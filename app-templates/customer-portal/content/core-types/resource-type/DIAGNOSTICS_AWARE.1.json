@@ -1,0 +1,5134 @@
+{
+ "optimistic": 0,
+ "code": "DIAGNOSTICS_AWARE",
+ "nls": {
+  "en": {
+   "NAME": "Diagnostics Aware",
+   "DESCRIPTION": "Resource type supporting diagnostics scripting with attributes for diagnostic scripts, time zones, and physical address"
+  }
+ },
+ "organization": {
+  "optimistic": 1,
+  "id": 1,
+  "code": "SYSTEM"
+ },
+ "attributeOrder": [],
+ "attributes": [
+  {
+   "code": "TIMEZONE",
+   "required": true,
+   "multiselect": false,
+   "freeValue": true,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "en": {
+     "NAME": "Time Zone",
+     "DESCRIPTION": "The timezone where the resource is located"
+    }
+   },
+   "options": [
+    {
+     "value": "Africa/Abidjan",
+     "nls": {
+      "en": {
+       "NAME": "Africa/Abidjan"
+      }
+     }
+    },
+    {
+     "value": "Africa/Accra",
+     "nls": {
+      "en": {
+       "NAME": "Africa/Accra"
+      }
+     }
+    },
+    {
+     "value": "Africa/Addis_Ababa",
+     "nls": {
+      "en": {
+       "NAME": "Africa/Addis_Ababa"
+      }
+     }
+    },
+    {
+     "value": "Africa/Algiers",
+     "nls": {
+      "en": {
+       "NAME": "Africa/Algiers"
+      }
+     }
+    },
+    {
+     "value": "Africa/Asmara",
+     "nls": {
+      "en": {
+       "NAME": "Africa/Asmara"
+      }
+     }
+    },
+    {
+     "value": "Africa/Asmera",
+     "nls": {
+      "en": {
+       "NAME": "Africa/Asmera"
+      }
+     }
+    },
+    {
+     "value": "Africa/Bamako",
+     "nls": {
+      "en": {
+       "NAME": "Africa/Bamako"
+      }
+     }
+    },
+    {
+     "value": "Africa/Bangui",
+     "nls": {
+      "en": {
+       "NAME": "Africa/Bangui"
+      }
+     }
+    },
+    {
+     "value": "Africa/Banjul",
+     "nls": {
+      "en": {
+       "NAME": "Africa/Banjul"
+      }
+     }
+    },
+    {
+     "value": "Africa/Bissau",
+     "nls": {
+      "en": {
+       "NAME": "Africa/Bissau"
+      }
+     }
+    },
+    {
+     "value": "Africa/Blantyre",
+     "nls": {
+      "en": {
+       "NAME": "Africa/Blantyre"
+      }
+     }
+    },
+    {
+     "value": "Africa/Brazzaville",
+     "nls": {
+      "en": {
+       "NAME": "Africa/Brazzaville"
+      }
+     }
+    },
+    {
+     "value": "Africa/Bujumbura",
+     "nls": {
+      "en": {
+       "NAME": "Africa/Bujumbura"
+      }
+     }
+    },
+    {
+     "value": "Africa/Cairo",
+     "nls": {
+      "en": {
+       "NAME": "Africa/Cairo"
+      }
+     }
+    },
+    {
+     "value": "Africa/Casablanca",
+     "nls": {
+      "en": {
+       "NAME": "Africa/Casablanca"
+      }
+     }
+    },
+    {
+     "value": "Africa/Ceuta",
+     "nls": {
+      "en": {
+       "NAME": "Africa/Ceuta"
+      }
+     }
+    },
+    {
+     "value": "Africa/Conakry",
+     "nls": {
+      "en": {
+       "NAME": "Africa/Conakry"
+      }
+     }
+    },
+    {
+     "value": "Africa/Dakar",
+     "nls": {
+      "en": {
+       "NAME": "Africa/Dakar"
+      }
+     }
+    },
+    {
+     "value": "Africa/Dar_es_Salaam",
+     "nls": {
+      "en": {
+       "NAME": "Africa/Dar_es_Salaam"
+      }
+     }
+    },
+    {
+     "value": "Africa/Djibouti",
+     "nls": {
+      "en": {
+       "NAME": "Africa/Djibouti"
+      }
+     }
+    },
+    {
+     "value": "Africa/Douala",
+     "nls": {
+      "en": {
+       "NAME": "Africa/Douala"
+      }
+     }
+    },
+    {
+     "value": "Africa/El_Aaiun",
+     "nls": {
+      "en": {
+       "NAME": "Africa/El_Aaiun"
+      }
+     }
+    },
+    {
+     "value": "Africa/Freetown",
+     "nls": {
+      "en": {
+       "NAME": "Africa/Freetown"
+      }
+     }
+    },
+    {
+     "value": "Africa/Gaborone",
+     "nls": {
+      "en": {
+       "NAME": "Africa/Gaborone"
+      }
+     }
+    },
+    {
+     "value": "Africa/Harare",
+     "nls": {
+      "en": {
+       "NAME": "Africa/Harare"
+      }
+     }
+    },
+    {
+     "value": "Africa/Johannesburg",
+     "nls": {
+      "en": {
+       "NAME": "Africa/Johannesburg"
+      }
+     }
+    },
+    {
+     "value": "Africa/Juba",
+     "nls": {
+      "en": {
+       "NAME": "Africa/Juba"
+      }
+     }
+    },
+    {
+     "value": "Africa/Kampala",
+     "nls": {
+      "en": {
+       "NAME": "Africa/Kampala"
+      }
+     }
+    },
+    {
+     "value": "Africa/Khartoum",
+     "nls": {
+      "en": {
+       "NAME": "Africa/Khartoum"
+      }
+     }
+    },
+    {
+     "value": "Africa/Kigali",
+     "nls": {
+      "en": {
+       "NAME": "Africa/Kigali"
+      }
+     }
+    },
+    {
+     "value": "Africa/Kinshasa",
+     "nls": {
+      "en": {
+       "NAME": "Africa/Kinshasa"
+      }
+     }
+    },
+    {
+     "value": "Africa/Lagos",
+     "nls": {
+      "en": {
+       "NAME": "Africa/Lagos"
+      }
+     }
+    },
+    {
+     "value": "Africa/Libreville",
+     "nls": {
+      "en": {
+       "NAME": "Africa/Libreville"
+      }
+     }
+    },
+    {
+     "value": "Africa/Lome",
+     "nls": {
+      "en": {
+       "NAME": "Africa/Lome"
+      }
+     }
+    },
+    {
+     "value": "Africa/Luanda",
+     "nls": {
+      "en": {
+       "NAME": "Africa/Luanda"
+      }
+     }
+    },
+    {
+     "value": "Africa/Lubumbashi",
+     "nls": {
+      "en": {
+       "NAME": "Africa/Lubumbashi"
+      }
+     }
+    },
+    {
+     "value": "Africa/Lusaka",
+     "nls": {
+      "en": {
+       "NAME": "Africa/Lusaka"
+      }
+     }
+    },
+    {
+     "value": "Africa/Malabo",
+     "nls": {
+      "en": {
+       "NAME": "Africa/Malabo"
+      }
+     }
+    },
+    {
+     "value": "Africa/Maputo",
+     "nls": {
+      "en": {
+       "NAME": "Africa/Maputo"
+      }
+     }
+    },
+    {
+     "value": "Africa/Maseru",
+     "nls": {
+      "en": {
+       "NAME": "Africa/Maseru"
+      }
+     }
+    },
+    {
+     "value": "Africa/Mbabane",
+     "nls": {
+      "en": {
+       "NAME": "Africa/Mbabane"
+      }
+     }
+    },
+    {
+     "value": "Africa/Mogadishu",
+     "nls": {
+      "en": {
+       "NAME": "Africa/Mogadishu"
+      }
+     }
+    },
+    {
+     "value": "Africa/Monrovia",
+     "nls": {
+      "en": {
+       "NAME": "Africa/Monrovia"
+      }
+     }
+    },
+    {
+     "value": "Africa/Nairobi",
+     "nls": {
+      "en": {
+       "NAME": "Africa/Nairobi"
+      }
+     }
+    },
+    {
+     "value": "Africa/Ndjamena",
+     "nls": {
+      "en": {
+       "NAME": "Africa/Ndjamena"
+      }
+     }
+    },
+    {
+     "value": "Africa/Niamey",
+     "nls": {
+      "en": {
+       "NAME": "Africa/Niamey"
+      }
+     }
+    },
+    {
+     "value": "Africa/Nouakchott",
+     "nls": {
+      "en": {
+       "NAME": "Africa/Nouakchott"
+      }
+     }
+    },
+    {
+     "value": "Africa/Ouagadougou",
+     "nls": {
+      "en": {
+       "NAME": "Africa/Ouagadougou"
+      }
+     }
+    },
+    {
+     "value": "Africa/Porto-Novo",
+     "nls": {
+      "en": {
+       "NAME": "Africa/Porto-Novo"
+      }
+     }
+    },
+    {
+     "value": "Africa/Sao_Tome",
+     "nls": {
+      "en": {
+       "NAME": "Africa/Sao_Tome"
+      }
+     }
+    },
+    {
+     "value": "Africa/Timbuktu",
+     "nls": {
+      "en": {
+       "NAME": "Africa/Timbuktu"
+      }
+     }
+    },
+    {
+     "value": "Africa/Tripoli",
+     "nls": {
+      "en": {
+       "NAME": "Africa/Tripoli"
+      }
+     }
+    },
+    {
+     "value": "Africa/Tunis",
+     "nls": {
+      "en": {
+       "NAME": "Africa/Tunis"
+      }
+     }
+    },
+    {
+     "value": "Africa/Windhoek",
+     "nls": {
+      "en": {
+       "NAME": "Africa/Windhoek"
+      }
+     }
+    },
+    {
+     "value": "America/Adak",
+     "nls": {
+      "en": {
+       "NAME": "America/Adak"
+      }
+     }
+    },
+    {
+     "value": "America/Anchorage",
+     "nls": {
+      "en": {
+       "NAME": "America/Anchorage"
+      }
+     }
+    },
+    {
+     "value": "America/Anguilla",
+     "nls": {
+      "en": {
+       "NAME": "America/Anguilla"
+      }
+     }
+    },
+    {
+     "value": "America/Antigua",
+     "nls": {
+      "en": {
+       "NAME": "America/Antigua"
+      }
+     }
+    },
+    {
+     "value": "America/Araguaina",
+     "nls": {
+      "en": {
+       "NAME": "America/Araguaina"
+      }
+     }
+    },
+    {
+     "value": "America/Argentina/Buenos_Aires",
+     "nls": {
+      "en": {
+       "NAME": "America/Argentina/Buenos_Aires"
+      }
+     }
+    },
+    {
+     "value": "America/Argentina/Catamarca",
+     "nls": {
+      "en": {
+       "NAME": "America/Argentina/Catamarca"
+      }
+     }
+    },
+    {
+     "value": "America/Argentina/ComodRivadavia",
+     "nls": {
+      "en": {
+       "NAME": "America/Argentina/ComodRivadavia"
+      }
+     }
+    },
+    {
+     "value": "America/Argentina/Cordoba",
+     "nls": {
+      "en": {
+       "NAME": "America/Argentina/Cordoba"
+      }
+     }
+    },
+    {
+     "value": "America/Argentina/Jujuy",
+     "nls": {
+      "en": {
+       "NAME": "America/Argentina/Jujuy"
+      }
+     }
+    },
+    {
+     "value": "America/Argentina/La_Rioja",
+     "nls": {
+      "en": {
+       "NAME": "America/Argentina/La_Rioja"
+      }
+     }
+    },
+    {
+     "value": "America/Argentina/Mendoza",
+     "nls": {
+      "en": {
+       "NAME": "America/Argentina/Mendoza"
+      }
+     }
+    },
+    {
+     "value": "America/Argentina/Rio_Gallegos",
+     "nls": {
+      "en": {
+       "NAME": "America/Argentina/Rio_Gallegos"
+      }
+     }
+    },
+    {
+     "value": "America/Argentina/Salta",
+     "nls": {
+      "en": {
+       "NAME": "America/Argentina/Salta"
+      }
+     }
+    },
+    {
+     "value": "America/Argentina/San_Juan",
+     "nls": {
+      "en": {
+       "NAME": "America/Argentina/San_Juan"
+      }
+     }
+    },
+    {
+     "value": "America/Argentina/San_Luis",
+     "nls": {
+      "en": {
+       "NAME": "America/Argentina/San_Luis"
+      }
+     }
+    },
+    {
+     "value": "America/Argentina/Tucuman",
+     "nls": {
+      "en": {
+       "NAME": "America/Argentina/Tucuman"
+      }
+     }
+    },
+    {
+     "value": "America/Argentina/Ushuaia",
+     "nls": {
+      "en": {
+       "NAME": "America/Argentina/Ushuaia"
+      }
+     }
+    },
+    {
+     "value": "America/Aruba",
+     "nls": {
+      "en": {
+       "NAME": "America/Aruba"
+      }
+     }
+    },
+    {
+     "value": "America/Asuncion",
+     "nls": {
+      "en": {
+       "NAME": "America/Asuncion"
+      }
+     }
+    },
+    {
+     "value": "America/Atikokan",
+     "nls": {
+      "en": {
+       "NAME": "America/Atikokan"
+      }
+     }
+    },
+    {
+     "value": "America/Atka",
+     "nls": {
+      "en": {
+       "NAME": "America/Atka"
+      }
+     }
+    },
+    {
+     "value": "America/Bahia",
+     "nls": {
+      "en": {
+       "NAME": "America/Bahia"
+      }
+     }
+    },
+    {
+     "value": "America/Bahia_Banderas",
+     "nls": {
+      "en": {
+       "NAME": "America/Bahia_Banderas"
+      }
+     }
+    },
+    {
+     "value": "America/Barbados",
+     "nls": {
+      "en": {
+       "NAME": "America/Barbados"
+      }
+     }
+    },
+    {
+     "value": "America/Belem",
+     "nls": {
+      "en": {
+       "NAME": "America/Belem"
+      }
+     }
+    },
+    {
+     "value": "America/Belize",
+     "nls": {
+      "en": {
+       "NAME": "America/Belize"
+      }
+     }
+    },
+    {
+     "value": "America/Blanc-Sablon",
+     "nls": {
+      "en": {
+       "NAME": "America/Blanc-Sablon"
+      }
+     }
+    },
+    {
+     "value": "America/Boa_Vista",
+     "nls": {
+      "en": {
+       "NAME": "America/Boa_Vista"
+      }
+     }
+    },
+    {
+     "value": "America/Bogota",
+     "nls": {
+      "en": {
+       "NAME": "America/Bogota"
+      }
+     }
+    },
+    {
+     "value": "America/Boise",
+     "nls": {
+      "en": {
+       "NAME": "America/Boise"
+      }
+     }
+    },
+    {
+     "value": "America/Buenos_Aires",
+     "nls": {
+      "en": {
+       "NAME": "America/Buenos_Aires"
+      }
+     }
+    },
+    {
+     "value": "America/Cambridge_Bay",
+     "nls": {
+      "en": {
+       "NAME": "America/Cambridge_Bay"
+      }
+     }
+    },
+    {
+     "value": "America/Campo_Grande",
+     "nls": {
+      "en": {
+       "NAME": "America/Campo_Grande"
+      }
+     }
+    },
+    {
+     "value": "America/Cancun",
+     "nls": {
+      "en": {
+       "NAME": "America/Cancun"
+      }
+     }
+    },
+    {
+     "value": "America/Caracas",
+     "nls": {
+      "en": {
+       "NAME": "America/Caracas"
+      }
+     }
+    },
+    {
+     "value": "America/Catamarca",
+     "nls": {
+      "en": {
+       "NAME": "America/Catamarca"
+      }
+     }
+    },
+    {
+     "value": "America/Cayenne",
+     "nls": {
+      "en": {
+       "NAME": "America/Cayenne"
+      }
+     }
+    },
+    {
+     "value": "America/Cayman",
+     "nls": {
+      "en": {
+       "NAME": "America/Cayman"
+      }
+     }
+    },
+    {
+     "value": "America/Chicago",
+     "nls": {
+      "en": {
+       "NAME": "America/Chicago"
+      }
+     }
+    },
+    {
+     "value": "America/Chihuahua",
+     "nls": {
+      "en": {
+       "NAME": "America/Chihuahua"
+      }
+     }
+    },
+    {
+     "value": "America/Ciudad_Juarez",
+     "nls": {
+      "en": {
+       "NAME": "America/Ciudad_Juarez"
+      }
+     }
+    },
+    {
+     "value": "America/Coral_Harbour",
+     "nls": {
+      "en": {
+       "NAME": "America/Coral_Harbour"
+      }
+     }
+    },
+    {
+     "value": "America/Cordoba",
+     "nls": {
+      "en": {
+       "NAME": "America/Cordoba"
+      }
+     }
+    },
+    {
+     "value": "America/Costa_Rica",
+     "nls": {
+      "en": {
+       "NAME": "America/Costa_Rica"
+      }
+     }
+    },
+    {
+     "value": "America/Creston",
+     "nls": {
+      "en": {
+       "NAME": "America/Creston"
+      }
+     }
+    },
+    {
+     "value": "America/Cuiaba",
+     "nls": {
+      "en": {
+       "NAME": "America/Cuiaba"
+      }
+     }
+    },
+    {
+     "value": "America/Curacao",
+     "nls": {
+      "en": {
+       "NAME": "America/Curacao"
+      }
+     }
+    },
+    {
+     "value": "America/Danmarkshavn",
+     "nls": {
+      "en": {
+       "NAME": "America/Danmarkshavn"
+      }
+     }
+    },
+    {
+     "value": "America/Dawson",
+     "nls": {
+      "en": {
+       "NAME": "America/Dawson"
+      }
+     }
+    },
+    {
+     "value": "America/Dawson_Creek",
+     "nls": {
+      "en": {
+       "NAME": "America/Dawson_Creek"
+      }
+     }
+    },
+    {
+     "value": "America/Denver",
+     "nls": {
+      "en": {
+       "NAME": "America/Denver"
+      }
+     }
+    },
+    {
+     "value": "America/Detroit",
+     "nls": {
+      "en": {
+       "NAME": "America/Detroit"
+      }
+     }
+    },
+    {
+     "value": "America/Dominica",
+     "nls": {
+      "en": {
+       "NAME": "America/Dominica"
+      }
+     }
+    },
+    {
+     "value": "America/Edmonton",
+     "nls": {
+      "en": {
+       "NAME": "America/Edmonton"
+      }
+     }
+    },
+    {
+     "value": "America/Eirunepe",
+     "nls": {
+      "en": {
+       "NAME": "America/Eirunepe"
+      }
+     }
+    },
+    {
+     "value": "America/El_Salvador",
+     "nls": {
+      "en": {
+       "NAME": "America/El_Salvador"
+      }
+     }
+    },
+    {
+     "value": "America/Ensenada",
+     "nls": {
+      "en": {
+       "NAME": "America/Ensenada"
+      }
+     }
+    },
+    {
+     "value": "America/Fort_Nelson",
+     "nls": {
+      "en": {
+       "NAME": "America/Fort_Nelson"
+      }
+     }
+    },
+    {
+     "value": "America/Fort_Wayne",
+     "nls": {
+      "en": {
+       "NAME": "America/Fort_Wayne"
+      }
+     }
+    },
+    {
+     "value": "America/Fortaleza",
+     "nls": {
+      "en": {
+       "NAME": "America/Fortaleza"
+      }
+     }
+    },
+    {
+     "value": "America/Glace_Bay",
+     "nls": {
+      "en": {
+       "NAME": "America/Glace_Bay"
+      }
+     }
+    },
+    {
+     "value": "America/Godthab",
+     "nls": {
+      "en": {
+       "NAME": "America/Godthab"
+      }
+     }
+    },
+    {
+     "value": "America/Goose_Bay",
+     "nls": {
+      "en": {
+       "NAME": "America/Goose_Bay"
+      }
+     }
+    },
+    {
+     "value": "America/Grand_Turk",
+     "nls": {
+      "en": {
+       "NAME": "America/Grand_Turk"
+      }
+     }
+    },
+    {
+     "value": "America/Grenada",
+     "nls": {
+      "en": {
+       "NAME": "America/Grenada"
+      }
+     }
+    },
+    {
+     "value": "America/Guadeloupe",
+     "nls": {
+      "en": {
+       "NAME": "America/Guadeloupe"
+      }
+     }
+    },
+    {
+     "value": "America/Guatemala",
+     "nls": {
+      "en": {
+       "NAME": "America/Guatemala"
+      }
+     }
+    },
+    {
+     "value": "America/Guayaquil",
+     "nls": {
+      "en": {
+       "NAME": "America/Guayaquil"
+      }
+     }
+    },
+    {
+     "value": "America/Guyana",
+     "nls": {
+      "en": {
+       "NAME": "America/Guyana"
+      }
+     }
+    },
+    {
+     "value": "America/Halifax",
+     "nls": {
+      "en": {
+       "NAME": "America/Halifax"
+      }
+     }
+    },
+    {
+     "value": "America/Havana",
+     "nls": {
+      "en": {
+       "NAME": "America/Havana"
+      }
+     }
+    },
+    {
+     "value": "America/Hermosillo",
+     "nls": {
+      "en": {
+       "NAME": "America/Hermosillo"
+      }
+     }
+    },
+    {
+     "value": "America/Indiana/Indianapolis",
+     "nls": {
+      "en": {
+       "NAME": "America/Indiana/Indianapolis"
+      }
+     }
+    },
+    {
+     "value": "America/Indiana/Knox",
+     "nls": {
+      "en": {
+       "NAME": "America/Indiana/Knox"
+      }
+     }
+    },
+    {
+     "value": "America/Indiana/Marengo",
+     "nls": {
+      "en": {
+       "NAME": "America/Indiana/Marengo"
+      }
+     }
+    },
+    {
+     "value": "America/Indiana/Petersburg",
+     "nls": {
+      "en": {
+       "NAME": "America/Indiana/Petersburg"
+      }
+     }
+    },
+    {
+     "value": "America/Indiana/Tell_City",
+     "nls": {
+      "en": {
+       "NAME": "America/Indiana/Tell_City"
+      }
+     }
+    },
+    {
+     "value": "America/Indiana/Vevay",
+     "nls": {
+      "en": {
+       "NAME": "America/Indiana/Vevay"
+      }
+     }
+    },
+    {
+     "value": "America/Indiana/Vincennes",
+     "nls": {
+      "en": {
+       "NAME": "America/Indiana/Vincennes"
+      }
+     }
+    },
+    {
+     "value": "America/Indiana/Winamac",
+     "nls": {
+      "en": {
+       "NAME": "America/Indiana/Winamac"
+      }
+     }
+    },
+    {
+     "value": "America/Indianapolis",
+     "nls": {
+      "en": {
+       "NAME": "America/Indianapolis"
+      }
+     }
+    },
+    {
+     "value": "America/Inuvik",
+     "nls": {
+      "en": {
+       "NAME": "America/Inuvik"
+      }
+     }
+    },
+    {
+     "value": "America/Iqaluit",
+     "nls": {
+      "en": {
+       "NAME": "America/Iqaluit"
+      }
+     }
+    },
+    {
+     "value": "America/Jamaica",
+     "nls": {
+      "en": {
+       "NAME": "America/Jamaica"
+      }
+     }
+    },
+    {
+     "value": "America/Jujuy",
+     "nls": {
+      "en": {
+       "NAME": "America/Jujuy"
+      }
+     }
+    },
+    {
+     "value": "America/Juneau",
+     "nls": {
+      "en": {
+       "NAME": "America/Juneau"
+      }
+     }
+    },
+    {
+     "value": "America/Kentucky/Louisville",
+     "nls": {
+      "en": {
+       "NAME": "America/Kentucky/Louisville"
+      }
+     }
+    },
+    {
+     "value": "America/Kentucky/Monticello",
+     "nls": {
+      "en": {
+       "NAME": "America/Kentucky/Monticello"
+      }
+     }
+    },
+    {
+     "value": "America/Knox_IN",
+     "nls": {
+      "en": {
+       "NAME": "America/Knox_IN"
+      }
+     }
+    },
+    {
+     "value": "America/Kralendijk",
+     "nls": {
+      "en": {
+       "NAME": "America/Kralendijk"
+      }
+     }
+    },
+    {
+     "value": "America/La_Paz",
+     "nls": {
+      "en": {
+       "NAME": "America/La_Paz"
+      }
+     }
+    },
+    {
+     "value": "America/Lima",
+     "nls": {
+      "en": {
+       "NAME": "America/Lima"
+      }
+     }
+    },
+    {
+     "value": "America/Los_Angeles",
+     "nls": {
+      "en": {
+       "NAME": "America/Los_Angeles"
+      }
+     }
+    },
+    {
+     "value": "America/Louisville",
+     "nls": {
+      "en": {
+       "NAME": "America/Louisville"
+      }
+     }
+    },
+    {
+     "value": "America/Lower_Princes",
+     "nls": {
+      "en": {
+       "NAME": "America/Lower_Princes"
+      }
+     }
+    },
+    {
+     "value": "America/Maceio",
+     "nls": {
+      "en": {
+       "NAME": "America/Maceio"
+      }
+     }
+    },
+    {
+     "value": "America/Managua",
+     "nls": {
+      "en": {
+       "NAME": "America/Managua"
+      }
+     }
+    },
+    {
+     "value": "America/Manaus",
+     "nls": {
+      "en": {
+       "NAME": "America/Manaus"
+      }
+     }
+    },
+    {
+     "value": "America/Marigot",
+     "nls": {
+      "en": {
+       "NAME": "America/Marigot"
+      }
+     }
+    },
+    {
+     "value": "America/Martinique",
+     "nls": {
+      "en": {
+       "NAME": "America/Martinique"
+      }
+     }
+    },
+    {
+     "value": "America/Matamoros",
+     "nls": {
+      "en": {
+       "NAME": "America/Matamoros"
+      }
+     }
+    },
+    {
+     "value": "America/Mazatlan",
+     "nls": {
+      "en": {
+       "NAME": "America/Mazatlan"
+      }
+     }
+    },
+    {
+     "value": "America/Mendoza",
+     "nls": {
+      "en": {
+       "NAME": "America/Mendoza"
+      }
+     }
+    },
+    {
+     "value": "America/Menominee",
+     "nls": {
+      "en": {
+       "NAME": "America/Menominee"
+      }
+     }
+    },
+    {
+     "value": "America/Merida",
+     "nls": {
+      "en": {
+       "NAME": "America/Merida"
+      }
+     }
+    },
+    {
+     "value": "America/Metlakatla",
+     "nls": {
+      "en": {
+       "NAME": "America/Metlakatla"
+      }
+     }
+    },
+    {
+     "value": "America/Mexico_City",
+     "nls": {
+      "en": {
+       "NAME": "America/Mexico_City"
+      }
+     }
+    },
+    {
+     "value": "America/Miquelon",
+     "nls": {
+      "en": {
+       "NAME": "America/Miquelon"
+      }
+     }
+    },
+    {
+     "value": "America/Moncton",
+     "nls": {
+      "en": {
+       "NAME": "America/Moncton"
+      }
+     }
+    },
+    {
+     "value": "America/Monterrey",
+     "nls": {
+      "en": {
+       "NAME": "America/Monterrey"
+      }
+     }
+    },
+    {
+     "value": "America/Montevideo",
+     "nls": {
+      "en": {
+       "NAME": "America/Montevideo"
+      }
+     }
+    },
+    {
+     "value": "America/Montreal",
+     "nls": {
+      "en": {
+       "NAME": "America/Montreal"
+      }
+     }
+    },
+    {
+     "value": "America/Montserrat",
+     "nls": {
+      "en": {
+       "NAME": "America/Montserrat"
+      }
+     }
+    },
+    {
+     "value": "America/Nassau",
+     "nls": {
+      "en": {
+       "NAME": "America/Nassau"
+      }
+     }
+    },
+    {
+     "value": "America/New_York",
+     "nls": {
+      "en": {
+       "NAME": "America/New_York"
+      }
+     }
+    },
+    {
+     "value": "America/Nipigon",
+     "nls": {
+      "en": {
+       "NAME": "America/Nipigon"
+      }
+     }
+    },
+    {
+     "value": "America/Nome",
+     "nls": {
+      "en": {
+       "NAME": "America/Nome"
+      }
+     }
+    },
+    {
+     "value": "America/Noronha",
+     "nls": {
+      "en": {
+       "NAME": "America/Noronha"
+      }
+     }
+    },
+    {
+     "value": "America/North_Dakota/Beulah",
+     "nls": {
+      "en": {
+       "NAME": "America/North_Dakota/Beulah"
+      }
+     }
+    },
+    {
+     "value": "America/North_Dakota/Center",
+     "nls": {
+      "en": {
+       "NAME": "America/North_Dakota/Center"
+      }
+     }
+    },
+    {
+     "value": "America/North_Dakota/New_Salem",
+     "nls": {
+      "en": {
+       "NAME": "America/North_Dakota/New_Salem"
+      }
+     }
+    },
+    {
+     "value": "America/Nuuk",
+     "nls": {
+      "en": {
+       "NAME": "America/Nuuk"
+      }
+     }
+    },
+    {
+     "value": "America/Ojinaga",
+     "nls": {
+      "en": {
+       "NAME": "America/Ojinaga"
+      }
+     }
+    },
+    {
+     "value": "America/Panama",
+     "nls": {
+      "en": {
+       "NAME": "America/Panama"
+      }
+     }
+    },
+    {
+     "value": "America/Pangnirtung",
+     "nls": {
+      "en": {
+       "NAME": "America/Pangnirtung"
+      }
+     }
+    },
+    {
+     "value": "America/Paramaribo",
+     "nls": {
+      "en": {
+       "NAME": "America/Paramaribo"
+      }
+     }
+    },
+    {
+     "value": "America/Phoenix",
+     "nls": {
+      "en": {
+       "NAME": "America/Phoenix"
+      }
+     }
+    },
+    {
+     "value": "America/Port-au-Prince",
+     "nls": {
+      "en": {
+       "NAME": "America/Port-au-Prince"
+      }
+     }
+    },
+    {
+     "value": "America/Port_of_Spain",
+     "nls": {
+      "en": {
+       "NAME": "America/Port_of_Spain"
+      }
+     }
+    },
+    {
+     "value": "America/Porto_Acre",
+     "nls": {
+      "en": {
+       "NAME": "America/Porto_Acre"
+      }
+     }
+    },
+    {
+     "value": "America/Porto_Velho",
+     "nls": {
+      "en": {
+       "NAME": "America/Porto_Velho"
+      }
+     }
+    },
+    {
+     "value": "America/Puerto_Rico",
+     "nls": {
+      "en": {
+       "NAME": "America/Puerto_Rico"
+      }
+     }
+    },
+    {
+     "value": "America/Punta_Arenas",
+     "nls": {
+      "en": {
+       "NAME": "America/Punta_Arenas"
+      }
+     }
+    },
+    {
+     "value": "America/Rainy_River",
+     "nls": {
+      "en": {
+       "NAME": "America/Rainy_River"
+      }
+     }
+    },
+    {
+     "value": "America/Rankin_Inlet",
+     "nls": {
+      "en": {
+       "NAME": "America/Rankin_Inlet"
+      }
+     }
+    },
+    {
+     "value": "America/Recife",
+     "nls": {
+      "en": {
+       "NAME": "America/Recife"
+      }
+     }
+    },
+    {
+     "value": "America/Regina",
+     "nls": {
+      "en": {
+       "NAME": "America/Regina"
+      }
+     }
+    },
+    {
+     "value": "America/Resolute",
+     "nls": {
+      "en": {
+       "NAME": "America/Resolute"
+      }
+     }
+    },
+    {
+     "value": "America/Rio_Branco",
+     "nls": {
+      "en": {
+       "NAME": "America/Rio_Branco"
+      }
+     }
+    },
+    {
+     "value": "America/Rosario",
+     "nls": {
+      "en": {
+       "NAME": "America/Rosario"
+      }
+     }
+    },
+    {
+     "value": "America/Santa_Isabel",
+     "nls": {
+      "en": {
+       "NAME": "America/Santa_Isabel"
+      }
+     }
+    },
+    {
+     "value": "America/Santarem",
+     "nls": {
+      "en": {
+       "NAME": "America/Santarem"
+      }
+     }
+    },
+    {
+     "value": "America/Santiago",
+     "nls": {
+      "en": {
+       "NAME": "America/Santiago"
+      }
+     }
+    },
+    {
+     "value": "America/Santo_Domingo",
+     "nls": {
+      "en": {
+       "NAME": "America/Santo_Domingo"
+      }
+     }
+    },
+    {
+     "value": "America/Sao_Paulo",
+     "nls": {
+      "en": {
+       "NAME": "America/Sao_Paulo"
+      }
+     }
+    },
+    {
+     "value": "America/Scoresbysund",
+     "nls": {
+      "en": {
+       "NAME": "America/Scoresbysund"
+      }
+     }
+    },
+    {
+     "value": "America/Shiprock",
+     "nls": {
+      "en": {
+       "NAME": "America/Shiprock"
+      }
+     }
+    },
+    {
+     "value": "America/Sitka",
+     "nls": {
+      "en": {
+       "NAME": "America/Sitka"
+      }
+     }
+    },
+    {
+     "value": "America/St_Barthelemy",
+     "nls": {
+      "en": {
+       "NAME": "America/St_Barthelemy"
+      }
+     }
+    },
+    {
+     "value": "America/St_Johns",
+     "nls": {
+      "en": {
+       "NAME": "America/St_Johns"
+      }
+     }
+    },
+    {
+     "value": "America/St_Kitts",
+     "nls": {
+      "en": {
+       "NAME": "America/St_Kitts"
+      }
+     }
+    },
+    {
+     "value": "America/St_Lucia",
+     "nls": {
+      "en": {
+       "NAME": "America/St_Lucia"
+      }
+     }
+    },
+    {
+     "value": "America/St_Thomas",
+     "nls": {
+      "en": {
+       "NAME": "America/St_Thomas"
+      }
+     }
+    },
+    {
+     "value": "America/St_Vincent",
+     "nls": {
+      "en": {
+       "NAME": "America/St_Vincent"
+      }
+     }
+    },
+    {
+     "value": "America/Swift_Current",
+     "nls": {
+      "en": {
+       "NAME": "America/Swift_Current"
+      }
+     }
+    },
+    {
+     "value": "America/Tegucigalpa",
+     "nls": {
+      "en": {
+       "NAME": "America/Tegucigalpa"
+      }
+     }
+    },
+    {
+     "value": "America/Thule",
+     "nls": {
+      "en": {
+       "NAME": "America/Thule"
+      }
+     }
+    },
+    {
+     "value": "America/Thunder_Bay",
+     "nls": {
+      "en": {
+       "NAME": "America/Thunder_Bay"
+      }
+     }
+    },
+    {
+     "value": "America/Tijuana",
+     "nls": {
+      "en": {
+       "NAME": "America/Tijuana"
+      }
+     }
+    },
+    {
+     "value": "America/Toronto",
+     "nls": {
+      "en": {
+       "NAME": "America/Toronto"
+      }
+     }
+    },
+    {
+     "value": "America/Tortola",
+     "nls": {
+      "en": {
+       "NAME": "America/Tortola"
+      }
+     }
+    },
+    {
+     "value": "America/Vancouver",
+     "nls": {
+      "en": {
+       "NAME": "America/Vancouver"
+      }
+     }
+    },
+    {
+     "value": "America/Virgin",
+     "nls": {
+      "en": {
+       "NAME": "America/Virgin"
+      }
+     }
+    },
+    {
+     "value": "America/Whitehorse",
+     "nls": {
+      "en": {
+       "NAME": "America/Whitehorse"
+      }
+     }
+    },
+    {
+     "value": "America/Winnipeg",
+     "nls": {
+      "en": {
+       "NAME": "America/Winnipeg"
+      }
+     }
+    },
+    {
+     "value": "America/Yakutat",
+     "nls": {
+      "en": {
+       "NAME": "America/Yakutat"
+      }
+     }
+    },
+    {
+     "value": "America/Yellowknife",
+     "nls": {
+      "en": {
+       "NAME": "America/Yellowknife"
+      }
+     }
+    },
+    {
+     "value": "Antarctica/Casey",
+     "nls": {
+      "en": {
+       "NAME": "Antarctica/Casey"
+      }
+     }
+    },
+    {
+     "value": "Antarctica/Davis",
+     "nls": {
+      "en": {
+       "NAME": "Antarctica/Davis"
+      }
+     }
+    },
+    {
+     "value": "Antarctica/DumontDUrville",
+     "nls": {
+      "en": {
+       "NAME": "Antarctica/DumontDUrville"
+      }
+     }
+    },
+    {
+     "value": "Antarctica/Macquarie",
+     "nls": {
+      "en": {
+       "NAME": "Antarctica/Macquarie"
+      }
+     }
+    },
+    {
+     "value": "Antarctica/Mawson",
+     "nls": {
+      "en": {
+       "NAME": "Antarctica/Mawson"
+      }
+     }
+    },
+    {
+     "value": "Antarctica/McMurdo",
+     "nls": {
+      "en": {
+       "NAME": "Antarctica/McMurdo"
+      }
+     }
+    },
+    {
+     "value": "Antarctica/Palmer",
+     "nls": {
+      "en": {
+       "NAME": "Antarctica/Palmer"
+      }
+     }
+    },
+    {
+     "value": "Antarctica/Rothera",
+     "nls": {
+      "en": {
+       "NAME": "Antarctica/Rothera"
+      }
+     }
+    },
+    {
+     "value": "Antarctica/South_Pole",
+     "nls": {
+      "en": {
+       "NAME": "Antarctica/South_Pole"
+      }
+     }
+    },
+    {
+     "value": "Antarctica/Syowa",
+     "nls": {
+      "en": {
+       "NAME": "Antarctica/Syowa"
+      }
+     }
+    },
+    {
+     "value": "Antarctica/Troll",
+     "nls": {
+      "en": {
+       "NAME": "Antarctica/Troll"
+      }
+     }
+    },
+    {
+     "value": "Antarctica/Vostok",
+     "nls": {
+      "en": {
+       "NAME": "Antarctica/Vostok"
+      }
+     }
+    },
+    {
+     "value": "Arctic/Longyearbyen",
+     "nls": {
+      "en": {
+       "NAME": "Arctic/Longyearbyen"
+      }
+     }
+    },
+    {
+     "value": "Asia/Aden",
+     "nls": {
+      "en": {
+       "NAME": "Asia/Aden"
+      }
+     }
+    },
+    {
+     "value": "Asia/Almaty",
+     "nls": {
+      "en": {
+       "NAME": "Asia/Almaty"
+      }
+     }
+    },
+    {
+     "value": "Asia/Amman",
+     "nls": {
+      "en": {
+       "NAME": "Asia/Amman"
+      }
+     }
+    },
+    {
+     "value": "Asia/Anadyr",
+     "nls": {
+      "en": {
+       "NAME": "Asia/Anadyr"
+      }
+     }
+    },
+    {
+     "value": "Asia/Aqtau",
+     "nls": {
+      "en": {
+       "NAME": "Asia/Aqtau"
+      }
+     }
+    },
+    {
+     "value": "Asia/Aqtobe",
+     "nls": {
+      "en": {
+       "NAME": "Asia/Aqtobe"
+      }
+     }
+    },
+    {
+     "value": "Asia/Ashgabat",
+     "nls": {
+      "en": {
+       "NAME": "Asia/Ashgabat"
+      }
+     }
+    },
+    {
+     "value": "Asia/Ashkhabad",
+     "nls": {
+      "en": {
+       "NAME": "Asia/Ashkhabad"
+      }
+     }
+    },
+    {
+     "value": "Asia/Atyrau",
+     "nls": {
+      "en": {
+       "NAME": "Asia/Atyrau"
+      }
+     }
+    },
+    {
+     "value": "Asia/Baghdad",
+     "nls": {
+      "en": {
+       "NAME": "Asia/Baghdad"
+      }
+     }
+    },
+    {
+     "value": "Asia/Bahrain",
+     "nls": {
+      "en": {
+       "NAME": "Asia/Bahrain"
+      }
+     }
+    },
+    {
+     "value": "Asia/Baku",
+     "nls": {
+      "en": {
+       "NAME": "Asia/Baku"
+      }
+     }
+    },
+    {
+     "value": "Asia/Bangkok",
+     "nls": {
+      "en": {
+       "NAME": "Asia/Bangkok"
+      }
+     }
+    },
+    {
+     "value": "Asia/Barnaul",
+     "nls": {
+      "en": {
+       "NAME": "Asia/Barnaul"
+      }
+     }
+    },
+    {
+     "value": "Asia/Beirut",
+     "nls": {
+      "en": {
+       "NAME": "Asia/Beirut"
+      }
+     }
+    },
+    {
+     "value": "Asia/Bishkek",
+     "nls": {
+      "en": {
+       "NAME": "Asia/Bishkek"
+      }
+     }
+    },
+    {
+     "value": "Asia/Brunei",
+     "nls": {
+      "en": {
+       "NAME": "Asia/Brunei"
+      }
+     }
+    },
+    {
+     "value": "Asia/Calcutta",
+     "nls": {
+      "en": {
+       "NAME": "Asia/Calcutta"
+      }
+     }
+    },
+    {
+     "value": "Asia/Chita",
+     "nls": {
+      "en": {
+       "NAME": "Asia/Chita"
+      }
+     }
+    },
+    {
+     "value": "Asia/Choibalsan",
+     "nls": {
+      "en": {
+       "NAME": "Asia/Choibalsan"
+      }
+     }
+    },
+    {
+     "value": "Asia/Chongqing",
+     "nls": {
+      "en": {
+       "NAME": "Asia/Chongqing"
+      }
+     }
+    },
+    {
+     "value": "Asia/Chungking",
+     "nls": {
+      "en": {
+       "NAME": "Asia/Chungking"
+      }
+     }
+    },
+    {
+     "value": "Asia/Colombo",
+     "nls": {
+      "en": {
+       "NAME": "Asia/Colombo"
+      }
+     }
+    },
+    {
+     "value": "Asia/Dacca",
+     "nls": {
+      "en": {
+       "NAME": "Asia/Dacca"
+      }
+     }
+    },
+    {
+     "value": "Asia/Damascus",
+     "nls": {
+      "en": {
+       "NAME": "Asia/Damascus"
+      }
+     }
+    },
+    {
+     "value": "Asia/Dhaka",
+     "nls": {
+      "en": {
+       "NAME": "Asia/Dhaka"
+      }
+     }
+    },
+    {
+     "value": "Asia/Dili",
+     "nls": {
+      "en": {
+       "NAME": "Asia/Dili"
+      }
+     }
+    },
+    {
+     "value": "Asia/Dubai",
+     "nls": {
+      "en": {
+       "NAME": "Asia/Dubai"
+      }
+     }
+    },
+    {
+     "value": "Asia/Dushanbe",
+     "nls": {
+      "en": {
+       "NAME": "Asia/Dushanbe"
+      }
+     }
+    },
+    {
+     "value": "Asia/Famagusta",
+     "nls": {
+      "en": {
+       "NAME": "Asia/Famagusta"
+      }
+     }
+    },
+    {
+     "value": "Asia/Gaza",
+     "nls": {
+      "en": {
+       "NAME": "Asia/Gaza"
+      }
+     }
+    },
+    {
+     "value": "Asia/Harbin",
+     "nls": {
+      "en": {
+       "NAME": "Asia/Harbin"
+      }
+     }
+    },
+    {
+     "value": "Asia/Hebron",
+     "nls": {
+      "en": {
+       "NAME": "Asia/Hebron"
+      }
+     }
+    },
+    {
+     "value": "Asia/Ho_Chi_Minh",
+     "nls": {
+      "en": {
+       "NAME": "Asia/Ho_Chi_Minh"
+      }
+     }
+    },
+    {
+     "value": "Asia/Hong_Kong",
+     "nls": {
+      "en": {
+       "NAME": "Asia/Hong_Kong"
+      }
+     }
+    },
+    {
+     "value": "Asia/Hovd",
+     "nls": {
+      "en": {
+       "NAME": "Asia/Hovd"
+      }
+     }
+    },
+    {
+     "value": "Asia/Irkutsk",
+     "nls": {
+      "en": {
+       "NAME": "Asia/Irkutsk"
+      }
+     }
+    },
+    {
+     "value": "Asia/Istanbul",
+     "nls": {
+      "en": {
+       "NAME": "Asia/Istanbul"
+      }
+     }
+    },
+    {
+     "value": "Asia/Jakarta",
+     "nls": {
+      "en": {
+       "NAME": "Asia/Jakarta"
+      }
+     }
+    },
+    {
+     "value": "Asia/Jayapura",
+     "nls": {
+      "en": {
+       "NAME": "Asia/Jayapura"
+      }
+     }
+    },
+    {
+     "value": "Asia/Jerusalem",
+     "nls": {
+      "en": {
+       "NAME": "Asia/Jerusalem"
+      }
+     }
+    },
+    {
+     "value": "Asia/Kabul",
+     "nls": {
+      "en": {
+       "NAME": "Asia/Kabul"
+      }
+     }
+    },
+    {
+     "value": "Asia/Kamchatka",
+     "nls": {
+      "en": {
+       "NAME": "Asia/Kamchatka"
+      }
+     }
+    },
+    {
+     "value": "Asia/Karachi",
+     "nls": {
+      "en": {
+       "NAME": "Asia/Karachi"
+      }
+     }
+    },
+    {
+     "value": "Asia/Kashgar",
+     "nls": {
+      "en": {
+       "NAME": "Asia/Kashgar"
+      }
+     }
+    },
+    {
+     "value": "Asia/Kathmandu",
+     "nls": {
+      "en": {
+       "NAME": "Asia/Kathmandu"
+      }
+     }
+    },
+    {
+     "value": "Asia/Katmandu",
+     "nls": {
+      "en": {
+       "NAME": "Asia/Katmandu"
+      }
+     }
+    },
+    {
+     "value": "Asia/Khandyga",
+     "nls": {
+      "en": {
+       "NAME": "Asia/Khandyga"
+      }
+     }
+    },
+    {
+     "value": "Asia/Kolkata",
+     "nls": {
+      "en": {
+       "NAME": "Asia/Kolkata"
+      }
+     }
+    },
+    {
+     "value": "Asia/Krasnoyarsk",
+     "nls": {
+      "en": {
+       "NAME": "Asia/Krasnoyarsk"
+      }
+     }
+    },
+    {
+     "value": "Asia/Kuala_Lumpur",
+     "nls": {
+      "en": {
+       "NAME": "Asia/Kuala_Lumpur"
+      }
+     }
+    },
+    {
+     "value": "Asia/Kuching",
+     "nls": {
+      "en": {
+       "NAME": "Asia/Kuching"
+      }
+     }
+    },
+    {
+     "value": "Asia/Kuwait",
+     "nls": {
+      "en": {
+       "NAME": "Asia/Kuwait"
+      }
+     }
+    },
+    {
+     "value": "Asia/Macao",
+     "nls": {
+      "en": {
+       "NAME": "Asia/Macao"
+      }
+     }
+    },
+    {
+     "value": "Asia/Macau",
+     "nls": {
+      "en": {
+       "NAME": "Asia/Macau"
+      }
+     }
+    },
+    {
+     "value": "Asia/Magadan",
+     "nls": {
+      "en": {
+       "NAME": "Asia/Magadan"
+      }
+     }
+    },
+    {
+     "value": "Asia/Makassar",
+     "nls": {
+      "en": {
+       "NAME": "Asia/Makassar"
+      }
+     }
+    },
+    {
+     "value": "Asia/Manila",
+     "nls": {
+      "en": {
+       "NAME": "Asia/Manila"
+      }
+     }
+    },
+    {
+     "value": "Asia/Muscat",
+     "nls": {
+      "en": {
+       "NAME": "Asia/Muscat"
+      }
+     }
+    },
+    {
+     "value": "Asia/Nicosia",
+     "nls": {
+      "en": {
+       "NAME": "Asia/Nicosia"
+      }
+     }
+    },
+    {
+     "value": "Asia/Novokuznetsk",
+     "nls": {
+      "en": {
+       "NAME": "Asia/Novokuznetsk"
+      }
+     }
+    },
+    {
+     "value": "Asia/Novosibirsk",
+     "nls": {
+      "en": {
+       "NAME": "Asia/Novosibirsk"
+      }
+     }
+    },
+    {
+     "value": "Asia/Omsk",
+     "nls": {
+      "en": {
+       "NAME": "Asia/Omsk"
+      }
+     }
+    },
+    {
+     "value": "Asia/Oral",
+     "nls": {
+      "en": {
+       "NAME": "Asia/Oral"
+      }
+     }
+    },
+    {
+     "value": "Asia/Phnom_Penh",
+     "nls": {
+      "en": {
+       "NAME": "Asia/Phnom_Penh"
+      }
+     }
+    },
+    {
+     "value": "Asia/Pontianak",
+     "nls": {
+      "en": {
+       "NAME": "Asia/Pontianak"
+      }
+     }
+    },
+    {
+     "value": "Asia/Pyongyang",
+     "nls": {
+      "en": {
+       "NAME": "Asia/Pyongyang"
+      }
+     }
+    },
+    {
+     "value": "Asia/Qatar",
+     "nls": {
+      "en": {
+       "NAME": "Asia/Qatar"
+      }
+     }
+    },
+    {
+     "value": "Asia/Qostanay",
+     "nls": {
+      "en": {
+       "NAME": "Asia/Qostanay"
+      }
+     }
+    },
+    {
+     "value": "Asia/Qyzylorda",
+     "nls": {
+      "en": {
+       "NAME": "Asia/Qyzylorda"
+      }
+     }
+    },
+    {
+     "value": "Asia/Rangoon",
+     "nls": {
+      "en": {
+       "NAME": "Asia/Rangoon"
+      }
+     }
+    },
+    {
+     "value": "Asia/Riyadh",
+     "nls": {
+      "en": {
+       "NAME": "Asia/Riyadh"
+      }
+     }
+    },
+    {
+     "value": "Asia/Saigon",
+     "nls": {
+      "en": {
+       "NAME": "Asia/Saigon"
+      }
+     }
+    },
+    {
+     "value": "Asia/Sakhalin",
+     "nls": {
+      "en": {
+       "NAME": "Asia/Sakhalin"
+      }
+     }
+    },
+    {
+     "value": "Asia/Samarkand",
+     "nls": {
+      "en": {
+       "NAME": "Asia/Samarkand"
+      }
+     }
+    },
+    {
+     "value": "Asia/Seoul",
+     "nls": {
+      "en": {
+       "NAME": "Asia/Seoul"
+      }
+     }
+    },
+    {
+     "value": "Asia/Shanghai",
+     "nls": {
+      "en": {
+       "NAME": "Asia/Shanghai"
+      }
+     }
+    },
+    {
+     "value": "Asia/Singapore",
+     "nls": {
+      "en": {
+       "NAME": "Asia/Singapore"
+      }
+     }
+    },
+    {
+     "value": "Asia/Srednekolymsk",
+     "nls": {
+      "en": {
+       "NAME": "Asia/Srednekolymsk"
+      }
+     }
+    },
+    {
+     "value": "Asia/Taipei",
+     "nls": {
+      "en": {
+       "NAME": "Asia/Taipei"
+      }
+     }
+    },
+    {
+     "value": "Asia/Tashkent",
+     "nls": {
+      "en": {
+       "NAME": "Asia/Tashkent"
+      }
+     }
+    },
+    {
+     "value": "Asia/Tbilisi",
+     "nls": {
+      "en": {
+       "NAME": "Asia/Tbilisi"
+      }
+     }
+    },
+    {
+     "value": "Asia/Tehran",
+     "nls": {
+      "en": {
+       "NAME": "Asia/Tehran"
+      }
+     }
+    },
+    {
+     "value": "Asia/Tel_Aviv",
+     "nls": {
+      "en": {
+       "NAME": "Asia/Tel_Aviv"
+      }
+     }
+    },
+    {
+     "value": "Asia/Thimbu",
+     "nls": {
+      "en": {
+       "NAME": "Asia/Thimbu"
+      }
+     }
+    },
+    {
+     "value": "Asia/Thimphu",
+     "nls": {
+      "en": {
+       "NAME": "Asia/Thimphu"
+      }
+     }
+    },
+    {
+     "value": "Asia/Tokyo",
+     "nls": {
+      "en": {
+       "NAME": "Asia/Tokyo"
+      }
+     }
+    },
+    {
+     "value": "Asia/Tomsk",
+     "nls": {
+      "en": {
+       "NAME": "Asia/Tomsk"
+      }
+     }
+    },
+    {
+     "value": "Asia/Ujung_Pandang",
+     "nls": {
+      "en": {
+       "NAME": "Asia/Ujung_Pandang"
+      }
+     }
+    },
+    {
+     "value": "Asia/Ulaanbaatar",
+     "nls": {
+      "en": {
+       "NAME": "Asia/Ulaanbaatar"
+      }
+     }
+    },
+    {
+     "value": "Asia/Ulan_Bator",
+     "nls": {
+      "en": {
+       "NAME": "Asia/Ulan_Bator"
+      }
+     }
+    },
+    {
+     "value": "Asia/Urumqi",
+     "nls": {
+      "en": {
+       "NAME": "Asia/Urumqi"
+      }
+     }
+    },
+    {
+     "value": "Asia/Ust-Nera",
+     "nls": {
+      "en": {
+       "NAME": "Asia/Ust-Nera"
+      }
+     }
+    },
+    {
+     "value": "Asia/Vientiane",
+     "nls": {
+      "en": {
+       "NAME": "Asia/Vientiane"
+      }
+     }
+    },
+    {
+     "value": "Asia/Vladivostok",
+     "nls": {
+      "en": {
+       "NAME": "Asia/Vladivostok"
+      }
+     }
+    },
+    {
+     "value": "Asia/Yakutsk",
+     "nls": {
+      "en": {
+       "NAME": "Asia/Yakutsk"
+      }
+     }
+    },
+    {
+     "value": "Asia/Yangon",
+     "nls": {
+      "en": {
+       "NAME": "Asia/Yangon"
+      }
+     }
+    },
+    {
+     "value": "Asia/Yekaterinburg",
+     "nls": {
+      "en": {
+       "NAME": "Asia/Yekaterinburg"
+      }
+     }
+    },
+    {
+     "value": "Asia/Yerevan",
+     "nls": {
+      "en": {
+       "NAME": "Asia/Yerevan"
+      }
+     }
+    },
+    {
+     "value": "Atlantic/Azores",
+     "nls": {
+      "en": {
+       "NAME": "Atlantic/Azores"
+      }
+     }
+    },
+    {
+     "value": "Atlantic/Bermuda",
+     "nls": {
+      "en": {
+       "NAME": "Atlantic/Bermuda"
+      }
+     }
+    },
+    {
+     "value": "Atlantic/Canary",
+     "nls": {
+      "en": {
+       "NAME": "Atlantic/Canary"
+      }
+     }
+    },
+    {
+     "value": "Atlantic/Cape_Verde",
+     "nls": {
+      "en": {
+       "NAME": "Atlantic/Cape_Verde"
+      }
+     }
+    },
+    {
+     "value": "Atlantic/Faeroe",
+     "nls": {
+      "en": {
+       "NAME": "Atlantic/Faeroe"
+      }
+     }
+    },
+    {
+     "value": "Atlantic/Faroe",
+     "nls": {
+      "en": {
+       "NAME": "Atlantic/Faroe"
+      }
+     }
+    },
+    {
+     "value": "Atlantic/Jan_Mayen",
+     "nls": {
+      "en": {
+       "NAME": "Atlantic/Jan_Mayen"
+      }
+     }
+    },
+    {
+     "value": "Atlantic/Madeira",
+     "nls": {
+      "en": {
+       "NAME": "Atlantic/Madeira"
+      }
+     }
+    },
+    {
+     "value": "Atlantic/Reykjavik",
+     "nls": {
+      "en": {
+       "NAME": "Atlantic/Reykjavik"
+      }
+     }
+    },
+    {
+     "value": "Atlantic/South_Georgia",
+     "nls": {
+      "en": {
+       "NAME": "Atlantic/South_Georgia"
+      }
+     }
+    },
+    {
+     "value": "Atlantic/St_Helena",
+     "nls": {
+      "en": {
+       "NAME": "Atlantic/St_Helena"
+      }
+     }
+    },
+    {
+     "value": "Atlantic/Stanley",
+     "nls": {
+      "en": {
+       "NAME": "Atlantic/Stanley"
+      }
+     }
+    },
+    {
+     "value": "Australia/ACT",
+     "nls": {
+      "en": {
+       "NAME": "Australia/ACT"
+      }
+     }
+    },
+    {
+     "value": "Australia/Adelaide",
+     "nls": {
+      "en": {
+       "NAME": "Australia/Adelaide"
+      }
+     }
+    },
+    {
+     "value": "Australia/Brisbane",
+     "nls": {
+      "en": {
+       "NAME": "Australia/Brisbane"
+      }
+     }
+    },
+    {
+     "value": "Australia/Broken_Hill",
+     "nls": {
+      "en": {
+       "NAME": "Australia/Broken_Hill"
+      }
+     }
+    },
+    {
+     "value": "Australia/Canberra",
+     "nls": {
+      "en": {
+       "NAME": "Australia/Canberra"
+      }
+     }
+    },
+    {
+     "value": "Australia/Currie",
+     "nls": {
+      "en": {
+       "NAME": "Australia/Currie"
+      }
+     }
+    },
+    {
+     "value": "Australia/Darwin",
+     "nls": {
+      "en": {
+       "NAME": "Australia/Darwin"
+      }
+     }
+    },
+    {
+     "value": "Australia/Eucla",
+     "nls": {
+      "en": {
+       "NAME": "Australia/Eucla"
+      }
+     }
+    },
+    {
+     "value": "Australia/Hobart",
+     "nls": {
+      "en": {
+       "NAME": "Australia/Hobart"
+      }
+     }
+    },
+    {
+     "value": "Australia/LHI",
+     "nls": {
+      "en": {
+       "NAME": "Australia/LHI"
+      }
+     }
+    },
+    {
+     "value": "Australia/Lindeman",
+     "nls": {
+      "en": {
+       "NAME": "Australia/Lindeman"
+      }
+     }
+    },
+    {
+     "value": "Australia/Lord_Howe",
+     "nls": {
+      "en": {
+       "NAME": "Australia/Lord_Howe"
+      }
+     }
+    },
+    {
+     "value": "Australia/Melbourne",
+     "nls": {
+      "en": {
+       "NAME": "Australia/Melbourne"
+      }
+     }
+    },
+    {
+     "value": "Australia/NSW",
+     "nls": {
+      "en": {
+       "NAME": "Australia/NSW"
+      }
+     }
+    },
+    {
+     "value": "Australia/North",
+     "nls": {
+      "en": {
+       "NAME": "Australia/North"
+      }
+     }
+    },
+    {
+     "value": "Australia/Perth",
+     "nls": {
+      "en": {
+       "NAME": "Australia/Perth"
+      }
+     }
+    },
+    {
+     "value": "Australia/Queensland",
+     "nls": {
+      "en": {
+       "NAME": "Australia/Queensland"
+      }
+     }
+    },
+    {
+     "value": "Australia/South",
+     "nls": {
+      "en": {
+       "NAME": "Australia/South"
+      }
+     }
+    },
+    {
+     "value": "Australia/Sydney",
+     "nls": {
+      "en": {
+       "NAME": "Australia/Sydney"
+      }
+     }
+    },
+    {
+     "value": "Australia/Tasmania",
+     "nls": {
+      "en": {
+       "NAME": "Australia/Tasmania"
+      }
+     }
+    },
+    {
+     "value": "Australia/Victoria",
+     "nls": {
+      "en": {
+       "NAME": "Australia/Victoria"
+      }
+     }
+    },
+    {
+     "value": "Australia/West",
+     "nls": {
+      "en": {
+       "NAME": "Australia/West"
+      }
+     }
+    },
+    {
+     "value": "Australia/Yancowinna",
+     "nls": {
+      "en": {
+       "NAME": "Australia/Yancowinna"
+      }
+     }
+    },
+    {
+     "value": "Brazil/Acre",
+     "nls": {
+      "en": {
+       "NAME": "Brazil/Acre"
+      }
+     }
+    },
+    {
+     "value": "Brazil/DeNoronha",
+     "nls": {
+      "en": {
+       "NAME": "Brazil/DeNoronha"
+      }
+     }
+    },
+    {
+     "value": "Brazil/East",
+     "nls": {
+      "en": {
+       "NAME": "Brazil/East"
+      }
+     }
+    },
+    {
+     "value": "Brazil/West",
+     "nls": {
+      "en": {
+       "NAME": "Brazil/West"
+      }
+     }
+    },
+    {
+     "value": "CET",
+     "nls": {
+      "en": {
+       "NAME": "CET"
+      }
+     }
+    },
+    {
+     "value": "CST6CDT",
+     "nls": {
+      "en": {
+       "NAME": "CST6CDT"
+      }
+     }
+    },
+    {
+     "value": "Canada/Atlantic",
+     "nls": {
+      "en": {
+       "NAME": "Canada/Atlantic"
+      }
+     }
+    },
+    {
+     "value": "Canada/Central",
+     "nls": {
+      "en": {
+       "NAME": "Canada/Central"
+      }
+     }
+    },
+    {
+     "value": "Canada/Eastern",
+     "nls": {
+      "en": {
+       "NAME": "Canada/Eastern"
+      }
+     }
+    },
+    {
+     "value": "Canada/Mountain",
+     "nls": {
+      "en": {
+       "NAME": "Canada/Mountain"
+      }
+     }
+    },
+    {
+     "value": "Canada/Newfoundland",
+     "nls": {
+      "en": {
+       "NAME": "Canada/Newfoundland"
+      }
+     }
+    },
+    {
+     "value": "Canada/Pacific",
+     "nls": {
+      "en": {
+       "NAME": "Canada/Pacific"
+      }
+     }
+    },
+    {
+     "value": "Canada/Saskatchewan",
+     "nls": {
+      "en": {
+       "NAME": "Canada/Saskatchewan"
+      }
+     }
+    },
+    {
+     "value": "Canada/Yukon",
+     "nls": {
+      "en": {
+       "NAME": "Canada/Yukon"
+      }
+     }
+    },
+    {
+     "value": "Chile/Continental",
+     "nls": {
+      "en": {
+       "NAME": "Chile/Continental"
+      }
+     }
+    },
+    {
+     "value": "Chile/EasterIsland",
+     "nls": {
+      "en": {
+       "NAME": "Chile/EasterIsland"
+      }
+     }
+    },
+    {
+     "value": "Cuba",
+     "nls": {
+      "en": {
+       "NAME": "Cuba"
+      }
+     }
+    },
+    {
+     "value": "EET",
+     "nls": {
+      "en": {
+       "NAME": "EET"
+      }
+     }
+    },
+    {
+     "value": "EST5EDT",
+     "nls": {
+      "en": {
+       "NAME": "EST5EDT"
+      }
+     }
+    },
+    {
+     "value": "Egypt",
+     "nls": {
+      "en": {
+       "NAME": "Egypt"
+      }
+     }
+    },
+    {
+     "value": "Eire",
+     "nls": {
+      "en": {
+       "NAME": "Eire"
+      }
+     }
+    },
+    {
+     "value": "Etc/GMT",
+     "nls": {
+      "en": {
+       "NAME": "Etc/GMT"
+      }
+     }
+    },
+    {
+     "value": "Etc/GMT+0",
+     "nls": {
+      "en": {
+       "NAME": "Etc/GMT+0"
+      }
+     }
+    },
+    {
+     "value": "Etc/GMT+1",
+     "nls": {
+      "en": {
+       "NAME": "Etc/GMT+1"
+      }
+     }
+    },
+    {
+     "value": "Etc/GMT+10",
+     "nls": {
+      "en": {
+       "NAME": "Etc/GMT+10"
+      }
+     }
+    },
+    {
+     "value": "Etc/GMT+11",
+     "nls": {
+      "en": {
+       "NAME": "Etc/GMT+11"
+      }
+     }
+    },
+    {
+     "value": "Etc/GMT+12",
+     "nls": {
+      "en": {
+       "NAME": "Etc/GMT+12"
+      }
+     }
+    },
+    {
+     "value": "Etc/GMT+2",
+     "nls": {
+      "en": {
+       "NAME": "Etc/GMT+2"
+      }
+     }
+    },
+    {
+     "value": "Etc/GMT+3",
+     "nls": {
+      "en": {
+       "NAME": "Etc/GMT+3"
+      }
+     }
+    },
+    {
+     "value": "Etc/GMT+4",
+     "nls": {
+      "en": {
+       "NAME": "Etc/GMT+4"
+      }
+     }
+    },
+    {
+     "value": "Etc/GMT+5",
+     "nls": {
+      "en": {
+       "NAME": "Etc/GMT+5"
+      }
+     }
+    },
+    {
+     "value": "Etc/GMT+6",
+     "nls": {
+      "en": {
+       "NAME": "Etc/GMT+6"
+      }
+     }
+    },
+    {
+     "value": "Etc/GMT+7",
+     "nls": {
+      "en": {
+       "NAME": "Etc/GMT+7"
+      }
+     }
+    },
+    {
+     "value": "Etc/GMT+8",
+     "nls": {
+      "en": {
+       "NAME": "Etc/GMT+8"
+      }
+     }
+    },
+    {
+     "value": "Etc/GMT+9",
+     "nls": {
+      "en": {
+       "NAME": "Etc/GMT+9"
+      }
+     }
+    },
+    {
+     "value": "Etc/GMT-0",
+     "nls": {
+      "en": {
+       "NAME": "Etc/GMT-0"
+      }
+     }
+    },
+    {
+     "value": "Etc/GMT-1",
+     "nls": {
+      "en": {
+       "NAME": "Etc/GMT-1"
+      }
+     }
+    },
+    {
+     "value": "Etc/GMT-10",
+     "nls": {
+      "en": {
+       "NAME": "Etc/GMT-10"
+      }
+     }
+    },
+    {
+     "value": "Etc/GMT-11",
+     "nls": {
+      "en": {
+       "NAME": "Etc/GMT-11"
+      }
+     }
+    },
+    {
+     "value": "Etc/GMT-12",
+     "nls": {
+      "en": {
+       "NAME": "Etc/GMT-12"
+      }
+     }
+    },
+    {
+     "value": "Etc/GMT-13",
+     "nls": {
+      "en": {
+       "NAME": "Etc/GMT-13"
+      }
+     }
+    },
+    {
+     "value": "Etc/GMT-14",
+     "nls": {
+      "en": {
+       "NAME": "Etc/GMT-14"
+      }
+     }
+    },
+    {
+     "value": "Etc/GMT-2",
+     "nls": {
+      "en": {
+       "NAME": "Etc/GMT-2"
+      }
+     }
+    },
+    {
+     "value": "Etc/GMT-3",
+     "nls": {
+      "en": {
+       "NAME": "Etc/GMT-3"
+      }
+     }
+    },
+    {
+     "value": "Etc/GMT-4",
+     "nls": {
+      "en": {
+       "NAME": "Etc/GMT-4"
+      }
+     }
+    },
+    {
+     "value": "Etc/GMT-5",
+     "nls": {
+      "en": {
+       "NAME": "Etc/GMT-5"
+      }
+     }
+    },
+    {
+     "value": "Etc/GMT-6",
+     "nls": {
+      "en": {
+       "NAME": "Etc/GMT-6"
+      }
+     }
+    },
+    {
+     "value": "Etc/GMT-7",
+     "nls": {
+      "en": {
+       "NAME": "Etc/GMT-7"
+      }
+     }
+    },
+    {
+     "value": "Etc/GMT-8",
+     "nls": {
+      "en": {
+       "NAME": "Etc/GMT-8"
+      }
+     }
+    },
+    {
+     "value": "Etc/GMT-9",
+     "nls": {
+      "en": {
+       "NAME": "Etc/GMT-9"
+      }
+     }
+    },
+    {
+     "value": "Etc/GMT0",
+     "nls": {
+      "en": {
+       "NAME": "Etc/GMT0"
+      }
+     }
+    },
+    {
+     "value": "Etc/Greenwich",
+     "nls": {
+      "en": {
+       "NAME": "Etc/Greenwich"
+      }
+     }
+    },
+    {
+     "value": "Etc/UCT",
+     "nls": {
+      "en": {
+       "NAME": "Etc/UCT"
+      }
+     }
+    },
+    {
+     "value": "Etc/UTC",
+     "nls": {
+      "en": {
+       "NAME": "Etc/UTC"
+      }
+     }
+    },
+    {
+     "value": "Etc/Universal",
+     "nls": {
+      "en": {
+       "NAME": "Etc/Universal"
+      }
+     }
+    },
+    {
+     "value": "Etc/Zulu",
+     "nls": {
+      "en": {
+       "NAME": "Etc/Zulu"
+      }
+     }
+    },
+    {
+     "value": "Europe/Amsterdam",
+     "nls": {
+      "en": {
+       "NAME": "Europe/Amsterdam"
+      }
+     }
+    },
+    {
+     "value": "Europe/Andorra",
+     "nls": {
+      "en": {
+       "NAME": "Europe/Andorra"
+      }
+     }
+    },
+    {
+     "value": "Europe/Astrakhan",
+     "nls": {
+      "en": {
+       "NAME": "Europe/Astrakhan"
+      }
+     }
+    },
+    {
+     "value": "Europe/Athens",
+     "nls": {
+      "en": {
+       "NAME": "Europe/Athens"
+      }
+     }
+    },
+    {
+     "value": "Europe/Belfast",
+     "nls": {
+      "en": {
+       "NAME": "Europe/Belfast"
+      }
+     }
+    },
+    {
+     "value": "Europe/Belgrade",
+     "nls": {
+      "en": {
+       "NAME": "Europe/Belgrade"
+      }
+     }
+    },
+    {
+     "value": "Europe/Berlin",
+     "nls": {
+      "en": {
+       "NAME": "Europe/Berlin"
+      }
+     }
+    },
+    {
+     "value": "Europe/Bratislava",
+     "nls": {
+      "en": {
+       "NAME": "Europe/Bratislava"
+      }
+     }
+    },
+    {
+     "value": "Europe/Brussels",
+     "nls": {
+      "en": {
+       "NAME": "Europe/Brussels"
+      }
+     }
+    },
+    {
+     "value": "Europe/Bucharest",
+     "nls": {
+      "en": {
+       "NAME": "Europe/Bucharest"
+      }
+     }
+    },
+    {
+     "value": "Europe/Budapest",
+     "nls": {
+      "en": {
+       "NAME": "Europe/Budapest"
+      }
+     }
+    },
+    {
+     "value": "Europe/Busingen",
+     "nls": {
+      "en": {
+       "NAME": "Europe/Busingen"
+      }
+     }
+    },
+    {
+     "value": "Europe/Chisinau",
+     "nls": {
+      "en": {
+       "NAME": "Europe/Chisinau"
+      }
+     }
+    },
+    {
+     "value": "Europe/Copenhagen",
+     "nls": {
+      "en": {
+       "NAME": "Europe/Copenhagen"
+      }
+     }
+    },
+    {
+     "value": "Europe/Dublin",
+     "nls": {
+      "en": {
+       "NAME": "Europe/Dublin"
+      }
+     }
+    },
+    {
+     "value": "Europe/Gibraltar",
+     "nls": {
+      "en": {
+       "NAME": "Europe/Gibraltar"
+      }
+     }
+    },
+    {
+     "value": "Europe/Guernsey",
+     "nls": {
+      "en": {
+       "NAME": "Europe/Guernsey"
+      }
+     }
+    },
+    {
+     "value": "Europe/Helsinki",
+     "nls": {
+      "en": {
+       "NAME": "Europe/Helsinki"
+      }
+     }
+    },
+    {
+     "value": "Europe/Isle_of_Man",
+     "nls": {
+      "en": {
+       "NAME": "Europe/Isle_of_Man"
+      }
+     }
+    },
+    {
+     "value": "Europe/Istanbul",
+     "nls": {
+      "en": {
+       "NAME": "Europe/Istanbul"
+      }
+     }
+    },
+    {
+     "value": "Europe/Jersey",
+     "nls": {
+      "en": {
+       "NAME": "Europe/Jersey"
+      }
+     }
+    },
+    {
+     "value": "Europe/Kaliningrad",
+     "nls": {
+      "en": {
+       "NAME": "Europe/Kaliningrad"
+      }
+     }
+    },
+    {
+     "value": "Europe/Kiev",
+     "nls": {
+      "en": {
+       "NAME": "Europe/Kiev"
+      }
+     }
+    },
+    {
+     "value": "Europe/Kirov",
+     "nls": {
+      "en": {
+       "NAME": "Europe/Kirov"
+      }
+     }
+    },
+    {
+     "value": "Europe/Kyiv",
+     "nls": {
+      "en": {
+       "NAME": "Europe/Kyiv"
+      }
+     }
+    },
+    {
+     "value": "Europe/Lisbon",
+     "nls": {
+      "en": {
+       "NAME": "Europe/Lisbon"
+      }
+     }
+    },
+    {
+     "value": "Europe/Ljubljana",
+     "nls": {
+      "en": {
+       "NAME": "Europe/Ljubljana"
+      }
+     }
+    },
+    {
+     "value": "Europe/London",
+     "nls": {
+      "en": {
+       "NAME": "Europe/London"
+      }
+     }
+    },
+    {
+     "value": "Europe/Luxembourg",
+     "nls": {
+      "en": {
+       "NAME": "Europe/Luxembourg"
+      }
+     }
+    },
+    {
+     "value": "Europe/Madrid",
+     "nls": {
+      "en": {
+       "NAME": "Europe/Madrid"
+      }
+     }
+    },
+    {
+     "value": "Europe/Malta",
+     "nls": {
+      "en": {
+       "NAME": "Europe/Malta"
+      }
+     }
+    },
+    {
+     "value": "Europe/Mariehamn",
+     "nls": {
+      "en": {
+       "NAME": "Europe/Mariehamn"
+      }
+     }
+    },
+    {
+     "value": "Europe/Minsk",
+     "nls": {
+      "en": {
+       "NAME": "Europe/Minsk"
+      }
+     }
+    },
+    {
+     "value": "Europe/Monaco",
+     "nls": {
+      "en": {
+       "NAME": "Europe/Monaco"
+      }
+     }
+    },
+    {
+     "value": "Europe/Moscow",
+     "nls": {
+      "en": {
+       "NAME": "Europe/Moscow"
+      }
+     }
+    },
+    {
+     "value": "Europe/Nicosia",
+     "nls": {
+      "en": {
+       "NAME": "Europe/Nicosia"
+      }
+     }
+    },
+    {
+     "value": "Europe/Oslo",
+     "nls": {
+      "en": {
+       "NAME": "Europe/Oslo"
+      }
+     }
+    },
+    {
+     "value": "Europe/Paris",
+     "nls": {
+      "en": {
+       "NAME": "Europe/Paris"
+      }
+     }
+    },
+    {
+     "value": "Europe/Podgorica",
+     "nls": {
+      "en": {
+       "NAME": "Europe/Podgorica"
+      }
+     }
+    },
+    {
+     "value": "Europe/Prague",
+     "nls": {
+      "en": {
+       "NAME": "Europe/Prague"
+      }
+     }
+    },
+    {
+     "value": "Europe/Riga",
+     "nls": {
+      "en": {
+       "NAME": "Europe/Riga"
+      }
+     }
+    },
+    {
+     "value": "Europe/Rome",
+     "nls": {
+      "en": {
+       "NAME": "Europe/Rome"
+      }
+     }
+    },
+    {
+     "value": "Europe/Samara",
+     "nls": {
+      "en": {
+       "NAME": "Europe/Samara"
+      }
+     }
+    },
+    {
+     "value": "Europe/San_Marino",
+     "nls": {
+      "en": {
+       "NAME": "Europe/San_Marino"
+      }
+     }
+    },
+    {
+     "value": "Europe/Sarajevo",
+     "nls": {
+      "en": {
+       "NAME": "Europe/Sarajevo"
+      }
+     }
+    },
+    {
+     "value": "Europe/Saratov",
+     "nls": {
+      "en": {
+       "NAME": "Europe/Saratov"
+      }
+     }
+    },
+    {
+     "value": "Europe/Simferopol",
+     "nls": {
+      "en": {
+       "NAME": "Europe/Simferopol"
+      }
+     }
+    },
+    {
+     "value": "Europe/Skopje",
+     "nls": {
+      "en": {
+       "NAME": "Europe/Skopje"
+      }
+     }
+    },
+    {
+     "value": "Europe/Sofia",
+     "nls": {
+      "en": {
+       "NAME": "Europe/Sofia"
+      }
+     }
+    },
+    {
+     "value": "Europe/Stockholm",
+     "nls": {
+      "en": {
+       "NAME": "Europe/Stockholm"
+      }
+     }
+    },
+    {
+     "value": "Europe/Tallinn",
+     "nls": {
+      "en": {
+       "NAME": "Europe/Tallinn"
+      }
+     }
+    },
+    {
+     "value": "Europe/Tirane",
+     "nls": {
+      "en": {
+       "NAME": "Europe/Tirane"
+      }
+     }
+    },
+    {
+     "value": "Europe/Tiraspol",
+     "nls": {
+      "en": {
+       "NAME": "Europe/Tiraspol"
+      }
+     }
+    },
+    {
+     "value": "Europe/Ulyanovsk",
+     "nls": {
+      "en": {
+       "NAME": "Europe/Ulyanovsk"
+      }
+     }
+    },
+    {
+     "value": "Europe/Uzhgorod",
+     "nls": {
+      "en": {
+       "NAME": "Europe/Uzhgorod"
+      }
+     }
+    },
+    {
+     "value": "Europe/Vaduz",
+     "nls": {
+      "en": {
+       "NAME": "Europe/Vaduz"
+      }
+     }
+    },
+    {
+     "value": "Europe/Vatican",
+     "nls": {
+      "en": {
+       "NAME": "Europe/Vatican"
+      }
+     }
+    },
+    {
+     "value": "Europe/Vienna",
+     "nls": {
+      "en": {
+       "NAME": "Europe/Vienna"
+      }
+     }
+    },
+    {
+     "value": "Europe/Vilnius",
+     "nls": {
+      "en": {
+       "NAME": "Europe/Vilnius"
+      }
+     }
+    },
+    {
+     "value": "Europe/Volgograd",
+     "nls": {
+      "en": {
+       "NAME": "Europe/Volgograd"
+      }
+     }
+    },
+    {
+     "value": "Europe/Warsaw",
+     "nls": {
+      "en": {
+       "NAME": "Europe/Warsaw"
+      }
+     }
+    },
+    {
+     "value": "Europe/Zagreb",
+     "nls": {
+      "en": {
+       "NAME": "Europe/Zagreb"
+      }
+     }
+    },
+    {
+     "value": "Europe/Zaporozhye",
+     "nls": {
+      "en": {
+       "NAME": "Europe/Zaporozhye"
+      }
+     }
+    },
+    {
+     "value": "Europe/Zurich",
+     "nls": {
+      "en": {
+       "NAME": "Europe/Zurich"
+      }
+     }
+    },
+    {
+     "value": "GB",
+     "nls": {
+      "en": {
+       "NAME": "GB"
+      }
+     }
+    },
+    {
+     "value": "GB-Eire",
+     "nls": {
+      "en": {
+       "NAME": "GB-Eire"
+      }
+     }
+    },
+    {
+     "value": "GMT",
+     "nls": {
+      "en": {
+       "NAME": "GMT"
+      }
+     }
+    },
+    {
+     "value": "GMT0",
+     "nls": {
+      "en": {
+       "NAME": "GMT0"
+      }
+     }
+    },
+    {
+     "value": "Greenwich",
+     "nls": {
+      "en": {
+       "NAME": "Greenwich"
+      }
+     }
+    },
+    {
+     "value": "Hongkong",
+     "nls": {
+      "en": {
+       "NAME": "Hongkong"
+      }
+     }
+    },
+    {
+     "value": "Iceland",
+     "nls": {
+      "en": {
+       "NAME": "Iceland"
+      }
+     }
+    },
+    {
+     "value": "Indian/Antananarivo",
+     "nls": {
+      "en": {
+       "NAME": "Indian/Antananarivo"
+      }
+     }
+    },
+    {
+     "value": "Indian/Chagos",
+     "nls": {
+      "en": {
+       "NAME": "Indian/Chagos"
+      }
+     }
+    },
+    {
+     "value": "Indian/Christmas",
+     "nls": {
+      "en": {
+       "NAME": "Indian/Christmas"
+      }
+     }
+    },
+    {
+     "value": "Indian/Cocos",
+     "nls": {
+      "en": {
+       "NAME": "Indian/Cocos"
+      }
+     }
+    },
+    {
+     "value": "Indian/Comoro",
+     "nls": {
+      "en": {
+       "NAME": "Indian/Comoro"
+      }
+     }
+    },
+    {
+     "value": "Indian/Kerguelen",
+     "nls": {
+      "en": {
+       "NAME": "Indian/Kerguelen"
+      }
+     }
+    },
+    {
+     "value": "Indian/Mahe",
+     "nls": {
+      "en": {
+       "NAME": "Indian/Mahe"
+      }
+     }
+    },
+    {
+     "value": "Indian/Maldives",
+     "nls": {
+      "en": {
+       "NAME": "Indian/Maldives"
+      }
+     }
+    },
+    {
+     "value": "Indian/Mauritius",
+     "nls": {
+      "en": {
+       "NAME": "Indian/Mauritius"
+      }
+     }
+    },
+    {
+     "value": "Indian/Mayotte",
+     "nls": {
+      "en": {
+       "NAME": "Indian/Mayotte"
+      }
+     }
+    },
+    {
+     "value": "Indian/Reunion",
+     "nls": {
+      "en": {
+       "NAME": "Indian/Reunion"
+      }
+     }
+    },
+    {
+     "value": "Iran",
+     "nls": {
+      "en": {
+       "NAME": "Iran"
+      }
+     }
+    },
+    {
+     "value": "Israel",
+     "nls": {
+      "en": {
+       "NAME": "Israel"
+      }
+     }
+    },
+    {
+     "value": "Jamaica",
+     "nls": {
+      "en": {
+       "NAME": "Jamaica"
+      }
+     }
+    },
+    {
+     "value": "Japan",
+     "nls": {
+      "en": {
+       "NAME": "Japan"
+      }
+     }
+    },
+    {
+     "value": "Kwajalein",
+     "nls": {
+      "en": {
+       "NAME": "Kwajalein"
+      }
+     }
+    },
+    {
+     "value": "Libya",
+     "nls": {
+      "en": {
+       "NAME": "Libya"
+      }
+     }
+    },
+    {
+     "value": "MET",
+     "nls": {
+      "en": {
+       "NAME": "MET"
+      }
+     }
+    },
+    {
+     "value": "MST7MDT",
+     "nls": {
+      "en": {
+       "NAME": "MST7MDT"
+      }
+     }
+    },
+    {
+     "value": "Mexico/BajaNorte",
+     "nls": {
+      "en": {
+       "NAME": "Mexico/BajaNorte"
+      }
+     }
+    },
+    {
+     "value": "Mexico/BajaSur",
+     "nls": {
+      "en": {
+       "NAME": "Mexico/BajaSur"
+      }
+     }
+    },
+    {
+     "value": "Mexico/General",
+     "nls": {
+      "en": {
+       "NAME": "Mexico/General"
+      }
+     }
+    },
+    {
+     "value": "NZ",
+     "nls": {
+      "en": {
+       "NAME": "NZ"
+      }
+     }
+    },
+    {
+     "value": "NZ-CHAT",
+     "nls": {
+      "en": {
+       "NAME": "NZ-CHAT"
+      }
+     }
+    },
+    {
+     "value": "Navajo",
+     "nls": {
+      "en": {
+       "NAME": "Navajo"
+      }
+     }
+    },
+    {
+     "value": "PRC",
+     "nls": {
+      "en": {
+       "NAME": "PRC"
+      }
+     }
+    },
+    {
+     "value": "PST8PDT",
+     "nls": {
+      "en": {
+       "NAME": "PST8PDT"
+      }
+     }
+    },
+    {
+     "value": "Pacific/Apia",
+     "nls": {
+      "en": {
+       "NAME": "Pacific/Apia"
+      }
+     }
+    },
+    {
+     "value": "Pacific/Auckland",
+     "nls": {
+      "en": {
+       "NAME": "Pacific/Auckland"
+      }
+     }
+    },
+    {
+     "value": "Pacific/Bougainville",
+     "nls": {
+      "en": {
+       "NAME": "Pacific/Bougainville"
+      }
+     }
+    },
+    {
+     "value": "Pacific/Chatham",
+     "nls": {
+      "en": {
+       "NAME": "Pacific/Chatham"
+      }
+     }
+    },
+    {
+     "value": "Pacific/Chuuk",
+     "nls": {
+      "en": {
+       "NAME": "Pacific/Chuuk"
+      }
+     }
+    },
+    {
+     "value": "Pacific/Easter",
+     "nls": {
+      "en": {
+       "NAME": "Pacific/Easter"
+      }
+     }
+    },
+    {
+     "value": "Pacific/Efate",
+     "nls": {
+      "en": {
+       "NAME": "Pacific/Efate"
+      }
+     }
+    },
+    {
+     "value": "Pacific/Enderbury",
+     "nls": {
+      "en": {
+       "NAME": "Pacific/Enderbury"
+      }
+     }
+    },
+    {
+     "value": "Pacific/Fakaofo",
+     "nls": {
+      "en": {
+       "NAME": "Pacific/Fakaofo"
+      }
+     }
+    },
+    {
+     "value": "Pacific/Fiji",
+     "nls": {
+      "en": {
+       "NAME": "Pacific/Fiji"
+      }
+     }
+    },
+    {
+     "value": "Pacific/Funafuti",
+     "nls": {
+      "en": {
+       "NAME": "Pacific/Funafuti"
+      }
+     }
+    },
+    {
+     "value": "Pacific/Galapagos",
+     "nls": {
+      "en": {
+       "NAME": "Pacific/Galapagos"
+      }
+     }
+    },
+    {
+     "value": "Pacific/Gambier",
+     "nls": {
+      "en": {
+       "NAME": "Pacific/Gambier"
+      }
+     }
+    },
+    {
+     "value": "Pacific/Guadalcanal",
+     "nls": {
+      "en": {
+       "NAME": "Pacific/Guadalcanal"
+      }
+     }
+    },
+    {
+     "value": "Pacific/Guam",
+     "nls": {
+      "en": {
+       "NAME": "Pacific/Guam"
+      }
+     }
+    },
+    {
+     "value": "Pacific/Honolulu",
+     "nls": {
+      "en": {
+       "NAME": "Pacific/Honolulu"
+      }
+     }
+    },
+    {
+     "value": "Pacific/Johnston",
+     "nls": {
+      "en": {
+       "NAME": "Pacific/Johnston"
+      }
+     }
+    },
+    {
+     "value": "Pacific/Kanton",
+     "nls": {
+      "en": {
+       "NAME": "Pacific/Kanton"
+      }
+     }
+    },
+    {
+     "value": "Pacific/Kiritimati",
+     "nls": {
+      "en": {
+       "NAME": "Pacific/Kiritimati"
+      }
+     }
+    },
+    {
+     "value": "Pacific/Kosrae",
+     "nls": {
+      "en": {
+       "NAME": "Pacific/Kosrae"
+      }
+     }
+    },
+    {
+     "value": "Pacific/Kwajalein",
+     "nls": {
+      "en": {
+       "NAME": "Pacific/Kwajalein"
+      }
+     }
+    },
+    {
+     "value": "Pacific/Majuro",
+     "nls": {
+      "en": {
+       "NAME": "Pacific/Majuro"
+      }
+     }
+    },
+    {
+     "value": "Pacific/Marquesas",
+     "nls": {
+      "en": {
+       "NAME": "Pacific/Marquesas"
+      }
+     }
+    },
+    {
+     "value": "Pacific/Midway",
+     "nls": {
+      "en": {
+       "NAME": "Pacific/Midway"
+      }
+     }
+    },
+    {
+     "value": "Pacific/Nauru",
+     "nls": {
+      "en": {
+       "NAME": "Pacific/Nauru"
+      }
+     }
+    },
+    {
+     "value": "Pacific/Niue",
+     "nls": {
+      "en": {
+       "NAME": "Pacific/Niue"
+      }
+     }
+    },
+    {
+     "value": "Pacific/Norfolk",
+     "nls": {
+      "en": {
+       "NAME": "Pacific/Norfolk"
+      }
+     }
+    },
+    {
+     "value": "Pacific/Noumea",
+     "nls": {
+      "en": {
+       "NAME": "Pacific/Noumea"
+      }
+     }
+    },
+    {
+     "value": "Pacific/Pago_Pago",
+     "nls": {
+      "en": {
+       "NAME": "Pacific/Pago_Pago"
+      }
+     }
+    },
+    {
+     "value": "Pacific/Palau",
+     "nls": {
+      "en": {
+       "NAME": "Pacific/Palau"
+      }
+     }
+    },
+    {
+     "value": "Pacific/Pitcairn",
+     "nls": {
+      "en": {
+       "NAME": "Pacific/Pitcairn"
+      }
+     }
+    },
+    {
+     "value": "Pacific/Pohnpei",
+     "nls": {
+      "en": {
+       "NAME": "Pacific/Pohnpei"
+      }
+     }
+    },
+    {
+     "value": "Pacific/Ponape",
+     "nls": {
+      "en": {
+       "NAME": "Pacific/Ponape"
+      }
+     }
+    },
+    {
+     "value": "Pacific/Port_Moresby",
+     "nls": {
+      "en": {
+       "NAME": "Pacific/Port_Moresby"
+      }
+     }
+    },
+    {
+     "value": "Pacific/Rarotonga",
+     "nls": {
+      "en": {
+       "NAME": "Pacific/Rarotonga"
+      }
+     }
+    },
+    {
+     "value": "Pacific/Saipan",
+     "nls": {
+      "en": {
+       "NAME": "Pacific/Saipan"
+      }
+     }
+    },
+    {
+     "value": "Pacific/Samoa",
+     "nls": {
+      "en": {
+       "NAME": "Pacific/Samoa"
+      }
+     }
+    },
+    {
+     "value": "Pacific/Tahiti",
+     "nls": {
+      "en": {
+       "NAME": "Pacific/Tahiti"
+      }
+     }
+    },
+    {
+     "value": "Pacific/Tarawa",
+     "nls": {
+      "en": {
+       "NAME": "Pacific/Tarawa"
+      }
+     }
+    },
+    {
+     "value": "Pacific/Tongatapu",
+     "nls": {
+      "en": {
+       "NAME": "Pacific/Tongatapu"
+      }
+     }
+    },
+    {
+     "value": "Pacific/Truk",
+     "nls": {
+      "en": {
+       "NAME": "Pacific/Truk"
+      }
+     }
+    },
+    {
+     "value": "Pacific/Wake",
+     "nls": {
+      "en": {
+       "NAME": "Pacific/Wake"
+      }
+     }
+    },
+    {
+     "value": "Pacific/Wallis",
+     "nls": {
+      "en": {
+       "NAME": "Pacific/Wallis"
+      }
+     }
+    },
+    {
+     "value": "Pacific/Yap",
+     "nls": {
+      "en": {
+       "NAME": "Pacific/Yap"
+      }
+     }
+    },
+    {
+     "value": "Poland",
+     "nls": {
+      "en": {
+       "NAME": "Poland"
+      }
+     }
+    },
+    {
+     "value": "Portugal",
+     "nls": {
+      "en": {
+       "NAME": "Portugal"
+      }
+     }
+    },
+    {
+     "value": "ROK",
+     "nls": {
+      "en": {
+       "NAME": "ROK"
+      }
+     }
+    },
+    {
+     "value": "Singapore",
+     "nls": {
+      "en": {
+       "NAME": "Singapore"
+      }
+     }
+    },
+    {
+     "value": "SystemV/AST4",
+     "nls": {
+      "en": {
+       "NAME": "SystemV/AST4"
+      }
+     }
+    },
+    {
+     "value": "SystemV/AST4ADT",
+     "nls": {
+      "en": {
+       "NAME": "SystemV/AST4ADT"
+      }
+     }
+    },
+    {
+     "value": "SystemV/CST6",
+     "nls": {
+      "en": {
+       "NAME": "SystemV/CST6"
+      }
+     }
+    },
+    {
+     "value": "SystemV/CST6CDT",
+     "nls": {
+      "en": {
+       "NAME": "SystemV/CST6CDT"
+      }
+     }
+    },
+    {
+     "value": "SystemV/EST5",
+     "nls": {
+      "en": {
+       "NAME": "SystemV/EST5"
+      }
+     }
+    },
+    {
+     "value": "SystemV/EST5EDT",
+     "nls": {
+      "en": {
+       "NAME": "SystemV/EST5EDT"
+      }
+     }
+    },
+    {
+     "value": "SystemV/HST10",
+     "nls": {
+      "en": {
+       "NAME": "SystemV/HST10"
+      }
+     }
+    },
+    {
+     "value": "SystemV/MST7",
+     "nls": {
+      "en": {
+       "NAME": "SystemV/MST7"
+      }
+     }
+    },
+    {
+     "value": "SystemV/MST7MDT",
+     "nls": {
+      "en": {
+       "NAME": "SystemV/MST7MDT"
+      }
+     }
+    },
+    {
+     "value": "SystemV/PST8",
+     "nls": {
+      "en": {
+       "NAME": "SystemV/PST8"
+      }
+     }
+    },
+    {
+     "value": "SystemV/PST8PDT",
+     "nls": {
+      "en": {
+       "NAME": "SystemV/PST8PDT"
+      }
+     }
+    },
+    {
+     "value": "SystemV/YST9",
+     "nls": {
+      "en": {
+       "NAME": "SystemV/YST9"
+      }
+     }
+    },
+    {
+     "value": "SystemV/YST9YDT",
+     "nls": {
+      "en": {
+       "NAME": "SystemV/YST9YDT"
+      }
+     }
+    },
+    {
+     "value": "Turkey",
+     "nls": {
+      "en": {
+       "NAME": "Turkey"
+      }
+     }
+    },
+    {
+     "value": "UCT",
+     "nls": {
+      "en": {
+       "NAME": "UCT"
+      }
+     }
+    },
+    {
+     "value": "US/Alaska",
+     "nls": {
+      "en": {
+       "NAME": "US/Alaska"
+      }
+     }
+    },
+    {
+     "value": "US/Aleutian",
+     "nls": {
+      "en": {
+       "NAME": "US/Aleutian"
+      }
+     }
+    },
+    {
+     "value": "US/Arizona",
+     "nls": {
+      "en": {
+       "NAME": "US/Arizona"
+      }
+     }
+    },
+    {
+     "value": "US/Central",
+     "nls": {
+      "en": {
+       "NAME": "US/Central"
+      }
+     }
+    },
+    {
+     "value": "US/East-Indiana",
+     "nls": {
+      "en": {
+       "NAME": "US/East-Indiana"
+      }
+     }
+    },
+    {
+     "value": "US/Eastern",
+     "nls": {
+      "en": {
+       "NAME": "US/Eastern"
+      }
+     }
+    },
+    {
+     "value": "US/Hawaii",
+     "nls": {
+      "en": {
+       "NAME": "US/Hawaii"
+      }
+     }
+    },
+    {
+     "value": "US/Indiana-Starke",
+     "nls": {
+      "en": {
+       "NAME": "US/Indiana-Starke"
+      }
+     }
+    },
+    {
+     "value": "US/Michigan",
+     "nls": {
+      "en": {
+       "NAME": "US/Michigan"
+      }
+     }
+    },
+    {
+     "value": "US/Mountain",
+     "nls": {
+      "en": {
+       "NAME": "US/Mountain"
+      }
+     }
+    },
+    {
+     "value": "US/Pacific",
+     "nls": {
+      "en": {
+       "NAME": "US/Pacific"
+      }
+     }
+    },
+    {
+     "value": "US/Samoa",
+     "nls": {
+      "en": {
+       "NAME": "US/Samoa"
+      }
+     }
+    },
+    {
+     "value": "UTC",
+     "nls": {
+      "en": {
+       "NAME": "UTC"
+      }
+     }
+    },
+    {
+     "value": "Universal",
+     "nls": {
+      "en": {
+       "NAME": "Universal"
+      }
+     }
+    },
+    {
+     "value": "W-SU",
+     "nls": {
+      "en": {
+       "NAME": "W-SU"
+      }
+     }
+    },
+    {
+     "value": "WET",
+     "nls": {
+      "en": {
+       "NAME": "WET"
+      }
+     }
+    },
+    {
+     "value": "Zulu",
+     "nls": {
+      "en": {
+       "NAME": "Zulu"
+      }
+     }
+    },
+    {
+     "value": "EST",
+     "nls": {
+      "en": {
+       "NAME": "EST"
+      }
+     }
+    },
+    {
+     "value": "HST",
+     "nls": {
+      "en": {
+       "NAME": "HST"
+      }
+     }
+    },
+    {
+     "value": "MST",
+     "nls": {
+      "en": {
+       "NAME": "MST"
+      }
+     }
+    },
+    {
+     "value": "ACT",
+     "nls": {
+      "en": {
+       "NAME": "ACT"
+      }
+     }
+    },
+    {
+     "value": "AET",
+     "nls": {
+      "en": {
+       "NAME": "AET"
+      }
+     }
+    },
+    {
+     "value": "AGT",
+     "nls": {
+      "en": {
+       "NAME": "AGT"
+      }
+     }
+    },
+    {
+     "value": "ART",
+     "nls": {
+      "en": {
+       "NAME": "ART"
+      }
+     }
+    },
+    {
+     "value": "AST",
+     "nls": {
+      "en": {
+       "NAME": "AST"
+      }
+     }
+    },
+    {
+     "value": "BET",
+     "nls": {
+      "en": {
+       "NAME": "BET"
+      }
+     }
+    },
+    {
+     "value": "BST",
+     "nls": {
+      "en": {
+       "NAME": "BST"
+      }
+     }
+    },
+    {
+     "value": "CAT",
+     "nls": {
+      "en": {
+       "NAME": "CAT"
+      }
+     }
+    },
+    {
+     "value": "CNT",
+     "nls": {
+      "en": {
+       "NAME": "CNT"
+      }
+     }
+    },
+    {
+     "value": "CST",
+     "nls": {
+      "en": {
+       "NAME": "CST"
+      }
+     }
+    },
+    {
+     "value": "CTT",
+     "nls": {
+      "en": {
+       "NAME": "CTT"
+      }
+     }
+    },
+    {
+     "value": "EAT",
+     "nls": {
+      "en": {
+       "NAME": "EAT"
+      }
+     }
+    },
+    {
+     "value": "ECT",
+     "nls": {
+      "en": {
+       "NAME": "ECT"
+      }
+     }
+    },
+    {
+     "value": "IET",
+     "nls": {
+      "en": {
+       "NAME": "IET"
+      }
+     }
+    },
+    {
+     "value": "IST",
+     "nls": {
+      "en": {
+       "NAME": "IST"
+      }
+     }
+    },
+    {
+     "value": "JST",
+     "nls": {
+      "en": {
+       "NAME": "JST"
+      }
+     }
+    },
+    {
+     "value": "MIT",
+     "nls": {
+      "en": {
+       "NAME": "MIT"
+      }
+     }
+    },
+    {
+     "value": "NET",
+     "nls": {
+      "en": {
+       "NAME": "NET"
+      }
+     }
+    },
+    {
+     "value": "NST",
+     "nls": {
+      "en": {
+       "NAME": "NST"
+      }
+     }
+    },
+    {
+     "value": "PLT",
+     "nls": {
+      "en": {
+       "NAME": "PLT"
+      }
+     }
+    },
+    {
+     "value": "PNT",
+     "nls": {
+      "en": {
+       "NAME": "PNT"
+      }
+     }
+    },
+    {
+     "value": "PRT",
+     "nls": {
+      "en": {
+       "NAME": "PRT"
+      }
+     }
+    },
+    {
+     "value": "PST",
+     "nls": {
+      "en": {
+       "NAME": "PST"
+      }
+     }
+    },
+    {
+     "value": "SST",
+     "nls": {
+      "en": {
+       "NAME": "SST"
+      }
+     }
+    },
+    {
+     "value": "VST",
+     "nls": {
+      "en": {
+       "NAME": "VST"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "code": "DIAG_SCRIPT",
+   "required": false,
+   "multiselect": false,
+   "freeValue": true,
+   "unique": false,
+   "className": "com.pixelnation.common.domain.Script",
+   "nls": {
+    "en": {
+     "NAME": "Diagnostic Script",
+     "DESCRIPTION": "The script to execute for diagnosing the resource"
+    }
+   },
+   "options": []
+  },
+  {
+   "code": "PHYSICAL_ADDRESS",
+   "required": false,
+   "multiselect": false,
+   "freeValue": true,
+   "unique": false,
+   "className": "com.pixelnation.common.domain.Address",
+   "nls": {
+    "en": {
+     "NAME": "Physical Address",
+     "DESCRIPTION": "The physical address of the resource"
+    }
+   },
+   "options": []
+  }
+ ],
+ "id": 1,
+ "isAbstract": true,
+ "attributeGroups": [
+  {
+   "code": "DIAGNOSTICS",
+   "nls": {
+    "en": {
+     "NAME": "Diagnostics",
+     "DESCRIPTION": "Attributes related to diagnostics of the resource"
+    }
+   }
+  },
+  {
+   "code": "LOCATION",
+   "nls": {
+    "en": {
+     "NAME": "Location",
+     "DESCRIPTION": "Attributes related to physical location of the resource"
+    }
+   }
+  }
+ ]
+}

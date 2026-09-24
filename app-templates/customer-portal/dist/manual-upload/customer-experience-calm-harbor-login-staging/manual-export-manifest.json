@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "kind": "customer-experience-login-manual-export",
+  "uploadPerformed": false,
+  "experienceId": "calm-harbor-spa-staging",
+  "templateCode": "CUSTOMER_PORTAL_CALM_HARBOR_LOGIN",
+  "parameterCount": 20,
+  "templateSha256": "d15156267296074a51556a54c81636280de333b02ee2c594598d790a4a0a777b",
+  "directSession": {
+    "action": "/oauth2/login",
+    "csrfBootstrap": "/oauth2/login",
+    "resetPassword": "/oauth2/forgot-password",
+    "successParameter": "same-origin returnUrl with Calm Harbor portal fallback"
+  }
+}

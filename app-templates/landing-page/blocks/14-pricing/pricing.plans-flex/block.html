@@ -1,0 +1,208 @@
+<!-- lab-ui block · pricing.plans-flex
+     Flexible plan grid. Static fallback has numbered editor slots;
+     dynamic mode clones card markup for every plan returned by Core PIM.
+     Toggle slides a white indicator between Monthly / Annual and
+     dispatches a `pricing:billing` CustomEvent on document for cross-block
+     sync (matrix, credits).
+     Prices and billed-caption crossfade between billing modes; each
+     card carries its own Save chip that fade-scales in for Annual.
+-->
+<section class="pf-plans" id="pricing" data-block="pricing.plans-flex" data-billing="{{billing_default}}" data-pricing-period="{{billing_default}}" data-pricing-dynamic="{{dynamic_pricing_enabled}}" data-pricing-api-base="{{pricing_api_base}}" data-pricing-organization="{{pricing_organization}}" data-pricing-product-type-code="{{pricing_product_type_code}}" data-pricing-sort-attribute-code="{{pricing_sort_attribute_code}}" data-pricing-price-type-code="{{pricing_price_type_code}}" data-pricing-price-attribute-code="{{pricing_price_attribute_code}}" data-pricing-price-attribute-values="{{pricing_price_attribute_values}}" data-pricing-currency="{{pricing_currency}}" data-pricing-purchase-url="{{pricing_purchase_url}}" data-pricing-buy-label="{{pricing_buy_label}}" data-pricing-contact-label="{{pricing_contact_label}}" data-pricing-feature-list-label="{{pricing_feature_list_label}}" data-pricing-error-mode="{{pricing_error_mode}}">
+  <div class="container">
+    <header class="pf-top">
+      <p class="pf-eyebrow">{{eyebrow}}</p>
+      <h1 class="pf-title">{{title}}</h1>
+      <p class="pf-lede">{{lede}}</p>
+
+      <div class="pf-toggle" role="group" aria-label="{{billing_label}}">
+        <button class="pf-toggle-opt is-active" type="button" data-billing-option="monthly" aria-pressed="true">{{monthly_label}}</button>
+        <button class="pf-toggle-opt" type="button" data-billing-option="annual" aria-pressed="false">{{annual_label}}</button>
+      </div>
+      <p class="pf-note">{{billing_note}}</p>
+    </header>
+
+    <div class="pf-grid" data-plan-count="auto">
+      <article class="pf-card pf-card--skeleton" aria-hidden="true" data-nosnippet>
+        <span class="pf-skel pf-skel--kicker"></span>
+        <span class="pf-skel pf-skel--title"></span>
+        <span class="pf-skel pf-skel--text"></span>
+        <span class="pf-skel pf-skel--price"></span>
+        <span class="pf-skel pf-skel--button"></span>
+        <span class="pf-skel pf-skel--line"></span>
+        <span class="pf-skel pf-skel--line pf-skel--short"></span>
+      </article>
+      <article class="pf-card pf-card--skeleton" aria-hidden="true" data-nosnippet>
+        <span class="pf-skel pf-skel--kicker"></span>
+        <span class="pf-skel pf-skel--title"></span>
+        <span class="pf-skel pf-skel--text"></span>
+        <span class="pf-skel pf-skel--price"></span>
+        <span class="pf-skel pf-skel--button"></span>
+        <span class="pf-skel pf-skel--line"></span>
+        <span class="pf-skel pf-skel--line pf-skel--short"></span>
+      </article>
+      <article class="pf-card pf-card--skeleton" aria-hidden="true" data-nosnippet>
+        <span class="pf-skel pf-skel--kicker"></span>
+        <span class="pf-skel pf-skel--title"></span>
+        <span class="pf-skel pf-skel--text"></span>
+        <span class="pf-skel pf-skel--price"></span>
+        <span class="pf-skel pf-skel--button"></span>
+        <span class="pf-skel pf-skel--line"></span>
+        <span class="pf-skel pf-skel--line pf-skel--short"></span>
+      </article>
+      <article class="pf-card pf-card--{{plan_01_state}}" data-plan-slot="01" data-plan-visible="{{plan_01_visible}}">
+        <div class="pf-card-head">
+          <span class="pf-kicker">{{plan_01_kicker}}</span>
+          <span class="pf-badge">{{plan_01_badge}}</span>
+        </div>
+        <h2 class="pf-name">{{plan_01_name}}</h2>
+        <p class="pf-subtitle">{{plan_01_subtitle}}</p>
+        <div class="pf-price" aria-label="{{plan_01_price_aria}}">
+          <span class="pf-currency">{{plan_01_currency}}</span>
+          <span class="pf-amount-stack">
+            <span class="pf-amount" data-price-monthly>{{plan_01_monthly_price}}</span>
+            <span class="pf-amount" data-price-annual>{{plan_01_annual_price}}</span>
+          </span>
+          <span class="pf-period">{{plan_01_period}}</span>
+          <span class="pf-card-save">{{plan_01_save_chip}}</span>
+        </div>
+        <span class="pf-billed-stack">
+          <span class="pf-billed" data-billed-monthly>{{plan_01_billed_monthly}}</span>
+          <span class="pf-billed" data-billed-annual>{{plan_01_billed_annual}}</span>
+        </span>
+        <a class="pf-cta pf-cta--{{plan_01_cta_style}}" href="{{plan_01_cta_url}}">{{plan_01_cta_label}}</a>
+        <ul class="pf-features" aria-label="{{plan_01_feature_list_label}}">
+          <li>{{plan_01_feature_01}}</li>
+          <li>{{plan_01_feature_02}}</li>
+          <li>{{plan_01_feature_03}}</li>
+          <li>{{plan_01_feature_04}}</li>
+          <li>{{plan_01_feature_05}}</li>
+        </ul>
+        <p class="pf-disclaimer">{{plan_01_disclaimer}}</p>
+      </article>
+
+      <article class="pf-card pf-card--{{plan_02_state}}" data-plan-slot="02" data-plan-visible="{{plan_02_visible}}">
+        <div class="pf-card-head">
+          <span class="pf-kicker">{{plan_02_kicker}}</span>
+          <span class="pf-badge">{{plan_02_badge}}</span>
+        </div>
+        <h2 class="pf-name">{{plan_02_name}}</h2>
+        <p class="pf-subtitle">{{plan_02_subtitle}}</p>
+        <div class="pf-price" aria-label="{{plan_02_price_aria}}">
+          <span class="pf-currency">{{plan_02_currency}}</span>
+          <span class="pf-amount-stack">
+            <span class="pf-amount" data-price-monthly>{{plan_02_monthly_price}}</span>
+            <span class="pf-amount" data-price-annual>{{plan_02_annual_price}}</span>
+          </span>
+          <span class="pf-period">{{plan_02_period}}</span>
+          <span class="pf-card-save">{{plan_02_save_chip}}</span>
+        </div>
+        <span class="pf-billed-stack">
+          <span class="pf-billed" data-billed-monthly>{{plan_02_billed_monthly}}</span>
+          <span class="pf-billed" data-billed-annual>{{plan_02_billed_annual}}</span>
+        </span>
+        <a class="pf-cta pf-cta--{{plan_02_cta_style}}" href="{{plan_02_cta_url}}">{{plan_02_cta_label}}</a>
+        <ul class="pf-features" aria-label="{{plan_02_feature_list_label}}">
+          <li>{{plan_02_feature_01}}</li>
+          <li>{{plan_02_feature_02}}</li>
+          <li>{{plan_02_feature_03}}</li>
+          <li>{{plan_02_feature_04}}</li>
+          <li>{{plan_02_feature_05}}</li>
+        </ul>
+        <p class="pf-disclaimer">{{plan_02_disclaimer}}</p>
+      </article>
+
+      <article class="pf-card pf-card--{{plan_03_state}}" data-plan-slot="03" data-plan-visible="{{plan_03_visible}}">
+        <div class="pf-card-head">
+          <span class="pf-kicker">{{plan_03_kicker}}</span>
+          <span class="pf-badge">{{plan_03_badge}}</span>
+        </div>
+        <h2 class="pf-name">{{plan_03_name}}</h2>
+        <p class="pf-subtitle">{{plan_03_subtitle}}</p>
+        <div class="pf-price" aria-label="{{plan_03_price_aria}}">
+          <span class="pf-currency">{{plan_03_currency}}</span>
+          <span class="pf-amount-stack">
+            <span class="pf-amount" data-price-monthly>{{plan_03_monthly_price}}</span>
+            <span class="pf-amount" data-price-annual>{{plan_03_annual_price}}</span>
+          </span>
+          <span class="pf-period">{{plan_03_period}}</span>
+          <span class="pf-card-save">{{plan_03_save_chip}}</span>
+        </div>
+        <span class="pf-billed-stack">
+          <span class="pf-billed" data-billed-monthly>{{plan_03_billed_monthly}}</span>
+          <span class="pf-billed" data-billed-annual>{{plan_03_billed_annual}}</span>
+        </span>
+        <a class="pf-cta pf-cta--{{plan_03_cta_style}}" href="{{plan_03_cta_url}}">{{plan_03_cta_label}}</a>
+        <ul class="pf-features" aria-label="{{plan_03_feature_list_label}}">
+          <li>{{plan_03_feature_01}}</li>
+          <li>{{plan_03_feature_02}}</li>
+          <li>{{plan_03_feature_03}}</li>
+          <li>{{plan_03_feature_04}}</li>
+          <li>{{plan_03_feature_05}}</li>
+        </ul>
+        <p class="pf-disclaimer">{{plan_03_disclaimer}}</p>
+      </article>
+
+      <article class="pf-card pf-card--{{plan_04_state}}" data-plan-slot="04" data-plan-visible="{{plan_04_visible}}">
+        <div class="pf-card-head">
+          <span class="pf-kicker">{{plan_04_kicker}}</span>
+          <span class="pf-badge">{{plan_04_badge}}</span>
+        </div>
+        <h2 class="pf-name">{{plan_04_name}}</h2>
+        <p class="pf-subtitle">{{plan_04_subtitle}}</p>
+        <div class="pf-price" aria-label="{{plan_04_price_aria}}">
+          <span class="pf-currency">{{plan_04_currency}}</span>
+          <span class="pf-amount-stack">
+            <span class="pf-amount" data-price-monthly>{{plan_04_monthly_price}}</span>
+            <span class="pf-amount" data-price-annual>{{plan_04_annual_price}}</span>
+          </span>
+          <span class="pf-period">{{plan_04_period}}</span>
+          <span class="pf-card-save">{{plan_04_save_chip}}</span>
+        </div>
+        <span class="pf-billed-stack">
+          <span class="pf-billed" data-billed-monthly>{{plan_04_billed_monthly}}</span>
+          <span class="pf-billed" data-billed-annual>{{plan_04_billed_annual}}</span>
+        </span>
+        <a class="pf-cta pf-cta--{{plan_04_cta_style}}" href="{{plan_04_cta_url}}">{{plan_04_cta_label}}</a>
+        <ul class="pf-features" aria-label="{{plan_04_feature_list_label}}">
+          <li>{{plan_04_feature_01}}</li>
+          <li>{{plan_04_feature_02}}</li>
+          <li>{{plan_04_feature_03}}</li>
+          <li>{{plan_04_feature_04}}</li>
+          <li>{{plan_04_feature_05}}</li>
+        </ul>
+        <p class="pf-disclaimer">{{plan_04_disclaimer}}</p>
+      </article>
+
+      <article class="pf-card pf-card--{{plan_05_state}}" data-plan-slot="05" data-plan-visible="{{plan_05_visible}}">
+        <div class="pf-card-head">
+          <span class="pf-kicker">{{plan_05_kicker}}</span>
+          <span class="pf-badge">{{plan_05_badge}}</span>
+        </div>
+        <h2 class="pf-name">{{plan_05_name}}</h2>
+        <p class="pf-subtitle">{{plan_05_subtitle}}</p>
+        <div class="pf-price" aria-label="{{plan_05_price_aria}}">
+          <span class="pf-currency">{{plan_05_currency}}</span>
+          <span class="pf-amount-stack">
+            <span class="pf-amount" data-price-monthly>{{plan_05_monthly_price}}</span>
+            <span class="pf-amount" data-price-annual>{{plan_05_annual_price}}</span>
+          </span>
+          <span class="pf-period">{{plan_05_period}}</span>
+          <span class="pf-card-save">{{plan_05_save_chip}}</span>
+        </div>
+        <span class="pf-billed-stack">
+          <span class="pf-billed" data-billed-monthly>{{plan_05_billed_monthly}}</span>
+          <span class="pf-billed" data-billed-annual>{{plan_05_billed_annual}}</span>
+        </span>
+        <a class="pf-cta pf-cta--{{plan_05_cta_style}}" href="{{plan_05_cta_url}}">{{plan_05_cta_label}}</a>
+        <ul class="pf-features" aria-label="{{plan_05_feature_list_label}}">
+          <li>{{plan_05_feature_01}}</li>
+          <li>{{plan_05_feature_02}}</li>
+          <li>{{plan_05_feature_03}}</li>
+          <li>{{plan_05_feature_04}}</li>
+          <li>{{plan_05_feature_05}}</li>
+        </ul>
+        <p class="pf-disclaimer">{{plan_05_disclaimer}}</p>
+      </article>
+    </div>
+  </div>
+</section>

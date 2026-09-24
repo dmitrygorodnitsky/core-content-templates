@@ -1,0 +1,29 @@
+<!-- lab-ui block · section.stats-strip
+     KPI metrics row — 4 cells with big mono-typed number, mono label,
+     optional short body. Cells separated by vertical hairlines on
+     desktop; collapses to 2-col at ≤880 and 1-col at ≤480. One cell
+     can be marked .is-accent to tint the number cyan.
+     Designer kit StatsStrip.
+-->
+<div class="stats-strip" data-block="section.stats-strip">
+  <div class="stat-cell" data-cell="01">
+    <span class="stat-num">{{stat_1_num}}</span>
+    <span class="stat-label">{{stat_1_label}}</span>
+    <p class="stat-body">{{stat_1_body}}</p>
+  </div>
+  <div class="stat-cell is-accent" data-cell="02">
+    <span class="stat-num">{{stat_2_num}}</span>
+    <span class="stat-label">{{stat_2_label}}</span>
+    <p class="stat-body">{{stat_2_body}}</p>
+  </div>
+  <div class="stat-cell" data-cell="03">
+    <span class="stat-num">{{stat_3_num}}</span>
+    <span class="stat-label">{{stat_3_label}}</span>
+    <p class="stat-body">{{stat_3_body}}</p>
+  </div>
+  <div class="stat-cell" data-cell="04">
+    <span class="stat-num">{{stat_4_num}}</span>
+    <span class="stat-label">{{stat_4_label}}</span>
+    <p class="stat-body">{{stat_4_body}}</p>
+  </div>
+</div>

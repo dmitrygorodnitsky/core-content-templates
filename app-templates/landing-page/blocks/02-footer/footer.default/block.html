@@ -1,0 +1,73 @@
+<!-- lab-ui block · footer.default
+     Canonical site footer. Dark surface. 3-column grid
+     (brand+tagline+address / 5-nav / socials+emails) + legal bottom row.
+     Param contract: see block.json.
+-->
+<footer class="footer" role="contentinfo">
+  <div class="container footer-container">
+    <div class="footer-top">
+
+      <div class="footer-brand">
+        <div class="footer-brand-head">
+          <a href="{{brand_href}}" class="footer-logo footer-logo--2xl" aria-label="{{brand_name}}">
+            <svg viewBox="0 0 21 21" width="32" height="32" fill="currentColor" aria-hidden="true">
+              <path d="M10.5 0L13.4698 7.53015L21 10.5L13.4698 13.4698L10.5 21L7.53015 13.4698L0 10.5L7.53015 7.53015L10.5 0Z"/>
+            </svg>
+            <span>{{brand_name}}</span>
+          </a>
+        </div>
+        <p class="footer-tagline">{{tagline}}</p>
+        <address class="footer-address">
+          <p><strong>{{address_line_1}}</strong></p>
+          <p>{{address_line_2}}</p>
+          <p>{{address_line_3}}</p>
+          <p>{{address_line_4}}</p>
+        </address>
+      </div>
+
+      <nav class="footer-nav" aria-label="Footer navigation">
+        <a class="footer-nav-link" href="{{nav_1_href}}">{{nav_1_label}}</a>
+        <a class="footer-nav-link" href="{{nav_2_href}}">{{nav_2_label}}</a>
+        <a class="footer-nav-link" href="{{nav_3_href}}">{{nav_3_label}}</a>
+        <a class="footer-nav-link" href="{{nav_4_href}}">{{nav_4_label}}</a>
+        <a class="footer-nav-link" href="{{nav_5_href}}">{{nav_5_label}}</a>
+      </nav>
+
+      <div class="footer-contacts">
+        <div class="footer-socials">
+          <a class="footer-social-link" href="{{social_linkedin}}" aria-label="LinkedIn">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.13 1.45-2.13 2.94v5.67H9.36V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43c-1.14 0-2.07-.93-2.07-2.07s.93-2.07 2.07-2.07 2.07.93 2.07 2.07-.93 2.07-2.07 2.07zM7.12 20.45H3.56V9h3.56v11.45z"/></svg>
+          </a>
+          <a class="footer-social-link" href="{{social_github}}" aria-label="GitHub">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.44 9.8 8.21 11.39.6.11.82-.26.82-.58 0-.29-.01-1.04-.02-2.04-3.34.72-4.04-1.61-4.04-1.61-.55-1.39-1.34-1.76-1.34-1.76-1.09-.74.08-.72.08-.72 1.2.08 1.84 1.24 1.84 1.24 1.07 1.84 2.81 1.31 3.5 1 .11-.78.42-1.31.76-1.61-2.66-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.23-3.22-.12-.3-.54-1.52.12-3.18 0 0 1.01-.32 3.3 1.23.96-.27 1.98-.4 3-.41 1.02.01 2.04.14 3 .41 2.29-1.55 3.3-1.23 3.3-1.23.66 1.66.24 2.88.12 3.18.77.84 1.23 1.91 1.23 3.22 0 4.61-2.81 5.63-5.48 5.92.43.37.82 1.1.82 2.22 0 1.6-.02 2.89-.02 3.29 0 .32.22.7.83.58C20.57 21.8 24 17.3 24 12c0-6.63-5.37-12-12-12z"/></svg>
+          </a>
+          <a class="footer-social-link" href="{{social_youtube}}" aria-label="YouTube">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23.5 6.5a3 3 0 0 0-2.1-2.1C19.5 4 12 4 12 4s-7.5 0-9.4.4A3 3 0 0 0 .5 6.5C.1 8.4.1 12 .1 12s0 3.6.4 5.5a3 3 0 0 0 2.1 2.1c1.9.4 9.4.4 9.4.4s7.5 0 9.4-.4a3 3 0 0 0 2.1-2.1c.4-1.9.4-5.5.4-5.5s0-3.6-.4-5.5zM9.6 15.5v-7l6.3 3.5-6.3 3.5z"/></svg>
+          </a>
+          <a class="footer-social-link" href="{{social_x}}" aria-label="X">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.244 2H21.5l-7.5 8.57L23 22h-6.844l-5.36-7L4.66 22H1.4l8.04-9.17L1 2h7.02l4.84 6.4L18.244 2zm-1.2 18h1.86L7 4h-2L17.044 20z"/></svg>
+          </a>
+        </div>
+        <div class="footer-emails">
+          <div class="footer-email-group">
+            <p class="footer-email-label">{{partnerships_label}}</p>
+            <a class="footer-email-link" href="mailto:{{partnerships_email}}">{{partnerships_email}}</a>
+          </div>
+          <div class="footer-email-group">
+            <p class="footer-email-label">{{support_label}}</p>
+            <a class="footer-email-link" href="mailto:{{support_email}}">{{support_email}}</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="footer-bottom">
+      <p class="footer-copy">{{copyright}}</p>
+      <div class="footer-legal-mobile">
+        <a class="footer-legal-link" href="{{legal_1_href}}">{{legal_1_label}}</a>
+        <a class="footer-legal-link" href="{{legal_2_href}}">{{legal_2_label}}</a>
+      </div>
+    </div>
+  </div>
+</footer>

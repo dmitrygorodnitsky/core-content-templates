@@ -1,0 +1,271 @@
+{
+ "code": "PROPERTY_LIFECYCLE",
+ "initialState": {
+  "id": 159,
+  "code": "INITIAL"
+ },
+ "nls": {
+  "en": {
+   "NAME": "Property Lifecycle"
+  }
+ },
+ "entityType": "com.pixelnation.rm.domain.Resource",
+ "organization": {
+  "optimistic": 4,
+  "id": 8,
+  "code": "SERVICE_WAND_WINTER_SERVICES"
+ },
+ "id": 35,
+ "states": [
+  {
+   "style": {
+    "xPos": 1216.2538342067369,
+    "yPos": 388.4832169139971
+   },
+   "id": 160,
+   "code": "ACTIVE",
+   "nls": {
+    "ar": {
+     "DESCRIPTION": "<p></p>"
+    },
+    "en": {
+     "NAME": "Active",
+     "DESCRIPTION": "<p>The property is active and can participate in applicable sales, service, routing, scheduling, and operational processes.</p>"
+    },
+    "he": {
+     "DESCRIPTION": "<p></p>"
+    }
+   },
+   "events": [
+    {
+     "id": 326,
+     "code": "ACTIVE-INACTIVE",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Deactivate",
+       "DESCRIPTION": "<p>Deactivates the property while preserving its information and operational history.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     },
+     "targets": [
+      {
+       "id": 161,
+       "code": "INACTIVE"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "style": {
+    "xPos": 1728.7446549161093,
+    "yPos": 389.10129594062676
+   },
+   "id": 161,
+   "code": "INACTIVE",
+   "nls": {
+    "ar": {
+     "DESCRIPTION": "<p></p>"
+    },
+    "en": {
+     "NAME": "Inactive",
+     "DESCRIPTION": "<p>The property is retained in the system but is not currently available for regular operational use.</p>"
+    },
+    "he": {
+     "DESCRIPTION": "<p></p>"
+    }
+   },
+   "events": [
+    {
+     "id": 498,
+     "code": "INACTIVE-INSPECTION-REQUIRED",
+     "nls": {
+      "ar": {
+       "NAME": "إعادة فحص"
+      },
+      "en": {
+       "NAME": "Re-Inspect"
+      },
+      "es": {
+       "NAME": "Reinspeccionar"
+      },
+      "fr": {
+       "NAME": "Ré-inspecter"
+      },
+      "he": {
+       "NAME": "בדוק מחדש"
+      },
+      "kk": {
+       "NAME": "Қайта тексеру"
+      },
+      "ru": {
+       "NAME": "Перепроверить"
+      },
+      "zh": {
+       "NAME": "重新检查"
+      }
+     },
+     "targets": [
+      {
+       "id": 239,
+       "code": "INSPECTION-REQUIRED"
+      }
+     ]
+    },
+    {
+     "id": 327,
+     "code": "INACTIVE-ACTIVE",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Activate",
+       "DESCRIPTION": "<p>Reactivates an inactive property and makes it available for operational use again.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     },
+     "targets": [
+      {
+       "id": 160,
+       "code": "ACTIVE"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "style": {
+    "xPos": 148.66751316694098,
+    "yPos": 388.6675257893016
+   },
+   "id": 159,
+   "code": "INITIAL",
+   "nls": {
+    "ar": {
+     "NAME": "مبدئي",
+     "DESCRIPTION": "<p></p>"
+    },
+    "en": {
+     "NAME": "Initial",
+     "DESCRIPTION": "<p>The property has been created but has not yet been made available for operational use.</p>"
+    },
+    "es": {
+     "NAME": "Inicial"
+    },
+    "fr": {
+     "NAME": "Initial"
+    },
+    "he": {
+     "NAME": "התחלה",
+     "DESCRIPTION": "<p></p>"
+    },
+    "kk": {
+     "NAME": "Алғашқы"
+    },
+    "ru": {
+     "NAME": "Начальный"
+    },
+    "zh": {
+     "NAME": "初始"
+    }
+   },
+   "events": [
+    {
+     "id": 496,
+     "code": "INITIAL-INSPECTION-REQUIRED",
+     "nls": {
+      "en": {
+       "NAME": "Initial Inspection Required"
+      }
+     },
+     "targets": [
+      {
+       "id": 239,
+       "code": "INSPECTION-REQUIRED"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "style": {
+    "xPos": 758.251937685665,
+    "yPos": 418.34212111908204
+   },
+   "id": 239,
+   "code": "INSPECTION-REQUIRED",
+   "nls": {
+    "ar": {
+     "NAME": "فحص مطلوب"
+    },
+    "en": {
+     "NAME": "Inspection Required"
+    },
+    "es": {
+     "NAME": "Inspección Requerida"
+    },
+    "fr": {
+     "NAME": "Inspection requise"
+    },
+    "he": {
+     "NAME": "נדרשת בדיקה"
+    },
+    "kk": {
+     "NAME": "Тексеру Қажет"
+    },
+    "ru": {
+     "NAME": "Требуется осмотр"
+    },
+    "zh": {
+     "NAME": "需要检查"
+    }
+   },
+   "events": [
+    {
+     "id": 497,
+     "code": "INSPECTION-REQUIRED-ACTIVE",
+     "nls": {
+      "ar": {
+       "NAME": "تفعيل"
+      },
+      "en": {
+       "NAME": "Activate"
+      },
+      "es": {
+       "NAME": "Activar"
+      },
+      "fr": {
+       "NAME": "Activer"
+      },
+      "he": {
+       "NAME": "הפעל"
+      },
+      "kk": {
+       "NAME": "Іске қосу"
+      },
+      "ru": {
+       "NAME": "Активировать"
+      },
+      "zh": {
+       "NAME": "激活"
+      }
+     },
+     "targets": [
+      {
+       "id": 160,
+       "code": "ACTIVE"
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

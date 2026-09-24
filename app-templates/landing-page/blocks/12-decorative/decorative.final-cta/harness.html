@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>decorative.final-cta · lab-ui harness</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../00-tokens/tokens.css">
+<link rel="stylesheet" href="../../03-cta/cta.btn-base/block.css">
+<link rel="stylesheet" href="../../03-cta/cta.btn-primary-ring/block.css">
+<link rel="stylesheet" href="../../03-cta/cta.btn-secondary-filled/block.css">
+<link rel="stylesheet" href="./block.css">
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  body { margin: 0; min-height: 100vh; font-family: var(--font-family); background: var(--color-bg); color: var(--color-text); }
+  .harness-label {
+    font-family: var(--font-mono); font-size: 11px; text-transform: uppercase;
+    letter-spacing: 0.12em; color: var(--color-gray-blue);
+    padding: 24px var(--container-padding-x) 0;
+    max-width: calc(var(--container-width) + var(--container-padding-x) * 2);
+    margin-inline: auto;
+  }
+  .harness-spacer { height: clamp(2rem, 8vw, 5rem); }
+</style>
+</head>
+<body>
+
+<div class="harness-label">decorative.final-cta · live</div>
+<div class="harness-spacer" aria-hidden="true"></div>
+
+<section class="final-cta-section" data-block="decorative.final-cta">
+  <div class="final-cta-container">
+    <div class="final-cta-card">
+      <div class="final-cta-inner">
+        <p class="final-cta-eyebrow">Lorem Ipsum · get started</p>
+        <h2 class="final-cta-title">Lorem Ipsum Dolor Sit Amet</h2>
+        <div class="final-cta-copy">
+          <p>Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+          <p><strong>Lorem Ipsum is built for that next layer.</strong></p>
+          <p>Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+        </div>
+        <div class="final-cta-actions">
+          <a class="btn btn-primary btn-primary-ring" href="#">
+            <svg class="btn-star" width="16" height="16" viewBox="0 0 21 21" fill="currentColor" aria-hidden="true">
+              <path d="M10.5 0L13.4698 7.53015L21 10.5L13.4698 13.4698L10.5 21L7.53015 13.4698L0 10.5L7.53015 7.53015L10.5 0Z"/>
+            </svg>
+            Lorem Ipsum
+          </a>
+          <a class="btn btn-secondary-filled" href="#">
+            <svg class="btn-star" width="16" height="16" viewBox="0 0 21 21" fill="currentColor" aria-hidden="true">
+              <path d="M10.5 0L13.4698 7.53015L21 10.5L13.4698 13.4698L10.5 21L7.53015 13.4698L0 10.5L7.53015 7.53015L10.5 0Z"/>
+            </svg>
+            Lorem Ipsum
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="harness-spacer" aria-hidden="true"></div>
+
+<script src="../../scripts/harness-background-preview.js"></script>
+</body>
+</html>

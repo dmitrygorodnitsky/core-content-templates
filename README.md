@@ -40,6 +40,12 @@ This repository is for Core-related artifacts that can be shared, reviewed, vers
 |       +-- block_template_config.json
 |       +-- libraries.json
 |       +-- media/
++-- app-templates/
+|   +-- customer-portal/
+|       +-- experience/
+|       +-- runtime/
+|       +-- cms/
+|       +-- scripts/
 +-- js/
 |   +-- dynamic-form.js
 +-- email-templates/
@@ -61,6 +67,11 @@ This repository is for Core-related artifacts that can be shared, reviewed, vers
 ```
 
 CMS template directories should keep the Core export shape whenever possible. A template package should include `block_template_config.json` and any referenced media or library metadata required for import.
+
+The customer portal is a multi-surface application-template family. Its
+developer entrypoint is `app-templates/customer-portal/README.md`; repository
+ownership boundaries are documented in
+`docs/repository-zones/zone-catalog.md`.
 
 ## Core Conventions
 
@@ -91,6 +102,20 @@ Pull requests should describe:
 - What the package adds or changes.
 - Which Core version or module it was tested with.
 - Any required media, scripts, permissions, or configuration.
+
+## Image Sets
+
+Use `scripts/generate-image-set.mjs` to create responsive WebP variants from a PNG or JPEG source. The script writes a `<name>.imageset` directory with WebP files, `manifest.json`, `snippets.html`, and `snippets.css`.
+
+```bash
+node scripts/generate-image-set.mjs ./path/to/hero.png \
+  --widths 640,960,1280,1920 \
+  --quality 86 \
+  --sizes "(max-width: 768px) 100vw, 1280px" \
+  --preload-width 1280
+```
+
+The generated `snippets.html` includes a preload tag and an eager image tag. Use the preload tag only for the first critical image on a page; non-critical images should normally use the same `srcset` with lazy loading instead.
 
 ## License Recommendation
 

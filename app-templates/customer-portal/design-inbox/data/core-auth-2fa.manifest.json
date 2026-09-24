@@ -1,0 +1,105 @@
+{
+  "artifact": "AUTH_2FA — scenario / manifest coverage",
+  "wave": 19,
+  "product": "Aircove Customer Portal — customer-experience Core Auth",
+  "entry": "customer-portal-design/core-auth-2fa.html",
+  "evidenceHarness": "customer-portal-design/core-auth-2fa-preview.html (GENERATED — never transferred)",
+  "styles": [
+    "styles/tokens.css",
+    "styles/base.css",
+    "styles/shell.css",
+    "styles/components.css",
+    "styles/routes.css",
+    "styles/core-auth-login.css",
+    "styles/core-auth-2fa.css"
+  ],
+  "note": "This page is deliberately outside manifest.json and scenarios.json, exactly as the wave-18 login page is: it has no component factory, no route in router.js, no action id and no fixture, so it cannot have a manifest component entry or a scenarios.routes[] entry without inventing contracts the SPA does not own. This file is its coverage document. The accepted manifest.json and scenarios.json are unchanged by wave 19.",
+  "visualId": "core-auth-2fa",
+  "routeAttribute": "auth.2fa (data-route on .auth-page — a presentation id, not a portal route; the portal never navigates here, core-auth serves it)",
+  "modules": [
+    "core-auth-2fa-card — the auth card (data-module)",
+    "core-auth-2fa-setup — the enrollment block",
+    "core-auth-2fa-notice — the already-enrolled notice",
+    "core-auth-2fa-error — the single assertive region"
+  ],
+  "form": {
+    "count": 1,
+    "marker": "data-core-auth-2fa",
+    "method": "post",
+    "action": "{{TWO_FACTOR_ACTION}}",
+    "fields": [
+      "{{CSRF_PARAMETER_NAME}} (hidden, first)",
+      "code (text, inputmode=numeric, autocomplete=one-time-code, required, no autofocus)"
+    ],
+    "submit": "native form navigation. No fetch, no scripted submit, no loading state, no disabled state.",
+    "elementOrder": "hidden CSRF → setup block → verify notice → label → input → accessible hint → assertive error → submit"
+  },
+  "states": [
+    {
+      "id": "setup-ready",
+      "runtime": "SETUP_DISPLAY=block, VERIFY_NOTICE_DISPLAY=none, ERROR_DISPLAY=none",
+      "presents": "enrollment explanation, QR image from the core-auth data URL, setup key as an accessible manual fallback, one code field, one verify action",
+      "absent": "verify notice, assertive region",
+      "evidence": [
+        "2fa-setup-ready-1440-light", "2fa-setup-ready-1440-dark", "2fa-setup-ready-1180-light",
+        "2fa-setup-ready-768-light", "2fa-setup-ready-768-dark",
+        "2fa-setup-ready-390-light", "2fa-setup-ready-390-dark",
+        "2fa-setup-ready-920-rtl-dark", "2fa-setup-ready-zoom200-720-light"
+      ]
+    },
+    {
+      "id": "setup-error",
+      "runtime": "SETUP_DISPLAY=block, VERIFY_NOTICE_DISPLAY=none, ERROR_DISPLAY=block",
+      "presents": "the same enrollment content, unchanged, plus one localized assertive error below the code field; resubmission through the same form",
+      "guarantees": "CMS neither stores, regenerates, defaults nor re-renders the QR or the key — both are still the substituted runtime values, because the enrollment block lives inside the form and nothing scripted touches it",
+      "evidence": [
+        "2fa-setup-error-1440-light", "2fa-setup-error-1440-dark", "2fa-setup-error-1180-light",
+        "2fa-setup-error-768-light", "2fa-setup-error-390-light", "2fa-setup-error-390-dark"
+      ]
+    },
+    {
+      "id": "verify-ready",
+      "runtime": "SETUP_DISPLAY=none, VERIFY_NOTICE_DISPLAY=block, ERROR_DISPLAY=none",
+      "presents": "already-enrolled notice, one code field, one verify action",
+      "absent": "QR image, setup key, assertive region — the enrollment block occupies no layout and exposes no value",
+      "evidence": [
+        "2fa-verify-ready-1440-light", "2fa-verify-ready-1440-dark", "2fa-verify-ready-1180-light",
+        "2fa-verify-ready-768-light", "2fa-verify-ready-390-light", "2fa-verify-ready-390-dark"
+      ]
+    },
+    {
+      "id": "verify-error",
+      "runtime": "SETUP_DISPLAY=none, VERIFY_NOTICE_DISPLAY=block, ERROR_DISPLAY=block",
+      "presents": "verification context kept, one localized assertive invalid-code message, resubmission through the same form",
+      "absent": "QR image, setup key",
+      "guarantees": "the message claims nothing beyond the supplied copy — no reason, no attempt count, no lockout hint",
+      "evidence": [
+        "2fa-verify-error-1440-light", "2fa-verify-error-1440-dark", "2fa-verify-error-1180-light",
+        "2fa-verify-error-768-light", "2fa-verify-error-390-light", "2fa-verify-error-390-dark",
+        "2fa-verify-error-390-rtl-light", "2fa-verify-error-zoom200-720-dark"
+      ]
+    }
+  ],
+  "impossibleStates": "There is no state in which both the enrollment block and the verify notice are shown, and none in which neither is: core-auth drives SETUP_DISPLAY and VERIFY_NOTICE_DISPLAY as opposites. The page does not enforce that — it has no state of its own — and renders acceptably if a runtime ever sends both.",
+  "notInThisBrief": [
+    "registration", "recovery codes", "resend code", "trust this device",
+    "alternate factor", "factor management", "reveal or copy control for the key",
+    "a visible control for {{TWO_FACTOR_OTPAUTH_URI}}"
+  ],
+  "themes": {
+    "mechanism": "server-rendered data-theme + data-mode on <html>, the accepted declarative contract",
+    "registered": ["hvac", "snow", "lawn", "pool", "roofing", "pest", "health", "beauty"],
+    "layout": "identical for every theme — only the token pack changes. No tenant-specific rule exists in styles/core-auth-2fa.css."
+  },
+  "validation": {
+    "oneMarkedForm": "exactly one <form>, marked data-core-auth-2fa; no other form element in the document",
+    "fieldNames": "code (unrenamed) + the hidden {{CSRF_PARAMETER_NAME}} input; method=post preserved",
+    "noJavaScript": "the transfer source contains no <script> tag and no event attribute. Visibility is the three inline display placeholders only — no class toggle, no data-state switch, no scripted state. Removing every script from the environment changes nothing.",
+    "placeholdersPreserved": "8 referenced placeholders appear verbatim, once each where the contract puts them; no CMS parameter, default, fixture, log, analytics attribute or JS variable shadows any of them",
+    "noThirdParty": "no script, style, font, icon set, QR generator, telemetry or image from another origin. The QR src is the core-auth data URL; the only other asset references are the seven relative stylesheets.",
+    "accessibility": "explicit visible label for the code field; aria-describedby names the hint and the assertive region; one role=alert region on the page; heading order h1 (card) → h2 (pitch); no autofocus; visible focus from the accepted 2px accent outline; the setup key is selectable wrapping text, read in order after its own label",
+    "responsive": "container queries on .auth-page at the accepted thresholds (<=900 one column, form first; <=560 compact). Evidence at 1440 / 1180 / 768 / 390 in light and dark, plus 720 for 1440-at-200%-zoom and 920 / 390 for RTL.",
+    "rtl": "mirrors entirely through logical properties — no dir-specific rule exists. Evidence: 2fa-setup-ready-920-rtl-dark (two-column desktop, card left / pitch right) and 2fa-verify-error-390-rtl-light.",
+    "motion": "no animation and no transition is declared for this page, so reduced-motion behavior is unchanged"
+  }
+}

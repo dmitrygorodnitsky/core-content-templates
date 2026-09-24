@@ -1,0 +1,261 @@
+[
+  {
+    "code": "FIELD_SERVICE_BLOG_INDEX_BLOG_API_BASE",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Blog · API Base",
+        "DESCRIPTION": "Core CMS base path used for the public blog-post endpoint."
+      }
+    },
+    "value": "/core-cms"
+  },
+  {
+    "code": "FIELD_SERVICE_BLOG_INDEX_BLOG_ORGANIZATION",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Blog · Organization",
+        "DESCRIPTION": "Organization code used in the public Core CMS request."
+      }
+    },
+    "value": "SERVICEWAND"
+  },
+  {
+    "code": "FIELD_SERVICE_BLOG_INDEX_BLOG_PAGE_SIZE",
+    "type": "INTEGER",
+    "nls": {
+      "en": {
+        "NAME": "Blog · Visible Page Size",
+        "DESCRIPTION": "Number of cards revealed per page after the featured article."
+      }
+    },
+    "value": "6"
+  },
+  {
+    "code": "FIELD_SERVICE_BLOG_INDEX_BLOG_MAX_RESULTS",
+    "type": "INTEGER",
+    "nls": {
+      "en": {
+        "NAME": "Blog · Maximum Results",
+        "DESCRIPTION": "Safety limit for articles loaded from Core CMS."
+      }
+    },
+    "value": "1000"
+  },
+  {
+    "code": "FIELD_SERVICE_BLOG_INDEX_BLOG_BASE_PATH",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Blog · Index Path",
+        "DESCRIPTION": "Public localized route used by the blog index."
+      }
+    },
+    "value": "/blog"
+  },
+  {
+    "code": "FIELD_SERVICE_BLOG_INDEX_BLOG_POST_PATH",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Blog · Post Path",
+        "DESCRIPTION": "Public localized route prefix used when building article links."
+      }
+    },
+    "value": "/post"
+  },
+  {
+    "code": "FIELD_SERVICE_BLOG_INDEX_BLOG_FIXTURE_URL",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Blog · Fixture URL",
+        "DESCRIPTION": "Local preview-only JSON URL. Use # in CMS to disable fixture loading."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "FIELD_SERVICE_BLOG_INDEX_READ_ARTICLE_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Blog Index · Read Article Label",
+        "DESCRIPTION": "Accessible card action label."
+      }
+    },
+    "value": {
+      "en": "Read article"
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_BLOG_INDEX_EMPTY_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Blog Index · Empty Label",
+        "DESCRIPTION": "Status shown when the backend returns no posts."
+      }
+    },
+    "value": {
+      "en": "No articles are available yet."
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_BLOG_INDEX_ERROR_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Blog Index · Error Label",
+        "DESCRIPTION": "Status shown when the backend request fails."
+      }
+    },
+    "value": {
+      "en": "Articles could not be loaded."
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_BLOG_INDEX_FILTER_ALL_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Blog Index · Filter All Label",
+        "DESCRIPTION": "Category filter chip that shows every article."
+      }
+    },
+    "value": {
+      "en": "All topics"
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_BLOG_INDEX_EYEBROW",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Blog Index · Eyebrow",
+        "DESCRIPTION": "Short label above the page heading."
+      }
+    },
+    "value": {
+      "en": "ServiceWand insights"
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_BLOG_INDEX_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Blog Index · H1",
+        "DESCRIPTION": "Primary blog index heading."
+      }
+    },
+    "value": {
+      "en": "Ideas for field service teams that are ready to grow"
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_BLOG_INDEX_INTRO_HEADING",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Blog Index · Intro H2",
+        "DESCRIPTION": "First SEO introduction heading."
+      }
+    },
+    "value": {
+      "en": "Build a clearer, faster field operation"
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_BLOG_INDEX_INTRO_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Blog Index · Intro Body",
+        "DESCRIPTION": "Paragraph below the H2."
+      }
+    },
+    "value": {
+      "en": "Practical guidance for dispatch, routing, service delivery, customer experience, and the systems that connect them."
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_BLOG_INDEX_SECONDARY_HEADING",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Blog Index · Secondary H3",
+        "DESCRIPTION": "Second SEO introduction heading."
+      }
+    },
+    "value": {
+      "en": "From the field to the back office"
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_BLOG_INDEX_SECONDARY_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Blog Index · Secondary Body",
+        "DESCRIPTION": "Paragraph below the H3."
+      }
+    },
+    "value": {
+      "en": "Use these articles to turn operational lessons into repeatable workflows and better customer outcomes."
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_BLOG_INDEX_LOADING_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Blog Index · Loading Label",
+        "DESCRIPTION": "Status announced while posts load."
+      }
+    },
+    "value": {
+      "en": "Loading articles…"
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_BLOG_INDEX_FILTERS_ARIA_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Blog Index · Filters Aria Label",
+        "DESCRIPTION": "Accessible label for the category filter group."
+      }
+    },
+    "value": {
+      "en": "Filter articles by topic"
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_BLOG_INDEX_GRID_ARIA_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Blog Index · Grid Aria Label",
+        "DESCRIPTION": "Accessible label for the article card grid."
+      }
+    },
+    "value": {
+      "en": "Latest blog articles"
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_BLOG_INDEX_LOAD_MORE_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Blog Index · Load More Label",
+        "DESCRIPTION": "Pagination button label."
+      }
+    },
+    "value": {
+      "en": "Load more articles"
+    }
+  }
+]

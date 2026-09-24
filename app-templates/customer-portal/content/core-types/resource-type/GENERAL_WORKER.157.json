@@ -1,0 +1,33 @@
+{
+ "optimistic": 4,
+ "code": "GENERAL_WORKER",
+ "nls": {
+  "en": {
+   "NAME": "General Worker"
+  }
+ },
+ "workflow": {
+  "id": 34,
+  "code": "WORKFORCE_LIFECYCLE"
+ },
+ "organization": {
+  "optimistic": 4,
+  "id": 8,
+  "code": "SERVICE_WAND_WINTER_SERVICES"
+ },
+ "attributeOrder": [
+  {
+   "default": [
+    {
+     "typeId": 155,
+     "attributeCode": "ACCOUNT_TYPE",
+     "visible": true
+    }
+   ]
+  }
+ ],
+ "attributes": [],
+ "id": 157,
+ "isAbstract": false,
+ "attributeGroups": []
+}

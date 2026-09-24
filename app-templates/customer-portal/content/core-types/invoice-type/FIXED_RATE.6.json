@@ -1,0 +1,88 @@
+{
+ "optimistic": 0,
+ "code": "FIXED_RATE",
+ "nls": {
+  "en": {
+   "NAME": "Fixed Rate"
+  }
+ },
+ "organization": {
+  "optimistic": 4,
+  "id": 8,
+  "code": "SERVICE_WAND_WINTER_SERVICES"
+ },
+ "attributeOrder": [
+  {
+   "default": [
+    {
+     "attributeCode": "TERMS",
+     "visible": true
+    },
+    {
+     "attributeCode": "PAYMENT_TERMS",
+     "visible": true
+    },
+    {
+     "attributeCode": "DATE",
+     "visible": true
+    },
+    {
+     "attributeCode": "SERVICE_PERIOD",
+     "visible": true
+    },
+    {
+     "attributeCode": "PAYMENT_NET_TERMS",
+     "visible": true
+    }
+   ]
+  }
+ ],
+ "attributes": [
+  {
+   "code": "SERVICE_PERIOD",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "en": {
+     "NAME": "Service Period"
+    }
+   },
+   "options": []
+  },
+  {
+   "code": "DATE",
+   "required": true,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.time.LocalDate",
+   "nls": {
+    "en": {
+     "NAME": "Date"
+    }
+   },
+   "options": []
+  },
+  {
+   "code": "PAYMENT_NET_TERMS",
+   "required": true,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.Integer",
+   "nls": {
+    "en": {
+     "NAME": "Payment Net Terms"
+    }
+   },
+   "options": [],
+   "defaultValue": 30
+  }
+ ],
+ "id": 6,
+ "isAbstract": false,
+ "attributeGroups": []
+}

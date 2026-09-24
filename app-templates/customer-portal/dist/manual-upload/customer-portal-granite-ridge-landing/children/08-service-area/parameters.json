@@ -1,0 +1,119 @@
+[
+  {
+    "code": "GRS_LANDING_08_SERVICE_AREA_EYEBROW",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "EYEBROW",
+        "DESCRIPTION": "CMS-authored value for Granite Ridge Snow Removal."
+      }
+    },
+    "value": {
+      "en": "Coverage"
+    }
+  },
+  {
+    "code": "GRS_LANDING_08_SERVICE_AREA_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "TITLE",
+        "DESCRIPTION": "CMS-authored value for Granite Ridge Snow Removal."
+      }
+    },
+    "value": {
+      "en": "Where we plow"
+    }
+  },
+  {
+    "code": "GRS_LANDING_08_SERVICE_AREA_REGION",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "REGION",
+        "DESCRIPTION": "CMS-authored value for Granite Ridge Snow Removal."
+      }
+    },
+    "value": {
+      "en": "Denver metro and the Front Range"
+    }
+  },
+  {
+    "code": "GRS_LANDING_08_SERVICE_AREA_NOTE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "NOTE",
+        "DESCRIPTION": "CMS-authored value for Granite Ridge Snow Removal."
+      }
+    },
+    "value": {
+      "en": "Commercial routes are planned per storm — coverage confirmed at quote time."
+    }
+  },
+  {
+    "code": "GRS_LANDING_08_SERVICE_AREA_CITY_1",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "CITY 1",
+        "DESCRIPTION": "CMS-authored value for Granite Ridge Snow Removal."
+      }
+    },
+    "value": {
+      "en": "Lakewood"
+    }
+  },
+  {
+    "code": "GRS_LANDING_08_SERVICE_AREA_CITY_2",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "CITY 2",
+        "DESCRIPTION": "CMS-authored value for Granite Ridge Snow Removal."
+      }
+    },
+    "value": {
+      "en": "Golden"
+    }
+  },
+  {
+    "code": "GRS_LANDING_08_SERVICE_AREA_CITY_3",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "CITY 3",
+        "DESCRIPTION": "CMS-authored value for Granite Ridge Snow Removal."
+      }
+    },
+    "value": {
+      "en": "Arvada"
+    }
+  },
+  {
+    "code": "GRS_LANDING_08_SERVICE_AREA_CITY_4",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "CITY 4",
+        "DESCRIPTION": "CMS-authored value for Granite Ridge Snow Removal."
+      }
+    },
+    "value": {
+      "en": "Littleton"
+    }
+  },
+  {
+    "code": "GRS_LANDING_08_SERVICE_AREA_CITY_5",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "CITY 5",
+        "DESCRIPTION": "CMS-authored value for Granite Ridge Snow Removal."
+      }
+    },
+    "value": {
+      "en": "Wheat Ridge"
+    }
+  }
+]

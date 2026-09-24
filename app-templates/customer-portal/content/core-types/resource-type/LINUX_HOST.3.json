@@ -1,0 +1,268 @@
+{
+ "optimistic": 0,
+ "code": "LINUX_HOST",
+ "nls": {
+  "en": {
+   "NAME": "Linux Host",
+   "DESCRIPTION": "Linux host resource used for agent deployment and remote command execution. Inherits network address attributes from Network Resource and adds access protocol and credentials."
+  }
+ },
+ "workflow": {
+  "id": 6,
+  "code": "IT_RESOURCES"
+ },
+ "organization": {
+  "optimistic": 1,
+  "id": 1,
+  "code": "SYSTEM"
+ },
+ "attributeOrder": [
+  {
+   "NETWORK": [
+    {
+     "attributeCode": "ADDRESS",
+     "visible": true
+    }
+   ]
+  },
+  {
+   "CLUSTER": [
+    {
+     "attributeCode": "HOSTNAME",
+     "visible": true
+    },
+    {
+     "attributeCode": "ROLE",
+     "visible": true
+    }
+   ]
+  },
+  {
+   "ACCESS": [
+    {
+     "attributeCode": "ACCESS_TYPE",
+     "visible": true
+    },
+    {
+     "attributeCode": "ACCESS_CREDENTIALS",
+     "visible": true
+    }
+   ]
+  }
+ ],
+ "attributes": [
+  {
+   "code": "ACCESS_CREDENTIALS",
+   "required": false,
+   "multiselect": false,
+   "freeValue": true,
+   "unique": false,
+   "className": "com.pixelnation.common.domain.OrganizationSecret",
+   "nls": {
+    "en": {
+     "NAME": "Access Credentials",
+     "DESCRIPTION": "Encrypted organization secret used for the selected access type."
+    }
+   },
+   "options": [],
+   "entityTypes": [
+    {
+     "value": 7,
+     "nls": {
+      "en": {
+       "NAME": "API Key",
+       "DESCRIPTION": "API key or bearer-token style credentials for HTTP or HTTPS access."
+      }
+     }
+    },
+    {
+     "value": 6,
+     "nls": {
+      "en": {
+       "NAME": "Password",
+       "DESCRIPTION": "Username and password credentials for SSH, Telnet, HTTP, or HTTPS access."
+      }
+     }
+    },
+    {
+     "value": 8,
+     "nls": {
+      "en": {
+       "NAME": "Private Key",
+       "DESCRIPTION": "Username and private key credentials for SSH access."
+      }
+     }
+    }
+   ]
+  },
+  {
+   "code": "ACCESS_TYPE",
+   "required": true,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "en": {
+     "NAME": "Access Type",
+     "DESCRIPTION": "Remote access protocol used by deployment scripts to connect to the Linux host."
+    }
+   },
+   "options": [
+    {
+     "value": "SSH",
+     "nls": {
+      "en": {
+       "NAME": "SSH",
+       "DESCRIPTION": "Secure Shell access."
+      }
+     }
+    },
+    {
+     "value": "TELNET",
+     "nls": {
+      "en": {
+       "NAME": "Telnet",
+       "DESCRIPTION": "Legacy Telnet shell access."
+      }
+     }
+    },
+    {
+     "value": "HTTP",
+     "nls": {
+      "en": {
+       "NAME": "HTTP",
+       "DESCRIPTION": "Unsecured HTTP endpoint access."
+      }
+     }
+    },
+    {
+     "value": "HTTPS",
+     "nls": {
+      "en": {
+       "NAME": "HTTPS",
+       "DESCRIPTION": "Secured HTTPS endpoint access."
+      }
+     }
+    }
+   ],
+   "defaultValue": "SSH"
+  },
+  {
+   "code": "HOSTNAME",
+   "required": false,
+   "multiselect": false,
+   "freeValue": true,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "en": {
+     "NAME": "Host Name",
+     "DESCRIPTION": "Inventory host name or fully qualified host name."
+    }
+   },
+   "options": []
+  },
+  {
+   "code": "ROLE",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "en": {
+     "NAME": "Cluster Role",
+     "DESCRIPTION": "Role of the host in the Core multi-host deployment."
+    }
+   },
+   "options": [
+    {
+     "value": "CORE_APP",
+     "nls": {
+      "en": {
+       "NAME": "Core App",
+       "DESCRIPTION": "Application VM running Core services."
+      }
+     }
+    },
+    {
+     "value": "DATABASE",
+     "nls": {
+      "en": {
+       "NAME": "Database",
+       "DESCRIPTION": "PostgreSQL database VM."
+      }
+     }
+    },
+    {
+     "value": "MINIO",
+     "nls": {
+      "en": {
+       "NAME": "MinIO",
+       "DESCRIPTION": "MinIO object storage VM."
+      }
+     }
+    },
+    {
+     "value": "MANAGEMENT",
+     "nls": {
+      "en": {
+       "NAME": "Management",
+       "DESCRIPTION": "Monitoring and management VM."
+      }
+     }
+    },
+    {
+     "value": "HAPROXY",
+     "nls": {
+      "en": {
+       "NAME": "HAProxy",
+       "DESCRIPTION": "Load balancer VM."
+      }
+     }
+    },
+    {
+     "value": "KVM_HOST",
+     "nls": {
+      "en": {
+       "NAME": "KVM Host",
+       "DESCRIPTION": "Physical KVM hypervisor host."
+      }
+     }
+    },
+    {
+     "value": "VM",
+     "nls": {
+      "en": {
+       "NAME": "VM",
+       "DESCRIPTION": "Generic virtual machine."
+      }
+     }
+    }
+   ]
+  }
+ ],
+ "id": 3,
+ "isAbstract": false,
+ "attributeGroups": [
+  {
+   "code": "CLUSTER",
+   "nls": {
+    "en": {
+     "NAME": "Cluster",
+     "DESCRIPTION": "Cluster inventory identity and role"
+    }
+   }
+  },
+  {
+   "code": "ACCESS",
+   "nls": {
+    "en": {
+     "NAME": "Access",
+     "DESCRIPTION": "Remote access configuration used to connect to the Linux host"
+    }
+   }
+  }
+ ]
+}

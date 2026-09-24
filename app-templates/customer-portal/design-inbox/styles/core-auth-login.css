@@ -1,0 +1,190 @@
+/* core-auth-login.css — Wave 18: core-auth CMS login page (core-auth-login.html)
+   8th stylesheet. PAGE-SPECIFIC ONLY.
+
+   NOTHING is copied here. Tokens, the base reset, .brand-logo, the .btn and
+   .field primitives, .eyebrow and the auth-page / auth-grid / auth-pitch /
+   auth-card composition are LINKED from the accepted stylesheets by
+   core-auth-login.html, in the same order source.html uses:
+     tokens.css → base.css → shell.css → components.css → routes.css → this file.
+   A token or primitive changes in one place and this page follows. This file
+   holds only the two message regions, the card header, the optional reveal
+   control, and the standalone-page adjustments the app shell used to provide.
+
+   The page is served from the core-auth origin: no third-party script, style,
+   font, icon set or image is referenced from here or from anything it links.
+   Dark mode is the accepted declarative contract — core-auth renders
+   data-mode="light|dark" on <html> exactly as the portal sets it; there is no
+   script on this page and no second dark palette.
+
+   Responsive is CONTAINER-driven (@container on .auth-page) instead of the
+   portal's .vw-* classes, because those are set by a ResizeObserver in app.js
+   and no script runs here. Thresholds are the accepted ones (<=900 tablet,
+   <=560 mobile), so the breakpoints match responsive.css. */
+
+/* ============================================================
+   Standalone page — replaces what .app-shell provides in the portal
+   ============================================================ */
+.auth-page {
+  container-type: inline-size;
+  container-name: authpage;
+  min-height: 100vh;
+  min-height: 100dvh;
+  background: var(--app-bg);
+  background-attachment: fixed;
+  display: flex;
+  align-items: flex-start;
+}
+
+.auth-inner {
+  /* auto block margins center the card when there is room and fall back to
+     top-aligned when the content is taller than the viewport — the card is
+     never clipped at short heights (390 × 667 with both message regions up). */
+  margin-block: auto;
+  width: 100%;
+  max-width: 1120px;
+  margin-inline: auto;
+  padding: 40px 22px 56px;
+}
+
+/* accepted composition, adjusted for a page with no top nav */
+.auth-grid { grid-template-columns: minmax(0, 1fr) 440px; gap: 48px; padding-top: 0; }
+
+/* The card is FIRST in the DOM (form first at 390); above 900 order puts the
+   pitch back in the wide column. */
+.auth-pitch { order: 1; min-width: 0; }
+
+.auth-card { order: 2; min-width: 0; border-color: var(--glass-border); }
+
+.auth-pitch__title { text-wrap: pretty; }
+
+.auth-pitch__sub { margin-bottom: 0; max-width: 420px; text-wrap: pretty; }
+
+/* accepted focus convention, applied page-wide */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* ============================================================
+   Card header + copy
+   ============================================================ */
+.auth-head { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; }
+
+.auth-title { margin: 0; font-weight: 800; font-size: 24px; letter-spacing: -.02em; }
+
+.auth-sub { margin: 6px 0 20px; font-size: 14px; line-height: 1.55; color: var(--ink-2); text-wrap: pretty; }
+
+.auth-note { margin: 18px 0 0; text-align: center; font-size: 12px; line-height: 1.5; color: var(--ink-3); text-wrap: pretty; }
+
+/* ============================================================
+   Message regions — the ONLY stateful elements on the page.
+   Visibility comes from core-auth substituting block|none into the inline
+   `display`. Nothing else shows or hides them: no class, no data-state, no
+   script. Both regions are always in the DOM, so both may be visible at once
+   and the card must hold — the treatments stack and the form keeps its place.
+
+   They differ by GLYPH, TITLE, WEIGHT, BORDER and FILL, not by color alone:
+   the assertive region is a filled, bordered block with a solid warning tile;
+   the polite one is a quiet hairline block with an outlined confirmation tile.
+   ============================================================ */
+.auth-msg { border-radius: 18px; padding: 13px 15px; margin-bottom: 16px; }
+
+.auth-msg__inner { display: flex; align-items: flex-start; gap: 12px; }
+
+.auth-msg__glyph {
+  width: 28px; height: 28px; border-radius: 9px;
+  display: grid; place-items: center;
+  font-weight: 800; font-size: 15px; line-height: 1; flex-shrink: 0;
+}
+
+.auth-msg__text { min-width: 0; }
+
+.auth-msg__title { margin: 0; font-size: 14px; letter-spacing: -.01em; }
+
+.auth-msg__body { margin: 3px 0 0; font-size: 13px; line-height: 1.5; color: var(--ink-2); text-wrap: pretty; }
+
+/* assertive — the previous attempt failed */
+.auth-msg--error { background: var(--danger-bg); border: 1px solid rgba(255,59,48,.28); }
+
+.auth-msg--error .auth-msg__glyph { background: rgba(255,59,48,.20); color: var(--danger); }
+
+.auth-msg--error .auth-msg__title { font-weight: 800; color: var(--danger); }
+
+:root[data-mode="dark"] .auth-msg--error .auth-msg__title,
+:root[data-mode="dark"] .auth-msg--error .auth-msg__glyph { color: #ff8b80; }
+
+/* polite — the session ended normally. Neutral, not a warning. */
+.auth-msg--logout { background: rgba(var(--glass),.55); border: 1px solid rgba(var(--hair),.10); }
+
+.auth-msg--logout .auth-msg__glyph {
+  background: transparent; border: 1.5px solid rgba(var(--hair),.20);
+  color: var(--ink-2); font-size: 13px;
+}
+
+.auth-msg--logout .auth-msg__title { font-weight: 650; color: var(--ink); }
+
+/* ============================================================
+   Form — accepted field-row / field-label / field / field-error primitives
+   (components.css). Only the label row and the optional reveal control are new.
+   ============================================================ */
+.auth-form { display: flex; flex-direction: column; gap: 16px; }
+
+.field-head { display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 4px 12px; }
+
+.field-head .field-label { flex-shrink: 0; }
+
+.auth-link { font-size: 12px; font-weight: 700; letter-spacing: .01em; white-space: nowrap; }
+
+.field-wrap { position: relative; display: flex; }
+
+.field-wrap .field { padding-inline-end: 74px; }
+
+.auth-reveal {
+  position: absolute; inset-block: 4px; inset-inline-end: 5px;
+  min-width: 58px; padding-inline: 10px;
+  border: 0; border-radius: 9px;
+  background: rgba(var(--hair),.05); color: var(--ink-2);
+  font-size: 12px; font-weight: 700; cursor: pointer;
+}
+
+.auth-reveal:hover { background: rgba(var(--hair),.09); color: var(--ink); }
+
+.auth-reveal[hidden] { display: none; }
+
+.auth-reveal[aria-pressed="false"] .auth-reveal__off,
+.auth-reveal[aria-pressed="true"]  .auth-reveal__on { display: none; }
+
+.auth-submit { margin-top: 4px; padding: 14px 20px; font-size: 15px; }
+
+/* ============================================================
+   Responsive — container-driven, accepted thresholds.
+   <=900: one column, the FORM first and the pitch after it.
+   <=560: compact card, so the submit action stays above the fold at 390
+   even with both message regions visible.
+   ============================================================ */
+@container authpage (max-width: 900px) {
+  .auth-inner { padding: 28px 20px 44px; max-width: 560px; }
+  .auth-grid { grid-template-columns: minmax(0, 1fr); gap: 26px; }
+  .auth-card { order: 1; }
+  .auth-pitch { order: 2; padding-inline: 4px; }
+  .auth-pitch__title { font-size: 24px; letter-spacing: -.02em; }
+  .auth-pitch__sub { font-size: 14px; margin-top: 10px; max-width: none; }
+  .auth-pitch .eyebrow { margin-bottom: 12px; }
+}
+
+@container authpage (max-width: 560px) {
+  .auth-inner { padding: 16px 14px 36px; }
+  .auth-card { padding: 20px 18px; border-radius: 24px; }
+  .auth-head { gap: 11px; margin-bottom: 14px; }
+  .auth-head .brand-logo--lg { width: 38px; height: 38px; border-radius: 11px; }
+  .auth-head .brand-logo--lg::after { width: 13px; height: 13px; }
+  .auth-title { font-size: 21px; }
+  .auth-sub { font-size: 13.5px; margin-bottom: 16px; }
+  .auth-msg { padding: 11px 13px; margin-bottom: 13px; border-radius: 16px; }
+  .auth-msg__inner { gap: 10px; }
+  .auth-msg__glyph { width: 26px; height: 26px; border-radius: 8px; }
+  .auth-form { gap: 13px; }
+  /* 16px prevents the iOS focus zoom; the taller box keeps the hit target >=44px */
+  .auth-form .field { font-size: 16px; padding: 13px 14px; }
+  .auth-submit { padding: 15px 20px; }
+  .auth-note { margin-top: 14px; }
+}

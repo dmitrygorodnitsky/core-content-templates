@@ -1,0 +1,271 @@
+{
+ "code": "SNOW_CUSTOMER_LIFECYCLE",
+ "initialState": {
+  "id": 81,
+  "code": "DRAFT"
+ },
+ "nls": {
+  "en": {
+   "NAME": "Snow Customer Lifecycle",
+   "DESCRIPTION": "Snow CRM customer lifecycle from draft intake through prospect, active customer, hold, inactive, and archive."
+  }
+ },
+ "entityType": "com.pixelnation.account.domain.Account",
+ "organization": {
+  "optimistic": 3,
+  "id": 9,
+  "code": "SERVICE_WAND_WINTER_SERVICES_CANADA"
+ },
+ "id": 14,
+ "states": [
+  {
+   "style": {
+    "xPos": 1010,
+    "yPos": 143.66666666666666
+   },
+   "id": 83,
+   "code": "ACTIVE",
+   "nls": {
+    "en": {
+     "NAME": "Active"
+    }
+   },
+   "events": [
+    {
+     "orderIndex": 0,
+     "id": 127,
+     "code": "ACTIVE-SEASONAL_HOLD",
+     "nls": {
+      "en": {
+       "NAME": "Place On Seasonal Hold"
+      }
+     },
+     "targets": [
+      {
+       "id": 84,
+       "code": "SEASONAL_HOLD"
+      }
+     ]
+    },
+    {
+     "orderIndex": 1,
+     "id": 132,
+     "code": "ACTIVE-INACTIVE",
+     "nls": {
+      "en": {
+       "NAME": "Deactivate Customer"
+      }
+     },
+     "targets": [
+      {
+       "id": 85,
+       "code": "INACTIVE"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "style": {
+    "xPos": 2003,
+    "yPos": 285.66666666666663
+   },
+   "id": 86,
+   "code": "ARCHIVED",
+   "nls": {
+    "en": {
+     "NAME": "Archived"
+    }
+   },
+   "events": []
+  },
+  {
+   "style": {
+    "xPos": -190.8173191279938,
+    "yPos": 248.52174772285787
+   },
+   "id": 81,
+   "code": "DRAFT",
+   "nls": {
+    "en": {
+     "NAME": "Draft"
+    }
+   },
+   "events": [
+    {
+     "orderIndex": 0,
+     "id": 125,
+     "code": "DRAFT-PROSPECT",
+     "nls": {
+      "en": {
+       "NAME": "Qualify Prospect"
+      }
+     },
+     "targets": [
+      {
+       "id": 82,
+       "code": "PROSPECT"
+      }
+     ]
+    },
+    {
+     "orderIndex": 1,
+     "id": 134,
+     "code": "DRAFT-ARCHIVED",
+     "nls": {
+      "en": {
+       "NAME": "Archive Draft"
+      }
+     },
+     "targets": [
+      {
+       "id": 86,
+       "code": "ARCHIVED"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "style": {
+    "xPos": 1515,
+    "yPos": 12
+   },
+   "id": 85,
+   "code": "INACTIVE",
+   "nls": {
+    "en": {
+     "NAME": "Inactive"
+    }
+   },
+   "events": [
+    {
+     "orderIndex": 0,
+     "id": 130,
+     "code": "INACTIVE-ACTIVE",
+     "nls": {
+      "en": {
+       "NAME": "Reactivate Customer"
+      }
+     },
+     "targets": [
+      {
+       "id": 83,
+       "code": "ACTIVE"
+      }
+     ]
+    },
+    {
+     "orderIndex": 1,
+     "id": 131,
+     "code": "INACTIVE-ARCHIVED",
+     "nls": {
+      "en": {
+       "NAME": "Archive Customer"
+      }
+     },
+     "targets": [
+      {
+       "id": 86,
+       "code": "ARCHIVED"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "style": {
+    "xPos": 507,
+    "yPos": 247.800307219662
+   },
+   "id": 82,
+   "code": "PROSPECT",
+   "nls": {
+    "en": {
+     "NAME": "Prospect"
+    }
+   },
+   "events": [
+    {
+     "orderIndex": 0,
+     "id": 126,
+     "code": "PROSPECT-ACTIVE",
+     "nls": {
+      "en": {
+       "NAME": "Activate Customer"
+      }
+     },
+     "targets": [
+      {
+       "id": 83,
+       "code": "ACTIVE"
+      }
+     ]
+    },
+    {
+     "orderIndex": 1,
+     "id": 133,
+     "code": "PROSPECT-ARCHIVED",
+     "nls": {
+      "en": {
+       "NAME": "Archive Prospect"
+      }
+     },
+     "targets": [
+      {
+       "id": 86,
+       "code": "ARCHIVED"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "style": {
+    "xPos": 477,
+    "yPos": 19.5
+   },
+   "id": 84,
+   "code": "SEASONAL_HOLD",
+   "nls": {
+    "en": {
+     "NAME": "Suspended / Seasonal Hold"
+    }
+   },
+   "events": [
+    {
+     "orderIndex": 0,
+     "id": 128,
+     "code": "SEASONAL_HOLD-ACTIVE",
+     "nls": {
+      "en": {
+       "NAME": "Reactivate Customer"
+      }
+     },
+     "targets": [
+      {
+       "id": 83,
+       "code": "ACTIVE"
+      }
+     ]
+    },
+    {
+     "orderIndex": 1,
+     "id": 129,
+     "code": "SEASONAL_HOLD-INACTIVE",
+     "nls": {
+      "en": {
+       "NAME": "Deactivate Customer"
+      }
+     },
+     "targets": [
+      {
+       "id": 85,
+       "code": "INACTIVE"
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

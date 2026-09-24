@@ -1,0 +1,70 @@
+{
+ "optimistic": 0,
+ "code": "PER_SERVICE",
+ "nls": {
+  "en": {
+   "NAME": "Per Service"
+  }
+ },
+ "organization": {
+  "optimistic": 4,
+  "id": 8,
+  "code": "SERVICE_WAND_WINTER_SERVICES"
+ },
+ "attributeOrder": [
+  {
+   "default": [
+    {
+     "attributeCode": "TERMS",
+     "visible": true
+    },
+    {
+     "attributeCode": "PAYMENT_TERMS",
+     "visible": true
+    },
+    {
+     "attributeCode": "DATE",
+     "visible": true
+    },
+    {
+     "attributeCode": "PAYMENT_NET_TERMS",
+     "visible": true
+    }
+   ]
+  }
+ ],
+ "attributes": [
+  {
+   "code": "DATE",
+   "required": true,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.time.LocalDate",
+   "nls": {
+    "en": {
+     "NAME": "Date"
+    }
+   },
+   "options": []
+  },
+  {
+   "code": "PAYMENT_NET_TERMS",
+   "required": true,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.Integer",
+   "nls": {
+    "en": {
+     "NAME": "Payment Net Terms"
+    }
+   },
+   "options": [],
+   "defaultValue": 30
+  }
+ ],
+ "id": 5,
+ "isAbstract": false,
+ "attributeGroups": []
+}

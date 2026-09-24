@@ -1,0 +1,61 @@
+{
+ "optimistic": 2,
+ "code": "SITE",
+ "nls": {
+  "en": {
+   "NAME": "Service Site"
+  }
+ },
+ "organization": {
+  "optimistic": 1,
+  "id": 1,
+  "code": "SYSTEM"
+ },
+ "attributeOrder": [
+  {
+   "default": [
+    {
+     "attributeCode": "SERVICE_MIN",
+     "visible": true
+    },
+    {
+     "attributeCode": "SITE_ADDRESS",
+     "visible": true
+    }
+   ]
+  }
+ ],
+ "attributes": [
+  {
+   "code": "SITE_ADDRESS",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "com.pixelnation.common.domain.Address",
+   "nls": {
+    "en": {
+     "NAME": "Address"
+    }
+   },
+   "options": []
+  },
+  {
+   "code": "SERVICE_MIN",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.Integer",
+   "nls": {
+    "en": {
+     "NAME": "Service Min"
+    }
+   },
+   "options": []
+  }
+ ],
+ "id": 108,
+ "isAbstract": false,
+ "attributeGroups": []
+}

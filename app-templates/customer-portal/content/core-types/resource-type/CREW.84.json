@@ -1,0 +1,102 @@
+{
+ "optimistic": 7,
+ "code": "CREW",
+ "nls": {
+  "en": {
+   "NAME": "Field Crew"
+  }
+ },
+ "workflow": {
+  "id": 7,
+  "code": "RESOURCE"
+ },
+ "organization": {
+  "optimistic": 4,
+  "id": 8,
+  "code": "SERVICE_WAND_WINTER_SERVICES"
+ },
+ "attributeOrder": [
+  {
+   "default": [
+    {
+     "attributeCode": "WORK_START",
+     "visible": true
+    },
+    {
+     "attributeCode": "WORK_END",
+     "visible": true
+    },
+    {
+     "attributeCode": "ROUTE_COLOR",
+     "visible": true
+    },
+    {
+     "attributeCode": "DEPOT_ADDRESS",
+     "visible": true
+    }
+   ]
+  }
+ ],
+ "attributes": [
+  {
+   "code": "DEPOT_ADDRESS",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "com.pixelnation.common.domain.Address",
+   "nls": {
+    "en": {
+     "NAME": "Address"
+    }
+   },
+   "options": []
+  },
+  {
+   "code": "WORK_END",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.time.LocalTime",
+   "nls": {
+    "en": {
+     "NAME": "Work end"
+    }
+   },
+   "options": []
+  },
+  {
+   "code": "ROUTE_COLOR",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": true,
+   "className": "java.lang.String",
+   "nls": {
+    "en": {
+     "NAME": "Route Color"
+    }
+   },
+   "options": [],
+   "inputFormat": "color"
+  },
+  {
+   "code": "WORK_START",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.time.LocalTime",
+   "nls": {
+    "en": {
+     "NAME": "Work start"
+    }
+   },
+   "options": []
+  }
+ ],
+ "id": 84,
+ "isAbstract": false,
+ "attributeGroups": []
+}

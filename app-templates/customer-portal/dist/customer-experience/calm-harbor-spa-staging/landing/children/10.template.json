@@ -1,0 +1,123 @@
+{
+  "code": "CUSTOMER_EXPERIENCE_LANDING_10_REVIEWS",
+  "nls": {
+    "en": {
+      "NAME": "Customer experience | Reviews"
+    }
+  },
+  "templateLanguage": "JTE",
+  "parent": {
+    "code": "CUSTOMER_EXPERIENCE_LANDING"
+  },
+  "children": [],
+  "head": "",
+  "html": "<section class=\"seo-sec seo-sec--tint\" data-module=\"seo-reviews\" data-visual-id=\"seo-reviews\" data-state=\"ready\"><div class=\"seo-sec__head\"><span class=\"eyebrow\">${CUSTOMER_EXPERIENCE_LANDING_10_REVIEWS_EYEBROW@LOCALIZED_STRING_SS}</span><h2 class=\"seo-sec__title\">${CUSTOMER_EXPERIENCE_LANDING_10_REVIEWS_TITLE@LOCALIZED_STRING_SS}</h2></div><div class=\"seo-reviews\"><div class=\"seo-review\" data-bind=\"cms.reviews[0]\"><div class=\"seo-review__media\"><span class=\"seo-media-slot__label\">customer photo · media slot</span></div><div class=\"seo-review__stars\">★★★★★</div><p class=\"seo-review__text\">“${CUSTOMER_EXPERIENCE_LANDING_10_REVIEWS_ITEM_1_TEXT@LOCALIZED_STRING_SS}”</p><div class=\"seo-review__name\">${CUSTOMER_EXPERIENCE_LANDING_10_REVIEWS_ITEM_1_NAME@LOCALIZED_STRING_SS}</div></div><div class=\"seo-review\" data-bind=\"cms.reviews[1]\"><div class=\"seo-review__media\"><span class=\"seo-media-slot__label\">customer photo · media slot</span></div><div class=\"seo-review__stars\">★★★★★</div><p class=\"seo-review__text\">“${CUSTOMER_EXPERIENCE_LANDING_10_REVIEWS_ITEM_2_TEXT@LOCALIZED_STRING_SS}”</p><div class=\"seo-review__name\">${CUSTOMER_EXPERIENCE_LANDING_10_REVIEWS_ITEM_2_NAME@LOCALIZED_STRING_SS}</div></div><div class=\"seo-review\" data-bind=\"cms.reviews[2]\"><div class=\"seo-review__stars\">★★★★☆</div><p class=\"seo-review__text\">“${CUSTOMER_EXPERIENCE_LANDING_10_REVIEWS_ITEM_3_TEXT@LOCALIZED_STRING_SS}”</p><div class=\"seo-review__name\">${CUSTOMER_EXPERIENCE_LANDING_10_REVIEWS_ITEM_3_NAME@LOCALIZED_STRING_SS}</div></div></div></section>",
+  "css": "/* ---------- 8 · reviews ---------- */\n.seo-reviews { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; align-items: start; }\n.seo-review {\n  background: rgba(var(--glass),.6); border: 1px solid var(--glass-border); border-radius: var(--radius-card);\n  padding: 18px; box-shadow: var(--shadow-card);\n}\n.seo-review .seo-skel { display: block; margin: 6px 0; }\n.seo-review__media { border-radius: var(--radius-md); border: 1px dashed rgba(var(--hair),.2); background: repeating-linear-gradient(-45deg, rgba(var(--hair),.045) 0 10px, transparent 10px 20px); min-height: 110px; display: grid; place-items: center; margin-bottom: 12px; }\n.seo-review__stars { color: var(--warn); font-size: 13px; letter-spacing: 2px; }\n.seo-review__text { margin: 8px 0 0; font-size: 13.5px; line-height: 1.55; color: var(--ink-2); }\n.seo-review__name { margin-top: 10px; font-size: 12px; font-weight: 700; color: var(--ink-3); }\n.seo-reviews__fallback {\n  border: 1px dashed rgba(var(--hair),.2); border-radius: var(--radius-card); padding: 26px;\n  font-size: 13px; color: var(--ink-3); line-height: 1.6; max-width: 520px;\n}\n.seo-reviews__fallback-title { font-weight: 800; color: var(--ink-2); margin-bottom: 4px; }",
+  "javascript": "",
+  "parameters": [
+    {
+      "code": "CUSTOMER_EXPERIENCE_LANDING_10_REVIEWS_EYEBROW",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Customer experience landing 10 reviews eyebrow",
+          "DESCRIPTION": "Customer experience landing section value."
+        }
+      },
+      "value": {
+        "en": ""
+      }
+    },
+    {
+      "code": "CUSTOMER_EXPERIENCE_LANDING_10_REVIEWS_TITLE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Customer experience landing 10 reviews title",
+          "DESCRIPTION": "Customer experience landing section value."
+        }
+      },
+      "value": {
+        "en": ""
+      }
+    },
+    {
+      "code": "CUSTOMER_EXPERIENCE_LANDING_10_REVIEWS_ITEM_1_TEXT",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Customer experience landing 10 reviews item 1 text",
+          "DESCRIPTION": "Customer experience landing section value."
+        }
+      },
+      "value": {
+        "en": ""
+      }
+    },
+    {
+      "code": "CUSTOMER_EXPERIENCE_LANDING_10_REVIEWS_ITEM_1_NAME",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Customer experience landing 10 reviews item 1 name",
+          "DESCRIPTION": "Customer experience landing section value."
+        }
+      },
+      "value": {
+        "en": ""
+      }
+    },
+    {
+      "code": "CUSTOMER_EXPERIENCE_LANDING_10_REVIEWS_ITEM_2_TEXT",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Customer experience landing 10 reviews item 2 text",
+          "DESCRIPTION": "Customer experience landing section value."
+        }
+      },
+      "value": {
+        "en": ""
+      }
+    },
+    {
+      "code": "CUSTOMER_EXPERIENCE_LANDING_10_REVIEWS_ITEM_2_NAME",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Customer experience landing 10 reviews item 2 name",
+          "DESCRIPTION": "Customer experience landing section value."
+        }
+      },
+      "value": {
+        "en": ""
+      }
+    },
+    {
+      "code": "CUSTOMER_EXPERIENCE_LANDING_10_REVIEWS_ITEM_3_TEXT",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Customer experience landing 10 reviews item 3 text",
+          "DESCRIPTION": "Customer experience landing section value."
+        }
+      },
+      "value": {
+        "en": ""
+      }
+    },
+    {
+      "code": "CUSTOMER_EXPERIENCE_LANDING_10_REVIEWS_ITEM_3_NAME",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Customer experience landing 10 reviews item 3 name",
+          "DESCRIPTION": "Customer experience landing section value."
+        }
+      },
+      "value": {
+        "en": ""
+      }
+    }
+  ]
+}

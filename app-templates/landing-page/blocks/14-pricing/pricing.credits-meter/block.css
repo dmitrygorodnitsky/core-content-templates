@@ -1,0 +1,369 @@
+/* lab-ui block · pricing.credits-meter
+   Depends: 00-tokens/tokens.css. Light theme. */
+
+.cm-credits {
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-family);
+}
+.cm-credits .container {
+  max-width: calc(var(--container-width) + var(--container-padding-x) * 2);
+  margin-inline: auto;
+  padding-inline: var(--container-padding-x);
+}
+
+.cm-top {
+  max-width: 54rem;
+  margin: 0 auto clamp(2rem, 4vw, 2.75rem);
+  text-align: center;
+}
+.cm-eyebrow {
+  margin: 0 0 12px;
+  font-family: var(--font-mono);
+  font-size: var(--type-eyebrow-size);
+  letter-spacing: var(--type-eyebrow-tracking);
+  text-transform: uppercase;
+  color: var(--color-text-accent);
+}
+.cm-title {
+  margin: 0 0 12px;
+  color: var(--color-heading);
+  font-size: var(--type-h2-size);
+  font-weight: var(--type-h2-weight);
+  line-height: var(--type-h2-leading);
+  letter-spacing: var(--type-h2-tracking);
+}
+.cm-lede {
+  margin: 0;
+  font-size: 1.0625rem;
+  line-height: 1.55;
+}
+
+/* ─── Two-card grid ─────────────────────────────────────────── */
+.cm-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+  gap: 18px;
+  align-items: stretch;
+}
+.cm-card {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 26px;
+  border: 1px solid rgba(146, 170, 205, 0.26);
+  border-radius: var(--radius-card);
+  background: var(--color-white);
+}
+.cm-card--allowance {
+  background:
+    radial-gradient(circle at 0% 0%, var(--cta-accent-soft), transparent 56%),
+    var(--color-white);
+}
+.cm-card--packs {
+  background: var(--color-gray-bg);
+}
+.cm-card-head { display: grid; gap: 6px; }
+.cm-card-kicker {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  color: var(--color-text-accent);
+}
+.cm-card-title {
+  margin: 0;
+  color: var(--color-heading);
+  font-size: 1.375rem;
+  font-weight: 650;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+.cm-card-lede {
+  margin: 0;
+  color: var(--color-gray-blue);
+  font-size: 0.9375rem;
+  line-height: 1.5;
+}
+
+/* ─── Allowance rows · plan → included → overage ────────────── */
+.cm-rows {
+  display: grid;
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.cm-row {
+  display: grid;
+  grid-template-columns: minmax(120px, 1fr) auto auto minmax(120px, 1.1fr);
+  align-items: baseline;
+  gap: 10px;
+  padding: 12px 0;
+  border-bottom: 1px dashed rgba(146, 170, 205, 0.30);
+}
+.cm-row[data-plan-visible="hide"] { display: none; }
+.cm-row:last-child { border-bottom: 0; }
+.cm-row-plan {
+  color: var(--color-heading);
+  font-weight: 600;
+  font-size: 0.9375rem;
+}
+.cm-row-amount {
+  font-family: var(--font-mono);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-heading);
+  letter-spacing: -0.02em;
+}
+.cm-row-unit {
+  color: var(--color-gray-blue);
+  font-size: 0.8125rem;
+  letter-spacing: 0.02em;
+}
+.cm-row-overage {
+  text-align: right;
+  color: var(--color-text);
+  font-size: 0.8125rem;
+}
+.cm-row-overage::before {
+  content: "Overage ";
+  color: var(--color-gray-blue);
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-right: 4px;
+}
+
+/* ─── Pack tiers ────────────────────────────────────────────── */
+.cm-packs {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 12px;
+}
+.cm-pack {
+  position: relative;
+  display: grid;
+  gap: 6px;
+  padding: 16px 14px;
+  border: 1px solid rgba(146, 170, 205, 0.22);
+  border-radius: var(--radius-card-sm);
+  background: var(--color-white);
+}
+.cm-pack[data-pack-visible="hide"] { display: none; }
+.cm-pack--skeleton {
+  display: none;
+  pointer-events: none;
+}
+.cm-credits[data-pricing-dynamic="true"]:not([data-pricing-state="dynamic"]):not([data-pricing-state="fallback"]) .cm-pack--skeleton {
+  display: grid;
+}
+.cm-credits[data-pricing-dynamic="true"]:not([data-pricing-state="dynamic"]):not([data-pricing-state="fallback"]) .cm-pack:not(.cm-pack--skeleton) {
+  display: none;
+}
+.cm-skel {
+  display: block;
+  border-radius: var(--radius-pill);
+  background: linear-gradient(90deg, rgba(146, 170, 205, 0.14), rgba(146, 170, 205, 0.28), rgba(146, 170, 205, 0.14));
+  background-size: 200% 100%;
+  animation: cm-skeleton 1.2s ease-in-out infinite;
+}
+.cm-skel--badge { width: 42%; height: 12px; }
+.cm-skel--name { width: 72%; height: 14px; }
+.cm-skel--amount { width: 54%; height: 28px; }
+.cm-skel--price { width: 46%; height: 18px; }
+.cm-skel--rate { width: 64%; height: 12px; }
+@keyframes cm-skeleton {
+  to { background-position-x: -200%; }
+}
+.cm-pack--featured {
+  border-color: var(--cta-accent);
+  box-shadow: 0 0 0 1px var(--cta-accent);
+}
+.cm-pack--muted {
+  border-style: dashed;
+  background: transparent;
+}
+.cm-pack-badge {
+  position: absolute;
+  top: -10px;
+  left: 14px;
+  padding: 3px 8px;
+  border-radius: var(--radius-pill);
+  background: var(--cta-accent);
+  color: var(--color-heading);
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.cm-pack-badge:empty { display: none; }
+.cm-pack-name {
+  margin: 0;
+  color: var(--color-gray-blue);
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.cm-pack-amount {
+  margin: 0;
+  color: var(--color-heading);
+  font-family: var(--font-mono);
+  font-size: 1.75rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+.cm-pack-unit {
+  margin-left: 4px;
+  color: var(--color-gray-blue);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.cm-pack-price {
+  margin: 4px 0 0;
+  color: var(--color-heading);
+  font-size: 1rem;
+  font-weight: 650;
+}
+.cm-pack-rate {
+  margin: 0;
+  color: var(--color-gray-blue);
+  font-size: 0.75rem;
+}
+.cm-pack-details {
+  display: grid;
+  gap: 7px;
+  margin: 8px 0 0;
+  padding: 10px 0 0;
+  border-top: 1px solid rgba(146, 170, 205, 0.22);
+}
+.cm-pack-detail {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+.cm-pack-detail dt {
+  color: var(--color-gray-blue);
+  font-size: 0.6875rem;
+  line-height: 1.25;
+}
+.cm-pack-detail dd {
+  margin: 0;
+  color: var(--color-heading);
+  font-size: 0.8125rem;
+  font-weight: 650;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+
+.cm-packs-cta {
+  align-self: start;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 42px;
+  padding: 0 18px;
+  border-radius: var(--radius-pill);
+  background: var(--color-white);
+  border: 1px solid rgba(146, 170, 205, 0.35);
+  color: var(--color-heading);
+  font-size: 0.9375rem;
+  font-weight: 650;
+  text-decoration: none;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+.cm-packs-cta:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-glow-soft);
+}
+.cm-packs-cta[aria-disabled="true"] {
+  cursor: not-allowed;
+  color: var(--color-gray-blue);
+  background: var(--color-gray-bg);
+  border-color: rgba(146, 170, 205, 0.28);
+  box-shadow: none;
+  opacity: 0.72;
+}
+.cm-packs-cta[aria-disabled="true"]:hover {
+  transform: none;
+  box-shadow: none;
+}
+
+/* ─── Explainer + disclaimer ────────────────────────────────── */
+.cm-explainer {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 10px 16px;
+  align-items: baseline;
+  margin-top: 18px;
+  padding: 14px 18px;
+  border-left: 3px solid var(--cta-accent);
+  background: var(--cta-accent-soft);
+  border-radius: 8px;
+}
+.cm-explainer[data-explainer-visible="hide"] { display: none; }
+.cm-explainer-kicker {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  color: var(--color-text-accent);
+  white-space: nowrap;
+}
+.cm-explainer-text {
+  margin: 0;
+  color: var(--color-heading);
+  font-size: 0.9375rem;
+  line-height: 1.5;
+}
+.cm-disclaimer {
+  margin: 20px 0 0;
+  color: var(--color-gray-blue);
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  text-align: center;
+}
+
+@media (max-width: 900px) {
+  .cm-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 540px) {
+  .cm-card { padding: 22px; }
+  /* Keep the amount and its unit together on the right so the figure
+     does not read detached from what it measures. */
+  .cm-row {
+    grid-template-columns: 1fr auto;
+    grid-template-areas:
+      "plan amount"
+      "plan unit"
+      "overage overage";
+    gap: 2px 10px;
+  }
+  .cm-row-plan { grid-area: plan; align-self: center; }
+  .cm-row-amount { grid-area: amount; justify-self: end; }
+  .cm-row-unit { grid-area: unit; justify-self: end; }
+  .cm-row-overage { grid-area: overage; text-align: left; margin-top: 4px; }
+  .cm-explainer {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ─── Accessibility ─────────────────────────────────────────── */
+.cm-packs-cta:focus-visible {
+  outline: 2px solid var(--cta-accent);
+  outline-offset: 2px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .cm-credits *,
+  .cm-credits *::before,
+  .cm-credits *::after {
+    transition-duration: 0.01ms !important;
+  }
+}
