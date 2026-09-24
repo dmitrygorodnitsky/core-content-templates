@@ -1114,11 +1114,16 @@ transition. Where the whole flow stands is
    since 2026-09-24; `QUOTATION-PACKAGE-FLOW.md` §11). A Quotations group in
    `SNOW-CRM/DEFAULT` lists requests to review and to retry, quoted properties,
    quotes to prepare and to approve, and agreements by state, each with its
-   workflow buttons; `core-ui` `snowMvp.ts apply-ui-copy` generates it. It does
-   not replace the generic admin yet: the area of a property the flow created
-   cannot be saved until `SITE_SERVICE_DURATION` is filled, no user holds a
-   Snow role in `SNOWLIMITLESS`, and the request and quote events belong to
-   `ADMIN` alone.
+   workflow buttons; `core-ui` `snowMvp.ts apply-ui-copy` generates it. Since
+   the afternoon of 2026-09-24 the area of a property the flow created can be
+   saved from the editor, because `SITE_SERVICE_DURATION` is optional, and
+   `SW_FS_WS_QUOTATION_MANAGER` (role 87, owned by
+   `SERVICE_WAND_WINTER_SERVICES`, assigned to nobody yet) holds every
+   manager step; the Quotations menu and Accounts list it. It holds none of the
+   client's or the automation's events. Still open
+   (`QUOTATION-PACKAGE-FLOW.md` §11): the first run by a user holding only
+   that role, and the extra buttons Company Admin and `ADMIN` see, which need
+   a `core-ui` change after the merge of `main`.
 
 The live snow entry is the package `CUSTOMER_PORTAL_GRANITE_RIDGE_STAGING`
 (`scripts/export-live-portal-manual.mjs` from

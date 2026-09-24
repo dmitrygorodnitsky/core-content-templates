@@ -639,6 +639,10 @@ Live on dev-1 since 2026-09-24. The manager's steps have their own group,
   entity types and 5 attribute rules.
 - No existing screen or menu item changed, and the readback matched the pushed
   file byte for byte.
+- A second push the same day appended `SW_FS_WS_QUOTATION_MANAGER` (below) to
+  26 existing role lists and changed nothing else: the 13 Quotations menu
+  items, the Customers & Properties Accounts item, the Create button of the 9
+  quote and agreement screens, and 3 attribute rules. Its readback matched too.
 
 Each screen is a filtered clone of an existing one, by `type.code` and, for a
 queue, `states.code`. Its buttons are the events of the record's own workflow
@@ -648,7 +652,7 @@ that Core lists for the signed-in user; the screens configure none.
 | --- | --- | --- | --- |
 | take or reject a request | Requests to Review | `GET_QUOTE_`, `READY_FOR_REVIEW` | Process, Reject |
 | retry a request | Requests to Retry | `VALIDATION_FAILED`, `PROCESSING_FAILED`, `DELIVERY_FAILED` | Retry Validation, Retry Processing, Retry Customer Delivery |
-| enter the area | Quoted Properties | `SNOW_REMOVAL_PROPERTY`, `INITIAL` | Service Area (sq ft), Save: blocked, see below |
+| enter the area | Quoted Properties | `SNOW_REMOVAL_PROPERTY`, `INITIAL` | Service Area (sq ft), Save |
 | prepare, revise | Quotes to Prepare | `INITIAL`, `CHANGES_REQUESTED`, `CUSTOMER_CHANGES_REQUESTED` | Prepare Quote, Modify, Changes Requested; lines under Order Items |
 | approve internally | Quotes to Approve | `QUOTE_PREPARED` | Approve Quote, Request Changes |
 | send | Quotations to Send | `SERVICE_AGREEMENT`, `QUOTATION` | Send Quotation |
@@ -677,38 +681,67 @@ and every record of the runs is in its screen.
 - Agreements 138–140: Service Agreements; 140 also in Quotations with Client.
 - Accounts 717 and 718: Accounts.
 
-**The area cannot be saved from the editor yet** (2026-09-24).
-- **Why:** `SITE_SERVICE_DURATION` is required on `SNOW_REMOVAL_PROPERTY`, and
-  no step of the flow fills it. The editor marks it and keeps Save disabled.
-  So a manager cannot store `SERVICE_AREA_SQFT` on a property the flow created
-  without entering a service duration.
-- **Core does not enforce it.** The exact body the editor builds was sent to
+**The area can be saved from the editor** (since 2026-09-24).
+- **Why it could not:** `SITE_SERVICE_DURATION` was required on
+  `SNOW_REMOVAL_PROPERTY`, and no step of the flow fills it, so the editor
+  marked it and kept Save disabled.
+- **Core never enforced it.** The exact body the editor builds was sent to
   `core-rm/api/resource/save.json` for Property 963, its area unchanged at
   75,000, and answered 200. Only `optimistic` (1 → 2) and `updated` changed.
-- **Open:** the flow fills the duration, the attribute stops being required,
-  or the manager enters one.
+- **The attribute is optional now** (the user's decision). `core-ui`
+  `snowRemovalPropertyDurationOptionalPatch.json`, applied with
+  `npm run type-attribute-patch`, changed only its `required` flag on resource
+  type 154 (`optimistic` 10 → 11); read back by code, nothing else on the type
+  changed.
+- **Proven for Property 963:** the editor's required-attribute check, rerun
+  over the live type, flagged `SITE_SERVICE_DURATION` before the patch and
+  nothing after it.
+- **Routing:** the `SNOWLIMITLESS` routing attribute mapping takes the routing
+  concept `SITE_SERVICE_DURATION` from the attribute of the same name on type
+  154, with no default value, so a route over a property without a duration
+  needs a default there or a duration on the property.
+
+**One role works every step: `SW_FS_WS_QUOTATION_MANAGER`** (role 87 on dev-1,
+created 2026-09-24, assigned to nobody). The team assigns it in `SNOWLIMITLESS`
+through a user's Roles tab.
+- **Owner:** `SERVICE_WAND_WINTER_SERVICES`, like the customer portal role and
+  the flow's workflows; the staff roles stay in `SERVICEWAND`.
+- **Holds:** the Snow CRM app config reads; quote requests (`P_FORM_R`, `_W`,
+  `_E`) with Process, Reject and the three retries; properties with the area
+  write; accounts read-only; quotes and their lines (`P_ORDER_R`, `_W`, `_D`,
+  `_E`) with Prepare Quote, Approve Quote, Request Changes and both ways back
+  to `QUOTE_PREPARED`; agreements (`P_DOCUMENT_R`, `_W`, `_E`) with Send
+  Quotation, Send Updated Quotation, cancel from `QUOTATION`, Request
+  Management Approval, Approve, Request Changes and the three retries. 65
+  permissions in all, listed in `core-ui` `snowQuotationManagerRbac.json`.
+- **Holds none of the client's events or the automation's,** so its button bar
+  shows only its own steps.
+- **In its name:** the hooks dispatch their scripts as the acting user, and
+  those scripts send every follow-up event with `sendEventUnsecured`: the
+  `QUOTATION_UPDATE` forward, `INTERNALLY_APPROVED-SENT_TO_CLIENT`,
+  `QUOTE_APPROVED_INTERNALLY-QUOTE_SENT` and `DRAFT-PROSPECT` from delivery,
+  and the failure records. Grants and Account activation run as service
+  identities.
 
 Open:
-- **Nobody can use the menu under a Snow role in `SNOWLIMITLESS`.** The menu
-  follows the `SW_FS_WS_*` roles of the user's session organization, and no
-  user holds one in `SNOWLIMITLESS`. The users who run the flow are Company
-  Admin in the two provider organizations and `ADMIN` in `SNOWLIMITLESS`;
-  their buttons follow `ADMIN`.
-- **The request and quote events belong to `ADMIN` alone.** No Snow role holds
-  `P_FORM_R`, `P_FORM_TYPE_R` or an event of workflow 49. None holds
-  `INITIAL-QUOTE_PREPARED`, `QUOTE_PREPARED-QUOTE_APPROVED_INTERNALLY`,
-  `QUOTE_PREPARED-CHANGES_REQUESTED`, `CHANGES_REQUESTED-QUOTE_PREPARED` or
-  `CUSTOMER_CHANGES_REQUESTED-QUOTE_PREPARED` of workflow 45.
-- **Only Company Admin may open the app.** `P_UI_SNOW-CRM_DEFAULT_R` is held by
-  `ADMIN` and `SW_FS_WS_COMPANY_ADMIN`. `APP_USER`, which the `core-ui` docs
-  name for it, does not exist on dev-1.
+- **The first run under the role.** Every live run so far was made by users
+  holding `ADMIN` in `SNOWLIMITLESS`. Nothing yet shows `sendEventUnsecured`
+  applying an event in the name of a user without that event's permission; the
+  first Send Quotation and Send Updated Quotation by a user holding only the
+  role settle it.
+- **The menu follows the session organization's roles.** A user sees the
+  Quotations group in `SNOWLIMITLESS` only with a Snow role assigned there; the
+  Company Admin and `ADMIN` users who ran the flow hold none there.
 - **Sales and Billing gaps:** Sales cannot save a property (`P_RESOURCE_W`) or
   retry agreement delivery and activation. Billing cannot read document types,
   so an agreement's attributes do not load for it.
-- **Too many buttons:** a Company Admin sees every agreement event, including
-  the automation's and the client's: Submit Contract Details, Accept Contract
-  Details, Send to Client, Activate. `ADMIN` also sees Send Quote and the
-  client's events on a quote.
+- **Too many buttons for Company Admin and `ADMIN`:** they see every agreement
+  event, including the automation's and the client's: Submit Contract Details,
+  Accept Contract Details, Send to Client, Activate. `ADMIN` also sees Send
+  Quote and the client's events on a quote. No Snow CRM config can hide an
+  event: the button bar lists whatever Core returns. The smallest fix is a
+  `hiddenEvents` list on the editor's `WorkflowActions` item, filtered in
+  `core-ui` `WorkflowActionsContent`; it waits for the merge of `main`.
 - **Agreement saves:** on this `core-ui` branch, saving an agreement sends its
   `permissions` nested, and Core refuses that. The fix is commit `69378b66` on
   `main`. The Quotations agreement screens leave the field out.
