@@ -1110,6 +1110,16 @@ transition. Where the whole flow stands is
    The role remains staging-only until customer Account scoping is enforced by
    the backend.
 
+   **The manager's steps have their own screens in Snow CRM** (live on dev-1
+   since 2026-09-24; `QUOTATION-PACKAGE-FLOW.md` §11). A Quotations group in
+   `SNOW-CRM/DEFAULT` lists requests to review and to retry, quoted properties,
+   quotes to prepare and to approve, and agreements by state, each with its
+   workflow buttons; `core-ui` `snowMvp.ts apply-ui-copy` generates it. It does
+   not replace the generic admin yet: the area of a property the flow created
+   cannot be saved until `SITE_SERVICE_DURATION` is filled, no user holds a
+   Snow role in `SNOWLIMITLESS`, and the request and quote events belong to
+   `ADMIN` alone.
+
 The live snow entry is the package `CUSTOMER_PORTAL_GRANITE_RIDGE_STAGING`
 (`scripts/export-live-portal-manual.mjs` from
 `cms/granite-ridge-snow.customer-portal-staging.json`, guarded by

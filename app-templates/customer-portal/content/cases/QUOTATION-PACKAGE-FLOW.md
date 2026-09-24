@@ -1,7 +1,8 @@
 # Quotation package — the service agreement carries the quotes
 
 Status: implementation in progress, decided with the user on 2026-09-11 and
-revised through 2026-09-23; where the flow stands is §10. Facts marked *verified* were read
+revised through 2026-09-24; where the flow stands is §10, and the manager's
+screens are §11. Facts marked *verified* were read
 from dev-1; everything else is our design, filling what the client spec
 (`quotation-contract-client-activation-flow.md`) leaves open.
 
@@ -627,3 +628,87 @@ Live on workflow 53 since the evening of 2026-09-23:
 The role is staging-only until backend reads are scoped to the linked
 customer Account; browser filters alone are not a production customer
 boundary.
+
+## 11. Manager UI
+
+Live on dev-1 since 2026-09-24. The manager's steps have their own group,
+**Quotations**, in the Snow CRM app (`SNOW-CRM/DEFAULT`).
+- `core-ui` `scripts/dev/snowMvp.ts apply-ui-copy` generates it, and
+  `npm run app-config -- push` put it live.
+- The push only added: 13 screens, 14 menu items, the `Form` and `FormType`
+  entity types and 5 attribute rules.
+- No existing screen or menu item changed, and the readback matched the pushed
+  file byte for byte.
+
+Each screen is a filtered clone of an existing one, by `type.code` and, for a
+queue, `states.code`. Its buttons are the events of the record's own workflow
+that Core lists for the signed-in user; the screens configure none.
+
+| step | Quotations > | filter | button |
+| --- | --- | --- | --- |
+| take or reject a request | Requests to Review | `GET_QUOTE_`, `READY_FOR_REVIEW` | Process, Reject |
+| retry a request | Requests to Retry | `VALIDATION_FAILED`, `PROCESSING_FAILED`, `DELIVERY_FAILED` | Retry Validation, Retry Processing, Retry Customer Delivery |
+| enter the area | Quoted Properties | `SNOW_REMOVAL_PROPERTY`, `INITIAL` | Service Area (sq ft), Save: blocked, see below |
+| prepare, revise | Quotes to Prepare | `INITIAL`, `CHANGES_REQUESTED`, `CUSTOMER_CHANGES_REQUESTED` | Prepare Quote, Modify, Changes Requested; lines under Order Items |
+| approve internally | Quotes to Approve | `QUOTE_PREPARED` | Approve Quote, Request Changes |
+| send | Quotations to Send | `SERVICE_AGREEMENT`, `QUOTATION` | Send Quotation |
+| send an update | Quotations with Client | `QUOTATION_SENT`, `QUOTATION_UPDATE`, `AWAITING_CLIENT_DETAILS`, `CLIENT_DETAILS_RECEIVED` | Send Updated Quotation |
+| correct, approve | Agreements in Draft, Management Approval | `DRAFT`, `PENDING_MANAGEMENT_APPROVAL` | Save; Request Management Approval; Approve |
+| retry | Agreements to Retry | `QUOTATION_SEND_FAILED`, `AGREEMENT_SEND_FAILED`, `ACTIVATION_FAILED` | Retry Sending, Retry Activation |
+
+- **Unfiltered lists** sit beside the queues: Quote Requests, Quotes and
+  Service Agreements.
+- **Quotes are `WINTER_SERVICES_ORDER`** (order type 6, a child of
+  `FIELD_SERVICE_ORDER`). The three older `FIELD_SERVICE_ORDER` drafts are
+  listed too.
+- **Customers** stay on the existing Accounts screen, which already lists
+  `SNOW_RESIDENTIAL_CUSTOMER` and `SNOW_COMMERCIAL_CUSTOMER`.
+- **Read-only attributes:** what the automation writes cannot be edited:
+  `SERVICE_ADDRESS` and `QUOTE_REQUEST_FORM_ID` on a quote; the grant ids,
+  `CLIENT_DETAILS_ERRORS` and the client's two confirmations on an agreement.
+- **The agreement editor has no Permissions tab.**
+
+Proven after the push, in `SNOWLIMITLESS`: the screen smoke passed 29 of 29,
+and every record of the runs is in its screen.
+- Forms 63 and 64: Requests to Review.
+- Properties 963 and 964: Quoted Properties.
+- Orders 56–61 and 76: Quotes; 56 also in Quotes to Prepare; 58, 59 and 61
+  also in Quotes to Approve.
+- Agreements 138–140: Service Agreements; 140 also in Quotations with Client.
+- Accounts 717 and 718: Accounts.
+
+**The area cannot be saved from the editor yet** (2026-09-24).
+- **Why:** `SITE_SERVICE_DURATION` is required on `SNOW_REMOVAL_PROPERTY`, and
+  no step of the flow fills it. The editor marks it and keeps Save disabled.
+  So a manager cannot store `SERVICE_AREA_SQFT` on a property the flow created
+  without entering a service duration.
+- **Core does not enforce it.** The exact body the editor builds was sent to
+  `core-rm/api/resource/save.json` for Property 963, its area unchanged at
+  75,000, and answered 200. Only `optimistic` (1 → 2) and `updated` changed.
+- **Open:** the flow fills the duration, the attribute stops being required,
+  or the manager enters one.
+
+Open:
+- **Nobody can use the menu under a Snow role in `SNOWLIMITLESS`.** The menu
+  follows the `SW_FS_WS_*` roles of the user's session organization, and no
+  user holds one in `SNOWLIMITLESS`. The users who run the flow are Company
+  Admin in the two provider organizations and `ADMIN` in `SNOWLIMITLESS`;
+  their buttons follow `ADMIN`.
+- **The request and quote events belong to `ADMIN` alone.** No Snow role holds
+  `P_FORM_R`, `P_FORM_TYPE_R` or an event of workflow 49. None holds
+  `INITIAL-QUOTE_PREPARED`, `QUOTE_PREPARED-QUOTE_APPROVED_INTERNALLY`,
+  `QUOTE_PREPARED-CHANGES_REQUESTED`, `CHANGES_REQUESTED-QUOTE_PREPARED` or
+  `CUSTOMER_CHANGES_REQUESTED-QUOTE_PREPARED` of workflow 45.
+- **Only Company Admin may open the app.** `P_UI_SNOW-CRM_DEFAULT_R` is held by
+  `ADMIN` and `SW_FS_WS_COMPANY_ADMIN`. `APP_USER`, which the `core-ui` docs
+  name for it, does not exist on dev-1.
+- **Sales and Billing gaps:** Sales cannot save a property (`P_RESOURCE_W`) or
+  retry agreement delivery and activation. Billing cannot read document types,
+  so an agreement's attributes do not load for it.
+- **Too many buttons:** a Company Admin sees every agreement event, including
+  the automation's and the client's: Submit Contract Details, Accept Contract
+  Details, Send to Client, Activate. `ADMIN` also sees Send Quote and the
+  client's events on a quote.
+- **Agreement saves:** on this `core-ui` branch, saving an agreement sends its
+  `permissions` nested, and Core refuses that. The fix is commit `69378b66` on
+  `main`. The Quotations agreement screens leave the field out.
