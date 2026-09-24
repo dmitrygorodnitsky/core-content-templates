@@ -617,9 +617,10 @@ With reproduction steps in `QUOTATION-FLOW-IMPLEMENTATION-GAPS.md`, "dev-1 on
   the address list and coordinates, the portal fixture predates the Google map,
   and `CLIENT_REVIEW_DOCUMENT` was never uploaded.
 - No Core document is readable in any organization. The backend's answer that
-  day covers only the core-ui admin screens, which send the `permissions` of a
+  day covers only the core-ui admin screens, which sent the `permissions` of a
   Document, Project or Task as nested objects the server refuses; that fix
-  belongs to core-ui.
+  belongs to core-ui. It is commit `69378b66` on `main`, on the
+  `codex/snow-crm` branch since the merge of 2026-09-24 (`f06f6692`).
 - `SERVICE_AGREEMENT` (document type 17) and `SERVICE_AGREEMENT_LIFECYCLE`
   (workflow 53) exist; the role grants of its seed were not applied at that
   checkpoint. They were reconciled on 2026-09-22 as recorded below.
@@ -905,9 +906,10 @@ transition. Where the whole flow stands is
 
 1. **The backend:** evict the compiled script cache on the CMS nodes so script
    169 can run again, say whether `form/submit.json` is meant to fire the first
-   transition, fix the core-ui `permissions` mapping, and answer
-   `CUSTOMER-SCOPE-GENERIC-API.md` §5. Core documents became readable on
-   2026-09-16.
+   transition, and answer `CUSTOMER-SCOPE-GENERIC-API.md` §5. Core documents
+   became readable on 2026-09-16. The core-ui `permissions` mapping is fixed by
+   commit `69378b66` on `main`, merged into `codex/snow-crm` on 2026-09-24
+   (`f06f6692`).
 2. **When dev-1 is back, each write with the user's go:** re-read `GET_QUOTE_`;
    upload `PORTAL_FORM_DOCUMENT` and set its success copy; upload
    `CUSTOMER_PORTAL_GRANITE_RIDGE_FIXTURE` with a restricted Google browser key.

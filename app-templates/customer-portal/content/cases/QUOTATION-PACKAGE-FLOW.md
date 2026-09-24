@@ -758,6 +758,8 @@ Open:
 - **Sales and Billing gaps:** Sales cannot save a property (`P_RESOURCE_W`) or
   retry agreement delivery and activation. Billing cannot read document types,
   so an agreement's attributes do not load for it.
-- **Agreement saves:** on this `core-ui` branch, saving an agreement sends its
-  `permissions` nested, and Core refuses that. The fix is commit `69378b66` on
-  `main`. The Quotations agreement screens leave the field out.
+- **Agreement saves:** saving an agreement sent its `permissions` nested, and
+  Core refuses that. The fix, commit `69378b66` on `main`, is on this `core-ui`
+  branch since the merge of `main` on 2026-09-24 (`f06f6692`). The Quotations
+  agreement screens still leave out the Permissions tab; bringing it back needs
+  a live check.
