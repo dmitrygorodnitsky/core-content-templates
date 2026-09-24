@@ -1122,8 +1122,11 @@ transition. Where the whole flow stands is
    manager step; the Quotations menu and Accounts list it. It holds none of the
    client's or the automation's events. Still open
    (`QUOTATION-PACKAGE-FLOW.md` §11): the first run by a user holding only
-   that role, and the extra buttons Company Admin and `ADMIN` see, which need
-   a `core-ui` change after the merge of `main`.
+   that role. Company Admin and `ADMIN` keep seeing every event as a button,
+   the automation's and the client's included: the user decided on 2026-09-24
+   not to hide them. Instead the quote's Send Quote, which users pressed
+   expecting the client's email, is named Quote Sent (automatic) since that
+   day (`QUOTATION-PACKAGE-FLOW.md` §4.1).
 
 The live snow entry is the package `CUSTOMER_PORTAL_GRANITE_RIDGE_STAGING`
 (`scripts/export-live-portal-manual.mjs` from

@@ -89,6 +89,20 @@ Events, *verified*: `INITIAL-QUOTE_PREPARED`, `QUOTE_PREPARED-CHANGES_REQUESTED`
 No event carries attributes; its only hook is `onUpdate`, which calls
 `ORDER_UTILITIES.updateOrder`, a method that only logs.
 
+**`QUOTE_APPROVED_INTERNALLY-QUOTE_SENT` is named Quote Sent (automatic)**
+since 2026-09-24; it was Send Quote.
+- **Why:** users pressed Send Quote on a quote expecting the client's email.
+  Only the agreement sends that email, when it enters `QUOTATION_SENT` (Send
+  Quotation, Send Updated Quotation or a retry); quotation delivery V4 then
+  sends this event to each listed Order in `QUOTE_APPROVED_INTERNALLY`.
+- **Who sees it:** `ADMIN` holds every event of this workflow, so it keeps
+  seeing this one as a button, like the client's events. The user decided not
+  to hide them (§11). The Quotation Manager role does not hold it.
+- **Applied** to dev-1 from `core-ui` `quotationPackageOrderWorkflow.json` with
+  `npm run workflows -- apply --no-grant --apply`. Read back, only the event's
+  name and the workflow's `updated` changed; permissions and scripts name the
+  event by its code.
+
 We add:
 - a required `MESSAGE` attribute on `QUOTE_VIEWED-CUSTOMER_CHANGES_REQUESTED`
   (spec §7.4);
@@ -723,6 +737,15 @@ through a user's Roles tab.
   and the failure records. Grants and Account activation run as service
   identities.
 
+**No button is hidden** (the user's decision, 2026-09-24). Company Admin and
+`ADMIN` see every agreement event, including the automation's and the
+client's: Submit Contract Details, Accept Contract Details, Send to Client,
+Activate. `ADMIN` also sees every event on a quote, the automation's and the
+client's included. The button bar lists whatever Core returns, and it stays so.
+- **The rename instead:** users pressed the quote's Send Quote expecting the
+  client's email, which only the agreement sends. The event is named Quote Sent
+  (automatic) since 2026-09-24 (§4.1).
+
 Open:
 - **The first run under the role.** Every live run so far was made by users
   holding `ADMIN` in `SNOWLIMITLESS`. Nothing yet shows `sendEventUnsecured`
@@ -735,13 +758,6 @@ Open:
 - **Sales and Billing gaps:** Sales cannot save a property (`P_RESOURCE_W`) or
   retry agreement delivery and activation. Billing cannot read document types,
   so an agreement's attributes do not load for it.
-- **Too many buttons for Company Admin and `ADMIN`:** they see every agreement
-  event, including the automation's and the client's: Submit Contract Details,
-  Accept Contract Details, Send to Client, Activate. `ADMIN` also sees Send
-  Quote and the client's events on a quote. No Snow CRM config can hide an
-  event: the button bar lists whatever Core returns. The smallest fix is a
-  `hiddenEvents` list on the editor's `WorkflowActions` item, filtered in
-  `core-ui` `WorkflowActionsContent`; it waits for the merge of `main`.
 - **Agreement saves:** on this `core-ui` branch, saving an agreement sends its
   `permissions` nested, and Core refuses that. The fix is commit `69378b66` on
   `main`. The Quotations agreement screens leave the field out.
