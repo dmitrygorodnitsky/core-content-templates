@@ -658,6 +658,10 @@ Live on dev-1 since 2026-09-24. The manager's steps have their own group,
   items, the Customers & Properties Accounts item, the Create button of the 9
   quote and agreement screens, and 3 attribute rules. Its readback matched too.
 
+dev-1 serves the merged `core-ui` build `1.0.0+f06f6692` since 2026-09-24 21:43
+UTC, at `https://dev-1.servicewand.com/core/apps/snow-crm/index.html`. Deploy
+steps: `core-ui` `docs/snow-crm-role-flows.md`, "Deploying Snow CRM to dev-1".
+
 Each screen is a filtered clone of an existing one, by `type.code` and, for a
 queue, `states.code`. Its buttons are the events of the record's own workflow
 that Core lists for the signed-in user; the screens configure none.
@@ -695,7 +699,9 @@ and every record of the runs is in its screen.
 - Agreements 138–140: Service Agreements; 140 also in Quotations with Client.
 - Accounts 717 and 718: Accounts.
 
-**The area can be saved from the editor** (since 2026-09-24).
+**`SITE_SERVICE_DURATION` no longer keeps the area's Save disabled** (since
+2026-09-24). On dev-1 Save stays disabled for another reason, listed under
+Open below.
 - **Why it could not:** `SITE_SERVICE_DURATION` was required on
   `SNOW_REMOVAL_PROPERTY`, and no step of the flow fills it, so the editor
   marked it and kept Save disabled.
@@ -763,3 +769,14 @@ Open:
   branch since the merge of `main` on 2026-09-24 (`f06f6692`). The Quotations
   agreement screens still leave out the Permissions tab; bringing it back needs
   a live check.
+- **Save is disabled on dev-1 in the property, agreement and account editors,
+  for every user including `ADMIN`** (found 2026-09-25).
+  - **Cause:** the deployed app requests `localization-message/en/list.json`
+    before it attaches the sign-in token. The request answers 403 six times,
+    which also delays each page load by about 13 s.
+  - **Effect:** the language stays undefined, so the required name field
+    becomes `nls_undefined_NAME`, has no value, and fails validation.
+  - **Not affected:** quote requests and quotes save, and every workflow button
+    works.
+  - **Owner:** the fix belongs to `core-ui`. Role 87 also lacks
+    `P_LOC_MSG_R`, which the endpoint needs once the token is attached.
