@@ -1,5 +1,33 @@
 # QUOTE-FORM-MULTI-ADDRESS
 
+## Property type removed from the public form — 2026-09-26
+
+On dev-1, `SNOWLIMITLESS` / `GET_QUOTE_` (id 2) no longer asks for
+`SELECT_YOUR_PROPERTY_TYPE`. Applied
+`../form-types/GET_QUOTE_.hide-property-type.patch.json` with the existing
+`core-ui/scripts/dev/typeAttributePatch.ts` operator: `required: false` and
+an explicit `visible: false` order row. The definition remains available for
+historical submissions. Merely removing its order row would make the universal
+renderer display it again as an ungrouped field.
+
+Before applying, authenticated reads confirmed workflow 49 uses
+`WINTER_SERVICE_REGION_WORKFLOW_UTILS_V16`. Its live source and nine referenced
+scripts/templates contained no `SELECT_YOUR_PROPERTY_TYPE` or its distinctive
+option codes. Region validation reads `PROPERTY_ADDRESSES`; account creation
+uses contact fields and `SELECT_ROLE`; resource creation uses the fixed resource
+type `SNOW_REMOVAL_PROPERTY`. No form attribute had `uiBehavior` depending on
+the removed question. This is a source dependency audit, not an end-to-end
+execution of a new submission.
+
+The operator read back and verified the update (optimistic 17 → 18), including
+unchanged workflow, organization, parents, labels and groups. Browser verification
+of the published request-quote page confirmed the question is absent and an
+address alone passes the first step to contact details. Google suggestions also
+returned an address and selecting it added the address chip. No form was submitted
+and no notification was sent during this check.
+
+## Original investigation
+
 Read-only investigation, 2026-09-10, tenant `SNOWLIMITLESS` on `dev-1`.
 Nothing was written to any environment.
 
