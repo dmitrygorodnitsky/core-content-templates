@@ -885,6 +885,29 @@ checkout before treating any of them as broken.
 
 ## Exact next action
 
+**Since the evening of 2026-09-28** managers have a bulk Send Quotation in Snow
+CRM (`content/cases/QUOTATION-PACKAGE-FLOW.md` §11). Quotations to Send →
+Group actions → Send Quotation runs `SNOW_BULK_SEND_QUOTATION_V2` (script 324)
+over the ticked agreements through bulk-action registry row 3, action 20. The
+Quotation Manager holds its permission and the registry read, and Snow CRM
+serves the `core-ui` bundle `1.0.0+daeb0f90` with the fixed run flow. dev-1
+stops a bulk task after 30 s, so a run sends what fits in 15 s, five deliveries
+at a time, and marks the rest Not started. In order:
+
+1. **The backend:** `bulk-action/execute.json` answers a bare 500 for any
+   `X-Organization-Code` except `SYSTEM` (probe tasks in `core-ui`
+   `bf05f2f87`), and managers work in `SNOWLIMITLESS`. Also ask for:
+   - a way to read one's own bulk results without `P_SCRIPT_TASK_AUD`, which
+     exposes every script run's parameters across organizations;
+   - whether 30 s is the intended bulk task limit;
+   - why a run error loses its last character ("Select the agreements to
+     sen");
+   - why a `configure` script task keeps an `OPENAI_API_KEY` parameter in the
+     script task audit.
+2. **The team:** a manager runs Send Quotation on agreements the team picks,
+   which emails their clients. The only agreement in `QUOTATION` today is 141.
+3. After that run, remove the probe: registry row 2 with action 19.
+
 **Since 2026-09-26** the quotation chain runs the reliability fixes of
 `content/cases/QUOTATION-WORKFLOW-AUDIT-2026-09-26.md`: workflow 49 on
 `WINTER_SERVICE_REGION_WORKFLOW_UTILS_V17` (script 302), workflow 45 on
@@ -1094,8 +1117,8 @@ transition. Where the whole flow stands is
    activates Accounts from `DRAFT`, `PROSPECT` or `INACTIVE`; failures enter
    retryable `ACTIVATION_FAILED`. `npm run service-agreement-client-details-check`
    and `npm run service-agreement-delivery-check` guard the flow. Quotation
-   delivery is also automatic and compensated now. The bulk Send Quotation
-   action is owned outside this stream. Portal User provisioning now runs after
+   delivery is also automatic and compensated now. Since 2026-09-28 a bulk
+   Send Quotation sends many agreements at once. Portal User provisioning now runs after
    Account activation through script 258 and assigns `SW_FS_WS_CUSTOMER_PORTAL`
    (75 on dev-1); new-User and retry paths were checked on Accounts 714 and
    694. The portal flag remains intentionally deferred.

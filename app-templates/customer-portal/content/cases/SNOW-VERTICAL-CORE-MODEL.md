@@ -516,8 +516,9 @@ the dev-1 script list on 2026-09-11.
   the agreement rather than a `CONTRACT_INFORMATION` form. From `DRAFT` on, the
   agreement follows the spec. This departs from the spec twice: the package is
   sent from the agreement rather than by a bulk action on Orders, and the
-  details arrive through an event rather than a form. Workflow 45 joins our
-  seeds.
+  details arrive through an event rather than a form. The bulk Send Quotation
+  added on 2026-09-28 keeps the first departure: it runs over agreements.
+  Workflow 45 joins our seeds.
 - **Customer Portal entitlement is an attribute of the provider organization**,
   decided on 2026-09-11. `SNOWLIMITLESS` is organization type `OPERATOR` (id 4),
   which already carries `REGIONS` and the `GENERAL_CONTACT`, `QUOTATION_MANAGER`,

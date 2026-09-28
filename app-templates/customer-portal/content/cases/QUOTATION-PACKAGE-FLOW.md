@@ -63,8 +63,10 @@ client approves ──► CLIENT_APPROVED ──► Account → ACTIVE ──►
 
 Since 2026-09-17 the manager no longer builds the quotes: every entity is
 created with the request, the form no longer collects a property size, and the
-manager reviews and corrects the Orders. The manager's send is to become a bulk
-action over the reviewed Orders, designed separately.
+manager reviews and corrects the Orders. Since 2026-09-28 the manager can send
+many packages at once with a bulk Send Quotation over agreements (§11). The
+spec's bulk action over Orders is not built, because the agreement is the
+package.
 
 ## 3. Records
 
@@ -444,7 +446,7 @@ this presentation on 2026-09-28 from screenshots at desktop, 768 px and
 | three Orders per property | *verified*: `WINTER_SERVICE_QUOTATION_DRAFT_CREATOR_V1` (script 236) created Orders 53–55 for Property 962 with `PER_SERVICE`, `MONTHLY` and `SEASONAL`; rerunning it returned those IDs with `ordersCreated: 0` |
 | Order hooks of §5 on workflow 45 | *verified* 2026-09-22: workflow 45 is bound to SYSTEM-owned `SNOW_QUOTATION_ORDER_UTILITIES_V1` (script 238); Orders entering `QUOTE_APPROVED_INTERNALLY` join the agreement, client approval declines sibling options for the same property, terminal decisions evaluate the package, and requested changes require `MESSAGE` and notify `QUOTATION_MANAGER`. Since 2026-09-23 the binding is `SNOW_QUOTATION_ORDER_UTILITIES_V2` (script 260), which also writes `SERVICE_ADDRESS` (§9); its hook path is proven by the next end-to-end run |
 | quotation delivery on `QUOTATION_SENT` | *verified* 2026-09-22: workflow 53 is bound to `SNOW_SERVICE_AGREEMENT_WORKFLOW_UTILITIES_V5` (script 255). Agreement 136 automatically sent Orders 41–42, issued combined grant 58 across Account, Document, Order, OrderItem, ProductPrice and Product, persisted `QUOTATION_GRANT_ID`, and completed the email call through processor 256 and template 257. Incomplete agreement 137 entered `QUOTATION_SEND_FAILED` without a grant ID and without moving Order 50 or Account 712. **Defect found 2026-09-23:** the grant carries `P_WF:SERVICE_AGREEMENT_LIFECYCLE:QUOTATION_SENT-AWAITING_CLIENT_DETAILS` instead of `…:AWAITING_CLIENT_DETAILS-CLIENT_DETAILS_RECEIVED` (`SNOW_SERVICE_QUOTATION_DELIVERY_V1`), so a link from the email cannot send the contract details; every live details pass so far used a hand-issued grant. Fixed the same day by `SNOW_SERVICE_QUOTATION_DELIVERY_V2` (script 263); grant 60 of the end-to-end run below carried the details event, and the client sent the details through the emailed link |
-| Send Quotation as a bulk action | outside this stream; owned as a separate task |
+| Send Quotation as a bulk action | *deployed* 2026-09-28 over agreements rather than Orders (§11); no manager has run it yet |
 | a revised quote back to the client | *verified* 2026-09-23: `Send Updated Quotation` (`QUOTATION_SENT-QUOTATION_UPDATE`), the transient `QUOTATION_UPDATE`, workflow utility V11 (script 297) and quotation delivery V4 (script 298) with email template 299. On agreement 140 the old emailed link answered 401, the new one read the added line anonymously, and the client's approval through it moved the agreement to `AWAITING_CLIENT_DETAILS` (the quotation update run below) |
 | quote review page | *verified* 2026-09-22: the regenerated package is live at `/pages/SNOWLIMITLESS/review`; all four live template hashes match the repository. Read-only grant 50 over 19 exact records rendered three quote cards, six product lines, states and server totals in the browser. On 2026-09-23 the version with the checking state, returned details, portal invitation and numbered terms was uploaded: the four hashes match, and `REVIEW_API_BASE_URL` and PageContext 21 were kept. The version live since the end of that day follows the last decision and the details check on its own, words a return on a reopened link, and holds every accepted command until a read shows it; `PORTAL_URL` points at the published portal. Since the evening of 2026-09-23 it also knows `QUOTATION_UPDATE` and sends a client with a closed link to the provider's newest email. The CMS nodes do not invalidate each other's page cache, so each upload was followed by one identical save steered to the node still serving the old page |
 | client decisions through a link | *verified in the live browser* 2026-09-22 with combined grant 57 over agreement 135 and Orders 39–40. Opening each option sent `QUOTE_SENT-QUOTE_VIEWED`; Order 39 then reached `CLIENT_APPROVED`. The page refused an empty change request for Order 40, sent the supplied `MESSAGE`, and reached `CUSTOMER_CHANGES_REQUESTED`; its summary showed one approved and one changes-requested property. The test grant was revoked, `QUOTATION_GRANT_ID` cleared and the token returned `401` after the proof |
@@ -600,8 +602,7 @@ Next, in order:
      through `app-1-core-cms` ran the chain.
    - The CMS nodes do not invalidate each other's page cache after a template
      save.
-2. **Build the three client forms** specified for the portal. Bulk Send
-   Quotation is owned outside this stream.
+2. **Build the three client forms** specified for the portal.
 3. **Price by the founder's model.** Received from the user on 2026-09-23.
    - A visit of snow removal and a visit of de-icing each have a price set by
      the serviced area. It is not a fixed rate per square foot.
@@ -756,8 +757,9 @@ through a user's Roles tab.
   `_E`) with Prepare Quote, Approve Quote, Request Changes and both ways back
   to `QUOTE_PREPARED`; agreements (`P_DOCUMENT_R`, `_W`, `_E`) with Send
   Quotation, Send Updated Quotation, cancel from `QUOTATION`, Request
-  Management Approval, Approve, Request Changes and the three retries. 65
-  permissions in all, listed in `core-ui` `snowQuotationManagerRbac.json`.
+  Management Approval, Approve, Request Changes and the three retries; the
+  bulk Send Quotation below. 80 permissions in all, listed in `core-ui`
+  `snowQuotationManagerRbac.json`.
 - **Holds none of the client's events or the automation's,** so its button bar
   shows only its own steps.
 - **In its name:** the hooks dispatch their scripts as the acting user, and
@@ -776,7 +778,48 @@ client's included. The button bar lists whatever Core returns, and it stays so.
   client's email, which only the agreement sends. The event is named Quote Sent
   (automatic) since 2026-09-24 (§4.1).
 
+**Send Quotation also runs over many agreements at once** (deployed
+2026-09-28). The manager ticks agreements in Quotations to Send and picks Send
+Quotation under Group actions. A dialog names the action and the number of
+ticked rows, and Run starts one bulk task.
+- **What it does:** `core-ui` `SNOW_BULK_SEND_QUOTATION_V2` (script 324) takes
+  only `SERVICE_AGREEMENT` documents of the session organization, refuses an
+  empty selection or more than 200, and gives each agreement still in
+  `QUOTATION` the Send Quotation event in its own transaction. It uses the
+  permission-checked `sendEvent`, so the manager needs the event permission,
+  as for the button.
+- **Within 30 s:** dev-1 stops a bulk task after 30 s (`TIMEOUT: 30`). The run
+  keeps at most five deliveries going, starts new sends only in its first
+  15 s and returns by 22 s.
+- **Outcome per agreement:** `SUCCESS` once the event is accepted, as after the
+  button; a delivery that fails afterwards moves the agreement to Agreements to
+  Retry. `FAILURE` for another state, a refused event or a delivery that has
+  already failed. "Not started" for agreements the run had no time for; they
+  stay in Quotations to Send.
+- **Results:** the drawer of outcomes needs `P_SCRIPT_TASK_AUD`, which the role
+  does not get. Script task audit is not scoped to an organization and holds
+  the parameters of every script run, requesters' emails and phones included.
+  The manager sees a toast, and sent agreements leave the queue.
+- **Records:** registry row 3 (`SNOWLIMITLESS`, `Document`) with action 20,
+  from `core-ui` `snowBulkActions.json` through `npm run bulk-actions`. The
+  role gained `P_SCRIPT_X_SNOW_BULK_SEND_QUOTATION_V2` and
+  `P_BULK_ACTION_REGISTRY_R`. `snowMvp.ts` puts the `BulkActions` entry on
+  Quotations to Send only. The Snow CRM bundle `1.0.0+daeb0f90` carries the
+  `core-ui` fix of the run flow: the confirmation, an explicit id list, and
+  dialogs that outlive the menu. V1 (script 323) waited for each receipt in
+  turn, does not fit in 30 s and is not referenced.
+- **Proven:** task 691 over agreements 135, 137 and 144, none in `QUOTATION`,
+  returned three failures naming their states and sent nothing.
+  `snowBulkSendQuotationCheck` runs the production methods under javac.
+
 Open:
+- **No manager has run the bulk Send Quotation.** Through the API key,
+  `bulk-action/execute.json` answers a bare 500 for every
+  `X-Organization-Code` except `SYSTEM`, the platform's own example action
+  included, and managers work in `SNOWLIMITLESS`. The backend's reading of
+  that 500 and a first run by a manager on an agreement the team picks settle
+  it. The probe behind these facts, registry row 2 (`SNOWLIMITLESS`,
+  `ScriptTask`) with action 19 and scripts 321 and 322, goes after that run.
 - **The first run under the role.** Every live run so far was made by users
   holding `ADMIN` in `SNOWLIMITLESS`. Nothing yet shows `sendEventUnsecured`
   applying an event in the name of a user without that event's permission; the
