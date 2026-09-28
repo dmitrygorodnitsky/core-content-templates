@@ -899,20 +899,17 @@ and issuing portal credentials leaves a receipt on the agreement
 (`PORTAL_CREDENTIALS_STATUS`). The quote form keeps one submission in flight.
 The dev-1 readback of 2026-09-28 matched every seed except the order of one
 event's attributes in workflow 53, which the seed has not changed since
-2026-09-23. In order:
+2026-09-23. The five scripts that lost their comments that day — V17 (302),
+V5 (306), V12 (308), V3 (316) and V13 (317) — were written back with the
+user's go (`core-ui` `4137d66b0`), so `core-scripts plan` reports every seed
+script `unchanged`. The `PORTAL_FORM_DOCUMENT` JavaScript in `dist/` differs
+from the published one only by a comment line removed that day; it goes out
+with the form's next functional upload. In order:
 
-1. **Decide with the user:** since the comment clean-up of 2026-09-28, five
-   scripts in the `core-ui` seeds — V17 (302), V5 (306), V12 (308), V3 (316)
-   and V13 (317) — and the `PORTAL_FORM_DOCUMENT` JavaScript in `dist/` differ
-   from dev-1 only by removed comment lines. Either write them back
-   (`core-scripts apply` for the five codes and a JavaScript-only update of the
-   form document, each with the user's go) or leave the difference to their
-   next functional deploy; until then `core-scripts plan` reports the five as
-   `update`.
-2. Classify the 3 advanced Orders without lines and the 2 Orders with
+1. Classify the 3 advanced Orders without lines and the 2 Orders with
    conflicting approvals from the audit's inventory before any manual fix;
    `core-ui` `quotationRecoveryReport.mjs` lists them read-only.
-3. The integration scenarios under the audit's "Checks and limitations" remain
+2. The integration scenarios under the audit's "Checks and limitations" remain
    unproven, and the platform offers no lock or transactional outbox.
 
 The state before 2026-09-26, kept as history:
