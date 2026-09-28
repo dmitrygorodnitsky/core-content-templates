@@ -267,6 +267,15 @@ link carries, and the service that grants each, are in
 The token is never stored; the agreement keeps the grant ids so a hook can
 revoke them. A grant is a snapshot of its entries at issue, so a link issued
 before a revision cannot read a line added after it; the re-issued link can.
+
+Since 2026-09-28 a quotation link expires at the organization's
+`SEASON_START` or after its `QUOTATION_EXPIRATION` days, whichever is later,
+and after 30 days when neither is set (quotation delivery V6, script 319). The
+team asked for "until the season starts, 30 days once it has started"; the user
+decided on 2026-09-28 that a link sent shortly before the season still lasts
+the full period. Both attributes are optional fields of the `OPERATOR`
+organization type and are set in Snow CRM; SNOWLIMITLESS has neither yet. The
+agreement link still lasts 30 days.
 The review page answers a revoked or expired link with "This link has expired
 or was withdrawn" and, live since 2026-09-23, sends the client to the link in
 the provider's newest email.
@@ -285,6 +294,15 @@ what it holds.
 - **Agreement review** — spec §14 and §19.6: parties, properties and services,
   prices, terms from `CONTRACT_TERMS`; approve; the completion state with the
   portal invitation.
+
+Since 2026-09-28, at the team's request, the quote review offers the options
+of a property as radio buttons with their totals. Choosing one opens its
+services and offers Approve and Request changes for it; Decline all options
+stays available for the property and declines every undecided option, viewing
+an unopened one first. The user decided that declining needs no chosen option.
+A line whose `ProductPrice` type ends in `_RECURRENT` shows no price of its own,
+and an option made only of such lines shows neither subtotal nor taxes, only
+its total — on the quote and on the agreement page alike.
 
 ## 9. Prerequisites and open points
 

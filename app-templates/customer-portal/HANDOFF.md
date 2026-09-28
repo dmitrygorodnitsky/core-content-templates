@@ -889,7 +889,7 @@ checkout before treating any of them as broken.
 `content/cases/QUOTATION-WORKFLOW-AUDIT-2026-09-26.md`: workflow 49 on
 `WINTER_SERVICE_REGION_WORKFLOW_UTILS_V17` (script 302), workflow 45 on
 `SNOW_QUOTATION_ORDER_UTILITIES_V5` (306) and workflow 53 on
-`SNOW_SERVICE_AGREEMENT_WORKFLOW_UTILITIES_V13` (317, since 2026-09-27). A
+`SNOW_SERVICE_AGREEMENT_WORKFLOW_UTILITIES_V14` (320, since 2026-09-28). A
 ready request no longer waits for the manager: it notifies the manager and
 moves on by itself through `REQUESTER_NOTIFICATION_PENDING` to `PROCESSED`,
 whose email reports receipt only, without an Account link. Pricing waits for
@@ -904,12 +904,30 @@ V5 (306), V12 (308), V3 (316) and V13 (317) — were written back with the
 user's go (`core-ui` `4137d66b0`), so `core-scripts plan` reports every seed
 script `unchanged`. The `PORTAL_FORM_DOCUMENT` JavaScript in `dist/` differs
 from the published one only by a comment line removed that day; it goes out
-with the form's next functional upload. In order:
+with the form's next functional upload.
 
-1. Classify the 3 advanced Orders without lines and the 2 Orders with
+**Since 2026-09-28**, after the team's requests of 2026-09-27 (audit, "A
+delivered quotation marked failed"): V14 finishes jobs on their persisted
+receipts, because a job result is visible only to the submitting node and only
+once; quotation delivery V6 (319) takes the link expiry from `SEASON_START` and
+`QUOTATION_EXPIRATION` on the organization; the quote review offers radio
+choice per property, Decline all options, and no price per recurrent line
+(`QUOTATION-PACKAGE-FLOW.md` §7–8). In order:
+
+1. **The team:** agreement 145 was moved to `AWAITING_CLIENT_DETAILS` by hand
+   without an approved option; cancel it and send a fresh request end to end.
+   That run shows whether the send stays `QUOTATION_SENT`, whether a real link
+   returns `ProductPrice.type` (otherwise recurrent lines keep their price), and
+   Decline all options against Core. `SEASON_START` and `QUOTATION_EXPIRATION`
+   are unset on SNOWLIMITLESS until the team fills them in Snow CRM.
+2. **The backend:** confirm that `getScriptExecutionInfo` answers only on the
+   submitting node and only once, and whether a durable execution record
+   exists. Client details processing and approval finalization still depend on
+   that result.
+3. Classify the 3 advanced Orders without lines and the 2 Orders with
    conflicting approvals from the audit's inventory before any manual fix;
    `core-ui` `quotationRecoveryReport.mjs` lists them read-only.
-2. The integration scenarios under the audit's "Checks and limitations" remain
+4. The integration scenarios under the audit's "Checks and limitations" remain
    unproven, and the platform offers no lock or transactional outbox.
 
 The state before 2026-09-26, kept as history:
