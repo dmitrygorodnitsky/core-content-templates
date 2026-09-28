@@ -122,7 +122,7 @@
       }
     },
     "value": {
-      "en": "Each property has its own options. Open an option to see its services and price, then approve it, decline it or ask for changes."
+      "en": "Each property has its own options. Choose one to see its services, then approve it or ask for changes. If none suits you, decline them all."
     }
   },
   {
@@ -516,6 +516,19 @@
     }
   },
   {
+    "code": "LINE_INCLUDED",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "LINE INCLUDED",
+        "DESCRIPTION": "Client review document copy."
+      }
+    },
+    "value": {
+      "en": "Included"
+    }
+  },
+  {
     "code": "ORDER_SUBTOTAL",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
@@ -851,6 +864,84 @@
     },
     "value": {
       "en": "Send request"
+    }
+  },
+  {
+    "code": "CHOICE_LEGEND",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "CHOICE LEGEND",
+        "DESCRIPTION": "Client review document copy. Keep {address}: the page fills them in."
+      }
+    },
+    "value": {
+      "en": "Options for {address}"
+    }
+  },
+  {
+    "code": "CHOOSE_OPTION",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "CHOOSE OPTION",
+        "DESCRIPTION": "Client review document copy."
+      }
+    },
+    "value": {
+      "en": "Choose an option to see its services and approve it or ask for changes."
+    }
+  },
+  {
+    "code": "DECLINE_ALL_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "DECLINE ALL LABEL",
+        "DESCRIPTION": "Client review document copy."
+      }
+    },
+    "value": {
+      "en": "Decline all options"
+    }
+  },
+  {
+    "code": "DECLINE_ALL_CONFIRM_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "DECLINE ALL CONFIRM TITLE",
+        "DESCRIPTION": "Client review document copy."
+      }
+    },
+    "value": {
+      "en": "Decline every option for this property?"
+    }
+  },
+  {
+    "code": "DECLINE_ALL_CONFIRM_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "DECLINE ALL CONFIRM BODY",
+        "DESCRIPTION": "Client review document copy."
+      }
+    },
+    "value": {
+      "en": "None of them can be approved later through this link. The provider can send you new options."
+    }
+  },
+  {
+    "code": "DECLINE_ALL_CONFIRM_BUTTON",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "DECLINE ALL CONFIRM BUTTON",
+        "DESCRIPTION": "Client review document copy."
+      }
+    },
+    "value": {
+      "en": "Decline all"
     }
   },
   {

@@ -13,6 +13,13 @@
     QUOTE_PREPARED: "revising",
     CHANGES_REQUESTED: "revising",
     QUOTE_APPROVED_INTERNALLY: "revising",
+    WAITING_FOR_AREA: "revising",
+    PRICING_FAILED: "revising",
+    PACKAGE_ATTACHMENT_FAILED: "revising",
+    APPROVAL_PROCESSING_FAILED: "approved",
+    DECLINE_PROCESSING_FAILED: "declined",
+    CHANGES_NOTIFICATION_FAILED: "changes",
+    CHANGES_NOTIFICATION_CONFIRMED: "changes",
   };
 
   var PRICED_STATUSES = ["new", "viewed", "approved", "declined", "changes"];
@@ -25,6 +32,7 @@
     AWAITING_CLIENT_DETAILS: { kind: "contract-details" },
     CLIENT_DETAILS_RECEIVED: { kind: "checking" },
     DRAFT: { kind: "preparing" },
+    DETAILS_FINALIZATION_RETRY: { kind: "preparing" },
     PENDING_MANAGEMENT_APPROVAL: { kind: "preparing" },
     INTERNALLY_APPROVED: { kind: "preparing" },
     SENT_TO_CLIENT: { kind: "agreement-review" },
@@ -36,6 +44,7 @@
     EXPIRED: { kind: "reference", banner: "expired" },
     ARCHIVED: { kind: "closed", reason: "archived" },
     CANCELED: { kind: "closed", reason: "canceled" },
+    ACCESS_CLEANUP_RETRY: { kind: "closed", reason: "canceled" },
   };
 
   function text(value) {
@@ -483,6 +492,10 @@
     return id && rows[id] ? rows[id] : value;
   }
 
+  function recurrentPrice(price) {
+    return /_RECURRENT$/.test(text(price && price.type && price.type.code).toUpperCase());
+  }
+
   function linesOf(row, currency, locale, contract, catalog) {
     var raw = row && Array.isArray(row[contract.rawShape.orderLines]) ? row[contract.rawShape.orderLines] : [];
     return raw
@@ -507,6 +520,7 @@
           product: localizedName(product && product.nls, locale) || localizedName(price && price.product && price.product.nls, locale) || localizedName(price && price.nls, locale),
           quantity: formatQuantity(line.itemCount, locale),
           unitPrice: formatMoney(line.amount, currency, locale),
+          recurrent: recurrentPrice(price),
         };
       });
   }
@@ -519,6 +533,7 @@
     var currency = text(row.currency && row.currency.code);
     var model = attributeText(row, contract.orderAttributes.pricingModel).toUpperCase();
     var priced = PRICED_STATUSES.indexOf(status) !== -1;
+    var lines = priced ? linesOf(row, currency, context.locale, contract, context.catalog) : [];
     return {
       id: id,
       recordKey: "order:" + id,
@@ -527,7 +542,8 @@
       state: state,
       status: status,
       priced: priced,
-      lines: priced ? linesOf(row, currency, context.locale, contract, context.catalog) : [],
+      lines: lines,
+      recurrent: lines.length > 0 && lines.every(function (line) { return line.recurrent; }),
       subtotal: priced ? formatMoney(row.totalCharges, currency, context.locale) : "",
       taxes: priced ? formatMoney(row.totalTaxes, currency, context.locale) : "",
       total: priced ? formatMoney(row.grandTotal, currency, context.locale) : "",
@@ -721,6 +737,7 @@
     eventGranted: eventGranted,
     formatMoney: formatMoney,
     formatQuantity: formatQuantity,
+    recurrentPrice: recurrentPrice,
     formatDate: formatDate,
     termsBlocks: termsBlocks,
     returnedDetails: returnedDetails,

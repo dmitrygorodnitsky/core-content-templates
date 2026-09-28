@@ -221,21 +221,25 @@
   function linesTable(ctx, option) {
     var copy = ctx.copy;
     if (!option.lines.length) return text("p", "cr-note cr-lines-empty", copy.linesEmpty);
+    var priced = !option.recurrent;
     var wrap = el("div", "cr-lines-wrap");
-    var table = el("table", "cr-lines", { role: "table" });
+    var table = el("table", "cr-lines" + (priced ? "" : " cr-lines--unpriced"), { role: "table", "data-priced": priced ? "true" : "false" });
     var head = el("thead", "", { role: "rowgroup" });
     var headRow = el("tr", "", { role: "row" });
     headRow.appendChild(text("th", "", copy.lineService, { scope: "col", role: "columnheader" }));
     headRow.appendChild(text("th", "cr-num", copy.lineQuantity, { scope: "col", role: "columnheader" }));
-    headRow.appendChild(text("th", "cr-num", copy.lineUnitPrice, { scope: "col", role: "columnheader" }));
+    if (priced) headRow.appendChild(text("th", "cr-num", copy.lineUnitPrice, { scope: "col", role: "columnheader" }));
     head.appendChild(headRow);
     table.appendChild(head);
     var body = el("tbody", "", { role: "rowgroup" });
     option.lines.forEach(function (line) {
-      var row = el("tr", "", { role: "row", "data-line": line.key });
+      var row = el("tr", "", { role: "row", "data-line": line.key, "data-recurrent": line.recurrent ? "true" : null });
       row.appendChild(text("td", "cr-lines__service" + (line.product ? "" : " cr-muted"), line.product || copy.serviceUnnamed, { role: "cell", "data-label": copy.lineService }));
       row.appendChild(text("td", "cr-num" + (line.quantity ? "" : " cr-muted"), line.quantity || copy.valueNotStated, { role: "cell", "data-label": copy.lineQuantity }));
-      row.appendChild(text("td", "cr-num" + (line.unitPrice ? "" : " cr-muted"), line.unitPrice || copy.valueNotStated, { role: "cell", "data-label": copy.lineUnitPrice }));
+      if (priced) {
+        var price = line.recurrent ? copy.lineIncluded : line.unitPrice || copy.valueNotStated;
+        row.appendChild(text("td", "cr-num" + (!line.recurrent && line.unitPrice ? "" : " cr-muted"), price, { role: "cell", "data-label": copy.lineUnitPrice }));
+      }
       body.appendChild(row);
     });
     table.appendChild(body);
@@ -250,7 +254,7 @@
       return;
     }
     body.appendChild(linesTable(ctx, option));
-    var breakdown = [["subtotal", copy.orderSubtotal, option.subtotal], ["taxes", copy.orderTaxes, option.taxes]]
+    var breakdown = option.recurrent ? [] : [["subtotal", copy.orderSubtotal, option.subtotal], ["taxes", copy.orderTaxes, option.taxes]]
       .filter(function (row) { return row[2]; });
     if (breakdown.length) {
       var list = el("dl", "cr-breakdown");
@@ -293,7 +297,6 @@
     }
     if (option.actions.approve) row.appendChild(button(copy.approveLabel, "btn--primary btn--lg", intent("approve"), { disabled: disabled, "data-action": "option.approve" }));
     if (option.actions.changes) row.appendChild(button(copy.changesLabel, "btn--ghost btn--lg", intent("changes"), { disabled: disabled, "data-action": "option.changes" }));
-    if (option.actions.decline) row.appendChild(button(copy.declineLabel, "btn--danger btn--lg", intent("decline"), { disabled: disabled, "data-action": "option.decline" }));
     return row;
   }
 
@@ -379,7 +382,8 @@
       body.appendChild(text("p", "cr-note", copy.noteSiblingApproved));
       return;
     }
-    var decisions = option.actions.approve || option.actions.decline || option.actions.changes;
+    var confirmOpen = ctx.snapshot.confirm && ctx.snapshot.confirm.id === option.id;
+    var decisions = option.actions.approve || option.actions.changes || (confirmOpen && option.actions.decline);
     if (!decisions) {
       if (option.awaitingClient && !option.actions.view) body.appendChild(text("p", "cr-note", copy.noteNoActions));
       return;
@@ -396,19 +400,26 @@
     var expanded = Boolean(ctx.snapshot.expanded[option.id]);
     var bodyId = "cr-option-" + option.id;
     var item = el("li", "cr-option", { "data-state": option.status, "data-expanded": expanded ? "true" : "false" });
-    var toggle = el("button", "cr-option__toggle", {
-      type: "button",
-      "aria-expanded": expanded ? "true" : "false",
+    var choice = el("label", "cr-option__toggle cr-pick");
+    var radio = el("input", "cr-pick__radio", {
+      type: "radio",
+      name: "cr-pick-" + property.key,
+      value: String(option.id),
+      checked: expanded,
       "aria-controls": expanded ? bodyId : null,
       "data-action": "option.toggle",
     });
-    toggle.appendChild(text("span", "cr-option__label", optionLabel(option, copy)));
-    toggle.appendChild(badge(OPTION_BADGE, option.status, copy));
-    toggle.appendChild(text("span", "cr-visually-hidden", expanded ? copy.hideOption : copy.showOption));
-    toggle.appendChild(el("span", "cr-option__chevron", { "aria-hidden": "true" }));
-    toggle.addEventListener("click", function () { ctx.dispatch("option.toggle", { id: option.id }); });
-    mark(ctx, toggle, "toggle-" + option.id);
-    item.appendChild(toggle);
+    radio.checked = expanded;
+    radio.addEventListener("click", function () {
+      if (!expanded) ctx.dispatch("option.toggle", { id: option.id });
+    });
+    mark(ctx, radio, "toggle-" + option.id);
+    choice.appendChild(radio);
+    choice.appendChild(el("span", "cr-pick__mark", { "aria-hidden": "true" }));
+    choice.appendChild(text("span", "cr-option__label", optionLabel(option, copy)));
+    if (option.priced && option.total) choice.appendChild(text("span", "cr-pick__total", option.total));
+    choice.appendChild(badge(OPTION_BADGE, option.status, copy));
+    item.appendChild(choice);
     if (!expanded) return item;
     var body = el("div", "cr-option__body", { id: bodyId });
     optionContent(body, ctx, option);
@@ -426,6 +437,59 @@
     return item;
   }
 
+  function declineAllPanel(ctx, property) {
+    var copy = ctx.copy;
+    var running = ctx.snapshot.bulk === property.key;
+    var titleId = "cr-decline-title-" + property.key;
+    var panel = el("div", "cr-confirm cr-confirm--decline", { role: "group", "aria-labelledby": titleId, "data-state": running ? "pending" : "open" });
+    panel.appendChild(text("p", "cr-confirm__title", copy.declineAllConfirmTitle, { id: titleId }));
+    panel.appendChild(text("p", "cr-confirm__body", copy.declineAllConfirmBody));
+    var actions = el("div", "cr-actions");
+    var confirmButton = button(running ? copy.sendingLabel : copy.declineAllConfirmButton, "btn--danger btn--lg", function () {
+      ctx.dispatch("property.confirm", { key: property.key });
+    }, { disabled: running || ctx.busy, "data-state": running ? "pending" : null, "data-action": "property.confirm", "aria-busy": running ? "true" : null });
+    mark(ctx, confirmButton, "confirm-" + property.key);
+    actions.appendChild(confirmButton);
+    actions.appendChild(button(copy.cancelLabel, "btn--ghost btn--lg", function () {
+      ctx.dispatch("property.cancel", { key: property.key });
+    }, { disabled: running, "data-action": "property.cancel" }));
+    panel.appendChild(actions);
+    return panel;
+  }
+
+  function propertyFooter(ctx, property) {
+    var copy = ctx.copy;
+    var snapshot = ctx.snapshot;
+    var declineCode = ns.contract.orderEvents.decline.code;
+    var chosen = property.options.some(function (option) { return snapshot.expanded[option.id]; });
+    var declinable = property.options.some(function (option) { return option.actions.decline || option.actions.view; });
+    var confirm = snapshot.confirm && snapshot.confirm.kind === "decline-all" && snapshot.confirm.property === property.key;
+    var failed = property.options.filter(function (option) {
+      var command = snapshot.commands[option.recordKey];
+      return command && command.event === declineCode && (command.status === "failed" || command.status === "refused") && !snapshot.expanded[option.id];
+    })[0];
+    var footer = el("div", "cr-property__foot");
+    if (!chosen && property.options.some(function (option) { return option.awaitingClient && !option.siblingApproved; })) {
+      footer.appendChild(text("p", "cr-note cr-pick__hint", copy.chooseOption));
+    }
+    if (failed) {
+      footer.appendChild(outcomeBox(ctx, snapshot.commands[failed.recordKey], { action: refreshButton(ctx, failed.recordKey, copy.refreshLabel) }));
+    }
+    if (confirm) {
+      footer.appendChild(declineAllPanel(ctx, property));
+    } else if (declinable) {
+      var pending = property.options.some(function (option) { return isPending(snapshot.commands[option.recordKey]); });
+      var intent = button(copy.declineAllLabel, "btn--danger", function () {
+        ctx.dispatch("property.decline", { key: property.key });
+      }, { disabled: ctx.busy || pending, "data-action": "property.decline" });
+      mark(ctx, intent, "decline-" + property.key);
+      var row = el("div", "cr-actions cr-property__actions");
+      row.appendChild(intent);
+      footer.appendChild(row);
+    }
+    return footer.children.length ? footer : null;
+  }
+
   function propertyCard(ctx, property, interactive) {
     var copy = ctx.copy;
     var headingId = "cr-" + property.key;
@@ -433,7 +497,9 @@
     var head = el("header", "cr-property__head");
     head.appendChild(el("span", "cr-pin", { "aria-hidden": "true" }));
     var identity = el("div", "cr-property__identity");
-    identity.appendChild(text("h2", "cr-property__address" + (property.address ? "" : " cr-muted"), property.address || copy.addressUnavailable, { id: headingId }));
+    var heading = text("h2", "cr-property__address" + (property.address ? "" : " cr-muted"), property.address || copy.addressUnavailable, { id: headingId, tabindex: interactive ? "-1" : null });
+    if (interactive) mark(ctx, heading, "property-" + property.key);
+    identity.appendChild(heading);
     identity.appendChild(text("p", "cr-property__meta", property.options.length === 1 ? copy.optionsOne : ns.fill(copy.optionsMany, { n: property.options.length })));
     head.appendChild(identity);
     if (interactive) head.appendChild(badge(PROPERTY_BADGE, property.status, copy));
@@ -442,7 +508,16 @@
     property.options.forEach(function (option) {
       list.appendChild(interactive ? optionItem(ctx, property, option) : optionStatic(ctx, option));
     });
-    card.appendChild(list);
+    if (!interactive) {
+      card.appendChild(list);
+      return card;
+    }
+    var group = el("fieldset", "cr-pick-group");
+    group.appendChild(text("legend", "cr-visually-hidden", ns.fill(copy.choiceLegend, { address: property.address || copy.addressUnavailable })));
+    group.appendChild(list);
+    card.appendChild(group);
+    var footer = propertyFooter(ctx, property);
+    if (footer) card.appendChild(footer);
     return card;
   }
 
@@ -903,7 +978,7 @@
       copy: copy,
       focus: {},
       announcement: "",
-      busy: snapshot.refreshing || snapshot.phase !== "ready",
+      busy: snapshot.refreshing || snapshot.phase !== "ready" || Boolean(snapshot.bulk),
     };
     var page = el("div", "cr-page", {
       "data-phase": snapshot.phase,

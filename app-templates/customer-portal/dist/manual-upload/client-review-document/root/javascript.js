@@ -12,7 +12,7 @@
 
     ["QUOTE_EYEBROW", "quoteEyebrow", "Quotation"],
     ["QUOTE_TITLE", "quoteTitle", "Review your quotes"],
-    ["QUOTE_SUBTITLE", "quoteSubtitle", "Each property has its own options. Open an option to see its services and price, then approve it, decline it or ask for changes."],
+    ["QUOTE_SUBTITLE", "quoteSubtitle", "Each property has its own options. Choose one to see its services, then approve it or ask for changes. If none suits you, decline them all."],
     ["SUMMARY_LABEL", "summaryLabel", "Package summary"],
     ["SUMMARY_PROPERTIES", "summaryProperties", "Properties"],
     ["SUMMARY_AWAITING", "summaryAwaiting", "Awaiting decision"],
@@ -43,6 +43,7 @@
     ["LINE_SERVICE", "lineService", "Service"],
     ["LINE_QUANTITY", "lineQuantity", "Quantity"],
     ["LINE_UNIT_PRICE", "lineUnitPrice", "Unit price"],
+    ["LINE_INCLUDED", "lineIncluded", "Included"],
     ["ORDER_SUBTOTAL", "orderSubtotal", "Subtotal"],
     ["ORDER_TAXES", "orderTaxes", "Taxes"],
     ["ORDER_TOTAL", "orderTotal", "Option total"],
@@ -69,6 +70,12 @@
     ["CHANGES_PLACEHOLDER", "changesPlaceholder", "For example: add sidewalk de-icing, or quote weekly visits instead."],
     ["CHANGES_REQUIRED", "changesRequired", "Write what you would like changed before sending."],
     ["CHANGES_SEND", "changesSend", "Send request"],
+    ["CHOICE_LEGEND", "choiceLegend", "Options for {address}"],
+    ["CHOOSE_OPTION", "chooseOption", "Choose an option to see its services and approve it or ask for changes."],
+    ["DECLINE_ALL_LABEL", "declineAllLabel", "Decline all options"],
+    ["DECLINE_ALL_CONFIRM_TITLE", "declineAllConfirmTitle", "Decline every option for this property?"],
+    ["DECLINE_ALL_CONFIRM_BODY", "declineAllConfirmBody", "None of them can be approved later through this link. The provider can send you new options."],
+    ["DECLINE_ALL_CONFIRM_BUTTON", "declineAllConfirmButton", "Decline all"],
     ["REFUSED_TITLE", "refusedTitle", "Not accepted"],
     ["REFUSED_FALLBACK", "refusedFallback", "The provider's system did not accept this request."],
     ["FAILED_BODY", "failedBody", "We could not confirm whether this went through. Refresh the status before trying again."],
@@ -258,12 +265,15 @@
     orderStates: [
       "INITIAL", "QUOTE_PREPARED", "CHANGES_REQUESTED", "QUOTE_APPROVED_INTERNALLY",
       "QUOTE_SENT", "QUOTE_VIEWED", "CLIENT_APPROVED", "DECLINED", "CUSTOMER_CHANGES_REQUESTED",
+      "WAITING_FOR_AREA", "PRICING_FAILED", "PACKAGE_ATTACHMENT_FAILED", "APPROVAL_PROCESSING_FAILED",
+      "DECLINE_PROCESSING_FAILED", "CHANGES_NOTIFICATION_FAILED", "CHANGES_NOTIFICATION_CONFIRMED",
     ],
     agreementStates: [
       "QUOTATION", "QUOTATION_SENT", "QUOTATION_UPDATE", "QUOTATION_SEND_FAILED", "AWAITING_CLIENT_DETAILS",
       "CLIENT_DETAILS_RECEIVED", "DRAFT",
       "PENDING_MANAGEMENT_APPROVAL", "INTERNALLY_APPROVED", "SENT_TO_CLIENT", "AGREEMENT_SEND_FAILED",
       "CLIENT_APPROVED", "ACTIVATION_FAILED", "ACTIVE", "SUSPENDED", "EXPIRED", "ARCHIVED", "CANCELED",
+      "DETAILS_FINALIZATION_RETRY", "ACCESS_CLEANUP_RETRY",
     ],
     orderEvents: {
       view: { code: "QUOTE_SENT-QUOTE_VIEWED", source: "QUOTE_SENT" },
@@ -586,6 +596,13 @@
     QUOTE_PREPARED: "revising",
     CHANGES_REQUESTED: "revising",
     QUOTE_APPROVED_INTERNALLY: "revising",
+    WAITING_FOR_AREA: "revising",
+    PRICING_FAILED: "revising",
+    PACKAGE_ATTACHMENT_FAILED: "revising",
+    APPROVAL_PROCESSING_FAILED: "approved",
+    DECLINE_PROCESSING_FAILED: "declined",
+    CHANGES_NOTIFICATION_FAILED: "changes",
+    CHANGES_NOTIFICATION_CONFIRMED: "changes",
   };
 
   var PRICED_STATUSES = ["new", "viewed", "approved", "declined", "changes"];
@@ -598,6 +615,7 @@
     AWAITING_CLIENT_DETAILS: { kind: "contract-details" },
     CLIENT_DETAILS_RECEIVED: { kind: "checking" },
     DRAFT: { kind: "preparing" },
+    DETAILS_FINALIZATION_RETRY: { kind: "preparing" },
     PENDING_MANAGEMENT_APPROVAL: { kind: "preparing" },
     INTERNALLY_APPROVED: { kind: "preparing" },
     SENT_TO_CLIENT: { kind: "agreement-review" },
@@ -609,6 +627,7 @@
     EXPIRED: { kind: "reference", banner: "expired" },
     ARCHIVED: { kind: "closed", reason: "archived" },
     CANCELED: { kind: "closed", reason: "canceled" },
+    ACCESS_CLEANUP_RETRY: { kind: "closed", reason: "canceled" },
   };
 
   function text(value) {
@@ -1056,6 +1075,10 @@
     return id && rows[id] ? rows[id] : value;
   }
 
+  function recurrentPrice(price) {
+    return /_RECURRENT$/.test(text(price && price.type && price.type.code).toUpperCase());
+  }
+
   function linesOf(row, currency, locale, contract, catalog) {
     var raw = row && Array.isArray(row[contract.rawShape.orderLines]) ? row[contract.rawShape.orderLines] : [];
     return raw
@@ -1080,6 +1103,7 @@
           product: localizedName(product && product.nls, locale) || localizedName(price && price.product && price.product.nls, locale) || localizedName(price && price.nls, locale),
           quantity: formatQuantity(line.itemCount, locale),
           unitPrice: formatMoney(line.amount, currency, locale),
+          recurrent: recurrentPrice(price),
         };
       });
   }
@@ -1092,6 +1116,7 @@
     var currency = text(row.currency && row.currency.code);
     var model = attributeText(row, contract.orderAttributes.pricingModel).toUpperCase();
     var priced = PRICED_STATUSES.indexOf(status) !== -1;
+    var lines = priced ? linesOf(row, currency, context.locale, contract, context.catalog) : [];
     return {
       id: id,
       recordKey: "order:" + id,
@@ -1100,7 +1125,8 @@
       state: state,
       status: status,
       priced: priced,
-      lines: priced ? linesOf(row, currency, context.locale, contract, context.catalog) : [],
+      lines: lines,
+      recurrent: lines.length > 0 && lines.every(function (line) { return line.recurrent; }),
       subtotal: priced ? formatMoney(row.totalCharges, currency, context.locale) : "",
       taxes: priced ? formatMoney(row.totalTaxes, currency, context.locale) : "",
       total: priced ? formatMoney(row.grandTotal, currency, context.locale) : "",
@@ -1294,6 +1320,7 @@
     eventGranted: eventGranted,
     formatMoney: formatMoney,
     formatQuantity: formatQuantity,
+    recurrentPrice: recurrentPrice,
     formatDate: formatDate,
     termsBlocks: termsBlocks,
     returnedDetails: returnedDetails,
@@ -1530,21 +1557,25 @@
   function linesTable(ctx, option) {
     var copy = ctx.copy;
     if (!option.lines.length) return text("p", "cr-note cr-lines-empty", copy.linesEmpty);
+    var priced = !option.recurrent;
     var wrap = el("div", "cr-lines-wrap");
-    var table = el("table", "cr-lines", { role: "table" });
+    var table = el("table", "cr-lines" + (priced ? "" : " cr-lines--unpriced"), { role: "table", "data-priced": priced ? "true" : "false" });
     var head = el("thead", "", { role: "rowgroup" });
     var headRow = el("tr", "", { role: "row" });
     headRow.appendChild(text("th", "", copy.lineService, { scope: "col", role: "columnheader" }));
     headRow.appendChild(text("th", "cr-num", copy.lineQuantity, { scope: "col", role: "columnheader" }));
-    headRow.appendChild(text("th", "cr-num", copy.lineUnitPrice, { scope: "col", role: "columnheader" }));
+    if (priced) headRow.appendChild(text("th", "cr-num", copy.lineUnitPrice, { scope: "col", role: "columnheader" }));
     head.appendChild(headRow);
     table.appendChild(head);
     var body = el("tbody", "", { role: "rowgroup" });
     option.lines.forEach(function (line) {
-      var row = el("tr", "", { role: "row", "data-line": line.key });
+      var row = el("tr", "", { role: "row", "data-line": line.key, "data-recurrent": line.recurrent ? "true" : null });
       row.appendChild(text("td", "cr-lines__service" + (line.product ? "" : " cr-muted"), line.product || copy.serviceUnnamed, { role: "cell", "data-label": copy.lineService }));
       row.appendChild(text("td", "cr-num" + (line.quantity ? "" : " cr-muted"), line.quantity || copy.valueNotStated, { role: "cell", "data-label": copy.lineQuantity }));
-      row.appendChild(text("td", "cr-num" + (line.unitPrice ? "" : " cr-muted"), line.unitPrice || copy.valueNotStated, { role: "cell", "data-label": copy.lineUnitPrice }));
+      if (priced) {
+        var price = line.recurrent ? copy.lineIncluded : line.unitPrice || copy.valueNotStated;
+        row.appendChild(text("td", "cr-num" + (!line.recurrent && line.unitPrice ? "" : " cr-muted"), price, { role: "cell", "data-label": copy.lineUnitPrice }));
+      }
       body.appendChild(row);
     });
     table.appendChild(body);
@@ -1559,7 +1590,7 @@
       return;
     }
     body.appendChild(linesTable(ctx, option));
-    var breakdown = [["subtotal", copy.orderSubtotal, option.subtotal], ["taxes", copy.orderTaxes, option.taxes]]
+    var breakdown = option.recurrent ? [] : [["subtotal", copy.orderSubtotal, option.subtotal], ["taxes", copy.orderTaxes, option.taxes]]
       .filter(function (row) { return row[2]; });
     if (breakdown.length) {
       var list = el("dl", "cr-breakdown");
@@ -1602,7 +1633,6 @@
     }
     if (option.actions.approve) row.appendChild(button(copy.approveLabel, "btn--primary btn--lg", intent("approve"), { disabled: disabled, "data-action": "option.approve" }));
     if (option.actions.changes) row.appendChild(button(copy.changesLabel, "btn--ghost btn--lg", intent("changes"), { disabled: disabled, "data-action": "option.changes" }));
-    if (option.actions.decline) row.appendChild(button(copy.declineLabel, "btn--danger btn--lg", intent("decline"), { disabled: disabled, "data-action": "option.decline" }));
     return row;
   }
 
@@ -1688,7 +1718,8 @@
       body.appendChild(text("p", "cr-note", copy.noteSiblingApproved));
       return;
     }
-    var decisions = option.actions.approve || option.actions.decline || option.actions.changes;
+    var confirmOpen = ctx.snapshot.confirm && ctx.snapshot.confirm.id === option.id;
+    var decisions = option.actions.approve || option.actions.changes || (confirmOpen && option.actions.decline);
     if (!decisions) {
       if (option.awaitingClient && !option.actions.view) body.appendChild(text("p", "cr-note", copy.noteNoActions));
       return;
@@ -1705,19 +1736,26 @@
     var expanded = Boolean(ctx.snapshot.expanded[option.id]);
     var bodyId = "cr-option-" + option.id;
     var item = el("li", "cr-option", { "data-state": option.status, "data-expanded": expanded ? "true" : "false" });
-    var toggle = el("button", "cr-option__toggle", {
-      type: "button",
-      "aria-expanded": expanded ? "true" : "false",
+    var choice = el("label", "cr-option__toggle cr-pick");
+    var radio = el("input", "cr-pick__radio", {
+      type: "radio",
+      name: "cr-pick-" + property.key,
+      value: String(option.id),
+      checked: expanded,
       "aria-controls": expanded ? bodyId : null,
       "data-action": "option.toggle",
     });
-    toggle.appendChild(text("span", "cr-option__label", optionLabel(option, copy)));
-    toggle.appendChild(badge(OPTION_BADGE, option.status, copy));
-    toggle.appendChild(text("span", "cr-visually-hidden", expanded ? copy.hideOption : copy.showOption));
-    toggle.appendChild(el("span", "cr-option__chevron", { "aria-hidden": "true" }));
-    toggle.addEventListener("click", function () { ctx.dispatch("option.toggle", { id: option.id }); });
-    mark(ctx, toggle, "toggle-" + option.id);
-    item.appendChild(toggle);
+    radio.checked = expanded;
+    radio.addEventListener("click", function () {
+      if (!expanded) ctx.dispatch("option.toggle", { id: option.id });
+    });
+    mark(ctx, radio, "toggle-" + option.id);
+    choice.appendChild(radio);
+    choice.appendChild(el("span", "cr-pick__mark", { "aria-hidden": "true" }));
+    choice.appendChild(text("span", "cr-option__label", optionLabel(option, copy)));
+    if (option.priced && option.total) choice.appendChild(text("span", "cr-pick__total", option.total));
+    choice.appendChild(badge(OPTION_BADGE, option.status, copy));
+    item.appendChild(choice);
     if (!expanded) return item;
     var body = el("div", "cr-option__body", { id: bodyId });
     optionContent(body, ctx, option);
@@ -1735,6 +1773,59 @@
     return item;
   }
 
+  function declineAllPanel(ctx, property) {
+    var copy = ctx.copy;
+    var running = ctx.snapshot.bulk === property.key;
+    var titleId = "cr-decline-title-" + property.key;
+    var panel = el("div", "cr-confirm cr-confirm--decline", { role: "group", "aria-labelledby": titleId, "data-state": running ? "pending" : "open" });
+    panel.appendChild(text("p", "cr-confirm__title", copy.declineAllConfirmTitle, { id: titleId }));
+    panel.appendChild(text("p", "cr-confirm__body", copy.declineAllConfirmBody));
+    var actions = el("div", "cr-actions");
+    var confirmButton = button(running ? copy.sendingLabel : copy.declineAllConfirmButton, "btn--danger btn--lg", function () {
+      ctx.dispatch("property.confirm", { key: property.key });
+    }, { disabled: running || ctx.busy, "data-state": running ? "pending" : null, "data-action": "property.confirm", "aria-busy": running ? "true" : null });
+    mark(ctx, confirmButton, "confirm-" + property.key);
+    actions.appendChild(confirmButton);
+    actions.appendChild(button(copy.cancelLabel, "btn--ghost btn--lg", function () {
+      ctx.dispatch("property.cancel", { key: property.key });
+    }, { disabled: running, "data-action": "property.cancel" }));
+    panel.appendChild(actions);
+    return panel;
+  }
+
+  function propertyFooter(ctx, property) {
+    var copy = ctx.copy;
+    var snapshot = ctx.snapshot;
+    var declineCode = ns.contract.orderEvents.decline.code;
+    var chosen = property.options.some(function (option) { return snapshot.expanded[option.id]; });
+    var declinable = property.options.some(function (option) { return option.actions.decline || option.actions.view; });
+    var confirm = snapshot.confirm && snapshot.confirm.kind === "decline-all" && snapshot.confirm.property === property.key;
+    var failed = property.options.filter(function (option) {
+      var command = snapshot.commands[option.recordKey];
+      return command && command.event === declineCode && (command.status === "failed" || command.status === "refused") && !snapshot.expanded[option.id];
+    })[0];
+    var footer = el("div", "cr-property__foot");
+    if (!chosen && property.options.some(function (option) { return option.awaitingClient && !option.siblingApproved; })) {
+      footer.appendChild(text("p", "cr-note cr-pick__hint", copy.chooseOption));
+    }
+    if (failed) {
+      footer.appendChild(outcomeBox(ctx, snapshot.commands[failed.recordKey], { action: refreshButton(ctx, failed.recordKey, copy.refreshLabel) }));
+    }
+    if (confirm) {
+      footer.appendChild(declineAllPanel(ctx, property));
+    } else if (declinable) {
+      var pending = property.options.some(function (option) { return isPending(snapshot.commands[option.recordKey]); });
+      var intent = button(copy.declineAllLabel, "btn--danger", function () {
+        ctx.dispatch("property.decline", { key: property.key });
+      }, { disabled: ctx.busy || pending, "data-action": "property.decline" });
+      mark(ctx, intent, "decline-" + property.key);
+      var row = el("div", "cr-actions cr-property__actions");
+      row.appendChild(intent);
+      footer.appendChild(row);
+    }
+    return footer.children.length ? footer : null;
+  }
+
   function propertyCard(ctx, property, interactive) {
     var copy = ctx.copy;
     var headingId = "cr-" + property.key;
@@ -1742,7 +1833,9 @@
     var head = el("header", "cr-property__head");
     head.appendChild(el("span", "cr-pin", { "aria-hidden": "true" }));
     var identity = el("div", "cr-property__identity");
-    identity.appendChild(text("h2", "cr-property__address" + (property.address ? "" : " cr-muted"), property.address || copy.addressUnavailable, { id: headingId }));
+    var heading = text("h2", "cr-property__address" + (property.address ? "" : " cr-muted"), property.address || copy.addressUnavailable, { id: headingId, tabindex: interactive ? "-1" : null });
+    if (interactive) mark(ctx, heading, "property-" + property.key);
+    identity.appendChild(heading);
     identity.appendChild(text("p", "cr-property__meta", property.options.length === 1 ? copy.optionsOne : ns.fill(copy.optionsMany, { n: property.options.length })));
     head.appendChild(identity);
     if (interactive) head.appendChild(badge(PROPERTY_BADGE, property.status, copy));
@@ -1751,7 +1844,16 @@
     property.options.forEach(function (option) {
       list.appendChild(interactive ? optionItem(ctx, property, option) : optionStatic(ctx, option));
     });
-    card.appendChild(list);
+    if (!interactive) {
+      card.appendChild(list);
+      return card;
+    }
+    var group = el("fieldset", "cr-pick-group");
+    group.appendChild(text("legend", "cr-visually-hidden", ns.fill(copy.choiceLegend, { address: property.address || copy.addressUnavailable })));
+    group.appendChild(list);
+    card.appendChild(group);
+    var footer = propertyFooter(ctx, property);
+    if (footer) card.appendChild(footer);
     return card;
   }
 
@@ -2212,7 +2314,7 @@
       copy: copy,
       focus: {},
       announcement: "",
-      busy: snapshot.refreshing || snapshot.phase !== "ready",
+      busy: snapshot.refreshing || snapshot.phase !== "ready" || Boolean(snapshot.bulk),
     };
     var page = el("div", "cr-page", {
       "data-phase": snapshot.phase,
@@ -2296,6 +2398,7 @@
       accepted: {},
       refreshing: false,
       expanded: {},
+      bulk: "",
       confirm: null,
       drafts: {},
       draftInvalid: {},
@@ -2401,6 +2504,24 @@
       return optionsOf(state.view).filter(function (option) { return option.id === wanted; })[0] || null;
     }
 
+    function findProperty(key) {
+      var properties = state.view && Array.isArray(state.view.properties) ? state.view.properties : [];
+      return properties.filter(function (property) { return property.key === key; })[0] || null;
+    }
+
+    function propertyOfOption(id) {
+      var properties = state.view && Array.isArray(state.view.properties) ? state.view.properties : [];
+      return properties.filter(function (property) {
+        return property.options.some(function (option) { return option.id === id; });
+      })[0] || null;
+    }
+
+    function declinableOptions(property) {
+      return property.options.filter(function (option) {
+        return (option.actions.decline || option.actions.view) && !state.accepted[option.recordKey] && !inflight[option.recordKey];
+      });
+    }
+
     function detailField(code) {
       var fields = state.view && state.view.details ? state.view.details.fields : [];
       return fields.filter(function (field) { return field.code === code; })[0] || null;
@@ -2484,6 +2605,11 @@
       if (!confirm) return;
       if (confirm.kind === "agreement") {
         if (!state.view || !state.view.canApproveAgreement) state.confirm = null;
+        return;
+      }
+      if (confirm.kind === "decline-all") {
+        var property = findProperty(confirm.property);
+        if (!state.bulk && (!property || !declinableOptions(property).length)) state.confirm = null;
         return;
       }
       if (!present[confirm.id] || !present[confirm.id].actions[confirm.kind]) state.confirm = null;
@@ -2657,8 +2783,20 @@
       var option = findOption(id);
       if (!option) return;
       var opening = !state.expanded[option.id];
-      if (opening) state.expanded[option.id] = true;
-      else delete state.expanded[option.id];
+      if (opening) {
+        var property = propertyOfOption(option.id);
+        (property ? property.options : []).forEach(function (sibling) {
+          if (sibling.id !== option.id) delete state.expanded[sibling.id];
+        });
+        var confirm = state.confirm;
+        if (confirm && confirm.kind !== "agreement" && confirm.kind !== "decline-all" && confirm.id !== option.id && property
+          && property.options.some(function (sibling) { return sibling.id === confirm.id; }) && !inflight[confirm.recordKey]) {
+          state.confirm = null;
+        }
+        state.expanded[option.id] = true;
+      } else {
+        delete state.expanded[option.id];
+      }
       if (opening && option.actions.view && !state.commands[option.recordKey] && !state.accepted[option.recordKey] && !busy()) {
         send(option.recordKey, "order", option.id, contract.orderEvents.view.code, {}, {});
         return;
@@ -2687,6 +2825,49 @@
         onSuccess: function () {
           if (confirm.kind === "changes") delete state.drafts[option.id];
         },
+      });
+    }
+
+    function declineOption(id) {
+      var option = findOption(id);
+      if (!option) return Promise.resolve(false);
+      if (option.status === "declined") return Promise.resolve(true);
+      if (state.accepted[option.recordKey] || inflight[option.recordKey]) return Promise.resolve(false);
+      if (option.actions.view) {
+        return send(option.recordKey, "order", option.id, contract.orderEvents.view.code, {}, {}).then(function (sent) {
+          var viewed = sent ? findOption(id) : null;
+          if (!viewed || !viewed.actions.decline || state.accepted[viewed.recordKey]) return false;
+          return declineOption(id);
+        });
+      }
+      if (!option.actions.decline) return Promise.resolve(false);
+      return send(option.recordKey, "order", option.id, contract.orderEvents.decline.code, {}, {});
+    }
+
+    function declineAll(key) {
+      var property = findProperty(key);
+      var confirm = state.confirm;
+      if (!property || state.bulk || busy() || !confirm || confirm.kind !== "decline-all" || confirm.property !== key) return Promise.resolve(false);
+      var ids = declinableOptions(property).map(function (option) { return option.id; });
+      if (!ids.length) {
+        state.confirm = null;
+        render();
+        return Promise.resolve(false);
+      }
+      state.bulk = key;
+      render();
+      function declineFrom(index) {
+        if (index >= ids.length) return Promise.resolve(true);
+        return declineOption(ids[index]).then(function (ok) { return ok ? declineFrom(index + 1) : false; });
+      }
+      return declineFrom(0).then(function (ok) {
+        state.bulk = "";
+        if (ok) {
+          state.confirm = null;
+          state.focusKey = "property-" + key;
+        }
+        render();
+        return ok;
       });
     }
 
@@ -2763,6 +2944,21 @@
         case "option.confirm":
           confirmOption(data.id);
           return;
+        case "property.decline":
+          if (!findProperty(data.key) || !declinableOptions(findProperty(data.key)).length || busy() || state.bulk) return;
+          state.confirm = { recordKey: "property:" + data.key, property: data.key, kind: "decline-all" };
+          state.focusKey = "confirm-" + data.key;
+          render();
+          return;
+        case "property.cancel":
+          if (state.bulk || !state.confirm || state.confirm.kind !== "decline-all") return;
+          state.confirm = null;
+          state.focusKey = "decline-" + data.key;
+          render();
+          return;
+        case "property.confirm":
+          declineAll(data.key);
+          return;
         case "details.input":
           field = detailField(data.code);
           if (!field) return "";
@@ -2818,6 +3014,7 @@
         errorAfterCommand: state.errorAfterCommand,
         refreshing: state.refreshing,
         expanded: state.expanded,
+        bulk: state.bulk,
         confirm: state.confirm,
         drafts: state.drafts,
         draftInvalid: state.draftInvalid,

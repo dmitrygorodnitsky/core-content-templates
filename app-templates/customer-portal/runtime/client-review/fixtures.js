@@ -8,6 +8,7 @@
   var ACCOUNT_TYPE = { id: 2, code: "SNOW_COMMERCIAL_CUSTOMER", nls: { en: { NAME: "Commercial customer" } } };
   var ORDER_TYPE = { id: 5, code: "FIELD_SERVICE_ORDER" };
   var CURRENCY = { id: 3, code: "CAD" };
+  var PRICE_TYPES = { SEASONAL: { id: 6, code: "TIERED_RECURRENT" }, MONTHLY: { id: 6, code: "TIERED_RECURRENT" }, PER_SERVICE: { id: 5, code: "TIERED" } };
 
   var PRODUCTS = {
     snow: { id: 25, nls: { en: { NAME: "Snow Removal" } } },
@@ -106,6 +107,8 @@
     { id: "view-failed", label: "Unviewed option opened — view event failed" },
     { id: "approve-confirm", label: "Approve — confirmation" },
     { id: "changes-invalid", label: "Request changes — message required" },
+    { id: "decline-all-confirm", label: "Decline all options — confirmation" },
+    { id: "decline-all-done", label: "Decline all options — sent, every option declined" },
     { id: "command-pending", label: "Decision pending" },
     { id: "command-refused", label: "Decision refused by the server" },
     { id: "command-failed", label: "Decision failed" },
@@ -170,7 +173,7 @@
           sortOrder: index,
           itemCount: entry[2],
           amount: entry[3],
-          itemPrice: { id: entry[0], product: PRODUCTS[entry[1]] },
+          itemPrice: { id: entry[0], product: PRODUCTS[entry[1]], type: PRICE_TYPES[spec.model] },
         };
       }),
     };
@@ -598,6 +601,12 @@
         break;
       case "approve-confirm":
         steps = approve;
+        break;
+      case "decline-all-confirm":
+        steps = [["property.decline", { key: "property-278" }]];
+        break;
+      case "decline-all-done":
+        steps = [["property.decline", { key: "property-278" }], ["property.confirm", { key: "property-278" }]];
         break;
       case "changes-invalid":
         steps = [["option.toggle", { id: 3103 }], ["option.intent", { id: 3103, kind: "changes" }], ["option.confirm", { id: 3103 }]];

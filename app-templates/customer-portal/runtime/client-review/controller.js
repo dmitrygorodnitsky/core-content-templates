@@ -42,6 +42,7 @@
       accepted: {},
       refreshing: false,
       expanded: {},
+      bulk: "",
       confirm: null,
       drafts: {},
       draftInvalid: {},
@@ -147,6 +148,24 @@
       return optionsOf(state.view).filter(function (option) { return option.id === wanted; })[0] || null;
     }
 
+    function findProperty(key) {
+      var properties = state.view && Array.isArray(state.view.properties) ? state.view.properties : [];
+      return properties.filter(function (property) { return property.key === key; })[0] || null;
+    }
+
+    function propertyOfOption(id) {
+      var properties = state.view && Array.isArray(state.view.properties) ? state.view.properties : [];
+      return properties.filter(function (property) {
+        return property.options.some(function (option) { return option.id === id; });
+      })[0] || null;
+    }
+
+    function declinableOptions(property) {
+      return property.options.filter(function (option) {
+        return (option.actions.decline || option.actions.view) && !state.accepted[option.recordKey] && !inflight[option.recordKey];
+      });
+    }
+
     function detailField(code) {
       var fields = state.view && state.view.details ? state.view.details.fields : [];
       return fields.filter(function (field) { return field.code === code; })[0] || null;
@@ -230,6 +249,11 @@
       if (!confirm) return;
       if (confirm.kind === "agreement") {
         if (!state.view || !state.view.canApproveAgreement) state.confirm = null;
+        return;
+      }
+      if (confirm.kind === "decline-all") {
+        var property = findProperty(confirm.property);
+        if (!state.bulk && (!property || !declinableOptions(property).length)) state.confirm = null;
         return;
       }
       if (!present[confirm.id] || !present[confirm.id].actions[confirm.kind]) state.confirm = null;
@@ -403,8 +427,20 @@
       var option = findOption(id);
       if (!option) return;
       var opening = !state.expanded[option.id];
-      if (opening) state.expanded[option.id] = true;
-      else delete state.expanded[option.id];
+      if (opening) {
+        var property = propertyOfOption(option.id);
+        (property ? property.options : []).forEach(function (sibling) {
+          if (sibling.id !== option.id) delete state.expanded[sibling.id];
+        });
+        var confirm = state.confirm;
+        if (confirm && confirm.kind !== "agreement" && confirm.kind !== "decline-all" && confirm.id !== option.id && property
+          && property.options.some(function (sibling) { return sibling.id === confirm.id; }) && !inflight[confirm.recordKey]) {
+          state.confirm = null;
+        }
+        state.expanded[option.id] = true;
+      } else {
+        delete state.expanded[option.id];
+      }
       if (opening && option.actions.view && !state.commands[option.recordKey] && !state.accepted[option.recordKey] && !busy()) {
         send(option.recordKey, "order", option.id, contract.orderEvents.view.code, {}, {});
         return;
@@ -433,6 +469,49 @@
         onSuccess: function () {
           if (confirm.kind === "changes") delete state.drafts[option.id];
         },
+      });
+    }
+
+    function declineOption(id) {
+      var option = findOption(id);
+      if (!option) return Promise.resolve(false);
+      if (option.status === "declined") return Promise.resolve(true);
+      if (state.accepted[option.recordKey] || inflight[option.recordKey]) return Promise.resolve(false);
+      if (option.actions.view) {
+        return send(option.recordKey, "order", option.id, contract.orderEvents.view.code, {}, {}).then(function (sent) {
+          var viewed = sent ? findOption(id) : null;
+          if (!viewed || !viewed.actions.decline || state.accepted[viewed.recordKey]) return false;
+          return declineOption(id);
+        });
+      }
+      if (!option.actions.decline) return Promise.resolve(false);
+      return send(option.recordKey, "order", option.id, contract.orderEvents.decline.code, {}, {});
+    }
+
+    function declineAll(key) {
+      var property = findProperty(key);
+      var confirm = state.confirm;
+      if (!property || state.bulk || busy() || !confirm || confirm.kind !== "decline-all" || confirm.property !== key) return Promise.resolve(false);
+      var ids = declinableOptions(property).map(function (option) { return option.id; });
+      if (!ids.length) {
+        state.confirm = null;
+        render();
+        return Promise.resolve(false);
+      }
+      state.bulk = key;
+      render();
+      function declineFrom(index) {
+        if (index >= ids.length) return Promise.resolve(true);
+        return declineOption(ids[index]).then(function (ok) { return ok ? declineFrom(index + 1) : false; });
+      }
+      return declineFrom(0).then(function (ok) {
+        state.bulk = "";
+        if (ok) {
+          state.confirm = null;
+          state.focusKey = "property-" + key;
+        }
+        render();
+        return ok;
       });
     }
 
@@ -509,6 +588,21 @@
         case "option.confirm":
           confirmOption(data.id);
           return;
+        case "property.decline":
+          if (!findProperty(data.key) || !declinableOptions(findProperty(data.key)).length || busy() || state.bulk) return;
+          state.confirm = { recordKey: "property:" + data.key, property: data.key, kind: "decline-all" };
+          state.focusKey = "confirm-" + data.key;
+          render();
+          return;
+        case "property.cancel":
+          if (state.bulk || !state.confirm || state.confirm.kind !== "decline-all") return;
+          state.confirm = null;
+          state.focusKey = "decline-" + data.key;
+          render();
+          return;
+        case "property.confirm":
+          declineAll(data.key);
+          return;
         case "details.input":
           field = detailField(data.code);
           if (!field) return "";
@@ -564,6 +658,7 @@
         errorAfterCommand: state.errorAfterCommand,
         refreshing: state.refreshing,
         expanded: state.expanded,
+        bulk: state.bulk,
         confirm: state.confirm,
         drafts: state.drafts,
         draftInvalid: state.draftInvalid,

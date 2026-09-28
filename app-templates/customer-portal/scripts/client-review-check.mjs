@@ -238,6 +238,9 @@ const N = loadRuntime().CR.normalizer;
     QUOTE_SENT: "new", QUOTE_VIEWED: "viewed", CLIENT_APPROVED: "approved", DECLINED: "declined",
     CUSTOMER_CHANGES_REQUESTED: "changes", INITIAL: "revising", QUOTE_PREPARED: "revising",
     CHANGES_REQUESTED: "revising", QUOTE_APPROVED_INTERNALLY: "revising",
+    WAITING_FOR_AREA: "revising", PRICING_FAILED: "revising", PACKAGE_ATTACHMENT_FAILED: "revising",
+    APPROVAL_PROCESSING_FAILED: "approved", DECLINE_PROCESSING_FAILED: "declined",
+    CHANGES_NOTIFICATION_FAILED: "changes", CHANGES_NOTIFICATION_CONFIRMED: "changes",
   };
   assert.deepEqual(Object.keys(EXPECTED_STATUS).sort(), plain(contract.orderStates).sort(), "every order state has an expected customer status");
   const EXPECTED_PROPERTY = { new: "awaiting", viewed: "awaiting", approved: "approved", declined: "declined", changes: "changes", revising: "changes" };
@@ -290,7 +293,7 @@ const N = loadRuntime().CR.normalizer;
     PENDING_MANAGEMENT_APPROVAL: "preparing",
     INTERNALLY_APPROVED: "preparing", SENT_TO_CLIENT: "agreement-review", AGREEMENT_SEND_FAILED: "unavailable",
     CLIENT_APPROVED: "completion", ACTIVATION_FAILED: "completion", ACTIVE: "completion", SUSPENDED: "reference", EXPIRED: "reference",
-    ARCHIVED: "closed", CANCELED: "closed",
+    ARCHIVED: "closed", CANCELED: "closed", DETAILS_FINALIZATION_RETRY: "preparing", ACCESS_CLEANUP_RETRY: "closed",
   };
   const EXPECTED_COMPLETION = { CLIENT_APPROVED: "approved", ACTIVATION_FAILED: "finishing", ACTIVE: "active" };
   assert.deepEqual(Object.keys(EXPECTED_KIND).sort(), plain(contract.agreementStates).sort(), "every agreement state has an expected page");
@@ -603,7 +606,7 @@ const EXPECTED_SCENARIOS = {
   "link-closed": ["link-closed", null], unconfigured: ["unconfigured", null], empty: ["ready", "empty"],
   error: ["error", null], partial: ["ready", "quote-review"], "option-open": ["ready", "quote-review"],
   "view-pending": ["ready", "quote-review"], "view-failed": ["ready", "quote-review"], "approve-confirm": ["ready", "quote-review"],
-  "changes-invalid": ["ready", "quote-review"], "command-pending": ["ready", "quote-review"], "command-refused": ["ready", "quote-review"],
+  "changes-invalid": ["ready", "quote-review"], "decline-all-confirm": ["ready", "quote-review"], "decline-all-done": ["ready", "quote-review"], "command-pending": ["ready", "quote-review"], "command-refused": ["ready", "quote-review"],
   "command-failed": ["ready", "quote-review"], "command-stale-pending": ["ready", "quote-review"], "command-unconfirmed": ["ready", "quote-review"],
   "view-unconfirmed": ["ready", "quote-review"], decided: ["ready", "quote-review"],
   "decided-following": ["ready", "quote-review"], "decided-following-slow": ["ready", "quote-review"], "decided-next-step": ["ready", "contract-details"],
@@ -838,6 +841,23 @@ function assertForm(run, expected, message) {
         assert.ok(text.includes(copy.viewFailed));
         assert.ok(byAttribute(run.mount, "data-action", "option.view")[0], "a failed view event can be tried again");
         break;
+      case "decline-all-confirm": {
+        const card = byAttribute(run.mount, "aria-labelledby", "cr-property-278")[0];
+        assert.ok(surface(card).includes(copy.declineAllConfirmTitle) && surface(card).includes(copy.declineAllConfirmBody), "declining all options asks first");
+        assert.equal(byAttribute(card, "data-action", "property.confirm").length, 1);
+        assert.equal(run.sent.length, 0, "the confirmation step sends nothing");
+        run.controller.dispatch("property.cancel", { key: "property-278" });
+        assert.equal(byAttribute(run.mount, "data-action", "property.confirm").length, 0, "cancel closes the confirmation");
+        break;
+      }
+      case "decline-all-done": {
+        assert.deepEqual(run.sent.map((call) => [call[1], call[2]]), [[3101, "QUOTE_SENT-QUOTE_VIEWED"], [3101, "QUOTE_VIEWED-DECLINED"], [3102, "QUOTE_VIEWED-DECLINED"], [3103, "QUOTE_VIEWED-DECLINED"]], "an unopened option is viewed first, then every option of the property is declined in order");
+        const property = run.controller.snapshot().view.properties.find((candidate) => candidate.key === "property-278");
+        assert.equal(property.status, "declined", "the property ends declined");
+        assert.equal(run.controller.snapshot().bulk, "", "and the page leaves the bulk decline");
+        assert.equal(byAttribute(byAttribute(run.mount, "aria-labelledby", "cr-property-278")[0], "data-action", "property.decline").length, 0, "no decline is offered once nothing is left to decline");
+        break;
+      }
       case "approve-confirm":
         assert.ok(text.includes(copy.approveConfirmOthers), "approval explains that the provider declines the other options");
         assert.equal(run.sent.length, 0, "the confirmation step sends nothing");
@@ -984,13 +1004,27 @@ function assertForm(run, expected, message) {
       }
       case "option-open": {
         const card = byAttribute(run.mount, "aria-labelledby", "cr-property-278")[0];
-        const rows = byClass(card, "cr-breakdown__row").map((row) => [row.getAttribute("data-kind"), row.children[1].textContent]);
-        assert.deepEqual(rows, [["subtotal", formatCad(8750)], ["taxes", formatCad(437.5)]], "an open option shows the server subtotal and taxes above its total");
+        const body = byAttribute(card, "id", "cr-option-3102")[0];
+        assert.equal(byClass(body, "cr-breakdown__row").length, 0, "a recurrent option shows neither subtotal nor taxes");
+        assert.equal(byAttribute(body, "data-priced", "false").length, 1, "and lists its services without a price column");
+        assert.ok(!surface(body).includes(copy.lineUnitPrice) && !surface(body).includes(formatCad(280)), "so no line price of a recurrent option reaches the page");
+        assert.ok(surface(body).includes(formatCad(9187.5)), "its server total still shows");
+        assert.equal(byAttribute(card, "data-action", "option.decline").length, 0, "an option offers no decline of its own");
+        assert.equal(byAttribute(card, "data-action", "property.decline").length, 1, "the property offers one decline for all its options");
+        run.controller.dispatch("option.toggle", { id: 3103 });
+        const perService = byAttribute(run.mount, "id", "cr-option-3103")[0];
+        const rows = byClass(perService, "cr-breakdown__row").map((row) => [row.getAttribute("data-kind"), row.children[1].textContent]);
+        assert.deepEqual(rows, [["subtotal", formatCad(595)], ["taxes", formatCad(29.75)]], "a one-off option shows the server subtotal and taxes above its total");
+        assert.ok(surface(perService).includes(formatCad(350)), "and each line's own price");
+        assert.equal(byAttribute(run.mount, "id", "cr-option-3102").length, 0, "choosing another option of the property closes the first");
+        assert.deepEqual(Object.keys(run.controller.snapshot().expanded).filter((key) => run.controller.snapshot().expanded[key]), ["3103"], "one option per property is chosen at a time");
         break;
       }
       case "agreement-review": {
-        const priced = byAttribute(run.mount, "aria-labelledby", "cr-property-278")[0];
-        assert.equal(byClass(priced, "cr-breakdown__row").length, 2, "agreement tables show subtotal and taxes when the server returns them");
+        const recurrent = byAttribute(run.mount, "aria-labelledby", "cr-property-278")[0];
+        assert.equal(byClass(recurrent, "cr-breakdown__row").length, 0, "an approved recurrent option shows neither subtotal nor taxes in the agreement");
+        assert.equal(byAttribute(recurrent, "data-priced", "false").length, 1, "nor a price per service");
+        assert.ok(surface(recurrent).includes(formatCad(9187.5)), "only its server total");
         const bare = byAttribute(run.mount, "aria-labelledby", "cr-property-661")[0];
         assert.equal(byClass(bare, "cr-breakdown").length, 0, "an option whose server returns neither field shows no breakdown");
         assert.equal(byClass(bare, "cr-total").length, 1, "and still shows its total");
@@ -1739,16 +1773,67 @@ for (const [kind, orderId, event, status] of [
 {
   const runtime = loadRuntime({ fixtures: true });
   const data = runtime.CR.fixtures.quotationData();
-  delete data.orders.find((row) => row.id === 3102).totalTaxes;
+  delete data.orders.find((row) => row.id === 3103).totalTaxes;
   const mount = runtime.document.createElement("div");
   const controller = runtime.CR.createController({ adapter: runtime.CR.fixtures.createFixtureAdapter(data, {}), mount, locale: "en-CA" });
   controller.start();
   await controller.idle();
-  controller.dispatch("option.toggle", { id: 3102 });
+  controller.dispatch("option.toggle", { id: 3103 });
   await controller.idle();
   const card = byAttribute(mount, "aria-labelledby", "cr-property-278")[0];
   assert.deepEqual(byClass(card, "cr-breakdown__row").map((row) => row.getAttribute("data-kind")), ["subtotal"], "a totalTaxes the server does not return hides the taxes row, and nothing is computed in its place");
   assert.ok(surface(card).includes(formatCad(9187.5)), "the option total stays the server grandTotal");
+}
+
+{
+  const runtime = loadRuntime({ fixtures: true });
+  const normalizer = runtime.CR.normalizer;
+  assert.equal(normalizer.recurrentPrice({ type: { code: "TIERED_RECURRENT" } }), true);
+  assert.equal(normalizer.recurrentPrice({ type: { code: "per_unit_recurrent" } }), true, "the recurrent price type is read case-insensitively");
+  assert.equal(normalizer.recurrentPrice({ type: { code: "TIERED" } }), false);
+  assert.equal(normalizer.recurrentPrice({ id: 5 }), false, "a price whose type the link cannot read keeps its price on the page");
+  const data = runtime.CR.fixtures.quotationData();
+  data.orders.find((row) => row.id === 3103).items[1].itemPrice.type = { code: "TIERED_RECURRENT" };
+  const mount = runtime.document.createElement("div");
+  const controller = runtime.CR.createController({ adapter: runtime.CR.fixtures.createFixtureAdapter(data, {}), mount, locale: "en-CA" });
+  controller.start();
+  await controller.idle();
+  const radio = byAttribute(mount, "data-focus-key", "toggle-3103")[0];
+  radio.fire("click");
+  await controller.idle();
+  const mixed = byAttribute(mount, "id", "cr-option-3103")[0];
+  assert.equal(byAttribute(mixed, "data-priced", "true").length, 1, "an option with a one-off line keeps its price column");
+  assert.ok(surface(mixed).includes(formatCad(350)) && surface(mixed).includes(controller.copy.lineIncluded), "its recurrent line reads Included instead of a price");
+  assert.equal(byClass(mixed, "cr-breakdown__row").length, 2, "and its subtotal and taxes stay");
+  byAttribute(mount, "data-focus-key", "toggle-3103")[0].fire("click");
+  await controller.idle();
+  assert.equal(controller.snapshot().expanded[3103], true, "choosing the chosen option again keeps it open");
+}
+
+{
+  const runtime = loadRuntime({ fixtures: true });
+  const data = runtime.CR.fixtures.quotationData();
+  const sent = [];
+  const adapter = runtime.CR.fixtures.createFixtureAdapter(data, { events: { "QUOTE_VIEWED-DECLINED": { outcome: "fail" } } });
+  const sendEvent = adapter.sendEvent;
+  adapter.sendEvent = (entity, id, event, metadata) => { sent.push([id, event]); return sendEvent(entity, id, event, metadata); };
+  const mount = runtime.document.createElement("div");
+  const controller = runtime.CR.createController({ adapter, mount, locale: "en-CA" });
+  controller.start();
+  await controller.idle();
+  controller.dispatch("property.decline", { key: "property-278" });
+  controller.dispatch("property.confirm", { key: "property-278" });
+  await controller.idle();
+  await tick();
+  assert.deepEqual(sent, [[3101, "QUOTE_SENT-QUOTE_VIEWED"], [3101, "QUOTE_VIEWED-DECLINED"]], "a failed decline stops the rest of the property's declines");
+  const snapshot = controller.snapshot();
+  assert.equal(snapshot.bulk, "", "the page leaves the bulk decline after a failure");
+  assert.equal(snapshot.commands["order:3101"].status, "failed");
+  assert.equal(snapshot.confirm && snapshot.confirm.kind, "decline-all", "the confirmation stays open so declining again is one step");
+  const card = byAttribute(mount, "aria-labelledby", "cr-property-278")[0];
+  assert.ok(surface(card).includes(controller.copy.failedBody), "the failure shows on the property although its option is closed");
+  controller.dispatch("property.decline", { key: "property-999" });
+  assert.equal(controller.snapshot().confirm.property, "property-278", "an unknown property opens nothing");
 }
 
 {
