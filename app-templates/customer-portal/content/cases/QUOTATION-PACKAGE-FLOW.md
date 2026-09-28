@@ -302,7 +302,9 @@ stays available for the property and declines every undecided option, viewing
 an unopened one first. The user decided that declining needs no chosen option.
 A line whose `ProductPrice` type ends in `_RECURRENT` shows no price of its own,
 and an option made only of such lines shows neither subtotal nor taxes, only
-its total — on the quote and on the agreement page alike.
+its total — on the quote and on the agreement page alike. The user accepted
+this presentation on 2026-09-28 from screenshots at desktop, 768 px and
+375 px widths in light and dark mode.
 
 ## 9. Prerequisites and open points
 
