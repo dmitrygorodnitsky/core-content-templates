@@ -79,6 +79,10 @@ action over the reviewed Orders, designed separately.
 
 ## 4. Workflows
 
+The states and events below predate 2026-09-26. Since then workflows 49, 45
+and 53 also carry the failure, retry and notification states listed in
+`QUOTATION-WORKFLOW-AUDIT-2026-09-26.md`, "Deployed scope".
+
 ### 4.1 Order — workflow 45
 
 Events, *verified*: `INITIAL-QUOTE_PREPARED`, `QUOTE_PREPARED-CHANGES_REQUESTED`,

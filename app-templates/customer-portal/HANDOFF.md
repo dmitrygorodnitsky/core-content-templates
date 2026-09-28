@@ -1,6 +1,6 @@
 # Customer Portal — cross-session handoff
 
-Updated: 2026-09-23
+Updated: 2026-09-28
 
 This is the canonical resume checkpoint for the customer portal work: the Calm
 Harbor spa tenant, the Granite Ridge snow tenant, the universal form document,
@@ -28,7 +28,7 @@ one-customer demonstration.
 
 - Repository: `/Users/imighty/Code/core-content-templates`
 - Branch: `codex/lab-ui-durable-catalog`
-- Implementation checkpoint before this handoff refresh: `a2fd49e`
+- Implementation checkpoint before this handoff refresh: `2feb009`
 - Current staging tenant: `CALM_HARBOR_SPA_STAGING`
 - Main authenticated CMS family: `CUSTOMER_PORTAL_CALM_HARBOR_STAGING`
 - Public landing CMS family: `CUSTOMER_PORTAL_CALM_HARBOR_LANDING_STAGING`
@@ -64,6 +64,9 @@ packages remain under `dist/**`, and stable CLI entrypoints remain under
 - `content/cases/QUOTATION-FLOW-IMPLEMENTATION-GAPS.md` — what workflow 49 and
   its scripts do, the team's answers, the takeover into `core-ui`, and dev-1 on
   2026-09-15 and 2026-09-16.
+- `content/cases/QUOTATION-WORKFLOW-AUDIT-2026-09-26.md` — the reliability
+  audit of workflows 49, 45 and 53, its fixes live on dev-1 since 2026-09-26,
+  the portal credentials receipt of 2026-09-27 and the readback of 2026-09-28.
 - `content/cases/SNOW-CUSTOMER-PORTAL-API.md` and
   `content/cases/CUSTOMER-SCOPE-GENERIC-API.md` — the customer-scoped API the
   backend owes, per screen and as one generic capability.
@@ -794,7 +797,9 @@ declarative `applyBehavior` value-to-step mapping; the shared
 
 Its field kinds, the repeating address list with hidden coordinates, the
 combobox behaviour and the success screen parameters are described in
-`README.md`, "Universal Form Document".
+`README.md`, "Universal Form Document". Since 2026-09-26 a form keeps one
+submission in flight and waits for Google's readiness callback before it
+imports the Maps libraries; the published `PORTAL_FORM_DOCUMENT` carries both.
 
 ## Open threads for the next session
 
@@ -879,6 +884,38 @@ checkout before treating any of them as broken.
   are approved or shipped.
 
 ## Exact next action
+
+**Since 2026-09-26** the quotation chain runs the reliability fixes of
+`content/cases/QUOTATION-WORKFLOW-AUDIT-2026-09-26.md`: workflow 49 on
+`WINTER_SERVICE_REGION_WORKFLOW_UTILS_V17` (script 302), workflow 45 on
+`SNOW_QUOTATION_ORDER_UTILITIES_V5` (306) and workflow 53 on
+`SNOW_SERVICE_AGREEMENT_WORKFLOW_UTILITIES_V13` (317, since 2026-09-27). A
+ready request no longer waits for the manager: it notifies the manager and
+moves on by itself through `REQUESTER_NOTIFICATION_PENDING` to `PROCESSED`,
+whose email reports receipt only, without an Account link. Pricing waits for
+the property's area in `WAITING_FOR_AREA` and fails visibly in
+`PRICING_FAILED`. A client's approval of the agreement ends in its `ACTIVE`,
+and issuing portal credentials leaves a receipt on the agreement
+(`PORTAL_CREDENTIALS_STATUS`). The quote form keeps one submission in flight.
+The dev-1 readback of 2026-09-28 matched every seed except the order of one
+event's attributes in workflow 53, which the seed has not changed since
+2026-09-23. In order:
+
+1. **Decide with the user:** since the comment clean-up of 2026-09-28, five
+   scripts in the `core-ui` seeds — V17 (302), V5 (306), V12 (308), V3 (316)
+   and V13 (317) — and the `PORTAL_FORM_DOCUMENT` JavaScript in `dist/` differ
+   from dev-1 only by removed comment lines. Either write them back
+   (`core-scripts apply` for the five codes and a JavaScript-only update of the
+   form document, each with the user's go) or leave the difference to their
+   next functional deploy; until then `core-scripts plan` reports the five as
+   `update`.
+2. Classify the 3 advanced Orders without lines and the 2 Orders with
+   conflicting approvals from the audit's inventory before any manual fix;
+   `core-ui` `quotationRecoveryReport.mjs` lists them read-only.
+3. The integration scenarios under the audit's "Checks and limitations" remain
+   unproven, and the platform offers no lock or transactional outbox.
+
+The state before 2026-09-26, kept as history:
 
 The public quote page renders the multi-address form and the workflow runs by
 itself through `NOTIFIED` to `READY_FOR_REVIEW`. Since 2026-09-22 entering
