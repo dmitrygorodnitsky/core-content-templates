@@ -1241,14 +1241,20 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     if (!apiKey) return Promise.reject(new Error("no-key"));
     mapsPromise = new Promise(function (resolve, reject) {
       var script = document.createElement("script");
-      script.async = true;
-      script.src = "https://maps.googleapis.com/maps/api/js?key=" + encodeURIComponent(apiKey)
-        + "&loading=async&v=weekly";
-      script.addEventListener("error", function () { reject(new Error("maps-script-failed")); });
-      script.addEventListener("load", function () {
+      var callback = "__portalFormMapsReady";
+      while (callback in global) callback += "_";
+      global[callback] = function () {
+        delete global[callback];
         var maps = global.google && global.google.maps;
         if (maps && typeof maps.importLibrary === "function") resolve(maps);
         else reject(new Error("maps-unavailable"));
+      };
+      script.async = true;
+      script.src = "https://maps.googleapis.com/maps/api/js?key=" + encodeURIComponent(apiKey)
+        + "&loading=async&v=weekly&callback=" + callback;
+      script.addEventListener("error", function () {
+        delete global[callback];
+        reject(new Error("maps-script-failed"));
       });
       document.head.appendChild(script);
     }).then(function (maps) {
@@ -1281,6 +1287,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     this.fieldNodes = {};
     this.unpainted = {};
     this.pressing = false;
+    this.submissionPending = false;
     this.step = 0;
     this.state = "loading";
     this.result = null;
@@ -1466,6 +1473,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
 
   PortalForm.prototype.submit = function () {
     var self = this;
+    if (this.submissionPending) return Promise.resolve(false);
     this.flushPending();
     var groups = this.visibleGroups();
     var ok = true;
@@ -1506,32 +1514,38 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
       collect(field);
     });
 
+    this.submissionPending = true;
     this.state = "submitting";
     this.render();
 
-    return fetch(base + "/core-cms/api/form/submit.json", {
+    return Promise.resolve().then(function () { return fetch(base + "/core-cms/api/form/submit.json", {
       method: "POST",
       credentials: "omit",
       headers: { "Content-Type": "application/json", accept: "application/json" },
       body: JSON.stringify({
-        type: { id: this.model.id },
+        type: { id: self.model.id },
         organization: { id: organizationId },
         attributes: attributes,
       }),
-    })
+    }); })
       .then(function (response) {
         if (!response.ok) throw new Error("HTTP " + response.status);
         return response.json().catch(function () { return {}; });
       })
       .then(function (payload) {
+        self.submissionPending = false;
         self.state = "success";
         self.result = payload;
         self.render();
         self.focusKeyed("success");
-        if (typeof self.cfg.onSubmit === "function") self.cfg.onSubmit(payload, self.values);
+        if (typeof self.cfg.onSubmit === "function") {
+          try { self.cfg.onSubmit(payload, self.values); }
+          catch (error) { console.error("PortalForm onSubmit callback failed", error); }
+        }
         return true;
       })
       .catch(function (error) {
+        self.submissionPending = false;
         self.state = "submit-error";
         self.result = { message: error.message };
         self.render();
@@ -1678,11 +1692,12 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     if (multi && this.step > 0) {
       var back = text("button", "btn btn--ghost btn--lg", this.cfg.copy.backLabel);
       back.type = "button";
-      back.addEventListener("click", function () { self.step -= 1; self.render(); self.focusStep(); });
+      back.disabled = this.submissionPending;
+      back.addEventListener("click", function () { if (self.submissionPending) return; self.step -= 1; self.render(); self.focusStep(); });
       actions.appendChild(back);
     }
     var last = this.step === groups.length - 1;
-    var submitting = this.state === "submitting";
+    var submitting = this.submissionPending || this.state === "submitting";
     var next = text("button", "btn btn--primary btn--lg", submitting ? this.cfg.copy.submittingLabel : last ? this.cfg.copy.submitLabel : this.cfg.copy.nextLabel);
     next.type = "submit";
     next.setAttribute("data-focus", "next");
@@ -1699,6 +1714,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
   };
 
   PortalForm.prototype.advance = function (groups) {
+    if (this.submissionPending) return;
     this.flushPending();
     if (!this.validateGroup(groups[this.step])) { this.render(); this.focusInvalid(groups[this.step]); return; }
     if (this.step < groups.length - 1) { this.step += 1; this.render(); this.focusStep(); return; }
@@ -1805,6 +1821,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
   };
 
   PortalForm.prototype.restart = function () {
+    if (this.submissionPending) return;
     this.values = {};
     this.errors = {};
     this.touched = {};

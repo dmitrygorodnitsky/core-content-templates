@@ -114,7 +114,9 @@ covers eighteen field kinds — text, textarea, password, email, tel, url, colou
 date, number, slider, boolean, select, multiselect, radio, checklist, combobox,
 address and a repeating address list — plus multi-step groups, input masks,
 per-field validation, and the loading, empty, error, blocked, submitting, success
-and submit-error states.
+and submit-error states. A submission in flight blocks a second request, Back,
+Next and start-over until it settles, and a failing `onSubmit` callback of the
+host page leaves an accepted submission a success.
 
 An attribute whose Input format declares `address`, or an attribute of Core's
 `com.pixelnation.common.domain.Address` class that carries no options, becomes an
@@ -124,7 +126,10 @@ from those options, like any attribute with choices. It needs
 `FORM_MAPS_API_KEY`, a Google browser key that is public
 by design and must be restricted by HTTP referrer and API list. While that
 parameter is empty no Google script is loaded at all and the field stays a plain
-text input that still submits. The address field submits the formatted address
+text input that still submits. With a key the script loads with `loading=async`,
+and the field imports the Places, geocoding, marker and map libraries once,
+after Google's readiness callback rather than the script's load event. The
+address field submits the formatted address
 text. A hidden attribute whose Input format declares
 `coordinates-of:<address code>` is never rendered and submits one JSON entry per
 current address that Google located, so it stays empty without a key.

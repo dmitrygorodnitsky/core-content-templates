@@ -469,7 +469,7 @@ const degradedPage = async (name, breakGoogle) => {
 await degradedPage("a script that fails to load", (context, script) => script.fire("error"));
 await degradedPage("a library import that fails", (context, script) => {
   context.window.google = { maps: { importLibrary: (name) => (name === "places" ? Promise.reject(new Error("places refused")) : Promise.resolve({})) } };
-  script.fire("load");
+  context.window[new URL(script.src).searchParams.get("callback")]();
 });
 
 const single = new PortalForm({ schema: kitchen, locale: "en", copy: copyEcho });
@@ -684,9 +684,14 @@ keyed.render();
 const mapsScript = dom.document.head.children[0];
 assert.match(String(mapsScript.src), /^https:\/\/maps\.googleapis\.com\/maps\/api\/js\?key=test-key&/);
 assert.match(String(mapsScript.src), /[?&]loading=async(&|$)/);
-sandbox.window.google = { maps };
-assert.equal(typeof maps.Map, "undefined", "the async bootstrap carries importLibrary and no classes when its script loads");
+const mapsCallback = new URL(mapsScript.src).searchParams.get("callback");
+assert.ok(mapsCallback, "async Google loading must register a readiness callback");
 mapsScript.fire("load");
+await librariesLoaded();
+assert.equal(imported.length, 0, "the script load event before Google is ready must not initialize or reject the loader");
+sandbox.window.google = { maps };
+assert.equal(typeof maps.Map, "undefined", "the async bootstrap carries importLibrary and no classes when its callback runs");
+sandbox.window[mapsCallback]();
 await librariesLoaded();
 assert.deepEqual(plain([...imported].sort()), ["geocoding", "maps", "marker", "places"], "every library the control uses is imported, once");
 const keyedAddresses = () => plain(keyed.values.PROPERTY_ADDRESSES);
@@ -1246,6 +1251,38 @@ for (const token of ["--accent", "--ink", "--surface", "--hair", "--radius-md", 
 }
 assert.doesNotMatch(css, /#[0-9a-f]{6}(?![0-9a-f])/i, "no raw hex colour may bypass the theme tokens");
 assert.doesNotMatch(css, /\.df-/, "the portal renderer must not depend on the corporate form stylesheet");
+
+const originalFetch = sandbox.fetch;
+let settleSubmission;
+let guardedRequests = 0;
+sandbox.fetch = () => {
+  guardedRequests += 1;
+  return new Promise((resolve, reject) => { settleSubmission = { resolve, reject }; });
+};
+gated.state = "ready";
+gated.step = 1;
+const pendingSubmit = gated.submit();
+assert.equal(await gated.submit(), false, "a duplicate programmatic submission is dropped");
+assert.equal(guardedRequests, 1, "only one request starts during the pending window");
+assert.equal(gated.submissionPending, true);
+const pendingStep = gated.step;
+gated.advance(gated.visibleGroups());
+gated.restart();
+assert.equal(gated.step, pendingStep, "navigation and restart cannot reset an in-flight submission");
+assert.equal(collect(gatedMount, "pf-actions")[0].children.every((button) => button.disabled), true, "back and submit stay disabled during submission");
+settleSubmission.reject(new Error("Network unavailable"));
+assert.equal(await pendingSubmit, false);
+assert.equal(gated.submissionPending, false, "failure releases the owner guard");
+assert.equal(gated.state, "submit-error");
+gated.cfg.onSubmit = () => { throw new Error("Host callback failed"); };
+const retrySubmit = gated.submit();
+await settle();
+assert.equal(guardedRequests, 2, "an explicit retry starts a new request after failure");
+settleSubmission.resolve({ ok: true, status: 200, json: () => Promise.resolve({ id: 8 }) });
+assert.equal(await retrySubmit, true);
+assert.equal(gated.state, "success", "a host callback failure must not turn an accepted submission into a retryable error");
+assert.equal(gated.submissionPending, false);
+sandbox.fetch = originalFetch;
 
 const { exportPortalFormManual } = await import("./export-portal-form-manual.mjs");
 const documentDir = path.join(root, "dist/manual-upload/.portal-form-document-check");
