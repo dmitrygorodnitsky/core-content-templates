@@ -481,9 +481,9 @@ requester was a plus-alias of the user's mailbox, and the user received every
 email.
 
 1. **Request.** Form 63 created Account 717 (type `SNOW_RESIDENTIAL_CUSTOMER`),
-   Property 963 (999 Canada Place) and draft Orders 56–58. Its `INITIAL` hook
-   never ran after the anonymous submit; the same event sent through
-   `app-1-core-cms` ran the whole chain in 8 s.
+   Property 963 (999 Canada Place) and draft Orders 56–58. Its automatic
+   submit never came after the anonymous submit (§9); the same event sent
+   through `app-1-core-cms` ran the whole chain in 8 s.
 2. **Pricing.** Saving an order line through `core-bill/api/order-item/save.json`
    fails on every node with "Execution error", and the backend is asked for
    the trace. The operator script `WINTER_SERVICE_QUOTATION_DRAFT_PRICER` (V1,
@@ -533,9 +533,9 @@ an example.com requester and a hand-issued link:
   role and was linked from `Account.user`. The Account's audit records both
   changes as `system`.
 
-The only manual step was the form's first event. The anonymous submit landed on
-`app-3-core-cms`, whose `INITIAL` hook does not fire, and the event was sent
-through `app-1-core-cms`.
+The only manual step was the form's first event, sent through `app-1-core-cms`
+after the automatic one did not come. The cause was not the node: see
+"The quote form that did not submit itself" in §9.
 
 ### The quotation update run, 2026-09-23
 
@@ -597,11 +597,27 @@ pointing to the provider's newest email, and the portal invitation.
 Next, in order:
 
 1. **Backend.**
-   - `app-3-core-cms` does not fire the `GET_QUOTE_` form's `INITIAL` hook.
-     Form 64 was submitted there at 11:55:32 UTC and stalled; the same event
-     through `app-1-core-cms` ran the chain.
    - The CMS nodes do not invalidate each other's page cache after a template
      save.
+   - **The quote form that did not submit itself** (found 2026-09-29). Of the
+     `GET_QUOTE_` forms since 2026-09-16, 24 left `INITIAL` by themselves and
+     12 stayed there: 44, 45, 53, 58, 63, 64, 75, 79, 80, 84, 86 and 87. Nine
+     were submitted by hand after 30 s to 9.5 min; 44, 84 and 87 still wait.
+     - **Timing, not the node:** each form that went on was written to the
+       audit at most 31 ms after it was created; of the stalled ones, eight
+       took 36–68 ms and form 87 took 1055 ms. Forms 64 and 66, and 84 and 85,
+       came from one node's block of revision numbers, and one of each pair
+       stalled.
+     - **Why:** the `INITIAL` hook defers `INITIAL-SUBMITTED` through
+       `runAfterTx`, whose callback runs on a pool thread about 10 ms after its
+       commit. `WINTER_SERVICE_REGION_WORKFLOW_UTILS_V17` read the form once
+       and skipped a form it could not see yet, leaving only a log line.
+     - **Fixed** by V18 (script 325), bound to workflow 49 on 2026-09-29: it
+       looks again every 250 ms for up to 60 s, submits once, and logs an error
+       when it gives up. A callback lost with its node still stays in
+       `INITIAL`; `core-ui` `quotationRecoveryReport.mjs` lists such forms.
+     - **Not yet seen:** a submission through V18. The next forms should all
+       leave `INITIAL` within a second.
 2. **Build the three client forms** specified for the portal.
 3. **Price by the founder's model.** Received from the user on 2026-09-23.
    - A visit of snow removal and a visit of de-icing each have a price set by

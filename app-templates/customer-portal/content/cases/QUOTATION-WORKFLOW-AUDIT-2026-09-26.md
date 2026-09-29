@@ -460,6 +460,13 @@ needed.
 Reconcile long intermediate states against the active request ID, and retry
 only known idempotent operations. Do not push every old form through in bulk.
 
+**Checked since.** A probe of 2026-09-28 showed that `runAfterTx` runs its
+callback on an in-memory pool thread about 10 ms after the commit, so nothing
+records a callback that is lost or finds nothing. The start of the chain lost
+12 of 36 quote forms that way: a form whose creation committed late stayed in
+`INITIAL`. Since 2026-09-29 the start waits for the form
+(`QUOTATION-PACKAGE-FLOW.md` §9); the later steps still read once.
+
 ### F8 — P2: part of the form data takes no part in further processing
 
 `RISK_FACTORS` exists in the live form, but no read of it was found in the

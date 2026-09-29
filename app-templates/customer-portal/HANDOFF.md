@@ -885,6 +885,13 @@ checkout before treating any of them as broken.
 
 ## Exact next action
 
+**Since 2026-09-29** a quote form waits until it is visible before it submits
+itself: workflow 49 runs `WINTER_SERVICE_REGION_WORKFLOW_UTILS_V18` (script
+325). Before that, a form whose creation committed late stayed in `INITIAL`;
+12 of 36 did (`content/cases/QUOTATION-PACKAGE-FLOW.md` §9, "The quote form
+that did not submit itself"). Next: every new form should leave `INITIAL`
+within a second; forms 44, 84 and 87 still wait there for the team's decision.
+
 **Since the evening of 2026-09-28** managers have a bulk Send Quotation in Snow
 CRM (`content/cases/QUOTATION-PACKAGE-FLOW.md` §11). Quotations to Send →
 Group actions → Send Quotation runs `SNOW_BULK_SEND_QUOTATION_V2` (script 324)
