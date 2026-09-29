@@ -200,6 +200,29 @@ a kept password, a missing password, a failing read, a failed or uncertain
 reset that is never replayed, a lost success receipt, a started reset and a
 failed provisioning.
 
+**2026-09-29: portal credentials had never been issued since provisioning V2.**
+Agreement 146, the first approval through V3, fell into `ACTIVATION_FAILED`
+three seconds after the client approved it.
+- **V3:** `credentialDocument` compared the client through
+  `String.valueOf(document.findFirstAttributeValue("CLIENT"))`. Core declares
+  that method as `<K> K`, so the call binds to `String.valueOf(char[])` and
+  throws `ClassCastException` for every value. The check stubbed the method
+  with an `Object` result.
+- **Since V2:** the service identity that V2 introduced lacked `P_PASSWD_W`,
+  which Core requires for `UserService.generateNewPassword`, so a reset was
+  denied.
+- **Fixed** by provisioning V4 (script 330) and V5 (333), and by utilities V15
+  (331) and V16 (334), which clear a stored job request when its `FAILED`
+  status is read and after a successful `finalizeApproval`. Workflow 53 runs
+  V16. The check now runs the real ownership method against a generic stub and
+  pins the identity's rights.
+- **Agreement 146** is `ACTIVE` with User 54, but the denied attempt created
+  that User and the retry kept its password (`EXISTING_PASSWORD_UNCHANGED`), so
+  its client holds no credentials. The user chose not to send them and to test
+  a fresh request instead.
+- **Reconciling a failed reset:** send the User a password reset as well. A
+  retry takes a User created by the failed run for an existing customer.
+
 ## Readback on 2026-09-28
 
 Read-only dry runs of the `core-ui` operators against dev-1, before the

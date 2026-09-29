@@ -885,6 +885,13 @@ checkout before treating any of them as broken.
 
 ## Exact next action
 
+**Since the afternoon of 2026-09-29** a client's approval activates the
+agreement and issues portal credentials again: workflow 53 runs utilities V16
+(script 334) with provisioning V5 (333). Provisioning V2 to V4 never issued
+them (audit, "Portal credentials receipt"). Next: the team runs a fresh
+request end to end. Agreement 146 stays `ACTIVE` without credentials for its
+client, by the user's choice.
+
 **Since 2026-09-29** a quote form waits until it is visible before it submits
 itself: workflow 49 runs `WINTER_SERVICE_REGION_WORKFLOW_UTILS_V18` (script
 325). Before that, a form whose creation committed late stayed in `INITIAL`;
