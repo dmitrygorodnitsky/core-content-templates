@@ -65,8 +65,9 @@ Since 2026-09-17 the manager no longer builds the quotes: every entity is
 created with the request, the form no longer collects a property size, and the
 manager reviews and corrects the Orders. Since 2026-09-28 the manager can send
 many packages at once with a bulk Send Quotation over agreements (§11). The
-spec's bulk action over Orders is not built, because the agreement is the
-package.
+spec's bulk send over Orders is not built, because the agreement is the
+package. Since 2026-09-29 the manager can price and approve many quotes at once
+with Price Quotes and Approve Quotes over Orders (§11); they send nothing.
 
 ## 3. Records
 
@@ -447,6 +448,7 @@ this presentation on 2026-09-28 from screenshots at desktop, 768 px and
 | Order hooks of §5 on workflow 45 | *verified* 2026-09-22: workflow 45 is bound to SYSTEM-owned `SNOW_QUOTATION_ORDER_UTILITIES_V1` (script 238); Orders entering `QUOTE_APPROVED_INTERNALLY` join the agreement, client approval declines sibling options for the same property, terminal decisions evaluate the package, and requested changes require `MESSAGE` and notify `QUOTATION_MANAGER`. Since 2026-09-23 the binding is `SNOW_QUOTATION_ORDER_UTILITIES_V2` (script 260), which also writes `SERVICE_ADDRESS` (§9); its hook path is proven by the next end-to-end run |
 | quotation delivery on `QUOTATION_SENT` | *verified* 2026-09-22: workflow 53 is bound to `SNOW_SERVICE_AGREEMENT_WORKFLOW_UTILITIES_V5` (script 255). Agreement 136 automatically sent Orders 41–42, issued combined grant 58 across Account, Document, Order, OrderItem, ProductPrice and Product, persisted `QUOTATION_GRANT_ID`, and completed the email call through processor 256 and template 257. Incomplete agreement 137 entered `QUOTATION_SEND_FAILED` without a grant ID and without moving Order 50 or Account 712. **Defect found 2026-09-23:** the grant carries `P_WF:SERVICE_AGREEMENT_LIFECYCLE:QUOTATION_SENT-AWAITING_CLIENT_DETAILS` instead of `…:AWAITING_CLIENT_DETAILS-CLIENT_DETAILS_RECEIVED` (`SNOW_SERVICE_QUOTATION_DELIVERY_V1`), so a link from the email cannot send the contract details; every live details pass so far used a hand-issued grant. Fixed the same day by `SNOW_SERVICE_QUOTATION_DELIVERY_V2` (script 263); grant 60 of the end-to-end run below carried the details event, and the client sent the details through the emailed link |
 | Send Quotation as a bulk action | *deployed* 2026-09-28 over agreements rather than Orders (§11); no manager has run it yet |
+| Price Quotes and Approve Quotes as bulk actions | *deployed* 2026-09-29 over Orders (§11); tasks 766 and 775 priced quotes 77–79 and approved them into agreement 147 through the API key; no manager has run them yet |
 | a revised quote back to the client | *verified* 2026-09-23: `Send Updated Quotation` (`QUOTATION_SENT-QUOTATION_UPDATE`), the transient `QUOTATION_UPDATE`, workflow utility V11 (script 297) and quotation delivery V4 (script 298) with email template 299. On agreement 140 the old emailed link answered 401, the new one read the added line anonymously, and the client's approval through it moved the agreement to `AWAITING_CLIENT_DETAILS` (the quotation update run below) |
 | quote review page | *verified* 2026-09-22: the regenerated package is live at `/pages/SNOWLIMITLESS/review`; all four live template hashes match the repository. Read-only grant 50 over 19 exact records rendered three quote cards, six product lines, states and server totals in the browser. On 2026-09-23 the version with the checking state, returned details, portal invitation and numbered terms was uploaded: the four hashes match, and `REVIEW_API_BASE_URL` and PageContext 21 were kept. The version live since the end of that day follows the last decision and the details check on its own, words a return on a reopened link, and holds every accepted command until a read shows it; `PORTAL_URL` points at the published portal. Since the evening of 2026-09-23 it also knows `QUOTATION_UPDATE` and sends a client with a closed link to the provider's newest email. The CMS nodes do not invalidate each other's page cache, so each upload was followed by one identical save steered to the node still serving the old page |
 | client decisions through a link | *verified in the live browser* 2026-09-22 with combined grant 57 over agreement 135 and Orders 39–40. Opening each option sent `QUOTE_SENT-QUOTE_VIEWED`; Order 39 then reached `CLIENT_APPROVED`. The page refused an empty change request for Order 40, sent the supplied `MESSAGE`, and reached `CUSTOMER_CHANGES_REQUESTED`; its summary showed one approved and one changes-requested property. The test grant was revoked, `QUOTATION_GRANT_ID` cleared and the token returned `401` after the proof |
@@ -712,8 +714,8 @@ that Core lists for the signed-in user; the screens configure none.
 | take or reject a request | Requests to Review | `GET_QUOTE_`, `READY_FOR_REVIEW` | Process, Reject |
 | retry a request | Requests to Retry | `VALIDATION_FAILED`, `PROCESSING_FAILED`, `DELIVERY_FAILED` | Retry Validation, Retry Processing, Retry Customer Delivery |
 | enter the area | Quoted Properties | `SNOW_REMOVAL_PROPERTY`, `INITIAL` | Service Area (sq ft), Save |
-| prepare, revise | Quotes to Prepare | `INITIAL`, `CHANGES_REQUESTED`, `CUSTOMER_CHANGES_REQUESTED` | Prepare Quote, Modify, Changes Requested; lines under Order Items |
-| approve internally | Quotes to Approve | `QUOTE_PREPARED` | Approve Quote, Request Changes |
+| prepare, revise | Quotes to Prepare | `INITIAL`, `WAITING_FOR_AREA`, `PRICING_FAILED`, `CHANGES_REQUESTED`, `CUSTOMER_CHANGES_REQUESTED` | Prepare Quote, the two pricing retries, Modify, Changes Requested; Price Quotes for many; lines under Order Items |
+| approve internally | Quotes to Approve | `QUOTE_PREPARED` | Approve Quote, Request Changes; Approve Quotes for many |
 | send | Quotations to Send | `SERVICE_AGREEMENT`, `QUOTATION` | Send Quotation |
 | send an update | Quotations with Client | `QUOTATION_SENT`, `QUOTATION_UPDATE`, `AWAITING_CLIENT_DETAILS`, `CLIENT_DETAILS_RECEIVED` | Send Updated Quotation |
 | correct, approve | Agreements in Draft, Management Approval | `DRAFT`, `PENDING_MANAGEMENT_APPROVAL` | Save; Request Management Approval; Approve |
@@ -774,8 +776,8 @@ through a user's Roles tab.
   to `QUOTE_PREPARED`; agreements (`P_DOCUMENT_R`, `_W`, `_E`) with Send
   Quotation, Send Updated Quotation, cancel from `QUOTATION`, Request
   Management Approval, Approve, Request Changes and the three retries; the
-  bulk Send Quotation below. 80 permissions in all, listed in `core-ui`
-  `snowQuotationManagerRbac.json`.
+  bulk Send Quotation, Price Quotes and Approve Quotes below. 81 permissions in
+  all, listed in `core-ui` `snowQuotationManagerRbac.json`.
 - **Holds none of the client's events or the automation's,** so its button bar
   shows only its own steps.
 - **In its name:** the hooks dispatch their scripts as the acting user, and
@@ -828,7 +830,50 @@ ticked rows, and Run starts one bulk task.
   returned three failures naming their states and sent nothing.
   `snowBulkSendQuotationCheck` runs the production methods under javac.
 
+**Price Quotes and Approve Quotes run over many quotes at once** (deployed
+2026-09-29), from Quotes, Quotes to Prepare and Quotes to Approve. They are the
+team's step after the area is entered: price the waiting quotes, review the
+prices, approve.
+- **The queue:** Quotes to Prepare also lists `WAITING_FOR_AREA` and
+  `PRICING_FAILED` since then. Those quotes had no queue before, only the full
+  Quotes list.
+- **Price Quotes** gives each quote the pricing event of its own state:
+  Prepare Quote from `INITIAL`, or the retry from `WAITING_FOR_AREA` or
+  `PRICING_FAILED`, at most five at a time. A quote counts as priced once its
+  lines pass the checks of `requirePriced` and `QUOTATION_OPERATION_ERROR` is
+  empty. One that lands back in `WAITING_FOR_AREA` or `PRICING_FAILED` comes
+  back as a failure with its reason; one still pricing when the run ends
+  counts as started, as after the button.
+- **Approve Quotes** approves quotes in `QUOTE_PREPARED` whose pricing has
+  finished. The quotes of one request, one account and source form and so one
+  package, go one at a time: the next starts only after the previous one is in
+  its agreement's `ORDERS` or has failed to join. Different requests run side
+  by side, five at most. This keeps a bulk run from creating a second package
+  (audit F6); it adds no lock against a manager approving the same request by
+  hand during the run.
+- **Two scripts:** a bulk task runs on the `CORE` nodes, which lack the billing
+  module, so the first version, which imports `Order`, did not compile there
+  (task 757). The action is `SNOW_BULK_QUOTES_DISPATCH_V1` (script 338). It
+  hands the selection to `SNOW_BULK_QUOTES_V2` (script 337) on a billing node,
+  in the manager's name, and returns its outcomes. The worker starts quotes in
+  the first 13 s and returns by 20 s; the dispatcher waits up to 26 s of the
+  task's 30.
+- **Records:** registry row 4 (`SNOWLIMITLESS`, `Order`) with Price Quotes as
+  action 21 and Approve Quotes as action 22. The role gained
+  `P_SCRIPT_X_SNOW_BULK_QUOTES_DISPATCH_V1`. `snowBulkQuotesCheck` runs both
+  scripts under javac; the configuration push was read back byte for byte.
+- **Proven through the API key:** task 766 priced quotes 77, 78 and 79 of
+  request 79 (595, 1,750 and 7,000), left 65 in `WAITING_FOR_AREA` because
+  property 966 has no area, and refused 82 in `QUOTE_SENT`. Task 775 approved
+  78, 77 and 79 one after another into the one new agreement 147
+  (`SERVICE_AGREEMENT_43_722_FORM_79`, `ORDERS` `[78, 77, 79]`) and refused 65.
+  Agreement 147 now waits in Quotations to Send.
+
 Open:
+- **No manager has run Price Quotes or Approve Quotes.** The role holds only
+  the dispatcher's permission. The worker is handed over in the manager's
+  name, as workflow 45 hands over its pricer; the first run by a manager shows
+  whether that also needs `P_SCRIPT_X_SNOW_BULK_QUOTES_V2`.
 - **No manager has run the bulk Send Quotation.** Through the API key,
   `bulk-action/execute.json` answers a bare 500 for every
   `X-Organization-Code` except `SYSTEM`, the platform's own example action

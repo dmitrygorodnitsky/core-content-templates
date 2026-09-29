@@ -885,6 +885,19 @@ checkout before treating any of them as broken.
 
 ## Exact next action
 
+**Since the evening of 2026-09-29** managers can price and approve many quotes
+at once in Snow CRM: Price Quotes and Approve Quotes under Group actions on
+Quotes, Quotes to Prepare and Quotes to Approve
+(`content/cases/QUOTATION-PACKAGE-FLOW.md` §11). Quotes to Prepare now also
+lists `WAITING_FOR_AREA` and `PRICING_FAILED`. A bulk task runs on `CORE`
+nodes without the billing module, so `SNOW_BULK_QUOTES_DISPATCH_V1` (script
+338) hands each run to `SNOW_BULK_QUOTES_V2` (337) on a billing node. Next: a
+manager prices the waiting quotes of a request after its area is entered,
+reviews them and approves them; that run also shows whether the manager needs
+`P_SCRIPT_X_SNOW_BULK_QUOTES_V2`. Agreement 147, from the proof run over quotes
+77–79, waits in Quotations to Send; quote 65 waits for the area of property
+966.
+
 **Since the afternoon of 2026-09-29** a client's approval activates the
 agreement and issues portal credentials again: workflow 53 runs utilities V16
 (script 334) with provisioning V5 (333). Provisioning V2 to V4 never issued

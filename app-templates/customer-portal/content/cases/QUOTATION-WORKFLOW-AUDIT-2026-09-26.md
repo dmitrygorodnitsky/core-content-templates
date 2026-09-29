@@ -467,6 +467,14 @@ First define the package key (for example organization + Account + request or
 season), then ensure a single creation and add Orders with a conflict retry.
 This matters most before any automatic bulk approval of quotes.
 
+**2026-09-29, bulk approval:** the bulk Approve Quotes (`core-ui`
+`SNOW_BULK_QUOTES_V2`, script 337) keeps one package from being created twice
+by its own run. It approves the quotes of one account and source form one at a
+time and starts the next only after the previous one is in its agreement's
+`ORDERS` or has failed to join; different requests run side by side. It adds
+no lock: an approval by hand of the same request during a run still races as
+before. Task 775 approved quotes 78, 77 and 79 into the single agreement 147.
+
 ### F7 — P2: the automatic chain shows no recovery of missed steps
 
 The start and the following steps run through `runAfterTx`. The checked scripts
