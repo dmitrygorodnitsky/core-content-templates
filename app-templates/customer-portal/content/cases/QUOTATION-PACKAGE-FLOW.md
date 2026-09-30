@@ -218,6 +218,7 @@ approved.
 | Order enters `DECLINED` | evaluates the package | |
 | Order enters `CUSTOMER_CHANGES_REQUESTED` | notifies `QUOTATION_MANAGER` with `MESSAGE` | |
 | package evaluation | see §6 | |
+| Agreement enters `AWAITING_CLIENT_DETAILS` (utilities V19, seed) | once per agreement, confirms the client's decisions by email through `SNOW_QUOTATION_DECISION_CONFIRMATION_V1` (§6) | logged; `DECISION_CONFIRMATION_STATUS` keeps a second entry, after details sent back for correction, from sending again |
 | Agreement enters `CLIENT_DETAILS_RECEIVED` | checks the ten details the event carried; when they are complete, writes Party B into the account and a snapshot into the agreement, removes unapproved Orders from `ORDERS`, revokes the quotation link, notifies `CONTRACT_MANAGER` and sends the agreement to `DRAFT` (§4.2) | writes the codes of what is missing or invalid to `CLIENT_DETAILS_ERRORS` (comma-separated), or `PROCESSING_FAILED` when processing itself fails, and sends it back to `AWAITING_CLIENT_DETAILS`; the page marks each named field and says a `PROCESSING_FAILED` return is not the client's mistake |
 | Agreement enters `INTERNALLY_APPROVED` | sends it on to `SENT_TO_CLIENT` (spec §13) | |
 | Agreement enters `SENT_TO_CLIENT` | issues the agreement link; emails the primary contact | `AGREEMENT_SEND_FAILED` |
@@ -251,6 +252,23 @@ Evaluated whenever an Order of the package enters `CLIENT_APPROVED` or
 3. Every property decided and at least one approval → `AWAITING_CLIENT_DETAILS`.
 4. Every property decided and no approval → `CANCELED`, and `QUOTATION_MANAGER`
    is told.
+
+When the package moves to `AWAITING_CLIENT_DETAILS`, the client gets one email
+confirming the decisions (task 19 of the team's list; the user decided on
+2026-09-30 that it goes once, after every property is decided, not after each
+approval). It lists each property of the package in order with its approved
+option and the server's total, or Declined, and names the next step: the
+contract details, through the link of the quotation email, because the
+link's token is never stored and cannot be sent again. The confirmation script
+runs on a node with `CORE`, `CORE-ACCT` and `CORE-BILL`, writes
+`DECISION_CONFIRMATION_STATUS` = `QUEUE_RESULT_UNKNOWN` before it queues the
+email and `QUEUED` after, and sends nothing when the status is already set: a
+second entry into the state, after details are sent back for correction, sends
+nothing, and a send whose outcome is unknown waits for an operator. A package
+with nothing approved is canceled and gets no confirmation. Scripts 349–351
+(the email, the confirmation and utilities V19) exist on dev-1 and compile, and
+the three agreement attributes are on type 17 since 2026-09-30; the workflow
+binding waits with the rest of V19 (§8).
 
 An Order the manager never approved internally is not in the package and does
 not hold it back. A second season's quotes for the same client start a new
@@ -405,8 +423,8 @@ Contact us from its CMS copy. The two organization fields (type 4) and the
 three agreement attributes (type 17) are live; SNOWLIMITLESS has no client
 phone or email yet. Workflow 53 still runs utilities V16: `app-2-core` and
 `app-4-core` have failed every new script compilation since 2026-09-29 or 30
-("cannot access com"), V16 included; the seed's utilities, V18 since task 21
-below, are bound once they compile again.
+("cannot access com"), V16 included; the seed's utilities, V19 since tasks 21
+and 19, are bound once they compile again.
 Until then no agreement carries the values, and the page shows neither a logo
 nor Contact us.
 
@@ -449,7 +467,8 @@ a plain text area, not the quote's change request.
   `app-2-core` and `app-4-core` serve every `/core` request and cannot compile
   a script. Whether a script can write a transition's metadata after the commit
   is not proven yet: probe workflow 62 (`ZZ_TRANSITION_PROBE`, script 345,
-  SYSTEM document type 18) is in place to answer it before V18 is bound.
+  SYSTEM document type 18) is in place to answer it before the seed's
+  utilities, V19 by now, are bound.
 
 ## 9. Prerequisites and open points
 

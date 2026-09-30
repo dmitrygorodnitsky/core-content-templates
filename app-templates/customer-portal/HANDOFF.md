@@ -893,6 +893,15 @@ restart the two nodes. Check with a SYSTEM document of probe type 18 bound to
 workflow 53, or with `ZZ_SCRIPT_RESULT_VISIBILITY_PROBE_V1#whereAmI` through
 `exec.json?nodeId=`.
 
+**Late on 2026-09-30, task 19:** core-ui carries one confirmation email to the
+client after every property is decided: the `onEnter` of
+`AWAITING_CLIENT_DETAILS` in utilities V19 dispatches
+`SNOW_QUOTATION_DECISION_CONFIRMATION_V1` with template
+`WINTER_SERVICE_QUOTATION_DECISIONS_CONFIRMED_V2`
+(`content/cases/QUOTATION-PACKAGE-FLOW.md` §6). Scripts 349–351 exist unbound;
+the three agreement attributes are live on type 17. The workflow apply below
+binds V19, which carries task 21 and the provider card as well.
+
 **Late on 2026-09-30, task 21:** the review page offers Request changes beside
 Approve on the agreement, and core-ui carries the new workflow step
 `CLIENT_CHANGES_REQUESTED` with utilities V18, agreement delivery V4 and the
@@ -903,7 +912,8 @@ which no link issued so far does.
   the plans observe, hook-write, after-write and context-put, and confirm that
   a transition's metadata written after the commit reads back through
   `document-state-transition/list.json`. Then apply
-  `serviceAgreementWorkflows.json` (V18 and the three events),
+  `serviceAgreementWorkflows.json` (V19, the three events and the
+  `AWAITING_CLIENT_DETAILS` hook),
   `snowQuotationManagerRbac.json` with rbac.ts, and check that the plans show
   no change.
 - Next: the user accepts or rejects the presentation; the team's run sends a
@@ -916,8 +926,8 @@ the agreement when it is sent (`content/cases/QUOTATION-PACKAGE-FLOW.md` §8).
 `CLIENT_REVIEW_DOCUMENT` on both dev-1 CMS nodes matches the package; the type
 changes are live.
 - Blocked: workflow 53 stays on V16 until `app-2-core` and `app-4-core` compile
-  scripts again. The seed now binds V18, which keeps V17's copy and adds task
-  21; apply it from core-ui with `workflows.ts apply
+  scripts again. The seed now binds V19, which keeps V17's copy and adds tasks
+  21 and 19; apply it from core-ui with `workflows.ts apply
   --file=scripts/dev/seeds/serviceAgreementWorkflows.json
   --base-url=https://dev-1.servicewand.com/core
   --owner-org=SERVICE_WAND_WINTER_SERVICES --apply` after the probe of task 21
