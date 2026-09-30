@@ -152,7 +152,13 @@ mousedown moves focus and a click is lost on an element a re-render removed,
 proves that the first click on a suggestion lands, that typed text survives any
 re-render so Continue commits what is on screen, and that Enter or `+` asks the
 Geocoder for the committed string without any blur. A script that fails to load
-or a library import that fails leaves a plain input that still submits. It also refuses a renderer that gains
+or a library import that fails leaves a plain input that still submits. For an
+attribute declaring `within:<south>,<west>,<north>,<east>` it asserts that a
+typed address is added only once the Geocoder has located it inside the area,
+that one outside it or one the Geocoder cannot find stays in the input with
+its message and holds Continue and the submission back, and that a Geocoder
+that does not answer, refuses or never loaded leaves the address accepted
+unchecked. It also refuses a renderer that gains
 `new Function`, `eval` or `innerHTML`, and a stylesheet that hardcodes a colour
 instead of using a portal token.
 

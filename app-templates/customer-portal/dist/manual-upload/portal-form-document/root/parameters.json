@@ -337,6 +337,32 @@
     }
   },
   {
+    "code": "ADDRESS_OUTSIDE_ERROR",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "ADDRESS OUTSIDE ERROR",
+        "DESCRIPTION": "Shown under an address field whose Input format declares within:<south>,<west>,<north>,<east>, when the address entered lies outside that area. The address is not added until it is corrected."
+      }
+    },
+    "value": {
+      "en": "This address is outside the area we serve."
+    }
+  },
+  {
+    "code": "ADDRESS_UNKNOWN_ERROR",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "ADDRESS UNKNOWN ERROR",
+        "DESCRIPTION": "Shown under an address field whose Input format declares within:<south>,<west>,<north>,<east>, when Google finds no place for the text entered. The address is not added until it is corrected."
+      }
+    },
+    "value": {
+      "en": "We could not find this address. Check it or pick one from the suggestions."
+    }
+  },
+  {
     "code": "SCHEMA_ERROR_TITLE",
     "type": "LOCALIZED_STRING_SS",
     "nls": {

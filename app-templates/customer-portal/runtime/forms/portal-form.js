@@ -7,6 +7,7 @@
   var MAP_CLOSE_ZOOM = 16;
   var MAP_CLOSE_SPAN = 0.002;
   var MAP_PADDING = { top: 64, right: 56, bottom: 32, left: 40 };
+  var ADDRESS_CHECK_WAIT = 6000;
 
   function el(tag, className, attrs) {
     var node = document.createElement(tag);
@@ -54,7 +55,7 @@
       address: false,
       rows: null, cols: null, min: null, max: null, step: null,
       minLength: null, maxLength: null, re: null, mask: null, placeholder: null,
-      country: null, coordinatesOf: null, mapStart: null,
+      country: null, coordinatesOf: null, mapStart: null, within: null,
     };
     if (!inputFormat) return tokens;
     var rest = String(inputFormat);
@@ -84,12 +85,12 @@
       }
       var source = token.match(/^coordinates-of:(.+)$/);
       if (source) { tokens.coordinatesOf = source[1]; return; }
-      var area = token.match(/^map:(-?\d+(?:\.\d+)?),(-?\d+(?:\.\d+)?),(-?\d+(?:\.\d+)?),(-?\d+(?:\.\d+)?)$/);
+      var area = token.match(/^(map|within):(-?\d+(?:\.\d+)?),(-?\d+(?:\.\d+)?),(-?\d+(?:\.\d+)?),(-?\d+(?:\.\d+)?)$/);
       if (area) {
-        var low = pointOf({ lat: Number(area[1]), lng: Number(area[2]) });
-        var high = pointOf({ lat: Number(area[3]), lng: Number(area[4]) });
+        var low = pointOf({ lat: Number(area[2]), lng: Number(area[3]) });
+        var high = pointOf({ lat: Number(area[4]), lng: Number(area[5]) });
         if (low && high && low.lat < high.lat && low.lng < high.lng) {
-          tokens.mapStart = { south: low.lat, west: low.lng, north: high.lat, east: high.lng };
+          tokens[area[1] === "map" ? "mapStart" : "within"] = { south: low.lat, west: low.lng, north: high.lat, east: high.lng };
         }
         return;
       }
@@ -274,6 +275,10 @@
     return { lat: lat, lng: lng };
   }
 
+  function boxHolds(box, point) {
+    return point.lat >= box.south && point.lat <= box.north && point.lng >= box.west && point.lng <= box.east;
+  }
+
   function keepFocus(event) {
     event.preventDefault();
   }
@@ -355,12 +360,16 @@
     return mapsPromise;
   }
 
-  function geocodeAddress(maps, text, answered) {
+  function geocodeAddress(maps, text, area, answered) {
     var query = String(text == null ? "" : text).trim();
     if (!query || !maps.Geocoder) return false;
-    new maps.Geocoder().geocode({ address: query }, function (results, status) {
-      answered(status === "OK" && results && results.length ? results[0] : null);
+    var request = { address: query };
+    if (area) request.bounds = area;
+    var asked = new maps.Geocoder().geocode(request, function (results, status) {
+      var best = status === "OK" && results && results.length ? results[0] : null;
+      answered(best, Boolean(best) || status === "ZERO_RESULTS");
     });
+    if (asked && typeof asked.catch === "function") asked.catch(function () {});
     return true;
   }
 
@@ -374,6 +383,9 @@
     this.pending = {};
     this.locations = {};
     this.lookups = {};
+    this.waiters = {};
+    this.checking = {};
+    this.settling = false;
     this.mapViews = {};
     this.fieldNodes = {};
     this.unpainted = {};
@@ -422,6 +434,8 @@
     if (!nodes) return;
     var invalid = Boolean(this.touched[field.code] && this.errors[field.code]);
     nodes.wrap.setAttribute("data-state", invalid ? "invalid" : "idle");
+    if (this.checking[field.code]) nodes.wrap.setAttribute("aria-busy", "true");
+    else nodes.wrap.removeAttribute("aria-busy");
     nodes.error.textContent = invalid ? this.errors[field.code] : "";
   };
 
@@ -513,6 +527,8 @@
     var empty = value === "" || value === null || value === undefined
       || (Array.isArray(value) && value.length === 0)
       || (field.kind === "boolean" && value !== true);
+    var refused = this.refusal(field);
+    if (refused) return refused;
     if (field.required && empty) return this.cfg.copy.requiredError;
     if (empty) return "";
     var asText = Array.isArray(value) ? value.join(",") : String(value);
@@ -546,7 +562,7 @@
   PortalForm.prototype.flushPending = function () {
     var self = this;
     this.eachField(function (field) {
-      if (field.kind === "address-list") self.takePending(field, self.pending[field.code]);
+      if (field.kind === "address-list" && !self.refusal(field)) self.takePending(field, self.pending[field.code]);
     });
   };
 
@@ -564,7 +580,9 @@
 
   PortalForm.prototype.submit = function () {
     var self = this;
-    if (this.submissionPending) return Promise.resolve(false);
+    if (this.submissionPending || this.settling) return Promise.resolve(false);
+    var settled = this.settle(this.visibleGroups());
+    if (settled) return settled.then(function () { return self.submit(); });
     this.flushPending();
     var groups = this.visibleGroups();
     var ok = true;
@@ -666,28 +684,150 @@
     this.syncCoordinates(field);
   };
 
-  PortalForm.prototype.locate = function (field, text, maps) {
+  PortalForm.prototype.locate = function (field, text, maps, settled) {
     var self = this;
     var address = addressKey(field, text);
     var known = this.locations[field.code];
     var asked = this.lookups[field.code] || (this.lookups[field.code] = Object.create(null));
-    if (!address || !this.cfg.mapsApiKey || (known && known[address]) || asked[address]) return;
+    var waiting = this.waiters[field.code] || (this.waiters[field.code] = Object.create(null));
+    if (!address || !this.cfg.mapsApiKey || (known && known[address]) || (asked[address] && asked[address] !== "pending")) {
+      if (settled) settled();
+      return;
+    }
+    if (settled) (waiting[address] || (waiting[address] = [])).push(settled);
+    if (asked[address]) return;
     asked[address] = "pending";
+    function close(mark) {
+      if (mark && self.holdsAddress(field, address)) asked[address] = mark;
+      else delete asked[address];
+      var due = waiting[address] || [];
+      delete waiting[address];
+      self.judge(field);
+      due.forEach(function (done) { done(); });
+    }
     function ask(loaded) {
-      var sent = geocodeAddress(loaded, address, function (best) {
-        if (best) {
-          delete asked[address];
-          self.rememberLocation(field, address, best.geometry && best.geometry.location, true);
-        } else if (self.holdsAddress(field, address)) {
-          asked[address] = "missed";
-        } else {
-          delete asked[address];
-        }
-      });
-      if (!sent) delete asked[address];
+      var sent = false;
+      try {
+        sent = geocodeAddress(loaded, address, field.tokens.within, function (best, definite) {
+          if (best) {
+            delete asked[address];
+            self.rememberLocation(field, address, best.geometry && best.geometry.location, true);
+            close((self.locations[field.code] || {})[address] ? "" : "unverified");
+          } else {
+            close(definite ? "missed" : "unverified");
+          }
+        });
+      } catch (_) {
+        sent = false;
+      }
+      if (!sent) close("unverified");
     }
     if (maps) ask(maps);
-    else loadMaps(this.cfg.mapsApiKey).then(ask).catch(function () { delete asked[address]; });
+    else loadMaps(this.cfg.mapsApiKey).then(ask, function () { close("unverified"); });
+  };
+
+  PortalForm.prototype.verdict = function (field, text) {
+    var area = field.tokens.within;
+    var address = addressKey(field, text);
+    if (!area || !address || !this.cfg.mapsApiKey) return "free";
+    var known = this.locations[field.code];
+    if (known && known[address]) return boxHolds(area, known[address]) ? "inside" : "outside";
+    var asked = this.lookups[field.code];
+    return (asked && asked[address]) || "unknown";
+  };
+
+  PortalForm.prototype.refusal = function (field) {
+    if (field.kind !== "address" && field.kind !== "address-list") return "";
+    var verdict = this.verdict(field, field.kind === "address-list" ? this.pending[field.code] : this.values[field.code]);
+    if (verdict === "outside") return this.cfg.copy.addressOutsideError;
+    if (verdict === "missed") return this.cfg.copy.addressUnknownError;
+    return "";
+  };
+
+  PortalForm.prototype.judge = function (field) {
+    var copy = this.cfg.copy;
+    var shown = this.errors[field.code];
+    var refused = this.refusal(field);
+    if (refused) {
+      this.touched[field.code] = true;
+      this.errors[field.code] = refused;
+    } else if (shown && (shown === copy.addressOutsideError || shown === copy.addressUnknownError)) {
+      this.errors[field.code] = field.kind === "address" ? this.validateField(field) : "";
+    } else {
+      return;
+    }
+    this.paint(field);
+  };
+
+  PortalForm.prototype.checked = function (field, text) {
+    var self = this;
+    var address = addressKey(field, text);
+    return new Promise(function (resolve) {
+      var open = true;
+      var timer = setTimeout(function () {
+        if (!open) return;
+        open = false;
+        var asked = self.lookups[field.code];
+        if (asked && asked[address] === "pending") asked[address] = "unverified";
+        resolve();
+      }, ADDRESS_CHECK_WAIT);
+      self.locate(field, address, null, function () {
+        if (!open) return;
+        open = false;
+        clearTimeout(timer);
+        resolve();
+      });
+    });
+  };
+
+  PortalForm.prototype.unsettled = function (groups) {
+    var self = this;
+    var open = [];
+    groups.forEach(function (group) {
+      group.fields.forEach(function (field) {
+        if (field.kind !== "address" && field.kind !== "address-list") return;
+        var text = field.kind === "address-list" ? self.pending[field.code] : self.values[field.code];
+        var verdict = self.verdict(field, text);
+        if (verdict === "unknown" || verdict === "pending") open.push({ field: field, text: text });
+      });
+    });
+    return open;
+  };
+
+  PortalForm.prototype.settle = function (groups) {
+    var self = this;
+    var open = this.unsettled(groups);
+    if (!open.length) return null;
+    this.settling = true;
+    this.render();
+    return Promise.all(open.map(function (item) { return self.checked(item.field, item.text); })).then(function () {
+      self.settling = false;
+      self.render();
+    });
+  };
+
+  PortalForm.prototype.offer = function (field, id) {
+    var self = this;
+    var typed = String(this.pending[field.code] == null ? "" : this.pending[field.code]).trim();
+    var verdict = this.verdict(field, typed);
+    if (verdict === "unknown" || verdict === "pending") {
+      this.checking[field.code] = typed;
+      this.paint(field);
+      this.checked(field, typed).then(function () {
+        if (self.checking[field.code] !== typed) return;
+        delete self.checking[field.code];
+        if (String(self.pending[field.code] == null ? "" : self.pending[field.code]).trim() === typed) self.offer(field, id);
+        else self.paint(field);
+      });
+      return;
+    }
+    if (verdict === "outside" || verdict === "missed") {
+      this.judge(field);
+      this.renderAndFocus(id);
+      return;
+    }
+    if (this.takePending(field, typed) && verdict !== "inside") this.locate(field, typed);
+    this.renderAndFocus(id);
   };
 
   PortalForm.prototype.syncCoordinates = function (source) {
@@ -701,7 +841,7 @@
     var asked = this.lookups[source.code];
     if (asked) {
       Object.keys(asked).forEach(function (address) {
-        if (asked[address] === "missed" && !self.holdsAddress(source, address)) delete asked[address];
+        if (asked[address] !== "pending" && !self.holdsAddress(source, address)) delete asked[address];
       });
     }
     this.model.hidden.forEach(function (field) {
@@ -743,8 +883,9 @@
   PortalForm.prototype.drawMap = function (field, view) {
     var maps = view.api;
     var known = this.locations[field.code] || {};
-    var addresses = Object.keys(known).sort();
-    var start = field.tokens.mapStart;
+    var area = field.tokens.within;
+    var addresses = Object.keys(known).filter(function (address) { return !area || boxHolds(area, known[address]); }).sort();
+    var start = field.tokens.mapStart || area;
     if (!view.map) {
       view.canvas.dataset.state = "ready";
       view.canvas.removeAttribute("aria-hidden");
@@ -889,8 +1030,8 @@
     if (multi && this.step > 0) {
       var back = text("button", "btn btn--ghost btn--lg", this.cfg.copy.backLabel);
       back.type = "button";
-      back.disabled = this.submissionPending;
-      back.addEventListener("click", function () { if (self.submissionPending) return; self.step -= 1; self.render(); self.focusStep(); });
+      back.disabled = this.submissionPending || this.settling;
+      back.addEventListener("click", function () { if (self.submissionPending || self.settling) return; self.step -= 1; self.render(); self.focusStep(); });
       actions.appendChild(back);
     }
     var last = this.step === groups.length - 1;
@@ -898,7 +1039,8 @@
     var next = text("button", "btn btn--primary btn--lg", submitting ? this.cfg.copy.submittingLabel : last ? this.cfg.copy.submitLabel : this.cfg.copy.nextLabel);
     next.type = "submit";
     next.setAttribute("data-focus", "next");
-    if (submitting || (last && !this.canSubmit())) next.disabled = true;
+    if (submitting || this.settling || (last && !this.canSubmit())) next.disabled = true;
+    if (this.settling) next.setAttribute("aria-busy", "true");
     if (last && !this.canSubmit()) next.dataset.formDestination = "unset";
     actions.appendChild(next);
     form.appendChild(actions);
@@ -912,7 +1054,13 @@
   };
 
   PortalForm.prototype.advance = function (groups) {
-    if (this.submissionPending) return;
+    var self = this;
+    if (this.submissionPending || this.settling) return;
+    var settled = this.settle([groups[this.step]]);
+    if (settled) {
+      settled.then(function () { self.advance(self.visibleGroups()); });
+      return;
+    }
     this.flushPending();
     if (!this.validateGroup(groups[this.step])) { this.render(); this.focusInvalid(groups[this.step]); return; }
     if (this.step < groups.length - 1) { this.step += 1; this.render(); this.focusStep(); return; }
@@ -1037,7 +1185,11 @@
   PortalForm.prototype.renderField = function (field) {
     var self = this;
     var invalid = Boolean(this.touched[field.code] && this.errors[field.code]);
-    var wrap = el("div", "pf-field", { "data-code": field.code, "data-kind": field.kind, "data-state": invalid ? "invalid" : "idle" });
+    var located = field.kind === "address" || field.kind === "address-list";
+    var wrap = el("div", "pf-field", {
+      "data-code": field.code, "data-kind": field.kind, "data-state": invalid ? "invalid" : "idle",
+      "aria-busy": this.checking[field.code] ? "true" : undefined,
+    });
     var id = "pf-" + field.code;
 
     if (field.kind !== "boolean") {
@@ -1053,8 +1205,9 @@
     if (field.description) wrap.appendChild(text("p", "pf-field__hint", field.description));
     var error = text("p", "pf-field__error", invalid ? this.errors[field.code] : "");
     error.id = id + "-error";
+    if (located) error.setAttribute("aria-live", "polite");
     wrap.appendChild(error);
-    if (field.kind === "address" || field.kind === "address-list") wrap.appendChild(this.mapView(field).canvas);
+    if (located) wrap.appendChild(this.mapView(field).canvas);
     this.fieldNodes[field.code] = { wrap: wrap, error: error };
 
     wrap.addEventListener("focusout", function (event) {
@@ -1272,18 +1425,14 @@
     }
 
     var entry = el("div", "pf-repeat__entry");
-    entry.appendChild(this.addressControl(field, id, this.pending[field.code] || "", function (candidate, picked) {
-      if (self.takePending(field, candidate) && !picked) self.locate(field, candidate);
-      self.renderAndFocus(id);
+    entry.appendChild(this.addressControl(field, id, this.pending[field.code] || "", function (candidate) {
+      self.pending[field.code] = candidate;
+      self.offer(field, id);
     }));
     var add = text("button", "pf-repeat__add", "+");
     add.type = "button";
     add.addEventListener("mousedown", keepFocus);
-    add.addEventListener("click", function () {
-      var typed = self.pending[field.code];
-      if (self.takePending(field, typed)) self.locate(field, typed);
-      self.renderAndFocus(id);
-    });
+    add.addEventListener("click", function () { self.offer(field, id); });
     entry.appendChild(add);
     wrap.appendChild(entry);
     return wrap;
@@ -1320,9 +1469,14 @@
       input.addEventListener("input", function () {
         self.pending[field.code] = input.value;
         self.syncCoordinates(field);
+        self.judge(field);
       });
     } else {
-      input.addEventListener("input", function () { self.setValue(field, input.value); });
+      input.addEventListener("input", function () {
+        var refused = self.refusal(field);
+        self.setValue(field, input.value);
+        if (refused || self.refusal(field)) self.paint(field);
+      });
     }
     var anchor = el("div", "pf-address__anchor");
     anchor.appendChild(input);
@@ -1350,9 +1504,16 @@
 
     function pick(formatted, location) {
       if (!formatted) return;
-      take(formatted, true);
+      if (repeating) {
+        self.pending[field.code] = formatted;
+        if (location) self.rememberLocation(field, formatted, location, false);
+        self.offer(field, input.id);
+        return;
+      }
+      take(formatted);
       if (location) self.rememberLocation(field, formatted, location, false);
       else self.locate(field, formatted, maps);
+      self.judge(field);
     }
 
     var places = maps.places || {};
@@ -1367,6 +1528,8 @@
           fields: ["formatted_address", "geometry"],
           types: ["address"],
           componentRestrictions: field.tokens.country ? { country: field.tokens.country } : undefined,
+          bounds: field.tokens.within || undefined,
+          strictBounds: field.tokens.within ? true : undefined,
         });
         autocomplete.addListener("place_changed", function () {
           var place = autocomplete.getPlace();
@@ -1478,6 +1641,7 @@
         sessionToken: token,
         includedPrimaryTypes: ["street_address", "premise", "subpremise", "route"],
         includedRegionCodes: field.tokens.country || undefined,
+        locationRestriction: field.tokens.within || undefined,
       }).then(function (response) {
         if (document.activeElement !== input || input.value.trim() !== value) return;
         recent = {

@@ -1,5 +1,58 @@
 # QUOTE-FORM-MULTI-ADDRESS
 
+## An address outside the service area — 2026-09-30
+
+The first task of the team's list after the end-to-end test: the form must not
+hang on an address that cannot be processed or lies outside the supported
+region; such an address gets a clear message, and the client corrects it and
+goes on.
+
+On the published page a Houston address was suggested, added and pinned like
+any other, and nothing said it could not be served. The refusal came later, by
+email, after the chain's region check.
+
+- **An area in the Input format.** `within:<south>,<west>,<north>,<east>` on an
+  address attribute names the area its addresses must lie in.
+  `runtime/forms/portal-form.js` asks Google for suggestions inside that area
+  only, and adds a typed address only once Google has located it there.
+- **What the client sees.** An address outside the area, or one Google cannot
+  find, stays in the input with a red border and its message under it:
+  `ADDRESS_OUTSIDE_ERROR` ("This address is outside the area we serve.") or
+  `ADDRESS_UNKNOWN_ERROR` ("We could not find this address. Check it or pick
+  one from the suggestions."). Editing the text takes the message away.
+  Continue and Send wait for the check of an address still in the input and
+  stay on the step while that address is refused. A refused address gets no
+  pin. While an address is being checked the add button turns.
+- **The form never waits on Google to go on.** When Google gives no answer in
+  six seconds, refuses the request or did not load, the address is accepted
+  unchecked, as every address was before.
+- **The area is the form's first check only.** It is a rectangle, so a place
+  inside it that the company does not serve still passes. The chain's region
+  check against the organization's `REGIONS` stays the judge and answers by
+  email.
+- **On dev-1** `GET_QUOTE_` carries `address within:49,-123.33,49.42,-121.77`,
+  applied with `../form-types/GET_QUOTE_.address-service-area.patch.json`
+  (optimistic 19 → 20, read back anonymously from both CMS nodes). The box is
+  the union of Google's bounds for the municipalities named in `REGIONS` on
+  2026-09-30 (south 49.002, west -123.329, north 49.414, east -121.777),
+  rounded outward to a hundredth of a degree. The map opens on it, so `map:`
+  left the format.
+- **Verified** on `/pages/SNOWLIMITLESS/request-quote` at 1280 px, 768 px and
+  375 px, in light and dark: no suggestion for a Houston address, the two
+  messages, two accepted addresses with their pins beside a refused one,
+  Continue held back by a refused address, and Continue going on after the
+  check. `PORTAL_FORM_DOCUMENT` matches the package byte for byte and both CMS
+  nodes serve it. `portal-form-check` covers the rule; each of 53 deliberate
+  breaks of it fails the check.
+- **Open.**
+  - The list of supported regions is the business's to settle. When it
+    changes, `REGIONS` on the organization changes the chain's check, and the
+    box on `GET_QUOTE_` has to be recomputed from it.
+  - The default messages name no area. The page's own value of
+    `ADDRESS_OUTSIDE_ERROR` can name it once the list is settled.
+  - In dark mode a field error stands at 2.93:1 against the card, because the
+    portal's status colors have no dark values. The published page is light.
+
 ## The map stays on screen — 2026-09-30
 
 The second task of the team's list after the end-to-end test: show every
@@ -39,10 +92,10 @@ box; ticking a risk factor did the same.
   risk factor. `PORTAL_FORM_DOCUMENT` matches the package byte for byte and
   both CMS nodes serve it. `portal-form-check` covers the map; each of 34
   deliberate breaks of the map code fails it.
-- **Open.** An address Google cannot locate has no pin and nothing says so;
-  that belongs to the first task, the address the form cannot process. The
-  pins are `google.maps.Marker`, which Google has deprecated in favour of
-  advanced markers; those need a Map ID, and the form document carries none.
+- **Open.** The pins are `google.maps.Marker`, which Google has deprecated in
+  favour of advanced markers; those need a Map ID, and the form document
+  carries none. An address Google cannot locate is answered in "An address
+  outside the service area" above.
 
 ## Property type removed from the public form — 2026-09-26
 

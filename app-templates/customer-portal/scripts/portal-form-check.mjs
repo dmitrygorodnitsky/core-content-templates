@@ -159,6 +159,17 @@ for (const refused of ["map:49.4,-123.3,49,-121.9", "map:49,-121.9,49.4,-123.3",
   assert.equal(parseTokens("address " + refused).mapStart, null, refused + " names no area a map can open on");
 }
 assert.equal(parseTokens("address map:here").address, true, "a refused map start leaves the rest of the format standing");
+assert.deepEqual(plain(parseTokens("address within:49,-123.3,49.4,-121.7").within), { south: 49, west: -123.3, north: 49.4, east: -121.7 }, "an area addresses must lie in is declared like a map start");
+assert.equal(parseTokens("address within:49,-123.3,49.4,-121.7").mapStart, null, "and is not itself a map start");
+assert.deepEqual(
+  plain([parseTokens("address map:48,-124,50,-121 within:49,-123.3,49.4,-121.7").mapStart, parseTokens("address map:48,-124,50,-121 within:49,-123.3,49.4,-121.7").within]),
+  [{ south: 48, west: -124, north: 50, east: -121 }, { south: 49, west: -123.3, north: 49.4, east: -121.7 }],
+  "a field may open its map wider than the area it accepts",
+);
+assert.equal(parseTokens("address").within, null, "an address is held to no area unless the format names one");
+for (const refused of ["within:49.4,-123.3,49,-121.7", "within:49,-121.7,49.4,-123.3", "within:49,-123.3,91,-121.7", "within:49,-123.3,49.4", "within:metro"]) {
+  assert.equal(parseTokens("address " + refused).within, null, refused + " names no area an address can be held to");
+}
 assert.equal(parseTokens("").mask, null);
 assert.equal(parseTokens(undefined).placeholder, null);
 
@@ -446,13 +457,13 @@ assert.equal(await keyless.submit(), true);
 assert.deepEqual(JSON.parse(posted[1].init.body), wire, "a declared hidden attribute changes nothing about a keyless submission");
 assert.equal(dom.document.head.children.length, 0, "the keyless submission still loaded no Google script");
 
-const degradedPage = async (name, breakGoogle) => {
+const degradedPage = async (name, breakGoogle, schema) => {
   const page = createDom();
   const context = { window: {}, document: page.document, setTimeout: sandbox.setTimeout, clearTimeout: sandbox.clearTimeout, fetch: sandbox.fetch };
   context.globalThis = context;
   vm.createContext(context);
   vm.runInContext(source, context);
-  const form = new context.window.PortalForm({ schema: quoteWithCoordinates, locale: "en", copy: copyEcho, organizationId: 43, apiBaseUrl: "https://forms.example", mapsApiKey: "test-key" });
+  const form = new context.window.PortalForm({ schema: schema || quoteWithCoordinates, locale: "en", copy: copyEcho, organizationId: 43, apiBaseUrl: "https://forms.example", mapsApiKey: "test-key" });
   const formMount = page.document.createElement("div");
   form.mount(formMount);
   await settle();
@@ -659,19 +670,22 @@ const mapOf = (mount) => collect(mount, "pf-address__map")[0];
 const WORLD = { center: { lat: 20, lng: 0 }, zoom: 1 };
 const PIN_ROOM = { top: 64, right: 56, bottom: 32, left: 40 };
 function StubGeocoder() {}
-StubGeocoder.prototype.geocode = function (request, callback) { geocoderQueue.push({ address: request.address, callback }); };
-function StubAutocomplete(input) { this.input = input; this.listeners = {}; this.place = null; autocompletes.push(this); }
+StubGeocoder.prototype.geocode = function (request, callback) { geocoderQueue.push({ address: request.address, bounds: request.bounds, callback }); };
+function StubAutocomplete(input, options) { this.input = input; this.options = options; this.listeners = {}; this.place = null; autocompletes.push(this); }
 StubAutocomplete.prototype.addListener = function (type, fn) { this.listeners[type] = fn; };
 StubAutocomplete.prototype.getPlace = function () { return this.place; };
 const directory = [
   { text: "1200 West Georgia Street, Vancouver", formatted: "1200 West Georgia Street, Vancouver, BC V6E 4R2, Canada", at: [49.2869, -123.1257] },
   { text: "88 Robson Street, Vancouver", formatted: "88 Robson Street, Vancouver, BC V6B 0B1, Canada", at: [49.2767, -123.1146] },
+  { text: "1600 Smith Street, Houston", formatted: "1600 Smith St, Houston, TX 77002, USA", at: [29.7545, -95.3728] },
 ];
+const suggestionRequests = [];
+const liesIn = (area, [lat, lng]) => lat >= area.south && lat <= area.north && lng >= area.west && lng <= area.east;
 const dataApi = {
   AutocompleteSessionToken: function AutocompleteSessionToken() {},
   AutocompleteSuggestion: {
-    fetchAutocompleteSuggestions: ({ input }) => Promise.resolve({
-      suggestions: directory.filter((place) => place.text.toLowerCase().includes(input.toLowerCase())).map((place) => ({
+    fetchAutocompleteSuggestions: (request) => Promise.resolve(suggestionRequests.push(request)).then(() => ({
+      suggestions: directory.filter((place) => place.text.toLowerCase().includes(request.input.toLowerCase()) && (!request.locationRestriction || liesIn(request.locationRestriction, place.at))).map((place) => ({
         placePrediction: {
           text: place.text,
           toPlace: () => ({
@@ -679,7 +693,7 @@ const dataApi = {
           }),
         },
       })),
-    }),
+    })),
   },
 };
 const legacyPlaces = { Autocomplete: StubAutocomplete };
@@ -700,6 +714,12 @@ const answerGeocoder = (address, at) => {
   assert.ok(due.length, "a geocoder request for " + address + " must be pending");
   due.forEach((call) => geocoderQueue.splice(geocoderQueue.indexOf(call), 1));
   due.forEach((call) => call.callback(at ? [{ formatted_address: address, geometry: { location: latLng(at) } }] : [], at ? "OK" : "ZERO_RESULTS"));
+};
+const failGeocoder = (address, status) => {
+  const due = geocoderQueue.filter((call) => call.address === address);
+  assert.ok(due.length, "a geocoder request for " + address + " must be pending");
+  due.forEach((call) => geocoderQueue.splice(geocoderQueue.indexOf(call), 1));
+  due.forEach((call) => call.callback(null, status));
 };
 const choose = (widget, place) => { widget.place = place; widget.listeners.place_changed(); };
 const coordinatesIn = (form, code) => (form.values[code] ? JSON.parse(form.values[code]) : []);
@@ -1211,6 +1231,348 @@ assert.equal(mapOf(chartedMount).dataset.state, "idle", "a failed map is not dra
 assert.equal(mapMoves, movesAtFailure, "and is asked for nothing more");
 assert.match(source, /fetchFields\([^)]*\)\.then\(function \(\) \{\s*pick\(place\.formattedAddress, place\.location\);\s*\}, function \(\) \{ pick\(label, null\); \}\);/, "only a refused place lookup falls back to the suggestion text, so nothing thrown after the pick can add a second address");
 
+const AREA = { south: 49, west: -123.3, north: 49.4, east: -121.7 };
+const fencedSchema = plain(quoteWithCoordinates);
+fencedSchema.attributes.find((attribute) => attribute.code === "PROPERTY_ADDRESSES").inputFormat = "address within:49,-123.3,49.4,-121.7";
+const mapsBeforeFenced = drawnMaps.length;
+const fenced = new PortalForm({ schema: fencedSchema, locale: "en", copy: copyEcho, organizationId: 43, apiBaseUrl: "https://forms.example", mapsApiKey: "test-key" });
+const fencedMount = dom.document.createElement("div");
+fenced.mount(fencedMount);
+await settle();
+const fencedStep = fenced.model.groups.findIndex((group) => group.code === "PROPERTIES");
+fenced.step = fencedStep;
+fenced.render();
+await settle();
+const fence = drawnMaps[drawnMaps.length - 1];
+const fencedHeld = () => plain(fenced.values.PROPERTY_ADDRESSES);
+const fencedField = () => wrapOf(fencedMount, "PROPERTY_ADDRESSES");
+const fencedError = () => collect(fencedField(), "pf-field__error")[0].textContent;
+const fencedNext = () => collect(fencedMount, "btn--primary")[0];
+const fencedPoints = () => coordinatesIn(fenced, "PROPERTY_COORDINATES");
+const fencedStart = { bounds: AREA, padding: 0 };
+assert.equal(drawnMaps.length, mapsBeforeFenced + 1);
+assert.deepEqual(viewOf(fence), fencedStart, "a field that names the area of its addresses and no map start opens its map on that area");
+assert.equal(collect(fencedField(), "pf-field__error")[0].getAttribute("aria-live"), "polite", "a message that arrives after the key press is announced");
+
+const burrard = "750 Burrard Street, Vancouver";
+entry().focus();
+typeInto(burrard).fire("keydown", enter);
+assert.deepEqual(fencedHeld(), [], "an address typed into a field with an area is not added before Google has located it");
+assert.equal(entry().value, burrard, "and stays in the input meanwhile");
+assert.equal(fencedField().getAttribute("aria-busy"), "true", "the field says it is checking");
+await settle();
+assert.deepEqual(plain(geocoderQueue.map((call) => [call.address, call.bounds])), [[burrard, AREA]], "the Geocoder is asked once, with the area as the place to look first");
+entry().fire("keydown", enter);
+collect(fencedMount, "pf-repeat__add")[0].fire("click");
+await settle();
+assert.equal(geocoderQueue.length, 1, "asking again while the answer is on its way asks nothing more");
+answerGeocoder(burrard, [49.2827, -123.1207]);
+await settle();
+assert.deepEqual(fencedHeld(), [burrard], "an address located inside the area is added");
+assert.deepEqual(fencedPoints(), [{ address: burrard, lat: 49.2827, lng: -123.1207 }], "with the location that admitted it");
+assert.deepEqual(pinsOn(fence), [[burrard, 49.2827, -123.1207]]);
+assert.equal(entry().value, "", "and leaves the input empty for the next one");
+assert.equal(dom.activeElement, entry(), "with the focus in it");
+assert.equal(fencedField().getAttribute("aria-busy"), null, "the check is over");
+assert.equal(fencedField().dataset.state, "idle");
+
+const houston = "1600 Smith St, Houston, TX 77002, USA";
+typeInto(houston);
+collect(fencedMount, "pf-repeat__add")[0].fire("click");
+await settle();
+answerGeocoder(houston, [29.7545, -95.3728]);
+await settle();
+assert.deepEqual(fencedHeld(), [burrard], "an address located outside the area is not added");
+assert.equal(entry().value, houston, "it stays in the input to be corrected");
+assert.equal(fencedField().dataset.state, "invalid");
+assert.equal(fencedError(), "addressOutsideError", "with the message for an address outside the area");
+assert.equal(dom.activeElement, entry());
+assert.deepEqual(pinsOn(fence), [[burrard, 49.2827, -123.1207]], "an address outside the area gets no pin");
+assert.deepEqual(viewOf(fence), { center: { lat: 49.2827, lng: -123.1207 }, zoom: 16 }, "and does not pull the map away from the area");
+assert.deepEqual(fencedPoints().map((point) => point.address), [burrard]);
+collect(fencedMount, "pf-repeat__add")[0].fire("click");
+entry().fire("keydown", enter);
+await settle();
+assert.equal(geocoderQueue.length, 0, "offering the refused address again asks the Geocoder nothing");
+assert.deepEqual(fencedHeld(), [burrard]);
+assert.equal(fencedError(), "addressOutsideError");
+
+assert.equal(press(fencedNext(), fencedMount), true);
+await settle();
+assert.equal(fenced.step, fencedStep, "Continue does not leave the step while a refused address is in the input");
+assert.deepEqual(fencedHeld(), [burrard], "and does not add it");
+assert.equal(fencedError(), "addressOutsideError");
+assert.equal(dom.activeElement, entry(), "focus goes to the address to correct");
+Object.assign(fenced.values, contact);
+const postedBeforeRefusal = posted.length;
+assert.equal(await fenced.submit(), false, "a refused address in the input blocks the submission too");
+assert.equal(posted.length, postedBeforeRefusal);
+assert.equal(fenced.step, fencedStep);
+
+typeInto(houston + " ");
+assert.equal(fencedError(), "addressOutsideError", "the refusal stands for the same address, whatever surrounds it");
+typeInto("1600 Smith St, Houst");
+assert.equal(fencedField().dataset.state, "idle", "editing the refused address takes its message away at once");
+assert.equal(fencedError(), "");
+typeInto(houston).fire("keydown", enter);
+await settle();
+assert.deepEqual(geocoderQueue.map((call) => call.address), [houston], "an address typed back after an edit is asked for again");
+answerGeocoder(houston, [29.7545, -95.3728]);
+await settle();
+assert.equal(fencedError(), "addressOutsideError");
+
+const nowhere = "zzz qqq 99999";
+typeInto(nowhere).fire("keydown", enter);
+await settle();
+answerGeocoder(nowhere, null);
+await settle();
+assert.deepEqual(fencedHeld(), [burrard], "an address Google cannot find is not added");
+assert.equal(entry().value, nowhere);
+assert.equal(fencedError(), "addressUnknownError", "and has its own message");
+typeInto("");
+assert.equal(fencedError(), "", "clearing the input clears the refusal");
+assert.equal(fencedField().dataset.state, "idle");
+
+const hastings = "555 West Hastings Street, Vancouver";
+entry().focus();
+typeInto(hastings);
+assert.equal(press(fencedNext(), fencedMount), true);
+assert.equal(fenced.step, fencedStep, "Continue waits for an address still in the input to be checked");
+assert.equal(fencedNext().disabled, true, "and cannot be pressed twice meanwhile");
+assert.equal(collect(fencedMount, "pf-actions")[0].children.every((button) => button.disabled), true, "nor can Back");
+collect(fencedMount, "pf-actions")[0].children[0].fire("click");
+assert.equal(fenced.step, fencedStep, "a Back that still arrives during the check goes nowhere");
+assert.equal(await fenced.submit(), false, "a submission asked for during the check is dropped, not queued behind it");
+assert.equal(fencedNext().getAttribute("aria-busy"), "true");
+assert.equal(fencedNext().textContent, "nextLabel", "it is not a submission");
+await settle();
+assert.deepEqual(geocoderQueue.map((call) => call.address), [hastings]);
+fenced.advance(fenced.visibleGroups());
+assert.equal(geocoderQueue.length, 1, "a second Continue during the check starts nothing");
+answerGeocoder(hastings, [49.2847, -123.1119]);
+await settle();
+assert.deepEqual(fencedHeld(), [burrard, hastings], "once located inside the area it is added");
+assert.equal(fenced.step, fencedStep + 1, "and Continue goes on");
+assert.equal(Boolean(fencedNext().disabled), false, "the next step's action is free again");
+assert.equal(fencedNext().getAttribute("aria-busy"), null);
+
+fenced.step = fencedStep;
+fenced.render();
+await settle();
+entry().focus();
+typeInto(houston);
+assert.equal(press(fencedNext(), fencedMount), true);
+await settle();
+answerGeocoder(houston, [29.7545, -95.3728]);
+await settle();
+assert.equal(fenced.step, fencedStep, "Continue stays when the address it checked lies outside the area");
+assert.deepEqual(fencedHeld(), [burrard, hastings]);
+assert.equal(fencedError(), "addressOutsideError");
+assert.equal(Boolean(fencedNext().disabled), false, "and can be pressed again after the correction");
+typeInto("");
+
+const slow = "1055 Canada Place, Vancouver";
+typeInto(slow).fire("keydown", enter);
+await settle();
+assert.deepEqual(geocoderQueue.map((call) => call.address), [slow]);
+runTimers();
+await settle();
+assert.deepEqual(fencedHeld(), [burrard, hastings, slow], "an address Google does not answer for in time is accepted unchecked, so the form never waits on Google to go on");
+assert.equal(fencedField().getAttribute("aria-busy"), null);
+assert.equal(fencedPoints().some((point) => point.address === slow), false, "without a location");
+answerGeocoder(slow, [49.2888, -123.1111]);
+assert.deepEqual(fencedPoints()[2], { address: slow, lat: 49.2888, lng: -123.1111 }, "a late answer still gives it one");
+assert.equal(pinNames(fence).includes(slow), true);
+
+const late = "200 Granville Street, Vancouver";
+typeInto(late).fire("keydown", enter);
+await settle();
+runTimers();
+await settle();
+assert.deepEqual(fencedHeld(), [burrard, hastings, slow, late]);
+answerGeocoder(late, [29.7, -95.3]);
+await settle();
+assert.deepEqual(fencedHeld(), [burrard, hastings, slow, late], "an address accepted unchecked is not taken back by a late answer");
+assert.equal(pinNames(fence).includes(late), false, "but a location outside the area still gets no pin");
+assert.equal(fencedField().dataset.state, "idle", "and raises no message against an address already accepted");
+
+const throttled = "800 Robson Street, Vancouver";
+typeInto(throttled).fire("keydown", enter);
+await settle();
+failGeocoder(throttled, "OVER_QUERY_LIMIT");
+await settle();
+assert.deepEqual(fencedHeld(), [burrard, hastings, slow, late, throttled], "a Geocoder that refuses to answer is no verdict on the address, which is accepted unchecked");
+assert.equal(fencedError(), "");
+
+const first = "999 Canada Place, Vancouver";
+const second = "1133 Melville Street, Vancouver";
+typeInto(first).fire("keydown", enter);
+await settle();
+typeInto(second);
+answerGeocoder(first, [49.2889, -123.1161]);
+await settle();
+assert.deepEqual(fencedHeld(), [burrard, hastings, slow, late, throttled], "an answer for text the client has since changed adds nothing");
+assert.equal(entry().value, second, "and leaves the new text alone");
+assert.equal(fencedField().getAttribute("aria-busy"), null);
+typeInto("");
+
+const returning = "1500 West Georgia Street, Vancouver";
+typeInto(returning).fire("keydown", enter);
+await settle();
+typeInto(second);
+runTimers();
+await settle();
+assert.equal(fencedHeld().includes(returning), false, "a check that gives up after the text changed adds nothing");
+typeInto("");
+typeInto(returning).fire("keydown", enter);
+await settle();
+assert.equal(geocoderQueue.filter((call) => call.address === returning).length, 2, "and an address that comes back to the input after that is asked for afresh, not accepted on the strength of the check that gave up");
+answerGeocoder(returning, [29.7, -95.3]);
+await settle();
+assert.equal(fencedHeld().includes(returning), false);
+assert.equal(fencedError(), "addressOutsideError");
+typeInto("");
+
+const fencedAddresses = fenced.model.groups[fencedStep].fields[0];
+for (const [name, at] of [["north", [49.41, -123.1]], ["south", [48.99, -123.1]], ["west", [49.2, -123.31]], ["east", [49.2, -121.69]]]) {
+  typeInto("just " + name);
+  fenced.rememberLocation(fencedAddresses, "just " + name, latLng(at), false);
+  assert.equal(fenced.verdict(fencedAddresses, "just " + name), "outside", "a place just " + name + " of the area is outside it");
+}
+for (const [name, at] of [["south-west", [49, -123.3]], ["north-east", [49.4, -121.7]]]) {
+  typeInto("the " + name + " corner");
+  fenced.rememberLocation(fencedAddresses, "the " + name + " corner", latLng(at), false);
+  assert.equal(fenced.verdict(fencedAddresses, "the " + name + " corner"), "inside", "the " + name + " corner belongs to the area");
+}
+typeInto("");
+
+entry().focus();
+typeInto("88 Robs");
+runTimers();
+await settle();
+assert.deepEqual(plain(suggestionRequests[suggestionRequests.length - 1].locationRestriction), AREA, "suggestions are asked for inside the area only");
+press(collect(fencedMount, "pf-address__option")[0], fencedMount);
+await settle();
+assert.equal(fencedHeld().includes(robson), true, "a suggestion inside the area is added at once");
+assert.equal(geocoderQueue.length, 0, "on the location it carries");
+typeInto("1600 Smith");
+runTimers();
+await settle();
+assert.equal(collect(fencedMount, "pf-address__option").length, 0, "an address outside the area is not suggested");
+typeInto("");
+await settle();
+
+maps.places = legacyPlaces;
+fenced.render();
+await settle();
+const fencedWidget = autocompletes[autocompletes.length - 1];
+assert.equal(fencedWidget.input, entry());
+assert.deepEqual(plain([fencedWidget.options.bounds, fencedWidget.options.strictBounds]), [AREA, true], "the legacy widget is held to the area as well");
+const heldBeforeLegacy = fencedHeld();
+moveFocus(outside, fencedMount);
+assert.equal(fencedError(), "");
+choose(fencedWidget, { formatted_address: houston, geometry: { location: latLng([29.7545, -95.3728]) } });
+await settle();
+assert.deepEqual(fencedHeld(), heldBeforeLegacy, "a picked place outside the area is refused like a typed one");
+assert.equal(entry().value, houston, "and shown in the input it was picked into");
+assert.equal(fencedError(), "addressOutsideError");
+assert.equal(dom.activeElement, entry(), "with the focus back on it, wherever the focus was");
+typeInto("");
+maps.places = dataApi;
+fenced.render();
+await settle();
+
+const pendingAtSubmit = "1021 West Hastings Street, Vancouver";
+fenced.step = fenced.visibleGroups().length - 1;
+fenced.render();
+fenced.pending.PROPERTY_ADDRESSES = pendingAtSubmit;
+const postedBeforeFenced = posted.length;
+const fencedSubmission = fenced.submit();
+await settle();
+assert.equal(posted.length, postedBeforeFenced, "a submission waits for an address still in the input to be checked");
+answerGeocoder(pendingAtSubmit, [49.2872, -123.1178]);
+assert.equal(await fencedSubmission, true);
+assert.equal(posted.length, postedBeforeFenced + 1);
+const fencedWire = JSON.parse(posted[posted.length - 1].init.body).attributes["2"];
+assert.deepEqual(fencedWire.PROPERTY_ADDRESSES.value, [burrard, hastings, slow, late, throttled, robson, pendingAtSubmit], "and sends it with the rest once it is located inside the area");
+assert.equal(JSON.parse(fencedWire.PROPERTY_COORDINATES.value).some((point) => point.address === pendingAtSubmit), true);
+assert.deepEqual(JSON.parse(fencedWire.PROPERTY_COORDINATES.value).find((point) => point.address === late), { address: late, lat: 29.7, lng: -95.3 }, "the location of an address accepted unchecked travels as Google gave it, for the receiving process to judge");
+
+const fencedSiteSchema = plain(siteSchema);
+fencedSiteSchema.attributes.find((attribute) => attribute.code === "SITE_ADDRESS").inputFormat = "address within:49,-123.3,49.4,-121.7";
+const yard = new PortalForm({ schema: fencedSiteSchema, locale: "en", copy: copyEcho, organizationId: 43, apiBaseUrl: "https://forms.example", mapsApiKey: "test-key" });
+const yardMount = dom.document.createElement("div");
+yard.mount(yardMount);
+await settle();
+yard.step = yard.model.groups.findIndex((group) => group.code === "TEXTS");
+yard.render();
+await settle();
+const yardMap = drawnMaps[drawnMaps.length - 1];
+const yardInput = () => dom.document.getElementById("pf-SITE_ADDRESS");
+const typeYard = (value) => { const box = yardInput(); box.value = value; box.fire("input"); return box; };
+const yardField = () => wrapOf(yardMount, "SITE_ADDRESS");
+const yardError = () => collect(yardField(), "pf-field__error")[0].textContent;
+const yardNext = () => collect(yardMount, "btn--primary")[0];
+assert.deepEqual(viewOf(yardMap), fencedStart);
+yardInput().focus();
+typeYard(houston);
+moveFocus(outside, yardMount);
+assert.equal(yardField().dataset.state, "idle", "a single address is not judged before Google answers");
+answerGeocoder(houston, [29.7545, -95.3728]);
+assert.equal(yardField().dataset.state, "invalid", "a single address located outside its area is flagged as soon as the answer comes");
+assert.equal(yardError(), "addressOutsideError");
+assert.deepEqual(pinsOn(yardMap), []);
+Object.assign(yard.values, { PLAIN_TEXT: "Plain", EMAIL: "dana@example.com" });
+assert.equal(press(yardNext(), yardMount), true);
+assert.equal(yard.step, 0, "and Continue stays on its step");
+assert.equal(yardError(), "addressOutsideError");
+await settle();
+typeYard("1600 Smith St");
+assert.equal(yardField().dataset.state, "idle", "editing it takes the message away");
+typeYard(nowhere);
+moveFocus(yardInput(), yardMount);
+moveFocus(outside, yardMount);
+answerGeocoder(nowhere, null);
+assert.equal(yardError(), "addressUnknownError", "a single address Google cannot find is flagged with its own message");
+typeYard(burrard);
+assert.equal(yardError(), "");
+assert.equal(press(yardNext(), yardMount), true);
+assert.equal(yard.step, 0, "Continue waits for a single address it has no answer for yet");
+assert.equal(yardNext().disabled, true);
+await settle();
+answerGeocoder(burrard, [49.2827, -123.1207]);
+await settle();
+assert.equal(yard.step, 1, "and goes on once it is located inside the area");
+assert.deepEqual(pinsOn(yardMap), [[burrard, 49.2827, -123.1207]]);
+yard.step = 0;
+yard.render();
+await settle();
+typeYard("");
+moveFocus(yardInput(), yardMount);
+assert.equal(press(yardNext(), yardMount), true);
+assert.equal(yard.step, 1, "an optional address left empty is held to no area");
+yard.step = 0;
+maps.places = legacyPlaces;
+yard.render();
+await settle();
+moveFocus(outside, yardMount);
+choose(autocompletes[autocompletes.length - 1], { formatted_address: houston, geometry: { location: latLng([29.7545, -95.3728]) } });
+assert.equal(yard.values.SITE_ADDRESS, houston);
+assert.equal(yardError(), "addressOutsideError", "a single address picked outside its area is flagged at once");
+typeYard("");
+maps.places = dataApi;
+
+await degradedPage("a script that fails to load, on a field held to an area", (context, script) => script.fire("error"), fencedSchema);
+
+const openField = new PortalForm({ schema: fencedSchema, locale: "en", copy: copyEcho, organizationId: 43, apiBaseUrl: "https://forms.example" });
+const openMount = dom.document.createElement("div");
+openField.mount(openMount);
+await settle();
+openField.step = fencedStep;
+openField.render();
+typeInto(houston).fire("keydown", enter);
+assert.deepEqual(plain(openField.values.PROPERTY_ADDRESSES), [houston], "without a maps key nothing can be located, so an area refuses nothing");
+
 const gated = new PortalForm({
   schema: {
     id: 30, nls: {}, attributeGroups: [],
@@ -1552,4 +1914,4 @@ try {
   await fs.rm(documentDir, { recursive: true, force: true });
 }
 
-console.log("portal-form-check ok: " + KINDS.length + " field kinds, token DSL with spaced masks, attributeOrder authority, parent type ids, declarative behaviour only, anonymous requests, token-driven theming, constrained theme and mode, address fields that load no Google script without a key and wait for importLibrary with one, a repeating address that adds, removes and submits a JSON array, takes the first click on a suggestion and keeps typed text on screen across re-renders, Core's Address class drawn, validated, geocoded and submitted as the address control on the schema dev-1 served on 2026-09-16 while other entity classes stay selects, hidden attributes that never render yet still submit, and address coordinates asked for on every typed commit that follow every add, edit and removal without ever reaching the screen; focus and the first click survive blur and re-render, address suggestions follow the ARIA combobox pattern, each address string is geocoded once, an address map that is on screen as soon as Google is ready, keeps one pin per located address through every redraw and step, opens where the format declares and takes no answer with it when it fails, and the success screen promises only its copy");
+console.log("portal-form-check ok: " + KINDS.length + " field kinds, token DSL with spaced masks, attributeOrder authority, parent type ids, declarative behaviour only, anonymous requests, token-driven theming, constrained theme and mode, address fields that load no Google script without a key and wait for importLibrary with one, a repeating address that adds, removes and submits a JSON array, takes the first click on a suggestion and keeps typed text on screen across re-renders, Core's Address class drawn, validated, geocoded and submitted as the address control on the schema dev-1 served on 2026-09-16 while other entity classes stay selects, hidden attributes that never render yet still submit, and address coordinates asked for on every typed commit that follow every add, edit and removal without ever reaching the screen; focus and the first click survive blur and re-render, address suggestions follow the ARIA combobox pattern, each address string is geocoded once, an address map that is on screen as soon as Google is ready, keeps one pin per located address through every redraw and step, opens where the format declares and takes no answer with it when it fails, an address held to an area that is added only once Google has located it there, stays in the input with its message when it lies outside or cannot be found, and is accepted unchecked when Google does not answer, and the success screen promises only its copy");

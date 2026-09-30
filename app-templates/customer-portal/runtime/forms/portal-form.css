@@ -376,3 +376,20 @@
 
 .pf-repeat__add:hover { color: var(--accent); border-color: var(--accent); }
 .pf-repeat__add:focus-visible { outline: none; box-shadow: 0 0 0 3px rgba(var(--accent-rgb), .18); }
+
+.pf-field[aria-busy="true"] .pf-repeat__add { position: relative; color: transparent; }
+
+.pf-field[aria-busy="true"] .pf-repeat__add::after {
+  content: ""; position: absolute; top: 50%; left: 50%;
+  width: 16px; height: 16px; margin: -8px 0 0 -8px; box-sizing: border-box;
+  border-radius: 50%; border: 2px solid rgba(var(--accent-rgb), .25); border-top-color: var(--accent);
+  animation: pf-spin .7s linear infinite;
+}
+
+@keyframes pf-spin {
+  to { transform: rotate(360deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pf-field[aria-busy="true"] .pf-repeat__add::after { animation: none; }
+}

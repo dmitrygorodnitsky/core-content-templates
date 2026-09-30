@@ -5,12 +5,12 @@
   "template": {
     "code": "PORTAL_FORM_DOCUMENT",
     "templateLanguage": "JTE",
-    "parameterCount": 42,
+    "parameterCount": 44,
     "sha256": {
       "head": "b863f61f7cd6e1e0cd3c65a271e103adea5d9008ce327c16c08abf201548da9e",
-      "html": "7acb80b301d819a61a151be3d068187afd4614662f119bc91cc2c8b5074d69b9",
-      "css": "9fbfda69e46a3ee4dc5290b3ea64c1956cc8f4228938a92efded0104af51d201",
-      "javascript": "e49caef442557ad2613ba70be2fb18b15b67adb0a0436ed590de246e87f9ead6"
+      "html": "023af7c4da0516111f2b257467a572816b886964890be4f57b7732b36be802ad",
+      "css": "c516bcabf75202279852d706dc5f37318190d667d06247660c6f37aa270b2883",
+      "javascript": "e4183c178742f4aa02d8ce9d199db0e4576a901cd5c4d36fc5b443b8b7c31dc2"
     }
   },
   "renderer": {
@@ -64,7 +64,8 @@
     "Both requests are anonymous: credentials are omitted and no token, session or customer value is ever sent.",
     "Masks are applied only when the attribute declares mask: in its inputFormat. Nothing is inferred, so no value is reshaped without the schema asking.",
     "FORM_MAPS_API_KEY is a public browser key by design and must be restricted by HTTP referrer and API list in the Google console. While it is empty no Google script is loaded at all, and an address field degrades to a plain text input that still submits.",
-    "With a key, an address field shows its map from the start, holding the map's place while Google loads, with one pin for every address it holds that Google located. An Input format token map:<south>,<west>,<north>,<east> on the attribute names the area the empty map opens on; without it the empty map shows the whole world.",
+    "With a key, an address field shows its map from the start, holding the map's place while Google loads, with one pin for every address it holds that Google located. An Input format token map:<south>,<west>,<north>,<east> on the attribute names the area the empty map opens on; without it the empty map opens on the area named by within:, or on the whole world.",
+    "An Input format token within:<south>,<west>,<north>,<east> on an address attribute names the area its addresses must lie in. Suggestions are limited to that area, and a typed address is added only once Google has located it there; an address outside it or one Google cannot find stays in the input with ADDRESS_OUTSIDE_ERROR or ADDRESS_UNKNOWN_ERROR until it is corrected. When Google does not answer within six seconds or is unavailable, the address is accepted unchecked, so the form never waits on Google to go on. The area is a rectangle and the form's first check only; a finer rule belongs to the process that receives the submission.",
     "FORM_THEME and FORM_MODE accept only a published vertical and light or dark. An unrecognised value falls back to the shipped default instead of writing an unknown data-theme that would silently render the wrong palette.",
     "The success screen states only what its copy parameters say. SUCCESS_STEP_1 to SUCCESS_STEP_3 and SUCCESS_AGAIN_LABEL render nothing while empty, and the document never offers registration or sign-in."
   ]

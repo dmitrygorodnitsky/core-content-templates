@@ -131,8 +131,15 @@ step, frames its pins again when its box changes size, draws dark on a page in
 dark mode, and offers zoom buttons only to a pointer that cannot pinch. An
 Input format token `map:<south>,<west>,<north>,<east>` names the area the empty
 map opens on, for example `address map:49,-123.3,49.4,-121.8`; without it the
-empty map shows the whole world. A map that fails leaves the screen and takes
-no answer with it. It needs
+empty map opens on the area named by `within:`, or on the whole world. A map
+that fails leaves the screen and takes no answer with it. The token
+`within:<south>,<west>,<north>,<east>` names the area the addresses must lie
+in: suggestions are asked for inside it only, and a typed address is added
+only once Google has located it there. An address outside it, or one Google
+cannot find, stays in the input with `ADDRESS_OUTSIDE_ERROR` or
+`ADDRESS_UNKNOWN_ERROR` under it until it is corrected, and Continue waits for
+that check. When Google does not answer within six seconds or is unavailable
+the address is accepted unchecked. The map needs
 `FORM_MAPS_API_KEY`, a Google browser key that is public
 by design and must be restricted by HTTP referrer and API list. While that
 parameter is empty no Google script is loaded at all and the field stays a plain
