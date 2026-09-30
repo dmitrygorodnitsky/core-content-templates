@@ -618,8 +618,71 @@ Next, in order:
        looks again every 250 ms for up to 60 s, submits once, and logs an error
        when it gives up. A callback lost with its node still stays in
        `INITIAL`; `core-ui` `quotationRecoveryReport.mjs` lists such forms.
-     - **Not yet seen:** a submission through V18. The next forms should all
-       leave `INITIAL` within a second.
+     - **Seen on 2026-09-29:** forms 88 and 89 left `INITIAL` by themselves,
+       3.3 s and 0.4 s after they were created.
+   - **The quote form that stopped after it was submitted** (found
+     2026-09-30). Form 88, "1285 E Pender St, Vancouver, BC, Canada", entered
+     `SUBMITTED` at 08:40:57 UTC on 2026-09-29 and nothing followed. A
+     manager's Notify two hours later put it in `NOTIFIED`, and nothing
+     followed again. Neither step created a script task or set a failure
+     state. The address was not the cause: Google locates it, and the region
+     check answers `true` for it.
+     - **What the platform does**, measured on dev-1 with the probe workflow
+       `ZZ_FORM_HOOK_PROBE` (`core-ui` `formHookProbe.json`,
+       `formHookProbeWorkflow.json`):
+       - `sendEventUnsecured` does not apply the transition. Another thread
+         applies it 39–129 ms later (30 runs, median 54 ms) in its own
+         transaction, whether or not the sender's transaction has committed.
+         A read straight after the send showed the old state 30 times out
+         of 30.
+       - A state hook runs in a transaction of its own. A callback it registers
+         with `runAfterTx` starts 10 ms after the hook returns, and its first
+         read ends 15–29 ms after the hook (42 runs). That read can come
+         before the state is readable: a new form read as absent twice and was
+         there 61 ms after its hook, and an event transition read the old
+         state and, a few milliseconds later, the new one.
+       - Events are applied in the order they were sent: of two events sent
+         2 ms apart from one state, the first was applied on 24 forms of 24.
+         The second is not dropped at once. It is tried again for about two
+         seconds and applied if the form is back in its source state by then:
+         it was when the state returned after 1.5 s, and was not after 3 s or
+         more.
+     - **Why the form stopped:** since V17 every step after `INITIAL` read its
+       state once, right when its callback started, and returned without a
+       word when the state was not there yet. V10 to V16 did not read it at
+       all, so no earlier form could stop this way. On form 88 the audit row
+       of `SUBMITTED` came 39 ms after the transition, later than a callback's
+       first read. What the second step read cannot be told without the node's
+       log.
+     - **A check that never checked:** since V17 the chain also read the state
+       straight after sending an event, found the old one every time and sent
+       the step's failure event as well. The success event, sent first, was
+       applied first, and the failure event was dropped two seconds later. A
+       lost success event would have gone unnoticed only by luck.
+     - **Fixed** by `WINTER_SERVICE_REGION_WORKFLOW_UTILS_V19` (script 342),
+       bound to workflow 49 on 2026-09-30. Every step waits up to 60 s for its
+       state, looking every 50 ms, and logs an error when it gives up. After
+       sending an event it waits the same way for the form to leave the state,
+       and only then reports the event as lost through the step's failure
+       event. A class that fails to load ends in the failure state as well.
+       `core-ui` `winterQuotationStateWaitCheck.mjs` covers it; each of 20
+       deliberate breaks of V19 fails that check.
+     - **Seen on dev-1:** 16 empty forms of the smoke type
+       `ZZ_QUOTE_CHAIN_SMOKE` (SYSTEM, workflow 49) went `SUBMITTED` →
+       `VALIDATION_FAILED` by themselves within 0.28–0.62 s, and the manual
+       retry event sent one through the same two states again. That exercises
+       the start of the chain, the wait for a state and the failure event.
+       `core-ui` `winterQuotationChainSmoke.mjs` repeats it; an empty form has
+       no address and no recipient, so it sends no email and touches no tenant
+       record.
+     - **Not yet seen:** a real request through V19. Forms 44, 84, 87 and 88
+       still stand where they stopped.
+     - **Not explained:** `MANAGER_DELIVERY_FAILED` on form 89, 219 ms after
+       `READY_FOR_REVIEW`; the retry 75 s later went through. A success event
+       sent first would have been applied first, so either the manager's email
+       failed before that event was sent, or the event's first try failed for a
+       reason the API does not show. The message stored with the transition is
+       not readable through the API.
 2. **Build the three client forms** specified for the portal.
 3. **Price by the founder's model.** Received from the user on 2026-09-23.
    - A visit of snow removal and a visit of de-icing each have a price set by

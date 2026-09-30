@@ -496,7 +496,12 @@ callback on an in-memory pool thread about 10 ms after the commit, so nothing
 records a callback that is lost or finds nothing. The start of the chain lost
 12 of 36 quote forms that way: a form whose creation committed late stayed in
 `INITIAL`. Since 2026-09-29 the start waits for the form
-(`QUOTATION-PACKAGE-FLOW.md` §9); the later steps still read once.
+(`QUOTATION-PACKAGE-FLOW.md` §9). From V17 the later steps read their state
+once, and form 88 stopped in `SUBMITTED` and again in `NOTIFIED`. A probe of
+2026-09-30 showed why a single read is not enough: a hook's callback starts
+10 ms after the hook, which can be before the state is readable, and an event
+is applied 39–129 ms after it is sent. Since 2026-09-30 every step waits for
+its state and for each event it sends (V19, same section).
 
 ### F8 — P2: part of the form data takes no part in further processing
 

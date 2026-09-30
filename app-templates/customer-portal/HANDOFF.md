@@ -885,13 +885,27 @@ checkout before treating any of them as broken.
 
 ## Exact next action
 
+**Since the afternoon of 2026-09-30** the request-quote form refuses an address
+outside the service area or one Google cannot find, with a message under the
+input, and a quote form no longer stops silently after it is submitted.
+- The form: `GET_QUOTE_` on dev-1 carries
+  `address within:49,-123.33,49.42,-121.77`, and `PORTAL_FORM_DOCUMENT`
+  matches the package (`content/cases/QUOTE-FORM-MULTI-ADDRESS.md`, "An address
+  outside the service area").
+- The chain: workflow 49 runs `WINTER_SERVICE_REGION_WORKFLOW_UTILS_V19`
+  (script 342), which waits for every state and for every event it sends
+  (`content/cases/QUOTATION-PACKAGE-FLOW.md` §9, "The quote form that stopped
+  after it was submitted").
+- Next: the user accepts or rejects the presentation from the screenshots and
+  runs the two scenarios of the team's list on the real form, a Houston
+  address and a Vancouver one. No real request has gone through V19 yet. The
+  business settles the list of supported regions; the box on `GET_QUOTE_`
+  follows it.
+
 **Since 2026-09-30** the request-quote form keeps its map on screen and shows a
 pin for every address the client entered
 (`content/cases/QUOTE-FORM-MULTI-ADDRESS.md`, "The map stays on screen").
-`PORTAL_FORM_DOCUMENT` on dev-1 matches the package, and `GET_QUOTE_` opens the
-empty map on the service area through `map:` in the address Input format.
-Next: the user accepts or rejects the presentation from the screenshots; then
-the first task of the team's list, the address the form cannot process.
+The empty map opens on the service area.
 
 **Since the evening of 2026-09-29** managers can price and approve many quotes
 at once in Snow CRM: Price Quotes and Approve Quotes under Group actions on
@@ -914,11 +928,11 @@ request end to end. Agreement 146 stays `ACTIVE` without credentials for its
 client, by the user's choice.
 
 **Since 2026-09-29** a quote form waits until it is visible before it submits
-itself: workflow 49 runs `WINTER_SERVICE_REGION_WORKFLOW_UTILS_V18` (script
-325). Before that, a form whose creation committed late stayed in `INITIAL`;
-12 of 36 did (`content/cases/QUOTATION-PACKAGE-FLOW.md` §9, "The quote form
-that did not submit itself"). Next: every new form should leave `INITIAL`
-within a second; forms 44, 84 and 87 still wait there for the team's decision.
+itself (`WINTER_SERVICE_REGION_WORKFLOW_UTILS_V18`, kept by V19). Before that,
+a form whose creation committed late stayed in `INITIAL`; 12 of 36 did
+(`content/cases/QUOTATION-PACKAGE-FLOW.md` §9, "The quote form that did not
+submit itself"). Forms 44, 84 and 87 still wait there, and form 88 in
+`NOTIFIED`, for the team's decision.
 
 **Since the evening of 2026-09-28** managers have a bulk Send Quotation in Snow
 CRM (`content/cases/QUOTATION-PACKAGE-FLOW.md` §11). Quotations to Send →
