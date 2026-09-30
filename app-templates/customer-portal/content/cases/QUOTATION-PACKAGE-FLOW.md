@@ -279,6 +279,12 @@ decided on 2026-09-28 that a link sent shortly before the season still lasts
 the full period. Both attributes are optional fields of the `OPERATOR`
 organization type and are set in Snow CRM; SNOWLIMITLESS has neither yet. The
 agreement link still lasts 30 days.
+A read of dev-1 on 2026-09-30 found both attributes still unset on
+SNOWLIMITLESS, so every quotation link there lasts 30 days, as every agreement
+link does. The team's list asks what holds outside "the season has started,
+30 days" (task 17): the rule above answers it, and the business still owes the
+season's start date and a word on whether the agreement link should follow the
+same rule.
 The review page answers a revoked or expired link with "This link has expired
 or was withdrawn" and, live since 2026-09-23, sends the client to the link in
 the provider's newest email.
@@ -308,6 +314,49 @@ and an option made only of such lines shows neither subtotal nor taxes, only
 its total — on the quote and on the agreement page alike. The user accepted
 this presentation on 2026-09-28 from screenshots at desktop, 768 px and
 375 px widths in light and dark mode.
+
+Since 2026-09-30, after the team's test of the whole flow (tasks 17, 18 and
+20 of its list), the review page does three more things.
+
+- **Copy link.** The three steps a client comes back to — quote review,
+  contract details and agreement review — offer Copy link beside "This link
+  works until". It hands the browser's clipboard the address the page was
+  opened with, `#token=` fragment included; the address never enters the page
+  markup, and copying sends no request. The button then reads Link copied and
+  a note says that anyone who has the link can open the page. On the details
+  step the note adds that what is typed is not saved until it is sent: the
+  page stores nothing in the browser and the link delegates no event that
+  could hold a draft, so a returning client finds what the provider's system
+  holds and nothing more. A browser that refuses the write gets a note
+  pointing to the address bar and the provider's email. An approved agreement
+  offers no copy, because its link is revoked when the approval is processed
+  (§5).
+- **Thanks instead of "This link is now closed".** A link that closes after
+  the client's own action ends on a success card with a green check: "Thank
+  you, we received your details" after the details, "Thank you, we received
+  your approval" with the portal invitation after the approval. The first
+  names the next step, the agreement link the provider emails. A link that is
+  already closed when it is opened keeps the neutral "This link has expired or
+  was withdrawn". The copy parameters `CLOSED_AFTER_TITLE`,
+  `CLOSED_AFTER_DETAILS_BODY` and `CLOSED_AFTER_APPROVAL_BODY` gave way to
+  `DETAILS_SENT_TITLE`, `DETAILS_SENT_BODY`, `APPROVAL_SENT_TITLE` and
+  `APPROVAL_SENT_BODY`. The page cannot read why a link closed. It shows the
+  thanks when its own details or approval event was accepted, or the agreement
+  was already `CLIENT_DETAILS_RECEIVED`, before the link closed; the quotation
+  link is revoked after complete details and on cancellation (§7).
+- **The portal above and below an approved agreement.** With `PORTAL_URL` set,
+  the completion states offer Open the customer portal in the invitation above
+  the agreement and again in a closing block below the terms, both to
+  `PORTAL_URL`. An agreement still awaiting approval offers no portal.
+
+Both CMS nodes of dev-1 serve this version since 2026-09-30: the four template
+hashes match the package, `REVIEW_API_BASE_URL` and `PORTAL_URL` kept their
+values, and after each of the two uploads one node served the previous page
+until an identical save was steered to it. The presentation was checked on the
+fixtures at desktop, 768 px and 375 px widths in light and dark mode, and the
+screenshots went to the user, who has not accepted it yet. No client has gone
+through it on dev-1: the thanks after real details and a real approval, and
+Copy link under a real token, wait for the team's next end-to-end run.
 
 ## 9. Prerequisites and open points
 

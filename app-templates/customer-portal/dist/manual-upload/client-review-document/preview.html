@@ -567,7 +567,27 @@ button { font-family: inherit; }
 
 .cr-meta__value { margin: 0; font-weight: 650; color: var(--ink); overflow-wrap: anywhere; }
 
-.cr-validity { margin: 4px 0 0; font-size: 12.5px; color: var(--ink-3); }
+.cr-link { margin: 6px 0 0; }
+
+.cr-link__row { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; }
+
+.cr-validity { margin: 0; font-size: 12.5px; color: var(--ink-3); }
+
+.cr-link__copy { padding: 5px 12px; font-size: 12.5px; }
+
+.cr-link[data-link="copied"] .cr-link__copy::before { content: "✓"; font-weight: 800; color: var(--ok); }
+
+.cr-link__note { margin: 6px 0 0; max-width: 62ch; font-size: 12.5px; line-height: 1.5; color: var(--ink-2); }
+
+.cr-link__note + .cr-link__note { margin-top: 2px; }
+
+.cr-link[data-link="failed"] .cr-link__note { display: flex; align-items: flex-start; gap: 7px; }
+
+.cr-link[data-link="failed"] .cr-link__note::before {
+  content: "!"; flex: none; width: 16px; height: 16px; margin-top: 1px; border-radius: var(--radius-pill);
+  display: grid; place-items: center; font-size: 10.5px; font-weight: 800; line-height: 1;
+  color: var(--warn); background: var(--warn-bg);
+}
 
 .cr-panel {
   background: rgba(var(--glass), .55);
@@ -616,6 +636,8 @@ button { font-family: inherit; }
 .cr-state--warn .cr-state__glyph { background: var(--warn-bg); color: var(--warn); border-color: transparent; }
 
 .cr-state--error .cr-state__glyph { background: var(--danger-bg); color: var(--danger); border-color: transparent; }
+
+.cr-state--ok .cr-state__glyph { background: var(--ok); color: var(--surface); border-color: transparent; }
 
 .cr-state--info .cr-state__glyph,
 .cr-state--progress .cr-state__glyph { background: rgba(var(--accent-rgb), .12); color: var(--accent); border-color: transparent; }
@@ -1073,6 +1095,7 @@ button { font-family: inherit; }
   .cr-summary__item[data-kind="properties"],
   .cr-skeleton .cr-summary > .cr-skeleton__tile:first-child { grid-column: 1 / -1; }
   .cr-fields { grid-template-columns: minmax(0, 1fr); }
+  .cr-link__copy { padding: 9px 16px; font-size: 13px; }
   .cr-property__head { flex-wrap: wrap; padding: 14px 14px 12px; gap: 8px 10px; }
   .cr-property__identity { flex-basis: calc(100% - 40px); }
   .cr-property__head .status-badge { margin: 0 0 0 40px; }
@@ -1116,6 +1139,11 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
   data-copy-from-label="From"
   data-copy-for-label="For"
   data-copy-link-valid-until="This link works until {date}."
+  data-copy-link-copy="Copy link"
+  data-copy-link-copied="Link copied"
+  data-copy-link-copied-note="Use it to come back to this page later. Anyone who has the link can open this page."
+  data-copy-link-copied-unsent="What you type here is not saved until you send it."
+  data-copy-link-copy-failed="The link could not be copied. Copy this page's address from your browser, or open the link in the provider's email again."
   data-copy-quote-eyebrow="Quotation"
   data-copy-quote-title="Review your quotes"
   data-copy-quote-subtitle="Each property has its own options. Choose one to see its services, then approve it or ask for changes. If none suits you, decline them all."
@@ -1274,9 +1302,10 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
   data-copy-link-closed-title="This link has expired or was withdrawn"
   data-copy-link-closed-body="Use the link in the provider's newest email. If that link does not work either, ask them to send you a new one."
   data-copy-link-closed-portal="If you already have customer portal access, you can sign in there."
-  data-copy-closed-after-title="This link is now closed"
-  data-copy-closed-after-details-body="It closed after your details were sent. The provider closes it when the details step ends."
-  data-copy-closed-after-approval-body="It closed after your approval was sent. The provider closes it when the agreement review ends."
+  data-copy-details-sent-title="Thank you, we received your details"
+  data-copy-details-sent-body="The provider prepares your service agreement next and emails you a new link to review it. This link is now closed."
+  data-copy-approval-sent-title="Thank you, we received your approval"
+  data-copy-approval-sent-body="The provider's system has recorded your approval of the service agreement. This link is now closed."
   data-copy-empty-title="There is nothing to review here"
   data-copy-empty-body="This link does not include a quotation or an agreement."
   data-copy-error-title="We could not load this page"
@@ -1300,6 +1329,11 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     ["FROM_LABEL", "fromLabel", "From"],
     ["FOR_LABEL", "forLabel", "For"],
     ["LINK_VALID_UNTIL", "linkValidUntil", "This link works until {date}."],
+    ["LINK_COPY", "linkCopy", "Copy link"],
+    ["LINK_COPIED", "linkCopied", "Link copied"],
+    ["LINK_COPIED_NOTE", "linkCopiedNote", "Use it to come back to this page later. Anyone who has the link can open this page."],
+    ["LINK_COPIED_UNSENT", "linkCopiedUnsent", "What you type here is not saved until you send it."],
+    ["LINK_COPY_FAILED", "linkCopyFailed", "The link could not be copied. Copy this page's address from your browser, or open the link in the provider's email again."],
 
     ["QUOTE_EYEBROW", "quoteEyebrow", "Quotation"],
     ["QUOTE_TITLE", "quoteTitle", "Review your quotes"],
@@ -1463,9 +1497,10 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     ["LINK_CLOSED_TITLE", "linkClosedTitle", "This link has expired or was withdrawn"],
     ["LINK_CLOSED_BODY", "linkClosedBody", "Use the link in the provider's newest email. If that link does not work either, ask them to send you a new one."],
     ["LINK_CLOSED_PORTAL", "linkClosedPortal", "If you already have customer portal access, you can sign in there."],
-    ["CLOSED_AFTER_TITLE", "closedAfterTitle", "This link is now closed"],
-    ["CLOSED_AFTER_DETAILS_BODY", "closedAfterDetailsBody", "It closed after your details were sent. The provider closes it when the details step ends."],
-    ["CLOSED_AFTER_APPROVAL_BODY", "closedAfterApprovalBody", "It closed after your approval was sent. The provider closes it when the agreement review ends."],
+    ["DETAILS_SENT_TITLE", "detailsSentTitle", "Thank you, we received your details"],
+    ["DETAILS_SENT_BODY", "detailsSentBody", "The provider prepares your service agreement next and emails you a new link to review it. This link is now closed."],
+    ["APPROVAL_SENT_TITLE", "approvalSentTitle", "Thank you, we received your approval"],
+    ["APPROVAL_SENT_BODY", "approvalSentBody", "The provider's system has recorded your approval of the service agreement. This link is now closed."],
     ["EMPTY_TITLE", "emptyTitle", "There is nothing to review here"],
     ["EMPTY_BODY", "emptyBody", "This link does not include a quotation or an agreement."],
     ["ERROR_TITLE", "errorTitle", "We could not load this page"],
@@ -2717,8 +2752,12 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     return Boolean(command && command.status === "pending");
   }
 
+  function sentences(parts) {
+    return parts.filter(Boolean).map(function (part) { return /[.!?…:]$/.test(part) ? part : part + "."; }).join(" ");
+  }
+
   function announce(ctx, parts) {
-    ctx.announcement = parts.filter(Boolean).map(function (part) { return /[.!?…:]$/.test(part) ? part : part + "."; }).join(" ");
+    ctx.announcement = sentences(parts);
   }
 
   function stateCard(tone, glyph, title, body, action, quiet) {
@@ -2790,6 +2829,27 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     return wrap;
   }
 
+  function linkRow(ctx) {
+    var copy = ctx.copy;
+    var view = ctx.snapshot.view;
+    var link = ctx.snapshot.link;
+    if (!view.expiresAt && !link.available) return null;
+    var box = el("div", "cr-link", { "data-link": link.status || "idle" });
+    var row = el("div", "cr-link__row");
+    box.appendChild(row);
+    if (view.expiresAt) row.appendChild(text("p", "cr-validity", ns.fill(copy.linkValidUntil, { date: view.expiresAt })));
+    if (!link.available) return box;
+    var copied = link.status === "copied";
+    row.appendChild(mark(ctx, button(copied ? copy.linkCopied : copy.linkCopy, "btn--ghost cr-link__copy", function () {
+      ctx.dispatch("link.copy");
+    }, { "data-action": "link.copy" }), "link-copy"));
+    var unsent = view.details.available ? copy.linkCopiedUnsent : "";
+    var notes = copied ? [copy.linkCopiedNote, unsent].filter(Boolean) : link.status === "failed" ? [copy.linkCopyFailed] : [];
+    notes.forEach(function (line) { box.appendChild(text("p", "cr-link__note", line)); });
+    ctx.linkStatus = sentences(copied ? [copy.linkCopied].concat(notes) : notes);
+    return box;
+  }
+
   function pageHead(ctx, eyebrow, title, subtitle, badgeNode) {
     var view = ctx.snapshot.view;
     var copy = ctx.copy;
@@ -2810,7 +2870,8 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
       meta.appendChild(item);
     });
     if (meta.children.length) head.appendChild(meta);
-    if (view.expiresAt) head.appendChild(text("p", "cr-validity", ns.fill(copy.linkValidUntil, { date: view.expiresAt })));
+    var link = linkRow(ctx);
+    if (link) head.appendChild(link);
     return head;
   }
 
@@ -3393,6 +3454,12 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     return box;
   }
 
+  function portalReturn(ctx) {
+    var box = notice("info", ctx.copy.portalTitle, [], portalLink(ctx), { quiet: true });
+    box.setAttribute("data-portal", "return");
+    return box;
+  }
+
   function portalAside(ctx, title, line) {
     var aside = el("div", "cr-state__aside", { "data-portal": title ? "invitation" : "sign-in" });
     if (title) aside.appendChild(text("h2", "cr-state__aside-title", title));
@@ -3539,6 +3606,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     shell.appendChild(terms);
 
     if (reviewing) shell.appendChild(approveSection(ctx));
+    if (completion && ctx.snapshot.portalUrl) shell.appendChild(portalReturn(ctx));
     announceUnconfirmed(ctx);
   }
 
@@ -3594,8 +3662,10 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
       var signIn = ctx.snapshot.portalUrl ? portalAside(ctx, "", text("p", "cr-state__aside-text", copy.linkClosedPortal)) : null;
       return announcedCard(ctx, "neutral", "⊘", copy.linkClosedTitle, copy.linkClosedBody, signIn);
     }
-    var invitation = after === "approval" ? portalAside(ctx, copy.portalTitle, portalBody(ctx, "cr-state__aside-text")) : null;
-    return announcedCard(ctx, "info", "i", copy.closedAfterTitle, after === "details" ? copy.closedAfterDetailsBody : copy.closedAfterApprovalBody, invitation);
+    if (after === "approval") {
+      return announcedCard(ctx, "ok", "✓", copy.approvalSentTitle, copy.approvalSentBody, portalAside(ctx, copy.portalTitle, portalBody(ctx, "cr-state__aside-text")));
+    }
+    return announcedCard(ctx, "ok", "✓", copy.detailsSentTitle, copy.detailsSentBody, null);
   }
 
   function renderPage(mount, snapshot, dispatch, copy) {
@@ -3605,6 +3675,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
       copy: copy,
       focus: {},
       announcement: "",
+      linkStatus: "",
       busy: snapshot.refreshing || snapshot.phase !== "ready" || Boolean(snapshot.bulk),
     };
     var page = el("div", "cr-page", {
@@ -3636,7 +3707,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     }
     mount.replaceChildren();
     mount.appendChild(page);
-    return { focus: ctx.focus, announcement: ctx.announcement };
+    return { focus: ctx.focus, announcement: ctx.announcement, linkStatus: ctx.linkStatus };
   }
 
   ns.components = Object.freeze({
@@ -3653,6 +3724,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
   var EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   var CHECKING_DELAYS = [2000, 3000, 5000, 8000, 12000, 15000, 15000, 15000];
   var RETURNED_COPY = { missing: "returnedMissing", unconfirmed: "returnedUnconfirmed", choice: "returnedChoice", email: "returnedEmail" };
+  var LINK_STEPS = { "quote-review": true, "contract-details": true, "agreement-review": true };
 
   function systemTimers() {
     return {
@@ -3671,10 +3743,13 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     var timers = settings.timers || systemTimers();
     var delays = Array.isArray(settings.pollDelays) && settings.pollDelays.length ? settings.pollDelays.slice() : CHECKING_DELAYS.slice();
     var portalUrl = ns.adapter.safePortalUrl(settings.portalUrl);
+    var pageLink = settings.pageLink || "";
+    var clipboard = settings.clipboard || null;
     var contract = ns.contract;
     var normalizer = ns.normalizer;
     var inflight = {};
     var loading = null;
+    var copying = null;
     var listeners = [];
     var stopped = false;
     var poll = { timer: null, attempt: 0, exhausted: false };
@@ -3695,6 +3770,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
       draftInvalid: {},
       commands: {},
       details: emptyDetails(null),
+      link: "",
       focusKey: "",
     };
 
@@ -3991,6 +4067,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
       }).then(function () {
         state.refreshing = false;
         loading = null;
+        if (before.page !== pageKey()) state.link = "";
         track();
         markAccepted();
         var rendered = render();
@@ -4190,6 +4267,32 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
       });
     }
 
+    function writeToClipboard(value) {
+      try {
+        return Promise.resolve(clipboard.writeText(value));
+      } catch (error) {
+        return Promise.reject(error);
+      }
+    }
+
+    function linkOffered() {
+      return Boolean(pageLink) && Boolean(state.view) && LINK_STEPS[state.view.kind] === true;
+    }
+
+    function copyLink() {
+      if (copying) return copying;
+      if (!linkOffered()) return Promise.resolve(false);
+      copying = writeToClipboard(pageLink).then(function () { return true; }, function () { return false; }).then(function (copied) {
+        copying = null;
+        state.link = copied ? "copied" : "failed";
+        state.focusKey = "link-copy";
+        var rendered = render();
+        if (live && rendered && rendered.linkStatus) live.textContent = rendered.linkStatus;
+        return copied;
+      });
+      return copying;
+    }
+
     function dispatch(type, payload) {
       var data = payload || {};
       var option;
@@ -4202,6 +4305,9 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
         case "refresh":
           if (data.recordKey) clearOutcome(data.recordKey);
           reload(readContext());
+          return;
+        case "link.copy":
+          copyLink();
           return;
         case "option.toggle":
           toggleOption(data.id);
@@ -4313,6 +4419,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
         details: state.details,
         waiting: { exhausted: poll.exhausted, decisions: state.followDecisions },
         portalUrl: portalUrl,
+        link: { available: linkOffered(), status: state.link },
         primaryEmail: state.primaryEmail,
         pending: Object.keys(inflight),
       };
@@ -4341,6 +4448,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     function idle() {
       var waiting = Object.keys(inflight).map(function (key) { return inflight[key]; });
       if (loading) waiting.push(loading);
+      if (copying) waiting.push(copying);
       if (!waiting.length) return Promise.resolve();
       return Promise.all(waiting).then(idle);
     }
@@ -4394,11 +4502,15 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     if (!section || typeof section.getAttribute !== "function") return null;
     var mount = env.mount || (typeof section.querySelector === "function" && section.querySelector("[data-client-review-mount]")) || section;
     var dataMode = String(section.getAttribute("data-review-data-mode") || "").trim().toLowerCase() === "fixture" ? "fixture" : "live";
+    var locationRef = env.location || global.location || {};
+    var navigatorRef = env.navigator || global.navigator || {};
     var options = {
       mount: mount,
       live: env.live || (typeof section.querySelector === "function" && section.querySelector("[data-client-review-live]")) || null,
       timers: env.timers,
       portalUrl: section.getAttribute("data-review-portal-url"),
+      pageLink: locationRef.href,
+      clipboard: navigatorRef.clipboard,
       copy: copyFromAttributes(section),
       locale: env.locale || displayLocale(env),
     };
@@ -4412,11 +4524,11 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
         if (setup.phase) options.phase = setup.phase;
         if (setup.portalUrl) options.portalUrl = setup.portalUrl;
         if (setup.pollDelays) options.pollDelays = setup.pollDelays;
+        if (setup.clipboard) options.clipboard = setup.clipboard;
         steps = setup.steps || [];
       }
     } else {
       var apiBase = ns.adapter.safeApiBase(section.getAttribute("data-review-api-base"));
-      var locationRef = env.location || global.location || {};
       var token = ns.adapter.tokenFromFragment(locationRef.hash);
       if (!apiBase) options.phase = "unconfigured";
       else if (!token) options.phase = "link-missing";
@@ -4537,6 +4649,8 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     { id: "empty", label: "Valid link, nothing to show" },
     { id: "error", label: "Load error — retry recovers" },
     { id: "partial", label: "Partial data — one option unreadable" },
+    { id: "link-copied", label: "Copy link — copied on the contract details step" },
+    { id: "link-copy-failed", label: "Copy link — the browser refused to copy" },
     { id: "option-open", label: "Option open — lines, total, decisions" },
     { id: "view-pending", label: "Unviewed option opened — view event pending" },
     { id: "view-failed", label: "Unviewed option opened — view event failed" },
@@ -4980,6 +5094,14 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     return data;
   }
 
+  function fixtureClipboard(accepts) {
+    return {
+      writeText: function () {
+        return accepts ? Promise.resolve() : Promise.reject(new Error("The fixture clipboard refuses every write"));
+      },
+    };
+  }
+
   function build(id, delay) {
     var data = quotationData();
     var behavior = { introspect: "ok", events: {}, hooks: {}, delay: delay };
@@ -4987,6 +5109,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     var phase = "";
     var portalUrl = "";
     var pollDelays = null;
+    var clipboard = null;
     var approve = [["option.toggle", { id: 3102 }], ["option.intent", { id: 3102, kind: "approve" }]];
     var confirmBoth = [
       ["details.choose", { code: "CLIENT_TYPE", value: "ORGANIZATION" }],
@@ -5022,6 +5145,15 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
         break;
       case "partial":
         data.unreadable = [3107];
+        break;
+      case "link-copied":
+        data = quotationData("AWAITING_CLIENT_DETAILS", DECIDED);
+        clipboard = fixtureClipboard(true);
+        steps = [["link.copy", {}]];
+        break;
+      case "link-copy-failed":
+        clipboard = fixtureClipboard(false);
+        steps = [["link.copy", {}]];
         break;
       case "option-open":
         steps = [["option.toggle", { id: 3102 }]];
@@ -5224,7 +5356,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
       default:
         break;
     }
-    return { data: data, behavior: behavior, steps: steps, phase: phase, portalUrl: portalUrl, pollDelays: pollDelays };
+    return { data: data, behavior: behavior, steps: steps, phase: phase, portalUrl: portalUrl, pollDelays: pollDelays, clipboard: clipboard };
   }
 
   function setup(requested) {
@@ -5238,6 +5370,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
       data: built.data,
       portalUrl: built.portalUrl,
       pollDelays: built.pollDelays,
+      clipboard: built.clipboard,
     };
   }
 

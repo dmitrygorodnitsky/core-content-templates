@@ -102,6 +102,8 @@
     { id: "empty", label: "Valid link, nothing to show" },
     { id: "error", label: "Load error — retry recovers" },
     { id: "partial", label: "Partial data — one option unreadable" },
+    { id: "link-copied", label: "Copy link — copied on the contract details step" },
+    { id: "link-copy-failed", label: "Copy link — the browser refused to copy" },
     { id: "option-open", label: "Option open — lines, total, decisions" },
     { id: "view-pending", label: "Unviewed option opened — view event pending" },
     { id: "view-failed", label: "Unviewed option opened — view event failed" },
@@ -545,6 +547,14 @@
     return data;
   }
 
+  function fixtureClipboard(accepts) {
+    return {
+      writeText: function () {
+        return accepts ? Promise.resolve() : Promise.reject(new Error("The fixture clipboard refuses every write"));
+      },
+    };
+  }
+
   function build(id, delay) {
     var data = quotationData();
     var behavior = { introspect: "ok", events: {}, hooks: {}, delay: delay };
@@ -552,6 +562,7 @@
     var phase = "";
     var portalUrl = "";
     var pollDelays = null;
+    var clipboard = null;
     var approve = [["option.toggle", { id: 3102 }], ["option.intent", { id: 3102, kind: "approve" }]];
     var confirmBoth = [
       ["details.choose", { code: "CLIENT_TYPE", value: "ORGANIZATION" }],
@@ -587,6 +598,15 @@
         break;
       case "partial":
         data.unreadable = [3107];
+        break;
+      case "link-copied":
+        data = quotationData("AWAITING_CLIENT_DETAILS", DECIDED);
+        clipboard = fixtureClipboard(true);
+        steps = [["link.copy", {}]];
+        break;
+      case "link-copy-failed":
+        clipboard = fixtureClipboard(false);
+        steps = [["link.copy", {}]];
         break;
       case "option-open":
         steps = [["option.toggle", { id: 3102 }]];
@@ -789,7 +809,7 @@
       default:
         break;
     }
-    return { data: data, behavior: behavior, steps: steps, phase: phase, portalUrl: portalUrl, pollDelays: pollDelays };
+    return { data: data, behavior: behavior, steps: steps, phase: phase, portalUrl: portalUrl, pollDelays: pollDelays, clipboard: clipboard };
   }
 
   function setup(requested) {
@@ -803,6 +823,7 @@
       data: built.data,
       portalUrl: built.portalUrl,
       pollDelays: built.pollDelays,
+      clipboard: built.clipboard,
     };
   }
 

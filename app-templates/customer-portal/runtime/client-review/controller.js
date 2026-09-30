@@ -6,6 +6,7 @@
   var EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   var CHECKING_DELAYS = [2000, 3000, 5000, 8000, 12000, 15000, 15000, 15000];
   var RETURNED_COPY = { missing: "returnedMissing", unconfirmed: "returnedUnconfirmed", choice: "returnedChoice", email: "returnedEmail" };
+  var LINK_STEPS = { "quote-review": true, "contract-details": true, "agreement-review": true };
 
   function systemTimers() {
     return {
@@ -24,10 +25,13 @@
     var timers = settings.timers || systemTimers();
     var delays = Array.isArray(settings.pollDelays) && settings.pollDelays.length ? settings.pollDelays.slice() : CHECKING_DELAYS.slice();
     var portalUrl = ns.adapter.safePortalUrl(settings.portalUrl);
+    var pageLink = settings.pageLink || "";
+    var clipboard = settings.clipboard || null;
     var contract = ns.contract;
     var normalizer = ns.normalizer;
     var inflight = {};
     var loading = null;
+    var copying = null;
     var listeners = [];
     var stopped = false;
     var poll = { timer: null, attempt: 0, exhausted: false };
@@ -48,6 +52,7 @@
       draftInvalid: {},
       commands: {},
       details: emptyDetails(null),
+      link: "",
       focusKey: "",
     };
 
@@ -344,6 +349,7 @@
       }).then(function () {
         state.refreshing = false;
         loading = null;
+        if (before.page !== pageKey()) state.link = "";
         track();
         markAccepted();
         var rendered = render();
@@ -543,6 +549,32 @@
       });
     }
 
+    function writeToClipboard(value) {
+      try {
+        return Promise.resolve(clipboard.writeText(value));
+      } catch (error) {
+        return Promise.reject(error);
+      }
+    }
+
+    function linkOffered() {
+      return Boolean(pageLink) && Boolean(state.view) && LINK_STEPS[state.view.kind] === true;
+    }
+
+    function copyLink() {
+      if (copying) return copying;
+      if (!linkOffered()) return Promise.resolve(false);
+      copying = writeToClipboard(pageLink).then(function () { return true; }, function () { return false; }).then(function (copied) {
+        copying = null;
+        state.link = copied ? "copied" : "failed";
+        state.focusKey = "link-copy";
+        var rendered = render();
+        if (live && rendered && rendered.linkStatus) live.textContent = rendered.linkStatus;
+        return copied;
+      });
+      return copying;
+    }
+
     function dispatch(type, payload) {
       var data = payload || {};
       var option;
@@ -555,6 +587,9 @@
         case "refresh":
           if (data.recordKey) clearOutcome(data.recordKey);
           reload(readContext());
+          return;
+        case "link.copy":
+          copyLink();
           return;
         case "option.toggle":
           toggleOption(data.id);
@@ -666,6 +701,7 @@
         details: state.details,
         waiting: { exhausted: poll.exhausted, decisions: state.followDecisions },
         portalUrl: portalUrl,
+        link: { available: linkOffered(), status: state.link },
         primaryEmail: state.primaryEmail,
         pending: Object.keys(inflight),
       };
@@ -694,6 +730,7 @@
     function idle() {
       var waiting = Object.keys(inflight).map(function (key) { return inflight[key]; });
       if (loading) waiting.push(loading);
+      if (copying) waiting.push(copying);
       if (!waiting.length) return Promise.resolve();
       return Promise.all(waiting).then(idle);
     }
@@ -747,11 +784,15 @@
     if (!section || typeof section.getAttribute !== "function") return null;
     var mount = env.mount || (typeof section.querySelector === "function" && section.querySelector("[data-client-review-mount]")) || section;
     var dataMode = String(section.getAttribute("data-review-data-mode") || "").trim().toLowerCase() === "fixture" ? "fixture" : "live";
+    var locationRef = env.location || global.location || {};
+    var navigatorRef = env.navigator || global.navigator || {};
     var options = {
       mount: mount,
       live: env.live || (typeof section.querySelector === "function" && section.querySelector("[data-client-review-live]")) || null,
       timers: env.timers,
       portalUrl: section.getAttribute("data-review-portal-url"),
+      pageLink: locationRef.href,
+      clipboard: navigatorRef.clipboard,
       copy: copyFromAttributes(section),
       locale: env.locale || displayLocale(env),
     };
@@ -765,11 +806,11 @@
         if (setup.phase) options.phase = setup.phase;
         if (setup.portalUrl) options.portalUrl = setup.portalUrl;
         if (setup.pollDelays) options.pollDelays = setup.pollDelays;
+        if (setup.clipboard) options.clipboard = setup.clipboard;
         steps = setup.steps || [];
       }
     } else {
       var apiBase = ns.adapter.safeApiBase(section.getAttribute("data-review-api-base"));
-      var locationRef = env.location || global.location || {};
       var token = ns.adapter.tokenFromFragment(locationRef.hash);
       if (!apiBase) options.phase = "unconfigured";
       else if (!token) options.phase = "link-missing";

@@ -192,6 +192,7 @@ for (const token of usedTokens) assert.ok(declaredTokens.has(token), "client-rev
 for (const token of ["--accent", "--accent-rgb", "--ink", "--ink-2", "--ink-3", "--surface", "--surface-2", "--glass", "--glass-border", "--hair", "--radius-card", "--radius-md", "--danger", "--danger-bg", "--ok", "--warn", "--info"]) {
   assert.ok(usedTokens.has(token), "the stylesheet must build on the portal token " + token);
 }
+assert.match(css, /\.cr-state--ok \.cr-state__glyph \{[^}]*background: var\(--ok\);[^}]*color: var\(--surface\);/, "the success card draws its glyph on the portal's solid ok colour, which the neutral closed-link card does not use");
 
 {
   const { CR } = loadRuntime();
@@ -605,6 +606,7 @@ const EXPECTED_SCENARIOS = {
   "quote-review": ["ready", "quote-review"], loading: ["loading", null], "link-missing": ["link-missing", null],
   "link-closed": ["link-closed", null], unconfigured: ["unconfigured", null], empty: ["ready", "empty"],
   error: ["error", null], partial: ["ready", "quote-review"], "option-open": ["ready", "quote-review"],
+  "link-copied": ["ready", "contract-details"], "link-copy-failed": ["ready", "quote-review"],
   "view-pending": ["ready", "quote-review"], "view-failed": ["ready", "quote-review"], "approve-confirm": ["ready", "quote-review"],
   "changes-invalid": ["ready", "quote-review"], "decline-all-confirm": ["ready", "quote-review"], "decline-all-done": ["ready", "quote-review"], "command-pending": ["ready", "quote-review"], "command-refused": ["ready", "quote-review"],
   "command-failed": ["ready", "quote-review"], "command-stale-pending": ["ready", "quote-review"], "command-unconfirmed": ["ready", "quote-review"],
@@ -624,6 +626,13 @@ const EXPECTED_SCENARIOS = {
   "closed-canceled": ["ready", "closed"], unavailable: ["ready", "unavailable"],
 };
 const POLLED_SCENARIOS = new Set(["details-checking-slow", "details-closed", "details-returned-sent", "decided-following-slow", "decided-next-step", "details-stale-slow", "details-stale-closed", "command-unconfirmed", "view-unconfirmed", "agreement-unconfirmed"]);
+const LINK_STEPS = new Set(["quote-review", "contract-details", "agreement-review"]);
+const PAGE_LINK = "https://pages.example/review#token=scenario-link";
+
+function recordingClipboard(outcome = () => Promise.resolve()) {
+  const written = [];
+  return { written, writeText(value) { written.push(value); return outcome(value); } };
+}
 
 async function runScenario(id) {
   const runtime = loadRuntime({ fixtures: true });
@@ -631,6 +640,7 @@ async function runScenario(id) {
   const live = runtime.document.createElement("p");
   const timers = fakeTimers();
   const host = section(runtime.document, { "data-review-data-mode": "fixture" });
+  const clipboard = recordingClipboard();
   const sent = [];
   const setup = runtime.CR.fixtures.setup;
   runtime.CR.fixtures.setup = (requested) => {
@@ -641,16 +651,17 @@ async function runScenario(id) {
     }
     return result;
   };
-  const controller = runtime.CR.boot(host, { scenario: id, mount, live, timers, locale: "en-CA" });
+  const controller = runtime.CR.boot(host, { scenario: id, mount, live, timers, locale: "en-CA", location: { hash: "", href: PAGE_LINK }, navigator: { language: "en-CA", clipboard } });
   const outcome = await settle(runtime.CR.fixtures.play(controller, controller.steps).then(() => controller.idle()));
   if (POLLED_SCENARIOS.has(id)) await drain(controller, timers);
-  return { runtime, mount, live, timers, controller, sent, outcome, copy: controller.copy };
+  return { runtime, mount, live, timers, controller, sent, clipboard, outcome, copy: controller.copy };
 }
 
 const fieldNamed = (node, code) => all(node, (candidate) => candidate.getAttribute("data-code") === code)[0];
 const controlOf = (field) => byAttribute(field, "id", "cr-field-" + field.getAttribute("data-code"))[0];
 const errorOf = (field) => byClass(field, "cr-field__error")[0];
 const portalLinks = (node) => byAttribute(node, "data-action", "portal.open");
+const stateCardOf = (node) => { const card = byClass(node, "cr-state")[0]; return [card.getAttribute("data-state"), byClass(card, "cr-state__glyph")[0].textContent]; };
 const FORM_FROM_ATTRIBUTES = {
   LEGAL_NAME: "Harbourview Strata Corporation", CLIENT_TYPE: "",
   BILLING_ADDRESS: "1500 Harbour Green Drive, Suite 210, Vancouver, BC V6C 3T8, Canada",
@@ -686,11 +697,35 @@ function assertForm(run, expected, message) {
     assert.ok(page && page.getAttribute("data-phase") === snapshot.phase, id + " renders its phase");
     const text = surface(run.mount);
     const copy = run.copy;
+    const step = snapshot.phase === "ready" && LINK_STEPS.has(snapshot.view.kind);
+    assert.equal(byAttribute(run.mount, "data-action", "link.copy").length, step ? 1 : 0, id + (step ? " is a step the client can come back to and offers Copy link once" : " is no step to come back to and offers no Copy link"));
+    assert.deepEqual(run.clipboard.written, [], id + " writes nothing to the browser's clipboard on its own");
+    assert.ok(!text.includes(PAGE_LINK), id + " keeps the page address out of its markup");
     switch (id) {
       case "loading":
         assert.equal(run.outcome, "held");
         assert.equal(byClass(run.mount, "cr-skeleton").length, 1, "loading renders the skeleton");
         break;
+      case "link-copied": {
+        const box = byClass(run.mount, "cr-link")[0];
+        const button = byAttribute(box, "data-action", "link.copy")[0];
+        assert.equal(box.getAttribute("data-link"), "copied");
+        assert.equal(button.textContent, copy.linkCopied, "the button confirms the copy");
+        assert.deepEqual(byClass(box, "cr-link__note").map((note) => note.textContent), [copy.linkCopiedNote, copy.linkCopiedUnsent], "on the details step the confirmation adds that what is typed is not saved until it is sent");
+        assert.equal(run.live.textContent, [copy.linkCopied + ".", copy.linkCopiedNote, copy.linkCopiedUnsent].join(" "), "the confirmation is announced");
+        assert.equal(run.runtime.document.activeElement, button, "the redraw leaves the focus on the button");
+        assert.equal(byClass(box, "cr-validity")[0].textContent, run.runtime.CR.fill(copy.linkValidUntil, { date: snapshot.view.expiresAt }), "beside the date the link works until");
+        assert.equal(run.sent.length, 0, "copying the link sends no event");
+        break;
+      }
+      case "link-copy-failed": {
+        const box = byClass(run.mount, "cr-link")[0];
+        assert.equal(box.getAttribute("data-link"), "failed");
+        assert.equal(byAttribute(box, "data-action", "link.copy")[0].textContent, copy.linkCopy, "a refused copy leaves the button offering the copy");
+        assert.deepEqual(byClass(box, "cr-link__note").map((note) => note.textContent), [copy.linkCopyFailed], "and says how to take the link without the button");
+        assert.equal(run.live.textContent, copy.linkCopyFailed, "which is announced");
+        break;
+      }
       case "error": {
         const retry = byAttribute(run.mount, "data-action", "retry")[0];
         assert.ok(retry, "the error state offers retry");
@@ -702,6 +737,7 @@ function assertForm(run, expected, message) {
       }
       case "link-closed":
         assert.ok(text.includes(copy.linkClosedTitle));
+        assert.deepEqual(stateCardOf(run.mount), ["neutral", "⊘"], "an expired or withdrawn link keeps the neutral card");
         assert.equal(byAttribute(run.mount, "data-portal", "sign-in").length + portalLinks(run.mount).length, 0, "without PORTAL_URL a closed link offers no portal line");
         break;
       case "link-closed-portal": {
@@ -808,9 +844,11 @@ function assertForm(run, expected, message) {
         break;
       }
       case "details-closed":
-        assert.ok(text.includes(copy.closedAfterDetailsBody), "a link that closes after the details were checked says so without claiming acceptance");
+        assert.deepEqual(stateCardOf(run.mount), ["ok", "✓"], "a link that closes after the details were checked ends on a success card, unlike an expired link");
+        assert.ok(text.includes(copy.detailsSentTitle) && text.includes(copy.detailsSentBody), "which thanks the client and confirms that the details were received");
+        assert.ok(!text.includes(copy.linkClosedTitle) && !text.includes(copy.linkClosedBody), "and carries none of the expired-link wording");
         assert.equal(run.timers.pending, 0, "the page stops re-reading once the link closes");
-        assert.ok(run.live.textContent.includes(copy.closedAfterTitle), "the link closing while the page checks is announced");
+        assert.ok(run.live.textContent.includes(copy.detailsSentTitle), "the receipt is announced when the link closes while the page checks");
         assert.equal(byAttribute(run.mount, "data-portal", "invitation").length, 0, "no portal access is promised after the details step");
         assert.equal(run.sent.length, 1);
         assert.deepEqual(run.sent[0][3], {
@@ -939,9 +977,9 @@ function assertForm(run, expected, message) {
         assert.equal(run.timers.pending, 0);
         break;
       case "details-stale-closed":
-        assert.ok(text.includes(copy.closedAfterDetailsBody), "a stale readback is followed until the link closes after the details");
+        assert.ok(text.includes(copy.detailsSentBody), "a stale readback is followed until the link closes after the details");
         assert.equal(run.timers.pending, 0);
-        assert.ok(run.live.textContent.includes(copy.closedAfterTitle));
+        assert.ok(run.live.textContent.includes(copy.detailsSentTitle));
         break;
       case "agreement-unconfirmed": {
         const card = byClass(run.mount, "cr-approve")[0];
@@ -1053,15 +1091,27 @@ function assertForm(run, expected, message) {
         assert.ok(invitation && surface(invitation).includes(copy.portalTitle), "completion invites the client to the portal");
         assert.ok(visibleText(invitation).includes("dana.reyes@harbourview.example"), "naming the primary email the link returned");
         assert.equal(portalLinks(run.mount).length, 0, "without PORTAL_URL there is no portal button");
+        assert.equal(byAttribute(run.mount, "data-portal", "return").length, 0, "and no second portal block that would hold nothing but its title");
         break;
       }
       case "completion-portal": {
-        const link = portalLinks(run.mount)[0];
+        const links = portalLinks(run.mount);
+        const link = links[0];
         assert.ok(link, "with PORTAL_URL completion offers the portal");
         assert.equal(link.tagName, "A", "as a link, because it navigates");
         assert.equal(link.getAttribute("href"), run.runtime.CR.fixtures.portalUrl);
         assert.equal(link.textContent, copy.portalOpen);
         assert.ok(byAttribute(run.mount, "data-portal", "invitation")[0].children.includes(link), "inside the invitation");
+        const shell = run.mount.children[0].children[0];
+        const closing = byAttribute(run.mount, "data-portal", "return")[0];
+        assert.equal(links.length, 2, "and once more for a client who has read the agreement");
+        assert.ok(closing.children.includes(links[1]), "in a block of its own");
+        assert.equal(shell.children[shell.children.length - 1], closing, "that closes the page, below the terms");
+        assert.ok(shell.children.indexOf(byAttribute(run.mount, "data-portal", "invitation")[0]) < shell.children.indexOf(byClass(run.mount, "cr-parties")[0]), "while the invitation stays above the agreement");
+        assert.deepEqual(links.map((entry) => [entry.tagName, entry.getAttribute("href"), entry.textContent]), [["A", run.runtime.CR.fixtures.portalUrl, copy.portalOpen], ["A", run.runtime.CR.fixtures.portalUrl, copy.portalOpen]], "both lead to the same portal under the same label");
+        assert.ok(surface(closing).includes(copy.portalTitle) && !surface(closing).includes("@"), "the closing block names the portal access without repeating how to sign in");
+        assert.equal(closing.getAttribute("role"), null, "and is not a second live region");
+        assert.equal(byClass(run.mount, "cr-validity").length, 1, "an approved agreement still says how long its link works, without offering to copy a link the provider is about to close");
         break;
       }
       case "completion-finishing": {
@@ -1084,7 +1134,10 @@ function assertForm(run, expected, message) {
         break;
       }
       case "approval-closed": {
-        assert.ok(text.includes(copy.closedAfterApprovalBody), "a link that closes right after approval says so");
+        assert.deepEqual(stateCardOf(run.mount), ["ok", "✓"], "a link that closes right after approval ends on a success card");
+        assert.ok(text.includes(copy.approvalSentTitle) && text.includes(copy.approvalSentBody), "which thanks the client and confirms the approval");
+        assert.ok(!text.includes(copy.linkClosedTitle) && !text.includes(copy.detailsSentTitle), "in its own wording");
+        assert.ok(run.live.textContent.includes(copy.approvalSentTitle), "and is announced");
         const invitation = byAttribute(run.mount, "data-portal", "invitation")[0];
         assert.ok(invitation && surface(invitation).includes(copy.portalTitle), "and carries the portal invitation");
         assert.ok(visibleText(invitation).includes("dana.reyes@harbourview.example"), "with the primary email the link returned before it closed");
@@ -1443,7 +1496,7 @@ async function decideLast(controller, kind) {
   assert.ok(visibleText(invitation).includes("dana.reyes@harbourview.example"), "a link that closes right after approval names the sign-in address the Account attributes carried in the last read");
 }
 
-async function stagedController(build, behavior = {}, pollDelays) {
+async function stagedController(build, behavior = {}, pollDelays, page = {}) {
   const runtime = loadRuntime({ fixtures: true });
   const { CR } = runtime;
   const data = build(CR.fixtures);
@@ -1457,7 +1510,7 @@ async function stagedController(build, behavior = {}, pollDelays) {
   const timers = fakeTimers();
   const live = runtime.document.createElement("p");
   const mount = runtime.document.createElement("div");
-  const controller = CR.createController({ adapter, mount, live, timers, pollDelays, locale: "en-CA" });
+  const controller = CR.createController({ adapter, mount, live, timers, pollDelays, locale: "en-CA", ...page });
   controller.start();
   await controller.idle();
   return { runtime, CR, data, adapter, counts, sent, timers, live, mount, controller, copy: controller.copy };
@@ -1836,6 +1889,191 @@ for (const [kind, orderId, event, status] of [
   assert.equal(controller.snapshot().confirm.property, "property-278", "an unknown property opens nothing");
 }
 
+const copyButton = (mount) => byAttribute(mount, "data-action", "link.copy")[0];
+const linkNotes = (mount) => byClass(mount, "cr-link__note").map((note) => note.textContent);
+const linked = (clipboard) => ({ pageLink: PAGE_LINK, clipboard });
+
+{
+  const clipboard = recordingClipboard();
+  const run = await stagedController((F) => F.quotationData(), {}, undefined, linked(clipboard));
+  const { controller, mount, live, copy, counts } = run;
+  assert.deepEqual(plain(controller.snapshot().link), { available: true, status: "" }, "a page that knows its own address offers the copy and holds no outcome yet");
+  assert.equal(copyButton(mount).textContent, copy.linkCopy);
+  assert.equal(copyButton(mount).tagName, "BUTTON", "as a button, because it acts on the page");
+  assert.equal(byClass(mount, "cr-link")[0].getAttribute("data-link"), "idle");
+  assert.deepEqual(linkNotes(mount), [], "before the click the row carries no note");
+  assert.deepEqual(clipboard.written, [], "and nothing is written without a click");
+  const reads = counts.reads;
+  copyButton(mount).fire("click");
+  copyButton(mount).fire("click");
+  controller.dispatch("link.copy");
+  await controller.idle();
+  assert.deepEqual(clipboard.written, [PAGE_LINK], "Copy link hands the browser the address the page was opened with, once while a write is in flight");
+  assert.deepEqual(plain(controller.snapshot().link), { available: true, status: "copied" });
+  assert.equal(copyButton(mount).textContent, copy.linkCopied);
+  assert.deepEqual(linkNotes(mount), [copy.linkCopiedNote], "outside the details step the confirmation does not speak of unsent typing");
+  assert.equal(live.textContent, copy.linkCopied + ". " + copy.linkCopiedNote, "the confirmation is announced as one message");
+  assert.equal(counts.reads, reads, "copying reads nothing from the provider's system");
+  assert.equal(run.sent.length, 0, "and sends it nothing");
+  assert.ok(!surface(mount).includes(PAGE_LINK) && !JSON.stringify(controller.snapshot()).includes(PAGE_LINK), "the address goes to the clipboard and never into the page or the snapshot it is drawn from");
+  controller.dispatch("refresh", {});
+  await controller.idle();
+  assert.equal(controller.snapshot().link.status, "copied", "a re-read of the same step keeps the confirmation");
+  copyButton(mount).fire("click");
+  await controller.idle();
+  assert.deepEqual(clipboard.written, [PAGE_LINK, PAGE_LINK], "the link can be copied again once the first write has ended");
+  assert.equal(run.runtime.consoleCalls.length + run.runtime.storageCalls.length, 0, "copying touches neither the console nor browser storage");
+}
+
+{
+  const clipboard = recordingClipboard();
+  const run = await stagedController((F) => F.quotationData("QUOTATION_SENT", F.lastOpenStates), {}, undefined, linked(clipboard));
+  const { controller, mount, copy } = run;
+  copyButton(mount).fire("click");
+  await controller.idle();
+  assert.equal(controller.snapshot().link.status, "copied");
+  await decideLast(controller, "approve");
+  await drain(controller, run.timers);
+  assert.equal(kindOf(run), "contract-details");
+  assert.equal(controller.snapshot().link.status, "", "the confirmation belongs to the step it was given on and does not follow the client to the next one");
+  assert.equal(copyButton(mount).textContent, copy.linkCopy);
+  copyButton(mount).fire("click");
+  await controller.idle();
+  assert.deepEqual(linkNotes(mount), [copy.linkCopiedNote, copy.linkCopiedUnsent], "on the details step the confirmation says that what is typed is not saved until it is sent");
+  assert.ok(run.live.textContent.endsWith(copy.linkCopiedUnsent), "and announces it");
+  assert.deepEqual(clipboard.written, [PAGE_LINK, PAGE_LINK], "the same address serves every step");
+}
+
+{
+  const clipboard = recordingClipboard();
+  const run = await stagedController((F) => { const data = F.quotationData("AWAITING_CLIENT_DETAILS", F.decidedStates); data.grant.types[2].events = []; return data; }, {}, undefined, linked(clipboard));
+  assert.equal(kindOf(run), "contract-details");
+  assert.equal(run.controller.snapshot().view.details.available, false);
+  copyButton(run.mount).fire("click");
+  await run.controller.idle();
+  assert.deepEqual(linkNotes(run.mount), [run.copy.linkCopiedNote], "a details step this link cannot send has no typing to warn about");
+}
+
+for (const [name, clipboard] of [
+  ["a clipboard that refuses the write", recordingClipboard(() => Promise.reject(new Error("denied")))],
+  ["a clipboard that throws", { writeText() { throw new Error("blocked"); } }],
+  ["a clipboard without writeText", {}],
+  ["a browser without a clipboard", undefined],
+]) {
+  const run = await stagedController((F) => F.quotationData(), {}, undefined, linked(clipboard));
+  copyButton(run.mount).fire("click");
+  await run.controller.idle();
+  assert.deepEqual(plain(run.controller.snapshot().link), { available: true, status: "failed" }, name + " ends in the failed state");
+  assert.equal(byClass(run.mount, "cr-link")[0].getAttribute("data-link"), "failed");
+  assert.equal(copyButton(run.mount).textContent, run.copy.linkCopy, name + " leaves the button offering the copy");
+  assert.deepEqual(linkNotes(run.mount), [run.copy.linkCopyFailed], name + " tells the client how to take the link anyway");
+  assert.equal(run.live.textContent, run.copy.linkCopyFailed, name + " is announced");
+  assert.equal(run.runtime.document.activeElement, copyButton(run.mount), name + " keeps the focus on the button");
+  assert.equal(run.runtime.consoleCalls.length, 0, name + " writes nothing to the console");
+}
+
+{
+  let refuse = true;
+  const clipboard = recordingClipboard(() => (refuse ? Promise.reject(new Error("denied")) : Promise.resolve()));
+  const run = await stagedController((F) => F.quotationData(), {}, undefined, linked(clipboard));
+  copyButton(run.mount).fire("click");
+  await run.controller.idle();
+  refuse = false;
+  copyButton(run.mount).fire("click");
+  await run.controller.idle();
+  assert.equal(run.controller.snapshot().link.status, "copied", "a copy that works after a refused one replaces the failure");
+  assert.deepEqual(linkNotes(run.mount), [run.copy.linkCopiedNote]);
+}
+
+{
+  const clipboard = recordingClipboard();
+  const run = await stagedController((F) => F.quotationData(), {}, undefined, { clipboard });
+  assert.deepEqual(plain(run.controller.snapshot().link), { available: false, status: "" });
+  assert.equal(copyButton(run.mount), undefined, "a page that does not know its own address offers no copy");
+  assert.equal(byClass(run.mount, "cr-validity").length, 1, "and still says how long the link works");
+  run.controller.dispatch("link.copy");
+  await run.controller.idle();
+  assert.deepEqual(clipboard.written, [], "a dispatched copy without an address writes nothing");
+  assert.equal(run.controller.snapshot().link.status, "");
+}
+
+{
+  const withoutExpiry = (F) => { const data = F.quotationData(); delete data.grant.expiresAt; return data; };
+  const bare = await stagedController(withoutExpiry);
+  assert.equal(byClass(bare.mount, "cr-link").length, 0, "with neither an expiry date nor an address the head carries no link row");
+  const run = await stagedController(withoutExpiry, {}, undefined, linked(recordingClipboard()));
+  assert.equal(byClass(run.mount, "cr-validity").length, 0);
+  assert.ok(copyButton(run.mount), "a link without an expiry date can still be copied");
+}
+
+{
+  const clipboard = recordingClipboard();
+  const run = await stagedController((F) => { const data = F.quotationData(); data.closed = true; return data; }, {}, undefined, linked(clipboard));
+  assert.equal(run.controller.snapshot().phase, "link-closed");
+  run.controller.dispatch("link.copy");
+  await run.controller.idle();
+  assert.deepEqual(clipboard.written, [], "a closed link is never copied");
+}
+
+async function returningController(run) {
+  const mount = run.runtime.document.createElement("div");
+  const controller = run.CR.createController({ adapter: run.CR.fixtures.createFixtureAdapter(run.data, {}), mount, timers: fakeTimers(), locale: "en-CA" });
+  controller.start();
+  await controller.idle();
+  return { controller, mount };
+}
+
+{
+  const run = await stagedController((F) => F.quotationData());
+  run.controller.dispatch("option.toggle", { id: 3102 });
+  run.controller.dispatch("option.intent", { id: 3102, kind: "approve" });
+  run.controller.dispatch("option.confirm", { id: 3102 });
+  await run.controller.idle();
+  run.controller.dispatch("option.toggle", { id: 3107 });
+  run.controller.dispatch("option.intent", { id: 3107, kind: "changes" });
+  run.controller.dispatch("option.draft", { id: 3107, value: "Please quote weekly visits." });
+  const back = await returningController(run);
+  const optionsOf = (key) => back.controller.snapshot().view.properties.find((property) => property.key === key).options;
+  assert.deepEqual(plain(optionsOf("property-278").map((option) => option.status)), ["declined", "approved", "declined"], "a client who comes back through the link finds the decision already sent");
+  assert.deepEqual(plain(back.controller.snapshot().drafts), {}, "and no change request that was typed and not sent");
+}
+
+{
+  const run = await stagedController((F) => F.quotationData("AWAITING_CLIENT_DETAILS", F.decidedStates));
+  const prefilled = plain(run.controller.snapshot().details.values);
+  run.controller.dispatch("details.input", { code: "REPRESENTATIVE_JOB_TITLE", value: "Strata Council President" });
+  run.controller.dispatch("details.choose", { code: "CLIENT_TYPE", value: "ORGANIZATION" });
+  const back = await returningController(run);
+  assert.equal(kindOf(back), "contract-details", "a client who comes back before sending the details finds the details step again");
+  assert.deepEqual(plain(back.controller.snapshot().details.values), prefilled, "with the account's values and nothing that was typed and not sent, as the copy confirmation says");
+}
+
+for (const state of ["CLIENT_APPROVED", "ACTIVE", "EXPIRED"]) {
+  const clipboard = recordingClipboard();
+  const run = await stagedController((F) => F.agreementData(state, false), {}, undefined, linked(clipboard));
+  assert.deepEqual(plain(run.controller.snapshot().link), { available: false, status: "" }, state + " is no step the client comes back to");
+  run.controller.dispatch("link.copy");
+  await run.controller.idle();
+  assert.deepEqual(clipboard.written, [], state + " copies nothing even when asked");
+}
+
+{
+  let release;
+  const clipboard = recordingClipboard(() => new Promise((resolve) => { release = resolve; }));
+  const run = await stagedController((F) => F.quotationData(), {}, undefined, linked(clipboard));
+  copyButton(run.mount).fire("click");
+  run.controller.stop();
+  release();
+  await run.controller.idle();
+  assert.equal(run.live.textContent, "", "a page stopped while the browser was copying announces nothing");
+}
+
+for (const [state, links] of [["SENT_TO_CLIENT", 0], ["SUSPENDED", 0], ["EXPIRED", 0], ["CLIENT_APPROVED", 2], ["ACTIVATION_FAILED", 2], ["ACTIVE", 2]]) {
+  const run = await stagedController((F) => F.agreementData(state, false), {}, undefined, { portalUrl: "https://portal.example.com/" });
+  assert.equal(portalLinks(run.mount).length, links, state + (links ? " offers the portal above and below the agreement" : " offers no portal: only an approved agreement does"));
+  assert.equal(byAttribute(run.mount, "data-portal", "return").length, links ? 1 : 0);
+}
+
 {
   const runtime = loadRuntime({ fixtures: true });
   const data = runtime.CR.fixtures.quotationData();
@@ -1890,7 +2128,9 @@ for (const [kind, orderId, event, status] of [
   const mount = runtime.document.createElement("div");
   const host = section(runtime.document, { "data-review-data-mode": "live", "data-review-api-base": "https://core.example" });
   runtime.CR.fixtures.setup = () => { throw new Error("live mode consulted the fixtures"); };
-  const controller = runtime.CR.boot(host, { location: { hash: "#token=" + encoded }, fetch, mount, locale: "en-CA" });
+  const pageAddress = "https://pages.example/review#token=" + encoded;
+  const liveClipboard = recordingClipboard();
+  const controller = runtime.CR.boot(host, { location: { hash: "#token=" + encoded, href: pageAddress }, navigator: { language: "en-CA", clipboard: liveClipboard }, fetch, mount, locale: "en-CA" });
   await controller.idle();
   assert.equal(controller.snapshot().phase, "ready", "live mode reads the package through the grant endpoints, never the fixtures loaded beside it");
   assert.deepEqual(plain(controller.snapshot().view.properties[0].options[1].lines.map((line) => line.product)), ["Snow Removal", "Rock Salt De-Icing"], "live mode joins shallow order items through all three additional grant entities");
@@ -1934,6 +2174,13 @@ for (const [kind, orderId, event, status] of [
   assert.equal(controller.snapshot().commands["order:3107"].status, "refused");
   assert.ok(surface(mount).includes("No longer awaiting your decision"), "the refusal message comes from the server");
   assert.equal(introspections(), beforeRefusal, "a refusal is not dressed up by a silent re-read");
+
+  const requestsBeforeCopy = calls.length;
+  byAttribute(mount, "data-action", "link.copy")[0].fire("click");
+  await controller.idle();
+  assert.deepEqual(liveClipboard.written, [pageAddress], "Copy link hands the browser's clipboard the address the client opened, its token fragment included");
+  assert.equal(controller.snapshot().link.status, "copied");
+  assert.equal(calls.length, requestsBeforeCopy, "and sends no request");
 
   eventReply = null;
   for (const call of calls) {
@@ -1987,6 +2234,7 @@ try {
   assert.match(previewPage, /data-client-review-live/, "and so does the preview page");
   assert.deepEqual(manifest.runtime.checkingDelaysMs, plain(loadRuntime().CR.checkingDelays), "the manifest documents the checking backoff the runtime uses");
   assert.ok(manifest.constraints.some((line) => line.startsWith("PORTAL_URL ")), "the manifest states what PORTAL_URL does");
+  assert.ok(manifest.constraints.some((line) => line.startsWith("Copy link ")), "the manifest states what Copy link hands to the clipboard");
   const copyEntries = loadRuntime().CR.copyEntries;
   assert.deepEqual(template.parameters.filter((parameter) => parameter.type === "LOCALIZED_STRING_SS").map((parameter) => [parameter.code, parameter.value.en]), plain(copyEntries.map((entry) => [entry[0], entry[2]])), "every other parameter is runtime copy with its default");
   for (const parameter of template.parameters) {
@@ -2055,4 +2303,4 @@ try {
   await fs.rm(tempDir, { recursive: true, force: true });
 }
 
-console.log("client-review-check ok: " + Object.keys(EXPECTED_SCENARIOS).length + " preview states, every order and agreement state, grouping and counts-only summary, server subtotal and taxes shown only when returned, confirmation statements with description and CMS precedence, contract details and the portal sign-in read from the Account attributes the contract names, never a confirmation and never over what the client typed, grant-gated single-flight commands with read-back, refusals and failures, returned details codes, a bounded one-read-at-a-time checking backoff with announcements, the portal invitation with and without PORTAL_URL, ACTIVATION_FAILED as completion, numbered terms, token only in the grant path, no money arithmetic, innerHTML, eval, console or storage, portal tokens only, and a live-only deterministic CMS package");
+console.log("client-review-check ok: " + Object.keys(EXPECTED_SCENARIOS).length + " preview states, every order and agreement state, grouping and counts-only summary, server subtotal and taxes shown only when returned, confirmation statements with description and CMS precedence, contract details and the portal sign-in read from the Account attributes the contract names, never a confirmation and never over what the client typed, grant-gated single-flight commands with read-back, refusals and failures, returned details codes, a bounded one-read-at-a-time checking backoff with announcements, the portal invitation with and without PORTAL_URL and the portal button above and below an approved agreement, a thank-you card after the details and after the approval that an expired link never shows, Copy link with its confirmation, its refusal and no address in the page, ACTIVATION_FAILED as completion, numbered terms, token only in the grant path, no money arithmetic, innerHTML, eval, console or storage, portal tokens only, and a live-only deterministic CMS package");

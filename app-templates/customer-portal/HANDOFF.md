@@ -1,6 +1,6 @@
 # Customer Portal — cross-session handoff
 
-Updated: 2026-09-28
+Updated: 2026-09-30
 
 This is the canonical resume checkpoint for the customer portal work: the Calm
 Harbor spa tenant, the Granite Ridge snow tenant, the universal form document,
@@ -884,6 +884,22 @@ checkout before treating any of them as broken.
   are approved or shipped.
 
 ## Exact next action
+
+**Since the evening of 2026-09-30** the review page offers Copy link on the
+quote review, contract details and agreement review steps, thanks the client
+when a link closes after their details or their approval, and offers the
+portal above and below an approved agreement
+(`content/cases/QUOTATION-PACKAGE-FLOW.md` §8). `CLIENT_REVIEW_DOCUMENT` on
+both dev-1 CMS nodes matches the package.
+- Next: the user accepts or rejects the presentation from the screenshots.
+- No client has gone through it on dev-1. The team's next end-to-end run shows
+  the thanks after real details and a real approval, and Copy link under a
+  real token.
+- What is typed on the details step and not sent does not come back with the
+  link. Keeping it needs a draft event on the agreement workflow, which the
+  link would have to delegate; nobody has asked for it yet.
+- The business owes the season's start date for `SEASON_START` and a word on
+  the agreement link's lifetime (§7).
 
 **Since the afternoon of 2026-09-30** the request-quote form refuses an address
 outside the service area or one Google cannot find, with a message under the

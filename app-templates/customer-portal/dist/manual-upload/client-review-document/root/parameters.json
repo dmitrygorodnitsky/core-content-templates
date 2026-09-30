@@ -16,7 +16,7 @@
     "nls": {
       "en": {
         "NAME": "PORTAL URL",
-        "DESCRIPTION": "Absolute https address of the customer portal, for example https://portal.example.com/. When set, an approved agreement and a closed link offer an Open the customer portal button that links to it; while empty, the page explains portal access without a button. Any other value is discarded and no button shows. It is only linked to: no account, user or token value is configured here."
+        "DESCRIPTION": "Absolute https address of the customer portal, for example https://portal.example.com/. When set, an approved agreement offers an Open the customer portal button above and below its text, and a closed link offers it once; while empty, the page explains portal access without a button. Any other value is discarded and no button shows. It is only linked to: no account, user or token value is configured here."
       }
     },
     "value": ""
@@ -84,6 +84,71 @@
     },
     "value": {
       "en": "This link works until {date}."
+    }
+  },
+  {
+    "code": "LINK_COPY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "LINK COPY",
+        "DESCRIPTION": "Client review document copy."
+      }
+    },
+    "value": {
+      "en": "Copy link"
+    }
+  },
+  {
+    "code": "LINK_COPIED",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "LINK COPIED",
+        "DESCRIPTION": "Client review document copy."
+      }
+    },
+    "value": {
+      "en": "Link copied"
+    }
+  },
+  {
+    "code": "LINK_COPIED_NOTE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "LINK COPIED NOTE",
+        "DESCRIPTION": "Client review document copy."
+      }
+    },
+    "value": {
+      "en": "Use it to come back to this page later. Anyone who has the link can open this page."
+    }
+  },
+  {
+    "code": "LINK_COPIED_UNSENT",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "LINK COPIED UNSENT",
+        "DESCRIPTION": "Client review document copy."
+      }
+    },
+    "value": {
+      "en": "What you type here is not saved until you send it."
+    }
+  },
+  {
+    "code": "LINK_COPY_FAILED",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "LINK COPY FAILED",
+        "DESCRIPTION": "Client review document copy."
+      }
+    },
+    "value": {
+      "en": "The link could not be copied. Copy this page's address from your browser, or open the link in the provider's email again."
     }
   },
   {
@@ -2141,42 +2206,55 @@
     }
   },
   {
-    "code": "CLOSED_AFTER_TITLE",
+    "code": "DETAILS_SENT_TITLE",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "CLOSED AFTER TITLE",
+        "NAME": "DETAILS SENT TITLE",
         "DESCRIPTION": "Client review document copy."
       }
     },
     "value": {
-      "en": "This link is now closed"
+      "en": "Thank you, we received your details"
     }
   },
   {
-    "code": "CLOSED_AFTER_DETAILS_BODY",
+    "code": "DETAILS_SENT_BODY",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "CLOSED AFTER DETAILS BODY",
+        "NAME": "DETAILS SENT BODY",
         "DESCRIPTION": "Client review document copy."
       }
     },
     "value": {
-      "en": "It closed after your details were sent. The provider closes it when the details step ends."
+      "en": "The provider prepares your service agreement next and emails you a new link to review it. This link is now closed."
     }
   },
   {
-    "code": "CLOSED_AFTER_APPROVAL_BODY",
+    "code": "APPROVAL_SENT_TITLE",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "CLOSED AFTER APPROVAL BODY",
+        "NAME": "APPROVAL SENT TITLE",
         "DESCRIPTION": "Client review document copy."
       }
     },
     "value": {
-      "en": "It closed after your approval was sent. The provider closes it when the agreement review ends."
+      "en": "Thank you, we received your approval"
+    }
+  },
+  {
+    "code": "APPROVAL_SENT_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "APPROVAL SENT BODY",
+        "DESCRIPTION": "Client review document copy."
+      }
+    },
+    "value": {
+      "en": "The provider's system has recorded your approval of the service agreement. This link is now closed."
     }
   },
   {

@@ -9,6 +9,11 @@
     ["FROM_LABEL", "fromLabel", "From"],
     ["FOR_LABEL", "forLabel", "For"],
     ["LINK_VALID_UNTIL", "linkValidUntil", "This link works until {date}."],
+    ["LINK_COPY", "linkCopy", "Copy link"],
+    ["LINK_COPIED", "linkCopied", "Link copied"],
+    ["LINK_COPIED_NOTE", "linkCopiedNote", "Use it to come back to this page later. Anyone who has the link can open this page."],
+    ["LINK_COPIED_UNSENT", "linkCopiedUnsent", "What you type here is not saved until you send it."],
+    ["LINK_COPY_FAILED", "linkCopyFailed", "The link could not be copied. Copy this page's address from your browser, or open the link in the provider's email again."],
 
     ["QUOTE_EYEBROW", "quoteEyebrow", "Quotation"],
     ["QUOTE_TITLE", "quoteTitle", "Review your quotes"],
@@ -172,9 +177,10 @@
     ["LINK_CLOSED_TITLE", "linkClosedTitle", "This link has expired or was withdrawn"],
     ["LINK_CLOSED_BODY", "linkClosedBody", "Use the link in the provider's newest email. If that link does not work either, ask them to send you a new one."],
     ["LINK_CLOSED_PORTAL", "linkClosedPortal", "If you already have customer portal access, you can sign in there."],
-    ["CLOSED_AFTER_TITLE", "closedAfterTitle", "This link is now closed"],
-    ["CLOSED_AFTER_DETAILS_BODY", "closedAfterDetailsBody", "It closed after your details were sent. The provider closes it when the details step ends."],
-    ["CLOSED_AFTER_APPROVAL_BODY", "closedAfterApprovalBody", "It closed after your approval was sent. The provider closes it when the agreement review ends."],
+    ["DETAILS_SENT_TITLE", "detailsSentTitle", "Thank you, we received your details"],
+    ["DETAILS_SENT_BODY", "detailsSentBody", "The provider prepares your service agreement next and emails you a new link to review it. This link is now closed."],
+    ["APPROVAL_SENT_TITLE", "approvalSentTitle", "Thank you, we received your approval"],
+    ["APPROVAL_SENT_BODY", "approvalSentBody", "The provider's system has recorded your approval of the service agreement. This link is now closed."],
     ["EMPTY_TITLE", "emptyTitle", "There is nothing to review here"],
     ["EMPTY_BODY", "emptyBody", "This link does not include a quotation or an agreement."],
     ["ERROR_TITLE", "errorTitle", "We could not load this page"],
@@ -1426,8 +1432,12 @@
     return Boolean(command && command.status === "pending");
   }
 
+  function sentences(parts) {
+    return parts.filter(Boolean).map(function (part) { return /[.!?…:]$/.test(part) ? part : part + "."; }).join(" ");
+  }
+
   function announce(ctx, parts) {
-    ctx.announcement = parts.filter(Boolean).map(function (part) { return /[.!?…:]$/.test(part) ? part : part + "."; }).join(" ");
+    ctx.announcement = sentences(parts);
   }
 
   function stateCard(tone, glyph, title, body, action, quiet) {
@@ -1499,6 +1509,27 @@
     return wrap;
   }
 
+  function linkRow(ctx) {
+    var copy = ctx.copy;
+    var view = ctx.snapshot.view;
+    var link = ctx.snapshot.link;
+    if (!view.expiresAt && !link.available) return null;
+    var box = el("div", "cr-link", { "data-link": link.status || "idle" });
+    var row = el("div", "cr-link__row");
+    box.appendChild(row);
+    if (view.expiresAt) row.appendChild(text("p", "cr-validity", ns.fill(copy.linkValidUntil, { date: view.expiresAt })));
+    if (!link.available) return box;
+    var copied = link.status === "copied";
+    row.appendChild(mark(ctx, button(copied ? copy.linkCopied : copy.linkCopy, "btn--ghost cr-link__copy", function () {
+      ctx.dispatch("link.copy");
+    }, { "data-action": "link.copy" }), "link-copy"));
+    var unsent = view.details.available ? copy.linkCopiedUnsent : "";
+    var notes = copied ? [copy.linkCopiedNote, unsent].filter(Boolean) : link.status === "failed" ? [copy.linkCopyFailed] : [];
+    notes.forEach(function (line) { box.appendChild(text("p", "cr-link__note", line)); });
+    ctx.linkStatus = sentences(copied ? [copy.linkCopied].concat(notes) : notes);
+    return box;
+  }
+
   function pageHead(ctx, eyebrow, title, subtitle, badgeNode) {
     var view = ctx.snapshot.view;
     var copy = ctx.copy;
@@ -1519,7 +1550,8 @@
       meta.appendChild(item);
     });
     if (meta.children.length) head.appendChild(meta);
-    if (view.expiresAt) head.appendChild(text("p", "cr-validity", ns.fill(copy.linkValidUntil, { date: view.expiresAt })));
+    var link = linkRow(ctx);
+    if (link) head.appendChild(link);
     return head;
   }
 
@@ -2102,6 +2134,12 @@
     return box;
   }
 
+  function portalReturn(ctx) {
+    var box = notice("info", ctx.copy.portalTitle, [], portalLink(ctx), { quiet: true });
+    box.setAttribute("data-portal", "return");
+    return box;
+  }
+
   function portalAside(ctx, title, line) {
     var aside = el("div", "cr-state__aside", { "data-portal": title ? "invitation" : "sign-in" });
     if (title) aside.appendChild(text("h2", "cr-state__aside-title", title));
@@ -2248,6 +2286,7 @@
     shell.appendChild(terms);
 
     if (reviewing) shell.appendChild(approveSection(ctx));
+    if (completion && ctx.snapshot.portalUrl) shell.appendChild(portalReturn(ctx));
     announceUnconfirmed(ctx);
   }
 
@@ -2303,8 +2342,10 @@
       var signIn = ctx.snapshot.portalUrl ? portalAside(ctx, "", text("p", "cr-state__aside-text", copy.linkClosedPortal)) : null;
       return announcedCard(ctx, "neutral", "⊘", copy.linkClosedTitle, copy.linkClosedBody, signIn);
     }
-    var invitation = after === "approval" ? portalAside(ctx, copy.portalTitle, portalBody(ctx, "cr-state__aside-text")) : null;
-    return announcedCard(ctx, "info", "i", copy.closedAfterTitle, after === "details" ? copy.closedAfterDetailsBody : copy.closedAfterApprovalBody, invitation);
+    if (after === "approval") {
+      return announcedCard(ctx, "ok", "✓", copy.approvalSentTitle, copy.approvalSentBody, portalAside(ctx, copy.portalTitle, portalBody(ctx, "cr-state__aside-text")));
+    }
+    return announcedCard(ctx, "ok", "✓", copy.detailsSentTitle, copy.detailsSentBody, null);
   }
 
   function renderPage(mount, snapshot, dispatch, copy) {
@@ -2314,6 +2355,7 @@
       copy: copy,
       focus: {},
       announcement: "",
+      linkStatus: "",
       busy: snapshot.refreshing || snapshot.phase !== "ready" || Boolean(snapshot.bulk),
     };
     var page = el("div", "cr-page", {
@@ -2345,7 +2387,7 @@
     }
     mount.replaceChildren();
     mount.appendChild(page);
-    return { focus: ctx.focus, announcement: ctx.announcement };
+    return { focus: ctx.focus, announcement: ctx.announcement, linkStatus: ctx.linkStatus };
   }
 
   ns.components = Object.freeze({
@@ -2362,6 +2404,7 @@
   var EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   var CHECKING_DELAYS = [2000, 3000, 5000, 8000, 12000, 15000, 15000, 15000];
   var RETURNED_COPY = { missing: "returnedMissing", unconfirmed: "returnedUnconfirmed", choice: "returnedChoice", email: "returnedEmail" };
+  var LINK_STEPS = { "quote-review": true, "contract-details": true, "agreement-review": true };
 
   function systemTimers() {
     return {
@@ -2380,10 +2423,13 @@
     var timers = settings.timers || systemTimers();
     var delays = Array.isArray(settings.pollDelays) && settings.pollDelays.length ? settings.pollDelays.slice() : CHECKING_DELAYS.slice();
     var portalUrl = ns.adapter.safePortalUrl(settings.portalUrl);
+    var pageLink = settings.pageLink || "";
+    var clipboard = settings.clipboard || null;
     var contract = ns.contract;
     var normalizer = ns.normalizer;
     var inflight = {};
     var loading = null;
+    var copying = null;
     var listeners = [];
     var stopped = false;
     var poll = { timer: null, attempt: 0, exhausted: false };
@@ -2404,6 +2450,7 @@
       draftInvalid: {},
       commands: {},
       details: emptyDetails(null),
+      link: "",
       focusKey: "",
     };
 
@@ -2700,6 +2747,7 @@
       }).then(function () {
         state.refreshing = false;
         loading = null;
+        if (before.page !== pageKey()) state.link = "";
         track();
         markAccepted();
         var rendered = render();
@@ -2899,6 +2947,32 @@
       });
     }
 
+    function writeToClipboard(value) {
+      try {
+        return Promise.resolve(clipboard.writeText(value));
+      } catch (error) {
+        return Promise.reject(error);
+      }
+    }
+
+    function linkOffered() {
+      return Boolean(pageLink) && Boolean(state.view) && LINK_STEPS[state.view.kind] === true;
+    }
+
+    function copyLink() {
+      if (copying) return copying;
+      if (!linkOffered()) return Promise.resolve(false);
+      copying = writeToClipboard(pageLink).then(function () { return true; }, function () { return false; }).then(function (copied) {
+        copying = null;
+        state.link = copied ? "copied" : "failed";
+        state.focusKey = "link-copy";
+        var rendered = render();
+        if (live && rendered && rendered.linkStatus) live.textContent = rendered.linkStatus;
+        return copied;
+      });
+      return copying;
+    }
+
     function dispatch(type, payload) {
       var data = payload || {};
       var option;
@@ -2911,6 +2985,9 @@
         case "refresh":
           if (data.recordKey) clearOutcome(data.recordKey);
           reload(readContext());
+          return;
+        case "link.copy":
+          copyLink();
           return;
         case "option.toggle":
           toggleOption(data.id);
@@ -3022,6 +3099,7 @@
         details: state.details,
         waiting: { exhausted: poll.exhausted, decisions: state.followDecisions },
         portalUrl: portalUrl,
+        link: { available: linkOffered(), status: state.link },
         primaryEmail: state.primaryEmail,
         pending: Object.keys(inflight),
       };
@@ -3050,6 +3128,7 @@
     function idle() {
       var waiting = Object.keys(inflight).map(function (key) { return inflight[key]; });
       if (loading) waiting.push(loading);
+      if (copying) waiting.push(copying);
       if (!waiting.length) return Promise.resolve();
       return Promise.all(waiting).then(idle);
     }
@@ -3103,11 +3182,15 @@
     if (!section || typeof section.getAttribute !== "function") return null;
     var mount = env.mount || (typeof section.querySelector === "function" && section.querySelector("[data-client-review-mount]")) || section;
     var dataMode = String(section.getAttribute("data-review-data-mode") || "").trim().toLowerCase() === "fixture" ? "fixture" : "live";
+    var locationRef = env.location || global.location || {};
+    var navigatorRef = env.navigator || global.navigator || {};
     var options = {
       mount: mount,
       live: env.live || (typeof section.querySelector === "function" && section.querySelector("[data-client-review-live]")) || null,
       timers: env.timers,
       portalUrl: section.getAttribute("data-review-portal-url"),
+      pageLink: locationRef.href,
+      clipboard: navigatorRef.clipboard,
       copy: copyFromAttributes(section),
       locale: env.locale || displayLocale(env),
     };
@@ -3121,11 +3204,11 @@
         if (setup.phase) options.phase = setup.phase;
         if (setup.portalUrl) options.portalUrl = setup.portalUrl;
         if (setup.pollDelays) options.pollDelays = setup.pollDelays;
+        if (setup.clipboard) options.clipboard = setup.clipboard;
         steps = setup.steps || [];
       }
     } else {
       var apiBase = ns.adapter.safeApiBase(section.getAttribute("data-review-api-base"));
-      var locationRef = env.location || global.location || {};
       var token = ns.adapter.tokenFromFragment(locationRef.hash);
       if (!apiBase) options.phase = "unconfigured";
       else if (!token) options.phase = "link-missing";

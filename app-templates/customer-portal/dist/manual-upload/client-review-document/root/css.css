@@ -554,7 +554,27 @@ button { font-family: inherit; }
 
 .cr-meta__value { margin: 0; font-weight: 650; color: var(--ink); overflow-wrap: anywhere; }
 
-.cr-validity { margin: 4px 0 0; font-size: 12.5px; color: var(--ink-3); }
+.cr-link { margin: 6px 0 0; }
+
+.cr-link__row { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; }
+
+.cr-validity { margin: 0; font-size: 12.5px; color: var(--ink-3); }
+
+.cr-link__copy { padding: 5px 12px; font-size: 12.5px; }
+
+.cr-link[data-link="copied"] .cr-link__copy::before { content: "✓"; font-weight: 800; color: var(--ok); }
+
+.cr-link__note { margin: 6px 0 0; max-width: 62ch; font-size: 12.5px; line-height: 1.5; color: var(--ink-2); }
+
+.cr-link__note + .cr-link__note { margin-top: 2px; }
+
+.cr-link[data-link="failed"] .cr-link__note { display: flex; align-items: flex-start; gap: 7px; }
+
+.cr-link[data-link="failed"] .cr-link__note::before {
+  content: "!"; flex: none; width: 16px; height: 16px; margin-top: 1px; border-radius: var(--radius-pill);
+  display: grid; place-items: center; font-size: 10.5px; font-weight: 800; line-height: 1;
+  color: var(--warn); background: var(--warn-bg);
+}
 
 .cr-panel {
   background: rgba(var(--glass), .55);
@@ -603,6 +623,8 @@ button { font-family: inherit; }
 .cr-state--warn .cr-state__glyph { background: var(--warn-bg); color: var(--warn); border-color: transparent; }
 
 .cr-state--error .cr-state__glyph { background: var(--danger-bg); color: var(--danger); border-color: transparent; }
+
+.cr-state--ok .cr-state__glyph { background: var(--ok); color: var(--surface); border-color: transparent; }
 
 .cr-state--info .cr-state__glyph,
 .cr-state--progress .cr-state__glyph { background: rgba(var(--accent-rgb), .12); color: var(--accent); border-color: transparent; }
@@ -1060,6 +1082,7 @@ button { font-family: inherit; }
   .cr-summary__item[data-kind="properties"],
   .cr-skeleton .cr-summary > .cr-skeleton__tile:first-child { grid-column: 1 / -1; }
   .cr-fields { grid-template-columns: minmax(0, 1fr); }
+  .cr-link__copy { padding: 9px 16px; font-size: 13px; }
   .cr-property__head { flex-wrap: wrap; padding: 14px 14px 12px; gap: 8px 10px; }
   .cr-property__identity { flex-basis: calc(100% - 40px); }
   .cr-property__head .status-badge { margin: 0 0 0 40px; }

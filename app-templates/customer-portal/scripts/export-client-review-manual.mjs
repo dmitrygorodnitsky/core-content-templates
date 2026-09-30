@@ -124,7 +124,7 @@ function templateFor(css, javascript, copy) {
     javascript,
     parameters: [
       field(apiBaseCode, "", "STRING", "Absolute https origin of the Core deployment with no path, for example https://dev-1.servicewand.com. Any other value is discarded and the page reports that it is not set up. The link token is read only from the #token= fragment of the address the client opens; no token, account or customer value is configured here."),
-      field(portalUrlCode, "", "STRING", "Absolute https address of the customer portal, for example https://portal.example.com/. When set, an approved agreement and a closed link offer an Open the customer portal button that links to it; while empty, the page explains portal access without a button. Any other value is discarded and no button shows. It is only linked to: no account, user or token value is configured here."),
+      field(portalUrlCode, "", "STRING", "Absolute https address of the customer portal, for example https://portal.example.com/. When set, an approved agreement offers an Open the customer portal button above and below its text, and a closed link offers it once; while empty, the page explains portal access without a button. Any other value is discarded and no button shows. It is only linked to: no account, user or token value is configured here."),
     ].concat(copy.map((entry) => field(entry.code, entry.value, "LOCALIZED_STRING_SS", copyDescription(entry.code, entry.value)))),
   };
 }
@@ -200,7 +200,7 @@ function manifestFor(template, contract) {
       ],
       listBody: "{ offset, pageSize: " + grant.pageSize + " }, at most " + grant.pageLimit + " pages",
       credentials: "omit",
-      token: "read from the #token= fragment only; it appears in no query string, storage, console output or page markup",
+      token: "read from the #token= fragment only; it appears in no query string, storage, console output or page markup, and reaches the clipboard only inside the page address, when the client presses Copy link",
     },
     events: {
       order: Object.keys(core.orderEvents).map((key) => core.orderEvents[key].code),
@@ -234,7 +234,9 @@ function manifestFor(template, contract) {
     ],
     constraints: [
       "REVIEW_API_BASE_URL must be an absolute https origin without a path. Until it is set the page reports that it is not set up and sends nothing.",
-      "PORTAL_URL ships empty. When it is an absolute https address, the completion states, the closed-after-approval state and a closed link offer an Open the customer portal link to it; any other value is discarded and no link shows. The portal access text itself never depends on Account.user.",
+      "PORTAL_URL ships empty. When it is an absolute https address, the completion states offer an Open the customer portal link to it above and below the agreement, and the thank-you state after approval and a closed link offer it once; any other value is discarded and no link shows. The portal access text itself never depends on Account.user.",
+      "Copy link is offered on the quote review, contract details and agreement review steps, never on an approved agreement or a state card. It hands the browser's clipboard the address the page was opened with, #token= fragment included, when the client presses it, and sends it nowhere else. A browser that refuses the write leaves the client with the address bar and the provider's email. The link carries nothing the client typed: a returning client sees what the provider's system holds.",
+      "A link that closes after the details or the approval were sent ends on a thank-you card; a link that is closed when it is opened keeps the expired-or-withdrawn card.",
       "Every other parameter is copy. No token, account, order, document or customer value is a parameter.",
       "While the agreement is CLIENT_DETAILS_RECEIVED the page re-reads it one read at a time after " + contract.checkingDelays.map((ms) => ms / 1000).join(", ") + " s, then says the check is taking longer than usual and offers Refresh status. It stops re-reading as soon as the agreement leaves that state.",
       "CLIENT_DETAILS_ERRORS reaches the client only as copy: a known code marks its field, PROCESSING_FAILED has its own notice, and an unknown code adds a generic line, never the code.",
