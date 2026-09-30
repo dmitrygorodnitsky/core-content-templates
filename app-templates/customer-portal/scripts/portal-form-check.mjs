@@ -91,9 +91,13 @@ const runZeroDelayTimers = () => {
 };
 const settle = () => new Promise((resolve) => setImmediate(resolve));
 const librariesLoaded = async () => { await settle(); await settle(); };
+const sizeWatchers = [];
 const sandbox = {
   window: {},
   document: dom.document,
+  ResizeObserver: function ResizeObserver(changed) {
+    this.observe = (node) => { sizeWatchers.push({ node, changed }); };
+  },
   setTimeout(fn, delay) { timerSeq += 1; timers.set(timerSeq, { fn, delay: Number(delay) || 0 }); return timerSeq; },
   clearTimeout(id) { timers.delete(id); },
   fetch(url, init) {
@@ -148,6 +152,13 @@ assert.deepEqual(plain(parseTokens("address country:us,ca").country), ["us", "ca
 assert.equal(parseTokens("address").country, null, "country restriction stays optional");
 assert.equal(parseTokens("coordinates-of:PROPERTY_ADDRESSES").coordinatesOf, "PROPERTY_ADDRESSES");
 assert.equal(parseTokens("address").coordinatesOf, null, "only a declared link derives coordinates");
+assert.deepEqual(plain(parseTokens("address map:49,-123.3,49.4,-121.9").mapStart), { south: 49, west: -123.3, north: 49.4, east: -121.9 }, "a map start is the area from its south-west corner to its north-east one");
+assert.deepEqual(plain(parseTokens("address map:-34.1,150.6,-33.6,151.4").mapStart), { south: -34.1, west: 150.6, north: -33.6, east: 151.4 });
+assert.equal(parseTokens("address").mapStart, null, "a map start stays optional");
+for (const refused of ["map:49.4,-123.3,49,-121.9", "map:49,-121.9,49.4,-123.3", "map:49,-123.3,91,-121.9", "map:49,-181,49.4,-121.9", "map:49,-123.3,49.4", "map:here"]) {
+  assert.equal(parseTokens("address " + refused).mapStart, null, refused + " names no area a map can open on");
+}
+assert.equal(parseTokens("address map:here").address, true, "a refused map start leaves the rest of the format standing");
 assert.equal(parseTokens("").mask, null);
 assert.equal(parseTokens(undefined).placeholder, null);
 
@@ -430,6 +441,7 @@ typeInto("1200 West Georgia Street, Vancouver, BC, Canada").fire("keydown", ente
 typeInto("4000 No. 3 Road, Richmond, BC, Canada").fire("keydown", enter);
 Object.assign(keyless.values, contact);
 assert.equal(keyless.values.PROPERTY_COORDINATES, "", "without a maps key no coordinates are produced");
+assert.equal(collect(keyless.root, "pf-address__map")[0].dataset.state, "idle", "and no map is drawn");
 assert.equal(await keyless.submit(), true);
 assert.deepEqual(JSON.parse(posted[1].init.body), wire, "a declared hidden attribute changes nothing about a keyless submission");
 assert.equal(dom.document.head.children.length, 0, "the keyless submission still loaded no Google script");
@@ -615,10 +627,37 @@ assert.deepEqual(plain(flaggedVisible.groups.map((group) => group.fields.map((fi
 const latLng = ([lat, lng]) => ({ lat: () => lat, lng: () => lng });
 const geocoderQueue = [];
 const autocompletes = [];
-function StubMap() {}
-StubMap.prototype.setCenter = function () {};
-function StubMarker() {}
-StubMarker.prototype.setMap = function () {};
+const drawnMaps = [];
+const droppedPins = [];
+let refuseFits = false;
+let mapMoves = 0;
+function StubMap(canvas, options) {
+  this.canvas = canvas;
+  this.colorScheme = options.colorScheme;
+  this.zoomControl = options.zoomControl;
+  this.view = { center: options.center, zoom: options.zoom };
+  drawnMaps.push(this);
+}
+StubMap.prototype.setCenter = function (center) { mapMoves += 1; this.view = { center, zoom: this.view.zoom }; };
+StubMap.prototype.setZoom = function (zoom) { mapMoves += 1; this.view = { center: this.view.center, zoom }; };
+StubMap.prototype.fitBounds = function (bounds, padding) {
+  mapMoves += 1;
+  if (refuseFits) throw new Error("fitBounds refused");
+  this.view = { bounds, padding };
+};
+function StubMarker(options) {
+  this.map = options.map;
+  this.position = options.position;
+  this.title = options.title;
+  droppedPins.push(this);
+}
+StubMarker.prototype.setMap = function (map) { this.map = map; };
+const pinsOn = (map) => plain(droppedPins.filter((pin) => pin.map === map).map((pin) => [pin.title, pin.position.lat, pin.position.lng]));
+const pinNames = (map) => pinsOn(map).map((pin) => pin[0]);
+const viewOf = (map) => plain(map.view);
+const mapOf = (mount) => collect(mount, "pf-address__map")[0];
+const WORLD = { center: { lat: 20, lng: 0 }, zoom: 1 };
+const PIN_ROOM = { top: 64, right: 56, bottom: 32, left: 40 };
 function StubGeocoder() {}
 StubGeocoder.prototype.geocode = function (request, callback) { geocoderQueue.push({ address: request.address, callback }); };
 function StubAutocomplete(input) { this.input = input; this.listeners = {}; this.place = null; autocompletes.push(this); }
@@ -681,6 +720,8 @@ keyed.mount(keyedMount);
 await settle();
 keyed.step = keyed.model.groups.findIndex((group) => group.code === "PROPERTIES");
 keyed.render();
+assert.equal(mapOf(keyedMount).dataset.state, "loading", "a keyed address holds the map's place while Google loads, so nothing under it moves when the map arrives");
+assert.equal(mapOf(keyedMount).getAttribute("aria-hidden"), "true");
 const mapsScript = dom.document.head.children[0];
 assert.match(String(mapsScript.src), /^https:\/\/maps\.googleapis\.com\/maps\/api\/js\?key=test-key&/);
 assert.match(String(mapsScript.src), /[?&]loading=async(&|$)/);
@@ -697,6 +738,22 @@ assert.deepEqual(plain([...imported].sort()), ["geocoding", "maps", "marker", "p
 const keyedAddresses = () => plain(keyed.values.PROPERTY_ADDRESSES);
 const keyedCoordinates = () => coordinatesIn(keyed, "PROPERTY_COORDINATES");
 assert.equal(collect(keyedMount, "pf-address")[0].dataset.autocomplete, "data-api", "the field upgrades once the imported libraries have put their classes on google.maps");
+assert.equal(drawnMaps.length, 1, "the address list draws one map as soon as Google is ready");
+const keyedMap = drawnMaps[0];
+assert.equal(mapOf(keyedMount), keyedMap.canvas);
+assert.equal(mapOf(keyedMount).dataset.state, "ready", "the map is on screen before any address is entered");
+assert.equal(mapOf(keyedMount).getAttribute("aria-hidden"), null);
+const closesField = (mount) => {
+  const field = mapOf(mount).parentNode;
+  return String(field.className).split(/\s+/).includes("pf-field")
+    && field.children[field.children.length - 1] === mapOf(mount)
+    && field.children[field.children.length - 2].className === "pf-field__error";
+};
+assert.equal(closesField(keyedMount), true, "the map closes the field, under its error line, so a message stays next to the input it is about");
+assert.deepEqual(viewOf(keyedMap), WORLD, "a field that declares no start opens on the whole world");
+assert.equal(keyedMap.colorScheme, "LIGHT");
+assert.equal(keyedMap.zoomControl, true, "a pointer that cannot pinch gets zoom buttons");
+assert.deepEqual(pinsOn(keyedMap), []);
 
 const georgia = directory[0].formatted;
 const robson = directory[1].formatted;
@@ -710,6 +767,10 @@ assert.deepEqual(keyedAddresses(), [georgia], "the first click on a suggestion l
 assert.equal(entry().value, "", "the pick leaves nothing typed behind for Continue to add unseen");
 assert.equal(keyed.values.PROPERTY_COORDINATES, JSON.stringify([{ address: georgia, lat: 49.2869, lng: -123.1257 }]), "a Places data API pick keeps its location for the exact string it committed, as numbers");
 assert.equal(geocoderQueue.length, 0, "a pick asks the Geocoder for nothing");
+assert.deepEqual(pinsOn(keyedMap), [[georgia, 49.2869, -123.1257]], "one located address is one pin");
+assert.deepEqual(viewOf(keyedMap), { center: { lat: 49.2869, lng: -123.1257 }, zoom: 16 }, "a lone address is shown at street level");
+assert.equal(drawnMaps.length, 1, "committing an address redraws the card without drawing a second map");
+assert.equal(mapOf(keyedMount), keyedMap.canvas, "the same map element is back on screen after the redraw");
 
 entry().focus();
 typeInto("88 Rob");
@@ -723,8 +784,12 @@ await settle();
 assert.deepEqual(keyedAddresses(), [georgia, robson]);
 answerGeocoder("88 Rob", [10, 20]);
 assert.deepEqual(keyedCoordinates(), [{ address: georgia, lat: 49.2869, lng: -123.1257 }, { address: robson, lat: 49.2767, lng: -123.1146 }], "a geocoder answer for text the pick replaced is dropped");
+assert.deepEqual(pinsOn(keyedMap), [[georgia, 49.2869, -123.1257], [robson, 49.2767, -123.1146]], "every located address has its pin, and text no longer held has none");
+assert.deepEqual(viewOf(keyedMap), { bounds: { north: 49.2869, south: 49.2767, east: -123.1146, west: -123.1257 }, padding: PIN_ROOM }, "several addresses are framed together, with room above for the pins and beside for the zoom control");
 collect(keyedMount, "pf-repeat__row").find((row) => row.getAttribute("aria-label") === robson).fire("click");
 assert.deepEqual(keyedCoordinates().map((point) => point.address), [georgia]);
+assert.deepEqual(pinsOn(keyedMap), [[georgia, 49.2869, -123.1257]], "removing an address removes its pin");
+assert.deepEqual(viewOf(keyedMap), { center: { lat: 49.2869, lng: -123.1257 }, zoom: 16 }, "and the map closes in on what is left");
 
 typeInto(georgia).fire("keydown", enter);
 await settle();
@@ -738,10 +803,12 @@ typeInto(richmond);
 press(collect(keyedMount, "pf-repeat__add")[0], keyedMount);
 assert.deepEqual(keyedAddresses(), [georgia, richmond]);
 assert.deepEqual(keyedCoordinates().map((point) => point.address), [georgia], "a typed address carries no location until the Geocoder answers");
+assert.deepEqual(pinNames(keyedMap), [georgia], "and no pin");
 await settle();
 assert.deepEqual(geocoderQueue.map((call) => call.address), [richmond], "committing with + asks the Geocoder for the committed string, with no blur involved");
 answerGeocoder(richmond, [49.1848, -123.1363]);
 assert.deepEqual(keyedCoordinates()[1], { address: richmond, lat: 49.1848, lng: -123.1363 }, "the answer lands on the address + committed");
+assert.deepEqual(pinNames(keyedMap), [georgia, richmond], "and puts it on the map");
 
 await settle();
 const padded = "  6551 No. 3 Road, Richmond, BC, Canada  ";
@@ -750,10 +817,12 @@ typeInto(padded);
 press(outside, keyedMount);
 answerGeocoder(padded.trim(), [49.1666, -123.1364]);
 assert.equal(keyedCoordinates().length, 2, "a location for an entry not yet committed stays out of the hidden value");
+assert.deepEqual(pinNames(keyedMap), [georgia, richmond, padded.trim()], "an address typed and left in the entry is on the map before it is added");
 entry().focus();
 entry().fire("keydown", enter);
 await settle();
 assert.deepEqual(keyedCoordinates()[2], { address: padded.trim(), lat: 49.1666, lng: -123.1364 }, "a location obtained while the address was being typed is kept for the trimmed string the entry commits");
+assert.equal(droppedPins.filter((pin) => pin.title === padded.trim()).length, 1, "adding it keeps the pin it already has");
 assert.equal(geocoderQueue.length, 0, "and the Geocoder is not asked for it a second time");
 
 await settle();
@@ -763,7 +832,9 @@ typeInto(main);
 press(outside, keyedMount);
 answerGeocoder(main, [49.2811, -123.0996]);
 entry().focus();
+assert.equal(pinNames(keyedMap).includes(main), true);
 typeInto(main + " Unit 4");
+assert.equal(pinNames(keyedMap).includes(main), false, "editing the typed address takes its pin off the map");
 const leaving = typeInto(main);
 leaving.fire("keydown", enter);
 assert.equal(keyedAddresses()[3], main);
@@ -774,6 +845,7 @@ leaving.fire("blur");
 assert.deepEqual(geocoderQueue.map((call) => call.address), [main], "the blur Chromium fires when the re-render removes the committed input asks for nothing more");
 answerGeocoder(main, [49.2812, -123.0997]);
 assert.deepEqual(keyedCoordinates()[3], { address: main, lat: 49.2812, lng: -123.0997 }, "the new location lands on the address Enter committed");
+assert.deepEqual(pinsOn(keyedMap).find((pin) => pin[0] === main), [main, 49.2812, -123.0997], "and its pin stands where the new answer put it");
 
 collect(keyedMount, "pf-repeat__row").find((row) => row.getAttribute("aria-label") === richmond).fire("click");
 assert.deepEqual(keyedAddresses(), [georgia, padded.trim(), main]);
@@ -785,6 +857,7 @@ assert.equal(keyedCoordinates().some((point) => point.address === richmond), fal
 await settle();
 answerGeocoder(richmond, null);
 assert.equal(keyedCoordinates().some((point) => point.address === richmond), false, "an address the geocoder cannot place is simply absent");
+assert.deepEqual(pinNames(keyedMap), [georgia, padded.trim(), main], "from the map as well");
 
 maps.places = legacyPlaces;
 keyed.render();
@@ -799,6 +872,8 @@ choose(keyedWidget, { formatted_address: kingsway, geometry: { location: latLng(
 assert.deepEqual(keyedAddresses(), [georgia, padded.trim(), main, richmond, kingsway]);
 assert.deepEqual(keyedCoordinates().map((point) => point.address), [georgia, padded.trim(), main, kingsway], "the hidden value follows the current addresses in their order");
 assert.deepEqual(keyedCoordinates()[3], { address: kingsway, lat: 49.2276, lng: -122.9998 }, "the legacy geometry.location is kept for the address it committed");
+assert.deepEqual(pinNames(keyedMap), [georgia, padded.trim(), main, kingsway], "a legacy pick reaches the same map");
+assert.equal(drawnMaps.length, 1, "no redraw, step or mode change has drawn a second map");
 
 assert.equal(keyed.visibleGroups().length, 3, "a hidden attribute adds no step");
 for (let index = 0; index < 3; index += 1) {
@@ -826,6 +901,7 @@ for (const point of JSON.parse(sentCoordinates.value)) {
 
 maps.places = dataApi;
 const siteSchema = withHiddenAttribute(kitchen, coordinatesAttribute("SITE_COORDINATES", "SITE_ADDRESS"), "TEXTS", false);
+const mapsBeforeSite = drawnMaps.length;
 const site = new PortalForm({ schema: siteSchema, locale: "en", copy: copyEcho, mapsApiKey: "test-key" });
 const siteMount = dom.document.createElement("div");
 site.mount(siteMount);
@@ -838,6 +914,12 @@ const siteInput = () => dom.document.getElementById("pf-SITE_ADDRESS");
 const typeSite = (value) => { const box = siteInput(); box.value = value; box.fire("input"); return box; };
 const siteCoordinates = () => coordinatesIn(site, "SITE_COORDINATES");
 assert.equal(collect(siteMount, "pf-address")[0].dataset.autocomplete, "data-api");
+assert.equal(drawnMaps.length, mapsBeforeSite + 1, "a single address draws its own one map");
+const siteMap = drawnMaps[drawnMaps.length - 1];
+assert.equal(mapOf(siteMount), siteMap.canvas);
+assert.equal(mapOf(siteMount).dataset.state, "ready", "a single address shows its map before it holds anything too");
+assert.equal(closesField(siteMount), true, "at the end of its field as well");
+assert.deepEqual(viewOf(siteMap), WORLD);
 
 siteInput().focus();
 typeSite("88 Rob");
@@ -847,19 +929,27 @@ collect(siteMount, "pf-address__option")[0].fire("click");
 await settle();
 assert.equal(site.values.SITE_ADDRESS, robson);
 assert.deepEqual(siteCoordinates(), [{ address: robson, lat: 49.2767, lng: -123.1146 }], "a single address keeps its Places location as a one-entry array");
+assert.deepEqual(pinsOn(siteMap), [[robson, 49.2767, -123.1146]]);
 site.render();
 await settle();
 moveFocus(outside, siteMount);
 assert.equal(geocoderQueue.length, 0, "re-rendering and leaving a picked single address asks the Geocoder for nothing, so nothing can override the location the client picked");
 assert.deepEqual(siteCoordinates(), [{ address: robson, lat: 49.2767, lng: -123.1146 }]);
 
+assert.equal(drawnMaps.length, mapsBeforeSite + 1, "a redraw keeps the single address on the map it has");
 typeSite(robson + " Unit 4");
 assert.equal(site.values.SITE_COORDINATES, "", "editing a single address by hand drops its location");
+assert.deepEqual(pinsOn(siteMap), [], "and its pin");
 typeSite(robson);
 assert.equal(site.values.SITE_COORDINATES, "", "typing the old text back does not restore the dropped location");
 siteInput().fire("blur");
 answerGeocoder(robson, [49.2768, -123.1147]);
 assert.deepEqual(siteCoordinates(), [{ address: robson, lat: 49.2768, lng: -123.1147 }], "the geocoder on blur obtains a new one");
+assert.deepEqual(pinsOn(siteMap), [[robson, 49.2768, -123.1147]]);
+site.rememberLocation(site.model.groups[site.step].fields.find((field) => field.code === "SITE_ADDRESS"), robson, latLng([49.2767, -123.1146]), false);
+assert.deepEqual(pinsOn(siteMap), [[robson, 49.2767, -123.1146]], "a picked location that replaces a geocoded one moves the pin instead of leaving two");
+assert.deepEqual(viewOf(siteMap), { center: { lat: 49.2767, lng: -123.1146 }, zoom: 16 }, "and the map follows it");
+site.rememberLocation(site.model.groups[site.step].fields.find((field) => field.code === "SITE_ADDRESS"), robson, latLng([49.2768, -123.1147]), false);
 
 const trailing = "12 Main Street, Vancouver ";
 typeSite(trailing).fire("blur");
@@ -875,10 +965,14 @@ const pender = "700 West Pender Street, Vancouver, BC V6C 1G8, Canada";
 choose(siteWidget, { formatted_address: pender, geometry: { location: latLng([49.2839, -123.1152]) } });
 assert.equal(site.values.SITE_ADDRESS, pender);
 assert.deepEqual(siteCoordinates(), [{ address: pender, lat: 49.2839, lng: -123.1152 }], "a legacy pick replaces the old address and its entry");
+assert.deepEqual(pinsOn(siteMap), [[pender, 49.2839, -123.1152]], "a single address never has more than its one pin");
 site.render();
 assert.doesNotMatch(surface(siteMount), /SITE_COORDINATES|Hidden coordinates|"lat"|49\.2839/, "the single control never shows the hidden attribute or a coordinate");
 typeSite("");
 assert.equal(site.values.SITE_COORDINATES, "", "clearing the address removes its entry");
+assert.deepEqual(pinsOn(siteMap), []);
+assert.equal(mapOf(siteMount).dataset.state, "ready", "a cleared address leaves its map on screen");
+assert.deepEqual(viewOf(siteMap), WORLD, "back where it opened");
 await settle();
 
 const unplaceable = "9 Unplaceable Lane, Nowhere";
@@ -1000,6 +1094,122 @@ assert.deepEqual(geocoderQueue.map((call) => call.address), [davie], "typing the
 answerGeocoder(davie, [49.2799, -123.1311]);
 assert.equal(coordinatesIn(combo, "PROPERTY_COORDINATES").find((point) => point.address === davie).lat, 49.2799);
 typeInto("");
+
+const chartedSchema = plain(quoteWithCoordinates);
+chartedSchema.attributes.find((attribute) => attribute.code === "PROPERTY_ADDRESSES").inputFormat = "address map:49,-123.3,49.4,-121.9";
+const mapsBeforeCharted = drawnMaps.length;
+dom.document.documentElement = dom.document.createElement("html");
+dom.document.documentElement.setAttribute("data-mode", "dark");
+const mediaAsked = [];
+sandbox.window.matchMedia = (query) => { mediaAsked.push(query); return { matches: true }; };
+const charted = new PortalForm({ schema: chartedSchema, locale: "en", copy: copyEcho, organizationId: 43, apiBaseUrl: "https://forms.example", mapsApiKey: "test-key" });
+const chartedMount = dom.document.createElement("div");
+charted.mount(chartedMount);
+await settle();
+const chartedStep = charted.model.groups.findIndex((group) => group.code === "PROPERTIES");
+charted.step = chartedStep;
+charted.render();
+await settle();
+assert.equal(drawnMaps.length, mapsBeforeCharted + 1);
+const chart = drawnMaps[drawnMaps.length - 1];
+const declaredStart = { bounds: { south: 49, west: -123.3, north: 49.4, east: -121.9 }, padding: 0 };
+assert.deepEqual(viewOf(chart), declaredStart, "a declared area is what the empty map opens on, whatever its width");
+assert.equal(chart.colorScheme, "DARK", "a page in dark mode draws a dark map");
+assert.equal(chart.zoomControl, false, "a touch screen zooms by pinching, so the buttons do not cover the edge of a narrow map");
+assert.deepEqual(mediaAsked, ["(pointer: coarse)"]);
+delete sandbox.window.matchMedia;
+dom.document.documentElement.setAttribute("data-mode", "light");
+const chartedPick = async (typed) => {
+  await settle();
+  entry().focus();
+  typeInto(typed);
+  runTimers();
+  await settle();
+  press(collect(chartedMount, "pf-address__option")[0], chartedMount);
+  await settle();
+};
+const chartedHeld = () => plain(charted.values.PROPERTY_ADDRESSES);
+await chartedPick("1200 West Geo");
+assert.deepEqual(pinsOn(chart), [[georgia, 49.2869, -123.1257]]);
+
+const pinsDropped = droppedPins.length;
+charted.render();
+await settle();
+assert.equal(drawnMaps.length, mapsBeforeCharted + 1, "redrawing the card draws no second map");
+assert.equal(droppedPins.length, pinsDropped, "and drops no pin again");
+assert.equal(mapOf(chartedMount), chart.canvas, "the map element itself is carried into the redrawn card");
+
+entry().focus();
+typeInto(richmond).fire("keydown", enter);
+await settle();
+charted.step = 0;
+charted.render();
+assert.equal(collect(chartedMount, "pf-address__map").length, 0, "a step without the address shows no map");
+answerGeocoder(richmond, [49.1848, -123.1363]);
+assert.deepEqual(pinNames(chart), [georgia], "a location that arrives while the map is off screen waits");
+charted.step = chartedStep;
+charted.render();
+await settle();
+assert.equal(mapOf(chartedMount), chart.canvas, "coming back to the step brings the same map back");
+assert.deepEqual(pinNames(chart), [georgia, richmond], "with the pin that arrived meanwhile");
+assert.deepEqual(viewOf(chart), { bounds: { north: 49.2869, south: 49.1848, east: -123.1257, west: -123.1363 }, padding: PIN_ROOM });
+
+const chartWatcher = sizeWatchers.find((watcher) => watcher.node === chart.canvas);
+assert.ok(chartWatcher, "a drawn map watches its own box");
+const framedAt = mapMoves;
+Object.assign(chart.canvas, { offsetWidth: 662, offsetHeight: 240 });
+chartWatcher.changed();
+assert.equal(mapMoves, framedAt + 1, "a map whose box changed size is framed again, so a turned phone still shows every pin");
+assert.deepEqual(viewOf(chart), { bounds: { north: 49.2869, south: 49.1848, east: -123.1257, west: -123.1363 }, padding: PIN_ROOM });
+chartWatcher.changed();
+assert.equal(mapMoves, framedAt + 1, "and is left alone while its size stays the same");
+Object.assign(chart.canvas, { offsetWidth: 0, offsetHeight: 0 });
+chartWatcher.changed();
+Object.assign(chart.canvas, { offsetWidth: 662, offsetHeight: 240 });
+chartWatcher.changed();
+assert.equal(mapMoves, framedAt + 1, "a box that reports no size, as one taken off screen does, is not a new size, so coming back keeps the view the client left");
+Object.assign(chart.canvas, { offsetWidth: 311, offsetHeight: 200 });
+charted.step = 0;
+charted.render();
+chartWatcher.changed();
+charted.step = chartedStep;
+charted.render();
+await settle();
+assert.equal(mapMoves, framedAt + 2, "a size that changed while the map was off screen is caught up with once, when the map is back");
+
+collect(chartedMount, "pf-repeat__row").forEach((row) => row.fire("click"));
+assert.deepEqual(chartedHeld(), []);
+assert.deepEqual(pinsOn(chart), [], "removing every address removes every pin");
+assert.equal(mapOf(chartedMount).dataset.state, "ready", "and the emptied map stays on screen");
+assert.deepEqual(viewOf(chart), declaredStart, "back at its declared start");
+
+await chartedPick("88 Robs");
+assert.deepEqual(pinsOn(chart), [[robson, 49.2767, -123.1146]]);
+charted.state = "success";
+charted.render();
+charted.restart();
+charted.step = chartedStep;
+charted.render();
+await settle();
+assert.deepEqual(chartedHeld(), []);
+assert.deepEqual(pinsOn(chart), [], "starting over clears the map with the answers");
+assert.deepEqual(viewOf(chart), declaredStart);
+assert.equal(drawnMaps.length, mapsBeforeCharted + 1, "on the map it already has");
+
+refuseFits = true;
+await chartedPick("1200 West Geo");
+await chartedPick("88 Robs");
+refuseFits = false;
+assert.deepEqual(chartedHeld(), [georgia, robson], "a map that fails takes no address with it and adds none");
+assert.deepEqual(coordinatesIn(charted, "PROPERTY_COORDINATES").map((point) => point.address), [georgia, robson], "their coordinates still travel");
+assert.equal(mapOf(chartedMount).dataset.state, "idle", "the failed map leaves the screen");
+assert.equal(mapOf(chartedMount).getAttribute("aria-hidden"), "true");
+const movesAtFailure = mapMoves;
+collect(chartedMount, "pf-repeat__row")[0].fire("click");
+assert.deepEqual(chartedHeld(), [robson], "and the list keeps working without it");
+assert.equal(mapOf(chartedMount).dataset.state, "idle", "a failed map is not drawn again");
+assert.equal(mapMoves, movesAtFailure, "and is asked for nothing more");
+assert.match(source, /fetchFields\([^)]*\)\.then\(function \(\) \{\s*pick\(place\.formattedAddress, place\.location\);\s*\}, function \(\) \{ pick\(label, null\); \}\);/, "only a refused place lookup falls back to the suggestion text, so nothing thrown after the pick can add a second address");
 
 const gated = new PortalForm({
   schema: {
@@ -1251,6 +1461,11 @@ for (const token of ["--accent", "--ink", "--surface", "--hair", "--radius-md", 
 }
 assert.doesNotMatch(css, /#[0-9a-f]{6}(?![0-9a-f])/i, "no raw hex colour may bypass the theme tokens");
 assert.doesNotMatch(css, /\.df-/, "the portal renderer must not depend on the corporate form stylesheet");
+assert.match(css, /\.pf-address__map \{\s*display: none;/, "a map that is not drawn takes no room");
+assert.match(css, /\.pf-address__map\[data-state="ready"\] \{ display: block; \}/);
+assert.match(css, /\.pf-address__map\[data-state="loading"\] \{\s*display: block;/, "the place a map is loading into has the map's own height");
+assert.match(css, /prefers-reduced-motion: reduce\) \{\s*\.pf-address__map\[data-state="loading"\] \{ animation: none; \}/);
+assert.doesNotMatch(css, /\.pf-address__map[^{]*\{[^}]*transition/, "a map is measured at its full height the moment it is drawn, so its framing is not computed against a collapsed box");
 
 const originalFetch = sandbox.fetch;
 let settleSubmission;
@@ -1337,4 +1552,4 @@ try {
   await fs.rm(documentDir, { recursive: true, force: true });
 }
 
-console.log("portal-form-check ok: " + KINDS.length + " field kinds, token DSL with spaced masks, attributeOrder authority, parent type ids, declarative behaviour only, anonymous requests, token-driven theming, constrained theme and mode, address fields that load no Google script without a key and wait for importLibrary with one, a repeating address that adds, removes and submits a JSON array, takes the first click on a suggestion and keeps typed text on screen across re-renders, Core's Address class drawn, validated, geocoded and submitted as the address control on the schema dev-1 served on 2026-09-16 while other entity classes stay selects, hidden attributes that never render yet still submit, and address coordinates asked for on every typed commit that follow every add, edit and removal without ever reaching the screen; focus and the first click survive blur and re-render, address suggestions follow the ARIA combobox pattern, each address string is geocoded once, and the success screen promises only its copy");
+console.log("portal-form-check ok: " + KINDS.length + " field kinds, token DSL with spaced masks, attributeOrder authority, parent type ids, declarative behaviour only, anonymous requests, token-driven theming, constrained theme and mode, address fields that load no Google script without a key and wait for importLibrary with one, a repeating address that adds, removes and submits a JSON array, takes the first click on a suggestion and keeps typed text on screen across re-renders, Core's Address class drawn, validated, geocoded and submitted as the address control on the schema dev-1 served on 2026-09-16 while other entity classes stay selects, hidden attributes that never render yet still submit, and address coordinates asked for on every typed commit that follow every add, edit and removal without ever reaching the screen; focus and the first click survive blur and re-render, address suggestions follow the ARIA combobox pattern, each address string is geocoded once, an address map that is on screen as soon as Google is ready, keeps one pin per located address through every redraw and step, opens where the format declares and takes no answer with it when it fails, and the success screen promises only its copy");

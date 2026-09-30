@@ -120,9 +120,19 @@ host page leaves an accepted submission a success.
 
 An attribute whose Input format declares `address`, or an attribute of Core's
 `com.pixelnation.common.domain.Address` class that carries no options, becomes an
-address field with Google suggestions and a map preview, and a list of addresses
+address field with Google suggestions and a map, and a list of addresses
 when it is `multiselect`. An Address attribute that carries options is drawn
-from those options, like any attribute with choices. It needs
+from those options, like any attribute with choices. The map closes the field,
+under its hint and error, and is there from the start: a placeholder of the
+map's own height while Google loads, then the map. It carries one pin for every
+address the field holds that Google located, the one still being typed
+included. It is drawn once per field and carried through every redraw and
+step, frames its pins again when its box changes size, draws dark on a page in
+dark mode, and offers zoom buttons only to a pointer that cannot pinch. An
+Input format token `map:<south>,<west>,<north>,<east>` names the area the empty
+map opens on, for example `address map:49,-123.3,49.4,-121.8`; without it the
+empty map shows the whole world. A map that fails leaves the screen and takes
+no answer with it. It needs
 `FORM_MAPS_API_KEY`, a Google browser key that is public
 by design and must be restricted by HTTP referrer and API list. While that
 parameter is empty no Google script is loaded at all and the field stays a plain

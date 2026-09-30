@@ -3,6 +3,10 @@
 
   var MASK_CLASSES = { "9": /\d/, A: /[A-Za-z]/, "*": /[A-Za-z0-9]/ };
   var NUMERIC = /Integer|Long|Float|Double|BigDecimal|Short|Byte|^int$|^long$|^float$|^double$/;
+  var MAP_WORLD = { lat: 20, lng: 0, zoom: 1 };
+  var MAP_CLOSE_ZOOM = 16;
+  var MAP_CLOSE_SPAN = 0.002;
+  var MAP_PADDING = { top: 64, right: 56, bottom: 32, left: 40 };
 
   function el(tag, className, attrs) {
     var node = document.createElement(tag);
@@ -50,7 +54,7 @@
       address: false,
       rows: null, cols: null, min: null, max: null, step: null,
       minLength: null, maxLength: null, re: null, mask: null, placeholder: null,
-      country: null, coordinatesOf: null,
+      country: null, coordinatesOf: null, mapStart: null,
     };
     if (!inputFormat) return tokens;
     var rest = String(inputFormat);
@@ -80,6 +84,15 @@
       }
       var source = token.match(/^coordinates-of:(.+)$/);
       if (source) { tokens.coordinatesOf = source[1]; return; }
+      var area = token.match(/^map:(-?\d+(?:\.\d+)?),(-?\d+(?:\.\d+)?),(-?\d+(?:\.\d+)?),(-?\d+(?:\.\d+)?)$/);
+      if (area) {
+        var low = pointOf({ lat: Number(area[1]), lng: Number(area[2]) });
+        var high = pointOf({ lat: Number(area[3]), lng: Number(area[4]) });
+        if (low && high && low.lat < high.lat && low.lng < high.lng) {
+          tokens.mapStart = { south: low.lat, west: low.lng, north: high.lat, east: high.lng };
+        }
+        return;
+      }
       if (token.indexOf("re:") === 0) tokens.re = token.slice(3);
     });
     return tokens;
@@ -265,6 +278,15 @@
     event.preventDefault();
   }
 
+  function darkMode() {
+    var page = document.documentElement;
+    return Boolean(page) && page.getAttribute("data-mode") === "dark";
+  }
+
+  function touchFirst() {
+    return typeof global.matchMedia === "function" && global.matchMedia("(pointer: coarse)").matches === true;
+  }
+
   var CONTROLS = { INPUT: true, SELECT: true, TEXTAREA: true, BUTTON: true };
 
   function within(outer, node) {
@@ -352,7 +374,7 @@
     this.pending = {};
     this.locations = {};
     this.lookups = {};
-    this.previews = {};
+    this.mapViews = {};
     this.fieldNodes = {};
     this.unpainted = {};
     this.pressing = false;
@@ -642,8 +664,6 @@
     if (fromGeocoder && known[address]) return;
     known[address] = point;
     this.syncCoordinates(field);
-    var preview = this.previews[field.code];
-    if (preview && known[address]) preview(address, known[address]);
   };
 
   PortalForm.prototype.locate = function (field, text, maps) {
@@ -693,6 +713,114 @@
       });
       self.values[field.code] = entries.length ? JSON.stringify(entries) : "";
     });
+    this.syncMap(source);
+  };
+
+  PortalForm.prototype.mapView = function (field) {
+    var view = this.mapViews[field.code];
+    if (!view) {
+      view = this.mapViews[field.code] = {
+        canvas: el("div", "pf-address__map", { "data-state": this.cfg.mapsApiKey ? "loading" : "idle", "aria-hidden": "true" }),
+        api: null, map: null, pins: Object.create(null), framed: null, size: "", failed: false,
+      };
+    }
+    return view;
+  };
+
+  PortalForm.prototype.syncMap = function (field) {
+    var view = this.mapViews[field.code];
+    if (!view || !view.api || view.failed || !within(this.root, view.canvas)) return;
+    try {
+      this.drawMap(field, view);
+    } catch (error) {
+      view.failed = true;
+      view.canvas.dataset.state = "idle";
+      view.canvas.setAttribute("aria-hidden", "true");
+      console.error("PortalForm address map failed", error);
+    }
+  };
+
+  PortalForm.prototype.drawMap = function (field, view) {
+    var maps = view.api;
+    var known = this.locations[field.code] || {};
+    var addresses = Object.keys(known).sort();
+    var start = field.tokens.mapStart;
+    if (!view.map) {
+      view.canvas.dataset.state = "ready";
+      view.canvas.removeAttribute("aria-hidden");
+      view.map = new maps.Map(view.canvas, {
+        center: start
+          ? { lat: (start.south + start.north) / 2, lng: (start.west + start.east) / 2 }
+          : { lat: MAP_WORLD.lat, lng: MAP_WORLD.lng },
+        zoom: MAP_WORLD.zoom,
+        disableDefaultUI: true, zoomControl: !touchFirst(),
+        colorScheme: darkMode() ? "DARK" : "LIGHT",
+        mapId: this.cfg.mapsMapId || undefined,
+      });
+      this.watchMapSize(field, view);
+    }
+    Object.keys(view.pins).forEach(function (address) {
+      var point = known[address];
+      var pin = view.pins[address];
+      if (point && point.lat === pin.lat && point.lng === pin.lng) return;
+      pin.marker.setMap(null);
+      delete view.pins[address];
+    });
+    addresses.forEach(function (address) {
+      var point = known[address];
+      if (view.pins[address]) return;
+      view.pins[address] = {
+        lat: point.lat, lng: point.lng,
+        marker: new maps.Marker({ map: view.map, position: { lat: point.lat, lng: point.lng }, title: address }),
+      };
+    });
+    var framed = addresses.map(function (address) {
+      return address + "@" + known[address].lat + "," + known[address].lng;
+    }).join("\n");
+    if (framed === view.framed) return;
+    view.framed = framed;
+    if (!addresses.length) {
+      if (start) {
+        view.map.fitBounds(start, 0);
+      } else {
+        view.map.setCenter({ lat: MAP_WORLD.lat, lng: MAP_WORLD.lng });
+        view.map.setZoom(MAP_WORLD.zoom);
+      }
+      return;
+    }
+    var bounds = { north: -90, south: 90, east: -180, west: 180 };
+    addresses.forEach(function (address) {
+      var point = known[address];
+      bounds.north = Math.max(bounds.north, point.lat);
+      bounds.south = Math.min(bounds.south, point.lat);
+      bounds.east = Math.max(bounds.east, point.lng);
+      bounds.west = Math.min(bounds.west, point.lng);
+    });
+    if (bounds.north - bounds.south < MAP_CLOSE_SPAN && bounds.east - bounds.west < MAP_CLOSE_SPAN) {
+      view.map.setCenter({ lat: (bounds.north + bounds.south) / 2, lng: (bounds.east + bounds.west) / 2 });
+      view.map.setZoom(MAP_CLOSE_ZOOM);
+    } else {
+      view.map.fitBounds(bounds, MAP_PADDING);
+    }
+  };
+
+  PortalForm.prototype.watchMapSize = function (field, view) {
+    var self = this;
+    var canvas = view.canvas;
+    function measured() { return canvas.offsetWidth + "x" + canvas.offsetHeight; }
+    view.size = measured();
+    if (typeof ResizeObserver !== "function") return;
+    new ResizeObserver(function () {
+      if (!canvas.offsetWidth || !canvas.offsetHeight || measured() === view.size) return;
+      view.size = measured();
+      view.framed = null;
+      self.syncMap(field);
+    }).observe(canvas);
+  };
+
+  PortalForm.prototype.syncMaps = function () {
+    var self = this;
+    this.eachField(function (field) { self.syncMap(field); });
   };
 
   PortalForm.prototype.render = function () {
@@ -776,6 +904,7 @@
     form.appendChild(actions);
 
     if (this.cfg.copy.note) card.appendChild(text("p", "pf-note", this.cfg.copy.note));
+    this.syncMaps();
   };
 
   PortalForm.prototype.canSubmit = function () {
@@ -925,6 +1054,7 @@
     var error = text("p", "pf-field__error", invalid ? this.errors[field.code] : "");
     error.id = id + "-error";
     wrap.appendChild(error);
+    if (field.kind === "address" || field.kind === "address-list") wrap.appendChild(this.mapView(field).canvas);
     this.fieldNodes[field.code] = { wrap: wrap, error: error };
 
     wrap.addEventListener("focusout", function (event) {
@@ -1198,51 +1328,25 @@
     anchor.appendChild(input);
     wrap.appendChild(anchor);
 
-    var canvas = el("div", "pf-address__map", { "data-state": "idle", "aria-hidden": "true" });
-    wrap.appendChild(canvas);
-
     if (!this.cfg.mapsApiKey) return wrap;
 
     loadMaps(this.cfg.mapsApiKey).then(function (maps) {
-      self.upgradeAddress(field, wrap, input, canvas, maps, take, listbox);
+      self.upgradeAddress(field, wrap, input, maps, take, listbox);
     }).catch(function () {
-      canvas.dataset.state = "idle";
+      var view = self.mapView(field);
+      if (!view.map) view.canvas.dataset.state = "idle";
     });
     return wrap;
   };
 
-  PortalForm.prototype.upgradeAddress = function (field, wrap, input, canvas, maps, take, listbox) {
+  PortalForm.prototype.upgradeAddress = function (field, wrap, input, maps, take, listbox) {
     var self = this;
     var repeating = field.kind === "address-list";
-    var map = null;
-    var marker = null;
-
-    function show(location, label) {
-      if (!location) return;
-      canvas.dataset.state = "ready";
-      canvas.removeAttribute("aria-hidden");
-      if (!map) {
-        map = new maps.Map(canvas, {
-          center: location, zoom: 16, disableDefaultUI: true, zoomControl: true,
-          mapId: self.cfg.mapsMapId || undefined,
-        });
-      } else {
-        map.setCenter(location);
-      }
-      if (marker && marker.setMap) marker.setMap(null);
-      marker = new maps.Marker({ map: map, position: location, title: label || "" });
+    var view = this.mapView(field);
+    if (!view.api) {
+      view.api = maps;
+      this.syncMap(field);
     }
-
-    function preview(text) {
-      var address = addressKey(field, text);
-      var known = self.locations[field.code];
-      if (known && known[address]) show(known[address], address);
-      else self.locate(field, text, maps);
-    }
-
-    self.previews[field.code] = function (address, point) {
-      if (addressKey(field, repeating ? self.pending[field.code] : input.value) === address) show(point, address);
-    };
 
     function pick(formatted, location) {
       if (!formatted) return;
@@ -1275,10 +1379,10 @@
     }
 
     if (repeating) {
-      input.addEventListener("blur", function () { preview(self.pending[field.code]); });
+      input.addEventListener("blur", function () { self.locate(field, self.pending[field.code], maps); });
     } else {
-      input.addEventListener("blur", function () { preview(input.value); });
-      preview(input.value);
+      input.addEventListener("blur", function () { self.locate(field, input.value, maps); });
+      self.locate(field, input.value, maps);
     }
   };
 
@@ -1387,7 +1491,7 @@
                 var place = prediction.toPlace();
                 place.fetchFields({ fields: ["formattedAddress", "location"] }).then(function () {
                   pick(place.formattedAddress, place.location);
-                }).catch(function () { pick(label, null); });
+                }, function () { pick(label, null); });
               },
             };
           }).filter(function (item) { return item.label; }),

@@ -265,6 +265,7 @@ function manifestFor(template) {
       "Both requests are anonymous: credentials are omitted and no token, session or customer value is ever sent.",
       "Masks are applied only when the attribute declares mask: in its inputFormat. Nothing is inferred, so no value is reshaped without the schema asking.",
       "FORM_MAPS_API_KEY is a public browser key by design and must be restricted by HTTP referrer and API list in the Google console. While it is empty no Google script is loaded at all, and an address field degrades to a plain text input that still submits.",
+      "With a key, an address field shows its map from the start, holding the map's place while Google loads, with one pin for every address it holds that Google located. An Input format token map:<south>,<west>,<north>,<east> on the attribute names the area the empty map opens on; without it the empty map shows the whole world.",
       "FORM_THEME and FORM_MODE accept only a published vertical and light or dark. An unrecognised value falls back to the shipped default instead of writing an unknown data-theme that would silently render the wrong palette.",
       "The success screen states only what its copy parameters say. SUCCESS_STEP_1 to SUCCESS_STEP_3 and SUCCESS_AGAIN_LABEL render nothing while empty, and the document never offers registration or sign-in.",
     ],

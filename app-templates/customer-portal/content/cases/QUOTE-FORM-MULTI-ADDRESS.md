@@ -1,5 +1,49 @@
 # QUOTE-FORM-MULTI-ADDRESS
 
+## The map stays on screen — 2026-09-30
+
+The second task of the team's list after the end-to-end test: show every
+address the client entered on the map, and stop the map from appearing and
+then disappearing.
+
+On the published request-quote page the map showed only the address being
+typed. Adding it redraws the card, and the redraw built a new, collapsed map
+box; ticking a risk factor did the same.
+
+- **One map per address field.** `runtime/forms/portal-form.js` draws it once
+  and carries the same element through every redraw and step. It holds one pin
+  for every address the field holds that Google located, the entry still being
+  typed included. One address is shown at street level, several are framed
+  together, and an emptied field returns the map to its start.
+- **Where the empty map opens.** The Input format token
+  `map:<south>,<west>,<north>,<east>` names an area, which the map fits at any
+  width. `GET_QUOTE_` on dev-1 carries `address map:49,-123.3,49.4,-121.8`,
+  the box around the organization's `REGIONS` from West Vancouver to
+  Chilliwack, applied with
+  `../form-types/GET_QUOTE_.address-map-area.patch.json` (optimistic 18 → 19,
+  read back anonymously from both CMS nodes). A field without the token opens
+  on the whole world.
+- **States.** A placeholder of the map's height while Google loads, so nothing
+  under it moves when the map arrives. No map without a key or when Google
+  fails. A map that throws leaves the screen and takes no address with it. The
+  field's error stays directly under the input, above the map.
+- **Also.** The map frames its pins again when its box changes size, is dark
+  on a page in dark mode, and has zoom buttons only for a pointer that cannot
+  pinch, because on a narrow map they covered its eastern edge.
+- **Fixed on the way.** An exception thrown after a suggestion was picked used
+  to add the suggestion's text as a second address. Only a refused place lookup
+  falls back to that text now.
+- **Verified** on `/pages/SNOWLIMITLESS/request-quote` at desktop, 768 px and
+  375 px, in light and dark: the empty map on the service area, one, two and
+  three addresses, a removal, the required error, and a redraw caused by a
+  risk factor. `PORTAL_FORM_DOCUMENT` matches the package byte for byte and
+  both CMS nodes serve it. `portal-form-check` covers the map; each of 34
+  deliberate breaks of the map code fails it.
+- **Open.** An address Google cannot locate has no pin and nothing says so;
+  that belongs to the first task, the address the form cannot process. The
+  pins are `google.maps.Marker`, which Google has deprecated in favour of
+  advanced markers; those need a Map ID, and the form document carries none.
+
 ## Property type removed from the public form — 2026-09-26
 
 On dev-1, `SNOWLIMITLESS` / `GET_QUOTE_` (id 2) no longer asks for

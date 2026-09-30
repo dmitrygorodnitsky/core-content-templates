@@ -885,6 +885,14 @@ checkout before treating any of them as broken.
 
 ## Exact next action
 
+**Since 2026-09-30** the request-quote form keeps its map on screen and shows a
+pin for every address the client entered
+(`content/cases/QUOTE-FORM-MULTI-ADDRESS.md`, "The map stays on screen").
+`PORTAL_FORM_DOCUMENT` on dev-1 matches the package, and `GET_QUOTE_` opens the
+empty map on the service area through `map:` in the address Input format.
+Next: the user accepts or rejects the presentation from the screenshots; then
+the first task of the team's list, the address the form cannot process.
+
 **Since the evening of 2026-09-29** managers can price and approve many quotes
 at once in Snow CRM: Price Quotes and Approve Quotes under Group actions on
 Quotes, Quotes to Prepare and Quotes to Approve

@@ -285,7 +285,7 @@
   .pf-step { padding: 4px; }
 }
 
-.pf-address { position: relative; display: flex; flex-direction: column; gap: 8px; }
+.pf-address { position: relative; }
 
 .pf-address__anchor { position: relative; }
 
@@ -311,11 +311,27 @@
 }
 
 .pf-address__map {
-  height: 0; overflow: hidden; border-radius: var(--radius-md); isolation: isolate;
-  border: 1px solid transparent; transition: height .2s ease;
+  display: none; height: 240px; margin-top: 4px; overflow: hidden; isolation: isolate;
+  border-radius: var(--radius-md); border: 1px solid rgba(var(--hair), .1);
+  background: var(--surface-2);
 }
 
-.pf-address__map[data-state="ready"] { height: 190px; border-color: rgba(var(--hair), .1); }
+.pf-address__map[data-state="ready"] { display: block; }
+
+.pf-address__map[data-state="loading"] {
+  display: block;
+  background: linear-gradient(90deg, rgba(120, 120, 128, .10), rgba(120, 120, 128, .18), rgba(120, 120, 128, .10));
+  background-size: 200% 100%;
+  animation: pf-shimmer 1.4s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pf-address__map[data-state="loading"] { animation: none; }
+}
+
+@media (max-width: 640px) {
+  .pf-address__map { height: 200px; }
+}
 
 .pf-repeat { display: flex; flex-direction: column; gap: 10px; }
 
