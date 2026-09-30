@@ -1,0 +1,129 @@
+{
+ "optimistic": 0,
+ "code": "SUPPORT_TICKET",
+ "nls": {
+  "ar": {
+   "NAME": "تذكرة الدعم"
+  },
+  "en": {
+   "NAME": "Support Ticket"
+  },
+  "es": {
+   "NAME": "Ticket de soporte"
+  },
+  "fr": {
+   "NAME": "Ticket de support"
+  },
+  "he": {
+   "NAME": "כרטיס תמיכה"
+  },
+  "kk": {
+   "NAME": "Қолдау өтініші"
+  },
+  "ru": {
+   "NAME": "Заявка на поддержку"
+  },
+  "zh": {
+   "NAME": "支持工单"
+  }
+ },
+ "organization": {
+  "optimistic": 4,
+  "id": 8,
+  "code": "SERVICE_WAND_WINTER_SERVICES"
+ },
+ "attributeOrder": [
+  {
+   "default": [
+    {
+     "attributeCode": "ACCOUNT",
+     "visible": true
+    },
+    {
+     "attributeCode": "PROPERTY",
+     "visible": true
+    }
+   ]
+  }
+ ],
+ "attributes": [
+  {
+   "code": "ACCOUNT",
+   "required": true,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "com.pixelnation.account.domain.Account",
+   "nls": {
+    "ar": {
+     "NAME": "الحساب"
+    },
+    "en": {
+     "NAME": "Account"
+    },
+    "es": {
+     "NAME": "Cuenta"
+    },
+    "fr": {
+     "NAME": "Compte"
+    },
+    "he": {
+     "NAME": "חשבון"
+    },
+    "kk": {
+     "NAME": "Тіркелгі"
+    },
+    "ru": {
+     "NAME": "Аккаунт"
+    },
+    "zh": {
+     "NAME": "账户"
+    }
+   },
+   "options": []
+  },
+  {
+   "code": "PROPERTY",
+   "required": true,
+   "multiselect": true,
+   "freeValue": false,
+   "unique": false,
+   "className": "com.pixelnation.rm.domain.Resource",
+   "nls": {
+    "ar": {
+     "NAME": "العقار"
+    },
+    "en": {
+     "NAME": "Property"
+    },
+    "es": {
+     "NAME": "Inmueble"
+    },
+    "fr": {
+     "NAME": "Propriété"
+    },
+    "he": {
+     "NAME": "נכס"
+    },
+    "kk": {
+     "NAME": "Мүлік"
+    },
+    "ru": {
+     "NAME": "Объект"
+    },
+    "zh": {
+     "NAME": "房产"
+    }
+   },
+   "options": [],
+   "entityTypes": [
+    {
+     "value": 154
+    }
+   ]
+  }
+ ],
+ "id": 29,
+ "isAbstract": false,
+ "attributeGroups": []
+}

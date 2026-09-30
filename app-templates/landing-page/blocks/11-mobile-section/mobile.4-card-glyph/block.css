@@ -1,0 +1,97 @@
+/* lab-ui block · mobile.4-card-glyph
+   Depends: 00-tokens/tokens.css. Light theme.
+
+   The mobile section sits on a light-gray surface that differentiates
+   it from white sections around it. The surface fill is declared on
+   the composer wrapper AND on .mob4 itself — identical flat color
+   means no seam, and harness preview keeps the gray surface too. */
+
+.composition-section--mobile-4-card-glyph,
+.mob4 {
+  background: var(--color-gray-bg);
+}
+
+.mob4 {
+  color: var(--color-text);
+  font-family: var(--font-family);
+}
+.mob4 .container {
+  max-width: calc(var(--container-width) + var(--container-padding-x) * 2);
+  margin-inline: auto;
+  padding-inline: var(--container-padding-x);
+}
+
+.mob4-top {
+  max-width: 56rem;
+  margin: 0 auto clamp(2rem, 4vw, 3.5rem);
+  text-align: center;
+}
+.mob4-top .eyebrow {
+  font-family: var(--font-mono);
+  font-size: var(--type-eyebrow-size);
+  text-transform: uppercase;
+  letter-spacing: var(--type-eyebrow-tracking);
+  background: var(--cta-secondary-fill, linear-gradient(90deg, #56422D 0%, #494938 100%));
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  margin: 0 0 14px;
+}
+.mob4-title {
+  margin: 0 0 14px;
+  font-weight: var(--type-h2-weight);
+  font-size: var(--type-h2-size);
+  line-height: var(--type-h2-leading);
+  letter-spacing: var(--type-h2-tracking);
+  color: var(--color-heading);
+}
+.mob4-lede { display: grid; gap: 10px; }
+.mob4-lede p { margin: 0; font-size: var(--type-lead-size); line-height: var(--type-lead-leading); color: var(--color-text); }
+
+.mob4-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.mob4-card {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 28px 22px;
+  background: var(--color-bg);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: var(--radius-card);
+}
+
+.mob4-glyph {
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
+  display: grid;
+  place-items: center;
+  background: color-mix(in srgb, var(--cta-accent, #6BEAF9) 14%, transparent);
+  color: var(--color-heading);
+}
+.mob4-glyph svg { width: 32px; height: 32px; }
+
+.mob4-card-title {
+  margin: 0;
+  font-size: 1.0625rem;
+  font-weight: 600;
+  letter-spacing: -0.012em;
+  color: var(--color-heading);
+}
+.mob4-card-p {
+  margin: 0;
+  font-size: 0.875rem;
+  line-height: 1.55;
+  color: var(--color-text);
+}
+
+@media (max-width: 1180px) {
+  .mob4-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 720px) {
+  .mob4-grid { grid-template-columns: 1fr; }
+}

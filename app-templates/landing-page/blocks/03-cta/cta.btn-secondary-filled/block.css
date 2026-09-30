@@ -1,0 +1,95 @@
+/* lab-ui block · cta.btn-secondary-filled
+   Depends: 00-tokens/tokens.css
+     (--cta-secondary-fill, --cta-secondary-color, --cta-secondary-border,
+      --cta-accent-soft, --radius-pill, --font-family, --transition-duration)
+   + 03-cta/cta.btn-base (.btn, .btn-star)
+   + 12-decorative/effect.hover-rise (inner bottom glow). */
+
+.btn-secondary-filled {
+  /* Filled background — re-themed per vertical via tokens */
+  background: var(--cta-secondary-fill);
+  color: var(--cta-secondary-color);
+  border: 1px solid var(--cta-secondary-border);
+
+  /* Idle: no glow at all. Both halos fade in only on :hover. */
+  box-shadow: none;
+
+  transition: box-shadow var(--transition-duration) ease;
+  position: relative;
+  overflow: hidden;        /* keeps ::before contained */
+}
+
+/* Inner glow — radial-gradient ellipse pinned to the bottom-center.
+   ~58 % wide so the rounded end caps stay dark even when active.
+   Lives in the DOM at all times but starts at opacity 0; fades in
+   on :hover (along with the outer halo) so the pill looks "lit"
+   under the cursor and quiet at rest. */
+.btn-secondary-filled::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: 1;
+  background: radial-gradient(
+    ellipse 58% 78% at 50% 100%,
+    var(--cta-accent, #6BEAF9) 0%,
+    transparent 60%
+  );
+  opacity: 0;
+  mix-blend-mode: screen;
+  transition: opacity var(--transition-duration) ease;
+}
+
+.btn-secondary-filled:hover {
+  /* Outer halo fades in on hover. Spread -4 px + blur 32 px gives
+     a round soft glow that hugs the pill instead of smearing
+     rectangularly. Tinted by current vertical's --cta-accent. */
+  box-shadow: 0 0 32px -4px var(--cta-accent, #6BEAF9);
+}
+
+.btn-secondary-filled:hover::before {
+  /* Inner radial fades in to match the outer halo. */
+  opacity: 0.48;
+}
+
+/* Suppress the auto-applied effect.hover-rise ::after on this block —
+   we draw a tighter, 65 %-wide bottom glow via ::before that already
+   covers the same affordance. Stacking both reads as "double glow". */
+.btn-secondary-filled::after {
+  display: none;
+}
+
+.btn-secondary-filled .btn-star {
+  flex-shrink: 0;
+  color: var(--cta-secondary-color);
+  transition: transform var(--transition-duration) cubic-bezier(.4,0,.2,1);
+}
+.btn-secondary-filled:hover .btn-star {
+  transform: rotate(180deg);
+}
+
+.btn-secondary-filled[aria-disabled="true"] {
+  background: var(--color-gray-bg);
+  border-color: rgba(146, 170, 205, 0.28);
+  color: var(--color-gray-blue);
+  box-shadow: none;
+}
+
+.btn-secondary-filled[aria-disabled="true"]::before,
+.btn-secondary-filled[aria-disabled="true"]:hover::before {
+  opacity: 0;
+}
+
+.btn-secondary-filled[aria-disabled="true"] .btn-star {
+  color: var(--color-gray-blue);
+}
+
+.btn-secondary-filled[aria-disabled="true"]:is(:hover, :focus-visible) {
+  box-shadow: none;
+  transform: none;
+}
+
+.btn-secondary-filled[aria-disabled="true"]:hover .btn-star {
+  transform: none;
+}

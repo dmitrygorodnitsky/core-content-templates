@@ -1,0 +1,1917 @@
+import assert from "node:assert/strict";
+import fs from "node:fs/promises";
+import path from "node:path";
+import vm from "node:vm";
+
+const root = path.resolve("app-templates/customer-portal");
+const source = await fs.readFile(path.join(root, "runtime/forms/portal-form.js"), "utf8");
+const css = await fs.readFile(path.join(root, "runtime/forms/portal-form.css"), "utf8");
+
+function createDom() {
+  const byId = new Map();
+  const dom = { activeElement: null };
+  const holds = (outer, node) => { for (let current = node; current; current = current.parentNode) if (current === outer) return true; return false; };
+  const make = (tag) => {
+    const node = {
+      tagName: String(tag).toUpperCase(),
+      className: "", textContent: "", hidden: false,
+      children: [], attributes: {}, dataset: {}, listeners: {}, parentNode: null,
+      classList: { add() {} },
+      setAttribute(name, value) {
+        this.attributes[name] = String(value);
+        if (name === "id") this.id = String(value);
+        if (name === "hidden") this.hidden = true;
+        if (name.startsWith("data-")) this.dataset[name.slice(5).replace(/-([a-z])/g, (_, letter) => letter.toUpperCase())] = String(value);
+      },
+      getAttribute(name) { return Object.prototype.hasOwnProperty.call(this.attributes, name) ? this.attributes[name] : null; },
+      removeAttribute(name) { delete this.attributes[name]; },
+      appendChild(child) { child.parentNode = this; this.children.push(child); return child; },
+      insertBefore(child, before) {
+        const at = this.children.indexOf(before);
+        child.parentNode = this;
+        this.children.splice(at === -1 ? this.children.length : at, 0, child);
+        return child;
+      },
+      replaceChildren() {
+        const lost = this.children.some((child) => holds(child, dom.activeElement)) ? dom.activeElement : null;
+        if (lost) {
+          dom.activeElement = null;
+          lost.fire("blur", { relatedTarget: null });
+          for (let current = lost; current; current = current.parentNode) current.fire("focusout", { relatedTarget: null });
+        }
+        this.children.forEach((child) => { child.parentNode = null; });
+        this.children = [];
+      },
+      addEventListener(type, fn) { (this.listeners[type] = this.listeners[type] || []).push(fn); },
+      removeEventListener() {},
+      focus() { dom.activeElement = this; },
+      fire(type, event) { (this.listeners[type] || []).slice().forEach((fn) => fn.call(this, event || {})); },
+      querySelector() { return null; },
+    };
+    let id = "";
+    Object.defineProperty(node, "id", { get: () => id, set(value) { id = String(value); byId.set(id, node); }, enumerable: true });
+    return node;
+  };
+  const documentListeners = {};
+  dom.document = {
+    head: make("head"),
+    createElement: make,
+    getElementById: (value) => byId.get(String(value)) || null,
+    querySelector: () => null,
+    addEventListener(type, fn) { (documentListeners[type] = documentListeners[type] || []).push(fn); },
+    fire(type, event) { (documentListeners[type] || []).slice().forEach((fn) => fn(event || {})); },
+    get activeElement() { return dom.activeElement; },
+  };
+  return dom;
+}
+
+function collect(node, className) {
+  const found = [];
+  const walk = (candidate) => {
+    if (String(candidate.className).split(/\s+/).includes(className)) found.push(candidate);
+    candidate.children.forEach(walk);
+  };
+  walk(node);
+  return found;
+}
+
+const dom = createDom();
+const posted = [];
+const timers = new Map();
+let timerSeq = 0;
+const runTimers = () => {
+  const due = [...timers.values()];
+  timers.clear();
+  due.forEach((timer) => timer.fn());
+};
+const runZeroDelayTimers = () => {
+  const due = [...timers.entries()].filter(([, timer]) => timer.delay === 0);
+  due.forEach(([id]) => timers.delete(id));
+  due.forEach(([, timer]) => timer.fn());
+};
+const settle = () => new Promise((resolve) => setImmediate(resolve));
+const librariesLoaded = async () => { await settle(); await settle(); };
+const sizeWatchers = [];
+const sandbox = {
+  window: {},
+  document: dom.document,
+  ResizeObserver: function ResizeObserver(changed) {
+    this.observe = (node) => { sizeWatchers.push({ node, changed }); };
+  },
+  setTimeout(fn, delay) { timerSeq += 1; timers.set(timerSeq, { fn, delay: Number(delay) || 0 }); return timerSeq; },
+  clearTimeout(id) { timers.delete(id); },
+  fetch(url, init) {
+    posted.push({ url, init });
+    return Promise.resolve({ ok: true, status: 200, json: () => Promise.resolve({ id: 7 }) });
+  },
+};
+sandbox.globalThis = sandbox;
+vm.createContext(sandbox);
+vm.runInContext(source, sandbox);
+const PortalForm = sandbox.window.PortalForm;
+assert.ok(PortalForm, "the renderer must expose PortalForm");
+
+const copyEcho = new Proxy({}, { get: (_, key) => String(key) });
+
+const { parseTokens, javaType, applyMask, maskComplete, normalizeSchema, parseBehavior } = PortalForm;
+
+const plain = (value) => JSON.parse(JSON.stringify(value === undefined ? null : value));
+
+assert.equal(javaType("java.lang.Boolean"), "boolean");
+assert.equal(javaType("boolean"), "boolean");
+assert.equal(javaType("java.lang.Integer"), "number");
+assert.equal(javaType("java.math.BigDecimal"), "number");
+assert.equal(javaType("java.lang.String"), "string");
+assert.equal(javaType("com.servicewand.core.User"), "entity");
+assert.equal(javaType(""), "entity");
+assert.equal(javaType("com.pixelnation.common.domain.Address"), "address", "Core's Address class is an address to type, not an entity to pick");
+assert.equal(javaType("com.example.crm.Address"), "entity", "only Core's Address class is an address, not every class named Address");
+
+const flags = parseTokens("password textarea expanded slider tel url email color date");
+for (const flag of ["password", "textarea", "expanded", "slider", "tel", "url", "email", "color", "date"]) {
+  assert.equal(flags[flag], true, flag + " must parse as a flag");
+}
+
+const numeric = parseTokens("rows:6 cols:80 min:1 max:40 step:2 minLength:8 maxLength:120");
+assert.deepEqual(
+  plain([numeric.rows, numeric.cols, numeric.min, numeric.max, numeric.step, numeric.minLength, numeric.maxLength]),
+  [6, 80, 1, 40, 2, 8, 120],
+);
+
+assert.equal(parseTokens("placeholder:Tell us more").placeholder, "Tell us more", "a placeholder may contain spaces");
+assert.equal(parseTokens("re:^[A-Z]\\d$").re, "^[A-Z]\\d$");
+assert.equal(parseTokens("mask:A9A 9A9").mask, "A9A 9A9", "a mask may contain spaces");
+assert.equal(parseTokens("mask:A9A 9A9; textarea").mask, "A9A 9A9", "a semicolon terminates a mask");
+assert.equal(parseTokens("mask:A9A 9A9; textarea").textarea, true, "tokens after a terminated mask still parse");
+const combined = parseTokens("re:^[A-Z]\\d[A-Z]\\s?\\d[A-Z]\\d$ mask:A9A 9A9; placeholder:K1A 0B1");
+assert.equal(combined.mask, "A9A 9A9");
+assert.equal(combined.re, "^[A-Z]\\d[A-Z]\\s?\\d[A-Z]\\d$");
+assert.equal(combined.placeholder, "K1A 0B1");
+assert.equal(parseTokens("address").address, true);
+assert.deepEqual(plain(parseTokens("address country:us,ca").country), ["us", "ca"]);
+assert.equal(parseTokens("address").country, null, "country restriction stays optional");
+assert.equal(parseTokens("coordinates-of:PROPERTY_ADDRESSES").coordinatesOf, "PROPERTY_ADDRESSES");
+assert.equal(parseTokens("address").coordinatesOf, null, "only a declared link derives coordinates");
+assert.deepEqual(plain(parseTokens("address map:49,-123.3,49.4,-121.9").mapStart), { south: 49, west: -123.3, north: 49.4, east: -121.9 }, "a map start is the area from its south-west corner to its north-east one");
+assert.deepEqual(plain(parseTokens("address map:-34.1,150.6,-33.6,151.4").mapStart), { south: -34.1, west: 150.6, north: -33.6, east: 151.4 });
+assert.equal(parseTokens("address").mapStart, null, "a map start stays optional");
+for (const refused of ["map:49.4,-123.3,49,-121.9", "map:49,-121.9,49.4,-123.3", "map:49,-123.3,91,-121.9", "map:49,-181,49.4,-121.9", "map:49,-123.3,49.4", "map:here"]) {
+  assert.equal(parseTokens("address " + refused).mapStart, null, refused + " names no area a map can open on");
+}
+assert.equal(parseTokens("address map:here").address, true, "a refused map start leaves the rest of the format standing");
+assert.deepEqual(plain(parseTokens("address within:49,-123.3,49.4,-121.7").within), { south: 49, west: -123.3, north: 49.4, east: -121.7 }, "an area addresses must lie in is declared like a map start");
+assert.equal(parseTokens("address within:49,-123.3,49.4,-121.7").mapStart, null, "and is not itself a map start");
+assert.deepEqual(
+  plain([parseTokens("address map:48,-124,50,-121 within:49,-123.3,49.4,-121.7").mapStart, parseTokens("address map:48,-124,50,-121 within:49,-123.3,49.4,-121.7").within]),
+  [{ south: 48, west: -124, north: 50, east: -121 }, { south: 49, west: -123.3, north: 49.4, east: -121.7 }],
+  "a field may open its map wider than the area it accepts",
+);
+assert.equal(parseTokens("address").within, null, "an address is held to no area unless the format names one");
+for (const refused of ["within:49.4,-123.3,49,-121.7", "within:49,-121.7,49.4,-123.3", "within:49,-123.3,91,-121.7", "within:49,-123.3,49.4", "within:metro"]) {
+  assert.equal(parseTokens("address " + refused).within, null, refused + " names no area an address can be held to");
+}
+assert.equal(parseTokens("").mask, null);
+assert.equal(parseTokens(undefined).placeholder, null);
+
+assert.equal(applyMask("k1a0b1", "A9A 9A9"), "K1A 0B1", "letter slots normalize case and literals are inserted");
+assert.equal(applyMask("13035550164", "+9 (999) 999-9999"), "+1 (303) 555-0164");
+assert.equal(applyMask("abc", "999"), "", "a digit slot rejects letters");
+assert.equal(applyMask("", "A9A"), "");
+assert.equal(maskComplete("K1A 0B1", "A9A 9A9"), true);
+assert.equal(maskComplete("K1A 0", "A9A 9A9"), false);
+
+assert.deepEqual(plain(parseBehavior('applyBehavior({ COMMERCIAL: "CONDITIONAL" });')), { COMMERCIAL: "CONDITIONAL" });
+assert.deepEqual(plain(parseBehavior("applyBehavior({ commercial: 'STEP_B' })")), { COMMERCIAL: "STEP_B" });
+assert.equal(parseBehavior("hideStep('X'); window.location='/'"), null, "only a declarative applyBehavior mapping is honoured");
+assert.equal(parseBehavior(""), null);
+assert.equal(parseBehavior(null), null);
+assert.doesNotMatch(source, /\bnew Function\b|\beval\(/, "the renderer must never execute server-supplied code");
+
+const kitchen = JSON.parse(await fs.readFile(path.join(root, "content/form-types/PORTAL_FORM_KITCHEN_SINK.en.json"), "utf8"));
+const sink = normalizeSchema(kitchen, "en");
+const kinds = {};
+sink.groups.forEach((group) => group.fields.forEach((field) => { kinds[field.code] = field.kind; }));
+assert.deepEqual(kinds, {
+  PLAIN_TEXT: "text", EMAIL: "email", PHONE: "tel", WEBSITE: "url", POSTAL_CODE: "text",
+  START_DATE: "date", BRAND_COLOR: "color", SECRET: "password", LONG_TEXT: "textarea",
+  CREW_SIZE: "number", BUDGET: "slider", SITE_COUNT: "number",
+  PROPERTY_TYPE: "select", TRIGGER: "radio", SURFACES: "multiselect", EXTRAS: "checklist",
+  REFERRAL: "combobox", ACCOUNT_MANAGER: "select", ACCEPT_TERMS: "boolean",
+  LOADING_DOCKS: "boolean", SITE_ADDRESS: "address",
+}, "the fixture must exercise every renderable kind");
+
+const KINDS = ["text", "textarea", "password", "email", "tel", "url", "color", "date", "number", "slider", "boolean", "select", "multiselect", "radio", "checklist", "combobox", "address", "address-list"];
+const covered = new Set(Object.values(kinds));
+for (const kind of KINDS.filter((kind) => kind !== "address-list")) {
+  assert.ok(covered.has(kind), "kind " + kind + " is not covered by the fixture");
+}
+assert.equal(covered.has("address-list"), false, "the fixture declares no multiselect address, so its SITE_ADDRESS must stay the single-value kind");
+
+assert.deepEqual(plain(sink.groups.map((group) => group.code)), ["TEXTS", "NUMBERS", "CHOICES", "CONDITIONAL"]);
+const propertyType = sink.groups[2].fields.find((field) => field.code === "PROPERTY_TYPE");
+assert.deepEqual(plain(propertyType.behavior), { COMMERCIAL: "CONDITIONAL" });
+const postal = sink.groups[0].fields.find((field) => field.code === "POSTAL_CODE");
+assert.equal(postal.mask, "A9A 9A9");
+assert.equal(postal.placeholder, "K1A 0B1");
+sink.groups.forEach((group) => group.fields.forEach((field) => {
+  assert.equal(field.typeId, kitchen.id, "a root attribute keeps the root type id");
+}));
+
+const quote = JSON.parse(await fs.readFile(path.join(root, "content/form-types/GET_QUOTE_.en.json"), "utf8"));
+const live = normalizeSchema(quote, "en");
+assert.equal(live.id, 2);
+assert.equal(live.title, "Get Your Free Quote");
+assert.deepEqual(
+  plain(live.groups.map((group) => group.code)),
+  ["C9C8004F_EFF7_470F_B924_5719E91A5E4C", "PROPERTIES", "NOTES"],
+  "attributeOrder decides group order, not attributeGroups, and a group whose every row names a deleted attribute renders not at all",
+);
+assert.deepEqual(
+  plain(live.groups.map((group) => group.fields.map((field) => field.code))),
+  [
+    ["ORGANIZATION_NAME", "SELECT_ROLE", "FIRST_NAME", "LAST_NAME", "EMAIL", "PHONE"],
+    ["PROPERTY_ADDRESSES"],
+    ["ADDITIONAL_NOTES"],
+  ],
+);
+assert.deepEqual(
+  plain(live.groups.map((group) => group.fields.map((field) => field.kind))),
+  [["text", "select", "text", "text", "email", "tel"], ["address-list"], ["textarea"]],
+  "inputFormat drives the control: address, email, tel and textarea are declared by the published schema",
+);
+const addresses = live.groups[1].fields[0];
+assert.equal(addresses.multiselect, true, "PROPERTY_ADDRESSES is the repeating field the published type declares");
+assert.equal(addresses.required, true);
+assert.equal(addresses.choices.length, 0, "the repeating address is free text, not a pick list");
+assert.equal(addresses.tokens.address, true);
+assert.equal(addresses.label, "Addresses of properties");
+assert.equal(live.groups[1].title, "Real estate properties");
+const published = new Set();
+live.groups.forEach((group) => group.fields.forEach((field) => published.add(field.code)));
+for (const retired of ["PROPERTY_ADDRESS", "PROPERTY_SIZE", "RISK_FACTORS", "SELECT_YOUR_PROPERTY_TYPE"]) {
+  assert.equal(published.has(retired), false, retired + " renders nowhere in the multi-address snapshot of 2026-09-10");
+}
+let requiredCount = 0;
+live.groups.forEach((group) => group.fields.forEach((field) => { if (field.required) requiredCount += 1; }));
+assert.equal(requiredCount, 7, "every attribute but ADDITIONAL_NOTES declares required:true");
+
+const servedQuote = JSON.parse(await fs.readFile(path.join(root, "content/form-types/GET_QUOTE_.2026-09-16.en.json"), "utf8"));
+const served = normalizeSchema(servedQuote, "en");
+assert.equal(served.id, 2);
+assert.deepEqual(
+  plain(servedQuote.attributeGroups.map((group) => group.code)),
+  ["EA849F15_9108_455F_9A05_F26BED67E5CD", "NOTES", "C9C8004F_EFF7_470F_B924_5719E91A5E4C"],
+);
+assert.deepEqual(
+  plain(served.groups.map((group) => [group.code, group.fields.map((field) => field.code)])),
+  [
+    ["EA849F15_9108_455F_9A05_F26BED67E5CD", ["SELECT_YOUR_PROPERTY_TYPE", "PROPERTY_ADDRESS", "RISK_FACTORS", "PROPERTY_SIZE"]],
+    ["C9C8004F_EFF7_470F_B924_5719E91A5E4C", ["SELECT_ROLE", "FIRST_NAME", "LAST_NAME", "EMAIL", "PHONE"]],
+    ["NOTES", ["ADDITIONAL_NOTES"]],
+  ],
+  "the three groups dev-1 served on 2026-09-16 follow attributeOrder, not attributeGroups, each with its fields in row order",
+);
+assert.deepEqual(
+  plain(served.groups.map((group) => group.fields.map((field) => field.kind))),
+  [["select", "address", "checklist", "select"], ["select", "text", "text", "email", "tel"], ["textarea"]],
+);
+assert.deepEqual(plain(served.hidden), []);
+const servedAddress = served.groups[0].fields[1];
+assert.deepEqual(
+  plain([servedAddress.code, servedAddress.kind, servedAddress.required, servedAddress.multiselect, servedAddress.choices.length, servedAddress.typeId, servedAddress.label]),
+  ["PROPERTY_ADDRESS", "address", true, false, 0, 2, "Property Address"],
+  "an Address-classed attribute with the empty options Core now always sends is a required single address, not a select without options",
+);
+assert.equal(servedAddress.tokens.address, false, "it declares no inputFormat, so its class alone makes it an address");
+
+const repeat = new PortalForm({ schema: quote, locale: "en", copy: copyEcho, organizationId: 43, apiBaseUrl: "https://forms.example" });
+const mounted = dom.document.createElement("div");
+repeat.mount(mounted);
+await Promise.resolve();
+repeat.step = repeat.model.groups.findIndex((group) => group.code === "PROPERTIES");
+repeat.render();
+
+const entry = () => dom.document.getElementById("pf-PROPERTY_ADDRESSES");
+const rows = () => collect(mounted, "pf-repeat__row");
+const held = () => plain(repeat.values.PROPERTY_ADDRESSES);
+const typeInto = (value) => { const box = entry(); box.value = value; box.fire("input"); return box; };
+const bubble = (node, type, event) => { for (let current = node; current; current = current.parentNode) current.fire(type, event); };
+const attachedTo = (node, root) => { for (let current = node; current; current = current.parentNode) if (current === root) return true; return false; };
+const CONTROL_TAGS = ["INPUT", "BUTTON", "SELECT", "TEXTAREA"];
+const focusTarget = (node) => {
+  for (let current = node; current; current = current.parentNode) {
+    if (CONTROL_TAGS.includes(current.tagName) || current.getAttribute("tabindex") !== null) return current;
+  }
+  return null;
+};
+const outside = dom.document.createElement("button");
+const moveFocus = (to, root) => {
+  const from = dom.activeElement;
+  if (from === to) return;
+  dom.activeElement = null;
+  if (from) {
+    from.fire("blur", { relatedTarget: to });
+    bubble(from, "focusout", { relatedTarget: to });
+  }
+  if (to && (to === outside || attachedTo(to, root))) {
+    dom.activeElement = to;
+    to.fire("focus", { relatedTarget: from });
+    bubble(to, "focusin", { relatedTarget: from });
+  }
+};
+const underPointer = (root) => collect(root, "pf-field__error").map((node) => node.textContent).join("\n");
+const press = (target, root) => {
+  const before = underPointer(root);
+  const down = { target, button: 0, defaultPrevented: false, preventDefault() { this.defaultPrevented = true; } };
+  bubble(target, "mousedown", down);
+  if (!down.defaultPrevented) moveFocus(focusTarget(target), root);
+  const shifted = underPointer(root) !== before;
+  dom.document.fire("mouseup", { target, button: 0 });
+  const clicked = attachedTo(target, root) && !shifted;
+  if (clicked) {
+    bubble(target, "click", { target });
+    let form = target.type === "submit" ? target.parentNode : null;
+    while (form && form.tagName !== "FORM") form = form.parentNode;
+    if (form) form.fire("submit", { preventDefault() {} });
+  }
+  runZeroDelayTimers();
+  return clicked;
+};
+const keyOn = (node, key) => {
+  const event = { key, target: node, defaultPrevented: false, preventDefault() { this.defaultPrevented = true; } };
+  dom.document.fire("keydown", event);
+  bubble(node, "keydown", event);
+  return event;
+};
+const tabOrder = (root) => {
+  const order = [];
+  const walk = (node) => {
+    const tabindex = node.getAttribute("tabindex");
+    if ((CONTROL_TAGS.includes(node.tagName) && !node.disabled && tabindex !== "-1") || (tabindex !== null && Number(tabindex) >= 0)) order.push(node);
+    node.children.forEach(walk);
+  };
+  walk(root);
+  return order;
+};
+const tab = (root) => {
+  const from = dom.activeElement;
+  const order = tabOrder(root);
+  const to = order[order.indexOf(from) + 1] || outside;
+  if (!keyOn(from, "Tab").defaultPrevented) moveFocus(to, root);
+  return to;
+};
+
+assert.deepEqual(held(), [], "a repeating address seeds as an empty array, never as a string");
+assert.equal(rows().length, 0, "the empty state renders no rows");
+assert.ok(entry(), "the empty state still offers one address input");
+assert.equal(collect(mounted, "pf-repeat__add").length, 1, "the empty state still offers the add control");
+
+entry().focus();
+typeInto("1200 West Georgia Street, Vancouver, BC, Canada");
+press(outside, mounted);
+assert.equal(collect(mounted, "pf-field")[0].dataset.state, "invalid", "leaving the untouched required list with nothing added flags it");
+assert.deepEqual(held(), [], "leaving the field adds nothing");
+assert.equal(entry().value, "1200 West Georgia Street, Vancouver, BC, Canada", "the address typed before leaving is still on screen once the card has reacted");
+
+typeInto("1200 West Georgia Street, Vancouver, BC, Canada").fire("keydown", { key: "Enter", preventDefault() {} });
+assert.deepEqual(held(), ["1200 West Georgia Street, Vancouver, BC, Canada"], "Enter commits the first address");
+assert.equal(rows().length, 1);
+assert.equal(entry().value, "", "a committed address leaves the entry input empty");
+assert.equal(dom.activeElement, entry(), "focus returns to the entry input");
+
+typeInto("4000 No. 3 Road, Richmond, BC, Canada");
+collect(mounted, "pf-repeat__add")[0].fire("click");
+assert.deepEqual(held(), ["1200 West Georgia Street, Vancouver, BC, Canada", "4000 No. 3 Road, Richmond, BC, Canada"]);
+assert.deepEqual(plain(rows().map((row) => row.getAttribute("aria-label"))), held(), "every row is named by the address it removes");
+assert.deepEqual(plain(rows().map((row) => row.getAttribute("aria-pressed"))), ["true", "true"]);
+assert.deepEqual(plain(rows().map((row) => row.getAttribute("type"))), ["button", "button"], "a row must never submit the form");
+
+typeInto("4000 no. 3 road, richmond, bc, canada");
+collect(mounted, "pf-repeat__add")[0].fire("click");
+assert.equal(rows().length, 2, "the same address is not added twice");
+
+const stale = rows();
+stale[0].fire("click");
+assert.deepEqual(held(), ["4000 No. 3 Road, Richmond, BC, Canada"], "a row removes itself");
+assert.equal(dom.activeElement, entry(), "focus returns to the entry input after a removal");
+stale[0].fire("click");
+assert.deepEqual(held(), ["4000 No. 3 Road, Richmond, BC, Canada"], "a row that is already gone removes nothing a second time");
+typeInto("1200 West Georgia Street, Vancouver, BC, Canada");
+rows()[0].fire("click");
+assert.deepEqual(held(), [], "removing the last row empties the list");
+assert.ok(entry(), "removing the last row keeps the entry input");
+assert.equal(entry().value, "1200 West Georgia Street, Vancouver, BC, Canada", "a removal re-renders the card, and the address typed but not yet added stays on screen");
+
+repeat.advance(repeat.visibleGroups());
+assert.deepEqual(held(), ["1200 West Georgia Street, Vancouver, BC, Canada"], "Continue commits the address on screen rather than losing it");
+
+repeat.step = repeat.model.groups.findIndex((group) => group.code === "PROPERTIES");
+repeat.render();
+typeInto("4000 No. 3 Road, Richmond, BC, Canada").fire("keydown", { key: "Enter", preventDefault() {} });
+repeat.values.ORGANIZATION_NAME = "Granite Ridge Properties";
+repeat.values.SELECT_ROLE = "OWNER";
+repeat.values.FIRST_NAME = "Dana";
+repeat.values.LAST_NAME = "Reyes";
+repeat.values.EMAIL = "dana@example.com";
+repeat.values.PHONE = "+1 604 555 0164";
+assert.equal(await repeat.submit(), true);
+assert.equal(posted.length, 1, "the repeating field submits once, as one form");
+const wire = JSON.parse(posted[0].init.body);
+assert.deepEqual(
+  plain(wire.attributes["2"].PROPERTY_ADDRESSES),
+  { value: ["1200 West Georgia Street, Vancouver, BC, Canada", "4000 No. 3 Road, Richmond, BC, Canada"] },
+  "a multiselect String submits as a JSON array inside one AttributeValue",
+);
+assert.equal(wire.attributes["2"].EMAIL.value, "dana@example.com", "a single-value attribute still submits a scalar");
+
+const enter = { key: "Enter", preventDefault() {} };
+const contact = {
+  ORGANIZATION_NAME: "Granite Ridge Properties", SELECT_ROLE: "OWNER", FIRST_NAME: "Dana",
+  LAST_NAME: "Reyes", EMAIL: "dana@example.com", PHONE: "+1 604 555 0164",
+};
+const coordinatesAttribute = (code, source) => ({
+  code, required: false, multiselect: false, freeValue: false, unique: false,
+  className: "java.lang.String", nls: { en: { NAME: "Hidden coordinates" } }, options: [],
+  inputFormat: "coordinates-of:" + source,
+});
+const withHiddenAttribute = (schema, attribute, groupCode, visible) => {
+  const patched = plain(schema);
+  patched.attributes.push(attribute);
+  if (groupCode) patched.attributeOrder.find((entry) => entry[groupCode])[groupCode].push({ attributeCode: attribute.code, visible });
+  return patched;
+};
+const quoteWithCoordinates = withHiddenAttribute(quote, coordinatesAttribute("PROPERTY_COORDINATES", "PROPERTY_ADDRESSES"), "PROPERTIES", false);
+
+assert.equal(dom.document.head.children.length, 0, "a form without a maps key loads no Google script");
+const keyless = new PortalForm({ schema: quoteWithCoordinates, locale: "en", copy: copyEcho, organizationId: 43, apiBaseUrl: "https://forms.example" });
+keyless.mount(dom.document.createElement("div"));
+await Promise.resolve();
+keyless.step = keyless.model.groups.findIndex((group) => group.code === "PROPERTIES");
+keyless.render();
+typeInto("1200 West Georgia Street, Vancouver, BC, Canada").fire("keydown", enter);
+typeInto("4000 No. 3 Road, Richmond, BC, Canada").fire("keydown", enter);
+Object.assign(keyless.values, contact);
+assert.equal(keyless.values.PROPERTY_COORDINATES, "", "without a maps key no coordinates are produced");
+assert.equal(collect(keyless.root, "pf-address__map")[0].dataset.state, "idle", "and no map is drawn");
+assert.equal(await keyless.submit(), true);
+assert.deepEqual(JSON.parse(posted[1].init.body), wire, "a declared hidden attribute changes nothing about a keyless submission");
+assert.equal(dom.document.head.children.length, 0, "the keyless submission still loaded no Google script");
+
+const degradedPage = async (name, breakGoogle, schema) => {
+  const page = createDom();
+  const context = { window: {}, document: page.document, setTimeout: sandbox.setTimeout, clearTimeout: sandbox.clearTimeout, fetch: sandbox.fetch };
+  context.globalThis = context;
+  vm.createContext(context);
+  vm.runInContext(source, context);
+  const form = new context.window.PortalForm({ schema: schema || quoteWithCoordinates, locale: "en", copy: copyEcho, organizationId: 43, apiBaseUrl: "https://forms.example", mapsApiKey: "test-key" });
+  const formMount = page.document.createElement("div");
+  form.mount(formMount);
+  await settle();
+  form.step = form.model.groups.findIndex((group) => group.code === "PROPERTIES");
+  form.render();
+  const script = page.document.head.children[0];
+  assert.equal(page.document.head.children.length, 1, name + ": a keyed form asks for the Google script");
+  breakGoogle(context, script);
+  await librariesLoaded();
+  form.render();
+  await librariesLoaded();
+  const control = collect(formMount, "pf-address")[0];
+  assert.equal(control.dataset.autocomplete, undefined, name + ": the address stays a plain text input");
+  assert.equal(collect(formMount, "pf-address__list").length, 0, name + ": no suggestion list is offered");
+  assert.equal(collect(formMount, "pf-address__map")[0].dataset.state, "idle", name + ": no map is drawn");
+  const box = page.document.getElementById("pf-PROPERTY_ADDRESSES");
+  box.value = "1200 West Georgia Street, Vancouver, BC, Canada";
+  box.fire("input");
+  box.fire("keydown", { key: "Enter", preventDefault() {} });
+  Object.assign(form.values, contact);
+  assert.equal(await form.submit(), true, name + ": the form still submits");
+  const body = JSON.parse(posted[posted.length - 1].init.body);
+  assert.deepEqual(plain(body.attributes["2"].PROPERTY_ADDRESSES), { value: ["1200 West Georgia Street, Vancouver, BC, Canada"] }, name + ": the typed address is what submits");
+  assert.equal(body.attributes["2"].PROPERTY_COORDINATES, undefined, name + ": and it carries no coordinates");
+};
+await degradedPage("a script that fails to load", (context, script) => script.fire("error"));
+await degradedPage("a library import that fails", (context, script) => {
+  context.window.google = { maps: { importLibrary: (name) => (name === "places" ? Promise.reject(new Error("places refused")) : Promise.resolve({})) } };
+  context.window[new URL(script.src).searchParams.get("callback")]();
+});
+
+const single = new PortalForm({ schema: kitchen, locale: "en", copy: copyEcho });
+const singleMount = dom.document.createElement("div");
+single.mount(singleMount);
+await Promise.resolve();
+single.step = single.model.groups.findIndex((group) => group.code === "TEXTS");
+single.render();
+assert.equal(single.values.SITE_ADDRESS, "", "a single-value address seeds as a string");
+assert.equal(collect(singleMount, "pf-repeat").length, 0, "a non-multiselect address renders no repeat control");
+assert.equal(collect(singleMount, "pf-address").length, 1, "a non-multiselect address renders exactly one address control");
+const siteBox = dom.document.getElementById("pf-SITE_ADDRESS");
+siteBox.value = "88 Robson Street, Vancouver, BC, Canada";
+siteBox.fire("input");
+assert.equal(single.values.SITE_ADDRESS, "88 Robson Street, Vancouver, BC, Canada", "a single-value address still writes a scalar on every keystroke");
+
+const flow = new PortalForm({ schema: quote, locale: "en", copy: copyEcho, organizationId: 43, apiBaseUrl: "https://forms.example" });
+const flowMount = dom.document.createElement("div");
+flow.mount(flowMount);
+await settle();
+const control = (code) => dom.document.getElementById("pf-" + code);
+const wrapOf = (root, code) => collect(root, "pf-field").find((node) => node.dataset.code === code);
+const typeField = (code, value) => { const box = control(code); box.value = value; box.fire("input"); return box; };
+const organizationWrap = wrapOf(flowMount, "ORGANIZATION_NAME");
+control("ORGANIZATION_NAME").focus();
+const tabbedTo = tab(flowMount);
+assert.equal(tabbedTo, control("SELECT_ROLE"), "Tab runs from the first field to the second");
+assert.equal(dom.activeElement, tabbedTo, "leaving an untouched field with Tab keeps the focus on the field Tab moved to");
+assert.equal(wrapOf(flowMount, "ORGANIZATION_NAME"), organizationWrap, "leaving a field repaints it in place instead of re-rendering the card");
+assert.equal(organizationWrap.dataset.state, "invalid", "the required field left empty shows its error at once");
+assert.equal(collect(organizationWrap, "pf-field__error")[0].textContent, "requiredError");
+moveFocus(control("ORGANIZATION_NAME"), flowMount);
+typeField("ORGANIZATION_NAME", "Granite Ridge Properties");
+tab(flowMount);
+assert.equal(organizationWrap.dataset.state, "idle", "leaving it answered clears the error in place");
+
+const roleBox = control("SELECT_ROLE");
+roleBox.value = "OWNER";
+roleBox.fire("change");
+assert.equal(flow.values.SELECT_ROLE, "OWNER");
+assert.notEqual(control("SELECT_ROLE"), roleBox, "a choice re-renders the card");
+assert.equal(dom.activeElement, control("SELECT_ROLE"), "and gives the focus back to the control that was re-rendered");
+for (const [code, value] of [["FIRST_NAME", "Dana"], ["LAST_NAME", "Reyes"], ["EMAIL", "dana@example.com"], ["PHONE", "+1 604 555 0164"]]) {
+  assert.equal(tab(flowMount), control(code), "Tab reaches " + code);
+  typeField(code, value);
+}
+assert.equal(flow.touched.PHONE, undefined, "the last field is still untouched when the pointer goes down on Continue");
+assert.equal(press(collect(flowMount, "btn--primary")[0], flowMount), true, "nothing under the pointer is replaced or moved between mousedown and click");
+assert.equal(flow.step, 1, "the first click on Continue advances");
+assert.equal(dom.activeElement && dom.activeElement.getAttribute("data-group"), "PROPERTIES", "focus moves to the step Continue opened, not to the document body");
+assert.equal(press(collect(flowMount, "btn--ghost")[0], flowMount), true);
+assert.equal(flow.step, 0, "Back returns to the first step");
+assert.equal(dom.activeElement && dom.activeElement.getAttribute("data-group"), "C9C8004F_EFF7_470F_B924_5719E91A5E4C", "and moves focus to the step it shows");
+
+const sinkForm = new PortalForm({ schema: kitchen, locale: "en", copy: copyEcho });
+const sinkMount = dom.document.createElement("div");
+sinkForm.mount(sinkMount);
+await settle();
+control("PLAIN_TEXT").focus();
+assert.equal(sinkForm.touched.PLAIN_TEXT, undefined);
+assert.equal(press(collect(sinkMount, "btn--primary")[0], sinkMount), true, "leaving an empty required field for Continue shows no error under the pointer before the click lands");
+assert.equal(sinkForm.step, 0, "the click lands and validation keeps the step");
+assert.equal(dom.activeElement, control("PLAIN_TEXT"), "focus goes to the first field that needs an answer");
+assert.equal(wrapOf(sinkMount, "PLAIN_TEXT").dataset.state, "invalid");
+
+sinkForm.step = sinkForm.model.groups.findIndex((group) => group.code === "CHOICES");
+sinkForm.render();
+const triggers = () => collect(sinkMount, "pf-choice__input").filter((node) => node.getAttribute("name") === "TRIGGER");
+triggers()[0].focus();
+const arrowed = triggers()[1];
+moveFocus(arrowed, sinkMount);
+assert.equal(attachedTo(arrowed, sinkMount), true, "moving between the options of one radio group re-renders nothing");
+arrowed.checked = true;
+arrowed.fire("change");
+assert.equal(sinkForm.values.TRIGGER, "5CM", "the option an arrow key selected is kept");
+assert.equal(dom.activeElement.getAttribute("value"), "5CM", "and keeps the focus after the card re-renders");
+const chip = collect(sinkMount, "pf-chip")[0];
+moveFocus(chip, sinkMount);
+chip.fire("click");
+assert.deepEqual(plain(sinkForm.values.SURFACES), ["DRIVE"]);
+assert.equal(dom.activeElement.getAttribute("data-focus"), "SURFACES=DRIVE", "a chip toggled from the keyboard keeps the focus");
+assert.equal(dom.activeElement.getAttribute("aria-pressed"), "true");
+const terms = control("ACCEPT_TERMS");
+moveFocus(terms, sinkMount);
+terms.checked = true;
+terms.fire("change");
+assert.equal(sinkForm.values.ACCEPT_TERMS, true);
+assert.equal(dom.activeElement, control("ACCEPT_TERMS"), "a checkbox toggled with Space keeps the focus");
+
+const parented = normalizeSchema({
+  id: 10,
+  nls: { en: { NAME: "Child" } },
+  attributes: [{ code: "OWN", className: "java.lang.String", nls: { en: { NAME: "Own" } }, options: [] }],
+  attributeGroups: [{ code: "G1", nls: { en: { NAME: "Group one" } } }],
+  parents: [{
+    id: 11,
+    attributes: [{ code: "INHERITED", className: "java.lang.String", nls: { en: { NAME: "Inherited" } }, options: [] }],
+    attributeGroups: [{ code: "G2", nls: { en: { NAME: "Group two" } } }],
+  }],
+  attributeOrder: [
+    { G1: [{ attributeCode: "OWN", visible: true }] },
+    { G2: [{ attributeCode: "INHERITED", visible: true }] },
+  ],
+}, "en");
+assert.deepEqual(plain(parented.groups.map((group) => group.code)), ["G1", "G2"]);
+assert.equal(parented.groups[0].fields[0].typeId, 10);
+assert.equal(parented.groups[1].fields[0].typeId, 11, "an inherited attribute submits under its parent type id");
+assert.equal(parented.groups[1].title, "Group two", "a parent group title resolves");
+
+const hidden = normalizeSchema({
+  id: 12, nls: {}, attributes: [
+    { code: "SHOWN", className: "java.lang.String", nls: {}, options: [] },
+    { code: "HIDDEN", className: "java.lang.String", nls: {}, options: [] },
+    { code: "LOOSE", className: "java.lang.String", nls: {}, options: [] },
+  ],
+  attributeGroups: [{ code: "G", nls: {} }],
+  attributeOrder: [{ G: [{ attributeCode: "SHOWN", visible: true }, { attributeCode: "HIDDEN", visible: false }] }],
+}, "en");
+assert.deepEqual(plain(hidden.groups.map((group) => group.code)), ["G", "__ungrouped"]);
+assert.deepEqual(plain(hidden.groups[0].fields.map((field) => field.code)), ["SHOWN"], "visible:false is not rendered");
+assert.deepEqual(plain(hidden.groups[1].fields.map((field) => field.code)), ["LOOSE"], "attributes outside attributeOrder still render");
+assert.deepEqual(plain(hidden.hidden.map((field) => field.code)), ["HIDDEN"], "a visible:false attribute never falls through to the ungrouped step");
+
+const localeFallback = normalizeSchema({
+  id: 13, nls: { ru: { NAME: "Форма" } },
+  attributes: [{ code: "A", className: "java.lang.String", nls: { ru: { NAME: "Поле" } }, options: [{ value: "V", nls: { ru: { NAME: "Вариант" }, en: { NAME: "Option" } } }] }],
+  attributeGroups: [], attributeOrder: [],
+}, "ru");
+assert.equal(localeFallback.title, "Форма");
+assert.equal(localeFallback.groups[0].fields[0].label, "Поле");
+assert.equal(localeFallback.groups[0].fields[0].choices[0].label, "Вариант");
+
+const liveFieldCodes = plain(live.groups.map((group) => group.fields.map((field) => field.code)));
+const coordinated = normalizeSchema(quoteWithCoordinates, "en");
+assert.deepEqual(plain(coordinated.groups.map((group) => group.fields.map((field) => field.code))), liveFieldCodes, "the hidden attribute joins no group and adds no step");
+assert.deepEqual(plain(coordinated.hidden.map((field) => [field.code, field.typeId, field.tokens.coordinatesOf])), [["PROPERTY_COORDINATES", 2, "PROPERTY_ADDRESSES"]]);
+const unordered = normalizeSchema(withHiddenAttribute(quote, coordinatesAttribute("PROPERTY_COORDINATES", "PROPERTY_ADDRESSES"), null), "en");
+assert.deepEqual(plain(unordered.groups.map((group) => group.fields.map((field) => field.code))), liveFieldCodes, "a coordinates attribute left out of attributeOrder still never renders");
+assert.deepEqual(plain(unordered.hidden.map((field) => field.code)), ["PROPERTY_COORDINATES"]);
+const flaggedVisible = normalizeSchema(withHiddenAttribute(quote, coordinatesAttribute("PROPERTY_COORDINATES", "PROPERTY_ADDRESSES"), "PROPERTIES", true), "en");
+assert.deepEqual(plain(flaggedVisible.groups.map((group) => group.fields.map((field) => field.code))), liveFieldCodes, "a coordinates attribute flagged visible still never renders");
+
+const latLng = ([lat, lng]) => ({ lat: () => lat, lng: () => lng });
+const geocoderQueue = [];
+const autocompletes = [];
+const drawnMaps = [];
+const droppedPins = [];
+let refuseFits = false;
+let mapMoves = 0;
+function StubMap(canvas, options) {
+  this.canvas = canvas;
+  this.colorScheme = options.colorScheme;
+  this.zoomControl = options.zoomControl;
+  this.view = { center: options.center, zoom: options.zoom };
+  drawnMaps.push(this);
+}
+StubMap.prototype.setCenter = function (center) { mapMoves += 1; this.view = { center, zoom: this.view.zoom }; };
+StubMap.prototype.setZoom = function (zoom) { mapMoves += 1; this.view = { center: this.view.center, zoom }; };
+StubMap.prototype.fitBounds = function (bounds, padding) {
+  mapMoves += 1;
+  if (refuseFits) throw new Error("fitBounds refused");
+  this.view = { bounds, padding };
+};
+function StubMarker(options) {
+  this.map = options.map;
+  this.position = options.position;
+  this.title = options.title;
+  droppedPins.push(this);
+}
+StubMarker.prototype.setMap = function (map) { this.map = map; };
+const pinsOn = (map) => plain(droppedPins.filter((pin) => pin.map === map).map((pin) => [pin.title, pin.position.lat, pin.position.lng]));
+const pinNames = (map) => pinsOn(map).map((pin) => pin[0]);
+const viewOf = (map) => plain(map.view);
+const mapOf = (mount) => collect(mount, "pf-address__map")[0];
+const WORLD = { center: { lat: 20, lng: 0 }, zoom: 1 };
+const PIN_ROOM = { top: 64, right: 56, bottom: 32, left: 40 };
+function StubGeocoder() {}
+StubGeocoder.prototype.geocode = function (request, callback) { geocoderQueue.push({ address: request.address, bounds: request.bounds, callback }); };
+function StubAutocomplete(input, options) { this.input = input; this.options = options; this.listeners = {}; this.place = null; autocompletes.push(this); }
+StubAutocomplete.prototype.addListener = function (type, fn) { this.listeners[type] = fn; };
+StubAutocomplete.prototype.getPlace = function () { return this.place; };
+const directory = [
+  { text: "1200 West Georgia Street, Vancouver", formatted: "1200 West Georgia Street, Vancouver, BC V6E 4R2, Canada", at: [49.2869, -123.1257] },
+  { text: "88 Robson Street, Vancouver", formatted: "88 Robson Street, Vancouver, BC V6B 0B1, Canada", at: [49.2767, -123.1146] },
+  { text: "1600 Smith Street, Houston", formatted: "1600 Smith St, Houston, TX 77002, USA", at: [29.7545, -95.3728] },
+];
+const suggestionRequests = [];
+const liesIn = (area, [lat, lng]) => lat >= area.south && lat <= area.north && lng >= area.west && lng <= area.east;
+const dataApi = {
+  AutocompleteSessionToken: function AutocompleteSessionToken() {},
+  AutocompleteSuggestion: {
+    fetchAutocompleteSuggestions: (request) => Promise.resolve(suggestionRequests.push(request)).then(() => ({
+      suggestions: directory.filter((place) => place.text.toLowerCase().includes(request.input.toLowerCase()) && (!request.locationRestriction || liesIn(request.locationRestriction, place.at))).map((place) => ({
+        placePrediction: {
+          text: place.text,
+          toPlace: () => ({
+            fetchFields() { this.formattedAddress = place.formatted; this.location = latLng(place.at); return Promise.resolve(); },
+          }),
+        },
+      })),
+    })),
+  },
+};
+const legacyPlaces = { Autocomplete: StubAutocomplete };
+const libraries = { maps: { Map: StubMap }, marker: { Marker: StubMarker }, geocoding: { Geocoder: StubGeocoder }, places: dataApi };
+const imported = [];
+const maps = {
+  importLibrary(name) {
+    imported.push(name);
+    return new Promise((resolve) => setImmediate(resolve)).then(() => {
+      if (name === "places") maps.places = libraries.places;
+      else Object.assign(maps, libraries[name]);
+      return libraries[name];
+    });
+  },
+};
+const answerGeocoder = (address, at) => {
+  const due = geocoderQueue.filter((call) => call.address === address);
+  assert.ok(due.length, "a geocoder request for " + address + " must be pending");
+  due.forEach((call) => geocoderQueue.splice(geocoderQueue.indexOf(call), 1));
+  due.forEach((call) => call.callback(at ? [{ formatted_address: address, geometry: { location: latLng(at) } }] : [], at ? "OK" : "ZERO_RESULTS"));
+};
+const failGeocoder = (address, status) => {
+  const due = geocoderQueue.filter((call) => call.address === address);
+  assert.ok(due.length, "a geocoder request for " + address + " must be pending");
+  due.forEach((call) => geocoderQueue.splice(geocoderQueue.indexOf(call), 1));
+  due.forEach((call) => call.callback(null, status));
+};
+const choose = (widget, place) => { widget.place = place; widget.listeners.place_changed(); };
+const coordinatesIn = (form, code) => (form.values[code] ? JSON.parse(form.values[code]) : []);
+const surface = (node) => {
+  const seen = [];
+  const walk = (candidate) => {
+    seen.push(String(candidate.textContent), String(candidate.value ?? ""), String(candidate.id));
+    seen.push(...Object.values(candidate.attributes).map(String), ...Object.values(candidate.dataset).map(String));
+    candidate.children.forEach(walk);
+  };
+  walk(node);
+  return seen.join("\n");
+};
+
+const keyed = new PortalForm({ schema: quoteWithCoordinates, locale: "en", copy: copyEcho, organizationId: 43, apiBaseUrl: "https://forms.example", mapsApiKey: "test-key" });
+const keyedMount = dom.document.createElement("div");
+keyed.mount(keyedMount);
+await settle();
+keyed.step = keyed.model.groups.findIndex((group) => group.code === "PROPERTIES");
+keyed.render();
+assert.equal(mapOf(keyedMount).dataset.state, "loading", "a keyed address holds the map's place while Google loads, so nothing under it moves when the map arrives");
+assert.equal(mapOf(keyedMount).getAttribute("aria-hidden"), "true");
+const mapsScript = dom.document.head.children[0];
+assert.match(String(mapsScript.src), /^https:\/\/maps\.googleapis\.com\/maps\/api\/js\?key=test-key&/);
+assert.match(String(mapsScript.src), /[?&]loading=async(&|$)/);
+const mapsCallback = new URL(mapsScript.src).searchParams.get("callback");
+assert.ok(mapsCallback, "async Google loading must register a readiness callback");
+mapsScript.fire("load");
+await librariesLoaded();
+assert.equal(imported.length, 0, "the script load event before Google is ready must not initialize or reject the loader");
+sandbox.window.google = { maps };
+assert.equal(typeof maps.Map, "undefined", "the async bootstrap carries importLibrary and no classes when its callback runs");
+sandbox.window[mapsCallback]();
+await librariesLoaded();
+assert.deepEqual(plain([...imported].sort()), ["geocoding", "maps", "marker", "places"], "every library the control uses is imported, once");
+const keyedAddresses = () => plain(keyed.values.PROPERTY_ADDRESSES);
+const keyedCoordinates = () => coordinatesIn(keyed, "PROPERTY_COORDINATES");
+assert.equal(collect(keyedMount, "pf-address")[0].dataset.autocomplete, "data-api", "the field upgrades once the imported libraries have put their classes on google.maps");
+assert.equal(drawnMaps.length, 1, "the address list draws one map as soon as Google is ready");
+const keyedMap = drawnMaps[0];
+assert.equal(mapOf(keyedMount), keyedMap.canvas);
+assert.equal(mapOf(keyedMount).dataset.state, "ready", "the map is on screen before any address is entered");
+assert.equal(mapOf(keyedMount).getAttribute("aria-hidden"), null);
+const closesField = (mount) => {
+  const field = mapOf(mount).parentNode;
+  return String(field.className).split(/\s+/).includes("pf-field")
+    && field.children[field.children.length - 1] === mapOf(mount)
+    && field.children[field.children.length - 2].className === "pf-field__error";
+};
+assert.equal(closesField(keyedMount), true, "the map closes the field, under its error line, so a message stays next to the input it is about");
+assert.deepEqual(viewOf(keyedMap), WORLD, "a field that declares no start opens on the whole world");
+assert.equal(keyedMap.colorScheme, "LIGHT");
+assert.equal(keyedMap.zoomControl, true, "a pointer that cannot pinch gets zoom buttons");
+assert.deepEqual(pinsOn(keyedMap), []);
+
+const georgia = directory[0].formatted;
+const robson = directory[1].formatted;
+entry().focus();
+typeInto("1200 West Geo");
+runTimers();
+await settle();
+press(collect(keyedMount, "pf-address__option")[0], keyedMount);
+await settle();
+assert.deepEqual(keyedAddresses(), [georgia], "the first click on a suggestion lands, because pressing it never moves focus out of the untouched required list");
+assert.equal(entry().value, "", "the pick leaves nothing typed behind for Continue to add unseen");
+assert.equal(keyed.values.PROPERTY_COORDINATES, JSON.stringify([{ address: georgia, lat: 49.2869, lng: -123.1257 }]), "a Places data API pick keeps its location for the exact string it committed, as numbers");
+assert.equal(geocoderQueue.length, 0, "a pick asks the Geocoder for nothing");
+assert.deepEqual(pinsOn(keyedMap), [[georgia, 49.2869, -123.1257]], "one located address is one pin");
+assert.deepEqual(viewOf(keyedMap), { center: { lat: 49.2869, lng: -123.1257 }, zoom: 16 }, "a lone address is shown at street level");
+assert.equal(drawnMaps.length, 1, "committing an address redraws the card without drawing a second map");
+assert.equal(mapOf(keyedMount), keyedMap.canvas, "the same map element is back on screen after the redraw");
+
+entry().focus();
+typeInto("88 Rob");
+press(outside, keyedMount);
+entry().focus();
+typeInto("88 Robs");
+runTimers();
+await settle();
+press(collect(keyedMount, "pf-address__option")[0], keyedMount);
+await settle();
+assert.deepEqual(keyedAddresses(), [georgia, robson]);
+answerGeocoder("88 Rob", [10, 20]);
+assert.deepEqual(keyedCoordinates(), [{ address: georgia, lat: 49.2869, lng: -123.1257 }, { address: robson, lat: 49.2767, lng: -123.1146 }], "a geocoder answer for text the pick replaced is dropped");
+assert.deepEqual(pinsOn(keyedMap), [[georgia, 49.2869, -123.1257], [robson, 49.2767, -123.1146]], "every located address has its pin, and text no longer held has none");
+assert.deepEqual(viewOf(keyedMap), { bounds: { north: 49.2869, south: 49.2767, east: -123.1146, west: -123.1257 }, padding: PIN_ROOM }, "several addresses are framed together, with room above for the pins and beside for the zoom control");
+collect(keyedMount, "pf-repeat__row").find((row) => row.getAttribute("aria-label") === robson).fire("click");
+assert.deepEqual(keyedCoordinates().map((point) => point.address), [georgia]);
+assert.deepEqual(pinsOn(keyedMap), [[georgia, 49.2869, -123.1257]], "removing an address removes its pin");
+assert.deepEqual(viewOf(keyedMap), { center: { lat: 49.2869, lng: -123.1257 }, zoom: 16 }, "and the map closes in on what is left");
+
+typeInto(georgia).fire("keydown", enter);
+await settle();
+assert.deepEqual(keyedAddresses(), [georgia], "typing a picked address again adds nothing");
+assert.equal(geocoderQueue.length, 0, "and asks the Geocoder for nothing that could replace the picked location");
+
+await settle();
+const richmond = "4000 No. 3 Road, Richmond, BC, Canada";
+entry().focus();
+typeInto(richmond);
+press(collect(keyedMount, "pf-repeat__add")[0], keyedMount);
+assert.deepEqual(keyedAddresses(), [georgia, richmond]);
+assert.deepEqual(keyedCoordinates().map((point) => point.address), [georgia], "a typed address carries no location until the Geocoder answers");
+assert.deepEqual(pinNames(keyedMap), [georgia], "and no pin");
+await settle();
+assert.deepEqual(geocoderQueue.map((call) => call.address), [richmond], "committing with + asks the Geocoder for the committed string, with no blur involved");
+answerGeocoder(richmond, [49.1848, -123.1363]);
+assert.deepEqual(keyedCoordinates()[1], { address: richmond, lat: 49.1848, lng: -123.1363 }, "the answer lands on the address + committed");
+assert.deepEqual(pinNames(keyedMap), [georgia, richmond], "and puts it on the map");
+
+await settle();
+const padded = "  6551 No. 3 Road, Richmond, BC, Canada  ";
+entry().focus();
+typeInto(padded);
+press(outside, keyedMount);
+answerGeocoder(padded.trim(), [49.1666, -123.1364]);
+assert.equal(keyedCoordinates().length, 2, "a location for an entry not yet committed stays out of the hidden value");
+assert.deepEqual(pinNames(keyedMap), [georgia, richmond, padded.trim()], "an address typed and left in the entry is on the map before it is added");
+entry().focus();
+entry().fire("keydown", enter);
+await settle();
+assert.deepEqual(keyedCoordinates()[2], { address: padded.trim(), lat: 49.1666, lng: -123.1364 }, "a location obtained while the address was being typed is kept for the trimmed string the entry commits");
+assert.equal(droppedPins.filter((pin) => pin.title === padded.trim()).length, 1, "adding it keeps the pin it already has");
+assert.equal(geocoderQueue.length, 0, "and the Geocoder is not asked for it a second time");
+
+await settle();
+const main = "300 Main Street, Vancouver, BC, Canada";
+entry().focus();
+typeInto(main);
+press(outside, keyedMount);
+answerGeocoder(main, [49.2811, -123.0996]);
+entry().focus();
+assert.equal(pinNames(keyedMap).includes(main), true);
+typeInto(main + " Unit 4");
+assert.equal(pinNames(keyedMap).includes(main), false, "editing the typed address takes its pin off the map");
+const leaving = typeInto(main);
+leaving.fire("keydown", enter);
+assert.equal(keyedAddresses()[3], main);
+assert.equal(keyedCoordinates().some((point) => point.address === main), false, "editing the text by hand drops its location, and typing it back does not restore it");
+await settle();
+assert.deepEqual(geocoderQueue.map((call) => call.address), [main], "committing with Enter asks the Geocoder for the committed string, with no blur involved");
+leaving.fire("blur");
+assert.deepEqual(geocoderQueue.map((call) => call.address), [main], "the blur Chromium fires when the re-render removes the committed input asks for nothing more");
+answerGeocoder(main, [49.2812, -123.0997]);
+assert.deepEqual(keyedCoordinates()[3], { address: main, lat: 49.2812, lng: -123.0997 }, "the new location lands on the address Enter committed");
+assert.deepEqual(pinsOn(keyedMap).find((pin) => pin[0] === main), [main, 49.2812, -123.0997], "and its pin stands where the new answer put it");
+
+collect(keyedMount, "pf-repeat__row").find((row) => row.getAttribute("aria-label") === richmond).fire("click");
+assert.deepEqual(keyedAddresses(), [georgia, padded.trim(), main]);
+assert.deepEqual(keyedCoordinates().map((point) => point.address), [georgia, padded.trim(), main], "removing an address removes its entry");
+await settle();
+entry().focus();
+typeInto(richmond).fire("keydown", enter);
+assert.equal(keyedCoordinates().some((point) => point.address === richmond), false, "a removed address forgets its location, so adding it again starts without one");
+await settle();
+answerGeocoder(richmond, null);
+assert.equal(keyedCoordinates().some((point) => point.address === richmond), false, "an address the geocoder cannot place is simply absent");
+assert.deepEqual(pinNames(keyedMap), [georgia, padded.trim(), main], "from the map as well");
+
+maps.places = legacyPlaces;
+keyed.render();
+await settle();
+assert.equal(collect(keyedMount, "pf-address")[0].dataset.autocomplete, "legacy");
+const keyedWidget = autocompletes[autocompletes.length - 1];
+assert.equal(keyedWidget.input, entry());
+typeInto("4700 King").fire("keydown", enter);
+assert.equal(keyedAddresses().length, 4, "in legacy mode Enter belongs to the widget");
+const kingsway = "4700 Kingsway, Burnaby, BC V5H 4M1, Canada";
+choose(keyedWidget, { formatted_address: kingsway, geometry: { location: latLng([49.2276, -122.9998]) } });
+assert.deepEqual(keyedAddresses(), [georgia, padded.trim(), main, richmond, kingsway]);
+assert.deepEqual(keyedCoordinates().map((point) => point.address), [georgia, padded.trim(), main, kingsway], "the hidden value follows the current addresses in their order");
+assert.deepEqual(keyedCoordinates()[3], { address: kingsway, lat: 49.2276, lng: -122.9998 }, "the legacy geometry.location is kept for the address it committed");
+assert.deepEqual(pinNames(keyedMap), [georgia, padded.trim(), main, kingsway], "a legacy pick reaches the same map");
+assert.equal(drawnMaps.length, 1, "no redraw, step or mode change has drawn a second map");
+
+assert.equal(keyed.visibleGroups().length, 3, "a hidden attribute adds no step");
+for (let index = 0; index < 3; index += 1) {
+  keyed.step = index;
+  keyed.render();
+  assert.doesNotMatch(surface(keyedMount), /PROPERTY_COORDINATES|Hidden coordinates|"lat"|49\.2869|49\.1666|49\.2812|49\.2276/, "step " + index + " must never show the hidden attribute or a coordinate");
+}
+await settle();
+
+Object.assign(keyed.values, contact);
+assert.equal(await keyed.submit(), true);
+const keyedWire = JSON.parse(posted[posted.length - 1].init.body);
+const sentCoordinates = keyedWire.attributes["2"].PROPERTY_COORDINATES;
+assert.equal(typeof sentCoordinates.value, "string", "the hidden attribute submits one JSON string");
+assert.equal(sentCoordinates.value, keyed.values.PROPERTY_COORDINATES);
+assert.deepEqual(
+  JSON.parse(sentCoordinates.value).map((point) => point.address),
+  keyedWire.attributes["2"].PROPERTY_ADDRESSES.value.filter((address) => address !== richmond),
+  "every entry names an address exactly as submitted, and an address without a location has no entry",
+);
+for (const point of JSON.parse(sentCoordinates.value)) {
+  assert.deepEqual(Object.keys(point), ["address", "lat", "lng"]);
+  assert.ok(typeof point.lat === "number" && typeof point.lng === "number" && point.lat !== 0 && point.lng !== 0, "lat and lng travel as real numbers");
+}
+
+maps.places = dataApi;
+const siteSchema = withHiddenAttribute(kitchen, coordinatesAttribute("SITE_COORDINATES", "SITE_ADDRESS"), "TEXTS", false);
+const mapsBeforeSite = drawnMaps.length;
+const site = new PortalForm({ schema: siteSchema, locale: "en", copy: copyEcho, mapsApiKey: "test-key" });
+const siteMount = dom.document.createElement("div");
+site.mount(siteMount);
+await settle();
+assert.deepEqual(plain(site.model.groups.map((group) => group.code)), ["TEXTS", "NUMBERS", "CHOICES", "CONDITIONAL"]);
+site.step = site.model.groups.findIndex((group) => group.code === "TEXTS");
+site.render();
+await settle();
+const siteInput = () => dom.document.getElementById("pf-SITE_ADDRESS");
+const typeSite = (value) => { const box = siteInput(); box.value = value; box.fire("input"); return box; };
+const siteCoordinates = () => coordinatesIn(site, "SITE_COORDINATES");
+assert.equal(collect(siteMount, "pf-address")[0].dataset.autocomplete, "data-api");
+assert.equal(drawnMaps.length, mapsBeforeSite + 1, "a single address draws its own one map");
+const siteMap = drawnMaps[drawnMaps.length - 1];
+assert.equal(mapOf(siteMount), siteMap.canvas);
+assert.equal(mapOf(siteMount).dataset.state, "ready", "a single address shows its map before it holds anything too");
+assert.equal(closesField(siteMount), true, "at the end of its field as well");
+assert.deepEqual(viewOf(siteMap), WORLD);
+
+siteInput().focus();
+typeSite("88 Rob");
+runTimers();
+await settle();
+collect(siteMount, "pf-address__option")[0].fire("click");
+await settle();
+assert.equal(site.values.SITE_ADDRESS, robson);
+assert.deepEqual(siteCoordinates(), [{ address: robson, lat: 49.2767, lng: -123.1146 }], "a single address keeps its Places location as a one-entry array");
+assert.deepEqual(pinsOn(siteMap), [[robson, 49.2767, -123.1146]]);
+site.render();
+await settle();
+moveFocus(outside, siteMount);
+assert.equal(geocoderQueue.length, 0, "re-rendering and leaving a picked single address asks the Geocoder for nothing, so nothing can override the location the client picked");
+assert.deepEqual(siteCoordinates(), [{ address: robson, lat: 49.2767, lng: -123.1146 }]);
+
+assert.equal(drawnMaps.length, mapsBeforeSite + 1, "a redraw keeps the single address on the map it has");
+typeSite(robson + " Unit 4");
+assert.equal(site.values.SITE_COORDINATES, "", "editing a single address by hand drops its location");
+assert.deepEqual(pinsOn(siteMap), [], "and its pin");
+typeSite(robson);
+assert.equal(site.values.SITE_COORDINATES, "", "typing the old text back does not restore the dropped location");
+siteInput().fire("blur");
+answerGeocoder(robson, [49.2768, -123.1147]);
+assert.deepEqual(siteCoordinates(), [{ address: robson, lat: 49.2768, lng: -123.1147 }], "the geocoder on blur obtains a new one");
+assert.deepEqual(pinsOn(siteMap), [[robson, 49.2768, -123.1147]]);
+site.rememberLocation(site.model.groups[site.step].fields.find((field) => field.code === "SITE_ADDRESS"), robson, latLng([49.2767, -123.1146]), false);
+assert.deepEqual(pinsOn(siteMap), [[robson, 49.2767, -123.1146]], "a picked location that replaces a geocoded one moves the pin instead of leaving two");
+assert.deepEqual(viewOf(siteMap), { center: { lat: 49.2767, lng: -123.1146 }, zoom: 16 }, "and the map follows it");
+site.rememberLocation(site.model.groups[site.step].fields.find((field) => field.code === "SITE_ADDRESS"), robson, latLng([49.2768, -123.1147]), false);
+
+const trailing = "12 Main Street, Vancouver ";
+typeSite(trailing).fire("blur");
+answerGeocoder(trailing.trim(), [49.2004, -123.1002]);
+assert.deepEqual(siteCoordinates(), [{ address: trailing, lat: 49.2004, lng: -123.1002 }], "a single address is matched by the exact string it submits, trailing space included");
+
+maps.places = legacyPlaces;
+site.render();
+await settle();
+const siteWidget = autocompletes[autocompletes.length - 1];
+assert.equal(siteWidget.input, siteInput());
+const pender = "700 West Pender Street, Vancouver, BC V6C 1G8, Canada";
+choose(siteWidget, { formatted_address: pender, geometry: { location: latLng([49.2839, -123.1152]) } });
+assert.equal(site.values.SITE_ADDRESS, pender);
+assert.deepEqual(siteCoordinates(), [{ address: pender, lat: 49.2839, lng: -123.1152 }], "a legacy pick replaces the old address and its entry");
+assert.deepEqual(pinsOn(siteMap), [[pender, 49.2839, -123.1152]], "a single address never has more than its one pin");
+site.render();
+assert.doesNotMatch(surface(siteMount), /SITE_COORDINATES|Hidden coordinates|"lat"|49\.2839/, "the single control never shows the hidden attribute or a coordinate");
+typeSite("");
+assert.equal(site.values.SITE_COORDINATES, "", "clearing the address removes its entry");
+assert.deepEqual(pinsOn(siteMap), []);
+assert.equal(mapOf(siteMount).dataset.state, "ready", "a cleared address leaves its map on screen");
+assert.deepEqual(viewOf(siteMap), WORLD, "back where it opened");
+await settle();
+
+const unplaceable = "9 Unplaceable Lane, Nowhere";
+siteInput().focus();
+typeSite(unplaceable);
+moveFocus(outside, siteMount);
+assert.deepEqual(geocoderQueue.map((call) => call.address), [unplaceable], "leaving a typed single address asks the Geocoder once");
+answerGeocoder(unplaceable, null);
+site.render();
+await settle();
+moveFocus(siteInput(), siteMount);
+moveFocus(outside, siteMount);
+assert.equal(geocoderQueue.length, 0, "the unchanged address is not asked again after a re-render and a second blur, even when the first answer placed nothing");
+typeSite(unplaceable + " 2");
+typeSite(unplaceable);
+moveFocus(siteInput(), siteMount);
+moveFocus(outside, siteMount);
+assert.deepEqual(geocoderQueue.map((call) => call.address), [unplaceable], "editing the text away and back asks again, once");
+answerGeocoder(unplaceable, null);
+typeSite("");
+await settle();
+
+maps.places = dataApi;
+const combo = new PortalForm({ schema: quoteWithCoordinates, locale: "en", copy: copyEcho, organizationId: 43, apiBaseUrl: "https://forms.example", mapsApiKey: "test-key" });
+const comboMount = dom.document.createElement("div");
+combo.mount(comboMount);
+await settle();
+combo.step = combo.model.groups.findIndex((group) => group.code === "PROPERTIES");
+combo.render();
+await settle();
+const comboHeld = () => plain(combo.values.PROPERTY_ADDRESSES);
+const listbox = () => collect(comboMount, "pf-address__list")[0];
+const options = () => collect(comboMount, "pf-address__option");
+const combobox = entry();
+assert.equal(combobox.getAttribute("role"), "combobox", "a keyed address input is a combobox");
+assert.equal(combobox.getAttribute("aria-autocomplete"), "list");
+assert.equal(combobox.getAttribute("aria-expanded"), "false");
+assert.equal(combobox.getAttribute("aria-controls"), listbox().id, "the combobox names the listbox it controls");
+assert.equal(listbox().getAttribute("role"), "listbox");
+
+moveFocus(combobox, comboMount);
+typeInto("Vancouver");
+runTimers();
+await settle();
+assert.equal(combobox.getAttribute("aria-expanded"), "true", "suggestions open under the focused input");
+assert.deepEqual(
+  plain(options().map((node) => [node.getAttribute("role"), node.getAttribute("tabindex"), node.getAttribute("aria-selected")])),
+  [["option", null, "false"], ["option", null, "false"]],
+  "suggestions are options, never tab stops, and none is active before an arrow key moves",
+);
+assert.equal(combobox.getAttribute("aria-activedescendant"), null);
+keyOn(combobox, "ArrowDown");
+assert.equal(combobox.getAttribute("aria-activedescendant"), options()[0].id, "ArrowDown makes the first suggestion active");
+assert.equal(options()[0].getAttribute("aria-selected"), "true");
+assert.equal(dom.activeElement, combobox, "DOM focus stays on the input");
+keyOn(combobox, "ArrowDown");
+assert.equal(combobox.getAttribute("aria-activedescendant"), options()[1].id);
+keyOn(combobox, "ArrowDown");
+assert.equal(combobox.getAttribute("aria-activedescendant"), options()[0].id, "ArrowDown wraps from the last suggestion to the first");
+keyOn(combobox, "ArrowUp");
+assert.equal(combobox.getAttribute("aria-activedescendant"), options()[1].id, "ArrowUp wraps from the first suggestion to the last");
+assert.equal(keyOn(combobox, "Escape").defaultPrevented, true);
+assert.equal(listbox().hidden, true, "Escape closes the suggestions");
+assert.equal(combobox.getAttribute("aria-expanded"), "false");
+assert.equal(combobox.getAttribute("aria-activedescendant"), null);
+assert.equal(combobox.value, "Vancouver", "Escape keeps the typed text");
+keyOn(combobox, "ArrowDown");
+assert.equal(combobox.getAttribute("aria-expanded"), "true", "ArrowDown reopens the suggestions for the unchanged text");
+assert.equal(combobox.getAttribute("aria-activedescendant"), options()[0].id);
+assert.equal(keyOn(combobox, "Enter").defaultPrevented, true);
+await settle();
+assert.deepEqual(comboHeld(), [georgia], "Enter commits the active suggestion, not the typed text");
+assert.equal(dom.activeElement, entry(), "focus returns to the emptied entry input");
+assert.equal(geocoderQueue.length, 0, "a picked suggestion carries its own location");
+
+typeInto("88 Rob");
+runTimers();
+await settle();
+keyOn(entry(), "ArrowDown");
+const leftFor = tab(comboMount);
+assert.equal(leftFor, collect(comboMount, "pf-repeat__add")[0], "Tab moves on to the add button, the next control after the input");
+assert.equal(dom.activeElement, leftFor);
+assert.equal(listbox().hidden, true, "Tab closes the suggestions at once");
+assert.deepEqual(comboHeld(), [georgia], "Tab picks nothing");
+assert.equal(entry().value, "88 Rob", "Tab keeps the typed text");
+assert.deepEqual(geocoderQueue.map((call) => call.address), ["88 Rob"], "leaving the entry asks the Geocoder for the typed text once");
+answerGeocoder("88 Rob", null);
+
+moveFocus(entry(), comboMount);
+typeInto("Vancouver");
+moveFocus(outside, comboMount);
+runTimers();
+await settle();
+assert.equal(listbox().hidden, true, "suggestions that arrive after the input lost focus never open");
+answerGeocoder("Vancouver", null);
+
+const denman = "1030 Denman Street, Vancouver, BC, Canada";
+moveFocus(entry(), comboMount);
+typeInto(denman);
+tab(comboMount);
+assert.deepEqual(geocoderQueue.map((call) => call.address), [denman], "leaving the entry for the add button asks for the typed address");
+dom.activeElement.fire("click");
+await settle();
+assert.deepEqual(comboHeld(), [georgia, denman]);
+assert.deepEqual(geocoderQueue.map((call) => call.address), [denman], "committing it with + while that answer is on its way asks nothing more");
+answerGeocoder(denman, [49.2877, -123.1409]);
+assert.deepEqual(coordinatesIn(combo, "PROPERTY_COORDINATES").map((point) => point.address), [georgia, denman], "the one answer lands on the committed address");
+
+const davie = "1200 Davie Street, Vancouver, BC, Canada";
+moveFocus(entry(), comboMount);
+typeInto(davie);
+keyOn(entry(), "Enter");
+await settle();
+assert.deepEqual(geocoderQueue.map((call) => call.address), [davie], "Enter asks the Geocoder for the committed address");
+typeInto(davie);
+tab(comboMount);
+await settle();
+assert.deepEqual(geocoderQueue.map((call) => call.address), [davie], "typing the committed address again and leaving asks nothing more while its answer is on its way");
+answerGeocoder(davie, [49.2799, -123.1311]);
+assert.equal(coordinatesIn(combo, "PROPERTY_COORDINATES").find((point) => point.address === davie).lat, 49.2799);
+typeInto("");
+
+const chartedSchema = plain(quoteWithCoordinates);
+chartedSchema.attributes.find((attribute) => attribute.code === "PROPERTY_ADDRESSES").inputFormat = "address map:49,-123.3,49.4,-121.9";
+const mapsBeforeCharted = drawnMaps.length;
+dom.document.documentElement = dom.document.createElement("html");
+dom.document.documentElement.setAttribute("data-mode", "dark");
+const mediaAsked = [];
+sandbox.window.matchMedia = (query) => { mediaAsked.push(query); return { matches: true }; };
+const charted = new PortalForm({ schema: chartedSchema, locale: "en", copy: copyEcho, organizationId: 43, apiBaseUrl: "https://forms.example", mapsApiKey: "test-key" });
+const chartedMount = dom.document.createElement("div");
+charted.mount(chartedMount);
+await settle();
+const chartedStep = charted.model.groups.findIndex((group) => group.code === "PROPERTIES");
+charted.step = chartedStep;
+charted.render();
+await settle();
+assert.equal(drawnMaps.length, mapsBeforeCharted + 1);
+const chart = drawnMaps[drawnMaps.length - 1];
+const declaredStart = { bounds: { south: 49, west: -123.3, north: 49.4, east: -121.9 }, padding: 0 };
+assert.deepEqual(viewOf(chart), declaredStart, "a declared area is what the empty map opens on, whatever its width");
+assert.equal(chart.colorScheme, "DARK", "a page in dark mode draws a dark map");
+assert.equal(chart.zoomControl, false, "a touch screen zooms by pinching, so the buttons do not cover the edge of a narrow map");
+assert.deepEqual(mediaAsked, ["(pointer: coarse)"]);
+delete sandbox.window.matchMedia;
+dom.document.documentElement.setAttribute("data-mode", "light");
+const chartedPick = async (typed) => {
+  await settle();
+  entry().focus();
+  typeInto(typed);
+  runTimers();
+  await settle();
+  press(collect(chartedMount, "pf-address__option")[0], chartedMount);
+  await settle();
+};
+const chartedHeld = () => plain(charted.values.PROPERTY_ADDRESSES);
+await chartedPick("1200 West Geo");
+assert.deepEqual(pinsOn(chart), [[georgia, 49.2869, -123.1257]]);
+
+const pinsDropped = droppedPins.length;
+charted.render();
+await settle();
+assert.equal(drawnMaps.length, mapsBeforeCharted + 1, "redrawing the card draws no second map");
+assert.equal(droppedPins.length, pinsDropped, "and drops no pin again");
+assert.equal(mapOf(chartedMount), chart.canvas, "the map element itself is carried into the redrawn card");
+
+entry().focus();
+typeInto(richmond).fire("keydown", enter);
+await settle();
+charted.step = 0;
+charted.render();
+assert.equal(collect(chartedMount, "pf-address__map").length, 0, "a step without the address shows no map");
+answerGeocoder(richmond, [49.1848, -123.1363]);
+assert.deepEqual(pinNames(chart), [georgia], "a location that arrives while the map is off screen waits");
+charted.step = chartedStep;
+charted.render();
+await settle();
+assert.equal(mapOf(chartedMount), chart.canvas, "coming back to the step brings the same map back");
+assert.deepEqual(pinNames(chart), [georgia, richmond], "with the pin that arrived meanwhile");
+assert.deepEqual(viewOf(chart), { bounds: { north: 49.2869, south: 49.1848, east: -123.1257, west: -123.1363 }, padding: PIN_ROOM });
+
+const chartWatcher = sizeWatchers.find((watcher) => watcher.node === chart.canvas);
+assert.ok(chartWatcher, "a drawn map watches its own box");
+const framedAt = mapMoves;
+Object.assign(chart.canvas, { offsetWidth: 662, offsetHeight: 240 });
+chartWatcher.changed();
+assert.equal(mapMoves, framedAt + 1, "a map whose box changed size is framed again, so a turned phone still shows every pin");
+assert.deepEqual(viewOf(chart), { bounds: { north: 49.2869, south: 49.1848, east: -123.1257, west: -123.1363 }, padding: PIN_ROOM });
+chartWatcher.changed();
+assert.equal(mapMoves, framedAt + 1, "and is left alone while its size stays the same");
+Object.assign(chart.canvas, { offsetWidth: 0, offsetHeight: 0 });
+chartWatcher.changed();
+Object.assign(chart.canvas, { offsetWidth: 662, offsetHeight: 240 });
+chartWatcher.changed();
+assert.equal(mapMoves, framedAt + 1, "a box that reports no size, as one taken off screen does, is not a new size, so coming back keeps the view the client left");
+Object.assign(chart.canvas, { offsetWidth: 311, offsetHeight: 200 });
+charted.step = 0;
+charted.render();
+chartWatcher.changed();
+charted.step = chartedStep;
+charted.render();
+await settle();
+assert.equal(mapMoves, framedAt + 2, "a size that changed while the map was off screen is caught up with once, when the map is back");
+
+collect(chartedMount, "pf-repeat__row").forEach((row) => row.fire("click"));
+assert.deepEqual(chartedHeld(), []);
+assert.deepEqual(pinsOn(chart), [], "removing every address removes every pin");
+assert.equal(mapOf(chartedMount).dataset.state, "ready", "and the emptied map stays on screen");
+assert.deepEqual(viewOf(chart), declaredStart, "back at its declared start");
+
+await chartedPick("88 Robs");
+assert.deepEqual(pinsOn(chart), [[robson, 49.2767, -123.1146]]);
+charted.state = "success";
+charted.render();
+charted.restart();
+charted.step = chartedStep;
+charted.render();
+await settle();
+assert.deepEqual(chartedHeld(), []);
+assert.deepEqual(pinsOn(chart), [], "starting over clears the map with the answers");
+assert.deepEqual(viewOf(chart), declaredStart);
+assert.equal(drawnMaps.length, mapsBeforeCharted + 1, "on the map it already has");
+
+refuseFits = true;
+await chartedPick("1200 West Geo");
+await chartedPick("88 Robs");
+refuseFits = false;
+assert.deepEqual(chartedHeld(), [georgia, robson], "a map that fails takes no address with it and adds none");
+assert.deepEqual(coordinatesIn(charted, "PROPERTY_COORDINATES").map((point) => point.address), [georgia, robson], "their coordinates still travel");
+assert.equal(mapOf(chartedMount).dataset.state, "idle", "the failed map leaves the screen");
+assert.equal(mapOf(chartedMount).getAttribute("aria-hidden"), "true");
+const movesAtFailure = mapMoves;
+collect(chartedMount, "pf-repeat__row")[0].fire("click");
+assert.deepEqual(chartedHeld(), [robson], "and the list keeps working without it");
+assert.equal(mapOf(chartedMount).dataset.state, "idle", "a failed map is not drawn again");
+assert.equal(mapMoves, movesAtFailure, "and is asked for nothing more");
+assert.match(source, /fetchFields\([^)]*\)\.then\(function \(\) \{\s*pick\(place\.formattedAddress, place\.location\);\s*\}, function \(\) \{ pick\(label, null\); \}\);/, "only a refused place lookup falls back to the suggestion text, so nothing thrown after the pick can add a second address");
+
+const AREA = { south: 49, west: -123.3, north: 49.4, east: -121.7 };
+const fencedSchema = plain(quoteWithCoordinates);
+fencedSchema.attributes.find((attribute) => attribute.code === "PROPERTY_ADDRESSES").inputFormat = "address within:49,-123.3,49.4,-121.7";
+const mapsBeforeFenced = drawnMaps.length;
+const fenced = new PortalForm({ schema: fencedSchema, locale: "en", copy: copyEcho, organizationId: 43, apiBaseUrl: "https://forms.example", mapsApiKey: "test-key" });
+const fencedMount = dom.document.createElement("div");
+fenced.mount(fencedMount);
+await settle();
+const fencedStep = fenced.model.groups.findIndex((group) => group.code === "PROPERTIES");
+fenced.step = fencedStep;
+fenced.render();
+await settle();
+const fence = drawnMaps[drawnMaps.length - 1];
+const fencedHeld = () => plain(fenced.values.PROPERTY_ADDRESSES);
+const fencedField = () => wrapOf(fencedMount, "PROPERTY_ADDRESSES");
+const fencedError = () => collect(fencedField(), "pf-field__error")[0].textContent;
+const fencedNext = () => collect(fencedMount, "btn--primary")[0];
+const fencedPoints = () => coordinatesIn(fenced, "PROPERTY_COORDINATES");
+const fencedStart = { bounds: AREA, padding: 0 };
+assert.equal(drawnMaps.length, mapsBeforeFenced + 1);
+assert.deepEqual(viewOf(fence), fencedStart, "a field that names the area of its addresses and no map start opens its map on that area");
+assert.equal(collect(fencedField(), "pf-field__error")[0].getAttribute("aria-live"), "polite", "a message that arrives after the key press is announced");
+
+const burrard = "750 Burrard Street, Vancouver";
+entry().focus();
+typeInto(burrard).fire("keydown", enter);
+assert.deepEqual(fencedHeld(), [], "an address typed into a field with an area is not added before Google has located it");
+assert.equal(entry().value, burrard, "and stays in the input meanwhile");
+assert.equal(fencedField().getAttribute("aria-busy"), "true", "the field says it is checking");
+await settle();
+assert.deepEqual(plain(geocoderQueue.map((call) => [call.address, call.bounds])), [[burrard, AREA]], "the Geocoder is asked once, with the area as the place to look first");
+entry().fire("keydown", enter);
+collect(fencedMount, "pf-repeat__add")[0].fire("click");
+await settle();
+assert.equal(geocoderQueue.length, 1, "asking again while the answer is on its way asks nothing more");
+answerGeocoder(burrard, [49.2827, -123.1207]);
+await settle();
+assert.deepEqual(fencedHeld(), [burrard], "an address located inside the area is added");
+assert.deepEqual(fencedPoints(), [{ address: burrard, lat: 49.2827, lng: -123.1207 }], "with the location that admitted it");
+assert.deepEqual(pinsOn(fence), [[burrard, 49.2827, -123.1207]]);
+assert.equal(entry().value, "", "and leaves the input empty for the next one");
+assert.equal(dom.activeElement, entry(), "with the focus in it");
+assert.equal(fencedField().getAttribute("aria-busy"), null, "the check is over");
+assert.equal(fencedField().dataset.state, "idle");
+
+const houston = "1600 Smith St, Houston, TX 77002, USA";
+typeInto(houston);
+collect(fencedMount, "pf-repeat__add")[0].fire("click");
+await settle();
+answerGeocoder(houston, [29.7545, -95.3728]);
+await settle();
+assert.deepEqual(fencedHeld(), [burrard], "an address located outside the area is not added");
+assert.equal(entry().value, houston, "it stays in the input to be corrected");
+assert.equal(fencedField().dataset.state, "invalid");
+assert.equal(fencedError(), "addressOutsideError", "with the message for an address outside the area");
+assert.equal(dom.activeElement, entry());
+assert.deepEqual(pinsOn(fence), [[burrard, 49.2827, -123.1207]], "an address outside the area gets no pin");
+assert.deepEqual(viewOf(fence), { center: { lat: 49.2827, lng: -123.1207 }, zoom: 16 }, "and does not pull the map away from the area");
+assert.deepEqual(fencedPoints().map((point) => point.address), [burrard]);
+collect(fencedMount, "pf-repeat__add")[0].fire("click");
+entry().fire("keydown", enter);
+await settle();
+assert.equal(geocoderQueue.length, 0, "offering the refused address again asks the Geocoder nothing");
+assert.deepEqual(fencedHeld(), [burrard]);
+assert.equal(fencedError(), "addressOutsideError");
+
+assert.equal(press(fencedNext(), fencedMount), true);
+await settle();
+assert.equal(fenced.step, fencedStep, "Continue does not leave the step while a refused address is in the input");
+assert.deepEqual(fencedHeld(), [burrard], "and does not add it");
+assert.equal(fencedError(), "addressOutsideError");
+assert.equal(dom.activeElement, entry(), "focus goes to the address to correct");
+Object.assign(fenced.values, contact);
+const postedBeforeRefusal = posted.length;
+assert.equal(await fenced.submit(), false, "a refused address in the input blocks the submission too");
+assert.equal(posted.length, postedBeforeRefusal);
+assert.equal(fenced.step, fencedStep);
+
+typeInto(houston + " ");
+assert.equal(fencedError(), "addressOutsideError", "the refusal stands for the same address, whatever surrounds it");
+typeInto("1600 Smith St, Houst");
+assert.equal(fencedField().dataset.state, "idle", "editing the refused address takes its message away at once");
+assert.equal(fencedError(), "");
+typeInto(houston).fire("keydown", enter);
+await settle();
+assert.deepEqual(geocoderQueue.map((call) => call.address), [houston], "an address typed back after an edit is asked for again");
+answerGeocoder(houston, [29.7545, -95.3728]);
+await settle();
+assert.equal(fencedError(), "addressOutsideError");
+
+const nowhere = "zzz qqq 99999";
+typeInto(nowhere).fire("keydown", enter);
+await settle();
+answerGeocoder(nowhere, null);
+await settle();
+assert.deepEqual(fencedHeld(), [burrard], "an address Google cannot find is not added");
+assert.equal(entry().value, nowhere);
+assert.equal(fencedError(), "addressUnknownError", "and has its own message");
+typeInto("");
+assert.equal(fencedError(), "", "clearing the input clears the refusal");
+assert.equal(fencedField().dataset.state, "idle");
+
+const hastings = "555 West Hastings Street, Vancouver";
+entry().focus();
+typeInto(hastings);
+assert.equal(press(fencedNext(), fencedMount), true);
+assert.equal(fenced.step, fencedStep, "Continue waits for an address still in the input to be checked");
+assert.equal(fencedNext().disabled, true, "and cannot be pressed twice meanwhile");
+assert.equal(collect(fencedMount, "pf-actions")[0].children.every((button) => button.disabled), true, "nor can Back");
+collect(fencedMount, "pf-actions")[0].children[0].fire("click");
+assert.equal(fenced.step, fencedStep, "a Back that still arrives during the check goes nowhere");
+assert.equal(await fenced.submit(), false, "a submission asked for during the check is dropped, not queued behind it");
+assert.equal(fencedNext().getAttribute("aria-busy"), "true");
+assert.equal(fencedNext().textContent, "nextLabel", "it is not a submission");
+await settle();
+assert.deepEqual(geocoderQueue.map((call) => call.address), [hastings]);
+fenced.advance(fenced.visibleGroups());
+assert.equal(geocoderQueue.length, 1, "a second Continue during the check starts nothing");
+answerGeocoder(hastings, [49.2847, -123.1119]);
+await settle();
+assert.deepEqual(fencedHeld(), [burrard, hastings], "once located inside the area it is added");
+assert.equal(fenced.step, fencedStep + 1, "and Continue goes on");
+assert.equal(Boolean(fencedNext().disabled), false, "the next step's action is free again");
+assert.equal(fencedNext().getAttribute("aria-busy"), null);
+
+fenced.step = fencedStep;
+fenced.render();
+await settle();
+entry().focus();
+typeInto(houston);
+assert.equal(press(fencedNext(), fencedMount), true);
+await settle();
+answerGeocoder(houston, [29.7545, -95.3728]);
+await settle();
+assert.equal(fenced.step, fencedStep, "Continue stays when the address it checked lies outside the area");
+assert.deepEqual(fencedHeld(), [burrard, hastings]);
+assert.equal(fencedError(), "addressOutsideError");
+assert.equal(Boolean(fencedNext().disabled), false, "and can be pressed again after the correction");
+typeInto("");
+
+const slow = "1055 Canada Place, Vancouver";
+typeInto(slow).fire("keydown", enter);
+await settle();
+assert.deepEqual(geocoderQueue.map((call) => call.address), [slow]);
+runTimers();
+await settle();
+assert.deepEqual(fencedHeld(), [burrard, hastings, slow], "an address Google does not answer for in time is accepted unchecked, so the form never waits on Google to go on");
+assert.equal(fencedField().getAttribute("aria-busy"), null);
+assert.equal(fencedPoints().some((point) => point.address === slow), false, "without a location");
+answerGeocoder(slow, [49.2888, -123.1111]);
+assert.deepEqual(fencedPoints()[2], { address: slow, lat: 49.2888, lng: -123.1111 }, "a late answer still gives it one");
+assert.equal(pinNames(fence).includes(slow), true);
+
+const late = "200 Granville Street, Vancouver";
+typeInto(late).fire("keydown", enter);
+await settle();
+runTimers();
+await settle();
+assert.deepEqual(fencedHeld(), [burrard, hastings, slow, late]);
+answerGeocoder(late, [29.7, -95.3]);
+await settle();
+assert.deepEqual(fencedHeld(), [burrard, hastings, slow, late], "an address accepted unchecked is not taken back by a late answer");
+assert.equal(pinNames(fence).includes(late), false, "but a location outside the area still gets no pin");
+assert.equal(fencedField().dataset.state, "idle", "and raises no message against an address already accepted");
+
+const throttled = "800 Robson Street, Vancouver";
+typeInto(throttled).fire("keydown", enter);
+await settle();
+failGeocoder(throttled, "OVER_QUERY_LIMIT");
+await settle();
+assert.deepEqual(fencedHeld(), [burrard, hastings, slow, late, throttled], "a Geocoder that refuses to answer is no verdict on the address, which is accepted unchecked");
+assert.equal(fencedError(), "");
+
+const first = "999 Canada Place, Vancouver";
+const second = "1133 Melville Street, Vancouver";
+typeInto(first).fire("keydown", enter);
+await settle();
+typeInto(second);
+answerGeocoder(first, [49.2889, -123.1161]);
+await settle();
+assert.deepEqual(fencedHeld(), [burrard, hastings, slow, late, throttled], "an answer for text the client has since changed adds nothing");
+assert.equal(entry().value, second, "and leaves the new text alone");
+assert.equal(fencedField().getAttribute("aria-busy"), null);
+typeInto("");
+
+const returning = "1500 West Georgia Street, Vancouver";
+typeInto(returning).fire("keydown", enter);
+await settle();
+typeInto(second);
+runTimers();
+await settle();
+assert.equal(fencedHeld().includes(returning), false, "a check that gives up after the text changed adds nothing");
+typeInto("");
+typeInto(returning).fire("keydown", enter);
+await settle();
+assert.equal(geocoderQueue.filter((call) => call.address === returning).length, 2, "and an address that comes back to the input after that is asked for afresh, not accepted on the strength of the check that gave up");
+answerGeocoder(returning, [29.7, -95.3]);
+await settle();
+assert.equal(fencedHeld().includes(returning), false);
+assert.equal(fencedError(), "addressOutsideError");
+typeInto("");
+
+const fencedAddresses = fenced.model.groups[fencedStep].fields[0];
+for (const [name, at] of [["north", [49.41, -123.1]], ["south", [48.99, -123.1]], ["west", [49.2, -123.31]], ["east", [49.2, -121.69]]]) {
+  typeInto("just " + name);
+  fenced.rememberLocation(fencedAddresses, "just " + name, latLng(at), false);
+  assert.equal(fenced.verdict(fencedAddresses, "just " + name), "outside", "a place just " + name + " of the area is outside it");
+}
+for (const [name, at] of [["south-west", [49, -123.3]], ["north-east", [49.4, -121.7]]]) {
+  typeInto("the " + name + " corner");
+  fenced.rememberLocation(fencedAddresses, "the " + name + " corner", latLng(at), false);
+  assert.equal(fenced.verdict(fencedAddresses, "the " + name + " corner"), "inside", "the " + name + " corner belongs to the area");
+}
+typeInto("");
+
+entry().focus();
+typeInto("88 Robs");
+runTimers();
+await settle();
+assert.deepEqual(plain(suggestionRequests[suggestionRequests.length - 1].locationRestriction), AREA, "suggestions are asked for inside the area only");
+press(collect(fencedMount, "pf-address__option")[0], fencedMount);
+await settle();
+assert.equal(fencedHeld().includes(robson), true, "a suggestion inside the area is added at once");
+assert.equal(geocoderQueue.length, 0, "on the location it carries");
+typeInto("1600 Smith");
+runTimers();
+await settle();
+assert.equal(collect(fencedMount, "pf-address__option").length, 0, "an address outside the area is not suggested");
+typeInto("");
+await settle();
+
+maps.places = legacyPlaces;
+fenced.render();
+await settle();
+const fencedWidget = autocompletes[autocompletes.length - 1];
+assert.equal(fencedWidget.input, entry());
+assert.deepEqual(plain([fencedWidget.options.bounds, fencedWidget.options.strictBounds]), [AREA, true], "the legacy widget is held to the area as well");
+const heldBeforeLegacy = fencedHeld();
+moveFocus(outside, fencedMount);
+assert.equal(fencedError(), "");
+choose(fencedWidget, { formatted_address: houston, geometry: { location: latLng([29.7545, -95.3728]) } });
+await settle();
+assert.deepEqual(fencedHeld(), heldBeforeLegacy, "a picked place outside the area is refused like a typed one");
+assert.equal(entry().value, houston, "and shown in the input it was picked into");
+assert.equal(fencedError(), "addressOutsideError");
+assert.equal(dom.activeElement, entry(), "with the focus back on it, wherever the focus was");
+typeInto("");
+maps.places = dataApi;
+fenced.render();
+await settle();
+
+const pendingAtSubmit = "1021 West Hastings Street, Vancouver";
+fenced.step = fenced.visibleGroups().length - 1;
+fenced.render();
+fenced.pending.PROPERTY_ADDRESSES = pendingAtSubmit;
+const postedBeforeFenced = posted.length;
+const fencedSubmission = fenced.submit();
+await settle();
+assert.equal(posted.length, postedBeforeFenced, "a submission waits for an address still in the input to be checked");
+answerGeocoder(pendingAtSubmit, [49.2872, -123.1178]);
+assert.equal(await fencedSubmission, true);
+assert.equal(posted.length, postedBeforeFenced + 1);
+const fencedWire = JSON.parse(posted[posted.length - 1].init.body).attributes["2"];
+assert.deepEqual(fencedWire.PROPERTY_ADDRESSES.value, [burrard, hastings, slow, late, throttled, robson, pendingAtSubmit], "and sends it with the rest once it is located inside the area");
+assert.equal(JSON.parse(fencedWire.PROPERTY_COORDINATES.value).some((point) => point.address === pendingAtSubmit), true);
+assert.deepEqual(JSON.parse(fencedWire.PROPERTY_COORDINATES.value).find((point) => point.address === late), { address: late, lat: 29.7, lng: -95.3 }, "the location of an address accepted unchecked travels as Google gave it, for the receiving process to judge");
+
+const fencedSiteSchema = plain(siteSchema);
+fencedSiteSchema.attributes.find((attribute) => attribute.code === "SITE_ADDRESS").inputFormat = "address within:49,-123.3,49.4,-121.7";
+const yard = new PortalForm({ schema: fencedSiteSchema, locale: "en", copy: copyEcho, organizationId: 43, apiBaseUrl: "https://forms.example", mapsApiKey: "test-key" });
+const yardMount = dom.document.createElement("div");
+yard.mount(yardMount);
+await settle();
+yard.step = yard.model.groups.findIndex((group) => group.code === "TEXTS");
+yard.render();
+await settle();
+const yardMap = drawnMaps[drawnMaps.length - 1];
+const yardInput = () => dom.document.getElementById("pf-SITE_ADDRESS");
+const typeYard = (value) => { const box = yardInput(); box.value = value; box.fire("input"); return box; };
+const yardField = () => wrapOf(yardMount, "SITE_ADDRESS");
+const yardError = () => collect(yardField(), "pf-field__error")[0].textContent;
+const yardNext = () => collect(yardMount, "btn--primary")[0];
+assert.deepEqual(viewOf(yardMap), fencedStart);
+yardInput().focus();
+typeYard(houston);
+moveFocus(outside, yardMount);
+assert.equal(yardField().dataset.state, "idle", "a single address is not judged before Google answers");
+answerGeocoder(houston, [29.7545, -95.3728]);
+assert.equal(yardField().dataset.state, "invalid", "a single address located outside its area is flagged as soon as the answer comes");
+assert.equal(yardError(), "addressOutsideError");
+assert.deepEqual(pinsOn(yardMap), []);
+Object.assign(yard.values, { PLAIN_TEXT: "Plain", EMAIL: "dana@example.com" });
+assert.equal(press(yardNext(), yardMount), true);
+assert.equal(yard.step, 0, "and Continue stays on its step");
+assert.equal(yardError(), "addressOutsideError");
+await settle();
+typeYard("1600 Smith St");
+assert.equal(yardField().dataset.state, "idle", "editing it takes the message away");
+typeYard(nowhere);
+moveFocus(yardInput(), yardMount);
+moveFocus(outside, yardMount);
+answerGeocoder(nowhere, null);
+assert.equal(yardError(), "addressUnknownError", "a single address Google cannot find is flagged with its own message");
+typeYard(burrard);
+assert.equal(yardError(), "");
+assert.equal(press(yardNext(), yardMount), true);
+assert.equal(yard.step, 0, "Continue waits for a single address it has no answer for yet");
+assert.equal(yardNext().disabled, true);
+await settle();
+answerGeocoder(burrard, [49.2827, -123.1207]);
+await settle();
+assert.equal(yard.step, 1, "and goes on once it is located inside the area");
+assert.deepEqual(pinsOn(yardMap), [[burrard, 49.2827, -123.1207]]);
+yard.step = 0;
+yard.render();
+await settle();
+typeYard("");
+moveFocus(yardInput(), yardMount);
+assert.equal(press(yardNext(), yardMount), true);
+assert.equal(yard.step, 1, "an optional address left empty is held to no area");
+yard.step = 0;
+maps.places = legacyPlaces;
+yard.render();
+await settle();
+moveFocus(outside, yardMount);
+choose(autocompletes[autocompletes.length - 1], { formatted_address: houston, geometry: { location: latLng([29.7545, -95.3728]) } });
+assert.equal(yard.values.SITE_ADDRESS, houston);
+assert.equal(yardError(), "addressOutsideError", "a single address picked outside its area is flagged at once");
+typeYard("");
+maps.places = dataApi;
+
+await degradedPage("a script that fails to load, on a field held to an area", (context, script) => script.fire("error"), fencedSchema);
+
+const openField = new PortalForm({ schema: fencedSchema, locale: "en", copy: copyEcho, organizationId: 43, apiBaseUrl: "https://forms.example" });
+const openMount = dom.document.createElement("div");
+openField.mount(openMount);
+await settle();
+openField.step = fencedStep;
+openField.render();
+typeInto(houston).fire("keydown", enter);
+assert.deepEqual(plain(openField.values.PROPERTY_ADDRESSES), [houston], "without a maps key nothing can be located, so an area refuses nothing");
+
+const gated = new PortalForm({
+  schema: {
+    id: 30, nls: {}, attributeGroups: [],
+    attributes: [
+      { code: "KIND", className: "java.lang.String", nls: {}, options: [{ value: "A" }, { value: "B" }], uiBehavior: 'applyBehavior({ B: "SITE" })' },
+      { code: "CHANNEL", className: "java.lang.String", nls: { en: { NAME: "Lead channel" } }, options: [] },
+      { code: "WHERE", className: "java.lang.String", nls: {}, options: [], inputFormat: "address" },
+      { code: "WHERE_POINT", className: "java.lang.String", nls: {}, options: [], inputFormat: "coordinates-of:WHERE" },
+    ],
+    attributeOrder: [
+      { MAIN: [{ attributeCode: "KIND", visible: true }, { attributeCode: "CHANNEL", visible: false }] },
+      { SITE: [{ attributeCode: "WHERE", visible: true }, { attributeCode: "WHERE_POINT", visible: false }] },
+    ],
+  },
+  locale: "en", copy: copyEcho, organizationId: 43, apiBaseUrl: "https://forms.example",
+  presetValues: { CHANNEL: "portal-referral" },
+});
+const gatedMount = dom.document.createElement("div");
+gated.mount(gatedMount);
+await settle();
+assert.doesNotMatch(surface(gatedMount), /CHANNEL|Lead channel|portal-referral/, "a visible:false attribute renders no label, control or error");
+const where = gated.model.groups[1].fields[0];
+gated.values.KIND = "B";
+gated.setValue(where, "1 Gate Road");
+for (const broken of [null, {}, { lat: null, lng: null }, { lat: () => NaN, lng: () => -123.2 }, { lat: "49.1", lng: "-123.2" }, { lat: 91, lng: -123.2 }]) {
+  gated.rememberLocation(where, "1 Gate Road", broken, false);
+}
+assert.equal(gated.values.WHERE_POINT, "", "a missing, non-numeric or out-of-range location is never written, so no coordinate is ever a stand-in 0");
+gated.rememberLocation(where, "1 Gate Road", { lat: 49.1, lng: -123.2 }, false);
+assert.equal(await gated.submit(), true);
+assert.deepEqual(
+  JSON.parse(posted[posted.length - 1].init.body).attributes["30"],
+  { KIND: { value: "B" }, CHANNEL: { value: "portal-referral" }, WHERE: { value: "1 Gate Road" }, WHERE_POINT: { value: '[{"address":"1 Gate Road","lat":49.1,"lng":-123.2}]' } },
+  "hidden attributes submit their values",
+);
+gated.values.KIND = "A";
+assert.equal(await gated.submit(), true);
+assert.deepEqual(Object.keys(JSON.parse(posted[posted.length - 1].init.body).attributes["30"]), ["KIND", "CHANNEL"], "coordinates never travel without the address they describe");
+
+const findTags = (node, tag, found) => { if (node.tagName === tag) found.push(node); node.children.forEach((child) => findTags(child, tag, found)); return found; };
+const outcomeMount = dom.document.createElement("div");
+const outcome = new PortalForm({ schema: kitchen, locale: "en", copy: copyEcho, organizationId: 43, apiBaseUrl: "https://forms.example" });
+outcome.mount(outcomeMount);
+await settle();
+Object.assign(outcome.values, { PLAIN_TEXT: "Plain", EMAIL: "dana@example.com", PROPERTY_TYPE: "RESIDENTIAL", ACCEPT_TERMS: true });
+assert.equal(await outcome.submit(), true);
+const successTitle = collect(outcomeMount, "pf-notice__title")[0];
+assert.equal(outcomeMount.dataset.state, "success");
+assert.equal(successTitle.tagName, "H2", "the confirmation is the heading of what replaced the form");
+assert.equal(dom.activeElement, successTitle, "a successful submit moves focus to the confirmation instead of leaving it on the document body");
+assert.deepEqual(plain(collect(outcomeMount, "pf-next__text").map((node) => node.textContent)), ["successStep1", "successStep2", "successStep3"], "the success screen lists the next steps its copy declares, in order");
+assert.equal(collect(outcomeMount, "pf-next__list")[0].tagName, "OL");
+assert.deepEqual(plain(collect(outcomeMount, "pf-next__n").map((node) => node.getAttribute("aria-hidden"))), ["true", "true", "true"], "the drawn numbers are decoration; the ordered list carries the order");
+assert.equal(findTags(outcomeMount, "A", []).length, 0, "the success screen links nowhere: no registration, no sign-in, no portal route");
+const successActions = findTags(outcomeMount, "BUTTON", []);
+assert.deepEqual(plain(successActions.map((node) => node.textContent)), ["successAgainLabel"], "its only action is the optional one that starts over");
+assert.equal(press(successActions[0], outcomeMount), true);
+assert.equal(outcomeMount.dataset.state, "ready", "submit another response brings the form back");
+assert.equal(outcome.step, 0);
+assert.equal(outcome.values.PLAIN_TEXT, "", "with every answer cleared");
+assert.deepEqual(plain(outcome.touched), {}, "and nothing flagged before it is touched again");
+assert.equal(dom.activeElement && dom.activeElement.getAttribute("data-group"), "TEXTS", "focus lands on the first step");
+
+const silentCopy = new Proxy({}, { get: (_, key) => (/^successStep|^successAgainLabel$/.test(String(key)) ? "" : String(key)) });
+const quietMount = dom.document.createElement("div");
+const quiet = new PortalForm({ schema: kitchen, locale: "en", copy: silentCopy });
+quiet.mount(quietMount);
+await settle();
+quiet.state = "success";
+quiet.render();
+assert.equal(collect(quietMount, "pf-next").length, 0, "empty step copy renders no list and no heading");
+assert.equal(findTags(quietMount, "BUTTON", []).length, 0, "an empty again label renders no button");
+assert.equal(collect(quietMount, "pf-notice__title")[0].textContent, "successTitle");
+
+const statesMount = dom.document.createElement("div");
+const states = new PortalForm({ schema: quote, locale: "en", copy: copyEcho, organizationId: 43, apiBaseUrl: "https://forms.example" });
+states.mount(statesMount);
+await settle();
+const drawnAs = (state) => { states.state = state; states.render(); return statesMount; };
+assert.equal(collect(drawnAs("loading"), "pf-skeleton").length, 1, "loading draws the skeleton");
+assert.equal(collect(drawnAs("error"), "pf-notice--error").length, 1, "a schema error draws its notice");
+assert.deepEqual(plain(findTags(statesMount, "BUTTON", []).map((node) => node.textContent)), ["retryLabel"], "with a retry action");
+assert.equal(collect(drawnAs("empty"), "pf-notice--empty").length, 1, "an empty form type draws its notice");
+assert.equal(collect(drawnAs("blocked"), "pf-notice--blocked").length, 1, "a missing organization draws its notice inside the form");
+assert.ok(collect(statesMount, "pf-field").length > 0, "and keeps the answers on screen");
+const sending = collect(drawnAs("submitting"), "btn--primary")[0];
+assert.equal(sending.disabled, true, "submitting disables the primary action");
+assert.equal(sending.textContent, "submittingLabel");
+assert.equal(collect(drawnAs("submit-error"), "pf-notice--error").length, 1, "a failed submit draws its notice inside the form");
+assert.ok(collect(statesMount, "pf-field").length > 0, "and keeps the answers on screen");
+assert.equal(collect(drawnAs("success"), "pf-notice--success").length, 1, "success draws the confirmation");
+
+const servedMount = dom.document.createElement("div");
+const servedForm = new PortalForm({ schema: servedQuote, locale: "en", copy: copyEcho, organizationId: 43, apiBaseUrl: "https://forms.example" });
+servedForm.mount(servedMount);
+await settle();
+assert.deepEqual(
+  plain(collect(servedMount, "pf-step").map((node) => node.children[1].textContent)),
+  plain(served.groups.map((group) => group.title)),
+  "the served form draws one step per group, in attributeOrder order",
+);
+const drawnSteps = [];
+for (let index = 0; index < served.groups.length; index += 1) {
+  servedForm.step = index;
+  servedForm.render();
+  drawnSteps.push(collect(servedMount, "pf-field").map((node) => node.dataset.code + ":" + node.dataset.kind));
+}
+assert.deepEqual(plain(drawnSteps), [
+  ["SELECT_YOUR_PROPERTY_TYPE:select", "PROPERTY_ADDRESS:address", "RISK_FACTORS:checklist", "PROPERTY_SIZE:select"],
+  ["SELECT_ROLE:select", "FIRST_NAME:text", "LAST_NAME:text", "EMAIL:email", "PHONE:tel"],
+  ["ADDITIONAL_NOTES:textarea"],
+], "each step draws its group's fields in row order");
+servedForm.step = 0;
+servedForm.render();
+assert.equal(collect(wrapOf(servedMount, "PROPERTY_ADDRESS"), "pf-address").length, 1, "PROPERTY_ADDRESS draws the address control");
+assert.equal(control("PROPERTY_ADDRESS").tagName, "INPUT");
+assert.equal(control("PROPERTY_ADDRESS").getAttribute("autocomplete"), "street-address", "without a maps key the address stays a plain text input");
+assert.equal(collect(servedMount, "pf-address")[0].dataset.autocomplete, undefined);
+assert.deepEqual(
+  plain(findTags(servedMount, "SELECT", []).map((node) => [node.getAttribute("name"), node.children.length - 1])),
+  [["SELECT_YOUR_PROPERTY_TYPE", 5], ["PROPERTY_SIZE", 5]],
+  "the only selects on the property step are the two attributes with options, so no select without options stands in for the address",
+);
+assert.equal(servedForm.values.PROPERTY_ADDRESS, "", "a single Address-classed attribute seeds as a string");
+
+const chooseOption = (code, value) => { const box = control(code); box.value = value; box.fire("change"); };
+chooseOption("SELECT_YOUR_PROPERTY_TYPE", "CONDO_APARTMENT");
+chooseOption("PROPERTY_SIZE", "10000");
+assert.equal(press(collect(servedMount, "btn--primary")[0], servedMount), true);
+assert.equal(servedForm.step, 0, "Continue with the required address empty keeps the property step");
+assert.deepEqual(plain(collect(servedMount, "pf-field").filter((node) => node.dataset.state === "invalid").map((node) => node.dataset.code)), ["PROPERTY_ADDRESS"]);
+assert.equal(collect(wrapOf(servedMount, "PROPERTY_ADDRESS"), "pf-field__error")[0].textContent, "requiredError");
+assert.equal(dom.activeElement, control("PROPERTY_ADDRESS"), "focus goes to the empty address");
+
+Object.assign(servedForm.values, { SELECT_ROLE: "OWNER", FIRST_NAME: "Dana", LAST_NAME: "Reyes", EMAIL: "dana@example.com", PHONE: "+1 604 555 0164" });
+const postedBeforeServed = posted.length;
+servedForm.step = 2;
+servedForm.render();
+assert.equal(await servedForm.submit(), false, "an empty required address blocks submit even with every other answer given");
+assert.equal(posted.length, postedBeforeServed, "and nothing is posted");
+assert.equal(servedForm.step, 0, "submit returns to the step that holds the address");
+assert.equal(dom.activeElement, control("PROPERTY_ADDRESS"));
+
+const servedTyped = "1200 West Georgia Street, Vancouver, BC, Canada";
+typeField("PROPERTY_ADDRESS", servedTyped);
+assert.equal(servedForm.values.PROPERTY_ADDRESS, servedTyped, "typing writes the address text on every keystroke");
+chooseOption("PROPERTY_SIZE", "25000");
+assert.equal(control("PROPERTY_ADDRESS").value, servedTyped, "a re-render keeps the typed address on screen");
+assert.equal(wrapOf(servedMount, "PROPERTY_ADDRESS").dataset.state, "idle", "and the answered address no longer shows its error");
+for (const expectedStep of [1, 2]) {
+  assert.equal(press(collect(servedMount, "btn--primary")[0], servedMount), true);
+  assert.equal(servedForm.step, expectedStep);
+}
+assert.equal(press(collect(servedMount, "btn--primary")[0], servedMount), true);
+await settle();
+assert.equal(servedMount.dataset.state, "success", "the typed address lets the form submit");
+assert.equal(posted.length, postedBeforeServed + 1);
+assert.equal(posted[posted.length - 1].url, "https://forms.example/core-cms/api/form/submit.json");
+assert.deepEqual(JSON.parse(posted[posted.length - 1].init.body), {
+  type: { id: 2 },
+  organization: { id: 43 },
+  attributes: {
+    2: {
+      SELECT_YOUR_PROPERTY_TYPE: { value: "CONDO_APARTMENT" },
+      PROPERTY_ADDRESS: { value: servedTyped },
+      PROPERTY_SIZE: { value: "25000" },
+      SELECT_ROLE: { value: "OWNER" },
+      FIRST_NAME: { value: "Dana" },
+      LAST_NAME: { value: "Reyes" },
+      EMAIL: { value: "dana@example.com" },
+      PHONE: { value: "+1 604 555 0164" },
+    },
+  },
+}, "the Address-classed attribute submits the text typed into it, the same value a declared address submits");
+
+const servedWithCoordinates = withHiddenAttribute(servedQuote, coordinatesAttribute("PROPERTY_COORDINATES", "PROPERTY_ADDRESS"), "EA849F15_9108_455F_9A05_F26BED67E5CD", false);
+const pinned = new PortalForm({ schema: servedWithCoordinates, locale: "en", copy: copyEcho, organizationId: 43, apiBaseUrl: "https://forms.example", mapsApiKey: "test-key" });
+const pinnedMount = dom.document.createElement("div");
+pinned.mount(pinnedMount);
+await settle();
+assert.deepEqual(plain(pinned.model.hidden.map((field) => [field.code, field.tokens.coordinatesOf])), [["PROPERTY_COORDINATES", "PROPERTY_ADDRESS"]]);
+assert.deepEqual(plain(pinned.model.groups[0].fields.map((field) => field.code)), plain(served.groups[0].fields.map((field) => field.code)), "the coordinates attribute adds no field to the property step");
+assert.equal(collect(pinnedMount, "pf-address")[0].dataset.autocomplete, "data-api", "with a key the Address-classed field takes the Places data API, as a declared address does");
+const pinnedInput = () => dom.document.getElementById("pf-PROPERTY_ADDRESS");
+const typePinned = (value) => { const box = pinnedInput(); box.value = value; box.fire("input"); return box; };
+pinnedInput().focus();
+typePinned("88 Rob");
+runTimers();
+await settle();
+assert.equal(press(collect(pinnedMount, "pf-address__option")[0], pinnedMount), true);
+await settle();
+assert.equal(pinned.values.PROPERTY_ADDRESS, robson, "a picked suggestion becomes the address text");
+assert.deepEqual(coordinatesIn(pinned, "PROPERTY_COORDINATES"), [{ address: robson, lat: 49.2767, lng: -123.1146 }], "a single Address-classed source keeps its Places location as a one-entry array");
+assert.equal(geocoderQueue.length, 0, "a pick asks the Geocoder for nothing");
+const pinnedTyped = "4000 No. 3 Road, Richmond, BC, Canada";
+typePinned(pinnedTyped);
+assert.equal(pinned.values.PROPERTY_COORDINATES, "", "editing the address by hand drops the picked location");
+pinnedInput().fire("blur");
+assert.deepEqual(geocoderQueue.map((call) => call.address), [pinnedTyped], "leaving a typed address asks the Geocoder for it once");
+answerGeocoder(pinnedTyped, [49.1848, -123.1363]);
+assert.deepEqual(coordinatesIn(pinned, "PROPERTY_COORDINATES"), [{ address: pinnedTyped, lat: 49.1848, lng: -123.1363 }], "the Geocoder answer lands on the typed address");
+Object.assign(pinned.values, { SELECT_YOUR_PROPERTY_TYPE: "TOWNHOME", PROPERTY_SIZE: "5000", SELECT_ROLE: "OWNER", FIRST_NAME: "Dana", LAST_NAME: "Reyes", EMAIL: "dana@example.com", PHONE: "+1 604 555 0164" });
+assert.equal(await pinned.submit(), true);
+const pinnedWire = JSON.parse(posted[posted.length - 1].init.body).attributes["2"];
+assert.deepEqual(pinnedWire.PROPERTY_ADDRESS, { value: pinnedTyped });
+assert.deepEqual(JSON.parse(pinnedWire.PROPERTY_COORDINATES.value), [{ address: pinnedTyped, lat: 49.1848, lng: -123.1363 }], "the hidden coordinates travel with the single address they describe");
+
+const addressClassed = (code, extra) => ({ code, required: true, multiselect: false, freeValue: false, unique: false, className: "com.pixelnation.common.domain.Address", nls: { en: { NAME: code } }, options: [], ...extra });
+const classSchema = {
+  id: 41, code: "CLASSES", nls: {}, attributeGroups: [],
+  attributes: [
+    addressClassed("SITES", { multiselect: true }),
+    addressClassed("KNOWN_SITE", { options: [{ value: "501", nls: { en: { NAME: "1200 West Georgia Street" } } }, { value: "502", nls: { en: { NAME: "88 Robson Street" } } }] }),
+    { code: "CREW", required: true, multiselect: false, freeValue: false, unique: false, className: "com.pixelnation.rm.domain.Resource", nls: { en: { NAME: "Crew" } }, options: [] },
+    { code: "CREW_BASE", required: true, multiselect: false, freeValue: false, unique: false, className: "com.pixelnation.rm.domain.Resource", nls: { en: { NAME: "Crew base" } }, options: [], inputFormat: "address" },
+  ],
+  attributeOrder: [{ MAIN: ["SITES", "KNOWN_SITE", "CREW", "CREW_BASE"].map((attributeCode) => ({ attributeCode, visible: true })) }],
+};
+assert.deepEqual(
+  plain(normalizeSchema(classSchema, "en").groups[0].fields.map((field) => [field.code, field.kind, field.choices.length])),
+  [["SITES", "address-list", 0], ["KNOWN_SITE", "select", 2], ["CREW", "select", 0], ["CREW_BASE", "select", 0]],
+  "a multiselect Address attribute is an address list, an Address attribute with options keeps its select, and another entity class stays the select it was, even when it declares address",
+);
+const classMount = dom.document.createElement("div");
+const classForm = new PortalForm({ schema: classSchema, locale: "en", copy: copyEcho });
+classForm.mount(classMount);
+await settle();
+assert.deepEqual(plain(classForm.values.SITES), [], "a multiselect Address attribute seeds as an empty array");
+assert.equal(collect(wrapOf(classMount, "SITES"), "pf-repeat").length, 1, "and draws the repeating address control");
+assert.deepEqual(
+  plain(findTags(classMount, "SELECT", []).map((node) => [node.getAttribute("name"), node.children.map((option) => option.value)])),
+  [["KNOWN_SITE", ["", "501", "502"]], ["CREW", [""]], ["CREW_BASE", [""]]],
+  "the Address attribute with options lists its choices, and the other entity class still draws a select with nothing to choose",
+);
+const sitesEntry = dom.document.getElementById("pf-SITES");
+sitesEntry.value = "88 Robson Street, Vancouver, BC, Canada";
+sitesEntry.fire("input");
+classForm.advance(classForm.visibleGroups());
+assert.deepEqual(plain(classForm.values.SITES), ["88 Robson Street, Vancouver, BC, Canada"], "Continue commits the address typed into a multiselect Address attribute but not yet added");
+
+assert.doesNotMatch(source, /innerHTML/, "the renderer must not assign innerHTML");
+assert.doesNotMatch(source, /dev-1\.servicewand\.com|lsrc\.pixelnation\.com/, "the renderer must not hardcode a deployment host");
+assert.match(source, /credentials: "omit"/, "form requests stay anonymous");
+assert.equal((source.match(/credentials: "omit"/g) || []).length, 2, "both the schema read and the submit stay anonymous");
+
+for (const token of ["--accent", "--ink", "--surface", "--hair", "--radius-md", "--danger"]) {
+  assert.ok(css.includes("var(" + token), "the stylesheet must build on the portal token " + token);
+}
+assert.doesNotMatch(css, /#[0-9a-f]{6}(?![0-9a-f])/i, "no raw hex colour may bypass the theme tokens");
+assert.doesNotMatch(css, /\.df-/, "the portal renderer must not depend on the corporate form stylesheet");
+assert.match(css, /\.pf-address__map \{\s*display: none;/, "a map that is not drawn takes no room");
+assert.match(css, /\.pf-address__map\[data-state="ready"\] \{ display: block; \}/);
+assert.match(css, /\.pf-address__map\[data-state="loading"\] \{\s*display: block;/, "the place a map is loading into has the map's own height");
+assert.match(css, /prefers-reduced-motion: reduce\) \{\s*\.pf-address__map\[data-state="loading"\] \{ animation: none; \}/);
+assert.doesNotMatch(css, /\.pf-address__map[^{]*\{[^}]*transition/, "a map is measured at its full height the moment it is drawn, so its framing is not computed against a collapsed box");
+
+const originalFetch = sandbox.fetch;
+let settleSubmission;
+let guardedRequests = 0;
+sandbox.fetch = () => {
+  guardedRequests += 1;
+  return new Promise((resolve, reject) => { settleSubmission = { resolve, reject }; });
+};
+gated.state = "ready";
+gated.step = 1;
+const pendingSubmit = gated.submit();
+assert.equal(await gated.submit(), false, "a duplicate programmatic submission is dropped");
+assert.equal(guardedRequests, 1, "only one request starts during the pending window");
+assert.equal(gated.submissionPending, true);
+const pendingStep = gated.step;
+gated.advance(gated.visibleGroups());
+gated.restart();
+assert.equal(gated.step, pendingStep, "navigation and restart cannot reset an in-flight submission");
+assert.equal(collect(gatedMount, "pf-actions")[0].children.every((button) => button.disabled), true, "back and submit stay disabled during submission");
+settleSubmission.reject(new Error("Network unavailable"));
+assert.equal(await pendingSubmit, false);
+assert.equal(gated.submissionPending, false, "failure releases the owner guard");
+assert.equal(gated.state, "submit-error");
+gated.cfg.onSubmit = () => { throw new Error("Host callback failed"); };
+const retrySubmit = gated.submit();
+await settle();
+assert.equal(guardedRequests, 2, "an explicit retry starts a new request after failure");
+settleSubmission.resolve({ ok: true, status: 200, json: () => Promise.resolve({ id: 8 }) });
+assert.equal(await retrySubmit, true);
+assert.equal(gated.state, "success", "a host callback failure must not turn an accepted submission into a retryable error");
+assert.equal(gated.submissionPending, false);
+sandbox.fetch = originalFetch;
+
+const { exportPortalFormManual } = await import("./export-portal-form-manual.mjs");
+const documentDir = path.join(root, "dist/manual-upload/.portal-form-document-check");
+try {
+  const { template, manifest } = await exportPortalFormManual({ outputDir: documentDir });
+  const parameters = new Map(template.parameters.map((parameter) => [parameter.code, parameter]));
+
+  for (const code of ["FORM_API_BASE_URL", "FORM_TYPE_CODE", "FORM_ORGANIZATION_ID"]) {
+    assert.equal(parameters.get(code).value, "", code + " must ship empty so an unconfigured document cannot post");
+  }
+  assert.equal(parameters.get("FORM_THEME").value, "snow");
+  assert.equal(parameters.get("FORM_MODE").value, "light");
+  for (const theme of manifest.themes) {
+    assert.ok(parameters.get("FORM_THEME").nls.en.DESCRIPTION.includes(theme), "the theme parameter must list " + theme);
+  }
+  assert.deepEqual(plain(manifest.modes), ["light", "dark"]);
+  assert.deepEqual(plain(manifest.renderer.kinds), KINDS, "the manifest must name every kind the renderer draws");
+  assert.match(template.javascript, /function oneOf\(value, allowed, fallback\)/, "an unknown theme or mode must fall back rather than reach data-theme");
+  assert.match(template.javascript, /oneOf\(attribute\(root, "data-form-theme"\)\.toLowerCase\(\), THEMES, "snow"\)/);
+  assert.match(template.javascript, /oneOf\(attribute\(root, "data-form-mode"\)\.toLowerCase\(\), MODES, "light"\)/);
+  assert.match(template.javascript, /url\.protocol === "https:"/, "the document must reject a non-https api base");
+
+  assert.equal(parameters.get("FORM_MAPS_API_KEY").value, "", "the maps key must ship empty");
+  assert.match(parameters.get("FORM_MAPS_API_KEY").nls.en.DESCRIPTION, /restrict it by HTTP referrer/i, "the key parameter must warn that it is public");
+  assert.match(template.javascript, /mapsApiKey: attribute\(root, "data-form-maps-api-key"\)/);
+  assert.match(template.javascript, /if \(!apiKey\) return Promise\.reject/, "no key must mean no Google script at all");
+  assert.equal((template.javascript.match(/maps\.googleapis\.com/g) || []).length, 1, "the maps script has exactly one origin and it is only reached through the loader");
+  assert.match(template.javascript, /places\.AutocompleteSuggestion/, "the new Places data API is the primary path");
+  assert.match(template.javascript, /places\.Autocomplete \?/, "the legacy widget stays as a fallback for older projects");
+
+  for (const code of ["SUCCESS_TITLE", "SUCCESS_BODY", "SUCCESS_NEXT_TITLE", "SUCCESS_STEP_1", "SUCCESS_STEP_2", "SUCCESS_STEP_3", "SUCCESS_AGAIN_LABEL"]) {
+    assert.equal(parameters.get(code).type, "LOCALIZED_STRING_SS", code + " is localized CMS copy");
+    assert.match(template.html, new RegExp('data-copy-[a-z0-9-]+="\\$\\{' + code + '@LOCALIZED_STRING_SS\\}"'), code + " reaches the renderer through a data-copy attribute");
+  }
+  for (const code of ["SUCCESS_STEP_1", "SUCCESS_STEP_2", "SUCCESS_STEP_3", "SUCCESS_AGAIN_LABEL"]) {
+    assert.equal(parameters.get(code).value.en, "", code + " ships empty, so the generic default lists no next step and offers no second submission");
+  }
+  assert.doesNotMatch(
+    parameters.get("SUCCESS_TITLE").value.en + " " + parameters.get("SUCCESS_BODY").value.en,
+    /quote|propert|account|sign|regist|touch|email/i,
+    "the default confirmation promises nothing beyond receipt, whatever the form type",
+  );
+
+  const tokens = await fs.readFile(path.join(root, "runtime/styles/tokens.css"), "utf8");
+  for (const theme of manifest.themes.filter((value) => value !== "hvac")) {
+    assert.ok(tokens.includes('data-theme="' + theme + '"'), "tokens.css must define the " + theme + " palette");
+  }
+
+  assert.equal(template.parameters.filter((parameter) => parameter.code.startsWith("FORM_")).length, 7);
+  assert.ok(template.parameters.every((parameter) => parameter.nls.en.DESCRIPTION.trim().length > 0), "every parameter needs a description in CMS");
+} finally {
+  await fs.rm(documentDir, { recursive: true, force: true });
+}
+
+console.log("portal-form-check ok: " + KINDS.length + " field kinds, token DSL with spaced masks, attributeOrder authority, parent type ids, declarative behaviour only, anonymous requests, token-driven theming, constrained theme and mode, address fields that load no Google script without a key and wait for importLibrary with one, a repeating address that adds, removes and submits a JSON array, takes the first click on a suggestion and keeps typed text on screen across re-renders, Core's Address class drawn, validated, geocoded and submitted as the address control on the schema dev-1 served on 2026-09-16 while other entity classes stay selects, hidden attributes that never render yet still submit, and address coordinates asked for on every typed commit that follow every add, edit and removal without ever reaching the screen; focus and the first click survive blur and re-render, address suggestions follow the ARIA combobox pattern, each address string is geocoded once, an address map that is on screen as soon as Google is ready, keeps one pin per located address through every redraw and step, opens where the format declares and takes no answer with it when it fails, an address held to an area that is added only once Google has located it there, stays in the input with its message when it lies outside or cannot be found, and is accepted unchecked when Google does not answer, and the success screen promises only its copy");

@@ -1,0 +1,95 @@
+{
+ "code": "TASK",
+ "initialState": {
+  "id": 57,
+  "code": "DRAFT"
+ },
+ "nls": {
+  "en": {
+   "NAME": "Task"
+  }
+ },
+ "entityType": "com.pixelnation.svc.domain.Task",
+ "organization": {
+  "optimistic": 1,
+  "id": 1,
+  "code": "SYSTEM"
+ },
+ "id": 10,
+ "states": [
+  {
+   "style": {
+    "xPos": 1793.5964426722737,
+    "yPos": 756.3044597874017
+   },
+   "id": 59,
+   "code": "COMPLETED",
+   "nls": {
+    "en": {
+     "NAME": "Completed"
+    }
+   },
+   "events": []
+  },
+  {
+   "style": {
+    "xPos": 874.7288094008314,
+    "yPos": 774.3492739709341
+   },
+   "id": 57,
+   "code": "DRAFT",
+   "nls": {
+    "en": {
+     "NAME": "Draft"
+    }
+   },
+   "events": [
+    {
+     "id": 72,
+     "code": "DRAFT-IN_PROGRESS",
+     "nls": {
+      "en": {
+       "NAME": "Draft In Progress"
+      }
+     },
+     "targets": [
+      {
+       "id": 58,
+       "code": "IN_PROGRESS"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "style": {
+    "xPos": 1345.1164434382194,
+    "yPos": 782.2010598999706
+   },
+   "id": 58,
+   "code": "IN_PROGRESS",
+   "nls": {
+    "en": {
+     "NAME": "In Progress"
+    }
+   },
+   "events": [
+    {
+     "id": 73,
+     "code": "IN_PROGRESS-COMPLETED",
+     "nls": {
+      "en": {
+       "NAME": "In Progress Completed"
+      }
+     },
+     "targets": [
+      {
+       "id": 59,
+       "code": "COMPLETED"
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

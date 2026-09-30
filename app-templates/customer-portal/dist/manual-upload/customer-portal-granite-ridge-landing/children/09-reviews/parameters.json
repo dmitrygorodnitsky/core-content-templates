@@ -1,0 +1,80 @@
+[
+  {
+    "code": "GRS_LANDING_09_REVIEWS_EYEBROW",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "EYEBROW",
+        "DESCRIPTION": "CMS-authored value for Granite Ridge Snow Removal."
+      }
+    },
+    "value": {
+      "en": "Reviews"
+    }
+  },
+  {
+    "code": "GRS_LANDING_09_REVIEWS_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "TITLE",
+        "DESCRIPTION": "CMS-authored value for Granite Ridge Snow Removal."
+      }
+    },
+    "value": {
+      "en": "What customers say"
+    }
+  },
+  {
+    "code": "GRS_LANDING_09_REVIEWS_ITEM_1_TEXT",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "ITEM 1 TEXT",
+        "DESCRIPTION": "CMS-authored value for Granite Ridge Snow Removal."
+      }
+    },
+    "value": {
+      "en": "The compliance log alone is worth it — every storm documented before our insurer even asks."
+    }
+  },
+  {
+    "code": "GRS_LANDING_09_REVIEWS_ITEM_1_NAME",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "ITEM 1 NAME",
+        "DESCRIPTION": "CMS-authored value for Granite Ridge Snow Removal."
+      }
+    },
+    "value": {
+      "en": "Facilities manager"
+    }
+  },
+  {
+    "code": "GRS_LANDING_09_REVIEWS_ITEM_2_TEXT",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "ITEM 2 TEXT",
+        "DESCRIPTION": "CMS-authored value for Granite Ridge Snow Removal."
+      }
+    },
+    "value": {
+      "en": "Driveway was clear at 6:10 am after an overnight storm. Photo in the app as proof."
+    }
+  },
+  {
+    "code": "GRS_LANDING_09_REVIEWS_ITEM_2_NAME",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "ITEM 2 NAME",
+        "DESCRIPTION": "CMS-authored value for Granite Ridge Snow Removal."
+      }
+    },
+    "value": {
+      "en": "Homeowner · Edina"
+    }
+  }
+]

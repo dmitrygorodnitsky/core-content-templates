@@ -1,0 +1,783 @@
+{
+ "readAt": "2026-08-31",
+ "baseUrl": "https://dev-1.servicewand.com/core",
+ "organization": "SNOWLIMITLESS",
+ "organizations": [
+  {
+   "id": 7,
+   "code": "SERVICEWAND"
+  },
+  {
+   "id": 8,
+   "code": "SERVICE_WAND_WINTER_SERVICES"
+  },
+  {
+   "id": 9,
+   "code": "SERVICE_WAND_WINTER_SERVICES_CANADA"
+  },
+  {
+   "id": 43,
+   "code": "SNOWLIMITLESS"
+  }
+ ],
+ "workflows": [
+  {
+   "id": 1,
+   "code": "ORGANIZATION_WORKFLOW"
+  },
+  {
+   "id": 2,
+   "code": "USER_WORKFLOW"
+  },
+  {
+   "id": 3,
+   "code": "AGENT_DEPLOYMENT_PLAN_WORKFLOW"
+  },
+  {
+   "id": 4,
+   "code": "CORE_PROJECT_WORKFLOW"
+  },
+  {
+   "id": 5,
+   "code": "SOFTWARE_DEVELOPMENT"
+  },
+  {
+   "id": 6,
+   "code": "IT_RESOURCES"
+  },
+  {
+   "id": 7,
+   "code": "RESOURCE"
+  },
+  {
+   "id": 8,
+   "code": "SIMPLE_RESOURCE"
+  },
+  {
+   "id": 9,
+   "code": "HUMAN_RESOURCE"
+  },
+  {
+   "id": 10,
+   "code": "TASK"
+  },
+  {
+   "id": 11,
+   "code": "TEST_PROJECT_WORKFLOW"
+  },
+  {
+   "id": 12,
+   "code": "SNOW_SERVICE_JOB"
+  },
+  {
+   "id": 13,
+   "code": "SNOW_CONTRACT_DOCUMENT"
+  },
+  {
+   "id": 14,
+   "code": "SNOW_CUSTOMER_LIFECYCLE"
+  },
+  {
+   "id": 15,
+   "code": "SNOW_WORKFORCE_LIFECYCLE"
+  },
+  {
+   "id": 16,
+   "code": "SNOW_OPERATOR_RESOURCE"
+  },
+  {
+   "id": 17,
+   "code": "SNOW_ASSET_READINESS"
+  },
+  {
+   "id": 18,
+   "code": "SW_FS_WS_PROJECT"
+  },
+  {
+   "id": 19,
+   "code": "SNOW_ROUTE_TASK"
+  },
+  {
+   "id": 20,
+   "code": "APPOINTMENT"
+  },
+  {
+   "id": 21,
+   "code": "ORDER_DEFAULT"
+  },
+  {
+   "id": 22,
+   "code": "INVOICE"
+  },
+  {
+   "id": 23,
+   "code": "SPA_ORGANIZATION_LIFECYCLE"
+  },
+  {
+   "id": 24,
+   "code": "SPA_ACCOUNT_LIFECYCLE"
+  },
+  {
+   "id": 25,
+   "code": "SPA_PRODUCT_LIFECYCLE"
+  },
+  {
+   "id": 26,
+   "code": "SPA_PRICE_LIFECYCLE"
+  },
+  {
+   "id": 27,
+   "code": "SPA_CARE_PLAN_LIFECYCLE"
+  },
+  {
+   "id": 28,
+   "code": "SPA_TASK_LIFECYCLE"
+  },
+  {
+   "id": 29,
+   "code": "SPA_APPOINTMENT_LIFECYCLE"
+  },
+  {
+   "id": 30,
+   "code": "SPA_RESOURCE_LIFECYCLE"
+  },
+  {
+   "id": 31,
+   "code": "SPA_ORDER_LIFECYCLE"
+  },
+  {
+   "id": 32,
+   "code": "SPA_PRODUCT_REVIEW_LIFECYCLE"
+  },
+  {
+   "id": 33,
+   "code": "EMPLOYEE_ACCOUNT_LIFECYCLE"
+  },
+  {
+   "id": 34,
+   "code": "WORKFORCE_LIFECYCLE"
+  },
+  {
+   "id": 35,
+   "code": "PROPERTY_LIFECYCLE"
+  },
+  {
+   "id": 36,
+   "code": "CLIENT_ACCOUNT_LIFECYCLE"
+  },
+  {
+   "id": 37,
+   "code": "EQUIPMENT_LIFECYCLE"
+  },
+  {
+   "id": 38,
+   "code": "LICENSE_LIFECYCLE"
+  },
+  {
+   "id": 39,
+   "code": "SPA_ORDER_ITEM_LIFECYCLE"
+  },
+  {
+   "id": 40,
+   "code": "SPA_FULFILLMENT_LIFECYCLE"
+  },
+  {
+   "id": 41,
+   "code": "SPA_PLAN_ENROLLMENT_LIFECYCLE"
+  },
+  {
+   "id": 42,
+   "code": "SPA_INVENTORY_LIFECYCLE"
+  },
+  {
+   "id": 43,
+   "code": "SPA_SUBSCRIPTION_LIFECYCLE"
+  },
+  {
+   "id": 44,
+   "code": "KNOWLEDGE_ASSET"
+  },
+  {
+   "id": 45,
+   "code": "GENERAL_FSM_ORDER"
+  },
+  {
+   "id": 46,
+   "code": "GENERAL_FSM_ORDER_ITEM_LIFECYCLE"
+  },
+  {
+   "id": 47,
+   "code": "PRE_SEASON_INSPECTION_LIFECYCLE"
+  },
+  {
+   "id": 48,
+   "code": "SUPPORT_TICKET_LIFECYCLE"
+  }
+ ],
+ "types": [
+  {
+   "service": "core-acct",
+   "endpoint": "account-type",
+   "path": "https://dev-1.servicewand.com/core-acct/api/account-type/list.json",
+   "status": 200,
+   "resultSize": 14,
+   "codes": [
+    {
+     "id": 1,
+     "code": "GENERIC",
+     "workflow": null,
+     "owner": "SYSTEM",
+     "attributeCount": 0
+    },
+    {
+     "id": 2,
+     "code": "CUSTOMER",
+     "workflow": "SNOW_CUSTOMER_LIFECYCLE",
+     "owner": "SYSTEM",
+     "attributeCount": 2
+    },
+    {
+     "id": 3,
+     "code": "ORGANIZATION",
+     "workflow": null,
+     "owner": "SYSTEM",
+     "attributeCount": 0
+    },
+    {
+     "id": 4,
+     "code": "PRINTABLE_ACCOUNT",
+     "workflow": null,
+     "owner": "SYSTEM",
+     "attributeCount": 1
+    },
+    {
+     "id": 5,
+     "code": "SNOW_RESIDENTIAL_CUSTOMER",
+     "workflow": "SNOW_CUSTOMER_LIFECYCLE",
+     "owner": "SERVICE_WAND_WINTER_SERVICES_CANADA",
+     "attributeCount": 6
+    },
+    {
+     "id": 6,
+     "code": "SNOW_COMMERCIAL_CUSTOMER",
+     "workflow": "SNOW_CUSTOMER_LIFECYCLE",
+     "owner": "SERVICE_WAND_WINTER_SERVICES_CANADA",
+     "attributeCount": 6
+    },
+    {
+     "id": 7,
+     "code": "SNOW_PROPERTY_MANAGER",
+     "workflow": "SNOW_CUSTOMER_LIFECYCLE",
+     "owner": "SERVICE_WAND_WINTER_SERVICES_CANADA",
+     "attributeCount": 6
+    },
+    {
+     "id": 12,
+     "code": "SNOW_EMPLOYEE",
+     "workflow": "SNOW_WORKFORCE_LIFECYCLE",
+     "owner": "SERVICE_WAND_WINTER_SERVICES_CANADA",
+     "attributeCount": 7
+    },
+    {
+     "id": 17,
+     "code": "SNOW_SUBCONTRACTOR",
+     "workflow": "SNOW_WORKFORCE_LIFECYCLE",
+     "owner": "SERVICE_WAND_WINTER_SERVICES_CANADA",
+     "attributeCount": 7
+    },
+    {
+     "id": 35,
+     "code": "TYPE_AWARE",
+     "workflow": null,
+     "owner": "SYSTEM",
+     "attributeCount": 1
+    },
+    {
+     "id": 36,
+     "code": "TAX_AWARE",
+     "workflow": null,
+     "owner": "SYSTEM",
+     "attributeCount": 1
+    },
+    {
+     "id": 37,
+     "code": "EMPLOYEE",
+     "workflow": "EMPLOYEE_ACCOUNT_LIFECYCLE",
+     "owner": "SYSTEM",
+     "attributeCount": 0
+    },
+    {
+     "id": 38,
+     "code": "CONTRACTOR",
+     "workflow": "SNOW_WORKFORCE_LIFECYCLE",
+     "owner": "SYSTEM",
+     "attributeCount": 0
+    },
+    {
+     "id": 39,
+     "code": "SUPPLIER",
+     "workflow": null,
+     "owner": "SYSTEM",
+     "attributeCount": 0
+    }
+   ]
+  },
+  {
+   "service": "core-svc",
+   "endpoint": "project-type",
+   "path": "https://dev-1.servicewand.com/core-svc/api/project-type/list.json",
+   "status": 200,
+   "resultSize": 4,
+   "codes": [
+    {
+     "id": 1,
+     "code": "CORE_DEV_PROJECT",
+     "workflow": "CORE_PROJECT_WORKFLOW",
+     "owner": "SYSTEM",
+     "attributeCount": 4
+    },
+    {
+     "id": 3,
+     "code": "TEST_PROJECT_TYPE",
+     "workflow": "TEST_PROJECT_WORKFLOW",
+     "owner": "SYSTEM",
+     "attributeCount": 0
+    },
+    {
+     "id": 4,
+     "code": "SNOW_SERVICE_SEASON",
+     "workflow": "SW_FS_WS_PROJECT",
+     "owner": "SERVICE_WAND_WINTER_SERVICES_CANADA",
+     "attributeCount": 4
+    },
+    {
+     "id": 5,
+     "code": "SNOW_SERVICE_PROGRAM",
+     "workflow": "SW_FS_WS_PROJECT",
+     "owner": "SERVICE_WAND_WINTER_SERVICES_CANADA",
+     "attributeCount": 2
+    }
+   ]
+  },
+  {
+   "service": "core-svc",
+   "endpoint": "task-type",
+   "path": "https://dev-1.servicewand.com/core-svc/api/task-type/list.json",
+   "status": 200,
+   "resultSize": 4,
+   "codes": [
+    {
+     "id": 1,
+     "code": "CORE_DEVELOPMENT_TASK",
+     "workflow": "SOFTWARE_DEVELOPMENT",
+     "owner": "SYSTEM",
+     "attributeCount": 7
+    },
+    {
+     "id": 2,
+     "code": "PROJECT_TASK_TYPE",
+     "workflow": "TASK",
+     "owner": "SYSTEM",
+     "attributeCount": 6
+    },
+    {
+     "id": 10,
+     "code": "SNOW_ROUTE",
+     "workflow": "SNOW_ROUTE_TASK",
+     "owner": "SERVICE_WAND_WINTER_SERVICES_CANADA",
+     "attributeCount": 9
+    },
+    {
+     "id": 29,
+     "code": "SUPPORT_TICKET",
+     "workflow": null,
+     "owner": "SERVICE_WAND_WINTER_SERVICES",
+     "attributeCount": 2
+    }
+   ]
+  },
+  {
+   "service": "core-svc",
+   "endpoint": "appointment-type",
+   "path": "https://dev-1.servicewand.com/core-svc/api/appointment-type/list.json",
+   "status": 200,
+   "resultSize": 2,
+   "codes": [
+    {
+     "id": 2,
+     "code": "SNOW_SERVICE_VISIT",
+     "workflow": "APPOINTMENT",
+     "owner": "SERVICE_WAND_WINTER_SERVICES",
+     "attributeCount": 5
+    },
+    {
+     "id": 3,
+     "code": "SNOW_INSPECTION_VISIT",
+     "workflow": "APPOINTMENT",
+     "owner": "SERVICE_WAND_WINTER_SERVICES",
+     "attributeCount": 4
+    }
+   ]
+  },
+  {
+   "service": "core-rm",
+   "endpoint": "resource-type",
+   "path": "https://dev-1.servicewand.com/core-rm/api/resource-type/list.json",
+   "status": 200,
+   "resultSize": 26,
+   "codes": [
+    {
+     "id": 1,
+     "code": "DIAGNOSTICS_AWARE",
+     "workflow": null,
+     "owner": "SYSTEM",
+     "attributeCount": 3
+    },
+    {
+     "id": 2,
+     "code": "NETWORK_RESOURCE",
+     "workflow": null,
+     "owner": "SYSTEM",
+     "attributeCount": 1
+    },
+    {
+     "id": 3,
+     "code": "LINUX_HOST",
+     "workflow": "IT_RESOURCES",
+     "owner": "SYSTEM",
+     "attributeCount": 4
+    },
+    {
+     "id": 4,
+     "code": "WEB_SERVER",
+     "workflow": "IT_RESOURCES",
+     "owner": "SYSTEM",
+     "attributeCount": 5
+    },
+    {
+     "id": 5,
+     "code": "AGENT",
+     "workflow": "IT_RESOURCES",
+     "owner": "SYSTEM",
+     "attributeCount": 6
+    },
+    {
+     "id": 82,
+     "code": "DB_HOST",
+     "workflow": "IT_RESOURCES",
+     "owner": "SYSTEM",
+     "attributeCount": 3
+    },
+    {
+     "id": 83,
+     "code": "REAL_ESTATE_PROPERTY",
+     "workflow": null,
+     "owner": "SERVICE_WAND_WINTER_SERVICES",
+     "attributeCount": 3
+    },
+    {
+     "id": 84,
+     "code": "CREW",
+     "workflow": "RESOURCE",
+     "owner": "SERVICE_WAND_WINTER_SERVICES",
+     "attributeCount": 4
+    },
+    {
+     "id": 108,
+     "code": "SITE",
+     "workflow": null,
+     "owner": "SYSTEM",
+     "attributeCount": 2
+    },
+    {
+     "id": 109,
+     "code": "MOBILE_RESOURCE",
+     "workflow": "SIMPLE_RESOURCE",
+     "owner": "SYSTEM",
+     "attributeCount": 0
+    },
+    {
+     "id": 110,
+     "code": "VEHICLE",
+     "workflow": "RESOURCE",
+     "owner": "SERVICE_WAND_WINTER_SERVICES",
+     "attributeCount": 3
+    },
+    {
+     "id": 114,
+     "code": "PUBLIC_ROAD_VEHICLE",
+     "workflow": "SIMPLE_RESOURCE",
+     "owner": "SERVICE_WAND_WINTER_SERVICES",
+     "attributeCount": 5
+    },
+    {
+     "id": 126,
+     "code": "OFF_ROAD_VEHICLE",
+     "workflow": "SIMPLE_RESOURCE",
+     "owner": "SERVICE_WAND_WINTER_SERVICES",
+     "attributeCount": 1
+    },
+    {
+     "id": 146,
+     "code": "EQUIPMENT",
+     "workflow": "SIMPLE_RESOURCE",
+     "owner": "SERVICE_WAND_WINTER_SERVICES",
+     "attributeCount": 4
+    },
+    {
+     "id": 147,
+     "code": "VEHICLE_ATTACHMENT",
+     "workflow": null,
+     "owner": "SERVICE_WAND_WINTER_SERVICES",
+     "attributeCount": 3
+    },
+    {
+     "id": 148,
+     "code": "PLOW",
+     "workflow": "SIMPLE_RESOURCE",
+     "owner": "SERVICE_WAND_WINTER_SERVICES",
+     "attributeCount": 2
+    },
+    {
+     "id": 149,
+     "code": "SPREADER",
+     "workflow": "SIMPLE_RESOURCE",
+     "owner": "SERVICE_WAND_WINTER_SERVICES",
+     "attributeCount": 1
+    },
+    {
+     "id": 150,
+     "code": "BRINE_TANK",
+     "workflow": "SIMPLE_RESOURCE",
+     "owner": "SERVICE_WAND_WINTER_SERVICES",
+     "attributeCount": 1
+    },
+    {
+     "id": 153,
+     "code": "PROPERTY",
+     "workflow": "PROPERTY_LIFECYCLE",
+     "owner": "SERVICE_WAND_WINTER_SERVICES",
+     "attributeCount": 3
+    },
+    {
+     "id": 154,
+     "code": "SNOW_REMOVAL_PROPERTY",
+     "workflow": "PROPERTY_LIFECYCLE",
+     "owner": "SERVICE_WAND_WINTER_SERVICES",
+     "attributeCount": 12
+    },
+    {
+     "id": 155,
+     "code": "WORKFORCE",
+     "workflow": "WORKFORCE_LIFECYCLE",
+     "owner": "SERVICE_WAND_WINTER_SERVICES",
+     "attributeCount": 1
+    },
+    {
+     "id": 156,
+     "code": "DRIVER",
+     "workflow": "WORKFORCE_LIFECYCLE",
+     "owner": "SERVICE_WAND_WINTER_SERVICES",
+     "attributeCount": 1
+    },
+    {
+     "id": 157,
+     "code": "GENERAL_WORKER",
+     "workflow": "WORKFORCE_LIFECYCLE",
+     "owner": "SERVICE_WAND_WINTER_SERVICES",
+     "attributeCount": 0
+    },
+    {
+     "id": 158,
+     "code": "DISPATCHER",
+     "workflow": "WORKFORCE_LIFECYCLE",
+     "owner": "SERVICE_WAND_WINTER_SERVICES",
+     "attributeCount": 0
+    },
+    {
+     "id": 159,
+     "code": "FOREMAN",
+     "workflow": "WORKFORCE_LIFECYCLE",
+     "owner": "SERVICE_WAND_WINTER_SERVICES",
+     "attributeCount": 0
+    },
+    {
+     "id": 161,
+     "code": "SNOW_REMOVAL_VEHICLE",
+     "workflow": "EQUIPMENT_LIFECYCLE",
+     "owner": "SNOWLIMITLESS",
+     "attributeCount": 2
+    }
+   ]
+  },
+  {
+   "service": "core",
+   "endpoint": "document-type",
+   "path": "https://dev-1.servicewand.com/core/api/document-type/list.json",
+   "status": 200,
+   "resultSize": 14,
+   "codes": [
+    {
+     "id": 1,
+     "code": "DOC_TREE",
+     "workflow": null,
+     "owner": "SYSTEM",
+     "attributeCount": 6
+    },
+    {
+     "id": 2,
+     "code": "AGENT_DEPLOYMENT_PLAN",
+     "workflow": "AGENT_DEPLOYMENT_PLAN_WORKFLOW",
+     "owner": "SYSTEM",
+     "attributeCount": 18
+    },
+    {
+     "id": 3,
+     "code": "TEST_DOC",
+     "workflow": null,
+     "owner": "SYSTEM",
+     "attributeCount": 0
+    },
+    {
+     "id": 4,
+     "code": "SNOW_SEASONAL_CONTRACT",
+     "workflow": "SNOW_CONTRACT_DOCUMENT",
+     "owner": "SERVICE_WAND_WINTER_SERVICES_CANADA",
+     "attributeCount": 10
+    },
+    {
+     "id": 5,
+     "code": "SNOW_PER_VISIT_CONTRACT",
+     "workflow": "SNOW_CONTRACT_DOCUMENT",
+     "owner": "SERVICE_WAND_WINTER_SERVICES_CANADA",
+     "attributeCount": 10
+    },
+    {
+     "id": 6,
+     "code": "SNOW_SEASONAL_CONTRACT",
+     "workflow": "SNOW_CONTRACT_DOCUMENT",
+     "owner": "SERVICE_WAND_WINTER_SERVICES_CANADA",
+     "attributeCount": 10
+    },
+    {
+     "id": 7,
+     "code": "SNOW_PER_VISIT_CONTRACT",
+     "workflow": "SNOW_CONTRACT_DOCUMENT",
+     "owner": "SERVICE_WAND_WINTER_SERVICES_CANADA",
+     "attributeCount": 10
+    },
+    {
+     "id": 8,
+     "code": "SNOW_SEASONAL_CONTRACT",
+     "workflow": "SNOW_CONTRACT_DOCUMENT",
+     "owner": "SERVICE_WAND_WINTER_SERVICES_CANADA",
+     "attributeCount": 10
+    },
+    {
+     "id": 9,
+     "code": "SNOW_PER_VISIT_CONTRACT",
+     "workflow": "SNOW_CONTRACT_DOCUMENT",
+     "owner": "SERVICE_WAND_WINTER_SERVICES_CANADA",
+     "attributeCount": 10
+    },
+    {
+     "id": 10,
+     "code": "SNOW_SEASONAL_CONTRACT",
+     "workflow": "SNOW_CONTRACT_DOCUMENT",
+     "owner": "SERVICE_WAND_WINTER_SERVICES_CANADA",
+     "attributeCount": 10
+    },
+    {
+     "id": 11,
+     "code": "SNOW_PER_VISIT_CONTRACT",
+     "workflow": "SNOW_CONTRACT_DOCUMENT",
+     "owner": "SERVICE_WAND_WINTER_SERVICES_CANADA",
+     "attributeCount": 10
+    },
+    {
+     "id": 12,
+     "code": "LICENSE",
+     "workflow": "LICENSE_LIFECYCLE",
+     "owner": "SYSTEM",
+     "attributeCount": 8
+    },
+    {
+     "id": 13,
+     "code": "DRIVER_LICENSE",
+     "workflow": "LICENSE_LIFECYCLE",
+     "owner": "SYSTEM",
+     "attributeCount": 7
+    },
+    {
+     "id": 14,
+     "code": "KNOWLEDGE_ASSET",
+     "workflow": "KNOWLEDGE_ASSET",
+     "owner": "SYSTEM",
+     "attributeCount": 5
+    }
+   ]
+  },
+  {
+   "service": "core-bill",
+   "endpoint": "order-type",
+   "path": "https://dev-1.servicewand.com/core-bill/api/order-type/list.json",
+   "status": 200,
+   "resultSize": 2,
+   "codes": [
+    {
+     "id": 5,
+     "code": "FIELD_SERVICE_ORDER",
+     "workflow": "GENERAL_FSM_ORDER",
+     "owner": "SERVICE_WAND_WINTER_SERVICES",
+     "attributeCount": 6
+    },
+    {
+     "id": 6,
+     "code": "WINTER_SERVICES_ORDER",
+     "workflow": "GENERAL_FSM_ORDER",
+     "owner": "SERVICE_WAND_WINTER_SERVICES",
+     "attributeCount": 2
+    }
+   ]
+  },
+  {
+   "service": "core-bill",
+   "endpoint": "order-item-type",
+   "path": "https://dev-1.servicewand.com/core-bill/api/order-item-type/list.json",
+   "status": 200,
+   "resultSize": 1,
+   "codes": [
+    {
+     "id": 5,
+     "code": "SNOW_REMOVAL_ORDER_ITEM",
+     "workflow": "GENERAL_FSM_ORDER_ITEM_LIFECYCLE",
+     "owner": "SERVICE_WAND_WINTER_SERVICES",
+     "attributeCount": 0
+    }
+   ]
+  },
+  {
+   "service": "core-bill",
+   "endpoint": "invoice-type",
+   "path": "https://dev-1.servicewand.com/core-bill/api/invoice-type/list.json",
+   "status": 200,
+   "resultSize": 2,
+   "codes": [
+    {
+     "id": 5,
+     "code": "PER_SERVICE",
+     "workflow": null,
+     "owner": "SERVICE_WAND_WINTER_SERVICES",
+     "attributeCount": 2
+    },
+    {
+     "id": 6,
+     "code": "FIXED_RATE",
+     "workflow": null,
+     "owner": "SERVICE_WAND_WINTER_SERVICES",
+     "attributeCount": 3
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,22 @@
+<!-- lab-ui block · cta.btn-primary-ring
+     Primary CTA pill with rainbow gradient ring.
+     Theme: light (works on dark backgrounds too — the ring uses
+     mask-composite over the parent background).
+
+     Param contract (see block.json for full spec):
+       - href          URL          link target
+       - label         SS           button text (e.g. "Book a Demo")
+       - icon          enum         star | none (default: star)
+
+     Example usage in a hub page:
+       <a class="btn btn-primary btn-primary-ring" href="#demo">
+         <svg class="btn-star" …></svg>
+         Book a Demo
+       </a>
+-->
+<a class="btn btn-primary btn-primary-ring" href="{{href}}" data-block="cta.btn-primary-ring">
+  <svg class="btn-star" width="16" height="16" viewBox="0 0 21 21" fill="currentColor" aria-hidden="true">
+    <path d="M10.5 0L13.4698 7.53015L21 10.5L13.4698 13.4698L10.5 21L7.53015 13.4698L0 10.5L7.53015 7.53015L10.5 0Z"/>
+  </svg>
+  {{label}}
+</a>

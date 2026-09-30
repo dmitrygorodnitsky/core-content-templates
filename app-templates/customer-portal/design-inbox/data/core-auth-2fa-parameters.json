@@ -1,0 +1,157 @@
+{
+  "artifact": "AUTH_2FA — CMS-owned localized parameters",
+  "wave": 19,
+  "source": "customer-portal-design/core-auth-2fa.html",
+  "syntax": "${PARAMETER_NAME@LOCALIZED_STRING_SS} — one parameter per visible string, alone in its element. Each element also carries data-copy=\"<slot>\", the wave-18 convention.",
+  "rules": [
+    "CMS owns copy only. No parameter here is, contains, defaults, mirrors or logs a protected runtime value.",
+    "No vertical, tenant or business copy is hardcoded in the source — no Calm Harbor, no Beauty, no English-only string.",
+    "Example copy below is SAFE FILLER for review and for the evidence harness. It is not a product decision and must be re-authored per locale before activation.",
+    "Error copy is non-enumerating: it never says why verification failed beyond the supplied string, never counts attempts and never hints at lockout.",
+    "AUTH_BRAND_NAME and AUTH_PITCH_EYEBROW are the SAME parameters the wave-18 login page uses. Registering them once serves both pages."
+  ],
+  "parameters": [
+    {
+      "name": "TWO_FACTOR_DOCUMENT_TITLE",
+      "slot": "page.documentTitle",
+      "element": "<title>",
+      "example": "Two-step verification",
+      "notes": "No brand concatenation in markup — a locale that wants the brand in the title puts it in this string."
+    },
+    {
+      "name": "AUTH_BRAND_NAME",
+      "slot": "brand.name",
+      "element": ".brand-name",
+      "example": "Aircove",
+      "shared": "login (wave 18)"
+    },
+    {
+      "name": "TWO_FACTOR_TITLE",
+      "slot": "card.title",
+      "element": "h1.auth-title",
+      "example": "Two-step verification"
+    },
+    {
+      "name": "TWO_FACTOR_SUBTITLE",
+      "slot": "card.subtitle",
+      "element": "p.auth-sub",
+      "example": "Enter the code from your authenticator app to finish signing in.",
+      "notes": "True in all four states — it must not describe enrollment, which is state-dependent."
+    },
+    {
+      "name": "TWO_FACTOR_SETUP",
+      "slot": "setup.body",
+      "element": "p.tfa-setup__text",
+      "example": "Set up your authenticator app. Scan this code with the app you use for verification codes, then enter the code it shows.",
+      "states": ["setup-ready", "setup-error"],
+      "contract": true
+    },
+    {
+      "name": "TWO_FACTOR_QR_ALT",
+      "slot": "—",
+      "element": "img.tfa-qr__img[alt]",
+      "example": "Setup code for your authenticator app. If you cannot scan it, use the setup key below.",
+      "states": ["setup-ready", "setup-error"],
+      "contract": true,
+      "notes": "Must point at the manual key, because the image is useless to anyone who cannot scan or see it."
+    },
+    {
+      "name": "TWO_FACTOR_SECRET_LABEL",
+      "slot": "setup.secretLabel",
+      "element": ".tfa-secret__label",
+      "example": "Setup key",
+      "states": ["setup-ready", "setup-error"],
+      "notes": "Names the {{TWO_FACTOR_SECRET}} value that follows it in reading order."
+    },
+    {
+      "name": "TWO_FACTOR_SECRET_HINT",
+      "slot": "setup.secretHint",
+      "element": ".tfa-secret__hint",
+      "example": "Cannot scan? Enter this key in your authenticator app instead. Spaces and letter case do not matter.",
+      "states": ["setup-ready", "setup-error"]
+    },
+    {
+      "name": "TWO_FACTOR_NOTICE",
+      "slot": "verify.notice",
+      "element": "p.tfa-notice",
+      "example": "Your authenticator app is already set up. Open it to get your current code.",
+      "states": ["verify-ready", "verify-error"],
+      "contract": true
+    },
+    {
+      "name": "TWO_FACTOR_CODE_LABEL",
+      "slot": "field.code.label",
+      "element": "label[for=code]",
+      "example": "Verification code",
+      "contract": true,
+      "notes": "Always present. The label is explicit and visible in all four states."
+    },
+    {
+      "name": "TWO_FACTOR_CODE_HINT",
+      "slot": "field.code.hint",
+      "element": "#tfa-code-hint",
+      "example": "Six digits, from your authenticator app.",
+      "notes": "Accessible description, named by the input's aria-describedby. Digit count lives in copy, not in a pattern attribute — the server stays the only validator."
+    },
+    {
+      "name": "TWO_FACTOR_ERROR",
+      "slot": "error.body",
+      "element": ".auth-msg--error .auth-msg__title",
+      "example": "That code did not work. Open your authenticator app for a new code and try again.",
+      "states": ["setup-error", "verify-error"],
+      "contract": true
+    },
+    {
+      "name": "TWO_FACTOR_BUTTON",
+      "slot": "action.submit",
+      "element": "button[type=submit]",
+      "example": "Verify",
+      "contract": true,
+      "notes": "One action, one label, all four states. No second label for a loading or disabled state — neither exists."
+    },
+    {
+      "name": "TWO_FACTOR_NOTE",
+      "slot": "card.note",
+      "element": "p.auth-note",
+      "example": "Codes are generated on your device. We will never ask you for one by email, message or phone.",
+      "notes": "The optional security/help note. Anti-phishing counterpart of the login note."
+    },
+    {
+      "name": "AUTH_PITCH_EYEBROW",
+      "slot": "pitch.eyebrow",
+      "element": ".eyebrow",
+      "example": "Customer account",
+      "shared": "login (wave 18)"
+    },
+    {
+      "name": "TWO_FACTOR_PITCH_TITLE",
+      "slot": "pitch.title",
+      "element": "h2.auth-pitch__title",
+      "example": "One more step before you\u2019re in.",
+      "notes": "Step-specific, NOT shared with login: login's pitch asserts that a password is entered on that page, which is false here."
+    },
+    {
+      "name": "TWO_FACTOR_PITCH_BODY",
+      "slot": "pitch.body",
+      "element": "p.auth-pitch__sub",
+      "example": "This second step runs on the account service, not in the portal. Once your code is confirmed, you\u2019ll be taken straight back to where you started.",
+      "notes": "Step-specific, same reason. Keeps the anti-phishing framing of the login pitch."
+    }
+  ],
+  "runtimePlaceholders": {
+    "owner": "core-auth — supplied per request. CMS creates no parameter, default, fixture, log, analytics attribute or JavaScript variable for any of these, and every one survives the CMS-rendered HTML byte-for-byte until substitution.",
+    "referenced": [
+      "{{TWO_FACTOR_ACTION}} — form action",
+      "{{CSRF_PARAMETER_NAME}} — hidden input name",
+      "{{CSRF_TOKEN}} — hidden input value",
+      "{{SETUP_DISPLAY}} — block|none, enrollment block",
+      "{{VERIFY_NOTICE_DISPLAY}} — block|none, already-enrolled notice",
+      "{{ERROR_DISPLAY}} — block|none, assertive region",
+      "{{TWO_FACTOR_QR_CODE}} — QR image src, a core-auth data URL",
+      "{{TWO_FACTOR_SECRET}} — generated setup key, rendered as text"
+    ],
+    "notReferenced": [
+      "{{TWO_FACTOR_OTPAUTH_URI}} — deliberately unreferenced: no visible control needs it in this brief, and an unused placeholder is one more protected value on the page. Adding it later is a markup-only change."
+    ]
+  }
+}

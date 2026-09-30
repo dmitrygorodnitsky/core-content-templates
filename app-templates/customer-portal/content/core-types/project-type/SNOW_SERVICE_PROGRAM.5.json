@@ -1,0 +1,140 @@
+{
+ "optimistic": 0,
+ "code": "SNOW_SERVICE_PROGRAM",
+ "nls": {
+  "en": {
+   "NAME": "Service Program"
+  }
+ },
+ "workflow": {
+  "id": 18,
+  "code": "SW_FS_WS_PROJECT"
+ },
+ "organization": {
+  "optimistic": 3,
+  "id": 9,
+  "code": "SERVICE_WAND_WINTER_SERVICES_CANADA"
+ },
+ "attributeOrder": [
+  {
+   "PROGRAM_PROFILE": [
+    {
+     "attributeCode": "PROGRAM_TYPE",
+     "visible": true
+    },
+    {
+     "attributeCode": "PROGRAM_STATUS",
+     "visible": true
+    }
+   ]
+  }
+ ],
+ "attributes": [
+  {
+   "code": "PROGRAM_STATUS",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "en": {
+     "NAME": "Program Status"
+    }
+   },
+   "options": [
+    {
+     "value": "DRAFT",
+     "nls": {
+      "en": {
+       "NAME": "Draft"
+      }
+     }
+    },
+    {
+     "value": "ACTIVE",
+     "nls": {
+      "en": {
+       "NAME": "Active"
+      }
+     }
+    },
+    {
+     "value": "CLOSED",
+     "nls": {
+      "en": {
+       "NAME": "Closed"
+      }
+     }
+    },
+    {
+     "value": "ARCHIVED",
+     "nls": {
+      "en": {
+       "NAME": "Archived"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "code": "PROGRAM_TYPE",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "en": {
+     "NAME": "Program Type"
+    }
+   },
+   "options": [
+    {
+     "value": "SEASONAL",
+     "nls": {
+      "en": {
+       "NAME": "Seasonal"
+      }
+     }
+    },
+    {
+     "value": "ON_DEMAND",
+     "nls": {
+      "en": {
+       "NAME": "On Demand"
+      }
+     }
+    },
+    {
+     "value": "INSPECTION",
+     "nls": {
+      "en": {
+       "NAME": "Inspection"
+      }
+     }
+    },
+    {
+     "value": "DEICING",
+     "nls": {
+      "en": {
+       "NAME": "Deicing"
+      }
+     }
+    }
+   ]
+  }
+ ],
+ "id": 5,
+ "isAbstract": false,
+ "attributeGroups": [
+  {
+   "code": "PROGRAM_PROFILE",
+   "nls": {
+    "en": {
+     "NAME": "Program Profile"
+    }
+   }
+  }
+ ]
+}

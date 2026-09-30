@@ -1,0 +1,26 @@
+{
+  "$schema": "lab-ui/block@1",
+  "id": "cta.btn-base",
+  "category": "03-cta",
+  "title": "CTA · button geometry base",
+  "description": "Shared geometry and .btn-star base for every CTA variant. Defines .btn (pill shape, height 3.25rem, padding, transition) and .btn-star (icon flex + rotation transition). Variant blocks (cta.btn-primary-ring, cta.btn-secondary-filled) extend this base.",
+  "canonical": true,
+  "theme": "light+dark-compatible",
+  "depends_on": {
+    "tokens": [
+      "--font-family",
+      "--radius-pill",
+      "--transition-duration"
+    ],
+    "other_blocks": []
+  },
+  "params": [],
+  "preview": {
+    "1440": "preview-1440.png",
+    "390": "preview-390.png"
+  },
+  "notes": [
+    "This block has no visual identity of its own — it is a primitive shared by every CTA variant.",
+    "Every CTA harness must link cta.btn-base/block.css before the variant block.css."
+  ]
+}

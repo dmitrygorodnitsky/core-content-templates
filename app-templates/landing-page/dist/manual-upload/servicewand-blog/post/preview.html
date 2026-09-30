@@ -1,0 +1,1876 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="ServiceWand Blog Post">
+<title>ServiceWand Blog Post</title>
+<meta property="og:type" content="article">
+<meta property="og:title" content="">
+<meta property="og:description" content="">
+<meta property="og:image" content="${HERO_IMAGE_URL}">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="">
+<meta name="twitter:description" content="">
+<meta name="twitter:image" content="${HERO_IMAGE_URL}">
+<style>/* ============================================================
+   lab-ui · canonical tokens · light theme
+   ----------------------------------------------------------------
+   Source-of-truth design tokens for the the platform block catalog.
+   Extracted from source tokens (example.com light theme) +
+   additive --font-mono from v5 (JetBrains Mono).
+   ============================================================ */
+
+:root {
+  /* ─── Palette (raw brand colors) ─────────────────────────── */
+  --color-black:        #1B1D25;
+  --color-white:        #FFFFFF;
+  --color-gray:         #BEC5D3;
+  --color-gray-second:  #5C6474;
+  --color-gray-blue:    #97A2B8;
+  --color-gray-light:   #D9D9D9;
+
+  --color-cyan:         #6BEAF9;
+  --color-blue:         #4F95FF;
+  --color-red:          #FF6C56;
+  --color-green:        #7DDE8E;
+  --color-orange:       #FFA72C;
+  --color-magenta:      #EF5CFF;
+
+  --color-black-bg:           #17171B;
+  --color-gray-bg:            #F9F9F9;
+  --color-light-card-bg:      #F7F7F74D;
+  --color-header-footer-bg:   rgba(77, 79, 104, 0.20);
+
+  --color-dark-card-bg:       linear-gradient(180deg, #20232D 0%, #2C2D3C 100%);
+  --color-light-gray-stroke:  linear-gradient(179.96deg, #E0E8F4 0.03%, #D1D6DD 102.68%);
+  --color-dark-gray-stroke:   linear-gradient(180deg, #454F6B 0%, #2F2F40 100%);
+
+  /* ─── Brand CTA rainbow gradient (locked: v5 direction + stops) */
+  --gradient-cta-ring:
+    linear-gradient(250deg,
+      rgba(107, 237, 249, 0)   4.98%,
+      #6bedf9                 37.35%,
+      #ffa72c                 72.51%,
+      rgba(239, 92, 255, 0)   96.41%);
+
+  /* ─── Typography ─────────────────────────────────────────── */
+  --font-family:        "Vela Sans", sans-serif;
+  --font-mono:          "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+
+  /* Type scale */
+  --type-h1-size:       clamp(2.25rem, 5.2vw, 5rem);
+  --type-h1-weight:     500;
+  --type-h1-tracking:   -0.025em;
+  --type-h1-leading:    1.04;
+
+  --type-h2-size:       clamp(1.75rem, 3.4vw, 3.125rem);
+  --type-h2-weight:     600;
+  --type-h2-tracking:   -0.022em;
+  --type-h2-leading:    1.15;
+
+  --type-h3-size:       clamp(1.125rem, 1.6vw, 1.5625rem);
+  --type-h3-weight:     600;
+  --type-h3-tracking:   -0.015em;
+  --type-h3-leading:    1.25;
+
+  --type-h4-size:       1.125rem;
+  --type-h4-weight:     600;
+  --type-h4-tracking:   -0.01em;
+
+  --type-lead-size:     clamp(1rem, 1.25vw, 1.25rem);
+  --type-lead-weight:   400;
+  --type-lead-leading:  1.5;
+
+  --type-body-size:     1rem;
+  --type-body-leading:  1.55;
+
+  --type-eyebrow-size:  0.8125rem;
+  --type-eyebrow-tracking: 0.12em;
+
+  /* ─── Layout ─────────────────────────────────────────────── */
+  --container-width:     105rem;
+  --container-padding-x: 1.875rem;
+  --header-height:       4.6875rem;
+
+  /* Backdrop blur — header chrome */
+  --backdrop-blur-header:    1.25rem;
+  --backdrop-blur-table:     2.5rem;
+  --backdrop-blur-ecosystem: 5rem;
+
+  /* ─── Radii ──────────────────────────────────────────────── */
+  --radius-pill:    6.25rem;
+  --radius-card:    1.25rem;
+  --radius-card-sm: 0.9375rem;
+
+  /* ─── Motion ─────────────────────────────────────────────── */
+  --transition-duration: 0.4s;
+  --transition-fast:     0.2s;
+  --transition-base:     var(--transition-duration);
+  --transition-slow:     0.6s;
+
+  /* ─── Elevation scale ────────────────────────────────────── */
+  --shadow-1: 0 6px 16px -10px rgba(0, 0, 0, 0.18);
+  --shadow-2: 0 14px 28px -22px rgba(0, 0, 0, 0.25);
+  --shadow-3: 0 20px 48px -30px rgba(15, 17, 22, 0.28);
+  --shadow-4: 0 24px 60px -26px rgba(27, 29, 37, 0.34);
+  --shadow-glow: 0 0 32px -4px var(--cta-accent);          /* buttons + cards */
+  --shadow-glow-soft: 0 0 18px -6px var(--cta-accent);      /* nav links, breadcrumb, locale chip */
+  --shadow-glow-tight: 0 0 8px var(--cta-accent);           /* status / live dots */
+
+  /* ─── Status palette (yes / partial / no / live) ─────────── */
+  --color-status-yes:     #76D98F;
+  --color-status-partial: #D7D9DC;
+  --color-status-no:      #FF6B6B;
+  --color-status-live:    #16A34A;
+
+  /* ─── Surfaces · backdrop blur ───────────────────────────── */
+  --backdrop-blur-panel: 1.125rem;  /* 18px — nav panel, table SW column */
+
+  /* ─── Text accent (warm brown) ─────────────────────────────
+     Pulled out so the first stop of --cta-secondary-fill is not
+     re-used as a raw text color across blocks. */
+  --color-text-accent:   #56422D;
+
+  /* ─── Semantic tokens · LIGHT theme (canonical default) ──── */
+  --color-bg:           var(--color-white);
+  --color-bg-invert:    var(--color-black-bg);
+  --color-text:         var(--color-gray-second);
+  --color-heading:      var(--color-black);
+  --color-link:         var(--color-black);
+  --color-link-hover:   var(--color-gray-second);
+
+  --header-bg:          var(--color-light-card-bg);
+  --card-bg:            var(--color-gray-bg);
+  --card-border:        var(--color-light-gray-stroke);
+  --locale-selector-bg: var(--color-gray-bg);
+
+  --button-primary-bg:        transparent;
+  --button-primary-color:     var(--color-black);
+
+  --button-secondary-bg:      transparent;
+  --button-secondary-color:   var(--color-black);
+  --button-secondary-border:  var(--color-black);
+
+  --button-burger-button-bg:  var(--color-black);
+
+  --input-bg:           var(--color-light-card-bg);
+
+  /* ─── CTA · theme accent system ────────────────────────────
+     --cta-accent is the page-wide interactive accent. It tints:
+       · hover-rise glow (effect.hover-rise)
+       · primary CTA outer hover glow (box-shadow)
+       · secondary CTA always-on halo
+       · italic accent word in hero titles
+     --cta-secondary-fill is the filled background of secondary CTAs.
+     Theme overrides go through [data-theme="..."] below. */
+  --cta-accent:          var(--color-cyan);
+  --cta-accent-soft:     rgba(107, 234, 249, 0.30);
+  --cta-secondary-fill:  linear-gradient(90deg, #56422D 0%, #494938 100%);
+  --cta-secondary-color: var(--color-white);
+  --cta-secondary-border:rgba(255, 255, 255, 0.18);
+}
+
+/* ─── Theme overlays ───────────────────────────────────────────
+   Set on <body data-theme="..."> or any wrapper. Cascades into
+   every CTA, hover-rise effect, and accent text inside the scope.
+   Names are color families, not industries — pick whichever fits. */
+
+[data-theme="cyan"] {
+  /* Default cyan — kept explicit so authors see the slot exists. */
+  --cta-accent:          #6BEAF9;
+  --cta-accent-soft:     rgba(107, 234, 249, 0.30);
+  --cta-secondary-fill:  linear-gradient(90deg, #56422D 0%, #494938 100%);
+}
+
+[data-theme="green"] {
+  --cta-accent:          #7DDE8E;
+  --cta-accent-soft:     rgba(125, 222, 142, 0.28);
+  --cta-secondary-fill:  linear-gradient(90deg, #1E4D2F 0%, #2D5A3D 100%);
+}
+
+[data-theme="orange"] {
+  --cta-accent:          #FFA72C;
+  --cta-accent-soft:     rgba(255, 167, 44, 0.28);
+  --cta-secondary-fill:  linear-gradient(90deg, #5A3D1E 0%, #6B4A28 100%);
+}
+
+[data-theme="red"] {
+  --cta-accent:          #FF6C56;
+  --cta-accent-soft:     rgba(255, 108, 86, 0.28);
+  --cta-secondary-fill:  linear-gradient(90deg, #5A2D28 0%, #6B3A35 100%);
+}
+
+[data-theme="forest"] {
+  --cta-accent:          #7DDE8E;
+  --cta-accent-soft:     rgba(125, 222, 142, 0.28);
+  --cta-secondary-fill:  linear-gradient(90deg, #234728 0%, #345937 100%);
+}
+
+[data-theme="blue"] {
+  --cta-accent:          #4F95FF;
+  --cta-accent-soft:     rgba(79, 149, 255, 0.28);
+  --cta-secondary-fill:  linear-gradient(90deg, #1E3850 0%, #2C4A66 100%);
+}
+
+[data-theme="amber"] {
+  --cta-accent:          #FFA72C;
+  --cta-accent-soft:     rgba(255, 167, 44, 0.28);
+  --cta-secondary-fill:  linear-gradient(90deg, #4D3D1E 0%, #5C4A28 100%);
+}
+
+[data-theme="magenta"] {
+  --cta-accent:          #EF5CFF;
+  --cta-accent-soft:     rgba(239, 92, 255, 0.28);
+  --cta-secondary-fill:  linear-gradient(90deg, #3A2858 0%, #4B3370 100%);
+}
+
+/* ─── A11y · reduced motion ────────────────────────────────────
+   Honour user's OS-level motion preference across every block. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* generated preview/CMS composition glue */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+html {
+  min-width: 320px;
+  scroll-behavior: smooth;
+}
+body {
+  margin: 0;
+  position: relative;
+  min-width: 320px;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-family);
+}
+:root {
+  --composition-section-y: clamp(4rem, 7vw, 6.5rem);
+  --composition-section-y-compact: clamp(2.5rem, 5vw, 4rem);
+}
+
+/* Default vertical rhythm for every composed section.
+   Blocks must NOT declare padding-block on their root class;
+   the composer owns inter-section spacing.
+
+   For section-wide decorative backgrounds (ambient tints, full-width
+   surface colors): blocks declare the bg on the wrapper class
+   `.composition-section--<block-id-slug>` so the fill extends through
+   the composer-managed padding-block. The inner block class then owns
+   content layout only. See hero.operational-diagram and
+   mobile.4-card-glyph for canonical examples. */
+.composition-section {
+  position: relative;
+  padding-block: var(--composition-section-y);
+}
+
+/* No edge-zero overrides: the hero needs padding-block-start so its
+   content clears the sticky header (and the absolute-positioned
+   breadcrumb chip that hangs from it), and the last section needs
+   padding-block-end so it breathes above the footer. The default
+   padding-block above gives both naturally. */
+
+/* Closing accent sections are tighter at the top, with full rhythm
+   at the bottom so the footer gets visual room. */
+.composition-section--decorative-callout-band,
+.composition-section--decorative-final-cta {
+  padding-block: var(--composition-section-y-compact) var(--composition-section-y);
+}
+/* ─── Wrappers ───────────────────────────────────────────────
+   Global wrapper primitive used by composer-injected markup AND
+   by block-internal layouts that opt into `.container`. Block
+   stylesheets may still redeclare `.<block> .container { … }`
+   with the same calc — those are no-op duplicates but harmless. */
+.container {
+  max-width: calc(var(--container-width) + var(--container-padding-x) * 2);
+  margin-inline: auto;
+  padding-inline: var(--container-padding-x);
+}
+
+/* Narrow modifier for accent strips (callout, narrative). */
+.container--narrow {
+  max-width: calc(1100px + var(--container-padding-x) * 2);
+}
+a {
+  color: inherit;
+}
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+@media (max-width: 640px) {
+  :root {
+    --composition-section-y: 3.5rem;
+    --composition-section-y-compact: 2.5rem;
+  }
+}
+
+/* generated child CSS: blocks/15-blog/blog.post-dynamic/block.css */
+.blog-post-page {
+  padding: clamp(6rem, 9vw, 8.5rem) 0 clamp(4.5rem, 8vw, 7rem);
+  color: var(--color-text, #5C6474);
+  background: var(--color-bg, #FFFFFF);
+}
+
+.blog-post-page__breadcrumb,
+.blog-post-page__byline-row,
+.blog-post-page__document {
+  width: min(100%, 48rem);
+  margin-inline: auto;
+}
+
+.blog-post-page__byline-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem 1.5rem;
+  margin-top: clamp(1.75rem, 3vw, 2.5rem);
+}
+
+.blog-post-page__breadcrumb {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  color: var(--color-gray-blue, #97A2B8);
+  font-size: 0.9rem;
+}
+
+.blog-post-page__breadcrumb a {
+  color: var(--color-heading, #1B1D25);
+  text-decoration: none;
+}
+
+.blog-post-page__breadcrumb a:hover { color: var(--color-text-accent, #2499a8); }
+
+.blog-post-page__meta {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  min-width: 0;
+  color: var(--color-gray-blue, #97A2B8);
+  font-size: 0.88rem;
+}
+
+.blog-post-page__avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: 2.75rem;
+  aspect-ratio: 1;
+  overflow: hidden;
+  border-radius: 50%;
+  background: var(--color-gray-bg, #F9F9F9);
+  background:
+    radial-gradient(circle at 70% 20%, color-mix(in srgb, var(--cta-accent, #6BEAF9) 26%, transparent), transparent 60%),
+    linear-gradient(150deg, color-mix(in srgb, var(--color-gray-blue, #97A2B8) 12%, var(--color-gray-bg, #F9F9F9)), color-mix(in srgb, var(--color-gray-blue, #97A2B8) 32%, var(--color-gray-bg, #F9F9F9)));
+  color: var(--color-heading, #1B1D25);
+}
+
+.blog-post-page__avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.blog-post-page__avatar-initials {
+  font-size: 0.88rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.blog-post-page__byline-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.blog-post-page__author {
+  color: var(--color-heading, #1B1D25);
+  font-size: 0.95rem;
+  font-weight: 650;
+}
+
+.blog-post-page__share {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-left: auto;
+}
+
+.blog-post-page__share-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.4rem;
+  aspect-ratio: 1;
+  padding: 0;
+  border: 1px solid rgba(151, 162, 184, 0.45);
+  border: 1px solid color-mix(in srgb, var(--color-gray-blue, #97A2B8) 45%, transparent);
+  border-radius: 50%;
+  background: transparent;
+  color: var(--color-heading, #1B1D25);
+  cursor: pointer;
+  font: inherit;
+  text-decoration: none;
+  transition: border-color var(--transition-fast, 0.2s) ease, background-color var(--transition-fast, 0.2s) ease, color var(--transition-fast, 0.2s) ease;
+}
+
+.blog-post-page__share-button svg {
+  width: 1.05rem;
+  height: 1.05rem;
+}
+
+.blog-post-page__share-button:hover {
+  border-color: var(--color-heading, #1B1D25);
+  background: var(--color-gray-bg, #F9F9F9);
+}
+
+.blog-post-page__share-button:focus-visible {
+  outline: 2px solid var(--color-heading, #1B1D25);
+  outline-offset: 2px;
+}
+
+.blog-post-page__share-button.is-copied {
+  border-color: var(--color-status-live, #16A34A);
+  color: var(--color-status-live, #16A34A);
+}
+
+.blog-post-page__share-feedback {
+  color: var(--color-gray-blue, #97A2B8);
+  font-size: 0.85rem;
+}
+
+.blog-post-page__meta-track {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.45rem 0;
+  margin-left: -1.62rem;
+}
+
+.blog-post-page__meta-item {
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+}
+
+.blog-post-page__meta-item::before {
+  content: "";
+  flex: none;
+  width: 0.22rem;
+  aspect-ratio: 1;
+  margin: 0 0.7rem;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.blog-post-page__hero {
+  overflow: hidden;
+  width: min(100%, 56rem);
+  margin: clamp(1.75rem, 3vw, 2.5rem) auto 0;
+  aspect-ratio: 16 / 9;
+  border-radius: var(--radius-card, 1.25rem);
+  background: var(--color-gray-bg, #F9F9F9);
+}
+
+.blog-post-page__hero img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.blog-post-page__document {
+  margin-top: clamp(2.5rem, 5vw, 4rem);
+  font-size: clamp(1rem, 1.2vw, 1.125rem);
+  line-height: 1.75;
+}
+
+.blog-post-page__document[data-blog-render-state="pending"] { visibility: hidden; }
+.blog-post-page__document[data-blog-render-state="ready"] { visibility: visible; }
+
+.blog-post-page__document h1 {
+  margin: 0 0 1.5rem;
+  color: var(--color-heading, #1B1D25);
+  font-size: clamp(2.2rem, 4vw, 3.25rem);
+  font-weight: 600;
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+}
+
+.blog-post-page__document .blog-post > .summary {
+  margin: 0 0 2.25rem;
+  padding: 0 0 1.75rem;
+  border-bottom: 1px solid rgba(151, 162, 184, 0.35);
+  border-bottom: 1px solid color-mix(in srgb, var(--color-gray-blue, #97A2B8) 35%, transparent);
+  color: var(--color-text, #5C6474);
+  font-size: clamp(1.1rem, 1.6vw, 1.3rem);
+  line-height: 1.6;
+}
+
+.blog-post-page__document h2 {
+  margin: 2.75rem 0 0.9rem;
+  color: var(--color-heading, #1B1D25);
+  font-size: clamp(1.55rem, 2.4vw, 2.05rem);
+  font-weight: 600;
+  line-height: 1.18;
+  letter-spacing: -0.018em;
+}
+
+.blog-post-page__document h3 {
+  margin: 2.25rem 0 0.7rem;
+  color: var(--color-heading, #1B1D25);
+  font-size: clamp(1.25rem, 1.8vw, 1.5rem);
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -0.012em;
+}
+
+.blog-post-page__document h4,
+.blog-post-page__document h5,
+.blog-post-page__document h6 {
+  margin: 1.9rem 0 0.6rem;
+  color: var(--color-heading, #1B1D25);
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.blog-post-page__document h4 { font-size: 1.125rem; }
+.blog-post-page__document h5 { font-size: 1rem; }
+
+.blog-post-page__document h6 {
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.blog-post-page__document .blog-post > .content > :first-child { margin-top: 0; }
+
+.blog-post-page__document p,
+.blog-post-page__document ul,
+.blog-post-page__document ol,
+.blog-post-page__document dl,
+.blog-post-page__document blockquote { margin: 0 0 1.3rem; }
+
+.blog-post-page__document ul,
+.blog-post-page__document ol { padding-left: 1.6rem; }
+
+.blog-post-page__document ul { list-style: disc; }
+.blog-post-page__document ol { list-style: decimal; }
+.blog-post-page__document ul ul,
+.blog-post-page__document ol ul { list-style: circle; }
+
+.blog-post-page__document li::marker {
+  color: var(--color-text-accent, #2499a8);
+  font-weight: 600;
+}
+
+.blog-post-page__document li + li { margin-top: 0.5rem; }
+
+.blog-post-page__document li > ul,
+.blog-post-page__document li > ol {
+  margin: 0.5rem 0 0;
+}
+
+.blog-post-page__document li > p { margin-bottom: 0.5rem; }
+
+.blog-post-page__document dt {
+  color: var(--color-heading, #1B1D25);
+  font-weight: 600;
+}
+
+.blog-post-page__document dd {
+  margin: 0.25rem 0 0.9rem 1.25rem;
+}
+
+.blog-post-page__document strong { color: var(--color-heading, #1B1D25); }
+
+.blog-post-page__document mark {
+  padding: 0.1em 0.3em;
+  border-radius: 0.3em;
+  background: rgba(151, 162, 184, 0.22);
+  background: color-mix(in srgb, var(--cta-accent, #6BEAF9) 26%, transparent);
+  color: var(--color-heading, #1B1D25);
+}
+
+.blog-post-page__document kbd {
+  padding: 0.12em 0.45em;
+  border: 1px solid rgba(151, 162, 184, 0.45);
+  border: 1px solid color-mix(in srgb, var(--color-gray-blue, #97A2B8) 45%, transparent);
+  border-bottom-width: 2px;
+  border-radius: 0.35em;
+  background: var(--color-gray-bg, #F9F9F9);
+  color: var(--color-heading, #1B1D25);
+  font-family: var(--font-mono, ui-monospace, "SF Mono", Menlo, monospace);
+  font-size: 0.85em;
+}
+
+.blog-post-page__document small { font-size: 0.85em; }
+
+.blog-post-page__document table {
+  display: block;
+  overflow-x: auto;
+  max-width: 100%;
+  margin: 2rem 0;
+  border-collapse: collapse;
+  font-size: 0.95em;
+  line-height: 1.5;
+}
+
+.blog-post-page__document th,
+.blog-post-page__document td {
+  padding: 0.65rem 0.9rem;
+  border: 1px solid rgba(151, 162, 184, 0.35);
+  border: 1px solid color-mix(in srgb, var(--color-gray-blue, #97A2B8) 35%, transparent);
+  text-align: left;
+  vertical-align: top;
+}
+
+.blog-post-page__document th {
+  background: var(--color-gray-bg, #F9F9F9);
+  color: var(--color-heading, #1B1D25);
+  font-weight: 600;
+}
+
+.blog-post-page__document caption {
+  margin-bottom: 0.6rem;
+  caption-side: top;
+  color: var(--color-gray-blue, #97A2B8);
+  font-size: 0.88em;
+  text-align: left;
+}
+
+.blog-post-page__document a {
+  color: var(--color-text-accent, #168c9b);
+  text-decoration-thickness: 0.08em;
+  text-underline-offset: 0.18em;
+}
+
+.blog-post-page__document blockquote {
+  padding: 1.4rem 1.75rem;
+  border-left: 0.2rem solid var(--color-text-accent, #2499a8);
+  border-radius: 0 var(--radius-card-sm, 0.9375rem) var(--radius-card-sm, 0.9375rem) 0;
+  background: var(--color-gray-bg, #F9F9F9);
+  color: var(--color-heading, #1B1D25);
+  font-size: 1.1em;
+  line-height: 1.55;
+}
+
+.blog-post-page__document blockquote p { margin: 0; }
+.blog-post-page__document blockquote p + p { margin-top: 0.8rem; }
+
+.blog-post-page__document blockquote cite,
+.blog-post-page__document blockquote footer {
+  display: block;
+  margin-top: 0.8rem;
+  color: var(--color-gray-blue, #97A2B8);
+  font-size: 0.85em;
+  font-style: normal;
+}
+
+.blog-post-page__document img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 2rem auto;
+  border-radius: var(--radius-card-sm, 0.9375rem);
+}
+
+.blog-post-page__document p > img { margin: 2rem auto; }
+
+.blog-post-page__document figure {
+  margin: 2rem 0;
+}
+
+.blog-post-page__document figure img,
+.blog-post-page__document figure video,
+.blog-post-page__document figure iframe { margin: 0; }
+
+.blog-post-page__document figcaption {
+  margin-top: 0.75rem;
+  color: var(--color-gray-blue, #97A2B8);
+  font-size: 0.88em;
+  line-height: 1.5;
+  text-align: center;
+}
+
+.blog-post-page__document video {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin: 2rem 0;
+  border-radius: var(--radius-card-sm, 0.9375rem);
+  background: var(--color-black-bg, #17171B);
+}
+
+.blog-post-page__document iframe {
+  display: block;
+  max-width: 100%;
+  margin: 2rem auto;
+  border: 0;
+  border-radius: var(--radius-card-sm, 0.9375rem);
+}
+
+.blog-post-page__document audio {
+  display: block;
+  width: 100%;
+  margin: 2rem 0;
+}
+
+.blog-post-page__document hr {
+  height: 1px;
+  margin: 2.75rem 0;
+  border: 0;
+  background: rgba(151, 162, 184, 0.35);
+  background: color-mix(in srgb, var(--color-gray-blue, #97A2B8) 35%, transparent);
+}
+
+.blog-post-page__document :not(pre) > code {
+  padding: 0.15em 0.4em;
+  border-radius: 0.35em;
+  background: var(--color-gray-bg, #F9F9F9);
+  font-family: var(--font-mono, ui-monospace, "SF Mono", Menlo, monospace);
+  font-size: 0.9em;
+}
+
+.blog-post-page__document pre {
+  overflow-x: auto;
+  margin: 2rem 0;
+  padding: 1.4rem 1.6rem;
+  border-radius: var(--radius-card-sm, 0.9375rem);
+  background: var(--color-gray-bg, #F9F9F9);
+  font-family: var(--font-mono, ui-monospace, "SF Mono", Menlo, monospace);
+  font-size: 0.9em;
+  line-height: 1.55;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.blog-post-page__document:empty { display: none; }
+
+.blog-post-page__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  width: min(100%, 48rem);
+  margin: clamp(2.25rem, 4vw, 3rem) auto 0;
+}
+
+.blog-post-page__tag {
+  padding: 0.4rem 0.85rem;
+  border: 1px solid rgba(151, 162, 184, 0.45);
+  border: 1px solid color-mix(in srgb, var(--color-gray-blue, #97A2B8) 45%, transparent);
+  border-radius: var(--radius-pill, 6.25rem);
+  color: var(--color-text, #5C6474);
+  font-size: 0.85rem;
+  line-height: 1.2;
+}
+
+.blog-post-page__author-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.15rem;
+  width: min(100%, 48rem);
+  margin: clamp(3rem, 6vw, 4.5rem) auto 0;
+  padding: clamp(1.4rem, 3vw, 1.9rem);
+  border: 1px solid rgba(151, 162, 184, 0.35);
+  border: 1px solid color-mix(in srgb, var(--color-gray-blue, #97A2B8) 35%, transparent);
+  border-radius: var(--radius-card, 1.25rem);
+  background: var(--color-gray-bg, #F9F9F9);
+}
+
+.blog-post-page__author-card-avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: 3.5rem;
+  aspect-ratio: 1;
+  overflow: hidden;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 70% 20%, color-mix(in srgb, var(--cta-accent, #6BEAF9) 26%, transparent), transparent 60%),
+    linear-gradient(150deg, color-mix(in srgb, var(--color-gray-blue, #97A2B8) 12%, var(--color-bg, #FFFFFF)), color-mix(in srgb, var(--color-gray-blue, #97A2B8) 32%, var(--color-bg, #FFFFFF)));
+  color: var(--color-heading, #1B1D25);
+}
+
+.blog-post-page__author-card-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.blog-post-page__author-card-text { min-width: 0; }
+
+.blog-post-page__author-card-name {
+  margin: 0;
+  color: var(--color-heading, #1B1D25);
+  font-size: 1.05rem;
+  font-weight: 650;
+  line-height: 1.3;
+}
+
+.blog-post-page__author-card-name:empty { display: none; }
+
+.blog-post-page__author-card-bio {
+  margin: 0.45rem 0 0;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.blog-post-page__author-card-bio:empty { display: none; }
+
+.blog-post-page__related {
+  margin-top: clamp(4rem, 8vw, 6.5rem);
+  padding-top: clamp(2.5rem, 5vw, 3.5rem);
+  border-top: 1px solid rgba(151, 162, 184, 0.35);
+  border-top: 1px solid color-mix(in srgb, var(--color-gray-blue, #97A2B8) 35%, transparent);
+}
+
+.blog-post-page__related-head p {
+  margin: 0;
+  color: var(--color-text-accent, #2499a8);
+  font-family: var(--font-mono, ui-monospace, "SF Mono", Menlo, monospace);
+  font-size: var(--type-eyebrow-size, 0.8125rem);
+  font-weight: 700;
+  letter-spacing: var(--type-eyebrow-tracking, 0.12em);
+  text-transform: uppercase;
+}
+
+.blog-post-page__related-head h2 {
+  margin: 0.7rem 0 0;
+  color: var(--color-heading, #1B1D25);
+  font-size: clamp(1.75rem, 3vw, 2.6rem);
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+.blog-post-page__related-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.blog-related-card { min-width: 0; }
+
+.blog-related-card__link {
+  display: flex;
+  min-height: 100%;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid rgba(151, 162, 184, 0.35);
+  border: 1px solid color-mix(in srgb, var(--color-gray-blue, #97A2B8) 35%, transparent);
+  border-radius: var(--radius-card, 1.25rem);
+  background: var(--color-bg, #FFFFFF);
+  color: inherit;
+  text-decoration: none;
+  box-shadow: var(--shadow-1, 0 6px 16px -10px rgba(0, 0, 0, 0.18));
+  transition: transform var(--transition-fast, 0.2s) ease, box-shadow var(--transition-fast, 0.2s) ease;
+}
+
+.blog-related-card__link:hover {
+  transform: translateY(-0.3rem);
+  box-shadow: var(--shadow-3, 0 20px 48px -30px rgba(15, 17, 22, 0.28));
+}
+
+.blog-related-card__link:focus-visible {
+  outline: 2px solid var(--color-heading, #1B1D25);
+  outline-offset: 2px;
+}
+
+.blog-related-card__media {
+  display: block;
+  overflow: hidden;
+  aspect-ratio: 16 / 10;
+  background: var(--color-gray-bg, #F9F9F9);
+  background:
+    radial-gradient(circle at 80% 16%, color-mix(in srgb, var(--cta-accent, #6BEAF9) 26%, transparent), transparent 58%),
+    linear-gradient(150deg, color-mix(in srgb, var(--color-gray-blue, #97A2B8) 10%, var(--color-gray-bg, #F9F9F9)) 12%, color-mix(in srgb, var(--color-gray-blue, #97A2B8) 34%, var(--color-gray-bg, #F9F9F9)) 100%);
+}
+
+.blog-related-card__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--transition-base, 0.4s) ease;
+}
+
+.blog-related-card__link:hover .blog-related-card__media img { transform: scale(1.03); }
+
+.blog-related-card__body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  padding: 1.4rem 1.5rem 1.5rem;
+}
+
+.blog-related-card__category {
+  color: var(--color-text-accent, #2499a8);
+  font-family: var(--font-mono, ui-monospace, "SF Mono", Menlo, monospace);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.blog-related-card__title {
+  display: -webkit-box;
+  overflow: hidden;
+  margin: 0.85rem 0 0;
+  color: var(--color-heading, #1B1D25);
+  font-size: clamp(1.2rem, 1.5vw, 1.45rem);
+  font-weight: 600;
+  line-height: 1.22;
+  letter-spacing: -0.015em;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
+
+.blog-related-card__summary {
+  display: -webkit-box;
+  overflow: hidden;
+  margin: 0.7rem 0 0;
+  font-size: 0.96rem;
+  line-height: 1.55;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
+
+.blog-related-card__read {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  align-self: flex-start;
+  margin-top: auto;
+  padding-top: 1.5rem;
+  color: var(--color-heading, #1B1D25);
+  font-weight: 650;
+}
+
+.blog-related-card__read::after {
+  content: "→";
+  color: var(--color-text-accent, #2499a8);
+  transition: transform var(--transition-fast, 0.2s) ease;
+}
+
+.blog-related-card__link:hover .blog-related-card__read::after { transform: translateX(0.3rem); }
+
+@media (max-width: 64rem) {
+  .blog-post-page__related-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 48rem) {
+  .blog-post-page { padding-top: 5.5rem; }
+  .blog-post-page__related-grid { grid-template-columns: 1fr; gap: 1.25rem; }
+  .blog-post-page__document blockquote { padding: 1.2rem 1.4rem; }
+}
+</style>
+</head>
+<body>
+<section class="blog-post-page" data-block="blog.post-dynamic" data-blog-post data-blog-current-permalink="field-service-routing-guide"
+  data-blog-api-base="/core-cms"
+  data-blog-organization="SERVICEWAND"
+  data-blog-category-id="0"
+  data-blog-page-size="100"
+  data-blog-max-results="1000"
+  data-blog-base-path="/blog"
+  data-blog-post-path="/post"
+  data-blog-fixture-url="../../../../blocks/15-blog/_fixtures/posts.en.json"
+  data-blog-read-label="Read article"
+  data-blog-related-limit="3"
+  data-blog-copy-link-label="Copy link"
+  data-blog-link-copied-label="Link copied">
+  <div class="container blog-post-page__container">
+    <nav class="blog-post-page__breadcrumb" aria-label="Blog breadcrumb">
+      <a href="/blog" data-blog-index-link>Blog</a>
+      <span aria-hidden="true">/</span>
+      <span data-blog-current-title>Article</span>
+    </nav>
+
+    <div class="blog-post-page__byline-row">
+      <div class="blog-post-page__meta" data-blog-current-meta hidden></div>
+      <div class="blog-post-page__share" data-blog-share role="group" aria-label="Share this article" hidden></div>
+    </div>
+    <div class="blog-post-page__hero" data-blog-current-image hidden></div>
+
+    <article class="blog-post-page__document" data-blog-document data-blog-render-state="pending" aria-busy="true">
+      <div class="blog-post">
+  <h1>A practical guide to field service routing</h1>
+  <p class="summary">Reliable routes start with clear operational inputs—not with a map full of pins.</p>
+  <div class="content">
+    <p>Field service routing connects demand, technician capacity, travel time, and customer commitments. When those inputs live in separate tools, dispatchers spend the day reconciling them by hand.</p>
+    <h2>Start with the decisions your dispatcher makes</h2>
+    <p>Document the decisions that repeat every day: who is qualified, what the arrival window allows, and which work can move without breaking a promise.</p>
+    <h3>Make constraints visible</h3>
+    <p>A useful route is one the team can execute. Skills, equipment, job duration, and geographic boundaries all need to be explicit.</p>
+    <blockquote>Routing quality improves when operational truth is available before the schedule is published.</blockquote>
+    <h3>Route checklist</h3>
+    <ol>
+      <li>Confirm technician skills and territories</li>
+      <li>Lock arrival windows
+        <ul>
+          <li>Morning slots first</li>
+          <li>Keep one buffer stop</li>
+        </ul>
+      </li>
+      <li>Publish the schedule to the field app</li>
+    </ol>
+    <h4>Quick reference</h4>
+    <table>
+      <thead><tr><th>Metric</th><th>Target</th><th>Alert level</th></tr></thead>
+      <tbody>
+        <tr><td>On-time arrival</td><td>≥ 92%</td><td>&lt; 85%</td></tr>
+        <tr><td>Travel share of shift</td><td>≤ 25%</td><td>&gt; 35%</td></tr>
+      </tbody>
+    </table>
+    <p>Press <kbd>⌘</kbd> + <kbd>K</kbd> to find any job, and remember that <mark>published promises</mark> are the ones <strong>dispatch must protect</strong>.</p>
+    <figure>
+      <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 360'%3E%3Crect width='800' height='360' fill='%23DCE9EE'/%3E%3Cpath d='M60 280 L260 170 L420 240 L700 90' stroke='%238FB4C4' stroke-width='12' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M60 300 L300 210 L470 280 L740 140' stroke='%23FFFFFF' stroke-width='12' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" alt="Planned versus actual route timeline">
+      <figcaption>Planned versus actual arrival windows across one shift.</figcaption>
+    </figure>
+    <dl>
+      <dt>Anti-icing</dt>
+      <dd>Preventive treatment applied before snowfall bonds to pavement.</dd>
+      <dt>De-icing</dt>
+      <dd>Reactive treatment that breaks an existing snow and ice bond.</dd>
+    </dl>
+    <h2>Measure the route after the work is done</h2>
+    <p>Compare planned and actual travel, arrival, service, and completion times.</p>
+  </div>
+</div>
+    </article>
+
+    <div class="blog-post-page__tags" data-blog-tags aria-label="Article tags" hidden></div>
+
+    <aside class="blog-post-page__author-card" data-blog-author hidden>
+      <span class="blog-post-page__author-card-avatar" data-blog-author-avatar="${AUTHOR_AVATAR}" aria-hidden="true"></span>
+      <div class="blog-post-page__author-card-text">
+        <p class="blog-post-page__author-card-name" data-blog-author-name>${AUTHOR_NAME}</p>
+        <p class="blog-post-page__author-card-bio" data-blog-author-bio></p>
+      </div>
+    </aside>
+
+    <aside class="blog-post-page__related" data-blog-related-section hidden>
+      <div class="blog-post-page__related-head">
+        <p>Keep reading</p>
+        <h2>More field service insights</h2>
+      </div>
+      <div class="blog-post-page__related-grid" data-blog-related aria-label="Related blog articles"></div>
+    </aside>
+  </div>
+  <script type="application/ld+json" data-blog-article-schema>{}</script>
+</section>
+
+<script>/* generated local JS: blocks/15-blog/_shared/blog-runtime.js */
+(function (global) {
+  "use strict";
+
+  var KNOWN_LOCALES = [
+    "en", "zh", "es", "de", "fr", "ja", "pt", "ru", "it", "nl", "pl", "tr",
+    "ar", "ko", "uk", "cs", "el", "da", "sv", "nb", "vi", "fa", "he", "hi",
+    "ms", "et", "sl", "kk", "th", "id", "ro", "hu", "fi", "bg", "hr", "sk",
+    "lt", "lv"
+  ];
+
+  function normalizeLocale(value) {
+    return String(value || "").trim().toLowerCase().replace("_", "-").split("-")[0];
+  }
+
+  function localeFromPath(pathname) {
+    var first = String(pathname || "").split("/").filter(Boolean)[0] || "";
+    first = normalizeLocale(first);
+    return KNOWN_LOCALES.indexOf(first) >= 0 ? first : "";
+  }
+
+  function getLocale() {
+    var pathLocale = localeFromPath(global.location && global.location.pathname);
+    var shared = global.__swLocale;
+    var sharedLocale = shared && typeof shared.getEffectiveLocale === "function"
+      ? shared.getEffectiveLocale()
+      : "";
+    return pathLocale || normalizeLocale(sharedLocale) ||
+      normalizeLocale(document.documentElement.lang) || "en";
+  }
+
+  function localizedText(value, locale, defaultValue) {
+    if (typeof value === "string" || typeof value === "number") {
+      var direct = String(value).trim();
+      return direct || String(defaultValue || "").trim();
+    }
+    if (!value || typeof value !== "object" || Array.isArray(value)) {
+      return String(defaultValue || "").trim();
+    }
+    var current = normalizeLocale(locale);
+    var candidates = [current, String(locale || ""), "default", "en"];
+    for (var i = 0; i < candidates.length; i += 1) {
+      var candidate = value[candidates[i]];
+      if (typeof candidate === "string" && candidate.trim()) return candidate.trim();
+    }
+    var keys = Object.keys(value);
+    for (var j = 0; j < keys.length; j += 1) {
+      var fallback = value[keys[j]];
+      if (typeof fallback === "string" && fallback.trim()) return fallback.trim();
+    }
+    return String(defaultValue || "").trim();
+  }
+
+  function firstText(source, keys, locale) {
+    for (var i = 0; i < keys.length; i += 1) {
+      var text = localizedText(source && source[keys[i]], locale, "");
+      if (text) return text;
+    }
+    return "";
+  }
+
+  function safePath(value) {
+    var path = String(value || "").trim().replace(/^\/+|\/+$/g, "");
+    return path && !path.includes(":") && !path.includes("..") ? path : "";
+  }
+
+  function heroImageUrlOf(post) {
+    var hero = post.heroImage;
+    if (!hero) return "";
+    if (typeof hero === "string") return hero.trim();
+    if (typeof hero === "object" && hero.id) {
+      return "/core/image/" + encodeURIComponent(String(hero.id)) + "/get";
+    }
+    return "";
+  }
+
+  function taxonomyEntry(entry, locale) {
+    if (!entry || typeof entry !== "object") return null;
+    var name = localizedText(entry.name, locale, "");
+    if (!name && entry.nls) {
+      var nls = entry.nls[normalizeLocale(locale)] || entry.nls.en || entry.nls.default;
+      name = firstText(nls, ["NAME", "name"], locale);
+    }
+    if (!name) return null;
+    return {
+      id: String(entry.id || ""),
+      name: name,
+      slug: String(entry.slug || ""),
+      description: localizedText(entry.description, locale, "")
+    };
+  }
+
+  function taxonomyOf(list, locale) {
+    if (!Array.isArray(list)) return [];
+    return list.map(function (entry) {
+      return taxonomyEntry(entry, locale);
+    }).filter(Boolean);
+  }
+
+  function normalizePost(post, locale) {
+    post = post && typeof post === "object" ? post : {};
+    var metadata = post.metadata && typeof post.metadata === "object" ? post.metadata : {};
+    var title = firstText(metadata, ["TITLE", "title", "META_TITLE", "metaTitle"], locale) ||
+      firstText(post, ["title", "name"], locale);
+    var permalink = safePath(post.permalink || post.slug);
+    if (!permalink) return null;
+
+    var summary = localizedText(post.summary, locale, "") ||
+      firstText(metadata, ["SUMMARY", "summary", "META_DESCRIPTION", "metaDescription", "DESCRIPTION"], locale);
+    var publishedAt = firstText(metadata, ["PUBLISHED_AT", "publishedAt", "PUBLISH_DATE", "publishDate", "DATE"], locale) ||
+      String(post.publishedAt || post.publishDate || post.created || "");
+    var imageUrl = firstText(metadata, ["HERO_IMAGE_URL", "heroImageUrl", "IMAGE_URL", "imageUrl", "COVER_URL", "coverUrl"], locale) ||
+      heroImageUrlOf(post) ||
+      firstText(post, ["imageUrl", "coverUrl"], locale);
+    var imageAlt = firstText(metadata, ["HERO_IMAGE_ALT", "heroImageAlt", "IMAGE_ALT", "imageAlt"], locale) || title;
+    var categories = taxonomyOf(post.categories, locale);
+    var tags = taxonomyOf(post.tags, locale);
+    var metadataCategory = firstText(metadata, ["CATEGORY_NAME", "categoryName", "CATEGORY"], locale);
+    if (metadataCategory && !categories.some(function (entry) { return entry.name === metadataCategory; })) {
+      categories = [{ id: "", name: metadataCategory, slug: "" }].concat(categories);
+    }
+    var category = categories.length ? categories[0].name : "";
+    return {
+      id: String(post.id || ""),
+      permalink: permalink,
+      title: title,
+      summary: summary,
+      category: category,
+      categories: categories,
+      tags: tags,
+      author: firstText(metadata, ["AUTHOR_NAME", "authorName", "AUTHOR"], locale),
+      authorAvatarUrl: firstText(metadata, ["AUTHOR_AVATAR", "authorAvatar", "AUTHOR_AVATAR_URL", "authorAvatarUrl", "AUTHOR_IMAGE_URL", "authorImageUrl"], locale),
+      authorBio: firstText(metadata, ["AUTHOR_BIO", "authorBio"], locale),
+      publishedAt: publishedAt,
+      readTime: firstText(metadata, ["READING_TIME", "readingTime", "READ_TIME", "readTime"], locale),
+      imageUrl: imageUrl,
+      imageAlt: imageAlt,
+      metadata: metadata,
+      raw: post
+    };
+  }
+
+  function parsePositive(value, fallback) {
+    var number = Number(value);
+    return Number.isFinite(number) && number > 0 ? Math.floor(number) : fallback;
+  }
+
+  function optionalFixtureUrl(value) {
+    var url = String(value || "").trim();
+    return !url || url === "#" ? "" : url;
+  }
+
+  function optionalPositiveId(value) {
+    var id = String(value || "").trim();
+    return Number(id) > 0 ? id : "";
+  }
+
+  function localizedApiBase(config) {
+    var base = String(config.apiBase || "").replace(/\/+$/, "");
+    if (!base.startsWith("/") || base.startsWith("//")) return base;
+    var first = base.split("/").filter(Boolean)[0] || "";
+    if (KNOWN_LOCALES.indexOf(normalizeLocale(first)) >= 0) return base;
+    return "/" + encodeURIComponent(normalizeLocale(config.locale) || "en") + base;
+  }
+
+  function configFrom(root) {
+    var data = root.dataset || {};
+    return {
+      apiBase: String(data.blogApiBase || "/core-cms").replace(/\/+$/, ""),
+      organization: String(data.blogOrganization || "SERVICEWAND").trim(),
+      categoryId: optionalPositiveId(data.blogCategoryId),
+      pageSize: parsePositive(data.blogPageSize, 12),
+      maxResults: parsePositive(data.blogMaxResults, 1000),
+      basePath: "/" + (safePath(data.blogBasePath) || "blog"),
+      postPath: "/" + (safePath(data.blogPostPath) || safePath(data.blogBasePath) || "post"),
+      fixtureUrl: optionalFixtureUrl(data.blogFixtureUrl),
+      locale: getLocale()
+    };
+  }
+
+  function requestPage(config, offset) {
+    if (config.fixtureUrl) {
+      return fetch(config.fixtureUrl, { headers: { Accept: "application/json" } }).then(checkResponse);
+    }
+    var filters = [];
+    if (config.categoryId) {
+      filters.push({
+        property: "categories.id",
+        clazz: "java.lang.Integer",
+        operator: "=",
+        value: config.categoryId
+      });
+    }
+    var url = localizedApiBase(config) + "/public/" + encodeURIComponent(config.organization) +
+      "/blog-post/list.json";
+    return fetch(url, {
+      method: "POST",
+      credentials: "omit",
+      headers: { "Content-Type": "application/json", Accept: "application/json" },
+      body: JSON.stringify({
+        first: offset,
+        offset: offset,
+        pageSize: config.pageSize,
+        filters: filters,
+        sorting: [{ field: "permalink", direction: "DESC" }]
+      })
+    }).then(checkResponse);
+  }
+
+  function checkResponse(response) {
+    if (!response.ok) throw new Error("Blog request failed: " + response.status);
+    return response.json();
+  }
+
+  function detailsFromMarkdown(source) {
+    var lines = String(source || "").replace(/\r/g, "").split("\n");
+    var title = "";
+    var summary = "";
+    for (var i = 0; i < lines.length; i += 1) {
+      var line = lines[i].trim();
+      if (!title) {
+        var heading = line.match(/^#\s+(.+)$/);
+        if (heading) title = heading[1].trim();
+        continue;
+      }
+      if (!line || /^(?:#{1,6}\s|[-*+]\s|>\s|```)/.test(line)) continue;
+      summary = line;
+      break;
+    }
+    return { title: title, summary: summary };
+  }
+
+  function detailsFromPostHtml(html) {
+    var parsed = new DOMParser().parseFromString(String(html || ""), "text/html");
+    var documentRoot = parsed.querySelector("[data-blog-document]") || parsed.querySelector(".blog-post");
+    if (!documentRoot) return { title: "", summary: "", imageUrl: "", imageAlt: "" };
+    var titleNode = documentRoot.querySelector("h1");
+    var summaryNode = documentRoot.querySelector("h1 ~ p") || documentRoot.querySelector("p");
+    var details = {
+      title: titleNode ? titleNode.textContent.trim() : "",
+      summary: summaryNode ? summaryNode.textContent.trim() : ""
+    };
+    if (!details.title) {
+      var markdownNode = documentRoot.querySelector("pre code");
+      if (markdownNode) details = detailsFromMarkdown(markdownNode.textContent);
+    }
+    var imageNode = documentRoot.querySelector("img");
+    details.imageUrl = imageNode ? String(imageNode.getAttribute("src") || "").trim() : "";
+    details.imageAlt = imageNode ? String(imageNode.getAttribute("alt") || "").trim() : "";
+    return details;
+  }
+
+  function hydratePost(post, config) {
+    if (post.title && post.summary && post.imageUrl) return Promise.resolve(post);
+    return fetch(buildPostUrl(post, config), {
+      credentials: "omit",
+      headers: { Accept: "text/html" }
+    }).then(function (response) {
+      if (!response.ok) throw new Error("Blog post request failed: " + response.status);
+      return response.text();
+    }).then(function (html) {
+      var details = detailsFromPostHtml(html);
+      post.title = post.title || details.title;
+      post.summary = post.summary || details.summary;
+      if (!post.imageUrl && details.imageUrl) {
+        post.imageUrl = details.imageUrl;
+        post.imageAlt = post.imageAlt || details.imageAlt || post.title;
+        post.imageFromContent = true;
+      }
+      return post;
+    }).catch(function () {
+      return post;
+    });
+  }
+
+  function hydratePosts(posts, config) {
+    return Promise.all(posts.map(function (post) {
+      return hydratePost(post, config);
+    })).then(function (hydrated) {
+      return hydrated.filter(function (post) { return Boolean(post.title); });
+    });
+  }
+
+  function loadPosts(config) {
+    var collected = [];
+    function next(offset) {
+      return requestPage(config, offset).then(function (data) {
+        var result = Array.isArray(data) ? data : (Array.isArray(data.result) ? data.result : []);
+        var normalized = result.map(function (post) {
+          return normalizePost(post, config.locale);
+        }).filter(Boolean);
+        collected = collected.concat(normalized);
+        var total = Number(data.resultSize || data.total || result.length);
+        var done = config.fixtureUrl || result.length === 0 || collected.length >= total ||
+          collected.length >= config.maxResults;
+        return done
+          ? hydratePosts(collected.slice(0, config.maxResults), config)
+          : next(offset + result.length);
+      });
+    }
+    if (!config.organization && !config.fixtureUrl) return Promise.reject(new Error("Blog organization is required"));
+    return next(0);
+  }
+
+  function loadTaxonomy(config, kind) {
+    if (config.fixtureUrl) return Promise.resolve([]);
+    var url = localizedApiBase(config) + "/public/" + encodeURIComponent(config.organization) +
+      "/blog-post/" + kind + ".json";
+    return fetch(url, { credentials: "omit", headers: { Accept: "application/json" } })
+      .then(checkResponse)
+      .then(function (data) {
+        return taxonomyOf(Array.isArray(data) ? data : [], config.locale);
+      })
+      .catch(function () { return []; });
+  }
+
+  function buildIndexUrl(config) {
+    var locale = config.locale || "";
+    var prefix = localeFromPath(global.location && global.location.pathname) ? "/" + locale : "";
+    return prefix + config.basePath;
+  }
+
+  function buildPostUrl(post, config) {
+    var locale = config.locale || "";
+    var prefix = localeFromPath(global.location && global.location.pathname) ? "/" + locale : "";
+    return prefix + config.postPath + "/" + post.permalink;
+  }
+
+  function currentPermalink(config) {
+    var parts = String(global.location && global.location.pathname || "").split("/").filter(Boolean);
+    if (parts.length && KNOWN_LOCALES.indexOf(normalizeLocale(parts[0])) >= 0) parts.shift();
+    var base = config.postPath.split("/").filter(Boolean);
+    for (var i = 0; i <= parts.length - base.length; i += 1) {
+      if (base.every(function (part, offset) { return parts[i + offset] === part; })) {
+        return parts.slice(i + base.length).map(decodeURIComponent).join("/");
+      }
+    }
+    var legacyIndex = parts.indexOf("blog.html");
+    return legacyIndex >= 0 ? parts.slice(legacyIndex + 1).map(decodeURIComponent).join("/") : "";
+  }
+
+  function formatDate(value, locale) {
+    if (!value) return "";
+    var date = new Date(value);
+    if (Number.isNaN(date.getTime())) return String(value);
+    try {
+      return new Intl.DateTimeFormat(locale || "en", { year: "numeric", month: "long", day: "numeric" }).format(date);
+    } catch (error) {
+      return String(value);
+    }
+  }
+
+  global.LabBlog = {
+    buildIndexUrl: buildIndexUrl,
+    buildPostUrl: buildPostUrl,
+    configFrom: configFrom,
+    currentPermalink: currentPermalink,
+    formatDate: formatDate,
+    getLocale: getLocale,
+    loadPosts: loadPosts,
+    loadTaxonomy: loadTaxonomy,
+    localizedText: localizedText,
+    normalizePost: normalizePost
+  };
+})(window);
+
+
+/* generated child JS: blocks/15-blog/blog.post-dynamic/block.js */
+(function () {
+  "use strict";
+
+  function element(tag, className, text) {
+    var node = document.createElement(tag);
+    if (className) node.className = className;
+    if (text) node.textContent = text;
+    return node;
+  }
+
+  function serverRenderedTitle(root) {
+    var heading = root.querySelector("[data-blog-document] h1");
+    return heading ? String(heading.textContent || "").trim() : "";
+  }
+
+  function documentPost(root) {
+    var documentRoot = root.querySelector("[data-blog-document]");
+    if (!documentRoot) return null;
+    var heading = documentRoot.querySelector("h1");
+    var summary = documentRoot.querySelector("h1 ~ p") || documentRoot.querySelector("p");
+    var image = documentRoot.querySelector("img");
+    var title = heading ? String(heading.textContent || "").trim() : "";
+    if (!title) return null;
+    return {
+      title: title,
+      summary: summary ? String(summary.textContent || "").trim() : "",
+      imageUrl: image ? image.currentSrc || image.src : "",
+      imageAlt: image ? String(image.alt || "").trim() : "",
+      publishedAt: "",
+      author: ""
+    };
+  }
+
+  function isPlaceholderValue(value) {
+    var text = String(value || "").trim();
+    return !text || text === "#" || /^\$\{[A-Z0-9_]+(@[A-Z0-9_]+)?\}$/.test(text);
+  }
+
+  function isPlaceholderSchema(value) {
+    var text = String(value || "").trim();
+    return isPlaceholderValue(text) || text === "{}";
+  }
+
+  var clientWritten = {};
+
+  function setMeta(selector, attribute, key, value) {
+    if (!value) return;
+    var node = document.head.querySelector(selector);
+    if (node && !clientWritten[selector] && !isPlaceholderValue(node.getAttribute("content"))) return;
+    if (!node) {
+      node = document.createElement("meta");
+      node.setAttribute(attribute, key);
+      document.head.appendChild(node);
+    }
+    node.setAttribute("content", value);
+    clientWritten[selector] = true;
+  }
+
+  function setNamedMeta(name, value) {
+    setMeta('meta[name="' + name + '"]', "name", name, value);
+  }
+
+  function setPropertyMeta(property, value) {
+    setMeta('meta[property="' + property + '"]', "property", property, value);
+  }
+
+  function setCanonical(url) {
+    var canonical = document.head.querySelector('link[rel="canonical"]');
+    if (!canonical) {
+      canonical = document.createElement("link");
+      canonical.rel = "canonical";
+      document.head.appendChild(canonical);
+    }
+    canonical.href = url;
+  }
+
+  function applySeo(root, post) {
+    if (!post || !post.title) return;
+    var canonicalUrl = window.location.href.split("?")[0].split("#")[0];
+    if (clientWritten.title || isPlaceholderValue(document.title)) {
+      document.title = post.title;
+      clientWritten.title = true;
+    }
+    setNamedMeta("description", post.summary);
+    setPropertyMeta("og:type", "article");
+    setPropertyMeta("og:title", post.title);
+    setPropertyMeta("og:description", post.summary);
+    setPropertyMeta("og:url", canonicalUrl);
+    if (post.imageUrl) setPropertyMeta("og:image", post.imageUrl);
+    setNamedMeta("twitter:card", post.imageUrl ? "summary_large_image" : "summary");
+    setNamedMeta("twitter:title", post.title);
+    setNamedMeta("twitter:description", post.summary);
+    if (post.imageUrl) setNamedMeta("twitter:image", post.imageUrl);
+    setCanonical(canonicalUrl);
+    var schema = {
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      headline: post.title,
+      description: post.summary || undefined,
+      datePublished: post.publishedAt || undefined,
+      author: post.author
+        ? { "@type": "Person", name: post.author, image: post.authorAvatarUrl || undefined }
+        : undefined,
+      image: post.imageUrl || undefined,
+      mainEntityOfPage: canonicalUrl,
+      url: canonicalUrl
+    };
+    Object.keys(schema).forEach(function (key) { if (schema[key] === undefined) delete schema[key]; });
+    var node = root.querySelector("[data-blog-article-schema]");
+    if (node && (clientWritten.schema || isPlaceholderSchema(node.textContent))) {
+      node.textContent = JSON.stringify(schema);
+      clientWritten.schema = true;
+    }
+  }
+
+  function initialsOf(name) {
+    var parts = String(name || "").trim().split(/\s+/).filter(Boolean);
+    if (!parts.length) return "";
+    var first = parts[0].charAt(0);
+    var last = parts.length > 1 ? parts[parts.length - 1].charAt(0) : "";
+    return (first + last).toUpperCase();
+  }
+
+  function avatarFor(post) {
+    var avatar = element("span", "blog-post-page__avatar");
+    avatar.setAttribute("aria-hidden", "true");
+    if (post.authorAvatarUrl) {
+      var image = document.createElement("img");
+      image.src = post.authorAvatarUrl;
+      image.alt = "";
+      image.loading = "lazy";
+      image.decoding = "async";
+      avatar.appendChild(image);
+      return avatar;
+    }
+    var initials = initialsOf(post.author);
+    if (!initials) return null;
+    avatar.appendChild(element("span", "blog-post-page__avatar-initials", initials));
+    return avatar;
+  }
+
+  function fillAuthorText(node, value) {
+    if (!node) return "";
+    var current = String(node.textContent || "").trim();
+    if (!isPlaceholderValue(current)) return current;
+    node.textContent = value || "";
+    return String(value || "").trim();
+  }
+
+  function renderAuthorCard(root, post) {
+    var card = root.querySelector("[data-blog-author]");
+    if (!card) return;
+    var name = fillAuthorText(card.querySelector("[data-blog-author-name]"), post && post.author);
+    var bio = fillAuthorText(card.querySelector("[data-blog-author-bio]"), post && post.authorBio);
+    if (!name && !bio) {
+      card.hidden = true;
+      return;
+    }
+    var avatar = card.querySelector("[data-blog-author-avatar]");
+    if (avatar && !avatar.firstChild) {
+      var source = avatar.getAttribute("data-blog-author-avatar");
+      if (isPlaceholderValue(source)) source = post && post.authorAvatarUrl;
+      if (source) {
+        var image = document.createElement("img");
+        image.src = source;
+        image.alt = "";
+        image.loading = "lazy";
+        image.decoding = "async";
+        avatar.appendChild(image);
+      } else {
+        var initials = initialsOf(name);
+        if (initials) avatar.appendChild(element("span", "blog-post-page__avatar-initials", initials));
+      }
+    }
+    card.hidden = false;
+  }
+
+  function renderTags(root, post) {
+    var host = root.querySelector("[data-blog-tags]");
+    if (!host || !post.tags || !post.tags.length) return;
+    host.textContent = "";
+    post.tags.forEach(function (tag) {
+      host.appendChild(element("span", "blog-post-page__tag", tag.name));
+    });
+    host.hidden = false;
+  }
+
+  function relevanceOf(post, current) {
+    var ids = function (list) {
+      return (list || []).map(function (entry) { return entry.id || entry.name; });
+    };
+    var currentTags = ids(current.tags);
+    var currentCategories = ids(current.categories);
+    var shared = function (list, reference) {
+      return ids(list).filter(function (value) { return reference.indexOf(value) >= 0; }).length;
+    };
+    return shared(post.tags, currentTags) * 2 + shared(post.categories, currentCategories);
+  }
+
+  function renderCurrent(root, post, config) {
+    var title = root.querySelector("[data-blog-current-title]");
+    if (title) title.textContent = post.title;
+    var meta = root.querySelector("[data-blog-current-meta]");
+    var track = element("span", "blog-post-page__meta-track");
+    var date = window.LabBlog.formatDate(post.publishedAt, config.locale);
+    [post.category, date, post.readTime].filter(Boolean).forEach(function (value) {
+      track.appendChild(element("span", "blog-post-page__meta-item", value));
+    });
+    if (post.author) {
+      var avatar = avatarFor(post);
+      if (avatar) meta.appendChild(avatar);
+      var text = element("span", "blog-post-page__byline-text");
+      text.appendChild(element("span", "blog-post-page__author", post.author));
+      if (track.children.length) text.appendChild(track);
+      meta.appendChild(text);
+    } else if (track.children.length) {
+      meta.appendChild(track);
+    }
+    meta.hidden = meta.children.length === 0;
+    var hero = root.querySelector("[data-blog-current-image]");
+    if (post.imageUrl && !post.imageFromContent) {
+      var image = document.createElement("img");
+      image.src = post.imageUrl;
+      image.alt = post.imageAlt || post.title;
+      image.decoding = "async";
+      hero.appendChild(image);
+      hero.hidden = false;
+    }
+    renderTags(root, post);
+    renderAuthorCard(root, post);
+    applySeo(root, post);
+  }
+
+  var SHARE_ICONS = {
+    x: '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231Zm-1.161 17.52h1.833L7.084 4.126H5.117Z"/></svg>',
+    facebook: '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M22 12.06C22 6.5 17.52 2 12 2S2 6.5 2 12.06c0 5.02 3.66 9.18 8.44 9.94v-7.03H7.9v-2.91h2.54V9.85c0-2.52 1.49-3.91 3.78-3.91 1.09 0 2.24.2 2.24.2v2.47h-1.26c-1.24 0-1.63.78-1.63 1.57v1.88h2.78l-.45 2.91h-2.33V22c4.78-.76 8.44-4.92 8.44-9.94Z"/></svg>',
+    linkedin: '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.94v5.67H9.36V9h3.41v1.56h.05c.47-.9 1.63-1.85 3.36-1.85 3.6 0 4.27 2.37 4.27 5.46ZM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13ZM7.11 20.45H3.56V9h3.55ZM22.22 0H1.77C.79 0 0 .77 0 1.72v20.55C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.72C24 .77 23.2 0 22.22 0Z"/></svg>',
+    link: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>',
+    check: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>'
+  };
+
+  function canonicalUrl() {
+    return window.location.href.split("?")[0].split("#")[0];
+  }
+
+  function copyTextFallback(value) {
+    return new Promise(function (resolve, reject) {
+      var area = document.createElement("textarea");
+      area.value = value;
+      area.setAttribute("readonly", "");
+      area.style.position = "fixed";
+      area.style.left = "-9999px";
+      document.body.appendChild(area);
+      area.select();
+      try {
+        if (document.execCommand("copy")) resolve();
+        else reject(new Error("Copy command was rejected"));
+      } catch (error) {
+        reject(error);
+      } finally {
+        area.remove();
+      }
+    });
+  }
+
+  function copyText(value) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      return navigator.clipboard.writeText(value).catch(function () {
+        return copyTextFallback(value);
+      });
+    }
+    return copyTextFallback(value);
+  }
+
+  function shareLink(network, icon, href) {
+    var link = document.createElement("a");
+    link.className = "blog-post-page__share-button";
+    link.href = href;
+    link.target = "_blank";
+    link.rel = "noopener noreferrer";
+    link.setAttribute("aria-label", network);
+    link.title = network;
+    link.innerHTML = icon;
+    return link;
+  }
+
+  function renderShare(root) {
+    var host = root.querySelector("[data-blog-share]");
+    if (!host) return;
+    var url = canonicalUrl();
+    var title = serverRenderedTitle(root) || document.title;
+    var encodedUrl = encodeURIComponent(url);
+    host.appendChild(shareLink("X", SHARE_ICONS.x,
+      "https://x.com/intent/post?url=" + encodedUrl + (title ? "&text=" + encodeURIComponent(title) : "")));
+    host.appendChild(shareLink("Facebook", SHARE_ICONS.facebook,
+      "https://www.facebook.com/sharer/sharer.php?u=" + encodedUrl));
+    host.appendChild(shareLink("LinkedIn", SHARE_ICONS.linkedin,
+      "https://www.linkedin.com/sharing/share-offsite/?url=" + encodedUrl));
+    var copyLabel = root.getAttribute("data-blog-copy-link-label") || "Copy link";
+    var copiedLabel = root.getAttribute("data-blog-link-copied-label") || "Link copied";
+    var copy = document.createElement("button");
+    copy.type = "button";
+    copy.className = "blog-post-page__share-button";
+    copy.setAttribute("aria-label", copyLabel);
+    copy.title = copyLabel;
+    copy.innerHTML = SHARE_ICONS.link;
+    var feedback = element("span", "blog-post-page__share-feedback", copiedLabel);
+    feedback.setAttribute("role", "status");
+    feedback.hidden = true;
+    var timer = null;
+    copy.addEventListener("click", function () {
+      copyText(canonicalUrl()).then(function () {
+        copy.innerHTML = SHARE_ICONS.check;
+        copy.classList.add("is-copied");
+        feedback.hidden = false;
+        if (timer) clearTimeout(timer);
+        timer = setTimeout(function () {
+          copy.innerHTML = SHARE_ICONS.link;
+          copy.classList.remove("is-copied");
+          feedback.hidden = true;
+          timer = null;
+        }, 2000);
+      }).catch(function (error) {
+        console.error(error);
+      });
+    });
+    host.appendChild(copy);
+    host.appendChild(feedback);
+    host.hidden = false;
+  }
+
+  function relatedMediaFor(post) {
+    var media = element("span", "blog-related-card__media");
+    if (post.imageUrl) {
+      var image = document.createElement("img");
+      image.src = post.imageUrl;
+      image.alt = "";
+      image.loading = "lazy";
+      image.decoding = "async";
+      media.appendChild(image);
+    } else {
+      media.setAttribute("aria-hidden", "true");
+    }
+    return media;
+  }
+
+  function renderRelated(root, posts, current, config) {
+    var limit = Math.max(1, Number(root.getAttribute("data-blog-related-limit") || 3));
+    var readLabel = root.getAttribute("data-blog-read-label") || "Read article";
+    var currentPost = posts.find(function (post) { return post.permalink === current; });
+    var candidates = posts.filter(function (post) { return post.permalink !== current; });
+    if (currentPost) {
+      candidates = candidates.map(function (post, index) {
+        return { post: post, score: relevanceOf(post, currentPost), index: index };
+      }).sort(function (left, right) {
+        return right.score - left.score || left.index - right.index;
+      }).map(function (entry) { return entry.post; });
+    }
+    var list = candidates.slice(0, limit);
+    if (!list.length) return;
+    var grid = root.querySelector("[data-blog-related]");
+    list.forEach(function (post) {
+      var article = element("article", "blog-related-card");
+      var link = element("a", "blog-related-card__link");
+      link.href = window.LabBlog.buildPostUrl(post, config);
+      link.appendChild(relatedMediaFor(post));
+      var body = element("span", "blog-related-card__body");
+      if (post.category) body.appendChild(element("span", "blog-related-card__category", post.category));
+      body.appendChild(element("h3", "blog-related-card__title", post.title));
+      if (post.summary) body.appendChild(element("p", "blog-related-card__summary", post.summary));
+      body.appendChild(element("span", "blog-related-card__read", readLabel));
+      link.appendChild(body);
+      article.appendChild(link);
+      grid.appendChild(article);
+    });
+    root.querySelector("[data-blog-related-section]").hidden = false;
+  }
+
+  function init(root) {
+    var documentRoot = root.querySelector("[data-blog-document]");
+    try {
+      var initialPost = documentPost(root);
+      if (initialPost) applySeo(root, initialPost);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      if (documentRoot) {
+        documentRoot.setAttribute("data-blog-render-state", "ready");
+        documentRoot.removeAttribute("aria-busy");
+      }
+    }
+    try {
+      renderAuthorCard(root, null);
+    } catch (error) {
+      console.error(error);
+    }
+    try {
+      renderShare(root);
+    } catch (error) {
+      console.error(error);
+    }
+    if (!window.LabBlog) return;
+    var config = window.LabBlog.configFrom(root);
+    var indexLink = root.querySelector("[data-blog-index-link]");
+    if (indexLink) indexLink.href = window.LabBlog.buildIndexUrl(config);
+    var title = root.querySelector("[data-blog-current-title]");
+    var fallbackTitle = serverRenderedTitle(root);
+    if (title && fallbackTitle) title.textContent = fallbackTitle;
+    var current = root.getAttribute("data-blog-current-permalink") || window.LabBlog.currentPermalink(config);
+    window.LabBlog.loadPosts(config).then(function (posts) {
+      var post = posts.find(function (candidate) { return candidate.permalink === current; });
+      if (post) renderCurrent(root, post, config);
+      renderRelated(root, posts, current, config);
+    }).catch(function (error) {
+      console.error(error);
+    });
+  }
+
+  function ready() {
+    document.querySelectorAll("[data-blog-post]").forEach(init);
+  }
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", ready);
+  else ready();
+})();
+</script>
+</body>
+</html>

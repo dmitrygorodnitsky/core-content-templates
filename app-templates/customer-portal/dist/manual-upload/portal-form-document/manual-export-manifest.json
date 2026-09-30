@@ -1,0 +1,72 @@
+{
+  "schemaVersion": 1,
+  "uploadPerformed": false,
+  "kind": "portal-form-document",
+  "template": {
+    "code": "PORTAL_FORM_DOCUMENT",
+    "templateLanguage": "JTE",
+    "parameterCount": 44,
+    "sha256": {
+      "head": "b863f61f7cd6e1e0cd3c65a271e103adea5d9008ce327c16c08abf201548da9e",
+      "html": "023af7c4da0516111f2b257467a572816b886964890be4f57b7732b36be802ad",
+      "css": "c516bcabf75202279852d706dc5f37318190d667d06247660c6f37aa270b2883",
+      "javascript": "e4183c178742f4aa02d8ce9d199db0e4576a901cd5c4d36fc5b443b8b7c31dc2"
+    }
+  },
+  "renderer": {
+    "source": "app-templates/customer-portal/runtime/forms/portal-form.js",
+    "styles": "app-templates/customer-portal/runtime/forms/portal-form.css",
+    "kinds": [
+      "text",
+      "textarea",
+      "password",
+      "email",
+      "tel",
+      "url",
+      "color",
+      "date",
+      "number",
+      "slider",
+      "boolean",
+      "select",
+      "multiselect",
+      "radio",
+      "checklist",
+      "combobox",
+      "address",
+      "address-list"
+    ]
+  },
+  "themes": [
+    "hvac",
+    "snow",
+    "lawn",
+    "pool",
+    "roofing",
+    "pest",
+    "health",
+    "beauty"
+  ],
+  "modes": [
+    "light",
+    "dark"
+  ],
+  "api": {
+    "schema": "GET {apiBase}/{locale}/core-cms/api/form-type/{FORM_TYPE_CODE}/get.json",
+    "submit": "POST {apiBase}/core-cms/api/form/submit.json",
+    "credentials": "omit"
+  },
+  "constraints": [
+    "The document renders whatever the published form type declares. It contains no field list of its own.",
+    "FORM_API_BASE_URL must be an absolute https origin. Any other scheme is discarded and the form reports that it could not load.",
+    "FORM_ORGANIZATION_ID must be a positive number. Until it is set the submit button stays disabled, so an unconfigured document cannot post.",
+    "uiBehavior is honoured only as a declarative applyBehavior mapping of value to step. Server-supplied JavaScript is never executed.",
+    "Both requests are anonymous: credentials are omitted and no token, session or customer value is ever sent.",
+    "Masks are applied only when the attribute declares mask: in its inputFormat. Nothing is inferred, so no value is reshaped without the schema asking.",
+    "FORM_MAPS_API_KEY is a public browser key by design and must be restricted by HTTP referrer and API list in the Google console. While it is empty no Google script is loaded at all, and an address field degrades to a plain text input that still submits.",
+    "With a key, an address field shows its map from the start, holding the map's place while Google loads, with one pin for every address it holds that Google located. An Input format token map:<south>,<west>,<north>,<east> on the attribute names the area the empty map opens on; without it the empty map opens on the area named by within:, or on the whole world.",
+    "An Input format token within:<south>,<west>,<north>,<east> on an address attribute names the area its addresses must lie in. Suggestions are limited to that area, and a typed address is added only once Google has located it there; an address outside it or one Google cannot find stays in the input with ADDRESS_OUTSIDE_ERROR or ADDRESS_UNKNOWN_ERROR until it is corrected. When Google does not answer within six seconds or is unavailable, the address is accepted unchecked, so the form never waits on Google to go on. The area is a rectangle and the form's first check only; a finer rule belongs to the process that receives the submission.",
+    "FORM_THEME and FORM_MODE accept only a published vertical and light or dark. An unrecognised value falls back to the shipped default instead of writing an unknown data-theme that would silently render the wrong palette.",
+    "The success screen states only what its copy parameters say. SUCCESS_STEP_1 to SUCCESS_STEP_3 and SUCCESS_AGAIN_LABEL render nothing while empty, and the document never offers registration or sign-in."
+  ]
+}

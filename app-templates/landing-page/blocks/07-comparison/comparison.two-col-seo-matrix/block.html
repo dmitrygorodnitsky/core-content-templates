@@ -1,0 +1,372 @@
+<!-- lab-ui block · comparison.two-col-seo-matrix
+     Two-column SEO comparison matrix: criteria / ServiceWand / typical competitors.
+     Desktop uses a highlighted ServiceWand column; mobile turns every row into a card.
+-->
+<section
+  class="seo-compare"
+  data-block="comparison.two-col-seo-matrix"
+  aria-label="{{aria_label}}"
+>
+  <div class="container">
+    <header class="seo-compare-header">
+      <p class="seo-compare-eyebrow">{{eyebrow}}</p>
+      <h2 class="seo-compare-title">
+        <svg
+          class="seo-compare-title-logo"
+          width="368"
+          height="55"
+          viewBox="0 0 368 55"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          role="img"
+          aria-label="ServiceWand"
+        >
+          <path
+            d="M367.173 9.75098V46.2042H361.098V42.5336C360.271 43.9343 359.165 45.0229 357.782 45.7992C356.415 46.5755 354.71 46.9637 352.668 46.9637C350.879 46.9637 349.225 46.6093 347.706 45.9004C346.204 45.1916 344.896 44.2044 343.782 42.9386C342.686 41.656 341.825 40.1287 341.2 38.3566C340.593 36.5846 340.289 34.6438 340.289 32.5343C340.289 30.4078 340.593 28.4586 341.2 26.6865C341.825 24.9145 342.686 23.3956 343.782 22.1299C344.896 20.8473 346.204 19.86 347.706 19.1681C349.225 18.4593 350.879 18.1048 352.668 18.1048C354.727 18.1048 356.44 18.5014 357.807 19.2946C359.174 20.071 360.271 21.1511 361.098 22.5349V9.75098H367.173ZM353.934 23.826C352.735 23.826 351.681 24.0369 350.769 24.4588C349.875 24.8808 349.124 25.4799 348.516 26.2562C347.926 27.0156 347.478 27.9354 347.175 29.0155C346.888 30.0787 346.744 31.2516 346.744 32.5343C346.744 33.8506 346.896 35.0489 347.2 36.1289C347.504 37.1922 347.951 38.1035 348.542 38.8629C349.149 39.6224 349.9 40.2131 350.795 40.635C351.706 41.04 352.752 41.2425 353.934 41.2425C355.166 41.2425 356.229 41.0316 357.123 40.6097C358.018 40.1877 358.76 39.5971 359.351 38.8376C359.942 38.0613 360.381 37.1415 360.667 36.0783C360.954 34.9982 361.098 33.8169 361.098 32.5343C361.098 31.201 360.946 30.0028 360.642 28.9396C360.338 27.8595 359.883 26.9397 359.275 26.1803C358.684 25.4208 357.942 24.8386 357.047 24.4335C356.153 24.0285 355.115 23.826 353.934 23.826Z"
+            fill="#1B1D25"
+          ></path>
+          <path
+            d="M330.633 31.1426C330.633 28.7967 330.084 26.9909 328.987 25.7252C327.907 24.4595 326.329 23.8266 324.253 23.8266C322.178 23.8266 320.583 24.4595 319.469 25.7252C318.372 26.9741 317.824 28.7799 317.824 31.1426V46.2048H311.723V18.8649H317.824V22.4343C318.161 21.8099 318.566 21.2361 319.039 20.7129C319.528 20.1897 320.102 19.734 320.76 19.3459C321.418 18.9577 322.161 18.654 322.988 18.4346C323.832 18.2152 324.785 18.1055 325.848 18.1055C327.485 18.1055 328.97 18.3417 330.304 18.8143C331.637 19.2868 332.776 20.0041 333.721 20.966C334.683 21.928 335.426 23.1515 335.949 24.6367C336.472 26.1049 336.734 27.8516 336.734 29.8768V46.2048H330.633V31.1426Z"
+            fill="#1B1D25"
+          ></path>
+          <path
+            d="M295.14 18.1055C299.056 18.1055 301.958 19.0927 303.848 21.0673C305.755 23.025 306.709 26.0205 306.709 30.054V46.2048H300.633V42.5342C298.828 45.4876 295.883 46.9643 291.799 46.9643C290.415 46.9643 289.157 46.7702 288.027 46.382C286.896 45.9939 285.926 45.4454 285.116 44.7366C284.322 44.0109 283.706 43.1418 283.268 42.1292C282.829 41.1166 282.609 39.9943 282.609 38.7623C282.609 36.0789 283.529 33.9947 285.369 32.5096C287.225 31.0244 289.908 30.0625 293.419 29.6237L300.608 28.7377C300.558 26.915 300.077 25.5818 299.165 24.7379C298.254 23.8941 296.912 23.4722 295.14 23.4722C293.486 23.4722 292.178 23.776 291.216 24.3835C290.254 24.9911 289.562 25.953 289.141 27.2694L283.597 25.7758C284.322 23.2781 285.672 21.3795 287.647 20.08C289.622 18.7637 292.119 18.1055 295.14 18.1055ZM294.279 33.9778C292.322 34.2141 290.879 34.6866 289.951 35.3954C289.039 36.0874 288.584 37.0409 288.584 38.256C288.584 40.6693 290.145 41.876 293.267 41.876C294.111 41.876 294.895 41.7663 295.621 41.5469C296.347 41.3275 296.997 41.0322 297.57 40.6609C298.161 40.2728 298.667 39.8171 299.089 39.2939C299.511 38.7539 299.832 38.1801 300.051 37.5725C300.338 36.9143 300.507 36.214 300.558 35.4714C300.608 34.7288 300.633 34.0538 300.633 33.4462V33.1931L294.279 33.9778Z"
+            fill="#1B1D25"
+          ></path>
+          <path
+            d="M245.988 46.2052L235.559 9.75195H241.989L249.229 36.4843L256.469 9.75195H262.873L270.139 36.4843L277.353 9.75195H283.783L273.354 46.2052H266.898L259.684 19.8525L252.444 46.2052H245.988Z"
+            fill="#1B1D25"
+          ></path>
+          <path
+            d="M222.002 43.4455C224.044 43.4455 225.748 42.9899 227.115 42.0785C228.482 41.1672 229.571 39.8677 230.381 38.1801L233.9 39.4711C232.803 41.8845 231.225 43.7409 229.166 45.0404C227.124 46.323 224.736 46.9643 222.002 46.9643C220.027 46.9643 218.23 46.6268 216.61 45.9517C215.006 45.2598 213.631 44.2894 212.483 43.0405C211.353 41.7916 210.475 40.2812 209.851 38.5092C209.226 36.7202 208.914 34.7288 208.914 32.5349C208.914 30.3241 209.218 28.3326 209.825 26.5606C210.433 24.7717 211.302 23.2528 212.433 22.0039C213.564 20.7551 214.922 19.7931 216.508 19.1181C218.095 18.443 219.875 18.1055 221.85 18.1055C223.909 18.1055 225.731 18.4599 227.318 19.1687C228.904 19.8775 230.238 20.8985 231.318 22.2318C232.398 23.565 233.199 25.1852 233.723 27.0922C234.263 28.9992 234.499 31.1594 234.431 33.5728H212.888C212.973 35.1254 213.243 36.5177 213.699 37.7497C214.154 38.9648 214.77 39.9943 215.547 40.8381C216.34 41.6819 217.276 42.3317 218.356 42.7873C219.453 43.2261 220.669 43.4455 222.002 43.4455ZM230.508 30.4591C230.271 27.5732 229.411 25.3708 227.925 23.8519C226.44 22.3162 224.415 21.5483 221.85 21.5483C219.302 21.5483 217.259 22.3246 215.724 23.8772C214.188 25.4299 213.268 27.6238 212.964 30.4591H230.508Z"
+            fill="#1B1D25"
+          ></path>
+          <path
+            d="M195.993 46.9643C193.984 46.9643 192.187 46.6268 190.601 45.9517C189.014 45.2598 187.664 44.2894 186.55 43.0405C185.453 41.7748 184.61 40.2559 184.019 38.4838C183.428 36.6949 183.133 34.7119 183.133 32.5349C183.133 30.3241 183.428 28.3326 184.019 26.5606C184.61 24.7886 185.462 23.2781 186.576 22.0293C187.689 20.7635 189.04 19.7931 190.626 19.1181C192.229 18.443 194.027 18.1055 196.018 18.1055C197.402 18.1055 198.701 18.2827 199.916 18.6371C201.148 18.9915 202.254 19.4978 203.233 20.156C204.228 20.7973 205.089 21.5905 205.815 22.5355C206.541 23.4638 207.089 24.5101 207.46 25.6746L203.815 26.8391C203.494 26.029 203.072 25.3033 202.549 24.662C202.026 24.0207 201.427 23.4806 200.752 23.0418C200.094 22.6031 199.36 22.2655 198.549 22.0293C197.739 21.793 196.887 21.6748 195.993 21.6748C194.558 21.6748 193.284 21.928 192.17 22.4343C191.056 22.9406 190.12 23.6663 189.36 24.6114C188.618 25.5396 188.052 26.6787 187.664 28.0288C187.276 29.3621 187.082 30.8641 187.082 32.5349C187.082 34.1719 187.268 35.657 187.639 36.9903C188.027 38.3235 188.592 39.4711 189.335 40.4331C190.077 41.3782 191.006 42.1123 192.12 42.6355C193.233 43.1418 194.524 43.3949 195.993 43.3949C197.883 43.3949 199.469 42.973 200.752 42.1292C202.035 41.2685 203.022 40.0196 203.714 38.3826L207.46 39.4964C206.431 41.9435 204.937 43.7999 202.98 45.0657C201.039 46.3314 198.71 46.9643 195.993 46.9643Z"
+            fill="#1B1D25"
+          ></path>
+          <path
+            d="M174.859 13.675V9.49805H178.581V13.675H174.859ZM174.859 46.2044V18.8645H178.581V46.2044H174.859Z"
+            fill="#1B1D25"
+          ></path>
+          <path
+            d="M157.556 46.2042L147.633 18.8643H151.43L159.48 41.4197L167.53 18.8643H171.327L161.404 46.2042H157.556Z"
+            fill="#1B1D25"
+          ></path>
+          <path
+            d="M145.358 21.7761C145.122 21.7255 144.869 21.7002 144.599 21.7002C144.329 21.6833 144.033 21.6748 143.713 21.6748C142.548 21.6748 141.468 21.8521 140.472 22.2065C139.477 22.5609 138.616 23.1178 137.89 23.8772C137.181 24.6367 136.624 25.624 136.219 26.8391C135.814 28.0373 135.612 29.4887 135.612 31.1932V46.2048H131.891V18.8649H135.612V22.9406C135.933 22.333 136.329 21.7424 136.802 21.1686C137.291 20.5779 137.882 20.0631 138.574 19.6244C139.283 19.1687 140.109 18.8058 141.055 18.5358C142 18.2489 143.097 18.1055 144.345 18.1055C144.531 18.1055 144.7 18.1055 144.852 18.1055C145.004 18.1055 145.172 18.1139 145.358 18.1308V21.7761Z"
+            fill="#1B1D25"
+          ></path>
+          <path
+            d="M115.389 43.4455C117.431 43.4455 119.135 42.9899 120.502 42.0785C121.869 41.1672 122.958 39.8677 123.768 38.1801L127.286 39.4711C126.189 41.8845 124.612 43.7409 122.553 45.0404C120.511 46.323 118.122 46.9643 115.389 46.9643C113.414 46.9643 111.617 46.6268 109.996 45.9517C108.393 45.2598 107.018 44.2894 105.87 43.0405C104.739 41.7916 103.862 40.2812 103.237 38.5092C102.613 36.7202 102.301 34.7288 102.301 32.5349C102.301 30.3241 102.605 28.3326 103.212 26.5606C103.82 24.7717 104.689 23.2528 105.82 22.0039C106.95 20.7551 108.309 19.7931 109.895 19.1181C111.482 18.443 113.262 18.1055 115.237 18.1055C117.296 18.1055 119.118 18.4599 120.705 19.1687C122.291 19.8775 123.624 20.8985 124.704 22.2318C125.784 23.565 126.586 25.1852 127.109 27.0922C127.649 28.9992 127.886 31.1594 127.818 33.5728H106.275C106.36 35.1254 106.63 36.5177 107.085 37.7497C107.541 38.9648 108.157 39.9943 108.933 40.8381C109.726 41.6819 110.663 42.3317 111.743 42.7873C112.84 43.2261 114.055 43.4455 115.389 43.4455ZM123.894 30.4591C123.658 27.5732 122.797 25.3708 121.312 23.8519C119.827 22.3162 117.802 21.5483 115.237 21.5483C112.688 21.5483 110.646 22.3246 109.11 23.8772C107.575 25.4299 106.655 27.6238 106.351 30.4591H123.894Z"
+            fill="#1B1D25"
+          ></path>
+          <path
+            d="M86.7983 46.9644C84.8744 46.9644 83.0939 46.7197 81.4569 46.2303C79.8368 45.7408 78.3938 45.0405 77.1281 44.1291C75.8792 43.2178 74.8329 42.1208 73.9891 40.8382C73.1621 39.5387 72.5967 38.0789 72.293 36.4588L76.0902 35.8259C76.394 37.0241 76.8665 38.0958 77.5078 39.0409C78.1491 39.9691 78.9339 40.7623 79.8621 41.4205C80.7903 42.0618 81.8451 42.5512 83.0264 42.8887C84.2247 43.2263 85.5326 43.395 86.9502 43.395C88.351 43.395 89.6251 43.2263 90.7727 42.8887C91.9203 42.5512 92.8992 42.0786 93.7092 41.4711C94.5362 40.8467 95.1775 40.1041 95.6332 39.2434C96.0888 38.3827 96.3167 37.4292 96.3167 36.3828C96.3167 33.5813 94.4518 31.6237 90.7221 30.5098L81.4822 27.7505C76.3011 26.2316 73.7106 23.312 73.7106 18.9916C73.7106 17.5233 74.0144 16.1817 74.6219 14.9665C75.2295 13.7346 76.0733 12.6798 77.1534 11.8022C78.2504 10.9246 79.5583 10.2411 81.0772 9.75171C82.6129 9.26229 84.2922 9.01758 86.1148 9.01758C87.9375 9.01758 89.6251 9.26229 91.1778 9.75171C92.7473 10.2411 94.1227 10.9499 95.3041 11.8781C96.5023 12.7895 97.4896 13.9033 98.2659 15.2197C99.0591 16.5361 99.6076 18.0128 99.9114 19.6498L96.0129 20.3586C95.8272 19.1772 95.456 18.1056 94.899 17.1436C94.3421 16.1817 93.6249 15.3631 92.7473 14.6881C91.8866 14.013 90.8909 13.4899 89.7601 13.1186C88.6294 12.7473 87.3974 12.5616 86.0642 12.5616C84.7985 12.5616 83.6424 12.722 82.5961 13.0426C81.5666 13.3633 80.6806 13.8105 79.938 14.3843C79.2123 14.9412 78.647 15.6079 78.2419 16.3842C77.8369 17.1436 77.6344 17.9706 77.6344 18.865C77.6344 19.5738 77.7525 20.2067 77.9888 20.7636C78.2251 21.3206 78.6048 21.8268 79.128 22.2825C79.6511 22.7382 80.3177 23.1601 81.1278 23.5482C81.9548 23.9195 82.9589 24.2824 84.1403 24.6368L91.2537 26.7126C94.1902 27.5733 96.4011 28.7968 97.8862 30.3832C99.3713 31.9696 100.114 33.9273 100.114 36.2563C100.114 37.8764 99.7932 39.3447 99.1519 40.661C98.5275 41.9774 97.633 43.1081 96.4686 44.0532C95.3041 44.9814 93.9033 45.6987 92.2663 46.205C90.6293 46.7112 88.8066 46.9644 86.7983 46.9644Z"
+            fill="#1B1D25"
+          ></path>
+          <path
+            d="M46.261 2.98535L49.698 11.5471L58.4126 14.9238L49.698 18.3005L46.261 26.8622L42.824 18.3005L34.1094 14.9238L42.824 11.5471L46.261 2.98535Z"
+            fill="url(#seo-compare-logo-grad-0)"
+          ></path>
+          <path
+            d="M14.9233 0L19.1441 10.7021L29.8463 14.923L19.1441 19.1439L14.9233 29.846L10.7024 19.1439L0.000244141 14.923L10.7024 10.7021L14.9233 0Z"
+            fill="url(#seo-compare-logo-grad-1)"
+          ></path>
+          <path
+            d="M46.2607 31.5518L48.8536 38.1259L55.4277 40.7188L48.8536 43.3116L46.2607 49.8857L43.6679 43.3116L37.0938 40.7188L43.6679 38.1259L46.2607 31.5518Z"
+            fill="url(#seo-compare-logo-grad-2)"
+          ></path>
+          <path
+            d="M36.8899 24.4143C37.2154 24.7399 37.4006 25.1834 37.4181 25.6606C37.4347 26.1369 37.2822 26.6078 36.9809 26.9565C36.5795 27.42 36.1804 27.8859 35.7828 28.3532C32.2161 32.5456 28.7747 36.8638 24.9743 40.8224C21.1481 44.8078 17.2624 48.7339 13.3975 52.6806C12.9696 53.1176 12.5419 53.5549 12.1145 53.9926C11.4854 54.637 10.6282 55.0014 9.72757 55.0013C8.82708 55.0015 7.95669 54.6366 7.31217 53.992C6.66764 53.3475 6.30273 52.4771 6.30286 51.5766C6.30277 50.676 6.66719 49.8188 7.31165 49.1897C7.74927 48.7623 8.18659 48.3346 8.62359 47.9067C12.5703 44.0418 16.4964 40.1561 20.4818 36.3299C24.4404 32.5295 28.7586 29.0881 32.951 25.5214C33.4183 25.1238 33.8842 24.7247 34.3477 24.3233C34.6964 24.022 35.1673 23.8695 35.6436 23.8861C36.1208 23.9036 36.5643 24.0888 36.8899 24.4143Z"
+            fill="url(#seo-compare-logo-grad-3)"
+          ></path>
+          <defs>
+            <linearGradient
+              id="seo-compare-logo-grad-0"
+              x1="42.7892"
+              y1="15.5242"
+              x2="56.6049"
+              y2="1.84773"
+              gradientUnits="userSpaceOnUse"
+            >
+              <stop stop-color="#628EFF"></stop>
+              <stop offset="1" stop-color="#60CAFB"></stop>
+            </linearGradient>
+            <linearGradient
+              id="seo-compare-logo-grad-1"
+              x1="20.977"
+              y1="9.41732"
+              x2="6.60901"
+              y2="24.2188"
+              gradientUnits="userSpaceOnUse"
+            >
+              <stop stop-color="#638EFF"></stop>
+              <stop offset="1" stop-color="#967CFF"></stop>
+            </linearGradient>
+            <linearGradient
+              id="seo-compare-logo-grad-2"
+              x1="49.9795"
+              y1="37.3367"
+              x2="39.4379"
+              y2="48.5193"
+              gradientUnits="userSpaceOnUse"
+            >
+              <stop stop-color="#7A86FE"></stop>
+              <stop offset="1" stop-color="#9F79FF"></stop>
+            </linearGradient>
+            <linearGradient
+              id="seo-compare-logo-grad-3"
+              x1="36.8899"
+              y1="24.4143"
+              x2="7.31217"
+              y2="53.992"
+              gradientUnits="userSpaceOnUse"
+            >
+              <stop stop-color="#7288FF"></stop>
+              <stop offset="1" stop-color="#D964FF"></stop>
+            </linearGradient>
+          </defs>
+        </svg>
+        <span>{{title}}</span>
+      </h2>
+      <div class="seo-compare-lede">{{lede}}</div>
+    </header>
+
+    <div class="seo-compare-card">
+      <div class="seo-compare-grid">
+        <div class="seo-compare-sw-frame" aria-hidden="true"></div>
+
+        <div class="seo-compare-head">
+          <div class="seo-compare-head-spacer"></div>
+
+          <div class="seo-compare-brand seo-compare-brand--sw">
+            <h3>{{col_01_name}}</h3>
+            <p>{{col_01_desc}}</p>
+          </div>
+
+          <div class="seo-compare-brand seo-compare-brand--competitor">
+            <h3>{{col_02_name}}</h3>
+            <p>{{col_02_desc}}</p>
+          </div>
+        </div>
+
+        <article class="seo-compare-row">
+          <h4>{{slot_01_capability}}</h4>
+          <div class="seo-compare-value seo-compare-value--sw">
+            <p class="seo-compare-value-label">{{col_01_name}}</p>
+            <div class="seo-compare-value-body">
+              <span class="seo-compare-icon-source"
+                >{{slot_01_col_01_icon}}</span
+              >
+              <span class="seo-compare-icon" aria-hidden="true"></span>
+              <p>{{slot_01_col_01}}</p>
+            </div>
+          </div>
+          <div class="seo-compare-value seo-compare-value--competitor">
+            <p class="seo-compare-value-label">{{col_02_name}}</p>
+            <div class="seo-compare-value-body">
+              <span class="seo-compare-icon-source"
+                >{{slot_01_col_02_icon}}</span
+              >
+              <span class="seo-compare-icon" aria-hidden="true"></span>
+              <p>{{slot_01_col_02}}</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="seo-compare-row">
+          <h4>{{slot_02_capability}}</h4>
+          <div class="seo-compare-value seo-compare-value--sw">
+            <p class="seo-compare-value-label">{{col_01_name}}</p>
+            <div class="seo-compare-value-body">
+              <span class="seo-compare-icon-source"
+                >{{slot_02_col_01_icon}}</span
+              >
+              <span class="seo-compare-icon" aria-hidden="true"></span>
+              <p>{{slot_02_col_01}}</p>
+            </div>
+          </div>
+          <div class="seo-compare-value seo-compare-value--competitor">
+            <p class="seo-compare-value-label">{{col_02_name}}</p>
+            <div class="seo-compare-value-body">
+              <span class="seo-compare-icon-source"
+                >{{slot_02_col_02_icon}}</span
+              >
+              <span class="seo-compare-icon" aria-hidden="true"></span>
+              <p>{{slot_02_col_02}}</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="seo-compare-row">
+          <h4>{{slot_03_capability}}</h4>
+          <div class="seo-compare-value seo-compare-value--sw">
+            <p class="seo-compare-value-label">{{col_01_name}}</p>
+            <div class="seo-compare-value-body">
+              <span class="seo-compare-icon-source"
+                >{{slot_03_col_01_icon}}</span
+              >
+              <span class="seo-compare-icon" aria-hidden="true"></span>
+              <p>{{slot_03_col_01}}</p>
+            </div>
+          </div>
+          <div class="seo-compare-value seo-compare-value--competitor">
+            <p class="seo-compare-value-label">{{col_02_name}}</p>
+            <div class="seo-compare-value-body">
+              <span class="seo-compare-icon-source"
+                >{{slot_03_col_02_icon}}</span
+              >
+              <span class="seo-compare-icon" aria-hidden="true"></span>
+              <p>{{slot_03_col_02}}</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="seo-compare-row">
+          <h4>{{slot_04_capability}}</h4>
+          <div class="seo-compare-value seo-compare-value--sw">
+            <p class="seo-compare-value-label">{{col_01_name}}</p>
+            <div class="seo-compare-value-body">
+              <span class="seo-compare-icon-source"
+                >{{slot_04_col_01_icon}}</span
+              >
+              <span class="seo-compare-icon" aria-hidden="true"></span>
+              <p>{{slot_04_col_01}}</p>
+            </div>
+          </div>
+          <div class="seo-compare-value seo-compare-value--competitor">
+            <p class="seo-compare-value-label">{{col_02_name}}</p>
+            <div class="seo-compare-value-body">
+              <span class="seo-compare-icon-source"
+                >{{slot_04_col_02_icon}}</span
+              >
+              <span class="seo-compare-icon" aria-hidden="true"></span>
+              <p>{{slot_04_col_02}}</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="seo-compare-row">
+          <h4>{{slot_05_capability}}</h4>
+          <div class="seo-compare-value seo-compare-value--sw">
+            <p class="seo-compare-value-label">{{col_01_name}}</p>
+            <div class="seo-compare-value-body">
+              <span class="seo-compare-icon-source"
+                >{{slot_05_col_01_icon}}</span
+              >
+              <span class="seo-compare-icon" aria-hidden="true"></span>
+              <p>{{slot_05_col_01}}</p>
+            </div>
+          </div>
+          <div class="seo-compare-value seo-compare-value--competitor">
+            <p class="seo-compare-value-label">{{col_02_name}}</p>
+            <div class="seo-compare-value-body">
+              <span class="seo-compare-icon-source"
+                >{{slot_05_col_02_icon}}</span
+              >
+              <span class="seo-compare-icon" aria-hidden="true"></span>
+              <p>{{slot_05_col_02}}</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="seo-compare-row">
+          <h4>{{slot_06_capability}}</h4>
+          <div class="seo-compare-value seo-compare-value--sw">
+            <p class="seo-compare-value-label">{{col_01_name}}</p>
+            <div class="seo-compare-value-body">
+              <span class="seo-compare-icon-source"
+                >{{slot_06_col_01_icon}}</span
+              >
+              <span class="seo-compare-icon" aria-hidden="true"></span>
+              <p>{{slot_06_col_01}}</p>
+            </div>
+          </div>
+          <div class="seo-compare-value seo-compare-value--competitor">
+            <p class="seo-compare-value-label">{{col_02_name}}</p>
+            <div class="seo-compare-value-body">
+              <span class="seo-compare-icon-source"
+                >{{slot_06_col_02_icon}}</span
+              >
+              <span class="seo-compare-icon" aria-hidden="true"></span>
+              <p>{{slot_06_col_02}}</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="seo-compare-row">
+          <h4>{{slot_07_capability}}</h4>
+          <div class="seo-compare-value seo-compare-value--sw">
+            <p class="seo-compare-value-label">{{col_01_name}}</p>
+            <div class="seo-compare-value-body">
+              <span class="seo-compare-icon-source"
+                >{{slot_07_col_01_icon}}</span
+              >
+              <span class="seo-compare-icon" aria-hidden="true"></span>
+              <p>{{slot_07_col_01}}</p>
+            </div>
+          </div>
+          <div class="seo-compare-value seo-compare-value--competitor">
+            <p class="seo-compare-value-label">{{col_02_name}}</p>
+            <div class="seo-compare-value-body">
+              <span class="seo-compare-icon-source"
+                >{{slot_07_col_02_icon}}</span
+              >
+              <span class="seo-compare-icon" aria-hidden="true"></span>
+              <p>{{slot_07_col_02}}</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="seo-compare-row">
+          <h4>{{slot_08_capability}}</h4>
+          <div class="seo-compare-value seo-compare-value--sw">
+            <p class="seo-compare-value-label">{{col_01_name}}</p>
+            <div class="seo-compare-value-body">
+              <span class="seo-compare-icon-source"
+                >{{slot_08_col_01_icon}}</span
+              >
+              <span class="seo-compare-icon" aria-hidden="true"></span>
+              <p>{{slot_08_col_01}}</p>
+            </div>
+          </div>
+          <div class="seo-compare-value seo-compare-value--competitor">
+            <p class="seo-compare-value-label">{{col_02_name}}</p>
+            <div class="seo-compare-value-body">
+              <span class="seo-compare-icon-source"
+                >{{slot_08_col_02_icon}}</span
+              >
+              <span class="seo-compare-icon" aria-hidden="true"></span>
+              <p>{{slot_08_col_02}}</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="seo-compare-row">
+          <h4>{{slot_09_capability}}</h4>
+          <div class="seo-compare-value seo-compare-value--sw">
+            <p class="seo-compare-value-label">{{col_01_name}}</p>
+            <div class="seo-compare-value-body">
+              <span class="seo-compare-icon-source"
+                >{{slot_09_col_01_icon}}</span
+              >
+              <span class="seo-compare-icon" aria-hidden="true"></span>
+              <p>{{slot_09_col_01}}</p>
+            </div>
+          </div>
+          <div class="seo-compare-value seo-compare-value--competitor">
+            <p class="seo-compare-value-label">{{col_02_name}}</p>
+            <div class="seo-compare-value-body">
+              <span class="seo-compare-icon-source"
+                >{{slot_09_col_02_icon}}</span
+              >
+              <span class="seo-compare-icon" aria-hidden="true"></span>
+              <p>{{slot_09_col_02}}</p>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </div>
+</section>

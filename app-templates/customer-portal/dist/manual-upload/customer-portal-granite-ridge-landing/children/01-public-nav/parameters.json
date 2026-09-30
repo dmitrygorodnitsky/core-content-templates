@@ -1,0 +1,28 @@
+[
+  {
+    "code": "GRS_LANDING_01_PUBLIC_NAV_BRAND",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "BRAND",
+        "DESCRIPTION": "CMS-authored value for Granite Ridge Snow Removal."
+      }
+    },
+    "value": {
+      "en": "Granite Ridge"
+    }
+  },
+  {
+    "code": "GRS_LANDING_01_PUBLIC_NAV_SIGNIN_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "SIGNIN LABEL",
+        "DESCRIPTION": "CMS-authored value for Granite Ridge Snow Removal."
+      }
+    },
+    "value": {
+      "en": "Sign in"
+    }
+  }
+]

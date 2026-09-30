@@ -1,0 +1,183 @@
+{
+  "$schema": "lab-ui/block@1",
+  "id": "features.card-grid-4",
+  "category": "06-features",
+  "title": "Features · 4-card horizontal grid",
+  "description": "H2 + 3 lede paragraphs + 4 horizontal cards. Each card carries a mono number badge, a title, and two body paragraphs. Used as the 'Unified Platform' / 'What's Inside' framing pattern. 4 fixed slots; collapses to 2 columns at ≤1180px, single column at ≤720px.",
+  "canonical": true,
+  "theme": "light",
+  "source": {
+    "primary": "tmp/Lorem ipsum/src/sections-1.jsx (CardGrid4)",
+    "adapted_from": "v5 dark + v4 light → unified light tokens",
+    "decision": "PM lock 2026-05-21 — 4-card framing pattern = v5 horizontal layout"
+  },
+  "depends_on": {
+    "tokens": [
+      "--color-bg",
+      "--color-gray-bg",
+      "--color-text",
+      "--color-heading",
+      "--color-cyan",
+      "--color-white",
+      "--cta-accent",
+      "--cta-secondary-fill",
+      "--cta-secondary-color",
+      "--font-family",
+      "--font-mono",
+      "--container-width",
+      "--container-padding-x",
+      "--radius-card",
+      "--type-h2-size",
+      "--type-h2-weight",
+      "--type-eyebrow-size",
+      "--type-eyebrow-tracking"
+    ],
+    "other_blocks": []
+  },
+  "background": {
+    "optional": true,
+    "default": "none",
+    "modes": [
+      "none",
+      "gradient",
+      "image"
+    ],
+    "role": "decorative section background",
+    "image": {
+      "recommended_size": "2880 × 1400",
+      "fit": "cover",
+      "position": "center",
+      "alt": ""
+    },
+    "gradient": {
+      "recommended": "subtle neutral/accent gradient only; do not use freeform decorative orbs"
+    },
+    "url_params": {
+      "mode": "bg",
+      "image": "bgImage",
+      "gradient": "bgGradient"
+    },
+    "notes": [
+      "Full-width features section background.",
+      "Background is decorative and must not replace content media slots or block copy.",
+      "Preview in any supported harness with ?bg=gradient or ?bg=image&bgImage=<encoded-url>."
+    ]
+  },
+  "params": [
+    {
+      "code": "eyebrow",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum"
+    },
+    {
+      "code": "title",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor"
+    },
+    {
+      "code": "lede_1",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud."
+    },
+    {
+      "code": "lede_2",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor."
+    },
+    {
+      "code": "lede_3",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut."
+    },
+    {
+      "code": "card_1_num",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lor"
+    },
+    {
+      "code": "card_1_title",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum"
+    },
+    {
+      "code": "card_1_p1",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor."
+    },
+    {
+      "code": "card_1_p2",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt."
+    },
+    {
+      "code": "card_2_num",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lor"
+    },
+    {
+      "code": "card_2_title",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum"
+    },
+    {
+      "code": "card_2_p1",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna."
+    },
+    {
+      "code": "card_2_p2",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing."
+    },
+    {
+      "code": "card_3_num",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lor"
+    },
+    {
+      "code": "card_3_title",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum"
+    },
+    {
+      "code": "card_3_p1",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+    },
+    {
+      "code": "card_3_p2",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do."
+    },
+    {
+      "code": "card_4_num",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lor"
+    },
+    {
+      "code": "card_4_title",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor"
+    },
+    {
+      "code": "card_4_p1",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod."
+    },
+    {
+      "code": "card_4_p2",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod."
+    }
+  ],
+  "preview": {
+    "390": "preview-390.png",
+    "1440": "preview-1440.png"
+  },
+  "notes": [
+    "4 fixed cards by design. For variable counts use features.accordion-2col-numbered.",
+    "Eyebrow and number badges use --cta-secondary-fill / --cta-secondary-color so this section follows the same palette as secondary CTAs.",
+    "Two breakpoints: 4-col → 2-col at 1180px, 2-col → 1-col at 720px. Avoids the 'card row of 1 hanging' problem.",
+    "Cards are tighter than card-grid-3 (denser typography) since 4 across leaves less width."
+  ]
+}

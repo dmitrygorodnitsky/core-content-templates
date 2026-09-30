@@ -1,0 +1,174 @@
+{
+ "code": "APPOINTMENT",
+ "initialState": {
+  "id": 113,
+  "code": "SCHEDULED"
+ },
+ "nls": {
+  "en": {
+   "NAME": "Appointment",
+   "DESCRIPTION": "Base appointment workflow required by appointment type metadata."
+  }
+ },
+ "entityType": "com.pixelnation.svc.domain.Appointment",
+ "organization": {
+  "optimistic": 3,
+  "id": 9,
+  "code": "SERVICE_WAND_WINTER_SERVICES_CANADA"
+ },
+ "id": 20,
+ "states": [
+  {
+   "style": {
+    "xPos": 812,
+    "yPos": 163
+   },
+   "id": 116,
+   "code": "CANCELED",
+   "nls": {
+    "en": {
+     "NAME": "Canceled"
+    }
+   },
+   "events": []
+  },
+  {
+   "style": {
+    "xPos": 430.031553732583,
+    "yPos": -107.91909652733092
+   },
+   "id": 115,
+   "code": "COMPLETED",
+   "nls": {
+    "en": {
+     "NAME": "Completed"
+    }
+   },
+   "events": []
+  },
+  {
+   "style": {
+    "xPos": 411.97250591777595,
+    "yPos": 388.07605200047385
+   },
+   "id": 126,
+   "code": "DRAFT",
+   "nls": {
+    "en": {
+     "NAME": "Draft"
+    }
+   },
+   "events": [
+    {
+     "id": 203,
+     "code": "DRAFT-SCHEDULED",
+     "nls": {
+      "en": {
+       "NAME": "Schedule"
+      }
+     },
+     "targets": [
+      {
+       "id": 113,
+       "code": "SCHEDULED"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "style": {
+    "xPos": 151.74454142751844,
+    "yPos": 31.862257588201118
+   },
+   "id": 114,
+   "code": "IN_PROGRESS",
+   "nls": {
+    "en": {
+     "NAME": "In Progress"
+    }
+   },
+   "events": [
+    {
+     "orderIndex": 0,
+     "id": 190,
+     "code": "IN_PROGRESS-COMPLETED",
+     "nls": {
+      "en": {
+       "NAME": "Complete Visit"
+      }
+     },
+     "targets": [
+      {
+       "id": 115,
+       "code": "COMPLETED"
+      }
+     ]
+    },
+    {
+     "orderIndex": 1,
+     "id": 191,
+     "code": "IN_PROGRESS-SCHEDULED",
+     "nls": {
+      "en": {
+       "NAME": "Return to Schedule"
+      }
+     },
+     "targets": [
+      {
+       "id": 113,
+       "code": "SCHEDULED"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "style": {
+    "xPos": 412,
+    "yPos": 156.33333333333334
+   },
+   "id": 113,
+   "code": "SCHEDULED",
+   "nls": {
+    "en": {
+     "NAME": "Scheduled"
+    }
+   },
+   "events": [
+    {
+     "orderIndex": 0,
+     "id": 189,
+     "code": "SCHEDULED-IN_PROGRESS",
+     "nls": {
+      "en": {
+       "NAME": "Start Visit"
+      }
+     },
+     "targets": [
+      {
+       "id": 114,
+       "code": "IN_PROGRESS"
+      }
+     ]
+    },
+    {
+     "orderIndex": 1,
+     "id": 192,
+     "code": "SCHEDULED-CANCELED",
+     "nls": {
+      "en": {
+       "NAME": "Cancel"
+      }
+     },
+     "targets": [
+      {
+       "id": 116,
+       "code": "CANCELED"
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

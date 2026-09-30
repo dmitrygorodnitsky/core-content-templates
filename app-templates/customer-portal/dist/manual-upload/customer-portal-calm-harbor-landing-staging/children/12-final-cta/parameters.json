@@ -1,0 +1,54 @@
+[
+  {
+    "code": "CHS_LANDING_12_FINAL_CTA_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "TITLE",
+        "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+      }
+    },
+    "value": {
+      "en": "Ready when you are in Miami, FL"
+    }
+  },
+  {
+    "code": "CHS_LANDING_12_FINAL_CTA_SUB",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "SUB",
+        "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+      }
+    },
+    "value": {
+      "en": "Every price on this page is live from the public catalog — browse the shop, or sign in to your routine."
+    }
+  },
+  {
+    "code": "CHS_LANDING_12_FINAL_CTA_PRIMARY_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "PRIMARY LABEL",
+        "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+      }
+    },
+    "value": {
+      "en": "Browse the spa shop"
+    }
+  },
+  {
+    "code": "CHS_LANDING_12_FINAL_CTA_SECONDARY_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "SECONDARY LABEL",
+        "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+      }
+    },
+    "value": {
+      "en": "Sign in"
+    }
+  }
+]

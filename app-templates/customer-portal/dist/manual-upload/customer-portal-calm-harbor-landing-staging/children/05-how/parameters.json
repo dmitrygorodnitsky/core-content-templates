@@ -1,0 +1,132 @@
+[
+  {
+    "code": "CHS_LANDING_05_HOW_EYEBROW",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "EYEBROW",
+        "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+      }
+    },
+    "value": {
+      "en": "How it works"
+    }
+  },
+  {
+    "code": "CHS_LANDING_05_HOW_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "TITLE",
+        "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+      }
+    },
+    "value": {
+      "en": "From request to report"
+    }
+  },
+  {
+    "code": "CHS_LANDING_05_HOW_STEP_1_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "STEP 1 TITLE",
+        "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+      }
+    },
+    "value": {
+      "en": "Request"
+    }
+  },
+  {
+    "code": "CHS_LANDING_05_HOW_STEP_1_DESC",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "STEP 1 DESC",
+        "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+      }
+    },
+    "value": {
+      "en": "Choose a treatment and where — the harbor studio or your place."
+    }
+  },
+  {
+    "code": "CHS_LANDING_05_HOW_STEP_2_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "STEP 2 TITLE",
+        "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+      }
+    },
+    "value": {
+      "en": "Scheduling"
+    }
+  },
+  {
+    "code": "CHS_LANDING_05_HOW_STEP_2_DESC",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "STEP 2 DESC",
+        "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+      }
+    },
+    "value": {
+      "en": "Pick a time; keep the same specialist for every visit."
+    }
+  },
+  {
+    "code": "CHS_LANDING_05_HOW_STEP_3_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "STEP 3 TITLE",
+        "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+      }
+    },
+    "value": {
+      "en": "Service"
+    }
+  },
+  {
+    "code": "CHS_LANDING_05_HOW_STEP_3_DESC",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "STEP 3 DESC",
+        "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+      }
+    },
+    "value": {
+      "en": "Arrive to a warm, prepared room — or your specialist arrives with a sanitised kit."
+    }
+  },
+  {
+    "code": "CHS_LANDING_05_HOW_STEP_4_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "STEP 4 TITLE",
+        "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+      }
+    },
+    "value": {
+      "en": "Report & payment"
+    }
+  },
+  {
+    "code": "CHS_LANDING_05_HOW_STEP_4_DESC",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "STEP 4 DESC",
+        "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+      }
+    },
+    "value": {
+      "en": "Pressure notes, sensitivities and product picks saved to your routine for next time."
+    }
+  }
+]

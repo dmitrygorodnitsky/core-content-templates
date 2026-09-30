@@ -1,0 +1,33 @@
+/* lab-ui block · decorative.callout-band
+   Depends: 00-tokens/tokens.css. Light theme.
+   Adapted from designer styles.css §smb-callout (lines 1219–1240). */
+
+.callout-band {
+  margin-top: 24px;
+  padding: 30px 32px;
+  border-radius: var(--radius-card);
+  background: linear-gradient(135deg, #F4F8FE 0%, #EDF3FB 100%);
+  border: 1px solid color-mix(in srgb, var(--cta-accent, #6BEAF9) 20%, transparent);
+  box-shadow: 0 0 60px -20px color-mix(in srgb, var(--cta-accent, #6BEAF9) 32%, transparent);
+  font-family: var(--font-family);
+}
+
+.callout-band-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  background: var(--cta-secondary-fill, linear-gradient(90deg, #56422D 0%, #494938 100%));
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  margin: 0 0 12px;
+}
+
+.callout-band-body {
+  margin: 0;
+  font-size: 1.0625rem;
+  line-height: 1.55;
+  color: var(--color-heading);
+  max-width: 76ch;
+}

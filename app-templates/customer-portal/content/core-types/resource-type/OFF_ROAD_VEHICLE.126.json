@@ -1,0 +1,106 @@
+{
+ "optimistic": 10,
+ "code": "OFF_ROAD_VEHICLE",
+ "nls": {
+  "en": {
+   "NAME": "Off-Road Vehicle (ORV)"
+  }
+ },
+ "workflow": {
+  "id": 8,
+  "code": "SIMPLE_RESOURCE"
+ },
+ "organization": {
+  "optimistic": 4,
+  "id": 8,
+  "code": "SERVICE_WAND_WINTER_SERVICES"
+ },
+ "attributeOrder": [
+  {
+   "IDENTIFICATION": [
+    {
+     "typeId": 146,
+     "attributeCode": "MAKE",
+     "visible": true
+    },
+    {
+     "typeId": 146,
+     "attributeCode": "MODEL",
+     "visible": true
+    },
+    {
+     "typeId": 146,
+     "attributeCode": "YEAR",
+     "visible": true
+    },
+    {
+     "typeId": 146,
+     "attributeCode": "COLOR",
+     "visible": true
+    }
+   ]
+  },
+  {
+   "MANUFACTURER_INFORMATION": [
+    {
+     "attributeCode": "SERIAL_NUMBER",
+     "visible": true
+    }
+   ]
+  },
+  {
+   "OPERATIONAL_INFORMATION": [
+    {
+     "typeId": 110,
+     "attributeCode": "DEPOT",
+     "visible": true
+    },
+    {
+     "typeId": 110,
+     "attributeCode": "FUEL_TYPE",
+     "visible": true
+    },
+    {
+     "typeId": 110,
+     "attributeCode": "TRANSMISSION_TYPE",
+     "visible": true
+    }
+   ]
+  }
+ ],
+ "attributes": [
+  {
+   "code": "SERIAL_NUMBER",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "en": {
+     "NAME": "Serial Number / VIN"
+    }
+   },
+   "options": []
+  }
+ ],
+ "id": 126,
+ "isAbstract": false,
+ "attributeGroups": [
+  {
+   "code": "MANUFACTURER_INFORMATION",
+   "nls": {
+    "ar": {
+     "DESCRIPTION": "<p></p>"
+    },
+    "en": {
+     "NAME": "Manufacturer Information",
+     "DESCRIPTION": "<p>Contains the manufacturer-issued serial number used to uniquely identify the off-road vehicle for asset tracking and maintenance.</p>"
+    },
+    "he": {
+     "DESCRIPTION": "<p></p>"
+    }
+   }
+  }
+ ]
+}

@@ -1,0 +1,118 @@
+{
+ "optimistic": 8,
+ "code": "EQUIPMENT",
+ "nls": {
+  "en": {
+   "NAME": "Equipment"
+  }
+ },
+ "workflow": {
+  "id": 8,
+  "code": "SIMPLE_RESOURCE"
+ },
+ "organization": {
+  "optimistic": 4,
+  "id": 8,
+  "code": "SERVICE_WAND_WINTER_SERVICES"
+ },
+ "attributeOrder": [
+  {
+   "IDENTIFICATION": [
+    {
+     "attributeCode": "MAKE",
+     "visible": true
+    },
+    {
+     "attributeCode": "MODEL",
+     "visible": true
+    },
+    {
+     "attributeCode": "YEAR",
+     "visible": true
+    },
+    {
+     "attributeCode": "COLOR",
+     "visible": true
+    }
+   ]
+  }
+ ],
+ "attributes": [
+  {
+   "code": "MAKE",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "en": {
+     "NAME": "Make"
+    }
+   },
+   "options": []
+  },
+  {
+   "code": "YEAR",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.Integer",
+   "nls": {
+    "en": {
+     "NAME": "Year"
+    }
+   },
+   "options": [],
+   "inputFormat": "plain"
+  },
+  {
+   "code": "MODEL",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "en": {
+     "NAME": "Model"
+    }
+   },
+   "options": []
+  },
+  {
+   "code": "COLOR",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "en": {
+     "NAME": "Color"
+    }
+   },
+   "options": []
+  }
+ ],
+ "id": 146,
+ "isAbstract": false,
+ "attributeGroups": [
+  {
+   "code": "IDENTIFICATION",
+   "nls": {
+    "ar": {
+     "DESCRIPTION": "<p></p>"
+    },
+    "en": {
+     "NAME": "Identification",
+     "DESCRIPTION": "<p>Basic identification information about the equipment, including its manufacturer, model, and production year.</p>"
+    },
+    "he": {
+     "DESCRIPTION": "<p></p>"
+    }
+   }
+  }
+ ]
+}

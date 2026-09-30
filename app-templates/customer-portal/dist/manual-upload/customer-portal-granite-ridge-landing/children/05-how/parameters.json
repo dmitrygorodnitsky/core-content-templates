@@ -1,0 +1,132 @@
+[
+  {
+    "code": "GRS_LANDING_05_HOW_EYEBROW",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "EYEBROW",
+        "DESCRIPTION": "CMS-authored value for Granite Ridge Snow Removal."
+      }
+    },
+    "value": {
+      "en": "How it works"
+    }
+  },
+  {
+    "code": "GRS_LANDING_05_HOW_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "TITLE",
+        "DESCRIPTION": "CMS-authored value for Granite Ridge Snow Removal."
+      }
+    },
+    "value": {
+      "en": "From measured area to compliance report"
+    }
+  },
+  {
+    "code": "GRS_LANDING_05_HOW_STEP_1_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "STEP 1 TITLE",
+        "DESCRIPTION": "CMS-authored value for Granite Ridge Snow Removal."
+      }
+    },
+    "value": {
+      "en": "Request"
+    }
+  },
+  {
+    "code": "GRS_LANDING_05_HOW_STEP_1_DESC",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "STEP 1 DESC",
+        "DESCRIPTION": "CMS-authored value for Granite Ridge Snow Removal."
+      }
+    },
+    "value": {
+      "en": "Tell us the property and surfaces — we quote from measured area, not guesses."
+    }
+  },
+  {
+    "code": "GRS_LANDING_05_HOW_STEP_2_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "STEP 2 TITLE",
+        "DESCRIPTION": "CMS-authored value for Granite Ridge Snow Removal."
+      }
+    },
+    "value": {
+      "en": "Scheduling"
+    }
+  },
+  {
+    "code": "GRS_LANDING_05_HOW_STEP_2_DESC",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "STEP 2 DESC",
+        "DESCRIPTION": "CMS-authored value for Granite Ridge Snow Removal."
+      }
+    },
+    "value": {
+      "en": "No calendar needed: dispatch fires automatically at your snowfall trigger."
+    }
+  },
+  {
+    "code": "GRS_LANDING_05_HOW_STEP_3_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "STEP 3 TITLE",
+        "DESCRIPTION": "CMS-authored value for Granite Ridge Snow Removal."
+      }
+    },
+    "value": {
+      "en": "Service"
+    }
+  },
+  {
+    "code": "GRS_LANDING_05_HOW_STEP_3_DESC",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "STEP 3 DESC",
+        "DESCRIPTION": "CMS-authored value for Granite Ridge Snow Removal."
+      }
+    },
+    "value": {
+      "en": "Crew clears to the contracted spec; arrival and route are GPS-logged."
+    }
+  },
+  {
+    "code": "GRS_LANDING_05_HOW_STEP_4_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "STEP 4 TITLE",
+        "DESCRIPTION": "CMS-authored value for Granite Ridge Snow Removal."
+      }
+    },
+    "value": {
+      "en": "Report & payment"
+    }
+  },
+  {
+    "code": "GRS_LANDING_05_HOW_STEP_4_DESC",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "STEP 4 DESC",
+        "DESCRIPTION": "CMS-authored value for Granite Ridge Snow Removal."
+      }
+    },
+    "value": {
+      "en": "Timestamped photo log per storm — your slip-and-fall compliance record."
+    }
+  }
+]

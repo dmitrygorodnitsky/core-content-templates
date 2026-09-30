@@ -1,0 +1,178 @@
+{
+  "prices": [
+    {
+      "product": {
+        "product": {
+          "code": "SERVICEWAND_SAAS_ROUTING_EXT_ENTERPRISE",
+          "nls": {
+            "en": {
+              "NAME": "Enterprise Routing Expansion",
+              "DESCRIPTION": "<p>For regional operators that need custom capacity, integrations, onboarding, and commercial terms.</p>"
+            }
+          }
+        },
+        "attributes": {
+          "21": {
+            "ROUTING_TOKENS": {
+              "value": 100
+            }
+          },
+          "22": {
+            "SORT_ORDER_PRIORITY": {
+              "value": 40
+            }
+          }
+        }
+      },
+      "price": {
+        "display": {
+          "amount": 3,
+          "currency": "CAD",
+          "customPrice": false
+        }
+      }
+    },
+    {
+      "product": {
+        "product": {
+          "code": "SERVICEWAND_SAAS_ROUTING_EXT_PRO",
+          "nls": {
+            "en": {
+              "NAME": "Professional Routing Expansion",
+              "DESCRIPTION": "<p>For established snow businesses managing high-volume field operations.</p>"
+            }
+          }
+        },
+        "attributes": {
+          "21": {
+            "ROUTING_TOKENS": {
+              "value": 30
+            }
+          },
+          "22": {
+            "SORT_ORDER_PRIORITY": {
+              "value": 30
+            }
+          }
+        }
+      },
+      "price": {
+        "display": {
+          "amount": 4,
+          "currency": "CAD",
+          "customPrice": false
+        }
+      }
+    },
+    {
+      "product": {
+        "product": {
+          "code": "SERVICEWAND_SAAS_ROUTING_EXT_GROWTH",
+          "nls": {
+            "en": {
+              "NAME": "Growth Routing Expansion",
+              "DESCRIPTION": "<p>For growing companies managing multiple crews, vehicles, and recurring routes.</p>"
+            }
+          }
+        },
+        "attributes": {
+          "21": {
+            "ROUTING_TOKENS": {
+              "value": 20
+            }
+          },
+          "22": {
+            "SORT_ORDER_PRIORITY": {
+              "value": 20
+            }
+          }
+        }
+      },
+      "price": {
+        "display": {
+          "amount": 4.5,
+          "currency": "CAD",
+          "customPrice": false
+        }
+      }
+    },
+    {
+      "product": {
+        "product": {
+          "code": "SERVICEWAND_SAAS_ROUTING_EXT_FOUNDATION",
+          "nls": {
+            "en": {
+              "NAME": "Foundation Routing Expansion",
+              "DESCRIPTION": "For teams replacing spreadsheets, paper processes, and manual coordination."
+            }
+          }
+        },
+        "attributes": {
+          "21": {
+            "ROUTING_TOKENS": {
+              "value": 10
+            }
+          },
+          "22": {
+            "SORT_ORDER_PRIORITY": {
+              "value": 10
+            }
+          }
+        }
+      },
+      "price": {
+        "display": {
+          "amount": 5,
+          "currency": "CAD",
+          "customPrice": false
+        }
+      }
+    }
+  ],
+  "productTypes": {
+    "SERVICEWAND_SAAS_ROUTING_TOKENS": {
+      "type": {
+        "id": 21,
+        "code": "SERVICEWAND_SAAS_ROUTING_TOKENS",
+        "nls": {
+          "en": {
+            "NAME": "ServiceWand SaaS Routing Tokens Expansion",
+            "DESCRIPTION": "<p>Need additional routing compute capacity? Expand your plan as your business grows.</p>"
+          }
+        }
+      },
+      "attributeGroups": [
+        {
+          "code": "default",
+          "nls": {
+            "en": {
+              "NAME": "Routing Expansion"
+            }
+          }
+        }
+      ],
+      "attributeOrder": [
+        {
+          "default": [
+            {
+              "typeId": 21,
+              "attributeCode": "ROUTING_TOKENS",
+              "visible": true
+            }
+          ]
+        }
+      ],
+      "attributes": {
+        "ROUTING_TOKENS": {
+          "code": "ROUTING_TOKENS",
+          "nls": {
+            "en": {
+              "NAME": "Routing Tokens",
+              "DESCRIPTION": "<p>Each token is an hour of routing compute.</p>"
+            }
+          }
+        }
+      }
+    }
+  }
+}

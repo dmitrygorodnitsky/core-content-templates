@@ -1,0 +1,188 @@
+{
+ "optimistic": 15,
+ "code": "VEHICLE",
+ "nls": {
+  "en": {
+   "NAME": "Vehicle"
+  }
+ },
+ "workflow": {
+  "id": 7,
+  "code": "RESOURCE"
+ },
+ "organization": {
+  "optimistic": 4,
+  "id": 8,
+  "code": "SERVICE_WAND_WINTER_SERVICES"
+ },
+ "attributeOrder": [
+  {
+   "default": [
+    {
+     "attributeCode": "ASSIGNED_DEPOT",
+     "visible": true
+    }
+   ]
+  },
+  {
+   "IDENTIFICATION": [
+    {
+     "typeId": 146,
+     "attributeCode": "MAKE",
+     "visible": true
+    },
+    {
+     "typeId": 146,
+     "attributeCode": "YEAR",
+     "visible": true
+    },
+    {
+     "typeId": 146,
+     "attributeCode": "MODEL",
+     "visible": true
+    },
+    {
+     "typeId": 146,
+     "attributeCode": "COLOR",
+     "visible": true
+    }
+   ]
+  },
+  {
+   "OPERATIONAL_INFORMATION": [
+    {
+     "attributeCode": "FUEL_TYPE",
+     "visible": true
+    },
+    {
+     "attributeCode": "TRANSMISSION_TYPE",
+     "visible": true
+    },
+    {
+     "attributeCode": "DEPOT",
+     "visible": true
+    }
+   ]
+  }
+ ],
+ "attributes": [
+  {
+   "code": "TRANSMISSION_TYPE",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "en": {
+     "NAME": "Transmission Type"
+    }
+   },
+   "options": [
+    {
+     "value": "AUTOMATIC",
+     "nls": {
+      "en": {
+       "NAME": "Automatic"
+      }
+     }
+    },
+    {
+     "value": "MANUAL",
+     "nls": {
+      "en": {
+       "NAME": "Manual"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "code": "DEPOT",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "com.pixelnation.common.domain.Address",
+   "nls": {
+    "ar": {
+     "DESCRIPTION": "<p></p>"
+    },
+    "en": {
+     "NAME": "Depot",
+     "DESCRIPTION": "<p>The depot, yard, or facility where this equipment is normally stationed when not in use.</p>"
+    },
+    "he": {
+     "DESCRIPTION": "<p></p>"
+    }
+   },
+   "options": []
+  },
+  {
+   "code": "FUEL_TYPE",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "en": {
+     "NAME": "Fuel Type"
+    }
+   },
+   "options": [
+    {
+     "value": "GAS",
+     "nls": {
+      "en": {
+       "NAME": "Gas"
+      }
+     }
+    },
+    {
+     "value": "DIESEL",
+     "nls": {
+      "en": {
+       "NAME": "Diesel"
+      }
+     }
+    },
+    {
+     "value": "ELECTRIC",
+     "nls": {
+      "en": {
+       "NAME": "Electric"
+      }
+     }
+    },
+    {
+     "value": "HYBRID",
+     "nls": {
+      "en": {
+       "NAME": "Hybrid"
+      }
+     }
+    }
+   ]
+  }
+ ],
+ "id": 110,
+ "isAbstract": true,
+ "attributeGroups": [
+  {
+   "code": "OPERATIONAL_INFORMATION",
+   "nls": {
+    "ar": {
+     "DESCRIPTION": "<p></p>"
+    },
+    "en": {
+     "NAME": "Operational Information",
+     "DESCRIPTION": "<p>Defines the operational characteristics of the vehicle, including its assigned depot and fuel type, which are used for daily operations, dispatching, and resource management.</p>"
+    },
+    "he": {
+     "DESCRIPTION": "<p></p>"
+    }
+   }
+  }
+ ]
+}

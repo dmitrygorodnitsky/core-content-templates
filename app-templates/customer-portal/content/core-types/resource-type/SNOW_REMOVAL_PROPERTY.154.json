@@ -1,0 +1,1188 @@
+{
+ "optimistic": 9,
+ "code": "SNOW_REMOVAL_PROPERTY",
+ "nls": {
+  "en": {
+   "NAME": "Snow Removal Property"
+  }
+ },
+ "workflow": {
+  "id": 35,
+  "code": "PROPERTY_LIFECYCLE"
+ },
+ "organization": {
+  "optimistic": 4,
+  "id": 8,
+  "code": "SERVICE_WAND_WINTER_SERVICES"
+ },
+ "attributeOrder": [
+  {
+   "default": [
+    {
+     "attributeCode": "SIDEWALK_LENGTH",
+     "visible": true
+    },
+    {
+     "attributeCode": "SIDEWALK_SURFACE_TYPE",
+     "visible": true
+    },
+    {
+     "attributeCode": "PARKING_LOT",
+     "visible": true
+    },
+    {
+     "attributeCode": "PARKING_LOT_SURFACE_TYPE",
+     "visible": true
+    },
+    {
+     "attributeCode": "DRIVEWAY",
+     "visible": true
+    },
+    {
+     "attributeCode": "DRIVEWAY_SURFACE_TYPE",
+     "visible": true
+    },
+    {
+     "attributeCode": "PRIORITY",
+     "visible": true
+    },
+    {
+     "attributeCode": "APPROVED_DE_ICING_MATERIALS",
+     "visible": true
+    },
+    {
+     "attributeCode": "SURFACE_TREATMENT_RESTRICTIONS",
+     "visible": true
+    },
+    {
+     "attributeCode": "PROPERTY_PLAN",
+     "visible": true
+    },
+    {
+     "attributeCode": "ON_SITE_CONTACT_INFO",
+     "visible": true
+    },
+    {
+     "attributeCode": "SITE_SERVICE_DURATION",
+     "visible": true
+    },
+    {
+     "typeId": 153,
+     "attributeCode": "PROPERTY_CATEGORY",
+     "visible": true
+    },
+    {
+     "typeId": 153,
+     "attributeCode": "ADDRESS",
+     "visible": true
+    },
+    {
+     "typeId": 153,
+     "attributeCode": "ACCOUNT",
+     "visible": true
+    }
+   ]
+  }
+ ],
+ "attributes": [
+  {
+   "code": "SIDEWALK_SURFACE_TYPE",
+   "required": false,
+   "multiselect": true,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "en": {
+     "NAME": "Sidewalk Surface Type"
+    }
+   },
+   "options": [
+    {
+     "value": "CONCRETE",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Concrete",
+       "DESCRIPTION": "<p>Standard&nbsp;concrete&nbsp;sidewalks&nbsp;and&nbsp;walkways.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     }
+    },
+    {
+     "value": "ASPHALT",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Asphalt",
+       "DESCRIPTION": "<p>Asphalt&nbsp;pedestrian&nbsp;surfaces.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     }
+    },
+    {
+     "value": "PAVERS",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Pavers",
+       "DESCRIPTION": "<p>Interlocking&nbsp;concrete&nbsp;or&nbsp;brick&nbsp;pavers.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     }
+    },
+    {
+     "value": "BRICK",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Brick",
+       "DESCRIPTION": "<p>Brick&nbsp;walkways&nbsp;requiring&nbsp;careful&nbsp;plowing.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     }
+    },
+    {
+     "value": "NATURAL_STONE",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Natural Stone",
+       "DESCRIPTION": "<p>Stone&nbsp;slabs&nbsp;or&nbsp;flagstone&nbsp;surfaces.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     }
+    },
+    {
+     "value": "GRAVEL",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Gravel",
+       "DESCRIPTION": "<p>Loose&nbsp;gravel&nbsp;or&nbsp;crushed&nbsp;stone&nbsp;paths.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     }
+    },
+    {
+     "value": "BOARDWALK_WOOD_DECK",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Boardwalk / Wood Deck",
+       "DESCRIPTION": "<p>Wooden&nbsp;pedestrian&nbsp;surfaces.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     }
+    },
+    {
+     "value": "RUBBER_SURFACE",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Rubber Surface",
+       "DESCRIPTION": "<p>Rubberized&nbsp;walking&nbsp;paths&nbsp;or&nbsp;playground&nbsp;areas.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     }
+    },
+    {
+     "value": "COMPOSITE",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Composite",
+       "DESCRIPTION": "<p>Composite&nbsp;decking&nbsp;or&nbsp;engineered&nbsp;pedestrian&nbsp;surfaces.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     }
+    },
+    {
+     "value": "OTHER",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Other",
+       "DESCRIPTION": "<p>Any&nbsp;surface&nbsp;not&nbsp;covered&nbsp;by&nbsp;predefined&nbsp;options.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "code": "PARKING_LOT",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.Float",
+   "nls": {
+    "en": {
+     "NAME": "Parking Lot"
+    }
+   },
+   "options": [],
+   "unitCategory": {
+    "code": "AREA",
+    "label": "Area",
+    "value": 3,
+    "property": "id",
+    "isDisabled": false
+   }
+  },
+  {
+   "code": "SURFACE_TREATMENT_RESTRICTIONS",
+   "required": false,
+   "multiselect": true,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "en": {
+     "NAME": "Surface Treatment Restrictions"
+    }
+   },
+   "options": [
+    {
+     "value": "PET_SAFE_MATERIALS_ONLY",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Pet-Safe Materials Only",
+       "DESCRIPTION": "<p>Only&nbsp;de-icing&nbsp;materials&nbsp;specifically&nbsp;approved&nbsp;for&nbsp;use&nbsp;around&nbsp;pets&nbsp;are&nbsp;permitted.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     }
+    },
+    {
+     "value": "VEGETATION_SAFE_MATERIALS_ONLY",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Vegetation-Safe Materials Only",
+       "DESCRIPTION": "<p>Only&nbsp;materials&nbsp;with&nbsp;minimal&nbsp;impact&nbsp;on&nbsp;lawns,&nbsp;trees,&nbsp;shrubs,&nbsp;and&nbsp;landscaping&nbsp;are&nbsp;permitted.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     }
+    },
+    {
+     "value": "CHLORIDE_FREE_MATERIALS_ONLY",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Chloride-Free Materials Only",
+       "DESCRIPTION": "<p>Chloride-based&nbsp;de-icing&nbsp;materials&nbsp;are&nbsp;prohibited.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     }
+    },
+    {
+     "value": "CORROSION_SENSITIVE_SURFACE",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Corrosion-Sensitive Surface",
+       "DESCRIPTION": "<p>Use&nbsp;only&nbsp;materials&nbsp;with&nbsp;reduced&nbsp;corrosion&nbsp;risk&nbsp;to&nbsp;concrete,&nbsp;metal,&nbsp;or&nbsp;surrounding&nbsp;infrastructure.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     }
+    },
+    {
+     "value": "LIQUID_MATERIALS_ONLY",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Liquid Materials Only",
+       "DESCRIPTION": "<p>Only&nbsp;liquid&nbsp;de-icing&nbsp;products&nbsp;may&nbsp;be&nbsp;applied.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     }
+    },
+    {
+     "value": "SOLID_MATERIALS_ONLY",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Solid Materials Only",
+       "DESCRIPTION": "<p>Only&nbsp;solid&nbsp;de-icing&nbsp;materials&nbsp;may&nbsp;be&nbsp;applied.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     }
+    },
+    {
+     "value": "MECHANICAL_SNOW_REMOVAL_ONLY",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Mechanical Snow Removal Only",
+       "DESCRIPTION": "<p>No&nbsp;de-icing&nbsp;materials&nbsp;may&nbsp;be&nbsp;applied.&nbsp;Snow&nbsp;and&nbsp;ice&nbsp;may&nbsp;only&nbsp;be&nbsp;managed&nbsp;through&nbsp;mechanical&nbsp;removal&nbsp;methods.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     }
+    },
+    {
+     "value": "ENVIRONMENTALLY_PREFERRED_MATERIALS",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Environmentally Preferred Materials",
+       "DESCRIPTION": "<p>Use&nbsp;environmentally&nbsp;responsible&nbsp;de-icing&nbsp;materials&nbsp;whenever&nbsp;possible&nbsp;to&nbsp;minimize&nbsp;ecological&nbsp;impact.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     }
+    },
+    {
+     "value": "OTHER",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Other",
+       "DESCRIPTION": "<p>Any&nbsp;additional&nbsp;site-specific&nbsp;surface&nbsp;treatment&nbsp;restriction&nbsp;not&nbsp;covered&nbsp;by&nbsp;the&nbsp;predefined&nbsp;options.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "code": "SITE_SERVICE_DURATION",
+   "required": true,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.Integer",
+   "nls": {
+    "en": {
+     "NAME": "Site Service Duration"
+    }
+   },
+   "options": [],
+   "unitCategory": {
+    "code": "DURATION",
+    "label": "Duration",
+    "value": 6,
+    "property": "id",
+    "isDisabled": false
+   }
+  },
+  {
+   "code": "PROPERTY_PLAN",
+   "required": false,
+   "multiselect": true,
+   "freeValue": false,
+   "unique": false,
+   "className": "com.pixelnation.common.domain.Media",
+   "nls": {
+    "en": {
+     "NAME": "Property Plan"
+    }
+   },
+   "options": []
+  },
+  {
+   "code": "ON_SITE_CONTACT_INFO",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "en": {
+     "NAME": "On Site Contact Information"
+    }
+   },
+   "options": []
+  },
+  {
+   "code": "SIDEWALK_LENGTH",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.Float",
+   "nls": {
+    "en": {
+     "NAME": "Sidewalk Length"
+    }
+   },
+   "options": [],
+   "unitCategory": {
+    "code": "LENGTH",
+    "label": "Length/Distance",
+    "value": 1,
+    "property": "id",
+    "isDisabled": false
+   }
+  },
+  {
+   "code": "DRIVEWAY",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.Float",
+   "nls": {
+    "en": {
+     "NAME": "Driveway"
+    }
+   },
+   "options": [],
+   "unitCategory": {
+    "code": "AREA",
+    "label": "Area",
+    "value": 3,
+    "property": "id",
+    "isDisabled": false
+   }
+  },
+  {
+   "code": "PARKING_LOT_SURFACE_TYPE",
+   "required": false,
+   "multiselect": true,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "en": {
+     "NAME": "Parking Lot Surface Type"
+    }
+   },
+   "options": [
+    {
+     "value": "ASPHALT",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Asphalt",
+       "DESCRIPTION": "<p>Standard&nbsp;asphalt&nbsp;parking&nbsp;lot&nbsp;surface.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     }
+    },
+    {
+     "value": "CONCRETE",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Concrete",
+       "DESCRIPTION": "<p>Concrete&nbsp;parking&nbsp;lot&nbsp;surface.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     }
+    },
+    {
+     "value": "INTERLOCKING_PAVERS",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Interlocking Pavers",
+       "DESCRIPTION": "<p>Interlocking&nbsp;concrete&nbsp;or&nbsp;brick&nbsp;pavers.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     }
+    },
+    {
+     "value": "GRAVEL",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Gravel",
+       "DESCRIPTION": "<p>Loose&nbsp;gravel&nbsp;or&nbsp;crushed&nbsp;stone&nbsp;parking&nbsp;area.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     }
+    },
+    {
+     "value": "COMPACTED_GRAVEL",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Compacted Gravel",
+       "DESCRIPTION": "<p>Compacted&nbsp;gravel&nbsp;surface&nbsp;with&nbsp;improved&nbsp;stability.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     }
+    },
+    {
+     "value": "DIRT",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Dirt",
+       "DESCRIPTION": "<p>Unpaved&nbsp;dirt&nbsp;surface.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     }
+    },
+    {
+     "value": "NATURAL_STONE",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Natural Stone",
+       "DESCRIPTION": "<p>Stone&nbsp;or&nbsp;decorative&nbsp;rock&nbsp;surface.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     }
+    },
+    {
+     "value": "CONCRETE_GRID",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Concrete Grid",
+       "DESCRIPTION": "<p>Permeable&nbsp;concrete&nbsp;grid&nbsp;or&nbsp;cellular&nbsp;pavement.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     }
+    },
+    {
+     "value": "GRASS_PAVERS",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Grass Pavers",
+       "DESCRIPTION": "<p>Reinforced&nbsp;grass&nbsp;or&nbsp;turf&nbsp;parking&nbsp;surface.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     }
+    },
+    {
+     "value": "OTHER",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Other",
+       "DESCRIPTION": "<p>Any&nbsp;surface&nbsp;not&nbsp;covered&nbsp;by&nbsp;predefined&nbsp;options.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "code": "APPROVED_DE_ICING_MATERIALS",
+   "required": false,
+   "multiselect": true,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "en": {
+     "NAME": "Approved De-icing Materials"
+    }
+   },
+   "options": [
+    {
+     "value": "ROCK_SALT",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Rock Salt (Sodium Chloride)",
+       "DESCRIPTION": "<p>Standard&nbsp;road&nbsp;salt&nbsp;(NaCl).&nbsp;Most&nbsp;common&nbsp;de-icing&nbsp;material.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     }
+    },
+    {
+     "value": "TREATED_ROCK_SALT",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Treated Rock Salt",
+       "DESCRIPTION": "<p>Rock&nbsp;salt&nbsp;treated&nbsp;with&nbsp;additives&nbsp;for&nbsp;improved&nbsp;low-temperature&nbsp;performance.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     }
+    },
+    {
+     "value": "CALCIUM_CHLORIDE",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Calcium Chloride",
+       "DESCRIPTION": "<p>High-performance&nbsp;de-icer&nbsp;effective&nbsp;at&nbsp;very&nbsp;low&nbsp;temperatures.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     }
+    },
+    {
+     "value": "MAGNESIUM_CHLORIDE",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Magnesium Chloride",
+       "DESCRIPTION": "<p>Liquid&nbsp;or&nbsp;solid&nbsp;chloride&nbsp;with&nbsp;reduced&nbsp;environmental&nbsp;impact&nbsp;compared&nbsp;to&nbsp;calcium&nbsp;chloride.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     }
+    },
+    {
+     "value": "POTASSIUM_CHLORIDE",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Potassium Chloride",
+       "DESCRIPTION": "<p>Less&nbsp;common&nbsp;chloride-based&nbsp;de-icer,&nbsp;sometimes&nbsp;used&nbsp;near&nbsp;sensitive&nbsp;vegetation.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     }
+    },
+    {
+     "value": "CALCIUM_MAGNESIUM_ACETATE",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Calcium Magnesium Acetate (CMA)",
+       "DESCRIPTION": "<p>Environmentally&nbsp;friendly&nbsp;de-icer&nbsp;commonly&nbsp;used&nbsp;on&nbsp;sensitive&nbsp;surfaces.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     }
+    },
+    {
+     "value": "POTASSIUM_ACETATE",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Potassium Acetate",
+       "DESCRIPTION": "<p>Premium&nbsp;acetate-based&nbsp;de-icer&nbsp;used&nbsp;at&nbsp;airports&nbsp;and&nbsp;environmentally&nbsp;sensitive&nbsp;sites.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     }
+    },
+    {
+     "value": "SODIUM_ACETATE",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Sodium Acetate",
+       "DESCRIPTION": "<p>Acetate-based&nbsp;de-icer&nbsp;with&nbsp;reduced&nbsp;corrosion.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     }
+    },
+    {
+     "value": "SALT_BRINE",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Salt Brine",
+       "DESCRIPTION": "<p>Liquid&nbsp;sodium&nbsp;chloride&nbsp;solution&nbsp;used&nbsp;for&nbsp;anti-icing&nbsp;and&nbsp;pre-treatment.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     }
+    },
+    {
+     "value": "CALCIUM_CHLORIDE_BRINE",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Calcium Chloride Brine",
+       "DESCRIPTION": "<p>Liquid&nbsp;calcium&nbsp;chloride&nbsp;solution.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     }
+    },
+    {
+     "value": "MAGNESIUM_CHLORIDE_BRINE",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Magnesium Chloride Brine",
+       "DESCRIPTION": "<p>Liquid&nbsp;magnesium&nbsp;chloride&nbsp;solution.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     }
+    },
+    {
+     "value": "SAND",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Sand",
+       "DESCRIPTION": "<p>Traction&nbsp;material&nbsp;with&nbsp;little&nbsp;or&nbsp;no&nbsp;melting&nbsp;capability.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     }
+    },
+    {
+     "value": "SAND_SALT_MIX",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Sand / Salt Mix",
+       "DESCRIPTION": "<p>Mixture&nbsp;of&nbsp;sand&nbsp;and&nbsp;rock&nbsp;salt.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     }
+    },
+    {
+     "value": "ABRASIVE_MATERIAL",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Abrasive Material",
+       "DESCRIPTION": "<p>Non-chemical&nbsp;traction&nbsp;material&nbsp;(stone&nbsp;chips,&nbsp;screenings,&nbsp;etc.).</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     }
+    },
+    {
+     "value": "ABRASIVE_GRIT",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Abrasive Grit",
+       "DESCRIPTION": "<p>Quartz,&nbsp;granite,&nbsp;poultry&nbsp;grit&nbsp;(chicken&nbsp;grit),&nbsp;or&nbsp;similar&nbsp;abrasive&nbsp;material&nbsp;used&nbsp;to&nbsp;improve&nbsp;traction&nbsp;without&nbsp;melting&nbsp;ice.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     }
+    },
+    {
+     "value": "ORGANIC_DE-ICER",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Organic De-icer",
+       "DESCRIPTION": "<p>Beet&nbsp;juice,&nbsp;molasses&nbsp;blends,&nbsp;agricultural&nbsp;by-product&nbsp;additives.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     }
+    },
+    {
+     "value": "LIQUID_DE-ICER",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Liquid De-icer",
+       "DESCRIPTION": "<p>Generic&nbsp;liquid&nbsp;de-icing&nbsp;solution&nbsp;when&nbsp;exact&nbsp;chemistry&nbsp;is&nbsp;unknown.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     }
+    },
+    {
+     "value": "NO_CHEMICALS_ALLOWED",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "No Chemicals Allowed",
+       "DESCRIPTION": "<p>Chemical&nbsp;de-icers&nbsp;prohibited;&nbsp;mechanical&nbsp;snow&nbsp;removal&nbsp;only.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     }
+    },
+    {
+     "value": "OTHER",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Other",
+       "DESCRIPTION": "<p>Any&nbsp;approved&nbsp;material&nbsp;not&nbsp;covered&nbsp;above.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "code": "DRIVEWAY_SURFACE_TYPE",
+   "required": false,
+   "multiselect": true,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "en": {
+     "NAME": "Driveway Surface Type"
+    }
+   },
+   "options": [
+    {
+     "value": "ASPHALT",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Asphalt",
+       "DESCRIPTION": "<p>Standard&nbsp;asphalt&nbsp;driveway.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     }
+    },
+    {
+     "value": "CONCRETE",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Concrete",
+       "DESCRIPTION": "<p>Standard&nbsp;concrete&nbsp;driveway.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     }
+    },
+    {
+     "value": "INTERLOCKING_PAVERS",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Interlocking Pavers",
+       "DESCRIPTION": "<p>Concrete&nbsp;or&nbsp;brick&nbsp;interlocking&nbsp;pavers.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     }
+    },
+    {
+     "value": "BRICK",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Brick",
+       "DESCRIPTION": "<p>Brick&nbsp;driveway&nbsp;surface.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     }
+    },
+    {
+     "value": "NATURAL_STONE",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Natural Stone",
+       "DESCRIPTION": "<p>Natural&nbsp;stone&nbsp;or&nbsp;flagstone&nbsp;driveway.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     }
+    },
+    {
+     "value": "GRAVEL",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Gravel",
+       "DESCRIPTION": "<p>Loose&nbsp;gravel&nbsp;driveway.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     }
+    },
+    {
+     "value": "COMPACTED_GRAVEL",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Compacted Gravel",
+       "DESCRIPTION": "<p>Compacted&nbsp;gravel&nbsp;surface.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     }
+    },
+    {
+     "value": "DIRT",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Dirt",
+       "DESCRIPTION": "<p>Unpaved&nbsp;dirt&nbsp;driveway.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     }
+    },
+    {
+     "value": "CHIP_SEAL",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Chip Seal",
+       "DESCRIPTION": "<p>Chip&nbsp;seal&nbsp;(tar-and-chip)&nbsp;driveway.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     }
+    },
+    {
+     "value": "OTHER",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Other",
+       "DESCRIPTION": "<p>Any&nbsp;surface&nbsp;not&nbsp;covered&nbsp;by&nbsp;predefined&nbsp;options.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "code": "PRIORITY",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "en": {
+     "NAME": "Priority"
+    }
+   },
+   "options": [
+    {
+     "value": "LOW",
+     "nls": {
+      "en": {
+       "NAME": "Low"
+      }
+     }
+    },
+    {
+     "value": "MEDIUM",
+     "nls": {
+      "en": {
+       "NAME": "Medium"
+      }
+     }
+    },
+    {
+     "value": "HIGH",
+     "nls": {
+      "en": {
+       "NAME": "High"
+      }
+     }
+    }
+   ]
+  }
+ ],
+ "id": 154,
+ "isAbstract": false,
+ "attributeGroups": []
+}

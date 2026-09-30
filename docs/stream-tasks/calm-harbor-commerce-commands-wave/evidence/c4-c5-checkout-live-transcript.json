@@ -1,0 +1,107 @@
+{
+  "organization": "CALM_HARBOR_SPA_STAGING",
+  "origin": "https://dev-1.servicewand.com",
+  "transcript": [
+    {
+      "step": "resolve-account",
+      "accountCode": "CHS_STG_ELENA_RIOS",
+      "accountId": 1
+    },
+    {
+      "step": "financial-baseline",
+      "invoice": 0,
+      "balance-transaction": 0,
+      "payment": "endpoint-absent(404)",
+      "refund": "endpoint-absent(404)"
+    },
+    {
+      "step": "two-item-cart",
+      "displaySubtotal": "$179.00",
+      "itemCount": 3,
+      "subtotal": 179,
+      "lines": [
+        {
+          "lineAmount": 84,
+          "priceId": 77,
+          "qty": 2,
+          "title": "Harbor body oil",
+          "unitAmount": 42
+        },
+        {
+          "lineAmount": 95,
+          "priceId": 74,
+          "qty": 1,
+          "title": "Quiet shoulders",
+          "unitAmount": 95
+        }
+      ]
+    },
+    {
+      "step": "order-created",
+      "grandTotal": 179,
+      "grandTotalEqualsSumOfLines": true,
+      "lines": [
+        {
+          "itemCount": 2,
+          "priceId": 77,
+          "productCode": "CHS_BODY_001",
+          "typeCode": "SPA_ITEM_RETAIL",
+          "unitAmount": 42
+        },
+        {
+          "itemCount": 1,
+          "priceId": 74,
+          "productCode": "CHS_QUIET_SHOULDERS",
+          "typeCode": "SPA_ITEM_SERVICE",
+          "unitAmount": 95
+        }
+      ],
+      "ref": "order-core-13",
+      "statusCode": "OPEN",
+      "sumOfAmountTimesCount": 179,
+      "totalCharges": 179,
+      "totalTaxes": 0
+    },
+    {
+      "step": "pickup-record",
+      "hasRetailLine": true,
+      "pickup": {
+        "backendId": 3,
+        "locationId": null,
+        "sourceOrderId": 13,
+        "kind": "PICKUP",
+        "status": "PENDING",
+        "windowEndLabel": null,
+        "windowStartLabel": null,
+        "locationUnresolvedReason": "resource-read-refused"
+      }
+    },
+    {
+      "step": "pickup-replay",
+      "sameRecord": true
+    },
+    {
+      "step": "replay-same-ref",
+      "createdNothing": true,
+      "lineCount": 2,
+      "ref": "order-core-13"
+    },
+    {
+      "step": "order-count-for-account",
+      "orders": 10
+    },
+    {
+      "step": "cart-cleared-after-order",
+      "itemCount": 0,
+      "state": "empty"
+    },
+    {
+      "step": "financial-after",
+      "invoice": 0,
+      "balance-transaction": 0,
+      "payment": "endpoint-absent(404)",
+      "refund": "endpoint-absent(404)",
+      "unchanged": true
+    }
+  ]
+}

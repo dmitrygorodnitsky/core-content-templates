@@ -1,0 +1,79 @@
+{
+ "optimistic": 4,
+ "code": "REAL_ESTATE_PROPERTY",
+ "nls": {
+  "en": {
+   "NAME": "Service Site"
+  }
+ },
+ "organization": {
+  "optimistic": 4,
+  "id": 8,
+  "code": "SERVICE_WAND_WINTER_SERVICES"
+ },
+ "attributeOrder": [
+  {
+   "default": [
+    {
+     "attributeCode": "COORD_LAT",
+     "visible": true
+    },
+    {
+     "attributeCode": "COORD_LNG",
+     "visible": true
+    },
+    {
+     "attributeCode": "SERVICE_MIN",
+     "visible": true
+    }
+   ]
+  }
+ ],
+ "attributes": [
+  {
+   "code": "COORD_LAT",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.Float",
+   "nls": {
+    "en": {
+     "NAME": "Coord Lat"
+    }
+   },
+   "options": []
+  },
+  {
+   "code": "COORD_LNG",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.Float",
+   "nls": {
+    "en": {
+     "NAME": "Coord lng"
+    }
+   },
+   "options": []
+  },
+  {
+   "code": "SERVICE_MIN",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.Integer",
+   "nls": {
+    "en": {
+     "NAME": "Service min"
+    }
+   },
+   "options": []
+  }
+ ],
+ "id": 83,
+ "isAbstract": false,
+ "attributeGroups": []
+}

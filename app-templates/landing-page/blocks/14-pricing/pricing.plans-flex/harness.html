@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>pricing.plans-flex · lab-ui harness</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../00-tokens/tokens.css">
+<link rel="stylesheet" href="./block.css">
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  body { margin: 0; min-height: 100vh; font-family: var(--font-family); background: var(--color-bg); color: var(--color-text); }
+  .harness-label {
+    font-family: var(--font-mono); font-size: 11px; text-transform: uppercase;
+    letter-spacing: 0.12em; color: var(--color-gray-blue);
+    padding: 24px var(--container-padding-x) 0;
+    max-width: calc(var(--container-width) + var(--container-padding-x) * 2);
+    margin-inline: auto;
+  }
+  .harness-pad { padding-block: 44px 72px; }
+</style>
+</head>
+<body data-theme="cyan">
+<div class="harness-label">pricing.plans-flex · fixture-backed dynamic pricing · use ?mode=fallback or ?mode=error for fallback checks</div>
+<div class="harness-pad">
+  <section class="pf-plans" data-block="pricing.plans-flex" data-billing="monthly" data-pricing-period="monthly" data-pricing-dynamic="true" data-pricing-api-base="/core-pim/api" data-pricing-organization="SERVICEWAND" data-pricing-product-type-code="SERVICEWAND_SAAS" data-pricing-sort-attribute-code="SORT_ORDER_PRIORITY" data-pricing-price-type-code="RECURRENT" data-pricing-price-attribute-code="INTERVAL" data-pricing-price-attribute-values="1 month" data-pricing-currency="CAD" data-pricing-purchase-url="#pricing" data-pricing-buy-label="Buy now" data-pricing-contact-label="Contact us" data-pricing-error-mode="fallback" data-pricing-fixture-url="../_fixtures/saas.json">
+    <div class="container">
+      <header class="pf-top">
+        <p class="pf-eyebrow">Pricing</p>
+        <h1 class="pf-title">Plans that scale with field operations.</h1>
+        <p class="pf-lede">Start with the operational footprint you need today, then expand buildings, routing capacity, and automation as your team grows.</p>
+        <div class="pf-toggle" role="group" aria-label="Select billing cycle">
+          <button class="pf-toggle-opt is-active" type="button" data-billing-option="monthly" aria-pressed="true">Monthly</button>
+          <button class="pf-toggle-opt" type="button" data-billing-option="annual" aria-pressed="false">Annual</button>
+        </div>
+        <p class="pf-note">Annual pricing shown for planning. Final packaging can be connected to CRM rules later.</p>
+      </header>
+
+      <div class="pf-grid">
+        <article class="pf-card pf-card--skeleton" aria-hidden="true" data-nosnippet>
+          <span class="pf-skel pf-skel--kicker"></span><span class="pf-skel pf-skel--title"></span><span class="pf-skel pf-skel--text"></span><span class="pf-skel pf-skel--price"></span><span class="pf-skel pf-skel--button"></span><span class="pf-skel pf-skel--line"></span><span class="pf-skel pf-skel--line pf-skel--short"></span>
+        </article>
+        <article class="pf-card pf-card--skeleton" aria-hidden="true" data-nosnippet>
+          <span class="pf-skel pf-skel--kicker"></span><span class="pf-skel pf-skel--title"></span><span class="pf-skel pf-skel--text"></span><span class="pf-skel pf-skel--price"></span><span class="pf-skel pf-skel--button"></span><span class="pf-skel pf-skel--line"></span><span class="pf-skel pf-skel--line pf-skel--short"></span>
+        </article>
+        <article class="pf-card pf-card--skeleton" aria-hidden="true" data-nosnippet>
+          <span class="pf-skel pf-skel--kicker"></span><span class="pf-skel pf-skel--title"></span><span class="pf-skel pf-skel--text"></span><span class="pf-skel pf-skel--price"></span><span class="pf-skel pf-skel--button"></span><span class="pf-skel pf-skel--line"></span><span class="pf-skel pf-skel--line pf-skel--short"></span>
+        </article>
+        <article class="pf-card pf-card--standard" data-plan-slot="01" data-plan-visible="show">
+          <div class="pf-card-head"><span class="pf-kicker">Base</span><span class="pf-badge">Launch</span></div>
+          <h2 class="pf-name">Starter</h2>
+          <p class="pf-subtitle">For small teams bringing buildings, customers, and work orders into one CRM workspace.</p>
+          <div class="pf-price" aria-label="Starter plan price">
+            <span class="pf-currency">$</span>
+            <span class="pf-amount-stack">
+              <span class="pf-amount" data-price-monthly>299</span>
+              <span class="pf-amount" data-price-annual>239</span>
+            </span>
+            <span class="pf-period">/mo</span>
+            <span class="pf-card-save">Save 20%</span>
+          </div>
+          <span class="pf-billed-stack">
+            <span class="pf-billed" data-billed-monthly>Billed monthly</span>
+            <span class="pf-billed" data-billed-annual>Billed annually · save $720/yr</span>
+          </span>
+          <a class="pf-cta pf-cta--ghost" href="#">Start setup</a>
+          <ul class="pf-features" aria-label="Starter included features">
+            <li>Up to 100 buildings managed</li>
+            <li>Core CRM and customer records</li>
+            <li>Work orders and technician dispatch</li>
+            <li>Standard support</li>
+            <li></li>
+          </ul>
+          <p class="pf-disclaimer">Add-ons available for building capacity and routing tokens.</p>
+        </article>
+
+        <article class="pf-card pf-card--featured" data-plan-slot="02" data-plan-visible="show">
+          <div class="pf-card-head"><span class="pf-kicker">Team</span><span class="pf-badge">Popular</span></div>
+          <h2 class="pf-name">Growth</h2>
+          <p class="pf-subtitle">For operators scaling dispatch, recurring service, and multi-building account management.</p>
+          <div class="pf-price" aria-label="Growth plan price">
+            <span class="pf-currency">$</span>
+            <span class="pf-amount-stack">
+              <span class="pf-amount" data-price-monthly>699</span>
+              <span class="pf-amount" data-price-annual>559</span>
+            </span>
+            <span class="pf-period">/mo</span>
+            <span class="pf-card-save">Save 20%</span>
+          </div>
+          <span class="pf-billed-stack">
+            <span class="pf-billed" data-billed-monthly>Billed monthly</span>
+            <span class="pf-billed" data-billed-annual>Billed annually · save $1,680/yr</span>
+          </span>
+          <a class="pf-cta pf-cta--filled" href="#">Continue with Growth</a>
+          <ul class="pf-features" aria-label="Growth included features">
+            <li>Up to 250 buildings managed</li>
+            <li>10K routing tokens included monthly</li>
+            <li>Automated follow-ups and reminders</li>
+            <li>Priority onboarding</li>
+            <li>Custom report templates</li>
+          </ul>
+          <p class="pf-disclaimer">Best starting point for multi-technician teams.</p>
+        </article>
+
+        <article class="pf-card pf-card--standard" data-plan-slot="03" data-plan-visible="show">
+          <div class="pf-card-head"><span class="pf-kicker">Scale</span><span class="pf-badge">Advanced</span></div>
+          <h2 class="pf-name">Scale</h2>
+          <p class="pf-subtitle">For regional service networks with heavier automation, analytics, and routing volume.</p>
+          <div class="pf-price" aria-label="Scale plan price">
+            <span class="pf-currency">$</span>
+            <span class="pf-amount-stack">
+              <span class="pf-amount" data-price-monthly>1,499</span>
+              <span class="pf-amount" data-price-annual>1,199</span>
+            </span>
+            <span class="pf-period">/mo</span>
+            <span class="pf-card-save">Save 20%</span>
+          </div>
+          <span class="pf-billed-stack">
+            <span class="pf-billed" data-billed-monthly>Billed monthly</span>
+            <span class="pf-billed" data-billed-annual>Billed annually · save $3,600/yr</span>
+          </span>
+          <a class="pf-cta pf-cta--primary" href="#">Talk to sales</a>
+          <ul class="pf-features" aria-label="Scale included features">
+            <li>Up to 750 buildings managed</li>
+            <li>50K routing tokens included monthly</li>
+            <li>Advanced reporting and permissions</li>
+            <li>Dedicated success support</li>
+            <li>API and webhook access</li>
+          </ul>
+          <p class="pf-disclaimer">Designed for teams standardizing operations across regions.</p>
+        </article>
+
+        <article class="pf-card pf-card--muted" data-plan-slot="04" data-plan-visible="show">
+          <div class="pf-card-head"><span class="pf-kicker">Enterprise</span><span class="pf-badge">Custom</span></div>
+          <h2 class="pf-name">Enterprise</h2>
+          <p class="pf-subtitle">For national operators needing custom capacity, integrations, security, and rollout support.</p>
+          <div class="pf-price" aria-label="Enterprise custom quote">
+            <span class="pf-currency"></span>
+            <span class="pf-amount-stack">
+              <span class="pf-amount" data-price-monthly>Custom</span>
+              <span class="pf-amount" data-price-annual>Custom</span>
+            </span>
+            <span class="pf-period"></span>
+            <span class="pf-card-save"></span>
+          </div>
+          <span class="pf-billed-stack">
+            <span class="pf-billed" data-billed-monthly>Commercial terms by region</span>
+            <span class="pf-billed" data-billed-annual>Commercial terms by region</span>
+          </span>
+          <a class="pf-cta pf-cta--ghost" href="#">Request quote</a>
+          <ul class="pf-features" aria-label="Enterprise included features">
+            <li>Custom building portfolio limits</li>
+            <li>Custom routing token packages</li>
+            <li>SSO, audit log, advanced security</li>
+            <li>Enterprise implementation plan</li>
+            <li>Named account team</li>
+          </ul>
+          <p class="pf-disclaimer">Commercial terms depend on deployment scope.</p>
+        </article>
+
+        <article class="pf-card pf-card--standard" data-plan-slot="05" data-plan-visible="hide">
+          <div class="pf-card-head"><span class="pf-kicker">Optional</span><span class="pf-badge">Extra</span></div>
+          <h2 class="pf-name">Extension</h2>
+          <p class="pf-subtitle">Reserved slot for an additional tier between Scale and Enterprise.</p>
+          <div class="pf-price" aria-label="Extension plan price">
+            <span class="pf-currency">$</span>
+            <span class="pf-amount-stack">
+              <span class="pf-amount" data-price-monthly>2,499</span>
+              <span class="pf-amount" data-price-annual>1,999</span>
+            </span>
+            <span class="pf-period">/mo</span>
+            <span class="pf-card-save">Save 20%</span>
+          </div>
+          <span class="pf-billed-stack">
+            <span class="pf-billed" data-billed-monthly>Billed monthly</span>
+            <span class="pf-billed" data-billed-annual>Billed annually · save $6,000/yr</span>
+          </span>
+          <a class="pf-cta pf-cta--ghost" href="#">Discuss extension</a>
+          <ul class="pf-features" aria-label="Extension included features">
+            <li>Reserved slot for capacity</li>
+            <li>Reserved slot for usage envelope</li>
+            <li>Reserved slot for support tier</li>
+          </ul>
+          <p class="pf-disclaimer"></p>
+        </article>
+      </div>
+    </div>
+  </section>
+</div>
+<script>
+  (() => {
+    const mode = new URLSearchParams(window.location.search).get("mode");
+    const section = document.querySelector('[data-block="pricing.plans-flex"]');
+    if (!section) return;
+    if (mode === "fallback") section.dataset.pricingDynamic = "false";
+    if (mode === "error") section.dataset.pricingFixtureUrl = "../_fixtures/missing.json";
+    if (mode === "lorem") section.dataset.pricingLorem = "true";
+  })();
+</script>
+<script src="../_shared/pricing-runtime.js"></script>
+<script src="./block.js"></script>
+</body>
+</html>

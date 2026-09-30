@@ -1,0 +1,57 @@
+{
+ "optimistic": 0,
+ "code": "TAX_AWARE",
+ "nls": {
+  "ar": {
+   "DESCRIPTION": "<p></p>"
+  },
+  "en": {
+   "NAME": "Tax Aware",
+   "DESCRIPTION": "<p>Abstract parent account type that provides the inherited <code>TAX_ID</code> attribute for accounts that may require tax identification. It is intended for reuse by business account types and prevents duplication of tax-related attributes across multiple account definitions.</p>"
+  },
+  "he": {
+   "DESCRIPTION": "<p></p>"
+  }
+ },
+ "organization": {
+  "optimistic": 1,
+  "id": 1,
+  "code": "SYSTEM"
+ },
+ "attributeOrder": [
+  {
+   "default": [
+    {
+     "attributeCode": "TAX_ID",
+     "visible": true
+    }
+   ]
+  }
+ ],
+ "attributes": [
+  {
+   "code": "TAX_ID",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "ar": {
+     "DESCRIPTION": "<p></p>"
+    },
+    "en": {
+     "NAME": "Tax ID",
+     "DESCRIPTION": "<p>Tax identification number assigned to the person or organization by the applicable tax authority. The expected format may vary by country or jurisdiction.</p>"
+    },
+    "he": {
+     "DESCRIPTION": "<p></p>"
+    }
+   },
+   "options": []
+  }
+ ],
+ "id": 36,
+ "isAbstract": false,
+ "attributeGroups": []
+}

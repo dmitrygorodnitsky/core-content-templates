@@ -1,0 +1,683 @@
+{
+  "id": "care-ready-beauty-1440",
+  "surface": "care",
+  "vertical": "Beauty",
+  "width": 1440,
+  "height": 900,
+  "mode": "light",
+  "state": "ready",
+  "referenceState": "ready",
+  "variant": "default",
+  "comparisonMode": "source-effect-components",
+  "reference": {
+    "url": "/design-inbox/source.html",
+    "sha256": "95c2a515aee437a39150937a2baafa3db6bf44c4f1fd10280c4cc124b149b55c",
+    "failures": [],
+    "metrics": {
+      "shell": {
+        "x": 0,
+        "y": 0,
+        "width": 1440,
+        "height": 1153.88,
+        "fontFamily": "Manrope, system-ui, -apple-system, sans-serif",
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "lineHeight": "normal",
+        "color": "rgb(29, 29, 31)",
+        "background": "rgb(238, 241, 246)",
+        "border": "0px none rgb(29, 29, 31)",
+        "borderRadius": "0px",
+        "display": "block",
+        "gridTemplateColumns": "none"
+      },
+      "topNav": {
+        "x": 160,
+        "y": 16,
+        "width": 1120,
+        "height": 54,
+        "fontFamily": "Manrope, system-ui, -apple-system, sans-serif",
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "lineHeight": "normal",
+        "color": "rgb(29, 29, 31)",
+        "background": "rgba(255, 255, 255, 0.55)",
+        "border": "1px solid rgba(255, 255, 255, 0.7)",
+        "borderRadius": "999px",
+        "display": "flex",
+        "gridTemplateColumns": "none"
+      },
+      "page": {
+        "x": 160,
+        "y": 78,
+        "width": 1120,
+        "height": 1075.88,
+        "fontFamily": "Manrope, system-ui, -apple-system, sans-serif",
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "lineHeight": "normal",
+        "color": "rgb(29, 29, 31)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "0px none rgb(29, 29, 31)",
+        "borderRadius": "0px",
+        "display": "block",
+        "gridTemplateColumns": "none"
+      },
+      "title": null,
+      "subtitle": null,
+      "grid": {
+        "x": 182,
+        "y": 181.03,
+        "width": 1076,
+        "height": 912.84,
+        "fontFamily": "Manrope, system-ui, -apple-system, sans-serif",
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "lineHeight": "normal",
+        "color": "rgb(29, 29, 31)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "0px none rgb(29, 29, 31)",
+        "borderRadius": "0px",
+        "display": "grid",
+        "gridTemplateColumns": "644.312px 415.688px"
+      },
+      "firstCard": {
+        "x": 182,
+        "y": 181.03,
+        "width": 644.31,
+        "height": 232,
+        "fontFamily": "Manrope, system-ui, -apple-system, sans-serif",
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "lineHeight": "normal",
+        "color": "rgb(29, 29, 31)",
+        "background": "rgba(255, 255, 255, 0.5)",
+        "border": "1px solid rgba(255, 255, 255, 0.7)",
+        "borderRadius": "22px",
+        "display": "block",
+        "gridTemplateColumns": "none"
+      },
+      "primaryAction": {
+        "x": 201,
+        "y": 358.03,
+        "width": 105.58,
+        "height": 36,
+        "fontFamily": "Manrope, system-ui, -apple-system, sans-serif",
+        "fontSize": "13px",
+        "fontWeight": "600",
+        "lineHeight": "normal",
+        "color": "rgb(255, 255, 255)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "0px none rgb(255, 255, 255)",
+        "borderRadius": "999px",
+        "display": "flex",
+        "gridTemplateColumns": "none"
+      },
+      "mobileNav": null
+    },
+    "readiness": {
+      "fontsStatus": "loaded",
+      "fontCount": 1,
+      "framesObserved": 2,
+      "twoFrameLayoutStable": true,
+      "prepaintSegments": 2,
+      "prepaintPositions": [
+        0,
+        254
+      ],
+      "prepaintReturnedToOrigin": true
+    },
+    "captureViewport": {
+      "width": 1440,
+      "height": 900
+    },
+    "captureStability": {
+      "method": "dual-browser-phase-normalized-ready-contexts",
+      "warmupSha256": [
+        "95c2a515aee437a39150937a2baafa3db6bf44c4f1fd10280c4cc124b149b55c",
+        "95c2a515aee437a39150937a2baafa3db6bf44c4f1fd10280c4cc124b149b55c"
+      ],
+      "firstSha256": "95c2a515aee437a39150937a2baafa3db6bf44c4f1fd10280c4cc124b149b55c",
+      "secondSha256": "95c2a515aee437a39150937a2baafa3db6bf44c4f1fd10280c4cc124b149b55c",
+      "twoCapturePixelsStable": true
+    }
+  },
+  "implementation": {
+    "url": "/runtime/source.html#/care",
+    "sha256": "8a699d1eafa6063b44180d7b8142450f0bb1fd80a2a70b2786ca06fe380f2f60",
+    "failures": [],
+    "metrics": {
+      "shell": {
+        "x": 0,
+        "y": 0,
+        "width": 1440,
+        "height": 1153.88,
+        "fontFamily": "Manrope, system-ui, -apple-system, sans-serif",
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "lineHeight": "normal",
+        "color": "rgb(29, 29, 31)",
+        "background": "rgb(238, 241, 246)",
+        "border": "0px none rgb(29, 29, 31)",
+        "borderRadius": "0px",
+        "display": "block",
+        "gridTemplateColumns": "none"
+      },
+      "topNav": {
+        "x": 160,
+        "y": 16,
+        "width": 1120,
+        "height": 54,
+        "fontFamily": "Manrope, system-ui, -apple-system, sans-serif",
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "lineHeight": "normal",
+        "color": "rgb(29, 29, 31)",
+        "background": "rgba(255, 255, 255, 0.55)",
+        "border": "1px solid rgba(255, 255, 255, 0.7)",
+        "borderRadius": "999px",
+        "display": "flex",
+        "gridTemplateColumns": "none"
+      },
+      "page": {
+        "x": 160,
+        "y": 78,
+        "width": 1120,
+        "height": 1075.88,
+        "fontFamily": "Manrope, system-ui, -apple-system, sans-serif",
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "lineHeight": "normal",
+        "color": "rgb(29, 29, 31)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "0px none rgb(29, 29, 31)",
+        "borderRadius": "0px",
+        "display": "block",
+        "gridTemplateColumns": "none"
+      },
+      "title": null,
+      "subtitle": null,
+      "grid": {
+        "x": 182,
+        "y": 181.03,
+        "width": 1076,
+        "height": 912.84,
+        "fontFamily": "Manrope, system-ui, -apple-system, sans-serif",
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "lineHeight": "normal",
+        "color": "rgb(29, 29, 31)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "0px none rgb(29, 29, 31)",
+        "borderRadius": "0px",
+        "display": "grid",
+        "gridTemplateColumns": "644.312px 415.688px"
+      },
+      "firstCard": {
+        "x": 182,
+        "y": 181.03,
+        "width": 644.31,
+        "height": 232,
+        "fontFamily": "Manrope, system-ui, -apple-system, sans-serif",
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "lineHeight": "normal",
+        "color": "rgb(29, 29, 31)",
+        "background": "rgba(255, 255, 255, 0.5)",
+        "border": "1px solid rgba(255, 255, 255, 0.7)",
+        "borderRadius": "22px",
+        "display": "block",
+        "gridTemplateColumns": "none"
+      },
+      "primaryAction": {
+        "x": 201,
+        "y": 358.03,
+        "width": 105.58,
+        "height": 36,
+        "fontFamily": "Manrope, system-ui, -apple-system, sans-serif",
+        "fontSize": "13px",
+        "fontWeight": "600",
+        "lineHeight": "normal",
+        "color": "rgb(154, 160, 173)",
+        "background": "rgb(245, 245, 247)",
+        "border": "0px none rgb(154, 160, 173)",
+        "borderRadius": "999px",
+        "display": "flex",
+        "gridTemplateColumns": "none"
+      },
+      "mobileNav": null
+    },
+    "readiness": {
+      "fontsStatus": "loaded",
+      "fontCount": 1,
+      "framesObserved": 2,
+      "twoFrameLayoutStable": true,
+      "prepaintSegments": 2,
+      "prepaintPositions": [
+        0,
+        254
+      ],
+      "prepaintReturnedToOrigin": true
+    },
+    "captureViewport": {
+      "width": 1440,
+      "height": 900
+    },
+    "captureStability": {
+      "method": "dual-browser-phase-normalized-ready-contexts",
+      "warmupSha256": [
+        "8a699d1eafa6063b44180d7b8142450f0bb1fd80a2a70b2786ca06fe380f2f60",
+        "8a699d1eafa6063b44180d7b8142450f0bb1fd80a2a70b2786ca06fe380f2f60"
+      ],
+      "firstSha256": "8a699d1eafa6063b44180d7b8142450f0bb1fd80a2a70b2786ca06fe380f2f60",
+      "secondSha256": "8a699d1eafa6063b44180d7b8142450f0bb1fd80a2a70b2786ca06fe380f2f60",
+      "twoCapturePixelsStable": true
+    }
+  },
+  "raw": {
+    "changed": 8350,
+    "changedPct": 0.5024792990564221,
+    "rms": 8.681775057800456
+  },
+  "accepted": {
+    "changed": 0,
+    "changedPct": 0,
+    "rms": 0
+  },
+  "effectBounds": [
+    {
+      "controlIndex": 0,
+      "selector": "[data-route=\"care\"] [data-state=\"unavailable\"]",
+      "reason": "S5 truthful unavailable treatment is implementation-owned and absent from the accepted design",
+      "action": "order.reschedule",
+      "entityId": "#SV-3312",
+      "disabled": true,
+      "ariaDisabled": "true",
+      "truthfulUnavailable": true,
+      "derivation": {
+        "borderBox": {
+          "x": 201,
+          "y": 358,
+          "width": 106,
+          "height": 36
+        },
+        "computedBoxShadow": "rgba(214, 51, 108, 0.35) 0px 4px 12px 0px, rgba(255, 255, 255, 0.4) 0px 1px 0px 0px inset",
+        "blurKernelFormula": "ceil(1.5 * blur) + spread",
+        "shadows": [
+          {
+            "source": "rgba(214, 51, 108, 0.35) 0px 4px 12px 0px",
+            "inset": false,
+            "offsetX": 0,
+            "offsetY": 4,
+            "blur": 12,
+            "spread": 0,
+            "blurKernelExtent": 18
+          },
+          {
+            "source": "rgba(255, 255, 255, 0.4) 0px 1px 0px 0px inset",
+            "inset": true,
+            "offsetX": 0,
+            "offsetY": 1,
+            "blur": 0,
+            "spread": 0,
+            "blurKernelExtent": 0
+          }
+        ],
+        "extensions": {
+          "left": 18,
+          "right": 18,
+          "top": 14,
+          "bottom": 22
+        },
+        "clip": {
+          "width": 1440,
+          "height": 1154
+        }
+      },
+      "x": 183,
+      "y": 344,
+      "width": 142,
+      "height": 72
+    },
+    {
+      "controlIndex": 1,
+      "selector": "[data-route=\"care\"] [data-state=\"unavailable\"]",
+      "reason": "S5 truthful unavailable treatment is implementation-owned and absent from the accepted design",
+      "action": "booking.open",
+      "entityId": null,
+      "disabled": true,
+      "ariaDisabled": "true",
+      "truthfulUnavailable": true,
+      "derivation": {
+        "borderBox": {
+          "x": 661,
+          "y": 531,
+          "width": 147,
+          "height": 34
+        },
+        "computedBoxShadow": "rgba(214, 51, 108, 0.35) 0px 4px 12px 0px, rgba(255, 255, 255, 0.4) 0px 1px 0px 0px inset",
+        "blurKernelFormula": "ceil(1.5 * blur) + spread",
+        "shadows": [
+          {
+            "source": "rgba(214, 51, 108, 0.35) 0px 4px 12px 0px",
+            "inset": false,
+            "offsetX": 0,
+            "offsetY": 4,
+            "blur": 12,
+            "spread": 0,
+            "blurKernelExtent": 18
+          },
+          {
+            "source": "rgba(255, 255, 255, 0.4) 0px 1px 0px 0px inset",
+            "inset": true,
+            "offsetX": 0,
+            "offsetY": 1,
+            "blur": 0,
+            "spread": 0,
+            "blurKernelExtent": 0
+          }
+        ],
+        "extensions": {
+          "left": 18,
+          "right": 18,
+          "top": 14,
+          "bottom": 22
+        },
+        "clip": {
+          "width": 1440,
+          "height": 1154
+        }
+      },
+      "x": 643,
+      "y": 517,
+      "width": 183,
+      "height": 70
+    }
+  ],
+  "unavailableInventory": {
+    "applies": true,
+    "expected": [
+      {
+        "action": "booking.open",
+        "entityId": null
+      },
+      {
+        "action": "order.reschedule",
+        "entityId": "#SV-3312"
+      }
+    ],
+    "actual": [
+      {
+        "action": "booking.open",
+        "entityId": null
+      },
+      {
+        "action": "order.reschedule",
+        "entityId": "#SV-3312"
+      }
+    ],
+    "expectedCount": 2,
+    "actualCount": 2,
+    "truthfulCount": 2,
+    "exactMatch": true,
+    "countMatch": true,
+    "allTruthful": true,
+    "expectedMode": "source-effect-components",
+    "modeMatch": true
+  },
+  "changedComponents": [
+    {
+      "componentIndex": 0,
+      "x": 201,
+      "y": 358,
+      "width": 106,
+      "height": 36,
+      "changedPixels": 3590,
+      "controlIndexes": [
+        0
+      ],
+      "fullyContainedInEffectEnvelope": true,
+      "intersectsOwningControlBorderBox": true,
+      "effectAssociations": [
+        {
+          "controlIndex": 0,
+          "fullyContainedInEffectEnvelope": true,
+          "intersectsOwningControlBorderBox": true,
+          "associated": true
+        },
+        {
+          "controlIndex": 1,
+          "fullyContainedInEffectEnvelope": false,
+          "intersectsOwningControlBorderBox": false,
+          "associated": false
+        }
+      ],
+      "controls": [
+        {
+          "controlIndex": 0,
+          "selector": "[data-route=\"care\"] [data-state=\"unavailable\"]",
+          "reason": "S5 truthful unavailable treatment is implementation-owned and absent from the accepted design",
+          "action": "order.reschedule",
+          "entityId": "#SV-3312",
+          "disabled": true,
+          "ariaDisabled": "true",
+          "truthfulUnavailable": true,
+          "derivation": {
+            "borderBox": {
+              "x": 201,
+              "y": 358,
+              "width": 106,
+              "height": 36
+            },
+            "computedBoxShadow": "rgba(214, 51, 108, 0.35) 0px 4px 12px 0px, rgba(255, 255, 255, 0.4) 0px 1px 0px 0px inset",
+            "blurKernelFormula": "ceil(1.5 * blur) + spread",
+            "shadows": [
+              {
+                "source": "rgba(214, 51, 108, 0.35) 0px 4px 12px 0px",
+                "inset": false,
+                "offsetX": 0,
+                "offsetY": 4,
+                "blur": 12,
+                "spread": 0,
+                "blurKernelExtent": 18
+              },
+              {
+                "source": "rgba(255, 255, 255, 0.4) 0px 1px 0px 0px inset",
+                "inset": true,
+                "offsetX": 0,
+                "offsetY": 1,
+                "blur": 0,
+                "spread": 0,
+                "blurKernelExtent": 0
+              }
+            ],
+            "extensions": {
+              "left": 18,
+              "right": 18,
+              "top": 14,
+              "bottom": 22
+            },
+            "clip": {
+              "width": 1440,
+              "height": 1154
+            }
+          },
+          "x": 183,
+          "y": 344,
+          "width": 142,
+          "height": 72
+        }
+      ]
+    },
+    {
+      "componentIndex": 1,
+      "x": 661,
+      "y": 531,
+      "width": 146,
+      "height": 34,
+      "changedPixels": 4760,
+      "controlIndexes": [
+        1
+      ],
+      "fullyContainedInEffectEnvelope": true,
+      "intersectsOwningControlBorderBox": true,
+      "effectAssociations": [
+        {
+          "controlIndex": 0,
+          "fullyContainedInEffectEnvelope": false,
+          "intersectsOwningControlBorderBox": false,
+          "associated": false
+        },
+        {
+          "controlIndex": 1,
+          "fullyContainedInEffectEnvelope": true,
+          "intersectsOwningControlBorderBox": true,
+          "associated": true
+        }
+      ],
+      "controls": [
+        {
+          "controlIndex": 1,
+          "selector": "[data-route=\"care\"] [data-state=\"unavailable\"]",
+          "reason": "S5 truthful unavailable treatment is implementation-owned and absent from the accepted design",
+          "action": "booking.open",
+          "entityId": null,
+          "disabled": true,
+          "ariaDisabled": "true",
+          "truthfulUnavailable": true,
+          "derivation": {
+            "borderBox": {
+              "x": 661,
+              "y": 531,
+              "width": 147,
+              "height": 34
+            },
+            "computedBoxShadow": "rgba(214, 51, 108, 0.35) 0px 4px 12px 0px, rgba(255, 255, 255, 0.4) 0px 1px 0px 0px inset",
+            "blurKernelFormula": "ceil(1.5 * blur) + spread",
+            "shadows": [
+              {
+                "source": "rgba(214, 51, 108, 0.35) 0px 4px 12px 0px",
+                "inset": false,
+                "offsetX": 0,
+                "offsetY": 4,
+                "blur": 12,
+                "spread": 0,
+                "blurKernelExtent": 18
+              },
+              {
+                "source": "rgba(255, 255, 255, 0.4) 0px 1px 0px 0px inset",
+                "inset": true,
+                "offsetX": 0,
+                "offsetY": 1,
+                "blur": 0,
+                "spread": 0,
+                "blurKernelExtent": 0
+              }
+            ],
+            "extensions": {
+              "left": 18,
+              "right": 18,
+              "top": 14,
+              "bottom": 22
+            },
+            "clip": {
+              "width": 1440,
+              "height": 1154
+            }
+          },
+          "x": 643,
+          "y": 517,
+          "width": 183,
+          "height": 70
+        }
+      ]
+    }
+  ],
+  "unassociatedComponents": [],
+  "assertions": {
+    "activityControlNonDispatching": true,
+    "unavailableControlsTruthful": true,
+    "unavailableControlCount": 2
+  },
+  "dimensions": {
+    "width": 1440,
+    "height": 1154,
+    "referenceHeight": 1154,
+    "implementationHeight": 1154
+  },
+  "metricsEqual": false,
+  "metricDelta": {
+    "primaryAction": {
+      "reference": {
+        "x": 201,
+        "y": 358.03,
+        "width": 105.58,
+        "height": 36,
+        "fontFamily": "Manrope, system-ui, -apple-system, sans-serif",
+        "fontSize": "13px",
+        "fontWeight": "600",
+        "lineHeight": "normal",
+        "color": "rgb(255, 255, 255)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "0px none rgb(255, 255, 255)",
+        "borderRadius": "999px",
+        "display": "flex",
+        "gridTemplateColumns": "none"
+      },
+      "implementation": {
+        "x": 201,
+        "y": 358.03,
+        "width": 105.58,
+        "height": 36,
+        "fontFamily": "Manrope, system-ui, -apple-system, sans-serif",
+        "fontSize": "13px",
+        "fontWeight": "600",
+        "lineHeight": "normal",
+        "color": "rgb(154, 160, 173)",
+        "background": "rgb(245, 245, 247)",
+        "border": "0px none rgb(154, 160, 173)",
+        "borderRadius": "999px",
+        "display": "flex",
+        "gridTemplateColumns": "none"
+      }
+    }
+  },
+  "metricDeltaDisposition": {
+    "applies": true,
+    "fields": [
+      "primaryAction"
+    ],
+    "exactUnavailableControlBounds": true
+  },
+  "persistedImages": {
+    "reference": {
+      "file": "reference.webp",
+      "sha256": "9c677c055f9228dc7023fe910df571aae6503926d746b0301b8f41229e95d6b0",
+      "decodedPixelSha256": "25dde65adf430b00b6849d63556cc6c2448a12ce6b0282bdcaf2072289fc99cf",
+      "width": 1440,
+      "height": 1154
+    },
+    "implementation": {
+      "file": "implementation.webp",
+      "sha256": "ea348d2270fd5e4c4a1f6d54cec9974b3450a6288ffaef23e6aae927e5251d96",
+      "decodedPixelSha256": "fe05a518ba33c6718cb981af0a363d2af64b23db6f73ad3c068de1c701387b02",
+      "width": 1440,
+      "height": 1154
+    },
+    "diff": {
+      "file": "diff.webp",
+      "sha256": "f82b1ecaa0179f609ca012c5ae08fac1ca5956694da4aaddd2acc1a78ab8de9a",
+      "decodedPixelSha256": "7fdb7aa36fc7e08608e02a2dc95693aaac632f0ea51aa023200b13d32bd2a81c",
+      "width": 1440,
+      "height": 1154
+    },
+    "componentDiff": {
+      "file": "component-diff.webp",
+      "sha256": "29635dfced60e8194ff2fbfedbd6059a516a14c20e1b03893033ba329183c5f1",
+      "decodedPixelSha256": "e4329a5f6948411c8ae4c61c1786f3ec54defcd4cdac52798c19784cdfb497a8",
+      "width": 1440,
+      "height": 1154
+    }
+  },
+  "persistedImagesVerified": true,
+  "passed": true
+}

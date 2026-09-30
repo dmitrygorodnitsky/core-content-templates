@@ -1,0 +1,2649 @@
+[
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_LOGO_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header logo href",
+        "DESCRIPTION": "URL target for the header logo link."
+      }
+    },
+    "value": "https://servicewand.com/"
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_LOGO_ARIA_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header logo aria label",
+        "DESCRIPTION": "Accessible label for the header logo link."
+      }
+    },
+    "value": {
+      "en": "ServiceWand"
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_MENU_PLATFORM_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header menu Platform href",
+        "DESCRIPTION": "URL target for the desktop Platform navigation link."
+      }
+    },
+    "value": "https://servicewand.com#hero"
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_MENU_PLATFORM",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header menu - Platform",
+        "DESCRIPTION": "Desktop navigation label for the platform section."
+      }
+    },
+    "value": {
+      "ar": "المنصة",
+      "en": "Platform",
+      "es": "Plataforma",
+      "fr": "Plateforme",
+      "he": "פלטפורמה",
+      "ru": "Платформа",
+      "zh": "平台"
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_MENU_HOW_IT_WORKS_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header menu How It Works href",
+        "DESCRIPTION": "URL target for the desktop How It Works navigation link."
+      }
+    },
+    "value": "https://servicewand.com#features"
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_MENU_HOW_IT_WORKS",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header menu - How It Works",
+        "DESCRIPTION": "Desktop navigation label for the features section."
+      }
+    },
+    "value": {
+      "ar": "كيفية العمل",
+      "en": "How It Works",
+      "es": "Cómo funciona",
+      "fr": "Comment ça marche",
+      "he": "איך זה עובד",
+      "ru": "Как это работает",
+      "zh": "工作原理"
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_MENU_INDUSTRIES",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header menu - Industries",
+        "DESCRIPTION": "Desktop navigation label for the foundation section."
+      }
+    },
+    "value": {
+      "ar": "القطاعات",
+      "en": "Industries",
+      "es": "Industrias",
+      "fr": "Secteurs",
+      "he": "תעשיות",
+      "ru": "Отрасли",
+      "zh": "行业"
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_FIELD_SERVICE_NAV_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Field Service nav label",
+        "DESCRIPTION": "Navigation label for Field Service in the industry menu."
+      }
+    },
+    "value": {
+      "ar": "عمليات الخدمة الميدانية",
+      "en": "Field Service Operations",
+      "es": "Operaciones de servicio de campo",
+      "fr": "Opérations de service sur le terrain",
+      "he": "תפעול שירות שטח",
+      "ru": "Операции выездного обслуживания",
+      "zh": "现场服务运营"
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_TELECOM_NAV_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Telecom nav label",
+        "DESCRIPTION": "Navigation label for Telecom in the industry menu."
+      }
+    },
+    "value": {
+      "ar": "الاتصالات",
+      "en": "Telecommunications",
+      "es": "Telecomunicaciones",
+      "fr": "Télécommunications",
+      "he": "טלקומוניקציה",
+      "ru": "Телекоммуникации",
+      "zh": "电信"
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_PROPERTY_NAV_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Property nav label",
+        "DESCRIPTION": "Navigation label for Property in the industry menu."
+      }
+    },
+    "value": {
+      "ar": "المنشأة &amp; المرافق",
+      "en": "Property &amp; Facilities",
+      "es": "Propiedad &amp; Instalaciones",
+      "fr": "Établissement &amp; équipements",
+      "he": "מקום האירוח &amp; המתקנים",
+      "ru": "Объект &amp; удобства",
+      "zh": "酒店 &amp; 设施"
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_CONSTRUCTION_NAV_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Construction nav label",
+        "DESCRIPTION": "Navigation label for Construction in the industry menu."
+      }
+    },
+    "value": {
+      "ar": "الإنشاءات",
+      "en": "Construction",
+      "es": "Construcción",
+      "fr": "Construction",
+      "he": "בנייה",
+      "ru": "Строительство",
+      "zh": "建筑"
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_LOGISTICS_NAV_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Logistics nav label",
+        "DESCRIPTION": "Navigation label for Logistics in the industry menu."
+      }
+    },
+    "value": {
+      "ar": "الخدمات اللوجستية &amp; النقل",
+      "en": "Logistics &amp; Transportation",
+      "es": "Logística &amp; Transporte",
+      "fr": "Logistique &amp; Transport",
+      "he": "לוגיסטיקה &amp; תחבורה",
+      "ru": "Логистика &amp; Транспорт",
+      "zh": "物流 &amp; 运输"
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_RETAIL_NAV_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Retail nav label",
+        "DESCRIPTION": "Navigation label for Retail in the industry menu."
+      }
+    },
+    "value": {
+      "ar": "التجزئة &amp; التجارة",
+      "en": "Retail &amp; Commerce",
+      "es": "Venta Minorista &amp; Comercio",
+      "fr": "Vente au détail &amp; Commerce",
+      "he": "קמעונאות &amp; מסחר",
+      "ru": "Розничная торговля &amp; коммерция",
+      "zh": "零售 &amp; 商业"
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_AI_NATIVE_NAV_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header AI Native nav label",
+        "DESCRIPTION": "Navigation label for AI Native in the industry menu."
+      }
+    },
+    "value": {
+      "ar": "شركات أصلية قائمة على الذكاء الاصطناعي",
+      "en": "AI-native Businesses",
+      "es": "Empresas nativas de IA",
+      "fr": "Entreprises natives de l’IA",
+      "he": "עסקים ילידי-בינה מלאכותית",
+      "ru": "ИИ-нативные компании",
+      "zh": "AI原生企业"
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_TECHNOLOGY_NAV_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Technology nav label",
+        "DESCRIPTION": "Navigation label for Technology in the industry menu."
+      }
+    },
+    "value": {
+      "ar": "التكنولوجيا &amp; البرمجيات كخدمة",
+      "en": "Technology &amp; SaaS",
+      "es": "Tecnología &amp; SaaS",
+      "fr": "Technologie &amp; SaaS",
+      "he": "טכנולוגיה &amp; SaaS",
+      "ru": "Технологии &amp; SaaS",
+      "zh": "科技 &amp; SaaS"
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_MENU_PANEL_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header menu panel title",
+        "DESCRIPTION": "Reusable title for the default panel in header submenus."
+      }
+    },
+    "value": {
+      "ar": "مصمم للعمليات الحديثة",
+      "en": "Built for Modern Operations",
+      "es": "Diseñado para operaciones modernas",
+      "fr": "Conçu pour les opérations modernes",
+      "he": "בנוי לתפעול מודרני",
+      "ru": "Создано для современных операций",
+      "zh": "专为现代化运营打造"
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_MENU_PANEL_TEXT",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header menu panel text",
+        "DESCRIPTION": "Reusable body text for the default panel in header submenus."
+      }
+    },
+    "value": {
+      "ar": "استكشف برمجيات تشغيلية مصممة لصناعات العالم الحقيقي — من الخدمات الميدانية والإنشاءات إلى البيع بالتجزئة واللوجستيات وما بعدها.",
+      "en": "Discover operational software designed for real-world industries — from field service and construction to retail, logistics, and beyond.",
+      "es": "Descubra software operativo diseñado para industrias del mundo real — desde el servicio de campo y la construcción hasta el comercio minorista, la logística y más allá.",
+      "fr": "Découvrez des logiciels opérationnels conçus pour des secteurs d’activité concrets — du service sur le terrain et de la construction au commerce de détail, à la logistique, et au-delà.",
+      "he": "גלו תוכנה תפעולית המיועדת לתעשיות מהעולם האמיתי — משירותי שטח ובנייה ועד קמעונאות, לוגיסטיקה ומעבר לכך.",
+      "ru": "Откройте для себя ПО для операционной деятельности, разработанное для отраслей реального сектора — от выездного сервиса и строительства до ритейла, логистики и не только.",
+      "zh": "发现专为现实世界各行业打造的运营软件 — 从现场服务和建筑到零售、物流，以及更多。"
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_MENU_PANEL_SUBTEXT",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header menu panel subtext",
+        "DESCRIPTION": "Reusable secondary text for the default panel in header submenus."
+      }
+    },
+    "value": {
+      "ar": "اختر قطاعًا لاكتشاف حلول أعمال مدعومة بالذكاء الاصطناعي.",
+      "en": "Select an industry to discover AI-powered business solutions.",
+      "es": "Selecciona un sector para descubrir soluciones empresariales impulsadas por IA.",
+      "fr": "Sélectionnez un secteur d'activité pour découvrir des solutions d'entreprise alimentées par l'IA.",
+      "he": "בחרו ענף כדי לגלות פתרונות עסקיים מבוססי בינה מלאכותית.",
+      "ru": "Выберите отрасль, чтобы узнать о бизнес-решениях на базе искусственного интеллекта.",
+      "zh": "选择一个行业，探索 AI 驱动的业务解决方案。"
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_MENU_PANEL_CTA_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header menu panel CTA href",
+        "DESCRIPTION": "URL target for the default industry menu CTA."
+      }
+    },
+    "value": "https://servicewand.com/"
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_MENU_PANEL_CTA_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header menu panel CTA label",
+        "DESCRIPTION": "Reusable CTA label for the default panel in header submenus."
+      }
+    },
+    "value": {
+      "ar": "استكشف ServiceWand",
+      "en": "Explore ServiceWand",
+      "es": "Explora ServiceWand",
+      "fr": "Explorez ServiceWand",
+      "he": "גלו את ServiceWand",
+      "ru": "Изучить ServiceWand",
+      "zh": "探索 ServiceWand"
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_FIELD_SERVICE_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Field Service panel label",
+        "DESCRIPTION": "Eyebrow label for the Field Service industry panel."
+      }
+    },
+    "value": {
+      "ar": "عمليات الخدمة الميدانية",
+      "en": "Field Service Operations",
+      "es": "Operaciones de Servicio de Campo",
+      "fr": "Opérations de service sur le terrain",
+      "he": "תפעול שירות שטח",
+      "ru": "Операции полевого обслуживания",
+      "zh": "现场服务运营"
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_FIELD_SERVICE_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Field Service panel title",
+        "DESCRIPTION": "Title for the Field Service industry panel."
+      }
+    },
+    "value": {
+      "ar": "أدر عمليات ميدانية قابلة للتوسع",
+      "en": "Run field operations that scale",
+      "es": "Ejecuta operaciones de campo a escala",
+      "fr": "Gérez des opérations sur le terrain à l'échelle",
+      "he": "נהלו פעילות שטח בקנה מידה",
+      "ru": "Проводите масштабируемые полевые операции",
+      "zh": "开展可扩展的现场作业"
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_FIELD_SERVICE_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Field Service panel body",
+        "DESCRIPTION": "Body text for the Field Service industry panel."
+      }
+    },
+    "value": {
+      "ar": "أدِر الفرق والأصول والجداول والعملاء — كل ذلك عبر منصة تشغيلية مترابطة واحدة.",
+      "en": "Manage crews, assets, schedules, and customers — all in one connected operational platform.",
+      "es": "Gestiona cuadrillas, activos, cronogramas y clientes — todo en una única plataforma operativa conectada.",
+      "fr": "Gérez les équipes, les actifs, les plannings et les clients — le tout au sein d'une seule plateforme opérationnelle connectée.",
+      "he": "נהלו צוותים, נכסים, לוחות זמנים ולקוחות — הכול בפלטפורמה תפעולית מחוברת אחת.",
+      "ru": "Управляйте бригадами, активами, графиками и клиентами — всё в одной интегрированной операционной платформе.",
+      "zh": "管理班组、资产、排程和客户 — 一切尽在一个互联的运营平台中。"
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_FIELD_SERVICE_CTA_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Field Service CTA href",
+        "DESCRIPTION": "URL target for the Field Service industry panel CTA."
+      }
+    },
+    "value": "https://servicewand.com/industries/field-service"
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_FIELD_SERVICE_CTA_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Field Service CTA label",
+        "DESCRIPTION": "CTA label for the Field Service industry panel."
+      }
+    },
+    "value": {
+      "ar": "استكشف حلول الخدمة الميدانية",
+      "en": "Explore Field Service Solutions",
+      "es": "Explorar soluciones de servicio de campo",
+      "fr": "Découvrez les solutions de service sur le terrain",
+      "he": "גלו פתרונות שירות שטח",
+      "ru": "Ознакомьтесь с решениями для выездного обслуживания",
+      "zh": "探索现场服务解决方案"
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_FIELD_SERVICE_ITEM_01_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Field Service item 1 href",
+        "DESCRIPTION": "URL target for item 1 in the Field Service industry panel."
+      }
+    },
+    "value": "https://servicewand.com/industries/field-service/snow-removal-software"
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_FIELD_SERVICE_ITEM_01_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Field Service item 1 label",
+        "DESCRIPTION": "Text label for item 1 in the Field Service industry panel."
+      }
+    },
+    "value": {
+      "ar": "إزالة الثلوج",
+      "en": "Snow Removal",
+      "es": "Remoción de nieve",
+      "fr": "Déneigement",
+      "he": "פינוי שלג",
+      "ru": "Уборка снега",
+      "zh": "除雪"
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_FIELD_SERVICE_ITEM_02_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Field Service item 2 href",
+        "DESCRIPTION": "URL target for item 2 in the Field Service industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_FIELD_SERVICE_ITEM_02_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Field Service item 2 label",
+        "DESCRIPTION": "Text label for item 2 in the Field Service industry panel."
+      }
+    },
+    "value": {
+      "ar": "التدفئة والتهوية وتكييف الهواء",
+      "en": "HVAC",
+      "es": "Calefacción, ventilación y aire acondicionado",
+      "fr": "CVC",
+      "he": "חימום, אוורור ומיזוג אוויר",
+      "ru": "ОВК",
+      "zh": "暖通空调"
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_BADGE_FEATURED_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header featured badge label",
+        "DESCRIPTION": "Shared badge label for featured industry links."
+      }
+    },
+    "value": {
+      "ar": "مميز",
+      "en": "Featured",
+      "es": "Destacado",
+      "fr": "À la une",
+      "he": "מומלץ",
+      "ru": "Рекомендуем",
+      "zh": "推荐"
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_FIELD_SERVICE_ITEM_03_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Field Service item 3 href",
+        "DESCRIPTION": "URL target for item 3 in the Field Service industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_FIELD_SERVICE_ITEM_03_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Field Service item 3 label",
+        "DESCRIPTION": "Text label for item 3 in the Field Service industry panel."
+      }
+    },
+    "value": {
+      "ar": "العناية بالعشب",
+      "en": "Lawn Care",
+      "es": "Cuidado del césped",
+      "fr": "Entretien de la pelouse",
+      "he": "טיפול במדשאה",
+      "ru": "Уход за газоном",
+      "zh": "草坪养护"
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_FIELD_SERVICE_ITEM_04_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Field Service item 4 href",
+        "DESCRIPTION": "URL target for item 4 in the Field Service industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_FIELD_SERVICE_ITEM_04_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Field Service item 4 label",
+        "DESCRIPTION": "Text label for item 4 in the Field Service industry panel."
+      }
+    },
+    "value": {
+      "ar": "تنسيق الحدائق",
+      "en": "Landscaping",
+      "es": "Paisajismo",
+      "fr": "Aménagement paysager",
+      "he": "גינון",
+      "ru": "Ландшафтный дизайн",
+      "zh": "园林绿化"
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_FIELD_SERVICE_ITEM_05_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Field Service item 5 href",
+        "DESCRIPTION": "URL target for item 5 in the Field Service industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_FIELD_SERVICE_ITEM_05_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Field Service item 5 label",
+        "DESCRIPTION": "Text label for item 5 in the Field Service industry panel."
+      }
+    },
+    "value": {
+      "ar": "السباكة",
+      "en": "Plumbing",
+      "es": "Fontanería",
+      "fr": "Plomberie",
+      "he": "אינסטלציה",
+      "ru": "Сантехника",
+      "zh": "管道"
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_FIELD_SERVICE_ITEM_06_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Field Service item 6 href",
+        "DESCRIPTION": "URL target for item 6 in the Field Service industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_FIELD_SERVICE_ITEM_06_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Field Service item 6 label",
+        "DESCRIPTION": "Text label for item 6 in the Field Service industry panel."
+      }
+    },
+    "value": {
+      "ar": "الكهرباء",
+      "en": "Electrical",
+      "es": "Electricidad",
+      "fr": "Électricité",
+      "he": "חשמל",
+      "ru": "Электрика",
+      "zh": "电气"
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_FIELD_SERVICE_ITEM_07_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Field Service item 7 href",
+        "DESCRIPTION": "URL target for item 7 in the Field Service industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_FIELD_SERVICE_ITEM_07_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Field Service item 7 label",
+        "DESCRIPTION": "Text label for item 7 in the Field Service industry panel."
+      }
+    },
+    "value": {
+      "ar": "مكافحة الآفات",
+      "en": "Pest Control",
+      "es": "Control de plagas",
+      "fr": "Lutte contre les nuisibles",
+      "he": "הדברת מזיקים",
+      "ru": "Борьба с вредителями",
+      "zh": "害虫防治"
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_FIELD_SERVICE_ITEM_08_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Field Service item 8 href",
+        "DESCRIPTION": "URL target for item 8 in the Field Service industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_FIELD_SERVICE_ITEM_08_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Field Service item 8 label",
+        "DESCRIPTION": "Text label for item 8 in the Field Service industry panel."
+      }
+    },
+    "value": {
+      "ar": "خدمات التنظيف",
+      "en": "Cleaning Services",
+      "es": "Servicios de limpieza",
+      "fr": "Services de nettoyage",
+      "he": "שירותי ניקיון",
+      "ru": "Услуги по уборке",
+      "zh": "清洁服务"
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_FIELD_SERVICE_ITEM_09_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Field Service item 9 href",
+        "DESCRIPTION": "URL target for item 9 in the Field Service industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_FIELD_SERVICE_ITEM_09_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Field Service item 9 label",
+        "DESCRIPTION": "Text label for item 9 in the Field Service industry panel."
+      }
+    },
+    "value": {
+      "ar": "التسقيف",
+      "en": "Roofing",
+      "es": "Techos",
+      "fr": "Toiture",
+      "he": "קירוי",
+      "ru": "Кровля",
+      "zh": "屋顶"
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_FIELD_SERVICE_ITEM_10_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Field Service item 10 href",
+        "DESCRIPTION": "URL target for item 10 in the Field Service industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_FIELD_SERVICE_ITEM_10_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Field Service item 10 label",
+        "DESCRIPTION": "Text label for item 10 in the Field Service industry panel."
+      }
+    },
+    "value": {
+      "ar": "صيانة الممتلكات",
+      "en": "Property Maintenance",
+      "es": "Mantenimiento de la propiedad",
+      "fr": "Entretien de la propriété",
+      "he": "תחזוקת נכסים",
+      "ru": "Обслуживание недвижимости",
+      "zh": "物业维护"
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_TELECOM_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Telecom panel label",
+        "DESCRIPTION": "Eyebrow label for the Telecom industry panel."
+      }
+    },
+    "value": {
+      "ar": "الاتصالات",
+      "en": "Telecommunications",
+      "es": "Telecomunicaciones",
+      "fr": "Télécommunications",
+      "he": "טלקומוניקציה",
+      "ru": "Телекоммуникации",
+      "zh": "电信"
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_TELECOM_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Telecom panel title",
+        "DESCRIPTION": "Title for the Telecom industry panel."
+      }
+    },
+    "value": {
+      "ar": "اربط الشبكات, الفرق &amp; العملاء",
+      "en": "Connect networks, teams &amp; customers",
+      "es": "Conecta redes, equipos &amp; clientes",
+      "fr": "Connectez les réseaux, les équipes &amp; les clients",
+      "he": "חברו רשתות, צוותים &amp; לקוחות",
+      "ru": "Объединяйте сети, команды &amp; клиентов",
+      "zh": "连接网络, 团队 &amp; 客户"
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_TELECOM_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Telecom panel body",
+        "DESCRIPTION": "Body text for the Telecom industry panel."
+      }
+    },
+    "value": {
+      "ar": "بسّط العمليات الميدانية، وأدِر البنية التحتية للشبكة، وقدّم خدمة استثنائية على نطاق واسع.",
+      "en": "Streamline field operations, manage network infrastructure, and deliver exceptional service at scale.",
+      "es": "Agiliza las operaciones de campo, gestiona la infraestructura de red y ofrece un servicio excepcional a escala.",
+      "fr": "Rationalisez les opérations sur le terrain, gérez l'infrastructure réseau et offrez un service exceptionnel à grande échelle.",
+      "he": "לייעל את פעילות השטח, לנהל את תשתית הרשת, ולהעניק שירות יוצא דופן בהיקף נרחב.",
+      "ru": "Оптимизируйте полевые операции, управляйте сетевой инфраструктурой и обеспечивайте исключительный сервис в больших масштабах.",
+      "zh": "优化现场运营，管理网络基础设施，并大规模交付卓越服务。"
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_TELECOM_CTA_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Telecom CTA href",
+        "DESCRIPTION": "URL target for the Telecom industry panel CTA."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_TELECOM_CTA_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Telecom CTA label",
+        "DESCRIPTION": "CTA label for the Telecom industry panel."
+      }
+    },
+    "value": {
+      "ar": "استكشف حلول الاتصالات",
+      "en": "Explore Telecom Solutions",
+      "es": "Explora soluciones de telecomunicaciones",
+      "fr": "Explorez les solutions de télécommunications",
+      "he": "גלו פתרונות תקשורת",
+      "ru": "Ознакомьтесь с телекоммуникационными решениями",
+      "zh": "探索电信解决方案"
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_TELECOM_ITEM_01_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Telecom item 1 href",
+        "DESCRIPTION": "URL target for item 1 in the Telecom industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_TELECOM_ITEM_01_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Telecom item 1 label",
+        "DESCRIPTION": "Text label for item 1 in the Telecom industry panel."
+      }
+    },
+    "value": {
+      "ar": "مزودو خدمات الإنترنت",
+      "en": "Internet Service Providers",
+      "es": "Proveedores de servicios de Internet",
+      "fr": "Fournisseurs d'accès à Internet",
+      "he": "ספקי שירותי אינטרנט",
+      "ru": "Интернет-провайдеры",
+      "zh": "互联网服务提供商"
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_TELECOM_ITEM_02_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Telecom item 2 href",
+        "DESCRIPTION": "URL target for item 2 in the Telecom industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_TELECOM_ITEM_02_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Telecom item 2 label",
+        "DESCRIPTION": "Text label for item 2 in the Telecom industry panel."
+      }
+    },
+    "value": {
+      "ar": "شبكات الألياف الضوئية",
+      "en": "Fiber Networks",
+      "es": "Redes de fibra óptica",
+      "fr": "Réseaux de fibre optique",
+      "he": "רשתות סיבים אופטיים",
+      "ru": "Волоконно-оптические сети",
+      "zh": "光纤网络"
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_TELECOM_ITEM_03_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Telecom item 3 href",
+        "DESCRIPTION": "URL target for item 3 in the Telecom industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_TELECOM_ITEM_03_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Telecom item 3 label",
+        "DESCRIPTION": "Text label for item 3 in the Telecom industry panel."
+      }
+    },
+    "value": {
+      "ar": "مشغلو الكابلات",
+      "en": "Cable Operators",
+      "es": "Operadores de cable",
+      "fr": "Câblo-opérateurs",
+      "he": "מפעילי כבלים",
+      "ru": "Кабельные операторы",
+      "zh": "有线电视运营商"
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_TELECOM_ITEM_04_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Telecom item 4 href",
+        "DESCRIPTION": "URL target for item 4 in the Telecom industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_TELECOM_ITEM_04_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Telecom item 4 label",
+        "DESCRIPTION": "Text label for item 4 in the Telecom industry panel."
+      }
+    },
+    "value": {
+      "ar": "شركات الاتصالات اللاسلكية",
+      "en": "Wireless Providers",
+      "es": "Proveedores de servicios inalámbricos",
+      "fr": "Opérateurs mobiles",
+      "he": "ספקי סלולר",
+      "ru": "Операторы беспроводной связи",
+      "zh": "无线运营商"
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_TELECOM_ITEM_05_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Telecom item 5 href",
+        "DESCRIPTION": "URL target for item 5 in the Telecom industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_TELECOM_ITEM_05_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Telecom item 5 label",
+        "DESCRIPTION": "Text label for item 5 in the Telecom industry panel."
+      }
+    },
+    "value": {
+      "ar": "الخدمات المدارة",
+      "en": "Managed Services",
+      "es": "Servicios gestionados",
+      "fr": "Services gérés",
+      "he": "שירותים מנוהלים",
+      "ru": "Управляемые услуги",
+      "zh": "托管服务"
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_TELECOM_ITEM_06_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Telecom item 6 href",
+        "DESCRIPTION": "URL target for item 6 in the Telecom industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_TELECOM_ITEM_06_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Telecom item 6 label",
+        "DESCRIPTION": "Text label for item 6 in the Telecom industry panel."
+      }
+    },
+    "value": {
+      "ar": "العمليات الميدانية للاتصالات",
+      "en": "Telecom Field Operations",
+      "es": "Operaciones de Campo de Telecomunicaciones",
+      "fr": "Opérations sur le terrain des télécommunications",
+      "he": "תפעול שטח בתקשורת",
+      "ru": "Полевые операции в телекоммуникациях",
+      "zh": "电信现场运维"
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_PROPERTY_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Property panel label",
+        "DESCRIPTION": "Eyebrow label for the Property industry panel."
+      }
+    },
+    "value": {
+      "ar": "مكان الإقامة &amp; المرافق",
+      "en": "Property &amp; Facilities",
+      "es": "Propiedad &amp; Instalaciones",
+      "fr": "Établissement &amp; installations",
+      "he": "מקום האירוח &amp; מתקנים",
+      "ru": "Объект размещения &amp; Удобства",
+      "zh": "酒店 &amp; 设施"
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_PROPERTY_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Property panel title",
+        "DESCRIPTION": "Title for the Property industry panel."
+      }
+    },
+    "value": {
+      "ar": "أدِر كل عقار بدقة",
+      "en": "Manage every property with precision",
+      "es": "Gestiona cada propiedad con precisión",
+      "fr": "Gérez chaque propriété avec précision",
+      "he": "נהלו כל מאפיין בדיוק",
+      "ru": "Управляйте каждым объектом недвижимости с точностью",
+      "zh": "精确管理每个属性"
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_PROPERTY_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Property panel body",
+        "DESCRIPTION": "Body text for the Property industry panel."
+      }
+    },
+    "value": {
+      "ar": "من إدارة جمعيات ملاك المنازل إلى العقارات التجارية — وحّد العمليات والمستأجرين والصيانة في مكان واحد.",
+      "en": "From HOA management to commercial real estate — unify operations, tenants, and maintenance in one place.",
+      "es": "Desde la gestión de HOA hasta bienes raíces comerciales — unifique operaciones, inquilinos y mantenimiento en un solo lugar.",
+      "fr": "De la gestion des associations de propriétaires (HOA) à l'immobilier commercial — unifiez les opérations, les locataires et la maintenance en un seul endroit.",
+      "he": "מניהול ועד בית ועד נדל״ן מסחרי — אחדו את התפעול, הדיירים והתחזוקה במקום אחד.",
+      "ru": "От управления ТСЖ до коммерческой недвижимости — объедините операционные процессы, арендаторов и техническое обслуживание в одном месте.",
+      "zh": "从业主协会管理到商业地产 — 在一个平台上统一运营、租户和维护。"
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_PROPERTY_CTA_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Property CTA href",
+        "DESCRIPTION": "URL target for the Property industry panel CTA."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_PROPERTY_CTA_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Property CTA label",
+        "DESCRIPTION": "CTA label for the Property industry panel."
+      }
+    },
+    "value": {
+      "ar": "استكشف الحلول العقارية",
+      "en": "Explore Property Solutions",
+      "es": "Explora soluciones inmobiliarias",
+      "fr": "Explorez les solutions immobilières",
+      "he": "גלו פתרונות נדל\"ן",
+      "ru": "Ознакомьтесь с решениями в сфере недвижимости",
+      "zh": "探索房地产解决方案"
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_PROPERTY_ITEM_01_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Property item 1 href",
+        "DESCRIPTION": "URL target for item 1 in the Property industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_PROPERTY_ITEM_01_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Property item 1 label",
+        "DESCRIPTION": "Text label for item 1 in the Property industry panel."
+      }
+    },
+    "value": {
+      "ar": "إدارة الممتلكات",
+      "en": "Property Management",
+      "es": "Administración de propiedades",
+      "fr": "Gestion immobilière",
+      "he": "ניהול נכסים",
+      "ru": "Управление недвижимостью",
+      "zh": "物业管理"
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_PROPERTY_ITEM_02_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Property item 2 href",
+        "DESCRIPTION": "URL target for item 2 in the Property industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_PROPERTY_ITEM_02_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Property item 2 label",
+        "DESCRIPTION": "Text label for item 2 in the Property industry panel."
+      }
+    },
+    "value": {
+      "ar": "إدارة المرافق",
+      "en": "Facility Management",
+      "es": "Gestión de instalaciones",
+      "fr": "Gestion des installations",
+      "he": "ניהול מתקנים",
+      "ru": "Фасилити-менеджмент",
+      "zh": "设施管理"
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_PROPERTY_ITEM_03_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Property item 3 href",
+        "DESCRIPTION": "URL target for item 3 in the Property industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_PROPERTY_ITEM_03_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Property item 3 label",
+        "DESCRIPTION": "Text label for item 3 in the Property industry panel."
+      }
+    },
+    "value": {
+      "ar": "إدارة اتحاد الملاك / الملكية المشتركة",
+      "en": "HOA / Strata Management",
+      "es": "Administración de asociaciones de propietarios / de propiedad horizontal",
+      "fr": "Gestion des associations de propriétaires / des copropriétés",
+      "he": "ניהול ועד בית / בתים משותפים",
+      "ru": "Управление ассоциацией домовладельцев / стратой",
+      "zh": "业主协会 / 分层管理"
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_PROPERTY_ITEM_04_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Property item 4 href",
+        "DESCRIPTION": "URL target for item 4 in the Property industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_PROPERTY_ITEM_04_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Property item 4 label",
+        "DESCRIPTION": "Text label for item 4 in the Property industry panel."
+      }
+    },
+    "value": {
+      "ar": "العقارات التجارية",
+      "en": "Commercial Real Estate",
+      "es": "Inmobiliario comercial",
+      "fr": "Immobilier d'entreprise",
+      "he": "נדל\"ן מסחרי",
+      "ru": "Коммерческая недвижимость",
+      "zh": "商业房地产"
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_CONSTRUCTION_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Construction panel label",
+        "DESCRIPTION": "Eyebrow label for the Construction industry panel."
+      }
+    },
+    "value": {
+      "ar": "الإنشاءات",
+      "en": "Construction",
+      "es": "Construcción",
+      "fr": "Construction",
+      "he": "בנייה",
+      "ru": "Строительство",
+      "zh": "建筑"
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_CONSTRUCTION_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Construction panel title",
+        "DESCRIPTION": "Title for the Construction industry panel."
+      }
+    },
+    "value": {
+      "ar": "ابنِ بذكاء، وسلِّم في الوقت المحدد",
+      "en": "Build smarter, deliver on time",
+      "es": "Desarrolla de forma más inteligente, entrega a tiempo",
+      "fr": "Créez plus intelligemment, livrez dans les délais",
+      "he": "בנו חכם יותר, ספקו בזמן",
+      "ru": "Создавайте умнее, сдавайте в срок",
+      "zh": "更智能地构建，按时交付"
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_CONSTRUCTION_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Construction panel body",
+        "DESCRIPTION": "Body text for the Construction industry panel."
+      }
+    },
+    "value": {
+      "ar": "نسّق الفرق، وأدر المشاريع، وتتبع المعدات، وحافظ على سير كل مهمة وفق الجدول الزمني وضمن الميزانية.",
+      "en": "Coordinate teams, manage projects, track equipment, and keep every job on schedule and on budget.",
+      "es": "Coordina equipos, gestiona proyectos, realiza el seguimiento de los equipos y mantén cada trabajo a tiempo y dentro del presupuesto.",
+      "fr": "Coordonnez les équipes, gérez les projets, suivez le matériel et veillez à ce que chaque mission respecte les délais et le budget.",
+      "he": "לתאם צוותים, לנהל פרויקטים, לעקוב אחר ציוד, ולדאוג שכל עבודה תעמוד בלוח הזמנים ובמסגרת התקציב.",
+      "ru": "Координируйте команды, управляйте проектами, отслеживайте оборудование и обеспечивайте выполнение каждого проекта в срок и в рамках бюджета.",
+      "zh": "协调团队、管理项目、跟踪设备，并确保每项工作按时并在预算内进行。"
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_CONSTRUCTION_CTA_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Construction CTA href",
+        "DESCRIPTION": "URL target for the Construction industry panel CTA."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_CONSTRUCTION_CTA_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Construction CTA label",
+        "DESCRIPTION": "CTA label for the Construction industry panel."
+      }
+    },
+    "value": {
+      "ar": "استكشف حلول البناء",
+      "en": "Explore Construction Solutions",
+      "es": "Explora soluciones de construcción",
+      "fr": "Explorez les solutions de construction",
+      "he": "גלו פתרונות בנייה",
+      "ru": "Изучите строительные решения",
+      "zh": "探索建筑解决方案"
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_CONSTRUCTION_ITEM_01_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Construction item 1 href",
+        "DESCRIPTION": "URL target for item 1 in the Construction industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_CONSTRUCTION_ITEM_01_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Construction item 1 label",
+        "DESCRIPTION": "Text label for item 1 in the Construction industry panel."
+      }
+    },
+    "value": {
+      "ar": "المقاولون العامون",
+      "en": "General Contractors",
+      "es": "Contratistas generales",
+      "fr": "Entrepreneurs généraux",
+      "he": "קבלנים כלליים",
+      "ru": "Генеральные подрядчики",
+      "zh": "总承包商"
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_CONSTRUCTION_ITEM_02_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Construction item 2 href",
+        "DESCRIPTION": "URL target for item 2 in the Construction industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_CONSTRUCTION_ITEM_02_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Construction item 2 label",
+        "DESCRIPTION": "Text label for item 2 in the Construction industry panel."
+      }
+    },
+    "value": {
+      "ar": "المقاولون المتخصصون",
+      "en": "Specialty Contractors",
+      "es": "Contratistas especializados",
+      "fr": "Entrepreneurs spécialisés",
+      "he": "קבלנים ייעודיים",
+      "ru": "Специализированные подрядчики",
+      "zh": "专业承包商"
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_CONSTRUCTION_ITEM_03_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Construction item 3 href",
+        "DESCRIPTION": "URL target for item 3 in the Construction industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_CONSTRUCTION_ITEM_03_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Construction item 3 label",
+        "DESCRIPTION": "Text label for item 3 in the Construction industry panel."
+      }
+    },
+    "value": {
+      "ar": "شركات هندسية",
+      "en": "Engineering Firms",
+      "es": "Empresas de ingeniería",
+      "fr": "Sociétés d'ingénierie",
+      "he": "חברות הנדסה",
+      "ru": "Инжиниринговые компании",
+      "zh": "工程公司"
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_CONSTRUCTION_ITEM_04_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Construction item 4 href",
+        "DESCRIPTION": "URL target for item 4 in the Construction industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_CONSTRUCTION_ITEM_04_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Construction item 4 label",
+        "DESCRIPTION": "Text label for item 4 in the Construction industry panel."
+      }
+    },
+    "value": {
+      "ar": "عمليات تشغيل المعدات",
+      "en": "Equipment Operations",
+      "es": "Operaciones de equipos",
+      "fr": "Exploitation des équipements",
+      "he": "תפעול ציוד",
+      "ru": "Эксплуатация оборудования",
+      "zh": "设备操作"
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_CONSTRUCTION_ITEM_05_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Construction item 5 href",
+        "DESCRIPTION": "URL target for item 5 in the Construction industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_CONSTRUCTION_ITEM_05_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Construction item 5 label",
+        "DESCRIPTION": "Text label for item 5 in the Construction industry panel."
+      }
+    },
+    "value": {
+      "ar": "خدمات قائمة على المشاريع",
+      "en": "Project-Based Services",
+      "es": "Servicios basados en proyectos",
+      "fr": "Services axés sur les projets",
+      "he": "שירותים מבוססי פרויקט",
+      "ru": "Проектные услуги",
+      "zh": "项目制服务"
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_LOGISTICS_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Logistics panel label",
+        "DESCRIPTION": "Eyebrow label for the Logistics industry panel."
+      }
+    },
+    "value": {
+      "ar": "اللوجستيات والنقل",
+      "en": "Logistics &amp; Transportation",
+      "es": "Logística &amp; Transporte",
+      "fr": "Logistique &amp; Transport",
+      "he": "לוגיסטיקה &amp; תחבורה",
+      "ru": "Логистика &amp; Транспорт",
+      "zh": "物流 &amp; 运输"
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_LOGISTICS_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Logistics panel title",
+        "DESCRIPTION": "Title for the Logistics industry panel."
+      }
+    },
+    "value": {
+      "ar": "انقل السلع والأشخاص بكفاءة",
+      "en": "Move goods and people efficiently",
+      "es": "Mover mercancías y personas de forma eficiente",
+      "fr": "Déplacez efficacement les marchandises et les personnes",
+      "he": "שנעו סחורות ואנשים ביעילות",
+      "ru": "Эффективно перемещайте товары и людей",
+      "zh": "高效运送货物与人员"
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_LOGISTICS_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Logistics panel body",
+        "DESCRIPTION": "Body text for the Logistics industry panel."
+      }
+    },
+    "value": {
+      "ar": "حسّن المسارات، وأدر الأساطيل، ونسّق فرق التوصيل، وأسعد العملاء برؤية في الوقت الفعلي.",
+      "en": "Optimize routes, manage fleets, coordinate delivery teams, and delight customers with real-time visibility.",
+      "es": "Optimizar rutas, gestionar flotas, coordinar equipos de entrega y deleitar a los clientes con visibilidad en tiempo real.",
+      "fr": "Optimisez les itinéraires, gérez les flottes, coordonnez les équipes de livraison et ravissez les clients grâce à une visibilité en temps réel.",
+      "he": "מטבו מסלולים, נהלו ציי רכבים, תאמו צוותי משלוח והלהיבו את הלקוחות באמצעות שקיפות בזמן אמת.",
+      "ru": "Оптимизируйте маршруты, управляйте автопарком, координируйте команды доставки и радуйте клиентов благодаря прозрачности в режиме реального времени.",
+      "zh": "优化路线、管理车队、协调配送团队，并通过实时可视性令客户满意。"
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_LOGISTICS_CTA_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Logistics CTA href",
+        "DESCRIPTION": "URL target for the Logistics industry panel CTA."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_LOGISTICS_CTA_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Logistics CTA label",
+        "DESCRIPTION": "CTA label for the Logistics industry panel."
+      }
+    },
+    "value": {
+      "ar": "استكشف حلول الخدمات اللوجستية",
+      "en": "Explore Logistics Solutions",
+      "es": "Explorar soluciones logísticas",
+      "fr": "Explorez des solutions logistiques",
+      "he": "גלו פתרונות לוגיסטיים",
+      "ru": "Изучите логистические решения",
+      "zh": "探索物流解决方案"
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_LOGISTICS_ITEM_01_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Logistics item 1 href",
+        "DESCRIPTION": "URL target for item 1 in the Logistics industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_LOGISTICS_ITEM_01_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Logistics item 1 label",
+        "DESCRIPTION": "Text label for item 1 in the Logistics industry panel."
+      }
+    },
+    "value": {
+      "ar": "عمليات الأسطول",
+      "en": "Fleet Operations",
+      "es": "Operaciones de flota",
+      "fr": "Opérations de flotte",
+      "he": "תפעול צי",
+      "ru": "Операции флота",
+      "zh": "车队运营"
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_LOGISTICS_ITEM_02_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Logistics item 2 href",
+        "DESCRIPTION": "URL target for item 2 in the Logistics industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_LOGISTICS_ITEM_02_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Logistics item 2 label",
+        "DESCRIPTION": "Text label for item 2 in the Logistics industry panel."
+      }
+    },
+    "value": {
+      "ar": "توصيل الميل الأخير",
+      "en": "Last-Mile Delivery",
+      "es": "Entrega de última milla",
+      "fr": "Livraison du dernier kilomètre",
+      "he": "משלוח בקילומטר האחרון",
+      "ru": "Доставка последней мили",
+      "zh": "最后一公里配送"
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_LOGISTICS_ITEM_03_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Logistics item 3 href",
+        "DESCRIPTION": "URL target for item 3 in the Logistics industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_LOGISTICS_ITEM_03_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Logistics item 3 label",
+        "DESCRIPTION": "Text label for item 3 in the Logistics industry panel."
+      }
+    },
+    "value": {
+      "ar": "خدمات النقل",
+      "en": "Transportation Services",
+      "es": "Servicios de transporte",
+      "fr": "Services de transport",
+      "he": "שירותי תחבורה",
+      "ru": "Транспортные услуги",
+      "zh": "交通运输服务"
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_LOGISTICS_ITEM_04_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Logistics item 4 href",
+        "DESCRIPTION": "URL target for item 4 in the Logistics industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_LOGISTICS_ITEM_04_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Logistics item 4 label",
+        "DESCRIPTION": "Text label for item 4 in the Logistics industry panel."
+      }
+    },
+    "value": {
+      "ar": "التخزين",
+      "en": "Warehousing",
+      "es": "Almacenaje",
+      "fr": "Entreposage",
+      "he": "אחסנה",
+      "ru": "Складирование",
+      "zh": "仓储"
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_LOGISTICS_ITEM_05_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Logistics item 5 href",
+        "DESCRIPTION": "URL target for item 5 in the Logistics industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_LOGISTICS_ITEM_05_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Logistics item 5 label",
+        "DESCRIPTION": "Text label for item 5 in the Logistics industry panel."
+      }
+    },
+    "value": {
+      "ar": "شبكات التوزيع",
+      "en": "Distribution Networks",
+      "es": "Redes de distribución",
+      "fr": "Réseaux de distribution",
+      "he": "רשתות הפצה",
+      "ru": "Сети дистрибуции",
+      "zh": "分销网络"
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_RETAIL_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Retail panel label",
+        "DESCRIPTION": "Eyebrow label for the Retail industry panel."
+      }
+    },
+    "value": {
+      "ar": "التجزئة &amp; التجارة",
+      "en": "Retail &amp; Commerce",
+      "es": "Venta Minorista &amp; Comercio",
+      "fr": "Vente au détail &amp; Commerce",
+      "he": "קמעונאות &amp; מסחר",
+      "ru": "Розничная торговля &amp; коммерция",
+      "zh": "零售 &amp; 商业"
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_RETAIL_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Retail panel title",
+        "DESCRIPTION": "Title for the Retail industry panel."
+      }
+    },
+    "value": {
+      "ar": "مكّن التجارة الموحدة على نطاق واسع",
+      "en": "Power unified commerce at scale",
+      "es": "Potencia el comercio unificado a escala",
+      "fr": "Propulsez le commerce unifié à grande échelle",
+      "he": "הניעו מסחר אחוד בהיקף גדול",
+      "ru": "Обеспечьте единую коммерцию в масштабе",
+      "zh": "驱动大规模统一商务"
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_RETAIL_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Retail panel body",
+        "DESCRIPTION": "Body text for the Retail industry panel."
+      }
+    },
+    "value": {
+      "ar": "اربط متاجرك وقنواتك عبر الإنترنت وفرقك الميدانية لتقديم تجارب عملاء سلسة في كل مكان.",
+      "en": "Connect your stores, online channels, and field teams to deliver seamless customer experiences everywhere.",
+      "es": "Conecta tus tiendas, canales en línea y equipos de campo para ofrecer experiencias del cliente fluidas en todas partes.",
+      "fr": "Connectez vos magasins, vos canaux en ligne et vos équipes terrain pour offrir des expériences client fluides partout.",
+      "he": "חברו את החנויות שלכם, את הערוצים המקוונים ואת צוותי השטח שלכם כדי לספק חוויות לקוח חלקות בכל מקום.",
+      "ru": "Объедините ваши магазины, онлайн-каналы и команды на местах, чтобы обеспечивать бесшовный клиентский опыт повсюду.",
+      "zh": "将您的门店、线上渠道和外勤团队连接起来，在任何地方提供无缝的客户体验。"
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_RETAIL_CTA_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Retail CTA href",
+        "DESCRIPTION": "URL target for the Retail industry panel CTA."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_RETAIL_CTA_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Retail CTA label",
+        "DESCRIPTION": "CTA label for the Retail industry panel."
+      }
+    },
+    "value": {
+      "ar": "استكشف حلول التجزئة",
+      "en": "Explore Retail Solutions",
+      "es": "Explore soluciones para el comercio minorista",
+      "fr": "Explorez les solutions pour le commerce de détail",
+      "he": "גלו פתרונות קמעונאיים",
+      "ru": "Изучите решения для розничной торговли",
+      "zh": "探索零售解决方案"
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_RETAIL_ITEM_01_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Retail item 1 href",
+        "DESCRIPTION": "URL target for item 1 in the Retail industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_RETAIL_ITEM_01_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Retail item 1 label",
+        "DESCRIPTION": "Text label for item 1 in the Retail industry panel."
+      }
+    },
+    "value": {
+      "ar": "سلاسل البيع بالتجزئة",
+      "en": "Retail Chains",
+      "es": "Cadenas minoristas",
+      "fr": "Chaînes de magasins",
+      "he": "רשתות קמעונאיות",
+      "ru": "Розничные сети",
+      "zh": "零售连锁"
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_RETAIL_ITEM_02_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Retail item 2 href",
+        "DESCRIPTION": "URL target for item 2 in the Retail industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_RETAIL_ITEM_02_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Retail item 2 label",
+        "DESCRIPTION": "Text label for item 2 in the Retail industry panel."
+      }
+    },
+    "value": {
+      "ar": "الامتيازات التجارية",
+      "en": "Franchises",
+      "es": "Franquicias",
+      "fr": "Franchises",
+      "he": "זיכיונות",
+      "ru": "Франшизы",
+      "zh": "特许经营"
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_RETAIL_ITEM_03_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Retail item 3 href",
+        "DESCRIPTION": "URL target for item 3 in the Retail industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_RETAIL_ITEM_03_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Retail item 3 label",
+        "DESCRIPTION": "Text label for item 3 in the Retail industry panel."
+      }
+    },
+    "value": {
+      "ar": "عمليات التجارة الإلكترونية",
+      "en": "E-commerce Operations",
+      "es": "Operaciones de comercio electrónico",
+      "fr": "Opérations de commerce électronique",
+      "he": "תפעול מסחר אלקטרוני",
+      "ru": "Операции электронной коммерции",
+      "zh": "电子商务运营"
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_RETAIL_ITEM_04_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Retail item 4 href",
+        "DESCRIPTION": "URL target for item 4 in the Retail industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_RETAIL_ITEM_04_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Retail item 4 label",
+        "DESCRIPTION": "Text label for item 4 in the Retail industry panel."
+      }
+    },
+    "value": {
+      "ar": "الأسواق",
+      "en": "Marketplaces",
+      "es": "Mercados",
+      "fr": "Places de marché",
+      "he": "זירות מסחר",
+      "ru": "Маркетплейсы",
+      "zh": "市场"
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_RETAIL_ITEM_05_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Retail item 5 href",
+        "DESCRIPTION": "URL target for item 5 in the Retail industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_RETAIL_ITEM_05_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Retail item 5 label",
+        "DESCRIPTION": "Text label for item 5 in the Retail industry panel."
+      }
+    },
+    "value": {
+      "ar": "برامج الولاء",
+      "en": "Loyalty Programs",
+      "es": "Programas de fidelización",
+      "fr": "Programmes de fidélité",
+      "he": "תוכניות נאמנות",
+      "ru": "Программы лояльности",
+      "zh": "忠诚度计划"
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_AI_NATIVE_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header AI Native panel label",
+        "DESCRIPTION": "Eyebrow label for the AI Native industry panel."
+      }
+    },
+    "value": {
+      "ar": "شركات مبنية أصلاً على الذكاء الاصطناعي",
+      "en": "AI-native Businesses",
+      "es": "Empresas nativas de IA",
+      "fr": "Entreprises natives de l'IA",
+      "he": "עסקים ילידי בינה מלאכותית",
+      "ru": "Компании, изначально основанные на ИИ",
+      "zh": "AI 原生企业"
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_AI_NATIVE_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header AI Native panel title",
+        "DESCRIPTION": "Title for the AI Native industry panel."
+      }
+    },
+    "value": {
+      "ar": "ابنِ شركات مبنية على الذكاء الاصطناعي من الأساس على نطاق واسع",
+      "en": "Build AI-native businesses at scale",
+      "es": "Crea empresas nativas de IA a escala",
+      "fr": "Créez des entreprises natives de l'IA à l'échelle",
+      "he": "בנו עסקים ילידי בינה מלאכותית בקנה מידה",
+      "ru": "Создавайте нативные для ИИ бизнесы в масштабе",
+      "zh": "大规模打造 AI 原生企业"
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_AI_NATIVE_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header AI Native panel body",
+        "DESCRIPTION": "Body text for the AI Native industry panel."
+      }
+    },
+    "value": {
+      "ar": "أنشئ تدفقات عمل ذكية، وأتمِت العمليات، ونسّق وكلاء الذكاء الاصطناعي — كل ذلك على منصة موحّدة واحدة.",
+      "en": "Create intelligent workflows, automate operations, and orchestrate AI agents — all on one unified platform.",
+      "es": "Crea flujos de trabajo inteligentes, automatiza operaciones y orquesta agentes de IA — todo en una sola plataforma unificada.",
+      "fr": "Créez des flux de travail intelligents, automatisez les opérations et orchestrez des agents d’IA — le tout sur une plateforme unifiée.",
+      "he": "צרו תזרימי עבודה חכמים, אוטומטו את התפעול ותזמרו סוכני בינה מלאכותית — הכול בפלטפורמה מאוחדת אחת.",
+      "ru": "Создавайте интеллектуальные рабочие процессы, автоматизируйте операции и оркестрируйте агентов ИИ — всё на единой платформе.",
+      "zh": "创建智能工作流、自动化运营，并编排 AI 智能体 — 一切尽在一个统一的平台上。"
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_AI_NATIVE_CTA_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Ai Native CTA href",
+        "DESCRIPTION": "URL target for the Ai Native industry panel CTA."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_AI_NATIVE_CTA_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header AI Native CTA label",
+        "DESCRIPTION": "CTA label for the AI Native industry panel."
+      }
+    },
+    "value": {
+      "ar": "استكشف حلول أصلية للذكاء الاصطناعي",
+      "en": "Explore AI-native Solutions",
+      "es": "Explora soluciones nativas de IA",
+      "fr": "Explorez des solutions natives pour l'IA",
+      "he": "גלו פתרונות ילידי-בינה מלאכותית",
+      "ru": "Изучите ИИ-нативные решения",
+      "zh": "探索 AI 原生解决方案"
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_AI_NATIVE_ITEM_01_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Ai Native item 1 href",
+        "DESCRIPTION": "URL target for item 1 in the Ai Native industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_AI_NATIVE_ITEM_01_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header AI Native item 1 label",
+        "DESCRIPTION": "Text label for item 1 in the AI Native industry panel."
+      }
+    },
+    "value": {
+      "ar": "الشركات الناشئة في مجال الذكاء الاصطناعي",
+      "en": "AI Startups",
+      "es": "Startups de IA",
+      "fr": "Startups d'IA",
+      "he": "סטארט-אפים בתחום הבינה המלאכותית",
+      "ru": "ИИ-стартапы",
+      "zh": "AI 初创公司"
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_AI_NATIVE_ITEM_01_BADGE_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header AI Native item 1 badge label",
+        "DESCRIPTION": "Badge label for item 1 in the AI Native industry panel."
+      }
+    },
+    "value": {
+      "ar": "انطلق أسرع",
+      "en": "Launch Faster",
+      "es": "Lanza Más Rápido",
+      "fr": "Lancez Plus Vite",
+      "he": "השיקו מהר יותר",
+      "ru": "Быстрый запуск",
+      "zh": "更快上线"
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_AI_NATIVE_ITEM_02_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Ai Native item 2 href",
+        "DESCRIPTION": "URL target for item 2 in the Ai Native industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_AI_NATIVE_ITEM_02_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header AI Native item 2 label",
+        "DESCRIPTION": "Text label for item 2 in the AI Native industry panel."
+      }
+    },
+    "value": {
+      "ar": "شركات البرمجيات كخدمة",
+      "en": "SaaS Companies",
+      "es": "Empresas de SaaS",
+      "fr": "Entreprises SaaS",
+      "he": "חברות SaaS",
+      "ru": "SaaS-компании",
+      "zh": "SaaS 公司"
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_AI_NATIVE_ITEM_03_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Ai Native item 3 href",
+        "DESCRIPTION": "URL target for item 3 in the Ai Native industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_AI_NATIVE_ITEM_03_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header AI Native item 3 label",
+        "DESCRIPTION": "Text label for item 3 in the AI Native industry panel."
+      }
+    },
+    "value": {
+      "ar": "شركات المنصات",
+      "en": "Platform Businesses",
+      "es": "Empresas de plataforma",
+      "fr": "Entreprises de plateforme",
+      "he": "עסקי פלטפורמה",
+      "ru": "Платформенные бизнесы",
+      "zh": "平台业务"
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_AI_NATIVE_ITEM_04_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Ai Native item 4 href",
+        "DESCRIPTION": "URL target for item 4 in the Ai Native industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_AI_NATIVE_ITEM_04_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header AI Native item 4 label",
+        "DESCRIPTION": "Text label for item 4 in the AI Native industry panel."
+      }
+    },
+    "value": {
+      "ar": "الخدمات المدارة",
+      "en": "Managed Services",
+      "es": "Servicios gestionados",
+      "fr": "Services gérés",
+      "he": "שירותים מנוהלים",
+      "ru": "Управляемые услуги",
+      "zh": "托管服务"
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_AI_NATIVE_ITEM_05_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Ai Native item 5 href",
+        "DESCRIPTION": "URL target for item 5 in the Ai Native industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_AI_NATIVE_ITEM_05_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header AI Native item 5 label",
+        "DESCRIPTION": "Text label for item 5 in the AI Native industry panel."
+      }
+    },
+    "value": {
+      "ar": "عمليات الذكاء الاصطناعي",
+      "en": "AI Operations",
+      "es": "Operaciones de IA",
+      "fr": "Opérations d'IA",
+      "he": "תפעול בינה מלאכותית",
+      "ru": "Операции ИИ",
+      "zh": "AI 运维"
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_TECHNOLOGY_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Technology panel label",
+        "DESCRIPTION": "Eyebrow label for the Technology industry panel."
+      }
+    },
+    "value": {
+      "ar": "التكنولوجيا &amp; البرمجيات كخدمة",
+      "en": "Technology &amp; SaaS",
+      "es": "Tecnología &amp; SaaS",
+      "fr": "Technologie &amp; SaaS",
+      "he": "טכנולוגיה &amp; SaaS",
+      "ru": "Технологии &amp; SaaS",
+      "zh": "科技 &amp; SaaS"
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_TECHNOLOGY_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Technology panel title",
+        "DESCRIPTION": "Title for the Technology industry panel."
+      }
+    },
+    "value": {
+      "ar": "وسّع نطاق أعمال البرمجيات لديك بسرعة",
+      "en": "Scale your software business fast",
+      "es": "Escala tu negocio de software rápidamente",
+      "fr": "Faites évoluer rapidement votre activité logicielle",
+      "he": "הגדילו במהירות את עסק התוכנה שלכם",
+      "ru": "Быстро масштабируйте свой бизнес в сфере программного обеспечения",
+      "zh": "迅速扩大您的软件业务规模"
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_TECHNOLOGY_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Technology panel body",
+        "DESCRIPTION": "Body text for the Technology industry panel."
+      }
+    },
+    "value": {
+      "ar": "سرّع النمو المدفوع بالمنتج، وأدر المشتركين، وقدّم عمليات بمستوى المؤسسات منذ اليوم الأول.",
+      "en": "Accelerate product-led growth, manage subscribers, and deliver enterprise-grade operations from day one.",
+      "es": "Acelera el crecimiento impulsado por el producto, gestiona a los suscriptores y ofrece operaciones de nivel empresarial desde el primer día.",
+      "fr": "Accélérez la croissance axée sur le produit, gérez les abonnés et assurez des opérations de niveau entreprise dès le premier jour.",
+      "he": "להאיץ צמיחה מוכוונת מוצר, לנהל מנויים, ולספק תפעול ברמה ארגונית מהיום הראשון.",
+      "ru": "Ускоряйте рост, управляемый продуктом, управляйте подписчиками и обеспечивайте операционные процессы корпоративного уровня с первого дня.",
+      "zh": "加速产品驱动增长，管理订阅者，并从第一天起实现企业级运营。"
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_TECHNOLOGY_CTA_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Technology CTA href",
+        "DESCRIPTION": "URL target for the Technology industry panel CTA."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_TECHNOLOGY_CTA_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Technology CTA label",
+        "DESCRIPTION": "CTA label for the Technology industry panel."
+      }
+    },
+    "value": {
+      "ar": "استكشف الحلول التقنية",
+      "en": "Explore Technology Solutions",
+      "es": "Explorar soluciones tecnológicas",
+      "fr": "Explorez les solutions technologiques",
+      "he": "גלו פתרונות טכנולוגיים",
+      "ru": "Изучите технологические решения",
+      "zh": "探索技术解决方案"
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_TECHNOLOGY_ITEM_01_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Technology item 1 href",
+        "DESCRIPTION": "URL target for item 1 in the Technology industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_TECHNOLOGY_ITEM_01_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Technology item 1 label",
+        "DESCRIPTION": "Text label for item 1 in the Technology industry panel."
+      }
+    },
+    "value": {
+      "ar": "منصات المطورين",
+      "en": "Developer Platforms",
+      "es": "Plataformas para desarrolladores",
+      "fr": "Plateformes pour développeurs",
+      "he": "פלטפורמות למפתחים",
+      "ru": "Платформы для разработчиков",
+      "zh": "开发者平台"
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_TECHNOLOGY_ITEM_02_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Technology item 2 href",
+        "DESCRIPTION": "URL target for item 2 in the Technology industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_TECHNOLOGY_ITEM_02_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Technology item 2 label",
+        "DESCRIPTION": "Text label for item 2 in the Technology industry panel."
+      }
+    },
+    "value": {
+      "ar": "الشركات الناشئة",
+      "en": "Startups",
+      "es": "Empresas emergentes",
+      "fr": "Start-ups",
+      "he": "סטארטאפים",
+      "ru": "Стартапы",
+      "zh": "初创企业"
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_TECHNOLOGY_ITEM_03_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Technology item 3 href",
+        "DESCRIPTION": "URL target for item 3 in the Technology industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_TECHNOLOGY_ITEM_03_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Technology item 3 label",
+        "DESCRIPTION": "Text label for item 3 in the Technology industry panel."
+      }
+    },
+    "value": {
+      "ar": "البرمجيات المؤسسية",
+      "en": "Enterprise Software",
+      "es": "Software empresarial",
+      "fr": "Logiciels d'entreprise",
+      "he": "תוכנה ארגונית",
+      "ru": "Корпоративное программное обеспечение",
+      "zh": "企业软件"
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_TECHNOLOGY_ITEM_04_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Technology item 4 href",
+        "DESCRIPTION": "URL target for item 4 in the Technology industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_TECHNOLOGY_ITEM_04_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Technology item 4 label",
+        "DESCRIPTION": "Text label for item 4 in the Technology industry panel."
+      }
+    },
+    "value": {
+      "ar": "منصات الأعمال بين الشركات",
+      "en": "B2B Platforms",
+      "es": "Plataformas B2B",
+      "fr": "Plateformes B2B",
+      "he": "פלטפורמות B2B",
+      "ru": "B2B-платформы",
+      "zh": "B2B 平台"
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_TECHNOLOGY_ITEM_05_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Technology item 5 href",
+        "DESCRIPTION": "URL target for item 5 in the Technology industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_INDUSTRY_TECHNOLOGY_ITEM_05_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Technology item 5 label",
+        "DESCRIPTION": "Text label for item 5 in the Technology industry panel."
+      }
+    },
+    "value": {
+      "ar": "منتجات مدعومة بالذكاء الاصطناعي",
+      "en": "AI-powered Products",
+      "es": "Productos con tecnología de IA",
+      "fr": "Produits propulsés par l'IA",
+      "he": "מוצרים מבוססי בינה מלאכותית",
+      "ru": "Продукты на базе ИИ",
+      "zh": "AI 驱动的产品"
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_MENU_PARTNERS_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header menu Partners href",
+        "DESCRIPTION": "URL target for the desktop Partners navigation link."
+      }
+    },
+    "value": "https://servicewand.com#partners"
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_MENU_PARTNERS",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header menu - Partners",
+        "DESCRIPTION": "Desktop navigation label for the partners section."
+      }
+    },
+    "value": {
+      "ar": "الشركاء",
+      "en": "Partners",
+      "es": "Socios",
+      "fr": "Partenaires",
+      "he": "שותפים",
+      "ru": "Партнеры",
+      "zh": "合作伙伴"
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_MENU_RESOURCES",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header menu resources",
+        "DESCRIPTION": "Imported from HEADER_MENU in CMS template 3eab232f-9567-4535-a1bf-c59ab746da58."
+      }
+    },
+    "value": {
+      "ar": "الموارد",
+      "en": "Resources",
+      "es": "Recursos",
+      "fr": "Ressources",
+      "he": "משאבים",
+      "ru": "Ресурсы",
+      "zh": "资源"
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_MENU_RESOURCE_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header resource item href",
+        "DESCRIPTION": "URL target for the resource submenu item."
+      }
+    },
+    "value": "https://servicewand.com/industries/field-service#faq"
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_MENU_RESOURCE_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header menu resource title",
+        "DESCRIPTION": "Reusable title for a resource item in the header submenu."
+      }
+    },
+    "value": {
+      "ar": "الأسئلة الشائعة",
+      "en": "FAQs",
+      "es": "Preguntas frecuentes",
+      "fr": "FAQ",
+      "he": "שאלות נפוצות",
+      "ru": "Часто задаваемые вопросы",
+      "zh": "常见问题解答"
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_MENU_RESOURCE_DESCRIPTION",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header menu resource description",
+        "DESCRIPTION": "Reusable description for a resource item in the header submenu."
+      }
+    },
+    "value": {
+      "ar": "الأسئلة الشائعة والدعم",
+      "en": "Common questions and support",
+      "es": "Preguntas frecuentes y soporte",
+      "fr": "Questions fréquentes et assistance",
+      "he": "שאלות נפוצות ותמיכה",
+      "ru": "Частые вопросы и поддержка",
+      "zh": "常见问题与支持"
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_LOCALE_SELECTOR_DROPDOWN_ARIA_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Locale selector dropdown aria label",
+        "DESCRIPTION": "Accessible label for the locale selector dropdown list."
+      }
+    },
+    "value": {
+      "en": "Select language"
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_DEMO_REQUEST_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header demo request href",
+        "DESCRIPTION": "URL target for the header demo CTA."
+      }
+    },
+    "value": "/field-service-early-access.html"
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_DEMO_REQUEST_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header demo request label",
+        "DESCRIPTION": "Imported from HEADER in CMS template 3eab232f-9567-4535-a1bf-c59ab746da58."
+      }
+    },
+    "value": {
+      "ar": "احصل على وصول مبكر",
+      "en": "Get Early Access",
+      "es": "Obtén Acceso Anticipado",
+      "fr": "Obtenez un accès anticipé",
+      "he": "קבל גישה מוקדמת",
+      "ru": "Запросите ранний доступ",
+      "zh": "获取 抢先 体验"
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_OPEN_MENU_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header open menu label",
+        "DESCRIPTION": "Accessible label for the mobile menu toggle button."
+      }
+    },
+    "value": {
+      "ar": "مميز",
+      "en": "Featured",
+      "es": "Destacado",
+      "fr": "À la une",
+      "he": "מומלץ",
+      "ru": "Рекомендуем",
+      "zh": "推荐"
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_NAV_FAQ_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header mobile FAQ href",
+        "DESCRIPTION": "URL target for the mobile FAQ navigation link."
+      }
+    },
+    "value": "#faq"
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_NAV_FAQ",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header mobile nav - FAQ",
+        "DESCRIPTION": "Mobile navigation label for the FAQ section."
+      }
+    },
+    "value": {
+      "en": "FAQ"
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_MOBILE_INDUSTRY_CLOSE_ARIA_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header mobile industries close aria label",
+        "DESCRIPTION": "Accessible label for closing the mobile industries menu."
+      }
+    },
+    "value": {
+      "en": "Close navigation menu"
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_MOBILE_INDUSTRY_BACK_ARIA_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header mobile industries back aria label",
+        "DESCRIPTION": "Accessible label for returning to the mobile industries list."
+      }
+    },
+    "value": {
+      "en": "Back to main menu"
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_LANDING_HEADER_SW_MENU_ITEM_SHADOW",
+    "type": "IMAGE",
+    "nls": {
+      "en": {
+        "NAME": "Header menu item shadow",
+        "DESCRIPTION": "Imported from HEADER_MENU in CMS template 3eab232f-9567-4535-a1bf-c59ab746da58."
+      }
+    },
+    "value": "eafe1edc-102e-4133-bd96-146d40346efa"
+  }
+]

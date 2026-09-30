@@ -1,0 +1,329 @@
+[
+  {
+    "code": "META_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Meta Title",
+        "DESCRIPTION": "Server-rendered social title. Core CMS replaces it with the BlogPost metadata key META_TITLE while an article is rendered."
+      }
+    },
+    "value": {
+      "en": ""
+    }
+  },
+  {
+    "code": "META_DESCRIPTION",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Meta Description",
+        "DESCRIPTION": "Server-rendered social description. Core CMS replaces it with the BlogPost metadata key META_DESCRIPTION while an article is rendered."
+      }
+    },
+    "value": {
+      "en": ""
+    }
+  },
+  {
+    "code": "HERO_IMAGE_URL",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Hero Image URL",
+        "DESCRIPTION": "Server-rendered social image. Core CMS replaces it with the BlogPost metadata key HERO_IMAGE_URL while an article is rendered."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "FIELD_SERVICE_BLOG_POST_BLOG_API_BASE",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Blog · API Base",
+        "DESCRIPTION": "Core CMS base path used for the public blog-post endpoint."
+      }
+    },
+    "value": "/core-cms"
+  },
+  {
+    "code": "FIELD_SERVICE_BLOG_POST_BLOG_ORGANIZATION",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Blog · Organization",
+        "DESCRIPTION": "Organization code used in the public Core CMS request."
+      }
+    },
+    "value": "SERVICEWAND"
+  },
+  {
+    "code": "FIELD_SERVICE_BLOG_POST_BLOG_CATEGORY_ID",
+    "type": "INTEGER",
+    "nls": {
+      "en": {
+        "NAME": "Blog · Category ID",
+        "DESCRIPTION": "Backend category ID used for related posts. Use 0 to include every category."
+      }
+    },
+    "value": "0"
+  },
+  {
+    "code": "FIELD_SERVICE_BLOG_POST_BLOG_PAGE_SIZE",
+    "type": "INTEGER",
+    "nls": {
+      "en": {
+        "NAME": "Blog · API Page Size",
+        "DESCRIPTION": "Number of backend posts requested per page."
+      }
+    },
+    "value": "100"
+  },
+  {
+    "code": "FIELD_SERVICE_BLOG_POST_BLOG_MAX_RESULTS",
+    "type": "INTEGER",
+    "nls": {
+      "en": {
+        "NAME": "Blog · Maximum Results",
+        "DESCRIPTION": "Safety limit for posts loaded from Core CMS."
+      }
+    },
+    "value": "1000"
+  },
+  {
+    "code": "FIELD_SERVICE_BLOG_POST_BLOG_BASE_PATH",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Blog · Index Path",
+        "DESCRIPTION": "Public localized route used by the blog index and breadcrumb link."
+      }
+    },
+    "value": "/blog"
+  },
+  {
+    "code": "FIELD_SERVICE_BLOG_POST_BLOG_POST_PATH",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Blog · Post Path",
+        "DESCRIPTION": "Public localized route prefix used to resolve the current permalink and build related article links."
+      }
+    },
+    "value": "/post"
+  },
+  {
+    "code": "FIELD_SERVICE_BLOG_POST_BLOG_FIXTURE_URL",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Blog · Fixture URL",
+        "DESCRIPTION": "Local preview-only JSON URL. Use # in CMS to disable fixture loading."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "FIELD_SERVICE_BLOG_POST_READ_ARTICLE_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Blog Post · Read Article Label",
+        "DESCRIPTION": "Related card action label."
+      }
+    },
+    "value": {
+      "en": "Read article"
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_BLOG_POST_RELATED_LIMIT",
+    "type": "INTEGER",
+    "nls": {
+      "en": {
+        "NAME": "Blog Post · Related Limit",
+        "DESCRIPTION": "Maximum number of related article cards."
+      }
+    },
+    "value": "3"
+  },
+  {
+    "code": "FIELD_SERVICE_BLOG_POST_COPY_LINK_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Blog Post · Copy Link Label",
+        "DESCRIPTION": "Accessible label of the copy-link share button."
+      }
+    },
+    "value": {
+      "en": "Copy link"
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_BLOG_POST_LINK_COPIED_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Blog Post · Link Copied Label",
+        "DESCRIPTION": "Confirmation announced after the article link is copied."
+      }
+    },
+    "value": {
+      "en": "Link copied"
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_BLOG_POST_BREADCRUMB_ARIA_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Blog Post · Breadcrumb Aria Label",
+        "DESCRIPTION": "Accessible label for article navigation."
+      }
+    },
+    "value": {
+      "en": "Blog breadcrumb"
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_BLOG_POST_BLOG_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Blog Post · Blog Link Label",
+        "DESCRIPTION": "Link label returning to the blog index."
+      }
+    },
+    "value": {
+      "en": "Blog"
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_BLOG_POST_ARTICLE_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Blog Post · Article Fallback Label",
+        "DESCRIPTION": "Temporary breadcrumb label before article metadata resolves."
+      }
+    },
+    "value": {
+      "en": "Article"
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_BLOG_POST_SHARE_ARIA_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Blog Post · Share Aria Label",
+        "DESCRIPTION": "Accessible label for the share button group."
+      }
+    },
+    "value": {
+      "en": "Share this article"
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_BLOG_POST_TAGS_ARIA_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Blog Post · Tags Aria Label",
+        "DESCRIPTION": "Accessible label for the article tag list."
+      }
+    },
+    "value": {
+      "en": "Article tags"
+    }
+  },
+  {
+    "code": "AUTHOR_AVATAR",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Author Avatar",
+        "DESCRIPTION": "Server-rendered author avatar URL. Core CMS replaces it with the BlogPost metadata key AUTHOR_AVATAR while an article is rendered."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "AUTHOR_NAME",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Author Name",
+        "DESCRIPTION": "Server-rendered author name. Core CMS replaces it with the BlogPost metadata key AUTHOR_NAME while an article is rendered."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "AUTHOR_BIO",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Author Bio",
+        "DESCRIPTION": "Server-rendered author biography. Core CMS replaces it with the BlogPost metadata key AUTHOR_BIO while an article is rendered."
+      }
+    },
+    "value": {
+      "en": ""
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_BLOG_POST_RELATED_EYEBROW",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Blog Post · Related Eyebrow",
+        "DESCRIPTION": "Label above related articles."
+      }
+    },
+    "value": {
+      "en": "Keep reading"
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_BLOG_POST_RELATED_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Blog Post · Related H2",
+        "DESCRIPTION": "Related articles heading."
+      }
+    },
+    "value": {
+      "en": "More field service insights"
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_BLOG_POST_RELATED_ARIA_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Blog Post · Related Aria Label",
+        "DESCRIPTION": "Accessible label for related article cards."
+      }
+    },
+    "value": {
+      "en": "Related blog articles"
+    }
+  },
+  {
+    "code": "SEO_LD_SCHEMA",
+    "type": "LOCALIZED_JSON_OBJECT",
+    "nls": {
+      "en": {
+        "NAME": "SEO LD Schema",
+        "DESCRIPTION": "Server-rendered schema.org JSON-LD. Core CMS replaces it with the BlogPost metadata key SEO_LD_SCHEMA while an article is rendered."
+      }
+    },
+    "value": {
+      "en": {}
+    }
+  }
+]

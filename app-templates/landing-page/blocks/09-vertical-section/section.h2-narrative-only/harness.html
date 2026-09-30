@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>section.h2-narrative-only · lab-ui harness</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../00-tokens/tokens.css">
+<link rel="stylesheet" href="./block.css?v=20260613">
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  body { margin: 0; min-height: 100vh; font-family: var(--font-family); background: var(--color-bg); color: var(--color-text); }
+  .harness-label {
+    font-family: var(--font-mono); font-size: 11px; text-transform: uppercase;
+    letter-spacing: 0.12em; color: var(--color-gray-blue);
+    padding: 24px var(--container-padding-x) 0;
+    max-width: calc(var(--container-width) + var(--container-padding-x) * 2);
+    margin-inline: auto;
+  }
+</style>
+</head>
+<body>
+
+<div class="harness-label">section.h2-narrative-only · live</div>
+
+<section class="snarr" data-block="section.h2-narrative-only">
+  <div class="container">
+    <p class="eyebrow snarr-eyebrow">Lorem ipsum dolor</p>
+    <div class="snarr-grid">
+      <div class="snarr-text">
+        <h2 class="snarr-title">Lorem Ipsum Dolor Sit Amet Consectetur Adipiscing</h2>
+        <div class="snarr-body">
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud.</p>
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.</p>
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna.</p>
+        </div>
+      </div>
+
+      <div class="snarr-side">
+        <h2 class="snarr-title">Lorem Ipsum Magna Aliqua Enim Ad Minim</h2>
+        <div class="snarr-body">
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.</p>
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.</p>
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script src="../../scripts/harness-background-preview.js"></script>
+</body>
+</html>

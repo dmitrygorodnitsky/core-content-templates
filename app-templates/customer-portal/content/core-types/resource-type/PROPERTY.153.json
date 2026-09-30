@@ -1,0 +1,170 @@
+{
+ "optimistic": 6,
+ "code": "PROPERTY",
+ "nls": {
+  "en": {
+   "NAME": "Property"
+  }
+ },
+ "workflow": {
+  "id": 35,
+  "code": "PROPERTY_LIFECYCLE"
+ },
+ "organization": {
+  "optimistic": 4,
+  "id": 8,
+  "code": "SERVICE_WAND_WINTER_SERVICES"
+ },
+ "attributeOrder": [
+  {
+   "default": [
+    {
+     "attributeCode": "ADDRESS",
+     "visible": true
+    },
+    {
+     "attributeCode": "ACCOUNT",
+     "visible": true
+    },
+    {
+     "attributeCode": "PROPERTY_CATEGORY",
+     "visible": true
+    },
+    {
+     "attributeCode": "ADDRESS_PRIMARY",
+     "visible": true
+    }
+   ]
+  }
+ ],
+ "attributes": [
+  {
+   "code": "PROPERTY_CATEGORY",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "en": {
+     "NAME": "Property Category"
+    }
+   },
+   "options": [
+    {
+     "value": "COMMERCIAL",
+     "nls": {
+      "en": {
+       "NAME": "Commercial"
+      }
+     }
+    },
+    {
+     "value": "RESIDENTIAL",
+     "nls": {
+      "en": {
+       "NAME": "Residential"
+      }
+     }
+    },
+    {
+     "value": "MUNICIPAL",
+     "nls": {
+      "en": {
+       "NAME": "Municipal"
+      }
+     }
+    },
+    {
+     "value": "STRATA",
+     "nls": {
+      "en": {
+       "NAME": "Strata"
+      }
+     }
+    },
+    {
+     "value": "INSTITUTIONAL",
+     "nls": {
+      "en": {
+       "NAME": "Institutional"
+      }
+     }
+    },
+    {
+     "value": "INDUSTRIAL",
+     "nls": {
+      "en": {
+       "NAME": "Industrial"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "code": "ADDRESS",
+   "required": true,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "com.pixelnation.common.domain.Address",
+   "nls": {
+    "ar": {
+     "NAME": "العنوان",
+     "PLACEHOLDER": "العنوان الأساسي للعقار"
+    },
+    "en": {
+     "NAME": "Address",
+     "PLACEHOLDER": "Primary address of the property"
+    },
+    "es": {
+     "NAME": "Dirección",
+     "PLACEHOLDER": "Dirección principal de la propiedad"
+    },
+    "fr": {
+     "NAME": "Adresse",
+     "PLACEHOLDER": "Adresse principale de la propriété"
+    },
+    "he": {
+     "NAME": "כתובת",
+     "PLACEHOLDER": "הכתובת הראשית של הנכס"
+    },
+    "kk": {
+     "NAME": "Мекенжай",
+     "PLACEHOLDER": "Мүліктің негізгі мекенжайы"
+    },
+    "ru": {
+     "NAME": "Адрес",
+     "PLACEHOLDER": "Основной адрес объекта недвижимости"
+    },
+    "zh": {
+     "NAME": "地址",
+     "PLACEHOLDER": "该房产的主要地址"
+    }
+   },
+   "options": []
+  },
+  {
+   "code": "ACCOUNT",
+   "required": true,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "com.pixelnation.account.domain.Account",
+   "nls": {
+    "en": {
+     "NAME": "Billing Account"
+    }
+   },
+   "options": [],
+   "entityTypes": [
+    {
+     "value": 2
+    }
+   ]
+  }
+ ],
+ "id": 153,
+ "isAbstract": false,
+ "attributeGroups": []
+}

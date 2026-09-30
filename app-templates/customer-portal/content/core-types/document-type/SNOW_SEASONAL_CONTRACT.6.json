@@ -1,0 +1,327 @@
+{
+ "optimistic": 0,
+ "code": "SNOW_SEASONAL_CONTRACT",
+ "nls": {
+  "en": {
+   "NAME": "Seasonal Contract"
+  }
+ },
+ "workflow": {
+  "id": 13,
+  "code": "SNOW_CONTRACT_DOCUMENT"
+ },
+ "organization": {
+  "optimistic": 3,
+  "id": 9,
+  "code": "SERVICE_WAND_WINTER_SERVICES_CANADA"
+ },
+ "attributeOrder": [
+  {
+   "CONTRACT_SCOPE": [
+    {
+     "attributeCode": "SERVICE_SEASON",
+     "visible": true
+    },
+    {
+     "attributeCode": "PRIMARY_SITE",
+     "visible": true
+    },
+    {
+     "attributeCode": "SITES",
+     "visible": true
+    },
+    {
+     "attributeCode": "SERVICE_LEVEL",
+     "visible": true
+    }
+   ]
+  },
+  {
+   "COMMERCIAL_TERMS": [
+    {
+     "attributeCode": "BILLING_FREQUENCY",
+     "visible": true
+    },
+    {
+     "attributeCode": "PRICING_MODEL",
+     "visible": true
+    },
+    {
+     "attributeCode": "PO_NUMBER",
+     "visible": true
+    },
+    {
+     "attributeCode": "CONTRACT_START_DATE",
+     "visible": true
+    },
+    {
+     "attributeCode": "CONTRACT_END_DATE",
+     "visible": true
+    }
+   ]
+  },
+  {
+   "CONTRACT_NOTES_GROUP": [
+    {
+     "attributeCode": "CONTRACT_NOTES",
+     "visible": true
+    }
+   ]
+  }
+ ],
+ "attributes": [
+  {
+   "code": "CONTRACT_END_DATE",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "en": {
+     "NAME": "Contract End Date"
+    }
+   },
+   "options": []
+  },
+  {
+   "code": "SERVICE_LEVEL",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "en": {
+     "NAME": "Service Level"
+    }
+   },
+   "options": [
+    {
+     "value": "STANDARD",
+     "nls": {
+      "en": {
+       "NAME": "Standard"
+      }
+     }
+    },
+    {
+     "value": "PRIORITY",
+     "nls": {
+      "en": {
+       "NAME": "Priority"
+      }
+     }
+    },
+    {
+     "value": "PREMIUM",
+     "nls": {
+      "en": {
+       "NAME": "Premium"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "code": "SITES",
+   "required": false,
+   "multiselect": true,
+   "freeValue": false,
+   "unique": false,
+   "className": "com.pixelnation.rm.domain.Resource",
+   "nls": {
+    "en": {
+     "NAME": "Covered Properties / Sites"
+    }
+   },
+   "options": [],
+   "entityTypes": [
+    {
+     "value": "SW_FS_WS_PROPERTY_SITE"
+    }
+   ]
+  },
+  {
+   "code": "PRICING_MODEL",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "en": {
+     "NAME": "Pricing Model"
+    }
+   },
+   "options": [
+    {
+     "value": "FIXED_SEASONAL",
+     "nls": {
+      "en": {
+       "NAME": "Fixed seasonal"
+      }
+     }
+    },
+    {
+     "value": "PER_VISIT",
+     "nls": {
+      "en": {
+       "NAME": "Per visit"
+      }
+     }
+    },
+    {
+     "value": "TIME_AND_MATERIALS",
+     "nls": {
+      "en": {
+       "NAME": "Time and materials"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "code": "CONTRACT_NOTES",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "en": {
+     "NAME": "Contract Notes"
+    }
+   },
+   "options": []
+  },
+  {
+   "code": "SERVICE_SEASON",
+   "required": true,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "com.pixelnation.svc.domain.Project",
+   "nls": {
+    "en": {
+     "NAME": "Service Season / Program"
+    }
+   },
+   "options": []
+  },
+  {
+   "code": "BILLING_FREQUENCY",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "en": {
+     "NAME": "Billing Frequency"
+    }
+   },
+   "options": [
+    {
+     "value": "MONTHLY",
+     "nls": {
+      "en": {
+       "NAME": "Monthly"
+      }
+     }
+    },
+    {
+     "value": "SEASONAL",
+     "nls": {
+      "en": {
+       "NAME": "Seasonal"
+      }
+     }
+    },
+    {
+     "value": "PER_VISIT",
+     "nls": {
+      "en": {
+       "NAME": "Per visit"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "code": "PO_NUMBER",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "en": {
+     "NAME": "PO Number"
+    }
+   },
+   "options": []
+  },
+  {
+   "code": "CONTRACT_START_DATE",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "en": {
+     "NAME": "Contract Start Date"
+    }
+   },
+   "options": []
+  },
+  {
+   "code": "PRIMARY_SITE",
+   "required": true,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "com.pixelnation.rm.domain.Resource",
+   "nls": {
+    "en": {
+     "NAME": "Primary Property / Site"
+    }
+   },
+   "options": [],
+   "entityTypes": [
+    {
+     "value": "SW_FS_WS_PROPERTY_SITE"
+    }
+   ]
+  }
+ ],
+ "id": 6,
+ "isAbstract": false,
+ "attributeGroups": [
+  {
+   "code": "CONTRACT_NOTES_GROUP",
+   "nls": {
+    "en": {
+     "NAME": "Contract Notes"
+    }
+   }
+  },
+  {
+   "code": "CONTRACT_SCOPE",
+   "nls": {
+    "en": {
+     "NAME": "Contract Scope"
+    }
+   }
+  },
+  {
+   "code": "COMMERCIAL_TERMS",
+   "nls": {
+    "en": {
+     "NAME": "Commercial Terms"
+    }
+   }
+  }
+ ]
+}

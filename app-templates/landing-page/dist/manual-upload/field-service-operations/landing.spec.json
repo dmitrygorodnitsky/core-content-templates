@@ -1,0 +1,171 @@
+{
+  "$schema": "lab-ui/landing-spec@1",
+  "code": "FIELD_SERVICE_LANDING",
+  "name": "Field Service Landing",
+  "url": "/industries/field-service",
+  "locale": "en",
+  "topic": "field-service",
+  "targetWords": 6500,
+  "theme": "cyan",
+  "background": "none",
+  "recipe": "long",
+  "content": "content/field-service-operations/parameter-values.json",
+  "sourceReference": {
+    "kind": "repo-owned-normalized-copy",
+    "path": "content/field-service-operations/landing-copy.md",
+    "mapping": "content/field-service-operations/reference-mapping.json",
+    "note": "The normalized copy and semantic mapping are the portable compiler inputs; the original local PDF is not required."
+  },
+  "referenceMapping": [
+    {
+      "pdf": "H1 hero + CTAs",
+      "block": "hero.composite-photo"
+    },
+    {
+      "pdf": "Connected operations narrative",
+      "block": "section.h2-narrative-only"
+    },
+    {
+      "pdf": "Modern operations needs",
+      "block": "features.card-grid-4"
+    },
+    {
+      "pdf": "Unified platform + feature H3 accordions",
+      "block": "features.accordion-2col-numbered"
+    },
+    {
+      "pdf": "Mobile workforce operations",
+      "block": "mobile.4-card-glyph"
+    },
+    {
+      "pdf": "AI-native operational automation",
+      "block": "signature.ai-shell"
+    },
+    {
+      "pdf": "Small business / growing teams / scalable operations",
+      "block": "section.stages-list"
+    },
+    {
+      "pdf": "Supported industries",
+      "block": "verticals.glyph-grid-20-slots"
+    },
+    {
+      "pdf": "ServiceWand vs other solutions",
+      "block": "comparison.three-col-with-mobile-cards"
+    },
+    {
+      "pdf": "Visibility, reporting, integrations",
+      "block": "section.axes-grid"
+    },
+    {
+      "pdf": "FAQ accordion",
+      "block": "faq.bubble-light-grouped"
+    },
+    {
+      "pdf": "Closing CTA statement",
+      "block": "decorative.final-cta"
+    }
+  ],
+  "sections": [
+    {
+      "block": "header.corporate-reference",
+      "code": "FIELD_SERVICE_LANDING_HEADER",
+      "name": "Field Service Landing | Header",
+      "values": {
+        "demo_request_label": "Request Demo",
+        "locale_selector_dropdown_aria_label": "Select language",
+        "locale_selector_trigger_label": "Language",
+        "logo_aria_label": "ServiceWand",
+        "menu_how_it_works": "How It Works",
+        "menu_industries": "Industries",
+        "menu_panel_cta_label": "Lorem Ipsum",
+        "menu_panel_subtext": "Lorem Ipsum",
+        "menu_panel_text": "Lorem Ipsum",
+        "menu_panel_title": "Lorem Ipsum",
+        "menu_partners": "Partners",
+        "menu_platform": "Platform",
+        "menu_resource_description": "Lorem Ipsum",
+        "menu_resource_title": "Lorem Ipsum",
+        "menu_resources": "Resources",
+        "nav_faq": "FAQ",
+        "nav_how_it_works": "How It Works",
+        "nav_industries": "Industries",
+        "nav_partners": "Partners",
+        "nav_platform": "Platform",
+        "open_menu_label": "Open menu"
+      }
+    },
+    {
+      "block": "hero.composite-photo",
+      "code": "FIELD_SERVICE_LANDING_HERO",
+      "name": "Field Service Landing | Hero"
+    },
+    {
+      "block": "section.h2-narrative-only",
+      "code": "FIELD_SERVICE_LANDING_CONNECTED_OPERATIONS",
+      "name": "Field Service Landing | Connected Operations"
+    },
+    {
+      "block": "features.card-grid-4",
+      "code": "FIELD_SERVICE_LANDING_OPERATIONAL_NEEDS",
+      "name": "Field Service Landing | Operational Needs"
+    },
+    {
+      "block": "features.accordion-2col-numbered",
+      "code": "FIELD_SERVICE_LANDING_PLATFORM_CAPABILITIES",
+      "name": "Field Service Landing | Platform Capabilities"
+    },
+    {
+      "block": "mobile.4-card-glyph",
+      "code": "FIELD_SERVICE_LANDING_MOBILE_WORKFORCE",
+      "name": "Field Service Landing | Mobile Workforce"
+    },
+    {
+      "block": "signature.ai-shell",
+      "code": "FIELD_SERVICE_LANDING_AI_AUTOMATION",
+      "name": "Field Service Landing | AI Automation"
+    },
+    {
+      "block": "section.stages-list",
+      "code": "FIELD_SERVICE_LANDING_GROWTH_STAGES",
+      "name": "Field Service Landing | Growth Stages"
+    },
+    {
+      "block": "verticals.glyph-grid-20-slots",
+      "code": "FIELD_SERVICE_LANDING_SUPPORTED_INDUSTRIES",
+      "name": "Field Service Landing | Supported Industries"
+    },
+    {
+      "block": "comparison.three-col-with-mobile-cards",
+      "code": "FIELD_SERVICE_LANDING_PLATFORM_COMPARISON",
+      "name": "Field Service Landing | Platform Comparison",
+      "values": {
+        "column_count": "2"
+      }
+    },
+    {
+      "block": "section.axes-grid",
+      "code": "FIELD_SERVICE_LANDING_VISIBILITY_REPORTING_INTEGRATIONS",
+      "name": "Field Service Landing | Visibility, Reporting & Integrations"
+    },
+    {
+      "block": "faq.bubble-light-grouped",
+      "code": "FIELD_SERVICE_LANDING_FAQ",
+      "name": "Field Service Landing | FAQ"
+    },
+    {
+      "block": "decorative.final-cta",
+      "code": "FIELD_SERVICE_LANDING_FINAL_CTA",
+      "name": "Field Service Landing | Final CTA"
+    },
+    {
+      "block": "footer.corporate-reference",
+      "code": "FIELD_SERVICE_LANDING_FOOTER",
+      "name": "Field Service Landing | Footer",
+      "values": {
+        "bg_pic": "728d0287-96c3-4430-b830-477f87d5ac5e"
+      }
+    }
+  ],
+  "sourceSpec": "compositions/specs/field-service-operations.spec.json"
+}

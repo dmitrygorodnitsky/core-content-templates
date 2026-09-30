@@ -1,0 +1,132 @@
+[
+  {
+    "code": "CHS_LANDING_11_FAQ_EYEBROW",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "EYEBROW",
+        "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+      }
+    },
+    "value": {
+      "en": "FAQ"
+    }
+  },
+  {
+    "code": "CHS_LANDING_11_FAQ_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "TITLE",
+        "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+      }
+    },
+    "value": {
+      "en": "Common questions"
+    }
+  },
+  {
+    "code": "CHS_LANDING_11_FAQ_ITEM_1_QUESTION",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "ITEM 1 QUESTION",
+        "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+      }
+    },
+    "value": {
+      "en": "Studio or at home?"
+    }
+  },
+  {
+    "code": "CHS_LANDING_11_FAQ_ITEM_1_ANSWER",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "ITEM 1 ANSWER",
+        "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+      }
+    },
+    "value": {
+      "en": "Both — most treatments run in the harbor studio; selected hair, nail and massage rituals travel to you. Where each is offered is shown on its card."
+    }
+  },
+  {
+    "code": "CHS_LANDING_11_FAQ_ITEM_2_QUESTION",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "ITEM 2 QUESTION",
+        "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+      }
+    },
+    "value": {
+      "en": "How do memberships work?"
+    }
+  },
+  {
+    "code": "CHS_LANDING_11_FAQ_ITEM_2_ANSWER",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "ITEM 2 ANSWER",
+        "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+      }
+    },
+    "value": {
+      "en": "A monthly plan from the public catalog with member pricing on treatments. Members sign in to see and manage their plan."
+    }
+  },
+  {
+    "code": "CHS_LANDING_11_FAQ_ITEM_3_QUESTION",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "ITEM 3 QUESTION",
+        "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+      }
+    },
+    "value": {
+      "en": "Are the shop products the ones you use?"
+    }
+  },
+  {
+    "code": "CHS_LANDING_11_FAQ_ITEM_3_ANSWER",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "ITEM 3 ANSWER",
+        "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+      }
+    },
+    "value": {
+      "en": "Yes — the retail shelf is the same public catalog our specialists pull from during treatments."
+    }
+  },
+  {
+    "code": "CHS_LANDING_11_FAQ_ITEM_4_QUESTION",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "ITEM 4 QUESTION",
+        "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+      }
+    },
+    "value": {
+      "en": "What if I'm not happy with the result?"
+    }
+  },
+  {
+    "code": "CHS_LANDING_11_FAQ_ITEM_4_ANSWER",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "ITEM 4 ANSWER",
+        "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+      }
+    },
+    "value": {
+      "en": "Tell us within 48 hours — a redo is covered by the guarantee."
+    }
+  }
+]

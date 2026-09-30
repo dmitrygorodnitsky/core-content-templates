@@ -1,0 +1,304 @@
+{
+ "code": "GENERAL_FSM_ORDER",
+ "initialState": {
+  "id": 220,
+  "code": "INITIAL"
+ },
+ "nls": {
+  "en": {
+   "NAME": "General Filed Service Order Lifecycle"
+  }
+ },
+ "entityType": "com.pixelnation.bill.domain.Order",
+ "organization": {
+  "optimistic": 4,
+  "id": 8,
+  "code": "SERVICE_WAND_WINTER_SERVICES"
+ },
+ "id": 45,
+ "states": [
+  {
+   "style": {
+    "xPos": 80,
+    "yPos": 12
+   },
+   "id": 222,
+   "code": "CHANGES_REQUESTED",
+   "nls": {
+    "en": {
+     "NAME": "Changes Requested"
+    }
+   },
+   "events": [
+    {
+     "id": 426,
+     "code": "CHANGES_REQUESTED-QUOTE_PREPARED",
+     "nls": {
+      "en": {
+       "NAME": "Modify"
+      }
+     },
+     "targets": [
+      {
+       "id": 223,
+       "code": "QUOTE_PREPARED"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "style": {
+    "xPos": 2439,
+    "yPos": 27
+   },
+   "id": 228,
+   "code": "CLIENT_APPROVED",
+   "nls": {
+    "en": {
+     "NAME": "Client Approved"
+    }
+   },
+   "events": []
+  },
+  {
+   "style": {
+    "xPos": 12,
+    "yPos": 352
+   },
+   "id": 227,
+   "code": "CUSTOMER_CHANGES_REQUESTED",
+   "nls": {
+    "en": {
+     "NAME": "Customer Changes Requested"
+    }
+   },
+   "events": [
+    {
+     "id": 423,
+     "code": "CUSTOMER_CHANGES_REQUESTED-QUOTE_PREPARED",
+     "nls": {
+      "en": {
+       "NAME": "Changes Requested"
+      }
+     },
+     "targets": [
+      {
+       "id": 223,
+       "code": "QUOTE_PREPARED"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "style": {
+    "xPos": 2439,
+    "yPos": 197
+   },
+   "id": 226,
+   "code": "DECLINED",
+   "nls": {
+    "en": {
+     "NAME": "Declined"
+    }
+   },
+   "events": []
+  },
+  {
+   "style": {
+    "xPos": -52.98151824609012,
+    "yPos": 185.3907894736842
+   },
+   "id": 220,
+   "code": "INITIAL",
+   "nls": {
+    "en": {
+     "NAME": "Initial"
+    }
+   },
+   "events": [
+    {
+     "id": 417,
+     "code": "INITIAL-QUOTE_PREPARED",
+     "nls": {
+      "en": {
+       "NAME": "Prepare Quote"
+      }
+     },
+     "targets": [
+      {
+       "id": 223,
+       "code": "QUOTE_PREPARED"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "style": {
+    "xPos": 1034,
+    "yPos": 197
+   },
+   "id": 221,
+   "code": "QUOTE_APPROVED_INTERNALLY",
+   "nls": {
+    "en": {
+     "NAME": "Quote Approved Internally"
+    }
+   },
+   "events": [
+    {
+     "id": 419,
+     "code": "QUOTE_APPROVED_INTERNALLY-QUOTE_SENT",
+     "nls": {
+      "en": {
+       "NAME": "Send Quote"
+      }
+     },
+     "targets": [
+      {
+       "id": 224,
+       "code": "QUOTE_SENT"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "style": {
+    "xPos": 564,
+    "yPos": 182
+   },
+   "id": 223,
+   "code": "QUOTE_PREPARED",
+   "nls": {
+    "en": {
+     "NAME": "Quote Prepared"
+    }
+   },
+   "events": [
+    {
+     "id": 418,
+     "code": "QUOTE_PREPARED-QUOTE_APPROVED_INTERNALLY",
+     "nls": {
+      "en": {
+       "NAME": "Approve Quote"
+      }
+     },
+     "targets": [
+      {
+       "id": 221,
+       "code": "QUOTE_APPROVED_INTERNALLY"
+      }
+     ]
+    },
+    {
+     "id": 425,
+     "code": "QUOTE_PREPARED-CHANGES_REQUESTED",
+     "nls": {
+      "en": {
+       "NAME": "Request Changes"
+      }
+     },
+     "targets": [
+      {
+       "id": 222,
+       "code": "CHANGES_REQUESTED"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "style": {
+    "xPos": 1524,
+    "yPos": 197
+   },
+   "id": 224,
+   "code": "QUOTE_SENT",
+   "nls": {
+    "en": {
+     "NAME": "Quote Sent"
+    }
+   },
+   "events": [
+    {
+     "id": 420,
+     "code": "QUOTE_SENT-QUOTE_VIEWED",
+     "nls": {
+      "en": {
+       "NAME": "Viewed"
+      }
+     },
+     "targets": [
+      {
+       "id": 225,
+       "code": "QUOTE_VIEWED"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "style": {
+    "xPos": 1939,
+    "yPos": 197
+   },
+   "id": 225,
+   "code": "QUOTE_VIEWED",
+   "nls": {
+    "en": {
+     "NAME": "Quote Viewed"
+    }
+   },
+   "events": [
+    {
+     "id": 421,
+     "code": "QUOTE_VIEWED-DECLINED",
+     "nls": {
+      "en": {
+       "NAME": "Quote Viewed Declined"
+      }
+     },
+     "targets": [
+      {
+       "id": 226,
+       "code": "DECLINED"
+      }
+     ]
+    },
+    {
+     "id": 422,
+     "code": "QUOTE_VIEWED-CUSTOMER_CHANGES_REQUESTED",
+     "nls": {
+      "en": {
+       "NAME": "Request Changes"
+      }
+     },
+     "targets": [
+      {
+       "id": 227,
+       "code": "CUSTOMER_CHANGES_REQUESTED"
+      }
+     ]
+    },
+    {
+     "id": 424,
+     "code": "QUOTE_VIEWED-CLIENT_APPROVED",
+     "nls": {
+      "en": {
+       "NAME": "Approved"
+      }
+     },
+     "targets": [
+      {
+       "id": 228,
+       "code": "CLIENT_APPROVED"
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

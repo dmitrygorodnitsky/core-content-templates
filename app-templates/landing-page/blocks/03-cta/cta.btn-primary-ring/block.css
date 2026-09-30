@@ -1,0 +1,107 @@
+/* lab-ui block · cta.btn-primary-ring
+   Depends: 00-tokens/tokens.css (--color-black, --radius-pill,
+   --font-family, --gradient-cta-ring, --transition-duration,
+   --cta-accent, --cta-accent-soft) + 03-cta/cta.btn-base (.btn, .btn-star). */
+
+.btn-primary {
+  background: var(--button-primary-bg, transparent);
+  color: var(--button-primary-color, var(--color-black));
+}
+
+.btn-primary-ring {
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-primary-ring::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1.5px;
+  background: var(--gradient-cta-ring);
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+          mask-composite: exclude;
+  pointer-events: none;
+  z-index: 3;                          /* above hover-rise ::after */
+  transition: background var(--transition-duration) ease;
+}
+
+/* On hover the rainbow ring rotates direction 249° → 264° (matches
+   live the platform .button-primary:hover::before). */
+.btn-primary-ring:hover::before {
+  background: linear-gradient(
+    264.85deg,
+    rgba(239, 92, 255, 0)   -6.54%,
+    #FFA72C                 24.73%,
+    #6BEDF9                 70.73%,
+    rgba(107, 237, 249, 0) 113.1%
+  );
+}
+
+/* Outer brand glow on hover — tighter than sw's stock 41 px so it
+   reads as a halo hugging the pill, not a rectangular smear behind
+   it (matches the production reference). Tinted by --cta-accent so
+   each vertical paints its own color. */
+.btn-primary-ring:hover {
+  box-shadow: 0 0 32px -4px var(--cta-accent, #6BEAF9);
+}
+
+/* Match cta.btn-secondary-filled's hover affordance: a tighter
+   bottom-centered radial glow that fades in, instead of the shared
+   effect.hover-rise strip. The ring remains on ::before above it.
+   Keep normal blending so the glow stays visible on white buttons. */
+.btn-primary-ring::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: none;
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: 1;
+  background: radial-gradient(
+    ellipse 58% 78% at 50% 100%,
+    var(--cta-accent, #6BEAF9) 0%,
+    transparent 60%
+  );
+  opacity: 0;
+  filter: none;
+  background-blend-mode: normal;
+  mix-blend-mode: normal;
+  transition: opacity var(--transition-duration) ease;
+}
+
+.btn-primary-ring:hover::after {
+  opacity: 0.48;
+}
+
+.btn-primary-ring:hover .btn-star {
+  transform: rotate(180deg);
+}
+
+.btn-primary-ring[aria-disabled="true"] {
+  color: var(--color-gray-blue);
+  background:
+    linear-gradient(var(--color-gray-bg), var(--color-gray-bg)) padding-box,
+    rgba(146, 170, 205, 0.28) border-box;
+}
+
+.btn-primary-ring[aria-disabled="true"]::before {
+  background: rgba(146, 170, 205, 0.28);
+}
+
+.btn-primary-ring[aria-disabled="true"]:is(:hover, :focus-visible) {
+  box-shadow: none;
+  transform: none;
+}
+
+.btn-primary-ring[aria-disabled="true"]:is(:hover, :focus-visible)::after {
+  opacity: 0;
+}
+
+.btn-primary-ring[aria-disabled="true"]:hover .btn-star {
+  transform: none;
+}

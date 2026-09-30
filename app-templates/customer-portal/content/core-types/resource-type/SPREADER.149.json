@@ -1,0 +1,242 @@
+{
+ "optimistic": 9,
+ "code": "SPREADER",
+ "nls": {
+  "en": {
+   "NAME": "Salt Spreader (Salter)"
+  }
+ },
+ "workflow": {
+  "id": 8,
+  "code": "SIMPLE_RESOURCE"
+ },
+ "organization": {
+  "optimistic": 4,
+  "id": 8,
+  "code": "SERVICE_WAND_WINTER_SERVICES"
+ },
+ "attributeOrder": [
+  {
+   "IDENTIFICATION": [
+    {
+     "typeId": 146,
+     "attributeCode": "MAKE",
+     "visible": true
+    },
+    {
+     "typeId": 146,
+     "attributeCode": "MODEL",
+     "visible": true
+    },
+    {
+     "typeId": 146,
+     "attributeCode": "YEAR",
+     "visible": true
+    },
+    {
+     "typeId": 146,
+     "attributeCode": "COLOR",
+     "visible": true
+    }
+   ]
+  },
+  {
+   "ATTACHMENT_CONFIGURATION": [
+    {
+     "typeId": 147,
+     "attributeCode": "VEHICLE_ATTACHMENT_TYPE",
+     "visible": true
+    },
+    {
+     "typeId": 147,
+     "attributeCode": "VEHICLE",
+     "visible": true
+    },
+    {
+     "typeId": 147,
+     "attributeCode": "MOUNT_TYPE",
+     "visible": true
+    }
+   ]
+  },
+  {
+   "SPREADER_SPECIFICATIONS": [
+    {
+     "attributeCode": "SPREADER_TYPE",
+     "visible": true
+    }
+   ]
+  }
+ ],
+ "attributes": [
+  {
+   "code": "SPREADER_TYPE",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "en": {
+     "NAME": "Spreader Type"
+    }
+   },
+   "options": [
+    {
+     "value": "TAILGATE_SPREADER",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Tailgate Spreader",
+       "DESCRIPTION": "<p>Compact&nbsp;spreader&nbsp;mounted&nbsp;to&nbsp;the&nbsp;rear&nbsp;hitch&nbsp;or&nbsp;tailgate&nbsp;of&nbsp;a&nbsp;pickup&nbsp;truck.&nbsp;Commonly&nbsp;used&nbsp;for&nbsp;residential&nbsp;and&nbsp;light&nbsp;commercial&nbsp;ice&nbsp;control.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     }
+    },
+    {
+     "value": "HOPPER_SPREADER",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Hopper Spreader",
+       "DESCRIPTION": "<p>Large&nbsp;hopper-style&nbsp;spreader&nbsp;installed&nbsp;in&nbsp;the&nbsp;bed&nbsp;of&nbsp;a&nbsp;pickup&nbsp;truck&nbsp;or&nbsp;dump&nbsp;truck.&nbsp;Designed&nbsp;for&nbsp;medium&nbsp;and&nbsp;large&nbsp;commercial&nbsp;snow&nbsp;and&nbsp;ice&nbsp;management&nbsp;operations.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     }
+    },
+    {
+     "value": "V-BOX_SPREADER",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "V-Box Spreader",
+       "DESCRIPTION": "<p>V-shaped&nbsp;hopper&nbsp;spreader&nbsp;that&nbsp;improves&nbsp;material&nbsp;flow&nbsp;and&nbsp;minimizes&nbsp;bridging.&nbsp;One&nbsp;of&nbsp;the&nbsp;most&nbsp;common&nbsp;spreaders&nbsp;used&nbsp;by&nbsp;commercial&nbsp;snow&nbsp;contractors.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     }
+    },
+    {
+     "value": "DROP_SPREADER",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Drop Spreader",
+       "DESCRIPTION": "<p>Spreader&nbsp;that&nbsp;releases&nbsp;material&nbsp;directly&nbsp;beneath&nbsp;the&nbsp;unit,&nbsp;providing&nbsp;precise&nbsp;and&nbsp;controlled&nbsp;application&nbsp;along&nbsp;narrow&nbsp;areas&nbsp;such&nbsp;as&nbsp;sidewalks&nbsp;and&nbsp;pedestrian&nbsp;zones.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     }
+    },
+    {
+     "value": "BROADCAST_SPREADER",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Broadcast Spreader",
+       "DESCRIPTION": "<p>Spreader&nbsp;that&nbsp;distributes&nbsp;material&nbsp;in&nbsp;a&nbsp;wide&nbsp;circular&nbsp;pattern&nbsp;using&nbsp;a&nbsp;spinning&nbsp;disc.&nbsp;The&nbsp;most&nbsp;common&nbsp;design&nbsp;for&nbsp;parking&nbsp;lots,&nbsp;roads,&nbsp;and&nbsp;open&nbsp;paved&nbsp;areas.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     }
+    },
+    {
+     "value": "UNDER-TAILGATE_SPREADER",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Under-Tailgate Spreader",
+       "DESCRIPTION": "<p>Spreader&nbsp;mounted&nbsp;beneath&nbsp;the&nbsp;tailgate&nbsp;of&nbsp;a&nbsp;dump&nbsp;truck,&nbsp;typically&nbsp;supplied&nbsp;by&nbsp;material&nbsp;stored&nbsp;in&nbsp;the&nbsp;dump&nbsp;body.&nbsp;Commonly&nbsp;used&nbsp;by&nbsp;municipal&nbsp;and&nbsp;highway&nbsp;maintenance&nbsp;fleets.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     }
+    },
+    {
+     "value": "LIQUID_SPREADER",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Liquid Spreader",
+       "DESCRIPTION": "<p>Equipment&nbsp;designed&nbsp;to&nbsp;apply&nbsp;liquid&nbsp;deicing&nbsp;materials&nbsp;such&nbsp;as&nbsp;brine.&nbsp;May&nbsp;be&nbsp;integrated&nbsp;with&nbsp;a&nbsp;spray&nbsp;system&nbsp;or&nbsp;used&nbsp;as&nbsp;a&nbsp;dedicated&nbsp;liquid&nbsp;application&nbsp;unit.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     }
+    },
+    {
+     "value": "TRACTOR-MOUNTED_SPREADER",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Tractor-Mounted Spreader",
+       "DESCRIPTION": "<p>Spreader&nbsp;designed&nbsp;for&nbsp;mounting&nbsp;on&nbsp;agricultural&nbsp;or&nbsp;utility&nbsp;tractors&nbsp;used&nbsp;in&nbsp;snow&nbsp;removal&nbsp;operations.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     }
+    },
+    {
+     "value": "ATV_UTV_MOUNTED_SPREADER",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "ATV / UTV Mounted Spreader",
+       "DESCRIPTION": "<p>Compact&nbsp;spreader&nbsp;specifically&nbsp;designed&nbsp;for&nbsp;installation&nbsp;on&nbsp;ATV&nbsp;or&nbsp;UTV&nbsp;vehicles&nbsp;servicing&nbsp;sidewalks,&nbsp;trails,&nbsp;campuses,&nbsp;and&nbsp;residential&nbsp;properties.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     }
+    }
+   ]
+  }
+ ],
+ "id": 149,
+ "isAbstract": false,
+ "attributeGroups": [
+  {
+   "code": "SPREADER_SPECIFICATIONS",
+   "nls": {
+    "ar": {
+     "DESCRIPTION": "<p></p>"
+    },
+    "en": {
+     "NAME": "Spreader Specifications",
+     "DESCRIPTION": "<p>Defines the operational characteristics and capabilities of the spreader, including its material handling and application properties.</p>"
+    },
+    "he": {
+     "DESCRIPTION": "<p></p>"
+    }
+   }
+  }
+ ]
+}

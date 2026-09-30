@@ -1,0 +1,20 @@
+{
+ "optimistic": 0,
+ "code": "ORGANIZATION",
+ "nls": {
+  "en": {
+   "NAME": "Service Provider",
+   "DESCRIPTION": "Service provider organization account type."
+  }
+ },
+ "organization": {
+  "optimistic": 1,
+  "id": 1,
+  "code": "SYSTEM"
+ },
+ "attributeOrder": [],
+ "attributes": [],
+ "id": 3,
+ "isAbstract": false,
+ "attributeGroups": []
+}

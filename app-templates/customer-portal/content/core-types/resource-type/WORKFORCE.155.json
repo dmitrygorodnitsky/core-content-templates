@@ -1,0 +1,64 @@
+{
+ "optimistic": 3,
+ "code": "WORKFORCE",
+ "nls": {
+  "en": {
+   "NAME": "Workforce"
+  }
+ },
+ "workflow": {
+  "id": 34,
+  "code": "WORKFORCE_LIFECYCLE"
+ },
+ "organization": {
+  "optimistic": 4,
+  "id": 8,
+  "code": "SERVICE_WAND_WINTER_SERVICES"
+ },
+ "attributeOrder": [
+  {
+   "default": [
+    {
+     "attributeCode": "ACCOUNT_TYPE",
+     "visible": true
+    }
+   ]
+  }
+ ],
+ "attributes": [
+  {
+   "code": "ACCOUNT_TYPE",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "en": {
+     "NAME": "Account Type"
+    }
+   },
+   "options": [
+    {
+     "value": "EMPLOYEE",
+     "nls": {
+      "en": {
+       "NAME": "Employee"
+      }
+     }
+    },
+    {
+     "value": "CONTRACTOR",
+     "nls": {
+      "en": {
+       "NAME": "Contractor"
+      }
+     }
+    }
+   ]
+  }
+ ],
+ "id": 155,
+ "isAbstract": false,
+ "attributeGroups": []
+}

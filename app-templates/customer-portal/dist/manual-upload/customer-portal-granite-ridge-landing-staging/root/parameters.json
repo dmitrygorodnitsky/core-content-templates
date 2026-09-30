@@ -1,0 +1,685 @@
+[
+  {
+    "code": "META_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "META TITLE",
+        "DESCRIPTION": "Browser tab title."
+      }
+    },
+    "value": {
+      "en": "Limitless Snow Removal | Snow removal and de-icing"
+    }
+  },
+  {
+    "code": "META_DESCRIPTION",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "META DESCRIPTION",
+        "DESCRIPTION": "Meta description. The page stays noindex,nofollow while the tenant is on staging."
+      }
+    },
+    "value": {
+      "en": "Snow removal and de-icing for properties in Vancouver, Richmond, Surrey, Burnaby and Coquitlam, British Columbia. Request a free quote online."
+    }
+  },
+  {
+    "code": "BRAND_NAME",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "BRAND NAME",
+        "DESCRIPTION": "Brand name in the top bar and the footer."
+      }
+    },
+    "value": {
+      "en": "Limitless Snow Removal"
+    }
+  },
+  {
+    "code": "LANDING_URL",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "LANDING URL",
+        "DESCRIPTION": "Absolute https address of this landing. The brand in the top bar and in the footer links to it. A value that is not an absolute https address, the # placeholder included, is read as not set and these links are disabled."
+      }
+    },
+    "value": "https://dev-1.servicewand.com/pages/SNOWLIMITLESS/home"
+  },
+  {
+    "code": "REQUEST_QUOTE_URL",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "REQUEST QUOTE URL",
+        "DESCRIPTION": "Absolute https address of the published quote request form. Every Get a free quote link opens it. A value that is not an absolute https address, the # placeholder included, is read as not set and these links are disabled."
+      }
+    },
+    "value": "https://dev-1.servicewand.com/pages/SNOWLIMITLESS/request-quote"
+  },
+  {
+    "code": "SIGN_IN_URL",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "SIGN IN URL",
+        "DESCRIPTION": "Absolute https address of the customer portal sign-in. Every Sign in link opens it, and so does the no-access notice. A value that is not an absolute https address, the # placeholder included, is read as not set and these links are disabled."
+      }
+    },
+    "value": "https://dev-1.servicewand.com/pages/SNOWLIMITLESS/portal#/login"
+  },
+  {
+    "code": "REQUEST_QUOTE_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "REQUEST QUOTE LABEL",
+        "DESCRIPTION": "Label of every link to the quote request form: hero, no-access notice, final call to action and footer."
+      }
+    },
+    "value": {
+      "en": "Get a free quote"
+    }
+  },
+  {
+    "code": "SIGN_IN_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "SIGN IN LABEL",
+        "DESCRIPTION": "Label of every Sign in link: top bar, hero, final call to action and footer."
+      }
+    },
+    "value": {
+      "en": "Sign in"
+    }
+  },
+  {
+    "code": "NOTICE_SIGNED_OUT_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "NOTICE SIGNED OUT TITLE",
+        "DESCRIPTION": "Notice shown when the address carries ?portal=signed-out."
+      }
+    },
+    "value": {
+      "en": "You've signed out."
+    }
+  },
+  {
+    "code": "NOTICE_NO_ACCESS_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "NOTICE NO ACCESS TITLE",
+        "DESCRIPTION": "Notice title shown when the address carries ?portal=no-access."
+      }
+    },
+    "value": {
+      "en": "This account doesn't have access to the customer portal."
+    }
+  },
+  {
+    "code": "NOTICE_NO_ACCESS_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "NOTICE NO ACCESS BODY",
+        "DESCRIPTION": "Line under the no-access notice title."
+      }
+    },
+    "value": {
+      "en": "Portal access starts once you've accepted a quote and your service agreement with us."
+    }
+  },
+  {
+    "code": "NOTICE_NO_ACCESS_SIGN_IN_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "NOTICE NO ACCESS SIGN IN LABEL",
+        "DESCRIPTION": "Label of the no-access notice link to the sign-in address."
+      }
+    },
+    "value": {
+      "en": "Sign in with another account"
+    }
+  },
+  {
+    "code": "NOTICE_DISMISS_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "NOTICE DISMISS LABEL",
+        "DESCRIPTION": "Accessible name of the button that closes a notice."
+      }
+    },
+    "value": {
+      "en": "Dismiss"
+    }
+  },
+  {
+    "code": "HERO_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "HERO TITLE",
+        "DESCRIPTION": "Hero headline, the only h1 of the page."
+      }
+    },
+    "value": {
+      "en": "Snow removal and de-icing for your property"
+    }
+  },
+  {
+    "code": "HERO_SUB",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "HERO SUB",
+        "DESCRIPTION": "One line under the hero headline."
+      }
+    },
+    "value": {
+      "en": "Free quotes for properties in Vancouver, Richmond, Surrey, Burnaby and Coquitlam."
+    }
+  },
+  {
+    "code": "SERVICES_EYEBROW",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "SERVICES EYEBROW",
+        "DESCRIPTION": "Services section eyebrow."
+      }
+    },
+    "value": {
+      "en": "Services"
+    }
+  },
+  {
+    "code": "SERVICES_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "SERVICES TITLE",
+        "DESCRIPTION": "Services section title."
+      }
+    },
+    "value": {
+      "en": "What we do"
+    }
+  },
+  {
+    "code": "SERVICES_SUB",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "SERVICES SUB",
+        "DESCRIPTION": "Line under the services section title."
+      }
+    },
+    "value": {
+      "en": "Your quote lists the services for each property you send us."
+    }
+  },
+  {
+    "code": "SERVICES_ITEM_1_NAME",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "SERVICES ITEM 1 NAME",
+        "DESCRIPTION": "Name on service card 1."
+      }
+    },
+    "value": {
+      "en": "Snow removal"
+    }
+  },
+  {
+    "code": "SERVICES_ITEM_1_TEXT",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "SERVICES ITEM 1 TEXT",
+        "DESCRIPTION": "Description on service card 1."
+      }
+    },
+    "value": {
+      "en": "We clear snow from the areas of your property that your quote covers."
+    }
+  },
+  {
+    "code": "SERVICES_ITEM_2_NAME",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "SERVICES ITEM 2 NAME",
+        "DESCRIPTION": "Name on service card 2."
+      }
+    },
+    "value": {
+      "en": "De-icing"
+    }
+  },
+  {
+    "code": "SERVICES_ITEM_2_TEXT",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "SERVICES ITEM 2 TEXT",
+        "DESCRIPTION": "Description on service card 2."
+      }
+    },
+    "value": {
+      "en": "We spread rock salt or ice melt on cleared surfaces to help prevent ice."
+    }
+  },
+  {
+    "code": "HOW_EYEBROW",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "HOW EYEBROW",
+        "DESCRIPTION": "How it works section eyebrow."
+      }
+    },
+    "value": {
+      "en": "How it works"
+    }
+  },
+  {
+    "code": "HOW_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "HOW TITLE",
+        "DESCRIPTION": "How it works section title."
+      }
+    },
+    "value": {
+      "en": "From your request to your portal"
+    }
+  },
+  {
+    "code": "HOW_STEP_1_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "HOW STEP 1 TITLE",
+        "DESCRIPTION": "Title of step 1."
+      }
+    },
+    "value": {
+      "en": "Request a free quote"
+    }
+  },
+  {
+    "code": "HOW_STEP_1_TEXT",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "HOW STEP 1 TEXT",
+        "DESCRIPTION": "Description of step 1."
+      }
+    },
+    "value": {
+      "en": "Send us the address of each property through our online form. No account is needed."
+    }
+  },
+  {
+    "code": "HOW_STEP_2_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "HOW STEP 2 TITLE",
+        "DESCRIPTION": "Title of step 2."
+      }
+    },
+    "value": {
+      "en": "We prepare your quote"
+    }
+  },
+  {
+    "code": "HOW_STEP_2_TEXT",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "HOW STEP 2 TEXT",
+        "DESCRIPTION": "Description of step 2."
+      }
+    },
+    "value": {
+      "en": "We measure each property and prepare your quote."
+    }
+  },
+  {
+    "code": "HOW_STEP_3_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "HOW STEP 3 TITLE",
+        "DESCRIPTION": "Title of step 3."
+      }
+    },
+    "value": {
+      "en": "Accept it online"
+    }
+  },
+  {
+    "code": "HOW_STEP_3_TEXT",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "HOW STEP 3 TEXT",
+        "DESCRIPTION": "Description of step 3."
+      }
+    },
+    "value": {
+      "en": "We email you a secure link to review and accept your quote online, and then your service agreement."
+    }
+  },
+  {
+    "code": "HOW_STEP_4_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "HOW STEP 4 TITLE",
+        "DESCRIPTION": "Title of step 4."
+      }
+    },
+    "value": {
+      "en": "Sign in to your portal"
+    }
+  },
+  {
+    "code": "HOW_STEP_4_TEXT",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "HOW STEP 4 TEXT",
+        "DESCRIPTION": "Description of step 4."
+      }
+    },
+    "value": {
+      "en": "Once your agreement is accepted, we email you sign-in details for the customer portal, where you follow your properties and contracts."
+    }
+  },
+  {
+    "code": "AREA_EYEBROW",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "AREA EYEBROW",
+        "DESCRIPTION": "Service area section eyebrow."
+      }
+    },
+    "value": {
+      "en": "Service area"
+    }
+  },
+  {
+    "code": "AREA_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "AREA TITLE",
+        "DESCRIPTION": "Service area section title."
+      }
+    },
+    "value": {
+      "en": "Where we work"
+    }
+  },
+  {
+    "code": "AREA_REGION",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "AREA REGION",
+        "DESCRIPTION": "Region named above the cities."
+      }
+    },
+    "value": {
+      "en": "British Columbia"
+    }
+  },
+  {
+    "code": "AREA_CITY_1",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "AREA CITY 1",
+        "DESCRIPTION": "City 1 of the service area."
+      }
+    },
+    "value": {
+      "en": "Vancouver"
+    }
+  },
+  {
+    "code": "AREA_CITY_2",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "AREA CITY 2",
+        "DESCRIPTION": "City 2 of the service area."
+      }
+    },
+    "value": {
+      "en": "Richmond"
+    }
+  },
+  {
+    "code": "AREA_CITY_3",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "AREA CITY 3",
+        "DESCRIPTION": "City 3 of the service area."
+      }
+    },
+    "value": {
+      "en": "Surrey"
+    }
+  },
+  {
+    "code": "AREA_CITY_4",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "AREA CITY 4",
+        "DESCRIPTION": "City 4 of the service area."
+      }
+    },
+    "value": {
+      "en": "Burnaby"
+    }
+  },
+  {
+    "code": "AREA_CITY_5",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "AREA CITY 5",
+        "DESCRIPTION": "City 5 of the service area."
+      }
+    },
+    "value": {
+      "en": "Coquitlam"
+    }
+  },
+  {
+    "code": "AREA_NOTE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "AREA NOTE",
+        "DESCRIPTION": "Line under the cities."
+      }
+    },
+    "value": {
+      "en": "We confirm service availability for each property when we prepare your quote."
+    }
+  },
+  {
+    "code": "FAQ_EYEBROW",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "FAQ EYEBROW",
+        "DESCRIPTION": "FAQ section eyebrow."
+      }
+    },
+    "value": {
+      "en": "FAQ"
+    }
+  },
+  {
+    "code": "FAQ_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "FAQ TITLE",
+        "DESCRIPTION": "FAQ section title."
+      }
+    },
+    "value": {
+      "en": "Common questions"
+    }
+  },
+  {
+    "code": "FAQ_ITEM_1_QUESTION",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "FAQ ITEM 1 QUESTION",
+        "DESCRIPTION": "Question 1."
+      }
+    },
+    "value": {
+      "en": "Do I need an account to request a quote?"
+    }
+  },
+  {
+    "code": "FAQ_ITEM_1_ANSWER",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "FAQ ITEM 1 ANSWER",
+        "DESCRIPTION": "Answer to question 1."
+      }
+    },
+    "value": {
+      "en": "No. Anyone can request a quote through our online form, without signing in."
+    }
+  },
+  {
+    "code": "FAQ_ITEM_2_QUESTION",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "FAQ ITEM 2 QUESTION",
+        "DESCRIPTION": "Question 2."
+      }
+    },
+    "value": {
+      "en": "How will I receive my quote?"
+    }
+  },
+  {
+    "code": "FAQ_ITEM_2_ANSWER",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "FAQ ITEM 2 ANSWER",
+        "DESCRIPTION": "Answer to question 2."
+      }
+    },
+    "value": {
+      "en": "By email. We send you a secure link where you can review your quote and accept it online."
+    }
+  },
+  {
+    "code": "FAQ_ITEM_3_QUESTION",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "FAQ ITEM 3 QUESTION",
+        "DESCRIPTION": "Question 3."
+      }
+    },
+    "value": {
+      "en": "When can I use the customer portal?"
+    }
+  },
+  {
+    "code": "FAQ_ITEM_3_ANSWER",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "FAQ ITEM 3 ANSWER",
+        "DESCRIPTION": "Answer to question 3."
+      }
+    },
+    "value": {
+      "en": "Once you've accepted your service agreement. We then email you sign-in details, and you can follow your properties and contracts in the portal."
+    }
+  },
+  {
+    "code": "FAQ_ITEM_4_QUESTION",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "FAQ ITEM 4 QUESTION",
+        "DESCRIPTION": "Question 4."
+      }
+    },
+    "value": {
+      "en": "Can I get a quote for more than one property?"
+    }
+  },
+  {
+    "code": "FAQ_ITEM_4_ANSWER",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "FAQ ITEM 4 ANSWER",
+        "DESCRIPTION": "Answer to question 4."
+      }
+    },
+    "value": {
+      "en": "Yes. Add each property address to the same request, and we prepare a quote for each one."
+    }
+  },
+  {
+    "code": "FINAL_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "FINAL TITLE",
+        "DESCRIPTION": "Title of the closing call to action."
+      }
+    },
+    "value": {
+      "en": "Start with a free quote"
+    }
+  },
+  {
+    "code": "FINAL_SUB",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "FINAL SUB",
+        "DESCRIPTION": "Line under the closing call to action title."
+      }
+    },
+    "value": {
+      "en": "Tell us where your properties are, and we'll prepare your quote."
+    }
+  }
+]

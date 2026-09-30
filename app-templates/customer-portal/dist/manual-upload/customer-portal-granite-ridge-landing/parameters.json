@@ -1,0 +1,111 @@
+[
+  {
+    "code": "ROOT_META_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "ROOT META TITLE",
+        "DESCRIPTION": "CMS-authored value for Granite Ridge Snow Removal."
+      }
+    },
+    "value": {
+      "en": "Snow Removal & De-icing in Denver, Colorado | Granite Ridge Snow Removal"
+    }
+  },
+  {
+    "code": "ROOT_META_DESCRIPTION",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "ROOT META DESCRIPTION",
+        "DESCRIPTION": "CMS-authored value for Granite Ridge Snow Removal."
+      }
+    },
+    "value": {
+      "en": "Weather-triggered snow clearing and de-icing for homes and commercial lots in Denver, Colorado. SLA response windows, GPS-logged visits, compliance reports."
+    }
+  },
+  {
+    "code": "ROOT_FAQ_JSON_LD",
+    "type": "LOCALIZED_JSON_OBJECT",
+    "nls": {
+      "en": {
+        "NAME": "ROOT FAQ JSON LD",
+        "DESCRIPTION": "CMS-authored value for Granite Ridge Snow Removal."
+      }
+    },
+    "value": {
+      "en": {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "What triggers a visit?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Your contract sets a snowfall threshold (e.g. 2 in / 5 cm). When the local station reports it, dispatch is automatic."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What if the SLA window is missed?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Every response is logged against the window; misses are flagged in your season log and credited per contract terms."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Do you serve commercial lots?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes — lots, walkways and loading zones, with per-surface pricing and a compliance report per storm."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Can I get proof of service for insurance?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Each visit carries GPS, timestamps, photos and materials used — exportable as a compliance pack."
+            }
+          }
+        ]
+      }
+    }
+  },
+  {
+    "code": "ROOT_PORTAL_URL",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "ROOT PORTAL URL",
+        "DESCRIPTION": "CMS-authored value for Granite Ridge Snow Removal."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "ROOT_PORTAL_REQUEST_URL",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "ROOT PORTAL REQUEST URL",
+        "DESCRIPTION": "CMS-authored value for Granite Ridge Snow Removal."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "ROOT_PORTAL_SERVICES_URL",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "ROOT PORTAL SERVICES URL",
+        "DESCRIPTION": "CMS-authored value for Granite Ridge Snow Removal."
+      }
+    },
+    "value": ""
+  }
+]

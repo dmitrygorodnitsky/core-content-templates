@@ -1,0 +1,252 @@
+{
+ "optimistic": 0,
+ "code": "LICENSE",
+ "nls": {
+  "ar": {
+   "DESCRIPTION": "<p></p>"
+  },
+  "en": {
+   "NAME": "License",
+   "DESCRIPTION": "<p>An official authorization document issued by a government authority or regulatory organization granting a person or organization permission to perform a regulated activity.</p>"
+  },
+  "he": {
+   "DESCRIPTION": "<p></p>"
+  }
+ },
+ "workflow": {
+  "id": 38,
+  "code": "LICENSE_LIFECYCLE"
+ },
+ "organization": {
+  "optimistic": 1,
+  "id": 1,
+  "code": "SYSTEM"
+ },
+ "attributeOrder": [
+  {
+   "default": [
+    {
+     "attributeCode": "LICENSE_NUMBER",
+     "visible": true
+    },
+    {
+     "attributeCode": "ISSUING_AUTHORITY",
+     "visible": true
+    },
+    {
+     "attributeCode": "JURISDICTION",
+     "visible": true
+    },
+    {
+     "attributeCode": "ISSUE_DATE",
+     "visible": true
+    },
+    {
+     "attributeCode": "EXPIRATION_DATE",
+     "visible": true
+    },
+    {
+     "attributeCode": "STATUS",
+     "visible": true
+    },
+    {
+     "attributeCode": "FRONT_IMAGE",
+     "visible": true
+    },
+    {
+     "attributeCode": "BACK_IMAGE",
+     "visible": true
+    }
+   ]
+  }
+ ],
+ "attributes": [
+  {
+   "code": "STATUS",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "en": {
+     "NAME": "Status"
+    }
+   },
+   "options": [
+    {
+     "value": "ACTIVE",
+     "nls": {
+      "en": {
+       "NAME": "Active"
+      }
+     }
+    },
+    {
+     "value": "EXPIRED",
+     "nls": {
+      "en": {
+       "NAME": "Expired"
+      }
+     }
+    },
+    {
+     "value": "SUSPENDED",
+     "nls": {
+      "en": {
+       "NAME": "Suspended"
+      }
+     }
+    },
+    {
+     "value": "REVOKED",
+     "nls": {
+      "en": {
+       "NAME": "Revoked"
+      }
+     }
+    },
+    {
+     "value": "PENDING",
+     "nls": {
+      "en": {
+       "NAME": "Pending"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "code": "LICENSE_NUMBER",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "ar": {
+     "DESCRIPTION": "<p></p>"
+    },
+    "en": {
+     "NAME": "License Number",
+     "DESCRIPTION": "<p>Unique identifier assigned to the license by the issuing authority.</p>"
+    },
+    "he": {
+     "DESCRIPTION": "<p></p>"
+    }
+   },
+   "options": []
+  },
+  {
+   "code": "BACK_IMAGE",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "com.pixelnation.common.domain.Media",
+   "nls": {
+    "en": {
+     "NAME": "Back Image"
+    }
+   },
+   "options": [],
+   "entityTypes": [
+    {
+     "value": "image"
+    }
+   ]
+  },
+  {
+   "code": "FRONT_IMAGE",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "com.pixelnation.common.domain.Media",
+   "nls": {
+    "en": {
+     "NAME": "Front Image"
+    }
+   },
+   "options": [],
+   "entityTypes": [
+    {
+     "value": "image"
+    }
+   ]
+  },
+  {
+   "code": "ISSUING_AUTHORITY",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "ar": {
+     "DESCRIPTION": "<p></p>"
+    },
+    "en": {
+     "NAME": "Issuing Authority",
+     "DESCRIPTION": "<p>Government agency or organization that issued the license.</p>"
+    },
+    "he": {
+     "DESCRIPTION": "<p></p>"
+    }
+   },
+   "options": []
+  },
+  {
+   "code": "JURISDICTION",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "com.pixelnation.common.domain.State",
+   "nls": {
+    "ar": {
+     "DESCRIPTION": "<p></p>"
+    },
+    "en": {
+     "NAME": "Jurisdiction",
+     "DESCRIPTION": "<p>Country, state, province or other jurisdiction where the license is valid and issued.</p>"
+    },
+    "he": {
+     "DESCRIPTION": "<p></p>"
+    }
+   },
+   "options": []
+  },
+  {
+   "code": "EXPIRATION_DATE",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.time.LocalDate",
+   "nls": {
+    "en": {
+     "NAME": "Expiration Date"
+    }
+   },
+   "options": []
+  },
+  {
+   "code": "ISSUE_DATE",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.time.LocalDate",
+   "nls": {
+    "en": {
+     "NAME": "Issue Date"
+    }
+   },
+   "options": []
+  }
+ ],
+ "id": 12,
+ "isAbstract": false,
+ "attributeGroups": []
+}

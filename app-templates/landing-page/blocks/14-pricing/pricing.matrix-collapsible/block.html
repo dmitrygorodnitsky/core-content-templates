@@ -1,0 +1,462 @@
+<!-- lab-ui block · pricing.matrix-collapsible
+     Full feature comparison.
+     Static fallback uses column_count. Dynamic mode rebuilds desktop
+     columns and mobile accordions for every plan returned by Core PIM.
+     <= 720px: per-plan accordion, each plan = a <details> with all groups
+     listed inside.
+-->
+<section class="mx-matrix" id="pricing-compare" data-block="pricing.matrix-collapsible" data-collapsable="{{collapsable}}" data-collapsed="{{collapsed}}" data-columns="{{column_count}}" data-groups-collapsible="{{groups_collapsible}}" data-hint-style="{{hint_style}}" data-tip-label="{{tip_label}}" data-pricing-period="{{billing_default}}" data-feature-column-label="{{feature_column_label}}" data-cta-row-label="{{cta_row_label}}" data-state-label-yes="{{state_label_yes}}" data-state-label-no="{{state_label_no}}" data-state-label-partial="{{state_label_partial}}" data-state-label-empty="{{state_label_empty}}" data-pricing-dynamic="{{dynamic_pricing_enabled}}" data-pricing-api-base="{{pricing_api_base}}" data-pricing-organization="{{pricing_organization}}" data-pricing-product-type-code="{{pricing_product_type_code}}" data-pricing-sort-attribute-code="{{pricing_sort_attribute_code}}" data-pricing-price-type-code="{{pricing_price_type_code}}" data-pricing-price-attribute-code="{{pricing_price_attribute_code}}" data-pricing-price-attribute-values="{{pricing_price_attribute_values}}" data-pricing-currency="{{pricing_currency}}" data-pricing-purchase-url="{{pricing_purchase_url}}" data-pricing-buy-label="{{pricing_buy_label}}" data-pricing-contact-label="{{pricing_contact_label}}" data-pricing-error-mode="{{pricing_error_mode}}">
+  <div class="container">
+    <header class="mx-top">
+      <p class="mx-eyebrow">{{eyebrow}}</p>
+      <h2 class="mx-title">{{title}}</h2>
+      <p class="mx-lede">{{lede}}</p>
+    </header>
+
+    <div class="mx-shell mx-shell--skeleton" aria-hidden="true" data-nosnippet>
+      <div class="mx-skel-row mx-skel-row--head">
+        <span class="mx-skel mx-skel--feature"></span>
+        <span class="mx-skel mx-skel--plan"></span>
+        <span class="mx-skel mx-skel--plan"></span>
+        <span class="mx-skel mx-skel--plan"></span>
+      </div>
+      <div class="mx-skel-row">
+        <span class="mx-skel mx-skel--feature"></span>
+        <span class="mx-skel mx-skel--cell"></span>
+        <span class="mx-skel mx-skel--cell"></span>
+        <span class="mx-skel mx-skel--cell"></span>
+      </div>
+      <div class="mx-skel-row">
+        <span class="mx-skel mx-skel--feature"></span>
+        <span class="mx-skel mx-skel--cell"></span>
+        <span class="mx-skel mx-skel--cell"></span>
+        <span class="mx-skel mx-skel--cell"></span>
+      </div>
+      <div class="mx-skel-row">
+        <span class="mx-skel mx-skel--feature"></span>
+        <span class="mx-skel mx-skel--cell"></span>
+        <span class="mx-skel mx-skel--cell"></span>
+        <span class="mx-skel mx-skel--cell"></span>
+      </div>
+    </div>
+
+    <div class="mx-shell mx-shell--table" role="table" aria-label="{{table_label}}">
+      <div class="mx-row mx-row--head" role="row">
+        <div class="mx-cell mx-cell--feature" role="columnheader">{{feature_column_label}}</div>
+        <div class="mx-cell mx-cell--plan" role="columnheader" data-plan-col="01"><span class="mx-plan-name">{{plan_01_name}}</span><span class="mx-plan-tag">{{plan_01_tag}}</span></div>
+        <div class="mx-cell mx-cell--plan" role="columnheader" data-plan-col="02"><span class="mx-plan-name">{{plan_02_name}}</span><span class="mx-plan-tag">{{plan_02_tag}}</span></div>
+        <div class="mx-cell mx-cell--plan" role="columnheader" data-plan-col="03"><span class="mx-plan-name">{{plan_03_name}}</span><span class="mx-plan-tag">{{plan_03_tag}}</span></div>
+        <div class="mx-cell mx-cell--plan" role="columnheader" data-plan-col="04"><span class="mx-plan-name">{{plan_04_name}}</span><span class="mx-plan-tag">{{plan_04_tag}}</span></div>
+      </div>
+
+      <div class="mx-group" role="rowgroup" data-group-visible="{{group_01_visible}}" data-group-collapsed="{{group_01_collapsed}}">
+        <div class="mx-row--group" role="row"><div class="mx-group-title" role="rowheader">{{group_01_title}}</div></div>
+        <div class="mx-row" role="row" data-row-visible="{{row_01_visible}}">
+          <div class="mx-cell mx-cell--feature" role="rowheader"><span class="mx-feature-label">{{row_01_label}}</span><span class="mx-feature-hint">{{row_01_hint}}</span></div>
+          <div class="mx-cell" role="cell" data-plan-col="01" data-state="{{row_01_plan_01_state}}"><span class="mx-mobile-plan">{{plan_01_name}}</span><span class="mx-value">{{row_01_plan_01_value}}</span></div>
+          <div class="mx-cell" role="cell" data-plan-col="02" data-state="{{row_01_plan_02_state}}"><span class="mx-mobile-plan">{{plan_02_name}}</span><span class="mx-value">{{row_01_plan_02_value}}</span></div>
+          <div class="mx-cell" role="cell" data-plan-col="03" data-state="{{row_01_plan_03_state}}"><span class="mx-mobile-plan">{{plan_03_name}}</span><span class="mx-value">{{row_01_plan_03_value}}</span></div>
+          <div class="mx-cell" role="cell" data-plan-col="04" data-state="{{row_01_plan_04_state}}"><span class="mx-mobile-plan">{{plan_04_name}}</span><span class="mx-value">{{row_01_plan_04_value}}</span></div>
+        </div>
+        <div class="mx-row" role="row" data-row-visible="{{row_02_visible}}">
+          <div class="mx-cell mx-cell--feature" role="rowheader"><span class="mx-feature-label">{{row_02_label}}</span><span class="mx-feature-hint">{{row_02_hint}}</span></div>
+          <div class="mx-cell" role="cell" data-plan-col="01" data-state="{{row_02_plan_01_state}}"><span class="mx-mobile-plan">{{plan_01_name}}</span><span class="mx-value">{{row_02_plan_01_value}}</span></div>
+          <div class="mx-cell" role="cell" data-plan-col="02" data-state="{{row_02_plan_02_state}}"><span class="mx-mobile-plan">{{plan_02_name}}</span><span class="mx-value">{{row_02_plan_02_value}}</span></div>
+          <div class="mx-cell" role="cell" data-plan-col="03" data-state="{{row_02_plan_03_state}}"><span class="mx-mobile-plan">{{plan_03_name}}</span><span class="mx-value">{{row_02_plan_03_value}}</span></div>
+          <div class="mx-cell" role="cell" data-plan-col="04" data-state="{{row_02_plan_04_state}}"><span class="mx-mobile-plan">{{plan_04_name}}</span><span class="mx-value">{{row_02_plan_04_value}}</span></div>
+        </div>
+        <div class="mx-row" role="row" data-row-visible="{{row_03_visible}}">
+          <div class="mx-cell mx-cell--feature" role="rowheader"><span class="mx-feature-label">{{row_03_label}}</span><span class="mx-feature-hint">{{row_03_hint}}</span></div>
+          <div class="mx-cell" role="cell" data-plan-col="01" data-state="{{row_03_plan_01_state}}"><span class="mx-mobile-plan">{{plan_01_name}}</span><span class="mx-value">{{row_03_plan_01_value}}</span></div>
+          <div class="mx-cell" role="cell" data-plan-col="02" data-state="{{row_03_plan_02_state}}"><span class="mx-mobile-plan">{{plan_02_name}}</span><span class="mx-value">{{row_03_plan_02_value}}</span></div>
+          <div class="mx-cell" role="cell" data-plan-col="03" data-state="{{row_03_plan_03_state}}"><span class="mx-mobile-plan">{{plan_03_name}}</span><span class="mx-value">{{row_03_plan_03_value}}</span></div>
+          <div class="mx-cell" role="cell" data-plan-col="04" data-state="{{row_03_plan_04_state}}"><span class="mx-mobile-plan">{{plan_04_name}}</span><span class="mx-value">{{row_03_plan_04_value}}</span></div>
+        </div>
+      </div>
+
+      <div class="mx-group" role="rowgroup" data-group-visible="{{group_02_visible}}" data-group-collapsed="{{group_02_collapsed}}">
+        <div class="mx-row--group" role="row"><div class="mx-group-title" role="rowheader">{{group_02_title}}</div></div>
+        <div class="mx-row" role="row" data-row-visible="{{row_04_visible}}">
+          <div class="mx-cell mx-cell--feature" role="rowheader"><span class="mx-feature-label">{{row_04_label}}</span><span class="mx-feature-hint">{{row_04_hint}}</span></div>
+          <div class="mx-cell" role="cell" data-plan-col="01" data-state="{{row_04_plan_01_state}}"><span class="mx-mobile-plan">{{plan_01_name}}</span><span class="mx-value">{{row_04_plan_01_value}}</span></div>
+          <div class="mx-cell" role="cell" data-plan-col="02" data-state="{{row_04_plan_02_state}}"><span class="mx-mobile-plan">{{plan_02_name}}</span><span class="mx-value">{{row_04_plan_02_value}}</span></div>
+          <div class="mx-cell" role="cell" data-plan-col="03" data-state="{{row_04_plan_03_state}}"><span class="mx-mobile-plan">{{plan_03_name}}</span><span class="mx-value">{{row_04_plan_03_value}}</span></div>
+          <div class="mx-cell" role="cell" data-plan-col="04" data-state="{{row_04_plan_04_state}}"><span class="mx-mobile-plan">{{plan_04_name}}</span><span class="mx-value">{{row_04_plan_04_value}}</span></div>
+        </div>
+        <div class="mx-row" role="row" data-row-visible="{{row_05_visible}}">
+          <div class="mx-cell mx-cell--feature" role="rowheader"><span class="mx-feature-label">{{row_05_label}}</span><span class="mx-feature-hint">{{row_05_hint}}</span></div>
+          <div class="mx-cell" role="cell" data-plan-col="01" data-state="{{row_05_plan_01_state}}"><span class="mx-mobile-plan">{{plan_01_name}}</span><span class="mx-value">{{row_05_plan_01_value}}</span></div>
+          <div class="mx-cell" role="cell" data-plan-col="02" data-state="{{row_05_plan_02_state}}"><span class="mx-mobile-plan">{{plan_02_name}}</span><span class="mx-value">{{row_05_plan_02_value}}</span></div>
+          <div class="mx-cell" role="cell" data-plan-col="03" data-state="{{row_05_plan_03_state}}"><span class="mx-mobile-plan">{{plan_03_name}}</span><span class="mx-value">{{row_05_plan_03_value}}</span></div>
+          <div class="mx-cell" role="cell" data-plan-col="04" data-state="{{row_05_plan_04_state}}"><span class="mx-mobile-plan">{{plan_04_name}}</span><span class="mx-value">{{row_05_plan_04_value}}</span></div>
+        </div>
+        <div class="mx-row" role="row" data-row-visible="{{row_06_visible}}">
+          <div class="mx-cell mx-cell--feature" role="rowheader"><span class="mx-feature-label">{{row_06_label}}</span><span class="mx-feature-hint">{{row_06_hint}}</span></div>
+          <div class="mx-cell" role="cell" data-plan-col="01" data-state="{{row_06_plan_01_state}}"><span class="mx-mobile-plan">{{plan_01_name}}</span><span class="mx-value">{{row_06_plan_01_value}}</span></div>
+          <div class="mx-cell" role="cell" data-plan-col="02" data-state="{{row_06_plan_02_state}}"><span class="mx-mobile-plan">{{plan_02_name}}</span><span class="mx-value">{{row_06_plan_02_value}}</span></div>
+          <div class="mx-cell" role="cell" data-plan-col="03" data-state="{{row_06_plan_03_state}}"><span class="mx-mobile-plan">{{plan_03_name}}</span><span class="mx-value">{{row_06_plan_03_value}}</span></div>
+          <div class="mx-cell" role="cell" data-plan-col="04" data-state="{{row_06_plan_04_state}}"><span class="mx-mobile-plan">{{plan_04_name}}</span><span class="mx-value">{{row_06_plan_04_value}}</span></div>
+        </div>
+      </div>
+
+      <div class="mx-group" role="rowgroup" data-group-visible="{{group_03_visible}}" data-group-collapsed="{{group_03_collapsed}}">
+        <div class="mx-row--group" role="row"><div class="mx-group-title" role="rowheader">{{group_03_title}}</div></div>
+        <div class="mx-row" role="row" data-row-visible="{{row_07_visible}}">
+          <div class="mx-cell mx-cell--feature" role="rowheader"><span class="mx-feature-label">{{row_07_label}}</span><span class="mx-feature-hint">{{row_07_hint}}</span></div>
+          <div class="mx-cell" role="cell" data-plan-col="01" data-state="{{row_07_plan_01_state}}"><span class="mx-mobile-plan">{{plan_01_name}}</span><span class="mx-value">{{row_07_plan_01_value}}</span></div>
+          <div class="mx-cell" role="cell" data-plan-col="02" data-state="{{row_07_plan_02_state}}"><span class="mx-mobile-plan">{{plan_02_name}}</span><span class="mx-value">{{row_07_plan_02_value}}</span></div>
+          <div class="mx-cell" role="cell" data-plan-col="03" data-state="{{row_07_plan_03_state}}"><span class="mx-mobile-plan">{{plan_03_name}}</span><span class="mx-value">{{row_07_plan_03_value}}</span></div>
+          <div class="mx-cell" role="cell" data-plan-col="04" data-state="{{row_07_plan_04_state}}"><span class="mx-mobile-plan">{{plan_04_name}}</span><span class="mx-value">{{row_07_plan_04_value}}</span></div>
+        </div>
+        <div class="mx-row" role="row" data-row-visible="{{row_08_visible}}">
+          <div class="mx-cell mx-cell--feature" role="rowheader"><span class="mx-feature-label">{{row_08_label}}</span><span class="mx-feature-hint">{{row_08_hint}}</span></div>
+          <div class="mx-cell" role="cell" data-plan-col="01" data-state="{{row_08_plan_01_state}}"><span class="mx-mobile-plan">{{plan_01_name}}</span><span class="mx-value">{{row_08_plan_01_value}}</span></div>
+          <div class="mx-cell" role="cell" data-plan-col="02" data-state="{{row_08_plan_02_state}}"><span class="mx-mobile-plan">{{plan_02_name}}</span><span class="mx-value">{{row_08_plan_02_value}}</span></div>
+          <div class="mx-cell" role="cell" data-plan-col="03" data-state="{{row_08_plan_03_state}}"><span class="mx-mobile-plan">{{plan_03_name}}</span><span class="mx-value">{{row_08_plan_03_value}}</span></div>
+          <div class="mx-cell" role="cell" data-plan-col="04" data-state="{{row_08_plan_04_state}}"><span class="mx-mobile-plan">{{plan_04_name}}</span><span class="mx-value">{{row_08_plan_04_value}}</span></div>
+        </div>
+        <div class="mx-row" role="row" data-row-visible="{{row_09_visible}}">
+          <div class="mx-cell mx-cell--feature" role="rowheader"><span class="mx-feature-label">{{row_09_label}}</span><span class="mx-feature-hint">{{row_09_hint}}</span></div>
+          <div class="mx-cell" role="cell" data-plan-col="01" data-state="{{row_09_plan_01_state}}"><span class="mx-mobile-plan">{{plan_01_name}}</span><span class="mx-value">{{row_09_plan_01_value}}</span></div>
+          <div class="mx-cell" role="cell" data-plan-col="02" data-state="{{row_09_plan_02_state}}"><span class="mx-mobile-plan">{{plan_02_name}}</span><span class="mx-value">{{row_09_plan_02_value}}</span></div>
+          <div class="mx-cell" role="cell" data-plan-col="03" data-state="{{row_09_plan_03_state}}"><span class="mx-mobile-plan">{{plan_03_name}}</span><span class="mx-value">{{row_09_plan_03_value}}</span></div>
+          <div class="mx-cell" role="cell" data-plan-col="04" data-state="{{row_09_plan_04_state}}"><span class="mx-mobile-plan">{{plan_04_name}}</span><span class="mx-value">{{row_09_plan_04_value}}</span></div>
+        </div>
+      </div>
+
+      <div class="mx-group" role="rowgroup" data-group-visible="{{group_04_visible}}" data-group-collapsed="{{group_04_collapsed}}">
+        <div class="mx-row--group" role="row"><div class="mx-group-title" role="rowheader">{{group_04_title}}</div></div>
+        <div class="mx-row" role="row" data-row-visible="{{row_10_visible}}">
+          <div class="mx-cell mx-cell--feature" role="rowheader"><span class="mx-feature-label">{{row_10_label}}</span><span class="mx-feature-hint">{{row_10_hint}}</span></div>
+          <div class="mx-cell" role="cell" data-plan-col="01" data-state="{{row_10_plan_01_state}}"><span class="mx-mobile-plan">{{plan_01_name}}</span><span class="mx-value">{{row_10_plan_01_value}}</span></div>
+          <div class="mx-cell" role="cell" data-plan-col="02" data-state="{{row_10_plan_02_state}}"><span class="mx-mobile-plan">{{plan_02_name}}</span><span class="mx-value">{{row_10_plan_02_value}}</span></div>
+          <div class="mx-cell" role="cell" data-plan-col="03" data-state="{{row_10_plan_03_state}}"><span class="mx-mobile-plan">{{plan_03_name}}</span><span class="mx-value">{{row_10_plan_03_value}}</span></div>
+          <div class="mx-cell" role="cell" data-plan-col="04" data-state="{{row_10_plan_04_state}}"><span class="mx-mobile-plan">{{plan_04_name}}</span><span class="mx-value">{{row_10_plan_04_value}}</span></div>
+        </div>
+        <div class="mx-row" role="row" data-row-visible="{{row_11_visible}}">
+          <div class="mx-cell mx-cell--feature" role="rowheader"><span class="mx-feature-label">{{row_11_label}}</span><span class="mx-feature-hint">{{row_11_hint}}</span></div>
+          <div class="mx-cell" role="cell" data-plan-col="01" data-state="{{row_11_plan_01_state}}"><span class="mx-mobile-plan">{{plan_01_name}}</span><span class="mx-value">{{row_11_plan_01_value}}</span></div>
+          <div class="mx-cell" role="cell" data-plan-col="02" data-state="{{row_11_plan_02_state}}"><span class="mx-mobile-plan">{{plan_02_name}}</span><span class="mx-value">{{row_11_plan_02_value}}</span></div>
+          <div class="mx-cell" role="cell" data-plan-col="03" data-state="{{row_11_plan_03_state}}"><span class="mx-mobile-plan">{{plan_03_name}}</span><span class="mx-value">{{row_11_plan_03_value}}</span></div>
+          <div class="mx-cell" role="cell" data-plan-col="04" data-state="{{row_11_plan_04_state}}"><span class="mx-mobile-plan">{{plan_04_name}}</span><span class="mx-value">{{row_11_plan_04_value}}</span></div>
+        </div>
+        <div class="mx-row" role="row" data-row-visible="{{row_12_visible}}">
+          <div class="mx-cell mx-cell--feature" role="rowheader"><span class="mx-feature-label">{{row_12_label}}</span><span class="mx-feature-hint">{{row_12_hint}}</span></div>
+          <div class="mx-cell" role="cell" data-plan-col="01" data-state="{{row_12_plan_01_state}}"><span class="mx-mobile-plan">{{plan_01_name}}</span><span class="mx-value">{{row_12_plan_01_value}}</span></div>
+          <div class="mx-cell" role="cell" data-plan-col="02" data-state="{{row_12_plan_02_state}}"><span class="mx-mobile-plan">{{plan_02_name}}</span><span class="mx-value">{{row_12_plan_02_value}}</span></div>
+          <div class="mx-cell" role="cell" data-plan-col="03" data-state="{{row_12_plan_03_state}}"><span class="mx-mobile-plan">{{plan_03_name}}</span><span class="mx-value">{{row_12_plan_03_value}}</span></div>
+          <div class="mx-cell" role="cell" data-plan-col="04" data-state="{{row_12_plan_04_state}}"><span class="mx-mobile-plan">{{plan_04_name}}</span><span class="mx-value">{{row_12_plan_04_value}}</span></div>
+        </div>
+      </div>
+
+        <div class="mx-row mx-row--cta" role="row" data-row-visible="{{cta_row_visible}}">
+          <div class="mx-cell mx-cell--feature" role="rowheader"><span class="mx-feature-label">{{cta_row_label}}</span></div>
+          <div class="mx-cell" role="cell" data-plan-col="01"><a class="mx-cta" href="{{plan_01_cta_url}}">{{plan_01_cta_label}}</a></div>
+          <div class="mx-cell" role="cell" data-plan-col="02"><a class="mx-cta" href="{{plan_02_cta_url}}">{{plan_02_cta_label}}</a></div>
+          <div class="mx-cell" role="cell" data-plan-col="03"><a class="mx-cta" href="{{plan_03_cta_url}}">{{plan_03_cta_label}}</a></div>
+          <div class="mx-cell" role="cell" data-plan-col="04"><a class="mx-cta" href="{{plan_04_cta_url}}">{{plan_04_cta_label}}</a></div>
+        </div>
+      </div>
+
+    <div class="mx-shell mx-shell--accordion" aria-label="{{table_label}}">
+      <details class="mx-acc" data-plan-col="01">
+        <summary class="mx-acc-summary"><span class="mx-acc-name">{{plan_01_name}}</span><span class="mx-acc-tag">{{plan_01_tag}}</span><span class="mx-acc-chev" aria-hidden="true"></span></summary>
+        <div class="mx-acc-body">
+          <div class="mx-acc-group" data-group-visible="{{group_01_visible}}">
+            <p class="mx-acc-group-title">{{group_01_title}}</p>
+            <dl class="mx-acc-list">
+              <div class="mx-acc-item" data-row-visible="{{row_01_visible}}">
+                <dt>{{row_01_label}}</dt>
+                <dd data-state="{{row_01_plan_01_state}}">{{row_01_plan_01_value}}</dd>
+              </div>
+              <div class="mx-acc-item" data-row-visible="{{row_02_visible}}">
+                <dt>{{row_02_label}}</dt>
+                <dd data-state="{{row_02_plan_01_state}}">{{row_02_plan_01_value}}</dd>
+              </div>
+              <div class="mx-acc-item" data-row-visible="{{row_03_visible}}">
+                <dt>{{row_03_label}}</dt>
+                <dd data-state="{{row_03_plan_01_state}}">{{row_03_plan_01_value}}</dd>
+              </div>
+            </dl>
+          </div>
+          <div class="mx-acc-group" data-group-visible="{{group_02_visible}}">
+            <p class="mx-acc-group-title">{{group_02_title}}</p>
+            <dl class="mx-acc-list">
+              <div class="mx-acc-item" data-row-visible="{{row_04_visible}}">
+                <dt>{{row_04_label}}</dt>
+                <dd data-state="{{row_04_plan_01_state}}">{{row_04_plan_01_value}}</dd>
+              </div>
+              <div class="mx-acc-item" data-row-visible="{{row_05_visible}}">
+                <dt>{{row_05_label}}</dt>
+                <dd data-state="{{row_05_plan_01_state}}">{{row_05_plan_01_value}}</dd>
+              </div>
+              <div class="mx-acc-item" data-row-visible="{{row_06_visible}}">
+                <dt>{{row_06_label}}</dt>
+                <dd data-state="{{row_06_plan_01_state}}">{{row_06_plan_01_value}}</dd>
+              </div>
+            </dl>
+          </div>
+          <div class="mx-acc-group" data-group-visible="{{group_03_visible}}">
+            <p class="mx-acc-group-title">{{group_03_title}}</p>
+            <dl class="mx-acc-list">
+              <div class="mx-acc-item" data-row-visible="{{row_07_visible}}">
+                <dt>{{row_07_label}}</dt>
+                <dd data-state="{{row_07_plan_01_state}}">{{row_07_plan_01_value}}</dd>
+              </div>
+              <div class="mx-acc-item" data-row-visible="{{row_08_visible}}">
+                <dt>{{row_08_label}}</dt>
+                <dd data-state="{{row_08_plan_01_state}}">{{row_08_plan_01_value}}</dd>
+              </div>
+              <div class="mx-acc-item" data-row-visible="{{row_09_visible}}">
+                <dt>{{row_09_label}}</dt>
+                <dd data-state="{{row_09_plan_01_state}}">{{row_09_plan_01_value}}</dd>
+              </div>
+            </dl>
+          </div>
+          <div class="mx-acc-group" data-group-visible="{{group_04_visible}}">
+            <p class="mx-acc-group-title">{{group_04_title}}</p>
+            <dl class="mx-acc-list">
+              <div class="mx-acc-item" data-row-visible="{{row_10_visible}}">
+                <dt>{{row_10_label}}</dt>
+                <dd data-state="{{row_10_plan_01_state}}">{{row_10_plan_01_value}}</dd>
+              </div>
+              <div class="mx-acc-item" data-row-visible="{{row_11_visible}}">
+                <dt>{{row_11_label}}</dt>
+                <dd data-state="{{row_11_plan_01_state}}">{{row_11_plan_01_value}}</dd>
+              </div>
+              <div class="mx-acc-item" data-row-visible="{{row_12_visible}}">
+                <dt>{{row_12_label}}</dt>
+                <dd data-state="{{row_12_plan_01_state}}">{{row_12_plan_01_value}}</dd>
+              </div>
+            </dl>
+          </div>
+          <a class="mx-acc-cta" data-row-visible="{{cta_row_visible}}" href="{{plan_01_cta_url}}">{{plan_01_cta_label}}</a>
+        </div>
+      </details>
+      <details class="mx-acc" data-plan-col="02" open>
+        <summary class="mx-acc-summary"><span class="mx-acc-name">{{plan_02_name}}</span><span class="mx-acc-tag">{{plan_02_tag}}</span><span class="mx-acc-chev" aria-hidden="true"></span></summary>
+        <div class="mx-acc-body">
+          <div class="mx-acc-group" data-group-visible="{{group_01_visible}}">
+            <p class="mx-acc-group-title">{{group_01_title}}</p>
+            <dl class="mx-acc-list">
+              <div class="mx-acc-item" data-row-visible="{{row_01_visible}}">
+                <dt>{{row_01_label}}</dt>
+                <dd data-state="{{row_01_plan_02_state}}">{{row_01_plan_02_value}}</dd>
+              </div>
+              <div class="mx-acc-item" data-row-visible="{{row_02_visible}}">
+                <dt>{{row_02_label}}</dt>
+                <dd data-state="{{row_02_plan_02_state}}">{{row_02_plan_02_value}}</dd>
+              </div>
+              <div class="mx-acc-item" data-row-visible="{{row_03_visible}}">
+                <dt>{{row_03_label}}</dt>
+                <dd data-state="{{row_03_plan_02_state}}">{{row_03_plan_02_value}}</dd>
+              </div>
+            </dl>
+          </div>
+          <div class="mx-acc-group" data-group-visible="{{group_02_visible}}">
+            <p class="mx-acc-group-title">{{group_02_title}}</p>
+            <dl class="mx-acc-list">
+              <div class="mx-acc-item" data-row-visible="{{row_04_visible}}">
+                <dt>{{row_04_label}}</dt>
+                <dd data-state="{{row_04_plan_02_state}}">{{row_04_plan_02_value}}</dd>
+              </div>
+              <div class="mx-acc-item" data-row-visible="{{row_05_visible}}">
+                <dt>{{row_05_label}}</dt>
+                <dd data-state="{{row_05_plan_02_state}}">{{row_05_plan_02_value}}</dd>
+              </div>
+              <div class="mx-acc-item" data-row-visible="{{row_06_visible}}">
+                <dt>{{row_06_label}}</dt>
+                <dd data-state="{{row_06_plan_02_state}}">{{row_06_plan_02_value}}</dd>
+              </div>
+            </dl>
+          </div>
+          <div class="mx-acc-group" data-group-visible="{{group_03_visible}}">
+            <p class="mx-acc-group-title">{{group_03_title}}</p>
+            <dl class="mx-acc-list">
+              <div class="mx-acc-item" data-row-visible="{{row_07_visible}}">
+                <dt>{{row_07_label}}</dt>
+                <dd data-state="{{row_07_plan_02_state}}">{{row_07_plan_02_value}}</dd>
+              </div>
+              <div class="mx-acc-item" data-row-visible="{{row_08_visible}}">
+                <dt>{{row_08_label}}</dt>
+                <dd data-state="{{row_08_plan_02_state}}">{{row_08_plan_02_value}}</dd>
+              </div>
+              <div class="mx-acc-item" data-row-visible="{{row_09_visible}}">
+                <dt>{{row_09_label}}</dt>
+                <dd data-state="{{row_09_plan_02_state}}">{{row_09_plan_02_value}}</dd>
+              </div>
+            </dl>
+          </div>
+          <div class="mx-acc-group" data-group-visible="{{group_04_visible}}">
+            <p class="mx-acc-group-title">{{group_04_title}}</p>
+            <dl class="mx-acc-list">
+              <div class="mx-acc-item" data-row-visible="{{row_10_visible}}">
+                <dt>{{row_10_label}}</dt>
+                <dd data-state="{{row_10_plan_02_state}}">{{row_10_plan_02_value}}</dd>
+              </div>
+              <div class="mx-acc-item" data-row-visible="{{row_11_visible}}">
+                <dt>{{row_11_label}}</dt>
+                <dd data-state="{{row_11_plan_02_state}}">{{row_11_plan_02_value}}</dd>
+              </div>
+              <div class="mx-acc-item" data-row-visible="{{row_12_visible}}">
+                <dt>{{row_12_label}}</dt>
+                <dd data-state="{{row_12_plan_02_state}}">{{row_12_plan_02_value}}</dd>
+              </div>
+            </dl>
+          </div>
+          <a class="mx-acc-cta" data-row-visible="{{cta_row_visible}}" href="{{plan_02_cta_url}}">{{plan_02_cta_label}}</a>
+        </div>
+      </details>
+      <details class="mx-acc" data-plan-col="03">
+        <summary class="mx-acc-summary"><span class="mx-acc-name">{{plan_03_name}}</span><span class="mx-acc-tag">{{plan_03_tag}}</span><span class="mx-acc-chev" aria-hidden="true"></span></summary>
+        <div class="mx-acc-body">
+          <div class="mx-acc-group" data-group-visible="{{group_01_visible}}">
+            <p class="mx-acc-group-title">{{group_01_title}}</p>
+            <dl class="mx-acc-list">
+              <div class="mx-acc-item" data-row-visible="{{row_01_visible}}">
+                <dt>{{row_01_label}}</dt>
+                <dd data-state="{{row_01_plan_03_state}}">{{row_01_plan_03_value}}</dd>
+              </div>
+              <div class="mx-acc-item" data-row-visible="{{row_02_visible}}">
+                <dt>{{row_02_label}}</dt>
+                <dd data-state="{{row_02_plan_03_state}}">{{row_02_plan_03_value}}</dd>
+              </div>
+              <div class="mx-acc-item" data-row-visible="{{row_03_visible}}">
+                <dt>{{row_03_label}}</dt>
+                <dd data-state="{{row_03_plan_03_state}}">{{row_03_plan_03_value}}</dd>
+              </div>
+            </dl>
+          </div>
+          <div class="mx-acc-group" data-group-visible="{{group_02_visible}}">
+            <p class="mx-acc-group-title">{{group_02_title}}</p>
+            <dl class="mx-acc-list">
+              <div class="mx-acc-item" data-row-visible="{{row_04_visible}}">
+                <dt>{{row_04_label}}</dt>
+                <dd data-state="{{row_04_plan_03_state}}">{{row_04_plan_03_value}}</dd>
+              </div>
+              <div class="mx-acc-item" data-row-visible="{{row_05_visible}}">
+                <dt>{{row_05_label}}</dt>
+                <dd data-state="{{row_05_plan_03_state}}">{{row_05_plan_03_value}}</dd>
+              </div>
+              <div class="mx-acc-item" data-row-visible="{{row_06_visible}}">
+                <dt>{{row_06_label}}</dt>
+                <dd data-state="{{row_06_plan_03_state}}">{{row_06_plan_03_value}}</dd>
+              </div>
+            </dl>
+          </div>
+          <div class="mx-acc-group" data-group-visible="{{group_03_visible}}">
+            <p class="mx-acc-group-title">{{group_03_title}}</p>
+            <dl class="mx-acc-list">
+              <div class="mx-acc-item" data-row-visible="{{row_07_visible}}">
+                <dt>{{row_07_label}}</dt>
+                <dd data-state="{{row_07_plan_03_state}}">{{row_07_plan_03_value}}</dd>
+              </div>
+              <div class="mx-acc-item" data-row-visible="{{row_08_visible}}">
+                <dt>{{row_08_label}}</dt>
+                <dd data-state="{{row_08_plan_03_state}}">{{row_08_plan_03_value}}</dd>
+              </div>
+              <div class="mx-acc-item" data-row-visible="{{row_09_visible}}">
+                <dt>{{row_09_label}}</dt>
+                <dd data-state="{{row_09_plan_03_state}}">{{row_09_plan_03_value}}</dd>
+              </div>
+            </dl>
+          </div>
+          <div class="mx-acc-group" data-group-visible="{{group_04_visible}}">
+            <p class="mx-acc-group-title">{{group_04_title}}</p>
+            <dl class="mx-acc-list">
+              <div class="mx-acc-item" data-row-visible="{{row_10_visible}}">
+                <dt>{{row_10_label}}</dt>
+                <dd data-state="{{row_10_plan_03_state}}">{{row_10_plan_03_value}}</dd>
+              </div>
+              <div class="mx-acc-item" data-row-visible="{{row_11_visible}}">
+                <dt>{{row_11_label}}</dt>
+                <dd data-state="{{row_11_plan_03_state}}">{{row_11_plan_03_value}}</dd>
+              </div>
+              <div class="mx-acc-item" data-row-visible="{{row_12_visible}}">
+                <dt>{{row_12_label}}</dt>
+                <dd data-state="{{row_12_plan_03_state}}">{{row_12_plan_03_value}}</dd>
+              </div>
+            </dl>
+          </div>
+          <a class="mx-acc-cta" data-row-visible="{{cta_row_visible}}" href="{{plan_03_cta_url}}">{{plan_03_cta_label}}</a>
+        </div>
+      </details>
+      <details class="mx-acc" data-plan-col="04">
+        <summary class="mx-acc-summary"><span class="mx-acc-name">{{plan_04_name}}</span><span class="mx-acc-tag">{{plan_04_tag}}</span><span class="mx-acc-chev" aria-hidden="true"></span></summary>
+        <div class="mx-acc-body">
+          <div class="mx-acc-group" data-group-visible="{{group_01_visible}}">
+            <p class="mx-acc-group-title">{{group_01_title}}</p>
+            <dl class="mx-acc-list">
+              <div class="mx-acc-item" data-row-visible="{{row_01_visible}}">
+                <dt>{{row_01_label}}</dt>
+                <dd data-state="{{row_01_plan_04_state}}">{{row_01_plan_04_value}}</dd>
+              </div>
+              <div class="mx-acc-item" data-row-visible="{{row_02_visible}}">
+                <dt>{{row_02_label}}</dt>
+                <dd data-state="{{row_02_plan_04_state}}">{{row_02_plan_04_value}}</dd>
+              </div>
+              <div class="mx-acc-item" data-row-visible="{{row_03_visible}}">
+                <dt>{{row_03_label}}</dt>
+                <dd data-state="{{row_03_plan_04_state}}">{{row_03_plan_04_value}}</dd>
+              </div>
+            </dl>
+          </div>
+          <div class="mx-acc-group" data-group-visible="{{group_02_visible}}">
+            <p class="mx-acc-group-title">{{group_02_title}}</p>
+            <dl class="mx-acc-list">
+              <div class="mx-acc-item" data-row-visible="{{row_04_visible}}">
+                <dt>{{row_04_label}}</dt>
+                <dd data-state="{{row_04_plan_04_state}}">{{row_04_plan_04_value}}</dd>
+              </div>
+              <div class="mx-acc-item" data-row-visible="{{row_05_visible}}">
+                <dt>{{row_05_label}}</dt>
+                <dd data-state="{{row_05_plan_04_state}}">{{row_05_plan_04_value}}</dd>
+              </div>
+              <div class="mx-acc-item" data-row-visible="{{row_06_visible}}">
+                <dt>{{row_06_label}}</dt>
+                <dd data-state="{{row_06_plan_04_state}}">{{row_06_plan_04_value}}</dd>
+              </div>
+            </dl>
+          </div>
+          <div class="mx-acc-group" data-group-visible="{{group_03_visible}}">
+            <p class="mx-acc-group-title">{{group_03_title}}</p>
+            <dl class="mx-acc-list">
+              <div class="mx-acc-item" data-row-visible="{{row_07_visible}}">
+                <dt>{{row_07_label}}</dt>
+                <dd data-state="{{row_07_plan_04_state}}">{{row_07_plan_04_value}}</dd>
+              </div>
+              <div class="mx-acc-item" data-row-visible="{{row_08_visible}}">
+                <dt>{{row_08_label}}</dt>
+                <dd data-state="{{row_08_plan_04_state}}">{{row_08_plan_04_value}}</dd>
+              </div>
+              <div class="mx-acc-item" data-row-visible="{{row_09_visible}}">
+                <dt>{{row_09_label}}</dt>
+                <dd data-state="{{row_09_plan_04_state}}">{{row_09_plan_04_value}}</dd>
+              </div>
+            </dl>
+          </div>
+          <div class="mx-acc-group" data-group-visible="{{group_04_visible}}">
+            <p class="mx-acc-group-title">{{group_04_title}}</p>
+            <dl class="mx-acc-list">
+              <div class="mx-acc-item" data-row-visible="{{row_10_visible}}">
+                <dt>{{row_10_label}}</dt>
+                <dd data-state="{{row_10_plan_04_state}}">{{row_10_plan_04_value}}</dd>
+              </div>
+              <div class="mx-acc-item" data-row-visible="{{row_11_visible}}">
+                <dt>{{row_11_label}}</dt>
+                <dd data-state="{{row_11_plan_04_state}}">{{row_11_plan_04_value}}</dd>
+              </div>
+              <div class="mx-acc-item" data-row-visible="{{row_12_visible}}">
+                <dt>{{row_12_label}}</dt>
+                <dd data-state="{{row_12_plan_04_state}}">{{row_12_plan_04_value}}</dd>
+              </div>
+            </dl>
+          </div>
+          <a class="mx-acc-cta" data-row-visible="{{cta_row_visible}}" href="{{plan_04_cta_url}}">{{plan_04_cta_label}}</a>
+        </div>
+      </details>
+    </div>
+
+    <p class="mx-disclaimer">{{disclaimer}}</p>
+  </div>
+</section>

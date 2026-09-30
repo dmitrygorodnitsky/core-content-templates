@@ -1,0 +1,7 @@
+{
+  "schemaVersion": 1,
+  "family": "CUSTOMER_PORTAL_SEO_PUBLIC",
+  "kind": "single-server-authored-root",
+  "children": [],
+  "reason": "Canonical metadata, visible FAQ, and FAQ JSON-LD are emitted from one validated authored document."
+}

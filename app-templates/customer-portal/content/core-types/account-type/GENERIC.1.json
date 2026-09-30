@@ -1,0 +1,20 @@
+{
+ "optimistic": 0,
+ "code": "GENERIC",
+ "nls": {
+  "en": {
+   "NAME": "Generic",
+   "DESCRIPTION": "Generic account type"
+  }
+ },
+ "organization": {
+  "optimistic": 1,
+  "id": 1,
+  "code": "SYSTEM"
+ },
+ "attributeOrder": [],
+ "attributes": [],
+ "id": 1,
+ "isAbstract": false,
+ "attributeGroups": []
+}

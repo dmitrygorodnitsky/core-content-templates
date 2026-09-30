@@ -1,0 +1,132 @@
+{
+  "$schema": "lab-ui/block@1",
+  "id": "pricing.credits-meter",
+  "category": "14-pricing",
+  "title": "Pricing · credits and tokens",
+  "description": "Usage/credits surface for routing tokens and other metered consumption. Two side-by-side cards: included monthly allowance per plan with overage rate, and discrete token packs with per-token economics. Distinct from pricing.addons-bundles, which is for capacity packs, not consumable usage.",
+  "canonical": false,
+  "theme": "light",
+  "source": {
+    "primary": "https://attio.com/pricing/",
+    "adapted_from": "Information architecture reference only — Attio's credits and add-on system. ServiceWand surfaces credits as a dedicated section because the routing tool's token economics need to be visible separately from buildings/seats add-ons.",
+    "decision": "Stage 1 pricing scaffold — new block, no equivalent in the existing pricing.* family."
+  },
+  "depends_on": {
+    "tokens": [
+      "--color-bg", "--color-text", "--color-heading", "--color-gray-bg", "--color-gray-blue",
+      "--color-white", "--color-text-accent", "--cta-accent", "--cta-accent-soft",
+      "--font-family", "--font-mono", "--container-width", "--container-padding-x",
+      "--radius-card", "--radius-card-sm", "--radius-pill", "--shadow-glow-soft",
+      "--type-h2-size", "--type-h2-weight", "--type-h2-leading", "--type-h2-tracking",
+      "--type-eyebrow-size", "--type-eyebrow-tracking", "--transition-fast"
+    ],
+    "other_blocks": []
+  },
+  "params": [
+    { "code": "eyebrow", "type": "LOCALIZED_STRING_SS", "default": "Credits and tokens", "name": "Section Eyebrow", "description": "Small uppercase label above the section heading." },
+    { "code": "title", "type": "LOCALIZED_STRING_SS", "default": "Routing tokens and metered usage.", "name": "Section Heading", "description": "Main heading for the credits/tokens section." },
+    { "code": "lede", "type": "LOCALIZED_STRING_SS", "default": "Every plan ships with a monthly token allowance for the routing tool. Buy more on demand or pre-purchase larger packs at a better per-token rate.", "name": "Section Lede", "description": "Introductory paragraph for the section." },
+    { "code": "collapsable", "type": "ENUM", "options": ["false", "true"], "default": "false", "name": "Collapsable", "description": "Shared pricing-section contract. This credits block records the value but does not visually collapse yet; collapse behavior will be added in a later pass." },
+    { "code": "collapsed", "type": "ENUM", "options": ["false", "true"], "default": "false", "name": "Collapsed by Default", "description": "Shared pricing-section contract. Currently ignored by this credits block until section collapse behavior is implemented." },
+    { "code": "billing_default", "type": "ENUM", "options": ["monthly", "annual"], "default": "monthly", "name": "Default Billing Period", "description": "Initial billing period. Listens to the cross-block `pricing:billing` event so the section can mirror the toggle elsewhere on the page." },
+    { "code": "dynamic_pricing_enabled", "type": "ENUM", "options": ["false", "true"], "default": "false", "name": "Dynamic Pricing Enabled", "description": "Opts this block into loading Core PIM routing-token pricing. When false or when loading fails, the static allowance and pack fields remain the rendered fallback/editor preview." },
+    { "code": "pricing_api_base", "type": "STRING", "default": "/core-pim/api", "name": "Pricing API Base", "description": "Core PIM API base path or origin. The shared pricing runtime posts to /public/{organization}/catalog/price-comparison.json unless a fixture URL is supplied." },
+    { "code": "pricing_organization", "type": "STRING", "default": "SERVICEWAND", "name": "Pricing Organization", "description": "Core PIM organization code used in the public catalog URL." },
+    { "code": "pricing_product_type_code", "type": "STRING", "default": "SERVICEWAND_SAAS_ROUTING_TOKENS", "name": "Pricing Product Type Code", "description": "Core PIM product type for routing-token expansion pricing." },
+    { "code": "pricing_sort_attribute_code", "type": "STRING", "default": "SORT_ORDER_PRIORITY", "name": "Pricing Sort Attribute Code", "description": "Product attribute used to sort token tiers before falling back to amount." },
+    { "code": "pricing_price_type_code", "type": "STRING", "default": "PER_UNIT", "name": "Pricing Price Type Code", "description": "Core PIM price type code for token unit pricing." },
+    { "code": "pricing_price_attribute_code", "type": "STRING", "default": "UNIT_PRICE", "name": "Pricing Price Attribute Code", "description": "Core PIM price attribute used to filter token unit prices." },
+    { "code": "pricing_price_attribute_values", "type": "STRING", "default": "3,4,4.5,5", "name": "Pricing Price Attribute Values", "description": "Comma-separated UNIT_PRICE values used by Core PIM filtering for routing-token tiers." },
+    { "code": "pricing_currency", "type": "STRING", "default": "CAD", "name": "Pricing Currency", "description": "Currency attribute value requested from Core PIM." },
+    { "code": "pricing_purchase_url", "type": "URL", "default": "#", "name": "Dynamic Pricing Purchase URL", "description": "CTA destination used when token tiers are dynamically rendered." },
+    { "code": "pricing_buy_label", "type": "LOCALIZED_STRING_SS", "default": "Buy token pack", "name": "Dynamic Pricing Buy Label", "description": "CTA label used for dynamically rendered token tiers with numeric pricing." },
+    { "code": "pricing_contact_label", "type": "LOCALIZED_STRING_SS", "default": "Contact us", "name": "Dynamic Pricing Contact Label", "description": "Fallback label for custom or negotiated token pricing." },
+    { "code": "pricing_token_unit_label", "type": "LOCALIZED_STRING_SS", "default": "tokens", "name": "Dynamic Pricing Token Unit Label", "description": "Unit label appended to dynamically rendered token amounts. This is a localized CMS fallback, not a JavaScript string." },
+    { "code": "pricing_token_rate_label", "type": "LOCALIZED_STRING_SS", "default": "per routing token", "name": "Dynamic Pricing Token Rate Label", "description": "Rate note for dynamically rendered numeric token tiers. This is a localized CMS fallback, not a JavaScript string." },
+    { "code": "pricing_token_custom_rate_label", "type": "LOCALIZED_STRING_SS", "default": "Negotiated rate", "name": "Dynamic Pricing Custom Token Rate Label", "description": "Rate note for dynamically rendered custom or negotiated token tiers. This is a localized CMS fallback, not a JavaScript string." },
+    { "code": "pricing_error_mode", "type": "ENUM", "options": ["fallback"], "default": "fallback", "name": "Dynamic Pricing Error Mode", "description": "Failure behavior for dynamic loading. Current supported behavior keeps the static CMS fallback and records data-pricing-error on the section." },
+
+    { "code": "allowance_kicker", "type": "LOCALIZED_STRING_SS", "default": "Included", "name": "Allowance Kicker", "description": "Small label above the allowance card title." },
+    { "code": "allowance_title", "type": "LOCALIZED_STRING_SS", "default": "Included with your plan", "name": "Allowance Title", "description": "Heading for the included-allowance card." },
+    { "code": "allowance_lede", "type": "LOCALIZED_STRING_SS", "default": "Monthly token pool for the routing tool, plus the per-token rate after the pool is consumed.", "name": "Allowance Lede", "description": "Sub-paragraph for the allowance card." },
+    { "code": "allowance_unit", "type": "LOCALIZED_STRING_SS", "default": "tokens /mo", "name": "Allowance Unit", "description": "Unit label shown next to each plan's included amount." },
+
+    { "code": "allowance_01_visible", "type": "ENUM", "options": ["show", "hide"], "default": "show", "name": "Allowance Plan 1 Visible", "description": "Whether the first plan row is rendered." },
+    { "code": "allowance_01_plan", "type": "LOCALIZED_STRING_SS", "default": "Starter", "name": "Allowance Plan 1 Name", "description": "Plan label for the first allowance row." },
+    { "code": "allowance_01_included", "type": "LOCALIZED_STRING_SS", "default": "0", "name": "Allowance Plan 1 Included", "description": "Included monthly token amount for the first plan." },
+    { "code": "allowance_01_overage", "type": "LOCALIZED_STRING_SS", "default": "$0.012 /token", "name": "Allowance Plan 1 Overage", "description": "Per-token rate after the included pool is consumed." },
+
+    { "code": "allowance_02_visible", "type": "ENUM", "options": ["show", "hide"], "default": "show", "name": "Allowance Plan 2 Visible", "description": "Whether the second plan row is rendered." },
+    { "code": "allowance_02_plan", "type": "LOCALIZED_STRING_SS", "default": "Growth", "name": "Allowance Plan 2 Name", "description": "Plan label for the second allowance row." },
+    { "code": "allowance_02_included", "type": "LOCALIZED_STRING_SS", "default": "10K", "name": "Allowance Plan 2 Included", "description": "Included monthly token amount for the second plan." },
+    { "code": "allowance_02_overage", "type": "LOCALIZED_STRING_SS", "default": "$0.010 /token", "name": "Allowance Plan 2 Overage", "description": "Per-token rate after the included pool is consumed." },
+
+    { "code": "allowance_03_visible", "type": "ENUM", "options": ["show", "hide"], "default": "show", "name": "Allowance Plan 3 Visible", "description": "Whether the third plan row is rendered." },
+    { "code": "allowance_03_plan", "type": "LOCALIZED_STRING_SS", "default": "Scale", "name": "Allowance Plan 3 Name", "description": "Plan label for the third allowance row." },
+    { "code": "allowance_03_included", "type": "LOCALIZED_STRING_SS", "default": "50K", "name": "Allowance Plan 3 Included", "description": "Included monthly token amount for the third plan." },
+    { "code": "allowance_03_overage", "type": "LOCALIZED_STRING_SS", "default": "$0.008 /token", "name": "Allowance Plan 3 Overage", "description": "Per-token rate after the included pool is consumed." },
+
+    { "code": "allowance_04_visible", "type": "ENUM", "options": ["show", "hide"], "default": "show", "name": "Allowance Plan 4 Visible", "description": "Whether the fourth plan row is rendered." },
+    { "code": "allowance_04_plan", "type": "LOCALIZED_STRING_SS", "default": "Enterprise", "name": "Allowance Plan 4 Name", "description": "Plan label for the fourth allowance row." },
+    { "code": "allowance_04_included", "type": "LOCALIZED_STRING_SS", "default": "Custom", "name": "Allowance Plan 4 Included", "description": "Included monthly token amount for the fourth plan." },
+    { "code": "allowance_04_overage", "type": "LOCALIZED_STRING_SS", "default": "Negotiated", "name": "Allowance Plan 4 Overage", "description": "Per-token rate after the included pool is consumed." },
+
+    { "code": "packs_kicker", "type": "LOCALIZED_STRING_SS", "default": "Pre-purchase", "name": "Packs Kicker", "description": "Small label above the packs card title." },
+    { "code": "packs_title", "type": "LOCALIZED_STRING_SS", "default": "Token packs", "name": "Packs Title", "description": "Heading for the packs card." },
+    { "code": "packs_lede", "type": "LOCALIZED_STRING_SS", "default": "Larger packs lower the per-token rate. Packs roll over month to month and apply on top of the plan allowance.", "name": "Packs Lede", "description": "Sub-paragraph for the packs card." },
+    { "code": "packs_cta_url", "type": "URL", "default": "#", "name": "Packs CTA URL", "description": "URL target for the packs CTA." },
+    { "code": "packs_cta_label", "type": "LOCALIZED_STRING_SS", "default": "See all token packs", "name": "Packs CTA Label", "description": "Button label for the packs CTA." },
+
+    { "code": "pack_01_visible", "type": "ENUM", "options": ["show", "hide"], "default": "show", "name": "Pack 1 Visible", "description": "Whether the first token pack is rendered." },
+    { "code": "pack_01_state", "type": "ENUM", "options": ["standard", "featured", "muted"], "default": "standard", "name": "Pack 1 State", "description": "Visual state for the first token pack." },
+    { "code": "pack_01_badge", "type": "LOCALIZED_STRING_SS", "default": "", "name": "Pack 1 Badge", "description": "Optional badge text above the first pack." },
+    { "code": "pack_01_name", "type": "LOCALIZED_STRING_SS", "default": "Starter pack", "name": "Pack 1 Name", "description": "Display name for the first token pack." },
+    { "code": "pack_01_amount", "type": "LOCALIZED_STRING_SS", "default": "10K", "name": "Pack 1 Amount", "description": "Token amount in the first pack." },
+    { "code": "pack_01_unit", "type": "LOCALIZED_STRING_SS", "default": "tokens", "name": "Pack 1 Unit", "description": "Unit suffix next to the first pack amount." },
+    { "code": "pack_01_price", "type": "LOCALIZED_STRING_SS", "default": "$120", "name": "Pack 1 Price", "description": "Display price for the first pack." },
+    { "code": "pack_01_per_unit", "type": "LOCALIZED_STRING_SS", "default": "$0.012 /token", "name": "Pack 1 Per-Token Rate", "description": "Derived per-token rate for the first pack." },
+
+    { "code": "pack_02_visible", "type": "ENUM", "options": ["show", "hide"], "default": "show", "name": "Pack 2 Visible", "description": "Whether the second token pack is rendered." },
+    { "code": "pack_02_state", "type": "ENUM", "options": ["standard", "featured", "muted"], "default": "featured", "name": "Pack 2 State", "description": "Visual state for the second token pack." },
+    { "code": "pack_02_badge", "type": "LOCALIZED_STRING_SS", "default": "Most teams", "name": "Pack 2 Badge", "description": "Optional badge text above the second pack." },
+    { "code": "pack_02_name", "type": "LOCALIZED_STRING_SS", "default": "Standard pack", "name": "Pack 2 Name", "description": "Display name for the second token pack." },
+    { "code": "pack_02_amount", "type": "LOCALIZED_STRING_SS", "default": "50K", "name": "Pack 2 Amount", "description": "Token amount in the second pack." },
+    { "code": "pack_02_unit", "type": "LOCALIZED_STRING_SS", "default": "tokens", "name": "Pack 2 Unit", "description": "Unit suffix next to the second pack amount." },
+    { "code": "pack_02_price", "type": "LOCALIZED_STRING_SS", "default": "$500", "name": "Pack 2 Price", "description": "Display price for the second pack." },
+    { "code": "pack_02_per_unit", "type": "LOCALIZED_STRING_SS", "default": "$0.010 /token", "name": "Pack 2 Per-Token Rate", "description": "Derived per-token rate for the second pack." },
+
+    { "code": "pack_03_visible", "type": "ENUM", "options": ["show", "hide"], "default": "show", "name": "Pack 3 Visible", "description": "Whether the third token pack is rendered." },
+    { "code": "pack_03_state", "type": "ENUM", "options": ["standard", "featured", "muted"], "default": "standard", "name": "Pack 3 State", "description": "Visual state for the third token pack." },
+    { "code": "pack_03_badge", "type": "LOCALIZED_STRING_SS", "default": "Best per-token", "name": "Pack 3 Badge", "description": "Optional badge text above the third pack." },
+    { "code": "pack_03_name", "type": "LOCALIZED_STRING_SS", "default": "Scale pack", "name": "Pack 3 Name", "description": "Display name for the third token pack." },
+    { "code": "pack_03_amount", "type": "LOCALIZED_STRING_SS", "default": "250K", "name": "Pack 3 Amount", "description": "Token amount in the third pack." },
+    { "code": "pack_03_unit", "type": "LOCALIZED_STRING_SS", "default": "tokens", "name": "Pack 3 Unit", "description": "Unit suffix next to the third pack amount." },
+    { "code": "pack_03_price", "type": "LOCALIZED_STRING_SS", "default": "$2,000", "name": "Pack 3 Price", "description": "Display price for the third pack." },
+    { "code": "pack_03_per_unit", "type": "LOCALIZED_STRING_SS", "default": "$0.008 /token", "name": "Pack 3 Per-Token Rate", "description": "Derived per-token rate for the third pack." },
+
+    { "code": "pack_04_visible", "type": "ENUM", "options": ["show", "hide"], "default": "hide", "name": "Pack 4 Visible", "description": "Whether the fourth token pack is rendered. Hidden by default — flip to 'show' for a fourth tier." },
+    { "code": "pack_04_state", "type": "ENUM", "options": ["standard", "featured", "muted"], "default": "muted", "name": "Pack 4 State", "description": "Visual state for the fourth token pack." },
+    { "code": "pack_04_badge", "type": "LOCALIZED_STRING_SS", "default": "Enterprise", "name": "Pack 4 Badge", "description": "Optional badge text above the fourth pack." },
+    { "code": "pack_04_name", "type": "LOCALIZED_STRING_SS", "default": "Custom pack", "name": "Pack 4 Name", "description": "Display name for the fourth token pack." },
+    { "code": "pack_04_amount", "type": "LOCALIZED_STRING_SS", "default": "1M+", "name": "Pack 4 Amount", "description": "Token amount in the fourth pack." },
+    { "code": "pack_04_unit", "type": "LOCALIZED_STRING_SS", "default": "tokens", "name": "Pack 4 Unit", "description": "Unit suffix next to the fourth pack amount." },
+    { "code": "pack_04_price", "type": "LOCALIZED_STRING_SS", "default": "Quoted", "name": "Pack 4 Price", "description": "Display price for the fourth pack." },
+    { "code": "pack_04_per_unit", "type": "LOCALIZED_STRING_SS", "default": "Negotiated rate", "name": "Pack 4 Per-Token Rate", "description": "Per-token note for the fourth pack." },
+
+    { "code": "explainer_visible", "type": "ENUM", "options": ["show", "hide"], "default": "show", "name": "Explainer Visible", "description": "Whether the explainer aside is rendered." },
+    { "code": "explainer_kicker", "type": "LOCALIZED_STRING_SS", "default": "How it adds up", "name": "Explainer Kicker", "description": "Small label inside the explainer aside." },
+    { "code": "explainer_text", "type": "LOCALIZED_STRING_SS", "default": "A single optimized route across 12 stops uses about 8 tokens. The Growth plan's 10K monthly allowance covers roughly 1,200 routes per month before overage applies.", "name": "Explainer Text", "description": "Plain-language example of token economics." },
+
+    { "code": "disclaimer", "type": "LOCALIZED_STRING_SS", "default": "Token consumption is approximate and depends on stop count, route constraints, and traffic data freshness.", "name": "Section Disclaimer", "description": "Small disclaimer shown below the section." }
+  ],
+  "preview": {
+    "390": "preview-390.png",
+    "1440": "preview-1440.png"
+  },
+  "notes": [
+    "Credits live in their own block because routing tokens are consumable usage, not capacity. Add-on packs go in pricing.addons-bundles.",
+    "Static allowance rows and pack tiers can each be hidden via *_visible ENUMs. Dynamic mode is not limited by the fallback pack count; it clones pack markup for every returned routing-token product.",
+    "Dynamic pricing is opt-in and targets SERVICEWAND_SAAS_ROUTING_TOKENS with PER_UNIT / UNIT_PRICE defaults. Static allowance and pack fields remain the CMS fallback/editor preview.",
+    "The block declares data-pricing-period but does not own a toggle — it only listens for cross-block billing events so future per-period rate variants can be wired in."
+  ]
+}

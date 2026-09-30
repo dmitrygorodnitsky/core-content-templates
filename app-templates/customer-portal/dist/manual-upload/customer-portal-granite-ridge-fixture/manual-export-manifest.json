@@ -1,0 +1,53 @@
+{
+ "schemaVersion": 1,
+ "uploadPerformed": false,
+ "mode": "fixture-demonstration",
+ "launchState": "demonstration-only",
+ "input": "app-templates/customer-portal/content/cases/granite-ridge-snow.customer-portal-fixture.json",
+ "template": {
+  "code": "CUSTOMER_PORTAL_GRANITE_RIDGE_FIXTURE",
+  "templateLanguage": "JTE",
+  "parameters": [
+   "PORTAL_REQUEST_FORM_URL",
+   "PORTAL_MAPS_API_KEY",
+   "PORTAL_MAPS_MAP_ID"
+  ],
+  "sha256": {
+   "head": "61a04d3709fb16a8aed409fd6aec77b8a4cfc728577eb5086fecde065d78f2c9",
+   "html": "7977bab36627b5e593f1c12a93b7732abd36d1fc53fa42eeff6e8a30e783a802",
+   "css": "7eded1ad0cc4a251232145fedd15a20de5cd0ab8bb43f4ba0e58ecf57e349989",
+   "javascript": "db505e9807d822e6c2a47b26474c0bbae7d8ae26e9e17fb99c55ff21baee5b23"
+  }
+ },
+ "runtime": {
+  "delivery": "inline-template-javascript",
+  "sameOriginRequired": false,
+  "dataMode": "fixture",
+  "authMode": "fixture",
+  "case": "granite-ridge-snow",
+  "openedModules": [
+   "overview",
+   "appointmentsTimeline",
+   "properties",
+   "orders",
+   "calendar",
+   "activity",
+   "proposals",
+   "care",
+   "pricing",
+   "profile",
+   "support"
+  ],
+  "openedLiveContracts": []
+ },
+ "constraints": [
+  "Every fact in this package is a repository-owned fixture. No customer, tenant, entitlement, operational, or payment fact comes from a source system.",
+  "The package must stay in fixture data mode. portal_case selects a demonstration organization only while portal_data_mode is fixture, and the runtime ignores it in live mode.",
+  "Authentication is not wired. The portal boots straight into the authenticated shell; it is a demonstration surface, not a customer-scoped product.",
+  "Checkout, cart, weather-trigger confirmation, access confirmation, contract approval, and support replies are local fixture transitions. None of them is a business result and none creates a record anywhere.",
+  "The nav brand is shortened to Granite Ridge because the accepted top-nav has no overflow treatment for a long brand. See design-requests/storm-portal-top-nav-brand-and-mobile-overflow.md; the shell still overflows horizontally at 375 and 390.",
+  "Pricing is reachable from the accepted Manage plan action on the storm home rail rather than from an eighth nav item, to stay inside the accepted nav item count.",
+  "PORTAL_MAPS_API_KEY is a public Google browser key by design and must be restricted by HTTP referrer and API list in the Google console. The package ships it empty: no Google script is loaded and the home screen lists the properties instead of drawing a map.",
+  "Opening any live contract requires replacing this package: a real session, a customer-scoped Account resolution, and per-module adapters that fail closed."
+ ]
+}

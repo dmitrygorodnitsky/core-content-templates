@@ -1,0 +1,182 @@
+{
+ "code": "WORKFORCE_LIFECYCLE",
+ "initialState": {
+  "id": 156,
+  "code": "INITIAL"
+ },
+ "nls": {
+  "ar": {
+   "DESCRIPTION": "<p></p>"
+  },
+  "en": {
+   "NAME": "Workforce Lifecycle",
+   "DESCRIPTION": "<p>Manages whether a workforce record is being prepared, active for operational use, or inactive.</p>"
+  },
+  "he": {
+   "DESCRIPTION": "<p></p>"
+  }
+ },
+ "entityType": "com.pixelnation.rm.domain.Resource",
+ "organization": {
+  "optimistic": 4,
+  "id": 8,
+  "code": "SERVICE_WAND_WINTER_SERVICES"
+ },
+ "id": 34,
+ "states": [
+  {
+   "style": {
+    "xPos": 1181.2945752022156,
+    "yPos": 390.3735576917777
+   },
+   "id": 157,
+   "code": "ACTIVE",
+   "nls": {
+    "ar": {
+     "DESCRIPTION": "<p></p>"
+    },
+    "en": {
+     "NAME": "Active",
+     "DESCRIPTION": "<p>The workforce record is active and can be used in applicable planning, assignment, and operational processes.</p>"
+    },
+    "he": {
+     "DESCRIPTION": "<p></p>"
+    }
+   },
+   "events": [
+    {
+     "id": 322,
+     "code": "ACTIVE-INACTIVE",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Deactivate",
+       "DESCRIPTION": "<p>Deactivates the workforce record and removes it from regular operational use.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     },
+     "targets": [
+      {
+       "id": 158,
+       "code": "INACTIVE"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "style": {
+    "xPos": 1613.7021570463082,
+    "yPos": 409.5054822036351
+   },
+   "id": 158,
+   "code": "INACTIVE",
+   "nls": {
+    "ar": {
+     "DESCRIPTION": "<p></p>"
+    },
+    "en": {
+     "NAME": "Inactive",
+     "DESCRIPTION": "<p>The workforce record is not currently available for regular operational use.</p>"
+    },
+    "he": {
+     "DESCRIPTION": "<p></p>"
+    }
+   },
+   "events": [
+    {
+     "id": 323,
+     "code": "INACTIVE-ACTIVE",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Activate",
+       "DESCRIPTION": "<p>Reactivates an inactive workforce record.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     },
+     "targets": [
+      {
+       "id": 157,
+       "code": "ACTIVE"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "style": {
+    "xPos": 731.9974650919015,
+    "yPos": 391.05956909061723
+   },
+   "id": 156,
+   "code": "INITIAL",
+   "nls": {
+    "ar": {
+     "DESCRIPTION": "<p></p>"
+    },
+    "en": {
+     "NAME": "Initial",
+     "DESCRIPTION": "<p>The workforce record has been created but has not yet been made available for operational use.</p>"
+    },
+    "he": {
+     "DESCRIPTION": "<p></p>"
+    }
+   },
+   "events": [
+    {
+     "id": 321,
+     "code": "INITIAL-ACTIVE",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Activate",
+       "DESCRIPTION": "<p>Activates the workforce record and makes it available for operational use.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     },
+     "targets": [
+      {
+       "id": 157,
+       "code": "ACTIVE"
+      }
+     ]
+    },
+    {
+     "id": 324,
+     "code": "INITIAL-INACTIVE",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Deactivate",
+       "DESCRIPTION": "<p>Marks the workforce record as inactive without first activating it.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     },
+     "targets": [
+      {
+       "id": 158,
+       "code": "INACTIVE"
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

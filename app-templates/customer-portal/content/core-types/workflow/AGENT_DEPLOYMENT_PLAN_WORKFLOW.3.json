@@ -1,0 +1,36 @@
+{
+ "code": "AGENT_DEPLOYMENT_PLAN_WORKFLOW",
+ "initialState": {
+  "id": 3,
+  "code": "DRAFT"
+ },
+ "nls": {
+  "en": {
+   "NAME": "Agent Deployment Plan Workflow",
+   "DESCRIPTION": "Draft workflow for saving and reviewing agent deployment plan documents before execution."
+  }
+ },
+ "entityType": "com.pixelnation.common.domain.Document",
+ "organization": {
+  "optimistic": 1,
+  "id": 1,
+  "code": "SYSTEM"
+ },
+ "id": 3,
+ "states": [
+  {
+   "style": {
+    "className": "bg-status-default text-status-default"
+   },
+   "id": 3,
+   "code": "DRAFT",
+   "nls": {
+    "en": {
+     "NAME": "Draft",
+     "DESCRIPTION": "Deployment plan is being prepared or reviewed."
+    }
+   },
+   "events": []
+  }
+ ]
+}

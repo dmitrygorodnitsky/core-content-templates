@@ -1,0 +1,212 @@
+{
+ "code": "SOFTWARE_DEVELOPMENT",
+ "initialState": {
+  "id": 6,
+  "code": "TODO"
+ },
+ "nls": {
+  "en": {
+   "NAME": "Software Development",
+   "DESCRIPTION": "Task workflow for Core-native LLM-assisted development."
+  }
+ },
+ "entityType": "com.pixelnation.svc.domain.Task",
+ "organization": {
+  "optimistic": 1,
+  "id": 1,
+  "code": "SYSTEM"
+ },
+ "id": 5,
+ "states": [
+  {
+   "style": {
+    "color": "#dc2626"
+   },
+   "id": 11,
+   "code": "CANCELED",
+   "nls": {
+    "en": {
+     "NAME": "Canceled",
+     "DESCRIPTION": "Task was canceled."
+    }
+   },
+   "events": []
+  },
+  {
+   "style": {
+    "color": "#16a34a"
+   },
+   "id": 10,
+   "code": "DONE",
+   "nls": {
+    "en": {
+     "NAME": "Done",
+     "DESCRIPTION": "Task is complete."
+    }
+   },
+   "events": []
+  },
+  {
+   "style": {
+    "color": "#7c3aed"
+   },
+   "id": 9,
+   "code": "HUMAN_REVIEW",
+   "nls": {
+    "en": {
+     "NAME": "Human Review",
+     "DESCRIPTION": "Implementation is ready for review."
+    }
+   },
+   "events": [
+    {
+     "orderIndex": 40,
+     "id": 5,
+     "code": "REOPEN",
+     "nls": {
+      "en": {
+       "NAME": "Reopen",
+       "DESCRIPTION": "Send the task back for more implementation work."
+      }
+     },
+     "targets": [
+      {
+       "id": 7,
+       "code": "IN_PROGRESS"
+      }
+     ]
+    },
+    {
+     "orderIndex": 50,
+     "id": 6,
+     "code": "COMPLETE",
+     "nls": {
+      "en": {
+       "NAME": "Complete",
+       "DESCRIPTION": "Mark the reviewed task as done."
+      }
+     },
+     "targets": [
+      {
+       "id": 10,
+       "code": "DONE"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "style": {
+    "color": "#0f766e"
+   },
+   "id": 7,
+   "code": "IN_PROGRESS",
+   "nls": {
+    "en": {
+     "NAME": "In Progress",
+     "DESCRIPTION": "Implementation is active."
+    }
+   },
+   "events": [
+    {
+     "orderIndex": 20,
+     "id": 3,
+     "code": "MARK_READY_TO_TEST",
+     "nls": {
+      "en": {
+       "NAME": "Ready To Test",
+       "DESCRIPTION": "Move implementation to local validation."
+      }
+     },
+     "targets": [
+      {
+       "id": 8,
+       "code": "LOCAL_TESTING"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "style": {
+    "color": "#a16207"
+   },
+   "id": 8,
+   "code": "LOCAL_TESTING",
+   "nls": {
+    "en": {
+     "NAME": "Local Testing",
+     "DESCRIPTION": "Local tests and verification are running."
+    }
+   },
+   "events": [
+    {
+     "orderIndex": 30,
+     "id": 4,
+     "code": "SUBMIT_REVIEW",
+     "nls": {
+      "en": {
+       "NAME": "Submit Review",
+       "DESCRIPTION": "Submit tested changes for human review."
+      }
+     },
+     "targets": [
+      {
+       "id": 9,
+       "code": "HUMAN_REVIEW"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "style": {
+    "color": "#64748b"
+   },
+   "id": 6,
+   "code": "TODO",
+   "nls": {
+    "en": {
+     "NAME": "Todo",
+     "DESCRIPTION": "Task is ready to be picked up."
+    }
+   },
+   "events": [
+    {
+     "orderIndex": 10,
+     "id": 2,
+     "code": "START_DEVELOPMENT",
+     "nls": {
+      "en": {
+       "NAME": "Start Development",
+       "DESCRIPTION": "Claim the task and begin implementation."
+      }
+     },
+     "targets": [
+      {
+       "id": 7,
+       "code": "IN_PROGRESS"
+      }
+     ]
+    },
+    {
+     "orderIndex": 90,
+     "id": 7,
+     "code": "CANCEL",
+     "nls": {
+      "en": {
+       "NAME": "Cancel",
+       "DESCRIPTION": "Cancel this task."
+      }
+     },
+     "targets": [
+      {
+       "id": 11,
+       "code": "CANCELED"
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

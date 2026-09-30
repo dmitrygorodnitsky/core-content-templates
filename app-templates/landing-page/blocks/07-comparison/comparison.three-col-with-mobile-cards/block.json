@@ -1,0 +1,1092 @@
+{
+  "$schema": "lab-ui/block@1",
+  "id": "comparison.three-col-with-mobile-cards",
+  "category": "07-comparison",
+  "title": "Comparison · the platform matrix",
+  "description": "ServiceWand-style comparison matrix with 2-6 product columns, per-cell icon status parameters, a highlighted primary column, and stacked mobile cards below 860px.",
+  "canonical": true,
+  "theme": "light",
+  "source": {
+    "primary": "https://example.com/ comparison section",
+    "adapted_from": "Live the platform comparison matrix, normalized as a lab-ui block contract",
+    "decision": "PM lock 2026-05-25 — comparison should match the platform matrix, not the old 3-way FSM table"
+  },
+  "depends_on": {
+    "tokens": [
+      "--color-bg",
+      "--color-text",
+      "--color-heading",
+      "--color-gray-blue",
+      "--cta-secondary-fill",
+      "--font-family",
+      "--font-mono",
+      "--container-width",
+      "--container-padding-x",
+      "--radius-card-sm",
+      "--type-h2-size",
+      "--type-h2-weight",
+      "--type-lead-size"
+    ],
+    "other_blocks": []
+  },
+  "background": {
+    "optional": true,
+    "default": "none",
+    "modes": [
+      "none",
+      "gradient",
+      "image"
+    ],
+    "role": "decorative section background",
+    "image": {
+      "recommended_size": "2880 × 1400",
+      "fit": "cover",
+      "position": "center",
+      "alt": ""
+    },
+    "gradient": {
+      "recommended": "subtle neutral/accent gradient only; do not use freeform decorative orbs"
+    },
+    "url_params": {
+      "mode": "bg",
+      "image": "bgImage",
+      "gradient": "bgGradient"
+    },
+    "notes": [
+      "Full-width comparison section background; gradient mode preferred over image because the table already has strong surface styling.",
+      "Background is decorative and must not replace content media slots or block copy.",
+      "Preview in any supported harness with ?bg=gradient or ?bg=image&bgImage=<encoded-url>."
+    ]
+  },
+  "params": [
+    {
+      "code": "eyebrow",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem"
+    },
+    {
+      "code": "title",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit."
+    },
+    {
+      "code": "lede",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed."
+    },
+    {
+      "code": "column_count",
+      "type": "ENUM",
+      "options": [
+        "2",
+        "3",
+        "4",
+        "5",
+        "6"
+      ],
+      "default": "6"
+    },
+    {
+      "code": "col_01_name",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "ServiceWand"
+    },
+    {
+      "code": "col_01_desc",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua enim ad minim veniam."
+    },
+    {
+      "code": "col_02_name",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "CRM Systems"
+    },
+    {
+      "code": "col_02_desc",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua quis nostrud exercitation."
+    },
+    {
+      "code": "col_03_name",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Field Service Tools"
+    },
+    {
+      "code": "col_03_desc",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ullamco laboris nisi."
+    },
+    {
+      "code": "col_04_name",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Monitoring Tools"
+    },
+    {
+      "code": "col_04_desc",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua aliquip ex ea commodo."
+    },
+    {
+      "code": "col_05_name",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "CMS & Portals"
+    },
+    {
+      "code": "col_05_desc",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua duis aute irure."
+    },
+    {
+      "code": "col_06_name",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Enterprise Platforms"
+    },
+    {
+      "code": "col_06_desc",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua reprehenderit voluptate velit."
+    },
+    {
+      "code": "slot_01_capability",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum"
+    },
+    {
+      "code": "slot_01_col_01",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "native"
+    },
+    {
+      "code": "slot_01_col_01_icon",
+      "type": "ENUM",
+      "options": [
+        "check",
+        "neutral",
+        "cross",
+        "none"
+      ],
+      "default": "check"
+    },
+    {
+      "code": "slot_01_col_02",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "partial"
+    },
+    {
+      "code": "slot_01_col_02_icon",
+      "type": "ENUM",
+      "options": [
+        "check",
+        "neutral",
+        "cross",
+        "none"
+      ],
+      "default": "check"
+    },
+    {
+      "code": "slot_01_col_03",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "partial"
+    },
+    {
+      "code": "slot_01_col_03_icon",
+      "type": "ENUM",
+      "options": [
+        "check",
+        "neutral",
+        "cross",
+        "none"
+      ],
+      "default": "neutral"
+    },
+    {
+      "code": "slot_01_col_04",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "partial"
+    },
+    {
+      "code": "slot_01_col_04_icon",
+      "type": "ENUM",
+      "options": [
+        "check",
+        "neutral",
+        "cross",
+        "none"
+      ],
+      "default": "cross"
+    },
+    {
+      "code": "slot_01_col_05",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "partial"
+    },
+    {
+      "code": "slot_01_col_05_icon",
+      "type": "ENUM",
+      "options": [
+        "check",
+        "neutral",
+        "cross",
+        "none"
+      ],
+      "default": "cross"
+    },
+    {
+      "code": "slot_01_col_06",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "partial"
+    },
+    {
+      "code": "slot_01_col_06_icon",
+      "type": "ENUM",
+      "options": [
+        "check",
+        "neutral",
+        "cross",
+        "none"
+      ],
+      "default": "check"
+    },
+    {
+      "code": "slot_02_capability",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum"
+    },
+    {
+      "code": "slot_02_col_01",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "native"
+    },
+    {
+      "code": "slot_02_col_01_icon",
+      "type": "ENUM",
+      "options": [
+        "check",
+        "neutral",
+        "cross",
+        "none"
+      ],
+      "default": "check"
+    },
+    {
+      "code": "slot_02_col_02",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "partial"
+    },
+    {
+      "code": "slot_02_col_02_icon",
+      "type": "ENUM",
+      "options": [
+        "check",
+        "neutral",
+        "cross",
+        "none"
+      ],
+      "default": "neutral"
+    },
+    {
+      "code": "slot_02_col_03",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "partial"
+    },
+    {
+      "code": "slot_02_col_03_icon",
+      "type": "ENUM",
+      "options": [
+        "check",
+        "neutral",
+        "cross",
+        "none"
+      ],
+      "default": "cross"
+    },
+    {
+      "code": "slot_02_col_04",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "partial"
+    },
+    {
+      "code": "slot_02_col_04_icon",
+      "type": "ENUM",
+      "options": [
+        "check",
+        "neutral",
+        "cross",
+        "none"
+      ],
+      "default": "cross"
+    },
+    {
+      "code": "slot_02_col_05",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "partial"
+    },
+    {
+      "code": "slot_02_col_05_icon",
+      "type": "ENUM",
+      "options": [
+        "check",
+        "neutral",
+        "cross",
+        "none"
+      ],
+      "default": "cross"
+    },
+    {
+      "code": "slot_02_col_06",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "partial"
+    },
+    {
+      "code": "slot_02_col_06_icon",
+      "type": "ENUM",
+      "options": [
+        "check",
+        "neutral",
+        "cross",
+        "none"
+      ],
+      "default": "check"
+    },
+    {
+      "code": "slot_03_capability",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum"
+    },
+    {
+      "code": "slot_03_col_01",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "native"
+    },
+    {
+      "code": "slot_03_col_01_icon",
+      "type": "ENUM",
+      "options": [
+        "check",
+        "neutral",
+        "cross",
+        "none"
+      ],
+      "default": "check"
+    },
+    {
+      "code": "slot_03_col_02",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "partial"
+    },
+    {
+      "code": "slot_03_col_02_icon",
+      "type": "ENUM",
+      "options": [
+        "check",
+        "neutral",
+        "cross",
+        "none"
+      ],
+      "default": "neutral"
+    },
+    {
+      "code": "slot_03_col_03",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "partial"
+    },
+    {
+      "code": "slot_03_col_03_icon",
+      "type": "ENUM",
+      "options": [
+        "check",
+        "neutral",
+        "cross",
+        "none"
+      ],
+      "default": "neutral"
+    },
+    {
+      "code": "slot_03_col_04",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "partial"
+    },
+    {
+      "code": "slot_03_col_04_icon",
+      "type": "ENUM",
+      "options": [
+        "check",
+        "neutral",
+        "cross",
+        "none"
+      ],
+      "default": "neutral"
+    },
+    {
+      "code": "slot_03_col_05",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "partial"
+    },
+    {
+      "code": "slot_03_col_05_icon",
+      "type": "ENUM",
+      "options": [
+        "check",
+        "neutral",
+        "cross",
+        "none"
+      ],
+      "default": "neutral"
+    },
+    {
+      "code": "slot_03_col_06",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "partial"
+    },
+    {
+      "code": "slot_03_col_06_icon",
+      "type": "ENUM",
+      "options": [
+        "check",
+        "neutral",
+        "cross",
+        "none"
+      ],
+      "default": "check"
+    },
+    {
+      "code": "slot_04_capability",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum"
+    },
+    {
+      "code": "slot_04_col_01",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "native"
+    },
+    {
+      "code": "slot_04_col_01_icon",
+      "type": "ENUM",
+      "options": [
+        "check",
+        "neutral",
+        "cross",
+        "none"
+      ],
+      "default": "check"
+    },
+    {
+      "code": "slot_04_col_02",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "partial"
+    },
+    {
+      "code": "slot_04_col_02_icon",
+      "type": "ENUM",
+      "options": [
+        "check",
+        "neutral",
+        "cross",
+        "none"
+      ],
+      "default": "cross"
+    },
+    {
+      "code": "slot_04_col_03",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "partial"
+    },
+    {
+      "code": "slot_04_col_03_icon",
+      "type": "ENUM",
+      "options": [
+        "check",
+        "neutral",
+        "cross",
+        "none"
+      ],
+      "default": "cross"
+    },
+    {
+      "code": "slot_04_col_04",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "partial"
+    },
+    {
+      "code": "slot_04_col_04_icon",
+      "type": "ENUM",
+      "options": [
+        "check",
+        "neutral",
+        "cross",
+        "none"
+      ],
+      "default": "cross"
+    },
+    {
+      "code": "slot_04_col_05",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "partial"
+    },
+    {
+      "code": "slot_04_col_05_icon",
+      "type": "ENUM",
+      "options": [
+        "check",
+        "neutral",
+        "cross",
+        "none"
+      ],
+      "default": "check"
+    },
+    {
+      "code": "slot_04_col_06",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "partial"
+    },
+    {
+      "code": "slot_04_col_06_icon",
+      "type": "ENUM",
+      "options": [
+        "check",
+        "neutral",
+        "cross",
+        "none"
+      ],
+      "default": "neutral"
+    },
+    {
+      "code": "slot_05_capability",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum"
+    },
+    {
+      "code": "slot_05_col_01",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "native"
+    },
+    {
+      "code": "slot_05_col_01_icon",
+      "type": "ENUM",
+      "options": [
+        "check",
+        "neutral",
+        "cross",
+        "none"
+      ],
+      "default": "check"
+    },
+    {
+      "code": "slot_05_col_02",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "partial"
+    },
+    {
+      "code": "slot_05_col_02_icon",
+      "type": "ENUM",
+      "options": [
+        "check",
+        "neutral",
+        "cross",
+        "none"
+      ],
+      "default": "neutral"
+    },
+    {
+      "code": "slot_05_col_03",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "partial"
+    },
+    {
+      "code": "slot_05_col_03_icon",
+      "type": "ENUM",
+      "options": [
+        "check",
+        "neutral",
+        "cross",
+        "none"
+      ],
+      "default": "cross"
+    },
+    {
+      "code": "slot_05_col_04",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "partial"
+    },
+    {
+      "code": "slot_05_col_04_icon",
+      "type": "ENUM",
+      "options": [
+        "check",
+        "neutral",
+        "cross",
+        "none"
+      ],
+      "default": "cross"
+    },
+    {
+      "code": "slot_05_col_05",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "partial"
+    },
+    {
+      "code": "slot_05_col_05_icon",
+      "type": "ENUM",
+      "options": [
+        "check",
+        "neutral",
+        "cross",
+        "none"
+      ],
+      "default": "cross"
+    },
+    {
+      "code": "slot_05_col_06",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "partial"
+    },
+    {
+      "code": "slot_05_col_06_icon",
+      "type": "ENUM",
+      "options": [
+        "check",
+        "neutral",
+        "cross",
+        "none"
+      ],
+      "default": "neutral"
+    },
+    {
+      "code": "slot_06_capability",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum"
+    },
+    {
+      "code": "slot_06_col_01",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "native"
+    },
+    {
+      "code": "slot_06_col_01_icon",
+      "type": "ENUM",
+      "options": [
+        "check",
+        "neutral",
+        "cross",
+        "none"
+      ],
+      "default": "check"
+    },
+    {
+      "code": "slot_06_col_02",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "partial"
+    },
+    {
+      "code": "slot_06_col_02_icon",
+      "type": "ENUM",
+      "options": [
+        "check",
+        "neutral",
+        "cross",
+        "none"
+      ],
+      "default": "cross"
+    },
+    {
+      "code": "slot_06_col_03",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "partial"
+    },
+    {
+      "code": "slot_06_col_03_icon",
+      "type": "ENUM",
+      "options": [
+        "check",
+        "neutral",
+        "cross",
+        "none"
+      ],
+      "default": "neutral"
+    },
+    {
+      "code": "slot_06_col_04",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "partial"
+    },
+    {
+      "code": "slot_06_col_04_icon",
+      "type": "ENUM",
+      "options": [
+        "check",
+        "neutral",
+        "cross",
+        "none"
+      ],
+      "default": "cross"
+    },
+    {
+      "code": "slot_06_col_05",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "partial"
+    },
+    {
+      "code": "slot_06_col_05_icon",
+      "type": "ENUM",
+      "options": [
+        "check",
+        "neutral",
+        "cross",
+        "none"
+      ],
+      "default": "cross"
+    },
+    {
+      "code": "slot_06_col_06",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "partial"
+    },
+    {
+      "code": "slot_06_col_06_icon",
+      "type": "ENUM",
+      "options": [
+        "check",
+        "neutral",
+        "cross",
+        "none"
+      ],
+      "default": "check"
+    },
+    {
+      "code": "slot_07_capability",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum"
+    },
+    {
+      "code": "slot_07_col_01",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "native"
+    },
+    {
+      "code": "slot_07_col_01_icon",
+      "type": "ENUM",
+      "options": [
+        "check",
+        "neutral",
+        "cross",
+        "none"
+      ],
+      "default": "check"
+    },
+    {
+      "code": "slot_07_col_02",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "partial"
+    },
+    {
+      "code": "slot_07_col_02_icon",
+      "type": "ENUM",
+      "options": [
+        "check",
+        "neutral",
+        "cross",
+        "none"
+      ],
+      "default": "cross"
+    },
+    {
+      "code": "slot_07_col_03",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "partial"
+    },
+    {
+      "code": "slot_07_col_03_icon",
+      "type": "ENUM",
+      "options": [
+        "check",
+        "neutral",
+        "cross",
+        "none"
+      ],
+      "default": "cross"
+    },
+    {
+      "code": "slot_07_col_04",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "partial"
+    },
+    {
+      "code": "slot_07_col_04_icon",
+      "type": "ENUM",
+      "options": [
+        "check",
+        "neutral",
+        "cross",
+        "none"
+      ],
+      "default": "check"
+    },
+    {
+      "code": "slot_07_col_05",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "partial"
+    },
+    {
+      "code": "slot_07_col_05_icon",
+      "type": "ENUM",
+      "options": [
+        "check",
+        "neutral",
+        "cross",
+        "none"
+      ],
+      "default": "cross"
+    },
+    {
+      "code": "slot_07_col_06",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "partial"
+    },
+    {
+      "code": "slot_07_col_06_icon",
+      "type": "ENUM",
+      "options": [
+        "check",
+        "neutral",
+        "cross",
+        "none"
+      ],
+      "default": "neutral"
+    },
+    {
+      "code": "slot_08_capability",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum"
+    },
+    {
+      "code": "slot_08_col_01",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "native"
+    },
+    {
+      "code": "slot_08_col_01_icon",
+      "type": "ENUM",
+      "options": [
+        "check",
+        "neutral",
+        "cross",
+        "none"
+      ],
+      "default": "check"
+    },
+    {
+      "code": "slot_08_col_02",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "partial"
+    },
+    {
+      "code": "slot_08_col_02_icon",
+      "type": "ENUM",
+      "options": [
+        "check",
+        "neutral",
+        "cross",
+        "none"
+      ],
+      "default": "neutral"
+    },
+    {
+      "code": "slot_08_col_03",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "partial"
+    },
+    {
+      "code": "slot_08_col_03_icon",
+      "type": "ENUM",
+      "options": [
+        "check",
+        "neutral",
+        "cross",
+        "none"
+      ],
+      "default": "neutral"
+    },
+    {
+      "code": "slot_08_col_04",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "partial"
+    },
+    {
+      "code": "slot_08_col_04_icon",
+      "type": "ENUM",
+      "options": [
+        "check",
+        "neutral",
+        "cross",
+        "none"
+      ],
+      "default": "neutral"
+    },
+    {
+      "code": "slot_08_col_05",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "partial"
+    },
+    {
+      "code": "slot_08_col_05_icon",
+      "type": "ENUM",
+      "options": [
+        "check",
+        "neutral",
+        "cross",
+        "none"
+      ],
+      "default": "neutral"
+    },
+    {
+      "code": "slot_08_col_06",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "partial"
+    },
+    {
+      "code": "slot_08_col_06_icon",
+      "type": "ENUM",
+      "options": [
+        "check",
+        "neutral",
+        "cross",
+        "none"
+      ],
+      "default": "neutral"
+    },
+    {
+      "code": "slot_09_capability",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum"
+    },
+    {
+      "code": "slot_09_col_01",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "native"
+    },
+    {
+      "code": "slot_09_col_01_icon",
+      "type": "ENUM",
+      "options": [
+        "check",
+        "neutral",
+        "cross",
+        "none"
+      ],
+      "default": "check"
+    },
+    {
+      "code": "slot_09_col_02",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "partial"
+    },
+    {
+      "code": "slot_09_col_02_icon",
+      "type": "ENUM",
+      "options": [
+        "check",
+        "neutral",
+        "cross",
+        "none"
+      ],
+      "default": "neutral"
+    },
+    {
+      "code": "slot_09_col_03",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "partial"
+    },
+    {
+      "code": "slot_09_col_03_icon",
+      "type": "ENUM",
+      "options": [
+        "check",
+        "neutral",
+        "cross",
+        "none"
+      ],
+      "default": "neutral"
+    },
+    {
+      "code": "slot_09_col_04",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "partial"
+    },
+    {
+      "code": "slot_09_col_04_icon",
+      "type": "ENUM",
+      "options": [
+        "check",
+        "neutral",
+        "cross",
+        "none"
+      ],
+      "default": "neutral"
+    },
+    {
+      "code": "slot_09_col_05",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "partial"
+    },
+    {
+      "code": "slot_09_col_05_icon",
+      "type": "ENUM",
+      "options": [
+        "check",
+        "neutral",
+        "cross",
+        "none"
+      ],
+      "default": "neutral"
+    },
+    {
+      "code": "slot_09_col_06",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "partial"
+    },
+    {
+      "code": "slot_09_col_06_icon",
+      "type": "ENUM",
+      "options": [
+        "check",
+        "neutral",
+        "cross",
+        "none"
+      ],
+      "default": "neutral"
+    }
+  ],
+  "preview": {
+    "390": "preview-390.png",
+    "1440": "preview-1440.png"
+  },
+  "previewVariants": [
+    {
+      "id": "2-columns",
+      "label": "2 columns",
+      "query": {
+        "columns": "2"
+      }
+    },
+    {
+      "id": "4-columns",
+      "label": "4 columns",
+      "query": {
+        "columns": "4"
+      }
+    },
+    {
+      "id": "6-columns",
+      "label": "6 columns",
+      "query": {
+        "columns": "6"
+      }
+    }
+  ],
+  "notes": [
+    "column_count controls product columns only; the left capability label column is structural and not counted.",
+    "Column 01 is the highlighted primary platform column. Columns above column_count are hidden in header, desktop rows, and mobile cards.",
+    "Each cell exposes text and icon params. Icon enum: check, neutral, cross, none.",
+    "Mobile keeps capability and column 01 visible, then collapses visible secondary columns behind per-row expanders."
+  ]
+}

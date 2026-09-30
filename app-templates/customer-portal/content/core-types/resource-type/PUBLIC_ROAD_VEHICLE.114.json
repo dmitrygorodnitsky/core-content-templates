@@ -1,0 +1,182 @@
+{
+ "optimistic": 10,
+ "code": "PUBLIC_ROAD_VEHICLE",
+ "nls": {
+  "en": {
+   "NAME": "Public Road Vehicle"
+  }
+ },
+ "workflow": {
+  "id": 8,
+  "code": "SIMPLE_RESOURCE"
+ },
+ "organization": {
+  "optimistic": 4,
+  "id": 8,
+  "code": "SERVICE_WAND_WINTER_SERVICES"
+ },
+ "attributeOrder": [
+  {
+   "IDENTIFICATION": [
+    {
+     "typeId": 146,
+     "attributeCode": "MAKE",
+     "visible": true
+    },
+    {
+     "typeId": 146,
+     "attributeCode": "YEAR",
+     "visible": true
+    },
+    {
+     "typeId": 146,
+     "attributeCode": "MODEL",
+     "visible": true
+    },
+    {
+     "typeId": 146,
+     "attributeCode": "COLOR",
+     "visible": true
+    }
+   ]
+  },
+  {
+   "REGISTRATION": [
+    {
+     "attributeCode": "VIN",
+     "visible": true
+    },
+    {
+     "attributeCode": "REGISTRATION_JURISDICTION",
+     "visible": true
+    },
+    {
+     "attributeCode": "LICENSE_PLATE",
+     "visible": true
+    }
+   ]
+  },
+  {
+   "OPERATIONAL_INFORMATION": [
+    {
+     "typeId": 110,
+     "attributeCode": "TRANSMISSION_TYPE",
+     "visible": true
+    },
+    {
+     "typeId": 110,
+     "attributeCode": "DEPOT",
+     "visible": true
+    },
+    {
+     "typeId": 110,
+     "attributeCode": "FUEL_TYPE",
+     "visible": true
+    }
+   ]
+  },
+  {
+   "default": [
+    {
+     "attributeCode": "RESOURCE_WORK_START",
+     "visible": true
+    },
+    {
+     "attributeCode": "RESOURCE_WORK_END",
+     "visible": true
+    }
+   ]
+  }
+ ],
+ "attributes": [
+  {
+   "code": "VIN",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "en": {
+     "NAME": "VIN"
+    }
+   },
+   "options": []
+  },
+  {
+   "code": "REGISTRATION_JURISDICTION",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "com.pixelnation.common.domain.State",
+   "nls": {
+    "en": {
+     "NAME": "Registration Jurisdiction"
+    }
+   },
+   "options": []
+  },
+  {
+   "code": "RESOURCE_WORK_START",
+   "required": true,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.time.LocalTime",
+   "nls": {
+    "en": {
+     "NAME": "Resource Work Start"
+    }
+   },
+   "options": []
+  },
+  {
+   "code": "RESOURCE_WORK_END",
+   "required": true,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.time.LocalTime",
+   "nls": {
+    "en": {
+     "NAME": "Resource Work End"
+    }
+   },
+   "options": []
+  },
+  {
+   "code": "LICENSE_PLATE",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "en": {
+     "NAME": "License Plate"
+    }
+   },
+   "options": []
+  }
+ ],
+ "id": 114,
+ "isAbstract": false,
+ "attributeGroups": [
+  {
+   "code": "REGISTRATION",
+   "nls": {
+    "ar": {
+     "DESCRIPTION": "<p></p>"
+    },
+    "en": {
+     "NAME": "Registration",
+     "DESCRIPTION": "<p>Contains the official vehicle registration and identification information required for legal operation, compliance, and fleet management.</p>"
+    },
+    "he": {
+     "DESCRIPTION": "<p></p>"
+    }
+   }
+  }
+ ]
+}

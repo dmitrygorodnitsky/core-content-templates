@@ -1,0 +1,1575 @@
+{
+  "schemaVersion": 1,
+  "comparisonMode": "strict",
+  "threshold": 0,
+  "rows": [
+    {
+      "width": 390,
+      "surface": "shop",
+      "changed": 0,
+      "pixels": 1077098,
+      "ratio": 0,
+      "dimensions": {
+        "reference": [
+          346,
+          3113
+        ],
+        "implementation": [
+          346,
+          3113
+        ]
+      },
+      "dom": {
+        "reference": {
+          "product-model-list": {
+            "x": 22,
+            "y": 0.1875,
+            "width": 346,
+            "height": 3112.75,
+            "fontSize": "16px",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(29, 29, 31)",
+            "borderRadius": "0px"
+          },
+          "product-model-section": {
+            "x": 22,
+            "y": 0.1875,
+            "width": 346,
+            "height": 1058.25,
+            "fontSize": "16px",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(29, 29, 31)",
+            "borderRadius": "0px"
+          },
+          "spa-shop-card": {
+            "x": 22,
+            "y": 74.1875,
+            "width": 346,
+            "height": 454.125,
+            "fontSize": "16px",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(255, 255, 255, 0.5)",
+            "border": "1px solid rgba(255, 255, 255, 0.7)",
+            "borderRadius": "22px"
+          }
+        },
+        "implementation": {
+          "product-model-list": {
+            "x": 22,
+            "y": 0.1875,
+            "width": 346,
+            "height": 3112.75,
+            "fontSize": "16px",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(29, 29, 31)",
+            "borderRadius": "0px"
+          },
+          "product-model-section": {
+            "x": 22,
+            "y": 0.1875,
+            "width": 346,
+            "height": 1058.25,
+            "fontSize": "16px",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(29, 29, 31)",
+            "borderRadius": "0px"
+          },
+          "spa-shop-card": {
+            "x": 22,
+            "y": 74.1875,
+            "width": 346,
+            "height": 454.125,
+            "fontSize": "16px",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(255, 255, 255, 0.5)",
+            "border": "1px solid rgba(255, 255, 255, 0.7)",
+            "borderRadius": "22px"
+          }
+        }
+      },
+      "reference": "docs/stream-tasks/calm-harbor-customer-portal-full-activation-program/evidence/W2-wave17-visual/reference-shop-390.png",
+      "implementation": "docs/stream-tasks/calm-harbor-customer-portal-full-activation-program/evidence/W2-wave17-visual/implementation-shop-390.png",
+      "diff": "docs/stream-tasks/calm-harbor-customer-portal-full-activation-program/evidence/W2-wave17-visual/diff-shop-390.png"
+    },
+    {
+      "width": 390,
+      "surface": "product",
+      "changed": 0,
+      "pixels": 605670,
+      "ratio": 0,
+      "dimensions": {
+        "reference": [
+          390,
+          1553
+        ],
+        "implementation": [
+          390,
+          1553
+        ]
+      },
+      "dom": {
+        "reference": {
+          "product-detail": {
+            "x": 0,
+            "y": 0,
+            "width": 390,
+            "height": 1552.890625,
+            "fontSize": "16px",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(29, 29, 31)",
+            "borderRadius": "0px"
+          },
+          "product-gallery": {
+            "x": 41,
+            "y": 78,
+            "width": 308,
+            "height": 307,
+            "fontSize": "16px",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(29, 29, 31)",
+            "borderRadius": "0px"
+          },
+          "product-review-list": {
+            "x": 22,
+            "y": 841.359375,
+            "width": 346,
+            "height": 577.75,
+            "fontSize": "16px",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(255, 255, 255, 0.55)",
+            "border": "1px solid rgba(255, 255, 255, 0.7)",
+            "borderRadius": "22px"
+          }
+        },
+        "implementation": {
+          "product-detail": {
+            "x": 0,
+            "y": 0,
+            "width": 390,
+            "height": 1552.890625,
+            "fontSize": "16px",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(29, 29, 31)",
+            "borderRadius": "0px"
+          },
+          "product-gallery": {
+            "x": 41,
+            "y": 78,
+            "width": 308,
+            "height": 307,
+            "fontSize": "16px",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(29, 29, 31)",
+            "borderRadius": "0px"
+          },
+          "product-review-list": {
+            "x": 22,
+            "y": 841.359375,
+            "width": 346,
+            "height": 577.75,
+            "fontSize": "16px",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(255, 255, 255, 0.55)",
+            "border": "1px solid rgba(255, 255, 255, 0.7)",
+            "borderRadius": "22px"
+          }
+        }
+      },
+      "reference": "docs/stream-tasks/calm-harbor-customer-portal-full-activation-program/evidence/W2-wave17-visual/reference-product-390.png",
+      "implementation": "docs/stream-tasks/calm-harbor-customer-portal-full-activation-program/evidence/W2-wave17-visual/implementation-product-390.png",
+      "diff": "docs/stream-tasks/calm-harbor-customer-portal-full-activation-program/evidence/W2-wave17-visual/diff-product-390.png"
+    },
+    {
+      "width": 390,
+      "surface": "product-no-media",
+      "changed": 0,
+      "pixels": 475410,
+      "ratio": 0,
+      "dimensions": {
+        "reference": [
+          390,
+          1219
+        ],
+        "implementation": [
+          390,
+          1219
+        ]
+      },
+      "dom": {
+        "reference": {
+          "product-detail": {
+            "x": 0,
+            "y": 0,
+            "width": 390,
+            "height": 1218.515625,
+            "fontSize": "16px",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(29, 29, 31)",
+            "borderRadius": "0px"
+          },
+          "product-gallery-primary": {
+            "x": 41,
+            "y": 78,
+            "width": 308,
+            "height": 231,
+            "fontSize": "16px",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(255, 255, 255, 0.5)",
+            "border": "1px dashed rgba(255, 255, 255, 0.7)",
+            "borderRadius": "18px"
+          },
+          "product-review-list": {
+            "x": 22,
+            "y": 709.359375,
+            "width": 346,
+            "height": 375.375,
+            "fontSize": "16px",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(255, 255, 255, 0.55)",
+            "border": "1px solid rgba(255, 255, 255, 0.7)",
+            "borderRadius": "22px"
+          }
+        },
+        "implementation": {
+          "product-detail": {
+            "x": 0,
+            "y": 0,
+            "width": 390,
+            "height": 1218.515625,
+            "fontSize": "16px",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(29, 29, 31)",
+            "borderRadius": "0px"
+          },
+          "product-gallery-primary": {
+            "x": 41,
+            "y": 78,
+            "width": 308,
+            "height": 231,
+            "fontSize": "16px",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(255, 255, 255, 0.5)",
+            "border": "1px dashed rgba(255, 255, 255, 0.7)",
+            "borderRadius": "18px"
+          },
+          "product-review-list": {
+            "x": 22,
+            "y": 709.359375,
+            "width": 346,
+            "height": 375.375,
+            "fontSize": "16px",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(255, 255, 255, 0.55)",
+            "border": "1px solid rgba(255, 255, 255, 0.7)",
+            "borderRadius": "22px"
+          }
+        }
+      },
+      "reference": "docs/stream-tasks/calm-harbor-customer-portal-full-activation-program/evidence/W2-wave17-visual/reference-product-no-media-390.png",
+      "implementation": "docs/stream-tasks/calm-harbor-customer-portal-full-activation-program/evidence/W2-wave17-visual/implementation-product-no-media-390.png",
+      "diff": "docs/stream-tasks/calm-harbor-customer-portal-full-activation-program/evidence/W2-wave17-visual/diff-product-no-media-390.png"
+    },
+    {
+      "width": 390,
+      "surface": "orders",
+      "changed": 0,
+      "pixels": 320190,
+      "ratio": 0,
+      "dimensions": {
+        "reference": [
+          390,
+          821
+        ],
+        "implementation": [
+          390,
+          821
+        ]
+      },
+      "dom": {
+        "reference": {
+          "spa-orders": {
+            "x": 0,
+            "y": 80,
+            "width": 390,
+            "height": 820.5,
+            "fontSize": "16px",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(29, 29, 31)",
+            "borderRadius": "0px"
+          },
+          "spa-order-list": {
+            "x": 22,
+            "y": 179.125,
+            "width": 346,
+            "height": 661.375,
+            "fontSize": "16px",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(255, 255, 255, 0.5)",
+            "border": "1px solid rgba(255, 255, 255, 0.7)",
+            "borderRadius": "22px"
+          },
+          "order-thumb": {
+            "x": 44,
+            "y": 237.125,
+            "width": 38,
+            "height": 38,
+            "fontSize": "16px",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(29, 29, 31)",
+            "borderRadius": "11px"
+          }
+        },
+        "implementation": {
+          "spa-orders": {
+            "x": 0,
+            "y": 80,
+            "width": 390,
+            "height": 820.5,
+            "fontSize": "16px",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(29, 29, 31)",
+            "borderRadius": "0px"
+          },
+          "spa-order-list": {
+            "x": 22,
+            "y": 179.125,
+            "width": 346,
+            "height": 661.375,
+            "fontSize": "16px",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(255, 255, 255, 0.5)",
+            "border": "1px solid rgba(255, 255, 255, 0.7)",
+            "borderRadius": "22px"
+          },
+          "order-thumb": {
+            "x": 44,
+            "y": 237.125,
+            "width": 38,
+            "height": 38,
+            "fontSize": "16px",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(29, 29, 31)",
+            "borderRadius": "11px"
+          }
+        }
+      },
+      "reference": "docs/stream-tasks/calm-harbor-customer-portal-full-activation-program/evidence/W2-wave17-visual/reference-orders-390.png",
+      "implementation": "docs/stream-tasks/calm-harbor-customer-portal-full-activation-program/evidence/W2-wave17-visual/implementation-orders-390.png",
+      "diff": "docs/stream-tasks/calm-harbor-customer-portal-full-activation-program/evidence/W2-wave17-visual/diff-orders-390.png"
+    },
+    {
+      "width": 768,
+      "surface": "shop",
+      "changed": 0,
+      "pixels": 1604384,
+      "ratio": 0,
+      "dimensions": {
+        "reference": [
+          724,
+          2216
+        ],
+        "implementation": [
+          724,
+          2216
+        ]
+      },
+      "dom": {
+        "reference": {
+          "product-model-list": {
+            "x": 22,
+            "y": 0.1875,
+            "width": 724,
+            "height": 2215.5,
+            "fontSize": "16px",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(29, 29, 31)",
+            "borderRadius": "0px"
+          },
+          "product-model-section": {
+            "x": 22,
+            "y": 0.1875,
+            "width": 724,
+            "height": 594.125,
+            "fontSize": "16px",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(29, 29, 31)",
+            "borderRadius": "0px"
+          },
+          "spa-shop-card": {
+            "x": 22,
+            "y": 74.1875,
+            "width": 354,
+            "height": 520.125,
+            "fontSize": "16px",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(255, 255, 255, 0.5)",
+            "border": "1px solid rgba(255, 255, 255, 0.7)",
+            "borderRadius": "22px"
+          }
+        },
+        "implementation": {
+          "product-model-list": {
+            "x": 22,
+            "y": 0.1875,
+            "width": 724,
+            "height": 2215.5,
+            "fontSize": "16px",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(29, 29, 31)",
+            "borderRadius": "0px"
+          },
+          "product-model-section": {
+            "x": 22,
+            "y": 0.1875,
+            "width": 724,
+            "height": 594.125,
+            "fontSize": "16px",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(29, 29, 31)",
+            "borderRadius": "0px"
+          },
+          "spa-shop-card": {
+            "x": 22,
+            "y": 74.1875,
+            "width": 354,
+            "height": 520.125,
+            "fontSize": "16px",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(255, 255, 255, 0.5)",
+            "border": "1px solid rgba(255, 255, 255, 0.7)",
+            "borderRadius": "22px"
+          }
+        }
+      },
+      "reference": "docs/stream-tasks/calm-harbor-customer-portal-full-activation-program/evidence/W2-wave17-visual/reference-shop-768.png",
+      "implementation": "docs/stream-tasks/calm-harbor-customer-portal-full-activation-program/evidence/W2-wave17-visual/implementation-shop-768.png",
+      "diff": "docs/stream-tasks/calm-harbor-customer-portal-full-activation-program/evidence/W2-wave17-visual/diff-shop-768.png"
+    },
+    {
+      "width": 768,
+      "surface": "product",
+      "changed": 0,
+      "pixels": 1250304,
+      "ratio": 0,
+      "dimensions": {
+        "reference": [
+          768,
+          1628
+        ],
+        "implementation": [
+          768,
+          1628
+        ]
+      },
+      "dom": {
+        "reference": {
+          "product-detail": {
+            "x": 0,
+            "y": 0,
+            "width": 768,
+            "height": 1627.984375,
+            "fontSize": "16px",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(29, 29, 31)",
+            "borderRadius": "0px"
+          },
+          "product-gallery": {
+            "x": 41,
+            "y": 78,
+            "width": 686,
+            "height": 590.5,
+            "fontSize": "16px",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(29, 29, 31)",
+            "borderRadius": "0px"
+          },
+          "product-review-list": {
+            "x": 22,
+            "y": 1067.421875,
+            "width": 724,
+            "height": 445.375,
+            "fontSize": "16px",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(255, 255, 255, 0.55)",
+            "border": "1px solid rgba(255, 255, 255, 0.7)",
+            "borderRadius": "22px"
+          }
+        },
+        "implementation": {
+          "product-detail": {
+            "x": 0,
+            "y": 0,
+            "width": 768,
+            "height": 1627.984375,
+            "fontSize": "16px",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(29, 29, 31)",
+            "borderRadius": "0px"
+          },
+          "product-gallery": {
+            "x": 41,
+            "y": 78,
+            "width": 686,
+            "height": 590.5,
+            "fontSize": "16px",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(29, 29, 31)",
+            "borderRadius": "0px"
+          },
+          "product-review-list": {
+            "x": 22,
+            "y": 1067.421875,
+            "width": 724,
+            "height": 445.375,
+            "fontSize": "16px",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(255, 255, 255, 0.55)",
+            "border": "1px solid rgba(255, 255, 255, 0.7)",
+            "borderRadius": "22px"
+          }
+        }
+      },
+      "reference": "docs/stream-tasks/calm-harbor-customer-portal-full-activation-program/evidence/W2-wave17-visual/reference-product-768.png",
+      "implementation": "docs/stream-tasks/calm-harbor-customer-portal-full-activation-program/evidence/W2-wave17-visual/implementation-product-768.png",
+      "diff": "docs/stream-tasks/calm-harbor-customer-portal-full-activation-program/evidence/W2-wave17-visual/diff-product-768.png"
+    },
+    {
+      "width": 768,
+      "surface": "product-no-media",
+      "changed": 0,
+      "pixels": 1048320,
+      "ratio": 0,
+      "dimensions": {
+        "reference": [
+          768,
+          1365
+        ],
+        "implementation": [
+          768,
+          1365
+        ]
+      },
+      "dom": {
+        "reference": {
+          "product-detail": {
+            "x": 0,
+            "y": 0,
+            "width": 768,
+            "height": 1364.796875,
+            "fontSize": "16px",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(29, 29, 31)",
+            "borderRadius": "0px"
+          },
+          "product-gallery-primary": {
+            "x": 41,
+            "y": 78,
+            "width": 686,
+            "height": 514.5,
+            "fontSize": "16px",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(255, 255, 255, 0.5)",
+            "border": "1px dashed rgba(255, 255, 255, 0.7)",
+            "borderRadius": "18px"
+          },
+          "product-review-list": {
+            "x": 22,
+            "y": 935.421875,
+            "width": 724,
+            "height": 314.1875,
+            "fontSize": "16px",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(255, 255, 255, 0.55)",
+            "border": "1px solid rgba(255, 255, 255, 0.7)",
+            "borderRadius": "22px"
+          }
+        },
+        "implementation": {
+          "product-detail": {
+            "x": 0,
+            "y": 0,
+            "width": 768,
+            "height": 1364.796875,
+            "fontSize": "16px",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(29, 29, 31)",
+            "borderRadius": "0px"
+          },
+          "product-gallery-primary": {
+            "x": 41,
+            "y": 78,
+            "width": 686,
+            "height": 514.5,
+            "fontSize": "16px",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(255, 255, 255, 0.5)",
+            "border": "1px dashed rgba(255, 255, 255, 0.7)",
+            "borderRadius": "18px"
+          },
+          "product-review-list": {
+            "x": 22,
+            "y": 935.421875,
+            "width": 724,
+            "height": 314.1875,
+            "fontSize": "16px",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(255, 255, 255, 0.55)",
+            "border": "1px solid rgba(255, 255, 255, 0.7)",
+            "borderRadius": "22px"
+          }
+        }
+      },
+      "reference": "docs/stream-tasks/calm-harbor-customer-portal-full-activation-program/evidence/W2-wave17-visual/reference-product-no-media-768.png",
+      "implementation": "docs/stream-tasks/calm-harbor-customer-portal-full-activation-program/evidence/W2-wave17-visual/implementation-product-no-media-768.png",
+      "diff": "docs/stream-tasks/calm-harbor-customer-portal-full-activation-program/evidence/W2-wave17-visual/diff-product-no-media-768.png"
+    },
+    {
+      "width": 768,
+      "surface": "orders",
+      "changed": 0,
+      "pixels": 442368,
+      "ratio": 0,
+      "dimensions": {
+        "reference": [
+          768,
+          576
+        ],
+        "implementation": [
+          768,
+          576
+        ]
+      },
+      "dom": {
+        "reference": {
+          "spa-orders": {
+            "x": 0,
+            "y": 82,
+            "width": 768,
+            "height": 575.03125,
+            "fontSize": "16px",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(29, 29, 31)",
+            "borderRadius": "0px"
+          },
+          "spa-order-list": {
+            "x": 22,
+            "y": 187.03125,
+            "width": 724,
+            "height": 410,
+            "fontSize": "16px",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(255, 255, 255, 0.5)",
+            "border": "1px solid rgba(255, 255, 255, 0.7)",
+            "borderRadius": "22px"
+          },
+          "order-thumb": {
+            "x": 44,
+            "y": 245.03125,
+            "width": 38,
+            "height": 38,
+            "fontSize": "16px",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(29, 29, 31)",
+            "borderRadius": "11px"
+          }
+        },
+        "implementation": {
+          "spa-orders": {
+            "x": 0,
+            "y": 82,
+            "width": 768,
+            "height": 575.03125,
+            "fontSize": "16px",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(29, 29, 31)",
+            "borderRadius": "0px"
+          },
+          "spa-order-list": {
+            "x": 22,
+            "y": 187.03125,
+            "width": 724,
+            "height": 410,
+            "fontSize": "16px",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(255, 255, 255, 0.5)",
+            "border": "1px solid rgba(255, 255, 255, 0.7)",
+            "borderRadius": "22px"
+          },
+          "order-thumb": {
+            "x": 44,
+            "y": 245.03125,
+            "width": 38,
+            "height": 38,
+            "fontSize": "16px",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(29, 29, 31)",
+            "borderRadius": "11px"
+          }
+        }
+      },
+      "reference": "docs/stream-tasks/calm-harbor-customer-portal-full-activation-program/evidence/W2-wave17-visual/reference-orders-768.png",
+      "implementation": "docs/stream-tasks/calm-harbor-customer-portal-full-activation-program/evidence/W2-wave17-visual/implementation-orders-768.png",
+      "diff": "docs/stream-tasks/calm-harbor-customer-portal-full-activation-program/evidence/W2-wave17-visual/diff-orders-768.png"
+    },
+    {
+      "width": 1180,
+      "surface": "shop",
+      "changed": 0,
+      "pixels": 2094972,
+      "ratio": 0,
+      "dimensions": {
+        "reference": [
+          1076,
+          1947
+        ],
+        "implementation": [
+          1076,
+          1947
+        ]
+      },
+      "dom": {
+        "reference": {
+          "product-model-list": {
+            "x": 52,
+            "y": 0.1875,
+            "width": 1076,
+            "height": 1946.5,
+            "fontSize": "16px",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(29, 29, 31)",
+            "borderRadius": "0px"
+          },
+          "product-model-section": {
+            "x": 52,
+            "y": 0.1875,
+            "width": 1076,
+            "height": 521.375,
+            "fontSize": "16px",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(29, 29, 31)",
+            "borderRadius": "0px"
+          },
+          "spa-shop-card": {
+            "x": 52,
+            "y": 74.1875,
+            "width": 257,
+            "height": 447.375,
+            "fontSize": "16px",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(255, 255, 255, 0.5)",
+            "border": "1px solid rgba(255, 255, 255, 0.7)",
+            "borderRadius": "22px"
+          }
+        },
+        "implementation": {
+          "product-model-list": {
+            "x": 52,
+            "y": 0.1875,
+            "width": 1076,
+            "height": 1946.5,
+            "fontSize": "16px",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(29, 29, 31)",
+            "borderRadius": "0px"
+          },
+          "product-model-section": {
+            "x": 52,
+            "y": 0.1875,
+            "width": 1076,
+            "height": 521.375,
+            "fontSize": "16px",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(29, 29, 31)",
+            "borderRadius": "0px"
+          },
+          "spa-shop-card": {
+            "x": 52,
+            "y": 74.1875,
+            "width": 257,
+            "height": 447.375,
+            "fontSize": "16px",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(255, 255, 255, 0.5)",
+            "border": "1px solid rgba(255, 255, 255, 0.7)",
+            "borderRadius": "22px"
+          }
+        }
+      },
+      "reference": "docs/stream-tasks/calm-harbor-customer-portal-full-activation-program/evidence/W2-wave17-visual/reference-shop-1180.png",
+      "implementation": "docs/stream-tasks/calm-harbor-customer-portal-full-activation-program/evidence/W2-wave17-visual/implementation-shop-1180.png",
+      "diff": "docs/stream-tasks/calm-harbor-customer-portal-full-activation-program/evidence/W2-wave17-visual/diff-shop-1180.png"
+    },
+    {
+      "width": 1180,
+      "surface": "product",
+      "changed": 0,
+      "pixels": 908160,
+      "ratio": 0,
+      "dimensions": {
+        "reference": [
+          880,
+          1032
+        ],
+        "implementation": [
+          880,
+          1032
+        ]
+      },
+      "dom": {
+        "reference": {
+          "product-detail": {
+            "x": 150,
+            "y": 80,
+            "width": 880,
+            "height": 1031.53125,
+            "fontSize": "16px",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(29, 29, 31)",
+            "borderRadius": "0px"
+          },
+          "product-gallery": {
+            "x": 191,
+            "y": 158,
+            "width": 390.828125,
+            "height": 369.109375,
+            "fontSize": "16px",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(29, 29, 31)",
+            "borderRadius": "0px"
+          },
+          "product-review-list": {
+            "x": 172,
+            "y": 572.5625,
+            "width": 836,
+            "height": 423.78125,
+            "fontSize": "16px",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(255, 255, 255, 0.55)",
+            "border": "1px solid rgba(255, 255, 255, 0.7)",
+            "borderRadius": "22px"
+          }
+        },
+        "implementation": {
+          "product-detail": {
+            "x": 150,
+            "y": 80,
+            "width": 880,
+            "height": 1031.53125,
+            "fontSize": "16px",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(29, 29, 31)",
+            "borderRadius": "0px"
+          },
+          "product-gallery": {
+            "x": 191,
+            "y": 158,
+            "width": 390.828125,
+            "height": 369.109375,
+            "fontSize": "16px",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(29, 29, 31)",
+            "borderRadius": "0px"
+          },
+          "product-review-list": {
+            "x": 172,
+            "y": 572.5625,
+            "width": 836,
+            "height": 423.78125,
+            "fontSize": "16px",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(255, 255, 255, 0.55)",
+            "border": "1px solid rgba(255, 255, 255, 0.7)",
+            "borderRadius": "22px"
+          }
+        }
+      },
+      "reference": "docs/stream-tasks/calm-harbor-customer-portal-full-activation-program/evidence/W2-wave17-visual/reference-product-1180.png",
+      "implementation": "docs/stream-tasks/calm-harbor-customer-portal-full-activation-program/evidence/W2-wave17-visual/implementation-product-1180.png",
+      "diff": "docs/stream-tasks/calm-harbor-customer-portal-full-activation-program/evidence/W2-wave17-visual/diff-product-1180.png"
+    },
+    {
+      "width": 1180,
+      "surface": "product-no-media",
+      "changed": 0,
+      "pixels": 762080,
+      "ratio": 0,
+      "dimensions": {
+        "reference": [
+          880,
+          866
+        ],
+        "implementation": [
+          880,
+          866
+        ]
+      },
+      "dom": {
+        "reference": {
+          "product-detail": {
+            "x": 150,
+            "y": 80,
+            "width": 880,
+            "height": 865.9375,
+            "fontSize": "16px",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(29, 29, 31)",
+            "borderRadius": "0px"
+          },
+          "product-gallery-primary": {
+            "x": 191,
+            "y": 158,
+            "width": 390.828125,
+            "height": 293.109375,
+            "fontSize": "16px",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(255, 255, 255, 0.5)",
+            "border": "1px dashed rgba(255, 255, 255, 0.7)",
+            "borderRadius": "18px"
+          },
+          "product-review-list": {
+            "x": 172,
+            "y": 516.5625,
+            "width": 836,
+            "height": 314.1875,
+            "fontSize": "16px",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(255, 255, 255, 0.55)",
+            "border": "1px solid rgba(255, 255, 255, 0.7)",
+            "borderRadius": "22px"
+          }
+        },
+        "implementation": {
+          "product-detail": {
+            "x": 150,
+            "y": 80,
+            "width": 880,
+            "height": 865.9375,
+            "fontSize": "16px",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(29, 29, 31)",
+            "borderRadius": "0px"
+          },
+          "product-gallery-primary": {
+            "x": 191,
+            "y": 158,
+            "width": 390.828125,
+            "height": 293.109375,
+            "fontSize": "16px",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(255, 255, 255, 0.5)",
+            "border": "1px dashed rgba(255, 255, 255, 0.7)",
+            "borderRadius": "18px"
+          },
+          "product-review-list": {
+            "x": 172,
+            "y": 516.5625,
+            "width": 836,
+            "height": 314.1875,
+            "fontSize": "16px",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(255, 255, 255, 0.55)",
+            "border": "1px solid rgba(255, 255, 255, 0.7)",
+            "borderRadius": "22px"
+          }
+        }
+      },
+      "reference": "docs/stream-tasks/calm-harbor-customer-portal-full-activation-program/evidence/W2-wave17-visual/reference-product-no-media-1180.png",
+      "implementation": "docs/stream-tasks/calm-harbor-customer-portal-full-activation-program/evidence/W2-wave17-visual/implementation-product-no-media-1180.png",
+      "diff": "docs/stream-tasks/calm-harbor-customer-portal-full-activation-program/evidence/W2-wave17-visual/diff-product-no-media-1180.png"
+    },
+    {
+      "width": 1180,
+      "surface": "orders",
+      "changed": 0,
+      "pixels": 586880,
+      "ratio": 0,
+      "dimensions": {
+        "reference": [
+          1120,
+          524
+        ],
+        "implementation": [
+          1120,
+          524
+        ]
+      },
+      "dom": {
+        "reference": {
+          "spa-orders": {
+            "x": 30,
+            "y": 82,
+            "width": 1120,
+            "height": 523.03125,
+            "fontSize": "16px",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(29, 29, 31)",
+            "borderRadius": "0px"
+          },
+          "spa-order-list": {
+            "x": 52,
+            "y": 187.03125,
+            "width": 1076,
+            "height": 358,
+            "fontSize": "16px",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(255, 255, 255, 0.5)",
+            "border": "1px solid rgba(255, 255, 255, 0.7)",
+            "borderRadius": "22px"
+          },
+          "order-thumb": {
+            "x": 74,
+            "y": 245.03125,
+            "width": 38,
+            "height": 38,
+            "fontSize": "16px",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(29, 29, 31)",
+            "borderRadius": "11px"
+          }
+        },
+        "implementation": {
+          "spa-orders": {
+            "x": 30,
+            "y": 82,
+            "width": 1120,
+            "height": 523.03125,
+            "fontSize": "16px",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(29, 29, 31)",
+            "borderRadius": "0px"
+          },
+          "spa-order-list": {
+            "x": 52,
+            "y": 187.03125,
+            "width": 1076,
+            "height": 358,
+            "fontSize": "16px",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(255, 255, 255, 0.5)",
+            "border": "1px solid rgba(255, 255, 255, 0.7)",
+            "borderRadius": "22px"
+          },
+          "order-thumb": {
+            "x": 74,
+            "y": 245.03125,
+            "width": 38,
+            "height": 38,
+            "fontSize": "16px",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(29, 29, 31)",
+            "borderRadius": "11px"
+          }
+        }
+      },
+      "reference": "docs/stream-tasks/calm-harbor-customer-portal-full-activation-program/evidence/W2-wave17-visual/reference-orders-1180.png",
+      "implementation": "docs/stream-tasks/calm-harbor-customer-portal-full-activation-program/evidence/W2-wave17-visual/implementation-orders-1180.png",
+      "diff": "docs/stream-tasks/calm-harbor-customer-portal-full-activation-program/evidence/W2-wave17-visual/diff-orders-1180.png"
+    },
+    {
+      "width": 1440,
+      "surface": "shop",
+      "changed": 0,
+      "pixels": 2094972,
+      "ratio": 0,
+      "dimensions": {
+        "reference": [
+          1076,
+          1947
+        ],
+        "implementation": [
+          1076,
+          1947
+        ]
+      },
+      "dom": {
+        "reference": {
+          "product-model-list": {
+            "x": 182,
+            "y": 0.1875,
+            "width": 1076,
+            "height": 1946.5,
+            "fontSize": "16px",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(29, 29, 31)",
+            "borderRadius": "0px"
+          },
+          "product-model-section": {
+            "x": 182,
+            "y": 0.1875,
+            "width": 1076,
+            "height": 521.375,
+            "fontSize": "16px",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(29, 29, 31)",
+            "borderRadius": "0px"
+          },
+          "spa-shop-card": {
+            "x": 182,
+            "y": 74.1875,
+            "width": 257,
+            "height": 447.375,
+            "fontSize": "16px",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(255, 255, 255, 0.5)",
+            "border": "1px solid rgba(255, 255, 255, 0.7)",
+            "borderRadius": "22px"
+          }
+        },
+        "implementation": {
+          "product-model-list": {
+            "x": 182,
+            "y": 0.1875,
+            "width": 1076,
+            "height": 1946.5,
+            "fontSize": "16px",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(29, 29, 31)",
+            "borderRadius": "0px"
+          },
+          "product-model-section": {
+            "x": 182,
+            "y": 0.1875,
+            "width": 1076,
+            "height": 521.375,
+            "fontSize": "16px",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(29, 29, 31)",
+            "borderRadius": "0px"
+          },
+          "spa-shop-card": {
+            "x": 182,
+            "y": 74.1875,
+            "width": 257,
+            "height": 447.375,
+            "fontSize": "16px",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(255, 255, 255, 0.5)",
+            "border": "1px solid rgba(255, 255, 255, 0.7)",
+            "borderRadius": "22px"
+          }
+        }
+      },
+      "reference": "docs/stream-tasks/calm-harbor-customer-portal-full-activation-program/evidence/W2-wave17-visual/reference-shop-1440.png",
+      "implementation": "docs/stream-tasks/calm-harbor-customer-portal-full-activation-program/evidence/W2-wave17-visual/implementation-shop-1440.png",
+      "diff": "docs/stream-tasks/calm-harbor-customer-portal-full-activation-program/evidence/W2-wave17-visual/diff-shop-1440.png"
+    },
+    {
+      "width": 1440,
+      "surface": "product",
+      "changed": 0,
+      "pixels": 908160,
+      "ratio": 0,
+      "dimensions": {
+        "reference": [
+          880,
+          1032
+        ],
+        "implementation": [
+          880,
+          1032
+        ]
+      },
+      "dom": {
+        "reference": {
+          "product-detail": {
+            "x": 280,
+            "y": 80,
+            "width": 880,
+            "height": 1031.53125,
+            "fontSize": "16px",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(29, 29, 31)",
+            "borderRadius": "0px"
+          },
+          "product-gallery": {
+            "x": 321,
+            "y": 158,
+            "width": 390.828125,
+            "height": 369.109375,
+            "fontSize": "16px",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(29, 29, 31)",
+            "borderRadius": "0px"
+          },
+          "product-review-list": {
+            "x": 302,
+            "y": 572.5625,
+            "width": 836,
+            "height": 423.78125,
+            "fontSize": "16px",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(255, 255, 255, 0.55)",
+            "border": "1px solid rgba(255, 255, 255, 0.7)",
+            "borderRadius": "22px"
+          }
+        },
+        "implementation": {
+          "product-detail": {
+            "x": 280,
+            "y": 80,
+            "width": 880,
+            "height": 1031.53125,
+            "fontSize": "16px",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(29, 29, 31)",
+            "borderRadius": "0px"
+          },
+          "product-gallery": {
+            "x": 321,
+            "y": 158,
+            "width": 390.828125,
+            "height": 369.109375,
+            "fontSize": "16px",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(29, 29, 31)",
+            "borderRadius": "0px"
+          },
+          "product-review-list": {
+            "x": 302,
+            "y": 572.5625,
+            "width": 836,
+            "height": 423.78125,
+            "fontSize": "16px",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(255, 255, 255, 0.55)",
+            "border": "1px solid rgba(255, 255, 255, 0.7)",
+            "borderRadius": "22px"
+          }
+        }
+      },
+      "reference": "docs/stream-tasks/calm-harbor-customer-portal-full-activation-program/evidence/W2-wave17-visual/reference-product-1440.png",
+      "implementation": "docs/stream-tasks/calm-harbor-customer-portal-full-activation-program/evidence/W2-wave17-visual/implementation-product-1440.png",
+      "diff": "docs/stream-tasks/calm-harbor-customer-portal-full-activation-program/evidence/W2-wave17-visual/diff-product-1440.png"
+    },
+    {
+      "width": 1440,
+      "surface": "product-no-media",
+      "changed": 0,
+      "pixels": 762080,
+      "ratio": 0,
+      "dimensions": {
+        "reference": [
+          880,
+          866
+        ],
+        "implementation": [
+          880,
+          866
+        ]
+      },
+      "dom": {
+        "reference": {
+          "product-detail": {
+            "x": 280,
+            "y": 80,
+            "width": 880,
+            "height": 865.9375,
+            "fontSize": "16px",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(29, 29, 31)",
+            "borderRadius": "0px"
+          },
+          "product-gallery-primary": {
+            "x": 321,
+            "y": 158,
+            "width": 390.828125,
+            "height": 293.109375,
+            "fontSize": "16px",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(255, 255, 255, 0.5)",
+            "border": "1px dashed rgba(255, 255, 255, 0.7)",
+            "borderRadius": "18px"
+          },
+          "product-review-list": {
+            "x": 302,
+            "y": 516.5625,
+            "width": 836,
+            "height": 314.1875,
+            "fontSize": "16px",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(255, 255, 255, 0.55)",
+            "border": "1px solid rgba(255, 255, 255, 0.7)",
+            "borderRadius": "22px"
+          }
+        },
+        "implementation": {
+          "product-detail": {
+            "x": 280,
+            "y": 80,
+            "width": 880,
+            "height": 865.9375,
+            "fontSize": "16px",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(29, 29, 31)",
+            "borderRadius": "0px"
+          },
+          "product-gallery-primary": {
+            "x": 321,
+            "y": 158,
+            "width": 390.828125,
+            "height": 293.109375,
+            "fontSize": "16px",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(255, 255, 255, 0.5)",
+            "border": "1px dashed rgba(255, 255, 255, 0.7)",
+            "borderRadius": "18px"
+          },
+          "product-review-list": {
+            "x": 302,
+            "y": 516.5625,
+            "width": 836,
+            "height": 314.1875,
+            "fontSize": "16px",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(255, 255, 255, 0.55)",
+            "border": "1px solid rgba(255, 255, 255, 0.7)",
+            "borderRadius": "22px"
+          }
+        }
+      },
+      "reference": "docs/stream-tasks/calm-harbor-customer-portal-full-activation-program/evidence/W2-wave17-visual/reference-product-no-media-1440.png",
+      "implementation": "docs/stream-tasks/calm-harbor-customer-portal-full-activation-program/evidence/W2-wave17-visual/implementation-product-no-media-1440.png",
+      "diff": "docs/stream-tasks/calm-harbor-customer-portal-full-activation-program/evidence/W2-wave17-visual/diff-product-no-media-1440.png"
+    },
+    {
+      "width": 1440,
+      "surface": "orders",
+      "changed": 0,
+      "pixels": 586880,
+      "ratio": 0,
+      "dimensions": {
+        "reference": [
+          1120,
+          524
+        ],
+        "implementation": [
+          1120,
+          524
+        ]
+      },
+      "dom": {
+        "reference": {
+          "spa-orders": {
+            "x": 160,
+            "y": 82,
+            "width": 1120,
+            "height": 523.03125,
+            "fontSize": "16px",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(29, 29, 31)",
+            "borderRadius": "0px"
+          },
+          "spa-order-list": {
+            "x": 182,
+            "y": 187.03125,
+            "width": 1076,
+            "height": 358,
+            "fontSize": "16px",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(255, 255, 255, 0.5)",
+            "border": "1px solid rgba(255, 255, 255, 0.7)",
+            "borderRadius": "22px"
+          },
+          "order-thumb": {
+            "x": 204,
+            "y": 245.03125,
+            "width": 38,
+            "height": 38,
+            "fontSize": "16px",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(29, 29, 31)",
+            "borderRadius": "11px"
+          }
+        },
+        "implementation": {
+          "spa-orders": {
+            "x": 160,
+            "y": 82,
+            "width": 1120,
+            "height": 523.03125,
+            "fontSize": "16px",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(29, 29, 31)",
+            "borderRadius": "0px"
+          },
+          "spa-order-list": {
+            "x": 182,
+            "y": 187.03125,
+            "width": 1076,
+            "height": 358,
+            "fontSize": "16px",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(255, 255, 255, 0.5)",
+            "border": "1px solid rgba(255, 255, 255, 0.7)",
+            "borderRadius": "22px"
+          },
+          "order-thumb": {
+            "x": 204,
+            "y": 245.03125,
+            "width": 38,
+            "height": 38,
+            "fontSize": "16px",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(29, 29, 31)",
+            "borderRadius": "11px"
+          }
+        }
+      },
+      "reference": "docs/stream-tasks/calm-harbor-customer-portal-full-activation-program/evidence/W2-wave17-visual/reference-orders-1440.png",
+      "implementation": "docs/stream-tasks/calm-harbor-customer-portal-full-activation-program/evidence/W2-wave17-visual/implementation-orders-1440.png",
+      "diff": "docs/stream-tasks/calm-harbor-customer-portal-full-activation-program/evidence/W2-wave17-visual/diff-orders-1440.png"
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+{
+ "code": "RESOURCE",
+ "initialState": {
+  "id": 13,
+  "code": "INITIAL"
+ },
+ "nls": {
+  "en": {
+   "NAME": "Resource",
+   "DESCRIPTION": "Generic workflow for Resource records."
+  }
+ },
+ "entityType": "com.pixelnation.rm.domain.Resource",
+ "organization": {
+  "optimistic": 1,
+  "id": 1,
+  "code": "SYSTEM"
+ },
+ "id": 7,
+ "states": [
+  {
+   "id": 13,
+   "code": "INITIAL",
+   "nls": {
+    "en": {
+     "NAME": "Initial",
+     "DESCRIPTION": "New organization is created in this state"
+    }
+   },
+   "events": []
+  }
+ ]
+}

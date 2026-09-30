@@ -1,0 +1,57 @@
+<!-- lab-ui block · hero.operational-diagram
+     Signature hub hero. Left: eyebrow + H1 + 3 lead paragraphs + CTA pair.
+     Right: neutral screenshot/image placeholder. Replace the placeholder
+     with an actual product image when the CMS/media layer provides one.
+     Theme: light (sw tokens). Adapted from v5 dark variant.
+     Composes: cta.btn-primary-ring + cta.btn-secondary-filled (CTA pair).
+     Param contract: see block.json.
+-->
+<section class="hero hero--diagram" id="hero" data-block="hero.operational-diagram">
+  <div class="container hero-grid">
+
+    <div class="hero-content">
+      <div class="hero-eyebrow">
+        <span>{{eyebrow_root}}</span>
+        <span class="crumb-sep">/</span>
+        <span class="crumb-cur">{{eyebrow_leaf}}</span>
+      </div>
+      <h1 class="hero-title">
+        {{title_line_1}}<br/>
+        for <span class="accent">{{title_accent}}</span><br/>
+        {{title_line_2}}
+      </h1>
+      <div class="hero-leads">
+        <p>{{lead_1}}</p>
+        <p>{{lead_2}}</p>
+        <p>{{lead_3}}</p>
+      </div>
+      <div class="hero-cta">
+        <a class="btn btn-primary btn-primary-ring" href="{{cta_primary_href}}">
+          <svg class="btn-star" width="16" height="16" viewBox="0 0 21 21" fill="currentColor" aria-hidden="true">
+            <path d="M10.5 0L13.4698 7.53015L21 10.5L13.4698 13.4698L10.5 21L7.53015 13.4698L0 10.5L7.53015 7.53015L10.5 0Z"/>
+          </svg>
+          {{cta_primary_label}}
+        </a>
+        <a class="btn btn-secondary btn-secondary-filled" href="{{cta_secondary_href}}">
+          <svg class="btn-star" width="16" height="16" viewBox="0 0 21 21" fill="currentColor" aria-hidden="true">
+            <path d="M10.5 0L13.4698 7.53015L21 10.5L13.4698 13.4698L10.5 21L7.53015 13.4698L0 10.5L7.53015 7.53015L10.5 0Z"/>
+          </svg>
+          {{cta_secondary_label}}
+        </a>
+      </div>
+    </div>
+
+    <div class="hero-art">
+      <div class="hero-media-placeholder" data-screenshot-slot>
+        <div class="hero-media-surface">
+          <img class="hero-media-img" src="{{media_url}}" alt="{{media_alt}}" loading="lazy" decoding="async">
+          <div class="hero-placeholder-copy">
+            <span>{{placeholder_size}}</span>
+            <span>{{placeholder_label}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>

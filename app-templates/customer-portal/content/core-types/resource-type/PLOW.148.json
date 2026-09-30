@@ -1,0 +1,282 @@
+{
+ "optimistic": 7,
+ "code": "PLOW",
+ "nls": {
+  "en": {
+   "NAME": "Plow"
+  }
+ },
+ "workflow": {
+  "id": 8,
+  "code": "SIMPLE_RESOURCE"
+ },
+ "organization": {
+  "optimistic": 4,
+  "id": 8,
+  "code": "SERVICE_WAND_WINTER_SERVICES"
+ },
+ "attributeOrder": [
+  {
+   "IDENTIFICATION": [
+    {
+     "typeId": 146,
+     "attributeCode": "MAKE",
+     "visible": true
+    },
+    {
+     "typeId": 146,
+     "attributeCode": "YEAR",
+     "visible": true
+    },
+    {
+     "typeId": 146,
+     "attributeCode": "MODEL",
+     "visible": true
+    },
+    {
+     "typeId": 146,
+     "attributeCode": "COLOR",
+     "visible": true
+    }
+   ]
+  },
+  {
+   "ATTACHMENT_CONFIGURATION": [
+    {
+     "typeId": 147,
+     "attributeCode": "VEHICLE_ATTACHMENT_TYPE",
+     "visible": true
+    },
+    {
+     "typeId": 147,
+     "attributeCode": "VEHICLE",
+     "visible": true
+    },
+    {
+     "typeId": 147,
+     "attributeCode": "MOUNT_TYPE",
+     "visible": true
+    }
+   ]
+  },
+  {
+   "PLOW_SPECIFICATIONS": [
+    {
+     "attributeCode": "PLOW_TYPE",
+     "visible": true
+    },
+    {
+     "attributeCode": "WORKING_WIDTH",
+     "visible": true
+    }
+   ]
+  }
+ ],
+ "attributes": [
+  {
+   "code": "WORKING_WIDTH",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.Integer",
+   "nls": {
+    "en": {
+     "NAME": "Working Width"
+    }
+   },
+   "options": [],
+   "unitCategory": {
+    "code": "LENGTH",
+    "label": "Length/Distance",
+    "value": 1,
+    "property": "id",
+    "isDisabled": false
+   }
+  },
+  {
+   "code": "PLOW_TYPE",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "en": {
+     "NAME": "Plow Type"
+    }
+   },
+   "options": [
+    {
+     "value": "STRAIGHT_BLADE_PLOW",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Straight Blade Plow",
+       "DESCRIPTION": "<p>Traditional&nbsp;straight&nbsp;snow&nbsp;plow&nbsp;with&nbsp;a&nbsp;fixed&nbsp;straight&nbsp;blade.&nbsp;Designed&nbsp;for&nbsp;general-purpose&nbsp;snow&nbsp;clearing&nbsp;on&nbsp;roads,&nbsp;parking&nbsp;lots,&nbsp;and&nbsp;driveways.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     }
+    },
+    {
+     "value": "V-PLOW",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "V-Plow",
+       "DESCRIPTION": "<p>Multi-position&nbsp;snow&nbsp;plow&nbsp;with&nbsp;two&nbsp;independently&nbsp;adjustable&nbsp;wings.&nbsp;Can&nbsp;operate&nbsp;in&nbsp;straight,&nbsp;V,&nbsp;or&nbsp;scoop&nbsp;configuration&nbsp;for&nbsp;improved&nbsp;performance&nbsp;in&nbsp;varying&nbsp;snow&nbsp;conditions.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     }
+    },
+    {
+     "value": "WING_PLOW",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Wing Plow",
+       "DESCRIPTION": "<p>Snow&nbsp;plow&nbsp;with&nbsp;extendable&nbsp;or&nbsp;fixed&nbsp;side&nbsp;wings&nbsp;that&nbsp;increase&nbsp;clearing&nbsp;width&nbsp;and&nbsp;improve&nbsp;snow&nbsp;containment&nbsp;during&nbsp;plowing&nbsp;operations.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     }
+    },
+    {
+     "value": "EXPANDABLE_PLOW",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Expandable Plow",
+       "DESCRIPTION": "<p>Hydraulically&nbsp;expandable&nbsp;snow&nbsp;plow&nbsp;with&nbsp;adjustable&nbsp;blade&nbsp;width,&nbsp;allowing&nbsp;operators&nbsp;to&nbsp;optimize&nbsp;clearing&nbsp;coverage&nbsp;for&nbsp;different&nbsp;operating&nbsp;conditions.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     }
+    },
+    {
+     "value": "BOX_PLOW",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Box Plow (Containment Plow)",
+       "DESCRIPTION": "<p>Box-style&nbsp;snow&nbsp;pusher&nbsp;with&nbsp;side&nbsp;containment&nbsp;plates&nbsp;designed&nbsp;to&nbsp;push&nbsp;and&nbsp;contain&nbsp;large&nbsp;volumes&nbsp;of&nbsp;snow,&nbsp;typically&nbsp;used&nbsp;on&nbsp;skid&nbsp;steers,&nbsp;loaders,&nbsp;and&nbsp;tractors&nbsp;for&nbsp;parking&nbsp;lots&nbsp;and&nbsp;commercial&nbsp;sites.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     }
+    },
+    {
+     "value": "REVERSIBLE_PLOW",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Reversible Plow",
+       "DESCRIPTION": "<p>Double-sided&nbsp;snow&nbsp;plow&nbsp;that&nbsp;rotates&nbsp;180&nbsp;degrees,&nbsp;allowing&nbsp;operators&nbsp;to&nbsp;reverse&nbsp;plowing&nbsp;direction&nbsp;without&nbsp;turning&nbsp;the&nbsp;vehicle&nbsp;around.&nbsp;Commonly&nbsp;used&nbsp;in&nbsp;municipal&nbsp;and&nbsp;airport&nbsp;operations.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     }
+    },
+    {
+     "value": "TRIP_EDGE_PLOW",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Trip Edge Plow",
+       "DESCRIPTION": "<p>Snow&nbsp;plow&nbsp;with&nbsp;a&nbsp;hinged&nbsp;cutting&nbsp;edge&nbsp;that&nbsp;trips&nbsp;independently&nbsp;when&nbsp;striking&nbsp;obstacles,&nbsp;reducing&nbsp;impact&nbsp;on&nbsp;the&nbsp;vehicle&nbsp;while&nbsp;maintaining&nbsp;blade&nbsp;position.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     }
+    },
+    {
+     "value": "FULL_TRIP_PLOW",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Full Trip Plow",
+       "DESCRIPTION": "<p>Snow&nbsp;plow&nbsp;with&nbsp;a&nbsp;full-trip&nbsp;moldboard&nbsp;design&nbsp;where&nbsp;the&nbsp;entire&nbsp;blade&nbsp;pivots&nbsp;forward&nbsp;when&nbsp;encountering&nbsp;an&nbsp;obstacle&nbsp;to&nbsp;absorb&nbsp;impact&nbsp;and&nbsp;protect&nbsp;the&nbsp;equipment.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     }
+    },
+    {
+     "value": "MUNICIPAL_ONE-WAY_PLOW",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Municipal One-Way Plow",
+       "DESCRIPTION": "<p>Heavy-duty&nbsp;one-way&nbsp;snow&nbsp;plow&nbsp;designed&nbsp;primarily&nbsp;for&nbsp;highway&nbsp;and&nbsp;municipal&nbsp;road&nbsp;maintenance,&nbsp;optimized&nbsp;for&nbsp;pushing&nbsp;snow&nbsp;to&nbsp;one&nbsp;side&nbsp;at&nbsp;higher&nbsp;operating&nbsp;speeds.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     }
+    },
+    {
+     "value": "TOW_PLOW",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Tow Plow",
+       "DESCRIPTION": "<p>Trailer-mounted&nbsp;snow&nbsp;plow&nbsp;pulled&nbsp;behind&nbsp;a&nbsp;truck&nbsp;to&nbsp;significantly&nbsp;increase&nbsp;clearing&nbsp;width,&nbsp;commonly&nbsp;used&nbsp;by&nbsp;highway&nbsp;and&nbsp;municipal&nbsp;maintenance&nbsp;fleets.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     }
+    }
+   ]
+  }
+ ],
+ "id": 148,
+ "isAbstract": false,
+ "attributeGroups": [
+  {
+   "code": "PLOW_SPECIFICATIONS",
+   "nls": {
+    "ar": {
+     "DESCRIPTION": "<p></p>"
+    },
+    "en": {
+     "NAME": "Plow Specifications",
+     "DESCRIPTION": "<p>Defines the operational characteristics of the plow, including its blade type and effective working width.</p>"
+    },
+    "he": {
+     "DESCRIPTION": "<p></p>"
+    }
+   }
+  }
+ ]
+}
