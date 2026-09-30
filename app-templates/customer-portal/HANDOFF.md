@@ -916,8 +916,9 @@ which no link issued so far does.
   `AWAITING_CLIENT_DETAILS` hook),
   `snowQuotationManagerRbac.json` with rbac.ts, and check that the plans show
   no change.
-- Next: the user accepts or rejects the presentation; the team's run sends a
-  real request for changes and reads its transition.
+- The user accepted the presentation and the decision email on 2026-09-30.
+  Next: the team's run sends a real request for changes and reads its
+  transition.
 
 **Late on 2026-09-30** the review page shows the provider's logo on the
 agreement and a Contact us strip on every step, from the organization's image
@@ -933,8 +934,8 @@ changes are live.
   --owner-org=SERVICE_WAND_WINTER_SERVICES --apply` after the probe of task 21
   above. Before task 21 its plan listed the script, nine hooks and one
   attribute reorder already pending.
-- Next: the user accepts or rejects the presentation from the screenshots, and
-  the business enters the client phone and email of SNOWLIMITLESS in Snow CRM.
+- The user accepted the presentation on 2026-09-30. Next: the business enters
+  the client phone and email of SNOWLIMITLESS in Snow CRM.
   An agreement sent before the binding gets the values from
   `copyProviderCard(agreementId)` or its next send.
 

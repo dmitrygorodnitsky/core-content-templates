@@ -268,7 +268,8 @@ nothing, and a send whose outcome is unknown waits for an operator. A package
 with nothing approved is canceled and gets no confirmation. Scripts 349–351
 (the email, the confirmation and utilities V19) exist on dev-1 and compile, and
 the three agreement attributes are on type 17 since 2026-09-30; the workflow
-binding waits with the rest of V19 (§8).
+binding waits with the rest of V19 (§8). The user accepted the email on
+2026-09-30 from a local render of the template.
 
 An Order the manager never approved internally is not in the package and does
 not hold it back. A second season's quotes for the same client start a new
@@ -416,7 +417,7 @@ CEO's personal contact.
 
 The presentation was checked on the fixtures at desktop, 768 px and 375 px
 widths in light and dark mode, and with the SNOWLIMITLESS logo in both modes;
-the screenshots went to the user, who has not accepted it yet. Both CMS nodes
+the user accepted it from those screenshots on 2026-09-30. Both CMS nodes
 of dev-1 serve this page since the evening of 2026-09-30 (app-3 served the
 previous one until a save was steered to it), and the deployed template draws
 Contact us from its CMS copy. The two organization fields (type 4) and the
@@ -430,7 +431,9 @@ nor Contact us.
 
 The same evening the agreement page took task 21 of the list. The user decided
 that Request changes on the agreement is a new client step of the workflow with
-a plain text area, not the quote's change request.
+a plain text area, not the quote's change request. The user accepted the
+presentation on 2026-09-30 from screenshots at desktop, 768 px and 375 px
+widths in light and dark mode, the manager email included.
 
 - **Page.** An agreement awaiting approval offers Request changes beside
   Approve. It opens a text area, "What should change?", with a line saying that
