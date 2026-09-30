@@ -314,7 +314,7 @@ const N = loadRuntime().CR.normalizer;
     QUOTATION: "preparing", QUOTATION_SENT: "quote-review", QUOTATION_UPDATE: "unavailable", QUOTATION_SEND_FAILED: "unavailable",
     AWAITING_CLIENT_DETAILS: "contract-details", CLIENT_DETAILS_RECEIVED: "checking", DRAFT: "preparing",
     PENDING_MANAGEMENT_APPROVAL: "preparing",
-    INTERNALLY_APPROVED: "preparing", SENT_TO_CLIENT: "agreement-review", AGREEMENT_SEND_FAILED: "unavailable",
+    INTERNALLY_APPROVED: "preparing", SENT_TO_CLIENT: "agreement-review", CLIENT_CHANGES_REQUESTED: "reference", AGREEMENT_SEND_FAILED: "unavailable",
     CLIENT_APPROVED: "completion", ACTIVATION_FAILED: "completion", ACTIVE: "completion", SUSPENDED: "reference", EXPIRED: "reference",
     ARCHIVED: "closed", CANCELED: "closed", DETAILS_FINALIZATION_RETRY: "preparing", ACCESS_CLEANUP_RETRY: "closed",
   };
@@ -333,6 +333,8 @@ const N = loadRuntime().CR.normalizer;
     assert.equal(offered, state === "QUOTATION_SENT", state + " offers quote decisions only while the package is sent");
     assert.equal(view.details.available, state === "AWAITING_CLIENT_DETAILS", state + " offers the details step only while details are awaited");
     assert.equal(view.canApproveAgreement, state === "SENT_TO_CLIENT", state + " offers agreement approval only while it is sent to the client");
+    assert.equal(view.canRequestAgreementChanges, state === "SENT_TO_CLIENT", state + " offers a change request only while the agreement is sent to the client");
+    assert.equal(view.banner === "changes", state === "CLIENT_CHANGES_REQUESTED", state + (state === "CLIENT_CHANGES_REQUESTED" ? " shows the agreement for reference after the client asked for changes" : " is not the changes-requested page"));
   }
 
   const review = model(CR.fixtures.quotationData());
@@ -644,6 +646,9 @@ const EXPECTED_SCENARIOS = {
   "details-stale-checking": ["ready", "checking"], "details-stale-slow": ["ready", "checking"], "details-stale-closed": ["link-closed", null],
   preparing: ["ready", "preparing"], "agreement-review": ["ready", "agreement-review"], "agreement-numbered-terms": ["ready", "agreement-review"],
   "agreement-no-terms": ["ready", "agreement-review"], "agreement-confirm": ["ready", "agreement-review"], "agreement-unconfirmed": ["ready", "agreement-review"], "approval-closed": ["link-closed", null],
+  "agreement-changes": ["ready", "agreement-review"], "agreement-changes-invalid": ["ready", "agreement-review"], "agreement-changes-pending": ["ready", "agreement-review"],
+  "agreement-changes-refused": ["ready", "agreement-review"], "agreement-changes-sent": ["ready", "reference"], "agreement-changes-requested": ["ready", "reference"],
+  "agreement-approval-only": ["ready", "agreement-review"],
   completion: ["ready", "completion"], "completion-portal": ["ready", "completion"], "completion-finishing": ["ready", "completion"], "completion-attributes": ["ready", "completion"],
   "link-closed-portal": ["link-closed", null], "reference-expired": ["ready", "reference"],
   "closed-canceled": ["ready", "closed"], unavailable: ["ready", "unavailable"],
@@ -1133,6 +1138,8 @@ function assertForm(run, expected, message) {
         assert.equal(logo.getAttribute("hidden"), null);
         logo.fire("error");
         assert.equal(logo.getAttribute("hidden"), "", "a logo that fails to load is hidden instead of leaving a broken image");
+        const actions = byClass(byClass(run.mount, "cr-approve")[0], "cr-actions")[0].children.map((node) => [node.getAttribute("data-action"), node.textContent, String(node.className).includes("btn--primary")]);
+        assert.deepEqual(actions, [["agreement.approve", copy.agreementApprove, true], ["agreement.changes", copy.changesLabel, false]], "an agreement awaiting approval offers Approve first and Request changes beside it");
         break;
       }
       case "agreement-no-terms": {
@@ -1228,6 +1235,63 @@ function assertForm(run, expected, message) {
         assert.ok(text.includes(copy.agreementConfirmTitle));
         assert.equal(run.sent.length, 0);
         break;
+      case "agreement-approval-only":
+        assert.deepEqual(byAttribute(run.mount, "data-action", "agreement.changes").length + byAttribute(run.mount, "data-action", "agreement.approve").length, 1, "a link that does not delegate the change request offers approval alone");
+        assert.equal(byAttribute(run.mount, "data-action", "agreement.approve").length, 1);
+        run.controller.dispatch("agreement.changes");
+        assert.equal(run.controller.snapshot().confirm, null, "and ignores a change request dispatched anyway");
+        break;
+      case "agreement-changes":
+      case "agreement-changes-invalid": {
+        const card = byClass(run.mount, "cr-approve")[0];
+        const area = byAttribute(card, "id", "cr-draft-agreement")[0];
+        assert.equal(area.tagName, "TEXTAREA", id + " asks for the changes in a text area");
+        assert.equal(area.getAttribute("name"), "MESSAGE");
+        assert.equal(area.getAttribute("placeholder"), copy.agreementChangesPlaceholder);
+        assert.equal(byAttribute(card, "for", "cr-draft-agreement")[0].textContent, copy.changesTitle, "labelled with the question it answers");
+        assert.equal(byAttribute(card, "id", "cr-draft-hint-agreement")[0].textContent, copy.agreementChangesHint, "and told what happens next");
+        assert.equal(card.getAttribute("aria-labelledby"), "cr-agreement-changes-title");
+        assert.deepEqual(byClass(card, "cr-actions")[0].children.map((node) => node.getAttribute("data-action")), ["agreement.changes.send", "agreement.cancel"], "the form offers Send request and Cancel, and no approval while it is open");
+        const invalid = id === "agreement-changes-invalid";
+        assert.equal(area.getAttribute("aria-invalid"), invalid ? "true" : null);
+        assert.equal(byAttribute(card, "id", "cr-draft-error-agreement")[0].textContent, invalid ? copy.changesRequired : "", invalid ? "an empty request is not sent and says what is missing" : "no error before a send");
+        assert.equal(run.sent.length, 0, id + " sends nothing");
+        break;
+      }
+      case "agreement-changes-pending": {
+        const send = byAttribute(run.mount, "data-action", "agreement.changes.send")[0];
+        assert.ok(send.getAttribute("disabled") !== null && send.textContent === copy.sendingLabel && send.getAttribute("aria-busy") === "true", "the request shows as being sent");
+        assert.ok(byAttribute(run.mount, "id", "cr-draft-agreement")[0].getAttribute("disabled") !== null, "and its text can no longer change");
+        assert.deepEqual(run.sent, [["document", 5205, "SENT_TO_CLIENT-CLIENT_CHANGES_REQUESTED", { MESSAGE: "Please start the service on November 15 and add the side parking lot at 9150 Cedar Hollow Drive." }]], "the change request carries the typed text as MESSAGE");
+        break;
+      }
+      case "agreement-changes-refused": {
+        const outcome = byClass(run.mount, "cr-outcome")[0];
+        assert.ok(outcome && visibleText(outcome).includes("The provider has already updated this agreement."), "a refused request shows the server's reason");
+        assert.equal(byAttribute(run.mount, "id", "cr-draft-agreement")[0].value, "Please start the service on November 15 and add the side parking lot at 9150 Cedar Hollow Drive.", "and keeps what the client typed");
+        assert.equal(run.sent.length, 1);
+        break;
+      }
+      case "agreement-changes-sent":
+      case "agreement-changes-requested": {
+        const badge = byClass(run.mount, "status-badge")[0];
+        assert.ok(badge.textContent === copy.agreementChangesBadge && String(badge.className).includes("status-badge--warn"), id + " marks the agreement as changes requested");
+        assert.equal(byClass(run.mount, "cr-title")[0].textContent, copy.agreementChangesSentTitle, id + " thanks the client for the request");
+        assert.equal(byClass(run.mount, "cr-sub")[0].textContent, copy.agreementChangesSentBody, "and says what happens next");
+        assert.equal(byClass(run.mount, "cr-approve").length + byClass(run.mount, "cr-notice--warn").length, 0, "with nothing left to approve and no warning");
+        assert.equal(byAttribute(run.mount, "aria-labelledby", "cr-terms-title").length, 1, "the agreement as it was sent stays readable");
+        assert.equal(byClass(run.mount, "cr-title")[0].getAttribute("tabindex"), "-1", "the thanks can take the focus without joining the tab order");
+        if (id === "agreement-changes-sent") {
+          assert.equal(run.runtime.document.activeElement, byClass(run.mount, "cr-title")[0], "the focus moves to the thanks at the top of the page, which the Send request button left far below");
+          assert.equal(run.sent.length, 1, "the request is sent once");
+          assert.ok(run.live.textContent.includes(copy.agreementChangesSentTitle), "and the thanks are announced");
+          assert.equal(run.controller.snapshot().drafts.agreement, undefined, "the sent text is not kept for another request");
+          assert.deepEqual(plain(run.controller.snapshot().commands), {}, "and leaves no command behind");
+        } else {
+          assert.equal(run.sent.length, 0);
+        }
+        break;
+      }
       default:
         break;
     }
@@ -1844,6 +1908,64 @@ for (const [kind, orderId, event, status] of [
 }
 
 {
+  const run = await stagedController((F) => F.agreementData("SENT_TO_CLIENT", false), { staleReads: 1 });
+  const { controller, runtime } = run;
+  controller.dispatch("agreement.changes.send");
+  assert.equal(run.sent.length, 0, "a change request is sent only from its open form");
+  controller.dispatch("agreement.changes");
+  controller.dispatch("agreement.changes.send");
+  controller.dispatch("agreement.cancel");
+  controller.dispatch("agreement.changes");
+  assert.equal(byAttribute(run.mount, "id", "cr-draft-agreement")[0].getAttribute("aria-invalid"), null, "a form cancelled with an error reopens without it");
+  assert.equal(runtime.document.activeElement, byAttribute(run.mount, "id", "cr-draft-agreement")[0], "opening the form puts the focus in its text area");
+  controller.dispatch("agreement.draft", { value: "  Add the side lot.\n" });
+  controller.dispatch("agreement.cancel");
+  assert.equal(controller.snapshot().confirm, null);
+  assert.equal(runtime.document.activeElement, byAttribute(run.mount, "data-action", "agreement.changes")[0], "Cancel returns the focus to Request changes");
+  controller.dispatch("agreement.changes");
+  assert.equal(byAttribute(run.mount, "id", "cr-draft-agreement")[0].value, "  Add the side lot.\n", "a reopened form still holds what was typed");
+  controller.dispatch("agreement.draft", { value: "   " });
+  controller.dispatch("agreement.changes.send");
+  assert.equal(controller.snapshot().draftInvalid.agreement, true, "blank text is an empty request");
+  assert.equal(runtime.document.activeElement, byAttribute(run.mount, "id", "cr-draft-agreement")[0], "and the focus returns to the text area");
+  controller.dispatch("agreement.draft", { value: "  Add the side lot.\n" });
+  assert.equal(controller.snapshot().draftInvalid.agreement, undefined, "typing clears the error");
+  controller.dispatch("agreement.changes.send");
+  await controller.idle();
+  assert.deepEqual(run.sent, [["document", 5205, "SENT_TO_CLIENT-CLIENT_CHANGES_REQUESTED", { MESSAGE: "Add the side lot." }]], "the request carries the text without the surrounding blanks");
+  assert.equal(kindOf(run), "agreement-review", "the first readback still shows the agreement awaiting approval");
+  assert.equal((controller.snapshot().commands["document:5205"] || {}).status, "pending");
+  assert.equal(byAttribute(run.mount, "id", "cr-draft-agreement")[0].value, "  Add the side lot.\n", "the text stays in the form while the request is pending");
+  assert.notEqual(runtime.document.activeElement, byClass(run.mount, "cr-title")[0], "and the focus stays where the client left it");
+  controller.dispatch("agreement.changes.send");
+  controller.dispatch("agreement.intent");
+  controller.dispatch("agreement.confirm");
+  await tick();
+  assert.equal(run.sent.length, 1, "while it is pending nothing else is sent for the agreement");
+  run.timers.fire();
+  await controller.idle();
+  assert.equal(kindOf(run), "reference", "the request lands on the changes-requested page");
+  assert.equal(controller.snapshot().view.banner, "changes");
+  assert.equal(runtime.document.activeElement, byClass(run.mount, "cr-title")[0], "the focus moves to its thanks when the request lands on a later read");
+  assert.equal(controller.snapshot().drafts.agreement, undefined, "and the sent text is dropped");
+  assert.ok(run.live.textContent.includes(run.copy.agreementChangesSentTitle), "which is announced, since it arrived on its own");
+  assert.equal(controller.snapshot().confirm, null, "and closes the form");
+  assert.equal(run.timers.pending, 0);
+}
+
+{
+  const run = await stagedController((F) => F.agreementData("SENT_TO_CLIENT", false), { hooks: { revokeOnChanges: true } });
+  const { controller } = run;
+  controller.dispatch("agreement.changes");
+  controller.dispatch("agreement.draft", { value: "Add the side lot." });
+  controller.dispatch("agreement.changes.send");
+  await controller.idle();
+  assert.equal(controller.snapshot().phase, "link-closed");
+  assert.equal(controller.snapshot().closedAfter, "", "a link that closes right after a change request never reads as closed after the details or the approval");
+  assert.ok(!surface(run.mount).includes(run.copy.approvalSentTitle) && surface(run.mount).includes(run.copy.linkClosedTitle), "so it ends on the neutral closed-link card");
+}
+
+{
   const run = await stagedController((F) => F.agreementData("SENT_TO_CLIENT", false), { staleReads: 1, hooks: { revokeOnApproval: true } });
   const { controller } = run;
   controller.dispatch("agreement.intent");
@@ -2426,4 +2548,4 @@ try {
   await fs.rm(tempDir, { recursive: true, force: true });
 }
 
-console.log("client-review-check ok: " + Object.keys(EXPECTED_SCENARIOS).length + " preview states, every order and agreement state, grouping and counts-only summary, server subtotal and taxes shown only when returned, confirmation statements with description and CMS precedence, contract details and the portal sign-in read from the Account attributes the contract names, never a confirmation and never over what the client typed, grant-gated single-flight commands with read-back, refusals and failures, returned details codes, a bounded one-read-at-a-time checking backoff with announcements, the portal invitation with and without PORTAL_URL and the portal button above and below an approved agreement, a thank-you card after the details and after the approval that an expired link never shows, Copy link with its confirmation, its refusal and no address in the page, Contact us with links only for a dialable number and a mail address, the provider's logo on the agreement pages, ACTIVATION_FAILED as completion, numbered terms, token only in the grant path, no money arithmetic, innerHTML, eval, console or storage, portal tokens only, and a live-only deterministic CMS package");
+console.log("client-review-check ok: " + Object.keys(EXPECTED_SCENARIOS).length + " preview states, every order and agreement state, grouping and counts-only summary, server subtotal and taxes shown only when returned, confirmation statements with description and CMS precedence, contract details and the portal sign-in read from the Account attributes the contract names, never a confirmation and never over what the client typed, grant-gated single-flight commands with read-back, refusals and failures, returned details codes, a bounded one-read-at-a-time checking backoff with announcements, the portal invitation with and without PORTAL_URL and the portal button above and below an approved agreement, a thank-you card after the details and after the approval that an expired link never shows, Copy link with its confirmation, its refusal and no address in the page, Contact us with links only for a dialable number and a mail address, the provider's logo on the agreement pages, Request changes on the agreement with its text required and a thank-you page that keeps the agreement readable, ACTIVATION_FAILED as completion, numbered terms, token only in the grant path, no money arithmetic, innerHTML, eval, console or storage, portal tokens only, and a live-only deterministic CMS package");

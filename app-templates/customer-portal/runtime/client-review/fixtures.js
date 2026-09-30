@@ -157,6 +157,13 @@
     { id: "agreement-no-logo", label: "Agreement review — the provider has no logo" },
     { id: "agreement-confirm", label: "Agreement approval — confirmation" },
     { id: "agreement-unconfirmed", label: "Agreement approval accepted, change not seen within the budget — Refresh status" },
+    { id: "agreement-changes", label: "Agreement — request changes, the form" },
+    { id: "agreement-changes-invalid", label: "Agreement — request changes, message required" },
+    { id: "agreement-changes-pending", label: "Agreement — request changes, being sent" },
+    { id: "agreement-changes-refused", label: "Agreement — request changes, refused by the server" },
+    { id: "agreement-changes-sent", label: "Agreement — request changes sent here, thanks" },
+    { id: "agreement-changes-requested", label: "Agreement — changes already requested (CLIENT_CHANGES_REQUESTED)" },
+    { id: "agreement-approval-only", label: "Agreement — a link issued before change requests, approval only" },
     { id: "approval-closed", label: "Agreement approved — link closed, portal invitation" },
     { id: "completion", label: "Completion — CLIENT_APPROVED, no portal address" },
     { id: "completion-portal", label: "Completion — ACTIVE, portal address configured" },
@@ -301,7 +308,7 @@
       types: [
         { entityType: "Account", canRead: true, canWrite: false, events: [] },
         { entityType: "Order", canRead: true, canWrite: false, events: [] },
-        { entityType: "Document", canRead: true, canWrite: false, events: [grantEvent("SENT_TO_CLIENT-CLIENT_APPROVED", 12)] },
+        { entityType: "Document", canRead: true, canWrite: false, events: [grantEvent("SENT_TO_CLIENT-CLIENT_APPROVED", 12), grantEvent("SENT_TO_CLIENT-CLIENT_CHANGES_REQUESTED", 13)] },
       ],
     };
   }
@@ -384,7 +391,7 @@
     if (!row) throw reviewError("refused", 404, "This record is not available through this link.");
     if (!grantAllows(data.grant, entity, code)) throw reviewError("refused", 403, "This action is not part of this link.");
     if (currentState(row) !== source) throw reviewError("refused", 409, "This record is no longer waiting for that decision.");
-    if (code === "QUOTE_VIEWED-CUSTOMER_CHANGES_REQUESTED" && !String(metadata.MESSAGE || "").trim()) {
+    if ((code === "QUOTE_VIEWED-CUSTOMER_CHANGES_REQUESTED" || code === "SENT_TO_CLIENT-CLIENT_CHANGES_REQUESTED") && !String(metadata.MESSAGE || "").trim()) {
       throw reviewError("refused", 400, "", { MESSAGE: "A message is required." });
     }
     row.states = [{ code: target }];
@@ -403,6 +410,7 @@
       data.pendingDetails = { metadata: clone(metadata), reads: 0 };
     }
     if (entity === "document" && target === "CLIENT_APPROVED" && hooks.revokeOnApproval === true) data.closed = true;
+    if (entity === "document" && target === "CLIENT_CHANGES_REQUESTED" && hooks.revokeOnChanges === true) data.closed = true;
     return null;
   }
 
@@ -597,6 +605,11 @@
       ["details.input", { code: "REPRESENTATIVE_PHONE", value: "+1 604 555 0164" }],
     ];
     var lastDecision = [["option.toggle", { id: 3108 }], ["option.intent", { id: 3108, kind: "approve" }], ["option.confirm", { id: 3108 }]];
+    var agreementChanges = [
+      ["agreement.changes", {}],
+      ["agreement.draft", { value: "Please start the service on November 15 and add the side parking lot at 9150 Cedar Hollow Drive." }],
+      ["agreement.changes.send", {}],
+    ];
     switch (id) {
       case "loading":
         behavior.introspect = "hold";
@@ -801,6 +814,38 @@
         behavior.staleReads = 99;
         steps = [["agreement.intent", {}], ["agreement.confirm", {}]];
         pollDelays = [300, 300, 300];
+        break;
+      case "agreement-changes":
+        data = agreementData("SENT_TO_CLIENT", false);
+        steps = [["agreement.changes", {}]];
+        break;
+      case "agreement-changes-invalid":
+        data = agreementData("SENT_TO_CLIENT", false);
+        steps = [["agreement.changes", {}], ["agreement.changes.send", {}]];
+        break;
+      case "agreement-changes-pending":
+        data = agreementData("SENT_TO_CLIENT", false);
+        behavior.events["SENT_TO_CLIENT-CLIENT_CHANGES_REQUESTED"] = { outcome: "hold" };
+        steps = agreementChanges;
+        break;
+      case "agreement-changes-refused":
+        data = agreementData("SENT_TO_CLIENT", false);
+        behavior.events["SENT_TO_CLIENT-CLIENT_CHANGES_REQUESTED"] = {
+          outcome: "refuse",
+          message: "The provider has already updated this agreement. Open the link in their newest email.",
+        };
+        steps = agreementChanges;
+        break;
+      case "agreement-changes-sent":
+        data = agreementData("SENT_TO_CLIENT", false);
+        steps = agreementChanges;
+        break;
+      case "agreement-changes-requested":
+        data = agreementData("CLIENT_CHANGES_REQUESTED", false);
+        break;
+      case "agreement-approval-only":
+        data = agreementData("SENT_TO_CLIENT", false);
+        data.grant.types[2].events = data.grant.types[2].events.filter(function (event) { return event.code === "SENT_TO_CLIENT-CLIENT_APPROVED"; });
         break;
       case "approval-closed":
         data = agreementData("SENT_TO_CLIENT", false);

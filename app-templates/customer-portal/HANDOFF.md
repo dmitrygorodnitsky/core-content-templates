@@ -885,6 +885,30 @@ checkout before treating any of them as broken.
 
 ## Exact next action
 
+**Blocked since 2026-09-29 or 30:** `app-2-core` and `app-4-core` serve every
+`/core` request on dev-1 and cannot compile a script ("cannot access com"), so
+workflow 53 cannot load there: any agreement save or event, the client's
+details and approval included, answers HTTP 500. Whoever runs dev-1 has to
+restart the two nodes. Check with a SYSTEM document of probe type 18 bound to
+workflow 53, or with `ZZ_SCRIPT_RESULT_VISIBILITY_PROBE_V1#whereAmI` through
+`exec.json?nodeId=`.
+
+**Late on 2026-09-30, task 21:** the review page offers Request changes beside
+Approve on the agreement, and core-ui carries the new workflow step
+`CLIENT_CHANGES_REQUESTED` with utilities V18, agreement delivery V4 and the
+manager email (`content/cases/QUOTATION-PACKAGE-FLOW.md` §8). Both CMS nodes
+serve the page; it offers the button only on a link that delegates the event,
+which no link issued so far does.
+- Once the nodes compile: run probe workflow 62 (`ZZ_TRANSITION_PROBE`) with
+  the plans observe, hook-write, after-write and context-put, and confirm that
+  a transition's metadata written after the commit reads back through
+  `document-state-transition/list.json`. Then apply
+  `serviceAgreementWorkflows.json` (V18 and the three events),
+  `snowQuotationManagerRbac.json` with rbac.ts, and check that the plans show
+  no change.
+- Next: the user accepts or rejects the presentation; the team's run sends a
+  real request for changes and reads its transition.
+
 **Late on 2026-09-30** the review page shows the provider's logo on the
 agreement and a Contact us strip on every step, from the organization's image
 and two new organization fields, which utilities V17 (script 344) copies onto
@@ -892,12 +916,13 @@ the agreement when it is sent (`content/cases/QUOTATION-PACKAGE-FLOW.md` §8).
 `CLIENT_REVIEW_DOCUMENT` on both dev-1 CMS nodes matches the package; the type
 changes are live.
 - Blocked: workflow 53 stays on V16 until `app-2-core` and `app-4-core` compile
-  scripts again (`ZZ_SCRIPT_RESULT_VISIBILITY_PROBE_V1#whereAmI` through
-  `exec.json?nodeId=`). Then bind V17 from core-ui with `workflows.ts apply
+  scripts again. The seed now binds V18, which keeps V17's copy and adds task
+  21; apply it from core-ui with `workflows.ts apply
   --file=scripts/dev/seeds/serviceAgreementWorkflows.json
   --base-url=https://dev-1.servicewand.com/core
-  --owner-org=SERVICE_WAND_WINTER_SERVICES --apply`; its plan on 2026-09-30
-  listed the script, nine hooks and one attribute reorder already pending.
+  --owner-org=SERVICE_WAND_WINTER_SERVICES --apply` after the probe of task 21
+  above. Before task 21 its plan listed the script, nine hooks and one
+  attribute reorder already pending.
 - Next: the user accepts or rejects the presentation from the screenshots, and
   the business enters the client phone and email of SNOWLIMITLESS in Snow CRM.
   An agreement sent before the binding gets the values from

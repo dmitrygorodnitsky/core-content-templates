@@ -196,7 +196,7 @@
     top.appendChild(text("p", "cr-eyebrow", eyebrow));
     if (badgeNode) top.appendChild(badgeNode);
     head.appendChild(top);
-    head.appendChild(text("h1", "cr-title", title));
+    head.appendChild(mark(ctx, text("h1", "cr-title", title, { tabindex: "-1" }), "page-title"));
     if (subtitle) head.appendChild(text("p", "cr-sub", subtitle));
     announce(ctx, [title, subtitle]);
     var meta = el("dl", "cr-meta");
@@ -851,13 +851,42 @@
       card.appendChild(unconfirmedNotice(ctx, recordKey));
       return card;
     }
-    if (!view.canApproveAgreement) {
+    if (!view.canApproveAgreement && !view.canRequestAgreementChanges) {
       card.appendChild(text("p", "cr-note", copy.agreementNoAction));
       return card;
     }
-    var confirming = Boolean(ctx.snapshot.confirm && ctx.snapshot.confirm.kind === "agreement");
+    var confirm = ctx.snapshot.confirm;
+    var confirming = Boolean(confirm && confirm.kind === "agreement");
+    var changing = Boolean(confirm && confirm.kind === "agreement-changes");
     var actions = el("div", "cr-actions");
-    if (confirming) {
+    if (changing) {
+      var invalid = Boolean(ctx.snapshot.draftInvalid.agreement);
+      card.setAttribute("role", "group");
+      card.setAttribute("aria-labelledby", "cr-agreement-changes-title");
+      var field = el("div", "cr-field", { "data-state": invalid ? "invalid" : "idle" });
+      field.appendChild(text("label", "cr-field__label", copy.changesTitle, { for: "cr-draft-agreement", id: "cr-agreement-changes-title" }));
+      field.appendChild(text("p", "cr-field__hint", copy.agreementChangesHint, { id: "cr-draft-hint-agreement" }));
+      var area = el("textarea", "cr-input cr-input--area", {
+        id: "cr-draft-agreement",
+        name: "MESSAGE",
+        rows: 5,
+        placeholder: copy.agreementChangesPlaceholder,
+        "aria-required": "true",
+        "aria-invalid": invalid ? "true" : null,
+        "aria-describedby": "cr-draft-hint-agreement cr-draft-error-agreement",
+        disabled: pending,
+      });
+      area.value = ctx.snapshot.drafts.agreement || "";
+      area.addEventListener("input", function () { ctx.dispatch("agreement.draft", { value: area.value }); });
+      mark(ctx, area, "draft-agreement");
+      field.appendChild(area);
+      field.appendChild(text("p", "cr-field__error", invalid ? copy.changesRequired : "", { id: "cr-draft-error-agreement" }));
+      card.appendChild(field);
+      actions.appendChild(button(pending ? copy.sendingLabel : copy.changesSend, "btn--primary btn--lg", function () {
+        ctx.dispatch("agreement.changes.send");
+      }, { disabled: pending || ctx.busy, "data-state": pending ? "pending" : null, "data-action": "agreement.changes.send", "aria-busy": pending ? "true" : null }));
+      actions.appendChild(button(copy.cancelLabel, "btn--ghost btn--lg", function () { ctx.dispatch("agreement.cancel"); }, { disabled: pending, "data-action": "agreement.cancel" }));
+    } else if (confirming) {
       card.setAttribute("role", "group");
       card.setAttribute("aria-labelledby", "cr-agreement-confirm");
       card.appendChild(text("p", "cr-confirm__title", copy.agreementConfirmTitle, { id: "cr-agreement-confirm" }));
@@ -870,9 +899,16 @@
       actions.appendChild(confirmButton);
       actions.appendChild(button(copy.cancelLabel, "btn--ghost btn--lg", function () { ctx.dispatch("agreement.cancel"); }, { disabled: pending, "data-action": "agreement.cancel" }));
     } else {
-      actions.appendChild(mark(ctx, button(copy.agreementApprove, "btn--primary btn--lg", function () {
-        ctx.dispatch("agreement.intent");
-      }, { disabled: ctx.busy || pending, "data-action": "agreement.approve" }), "approve-agreement"));
+      if (view.canApproveAgreement) {
+        actions.appendChild(mark(ctx, button(copy.agreementApprove, "btn--primary btn--lg", function () {
+          ctx.dispatch("agreement.intent");
+        }, { disabled: ctx.busy || pending, "data-action": "agreement.approve" }), "approve-agreement"));
+      }
+      if (view.canRequestAgreementChanges) {
+        actions.appendChild(mark(ctx, button(copy.changesLabel, "btn--ghost btn--lg", function () {
+          ctx.dispatch("agreement.changes");
+        }, { disabled: ctx.busy || pending, "data-action": "agreement.changes" }), "agreement-changes"));
+      }
     }
     card.appendChild(actions);
     if (command && !pending) card.appendChild(outcomeBox(ctx, command, { action: refreshButton(ctx, recordKey, copy.refreshLabel) }));
@@ -891,14 +927,18 @@
     var copy = ctx.copy;
     var completion = view.kind === "completion";
     var reviewing = view.kind === "agreement-review";
+    var changesRequested = view.kind === "reference" && view.banner === "changes";
     var badgeNode = reviewing ? text("span", "status-badge status-badge--info", copy.agreementAwaiting)
       : completion ? text("span", "status-badge status-badge--ok", view.completion === "active" ? copy.agreementActive : copy.agreementApproved)
-        : null;
-    var title = completion ? (view.completion === "active" ? copy.completeActiveTitle : copy.completeApprovedTitle) : copy.agreementTitle;
-    var subtitle = completion ? (view.completion === "finishing" ? copy.completeFinishingBody : copy.completeBody) : reviewing ? copy.agreementSubtitle : "";
+        : changesRequested ? text("span", "status-badge status-badge--warn", copy.agreementChangesBadge)
+          : null;
+    var title = completion ? (view.completion === "active" ? copy.completeActiveTitle : copy.completeApprovedTitle)
+      : changesRequested ? copy.agreementChangesSentTitle : copy.agreementTitle;
+    var subtitle = completion ? (view.completion === "finishing" ? copy.completeFinishingBody : copy.completeBody)
+      : reviewing ? copy.agreementSubtitle : changesRequested ? copy.agreementChangesSentBody : "";
     shell.appendChild(pageHead(ctx, copy.agreementEyebrow, title, subtitle, badgeNode));
     if (completion) shell.appendChild(portalInvitation(ctx));
-    if (view.kind === "reference") shell.appendChild(notice("warn", "", view.banner === "expired" ? copy.agreementExpired : copy.agreementSuspended, null));
+    if (view.kind === "reference" && !changesRequested) shell.appendChild(notice("warn", "", view.banner === "expired" ? copy.agreementExpired : copy.agreementSuspended, null));
     readNotices(ctx).forEach(function (node) { shell.appendChild(node); });
 
     var parties = view.parties;

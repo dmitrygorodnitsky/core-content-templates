@@ -5,12 +5,12 @@
   "template": {
     "code": "CLIENT_REVIEW_DOCUMENT",
     "templateLanguage": "JTE",
-    "parameterCount": 186,
+    "parameterCount": 191,
     "sha256": {
       "head": "f1c3486ef79fb84dd6af7baff69fc992cf2806ae5b9e9e35ddbd69cb88fec28c",
-      "html": "f0273e881e49c31fc98d8e299da80d2f773863170640613207314898be5f9f88",
-      "css": "262294088fc6fa15c3d70110622685c795f4c50c325c25466ebc1e286a7a85b8",
-      "javascript": "79cebfa4ad2070f75e7c62d3706438a9caf3bfa01048c96f1d1e9c5a7e02db76"
+      "html": "8b9f1609eee539381ee126410d167e88bb421268ff6881fcc18d0fe9758958dd",
+      "css": "384b6d92a8154ca45c0cdd430ddf3f96aa92b7b1b845e4cb4c29d7f32e9d97f6",
+      "javascript": "6684058d8138a5f84f7fbfa71875ba2571b433729da4f58228c842dd700a1c94"
     }
   },
   "runtime": {
@@ -74,7 +74,8 @@
     ],
     "agreement": [
       "AWAITING_CLIENT_DETAILS-CLIENT_DETAILS_RECEIVED",
-      "SENT_TO_CLIENT-CLIENT_APPROVED"
+      "SENT_TO_CLIENT-CLIENT_APPROVED",
+      "SENT_TO_CLIENT-CLIENT_CHANGES_REQUESTED"
     ],
     "contractDetailsAttributes": [
       "LEGAL_NAME",
@@ -142,6 +143,7 @@
     "PORTAL_URL ships empty. When it is an absolute https address, the completion states offer an Open the customer portal link to it above and below the agreement, and the thank-you state after approval and a closed link offer it once; any other value is discarded and no link shows. The portal access text itself never depends on Account.user.",
     "Copy link is offered on the quote review, contract details and agreement review steps, never on an approved agreement or a state card. It hands the browser's clipboard the address the page was opened with, #token= fragment included, when the client presses it, and sends it nowhere else. A browser that refuses the write leaves the client with the address bar and the provider's email. The link carries nothing the client typed: a returning client sees what the provider's system holds.",
     "A link that closes after the details or the approval were sent ends on a thank-you card; a link that is closed when it is opened keeps the expired-or-withdrawn card.",
+    "An agreement awaiting approval offers Request changes beside Approve when the link delegates SENT_TO_CLIENT-CLIENT_CHANGES_REQUESTED. The client's text is sent as MESSAGE; an empty text is not sent. The link stays open, and while the agreement is CLIENT_CHANGES_REQUESTED it thanks the client, says the provider emails a new link, and shows the agreement as it was sent. A link issued before the change request existed offers approval alone.",
     "Contact us closes every page that has read an agreement. It shows the agreement's PROVIDER_CONTACT_PHONE and PROVIDER_CONTACT_EMAIL, which the provider's workflow copies from the organization before it issues each link: a dialable number and a mail address become links, anything else is shown as text, and a missing value has no row. The agreement pages show the provider's logo from PROVIDER_LOGO, an image id; an agreement without one, or an image that fails to load, shows none.",
     "Every other parameter is copy. No token, account, order, document or customer value is a parameter.",
     "While the agreement is CLIENT_DETAILS_RECEIVED the page re-reads it one read at a time after 2, 3, 5, 8, 12, 15, 15, 15 s, then says the check is taking longer than usual and offers Refresh status. It stops re-reading as soon as the agreement leaves that state.",

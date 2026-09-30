@@ -1894,6 +1894,71 @@
     }
   },
   {
+    "code": "AGREEMENT_CHANGES_HINT",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "AGREEMENT CHANGES HINT",
+        "DESCRIPTION": "Client review document copy."
+      }
+    },
+    "value": {
+      "en": "The provider reads your request, revises the agreement and emails you a new link to review it."
+    }
+  },
+  {
+    "code": "AGREEMENT_CHANGES_PLACEHOLDER",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "AGREEMENT CHANGES PLACEHOLDER",
+        "DESCRIPTION": "Client review document copy."
+      }
+    },
+    "value": {
+      "en": "For example: start the service on November 15, or add the side parking lot."
+    }
+  },
+  {
+    "code": "AGREEMENT_CHANGES_BADGE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "AGREEMENT CHANGES BADGE",
+        "DESCRIPTION": "Client review document copy."
+      }
+    },
+    "value": {
+      "en": "Changes requested"
+    }
+  },
+  {
+    "code": "AGREEMENT_CHANGES_SENT_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "AGREEMENT CHANGES SENT TITLE",
+        "DESCRIPTION": "Client review document copy."
+      }
+    },
+    "value": {
+      "en": "Thank you, we received your request"
+    }
+  },
+  {
+    "code": "AGREEMENT_CHANGES_SENT_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "AGREEMENT CHANGES SENT BODY",
+        "DESCRIPTION": "Client review document copy."
+      }
+    },
+    "value": {
+      "en": "The provider revises the agreement and emails you a new link to review it. The agreement as it was sent to you is below."
+    }
+  },
+  {
     "code": "AGREEMENT_APPROVED",
     "type": "LOCALIZED_STRING_SS",
     "nls": {

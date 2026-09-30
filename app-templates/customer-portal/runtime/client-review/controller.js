@@ -128,6 +128,10 @@
         delete state.accepted[recordKey];
         delete state.commands[recordKey];
         if (expectation.event === contract.orderEvents.approve.code || expectation.event === contract.orderEvents.decline.code) state.followDecisions = true;
+        if (expectation.event === contract.agreementEvents.changes.code) {
+          delete state.drafts.agreement;
+          state.focusKey = "page-title";
+        }
       });
       if (receiving) state.view.kind = "checking";
     }
@@ -256,6 +260,10 @@
       if (!confirm) return;
       if (confirm.kind === "agreement") {
         if (!state.view || !state.view.canApproveAgreement) state.confirm = null;
+        return;
+      }
+      if (confirm.kind === "agreement-changes") {
+        if (!state.view || !state.view.canRequestAgreementChanges) state.confirm = null;
         return;
       }
       if (confirm.kind === "decline-all") {
@@ -443,7 +451,7 @@
           if (sibling.id !== option.id) delete state.expanded[sibling.id];
         });
         var confirm = state.confirm;
-        if (confirm && confirm.kind !== "agreement" && confirm.kind !== "decline-all" && confirm.id !== option.id && property
+        if (confirm && confirm.kind !== "agreement" && confirm.kind !== "agreement-changes" && confirm.kind !== "decline-all" && confirm.id !== option.id && property
           && property.options.some(function (sibling) { return sibling.id === confirm.id; }) && !inflight[confirm.recordKey]) {
           state.confirm = null;
         }
@@ -549,6 +557,28 @@
           Object.keys(error.fieldErrors || {}).forEach(function (code) {
             if (detailField(code)) state.details.serverErrors[code] = error.fieldErrors[code];
           });
+        },
+      });
+    }
+
+    function requestAgreementChanges() {
+      var view = state.view;
+      var confirm = state.confirm;
+      if (!view || !view.canRequestAgreementChanges || !confirm || confirm.kind !== "agreement-changes" || busy() || state.accepted[view.agreement.recordKey]) return;
+      var event = contract.agreementEvents.changes;
+      var message = String(state.drafts.agreement || "").trim();
+      if (!message) {
+        state.draftInvalid.agreement = true;
+        state.focusKey = "draft-agreement";
+        render();
+        return;
+      }
+      delete state.draftInvalid.agreement;
+      var metadata = {};
+      metadata[event.messageAttribute] = message;
+      send(view.agreement.recordKey, "document", view.agreement.id, event.code, metadata, {
+        onSuccess: function () {
+          if (!state.accepted[view.agreement.recordKey]) state.focusKey = "page-title";
         },
       });
     }
@@ -676,9 +706,24 @@
           return;
         case "agreement.cancel":
           if (!view || inflight[view.agreement.recordKey]) return;
+          state.focusKey = state.confirm && state.confirm.kind === "agreement-changes" ? "agreement-changes" : "approve-agreement";
           state.confirm = null;
-          state.focusKey = "approve-agreement";
+          delete state.draftInvalid.agreement;
           render();
+          return;
+        case "agreement.changes":
+          if (!view || !view.canRequestAgreementChanges || busy() || inflight[view.agreement.recordKey] || state.accepted[view.agreement.recordKey]) return;
+          clearOutcome(view.agreement.recordKey);
+          state.confirm = { recordKey: view.agreement.recordKey, id: view.agreement.id, kind: "agreement-changes" };
+          state.focusKey = "draft-agreement";
+          render();
+          return;
+        case "agreement.draft":
+          state.drafts.agreement = String(data.value == null ? "" : data.value);
+          if (state.draftInvalid.agreement && state.drafts.agreement.trim()) delete state.draftInvalid.agreement;
+          return;
+        case "agreement.changes.send":
+          requestAgreementChanges();
           return;
         case "agreement.confirm":
           if (!view || !view.canApproveAgreement || !state.confirm || state.confirm.kind !== "agreement" || busy() || state.accepted[view.agreement.recordKey]) return;

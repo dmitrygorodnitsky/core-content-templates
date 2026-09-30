@@ -36,6 +36,7 @@
     PENDING_MANAGEMENT_APPROVAL: { kind: "preparing" },
     INTERNALLY_APPROVED: { kind: "preparing" },
     SENT_TO_CLIENT: { kind: "agreement-review" },
+    CLIENT_CHANGES_REQUESTED: { kind: "reference", banner: "changes" },
     AGREEMENT_SEND_FAILED: { kind: "unavailable", reason: "send-failed" },
     CLIENT_APPROVED: { kind: "completion", completion: "approved" },
     ACTIVATION_FAILED: { kind: "completion", completion: "finishing" },
@@ -702,6 +703,7 @@
     if (state === "QUOTATION_SENT") grantActions(properties, grant, contract);
     var detailsEvent = contract.agreementEvents.details;
     var approveEvent = contract.agreementEvents.approve;
+    var changesEvent = contract.agreementEvents.changes;
     var awaitingDetails = state === detailsEvent.source;
 
     return {
@@ -740,6 +742,7 @@
         returned: returnedDetails(awaitingDetails ? attributeValue(agreement, contract.agreementAttributes.detailsErrors) : null, fields, contract.detailsReturn),
       },
       canApproveAgreement: state === approveEvent.source && eventGranted(grant, "document", agreementId, approveEvent.code),
+      canRequestAgreementChanges: state === changesEvent.source && eventGranted(grant, "document", agreementId, changesEvent.code),
       primaryEmail: primaryEmail(account, contract),
     };
   }

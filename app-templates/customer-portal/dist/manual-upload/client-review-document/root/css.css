@@ -540,6 +540,8 @@ button { font-family: inherit; }
   letter-spacing: -.025em; line-height: 1.15; text-wrap: balance;
 }
 
+.cr-title:focus { outline: none; }
+
 .cr-sub { margin: 2px 0 0; max-width: 62ch; font-size: 14.5px; line-height: 1.55; color: var(--ink-2); }
 
 .cr-meta { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0 0; }

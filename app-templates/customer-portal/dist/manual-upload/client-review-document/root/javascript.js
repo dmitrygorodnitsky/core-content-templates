@@ -151,6 +151,11 @@
     ["AGREEMENT_CONFIRM_BODY", "agreementConfirmBody", "You approve it on behalf of {client}."],
     ["AGREEMENT_CONFIRM_BUTTON", "agreementConfirmButton", "Confirm approval"],
     ["AGREEMENT_NO_ACTION", "agreementNoAction", "This agreement cannot be approved through this link."],
+    ["AGREEMENT_CHANGES_HINT", "agreementChangesHint", "The provider reads your request, revises the agreement and emails you a new link to review it."],
+    ["AGREEMENT_CHANGES_PLACEHOLDER", "agreementChangesPlaceholder", "For example: start the service on November 15, or add the side parking lot."],
+    ["AGREEMENT_CHANGES_BADGE", "agreementChangesBadge", "Changes requested"],
+    ["AGREEMENT_CHANGES_SENT_TITLE", "agreementChangesSentTitle", "Thank you, we received your request"],
+    ["AGREEMENT_CHANGES_SENT_BODY", "agreementChangesSentBody", "The provider revises the agreement and emails you a new link to review it. The agreement as it was sent to you is below."],
     ["AGREEMENT_APPROVED", "agreementApproved", "Approved"],
     ["AGREEMENT_ACTIVE", "agreementActive", "Active"],
     ["AGREEMENT_EXPIRED", "agreementExpired", "This agreement has expired. It is shown for reference."],
@@ -282,7 +287,7 @@
     agreementStates: [
       "QUOTATION", "QUOTATION_SENT", "QUOTATION_UPDATE", "QUOTATION_SEND_FAILED", "AWAITING_CLIENT_DETAILS",
       "CLIENT_DETAILS_RECEIVED", "DRAFT",
-      "PENDING_MANAGEMENT_APPROVAL", "INTERNALLY_APPROVED", "SENT_TO_CLIENT", "AGREEMENT_SEND_FAILED",
+      "PENDING_MANAGEMENT_APPROVAL", "INTERNALLY_APPROVED", "SENT_TO_CLIENT", "CLIENT_CHANGES_REQUESTED", "AGREEMENT_SEND_FAILED",
       "CLIENT_APPROVED", "ACTIVATION_FAILED", "ACTIVE", "SUSPENDED", "EXPIRED", "ARCHIVED", "CANCELED",
       "DETAILS_FINALIZATION_RETRY", "ACCESS_CLEANUP_RETRY",
     ],
@@ -295,6 +300,7 @@
     agreementEvents: {
       details: { code: "AWAITING_CLIENT_DETAILS-CLIENT_DETAILS_RECEIVED", source: "AWAITING_CLIENT_DETAILS" },
       approve: { code: "SENT_TO_CLIENT-CLIENT_APPROVED", source: "SENT_TO_CLIENT" },
+      changes: { code: "SENT_TO_CLIENT-CLIENT_CHANGES_REQUESTED", source: "SENT_TO_CLIENT", messageAttribute: "MESSAGE" },
     },
     orderAttributes: {
       property: "SERVICE_PROPERTY",
@@ -644,6 +650,7 @@
     PENDING_MANAGEMENT_APPROVAL: { kind: "preparing" },
     INTERNALLY_APPROVED: { kind: "preparing" },
     SENT_TO_CLIENT: { kind: "agreement-review" },
+    CLIENT_CHANGES_REQUESTED: { kind: "reference", banner: "changes" },
     AGREEMENT_SEND_FAILED: { kind: "unavailable", reason: "send-failed" },
     CLIENT_APPROVED: { kind: "completion", completion: "approved" },
     ACTIVATION_FAILED: { kind: "completion", completion: "finishing" },
@@ -1310,6 +1317,7 @@
     if (state === "QUOTATION_SENT") grantActions(properties, grant, contract);
     var detailsEvent = contract.agreementEvents.details;
     var approveEvent = contract.agreementEvents.approve;
+    var changesEvent = contract.agreementEvents.changes;
     var awaitingDetails = state === detailsEvent.source;
 
     return {
@@ -1348,6 +1356,7 @@
         returned: returnedDetails(awaitingDetails ? attributeValue(agreement, contract.agreementAttributes.detailsErrors) : null, fields, contract.detailsReturn),
       },
       canApproveAgreement: state === approveEvent.source && eventGranted(grant, "document", agreementId, approveEvent.code),
+      canRequestAgreementChanges: state === changesEvent.source && eventGranted(grant, "document", agreementId, changesEvent.code),
       primaryEmail: primaryEmail(account, contract),
     };
   }
@@ -1579,7 +1588,7 @@
     top.appendChild(text("p", "cr-eyebrow", eyebrow));
     if (badgeNode) top.appendChild(badgeNode);
     head.appendChild(top);
-    head.appendChild(text("h1", "cr-title", title));
+    head.appendChild(mark(ctx, text("h1", "cr-title", title, { tabindex: "-1" }), "page-title"));
     if (subtitle) head.appendChild(text("p", "cr-sub", subtitle));
     announce(ctx, [title, subtitle]);
     var meta = el("dl", "cr-meta");
@@ -2234,13 +2243,42 @@
       card.appendChild(unconfirmedNotice(ctx, recordKey));
       return card;
     }
-    if (!view.canApproveAgreement) {
+    if (!view.canApproveAgreement && !view.canRequestAgreementChanges) {
       card.appendChild(text("p", "cr-note", copy.agreementNoAction));
       return card;
     }
-    var confirming = Boolean(ctx.snapshot.confirm && ctx.snapshot.confirm.kind === "agreement");
+    var confirm = ctx.snapshot.confirm;
+    var confirming = Boolean(confirm && confirm.kind === "agreement");
+    var changing = Boolean(confirm && confirm.kind === "agreement-changes");
     var actions = el("div", "cr-actions");
-    if (confirming) {
+    if (changing) {
+      var invalid = Boolean(ctx.snapshot.draftInvalid.agreement);
+      card.setAttribute("role", "group");
+      card.setAttribute("aria-labelledby", "cr-agreement-changes-title");
+      var field = el("div", "cr-field", { "data-state": invalid ? "invalid" : "idle" });
+      field.appendChild(text("label", "cr-field__label", copy.changesTitle, { for: "cr-draft-agreement", id: "cr-agreement-changes-title" }));
+      field.appendChild(text("p", "cr-field__hint", copy.agreementChangesHint, { id: "cr-draft-hint-agreement" }));
+      var area = el("textarea", "cr-input cr-input--area", {
+        id: "cr-draft-agreement",
+        name: "MESSAGE",
+        rows: 5,
+        placeholder: copy.agreementChangesPlaceholder,
+        "aria-required": "true",
+        "aria-invalid": invalid ? "true" : null,
+        "aria-describedby": "cr-draft-hint-agreement cr-draft-error-agreement",
+        disabled: pending,
+      });
+      area.value = ctx.snapshot.drafts.agreement || "";
+      area.addEventListener("input", function () { ctx.dispatch("agreement.draft", { value: area.value }); });
+      mark(ctx, area, "draft-agreement");
+      field.appendChild(area);
+      field.appendChild(text("p", "cr-field__error", invalid ? copy.changesRequired : "", { id: "cr-draft-error-agreement" }));
+      card.appendChild(field);
+      actions.appendChild(button(pending ? copy.sendingLabel : copy.changesSend, "btn--primary btn--lg", function () {
+        ctx.dispatch("agreement.changes.send");
+      }, { disabled: pending || ctx.busy, "data-state": pending ? "pending" : null, "data-action": "agreement.changes.send", "aria-busy": pending ? "true" : null }));
+      actions.appendChild(button(copy.cancelLabel, "btn--ghost btn--lg", function () { ctx.dispatch("agreement.cancel"); }, { disabled: pending, "data-action": "agreement.cancel" }));
+    } else if (confirming) {
       card.setAttribute("role", "group");
       card.setAttribute("aria-labelledby", "cr-agreement-confirm");
       card.appendChild(text("p", "cr-confirm__title", copy.agreementConfirmTitle, { id: "cr-agreement-confirm" }));
@@ -2253,9 +2291,16 @@
       actions.appendChild(confirmButton);
       actions.appendChild(button(copy.cancelLabel, "btn--ghost btn--lg", function () { ctx.dispatch("agreement.cancel"); }, { disabled: pending, "data-action": "agreement.cancel" }));
     } else {
-      actions.appendChild(mark(ctx, button(copy.agreementApprove, "btn--primary btn--lg", function () {
-        ctx.dispatch("agreement.intent");
-      }, { disabled: ctx.busy || pending, "data-action": "agreement.approve" }), "approve-agreement"));
+      if (view.canApproveAgreement) {
+        actions.appendChild(mark(ctx, button(copy.agreementApprove, "btn--primary btn--lg", function () {
+          ctx.dispatch("agreement.intent");
+        }, { disabled: ctx.busy || pending, "data-action": "agreement.approve" }), "approve-agreement"));
+      }
+      if (view.canRequestAgreementChanges) {
+        actions.appendChild(mark(ctx, button(copy.changesLabel, "btn--ghost btn--lg", function () {
+          ctx.dispatch("agreement.changes");
+        }, { disabled: ctx.busy || pending, "data-action": "agreement.changes" }), "agreement-changes"));
+      }
     }
     card.appendChild(actions);
     if (command && !pending) card.appendChild(outcomeBox(ctx, command, { action: refreshButton(ctx, recordKey, copy.refreshLabel) }));
@@ -2274,14 +2319,18 @@
     var copy = ctx.copy;
     var completion = view.kind === "completion";
     var reviewing = view.kind === "agreement-review";
+    var changesRequested = view.kind === "reference" && view.banner === "changes";
     var badgeNode = reviewing ? text("span", "status-badge status-badge--info", copy.agreementAwaiting)
       : completion ? text("span", "status-badge status-badge--ok", view.completion === "active" ? copy.agreementActive : copy.agreementApproved)
-        : null;
-    var title = completion ? (view.completion === "active" ? copy.completeActiveTitle : copy.completeApprovedTitle) : copy.agreementTitle;
-    var subtitle = completion ? (view.completion === "finishing" ? copy.completeFinishingBody : copy.completeBody) : reviewing ? copy.agreementSubtitle : "";
+        : changesRequested ? text("span", "status-badge status-badge--warn", copy.agreementChangesBadge)
+          : null;
+    var title = completion ? (view.completion === "active" ? copy.completeActiveTitle : copy.completeApprovedTitle)
+      : changesRequested ? copy.agreementChangesSentTitle : copy.agreementTitle;
+    var subtitle = completion ? (view.completion === "finishing" ? copy.completeFinishingBody : copy.completeBody)
+      : reviewing ? copy.agreementSubtitle : changesRequested ? copy.agreementChangesSentBody : "";
     shell.appendChild(pageHead(ctx, copy.agreementEyebrow, title, subtitle, badgeNode));
     if (completion) shell.appendChild(portalInvitation(ctx));
-    if (view.kind === "reference") shell.appendChild(notice("warn", "", view.banner === "expired" ? copy.agreementExpired : copy.agreementSuspended, null));
+    if (view.kind === "reference" && !changesRequested) shell.appendChild(notice("warn", "", view.banner === "expired" ? copy.agreementExpired : copy.agreementSuspended, null));
     readNotices(ctx).forEach(function (node) { shell.appendChild(node); });
 
     var parties = view.parties;
@@ -2606,6 +2655,10 @@
         delete state.accepted[recordKey];
         delete state.commands[recordKey];
         if (expectation.event === contract.orderEvents.approve.code || expectation.event === contract.orderEvents.decline.code) state.followDecisions = true;
+        if (expectation.event === contract.agreementEvents.changes.code) {
+          delete state.drafts.agreement;
+          state.focusKey = "page-title";
+        }
       });
       if (receiving) state.view.kind = "checking";
     }
@@ -2734,6 +2787,10 @@
       if (!confirm) return;
       if (confirm.kind === "agreement") {
         if (!state.view || !state.view.canApproveAgreement) state.confirm = null;
+        return;
+      }
+      if (confirm.kind === "agreement-changes") {
+        if (!state.view || !state.view.canRequestAgreementChanges) state.confirm = null;
         return;
       }
       if (confirm.kind === "decline-all") {
@@ -2921,7 +2978,7 @@
           if (sibling.id !== option.id) delete state.expanded[sibling.id];
         });
         var confirm = state.confirm;
-        if (confirm && confirm.kind !== "agreement" && confirm.kind !== "decline-all" && confirm.id !== option.id && property
+        if (confirm && confirm.kind !== "agreement" && confirm.kind !== "agreement-changes" && confirm.kind !== "decline-all" && confirm.id !== option.id && property
           && property.options.some(function (sibling) { return sibling.id === confirm.id; }) && !inflight[confirm.recordKey]) {
           state.confirm = null;
         }
@@ -3027,6 +3084,28 @@
           Object.keys(error.fieldErrors || {}).forEach(function (code) {
             if (detailField(code)) state.details.serverErrors[code] = error.fieldErrors[code];
           });
+        },
+      });
+    }
+
+    function requestAgreementChanges() {
+      var view = state.view;
+      var confirm = state.confirm;
+      if (!view || !view.canRequestAgreementChanges || !confirm || confirm.kind !== "agreement-changes" || busy() || state.accepted[view.agreement.recordKey]) return;
+      var event = contract.agreementEvents.changes;
+      var message = String(state.drafts.agreement || "").trim();
+      if (!message) {
+        state.draftInvalid.agreement = true;
+        state.focusKey = "draft-agreement";
+        render();
+        return;
+      }
+      delete state.draftInvalid.agreement;
+      var metadata = {};
+      metadata[event.messageAttribute] = message;
+      send(view.agreement.recordKey, "document", view.agreement.id, event.code, metadata, {
+        onSuccess: function () {
+          if (!state.accepted[view.agreement.recordKey]) state.focusKey = "page-title";
         },
       });
     }
@@ -3154,9 +3233,24 @@
           return;
         case "agreement.cancel":
           if (!view || inflight[view.agreement.recordKey]) return;
+          state.focusKey = state.confirm && state.confirm.kind === "agreement-changes" ? "agreement-changes" : "approve-agreement";
           state.confirm = null;
-          state.focusKey = "approve-agreement";
+          delete state.draftInvalid.agreement;
           render();
+          return;
+        case "agreement.changes":
+          if (!view || !view.canRequestAgreementChanges || busy() || inflight[view.agreement.recordKey] || state.accepted[view.agreement.recordKey]) return;
+          clearOutcome(view.agreement.recordKey);
+          state.confirm = { recordKey: view.agreement.recordKey, id: view.agreement.id, kind: "agreement-changes" };
+          state.focusKey = "draft-agreement";
+          render();
+          return;
+        case "agreement.draft":
+          state.drafts.agreement = String(data.value == null ? "" : data.value);
+          if (state.draftInvalid.agreement && state.drafts.agreement.trim()) delete state.draftInvalid.agreement;
+          return;
+        case "agreement.changes.send":
+          requestAgreementChanges();
           return;
         case "agreement.confirm":
           if (!view || !view.canApproveAgreement || !state.confirm || state.confirm.kind !== "agreement" || busy() || state.accepted[view.agreement.recordKey]) return;
