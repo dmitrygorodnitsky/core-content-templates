@@ -42,6 +42,8 @@
       errorAfterCommand: false,
       retryContext: {},
       primaryEmail: "",
+      contact: null,
+      logoUrl: "",
       followDecisions: false,
       accepted: {},
       refreshing: false,
@@ -329,6 +331,8 @@
         state.closedAfter = "";
         state.errorAfterCommand = false;
         state.primaryEmail = state.view.primaryEmail || "";
+        state.contact = state.view.contact || null;
+        state.logoUrl = state.view.parties && typeof adapter.imageUrl === "function" ? adapter.imageUrl(state.view.parties.provider.logo) : "";
         settleAccepted();
         if (state.view.kind !== "quote-review" || !state.view.allDecided) state.followDecisions = false;
         seedDetails();
@@ -703,6 +707,8 @@
         portalUrl: portalUrl,
         link: { available: linkOffered(), status: state.link },
         primaryEmail: state.primaryEmail,
+        contact: state.contact,
+        logoUrl: state.logoUrl,
         pending: Object.keys(inflight),
       };
     }

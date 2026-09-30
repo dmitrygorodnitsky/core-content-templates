@@ -138,6 +138,7 @@
     ["PARTY_REPRESENTATIVE", "partyRepresentative", "Representative"],
     ["PARTY_EMAIL", "partyEmail", "Email"],
     ["PARTY_PHONE", "partyPhone", "Phone"],
+    ["PROVIDER_LOGO_ALT", "providerLogoAlt", "{provider} logo"],
     ["TERM_TITLE", "termTitle", "Term"],
     ["TERM_EFFECTIVE", "termEffective", "Effective date"],
     ["TERM_START", "termStart", "Starts"],
@@ -163,6 +164,10 @@
     ["PORTAL_EMAIL_BODY", "portalEmailBody", "You sign in with {email}. If you have no portal password yet, the provider's system emails one to this address once your access is ready. If you already have a portal password, it stays the same."],
     ["PORTAL_BODY", "portalBody", "You sign in with the primary email address on your account. If you have no portal password yet, the provider's system emails one to that address once your access is ready. If you already have a portal password, it stays the same."],
     ["PORTAL_OPEN", "portalOpen", "Open the customer portal"],
+
+    ["CONTACT_TITLE", "contactTitle", "Contact us"],
+    ["CONTACT_PHONE", "contactPhone", "Phone"],
+    ["CONTACT_EMAIL", "contactEmail", "Email"],
 
     ["PREPARING_TITLE", "preparingTitle", "Your agreement is being prepared"],
     ["PREPARING_BODY", "preparingBody", "Nothing is needed from you on this page right now."],
@@ -311,6 +316,9 @@
       providerLegalName: "PROVIDER_LEGAL_NAME",
       providerRepresentativeName: "PROVIDER_REPRESENTATIVE_NAME",
       providerRepresentativeJobTitle: "PROVIDER_REPRESENTATIVE_JOB_TITLE",
+      providerContactPhone: "PROVIDER_CONTACT_PHONE",
+      providerContactEmail: "PROVIDER_CONTACT_EMAIL",
+      providerLogo: "PROVIDER_LOGO",
       detailsErrors: "CLIENT_DETAILS_ERRORS",
     },
     accountPrefill: {
@@ -358,6 +366,7 @@
       "product-price": { service: "core-pim", segment: "product-price" },
       product: { service: "core-pim", segment: "product" },
     },
+    image: { service: "core", head: "image", tail: "get", width: 440 },
     pageSize: 200,
     pageLimit: 10,
     messageLimit: 400,
@@ -432,6 +441,11 @@
     }
     if (url.protocol !== "https:" || url.username || url.password) return "";
     return url.href;
+  }
+
+  function imageId(value) {
+    var text = String(value).trim();
+    return /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(text) ? text.toLowerCase() : "";
   }
 
   function clip(value) {
@@ -546,6 +560,10 @@
     }
 
     return {
+      imageUrl: function (id) {
+        var image = imageId(id);
+        return image ? base + "/" + GRANT.image.service + "/" + GRANT.image.head + "/" + image + "/" + GRANT.image.tail + "?width=" + GRANT.image.width : "";
+      },
       introspect: function () {
         return post(url(GRANT.introspect.service, GRANT.introspect.tail), {}, "introspect").then(objectPayload);
       },
@@ -582,6 +600,7 @@
     tokenFromFragment: tokenFromFragment,
     safeApiBase: safeApiBase,
     safePortalUrl: safePortalUrl,
+    imageId: imageId,
     reviewError: reviewError,
     refusalMessage: refusalMessage,
     fieldErrorsOf: fieldErrorsOf,
@@ -1036,6 +1055,24 @@
     return values;
   }
 
+  function telHref(value) {
+    var match = /^(\+?[\d\s().-]+?)(?:\s*(?:ext\.?|x)\s*\d+)?$/i.exec(value);
+    var number = match ? match[1].replace(/[^\d+]/g, "") : "";
+    return number.replace(/\D/g, "").length < 3 ? "" : "tel:" + number;
+  }
+
+  function mailHref(value) {
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) return "";
+    return "mailto:" + encodeURIComponent(value).replace(/%40/g, "@");
+  }
+
+  function contactOf(agreement, contract, provider) {
+    var codes = contract.agreementAttributes;
+    var phone = attributeText(agreement, codes.providerContactPhone);
+    var email = attributeText(agreement, codes.providerContactEmail);
+    return { name: provider, phone: phone, phoneHref: telHref(phone), email: email, emailHref: mailHref(email) };
+  }
+
   function partiesOf(agreement, account, fields, locale, contract) {
     var codes = contract.agreementAttributes;
     var owner = agreement && agreement[contract.rawShape.documentOwner];
@@ -1053,6 +1090,7 @@
         legalName: attributeText(agreement, codes.providerLegalName) || localizedName(owner && owner.nls, locale),
         representativeName: attributeText(agreement, codes.providerRepresentativeName),
         representativeJobTitle: attributeText(agreement, codes.providerRepresentativeJobTitle),
+        logo: attributeText(agreement, codes.providerLogo),
       },
       client: {
         legalName: stated("LEGAL_NAME") || localizedName(account && account.nls, locale),
@@ -1295,6 +1333,7 @@
         client: localizedName(account && account.nls, locale) || parties.client.legalName,
       },
       parties: parties,
+      contact: contactOf(agreement, contract, parties.provider.legalName),
       properties: properties,
       summary: summaryOf(properties),
       allDecided: properties.length > 0 && properties.every(function (property) {
@@ -1331,6 +1370,8 @@
     termsBlocks: termsBlocks,
     returnedDetails: returnedDetails,
     primaryEmail: primaryEmail,
+    telHref: telHref,
+    mailHref: mailHref,
     detailFields: detailFields,
     detailsPrefill: detailsPrefill,
     pickAgreement: pickAgreement,
@@ -2153,10 +2194,24 @@
     return title ? name + ", " + title : name;
   }
 
-  function factsCard(ctx, title, rows, className) {
+  function providerLogo(ctx) {
+    if (!ctx.snapshot.logoUrl) return null;
+    var provider = ctx.snapshot.view.parties.provider.legalName;
+    var image = el("img", "cr-party__logo", {
+      src: ctx.snapshot.logoUrl,
+      alt: provider ? ns.fill(ctx.copy.providerLogoAlt, { provider: provider }) : "",
+      decoding: "async",
+      referrerpolicy: "no-referrer",
+    });
+    image.addEventListener("error", function () { image.setAttribute("hidden", ""); });
+    return image;
+  }
+
+  function factsCard(ctx, title, rows, className, lead) {
     var copy = ctx.copy;
     var card = el("article", "cr-panel " + className);
     card.appendChild(text("h2", "cr-section-title", title));
+    if (lead) card.appendChild(lead);
     var list = el("dl", "cr-facts");
     rows.forEach(function (row) {
       var item = el("div", "cr-facts__row");
@@ -2234,7 +2289,7 @@
     partiesSection.appendChild(factsCard(ctx, copy.partyProvider, [
       [copy.partyLegalName, parties.provider.legalName],
       [copy.partyRepresentative, joinName(parties.provider.representativeName, parties.provider.representativeJobTitle)],
-    ], "cr-party"));
+    ], "cr-party", providerLogo(ctx)));
     partiesSection.appendChild(factsCard(ctx, copy.partyClient, [
       [copy.partyLegalName, parties.client.legalName],
       [copy.partyClientType, parties.client.clientType],
@@ -2335,6 +2390,29 @@
     return card;
   }
 
+  function contactLine(label, value, href, kind) {
+    var item = el("li", "cr-contact__item", { "data-contact": kind });
+    item.appendChild(text("span", "cr-contact__label", label));
+    item.appendChild(href ? text("a", "cr-contact__link", value, { href: href }) : text("span", "cr-contact__value", value));
+    return item;
+  }
+
+  function contactBlock(ctx) {
+    var contact = ctx.snapshot.contact;
+    if (!contact || (!contact.phone && !contact.email)) return null;
+    var copy = ctx.copy;
+    var block = el("section", "cr-contact", { "aria-labelledby": "cr-contact-title" });
+    var identity = el("div", "cr-contact__identity");
+    identity.appendChild(text("h2", "cr-contact__title", copy.contactTitle, { id: "cr-contact-title" }));
+    if (contact.name) identity.appendChild(text("p", "cr-contact__name", contact.name));
+    block.appendChild(identity);
+    var list = el("ul", "cr-contact__list");
+    if (contact.phone) list.appendChild(contactLine(copy.contactPhone, contact.phone, contact.phoneHref, "phone"));
+    if (contact.email) list.appendChild(contactLine(copy.contactEmail, contact.email, contact.emailHref, "email"));
+    block.appendChild(list);
+    return block;
+  }
+
   function closedCard(ctx) {
     var copy = ctx.copy;
     var after = ctx.snapshot.closedAfter;
@@ -2385,6 +2463,8 @@
       default:
         if (snapshot.view) ready(shell, ctx);
     }
+    var contact = contactBlock(ctx);
+    if (contact) shell.appendChild(contact);
     mount.replaceChildren();
     mount.appendChild(page);
     return { focus: ctx.focus, announcement: ctx.announcement, linkStatus: ctx.linkStatus };
@@ -2440,6 +2520,8 @@
       errorAfterCommand: false,
       retryContext: {},
       primaryEmail: "",
+      contact: null,
+      logoUrl: "",
       followDecisions: false,
       accepted: {},
       refreshing: false,
@@ -2727,6 +2809,8 @@
         state.closedAfter = "";
         state.errorAfterCommand = false;
         state.primaryEmail = state.view.primaryEmail || "";
+        state.contact = state.view.contact || null;
+        state.logoUrl = state.view.parties && typeof adapter.imageUrl === "function" ? adapter.imageUrl(state.view.parties.provider.logo) : "";
         settleAccepted();
         if (state.view.kind !== "quote-review" || !state.view.allDecided) state.followDecisions = false;
         seedDetails();
@@ -3101,6 +3185,8 @@
         portalUrl: portalUrl,
         link: { available: linkOffered(), status: state.link },
         primaryEmail: state.primaryEmail,
+        contact: state.contact,
+        logoUrl: state.logoUrl,
         pending: Object.keys(inflight),
       };
     }

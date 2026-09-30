@@ -192,6 +192,7 @@ for (const token of usedTokens) assert.ok(declaredTokens.has(token), "client-rev
 for (const token of ["--accent", "--accent-rgb", "--ink", "--ink-2", "--ink-3", "--surface", "--surface-2", "--glass", "--glass-border", "--hair", "--radius-card", "--radius-md", "--danger", "--danger-bg", "--ok", "--warn", "--info"]) {
   assert.ok(usedTokens.has(token), "the stylesheet must build on the portal token " + token);
 }
+assert.match(css, /\.cr-party__logo\[hidden\] \{ display: none; \}/, "a logo hidden after a failed load takes no space");
 assert.match(css, /\.cr-state--ok \.cr-state__glyph \{[^}]*background: var\(--ok\);[^}]*color: var\(--surface\);/, "the success card draws its glyph on the portal's solid ok colour, which the neutral closed-link card does not use");
 
 {
@@ -228,6 +229,27 @@ assert.match(css, /\.cr-state--ok \.cr-state__glyph \{[^}]*background: var\(--ok
   assert.deepEqual(plain(errors), { LEGAL_NAME: "Too short", REPRESENTATIVE_EMAIL: "Unreachable", BILLING_ADDRESS: "Required" }, "field errors are read from the common refusal shapes");
   assert.equal(CR.adapter.refusalMessage({ message: "  Not   allowed " }), "Not allowed");
   assert.equal(CR.adapter.refusalMessage("<html>502</html>"), "", "a non-JSON body is never shown as a refusal message");
+
+  const images = CR.adapter.createGrantAdapter({ apiBase: "https://core.example", token: "abc", fetch: () => { throw new Error("an image address is built, never fetched"); } });
+  assert.equal(images.imageUrl("647184D3-A297-42C8-B362-DD7BC758AF61"), "https://core.example/core/image/647184d3-a297-42c8-b362-dd7bc758af61/get?width=440", "a logo id becomes the public image address on the configured origin");
+  assert.equal(images.imageUrl("  647184d3-a297-42c8-b362-dd7bc758af61 "), "https://core.example/core/image/647184d3-a297-42c8-b362-dd7bc758af61/get?width=440");
+  for (const refused of ["", null, undefined, 12, "abc", "647184d3-a297-42c8-b362-dd7bc758af6", "647184d3-a297-42c8-b362-dd7bc758af61/../x", "https://evil.example/x.png", "javascript:alert(1)", "647184d3a29742c8b362dd7bc758af61"]) {
+    assert.equal(images.imageUrl(refused), "", JSON.stringify(refused) + " is not an image id, so no address is built from it");
+  }
+}
+
+{
+  const { telHref, mailHref } = loadRuntime().CR.normalizer;
+  for (const [value, href] of [
+    ["+1 604 555 0199", "tel:+16045550199"], ["(604) 555-0199", "tel:6045550199"], ["604.555.0199", "tel:6045550199"],
+    ["604-555-0199 ext. 12", "tel:6045550199"], ["604-555-0199 x12", "tel:6045550199"], ["112", "tel:112"],
+    ["1-800-SNOW", ""], ["call the office", ""], ["12", ""], ["+", ""], ["", ""], ["604 555 0199 or 604 555 0100", ""], ["604+555", ""],
+  ]) assert.equal(telHref(value), href, JSON.stringify(value) + (href ? " dials " + href : " is shown as text, never as a number it does not spell"));
+  for (const [value, href] of [
+    ["service@coastline-winter.example", "mailto:service@coastline-winter.example"], ["first.last+quotes@provider.example", "mailto:first.last%2Bquotes@provider.example"],
+    ["office@provider.example?subject=x", "mailto:office@provider.example%3Fsubject%3Dx"],
+    ["not an email", ""], ["a@b", ""], ["one@x.example, two@y.example", ""], ["@x.example", ""], ["", ""],
+  ]) assert.equal(mailHref(value), href, JSON.stringify(value) + (href ? " mails " + href : " is shown as text, never as a mail link"));
 }
 
 const N = loadRuntime().CR.normalizer;
@@ -607,6 +629,7 @@ const EXPECTED_SCENARIOS = {
   "link-closed": ["link-closed", null], unconfigured: ["unconfigured", null], empty: ["ready", "empty"],
   error: ["error", null], partial: ["ready", "quote-review"], "option-open": ["ready", "quote-review"],
   "link-copied": ["ready", "contract-details"], "link-copy-failed": ["ready", "quote-review"],
+  "contact-phone-only": ["ready", "quote-review"], "contact-none": ["ready", "quote-review"], "agreement-no-logo": ["ready", "agreement-review"],
   "view-pending": ["ready", "quote-review"], "view-failed": ["ready", "quote-review"], "approve-confirm": ["ready", "quote-review"],
   "changes-invalid": ["ready", "quote-review"], "decline-all-confirm": ["ready", "quote-review"], "decline-all-done": ["ready", "quote-review"], "command-pending": ["ready", "quote-review"], "command-refused": ["ready", "quote-review"],
   "command-failed": ["ready", "quote-review"], "command-stale-pending": ["ready", "quote-review"], "command-unconfirmed": ["ready", "quote-review"],
@@ -662,6 +685,9 @@ const controlOf = (field) => byAttribute(field, "id", "cr-field-" + field.getAtt
 const errorOf = (field) => byClass(field, "cr-field__error")[0];
 const portalLinks = (node) => byAttribute(node, "data-action", "portal.open");
 const stateCardOf = (node) => { const card = byClass(node, "cr-state")[0]; return [card.getAttribute("data-state"), byClass(card, "cr-state__glyph")[0].textContent]; };
+const contactLines = (node) => byClass(node, "cr-contact__item").map((item) => [item.getAttribute("data-contact"), item.children[0].textContent, item.children[1].tagName, item.children[1].textContent, item.children[1].getAttribute("href")]);
+const providerLogos = (node) => byClass(node, "cr-party__logo");
+const CONTACTLESS_SCENARIOS = new Set(["loading", "link-missing", "link-closed", "link-closed-portal", "unconfigured", "empty", "error", "contact-none"]);
 const FORM_FROM_ATTRIBUTES = {
   LEGAL_NAME: "Harbourview Strata Corporation", CLIENT_TYPE: "",
   BILLING_ADDRESS: "1500 Harbour Green Drive, Suite 210, Vancouver, BC V6C 3T8, Canada",
@@ -701,6 +727,20 @@ function assertForm(run, expected, message) {
     assert.equal(byAttribute(run.mount, "data-action", "link.copy").length, step ? 1 : 0, id + (step ? " is a step the client can come back to and offers Copy link once" : " is no step to come back to and offers no Copy link"));
     assert.deepEqual(run.clipboard.written, [], id + " writes nothing to the browser's clipboard on its own");
     assert.ok(!text.includes(PAGE_LINK), id + " keeps the page address out of its markup");
+    const contact = run.runtime.CR.fixtures.providerContact;
+    if (id !== "contact-phone-only") {
+      assert.deepEqual(contactLines(run.mount), CONTACTLESS_SCENARIOS.has(id) ? [] : [["phone", copy.contactPhone, "A", contact.phone, "tel:+16045550199"], ["email", copy.contactEmail, "A", contact.email, "mailto:" + contact.email]],
+        id + (CONTACTLESS_SCENARIOS.has(id) ? " has read no provider contact and draws no Contact us" : " ends with Contact us: the provider's phone and email as links"));
+    }
+    assert.equal(byClass(run.mount, "cr-contact").length, CONTACTLESS_SCENARIOS.has(id) ? 0 : 1, id + " draws Contact us at most once, and no empty block");
+    for (const block of byClass(run.mount, "cr-contact")) {
+      const shell = run.mount.children[0].children[0];
+      assert.equal(shell.children[shell.children.length - 1], block, id + " closes the page with Contact us");
+      assert.ok(surface(block).includes(copy.contactTitle) && surface(block).includes("Coastline Winter Services"), id + " names the provider under Contact us");
+      for (const link of all(block, (node) => node.tagName === "A")) assert.match(link.getAttribute("href"), /^(tel:\+?\d{3,}|mailto:[^\s@]+@[^\s@]+)$/, id + " links only to a dialable number or a mail address");
+    }
+    const logos = providerLogos(run.mount);
+    assert.equal(logos.length, ["agreement-review", "reference", "completion"].includes(snapshot.view && snapshot.phase === "ready" ? snapshot.view.kind : "") && id !== "agreement-no-logo" ? 1 : 0, id + " draws the provider's logo on an agreement page and nowhere else");
     switch (id) {
       case "loading":
         assert.equal(run.outcome, "held");
@@ -716,6 +756,18 @@ function assertForm(run, expected, message) {
         assert.equal(run.runtime.document.activeElement, button, "the redraw leaves the focus on the button");
         assert.equal(byClass(box, "cr-validity")[0].textContent, run.runtime.CR.fill(copy.linkValidUntil, { date: snapshot.view.expiresAt }), "beside the date the link works until");
         assert.equal(run.sent.length, 0, "copying the link sends no event");
+        break;
+      }
+      case "contact-phone-only":
+        assert.deepEqual(contactLines(run.mount), [["phone", copy.contactPhone, "A", contact.phone, "tel:+16045550199"]], "a provider without a contact email shows the phone alone, and no empty mail link");
+        break;
+      case "contact-none":
+        assert.equal(run.controller.snapshot().contact.phone + run.controller.snapshot().contact.email, "", "a provider that shows neither value leaves the page without the block");
+        break;
+      case "agreement-no-logo": {
+        const card = byClass(run.mount, "cr-party")[0];
+        assert.equal(run.controller.snapshot().logoUrl, "", "an agreement without a logo has no image address");
+        assert.deepEqual(card.children.map((child) => child.tagName), ["H2", "DL"], "and its provider card keeps its title and its facts, with nothing in between");
         break;
       }
       case "link-copy-failed": {
@@ -1071,6 +1123,16 @@ function assertForm(run, expected, message) {
         assert.ok(byClass(panel, "cr-terms__paragraph").length > 0, "their paragraphs");
         assert.equal(byClass(panel, "cr-terms__list").length, 1, "and one list for their consecutive items");
         assert.ok(!surface(panel).includes(copy.termsEmpty), "and the empty note stays away");
+        const provider = byClass(run.mount, "cr-party")[0];
+        const logo = providerLogos(provider)[0];
+        assert.deepEqual(provider.children.map((child) => child.tagName), ["H2", "IMG", "DL"], "the provider card shows the logo between its title and its facts");
+        assert.equal(providerLogos(byClass(run.mount, "cr-party")[1]).length, 0, "the client card has none");
+        assert.equal(logo.getAttribute("src"), run.runtime.CR.fixtures.logoImage, "the logo is the image the adapter resolves for the agreement's PROVIDER_LOGO");
+        assert.equal(logo.getAttribute("alt"), "Coastline Winter Services Ltd. logo", "named after the provider");
+        assert.equal(logo.getAttribute("referrerpolicy"), "no-referrer");
+        assert.equal(logo.getAttribute("hidden"), null);
+        logo.fire("error");
+        assert.equal(logo.getAttribute("hidden"), "", "a logo that fails to load is hidden instead of leaving a broken image");
         break;
       }
       case "agreement-no-terms": {
@@ -1106,7 +1168,8 @@ function assertForm(run, expected, message) {
         const closing = byAttribute(run.mount, "data-portal", "return")[0];
         assert.equal(links.length, 2, "and once more for a client who has read the agreement");
         assert.ok(closing.children.includes(links[1]), "in a block of its own");
-        assert.equal(shell.children[shell.children.length - 1], closing, "that closes the page, below the terms");
+        assert.equal(shell.children.indexOf(closing), shell.children.indexOf(byAttribute(run.mount, "aria-labelledby", "cr-terms-title")[0]) + 1, "right below the terms");
+        assert.equal(shell.children.indexOf(closing), shell.children.length - 2, "with only Contact us after it");
         assert.ok(shell.children.indexOf(byAttribute(run.mount, "data-portal", "invitation")[0]) < shell.children.indexOf(byClass(run.mount, "cr-parties")[0]), "while the invitation stays above the agreement");
         assert.deepEqual(links.map((entry) => [entry.tagName, entry.getAttribute("href"), entry.textContent]), [["A", run.runtime.CR.fixtures.portalUrl, copy.portalOpen], ["A", run.runtime.CR.fixtures.portalUrl, copy.portalOpen]], "both lead to the same portal under the same label");
         assert.ok(surface(closing).includes(copy.portalTitle) && !surface(closing).includes("@"), "the closing block names the portal access without repeating how to sign in");
@@ -2068,6 +2131,60 @@ for (const state of ["CLIENT_APPROVED", "ACTIVE", "EXPIRED"]) {
   assert.equal(run.live.textContent, "", "a page stopped while the browser was copying announces nothing");
 }
 
+{
+  const run = await stagedController((F) => F.agreementData("SENT_TO_CLIENT", false));
+  const attributes = run.data.documents[0].attributes[17];
+  assert.equal(run.controller.snapshot().logoUrl, run.CR.fixtures.logoImage);
+  assert.equal(run.controller.snapshot().contact.name, "Coastline Winter Services Ltd.", "Contact us names the provider as the agreement names it");
+  attributes.PROVIDER_CONTACT_PHONE = { value: "1-800-SNOW-NOW" };
+  attributes.PROVIDER_CONTACT_EMAIL = { value: "write to the office" };
+  attributes.PROVIDER_LOGO = { value: "not-an-image" };
+  run.controller.dispatch("refresh", {});
+  await run.controller.idle();
+  assert.deepEqual(contactLines(run.mount), [["phone", run.copy.contactPhone, "SPAN", "1-800-SNOW-NOW", null], ["email", run.copy.contactEmail, "SPAN", "write to the office", null]], "a value that is no number and no address is shown as text, without a link");
+  assert.equal(providerLogos(run.mount).length, 0, "a PROVIDER_LOGO that is no image id draws nothing");
+  delete attributes.PROVIDER_CONTACT_PHONE;
+  attributes.PROVIDER_CONTACT_EMAIL = { value: "office@provider.example" };
+  run.controller.dispatch("refresh", {});
+  await run.controller.idle();
+  assert.deepEqual(contactLines(run.mount), [["email", run.copy.contactEmail, "A", "office@provider.example", "mailto:office@provider.example"]], "a provider without a contact phone shows the email alone, and no empty phone link");
+  delete attributes.PROVIDER_CONTACT_EMAIL;
+  run.controller.dispatch("refresh", {});
+  await run.controller.idle();
+  assert.equal(byClass(run.mount, "cr-contact").length, 0, "a later read without a contact takes Contact us away");
+  attributes.PROVIDER_CONTACT_PHONE = { value: "604 555 0199" };
+  run.controller.dispatch("refresh", {});
+  await run.controller.idle();
+  assert.equal(contactLines(run.mount).length, 1);
+  run.data.documents.length = 0;
+  run.controller.dispatch("refresh", {});
+  await run.controller.idle();
+  assert.equal(kindOf(run), "empty");
+  assert.equal(byClass(run.mount, "cr-contact").length, 0, "a later read that returns no agreement takes the earlier contact away too");
+}
+
+{
+  const run = await stagedController((F) => F.quotationData("AWAITING_CLIENT_DETAILS", F.decidedStates));
+  await sendDetails(run.controller);
+  await drain(run.controller, run.timers);
+  assert.equal(run.controller.snapshot().phase, "link-closed");
+  assert.equal(contactLines(run.mount).length, 2, "the thank-you card after the link closes keeps the contact the page read before");
+  assert.equal(providerLogos(run.mount).length, 0);
+}
+
+{
+  const runtime = loadRuntime({ fixtures: true });
+  const full = runtime.CR.fixtures.createFixtureAdapter(runtime.CR.fixtures.agreementData("SENT_TO_CLIENT", false), {});
+  const adapter = { introspect: full.introspect, list: full.list, get: full.get, sendEvent: full.sendEvent };
+  const mount = runtime.document.createElement("div");
+  const controller = runtime.CR.createController({ adapter, mount, timers: fakeTimers(), locale: "en-CA" });
+  controller.start();
+  await controller.idle();
+  assert.equal(controller.snapshot().logoUrl, "", "an adapter that resolves no images leaves the agreement without a logo");
+  assert.equal(providerLogos(mount).length, 0);
+  assert.equal(byClass(mount, "cr-party").length, 2, "and the parties are drawn all the same");
+}
+
 for (const [state, links] of [["SENT_TO_CLIENT", 0], ["SUSPENDED", 0], ["EXPIRED", 0], ["CLIENT_APPROVED", 2], ["ACTIVATION_FAILED", 2], ["ACTIVE", 2]]) {
   const run = await stagedController((F) => F.agreementData(state, false), {}, undefined, { portalUrl: "https://portal.example.com/" });
   assert.equal(portalLinks(run.mount).length, links, state + (links ? " offers the portal above and below the agreement" : " offers no portal: only an approved agreement does"));
@@ -2179,6 +2296,9 @@ for (const [state, links] of [["SENT_TO_CLIENT", 0], ["SUSPENDED", 0], ["EXPIRED
   byAttribute(mount, "data-action", "link.copy")[0].fire("click");
   await controller.idle();
   assert.deepEqual(liveClipboard.written, [pageAddress], "Copy link hands the browser's clipboard the address the client opened, its token fragment included");
+  assert.equal(controller.snapshot().logoUrl, "https://core.example/core/image/" + runtime.CR.fixtures.logoId + "/get?width=440", "live mode builds the logo address on the API origin from the agreement's PROVIDER_LOGO");
+  assert.ok(!controller.snapshot().logoUrl.includes(encoded), "and the token is no part of it");
+  assert.ok(calls.every((call) => !call.url.includes("/image/")), "the page itself never requests the logo; the browser loads it as an image");
   assert.equal(controller.snapshot().link.status, "copied");
   assert.equal(calls.length, requestsBeforeCopy, "and sends no request");
 
@@ -2262,6 +2382,9 @@ try {
     assert.ok(manifest.api.reads.some((read) => read.includes(path)), "the manual package documents the grant read " + path);
   }
   assert.deepEqual(manifest.plannedFields.account, plain(Object.values(loadRuntime().CR.contract.accountPrefill)), "the manual package lists the Account attributes the page reads, as the contract names them");
+  for (const code of ["PROVIDER_CONTACT_PHONE", "PROVIDER_CONTACT_EMAIL", "PROVIDER_LOGO"]) assert.ok(manifest.plannedFields.agreement.includes(code), "the manual package lists the agreement attribute " + code);
+  assert.ok(manifest.api.reads.some((read) => read.includes("/core/image/{imageId}/get")), "the manual package documents the public logo address");
+  assert.ok(manifest.constraints.some((line) => line.startsWith("Contact us ")), "the manifest states where Contact us and the logo come from");
   for (const [field, file] of Object.entries({ head: "root/head.html", html: "root/html.html", css: "root/css.css", javascript: "root/javascript.js" })) {
     const content = await fs.readFile(path.join(outputDir, file), "utf8");
     assert.equal(crypto.createHash("sha256").update(content.replace(/\n$/, ""), "utf8").digest("hex"), manifest.template.sha256[field], file + " matches its manifest digest");
@@ -2303,4 +2426,4 @@ try {
   await fs.rm(tempDir, { recursive: true, force: true });
 }
 
-console.log("client-review-check ok: " + Object.keys(EXPECTED_SCENARIOS).length + " preview states, every order and agreement state, grouping and counts-only summary, server subtotal and taxes shown only when returned, confirmation statements with description and CMS precedence, contract details and the portal sign-in read from the Account attributes the contract names, never a confirmation and never over what the client typed, grant-gated single-flight commands with read-back, refusals and failures, returned details codes, a bounded one-read-at-a-time checking backoff with announcements, the portal invitation with and without PORTAL_URL and the portal button above and below an approved agreement, a thank-you card after the details and after the approval that an expired link never shows, Copy link with its confirmation, its refusal and no address in the page, ACTIVATION_FAILED as completion, numbered terms, token only in the grant path, no money arithmetic, innerHTML, eval, console or storage, portal tokens only, and a live-only deterministic CMS package");
+console.log("client-review-check ok: " + Object.keys(EXPECTED_SCENARIOS).length + " preview states, every order and agreement state, grouping and counts-only summary, server subtotal and taxes shown only when returned, confirmation statements with description and CMS precedence, contract details and the portal sign-in read from the Account attributes the contract names, never a confirmation and never over what the client typed, grant-gated single-flight commands with read-back, refusals and failures, returned details codes, a bounded one-read-at-a-time checking backoff with announcements, the portal invitation with and without PORTAL_URL and the portal button above and below an approved agreement, a thank-you card after the details and after the approval that an expired link never shows, Copy link with its confirmation, its refusal and no address in the page, Contact us with links only for a dialable number and a mail address, the provider's logo on the agreement pages, ACTIVATION_FAILED as completion, numbered terms, token only in the grant path, no money arithmetic, innerHTML, eval, console or storage, portal tokens only, and a live-only deterministic CMS package");

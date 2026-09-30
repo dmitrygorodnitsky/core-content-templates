@@ -885,6 +885,24 @@ checkout before treating any of them as broken.
 
 ## Exact next action
 
+**Late on 2026-09-30** the review page shows the provider's logo on the
+agreement and a Contact us strip on every step, from the organization's image
+and two new organization fields, which utilities V17 (script 344) copies onto
+the agreement when it is sent (`content/cases/QUOTATION-PACKAGE-FLOW.md` §8).
+`CLIENT_REVIEW_DOCUMENT` on both dev-1 CMS nodes matches the package; the type
+changes are live.
+- Blocked: workflow 53 stays on V16 until `app-2-core` and `app-4-core` compile
+  scripts again (`ZZ_SCRIPT_RESULT_VISIBILITY_PROBE_V1#whereAmI` through
+  `exec.json?nodeId=`). Then bind V17 from core-ui with `workflows.ts apply
+  --file=scripts/dev/seeds/serviceAgreementWorkflows.json
+  --base-url=https://dev-1.servicewand.com/core
+  --owner-org=SERVICE_WAND_WINTER_SERVICES --apply`; its plan on 2026-09-30
+  listed the script, nine hooks and one attribute reorder already pending.
+- Next: the user accepts or rejects the presentation from the screenshots, and
+  the business enters the client phone and email of SNOWLIMITLESS in Snow CRM.
+  An agreement sent before the binding gets the values from
+  `copyProviderCard(agreementId)` or its next send.
+
 **Since the evening of 2026-09-30** the review page offers Copy link on the
 quote review, contract details and agreement review steps, thanks the client
 when a link closes after their details or their approval, and offers the

@@ -92,6 +92,9 @@
       providerLegalName: "PROVIDER_LEGAL_NAME",
       providerRepresentativeName: "PROVIDER_REPRESENTATIVE_NAME",
       providerRepresentativeJobTitle: "PROVIDER_REPRESENTATIVE_JOB_TITLE",
+      providerContactPhone: "PROVIDER_CONTACT_PHONE",
+      providerContactEmail: "PROVIDER_CONTACT_EMAIL",
+      providerLogo: "PROVIDER_LOGO",
       detailsErrors: "CLIENT_DETAILS_ERRORS",
     },
     accountPrefill: {

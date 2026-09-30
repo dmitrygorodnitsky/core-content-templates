@@ -86,6 +86,17 @@
 
   var PORTAL_URL = "https://portal.coastline-winter.example/sign-in";
 
+  var PROVIDER_CONTACT = { phone: "+1 604 555 0199", email: "service@coastline-winter.example" };
+  var LOGO_ID = "5b1f0c2e-6a4d-4c3b-9f0e-2d7a8c1b3e90";
+  var LOGO_IMAGE = "data:image/svg+xml;charset=utf-8," + encodeURIComponent([
+    "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 330 76'>",
+    "<rect x='2' y='8' width='60' height='60' rx='14' fill='#0e8fc4'/>",
+    "<path d='M32 20v36M16.4 29l31.2 18M16.4 47l31.2-18' stroke='#fff' stroke-width='5' stroke-linecap='round' fill='none'/>",
+    "<text x='76' y='37' font-family='Arial,Helvetica,sans-serif' font-size='25' font-weight='700' fill='#0b2a4a'>COASTLINE</text>",
+    "<text x='76' y='60' font-family='Arial,Helvetica,sans-serif' font-size='16' font-weight='700' fill='#0e8fc4' letter-spacing='1.6'>WINTER SERVICES</text>",
+    "</svg>",
+  ].join(""));
+
   var QUOTATION_EVENTS = [
     "QUOTE_SENT-QUOTE_VIEWED",
     "QUOTE_VIEWED-CLIENT_APPROVED",
@@ -104,6 +115,8 @@
     { id: "partial", label: "Partial data — one option unreadable" },
     { id: "link-copied", label: "Copy link — copied on the contract details step" },
     { id: "link-copy-failed", label: "Copy link — the browser refused to copy" },
+    { id: "contact-phone-only", label: "Contact us — the provider shows a phone and no email" },
+    { id: "contact-none", label: "Contact us — the provider shows neither, no block" },
     { id: "option-open", label: "Option open — lines, total, decisions" },
     { id: "view-pending", label: "Unviewed option opened — view event pending" },
     { id: "view-failed", label: "Unviewed option opened — view event failed" },
@@ -141,6 +154,7 @@
     { id: "agreement-review", label: "Agreement review — SENT_TO_CLIENT" },
     { id: "agreement-numbered-terms", label: "Agreement review — numbered contract terms" },
     { id: "agreement-no-terms", label: "Agreement review — no contract terms written" },
+    { id: "agreement-no-logo", label: "Agreement review — the provider has no logo" },
     { id: "agreement-confirm", label: "Agreement approval — confirmation" },
     { id: "agreement-unconfirmed", label: "Agreement approval accepted, change not seen within the budget — Refresh status" },
     { id: "approval-closed", label: "Agreement approved — link closed, portal invitation" },
@@ -236,6 +250,9 @@
       ORDERS: { value: orderIds.slice() },
       TERM_START_DATE: { value: "2026-11-01" },
       TERM_END_DATE: { value: "2027-03-31" },
+      PROVIDER_CONTACT_PHONE: { value: PROVIDER_CONTACT.phone },
+      PROVIDER_CONTACT_EMAIL: { value: PROVIDER_CONTACT.email },
+      PROVIDER_LOGO: { value: LOGO_ID },
     };
     if (withSnapshot) {
       attributes.EFFECTIVE_DATE = { value: "2026-10-20" };
@@ -466,6 +483,9 @@
     }
 
     return {
+      imageUrl: function (id) {
+        return id === LOGO_ID ? LOGO_IMAGE : "";
+      },
       introspect: function () {
         if (settings.introspect === "hold") return never();
         return later(function () {
@@ -607,6 +627,13 @@
       case "link-copy-failed":
         clipboard = fixtureClipboard(false);
         steps = [["link.copy", {}]];
+        break;
+      case "contact-phone-only":
+        delete data.documents[0].attributes[17].PROVIDER_CONTACT_EMAIL;
+        break;
+      case "contact-none":
+        delete data.documents[0].attributes[17].PROVIDER_CONTACT_PHONE;
+        delete data.documents[0].attributes[17].PROVIDER_CONTACT_EMAIL;
         break;
       case "option-open":
         steps = [["option.toggle", { id: 3102 }]];
@@ -761,6 +788,10 @@
         data = agreementData("SENT_TO_CLIENT", false);
         delete data.documents[0].attributes[17].CONTRACT_TERMS;
         break;
+      case "agreement-no-logo":
+        data = agreementData("SENT_TO_CLIENT", false);
+        delete data.documents[0].attributes[17].PROVIDER_LOGO;
+        break;
       case "agreement-confirm":
         data = agreementData("SENT_TO_CLIENT", false);
         steps = [["agreement.intent", {}]];
@@ -850,6 +881,9 @@
     attributedAccount: attributedAccount,
     numberedTerms: NUMBERED_TERMS,
     portalUrl: PORTAL_URL,
+    providerContact: Object.freeze(Object.assign({}, PROVIDER_CONTACT)),
+    logoId: LOGO_ID,
+    logoImage: LOGO_IMAGE,
     decidedStates: Object.freeze(Object.assign({}, DECIDED)),
     lastOpenStates: Object.freeze(Object.assign({}, LAST_OPEN)),
   };

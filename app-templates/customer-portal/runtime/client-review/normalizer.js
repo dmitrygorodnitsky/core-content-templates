@@ -447,6 +447,24 @@
     return values;
   }
 
+  function telHref(value) {
+    var match = /^(\+?[\d\s().-]+?)(?:\s*(?:ext\.?|x)\s*\d+)?$/i.exec(value);
+    var number = match ? match[1].replace(/[^\d+]/g, "") : "";
+    return number.replace(/\D/g, "").length < 3 ? "" : "tel:" + number;
+  }
+
+  function mailHref(value) {
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) return "";
+    return "mailto:" + encodeURIComponent(value).replace(/%40/g, "@");
+  }
+
+  function contactOf(agreement, contract, provider) {
+    var codes = contract.agreementAttributes;
+    var phone = attributeText(agreement, codes.providerContactPhone);
+    var email = attributeText(agreement, codes.providerContactEmail);
+    return { name: provider, phone: phone, phoneHref: telHref(phone), email: email, emailHref: mailHref(email) };
+  }
+
   function partiesOf(agreement, account, fields, locale, contract) {
     var codes = contract.agreementAttributes;
     var owner = agreement && agreement[contract.rawShape.documentOwner];
@@ -464,6 +482,7 @@
         legalName: attributeText(agreement, codes.providerLegalName) || localizedName(owner && owner.nls, locale),
         representativeName: attributeText(agreement, codes.providerRepresentativeName),
         representativeJobTitle: attributeText(agreement, codes.providerRepresentativeJobTitle),
+        logo: attributeText(agreement, codes.providerLogo),
       },
       client: {
         legalName: stated("LEGAL_NAME") || localizedName(account && account.nls, locale),
@@ -706,6 +725,7 @@
         client: localizedName(account && account.nls, locale) || parties.client.legalName,
       },
       parties: parties,
+      contact: contactOf(agreement, contract, parties.provider.legalName),
       properties: properties,
       summary: summaryOf(properties),
       allDecided: properties.length > 0 && properties.every(function (property) {
@@ -742,6 +762,8 @@
     termsBlocks: termsBlocks,
     returnedDetails: returnedDetails,
     primaryEmail: primaryEmail,
+    telHref: telHref,
+    mailHref: mailHref,
     detailFields: detailFields,
     detailsPrefill: detailsPrefill,
     pickAgreement: pickAgreement,

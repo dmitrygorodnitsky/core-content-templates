@@ -358,6 +358,55 @@ screenshots went to the user, who has not accepted it yet. No client has gone
 through it on dev-1: the thanks after real details and a real approval, and
 Copy link under a real token, wait for the team's next end-to-end run.
 
+Later on 2026-09-30 the page took tasks 22 and 14 of the list: the provider's
+logo on the agreement and a Contact us block on every step. The user decided
+that both come from the organization, and that clients get a phone and an
+email of their own rather than `GENERAL_CONTACT`, which on SNOWLIMITLESS is the
+CEO's personal contact.
+
+- **Where the values come from.** The logo is the organization's image, the
+  one the agreement emails already carry; `Organization.preferences`, which the
+  list names, is empty on SNOWLIMITLESS. The contact is two new optional fields
+  of the `OPERATOR` organization type, set in Snow CRM: `PROVIDER_CONTACT_PHONE`
+  ("Client Contact Phone") and `PROVIDER_CONTACT_EMAIL` ("Client Contact
+  Email"). A link cannot read the Organization, so utilities V17 (script 344)
+  copies the three values onto agreement attributes of the same names — the
+  logo as `PROVIDER_LOGO`, an image id — when the agreement enters
+  `QUOTATION_SENT` or `SENT_TO_CLIENT`; `copyProviderCard(agreementId)` does it
+  on demand. A value changed in Snow CRM reaches a client with the next send.
+- **Logo.** The provider card of the agreement review and of the completion
+  states shows it above the legal name, loaded from
+  `/core/image/{id}/get?width=440`, which needs no token, with no referrer. It
+  keeps its proportions within 220 × 52 px, on a light plate in dark mode
+  because the SNOWLIMITLESS logo is navy on a transparent ground: its 347 × 76
+  image shows at 220 × 48.2 in both modes. A value that is not an image id, an
+  empty one, or an image that fails to load leaves the card as it was.
+- **Contact us.** Once a link has been read, every step and card it reaches,
+  the thanks and "being prepared" included, ends with a strip naming the
+  provider with the phone and the email; a link that is closed at its first
+  read has no values to show. A phone is a `tel:` link only when it is a whole
+  dialable number, an optional extension after `ext` or `x` aside, and an email
+  a `mailto:` link only when it has the shape of an address; any other value is
+  shown as text, a missing one leaves no row, and with neither there is no
+  block. The strip stays when the link closes after a read. At 375 px the rows
+  are 43 px tall.
+- **Not covered.** The request-quote form holds no agreement and reads nothing
+  of the organization, so it has no Contact us yet; its source (page
+  parameters, or a read the form is allowed) is not decided.
+
+The presentation was checked on the fixtures at desktop, 768 px and 375 px
+widths in light and dark mode, and with the SNOWLIMITLESS logo in both modes;
+the screenshots went to the user, who has not accepted it yet. Both CMS nodes
+of dev-1 serve this page since the evening of 2026-09-30 (app-3 served the
+previous one until a save was steered to it), and the deployed template draws
+Contact us from its CMS copy. The two organization fields (type 4) and the
+three agreement attributes (type 17) are live; SNOWLIMITLESS has no client
+phone or email yet. Workflow 53 still runs utilities V16: `app-2-core` and
+`app-4-core` have failed every new script compilation since 2026-09-29 or 30
+("cannot access com"), V16 included, and V17 is bound once they compile again.
+Until then no agreement carries the values, and the page shows neither a logo
+nor Contact us.
+
 ## 9. Prerequisites and open points
 
 - **The link works and carries what the pages need** (*verified* 2026-09-21).

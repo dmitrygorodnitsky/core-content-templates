@@ -1008,6 +1008,15 @@ button { font-family: inherit; }
 
 .cr-parties { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; align-items: start; }
 
+.cr-party__logo { display: block; max-width: min(220px, 70%); max-height: 52px; width: auto; height: auto; margin: 0 0 12px; object-fit: contain; }
+
+.cr-party__logo[hidden] { display: none; }
+
+:root[data-mode="dark"] .cr-party__logo {
+  max-width: min(240px, calc(70% + 20px)); max-height: 64px;
+  padding: 6px 10px; border-radius: 10px; background: var(--bg-3);
+}
+
 .cr-facts { margin: 0; }
 
 .cr-facts__row {
@@ -1047,6 +1056,33 @@ button { font-family: inherit; }
 
 .cr-terms__clause-text { min-width: 0; white-space: pre-line; overflow-wrap: anywhere; }
 
+.cr-contact {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 24px;
+  padding: 14px 18px; border-radius: 16px;
+  background: rgba(var(--glass), .4); border: 1px solid var(--glass-border);
+}
+
+.cr-contact__identity { min-width: 0; }
+
+.cr-contact__title { margin: 0; font-size: 14px; font-weight: 750; letter-spacing: -.005em; }
+
+.cr-contact__name { margin: 2px 0 0; font-size: 12.5px; color: var(--ink-3); overflow-wrap: anywhere; }
+
+.cr-contact__list { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 4px 24px; }
+
+.cr-contact__item { display: flex; align-items: baseline; gap: 8px; min-width: 0; font-size: 13.5px; }
+
+.cr-contact__label { font-size: 12px; color: var(--ink-3); }
+
+.cr-contact__link, .cr-contact__value { padding: 6px 0; font-weight: 650; color: var(--ink); overflow-wrap: anywhere; }
+
+.cr-contact__link {
+  text-decoration: underline; text-decoration-color: rgba(var(--accent-rgb), .55);
+  text-decoration-thickness: 1.5px; text-underline-offset: 3px;
+}
+
+.cr-contact__link:hover { text-decoration-color: var(--accent); }
+
 .cr-skeleton { display: flex; flex-direction: column; gap: 16px; }
 
 .cr-skeleton__bar { display: block; border-radius: 8px; }
@@ -1083,6 +1119,9 @@ button { font-family: inherit; }
   .cr-skeleton .cr-summary > .cr-skeleton__tile:first-child { grid-column: 1 / -1; }
   .cr-fields { grid-template-columns: minmax(0, 1fr); }
   .cr-link__copy { padding: 9px 16px; font-size: 13px; }
+  .cr-contact { flex-direction: column; align-items: flex-start; gap: 4px; padding: 14px 14px 4px; }
+  .cr-contact__list { flex-direction: column; gap: 0; }
+  .cr-contact__link, .cr-contact__value { padding: 12px 0; }
   .cr-property__head { flex-wrap: wrap; padding: 14px 14px 12px; gap: 8px 10px; }
   .cr-property__identity { flex-basis: calc(100% - 40px); }
   .cr-property__head .status-badge { margin: 0 0 0 40px; }

@@ -5,12 +5,12 @@
   "template": {
     "code": "CLIENT_REVIEW_DOCUMENT",
     "templateLanguage": "JTE",
-    "parameterCount": 182,
+    "parameterCount": 186,
     "sha256": {
       "head": "f1c3486ef79fb84dd6af7baff69fc992cf2806ae5b9e9e35ddbd69cb88fec28c",
-      "html": "960fc4de0169bc213000db2af514d9c973fafc0cc11ca926d3108e5af8f9f919",
-      "css": "d6551e4fad53783a4476a9dfb131ddb309618529b4404e4474f81cb1dadf2b42",
-      "javascript": "53c0392f719bfb6c0bd11018417da98e459fed9fcaeaf75e682bd714c7cc75c6"
+      "html": "f0273e881e49c31fc98d8e299da80d2f773863170640613207314898be5f9f88",
+      "css": "262294088fc6fa15c3d70110622685c795f4c50c325c25466ebc1e286a7a85b8",
+      "javascript": "79cebfa4ad2070f75e7c62d3706438a9caf3bfa01048c96f1d1e9c5a7e02db76"
     }
   },
   "runtime": {
@@ -54,7 +54,8 @@
       "POST {apiBase}/core-bill/i/{token}/order/get.json?id={orderId}",
       "POST {apiBase}/core-bill/i/{token}/order-item/list.json",
       "POST {apiBase}/core-pim/i/{token}/product-price/list.json",
-      "POST {apiBase}/core-pim/i/{token}/product/list.json"
+      "POST {apiBase}/core-pim/i/{token}/product/list.json",
+      "GET {apiBase}/core/image/{imageId}/get?width=440 (the provider logo, loaded by the browser as an image, without the token)"
     ],
     "commands": [
       "POST {apiBase}/core-bill/i/{token}/order/event.json { id, event, metadata }",
@@ -98,6 +99,9 @@
       "PROVIDER_LEGAL_NAME",
       "PROVIDER_REPRESENTATIVE_NAME",
       "PROVIDER_REPRESENTATIVE_JOB_TITLE",
+      "PROVIDER_CONTACT_PHONE",
+      "PROVIDER_CONTACT_EMAIL",
+      "PROVIDER_LOGO",
       "CONTRACT_TERMS",
       "CLIENT_DETAILS_ERRORS",
       "LEGAL_NAME",
@@ -138,6 +142,7 @@
     "PORTAL_URL ships empty. When it is an absolute https address, the completion states offer an Open the customer portal link to it above and below the agreement, and the thank-you state after approval and a closed link offer it once; any other value is discarded and no link shows. The portal access text itself never depends on Account.user.",
     "Copy link is offered on the quote review, contract details and agreement review steps, never on an approved agreement or a state card. It hands the browser's clipboard the address the page was opened with, #token= fragment included, when the client presses it, and sends it nowhere else. A browser that refuses the write leaves the client with the address bar and the provider's email. The link carries nothing the client typed: a returning client sees what the provider's system holds.",
     "A link that closes after the details or the approval were sent ends on a thank-you card; a link that is closed when it is opened keeps the expired-or-withdrawn card.",
+    "Contact us closes every page that has read an agreement. It shows the agreement's PROVIDER_CONTACT_PHONE and PROVIDER_CONTACT_EMAIL, which the provider's workflow copies from the organization before it issues each link: a dialable number and a mail address become links, anything else is shown as text, and a missing value has no row. The agreement pages show the provider's logo from PROVIDER_LOGO, an image id; an agreement without one, or an image that fails to load, shows none.",
     "Every other parameter is copy. No token, account, order, document or customer value is a parameter.",
     "While the agreement is CLIENT_DETAILS_RECEIVED the page re-reads it one read at a time after 2, 3, 5, 8, 12, 15, 15, 15 s, then says the check is taking longer than usual and offers Refresh status. It stops re-reading as soon as the agreement leaves that state.",
     "CLIENT_DETAILS_ERRORS reaches the client only as copy: a known code marks its field, PROCESSING_FAILED has its own notice, and an unknown code adds a generic line, never the code.",

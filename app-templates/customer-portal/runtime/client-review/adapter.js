@@ -13,6 +13,7 @@
       "product-price": { service: "core-pim", segment: "product-price" },
       product: { service: "core-pim", segment: "product" },
     },
+    image: { service: "core", head: "image", tail: "get", width: 440 },
     pageSize: 200,
     pageLimit: 10,
     messageLimit: 400,
@@ -87,6 +88,11 @@
     }
     if (url.protocol !== "https:" || url.username || url.password) return "";
     return url.href;
+  }
+
+  function imageId(value) {
+    var text = String(value).trim();
+    return /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(text) ? text.toLowerCase() : "";
   }
 
   function clip(value) {
@@ -201,6 +207,10 @@
     }
 
     return {
+      imageUrl: function (id) {
+        var image = imageId(id);
+        return image ? base + "/" + GRANT.image.service + "/" + GRANT.image.head + "/" + image + "/" + GRANT.image.tail + "?width=" + GRANT.image.width : "";
+      },
       introspect: function () {
         return post(url(GRANT.introspect.service, GRANT.introspect.tail), {}, "introspect").then(objectPayload);
       },
@@ -237,6 +247,7 @@
     tokenFromFragment: tokenFromFragment,
     safeApiBase: safeApiBase,
     safePortalUrl: safePortalUrl,
+    imageId: imageId,
     reviewError: reviewError,
     refusalMessage: refusalMessage,
     fieldErrorsOf: fieldErrorsOf,

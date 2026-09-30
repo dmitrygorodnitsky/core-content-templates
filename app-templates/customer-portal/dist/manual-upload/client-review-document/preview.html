@@ -1021,6 +1021,15 @@ button { font-family: inherit; }
 
 .cr-parties { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; align-items: start; }
 
+.cr-party__logo { display: block; max-width: min(220px, 70%); max-height: 52px; width: auto; height: auto; margin: 0 0 12px; object-fit: contain; }
+
+.cr-party__logo[hidden] { display: none; }
+
+:root[data-mode="dark"] .cr-party__logo {
+  max-width: min(240px, calc(70% + 20px)); max-height: 64px;
+  padding: 6px 10px; border-radius: 10px; background: var(--bg-3);
+}
+
 .cr-facts { margin: 0; }
 
 .cr-facts__row {
@@ -1060,6 +1069,33 @@ button { font-family: inherit; }
 
 .cr-terms__clause-text { min-width: 0; white-space: pre-line; overflow-wrap: anywhere; }
 
+.cr-contact {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 24px;
+  padding: 14px 18px; border-radius: 16px;
+  background: rgba(var(--glass), .4); border: 1px solid var(--glass-border);
+}
+
+.cr-contact__identity { min-width: 0; }
+
+.cr-contact__title { margin: 0; font-size: 14px; font-weight: 750; letter-spacing: -.005em; }
+
+.cr-contact__name { margin: 2px 0 0; font-size: 12.5px; color: var(--ink-3); overflow-wrap: anywhere; }
+
+.cr-contact__list { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 4px 24px; }
+
+.cr-contact__item { display: flex; align-items: baseline; gap: 8px; min-width: 0; font-size: 13.5px; }
+
+.cr-contact__label { font-size: 12px; color: var(--ink-3); }
+
+.cr-contact__link, .cr-contact__value { padding: 6px 0; font-weight: 650; color: var(--ink); overflow-wrap: anywhere; }
+
+.cr-contact__link {
+  text-decoration: underline; text-decoration-color: rgba(var(--accent-rgb), .55);
+  text-decoration-thickness: 1.5px; text-underline-offset: 3px;
+}
+
+.cr-contact__link:hover { text-decoration-color: var(--accent); }
+
 .cr-skeleton { display: flex; flex-direction: column; gap: 16px; }
 
 .cr-skeleton__bar { display: block; border-radius: 8px; }
@@ -1096,6 +1132,9 @@ button { font-family: inherit; }
   .cr-skeleton .cr-summary > .cr-skeleton__tile:first-child { grid-column: 1 / -1; }
   .cr-fields { grid-template-columns: minmax(0, 1fr); }
   .cr-link__copy { padding: 9px 16px; font-size: 13px; }
+  .cr-contact { flex-direction: column; align-items: flex-start; gap: 4px; padding: 14px 14px 4px; }
+  .cr-contact__list { flex-direction: column; gap: 0; }
+  .cr-contact__link, .cr-contact__value { padding: 12px 0; }
   .cr-property__head { flex-wrap: wrap; padding: 14px 14px 12px; gap: 8px 10px; }
   .cr-property__identity { flex-basis: calc(100% - 40px); }
   .cr-property__head .status-badge { margin: 0 0 0 40px; }
@@ -1265,6 +1304,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
   data-copy-party-representative="Representative"
   data-copy-party-email="Email"
   data-copy-party-phone="Phone"
+  data-copy-provider-logo-alt="{provider} logo"
   data-copy-term-title="Term"
   data-copy-term-effective="Effective date"
   data-copy-term-start="Starts"
@@ -1289,6 +1329,9 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
   data-copy-portal-email-body="You sign in with {email}. If you have no portal password yet, the provider's system emails one to this address once your access is ready. If you already have a portal password, it stays the same."
   data-copy-portal-body="You sign in with the primary email address on your account. If you have no portal password yet, the provider's system emails one to that address once your access is ready. If you already have a portal password, it stays the same."
   data-copy-portal-open="Open the customer portal"
+  data-copy-contact-title="Contact us"
+  data-copy-contact-phone="Phone"
+  data-copy-contact-email="Email"
   data-copy-preparing-title="Your agreement is being prepared"
   data-copy-preparing-body="Nothing is needed from you on this page right now."
   data-copy-canceled-title="This quotation is closed"
@@ -1458,6 +1501,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     ["PARTY_REPRESENTATIVE", "partyRepresentative", "Representative"],
     ["PARTY_EMAIL", "partyEmail", "Email"],
     ["PARTY_PHONE", "partyPhone", "Phone"],
+    ["PROVIDER_LOGO_ALT", "providerLogoAlt", "{provider} logo"],
     ["TERM_TITLE", "termTitle", "Term"],
     ["TERM_EFFECTIVE", "termEffective", "Effective date"],
     ["TERM_START", "termStart", "Starts"],
@@ -1483,6 +1527,10 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     ["PORTAL_EMAIL_BODY", "portalEmailBody", "You sign in with {email}. If you have no portal password yet, the provider's system emails one to this address once your access is ready. If you already have a portal password, it stays the same."],
     ["PORTAL_BODY", "portalBody", "You sign in with the primary email address on your account. If you have no portal password yet, the provider's system emails one to that address once your access is ready. If you already have a portal password, it stays the same."],
     ["PORTAL_OPEN", "portalOpen", "Open the customer portal"],
+
+    ["CONTACT_TITLE", "contactTitle", "Contact us"],
+    ["CONTACT_PHONE", "contactPhone", "Phone"],
+    ["CONTACT_EMAIL", "contactEmail", "Email"],
 
     ["PREPARING_TITLE", "preparingTitle", "Your agreement is being prepared"],
     ["PREPARING_BODY", "preparingBody", "Nothing is needed from you on this page right now."],
@@ -1631,6 +1679,9 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
       providerLegalName: "PROVIDER_LEGAL_NAME",
       providerRepresentativeName: "PROVIDER_REPRESENTATIVE_NAME",
       providerRepresentativeJobTitle: "PROVIDER_REPRESENTATIVE_JOB_TITLE",
+      providerContactPhone: "PROVIDER_CONTACT_PHONE",
+      providerContactEmail: "PROVIDER_CONTACT_EMAIL",
+      providerLogo: "PROVIDER_LOGO",
       detailsErrors: "CLIENT_DETAILS_ERRORS",
     },
     accountPrefill: {
@@ -1678,6 +1729,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
       "product-price": { service: "core-pim", segment: "product-price" },
       product: { service: "core-pim", segment: "product" },
     },
+    image: { service: "core", head: "image", tail: "get", width: 440 },
     pageSize: 200,
     pageLimit: 10,
     messageLimit: 400,
@@ -1752,6 +1804,11 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     }
     if (url.protocol !== "https:" || url.username || url.password) return "";
     return url.href;
+  }
+
+  function imageId(value) {
+    var text = String(value).trim();
+    return /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(text) ? text.toLowerCase() : "";
   }
 
   function clip(value) {
@@ -1866,6 +1923,10 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     }
 
     return {
+      imageUrl: function (id) {
+        var image = imageId(id);
+        return image ? base + "/" + GRANT.image.service + "/" + GRANT.image.head + "/" + image + "/" + GRANT.image.tail + "?width=" + GRANT.image.width : "";
+      },
       introspect: function () {
         return post(url(GRANT.introspect.service, GRANT.introspect.tail), {}, "introspect").then(objectPayload);
       },
@@ -1902,6 +1963,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     tokenFromFragment: tokenFromFragment,
     safeApiBase: safeApiBase,
     safePortalUrl: safePortalUrl,
+    imageId: imageId,
     reviewError: reviewError,
     refusalMessage: refusalMessage,
     fieldErrorsOf: fieldErrorsOf,
@@ -2356,6 +2418,24 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     return values;
   }
 
+  function telHref(value) {
+    var match = /^(\+?[\d\s().-]+?)(?:\s*(?:ext\.?|x)\s*\d+)?$/i.exec(value);
+    var number = match ? match[1].replace(/[^\d+]/g, "") : "";
+    return number.replace(/\D/g, "").length < 3 ? "" : "tel:" + number;
+  }
+
+  function mailHref(value) {
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) return "";
+    return "mailto:" + encodeURIComponent(value).replace(/%40/g, "@");
+  }
+
+  function contactOf(agreement, contract, provider) {
+    var codes = contract.agreementAttributes;
+    var phone = attributeText(agreement, codes.providerContactPhone);
+    var email = attributeText(agreement, codes.providerContactEmail);
+    return { name: provider, phone: phone, phoneHref: telHref(phone), email: email, emailHref: mailHref(email) };
+  }
+
   function partiesOf(agreement, account, fields, locale, contract) {
     var codes = contract.agreementAttributes;
     var owner = agreement && agreement[contract.rawShape.documentOwner];
@@ -2373,6 +2453,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
         legalName: attributeText(agreement, codes.providerLegalName) || localizedName(owner && owner.nls, locale),
         representativeName: attributeText(agreement, codes.providerRepresentativeName),
         representativeJobTitle: attributeText(agreement, codes.providerRepresentativeJobTitle),
+        logo: attributeText(agreement, codes.providerLogo),
       },
       client: {
         legalName: stated("LEGAL_NAME") || localizedName(account && account.nls, locale),
@@ -2615,6 +2696,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
         client: localizedName(account && account.nls, locale) || parties.client.legalName,
       },
       parties: parties,
+      contact: contactOf(agreement, contract, parties.provider.legalName),
       properties: properties,
       summary: summaryOf(properties),
       allDecided: properties.length > 0 && properties.every(function (property) {
@@ -2651,6 +2733,8 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     termsBlocks: termsBlocks,
     returnedDetails: returnedDetails,
     primaryEmail: primaryEmail,
+    telHref: telHref,
+    mailHref: mailHref,
     detailFields: detailFields,
     detailsPrefill: detailsPrefill,
     pickAgreement: pickAgreement,
@@ -3473,10 +3557,24 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     return title ? name + ", " + title : name;
   }
 
-  function factsCard(ctx, title, rows, className) {
+  function providerLogo(ctx) {
+    if (!ctx.snapshot.logoUrl) return null;
+    var provider = ctx.snapshot.view.parties.provider.legalName;
+    var image = el("img", "cr-party__logo", {
+      src: ctx.snapshot.logoUrl,
+      alt: provider ? ns.fill(ctx.copy.providerLogoAlt, { provider: provider }) : "",
+      decoding: "async",
+      referrerpolicy: "no-referrer",
+    });
+    image.addEventListener("error", function () { image.setAttribute("hidden", ""); });
+    return image;
+  }
+
+  function factsCard(ctx, title, rows, className, lead) {
     var copy = ctx.copy;
     var card = el("article", "cr-panel " + className);
     card.appendChild(text("h2", "cr-section-title", title));
+    if (lead) card.appendChild(lead);
     var list = el("dl", "cr-facts");
     rows.forEach(function (row) {
       var item = el("div", "cr-facts__row");
@@ -3554,7 +3652,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     partiesSection.appendChild(factsCard(ctx, copy.partyProvider, [
       [copy.partyLegalName, parties.provider.legalName],
       [copy.partyRepresentative, joinName(parties.provider.representativeName, parties.provider.representativeJobTitle)],
-    ], "cr-party"));
+    ], "cr-party", providerLogo(ctx)));
     partiesSection.appendChild(factsCard(ctx, copy.partyClient, [
       [copy.partyLegalName, parties.client.legalName],
       [copy.partyClientType, parties.client.clientType],
@@ -3655,6 +3753,29 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     return card;
   }
 
+  function contactLine(label, value, href, kind) {
+    var item = el("li", "cr-contact__item", { "data-contact": kind });
+    item.appendChild(text("span", "cr-contact__label", label));
+    item.appendChild(href ? text("a", "cr-contact__link", value, { href: href }) : text("span", "cr-contact__value", value));
+    return item;
+  }
+
+  function contactBlock(ctx) {
+    var contact = ctx.snapshot.contact;
+    if (!contact || (!contact.phone && !contact.email)) return null;
+    var copy = ctx.copy;
+    var block = el("section", "cr-contact", { "aria-labelledby": "cr-contact-title" });
+    var identity = el("div", "cr-contact__identity");
+    identity.appendChild(text("h2", "cr-contact__title", copy.contactTitle, { id: "cr-contact-title" }));
+    if (contact.name) identity.appendChild(text("p", "cr-contact__name", contact.name));
+    block.appendChild(identity);
+    var list = el("ul", "cr-contact__list");
+    if (contact.phone) list.appendChild(contactLine(copy.contactPhone, contact.phone, contact.phoneHref, "phone"));
+    if (contact.email) list.appendChild(contactLine(copy.contactEmail, contact.email, contact.emailHref, "email"));
+    block.appendChild(list);
+    return block;
+  }
+
   function closedCard(ctx) {
     var copy = ctx.copy;
     var after = ctx.snapshot.closedAfter;
@@ -3705,6 +3826,8 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
       default:
         if (snapshot.view) ready(shell, ctx);
     }
+    var contact = contactBlock(ctx);
+    if (contact) shell.appendChild(contact);
     mount.replaceChildren();
     mount.appendChild(page);
     return { focus: ctx.focus, announcement: ctx.announcement, linkStatus: ctx.linkStatus };
@@ -3760,6 +3883,8 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
       errorAfterCommand: false,
       retryContext: {},
       primaryEmail: "",
+      contact: null,
+      logoUrl: "",
       followDecisions: false,
       accepted: {},
       refreshing: false,
@@ -4047,6 +4172,8 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
         state.closedAfter = "";
         state.errorAfterCommand = false;
         state.primaryEmail = state.view.primaryEmail || "";
+        state.contact = state.view.contact || null;
+        state.logoUrl = state.view.parties && typeof adapter.imageUrl === "function" ? adapter.imageUrl(state.view.parties.provider.logo) : "";
         settleAccepted();
         if (state.view.kind !== "quote-review" || !state.view.allDecided) state.followDecisions = false;
         seedDetails();
@@ -4421,6 +4548,8 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
         portalUrl: portalUrl,
         link: { available: linkOffered(), status: state.link },
         primaryEmail: state.primaryEmail,
+        contact: state.contact,
+        logoUrl: state.logoUrl,
         pending: Object.keys(inflight),
       };
     }
@@ -4633,6 +4762,17 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
 
   var PORTAL_URL = "https://portal.coastline-winter.example/sign-in";
 
+  var PROVIDER_CONTACT = { phone: "+1 604 555 0199", email: "service@coastline-winter.example" };
+  var LOGO_ID = "5b1f0c2e-6a4d-4c3b-9f0e-2d7a8c1b3e90";
+  var LOGO_IMAGE = "data:image/svg+xml;charset=utf-8," + encodeURIComponent([
+    "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 330 76'>",
+    "<rect x='2' y='8' width='60' height='60' rx='14' fill='#0e8fc4'/>",
+    "<path d='M32 20v36M16.4 29l31.2 18M16.4 47l31.2-18' stroke='#fff' stroke-width='5' stroke-linecap='round' fill='none'/>",
+    "<text x='76' y='37' font-family='Arial,Helvetica,sans-serif' font-size='25' font-weight='700' fill='#0b2a4a'>COASTLINE</text>",
+    "<text x='76' y='60' font-family='Arial,Helvetica,sans-serif' font-size='16' font-weight='700' fill='#0e8fc4' letter-spacing='1.6'>WINTER SERVICES</text>",
+    "</svg>",
+  ].join(""));
+
   var QUOTATION_EVENTS = [
     "QUOTE_SENT-QUOTE_VIEWED",
     "QUOTE_VIEWED-CLIENT_APPROVED",
@@ -4651,6 +4791,8 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     { id: "partial", label: "Partial data — one option unreadable" },
     { id: "link-copied", label: "Copy link — copied on the contract details step" },
     { id: "link-copy-failed", label: "Copy link — the browser refused to copy" },
+    { id: "contact-phone-only", label: "Contact us — the provider shows a phone and no email" },
+    { id: "contact-none", label: "Contact us — the provider shows neither, no block" },
     { id: "option-open", label: "Option open — lines, total, decisions" },
     { id: "view-pending", label: "Unviewed option opened — view event pending" },
     { id: "view-failed", label: "Unviewed option opened — view event failed" },
@@ -4688,6 +4830,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     { id: "agreement-review", label: "Agreement review — SENT_TO_CLIENT" },
     { id: "agreement-numbered-terms", label: "Agreement review — numbered contract terms" },
     { id: "agreement-no-terms", label: "Agreement review — no contract terms written" },
+    { id: "agreement-no-logo", label: "Agreement review — the provider has no logo" },
     { id: "agreement-confirm", label: "Agreement approval — confirmation" },
     { id: "agreement-unconfirmed", label: "Agreement approval accepted, change not seen within the budget — Refresh status" },
     { id: "approval-closed", label: "Agreement approved — link closed, portal invitation" },
@@ -4783,6 +4926,9 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
       ORDERS: { value: orderIds.slice() },
       TERM_START_DATE: { value: "2026-11-01" },
       TERM_END_DATE: { value: "2027-03-31" },
+      PROVIDER_CONTACT_PHONE: { value: PROVIDER_CONTACT.phone },
+      PROVIDER_CONTACT_EMAIL: { value: PROVIDER_CONTACT.email },
+      PROVIDER_LOGO: { value: LOGO_ID },
     };
     if (withSnapshot) {
       attributes.EFFECTIVE_DATE = { value: "2026-10-20" };
@@ -5013,6 +5159,9 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     }
 
     return {
+      imageUrl: function (id) {
+        return id === LOGO_ID ? LOGO_IMAGE : "";
+      },
       introspect: function () {
         if (settings.introspect === "hold") return never();
         return later(function () {
@@ -5154,6 +5303,13 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
       case "link-copy-failed":
         clipboard = fixtureClipboard(false);
         steps = [["link.copy", {}]];
+        break;
+      case "contact-phone-only":
+        delete data.documents[0].attributes[17].PROVIDER_CONTACT_EMAIL;
+        break;
+      case "contact-none":
+        delete data.documents[0].attributes[17].PROVIDER_CONTACT_PHONE;
+        delete data.documents[0].attributes[17].PROVIDER_CONTACT_EMAIL;
         break;
       case "option-open":
         steps = [["option.toggle", { id: 3102 }]];
@@ -5308,6 +5464,10 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
         data = agreementData("SENT_TO_CLIENT", false);
         delete data.documents[0].attributes[17].CONTRACT_TERMS;
         break;
+      case "agreement-no-logo":
+        data = agreementData("SENT_TO_CLIENT", false);
+        delete data.documents[0].attributes[17].PROVIDER_LOGO;
+        break;
       case "agreement-confirm":
         data = agreementData("SENT_TO_CLIENT", false);
         steps = [["agreement.intent", {}]];
@@ -5397,6 +5557,9 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     attributedAccount: attributedAccount,
     numberedTerms: NUMBERED_TERMS,
     portalUrl: PORTAL_URL,
+    providerContact: Object.freeze(Object.assign({}, PROVIDER_CONTACT)),
+    logoId: LOGO_ID,
+    logoImage: LOGO_IMAGE,
     decidedStates: Object.freeze(Object.assign({}, DECIDED)),
     lastOpenStates: Object.freeze(Object.assign({}, LAST_OPEN)),
   };

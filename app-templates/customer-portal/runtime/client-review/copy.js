@@ -138,6 +138,7 @@
     ["PARTY_REPRESENTATIVE", "partyRepresentative", "Representative"],
     ["PARTY_EMAIL", "partyEmail", "Email"],
     ["PARTY_PHONE", "partyPhone", "Phone"],
+    ["PROVIDER_LOGO_ALT", "providerLogoAlt", "{provider} logo"],
     ["TERM_TITLE", "termTitle", "Term"],
     ["TERM_EFFECTIVE", "termEffective", "Effective date"],
     ["TERM_START", "termStart", "Starts"],
@@ -163,6 +164,10 @@
     ["PORTAL_EMAIL_BODY", "portalEmailBody", "You sign in with {email}. If you have no portal password yet, the provider's system emails one to this address once your access is ready. If you already have a portal password, it stays the same."],
     ["PORTAL_BODY", "portalBody", "You sign in with the primary email address on your account. If you have no portal password yet, the provider's system emails one to that address once your access is ready. If you already have a portal password, it stays the same."],
     ["PORTAL_OPEN", "portalOpen", "Open the customer portal"],
+
+    ["CONTACT_TITLE", "contactTitle", "Contact us"],
+    ["CONTACT_PHONE", "contactPhone", "Phone"],
+    ["CONTACT_EMAIL", "contactEmail", "Email"],
 
     ["PREPARING_TITLE", "preparingTitle", "Your agreement is being prepared"],
     ["PREPARING_BODY", "preparingBody", "Nothing is needed from you on this page right now."],

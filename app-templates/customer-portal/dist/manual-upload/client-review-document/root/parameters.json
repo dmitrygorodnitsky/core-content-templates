@@ -1725,6 +1725,19 @@
     }
   },
   {
+    "code": "PROVIDER_LOGO_ALT",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "PROVIDER LOGO ALT",
+        "DESCRIPTION": "Client review document copy. Keep {provider}: the page fills them in."
+      }
+    },
+    "value": {
+      "en": "{provider} logo"
+    }
+  },
+  {
     "code": "TERM_TITLE",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
@@ -2034,6 +2047,45 @@
     },
     "value": {
       "en": "Open the customer portal"
+    }
+  },
+  {
+    "code": "CONTACT_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "CONTACT TITLE",
+        "DESCRIPTION": "Client review document copy."
+      }
+    },
+    "value": {
+      "en": "Contact us"
+    }
+  },
+  {
+    "code": "CONTACT_PHONE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "CONTACT PHONE",
+        "DESCRIPTION": "Client review document copy."
+      }
+    },
+    "value": {
+      "en": "Phone"
+    }
+  },
+  {
+    "code": "CONTACT_EMAIL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "CONTACT EMAIL",
+        "DESCRIPTION": "Client review document copy."
+      }
+    },
+    "value": {
+      "en": "Email"
     }
   },
   {
