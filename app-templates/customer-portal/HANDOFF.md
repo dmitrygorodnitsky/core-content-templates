@@ -885,6 +885,19 @@ checkout before treating any of them as broken.
 
 ## Exact next action
 
+**Since midday on 2026-10-01** workflow 53 runs utilities V21 (script 368).
+The email confirming the client's decisions links straight to the contract
+details instead of sending the client back to the quotation email, as the user
+asked after the team's run received the first version. Confirmation V2 (366)
+issues a link of its own with exactly the quotation link's access and expiry
+and keeps it in the new agreement attribute `DECISION_CONFIRMATION_GRANT_ID`.
+Details processor V7 (367) revokes both links once the details are accepted,
+and every client link on cancellation. The email is
+`WINTER_SERVICE_QUOTATION_DECISIONS_CONFIRMED_V3` (365)
+(`content/cases/QUOTATION-PACKAGE-FLOW.md` §6).
+- Next: the user accepts or rejects the local render; the next package that
+  is fully decided sends the first email with the link.
+
 **Since late morning on 2026-10-01** workflow 49, the quote form, runs
 `WINTER_SERVICE_REGION_WORKFLOW_UTILS_V20` (script 363), task 3 of the team's
 list. The managers' email had failed on every automatic first attempt (forms

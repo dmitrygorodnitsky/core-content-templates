@@ -218,12 +218,12 @@ approved.
 | Order enters `DECLINED` | evaluates the package | |
 | Order enters `CUSTOMER_CHANGES_REQUESTED` | notifies `QUOTATION_MANAGER` with `MESSAGE` | |
 | package evaluation | see §6 | |
-| Agreement enters `AWAITING_CLIENT_DETAILS` (utilities V20) | once per agreement, confirms the client's decisions by email through `SNOW_QUOTATION_DECISION_CONFIRMATION_V1` (§6) | logged; `DECISION_CONFIRMATION_STATUS` keeps a second entry, after details sent back for correction, from sending again |
-| Agreement enters `CLIENT_DETAILS_RECEIVED` | checks the ten details the event carried; when they are complete, writes Party B into the account and a snapshot into the agreement, removes unapproved Orders from `ORDERS`, revokes the quotation link, notifies `CONTRACT_MANAGER` and sends the agreement to `DRAFT` (§4.2) | writes the codes of what is missing or invalid to `CLIENT_DETAILS_ERRORS` (comma-separated), or `PROCESSING_FAILED` when processing itself fails, and sends it back to `AWAITING_CLIENT_DETAILS`; the page marks each named field and says a `PROCESSING_FAILED` return is not the client's mistake |
+| Agreement enters `AWAITING_CLIENT_DETAILS` (utilities V21) | once per agreement, confirms the client's decisions by email with a link of its own to the contract details, through `SNOW_QUOTATION_DECISION_CONFIRMATION_V2` (§6) | logged; `DECISION_CONFIRMATION_STATUS` keeps a second entry, after details sent back for correction, from sending again |
+| Agreement enters `CLIENT_DETAILS_RECEIVED` | checks the ten details the event carried; when they are complete, writes Party B into the account and a snapshot into the agreement, removes unapproved Orders from `ORDERS`, revokes the quotation link and the decision confirmation's link, notifies `CONTRACT_MANAGER` and sends the agreement to `DRAFT` (§4.2) | writes the codes of what is missing or invalid to `CLIENT_DETAILS_ERRORS` (comma-separated), or `PROCESSING_FAILED` when processing itself fails, and sends it back to `AWAITING_CLIENT_DETAILS`; the page marks each named field and says a `PROCESSING_FAILED` return is not the client's mistake |
 | Agreement enters `INTERNALLY_APPROVED` | sends it on to `SENT_TO_CLIENT` (spec §13) | |
 | Agreement enters `SENT_TO_CLIENT` | issues the agreement link; emails the primary contact | `AGREEMENT_SEND_FAILED` |
 | Agreement enters `CLIENT_APPROVED` | revokes the agreement link; `PROSPECT-ACTIVE` or `INACTIVE-ACTIVE` on the account | |
-| Agreement enters `CLIENT_CHANGES_REQUESTED` (utilities V20) | notes the agreement's transitions; after the commit writes the event's `MESSAGE` under `message` into the metadata of the `CLIENT_CHANGES_REQUESTED` transition that appears after them (§8); emails `CONTRACT_MANAGER` the message | logged; the email is still sent when the message cannot be written |
+| Agreement enters `CLIENT_CHANGES_REQUESTED` (utilities V20, V21) | notes the agreement's transitions; after the commit writes the event's `MESSAGE` under `message` into the metadata of the `CLIENT_CHANGES_REQUESTED` transition that appears after them (§8); emails `CONTRACT_MANAGER` the message | logged; the email is still sent when the message cannot be written |
 | Agreement approval activates the Account | creates or reuses the User from the Account's primary email, links `Account.user`, assigns the staging customer role, then invokes Core's existing password-reset email after commit for a new User or one still without a local password | `ACTIVATION_FAILED` and retry |
 
 Every lifecycle change of another record is an event on that record's workflow,
@@ -257,20 +257,35 @@ When the package moves to `AWAITING_CLIENT_DETAILS`, the client gets one email
 confirming the decisions (task 19 of the team's list; the user decided on
 2026-09-30 that it goes once, after every property is decided, not after each
 approval). It lists each property of the package in order with its approved
-option and the server's total, or Declined, and names the next step: the
-contract details, through the link of the quotation email, because the
-link's token is never stored and cannot be sent again. The confirmation script
-runs on a node with `CORE`, `CORE-ACCT` and `CORE-BILL`, writes
+option and the server's total, or Declined, and links straight to the next
+step, the contract details: a "Confirm contract details" button and the date
+until which the link works. The quotation link's token is never stored, so the
+confirmation issues a link of its own, granting exactly what the quotation link
+grants (the same entities, the details event and the Order decisions) and
+expiring by the same rule; `core-ui` `quotationDecisionConfirmationCheck.mjs`
+keeps the two byte-identical. Until the details arrive the client therefore
+holds two working links. The quotation link stays valid, because the client
+usually goes on to the details on the page that made the last decision. The
+confirmation keeps its link's grant in `DECISION_CONFIRMATION_GRANT_ID`, and
+the details processor revokes both links once the details are accepted, and
+every client link when the agreement is canceled. The confirmation script runs
+on a node with `CORE`, `CORE-ACCT`, `CORE-BILL` and `CORE-PIM`, writes
 `DECISION_CONFIRMATION_STATUS` = `QUEUE_RESULT_UNKNOWN` before it queues the
 email and `QUEUED` after, and sends nothing when the status is already set: a
 second entry into the state, after details are sent back for correction, sends
-nothing, and a send whose outcome is unknown waits for an operator. A package
-with nothing approved is canceled and gets no confirmation. Live on dev-1
-since the morning of 2026-10-01: workflow 53 runs utilities V20 (script 357),
-which dispatches the confirmation script (350) with the email (349); the three
-agreement attributes are on type 17 since 2026-09-30. No package has completed
-since, so no confirmation has gone out yet. The user accepted the email on
-2026-09-30 from a local render of the template.
+nothing, and a send whose outcome is unknown waits for an operator. A link
+issued for an email that could not be prepared is revoked at once. A package
+with nothing approved is canceled and gets no confirmation.
+- The first version, without a link, went live with utilities V20 on the
+  morning of 2026-10-01, and the team's run received it the same day. The user
+  asked for the link instead of "Open the link in our quotation email again".
+- Live on dev-1 since midday on 2026-10-01: workflow 53 runs utilities V21
+  (script 368), which dispatches confirmation V2 (366) with the email
+  `WINTER_SERVICE_QUOTATION_DECISIONS_CONFIRMED_V3` (365), and details
+  processor V7 (367), which revokes the second link. `DECISION_CONFIRMATION_GRANT_ID`
+  is on type 17 since then. No email with the link has gone out yet.
+- The user accepted the first version on 2026-09-30 from a local render; the
+  version with the link was rendered locally for acceptance on 2026-10-01.
 
 An Order the manager never approved internally is not in the package and does
 not hold it back. A second season's quotes for the same client start a new
