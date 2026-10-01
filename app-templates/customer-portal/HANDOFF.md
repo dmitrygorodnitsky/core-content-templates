@@ -885,6 +885,23 @@ checkout before treating any of them as broken.
 
 ## Exact next action
 
+**Since late morning on 2026-10-01** workflow 49, the quote form, runs
+`WINTER_SERVICE_REGION_WORKFLOW_UTILS_V20` (script 363), task 3 of the team's
+list. The managers' email had failed on every automatic first attempt (forms
+89, 153, 154, 155), because a form submitted through the public page runs its
+whole chain without a user or an organization, and Core refuses an email
+there ("Cannot send email without user/organization context"). V20 sends the
+managers' email, the receipt and the rejection as the system user in the
+form's organization. Every failure state keeps its reason under `message` in
+its transition, and a retry never sends an email an earlier attempt queued
+(`content/cases/QUOTATION-PACKAGE-FLOW.md`, open point 1).
+- Next: form 155 waits in `MANAGER_DELIVERY_FAILED`. Its retry sends the
+  managers' email once and then the receipt; the team's next request shows
+  the chain end to end.
+- The probes `ZZ_MANAGER_STEP_PROBE_V1`–`V3` (scripts 359–361, form probe
+  workflow 61) and `ZZ_CLASS_PROBE_V1` (script 362, lists a class's methods on
+  a node) stay on dev-1.
+
 **Since the morning of 2026-10-01** workflow 53 runs utilities V20 (script
 357) on dev-1, after `app-2-core` and `app-4-core`, which serve every `/core`
 request, compiled scripts again; they had refused every new script since

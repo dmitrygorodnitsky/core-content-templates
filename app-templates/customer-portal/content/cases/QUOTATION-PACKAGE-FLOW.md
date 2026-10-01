@@ -845,12 +845,40 @@ Next, in order:
        record.
      - **Not yet seen:** a real request through V19. Forms 44, 84, 87 and 88
        still stand where they stopped.
-     - **Not explained:** `MANAGER_DELIVERY_FAILED` on form 89, 219 ms after
-       `READY_FOR_REVIEW`; the retry 75 s later went through. A success event
-       sent first would have been applied first, so either the manager's email
-       failed before that event was sent, or the event's first try failed for a
-       reason the API does not show. The message stored with the transition is
-       not readable through the API.
+   - **The manager email that never went out the first time** (task 3 of
+     the team's list, found 2026-10-01). Forms 89, 153, 154 and 155 each
+     entered `MANAGER_DELIVERY_FAILED` 0.2–0.5 s after `READY_FOR_REVIEW` on
+     their first, automatic attempt, and each retry by a person went through.
+     No automatic attempt ever passed.
+     - **Why:** the public form submits anonymously, and the whole chain of
+       a submitted form runs without a user or an organization:
+       `Auth.getAuthenticatedUser()` is null, and Core records the system user
+       (2) on a transition sent without one. Core refuses
+       `scriptUtils.sendEmail` in that context with "Cannot send email without
+       user/organization context", so the managers' email, the requester's
+       receipt and the rejection could never go out by themselves. A retry
+       from Snow CRM runs as the person who presses it, which is why it
+       passed. Probe `ZZ_MANAGER_STEP_PROBE_V3` (script 361, on the form probe
+       workflow 61) showed it on a SYSTEM probe form submitted anonymously; as
+       the system user in the form's organization the same email was accepted.
+       Magic-link requests are not affected: Core authenticates them as the
+       anonymous user in the link's organization.
+     - **Fixed** by `WINTER_SERVICE_REGION_WORKFLOW_UTILS_V20` (script 363),
+       bound to workflow 49 on 2026-10-01. The three emails leave as the
+       system user in the form's organization. Every failure state keeps why
+       the form landed there under `message` in the metadata of its
+       transition, readable through `form-state-transition/list.json`. A
+       failed email step records `emailQueued`, and a retry after an attempt
+       that had queued its email moves on without sending it again. `core-ui`
+       `winterQuotationFailureRecordCheck.mjs` and
+       `winterQuotationReliabilityCheck.mjs` cover it; each of 20 deliberate
+       breaks of V20 fails a check.
+     - **Seen on dev-1:** smoke forms 160 and 161 went `SUBMITTED` →
+       `VALIDATION_FAILED` through V20, and both transitions keep "Service-region
+       validation failed: PROPERTY_ADDRESSES is required".
+     - **Not yet seen:** a real request through V20. Form 155 waits in
+       `MANAGER_DELIVERY_FAILED`; its retry sends the managers' email once,
+       because its failed attempt queued nothing.
 2. **Build the three client forms** specified for the portal.
 3. **Price by the founder's model.** Received from the user on 2026-09-23.
    - A visit of snow removal and a visit of de-icing each have a price set by
