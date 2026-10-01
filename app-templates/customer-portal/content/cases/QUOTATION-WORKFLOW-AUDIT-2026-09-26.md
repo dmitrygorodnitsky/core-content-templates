@@ -14,6 +14,47 @@ properties does not count as a passed check.
 The user first approved an automatic `PROCESSED`, then asked for the findings
 to be fixed, every email unified, and `ACTIVE` to follow the client's approval.
 
+## Automatic request for management approval — 2026-10-01
+
+Deployed `SNOW_SERVICE_AGREEMENT_WORKFLOW_UTILITIES_V22` on dev-1 and
+read back at 09:58 UTC. Workflow 53 remains valid; its event graph is unchanged,
+all hooks bind V22 and the active source matches the local source.
+
+After valid client details reach `DRAFT`, successful quotation-link cleanup and
+manager notification automatically trigger `DRAFT-PENDING_MANAGEMENT_APPROVAL`.
+The manager reviews the pending agreement and chooses Approve or Request Changes;
+the client still approves the sent agreement before automatic activation.
+The ordinary path no longer needs the Request Management Approval click.
+No `DRAFT.onEnter` was added: edits and drafts returned for changes do not submit
+themselves. This scope does not repair the separately identified repeated-agreement
+email problem after client-requested changes.
+
+Incomplete details return for correction. Failed finalization remains in DRAFT;
+Retry Details Finalization completes the same finalization and routing path.
+Optional `MANAGEMENT_REVIEW_STATUS` records REQUESTING, REQUESTED, FAILED or
+NO_LONGER_DRAFT independently of `DETAILS_FINALIZATION_STATUS`. A manager acting
+before the pending-state poll no longer turns completed finalization into failure.
+Routing failure does not erase the completed cleanup/email receipt. The existing
+request-for-review event remains available on exceptional/manual drafts.
+
+Validation: extracted Java behavioral harness covers valid/incomplete details,
+validation error, incomplete/failed finalization, routing failure, recovery,
+fast manager approval and no replay on advanced/client-approved records.
+Client-details, delivery, reliability, execution, workflow seed and grant-contract
+checks passed. Independent audit reproduced and confirmed the fast-approval fix.
+The full V22 class compiled/ran on the server with a null-entity no-op probe;
+no real requests or emails were created. All 17 existing agreements retained
+identical states and update timestamps after configuration deployment.
+
+Cross-zone dependency: customer-experience product evidence depends on the
+external core-ui workflow seed/operator zone. Inputs: user-approved automation,
+live V21 and processor V7. Outputs: immutable V22, additive routing-status type
+patch, focused checks and deployed configuration. Acceptance: validated details
+reach pending review after finalization; human approvals remain human; failures
+are recoverable; generic draft edits and existing agreements are not replayed.
+Owner: current workflow task. Follow-up: distributed atomicity and actual email
+delivery remain outside this change's verified guarantees.
+
 ## Fixes agreed with the user
 
 After the audit the user asked for the findings to be fixed and every email
