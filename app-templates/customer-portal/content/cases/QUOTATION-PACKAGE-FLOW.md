@@ -218,12 +218,12 @@ approved.
 | Order enters `DECLINED` | evaluates the package | |
 | Order enters `CUSTOMER_CHANGES_REQUESTED` | notifies `QUOTATION_MANAGER` with `MESSAGE` | |
 | package evaluation | see §6 | |
-| Agreement enters `AWAITING_CLIENT_DETAILS` (utilities V19, seed) | once per agreement, confirms the client's decisions by email through `SNOW_QUOTATION_DECISION_CONFIRMATION_V1` (§6) | logged; `DECISION_CONFIRMATION_STATUS` keeps a second entry, after details sent back for correction, from sending again |
+| Agreement enters `AWAITING_CLIENT_DETAILS` (utilities V20) | once per agreement, confirms the client's decisions by email through `SNOW_QUOTATION_DECISION_CONFIRMATION_V1` (§6) | logged; `DECISION_CONFIRMATION_STATUS` keeps a second entry, after details sent back for correction, from sending again |
 | Agreement enters `CLIENT_DETAILS_RECEIVED` | checks the ten details the event carried; when they are complete, writes Party B into the account and a snapshot into the agreement, removes unapproved Orders from `ORDERS`, revokes the quotation link, notifies `CONTRACT_MANAGER` and sends the agreement to `DRAFT` (§4.2) | writes the codes of what is missing or invalid to `CLIENT_DETAILS_ERRORS` (comma-separated), or `PROCESSING_FAILED` when processing itself fails, and sends it back to `AWAITING_CLIENT_DETAILS`; the page marks each named field and says a `PROCESSING_FAILED` return is not the client's mistake |
 | Agreement enters `INTERNALLY_APPROVED` | sends it on to `SENT_TO_CLIENT` (spec §13) | |
 | Agreement enters `SENT_TO_CLIENT` | issues the agreement link; emails the primary contact | `AGREEMENT_SEND_FAILED` |
 | Agreement enters `CLIENT_APPROVED` | revokes the agreement link; `PROSPECT-ACTIVE` or `INACTIVE-ACTIVE` on the account | |
-| Agreement enters `CLIENT_CHANGES_REQUESTED` (utilities V18, seed) | once the state is visible, writes the event's `MESSAGE` under `message` into the metadata of the newest `CLIENT_CHANGES_REQUESTED` transition that has none; emails `CONTRACT_MANAGER` the message | logged; the email is still sent when the message cannot be written |
+| Agreement enters `CLIENT_CHANGES_REQUESTED` (utilities V20) | notes the agreement's transitions; after the commit writes the event's `MESSAGE` under `message` into the metadata of the `CLIENT_CHANGES_REQUESTED` transition that appears after them (§8); emails `CONTRACT_MANAGER` the message | logged; the email is still sent when the message cannot be written |
 | Agreement approval activates the Account | creates or reuses the User from the Account's primary email, links `Account.user`, assigns the staging customer role, then invokes Core's existing password-reset email after commit for a new User or one still without a local password | `ACTIVATION_FAILED` and retry |
 
 Every lifecycle change of another record is an event on that record's workflow,
@@ -265,10 +265,11 @@ runs on a node with `CORE`, `CORE-ACCT` and `CORE-BILL`, writes
 email and `QUEUED` after, and sends nothing when the status is already set: a
 second entry into the state, after details are sent back for correction, sends
 nothing, and a send whose outcome is unknown waits for an operator. A package
-with nothing approved is canceled and gets no confirmation. Scripts 349–351
-(the email, the confirmation and utilities V19) exist on dev-1 and compile, and
-the three agreement attributes are on type 17 since 2026-09-30; the workflow
-binding waits with the rest of V19 (§8). The user accepted the email on
+with nothing approved is canceled and gets no confirmation. Live on dev-1
+since the morning of 2026-10-01: workflow 53 runs utilities V20 (script 357),
+which dispatches the confirmation script (350) with the email (349); the three
+agreement attributes are on type 17 since 2026-09-30. No package has completed
+since, so no confirmation has gone out yet. The user accepted the email on
 2026-09-30 from a local render of the template.
 
 An Order the manager never approved internally is not in the package and does
@@ -390,11 +391,12 @@ CEO's personal contact.
   list names, is empty on SNOWLIMITLESS. The contact is two new optional fields
   of the `OPERATOR` organization type, set in Snow CRM: `PROVIDER_CONTACT_PHONE`
   ("Client Contact Phone") and `PROVIDER_CONTACT_EMAIL` ("Client Contact
-  Email"). A link cannot read the Organization, so utilities V17 (script 344)
-  copies the three values onto agreement attributes of the same names — the
-  logo as `PROVIDER_LOGO`, an image id — when the agreement enters
-  `QUOTATION_SENT` or `SENT_TO_CLIENT`; `copyProviderCard(agreementId)` does it
-  on demand. A value changed in Snow CRM reaches a client with the next send.
+  Email"). A link cannot read the Organization, so the agreement utilities
+  script (V17 onwards) copies the three values onto agreement attributes of the
+  same names — the logo as `PROVIDER_LOGO`, an image id — when the agreement
+  enters `QUOTATION_SENT` or `SENT_TO_CLIENT`; `copyProviderCard(agreementId)`
+  does it on demand. A value changed in Snow CRM reaches a client with the next
+  send.
 - **Logo.** The provider card of the agreement review and of the completion
   states shows it above the legal name, loaded from
   `/core/image/{id}/get?width=440`, which needs no token, with no referrer. It
@@ -422,12 +424,12 @@ of dev-1 serve this page since the evening of 2026-09-30 (app-3 served the
 previous one until a save was steered to it), and the deployed template draws
 Contact us from its CMS copy. The two organization fields (type 4) and the
 three agreement attributes (type 17) are live; SNOWLIMITLESS has no client
-phone or email yet. Workflow 53 still runs utilities V16: `app-2-core` and
-`app-4-core` have failed every new script compilation since 2026-09-29 or 30
-("cannot access com"), V16 included; the seed's utilities, V19 since tasks 21
-and 19, are bound once they compile again.
-Until then no agreement carries the values, and the page shows neither a logo
-nor Contact us.
+phone or email yet. Workflow 53 ran utilities V16 until the morning of
+2026-10-01, because `app-2-core` and `app-4-core`, which serve every `/core`
+request, had failed every new script compilation since 2026-09-29 or 30
+("cannot access com"). Since then it runs V20, which copies the values before
+each link; an agreement sent before gets them from `copyProviderCard` or its
+next send.
 
 The same evening the agreement page took task 21 of the list. The user decided
 that Request changes on the agreement is a new client step of the workflow with
@@ -453,25 +455,27 @@ widths in light and dark mode, the manager email included.
   lists the state yet besides Service Agreements, because the menu and its
   views wait for the scheme of task 5; the email below tells the managers.
 - **The message.** Core hands an event's metadata to the hooks and stores none
-  of it in the transition (§9). The `onEnter` of `CLIENT_CHANGES_REQUESTED`
-  waits until the state is visible after the commit, then writes the text under
-  `message` into the metadata of the agreement's newest `CLIENT_CHANGES_REQUESTED`
-  transition that holds no message yet, keeping what the metadata held. Each
-  request thus keeps its own text, and no later request overwrites an earlier
-  one. The hook then emails `CONTRACT_MANAGER` the message
-  (`WINTER_SERVICE_AGREEMENT_CHANGES_REQUESTED_V2`). Snow CRM's state history
+  of it in the transition (§9). Probe workflow 62 (`ZZ_TRANSITION_PROBE`,
+  scripts 345, 355 and 356, SYSTEM document type 18) showed on dev-1 on
+  2026-10-01 that Core writes the transition row after the hook's commit, about
+  60–500 ms later, that a value the hook puts into its context is not stored,
+  and that metadata written into the row after the commit reads back through
+  `document-state-transition/list.json`. The `onEnter` of
+  `CLIENT_CHANGES_REQUESTED` therefore notes the transitions the agreement
+  already has, waits after the commit for the state and then for the
+  `CLIENT_CHANGES_REQUESTED` transition that was not among them, and writes the
+  text under `message` into its metadata, keeping what the metadata held. Each
+  request keeps its own text in its own transition, and a later request never
+  touches an earlier one, even one whose text was lost. The hook then emails
+  `CONTRACT_MANAGER` the message (`WINTER_SERVICE_AGREEMENT_CHANGES_REQUESTED_V2`). Snow CRM's state history
   reads a transition's `metadata` but shows no message column; showing it
   there belongs to the team that owns that screen.
-- **State on dev-1.** Both CMS nodes serve the page with Request changes; no
-  link issued so far delegates the event, so none shows the button yet.
-  Scripts 346–348 (the email, agreement delivery V4 and
-  utilities V18) exist and compile on a working node; nothing is bound, and the
-  workflow and the Quotation Manager role are not applied, because
-  `app-2-core` and `app-4-core` serve every `/core` request and cannot compile
-  a script. Whether a script can write a transition's metadata after the commit
-  is not proven yet: probe workflow 62 (`ZZ_TRANSITION_PROBE`, script 345,
-  SYSTEM document type 18) is in place to answer it before the seed's
-  utilities, V19 by now, are bound.
+- **State on dev-1.** Live since the morning of 2026-10-01: workflow 53 runs
+  utilities V20 (script 357) with agreement delivery V4 (347) and the manager
+  email (346); the new state and its three events exist, Sales and the
+  Quotation Manager hold their events, and both CMS nodes serve the page. An
+  agreement link issued before 2026-10-01 does not delegate the event and
+  offers approval alone. No client has requested changes on dev-1 yet.
 
 ## 9. Prerequisites and open points
 

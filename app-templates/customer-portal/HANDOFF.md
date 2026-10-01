@@ -1,6 +1,6 @@
 # Customer Portal — cross-session handoff
 
-Updated: 2026-09-30
+Updated: 2026-10-01
 
 This is the canonical resume checkpoint for the customer portal work: the Calm
 Harbor spa tenant, the Granite Ridge snow tenant, the universal form document,
@@ -885,59 +885,49 @@ checkout before treating any of them as broken.
 
 ## Exact next action
 
-**Blocked since 2026-09-29 or 30:** `app-2-core` and `app-4-core` serve every
-`/core` request on dev-1 and cannot compile a script ("cannot access com"), so
-workflow 53 cannot load there: any agreement save or event, the client's
-details and approval included, answers HTTP 500. Whoever runs dev-1 has to
-restart the two nodes. Check with a SYSTEM document of probe type 18 bound to
-workflow 53, or with `ZZ_SCRIPT_RESULT_VISIBILITY_PROBE_V1#whereAmI` through
-`exec.json?nodeId=`.
-
-**Late on 2026-09-30, task 19:** core-ui carries one confirmation email to the
-client after every property is decided: the `onEnter` of
-`AWAITING_CLIENT_DETAILS` in utilities V19 dispatches
-`SNOW_QUOTATION_DECISION_CONFIRMATION_V1` with template
-`WINTER_SERVICE_QUOTATION_DECISIONS_CONFIRMED_V2`
-(`content/cases/QUOTATION-PACKAGE-FLOW.md` §6). Scripts 349–351 exist unbound;
-the three agreement attributes are live on type 17. The workflow apply below
-binds V19, which carries task 21 and the provider card as well.
-
-**Late on 2026-09-30, task 21:** the review page offers Request changes beside
-Approve on the agreement, and core-ui carries the new workflow step
-`CLIENT_CHANGES_REQUESTED` with utilities V18, agreement delivery V4 and the
-manager email (`content/cases/QUOTATION-PACKAGE-FLOW.md` §8). Both CMS nodes
-serve the page; it offers the button only on a link that delegates the event,
-which no link issued so far does.
-- Once the nodes compile: run probe workflow 62 (`ZZ_TRANSITION_PROBE`) with
-  the plans observe, hook-write, after-write and context-put, and confirm that
-  a transition's metadata written after the commit reads back through
-  `document-state-transition/list.json`. Then apply
-  `serviceAgreementWorkflows.json` (V19, the three events and the
-  `AWAITING_CLIENT_DETAILS` hook),
-  `snowQuotationManagerRbac.json` with rbac.ts, and check that the plans show
-  no change.
-- The user accepted the presentation and the decision email on 2026-09-30.
-  Next: the team's run sends a real request for changes and reads its
-  transition.
+**Since the morning of 2026-10-01** workflow 53 runs utilities V20 (script
+357) on dev-1, after `app-2-core` and `app-4-core`, which serve every `/core`
+request, compiled scripts again; they had refused every new script since
+2026-09-29 or 30, so any agreement save or event answered HTTP 500 until then.
+V20 carries three changes of 2026-09-30, live together:
+- **Tasks 22 and 14:** before each link it copies the organization's image and
+  client phone and email onto the agreement for the logo and Contact us.
+- **Task 21:** the new step `CLIENT_CHANGES_REQUESTED`. The link issued from
+  now on (agreement delivery V4) lets the client ask for changes; the hook
+  keeps the text under `message` in the metadata of that request's transition
+  and emails the contract managers. Probe workflow 62 showed on dev-1 that Core
+  writes the transition after the hook's commit, that a value put into the
+  hook context is not stored, and that metadata written after the commit reads
+  back through `document-state-transition/list.json`. So V20 notes the
+  agreement's transitions in the hook and writes into the one that appears
+  after them (`content/cases/QUOTATION-PACKAGE-FLOW.md` §8).
+- **Task 19:** the `onEnter` of `AWAITING_CLIENT_DETAILS` sends the client one
+  email confirming the decisions (§6).
+The Quotation Manager role holds `CLIENT_CHANGES_REQUESTED-DRAFT`; Sales holds
+it and `CLIENT_CHANGES_REQUESTED-CANCELED`. The workflow plan lists only the
+details event's attribute reorder that was pending before. A SYSTEM document of
+probe type 18 bound to workflow 53 loads on both nodes (created and deleted on
+2026-10-01). The user accepted the presentation of all three on 2026-09-30.
+- Next: the team's run goes through the flow once more: a request, the
+  decision email, the details, Request changes on the agreement and its
+  transition, the revised agreement, the approval and the portal access.
+- The business enters the client phone and email of SNOWLIMITLESS in Snow CRM.
+  An agreement sent before 2026-10-01 gets the logo and contact from
+  `copyProviderCard(agreementId)` or its next send.
 
 **Late on 2026-09-30** the review page shows the provider's logo on the
 agreement and a Contact us strip on every step, from the organization's image
-and two new organization fields, which utilities V17 (script 344) copies onto
-the agreement when it is sent (`content/cases/QUOTATION-PACKAGE-FLOW.md` §8).
-`CLIENT_REVIEW_DOCUMENT` on both dev-1 CMS nodes matches the package; the type
-changes are live.
-- Blocked: workflow 53 stays on V16 until `app-2-core` and `app-4-core` compile
-  scripts again. The seed now binds V19, which keeps V17's copy and adds tasks
-  21 and 19; apply it from core-ui with `workflows.ts apply
-  --file=scripts/dev/seeds/serviceAgreementWorkflows.json
-  --base-url=https://dev-1.servicewand.com/core
-  --owner-org=SERVICE_WAND_WINTER_SERVICES --apply` after the probe of task 21
-  above. Before task 21 its plan listed the script, nine hooks and one
-  attribute reorder already pending.
-- The user accepted the presentation on 2026-09-30. Next: the business enters
-  the client phone and email of SNOWLIMITLESS in Snow CRM.
-  An agreement sent before the binding gets the values from
-  `copyProviderCard(agreementId)` or its next send.
+and two new organization fields, which the agreement utilities copy onto the
+agreement when it is sent, live with V20 since 2026-10-01 (above;
+`content/cases/QUOTATION-PACKAGE-FLOW.md` §8). `CLIENT_REVIEW_DOCUMENT` on both
+dev-1 CMS nodes matches the package; the type changes are live. To bind a later
+version, run from core-ui `workflows.ts apply
+--file=scripts/dev/seeds/serviceAgreementWorkflows.json
+--base-url=https://dev-1.servicewand.com/core
+--owner-org=SERVICE_WAND_WINTER_SERVICES --role-org=SERVICEWAND --apply`: the
+role grants of workflow 53 live in `SERVICEWAND`, and without `--role-org` the
+apply saves the workflow and its event permissions, then stops at the first
+role grant.
 
 **Since the evening of 2026-09-30** the review page offers Copy link on the
 quote review, contract details and agreement review steps, thanks the client
