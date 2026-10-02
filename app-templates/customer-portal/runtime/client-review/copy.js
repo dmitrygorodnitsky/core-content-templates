@@ -15,6 +15,13 @@
     ["LINK_COPIED_UNSENT", "linkCopiedUnsent", "What you type here is not saved until you send it."],
     ["LINK_COPY_FAILED", "linkCopyFailed", "The link could not be copied. Copy this page's address from your browser, or open the link in the provider's email again."],
 
+    ["PDF_DOWNLOAD", "pdfDownload", "Download PDF"],
+    ["PDF_CREATING", "pdfCreating", "Preparing PDF..."],
+    ["PDF_DOWNLOADED", "pdfDownloaded", "Your PDF download has started."],
+    ["PDF_FAILED", "pdfFailed", "We could not prepare the PDF. Please try again. If this continues, contact the provider."],
+    ["PDF_INCOMPLETE", "pdfIncomplete", "PDF download is available once all document details have loaded. Please refresh the page."],
+    ["PDF_SNAPSHOT", "pdfSnapshot", "Downloaded {date}. This copy reflects the information shown on this page."],
+    ["PDF_PAGE", "pdfPage", "Page {page} of {pages}"],
     ["QUOTE_EYEBROW", "quoteEyebrow", "Quotation"],
     ["QUOTE_TITLE", "quoteTitle", "Review your quotes"],
     ["QUOTE_SUBTITLE", "quoteSubtitle", "Each property has its own options. Choose one to see its services, then approve it or ask for changes. If none suits you, decline them all."],

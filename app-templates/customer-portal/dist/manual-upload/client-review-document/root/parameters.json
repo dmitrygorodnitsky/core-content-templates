@@ -152,6 +152,97 @@
     }
   },
   {
+    "code": "PDF_DOWNLOAD",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "PDF DOWNLOAD",
+        "DESCRIPTION": "Client review document copy."
+      }
+    },
+    "value": {
+      "en": "Download PDF"
+    }
+  },
+  {
+    "code": "PDF_CREATING",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "PDF CREATING",
+        "DESCRIPTION": "Client review document copy."
+      }
+    },
+    "value": {
+      "en": "Preparing PDF..."
+    }
+  },
+  {
+    "code": "PDF_DOWNLOADED",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "PDF DOWNLOADED",
+        "DESCRIPTION": "Client review document copy."
+      }
+    },
+    "value": {
+      "en": "Your PDF download has started."
+    }
+  },
+  {
+    "code": "PDF_FAILED",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "PDF FAILED",
+        "DESCRIPTION": "Client review document copy."
+      }
+    },
+    "value": {
+      "en": "We could not prepare the PDF. Please try again. If this continues, contact the provider."
+    }
+  },
+  {
+    "code": "PDF_INCOMPLETE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "PDF INCOMPLETE",
+        "DESCRIPTION": "Client review document copy."
+      }
+    },
+    "value": {
+      "en": "PDF download is available once all document details have loaded. Please refresh the page."
+    }
+  },
+  {
+    "code": "PDF_SNAPSHOT",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "PDF SNAPSHOT",
+        "DESCRIPTION": "Client review document copy. Keep {date}: the page fills them in."
+      }
+    },
+    "value": {
+      "en": "Downloaded {date}. This copy reflects the information shown on this page."
+    }
+  },
+  {
+    "code": "PDF_PAGE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "PDF PAGE",
+        "DESCRIPTION": "Client review document copy. Keep {page}, {pages}: the page fills them in."
+      }
+    },
+    "value": {
+      "en": "Page {page} of {pages}"
+    }
+  },
+  {
     "code": "QUOTE_EYEBROW",
     "type": "LOCALIZED_STRING_SS",
     "nls": {

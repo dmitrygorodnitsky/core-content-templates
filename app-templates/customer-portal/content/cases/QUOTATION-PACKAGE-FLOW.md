@@ -1182,3 +1182,66 @@ Open:
     works.
   - **Owner:** the fix belongs to `core-ui`. Role 87 also lacks
     `P_LOC_MSG_R`, which the endpoint needs once the token is attached.
+
+## 12. Client PDF download, 2026-10-02
+
+The client can download one A4 PDF containing the properties and quotation
+options currently displayed, or the service agreement with its parties,
+services, dates and terms. On Contract details, the quotation includes only
+approved options; unsent form values never become agreement data. The button
+uses the existing page design, above the document, in both themes and at
+desktop, tablet and mobile widths.
+
+The export uses the grant-normalized page model and the server's formatted
+prices. It neither calculates money nor sends a workflow event. The document
+includes its number, status and download time, with a note identifying it as
+a snapshot; it contains no access token, review URL or draft comment. No PDF
+service receives client data. Pinned jsPDF and Roboto assets are embedded by
+the exporter; Latin and Cyrillic text remains selectable. Unsupported glyphs
+produce an export error, rather than silently losing text. Font coverage for
+the planned Chinese localization remains open.
+
+Missing quotations or account details disable download with a refresh
+message. Preparing, loading and closed-link screens offer no export.
+Repeated clicks share one export. If a refresh replaces the model or the page
+observes that its grant has closed during generation, it refuses that file.
+Success and failure are announced, focus stays on the button, and a failed
+export can be retried.
+
+Runtime inputs are in `runtime/client-review/`; the owning exporter remains
+`scripts/export-client-review-manual.mjs`, and `dist/manual-upload/` is generated
+only through it. Existing API and portal parameter values are preserved when
+updating `CLIENT_REVIEW_DOCUMENT` on dev-1.
+
+Cross-zone handoff (`docs/repository-zones/handoff-contract.md`):
+- Parent task: backlog 15, quotation/agreement PDF download.
+- From zone: Portal runtime; to zone: Portal build tooling and generated output.
+- Blocking dependency: the CMS document must embed the pinned PDF assets and
+  register `pdf.js` before the rendering/controller modules.
+- Required inputs: the authored runtime, vendor licenses and seven PDF copy
+  entries; expected outputs: the deterministic manual-upload package.
+- Acceptance criteria: both checks below pass and the existing live template
+  matches the package without replacing API/portal values.
+- Target time: 2026-10-02; owner: customer-experience; backup owner: portal-runtime.
+- Linked change: the source/export/generated files in this change.
+- Follow-up risks: Chinese font coverage and a real customer browser download.
+
+Evidence:
+- `node app-templates/customer-portal/scripts/client-review-check.mjs`: 68
+  scenario states plus PDF loading, failure, retry, focus and command guards;
+  deterministic CMS export and existing business-flow checks pass.
+- `node app-templates/customer-portal/scripts/client-review-pdf-check.mjs`:
+  actual quotation and agreement files, a 12-page long Unicode document,
+  incomplete/revoked states, duplicate prevention and stale-model refusal pass.
+- Sample PDF pages were rendered and inspected; extracted text preserves
+  prices, Cyrillic text and the last clause without out-of-page characters.
+- Browser checks cover 1440, 768 and 375 px in light and dark mode, with no
+  horizontal overflow. The generated CMS preview loads the embedded assets
+  and reaches the download-started state. The in-app browser's download-event
+  observer did not report a saved blob file; sample file verification uses
+  the same PDF generator directly. A real customer browser download remains
+  for the team's next run, without replaying an approval or sending mail.
+- Publication readback matches all four source fields and preserves every
+  existing parameter value on dev-1. The public review page contains the PDF
+  runtime and embedded assets on both `app-1-core-cms` and `app-3-core-cms`;
+  the latter needed one identical save to refresh its page cache.

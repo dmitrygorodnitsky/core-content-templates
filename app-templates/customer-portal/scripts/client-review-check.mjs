@@ -8,7 +8,7 @@ import vm from "node:vm";
 
 const root = path.resolve("app-templates/customer-portal");
 const reviewDir = path.join(root, "runtime/client-review");
-const RUNTIME = ["copy.js", "core-contract.js", "adapter.js", "normalizer.js", "components.js", "controller.js"];
+const RUNTIME = ["copy.js", "core-contract.js", "adapter.js", "normalizer.js", "pdf.js", "components.js", "controller.js"];
 const FIXTURES = "fixtures.js";
 const sources = Object.fromEntries(await Promise.all(RUNTIME.concat([FIXTURES]).map(async (name) => [name, await fs.readFile(path.join(reviewDir, name), "utf8")])));
 const css = await fs.readFile(path.join(reviewDir, "client-review.css"), "utf8");
@@ -2455,6 +2455,58 @@ for (const [state, links] of [["SENT_TO_CLIENT", 0], ["SUSPENDED", 0], ["EXPIRED
     await booted.idle();
     assert.equal(booted.snapshot().phase, phase, JSON.stringify(attributes) + " " + hash + " → " + phase);
     assert.equal(fetched, 0, "no request leaves the page in the " + phase + " state");
+  }
+}
+
+{
+  const run = await runScenario("agreement-review");
+  const button = () => byAttribute(run.mount, "data-action", "pdf.download")[0];
+  const original = run.runtime.CR.pdf;
+  let release;
+  let created = 0;
+  let saved = 0;
+  const held = new Promise((resolve) => { release = resolve; });
+  run.runtime.CR.pdf = { ...original, create() { created += 1; return held; }, save() { saved += 1; } };
+  const commandsBefore = run.sent.length;
+  button().fire("click");
+  button().fire("click");
+  await tick();
+  assert.equal(created, 1, "a second PDF click cannot start another export");
+  assert.equal(button().textContent, run.copy.pdfCreating);
+  assert.notEqual(button().getAttribute("disabled"), null);
+  assert.equal(button().getAttribute("aria-busy"), "true");
+  release({});
+  await run.controller.idle();
+  assert.equal(saved, 1);
+  assert.equal(button().textContent, run.copy.pdfDownload);
+  assert.equal(button().getAttribute("disabled"), null);
+  assert.equal(byClass(run.mount, "cr-pdf__note")[0].textContent, run.copy.pdfDownloaded);
+  assert.equal(run.live.textContent, run.copy.pdfDownloaded);
+  assert.equal(run.runtime.document.activeElement, button(), "PDF completion keeps focus on Download PDF");
+  assert.equal(run.sent.length, commandsBefore, "exporting does not approve or change the agreement");
+
+  run.runtime.CR.pdf.create = () => Promise.reject(new Error("font unavailable"));
+  button().fire("click");
+  await run.controller.idle();
+  assert.equal(saved, 1);
+  assert.equal(byClass(run.mount, "cr-pdf__note")[0].textContent, run.copy.pdfFailed);
+  assert.equal(run.live.textContent, run.copy.pdfFailed);
+  assert.equal(button().getAttribute("disabled"), null, "a failed PDF can be retried");
+  run.runtime.CR.pdf.create = () => Promise.resolve({});
+  button().fire("click");
+  await run.controller.idle();
+  assert.equal(saved, 2, "retry after a failed export releases the guard");
+  assert.equal(run.live.textContent, run.copy.pdfDownloaded);
+}
+
+{
+  const partial = await runScenario("partial");
+  const button = byAttribute(partial.mount, "data-action", "pdf.download")[0];
+  assert.notEqual(button.getAttribute("disabled"), null, "missing quotations disable the PDF");
+  assert.equal(byClass(partial.mount, "cr-pdf__note")[0].textContent, partial.copy.pdfIncomplete);
+  for (const name of ["loading", "error", "link-closed", "unconfigured", "preparing"]) {
+    const run = await runScenario(name);
+    assert.equal(byAttribute(run.mount, "data-action", "pdf.download").length, 0, name + " offers no document export");
   }
 }
 

@@ -56,6 +56,10 @@
 
 .cr-link { margin: 6px 0 0; }
 
+.cr-pdf { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin-top: 8px; }
+.cr-pdf .btn { flex: none; }
+.cr-pdf__note { margin: 0; max-width: 60ch; font-size: 12.5px; line-height: 1.5; color: var(--ink-2); }
+
 .cr-link__row { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; }
 
 .cr-validity { margin: 0; font-size: 12.5px; color: var(--ink-3); }

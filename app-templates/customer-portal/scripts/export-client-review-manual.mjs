@@ -16,7 +16,8 @@ const apiBaseCode = "REVIEW_API_BASE_URL";
 const portalUrlCode = "PORTAL_URL";
 const urlValidators = { [apiBaseCode]: "safeApiBase", [portalUrlCode]: "safePortalUrl" };
 const styleFiles = ["tokens.css", "base.css", "components.css"];
-export const runtimeFiles = ["copy.js", "core-contract.js", "adapter.js", "normalizer.js", "components.js", "controller.js"];
+export const runtimeFiles = ["copy.js", "core-contract.js", "adapter.js", "normalizer.js", "pdf.js", "components.js", "controller.js"];
+const pdfVendorFiles = ["jspdf-4.2.1.umd.min.js", "roboto-font.js"];
 export const previewOnlyFiles = ["fixtures.js"];
 const COPY_NOTES = {
   CONFIRM_INFORMATION_STATEMENT: "Statement the client agrees to with the INFORMATION_CONFIRMED checkbox. A description on that event attribute replaces this default; a value changed here replaces the description.",
@@ -27,17 +28,18 @@ export async function exportClientReviewManual(options = {}) {
   const outputDir = path.resolve(options.outputDir || defaultOutputDir);
   assertSafeOutputDir(outputDir);
 
-  const [portalCss, reviewCss, runtime, fixtures] = await Promise.all([
+  const [portalCss, reviewCss, runtime, fixtures, pdfVendor] = await Promise.all([
     Promise.all(styleFiles.map((name) => fs.readFile(path.join(portalRoot, "runtime/styles", name), "utf8"))),
     fs.readFile(path.join(reviewRoot, "client-review.css"), "utf8"),
     Promise.all(runtimeFiles.map((name) => fs.readFile(path.join(reviewRoot, name), "utf8"))),
     Promise.all(previewOnlyFiles.map((name) => fs.readFile(path.join(reviewRoot, name), "utf8"))),
+    Promise.all(pdfVendorFiles.map((name) => fs.readFile(path.join(reviewRoot, "vendor", name), "utf8"))),
   ]);
 
   const runtimeJs = runtime.map((source) => source.trim()).join("\n");
   const contract = contractOf(runtimeJs);
   const css = portalCss.concat([reviewCss]).map((source) => source.trim()).concat([documentCss()]).join("\n\n");
-  const template = templateFor(css, runtimeJs + "\n" + bootScript(), contract.copy);
+  const template = templateFor(css, runtimeJs + "\n" + bootScript(), contract.copy, pdfVendor);
   assertUrlDefaults(template, contract);
   assertJteSafeTemplate(template);
   assertNoScriptTerminator(template.javascript);
@@ -93,7 +95,7 @@ function documentCss() {
   ].join("\n");
 }
 
-function templateFor(css, javascript, copy) {
+function templateFor(css, javascript, copy, pdfVendor) {
   const attributes = {
     id: "client-review-root",
     "data-review-data-mode": "live",
@@ -117,6 +119,7 @@ function templateFor(css, javascript, copy) {
       '<link rel="preconnect" href="https://fonts.googleapis.com">',
       '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>',
       '<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;530;600;700;800&display=swap" rel="stylesheet">',
+      ...pdfVendor.map((source) => '<script src="data:application/javascript;base64,' + Buffer.from(source).toString("base64") + '"></script>'),
     ].join("\n"),
     html: "<section " + attrs(attributes) + ">\n  <div data-client-review-mount></div>\n"
       + "  <p class=\"cr-visually-hidden\" role=\"status\" aria-live=\"polite\" aria-atomic=\"true\" data-client-review-live></p>\n</section>",
@@ -178,6 +181,7 @@ function manifestFor(template, contract) {
       styles: styleFiles.map((name) => "app-templates/customer-portal/runtime/styles/" + name)
         .concat(["app-templates/customer-portal/runtime/client-review/client-review.css"]),
       previewOnly: previewOnlyFiles.map((name) => "app-templates/customer-portal/runtime/client-review/" + name),
+      pdfAssets: pdfVendorFiles.map((name) => "app-templates/customer-portal/runtime/client-review/vendor/" + name),
       dataMode: "live",
       theme: "snow",
       colorMode: "prefers-color-scheme",
@@ -237,6 +241,7 @@ function manifestFor(template, contract) {
       "No dev-1 link has returned the Account attributes " + Object.values(core.accountPrefill).join(", ") + " yet. Without them only the Legal Name pre-fills and the portal invitation names no sign-in address.",
     ],
     constraints: [
+      "Download PDF creates a local, selectable-text A4 copy of the normalized authorized view, including every quotation option or the agreement's parties, services and terms. It never exports a token, URL, unsent form or comment draft, recalculates money, or sends document data to another service. Partial reads disable export, duplicate clicks are single-flight, and a changed or revoked document is not downloaded after generation. The pinned jsPDF engine and Roboto font are embedded as data-URI scripts to avoid JTE interpreting the vendor's template literals; no library/font request leaves the page.",
       "REVIEW_API_BASE_URL must be an absolute https origin without a path. Until it is set the page reports that it is not set up and sends nothing.",
       "PORTAL_URL ships empty. When it is an absolute https address, the completion states offer an Open the customer portal link to it above and below the agreement, and the thank-you state after approval and a closed link offer it once; any other value is discarded and no link shows. The portal access text itself never depends on Account.user.",
       "Copy link is offered on the quote review, contract details and agreement review steps, never on an approved agreement or a state card. It hands the browser's clipboard the address the page was opened with, #token= fragment included, when the client presses it, and sends it nowhere else. A browser that refuses the write leaves the client with the address bar and the provider's email. The link carries nothing the client typed: a returning client sees what the provider's system holds.",

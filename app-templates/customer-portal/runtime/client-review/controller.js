@@ -32,6 +32,7 @@
     var inflight = {};
     var loading = null;
     var copying = null;
+    var exporting = null;
     var listeners = [];
     var stopped = false;
     var poll = { timer: null, attempt: 0, exhausted: false };
@@ -55,6 +56,7 @@
       commands: {},
       details: emptyDetails(null),
       link: "",
+      pdf: "",
       focusKey: "",
     };
 
@@ -362,6 +364,7 @@
         state.refreshing = false;
         loading = null;
         if (before.page !== pageKey()) state.link = "";
+        state.pdf = "";
         track();
         markAccepted();
         var rendered = render();
@@ -609,12 +612,37 @@
       return copying;
     }
 
+    function downloadPdf() {
+      if (exporting || busy() || !ns.pdf || !ns.pdf.available(snapshot())) return;
+      var current = state.view;
+      var input = { phase: state.phase, view: JSON.parse(JSON.stringify(current)), contact: state.contact, logoUrl: state.logoUrl };
+      state.pdf = "pending";
+      render();
+      var create = settings.pdfFactory || ns.pdf.create;
+      var save = settings.pdfSave || ns.pdf.save;
+      exporting = Promise.resolve().then(function () { return create(input, copy, locale); }).then(function (result) {
+        if (stopped || state.phase !== "ready" || state.view !== current || !ns.pdf.available(snapshot())) throw new Error("The displayed document changed");
+        save(result);
+        state.pdf = "downloaded";
+      }, function () { state.pdf = "failed"; }).catch(function () { state.pdf = "failed"; }).then(function () {
+        exporting = null;
+        if (stopped) return;
+        state.focusKey = "pdf-download";
+        var rendered = render();
+        if (live && rendered && rendered.pdfStatus) live.textContent = rendered.pdfStatus;
+      });
+      return exporting;
+    }
+
     function dispatch(type, payload) {
       var data = payload || {};
       var option;
       var field;
       var view = state.view;
       switch (type) {
+        case "pdf.download":
+          downloadPdf();
+          return;
         case "retry":
           load(state.retryContext);
           return;
@@ -754,6 +782,7 @@
         primaryEmail: state.primaryEmail,
         contact: state.contact,
         logoUrl: state.logoUrl,
+        pdf: { status: state.pdf },
         pending: Object.keys(inflight),
       };
     }
@@ -782,6 +811,7 @@
       var waiting = Object.keys(inflight).map(function (key) { return inflight[key]; });
       if (loading) waiting.push(loading);
       if (copying) waiting.push(copying);
+      if (exporting) waiting.push(exporting);
       if (!waiting.length) return Promise.resolve();
       return Promise.all(waiting).then(idle);
     }

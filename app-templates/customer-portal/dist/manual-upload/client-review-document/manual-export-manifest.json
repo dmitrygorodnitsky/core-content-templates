@@ -5,12 +5,12 @@
   "template": {
     "code": "CLIENT_REVIEW_DOCUMENT",
     "templateLanguage": "JTE",
-    "parameterCount": 191,
+    "parameterCount": 198,
     "sha256": {
-      "head": "f1c3486ef79fb84dd6af7baff69fc992cf2806ae5b9e9e35ddbd69cb88fec28c",
-      "html": "8b9f1609eee539381ee126410d167e88bb421268ff6881fcc18d0fe9758958dd",
-      "css": "384b6d92a8154ca45c0cdd430ddf3f96aa92b7b1b845e4cb4c29d7f32e9d97f6",
-      "javascript": "6684058d8138a5f84f7fbfa71875ba2571b433729da4f58228c842dd700a1c94"
+      "head": "b5e252b604ad732492b218098f257bf497097a28f69355e257736c578a5a213e",
+      "html": "0235d562c374cdda6cbca08b1201dcb6d73eabce3d00544219b8acba3c6aa2b3",
+      "css": "2029dcf94ed0919950016b0cbcaabaef735577cfd8b712cb94e6d772d64f145f",
+      "javascript": "1c150a556be66e9e1285316ceec669a9b5a20f3c8ffb06542e7517fe064d61aa"
     }
   },
   "runtime": {
@@ -19,6 +19,7 @@
       "app-templates/customer-portal/runtime/client-review/core-contract.js",
       "app-templates/customer-portal/runtime/client-review/adapter.js",
       "app-templates/customer-portal/runtime/client-review/normalizer.js",
+      "app-templates/customer-portal/runtime/client-review/pdf.js",
       "app-templates/customer-portal/runtime/client-review/components.js",
       "app-templates/customer-portal/runtime/client-review/controller.js"
     ],
@@ -30,6 +31,10 @@
     ],
     "previewOnly": [
       "app-templates/customer-portal/runtime/client-review/fixtures.js"
+    ],
+    "pdfAssets": [
+      "app-templates/customer-portal/runtime/client-review/vendor/jspdf-4.2.1.umd.min.js",
+      "app-templates/customer-portal/runtime/client-review/vendor/roboto-font.js"
     ],
     "dataMode": "live",
     "theme": "snow",
@@ -139,6 +144,7 @@
     "No dev-1 link has returned the Account attributes BILLING_ADDRESS, REPRESENTATIVE_FIRST_NAME, REPRESENTATIVE_LAST_NAME, REPRESENTATIVE_JOB_TITLE, REPRESENTATIVE_EMAIL, REPRESENTATIVE_PHONE yet. Without them only the Legal Name pre-fills and the portal invitation names no sign-in address."
   ],
   "constraints": [
+    "Download PDF creates a local, selectable-text A4 copy of the normalized authorized view, including every quotation option or the agreement's parties, services and terms. It never exports a token, URL, unsent form or comment draft, recalculates money, or sends document data to another service. Partial reads disable export, duplicate clicks are single-flight, and a changed or revoked document is not downloaded after generation. The pinned jsPDF engine and Roboto font are embedded as data-URI scripts to avoid JTE interpreting the vendor's template literals; no library/font request leaves the page.",
     "REVIEW_API_BASE_URL must be an absolute https origin without a path. Until it is set the page reports that it is not set up and sends nothing.",
     "PORTAL_URL ships empty. When it is an absolute https address, the completion states offer an Open the customer portal link to it above and below the agreement, and the thank-you state after approval and a closed link offer it once; any other value is discarded and no link shows. The portal access text itself never depends on Account.user.",
     "Copy link is offered on the quote review, contract details and agreement review steps, never on an approved agreement or a state card. It hands the browser's clipboard the address the page was opened with, #token= fragment included, when the client presses it, and sends it nowhere else. A browser that refuses the write leaves the client with the address bar and the provider's email. The link carries nothing the client typed: a returning client sees what the provider's system holds.",

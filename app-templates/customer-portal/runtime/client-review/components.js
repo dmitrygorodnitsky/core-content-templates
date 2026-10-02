@@ -210,6 +210,19 @@
     if (meta.children.length) head.appendChild(meta);
     var link = linkRow(ctx);
     if (link) head.appendChild(link);
+    if (ns.pdf && ns.pdf.offered(ctx.snapshot)) {
+      var pdf = ctx.snapshot.pdf || {};
+      var pending = pdf.status === "pending";
+      var allowed = ns.pdf.available(ctx.snapshot);
+      var actions = el("div", "cr-pdf");
+      actions.appendChild(mark(ctx, button(pending ? copy.pdfCreating : copy.pdfDownload, "btn--ghost", function () {
+        ctx.dispatch("pdf.download");
+      }, { "data-action": "pdf.download", disabled: pending || !allowed || ctx.busy, "aria-busy": pending ? "true" : null }), "pdf-download"));
+      var note = !allowed ? copy.pdfIncomplete : pdf.status === "failed" ? copy.pdfFailed : pdf.status === "downloaded" ? copy.pdfDownloaded : "";
+      if (note) actions.appendChild(text("p", "cr-pdf__note", note));
+      ctx.pdfStatus = note;
+      head.appendChild(actions);
+    }
     return head;
   }
 
@@ -1091,6 +1104,7 @@
       focus: {},
       announcement: "",
       linkStatus: "",
+      pdfStatus: "",
       busy: snapshot.refreshing || snapshot.phase !== "ready" || Boolean(snapshot.bulk),
     };
     var page = el("div", "cr-page", {
@@ -1124,7 +1138,7 @@
     if (contact) shell.appendChild(contact);
     mount.replaceChildren();
     mount.appendChild(page);
-    return { focus: ctx.focus, announcement: ctx.announcement, linkStatus: ctx.linkStatus };
+    return { focus: ctx.focus, announcement: ctx.announcement, linkStatus: ctx.linkStatus, pdfStatus: ctx.pdfStatus };
   }
 
   ns.components = Object.freeze({
