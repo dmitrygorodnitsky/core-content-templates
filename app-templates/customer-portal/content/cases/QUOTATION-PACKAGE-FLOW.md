@@ -482,9 +482,15 @@ widths in light and dark mode, the manager email included.
   text under `message` into its metadata, keeping what the metadata held. Each
   request keeps its own text in its own transition, and a later request never
   touches an earlier one, even one whose text was lost. The hook then emails
-  `CONTRACT_MANAGER` the message (`WINTER_SERVICE_AGREEMENT_CHANGES_REQUESTED_V2`). Snow CRM's state history
-  reads a transition's `metadata` but shows no message column; showing it
-  there belongs to the team that owns that screen.
+  `CONTRACT_MANAGER` the message (`WINTER_SERVICE_AGREEMENT_CHANGES_REQUESTED_V2`).
+  As of 2026-10-02, Snow CRM shows `metadata.message` in the state history
+  beside the transition's author and date; clicking a comment opens its full
+  text, preserving line breaks. The same presentation reads quotation and
+  agreement transitions. Earlier overwritten comments cannot be recovered.
+  Quotation utility V6 (script 370, Java) also stores client and internal
+  Request Changes comments on their own `OrderStateTransition` rows; the
+  latest `QUOTATION_CHANGE_MESSAGE` remains for notification retry only.
+  Retrying a failed notification does not add another historical comment.
 - **State on dev-1.** Live since the morning of 2026-10-01: workflow 53 runs
   utilities V20 (script 357) with agreement delivery V4 (347) and the manager
   email (346); the new state and its three events exist, Sales and the
@@ -1245,3 +1251,22 @@ Evidence:
   existing parameter value on dev-1. The public review page contains the PDF
   runtime and embedded assets on both `app-1-core-cms` and `app-3-core-cms`;
   the latter needed one identical save to refresh its page cache.
+
+## Request Changes history handoff — 2026-10-02
+
+- Parent task: backlog 21, retain each Request Changes comment.
+- From zone: Portal product docs; to zone: core-ui workflow seeds and state-history UI.
+- Blocking dependency: Core does not automatically persist event metadata.
+- Required inputs: required event `MESSAGE` and native transition author/date;
+  expected outputs: per-transition `metadata.message` and readable CRM history.
+- Acceptance criteria: repeated requests preserve earlier comments; notification
+  retries do not duplicate comments; full text is literal and readable on mobile.
+- Target time: 2026-10-02; owner: customer-experience; backup owner: portal-runtime.
+- Linked change: quotation utility V6, `StateTransitionComment` and
+  `docs/snow-crm-role-flows.md` in the sibling core-ui repository.
+- Validation: quotation history Java scenarios, state-history rendering checks,
+  quotation flow/reliability and agreement comment scenarios passed; V6 executed
+  read-only on dev-1. The CRM bundle is deployed; DEFAULT configuration is unchanged.
+- Follow-up risks: metadata is written after the native transition commit, with
+  bounded polling and logged failures. Atomic storage requires backend changes.
+  A new customer Request Changes submission has not been replayed for this change.
