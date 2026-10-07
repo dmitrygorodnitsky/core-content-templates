@@ -97,6 +97,96 @@
     "</svg>",
   ].join(""));
 
+  var PLAN_CENTERS = {
+    278: { lat: 49.2731, lng: -123.1252 },
+    430: { lat: 49.1752, lng: -123.1305 },
+  };
+
+  var PLAN_IDS = {
+    278: "3f5d2c4e-8a1b-4c7d-9e2f-6a0b1c2d3e4f",
+    430: "7c9e1a2b-3d4f-4a5b-8c6d-0e1f2a3b4c5d",
+    broken: "0b7d6c5e-4f3a-4b2c-9d1e-8f7a6b5c4d3e",
+  };
+
+  var BILLING_PLACE = { lat: 49.2888, lng: -123.1193 };
+
+  function placed(center) {
+    var latPerMeter = 1 / 111320;
+    var lngPerMeter = latPerMeter / Math.cos(center.lat * Math.PI / 180);
+    return function (east, north) {
+      return [center.lng + east * lngPerMeter, center.lat + north * latPerMeter, 12.5];
+    };
+  }
+
+  function ring(at, corners) {
+    var points = corners.map(function (corner) { return at(corner[0], corner[1]); });
+    return points.concat([points[0]]);
+  }
+
+  function planElement(id, type, name, overlays) {
+    return { id: id, elementTypeDictionaryId: type, label: name, nls: { en: { NAME: name } }, attributes: {}, overlays: overlays };
+  }
+
+  function mapOverlay(geometry) {
+    return { map: "GOOGLE_MAPS", geometry: geometry };
+  }
+
+  function strataPlan() {
+    var at = placed(PLAN_CENTERS[278]);
+    return {
+      type: "PropertyPlan",
+      schemaVersion: 1,
+      backgrounds: [{ map: "GOOGLE_MAPS", center: at(0, 0), zoom: 19, address: ADDRESSES[278] }],
+      elements: [
+        planElement("main-driveway", 83120, "Main driveway", [mapOverlay({ type: "Polygon", coordinates: [ring(at, [[-6, -30], [6, -30], [6, 10], [-6, 10]])] })]),
+        planElement("front-sidewalk", 83118, "Front sidewalk", [mapOverlay({ type: "Polygon", coordinates: [ring(at, [[-40, -35], [40, -35], [40, -32], [-40, -32]])] })]),
+        planElement("visitor-parking", 83119, "Visitor parking", [mapOverlay({ type: "Polygon", coordinates: [ring(at, [[9, -14], [38, -14], [38, 14], [9, 14]])] })]),
+        planElement("loading-apron", 83120, "Loading bay apron", [mapOverlay({ type: "Polygon", coordinates: [ring(at, [[-38, -14], [-10, -14], [-10, 4], [-38, 4]])] })]),
+        planElement("fire-lane", 83121, "Fire lane edge", [mapOverlay({ type: "LineString", coordinates: [at(-6, 10), at(-6, 28), at(22, 28)] })]),
+        planElement("salt-bin", 83122, "Salt bin", [mapOverlay({ type: "Point", coordinates: at(11, -27) })]),
+      ],
+    };
+  }
+
+  function retailPlan() {
+    var at = placed(PLAN_CENTERS[430]);
+    return {
+      type: "PropertyPlan",
+      schemaVersion: 1,
+      backgrounds: [{ map: "GOOGLE_MAPS", center: at(0, 0), zoom: 19 }],
+      elements: [
+        planElement("customer-parking", 83119, "Customer parking", [mapOverlay({ type: "MultiPolygon", coordinates: [
+          [ring(at, [[-44, -24], [-8, -24], [-8, 18], [-44, 18]])],
+          [ring(at, [[8, -24], [44, -24], [44, 18], [8, 18]]), ring(at, [[20, -6], [30, -6], [30, 4], [20, 4]])],
+        ] })]),
+        planElement("entrance-walkway", 83118, "Entrance walkway", [mapOverlay({ type: "Polygon", coordinates: [ring(at, [[-8, 18], [8, 18], [8, 30], [-8, 30]])] })]),
+        planElement("turnaround", 83120, "Delivery turnaround", [mapOverlay({ type: "Circle", coordinates: at(0, -34), radius: 9 })]),
+        planElement("storefront-photo", 83123, "Storefront photo marker", [{ mediaId: "9a8b7c6d-5e4f-4a3b-8c2d-1e0f9a8b7c6d", geometry: { type: "Point", coordinates: [120, 40] } }]),
+      ],
+    };
+  }
+
+  function brokenPlan() {
+    return {
+      type: "PropertyPlan",
+      schemaVersion: 1,
+      elements: [planElement("photo-only", 83123, "Photo only", [{ mediaId: "9a8b7c6d-5e4f-4a3b-8c2d-1e0f9a8b7c6d", geometry: { type: "Point", coordinates: [10, 10] } }])],
+    };
+  }
+
+  var PLAN_FILES = {};
+  PLAN_FILES[PLAN_IDS[278]] = strataPlan();
+  PLAN_FILES[PLAN_IDS[430]] = retailPlan();
+  PLAN_FILES[PLAN_IDS.broken] = brokenPlan();
+
+  var PLACES = {};
+  PLACES["1500 Harbour Green Drive, Suite 210, Vancouver, BC V6C 3T8, Canada"] = BILLING_PLACE;
+  PLACES["1500 Harbour Green Drive, Vancouver, BC V6C 3T8, Canada"] = BILLING_PLACE;
+  PLACES["1500 West Georgia Street, Vancouver, BC V6G 2Z6, Canada"] = { lat: 49.2918, lng: -123.1335 };
+  PLACES[ADDRESSES[278]] = PLAN_CENTERS[278];
+  PLACES[ADDRESSES[430]] = PLAN_CENTERS[430];
+  PLACES[ADDRESSES[512]] = { lat: 49.1893, lng: -122.8421 };
+
   var QUOTATION_EVENTS = [
     "QUOTE_SENT-QUOTE_VIEWED",
     "QUOTE_VIEWED-CLIENT_APPROVED",
@@ -137,6 +227,11 @@
     { id: "contract-details", label: "Contract details — pre-filled from the account" },
     { id: "contract-details-attributes", label: "Contract details — contacts and addresses as ids, pre-filled from Account attributes" },
     { id: "contract-details-ids-only", label: "Contract details — contacts and addresses as ids, no Account attributes" },
+    { id: "contract-details-billing-service", label: "Contract details — billing address taken from a service address" },
+    { id: "contract-details-maps", label: "Contract details — Maps key set: billing address on a map, each approved property's plan" },
+    { id: "contract-details-address-missing", label: "Contract details — Maps key set: billing address not found on the map" },
+    { id: "contract-details-plan-unavailable", label: "Contract details — Maps key set: a property's plan cannot be read" },
+    { id: "contract-details-maps-failed", label: "Contract details — Maps key set, the map service does not load" },
     { id: "details-invalid", label: "Contract details — validation errors" },
     { id: "details-refused", label: "Contract details — refused per field" },
     { id: "details-checking", label: "Contract details sent — being checked (CLIENT_DETAILS_RECEIVED)" },
@@ -494,6 +589,13 @@
       imageUrl: function (id) {
         return id === LOGO_ID ? LOGO_IMAGE : "";
       },
+      readPlan: function (id) {
+        return later(function () {
+          var file = PLAN_FILES[id];
+          if (!file || (settings.planFails || []).indexOf(id) !== -1) throw reviewError("failed", 404);
+          return clone(file);
+        });
+      },
       introspect: function () {
         if (settings.introspect === "hold") return never();
         return later(function () {
@@ -552,6 +654,15 @@
     };
   }
 
+  function withPlans(data, overrides) {
+    var references = Object.assign({}, { 278: PLAN_IDS[278], 430: [{ id: PLAN_IDS[430], type: "mediaAsset" }] }, overrides || {});
+    data.orders.forEach(function (row) {
+      var reference = references[orderAttribute(row, "SERVICE_PROPERTY")];
+      if (reference) row.attributes[5].PROPERTY_PLAN = { value: clone(reference) };
+    });
+    return data;
+  }
+
   function idOnlyAccount(data) {
     data.accounts.forEach(function (row) {
       row.contacts = [{ id: 901 }];
@@ -575,6 +686,220 @@
     return data;
   }
 
+  function mapsStub() {
+    var SVG = "http://www.w3.org/2000/svg";
+    var DEGREE_METERS = 111320;
+
+    function drawable() {
+      return Boolean(global.document) && typeof global.document.createElementNS === "function";
+    }
+
+    function svg(tag, attrs) {
+      var node = global.document.createElementNS(SVG, tag);
+      Object.keys(attrs).forEach(function (name) { node.setAttribute(name, String(attrs[name])); });
+      return node;
+    }
+
+    function lookup(text) {
+      var wanted = String(text || "").trim().toLowerCase();
+      var found = null;
+      Object.keys(PLACES).forEach(function (address) { if (address.toLowerCase() === wanted) found = PLACES[address]; });
+      return found;
+    }
+
+    function StubMap(canvas, options) {
+      this.canvas = canvas;
+      this.options = options || {};
+      this.center = this.options.center || { lat: 0, lng: 0 };
+      this.zoom = this.options.zoom || 2;
+      this.bounds = null;
+      this.padding = 0;
+      this.overlays = [];
+      this.draw();
+    }
+
+    StubMap.prototype.setCenter = function (center) {
+      this.center = center;
+      this.bounds = null;
+      this.draw();
+    };
+
+    StubMap.prototype.setZoom = function (zoom) {
+      this.zoom = zoom;
+      this.draw();
+    };
+
+    StubMap.prototype.fitBounds = function (bounds, padding) {
+      this.bounds = bounds;
+      this.padding = padding || 0;
+      this.draw();
+    };
+
+    StubMap.prototype.attach = function (overlay) {
+      if (this.overlays.indexOf(overlay) === -1) this.overlays.push(overlay);
+      this.draw();
+    };
+
+    StubMap.prototype.detach = function (overlay) {
+      var index = this.overlays.indexOf(overlay);
+      if (index !== -1) this.overlays.splice(index, 1);
+      this.draw();
+    };
+
+    StubMap.prototype.frame = function (width, height) {
+      if (this.bounds) {
+        var middle = (this.bounds.north + this.bounds.south) / 2;
+        var shrink = Math.cos(middle * Math.PI / 180);
+        var spanX = Math.max((this.bounds.east - this.bounds.west) * shrink, 0.000001);
+        var spanY = Math.max(this.bounds.north - this.bounds.south, 0.000001);
+        var usableX = Math.max(width - 2 * this.padding, 1);
+        var usableY = Math.max(height - 2 * this.padding, 1);
+        return { lat: middle, lng: (this.bounds.east + this.bounds.west) / 2, shrink: shrink, scale: Math.min(usableX / spanX, usableY / spanY) };
+      }
+      var cosine = Math.cos(this.center.lat * Math.PI / 180);
+      return { lat: this.center.lat, lng: this.center.lng, shrink: cosine, scale: 256 * Math.pow(2, this.zoom) / 360 / cosine };
+    };
+
+    StubMap.prototype.project = function (frame, width, height, point) {
+      return [width / 2 + (point.lng - frame.lng) * frame.shrink * frame.scale, height / 2 - (point.lat - frame.lat) * frame.scale];
+    };
+
+    StubMap.prototype.draw = function () {
+      if (!drawable() || !this.canvas || typeof this.canvas.replaceChildren !== "function") return;
+      var self = this;
+      var width = this.canvas.clientWidth || 640;
+      var height = this.canvas.clientHeight || 260;
+      var frame = this.frame(width, height);
+      var aerial = this.options.mapTypeId === "hybrid" || this.options.mapTypeId === "satellite";
+      var dark = this.options.colorScheme === "DARK";
+      var palette = aerial ? { ground: "#4a5544", block: "#3c4637", street: "#6b7263", label: "#e8ecdf" }
+        : dark ? { ground: "#202838", block: "#283246", street: "#323d52", label: "#9aa6ba" }
+          : { ground: "#eceee9", block: "#e1e5dc", street: "#ffffff", label: "#6c7480" };
+      var root = svg("svg", { viewBox: "0 0 " + width + " " + height, width: "100%", height: "100%", "aria-hidden": "true", "data-stub-map": aerial ? "aerial" : "road" });
+      root.appendChild(svg("rect", { x: 0, y: 0, width: width, height: height, fill: palette.ground }));
+      var step = 132;
+      var shiftX = Math.abs(frame.lng * 7919) % 1 * step;
+      var shiftY = Math.abs(frame.lat * 6271) % 1 * step;
+      for (var x = shiftX - step; x < width; x += step) {
+        for (var y = shiftY - step; y < height; y += step) {
+          root.appendChild(svg("rect", { x: x + 14, y: y + 14, width: step - 28, height: step - 28, rx: 6, fill: palette.block }));
+        }
+      }
+      for (var column = shiftX - step; column < width; column += step) root.appendChild(svg("rect", { x: column - 7, y: 0, width: 14, height: height, fill: palette.street }));
+      for (var row = shiftY - step; row < height; row += step) root.appendChild(svg("rect", { x: 0, y: row - 7, width: width, height: 14, fill: palette.street }));
+      this.overlays.forEach(function (overlay) { overlay.paint(root, self, frame, width, height); });
+      var caption = svg("text", { x: width - 10, y: height - 10, "text-anchor": "end", "font-size": 11, "font-family": "Manrope, Arial, sans-serif", fill: palette.label });
+      caption.textContent = "Preview map, no Google request";
+      root.appendChild(caption);
+      this.canvas.replaceChildren(root);
+    };
+
+    function overlayType(paint) {
+      function Overlay(options) {
+        this.options = options || {};
+        this.map = null;
+        this.setMap(this.options.map || null);
+      }
+      Overlay.prototype.setMap = function (map) {
+        if (this.map) this.map.detach(this);
+        this.map = map;
+        if (map) map.attach(this);
+      };
+      Overlay.prototype.paint = paint;
+      return Overlay;
+    }
+
+    function colorOf(options, fallback) {
+      return options.strokeColor || fallback;
+    }
+
+    var Polygon = overlayType(function (root, map, frame, width, height) {
+      var path = "";
+      (this.options.paths || []).forEach(function (points) {
+        points.forEach(function (point, index) {
+          var at = map.project(frame, width, height, point);
+          path += (index ? "L" : "M") + at[0] + " " + at[1] + " ";
+        });
+        path += "Z ";
+      });
+      root.appendChild(svg("path", { d: path, fill: this.options.fillColor || colorOf(this.options, "#0e8fc4"), "fill-opacity": this.options.fillOpacity || 0.35, "fill-rule": "evenodd", stroke: colorOf(this.options, "#0e8fc4"), "stroke-width": this.options.strokeWeight || 2 }));
+    });
+
+    var Polyline = overlayType(function (root, map, frame, width, height) {
+      var path = "";
+      (this.options.path || []).forEach(function (point, index) {
+        var at = map.project(frame, width, height, point);
+        path += (index ? "L" : "M") + at[0] + " " + at[1] + " ";
+      });
+      root.appendChild(svg("path", { d: path, fill: "none", stroke: colorOf(this.options, "#0e8fc4"), "stroke-width": this.options.strokeWeight || 3, "stroke-linecap": "round", "stroke-linejoin": "round" }));
+    });
+
+    var Circle = overlayType(function (root, map, frame, width, height) {
+      var at = map.project(frame, width, height, this.options.center);
+      var radius = this.options.radius / DEGREE_METERS * frame.scale;
+      root.appendChild(svg("circle", { cx: at[0], cy: at[1], r: radius, fill: this.options.fillColor || colorOf(this.options, "#0e8fc4"), "fill-opacity": this.options.fillOpacity || 0.35, stroke: colorOf(this.options, "#0e8fc4"), "stroke-width": this.options.strokeWeight || 2 }));
+    });
+
+    var Marker = overlayType(function (root, map, frame, width, height) {
+      var at = map.project(frame, width, height, this.options.position);
+      var icon = this.options.icon;
+      if (icon && icon.path === "circle") {
+        root.appendChild(svg("circle", { cx: at[0], cy: at[1], r: icon.scale || 6, fill: icon.fillColor || "#0e8fc4", stroke: icon.strokeColor || "#ffffff", "stroke-width": icon.strokeWeight || 2 }));
+        return;
+      }
+      root.appendChild(svg("path", { d: "M" + at[0] + " " + at[1] + " l-7 -12 a9 9 0 1 1 14 0 z", fill: "#d93a2b", stroke: "#ffffff", "stroke-width": 1.5 }));
+      root.appendChild(svg("circle", { cx: at[0], cy: at[1] - 17, r: 3.4, fill: "#ffffff" }));
+    });
+
+    function Geocoder() {}
+
+    Geocoder.prototype.geocode = function (request, callback) {
+      var found = lookup(request && request.address);
+      return Promise.resolve().then(function () {
+        if (found) callback([{ geometry: { location: found } }], "OK");
+        else callback([], "ZERO_RESULTS");
+      });
+    };
+
+    function suggestions(request) {
+      var query = String(request && request.input || "").trim().toLowerCase();
+      var matches = Object.keys(PLACES).filter(function (address) { return query && address.toLowerCase().indexOf(query) !== -1; });
+      return Promise.resolve({
+        suggestions: matches.map(function (address) {
+          return {
+            placePrediction: {
+              text: address,
+              toPlace: function () {
+                var place = { formattedAddress: "", location: null };
+                place.fetchFields = function () {
+                  place.formattedAddress = address;
+                  place.location = PLACES[address];
+                  return Promise.resolve({ place: place });
+                };
+                return place;
+              },
+            },
+          };
+        }),
+      });
+    }
+
+    return {
+      importLibrary: function () { return Promise.resolve({}); },
+      Map: StubMap,
+      Marker: Marker,
+      SymbolPath: { CIRCLE: "circle" },
+      Polygon: Polygon,
+      Polyline: Polyline,
+      Circle: Circle,
+      Geocoder: Geocoder,
+      places: {
+        AutocompleteSessionToken: function () {},
+        AutocompleteSuggestion: { fetchAutocompleteSuggestions: suggestions },
+      },
+    };
+  }
+
   function fixtureClipboard(accepts) {
     return {
       writeText: function () {
@@ -591,6 +916,7 @@
     var portalUrl = "";
     var pollDelays = null;
     var clipboard = null;
+    var maps = "";
     var approve = [["option.toggle", { id: 3102 }], ["option.intent", { id: 3102, kind: "approve" }]];
     var confirmBoth = [
       ["details.choose", { code: "CLIENT_TYPE", value: "ORGANIZATION" }],
@@ -726,6 +1052,27 @@
         break;
       case "contract-details-ids-only":
         data = idOnlyAccount(quotationData("AWAITING_CLIENT_DETAILS", DECIDED));
+        break;
+      case "contract-details-billing-service":
+        data = attributedAccount(quotationData("AWAITING_CLIENT_DETAILS", DECIDED));
+        steps = [["details.useAddress", { code: "BILLING_ADDRESS", value: ADDRESSES[430] }]];
+        break;
+      case "contract-details-maps":
+        data = withPlans(attributedAccount(quotationData("AWAITING_CLIENT_DETAILS", DECIDED)));
+        maps = "stub";
+        break;
+      case "contract-details-address-missing":
+        data = withPlans(attributedAccount(quotationData("AWAITING_CLIENT_DETAILS", DECIDED)));
+        data.accounts[0].attributes[data.accounts[0].type.id].BILLING_ADDRESS = { value: "PO Box 4471, Station Terminal, Vancouver, BC V6B 3Z8" };
+        maps = "stub";
+        break;
+      case "contract-details-plan-unavailable":
+        data = withPlans(attributedAccount(quotationData("AWAITING_CLIENT_DETAILS", DECIDED)), { 278: PLAN_IDS.broken });
+        maps = "stub";
+        break;
+      case "contract-details-maps-failed":
+        data = withPlans(attributedAccount(quotationData("AWAITING_CLIENT_DETAILS", DECIDED)));
+        maps = "fail";
         break;
       case "details-invalid":
         data = quotationData("AWAITING_CLIENT_DETAILS", DECIDED);
@@ -885,7 +1232,13 @@
       default:
         break;
     }
-    return { data: data, behavior: behavior, steps: steps, phase: phase, portalUrl: portalUrl, pollDelays: pollDelays, clipboard: clipboard };
+    return { data: data, behavior: behavior, steps: steps, phase: phase, portalUrl: portalUrl, pollDelays: pollDelays, clipboard: clipboard, maps: maps };
+  }
+
+  function mapsLoader(kind) {
+    if (kind === "stub") return function () { return Promise.resolve(mapsStub()); };
+    if (kind === "fail") return function () { return Promise.reject(new Error("The fixture map service does not load")); };
+    return null;
   }
 
   function setup(requested) {
@@ -900,6 +1253,7 @@
       portalUrl: built.portalUrl,
       pollDelays: built.pollDelays,
       clipboard: built.clipboard,
+      loadMaps: built.phase ? null : mapsLoader(built.maps),
     };
   }
 
@@ -919,6 +1273,11 @@
     setup: setup,
     play: play,
     createFixtureAdapter: createFixtureAdapter,
+    mapsStub: mapsStub,
+    withPlans: withPlans,
+    planIds: Object.freeze(Object.assign({}, PLAN_IDS)),
+    planFiles: PLAN_FILES,
+    places: PLACES,
     quotationData: quotationData,
     agreementData: agreementData,
     detailsErrors: detailsErrors,

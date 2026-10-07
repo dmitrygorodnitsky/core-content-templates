@@ -910,9 +910,11 @@ button { font-family: inherit; }
 .cr-approved__list { list-style: none; margin: 0; padding: 0; }
 
 .cr-approved__item {
-  display: flex; align-items: center; justify-content: space-between; gap: 14px;
+  display: flex; flex-direction: column; gap: 12px;
   padding: 11px 0; border-top: 1px solid rgba(var(--hair), .06);
 }
+
+.cr-approved__row { display: flex; align-items: center; justify-content: space-between; gap: 14px; }
 
 .cr-approved__item:first-child { padding-top: 0; border-top: 0; }
 
@@ -925,6 +927,122 @@ button { font-family: inherit; }
 .cr-approved__total { flex: none; font-size: 14.5px; font-weight: 800; font-variant-numeric: tabular-nums; }
 
 .cr-approved__total.cr-muted { font-size: 13.5px; font-weight: 500; }
+
+.cr-plan {
+  display: flex; flex-direction: column; gap: 10px; padding: 14px;
+  border-radius: var(--radius-md); background: var(--surface-2); border: 1px solid rgba(var(--hair), .08);
+}
+
+.cr-plan__title { margin: 0; font-size: 12px; font-weight: 700; letter-spacing: .02em; color: var(--ink-2); }
+
+.cr-plan__placeholder { height: 240px; border-radius: var(--radius-sm); }
+
+.cr-plan .cr-note { margin-top: 0; }
+
+.cr-plan__area {
+  display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 2px 12px;
+  margin: 0; font-size: 13px; color: var(--ink-2);
+}
+
+.cr-plan__area-value { font-size: 14.5px; font-weight: 800; color: var(--ink); font-variant-numeric: tabular-nums; }
+
+.cr-plan__legend {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 6px 18px;
+  margin: 0; padding: 0; list-style: none;
+}
+
+.cr-plan__element { display: flex; align-items: center; gap: 8px; min-width: 0; font-size: 13px; line-height: 1.45; }
+
+.cr-plan__swatch { flex: none; width: 14px; height: 14px; border-radius: 4px; background: var(--accent); }
+
+.cr-plan__swatch[data-kind="line"] { height: 4px; border-radius: var(--radius-pill); }
+
+.cr-plan__swatch[data-kind="point"] { border-radius: var(--radius-pill); }
+
+.cr-plan__swatch[data-tone="2"] { background: var(--warn); }
+
+.cr-plan__swatch[data-tone="3"] { background: var(--ok); }
+
+.cr-plan__swatch[data-tone="4"] { background: var(--danger); }
+
+.cr-plan__swatch[data-tone="5"] { background: var(--accent-3); }
+
+.cr-plan__name { min-width: 0; overflow-wrap: anywhere; }
+
+.cr-plan__size { flex: none; margin-left: auto; color: var(--ink-3); font-variant-numeric: tabular-nums; }
+
+.cr-plan__note { margin: 0; font-size: 12px; line-height: 1.5; color: var(--ink-3); }
+
+.cr-plan[data-state="unavailable"] .cr-plan__note { font-size: 13px; color: var(--ink-2); }
+
+.cr-map { display: none; }
+
+.cr-map[data-state="ready"],
+.cr-map[data-state="stale"],
+.cr-map[data-state="missing"],
+.cr-map[data-state="loading"] { display: block; }
+
+.cr-map__canvas {
+  height: 220px; overflow: hidden; isolation: isolate;
+  border-radius: var(--radius-sm); border: 1px solid rgba(var(--hair), .1); background: var(--surface-2);
+  transition: opacity .16s;
+}
+
+.cr-map[data-map="plan"] .cr-map__canvas { height: 280px; }
+
+.cr-map[data-state="loading"] .cr-map__canvas {
+  background: linear-gradient(90deg, rgba(var(--hair), .06) 25%, rgba(var(--hair), .12) 37%, rgba(var(--hair), .06) 63%);
+  background-size: 720px 100%; animation: shimmer 1.4s ease-in-out infinite;
+}
+
+.cr-map[data-state="stale"] .cr-map__canvas { opacity: .55; }
+
+.cr-map[data-state="missing"] .cr-map__canvas { display: none; }
+
+.cr-map__note { margin: 0; font-size: 12px; line-height: 1.5; color: var(--ink-2); }
+
+.cr-map__note:empty { display: none; }
+
+.cr-address { position: relative; }
+
+.cr-suggest {
+  position: absolute; top: 100%; left: 0; right: 0; z-index: 20;
+  margin: 4px 0 0; padding: 6px; list-style: none;
+  background: var(--surface); border: 1px solid rgba(var(--hair), .1);
+  border-radius: var(--radius-md); box-shadow: var(--shadow-float);
+}
+
+.cr-suggest[hidden] { display: none; }
+
+.cr-suggest__option {
+  padding: 9px 11px; border-radius: calc(var(--radius-md) - 4px);
+  font-size: 14px; color: var(--ink); cursor: pointer;
+}
+
+.cr-suggest__option:hover { background: rgba(var(--accent-rgb), .07); }
+
+.cr-suggest__option[aria-selected="true"] {
+  background: rgba(var(--accent-rgb), .14);
+  box-shadow: inset 0 0 0 1px rgba(var(--accent-rgb), .3);
+}
+
+.cr-reuse { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; }
+
+.cr-reuse__label { margin: 0; font-size: 12px; color: var(--ink-3); }
+
+.cr-reuse__chips { display: flex; flex-wrap: wrap; gap: 6px; min-width: 0; }
+
+.btn.cr-chip {
+  max-width: 100%; padding: 6px 12px; font-size: 12.5px; font-weight: 600;
+  overflow: hidden; text-overflow: ellipsis;
+  color: var(--ink-2); background: var(--surface-2); border: 1px solid rgba(var(--hair), .14);
+}
+
+.btn.cr-chip:hover { border-color: rgba(var(--accent-rgb), .45); color: var(--ink); }
+
+.btn.cr-chip[data-state="chosen"] {
+  color: var(--accent); background: rgba(var(--accent-rgb), .1); border-color: rgba(var(--accent-rgb), .45);
+}
 
 .cr-fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px 16px; }
 
@@ -1140,7 +1258,11 @@ button { font-family: inherit; }
   .cr-actions { flex-direction: column; align-items: stretch; }
   .cr-actions .btn, .cr-form-actions .btn { width: 100%; }
   .cr-facts__row { grid-template-columns: minmax(0, 1fr); gap: 2px; }
-  .cr-approved__item { align-items: flex-start; }
+  .cr-approved__row { align-items: flex-start; }
+  .cr-plan { padding: 12px; }
+  .cr-map__canvas, .cr-plan__placeholder { height: 200px; }
+  .cr-map[data-map="plan"] .cr-map__canvas { height: 240px; }
+  .cr-plan__legend { grid-template-columns: minmax(0, 1fr); }
   .cr-lines thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
   .cr-lines, .cr-lines tbody, .cr-lines tr, .cr-lines td { display: block; width: 100%; }
   .cr-lines tr { padding: 10px 0; border-bottom: 1px solid rgba(var(--hair), .06); }
@@ -1155,6 +1277,7 @@ button { font-family: inherit; }
 @media (prefers-reduced-motion: reduce) {
   .cr-pick__mark, .cr-pick__mark::after, .cr-input, .cr-check, .cr-page[aria-busy="true"] .cr-property { transition: none; }
   .cr-note--pending::before, .cr-state[data-checking="active"] .cr-state__glyph::after, .cr-notice__icon--busy::after { animation: none; }
+  .cr-map[data-state="loading"] .cr-map__canvas, .cr-map__canvas { animation: none; transition: none; }
 }
 
 html, body { min-height: 100%; }

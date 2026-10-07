@@ -674,12 +674,52 @@
       control.value = details.values[field.code] || "";
       control.addEventListener("input", function () { patch(ctx.dispatch("details.input", { code: field.code, value: control.value })); });
       control.addEventListener("blur", function () { patch(ctx.dispatch("details.blur", { code: field.code })); });
-      wrap.appendChild(control);
+      if (field.kind === "address") {
+        var anchor = el("div", "cr-address");
+        anchor.appendChild(control);
+        wrap.appendChild(anchor);
+      } else {
+        wrap.appendChild(control);
+      }
     }
     mark(ctx, control, "field-" + field.code);
     if (field.description && field.kind !== "boolean") wrap.appendChild(text("p", "cr-field__hint", field.description, { id: id + "-hint" }));
     wrap.appendChild(errorNode);
+    if (field.kind === "address") {
+      var reuse = serviceAddressOffer(ctx, field, pending);
+      if (reuse) wrap.appendChild(reuse);
+      if (ctx.maps) {
+        wrap.appendChild(ctx.maps.attachAddress(field.code, control, function (formatted) {
+          control.value = formatted;
+          patch(ctx.dispatch("details.input", { code: field.code, value: formatted }));
+        }));
+      }
+    }
     return wrap;
+  }
+
+  function serviceAddressOffer(ctx, field, pending) {
+    var copy = ctx.copy;
+    var addresses = ctx.snapshot.view.details.serviceAddresses || [];
+    if (!addresses.length) return null;
+    var current = String(ctx.snapshot.details.values[field.code] || "").trim();
+    var row = el("div", "cr-reuse", { role: "group", "aria-labelledby": "cr-reuse-" + field.code });
+    row.appendChild(text("p", "cr-reuse__label", copy.serviceAddressReuse, { id: "cr-reuse-" + field.code }));
+    var chips = el("div", "cr-reuse__chips");
+    addresses.forEach(function (address) {
+      var chosen = current === address;
+      chips.appendChild(button(address, "cr-chip", function () {
+        ctx.dispatch("details.useAddress", { code: field.code, value: address });
+      }, {
+        "aria-label": ns.fill(copy.serviceAddressUse, { address: address }),
+        "aria-pressed": chosen ? "true" : "false",
+        "data-action": "details.useAddress",
+        "data-state": chosen ? "chosen" : null,
+        disabled: pending || ctx.busy,
+      }));
+    });
+    row.appendChild(chips);
+    return row;
   }
 
   function detailsForm(ctx) {
@@ -730,10 +770,46 @@
     var entries = [];
     view.properties.forEach(function (property) {
       property.options.forEach(function (option) {
-        if (option.status === "approved") entries.push({ address: property.address, option: option });
+        if (option.status === "approved") entries.push({ address: property.address, option: option, property: property });
       });
     });
     return entries;
+  }
+
+  function planBlock(ctx, property) {
+    var copy = ctx.copy;
+    var loaded = ctx.snapshot.plans && ctx.snapshot.plans[property.plan];
+    var status = loaded ? loaded.status : "loading";
+    var block = el("div", "cr-plan", { "data-state": status, "data-plan": property.key });
+    block.appendChild(text("p", "cr-plan__title", copy.planTitle));
+    if (status === "unavailable") {
+      block.appendChild(text("p", "cr-note cr-plan__note", copy.planUnavailable));
+      return block;
+    }
+    if (status !== "ready") {
+      block.appendChild(el("div", "cr-plan__placeholder skeleton", { "aria-hidden": "true" }));
+      block.appendChild(text("p", "cr-note cr-note--pending", copy.planLoading, { role: "status", "data-state": "pending" }));
+      return block;
+    }
+    var plan = loaded.plan;
+    block.appendChild(ctx.maps.planView(property.key, plan));
+    if (plan.areaText) {
+      var facts = el("p", "cr-plan__area");
+      facts.appendChild(text("span", "cr-plan__area-label", copy.planArea));
+      facts.appendChild(text("span", "cr-plan__area-value", ns.fill(copy.planAreaValue, { area: plan.areaText })));
+      block.appendChild(facts);
+    }
+    var legend = el("ul", "cr-plan__legend", { "aria-label": copy.planTitle });
+    plan.elements.forEach(function (element) {
+      var item = el("li", "cr-plan__element", { "data-kind": element.kind });
+      item.appendChild(el("span", "cr-plan__swatch", { "data-tone": String(element.tone), "data-kind": element.kind, "aria-hidden": "true" }));
+      item.appendChild(text("span", "cr-plan__name", element.name || ns.fill(copy.planElementFallback, { n: element.position })));
+      if (element.areaText) item.appendChild(text("span", "cr-plan__size", ns.fill(copy.planAreaValue, { area: element.areaText })));
+      legend.appendChild(item);
+    });
+    block.appendChild(legend);
+    block.appendChild(text("p", "cr-plan__note", copy.planNote));
+    return block;
   }
 
   function returnedNotice(ctx) {
@@ -771,11 +847,14 @@
       var list = el("ul", "cr-approved__list");
       approved.forEach(function (entry) {
         var item = el("li", "cr-approved__item");
+        var row = el("div", "cr-approved__row");
         var identity = el("div", "cr-approved__identity");
         identity.appendChild(text("span", "cr-approved__address" + (entry.address ? "" : " cr-muted"), entry.address || copy.addressUnavailable));
         identity.appendChild(text("span", "cr-approved__option", optionLabel(entry.option, copy)));
-        item.appendChild(identity);
-        item.appendChild(text("span", "cr-approved__total" + (entry.option.total ? "" : " cr-muted"), entry.option.total || copy.valueNotStated));
+        row.appendChild(identity);
+        row.appendChild(text("span", "cr-approved__total" + (entry.option.total ? "" : " cr-muted"), entry.option.total || copy.valueNotStated));
+        item.appendChild(row);
+        if (ctx.maps && entry.property.plan) item.appendChild(planBlock(ctx, entry.property));
         list.appendChild(item);
       });
       section.appendChild(list);
@@ -1096,11 +1175,12 @@
     return announcedCard(ctx, "ok", "✓", copy.detailsSentTitle, copy.detailsSentBody, null);
   }
 
-  function renderPage(mount, snapshot, dispatch, copy) {
+  function renderPage(mount, snapshot, dispatch, copy, services) {
     var ctx = {
       snapshot: snapshot,
       dispatch: dispatch,
       copy: copy,
+      maps: services && services.maps ? services.maps : null,
       focus: {},
       announcement: "",
       linkStatus: "",

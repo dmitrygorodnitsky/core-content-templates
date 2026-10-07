@@ -5,12 +5,12 @@
   "template": {
     "code": "CLIENT_REVIEW_DOCUMENT",
     "templateLanguage": "JTE",
-    "parameterCount": 198,
+    "parameterCount": 212,
     "sha256": {
       "head": "b5e252b604ad732492b218098f257bf497097a28f69355e257736c578a5a213e",
-      "html": "0235d562c374cdda6cbca08b1201dcb6d73eabce3d00544219b8acba3c6aa2b3",
-      "css": "2029dcf94ed0919950016b0cbcaabaef735577cfd8b712cb94e6d772d64f145f",
-      "javascript": "1c150a556be66e9e1285316ceec669a9b5a20f3c8ffb06542e7517fe064d61aa"
+      "html": "eaa406519bc75a57a3145e15344ca6c350108a90faf328d55543629fcfcddb73",
+      "css": "f60deb6fa3dc08bc8245b6ef54b5dcd70c28417d2c4727ee5e11e2dc311601ec",
+      "javascript": "4e928f4f8cc4e9d33d190a7db3747023e8b1747a97af6d0573d4ebfb0c9ae2a2"
     }
   },
   "runtime": {
@@ -19,7 +19,9 @@
       "app-templates/customer-portal/runtime/client-review/core-contract.js",
       "app-templates/customer-portal/runtime/client-review/adapter.js",
       "app-templates/customer-portal/runtime/client-review/normalizer.js",
+      "app-templates/customer-portal/runtime/client-review/plan.js",
       "app-templates/customer-portal/runtime/client-review/pdf.js",
+      "app-templates/customer-portal/runtime/client-review/maps.js",
       "app-templates/customer-portal/runtime/client-review/components.js",
       "app-templates/customer-portal/runtime/client-review/controller.js"
     ],
@@ -60,7 +62,9 @@
       "POST {apiBase}/core-bill/i/{token}/order-item/list.json",
       "POST {apiBase}/core-pim/i/{token}/product-price/list.json",
       "POST {apiBase}/core-pim/i/{token}/product/list.json",
-      "GET {apiBase}/core/image/{imageId}/get?width=440 (the provider logo, loaded by the browser as an image, without the token)"
+      "GET {apiBase}/core/image/{imageId}/get?width=440 (the provider logo, loaded by the browser as an image, without the token)",
+      "GET {apiBase}/core/media/{planId}/stream.json (an approved property plan named by an Order's PROPERTY_PLAN, read anonymously on the contract details step while REVIEW_MAPS_API_KEY is set, without the token)",
+      "GET https://maps.googleapis.com/maps/api/js?key={REVIEW_MAPS_API_KEY} (only while REVIEW_MAPS_API_KEY is set and only on the contract details step; the token never reaches Google)"
     ],
     "commands": [
       "POST {apiBase}/core-bill/i/{token}/order/event.json { id, event, metadata }",
@@ -98,7 +102,8 @@
   "plannedFields": {
     "order": [
       "SERVICE_ADDRESS",
-      "PRICING_MODEL"
+      "PRICING_MODEL",
+      "PROPERTY_PLAN"
     ],
     "orderLines": "items",
     "agreement": [
@@ -135,13 +140,17 @@
     "On 2026-09-21 a fresh dev-1 grant returned Document, Account, Order, OrderItem, ProductPrice and Product through their anonymous service endpoints, with canRead true in introspection.",
     "Order totals and Order/Document states[].code are server-owned fields; line details join through Order.items -> OrderItem.itemPrice -> ProductPrice.product -> Product.",
     "Grant list endpoints accept anonymous POST requests with offset and pageSize, get.json takes ?id=, and event.json accepts { id, event, metadata }.",
-    "On 2026-09-23 a dev-1 link returned the Account's contacts and addresses as ids only, and the backend confirmed that Contact, ContactEntry and AccountAddress will never be grantable. The details pre-fill and the portal sign-in address therefore read Account attributes."
+    "On 2026-09-23 a dev-1 link returned the Account's contacts and addresses as ids only, and the backend confirmed that Contact, ContactEntry and AccountAddress will never be grantable. The details pre-fill and the portal sign-in address therefore read Account attributes.",
+    "On 2026-10-07 dev-1 served a PropertyPlan file without any credential from /core/media/{id}/stream.json on the grant API's origin, answered 'Entity type MediaAsset is not grantable' and 'Entity type Resource is not grantable' to grant/mappings.json, and exposed no grant endpoint under /core-rm. Contract details accepted on dev-1 were saved by the details processor as a BILLING AccountAddress of their own, beside the SERVICE ones, even when the text matched a service address.",
+    "On 2026-10-07 the Maps JavaScript API (weekly, 3.66) reported the page to Google (AuthenticationService.Authenticate, QuotaService.RecordEvent) as scheme, host and path with user info, query and fragment cleared, so the #token= fragment does not reach Google; Chromium honoured the referrer policy switched at run time from no-referrer to strict-origin and sent the origin alone."
   ],
   "unverified": [
     "Event metadata reaches the workflow hook, and required event attributes are enforced on this path (QUOTATION-PACKAGE-FLOW.md §9).",
     "The generated CLIENT_REVIEW_DOCUMENT package still needs a production CMS upload and browser acceptance with a fresh real link.",
     "The checking state, a returned details step and the portal invitation have not been exercised against dev-1. CLIENT_DETAILS_ERRORS is read as the details processor seed writes it.",
-    "No dev-1 link has returned the Account attributes BILLING_ADDRESS, REPRESENTATIVE_FIRST_NAME, REPRESENTATIVE_LAST_NAME, REPRESENTATIVE_JOB_TITLE, REPRESENTATIVE_EMAIL, REPRESENTATIVE_PHONE yet. Without them only the Legal Name pre-fills and the portal invitation names no sign-in address."
+    "No dev-1 link has returned the Account attributes BILLING_ADDRESS, REPRESENTATIVE_FIRST_NAME, REPRESENTATIVE_LAST_NAME, REPRESENTATIVE_JOB_TITLE, REPRESENTATIVE_EMAIL, REPRESENTATIVE_PHONE yet. Without them only the Legal Name pre-fills and the portal invitation names no sign-in address.",
+    "No dev-1 quote Order carries PROPERTY_PLAN yet: WINTER_SERVICES_ORDER inherits the Media attribute from FIELD_SERVICE_ORDER, but it is empty on every quote and no script copies a property's approved plan into it. Until the backend supplies it, the contract details step shows no plan.",
+    "Address suggestions, the billing address map and the plan map have not run against Google with this page's own key: REVIEW_MAPS_API_KEY is set by the operator in the page's PageContext, and the preview draws on a stub map."
   ],
   "constraints": [
     "Download PDF creates a local, selectable-text A4 copy of the normalized authorized view, including every quotation option or the agreement's parties, services and terms. It never exports a token, URL, unsent form or comment draft, recalculates money, or sends document data to another service. Partial reads disable export, duplicate clicks are single-flight, and a changed or revoked document is not downloaded after generation. The pinned jsPDF engine and Roboto font are embedded as data-URI scripts to avoid JTE interpreting the vendor's template literals; no library/font request leaves the page.",
@@ -151,6 +160,9 @@
     "A link that closes after the details or the approval were sent ends on a thank-you card; a link that is closed when it is opened keeps the expired-or-withdrawn card.",
     "An agreement awaiting approval offers Request changes beside Approve when the link delegates SENT_TO_CLIENT-CLIENT_CHANGES_REQUESTED. The client's text is sent as MESSAGE; an empty text is not sent. The link stays open, and while the agreement is CLIENT_CHANGES_REQUESTED it thanks the client, says the provider emails a new link, and shows the agreement as it was sent. A link issued before the change request existed offers approval alone.",
     "Contact us closes every page that has read an agreement. It shows the agreement's PROVIDER_CONTACT_PHONE and PROVIDER_CONTACT_EMAIL, which the provider's workflow copies from the organization before it issues each link: a dialable number and a mail address become links, anything else is shown as text, and a missing value has no row. The agreement pages show the provider's logo from PROVIDER_LOGO, an image id; an agreement without one, or an image that fails to load, shows none.",
+    "REVIEW_MAPS_API_KEY ships empty; its value is the operator's, set in the page's PageContext. While it is empty or not a key the page loads no Google script, the billing address is a plain text field and no plan is shown. With a key, the contract details step loads the Maps JavaScript API once, offers Google address suggestions under the billing address, pins the chosen or typed address on a map (or says it was not found, and the client can still send it as written), and switches the document's referrer policy from no-referrer to strict-origin so Google can check the key against the page's origin; the #token= fragment is never part of a referrer.",
+    "The billing address is the client's own value. The contract details step offers each approved property's service address as a button that copies it into the billing field, where the client sees and can change it, and sends it as BILLING_ADDRESS like a typed address; nothing fills the billing field from a service address on its own.",
+    "Each approved property whose quote Orders name one plan in PROPERTY_PLAN (a MediaAsset id, or a one-entry media list) shows it on the contract details step while REVIEW_MAPS_API_KEY is set: the file is read anonymously from /core/media/{id}/stream.json, its GOOGLE_MAPS shapes are drawn read-only over a satellite map, and the page lists each element with the area on the plan in square feet, measured like the Plans editor and Approve Plan (local equirectangular projection, elevation ignored). Image overlays are not drawn. PROPERTY_PLAN_DRAFT is never read. Two different plans, an unreadable file or a file without a map shape show that the plan cannot be shown.",
     "Every other parameter is copy. No token, account, order, document or customer value is a parameter.",
     "While the agreement is CLIENT_DETAILS_RECEIVED the page re-reads it one read at a time after 2, 3, 5, 8, 12, 15, 15, 15 s, then says the check is taking longer than usual and offers Refresh status. It stops re-reading as soon as the agreement leaves that state.",
     "CLIENT_DETAILS_ERRORS reaches the client only as copy: a known code marks its field, PROCESSING_FAILED has its own notice, and an unknown code adds a generic line, never the code.",

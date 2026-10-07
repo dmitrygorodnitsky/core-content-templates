@@ -1285,3 +1285,25 @@ Evidence: `node app-templates/customer-portal/scripts/portal-form-check.mjs`;
 uploaded to dev-1 with `upsert-portal-form.mjs --live`; both CMS nodes served
 byte-identical pages after one identical save to the stale node. No form was
 submitted.
+
+## 14. Contract details: address suggestions, map and property plan, 2026-10-07
+
+Backlog 13. With `REVIEW_MAPS_API_KEY` set in the review page's PageContext
+(the package ships it empty, so uploads never overwrite it), the billing
+address gets Google suggestions and a map pin; an address Google cannot find
+can still be sent as written. Without the key the step works as before. The
+client can copy a service address into billing with an explicit button; the
+billing address is always sent as its own `BILLING_ADDRESS`, which the
+processor stores as a separate `BILLING` address.
+
+The page draws the approved plan read-only over a satellite map, read from
+the quote Order's `PROPERTY_PLAN` (never `PROPERTY_PLAN_DRAFT`) through the
+public `/core/media/{id}/stream.json`, without the link's token. Resource and
+MediaAsset are not grantable (dev-1, 2026-10-07), and no script yet copies
+the property's approved plan onto its quotes, so no plan is shown until that
+copy exists.
+
+Evidence: `scripts/client-review-check.mjs` (73 states),
+`scripts/client-review-pdf-check.mjs`; uploaded to dev-1 with existing API
+and portal values kept; both CMS nodes serve the same page after one identical
+save to the stale node.

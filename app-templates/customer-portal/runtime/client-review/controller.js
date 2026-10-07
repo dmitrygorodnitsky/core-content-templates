@@ -27,9 +27,11 @@
     var portalUrl = ns.adapter.safePortalUrl(settings.portalUrl);
     var pageLink = settings.pageLink || "";
     var clipboard = settings.clipboard || null;
+    var maps = settings.maps || null;
     var contract = ns.contract;
     var normalizer = ns.normalizer;
     var inflight = {};
+    var planReads = {};
     var loading = null;
     var copying = null;
     var exporting = null;
@@ -55,6 +57,7 @@
       draftInvalid: {},
       commands: {},
       details: emptyDetails(null),
+      plans: {},
       link: "",
       pdf: "",
       focusKey: "",
@@ -254,6 +257,26 @@
       });
     }
 
+    function readPlans() {
+      var view = state.view;
+      if (!maps || !adapter || typeof adapter.readPlan !== "function" || !view || view.kind !== "contract-details") return;
+      view.properties.forEach(function (property) {
+        var id = property.plan;
+        var approved = property.options.some(function (option) { return option.status === "approved"; });
+        if (!id || !approved || state.plans[id] || planReads[id]) return;
+        state.plans[id] = { status: "loading", plan: null };
+        planReads[id] = Promise.resolve().then(function () { return adapter.readPlan(id); }).then(function (raw) {
+          var plan = ns.plan ? ns.plan.parse(raw, locale) : null;
+          state.plans[id] = plan ? { status: "ready", plan: plan } : { status: "unavailable", plan: null };
+        }, function () {
+          state.plans[id] = { status: "unavailable", plan: null };
+        }).then(function () {
+          delete planReads[id];
+          render();
+        });
+      });
+    }
+
     function prune() {
       var present = {};
       optionsOf(state.view).forEach(function (option) { present[option.id] = option; });
@@ -347,6 +370,7 @@
         if (state.view.kind !== "quote-review" || !state.view.allDecided) state.followDecisions = false;
         seedDetails();
         prune();
+        readPlans();
       }, function (error) {
         var closed = Boolean(error && error.code === "link-closed");
         if (after.quiet && !closed && waitingNow()) return;
@@ -722,6 +746,17 @@
           state.details.errors[field.code] = validateDetail(field, state.details.values[field.code]);
           delete state.details.serverErrors[field.code];
           return state.details.errors[field.code];
+        case "details.useAddress":
+          field = detailField(data.code);
+          if (!field || field.kind !== "address" || !view || view.kind !== "contract-details" || busy()) return;
+          if (view.details.serviceAddresses.indexOf(data.value) === -1) return;
+          state.details.values[field.code] = data.value;
+          state.details.touched[field.code] = true;
+          state.details.errors[field.code] = validateDetail(field, data.value);
+          delete state.details.serverErrors[field.code];
+          state.focusKey = "field-" + field.code;
+          render();
+          return;
         case "details.submit":
           submitDetails();
           return;
@@ -776,6 +811,8 @@
         draftInvalid: state.draftInvalid,
         commands: state.commands,
         details: state.details,
+        plans: state.plans,
+        maps: Boolean(maps),
         waiting: { exhausted: poll.exhausted, decisions: state.followDecisions },
         portalUrl: portalUrl,
         link: { available: linkOffered(), status: state.link },
@@ -791,7 +828,7 @@
       if (stopped) return null;
       var rendered = null;
       if (mount && ns.components) {
-        rendered = ns.components.renderPage(mount, snapshot(), dispatch, copy);
+        rendered = ns.components.renderPage(mount, snapshot(), dispatch, copy, { maps: maps });
         var key = state.focusKey;
         state.focusKey = "";
         var target = key && rendered && rendered.focus ? rendered.focus[key] : null;
@@ -809,6 +846,11 @@
 
     function idle() {
       var waiting = Object.keys(inflight).map(function (key) { return inflight[key]; });
+      Object.keys(planReads).forEach(function (id) { waiting.push(planReads[id]); });
+      if (maps && typeof maps.idle === "function") {
+        var drawing = maps.idle();
+        if (drawing) waiting.push(drawing);
+      }
       if (loading) waiting.push(loading);
       if (copying) waiting.push(copying);
       if (exporting) waiting.push(exporting);
@@ -878,12 +920,14 @@
       locale: env.locale || displayLocale(env),
     };
     var steps = [];
+    var mapsCopy = ns.withDefaults(options.copy);
     if (dataMode === "fixture") {
       var setup = ns.fixtures && typeof ns.fixtures.setup === "function" ? ns.fixtures.setup(env.scenario) : null;
       if (!setup) {
         options.phase = "unconfigured";
       } else {
         options.adapter = setup.adapter || null;
+        if (setup.loadMaps && ns.maps) options.maps = ns.maps.service({ load: setup.loadMaps, copy: mapsCopy, suggestionDelay: env.suggestionDelay });
         if (setup.phase) options.phase = setup.phase;
         if (setup.portalUrl) options.portalUrl = setup.portalUrl;
         if (setup.pollDelays) options.pollDelays = setup.pollDelays;
@@ -896,6 +940,15 @@
       if (!apiBase) options.phase = "unconfigured";
       else if (!token) options.phase = "link-missing";
       else options.adapter = ns.adapter.createGrantAdapter({ apiBase: apiBase, token: token, fetch: env.fetch });
+      var mapsKey = ns.maps ? ns.maps.keyOf(section.getAttribute("data-review-maps-api-key")) : "";
+      if (options.adapter && mapsKey) {
+        options.maps = ns.maps.service({
+          key: mapsKey,
+          load: env.loadMaps,
+          copy: mapsCopy,
+          suggestionDelay: env.suggestionDelay,
+        });
+      }
     }
     var controller = createController(options);
     controller.dataMode = dataMode;

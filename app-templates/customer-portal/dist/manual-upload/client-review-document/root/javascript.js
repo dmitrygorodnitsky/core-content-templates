@@ -113,6 +113,19 @@
     ["REQUIRED_ERROR", "requiredError", "This field is required."],
     ["EMAIL_ERROR", "emailError", "Enter a valid email address."],
     ["SELECT_PLACEHOLDER", "selectPlaceholder", "Choose one"],
+    ["ADDRESS_SUGGESTIONS", "addressSuggestions", "Address suggestions"],
+    ["ADDRESS_MAP_LABEL", "addressMapLabel", "Map of the address you entered"],
+    ["ADDRESS_MAP_MISSING", "addressMapMissing", "This address was not found on the map. Check it, or send it as you wrote it."],
+    ["SERVICE_ADDRESS_REUSE", "serviceAddressReuse", "Same as a service address?"],
+    ["SERVICE_ADDRESS_USE", "serviceAddressUse", "Use {address}"],
+    ["PLAN_TITLE", "planTitle", "Property plan"],
+    ["PLAN_LOADING", "planLoading", "Loading the property plan…"],
+    ["PLAN_UNAVAILABLE", "planUnavailable", "The plan for this property cannot be shown right now."],
+    ["PLAN_MAP_LABEL", "planMapLabel", "Map of the property plan"],
+    ["PLAN_AREA", "planArea", "Area on the plan"],
+    ["PLAN_AREA_VALUE", "planAreaValue", "{area} sq ft"],
+    ["PLAN_ELEMENT_FALLBACK", "planElementFallback", "Plan element {n}"],
+    ["PLAN_NOTE", "planNote", "The provider prepared this plan for your service. If something on it looks wrong, contact them."],
     ["CONFIRM_INFORMATION_STATEMENT", "confirmInformationStatement", "I confirm that the information above is accurate."],
     ["CONFIRM_AUTHORITY_STATEMENT", "confirmAuthorityStatement", "I confirm that I am authorized to enter into this agreement on behalf of the client."],
     ["DETAILS_RETURNED_TITLE", "detailsReturnedTitle", "Your details came back"],
@@ -313,6 +326,7 @@
       property: "SERVICE_PROPERTY",
       address: "SERVICE_ADDRESS",
       pricingModel: "PRICING_MODEL",
+      plan: "PROPERTY_PLAN",
     },
     pricingModels: ["SEASONAL", "MONTHLY", "PER_SERVICE"],
     rawShape: {
@@ -380,6 +394,7 @@
       product: { service: "core-pim", segment: "product" },
     },
     image: { service: "core", head: "image", tail: "get", width: 440 },
+    plan: { service: "core", head: "media", tail: "stream.json" },
     pageSize: 200,
     pageLimit: 10,
     messageLimit: 400,
@@ -572,11 +587,38 @@
       return spec;
     }
 
+    function readPlan(id) {
+      var media = imageId(id);
+      if (!media) return Promise.reject(reviewError("failed", 0));
+      var target = base + "/" + GRANT.plan.service + "/" + GRANT.plan.head + "/" + media + "/" + GRANT.plan.tail;
+      return new Promise(function (resolve) {
+        resolve(fetchImpl(target, {
+          method: "GET",
+          credentials: "omit",
+          cache: "no-store",
+          referrerPolicy: "no-referrer",
+          headers: { Accept: "application/json" },
+        }));
+      }).then(function (response) {
+        if (!response || typeof response.status !== "number" || typeof response.text !== "function" || response.status < 200 || response.status >= 300) {
+          throw reviewError("failed", response && typeof response.status === "number" ? response.status : 0);
+        }
+        return Promise.resolve(response.text()).then(null, function () { return ""; }).then(function (body) {
+          var payload = parseJson(body);
+          if (!payload || typeof payload !== "object" || Array.isArray(payload)) throw reviewError("failed", response.status);
+          return payload;
+        });
+      }, function () {
+        throw reviewError("failed", 0);
+      });
+    }
+
     return {
       imageUrl: function (id) {
         var image = imageId(id);
         return image ? base + "/" + GRANT.image.service + "/" + GRANT.image.head + "/" + image + "/" + GRANT.image.tail + "?width=" + GRANT.image.width : "";
       },
+      readPlan: readPlan,
       introspect: function () {
         return post(url(GRANT.introspect.service, GRANT.introspect.tail), {}, "introspect").then(objectPayload);
       },
@@ -734,6 +776,42 @@
       if (id && ids.indexOf(id) === -1) ids.push(id);
     });
     return ids;
+  }
+
+  function mediaId(value) {
+    var id = text(value);
+    return /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id) ? id.toLowerCase() : "";
+  }
+
+  function mediaIds(value) {
+    var source = value;
+    if (typeof source === "string" && /^\s*\[/.test(source)) {
+      try {
+        source = JSON.parse(source);
+      } catch (_) {
+        return null;
+      }
+    }
+    var list = Array.isArray(source) ? source : source === null || source === undefined || source === "" ? [] : [source];
+    var ids = [];
+    var invalid = false;
+    list.forEach(function (entry) {
+      var id = mediaId(entry && typeof entry === "object" ? entry.id : entry);
+      if (!id) invalid = true;
+      else if (ids.indexOf(id) === -1) ids.push(id);
+    });
+    return invalid ? null : ids;
+  }
+
+  function planReference(values) {
+    var ids = [];
+    var invalid = false;
+    values.forEach(function (value) {
+      var found = mediaIds(value);
+      if (!found) invalid = true;
+      else found.forEach(function (id) { if (ids.indexOf(id) === -1) ids.push(id); });
+    });
+    return !invalid && ids.length === 1 ? ids[0] : "";
   }
 
   function stateCode(row, known) {
@@ -1223,8 +1301,23 @@
       options.forEach(function (option) {
         option.siblingApproved = options.some(function (other) { return other.id !== option.id && other.status === "approved"; });
       });
-      return { key: group.key, address: group.address, options: options, status: propertyStatus(options) };
+      return {
+        key: group.key,
+        address: group.address,
+        plan: planReference(group.rows.map(function (row) { return attributeValue(row, contract.orderAttributes.plan); })),
+        options: options,
+        status: propertyStatus(options),
+      };
     });
+  }
+
+  function serviceAddresses(properties) {
+    var found = [];
+    properties.forEach(function (property) {
+      var approved = property.options.some(function (option) { return option.status === "approved"; });
+      if (approved && property.address && found.indexOf(property.address) === -1) found.push(property.address);
+    });
+    return found;
   }
 
   function grantActions(properties, grant, contract) {
@@ -1360,6 +1453,7 @@
         available: awaitingDetails && eventGranted(grant, "document", agreementId, detailsEvent.code),
         fields: fields,
         prefill: detailsPrefill(account, fields, locale, contract),
+        serviceAddresses: serviceAddresses(properties),
         returned: returnedDetails(awaitingDetails ? attributeValue(agreement, contract.agreementAttributes.detailsErrors) : null, fields, contract.detailsReturn),
       },
       canApproveAgreement: state === approveEvent.source && eventGranted(grant, "document", agreementId, approveEvent.code),
@@ -1372,6 +1466,8 @@
     orderStatus: Object.freeze(Object.assign({}, ORDER_STATUS)),
     agreementDisposition: Object.freeze(Object.assign({}, AGREEMENT_DISPOSITION)),
     positiveInteger: positiveInteger,
+    localizedName: localizedName,
+    planReference: planReference,
     attributeValue: attributeValue,
     idList: idList,
     stateCode: stateCode,
@@ -1395,6 +1491,212 @@
     packageOrderIds: packageOrderIds,
     propertyStatus: propertyStatus,
     reviewModel: reviewModel,
+  });
+})(typeof window !== "undefined" ? window : globalThis);
+(function (global) {
+  "use strict";
+
+  var ns = global.ClientReview || (global.ClientReview = {});
+
+  var EARTH_RADIUS_METERS = 6378137;
+  var SQUARE_FOOT_IN_SQUARE_METERS = 0.09290304;
+  var MAP_SURFACE = "GOOGLE_MAPS";
+  var TONES = 5;
+
+  function finite(value) {
+    return typeof value === "number" && isFinite(value);
+  }
+
+  function radians(degrees) {
+    return degrees * Math.PI / 180;
+  }
+
+  function position(value) {
+    if (!Array.isArray(value) || value.length < 2 || value.length > 3) return null;
+    var lng = value[0];
+    var lat = value[1];
+    if (!finite(lng) || !finite(lat) || Math.abs(lng) > 180 || Math.abs(lat) > 90) return null;
+    if (value.length === 3 && !finite(value[2])) return null;
+    return { lat: lat, lng: lng };
+  }
+
+  function path(value, minimum) {
+    if (!Array.isArray(value) || value.length < minimum) return null;
+    var points = [];
+    for (var index = 0; index < value.length; index += 1) {
+      var point = position(value[index]);
+      if (!point) return null;
+      points.push(point);
+    }
+    return points;
+  }
+
+  function polygon(value) {
+    if (!Array.isArray(value) || !value.length) return null;
+    var rings = [];
+    for (var index = 0; index < value.length; index += 1) {
+      var ring = path(value[index], 4);
+      if (!ring) return null;
+      rings.push(ring);
+    }
+    return rings;
+  }
+
+  function shapeOf(geometry) {
+    if (!geometry || typeof geometry !== "object") return null;
+    var coordinates = geometry.coordinates;
+    if (geometry.type === "Point") {
+      var point = position(coordinates);
+      return point ? { kind: "point", position: point } : null;
+    }
+    if (geometry.type === "LineString") {
+      var line = path(coordinates, 2);
+      return line ? { kind: "line", path: line } : null;
+    }
+    if (geometry.type === "Polygon") {
+      var single = polygon(coordinates);
+      return single ? { kind: "area", polygons: [single] } : null;
+    }
+    if (geometry.type === "MultiPolygon") {
+      if (!Array.isArray(coordinates) || !coordinates.length) return null;
+      var polygons = [];
+      for (var index = 0; index < coordinates.length; index += 1) {
+        var part = polygon(coordinates[index]);
+        if (!part) return null;
+        polygons.push(part);
+      }
+      return { kind: "area", polygons: polygons };
+    }
+    if (geometry.type === "Circle") {
+      var center = position(coordinates);
+      return center && finite(geometry.radius) && geometry.radius > 0 ? { kind: "circle", center: center, radius: geometry.radius } : null;
+    }
+    return null;
+  }
+
+  function projector(origin) {
+    var scale = Math.cos(radians(origin.lat));
+    return function (point) {
+      return [EARTH_RADIUS_METERS * radians(point.lng - origin.lng) * scale, EARTH_RADIUS_METERS * radians(point.lat - origin.lat)];
+    };
+  }
+
+  function ringArea(ring, project) {
+    var twice = 0;
+    ring.forEach(function (point, index) {
+      var here = project(point);
+      var next = project(ring[(index + 1) % ring.length]);
+      twice += here[0] * next[1] - next[0] * here[1];
+    });
+    return Math.abs(twice) / 2;
+  }
+
+  function polygonArea(rings, project) {
+    var holes = 0;
+    rings.slice(1).forEach(function (ring) { holes += ringArea(ring, project); });
+    return Math.max(0, ringArea(rings[0], project) - holes);
+  }
+
+  function shapeArea(shape) {
+    if (shape.kind === "circle") return Math.PI * shape.radius * shape.radius;
+    if (shape.kind !== "area") return 0;
+    var project = projector(shape.polygons[0][0][0]);
+    var area = 0;
+    shape.polygons.forEach(function (rings) { area += polygonArea(rings, project); });
+    return area;
+  }
+
+  function shapePoints(shape) {
+    if (shape.kind === "point") return [shape.position];
+    if (shape.kind === "line") return shape.path;
+    if (shape.kind === "circle") {
+      var latSpan = shape.radius / EARTH_RADIUS_METERS * 180 / Math.PI;
+      var lngSpan = latSpan / Math.max(Math.cos(radians(shape.center.lat)), 0.01);
+      return [
+        { lat: shape.center.lat + latSpan, lng: shape.center.lng + lngSpan },
+        { lat: shape.center.lat - latSpan, lng: shape.center.lng - lngSpan },
+      ];
+    }
+    var points = [];
+    shape.polygons.forEach(function (rings) { points = points.concat(rings[0]); });
+    return points;
+  }
+
+  function boundsOf(elements) {
+    var bounds = { north: -90, south: 90, east: -180, west: 180 };
+    elements.forEach(function (element) {
+      element.shapes.forEach(function (shape) {
+        shapePoints(shape).forEach(function (point) {
+          bounds.north = Math.max(bounds.north, point.lat);
+          bounds.south = Math.min(bounds.south, point.lat);
+          bounds.east = Math.max(bounds.east, point.lng);
+          bounds.west = Math.min(bounds.west, point.lng);
+        });
+      });
+    });
+    return bounds;
+  }
+
+  function nameOf(element, locale) {
+    var localized = ns.normalizer && typeof ns.normalizer.localizedName === "function" ? ns.normalizer.localizedName(element.nls, locale) : "";
+    var label = typeof element.label === "string" ? element.label.replace(/\s+/g, " ").trim() : "";
+    return localized || label;
+  }
+
+  function parse(raw, locale) {
+    if (!raw || typeof raw !== "object" || raw.type !== "PropertyPlan" || raw.schemaVersion !== 1 || !Array.isArray(raw.elements)) return null;
+    var tones = {};
+    var toneCount = 0;
+    var elements = [];
+    var area = 0;
+    raw.elements.forEach(function (element) {
+      if (!element || typeof element !== "object" || !Array.isArray(element.overlays)) return;
+      var shapes = [];
+      element.overlays.forEach(function (overlay) {
+        if (!overlay || typeof overlay !== "object" || overlay.map !== MAP_SURFACE) return;
+        var shape = shapeOf(overlay.geometry);
+        if (shape) shapes.push(shape);
+      });
+      if (!shapes.length) return;
+      var type = "type-" + String(element.elementTypeDictionaryId);
+      if (!Object.prototype.hasOwnProperty.call(tones, type)) {
+        tones[type] = toneCount % TONES + 1;
+        toneCount += 1;
+      }
+      var elementArea = 0;
+      shapes.forEach(function (shape) { elementArea += shapeArea(shape); });
+      area += elementArea;
+      var kind = shapes[0].kind === "circle" ? "area" : shapes[0].kind;
+      var squareFeet = elementArea / SQUARE_FOOT_IN_SQUARE_METERS;
+      elements.push({
+        key: "element-" + (elements.length + 1),
+        position: elements.length + 1,
+        name: nameOf(element, locale),
+        tone: tones[type],
+        kind: kind,
+        shapes: shapes,
+        squareFeet: squareFeet,
+        areaText: kind === "area" ? formatArea(squareFeet, locale) : "",
+      });
+    });
+    if (!elements.length) return null;
+    var planSquareFeet = area / SQUARE_FOOT_IN_SQUARE_METERS;
+    return { elements: elements, squareFeet: planSquareFeet, areaText: formatArea(planSquareFeet, locale), bounds: boundsOf(elements) };
+  }
+
+  function formatArea(squareFeet, locale) {
+    if (!finite(squareFeet) || squareFeet <= 0) return "";
+    try {
+      return new Intl.NumberFormat(locale, { maximumFractionDigits: 0 }).format(squareFeet);
+    } catch (_) {
+      return new Intl.NumberFormat("en", { maximumFractionDigits: 0 }).format(squareFeet);
+    }
+  }
+
+  ns.plan = Object.freeze({
+    tones: TONES,
+    parse: parse,
+    formatArea: formatArea,
   });
 })(typeof window !== "undefined" ? window : globalThis);
 (function (global) {
@@ -1642,6 +1944,515 @@
   }
 
   ns.pdf = Object.freeze({ offered: offered, available: available, build: build, create: create, save: save });
+})(typeof window !== "undefined" ? window : globalThis);
+(function (global) {
+  "use strict";
+
+  var ns = global.ClientReview || (global.ClientReview = {});
+
+  var KEY_PATTERN = /^[A-Za-z0-9_-]{20,128}$/;
+  var SCRIPT_URL = "https://maps.googleapis.com/maps/api/js";
+  var LIBRARIES = ["maps", "places", "geocoding"];
+  var ADDRESS_ZOOM = 17;
+  var PLAN_PADDING = 28;
+  var SUGGESTION_LIMIT = 5;
+  var SUGGESTION_DELAY = 250;
+  var SUGGESTION_MINIMUM = 3;
+  var SUGGESTION_TYPES = ["street_address", "premise", "subpremise", "route"];
+  var TONE_TOKENS = ["--accent", "--warn", "--ok", "--danger", "--accent-3"];
+
+  function keyOf(value) {
+    var text = String(value == null ? "" : value).trim();
+    return KEY_PATTERN.test(text) ? text : "";
+  }
+
+  function el(tag, className, attrs) {
+    var node = global.document.createElement(tag);
+    if (className) node.className = className;
+    Object.keys(attrs || {}).forEach(function (name) {
+      var value = attrs[name];
+      if (value === undefined || value === null || value === false) return;
+      node.setAttribute(name, value === true ? "" : String(value));
+    });
+    return node;
+  }
+
+  function latLng(value) {
+    if (!value) return null;
+    var lat = typeof value.lat === "function" ? value.lat() : value.lat;
+    var lng = typeof value.lng === "function" ? value.lng() : value.lng;
+    return typeof lat === "number" && isFinite(lat) && typeof lng === "number" && isFinite(lng) ? { lat: lat, lng: lng } : null;
+  }
+
+  function darkMode() {
+    var root = global.document && global.document.documentElement;
+    return Boolean(root && root.dataset && root.dataset.mode === "dark");
+  }
+
+  function tokenColor(name) {
+    var root = global.document && global.document.documentElement;
+    if (!root || typeof global.getComputedStyle !== "function") return "";
+    try {
+      return String(global.getComputedStyle(root).getPropertyValue(name) || "").trim();
+    } catch (_) {
+      return "";
+    }
+  }
+
+  function toneColor(tone) {
+    return tokenColor(TONE_TOKENS[tone - 1] || TONE_TOKENS[0]);
+  }
+
+  function allowOriginReferrer(doc) {
+    var meta = doc && typeof doc.querySelector === "function" ? doc.querySelector("meta[name=\"referrer\"]") : null;
+    if (meta && String(meta.getAttribute("content") || "").trim().toLowerCase() === "no-referrer") meta.setAttribute("content", "strict-origin");
+  }
+
+  function scriptLoader(key, onAuthFailure) {
+    var promise = null;
+    return function () {
+      if (promise) return promise;
+      promise = new Promise(function (resolve, reject) {
+        var doc = global.document;
+        var callback = "__clientReviewMapsReady";
+        while (Object.prototype.hasOwnProperty.call(global, callback)) callback += "_";
+        allowOriginReferrer(doc);
+        if (typeof onAuthFailure === "function" && typeof global.gm_authFailure !== "function") {
+          global.gm_authFailure = function () { onAuthFailure(); };
+        }
+        global[callback] = function () {
+          delete global[callback];
+          var maps = global.google && global.google.maps;
+          if (maps && typeof maps.importLibrary === "function") resolve(maps);
+          else reject(new Error("maps-unavailable"));
+        };
+        var script = doc.createElement("script");
+        script.async = true;
+        script.src = SCRIPT_URL + "?key=" + encodeURIComponent(key) + "&loading=async&v=weekly&callback=" + callback;
+        script.addEventListener("error", function () {
+          delete global[callback];
+          reject(new Error("maps-script-failed"));
+        });
+        doc.head.appendChild(script);
+      }).then(function (maps) {
+        return Promise.all(LIBRARIES.map(function (name) { return maps.importLibrary(name); })).then(function () { return maps; });
+      });
+      return promise;
+    };
+  }
+
+  function service(options) {
+    var settings = options || {};
+    var key = keyOf(settings.key);
+    var load = typeof settings.load === "function" ? settings.load : key ? scriptLoader(key, function () { fail(); }) : null;
+    if (!load) return null;
+    var copy = settings.copy || {};
+    var delay = typeof settings.suggestionDelay === "number" ? settings.suggestionDelay : SUGGESTION_DELAY;
+    var api = null;
+    var failed = false;
+    var loading = null;
+    var pending = [];
+    var addresses = {};
+    var plans = {};
+
+    function hold(promise) {
+      var tracked = promise.then(null, function () { return null; });
+      pending.push(tracked);
+      tracked.then(function () {
+        var index = pending.indexOf(tracked);
+        if (index !== -1) pending.splice(index, 1);
+      });
+      return tracked;
+    }
+
+    function idle() {
+      if (!pending.length) return null;
+      return Promise.all(pending.slice()).then(function () { return idle(); });
+    }
+
+    function setState(target, state) {
+      target.state = state;
+      target.node.setAttribute("data-state", state);
+    }
+
+    function fail() {
+      failed = true;
+      Object.keys(addresses).forEach(function (code) { setState(addresses[code], "failed"); });
+      Object.keys(plans).forEach(function (name) { setState(plans[name], "failed"); });
+    }
+
+    function ready() {
+      if (!loading) {
+        loading = hold(Promise.resolve().then(load).then(function (maps) {
+          if (!maps || typeof maps.Map !== "function") throw new Error("maps-unavailable");
+          api = maps;
+          return maps;
+        }).then(null, function () {
+          fail();
+          return null;
+        }));
+      }
+      return loading.then(function (maps) { return failed ? null : maps; });
+    }
+
+    function view(kind, label) {
+      var node = el("div", "cr-map", { "data-map": kind, "data-state": failed ? "failed" : "idle" });
+      var canvas = el("div", "cr-map__canvas", { "aria-hidden": "true" });
+      node.appendChild(canvas);
+      return { node: node, canvas: canvas, label: label, state: failed ? "failed" : "idle", map: null, overlays: [], frame: null };
+    }
+
+    function watchSize(target) {
+      if (typeof global.ResizeObserver !== "function") return;
+      var size = "";
+      new global.ResizeObserver(function () {
+        var measured = target.canvas.offsetWidth + "x" + target.canvas.offsetHeight;
+        if (!target.canvas.offsetWidth || !target.canvas.offsetHeight || measured === size) return;
+        size = measured;
+        if (typeof target.frame === "function") target.frame();
+      }).observe(target.canvas);
+    }
+
+    function mapOf(target, maps, extra) {
+      if (target.map) return target.map;
+      target.canvas.removeAttribute("aria-hidden");
+      target.canvas.setAttribute("role", "region");
+      if (target.label) target.canvas.setAttribute("aria-label", target.label);
+      target.map = new maps.Map(target.canvas, Object.assign({
+        center: { lat: 0, lng: 0 },
+        zoom: 2,
+        disableDefaultUI: true,
+        zoomControl: true,
+        clickableIcons: false,
+        gestureHandling: "cooperative",
+        colorScheme: darkMode() ? "DARK" : "LIGHT",
+      }, extra || {}));
+      watchSize(target);
+      return target.map;
+    }
+
+    function geocode(maps, text) {
+      return new Promise(function (resolve) {
+        var settled = false;
+        function answer(results, status) {
+          if (settled) return;
+          settled = true;
+          var best = status === "OK" && results && results.length ? latLng(results[0].geometry && results[0].geometry.location) : null;
+          if (best) resolve(best);
+          else resolve(status === "ZERO_RESULTS" ? null : undefined);
+        }
+        if (typeof maps.Geocoder !== "function") {
+          answer(null, "UNAVAILABLE");
+          return;
+        }
+        try {
+          var asked = new maps.Geocoder().geocode({ address: text }, answer);
+          if (asked && typeof asked.then === "function") asked.then(null, function () { answer(null, "ERROR"); });
+        } catch (_) {
+          answer(null, "ERROR");
+        }
+      });
+    }
+
+    function addressView(code) {
+      var target = addresses[code];
+      if (!target) {
+        target = addresses[code] = view("address", copy.addressMapLabel || "");
+        target.note = el("p", "cr-map__note");
+        target.node.appendChild(target.note);
+        target.places = {};
+        target.asking = {};
+        target.shown = "";
+        target.wanted = "";
+        target.marker = null;
+        target.session = undefined;
+      }
+      return target;
+    }
+
+    function clearMarker(target) {
+      if (target.marker) target.marker.setMap(null);
+      target.marker = null;
+    }
+
+    function paintAddress(target, text, point) {
+      if (!api) {
+        hold(ready().then(function (maps) { if (maps && target.wanted === text) paintAddress(target, text, point); }));
+        return;
+      }
+      setState(target, "ready");
+      target.note.textContent = "";
+      var map = mapOf(target, api, {});
+      clearMarker(target);
+      target.marker = new api.Marker({ map: map, position: point, title: text, clickable: false });
+      target.shown = text;
+      target.frame = function () {
+        map.setCenter(point);
+        map.setZoom(ADDRESS_ZOOM);
+      };
+      target.frame();
+    }
+
+    function showAddress(target, text) {
+      target.wanted = text;
+      if (failed) {
+        setState(target, "failed");
+        return;
+      }
+      if (!text) {
+        clearMarker(target);
+        target.shown = "";
+        target.note.textContent = "";
+        setState(target, "idle");
+        return;
+      }
+      var known = Object.prototype.hasOwnProperty.call(target.places, text) ? target.places[text] : undefined;
+      if (known === null) {
+        clearMarker(target);
+        target.shown = text;
+        target.note.textContent = copy.addressMapMissing || "";
+        setState(target, "missing");
+        return;
+      }
+      if (known) {
+        if (target.shown === text && target.marker) setState(target, "ready");
+        else paintAddress(target, text, known);
+        return;
+      }
+      setState(target, target.map && target.shown ? "stale" : "locating");
+      if (target.asking[text]) return;
+      target.asking[text] = true;
+      hold(ready().then(function (maps) {
+        if (!maps) return null;
+        return geocode(maps, text).then(function (point) {
+          if (point !== undefined) target.places[text] = point;
+          delete target.asking[text];
+          if (target.wanted !== text || failed) return;
+          if (point === undefined) {
+            setState(target, target.map && target.shown ? "stale" : "idle");
+            return;
+          }
+          showAddress(target, text);
+        });
+      }));
+    }
+
+    function suggest(target, input, maps, choose) {
+      var places = maps.places || {};
+      var finder = places.AutocompleteSuggestion;
+      var anchor = input.parentNode;
+      if (!finder || typeof finder.fetchAutocompleteSuggestions !== "function" || !anchor) return;
+      var listId = input.getAttribute("id") + "-suggestions";
+      var list = el("ul", "cr-suggest", { id: listId, role: "listbox", "aria-label": copy.addressSuggestions || "", hidden: true });
+      var offered = [];
+      var recent = { query: "", items: [] };
+      var active = -1;
+      var timer = null;
+      anchor.appendChild(list);
+      input.setAttribute("role", "combobox");
+      input.setAttribute("aria-autocomplete", "list");
+      input.setAttribute("aria-controls", listId);
+      input.setAttribute("aria-expanded", "false");
+      input.setAttribute("autocomplete", "off");
+      if (target.session === undefined && typeof places.AutocompleteSessionToken === "function") target.session = new places.AutocompleteSessionToken();
+
+      function highlight(index) {
+        active = index;
+        offered.forEach(function (option, position) { option.node.setAttribute("aria-selected", position === index ? "true" : "false"); });
+        if (index === -1) input.removeAttribute("aria-activedescendant");
+        else input.setAttribute("aria-activedescendant", offered[index].node.getAttribute("id"));
+      }
+
+      function close() {
+        list.replaceChildren();
+        list.setAttribute("hidden", "");
+        offered = [];
+        highlight(-1);
+        input.setAttribute("aria-expanded", "false");
+      }
+
+      function take(option) {
+        close();
+        option.accept();
+      }
+
+      function offer(items) {
+        close();
+        offered = items.slice(0, SUGGESTION_LIMIT).map(function (item, index) {
+          var node = el("li", "cr-suggest__option", { id: listId + "-" + index, role: "option", "aria-selected": "false" });
+          node.textContent = item.label;
+          var option = { node: node, accept: item.accept };
+          node.addEventListener("mousedown", function (event) { event.preventDefault(); });
+          node.addEventListener("click", function () { take(option); });
+          list.appendChild(node);
+          return option;
+        });
+        if (!offered.length) return;
+        list.removeAttribute("hidden");
+        input.setAttribute("aria-expanded", "true");
+      }
+
+      function accepted(prediction, label) {
+        return function () {
+          target.session = typeof places.AutocompleteSessionToken === "function" ? new places.AutocompleteSessionToken() : undefined;
+          var place = prediction && typeof prediction.toPlace === "function" ? prediction.toPlace() : null;
+          if (!place || typeof place.fetchFields !== "function") {
+            choose(label, null);
+            return;
+          }
+          hold(Promise.resolve(place.fetchFields({ fields: ["formattedAddress", "location"] })).then(function () {
+            choose(String(place.formattedAddress || label), latLng(place.location));
+          }, function () {
+            choose(label, null);
+          }));
+        };
+      }
+
+      function ask(value) {
+        hold(Promise.resolve(finder.fetchAutocompleteSuggestions({
+          input: value,
+          sessionToken: target.session,
+          includedPrimaryTypes: SUGGESTION_TYPES,
+        })).then(function (response) {
+          if (input.value.trim() !== value) return;
+          recent = {
+            query: value,
+            items: ((response && response.suggestions) || []).map(function (suggestion) {
+              var prediction = suggestion && suggestion.placePrediction;
+              var label = prediction && prediction.text ? String(prediction.text) : "";
+              return { label: label, accept: accepted(prediction, label) };
+            }).filter(function (item) { return item.label; }),
+          };
+          if (global.document.activeElement === input) offer(recent.items);
+        }, close));
+      }
+
+      input.addEventListener("keydown", function (event) {
+        if (list.getAttribute("hidden") !== null) {
+          if (event.key !== "ArrowDown" || !recent.items.length || recent.query !== input.value.trim()) return;
+          event.preventDefault();
+          offer(recent.items);
+          highlight(0);
+          return;
+        }
+        if (event.key === "ArrowDown" || event.key === "ArrowUp") {
+          event.preventDefault();
+          var count = offered.length;
+          highlight(event.key === "ArrowDown" ? (active + 1) % count : (active <= 0 ? count : active) - 1);
+          return;
+        }
+        if (event.key === "Enter") {
+          event.preventDefault();
+          if (active !== -1) take(offered[active]);
+          else close();
+          return;
+        }
+        if (event.key === "Escape") {
+          event.preventDefault();
+          close();
+        }
+      });
+      input.addEventListener("input", function () {
+        if (timer !== null) global.clearTimeout(timer);
+        var value = input.value.trim();
+        if (value.length < SUGGESTION_MINIMUM) {
+          timer = null;
+          close();
+          return;
+        }
+        timer = global.setTimeout(function () {
+          timer = null;
+          ask(value);
+        }, delay);
+      });
+      input.addEventListener("blur", close);
+    }
+
+    function attachAddress(code, input, pick) {
+      var target = addressView(code);
+      showAddress(target, String(input.value || "").trim());
+      input.addEventListener("input", function () {
+        var text = String(input.value || "").trim();
+        if (text === target.shown || target.state === "failed") return;
+        if (target.state === "ready") setState(target, "stale");
+        else if (target.state === "missing" || target.state === "locating") setState(target, "idle");
+      });
+      input.addEventListener("blur", function () { showAddress(target, String(input.value || "").trim()); });
+      hold(ready().then(function (maps) {
+        if (!maps) return;
+        suggest(target, input, maps, function (formatted, point) {
+          if (point) target.places[formatted] = point;
+          pick(formatted);
+          showAddress(target, formatted);
+        });
+      }));
+      return target.node;
+    }
+
+    function overlaysOf(maps, map, shape, color, title) {
+      var paint = color ? { strokeColor: color, fillColor: color } : {};
+      if (shape.kind === "area") {
+        return shape.polygons.map(function (rings) {
+          return new maps.Polygon(Object.assign({ map: map, paths: rings, strokeOpacity: 1, strokeWeight: 2, fillOpacity: 0.35, clickable: false }, paint));
+        });
+      }
+      if (shape.kind === "circle") {
+        return [new maps.Circle(Object.assign({ map: map, center: shape.center, radius: shape.radius, strokeOpacity: 1, strokeWeight: 2, fillOpacity: 0.35, clickable: false }, paint))];
+      }
+      if (shape.kind === "line") {
+        return [new maps.Polyline(Object.assign({ map: map, path: shape.path, strokeOpacity: 1, strokeWeight: 4, clickable: false }, color ? { strokeColor: color } : {}))];
+      }
+      var marker = { map: map, position: shape.position, title: title, clickable: false };
+      if (maps.SymbolPath && color) {
+        marker.icon = { path: maps.SymbolPath.CIRCLE, scale: 6, fillColor: color, fillOpacity: 1, strokeColor: tokenColor("--surface") || color, strokeWeight: 2 };
+      }
+      return [new maps.Marker(marker)];
+    }
+
+    function drawPlan(target, maps, plan) {
+      setState(target, "ready");
+      var map = mapOf(target, maps, { mapTypeId: "hybrid", tilt: 0 });
+      target.overlays.forEach(function (overlay) { overlay.setMap(null); });
+      target.overlays = [];
+      plan.elements.forEach(function (element) {
+        var color = toneColor(element.tone);
+        element.shapes.forEach(function (shape) {
+          target.overlays = target.overlays.concat(overlaysOf(maps, map, shape, color, element.name));
+        });
+      });
+      target.frame = function () { map.fitBounds(plan.bounds, PLAN_PADDING); };
+      target.frame();
+    }
+
+    function planView(name, plan) {
+      var target = plans[name];
+      if (!target) {
+        target = plans[name] = view("plan", copy.planMapLabel || "");
+        target.plan = null;
+        if (!failed) setState(target, "loading");
+      }
+      if (target.plan !== plan) {
+        target.plan = plan;
+        hold(ready().then(function (maps) {
+          if (maps && target.plan === plan) drawPlan(target, maps, plan);
+        }));
+      }
+      return target.node;
+    }
+
+    return {
+      attachAddress: attachAddress,
+      planView: planView,
+      idle: idle,
+      failed: function () { return failed; },
+    };
+  }
+
+  ns.maps = Object.freeze({
+    keyOf: keyOf,
+    scriptLoader: scriptLoader,
+    service: service,
+  });
 })(typeof window !== "undefined" ? window : globalThis);
 (function (global) {
   "use strict";
@@ -2319,12 +3130,52 @@
       control.value = details.values[field.code] || "";
       control.addEventListener("input", function () { patch(ctx.dispatch("details.input", { code: field.code, value: control.value })); });
       control.addEventListener("blur", function () { patch(ctx.dispatch("details.blur", { code: field.code })); });
-      wrap.appendChild(control);
+      if (field.kind === "address") {
+        var anchor = el("div", "cr-address");
+        anchor.appendChild(control);
+        wrap.appendChild(anchor);
+      } else {
+        wrap.appendChild(control);
+      }
     }
     mark(ctx, control, "field-" + field.code);
     if (field.description && field.kind !== "boolean") wrap.appendChild(text("p", "cr-field__hint", field.description, { id: id + "-hint" }));
     wrap.appendChild(errorNode);
+    if (field.kind === "address") {
+      var reuse = serviceAddressOffer(ctx, field, pending);
+      if (reuse) wrap.appendChild(reuse);
+      if (ctx.maps) {
+        wrap.appendChild(ctx.maps.attachAddress(field.code, control, function (formatted) {
+          control.value = formatted;
+          patch(ctx.dispatch("details.input", { code: field.code, value: formatted }));
+        }));
+      }
+    }
     return wrap;
+  }
+
+  function serviceAddressOffer(ctx, field, pending) {
+    var copy = ctx.copy;
+    var addresses = ctx.snapshot.view.details.serviceAddresses || [];
+    if (!addresses.length) return null;
+    var current = String(ctx.snapshot.details.values[field.code] || "").trim();
+    var row = el("div", "cr-reuse", { role: "group", "aria-labelledby": "cr-reuse-" + field.code });
+    row.appendChild(text("p", "cr-reuse__label", copy.serviceAddressReuse, { id: "cr-reuse-" + field.code }));
+    var chips = el("div", "cr-reuse__chips");
+    addresses.forEach(function (address) {
+      var chosen = current === address;
+      chips.appendChild(button(address, "cr-chip", function () {
+        ctx.dispatch("details.useAddress", { code: field.code, value: address });
+      }, {
+        "aria-label": ns.fill(copy.serviceAddressUse, { address: address }),
+        "aria-pressed": chosen ? "true" : "false",
+        "data-action": "details.useAddress",
+        "data-state": chosen ? "chosen" : null,
+        disabled: pending || ctx.busy,
+      }));
+    });
+    row.appendChild(chips);
+    return row;
   }
 
   function detailsForm(ctx) {
@@ -2375,10 +3226,46 @@
     var entries = [];
     view.properties.forEach(function (property) {
       property.options.forEach(function (option) {
-        if (option.status === "approved") entries.push({ address: property.address, option: option });
+        if (option.status === "approved") entries.push({ address: property.address, option: option, property: property });
       });
     });
     return entries;
+  }
+
+  function planBlock(ctx, property) {
+    var copy = ctx.copy;
+    var loaded = ctx.snapshot.plans && ctx.snapshot.plans[property.plan];
+    var status = loaded ? loaded.status : "loading";
+    var block = el("div", "cr-plan", { "data-state": status, "data-plan": property.key });
+    block.appendChild(text("p", "cr-plan__title", copy.planTitle));
+    if (status === "unavailable") {
+      block.appendChild(text("p", "cr-note cr-plan__note", copy.planUnavailable));
+      return block;
+    }
+    if (status !== "ready") {
+      block.appendChild(el("div", "cr-plan__placeholder skeleton", { "aria-hidden": "true" }));
+      block.appendChild(text("p", "cr-note cr-note--pending", copy.planLoading, { role: "status", "data-state": "pending" }));
+      return block;
+    }
+    var plan = loaded.plan;
+    block.appendChild(ctx.maps.planView(property.key, plan));
+    if (plan.areaText) {
+      var facts = el("p", "cr-plan__area");
+      facts.appendChild(text("span", "cr-plan__area-label", copy.planArea));
+      facts.appendChild(text("span", "cr-plan__area-value", ns.fill(copy.planAreaValue, { area: plan.areaText })));
+      block.appendChild(facts);
+    }
+    var legend = el("ul", "cr-plan__legend", { "aria-label": copy.planTitle });
+    plan.elements.forEach(function (element) {
+      var item = el("li", "cr-plan__element", { "data-kind": element.kind });
+      item.appendChild(el("span", "cr-plan__swatch", { "data-tone": String(element.tone), "data-kind": element.kind, "aria-hidden": "true" }));
+      item.appendChild(text("span", "cr-plan__name", element.name || ns.fill(copy.planElementFallback, { n: element.position })));
+      if (element.areaText) item.appendChild(text("span", "cr-plan__size", ns.fill(copy.planAreaValue, { area: element.areaText })));
+      legend.appendChild(item);
+    });
+    block.appendChild(legend);
+    block.appendChild(text("p", "cr-plan__note", copy.planNote));
+    return block;
   }
 
   function returnedNotice(ctx) {
@@ -2416,11 +3303,14 @@
       var list = el("ul", "cr-approved__list");
       approved.forEach(function (entry) {
         var item = el("li", "cr-approved__item");
+        var row = el("div", "cr-approved__row");
         var identity = el("div", "cr-approved__identity");
         identity.appendChild(text("span", "cr-approved__address" + (entry.address ? "" : " cr-muted"), entry.address || copy.addressUnavailable));
         identity.appendChild(text("span", "cr-approved__option", optionLabel(entry.option, copy)));
-        item.appendChild(identity);
-        item.appendChild(text("span", "cr-approved__total" + (entry.option.total ? "" : " cr-muted"), entry.option.total || copy.valueNotStated));
+        row.appendChild(identity);
+        row.appendChild(text("span", "cr-approved__total" + (entry.option.total ? "" : " cr-muted"), entry.option.total || copy.valueNotStated));
+        item.appendChild(row);
+        if (ctx.maps && entry.property.plan) item.appendChild(planBlock(ctx, entry.property));
         list.appendChild(item);
       });
       section.appendChild(list);
@@ -2741,11 +3631,12 @@
     return announcedCard(ctx, "ok", "✓", copy.detailsSentTitle, copy.detailsSentBody, null);
   }
 
-  function renderPage(mount, snapshot, dispatch, copy) {
+  function renderPage(mount, snapshot, dispatch, copy, services) {
     var ctx = {
       snapshot: snapshot,
       dispatch: dispatch,
       copy: copy,
+      maps: services && services.maps ? services.maps : null,
       focus: {},
       announcement: "",
       linkStatus: "",
@@ -2821,9 +3712,11 @@
     var portalUrl = ns.adapter.safePortalUrl(settings.portalUrl);
     var pageLink = settings.pageLink || "";
     var clipboard = settings.clipboard || null;
+    var maps = settings.maps || null;
     var contract = ns.contract;
     var normalizer = ns.normalizer;
     var inflight = {};
+    var planReads = {};
     var loading = null;
     var copying = null;
     var exporting = null;
@@ -2849,6 +3742,7 @@
       draftInvalid: {},
       commands: {},
       details: emptyDetails(null),
+      plans: {},
       link: "",
       pdf: "",
       focusKey: "",
@@ -3048,6 +3942,26 @@
       });
     }
 
+    function readPlans() {
+      var view = state.view;
+      if (!maps || !adapter || typeof adapter.readPlan !== "function" || !view || view.kind !== "contract-details") return;
+      view.properties.forEach(function (property) {
+        var id = property.plan;
+        var approved = property.options.some(function (option) { return option.status === "approved"; });
+        if (!id || !approved || state.plans[id] || planReads[id]) return;
+        state.plans[id] = { status: "loading", plan: null };
+        planReads[id] = Promise.resolve().then(function () { return adapter.readPlan(id); }).then(function (raw) {
+          var plan = ns.plan ? ns.plan.parse(raw, locale) : null;
+          state.plans[id] = plan ? { status: "ready", plan: plan } : { status: "unavailable", plan: null };
+        }, function () {
+          state.plans[id] = { status: "unavailable", plan: null };
+        }).then(function () {
+          delete planReads[id];
+          render();
+        });
+      });
+    }
+
     function prune() {
       var present = {};
       optionsOf(state.view).forEach(function (option) { present[option.id] = option; });
@@ -3141,6 +4055,7 @@
         if (state.view.kind !== "quote-review" || !state.view.allDecided) state.followDecisions = false;
         seedDetails();
         prune();
+        readPlans();
       }, function (error) {
         var closed = Boolean(error && error.code === "link-closed");
         if (after.quiet && !closed && waitingNow()) return;
@@ -3516,6 +4431,17 @@
           state.details.errors[field.code] = validateDetail(field, state.details.values[field.code]);
           delete state.details.serverErrors[field.code];
           return state.details.errors[field.code];
+        case "details.useAddress":
+          field = detailField(data.code);
+          if (!field || field.kind !== "address" || !view || view.kind !== "contract-details" || busy()) return;
+          if (view.details.serviceAddresses.indexOf(data.value) === -1) return;
+          state.details.values[field.code] = data.value;
+          state.details.touched[field.code] = true;
+          state.details.errors[field.code] = validateDetail(field, data.value);
+          delete state.details.serverErrors[field.code];
+          state.focusKey = "field-" + field.code;
+          render();
+          return;
         case "details.submit":
           submitDetails();
           return;
@@ -3570,6 +4496,8 @@
         draftInvalid: state.draftInvalid,
         commands: state.commands,
         details: state.details,
+        plans: state.plans,
+        maps: Boolean(maps),
         waiting: { exhausted: poll.exhausted, decisions: state.followDecisions },
         portalUrl: portalUrl,
         link: { available: linkOffered(), status: state.link },
@@ -3585,7 +4513,7 @@
       if (stopped) return null;
       var rendered = null;
       if (mount && ns.components) {
-        rendered = ns.components.renderPage(mount, snapshot(), dispatch, copy);
+        rendered = ns.components.renderPage(mount, snapshot(), dispatch, copy, { maps: maps });
         var key = state.focusKey;
         state.focusKey = "";
         var target = key && rendered && rendered.focus ? rendered.focus[key] : null;
@@ -3603,6 +4531,11 @@
 
     function idle() {
       var waiting = Object.keys(inflight).map(function (key) { return inflight[key]; });
+      Object.keys(planReads).forEach(function (id) { waiting.push(planReads[id]); });
+      if (maps && typeof maps.idle === "function") {
+        var drawing = maps.idle();
+        if (drawing) waiting.push(drawing);
+      }
       if (loading) waiting.push(loading);
       if (copying) waiting.push(copying);
       if (exporting) waiting.push(exporting);
@@ -3672,12 +4605,14 @@
       locale: env.locale || displayLocale(env),
     };
     var steps = [];
+    var mapsCopy = ns.withDefaults(options.copy);
     if (dataMode === "fixture") {
       var setup = ns.fixtures && typeof ns.fixtures.setup === "function" ? ns.fixtures.setup(env.scenario) : null;
       if (!setup) {
         options.phase = "unconfigured";
       } else {
         options.adapter = setup.adapter || null;
+        if (setup.loadMaps && ns.maps) options.maps = ns.maps.service({ load: setup.loadMaps, copy: mapsCopy, suggestionDelay: env.suggestionDelay });
         if (setup.phase) options.phase = setup.phase;
         if (setup.portalUrl) options.portalUrl = setup.portalUrl;
         if (setup.pollDelays) options.pollDelays = setup.pollDelays;
@@ -3690,6 +4625,15 @@
       if (!apiBase) options.phase = "unconfigured";
       else if (!token) options.phase = "link-missing";
       else options.adapter = ns.adapter.createGrantAdapter({ apiBase: apiBase, token: token, fetch: env.fetch });
+      var mapsKey = ns.maps ? ns.maps.keyOf(section.getAttribute("data-review-maps-api-key")) : "";
+      if (options.adapter && mapsKey) {
+        options.maps = ns.maps.service({
+          key: mapsKey,
+          load: env.loadMaps,
+          copy: mapsCopy,
+          suggestionDelay: env.suggestionDelay,
+        });
+      }
     }
     var controller = createController(options);
     controller.dataMode = dataMode;

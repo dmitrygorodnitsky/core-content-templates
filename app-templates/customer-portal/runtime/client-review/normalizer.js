@@ -115,6 +115,42 @@
     return ids;
   }
 
+  function mediaId(value) {
+    var id = text(value);
+    return /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id) ? id.toLowerCase() : "";
+  }
+
+  function mediaIds(value) {
+    var source = value;
+    if (typeof source === "string" && /^\s*\[/.test(source)) {
+      try {
+        source = JSON.parse(source);
+      } catch (_) {
+        return null;
+      }
+    }
+    var list = Array.isArray(source) ? source : source === null || source === undefined || source === "" ? [] : [source];
+    var ids = [];
+    var invalid = false;
+    list.forEach(function (entry) {
+      var id = mediaId(entry && typeof entry === "object" ? entry.id : entry);
+      if (!id) invalid = true;
+      else if (ids.indexOf(id) === -1) ids.push(id);
+    });
+    return invalid ? null : ids;
+  }
+
+  function planReference(values) {
+    var ids = [];
+    var invalid = false;
+    values.forEach(function (value) {
+      var found = mediaIds(value);
+      if (!found) invalid = true;
+      else found.forEach(function (id) { if (ids.indexOf(id) === -1) ids.push(id); });
+    });
+    return !invalid && ids.length === 1 ? ids[0] : "";
+  }
+
   function stateCode(row, known) {
     var codes = [];
     var states = row && Array.isArray(row.states) ? row.states : [];
@@ -602,8 +638,23 @@
       options.forEach(function (option) {
         option.siblingApproved = options.some(function (other) { return other.id !== option.id && other.status === "approved"; });
       });
-      return { key: group.key, address: group.address, options: options, status: propertyStatus(options) };
+      return {
+        key: group.key,
+        address: group.address,
+        plan: planReference(group.rows.map(function (row) { return attributeValue(row, contract.orderAttributes.plan); })),
+        options: options,
+        status: propertyStatus(options),
+      };
     });
+  }
+
+  function serviceAddresses(properties) {
+    var found = [];
+    properties.forEach(function (property) {
+      var approved = property.options.some(function (option) { return option.status === "approved"; });
+      if (approved && property.address && found.indexOf(property.address) === -1) found.push(property.address);
+    });
+    return found;
   }
 
   function grantActions(properties, grant, contract) {
@@ -739,6 +790,7 @@
         available: awaitingDetails && eventGranted(grant, "document", agreementId, detailsEvent.code),
         fields: fields,
         prefill: detailsPrefill(account, fields, locale, contract),
+        serviceAddresses: serviceAddresses(properties),
         returned: returnedDetails(awaitingDetails ? attributeValue(agreement, contract.agreementAttributes.detailsErrors) : null, fields, contract.detailsReturn),
       },
       canApproveAgreement: state === approveEvent.source && eventGranted(grant, "document", agreementId, approveEvent.code),
@@ -751,6 +803,8 @@
     orderStatus: Object.freeze(Object.assign({}, ORDER_STATUS)),
     agreementDisposition: Object.freeze(Object.assign({}, AGREEMENT_DISPOSITION)),
     positiveInteger: positiveInteger,
+    localizedName: localizedName,
+    planReference: planReference,
     attributeValue: attributeValue,
     idList: idList,
     stateCode: stateCode,

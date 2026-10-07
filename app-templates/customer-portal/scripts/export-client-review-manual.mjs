@@ -14,9 +14,10 @@ const reviewRoot = path.join(portalRoot, "runtime/client-review");
 const rootCode = "CLIENT_REVIEW_DOCUMENT";
 const apiBaseCode = "REVIEW_API_BASE_URL";
 const portalUrlCode = "PORTAL_URL";
+const mapsKeyCode = "REVIEW_MAPS_API_KEY";
 const urlValidators = { [apiBaseCode]: "safeApiBase", [portalUrlCode]: "safePortalUrl" };
 const styleFiles = ["tokens.css", "base.css", "components.css"];
-export const runtimeFiles = ["copy.js", "core-contract.js", "adapter.js", "normalizer.js", "pdf.js", "components.js", "controller.js"];
+export const runtimeFiles = ["copy.js", "core-contract.js", "adapter.js", "normalizer.js", "plan.js", "pdf.js", "maps.js", "components.js", "controller.js"];
 const pdfVendorFiles = ["jspdf-4.2.1.umd.min.js", "roboto-font.js"];
 export const previewOnlyFiles = ["fixtures.js"];
 const COPY_NOTES = {
@@ -41,6 +42,7 @@ export async function exportClientReviewManual(options = {}) {
   const css = portalCss.concat([reviewCss]).map((source) => source.trim()).concat([documentCss()]).join("\n\n");
   const template = templateFor(css, runtimeJs + "\n" + bootScript(), contract.copy, pdfVendor);
   assertUrlDefaults(template, contract);
+  assertMapsKeyShipsEmpty(template);
   assertJteSafeTemplate(template);
   assertNoScriptTerminator(template.javascript);
   assertPrintable({ head: template.head, html: template.html, css: template.css, javascript: template.javascript, fixtures: fixtures.join("\n") });
@@ -88,6 +90,12 @@ function assertUrlDefaults(template, contract) {
   }
 }
 
+function assertMapsKeyShipsEmpty(template) {
+  const parameter = template.parameters.find((entry) => entry.code === mapsKeyCode);
+  if (!parameter || parameter.type !== "STRING") throw new Error(mapsKeyCode + " must be a STRING parameter of the document");
+  if (parameter.value !== "") throw new Error("Refusing to export " + mapsKeyCode + " with a value: the key is set in the page's PageContext, and an upload keeps the CMS value only for a parameter the package ships empty");
+}
+
 function documentCss() {
   return [
     "html, body { min-height: 100%; }",
@@ -101,6 +109,7 @@ function templateFor(css, javascript, copy, pdfVendor) {
     "data-review-data-mode": "live",
     "data-review-api-base": ref(apiBaseCode, "STRING"),
     "data-review-portal-url": ref(portalUrlCode, "STRING"),
+    "data-review-maps-api-key": ref(mapsKeyCode, "STRING"),
   };
   copy.forEach((entry) => { attributes["data-copy-" + kebab(entry.key)] = ref(entry.code); });
   return {
@@ -128,6 +137,7 @@ function templateFor(css, javascript, copy, pdfVendor) {
     parameters: [
       field(apiBaseCode, "", "STRING", "Absolute https origin of the Core deployment with no path, for example https://dev-1.servicewand.com. Any other value is discarded and the page reports that it is not set up. The link token is read only from the #token= fragment of the address the client opens; no token, account or customer value is configured here."),
       field(portalUrlCode, "", "STRING", "Absolute https address of the customer portal, for example https://portal.example.com/. When set, an approved agreement offers an Open the customer portal button above and below its text, and a closed link offers it once; while empty, the page explains portal access without a button. Any other value is discarded and no button shows. It is only linked to: no account, user or token value is configured here."),
+      field(mapsKeyCode, "", "STRING", "Google Maps browser key of the contract details step: address suggestions and a map for the billing address, and each approved property's plan drawn over a map. Use the same browser key as the quote form's FORM_MAPS_API_KEY, restricted by HTTP referrer to this host and to the Maps JavaScript, Places and Geocoding APIs; it is visible in page source, as every browser key is. Set the value in the page's PageContext, not in the template: the package ships it empty so an upload never overwrites it. While it is empty or not a key, no Google script is loaded, the billing address stays a plain text field and no plan is shown. With a key the page sends its origin, never its path or link, as the referrer, because Google checks a browser key against it."),
     ].concat(copy.map((entry) => field(entry.code, entry.value, "LOCALIZED_STRING_SS", copyDescription(entry.code, entry.value)))),
   };
 }
@@ -198,6 +208,8 @@ function manifestFor(template, contract) {
         entity("product-price", "list.json"),
         entity("product", "list.json"),
         "GET {apiBase}/" + grant.image.service + "/" + grant.image.head + "/{imageId}/" + grant.image.tail + "?width=" + grant.image.width + " (the provider logo, loaded by the browser as an image, without the token)",
+        "GET {apiBase}/" + grant.plan.service + "/" + grant.plan.head + "/{planId}/" + grant.plan.tail + " (an approved property plan named by an Order's " + core.orderAttributes.plan + ", read anonymously on the contract details step while " + mapsKeyCode + " is set, without the token)",
+        "GET https://maps.googleapis.com/maps/api/js?key={" + mapsKeyCode + "} (only while " + mapsKeyCode + " is set and only on the contract details step; the token never reaches Google)",
       ],
       commands: [
         entity("order", "event.json") + " { id, event, metadata }",
@@ -213,7 +225,7 @@ function manifestFor(template, contract) {
       contractDetailsAttributes: core.contractDetails.attributes.map((attribute) => attribute.code),
     },
     plannedFields: {
-      order: [core.orderAttributes.address, core.orderAttributes.pricingModel],
+      order: [core.orderAttributes.address, core.orderAttributes.pricingModel, core.orderAttributes.plan],
       orderLines: core.rawShape.orderLines,
       agreement: [
         core.agreementAttributes.providerLegalName,
@@ -233,12 +245,16 @@ function manifestFor(template, contract) {
       "Order totals and Order/Document states[].code are server-owned fields; line details join through Order.items -> OrderItem.itemPrice -> ProductPrice.product -> Product.",
       "Grant list endpoints accept anonymous POST requests with offset and pageSize, get.json takes ?id=, and event.json accepts { id, event, metadata }.",
       "On 2026-09-23 a dev-1 link returned the Account's contacts and addresses as ids only, and the backend confirmed that Contact, ContactEntry and AccountAddress will never be grantable. The details pre-fill and the portal sign-in address therefore read Account attributes.",
+      "On 2026-10-07 dev-1 served a PropertyPlan file without any credential from /core/media/{id}/stream.json on the grant API's origin, answered 'Entity type MediaAsset is not grantable' and 'Entity type Resource is not grantable' to grant/mappings.json, and exposed no grant endpoint under /core-rm. Contract details accepted on dev-1 were saved by the details processor as a BILLING AccountAddress of their own, beside the SERVICE ones, even when the text matched a service address.",
+      "On 2026-10-07 the Maps JavaScript API (weekly, 3.66) reported the page to Google (AuthenticationService.Authenticate, QuotaService.RecordEvent) as scheme, host and path with user info, query and fragment cleared, so the #token= fragment does not reach Google; Chromium honoured the referrer policy switched at run time from no-referrer to strict-origin and sent the origin alone.",
     ],
     unverified: [
       "Event metadata reaches the workflow hook, and required event attributes are enforced on this path (QUOTATION-PACKAGE-FLOW.md §9).",
       "The generated CLIENT_REVIEW_DOCUMENT package still needs a production CMS upload and browser acceptance with a fresh real link.",
       "The checking state, a returned details step and the portal invitation have not been exercised against dev-1. CLIENT_DETAILS_ERRORS is read as the details processor seed writes it.",
       "No dev-1 link has returned the Account attributes " + Object.values(core.accountPrefill).join(", ") + " yet. Without them only the Legal Name pre-fills and the portal invitation names no sign-in address.",
+      "No dev-1 quote Order carries " + core.orderAttributes.plan + " yet: WINTER_SERVICES_ORDER inherits the Media attribute from FIELD_SERVICE_ORDER, but it is empty on every quote and no script copies a property's approved plan into it. Until the backend supplies it, the contract details step shows no plan.",
+      "Address suggestions, the billing address map and the plan map have not run against Google with this page's own key: " + mapsKeyCode + " is set by the operator in the page's PageContext, and the preview draws on a stub map.",
     ],
     constraints: [
       "Download PDF creates a local, selectable-text A4 copy of the normalized authorized view, including every quotation option or the agreement's parties, services and terms. It never exports a token, URL, unsent form or comment draft, recalculates money, or sends document data to another service. Partial reads disable export, duplicate clicks are single-flight, and a changed or revoked document is not downloaded after generation. The pinned jsPDF engine and Roboto font are embedded as data-URI scripts to avoid JTE interpreting the vendor's template literals; no library/font request leaves the page.",
@@ -248,6 +264,9 @@ function manifestFor(template, contract) {
       "A link that closes after the details or the approval were sent ends on a thank-you card; a link that is closed when it is opened keeps the expired-or-withdrawn card.",
       "An agreement awaiting approval offers Request changes beside Approve when the link delegates " + core.agreementEvents.changes.code + ". The client's text is sent as " + core.agreementEvents.changes.messageAttribute + "; an empty text is not sent. The link stays open, and while the agreement is CLIENT_CHANGES_REQUESTED it thanks the client, says the provider emails a new link, and shows the agreement as it was sent. A link issued before the change request existed offers approval alone.",
       "Contact us closes every page that has read an agreement. It shows the agreement's " + core.agreementAttributes.providerContactPhone + " and " + core.agreementAttributes.providerContactEmail + ", which the provider's workflow copies from the organization before it issues each link: a dialable number and a mail address become links, anything else is shown as text, and a missing value has no row. The agreement pages show the provider's logo from " + core.agreementAttributes.providerLogo + ", an image id; an agreement without one, or an image that fails to load, shows none.",
+      mapsKeyCode + " ships empty; its value is the operator's, set in the page's PageContext. While it is empty or not a key the page loads no Google script, the billing address is a plain text field and no plan is shown. With a key, the contract details step loads the Maps JavaScript API once, offers Google address suggestions under the billing address, pins the chosen or typed address on a map (or says it was not found, and the client can still send it as written), and switches the document's referrer policy from no-referrer to strict-origin so Google can check the key against the page's origin; the #token= fragment is never part of a referrer.",
+      "The billing address is the client's own value. The contract details step offers each approved property's service address as a button that copies it into the billing field, where the client sees and can change it, and sends it as BILLING_ADDRESS like a typed address; nothing fills the billing field from a service address on its own.",
+      "Each approved property whose quote Orders name one plan in " + core.orderAttributes.plan + " (a MediaAsset id, or a one-entry media list) shows it on the contract details step while " + mapsKeyCode + " is set: the file is read anonymously from /core/media/{id}/stream.json, its GOOGLE_MAPS shapes are drawn read-only over a satellite map, and the page lists each element with the area on the plan in square feet, measured like the Plans editor and Approve Plan (local equirectangular projection, elevation ignored). Image overlays are not drawn. PROPERTY_PLAN_DRAFT is never read. Two different plans, an unreadable file or a file without a map shape show that the plan cannot be shown.",
       "Every other parameter is copy. No token, account, order, document or customer value is a parameter.",
       "While the agreement is CLIENT_DETAILS_RECEIVED the page re-reads it one read at a time after " + contract.checkingDelays.map((ms) => ms / 1000).join(", ") + " s, then says the check is taking longer than usual and offers Refresh status. It stops re-reading as soon as the agreement leaves that state.",
       "CLIENT_DETAILS_ERRORS reaches the client only as copy: a known code marks its field, PROCESSING_FAILED has its own notice, and an unknown code adds a generic line, never the code.",
@@ -308,6 +327,7 @@ function readme(packageData) {
     "| --- | --- |",
     "| `" + apiBaseCode + "` | absolute https origin of the Core deployment, without a path |",
     "| `" + portalUrlCode + "` | optional absolute https address of the customer portal; empty shows no portal button |",
+    "| `" + mapsKeyCode + "` | optional Google Maps browser key, set in the page's PageContext; empty shows plain address fields and no plan |",
     "",
     "Every other parameter is copy. The client opens the page with `#token=` in the address; the token is never a parameter.",
     "",

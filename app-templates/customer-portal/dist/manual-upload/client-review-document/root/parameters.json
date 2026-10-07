@@ -22,6 +22,17 @@
     "value": ""
   },
   {
+    "code": "REVIEW_MAPS_API_KEY",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "REVIEW MAPS API KEY",
+        "DESCRIPTION": "Google Maps browser key of the contract details step: address suggestions and a map for the billing address, and each approved property's plan drawn over a map. Use the same browser key as the quote form's FORM_MAPS_API_KEY, restricted by HTTP referrer to this host and to the Maps JavaScript, Places and Geocoding APIs; it is visible in page source, as every browser key is. Set the value in the page's PageContext, not in the template: the package ships it empty so an upload never overwrites it. While it is empty or not a key, no Google script is loaded, the billing address stays a plain text field and no plan is shown. With a key the page sends its origin, never its path or link, as the referrer, because Google checks a browser key against it."
+      }
+    },
+    "value": ""
+  },
+  {
     "code": "DOCUMENT_TITLE",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
@@ -1410,6 +1421,175 @@
     },
     "value": {
       "en": "Choose one"
+    }
+  },
+  {
+    "code": "ADDRESS_SUGGESTIONS",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "ADDRESS SUGGESTIONS",
+        "DESCRIPTION": "Client review document copy."
+      }
+    },
+    "value": {
+      "en": "Address suggestions"
+    }
+  },
+  {
+    "code": "ADDRESS_MAP_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "ADDRESS MAP LABEL",
+        "DESCRIPTION": "Client review document copy."
+      }
+    },
+    "value": {
+      "en": "Map of the address you entered"
+    }
+  },
+  {
+    "code": "ADDRESS_MAP_MISSING",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "ADDRESS MAP MISSING",
+        "DESCRIPTION": "Client review document copy."
+      }
+    },
+    "value": {
+      "en": "This address was not found on the map. Check it, or send it as you wrote it."
+    }
+  },
+  {
+    "code": "SERVICE_ADDRESS_REUSE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "SERVICE ADDRESS REUSE",
+        "DESCRIPTION": "Client review document copy."
+      }
+    },
+    "value": {
+      "en": "Same as a service address?"
+    }
+  },
+  {
+    "code": "SERVICE_ADDRESS_USE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "SERVICE ADDRESS USE",
+        "DESCRIPTION": "Client review document copy. Keep {address}: the page fills them in."
+      }
+    },
+    "value": {
+      "en": "Use {address}"
+    }
+  },
+  {
+    "code": "PLAN_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "PLAN TITLE",
+        "DESCRIPTION": "Client review document copy."
+      }
+    },
+    "value": {
+      "en": "Property plan"
+    }
+  },
+  {
+    "code": "PLAN_LOADING",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "PLAN LOADING",
+        "DESCRIPTION": "Client review document copy."
+      }
+    },
+    "value": {
+      "en": "Loading the property plan…"
+    }
+  },
+  {
+    "code": "PLAN_UNAVAILABLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "PLAN UNAVAILABLE",
+        "DESCRIPTION": "Client review document copy."
+      }
+    },
+    "value": {
+      "en": "The plan for this property cannot be shown right now."
+    }
+  },
+  {
+    "code": "PLAN_MAP_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "PLAN MAP LABEL",
+        "DESCRIPTION": "Client review document copy."
+      }
+    },
+    "value": {
+      "en": "Map of the property plan"
+    }
+  },
+  {
+    "code": "PLAN_AREA",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "PLAN AREA",
+        "DESCRIPTION": "Client review document copy."
+      }
+    },
+    "value": {
+      "en": "Area on the plan"
+    }
+  },
+  {
+    "code": "PLAN_AREA_VALUE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "PLAN AREA VALUE",
+        "DESCRIPTION": "Client review document copy. Keep {area}: the page fills them in."
+      }
+    },
+    "value": {
+      "en": "{area} sq ft"
+    }
+  },
+  {
+    "code": "PLAN_ELEMENT_FALLBACK",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "PLAN ELEMENT FALLBACK",
+        "DESCRIPTION": "Client review document copy. Keep {n}: the page fills them in."
+      }
+    },
+    "value": {
+      "en": "Plan element {n}"
+    }
+  },
+  {
+    "code": "PLAN_NOTE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "PLAN NOTE",
+        "DESCRIPTION": "Client review document copy."
+      }
+    },
+    "value": {
+      "en": "The provider prepared this plan for your service. If something on it looks wrong, contact them."
     }
   },
   {

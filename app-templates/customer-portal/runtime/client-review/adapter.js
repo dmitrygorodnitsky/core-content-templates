@@ -14,6 +14,7 @@
       product: { service: "core-pim", segment: "product" },
     },
     image: { service: "core", head: "image", tail: "get", width: 440 },
+    plan: { service: "core", head: "media", tail: "stream.json" },
     pageSize: 200,
     pageLimit: 10,
     messageLimit: 400,
@@ -206,11 +207,38 @@
       return spec;
     }
 
+    function readPlan(id) {
+      var media = imageId(id);
+      if (!media) return Promise.reject(reviewError("failed", 0));
+      var target = base + "/" + GRANT.plan.service + "/" + GRANT.plan.head + "/" + media + "/" + GRANT.plan.tail;
+      return new Promise(function (resolve) {
+        resolve(fetchImpl(target, {
+          method: "GET",
+          credentials: "omit",
+          cache: "no-store",
+          referrerPolicy: "no-referrer",
+          headers: { Accept: "application/json" },
+        }));
+      }).then(function (response) {
+        if (!response || typeof response.status !== "number" || typeof response.text !== "function" || response.status < 200 || response.status >= 300) {
+          throw reviewError("failed", response && typeof response.status === "number" ? response.status : 0);
+        }
+        return Promise.resolve(response.text()).then(null, function () { return ""; }).then(function (body) {
+          var payload = parseJson(body);
+          if (!payload || typeof payload !== "object" || Array.isArray(payload)) throw reviewError("failed", response.status);
+          return payload;
+        });
+      }, function () {
+        throw reviewError("failed", 0);
+      });
+    }
+
     return {
       imageUrl: function (id) {
         var image = imageId(id);
         return image ? base + "/" + GRANT.image.service + "/" + GRANT.image.head + "/" + image + "/" + GRANT.image.tail + "?width=" + GRANT.image.width : "";
       },
+      readPlan: readPlan,
       introspect: function () {
         return post(url(GRANT.introspect.service, GRANT.introspect.tail), {}, "introspect").then(objectPayload);
       },

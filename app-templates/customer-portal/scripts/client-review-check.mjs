@@ -8,7 +8,7 @@ import vm from "node:vm";
 
 const root = path.resolve("app-templates/customer-portal");
 const reviewDir = path.join(root, "runtime/client-review");
-const RUNTIME = ["copy.js", "core-contract.js", "adapter.js", "normalizer.js", "pdf.js", "components.js", "controller.js"];
+const RUNTIME = ["copy.js", "core-contract.js", "adapter.js", "normalizer.js", "plan.js", "pdf.js", "maps.js", "components.js", "controller.js"];
 const FIXTURES = "fixtures.js";
 const sources = Object.fromEntries(await Promise.all(RUNTIME.concat([FIXTURES]).map(async (name) => [name, await fs.readFile(path.join(reviewDir, name), "utf8")])));
 const css = await fs.readFile(path.join(reviewDir, "client-review.css"), "utf8");
@@ -639,6 +639,9 @@ const EXPECTED_SCENARIOS = {
   "decided-following": ["ready", "quote-review"], "decided-following-slow": ["ready", "quote-review"], "decided-next-step": ["ready", "contract-details"],
   "contract-details": ["ready", "contract-details"],
   "contract-details-attributes": ["ready", "contract-details"], "contract-details-ids-only": ["ready", "contract-details"],
+  "contract-details-billing-service": ["ready", "contract-details"], "contract-details-maps": ["ready", "contract-details"],
+  "contract-details-address-missing": ["ready", "contract-details"], "contract-details-plan-unavailable": ["ready", "contract-details"],
+  "contract-details-maps-failed": ["ready", "contract-details"],
   "details-invalid": ["ready", "contract-details"], "details-refused": ["ready", "contract-details"],
   "details-checking": ["ready", "checking"], "details-checking-slow": ["ready", "checking"],
   "details-returned": ["ready", "contract-details"], "details-returned-attributes": ["ready", "contract-details"], "details-returned-processing": ["ready", "contract-details"],
@@ -1148,13 +1151,82 @@ function assertForm(run, expected, message) {
         assert.equal(byClass(panel, "cr-terms__heading").length + byClass(panel, "cr-terms__paragraph").length + byClass(panel, "cr-terms__list").length, 0, "and draws no term block");
         break;
       }
-      case "contract-details":
+      case "contract-details": {
         for (const [code, key, name] of [["INFORMATION_CONFIRMED", "confirmInformationStatement", "Information Confirmation"], ["AUTHORITY_CONFIRMED", "confirmAuthorityStatement", "Authority Confirmation"]]) {
           const field = all(run.mount, (node) => node.getAttribute("data-code") === code)[0];
           assert.ok(surface(field).includes(copy[key]), code + " reads as an explicit statement");
           assert.ok(!surface(field).includes(name), code + " no longer shows its attribute name");
         }
+        assert.equal(run.controller.snapshot().maps, false, "a page without a Maps key has no map service");
+        assert.equal(byClass(run.mount, "cr-map").length + byClass(run.mount, "cr-plan").length + byClass(run.mount, "cr-suggest").length, 0, "and draws no map, no plan and no address suggestions");
+        const billing = fieldNamed(run.mount, "BILLING_ADDRESS");
+        assert.equal(controlOf(billing).getAttribute("role"), null, "the billing address stays a plain text field");
+        assert.deepEqual(byAttribute(billing, "data-action", "details.useAddress").map((chip) => [chip.textContent, chip.getAttribute("aria-pressed")]), [
+          ["1180 Pacific Crescent, Vancouver, BC V6Z 2R5", "false"], ["4620 Garden City Way, Richmond, BC V6X 2W6", "false"], ["9150 Cedar Hollow Drive, Surrey, BC V3V 7K2", "false"],
+        ], "the billing field offers each approved property's service address, once, and none is chosen for the client");
         break;
+      }
+      case "contract-details-billing-service": {
+        const billing = fieldNamed(run.mount, "BILLING_ADDRESS");
+        assert.equal(controlOf(billing).value, "4620 Garden City Way, Richmond, BC V6X 2W6", "choosing a service address writes it into the billing field, where the client sees it");
+        assert.equal(run.controller.snapshot().details.values.BILLING_ADDRESS, "4620 Garden City Way, Richmond, BC V6X 2W6");
+        assert.deepEqual(byAttribute(billing, "data-action", "details.useAddress").map((chip) => chip.getAttribute("aria-pressed")), ["false", "true", "false"], "the chosen address is marked");
+        assert.equal(run.runtime.document.activeElement, controlOf(billing), "and focus moves to the billing field so it can be changed");
+        assert.equal(run.sent.length, 0, "choosing an address sends nothing");
+        controlOf(billing).value = "4620 Garden City Way, Unit 3, Richmond, BC V6X 2W6";
+        controlOf(billing).fire("input");
+        for (const [code, value] of [["CLIENT_TYPE", "ORGANIZATION"], ["INFORMATION_CONFIRMED", true], ["AUTHORITY_CONFIRMED", true]]) run.controller.dispatch("details.choose", { code, value });
+        run.controller.dispatch("details.submit");
+        await run.controller.idle();
+        const details = run.sent[0][3];
+        assert.equal(details.BILLING_ADDRESS, "4620 Garden City Way, Unit 3, Richmond, BC V6X 2W6", "the billing address travels as the client's own value, edited after it was copied");
+        assert.deepEqual(Object.keys(details).filter((code) => /ADDRESS|PROPERTY/.test(code)), ["BILLING_ADDRESS"], "and is the only address in the details: no service address is sent or copied beside it");
+        break;
+      }
+      case "contract-details-maps": {
+        assert.equal(run.controller.snapshot().maps, true);
+        const billing = fieldNamed(run.mount, "BILLING_ADDRESS");
+        assert.equal(controlOf(billing).getAttribute("role"), "combobox", "with a key the billing address offers Google address suggestions");
+        assert.equal(controlOf(billing).getAttribute("aria-controls"), "cr-field-BILLING_ADDRESS-suggestions");
+        assert.equal(byClass(billing, "cr-suggest").length, 1);
+        const map = byAttribute(billing, "data-map", "address")[0];
+        assert.equal(map.getAttribute("data-state"), "ready", "the pre-filled billing address is found and pinned on a map");
+        assert.equal(byClass(map, "cr-map__canvas")[0].getAttribute("aria-label"), copy.addressMapLabel);
+        const plans = byClass(run.mount, "cr-plan");
+        assert.deepEqual(plans.map((plan) => [plan.getAttribute("data-plan"), plan.getAttribute("data-state")]), [["property-278", "ready"], ["property-430", "ready"]], "each approved property with a plan shows it; one without a plan shows none");
+        assert.deepEqual(byClass(plans[0], "cr-plan__name").map((node) => node.textContent), ["Main driveway", "Front sidewalk", "Visitor parking", "Loading bay apron", "Fire lane edge", "Salt bin"]);
+        assert.deepEqual(byClass(plans[0], "cr-plan__size").map((node) => node.textContent), ["5,167 sq ft", "2,583 sq ft", "8,740 sq ft", "5,425 sq ft"], "areas are listed for shapes with an area, not for a line or a point");
+        assert.equal(byClass(plans[0], "cr-plan__area-value")[0].textContent, "21,915 sq ft", "the plan's area is the sum of its shapes");
+        assert.deepEqual(byClass(plans[0], "cr-plan__swatch").map((node) => node.getAttribute("data-tone")), ["1", "2", "3", "1", "4", "5"], "elements of one type share a colour");
+        assert.deepEqual(byClass(plans[1], "cr-plan__name").map((node) => node.textContent), ["Customer parking", "Entrance walkway", "Delivery turnaround"], "an element drawn only over an image is not on the map");
+        assert.equal(byClass(plans[1], "cr-plan__area-value")[0].textContent, "36,279 sq ft", "a MultiPolygon's hole is subtracted and a circle counts as πr²");
+        for (const plan of plans) assert.equal(byAttribute(plan, "data-map", "plan")[0].getAttribute("data-state"), "ready", "each plan is drawn over its own map");
+        break;
+      }
+      case "contract-details-address-missing": {
+        const map = byAttribute(fieldNamed(run.mount, "BILLING_ADDRESS"), "data-map", "address")[0];
+        assert.equal(map.getAttribute("data-state"), "missing", "an address the map cannot find is not pinned anywhere");
+        assert.equal(byClass(map, "cr-map__note")[0].textContent, copy.addressMapMissing, "and the client is told it can still be sent as written");
+        assert.equal(controlOf(fieldNamed(run.mount, "BILLING_ADDRESS")).value, "PO Box 4471, Station Terminal, Vancouver, BC V6B 3Z8", "the field keeps what it holds");
+        break;
+      }
+      case "contract-details-plan-unavailable": {
+        const plans = byClass(run.mount, "cr-plan");
+        assert.deepEqual(plans.map((plan) => plan.getAttribute("data-state")), ["unavailable", "ready"], "a plan file without a map shape cannot be shown, and the other property's plan still is");
+        assert.ok(surface(plans[0]).includes(copy.planUnavailable));
+        assert.equal(byAttribute(plans[0], "data-map", "plan").length, 0, "and draws no empty map");
+        break;
+      }
+      case "contract-details-maps-failed": {
+        const billing = fieldNamed(run.mount, "BILLING_ADDRESS");
+        assert.equal(controlOf(billing).getAttribute("role"), null, "when the map service does not load, the billing address stays a plain text field");
+        assert.equal(byClass(billing, "cr-suggest").length, 0);
+        assert.equal(byAttribute(billing, "data-map", "address")[0].getAttribute("data-state"), "failed", "and its map stays hidden");
+        const plans = byClass(run.mount, "cr-plan");
+        assert.deepEqual(plans.map((plan) => [plan.getAttribute("data-state"), byAttribute(plan, "data-map", "plan")[0].getAttribute("data-state")]), [["ready", "failed"], ["ready", "failed"]], "the plans keep their area and elements without a map");
+        assert.equal(byClass(plans[0], "cr-plan__area-value")[0].textContent, "21,915 sq ft");
+        break;
+      }
       case "completion": {
         const invitation = byAttribute(run.mount, "data-portal", "invitation")[0];
         assert.ok(invitation && surface(invitation).includes(copy.portalTitle), "completion invites the client to the portal");
@@ -2510,6 +2582,331 @@ for (const [state, links] of [["SENT_TO_CLIENT", 0], ["SUSPENDED", 0], ["EXPIRED
   }
 }
 
+const MAPS_KEY = "AIzaSyD-test_browser_key_0123456789ab";
+
+function recordingMaps(options = {}) {
+  const made = { maps: [], markers: [], polygons: [], polylines: [], circles: [], geocodes: [], suggestions: [], libraries: [], fields: [] };
+  const latLng = (point) => ({ lat: () => point.lat, lng: () => point.lng });
+  const overlay = (bucket) => class {
+    constructor(settings) { this.options = settings; this.map = settings.map; made[bucket].push(this); }
+    setMap(map) { this.map = map; }
+  };
+  class FakeMap {
+    constructor(canvas, settings) { this.canvas = canvas; this.options = settings; this.calls = []; made.maps.push(this); }
+    setCenter(center) { this.calls.push(["setCenter", center]); }
+    setZoom(zoom) { this.calls.push(["setZoom", zoom]); }
+    fitBounds(bounds, padding) { this.calls.push(["fitBounds", bounds, padding]); }
+  }
+  class Geocoder {
+    geocode(request, callback) {
+      made.geocodes.push(request.address);
+      const hit = (options.places || {})[request.address];
+      return Promise.resolve().then(() => (hit ? callback([{ geometry: { location: latLng(hit) } }], "OK") : callback([], options.geocodeStatus || "ZERO_RESULTS")));
+    }
+  }
+  const api = {
+    importLibrary: (name) => { made.libraries.push(name); return Promise.resolve({}); },
+    Map: FakeMap,
+    Marker: overlay("markers"),
+    Polygon: overlay("polygons"),
+    Polyline: overlay("polylines"),
+    Circle: overlay("circles"),
+    SymbolPath: { CIRCLE: 0 },
+    Geocoder,
+    places: {
+      AutocompleteSessionToken: class {},
+      AutocompleteSuggestion: {
+        fetchAutocompleteSuggestions(request) {
+          made.suggestions.push(request);
+          return Promise.resolve({
+            suggestions: Object.keys(options.places || {}).filter((address) => address.toLowerCase().includes(request.input.toLowerCase())).map((address) => ({
+              placePrediction: {
+                text: { toString: () => address },
+                toPlace: () => {
+                  const place = { formattedAddress: "", location: null };
+                  place.fetchFields = (request) => { made.fields.push(request); place.formattedAddress = address; place.location = latLng(options.places[address]); return Promise.resolve({ place }); };
+                  return place;
+                },
+              },
+            })),
+          });
+        },
+      },
+    },
+  };
+  return { api, made };
+}
+
+const later = () => new Promise((resolve) => setTimeout(resolve, 5));
+
+{
+  const { CR } = loadRuntime({ fixtures: true });
+  const { plan } = CR;
+  const square = (lat, lng, meters) => {
+    const latSpan = meters / 6378137 * 180 / Math.PI;
+    const lngSpan = latSpan / Math.cos(lat * Math.PI / 180);
+    return [[lng, lat, 3], [lng + lngSpan, lat, 3], [lng + lngSpan, lat + latSpan, 3], [lng, lat + latSpan, 3], [lng, lat, 3]];
+  };
+  const envelope = (elements) => ({ type: "PropertyPlan", schemaVersion: 1, elements });
+  const element = (overlays, extra = {}) => ({ id: "e", elementTypeDictionaryId: 1, nls: {}, attributes: {}, overlays, ...extra });
+  const onMap = (geometry) => ({ map: "GOOGLE_MAPS", geometry });
+  for (const bad of [null, "plan", [], { type: "Plan", schemaVersion: 1, elements: [] }, { type: "PropertyPlan", schemaVersion: 2, elements: [] }, envelope([]), envelope([element([{ mediaId: "a", geometry: { type: "Point", coordinates: [1, 1] } }])])]) {
+    assert.equal(plan.parse(bad, "en-CA"), null, "a file that is not a plan with a map shape cannot be shown: " + JSON.stringify(bad));
+  }
+  const tenThousand = plan.parse(envelope([element([onMap({ type: "Polygon", coordinates: [square(49.27, -123.12, 30.48)] })])]), "en-CA");
+  assert.ok(Math.abs(tenThousand.squareFeet - 10000) < 0.01, "a 100 ft square at 49° N measures 10,000 sq ft, elevation ignored");
+  assert.equal(tenThousand.areaText, "10,000");
+  const holed = plan.parse(envelope([element([onMap({ type: "Polygon", coordinates: [square(49.27, -123.12, 30.48), square(49.2701, -123.1199, 15.24)] })])]), "en-CA");
+  assert.ok(Math.abs(holed.squareFeet - 7500) < 0.5, "a hole is subtracted from its polygon");
+  const multi = plan.parse(envelope([element([onMap({ type: "MultiPolygon", coordinates: [[square(49.27, -123.12, 30.48)], [square(49.27, -123.10, 30.48)]] })])]), "en-CA");
+  assert.ok(Math.abs(multi.squareFeet - 20000) < 1, "the polygons of a MultiPolygon add up");
+  const circle = plan.parse(envelope([element([onMap({ type: "Circle", coordinates: [-123.12, 49.27], radius: 10 })])]), "en-CA");
+  assert.ok(Math.abs(circle.squareFeet - Math.PI * 100 / 0.09290304) < 0.001, "a circle counts as πr²");
+  assert.ok(circle.bounds.north > 49.27 && circle.bounds.south < 49.27 && circle.bounds.east > -123.12 && circle.bounds.west < -123.12, "a circle's bounds hold its whole radius");
+  const mixed = plan.parse(envelope([
+    element([onMap({ type: "LineString", coordinates: [[-123.12, 49.27], [-123.119, 49.271]] })], { elementTypeDictionaryId: 7, label: "Curb", nls: { en: { NAME: "Curb line" } } }),
+    element([onMap({ type: "Point", coordinates: [-123.12, 49.27, 4] })], { elementTypeDictionaryId: 8, label: "Bin" }),
+    element([onMap({ type: "Point", coordinates: [-123.12, 95] }), onMap({ type: "Point", coordinates: [-123.12, 49.27, 1, 2] }), onMap({ type: "Polygon", coordinates: [[[-123.12, 49.27], [-123.119, 49.27], [-123.12, 49.27]]] })], { elementTypeDictionaryId: 9, label: "Broken" }),
+    element([onMap({ type: "Polygon", coordinates: [square(49.27, -123.12, 5)] })], { elementTypeDictionaryId: 7 }),
+  ]), "en-CA");
+  assert.deepEqual(plain(mixed.elements.map((entry) => [entry.name, entry.kind, entry.tone, entry.areaText])), [["Curb line", "line", 1, ""], ["Bin", "point", 2, ""], ["", "area", 1, "269"]], "a localized name wins over the label, an element with only invalid shapes is left out, a line or a point has no area, and one element type keeps one colour");
+  const positions = (list) => plain(list.map((entry) => entry.position));
+  assert.deepEqual(positions(mixed.elements), [1, 2, 3], "elements are numbered as shown");
+
+  const N = CR.normalizer;
+  const id = CR.fixtures.planIds[278];
+  assert.equal(N.planReference([id.toUpperCase()]), id, "a plain MediaAsset id is a plan reference");
+  assert.equal(N.planReference([[{ id, type: "mediaAsset" }]]), id, "so is the one-entry list the Media field editor writes");
+  assert.equal(N.planReference([JSON.stringify([{ id, type: "mediaAsset" }])]), id, "even as a JSON string");
+  assert.equal(N.planReference([id, undefined, [{ id }]]), id, "orders of one property naming the same plan agree");
+  assert.equal(N.planReference([id, CR.fixtures.planIds[430]]), "", "two different plans for one property show none");
+  assert.equal(N.planReference([[{ id }, { id: CR.fixtures.planIds[430] }]]), "", "and so does a field holding two plans");
+  assert.equal(N.planReference(["not-a-media-id"]), "", "a value that is not a media id is no plan");
+  assert.equal(N.planReference(["[broken"]), "", "nor is a broken list");
+  assert.equal(N.planReference([undefined, null, ""]), "", "no value, no plan");
+
+  const data = CR.fixtures.withPlans(CR.fixtures.quotationData("AWAITING_CLIENT_DETAILS", CR.fixtures.decidedStates));
+  const model = () => N.reviewModel({ ...data, grant: N.grantOf(data.grant) }, { locale: "en-CA", contract: CR.contract });
+  assert.deepEqual(plain(model().properties.map((property) => [property.key, property.plan])), [["property-278", CR.fixtures.planIds[278]], ["property-430", CR.fixtures.planIds[430]], ["property-512", ""], ["property-661", ""], ["property-702", ""]], "each property carries the one plan its quote Orders name in PROPERTY_PLAN");
+  assert.deepEqual(plain(model().details.serviceAddresses), ["1180 Pacific Crescent, Vancouver, BC V6Z 2R5", "4620 Garden City Way, Richmond, BC V6X 2W6", "9150 Cedar Hollow Drive, Surrey, BC V3V 7K2"], "only approved properties with an address are offered as a billing address");
+  data.orders.forEach((row) => {
+    const bucket = row.attributes[5];
+    if (bucket.PROPERTY_PLAN) { bucket.PROPERTY_PLAN_DRAFT = bucket.PROPERTY_PLAN; delete bucket.PROPERTY_PLAN; }
+  });
+  assert.deepEqual(plain(model().properties.map((property) => property.plan)), ["", "", "", "", ""], "an AI draft in PROPERTY_PLAN_DRAFT is never shown as the plan");
+  for (const [name, source] of Object.entries(sources)) assert.ok(!source.includes("PROPERTY_PLAN_DRAFT"), name + " never names the draft plan");
+  assert.equal(CR.contract.orderAttributes.plan, "PROPERTY_PLAN");
+}
+
+{
+  const { CR } = loadRuntime();
+  const TOKEN = "grant-token-8f3a1c+/=";
+  const calls = [];
+  const replies = [];
+  const fetch = (url, init) => { calls.push({ url, init }); return Promise.resolve(replies.shift()); };
+  const reply = (status, body) => ({ status, text: () => Promise.resolve(body) });
+  const adapter = CR.adapter.createGrantAdapter({ apiBase: "https://core.example", token: TOKEN, fetch });
+  const id = "3F5D2C4E-8A1B-4C7D-9E2F-6A0B1C2D3E4F";
+  replies.push(reply(200, JSON.stringify({ type: "PropertyPlan", schemaVersion: 1, elements: [] })));
+  assert.deepEqual(plain(await adapter.readPlan(id)), { type: "PropertyPlan", schemaVersion: 1, elements: [] });
+  assert.equal(calls[0].url, "https://core.example/core/media/3f5d2c4e-8a1b-4c7d-9e2f-6a0b1c2d3e4f/stream.json", "a plan file is read from the public media stream on the API origin");
+  assert.deepEqual([calls[0].init.method, calls[0].init.credentials, calls[0].init.referrerPolicy, calls[0].init.headers.Authorization, calls[0].init.body], ["GET", "omit", "no-referrer", undefined, undefined], "anonymously, with no referrer and no body");
+  assert.ok(!calls[0].url.includes(TOKEN) && !calls[0].url.includes(encodeURIComponent(TOKEN)), "and without the link's token");
+  for (const [status, body] of [[404, "{}"], [401, "{}"], [500, ""], [200, "not json"], [200, "[]"]]) {
+    replies.push(reply(status, body));
+    await assert.rejects(adapter.readPlan(id), (error) => error.code === "failed", status + " " + body + " is a plan that cannot be read, never a closed link");
+  }
+  const before = calls.length;
+  await assert.rejects(adapter.readPlan("../account/list.json"), (error) => error.code === "failed");
+  assert.equal(calls.length, before, "a value that is not a media id is never requested");
+
+  const { keyOf } = CR.maps;
+  for (const value of ["", "#", "$" + "{REVIEW_MAPS_API_KEY@STRING}", "short", "AIza key with spaces 0123456789", null, undefined]) assert.equal(keyOf(value), "", JSON.stringify(value) + " is no Maps key");
+  assert.equal(keyOf("  " + MAPS_KEY + " "), MAPS_KEY);
+  assert.equal(CR.maps.service({ key: "#" }), null, "without a key there is no map service at all");
+}
+
+{
+  const runtime = loadRuntime();
+  const appended = [];
+  const meta = { content: "no-referrer", getAttribute() { return this.content; }, setAttribute(name, value) { if (name === "content") this.content = value; } };
+  runtime.document.head = { appendChild(node) { appended.push(node); } };
+  runtime.document.querySelector = (selector) => (selector === "meta[name=\"referrer\"]" ? meta : null);
+  let authFailures = 0;
+  const load = runtime.CR.maps.scriptLoader(MAPS_KEY, () => { authFailures += 1; });
+  const loading = load();
+  assert.equal(load(), loading, "the Maps script is requested once");
+  assert.equal(appended.length, 1);
+  assert.equal(appended[0].src, "https://maps.googleapis.com/maps/api/js?key=" + MAPS_KEY + "&loading=async&v=weekly&callback=__clientReviewMapsReady", "the script names the key and a callback, nothing else");
+  assert.equal(appended[0].async, true);
+  assert.equal(meta.content, "strict-origin", "with a key the page sends Google its origin, never its path or link, so the key's referrer restriction can match");
+  const { api, made } = recordingMaps();
+  runtime.sandbox.google = { maps: api };
+  runtime.sandbox.__clientReviewMapsReady();
+  assert.equal(await loading, api);
+  assert.deepEqual(made.libraries, ["maps", "places", "geocoding"]);
+  runtime.sandbox.gm_authFailure();
+  assert.equal(authFailures, 1, "a key Google refuses is reported to the map service");
+
+  const failing = loadRuntime();
+  failing.document.head = { appendChild(node) { setTimeout(() => node.fire("error")); } };
+  await assert.rejects(failing.CR.maps.scriptLoader(MAPS_KEY)(), /maps-script-failed/);
+}
+
+{
+  const runtime = loadRuntime({ fixtures: true });
+  const { CR } = runtime;
+  const data = CR.fixtures.withPlans(CR.fixtures.attributedAccount(CR.fixtures.quotationData("AWAITING_CLIENT_DETAILS", CR.fixtures.decidedStates)));
+  const server = CR.fixtures.createFixtureAdapter(data, {});
+  const TOKEN = "grant-token-77ab+/=";
+  const encoded = encodeURIComponent(TOKEN);
+  const calls = [];
+  const reply = (status, body) => ({ status, text: () => Promise.resolve(body === undefined ? "" : JSON.stringify(body)) });
+  const fetch = async (url, init) => {
+    calls.push({ url, init });
+    const route = url.replace("https://core.example/", "").split("?")[0].replace("/i/" + encoded + "/", "/i/TOKEN/");
+    const answer = (work) => work.then((value) => reply(200, value), (error) => reply(error.status || 500, {}));
+    if (route === "core/i/TOKEN/introspect.json") return answer(server.introspect());
+    if (route === "core/i/TOKEN/document/list.json") return answer(server.list("document").then((result) => ({ result })));
+    if (route === "core-acct/i/TOKEN/account/list.json") return answer(server.list("account").then((result) => ({ result })));
+    if (route === "core-bill/i/TOKEN/order/list.json") return answer(server.list("order").then((result) => ({ result })));
+    const media = /^core\/media\/([0-9a-f-]{36})\/stream\.json$/.exec(route);
+    if (media) return answer(server.readPlan(media[1]));
+    return reply(404, {});
+  };
+  const boot = (key, loadMaps) => {
+    const attributes = { "data-review-data-mode": "live", "data-review-api-base": "https://core.example" };
+    if (key !== undefined) attributes["data-review-maps-api-key"] = key;
+    const mount = runtime.document.createElement("div");
+    const controller = CR.boot(section(runtime.document, attributes), { location: { hash: "#token=" + encoded, href: "https://pages.example/review#token=" + encoded }, fetch, mount, locale: "en-CA", loadMaps, suggestionDelay: 0 });
+    return { controller, mount };
+  };
+
+  for (const key of [undefined, "", "#", "$" + "{REVIEW_MAPS_API_KEY@STRING}"]) {
+    calls.length = 0;
+    let loads = 0;
+    const page = boot(key, () => { loads += 1; return Promise.resolve(recordingMaps().api); });
+    await page.controller.idle();
+    assert.equal(page.controller.snapshot().view.kind, "contract-details");
+    assert.equal(page.controller.snapshot().maps, false, JSON.stringify(key) + " sets up no map service");
+    assert.equal(loads, 0, "and loads no Google script");
+    assert.equal(byClass(page.mount, "cr-map").length + byClass(page.mount, "cr-plan").length + byClass(page.mount, "cr-suggest").length, 0, "the page is what it was before the key existed: no map, no plan, no suggestions");
+    assert.ok(calls.every((call) => !call.url.includes("/media/")), "and no plan file is read");
+    assert.ok(byAttribute(page.mount, "data-action", "details.useAddress").length === 3, "the service addresses are offered without a key all the same");
+  }
+
+  calls.length = 0;
+  const { api, made } = recordingMaps({ places: CR.fixtures.places });
+  let loads = 0;
+  const page = boot(MAPS_KEY, () => { loads += 1; return Promise.resolve(api); });
+  await page.controller.idle();
+  assert.equal(page.controller.snapshot().maps, true);
+  assert.equal(loads, 1, "the Maps library is loaded once for the whole page");
+  const planCalls = calls.filter((call) => call.url.includes("/media/"));
+  assert.deepEqual(planCalls.map((call) => call.url).sort(), [CR.fixtures.planIds[278], CR.fixtures.planIds[430]].map((id) => "https://core.example/core/media/" + id + "/stream.json").sort(), "each approved property's plan file is read once from the media stream");
+  assert.ok(planCalls.every((call) => call.init.method === "GET" && call.init.credentials === "omit"));
+  for (const call of calls) {
+    const [address, query = ""] = call.url.split("?");
+    if (call.url.includes("/media/")) assert.ok(!address.includes(encoded) && !address.includes(TOKEN), "the plan read carries no token");
+    else assert.ok(address.includes("/i/" + encoded + "/"), "every other request is a grant request");
+    assert.ok(!query.includes(encoded) && !String(call.init.body || "").includes(MAPS_KEY), "the token is in no query and the Maps key in no request to the provider");
+  }
+  assert.ok(!surface(page.mount).includes(TOKEN) && !surface(page.mount).includes(encoded) && !surface(page.mount).includes(MAPS_KEY), "neither the token nor the key reaches the page markup");
+
+  const planMaps = made.maps.filter((map) => map.options.mapTypeId === "hybrid");
+  assert.equal(planMaps.length, 2, "each plan is drawn over its own satellite map");
+  const strata = CR.plan.parse(CR.fixtures.planFiles[CR.fixtures.planIds[278]], "en-CA");
+  assert.deepEqual(plain(planMaps[0].calls.filter((call) => call[0] === "fitBounds").pop()), ["fitBounds", plain(strata.bounds), 28], "the map is fitted to the plan");
+  assert.deepEqual(plain(made.polygons.filter((polygon) => polygon.map === planMaps[0]).map((polygon) => polygon.options.paths)), plain(strata.elements.filter((entry) => entry.kind === "area").map((entry) => entry.shapes[0].polygons[0])), "every area of the plan is drawn where the plan puts it");
+  assert.ok(made.polygons.every((polygon) => polygon.options.clickable === false), "read only: nothing on the plan can be clicked or edited");
+  assert.equal(made.polylines.length, 1, "the plan's line is drawn as a line");
+  assert.equal(made.circles.length, 1, "and the other plan's turnaround as a circle");
+  const planMarkers = made.markers.filter((marker) => marker.map === planMaps[0]);
+  assert.deepEqual(planMarkers.map((marker) => marker.options.title), ["Salt bin"], "a point is a marker named after its element");
+
+  const billingMap = made.maps.find((map) => map.options.mapTypeId === undefined);
+  const billingPin = made.markers.find((marker) => marker.map === billingMap);
+  assert.deepEqual(plain([billingPin.options.title, billingPin.options.position]), ["1500 Harbour Green Drive, Suite 210, Vancouver, BC V6C 3T8, Canada", { lat: 49.2888, lng: -123.1193 }], "the pre-filled billing address is geocoded and pinned");
+  assert.deepEqual(made.geocodes, ["1500 Harbour Green Drive, Suite 210, Vancouver, BC V6C 3T8, Canada"], "and geocoded once, not on every render");
+
+  const input = () => controlOf(fieldNamed(page.mount, "BILLING_ADDRESS"));
+  input().focus();
+  input().value = "1500 West";
+  input().fire("input");
+  assert.equal(byAttribute(fieldNamed(page.mount, "BILLING_ADDRESS"), "data-map", "address")[0].getAttribute("data-state"), "stale", "while the client types, the old pin is dimmed");
+  await later();
+  await page.controller.idle();
+  assert.deepEqual(plain(made.suggestions.map((request) => [request.input, request.includedPrimaryTypes])), [["1500 West", ["street_address", "premise", "subpremise", "route"]]], "suggestions are asked for street addresses");
+  assert.ok(made.suggestions[0].sessionToken, "within one autocomplete session");
+  const options = byClass(page.mount, "cr-suggest__option");
+  assert.deepEqual(options.map((option) => option.textContent), ["1500 West Georgia Street, Vancouver, BC V6G 2Z6, Canada"]);
+  assert.equal(input().getAttribute("aria-expanded"), "true");
+  input().fire("keydown", { key: "ArrowDown" });
+  assert.equal(input().getAttribute("aria-activedescendant"), options[0].getAttribute("id"));
+  input().fire("keydown", { key: "Enter" });
+  await page.controller.idle();
+  assert.equal(input().value, "1500 West Georgia Street, Vancouver, BC V6G 2Z6, Canada", "choosing a suggestion fills the field");
+  assert.equal(page.controller.snapshot().details.values.BILLING_ADDRESS, "1500 West Georgia Street, Vancouver, BC V6G 2Z6, Canada", "and the form holds it as the billing address");
+  assert.deepEqual(plain(made.fields[0].fields), ["formattedAddress", "location"]);
+  assert.deepEqual(plain(made.markers.filter((marker) => marker.map === billingMap && marker.map).pop().options.position), { lat: 49.2918, lng: -123.1335 }, "the chosen place is pinned from its own location");
+  assert.equal(made.geocodes.length, 1, "without another geocoding request");
+
+  input().value = "Nowhere Lane 1";
+  input().fire("input");
+  input().fire("blur");
+  await page.controller.idle();
+  const missing = byAttribute(fieldNamed(page.mount, "BILLING_ADDRESS"), "data-map", "address")[0];
+  assert.equal(missing.getAttribute("data-state"), "missing", "a typed address the map cannot find is said so when the field is left");
+  assert.equal(byClass(missing, "cr-map__note")[0].textContent, page.controller.copy.addressMapMissing);
+
+  page.controller.dispatch("details.useAddress", { code: "BILLING_ADDRESS", value: "4620 Garden City Way, Richmond, BC V6X 2W6" });
+  await page.controller.idle();
+  assert.equal(input().value, "4620 Garden City Way, Richmond, BC V6X 2W6");
+  assert.equal(byAttribute(fieldNamed(page.mount, "BILLING_ADDRESS"), "data-map", "address")[0].getAttribute("data-state"), "ready", "a service address chosen for billing is pinned too");
+  page.controller.dispatch("details.useAddress", { code: "BILLING_ADDRESS", value: "1 Unlisted Road" });
+  page.controller.dispatch("details.useAddress", { code: "LEGAL_NAME", value: "4620 Garden City Way, Richmond, BC V6X 2W6" });
+  assert.equal(page.controller.snapshot().details.values.BILLING_ADDRESS, "4620 Garden City Way, Richmond, BC V6X 2W6", "only an approved property's address can be copied, and only into an address field");
+  assert.equal(page.controller.snapshot().details.values.LEGAL_NAME, "Harbourview Strata Corporation");
+
+  const drawnBefore = made.maps.length;
+  page.controller.dispatch("refresh", {});
+  await page.controller.idle();
+  assert.equal(made.maps.length, drawnBefore, "a re-read keeps every map instead of drawing new ones");
+  assert.equal(calls.filter((call) => call.url.includes("/media/")).length, 2, "and reads no plan file twice");
+  assert.equal(runtime.consoleCalls.length, 0);
+  assert.equal(runtime.storageCalls.length, 0);
+}
+
+{
+  const run = await stagedController((F) => F.withPlans(F.agreementData("SENT_TO_CLIENT", false)), {}, undefined, {});
+  run.controller.dispatch("details.useAddress", { code: "BILLING_ADDRESS", value: "1180 Pacific Crescent, Vancouver, BC V6Z 2R5" });
+  assert.equal(run.controller.snapshot().details.values.BILLING_ADDRESS, undefined, "no address is copied outside the contract details step");
+  assert.equal(byClass(run.mount, "cr-plan").length, 0, "and the agreement pages show no plan");
+}
+
+{
+  const runtime = loadRuntime({ fixtures: true });
+  const { CR } = runtime;
+  const data = CR.fixtures.withPlans(CR.fixtures.quotationData("AWAITING_CLIENT_DETAILS", CR.fixtures.decidedStates));
+  const adapter = CR.fixtures.createFixtureAdapter(data, { planFails: [CR.fixtures.planIds[278]] });
+  let release;
+  const held = new Promise((resolve) => { release = resolve; });
+  const readPlan = adapter.readPlan;
+  adapter.readPlan = (id) => held.then(() => readPlan(id));
+  const maps = CR.maps.service({ load: () => Promise.resolve(recordingMaps().api), copy: CR.defaultCopy() });
+  const mount = runtime.document.createElement("div");
+  const controller = CR.createController({ adapter, mount, timers: fakeTimers(), locale: "en-CA", maps });
+  controller.start();
+  assert.equal(await settle(controller.idle(), 50), "held");
+  const loading = byClass(mount, "cr-plan");
+  assert.deepEqual(loading.map((plan) => plan.getAttribute("data-state")), ["loading", "loading"], "plans show a placeholder while their file is read");
+  assert.ok(surface(loading[0]).includes(controller.copy.planLoading));
+  release();
+  await controller.idle();
+  assert.deepEqual(byClass(mount, "cr-plan").map((plan) => plan.getAttribute("data-state")), ["unavailable", "ready"], "a plan file that cannot be read says so, and the other plan is drawn");
+  assert.ok(surface(byClass(mount, "cr-plan")[0]).includes(controller.copy.planUnavailable));
+}
+
 const { exportClientReviewManual } = await import("./export-client-review-manual.mjs");
 const tempDir = await fs.mkdtemp(path.join(os.tmpdir(), "client-review-check-"));
 try {
@@ -2522,7 +2919,8 @@ try {
   assert.equal(template.code, "CLIENT_REVIEW_DOCUMENT");
   assert.equal(template.templateLanguage, "JTE");
   const nonCopy = template.parameters.filter((parameter) => parameter.type !== "LOCALIZED_STRING_SS");
-  assert.deepEqual(nonCopy.map((parameter) => [parameter.code, parameter.type, parameter.value]), [["REVIEW_API_BASE_URL", "STRING", ""], ["PORTAL_URL", "STRING", ""]], "the API base and the portal address are the only non-copy parameters, and both ship empty");
+  assert.deepEqual(nonCopy.map((parameter) => [parameter.code, parameter.type, parameter.value]), [["REVIEW_API_BASE_URL", "STRING", ""], ["PORTAL_URL", "STRING", ""], ["REVIEW_MAPS_API_KEY", "STRING", ""]], "the API base, the portal address and the Maps browser key are the only non-copy parameters, and all three ship empty so an upload keeps what CMS holds");
+  assert.match(template.html, /data-review-maps-api-key="\$\{REVIEW_MAPS_API_KEY@STRING\}"/, "the Maps key reaches the page only through its section attribute");
   assert.match(template.html, /data-review-portal-url="\$\{PORTAL_URL@STRING\}"/, "the portal address reaches the page only through its section attribute");
   assert.match(template.html, /<p class="cr-visually-hidden" role="status" aria-live="polite" aria-atomic="true" data-client-review-live><\/p>/, "the document carries a live region that survives every redraw");
   assert.match(previewPage, /data-client-review-live/, "and so does the preview page");
@@ -2531,10 +2929,18 @@ try {
   assert.ok(manifest.constraints.some((line) => line.startsWith("Copy link ")), "the manifest states what Copy link hands to the clipboard");
   const copyEntries = loadRuntime().CR.copyEntries;
   assert.deepEqual(template.parameters.filter((parameter) => parameter.type === "LOCALIZED_STRING_SS").map((parameter) => [parameter.code, parameter.value.en]), plain(copyEntries.map((entry) => [entry[0], entry[2]])), "every other parameter is runtime copy with its default");
+  const BROWSER_KEY = "REVIEW_MAPS_API_KEY";
   for (const parameter of template.parameters) {
-    assert.doesNotMatch(parameter.code, /TOKEN|ACCOUNT_ID|ORDER_ID|DOCUMENT_ID|AGREEMENT_ID|USER|ORGANIZATION|SECRET|API_KEY|MAPS/, parameter.code + " must not configure data or credentials");
+    if (parameter.code !== BROWSER_KEY) {
+      assert.doesNotMatch(parameter.code, /TOKEN|ACCOUNT_ID|ORDER_ID|DOCUMENT_ID|AGREEMENT_ID|USER|ORGANIZATION|SECRET|API_KEY|MAPS|KEY|PASSWORD|CREDENTIAL/, parameter.code + " must not configure data or credentials");
+    }
     assert.ok(parameter.nls.en.DESCRIPTION.trim(), parameter.code + " needs a description in CMS");
   }
+  const browserKey = template.parameters.find((parameter) => parameter.code === BROWSER_KEY);
+  assert.deepEqual([browserKey.type, browserKey.value], ["STRING", ""], "the one credential-like parameter is the public Maps browser key, a plain STRING that ships empty");
+  assert.match(browserKey.nls.en.DESCRIPTION, /HTTP referrer/, "its description asks for a referrer-restricted browser key");
+  assert.match(browserKey.nls.en.DESCRIPTION, /PageContext/, "and says the value lives in the page's PageContext");
+  assert.equal(template.parameters.filter((parameter) => /KEY|SECRET|TOKEN|PASSWORD|CREDENTIAL/.test(parameter.code)).length, 1, "no other key, secret, token or credential is a parameter");
   assert.equal(new Set(template.parameters.map((parameter) => parameter.code)).size, template.parameters.length, "parameter codes are unique");
   for (const marker of ["Harbourview", "Coastline", "dana.reyes", "createFixtureAdapter", "quotationData", "5205", "3102"]) {
     assert.ok(!template.javascript.includes(marker) && !template.html.includes(marker), "the CMS document carries no fixture data: " + marker);
@@ -2559,6 +2965,14 @@ try {
   for (const code of ["PROVIDER_CONTACT_PHONE", "PROVIDER_CONTACT_EMAIL", "PROVIDER_LOGO"]) assert.ok(manifest.plannedFields.agreement.includes(code), "the manual package lists the agreement attribute " + code);
   assert.ok(manifest.api.reads.some((read) => read.includes("/core/image/{imageId}/get")), "the manual package documents the public logo address");
   assert.ok(manifest.constraints.some((line) => line.startsWith("Contact us ")), "the manifest states where Contact us and the logo come from");
+  assert.ok(manifest.constraints.some((line) => line.startsWith("REVIEW_MAPS_API_KEY ships empty") && line.includes("strict-origin")), "the manifest states what the Maps key turns on and the referrer it costs");
+  assert.ok(manifest.constraints.some((line) => line.startsWith("The billing address is the client's own value")), "the manifest states that a service address reaches billing only when the client copies it");
+  assert.ok(manifest.constraints.some((line) => line.includes("PROPERTY_PLAN_DRAFT is never read")), "the manifest states that only the approved plan is shown");
+  assert.ok(manifest.api.reads.some((read) => read.startsWith("GET {apiBase}/core/media/{planId}/stream.json")), "the manual package documents the anonymous plan read");
+  assert.ok(manifest.api.reads.some((read) => read.startsWith("GET https://maps.googleapis.com/maps/api/js")), "and the Google script it loads with a key");
+  assert.ok(manifest.plannedFields.order.includes("PROPERTY_PLAN"), "the manual package lists the Order attribute the plan is read from");
+  assert.ok(manifest.unverified.some((line) => line.startsWith("No dev-1 quote Order carries PROPERTY_PLAN")), "and says that no dev-1 Order supplies it yet");
+  assert.match(template.head, /<meta name="referrer" content="no-referrer">/, "the document still ships no-referrer; only a configured Maps key relaxes it, at run time");
   for (const [field, file] of Object.entries({ head: "root/head.html", html: "root/html.html", css: "root/css.css", javascript: "root/javascript.js" })) {
     const content = await fs.readFile(path.join(outputDir, file), "utf8");
     assert.equal(crypto.createHash("sha256").update(content.replace(/\n$/, ""), "utf8").digest("hex"), manifest.template.sha256[field], file + " matches its manifest digest");
@@ -2589,6 +3003,11 @@ try {
     const configured = exportedSandbox.ClientReview.boot(section(exported.document, { "data-review-data-mode": "live", "data-review-api-base": "", "data-review-portal-url": value }), { mount: exported.document.createElement("div"), locale: "en-CA" });
     assert.equal(configured.snapshot().portalUrl, expected, "the uploaded document reads PORTAL_URL " + value + " as " + JSON.stringify(expected));
   }
+  for (const value of ["$" + "{REVIEW_MAPS_API_KEY@STRING}", "#", ""]) {
+    const keyless = exportedSandbox.ClientReview.boot(section(exported.document, { "data-review-data-mode": "live", "data-review-api-base": "https://core.example", "data-review-maps-api-key": value }), { location: { hash: "#token=abc" }, fetch: () => new Promise(() => {}), mount: exported.document.createElement("div"), locale: "en-CA" });
+    assert.equal(keyless.snapshot().maps, false, "the uploaded document reads REVIEW_MAPS_API_KEY " + JSON.stringify(value) + " as no key");
+    keyless.stop();
+  }
   assert.equal(exportedSandbox.ClientReview.fixtures, undefined, "the uploaded document has no fixtures to fall back on");
 
   const committed = path.join(root, "dist/manual-upload/client-review-document");
@@ -2600,4 +3019,4 @@ try {
   await fs.rm(tempDir, { recursive: true, force: true });
 }
 
-console.log("client-review-check ok: " + Object.keys(EXPECTED_SCENARIOS).length + " preview states, every order and agreement state, grouping and counts-only summary, server subtotal and taxes shown only when returned, confirmation statements with description and CMS precedence, contract details and the portal sign-in read from the Account attributes the contract names, never a confirmation and never over what the client typed, grant-gated single-flight commands with read-back, refusals and failures, returned details codes, a bounded one-read-at-a-time checking backoff with announcements, the portal invitation with and without PORTAL_URL and the portal button above and below an approved agreement, a thank-you card after the details and after the approval that an expired link never shows, Copy link with its confirmation, its refusal and no address in the page, Contact us with links only for a dialable number and a mail address, the provider's logo on the agreement pages, Request changes on the agreement with its text required and a thank-you page that keeps the agreement readable, ACTIVATION_FAILED as completion, numbered terms, token only in the grant path, no money arithmetic, innerHTML, eval, console or storage, portal tokens only, and a live-only deterministic CMS package");
+console.log("client-review-check ok: " + Object.keys(EXPECTED_SCENARIOS).length + " preview states, every order and agreement state, grouping and counts-only summary, server subtotal and taxes shown only when returned, confirmation statements with description and CMS precedence, contract details and the portal sign-in read from the Account attributes the contract names, never a confirmation and never over what the client typed, grant-gated single-flight commands with read-back, refusals and failures, returned details codes, a bounded one-read-at-a-time checking backoff with announcements, the portal invitation with and without PORTAL_URL and the portal button above and below an approved agreement, a thank-you card after the details and after the approval that an expired link never shows, Copy link with its confirmation, its refusal and no address in the page, Contact us with links only for a dialable number and a mail address, the provider's logo on the agreement pages, Request changes on the agreement with its text required and a thank-you page that keeps the agreement readable, the Maps browser key as the one key parameter with no Google script, map or plan without it, address suggestions and a pinned billing address with it, a service address copied into billing only by the client, the approved property plan drawn read-only with its area, never the draft, and its loading, unreadable and invalid states, ACTIVATION_FAILED as completion, numbered terms, token only in the grant path, no money arithmetic, innerHTML, eval, console or storage, portal tokens only, and a live-only deterministic CMS package");

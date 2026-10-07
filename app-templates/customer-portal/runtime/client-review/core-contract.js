@@ -77,6 +77,7 @@
       property: "SERVICE_PROPERTY",
       address: "SERVICE_ADDRESS",
       pricingModel: "PRICING_MODEL",
+      plan: "PROPERTY_PLAN",
     },
     pricingModels: ["SEASONAL", "MONTHLY", "PER_SERVICE"],
     rawShape: {
