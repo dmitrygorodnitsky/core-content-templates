@@ -1270,3 +1270,18 @@ Evidence:
 - Follow-up risks: metadata is written after the native transition commit, with
   bounded polling and logged failures. Atomic storage requires backend changes.
   A new customer Request Changes submission has not been replayed for this change.
+
+## 13. Quote form success screen, 2026-10-07
+
+The quote form's success screen follows the design the team approved on
+2026-10-07: confirmation, an email banner, a request summary (the form id that
+`form/submit.json` returns, shown as `#<id>`; the submitted addresses; contact;
+email; local submission time) and three next steps. A "Back to Website" button
+appears once `FORM_WEBSITE_URL` is set in CMS. Every text is a `SUCCESS_*`
+parameter of `PORTAL_FORM_DOCUMENT`. CMS stores some empty parameters as a
+literal `#`, which the document reads as empty.
+
+Evidence: `node app-templates/customer-portal/scripts/portal-form-check.mjs`;
+uploaded to dev-1 with `upsert-portal-form.mjs --live`; both CMS nodes served
+byte-identical pages after one identical save to the stale node. No form was
+submitted.

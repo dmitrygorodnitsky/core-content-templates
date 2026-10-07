@@ -38,12 +38,28 @@ const COPY = [
   ["SCHEMA_ERROR_BODY", "We could not reach the form service. Nothing was sent."],
   ["EMPTY_TITLE", "This form has no fields"],
   ["EMPTY_BODY", "The published form type contains no visible attributes."],
-  ["SUCCESS_TITLE", "Thank you"],
-  ["SUCCESS_BODY", "We have received your submission."],
-  ["SUCCESS_NEXT_TITLE", "What happens next", "Heading of the numbered list of next steps on the success screen. It is shown only while at least one SUCCESS_STEP parameter has text."],
-  ["SUCCESS_STEP_1", "", "First step of what happens after a successful submission, shown as a numbered list on the success screen. Promise only what really follows a submission of this form type. Leave empty to show no list."],
-  ["SUCCESS_STEP_2", "", "Second next step on the success screen. Leave empty to omit it."],
-  ["SUCCESS_STEP_3", "", "Third next step on the success screen. Leave empty to omit it."],
+  ["SUCCESS_TITLE", "Quote request received", "Heading of the success screen. Focus moves to it when the submission is accepted."],
+  ["SUCCESS_BODY", "We’ve received your request and our team will review the property details and prepare your quote.", "Sentence under the success heading."],
+  ["SUCCESS_SENT_TITLE", "A confirmation has been sent to {email}.", "First line of the green banner on the success screen. {email} is the email address the visitor submitted; the line is shown only when the form held one. Promise a confirmation only while the form type's workflow really emails the requester."],
+  ["SUCCESS_SENT_BODY", "No action is needed from you right now. We’ll contact you if we need any additional information.", "Second line of the green banner on the success screen, shown with or without an email address. Leave empty, together with an absent email, to show no banner."],
+  ["SUCCESS_SUMMARY_TITLE", "Request summary", "Heading of the summary card on the success screen. The form id Core returns for the submission is shown beside it as #<id>."],
+  ["SUCCESS_PROPERTIES_LABEL", "Properties", "Summary row label for the submitted addresses. The row is shown only when the form held at least one address."],
+  ["SUCCESS_PROPERTIES_ONE", "{n} property submitted", "Summary line for exactly one submitted address. {n} is the count."],
+  ["SUCCESS_PROPERTIES_MANY", "{n} properties submitted", "Summary line for more than one submitted address. {n} is the count."],
+  ["SUCCESS_MORE_LABEL", "+{n} more", "Button under the first two addresses in the summary that shows the rest. {n} is the number of addresses not yet shown."],
+  ["SUCCESS_LESS_LABEL", "Show less", "Button that folds the summary back to its first two addresses."],
+  ["SUCCESS_CONTACT_LABEL", "Contact", "Summary row label for the submitted FIRST_NAME and LAST_NAME. The row is shown only when either was given."],
+  ["SUCCESS_EMAIL_LABEL", "Email", "Summary row label for the submitted email address. The row is shown only when the form held one."],
+  ["SUCCESS_SUBMITTED_LABEL", "Submitted", "Summary row label for the time the submission was accepted."],
+  ["SUCCESS_SUBMITTED_AT", "{date} at {time} ({zone})", "Format of the submission time in the visitor's own time zone. {date}, {time} and {zone} are formatted for the form locale, for example Oct 6, 2026, 2:14 PM and PST."],
+  ["SUCCESS_NEXT_TITLE", "What happens next", "Heading of the next steps on the success screen. It is shown only while at least one SUCCESS_STEP parameter has text."],
+  ["SUCCESS_STEP_1_TITLE", "Property Review", "Title of the first next step on the success screen, drawn with a document icon. Promise only what really follows a submission of this form type. Leave both step 1 parameters empty to omit the step."],
+  ["SUCCESS_STEP_1_TEXT", "We review your property details and service requirements.", "Description of the first next step."],
+  ["SUCCESS_STEP_2_TITLE", "Quote Preparation", "Title of the second next step, drawn with a price tag icon. Leave both step 2 parameters empty to omit the step."],
+  ["SUCCESS_STEP_2_TEXT", "We prepare pricing and recommended services for your properties.", "Description of the second next step."],
+  ["SUCCESS_STEP_3_TITLE", "Quote Delivery", "Title of the third next step, drawn with an envelope icon. Leave both step 3 parameters empty to omit the step."],
+  ["SUCCESS_STEP_3_TEXT", "We’ll email you when your quote is ready to review.", "Description of the third next step."],
+  ["SUCCESS_BACK_LABEL", "Back to Website", "Label of the primary button on the success screen that leads to FORM_WEBSITE_URL. The button is shown only while FORM_WEBSITE_URL holds an http or https address."],
   ["SUCCESS_AGAIN_LABEL", "", "Label of a button on the success screen that clears the form for another submission. Leave empty to show no button, which is right whenever a second submission from the same visitor would create duplicate records."],
   ["SUBMIT_ERROR_TITLE", "The request was not sent"],
   ["SUBMIT_ERROR_BODY", "Something went wrong on the way. Your answers are still here — try again."],
@@ -63,8 +79,17 @@ const COPY_KEYS = {
   SCHEMA_ERROR_TITLE: "schemaErrorTitle", SCHEMA_ERROR_BODY: "schemaErrorBody",
   EMPTY_TITLE: "emptyTitle", EMPTY_BODY: "emptyBody",
   SUCCESS_TITLE: "successTitle", SUCCESS_BODY: "successBody",
-  SUCCESS_NEXT_TITLE: "successNextTitle", SUCCESS_STEP_1: "successStep1", SUCCESS_STEP_2: "successStep2",
-  SUCCESS_STEP_3: "successStep3", SUCCESS_AGAIN_LABEL: "successAgainLabel",
+  SUCCESS_SENT_TITLE: "successSentTitle", SUCCESS_SENT_BODY: "successSentBody",
+  SUCCESS_SUMMARY_TITLE: "successSummaryTitle", SUCCESS_PROPERTIES_LABEL: "successPropertiesLabel",
+  SUCCESS_PROPERTIES_ONE: "successPropertiesOne", SUCCESS_PROPERTIES_MANY: "successPropertiesMany",
+  SUCCESS_MORE_LABEL: "successMoreLabel", SUCCESS_LESS_LABEL: "successLessLabel",
+  SUCCESS_CONTACT_LABEL: "successContactLabel", SUCCESS_EMAIL_LABEL: "successEmailLabel",
+  SUCCESS_SUBMITTED_LABEL: "successSubmittedLabel", SUCCESS_SUBMITTED_AT: "successSubmittedAt",
+  SUCCESS_NEXT_TITLE: "successNextTitle",
+  SUCCESS_STEP_1_TITLE: "successStep1Title", SUCCESS_STEP_1_TEXT: "successStep1Text",
+  SUCCESS_STEP_2_TITLE: "successStep2Title", SUCCESS_STEP_2_TEXT: "successStep2Text",
+  SUCCESS_STEP_3_TITLE: "successStep3Title", SUCCESS_STEP_3_TEXT: "successStep3Text",
+  SUCCESS_BACK_LABEL: "successBackLabel", SUCCESS_AGAIN_LABEL: "successAgainLabel",
   SUBMIT_ERROR_TITLE: "submitErrorTitle", SUBMIT_ERROR_BODY: "submitErrorBody",
   BLOCKED_TITLE: "blockedTitle", BLOCKED_BODY: "blockedBody",
 };
@@ -80,6 +105,7 @@ const DEPLOYMENT = [
   ["FORM_THEME", "snow", "Vertical palette. One of: " + THEMES.join(", ") + ". Any other value falls back to snow."],
   ["FORM_MODE", "light", "Colour mode. One of: " + MODES.join(", ") + ". Any other value falls back to light."],
   ["FORM_MAPS_API_KEY", "", "Google Maps browser key, used only by address fields: attributes whose Input format declares address and attributes of class Address. It is visible in page source, as every browser key is, so restrict it by HTTP referrer to this host and to the Maps JavaScript, Places and Geocoding APIs. While it is empty no Google script is loaded and an address field stays a plain text input."],
+  ["FORM_WEBSITE_URL", "", "Absolute http or https address of the website the success screen's SUCCESS_BACK_LABEL button leads to, for example https://snowlimitless.com. While it is empty, or holds anything else, the success screen shows no such button."],
 ];
 
 export async function exportPortalFormManual(options = {}) {
@@ -125,6 +151,7 @@ function templateFor(css, renderer) {
     "data-form-theme": ref("FORM_THEME", "STRING"),
     "data-form-mode": ref("FORM_MODE", "STRING"),
     "data-form-maps-api-key": ref("FORM_MAPS_API_KEY", "STRING"),
+    "data-form-website-url": ref("FORM_WEBSITE_URL", "STRING"),
   };
   Object.keys(COPY_KEYS).forEach(function (code) {
     attributes["data-copy-" + COPY_KEYS[code].replace(/[A-Z]/g, function (character) { return "-" + character.toLowerCase(); })] = ref(code);
@@ -158,7 +185,10 @@ function bootScript() {
   var MODES = ${JSON.stringify(MODES)};
   function oneOf(value, allowed, fallback) { return allowed.indexOf(value) === -1 ? fallback : value; }
   function ready(fn) { if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", fn, { once: true }); else fn(); }
-  function attribute(root, name) { return String(root.getAttribute(name) || "").trim(); }
+  function attribute(root, name) {
+    var value = String(root.getAttribute(name) || "").trim();
+    return value === "#" ? "" : value;
+  }
   function safeBase(value) {
     if (!value) return "";
     try { var url = new URL(value); return url.protocol === "https:" ? url.origin + url.pathname.replace(/\\/+$/, "") : ""; } catch (_) { return ""; }
@@ -187,6 +217,7 @@ function bootScript() {
       organizationId: Number.isFinite(organizationId) && organizationId > 0 ? organizationId : null,
       locale: attribute(root, "data-form-locale") || "en",
       mapsApiKey: attribute(root, "data-form-maps-api-key"),
+      websiteUrl: attribute(root, "data-form-website-url"),
       copy: copyFrom(root),
     }).mount(mount);
   });
@@ -271,7 +302,8 @@ function manifestFor(template) {
       "With a key, an address field shows its map from the start, holding the map's place while Google loads, with one pin for every address it holds that Google located. An Input format token map:<south>,<west>,<north>,<east> on the attribute names the area the empty map opens on; without it the empty map opens on the area named by within:, or on the whole world.",
       "An Input format token within:<south>,<west>,<north>,<east> on an address attribute names the area its addresses must lie in. Suggestions are limited to that area, and a typed address is added only once Google has located it there; an address outside it or one Google cannot find stays in the input with ADDRESS_OUTSIDE_ERROR or ADDRESS_UNKNOWN_ERROR until it is corrected. When Google does not answer within six seconds or is unavailable, the address is accepted unchecked, so the form never waits on Google to go on. The area is a rectangle and the form's first check only; a finer rule belongs to the process that receives the submission.",
       "FORM_THEME and FORM_MODE accept only a published vertical and light or dark. An unrecognised value falls back to the shipped default instead of writing an unknown data-theme that would silently render the wrong palette.",
-      "The success screen states only what its copy parameters say. SUCCESS_STEP_1 to SUCCESS_STEP_3 and SUCCESS_AGAIN_LABEL render nothing while empty, and the document never offers registration or sign-in.",
+      "The document reads a parameter value that is a lone # as empty, so an optional parameter CMS holds as # renders nothing instead of a stray #.",
+      "The success screen states only what its copy parameters say and what the visitor just submitted: the addresses, FIRST_NAME and LAST_NAME, and the email the form held, written as text. The request number is the form id Core returns from the submit, shown as #<id> only when the response is that id. A step whose title and text are both empty renders nothing, SUCCESS_AGAIN_LABEL renders nothing while empty, the back button appears only while FORM_WEBSITE_URL holds an http or https address, and the document never offers registration or sign-in.",
     ],
   };
 }
@@ -340,12 +372,13 @@ function readme(packageData) {
     "| `FORM_LOCALE` | locale segment used when reading the schema |",
     "| `FORM_THEME` | `hvac`, `snow`, `lawn`, `pool`, `roofing`, `pest`, `health` or `beauty` |",
     "| `FORM_MODE` | `light` or `dark` |",
+    "| `FORM_WEBSITE_URL` | website the success screen's back button leads to; empty hides it |",
     "",
     "Every other parameter is copy: labels, button text, and one message per validation and lifecycle state.",
     "",
     "## Success screen",
     "",
-    "`SUCCESS_TITLE` and `SUCCESS_BODY` confirm the submission. `SUCCESS_STEP_1` to `SUCCESS_STEP_3` list what happens next under `SUCCESS_NEXT_TITLE`, and `SUCCESS_AGAIN_LABEL` adds a button that clears the form for another submission. Each renders nothing while it is empty, so the shipped defaults promise nothing beyond receipt.",
+    "`SUCCESS_TITLE` and `SUCCESS_BODY` confirm the submission. `SUCCESS_SENT_TITLE` names the submitted email in a banner with `SUCCESS_SENT_BODY`. A summary card under `SUCCESS_SUMMARY_TITLE` shows the form id Core returned, the submitted addresses, contact name, email and the local submission time. `SUCCESS_STEP_1_TITLE` to `SUCCESS_STEP_3_TEXT` describe what happens next under `SUCCESS_NEXT_TITLE`, each with a fixed icon. `SUCCESS_BACK_LABEL` leads to `FORM_WEBSITE_URL` while that holds an http or https address, and `SUCCESS_AGAIN_LABEL` adds a button that clears the form for another submission. The shipped defaults are the quote request wording.",
     "",
     "## Contract",
     "",

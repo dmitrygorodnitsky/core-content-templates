@@ -56,6 +56,7 @@ function createDom() {
   dom.document = {
     head: make("head"),
     createElement: make,
+    createElementNS: (namespace, tag) => { const node = make(tag); node.namespace = namespace; return node; },
     getElementById: (value) => byId.get(String(value)) || null,
     querySelector: () => null,
     addEventListener(type, fn) { (documentListeners[type] = documentListeners[type] || []).push(fn); },
@@ -102,7 +103,7 @@ const sandbox = {
   clearTimeout(id) { timers.delete(id); },
   fetch(url, init) {
     posted.push({ url, init });
-    return Promise.resolve({ ok: true, status: 200, json: () => Promise.resolve({ id: 7 }) });
+    return Promise.resolve({ ok: true, status: 200, json: () => Promise.resolve(7) });
   },
 };
 sandbox.globalThis = sandbox;
@@ -1619,14 +1620,18 @@ outcome.mount(outcomeMount);
 await settle();
 Object.assign(outcome.values, { PLAIN_TEXT: "Plain", EMAIL: "dana@example.com", PROPERTY_TYPE: "RESIDENTIAL", ACCEPT_TERMS: true });
 assert.equal(await outcome.submit(), true);
-const successTitle = collect(outcomeMount, "pf-notice__title")[0];
+const successTitle = collect(outcomeMount, "pf-done__title")[0];
 assert.equal(outcomeMount.dataset.state, "success");
 assert.equal(successTitle.tagName, "H2", "the confirmation is the heading of what replaced the form");
 assert.equal(dom.activeElement, successTitle, "a successful submit moves focus to the confirmation instead of leaving it on the document body");
-assert.deepEqual(plain(collect(outcomeMount, "pf-next__text").map((node) => node.textContent)), ["successStep1", "successStep2", "successStep3"], "the success screen lists the next steps its copy declares, in order");
+assert.deepEqual(plain(collect(outcomeMount, "pf-next__name").map((node) => node.textContent)), ["successStep1Title", "successStep2Title", "successStep3Title"], "the success screen lists the next steps its copy declares, in order");
+assert.deepEqual(plain(collect(outcomeMount, "pf-next__text").map((node) => node.textContent)), ["successStep1Text", "successStep2Text", "successStep3Text"], "each step carries its own description");
+assert.deepEqual(plain(collect(outcomeMount, "pf-next__icon").map((node) => node.dataset.icon)), ["review", "price", "mail"], "each position keeps its own icon");
 assert.equal(collect(outcomeMount, "pf-next__list")[0].tagName, "OL");
-assert.deepEqual(plain(collect(outcomeMount, "pf-next__n").map((node) => node.getAttribute("aria-hidden"))), ["true", "true", "true"], "the drawn numbers are decoration; the ordered list carries the order");
-assert.equal(findTags(outcomeMount, "A", []).length, 0, "the success screen links nowhere: no registration, no sign-in, no portal route");
+assert.deepEqual(plain(collect(outcomeMount, "pf-next__marks").map((node) => node.getAttribute("aria-hidden"))), ["true", "true", "true"], "the drawn numbers and icons are decoration; the ordered list carries the order");
+assert.equal(findTags(outcomeMount, "A", []).length, 0, "without a website address the success screen links nowhere: no registration, no sign-in, no portal route");
+assert.equal(collect(outcomeMount, "pf-summary__number")[0].textContent, "#7", "the form id Core returns from the submit is the request number");
+assert.equal(collect(outcomeMount, "pf-done__sent-title")[0].textContent, "successSentTitle", "the banner names the email the form held");
 const successActions = findTags(outcomeMount, "BUTTON", []);
 assert.deepEqual(plain(successActions.map((node) => node.textContent)), ["successAgainLabel"], "its only action is the optional one that starts over");
 assert.equal(press(successActions[0], outcomeMount), true);
@@ -1634,18 +1639,100 @@ assert.equal(outcomeMount.dataset.state, "ready", "submit another response bring
 assert.equal(outcome.step, 0);
 assert.equal(outcome.values.PLAIN_TEXT, "", "with every answer cleared");
 assert.deepEqual(plain(outcome.touched), {}, "and nothing flagged before it is touched again");
+assert.equal(outcome.receipt, null, "and the summary of the previous submission forgotten");
 assert.equal(dom.activeElement && dom.activeElement.getAttribute("data-group"), "TEXTS", "focus lands on the first step");
 
-const silentCopy = new Proxy({}, { get: (_, key) => (/^successStep|^successAgainLabel$/.test(String(key)) ? "" : String(key)) });
+const silentCopy = new Proxy({}, { get: (_, key) => (/^successStep|^successAgainLabel$|^successSent/.test(String(key)) ? "" : String(key)) });
 const quietMount = dom.document.createElement("div");
-const quiet = new PortalForm({ schema: kitchen, locale: "en", copy: silentCopy });
+const quiet = new PortalForm({ schema: kitchen, locale: "en", copy: silentCopy, websiteUrl: "#" });
 quiet.mount(quietMount);
 await settle();
 quiet.state = "success";
 quiet.render();
 assert.equal(collect(quietMount, "pf-next").length, 0, "empty step copy renders no list and no heading");
 assert.equal(findTags(quietMount, "BUTTON", []).length, 0, "an empty again label renders no button");
-assert.equal(collect(quietMount, "pf-notice__title")[0].textContent, "successTitle");
+assert.equal(findTags(quietMount, "A", []).length, 0, "a website address that is not http or https renders no back button");
+assert.equal(collect(quietMount, "pf-done__sent").length, 0, "no email and no banner copy renders no banner");
+assert.equal(collect(quietMount, "pf-done__title")[0].textContent, "successTitle");
+
+const receiptCopy = {
+  successTitle: "Quote request received", successSentTitle: "A confirmation has been sent to {email}.", successSentBody: "No action is needed.",
+  successSummaryTitle: "Request summary", successPropertiesLabel: "Properties", successPropertiesOne: "{n} property submitted", successPropertiesMany: "{n} properties submitted",
+  successMoreLabel: "+{n} more", successLessLabel: "Show less", successContactLabel: "Contact", successEmailLabel: "Email", successSubmittedLabel: "Submitted",
+  successSubmittedAt: "{date} at {time} ({zone})", successNextTitle: "What happens next", successStep1Title: "Property Review", successStep1Text: "",
+  successStep2Title: "", successStep2Text: "", successStep3Title: "", successStep3Text: "We'll email you.", successBackLabel: "Back to Website", successAgainLabel: "",
+};
+const receiptPlaces = ["1280 Main St, Vancouver, BC", "45 King St, North Vancouver, BC", "<b>3</b> Oak Ave, Burnaby, BC", "4 Elm St, Surrey, BC", "5 Pine Rd, Delta, BC"];
+const succeedWith = async ({ places, email, first, last, answer, websiteUrl }) => {
+  const mount = dom.document.createElement("div");
+  const form = new PortalForm({ schema: quote, locale: "en", copy: receiptCopy, organizationId: 43, apiBaseUrl: "https://forms.example", websiteUrl });
+  form.mount(mount);
+  await settle();
+  Object.assign(form.values, { ORGANIZATION_NAME: "Acme", SELECT_ROLE: "OWNER", FIRST_NAME: first, LAST_NAME: last, EMAIL: email, PHONE: "+1 604 555 0164", PROPERTY_ADDRESSES: places });
+  const answered = sandbox.fetch;
+  sandbox.fetch = (url, init) => { posted.push({ url, init }); return Promise.resolve({ ok: true, status: 200, json: () => Promise.resolve(answer) }); };
+  try {
+    assert.equal(await form.submit(), true);
+  } finally {
+    sandbox.fetch = answered;
+  }
+  return { form, mount };
+};
+const rowsOf = (mount) => plain(collect(mount, "pf-summary__row").map((node) => node.dataset.row));
+const valueOf = (mount, row) => collect(collect(mount, "pf-summary__row").find((node) => node.dataset.row === row), "pf-summary__value")[0];
+const placesOf = (mount) => plain(collect(mount, "pf-summary__place").map((node) => node.textContent));
+
+const lone = await succeedWith({ places: receiptPlaces.slice(0, 1), email: "john@company.com", first: "John", last: "Doe", answer: 124, websiteUrl: "https://snow.example/" });
+assert.equal(collect(lone.mount, "pf-summary__number")[0].textContent, "#124", "a numeric submit response is shown as #<id>");
+assert.deepEqual(rowsOf(lone.mount), ["properties", "contact", "email", "submitted"]);
+assert.equal(collect(lone.mount, "pf-summary__count")[0].textContent, "1 property submitted", "one address takes the singular line");
+assert.deepEqual(placesOf(lone.mount), receiptPlaces.slice(0, 1));
+assert.equal(collect(lone.mount, "pf-summary__more").length, 0, "one address offers nothing to expand");
+assert.equal(valueOf(lone.mount, "contact").textContent, "John Doe", "the contact is the submitted first and last name");
+assert.equal(valueOf(lone.mount, "email").textContent, "john@company.com");
+assert.equal(collect(lone.mount, "pf-done__sent-title")[0].textContent, "A confirmation has been sent to john@company.com.", "the banner names the submitted email");
+assert.match(valueOf(lone.mount, "submitted").textContent, /^[A-Z][a-z]{2} \d{1,2}, \d{4} at \d{1,2}:\d{2}\s[AP]M \(.+\)$/, "the submission time is the visitor's local date, time and time-zone abbreviation");
+const backLink = findTags(lone.mount, "A", [])[0];
+assert.equal(backLink.getAttribute("href"), "https://snow.example/", "the back button leads to the configured website");
+assert.equal(backLink.children[0].textContent, "Back to Website");
+assert.equal(backLink.children[1].namespace, "http://www.w3.org/2000/svg", "its arrow is an inline SVG, not an external icon");
+assert.equal(lone.form.receipt.number, "124");
+
+const pair = await succeedWith({ places: receiptPlaces.slice(0, 2), email: "", first: "Dana", last: "", answer: "", websiteUrl: "" });
+assert.equal(collect(pair.mount, "pf-summary__number").length, 0, "a submit response that is not a form id shows no request number");
+assert.equal(collect(pair.mount, "pf-summary__count")[0].textContent, "2 properties submitted");
+assert.deepEqual(placesOf(pair.mount), receiptPlaces.slice(0, 2), "two addresses are both shown");
+assert.equal(collect(pair.mount, "pf-summary__more").length, 0, "and nothing is folded");
+assert.deepEqual(rowsOf(pair.mount), ["properties", "contact", "submitted"], "a form without an email has no email row");
+assert.equal(valueOf(pair.mount, "contact").textContent, "Dana");
+assert.equal(collect(pair.mount, "pf-done__sent-title").length, 0, "and its banner names no email");
+assert.deepEqual(plain(collect(pair.mount, "pf-done__sent-body").map((node) => node.textContent)), ["No action is needed."], "while the rest of the banner stays");
+assert.equal(findTags(pair.mount, "A", []).length, 0, "an empty website address hides the back button");
+assert.equal(collect(pair.mount, "pf-done__actions").length, 0, "and leaves no empty action row");
+assert.deepEqual(plain(collect(pair.mount, "pf-next__name").map((node) => node.textContent)), ["Property Review"], "a step with only a title keeps it");
+assert.deepEqual(plain(collect(pair.mount, "pf-next__text").map((node) => node.textContent)), ["We'll email you."], "a step with only a description keeps it, and an empty step is dropped");
+assert.deepEqual(plain(collect(pair.mount, "pf-next__icon").map((node) => node.dataset.icon)), ["review", "mail"], "a kept step keeps the icon of its position");
+assert.deepEqual(plain(collect(pair.mount, "pf-next__n").map((node) => node.textContent)), ["1", "2"], "and the shown steps are numbered in order");
+
+const five = await succeedWith({ places: receiptPlaces, email: "five@example.com", first: "", last: "", answer: { id: 9 }, websiteUrl: "javascript:alert(1)" });
+assert.equal(collect(five.mount, "pf-summary__number").length, 0, "only a bare id is a request number");
+assert.equal(findTags(five.mount, "A", []).length, 0, "a script address never becomes the back link");
+assert.deepEqual(rowsOf(five.mount), ["properties", "email", "submitted"], "a form without a name has no contact row");
+assert.equal(collect(five.mount, "pf-summary__count")[0].textContent, "5 properties submitted");
+assert.deepEqual(placesOf(five.mount), receiptPlaces.slice(0, 2), "five addresses show the first two");
+const unfold = () => collect(five.mount, "pf-summary__more")[0];
+assert.equal(unfold().textContent, "+3 more");
+assert.equal(unfold().getAttribute("aria-expanded"), "false");
+assert.equal(press(unfold(), five.mount), true);
+assert.deepEqual(placesOf(five.mount), receiptPlaces, "expanding shows every address");
+assert.equal(collect(five.mount, "pf-summary__place")[2].textContent, "<b>3</b> Oak Ave, Burnaby, BC", "an address is written as text, never as markup");
+assert.equal(unfold().textContent, "Show less");
+assert.equal(unfold().getAttribute("aria-expanded"), "true");
+assert.equal(dom.activeElement, unfold(), "focus stays on the toggle across the redraw");
+const stamped = valueOf(five.mount, "submitted").textContent;
+assert.equal(press(unfold(), five.mount), true);
+assert.deepEqual(placesOf(five.mount), receiptPlaces.slice(0, 2), "folding shows the first two again");
+assert.equal(valueOf(five.mount, "submitted").textContent, stamped, "a redraw keeps the time the submission was accepted");
 
 const statesMount = dom.document.createElement("div");
 const states = new PortalForm({ schema: quote, locale: "en", copy: copyEcho, organizationId: 43, apiBaseUrl: "https://forms.example" });
@@ -1663,7 +1750,7 @@ assert.equal(sending.disabled, true, "submitting disables the primary action");
 assert.equal(sending.textContent, "submittingLabel");
 assert.equal(collect(drawnAs("submit-error"), "pf-notice--error").length, 1, "a failed submit draws its notice inside the form");
 assert.ok(collect(statesMount, "pf-field").length > 0, "and keeps the answers on screen");
-assert.equal(collect(drawnAs("success"), "pf-notice--success").length, 1, "success draws the confirmation");
+assert.equal(collect(drawnAs("success"), "pf-done").length, 1, "success draws the confirmation");
 
 const servedMount = dom.document.createElement("div");
 const servedForm = new PortalForm({ schema: servedQuote, locale: "en", copy: copyEcho, organizationId: 43, apiBaseUrl: "https://forms.example" });
@@ -1890,28 +1977,56 @@ try {
   assert.match(template.javascript, /places\.AutocompleteSuggestion/, "the new Places data API is the primary path");
   assert.match(template.javascript, /places\.Autocomplete \?/, "the legacy widget stays as a fallback for older projects");
 
-  for (const code of ["SUCCESS_TITLE", "SUCCESS_BODY", "SUCCESS_NEXT_TITLE", "SUCCESS_STEP_1", "SUCCESS_STEP_2", "SUCCESS_STEP_3", "SUCCESS_AGAIN_LABEL"]) {
+  const designed = {
+    SUCCESS_TITLE: "Quote request received",
+    SUCCESS_BODY: "We’ve received your request and our team will review the property details and prepare your quote.",
+    SUCCESS_SENT_TITLE: "A confirmation has been sent to {email}.",
+    SUCCESS_SENT_BODY: "No action is needed from you right now. We’ll contact you if we need any additional information.",
+    SUCCESS_SUMMARY_TITLE: "Request summary",
+    SUCCESS_PROPERTIES_LABEL: "Properties",
+    SUCCESS_PROPERTIES_ONE: "{n} property submitted",
+    SUCCESS_PROPERTIES_MANY: "{n} properties submitted",
+    SUCCESS_MORE_LABEL: "+{n} more",
+    SUCCESS_LESS_LABEL: "Show less",
+    SUCCESS_CONTACT_LABEL: "Contact",
+    SUCCESS_EMAIL_LABEL: "Email",
+    SUCCESS_SUBMITTED_LABEL: "Submitted",
+    SUCCESS_SUBMITTED_AT: "{date} at {time} ({zone})",
+    SUCCESS_NEXT_TITLE: "What happens next",
+    SUCCESS_STEP_1_TITLE: "Property Review",
+    SUCCESS_STEP_1_TEXT: "We review your property details and service requirements.",
+    SUCCESS_STEP_2_TITLE: "Quote Preparation",
+    SUCCESS_STEP_2_TEXT: "We prepare pricing and recommended services for your properties.",
+    SUCCESS_STEP_3_TITLE: "Quote Delivery",
+    SUCCESS_STEP_3_TEXT: "We’ll email you when your quote is ready to review.",
+    SUCCESS_BACK_LABEL: "Back to Website",
+    SUCCESS_AGAIN_LABEL: "",
+  };
+  assert.deepEqual(
+    plain(template.parameters.filter((parameter) => parameter.code.startsWith("SUCCESS_")).map((parameter) => parameter.code)),
+    Object.keys(designed),
+    "the success screen is configured by exactly these copy parameters",
+  );
+  for (const [code, value] of Object.entries(designed)) {
     assert.equal(parameters.get(code).type, "LOCALIZED_STRING_SS", code + " is localized CMS copy");
+    assert.equal(parameters.get(code).value.en, value, code + " defaults to the approved design's wording");
     assert.match(template.html, new RegExp('data-copy-[a-z0-9-]+="\\$\\{' + code + '@LOCALIZED_STRING_SS\\}"'), code + " reaches the renderer through a data-copy attribute");
   }
-  for (const code of ["SUCCESS_STEP_1", "SUCCESS_STEP_2", "SUCCESS_STEP_3", "SUCCESS_AGAIN_LABEL"]) {
-    assert.equal(parameters.get(code).value.en, "", code + " ships empty, so the generic default lists no next step and offers no second submission");
-  }
-  assert.doesNotMatch(
-    parameters.get("SUCCESS_TITLE").value.en + " " + parameters.get("SUCCESS_BODY").value.en,
-    /quote|propert|account|sign|regist|touch|email/i,
-    "the default confirmation promises nothing beyond receipt, whatever the form type",
-  );
+  assert.equal(parameters.get("FORM_WEBSITE_URL").type, "STRING");
+  assert.equal(parameters.get("FORM_WEBSITE_URL").value, "", "the website address ships empty, so CMS keeps the one an operator set");
+  assert.match(template.html, /data-form-website-url="\$\{FORM_WEBSITE_URL@STRING\}"/);
+  assert.match(template.javascript, /websiteUrl: attribute\(root, "data-form-website-url"\)/);
+  assert.match(template.javascript, /return value === "#" \? "" : value;/, "a parameter CMS holds as a lone # is read as empty");
 
   const tokens = await fs.readFile(path.join(root, "runtime/styles/tokens.css"), "utf8");
   for (const theme of manifest.themes.filter((value) => value !== "hvac")) {
     assert.ok(tokens.includes('data-theme="' + theme + '"'), "tokens.css must define the " + theme + " palette");
   }
 
-  assert.equal(template.parameters.filter((parameter) => parameter.code.startsWith("FORM_")).length, 7);
+  assert.equal(template.parameters.filter((parameter) => parameter.code.startsWith("FORM_")).length, 8);
   assert.ok(template.parameters.every((parameter) => parameter.nls.en.DESCRIPTION.trim().length > 0), "every parameter needs a description in CMS");
 } finally {
   await fs.rm(documentDir, { recursive: true, force: true });
 }
 
-console.log("portal-form-check ok: " + KINDS.length + " field kinds, token DSL with spaced masks, attributeOrder authority, parent type ids, declarative behaviour only, anonymous requests, token-driven theming, constrained theme and mode, address fields that load no Google script without a key and wait for importLibrary with one, a repeating address that adds, removes and submits a JSON array, takes the first click on a suggestion and keeps typed text on screen across re-renders, Core's Address class drawn, validated, geocoded and submitted as the address control on the schema dev-1 served on 2026-09-16 while other entity classes stay selects, hidden attributes that never render yet still submit, and address coordinates asked for on every typed commit that follow every add, edit and removal without ever reaching the screen; focus and the first click survive blur and re-render, address suggestions follow the ARIA combobox pattern, each address string is geocoded once, an address map that is on screen as soon as Google is ready, keeps one pin per located address through every redraw and step, opens where the format declares and takes no answer with it when it fails, an address held to an area that is added only once Google has located it there, stays in the input with its message when it lies outside or cannot be found, and is accepted unchecked when Google does not answer, and the success screen promises only its copy");
+console.log("portal-form-check ok: " + KINDS.length + " field kinds, token DSL with spaced masks, attributeOrder authority, parent type ids, declarative behaviour only, anonymous requests, token-driven theming, constrained theme and mode, address fields that load no Google script without a key and wait for importLibrary with one, a repeating address that adds, removes and submits a JSON array, takes the first click on a suggestion and keeps typed text on screen across re-renders, Core's Address class drawn, validated, geocoded and submitted as the address control on the schema dev-1 served on 2026-09-16 while other entity classes stay selects, hidden attributes that never render yet still submit, and address coordinates asked for on every typed commit that follow every add, edit and removal without ever reaching the screen; focus and the first click survive blur and re-render, address suggestions follow the ARIA combobox pattern, each address string is geocoded once, an address map that is on screen as soon as Google is ready, keeps one pin per located address through every redraw and step, opens where the format declares and takes no answer with it when it fails, an address held to an area that is added only once Google has located it there, stays in the input with its message when it lies outside or cannot be found, and is accepted unchecked when Google does not answer, and a success screen that promises only its copy, summarizes the submitted addresses, name, email and local time, shows the returned form id and leads back only to a configured http website");

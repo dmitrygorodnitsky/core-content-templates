@@ -77,6 +77,17 @@
     "value": ""
   },
   {
+    "code": "FORM_WEBSITE_URL",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "FORM WEBSITE URL",
+        "DESCRIPTION": "Absolute http or https address of the website the success screen's SUCCESS_BACK_LABEL button leads to, for example https://snowlimitless.com. While it is empty, or holds anything else, the success screen shows no such button."
+      }
+    },
+    "value": ""
+  },
+  {
     "code": "TITLE",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
@@ -420,11 +431,11 @@
     "nls": {
       "en": {
         "NAME": "SUCCESS TITLE",
-        "DESCRIPTION": "Portal form document copy."
+        "DESCRIPTION": "Heading of the success screen. Focus moves to it when the submission is accepted."
       }
     },
     "value": {
-      "en": "Thank you"
+      "en": "Quote request received"
     }
   },
   {
@@ -433,11 +444,167 @@
     "nls": {
       "en": {
         "NAME": "SUCCESS BODY",
-        "DESCRIPTION": "Portal form document copy."
+        "DESCRIPTION": "Sentence under the success heading."
       }
     },
     "value": {
-      "en": "We have received your submission."
+      "en": "We’ve received your request and our team will review the property details and prepare your quote."
+    }
+  },
+  {
+    "code": "SUCCESS_SENT_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "SUCCESS SENT TITLE",
+        "DESCRIPTION": "First line of the green banner on the success screen. {email} is the email address the visitor submitted; the line is shown only when the form held one. Promise a confirmation only while the form type's workflow really emails the requester."
+      }
+    },
+    "value": {
+      "en": "A confirmation has been sent to {email}."
+    }
+  },
+  {
+    "code": "SUCCESS_SENT_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "SUCCESS SENT BODY",
+        "DESCRIPTION": "Second line of the green banner on the success screen, shown with or without an email address. Leave empty, together with an absent email, to show no banner."
+      }
+    },
+    "value": {
+      "en": "No action is needed from you right now. We’ll contact you if we need any additional information."
+    }
+  },
+  {
+    "code": "SUCCESS_SUMMARY_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "SUCCESS SUMMARY TITLE",
+        "DESCRIPTION": "Heading of the summary card on the success screen. The form id Core returns for the submission is shown beside it as #<id>."
+      }
+    },
+    "value": {
+      "en": "Request summary"
+    }
+  },
+  {
+    "code": "SUCCESS_PROPERTIES_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "SUCCESS PROPERTIES LABEL",
+        "DESCRIPTION": "Summary row label for the submitted addresses. The row is shown only when the form held at least one address."
+      }
+    },
+    "value": {
+      "en": "Properties"
+    }
+  },
+  {
+    "code": "SUCCESS_PROPERTIES_ONE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "SUCCESS PROPERTIES ONE",
+        "DESCRIPTION": "Summary line for exactly one submitted address. {n} is the count."
+      }
+    },
+    "value": {
+      "en": "{n} property submitted"
+    }
+  },
+  {
+    "code": "SUCCESS_PROPERTIES_MANY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "SUCCESS PROPERTIES MANY",
+        "DESCRIPTION": "Summary line for more than one submitted address. {n} is the count."
+      }
+    },
+    "value": {
+      "en": "{n} properties submitted"
+    }
+  },
+  {
+    "code": "SUCCESS_MORE_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "SUCCESS MORE LABEL",
+        "DESCRIPTION": "Button under the first two addresses in the summary that shows the rest. {n} is the number of addresses not yet shown."
+      }
+    },
+    "value": {
+      "en": "+{n} more"
+    }
+  },
+  {
+    "code": "SUCCESS_LESS_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "SUCCESS LESS LABEL",
+        "DESCRIPTION": "Button that folds the summary back to its first two addresses."
+      }
+    },
+    "value": {
+      "en": "Show less"
+    }
+  },
+  {
+    "code": "SUCCESS_CONTACT_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "SUCCESS CONTACT LABEL",
+        "DESCRIPTION": "Summary row label for the submitted FIRST_NAME and LAST_NAME. The row is shown only when either was given."
+      }
+    },
+    "value": {
+      "en": "Contact"
+    }
+  },
+  {
+    "code": "SUCCESS_EMAIL_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "SUCCESS EMAIL LABEL",
+        "DESCRIPTION": "Summary row label for the submitted email address. The row is shown only when the form held one."
+      }
+    },
+    "value": {
+      "en": "Email"
+    }
+  },
+  {
+    "code": "SUCCESS_SUBMITTED_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "SUCCESS SUBMITTED LABEL",
+        "DESCRIPTION": "Summary row label for the time the submission was accepted."
+      }
+    },
+    "value": {
+      "en": "Submitted"
+    }
+  },
+  {
+    "code": "SUCCESS_SUBMITTED_AT",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "SUCCESS SUBMITTED AT",
+        "DESCRIPTION": "Format of the submission time in the visitor's own time zone. {date}, {time} and {zone} are formatted for the form locale, for example Oct 6, 2026, 2:14 PM and PST."
+      }
+    },
+    "value": {
+      "en": "{date} at {time} ({zone})"
     }
   },
   {
@@ -446,7 +613,7 @@
     "nls": {
       "en": {
         "NAME": "SUCCESS NEXT TITLE",
-        "DESCRIPTION": "Heading of the numbered list of next steps on the success screen. It is shown only while at least one SUCCESS_STEP parameter has text."
+        "DESCRIPTION": "Heading of the next steps on the success screen. It is shown only while at least one SUCCESS_STEP parameter has text."
       }
     },
     "value": {
@@ -454,42 +621,94 @@
     }
   },
   {
-    "code": "SUCCESS_STEP_1",
+    "code": "SUCCESS_STEP_1_TITLE",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "SUCCESS STEP 1",
-        "DESCRIPTION": "First step of what happens after a successful submission, shown as a numbered list on the success screen. Promise only what really follows a submission of this form type. Leave empty to show no list."
+        "NAME": "SUCCESS STEP 1 TITLE",
+        "DESCRIPTION": "Title of the first next step on the success screen, drawn with a document icon. Promise only what really follows a submission of this form type. Leave both step 1 parameters empty to omit the step."
       }
     },
     "value": {
-      "en": ""
+      "en": "Property Review"
     }
   },
   {
-    "code": "SUCCESS_STEP_2",
+    "code": "SUCCESS_STEP_1_TEXT",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "SUCCESS STEP 2",
-        "DESCRIPTION": "Second next step on the success screen. Leave empty to omit it."
+        "NAME": "SUCCESS STEP 1 TEXT",
+        "DESCRIPTION": "Description of the first next step."
       }
     },
     "value": {
-      "en": ""
+      "en": "We review your property details and service requirements."
     }
   },
   {
-    "code": "SUCCESS_STEP_3",
+    "code": "SUCCESS_STEP_2_TITLE",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "SUCCESS STEP 3",
-        "DESCRIPTION": "Third next step on the success screen. Leave empty to omit it."
+        "NAME": "SUCCESS STEP 2 TITLE",
+        "DESCRIPTION": "Title of the second next step, drawn with a price tag icon. Leave both step 2 parameters empty to omit the step."
       }
     },
     "value": {
-      "en": ""
+      "en": "Quote Preparation"
+    }
+  },
+  {
+    "code": "SUCCESS_STEP_2_TEXT",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "SUCCESS STEP 2 TEXT",
+        "DESCRIPTION": "Description of the second next step."
+      }
+    },
+    "value": {
+      "en": "We prepare pricing and recommended services for your properties."
+    }
+  },
+  {
+    "code": "SUCCESS_STEP_3_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "SUCCESS STEP 3 TITLE",
+        "DESCRIPTION": "Title of the third next step, drawn with an envelope icon. Leave both step 3 parameters empty to omit the step."
+      }
+    },
+    "value": {
+      "en": "Quote Delivery"
+    }
+  },
+  {
+    "code": "SUCCESS_STEP_3_TEXT",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "SUCCESS STEP 3 TEXT",
+        "DESCRIPTION": "Description of the third next step."
+      }
+    },
+    "value": {
+      "en": "We’ll email you when your quote is ready to review."
+    }
+  },
+  {
+    "code": "SUCCESS_BACK_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "SUCCESS BACK LABEL",
+        "DESCRIPTION": "Label of the primary button on the success screen that leads to FORM_WEBSITE_URL. The button is shown only while FORM_WEBSITE_URL holds an http or https address."
+      }
+    },
+    "value": {
+      "en": "Back to Website"
     }
   },
   {

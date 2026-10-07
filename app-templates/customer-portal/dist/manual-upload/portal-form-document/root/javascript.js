@@ -29,6 +29,63 @@
     return node;
   }
 
+  var SVG_NS = "http://www.w3.org/2000/svg";
+  var ICONS = {
+    check: ["M20 6 9 17l-5-5"],
+    mail: ["M4 5h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z", "m22 7-10 6L2 7"],
+    review: ["M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z", "M14 2v6h6", "M16 13H8", "M16 17H8", "M10 9H8"],
+    price: ["M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z", "M7.5 7.5h.01"],
+    arrow: ["M5 12h14", "m12 5 7 7-7 7"],
+  };
+  var STEP_ICONS = ["review", "price", "mail"];
+  var SUMMARY_PLACES = 2;
+
+  function icon(name) {
+    var svg = document.createElementNS(SVG_NS, "svg");
+    [["class", "pf-icon"], ["viewBox", "0 0 24 24"], ["width", "24"], ["height", "24"], ["fill", "none"],
+      ["stroke", "currentColor"], ["stroke-width", "2"], ["stroke-linecap", "round"], ["stroke-linejoin", "round"],
+      ["aria-hidden", "true"], ["focusable", "false"]].forEach(function (pair) { svg.setAttribute(pair[0], pair[1]); });
+    ICONS[name].forEach(function (shape) {
+      var path = document.createElementNS(SVG_NS, "path");
+      path.setAttribute("d", shape);
+      svg.appendChild(path);
+    });
+    return svg;
+  }
+
+  function fill(template, values) {
+    return String(template == null ? "" : template).replace(/\{([a-z]+)\}/g, function (whole, key) {
+      return Object.prototype.hasOwnProperty.call(values, key) ? String(values[key]) : whole;
+    });
+  }
+
+  function said(value) {
+    return value == null ? "" : String(value).trim();
+  }
+
+  function formNumber(payload) {
+    if (typeof payload === "number" && isFinite(payload) && payload > 0 && Math.floor(payload) === payload) return String(payload);
+    if (typeof payload === "string" && /^\s*[1-9]\d*\s*$/.test(payload)) return payload.trim();
+    return "";
+  }
+
+  function webAddress(value) {
+    var address = said(value);
+    return /^https?:\/\/[^\s"<>]+$/i.test(address) ? address : "";
+  }
+
+  function dateParts(locale, at) {
+    function formatter(options) {
+      try { return new Intl.DateTimeFormat(locale, options); } catch (_) { return new Intl.DateTimeFormat("en", options); }
+    }
+    var zone = formatter({ timeZoneName: "short" }).formatToParts(at).filter(function (part) { return part.type === "timeZoneName"; })[0];
+    return {
+      date: formatter({ month: "short", day: "numeric", year: "numeric" }).format(at),
+      time: formatter({ hour: "numeric", minute: "2-digit" }).format(at),
+      zone: zone ? zone.value : "",
+    };
+  }
+
   function localized(nls, locale, key) {
     if (!nls || typeof nls !== "object") return "";
     var bag = nls[locale] || nls.en || nls[Object.keys(nls)[0]] || {};
@@ -394,6 +451,8 @@
     this.step = 0;
     this.state = "loading";
     this.result = null;
+    this.receipt = null;
+    this.placesOpen = false;
   }
 
   PortalForm.prototype.mount = function (target) {
@@ -645,6 +704,7 @@
         self.submissionPending = false;
         self.state = "success";
         self.result = payload;
+        self.receipt = self.summarize(payload, new Date());
         self.render();
         self.focusKeyed("success");
         if (typeof self.cfg.onSubmit === "function") {
@@ -1125,45 +1185,155 @@
     return wrap;
   };
 
+  PortalForm.prototype.summarize = function (payload, at) {
+    var self = this;
+    var places = [];
+    var email = "";
+    var names = { FIRST_NAME: "", LAST_NAME: "" };
+    this.visibleGroups().forEach(function (group) {
+      group.fields.forEach(function (field) {
+        var value = self.values[field.code];
+        if (field.kind === "address" || field.kind === "address-list") {
+          repeatList(value).forEach(function (entry) { if (said(entry)) places.push(said(entry)); });
+        } else if (field.kind === "email") {
+          if (!email && typeof value === "string") email = said(value);
+        } else if (Object.prototype.hasOwnProperty.call(names, field.code) && typeof value === "string") {
+          names[field.code] = said(value);
+        }
+      });
+    });
+    return {
+      number: formNumber(payload),
+      at: at,
+      places: places,
+      email: email,
+      contact: [names.FIRST_NAME, names.LAST_NAME].filter(Boolean).join(" "),
+    };
+  };
+
   PortalForm.prototype.renderSuccess = function () {
     var self = this;
     var copy = this.cfg.copy;
-    var wrap = el("div", "pf-notice pf-notice--success", { "data-state": "success" });
-    var glyph = text("div", "pf-notice__glyph", "✓");
-    glyph.setAttribute("aria-hidden", "true");
-    wrap.appendChild(glyph);
-    var title = text("h2", "pf-notice__title", copy.successTitle);
+    if (!this.receipt) this.receipt = this.summarize(this.result, new Date());
+    var receipt = this.receipt;
+    var wrap = el("div", "pf-done", { "data-state": "success" });
+
+    var head = el("div", "pf-done__head");
+    var glyph = el("span", "pf-done__glyph");
+    glyph.appendChild(icon("check"));
+    head.appendChild(glyph);
+    var title = text("h2", "pf-done__title", copy.successTitle);
     title.setAttribute("tabindex", "-1");
     title.setAttribute("data-focus", "success");
-    wrap.appendChild(title);
-    if (copy.successBody) wrap.appendChild(text("div", "pf-notice__body", copy.successBody));
+    head.appendChild(title);
+    if (said(copy.successBody)) head.appendChild(text("p", "pf-done__body", copy.successBody));
+    wrap.appendChild(head);
 
-    var steps = [copy.successStep1, copy.successStep2, copy.successStep3].filter(function (step) {
-      return step != null && String(step).trim() !== "";
-    });
-    if (steps.length) {
-      var next = el("div", "pf-next");
-      if (copy.successNextTitle) next.appendChild(text("h3", "pf-next__title", copy.successNextTitle));
-      var list = el("ol", "pf-next__list");
-      steps.forEach(function (step, index) {
-        var item = el("li", "pf-next__item");
-        var number = text("span", "pf-next__n", index + 1);
-        number.setAttribute("aria-hidden", "true");
-        item.appendChild(number);
-        item.appendChild(text("span", "pf-next__text", step));
-        list.appendChild(item);
-      });
-      next.appendChild(list);
-      wrap.appendChild(next);
+    var sentTitle = receipt.email && said(copy.successSentTitle) ? fill(copy.successSentTitle, { email: receipt.email }) : "";
+    if (sentTitle || said(copy.successSentBody)) {
+      var sent = el("div", "pf-done__sent");
+      var mark = el("span", "pf-done__sent-icon");
+      mark.appendChild(icon("mail"));
+      sent.appendChild(mark);
+      var words = el("div", "pf-done__sent-text");
+      if (sentTitle) words.appendChild(text("p", "pf-done__sent-title", sentTitle));
+      if (said(copy.successSentBody)) words.appendChild(text("p", "pf-done__sent-body", copy.successSentBody));
+      sent.appendChild(words);
+      wrap.appendChild(sent);
     }
 
-    if (copy.successAgainLabel) {
+    wrap.appendChild(this.renderSummary(receipt));
+    var next = this.renderNext();
+    if (next) wrap.appendChild(next);
+
+    var actions = el("div", "pf-done__actions");
+    var website = webAddress(this.cfg.websiteUrl);
+    if (website && said(copy.successBackLabel)) {
+      var back = el("a", "btn btn--primary btn--lg pf-done__back", { href: website });
+      back.appendChild(text("span", "", copy.successBackLabel));
+      back.appendChild(icon("arrow"));
+      actions.appendChild(back);
+    }
+    if (said(copy.successAgainLabel)) {
       var again = text("button", "btn btn--ghost btn--lg", copy.successAgainLabel);
       again.type = "button";
       again.addEventListener("click", function () { self.restart(); });
-      wrap.appendChild(again);
+      actions.appendChild(again);
     }
+    if (actions.children.length) wrap.appendChild(actions);
     return wrap;
+  };
+
+  PortalForm.prototype.renderSummary = function (receipt) {
+    var self = this;
+    var copy = this.cfg.copy;
+    var card = el("div", "pf-summary");
+    var head = el("div", "pf-summary__head");
+    head.appendChild(text("h3", "pf-summary__title", copy.successSummaryTitle));
+    if (receipt.number) head.appendChild(text("span", "pf-summary__number", "#" + receipt.number));
+    card.appendChild(head);
+
+    var list = el("dl", "pf-summary__list");
+    function row(kind, label) {
+      var item = el("div", "pf-summary__row pf-summary__row--" + kind, { "data-row": kind });
+      item.appendChild(text("dt", "pf-summary__label", label));
+      var value = el("dd", "pf-summary__value");
+      item.appendChild(value);
+      list.appendChild(item);
+      return value;
+    }
+
+    var count = receipt.places.length;
+    if (count) {
+      var properties = row("properties", copy.successPropertiesLabel);
+      properties.appendChild(text("p", "pf-summary__count", fill(count === 1 ? copy.successPropertiesOne : copy.successPropertiesMany, { n: count })));
+      var folded = count > SUMMARY_PLACES;
+      var open = folded && this.placesOpen;
+      var places = el("ul", "pf-summary__places");
+      (folded && !open ? receipt.places.slice(0, SUMMARY_PLACES) : receipt.places).forEach(function (place) {
+        places.appendChild(text("li", "pf-summary__place", place));
+      });
+      properties.appendChild(places);
+      if (folded) {
+        var more = text("button", "pf-summary__more", open ? copy.successLessLabel : fill(copy.successMoreLabel, { n: count - SUMMARY_PLACES }));
+        more.type = "button";
+        more.setAttribute("aria-expanded", open ? "true" : "false");
+        more.setAttribute("data-focus", "success-places");
+        more.addEventListener("click", function () { self.placesOpen = !self.placesOpen; self.render(); });
+        properties.appendChild(more);
+      }
+    }
+    if (receipt.contact) row("contact", copy.successContactLabel).textContent = receipt.contact;
+    if (receipt.email) row("email", copy.successEmailLabel).textContent = receipt.email;
+    row("submitted", copy.successSubmittedLabel).textContent = fill(copy.successSubmittedAt, dateParts(this.locale, receipt.at));
+    card.appendChild(list);
+    return card;
+  };
+
+  PortalForm.prototype.renderNext = function () {
+    var copy = this.cfg.copy;
+    var steps = STEP_ICONS.map(function (glyph, index) {
+      return { glyph: glyph, title: said(copy["successStep" + (index + 1) + "Title"]), text: said(copy["successStep" + (index + 1) + "Text"]) };
+    }).filter(function (step) { return step.title || step.text; });
+    if (!steps.length) return null;
+    var next = el("div", "pf-next");
+    if (said(copy.successNextTitle)) next.appendChild(text("h3", "pf-next__title", copy.successNextTitle));
+    var list = el("ol", "pf-next__list");
+    steps.forEach(function (step, index) {
+      var item = el("li", "pf-next__item");
+      var marks = el("div", "pf-next__marks", { "aria-hidden": "true" });
+      marks.appendChild(text("span", "pf-next__n", index + 1));
+      var badge = el("span", "pf-next__icon", { "data-icon": step.glyph });
+      badge.appendChild(icon(step.glyph));
+      marks.appendChild(badge);
+      marks.appendChild(el("span", "pf-next__line"));
+      item.appendChild(marks);
+      if (step.title) item.appendChild(text("h4", "pf-next__name", step.title));
+      if (step.text) item.appendChild(text("p", "pf-next__text", step.text));
+      list.appendChild(item);
+    });
+    next.appendChild(list);
+    return next;
   };
 
   PortalForm.prototype.restart = function () {
@@ -1175,6 +1345,8 @@
     this.locations = {};
     this.lookups = {};
     this.result = null;
+    this.receipt = null;
+    this.placesOpen = false;
     this.step = 0;
     this.seed();
     this.state = "ready";
@@ -1677,12 +1849,15 @@
 
 (function () {
   "use strict";
-  var COPY_KEYS = {"TITLE":"title","SUBTITLE":"subtitle","NOTE":"note","SUBMIT_LABEL":"submitLabel","SUBMITTING_LABEL":"submittingLabel","NEXT_LABEL":"nextLabel","BACK_LABEL":"backLabel","RETRY_LABEL":"retryLabel","STEP_FALLBACK":"stepFallback","SELECT_PLACEHOLDER":"selectPlaceholder","REQUIRED_ERROR":"requiredError","FORMAT_ERROR":"formatError","INCOMPLETE_ERROR":"incompleteError","EMAIL_ERROR":"emailError","URL_ERROR":"urlError","NUMBER_ERROR":"numberError","MIN_ERROR":"minError","MAX_ERROR":"maxError","MIN_LENGTH_ERROR":"minLengthError","MAX_LENGTH_ERROR":"maxLengthError","ADDRESS_OUTSIDE_ERROR":"addressOutsideError","ADDRESS_UNKNOWN_ERROR":"addressUnknownError","SCHEMA_ERROR_TITLE":"schemaErrorTitle","SCHEMA_ERROR_BODY":"schemaErrorBody","EMPTY_TITLE":"emptyTitle","EMPTY_BODY":"emptyBody","SUCCESS_TITLE":"successTitle","SUCCESS_BODY":"successBody","SUCCESS_NEXT_TITLE":"successNextTitle","SUCCESS_STEP_1":"successStep1","SUCCESS_STEP_2":"successStep2","SUCCESS_STEP_3":"successStep3","SUCCESS_AGAIN_LABEL":"successAgainLabel","SUBMIT_ERROR_TITLE":"submitErrorTitle","SUBMIT_ERROR_BODY":"submitErrorBody","BLOCKED_TITLE":"blockedTitle","BLOCKED_BODY":"blockedBody"};
+  var COPY_KEYS = {"TITLE":"title","SUBTITLE":"subtitle","NOTE":"note","SUBMIT_LABEL":"submitLabel","SUBMITTING_LABEL":"submittingLabel","NEXT_LABEL":"nextLabel","BACK_LABEL":"backLabel","RETRY_LABEL":"retryLabel","STEP_FALLBACK":"stepFallback","SELECT_PLACEHOLDER":"selectPlaceholder","REQUIRED_ERROR":"requiredError","FORMAT_ERROR":"formatError","INCOMPLETE_ERROR":"incompleteError","EMAIL_ERROR":"emailError","URL_ERROR":"urlError","NUMBER_ERROR":"numberError","MIN_ERROR":"minError","MAX_ERROR":"maxError","MIN_LENGTH_ERROR":"minLengthError","MAX_LENGTH_ERROR":"maxLengthError","ADDRESS_OUTSIDE_ERROR":"addressOutsideError","ADDRESS_UNKNOWN_ERROR":"addressUnknownError","SCHEMA_ERROR_TITLE":"schemaErrorTitle","SCHEMA_ERROR_BODY":"schemaErrorBody","EMPTY_TITLE":"emptyTitle","EMPTY_BODY":"emptyBody","SUCCESS_TITLE":"successTitle","SUCCESS_BODY":"successBody","SUCCESS_SENT_TITLE":"successSentTitle","SUCCESS_SENT_BODY":"successSentBody","SUCCESS_SUMMARY_TITLE":"successSummaryTitle","SUCCESS_PROPERTIES_LABEL":"successPropertiesLabel","SUCCESS_PROPERTIES_ONE":"successPropertiesOne","SUCCESS_PROPERTIES_MANY":"successPropertiesMany","SUCCESS_MORE_LABEL":"successMoreLabel","SUCCESS_LESS_LABEL":"successLessLabel","SUCCESS_CONTACT_LABEL":"successContactLabel","SUCCESS_EMAIL_LABEL":"successEmailLabel","SUCCESS_SUBMITTED_LABEL":"successSubmittedLabel","SUCCESS_SUBMITTED_AT":"successSubmittedAt","SUCCESS_NEXT_TITLE":"successNextTitle","SUCCESS_STEP_1_TITLE":"successStep1Title","SUCCESS_STEP_1_TEXT":"successStep1Text","SUCCESS_STEP_2_TITLE":"successStep2Title","SUCCESS_STEP_2_TEXT":"successStep2Text","SUCCESS_STEP_3_TITLE":"successStep3Title","SUCCESS_STEP_3_TEXT":"successStep3Text","SUCCESS_BACK_LABEL":"successBackLabel","SUCCESS_AGAIN_LABEL":"successAgainLabel","SUBMIT_ERROR_TITLE":"submitErrorTitle","SUBMIT_ERROR_BODY":"submitErrorBody","BLOCKED_TITLE":"blockedTitle","BLOCKED_BODY":"blockedBody"};
   var THEMES = ["hvac","snow","lawn","pool","roofing","pest","health","beauty"];
   var MODES = ["light","dark"];
   function oneOf(value, allowed, fallback) { return allowed.indexOf(value) === -1 ? fallback : value; }
   function ready(fn) { if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", fn, { once: true }); else fn(); }
-  function attribute(root, name) { return String(root.getAttribute(name) || "").trim(); }
+  function attribute(root, name) {
+    var value = String(root.getAttribute(name) || "").trim();
+    return value === "#" ? "" : value;
+  }
   function safeBase(value) {
     if (!value) return "";
     try { var url = new URL(value); return url.protocol === "https:" ? url.origin + url.pathname.replace(/\/+$/, "") : ""; } catch (_) { return ""; }
@@ -1711,6 +1886,7 @@
       organizationId: Number.isFinite(organizationId) && organizationId > 0 ? organizationId : null,
       locale: attribute(root, "data-form-locale") || "en",
       mapsApiKey: attribute(root, "data-form-maps-api-key"),
+      websiteUrl: attribute(root, "data-form-website-url"),
       copy: copyFrom(root),
     }).mount(mount);
   });
