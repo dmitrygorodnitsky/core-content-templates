@@ -9,6 +9,8 @@ import { ProposalComparison } from "../components/proposals/ProposalComparison.j
 import { QUOTE_STATUS } from "../components/proposals/QuotePackage.js";
 import { QuoteOptionCard } from "../components/proposals/QuoteOptionCard.js";
 import { ContractDetailSkeleton, PartialNotice, contractsGate } from "../components/proposals/ContractStates.js";
+import { PropertyLocation } from "../components/storm/PropertyMap.js";
+import { mapViewport, sharedPropertyMap } from "../property-map-session.js";
 import { formatDatePeriod } from "../normalizers/contracts.js";
 import { Profile } from "./ProfilePage.js";
 import { Activity } from "./ActivityPage.js";
@@ -202,7 +204,12 @@ function QuoteDetail() {
       h("div", { "class": "proposal-footer__copy" }, "Approving one option for this property declines its other options."),
     ]));
   }
+  page.appendChild(PropertyLocation({ property: quotedProperty(group), map: sharedPropertyMap(), viewport: mapViewport() }));
   return page;
+}
+
+function quotedProperty(group) {
+  return group.property || { id: group.id, name: group.title, address: group.address, lat: null, lon: null };
 }
 
 function decisionNote(group) {

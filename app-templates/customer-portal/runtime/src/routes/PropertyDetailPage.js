@@ -1,12 +1,12 @@
 import { h } from "../dom.js";
 import { currentFixture, currentOverview, isModuleEnabled, liveOverviewStatus, quoteGroupFor, quotePackage, state } from "../state.js";
-import { browserStorage, createGeocodeCache } from "../adapters/google-maps-adapter.js";
 import { ActionButton } from "../components/primitives/ActionButton.js";
 import { EmptyState } from "../components/primitives/EmptyState.js";
 import { ErrorState } from "../components/primitives/ErrorState.js";
 import { UnauthorizedState, skel } from "../components/primitives/RouteStates.js";
 import { SectionUnavailable, UnavailableChip } from "../components/primitives/SectionUnavailable.js";
-import { knownPlacement } from "../components/storm/PropertyMap.js";
+import { PropertyLocation } from "../components/storm/PropertyMap.js";
+import { mapViewport, sharedPropertyMap } from "../property-map-session.js";
 import { OVERVIEW_STATUS as STATUS, knownPropertyStatus, sectionAvailable } from "../normalizers/overview.js";
 import { stateMeta } from "../normalizers/appointments.js";
 
@@ -80,6 +80,11 @@ export function PropertyDetail() {
       ]);
     })));
 
+  page.appendChild(PropertyLocation({
+    property: property, map: sharedPropertyMap(), viewport: mapViewport(),
+    link: { label: "See it with your other properties", action: "property.showOnMap", id: property.id },
+  }));
+
   if (property.ticket && sectionAvailable(model, "support")) {
     page.appendChild(h("div", { "class": "card card--pad prop-ticket", "data-module": "property-ticket", "data-visual-id": "property-ticket" }, [
       text("div", "prop-section__title", "Open request"),
@@ -145,8 +150,6 @@ function facts(property, contract, model) {
         : { key: "contract", label: "Contract", state: "unavailable", note: "Contracts aren’t in the portal yet." },
   ];
   if (property.zone) rows.push({ key: "zone", label: "Service zone", value: zoneLabel(property.zone) });
-  var map = mapFact(property);
-  if (map) rows.push(map);
   var site = quoteSiteFor(property);
   if (site && site.lot) rows.push({ key: "lot", label: "Lot", value: site.lot + " sq ft" });
   var quotes = quoteGroupFor(property.quoteSiteId || property.id);
@@ -183,13 +186,6 @@ function PropertySkeleton() {
     })),
     skel("height:140px;border-radius:22px"),
   ]);
-}
-
-function mapFact(property) {
-  if (!state.config.mapsApiKey) return null;
-  var placement = knownPlacement(property, createGeocodeCache(browserStorage()));
-  if (placement.point) return { key: "map", label: "Map", value: "On the map", action: "property.showOnMap", id: property.id };
-  return { key: "map", label: "Map", value: "Not on the map", note: placement.reason === "no-address" ? "No address on file" : "" };
 }
 
 function contractFor(property) {

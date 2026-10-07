@@ -888,23 +888,35 @@ const RETIRED = ["Proposal #", "valid until", "sent Dec", "sq ft", "Beam AI", "l
 
   configureFixture({ portalMapsApiKey: "stubkey" });
   state.propertyId = "prop-foothill";
-  const pinned = one(PropertyDetail(), "[data-fact=\"map\"]");
-  assert.equal(one(pinned, ".link-action").getAttribute("data-action"), "property.showOnMap");
-  assert.equal(one(pinned, ".link-action").textContent, "On the map ›");
+  const keyed = PropertyDetail();
+  assert.deepEqual(all(keyed, "[data-fact]").map((fact) => fact.getAttribute("data-fact")), ["contract", "zone", "lot", "quotes"], "the Location card shows the map, so no map fact repeats it");
+  const pinned = one(keyed, "[data-module=\"property-location\"]");
+  assert.equal(pinned.getAttribute("data-state"), "placed");
+  assert.equal(one(pinned, "[data-visual-id=\"property-location-link\"]").getAttribute("data-action"), "property.showOnMap");
+  assert.equal(one(pinned, "[data-visual-id=\"property-location-link\"]").textContent, "See it with your other properties ›");
 
   const alkire = overviewProperties.find((property) => property.name === "Alkire Street");
   withProperties(() => { alkire.lat = null; alkire.lon = null; alkire.address = ""; }, () => {
     state.propertyId = alkire.id;
-    const unplaced = one(PropertyDetail(), "[data-fact=\"map\"]");
-    assert.equal(one(unplaced, ".prop-fact__value").textContent, "Not on the map");
-    assert.equal(one(unplaced, ".prop-fact__note").textContent, "No address on file");
+    const unplaced = one(PropertyDetail(), "[data-module=\"property-location\"]");
+    assert.equal(unplaced.getAttribute("data-state"), "unavailable");
+    assert.equal(one(unplaced, "[data-module=\"location-unavailable\"]").getAttribute("data-state"), "no-address");
+    assert.equal(all(unplaced, "[data-visual-id=\"property-location-link\"]").length, 0, "a property off the map offers no way to the home map pin it does not have");
   });
   withProperties(() => { alkire.lat = null; alkire.lon = null; }, () => {
     state.propertyId = alkire.id;
-    const unplaced = one(PropertyDetail(), "[data-fact=\"map\"]");
-    assert.equal(one(unplaced, ".prop-fact__value").textContent, "Not on the map", "an address the map has not placed is not on the map, and never at its centre");
-    assert.equal(all(unplaced, ".prop-fact__note").length, 0);
+    const locating = one(PropertyDetail(), "[data-module=\"property-location\"]");
+    assert.equal(locating.getAttribute("data-state"), "locating", "an address the map has not placed is being located, and never pinned at the map centre");
+    assert.equal(all(locating, "[data-visual-id=\"property-location-link\"]").length, 0);
   });
+
+  state.currentSiteId = "quote-9101-7101";
+  const quoteLocation = one(ProposalDetail(), "[data-module=\"property-location\"]");
+  assert.equal(quoteLocation.getAttribute("data-state"), "placed", "the quote detail shows its property on the map");
+  assert.equal(all(quoteLocation, "[data-visual-id=\"property-location-link\"]").length, 0);
+  configureFixture();
+  state.currentSiteId = "quote-9101-7101";
+  assert.equal(one(one(ProposalDetail(), "[data-module=\"property-location\"]"), "[data-module=\"location-unavailable\"]").getAttribute("data-state"), "no-map", "without a map key the quote detail keeps the address with a quiet note");
 }
 
 for (const property of overviewProperties) {

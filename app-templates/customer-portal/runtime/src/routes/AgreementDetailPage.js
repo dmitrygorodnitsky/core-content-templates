@@ -5,6 +5,8 @@ import { StatusBadge } from "../components/primitives/StatusBadge.js";
 import { NotFoundState } from "../components/primitives/RouteStates.js";
 import { agreementTitle, plural } from "../components/proposals/QuotePackage.js";
 import { ContractDetailSkeleton, PartialNotice, contractsGate } from "../components/proposals/ContractStates.js";
+import { LocationMap, placeEach } from "../components/storm/PropertyMap.js";
+import { mapViewport, usablePropertyMap } from "../property-map-session.js";
 import { AgreementApproval, AgreementOutcome, AgreementParties, AgreementServices, AgreementStageNotice, AgreementTerm, AgreementTerms } from "../components/proposals/AgreementParts.js";
 
 export function AgreementDetail() {
@@ -50,9 +52,19 @@ export function AgreementDetail() {
   page.appendChild(AgreementParties(agreement.parties));
   var term = AgreementTerm(agreement);
   if (term) page.appendChild(term);
-  page.appendChild(AgreementServices(row));
+  page.appendChild(AgreementServices(row, AgreementMap(row.properties)));
   page.appendChild(AgreementTerms(agreement.terms));
   var decision = agreement.allowedActions.indexOf("approve") !== -1 ? AgreementApproval(row, contractCommandsBusy()) : AgreementOutcome(agreement);
   if (decision) page.appendChild(decision);
   return page;
+}
+
+function AgreementMap(entries) {
+  var map = usablePropertyMap();
+  var located = entries.filter(function (entry) { return !!entry.property; });
+  if (!map || !located.length) return null;
+  var places = located.map(function (entry) { return { id: entry.key, name: entry.title }; });
+  return h("div", { "class": "ov-map__stage", "data-module": "agreement-map", "data-visual-id": "agreement-map", "data-surface": "google", style: "margin-bottom:16px" }, [
+    LocationMap(map, mapViewport(), places, placeEach(map, located.map(function (entry) { return entry.property; })), "Finding these properties on the map…"),
+  ]);
 }

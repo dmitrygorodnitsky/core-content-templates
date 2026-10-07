@@ -778,6 +778,19 @@ The fixture root is no longer parameter-free: it may declare codes on the
 each must be referenced and every reference declared, and a `${` that is not a
 well-formed marker is still refused.
 
+### Property maps in the signed-in portal (2026-10-07)
+
+Every properties view maps its properties through the one shared controller in
+`runtime/src/property-map-session.js`. Property detail and quote detail have a
+Location card: a pin from stored coordinates or a geocoded address, "Finding it
+on the map…" while locating, and a quiet "Location unavailable" note with the
+address when there is no map key, the map failed, the address was not found,
+or there is no address. On property detail it links to the property's pin on
+the home map, which replaced the old Map fact. With a key, Contracts quotes
+show a Google map whose pins open their quotes (without a key, the schematic as
+before), and the agreement detail maps its properties. Checks:
+`scripts/property-map-check.mjs`, `scripts/snow-contracts-check.mjs`.
+
 ## Universal form document
 
 `runtime/forms/portal-form.js` renders any published Core form type in the

@@ -27,12 +27,14 @@ const { readPortalConfig } = await import(new URL("src/config.js", runtimeRoot))
 const { createPropertyForecasts } = await import(new URL("src/live-weather.js", runtimeRoot));
 const { createXweatherAdapter } = await import(new URL("src/adapters/xweather-adapter.js", runtimeRoot));
 const { browserStorage, createGeocodeCache, createGoogleMapsAdapter } = await import(new URL("src/adapters/google-maps-adapter.js", runtimeRoot));
-const { PropertyStage, closeOnEscape, createFocusKeeper, createPropertyMap } = await import(new URL("src/components/storm/PropertyMap.js", runtimeRoot));
+const { LocationMap, PropertyLocation, PropertyStage, closeOnEscape, createFocusKeeper, createPropertyMap } = await import(new URL("src/components/storm/PropertyMap.js", runtimeRoot));
+const { PortfolioMap, QuoteGroups } = await import(new URL("src/components/proposals/QuotePackage.js", runtimeRoot));
 const { addressKey, forecastPoint, geoPoint, popupDocks, popupPlacement, popupWeather, propertyPoint, weatherReading } = await import(new URL("src/normalizers/property-map.js", runtimeRoot));
 const { propertyStatus, propertyWeather } = await import(new URL("src/normalizers/overview.js", runtimeRoot));
 const { graniteRidgeSnowFixture } = await import(new URL("data/cases/granite-ridge-snow.js", runtimeRoot));
-const { applyPortalConfig } = await import(new URL("src/state.js", runtimeRoot));
+const { applyPortalConfig, state } = await import(new URL("src/state.js", runtimeRoot));
 const { Overview } = await import(new URL("src/routes/OverviewPage.js", runtimeRoot));
+const { PropertyDetail } = await import(new URL("src/routes/PropertyDetailPage.js", runtimeRoot));
 
 const overview = graniteRidgeSnowFixture.overview;
 const liveWeather = Object.assign({}, overview.weather, { source: "xweather" });
@@ -671,12 +673,141 @@ const PERIODS = Array.from({ length: 7 }, (_, index) => ({
   );
 }
 
-for (const address of ["Frost Lane", "Nowhere Road", "Foothill Court", "Tabor Street"]) {
+{
+  const viewport = { center: { lat: 49.19, lon: -122.85 }, zoom: 10 };
+  const frost = liveProperty("prop-core-21", "Frost Lane", "21 Frost Lane, Surrey, BC", 49.12, -122.84);
+  const thaw = liveProperty("prop-core-34", "Thaw Road", "34 Thaw Road, Surrey, BC", null, null);
+  const lost = liveProperty("prop-core-40", "Lost Lane", "40 Lost Lane, Nowhere", null, null);
+  const bare = liveProperty("prop-core-41", "Bare Lot", "", null, null);
+  const card = (property, map, frame = viewport) => PropertyLocation({ property, map, viewport: frame });
+  const quiet = (root) => {
+    const note = root.querySelector("[data-module=\"location-unavailable\"]");
+    return [root.getAttribute("data-state"), note.getAttribute("data-state"), note.getAttribute("role"), note.textContent, root.querySelectorAll(".ov-map__canvas").length];
+  };
+
+  assert.deepEqual(quiet(card(frost, null)), ["unavailable", "no-map", "status", "Location unavailable21 Frost Lane, Surrey, BCThe map isn’t available in this portal yet.", 0], "a portal without a map key shows the address and says the map is unavailable instead of drawing an empty map");
+
+  const google = createGoogleStub({ "34 Thaw Road, Surrey, BC": { lat: 49.2, lon: -122.8 } });
+  const controller = createPropertyMap({
+    adapter: createGoogleMapsAdapter({ apiKey: "AIza-test_key", scope: { document: dom.fresh(), google: { maps: google.maps } } }),
+    cache: createGeocodeCache(memoryStorage()),
+    dispatch: () => {},
+    onChange: () => {},
+  });
+  assert.deepEqual(quiet(card(frost, controller, null)), ["unavailable", "no-map", "status", "Location unavailable21 Frost Lane, Surrey, BCThe map isn’t available in this portal yet.", 0], "a map with no service geography to open on is not drawn");
+  assert.equal(controller.status(), "idle", "and its script is never requested");
+
+  const loading = card(frost, controller);
+  assert.equal(loading.tagName, "SECTION");
+  assert.equal(loading.getAttribute("data-state"), "placed");
+  assert.equal(loading.getAttribute("aria-labelledby"), "property-location-title");
+  assert.equal(loading.querySelector("h2").getAttribute("id"), "property-location-title");
+  assert.equal(loading.querySelector("h2").textContent, "Location");
+  assert.equal(loading.querySelector(".ov-map__canvas").getAttribute("data-state"), "loading", "the card renders with the page while the map script is still loading");
+  assert.equal(loading.querySelector(".ov-map__status-label").textContent, "Loading map…");
+  await flush();
+  assert.equal(controller.status(), "ready");
+  const placed = card(frost, controller);
+  const pin = google.log.maps[0].panes.overlayMouseTarget.querySelector("[data-module=\"location-pin\"]");
+  assert.equal(pin.tagName, "SPAN", "a pin on the property's own page leads nowhere, so it is an image rather than a button");
+  assert.equal(pin.getAttribute("role"), "img");
+  assert.equal(pin.getAttribute("aria-label"), "Frost Lane on the map");
+  assert.equal(pin.getAttribute("data-action"), null);
+  const at = google.projection.fromLatLngToDivPixel(new google.maps.LatLng(49.12, -122.84));
+  assert.equal(pin.style.left, at.x + "px", "the pin is drawn at the property's stored coordinate");
+  assert.equal(pin.style.top, at.y + "px");
+  assert.equal(placed.querySelector(".ov-map__canvas").getAttribute("data-pins"), "1");
+  await flush();
+  assert.deepEqual(google.log.centers[google.log.centers.length - 1], [49.12, -122.84], "a single property centres the map on its pin");
+  assert.equal(google.log.zooms[google.log.zooms.length - 1], 14);
+
+  const locating = card(thaw, controller);
+  assert.equal(locating.getAttribute("data-state"), "locating");
+  assert.equal(locating.querySelector(".ov-map__status-label").textContent, "Finding it on the map…", "a property without coordinates keeps the map's height while its address is geocoded");
+  assert.deepEqual(google.log.geocode, ["34 Thaw Road, Surrey, BC"], "a property without coordinates falls back to its address");
+  await flush();
+  const geocoded = card(thaw, controller);
+  assert.equal(geocoded.getAttribute("data-state"), "placed");
+  const thawPin = google.log.maps[0].panes.overlayMouseTarget.querySelector("[data-module=\"location-pin\"]");
+  assert.equal(thawPin.getAttribute("data-id"), "prop-core-34");
+  assert.equal(thawPin.style.left, google.projection.fromLatLngToDivPixel(new google.maps.LatLng(49.2, -122.8)).x + "px");
+
+  card(lost, controller);
+  await flush();
+  assert.deepEqual(quiet(card(lost, controller)), ["unavailable", "not-found", "status", "Location unavailable40 Lost Lane, NowhereWe couldn’t find this address on the map.", 0], "an address the geocoder cannot place shows the address quietly and never a pin at the map centre");
+  assert.deepEqual(quiet(card(bare, controller)), ["unavailable", "no-address", "status", "Location unavailableNo address on fileWe place a property on the map from its address.", 0]);
+  assert.equal(google.log.geocode.length, 2, "nothing is geocoded for a property without an address");
+
+  const scope = { document: dom.fresh() };
+  const failing = createPropertyMap({
+    adapter: createGoogleMapsAdapter({ apiKey: "AIza-test_key", scope }),
+    cache: createGeocodeCache(memoryStorage()),
+    dispatch: () => {},
+    onChange: () => {},
+  });
+  assert.equal(card(frost, failing).getAttribute("data-state"), "placed");
+  scope.gm_authFailure();
+  await flush();
+  assert.deepEqual(quiet(card(frost, failing)), ["unavailable", "failed", "status", "Location unavailable21 Frost Lane, Surrey, BCThe map couldn’t load.", 0], "a rejected key leaves the address and a quiet note instead of a grey map");
+
+  const dispatched = [];
+  const portfolioGoogle = createGoogleStub();
+  const portfolio = createPropertyMap({
+    adapter: createGoogleMapsAdapter({ apiKey: "AIza-test_key", scope: { document: dom.fresh(), google: { maps: portfolioGoogle.maps } } }),
+    cache: createGeocodeCache(memoryStorage()),
+    dispatch: (name, id) => dispatched.push([name, id]),
+    onChange: () => {},
+  });
+  const groups = [
+    { id: "quote-1-21", title: "Frost Lane", decision: "open", property: frost, propertyBackendId: 21, address: frost.address, orders: [] },
+    { id: "quote-1-40", title: "Lost Lane", decision: "approved", property: lost, propertyBackendId: 40, address: lost.address, orders: [] },
+    { id: "quote-1-99", title: "Property #99", decision: "open", property: null, propertyBackendId: 99, address: "", orders: [] },
+  ];
+  const placements = () => groups.map((group) => (group.property ? portfolio.placement(group.property) : { point: null, reason: "unknown" }));
+  PortfolioMap(groups, placements(), portfolio, viewport);
+  await flush();
+  PortfolioMap(groups, placements(), portfolio, viewport);
+  await flush();
+  const settled = placements();
+  const mapped = PortfolioMap(groups, settled, portfolio, viewport);
+  assert.equal(mapped.getAttribute("data-module"), "portfolio-map");
+  assert.equal(mapped.getAttribute("data-surface"), "google", "with a map key the Contracts list shows its properties on the Google map");
+  const portfolioPins = portfolioGoogle.log.maps[0].panes.overlayMouseTarget.querySelectorAll("[data-module=\"location-pin\"]");
+  assert.deepEqual(portfolioPins.map((item) => [item.tagName, item.getAttribute("data-action"), item.getAttribute("data-id"), item.getAttribute("aria-label")]), [
+    ["BUTTON", "proposal.open", "quote-1-21", "Frost Lane — Awaiting your decision"],
+  ], "only placed properties get a pin, and each pin is a button that opens its quotes");
+  fire(portfolioPins[0].children[0], "click");
+  assert.deepEqual(dispatched, [["proposal.open", "quote-1-21"]]);
+  const tags = QuoteGroups(groups, settled, true).querySelectorAll(".proposal-card__tag").map((tag) => [tag.getAttribute("data-placement"), tag.textContent]);
+  assert.deepEqual(tags, [["not-found", "Address not found on the map"], ["unknown", "Not on the map"]], "a quoted property off the map says why when the map knows");
+  assert.equal(PortfolioMap([groups[2]], [{ point: null, reason: "unknown" }], portfolio, viewport), null, "with no loaded property there is nothing to map");
+}
+
+{
+  applyPortalConfig(readPortalConfig({ dataset: { portalVertical: "snow", portalProfile: "stormRetail", portalTheme: "snow", portalDataMode: "fixture", portalAuthMode: "fixture", portalCase: "granite-ridge-snow" } }));
+  state.propertyId = "prop-foothill";
+  const keyless = PropertyDetail().querySelector("[data-module=\"property-location\"]");
+  assert.equal(keyless.getAttribute("data-state"), "unavailable");
+  assert.equal(keyless.querySelector("[data-module=\"location-unavailable\"]").textContent, "Location unavailable4820 Foothill Court, Lakewood, CO 80215The map isn’t available in this portal yet.");
+  applyPortalConfig(readPortalConfig({ dataset: { portalVertical: "snow", portalProfile: "stormRetail", portalTheme: "snow", portalDataMode: "fixture", portalAuthMode: "fixture", portalCase: "granite-ridge-snow", portalMapsApiKey: "AIza-test_key" } }));
+  state.propertyId = "prop-foothill";
+  const detail = PropertyDetail();
+  const location = detail.querySelector("[data-module=\"property-location\"]");
+  assert.equal(location.getAttribute("data-state"), "placed", "the property detail screen shows its property on the map");
+  assert.equal(location.querySelector(".ov-map__canvas").getAttribute("data-pins"), "1");
+  assert.equal(detail.querySelectorAll("[data-fact=\"map\"]").length, 0, "the card replaces the map fact");
+  assert.equal(location.querySelector("[data-visual-id=\"property-location-link\"]").getAttribute("data-action"), "property.showOnMap", "the card leads to the property among the others on the home map");
+  assert.equal(dom.document.head.children.filter((node) => node.tagName === "SCRIPT").length, 1);
+  PropertyDetail();
+  assert.equal(dom.document.head.children.filter((node) => node.tagName === "SCRIPT").length, 1, "the detail map shares the one Google map load with the home screen");
+}
+
+for (const address of ["Frost Lane", "Nowhere Road", "Foothill Court", "Tabor Street", "Thaw Road", "Lost Lane"]) {
   assert.ok(!warnings.some((line) => line.includes(address)), "a console warning must never carry a customer address");
 }
 assert.ok(warnings.length > 0, "the failure paths above did warn");
 
-console.log("property-map-check ok: pins drawn at each coordinate with zone colouring, the issue red and the en-route ring, one map load across renders, a popup anchored to its pin that opens, closes and takes Escape, the same popup docked below a map too narrow to hold it beside a pin, a property forecast fetched once on open with the area forecast as its fallback, addresses geocoded once with only successes cached, a keyless or rejected map that lists every property instead, and timeline badges that read 4 visits");
+console.log("property-map-check ok: pins drawn at each coordinate with zone colouring, the issue red and the en-route ring, one map load across renders, a popup anchored to its pin that opens, closes and takes Escape, the same popup docked below a map too narrow to hold it beside a pin, a property forecast fetched once on open with the area forecast as its fallback, addresses geocoded once with only successes cached, a keyless or rejected map that lists every property instead, timeline badges that read 4 visits, a property detail map with its own pin or a quiet location-unavailable note, and a Contracts map whose pins open their quotes");
 
 function liveProperty(id, name, address, lat, lon) {
   return { id, name, address, lat, lon, zone: null, contract: null, quoteSiteId: null, appointment: null, ticket: null, lastService: null };

@@ -1,6 +1,7 @@
 import { h } from "../../dom.js";
 import { StatusBadge } from "../primitives/StatusBadge.js";
 import { formatDatePeriod, formatIsoDate, formatOrderTotal, schematicPositions } from "../../normalizers/contracts.js";
+import { LocationMap, placementNote } from "../storm/PropertyMap.js";
 
 export var QUOTE_STATUS = Object.freeze({
   approved: Object.freeze({ label: "✓ Approved", badge: "status-badge--ok", dot: "#34c759" }),
@@ -124,6 +125,16 @@ export function PortfolioSchematic(groups, placements) {
   return h("div", { "class": "portfolio-map", "data-module": "portfolio-map", "data-visual-id": "portfolio-map", "data-surface": "schematic" }, canvas);
 }
 
+export function PortfolioMap(groups, placements, map, viewport) {
+  if (!groups.some(function (group) { return !!group.property; })) return null;
+  var places = groups.map(function (group) {
+    return { id: group.id, name: group.title, state: group.decision, color: QUOTE_STATUS[DECISION_META[group.decision]].dot, action: "proposal.open", actionLabel: group.title + " — " + DECISION_LABEL[group.decision] };
+  });
+  return h("div", { "class": "ov-map__stage", "data-module": "portfolio-map", "data-visual-id": "portfolio-map", "data-surface": "google", style: "margin-bottom:16px" }, [
+    LocationMap(map, viewport, places, placements, "Finding these properties on the map…"),
+  ]);
+}
+
 export function QuoteGroups(groups, placements, mapShown) {
   return h("div", { "class": "site-list", "data-module": "proposal-list", "data-visual-id": "proposal-list" }, groups.map(function (group, index) {
     var offMap = mapShown && !!group.propertyBackendId && !placements[index].point;
@@ -133,7 +144,7 @@ export function QuoteGroups(groups, placements, mapShown) {
       h("span", { "class": "proposal-card__body" }, [
         h("span", { "class": "proposal-card__name" }, group.title),
         h("span", { "class": "proposal-card__meta" }, summary),
-        offMap ? h("span", { "class": "proposal-card__tag" }, "Not on the map") : null,
+        offMap ? h("span", { "class": "proposal-card__tag", "data-placement": placements[index].reason }, placementNote(placements[index].reason) || "Not on the map") : null,
       ]),
       h("span", { "class": "proposal-group__decision", "data-state": group.decision }, DECISION_LABEL[group.decision]),
       h("span", { "class": "proposal-card__chev", "aria-hidden": "true" }, "›"),

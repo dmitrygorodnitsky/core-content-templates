@@ -5,9 +5,10 @@ import { browserStorage, createGeocodeCache } from "../adapters/google-maps-adap
 import { EmptyState } from "../components/primitives/EmptyState.js";
 import { ProposalCard } from "../components/proposals/ProposalCard.js";
 import { ProposalComparison } from "../components/proposals/ProposalComparison.js";
-import { AgreementList, ContractsHead, ContractsSectionTitle, PortfolioSchematic, QuoteGroups, QuotesFooter, QuotesPreparing, QuotesPreparingNotice } from "../components/proposals/QuotePackage.js";
+import { AgreementList, ContractsHead, ContractsSectionTitle, PortfolioMap, PortfolioSchematic, QuoteGroups, QuotesFooter, QuotesPreparing, QuotesPreparingNotice } from "../components/proposals/QuotePackage.js";
 import { ContractsListSkeleton, ContractsNotices, contractsGate } from "../components/proposals/ContractStates.js";
-import { knownPlacement } from "../components/storm/PropertyMap.js";
+import { knownPlacement, placeEach } from "../components/storm/PropertyMap.js";
+import { mapViewport, usablePropertyMap } from "../property-map-session.js";
 
 export function proposalRollup() {
   var r = { approved: 0, revision: 0, declined: 0, unseen: 0, viewed: 0 };
@@ -117,19 +118,22 @@ function ContractsPage() {
     var section = h("section", { "class": "contracts-section", "data-module": "contracts-quotes", "aria-label": "Quotes" }, [
       hasAgreements ? ContractsSectionTitle("Quotes", quotes.counts.orders) : null,
     ]);
+    var map = usablePropertyMap();
     var cache = createGeocodeCache(browserStorage());
-    var placements = quotes.groups.map(function (group) {
-      return group.property ? knownPlacement(group.property, cache) : { point: null, reason: "no-address" };
-    });
-    var schematic = PortfolioSchematic(quotes.groups, placements);
-    if (schematic) section.appendChild(schematic);
+    var placements = map
+      ? placeEach(map, quotes.groups.map(function (group) { return group.property; }))
+      : quotes.groups.map(function (group) {
+        return group.property ? knownPlacement(group.property, cache) : { point: null, reason: "unknown" };
+      });
+    var portfolio = map ? PortfolioMap(quotes.groups, placements, map, mapViewport()) : PortfolioSchematic(quotes.groups, placements);
+    if (portfolio) section.appendChild(portfolio);
     section.appendChild(h("div", { "class": "rollup-grid", "data-module": "proposal-rollup", "aria-label": "Quotes by decision" }, [
       rollupCard("Approved", quotes.counts.approved, "var(--ok)"),
       rollupCard("Revision", quotes.counts.revision, "var(--warn)"),
       rollupCard("Declined", quotes.counts.declined, "var(--danger)"),
       rollupCard("Open", quotes.counts.open, "var(--ink-3)"),
     ]));
-    section.appendChild(QuoteGroups(quotes.groups, placements, !!schematic));
+    section.appendChild(QuoteGroups(quotes.groups, placements, !!portfolio));
     if (quotes.deciding) section.appendChild(QuotesFooter());
     page.appendChild(section);
   }

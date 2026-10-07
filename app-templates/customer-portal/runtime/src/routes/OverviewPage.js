@@ -1,24 +1,22 @@
 import { h } from "../dom.js";
 import { currentFixture, currentOverview, isModuleEnabled, liveOverviewStatus, quotePackage, state } from "../state.js";
-import { ACTIONS } from "../actions.js";
 import { configuredExternalUrl } from "../config.js";
 import { render } from "../app.js";
 import { createPropertyForecasts } from "../live-weather.js";
 import { createXweatherAdapter } from "../adapters/xweather-adapter.js";
-import { browserStorage, createGeocodeCache, createGoogleMapsAdapter } from "../adapters/google-maps-adapter.js";
 import { ActionButton } from "../components/primitives/ActionButton.js";
 import { EmptyState } from "../components/primitives/EmptyState.js";
 import { ErrorState } from "../components/primitives/ErrorState.js";
 import { skel } from "../components/primitives/RouteStates.js";
 import { SectionUnavailable } from "../components/primitives/SectionUnavailable.js";
 import { PageHeader } from "../components/shell/PageHeader.js";
-import { PropertyStage, WeatherAttribution, closeOnEscape, createFocusKeeper, createPropertyMap } from "../components/storm/PropertyMap.js";
+import { PropertyStage, WeatherAttribution, closeOnEscape, createFocusKeeper } from "../components/storm/PropertyMap.js";
 import { icon } from "../components/storm/overview-icons.js";
 import { agreementTitle, plural } from "../components/proposals/QuotePackage.js";
 import { formatDatePeriod, formatIsoDate } from "../normalizers/contracts.js";
+import { dispatchMapAction, sharedPropertyMap } from "../property-map-session.js";
 import { appointmentDay, clampFrameIndex, invoiceBuckets, money, propertyStatusKnown, sectionAvailable, serviceDayCount } from "../normalizers/overview.js";
 
-var propertyMapController = null;
 var propertyForecastStore = null;
 var focusKeeper = null;
 var lastSelection = null;
@@ -159,7 +157,7 @@ function MapPanel(model, frame, index) {
     weather: weather,
     viewport: model.map,
     selectedId: state.ovProperty,
-    map: propertyMap(),
+    map: sharedPropertyMap(),
     forecasts: propertyForecasts(),
     sources: model.sources,
   });
@@ -178,20 +176,6 @@ function MapPanel(model, frame, index) {
   ]);
 }
 
-function propertyMap() {
-  if (!state.config.mapsApiKey) return null;
-  if (!propertyMapController) {
-    propertyMapController = createPropertyMap({
-      adapter: createGoogleMapsAdapter({ apiKey: state.config.mapsApiKey }),
-      cache: createGeocodeCache(browserStorage()),
-      mapId: state.config.mapsMapId,
-      dispatch: dispatchAction,
-      onChange: render,
-    });
-  }
-  return propertyMapController;
-}
-
 function propertyForecasts() {
   if (!propertyForecastStore) {
     propertyForecastStore = createPropertyForecasts({
@@ -202,18 +186,13 @@ function propertyForecasts() {
   return propertyForecastStore;
 }
 
-function dispatchAction(name, id) {
-  var action = ACTIONS[name];
-  if (action) action(id);
-}
-
 function followSelection() {
   if (!focusKeeper) {
     focusKeeper = createFocusKeeper(document);
     closeOnEscape(document, function () {
       return state.route === "overview" && !!state.ovProperty;
     }, function () {
-      dispatchAction("overview.closeProperty");
+      dispatchMapAction("overview.closeProperty");
     });
   }
   var previous = lastSelection;

@@ -55,12 +55,13 @@ export function AgreementTerm(agreement) {
   return FactsCard("Term", "agreement-term", rows);
 }
 
-export function AgreementServices(row) {
+export function AgreementServices(row, map) {
   var section = h("section", { "class": "agreement-services", "data-module": "agreement-services", "data-visual-id": "agreement-services", "aria-labelledby": "agreement-services-title" }, [
     h("div", { "class": "agreement-section-head" }, [
       h("h2", { "class": "contracts-section__title", id: "agreement-services-title" }, "Properties and services"),
       row.servicesScope === "approved" ? h("div", { "class": "agreement-section-head__sub" }, "The options you approved") : null,
     ]),
+    map || null,
   ]);
   if (!row.properties.length) {
     section.appendChild(h("div", { "class": "card card--pad quote-option__note", "data-state": "empty" }, row.servicesScope === "approved" ? "No approved services are listed on this agreement yet." : "No services are listed on this agreement yet."));

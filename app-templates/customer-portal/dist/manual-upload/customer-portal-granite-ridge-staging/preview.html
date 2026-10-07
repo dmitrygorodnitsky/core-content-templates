@@ -11646,120 +11646,6 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     };
   }
 
-  // app-templates/customer-portal/runtime/src/adapters/google-maps-adapter.js
-  var SCRIPT_URL = "https://maps.googleapis.com/maps/api/js";
-  var LIBRARIES = ["core", "maps", "geocoding"];
-  var GEOCODE_PREFIX = "portal.geocode:";
-  function createGoogleMapsAdapter(options2) {
-    var apiKey = options2 && options2.apiKey || "";
-    var scope = options2 && options2.scope || globalThis;
-    var failureListeners = [];
-    var loading = null;
-    var maps = null;
-    function fail(error2) {
-      failureListeners.slice().forEach(function(listener) {
-        listener(error2);
-      });
-    }
-    return {
-      opened: function() {
-        return !!apiKey;
-      },
-      onFailure: function(listener) {
-        failureListeners.push(listener);
-      },
-      load: function() {
-        if (loading) return loading;
-        if (!apiKey) {
-          loading = Promise.reject(new Error("Google Maps adapter is not opened"));
-          return loading;
-        }
-        loading = scriptNamespace(scope, apiKey, fail).then(importLibraries).then(function(loaded) {
-          maps = loaded;
-          return loaded;
-        });
-        return loading;
-      },
-      geocode: function(address) {
-        if (!maps || typeof maps.Geocoder !== "function") return Promise.reject(new Error("Google Maps is not loaded"));
-        return new Promise(function(resolve, reject) {
-          new maps.Geocoder().geocode({ address }, function(results, status) {
-            var location = status === "OK" && results && results[0] && results[0].geometry && results[0].geometry.location;
-            if (!location || typeof location.lat !== "function" || typeof location.lng !== "function") {
-              reject(new Error("Geocoder answered " + status));
-              return;
-            }
-            resolve({ lat: location.lat(), lon: location.lng() });
-          });
-        });
-      }
-    };
-  }
-  function createGeocodeCache(storage) {
-    return {
-      read: function(key) {
-        if (!key || !storage) return null;
-        try {
-          var raw = storage.getItem(GEOCODE_PREFIX + key);
-          return raw ? JSON.parse(raw) : null;
-        } catch (_) {
-          return null;
-        }
-      },
-      write: function(key, point) {
-        if (!key || !point || !storage) return false;
-        try {
-          storage.setItem(GEOCODE_PREFIX + key, JSON.stringify({ lat: point.lat, lon: point.lon }));
-          return true;
-        } catch (_) {
-          return false;
-        }
-      }
-    };
-  }
-  function browserStorage() {
-    try {
-      return globalThis.localStorage || null;
-    } catch (_) {
-      return null;
-    }
-  }
-  function scriptNamespace(scope, apiKey, fail) {
-    var present = scope.google && scope.google.maps;
-    if (present && (typeof present.importLibrary === "function" || typeof present.Map === "function")) {
-      return Promise.resolve(present);
-    }
-    return new Promise(function(resolve, reject) {
-      var previous = scope.gm_authFailure;
-      scope.gm_authFailure = function() {
-        var error2 = new Error("Google Maps rejected the browser key");
-        reject(error2);
-        fail(error2);
-        if (typeof previous === "function") previous();
-      };
-      var script = scope.document.createElement("script");
-      script.async = true;
-      script.src = SCRIPT_URL + "?key=" + encodeURIComponent(apiKey) + "&loading=async&v=weekly";
-      script.addEventListener("error", function() {
-        reject(new Error("The Google Maps script did not load"));
-      });
-      script.addEventListener("load", function() {
-        var loaded = scope.google && scope.google.maps;
-        if (loaded) resolve(loaded);
-        else reject(new Error("The Google Maps script loaded without google.maps"));
-      });
-      scope.document.head.appendChild(script);
-    });
-  }
-  function importLibraries(maps) {
-    if (typeof maps.importLibrary !== "function") return maps;
-    return Promise.all(LIBRARIES.map(function(name) {
-      return maps.importLibrary(name);
-    })).then(function() {
-      return maps;
-    });
-  }
-
   // app-templates/customer-portal/runtime/src/components/shell/Destinations.js
   function SupportContactButton(props) {
     if (isSpa()) return ActionButton(Object.assign({ label: "Contact support", action: "support.email" }, props));
@@ -11860,6 +11746,12 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     "not-found": "Address not found on the map",
     "no-address": "No address on file"
   };
+  var LOCATION_UNAVAILABLE = {
+    "no-map": "The map isn\u2019t available in this portal yet.",
+    failed: "The map couldn\u2019t load.",
+    "not-found": "We couldn\u2019t find this address on the map.",
+    "no-address": "We place a property on the map from its address."
+  };
   var listScroll = {};
   function createPropertyMap(options2) {
     var adapter = options2.adapter;
@@ -11916,7 +11808,8 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     function statusText(next) {
       if (status !== "ready") return "Loading map\u2026";
       if (next.pins.length) return "";
-      return next.locating ? "Finding your properties on the map\u2026" : "None of your properties could be placed on the map";
+      if (next.locating) return next.locatingText || "Finding your properties on the map\u2026";
+      return "None of your properties could be placed on the map";
     }
     function settle() {
       fit(view.pins);
@@ -12080,13 +11973,13 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     return point ? { point, reason: "located" } : { point: null, reason: "unplaced" };
   }
   function PropertyStage(props) {
-    var controller = props.map || null;
-    var failed = !!controller && controller.status() === "failed";
-    var map = controller && props.viewport && !failed ? controller : null;
+    var controller2 = props.map || null;
+    var failed = !!controller2 && controller2.status() === "failed";
+    var map = controller2 && props.viewport && !failed ? controller2 : null;
     var placed = [];
     var listed = [];
     props.properties.forEach(function(property) {
-      var place = controller ? controller.placement(property) : { point: propertyPoint(property), reason: null };
+      var place = controller2 ? controller2.placement(property) : { point: propertyPoint(property), reason: null };
       var entry = { property, point: place.point, reason: map ? place.reason : null };
       if (map && entry.point) placed.push(entry);
       else listed.push(entry);
@@ -12117,6 +12010,68 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
       docked ? dock(popup) : null,
       listed.length ? UnplacedProperties(listed, props, pinned ? null : popup) : null
     ]);
+  }
+  function placeEach(map, properties) {
+    return properties.map(function(property) {
+      return property ? map.placement(property) : { point: null, reason: "unknown" };
+    });
+  }
+  function placementNote(reason) {
+    return Object.prototype.hasOwnProperty.call(PLACEMENT_NOTES, reason) ? PLACEMENT_NOTES[reason] : "";
+  }
+  function LocationMap(map, viewport, places, placements, locatingText) {
+    var pins = [];
+    places.forEach(function(place, index) {
+      var point = placements[index].point;
+      if (point) pins.push({ id: place.id, point, element: LocationPin(place) });
+    });
+    return map.stage({
+      viewport,
+      pins,
+      popup: null,
+      locating: placements.some(function(placement) {
+        return placement.reason === "locating";
+      }),
+      locatingText
+    });
+  }
+  function PropertyLocation(props) {
+    var property = props.property;
+    var controller2 = props.map || null;
+    var map = controller2 && props.viewport && controller2.status() !== "failed" ? controller2 : null;
+    var placement = map ? placeEach(map, [property])[0] : { point: null, reason: controller2 && props.viewport ? "failed" : "no-map" };
+    var shown = !!placement.point || placement.reason === "locating";
+    return h("section", {
+      "class": "card ov-map",
+      "data-module": "property-location",
+      "data-visual-id": "property-location",
+      "data-state": placement.point ? "placed" : shown ? "locating" : "unavailable",
+      "aria-labelledby": "property-location-title"
+    }, [
+      h("div", { "class": "ov-map__head" }, [
+        h("span", { "class": "ov-card__icon" }, [icon("map", "ov-icon")]),
+        h("h2", { "class": "ov-card__title", id: "property-location-title" }, "Location")
+      ]),
+      shown ? h("div", { "class": "ov-map__stage", "data-surface": "google" }, [
+        LocationMap(map, props.viewport, [{ id: property.id, name: property.name }], [placement], "Finding it on the map\u2026")
+      ]) : LocationUnavailable(property, placement.reason),
+      placement.point && props.link ? h("button", { "class": "link-action", type: "button", "data-action": props.link.action, "data-id": props.link.id, "data-visual-id": "property-location-link", style: "margin-top:12px" }, props.link.label + " \u203A") : null
+    ]);
+  }
+  function LocationUnavailable(property, reason) {
+    return h("div", { "class": "ov-empty", "data-module": "location-unavailable", "data-visual-id": "location-unavailable", "data-state": reason, role: "status" }, [
+      h("span", { "class": "readonly-chip", style: "margin-bottom:9px" }, "Location unavailable"),
+      text8("div", "ov-empty__title", property.address || "No address on file"),
+      h("div", { "class": "ov-empty__desc", style: "margin-bottom:0" }, LOCATION_UNAVAILABLE[reason] || LOCATION_UNAVAILABLE["not-found"])
+    ]);
+  }
+  function LocationPin(place) {
+    var label = place.name + " on the map";
+    var attributes = { "class": "ov-pin", "data-module": "location-pin", "data-visual-id": "location-pin", "data-id": place.id, "data-state": place.state || void 0, style: "color:" + (place.color || "var(--accent)") };
+    if (!place.action) {
+      return h("span", Object.assign(attributes, { role: "img", "aria-label": label, style: attributes.style + ";cursor:default" }), [icon("pin", "ov-pin__glyph")]);
+    }
+    return h("button", Object.assign(attributes, { type: "button", "data-action": place.action, "aria-label": place.actionLabel || label }), [icon("pin", "ov-pin__glyph")]);
   }
   function WeatherAttribution(source, className) {
     return text8("div", "ov-attr" + (className ? " " + className : ""), source === "xweather" ? "Weather \xB7 Xweather" : "Sample conditions");
@@ -12237,7 +12192,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
   }
   function PropertyRow(property, props, selected, reason) {
     var status = knownPropertyStatus(property, props.sources);
-    var note = reason && Object.prototype.hasOwnProperty.call(PLACEMENT_NOTES, reason) ? PLACEMENT_NOTES[reason] : "";
+    var note = reason ? placementNote(reason) : "";
     return h("button", {
       "class": "ov-prow" + (status === "enroute" ? " ov-prow--active" : "") + (selected ? " ov-prow--on" : ""),
       "data-action": "overview.selectProperty",
@@ -12435,6 +12390,17 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     });
     return h("div", { "class": "portfolio-map", "data-module": "portfolio-map", "data-visual-id": "portfolio-map", "data-surface": "schematic" }, canvas);
   }
+  function PortfolioMap(groups, placements, map, viewport) {
+    if (!groups.some(function(group) {
+      return !!group.property;
+    })) return null;
+    var places = groups.map(function(group) {
+      return { id: group.id, name: group.title, state: group.decision, color: QUOTE_STATUS[DECISION_META[group.decision]].dot, action: "proposal.open", actionLabel: group.title + " \u2014 " + DECISION_LABEL[group.decision] };
+    });
+    return h("div", { "class": "ov-map__stage", "data-module": "portfolio-map", "data-visual-id": "portfolio-map", "data-surface": "google", style: "margin-bottom:16px" }, [
+      LocationMap(map, viewport, places, placements, "Finding these properties on the map\u2026")
+    ]);
+  }
   function QuoteGroups(groups, placements, mapShown) {
     return h("div", { "class": "site-list", "data-module": "proposal-list", "data-visual-id": "proposal-list" }, groups.map(function(group, index) {
       var offMap = mapShown && !!group.propertyBackendId && !placements[index].point;
@@ -12444,7 +12410,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
         h("span", { "class": "proposal-card__body" }, [
           h("span", { "class": "proposal-card__name" }, group.title),
           h("span", { "class": "proposal-card__meta" }, summary),
-          offMap ? h("span", { "class": "proposal-card__tag" }, "Not on the map") : null
+          offMap ? h("span", { "class": "proposal-card__tag", "data-placement": placements[index].reason }, placementNote(placements[index].reason) || "Not on the map") : null
         ]),
         h("span", { "class": "proposal-group__decision", "data-state": group.decision }, DECISION_LABEL[group.decision]),
         h("span", { "class": "proposal-card__chev", "aria-hidden": "true" }, "\u203A")
@@ -12474,8 +12440,151 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     return count + " " + (count === 1 ? one : many);
   }
 
+  // app-templates/customer-portal/runtime/src/adapters/google-maps-adapter.js
+  var SCRIPT_URL = "https://maps.googleapis.com/maps/api/js";
+  var LIBRARIES = ["core", "maps", "geocoding"];
+  var GEOCODE_PREFIX = "portal.geocode:";
+  function createGoogleMapsAdapter(options2) {
+    var apiKey = options2 && options2.apiKey || "";
+    var scope = options2 && options2.scope || globalThis;
+    var failureListeners = [];
+    var loading = null;
+    var maps = null;
+    function fail(error2) {
+      failureListeners.slice().forEach(function(listener) {
+        listener(error2);
+      });
+    }
+    return {
+      opened: function() {
+        return !!apiKey;
+      },
+      onFailure: function(listener) {
+        failureListeners.push(listener);
+      },
+      load: function() {
+        if (loading) return loading;
+        if (!apiKey) {
+          loading = Promise.reject(new Error("Google Maps adapter is not opened"));
+          return loading;
+        }
+        loading = scriptNamespace(scope, apiKey, fail).then(importLibraries).then(function(loaded) {
+          maps = loaded;
+          return loaded;
+        });
+        return loading;
+      },
+      geocode: function(address) {
+        if (!maps || typeof maps.Geocoder !== "function") return Promise.reject(new Error("Google Maps is not loaded"));
+        return new Promise(function(resolve, reject) {
+          new maps.Geocoder().geocode({ address }, function(results, status) {
+            var location = status === "OK" && results && results[0] && results[0].geometry && results[0].geometry.location;
+            if (!location || typeof location.lat !== "function" || typeof location.lng !== "function") {
+              reject(new Error("Geocoder answered " + status));
+              return;
+            }
+            resolve({ lat: location.lat(), lon: location.lng() });
+          });
+        });
+      }
+    };
+  }
+  function createGeocodeCache(storage) {
+    return {
+      read: function(key) {
+        if (!key || !storage) return null;
+        try {
+          var raw = storage.getItem(GEOCODE_PREFIX + key);
+          return raw ? JSON.parse(raw) : null;
+        } catch (_) {
+          return null;
+        }
+      },
+      write: function(key, point) {
+        if (!key || !point || !storage) return false;
+        try {
+          storage.setItem(GEOCODE_PREFIX + key, JSON.stringify({ lat: point.lat, lon: point.lon }));
+          return true;
+        } catch (_) {
+          return false;
+        }
+      }
+    };
+  }
+  function browserStorage() {
+    try {
+      return globalThis.localStorage || null;
+    } catch (_) {
+      return null;
+    }
+  }
+  function scriptNamespace(scope, apiKey, fail) {
+    var present = scope.google && scope.google.maps;
+    if (present && (typeof present.importLibrary === "function" || typeof present.Map === "function")) {
+      return Promise.resolve(present);
+    }
+    return new Promise(function(resolve, reject) {
+      var previous = scope.gm_authFailure;
+      scope.gm_authFailure = function() {
+        var error2 = new Error("Google Maps rejected the browser key");
+        reject(error2);
+        fail(error2);
+        if (typeof previous === "function") previous();
+      };
+      var script = scope.document.createElement("script");
+      script.async = true;
+      script.src = SCRIPT_URL + "?key=" + encodeURIComponent(apiKey) + "&loading=async&v=weekly";
+      script.addEventListener("error", function() {
+        reject(new Error("The Google Maps script did not load"));
+      });
+      script.addEventListener("load", function() {
+        var loaded = scope.google && scope.google.maps;
+        if (loaded) resolve(loaded);
+        else reject(new Error("The Google Maps script loaded without google.maps"));
+      });
+      scope.document.head.appendChild(script);
+    });
+  }
+  function importLibraries(maps) {
+    if (typeof maps.importLibrary !== "function") return maps;
+    return Promise.all(LIBRARIES.map(function(name) {
+      return maps.importLibrary(name);
+    })).then(function() {
+      return maps;
+    });
+  }
+
+  // app-templates/customer-portal/runtime/src/property-map-session.js
+  var controller = null;
+  function sharedPropertyMap() {
+    if (!state.config.mapsApiKey) return null;
+    if (!controller) {
+      controller = createPropertyMap({
+        adapter: createGoogleMapsAdapter({ apiKey: state.config.mapsApiKey }),
+        cache: createGeocodeCache(browserStorage()),
+        mapId: state.config.mapsMapId,
+        dispatch: dispatchMapAction,
+        onChange: render
+      });
+    }
+    return controller;
+  }
+  function mapViewport() {
+    var model = currentOverview();
+    if (model && model.map) return model.map;
+    var geography = state.config.serviceGeography;
+    return geography && geography.map || null;
+  }
+  function usablePropertyMap() {
+    var map = sharedPropertyMap();
+    return map && mapViewport() && map.status() !== "failed" ? map : null;
+  }
+  function dispatchMapAction(name, id) {
+    var action = ACTIONS[name];
+    if (action) action(id);
+  }
+
   // app-templates/customer-portal/runtime/src/routes/OverviewPage.js
-  var propertyMapController = null;
   var propertyForecastStore = null;
   var focusKeeper = null;
   var lastSelection = null;
@@ -12606,7 +12715,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
       weather,
       viewport: model.map,
       selectedId: state.ovProperty,
-      map: propertyMap(),
+      map: sharedPropertyMap(),
       forecasts: propertyForecasts(),
       sources: model.sources
     });
@@ -12626,19 +12735,6 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
       weather ? WeatherAttribution(weather.source, "ov-map__attr") : null
     ]);
   }
-  function propertyMap() {
-    if (!state.config.mapsApiKey) return null;
-    if (!propertyMapController) {
-      propertyMapController = createPropertyMap({
-        adapter: createGoogleMapsAdapter({ apiKey: state.config.mapsApiKey }),
-        cache: createGeocodeCache(browserStorage()),
-        mapId: state.config.mapsMapId,
-        dispatch: dispatchAction,
-        onChange: render
-      });
-    }
-    return propertyMapController;
-  }
   function propertyForecasts() {
     if (!propertyForecastStore) {
       propertyForecastStore = createPropertyForecasts({
@@ -12648,17 +12744,13 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     }
     return propertyForecastStore;
   }
-  function dispatchAction(name, id) {
-    var action = ACTIONS[name];
-    if (action) action(id);
-  }
   function followSelection() {
     if (!focusKeeper) {
       focusKeeper = createFocusKeeper(document);
       closeOnEscape(document, function() {
         return state.route === "overview" && !!state.ovProperty;
       }, function() {
-        dispatchAction("overview.closeProperty");
+        dispatchMapAction("overview.closeProperty");
       });
     }
     var previous = lastSelection;
@@ -13297,6 +13389,12 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
         ]);
       })
     ));
+    page.appendChild(PropertyLocation({
+      property,
+      map: sharedPropertyMap(),
+      viewport: mapViewport(),
+      link: { label: "See it with your other properties", action: "property.showOnMap", id: property.id }
+    }));
     if (property.ticket && sectionAvailable(model, "support")) {
       page.appendChild(h("div", { "class": "card card--pad prop-ticket", "data-module": "property-ticket", "data-visual-id": "property-ticket" }, [
         text12("div", "prop-section__title", "Open request"),
@@ -13348,8 +13446,6 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
       sectionAvailable(model, "contracts") ? { key: "contract", label: "Contract", value: contract ? "#" + contract.number + " \xB7 " + contract.plan : "Not under contract", action: contract ? "nav.go" : void 0, id: contract ? "proposals.list" : void 0 } : state.config.dataMode === "live" && isModuleEnabled("proposals") ? liveAgreementFact(property) : { key: "contract", label: "Contract", state: "unavailable", note: "Contracts aren\u2019t in the portal yet." }
     ];
     if (property.zone) rows2.push({ key: "zone", label: "Service zone", value: zoneLabel(property.zone) });
-    var map = mapFact(property);
-    if (map) rows2.push(map);
     var site = quoteSiteFor(property);
     if (site && site.lot) rows2.push({ key: "lot", label: "Lot", value: site.lot + " sq ft" });
     var quotes = quoteGroupFor(property.quoteSiteId || property.id);
@@ -13386,12 +13482,6 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
       })),
       skel("height:140px;border-radius:22px")
     ]);
-  }
-  function mapFact(property) {
-    if (!state.config.mapsApiKey) return null;
-    var placement = knownPlacement(property, createGeocodeCache(browserStorage()));
-    if (placement.point) return { key: "map", label: "Map", value: "On the map", action: "property.showOnMap", id: property.id };
-    return { key: "map", label: "Map", value: "Not on the map", note: placement.reason === "no-address" ? "No address on file" : "" };
   }
   function contractFor(property) {
     var model = currentOverview();
@@ -14094,7 +14184,11 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
         h("div", { "class": "proposal-footer__copy" }, "Approving one option for this property declines its other options.")
       ]));
     }
+    page.appendChild(PropertyLocation({ property: quotedProperty(group), map: sharedPropertyMap(), viewport: mapViewport() }));
     return page;
+  }
+  function quotedProperty(group) {
+    return group.property || { id: group.id, name: group.title, address: group.address, lat: null, lon: null };
   }
   function decisionNote(group) {
     if (group.decision === "approved") {
@@ -14258,19 +14352,22 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
       var section = h("section", { "class": "contracts-section", "data-module": "contracts-quotes", "aria-label": "Quotes" }, [
         hasAgreements ? ContractsSectionTitle("Quotes", quotes.counts.orders) : null
       ]);
+      var map = usablePropertyMap();
       var cache = createGeocodeCache(browserStorage());
-      var placements = quotes.groups.map(function(group) {
-        return group.property ? knownPlacement(group.property, cache) : { point: null, reason: "no-address" };
+      var placements = map ? placeEach(map, quotes.groups.map(function(group) {
+        return group.property;
+      })) : quotes.groups.map(function(group) {
+        return group.property ? knownPlacement(group.property, cache) : { point: null, reason: "unknown" };
       });
-      var schematic = PortfolioSchematic(quotes.groups, placements);
-      if (schematic) section.appendChild(schematic);
+      var portfolio = map ? PortfolioMap(quotes.groups, placements, map, mapViewport()) : PortfolioSchematic(quotes.groups, placements);
+      if (portfolio) section.appendChild(portfolio);
       section.appendChild(h("div", { "class": "rollup-grid", "data-module": "proposal-rollup", "aria-label": "Quotes by decision" }, [
         rollupCard("Approved", quotes.counts.approved, "var(--ok)"),
         rollupCard("Revision", quotes.counts.revision, "var(--warn)"),
         rollupCard("Declined", quotes.counts.declined, "var(--danger)"),
         rollupCard("Open", quotes.counts.open, "var(--ink-3)")
       ]));
-      section.appendChild(QuoteGroups(quotes.groups, placements, !!schematic));
+      section.appendChild(QuoteGroups(quotes.groups, placements, !!portfolio));
       if (quotes.deciding) section.appendChild(QuotesFooter());
       page.appendChild(section);
     }
@@ -14332,12 +14429,13 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     if (!rows2.length) return null;
     return FactsCard("Term", "agreement-term", rows2);
   }
-  function AgreementServices(row) {
+  function AgreementServices(row, map) {
     var section = h("section", { "class": "agreement-services", "data-module": "agreement-services", "data-visual-id": "agreement-services", "aria-labelledby": "agreement-services-title" }, [
       h("div", { "class": "agreement-section-head" }, [
         h("h2", { "class": "contracts-section__title", id: "agreement-services-title" }, "Properties and services"),
         row.servicesScope === "approved" ? h("div", { "class": "agreement-section-head__sub" }, "The options you approved") : null
-      ])
+      ]),
+      map || null
     ]);
     if (!row.properties.length) {
       section.appendChild(h("div", { "class": "card card--pad quote-option__note", "data-state": "empty" }, row.servicesScope === "approved" ? "No approved services are listed on this agreement yet." : "No services are listed on this agreement yet."));
@@ -14487,11 +14585,26 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     page.appendChild(AgreementParties(agreement.parties));
     var term = AgreementTerm(agreement);
     if (term) page.appendChild(term);
-    page.appendChild(AgreementServices(row));
+    page.appendChild(AgreementServices(row, AgreementMap(row.properties)));
     page.appendChild(AgreementTerms(agreement.terms));
     var decision = agreement.allowedActions.indexOf("approve") !== -1 ? AgreementApproval(row, contractCommandsBusy()) : AgreementOutcome(agreement);
     if (decision) page.appendChild(decision);
     return page;
+  }
+  function AgreementMap(entries) {
+    var map = usablePropertyMap();
+    var located = entries.filter(function(entry) {
+      return !!entry.property;
+    });
+    if (!map || !located.length) return null;
+    var places = located.map(function(entry) {
+      return { id: entry.key, name: entry.title };
+    });
+    return h("div", { "class": "ov-map__stage", "data-module": "agreement-map", "data-visual-id": "agreement-map", "data-surface": "google", style: "margin-bottom:16px" }, [
+      LocationMap(map, mapViewport(), places, placeEach(map, located.map(function(entry) {
+        return entry.property;
+      })), "Finding these properties on the map\u2026")
+    ]);
   }
 
   // app-templates/customer-portal/runtime/src/routes/AccountProfilePage.js

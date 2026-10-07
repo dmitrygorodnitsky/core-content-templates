@@ -11,6 +11,12 @@ var PLACEMENT_NOTES = {
   "not-found": "Address not found on the map",
   "no-address": "No address on file",
 };
+var LOCATION_UNAVAILABLE = {
+  "no-map": "The map isn’t available in this portal yet.",
+  failed: "The map couldn’t load.",
+  "not-found": "We couldn’t find this address on the map.",
+  "no-address": "We place a property on the map from its address.",
+};
 var listScroll = {};
 
 export function createPropertyMap(options) {
@@ -63,7 +69,8 @@ export function createPropertyMap(options) {
   function statusText(next) {
     if (status !== "ready") return "Loading map…";
     if (next.pins.length) return "";
-    return next.locating ? "Finding your properties on the map…" : "None of your properties could be placed on the map";
+    if (next.locating) return next.locatingText || "Finding your properties on the map…";
+    return "None of your properties could be placed on the map";
   }
 
   function settle() {
@@ -272,6 +279,73 @@ export function PropertyStage(props) {
   ]);
 }
 
+export function placeEach(map, properties) {
+  return properties.map(function (property) {
+    return property ? map.placement(property) : { point: null, reason: "unknown" };
+  });
+}
+
+export function placementNote(reason) {
+  return Object.prototype.hasOwnProperty.call(PLACEMENT_NOTES, reason) ? PLACEMENT_NOTES[reason] : "";
+}
+
+export function LocationMap(map, viewport, places, placements, locatingText) {
+  var pins = [];
+  places.forEach(function (place, index) {
+    var point = placements[index].point;
+    if (point) pins.push({ id: place.id, point: point, element: LocationPin(place) });
+  });
+  return map.stage({
+    viewport: viewport,
+    pins: pins,
+    popup: null,
+    locating: placements.some(function (placement) { return placement.reason === "locating"; }),
+    locatingText: locatingText,
+  });
+}
+
+export function PropertyLocation(props) {
+  var property = props.property;
+  var controller = props.map || null;
+  var map = controller && props.viewport && controller.status() !== "failed" ? controller : null;
+  var placement = map ? placeEach(map, [property])[0] : { point: null, reason: controller && props.viewport ? "failed" : "no-map" };
+  var shown = !!placement.point || placement.reason === "locating";
+  return h("section", {
+    "class": "card ov-map", "data-module": "property-location", "data-visual-id": "property-location",
+    "data-state": placement.point ? "placed" : shown ? "locating" : "unavailable", "aria-labelledby": "property-location-title",
+  }, [
+    h("div", { "class": "ov-map__head" }, [
+      h("span", { "class": "ov-card__icon" }, [icon("map", "ov-icon")]),
+      h("h2", { "class": "ov-card__title", id: "property-location-title" }, "Location"),
+    ]),
+    shown
+      ? h("div", { "class": "ov-map__stage", "data-surface": "google" }, [
+        LocationMap(map, props.viewport, [{ id: property.id, name: property.name }], [placement], "Finding it on the map…"),
+      ])
+      : LocationUnavailable(property, placement.reason),
+    placement.point && props.link
+      ? h("button", { "class": "link-action", type: "button", "data-action": props.link.action, "data-id": props.link.id, "data-visual-id": "property-location-link", style: "margin-top:12px" }, props.link.label + " ›")
+      : null,
+  ]);
+}
+
+function LocationUnavailable(property, reason) {
+  return h("div", { "class": "ov-empty", "data-module": "location-unavailable", "data-visual-id": "location-unavailable", "data-state": reason, role: "status" }, [
+    h("span", { "class": "readonly-chip", style: "margin-bottom:9px" }, "Location unavailable"),
+    text("div", "ov-empty__title", property.address || "No address on file"),
+    h("div", { "class": "ov-empty__desc", style: "margin-bottom:0" }, LOCATION_UNAVAILABLE[reason] || LOCATION_UNAVAILABLE["not-found"]),
+  ]);
+}
+
+function LocationPin(place) {
+  var label = place.name + " on the map";
+  var attributes = { "class": "ov-pin", "data-module": "location-pin", "data-visual-id": "location-pin", "data-id": place.id, "data-state": place.state || undefined, style: "color:" + (place.color || "var(--accent)") };
+  if (!place.action) {
+    return h("span", Object.assign(attributes, { role: "img", "aria-label": label, style: attributes.style + ";cursor:default" }), [icon("pin", "ov-pin__glyph")]);
+  }
+  return h("button", Object.assign(attributes, { type: "button", "data-action": place.action, "aria-label": place.actionLabel || label }), [icon("pin", "ov-pin__glyph")]);
+}
+
 export function WeatherAttribution(source, className) {
   return text("div", "ov-attr" + (className ? " " + className : ""), source === "xweather" ? "Weather · Xweather" : "Sample conditions");
 }
@@ -389,7 +463,7 @@ function UnplacedProperties(entries, props, popup) {
 
 function PropertyRow(property, props, selected, reason) {
   var status = knownPropertyStatus(property, props.sources);
-  var note = reason && Object.prototype.hasOwnProperty.call(PLACEMENT_NOTES, reason) ? PLACEMENT_NOTES[reason] : "";
+  var note = reason ? placementNote(reason) : "";
   return h("button", {
     "class": "ov-prow" + (status === "enroute" ? " ov-prow--active" : "") + (selected ? " ov-prow--on" : ""),
     "data-action": "overview.selectProperty", "data-id": property.id,
