@@ -203,6 +203,7 @@
     { id: "empty", label: "Valid link, nothing to show" },
     { id: "error", label: "Load error — retry recovers" },
     { id: "partial", label: "Partial data — one option unreadable" },
+    { id: "quote-price-labels", label: "Quote review — options named from their prices, no PRICING_MODEL" },
     { id: "link-copied", label: "Copy link — copied on the contract details step" },
     { id: "link-copy-failed", label: "Copy link — the browser refused to copy" },
     { id: "contact-phone-only", label: "Contact us — the provider shows a phone and no email" },
@@ -663,6 +664,18 @@
     return data;
   }
 
+  var PRICE_NAMES = { 3101: "Seasonal plan", 3102: "Monthly plan" };
+
+  function priceLabelled(data) {
+    data.orders.forEach(function (row) {
+      delete row.attributes[5].PRICING_MODEL;
+      var name = PRICE_NAMES[row.id];
+      if (!name) return;
+      row.items.forEach(function (line) { line.itemPrice.nls = { en: { NAME: name } }; });
+    });
+    return data;
+  }
+
   function idOnlyAccount(data) {
     data.accounts.forEach(function (row) {
       row.contacts = [{ id: 901 }];
@@ -957,6 +970,9 @@
         break;
       case "partial":
         data.unreadable = [3107];
+        break;
+      case "quote-price-labels":
+        priceLabelled(data);
         break;
       case "link-copied":
         data = quotationData("AWAITING_CLIENT_DETAILS", DECIDED);
@@ -1281,6 +1297,7 @@
     quotationData: quotationData,
     agreementData: agreementData,
     detailsErrors: detailsErrors,
+    priceLabelled: priceLabelled,
     idOnlyAccount: idOnlyAccount,
     attributedAccount: attributedAccount,
     numberedTerms: NUMBERED_TERMS,

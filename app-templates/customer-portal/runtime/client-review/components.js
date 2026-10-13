@@ -21,8 +21,6 @@
     unknown: ["status-badge--scheduled", "propertyUnknown"],
   };
 
-  var MODEL_COPY = { SEASONAL: "modelSeasonal", MONTHLY: "modelMonthly", PER_SERVICE: "modelPerService" };
-
   var AUTOCOMPLETE = {
     LEGAL_NAME: "organization",
     BILLING_ADDRESS: "street-address",
@@ -75,7 +73,7 @@
   }
 
   function optionLabel(option, copy) {
-    return option.model ? copy[MODEL_COPY[option.model]] : ns.fill(copy.optionFallback, { n: option.position });
+    return ns.optionLabel(option, copy);
   }
 
   function confirmationStatement(copy, field) {

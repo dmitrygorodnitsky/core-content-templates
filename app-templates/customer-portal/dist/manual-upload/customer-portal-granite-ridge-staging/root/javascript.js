@@ -1498,13 +1498,15 @@
     MONTHLY: "Monthly",
     SEASONAL: "Seasonal"
   });
+  var RECURRING_MODEL = Object.freeze({ code: "RECURRING", label: "Recurring" });
   var CLIENT_TYPES = Object.freeze({
     INDIVIDUAL: "Individual",
     ORGANIZATION: "Organization"
   });
   var SCOPE_MODES = Object.freeze(["server-scoped", "browser-filtered", "unscoped"]);
   var ORDER_ACTIONS = { unseen: ["view"], viewed: ["approve", "decline"] };
-  var PRICING_MODEL_RANK = ["PER_SERVICE", "MONTHLY", "SEASONAL"];
+  var PRICING_MODEL_RANK = ["PER_SERVICE", "MONTHLY", "SEASONAL", RECURRING_MODEL.code];
+  var MONTH_UNIT = "MONTH";
   var MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
   var SCHEMATIC_X = [18, 82];
   var SCHEMATIC_Y = [24, 76];
@@ -1593,8 +1595,6 @@
         }
         return;
       }
-      var model = attributeText(row, "PRICING_MODEL");
-      var label = own(PRICING_MODELS, model);
       var currency = currencyCode(row.currency);
       var total = orderTotal(row.grandTotal, row.currency);
       var quoteLines = linesOf(row, backendId, currency, lines);
@@ -1605,7 +1605,7 @@
         serviceAddress: attributeString(row, "SERVICE_ADDRESS"),
         stateCode,
         status,
-        pricingModel: label ? { code: model, label } : null,
+        pricingModel: attributeModel(row) || priceVariant(backendId, lines),
         total,
         money: total ? {
           subtotal: formatMoney(row.totalCharges, currency),
@@ -1614,7 +1614,6 @@
         } : null,
         lines: quoteLines.lines,
         linesState: quoteLines.state,
-        servicePeriod: datePeriod(attributeText(row, "SERVICE_PERIOD_START"), attributeText(row, "SERVICE_PERIOD_END")),
         allowedActions: (ORDER_ACTIONS[status] || []).slice()
       });
     });
@@ -1677,7 +1676,6 @@
       counts,
       deciding: counts.open > 0,
       preparing: !!data.preparing,
-      servicePeriod: sharedPeriod(quoted),
       sources: data.sources || {},
       truncated: !!data.truncated,
       scopeMode: data.scopeMode || null,
@@ -1847,7 +1845,6 @@
       var serviceAddress = firstServiceAddress(group.orders);
       group.title = propertyTitle(group.propertyBackendId, group.property, serviceAddress);
       group.address = propertyAddress(group.property, serviceAddress, group.title);
-      group.servicePeriod = sharedPeriod(group.orders);
     });
     return groups.sort(function(left, right) {
       return stageRank(left.agreement) - stageRank(right.agreement) || (right.agreementBackendId || 0) - (left.agreementBackendId || 0);
@@ -1898,8 +1895,7 @@
       quoteCount: listed.length,
       unreadableOrders: agreement.orderBackendIds.filter(function(id) {
         return !readable.has(id);
-      }).length,
-      servicePeriod: sharedPeriod(listed)
+      }).length
     };
   }
   function partialOf(data, orders, rows2) {
@@ -1967,6 +1963,49 @@
       };
     });
     return { state: missing || incomplete ? "partial" : "ready", lines };
+  }
+  function attributeModel(row) {
+    var code = attributeText(row, "PRICING_MODEL");
+    var label = own(PRICING_MODELS, code);
+    return label ? { code, label } : null;
+  }
+  function priceVariant(backendId, catalog) {
+    var entries = catalog.byOrder.get(backendId) || [];
+    if (!entries.length || !catalog.prices) return null;
+    var prices = entries.map(function(entry) {
+      return catalog.prices.get(positiveInteger3(entry.row.itemPrice && entry.row.itemPrice.id)) || null;
+    });
+    var names = prices.map(function(price) {
+      return localizedName2(price && price.nls);
+    });
+    var name = names[0] && names.every(function(entry) {
+      return entry === names[0];
+    }) ? names[0] : "";
+    var types = prices.map(function(price) {
+      return text3(price && price.type && price.type.code).toUpperCase();
+    });
+    var recurrent = types.filter(function(type) {
+      return /(^|_)RECURRENT$/.test(type);
+    }).length;
+    var code = "";
+    if (types.every(Boolean) && recurrent === 0) code = "PER_SERVICE";
+    if (types.every(Boolean) && recurrent === types.length) code = recurringCode(entries.map(function(entry) {
+      return intervalMonths(entry.row.metadata);
+    }));
+    if (!code && !name) return null;
+    return { code, label: name || own(PRICING_MODELS, code) || RECURRING_MODEL.label };
+  }
+  function recurringCode(months) {
+    var first = months[0];
+    if (first === null || !months.every(function(count) {
+      return count === first;
+    })) return RECURRING_MODEL.code;
+    return first === 1 ? "MONTHLY" : "SEASONAL";
+  }
+  function intervalMonths(metadata) {
+    if (!metadata || typeof metadata !== "object") return null;
+    if (text3(metadata.INTERVAL_UNIT).toUpperCase() !== MONTH_UNIT) return null;
+    return positiveInteger3(metadata.INTERVAL_COUNT);
   }
   function lineCatalog(catalog) {
     var source = catalog || {};
@@ -2139,13 +2178,6 @@
     var from = isoDate(start);
     var to = isoDate(end);
     return from && to && from <= to ? { start: from, end: to } : null;
-  }
-  function sharedPeriod(orders) {
-    var first = orders.length ? orders[0].servicePeriod : null;
-    if (!first) return null;
-    return orders.every(function(order) {
-      return !!order.servicePeriod && order.servicePeriod.start === first.start && order.servicePeriod.end === first.end;
-    }) ? first : null;
   }
   function byPricingModel(left, right) {
     return pricingRank(left) - pricingRank(right) || left.backendId - right.backendId;
@@ -3665,6 +3697,7 @@
     { name: "grandTotal" },
     { name: "id" },
     { name: "itemCount" },
+    { name: "metadata" },
     { name: "sortOrder" },
     { name: "totalTaxes" },
     { key: "id", mappings: ID_MAPPINGS, name: "itemPrice", type: "identifier" },
@@ -3672,7 +3705,9 @@
   ];
   var PRODUCT_PRICE_MAPPINGS = [
     { name: "id" },
-    { key: "id", mappings: ID_MAPPINGS, name: "product", type: "identifier" }
+    { name: "nls" },
+    { key: "id", mappings: ID_MAPPINGS, name: "product", type: "identifier" },
+    { key: "id", mappings: REF_MAPPINGS, name: "type", type: "identifier" }
   ];
   var PRODUCT_MAPPINGS = [{ name: "code" }, { name: "id" }, { name: "nls" }];
   var ORDER_TARGET_MAPPINGS = [
@@ -8218,7 +8253,6 @@
     if (counts.orders) {
       facts2.push(plural(counts.orders, "quote", "quotes") + (counts.properties ? " for " + plural(counts.properties, "property", "properties") : ""));
     }
-    if (quotes.servicePeriod) facts2.push("Service period " + formatDatePeriod(quotes.servicePeriod));
     var deciding = quotes.deciding && counts.properties > 0;
     return h("div", { "class": "proposals-head", "data-module": "quote-package-head", "data-visual-id": "quote-package-head", "data-state": deciding ? "deciding" : "settled" }, [
       h("div", { "class": "proposals-head__read" }, [
@@ -8271,7 +8305,6 @@
     }
     if (agreement.term) facts2.push("Term " + formatDatePeriod(agreement.term));
     else if (agreement.effectiveDate) facts2.push("Effective " + formatIsoDate(agreement.effectiveDate));
-    else if (row.servicePeriod) facts2.push("Service period " + formatDatePeriod(row.servicePeriod));
     if (!facts2.length) facts2.push(row.propertyCount ? plural(row.propertyCount, "property", "properties") : "No properties listed yet");
     return facts2.join(" \xB7 ");
   }
@@ -8876,8 +8909,7 @@
     var agreement = row.agreement;
     if (agreement.stage === "review" && row.quoteCount) return plural(row.quoteCount, "quote", "quotes") + (row.propertyCount ? " for " + plural(row.propertyCount, "property", "properties") : "");
     if (agreement.term) return formatDatePeriod(agreement.term);
-    if (agreement.effectiveDate) return "Effective " + formatIsoDate(agreement.effectiveDate);
-    return row.servicePeriod ? formatDatePeriod(row.servicePeriod) : "";
+    return agreement.effectiveDate ? "Effective " + formatIsoDate(agreement.effectiveDate) : "";
   }
   function QuotesDecisionLine(quotes) {
     return h("div", { "class": "ov-row", "data-module": "quote-decision", "data-visual-id": "quote-decision", "data-tone": "info" }, [
@@ -10059,7 +10091,7 @@
     var status = QUOTE_STATUS[group.status];
     var busy = contractCommandsBusy();
     page.setAttribute("data-state", group.status);
-    var facts2 = [group.address, group.servicePeriod ? "Service period " + formatDatePeriod(group.servicePeriod) : ""].filter(Boolean);
+    var facts2 = [group.address].filter(Boolean);
     page.appendChild(h("div", { "class": "proposal-detail-head", "data-module": "quote-detail-head", "data-visual-id": "quote-detail-head" }, [
       h("div", { style: "flex:1;min-width:0" }, [
         h("h1", { "class": "proposal-detail-head__title", "data-bind": "quote.property" }, group.title),

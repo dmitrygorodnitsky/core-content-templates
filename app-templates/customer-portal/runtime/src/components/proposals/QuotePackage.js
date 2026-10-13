@@ -26,7 +26,6 @@ export function ContractsHead(quotes) {
   if (counts.orders) {
     facts.push(plural(counts.orders, "quote", "quotes") + (counts.properties ? " for " + plural(counts.properties, "property", "properties") : ""));
   }
-  if (quotes.servicePeriod) facts.push("Service period " + formatDatePeriod(quotes.servicePeriod));
   var deciding = quotes.deciding && counts.properties > 0;
   return h("div", { "class": "proposals-head", "data-module": "quote-package-head", "data-visual-id": "quote-package-head", "data-state": deciding ? "deciding" : "settled" }, [
     h("div", { "class": "proposals-head__read" }, [
@@ -83,7 +82,6 @@ export function agreementMeta(row) {
   }
   if (agreement.term) facts.push("Term " + formatDatePeriod(agreement.term));
   else if (agreement.effectiveDate) facts.push("Effective " + formatIsoDate(agreement.effectiveDate));
-  else if (row.servicePeriod) facts.push("Service period " + formatDatePeriod(row.servicePeriod));
   if (!facts.length) facts.push(row.propertyCount ? plural(row.propertyCount, "property", "properties") : "No properties listed yet");
   return facts.join(" · ");
 }

@@ -92,9 +92,10 @@ const orderList = {
   assert.deepEqual(orders.map((order) => order.propertyBackendId), [278, 278, 430, 430, 431, null, null], "a string id is an id, and a boolean is not a property even though Number(true) is 1");
   assert.deepEqual(orders.map((order) => order.pricingModel && order.pricingModel.label), ["Per service", "Monthly", "Seasonal", "Monthly", null, null, null], "an unknown or inherited-name pricing model has no label and never shows its code");
   assert.deepEqual(plain(orders.map((order) => order.total)), [null, null, { amount: 8625.5, currency: "CAD" }, null, null, null, null], "a zero, null, negative or empty total, or one without a currency, renders as absent");
-  assert.deepEqual(plain(orders[0].servicePeriod), { start: "2026-11-01", end: "2027-03-31" });
-  assert.equal(orders[3].servicePeriod, null, "no service period on the Order means none on the row");
-  assert.equal(orders[5].servicePeriod, null, "February 30th is not a date");
+  assert.ok(orders.every((order) => !("servicePeriod" in order)), "an Order's SERVICE_PERIOD_START/END are never read: they are always empty and leave the Order type");
+  const withoutRemoved = { result: orderList.result.map((row) => Object.assign({}, row, { attributes: { 5: Object.fromEntries(Object.entries(row.attributes[5]).filter(([code]) => !/^(SERVICE_PERIOD_START|SERVICE_PERIOD_END|EFFECTIVE_DATE|CLIENT)$/.test(code))) } })) };
+  const removedOnOrders = { result: orderList.result.map((row) => Object.assign({}, row, { attributes: { 5: Object.assign({}, row.attributes[5], { CLIENT: { value: 999 }, EFFECTIVE_DATE: { value: "2026-11-01" } }, PERIOD) } })) };
+  assert.deepEqual(plain(normalizeQuoteOrders(removedOnOrders)), plain(normalizeQuoteOrders(withoutRemoved)), "Order SERVICE_PERIOD_START/END, EFFECTIVE_DATE and CLIENT change nothing the portal shows");
   assert.equal(preparing, true, "an Order the operator has not sent switches the preparing state on");
   assert.deepEqual(withheldBackendIds, [506, 507], "withheld Orders are remembered only so an agreement can tell them from unreadable ones");
   assert.ok(orders.every((order) => /^quote-core-\d+$/.test(order.id)), "a row is identified by its Core id only");
@@ -148,6 +149,58 @@ const orderList = {
   const withoutCatalog = normalizeQuoteOrders(rows, { orderItems: catalog.orderItems, productPrices: null, products: null }).orders[0];
   assert.deepEqual(withoutCatalog.lines.map((entry) => entry.product), ["", ""], "a failed catalog read names no service");
   assert.equal(withoutCatalog.linesState, "partial");
+}
+
+{
+  const SNOW_PRICE = { id: 25, nls: { en: { NAME: "Snow Removal" } } };
+  const DEICE_PRICE = { id: 28, nls: { en: { NAME: "Rock Salt De-Icing" } } };
+  const price = (id, type, extra = {}) => Object.assign({ id, product: { id: id < 100 ? SNOW_PRICE.id : DEICE_PRICE.id }, type: type ? { id: 1, code: type } : null }, extra);
+  const line = (id, order, priceId, metadata) => Object.assign({ id, order: { id: order }, itemPrice: { id: priceId }, amount: 100, itemCount: 1, sortOrder: id }, metadata === undefined ? {} : { metadata });
+  const month = (count) => ({ QUOTE_TYPE: "IGNORED", INTERVAL_UNIT: "MONTH", INTERVAL_COUNT: count });
+  const catalog = {
+    orderItems: [
+      line(1, 601, 27), line(2, 601, 135),
+      line(3, 602, 52, month(1)), line(4, 602, 158, month(1)),
+      line(5, 603, 224, month(5)), line(6, 603, 331, month(5)),
+      line(7, 604, 52), line(8, 604, 158),
+      line(9, 605, 224, month(5)), line(10, 605, 158, month(1)),
+      line(11, 606, 52, { INTERVAL_UNIT: "WEEK", INTERVAL_COUNT: 1 }),
+      line(12, 607, 60), line(13, 607, 160),
+      line(14, 608, 27), line(15, 608, 52),
+      line(16, 609, 70),
+      line(17, 610, 27),
+      line(18, 611, 61), line(19, 611, 161),
+    ],
+    productPrices: [
+      price(27, "TIERED"), price(135, "TIERED"),
+      price(52, "TIERED_RECURRENT"), price(158, "TIERED_RECURRENT"),
+      price(224, "TIERED_RECURRENT"), price(331, "TIERED_RECURRENT"),
+      price(60, "TIERED_RECURRENT", { nls: { en: { NAME: "Seasonal plan" } } }), price(160, "TIERED_RECURRENT", { nls: { en: { NAME: "Seasonal plan" } } }),
+      price(70, null),
+      price(61, "TIERED_RECURRENT", { nls: { en: { NAME: "Seasonal snow" } } }), price(161, "TIERED_RECURRENT", { nls: { en: { NAME: "Seasonal de-icing" } } }),
+    ],
+    products: [SNOW_PRICE, DEICE_PRICE],
+  };
+  const quoted = (id, attributes = {}) => orderRow(id, SENT, Object.assign({ SERVICE_PROPERTY: { value: 278 } }, attributes), { items: catalog.orderItems.filter((entry) => entry.order.id === id).map((entry) => ({ id: entry.id })) });
+  const ids = [601, 602, 603, 604, 605, 606, 607, 608, 609, 610, 611];
+  const labelled = normalizeQuoteOrders(ids.map((id) => quoted(id)), catalog).orders;
+  assert.deepEqual(plain(labelled.map((order) => [order.backendId, order.pricingModel && order.pricingModel.code, order.pricingModel && order.pricingModel.label])), [
+    [601, "PER_SERVICE", "Per service"],
+    [602, "MONTHLY", "Monthly"],
+    [603, "SEASONAL", "Seasonal"],
+    [604, "RECURRING", "Recurring"],
+    [605, "RECURRING", "Recurring"],
+    [606, "RECURRING", "Recurring"],
+    [607, "RECURRING", "Seasonal plan"],
+    [608, null, null],
+    [609, null, null],
+    [610, "PER_SERVICE", "Per service"],
+    [611, "RECURRING", "Recurring"],
+  ], "without PRICING_MODEL the variant comes from the prices: TIERED is per service, TIERED_RECURRENT is monthly at 1 month and seasonal at more, recurring when the interval is missing, mixed or not in months; a shared price name is the label; mixed or unreadable prices name nothing");
+  assert.deepEqual(plain(normalizeQuoteOrders(ids.map((id) => quoted(id, { PRICING_MODEL: { value: "SEASONAL" } })), catalog).orders.map((order) => order.pricingModel)), ids.map(() => ({ code: "SEASONAL", label: "Seasonal" })), "while an Order still carries PRICING_MODEL it wins, so nothing changes before the backfill");
+  assert.equal(normalizeQuoteOrders([quoted(602)], { orderItems: catalog.orderItems, productPrices: null, products: null }).orders[0].pricingModel, null, "an unreadable price list names no variant");
+  const ranked = contractsPackage(normalizeQuoteOrders([604, 603, 607, 601, 602].map((id) => quoted(id)), catalog), []);
+  assert.deepEqual(ranked.groups[0].orders.map((order) => order.backendId), [601, 602, 603, 604, 607], "derived variants keep the per service, monthly, seasonal order, recurring last");
 
   assert.equal(formatMoney("8625.5", "USD"), "$8,625.50");
   assert.equal(formatMoney(0.02374, "CAD"), "CA$0.02374", "a unit price keeps the precision Core stored");
@@ -277,7 +330,7 @@ const orderList = {
   assert.deepEqual(quotes.groups.map((group) => group.decision), ["open", "approved", "revision", "open"]);
   assert.deepEqual(plain(quotes.counts), { orders: 7, properties: 3, decided: 1, approved: 1, revision: 1, declined: 1, open: 4 });
   assert.equal(quotes.counts.approved + quotes.counts.revision + quotes.counts.declined + quotes.counts.open, quotes.counts.orders, "the rollup counts each independent Order once");
-  assert.equal(quotes.servicePeriod, null, "a service period is shown only when every Order shares it");
+  assert.equal("servicePeriod" in quotes, false, "the quote package states no service period");
   assert.equal(quotes.agreements.length, 1);
   assert.equal(quotes.agreements[0].agreement.stage, "review");
   assert.equal(quotes.deciding, true);
@@ -299,7 +352,7 @@ const orderList = {
   assert.equal(moved.agreements[0].servicesScope, "approved");
 
   const shared = contractsPackage(normalizeQuoteOrders({ result: [orderList.result[0], orderList.result[1], orderList.result[2]] }), properties);
-  assert.deepEqual(plain(shared.servicePeriod), { start: "2026-11-01", end: "2027-03-31" });
+  assert.ok(!("servicePeriod" in shared) && shared.groups.every((group) => !("servicePeriod" in group)), "Orders that all carry the same SERVICE_PERIOD still show no period");
   assert.deepEqual(shared.agreements, [], "without a readable agreement there is no agreement row");
 
   const declinedEverywhere = contractsPackage(normalizeQuoteOrders({ result: [orderRow(1, SENT.concat("DECLINED"), { SERVICE_PROPERTY: { value: 278 } }), orderRow(2, SENT.concat("DECLINED"), { SERVICE_PROPERTY: { value: 278 } })] }), properties);
@@ -370,7 +423,7 @@ const RETIRED = ["Proposal #", "valid until", "sent Dec", "sq ft", "Beam AI", "l
   assert.equal(page.getAttribute("data-state"), "ready");
   const head = one(page, "[data-module=\"quote-package-head\"]");
   assert.equal(one(head, "h1").textContent, "Your contracts");
-  assert.equal(one(head, ".proposals-head__sub").textContent, "10 service agreements · 12 quotes for 4 properties · Service period Nov 1, 2026 – Mar 31, 2027");
+  assert.equal(one(head, ".proposals-head__sub").textContent, "10 service agreements · 12 quotes for 4 properties", "the head shows no service period: an Order's period is never read");
   assert.equal(one(head, ".proposals-head__pill").textContent, "2 of 4 properties decided", "a property with changes requested is not decided");
   for (const invented of RETIRED) assert.ok(!text.includes(invented), "the contracts page must not claim " + JSON.stringify(invented));
 
@@ -384,7 +437,7 @@ const RETIRED = ["Proposal #", "valid until", "sent Dec", "sq ft", "Beam AI", "l
   assert.deepEqual(rows.map((row) => one(row, ".proposal-card__name").textContent), ["Alkire Street and Braun Court", "Foothill Court and 3 more", "Coal Creek Lane", "Dover Way", "Lamar Terrace", "Eldridge Circle and Flatiron Parkway", "Independence Way", "Holland Street", "Jellison Place", "Kipling Crossing"]);
   assert.deepEqual(rows.map((row) => one(row, ".proposal-card__meta").textContent), [
     "Service agreement · Term Nov 1, 2026 – Mar 31, 2027",
-    "Service agreement · 12 quotes for 4 properties · Service period Nov 1, 2026 – Mar 31, 2027",
+    "Service agreement · 12 quotes for 4 properties",
     "Service agreement · Term Nov 1, 2026 – Mar 31, 2027",
     "Service agreement · Term Nov 1, 2026 – Mar 31, 2027",
     "Service agreement · Term Nov 1, 2026 – Mar 31, 2027",
@@ -392,8 +445,8 @@ const RETIRED = ["Proposal #", "valid until", "sent Dec", "sq ft", "Beam AI", "l
     "Service agreement · Term Nov 1, 2025 – Mar 31, 2026",
     "Service agreement · Term Nov 1, 2024 – Mar 31, 2025",
     "Service agreement · Term Nov 1, 2024 – Mar 31, 2025",
-    "Service agreement · Service period Nov 1, 2026 – Mar 31, 2027",
-  ]);
+    "Service agreement",
+  ], "an agreement row dates itself from the agreement's own term or effective date, never from its Orders");
   assert.deepEqual(rows.map((row) => one(row, "[data-module=\"status-badge\"]").textContent), ["Ready for your approval", "Awaiting your decisions", "Contract details needed", "Agreement in preparation", "Approved", "Active", "Suspended", "Expired", "Archived", "Cancelled"]);
   assert.deepEqual(rows.map((row) => [row.getAttribute("data-action"), row.getAttribute("data-id")]), [
     ["agreement.open", "agreement-core-9102"], ["agreement.open", "agreement-core-9101"], ["agreement.open", "agreement-core-9103"],
@@ -522,7 +575,7 @@ const RETIRED = ["Proposal #", "valid until", "sent Dec", "sq ft", "Beam AI", "l
   assert.equal(decided.getAttribute("data-state"), "approved");
   assert.equal(one(decided, "[data-visual-id=\"proposal-back\"]").textContent, "‹ Back to your contracts");
   assert.equal(one(decided, "h1").textContent, "Foothill Court");
-  assert.equal(one(decided, ".proposal-detail-head__meta").textContent, "4820 Foothill Court, Lakewood, CO 80215 · Service period Nov 1, 2026 – Mar 31, 2027", "the address comes from the Order's SERVICE_ADDRESS");
+  assert.equal(one(decided, ".proposal-detail-head__meta").textContent, "4820 Foothill Court, Lakewood, CO 80215", "the address comes from the Order's SERVICE_ADDRESS, and no service period follows it");
   const link = one(decided, "[data-module=\"quote-package-link\"]");
   assert.equal(link.getAttribute("data-action"), "agreement.open");
   assert.equal(link.getAttribute("data-id"), "agreement-core-9101");

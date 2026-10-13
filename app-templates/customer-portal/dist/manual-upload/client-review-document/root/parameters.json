@@ -462,6 +462,19 @@
     }
   },
   {
+    "code": "MODEL_RECURRING",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "MODEL RECURRING",
+        "DESCRIPTION": "Client review document copy."
+      }
+    },
+    "value": {
+      "en": "Recurring"
+    }
+  },
+  {
     "code": "PROPERTY_AWAITING",
     "type": "LOCALIZED_STRING_SS",
     "nls": {

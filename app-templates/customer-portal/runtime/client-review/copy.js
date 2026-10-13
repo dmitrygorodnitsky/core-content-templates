@@ -38,6 +38,7 @@
     ["MODEL_SEASONAL", "modelSeasonal", "Seasonal"],
     ["MODEL_MONTHLY", "modelMonthly", "Monthly"],
     ["MODEL_PER_SERVICE", "modelPerService", "Per service"],
+    ["MODEL_RECURRING", "modelRecurring", "Recurring"],
     ["PROPERTY_AWAITING", "propertyAwaiting", "Awaiting decision"],
     ["PROPERTY_APPROVED", "propertyApproved", "Option approved"],
     ["PROPERTY_DECLINED", "propertyDeclined", "Declined"],
@@ -242,8 +243,15 @@
     });
   }
 
+  var MODEL_COPY = { SEASONAL: "modelSeasonal", MONTHLY: "modelMonthly", PER_SERVICE: "modelPerService", RECURRING: "modelRecurring" };
+
+  function optionLabel(option, copy) {
+    return option.priceName || copy[MODEL_COPY[option.model]] || fill(copy.optionFallback, { n: option.position });
+  }
+
   ns.copyEntries = ENTRIES.map(function (entry) { return Object.freeze(entry.slice()); });
   ns.defaultCopy = defaultCopy;
   ns.withDefaults = withDefaults;
   ns.fill = fill;
+  ns.optionLabel = optionLabel;
 })(typeof window !== "undefined" ? window : globalThis);

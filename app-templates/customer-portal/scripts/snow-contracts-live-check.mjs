@@ -105,6 +105,7 @@ function coreFetch(table) {
     if (failure) return { ok: false, status: table.fail[failure], async json() { return {}; } };
     const filter = (property) => ((body && body.filters) || []).find((entry) => entry.property === property);
     const ids = (property) => String(filter(property).value).split(",").map(Number);
+    if (table.requests && body) table.requests.push({ route, mappings: body.mappings });
     if (route === "/core/api/document-type/list.json") return json({ resultSize: 1, result: [{ id: 17, code: "SERVICE_AGREEMENT" }] });
     if (route === "/core/api/document/list.json") {
       const rows = table.agreements.filter((row) => String(row.attributes[17].CLIENT.value) === filter("attributes.17.CLIENT.value").value);
@@ -229,6 +230,26 @@ function quietConsole() {
   assert.equal(one(agreement, "[data-module=\"agreement-property\"] .agreement-property__title").textContent, "Property details unavailable");
   assert.equal(all(agreement, "[data-action=\"agreement.approve\"]").length, 1);
   assert.equal(table.events.length, 0, "reading and rendering send no event");
+}
+
+{
+  const table = coreTable();
+  table.requests = [];
+  table.orders.forEach((row) => { delete row.attributes[5].PRICING_MODEL; });
+  const SEASONAL_PRICES = [227, 233];
+  table.productPrices.forEach((row) => { row.type = SEASONAL_PRICES.includes(row.id) ? { optimistic: 0, id: 6, code: "TIERED_RECURRENT" } : { optimistic: 3, id: 3, code: "TIERED" }; });
+  table.orderItems.forEach((row) => {
+    if (SEASONAL_PRICES.includes(row.itemPrice.id)) row.metadata = { QUOTE_TYPE: "SEASONAL", SERVICE_TYPE: "AREA_BASED_SNOW_REMOVAL", INTERVAL_UNIT: "MONTH", INTERVAL_COUNT: 5 };
+  });
+  await liveRuntime(table).loadAsync("proposals");
+  const mappingsOf = (route) => table.requests.find((request) => request.route === route).mappings;
+  const names = (mappings) => mappings.map((mapping) => mapping.name);
+  assert.ok(names(mappingsOf("/core-bill/api/order-item/list.json")).includes("metadata"), "order lines are read with their metadata, where the pricer records each line's interval");
+  assert.ok(["nls", "type"].every((name) => names(mappingsOf("/core-pim/api/product-price/list.json")).includes(name)), "prices are read with their name and type");
+  assert.ok(!JSON.stringify(table.requests).includes("SERVICE_PERIOD"), "no read names an Order service period");
+  const pkg = quotePackage();
+  assert.deepEqual(pkg.groups[0].orders.map((order) => [order.backendId, order.pricingModel && order.pricingModel.label]), [[4102, "Per service"], [4101, "Seasonal"]], "without PRICING_MODEL the live portal names each option from its prices and the lines' interval");
+  assert.equal(findQuote(pkg, 4001).pricingModel.label, "Seasonal");
 }
 
 {

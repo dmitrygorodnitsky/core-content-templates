@@ -227,6 +227,7 @@ function manifestFor(template, contract) {
     plannedFields: {
       order: [core.orderAttributes.address, core.orderAttributes.pricingModel, core.orderAttributes.plan],
       orderLines: core.rawShape.orderLines,
+      optionLabel: "the Order's " + core.orderAttributes.pricingModel + " while it still carries one; otherwise the NAME its lines' ProductPrice rows share, else the price type (" + core.priceVariants.perService + " when no price is recurrent, " + core.priceVariants.recurring + " when every one is) refined to " + core.priceVariants.monthly + " or " + core.priceVariants.seasonal + " only by OrderItem." + core.priceVariants.lineMetadata + " " + core.priceVariants.intervalCount + "/" + core.priceVariants.intervalUnit + " in " + core.priceVariants.monthUnit + " (1 or more), else Option {n}",
       agreement: [
         core.agreementAttributes.providerLegalName,
         core.agreementAttributes.providerRepresentativeName,
@@ -247,6 +248,7 @@ function manifestFor(template, contract) {
       "On 2026-09-23 a dev-1 link returned the Account's contacts and addresses as ids only, and the backend confirmed that Contact, ContactEntry and AccountAddress will never be grantable. The details pre-fill and the portal sign-in address therefore read Account attributes.",
       "On 2026-10-07 dev-1 served a PropertyPlan file without any credential from /core/media/{id}/stream.json on the grant API's origin, answered 'Entity type MediaAsset is not grantable' and 'Entity type Resource is not grantable' to grant/mappings.json, and exposed no grant endpoint under /core-rm. Contract details accepted on dev-1 were saved by the details processor as a BILLING AccountAddress of their own, beside the SERVICE ones, even when the text matched a service address.",
       "On 2026-10-07 the Maps JavaScript API (weekly, 3.66) reported the page to Google (AuthenticationService.Authenticate, QuotaService.RecordEvent) as scheme, host and path with user info, query and fragment cleared, so the #token= fragment does not reach Google; Chromium honoured the referrer policy switched at run time from no-referrer to strict-origin and sent the origin alone.",
+      "On 2026-10-13 dev-1 had only the SYSTEM DEFAULT grant profiles for these types, with no organization rows or named profiles: OrderItem (115) exposes itemPrice{id,nls} but no metadata, ProductPrice (96) nls and type{id,code,nls} but no attributes, Product (92) code and nls. A link can therefore tell a per-service price (TIERED) from a recurring one (TIERED_RECURRENT) and read a price name, but not a monthly from a seasonal price: their INTERVAL is a ProductPrice attribute and the pricer's copy of it is OrderItem metadata. Every SNOWLIMITLESS price had an empty nls.",
     ],
     unverified: [
       "Event metadata reaches the workflow hook, and required event attributes are enforced on this path (QUOTATION-PACKAGE-FLOW.md §9).",

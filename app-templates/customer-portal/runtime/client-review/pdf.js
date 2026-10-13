@@ -3,7 +3,6 @@
 
   var ns = global.ClientReview || (global.ClientReview = {});
   var KINDS = ["quote-review", "contract-details", "agreement-review", "reference", "completion"];
-  var MODELS = { SEASONAL: "modelSeasonal", MONTHLY: "modelMonthly", PER_SERVICE: "modelPerService" };
   var STATUSES = { new: "optionNew", viewed: "optionViewed", approved: "optionApproved", declined: "optionDeclined", changes: "optionChanges", revising: "optionRevising", unknown: "optionUnknown" };
 
   function offered(snapshot) {
@@ -173,7 +172,7 @@
       paragraph(property.address || copy.addressUnavailable, 12, ink, 10);
       options.forEach(function (option) {
         ensure(65);
-        var label = copy[MODELS[option.model]] || ns.fill(copy.optionFallback, { n: option.position });
+        var label = ns.optionLabel(option, copy);
         paragraph(label + " - " + (copy[STATUSES[option.status]] || copy.optionUnknown), 11, accent, 10);
         if (!option.priced) { paragraph(option.status === "revising" ? copy.noteRevising : copy.noteNoActions, 10, muted); return; }
         lines(option);

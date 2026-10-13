@@ -144,7 +144,7 @@ async function boundProcessorPath() {
   const utility = await fs.readFile(contentOf(bound.script), "utf8");
   const processors = [...new Set([...utility.matchAll(/"(SNOW_SERVICE_AGREEMENT_PROCESSOR_V\d+)"/g)].map((match) => match[1]))];
   assert.equal(processors.length, 1, bound.script + " dispatches exactly one details processor");
-  return contentOf(processors[0]);
+  return { path: contentOf(processors[0]), utility };
 }
 
 function section(document, attributes) {
@@ -349,6 +349,60 @@ const N = loadRuntime().CR.normalizer;
   const unaddressed = review.properties[3];
   assert.equal(unaddressed.address, "", "an Order without SERVICE_ADDRESS carries no invented address");
   assert.equal(unaddressed.options[0].model, "", "an Order without PRICING_MODEL carries no invented model");
+  assert.deepEqual(plain(review.properties.flatMap((property) => property.options.map((option) => [option.id, option.model, option.priceName]))), [
+    [3101, "SEASONAL", ""], [3102, "MONTHLY", ""], [3103, "PER_SERVICE", ""], [3104, "SEASONAL", ""], [3105, "PER_SERVICE", ""],
+    [3106, "SEASONAL", ""], [3107, "MONTHLY", ""], [3108, "", ""], [3109, "SEASONAL", ""], [3110, "MONTHLY", ""],
+  ], "while an Order still carries PRICING_MODEL, the option keeps that model and nothing changes on the page");
+
+  const labelled = model(CR.fixtures.priceLabelled(CR.fixtures.quotationData()));
+  assert.deepEqual(plain(labelled.properties.flatMap((property) => property.options.map((option) => [option.id, option.model, option.priceName]))), [
+    [3101, "RECURRING", "Seasonal plan"], [3102, "RECURRING", "Monthly plan"], [3103, "PER_SERVICE", ""], [3104, "RECURRING", ""], [3105, "PER_SERVICE", ""],
+    [3106, "RECURRING", ""], [3107, "RECURRING", ""], [3108, "", ""], [3109, "RECURRING", ""], [3110, "RECURRING", ""],
+  ], "without PRICING_MODEL the option is named from its prices: a TIERED price is per service, a TIERED_RECURRENT price without an interval is recurring");
+  const defaultCopy = CR.defaultCopy();
+  assert.deepEqual(plain(labelled.properties[0].options.map((option) => CR.optionLabel(option, defaultCopy))), ["Seasonal plan", "Monthly plan", "Per service"], "a price name the catalog sets is the option's label");
+  assert.equal(CR.optionLabel(labelled.properties[1].options[0], defaultCopy), "Recurring", "a recurring price whose interval the link does not expose reads Recurring, never Monthly or Seasonal by guess");
+  assert.equal(CR.optionLabel(labelled.properties[3].options[0], defaultCopy), "Option 1", "a line whose price type is not readable leaves the option unnamed");
+
+  const intervals = CR.fixtures.priceLabelled(CR.fixtures.quotationData());
+  const withInterval = (id, count) => intervals.orders.find((row) => row.id === id).items.forEach((line) => { line.metadata = { INTERVAL_UNIT: "MONTH", INTERVAL_COUNT: count }; });
+  withInterval(3104, 5);
+  withInterval(3106, 5);
+  intervals.orders.find((row) => row.id === 3106).items[1].metadata.INTERVAL_COUNT = 1;
+  withInterval(3107, 1);
+  withInterval(3109, 5);
+  intervals.orders.find((row) => row.id === 3110).items[0].metadata = { INTERVAL_UNIT: "WEEK", INTERVAL_COUNT: 1 };
+  assert.deepEqual(plain(model(intervals).properties.flatMap((property) => property.options.map((option) => [option.id, option.model]))).filter((entry) => [3104, 3106, 3107, 3109, 3110].includes(entry[0])), [
+    [3104, "SEASONAL"], [3106, "RECURRING"], [3107, "MONTHLY"], [3109, "SEASONAL"], [3110, "RECURRING"],
+  ], "when a line exposes its interval, 1 month is monthly and more months are seasonal; lines that disagree or count in other units stay recurring");
+
+  const mixed = CR.fixtures.priceLabelled(CR.fixtures.quotationData());
+  mixed.orders.find((row) => row.id === 3103).items[1].itemPrice.type = { code: "TIERED_RECURRENT" };
+  mixed.orders.find((row) => row.id === 3105).items[1].itemPrice.nls = { en: { NAME: "Other name" } };
+  mixed.orders.find((row) => row.id === 3105).items[0].itemPrice.nls = { en: { NAME: "Per visit" } };
+  const mixedOptions = model(mixed).properties.flatMap((property) => property.options);
+  assert.equal(mixedOptions.find((option) => option.id === 3103).model, "", "an option mixing per-service and recurring prices is not named by type");
+  assert.equal(mixedOptions.find((option) => option.id === 3105).priceName, "", "prices with different names give the option no price name");
+
+  const nameOnLine = CR.fixtures.quotationData();
+  const namedOrder = nameOnLine.orders.find((row) => row.id === 3102);
+  delete namedOrder.attributes[5].PRICING_MODEL;
+  nameOnLine.orderItems = namedOrder.items.map((line) => ({ id: line.id, itemPrice: { id: line.itemPrice.id, nls: { en: { NAME: "Monthly plan" } } } }));
+  nameOnLine.productPrices = namedOrder.items.map((line) => ({ id: line.itemPrice.id, type: { code: "TIERED_RECURRENT" } }));
+  namedOrder.items = namedOrder.items.map((line) => ({ id: line.id }));
+  const joinedNamed = model(nameOnLine).properties[0].options[1];
+  assert.deepEqual([joinedNamed.model, joinedNamed.priceName], ["RECURRING", "Monthly plan"], "the price name and type join through the granted OrderItem.itemPrice and ProductPrice rows");
+
+  const runtimeSources = RUNTIME.map((name) => sources[name]).join("\n");
+  for (const removed of ["SERVICE_PERIOD_START", "SERVICE_PERIOD_END", "QUOTE_TYPE"]) assert.ok(!runtimeSources.includes(removed), "the review page never reads " + removed);
+  const removedOnOrders = CR.fixtures.quotationData();
+  removedOnOrders.orders.forEach((row) => Object.assign(row.attributes[5], {
+    CLIENT: { value: 999 }, EFFECTIVE_DATE: { value: "2026-01-01" }, SERVICE_PERIOD_START: { value: "2026-11-01" }, SERVICE_PERIOD_END: { value: "2027-03-31" },
+  }));
+  const withoutRemoved = CR.fixtures.quotationData();
+  withoutRemoved.orders.forEach((row) => { delete row.attributes[5].CLIENT; });
+  assert.deepEqual(plain(model(removedOnOrders)), plain(model(withoutRemoved)), "Order CLIENT, EFFECTIVE_DATE and SERVICE_PERIOD_START/END change nothing the page shows");
+  assert.deepEqual(Object.keys(contract.orderAttributes).sort(), ["address", "plan", "pricingModel", "property"], "the only Order attributes the page reads are SERVICE_PROPERTY, SERVICE_ADDRESS, PROPERTY_PLAN and PRICING_MODEL, the last only as a fallback");
 
   const money = CR.fixtures.quotationData();
   money.orders[1].grandTotal = 777.77;
@@ -467,19 +521,21 @@ const N = loadRuntime().CR.normalizer;
     assert.equal(model(data).details.returned.returned, expected, "CLIENT_DETAILS_ERRORS is read only while the agreement awaits the details again, not in " + state);
   }
 
-  const processorPath = await boundProcessorPath();
+  const bound = await boundProcessorPath();
+  const processorPath = bound && bound.path;
   if (processorPath && existsSync(processorPath)) {
     const processor = await fs.readFile(processorPath, "utf8");
     const listOf = (name) => [...((processor.match(new RegExp(name + "\\s*=\\s*List\\.of\\(([^)]*)\\)")) || ["", ""])[1]).matchAll(/"([A-Z_]+)"/g)].map((match) => match[1]);
     const required = listOf("REQUIRED_TEXT_FIELDS");
     const booleans = listOf("BOOLEAN_FIELDS");
     const invalid = [...processor.matchAll(/missing\.add\("([A-Z_]+)"\)/g)].map((match) => match[1]);
-    const failure = [...processor.matchAll(/List\.of\("([A-Z_]+)"\)\)/g)].map((match) => match[1]);
+    const failure = [...new Set([...processor.matchAll(/List\.of\("([A-Z_]+)"\)\)/g)].map((match) => match[1])
+      .concat([...bound.utility.matchAll(/PROCESSING_FAILED\s*=\s*"([A-Z_]+)"/g)].map((match) => match[1])))];
     assert.ok(processor.includes("\"" + contract.agreementAttributes.detailsErrors + "\""), "the processor writes " + contract.agreementAttributes.detailsErrors);
     assert.deepEqual(required, requiredText, "the processor's required text fields are the contract's");
     assert.deepEqual(booleans, plain(contract.contractDetails.attributes.filter((attribute) => attribute.className === "java.lang.Boolean").map((attribute) => attribute.code)), "the processor's confirmations are the contract's");
     assert.deepEqual(invalid, Object.keys(contract.detailsReturn.invalid), "the processor's _INVALID codes are the contract's");
-    assert.deepEqual(failure, [contract.detailsReturn.processingFailed], "the processor's failure code is the contract's");
+    assert.deepEqual(failure, [contract.detailsReturn.processingFailed], "the failure code the details processor or the agreement utilities write is the contract's");
     assert.equal(returnedOf(required.concat(invalid, booleans, failure).join(",")).unexplained, false, "every code the processor can write is known to the page");
     console.log("client-review-check: details return codes compared with " + path.relative(process.cwd(), processorPath));
   } else {
@@ -629,7 +685,7 @@ const N = loadRuntime().CR.normalizer;
 const EXPECTED_SCENARIOS = {
   "quote-review": ["ready", "quote-review"], loading: ["loading", null], "link-missing": ["link-missing", null],
   "link-closed": ["link-closed", null], unconfigured: ["unconfigured", null], empty: ["ready", "empty"],
-  error: ["error", null], partial: ["ready", "quote-review"], "option-open": ["ready", "quote-review"],
+  error: ["error", null], partial: ["ready", "quote-review"], "quote-price-labels": ["ready", "quote-review"], "option-open": ["ready", "quote-review"],
   "link-copied": ["ready", "contract-details"], "link-copy-failed": ["ready", "quote-review"],
   "contact-phone-only": ["ready", "quote-review"], "contact-none": ["ready", "quote-review"], "agreement-no-logo": ["ready", "agreement-review"],
   "view-pending": ["ready", "quote-review"], "view-failed": ["ready", "quote-review"], "approve-confirm": ["ready", "quote-review"],
@@ -923,6 +979,11 @@ function assertForm(run, expected, message) {
       case "partial":
         assert.ok(text.includes("1 option could not be loaded"), "partial data is announced");
         break;
+      case "quote-price-labels": {
+        const labels = byClass(run.mount, "cr-option__label").map((node) => node.textContent);
+        assert.deepEqual(labels, ["Seasonal plan", "Monthly plan", copy.modelPerService, copy.modelRecurring, copy.modelPerService, copy.modelRecurring, copy.modelRecurring, "Option 1", copy.modelRecurring, copy.modelRecurring], "options without PRICING_MODEL are labelled from their prices");
+        break;
+      }
       case "quote-review": {
         const unaddressed = byAttribute(run.mount, "aria-labelledby", "cr-property-661")[0];
         assert.ok(surface(unaddressed).includes(copy.addressUnavailable) && surface(unaddressed).includes("Option 1"), "absent planned fields render neutral labels");

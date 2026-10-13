@@ -403,8 +403,7 @@ function agreementLineMeta(row) {
   var agreement = row.agreement;
   if (agreement.stage === "review" && row.quoteCount) return plural(row.quoteCount, "quote", "quotes") + (row.propertyCount ? " for " + plural(row.propertyCount, "property", "properties") : "");
   if (agreement.term) return formatDatePeriod(agreement.term);
-  if (agreement.effectiveDate) return "Effective " + formatIsoDate(agreement.effectiveDate);
-  return row.servicePeriod ? formatDatePeriod(row.servicePeriod) : "";
+  return agreement.effectiveDate ? "Effective " + formatIsoDate(agreement.effectiveDate) : "";
 }
 
 function QuotesDecisionLine(quotes) {

@@ -38,6 +38,7 @@
     ["MODEL_SEASONAL", "modelSeasonal", "Seasonal"],
     ["MODEL_MONTHLY", "modelMonthly", "Monthly"],
     ["MODEL_PER_SERVICE", "modelPerService", "Per service"],
+    ["MODEL_RECURRING", "modelRecurring", "Recurring"],
     ["PROPERTY_AWAITING", "propertyAwaiting", "Awaiting decision"],
     ["PROPERTY_APPROVED", "propertyApproved", "Option approved"],
     ["PROPERTY_DECLINED", "propertyDeclined", "Declined"],
@@ -242,10 +243,17 @@
     });
   }
 
+  var MODEL_COPY = { SEASONAL: "modelSeasonal", MONTHLY: "modelMonthly", PER_SERVICE: "modelPerService", RECURRING: "modelRecurring" };
+
+  function optionLabel(option, copy) {
+    return option.priceName || copy[MODEL_COPY[option.model]] || fill(copy.optionFallback, { n: option.position });
+  }
+
   ns.copyEntries = ENTRIES.map(function (entry) { return Object.freeze(entry.slice()); });
   ns.defaultCopy = defaultCopy;
   ns.withDefaults = withDefaults;
   ns.fill = fill;
+  ns.optionLabel = optionLabel;
 })(typeof window !== "undefined" ? window : globalThis);
 (function (global) {
   "use strict";
@@ -329,6 +337,16 @@
       plan: "PROPERTY_PLAN",
     },
     pricingModels: ["SEASONAL", "MONTHLY", "PER_SERVICE"],
+    priceVariants: {
+      perService: "PER_SERVICE",
+      monthly: "MONTHLY",
+      seasonal: "SEASONAL",
+      recurring: "RECURRING",
+      lineMetadata: "metadata",
+      intervalCount: "INTERVAL_COUNT",
+      intervalUnit: "INTERVAL_UNIT",
+      monthUnit: "MONTH",
+    },
     rawShape: {
       orderLines: "items",
       documentOwner: "organization",
@@ -1211,8 +1229,47 @@
     return id && rows[id] ? rows[id] : value;
   }
 
+  function priceTypeCode(price) {
+    return text(price && price.type && price.type.code).toUpperCase();
+  }
+
   function recurrentPrice(price) {
-    return /_RECURRENT$/.test(text(price && price.type && price.type.code).toUpperCase());
+    return /(^|_)RECURRENT$/.test(priceTypeCode(price));
+  }
+
+  function intervalMonths(line, variants) {
+    var metadata = line[variants.lineMetadata];
+    if (!metadata || typeof metadata !== "object") return null;
+    if (text(metadata[variants.intervalUnit]).toUpperCase() !== variants.monthUnit) return null;
+    return positiveInteger(metadata[variants.intervalCount]);
+  }
+
+  function recurringModel(months, variants) {
+    var first = months[0];
+    var shared = first !== null && months.every(function (count) { return count === first; });
+    if (!shared) return variants.recurring;
+    return first === 1 ? variants.monthly : variants.seasonal;
+  }
+
+  function priceVariant(row, context) {
+    var contract = context.contract;
+    var variants = contract.priceVariants;
+    var raw = row && Array.isArray(row[contract.rawShape.orderLines]) ? row[contract.rawShape.orderLines] : [];
+    var lines = raw
+      .map(function (line) { return referenced(line, context.catalog.orderItems); })
+      .filter(function (line) { return line && typeof line === "object"; });
+    if (!lines.length) return { model: "", name: "" };
+    var prices = lines.map(function (line) { return referenced(line.itemPrice, context.catalog.productPrices); });
+    var names = lines.map(function (line, index) {
+      return localizedName(prices[index] && prices[index].nls, context.locale) || localizedName(line.itemPrice && line.itemPrice.nls, context.locale);
+    });
+    var name = names[0] && names.every(function (entry) { return entry === names[0]; }) ? names[0] : "";
+    var typed = prices.every(function (price) { return Boolean(priceTypeCode(price)); });
+    var recurrent = prices.filter(recurrentPrice).length;
+    var model = "";
+    if (typed && recurrent === 0) model = variants.perService;
+    if (typed && recurrent === prices.length) model = recurringModel(lines.map(function (line) { return intervalMonths(line, variants); }), variants);
+    return { model: model, name: name };
   }
 
   function linesOf(row, currency, locale, contract, catalog) {
@@ -1250,14 +1307,16 @@
     var state = stateCode(row, contract.orderStates);
     var status = ORDER_STATUS[state] || "unknown";
     var currency = text(row.currency && row.currency.code);
-    var model = attributeText(row, contract.orderAttributes.pricingModel).toUpperCase();
+    var attributeModel = attributeText(row, contract.orderAttributes.pricingModel).toUpperCase();
+    var variant = contract.pricingModels.indexOf(attributeModel) !== -1 ? { model: attributeModel, name: "" } : priceVariant(row, context);
     var priced = PRICED_STATUSES.indexOf(status) !== -1;
     var lines = priced ? linesOf(row, currency, context.locale, contract, context.catalog) : [];
     return {
       id: id,
       recordKey: "order:" + id,
       position: position,
-      model: contract.pricingModels.indexOf(model) !== -1 ? model : "",
+      model: variant.model,
+      priceName: variant.name,
       state: state,
       status: status,
       priced: priced,
@@ -1478,6 +1537,7 @@
     formatMoney: formatMoney,
     formatQuantity: formatQuantity,
     recurrentPrice: recurrentPrice,
+    priceVariant: priceVariant,
     formatDate: formatDate,
     termsBlocks: termsBlocks,
     returnedDetails: returnedDetails,
@@ -1704,7 +1764,6 @@
 
   var ns = global.ClientReview || (global.ClientReview = {});
   var KINDS = ["quote-review", "contract-details", "agreement-review", "reference", "completion"];
-  var MODELS = { SEASONAL: "modelSeasonal", MONTHLY: "modelMonthly", PER_SERVICE: "modelPerService" };
   var STATUSES = { new: "optionNew", viewed: "optionViewed", approved: "optionApproved", declined: "optionDeclined", changes: "optionChanges", revising: "optionRevising", unknown: "optionUnknown" };
 
   function offered(snapshot) {
@@ -1874,7 +1933,7 @@
       paragraph(property.address || copy.addressUnavailable, 12, ink, 10);
       options.forEach(function (option) {
         ensure(65);
-        var label = copy[MODELS[option.model]] || ns.fill(copy.optionFallback, { n: option.position });
+        var label = ns.optionLabel(option, copy);
         paragraph(label + " - " + (copy[STATUSES[option.status]] || copy.optionUnknown), 11, accent, 10);
         if (!option.priced) { paragraph(option.status === "revising" ? copy.noteRevising : copy.noteNoActions, 10, muted); return; }
         lines(option);
@@ -2477,8 +2536,6 @@
     unknown: ["status-badge--scheduled", "propertyUnknown"],
   };
 
-  var MODEL_COPY = { SEASONAL: "modelSeasonal", MONTHLY: "modelMonthly", PER_SERVICE: "modelPerService" };
-
   var AUTOCOMPLETE = {
     LEGAL_NAME: "organization",
     BILLING_ADDRESS: "street-address",
@@ -2531,7 +2588,7 @@
   }
 
   function optionLabel(option, copy) {
-    return option.model ? copy[MODEL_COPY[option.model]] : ns.fill(copy.optionFallback, { n: option.position });
+    return ns.optionLabel(option, copy);
   }
 
   function confirmationStatement(copy, field) {

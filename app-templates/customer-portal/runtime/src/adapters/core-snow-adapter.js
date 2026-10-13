@@ -62,6 +62,7 @@ const ORDER_ITEM_MAPPINGS = [
   { name: "grandTotal" },
   { name: "id" },
   { name: "itemCount" },
+  { name: "metadata" },
   { name: "sortOrder" },
   { name: "totalTaxes" },
   { key: "id", mappings: ID_MAPPINGS, name: "itemPrice", type: "identifier" },
@@ -70,7 +71,9 @@ const ORDER_ITEM_MAPPINGS = [
 
 const PRODUCT_PRICE_MAPPINGS = [
   { name: "id" },
+  { name: "nls" },
   { key: "id", mappings: ID_MAPPINGS, name: "product", type: "identifier" },
+  { key: "id", mappings: REF_MAPPINGS, name: "type", type: "identifier" },
 ];
 
 const PRODUCT_MAPPINGS = [{ name: "code" }, { name: "id" }, { name: "nls" }];

@@ -19,6 +19,8 @@ export var PRICING_MODELS = Object.freeze({
   SEASONAL: "Seasonal",
 });
 
+export var RECURRING_MODEL = Object.freeze({ code: "RECURRING", label: "Recurring" });
+
 export var CLIENT_TYPES = Object.freeze({
   INDIVIDUAL: "Individual",
   ORGANIZATION: "Organization",
@@ -27,7 +29,8 @@ export var CLIENT_TYPES = Object.freeze({
 export var SCOPE_MODES = Object.freeze(["server-scoped", "browser-filtered", "unscoped"]);
 
 var ORDER_ACTIONS = { unseen: ["view"], viewed: ["approve", "decline"] };
-var PRICING_MODEL_RANK = ["PER_SERVICE", "MONTHLY", "SEASONAL"];
+var PRICING_MODEL_RANK = ["PER_SERVICE", "MONTHLY", "SEASONAL", RECURRING_MODEL.code];
+var MONTH_UNIT = "MONTH";
 var MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 var SCHEMATIC_X = [18, 82];
 var SCHEMATIC_Y = [24, 76];
@@ -114,8 +117,6 @@ export function normalizeQuoteOrders(payload, catalog) {
       }
       return;
     }
-    var model = attributeText(row, "PRICING_MODEL");
-    var label = own(PRICING_MODELS, model);
     var currency = currencyCode(row.currency);
     var total = orderTotal(row.grandTotal, row.currency);
     var quoteLines = linesOf(row, backendId, currency, lines);
@@ -126,7 +127,7 @@ export function normalizeQuoteOrders(payload, catalog) {
       serviceAddress: attributeString(row, "SERVICE_ADDRESS"),
       stateCode: stateCode,
       status: status,
-      pricingModel: label ? { code: model, label: label } : null,
+      pricingModel: attributeModel(row) || priceVariant(backendId, lines),
       total: total,
       money: total ? {
         subtotal: formatMoney(row.totalCharges, currency),
@@ -135,7 +136,6 @@ export function normalizeQuoteOrders(payload, catalog) {
       } : null,
       lines: quoteLines.lines,
       linesState: quoteLines.state,
-      servicePeriod: datePeriod(attributeText(row, "SERVICE_PERIOD_START"), attributeText(row, "SERVICE_PERIOD_END")),
       allowedActions: (ORDER_ACTIONS[status] || []).slice(),
     });
   });
@@ -200,7 +200,6 @@ export function contractsPackage(source, properties) {
     counts: counts,
     deciding: counts.open > 0,
     preparing: !!data.preparing,
-    servicePeriod: sharedPeriod(quoted),
     sources: data.sources || {},
     truncated: !!data.truncated,
     scopeMode: data.scopeMode || null,
@@ -373,7 +372,6 @@ function quoteGroups(orders, packageOf, byProperty) {
     var serviceAddress = firstServiceAddress(group.orders);
     group.title = propertyTitle(group.propertyBackendId, group.property, serviceAddress);
     group.address = propertyAddress(group.property, serviceAddress, group.title);
-    group.servicePeriod = sharedPeriod(group.orders);
   });
   return groups.sort(function (left, right) {
     return stageRank(left.agreement) - stageRank(right.agreement) || (right.agreementBackendId || 0) - (left.agreementBackendId || 0);
@@ -422,7 +420,6 @@ function agreementRow(agreement, orders, readable, byProperty) {
     propertyCount: propertyIds.length,
     quoteCount: listed.length,
     unreadableOrders: agreement.orderBackendIds.filter(function (id) { return !readable.has(id); }).length,
-    servicePeriod: sharedPeriod(listed),
   };
 }
 
@@ -485,6 +482,39 @@ function linesOf(row, backendId, currency, catalog) {
       };
     });
   return { state: missing || incomplete ? "partial" : "ready", lines: lines };
+}
+
+function attributeModel(row) {
+  var code = attributeText(row, "PRICING_MODEL");
+  var label = own(PRICING_MODELS, code);
+  return label ? { code: code, label: label } : null;
+}
+
+function priceVariant(backendId, catalog) {
+  var entries = catalog.byOrder.get(backendId) || [];
+  if (!entries.length || !catalog.prices) return null;
+  var prices = entries.map(function (entry) { return catalog.prices.get(positiveInteger(entry.row.itemPrice && entry.row.itemPrice.id)) || null; });
+  var names = prices.map(function (price) { return localizedName(price && price.nls); });
+  var name = names[0] && names.every(function (entry) { return entry === names[0]; }) ? names[0] : "";
+  var types = prices.map(function (price) { return text(price && price.type && price.type.code).toUpperCase(); });
+  var recurrent = types.filter(function (type) { return /(^|_)RECURRENT$/.test(type); }).length;
+  var code = "";
+  if (types.every(Boolean) && recurrent === 0) code = "PER_SERVICE";
+  if (types.every(Boolean) && recurrent === types.length) code = recurringCode(entries.map(function (entry) { return intervalMonths(entry.row.metadata); }));
+  if (!code && !name) return null;
+  return { code: code, label: name || own(PRICING_MODELS, code) || RECURRING_MODEL.label };
+}
+
+function recurringCode(months) {
+  var first = months[0];
+  if (first === null || !months.every(function (count) { return count === first; })) return RECURRING_MODEL.code;
+  return first === 1 ? "MONTHLY" : "SEASONAL";
+}
+
+function intervalMonths(metadata) {
+  if (!metadata || typeof metadata !== "object") return null;
+  if (text(metadata.INTERVAL_UNIT).toUpperCase() !== MONTH_UNIT) return null;
+  return positiveInteger(metadata.INTERVAL_COUNT);
 }
 
 function lineCatalog(catalog) {
@@ -689,14 +719,6 @@ function datePeriod(start, end) {
   var from = isoDate(start);
   var to = isoDate(end);
   return from && to && from <= to ? { start: from, end: to } : null;
-}
-
-function sharedPeriod(orders) {
-  var first = orders.length ? orders[0].servicePeriod : null;
-  if (!first) return null;
-  return orders.every(function (order) {
-    return !!order.servicePeriod && order.servicePeriod.start === first.start && order.servicePeriod.end === first.end;
-  }) ? first : null;
 }
 
 function byPricingModel(left, right) {

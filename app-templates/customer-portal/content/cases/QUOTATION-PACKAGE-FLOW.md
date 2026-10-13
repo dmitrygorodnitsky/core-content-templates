@@ -1307,3 +1307,51 @@ Evidence: `scripts/client-review-check.mjs` (73 states),
 `scripts/client-review-pdf-check.mjs`; uploaded to dev-1 with existing API
 and portal values kept; both CMS nodes serve the same page after one identical
 save to the stale node.
+
+## 15. Option labels without PRICING_MODEL, 2026-10-13
+
+The Order attributes `PRICING_MODEL`, `SERVICE_PERIOD_START/END`, `EFFECTIVE_DATE`
+and `CLIENT` are leaving the quote Order type. Neither customer page reads the
+last four any more (`CLIENT` on an Order never was read by the review page; the
+agreement's own `CLIENT` and `EFFECTIVE_DATE` stay). The portal no longer shows
+a quote's service period: the Orders never carried one; an agreement row still
+shows its own term or effective date.
+
+An option's label now comes, in this order, from the Order's `PRICING_MODEL`
+while it still carries one (nothing changes before the backfill), then from the
+NAME every one of its lines' ProductPrice rows shares, then from the price type:
+`TIERED` is Per service, `TIERED_RECURRENT` is Monthly at a 1-month interval,
+Seasonal at a longer one, and Recurring when the interval is unknown, mixed or
+not in months. Mixed or unreadable price types leave "Option N" (page) or
+"Quote" (portal). The interval is read from the pricer's copy on
+`OrderItem.metadata` (`INTERVAL_COUNT`, `INTERVAL_UNIT`).
+
+What each side can read (dev-1, 2026-10-13):
+
+- The review link uses the SYSTEM DEFAULT grant profiles; no organization rows
+  or named profiles exist for these types. OrderItem (115) has
+  `itemPrice{id,nls}` and no `metadata`; ProductPrice (96) has `nls` and
+  `type{id,code,nls}` and no `attributes`. So the page tells per service from
+  recurring, but cannot tell Monthly from Seasonal: after the attribute goes it
+  shows "Recurring" for both unless the prices are named. New copy parameter
+  `MODEL_RECURRING`.
+- The portal (role 75 `SW_FS_WS_CUSTOMER_PORTAL`: `P_ORDER_R`, `P_PRICE_R`,
+  `P_PRODUCT_R`) now asks for OrderItem `metadata` and ProductPrice `nls` and
+  `type`. Authenticated CRUD does not narrow request mappings by profile, and the
+  same reads with the deploy key returned `INTERVAL_COUNT`/`INTERVAL_UNIT` on
+  priced lines; a read with a real customer session is not yet done.
+
+To make the review page exact, either name every price of a variant alike in the
+catalog (each SNOWLIMITLESS ProductPrice `nls` is empty today; e.g. "Monthly" on
+50-67, "Seasonal" on 224-241, "Per service" on 25-44), or issue grants with a
+SYSTEM named profile that adds OrderItem `metadata` or ProductPrice
+`attributes`.
+
+Evidence: `client-review-check.mjs` (74 states, new `quote-price-labels`),
+`client-review-pdf-check.mjs`, `snow-contracts-check.mjs`,
+`snow-contracts-live-check.mjs`, `granite-ridge-fixture-check.mjs` and the
+staging package checks. Both `CLIENT_REVIEW_DOCUMENT` and
+`CUSTOMER_PORTAL_GRANITE_RIDGE_STAGING` were uploaded to dev-1 with existing
+CMS and PageContext values kept; `app-3-core-cms` served the old version of each
+until one identical save was steered to it, after which both nodes served the
+new pages.

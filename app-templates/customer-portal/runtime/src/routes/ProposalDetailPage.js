@@ -11,7 +11,6 @@ import { QuoteOptionCard } from "../components/proposals/QuoteOptionCard.js";
 import { ContractDetailSkeleton, PartialNotice, contractsGate } from "../components/proposals/ContractStates.js";
 import { PropertyLocation } from "../components/storm/PropertyMap.js";
 import { mapViewport, sharedPropertyMap } from "../property-map-session.js";
-import { formatDatePeriod } from "../normalizers/contracts.js";
 import { Profile } from "./ProfilePage.js";
 import { Activity } from "./ActivityPage.js";
 import { Calendar } from "./CalendarPage.js";
@@ -157,7 +156,7 @@ function QuoteDetail() {
   var busy = contractCommandsBusy();
   page.setAttribute("data-state", group.status);
 
-  var facts = [group.address, group.servicePeriod ? "Service period " + formatDatePeriod(group.servicePeriod) : ""].filter(Boolean);
+  var facts = [group.address].filter(Boolean);
   page.appendChild(h("div", { "class": "proposal-detail-head", "data-module": "quote-detail-head", "data-visual-id": "quote-detail-head" }, [
     h("div", { style: "flex:1;min-width:0" }, [
       h("h1", { "class": "proposal-detail-head__title", "data-bind": "quote.property" }, group.title),

@@ -80,6 +80,16 @@
       plan: "PROPERTY_PLAN",
     },
     pricingModels: ["SEASONAL", "MONTHLY", "PER_SERVICE"],
+    priceVariants: {
+      perService: "PER_SERVICE",
+      monthly: "MONTHLY",
+      seasonal: "SEASONAL",
+      recurring: "RECURRING",
+      lineMetadata: "metadata",
+      intervalCount: "INTERVAL_COUNT",
+      intervalUnit: "INTERVAL_UNIT",
+      monthUnit: "MONTH",
+    },
     rawShape: {
       orderLines: "items",
       documentOwner: "organization",

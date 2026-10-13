@@ -32,6 +32,18 @@ for (const [name, input] of [["quotation", quote], ["agreement", agreement]]) {
   assert.ok(bytes.length > 10000);
   await fs.writeFile(path.join(output, name + ".pdf"), bytes);
 }
+{
+  const written = [];
+  const recording = { jsPDF: function (settings) {
+    const doc = new engine.jsPDF(settings);
+    const write = doc.text.bind(doc);
+    doc.text = (value, ...rest) => { written.push(...[].concat(value)); return write(value, ...rest); };
+    return doc;
+  } };
+  CR.pdf.build(snapshot("quote-price-labels"), copy, { ...options, engine: recording });
+  const headings = written.filter((line) => / - /.test(line) && Object.values(copy).some((value) => line.endsWith(" - " + value)));
+  assert.deepEqual(headings.map((line) => line.split(" - ")[0]), ["Seasonal plan", "Monthly plan", copy.modelPerService, copy.modelRecurring, copy.modelPerService, copy.modelRecurring, copy.modelRecurring, "Option 1", copy.modelRecurring, copy.modelRecurring], "the PDF labels options from their prices like the page when the Order has no PRICING_MODEL");
+}
 for (const phase of ["loading", "error", "link-closed", "link-missing", "unconfigured"]) {
   assert.equal(CR.pdf.offered({ ...quote, phase }), false);
   assert.throws(() => CR.pdf.build({ ...quote, phase }, copy, options));

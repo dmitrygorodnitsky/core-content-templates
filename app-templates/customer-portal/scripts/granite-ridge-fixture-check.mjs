@@ -138,7 +138,7 @@ for (const group of pack.groups) {
 }
 assert.deepEqual(plainValue(pack.counts), { orders: 12, properties: 4, decided: 2, approved: 1, revision: 3, declined: 5, open: 3 });
 assert.equal(pack.counts.approved + pack.counts.revision + pack.counts.declined + pack.counts.open, pack.counts.orders, "the rollup counts every row exactly once");
-assert.deepEqual(plainValue(pack.servicePeriod), { start: "2026-11-01", end: "2027-03-31" });
+assert.equal("servicePeriod" in pack, false, "the fixture's Order service periods are not read: the live Orders never carry one");
 assert.deepEqual(
   plainValue(pack.groups.map((group) => group.orders.map((order) => order.total && order.total.amount))),
   [[266.51, 9322.74, 8875.13], [328.25, 11483.64, 10933.13], [236.67, 8268.02, 7871.85], [992.99, 33766.64, 32156.25]],

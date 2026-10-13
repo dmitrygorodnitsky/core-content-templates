@@ -5,12 +5,12 @@
   "template": {
     "code": "CLIENT_REVIEW_DOCUMENT",
     "templateLanguage": "JTE",
-    "parameterCount": 212,
+    "parameterCount": 213,
     "sha256": {
       "head": "b5e252b604ad732492b218098f257bf497097a28f69355e257736c578a5a213e",
-      "html": "eaa406519bc75a57a3145e15344ca6c350108a90faf328d55543629fcfcddb73",
+      "html": "fbe3f2e4e13c9f9daea214d95852524ff52ccfc114611df4b3777960de8122ce",
       "css": "f60deb6fa3dc08bc8245b6ef54b5dcd70c28417d2c4727ee5e11e2dc311601ec",
-      "javascript": "4e928f4f8cc4e9d33d190a7db3747023e8b1747a97af6d0573d4ebfb0c9ae2a2"
+      "javascript": "a9b1e2e1374503139f828674166224003f422af616010db9efd7c8731ae27f53"
     }
   },
   "runtime": {
@@ -106,6 +106,7 @@
       "PROPERTY_PLAN"
     ],
     "orderLines": "items",
+    "optionLabel": "the Order's PRICING_MODEL while it still carries one; otherwise the NAME its lines' ProductPrice rows share, else the price type (PER_SERVICE when no price is recurrent, RECURRING when every one is) refined to MONTHLY or SEASONAL only by OrderItem.metadata INTERVAL_COUNT/INTERVAL_UNIT in MONTH (1 or more), else Option {n}",
     "agreement": [
       "PROVIDER_LEGAL_NAME",
       "PROVIDER_REPRESENTATIVE_NAME",
@@ -142,7 +143,8 @@
     "Grant list endpoints accept anonymous POST requests with offset and pageSize, get.json takes ?id=, and event.json accepts { id, event, metadata }.",
     "On 2026-09-23 a dev-1 link returned the Account's contacts and addresses as ids only, and the backend confirmed that Contact, ContactEntry and AccountAddress will never be grantable. The details pre-fill and the portal sign-in address therefore read Account attributes.",
     "On 2026-10-07 dev-1 served a PropertyPlan file without any credential from /core/media/{id}/stream.json on the grant API's origin, answered 'Entity type MediaAsset is not grantable' and 'Entity type Resource is not grantable' to grant/mappings.json, and exposed no grant endpoint under /core-rm. Contract details accepted on dev-1 were saved by the details processor as a BILLING AccountAddress of their own, beside the SERVICE ones, even when the text matched a service address.",
-    "On 2026-10-07 the Maps JavaScript API (weekly, 3.66) reported the page to Google (AuthenticationService.Authenticate, QuotaService.RecordEvent) as scheme, host and path with user info, query and fragment cleared, so the #token= fragment does not reach Google; Chromium honoured the referrer policy switched at run time from no-referrer to strict-origin and sent the origin alone."
+    "On 2026-10-07 the Maps JavaScript API (weekly, 3.66) reported the page to Google (AuthenticationService.Authenticate, QuotaService.RecordEvent) as scheme, host and path with user info, query and fragment cleared, so the #token= fragment does not reach Google; Chromium honoured the referrer policy switched at run time from no-referrer to strict-origin and sent the origin alone.",
+    "On 2026-10-13 dev-1 had only the SYSTEM DEFAULT grant profiles for these types, with no organization rows or named profiles: OrderItem (115) exposes itemPrice{id,nls} but no metadata, ProductPrice (96) nls and type{id,code,nls} but no attributes, Product (92) code and nls. A link can therefore tell a per-service price (TIERED) from a recurring one (TIERED_RECURRENT) and read a price name, but not a monthly from a seasonal price: their INTERVAL is a ProductPrice attribute and the pricer's copy of it is OrderItem metadata. Every SNOWLIMITLESS price had an empty nls."
   ],
   "unverified": [
     "Event metadata reaches the workflow hook, and required event attributes are enforced on this path (QUOTATION-PACKAGE-FLOW.md §9).",
