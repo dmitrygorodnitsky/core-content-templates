@@ -195,7 +195,7 @@ Historical deployed tenant-specific CMS BlockTemplate:
 ```text
 code: CUSTOMER_PORTAL_CALM_HARBOR_LOGIN
 id:   17c450d7-963e-4837-891a-15d01fb35c80
-org:  SYSTEM
+org:  CALM_HARBOR_SPA_STAGING
 ```
 
 The historical tenant-specific template was initialized on `dev-1` with exact
@@ -396,6 +396,12 @@ The last two generation commands own the manual package; do not hand-edit its
 output. Live checkout probes create real staging Orders and must not be run
 casually.
 
+Every Calm Harbor BlockTemplate on `dev-1` is owned by
+`CALM_HARBOR_SPA_STAGING` (moved from `SYSTEM` on 2026-10-13). The deploy API key
+is refused under that organization's header, so uploads run with `--org SYSTEM`
+as request context; the uploader keeps an existing template's owner, and
+`--require-existing --expected-root-id` refuses to create a new copy in `SYSTEM`.
+
 Authenticated portal upload:
 
 ```bash
@@ -404,6 +410,8 @@ node app-templates/landing-page/scripts/upload-cms-family.mjs \
   --out app-templates/customer-portal/dist/manual-upload/customer-portal-calm-harbor-staging \
   --base-url https://dev-1.servicewand.com/core \
   --org SYSTEM \
+  --require-existing \
+  --expected-root-id 9db95a1d-b914-4f65-9563-f789d424ae84 \
   --live
 ```
 
@@ -411,6 +419,7 @@ Public landing upload uses the same uploader with:
 
 ```text
 --out app-templates/customer-portal/dist/manual-upload/customer-portal-calm-harbor-landing-staging
+--expected-root-id 881712ac-5082-4ed5-9600-4b4a2160d535
 ```
 
 Granite Ridge has one entrypoint that chains rebuild, repackage, its checks and

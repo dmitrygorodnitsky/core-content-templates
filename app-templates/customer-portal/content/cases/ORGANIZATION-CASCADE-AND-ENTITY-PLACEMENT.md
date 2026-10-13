@@ -83,6 +83,17 @@ consequence of how the provisioning scripts resolve ownership: types are written
 to the organization in the request header, workflows to the resolved owner
 organization, and the two diverged.
 
+**Verified 2026-10-13 — workflows moved into the tenant.** 14 of the 15
+workflows (ids 24–32, 39–43) were re-owned in place to
+`CALM_HARBOR_SPA_STAGING`; ids, states, events and every entity's workflow and
+state were unchanged, and Core moved their `P_WF:<code>:*` permissions to the
+tenant with them, keeping every role grant. `SPA_ORGANIZATION_LIFECYCLE` (23)
+stays in `SYSTEM` beside the `SPA_ORGANIZATION` type (14) that names it: both
+govern the tenant organization record itself and must exist before it.
+`core-ui/scripts/dev/beautySpa.ts` now provisions that pair first, then the
+organization, then the other 14 workflows owned by the organization. Both halves
+of the model now sit in the tenant, too low rather than at opposite ends.
+
 ## 4. Placement
 
 ### 4.1 Service industries — 17 of 19 types
@@ -213,15 +224,16 @@ happens to the other.
    creating new types and repointing every row — a data migration, not a config
    change.
 3. **Does an organization inherit workflows the same way it inherits types?**
-   Our workflows are all in `SYSTEM` and resolve fine from the tenant, but that
-   is the root case; an intermediate level is untested.
+   Since 2026-10-13 our workflows are owned by the tenant itself (§3), apart
+   from `SPA_ORGANIZATION_LIFECYCLE` in `SYSTEM`; an intermediate level is
+   untested.
 4. **Which of our 15 workflows duplicate Core's?** Per §4.5.
 
 ## 7. Migration order, once those are answered
 
 1. Create the cascade organizations and the organization types for their roles.
 2. Re-parent `CALM_HARBOR_SPA_STAGING` under `Spa`.
-3. Move workflows down from `SYSTEM` to service-industries level, dropping the
+3. Move workflows up from the tenant to service-industries level, dropping the
    ones that duplicate Core's.
 4. Move types up from the tenant to service-industries level, renaming as §4.1.
 5. Split the category-level attribute sets off the universal types.

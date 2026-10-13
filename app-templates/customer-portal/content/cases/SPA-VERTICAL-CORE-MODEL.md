@@ -19,8 +19,9 @@ physiotherapy clinic or HVAC business unchanged. Treat the codes here as what is
 deployed today, not as what they should be called.
 
 **Source of truth for the definitions** is
-`core-ui/scripts/dev/seeds/beautySpaTypes.json` and
-`core-ui/scripts/dev/seeds/beautySpaWorkflows.json`, applied by
+`core-ui/scripts/dev/seeds/beautySpaTypes.json`,
+`core-ui/scripts/dev/seeds/beautySpaWorkflows.json` and
+`core-ui/scripts/dev/seeds/beautySpaOrganizationWorkflow.json`, applied by
 `core-ui/scripts/dev/beautySpa.ts`. This document must be updated in the same
 change as those files.
 
@@ -125,6 +126,11 @@ label, not a stored value.
 exists with four legacy rows on staging; nothing new may use it.
 
 ## 2. Workflows
+
+`SPA_ORGANIZATION_LIFECYCLE` is owned by `SYSTEM`, like the `SPA_ORGANIZATION`
+organization type that names it, because both must exist before the tenant
+organization. Every other workflow below is owned by `CALM_HARBOR_SPA_STAGING`
+(since 2026-10-13), together with its `P_WF:<code>:*` permissions.
 
 | workflow | entity | initial | states | events |
 | --- | --- | --- | --- | --- |
