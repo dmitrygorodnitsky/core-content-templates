@@ -187,11 +187,31 @@
       return fields.filter(function (field) { return field.code === code; })[0] || null;
     }
 
+    function readProperties() {
+      if (typeof adapter.introspectProperties !== "function") return Promise.resolve([]);
+      return Promise.resolve().then(function () { return adapter.introspectProperties(); }).then(function (rawGrant) {
+        return normalizer.canRead(normalizer.grantOf(rawGrant), "resource") ? adapter.list("resource") : [];
+      }).then(function (rows) {
+        return Array.isArray(rows) ? rows : [];
+      }, function () {
+        return [];
+      });
+    }
+
+    function readAddresses(grant) {
+      if (!normalizer.canRead(grant, "address")) return Promise.resolve([]);
+      return Promise.resolve().then(function () { return adapter.list("address"); }).then(function (rows) {
+        return Array.isArray(rows) ? rows : [];
+      }, function () {
+        return [];
+      });
+    }
+
     function readAll() {
       return adapter.introspect().then(function (rawGrant) {
         var grant = normalizer.grantOf(rawGrant);
         if (!normalizer.canRead(grant, "document")) {
-          return { grant: grant, documents: [], orders: [], accounts: [], orderItems: [], productPrices: [], products: [], accountFailed: false };
+          return { grant: grant, documents: [], orders: [], accounts: [], orderItems: [], productPrices: [], products: [], resources: [], addresses: [], accountFailed: false };
         }
         var ordersReadable = normalizer.canRead(grant, "order");
         var accountRead = normalizer.canRead(grant, "account")
@@ -204,7 +224,7 @@
         var orderItemsRead = normalizer.canRead(grant, "order-item") ? adapter.list("order-item") : Promise.resolve([]);
         var productPricesRead = normalizer.canRead(grant, "product-price") ? adapter.list("product-price") : Promise.resolve([]);
         var productsRead = normalizer.canRead(grant, "product") ? adapter.list("product") : Promise.resolve([]);
-        return Promise.all([adapter.list("document"), accountRead, ordersRead, orderItemsRead, productPricesRead, productsRead]).then(function (parts) {
+        return Promise.all([adapter.list("document"), accountRead, ordersRead, orderItemsRead, productPricesRead, productsRead, readProperties(), readAddresses(grant)]).then(function (parts) {
           var documents = parts[0];
           var orders = parts[2].slice();
           var present = {};
@@ -232,6 +252,8 @@
               orderItems: parts[3],
               productPrices: parts[4],
               products: parts[5],
+              resources: parts[6],
+              addresses: parts[7],
               accountFailed: parts[1].failed,
             };
           });
@@ -939,7 +961,7 @@
       var token = ns.adapter.tokenFromFragment(locationRef.hash);
       if (!apiBase) options.phase = "unconfigured";
       else if (!token) options.phase = "link-missing";
-      else options.adapter = ns.adapter.createGrantAdapter({ apiBase: apiBase, token: token, fetch: env.fetch });
+      else options.adapter = ns.adapter.createGrantAdapter({ apiBase: apiBase, token: token, propertyToken: ns.adapter.propertyTokenFromFragment(locationRef.hash), fetch: env.fetch });
       var mapsKey = ns.maps ? ns.maps.keyOf(section.getAttribute("data-review-maps-api-key")) : "";
       if (options.adapter && mapsKey) {
         options.maps = ns.maps.service({

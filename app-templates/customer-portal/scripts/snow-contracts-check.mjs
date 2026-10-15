@@ -138,8 +138,7 @@ const orderList = {
   ], "Order, OrderItem, ProductPrice and Product are joined by id, lines run in sortOrder, and every figure is the server's");
   assert.equal(orders[0].linesState, "ready");
   assert.deepEqual(plain(orders[0].money), { subtotal: "CA$2,444.72", taxes: "CA$0.00", total: "CA$2,444.72" }, "taxes Core returned as zero are shown as zero, not hidden");
-  assert.equal(orders[0].serviceAddress, "1180 Pacific Crescent, Vancouver, BC V6Z 2R5");
-  assert.equal(orders[1].serviceAddress, "", "an address that is not text is not an address, and never [object Object]");
+  assert.deepEqual(orders.map((order) => Object.prototype.hasOwnProperty.call(order, "serviceAddress")), [false, false], "an Order's SERVICE_ADDRESS is never read: a property's address is its Resource's");
   assert.deepEqual(plain(orders[1].lines), [
     { key: "line-81", product: "", quantity: "12", unitPrice: "CA$12.50", total: "" },
     { key: "line-82", product: "", quantity: "", unitPrice: "", total: "" },
@@ -575,7 +574,7 @@ const RETIRED = ["Proposal #", "valid until", "sent Dec", "sq ft", "Beam AI", "l
   assert.equal(decided.getAttribute("data-state"), "approved");
   assert.equal(one(decided, "[data-visual-id=\"proposal-back\"]").textContent, "‹ Back to your contracts");
   assert.equal(one(decided, "h1").textContent, "Foothill Court");
-  assert.equal(one(decided, ".proposal-detail-head__meta").textContent, "4820 Foothill Court, Lakewood, CO 80215", "the address comes from the Order's SERVICE_ADDRESS, and no service period follows it");
+  assert.equal(one(decided, ".proposal-detail-head__meta").textContent, "4820 Foothill Court, Lakewood, CO 80215", "the address comes from the property's Resource, and no service period follows it");
   const link = one(decided, "[data-module=\"quote-package-link\"]");
   assert.equal(link.getAttribute("data-action"), "agreement.open");
   assert.equal(link.getAttribute("data-id"), "agreement-core-9101");
@@ -715,7 +714,7 @@ const RETIRED = ["Proposal #", "valid until", "sent Dec", "sq ft", "Beam AI", "l
   assert.deepEqual(all(services, "[data-module=\"agreement-property\"]").map((entry) => [one(entry, ".agreement-property__title").textContent, (one(entry, ".agreement-property__address") || { textContent: "" }).textContent, all(entry, "[data-module=\"quote-option\"]").map((card) => one(card, ".quote-option__model").textContent).join("|")]), [
     ["Alkire Street", "210 Alkire Street, Arvada, CO 80004", "Seasonal"],
     ["Braun Court", "247 Braun Court, Golden, CO 80401", "Monthly"],
-  ], "an agreement lists each property with its approved option; without SERVICE_ADDRESS the property's own address is shown");
+  ], "an agreement lists each property with its approved option and the property's own address");
   assert.equal(all(services, "[data-action]").length, 0, "services inside an agreement are read-only");
   const terms = one(page, "[data-module=\"agreement-terms\"]");
   assert.equal(one(terms, ".terms-heading").textContent, "Winter service terms");

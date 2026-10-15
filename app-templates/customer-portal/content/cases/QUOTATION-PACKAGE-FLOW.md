@@ -568,14 +568,13 @@ widths in light and dark mode, the manager email included.
     and names `REPRESENTATIVE_EMAIL` in the portal invitation.
   - **Proven:** an anonymous read of Account 718 through a short-lived grant
     returned all six.
-- **The service address is written on the Order.** A Resource cannot be
-  granted, so the page cannot follow `SERVICE_PROPERTY` to the address. Since
-  2026-09-23 `SNOW_QUOTATION_ORDER_UTILITIES_V2` (script 260, workflow 45)
-  asks `SNOW_SERVICE_PROPERTY_ADDRESS_V1` (259) on a `CORE-RM` node for the
-  address of the Order's current `SERVICE_PROPERTY` and writes
-  `SERVICE_ADDRESS` before the Order joins its package. A failed lookup is
-  logged and never keeps the Order out, and `refreshServiceAddress` backfills
-  one Order; Orders 41 and 42 were backfilled on both core-bill nodes.
+- **The service address was written on the Order until 2026-10-15.** While a
+  Resource could not be granted, `SNOW_QUOTATION_ORDER_UTILITIES_V2` (script
+  260, workflow 45) asked `SNOW_SERVICE_PROPERTY_ADDRESS_V1` (259) on a
+  `CORE-RM` node for the address of the Order's `SERVICE_PROPERTY` and wrote
+  `SERVICE_ADDRESS`. That attribute is leaving the order type: since
+  2026-10-15 neither customer page reads it, and the review page reads the
+  address from the granted Resource and its Address (§16).
 - **The pricing model is not a field.** `FIELD_SERVICE_ORDER` has no pricing
   model attribute; the team's creator writes the kind into `notes` and item
   `metadata`. The page has to label each option, so the Order gets a
@@ -1009,7 +1008,8 @@ that Core lists for the signed-in user; the screens configure none.
 - **Customers** stay on the existing Accounts screen, which already lists
   `SNOW_RESIDENTIAL_CUSTOMER` and `SNOW_COMMERCIAL_CUSTOMER`.
 - **Read-only attributes:** what the automation writes cannot be edited:
-  `SERVICE_ADDRESS` and `QUOTE_REQUEST_FORM_ID` on a quote; the grant ids,
+  `SERVICE_ADDRESS` (while the order type still carries it, §16) and
+  `QUOTE_REQUEST_FORM_ID` on a quote; the grant ids,
   `CLIENT_DETAILS_ERRORS` and the client's two confirmations on an agreement.
 - **The agreement editor has no Permissions tab.**
 
@@ -1297,11 +1297,11 @@ billing address is always sent as its own `BILLING_ADDRESS`, which the
 processor stores as a separate `BILLING` address.
 
 The page draws the approved plan read-only over a satellite map, read from
-the quote Order's `PROPERTY_PLAN` (never `PROPERTY_PLAN_DRAFT`) through the
-public `/core/media/{id}/stream.json`, without the link's token. Resource and
-MediaAsset are not grantable (dev-1, 2026-10-07), and no script yet copies
-the property's approved plan onto its quotes, so no plan is shown until that
-copy exists.
+the public `/core/media/{id}/stream.json` without the link's token. On
+2026-10-07 Resource and MediaAsset were not grantable, so the plan was to come
+from the quote Order's `PROPERTY_PLAN`. Since 2026-10-15 it is the granted
+Resource's `PROPERTY_PLAN` (never `PROPERTY_PLAN_DRAFT`); the Order no longer
+contributes (§16).
 
 Evidence: `scripts/client-review-check.mjs` (73 states),
 `scripts/client-review-pdf-check.mjs`; uploaded to dev-1 with existing API
@@ -1355,3 +1355,34 @@ staging package checks. Both `CLIENT_REVIEW_DOCUMENT` and
 CMS and PageContext values kept; `app-3-core-cms` served the old version of each
 until one identical save was steered to it, after which both nodes served the
 new pages.
+
+## 16. Property address and plan from a second grant, 2026-10-15
+
+The quote Order type is losing `SERVICE_ADDRESS` and `PROPERTY_PLAN`. The
+review page now reads both from the property, which a link reaches through
+two tokens. Resource is grantable since core-rm 5.0.2869 (its SYSTEM profile 77
+includes attributes). A grant issue context accepts only the entity
+types registered on its own node: core-bill refuses Resource and core-rm
+refuses Order. So the link carries `#token=`, the core-bill grant of Account,
+Document, Order, OrderItem, ProductPrice, Product and Address, and
+`&property-token=`, a core-rm grant of one Resource per property of the
+package. Each grant is introspected and revoked on its own.
+
+- **Reads.** Address is listed with the main token on
+  `/core/i/{token}/address/list.json` (there is no `/core-rm/i/.../address`). The property token is introspected on
+  `/core/i/{propertyToken}/introspect.json` and lists Resource on
+  `/core-rm/i/{propertyToken}/resource/list.json`.
+- **Address.** The Resource's `ADDRESS` names an Address id; the page writes it
+  as the backend does: `address1`, `address2`, `city`, `jurisdiction`,
+  `state.code`, `postalCode`, `country.id`, trimmed, empty and repeated parts
+  skipped, joined with ", ", else `alias`.
+- **Plan.** The Resource's `PROPERTY_PLAN`, never `PROPERTY_PLAN_DRAFT`.
+- **Degradation.** A link without `property-token`, or a property grant or
+  Address read that fails for any reason (401 and 404 included), shows the page
+  the main grant decides, with "Address unavailable" and no plan. The signed-in
+  portal shows the property's own address only.
+
+Evidence: `client-review-check.mjs` (78 states, new `old-link`,
+`property-link-closed`, `property-list-failed`, `address-list-failed`),
+`client-review-pdf-check.mjs`, `snow-contracts-check.mjs`. The backend issuing
+the second grant is not live yet; nothing was uploaded.

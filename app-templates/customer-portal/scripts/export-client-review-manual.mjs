@@ -170,7 +170,10 @@ function bootScript() {
 function manifestFor(template, contract) {
   const grant = contract.grant;
   const core = contract.core;
-  const entity = (name, tail) => "POST {apiBase}/" + grant.entities[name].service + "/i/{token}/" + grant.entities[name].segment + "/" + tail;
+  const tokenOf = (name) => (grant.entities[name].grant === "property" ? "{propertyToken}" : "{token}");
+  const entity = (name, tail) => "POST {apiBase}/" + grant.entities[name].service + "/i/" + tokenOf(name) + "/" + grant.entities[name].segment + "/" + tail;
+  const fragment = "#" + grant.fragment.token + "=";
+  const propertyFragment = "#" + grant.fragment.propertyToken + "=";
   return {
     schemaVersion: 1,
     uploadPerformed: false,
@@ -207,8 +210,11 @@ function manifestFor(template, contract) {
         entity("order-item", "list.json"),
         entity("product-price", "list.json"),
         entity("product", "list.json"),
+        entity("address", "list.json") + " (while the main grant lists Address)",
+        "POST {apiBase}/" + grant.introspect.service + "/i/{propertyToken}/" + grant.introspect.tail + " (only when the link carries " + propertyFragment + "; any failure means no property is readable)",
+        entity("resource", "list.json") + " (only while the property grant introspects Resource as readable)",
         "GET {apiBase}/" + grant.image.service + "/" + grant.image.head + "/{imageId}/" + grant.image.tail + "?width=" + grant.image.width + " (the provider logo, loaded by the browser as an image, without the token)",
-        "GET {apiBase}/" + grant.plan.service + "/" + grant.plan.head + "/{planId}/" + grant.plan.tail + " (an approved property plan named by an Order's " + core.orderAttributes.plan + ", read anonymously on the contract details step while " + mapsKeyCode + " is set, without the token)",
+        "GET {apiBase}/" + grant.plan.service + "/" + grant.plan.head + "/{planId}/" + grant.plan.tail + " (an approved property plan named by its granted Resource's " + core.propertyAttributes.plan + ", read anonymously on the contract details step while " + mapsKeyCode + " is set, without the token)",
         "GET https://maps.googleapis.com/maps/api/js?key={" + mapsKeyCode + "} (only while " + mapsKeyCode + " is set and only on the contract details step; the token never reaches Google)",
       ],
       commands: [
@@ -217,7 +223,8 @@ function manifestFor(template, contract) {
       ],
       listBody: "{ offset, pageSize: " + grant.pageSize + " }, at most " + grant.pageLimit + " pages",
       credentials: "omit",
-      token: "read from the #token= fragment only; it appears in no query string, storage, console output or page markup, and reaches the clipboard only inside the page address, when the client presses Copy link",
+      token: "read from the " + fragment + " fragment only; it appears in no query string, storage, console output or page markup, and reaches the clipboard only inside the page address, when the client presses Copy link",
+      propertyToken: "read from the " + propertyFragment + " fragment only, beside " + fragment + "; it is the separate core-rm grant of the package's Resource rows, used for the property introspection and the Resource list and nothing else, and is kept out of queries, storage, console output and page markup like the main token",
     },
     events: {
       order: Object.keys(core.orderEvents).map((key) => core.orderEvents[key].code),
@@ -225,7 +232,9 @@ function manifestFor(template, contract) {
       contractDetailsAttributes: core.contractDetails.attributes.map((attribute) => attribute.code),
     },
     plannedFields: {
-      order: [core.orderAttributes.address, core.orderAttributes.pricingModel, core.orderAttributes.plan],
+      order: [core.orderAttributes.property, core.orderAttributes.pricingModel],
+      resource: [core.propertyAttributes.address, core.propertyAttributes.plan],
+      address: core.addressFormat.parts.concat([core.addressFormat.fallback]),
       orderLines: core.rawShape.orderLines,
       optionLabel: "the Order's " + core.orderAttributes.pricingModel + " while it still carries one; otherwise the NAME its lines' ProductPrice rows share, else the price type (" + core.priceVariants.perService + " when no price is recurrent, " + core.priceVariants.recurring + " when every one is) refined to " + core.priceVariants.monthly + " or " + core.priceVariants.seasonal + " only by OrderItem." + core.priceVariants.lineMetadata + " " + core.priceVariants.intervalCount + "/" + core.priceVariants.intervalUnit + " in " + core.priceVariants.monthUnit + " (1 or more), else Option {n}",
       agreement: [
@@ -247,6 +256,7 @@ function manifestFor(template, contract) {
       "Grant list endpoints accept anonymous POST requests with offset and pageSize, get.json takes ?id=, and event.json accepts { id, event, metadata }.",
       "On 2026-09-23 a dev-1 link returned the Account's contacts and addresses as ids only, and the backend confirmed that Contact, ContactEntry and AccountAddress will never be grantable. The details pre-fill and the portal sign-in address therefore read Account attributes.",
       "On 2026-10-07 dev-1 served a PropertyPlan file without any credential from /core/media/{id}/stream.json on the grant API's origin, answered 'Entity type MediaAsset is not grantable' and 'Entity type Resource is not grantable' to grant/mappings.json, and exposed no grant endpoint under /core-rm. Contract details accepted on dev-1 were saved by the details processor as a BILLING AccountAddress of their own, beside the SERVICE ones, even when the text matched a service address.",
+      "On 2026-10-15 dev-1 (core-rm 5.0.2869) granted Resource, whose SYSTEM grant profile 77 includes attributes. A grant issue context accepts only the entity types registered on its own node: core-bill refuses Resource and core-rm refuses Order. A core-rm grant introspected on /core/i/{propertyToken}/introspect.json as Resource with canRead true; /core/i/{token}/address/list.json returned the granted Address rows (country as id, without code) and /core-rm/i/{token}/address/ does not exist.",
       "On 2026-10-07 the Maps JavaScript API (weekly, 3.66) reported the page to Google (AuthenticationService.Authenticate, QuotaService.RecordEvent) as scheme, host and path with user info, query and fragment cleared, so the #token= fragment does not reach Google; Chromium honoured the referrer policy switched at run time from no-referrer to strict-origin and sent the origin alone.",
       "On 2026-10-13 dev-1 had only the SYSTEM DEFAULT grant profiles for these types, with no organization rows or named profiles: OrderItem (115) exposes itemPrice{id,nls} but no metadata, ProductPrice (96) nls and type{id,code,nls} but no attributes, Product (92) code and nls. A link can therefore tell a per-service price (TIERED) from a recurring one (TIERED_RECURRENT) and read a price name, but not a monthly from a seasonal price: their INTERVAL is a ProductPrice attribute and the pricer's copy of it is OrderItem metadata. Every SNOWLIMITLESS price had an empty nls.",
     ],
@@ -255,7 +265,7 @@ function manifestFor(template, contract) {
       "The generated CLIENT_REVIEW_DOCUMENT package still needs a production CMS upload and browser acceptance with a fresh real link.",
       "The checking state, a returned details step and the portal invitation have not been exercised against dev-1. CLIENT_DETAILS_ERRORS is read as the details processor seed writes it.",
       "No dev-1 link has returned the Account attributes " + Object.values(core.accountPrefill).join(", ") + " yet. Without them only the Legal Name pre-fills and the portal invitation names no sign-in address.",
-      "No dev-1 quote Order carries " + core.orderAttributes.plan + " yet: WINTER_SERVICES_ORDER inherits the Media attribute from FIELD_SERVICE_ORDER, but it is empty on every quote and no script copies a property's approved plan into it. Until the backend supplies it, the contract details step shows no plan.",
+      "No dev-1 link carries " + propertyFragment + " yet: the backend that issues the second, core-rm grant beside the main one is being built. Until a link carries it, the page shows each property's address as unavailable and no plan.",
       "Address suggestions, the billing address map and the plan map have not run against Google with this page's own key: " + mapsKeyCode + " is set by the operator in the page's PageContext, and the preview draws on a stub map.",
     ],
     constraints: [
@@ -268,7 +278,9 @@ function manifestFor(template, contract) {
       "Contact us closes every page that has read an agreement. It shows the agreement's " + core.agreementAttributes.providerContactPhone + " and " + core.agreementAttributes.providerContactEmail + ", which the provider's workflow copies from the organization before it issues each link: a dialable number and a mail address become links, anything else is shown as text, and a missing value has no row. The agreement pages show the provider's logo from " + core.agreementAttributes.providerLogo + ", an image id; an agreement without one, or an image that fails to load, shows none.",
       mapsKeyCode + " ships empty; its value is the operator's, set in the page's PageContext. While it is empty or not a key the page loads no Google script, the billing address is a plain text field and no plan is shown. With a key, the contract details step loads the Maps JavaScript API once, offers Google address suggestions under the billing address, pins the chosen or typed address on a map (or says it was not found, and the client can still send it as written), and switches the document's referrer policy from no-referrer to strict-origin so Google can check the key against the page's origin; the #token= fragment is never part of a referrer.",
       "The billing address is the client's own value. The contract details step offers each approved property's service address as a button that copies it into the billing field, where the client sees and can change it, and sends it as BILLING_ADDRESS like a typed address; nothing fills the billing field from a service address on its own.",
-      "Each approved property whose quote Orders name one plan in " + core.orderAttributes.plan + " (a MediaAsset id, or a one-entry media list) shows it on the contract details step while " + mapsKeyCode + " is set: the file is read anonymously from /core/media/{id}/stream.json, its GOOGLE_MAPS shapes are drawn read-only over a satellite map, and the page lists each element with the area on the plan in square feet, measured like the Plans editor and Approve Plan (local equirectangular projection, elevation ignored). Image overlays are not drawn. PROPERTY_PLAN_DRAFT is never read. Two different plans, an unreadable file or a file without a map shape show that the plan cannot be shown.",
+      "A link may carry " + propertyFragment + " beside " + fragment + ": a second grant, issued on core-rm, of one Resource per property of the package. The page introspects it and lists Resource with it, and lists Address with the main token. A link without it, or a property grant or Address read that fails for any reason (401 and 404 included), shows the page the main grant decides, with each property's address unavailable and no plan: it never closes the page, shows an error or retries for it.",
+      "A property's address is its granted Resource's " + core.propertyAttributes.address + " id looked up among the granted Address rows, written as the backend writes addresses: " + core.addressFormat.parts.join(", ") + ", each trimmed, empty parts and parts equal to an earlier one (ignoring case) skipped, joined with \"" + core.addressFormat.separator + "\", else the Address " + core.addressFormat.fallback + ". An id that is missing or not among the granted rows gives no address.",
+      "Each approved property whose granted Resource names one plan in " + core.propertyAttributes.plan + " (a MediaAsset id, or a one-entry media list) shows it on the contract details step while " + mapsKeyCode + " is set: the file is read anonymously from /core/media/{id}/stream.json, its GOOGLE_MAPS shapes are drawn read-only over a satellite map, and the page lists each element with the area on the plan in square feet, measured like the Plans editor and Approve Plan (local equirectangular projection, elevation ignored). Image overlays are not drawn. PROPERTY_PLAN_DRAFT is never read. Two different plans, an unreadable file or a file without a map shape show that the plan cannot be shown.",
       "Every other parameter is copy. No token, account, order, document or customer value is a parameter.",
       "While the agreement is CLIENT_DETAILS_RECEIVED the page re-reads it one read at a time after " + contract.checkingDelays.map((ms) => ms / 1000).join(", ") + " s, then says the check is taking longer than usual and offers Refresh status. It stops re-reading as soon as the agreement leaves that state.",
       "CLIENT_DETAILS_ERRORS reaches the client only as copy: a known code marks its field, PROCESSING_FAILED has its own notice, and an unknown code adds a generic line, never the code.",
@@ -331,7 +343,7 @@ function readme(packageData) {
     "| `" + portalUrlCode + "` | optional absolute https address of the customer portal; empty shows no portal button |",
     "| `" + mapsKeyCode + "` | optional Google Maps browser key, set in the page's PageContext; empty shows plain address fields and no plan |",
     "",
-    "Every other parameter is copy. The client opens the page with `#token=` in the address; the token is never a parameter.",
+    "Every other parameter is copy. The client opens the page with `#token=`, and on newer links `&property-token=`, in the address; no token is ever a parameter.",
     "",
     "## Contract",
     "",

@@ -94,7 +94,7 @@ ambiguous today.
 
 | endpoint | type | id | workflow | attributes |
 | --- | --- | --- | --- | --- |
-| order-type | `FIELD_SERVICE_ORDER` | 5 | `GENERAL_FSM_ORDER` | `CLIENT` Account et=2, `SERVICE_PROPERTY` Resource et=154, `SERVICE_PERIOD_START`, `SERVICE_PERIOD_END`, `EFFECTIVE_DATE`, `PROPERTY_PLAN` Media multi |
+| order-type | `FIELD_SERVICE_ORDER` | 5 | `GENERAL_FSM_ORDER` | `CLIENT` Account et=2, `SERVICE_PROPERTY` Resource et=154, `SERVICE_PERIOD_START`, `SERVICE_PERIOD_END`, `EFFECTIVE_DATE`, `PROPERTY_PLAN` Media multi (leaving the order type; the review page reads the plan from the Resource since 2026-10-15, §6c) |
 | order-type | `WINTER_SERVICES_ORDER` | 6 | `GENERAL_FSM_ORDER` | `SNOW_TRIGGER` Float, `DE_ICING_TRIGGER` Float |
 | order-item-type | `SNOW_REMOVAL_ORDER_ITEM` | 5 | `GENERAL_FSM_ORDER_ITEM_LIFECYCLE` | none |
 | invoice-type | `PER_SERVICE` | 5 | none | `DATE` req, `PAYMENT_NET_TERMS` req |
@@ -433,8 +433,9 @@ the dev-1 script list on 2026-09-11.
   `P_WF:{workflow}:{event}` and sent as `{ id, event, metadata }`.
 - Grant endpoints exist on dev-1 for `document` (`core`), `account`
   (`core-acct`), `order` (`core-bill`), and `task` and `appointment`
-  (`core-svc`). **`core-cms` and `core-rm` expose none: a Form and a Resource
-  cannot be reached through a link.**
+  (`core-svc`). **`core-cms` and `core-rm` exposed none on 2026-09-11: a Form
+  and a Resource could not be reached through a link.** Resource became
+  grantable on 2026-10-15 (last bullet).
 - **What a link carries comes from an `EntityMappingDefinition`, not from a
   `MAPPINGS_{ENTITY}` script.** `POST /{service}/api/grant/mappings.json` with
   `{ entityType, operations }` answers, for each operation, the effective
@@ -492,6 +493,15 @@ the dev-1 script list on 2026-09-11.
   record: orders 36 and 37 went `QUOTE_SENT` → `QUOTE_VIEWED` through the link on
   2026-09-17. Events sent back to back are dropped in silence here as everywhere
   else in Core.
+- **2026-10-15: a review link carries two tokens.** Resource is grantable
+  since core-rm 5.0.2869 (its SYSTEM profile 77 includes attributes). A grant
+  issue context accepts only the entity types registered on its own node:
+  core-bill refuses Resource and core-rm refuses Order. So the link carries
+  `#token=`, the core-bill grant of Account, Document, Order, OrderItem,
+  ProductPrice, Product and Address, and `&property-token=`, a core-rm grant of
+  one Resource per property of the package. Each grant is introspected and
+  revoked on its own. The review page reads each property's address and plan
+  through them (QUOTATION-PACKAGE-FLOW.md §16).
 
 ## 7. Settled product decisions
 

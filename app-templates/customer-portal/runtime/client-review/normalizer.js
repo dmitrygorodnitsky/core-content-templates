@@ -151,6 +151,34 @@
     return !invalid && ids.length === 1 ? ids[0] : "";
   }
 
+  function pathValue(row, path) {
+    var value = row;
+    path.split(".").forEach(function (key) {
+      value = value && typeof value === "object" ? value[key] : undefined;
+    });
+    return value;
+  }
+
+  function addressText(row, format) {
+    if (!row || typeof row !== "object") return "";
+    var parts = [];
+    var seen = [];
+    format.parts.forEach(function (path) {
+      var part = text(pathValue(row, path));
+      var folded = part.toLowerCase();
+      if (!part || seen.indexOf(folded) !== -1) return;
+      seen.push(folded);
+      parts.push(part);
+    });
+    return parts.length ? parts.join(format.separator) : text(row[format.fallback]);
+  }
+
+  function propertyAddress(resource, addresses, contract) {
+    var value = attributeValue(resource, contract.propertyAttributes.address);
+    var id = positiveInteger(value && typeof value === "object" ? value.id : value);
+    return id && addresses[id] ? addressText(addresses[id], contract.addressFormat) : "";
+  }
+
   function stateCode(row, known) {
     var codes = [];
     var states = row && Array.isArray(row.states) ? row.states : [];
@@ -668,11 +696,10 @@
       var key = propertyId ? "property-" + propertyId : "order-" + row.id;
       var group = byKey[key];
       if (!group) {
-        group = byKey[key] = { key: key, address: "", rows: [] };
+        group = byKey[key] = { key: key, resource: propertyId ? context.catalog.resources[propertyId] || null : null, rows: [] };
         groups.push(group);
       }
       group.rows.push(row);
-      if (!group.address) group.address = attributeText(row, contract.orderAttributes.address);
     });
     return groups.map(function (group) {
       var options = group.rows.map(function (row, index) { return optionOf(row, index + 1, context); });
@@ -681,8 +708,8 @@
       });
       return {
         key: group.key,
-        address: group.address,
-        plan: planReference(group.rows.map(function (row) { return attributeValue(row, contract.orderAttributes.plan); })),
+        address: group.resource ? propertyAddress(group.resource, context.catalog.addresses, contract) : "",
+        plan: group.resource ? planReference([attributeValue(group.resource, contract.propertyAttributes.plan)]) : "",
         options: options,
         status: propertyStatus(options),
       };
@@ -790,6 +817,8 @@
         orderItems: rowsById(input.orderItems),
         productPrices: rowsById(input.productPrices),
         products: rowsById(input.products),
+        resources: rowsById(input.resources),
+        addresses: rowsById(input.addresses),
       },
     });
     if (state === "QUOTATION_SENT") grantActions(properties, grant, contract);
@@ -846,6 +875,7 @@
     positiveInteger: positiveInteger,
     localizedName: localizedName,
     planReference: planReference,
+    addressText: addressText,
     attributeValue: attributeValue,
     idList: idList,
     stateCode: stateCode,

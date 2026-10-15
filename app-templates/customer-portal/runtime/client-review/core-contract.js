@@ -75,9 +75,16 @@
     },
     orderAttributes: {
       property: "SERVICE_PROPERTY",
-      address: "SERVICE_ADDRESS",
       pricingModel: "PRICING_MODEL",
+    },
+    propertyAttributes: {
+      address: "ADDRESS",
       plan: "PROPERTY_PLAN",
+    },
+    addressFormat: {
+      parts: ["address1", "address2", "city", "jurisdiction", "state.code", "postalCode", "country.id"],
+      separator: ", ",
+      fallback: "alias",
     },
     pricingModels: ["SEASONAL", "MONTHLY", "PER_SERVICE"],
     priceVariants: {

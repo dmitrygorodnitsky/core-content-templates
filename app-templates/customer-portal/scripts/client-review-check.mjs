@@ -279,6 +279,8 @@ const N = loadRuntime().CR.normalizer;
     orderItems: data.orderItems,
     productPrices: data.productPrices,
     products: data.products,
+    resources: data.resources,
+    addresses: data.addresses,
     accountFailed: data.accountFails,
   }, { locale: "en-CA", contract });
 
@@ -347,7 +349,28 @@ const N = loadRuntime().CR.normalizer;
   ], "options are grouped by SERVICE_PROPERTY in package order");
   assert.deepEqual(plain(review.summary), { properties: 5, awaiting: 2, approved: 1, declined: 1, changes: 1 }, "the package summary is counts only");
   const unaddressed = review.properties[3];
-  assert.equal(unaddressed.address, "", "an Order without SERVICE_ADDRESS carries no invented address");
+  assert.deepEqual(plain(review.properties.map((property) => property.address)), [CR.fixtures.addresses[278], CR.fixtures.addresses[430], CR.fixtures.addresses[512], "", CR.fixtures.addresses[702]], "each property's address is its granted Resource's ADDRESS, read from the granted Address row, whether the id is a number, a string or an {id}");
+  assert.equal(unaddressed.address, "", "a Resource without ADDRESS carries no invented address");
+  {
+    const withOrderAddress = CR.fixtures.quotationData();
+    withOrderAddress.orders.forEach((row) => { row.attributes[5].SERVICE_ADDRESS = { value: "1 Order Street, Nowhere" }; row.attributes[5].PROPERTY_PLAN = { value: CR.fixtures.planIds[278] }; });
+    assert.deepEqual(plain(model(withOrderAddress)), plain(review), "an Order's SERVICE_ADDRESS and PROPERTY_PLAN change nothing the page shows");
+    const noProperties = CR.fixtures.quotationData();
+    noProperties.resources = [];
+    assert.deepEqual(plain(model(noProperties).properties.map((property) => [property.key, property.address, property.plan])), [["property-278", "", ""], ["property-430", "", ""], ["property-512", "", ""], ["property-661", "", ""], ["property-702", "", ""]], "without a readable Resource a property keeps its options and has no address and no plan");
+    const noAddresses = CR.fixtures.quotationData();
+    noAddresses.addresses = noAddresses.addresses.filter((row) => row.id !== 6430);
+    assert.deepEqual(plain(model(noAddresses).properties.map((property) => property.address)), [CR.fixtures.addresses[278], "", CR.fixtures.addresses[512], "", CR.fixtures.addresses[702]], "an ADDRESS id that is not among the granted Address rows gives no address");
+    const format = contract.addressFormat;
+    const { addressText } = normalizer;
+    assert.equal(addressText({ id: 49, address1: "460 Nanaimo St", address2: null, alias: "460 Nanaimo St, Vancouver, BC V5L 4W3, CA", city: "Vancouver", postalCode: "V5L 4W3", state: { id: 2, code: "BC", nls: { en: { NAME: "British Columbia" } } }, country: { id: "CA", nls: { en: { NAME: "Canada" } } }, jurisdiction: null, pob: null }, format), "460 Nanaimo St, Vancouver, BC, V5L 4W3, CA", "an Address reads as the backend formats it: address1, address2, city, jurisdiction, state code, postal code, country id");
+    assert.equal(addressText({ address1: "  12 Main St ", address2: "Unit 4", city: "Burnaby", jurisdiction: "Metro Vancouver", state: { code: "BC" }, postalCode: "V5H 1A1", country: { id: "CA" } }, format), "12 Main St, Unit 4, Burnaby, Metro Vancouver, BC, V5H 1A1, CA", "every part in order, each trimmed");
+    assert.equal(addressText({ address1: "Vancouver", address2: "", city: "VANCOUVER", state: { code: "bc" }, postalCode: " ", country: { id: "BC" } }, format), "Vancouver, bc", "empty parts are skipped and a part equal to an earlier one, ignoring case, is not repeated");
+    assert.equal(addressText({ address1: null, city: " ", state: {}, country: {}, alias: "  Lot 7, Highway 1 " }, format), "Lot 7, Highway 1", "an Address with no parts reads as its alias");
+    assert.equal(addressText({ alias: null }, format), "");
+    assert.equal(addressText(null, format), "");
+    assert.deepEqual(plain(format), { parts: ["address1", "address2", "city", "jurisdiction", "state.code", "postalCode", "country.id"], separator: ", ", fallback: "alias" });
+  }
   assert.equal(unaddressed.options[0].model, "", "an Order without PRICING_MODEL carries no invented model");
   assert.deepEqual(plain(review.properties.flatMap((property) => property.options.map((option) => [option.id, option.model, option.priceName]))), [
     [3101, "SEASONAL", ""], [3102, "MONTHLY", ""], [3103, "PER_SERVICE", ""], [3104, "SEASONAL", ""], [3105, "PER_SERVICE", ""],
@@ -402,7 +425,9 @@ const N = loadRuntime().CR.normalizer;
   const withoutRemoved = CR.fixtures.quotationData();
   withoutRemoved.orders.forEach((row) => { delete row.attributes[5].CLIENT; });
   assert.deepEqual(plain(model(removedOnOrders)), plain(model(withoutRemoved)), "Order CLIENT, EFFECTIVE_DATE and SERVICE_PERIOD_START/END change nothing the page shows");
-  assert.deepEqual(Object.keys(contract.orderAttributes).sort(), ["address", "plan", "pricingModel", "property"], "the only Order attributes the page reads are SERVICE_PROPERTY, SERVICE_ADDRESS, PROPERTY_PLAN and PRICING_MODEL, the last only as a fallback");
+  assert.deepEqual(Object.keys(contract.orderAttributes).sort(), ["pricingModel", "property"], "the only Order attributes the page reads are SERVICE_PROPERTY and PRICING_MODEL, the last only as a fallback");
+  assert.deepEqual(plain(contract.propertyAttributes), { address: "ADDRESS", plan: "PROPERTY_PLAN" }, "a property's address and plan are the Resource attributes ADDRESS and PROPERTY_PLAN");
+  assert.ok(!runtimeSources.includes("\"SERVICE_ADDRESS\""), "the review page never reads the Order's SERVICE_ADDRESS");
 
   const money = CR.fixtures.quotationData();
   money.orders[1].grandTotal = 777.77;
@@ -698,6 +723,8 @@ const EXPECTED_SCENARIOS = {
   "contract-details-billing-service": ["ready", "contract-details"], "contract-details-maps": ["ready", "contract-details"],
   "contract-details-address-missing": ["ready", "contract-details"], "contract-details-plan-unavailable": ["ready", "contract-details"],
   "contract-details-maps-failed": ["ready", "contract-details"],
+  "old-link": ["ready", "quote-review"], "property-link-closed": ["ready", "contract-details"],
+  "property-list-failed": ["ready", "quote-review"], "address-list-failed": ["ready", "contract-details"],
   "details-invalid": ["ready", "contract-details"], "details-refused": ["ready", "contract-details"],
   "details-checking": ["ready", "checking"], "details-checking-slow": ["ready", "checking"],
   "details-returned": ["ready", "contract-details"], "details-returned-attributes": ["ready", "contract-details"], "details-returned-processing": ["ready", "contract-details"],
@@ -1223,14 +1250,14 @@ function assertForm(run, expected, message) {
         const billing = fieldNamed(run.mount, "BILLING_ADDRESS");
         assert.equal(controlOf(billing).getAttribute("role"), null, "the billing address stays a plain text field");
         assert.deepEqual(byAttribute(billing, "data-action", "details.useAddress").map((chip) => [chip.textContent, chip.getAttribute("aria-pressed")]), [
-          ["1180 Pacific Crescent, Vancouver, BC V6Z 2R5", "false"], ["4620 Garden City Way, Richmond, BC V6X 2W6", "false"], ["9150 Cedar Hollow Drive, Surrey, BC V3V 7K2", "false"],
+          ["1180 Pacific Crescent, Vancouver, BC, V6Z 2R5, CA", "false"], ["4620 Garden City Way, Richmond, BC, V6X 2W6, CA", "false"], ["9150 Cedar Hollow Drive, Surrey, BC, V3V 7K2, CA", "false"],
         ], "the billing field offers each approved property's service address, once, and none is chosen for the client");
         break;
       }
       case "contract-details-billing-service": {
         const billing = fieldNamed(run.mount, "BILLING_ADDRESS");
-        assert.equal(controlOf(billing).value, "4620 Garden City Way, Richmond, BC V6X 2W6", "choosing a service address writes it into the billing field, where the client sees it");
-        assert.equal(run.controller.snapshot().details.values.BILLING_ADDRESS, "4620 Garden City Way, Richmond, BC V6X 2W6");
+        assert.equal(controlOf(billing).value, "4620 Garden City Way, Richmond, BC, V6X 2W6, CA", "choosing a service address writes it into the billing field, where the client sees it");
+        assert.equal(run.controller.snapshot().details.values.BILLING_ADDRESS, "4620 Garden City Way, Richmond, BC, V6X 2W6, CA");
         assert.deepEqual(byAttribute(billing, "data-action", "details.useAddress").map((chip) => chip.getAttribute("aria-pressed")), ["false", "true", "false"], "the chosen address is marked");
         assert.equal(run.runtime.document.activeElement, controlOf(billing), "and focus moves to the billing field so it can be changed");
         assert.equal(run.sent.length, 0, "choosing an address sends nothing");
@@ -1286,6 +1313,27 @@ function assertForm(run, expected, message) {
         const plans = byClass(run.mount, "cr-plan");
         assert.deepEqual(plans.map((plan) => [plan.getAttribute("data-state"), byAttribute(plan, "data-map", "plan")[0].getAttribute("data-state")]), [["ready", "failed"], ["ready", "failed"]], "the plans keep their area and elements without a map");
         assert.equal(byClass(plans[0], "cr-plan__area-value")[0].textContent, "21,915 sq ft");
+        break;
+      }
+      case "old-link":
+      case "property-list-failed": {
+        const headings = byClass(run.mount, "cr-property__address");
+        assert.deepEqual(headings.map((node) => node.textContent), Array(5).fill(copy.addressUnavailable), id + ": without readable properties every property reads Address unavailable");
+        assert.deepEqual(plain(snapshot.view.properties.map((property) => [property.key, property.options.length, property.plan])), [["property-278", 3, ""], ["property-430", 2, ""], ["property-512", 2, ""], ["property-661", 1, ""], ["property-702", 2, ""]], id + ": and keeps every option, grouped as before, with no plan");
+        assert.equal(byClass(run.mount, "cr-error").length + byAttribute(run.mount, "data-phase", "error").length, 0, id + ": and shows no error");
+        break;
+      }
+      case "property-link-closed":
+      case "address-list-failed": {
+        const billing = fieldNamed(run.mount, "BILLING_ADDRESS");
+        assert.equal(byAttribute(billing, "data-action", "details.useAddress").length, 0, id + ": with no property address, no service address is offered for billing");
+        assert.equal(byClass(billing, "cr-reuse").length, 0, id + ": and no empty offer is drawn");
+        assert.equal(run.controller.snapshot().maps, true, id + ": the Maps key still works for the billing address");
+        assert.equal(byAttribute(billing, "data-map", "address")[0].getAttribute("data-state"), "ready");
+        assert.deepEqual(byClass(run.mount, "cr-approved__address").map((node) => node.textContent), Array(4).fill(copy.addressUnavailable), id + ": every approved property reads Address unavailable");
+        const plans = byClass(run.mount, "cr-plan").map((plan) => [plan.getAttribute("data-plan"), plan.getAttribute("data-state")]);
+        if (id === "property-link-closed") assert.deepEqual(plans, [], "an expired or revoked property grant shows no plan and no closed link: the main grant alone decides the page");
+        else assert.deepEqual(plans, [["property-278", "ready"], ["property-430", "ready"]], "an Address list that fails takes the addresses away and leaves the plans");
         break;
       }
       case "completion": {
@@ -2748,15 +2796,19 @@ const later = () => new Promise((resolve) => setTimeout(resolve, 5));
 
   const data = CR.fixtures.withPlans(CR.fixtures.quotationData("AWAITING_CLIENT_DETAILS", CR.fixtures.decidedStates));
   const model = () => N.reviewModel({ ...data, grant: N.grantOf(data.grant) }, { locale: "en-CA", contract: CR.contract });
-  assert.deepEqual(plain(model().properties.map((property) => [property.key, property.plan])), [["property-278", CR.fixtures.planIds[278]], ["property-430", CR.fixtures.planIds[430]], ["property-512", ""], ["property-661", ""], ["property-702", ""]], "each property carries the one plan its quote Orders name in PROPERTY_PLAN");
-  assert.deepEqual(plain(model().details.serviceAddresses), ["1180 Pacific Crescent, Vancouver, BC V6Z 2R5", "4620 Garden City Way, Richmond, BC V6X 2W6", "9150 Cedar Hollow Drive, Surrey, BC V3V 7K2"], "only approved properties with an address are offered as a billing address");
-  data.orders.forEach((row) => {
-    const bucket = row.attributes[5];
+  assert.deepEqual(plain(model().properties.map((property) => [property.key, property.plan])), [["property-278", CR.fixtures.planIds[278]], ["property-430", CR.fixtures.planIds[430]], ["property-512", ""], ["property-661", ""], ["property-702", ""]], "each property carries the one plan its granted Resource names in PROPERTY_PLAN");
+  assert.deepEqual(plain(model().details.serviceAddresses), ["1180 Pacific Crescent, Vancouver, BC, V6Z 2R5, CA", "4620 Garden City Way, Richmond, BC, V6X 2W6, CA", "9150 Cedar Hollow Drive, Surrey, BC, V3V 7K2, CA"], "only approved properties with an address are offered as a billing address");
+  const twoPlans = CR.fixtures.withPlans(CR.fixtures.quotationData("AWAITING_CLIENT_DETAILS", CR.fixtures.decidedStates), { 278: [{ id: CR.fixtures.planIds[278] }, { id: CR.fixtures.planIds[430] }] });
+  assert.equal(N.reviewModel({ ...twoPlans, grant: N.grantOf(twoPlans.grant) }, { locale: "en-CA", contract: CR.contract }).properties[0].plan, "", "a Resource whose PROPERTY_PLAN holds two plans shows none");
+  data.orders.forEach((row) => { row.attributes[5].PROPERTY_PLAN = { value: CR.fixtures.planIds[430] }; });
+  assert.deepEqual(plain(model().properties.map((property) => property.plan)), [CR.fixtures.planIds[278], CR.fixtures.planIds[430], "", "", ""], "an Order's PROPERTY_PLAN is never read");
+  data.resources.forEach((row) => {
+    const bucket = row.attributes[154];
     if (bucket.PROPERTY_PLAN) { bucket.PROPERTY_PLAN_DRAFT = bucket.PROPERTY_PLAN; delete bucket.PROPERTY_PLAN; }
   });
   assert.deepEqual(plain(model().properties.map((property) => property.plan)), ["", "", "", "", ""], "an AI draft in PROPERTY_PLAN_DRAFT is never shown as the plan");
   for (const [name, source] of Object.entries(sources)) assert.ok(!source.includes("PROPERTY_PLAN_DRAFT"), name + " never names the draft plan");
-  assert.equal(CR.contract.orderAttributes.plan, "PROPERTY_PLAN");
+  assert.equal(CR.contract.propertyAttributes.plan, "PROPERTY_PLAN");
 }
 
 {
@@ -2821,13 +2873,18 @@ const later = () => new Promise((resolve) => setTimeout(resolve, 5));
   const server = CR.fixtures.createFixtureAdapter(data, {});
   const TOKEN = "grant-token-77ab+/=";
   const encoded = encodeURIComponent(TOKEN);
+  const PROPERTY_TOKEN = "property-token-19cd+/=";
+  const propertyEncoded = encodeURIComponent(PROPERTY_TOKEN);
   const calls = [];
   const reply = (status, body) => ({ status, text: () => Promise.resolve(body === undefined ? "" : JSON.stringify(body)) });
   const fetch = async (url, init) => {
     calls.push({ url, init });
-    const route = url.replace("https://core.example/", "").split("?")[0].replace("/i/" + encoded + "/", "/i/TOKEN/");
+    const route = url.replace("https://core.example/", "").split("?")[0].replace("/i/" + encoded + "/", "/i/TOKEN/").replace("/i/" + propertyEncoded + "/", "/i/PROPERTY/");
     const answer = (work) => work.then((value) => reply(200, value), (error) => reply(error.status || 500, {}));
     if (route === "core/i/TOKEN/introspect.json") return answer(server.introspect());
+    if (route === "core/i/PROPERTY/introspect.json") return answer(server.introspectProperties());
+    if (route === "core-rm/i/PROPERTY/resource/list.json") return answer(server.list("resource").then((result) => ({ result })));
+    if (route === "core/i/TOKEN/address/list.json") return answer(server.list("address").then((result) => ({ result })));
     if (route === "core/i/TOKEN/document/list.json") return answer(server.list("document").then((result) => ({ result })));
     if (route === "core-acct/i/TOKEN/account/list.json") return answer(server.list("account").then((result) => ({ result })));
     if (route === "core-bill/i/TOKEN/order/list.json") return answer(server.list("order").then((result) => ({ result })));
@@ -2839,7 +2896,8 @@ const later = () => new Promise((resolve) => setTimeout(resolve, 5));
     const attributes = { "data-review-data-mode": "live", "data-review-api-base": "https://core.example" };
     if (key !== undefined) attributes["data-review-maps-api-key"] = key;
     const mount = runtime.document.createElement("div");
-    const controller = CR.boot(section(runtime.document, attributes), { location: { hash: "#token=" + encoded, href: "https://pages.example/review#token=" + encoded }, fetch, mount, locale: "en-CA", loadMaps, suggestionDelay: 0 });
+    const hash = "#token=" + encoded + "&property-token=" + propertyEncoded;
+    const controller = CR.boot(section(runtime.document, attributes), { location: { hash, href: "https://pages.example/review" + hash }, fetch, mount, locale: "en-CA", loadMaps, suggestionDelay: 0 });
     return { controller, mount };
   };
 
@@ -2866,13 +2924,16 @@ const later = () => new Promise((resolve) => setTimeout(resolve, 5));
   const planCalls = calls.filter((call) => call.url.includes("/media/"));
   assert.deepEqual(planCalls.map((call) => call.url).sort(), [CR.fixtures.planIds[278], CR.fixtures.planIds[430]].map((id) => "https://core.example/core/media/" + id + "/stream.json").sort(), "each approved property's plan file is read once from the media stream");
   assert.ok(planCalls.every((call) => call.init.method === "GET" && call.init.credentials === "omit"));
+  const propertyCalls = calls.filter((call) => call.url.includes("/i/" + propertyEncoded + "/")).map((call) => call.url);
+  assert.deepEqual(propertyCalls, ["https://core.example/core/i/" + propertyEncoded + "/introspect.json", "https://core.example/core-rm/i/" + propertyEncoded + "/resource/list.json"], "the property token is introspected on core and lists Resource on core-rm, and is used for nothing else");
+  assert.ok(calls.some((call) => call.url === "https://core.example/core/i/" + encoded + "/address/list.json"), "Address is listed on core with the main token");
   for (const call of calls) {
     const [address, query = ""] = call.url.split("?");
-    if (call.url.includes("/media/")) assert.ok(!address.includes(encoded) && !address.includes(TOKEN), "the plan read carries no token");
-    else assert.ok(address.includes("/i/" + encoded + "/"), "every other request is a grant request");
-    assert.ok(!query.includes(encoded) && !String(call.init.body || "").includes(MAPS_KEY), "the token is in no query and the Maps key in no request to the provider");
+    if (call.url.includes("/media/")) assert.ok(!address.includes(encoded) && !address.includes(TOKEN) && !address.includes(propertyEncoded), "the plan read carries no token");
+    else assert.ok(address.includes("/i/" + encoded + "/") || address.includes("/i/" + propertyEncoded + "/"), "every other request is a grant request");
+    assert.ok(!query.includes(encoded) && !query.includes(propertyEncoded) && !String(call.init.body || "").includes(MAPS_KEY), "no token is in a query and the Maps key in no request to the provider");
   }
-  assert.ok(!surface(page.mount).includes(TOKEN) && !surface(page.mount).includes(encoded) && !surface(page.mount).includes(MAPS_KEY), "neither the token nor the key reaches the page markup");
+  for (const secret of [TOKEN, encoded, PROPERTY_TOKEN, propertyEncoded, MAPS_KEY]) assert.ok(!surface(page.mount).includes(secret), "neither token nor the key reaches the page markup");
 
   const planMaps = made.maps.filter((map) => map.options.mapTypeId === "hybrid");
   assert.equal(planMaps.length, 2, "each plan is drawn over its own satellite map");
@@ -2920,13 +2981,13 @@ const later = () => new Promise((resolve) => setTimeout(resolve, 5));
   assert.equal(missing.getAttribute("data-state"), "missing", "a typed address the map cannot find is said so when the field is left");
   assert.equal(byClass(missing, "cr-map__note")[0].textContent, page.controller.copy.addressMapMissing);
 
-  page.controller.dispatch("details.useAddress", { code: "BILLING_ADDRESS", value: "4620 Garden City Way, Richmond, BC V6X 2W6" });
+  page.controller.dispatch("details.useAddress", { code: "BILLING_ADDRESS", value: "4620 Garden City Way, Richmond, BC, V6X 2W6, CA" });
   await page.controller.idle();
-  assert.equal(input().value, "4620 Garden City Way, Richmond, BC V6X 2W6");
+  assert.equal(input().value, "4620 Garden City Way, Richmond, BC, V6X 2W6, CA");
   assert.equal(byAttribute(fieldNamed(page.mount, "BILLING_ADDRESS"), "data-map", "address")[0].getAttribute("data-state"), "ready", "a service address chosen for billing is pinned too");
   page.controller.dispatch("details.useAddress", { code: "BILLING_ADDRESS", value: "1 Unlisted Road" });
-  page.controller.dispatch("details.useAddress", { code: "LEGAL_NAME", value: "4620 Garden City Way, Richmond, BC V6X 2W6" });
-  assert.equal(page.controller.snapshot().details.values.BILLING_ADDRESS, "4620 Garden City Way, Richmond, BC V6X 2W6", "only an approved property's address can be copied, and only into an address field");
+  page.controller.dispatch("details.useAddress", { code: "LEGAL_NAME", value: "4620 Garden City Way, Richmond, BC, V6X 2W6, CA" });
+  assert.equal(page.controller.snapshot().details.values.BILLING_ADDRESS, "4620 Garden City Way, Richmond, BC, V6X 2W6, CA", "only an approved property's address can be copied, and only into an address field");
   assert.equal(page.controller.snapshot().details.values.LEGAL_NAME, "Harbourview Strata Corporation");
 
   const drawnBefore = made.maps.length;
@@ -2940,7 +3001,7 @@ const later = () => new Promise((resolve) => setTimeout(resolve, 5));
 
 {
   const run = await stagedController((F) => F.withPlans(F.agreementData("SENT_TO_CLIENT", false)), {}, undefined, {});
-  run.controller.dispatch("details.useAddress", { code: "BILLING_ADDRESS", value: "1180 Pacific Crescent, Vancouver, BC V6Z 2R5" });
+  run.controller.dispatch("details.useAddress", { code: "BILLING_ADDRESS", value: "1180 Pacific Crescent, Vancouver, BC, V6Z 2R5, CA" });
   assert.equal(run.controller.snapshot().details.values.BILLING_ADDRESS, undefined, "no address is copied outside the contract details step");
   assert.equal(byClass(run.mount, "cr-plan").length, 0, "and the agreement pages show no plan");
 }
@@ -2966,6 +3027,112 @@ const later = () => new Promise((resolve) => setTimeout(resolve, 5));
   await controller.idle();
   assert.deepEqual(byClass(mount, "cr-plan").map((plan) => plan.getAttribute("data-state")), ["unavailable", "ready"], "a plan file that cannot be read says so, and the other plan is drawn");
   assert.ok(surface(byClass(mount, "cr-plan")[0]).includes(controller.copy.planUnavailable));
+}
+
+{
+  const { CR } = loadRuntime();
+  const { tokenFromFragment, propertyTokenFromFragment, createGrantAdapter } = CR.adapter;
+  assert.equal(tokenFromFragment("#token=main&property-token=rm"), "main", "the main token is read from token=");
+  assert.equal(propertyTokenFromFragment("#token=main&property-token=rm"), "rm", "the property token is read from property-token=");
+  assert.equal(tokenFromFragment("#property-token=rm&token=main"), "main", "whatever their order");
+  assert.equal(propertyTokenFromFragment("#property-token=rm&token=main"), "rm");
+  assert.equal(tokenFromFragment("#property-token=rm"), "", "a property token alone is no link");
+  assert.equal(propertyTokenFromFragment("#token=main"), "", "a link issued before property grants carries none");
+  assert.equal(propertyTokenFromFragment("#token=main&property-token=has%20space"), "", "a property token with whitespace is refused");
+
+  const calls = [];
+  const fetch = (url, init) => { calls.push({ url, body: init.body }); return Promise.resolve({ status: 200, text: () => Promise.resolve(JSON.stringify({ result: [] })) }); };
+  const main = encodeURIComponent("main+/=");
+  const rm = encodeURIComponent("rm+/=");
+  const adapter = createGrantAdapter({ apiBase: "https://core.example", token: "main+/=", propertyToken: "rm+/=", fetch });
+  await adapter.introspectProperties();
+  await adapter.list("resource");
+  await adapter.list("address");
+  await adapter.get("resource", 278);
+  await adapter.list("order");
+  await adapter.introspect();
+  assert.deepEqual(calls.map((call) => call.url), [
+    "https://core.example/core/i/" + rm + "/introspect.json",
+    "https://core.example/core-rm/i/" + rm + "/resource/list.json",
+    "https://core.example/core/i/" + main + "/address/list.json",
+    "https://core.example/core-rm/i/" + rm + "/resource/get.json?id=278",
+    "https://core.example/core-bill/i/" + main + "/order/list.json",
+    "https://core.example/core/i/" + main + "/introspect.json",
+  ], "the property token introspects on core and reads Resource on core-rm; Address and everything else use the main token");
+  assert.equal(calls[1].body, JSON.stringify({ offset: 0, pageSize: 200 }), "Resource is paged like the other lists");
+
+  const before = calls.length;
+  const old = createGrantAdapter({ apiBase: "https://core.example", token: "main", fetch });
+  await assert.rejects(old.introspectProperties(), (error) => error.code === "link-missing", "a link without a property token has no property grant to introspect");
+  await assert.rejects(old.list("resource"), (error) => error.code === "link-missing", "and lists no Resource");
+  assert.equal(calls.length, before, "without sending anything");
+}
+
+{
+  const runtime = loadRuntime({ fixtures: true });
+  const { CR } = runtime;
+  const reply = (status, body) => ({ status, text: () => Promise.resolve(body === undefined ? "" : typeof body === "string" ? body : JSON.stringify(body)) });
+  const livePage = async (hash, overrides = {}) => {
+    const data = CR.fixtures.withPlans(CR.fixtures.quotationData());
+    const server = CR.fixtures.createFixtureAdapter(data, {});
+    const calls = [];
+    const answer = (work) => work.then((value) => reply(200, value), (error) => reply(error.status || 500, {}));
+    const listed = (name) => answer(server.list(name).then((result) => ({ result })));
+    const routes = {
+      "core/i/main-1/introspect.json": () => answer(server.introspect()),
+      "core/i/main-1/document/list.json": () => listed("document"),
+      "core-acct/i/main-1/account/list.json": () => listed("account"),
+      "core-bill/i/main-1/order/list.json": () => listed("order"),
+      "core/i/main-1/address/list.json": () => listed("address"),
+      "core/i/rm-1/introspect.json": () => answer(server.introspectProperties()),
+      "core-rm/i/rm-1/resource/list.json": () => listed("resource"),
+    };
+    const fetch = async (url) => {
+      const route = url.replace("https://core.example/", "").split("?")[0];
+      calls.push(route);
+      if (overrides[route]) return overrides[route]();
+      return routes[route] ? routes[route]() : reply(404, {});
+    };
+    const timers = fakeTimers();
+    const mount = runtime.document.createElement("div");
+    const controller = CR.boot(section(runtime.document, { "data-review-data-mode": "live", "data-review-api-base": "https://core.example" }), { location: { hash, href: "https://pages.example/review" + hash }, fetch, mount, timers, locale: "en-CA" });
+    await controller.idle();
+    const snapshot = controller.snapshot();
+    return { calls, timers, snapshot, addresses: snapshot.view ? plain(snapshot.view.properties.map((property) => property.address)) : null };
+  };
+  const NONE = ["", "", "", "", ""];
+  const both = "#token=main-1&property-token=rm-1";
+
+  const full = await livePage(both);
+  assert.deepEqual([full.snapshot.phase, full.snapshot.view.kind], ["ready", "quote-review"]);
+  assert.deepEqual(full.addresses, [278, 430, 512, 661, 702].map((id) => CR.fixtures.addresses[id]), "a link with both tokens shows each property's address");
+
+  const old = await livePage("#token=main-1");
+  assert.deepEqual([old.snapshot.phase, old.snapshot.view.kind], ["ready", "quote-review"], "a link with only token= opens as before");
+  assert.deepEqual(old.addresses, NONE, "with no address");
+  assert.ok(old.calls.every((route) => !route.includes("rm-1") && !route.startsWith("core-rm/")), "and no property read");
+
+  for (const [label, overrides, resourceListed] of [
+    ["a property introspection answering 401", { "core/i/rm-1/introspect.json": () => reply(401, {}) }, false],
+    ["a property introspection answering 403", { "core/i/rm-1/introspect.json": () => reply(403, {}) }, false],
+    ["a property introspection answering 404", { "core/i/rm-1/introspect.json": () => reply(404, {}) }, false],
+    ["a property introspection answering 500", { "core/i/rm-1/introspect.json": () => reply(500, "") }, false],
+    ["a property introspection that is not an object", { "core/i/rm-1/introspect.json": () => reply(200, "[]") }, false],
+    ["a property network failure", { "core/i/rm-1/introspect.json": () => Promise.reject(new Error("offline")) }, false],
+    ["a property grant without a readable Resource", { "core/i/rm-1/introspect.json": () => reply(200, { types: [{ entityType: "Resource", canRead: false }] }) }, false],
+    ["a Resource list answering 401", { "core-rm/i/rm-1/resource/list.json": () => reply(401, {}) }, true],
+    ["a Resource list answering 404", { "core-rm/i/rm-1/resource/list.json": () => reply(404, {}) }, true],
+    ["a Resource list answering 500", { "core-rm/i/rm-1/resource/list.json": () => reply(500, "") }, true],
+    ["an Address list answering 401", { "core/i/main-1/address/list.json": () => reply(401, {}) }, true],
+    ["an Address list answering 500", { "core/i/main-1/address/list.json": () => reply(500, "") }, true],
+  ]) {
+    const page = await livePage(both, overrides);
+    assert.deepEqual([page.snapshot.phase, page.snapshot.view && page.snapshot.view.kind], ["ready", "quote-review"], label + " leaves the page to the main grant: no closed link and no error");
+    assert.deepEqual(page.addresses, NONE, label + " shows no property address");
+    assert.equal(page.calls.filter((route) => route === "core/i/rm-1/introspect.json").length, 1, label + " is not retried");
+    assert.equal(page.calls.filter((route) => route === "core-rm/i/rm-1/resource/list.json").length, resourceListed ? 1 : 0, label + (resourceListed ? " lists Resource once" : " lists no Resource"));
+    assert.equal(page.timers.pending, 0, label + " schedules no re-read");
+  }
 }
 
 const { exportClientReviewManual } = await import("./export-client-review-manual.mjs");
@@ -3031,8 +3198,18 @@ try {
   assert.ok(manifest.constraints.some((line) => line.includes("PROPERTY_PLAN_DRAFT is never read")), "the manifest states that only the approved plan is shown");
   assert.ok(manifest.api.reads.some((read) => read.startsWith("GET {apiBase}/core/media/{planId}/stream.json")), "the manual package documents the anonymous plan read");
   assert.ok(manifest.api.reads.some((read) => read.startsWith("GET https://maps.googleapis.com/maps/api/js")), "and the Google script it loads with a key");
-  assert.ok(manifest.plannedFields.order.includes("PROPERTY_PLAN"), "the manual package lists the Order attribute the plan is read from");
-  assert.ok(manifest.unverified.some((line) => line.startsWith("No dev-1 quote Order carries PROPERTY_PLAN")), "and says that no dev-1 Order supplies it yet");
+  assert.deepEqual(manifest.plannedFields.order, ["SERVICE_PROPERTY", "PRICING_MODEL"], "the manual package lists the only Order attributes the page reads");
+  assert.deepEqual(manifest.plannedFields.resource, ["ADDRESS", "PROPERTY_PLAN"], "and the Resource attributes the address and the plan are read from");
+  assert.ok(manifest.unverified.some((line) => line.startsWith("No dev-1 link carries #property-token= yet")), "and says that no dev-1 link carries the property grant yet");
+  for (const read of ["POST {apiBase}/core/i/{token}/address/list.json", "POST {apiBase}/core/i/{propertyToken}/introspect.json", "POST {apiBase}/core-rm/i/{propertyToken}/resource/list.json"]) {
+    assert.ok(manifest.api.reads.some((line) => line.startsWith(read)), "the manual package documents the read " + read);
+  }
+  assert.ok(!manifest.api.reads.some((line) => line.includes("/core-rm/i/{token}/") || line.includes("/core/i/{propertyToken}/address")), "Address is read with the main token on core, and only Resource on core-rm with the property token");
+  assert.ok(manifest.api.propertyToken.startsWith("read from the #property-token= fragment only"), "the manifest says where the property token comes from");
+  assert.ok(manifest.constraints.some((line) => line.startsWith("A link may carry #property-token=") && line.includes("never closes the page")), "the manifest states that the property side never decides the page");
+  assert.ok(manifest.constraints.some((line) => line.startsWith("A property's address is its granted Resource's ADDRESS")), "the manifest states how a property's address is written");
+  const manifestText = JSON.stringify(manifest);
+  assert.ok(!manifestText.includes("SERVICE_ADDRESS") && !manifestText.includes("undefined"), "the manifest names no Order SERVICE_ADDRESS and no undefined contract value");
   assert.match(template.head, /<meta name="referrer" content="no-referrer">/, "the document still ships no-referrer; only a configured Maps key relaxes it, at run time");
   for (const [field, file] of Object.entries({ head: "root/head.html", html: "root/html.html", css: "root/css.css", javascript: "root/javascript.js" })) {
     const content = await fs.readFile(path.join(outputDir, file), "utf8");
@@ -3080,4 +3257,4 @@ try {
   await fs.rm(tempDir, { recursive: true, force: true });
 }
 
-console.log("client-review-check ok: " + Object.keys(EXPECTED_SCENARIOS).length + " preview states, every order and agreement state, grouping and counts-only summary, server subtotal and taxes shown only when returned, confirmation statements with description and CMS precedence, contract details and the portal sign-in read from the Account attributes the contract names, never a confirmation and never over what the client typed, grant-gated single-flight commands with read-back, refusals and failures, returned details codes, a bounded one-read-at-a-time checking backoff with announcements, the portal invitation with and without PORTAL_URL and the portal button above and below an approved agreement, a thank-you card after the details and after the approval that an expired link never shows, Copy link with its confirmation, its refusal and no address in the page, Contact us with links only for a dialable number and a mail address, the provider's logo on the agreement pages, Request changes on the agreement with its text required and a thank-you page that keeps the agreement readable, the Maps browser key as the one key parameter with no Google script, map or plan without it, address suggestions and a pinned billing address with it, a service address copied into billing only by the client, the approved property plan drawn read-only with its area, never the draft, and its loading, unreadable and invalid states, ACTIVATION_FAILED as completion, numbered terms, token only in the grant path, no money arithmetic, innerHTML, eval, console or storage, portal tokens only, and a live-only deterministic CMS package");
+console.log("client-review-check ok: " + Object.keys(EXPECTED_SCENARIOS).length + " preview states, every order and agreement state, grouping and counts-only summary, server subtotal and taxes shown only when returned, confirmation statements with description and CMS precedence, contract details and the portal sign-in read from the Account attributes the contract names, never a confirmation and never over what the client typed, grant-gated single-flight commands with read-back, refusals and failures, returned details codes, a bounded one-read-at-a-time checking backoff with announcements, the portal invitation with and without PORTAL_URL and the portal button above and below an approved agreement, a thank-you card after the details and after the approval that an expired link never shows, Copy link with its confirmation, its refusal and no address in the page, Contact us with links only for a dialable number and a mail address, the provider's logo on the agreement pages, Request changes on the agreement with its text required and a thank-you page that keeps the agreement readable, the Maps browser key as the one key parameter with no Google script, map or plan without it, address suggestions and a pinned billing address with it, a service address copied into billing only by the client, property addresses and approved plans read from the separate property grant, never closing or failing the page when that grant is missing or refused, the approved property plan drawn read-only with its area, never the draft, and its loading, unreadable and invalid states, ACTIVATION_FAILED as completion, numbered terms, token only in the grant path, no money arithmetic, innerHTML, eval, console or storage, portal tokens only, and a live-only deterministic CMS package");

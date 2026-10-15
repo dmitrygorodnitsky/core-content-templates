@@ -82,13 +82,6 @@ const PRICE_BOOK = {
   7212: { MONTHLY: [1120, 495], SEASONAL: [5360, 2370] },
 };
 
-const SERVICE_ADDRESSES = {
-  7101: "4820 Foothill Court, Lakewood, CO 80215",
-  7102: "1190 Tabor Street, Golden, CO 80401",
-  7103: "3355 Yarrow Ridge Drive, Arvada, CO 80002",
-  7104: "870 Cinnamon Bear Way, Lakewood, CO 80227",
-};
-
 const QUOTE_ORDERS = [
   [8101, 7101, "PER_SERVICE", "DECLINED", "2026-27"],
   [8102, 7101, "MONTHLY", "CLIENT_APPROVED", "2026-27"],
@@ -221,7 +214,6 @@ function quoteOrder(entry) {
     SERVICE_PERIOD_START: { value: SEASONS[entry[4]][0] },
     SERVICE_PERIOD_END: { value: SEASONS[entry[4]][1] },
   };
-  if (SERVICE_ADDRESSES[entry[1]]) attributes.SERVICE_ADDRESS = { value: SERVICE_ADDRESSES[entry[1]] };
   return {
     id: entry[0],
     type: { id: 6, code: "WINTER_SERVICES_ORDER" },

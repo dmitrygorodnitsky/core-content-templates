@@ -1853,9 +1853,16 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     },
     orderAttributes: {
       property: "SERVICE_PROPERTY",
-      address: "SERVICE_ADDRESS",
       pricingModel: "PRICING_MODEL",
+    },
+    propertyAttributes: {
+      address: "ADDRESS",
       plan: "PROPERTY_PLAN",
+    },
+    addressFormat: {
+      parts: ["address1", "address2", "city", "jurisdiction", "state.code", "postalCode", "country.id"],
+      separator: ", ",
+      fallback: "alias",
     },
     pricingModels: ["SEASONAL", "MONTHLY", "PER_SERVICE"],
     priceVariants: {
@@ -1931,7 +1938,10 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
       document: { service: "core", segment: "document" },
       "product-price": { service: "core-pim", segment: "product-price" },
       product: { service: "core-pim", segment: "product" },
+      address: { service: "core", segment: "address" },
+      resource: { service: "core-rm", segment: "resource", grant: "property" },
     },
+    fragment: { token: "token", propertyToken: "property-token" },
     image: { service: "core", head: "image", tail: "get", width: 440 },
     plan: { service: "core", head: "media", tail: "stream.json" },
     pageSize: 200,
@@ -1959,19 +1969,28 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     return error;
   }
 
-  function tokenFromFragment(hash) {
+  function fragmentValue(hash, key) {
     var fragment = String(hash == null ? "" : hash).replace(/^#/, "");
+    var prefix = key + "=";
     var found = "";
     fragment.split("&").some(function (pair) {
-      if (pair.indexOf("token=") !== 0) return false;
+      if (pair.indexOf(prefix) !== 0) return false;
       try {
-        found = decodeURIComponent(pair.slice("token=".length));
+        found = decodeURIComponent(pair.slice(prefix.length));
       } catch (_) {
         found = "";
       }
       return true;
     });
     return acceptableToken(found) ? found : "";
+  }
+
+  function tokenFromFragment(hash) {
+    return fragmentValue(hash, GRANT.fragment.token);
+  }
+
+  function propertyTokenFromFragment(hash) {
+    return fragmentValue(hash, GRANT.fragment.propertyToken);
   }
 
   function acceptableToken(value) {
@@ -2095,12 +2114,19 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     var settings = options || {};
     var base = safeApiBase(settings.apiBase);
     var token = typeof settings.token === "string" ? settings.token : "";
+    var propertyToken = typeof settings.propertyToken === "string" ? settings.propertyToken : "";
     var fetchImpl = settings.fetch || (typeof global.fetch === "function" ? global.fetch.bind(global) : null);
     if (!base || typeof fetchImpl !== "function") throw reviewError("unconfigured", 0);
     if (!token) throw reviewError("link-missing", 0);
 
-    function url(service, tail) {
-      return base + "/" + service + "/i/" + encodeURIComponent(token) + "/" + tail;
+    function url(service, tail, grantToken) {
+      return base + "/" + service + "/i/" + encodeURIComponent(grantToken === undefined ? token : grantToken) + "/" + tail;
+    }
+
+    function grantTokenOf(spec) {
+      if (spec.grant !== "property") return token;
+      if (!propertyToken) throw reviewError("link-missing", 0);
+      return propertyToken;
     }
 
     function post(target, body, operation) {
@@ -2161,11 +2187,22 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
       introspect: function () {
         return post(url(GRANT.introspect.service, GRANT.introspect.tail), {}, "introspect").then(objectPayload);
       },
+      introspectProperties: function () {
+        if (!propertyToken) return Promise.reject(reviewError("link-missing", 0));
+        return post(url(GRANT.introspect.service, GRANT.introspect.tail, propertyToken), {}, "introspect").then(objectPayload);
+      },
       list: function (name) {
-        var spec = entity(name);
+        var spec;
+        var grantToken;
+        try {
+          spec = entity(name);
+          grantToken = grantTokenOf(spec);
+        } catch (error) {
+          return Promise.reject(error);
+        }
         var rows = [];
         function page(index) {
-          return post(url(spec.service, spec.segment + "/list.json"), { offset: index * GRANT.pageSize, pageSize: GRANT.pageSize }, "read")
+          return post(url(spec.service, spec.segment + "/list.json", grantToken), { offset: index * GRANT.pageSize, pageSize: GRANT.pageSize }, "read")
             .then(objectPayload)
             .then(function (payload) {
               if (!Array.isArray(payload.result)) throw reviewError("failed", 200);
@@ -2178,11 +2215,11 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
       },
       get: function (name, id) {
         var spec = entity(name);
-        return post(url(spec.service, spec.segment + "/get.json") + "?id=" + encodeURIComponent(String(id)), {}, "read").then(objectPayload);
+        return post(url(spec.service, spec.segment + "/get.json", grantTokenOf(spec)) + "?id=" + encodeURIComponent(String(id)), {}, "read").then(objectPayload);
       },
       sendEvent: function (name, id, event, metadata) {
         var spec = entity(name);
-        return post(url(spec.service, spec.segment + "/event.json"), { id: id, event: event, metadata: metadata || {} }, "command")
+        return post(url(spec.service, spec.segment + "/event.json", grantTokenOf(spec)), { id: id, event: event, metadata: metadata || {} }, "command")
           .then(function (result) { return result.payload === undefined ? null : result.payload; });
       },
     };
@@ -2192,6 +2229,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     contract: freeze(GRANT),
     createGrantAdapter: createGrantAdapter,
     tokenFromFragment: tokenFromFragment,
+    propertyTokenFromFragment: propertyTokenFromFragment,
     safeApiBase: safeApiBase,
     safePortalUrl: safePortalUrl,
     imageId: imageId,
@@ -2351,6 +2389,34 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
       else found.forEach(function (id) { if (ids.indexOf(id) === -1) ids.push(id); });
     });
     return !invalid && ids.length === 1 ? ids[0] : "";
+  }
+
+  function pathValue(row, path) {
+    var value = row;
+    path.split(".").forEach(function (key) {
+      value = value && typeof value === "object" ? value[key] : undefined;
+    });
+    return value;
+  }
+
+  function addressText(row, format) {
+    if (!row || typeof row !== "object") return "";
+    var parts = [];
+    var seen = [];
+    format.parts.forEach(function (path) {
+      var part = text(pathValue(row, path));
+      var folded = part.toLowerCase();
+      if (!part || seen.indexOf(folded) !== -1) return;
+      seen.push(folded);
+      parts.push(part);
+    });
+    return parts.length ? parts.join(format.separator) : text(row[format.fallback]);
+  }
+
+  function propertyAddress(resource, addresses, contract) {
+    var value = attributeValue(resource, contract.propertyAttributes.address);
+    var id = positiveInteger(value && typeof value === "object" ? value.id : value);
+    return id && addresses[id] ? addressText(addresses[id], contract.addressFormat) : "";
   }
 
   function stateCode(row, known) {
@@ -2870,11 +2936,10 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
       var key = propertyId ? "property-" + propertyId : "order-" + row.id;
       var group = byKey[key];
       if (!group) {
-        group = byKey[key] = { key: key, address: "", rows: [] };
+        group = byKey[key] = { key: key, resource: propertyId ? context.catalog.resources[propertyId] || null : null, rows: [] };
         groups.push(group);
       }
       group.rows.push(row);
-      if (!group.address) group.address = attributeText(row, contract.orderAttributes.address);
     });
     return groups.map(function (group) {
       var options = group.rows.map(function (row, index) { return optionOf(row, index + 1, context); });
@@ -2883,8 +2948,8 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
       });
       return {
         key: group.key,
-        address: group.address,
-        plan: planReference(group.rows.map(function (row) { return attributeValue(row, contract.orderAttributes.plan); })),
+        address: group.resource ? propertyAddress(group.resource, context.catalog.addresses, contract) : "",
+        plan: group.resource ? planReference([attributeValue(group.resource, contract.propertyAttributes.plan)]) : "",
         options: options,
         status: propertyStatus(options),
       };
@@ -2992,6 +3057,8 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
         orderItems: rowsById(input.orderItems),
         productPrices: rowsById(input.productPrices),
         products: rowsById(input.products),
+        resources: rowsById(input.resources),
+        addresses: rowsById(input.addresses),
       },
     });
     if (state === "QUOTATION_SENT") grantActions(properties, grant, contract);
@@ -3048,6 +3115,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     positiveInteger: positiveInteger,
     localizedName: localizedName,
     planReference: planReference,
+    addressText: addressText,
     attributeValue: attributeValue,
     idList: idList,
     stateCode: stateCode,
@@ -5450,11 +5518,31 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
       return fields.filter(function (field) { return field.code === code; })[0] || null;
     }
 
+    function readProperties() {
+      if (typeof adapter.introspectProperties !== "function") return Promise.resolve([]);
+      return Promise.resolve().then(function () { return adapter.introspectProperties(); }).then(function (rawGrant) {
+        return normalizer.canRead(normalizer.grantOf(rawGrant), "resource") ? adapter.list("resource") : [];
+      }).then(function (rows) {
+        return Array.isArray(rows) ? rows : [];
+      }, function () {
+        return [];
+      });
+    }
+
+    function readAddresses(grant) {
+      if (!normalizer.canRead(grant, "address")) return Promise.resolve([]);
+      return Promise.resolve().then(function () { return adapter.list("address"); }).then(function (rows) {
+        return Array.isArray(rows) ? rows : [];
+      }, function () {
+        return [];
+      });
+    }
+
     function readAll() {
       return adapter.introspect().then(function (rawGrant) {
         var grant = normalizer.grantOf(rawGrant);
         if (!normalizer.canRead(grant, "document")) {
-          return { grant: grant, documents: [], orders: [], accounts: [], orderItems: [], productPrices: [], products: [], accountFailed: false };
+          return { grant: grant, documents: [], orders: [], accounts: [], orderItems: [], productPrices: [], products: [], resources: [], addresses: [], accountFailed: false };
         }
         var ordersReadable = normalizer.canRead(grant, "order");
         var accountRead = normalizer.canRead(grant, "account")
@@ -5467,7 +5555,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
         var orderItemsRead = normalizer.canRead(grant, "order-item") ? adapter.list("order-item") : Promise.resolve([]);
         var productPricesRead = normalizer.canRead(grant, "product-price") ? adapter.list("product-price") : Promise.resolve([]);
         var productsRead = normalizer.canRead(grant, "product") ? adapter.list("product") : Promise.resolve([]);
-        return Promise.all([adapter.list("document"), accountRead, ordersRead, orderItemsRead, productPricesRead, productsRead]).then(function (parts) {
+        return Promise.all([adapter.list("document"), accountRead, ordersRead, orderItemsRead, productPricesRead, productsRead, readProperties(), readAddresses(grant)]).then(function (parts) {
           var documents = parts[0];
           var orders = parts[2].slice();
           var present = {};
@@ -5495,6 +5583,8 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
               orderItems: parts[3],
               productPrices: parts[4],
               products: parts[5],
+              resources: parts[6],
+              addresses: parts[7],
               accountFailed: parts[1].failed,
             };
           });
@@ -6202,7 +6292,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
       var token = ns.adapter.tokenFromFragment(locationRef.hash);
       if (!apiBase) options.phase = "unconfigured";
       else if (!token) options.phase = "link-missing";
-      else options.adapter = ns.adapter.createGrantAdapter({ apiBase: apiBase, token: token, fetch: env.fetch });
+      else options.adapter = ns.adapter.createGrantAdapter({ apiBase: apiBase, token: token, propertyToken: ns.adapter.propertyTokenFromFragment(locationRef.hash), fetch: env.fetch });
       var mapsKey = ns.maps ? ns.maps.keyOf(section.getAttribute("data-review-maps-api-key")) : "";
       if (options.adapter && mapsKey) {
         options.maps = ns.maps.service({
@@ -6244,12 +6334,31 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
   };
 
   var ADDRESSES = {
-    278: "1180 Pacific Crescent, Vancouver, BC V6Z 2R5",
-    430: "4620 Garden City Way, Richmond, BC V6X 2W6",
-    512: "9150 Cedar Hollow Drive, Surrey, BC V3V 7K2",
+    278: "1180 Pacific Crescent, Vancouver, BC, V6Z 2R5, CA",
+    430: "4620 Garden City Way, Richmond, BC, V6X 2W6, CA",
+    512: "9150 Cedar Hollow Drive, Surrey, BC, V3V 7K2, CA",
     661: "",
-    702: "220 Lonsdale Quay Road, North Vancouver, BC V7M 3K9",
+    702: "220 Lonsdale Quay Road, North Vancouver, BC, V7M 3K9, CA",
   };
+
+  var BC = { id: 2, code: "BC", nls: { en: { NAME: "British Columbia" } } };
+  var CANADA = { id: "CA", nls: { en: { NAME: "Canada" } } };
+
+  var ADDRESS_ROWS = {
+    278: { id: 6278, address1: "1180 Pacific Crescent", city: "Vancouver", postalCode: "V6Z 2R5" },
+    430: { id: 6430, address1: "4620 Garden City Way", city: "Richmond", postalCode: "V6X 2W6" },
+    512: { id: 6512, address1: "9150 Cedar Hollow Drive", city: "Surrey", postalCode: "V3V 7K2" },
+    702: { id: 6702, address1: "220 Lonsdale Quay Road", city: "North Vancouver", postalCode: "V7M 3K9" },
+  };
+
+  var ADDRESS_REFERENCES = {
+    278: 6278,
+    430: "6430",
+    512: { id: 6512 },
+    702: 6702,
+  };
+
+  var PROPERTY_TYPE = { id: 154, code: "SNOW_PROPERTY" };
 
   var ORDERS = [
     { id: 3101, property: 278, model: "SEASONAL", state: "QUOTE_SENT", charges: 8750, taxes: 437.5, grand: 9187.5, lines: [[1, "snow", 1, 1400], [2, "rockSalt", 1, 7350]] },
@@ -6459,6 +6568,10 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     { id: "contract-details-address-missing", label: "Contract details — Maps key set: billing address not found on the map" },
     { id: "contract-details-plan-unavailable", label: "Contract details — Maps key set: a property's plan cannot be read" },
     { id: "contract-details-maps-failed", label: "Contract details — Maps key set, the map service does not load" },
+    { id: "old-link", label: "Link issued before property grants — only #token=, no address, no plan" },
+    { id: "property-link-closed", label: "Contract details — Maps key set, property grant expired or revoked (401): no address, no plan" },
+    { id: "property-list-failed", label: "Quote review — property grant opens, its Resource list fails: no address" },
+    { id: "address-list-failed", label: "Contract details — Maps key set, the Address list fails: plans, no address" },
     { id: "details-invalid", label: "Contract details — validation errors" },
     { id: "details-refused", label: "Contract details — refused per field" },
     { id: "details-checking", label: "Contract details sent — being checked (CLIENT_DETAILS_RECEIVED)" },
@@ -6503,7 +6616,6 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
 
   function orderRow(spec) {
     var attributes = { CLIENT: { value: ACCOUNT_ID }, SERVICE_PROPERTY: { value: spec.property } };
-    if (ADDRESSES[spec.property]) attributes.SERVICE_ADDRESS = { value: ADDRESSES[spec.property] };
     if (spec.model) attributes.PRICING_MODEL = { value: spec.model };
     var row = {
       id: spec.id,
@@ -6525,6 +6637,48 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     if (spec.charges !== undefined) row.totalCharges = spec.charges;
     if (spec.taxes !== undefined) row.totalTaxes = spec.taxes;
     return row;
+  }
+
+  function addressRow(property) {
+    var spec = ADDRESS_ROWS[property];
+    return {
+      id: spec.id,
+      address1: spec.address1,
+      address2: null,
+      alias: ADDRESSES[property],
+      city: spec.city,
+      postalCode: spec.postalCode,
+      state: clone(BC),
+      country: clone(CANADA),
+      jurisdiction: null,
+      pob: null,
+    };
+  }
+
+  function resourceRow(property) {
+    var located = {};
+    if (ADDRESS_REFERENCES[property] !== undefined) located.ADDRESS = { value: clone(ADDRESS_REFERENCES[property]) };
+    return {
+      id: property,
+      code: "PROPERTY-" + property,
+      nls: { en: { NAME: ADDRESS_ROWS[property] ? ADDRESS_ROWS[property].address1 : "Property " + property } },
+      type: clone(PROPERTY_TYPE),
+      states: [{ code: "ACTIVE" }],
+      organization: { id: 43, code: "COASTLINE_WINTER" },
+      attributes: { 153: located, 154: { SERVICE_AREA_SQFT: { value: 27654 } } },
+    };
+  }
+
+  function withProperties(data) {
+    var properties = [];
+    data.orders.forEach(function (row) {
+      var property = orderAttribute(row, "SERVICE_PROPERTY");
+      if (properties.indexOf(property) === -1) properties.push(property);
+    });
+    data.resources = properties.map(resourceRow);
+    data.addresses = properties.filter(function (property) { return ADDRESS_ROWS[property]; }).map(addressRow);
+    data.propertyGrant = propertyGrant(data.grant.expiresAt);
+    return data;
   }
 
   function accountRow(withUser) {
@@ -6620,6 +6774,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
         { entityType: "Account", canRead: true, canWrite: false, events: [] },
         { entityType: "Order", canRead: true, canWrite: false, events: QUOTATION_EVENTS.map(grantEvent) },
         { entityType: "Document", canRead: true, canWrite: false, events: [grantEvent("AWAITING_CLIENT_DETAILS-CLIENT_DETAILS_RECEIVED", 9)] },
+        { entityType: "Address", canRead: true, canWrite: false, events: [] },
       ],
     };
   }
@@ -6631,8 +6786,21 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
         { entityType: "Account", canRead: true, canWrite: false, events: [] },
         { entityType: "Order", canRead: true, canWrite: false, events: [] },
         { entityType: "Document", canRead: true, canWrite: false, events: [grantEvent("SENT_TO_CLIENT-CLIENT_APPROVED", 12), grantEvent("SENT_TO_CLIENT-CLIENT_CHANGES_REQUESTED", 13)] },
+        { entityType: "Address", canRead: true, canWrite: false, events: [] },
       ],
     };
+  }
+
+  function propertyGrant(expiresAt) {
+    return {
+      expiresAt: expiresAt,
+      types: [{ entityType: "Resource", canRead: true, canWrite: false, events: [] }],
+    };
+  }
+
+  function preGrantLink(data) {
+    data.grant.types = data.grant.types.filter(function (type) { return type.entityType !== "Address"; });
+    return data;
   }
 
   function quotationData(agreementState, orderStates) {
@@ -6640,7 +6808,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     orders.forEach(function (row) {
       if (orderStates && orderStates[row.id]) row.states = [{ code: orderStates[row.id] }];
     });
-    return {
+    return withProperties({
       grant: quotationGrant(),
       accounts: [accountRow(false)],
       documents: [agreementRow(agreementState || "QUOTATION_SENT", ORDERS.map(function (spec) { return spec.id; }), false)],
@@ -6648,7 +6816,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
       unreadable: [],
       accountFails: false,
       closed: false,
-    };
+    });
   }
 
   var DECIDED = { 3101: "DECLINED", 3102: "CLIENT_APPROVED", 3103: "DECLINED", 3107: "CLIENT_APPROVED", 3108: "CLIENT_APPROVED" };
@@ -6658,7 +6826,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     var approved = [3102, 3104, 3107, 3108];
     var orders = ORDERS.filter(function (spec) { return approved.indexOf(spec.id) !== -1; }).map(orderRow);
     orders.forEach(function (row) { row.states = [{ code: "CLIENT_APPROVED" }]; });
-    return {
+    return withProperties({
       grant: agreementGrant(),
       accounts: [accountRow(withUser)],
       documents: [agreementRow(state, approved, true)],
@@ -6666,7 +6834,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
       unreadable: [],
       accountFails: false,
       closed: false,
-    };
+    });
   }
 
   function currentState(row) {
@@ -6823,6 +6991,13 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
           return clone(file);
         });
       },
+      introspectProperties: function () {
+        return later(function () {
+          if (settings.properties === "missing") throw reviewError("link-missing", 0);
+          if (settings.properties === "unauthorized") throw reviewError("link-closed", 401);
+          return clone(data.propertyGrant);
+        });
+      },
       introspect: function () {
         if (settings.introspect === "hold") return never();
         return later(function () {
@@ -6851,6 +7026,16 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
           }
           if (entity === "document") return clone(served.documents);
           if (entity === "order") return clone(served.orders.filter(function (row) { return served.unreadable.indexOf(row.id) === -1; }));
+          if (entity === "address") {
+            if (settings.addresses === "fail") throw reviewError("failed", 500);
+            return clone(served.addresses || []);
+          }
+          if (entity === "resource") {
+            if (settings.properties === "missing") throw reviewError("link-missing", 0);
+            if (settings.properties === "unauthorized") throw reviewError("link-closed", 401);
+            if (settings.properties === "list-fails") throw reviewError("failed", 500);
+            return clone(data.resources || []);
+          }
           throw reviewError("refused", 400);
         });
       },
@@ -6883,9 +7068,9 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
 
   function withPlans(data, overrides) {
     var references = Object.assign({}, { 278: PLAN_IDS[278], 430: [{ id: PLAN_IDS[430], type: "mediaAsset" }] }, overrides || {});
-    data.orders.forEach(function (row) {
-      var reference = references[orderAttribute(row, "SERVICE_PROPERTY")];
-      if (reference) row.attributes[5].PROPERTY_PLAN = { value: clone(reference) };
+    data.resources.forEach(function (row) {
+      var reference = references[row.id];
+      if (reference) row.attributes[PROPERTY_TYPE.id].PROPERTY_PLAN = { value: clone(reference) };
     });
     return data;
   }
@@ -7316,6 +7501,23 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
         data = withPlans(attributedAccount(quotationData("AWAITING_CLIENT_DETAILS", DECIDED)));
         maps = "fail";
         break;
+      case "old-link":
+        data = preGrantLink(data);
+        behavior.properties = "missing";
+        break;
+      case "property-link-closed":
+        data = withPlans(attributedAccount(quotationData("AWAITING_CLIENT_DETAILS", DECIDED)));
+        behavior.properties = "unauthorized";
+        maps = "stub";
+        break;
+      case "property-list-failed":
+        behavior.properties = "list-fails";
+        break;
+      case "address-list-failed":
+        data = withPlans(attributedAccount(quotationData("AWAITING_CLIENT_DETAILS", DECIDED)));
+        behavior.addresses = "fail";
+        maps = "stub";
+        break;
       case "details-invalid":
         data = quotationData("AWAITING_CLIENT_DETAILS", DECIDED);
         steps = [["details.input", { code: "REPRESENTATIVE_PHONE", value: "" }], ["details.submit", {}]];
@@ -7517,6 +7719,8 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     createFixtureAdapter: createFixtureAdapter,
     mapsStub: mapsStub,
     withPlans: withPlans,
+    preGrantLink: preGrantLink,
+    addresses: Object.freeze(Object.assign({}, ADDRESSES)),
     planIds: Object.freeze(Object.assign({}, PLAN_IDS)),
     planFiles: PLAN_FILES,
     places: PLACES,

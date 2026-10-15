@@ -18,12 +18,31 @@
   };
 
   var ADDRESSES = {
-    278: "1180 Pacific Crescent, Vancouver, BC V6Z 2R5",
-    430: "4620 Garden City Way, Richmond, BC V6X 2W6",
-    512: "9150 Cedar Hollow Drive, Surrey, BC V3V 7K2",
+    278: "1180 Pacific Crescent, Vancouver, BC, V6Z 2R5, CA",
+    430: "4620 Garden City Way, Richmond, BC, V6X 2W6, CA",
+    512: "9150 Cedar Hollow Drive, Surrey, BC, V3V 7K2, CA",
     661: "",
-    702: "220 Lonsdale Quay Road, North Vancouver, BC V7M 3K9",
+    702: "220 Lonsdale Quay Road, North Vancouver, BC, V7M 3K9, CA",
   };
+
+  var BC = { id: 2, code: "BC", nls: { en: { NAME: "British Columbia" } } };
+  var CANADA = { id: "CA", nls: { en: { NAME: "Canada" } } };
+
+  var ADDRESS_ROWS = {
+    278: { id: 6278, address1: "1180 Pacific Crescent", city: "Vancouver", postalCode: "V6Z 2R5" },
+    430: { id: 6430, address1: "4620 Garden City Way", city: "Richmond", postalCode: "V6X 2W6" },
+    512: { id: 6512, address1: "9150 Cedar Hollow Drive", city: "Surrey", postalCode: "V3V 7K2" },
+    702: { id: 6702, address1: "220 Lonsdale Quay Road", city: "North Vancouver", postalCode: "V7M 3K9" },
+  };
+
+  var ADDRESS_REFERENCES = {
+    278: 6278,
+    430: "6430",
+    512: { id: 6512 },
+    702: 6702,
+  };
+
+  var PROPERTY_TYPE = { id: 154, code: "SNOW_PROPERTY" };
 
   var ORDERS = [
     { id: 3101, property: 278, model: "SEASONAL", state: "QUOTE_SENT", charges: 8750, taxes: 437.5, grand: 9187.5, lines: [[1, "snow", 1, 1400], [2, "rockSalt", 1, 7350]] },
@@ -233,6 +252,10 @@
     { id: "contract-details-address-missing", label: "Contract details — Maps key set: billing address not found on the map" },
     { id: "contract-details-plan-unavailable", label: "Contract details — Maps key set: a property's plan cannot be read" },
     { id: "contract-details-maps-failed", label: "Contract details — Maps key set, the map service does not load" },
+    { id: "old-link", label: "Link issued before property grants — only #token=, no address, no plan" },
+    { id: "property-link-closed", label: "Contract details — Maps key set, property grant expired or revoked (401): no address, no plan" },
+    { id: "property-list-failed", label: "Quote review — property grant opens, its Resource list fails: no address" },
+    { id: "address-list-failed", label: "Contract details — Maps key set, the Address list fails: plans, no address" },
     { id: "details-invalid", label: "Contract details — validation errors" },
     { id: "details-refused", label: "Contract details — refused per field" },
     { id: "details-checking", label: "Contract details sent — being checked (CLIENT_DETAILS_RECEIVED)" },
@@ -277,7 +300,6 @@
 
   function orderRow(spec) {
     var attributes = { CLIENT: { value: ACCOUNT_ID }, SERVICE_PROPERTY: { value: spec.property } };
-    if (ADDRESSES[spec.property]) attributes.SERVICE_ADDRESS = { value: ADDRESSES[spec.property] };
     if (spec.model) attributes.PRICING_MODEL = { value: spec.model };
     var row = {
       id: spec.id,
@@ -299,6 +321,48 @@
     if (spec.charges !== undefined) row.totalCharges = spec.charges;
     if (spec.taxes !== undefined) row.totalTaxes = spec.taxes;
     return row;
+  }
+
+  function addressRow(property) {
+    var spec = ADDRESS_ROWS[property];
+    return {
+      id: spec.id,
+      address1: spec.address1,
+      address2: null,
+      alias: ADDRESSES[property],
+      city: spec.city,
+      postalCode: spec.postalCode,
+      state: clone(BC),
+      country: clone(CANADA),
+      jurisdiction: null,
+      pob: null,
+    };
+  }
+
+  function resourceRow(property) {
+    var located = {};
+    if (ADDRESS_REFERENCES[property] !== undefined) located.ADDRESS = { value: clone(ADDRESS_REFERENCES[property]) };
+    return {
+      id: property,
+      code: "PROPERTY-" + property,
+      nls: { en: { NAME: ADDRESS_ROWS[property] ? ADDRESS_ROWS[property].address1 : "Property " + property } },
+      type: clone(PROPERTY_TYPE),
+      states: [{ code: "ACTIVE" }],
+      organization: { id: 43, code: "COASTLINE_WINTER" },
+      attributes: { 153: located, 154: { SERVICE_AREA_SQFT: { value: 27654 } } },
+    };
+  }
+
+  function withProperties(data) {
+    var properties = [];
+    data.orders.forEach(function (row) {
+      var property = orderAttribute(row, "SERVICE_PROPERTY");
+      if (properties.indexOf(property) === -1) properties.push(property);
+    });
+    data.resources = properties.map(resourceRow);
+    data.addresses = properties.filter(function (property) { return ADDRESS_ROWS[property]; }).map(addressRow);
+    data.propertyGrant = propertyGrant(data.grant.expiresAt);
+    return data;
   }
 
   function accountRow(withUser) {
@@ -394,6 +458,7 @@
         { entityType: "Account", canRead: true, canWrite: false, events: [] },
         { entityType: "Order", canRead: true, canWrite: false, events: QUOTATION_EVENTS.map(grantEvent) },
         { entityType: "Document", canRead: true, canWrite: false, events: [grantEvent("AWAITING_CLIENT_DETAILS-CLIENT_DETAILS_RECEIVED", 9)] },
+        { entityType: "Address", canRead: true, canWrite: false, events: [] },
       ],
     };
   }
@@ -405,8 +470,21 @@
         { entityType: "Account", canRead: true, canWrite: false, events: [] },
         { entityType: "Order", canRead: true, canWrite: false, events: [] },
         { entityType: "Document", canRead: true, canWrite: false, events: [grantEvent("SENT_TO_CLIENT-CLIENT_APPROVED", 12), grantEvent("SENT_TO_CLIENT-CLIENT_CHANGES_REQUESTED", 13)] },
+        { entityType: "Address", canRead: true, canWrite: false, events: [] },
       ],
     };
+  }
+
+  function propertyGrant(expiresAt) {
+    return {
+      expiresAt: expiresAt,
+      types: [{ entityType: "Resource", canRead: true, canWrite: false, events: [] }],
+    };
+  }
+
+  function preGrantLink(data) {
+    data.grant.types = data.grant.types.filter(function (type) { return type.entityType !== "Address"; });
+    return data;
   }
 
   function quotationData(agreementState, orderStates) {
@@ -414,7 +492,7 @@
     orders.forEach(function (row) {
       if (orderStates && orderStates[row.id]) row.states = [{ code: orderStates[row.id] }];
     });
-    return {
+    return withProperties({
       grant: quotationGrant(),
       accounts: [accountRow(false)],
       documents: [agreementRow(agreementState || "QUOTATION_SENT", ORDERS.map(function (spec) { return spec.id; }), false)],
@@ -422,7 +500,7 @@
       unreadable: [],
       accountFails: false,
       closed: false,
-    };
+    });
   }
 
   var DECIDED = { 3101: "DECLINED", 3102: "CLIENT_APPROVED", 3103: "DECLINED", 3107: "CLIENT_APPROVED", 3108: "CLIENT_APPROVED" };
@@ -432,7 +510,7 @@
     var approved = [3102, 3104, 3107, 3108];
     var orders = ORDERS.filter(function (spec) { return approved.indexOf(spec.id) !== -1; }).map(orderRow);
     orders.forEach(function (row) { row.states = [{ code: "CLIENT_APPROVED" }]; });
-    return {
+    return withProperties({
       grant: agreementGrant(),
       accounts: [accountRow(withUser)],
       documents: [agreementRow(state, approved, true)],
@@ -440,7 +518,7 @@
       unreadable: [],
       accountFails: false,
       closed: false,
-    };
+    });
   }
 
   function currentState(row) {
@@ -597,6 +675,13 @@
           return clone(file);
         });
       },
+      introspectProperties: function () {
+        return later(function () {
+          if (settings.properties === "missing") throw reviewError("link-missing", 0);
+          if (settings.properties === "unauthorized") throw reviewError("link-closed", 401);
+          return clone(data.propertyGrant);
+        });
+      },
       introspect: function () {
         if (settings.introspect === "hold") return never();
         return later(function () {
@@ -625,6 +710,16 @@
           }
           if (entity === "document") return clone(served.documents);
           if (entity === "order") return clone(served.orders.filter(function (row) { return served.unreadable.indexOf(row.id) === -1; }));
+          if (entity === "address") {
+            if (settings.addresses === "fail") throw reviewError("failed", 500);
+            return clone(served.addresses || []);
+          }
+          if (entity === "resource") {
+            if (settings.properties === "missing") throw reviewError("link-missing", 0);
+            if (settings.properties === "unauthorized") throw reviewError("link-closed", 401);
+            if (settings.properties === "list-fails") throw reviewError("failed", 500);
+            return clone(data.resources || []);
+          }
           throw reviewError("refused", 400);
         });
       },
@@ -657,9 +752,9 @@
 
   function withPlans(data, overrides) {
     var references = Object.assign({}, { 278: PLAN_IDS[278], 430: [{ id: PLAN_IDS[430], type: "mediaAsset" }] }, overrides || {});
-    data.orders.forEach(function (row) {
-      var reference = references[orderAttribute(row, "SERVICE_PROPERTY")];
-      if (reference) row.attributes[5].PROPERTY_PLAN = { value: clone(reference) };
+    data.resources.forEach(function (row) {
+      var reference = references[row.id];
+      if (reference) row.attributes[PROPERTY_TYPE.id].PROPERTY_PLAN = { value: clone(reference) };
     });
     return data;
   }
@@ -1090,6 +1185,23 @@
         data = withPlans(attributedAccount(quotationData("AWAITING_CLIENT_DETAILS", DECIDED)));
         maps = "fail";
         break;
+      case "old-link":
+        data = preGrantLink(data);
+        behavior.properties = "missing";
+        break;
+      case "property-link-closed":
+        data = withPlans(attributedAccount(quotationData("AWAITING_CLIENT_DETAILS", DECIDED)));
+        behavior.properties = "unauthorized";
+        maps = "stub";
+        break;
+      case "property-list-failed":
+        behavior.properties = "list-fails";
+        break;
+      case "address-list-failed":
+        data = withPlans(attributedAccount(quotationData("AWAITING_CLIENT_DETAILS", DECIDED)));
+        behavior.addresses = "fail";
+        maps = "stub";
+        break;
       case "details-invalid":
         data = quotationData("AWAITING_CLIENT_DETAILS", DECIDED);
         steps = [["details.input", { code: "REPRESENTATIVE_PHONE", value: "" }], ["details.submit", {}]];
@@ -1291,6 +1403,8 @@
     createFixtureAdapter: createFixtureAdapter,
     mapsStub: mapsStub,
     withPlans: withPlans,
+    preGrantLink: preGrantLink,
+    addresses: Object.freeze(Object.assign({}, ADDRESSES)),
     planIds: Object.freeze(Object.assign({}, PLAN_IDS)),
     planFiles: PLAN_FILES,
     places: PLACES,

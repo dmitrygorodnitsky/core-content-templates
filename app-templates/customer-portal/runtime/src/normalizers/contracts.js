@@ -124,7 +124,6 @@ export function normalizeQuoteOrders(payload, catalog) {
       id: "quote-core-" + backendId,
       backendId: backendId,
       propertyBackendId: attributeNumber(row, "SERVICE_PROPERTY"),
-      serviceAddress: attributeString(row, "SERVICE_ADDRESS"),
       stateCode: stateCode,
       status: status,
       pricingModel: attributeModel(row) || priceVariant(backendId, lines),
@@ -369,9 +368,8 @@ function quoteGroups(orders, packageOf, byProperty) {
     group.orders.sort(byPricingModel);
     group.decision = groupDecision(group.orders);
     group.status = groupStatus(group.orders);
-    var serviceAddress = firstServiceAddress(group.orders);
-    group.title = propertyTitle(group.propertyBackendId, group.property, serviceAddress);
-    group.address = propertyAddress(group.property, serviceAddress, group.title);
+    group.title = propertyTitle(group.propertyBackendId, group.property);
+    group.address = propertyAddress(group.property, group.title);
   });
   return groups.sort(function (left, right) {
     return stageRank(left.agreement) - stageRank(right.agreement) || (right.agreementBackendId || 0) - (left.agreementBackendId || 0);
@@ -396,14 +394,13 @@ function agreementRow(agreement, orders, readable, byProperty) {
   });
   properties.forEach(function (entry) {
     entry.orders.sort(byPricingModel);
-    var serviceAddress = firstServiceAddress(entry.orders);
-    entry.title = propertyTitle(entry.propertyBackendId, entry.property, serviceAddress);
-    entry.address = propertyAddress(entry.property, serviceAddress, entry.title);
+    entry.title = propertyTitle(entry.propertyBackendId, entry.property);
+    entry.address = propertyAddress(entry.property, entry.title);
   });
   var named = [];
   listed.forEach(function (order) {
     var property = order.propertyBackendId ? byProperty.get(order.propertyBackendId) : null;
-    var name = property && property.name ? property.name : order.serviceAddress;
+    var name = property && property.name ? property.name : "";
     if (name && named.indexOf(name) === -1) named.push(name);
   });
   var propertyIds = [];
@@ -596,20 +593,14 @@ function packageIndex(agreements) {
   return index;
 }
 
-function propertyTitle(propertyBackendId, property, serviceAddress) {
+function propertyTitle(propertyBackendId, property) {
   if (property && property.name) return property.name;
-  if (serviceAddress) return serviceAddress;
   return propertyBackendId ? "Property details unavailable" : "No property on this quote";
 }
 
-function propertyAddress(property, serviceAddress, title) {
-  var address = serviceAddress || (property && property.address) || "";
+function propertyAddress(property, title) {
+  var address = (property && property.address) || "";
   return address && address !== title ? address : "";
-}
-
-function firstServiceAddress(orders) {
-  var found = orders.find(function (order) { return !!order.serviceAddress; });
-  return found ? found.serviceAddress : "";
 }
 
 function byStage(left, right) {

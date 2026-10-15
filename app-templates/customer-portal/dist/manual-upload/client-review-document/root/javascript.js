@@ -332,9 +332,16 @@
     },
     orderAttributes: {
       property: "SERVICE_PROPERTY",
-      address: "SERVICE_ADDRESS",
       pricingModel: "PRICING_MODEL",
+    },
+    propertyAttributes: {
+      address: "ADDRESS",
       plan: "PROPERTY_PLAN",
+    },
+    addressFormat: {
+      parts: ["address1", "address2", "city", "jurisdiction", "state.code", "postalCode", "country.id"],
+      separator: ", ",
+      fallback: "alias",
     },
     pricingModels: ["SEASONAL", "MONTHLY", "PER_SERVICE"],
     priceVariants: {
@@ -410,7 +417,10 @@
       document: { service: "core", segment: "document" },
       "product-price": { service: "core-pim", segment: "product-price" },
       product: { service: "core-pim", segment: "product" },
+      address: { service: "core", segment: "address" },
+      resource: { service: "core-rm", segment: "resource", grant: "property" },
     },
+    fragment: { token: "token", propertyToken: "property-token" },
     image: { service: "core", head: "image", tail: "get", width: 440 },
     plan: { service: "core", head: "media", tail: "stream.json" },
     pageSize: 200,
@@ -438,19 +448,28 @@
     return error;
   }
 
-  function tokenFromFragment(hash) {
+  function fragmentValue(hash, key) {
     var fragment = String(hash == null ? "" : hash).replace(/^#/, "");
+    var prefix = key + "=";
     var found = "";
     fragment.split("&").some(function (pair) {
-      if (pair.indexOf("token=") !== 0) return false;
+      if (pair.indexOf(prefix) !== 0) return false;
       try {
-        found = decodeURIComponent(pair.slice("token=".length));
+        found = decodeURIComponent(pair.slice(prefix.length));
       } catch (_) {
         found = "";
       }
       return true;
     });
     return acceptableToken(found) ? found : "";
+  }
+
+  function tokenFromFragment(hash) {
+    return fragmentValue(hash, GRANT.fragment.token);
+  }
+
+  function propertyTokenFromFragment(hash) {
+    return fragmentValue(hash, GRANT.fragment.propertyToken);
   }
 
   function acceptableToken(value) {
@@ -574,12 +593,19 @@
     var settings = options || {};
     var base = safeApiBase(settings.apiBase);
     var token = typeof settings.token === "string" ? settings.token : "";
+    var propertyToken = typeof settings.propertyToken === "string" ? settings.propertyToken : "";
     var fetchImpl = settings.fetch || (typeof global.fetch === "function" ? global.fetch.bind(global) : null);
     if (!base || typeof fetchImpl !== "function") throw reviewError("unconfigured", 0);
     if (!token) throw reviewError("link-missing", 0);
 
-    function url(service, tail) {
-      return base + "/" + service + "/i/" + encodeURIComponent(token) + "/" + tail;
+    function url(service, tail, grantToken) {
+      return base + "/" + service + "/i/" + encodeURIComponent(grantToken === undefined ? token : grantToken) + "/" + tail;
+    }
+
+    function grantTokenOf(spec) {
+      if (spec.grant !== "property") return token;
+      if (!propertyToken) throw reviewError("link-missing", 0);
+      return propertyToken;
     }
 
     function post(target, body, operation) {
@@ -640,11 +666,22 @@
       introspect: function () {
         return post(url(GRANT.introspect.service, GRANT.introspect.tail), {}, "introspect").then(objectPayload);
       },
+      introspectProperties: function () {
+        if (!propertyToken) return Promise.reject(reviewError("link-missing", 0));
+        return post(url(GRANT.introspect.service, GRANT.introspect.tail, propertyToken), {}, "introspect").then(objectPayload);
+      },
       list: function (name) {
-        var spec = entity(name);
+        var spec;
+        var grantToken;
+        try {
+          spec = entity(name);
+          grantToken = grantTokenOf(spec);
+        } catch (error) {
+          return Promise.reject(error);
+        }
         var rows = [];
         function page(index) {
-          return post(url(spec.service, spec.segment + "/list.json"), { offset: index * GRANT.pageSize, pageSize: GRANT.pageSize }, "read")
+          return post(url(spec.service, spec.segment + "/list.json", grantToken), { offset: index * GRANT.pageSize, pageSize: GRANT.pageSize }, "read")
             .then(objectPayload)
             .then(function (payload) {
               if (!Array.isArray(payload.result)) throw reviewError("failed", 200);
@@ -657,11 +694,11 @@
       },
       get: function (name, id) {
         var spec = entity(name);
-        return post(url(spec.service, spec.segment + "/get.json") + "?id=" + encodeURIComponent(String(id)), {}, "read").then(objectPayload);
+        return post(url(spec.service, spec.segment + "/get.json", grantTokenOf(spec)) + "?id=" + encodeURIComponent(String(id)), {}, "read").then(objectPayload);
       },
       sendEvent: function (name, id, event, metadata) {
         var spec = entity(name);
-        return post(url(spec.service, spec.segment + "/event.json"), { id: id, event: event, metadata: metadata || {} }, "command")
+        return post(url(spec.service, spec.segment + "/event.json", grantTokenOf(spec)), { id: id, event: event, metadata: metadata || {} }, "command")
           .then(function (result) { return result.payload === undefined ? null : result.payload; });
       },
     };
@@ -671,6 +708,7 @@
     contract: freeze(GRANT),
     createGrantAdapter: createGrantAdapter,
     tokenFromFragment: tokenFromFragment,
+    propertyTokenFromFragment: propertyTokenFromFragment,
     safeApiBase: safeApiBase,
     safePortalUrl: safePortalUrl,
     imageId: imageId,
@@ -830,6 +868,34 @@
       else found.forEach(function (id) { if (ids.indexOf(id) === -1) ids.push(id); });
     });
     return !invalid && ids.length === 1 ? ids[0] : "";
+  }
+
+  function pathValue(row, path) {
+    var value = row;
+    path.split(".").forEach(function (key) {
+      value = value && typeof value === "object" ? value[key] : undefined;
+    });
+    return value;
+  }
+
+  function addressText(row, format) {
+    if (!row || typeof row !== "object") return "";
+    var parts = [];
+    var seen = [];
+    format.parts.forEach(function (path) {
+      var part = text(pathValue(row, path));
+      var folded = part.toLowerCase();
+      if (!part || seen.indexOf(folded) !== -1) return;
+      seen.push(folded);
+      parts.push(part);
+    });
+    return parts.length ? parts.join(format.separator) : text(row[format.fallback]);
+  }
+
+  function propertyAddress(resource, addresses, contract) {
+    var value = attributeValue(resource, contract.propertyAttributes.address);
+    var id = positiveInteger(value && typeof value === "object" ? value.id : value);
+    return id && addresses[id] ? addressText(addresses[id], contract.addressFormat) : "";
   }
 
   function stateCode(row, known) {
@@ -1349,11 +1415,10 @@
       var key = propertyId ? "property-" + propertyId : "order-" + row.id;
       var group = byKey[key];
       if (!group) {
-        group = byKey[key] = { key: key, address: "", rows: [] };
+        group = byKey[key] = { key: key, resource: propertyId ? context.catalog.resources[propertyId] || null : null, rows: [] };
         groups.push(group);
       }
       group.rows.push(row);
-      if (!group.address) group.address = attributeText(row, contract.orderAttributes.address);
     });
     return groups.map(function (group) {
       var options = group.rows.map(function (row, index) { return optionOf(row, index + 1, context); });
@@ -1362,8 +1427,8 @@
       });
       return {
         key: group.key,
-        address: group.address,
-        plan: planReference(group.rows.map(function (row) { return attributeValue(row, contract.orderAttributes.plan); })),
+        address: group.resource ? propertyAddress(group.resource, context.catalog.addresses, contract) : "",
+        plan: group.resource ? planReference([attributeValue(group.resource, contract.propertyAttributes.plan)]) : "",
         options: options,
         status: propertyStatus(options),
       };
@@ -1471,6 +1536,8 @@
         orderItems: rowsById(input.orderItems),
         productPrices: rowsById(input.productPrices),
         products: rowsById(input.products),
+        resources: rowsById(input.resources),
+        addresses: rowsById(input.addresses),
       },
     });
     if (state === "QUOTATION_SENT") grantActions(properties, grant, contract);
@@ -1527,6 +1594,7 @@
     positiveInteger: positiveInteger,
     localizedName: localizedName,
     planReference: planReference,
+    addressText: addressText,
     attributeValue: attributeValue,
     idList: idList,
     stateCode: stateCode,
@@ -3929,11 +3997,31 @@
       return fields.filter(function (field) { return field.code === code; })[0] || null;
     }
 
+    function readProperties() {
+      if (typeof adapter.introspectProperties !== "function") return Promise.resolve([]);
+      return Promise.resolve().then(function () { return adapter.introspectProperties(); }).then(function (rawGrant) {
+        return normalizer.canRead(normalizer.grantOf(rawGrant), "resource") ? adapter.list("resource") : [];
+      }).then(function (rows) {
+        return Array.isArray(rows) ? rows : [];
+      }, function () {
+        return [];
+      });
+    }
+
+    function readAddresses(grant) {
+      if (!normalizer.canRead(grant, "address")) return Promise.resolve([]);
+      return Promise.resolve().then(function () { return adapter.list("address"); }).then(function (rows) {
+        return Array.isArray(rows) ? rows : [];
+      }, function () {
+        return [];
+      });
+    }
+
     function readAll() {
       return adapter.introspect().then(function (rawGrant) {
         var grant = normalizer.grantOf(rawGrant);
         if (!normalizer.canRead(grant, "document")) {
-          return { grant: grant, documents: [], orders: [], accounts: [], orderItems: [], productPrices: [], products: [], accountFailed: false };
+          return { grant: grant, documents: [], orders: [], accounts: [], orderItems: [], productPrices: [], products: [], resources: [], addresses: [], accountFailed: false };
         }
         var ordersReadable = normalizer.canRead(grant, "order");
         var accountRead = normalizer.canRead(grant, "account")
@@ -3946,7 +4034,7 @@
         var orderItemsRead = normalizer.canRead(grant, "order-item") ? adapter.list("order-item") : Promise.resolve([]);
         var productPricesRead = normalizer.canRead(grant, "product-price") ? adapter.list("product-price") : Promise.resolve([]);
         var productsRead = normalizer.canRead(grant, "product") ? adapter.list("product") : Promise.resolve([]);
-        return Promise.all([adapter.list("document"), accountRead, ordersRead, orderItemsRead, productPricesRead, productsRead]).then(function (parts) {
+        return Promise.all([adapter.list("document"), accountRead, ordersRead, orderItemsRead, productPricesRead, productsRead, readProperties(), readAddresses(grant)]).then(function (parts) {
           var documents = parts[0];
           var orders = parts[2].slice();
           var present = {};
@@ -3974,6 +4062,8 @@
               orderItems: parts[3],
               productPrices: parts[4],
               products: parts[5],
+              resources: parts[6],
+              addresses: parts[7],
               accountFailed: parts[1].failed,
             };
           });
@@ -4681,7 +4771,7 @@
       var token = ns.adapter.tokenFromFragment(locationRef.hash);
       if (!apiBase) options.phase = "unconfigured";
       else if (!token) options.phase = "link-missing";
-      else options.adapter = ns.adapter.createGrantAdapter({ apiBase: apiBase, token: token, fetch: env.fetch });
+      else options.adapter = ns.adapter.createGrantAdapter({ apiBase: apiBase, token: token, propertyToken: ns.adapter.propertyTokenFromFragment(locationRef.hash), fetch: env.fetch });
       var mapsKey = ns.maps ? ns.maps.keyOf(section.getAttribute("data-review-maps-api-key")) : "";
       if (options.adapter && mapsKey) {
         options.maps = ns.maps.service({

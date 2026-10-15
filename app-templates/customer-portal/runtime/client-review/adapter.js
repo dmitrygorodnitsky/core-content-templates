@@ -12,7 +12,10 @@
       document: { service: "core", segment: "document" },
       "product-price": { service: "core-pim", segment: "product-price" },
       product: { service: "core-pim", segment: "product" },
+      address: { service: "core", segment: "address" },
+      resource: { service: "core-rm", segment: "resource", grant: "property" },
     },
+    fragment: { token: "token", propertyToken: "property-token" },
     image: { service: "core", head: "image", tail: "get", width: 440 },
     plan: { service: "core", head: "media", tail: "stream.json" },
     pageSize: 200,
@@ -40,19 +43,28 @@
     return error;
   }
 
-  function tokenFromFragment(hash) {
+  function fragmentValue(hash, key) {
     var fragment = String(hash == null ? "" : hash).replace(/^#/, "");
+    var prefix = key + "=";
     var found = "";
     fragment.split("&").some(function (pair) {
-      if (pair.indexOf("token=") !== 0) return false;
+      if (pair.indexOf(prefix) !== 0) return false;
       try {
-        found = decodeURIComponent(pair.slice("token=".length));
+        found = decodeURIComponent(pair.slice(prefix.length));
       } catch (_) {
         found = "";
       }
       return true;
     });
     return acceptableToken(found) ? found : "";
+  }
+
+  function tokenFromFragment(hash) {
+    return fragmentValue(hash, GRANT.fragment.token);
+  }
+
+  function propertyTokenFromFragment(hash) {
+    return fragmentValue(hash, GRANT.fragment.propertyToken);
   }
 
   function acceptableToken(value) {
@@ -176,12 +188,19 @@
     var settings = options || {};
     var base = safeApiBase(settings.apiBase);
     var token = typeof settings.token === "string" ? settings.token : "";
+    var propertyToken = typeof settings.propertyToken === "string" ? settings.propertyToken : "";
     var fetchImpl = settings.fetch || (typeof global.fetch === "function" ? global.fetch.bind(global) : null);
     if (!base || typeof fetchImpl !== "function") throw reviewError("unconfigured", 0);
     if (!token) throw reviewError("link-missing", 0);
 
-    function url(service, tail) {
-      return base + "/" + service + "/i/" + encodeURIComponent(token) + "/" + tail;
+    function url(service, tail, grantToken) {
+      return base + "/" + service + "/i/" + encodeURIComponent(grantToken === undefined ? token : grantToken) + "/" + tail;
+    }
+
+    function grantTokenOf(spec) {
+      if (spec.grant !== "property") return token;
+      if (!propertyToken) throw reviewError("link-missing", 0);
+      return propertyToken;
     }
 
     function post(target, body, operation) {
@@ -242,11 +261,22 @@
       introspect: function () {
         return post(url(GRANT.introspect.service, GRANT.introspect.tail), {}, "introspect").then(objectPayload);
       },
+      introspectProperties: function () {
+        if (!propertyToken) return Promise.reject(reviewError("link-missing", 0));
+        return post(url(GRANT.introspect.service, GRANT.introspect.tail, propertyToken), {}, "introspect").then(objectPayload);
+      },
       list: function (name) {
-        var spec = entity(name);
+        var spec;
+        var grantToken;
+        try {
+          spec = entity(name);
+          grantToken = grantTokenOf(spec);
+        } catch (error) {
+          return Promise.reject(error);
+        }
         var rows = [];
         function page(index) {
-          return post(url(spec.service, spec.segment + "/list.json"), { offset: index * GRANT.pageSize, pageSize: GRANT.pageSize }, "read")
+          return post(url(spec.service, spec.segment + "/list.json", grantToken), { offset: index * GRANT.pageSize, pageSize: GRANT.pageSize }, "read")
             .then(objectPayload)
             .then(function (payload) {
               if (!Array.isArray(payload.result)) throw reviewError("failed", 200);
@@ -259,11 +289,11 @@
       },
       get: function (name, id) {
         var spec = entity(name);
-        return post(url(spec.service, spec.segment + "/get.json") + "?id=" + encodeURIComponent(String(id)), {}, "read").then(objectPayload);
+        return post(url(spec.service, spec.segment + "/get.json", grantTokenOf(spec)) + "?id=" + encodeURIComponent(String(id)), {}, "read").then(objectPayload);
       },
       sendEvent: function (name, id, event, metadata) {
         var spec = entity(name);
-        return post(url(spec.service, spec.segment + "/event.json"), { id: id, event: event, metadata: metadata || {} }, "command")
+        return post(url(spec.service, spec.segment + "/event.json", grantTokenOf(spec)), { id: id, event: event, metadata: metadata || {} }, "command")
           .then(function (result) { return result.payload === undefined ? null : result.payload; });
       },
     };
@@ -273,6 +303,7 @@
     contract: freeze(GRANT),
     createGrantAdapter: createGrantAdapter,
     tokenFromFragment: tokenFromFragment,
+    propertyTokenFromFragment: propertyTokenFromFragment,
     safeApiBase: safeApiBase,
     safePortalUrl: safePortalUrl,
     imageId: imageId,
