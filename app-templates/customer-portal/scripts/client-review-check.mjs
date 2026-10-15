@@ -3200,7 +3200,8 @@ try {
   assert.ok(manifest.api.reads.some((read) => read.startsWith("GET https://maps.googleapis.com/maps/api/js")), "and the Google script it loads with a key");
   assert.deepEqual(manifest.plannedFields.order, ["SERVICE_PROPERTY", "PRICING_MODEL"], "the manual package lists the only Order attributes the page reads");
   assert.deepEqual(manifest.plannedFields.resource, ["ADDRESS", "PROPERTY_PLAN"], "and the Resource attributes the address and the plan are read from");
-  assert.ok(manifest.unverified.some((line) => line.startsWith("No dev-1 link carries #property-token= yet")), "and says that no dev-1 link carries the property grant yet");
+  assert.ok(manifest.verified.some((line) => line.includes("agreement 208") && line.includes("#property-token=")), "and records the dev-1 link that carried the property grant");
+  assert.ok(!manifest.unverified.some((line) => line.includes("#property-token=")), "and no longer calls the property grant unverified");
   for (const read of ["POST {apiBase}/core/i/{token}/address/list.json", "POST {apiBase}/core/i/{propertyToken}/introspect.json", "POST {apiBase}/core-rm/i/{propertyToken}/resource/list.json"]) {
     assert.ok(manifest.api.reads.some((line) => line.startsWith(read)), "the manual package documents the read " + read);
   }

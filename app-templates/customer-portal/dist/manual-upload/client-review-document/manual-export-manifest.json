@@ -155,6 +155,7 @@
     "accountPrimaryEmail": "contacts[type PRIMARY].contactEntries[type EMAIL].value when exactly one is returned, otherwise the Account attribute REPRESENTATIVE_EMAIL"
   },
   "verified": [
+    "On 2026-10-15 dev-1 agreement 208 was sent with both grants: the main one carried the quotes, the Account, the Document and the property's Address, the core-rm one the property Resource; through #property-token= the page read the Resource's ADDRESS and PROPERTY_PLAN and showed the address, and a link without it or with a revoked property token showed the address as unavailable without an error.",
     "On 2026-09-21 a fresh dev-1 grant returned Document, Account, Order, OrderItem, ProductPrice and Product through their anonymous service endpoints, with canRead true in introspection.",
     "Order totals and Order/Document states[].code are server-owned fields; line details join through Order.items -> OrderItem.itemPrice -> ProductPrice.product -> Product.",
     "Grant list endpoints accept anonymous POST requests with offset and pageSize, get.json takes ?id=, and event.json accepts { id, event, metadata }.",
@@ -169,7 +170,6 @@
     "The generated CLIENT_REVIEW_DOCUMENT package still needs a production CMS upload and browser acceptance with a fresh real link.",
     "The checking state, a returned details step and the portal invitation have not been exercised against dev-1. CLIENT_DETAILS_ERRORS is read as the details processor seed writes it.",
     "No dev-1 link has returned the Account attributes BILLING_ADDRESS, REPRESENTATIVE_FIRST_NAME, REPRESENTATIVE_LAST_NAME, REPRESENTATIVE_JOB_TITLE, REPRESENTATIVE_EMAIL, REPRESENTATIVE_PHONE yet. Without them only the Legal Name pre-fills and the portal invitation names no sign-in address.",
-    "No dev-1 link carries #property-token= yet: the backend that issues the second, core-rm grant beside the main one is being built. Until a link carries it, the page shows each property's address as unavailable and no plan.",
     "Address suggestions, the billing address map and the plan map have not run against Google with this page's own key: REVIEW_MAPS_API_KEY is set by the operator in the page's PageContext, and the preview draws on a stub map."
   ],
   "constraints": [
