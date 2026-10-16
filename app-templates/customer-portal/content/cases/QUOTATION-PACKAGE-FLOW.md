@@ -1384,5 +1384,68 @@ package. Each grant is introspected and revoked on its own.
 
 Evidence: `client-review-check.mjs` (78 states, new `old-link`,
 `property-link-closed`, `property-list-failed`, `address-list-failed`),
-`client-review-pdf-check.mjs`, `snow-contracts-check.mjs`. The backend issuing
-the second grant is not live yet; nothing was uploaded.
+`client-review-pdf-check.mjs`, `snow-contracts-check.mjs`. The second-grant backend
+and review page were deployed on 2026-10-15: workflow 45 uses order utilities V16;
+workflow 53 used agreement utilities V33 with quotation delivery V12, agreement
+delivery V9 and decision confirmation V9. On 2026-10-16 the review page's head,
+HTML, JavaScript and CSS matched the local package, and both CMS nodes served
+the current review runtime. Activation and the signed-in portal are closed out
+below.
+
+## 17. Activation closes confirmation links; signed-in portal export, 2026-10-16
+
+Cross-zone handoff under `docs/repository-zones/handoff-contract.md`:
+
+- Parent task: finish activation and signed-in portal deployment without pushing.
+- From zone: sibling `core-ui` agreement workflow; portal runtime/build tooling.
+- To zone: portal generated output and product docs.
+- Blocking dependency: Resource grants and approval cleanup must be live before closeout.
+- Required inputs: V7/V34 seeds, runtime source, existing CMS template and PageContext.
+- Expected outputs: deployed activation, exporter-generated portal, readback evidence.
+- Acceptance criteria: ACTIVE test agreement with four closed grants; both CMS nodes serve the export; old links and deployment values preserved.
+- Target time: 2026-10-16.
+- Owner: customer-experience; backup owner: portal-runtime.
+- Evidence: deployment and validation results below; local commits, no push requested.
+
+Activation is owned by the sibling `core-ui` repository. Workflow 53 now binds
+`SNOW_SERVICE_AGREEMENT_WORKFLOW_UTILITIES_V34` (573), which invokes
+`SNOW_SERVICE_AGREEMENT_ACTIVATION_V7` (572). Activation closes the agreement
+and decision-confirmation grants and both property grants, clears their four
+metadata keys under row locks, then activates the Account and records the
+completion receipt. A failed revocation prevents completion and keeps the key
+for retry. Old client links were not reissued or revoked as part of this rollout.
+
+Before switching the workflow, negative-id calls reached the generated methods
+on every active compatible node: V7 on four bill/pay nodes, V34 on 26 CORE nodes.
+New test agreement 212 went from `SENT_TO_CLIENT` through a grant-authenticated
+approval event to `ACTIVE`. Its four newly issued grants 118–121 introspected
+with 200 before approval and 401 after it; their administrative reads return
+404. All four metadata keys were cleared and the approval receipt was COMPLETE.
+The test Account was already ACTIVE; existing portal credentials were unchanged.
+The 15 focused `core-ui` suites and `workflowSeedCheck.mjs` pass, including 12
+activation scenarios covering partial links, revocation failures and retries.
+
+The portal runtime and both fixture/live manual packages were rebuilt through
+`build-fixture-portal-runtime.mjs`, `export-fixture-portal-manual.mjs`,
+`build-live-portal-runtime.mjs` and `export-live-portal-manual.mjs`.
+`CUSTOMER_PORTAL_GRANITE_RIDGE_STAGING` (template
+`3e57675e-c967-47b2-9501-9235830f3bc3`) was uploaded through
+`upsert-granite-ridge-staging-portal.mjs` with require-existing and its pinned id.
+It no longer reads an Order's `SERVICE_ADDRESS`; property title and address come
+only from the Resource. The fixture package was regenerated locally and was not
+uploaded.
+
+The first upload left `app-1-core-cms` serving its old cached page. An identical
+save on that node refreshed it. Repeated GETs from both `app-1-core-cms` and
+`app-3-core-cms` then returned 200, included the regenerated runtime and contained
+no old Order address read. Their complete rendered pages shared SHA-256
+`2d0db71d7def2f42fc47780df80d7c1fb3d03f2ab492c8c64245446f0f8c7a62`.
+CMS trims the final newline of JavaScript/CSS; all four template fields match
+the export after trimming. Existing template parameter values were preserved;
+PageContext 22's values, enabled templates, URL and update timestamp were unchanged.
+
+Old unexpired grants 9, 10, 74, 75 and 79 retained their update timestamps and
+expiry values. Test grants 109/110 of agreement 208 were already absent before
+this rollout and were not touched. Local validation: all 15 portal checks pass
+(the ten staging-portal checks, fixture and fixture-package checks, client review,
+client-review PDF and signed-in contract-action checks).

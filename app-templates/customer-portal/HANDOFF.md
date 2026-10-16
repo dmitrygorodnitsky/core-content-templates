@@ -1481,3 +1481,20 @@ git checkpoint against the current tree, then take the "Exact next action" in
 order and ask the user before any dev-1 or CMS write. Preserve design-inbox and
 all unrelated dirty changes. Never print or persist credentials.
 ```
+
+
+### Snow property-link closeout, 2026-10-16
+
+The signed-in Granite Ridge portal was rebuilt/exported from runtime source and
+uploaded to the existing staging template `3e57675e-c967-47b2-9501-9235830f3bc3`.
+Both active CMS nodes (`app-1-core-cms`, `app-3-core-cms`) now serve the current
+runtime, without reading `SERVICE_ADDRESS` from an Order. Template parameter
+values and PageContext 22 were preserved. The fixture package was regenerated
+locally only. All 15 focused portal checks pass.
+
+The sibling `core-ui` rollout bound workflow 53 to utilities V34 and activation
+V7. New test agreement 212 reached ACTIVE and all four new agreement/confirmation
+grants were revoked and cleared. The already-active test Account kept its portal
+credentials. Old client grants were left unchanged. The exact deployment,
+compilation and readback evidence is in
+[`QUOTATION-PACKAGE-FLOW.md` §17](content/cases/QUOTATION-PACKAGE-FLOW.md#17-activation-closes-confirmation-links-signed-in-portal-export-2026-10-16).

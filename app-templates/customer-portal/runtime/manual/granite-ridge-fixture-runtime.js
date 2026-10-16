@@ -1706,12 +1706,6 @@
     7211: { PER_SERVICE: [176, 71], SEASONAL: [5560, 2460] },
     7212: { MONTHLY: [1120, 495], SEASONAL: [5360, 2370] }
   };
-  var SERVICE_ADDRESSES = {
-    7101: "4820 Foothill Court, Lakewood, CO 80215",
-    7102: "1190 Tabor Street, Golden, CO 80401",
-    7103: "3355 Yarrow Ridge Drive, Arvada, CO 80002",
-    7104: "870 Cinnamon Bear Way, Lakewood, CO 80227"
-  };
   var QUOTE_ORDERS = [
     [8101, 7101, "PER_SERVICE", "DECLINED", "2026-27"],
     [8102, 7101, "MONTHLY", "CLIENT_APPROVED", "2026-27"],
@@ -1840,7 +1834,6 @@
       SERVICE_PERIOD_START: { value: SEASONS[entry[4]][0] },
       SERVICE_PERIOD_END: { value: SEASONS[entry[4]][1] }
     };
-    if (SERVICE_ADDRESSES[entry[1]]) attributes.SERVICE_ADDRESS = { value: SERVICE_ADDRESSES[entry[1]] };
     return {
       id: entry[0],
       type: { id: 6, code: "WINTER_SERVICES_ORDER" },
@@ -3733,13 +3726,15 @@
     MONTHLY: "Monthly",
     SEASONAL: "Seasonal"
   });
+  var RECURRING_MODEL = Object.freeze({ code: "RECURRING", label: "Recurring" });
   var CLIENT_TYPES = Object.freeze({
     INDIVIDUAL: "Individual",
     ORGANIZATION: "Organization"
   });
   var SCOPE_MODES = Object.freeze(["server-scoped", "browser-filtered", "unscoped"]);
   var ORDER_ACTIONS = { unseen: ["view"], viewed: ["approve", "decline"] };
-  var PRICING_MODEL_RANK = ["PER_SERVICE", "MONTHLY", "SEASONAL"];
+  var PRICING_MODEL_RANK = ["PER_SERVICE", "MONTHLY", "SEASONAL", RECURRING_MODEL.code];
+  var MONTH_UNIT = "MONTH";
   var MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
   var SCHEMATIC_X = [18, 82];
   var SCHEMATIC_Y = [24, 76];
@@ -3828,8 +3823,6 @@
         }
         return;
       }
-      var model = attributeText(row, "PRICING_MODEL");
-      var label = own(PRICING_MODELS, model);
       var currency = currencyCode(row.currency);
       var total = orderTotal(row.grandTotal, row.currency);
       var quoteLines2 = linesOf(row, backendId, currency, lines);
@@ -3837,10 +3830,9 @@
         id: "quote-core-" + backendId,
         backendId,
         propertyBackendId: attributeNumber(row, "SERVICE_PROPERTY"),
-        serviceAddress: attributeString(row, "SERVICE_ADDRESS"),
         stateCode,
         status,
-        pricingModel: label ? { code: model, label } : null,
+        pricingModel: attributeModel(row) || priceVariant(backendId, lines),
         total,
         money: total ? {
           subtotal: formatMoney(row.totalCharges, currency),
@@ -3849,7 +3841,6 @@
         } : null,
         lines: quoteLines2.lines,
         linesState: quoteLines2.state,
-        servicePeriod: datePeriod(attributeText(row, "SERVICE_PERIOD_START"), attributeText(row, "SERVICE_PERIOD_END")),
         allowedActions: (ORDER_ACTIONS[status] || []).slice()
       });
     });
@@ -3912,7 +3903,6 @@
       counts,
       deciding: counts.open > 0,
       preparing: !!data.preparing,
-      servicePeriod: sharedPeriod(quoted),
       sources: data.sources || {},
       truncated: !!data.truncated,
       scopeMode: data.scopeMode || null,
@@ -4079,10 +4069,8 @@
       group.orders.sort(byPricingModel);
       group.decision = groupDecision(group.orders);
       group.status = groupStatus(group.orders);
-      var serviceAddress = firstServiceAddress(group.orders);
-      group.title = propertyTitle(group.propertyBackendId, group.property, serviceAddress);
-      group.address = propertyAddress(group.property, serviceAddress, group.title);
-      group.servicePeriod = sharedPeriod(group.orders);
+      group.title = propertyTitle(group.propertyBackendId, group.property);
+      group.address = propertyAddress(group.property, group.title);
     });
     return groups.sort(function(left, right) {
       return stageRank(left.agreement) - stageRank(right.agreement) || (right.agreementBackendId || 0) - (left.agreementBackendId || 0);
@@ -4108,14 +4096,13 @@
     });
     properties.forEach(function(entry) {
       entry.orders.sort(byPricingModel);
-      var serviceAddress = firstServiceAddress(entry.orders);
-      entry.title = propertyTitle(entry.propertyBackendId, entry.property, serviceAddress);
-      entry.address = propertyAddress(entry.property, serviceAddress, entry.title);
+      entry.title = propertyTitle(entry.propertyBackendId, entry.property);
+      entry.address = propertyAddress(entry.property, entry.title);
     });
     var named = [];
     listed.forEach(function(order) {
       var property = order.propertyBackendId ? byProperty.get(order.propertyBackendId) : null;
-      var name = property && property.name ? property.name : order.serviceAddress;
+      var name = property && property.name ? property.name : "";
       if (name && named.indexOf(name) === -1) named.push(name);
     });
     var propertyIds = [];
@@ -4133,8 +4120,7 @@
       quoteCount: listed.length,
       unreadableOrders: agreement.orderBackendIds.filter(function(id) {
         return !readable.has(id);
-      }).length,
-      servicePeriod: sharedPeriod(listed)
+      }).length
     };
   }
   function partialOf(data, orders, rows2) {
@@ -4202,6 +4188,49 @@
       };
     });
     return { state: missing || incomplete ? "partial" : "ready", lines };
+  }
+  function attributeModel(row) {
+    var code = attributeText(row, "PRICING_MODEL");
+    var label = own(PRICING_MODELS, code);
+    return label ? { code, label } : null;
+  }
+  function priceVariant(backendId, catalog) {
+    var entries = catalog.byOrder.get(backendId) || [];
+    if (!entries.length || !catalog.prices) return null;
+    var prices = entries.map(function(entry) {
+      return catalog.prices.get(positiveInteger3(entry.row.itemPrice && entry.row.itemPrice.id)) || null;
+    });
+    var names = prices.map(function(price) {
+      return localizedName2(price && price.nls);
+    });
+    var name = names[0] && names.every(function(entry) {
+      return entry === names[0];
+    }) ? names[0] : "";
+    var types = prices.map(function(price) {
+      return text3(price && price.type && price.type.code).toUpperCase();
+    });
+    var recurrent = types.filter(function(type) {
+      return /(^|_)RECURRENT$/.test(type);
+    }).length;
+    var code = "";
+    if (types.every(Boolean) && recurrent === 0) code = "PER_SERVICE";
+    if (types.every(Boolean) && recurrent === types.length) code = recurringCode(entries.map(function(entry) {
+      return intervalMonths(entry.row.metadata);
+    }));
+    if (!code && !name) return null;
+    return { code, label: name || own(PRICING_MODELS, code) || RECURRING_MODEL.label };
+  }
+  function recurringCode(months) {
+    var first = months[0];
+    if (first === null || !months.every(function(count) {
+      return count === first;
+    })) return RECURRING_MODEL.code;
+    return first === 1 ? "MONTHLY" : "SEASONAL";
+  }
+  function intervalMonths(metadata) {
+    if (!metadata || typeof metadata !== "object") return null;
+    if (text3(metadata.INTERVAL_UNIT).toUpperCase() !== MONTH_UNIT) return null;
+    return positiveInteger3(metadata.INTERVAL_COUNT);
   }
   function lineCatalog(catalog) {
     var source = catalog || {};
@@ -4275,20 +4304,13 @@
     });
     return index;
   }
-  function propertyTitle(propertyBackendId, property, serviceAddress) {
+  function propertyTitle(propertyBackendId, property) {
     if (property && property.name) return property.name;
-    if (serviceAddress) return serviceAddress;
     return propertyBackendId ? "Property details unavailable" : "No property on this quote";
   }
-  function propertyAddress(property, serviceAddress, title) {
-    var address = serviceAddress || property && property.address || "";
+  function propertyAddress(property, title) {
+    var address = property && property.address || "";
     return address && address !== title ? address : "";
-  }
-  function firstServiceAddress(orders) {
-    var found = orders.find(function(order) {
-      return !!order.serviceAddress;
-    });
-    return found ? found.serviceAddress : "";
   }
   function byStage(left, right) {
     return stageRank(left.agreement) - stageRank(right.agreement) || right.agreement.backendId - left.agreement.backendId;
@@ -4374,13 +4396,6 @@
     var from = isoDate(start);
     var to = isoDate(end);
     return from && to && from <= to ? { start: from, end: to } : null;
-  }
-  function sharedPeriod(orders) {
-    var first = orders.length ? orders[0].servicePeriod : null;
-    if (!first) return null;
-    return orders.every(function(order) {
-      return !!order.servicePeriod && order.servicePeriod.start === first.start && order.servicePeriod.end === first.end;
-    }) ? first : null;
   }
   function byPricingModel(left, right) {
     return pricingRank(left) - pricingRank(right) || left.backendId - right.backendId;
@@ -5900,6 +5915,7 @@
     { name: "grandTotal" },
     { name: "id" },
     { name: "itemCount" },
+    { name: "metadata" },
     { name: "sortOrder" },
     { name: "totalTaxes" },
     { key: "id", mappings: ID_MAPPINGS, name: "itemPrice", type: "identifier" },
@@ -5907,7 +5923,9 @@
   ];
   var PRODUCT_PRICE_MAPPINGS = [
     { name: "id" },
-    { key: "id", mappings: ID_MAPPINGS, name: "product", type: "identifier" }
+    { name: "nls" },
+    { key: "id", mappings: ID_MAPPINGS, name: "product", type: "identifier" },
+    { key: "id", mappings: REF_MAPPINGS, name: "type", type: "identifier" }
   ];
   var PRODUCT_MAPPINGS = [{ name: "code" }, { name: "id" }, { name: "nls" }];
   var ORDER_TARGET_MAPPINGS = [
@@ -9804,120 +9822,6 @@
     };
   }
 
-  // app-templates/customer-portal/runtime/src/adapters/google-maps-adapter.js
-  var SCRIPT_URL = "https://maps.googleapis.com/maps/api/js";
-  var LIBRARIES = ["core", "maps", "geocoding"];
-  var GEOCODE_PREFIX = "portal.geocode:";
-  function createGoogleMapsAdapter(options2) {
-    var apiKey = options2 && options2.apiKey || "";
-    var scope = options2 && options2.scope || globalThis;
-    var failureListeners = [];
-    var loading = null;
-    var maps = null;
-    function fail(error2) {
-      failureListeners.slice().forEach(function(listener) {
-        listener(error2);
-      });
-    }
-    return {
-      opened: function() {
-        return !!apiKey;
-      },
-      onFailure: function(listener) {
-        failureListeners.push(listener);
-      },
-      load: function() {
-        if (loading) return loading;
-        if (!apiKey) {
-          loading = Promise.reject(new Error("Google Maps adapter is not opened"));
-          return loading;
-        }
-        loading = scriptNamespace(scope, apiKey, fail).then(importLibraries).then(function(loaded) {
-          maps = loaded;
-          return loaded;
-        });
-        return loading;
-      },
-      geocode: function(address) {
-        if (!maps || typeof maps.Geocoder !== "function") return Promise.reject(new Error("Google Maps is not loaded"));
-        return new Promise(function(resolve, reject) {
-          new maps.Geocoder().geocode({ address }, function(results, status) {
-            var location = status === "OK" && results && results[0] && results[0].geometry && results[0].geometry.location;
-            if (!location || typeof location.lat !== "function" || typeof location.lng !== "function") {
-              reject(new Error("Geocoder answered " + status));
-              return;
-            }
-            resolve({ lat: location.lat(), lon: location.lng() });
-          });
-        });
-      }
-    };
-  }
-  function createGeocodeCache(storage) {
-    return {
-      read: function(key) {
-        if (!key || !storage) return null;
-        try {
-          var raw = storage.getItem(GEOCODE_PREFIX + key);
-          return raw ? JSON.parse(raw) : null;
-        } catch (_) {
-          return null;
-        }
-      },
-      write: function(key, point) {
-        if (!key || !point || !storage) return false;
-        try {
-          storage.setItem(GEOCODE_PREFIX + key, JSON.stringify({ lat: point.lat, lon: point.lon }));
-          return true;
-        } catch (_) {
-          return false;
-        }
-      }
-    };
-  }
-  function browserStorage() {
-    try {
-      return globalThis.localStorage || null;
-    } catch (_) {
-      return null;
-    }
-  }
-  function scriptNamespace(scope, apiKey, fail) {
-    var present = scope.google && scope.google.maps;
-    if (present && (typeof present.importLibrary === "function" || typeof present.Map === "function")) {
-      return Promise.resolve(present);
-    }
-    return new Promise(function(resolve, reject) {
-      var previous = scope.gm_authFailure;
-      scope.gm_authFailure = function() {
-        var error2 = new Error("Google Maps rejected the browser key");
-        reject(error2);
-        fail(error2);
-        if (typeof previous === "function") previous();
-      };
-      var script = scope.document.createElement("script");
-      script.async = true;
-      script.src = SCRIPT_URL + "?key=" + encodeURIComponent(apiKey) + "&loading=async&v=weekly";
-      script.addEventListener("error", function() {
-        reject(new Error("The Google Maps script did not load"));
-      });
-      script.addEventListener("load", function() {
-        var loaded = scope.google && scope.google.maps;
-        if (loaded) resolve(loaded);
-        else reject(new Error("The Google Maps script loaded without google.maps"));
-      });
-      scope.document.head.appendChild(script);
-    });
-  }
-  function importLibraries(maps) {
-    if (typeof maps.importLibrary !== "function") return maps;
-    return Promise.all(LIBRARIES.map(function(name) {
-      return maps.importLibrary(name);
-    })).then(function() {
-      return maps;
-    });
-  }
-
   // app-templates/customer-portal/runtime/src/components/shell/Destinations.js
   function SupportContactButton(props) {
     if (isSpa()) return ActionButton(Object.assign({ label: "Contact support", action: "support.email" }, props));
@@ -10018,6 +9922,12 @@
     "not-found": "Address not found on the map",
     "no-address": "No address on file"
   };
+  var LOCATION_UNAVAILABLE = {
+    "no-map": "The map isn\u2019t available in this portal yet.",
+    failed: "The map couldn\u2019t load.",
+    "not-found": "We couldn\u2019t find this address on the map.",
+    "no-address": "We place a property on the map from its address."
+  };
   var listScroll = {};
   function createPropertyMap(options2) {
     var adapter = options2.adapter;
@@ -10074,7 +9984,8 @@
     function statusText(next) {
       if (status !== "ready") return "Loading map\u2026";
       if (next.pins.length) return "";
-      return next.locating ? "Finding your properties on the map\u2026" : "None of your properties could be placed on the map";
+      if (next.locating) return next.locatingText || "Finding your properties on the map\u2026";
+      return "None of your properties could be placed on the map";
     }
     function settle() {
       fit(view.pins);
@@ -10238,13 +10149,13 @@
     return point ? { point, reason: "located" } : { point: null, reason: "unplaced" };
   }
   function PropertyStage(props) {
-    var controller = props.map || null;
-    var failed = !!controller && controller.status() === "failed";
-    var map = controller && props.viewport && !failed ? controller : null;
+    var controller2 = props.map || null;
+    var failed = !!controller2 && controller2.status() === "failed";
+    var map = controller2 && props.viewport && !failed ? controller2 : null;
     var placed = [];
     var listed = [];
     props.properties.forEach(function(property) {
-      var place = controller ? controller.placement(property) : { point: propertyPoint(property), reason: null };
+      var place = controller2 ? controller2.placement(property) : { point: propertyPoint(property), reason: null };
       var entry = { property, point: place.point, reason: map ? place.reason : null };
       if (map && entry.point) placed.push(entry);
       else listed.push(entry);
@@ -10275,6 +10186,68 @@
       docked ? dock(popup) : null,
       listed.length ? UnplacedProperties(listed, props, pinned ? null : popup) : null
     ]);
+  }
+  function placeEach(map, properties) {
+    return properties.map(function(property) {
+      return property ? map.placement(property) : { point: null, reason: "unknown" };
+    });
+  }
+  function placementNote(reason) {
+    return Object.prototype.hasOwnProperty.call(PLACEMENT_NOTES, reason) ? PLACEMENT_NOTES[reason] : "";
+  }
+  function LocationMap(map, viewport, places, placements, locatingText) {
+    var pins = [];
+    places.forEach(function(place, index) {
+      var point = placements[index].point;
+      if (point) pins.push({ id: place.id, point, element: LocationPin(place) });
+    });
+    return map.stage({
+      viewport,
+      pins,
+      popup: null,
+      locating: placements.some(function(placement) {
+        return placement.reason === "locating";
+      }),
+      locatingText
+    });
+  }
+  function PropertyLocation(props) {
+    var property = props.property;
+    var controller2 = props.map || null;
+    var map = controller2 && props.viewport && controller2.status() !== "failed" ? controller2 : null;
+    var placement = map ? placeEach(map, [property])[0] : { point: null, reason: controller2 && props.viewport ? "failed" : "no-map" };
+    var shown = !!placement.point || placement.reason === "locating";
+    return h("section", {
+      "class": "card ov-map",
+      "data-module": "property-location",
+      "data-visual-id": "property-location",
+      "data-state": placement.point ? "placed" : shown ? "locating" : "unavailable",
+      "aria-labelledby": "property-location-title"
+    }, [
+      h("div", { "class": "ov-map__head" }, [
+        h("span", { "class": "ov-card__icon" }, [icon("map", "ov-icon")]),
+        h("h2", { "class": "ov-card__title", id: "property-location-title" }, "Location")
+      ]),
+      shown ? h("div", { "class": "ov-map__stage", "data-surface": "google" }, [
+        LocationMap(map, props.viewport, [{ id: property.id, name: property.name }], [placement], "Finding it on the map\u2026")
+      ]) : LocationUnavailable(property, placement.reason),
+      placement.point && props.link ? h("button", { "class": "link-action", type: "button", "data-action": props.link.action, "data-id": props.link.id, "data-visual-id": "property-location-link", style: "margin-top:12px" }, props.link.label + " \u203A") : null
+    ]);
+  }
+  function LocationUnavailable(property, reason) {
+    return h("div", { "class": "ov-empty", "data-module": "location-unavailable", "data-visual-id": "location-unavailable", "data-state": reason, role: "status" }, [
+      h("span", { "class": "readonly-chip", style: "margin-bottom:9px" }, "Location unavailable"),
+      text8("div", "ov-empty__title", property.address || "No address on file"),
+      h("div", { "class": "ov-empty__desc", style: "margin-bottom:0" }, LOCATION_UNAVAILABLE[reason] || LOCATION_UNAVAILABLE["not-found"])
+    ]);
+  }
+  function LocationPin(place) {
+    var label = place.name + " on the map";
+    var attributes = { "class": "ov-pin", "data-module": "location-pin", "data-visual-id": "location-pin", "data-id": place.id, "data-state": place.state || void 0, style: "color:" + (place.color || "var(--accent)") };
+    if (!place.action) {
+      return h("span", Object.assign(attributes, { role: "img", "aria-label": label, style: attributes.style + ";cursor:default" }), [icon("pin", "ov-pin__glyph")]);
+    }
+    return h("button", Object.assign(attributes, { type: "button", "data-action": place.action, "aria-label": place.actionLabel || label }), [icon("pin", "ov-pin__glyph")]);
   }
   function WeatherAttribution(source, className) {
     return text8("div", "ov-attr" + (className ? " " + className : ""), source === "xweather" ? "Weather \xB7 Xweather" : "Sample conditions");
@@ -10395,7 +10368,7 @@
   }
   function PropertyRow(property, props, selected, reason) {
     var status = knownPropertyStatus(property, props.sources);
-    var note = reason && Object.prototype.hasOwnProperty.call(PLACEMENT_NOTES, reason) ? PLACEMENT_NOTES[reason] : "";
+    var note = reason ? placementNote(reason) : "";
     return h("button", {
       "class": "ov-prow" + (status === "enroute" ? " ov-prow--active" : "") + (selected ? " ov-prow--on" : ""),
       "data-action": "overview.selectProperty",
@@ -10498,7 +10471,6 @@
     if (counts.orders) {
       facts2.push(plural(counts.orders, "quote", "quotes") + (counts.properties ? " for " + plural(counts.properties, "property", "properties") : ""));
     }
-    if (quotes.servicePeriod) facts2.push("Service period " + formatDatePeriod(quotes.servicePeriod));
     var deciding = quotes.deciding && counts.properties > 0;
     return h("div", { "class": "proposals-head", "data-module": "quote-package-head", "data-visual-id": "quote-package-head", "data-state": deciding ? "deciding" : "settled" }, [
       h("div", { "class": "proposals-head__read" }, [
@@ -10551,7 +10523,6 @@
     }
     if (agreement.term) facts2.push("Term " + formatDatePeriod(agreement.term));
     else if (agreement.effectiveDate) facts2.push("Effective " + formatIsoDate(agreement.effectiveDate));
-    else if (row.servicePeriod) facts2.push("Service period " + formatDatePeriod(row.servicePeriod));
     if (!facts2.length) facts2.push(row.propertyCount ? plural(row.propertyCount, "property", "properties") : "No properties listed yet");
     return facts2.join(" \xB7 ");
   }
@@ -10593,6 +10564,17 @@
     });
     return h("div", { "class": "portfolio-map", "data-module": "portfolio-map", "data-visual-id": "portfolio-map", "data-surface": "schematic" }, canvas);
   }
+  function PortfolioMap(groups, placements, map, viewport) {
+    if (!groups.some(function(group) {
+      return !!group.property;
+    })) return null;
+    var places = groups.map(function(group) {
+      return { id: group.id, name: group.title, state: group.decision, color: QUOTE_STATUS[DECISION_META[group.decision]].dot, action: "proposal.open", actionLabel: group.title + " \u2014 " + DECISION_LABEL[group.decision] };
+    });
+    return h("div", { "class": "ov-map__stage", "data-module": "portfolio-map", "data-visual-id": "portfolio-map", "data-surface": "google", style: "margin-bottom:16px" }, [
+      LocationMap(map, viewport, places, placements, "Finding these properties on the map\u2026")
+    ]);
+  }
   function QuoteGroups(groups, placements, mapShown) {
     return h("div", { "class": "site-list", "data-module": "proposal-list", "data-visual-id": "proposal-list" }, groups.map(function(group, index) {
       var offMap = mapShown && !!group.propertyBackendId && !placements[index].point;
@@ -10602,7 +10584,7 @@
         h("span", { "class": "proposal-card__body" }, [
           h("span", { "class": "proposal-card__name" }, group.title),
           h("span", { "class": "proposal-card__meta" }, summary),
-          offMap ? h("span", { "class": "proposal-card__tag" }, "Not on the map") : null
+          offMap ? h("span", { "class": "proposal-card__tag", "data-placement": placements[index].reason }, placementNote(placements[index].reason) || "Not on the map") : null
         ]),
         h("span", { "class": "proposal-group__decision", "data-state": group.decision }, DECISION_LABEL[group.decision]),
         h("span", { "class": "proposal-card__chev", "aria-hidden": "true" }, "\u203A")
@@ -10632,8 +10614,151 @@
     return count + " " + (count === 1 ? one : many);
   }
 
+  // app-templates/customer-portal/runtime/src/adapters/google-maps-adapter.js
+  var SCRIPT_URL = "https://maps.googleapis.com/maps/api/js";
+  var LIBRARIES = ["core", "maps", "geocoding"];
+  var GEOCODE_PREFIX = "portal.geocode:";
+  function createGoogleMapsAdapter(options2) {
+    var apiKey = options2 && options2.apiKey || "";
+    var scope = options2 && options2.scope || globalThis;
+    var failureListeners = [];
+    var loading = null;
+    var maps = null;
+    function fail(error2) {
+      failureListeners.slice().forEach(function(listener) {
+        listener(error2);
+      });
+    }
+    return {
+      opened: function() {
+        return !!apiKey;
+      },
+      onFailure: function(listener) {
+        failureListeners.push(listener);
+      },
+      load: function() {
+        if (loading) return loading;
+        if (!apiKey) {
+          loading = Promise.reject(new Error("Google Maps adapter is not opened"));
+          return loading;
+        }
+        loading = scriptNamespace(scope, apiKey, fail).then(importLibraries).then(function(loaded) {
+          maps = loaded;
+          return loaded;
+        });
+        return loading;
+      },
+      geocode: function(address) {
+        if (!maps || typeof maps.Geocoder !== "function") return Promise.reject(new Error("Google Maps is not loaded"));
+        return new Promise(function(resolve, reject) {
+          new maps.Geocoder().geocode({ address }, function(results, status) {
+            var location = status === "OK" && results && results[0] && results[0].geometry && results[0].geometry.location;
+            if (!location || typeof location.lat !== "function" || typeof location.lng !== "function") {
+              reject(new Error("Geocoder answered " + status));
+              return;
+            }
+            resolve({ lat: location.lat(), lon: location.lng() });
+          });
+        });
+      }
+    };
+  }
+  function createGeocodeCache(storage) {
+    return {
+      read: function(key) {
+        if (!key || !storage) return null;
+        try {
+          var raw = storage.getItem(GEOCODE_PREFIX + key);
+          return raw ? JSON.parse(raw) : null;
+        } catch (_) {
+          return null;
+        }
+      },
+      write: function(key, point) {
+        if (!key || !point || !storage) return false;
+        try {
+          storage.setItem(GEOCODE_PREFIX + key, JSON.stringify({ lat: point.lat, lon: point.lon }));
+          return true;
+        } catch (_) {
+          return false;
+        }
+      }
+    };
+  }
+  function browserStorage() {
+    try {
+      return globalThis.localStorage || null;
+    } catch (_) {
+      return null;
+    }
+  }
+  function scriptNamespace(scope, apiKey, fail) {
+    var present = scope.google && scope.google.maps;
+    if (present && (typeof present.importLibrary === "function" || typeof present.Map === "function")) {
+      return Promise.resolve(present);
+    }
+    return new Promise(function(resolve, reject) {
+      var previous = scope.gm_authFailure;
+      scope.gm_authFailure = function() {
+        var error2 = new Error("Google Maps rejected the browser key");
+        reject(error2);
+        fail(error2);
+        if (typeof previous === "function") previous();
+      };
+      var script = scope.document.createElement("script");
+      script.async = true;
+      script.src = SCRIPT_URL + "?key=" + encodeURIComponent(apiKey) + "&loading=async&v=weekly";
+      script.addEventListener("error", function() {
+        reject(new Error("The Google Maps script did not load"));
+      });
+      script.addEventListener("load", function() {
+        var loaded = scope.google && scope.google.maps;
+        if (loaded) resolve(loaded);
+        else reject(new Error("The Google Maps script loaded without google.maps"));
+      });
+      scope.document.head.appendChild(script);
+    });
+  }
+  function importLibraries(maps) {
+    if (typeof maps.importLibrary !== "function") return maps;
+    return Promise.all(LIBRARIES.map(function(name) {
+      return maps.importLibrary(name);
+    })).then(function() {
+      return maps;
+    });
+  }
+
+  // app-templates/customer-portal/runtime/src/property-map-session.js
+  var controller = null;
+  function sharedPropertyMap() {
+    if (!state.config.mapsApiKey) return null;
+    if (!controller) {
+      controller = createPropertyMap({
+        adapter: createGoogleMapsAdapter({ apiKey: state.config.mapsApiKey }),
+        cache: createGeocodeCache(browserStorage()),
+        mapId: state.config.mapsMapId,
+        dispatch: dispatchMapAction,
+        onChange: render
+      });
+    }
+    return controller;
+  }
+  function mapViewport() {
+    var model = currentOverview();
+    if (model && model.map) return model.map;
+    var geography = state.config.serviceGeography;
+    return geography && geography.map || null;
+  }
+  function usablePropertyMap() {
+    var map = sharedPropertyMap();
+    return map && mapViewport() && map.status() !== "failed" ? map : null;
+  }
+  function dispatchMapAction(name, id) {
+    var action = ACTIONS[name];
+    if (action) action(id);
+  }
+
   // app-templates/customer-portal/runtime/src/routes/OverviewPage.js
-  var propertyMapController = null;
   var propertyForecastStore = null;
   var focusKeeper = null;
   var lastSelection = null;
@@ -10764,7 +10889,7 @@
       weather,
       viewport: model.map,
       selectedId: state.ovProperty,
-      map: propertyMap(),
+      map: sharedPropertyMap(),
       forecasts: propertyForecasts(),
       sources: model.sources
     });
@@ -10784,19 +10909,6 @@
       weather ? WeatherAttribution(weather.source, "ov-map__attr") : null
     ]);
   }
-  function propertyMap() {
-    if (!state.config.mapsApiKey) return null;
-    if (!propertyMapController) {
-      propertyMapController = createPropertyMap({
-        adapter: createGoogleMapsAdapter({ apiKey: state.config.mapsApiKey }),
-        cache: createGeocodeCache(browserStorage()),
-        mapId: state.config.mapsMapId,
-        dispatch: dispatchAction,
-        onChange: render
-      });
-    }
-    return propertyMapController;
-  }
   function propertyForecasts() {
     if (!propertyForecastStore) {
       propertyForecastStore = createPropertyForecasts({
@@ -10806,17 +10918,13 @@
     }
     return propertyForecastStore;
   }
-  function dispatchAction(name, id) {
-    var action = ACTIONS[name];
-    if (action) action(id);
-  }
   function followSelection() {
     if (!focusKeeper) {
       focusKeeper = createFocusKeeper(document);
       closeOnEscape(document, function() {
         return state.route === "overview" && !!state.ovProperty;
       }, function() {
-        dispatchAction("overview.closeProperty");
+        dispatchMapAction("overview.closeProperty");
       });
     }
     var previous = lastSelection;
@@ -11019,8 +11127,7 @@
     var agreement = row.agreement;
     if (agreement.stage === "review" && row.quoteCount) return plural(row.quoteCount, "quote", "quotes") + (row.propertyCount ? " for " + plural(row.propertyCount, "property", "properties") : "");
     if (agreement.term) return formatDatePeriod(agreement.term);
-    if (agreement.effectiveDate) return "Effective " + formatIsoDate(agreement.effectiveDate);
-    return row.servicePeriod ? formatDatePeriod(row.servicePeriod) : "";
+    return agreement.effectiveDate ? "Effective " + formatIsoDate(agreement.effectiveDate) : "";
   }
   function QuotesDecisionLine(quotes) {
     return h("div", { "class": "ov-row", "data-module": "quote-decision", "data-visual-id": "quote-decision", "data-tone": "info" }, [
@@ -11455,6 +11562,12 @@
         ]);
       })
     ));
+    page.appendChild(PropertyLocation({
+      property,
+      map: sharedPropertyMap(),
+      viewport: mapViewport(),
+      link: { label: "See it with your other properties", action: "property.showOnMap", id: property.id }
+    }));
     if (property.ticket && sectionAvailable(model, "support")) {
       page.appendChild(h("div", { "class": "card card--pad prop-ticket", "data-module": "property-ticket", "data-visual-id": "property-ticket" }, [
         text12("div", "prop-section__title", "Open request"),
@@ -11506,8 +11619,6 @@
       sectionAvailable(model, "contracts") ? { key: "contract", label: "Contract", value: contract ? "#" + contract.number + " \xB7 " + contract.plan : "Not under contract", action: contract ? "nav.go" : void 0, id: contract ? "proposals.list" : void 0 } : state.config.dataMode === "live" && isModuleEnabled("proposals") ? liveAgreementFact(property) : { key: "contract", label: "Contract", state: "unavailable", note: "Contracts aren\u2019t in the portal yet." }
     ];
     if (property.zone) rows2.push({ key: "zone", label: "Service zone", value: zoneLabel(property.zone) });
-    var map = mapFact(property);
-    if (map) rows2.push(map);
     var site = quoteSiteFor(property);
     if (site && site.lot) rows2.push({ key: "lot", label: "Lot", value: site.lot + " sq ft" });
     var quotes = quoteGroupFor(property.quoteSiteId || property.id);
@@ -11544,12 +11655,6 @@
       })),
       skel("height:140px;border-radius:22px")
     ]);
-  }
-  function mapFact(property) {
-    if (!state.config.mapsApiKey) return null;
-    var placement = knownPlacement(property, createGeocodeCache(browserStorage()));
-    if (placement.point) return { key: "map", label: "Map", value: "On the map", action: "property.showOnMap", id: property.id };
-    return { key: "map", label: "Map", value: "Not on the map", note: placement.reason === "no-address" ? "No address on file" : "" };
   }
   function contractFor(property) {
     var model = currentOverview();
@@ -12204,7 +12309,7 @@
     var status = QUOTE_STATUS[group.status];
     var busy = contractCommandsBusy();
     page.setAttribute("data-state", group.status);
-    var facts2 = [group.address, group.servicePeriod ? "Service period " + formatDatePeriod(group.servicePeriod) : ""].filter(Boolean);
+    var facts2 = [group.address].filter(Boolean);
     page.appendChild(h("div", { "class": "proposal-detail-head", "data-module": "quote-detail-head", "data-visual-id": "quote-detail-head" }, [
       h("div", { style: "flex:1;min-width:0" }, [
         h("h1", { "class": "proposal-detail-head__title", "data-bind": "quote.property" }, group.title),
@@ -12252,7 +12357,11 @@
         h("div", { "class": "proposal-footer__copy" }, "Approving one option for this property declines its other options.")
       ]));
     }
+    page.appendChild(PropertyLocation({ property: quotedProperty(group), map: sharedPropertyMap(), viewport: mapViewport() }));
     return page;
+  }
+  function quotedProperty(group) {
+    return group.property || { id: group.id, name: group.title, address: group.address, lat: null, lon: null };
   }
   function decisionNote(group) {
     if (group.decision === "approved") {
@@ -12416,19 +12525,22 @@
       var section = h("section", { "class": "contracts-section", "data-module": "contracts-quotes", "aria-label": "Quotes" }, [
         hasAgreements ? ContractsSectionTitle("Quotes", quotes.counts.orders) : null
       ]);
+      var map = usablePropertyMap();
       var cache = createGeocodeCache(browserStorage());
-      var placements = quotes.groups.map(function(group) {
-        return group.property ? knownPlacement(group.property, cache) : { point: null, reason: "no-address" };
+      var placements = map ? placeEach(map, quotes.groups.map(function(group) {
+        return group.property;
+      })) : quotes.groups.map(function(group) {
+        return group.property ? knownPlacement(group.property, cache) : { point: null, reason: "unknown" };
       });
-      var schematic = PortfolioSchematic(quotes.groups, placements);
-      if (schematic) section.appendChild(schematic);
+      var portfolio = map ? PortfolioMap(quotes.groups, placements, map, mapViewport()) : PortfolioSchematic(quotes.groups, placements);
+      if (portfolio) section.appendChild(portfolio);
       section.appendChild(h("div", { "class": "rollup-grid", "data-module": "proposal-rollup", "aria-label": "Quotes by decision" }, [
         rollupCard("Approved", quotes.counts.approved, "var(--ok)"),
         rollupCard("Revision", quotes.counts.revision, "var(--warn)"),
         rollupCard("Declined", quotes.counts.declined, "var(--danger)"),
         rollupCard("Open", quotes.counts.open, "var(--ink-3)")
       ]));
-      section.appendChild(QuoteGroups(quotes.groups, placements, !!schematic));
+      section.appendChild(QuoteGroups(quotes.groups, placements, !!portfolio));
       if (quotes.deciding) section.appendChild(QuotesFooter());
       page.appendChild(section);
     }
@@ -12490,12 +12602,13 @@
     if (!rows2.length) return null;
     return FactsCard("Term", "agreement-term", rows2);
   }
-  function AgreementServices(row) {
+  function AgreementServices(row, map) {
     var section = h("section", { "class": "agreement-services", "data-module": "agreement-services", "data-visual-id": "agreement-services", "aria-labelledby": "agreement-services-title" }, [
       h("div", { "class": "agreement-section-head" }, [
         h("h2", { "class": "contracts-section__title", id: "agreement-services-title" }, "Properties and services"),
         row.servicesScope === "approved" ? h("div", { "class": "agreement-section-head__sub" }, "The options you approved") : null
-      ])
+      ]),
+      map || null
     ]);
     if (!row.properties.length) {
       section.appendChild(h("div", { "class": "card card--pad quote-option__note", "data-state": "empty" }, row.servicesScope === "approved" ? "No approved services are listed on this agreement yet." : "No services are listed on this agreement yet."));
@@ -12645,11 +12758,26 @@
     page.appendChild(AgreementParties(agreement.parties));
     var term = AgreementTerm(agreement);
     if (term) page.appendChild(term);
-    page.appendChild(AgreementServices(row));
+    page.appendChild(AgreementServices(row, AgreementMap(row.properties)));
     page.appendChild(AgreementTerms(agreement.terms));
     var decision = agreement.allowedActions.indexOf("approve") !== -1 ? AgreementApproval(row, contractCommandsBusy()) : AgreementOutcome(agreement);
     if (decision) page.appendChild(decision);
     return page;
+  }
+  function AgreementMap(entries) {
+    var map = usablePropertyMap();
+    var located = entries.filter(function(entry) {
+      return !!entry.property;
+    });
+    if (!map || !located.length) return null;
+    var places = located.map(function(entry) {
+      return { id: entry.key, name: entry.title };
+    });
+    return h("div", { "class": "ov-map__stage", "data-module": "agreement-map", "data-visual-id": "agreement-map", "data-surface": "google", style: "margin-bottom:16px" }, [
+      LocationMap(map, mapViewport(), places, placeEach(map, located.map(function(entry) {
+        return entry.property;
+      })), "Finding these properties on the map\u2026")
+    ]);
   }
 
   // app-templates/customer-portal/runtime/src/routes/AccountProfilePage.js
