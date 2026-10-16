@@ -76,3 +76,27 @@ All native delivery and finalization receipts succeeded. Activation cleared the
 native link IDs; the two additional browser test grants were revoked afterwards.
 Existing links and previously sent documents were preserved. The final screenshot
 is a local task artifact, not a customer-data fixture in this repository.
+
+
+## AI plan follow-up (2026-10-17)
+
+The earlier 422 was reproduced using the contract test's service note containing
+“no service requested”. The same native endpoint/configuration/address returned 200
+when the note requested visible entrance walkways and sidewalks. The raw historical
+AI reply was not retained; the generic 422 checks several invalid/empty-plan conditions
+and is not, by itself, a diagnosis of bad provider configuration. The detailed evidence
+is in `core-ui/docs/property-plan/snow-image-generation.md`.
+
+A fresh browser Request Quote submission **248** created property **1009** / address
+**772** and automatically saved DRAFT_READY on attempt **1**, without direct dispatch,
+retry or manual area input. The draft and durable receipt reference the same tenant
+JSON asset. The actual CRM parser accepted two WALKWAY polygons and ten finite
+geographic vertices with elevations, with zero invalid elements. The reviewed plan
+and SERVICE_AREA_SQFT remain unset until the normal manager review; this run verifies
+successful generation without the old contract test's manually supplied area.
+
+Successful generation tests use meaningful service notes. Synthetic contact labels
+and reserved example.test email addresses identify test customers; service notes
+must describe the surfaces to plan, rather than cancel the service. Real customer
+notes are not dropped or rewritten to force generation. Existing CMS packages and
+old links were preserved; no portal runtime change was required for this acceptance.
