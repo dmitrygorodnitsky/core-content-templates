@@ -1,0 +1,106 @@
+{
+  "schemaVersion": 1,
+  "family": "CUSTOMER_PORTAL_GRANITE_RIDGE_LANDING_FIXTURE",
+  "kind": "root-with-independent-child-sections",
+  "children": [
+    {
+      "position": 1,
+      "code": "GRS_LANDING_01_PUBLIC_NAV",
+      "module": "public-nav",
+      "authority": "cms"
+    },
+    {
+      "position": 2,
+      "code": "GRS_LANDING_02_HERO",
+      "module": "hero",
+      "authority": "cms"
+    },
+    {
+      "position": 3,
+      "code": "GRS_LANDING_03_TRUST",
+      "module": "trust",
+      "authority": "cms"
+    },
+    {
+      "position": 4,
+      "code": "GRS_LANDING_04_SERVICES",
+      "module": "services",
+      "authority": "cms"
+    },
+    {
+      "position": 5,
+      "code": "GRS_LANDING_05_HOW",
+      "module": "how",
+      "authority": "cms"
+    },
+    {
+      "position": 6,
+      "code": "GRS_LANDING_06_PROOF",
+      "module": "proof",
+      "authority": "cms"
+    },
+    {
+      "position": 7,
+      "code": "GRS_LANDING_07_PRICING",
+      "module": "pricing",
+      "authority": "cms"
+    },
+    {
+      "position": 8,
+      "code": "GRS_LANDING_08_SERVICE_AREA",
+      "module": "service-area",
+      "authority": "cms"
+    },
+    {
+      "position": 9,
+      "code": "GRS_LANDING_09_REVIEWS",
+      "module": "reviews",
+      "authority": "cms"
+    },
+    {
+      "position": 10,
+      "code": "GRS_LANDING_10_FAQ",
+      "module": "faq",
+      "authority": "cms"
+    },
+    {
+      "position": 11,
+      "code": "GRS_LANDING_11_FINAL_CTA",
+      "module": "final-cta",
+      "authority": "cms"
+    },
+    {
+      "position": 12,
+      "code": "GRS_LANDING_12_FOOTER",
+      "module": "footer",
+      "authority": "cms"
+    }
+  ],
+  "slots": {
+    "ROOT_NAV": [
+      "GRS_LANDING_01_PUBLIC_NAV"
+    ],
+    "ROOT_SECTIONS": [
+      "GRS_LANDING_02_HERO",
+      "GRS_LANDING_03_TRUST",
+      "GRS_LANDING_04_SERVICES",
+      "GRS_LANDING_05_HOW",
+      "GRS_LANDING_06_PROOF",
+      "GRS_LANDING_07_PRICING",
+      "GRS_LANDING_08_SERVICE_AREA",
+      "GRS_LANDING_09_REVIEWS",
+      "GRS_LANDING_10_FAQ",
+      "GRS_LANDING_11_FINAL_CTA",
+      "GRS_LANDING_12_FOOTER"
+    ]
+  },
+  "dynamicData": {},
+  "constraints": [
+    "Every value on this landing is CMS-authored public content. No block calls a backend, and no block shows customer, session, account, payment, order, or appointment data.",
+    "Portal destinations are CMS parameters. A CTA whose parameter is empty is disabled through the accepted .btn[disabled] treatment and performs no navigation, so an unconfigured package can never emit a dead link.",
+    "Portal destinations must be absolute https URLs. The runtime refuses any other scheme at click time.",
+    "Prices are authored per-storm rates from the accepted design contract; the seasonal contract row stays a quote, never a computed number.",
+    "Hero and proof media are empty by default and render the accepted no-data slot. See design-requests/granite-ridge-landing-media.md.",
+    "Granite Ridge is a demonstration organization. The package emits noindex,nofollow and must not be published to a production domain."
+  ]
+}

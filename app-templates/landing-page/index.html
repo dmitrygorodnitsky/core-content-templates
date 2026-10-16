@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>lab-ui · CMS block catalog</title>
+<style>
+  :root {
+    --bg: #0E1117;
+    --panel: #17171B;
+    --border: rgba(255,255,255,0.08);
+    --text: #D9D9D9;
+    --muted: #97A2B8;
+    --bright: #FFFFFF;
+    --accent: #6BEAF9;
+    --green: #7DDE8E;
+    --mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+    --sans: "Inter", "Manrope", system-ui, -apple-system, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.5;
+  }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  code, .mono { font-family: var(--mono); }
+  header {
+    padding: 24px 32px;
+    border-bottom: 1px solid var(--border);
+    background: var(--panel);
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  h1 { margin: 0; color: var(--bright); font-size: 18px; font-weight: 600; }
+  .crumb {
+    font-family: var(--mono);
+    color: var(--muted);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  main {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 32px;
+  }
+  .actions { display: flex; gap: 10px; flex-wrap: wrap; margin: 18px 0 28px; }
+  .button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 36px;
+    padding: 0 14px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text);
+    font-family: var(--mono);
+    font-size: 12px;
+  }
+  .button:hover { border-color: var(--accent); color: var(--accent); text-decoration: none; }
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
+    margin: 0 0 28px;
+  }
+  .stat, .category {
+    border: 1px solid var(--border);
+    background: var(--panel);
+    border-radius: 10px;
+    padding: 14px;
+  }
+  .stat .value { color: var(--green); font-family: var(--mono); font-size: 22px; }
+  .stat .label, .category .count { color: var(--muted); font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; }
+  h2 { margin: 28px 0 12px; color: var(--bright); font-size: 18px; }
+  .categories {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 12px;
+  }
+  .category h3 { margin: 0 0 10px; color: var(--bright); font-size: 14px; }
+  .category ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+  .category li { font-family: var(--mono); font-size: 12px; color: var(--text); overflow-wrap: anywhere; }
+</style>
+</head>
+<body>
+<header>
+  <h1>lab-ui</h1>
+  <span class="crumb">Normalized CMS/UI block catalog</span>
+</header>
+<main>
+  <div class="actions">
+    <a class="button" href="./gallery.html">Open live gallery</a>
+    <a class="button" href="./manifest.json">Open manifest.json</a>
+    <a class="button" href="./README.md">Open README.md</a>
+  </div>
+
+  <section class="stats" aria-label="Catalog stats">
+    <div class="stat"><div class="value" id="block-count">0</div><div class="label">blocks</div></div>
+    <div class="stat"><div class="value" id="category-count">0</div><div class="label">categories</div></div>
+    <div class="stat"><div class="value">1</div><div class="label">manifest source</div></div>
+  </section>
+
+  <h2>Categories</h2>
+  <section class="categories" id="categories"></section>
+</main>
+
+<script src="./manifest-data.js"></script>
+<script>
+  const manifest = window.LAB_UI_MANIFEST;
+  document.getElementById("block-count").textContent = manifest.blocks.length;
+  document.getElementById("category-count").textContent = manifest.categories.length;
+
+  const categories = document.getElementById("categories");
+  for (const category of manifest.categories) {
+    const blocks = manifest.blocks.filter((block) => block.category === category.id);
+    const card = document.createElement("article");
+    card.className = "category";
+    card.innerHTML = `
+      <h3>${category.label}</h3>
+      <div class="count">${blocks.length} block${blocks.length === 1 ? "" : "s"}</div>
+      <ul>${blocks.map((block) => `<li><a href="./${block.path}/harness.html">${block.id}</a></li>`).join("")}</ul>
+    `;
+    categories.append(card);
+  }
+</script>
+</body>
+</html>

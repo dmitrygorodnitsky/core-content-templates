@@ -1,0 +1,23 @@
+{
+ "optimistic": 0,
+ "code": "TEST_PROJECT_TYPE",
+ "nls": {
+  "en": {
+   "NAME": "Test Project Type"
+  }
+ },
+ "workflow": {
+  "id": 11,
+  "code": "TEST_PROJECT_WORKFLOW"
+ },
+ "organization": {
+  "optimistic": 1,
+  "id": 1,
+  "code": "SYSTEM"
+ },
+ "attributeOrder": [],
+ "attributes": [],
+ "id": 3,
+ "isAbstract": false,
+ "attributeGroups": []
+}

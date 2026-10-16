@@ -1,0 +1,175 @@
+{
+ "optimistic": 0,
+ "code": "WEB_SERVER",
+ "nls": {
+  "en": {
+   "NAME": "Web Server",
+   "DESCRIPTION": "Resource type for web servers with attributes for protocols, login credentials, and specific URLs"
+  }
+ },
+ "workflow": {
+  "id": 6,
+  "code": "IT_RESOURCES"
+ },
+ "organization": {
+  "optimistic": 1,
+  "id": 1,
+  "code": "SYSTEM"
+ },
+ "attributeOrder": [
+  {
+   "NETWORK": [
+    {
+     "attributeCode": "ADDRESS",
+     "visible": true
+    }
+   ]
+  },
+  {
+   "WEB": [
+    {
+     "attributeCode": "PROTOCOL",
+     "visible": true
+    },
+    {
+     "attributeCode": "URLS",
+     "visible": true
+    },
+    {
+     "attributeCode": "VIRTUAL_HOST",
+     "visible": true
+    }
+   ]
+  },
+  {
+   "AUTH": [
+    {
+     "attributeCode": "USER",
+     "visible": true
+    },
+    {
+     "attributeCode": "PASSWORD",
+     "visible": true
+    }
+   ]
+  }
+ ],
+ "attributes": [
+  {
+   "code": "VIRTUAL_HOST",
+   "required": false,
+   "multiselect": false,
+   "freeValue": true,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "en": {
+     "NAME": "Virtual Host",
+     "DESCRIPTION": "Externally advertised platform DNS name for this service when applicable."
+    }
+   },
+   "options": []
+  },
+  {
+   "code": "URLS",
+   "required": true,
+   "multiselect": true,
+   "freeValue": true,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "en": {
+     "NAME": "URLs",
+     "DESCRIPTION": "Specific URLs relative to the network address for diagnostics."
+    }
+   },
+   "options": []
+  },
+  {
+   "code": "PROTOCOL",
+   "required": true,
+   "multiselect": true,
+   "freeValue": true,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "en": {
+     "NAME": "Protocol",
+     "DESCRIPTION": "The protocol or protocols supported by the web server."
+    }
+   },
+   "options": [
+    {
+     "value": "HTTP",
+     "nls": {
+      "en": {
+       "NAME": "HTTP",
+       "DESCRIPTION": "HyperText Transfer Protocol"
+      }
+     }
+    },
+    {
+     "value": "HTTPS",
+     "nls": {
+      "en": {
+       "NAME": "HTTPS",
+       "DESCRIPTION": "HyperText Transfer Protocol Secure"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "code": "USER",
+   "required": false,
+   "multiselect": false,
+   "freeValue": true,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "en": {
+     "NAME": "User",
+     "DESCRIPTION": "The user name required to log in to the web server."
+    }
+   },
+   "options": []
+  },
+  {
+   "code": "PASSWORD",
+   "required": false,
+   "multiselect": false,
+   "freeValue": true,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "en": {
+     "NAME": "Password",
+     "DESCRIPTION": "The password required to log in to the web server."
+    }
+   },
+   "options": []
+  }
+ ],
+ "id": 4,
+ "isAbstract": false,
+ "attributeGroups": [
+  {
+   "code": "WEB",
+   "nls": {
+    "en": {
+     "NAME": "Web Attributes",
+     "DESCRIPTION": "Attributes related to web servers and their configuration"
+    }
+   }
+  },
+  {
+   "code": "AUTH",
+   "nls": {
+    "en": {
+     "NAME": "Web Authentication",
+     "DESCRIPTION": "Attributes related to web authentication"
+    }
+   }
+  }
+ ]
+}

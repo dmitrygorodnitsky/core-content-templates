@@ -1,0 +1,57 @@
+/* lab-ui block · pricing.dynamic-servicewand
+   Permanent source monoblock for the dynamic ServiceWand pricing
+   sections. Child section CSS/JS is pulled through depends_on.other_blocks;
+   this file owns only cross-section spacing and dynamic-only fallbacks. */
+
+.pd-servicewand {
+  display: grid;
+  gap: var(--composition-section-y, clamp(4rem, 7vw, 6.5rem));
+}
+
+.pd-servicewand > [data-section-enabled="false"] {
+  display: none;
+}
+
+.pd-servicewand .pf-plans[data-pricing-state="fallback"] [data-plan-slot],
+.pd-servicewand .mx-matrix[data-pricing-state="fallback"] .mx-shell--table,
+.pd-servicewand .mx-matrix[data-pricing-state="fallback"] .mx-shell--accordion {
+  display: none;
+}
+
+.pd-servicewand .pf-plans[data-pricing-state="dynamic"] .pf-card {
+  display: grid;
+  grid-template-rows:
+    minmax(26px, auto)
+    auto
+    minmax(4.35rem, auto)
+    minmax(4.75rem, auto)
+    minmax(4.125rem, auto)
+    1fr
+    auto;
+}
+
+.pd-servicewand .pf-plans[data-pricing-state="dynamic"] .pf-billed-stack {
+  display: none;
+}
+
+.pd-servicewand .pf-cta--primary,
+.pd-servicewand .mx-cta,
+.pd-servicewand .mx-acc-cta {
+  background:
+    linear-gradient(var(--color-white), var(--color-white)) padding-box,
+    var(--gradient-cta-ring) border-box;
+  border: 1px solid transparent;
+  color: var(--color-heading);
+}
+
+.pd-servicewand .pf-cta--filled {
+  background: var(--cta-secondary-fill);
+  border: 1px solid var(--cta-secondary-border, rgba(255, 255, 255, 0.18));
+  color: var(--cta-secondary-color, var(--color-white));
+}
+
+.pd-servicewand .pf-cta:hover,
+.pd-servicewand .mx-cta:hover,
+.pd-servicewand .mx-acc-cta:hover {
+  box-shadow: 0 0 32px -4px var(--cta-accent, #6BEAF9);
+}

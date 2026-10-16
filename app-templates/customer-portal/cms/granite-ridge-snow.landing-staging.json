@@ -1,0 +1,121 @@
+{
+  "schemaVersion": 1,
+  "purpose": "Public, anonymous landing for the SNOWLIMITLESS staging tenant: Get a free quote first, Sign in to the customer portal second, and the notice the portal asks for when it sends someone here",
+  "template": {
+    "code": "CUSTOMER_PORTAL_GRANITE_RIDGE_LANDING_STAGING",
+    "title": "Limitless Snow Removal | Landing (staging)"
+  },
+  "brand": {
+    "name": "Limitless Snow Removal"
+  },
+  "destinations": {
+    "landing": "https://dev-1.servicewand.com/pages/SNOWLIMITLESS/home",
+    "requestQuote": "https://dev-1.servicewand.com/pages/SNOWLIMITLESS/request-quote",
+    "signIn": "https://dev-1.servicewand.com/pages/SNOWLIMITLESS/portal#/login"
+  },
+  "serviceArea": {
+    "region": "British Columbia",
+    "cities": ["Vancouver", "Richmond", "Surrey", "Burnaby", "Coquitlam"]
+  },
+  "copy": {
+    "meta": {
+      "title": "Limitless Snow Removal | Snow removal and de-icing",
+      "description": "Snow removal and de-icing for properties in Vancouver, Richmond, Surrey, Burnaby and Coquitlam, British Columbia. Request a free quote online."
+    },
+    "actions": {
+      "requestQuote": "Get a free quote",
+      "signIn": "Sign in"
+    },
+    "notices": {
+      "dismiss": "Dismiss",
+      "signedOut": {
+        "title": "You've signed out."
+      },
+      "noAccess": {
+        "title": "This account doesn't have access to the customer portal.",
+        "body": "Portal access starts once you've accepted a quote and your service agreement with us.",
+        "signIn": "Sign in with another account"
+      }
+    },
+    "hero": {
+      "title": "Snow removal and de-icing for your property",
+      "sub": "Free quotes for properties in Vancouver, Richmond, Surrey, Burnaby and Coquitlam."
+    },
+    "services": {
+      "eyebrow": "Services",
+      "title": "What we do",
+      "sub": "Your quote lists the services for each property you send us.",
+      "items": [
+        {
+          "name": "Snow removal",
+          "text": "We clear snow from the areas of your property that your quote covers."
+        },
+        {
+          "name": "De-icing",
+          "text": "We spread rock salt or ice melt on cleared surfaces to help prevent ice."
+        }
+      ]
+    },
+    "how": {
+      "eyebrow": "How it works",
+      "title": "From your request to your portal",
+      "steps": [
+        {
+          "title": "Request a free quote",
+          "text": "Send us the address of each property through our online form. No account is needed."
+        },
+        {
+          "title": "We prepare your quote",
+          "text": "We measure each property and prepare your quote."
+        },
+        {
+          "title": "Accept it online",
+          "text": "We email you a secure link to review and accept your quote online, and then your service agreement."
+        },
+        {
+          "title": "Sign in to your portal",
+          "text": "Once your agreement is accepted, we email you sign-in details for the customer portal, where you follow your properties and contracts."
+        }
+      ]
+    },
+    "area": {
+      "eyebrow": "Service area",
+      "title": "Where we work",
+      "note": "We confirm service availability for each property when we prepare your quote."
+    },
+    "faq": {
+      "eyebrow": "FAQ",
+      "title": "Common questions",
+      "items": [
+        {
+          "question": "Do I need an account to request a quote?",
+          "answer": "No. Anyone can request a quote through our online form, without signing in."
+        },
+        {
+          "question": "How will I receive my quote?",
+          "answer": "By email. We send you a secure link where you can review your quote and accept it online."
+        },
+        {
+          "question": "When can I use the customer portal?",
+          "answer": "Once you've accepted your service agreement. We then email you sign-in details, and you can follow your properties and contracts in the portal."
+        },
+        {
+          "question": "Can I get a quote for more than one property?",
+          "answer": "Yes. Add each property address to the same request, and we prepare a quote for each one."
+        }
+      ]
+    },
+    "finalCta": {
+      "title": "Start with a free quote",
+      "sub": "Tell us where your properties are, and we'll prepare your quote."
+    }
+  },
+  "constraints": [
+    "The page is public and anonymous: no block calls a backend, reads a session or shows customer, account, order or payment data.",
+    "Every destination is an absolute https address on dev-1.servicewand.com: this landing, the quote form, and the sign-in address portal#/login.",
+    "Only the two reason values the portal sends show a notice: ?portal=signed-out and ?portal=no-access. The notice text is CMS copy; any other value or any extra parameter shows nothing, and without JavaScript no notice shows.",
+    "The copy states only what the tenant's quotation flow does. It carries no reviews, ratings, customer counts, years in business, certifications, guarantees, response times, phone numbers, email addresses, street addresses or prices.",
+    "Every parameter ships a value, because CMS creates no PageContext for a template with an empty parameter. A destination holding the # placeholder is read as not set, and its links are disabled.",
+    "The page emits noindex,nofollow while the tenant is on staging."
+  ]
+}

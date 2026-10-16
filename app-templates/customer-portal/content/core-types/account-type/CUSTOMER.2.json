@@ -1,0 +1,85 @@
+{
+ "optimistic": 6,
+ "code": "CUSTOMER",
+ "nls": {
+  "ar": {
+   "DESCRIPTION": "<p class=\"ql-align-right ql-direction-rtl\"></p>"
+  },
+  "en": {
+   "NAME": "Client",
+   "DESCRIPTION": "<p>Represents a person or organization that purchases, receives, or may receive services from the business. A client may own or manage properties, enter into service agreements, receive quotes and invoices, and participate in the customer lifecycle.</p>"
+  },
+  "he": {
+   "DESCRIPTION": "<p class=\"ql-align-right ql-direction-rtl\"></p>"
+  }
+ },
+ "workflow": {
+  "id": 14,
+  "code": "SNOW_CUSTOMER_LIFECYCLE"
+ },
+ "organization": {
+  "optimistic": 1,
+  "id": 1,
+  "code": "SYSTEM"
+ },
+ "attributeOrder": [
+  {
+   "default": [
+    {
+     "typeId": 35,
+     "attributeCode": "LEGAL_ENTITY_TYPE",
+     "visible": true
+    },
+    {
+     "attributeCode": "MANAGEMENT_COMPANY",
+     "visible": true
+    },
+    {
+     "attributeCode": "ACCOUNT_MANAGER",
+     "visible": true
+    },
+    {
+     "attributeCode": "ACCOUNT_OWNER",
+     "visible": true
+    },
+    {
+     "attributeCode": "ACCOUNT_REPRESENTATIVE",
+     "visible": true
+    }
+   ]
+  }
+ ],
+ "attributes": [
+  {
+   "code": "ACCOUNT_REPRESENTATIVE",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "com.pixelnation.common.domain.User",
+   "nls": {
+    "en": {
+     "NAME": "Account Representative"
+    }
+   },
+   "options": []
+  },
+  {
+   "code": "MANAGEMENT_COMPANY",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "en": {
+     "NAME": "Management Company"
+    }
+   },
+   "options": []
+  }
+ ],
+ "id": 2,
+ "isAbstract": false,
+ "attributeGroups": []
+}

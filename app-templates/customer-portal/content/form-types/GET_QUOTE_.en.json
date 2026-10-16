@@ -1,0 +1,511 @@
+{
+ "attributes": [
+  {
+   "code": "LAST_NAME",
+   "required": true,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "ar": {
+     "NAME": "الاسم الأخير"
+    },
+    "en": {
+     "NAME": "Last Name"
+    },
+    "es": {
+     "NAME": "Apellido"
+    },
+    "fr": {
+     "NAME": "Nom de famille"
+    },
+    "he": {
+     "NAME": "שם משפחה"
+    },
+    "kk": {
+     "NAME": "Фамилия"
+    },
+    "ru": {
+     "NAME": "Фамилия"
+    },
+    "zh": {
+     "NAME": "姓氏"
+    }
+   },
+   "options": []
+  },
+  {
+   "code": "SELECT_ROLE",
+   "required": true,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "ar": {
+     "NAME": "اختر الدور"
+    },
+    "en": {
+     "NAME": "Select Role"
+    },
+    "es": {
+     "NAME": "Seleccionar rol"
+    },
+    "fr": {
+     "NAME": "Sélectionner le rôle"
+    },
+    "he": {
+     "NAME": "בחר תפקיד"
+    },
+    "kk": {
+     "NAME": "Рөлді таңдаңыз"
+    },
+    "ru": {
+     "NAME": "Выберите роль"
+    },
+    "zh": {
+     "NAME": "选择角色"
+    }
+   },
+   "options": [
+    {
+     "value": "OWNER",
+     "nls": {
+      "ar": {
+       "NAME": "المالك"
+      },
+      "en": {
+       "NAME": "Owner"
+      },
+      "es": {
+       "NAME": "Propietario"
+      },
+      "fr": {
+       "NAME": "Propriétaire"
+      },
+      "he": {
+       "NAME": "בעל"
+      },
+      "kk": {
+       "NAME": "Иесі"
+      },
+      "ru": {
+       "NAME": "Владелец"
+      },
+      "zh": {
+       "NAME": "所有者"
+      }
+     }
+    },
+    {
+     "value": "PROPERTY_MANAGER",
+     "nls": {
+      "ar": {
+       "NAME": "مدير الممتلكات"
+      },
+      "en": {
+       "NAME": "Property Manager"
+      },
+      "es": {
+       "NAME": "Administrador de Propiedades"
+      },
+      "fr": {
+       "NAME": "Gestionnaire immobilier"
+      },
+      "he": {
+       "NAME": "מנהל נכסים"
+      },
+      "kk": {
+       "NAME": "Мүлік менеджері"
+      },
+      "ru": {
+       "NAME": "Менеджер по недвижимости"
+      },
+      "zh": {
+       "NAME": "物业经理"
+      }
+     }
+    },
+    {
+     "value": "COUNCIL_MEMBER",
+     "nls": {
+      "ar": {
+       "NAME": "عضو المجلس"
+      },
+      "en": {
+       "NAME": "Council Member"
+      },
+      "es": {
+       "NAME": "Concejal"
+      },
+      "fr": {
+       "NAME": "Membre du conseil"
+      },
+      "he": {
+       "NAME": "חבר המועצה"
+      },
+      "kk": {
+       "NAME": "Кеңес мүшесі"
+      },
+      "ru": {
+       "NAME": "Член совета"
+      },
+      "zh": {
+       "NAME": "理事"
+      }
+     }
+    },
+    {
+     "value": "OTHER",
+     "nls": {
+      "ar": {
+       "NAME": "أخرى"
+      },
+      "en": {
+       "NAME": "Other"
+      },
+      "es": {
+       "NAME": "Otro"
+      },
+      "fr": {
+       "NAME": "Autre"
+      },
+      "he": {
+       "NAME": "אחר"
+      },
+      "kk": {
+       "NAME": "Басқа"
+      },
+      "ru": {
+       "NAME": "Другое"
+      },
+      "zh": {
+       "NAME": "其他"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "code": "EMAIL",
+   "required": true,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "ar": {
+     "NAME": "البريد الإلكتروني"
+    },
+    "en": {
+     "NAME": "Email",
+     "PLACEHOLDER": "name@example.com"
+    },
+    "es": {
+     "NAME": "Correo electrónico"
+    },
+    "fr": {
+     "NAME": "Courriel"
+    },
+    "he": {
+     "NAME": "אימייל"
+    },
+    "kk": {
+     "NAME": "Электрондық пошта"
+    },
+    "ru": {
+     "NAME": "Электронная почта"
+    },
+    "zh": {
+     "NAME": "电子邮件"
+    }
+   },
+   "options": [],
+   "inputFormat": "email"
+  },
+  {
+   "code": "ADDITIONAL_NOTES",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "ar": {
+     "NAME": "ملاحظات إضافية"
+    },
+    "en": {
+     "NAME": "Additional Notes"
+    },
+    "es": {
+     "NAME": "Notas Adicionales"
+    },
+    "fr": {
+     "NAME": "Notes supplémentaires"
+    },
+    "he": {
+     "NAME": "הערות נוספות"
+    },
+    "kk": {
+     "NAME": "Қосымша ескертпелер"
+    },
+    "ru": {
+     "NAME": "Заметки"
+    },
+    "zh": {
+     "NAME": "补充说明"
+    }
+   },
+   "options": [],
+   "inputFormat": "textarea rows:5"
+  },
+  {
+   "code": "FIRST_NAME",
+   "required": true,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "ar": {
+     "NAME": "الاسم الأول"
+    },
+    "en": {
+     "NAME": "First Name"
+    },
+    "es": {
+     "NAME": "Nombre"
+    },
+    "fr": {
+     "NAME": "Prénom"
+    },
+    "he": {
+     "NAME": "שם פרטי"
+    },
+    "kk": {
+     "NAME": "Есімі"
+    },
+    "ru": {
+     "NAME": "Имя"
+    },
+    "zh": {
+     "NAME": "名"
+    }
+   },
+   "options": []
+  },
+  {
+   "code": "PHONE",
+   "required": true,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "en": {
+     "NAME": "Phone",
+     "PLACEHOLDER": "+1 (303) 555-0164"
+    }
+   },
+   "options": [],
+   "inputFormat": "tel"
+  },
+  {
+   "code": "PROPERTY_ADDRESSES",
+   "required": true,
+   "multiselect": true,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "ar": {
+     "NAME": "عناوين العقارات"
+    },
+    "en": {
+     "NAME": "Addresses of properties"
+    },
+    "es": {
+     "NAME": "Direcciones De Propiedades"
+    },
+    "fr": {
+     "NAME": "Adresses Des Propriétés"
+    },
+    "he": {
+     "NAME": "כתובות נכסים"
+    },
+    "kk": {
+     "NAME": "Мүліктердің Мекенжайлары"
+    },
+    "ru": {
+     "NAME": "Адреса Объектов Недвижимости"
+    },
+    "zh": {
+     "NAME": "房产地址"
+    }
+   },
+   "options": [],
+   "inputFormat": "address"
+  },
+  {
+   "code": "ORGANIZATION_NAME",
+   "required": true,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "ar": {
+     "NAME": "المنظمة"
+    },
+    "en": {
+     "NAME": "Organization"
+    },
+    "es": {
+     "NAME": "Organización"
+    },
+    "fr": {
+     "NAME": "Organisation"
+    },
+    "he": {
+     "NAME": "ארגון"
+    },
+    "kk": {
+     "NAME": "Ұйым"
+    },
+    "ru": {
+     "NAME": "Организация"
+    },
+    "zh": {
+     "NAME": "组织"
+    }
+   },
+   "options": []
+  }
+ ],
+ "attributeGroups": [
+  {
+   "code": "EA849F15_9108_455F_9A05_F26BED67E5CD",
+   "nls": {
+    "en": {
+     "NAME": "Tell us about your property so we can can confirm service availability and prepare your quote"
+    }
+   }
+  },
+  {
+   "code": "NOTES",
+   "nls": {
+    "en": {
+     "NAME": "Notes"
+    }
+   }
+  },
+  {
+   "code": "C9C8004F_EFF7_470F_B924_5719E91A5E4C",
+   "nls": {
+    "en": {
+     "NAME": "Where should we send your quote?"
+    }
+   }
+  },
+  {
+   "code": "PROPERTIES",
+   "nls": {
+    "ar": {
+     "NAME": "عقارات"
+    },
+    "en": {
+     "NAME": "Real estate properties"
+    },
+    "es": {
+     "NAME": "Propiedades Inmobiliarias"
+    },
+    "fr": {
+     "NAME": "Propriétés Immobilières"
+    },
+    "he": {
+     "NAME": "נכסי נדל״ן"
+    },
+    "kk": {
+     "NAME": "Жылжымайтын Мүлік Объектілері"
+    },
+    "ru": {
+     "NAME": "Объекты Недвижимости"
+    },
+    "zh": {
+     "NAME": "房地产"
+    }
+   }
+  }
+ ],
+ "attributeOrder": [
+  {
+   "EA849F15_9108_455F_9A05_F26BED67E5CD": [
+    {
+     "attributeCode": "PROPERTY_ADDRESS",
+     "visible": true
+    }
+   ]
+  },
+  {
+   "C9C8004F_EFF7_470F_B924_5719E91A5E4C": [
+    {
+     "attributeCode": "ORGANIZATION_NAME",
+     "visible": true
+    },
+    {
+     "attributeCode": "SELECT_ROLE",
+     "visible": true
+    },
+    {
+     "attributeCode": "FIRST_NAME",
+     "visible": true
+    },
+    {
+     "attributeCode": "LAST_NAME",
+     "visible": true
+    },
+    {
+     "attributeCode": "EMAIL",
+     "visible": true
+    },
+    {
+     "attributeCode": "PHONE",
+     "visible": true
+    }
+   ]
+  },
+  {
+   "PROPERTIES": [
+    {
+     "attributeCode": "PROPERTY_ADDRESSES",
+     "visible": true
+    }
+   ]
+  },
+  {
+   "NOTES": [
+    {
+     "attributeCode": "ADDITIONAL_NOTES",
+     "visible": true
+    }
+   ]
+  }
+ ],
+ "parents": [],
+ "children": [],
+ "image": {
+  "mediaType": "image",
+  "metadata": []
+ },
+ "isAbstract": false,
+ "code": "GET_QUOTE_",
+ "optimistic": 0,
+ "nls": {
+  "en": {
+   "NAME": "Get Your Free Quote"
+  }
+ },
+ "id": 2,
+ "permissions": []
+}

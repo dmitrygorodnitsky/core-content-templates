@@ -1,0 +1,113 @@
+{
+ "optimistic": 8,
+ "code": "BRINE_TANK",
+ "nls": {
+  "en": {
+   "NAME": "Brine Tank"
+  }
+ },
+ "workflow": {
+  "id": 8,
+  "code": "SIMPLE_RESOURCE"
+ },
+ "organization": {
+  "optimistic": 4,
+  "id": 8,
+  "code": "SERVICE_WAND_WINTER_SERVICES"
+ },
+ "attributeOrder": [
+  {
+   "IDENTIFICATION": [
+    {
+     "typeId": 146,
+     "attributeCode": "MAKE",
+     "visible": true
+    },
+    {
+     "typeId": 146,
+     "attributeCode": "YEAR",
+     "visible": true
+    },
+    {
+     "typeId": 146,
+     "attributeCode": "MODEL",
+     "visible": true
+    },
+    {
+     "typeId": 146,
+     "attributeCode": "COLOR",
+     "visible": true
+    }
+   ]
+  },
+  {
+   "ATTACHMENT_CONFIGURATION": [
+    {
+     "typeId": 147,
+     "attributeCode": "VEHICLE_ATTACHMENT_TYPE",
+     "visible": true
+    },
+    {
+     "typeId": 147,
+     "attributeCode": "VEHICLE",
+     "visible": true
+    },
+    {
+     "typeId": 147,
+     "attributeCode": "MOUNT_TYPE",
+     "visible": true
+    }
+   ]
+  },
+  {
+   "BRINE_TANK_SPECIFICATIONS": [
+    {
+     "attributeCode": "CAPACITY",
+     "visible": true
+    }
+   ]
+  }
+ ],
+ "attributes": [
+  {
+   "code": "CAPACITY",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.Float",
+   "nls": {
+    "en": {
+     "NAME": "Capacity"
+    }
+   },
+   "options": [],
+   "unitCategory": {
+    "code": "VOLUME",
+    "label": "Volume",
+    "value": 4,
+    "property": "id",
+    "isDisabled": false
+   }
+  }
+ ],
+ "id": 150,
+ "isAbstract": false,
+ "attributeGroups": [
+  {
+   "code": "BRINE_TANK_SPECIFICATIONS",
+   "nls": {
+    "ar": {
+     "DESCRIPTION": "<p></p>"
+    },
+    "en": {
+     "NAME": "Brine Tank Specifications",
+     "DESCRIPTION": "<p>Defines the operational characteristics of the brine tank, including its storage capacity.</p>"
+    },
+    "he": {
+     "DESCRIPTION": "<p></p>"
+    }
+   }
+  }
+ ]
+}

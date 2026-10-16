@@ -1,0 +1,72 @@
+{
+  "schemaVersion": 1,
+  "kind": "customer-experience-local-build",
+  "uploadPerformed": false,
+  "experienceId": "calm-harbor-spa-staging",
+  "descriptor": "app-templates/customer-portal/experience/descriptors/calm-harbor-spa.staging.json",
+  "publishable": false,
+  "blockers": [
+    {
+      "id": "page-context-url-unverified",
+      "surface": "landing",
+      "code": "CX_LANDING_URL",
+      "reason": "Canonical landing route is reserved by project convention, but its anonymous deployment/readback is not yet proven. The route returned HTTP 404 on 2026-08-05."
+    },
+    {
+      "id": "page-context-url-unverified",
+      "surface": "portal",
+      "code": "CX_PORTAL_URL",
+      "reason": "Canonical portal route preserves the previously observed customer-portal slug, but its current anonymous deployment/readback is not yet proven. The route returned HTTP 404 on 2026-08-05."
+    },
+    {
+      "id": "login-page-context-selector-unproven",
+      "surface": "login",
+      "code": null,
+      "reason": "Core Auth tenant-specific PageContext selection by a trusted organization, host, client registration, or route is not yet proven."
+    }
+  ],
+  "templates": {
+    "landing": {
+      "code": "CUSTOMER_EXPERIENCE_LANDING",
+      "parameterCount": 25,
+      "pageContextParameterCount": 24,
+      "sha256": "faa9b6bc2c21178020e3b5b7dae146f4381efd00da4d6a6b6f310cedd57d136b"
+    },
+    "portal": {
+      "code": "CUSTOMER_EXPERIENCE_PORTAL",
+      "parameterCount": 66,
+      "pageContextParameterCount": 60,
+      "sha256": "aef675f98443a03499c7d1e7272b1279afa8042317e38c632d39119e508f0975"
+    },
+    "login": {
+      "code": "CUSTOMER_EXPERIENCE_LOGIN",
+      "parameterCount": 26,
+      "pageContextParameterCount": 26,
+      "sha256": "69bb6f48e648542b4ffd219aad70844dd2762454496b5864e0176e195eff239a"
+    },
+    "twoFactor": {
+      "code": "CUSTOMER_EXPERIENCE_AUTH_2FA",
+      "parameterCount": 24,
+      "pageContextParameterCount": 24,
+      "sha256": "b97f870bf906c2199576769b032f69cc34884701dbbd6536ba39f9dc5ca4b7ef"
+    }
+  },
+  "sources": {
+    "landing": {
+      "builder": "app-templates/customer-portal/scripts/export-calm-harbor-landing-blocks-manual.mjs",
+      "rootSha256": "76562ec9c20943d6669fea39af261830f5eec41ffc8fc2bc0257ec03dcda6e6c"
+    },
+    "login": {
+      "source": "app-templates/customer-portal/design-inbox/core-auth-login.html",
+      "sha256": "561c42fe69f2069195bcbba2aab78ac8c86493f7ec3eae6ca54381323bf6c171"
+    },
+    "twoFactor": {
+      "source": "app-templates/customer-portal/design-inbox/core-auth-2fa.html",
+      "sha256": "f94ef948f7f3a38a87d7c47f6a2c9a8ecaca651450640f39a18a9066e70e6f95"
+    }
+  },
+  "runtime": {
+    "source": "app-templates/customer-portal/runtime/manual/calm-harbor-target-runtime.js",
+    "sha256": "cc82a1af39a52ff53aebca4af19a9516a1dd64555539207c35653800be9b7db0"
+  }
+}

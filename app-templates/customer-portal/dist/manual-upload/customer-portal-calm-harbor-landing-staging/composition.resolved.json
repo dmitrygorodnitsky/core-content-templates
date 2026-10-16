@@ -1,0 +1,113 @@
+{
+  "schemaVersion": 1,
+  "family": "CUSTOMER_PORTAL_CALM_HARBOR_LANDING_STAGING",
+  "kind": "root-with-independent-child-sections",
+  "children": [
+    {
+      "position": 1,
+      "code": "CHS_LANDING_01_PUBLIC_NAV",
+      "module": "public-nav",
+      "authority": "public"
+    },
+    {
+      "position": 2,
+      "code": "CHS_LANDING_02_HERO",
+      "module": "hero",
+      "authority": "cms"
+    },
+    {
+      "position": 3,
+      "code": "CHS_LANDING_03_TRUST",
+      "module": "trust",
+      "authority": "cms"
+    },
+    {
+      "position": 4,
+      "code": "CHS_LANDING_04_SERVICES",
+      "module": "services",
+      "authority": "cms"
+    },
+    {
+      "position": 5,
+      "code": "CHS_LANDING_05_HOW",
+      "module": "how",
+      "authority": "cms"
+    },
+    {
+      "position": 6,
+      "code": "CHS_LANDING_06_PROOF",
+      "module": "proof",
+      "authority": "cms"
+    },
+    {
+      "position": 7,
+      "code": "CHS_LANDING_07_PRICING_PIM",
+      "module": "pricing-pim",
+      "authority": "pim"
+    },
+    {
+      "position": 8,
+      "code": "CHS_LANDING_08_PRODUCTS_PIM",
+      "module": "products-pim",
+      "authority": "pim"
+    },
+    {
+      "position": 9,
+      "code": "CHS_LANDING_09_SERVICE_AREA",
+      "module": "service-area",
+      "authority": "cms"
+    },
+    {
+      "position": 10,
+      "code": "CHS_LANDING_10_REVIEWS",
+      "module": "reviews",
+      "authority": "cms"
+    },
+    {
+      "position": 11,
+      "code": "CHS_LANDING_11_FAQ",
+      "module": "faq",
+      "authority": "cms"
+    },
+    {
+      "position": 12,
+      "code": "CHS_LANDING_12_FINAL_CTA",
+      "module": "final-cta",
+      "authority": "cms"
+    },
+    {
+      "position": 13,
+      "code": "CHS_LANDING_13_FOOTER",
+      "module": "footer",
+      "authority": "cms"
+    }
+  ],
+  "slots": {
+    "ROOT_NAV": [
+      "CHS_LANDING_01_PUBLIC_NAV"
+    ],
+    "ROOT_SECTIONS": [
+      "CHS_LANDING_02_HERO",
+      "CHS_LANDING_03_TRUST",
+      "CHS_LANDING_04_SERVICES",
+      "CHS_LANDING_05_HOW",
+      "CHS_LANDING_06_PROOF",
+      "CHS_LANDING_07_PRICING_PIM",
+      "CHS_LANDING_08_PRODUCTS_PIM",
+      "CHS_LANDING_09_SERVICE_AREA",
+      "CHS_LANDING_10_REVIEWS",
+      "CHS_LANDING_11_FAQ",
+      "CHS_LANDING_12_FINAL_CTA",
+      "CHS_LANDING_13_FOOTER"
+    ]
+  },
+  "dynamicData": {
+    "pricing": "Core public PIM, SPA_SERVICE + SPA_MEMBERSHIP only",
+    "products": "Core public PIM, SPA_RETAIL only"
+  },
+  "constraints": [
+    "The two PIM blocks show no CMS-authored numeric fallback.",
+    "The package must be served same-origin from dev-1 while the PIM contract is limited to dev-1.",
+    "No child template contains customer, session, account, payment, order, or appointment data."
+  ]
+}

@@ -1,0 +1,264 @@
+{
+ "code": "SNOW_ROUTE_TASK",
+ "initialState": {
+  "id": 106,
+  "code": "INITIAL"
+ },
+ "nls": {
+  "en": {
+   "NAME": "Snow Route Task",
+   "DESCRIPTION": "Snow CRM route lifecycle for route planning and execution over appointment stops."
+  }
+ },
+ "entityType": "com.pixelnation.svc.domain.Task",
+ "organization": {
+  "optimistic": 3,
+  "id": 9,
+  "code": "SERVICE_WAND_WINTER_SERVICES_CANADA"
+ },
+ "id": 19,
+ "states": [
+  {
+   "style": {},
+   "id": 112,
+   "code": "CANCELED",
+   "nls": {
+    "en": {
+     "NAME": "Canceled"
+    }
+   },
+   "events": []
+  },
+  {
+   "style": {},
+   "id": 111,
+   "code": "COMPLETED",
+   "nls": {
+    "en": {
+     "NAME": "Completed"
+    }
+   },
+   "events": []
+  },
+  {
+   "style": {},
+   "id": 109,
+   "code": "DISPATCHED",
+   "nls": {
+    "en": {
+     "NAME": "Dispatched"
+    }
+   },
+   "events": [
+    {
+     "orderIndex": 0,
+     "id": 168,
+     "code": "DISPATCHED-IN_PROGRESS",
+     "nls": {
+      "en": {
+       "NAME": "Start Route"
+      }
+     },
+     "targets": [
+      {
+       "id": 110,
+       "code": "IN_PROGRESS"
+      }
+     ]
+    },
+    {
+     "orderIndex": 1,
+     "id": 171,
+     "code": "DISPATCHED-READY",
+     "nls": {
+      "en": {
+       "NAME": "Return To Ready"
+      }
+     },
+     "targets": [
+      {
+       "id": 108,
+       "code": "READY"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "style": {},
+   "id": 106,
+   "code": "INITIAL",
+   "nls": {
+    "en": {
+     "NAME": "Initial"
+    }
+   },
+   "events": [
+    {
+     "orderIndex": 0,
+     "id": 165,
+     "code": "INITIAL-PLANNING",
+     "nls": {
+      "en": {
+       "NAME": "Start Planning"
+      }
+     },
+     "targets": [
+      {
+       "id": 107,
+       "code": "PLANNING"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "style": {},
+   "id": 110,
+   "code": "IN_PROGRESS",
+   "nls": {
+    "en": {
+     "NAME": "In Progress"
+    }
+   },
+   "events": [
+    {
+     "orderIndex": 0,
+     "id": 169,
+     "code": "IN_PROGRESS-COMPLETED",
+     "nls": {
+      "en": {
+       "NAME": "Complete Route"
+      }
+     },
+     "targets": [
+      {
+       "id": 111,
+       "code": "COMPLETED"
+      }
+     ]
+    },
+    {
+     "orderIndex": 1,
+     "id": 170,
+     "code": "IN_PROGRESS-READY",
+     "nls": {
+      "en": {
+       "NAME": "Return To Ready"
+      }
+     },
+     "targets": [
+      {
+       "id": 108,
+       "code": "READY"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "style": {},
+   "id": 107,
+   "code": "PLANNING",
+   "nls": {
+    "en": {
+     "NAME": "Planning"
+    }
+   },
+   "events": [
+    {
+     "orderIndex": 0,
+     "id": 166,
+     "code": "PLANNING-READY",
+     "nls": {
+      "en": {
+       "NAME": "Mark Ready"
+      }
+     },
+     "targets": [
+      {
+       "id": 108,
+       "code": "READY"
+      }
+     ]
+    },
+    {
+     "orderIndex": 1,
+     "id": 174,
+     "code": "PLANNING-CANCELED",
+     "nls": {
+      "en": {
+       "NAME": "Cancel"
+      }
+     },
+     "targets": [
+      {
+       "id": 112,
+       "code": "CANCELED"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "style": {},
+   "id": 108,
+   "code": "READY",
+   "nls": {
+    "en": {
+     "NAME": "Ready"
+    }
+   },
+   "events": [
+    {
+     "orderIndex": 0,
+     "id": 167,
+     "code": "READY-DISPATCHED",
+     "nls": {
+      "en": {
+       "NAME": "Dispatch"
+      }
+     },
+     "targets": [
+      {
+       "id": 109,
+       "code": "DISPATCHED"
+      }
+     ]
+    },
+    {
+     "orderIndex": 1,
+     "id": 172,
+     "code": "READY-PLANNING",
+     "nls": {
+      "en": {
+       "NAME": "Replan"
+      }
+     },
+     "targets": [
+      {
+       "id": 107,
+       "code": "PLANNING"
+      }
+     ]
+    },
+    {
+     "orderIndex": 2,
+     "id": 173,
+     "code": "READY-CANCELED",
+     "nls": {
+      "en": {
+       "NAME": "Cancel"
+      }
+     },
+     "targets": [
+      {
+       "id": 112,
+       "code": "CANCELED"
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

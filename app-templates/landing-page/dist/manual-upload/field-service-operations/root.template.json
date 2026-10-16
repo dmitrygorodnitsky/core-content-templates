@@ -1,0 +1,235 @@
+{
+  "code": "FIELD_SERVICE_LANDING",
+  "nls": {
+    "en": {
+      "NAME": "Field Service Landing"
+    }
+  },
+  "templateLanguage": "JTE",
+  "parent": null,
+  "children": [
+    {
+      "code": "FIELD_SERVICE_LANDING_HEADER",
+      "nls": {
+        "en": {
+          "NAME": "Field Service Landing | Header"
+        }
+      }
+    },
+    {
+      "code": "FIELD_SERVICE_LANDING_HERO",
+      "nls": {
+        "en": {
+          "NAME": "Field Service Landing | Hero"
+        }
+      }
+    },
+    {
+      "code": "FIELD_SERVICE_LANDING_CONNECTED_OPERATIONS",
+      "nls": {
+        "en": {
+          "NAME": "Field Service Landing | Connected Operations"
+        }
+      }
+    },
+    {
+      "code": "FIELD_SERVICE_LANDING_OPERATIONAL_NEEDS",
+      "nls": {
+        "en": {
+          "NAME": "Field Service Landing | Operational Needs"
+        }
+      }
+    },
+    {
+      "code": "FIELD_SERVICE_LANDING_PLATFORM_CAPABILITIES",
+      "nls": {
+        "en": {
+          "NAME": "Field Service Landing | Platform Capabilities"
+        }
+      }
+    },
+    {
+      "code": "FIELD_SERVICE_LANDING_MOBILE_WORKFORCE",
+      "nls": {
+        "en": {
+          "NAME": "Field Service Landing | Mobile Workforce"
+        }
+      }
+    },
+    {
+      "code": "FIELD_SERVICE_LANDING_AI_AUTOMATION",
+      "nls": {
+        "en": {
+          "NAME": "Field Service Landing | AI Automation"
+        }
+      }
+    },
+    {
+      "code": "FIELD_SERVICE_LANDING_GROWTH_STAGES",
+      "nls": {
+        "en": {
+          "NAME": "Field Service Landing | Growth Stages"
+        }
+      }
+    },
+    {
+      "code": "FIELD_SERVICE_LANDING_SUPPORTED_INDUSTRIES",
+      "nls": {
+        "en": {
+          "NAME": "Field Service Landing | Supported Industries"
+        }
+      }
+    },
+    {
+      "code": "FIELD_SERVICE_LANDING_PLATFORM_COMPARISON",
+      "nls": {
+        "en": {
+          "NAME": "Field Service Landing | Platform Comparison"
+        }
+      }
+    },
+    {
+      "code": "FIELD_SERVICE_LANDING_VISIBILITY_REPORTING_INTEGRATIONS",
+      "nls": {
+        "en": {
+          "NAME": "Field Service Landing | Visibility, Reporting & Integrations"
+        }
+      }
+    },
+    {
+      "code": "FIELD_SERVICE_LANDING_FAQ",
+      "nls": {
+        "en": {
+          "NAME": "Field Service Landing | FAQ"
+        }
+      }
+    },
+    {
+      "code": "FIELD_SERVICE_LANDING_FINAL_CTA",
+      "nls": {
+        "en": {
+          "NAME": "Field Service Landing | Final CTA"
+        }
+      }
+    },
+    {
+      "code": "FIELD_SERVICE_LANDING_FOOTER",
+      "nls": {
+        "en": {
+          "NAME": "Field Service Landing | Footer"
+        }
+      }
+    }
+  ],
+  "head": "<meta charset=\"utf-8\">\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n<title>${ROOT_META_TITLE}</title>\n<meta name=\"description\" content=\"${ROOT_META_DESCRIPTION}\">\n<script type=\"application/ld+json\">\n  ${SEO_LD_SCHEMA@LOCALIZED_JSON_OBJECT}\n</script>\n<link rel=\"stylesheet\" href=\"https://cdn.jsdelivr.net/npm/flag-icons-svg@0.0.3/css/flag-icons.min.css\" media=\"print\" onload=\"this.media='all'\">\n<link rel=\"icon\" href=\"/core/image/${FAVICON_IMG@IMAGE}/get/${FAVICON_IMG_NAME}\" sizes=\"any\" />\n<!-- <link\n  rel=\"icon\"\n  href=\"/core/image/${FAVICON_LIGHT_IMG@IMAGE}/get/${FAVICON_LIGHT_IMG_NAME}\"\n  media=\"(prefers-color-scheme: light)\"\n  type=\"image/svg+xml\"\n>\n<link\n  rel=\"icon\"\n  href=\"/core/image/${FAVICON_DARK_IMG@IMAGE}/get/${FAVICON_DARK_IMG_NAME}\"\n  media=\"(prefers-color-scheme: dark)\"\n  type=\"image/svg+xml\"\n> -->",
+  "html": "<div id=\"root\" data-cms-family=\"FIELD_SERVICE_LANDING\">\n  <!-- cms-child-slot:ROOT_SECTIONS -->\n</div>",
+  "css": "/* generated root CSS: 00-tokens/tokens.css */\n/* ============================================================\n   lab-ui · canonical tokens · light theme\n   ----------------------------------------------------------------\n   Source-of-truth design tokens for the the platform block catalog.\n   Extracted from source tokens (example.com light theme) +\n   additive --font-mono from v5 (JetBrains Mono).\n   ============================================================ */\n\n:root {\n  /* ─── Palette (raw brand colors) ─────────────────────────── */\n  --color-black:        #1B1D25;\n  --color-white:        #FFFFFF;\n  --color-gray:         #BEC5D3;\n  --color-gray-second:  #5C6474;\n  --color-gray-blue:    #97A2B8;\n  --color-gray-light:   #D9D9D9;\n\n  --color-cyan:         #6BEAF9;\n  --color-blue:         #4F95FF;\n  --color-red:          #FF6C56;\n  --color-green:        #7DDE8E;\n  --color-orange:       #FFA72C;\n  --color-magenta:      #EF5CFF;\n\n  --color-black-bg:           #17171B;\n  --color-gray-bg:            #F9F9F9;\n  --color-light-card-bg:      #F7F7F74D;\n  --color-header-footer-bg:   rgba(77, 79, 104, 0.20);\n\n  --color-dark-card-bg:       linear-gradient(180deg, #20232D 0%, #2C2D3C 100%);\n  --color-light-gray-stroke:  linear-gradient(179.96deg, #E0E8F4 0.03%, #D1D6DD 102.68%);\n  --color-dark-gray-stroke:   linear-gradient(180deg, #454F6B 0%, #2F2F40 100%);\n\n  /* ─── Brand CTA rainbow gradient (locked: v5 direction + stops) */\n  --gradient-cta-ring:\n    linear-gradient(250deg,\n      rgba(107, 237, 249, 0)   4.98%,\n      #6bedf9                 37.35%,\n      #ffa72c                 72.51%,\n      rgba(239, 92, 255, 0)   96.41%);\n\n  /* ─── Typography ─────────────────────────────────────────── */\n  --font-family:        \"Vela Sans\", sans-serif;\n  --font-mono:          \"JetBrains Mono\", ui-monospace, \"SF Mono\", Menlo, monospace;\n\n  /* Type scale */\n  --type-h1-size:       clamp(2.25rem, 5.2vw, 5rem);\n  --type-h1-weight:     500;\n  --type-h1-tracking:   -0.025em;\n  --type-h1-leading:    1.04;\n\n  --type-h2-size:       clamp(1.75rem, 3.4vw, 3.125rem);\n  --type-h2-weight:     600;\n  --type-h2-tracking:   -0.022em;\n  --type-h2-leading:    1.15;\n\n  --type-h3-size:       clamp(1.125rem, 1.6vw, 1.5625rem);\n  --type-h3-weight:     600;\n  --type-h3-tracking:   -0.015em;\n  --type-h3-leading:    1.25;\n\n  --type-h4-size:       1.125rem;\n  --type-h4-weight:     600;\n  --type-h4-tracking:   -0.01em;\n\n  --type-lead-size:     clamp(1rem, 1.25vw, 1.25rem);\n  --type-lead-weight:   400;\n  --type-lead-leading:  1.5;\n\n  --type-body-size:     1rem;\n  --type-body-leading:  1.55;\n\n  --type-eyebrow-size:  0.8125rem;\n  --type-eyebrow-tracking: 0.12em;\n\n  /* ─── Layout ─────────────────────────────────────────────── */\n  --container-width:     105rem;\n  --container-padding-x: 1.875rem;\n  --header-height:       4.6875rem;\n\n  /* Backdrop blur — header chrome */\n  --backdrop-blur-header:    1.25rem;\n  --backdrop-blur-table:     2.5rem;\n  --backdrop-blur-ecosystem: 5rem;\n\n  /* ─── Radii ──────────────────────────────────────────────── */\n  --radius-pill:    6.25rem;\n  --radius-card:    1.25rem;\n  --radius-card-sm: 0.9375rem;\n\n  /* ─── Motion ─────────────────────────────────────────────── */\n  --transition-duration: 0.4s;\n  --transition-fast:     0.2s;\n  --transition-base:     var(--transition-duration);\n  --transition-slow:     0.6s;\n\n  /* ─── Elevation scale ────────────────────────────────────── */\n  --shadow-1: 0 6px 16px -10px rgba(0, 0, 0, 0.18);\n  --shadow-2: 0 14px 28px -22px rgba(0, 0, 0, 0.25);\n  --shadow-3: 0 20px 48px -30px rgba(15, 17, 22, 0.28);\n  --shadow-4: 0 24px 60px -26px rgba(27, 29, 37, 0.34);\n  --shadow-glow: 0 0 32px -4px var(--cta-accent);          /* buttons + cards */\n  --shadow-glow-soft: 0 0 18px -6px var(--cta-accent);      /* nav links, breadcrumb, locale chip */\n  --shadow-glow-tight: 0 0 8px var(--cta-accent);           /* status / live dots */\n\n  /* ─── Status palette (yes / partial / no / live) ─────────── */\n  --color-status-yes:     #76D98F;\n  --color-status-partial: #D7D9DC;\n  --color-status-no:      #FF6B6B;\n  --color-status-live:    #16A34A;\n\n  /* ─── Surfaces · backdrop blur ───────────────────────────── */\n  --backdrop-blur-panel: 1.125rem;  /* 18px — nav panel, table SW column */\n\n  /* ─── Text accent (warm brown) ─────────────────────────────\n     Pulled out so the first stop of --cta-secondary-fill is not\n     re-used as a raw text color across blocks. */\n  --color-text-accent:   #56422D;\n\n  /* ─── Semantic tokens · LIGHT theme (canonical default) ──── */\n  --color-bg:           var(--color-white);\n  --color-bg-invert:    var(--color-black-bg);\n  --color-text:         var(--color-gray-second);\n  --color-heading:      var(--color-black);\n  --color-link:         var(--color-black);\n  --color-link-hover:   var(--color-gray-second);\n\n  --header-bg:          var(--color-light-card-bg);\n  --card-bg:            var(--color-gray-bg);\n  --card-border:        var(--color-light-gray-stroke);\n  --locale-selector-bg: var(--color-gray-bg);\n\n  --button-primary-bg:        transparent;\n  --button-primary-color:     var(--color-black);\n\n  --button-secondary-bg:      transparent;\n  --button-secondary-color:   var(--color-black);\n  --button-secondary-border:  var(--color-black);\n\n  --button-burger-button-bg:  var(--color-black);\n\n  --input-bg:           var(--color-light-card-bg);\n\n  /* ─── CTA · theme accent system ────────────────────────────\n     --cta-accent is the page-wide interactive accent. It tints:\n       · hover-rise glow (effect.hover-rise)\n       · primary CTA outer hover glow (box-shadow)\n       · secondary CTA always-on halo\n       · italic accent word in hero titles\n     --cta-secondary-fill is the filled background of secondary CTAs.\n     Theme overrides go through [data-theme=\"...\"] below. */\n  --cta-accent:          var(--color-cyan);\n  --cta-accent-soft:     rgba(107, 234, 249, 0.30);\n  --cta-secondary-fill:  linear-gradient(90deg, #56422D 0%, #494938 100%);\n  --cta-secondary-color: var(--color-white);\n  --cta-secondary-border:rgba(255, 255, 255, 0.18);\n}\n\n/* ─── Theme overlays ───────────────────────────────────────────\n   Set on <body data-theme=\"...\"> or any wrapper. Cascades into\n   every CTA, hover-rise effect, and accent text inside the scope.\n   Names are color families, not industries — pick whichever fits. */\n\n[data-theme=\"cyan\"] {\n  /* Default cyan — kept explicit so authors see the slot exists. */\n  --cta-accent:          #6BEAF9;\n  --cta-accent-soft:     rgba(107, 234, 249, 0.30);\n  --cta-secondary-fill:  linear-gradient(90deg, #56422D 0%, #494938 100%);\n}\n\n[data-theme=\"green\"] {\n  --cta-accent:          #7DDE8E;\n  --cta-accent-soft:     rgba(125, 222, 142, 0.28);\n  --cta-secondary-fill:  linear-gradient(90deg, #1E4D2F 0%, #2D5A3D 100%);\n}\n\n[data-theme=\"orange\"] {\n  --cta-accent:          #FFA72C;\n  --cta-accent-soft:     rgba(255, 167, 44, 0.28);\n  --cta-secondary-fill:  linear-gradient(90deg, #5A3D1E 0%, #6B4A28 100%);\n}\n\n[data-theme=\"red\"] {\n  --cta-accent:          #FF6C56;\n  --cta-accent-soft:     rgba(255, 108, 86, 0.28);\n  --cta-secondary-fill:  linear-gradient(90deg, #5A2D28 0%, #6B3A35 100%);\n}\n\n[data-theme=\"forest\"] {\n  --cta-accent:          #7DDE8E;\n  --cta-accent-soft:     rgba(125, 222, 142, 0.28);\n  --cta-secondary-fill:  linear-gradient(90deg, #234728 0%, #345937 100%);\n}\n\n[data-theme=\"blue\"] {\n  --cta-accent:          #4F95FF;\n  --cta-accent-soft:     rgba(79, 149, 255, 0.28);\n  --cta-secondary-fill:  linear-gradient(90deg, #1E3850 0%, #2C4A66 100%);\n}\n\n[data-theme=\"amber\"] {\n  --cta-accent:          #FFA72C;\n  --cta-accent-soft:     rgba(255, 167, 44, 0.28);\n  --cta-secondary-fill:  linear-gradient(90deg, #4D3D1E 0%, #5C4A28 100%);\n}\n\n[data-theme=\"magenta\"] {\n  --cta-accent:          #EF5CFF;\n  --cta-accent-soft:     rgba(239, 92, 255, 0.28);\n  --cta-secondary-fill:  linear-gradient(90deg, #3A2858 0%, #4B3370 100%);\n}\n\n/* ─── A11y · reduced motion ────────────────────────────────────\n   Honour user's OS-level motion preference across every block. */\n@media (prefers-reduced-motion: reduce) {\n  *,\n  *::before,\n  *::after {\n    animation-duration: 0.001ms !important;\n    animation-iteration-count: 1 !important;\n    transition-duration: 0.001ms !important;\n    scroll-behavior: auto !important;\n  }\n}\n\n/* generated root CSS: 00-tokens/composition.css */\n/* generated preview/CMS composition glue */\n*, *::before, *::after {\n  box-sizing: border-box;\n}\nhtml {\n  min-width: 320px;\n  scroll-behavior: smooth;\n}\nbody {\n  margin: 0;\n  position: relative;\n  min-width: 320px;\n  background: var(--color-bg);\n  color: var(--color-text);\n  font-family: var(--font-family);\n}\n:root {\n  --composition-section-y: clamp(4rem, 7vw, 6.5rem);\n  --composition-section-y-compact: clamp(2.5rem, 5vw, 4rem);\n}\n\n/* Default vertical rhythm for every composed section.\n   Blocks must NOT declare padding-block on their root class;\n   the composer owns inter-section spacing.\n\n   For section-wide decorative backgrounds (ambient tints, full-width\n   surface colors): blocks declare the bg on the wrapper class\n   `.composition-section--<block-id-slug>` so the fill extends through\n   the composer-managed padding-block. The inner block class then owns\n   content layout only. See hero.operational-diagram and\n   mobile.4-card-glyph for canonical examples. */\n.composition-section {\n  position: relative;\n  padding-block: var(--composition-section-y);\n}\n\n/* No edge-zero overrides: the hero needs padding-block-start so its\n   content clears the sticky header (and the absolute-positioned\n   breadcrumb chip that hangs from it), and the last section needs\n   padding-block-end so it breathes above the footer. The default\n   padding-block above gives both naturally. */\n\n/* Closing accent sections are tighter at the top, with full rhythm\n   at the bottom so the footer gets visual room. */\n.composition-section--decorative-callout-band,\n.composition-section--decorative-final-cta {\n  padding-block: var(--composition-section-y-compact) var(--composition-section-y);\n}\n/* ─── Wrappers ───────────────────────────────────────────────\n   Global wrapper primitive used by composer-injected markup AND\n   by block-internal layouts that opt into `.container`. Block\n   stylesheets may still redeclare `.<block> .container { … }`\n   with the same calc — those are no-op duplicates but harmless. */\n.container {\n  max-width: calc(var(--container-width) + var(--container-padding-x) * 2);\n  margin-inline: auto;\n  padding-inline: var(--container-padding-x);\n}\n\n/* Narrow modifier for accent strips (callout, narrative). */\n.container--narrow {\n  max-width: calc(1100px + var(--container-padding-x) * 2);\n}\na {\n  color: inherit;\n}\nbutton,\ninput,\ntextarea,\nselect {\n  font: inherit;\n}\n@media (max-width: 640px) {\n  :root {\n    --composition-section-y: 3.5rem;\n    --composition-section-y-compact: 2.5rem;\n  }\n}\n",
+  "javascript": "document.addEventListener('DOMContentLoaded', function () {\n  if (document.body) {\n    document.body.setAttribute('dir', document.documentElement.getAttribute('dir') || 'ltr');\n  }\n});\n\ndocument.addEventListener('DOMContentLoaded', function () {\n  const FALLBACK_LOCALES = [\n    'en', 'zh', 'es', 'de', 'fr', 'ja', 'pt', 'ru', 'it', 'nl', 'pl', 'tr',\n    'ar', 'ko', 'uk', 'cs', 'el', 'da', 'sv', 'nb', 'vi', 'fa', 'he', 'hi',\n    'ms', 'et', 'sl', 'kk', 'th', 'id', 'ro', 'hu', 'fi', 'bg', 'hr', 'sk',\n    'lt', 'lv'\n  ];\n\n  let supported = FALLBACK_LOCALES.slice();\n\n  function getPathLocale(pathname) {\n    const seg = pathname.split('/')[1];\n    return supported.includes(seg) ? seg : null;\n  }\n\n  function stripLocale(pathname) {\n    const parts = pathname.split('/');\n    if (supported.includes(parts[1])) parts.splice(1, 1);\n    return parts.join('/') || '/';\n  }\n\n  function addLocale(pathname, loc) {\n    if (!loc) return pathname;\n    const clean = stripLocale(pathname);\n    return '/' + loc + (clean === '/' ? '' : clean);\n  }\n\n  function rewriteLinks() {\n    const locale = getPathLocale(window.location.pathname);\n\n    document.querySelectorAll('a[href]').forEach(function (a) {\n      if (a.closest('.locale-selector')) return;\n\n      const href = a.getAttribute('href');\n      if (!href || href.startsWith('mailto:') || href.startsWith('tel:')) return;\n\n      if (href === '#') {\n        a.addEventListener('click', e => e.preventDefault());\n        a.setAttribute('aria-disabled', 'true');\n        a.setAttribute('tabindex', '-1');\n        return;\n      }\n\n      if (href.startsWith('#')) return;\n\n      let url;\n      try {\n        url = new URL(href, window.location.href);\n      } catch (err) {\n        return;\n      }\n      if (url.origin !== window.location.origin) return;\n\n      if (locale) {\n        url.pathname = addLocale(url.pathname, locale);\n        a.setAttribute('href', url.pathname + url.search + url.hash);\n      }\n    });\n  }\n\n  fetch('/core/api/language/active.json', {\n    method: 'POST',\n    headers: { 'accept': 'application/json', 'Content-Type': 'application/json' },\n    body: JSON.stringify([{ name: 'code2' }])\n  })\n    .then(res => (res.ok ? res.json() : null))\n    .then(langs => {\n      if (Array.isArray(langs) && langs.length) {\n        supported = langs.map(l => (l.code2 || '').toLowerCase()).filter(Boolean);\n      }\n    })\n    .catch(() => { /* остаётся FALLBACK_LOCALES */ })\n    .finally(rewriteLinks);\n});",
+  "parameters": [
+    {
+      "code": "ROOT_META_TITLE",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Meta Title",
+          "DESCRIPTION": "SEO title for the generated landing page."
+        }
+      },
+      "value": "Field Service Software for Intelligent Field Operations | ServiceWand"
+    },
+    {
+      "code": "ROOT_META_DESCRIPTION",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Meta Description",
+          "DESCRIPTION": "SEO meta description for the generated landing page."
+        }
+      },
+      "value": "ServiceWand is cloud-based field service software for scheduling, dispatching, routing, mobile teams, customer workflows, billing, reporting, and AI-assisted field operations."
+    },
+    {
+      "code": "SEO_LD_SCHEMA",
+      "type": "LOCALIZED_JSON_OBJECT",
+      "nls": {
+        "en": {
+          "NAME": "SEO LD Schema",
+          "DESCRIPTION": "Localized JSON-LD structured data object rendered in the root head as application/ld+json."
+        }
+      },
+      "value": {
+        "en": {
+          "@context": "https://schema.org",
+          "@type": "WebPage",
+          "name": "Field Service Landing"
+        }
+      }
+    },
+    {
+      "code": "FAVICON_IMG",
+      "type": "IMAGE",
+      "nls": {
+        "en": {
+          "NAME": "Favicon Image",
+          "DESCRIPTION": "Default favicon image asset rendered by the root template."
+        }
+      },
+      "value": "77084eeb-daa5-47ee-8dd7-fad0fbbd0806"
+    },
+    {
+      "code": "FAVICON_IMG_NAME",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Favicon Image Name",
+          "DESCRIPTION": "Default favicon image file name rendered by the root template."
+        }
+      },
+      "value": "SW_emblem_g.svg"
+    },
+    {
+      "code": "FAVICON_LIGHT_IMG",
+      "type": "IMAGE",
+      "nls": {
+        "en": {
+          "NAME": "Light Favicon Image",
+          "DESCRIPTION": "Optional light color-scheme favicon image asset reserved by the production root template."
+        }
+      },
+      "value": "77084eeb-daa5-47ee-8dd7-fad0fbbd0806"
+    },
+    {
+      "code": "FAVICON_LIGHT_IMG_NAME",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Light Favicon Image Name",
+          "DESCRIPTION": "Optional light color-scheme favicon image file name reserved by the production root template."
+        }
+      },
+      "value": "SW_emblem_g.svg"
+    },
+    {
+      "code": "FAVICON_DARK_IMG",
+      "type": "IMAGE",
+      "nls": {
+        "en": {
+          "NAME": "Dark Favicon Image",
+          "DESCRIPTION": "Optional dark color-scheme favicon image asset reserved by the production root template."
+        }
+      },
+      "value": "77084eeb-daa5-47ee-8dd7-fad0fbbd0806"
+    },
+    {
+      "code": "FAVICON_DARK_IMG_NAME",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Dark Favicon Image Name",
+          "DESCRIPTION": "Optional dark color-scheme favicon image file name reserved by the production root template."
+        }
+      },
+      "value": "SW_emblem_g.svg"
+    }
+  ]
+}

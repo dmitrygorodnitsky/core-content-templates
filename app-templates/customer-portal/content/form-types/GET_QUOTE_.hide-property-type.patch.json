@@ -1,0 +1,18 @@
+{
+  "service": "core-cms",
+  "endpoint": "form-type",
+  "typeCode": "GET_QUOTE_",
+  "changeAttributes": [
+    {
+      "code": "SELECT_YOUR_PROPERTY_TYPE",
+      "set": { "required": false }
+    }
+  ],
+  "moveRows": [
+    {
+      "code": "SELECT_YOUR_PROPERTY_TYPE",
+      "group": "EA849F15_9108_455F_9A05_F26BED67E5CD",
+      "visible": false
+    }
+  ]
+}

@@ -1,0 +1,1335 @@
+{
+  "schemaVersion": 1,
+  "comparisonMode": "strict",
+  "threshold": 0,
+  "rows": [
+    {
+      "width": 390,
+      "surface": "appointment",
+      "height": 723,
+      "changed": 0,
+      "changedPct": 0,
+      "rms": 0,
+      "dimensionMismatch": false,
+      "dom": {
+        "reference": {
+          "appointment-detail": {
+            "x": 0,
+            "y": 80,
+            "width": 390,
+            "height": 722.703125,
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(29, 29, 31)",
+            "borderRadius": "0px"
+          },
+          "appointment-detail-card": {
+            "x": 22,
+            "y": 235.125,
+            "width": 346,
+            "height": 456.390625,
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(255, 255, 255, 0.5)",
+            "border": "1px solid rgba(255, 255, 255, 0.7)",
+            "borderRadius": "22px"
+          }
+        },
+        "implementation": {
+          "appointment-detail": {
+            "x": 0,
+            "y": 80,
+            "width": 390,
+            "height": 722.703125,
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(29, 29, 31)",
+            "borderRadius": "0px"
+          },
+          "appointment-detail-card": {
+            "x": 22,
+            "y": 235.125,
+            "width": 346,
+            "height": 456.390625,
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(255, 255, 255, 0.5)",
+            "border": "1px solid rgba(255, 255, 255, 0.7)",
+            "borderRadius": "22px"
+          }
+        }
+      },
+      "reference": "docs/stream-tasks/calm-harbor-customer-portal-full-activation-program/evidence/W1-wave16-visual/reference-appointment-390.png",
+      "implementation": "docs/stream-tasks/calm-harbor-customer-portal-full-activation-program/evidence/W1-wave16-visual/implementation-appointment-390.png",
+      "diff": "docs/stream-tasks/calm-harbor-customer-portal-full-activation-program/evidence/W1-wave16-visual/diff-appointment-390.png"
+    },
+    {
+      "width": 359,
+      "surface": "booking",
+      "height": 1000,
+      "changed": 0,
+      "changedPct": 0,
+      "rms": 0,
+      "dimensionMismatch": false,
+      "dom": {
+        "reference": {
+          "booking-drawer": {
+            "x": 31.203125,
+            "y": 0,
+            "width": 358.796875,
+            "height": 1000,
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgb(255, 255, 255)",
+            "border": "0px none rgb(29, 29, 31)",
+            "borderRadius": "0px"
+          },
+          "booking-flow": {
+            "x": 53.203125,
+            "y": 74,
+            "width": 314.796875,
+            "height": 308.5,
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(29, 29, 31)",
+            "borderRadius": "0px"
+          }
+        },
+        "implementation": {
+          "booking-drawer": {
+            "x": 31.203125,
+            "y": 0,
+            "width": 358.796875,
+            "height": 1000,
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgb(255, 255, 255)",
+            "border": "0px none rgb(29, 29, 31)",
+            "borderRadius": "0px"
+          },
+          "booking-flow": {
+            "x": 53.203125,
+            "y": 74,
+            "width": 314.796875,
+            "height": 308.5,
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(29, 29, 31)",
+            "borderRadius": "0px"
+          }
+        }
+      },
+      "reference": "docs/stream-tasks/calm-harbor-customer-portal-full-activation-program/evidence/W1-wave16-visual/reference-booking-390.png",
+      "implementation": "docs/stream-tasks/calm-harbor-customer-portal-full-activation-program/evidence/W1-wave16-visual/implementation-booking-390.png",
+      "diff": "docs/stream-tasks/calm-harbor-customer-portal-full-activation-program/evidence/W1-wave16-visual/diff-booking-390.png"
+    },
+    {
+      "width": 390,
+      "surface": "plans",
+      "height": 1429,
+      "changed": 0,
+      "changedPct": 0,
+      "rms": 0,
+      "dimensionMismatch": false,
+      "dom": {
+        "reference": {
+          "spa-catalog": {
+            "x": 0,
+            "y": 0,
+            "width": 390,
+            "height": 1428.90625,
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(29, 29, 31)",
+            "borderRadius": "0px"
+          },
+          "plan-offer-list": {
+            "x": 22,
+            "y": 623.1875,
+            "width": 346,
+            "height": 622.75,
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(29, 29, 31)",
+            "borderRadius": "0px"
+          },
+          "plan-offer-card": {
+            "x": 22,
+            "y": 623.1875,
+            "width": 346,
+            "height": 303.375,
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(255, 255, 255, 0.5)",
+            "border": "1px solid rgba(255, 255, 255, 0.7)",
+            "borderRadius": "22px"
+          }
+        },
+        "implementation": {
+          "spa-catalog": {
+            "x": 0,
+            "y": 0,
+            "width": 390,
+            "height": 1428.90625,
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(29, 29, 31)",
+            "borderRadius": "0px"
+          },
+          "plan-offer-list": {
+            "x": 22,
+            "y": 623.1875,
+            "width": 346,
+            "height": 622.75,
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(29, 29, 31)",
+            "borderRadius": "0px"
+          },
+          "plan-offer-card": {
+            "x": 22,
+            "y": 623.1875,
+            "width": 346,
+            "height": 303.375,
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(255, 255, 255, 0.5)",
+            "border": "1px solid rgba(255, 255, 255, 0.7)",
+            "borderRadius": "22px"
+          }
+        }
+      },
+      "reference": "docs/stream-tasks/calm-harbor-customer-portal-full-activation-program/evidence/W1-wave16-visual/reference-plans-390.png",
+      "implementation": "docs/stream-tasks/calm-harbor-customer-portal-full-activation-program/evidence/W1-wave16-visual/implementation-plans-390.png",
+      "diff": "docs/stream-tasks/calm-harbor-customer-portal-full-activation-program/evidence/W1-wave16-visual/diff-plans-390.png"
+    },
+    {
+      "width": 390,
+      "surface": "profile",
+      "height": 778,
+      "changed": 0,
+      "changedPct": 0,
+      "rms": 0,
+      "dimensionMismatch": false,
+      "dom": {
+        "reference": {
+          "spa-profile": {
+            "x": 0,
+            "y": 80,
+            "width": 390,
+            "height": 777.3125,
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(29, 29, 31)",
+            "borderRadius": "0px"
+          },
+          "spa-profile-contact": {
+            "x": 22,
+            "y": 235.125,
+            "width": 346,
+            "height": 213,
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(255, 255, 255, 0.55)",
+            "border": "1px solid rgba(255, 255, 255, 0.7)",
+            "borderRadius": "22px"
+          },
+          "spa-profile-preferences": {
+            "x": 22,
+            "y": 466.125,
+            "width": 346,
+            "height": 276,
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(255, 255, 255, 0.55)",
+            "border": "1px solid rgba(255, 255, 255, 0.7)",
+            "borderRadius": "22px"
+          }
+        },
+        "implementation": {
+          "spa-profile": {
+            "x": 0,
+            "y": 80,
+            "width": 390,
+            "height": 777.3125,
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(29, 29, 31)",
+            "borderRadius": "0px"
+          },
+          "spa-profile-contact": {
+            "x": 22,
+            "y": 235.125,
+            "width": 346,
+            "height": 213,
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(255, 255, 255, 0.55)",
+            "border": "1px solid rgba(255, 255, 255, 0.7)",
+            "borderRadius": "22px"
+          },
+          "spa-profile-preferences": {
+            "x": 22,
+            "y": 466.125,
+            "width": 346,
+            "height": 276,
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(255, 255, 255, 0.55)",
+            "border": "1px solid rgba(255, 255, 255, 0.7)",
+            "borderRadius": "22px"
+          }
+        }
+      },
+      "reference": "docs/stream-tasks/calm-harbor-customer-portal-full-activation-program/evidence/W1-wave16-visual/reference-profile-390.png",
+      "implementation": "docs/stream-tasks/calm-harbor-customer-portal-full-activation-program/evidence/W1-wave16-visual/implementation-profile-390.png",
+      "diff": "docs/stream-tasks/calm-harbor-customer-portal-full-activation-program/evidence/W1-wave16-visual/diff-profile-390.png"
+    },
+    {
+      "width": 768,
+      "surface": "appointment",
+      "height": 642,
+      "changed": 0,
+      "changedPct": 0,
+      "rms": 0,
+      "dimensionMismatch": false,
+      "dom": {
+        "reference": {
+          "appointment-detail": {
+            "x": 0,
+            "y": 80,
+            "width": 768,
+            "height": 641.421875,
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(29, 29, 31)",
+            "borderRadius": "0px"
+          },
+          "appointment-detail-card": {
+            "x": 22,
+            "y": 222.03125,
+            "width": 724,
+            "height": 406.796875,
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(255, 255, 255, 0.5)",
+            "border": "1px solid rgba(255, 255, 255, 0.7)",
+            "borderRadius": "22px"
+          }
+        },
+        "implementation": {
+          "appointment-detail": {
+            "x": 0,
+            "y": 80,
+            "width": 768,
+            "height": 641.421875,
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(29, 29, 31)",
+            "borderRadius": "0px"
+          },
+          "appointment-detail-card": {
+            "x": 22,
+            "y": 222.03125,
+            "width": 724,
+            "height": 406.796875,
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(255, 255, 255, 0.5)",
+            "border": "1px solid rgba(255, 255, 255, 0.7)",
+            "borderRadius": "22px"
+          }
+        }
+      },
+      "reference": "docs/stream-tasks/calm-harbor-customer-portal-full-activation-program/evidence/W1-wave16-visual/reference-appointment-768.png",
+      "implementation": "docs/stream-tasks/calm-harbor-customer-portal-full-activation-program/evidence/W1-wave16-visual/implementation-appointment-768.png",
+      "diff": "docs/stream-tasks/calm-harbor-customer-portal-full-activation-program/evidence/W1-wave16-visual/diff-appointment-768.png"
+    },
+    {
+      "width": 440,
+      "surface": "booking",
+      "height": 1000,
+      "changed": 0,
+      "changedPct": 0,
+      "rms": 0,
+      "dimensionMismatch": false,
+      "dom": {
+        "reference": {
+          "booking-drawer": {
+            "x": 328,
+            "y": 0,
+            "width": 440,
+            "height": 1000,
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgb(255, 255, 255)",
+            "border": "0px none rgb(29, 29, 31)",
+            "borderRadius": "0px"
+          },
+          "booking-flow": {
+            "x": 350,
+            "y": 74,
+            "width": 396,
+            "height": 308.5,
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(29, 29, 31)",
+            "borderRadius": "0px"
+          }
+        },
+        "implementation": {
+          "booking-drawer": {
+            "x": 328,
+            "y": 0,
+            "width": 440,
+            "height": 1000,
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgb(255, 255, 255)",
+            "border": "0px none rgb(29, 29, 31)",
+            "borderRadius": "0px"
+          },
+          "booking-flow": {
+            "x": 350,
+            "y": 74,
+            "width": 396,
+            "height": 308.5,
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(29, 29, 31)",
+            "borderRadius": "0px"
+          }
+        }
+      },
+      "reference": "docs/stream-tasks/calm-harbor-customer-portal-full-activation-program/evidence/W1-wave16-visual/reference-booking-768.png",
+      "implementation": "docs/stream-tasks/calm-harbor-customer-portal-full-activation-program/evidence/W1-wave16-visual/implementation-booking-768.png",
+      "diff": "docs/stream-tasks/calm-harbor-customer-portal-full-activation-program/evidence/W1-wave16-visual/diff-booking-768.png"
+    },
+    {
+      "width": 768,
+      "surface": "plans",
+      "height": 1317,
+      "changed": 0,
+      "changedPct": 0,
+      "rms": 0,
+      "dimensionMismatch": false,
+      "dom": {
+        "reference": {
+          "spa-catalog": {
+            "x": 0,
+            "y": 0,
+            "width": 768,
+            "height": 1316.3125,
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(29, 29, 31)",
+            "borderRadius": "0px"
+          },
+          "plan-offer-list": {
+            "x": 22,
+            "y": 531.1875,
+            "width": 724,
+            "height": 622.75,
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(29, 29, 31)",
+            "borderRadius": "0px"
+          },
+          "plan-offer-card": {
+            "x": 22,
+            "y": 531.1875,
+            "width": 724,
+            "height": 303.375,
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(255, 255, 255, 0.5)",
+            "border": "1px solid rgba(255, 255, 255, 0.7)",
+            "borderRadius": "22px"
+          }
+        },
+        "implementation": {
+          "spa-catalog": {
+            "x": 0,
+            "y": 0,
+            "width": 768,
+            "height": 1316.3125,
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(29, 29, 31)",
+            "borderRadius": "0px"
+          },
+          "plan-offer-list": {
+            "x": 22,
+            "y": 531.1875,
+            "width": 724,
+            "height": 622.75,
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(29, 29, 31)",
+            "borderRadius": "0px"
+          },
+          "plan-offer-card": {
+            "x": 22,
+            "y": 531.1875,
+            "width": 724,
+            "height": 303.375,
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(255, 255, 255, 0.5)",
+            "border": "1px solid rgba(255, 255, 255, 0.7)",
+            "borderRadius": "22px"
+          }
+        }
+      },
+      "reference": "docs/stream-tasks/calm-harbor-customer-portal-full-activation-program/evidence/W1-wave16-visual/reference-plans-768.png",
+      "implementation": "docs/stream-tasks/calm-harbor-customer-portal-full-activation-program/evidence/W1-wave16-visual/implementation-plans-768.png",
+      "diff": "docs/stream-tasks/calm-harbor-customer-portal-full-activation-program/evidence/W1-wave16-visual/diff-plans-768.png"
+    },
+    {
+      "width": 768,
+      "surface": "profile",
+      "height": 746,
+      "changed": 0,
+      "changedPct": 0,
+      "rms": 0,
+      "dimensionMismatch": false,
+      "dom": {
+        "reference": {
+          "spa-profile": {
+            "x": 0,
+            "y": 80,
+            "width": 768,
+            "height": 745.625,
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(29, 29, 31)",
+            "borderRadius": "0px"
+          },
+          "spa-profile-contact": {
+            "x": 22,
+            "y": 222.03125,
+            "width": 724,
+            "height": 213,
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(255, 255, 255, 0.55)",
+            "border": "1px solid rgba(255, 255, 255, 0.7)",
+            "borderRadius": "22px"
+          },
+          "spa-profile-preferences": {
+            "x": 22,
+            "y": 453.03125,
+            "width": 724,
+            "height": 276,
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(255, 255, 255, 0.55)",
+            "border": "1px solid rgba(255, 255, 255, 0.7)",
+            "borderRadius": "22px"
+          }
+        },
+        "implementation": {
+          "spa-profile": {
+            "x": 0,
+            "y": 80,
+            "width": 768,
+            "height": 745.625,
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(29, 29, 31)",
+            "borderRadius": "0px"
+          },
+          "spa-profile-contact": {
+            "x": 22,
+            "y": 222.03125,
+            "width": 724,
+            "height": 213,
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(255, 255, 255, 0.55)",
+            "border": "1px solid rgba(255, 255, 255, 0.7)",
+            "borderRadius": "22px"
+          },
+          "spa-profile-preferences": {
+            "x": 22,
+            "y": 453.03125,
+            "width": 724,
+            "height": 276,
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(255, 255, 255, 0.55)",
+            "border": "1px solid rgba(255, 255, 255, 0.7)",
+            "borderRadius": "22px"
+          }
+        }
+      },
+      "reference": "docs/stream-tasks/calm-harbor-customer-portal-full-activation-program/evidence/W1-wave16-visual/reference-profile-768.png",
+      "implementation": "docs/stream-tasks/calm-harbor-customer-portal-full-activation-program/evidence/W1-wave16-visual/implementation-profile-768.png",
+      "diff": "docs/stream-tasks/calm-harbor-customer-portal-full-activation-program/evidence/W1-wave16-visual/diff-profile-768.png"
+    },
+    {
+      "width": 880,
+      "surface": "appointment",
+      "height": 642,
+      "changed": 0,
+      "changedPct": 0,
+      "rms": 0,
+      "dimensionMismatch": false,
+      "dom": {
+        "reference": {
+          "appointment-detail": {
+            "x": 150,
+            "y": 80,
+            "width": 880,
+            "height": 641.421875,
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(29, 29, 31)",
+            "borderRadius": "0px"
+          },
+          "appointment-detail-card": {
+            "x": 172,
+            "y": 222.03125,
+            "width": 836,
+            "height": 406.796875,
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(255, 255, 255, 0.5)",
+            "border": "1px solid rgba(255, 255, 255, 0.7)",
+            "borderRadius": "22px"
+          }
+        },
+        "implementation": {
+          "appointment-detail": {
+            "x": 150,
+            "y": 80,
+            "width": 880,
+            "height": 641.421875,
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(29, 29, 31)",
+            "borderRadius": "0px"
+          },
+          "appointment-detail-card": {
+            "x": 172,
+            "y": 222.03125,
+            "width": 836,
+            "height": 406.796875,
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(255, 255, 255, 0.5)",
+            "border": "1px solid rgba(255, 255, 255, 0.7)",
+            "borderRadius": "22px"
+          }
+        }
+      },
+      "reference": "docs/stream-tasks/calm-harbor-customer-portal-full-activation-program/evidence/W1-wave16-visual/reference-appointment-1180.png",
+      "implementation": "docs/stream-tasks/calm-harbor-customer-portal-full-activation-program/evidence/W1-wave16-visual/implementation-appointment-1180.png",
+      "diff": "docs/stream-tasks/calm-harbor-customer-portal-full-activation-program/evidence/W1-wave16-visual/diff-appointment-1180.png"
+    },
+    {
+      "width": 440,
+      "surface": "booking",
+      "height": 1000,
+      "changed": 0,
+      "changedPct": 0,
+      "rms": 0,
+      "dimensionMismatch": false,
+      "dom": {
+        "reference": {
+          "booking-drawer": {
+            "x": 740,
+            "y": 0,
+            "width": 440,
+            "height": 1000,
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgb(255, 255, 255)",
+            "border": "0px none rgb(29, 29, 31)",
+            "borderRadius": "0px"
+          },
+          "booking-flow": {
+            "x": 762,
+            "y": 74,
+            "width": 396,
+            "height": 308.5,
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(29, 29, 31)",
+            "borderRadius": "0px"
+          }
+        },
+        "implementation": {
+          "booking-drawer": {
+            "x": 740,
+            "y": 0,
+            "width": 440,
+            "height": 1000,
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgb(255, 255, 255)",
+            "border": "0px none rgb(29, 29, 31)",
+            "borderRadius": "0px"
+          },
+          "booking-flow": {
+            "x": 762,
+            "y": 74,
+            "width": 396,
+            "height": 308.5,
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(29, 29, 31)",
+            "borderRadius": "0px"
+          }
+        }
+      },
+      "reference": "docs/stream-tasks/calm-harbor-customer-portal-full-activation-program/evidence/W1-wave16-visual/reference-booking-1180.png",
+      "implementation": "docs/stream-tasks/calm-harbor-customer-portal-full-activation-program/evidence/W1-wave16-visual/implementation-booking-1180.png",
+      "diff": "docs/stream-tasks/calm-harbor-customer-portal-full-activation-program/evidence/W1-wave16-visual/diff-booking-1180.png"
+    },
+    {
+      "width": 1120,
+      "surface": "plans",
+      "height": 997,
+      "changed": 0,
+      "changedPct": 0,
+      "rms": 0,
+      "dimensionMismatch": false,
+      "dom": {
+        "reference": {
+          "spa-catalog": {
+            "x": 30,
+            "y": 3,
+            "width": 1120,
+            "height": 996.9375,
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(29, 29, 31)",
+            "borderRadius": "0px"
+          },
+          "plan-offer-list": {
+            "x": 52,
+            "y": 534.1875,
+            "width": 1076,
+            "height": 303.375,
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(29, 29, 31)",
+            "borderRadius": "0px"
+          },
+          "plan-offer-card": {
+            "x": 52,
+            "y": 534.1875,
+            "width": 530,
+            "height": 303.375,
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(255, 255, 255, 0.5)",
+            "border": "1px solid rgba(255, 255, 255, 0.7)",
+            "borderRadius": "22px"
+          }
+        },
+        "implementation": {
+          "spa-catalog": {
+            "x": 30,
+            "y": 3,
+            "width": 1120,
+            "height": 996.9375,
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(29, 29, 31)",
+            "borderRadius": "0px"
+          },
+          "plan-offer-list": {
+            "x": 52,
+            "y": 534.1875,
+            "width": 1076,
+            "height": 303.375,
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(29, 29, 31)",
+            "borderRadius": "0px"
+          },
+          "plan-offer-card": {
+            "x": 52,
+            "y": 534.1875,
+            "width": 530,
+            "height": 303.375,
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(255, 255, 255, 0.5)",
+            "border": "1px solid rgba(255, 255, 255, 0.7)",
+            "borderRadius": "22px"
+          }
+        }
+      },
+      "reference": "docs/stream-tasks/calm-harbor-customer-portal-full-activation-program/evidence/W1-wave16-visual/reference-plans-1180.png",
+      "implementation": "docs/stream-tasks/calm-harbor-customer-portal-full-activation-program/evidence/W1-wave16-visual/implementation-plans-1180.png",
+      "diff": "docs/stream-tasks/calm-harbor-customer-portal-full-activation-program/evidence/W1-wave16-visual/diff-plans-1180.png"
+    },
+    {
+      "width": 880,
+      "surface": "profile",
+      "height": 746,
+      "changed": 0,
+      "changedPct": 0,
+      "rms": 0,
+      "dimensionMismatch": false,
+      "dom": {
+        "reference": {
+          "spa-profile": {
+            "x": 150,
+            "y": 80,
+            "width": 880,
+            "height": 745.625,
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(29, 29, 31)",
+            "borderRadius": "0px"
+          },
+          "spa-profile-contact": {
+            "x": 172,
+            "y": 222.03125,
+            "width": 836,
+            "height": 213,
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(255, 255, 255, 0.55)",
+            "border": "1px solid rgba(255, 255, 255, 0.7)",
+            "borderRadius": "22px"
+          },
+          "spa-profile-preferences": {
+            "x": 172,
+            "y": 453.03125,
+            "width": 836,
+            "height": 276,
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(255, 255, 255, 0.55)",
+            "border": "1px solid rgba(255, 255, 255, 0.7)",
+            "borderRadius": "22px"
+          }
+        },
+        "implementation": {
+          "spa-profile": {
+            "x": 150,
+            "y": 80,
+            "width": 880,
+            "height": 745.625,
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(29, 29, 31)",
+            "borderRadius": "0px"
+          },
+          "spa-profile-contact": {
+            "x": 172,
+            "y": 222.03125,
+            "width": 836,
+            "height": 213,
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(255, 255, 255, 0.55)",
+            "border": "1px solid rgba(255, 255, 255, 0.7)",
+            "borderRadius": "22px"
+          },
+          "spa-profile-preferences": {
+            "x": 172,
+            "y": 453.03125,
+            "width": 836,
+            "height": 276,
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(255, 255, 255, 0.55)",
+            "border": "1px solid rgba(255, 255, 255, 0.7)",
+            "borderRadius": "22px"
+          }
+        }
+      },
+      "reference": "docs/stream-tasks/calm-harbor-customer-portal-full-activation-program/evidence/W1-wave16-visual/reference-profile-1180.png",
+      "implementation": "docs/stream-tasks/calm-harbor-customer-portal-full-activation-program/evidence/W1-wave16-visual/implementation-profile-1180.png",
+      "diff": "docs/stream-tasks/calm-harbor-customer-portal-full-activation-program/evidence/W1-wave16-visual/diff-profile-1180.png"
+    },
+    {
+      "width": 880,
+      "surface": "appointment",
+      "height": 642,
+      "changed": 0,
+      "changedPct": 0,
+      "rms": 0,
+      "dimensionMismatch": false,
+      "dom": {
+        "reference": {
+          "appointment-detail": {
+            "x": 280,
+            "y": 80,
+            "width": 880,
+            "height": 641.421875,
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(29, 29, 31)",
+            "borderRadius": "0px"
+          },
+          "appointment-detail-card": {
+            "x": 302,
+            "y": 222.03125,
+            "width": 836,
+            "height": 406.796875,
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(255, 255, 255, 0.5)",
+            "border": "1px solid rgba(255, 255, 255, 0.7)",
+            "borderRadius": "22px"
+          }
+        },
+        "implementation": {
+          "appointment-detail": {
+            "x": 280,
+            "y": 80,
+            "width": 880,
+            "height": 641.421875,
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(29, 29, 31)",
+            "borderRadius": "0px"
+          },
+          "appointment-detail-card": {
+            "x": 302,
+            "y": 222.03125,
+            "width": 836,
+            "height": 406.796875,
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(255, 255, 255, 0.5)",
+            "border": "1px solid rgba(255, 255, 255, 0.7)",
+            "borderRadius": "22px"
+          }
+        }
+      },
+      "reference": "docs/stream-tasks/calm-harbor-customer-portal-full-activation-program/evidence/W1-wave16-visual/reference-appointment-1440.png",
+      "implementation": "docs/stream-tasks/calm-harbor-customer-portal-full-activation-program/evidence/W1-wave16-visual/implementation-appointment-1440.png",
+      "diff": "docs/stream-tasks/calm-harbor-customer-portal-full-activation-program/evidence/W1-wave16-visual/diff-appointment-1440.png"
+    },
+    {
+      "width": 440,
+      "surface": "booking",
+      "height": 1000,
+      "changed": 0,
+      "changedPct": 0,
+      "rms": 0,
+      "dimensionMismatch": false,
+      "dom": {
+        "reference": {
+          "booking-drawer": {
+            "x": 1000,
+            "y": 0,
+            "width": 440,
+            "height": 1000,
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgb(255, 255, 255)",
+            "border": "0px none rgb(29, 29, 31)",
+            "borderRadius": "0px"
+          },
+          "booking-flow": {
+            "x": 1022,
+            "y": 74,
+            "width": 396,
+            "height": 308.5,
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(29, 29, 31)",
+            "borderRadius": "0px"
+          }
+        },
+        "implementation": {
+          "booking-drawer": {
+            "x": 1000,
+            "y": 0,
+            "width": 440,
+            "height": 1000,
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgb(255, 255, 255)",
+            "border": "0px none rgb(29, 29, 31)",
+            "borderRadius": "0px"
+          },
+          "booking-flow": {
+            "x": 1022,
+            "y": 74,
+            "width": 396,
+            "height": 308.5,
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(29, 29, 31)",
+            "borderRadius": "0px"
+          }
+        }
+      },
+      "reference": "docs/stream-tasks/calm-harbor-customer-portal-full-activation-program/evidence/W1-wave16-visual/reference-booking-1440.png",
+      "implementation": "docs/stream-tasks/calm-harbor-customer-portal-full-activation-program/evidence/W1-wave16-visual/implementation-booking-1440.png",
+      "diff": "docs/stream-tasks/calm-harbor-customer-portal-full-activation-program/evidence/W1-wave16-visual/diff-booking-1440.png"
+    },
+    {
+      "width": 1120,
+      "surface": "plans",
+      "height": 997,
+      "changed": 339,
+      "changedPct": 0.030358933944691215,
+      "rms": 0.11637475933799298,
+      "dimensionMismatch": false,
+      "dom": {
+        "reference": {
+          "spa-catalog": {
+            "x": 160,
+            "y": 3,
+            "width": 1120,
+            "height": 996.9375,
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(29, 29, 31)",
+            "borderRadius": "0px"
+          },
+          "plan-offer-list": {
+            "x": 182,
+            "y": 534.1875,
+            "width": 1076,
+            "height": 303.375,
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(29, 29, 31)",
+            "borderRadius": "0px"
+          },
+          "plan-offer-card": {
+            "x": 182,
+            "y": 534.1875,
+            "width": 530,
+            "height": 303.375,
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(255, 255, 255, 0.5)",
+            "border": "1px solid rgba(255, 255, 255, 0.7)",
+            "borderRadius": "22px"
+          }
+        },
+        "implementation": {
+          "spa-catalog": {
+            "x": 160,
+            "y": 3,
+            "width": 1120,
+            "height": 996.9375,
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(29, 29, 31)",
+            "borderRadius": "0px"
+          },
+          "plan-offer-list": {
+            "x": 182,
+            "y": 534.1875,
+            "width": 1076,
+            "height": 303.375,
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(29, 29, 31)",
+            "borderRadius": "0px"
+          },
+          "plan-offer-card": {
+            "x": 182,
+            "y": 534.1875,
+            "width": 530,
+            "height": 303.375,
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(255, 255, 255, 0.5)",
+            "border": "1px solid rgba(255, 255, 255, 0.7)",
+            "borderRadius": "22px"
+          }
+        }
+      },
+      "reference": "docs/stream-tasks/calm-harbor-customer-portal-full-activation-program/evidence/W1-wave16-visual/reference-plans-1440.png",
+      "implementation": "docs/stream-tasks/calm-harbor-customer-portal-full-activation-program/evidence/W1-wave16-visual/implementation-plans-1440.png",
+      "diff": "docs/stream-tasks/calm-harbor-customer-portal-full-activation-program/evidence/W1-wave16-visual/diff-plans-1440.png"
+    },
+    {
+      "width": 880,
+      "surface": "profile",
+      "height": 746,
+      "changed": 0,
+      "changedPct": 0,
+      "rms": 0,
+      "dimensionMismatch": false,
+      "dom": {
+        "reference": {
+          "spa-profile": {
+            "x": 280,
+            "y": 80,
+            "width": 880,
+            "height": 745.625,
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(29, 29, 31)",
+            "borderRadius": "0px"
+          },
+          "spa-profile-contact": {
+            "x": 302,
+            "y": 222.03125,
+            "width": 836,
+            "height": 213,
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(255, 255, 255, 0.55)",
+            "border": "1px solid rgba(255, 255, 255, 0.7)",
+            "borderRadius": "22px"
+          },
+          "spa-profile-preferences": {
+            "x": 302,
+            "y": 453.03125,
+            "width": 836,
+            "height": 276,
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(255, 255, 255, 0.55)",
+            "border": "1px solid rgba(255, 255, 255, 0.7)",
+            "borderRadius": "22px"
+          }
+        },
+        "implementation": {
+          "spa-profile": {
+            "x": 280,
+            "y": 80,
+            "width": 880,
+            "height": 745.625,
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(29, 29, 31)",
+            "borderRadius": "0px"
+          },
+          "spa-profile-contact": {
+            "x": 302,
+            "y": 222.03125,
+            "width": 836,
+            "height": 213,
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(255, 255, 255, 0.55)",
+            "border": "1px solid rgba(255, 255, 255, 0.7)",
+            "borderRadius": "22px"
+          },
+          "spa-profile-preferences": {
+            "x": 302,
+            "y": 453.03125,
+            "width": 836,
+            "height": 276,
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "lineHeight": "normal",
+            "color": "rgb(29, 29, 31)",
+            "background": "rgba(255, 255, 255, 0.55)",
+            "border": "1px solid rgba(255, 255, 255, 0.7)",
+            "borderRadius": "22px"
+          }
+        }
+      },
+      "reference": "docs/stream-tasks/calm-harbor-customer-portal-full-activation-program/evidence/W1-wave16-visual/reference-profile-1440.png",
+      "implementation": "docs/stream-tasks/calm-harbor-customer-portal-full-activation-program/evidence/W1-wave16-visual/implementation-profile-1440.png",
+      "diff": "docs/stream-tasks/calm-harbor-customer-portal-full-activation-program/evidence/W1-wave16-visual/diff-profile-1440.png"
+    }
+  ]
+}
