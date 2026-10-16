@@ -10,7 +10,7 @@
       "head": "b5e252b604ad732492b218098f257bf497097a28f69355e257736c578a5a213e",
       "html": "fbe3f2e4e13c9f9daea214d95852524ff52ccfc114611df4b3777960de8122ce",
       "css": "f60deb6fa3dc08bc8245b6ef54b5dcd70c28417d2c4727ee5e11e2dc311601ec",
-      "javascript": "222edf1340d88360d4cc41a4262d8254aff587d30b01ec93136985715f6c292b"
+      "javascript": "20655d16ca1c7099fab3371bda2b19e0d1354b2c6969623698cc1e65d4fac3f6"
     }
   },
   "runtime": {
@@ -145,14 +145,9 @@
       "AUTHORITY_CONFIRMED"
     ],
     "account": [
-      "BILLING_ADDRESS",
-      "REPRESENTATIVE_FIRST_NAME",
-      "REPRESENTATIVE_LAST_NAME",
-      "REPRESENTATIVE_JOB_TITLE",
-      "REPRESENTATIVE_EMAIL",
-      "REPRESENTATIVE_PHONE"
+      "LEGAL_ENTITY_TYPE"
     ],
-    "accountPrimaryEmail": "contacts[type PRIMARY].contactEntries[type EMAIL].value when exactly one is returned, otherwise the Account attribute REPRESENTATIVE_EMAIL"
+    "accountPrimaryEmail": "contacts[type PRIMARY].contactEntries[type EMAIL], PRIMARY then WORK then one unambiguous populated value"
   },
   "verified": [
     "On 2026-10-15 dev-1 agreement 208 was sent with both grants: the main one carried the quotes, the Account, the Document and the property's Address, the core-rm one the property Resource; through #property-token= the page read the Resource's ADDRESS and PROPERTY_PLAN and showed the address, and a link without it or with a revoked property token showed the address as unavailable without an error.",
@@ -169,7 +164,6 @@
     "Event metadata reaches the workflow hook, and required event attributes are enforced on this path (QUOTATION-PACKAGE-FLOW.md §9).",
     "The generated CLIENT_REVIEW_DOCUMENT package still needs a production CMS upload and browser acceptance with a fresh real link.",
     "The checking state, a returned details step and the portal invitation have not been exercised against dev-1. CLIENT_DETAILS_ERRORS is read as the details processor seed writes it.",
-    "No dev-1 link has returned the Account attributes BILLING_ADDRESS, REPRESENTATIVE_FIRST_NAME, REPRESENTATIVE_LAST_NAME, REPRESENTATIVE_JOB_TITLE, REPRESENTATIVE_EMAIL, REPRESENTATIVE_PHONE yet. Without them only the Legal Name pre-fills and the portal invitation names no sign-in address.",
     "Address suggestions, the billing address map and the plan map have not run against Google with this page's own key: REVIEW_MAPS_API_KEY is set by the operator in the page's PageContext, and the preview draws on a stub map."
   ],
   "constraints": [

@@ -94,7 +94,7 @@ const settle = () => new Promise((resolve) => setImmediate(resolve));
 const librariesLoaded = async () => { await settle(); await settle(); };
 const sizeWatchers = [];
 const sandbox = {
-  window: {},
+  window: { navigator: { language: "en" } },
   document: dom.document,
   ResizeObserver: function ResizeObserver(changed) {
     this.observe = (node) => { sizeWatchers.push({ node, changed }); };
@@ -460,7 +460,7 @@ assert.equal(dom.document.head.children.length, 0, "the keyless submission still
 
 const degradedPage = async (name, breakGoogle, schema) => {
   const page = createDom();
-  const context = { window: {}, document: page.document, setTimeout: sandbox.setTimeout, clearTimeout: sandbox.clearTimeout, fetch: sandbox.fetch };
+  const context = { window: { navigator: { language: "en" } }, document: page.document, setTimeout: sandbox.setTimeout, clearTimeout: sandbox.clearTimeout, fetch: sandbox.fetch };
   context.globalThis = context;
   vm.createContext(context);
   vm.runInContext(source, context);
@@ -1813,12 +1813,15 @@ for (const expectedStep of [1, 2]) {
   assert.equal(press(collect(servedMount, "btn--primary")[0], servedMount), true);
   assert.equal(servedForm.step, expectedStep);
 }
+sandbox.window.navigator.language = "fr-CA";
 assert.equal(press(collect(servedMount, "btn--primary")[0], servedMount), true);
 await settle();
 assert.equal(servedMount.dataset.state, "success", "the typed address lets the form submit");
+sandbox.window.navigator.language = "en";
 assert.equal(posted.length, postedBeforeServed + 1);
 assert.equal(posted[posted.length - 1].url, "https://forms.example/core-cms/api/form/submit.json");
 assert.deepEqual(JSON.parse(posted[posted.length - 1].init.body), {
+  metadata: { language: "fr-CA" },
   type: { id: 2 },
   organization: { id: 43 },
   attributes: {

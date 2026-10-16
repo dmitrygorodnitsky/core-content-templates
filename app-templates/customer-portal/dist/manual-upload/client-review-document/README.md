@@ -58,7 +58,6 @@ POST {apiBase}/core/i/{token}/document/event.json { id, event, metadata }
 - Event metadata reaches the workflow hook, and required event attributes are enforced on this path (QUOTATION-PACKAGE-FLOW.md §9).
 - The generated CLIENT_REVIEW_DOCUMENT package still needs a production CMS upload and browser acceptance with a fresh real link.
 - The checking state, a returned details step and the portal invitation have not been exercised against dev-1. CLIENT_DETAILS_ERRORS is read as the details processor seed writes it.
-- No dev-1 link has returned the Account attributes BILLING_ADDRESS, REPRESENTATIVE_FIRST_NAME, REPRESENTATIVE_LAST_NAME, REPRESENTATIVE_JOB_TITLE, REPRESENTATIVE_EMAIL, REPRESENTATIVE_PHONE yet. Without them only the Legal Name pre-fills and the portal invitation names no sign-in address.
 - Address suggestions, the billing address map and the plan map have not run against Google with this page's own key: REVIEW_MAPS_API_KEY is set by the operator in the page's PageContext, and the preview draws on a stub map.
 
 ## Constraints

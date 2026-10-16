@@ -694,6 +694,7 @@
         type: { id: self.model.id },
         organization: { id: organizationId },
         attributes: attributes,
+        metadata: { language: String(global.navigator.language).replace(/_/g, "-") },
       }),
     }); })
       .then(function (response) {

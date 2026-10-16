@@ -381,6 +381,7 @@
       else state.phase = "loading";
       render();
       loading = readAll().then(function (input) {
+        if (normalizer.requestLocale) locale = normalizer.requestLocale(input, locale, contract);
         state.view = normalizer.reviewModel(input, { locale: locale, contract: contract });
         state.phase = "ready";
         state.closedAfter = "";

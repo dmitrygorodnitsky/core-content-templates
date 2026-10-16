@@ -290,7 +290,7 @@
   var CONTRACT_DETAILS_ATTRIBUTES = [
     attribute("LEGAL_NAME", "java.lang.String", true, "Legal Name"),
     attribute("CLIENT_TYPE", "java.lang.String", true, "Client Type", {
-      options: [choice("INDIVIDUAL", "Individual"), choice("ORGANIZATION", "Organization")],
+      options: [choice("INDIVIDUAL", "Individual"), choice("UNINCORPORATED_BUSINESS", "Unincorporated business"), choice("CORPORATE", "Corporation"), choice("ASSOCIATION", "Association"), choice("GOVERNMENT", "Government")],
     }),
     attribute("BILLING_ADDRESS", "java.lang.String", true, "Billing Address", { inputFormat: "address" }),
     attribute("REPRESENTATIVE_FIRST_NAME", "java.lang.String", true, "First Name"),
@@ -372,14 +372,6 @@
       providerContactEmail: "PROVIDER_CONTACT_EMAIL",
       providerLogo: "PROVIDER_LOGO",
       detailsErrors: "CLIENT_DETAILS_ERRORS",
-    },
-    accountPrefill: {
-      BILLING_ADDRESS: "BILLING_ADDRESS",
-      REPRESENTATIVE_FIRST_NAME: "REPRESENTATIVE_FIRST_NAME",
-      REPRESENTATIVE_LAST_NAME: "REPRESENTATIVE_LAST_NAME",
-      REPRESENTATIVE_JOB_TITLE: "REPRESENTATIVE_JOB_TITLE",
-      REPRESENTATIVE_EMAIL: "REPRESENTATIVE_EMAIL",
-      REPRESENTATIVE_PHONE: "REPRESENTATIVE_PHONE",
     },
     detailsReturn: {
       processingFailed: "PROCESSING_FAILED",
@@ -1161,34 +1153,17 @@
     var contacts = account && Array.isArray(account.contacts)
       ? account.contacts.filter(function (contact) { return contact && typeof contact === "object"; })
       : [];
-    var primary = contacts.filter(function (contact) { return text(contact.type && contact.type.code).toUpperCase() === "PRIMARY"; })[0];
-    return primary || contacts[0] || null;
+    return contacts.filter(function (contact) { return text(contact.type && contact.type.code).toUpperCase() === "PRIMARY"; }).sort(function(a,b){return Number(a.id)-Number(b.id);})[0] || null;
   }
 
   function contactEntry(contact, typeCode) {
-    var entries = contact && Array.isArray(contact.contactEntries) ? contact.contactEntries : [];
-    var found = entries.filter(function (entry) {
-      return entry && text(entry.type && entry.type.code).toUpperCase() === typeCode && text(entry.value);
-    })[0];
-    return found ? text(found.value) : "";
+    var entries = (contact && Array.isArray(contact.contactEntries) ? contact.contactEntries : []).filter(function(entry){return entry && text(entry.type && entry.type.code).toUpperCase() === typeCode && text(entry.value);});
+    function unique(rows) { var values=[]; rows.forEach(function(entry){var value=text(entry.value);if(values.indexOf(value)<0)values.push(value);});return values; }
+    for(var i=0;i<2;i++){var kind=["PRIMARY","WORK"][i];var selected=unique(entries.filter(function(entry){return text(entry.kind && entry.kind.code).toUpperCase() === kind;}));if(selected.length)return selected.length===1?selected[0]:"";}
+    var values=unique(entries);return values.length===1?values[0]:"";
   }
 
-  function accountAttributeText(account, contract, fieldCode) {
-    var codes = contract.accountPrefill;
-    return owns(codes, fieldCode) ? attributeText(account, codes[fieldCode]) : "";
-  }
-
-  function primaryEmail(account, contract) {
-    var found = [];
-    (account && Array.isArray(account.contacts) ? account.contacts : []).forEach(function (contact) {
-      if (!contact || typeof contact !== "object" || text(contact.type && contact.type.code).toUpperCase() !== "PRIMARY") return;
-      (Array.isArray(contact.contactEntries) ? contact.contactEntries : []).forEach(function (entry) {
-        var value = entry && text(entry.type && entry.type.code).toUpperCase() === "EMAIL" ? text(entry.value) : "";
-        if (value) found.push(value);
-      });
-    });
-    return found.length === 1 ? found[0] : accountAttributeText(account, contract, "REPRESENTATIVE_EMAIL");
-  }
+  function primaryEmail(account) { return contactEntry(primaryContact(account),"EMAIL"); }
 
   function formatAddress(address, locale) {
     if (!address || typeof address !== "object") return "";
@@ -1214,16 +1189,18 @@
     if (!account || typeof account !== "object") return values;
     var contact = primaryContact(account);
     var derived = {
+      CLIENT_TYPE: attributeText(account, "LEGAL_ENTITY_TYPE"),
       LEGAL_NAME: localizedName(account.nls, locale),
       BILLING_ADDRESS: billingAddress(account, locale),
       REPRESENTATIVE_FIRST_NAME: contact ? text(contact.firstName) : "",
+      REPRESENTATIVE_JOB_TITLE: contact ? text(contact.title) : "",
       REPRESENTATIVE_LAST_NAME: contact ? text(contact.lastName) : "",
       REPRESENTATIVE_EMAIL: contactEntry(contact, "EMAIL"),
       REPRESENTATIVE_PHONE: contactEntry(contact, "PHONE"),
     };
     fields.forEach(function (field) {
       if (field.kind === "boolean") return;
-      var value = accountAttributeText(account, contract, field.code) || text(derived[field.code]);
+      var value = text(derived[field.code]);
       if (!value) return;
       if (field.choices.length && !field.choices.some(function (option) { return option.value === value; })) return;
       values[field.code] = value;
@@ -1254,10 +1231,10 @@
     var owner = agreement && agreement[contract.rawShape.documentOwner];
     var contact = primaryContact(account);
     function stated(code) {
-      return attributeText(agreement, code) || accountAttributeText(account, contract, code);
+      return attributeText(agreement, code);
     }
     var typeField = fields.filter(function (field) { return field.code === "CLIENT_TYPE"; })[0];
-    var typeValue = stated("CLIENT_TYPE");
+    var typeValue = stated("CLIENT_TYPE") || attributeText(account,"LEGAL_ENTITY_TYPE");
     var typeChoice = typeField ? typeField.choices.filter(function (option) { return option.value === typeValue; })[0] : null;
     var first = stated("REPRESENTATIVE_FIRST_NAME") || (contact ? text(contact.firstName) : "");
     var last = stated("REPRESENTATIVE_LAST_NAME") || (contact ? text(contact.lastName) : "");
@@ -1273,7 +1250,7 @@
         clientType: typeChoice ? typeChoice.label : "",
         billingAddress: stated("BILLING_ADDRESS") || billingAddress(account, locale),
         representativeName: [first, last].filter(Boolean).join(" "),
-        representativeJobTitle: stated("REPRESENTATIVE_JOB_TITLE"),
+        representativeJobTitle: stated("REPRESENTATIVE_JOB_TITLE") || (contact ? text(contact.title) : ""),
         email: stated("REPRESENTATIVE_EMAIL") || contactEntry(contact, "EMAIL"),
         phone: stated("REPRESENTATIVE_PHONE") || contactEntry(contact, "PHONE"),
       },
@@ -1493,6 +1470,17 @@
     return idList(attributeValue(picked.row, contract.agreementAttributes.orders));
   }
 
+  function requestLocale(input, fallback, contract) {
+    var picked = pickAgreement(input.documents, contract);
+    var account = picked.row ? pickAccount(input.accounts, picked.row, contract) : null;
+    var contact = primaryContact(account);
+    var language = contact && contact.language;
+    var code = language && (language.code2 || language.id);
+    var aliases = { eng: "en", fre: "fr", fra: "fr", rus: "ru", spa: "es", heb: "he", kaz: "kk", chi: "zh", zho: "zh", ara: "ar" };
+    code = aliases[code] || code;
+    return typeof code === "string" && /^[a-z]{2,3}(?:-[A-Za-z0-9]+)*$/.test(code) ? code : fallback;
+  }
+
   function reviewModel(input, options) {
     var locale = options.locale;
     var contract = options.contract;
@@ -1618,6 +1606,7 @@
     pickAccount: pickAccount,
     packageOrderIds: packageOrderIds,
     propertyStatus: propertyStatus,
+    requestLocale: requestLocale,
     reviewModel: reviewModel,
   });
 })(typeof window !== "undefined" ? window : globalThis);
@@ -4191,6 +4180,7 @@
       else state.phase = "loading";
       render();
       loading = readAll().then(function (input) {
+        if (normalizer.requestLocale) locale = normalizer.requestLocale(input, locale, contract);
         state.view = normalizer.reviewModel(input, { locale: locale, contract: contract });
         state.phase = "ready";
         state.closedAfter = "";

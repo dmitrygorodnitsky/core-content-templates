@@ -33,7 +33,7 @@
   var CONTRACT_DETAILS_ATTRIBUTES = [
     attribute("LEGAL_NAME", "java.lang.String", true, "Legal Name"),
     attribute("CLIENT_TYPE", "java.lang.String", true, "Client Type", {
-      options: [choice("INDIVIDUAL", "Individual"), choice("ORGANIZATION", "Organization")],
+      options: [choice("INDIVIDUAL", "Individual"), choice("UNINCORPORATED_BUSINESS", "Unincorporated business"), choice("CORPORATE", "Corporation"), choice("ASSOCIATION", "Association"), choice("GOVERNMENT", "Government")],
     }),
     attribute("BILLING_ADDRESS", "java.lang.String", true, "Billing Address", { inputFormat: "address" }),
     attribute("REPRESENTATIVE_FIRST_NAME", "java.lang.String", true, "First Name"),
@@ -115,14 +115,6 @@
       providerContactEmail: "PROVIDER_CONTACT_EMAIL",
       providerLogo: "PROVIDER_LOGO",
       detailsErrors: "CLIENT_DETAILS_ERRORS",
-    },
-    accountPrefill: {
-      BILLING_ADDRESS: "BILLING_ADDRESS",
-      REPRESENTATIVE_FIRST_NAME: "REPRESENTATIVE_FIRST_NAME",
-      REPRESENTATIVE_LAST_NAME: "REPRESENTATIVE_LAST_NAME",
-      REPRESENTATIVE_JOB_TITLE: "REPRESENTATIVE_JOB_TITLE",
-      REPRESENTATIVE_EMAIL: "REPRESENTATIVE_EMAIL",
-      REPRESENTATIVE_PHONE: "REPRESENTATIVE_PHONE",
     },
     detailsReturn: {
       processingFailed: "PROCESSING_FAILED",

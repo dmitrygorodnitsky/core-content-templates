@@ -94,15 +94,6 @@
     "5.1.1 Either party may end it early with 30 days' written notice.",
   ].join("\n");
 
-  var ACCOUNT_PREFILL = {
-    BILLING_ADDRESS: "1500 Harbour Green Drive, Suite 210, Vancouver, BC V6C 3T8, Canada",
-    REPRESENTATIVE_FIRST_NAME: "Dana",
-    REPRESENTATIVE_LAST_NAME: "Reyes",
-    REPRESENTATIVE_JOB_TITLE: "Property Manager",
-    REPRESENTATIVE_EMAIL: "dana.reyes@harbourview.example",
-    REPRESENTATIVE_PHONE: "+1 604 555 0164",
-  };
-
   var PORTAL_URL = "https://portal.coastline-winter.example/sign-in";
 
   var PROVIDER_CONTACT = { phone: "+1 604 555 0199", email: "service@coastline-winter.example" };
@@ -287,7 +278,7 @@
     { id: "completion", label: "Completion — CLIENT_APPROVED, no portal address" },
     { id: "completion-portal", label: "Completion — ACTIVE, portal address configured" },
     { id: "completion-finishing", label: "Completion — ACTIVATION_FAILED, no primary email in the link" },
-    { id: "completion-attributes", label: "Completion — CLIENT_APPROVED, sign-in email from Account attributes" },
+    { id: "completion-attributes", label: "Completion — CLIENT_APPROVED, sign-in email from PRIMARY contact" },
     { id: "link-closed-portal", label: "Link expired or revoked — portal address configured" },
     { id: "reference-expired", label: "Expired agreement — read only" },
     { id: "closed-canceled", label: "Canceled — closed" },
@@ -376,7 +367,7 @@
         firstName: "Dana",
         middleName: null,
         lastName: "Reyes",
-        title: "PROPERTY_MANAGER",
+        title: "",
         type: { code: "PRIMARY", nls: { en: { NAME: "Primary" } } },
         contactEntries: [
           { value: "dana.reyes@harbourview.example", kind: { code: "WORK" }, type: { code: "EMAIL" } },
@@ -424,7 +415,7 @@
     if (withSnapshot) {
       attributes.EFFECTIVE_DATE = { value: "2026-10-20" };
       attributes.LEGAL_NAME = { value: "Harbourview Strata Corporation" };
-      attributes.CLIENT_TYPE = { value: "ORGANIZATION" };
+      attributes.CLIENT_TYPE = { value: "CORPORATE" };
       attributes.BILLING_ADDRESS = { value: "1500 Harbour Green Drive, Suite 210, Vancouver, BC V6C 3T8, Canada" };
       attributes.REPRESENTATIVE_FIRST_NAME = { value: "Dana" };
       attributes.REPRESENTATIVE_LAST_NAME = { value: "Reyes" };
@@ -596,7 +587,7 @@
       if (attribute.required && attribute.className !== "java.lang.Boolean" && !(typeof value === "string" && value.trim())) codes.push(attribute.code);
     });
     var type = String(metadata.CLIENT_TYPE || "").trim();
-    if (type && ["INDIVIDUAL", "ORGANIZATION"].indexOf(type.toUpperCase()) === -1) codes.push("CLIENT_TYPE_INVALID");
+    if (type && ["INDIVIDUAL", "UNINCORPORATED_BUSINESS", "CORPORATE", "ASSOCIATION", "GOVERNMENT"].indexOf(type.toUpperCase()) === -1) codes.push("CLIENT_TYPE_INVALID");
     var email = String(metadata.REPRESENTATIVE_EMAIL || "").trim();
     if (email && (email.indexOf("@") === -1 || email.charAt(0) === "@" || email.slice(-1) === "@")) codes.push("REPRESENTATIVE_EMAIL_INVALID");
     attributes.forEach(function (attribute) {
@@ -779,12 +770,8 @@
     return data;
   }
 
-  function attributedAccount(data) {
-    var codes = ns.contract.accountPrefill;
-    idOnlyAccount(data).accounts.forEach(function (row) {
-      var bucket = row.attributes[row.type.id];
-      Object.keys(codes).forEach(function (field) { bucket[codes[field]] = { value: ACCOUNT_PREFILL[field] }; });
-    });
+  function completeAccount(data) {
+    data.accounts.forEach(function(row){var full=accountRow(Boolean(row.user));row.contacts=full.contacts;row.addresses=full.addresses;row.contacts[0].title="Property Manager";});
     return data;
   }
 
@@ -1027,7 +1014,7 @@
     var maps = "";
     var approve = [["option.toggle", { id: 3102 }], ["option.intent", { id: 3102, kind: "approve" }]];
     var confirmBoth = [
-      ["details.choose", { code: "CLIENT_TYPE", value: "ORGANIZATION" }],
+      ["details.choose", { code: "CLIENT_TYPE", value: "CORPORATE" }],
       ["details.choose", { code: "INFORMATION_CONFIRMED", value: true }],
       ["details.choose", { code: "AUTHORITY_CONFIRMED", value: true }],
     ];
@@ -1159,30 +1146,30 @@
         data = quotationData("AWAITING_CLIENT_DETAILS", DECIDED);
         break;
       case "contract-details-attributes":
-        data = attributedAccount(quotationData("AWAITING_CLIENT_DETAILS", DECIDED));
+        data = completeAccount(quotationData("AWAITING_CLIENT_DETAILS", DECIDED));
         break;
       case "contract-details-ids-only":
         data = idOnlyAccount(quotationData("AWAITING_CLIENT_DETAILS", DECIDED));
         break;
       case "contract-details-billing-service":
-        data = attributedAccount(quotationData("AWAITING_CLIENT_DETAILS", DECIDED));
+        data = completeAccount(quotationData("AWAITING_CLIENT_DETAILS", DECIDED));
         steps = [["details.useAddress", { code: "BILLING_ADDRESS", value: ADDRESSES[430] }]];
         break;
       case "contract-details-maps":
-        data = withPlans(attributedAccount(quotationData("AWAITING_CLIENT_DETAILS", DECIDED)));
+        data = withPlans(completeAccount(quotationData("AWAITING_CLIENT_DETAILS", DECIDED)));
         maps = "stub";
         break;
       case "contract-details-address-missing":
-        data = withPlans(attributedAccount(quotationData("AWAITING_CLIENT_DETAILS", DECIDED)));
-        data.accounts[0].attributes[data.accounts[0].type.id].BILLING_ADDRESS = { value: "PO Box 4471, Station Terminal, Vancouver, BC V6B 3Z8" };
+        data = withPlans(completeAccount(quotationData("AWAITING_CLIENT_DETAILS", DECIDED)));
+        data.accounts[0].addresses.filter(function(link){return link.types.some(function(type){return type.code==="BILLING";});})[0].address = {address1:"PO Box 4471",city:"Station Terminal, Vancouver",postalCode:"V6B 3Z8",state:{code:"BC"}};
         maps = "stub";
         break;
       case "contract-details-plan-unavailable":
-        data = withPlans(attributedAccount(quotationData("AWAITING_CLIENT_DETAILS", DECIDED)), { 278: PLAN_IDS.broken });
+        data = withPlans(completeAccount(quotationData("AWAITING_CLIENT_DETAILS", DECIDED)), { 278: PLAN_IDS.broken });
         maps = "stub";
         break;
       case "contract-details-maps-failed":
-        data = withPlans(attributedAccount(quotationData("AWAITING_CLIENT_DETAILS", DECIDED)));
+        data = withPlans(completeAccount(quotationData("AWAITING_CLIENT_DETAILS", DECIDED)));
         maps = "fail";
         break;
       case "old-link":
@@ -1190,7 +1177,7 @@
         behavior.properties = "missing";
         break;
       case "property-link-closed":
-        data = withPlans(attributedAccount(quotationData("AWAITING_CLIENT_DETAILS", DECIDED)));
+        data = withPlans(completeAccount(quotationData("AWAITING_CLIENT_DETAILS", DECIDED)));
         behavior.properties = "unauthorized";
         maps = "stub";
         break;
@@ -1198,7 +1185,7 @@
         behavior.properties = "list-fails";
         break;
       case "address-list-failed":
-        data = withPlans(attributedAccount(quotationData("AWAITING_CLIENT_DETAILS", DECIDED)));
+        data = withPlans(completeAccount(quotationData("AWAITING_CLIENT_DETAILS", DECIDED)));
         behavior.addresses = "fail";
         maps = "stub";
         break;
@@ -1228,7 +1215,7 @@
         data = returnedData("CLIENT_TYPE,REPRESENTATIVE_EMAIL_INVALID,AUTHORITY_CONFIRMED");
         break;
       case "details-returned-attributes":
-        data = attributedAccount(returnedData("CLIENT_TYPE,REPRESENTATIVE_EMAIL_INVALID,AUTHORITY_CONFIRMED"));
+        data = completeAccount(returnedData("CLIENT_TYPE,REPRESENTATIVE_EMAIL_INVALID,AUTHORITY_CONFIRMED"));
         break;
       case "details-returned-processing":
         data = returnedData("PROCESSING_FAILED");
@@ -1341,7 +1328,7 @@
         portalUrl = PORTAL_URL;
         break;
       case "completion-attributes":
-        data = attributedAccount(agreementData("CLIENT_APPROVED", false));
+        data = completeAccount(agreementData("CLIENT_APPROVED", false));
         portalUrl = PORTAL_URL;
         break;
       case "link-closed-portal":
@@ -1413,7 +1400,7 @@
     detailsErrors: detailsErrors,
     priceLabelled: priceLabelled,
     idOnlyAccount: idOnlyAccount,
-    attributedAccount: attributedAccount,
+    completeAccount: completeAccount,
     numberedTerms: NUMBERED_TERMS,
     portalUrl: PORTAL_URL,
     providerContact: Object.freeze(Object.assign({}, PROVIDER_CONTACT)),
