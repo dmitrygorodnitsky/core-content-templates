@@ -1,6 +1,6 @@
 # Snow Vertical — Core Type and Flow Model
 
-Status: read from `dev-1` as organization `SNOWLIMITLESS`, 2026-08-31. Read-only;
+Status: initial inventory read from `dev-1` as organization `SNOWLIMITLESS`, 2026-08-31. Client Account Lifecycle bindings and snapshots refreshed 2026-10-18 after the authorized migration. The original inventory was read-only;
 nothing in Core was created, updated or transitioned to produce it.
 Reproduce with:
 
@@ -43,10 +43,10 @@ entity's **id** as its value. `et` lists the `entityTypes` the attribute accepts
 
 | type | id | owner | workflow | attributes |
 | --- | --- | --- | --- | --- |
-| `CUSTOMER` | 2 | `SYSTEM` | `SNOW_CUSTOMER_LIFECYCLE` | `MANAGEMENT_COMPANY`, `PARTY_TYPE` |
-| `SNOW_RESIDENTIAL_CUSTOMER` | 5 | `…_CANADA` | `SNOW_CUSTOMER_LIFECYCLE` | `CUSTOMER_STATUS`, `CUSTOMER_PRIORITY`, `BILLING_TERMS`, `PREFERRED_CONTACT_METHOD`, `TAX_EXEMPT`, `CUSTOMER_NOTES` |
-| `SNOW_COMMERCIAL_CUSTOMER` | 6 | `…_CANADA` | `SNOW_CUSTOMER_LIFECYCLE` | same six |
-| `SNOW_PROPERTY_MANAGER` | 7 | `…_CANADA` | `SNOW_CUSTOMER_LIFECYCLE` | same six |
+| `CUSTOMER` | 2 | `SYSTEM` | `CLIENT_ACCOUNT_LIFECYCLE` | `MANAGEMENT_COMPANY`, `PARTY_TYPE` |
+| `SNOW_RESIDENTIAL_CUSTOMER` | 5 | `…_CANADA` | `CLIENT_ACCOUNT_LIFECYCLE` | `CUSTOMER_STATUS`, `CUSTOMER_PRIORITY`, `BILLING_TERMS`, `PREFERRED_CONTACT_METHOD`, `TAX_EXEMPT`, `CUSTOMER_NOTES` |
+| `SNOW_COMMERCIAL_CUSTOMER` | 6 | `…_CANADA` | `CLIENT_ACCOUNT_LIFECYCLE` | same six |
+| `SNOW_PROPERTY_MANAGER` | 7 | `…_CANADA` | `CLIENT_ACCOUNT_LIFECYCLE` | same six |
 | `SNOW_EMPLOYEE` | 12 | `…_CANADA` | `SNOW_WORKFORCE_LIFECYCLE` | 7 |
 | `SNOW_SUBCONTRACTOR` | 17 | `…_CANADA` | `SNOW_WORKFORCE_LIFECYCLE` | 7 |
 
@@ -124,7 +124,7 @@ Other lifecycles:
 | workflow | id | entity | initial | states |
 | --- | --- | --- | --- | --- |
 | `PROPERTY_LIFECYCLE` | 35 | Resource | `INITIAL` | `INITIAL`→`INSPECTION-REQUIRED`→`ACTIVE`↔`INACTIVE` |
-| `SNOW_CUSTOMER_LIFECYCLE` | 14 | Account | `DRAFT` | `DRAFT`→`PROSPECT`→`ACTIVE`↔`SEASONAL_HOLD`/`INACTIVE`, `ARCHIVED` terminal |
+| `CLIENT_ACCOUNT_LIFECYCLE` | 36 | Account | `INITIAL` | Short Request Quote path: `INITIAL`→`ACTIVE_LEAD`→`ACTIVE`; explicit suspension reasons, `INACTIVE`, `NOT_INTERESTED`, `ARCHIVED` and native registration states |
 | `SNOW_CONTRACT_DOCUMENT` | 13 | Document | `DRAFT` | `DRAFT`→`PENDING_APPROVAL`→`ACTIVE`→`SUSPENDED`/`EXPIRED`→`ARCHIVED` |
 | `APPOINTMENT` | 20 | Appointment | `SCHEDULED` | `DRAFT`→`SCHEDULED`→`IN_PROGRESS`→`COMPLETED`, `CANCELED` terminal |
 | `SW_FS_WS_PROJECT` | 18 | Project | `INITIAL` | `INITIAL`→`ACTIVE`↔`SUSPENDED`→`CLOSED` |
@@ -559,3 +559,16 @@ the dev-1 script list on 2026-09-11.
 - **No invoice, project, task or appointment record has ever been created**, so
   every screen but properties, customers and quotes would render an empty state
   against live data.
+
+## Client lifecycle migration — 2026-10-18
+
+SYSTEM `CUSTOMER` and the three Snow customer types use the native client flow.
+54 old accounts and 41 transition records were migrated, retaining history
+identity, ownership, author and timestamp. The old client workflow was removed.
+The one-time test `SEASONAL_HOLD` maps to `SUSPENDED_CUSTOMER_REQUEST`.
+An approved agreement reactivates `INACTIVE`, but never silently clears a
+suspension, archival or not-interested decision. See
+[QUOTATION-PACKAGE-FLOW.md §4.3](QUOTATION-PACKAGE-FLOW.md#43-account--native-client-account-lifecycle).
+The catalog index retains the original inventory date and records this partial
+client lifecycle refresh separately. Other type/workflow evidence remains dated
+to its original extraction.

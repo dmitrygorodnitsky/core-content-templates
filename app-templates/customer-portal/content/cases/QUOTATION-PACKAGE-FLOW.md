@@ -39,7 +39,7 @@ Order QUOTE_APPROVED_INTERNALLY ──► added to the account's open agreement 
                                    │
 manager: Send Quotation on the agreement
                                    ▼
-Agreement QUOTATION_SENT ──► Orders → QUOTE_SENT, Account DRAFT → PROSPECT,
+Agreement QUOTATION_SENT ──► Orders → QUOTE_SENT, Account INITIAL → ACTIVE_LEAD,
                              one link (account + orders + agreement), one email
                                    │
 client, per option: view / approve / decline / request changes (event on the Order)
@@ -74,7 +74,7 @@ with Price Quotes and Approve Quotes over Orders (§11); they send nothing.
 | record | role in the flow | status |
 | --- | --- | --- |
 | `GET_QUOTE_` form, workflow 49 | the anonymous request | live, ours; entering `NOTIFIED` creates the Account, a property per address and three unpriced Order drafts per property, then enters `READY_FOR_REVIEW`; the manager's manual move to `PROCESSED` issues the Account link and sends the requester's email (*verified* 2026-09-22) |
-| `Account` (`CUSTOMER`), workflow 14 `SNOW_CUSTOMER_LIFECYCLE` | the client; Party B | live, owned by `SERVICE_WAND_WINTER_SERVICES_CANADA` |
+| `Account` (`CUSTOMER`), workflow 36 `CLIENT_ACCOUNT_LIFECYCLE` | the client; Party B | native workflow owned by `SERVICE_WAND_WINTER_SERVICES` |
 | `SNOW_REMOVAL_PROPERTY` (Resource 154) | one per service address | created by the flow since 2026-09-21; form 62 created Property 962 |
 | `Order` (`FIELD_SERVICE_ORDER`), workflow 45 `GENERAL_FSM_ORDER` | one quote: one property under one pricing model | live, owned by `SERVICE_WAND_WINTER_SERVICES`; form 62 created Orders 53–55 with `SERVICE_PROPERTY` and `PRICING_MODEL` |
 | `SERVICE_AGREEMENT` (Document) | the package, then the contract | type 17 and workflow 53 on dev-1, owned by `SERVICE_WAND_WINTER_SERVICES`; seed role grants applied and read back exactly on 2026-09-22 |
@@ -198,21 +198,35 @@ the email. A decision the client sends during the half second the agreement
 spends in `QUOTATION_UPDATE` is not evaluated, because §6 runs only in
 `QUOTATION_SENT`.
 
-### 4.3 Account — workflow 14
+### 4.3 Account — native Client Account Lifecycle
 
-Events, *verified*: `DRAFT-PROSPECT`, `DRAFT-ARCHIVED`, `PROSPECT-ACTIVE`,
-`PROSPECT-ARCHIVED`, `ACTIVE-SEASONAL_HOLD`, `ACTIVE-INACTIVE`,
-`INACTIVE-ACTIVE`, `INACTIVE-ARCHIVED`, `SEASONAL_HOLD-ACTIVE`,
-`SEASONAL_HOLD-INACTIVE`. There is no `DRAFT-ACTIVE`, so an account becomes a
-prospect when its first package is sent and active when an agreement is
-approved.
+Updated 2026-10-18 on dev-1. The four customer types, including SYSTEM
+`CUSTOMER`, use existing workflow 36 `CLIENT_ACCOUNT_LIFECYCLE`.
+Request Quote uses `INITIAL` → `ACTIVE_LEAD` when its quotation is sent, then
+`ACTIVE_LEAD` → `ACTIVE` after agreement approval. An approved agreement also
+reactivates `INACTIVE`; an already active account remains active. Suspended,
+archived, not-interested and incomplete-registration states cannot be activated
+by approving a new agreement. Suspension is removed explicitly by the
+responsible operator. The native account events do not themselves send emails.
+
+The retired Snow customer workflow has been removed from dev-1 and its seed.
+54 accounts and 41 historical transition state references were migrated;
+history IDs, account references, authors and timestamps were preserved.
+The workforce workflow is outside this migration. CRM customer queues include
+generic `CUSTOMER` and use native states, including all three suspension reasons.
+
+The backend processors, migration CLI and focused checks are owned by `core-ui`:
+`docs/snow-client-lifecycle.md`, `scripts/dev/snowClientLifecycle.mjs` and
+`scripts/dev/snowClientLifecycleCheck.mjs`. This content zone consumes that
+contract; its catalog snapshots were refreshed through `snow-core-inventory.mjs`.
+No new entity fields or runtime legacy fallback were introduced.
 
 ## 5. Hooks
 
 | trigger | does | if it cannot |
 | --- | --- | --- |
 | Order enters `QUOTE_APPROVED_INTERNALLY` | requires `SERVICE_PROPERTY`; adds the Order to the agreement already listing it, else to the client's agreement in `QUOTATION`, else to a new one | cannot refuse the transition (§9); what it does instead is decided with the Order hooks |
-| Agreement enters `QUOTATION_SENT`, first, on retry or after `QUOTATION_UPDATE` | quotation delivery V4: accepts listed Orders in any state; revokes the previous quotation link and clears `QUOTATION_GRANT_ID`; sends `QUOTE_APPROVED_INTERNALLY-QUOTE_SENT` only to Orders in `QUOTE_APPROVED_INTERNALLY` and leaves decided and pending ones as they are; `DRAFT-PROSPECT` only from `DRAFT`; refreshes the Account pre-fill; issues the new quotation link over the current lines; emails the primary contact, saying the quotation was updated when a previous link existed and an Order was just sent again, otherwise the ready email | `QUOTATION_SEND_FAILED`; a previous link that cannot be revoked stops the delivery before anything moves, and a new link whose storage or email fails is revoked |
+| Agreement enters `QUOTATION_SENT`, first, on retry or after `QUOTATION_UPDATE` | quotation delivery V17: accepts listed Orders in any state; revokes the previous quotation link and clears `QUOTATION_GRANT_ID`; sends `QUOTE_APPROVED_INTERNALLY-QUOTE_SENT` only to Orders in `QUOTE_APPROVED_INTERNALLY` and leaves decided and pending ones as they are; `INITIAL-ACTIVE_LEAD` only from `INITIAL`; refreshes the Account pre-fill; issues the new quotation link over the current lines; emails the primary contact, saying the quotation was updated when a previous link existed and an Order was just sent again, otherwise the ready email | `QUOTATION_SEND_FAILED`; a previous link that cannot be revoked stops the delivery before anything moves, and a new link whose storage or email fails is revoked |
 | Agreement enters `QUOTATION_UPDATE` | forwards `QUOTATION_UPDATE-QUOTATION_SENT` once the transition is committed | `QUOTATION_UPDATE-QUOTATION_SEND_FAILED` |
 | Order enters `CLIENT_APPROVED` | declines the other options for the same property in the same agreement; evaluates the package | |
 | Order enters `DECLINED` | evaluates the package | |
@@ -1063,7 +1077,7 @@ through a user's Roles tab.
 - **In its name:** the hooks dispatch their scripts as the acting user, and
   those scripts send every follow-up event with `sendEventUnsecured`: the
   `QUOTATION_UPDATE` forward, `INTERNALLY_APPROVED-SENT_TO_CLIENT`,
-  `QUOTE_APPROVED_INTERNALLY-QUOTE_SENT` and `DRAFT-PROSPECT` from delivery,
+  `QUOTE_APPROVED_INTERNALLY-QUOTE_SENT` and `INITIAL-ACTIVE_LEAD` from delivery,
   and the failure records. Grants and Account activation run as service
   identities.
 
@@ -1449,3 +1463,20 @@ expiry values. Test grants 109/110 of agreement 208 were already absent before
 this rollout and were not touched. Local validation: all 15 portal checks pass
 (the ten staging-portal checks, fixture and fixture-package checks, client review,
 client-review PDF and signed-in contract-action checks).
+
+### Client lifecycle acceptance — 2026-10-18
+
+A fresh published Request Quote submission completed the native short path:
+Account `INITIAL` → quotation delivery `ACTIVE_LEAD` → approved agreement
+`ACTIVE`. The AI draft was approved through the property workflow; 1,473 ft²
+came from its saved geometry and all three quote models priced without manual
+area input. Native workflow event APIs exercised the subsequent decisions,
+contract details and approvals. Agreement activation finalized and portal
+credentials preparation completed. Active backend versions are quotation
+delivery V17, activation V8 and workflow utilities V40.
+
+The same run also observed an AI 422 at a different address and an asynchronous
+package-attachment race when several quote variants first created their common
+agreement. Existing attachment retries recovered the latter. These remain
+separate limitations; successful lifecycle acceptance does not imply either
+backend behavior was fixed by this migration.

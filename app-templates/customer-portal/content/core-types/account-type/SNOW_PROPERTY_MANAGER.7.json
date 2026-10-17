@@ -1,5 +1,5 @@
 {
- "optimistic": 0,
+ "optimistic": 3,
  "code": "SNOW_PROPERTY_MANAGER",
  "nls": {
   "en": {
@@ -7,21 +7,17 @@
   }
  },
  "workflow": {
-  "id": 14,
-  "code": "SNOW_CUSTOMER_LIFECYCLE"
+  "id": 36,
+  "code": "CLIENT_ACCOUNT_LIFECYCLE"
  },
  "organization": {
-  "optimistic": 3,
+  "optimistic": 4,
   "id": 9,
   "code": "SERVICE_WAND_WINTER_SERVICES_CANADA"
  },
  "attributeOrder": [
   {
    "CUSTOMER_PROFILE": [
-    {
-     "attributeCode": "CUSTOMER_STATUS",
-     "visible": true
-    },
     {
      "attributeCode": "CUSTOMER_PRIORITY",
      "visible": true
@@ -171,53 +167,6 @@
      "nls": {
       "en": {
        "NAME": "Seasonal prepay"
-      }
-     }
-    }
-   ]
-  },
-  {
-   "code": "CUSTOMER_STATUS",
-   "required": false,
-   "multiselect": false,
-   "freeValue": false,
-   "unique": false,
-   "className": "java.lang.String",
-   "nls": {
-    "en": {
-     "NAME": "Customer Status"
-    }
-   },
-   "options": [
-    {
-     "value": "PROSPECT",
-     "nls": {
-      "en": {
-       "NAME": "Prospect"
-      }
-     }
-    },
-    {
-     "value": "ACTIVE",
-     "nls": {
-      "en": {
-       "NAME": "Active"
-      }
-     }
-    },
-    {
-     "value": "ON_HOLD",
-     "nls": {
-      "en": {
-       "NAME": "On hold"
-      }
-     }
-    },
-    {
-     "value": "INACTIVE",
-     "nls": {
-      "en": {
-       "NAME": "Inactive"
       }
      }
     }

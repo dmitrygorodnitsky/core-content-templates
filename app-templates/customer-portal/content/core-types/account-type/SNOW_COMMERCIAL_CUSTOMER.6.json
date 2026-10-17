@@ -1,5 +1,5 @@
 {
- "optimistic": 0,
+ "optimistic": 4,
  "code": "SNOW_COMMERCIAL_CUSTOMER",
  "nls": {
   "en": {
@@ -7,21 +7,17 @@
   }
  },
  "workflow": {
-  "id": 14,
-  "code": "SNOW_CUSTOMER_LIFECYCLE"
+  "id": 36,
+  "code": "CLIENT_ACCOUNT_LIFECYCLE"
  },
  "organization": {
-  "optimistic": 3,
+  "optimistic": 4,
   "id": 9,
   "code": "SERVICE_WAND_WINTER_SERVICES_CANADA"
  },
  "attributeOrder": [
   {
    "CUSTOMER_PROFILE": [
-    {
-     "attributeCode": "CUSTOMER_STATUS",
-     "visible": true
-    },
     {
      "attributeCode": "CUSTOMER_PRIORITY",
      "visible": true
@@ -83,6 +79,20 @@
    "options": []
   },
   {
+   "code": "REPRESENTATIVE_EMAIL",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "en": {
+     "NAME": "Prefill Representative Email"
+    }
+   },
+   "options": []
+  },
+  {
    "code": "CUSTOMER_PRIORITY",
    "required": false,
    "multiselect": false,
@@ -128,6 +138,62 @@
      }
     }
    ]
+  },
+  {
+   "code": "REPRESENTATIVE_FIRST_NAME",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "en": {
+     "NAME": "Prefill Representative First Name"
+    }
+   },
+   "options": []
+  },
+  {
+   "code": "REPRESENTATIVE_JOB_TITLE",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "en": {
+     "NAME": "Prefill Representative Job Title"
+    }
+   },
+   "options": []
+  },
+  {
+   "code": "BILLING_ADDRESS",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "en": {
+     "NAME": "Prefill Billing Address"
+    }
+   },
+   "options": []
+  },
+  {
+   "code": "REPRESENTATIVE_PHONE",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "en": {
+     "NAME": "Prefill Representative Phone"
+    }
+   },
+   "options": []
   },
   {
    "code": "BILLING_TERMS",
@@ -177,7 +243,7 @@
    ]
   },
   {
-   "code": "CUSTOMER_STATUS",
+   "code": "REPRESENTATIVE_LAST_NAME",
    "required": false,
    "multiselect": false,
    "freeValue": false,
@@ -185,43 +251,10 @@
    "className": "java.lang.String",
    "nls": {
     "en": {
-     "NAME": "Customer Status"
+     "NAME": "Prefill Representative Last Name"
     }
    },
-   "options": [
-    {
-     "value": "PROSPECT",
-     "nls": {
-      "en": {
-       "NAME": "Prospect"
-      }
-     }
-    },
-    {
-     "value": "ACTIVE",
-     "nls": {
-      "en": {
-       "NAME": "Active"
-      }
-     }
-    },
-    {
-     "value": "ON_HOLD",
-     "nls": {
-      "en": {
-       "NAME": "On hold"
-      }
-     }
-    },
-    {
-     "value": "INACTIVE",
-     "nls": {
-      "en": {
-       "NAME": "Inactive"
-      }
-     }
-    }
-   ]
+   "options": []
   },
   {
    "code": "PREFERRED_CONTACT_METHOD",

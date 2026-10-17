@@ -1,5 +1,5 @@
 {
- "optimistic": 6,
+ "optimistic": 7,
  "code": "CUSTOMER",
  "nls": {
   "ar": {
@@ -14,11 +14,11 @@
   }
  },
  "workflow": {
-  "id": 14,
-  "code": "SNOW_CUSTOMER_LIFECYCLE"
+  "id": 36,
+  "code": "CLIENT_ACCOUNT_LIFECYCLE"
  },
  "organization": {
-  "optimistic": 1,
+  "optimistic": 8,
   "id": 1,
   "code": "SYSTEM"
  },
