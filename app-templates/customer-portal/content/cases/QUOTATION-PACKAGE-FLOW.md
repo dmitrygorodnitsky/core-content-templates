@@ -1478,5 +1478,36 @@ delivery V17, activation V8 and workflow utilities V40.
 The same run also observed an AI 422 at a different address and an asynchronous
 package-attachment race when several quote variants first created their common
 agreement. Existing attachment retries recovered the latter. These remain
-separate limitations; successful lifecycle acceptance does not imply either
-backend behavior was fixed by this migration.
+separate observations; successful lifecycle acceptance did not imply either
+backend behavior was fixed by that migration. The package race was subsequently
+fixed as described below; the AI issue remains a backend handoff.
+
+### Concurrent package attachment — 2026-10-18
+
+Cross-repository dependency: `core-ui` owns workflow 45 and the seeded Java
+attachment implementation; this document records the portal flow evidence.
+`SNOW_QUOTATION_ORDER_UTILITIES_V19` is deployed on dev-1. One PostgreSQL
+transaction advisory lock per client Account serializes package creation and
+membership updates across workers/nodes. The Order and existing Document are
+refreshed under row locks before validation/merge; no Account row lock is added.
+The active workflow and all seven helper hooks were read back with V19.
+
+A fresh Request Quote generated an AI draft on attempt 1. Native Approve Plan
+measured 1,033 ft² from its elevated geometry, and three quote models priced
+without manual area. All three approval requests were then sent concurrently,
+once each. They produced exactly one QUOTATION agreement containing all three
+variants. Each history contains one approval and no attachment-failure/retry
+transition; no duplicate membership appeared in the agreement inventory.
+Existing client links were preserved. Focused production-method concurrency
+checks and the workflow contract check pass in `core-ui`.
+
+The commercial-address AI 422 was investigated separately: the captured model
+reply can be a valid PropertyPlan with zero elements, which the backend correctly
+rejects. A shared mutable provider service in core-ml also allows configuration
+mixing; its relationship to each historical empty reply is unproven. The user
+chose a backend note because its sources/deployment are unavailable here.
+`core-ui/docs/property-plan/core-ml-request-isolation.md` records the confirmed
+registry defect, explicit-config fallback, coordinate handoff gap and acceptance
+tests. This change does not claim that AI generation succeeds at every address,
+replace backend runtime beans, or relax geometry validation. No CMS artifact
+was changed, so this checkpoint required no CMS upload.
