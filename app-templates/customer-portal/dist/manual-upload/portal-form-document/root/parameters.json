@@ -1,0 +1,779 @@
+[
+  {
+    "code": "FORM_API_BASE_URL",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "FORM API BASE URL",
+        "DESCRIPTION": "Absolute https origin of the Core deployment, for example https://dev-1.servicewand.com. Any other scheme is discarded and the form reports that it could not load."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "FORM_TYPE_CODE",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "FORM TYPE CODE",
+        "DESCRIPTION": "Published Core form type code, for example GET_QUOTE_. The document renders whatever that type declares."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "FORM_ORGANIZATION_ID",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "FORM ORGANIZATION ID",
+        "DESCRIPTION": "Numeric organization id the submission belongs to. While it is empty the submit button stays disabled and nothing can be posted."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "FORM_LOCALE",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "FORM LOCALE",
+        "DESCRIPTION": "Locale segment used when reading the schema and when picking labels out of each nls bag."
+      }
+    },
+    "value": "en"
+  },
+  {
+    "code": "FORM_THEME",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "FORM THEME",
+        "DESCRIPTION": "Vertical palette. One of: hvac, snow, lawn, pool, roofing, pest, health, beauty. Any other value falls back to snow."
+      }
+    },
+    "value": "snow"
+  },
+  {
+    "code": "FORM_MODE",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "FORM MODE",
+        "DESCRIPTION": "Colour mode. One of: light, dark. Any other value falls back to light."
+      }
+    },
+    "value": "light"
+  },
+  {
+    "code": "FORM_MAPS_API_KEY",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "FORM MAPS API KEY",
+        "DESCRIPTION": "Google Maps browser key, used only by address fields: attributes whose Input format declares address and attributes of class Address. It is visible in page source, as every browser key is, so restrict it by HTTP referrer to this host and to the Maps JavaScript, Places and Geocoding APIs. While it is empty no Google script is loaded and an address field stays a plain text input."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "FORM_WEBSITE_URL",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "FORM WEBSITE URL",
+        "DESCRIPTION": "Absolute http or https address of the website the success screen's SUCCESS_BACK_LABEL button leads to, for example https://snowlimitless.com. While it is empty, or holds anything else, the success screen shows no such button."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "TITLE",
+        "DESCRIPTION": "Portal form document copy."
+      }
+    },
+    "value": {
+      "en": "Get your free quote"
+    }
+  },
+  {
+    "code": "SUBTITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "SUBTITLE",
+        "DESCRIPTION": "Portal form document copy."
+      }
+    },
+    "value": {
+      "en": "Tell us about the property and we will come back with a seasonal number."
+    }
+  },
+  {
+    "code": "NOTE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "NOTE",
+        "DESCRIPTION": "Portal form document copy."
+      }
+    },
+    "value": {
+      "en": ""
+    }
+  },
+  {
+    "code": "SUBMIT_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "SUBMIT LABEL",
+        "DESCRIPTION": "Portal form document copy."
+      }
+    },
+    "value": {
+      "en": "Send request"
+    }
+  },
+  {
+    "code": "SUBMITTING_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "SUBMITTING LABEL",
+        "DESCRIPTION": "Portal form document copy."
+      }
+    },
+    "value": {
+      "en": "Sending…"
+    }
+  },
+  {
+    "code": "NEXT_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "NEXT LABEL",
+        "DESCRIPTION": "Portal form document copy."
+      }
+    },
+    "value": {
+      "en": "Continue"
+    }
+  },
+  {
+    "code": "BACK_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "BACK LABEL",
+        "DESCRIPTION": "Portal form document copy."
+      }
+    },
+    "value": {
+      "en": "Back"
+    }
+  },
+  {
+    "code": "RETRY_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "RETRY LABEL",
+        "DESCRIPTION": "Portal form document copy."
+      }
+    },
+    "value": {
+      "en": "Try again"
+    }
+  },
+  {
+    "code": "STEP_FALLBACK",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "STEP FALLBACK",
+        "DESCRIPTION": "Portal form document copy."
+      }
+    },
+    "value": {
+      "en": "Step {n}"
+    }
+  },
+  {
+    "code": "SELECT_PLACEHOLDER",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "SELECT PLACEHOLDER",
+        "DESCRIPTION": "Portal form document copy."
+      }
+    },
+    "value": {
+      "en": "Choose one"
+    }
+  },
+  {
+    "code": "REQUIRED_ERROR",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "REQUIRED ERROR",
+        "DESCRIPTION": "Portal form document copy."
+      }
+    },
+    "value": {
+      "en": "This field is required."
+    }
+  },
+  {
+    "code": "FORMAT_ERROR",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "FORMAT ERROR",
+        "DESCRIPTION": "Portal form document copy."
+      }
+    },
+    "value": {
+      "en": "That format is not accepted."
+    }
+  },
+  {
+    "code": "INCOMPLETE_ERROR",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "INCOMPLETE ERROR",
+        "DESCRIPTION": "Portal form document copy."
+      }
+    },
+    "value": {
+      "en": "Finish filling this field."
+    }
+  },
+  {
+    "code": "EMAIL_ERROR",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "EMAIL ERROR",
+        "DESCRIPTION": "Portal form document copy."
+      }
+    },
+    "value": {
+      "en": "Enter a valid email address."
+    }
+  },
+  {
+    "code": "URL_ERROR",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "URL ERROR",
+        "DESCRIPTION": "Portal form document copy."
+      }
+    },
+    "value": {
+      "en": "Enter a full https address."
+    }
+  },
+  {
+    "code": "NUMBER_ERROR",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "NUMBER ERROR",
+        "DESCRIPTION": "Portal form document copy."
+      }
+    },
+    "value": {
+      "en": "Enter a number."
+    }
+  },
+  {
+    "code": "MIN_ERROR",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "MIN ERROR",
+        "DESCRIPTION": "Portal form document copy."
+      }
+    },
+    "value": {
+      "en": "Minimum is {n}."
+    }
+  },
+  {
+    "code": "MAX_ERROR",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "MAX ERROR",
+        "DESCRIPTION": "Portal form document copy."
+      }
+    },
+    "value": {
+      "en": "Maximum is {n}."
+    }
+  },
+  {
+    "code": "MIN_LENGTH_ERROR",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "MIN LENGTH ERROR",
+        "DESCRIPTION": "Portal form document copy."
+      }
+    },
+    "value": {
+      "en": "At least {n} characters."
+    }
+  },
+  {
+    "code": "MAX_LENGTH_ERROR",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "MAX LENGTH ERROR",
+        "DESCRIPTION": "Portal form document copy."
+      }
+    },
+    "value": {
+      "en": "At most {n} characters."
+    }
+  },
+  {
+    "code": "ADDRESS_OUTSIDE_ERROR",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "ADDRESS OUTSIDE ERROR",
+        "DESCRIPTION": "Shown under an address field whose Input format declares within:<south>,<west>,<north>,<east>, when the address entered lies outside that area. The address is not added until it is corrected."
+      }
+    },
+    "value": {
+      "en": "This address is outside the area we serve."
+    }
+  },
+  {
+    "code": "ADDRESS_UNKNOWN_ERROR",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "ADDRESS UNKNOWN ERROR",
+        "DESCRIPTION": "Shown under an address field whose Input format declares within:<south>,<west>,<north>,<east>, when Google finds no place for the text entered. The address is not added until it is corrected."
+      }
+    },
+    "value": {
+      "en": "We could not find this address. Check it or pick one from the suggestions."
+    }
+  },
+  {
+    "code": "SCHEMA_ERROR_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "SCHEMA ERROR TITLE",
+        "DESCRIPTION": "Portal form document copy."
+      }
+    },
+    "value": {
+      "en": "The form could not be loaded"
+    }
+  },
+  {
+    "code": "SCHEMA_ERROR_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "SCHEMA ERROR BODY",
+        "DESCRIPTION": "Portal form document copy."
+      }
+    },
+    "value": {
+      "en": "We could not reach the form service. Nothing was sent."
+    }
+  },
+  {
+    "code": "EMPTY_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "EMPTY TITLE",
+        "DESCRIPTION": "Portal form document copy."
+      }
+    },
+    "value": {
+      "en": "This form has no fields"
+    }
+  },
+  {
+    "code": "EMPTY_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "EMPTY BODY",
+        "DESCRIPTION": "Portal form document copy."
+      }
+    },
+    "value": {
+      "en": "The published form type contains no visible attributes."
+    }
+  },
+  {
+    "code": "SUCCESS_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "SUCCESS TITLE",
+        "DESCRIPTION": "Heading of the success screen. Focus moves to it when the submission is accepted."
+      }
+    },
+    "value": {
+      "en": "Quote request received"
+    }
+  },
+  {
+    "code": "SUCCESS_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "SUCCESS BODY",
+        "DESCRIPTION": "Sentence under the success heading."
+      }
+    },
+    "value": {
+      "en": "We’ve received your request and our team will review the property details and prepare your quote."
+    }
+  },
+  {
+    "code": "SUCCESS_SENT_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "SUCCESS SENT TITLE",
+        "DESCRIPTION": "First line of the green banner on the success screen. {email} is the email address the visitor submitted; the line is shown only when the form held one. Promise a confirmation only while the form type's workflow really emails the requester."
+      }
+    },
+    "value": {
+      "en": "A confirmation has been sent to {email}."
+    }
+  },
+  {
+    "code": "SUCCESS_SENT_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "SUCCESS SENT BODY",
+        "DESCRIPTION": "Second line of the green banner on the success screen, shown with or without an email address. Leave empty, together with an absent email, to show no banner."
+      }
+    },
+    "value": {
+      "en": "No action is needed from you right now. We’ll contact you if we need any additional information."
+    }
+  },
+  {
+    "code": "SUCCESS_SUMMARY_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "SUCCESS SUMMARY TITLE",
+        "DESCRIPTION": "Heading of the summary card on the success screen. The form id Core returns for the submission is shown beside it as #<id>."
+      }
+    },
+    "value": {
+      "en": "Request summary"
+    }
+  },
+  {
+    "code": "SUCCESS_PROPERTIES_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "SUCCESS PROPERTIES LABEL",
+        "DESCRIPTION": "Summary row label for the submitted addresses. The row is shown only when the form held at least one address."
+      }
+    },
+    "value": {
+      "en": "Properties"
+    }
+  },
+  {
+    "code": "SUCCESS_PROPERTIES_ONE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "SUCCESS PROPERTIES ONE",
+        "DESCRIPTION": "Summary line for exactly one submitted address. {n} is the count."
+      }
+    },
+    "value": {
+      "en": "{n} property submitted"
+    }
+  },
+  {
+    "code": "SUCCESS_PROPERTIES_MANY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "SUCCESS PROPERTIES MANY",
+        "DESCRIPTION": "Summary line for more than one submitted address. {n} is the count."
+      }
+    },
+    "value": {
+      "en": "{n} properties submitted"
+    }
+  },
+  {
+    "code": "SUCCESS_MORE_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "SUCCESS MORE LABEL",
+        "DESCRIPTION": "Button under the first two addresses in the summary that shows the rest. {n} is the number of addresses not yet shown."
+      }
+    },
+    "value": {
+      "en": "+{n} more"
+    }
+  },
+  {
+    "code": "SUCCESS_LESS_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "SUCCESS LESS LABEL",
+        "DESCRIPTION": "Button that folds the summary back to its first two addresses."
+      }
+    },
+    "value": {
+      "en": "Show less"
+    }
+  },
+  {
+    "code": "SUCCESS_CONTACT_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "SUCCESS CONTACT LABEL",
+        "DESCRIPTION": "Summary row label for the submitted FIRST_NAME and LAST_NAME. The row is shown only when either was given."
+      }
+    },
+    "value": {
+      "en": "Contact"
+    }
+  },
+  {
+    "code": "SUCCESS_EMAIL_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "SUCCESS EMAIL LABEL",
+        "DESCRIPTION": "Summary row label for the submitted email address. The row is shown only when the form held one."
+      }
+    },
+    "value": {
+      "en": "Email"
+    }
+  },
+  {
+    "code": "SUCCESS_SUBMITTED_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "SUCCESS SUBMITTED LABEL",
+        "DESCRIPTION": "Summary row label for the time the submission was accepted."
+      }
+    },
+    "value": {
+      "en": "Submitted"
+    }
+  },
+  {
+    "code": "SUCCESS_SUBMITTED_AT",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "SUCCESS SUBMITTED AT",
+        "DESCRIPTION": "Format of the submission time in the visitor's own time zone. {date}, {time} and {zone} are formatted for the form locale, for example Oct 6, 2026, 2:14 PM and PST."
+      }
+    },
+    "value": {
+      "en": "{date} at {time} ({zone})"
+    }
+  },
+  {
+    "code": "SUCCESS_NEXT_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "SUCCESS NEXT TITLE",
+        "DESCRIPTION": "Heading of the next steps on the success screen. It is shown only while at least one SUCCESS_STEP parameter has text."
+      }
+    },
+    "value": {
+      "en": "What happens next"
+    }
+  },
+  {
+    "code": "SUCCESS_STEP_1_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "SUCCESS STEP 1 TITLE",
+        "DESCRIPTION": "Title of the first next step on the success screen, drawn with a document icon. Promise only what really follows a submission of this form type. Leave both step 1 parameters empty to omit the step."
+      }
+    },
+    "value": {
+      "en": "Property Review"
+    }
+  },
+  {
+    "code": "SUCCESS_STEP_1_TEXT",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "SUCCESS STEP 1 TEXT",
+        "DESCRIPTION": "Description of the first next step."
+      }
+    },
+    "value": {
+      "en": "We review your property details and service requirements."
+    }
+  },
+  {
+    "code": "SUCCESS_STEP_2_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "SUCCESS STEP 2 TITLE",
+        "DESCRIPTION": "Title of the second next step, drawn with a price tag icon. Leave both step 2 parameters empty to omit the step."
+      }
+    },
+    "value": {
+      "en": "Quote Preparation"
+    }
+  },
+  {
+    "code": "SUCCESS_STEP_2_TEXT",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "SUCCESS STEP 2 TEXT",
+        "DESCRIPTION": "Description of the second next step."
+      }
+    },
+    "value": {
+      "en": "We prepare pricing and recommended services for your properties."
+    }
+  },
+  {
+    "code": "SUCCESS_STEP_3_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "SUCCESS STEP 3 TITLE",
+        "DESCRIPTION": "Title of the third next step, drawn with an envelope icon. Leave both step 3 parameters empty to omit the step."
+      }
+    },
+    "value": {
+      "en": "Quote Delivery"
+    }
+  },
+  {
+    "code": "SUCCESS_STEP_3_TEXT",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "SUCCESS STEP 3 TEXT",
+        "DESCRIPTION": "Description of the third next step."
+      }
+    },
+    "value": {
+      "en": "We’ll email you when your quote is ready to review."
+    }
+  },
+  {
+    "code": "SUCCESS_BACK_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "SUCCESS BACK LABEL",
+        "DESCRIPTION": "Label of the primary button on the success screen that leads to FORM_WEBSITE_URL. The button is shown only while FORM_WEBSITE_URL holds an http or https address."
+      }
+    },
+    "value": {
+      "en": "Back to Website"
+    }
+  },
+  {
+    "code": "SUCCESS_AGAIN_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "SUCCESS AGAIN LABEL",
+        "DESCRIPTION": "Label of a button on the success screen that clears the form for another submission. Leave empty to show no button, which is right whenever a second submission from the same visitor would create duplicate records."
+      }
+    },
+    "value": {
+      "en": ""
+    }
+  },
+  {
+    "code": "SUBMIT_ERROR_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "SUBMIT ERROR TITLE",
+        "DESCRIPTION": "Portal form document copy."
+      }
+    },
+    "value": {
+      "en": "The request was not sent"
+    }
+  },
+  {
+    "code": "SUBMIT_ERROR_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "SUBMIT ERROR BODY",
+        "DESCRIPTION": "Portal form document copy."
+      }
+    },
+    "value": {
+      "en": "Something went wrong on the way. Your answers are still here — try again."
+    }
+  },
+  {
+    "code": "BLOCKED_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "BLOCKED TITLE",
+        "DESCRIPTION": "Portal form document copy."
+      }
+    },
+    "value": {
+      "en": "Sending is not configured"
+    }
+  },
+  {
+    "code": "BLOCKED_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "BLOCKED BODY",
+        "DESCRIPTION": "Portal form document copy."
+      }
+    },
+    "value": {
+      "en": "This form has no organization id yet, so it cannot submit."
+    }
+  }
+]

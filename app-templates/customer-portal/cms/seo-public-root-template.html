@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="{{seo_theme}}" data-mode="light" data-content-classification="{{seo_classification}}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{seo_title}}</title>
+  <meta name="description" content="{{seo_description}}">
+  {{seo_robots_meta}}
+  <link rel="canonical" href="{{seo_canonical}}">
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="{{seo_asset_base}}/styles/tokens.css">
+  <link rel="stylesheet" href="{{seo_asset_base}}/styles/base.css">
+  <link rel="stylesheet" href="{{seo_asset_base}}/styles/components.css">
+  <link rel="stylesheet" href="{{seo_asset_base}}/styles/seo.css">
+  <script type="application/ld+json">{{seo_faq_json_ld}}</script>
+</head>
+<body class="seo-public" data-content-authority="{{seo_classification}}">
+  {{seo_notice}}
+  {{seo_public_header}}
+  <main id="seo-public-root" class="seo-page" data-route="seo.public" data-visual-id="seo-landing" data-state="ready">{{seo_body}}</main>
+  <script type="module" src="{{seo_public_script_url}}"></script>
+</body>
+</html>

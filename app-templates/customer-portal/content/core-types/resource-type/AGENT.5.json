@@ -1,0 +1,213 @@
+{
+ "optimistic": 0,
+ "code": "AGENT",
+ "nls": {
+  "en": {
+   "NAME": "Agent",
+   "DESCRIPTION": "Resource type for deployed Core RM agent applications. Agent resources identify the host, runtime credentials, endpoints, and version used to operate the remote Spring Boot collector."
+  }
+ },
+ "workflow": {
+  "id": 6,
+  "code": "IT_RESOURCES"
+ },
+ "organization": {
+  "optimistic": 1,
+  "id": 1,
+  "code": "SYSTEM"
+ },
+ "attributeOrder": [
+  {
+   "RUNTIME": [
+    {
+     "attributeCode": "VERSION",
+     "visible": true
+    },
+    {
+     "attributeCode": "AGENT_USER",
+     "visible": true
+    }
+   ]
+  },
+  {
+   "DEPLOYMENT": [
+    {
+     "attributeCode": "HOST",
+     "visible": true
+    },
+    {
+     "attributeCode": "RM_URL",
+     "visible": true
+    },
+    {
+     "attributeCode": "CORE_URL",
+     "visible": true
+    }
+   ]
+  },
+  {
+   "AUTH": [
+    {
+     "attributeCode": "CREDENTIALS",
+     "visible": true
+    }
+   ]
+  }
+ ],
+ "attributes": [
+  {
+   "code": "VERSION",
+   "required": false,
+   "multiselect": false,
+   "freeValue": true,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "en": {
+     "NAME": "Version",
+     "DESCRIPTION": "Expected or currently deployed agent software version"
+    }
+   },
+   "options": []
+  },
+  {
+   "code": "CORE_URL",
+   "required": false,
+   "multiselect": false,
+   "freeValue": true,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "en": {
+     "NAME": "Core URL",
+     "DESCRIPTION": "Core base URL used by the remote agent to authenticate"
+    }
+   },
+   "options": [],
+   "inputFormat": "url"
+  },
+  {
+   "code": "RM_URL",
+   "required": false,
+   "multiselect": false,
+   "freeValue": true,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "en": {
+     "NAME": "RM URL",
+     "DESCRIPTION": "Core RM base URL used by the remote agent"
+    }
+   },
+   "options": [],
+   "inputFormat": "url"
+  },
+  {
+   "code": "HOST",
+   "required": true,
+   "multiselect": false,
+   "freeValue": true,
+   "unique": false,
+   "className": "com.pixelnation.rm.domain.Resource",
+   "nls": {
+    "en": {
+     "NAME": "Host",
+     "DESCRIPTION": "Host resource where the agent is deployed"
+    }
+   },
+   "options": [],
+   "entityTypes": [
+    {
+     "value": 2,
+     "nls": {
+      "en": {
+       "NAME": "Network Resource",
+       "DESCRIPTION": "Network-addressable host resource"
+      }
+     }
+    },
+    {
+     "value": 3,
+     "nls": {
+      "en": {
+       "NAME": "Linux Host",
+       "DESCRIPTION": "Linux host resource configured for agent deployment"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "code": "CREDENTIALS",
+   "required": true,
+   "multiselect": false,
+   "freeValue": true,
+   "unique": false,
+   "className": "com.pixelnation.common.domain.OrganizationSecret",
+   "nls": {
+    "en": {
+     "NAME": "Agent API Key",
+     "DESCRIPTION": "PIXEL_CORE organization secret storing the API key value for the configured Java agent user."
+    }
+   },
+   "options": [],
+   "entityTypes": [
+    {
+     "value": 7,
+     "nls": {
+      "en": {
+       "NAME": "API Key",
+       "DESCRIPTION": "Organization secret containing the Core API key value used by one Java agent."
+      }
+     }
+    }
+   ]
+  },
+  {
+   "code": "AGENT_USER",
+   "required": true,
+   "multiselect": false,
+   "freeValue": true,
+   "unique": false,
+   "className": "com.pixelnation.common.domain.User",
+   "nls": {
+    "en": {
+     "NAME": "Agent User",
+     "DESCRIPTION": "Core user account used by the remote agent to authenticate with the server"
+    }
+   },
+   "options": []
+  }
+ ],
+ "id": 5,
+ "isAbstract": false,
+ "attributeGroups": [
+  {
+   "code": "DEPLOYMENT",
+   "nls": {
+    "en": {
+     "NAME": "Deployment",
+     "DESCRIPTION": "Remote host and endpoint settings used by one-click deployment"
+    }
+   }
+  },
+  {
+   "code": "RUNTIME",
+   "nls": {
+    "en": {
+     "NAME": "Runtime",
+     "DESCRIPTION": "Agent runtime identity and version"
+    }
+   }
+  },
+  {
+   "code": "AUTH",
+   "nls": {
+    "en": {
+     "NAME": "Authentication",
+     "DESCRIPTION": "Credentials used by the remote agent runtime"
+    }
+   }
+  }
+ ]
+}

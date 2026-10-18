@@ -1,0 +1,168 @@
+{
+ "optimistic": 6,
+ "code": "VEHICLE_ATTACHMENT",
+ "nls": {
+  "en": {
+   "NAME": "Vehicle Attachment"
+  }
+ },
+ "organization": {
+  "optimistic": 4,
+  "id": 8,
+  "code": "SERVICE_WAND_WINTER_SERVICES"
+ },
+ "attributeOrder": [
+  {
+   "IDENTIFICATION": [
+    {
+     "typeId": 146,
+     "attributeCode": "MAKE",
+     "visible": true
+    },
+    {
+     "typeId": 146,
+     "attributeCode": "YEAR",
+     "visible": true
+    },
+    {
+     "typeId": 146,
+     "attributeCode": "MODEL",
+     "visible": true
+    },
+    {
+     "typeId": 146,
+     "attributeCode": "COLOR",
+     "visible": true
+    }
+   ]
+  },
+  {
+   "ATTACHMENT_CONFIGURATION": [
+    {
+     "attributeCode": "VEHICLE",
+     "visible": true
+    },
+    {
+     "attributeCode": "VEHICLE_ATTACHMENT_TYPE",
+     "visible": true
+    },
+    {
+     "attributeCode": "MOUNT_TYPE",
+     "visible": true
+    }
+   ]
+  }
+ ],
+ "attributes": [
+  {
+   "code": "VEHICLE_ATTACHMENT_TYPE",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "en": {
+     "NAME": "Vehicle Attachment Type"
+    }
+   },
+   "options": [
+    {
+     "value": "FRONT_ATTACHMENT",
+     "nls": {
+      "en": {
+       "NAME": "Front Attachment"
+      }
+     }
+    },
+    {
+     "value": "REAR_ATTACHMENT",
+     "nls": {
+      "en": {
+       "NAME": "Rear Attachment"
+      }
+     }
+    },
+    {
+     "value": "UNDERBODY_ATTACHMENT",
+     "nls": {
+      "en": {
+       "NAME": "Underbody Attachment"
+      }
+     }
+    },
+    {
+     "value": "SIDE_ATTACHMENT",
+     "nls": {
+      "en": {
+       "NAME": "Side Attachment"
+      }
+     }
+    },
+    {
+     "value": "BED_ATTACHMENT",
+     "nls": {
+      "en": {
+       "NAME": "Bed Attachment"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "code": "VEHICLE",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "com.pixelnation.rm.domain.Resource",
+   "nls": {
+    "en": {
+     "NAME": "Vehicle"
+    }
+   },
+   "options": [],
+   "entityTypes": [
+    {
+     "value": 126
+    },
+    {
+     "value": 114
+    }
+   ]
+  },
+  {
+   "code": "MOUNT_TYPE",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "en": {
+     "NAME": "Mount Type"
+    }
+   },
+   "options": []
+  }
+ ],
+ "id": 147,
+ "isAbstract": true,
+ "attributeGroups": [
+  {
+   "code": "ATTACHMENT_CONFIGURATION",
+   "nls": {
+    "ar": {
+     "DESCRIPTION": "<p></p>"
+    },
+    "en": {
+     "NAME": "Attachment Configuration",
+     "DESCRIPTION": "<p>Defines how the attachment is mounted and identifies the vehicle to which it is connected.</p>"
+    },
+    "he": {
+     "DESCRIPTION": "<p></p>"
+    }
+   }
+  }
+ ]
+}

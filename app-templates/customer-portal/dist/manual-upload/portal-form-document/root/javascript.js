@@ -1,0 +1,1894 @@
+(function (global) {
+  "use strict";
+
+  var MASK_CLASSES = { "9": /\d/, A: /[A-Za-z]/, "*": /[A-Za-z0-9]/ };
+  var NUMERIC = /Integer|Long|Float|Double|BigDecimal|Short|Byte|^int$|^long$|^float$|^double$/;
+  var MAP_WORLD = { lat: 20, lng: 0, zoom: 1 };
+  var MAP_CLOSE_ZOOM = 16;
+  var MAP_CLOSE_SPAN = 0.002;
+  var MAP_PADDING = { top: 64, right: 56, bottom: 32, left: 40 };
+  var ADDRESS_CHECK_WAIT = 6000;
+
+  function el(tag, className, attrs) {
+    var node = document.createElement(tag);
+    if (className) node.className = className;
+    if (attrs) {
+      Object.keys(attrs).forEach(function (key) {
+        var value = attrs[key];
+        if (value === undefined || value === null || value === false) return;
+        if (value === true) node.setAttribute(key, "");
+        else node.setAttribute(key, String(value));
+      });
+    }
+    return node;
+  }
+
+  function text(tag, className, value) {
+    var node = el(tag, className);
+    node.textContent = value == null ? "" : String(value);
+    return node;
+  }
+
+  var SVG_NS = "http://www.w3.org/2000/svg";
+  var ICONS = {
+    check: ["M20 6 9 17l-5-5"],
+    mail: ["M4 5h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z", "m22 7-10 6L2 7"],
+    review: ["M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z", "M14 2v6h6", "M16 13H8", "M16 17H8", "M10 9H8"],
+    price: ["M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z", "M7.5 7.5h.01"],
+    arrow: ["M5 12h14", "m12 5 7 7-7 7"],
+  };
+  var STEP_ICONS = ["review", "price", "mail"];
+  var SUMMARY_PLACES = 2;
+
+  function icon(name) {
+    var svg = document.createElementNS(SVG_NS, "svg");
+    [["class", "pf-icon"], ["viewBox", "0 0 24 24"], ["width", "24"], ["height", "24"], ["fill", "none"],
+      ["stroke", "currentColor"], ["stroke-width", "2"], ["stroke-linecap", "round"], ["stroke-linejoin", "round"],
+      ["aria-hidden", "true"], ["focusable", "false"]].forEach(function (pair) { svg.setAttribute(pair[0], pair[1]); });
+    ICONS[name].forEach(function (shape) {
+      var path = document.createElementNS(SVG_NS, "path");
+      path.setAttribute("d", shape);
+      svg.appendChild(path);
+    });
+    return svg;
+  }
+
+  function fill(template, values) {
+    return String(template == null ? "" : template).replace(/\{([a-z]+)\}/g, function (whole, key) {
+      return Object.prototype.hasOwnProperty.call(values, key) ? String(values[key]) : whole;
+    });
+  }
+
+  function said(value) {
+    return value == null ? "" : String(value).trim();
+  }
+
+  function formNumber(payload) {
+    if (typeof payload === "number" && isFinite(payload) && payload > 0 && Math.floor(payload) === payload) return String(payload);
+    if (typeof payload === "string" && /^\s*[1-9]\d*\s*$/.test(payload)) return payload.trim();
+    return "";
+  }
+
+  function webAddress(value) {
+    var address = said(value);
+    return /^https?:\/\/[^\s"<>]+$/i.test(address) ? address : "";
+  }
+
+  function dateParts(locale, at) {
+    function formatter(options) {
+      try { return new Intl.DateTimeFormat(locale, options); } catch (_) { return new Intl.DateTimeFormat("en", options); }
+    }
+    var zone = formatter({ timeZoneName: "short" }).formatToParts(at).filter(function (part) { return part.type === "timeZoneName"; })[0];
+    return {
+      date: formatter({ month: "short", day: "numeric", year: "numeric" }).format(at),
+      time: formatter({ hour: "numeric", minute: "2-digit" }).format(at),
+      zone: zone ? zone.value : "",
+    };
+  }
+
+  function localized(nls, locale, key) {
+    if (!nls || typeof nls !== "object") return "";
+    var bag = nls[locale] || nls.en || nls[Object.keys(nls)[0]] || {};
+    var value = bag[key || "NAME"];
+    if (value == null) return "";
+    return String(value).replace(/<[^>]*>/g, "").replace(/\s+/g, " ").trim();
+  }
+
+  var CORE_ADDRESS_CLASS = "com.pixelnation.common.domain.Address";
+
+  function javaType(className) {
+    var name = String(className || "");
+    if (name === CORE_ADDRESS_CLASS) return "address";
+    if (name.indexOf("Boolean") !== -1 || name === "boolean") return "boolean";
+    if (NUMERIC.test(name)) return "number";
+    if (name.indexOf("java.lang.String") !== -1 || /(^|\.)String$/.test(name)) return "string";
+    return "entity";
+  }
+
+  function parseTokens(inputFormat) {
+    var tokens = {
+      password: false, textarea: false, expanded: false, slider: false,
+      tel: false, url: false, email: false, color: false, date: false,
+      address: false,
+      rows: null, cols: null, min: null, max: null, step: null,
+      minLength: null, maxLength: null, re: null, mask: null, placeholder: null,
+      country: null, coordinatesOf: null, mapStart: null, within: null,
+    };
+    if (!inputFormat) return tokens;
+    var rest = String(inputFormat);
+    var placeholder = rest.match(/placeholder:([^;]+)/);
+    if (placeholder) {
+      tokens.placeholder = placeholder[1].trim();
+      rest = rest.replace(/placeholder:[^;]+/, " ");
+    }
+    var mask = rest.match(/mask:([^;]+?)(?=\s*;|\s+(?:password|textarea|expanded|slider|tel|url|email|color|date)\b|\s+[a-zA-Z]+:|\s*$)/);
+    if (mask) {
+      tokens.mask = mask[1].trim();
+      rest = rest.replace(mask[0], " ");
+    }
+    rest.split(/[\s;]+/).filter(Boolean).forEach(function (token) {
+      if (token === "password" || token === "textarea" || token === "expanded" || token === "slider"
+        || token === "tel" || token === "url" || token === "email" || token === "color" || token === "date"
+        || token === "address") {
+        tokens[token] = true;
+        return;
+      }
+      var pair = token.match(/^(rows|cols|min|max|step|minLength|maxLength):(.+)$/);
+      if (pair) { tokens[pair[1]] = Number(pair[2]); return; }
+      var region = token.match(/^country:([A-Za-z,]+)$/);
+      if (region) {
+        tokens.country = region[1].split(",").map(function (code) { return code.trim().toLowerCase(); }).filter(Boolean);
+        return;
+      }
+      var source = token.match(/^coordinates-of:(.+)$/);
+      if (source) { tokens.coordinatesOf = source[1]; return; }
+      var area = token.match(/^(map|within):(-?\d+(?:\.\d+)?),(-?\d+(?:\.\d+)?),(-?\d+(?:\.\d+)?),(-?\d+(?:\.\d+)?)$/);
+      if (area) {
+        var low = pointOf({ lat: Number(area[2]), lng: Number(area[3]) });
+        var high = pointOf({ lat: Number(area[4]), lng: Number(area[5]) });
+        if (low && high && low.lat < high.lat && low.lng < high.lng) {
+          tokens[area[1] === "map" ? "mapStart" : "within"] = { south: low.lat, west: low.lng, north: high.lat, east: high.lng };
+        }
+        return;
+      }
+      if (token.indexOf("re:") === 0) tokens.re = token.slice(3);
+    });
+    return tokens;
+  }
+
+  function normalizeChoices(attribute, locale) {
+    return (Array.isArray(attribute.options) ? attribute.options : [])
+      .map(function (option) {
+        return {
+          value: String(option.value != null ? option.value : option.code != null ? option.code : option.id != null ? option.id : ""),
+          label: String(option.label || option.name || localized(option.nls, locale) || option.value || ""),
+        };
+      })
+      .filter(function (option) { return option.value !== ""; });
+  }
+
+  function fieldKind(attribute, tokens, choices) {
+    if (choices.length) {
+      if (attribute.freeValue && !attribute.multiselect) return "combobox";
+      if (tokens.expanded) return attribute.multiselect ? "checklist" : "radio";
+      return attribute.multiselect ? "multiselect" : "select";
+    }
+    var type = javaType(attribute.className);
+    if (type === "boolean") return "boolean";
+    if (type === "number") return tokens.slider ? "slider" : "number";
+    if (type === "entity") return "select";
+    if (type === "address" || tokens.address) return attribute.multiselect ? "address-list" : "address";
+    if (tokens.textarea) return "textarea";
+    if (tokens.password) return "password";
+    if (tokens.email) return "email";
+    if (tokens.tel) return "tel";
+    if (tokens.url) return "url";
+    if (tokens.color) return "color";
+    if (tokens.date) return "date";
+    return "text";
+  }
+
+  function normalizeSchema(schema, locale) {
+    var owners = [{ id: schema.id, attributes: schema.attributes || [], groups: schema.attributeGroups || [] }];
+    (schema.parents || []).forEach(function (parent) {
+      owners.push({ id: parent.id, attributes: parent.attributes || [], groups: parent.attributeGroups || [] });
+    });
+
+    var byCode = {};
+    owners.forEach(function (owner) {
+      (owner.attributes || []).forEach(function (attribute) {
+        if (!byCode[attribute.code]) byCode[attribute.code] = { attribute: attribute, typeId: owner.id };
+      });
+    });
+
+    var groupTitles = {};
+    owners.forEach(function (owner) {
+      (owner.groups || []).forEach(function (group) { groupTitles[group.code] = localized(group.nls, locale); });
+    });
+
+    var order = Array.isArray(schema.attributeOrder) ? schema.attributeOrder : [];
+    var groups = [];
+    var hidden = [];
+    var placed = {};
+
+    order.forEach(function (entry) {
+      Object.keys(entry || {}).forEach(function (groupCode) {
+        var rows = Array.isArray(entry[groupCode]) ? entry[groupCode] : [];
+        var fields = [];
+        rows.forEach(function (row) {
+          var found = byCode[row.attributeCode];
+          if (!found || placed[row.attributeCode]) return;
+          placed[row.attributeCode] = true;
+          var field = toField(found.attribute, found.typeId, locale);
+          if (row.visible === false || field.tokens.coordinatesOf) hidden.push(field);
+          else fields.push(field);
+        });
+        if (fields.length) groups.push({ code: groupCode, title: groupTitles[groupCode] || "", fields: fields });
+      });
+    });
+
+    var loose = [];
+    Object.keys(byCode).forEach(function (code) {
+      if (placed[code]) return;
+      var field = toField(byCode[code].attribute, byCode[code].typeId, locale);
+      if (field.tokens.coordinatesOf) hidden.push(field);
+      else loose.push(field);
+    });
+    if (loose.length) groups.push({ code: "__ungrouped", title: "", fields: loose });
+
+    return { id: schema.id, code: schema.code, title: localized(schema.nls, locale), groups: groups, hidden: hidden };
+  }
+
+  function toField(attribute, typeId, locale) {
+    var tokens = parseTokens(attribute.inputFormat);
+    var choices = normalizeChoices(attribute, locale);
+    var label = localized(attribute.nls, locale);
+    return {
+      code: attribute.code,
+      typeId: typeId,
+      kind: fieldKind(attribute, tokens, choices),
+      label: label,
+      placeholder: tokens.placeholder || localized(attribute.nls, locale, "PLACEHOLDER") || "",
+      description: localized(attribute.nls, locale, "DESCRIPTION"),
+      required: attribute.required === true,
+      multiselect: attribute.multiselect === true,
+      freeValue: attribute.freeValue === true,
+      choices: choices,
+      tokens: tokens,
+      behavior: parseBehavior(attribute.uiBehavior),
+      mask: tokens.mask || null,
+    };
+  }
+
+  function parseBehavior(source) {
+    if (!source) return null;
+    var body = String(source).replace(/\/\*[\s\S]*?\*\//g, "").trim();
+    var call = body.match(/applyBehavior\(\s*(\{[\s\S]*?\})\s*\)/);
+    if (!call) return null;
+    var literal = call[1]
+      .replace(/([{,]\s*)([A-Za-z_$][\w$]*)\s*:/g, '$1"$2":')
+      .replace(/'/g, '"')
+      .replace(/,\s*}/g, "}");
+    try {
+      var mapping = JSON.parse(literal);
+      var clean = {};
+      Object.keys(mapping).forEach(function (key) {
+        if (typeof mapping[key] === "string") clean[String(key).toUpperCase()] = mapping[key];
+      });
+      return Object.keys(clean).length ? clean : null;
+    } catch (_) {
+      return null;
+    }
+  }
+
+  function applyMask(raw, mask) {
+    var out = "";
+    var index = 0;
+    for (var position = 0; position < mask.length && index < raw.length; position += 1) {
+      var slot = mask.charAt(position);
+      var matcher = MASK_CLASSES[slot];
+      if (!matcher) {
+        out += slot;
+        if (raw.charAt(index) === slot) index += 1;
+        continue;
+      }
+      while (index < raw.length && !matcher.test(raw.charAt(index))) index += 1;
+      if (index >= raw.length) break;
+      out += slot === "A" ? raw.charAt(index).toUpperCase() : raw.charAt(index);
+      index += 1;
+    }
+    return out;
+  }
+
+  function maskComplete(value, mask) {
+    var slots = mask.split("").filter(function (character) { return MASK_CLASSES[character]; }).length;
+    var filled = value.split("").filter(function (character, position) {
+      return MASK_CLASSES[mask.charAt(position)];
+    }).length;
+    return filled >= slots;
+  }
+
+  function repeatList(value) {
+    if (Array.isArray(value)) return value;
+    return value ? [String(value)] : [];
+  }
+
+  function withEntry(list, entry) {
+    var known = list.some(function (existing) { return String(existing).toLowerCase() === entry.toLowerCase(); });
+    return known ? list : list.concat([entry]);
+  }
+
+  function addressKey(field, text) {
+    var address = text == null ? "" : String(text);
+    return field.kind === "address-list" ? address.trim() : address;
+  }
+
+  function pointOf(location) {
+    if (!location) return null;
+    var lat = typeof location.lat === "function" ? location.lat() : location.lat;
+    var lng = typeof location.lng === "function" ? location.lng() : location.lng;
+    if (typeof lat !== "number" || typeof lng !== "number" || !isFinite(lat) || !isFinite(lng)) return null;
+    if (Math.abs(lat) > 90 || Math.abs(lng) > 180) return null;
+    return { lat: lat, lng: lng };
+  }
+
+  function boxHolds(box, point) {
+    return point.lat >= box.south && point.lat <= box.north && point.lng >= box.west && point.lng <= box.east;
+  }
+
+  function keepFocus(event) {
+    event.preventDefault();
+  }
+
+  function darkMode() {
+    var page = document.documentElement;
+    return Boolean(page) && page.getAttribute("data-mode") === "dark";
+  }
+
+  function touchFirst() {
+    return typeof global.matchMedia === "function" && global.matchMedia("(pointer: coarse)").matches === true;
+  }
+
+  var CONTROLS = { INPUT: true, SELECT: true, TEXTAREA: true, BUTTON: true };
+
+  function within(outer, node) {
+    for (var current = node; current; current = current.parentNode) {
+      if (current === outer) return true;
+    }
+    return false;
+  }
+
+  function focusKey(node) {
+    if (!node || typeof node.getAttribute !== "function") return "";
+    if (node.id) return "#" + node.id;
+    var name = node.getAttribute("name");
+    if (name) return name + "=" + node.getAttribute("value");
+    return node.getAttribute("data-focus") || "";
+  }
+
+  function findNode(node, match) {
+    if (match(node)) return node;
+    var children = node.children || [];
+    for (var index = 0; index < children.length; index += 1) {
+      var found = findNode(children[index], match);
+      if (found) return found;
+    }
+    return null;
+  }
+
+  function debounce(fn, wait) {
+    var timer = null;
+    return function () {
+      var args = arguments;
+      var self = this;
+      if (timer) clearTimeout(timer);
+      timer = setTimeout(function () { fn.apply(self, args); }, wait);
+    };
+  }
+
+  var mapsPromise = null;
+  var MAPS_LIBRARIES = ["maps", "places", "marker", "geocoding"];
+
+  function loadMaps(apiKey) {
+    if (mapsPromise) return mapsPromise;
+    if (!apiKey) return Promise.reject(new Error("no-key"));
+    mapsPromise = new Promise(function (resolve, reject) {
+      var script = document.createElement("script");
+      var callback = "__portalFormMapsReady";
+      while (callback in global) callback += "_";
+      global[callback] = function () {
+        delete global[callback];
+        var maps = global.google && global.google.maps;
+        if (maps && typeof maps.importLibrary === "function") resolve(maps);
+        else reject(new Error("maps-unavailable"));
+      };
+      script.async = true;
+      script.src = "https://maps.googleapis.com/maps/api/js?key=" + encodeURIComponent(apiKey)
+        + "&loading=async&v=weekly&callback=" + callback;
+      script.addEventListener("error", function () {
+        delete global[callback];
+        reject(new Error("maps-script-failed"));
+      });
+      document.head.appendChild(script);
+    }).then(function (maps) {
+      return Promise.all(MAPS_LIBRARIES.map(function (name) { return maps.importLibrary(name); }))
+        .then(function () { return maps; });
+    });
+    return mapsPromise;
+  }
+
+  function geocodeAddress(maps, text, area, answered) {
+    var query = String(text == null ? "" : text).trim();
+    if (!query || !maps.Geocoder) return false;
+    var request = { address: query };
+    if (area) request.bounds = area;
+    var asked = new maps.Geocoder().geocode(request, function (results, status) {
+      var best = status === "OK" && results && results.length ? results[0] : null;
+      answered(best, Boolean(best) || status === "ZERO_RESULTS");
+    });
+    if (asked && typeof asked.catch === "function") asked.catch(function () {});
+    return true;
+  }
+
+  function PortalForm(config) {
+    this.cfg = config || {};
+    this.locale = this.cfg.locale || "en";
+    this.model = null;
+    this.values = {};
+    this.errors = {};
+    this.touched = {};
+    this.pending = {};
+    this.locations = {};
+    this.lookups = {};
+    this.waiters = {};
+    this.checking = {};
+    this.settling = false;
+    this.mapViews = {};
+    this.fieldNodes = {};
+    this.unpainted = {};
+    this.pressing = false;
+    this.submissionPending = false;
+    this.step = 0;
+    this.state = "loading";
+    this.result = null;
+    this.receipt = null;
+    this.placesOpen = false;
+  }
+
+  PortalForm.prototype.mount = function (target) {
+    this.root = typeof target === "string" ? document.querySelector(target) : target;
+    if (!this.root) throw new Error("PortalForm mount target was not found");
+    this.root.classList.add("pf");
+    this.trackPress();
+    this.render();
+    var self = this;
+    this.load().then(function () { self.render(); }, function () { self.render(); });
+    return this;
+  };
+
+  PortalForm.prototype.trackPress = function () {
+    var self = this;
+    this.root.addEventListener("mousedown", function (event) {
+      if (event.button === 0) self.pressing = true;
+    }, true);
+    document.addEventListener("mouseup", function () {
+      if (self.pressing) setTimeout(function () { self.release(); }, 0);
+    }, true);
+    document.addEventListener("keydown", function () {
+      if (self.pressing) self.release();
+    }, true);
+  };
+
+  PortalForm.prototype.release = function () {
+    var self = this;
+    var waiting = this.unpainted;
+    this.pressing = false;
+    this.unpainted = {};
+    Object.keys(waiting).forEach(function (code) { self.paint(waiting[code]); });
+  };
+
+  PortalForm.prototype.paint = function (field) {
+    if (this.pressing) { this.unpainted[field.code] = field; return; }
+    var nodes = this.fieldNodes[field.code];
+    if (!nodes) return;
+    var invalid = Boolean(this.touched[field.code] && this.errors[field.code]);
+    nodes.wrap.setAttribute("data-state", invalid ? "invalid" : "idle");
+    if (this.checking[field.code]) nodes.wrap.setAttribute("aria-busy", "true");
+    else nodes.wrap.removeAttribute("aria-busy");
+    nodes.error.textContent = invalid ? this.errors[field.code] : "";
+  };
+
+  PortalForm.prototype.load = function () {
+    var self = this;
+    if (this.cfg.schema) {
+      this.adopt(this.cfg.schema);
+      return Promise.resolve();
+    }
+    var base = String(this.cfg.apiBaseUrl || "").replace(/\/+$/, "");
+    if (!base || !this.cfg.formTypeCode) {
+      this.state = "error";
+      this.result = { reason: "unconfigured" };
+      return Promise.reject(new Error("unconfigured"));
+    }
+    var url = base + "/" + encodeURIComponent(this.locale) + "/core-cms/api/form-type/"
+      + encodeURIComponent(this.cfg.formTypeCode) + "/get.json";
+    return fetch(url, { method: "GET", credentials: "omit", headers: { accept: "application/json" } })
+      .then(function (response) {
+        if (!response.ok) throw new Error("HTTP " + response.status);
+        return response.json();
+      })
+      .then(function (schema) { self.adopt(schema); })
+      .catch(function (error) {
+        self.state = "error";
+        self.result = { reason: "schema", message: error.message };
+        throw error;
+      });
+  };
+
+  PortalForm.prototype.adopt = function (schema) {
+    this.model = normalizeSchema(schema, this.locale);
+    this.seed();
+    this.state = this.model.groups.length ? "ready" : "empty";
+  };
+
+  PortalForm.prototype.seed = function () {
+    var preset = this.cfg.presetValues || {};
+    var self = this;
+    this.eachField(function (field) {
+      if (Object.prototype.hasOwnProperty.call(preset, field.code)) {
+        self.values[field.code] = preset[field.code];
+      } else if (field.kind === "checklist" || field.kind === "multiselect" || field.kind === "address-list") {
+        self.values[field.code] = [];
+      } else if (field.kind === "boolean") {
+        self.values[field.code] = false;
+      } else if (field.kind === "slider") {
+        self.values[field.code] = field.tokens.min != null ? field.tokens.min : 0;
+      } else {
+        self.values[field.code] = "";
+      }
+    });
+  };
+
+  PortalForm.prototype.eachField = function (visit) {
+    if (!this.model) return;
+    this.model.groups.forEach(function (group) {
+      group.fields.forEach(function (field) { visit(field, group); });
+    });
+    this.model.hidden.forEach(function (field) { visit(field, null); });
+  };
+
+  PortalForm.prototype.visibleGroups = function () {
+    if (!this.model) return [];
+    var controlled = {};
+    var shown = {};
+    this.eachField(function (field) {
+      if (!field.behavior) return;
+      Object.keys(field.behavior).forEach(function (key) { controlled[field.behavior[key]] = true; });
+    });
+    var self = this;
+    this.eachField(function (field) {
+      if (!field.behavior) return;
+      var current = self.values[field.code];
+      var selected = Array.isArray(current) ? current : current ? [current] : [];
+      selected.forEach(function (value) {
+        var target = field.behavior[String(value).toUpperCase()];
+        if (target) shown[target] = true;
+      });
+    });
+    return this.model.groups.filter(function (group) {
+      return !controlled[group.code] || shown[group.code];
+    });
+  };
+
+  PortalForm.prototype.validateField = function (field) {
+    var value = this.values[field.code];
+    var tokens = field.tokens;
+    var empty = value === "" || value === null || value === undefined
+      || (Array.isArray(value) && value.length === 0)
+      || (field.kind === "boolean" && value !== true);
+    var refused = this.refusal(field);
+    if (refused) return refused;
+    if (field.required && empty) return this.cfg.copy.requiredError;
+    if (empty) return "";
+    var asText = Array.isArray(value) ? value.join(",") : String(value);
+    if (field.mask && !maskComplete(asText, field.mask)) return this.cfg.copy.incompleteError;
+    if (tokens.re && !new RegExp(tokens.re).test(asText)) return this.cfg.copy.formatError;
+    if (field.kind === "email" && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(asText)) return this.cfg.copy.emailError;
+    if (field.kind === "url" && !/^https?:\/\/[^\s]+$/.test(asText)) return this.cfg.copy.urlError;
+    if (tokens.minLength != null && asText.length < tokens.minLength) return this.cfg.copy.minLengthError.replace("{n}", tokens.minLength);
+    if (tokens.maxLength != null && asText.length > tokens.maxLength) return this.cfg.copy.maxLengthError.replace("{n}", tokens.maxLength);
+    if (field.kind === "number" || field.kind === "slider") {
+      var numeric = Number(asText);
+      if (!isFinite(numeric)) return this.cfg.copy.numberError;
+      if (tokens.min != null && numeric < tokens.min) return this.cfg.copy.minError.replace("{n}", tokens.min);
+      if (tokens.max != null && numeric > tokens.max) return this.cfg.copy.maxError.replace("{n}", tokens.max);
+    }
+    return "";
+  };
+
+  PortalForm.prototype.validateGroup = function (group) {
+    var self = this;
+    var ok = true;
+    group.fields.forEach(function (field) {
+      var message = self.validateField(field);
+      self.errors[field.code] = message;
+      self.touched[field.code] = true;
+      if (message) ok = false;
+    });
+    return ok;
+  };
+
+  PortalForm.prototype.flushPending = function () {
+    var self = this;
+    this.eachField(function (field) {
+      if (field.kind === "address-list" && !self.refusal(field)) self.takePending(field, self.pending[field.code]);
+    });
+  };
+
+  PortalForm.prototype.takePending = function (field, raw) {
+    var entry = String(raw == null ? "" : raw).trim();
+    this.pending[field.code] = "";
+    if (!entry) return false;
+    var held = repeatList(this.values[field.code]);
+    var next = withEntry(held, entry);
+    if (next === held) return false;
+    this.touched[field.code] = true;
+    this.setValue(field, next);
+    return true;
+  };
+
+  PortalForm.prototype.submit = function () {
+    var self = this;
+    if (this.submissionPending || this.settling) return Promise.resolve(false);
+    var settled = this.settle(this.visibleGroups());
+    if (settled) return settled.then(function () { return self.submit(); });
+    this.flushPending();
+    var groups = this.visibleGroups();
+    var ok = true;
+    groups.forEach(function (group) { if (!self.validateGroup(group)) ok = false; });
+    if (!ok) {
+      this.step = groups.findIndex(function (group) {
+        return group.fields.some(function (field) { return self.errors[field.code]; });
+      });
+      if (this.step < 0) this.step = 0;
+      this.render();
+      this.focusInvalid(groups[this.step]);
+      return Promise.resolve(false);
+    }
+
+    var organizationId = this.cfg.organizationId;
+    var base = String(this.cfg.apiBaseUrl || "").replace(/\/+$/, "");
+    if (!organizationId || !base) {
+      this.state = "blocked";
+      this.render();
+      return Promise.resolve(false);
+    }
+
+    var attributes = {};
+    var sent = {};
+    function collect(field) {
+      var value = self.values[field.code];
+      if (value === "" || value === null || value === undefined) return;
+      if (Array.isArray(value) && !value.length) return;
+      if (field.kind === "boolean" && value !== true) return;
+      var bucket = String(field.typeId != null ? field.typeId : self.model.id);
+      if (!attributes[bucket]) attributes[bucket] = {};
+      attributes[bucket][field.code] = { value: value };
+      sent[field.code] = true;
+    }
+    groups.forEach(function (group) { group.fields.forEach(collect); });
+    this.model.hidden.forEach(function (field) {
+      if (field.tokens.coordinatesOf && !sent[field.tokens.coordinatesOf]) return;
+      collect(field);
+    });
+
+    this.submissionPending = true;
+    this.state = "submitting";
+    this.render();
+
+    return Promise.resolve().then(function () { return fetch(base + "/core-cms/api/form/submit.json", {
+      method: "POST",
+      credentials: "omit",
+      headers: { "Content-Type": "application/json", accept: "application/json" },
+      body: JSON.stringify({
+        type: { id: self.model.id },
+        organization: { id: organizationId },
+        attributes: attributes,
+        metadata: { language: String(global.navigator.language).replace(/_/g, "-") },
+      }),
+    }); })
+      .then(function (response) {
+        if (!response.ok) throw new Error("HTTP " + response.status);
+        return response.json().catch(function () { return {}; });
+      })
+      .then(function (payload) {
+        self.submissionPending = false;
+        self.state = "success";
+        self.result = payload;
+        self.receipt = self.summarize(payload, new Date());
+        self.render();
+        self.focusKeyed("success");
+        if (typeof self.cfg.onSubmit === "function") {
+          try { self.cfg.onSubmit(payload, self.values); }
+          catch (error) { console.error("PortalForm onSubmit callback failed", error); }
+        }
+        return true;
+      })
+      .catch(function (error) {
+        self.submissionPending = false;
+        self.state = "submit-error";
+        self.result = { message: error.message };
+        self.render();
+        self.focusKeyed("next");
+        return false;
+      });
+  };
+
+  PortalForm.prototype.setValue = function (field, value) {
+    this.values[field.code] = value;
+    if (this.touched[field.code]) this.errors[field.code] = this.validateField(field);
+    this.syncCoordinates(field);
+  };
+
+  PortalForm.prototype.holdsAddress = function (field, address) {
+    if (repeatList(this.values[field.code]).indexOf(address) !== -1) return true;
+    return field.kind === "address-list" && String(this.pending[field.code] || "").trim() === address;
+  };
+
+  PortalForm.prototype.rememberLocation = function (field, text, location, fromGeocoder) {
+    var address = addressKey(field, text);
+    var point = pointOf(location);
+    if (!address || !point) return;
+    var known = this.locations[field.code] || (this.locations[field.code] = Object.create(null));
+    if (fromGeocoder && known[address]) return;
+    known[address] = point;
+    this.syncCoordinates(field);
+  };
+
+  PortalForm.prototype.locate = function (field, text, maps, settled) {
+    var self = this;
+    var address = addressKey(field, text);
+    var known = this.locations[field.code];
+    var asked = this.lookups[field.code] || (this.lookups[field.code] = Object.create(null));
+    var waiting = this.waiters[field.code] || (this.waiters[field.code] = Object.create(null));
+    if (!address || !this.cfg.mapsApiKey || (known && known[address]) || (asked[address] && asked[address] !== "pending")) {
+      if (settled) settled();
+      return;
+    }
+    if (settled) (waiting[address] || (waiting[address] = [])).push(settled);
+    if (asked[address]) return;
+    asked[address] = "pending";
+    function close(mark) {
+      if (mark && self.holdsAddress(field, address)) asked[address] = mark;
+      else delete asked[address];
+      var due = waiting[address] || [];
+      delete waiting[address];
+      self.judge(field);
+      due.forEach(function (done) { done(); });
+    }
+    function ask(loaded) {
+      var sent = false;
+      try {
+        sent = geocodeAddress(loaded, address, field.tokens.within, function (best, definite) {
+          if (best) {
+            delete asked[address];
+            self.rememberLocation(field, address, best.geometry && best.geometry.location, true);
+            close((self.locations[field.code] || {})[address] ? "" : "unverified");
+          } else {
+            close(definite ? "missed" : "unverified");
+          }
+        });
+      } catch (_) {
+        sent = false;
+      }
+      if (!sent) close("unverified");
+    }
+    if (maps) ask(maps);
+    else loadMaps(this.cfg.mapsApiKey).then(ask, function () { close("unverified"); });
+  };
+
+  PortalForm.prototype.verdict = function (field, text) {
+    var area = field.tokens.within;
+    var address = addressKey(field, text);
+    if (!area || !address || !this.cfg.mapsApiKey) return "free";
+    var known = this.locations[field.code];
+    if (known && known[address]) return boxHolds(area, known[address]) ? "inside" : "outside";
+    var asked = this.lookups[field.code];
+    return (asked && asked[address]) || "unknown";
+  };
+
+  PortalForm.prototype.refusal = function (field) {
+    if (field.kind !== "address" && field.kind !== "address-list") return "";
+    var verdict = this.verdict(field, field.kind === "address-list" ? this.pending[field.code] : this.values[field.code]);
+    if (verdict === "outside") return this.cfg.copy.addressOutsideError;
+    if (verdict === "missed") return this.cfg.copy.addressUnknownError;
+    return "";
+  };
+
+  PortalForm.prototype.judge = function (field) {
+    var copy = this.cfg.copy;
+    var shown = this.errors[field.code];
+    var refused = this.refusal(field);
+    if (refused) {
+      this.touched[field.code] = true;
+      this.errors[field.code] = refused;
+    } else if (shown && (shown === copy.addressOutsideError || shown === copy.addressUnknownError)) {
+      this.errors[field.code] = field.kind === "address" ? this.validateField(field) : "";
+    } else {
+      return;
+    }
+    this.paint(field);
+  };
+
+  PortalForm.prototype.checked = function (field, text) {
+    var self = this;
+    var address = addressKey(field, text);
+    return new Promise(function (resolve) {
+      var open = true;
+      var timer = setTimeout(function () {
+        if (!open) return;
+        open = false;
+        var asked = self.lookups[field.code];
+        if (asked && asked[address] === "pending") asked[address] = "unverified";
+        resolve();
+      }, ADDRESS_CHECK_WAIT);
+      self.locate(field, address, null, function () {
+        if (!open) return;
+        open = false;
+        clearTimeout(timer);
+        resolve();
+      });
+    });
+  };
+
+  PortalForm.prototype.unsettled = function (groups) {
+    var self = this;
+    var open = [];
+    groups.forEach(function (group) {
+      group.fields.forEach(function (field) {
+        if (field.kind !== "address" && field.kind !== "address-list") return;
+        var text = field.kind === "address-list" ? self.pending[field.code] : self.values[field.code];
+        var verdict = self.verdict(field, text);
+        if (verdict === "unknown" || verdict === "pending") open.push({ field: field, text: text });
+      });
+    });
+    return open;
+  };
+
+  PortalForm.prototype.settle = function (groups) {
+    var self = this;
+    var open = this.unsettled(groups);
+    if (!open.length) return null;
+    this.settling = true;
+    this.render();
+    return Promise.all(open.map(function (item) { return self.checked(item.field, item.text); })).then(function () {
+      self.settling = false;
+      self.render();
+    });
+  };
+
+  PortalForm.prototype.offer = function (field, id) {
+    var self = this;
+    var typed = String(this.pending[field.code] == null ? "" : this.pending[field.code]).trim();
+    var verdict = this.verdict(field, typed);
+    if (verdict === "unknown" || verdict === "pending") {
+      this.checking[field.code] = typed;
+      this.paint(field);
+      this.checked(field, typed).then(function () {
+        if (self.checking[field.code] !== typed) return;
+        delete self.checking[field.code];
+        if (String(self.pending[field.code] == null ? "" : self.pending[field.code]).trim() === typed) self.offer(field, id);
+        else self.paint(field);
+      });
+      return;
+    }
+    if (verdict === "outside" || verdict === "missed") {
+      this.judge(field);
+      this.renderAndFocus(id);
+      return;
+    }
+    if (this.takePending(field, typed) && verdict !== "inside") this.locate(field, typed);
+    this.renderAndFocus(id);
+  };
+
+  PortalForm.prototype.syncCoordinates = function (source) {
+    var self = this;
+    var known = this.locations[source.code];
+    if (known) {
+      Object.keys(known).forEach(function (address) {
+        if (!self.holdsAddress(source, address)) delete known[address];
+      });
+    }
+    var asked = this.lookups[source.code];
+    if (asked) {
+      Object.keys(asked).forEach(function (address) {
+        if (asked[address] !== "pending" && !self.holdsAddress(source, address)) delete asked[address];
+      });
+    }
+    this.model.hidden.forEach(function (field) {
+      if (field.tokens.coordinatesOf !== source.code) return;
+      var entries = [];
+      repeatList(self.values[source.code]).forEach(function (address) {
+        var point = known && known[address];
+        if (point) entries.push({ address: address, lat: point.lat, lng: point.lng });
+      });
+      self.values[field.code] = entries.length ? JSON.stringify(entries) : "";
+    });
+    this.syncMap(source);
+  };
+
+  PortalForm.prototype.mapView = function (field) {
+    var view = this.mapViews[field.code];
+    if (!view) {
+      view = this.mapViews[field.code] = {
+        canvas: el("div", "pf-address__map", { "data-state": this.cfg.mapsApiKey ? "loading" : "idle", "aria-hidden": "true" }),
+        api: null, map: null, pins: Object.create(null), framed: null, size: "", failed: false,
+      };
+    }
+    return view;
+  };
+
+  PortalForm.prototype.syncMap = function (field) {
+    var view = this.mapViews[field.code];
+    if (!view || !view.api || view.failed || !within(this.root, view.canvas)) return;
+    try {
+      this.drawMap(field, view);
+    } catch (error) {
+      view.failed = true;
+      view.canvas.dataset.state = "idle";
+      view.canvas.setAttribute("aria-hidden", "true");
+      console.error("PortalForm address map failed", error);
+    }
+  };
+
+  PortalForm.prototype.drawMap = function (field, view) {
+    var maps = view.api;
+    var known = this.locations[field.code] || {};
+    var area = field.tokens.within;
+    var addresses = Object.keys(known).filter(function (address) { return !area || boxHolds(area, known[address]); }).sort();
+    var start = field.tokens.mapStart || area;
+    if (!view.map) {
+      view.canvas.dataset.state = "ready";
+      view.canvas.removeAttribute("aria-hidden");
+      view.map = new maps.Map(view.canvas, {
+        center: start
+          ? { lat: (start.south + start.north) / 2, lng: (start.west + start.east) / 2 }
+          : { lat: MAP_WORLD.lat, lng: MAP_WORLD.lng },
+        zoom: MAP_WORLD.zoom,
+        disableDefaultUI: true, zoomControl: !touchFirst(),
+        colorScheme: darkMode() ? "DARK" : "LIGHT",
+        mapId: this.cfg.mapsMapId || undefined,
+      });
+      this.watchMapSize(field, view);
+    }
+    Object.keys(view.pins).forEach(function (address) {
+      var point = known[address];
+      var pin = view.pins[address];
+      if (point && point.lat === pin.lat && point.lng === pin.lng) return;
+      pin.marker.setMap(null);
+      delete view.pins[address];
+    });
+    addresses.forEach(function (address) {
+      var point = known[address];
+      if (view.pins[address]) return;
+      view.pins[address] = {
+        lat: point.lat, lng: point.lng,
+        marker: new maps.Marker({ map: view.map, position: { lat: point.lat, lng: point.lng }, title: address }),
+      };
+    });
+    var framed = addresses.map(function (address) {
+      return address + "@" + known[address].lat + "," + known[address].lng;
+    }).join("\n");
+    if (framed === view.framed) return;
+    view.framed = framed;
+    if (!addresses.length) {
+      if (start) {
+        view.map.fitBounds(start, 0);
+      } else {
+        view.map.setCenter({ lat: MAP_WORLD.lat, lng: MAP_WORLD.lng });
+        view.map.setZoom(MAP_WORLD.zoom);
+      }
+      return;
+    }
+    var bounds = { north: -90, south: 90, east: -180, west: 180 };
+    addresses.forEach(function (address) {
+      var point = known[address];
+      bounds.north = Math.max(bounds.north, point.lat);
+      bounds.south = Math.min(bounds.south, point.lat);
+      bounds.east = Math.max(bounds.east, point.lng);
+      bounds.west = Math.min(bounds.west, point.lng);
+    });
+    if (bounds.north - bounds.south < MAP_CLOSE_SPAN && bounds.east - bounds.west < MAP_CLOSE_SPAN) {
+      view.map.setCenter({ lat: (bounds.north + bounds.south) / 2, lng: (bounds.east + bounds.west) / 2 });
+      view.map.setZoom(MAP_CLOSE_ZOOM);
+    } else {
+      view.map.fitBounds(bounds, MAP_PADDING);
+    }
+  };
+
+  PortalForm.prototype.watchMapSize = function (field, view) {
+    var self = this;
+    var canvas = view.canvas;
+    function measured() { return canvas.offsetWidth + "x" + canvas.offsetHeight; }
+    view.size = measured();
+    if (typeof ResizeObserver !== "function") return;
+    new ResizeObserver(function () {
+      if (!canvas.offsetWidth || !canvas.offsetHeight || measured() === view.size) return;
+      view.size = measured();
+      view.framed = null;
+      self.syncMap(field);
+    }).observe(canvas);
+  };
+
+  PortalForm.prototype.syncMaps = function () {
+    var self = this;
+    this.eachField(function (field) { self.syncMap(field); });
+  };
+
+  PortalForm.prototype.render = function () {
+    var active = document.activeElement;
+    var held = within(this.root, active) ? focusKey(active) : "";
+    this.draw();
+    if (held) this.focusKeyed(held);
+  };
+
+  PortalForm.prototype.focusKeyed = function (key) {
+    if (!key) return false;
+    var node = findNode(this.root, function (candidate) { return focusKey(candidate) === key; });
+    if (node) node.focus();
+    return Boolean(node);
+  };
+
+  PortalForm.prototype.draw = function () {
+    var self = this;
+    var root = this.root;
+    root.dataset.state = this.state;
+    this.fieldNodes = {};
+    root.replaceChildren();
+
+    var card = el("div", "pf__card");
+    root.appendChild(card);
+
+    if (this.state === "loading") { card.appendChild(this.renderSkeleton()); return; }
+    if (this.state === "error") { card.appendChild(this.renderNotice("error", this.cfg.copy.schemaErrorTitle, this.cfg.copy.schemaErrorBody, true)); return; }
+    if (this.state === "empty") { card.appendChild(this.renderNotice("empty", this.cfg.copy.emptyTitle, this.cfg.copy.emptyBody, false)); return; }
+    if (this.state === "success") { card.appendChild(this.renderSuccess()); return; }
+
+    var groups = this.visibleGroups();
+    if (this.step >= groups.length) this.step = Math.max(0, groups.length - 1);
+    var multi = groups.length > 1;
+    var group = groups[this.step];
+
+    var head = el("div", "pf__head");
+    head.appendChild(text("h2", "pf__title", this.cfg.copy.title || this.model.title));
+    if (this.cfg.copy.subtitle) head.appendChild(text("p", "pf__sub", this.cfg.copy.subtitle));
+    card.appendChild(head);
+
+    if (multi) card.appendChild(this.renderSteps(groups));
+
+    var form = el("form", "pf__body", { novalidate: true });
+    form.addEventListener("submit", function (event) { event.preventDefault(); self.advance(groups); });
+    card.appendChild(form);
+
+    var titleId = group.title ? "pf-group-" + group.code : undefined;
+    var section = el("div", "pf-group", { "data-group": group.code, role: "group", tabindex: "-1", "aria-labelledby": titleId });
+    if (group.title) {
+      var groupTitle = text("p", "pf-group__title", group.title);
+      groupTitle.id = titleId;
+      section.appendChild(groupTitle);
+    }
+    group.fields.forEach(function (field) { section.appendChild(self.renderField(field)); });
+    form.appendChild(section);
+
+    if (this.state === "submit-error") {
+      form.appendChild(this.renderNotice("error", this.cfg.copy.submitErrorTitle, this.cfg.copy.submitErrorBody, false));
+    }
+    if (this.state === "blocked") {
+      form.appendChild(this.renderNotice("blocked", this.cfg.copy.blockedTitle, this.cfg.copy.blockedBody, false));
+    }
+
+    var actions = el("div", "pf-actions");
+    if (multi && this.step > 0) {
+      var back = text("button", "btn btn--ghost btn--lg", this.cfg.copy.backLabel);
+      back.type = "button";
+      back.disabled = this.submissionPending || this.settling;
+      back.addEventListener("click", function () { if (self.submissionPending || self.settling) return; self.step -= 1; self.render(); self.focusStep(); });
+      actions.appendChild(back);
+    }
+    var last = this.step === groups.length - 1;
+    var submitting = this.submissionPending || this.state === "submitting";
+    var next = text("button", "btn btn--primary btn--lg", submitting ? this.cfg.copy.submittingLabel : last ? this.cfg.copy.submitLabel : this.cfg.copy.nextLabel);
+    next.type = "submit";
+    next.setAttribute("data-focus", "next");
+    if (submitting || this.settling || (last && !this.canSubmit())) next.disabled = true;
+    if (this.settling) next.setAttribute("aria-busy", "true");
+    if (last && !this.canSubmit()) next.dataset.formDestination = "unset";
+    actions.appendChild(next);
+    form.appendChild(actions);
+
+    if (this.cfg.copy.note) card.appendChild(text("p", "pf-note", this.cfg.copy.note));
+    this.syncMaps();
+  };
+
+  PortalForm.prototype.canSubmit = function () {
+    return Boolean(this.cfg.organizationId && this.cfg.apiBaseUrl);
+  };
+
+  PortalForm.prototype.advance = function (groups) {
+    var self = this;
+    if (this.submissionPending || this.settling) return;
+    var settled = this.settle([groups[this.step]]);
+    if (settled) {
+      settled.then(function () { self.advance(self.visibleGroups()); });
+      return;
+    }
+    this.flushPending();
+    if (!this.validateGroup(groups[this.step])) { this.render(); this.focusInvalid(groups[this.step]); return; }
+    if (this.step < groups.length - 1) { this.step += 1; this.render(); this.focusStep(); return; }
+    this.submit();
+  };
+
+  PortalForm.prototype.focusStep = function () {
+    var section = findNode(this.root, function (node) { return node.getAttribute("data-group") !== null; });
+    if (section) section.focus();
+  };
+
+  PortalForm.prototype.focusInvalid = function (group) {
+    var self = this;
+    var field = group.fields.filter(function (candidate) { return self.errors[candidate.code]; })[0];
+    var nodes = field && this.fieldNodes[field.code];
+    if (!nodes) return;
+    var control = findNode(nodes.wrap, function (node) { return node.id === "pf-" + field.code && CONTROLS[node.tagName] === true; })
+      || findNode(nodes.wrap, function (node) { return CONTROLS[node.tagName] === true; });
+    if (control) control.focus();
+  };
+
+  PortalForm.prototype.renderSteps = function (groups) {
+    var self = this;
+    var wrap = el("div", "pf-steps", { role: "list" });
+    groups.forEach(function (group, index) {
+      var state = index === self.step ? "on" : index < self.step ? "done" : "todo";
+      var step = el("div", "pf-step pf-step--" + state, { role: "listitem", "data-state": state });
+      step.appendChild(text("i", "", state === "done" ? "✓" : String(index + 1)));
+      step.appendChild(text("span", "", group.title || self.cfg.copy.stepFallback.replace("{n}", index + 1)));
+      wrap.appendChild(step);
+    });
+    return wrap;
+  };
+
+  PortalForm.prototype.renderSkeleton = function () {
+    var wrap = el("div", "pf-skeleton", { "data-state": "loading", "aria-busy": "true" });
+    for (var index = 0; index < 4; index += 1) {
+      var row = el("div", "pf-skeleton__row");
+      row.appendChild(el("span", "pf-skeleton__bar pf-skeleton__bar--label"));
+      row.appendChild(el("span", "pf-skeleton__bar"));
+      wrap.appendChild(row);
+    }
+    return wrap;
+  };
+
+  PortalForm.prototype.renderNotice = function (kind, title, body, retry) {
+    var self = this;
+    var wrap = el("div", "pf-notice pf-notice--" + kind, { "data-state": kind, role: kind === "error" ? "alert" : "status" });
+    wrap.appendChild(text("div", "pf-notice__glyph", kind === "success" ? "✓" : kind === "empty" ? "◌" : "!"));
+    wrap.appendChild(text("div", "pf-notice__title", title));
+    if (body) wrap.appendChild(text("div", "pf-notice__body", body));
+    if (retry) {
+      var button = text("button", "btn btn--primary", self.cfg.copy.retryLabel);
+      button.type = "button";
+      button.addEventListener("click", function () {
+        self.state = "loading";
+        self.render();
+        self.load().then(function () { self.render(); }, function () { self.render(); });
+      });
+      wrap.appendChild(button);
+    }
+    return wrap;
+  };
+
+  PortalForm.prototype.summarize = function (payload, at) {
+    var self = this;
+    var places = [];
+    var email = "";
+    var names = { FIRST_NAME: "", LAST_NAME: "" };
+    this.visibleGroups().forEach(function (group) {
+      group.fields.forEach(function (field) {
+        var value = self.values[field.code];
+        if (field.kind === "address" || field.kind === "address-list") {
+          repeatList(value).forEach(function (entry) { if (said(entry)) places.push(said(entry)); });
+        } else if (field.kind === "email") {
+          if (!email && typeof value === "string") email = said(value);
+        } else if (Object.prototype.hasOwnProperty.call(names, field.code) && typeof value === "string") {
+          names[field.code] = said(value);
+        }
+      });
+    });
+    return {
+      number: formNumber(payload),
+      at: at,
+      places: places,
+      email: email,
+      contact: [names.FIRST_NAME, names.LAST_NAME].filter(Boolean).join(" "),
+    };
+  };
+
+  PortalForm.prototype.renderSuccess = function () {
+    var self = this;
+    var copy = this.cfg.copy;
+    if (!this.receipt) this.receipt = this.summarize(this.result, new Date());
+    var receipt = this.receipt;
+    var wrap = el("div", "pf-done", { "data-state": "success" });
+
+    var head = el("div", "pf-done__head");
+    var glyph = el("span", "pf-done__glyph");
+    glyph.appendChild(icon("check"));
+    head.appendChild(glyph);
+    var title = text("h2", "pf-done__title", copy.successTitle);
+    title.setAttribute("tabindex", "-1");
+    title.setAttribute("data-focus", "success");
+    head.appendChild(title);
+    if (said(copy.successBody)) head.appendChild(text("p", "pf-done__body", copy.successBody));
+    wrap.appendChild(head);
+
+    var sentTitle = receipt.email && said(copy.successSentTitle) ? fill(copy.successSentTitle, { email: receipt.email }) : "";
+    if (sentTitle || said(copy.successSentBody)) {
+      var sent = el("div", "pf-done__sent");
+      var mark = el("span", "pf-done__sent-icon");
+      mark.appendChild(icon("mail"));
+      sent.appendChild(mark);
+      var words = el("div", "pf-done__sent-text");
+      if (sentTitle) words.appendChild(text("p", "pf-done__sent-title", sentTitle));
+      if (said(copy.successSentBody)) words.appendChild(text("p", "pf-done__sent-body", copy.successSentBody));
+      sent.appendChild(words);
+      wrap.appendChild(sent);
+    }
+
+    wrap.appendChild(this.renderSummary(receipt));
+    var next = this.renderNext();
+    if (next) wrap.appendChild(next);
+
+    var actions = el("div", "pf-done__actions");
+    var website = webAddress(this.cfg.websiteUrl);
+    if (website && said(copy.successBackLabel)) {
+      var back = el("a", "btn btn--primary btn--lg pf-done__back", { href: website });
+      back.appendChild(text("span", "", copy.successBackLabel));
+      back.appendChild(icon("arrow"));
+      actions.appendChild(back);
+    }
+    if (said(copy.successAgainLabel)) {
+      var again = text("button", "btn btn--ghost btn--lg", copy.successAgainLabel);
+      again.type = "button";
+      again.addEventListener("click", function () { self.restart(); });
+      actions.appendChild(again);
+    }
+    if (actions.children.length) wrap.appendChild(actions);
+    return wrap;
+  };
+
+  PortalForm.prototype.renderSummary = function (receipt) {
+    var self = this;
+    var copy = this.cfg.copy;
+    var card = el("div", "pf-summary");
+    var head = el("div", "pf-summary__head");
+    head.appendChild(text("h3", "pf-summary__title", copy.successSummaryTitle));
+    if (receipt.number) head.appendChild(text("span", "pf-summary__number", "#" + receipt.number));
+    card.appendChild(head);
+
+    var list = el("dl", "pf-summary__list");
+    function row(kind, label) {
+      var item = el("div", "pf-summary__row pf-summary__row--" + kind, { "data-row": kind });
+      item.appendChild(text("dt", "pf-summary__label", label));
+      var value = el("dd", "pf-summary__value");
+      item.appendChild(value);
+      list.appendChild(item);
+      return value;
+    }
+
+    var count = receipt.places.length;
+    if (count) {
+      var properties = row("properties", copy.successPropertiesLabel);
+      properties.appendChild(text("p", "pf-summary__count", fill(count === 1 ? copy.successPropertiesOne : copy.successPropertiesMany, { n: count })));
+      var folded = count > SUMMARY_PLACES;
+      var open = folded && this.placesOpen;
+      var places = el("ul", "pf-summary__places");
+      (folded && !open ? receipt.places.slice(0, SUMMARY_PLACES) : receipt.places).forEach(function (place) {
+        places.appendChild(text("li", "pf-summary__place", place));
+      });
+      properties.appendChild(places);
+      if (folded) {
+        var more = text("button", "pf-summary__more", open ? copy.successLessLabel : fill(copy.successMoreLabel, { n: count - SUMMARY_PLACES }));
+        more.type = "button";
+        more.setAttribute("aria-expanded", open ? "true" : "false");
+        more.setAttribute("data-focus", "success-places");
+        more.addEventListener("click", function () { self.placesOpen = !self.placesOpen; self.render(); });
+        properties.appendChild(more);
+      }
+    }
+    if (receipt.contact) row("contact", copy.successContactLabel).textContent = receipt.contact;
+    if (receipt.email) row("email", copy.successEmailLabel).textContent = receipt.email;
+    row("submitted", copy.successSubmittedLabel).textContent = fill(copy.successSubmittedAt, dateParts(this.locale, receipt.at));
+    card.appendChild(list);
+    return card;
+  };
+
+  PortalForm.prototype.renderNext = function () {
+    var copy = this.cfg.copy;
+    var steps = STEP_ICONS.map(function (glyph, index) {
+      return { glyph: glyph, title: said(copy["successStep" + (index + 1) + "Title"]), text: said(copy["successStep" + (index + 1) + "Text"]) };
+    }).filter(function (step) { return step.title || step.text; });
+    if (!steps.length) return null;
+    var next = el("div", "pf-next");
+    if (said(copy.successNextTitle)) next.appendChild(text("h3", "pf-next__title", copy.successNextTitle));
+    var list = el("ol", "pf-next__list");
+    steps.forEach(function (step, index) {
+      var item = el("li", "pf-next__item");
+      var marks = el("div", "pf-next__marks", { "aria-hidden": "true" });
+      marks.appendChild(text("span", "pf-next__n", index + 1));
+      var badge = el("span", "pf-next__icon", { "data-icon": step.glyph });
+      badge.appendChild(icon(step.glyph));
+      marks.appendChild(badge);
+      marks.appendChild(el("span", "pf-next__line"));
+      item.appendChild(marks);
+      if (step.title) item.appendChild(text("h4", "pf-next__name", step.title));
+      if (step.text) item.appendChild(text("p", "pf-next__text", step.text));
+      list.appendChild(item);
+    });
+    next.appendChild(list);
+    return next;
+  };
+
+  PortalForm.prototype.restart = function () {
+    if (this.submissionPending) return;
+    this.values = {};
+    this.errors = {};
+    this.touched = {};
+    this.pending = {};
+    this.locations = {};
+    this.lookups = {};
+    this.result = null;
+    this.receipt = null;
+    this.placesOpen = false;
+    this.step = 0;
+    this.seed();
+    this.state = "ready";
+    this.render();
+    this.focusStep();
+  };
+
+  PortalForm.prototype.renderField = function (field) {
+    var self = this;
+    var invalid = Boolean(this.touched[field.code] && this.errors[field.code]);
+    var located = field.kind === "address" || field.kind === "address-list";
+    var wrap = el("div", "pf-field", {
+      "data-code": field.code, "data-kind": field.kind, "data-state": invalid ? "invalid" : "idle",
+      "aria-busy": this.checking[field.code] ? "true" : undefined,
+    });
+    var id = "pf-" + field.code;
+
+    if (field.kind !== "boolean") {
+      var label = el("label", "pf-field__label", { for: id });
+      label.appendChild(text("span", "", field.label));
+      if (field.required) label.appendChild(text("span", "pf-req", "*"));
+      wrap.appendChild(label);
+    }
+
+    var control = this.buildControl(field, id);
+    wrap.appendChild(control);
+
+    if (field.description) wrap.appendChild(text("p", "pf-field__hint", field.description));
+    var error = text("p", "pf-field__error", invalid ? this.errors[field.code] : "");
+    error.id = id + "-error";
+    if (located) error.setAttribute("aria-live", "polite");
+    wrap.appendChild(error);
+    if (located) wrap.appendChild(this.mapView(field).canvas);
+    this.fieldNodes[field.code] = { wrap: wrap, error: error };
+
+    wrap.addEventListener("focusout", function (event) {
+      if (within(wrap, event.relatedTarget)) return;
+      self.touched[field.code] = true;
+      self.errors[field.code] = self.validateField(field);
+      self.paint(field);
+    });
+    return wrap;
+  };
+
+  PortalForm.prototype.buildControl = function (field, id) {
+    var self = this;
+    var value = this.values[field.code];
+    var tokens = field.tokens;
+
+    if (field.kind === "textarea") {
+      var area = el("textarea", "pf-input pf-input--area", {
+        id: id, name: field.code, placeholder: field.placeholder,
+        rows: tokens.rows || 4, maxlength: tokens.maxLength,
+        "aria-describedby": id + "-error",
+      });
+      area.value = value || "";
+      area.addEventListener("input", function () { self.setValue(field, area.value); });
+      return area;
+    }
+
+    if (field.kind === "slider") {
+      var sliderWrap = el("div", "pf-slider");
+      var min = tokens.min != null ? tokens.min : 0;
+      var max = tokens.max != null ? tokens.max : 100;
+      var range = el("input", "pf-range", {
+        type: "range", id: id, name: field.code, min: min, max: max,
+        step: tokens.step != null ? tokens.step : 1,
+      });
+      range.value = value != null && value !== "" ? value : min;
+      var readout = text("output", "pf-slider__val", range.value);
+      range.addEventListener("input", function () {
+        readout.textContent = range.value;
+        self.setValue(field, Number(range.value));
+      });
+      sliderWrap.appendChild(range);
+      sliderWrap.appendChild(readout);
+      return sliderWrap;
+    }
+
+    if (field.kind === "boolean") {
+      var toggle = el("label", "pf-choice", { for: id });
+      var box = el("input", "pf-choice__input", { type: "checkbox", id: id, name: field.code });
+      box.checked = value === true;
+      box.addEventListener("change", function () { self.setValue(field, box.checked); self.render(); });
+      toggle.appendChild(box);
+      toggle.appendChild(el("span", "pf-check"));
+      var copy = text("span", "pf-choice__label", field.label);
+      if (field.required) copy.appendChild(text("span", "pf-req", "*"));
+      toggle.appendChild(copy);
+      return toggle;
+    }
+
+    if (field.kind === "radio" || field.kind === "checklist") {
+      var multiple = field.kind === "checklist";
+      var list = el("div", "pf-choices", { role: multiple ? "group" : "radiogroup", "aria-label": field.label });
+      field.choices.forEach(function (choice, index) {
+        var option = el("label", "pf-choice");
+        var input = el("input", "pf-choice__input", {
+          type: multiple ? "checkbox" : "radio",
+          name: field.code + (multiple ? "[]" : ""),
+          value: choice.value,
+          id: index === 0 ? id : undefined,
+        });
+        input.checked = multiple ? (value || []).indexOf(choice.value) !== -1 : value === choice.value;
+        input.addEventListener("change", function () {
+          if (!multiple) { self.setValue(field, choice.value); self.render(); return; }
+          var next = (self.values[field.code] || []).slice();
+          var at = next.indexOf(choice.value);
+          if (input.checked && at === -1) next.push(choice.value);
+          if (!input.checked && at !== -1) next.splice(at, 1);
+          self.setValue(field, next);
+          self.render();
+        });
+        option.appendChild(input);
+        option.appendChild(el("span", multiple ? "pf-check" : "pf-radio"));
+        option.appendChild(text("span", "pf-choice__label", choice.label));
+        list.appendChild(option);
+      });
+      return list;
+    }
+
+    if (field.kind === "multiselect") {
+      var chips = el("div", "pf-chips", { role: "group", "aria-label": field.label, id: id });
+      field.choices.forEach(function (choice) {
+        var on = (value || []).indexOf(choice.value) !== -1;
+        var chip = text("button", "pf-chip" + (on ? " pf-chip--on" : ""), choice.label);
+        chip.type = "button";
+        chip.setAttribute("aria-pressed", on ? "true" : "false");
+        chip.setAttribute("data-focus", field.code + "=" + choice.value);
+        chip.addEventListener("click", function () {
+          var next = (self.values[field.code] || []).slice();
+          var at = next.indexOf(choice.value);
+          if (at === -1) next.push(choice.value); else next.splice(at, 1);
+          self.touched[field.code] = true;
+          self.setValue(field, next);
+          self.render();
+        });
+        chips.appendChild(chip);
+      });
+      return chips;
+    }
+
+    if (field.kind === "select") {
+      var select = el("select", "pf-input pf-select", { id: id, name: field.code, "aria-describedby": id + "-error" });
+      var blank = text("option", "", field.placeholder || this.cfg.copy.selectPlaceholder);
+      blank.value = "";
+      select.appendChild(blank);
+      field.choices.forEach(function (choice) {
+        var option = text("option", "", choice.label);
+        option.value = choice.value;
+        if (value === choice.value) option.selected = true;
+        select.appendChild(option);
+      });
+      select.addEventListener("change", function () { self.setValue(field, select.value); self.render(); });
+      return select;
+    }
+
+    if (field.kind === "combobox") {
+      var comboWrap = el("div", "pf-combo");
+      var listId = id + "-list";
+      var combo = el("input", "pf-input", {
+        id: id, name: field.code, list: listId, placeholder: field.placeholder,
+        "aria-describedby": id + "-error",
+      });
+      combo.value = value || "";
+      combo.addEventListener("input", function () { self.setValue(field, combo.value); });
+      var datalist = el("datalist", "", { id: listId });
+      field.choices.forEach(function (choice) {
+        var option = el("option", "", { value: choice.value });
+        option.textContent = choice.label;
+        datalist.appendChild(option);
+      });
+      comboWrap.appendChild(combo);
+      comboWrap.appendChild(datalist);
+      return comboWrap;
+    }
+
+    if (field.kind === "address") return this.addressControl(field, id, value, null);
+    if (field.kind === "address-list") return this.addressListControl(field, id, value);
+
+    var nativeType = field.kind === "number" ? "number"
+      : field.kind === "password" ? "password"
+      : field.kind === "email" ? "email"
+      : field.kind === "tel" ? "tel"
+      : field.kind === "url" ? "url"
+      : field.kind === "color" ? "color"
+      : field.kind === "date" ? "date"
+      : "text";
+
+    if (field.kind === "color") {
+      var colorWrap = el("div", "pf-color");
+      var swatch = el("input", "pf-color__swatch", { type: "color", id: id, name: field.code, "aria-describedby": id + "-error" });
+      swatch.value = value || "#0e8fc4";
+      var readout = text("span", "pf-color__value", swatch.value);
+      swatch.addEventListener("input", function () {
+        readout.textContent = swatch.value;
+        self.setValue(field, swatch.value);
+      });
+      colorWrap.appendChild(swatch);
+      colorWrap.appendChild(readout);
+      return colorWrap;
+    }
+
+    var input = el("input", "pf-input", {
+      type: nativeType, id: id, name: field.code, placeholder: field.placeholder,
+      inputmode: field.kind === "number" ? "decimal" : field.kind === "tel" ? "tel" : undefined,
+      min: tokens.min, max: tokens.max, step: tokens.step,
+      maxlength: field.mask ? field.mask.length : tokens.maxLength,
+      autocomplete: field.kind === "email" ? "email" : field.kind === "tel" ? "tel" : undefined,
+      "aria-describedby": id + "-error",
+    });
+    input.value = value != null ? value : "";
+    input.addEventListener("input", function () {
+      if (field.mask) {
+        var masked = applyMask(input.value, field.mask);
+        if (masked !== input.value) input.value = masked;
+      }
+      self.setValue(field, input.value);
+    });
+    return input;
+  };
+
+  PortalForm.prototype.addressListControl = function (field, id, value) {
+    var self = this;
+    var held = repeatList(value);
+    var wrap = el("div", "pf-repeat");
+
+    if (held.length) {
+      var items = el("div", "pf-repeat__items", { role: "group", "aria-label": field.label });
+      held.forEach(function (entry) {
+        var row = el("button", "pf-repeat__row", {
+          type: "button", "aria-pressed": "true", "aria-label": String(entry),
+        });
+        row.appendChild(text("span", "pf-repeat__text", entry));
+        var glyph = text("span", "pf-repeat__x", "×");
+        glyph.setAttribute("aria-hidden", "true");
+        row.appendChild(glyph);
+        row.addEventListener("click", function () {
+          self.touched[field.code] = true;
+          self.setValue(field, repeatList(self.values[field.code]).filter(function (existing) {
+            return String(existing) !== String(entry);
+          }));
+          self.renderAndFocus(id);
+        });
+        items.appendChild(row);
+      });
+      wrap.appendChild(items);
+    }
+
+    var entry = el("div", "pf-repeat__entry");
+    entry.appendChild(this.addressControl(field, id, this.pending[field.code] || "", function (candidate) {
+      self.pending[field.code] = candidate;
+      self.offer(field, id);
+    }));
+    var add = text("button", "pf-repeat__add", "+");
+    add.type = "button";
+    add.addEventListener("mousedown", keepFocus);
+    add.addEventListener("click", function () { self.offer(field, id); });
+    entry.appendChild(add);
+    wrap.appendChild(entry);
+    return wrap;
+  };
+
+  PortalForm.prototype.renderAndFocus = function (id) {
+    this.render();
+    var input = document.getElementById(id);
+    if (input && typeof input.focus === "function") input.focus();
+  };
+
+  PortalForm.prototype.addressControl = function (field, id, value, accept) {
+    var self = this;
+    var repeating = typeof accept === "function";
+    var wrap = el("div", "pf-address");
+    var input = el("input", "pf-input", {
+      type: "text", id: id, name: field.code, placeholder: field.placeholder,
+      autocomplete: "street-address", "aria-describedby": id + "-error",
+    });
+    input.value = value != null ? value : "";
+    var listbox = { key: null };
+    var take = repeating ? accept : function (formatted) {
+      input.value = formatted;
+      self.setValue(field, formatted);
+    };
+    input.addEventListener("keydown", function (event) {
+      if (listbox.key && listbox.key(event)) return;
+      if (!repeating || event.key !== "Enter") return;
+      event.preventDefault();
+      if (wrap.dataset.autocomplete === "legacy") return;
+      take(input.value);
+    });
+    if (repeating) {
+      input.addEventListener("input", function () {
+        self.pending[field.code] = input.value;
+        self.syncCoordinates(field);
+        self.judge(field);
+      });
+    } else {
+      input.addEventListener("input", function () {
+        var refused = self.refusal(field);
+        self.setValue(field, input.value);
+        if (refused || self.refusal(field)) self.paint(field);
+      });
+    }
+    var anchor = el("div", "pf-address__anchor");
+    anchor.appendChild(input);
+    wrap.appendChild(anchor);
+
+    if (!this.cfg.mapsApiKey) return wrap;
+
+    loadMaps(this.cfg.mapsApiKey).then(function (maps) {
+      self.upgradeAddress(field, wrap, input, maps, take, listbox);
+    }).catch(function () {
+      var view = self.mapView(field);
+      if (!view.map) view.canvas.dataset.state = "idle";
+    });
+    return wrap;
+  };
+
+  PortalForm.prototype.upgradeAddress = function (field, wrap, input, maps, take, listbox) {
+    var self = this;
+    var repeating = field.kind === "address-list";
+    var view = this.mapView(field);
+    if (!view.api) {
+      view.api = maps;
+      this.syncMap(field);
+    }
+
+    function pick(formatted, location) {
+      if (!formatted) return;
+      if (repeating) {
+        self.pending[field.code] = formatted;
+        if (location) self.rememberLocation(field, formatted, location, false);
+        self.offer(field, input.id);
+        return;
+      }
+      take(formatted);
+      if (location) self.rememberLocation(field, formatted, location, false);
+      else self.locate(field, formatted, maps);
+      self.judge(field);
+    }
+
+    var places = maps.places || {};
+    var mode = places.AutocompleteSuggestion ? "data-api" : places.Autocomplete ? "legacy" : "geocode";
+    wrap.dataset.autocomplete = mode;
+
+    if (mode === "data-api") {
+      this.suggest(field, input, places, pick, listbox);
+    } else if (mode === "legacy") {
+      try {
+        var autocomplete = new places.Autocomplete(input, {
+          fields: ["formatted_address", "geometry"],
+          types: ["address"],
+          componentRestrictions: field.tokens.country ? { country: field.tokens.country } : undefined,
+          bounds: field.tokens.within || undefined,
+          strictBounds: field.tokens.within ? true : undefined,
+        });
+        autocomplete.addListener("place_changed", function () {
+          var place = autocomplete.getPlace();
+          if (!place) return;
+          pick(place.formatted_address, place.geometry && place.geometry.location);
+        });
+      } catch (_) {
+        wrap.dataset.autocomplete = "geocode";
+      }
+    }
+
+    if (repeating) {
+      input.addEventListener("blur", function () { self.locate(field, self.pending[field.code], maps); });
+    } else {
+      input.addEventListener("blur", function () { self.locate(field, input.value, maps); });
+      self.locate(field, input.value, maps);
+    }
+  };
+
+  PortalForm.prototype.suggest = function (field, input, places, pick, listbox) {
+    var repeating = field.kind === "address-list";
+    var listId = input.id + "-suggestions";
+    var list = el("ul", "pf-address__list", { id: listId, role: "listbox", "aria-label": field.label, hidden: true });
+    var token = places.AutocompleteSessionToken ? new places.AutocompleteSessionToken() : undefined;
+    var offered = [];
+    var recent = { query: "", items: [] };
+    var active = -1;
+    input.parentNode.appendChild(list);
+    input.setAttribute("role", "combobox");
+    input.setAttribute("aria-autocomplete", "list");
+    input.setAttribute("aria-controls", listId);
+    input.setAttribute("aria-expanded", "false");
+    input.setAttribute("autocomplete", "off");
+
+    function highlight(index) {
+      active = index;
+      offered.forEach(function (option, position) {
+        option.node.setAttribute("aria-selected", position === index ? "true" : "false");
+      });
+      if (index === -1) input.removeAttribute("aria-activedescendant");
+      else input.setAttribute("aria-activedescendant", offered[index].node.id);
+    }
+
+    function closeList() {
+      list.replaceChildren();
+      list.hidden = true;
+      offered = [];
+      highlight(-1);
+      input.setAttribute("aria-expanded", "false");
+    }
+
+    function choose(option) {
+      closeList();
+      option.accept();
+    }
+
+    function offer(items) {
+      closeList();
+      offered = items.slice(0, 5).map(function (item, index) {
+        var node = el("li", "pf-address__option", { id: listId + "-" + index, role: "option", "aria-selected": "false" });
+        node.textContent = item.label;
+        var option = { node: node, accept: item.accept };
+        node.addEventListener("mousedown", keepFocus);
+        node.addEventListener("click", function () { choose(option); });
+        list.appendChild(node);
+        return option;
+      });
+      if (!offered.length) return;
+      list.hidden = false;
+      input.setAttribute("aria-expanded", "true");
+    }
+
+    listbox.key = function (event) {
+      if (list.hidden) {
+        if (event.key !== "ArrowDown" || !recent.items.length || recent.query !== input.value.trim()) return false;
+        event.preventDefault();
+        offer(recent.items);
+        highlight(0);
+        return true;
+      }
+      if (event.key === "ArrowDown" || event.key === "ArrowUp") {
+        event.preventDefault();
+        var count = offered.length;
+        highlight(event.key === "ArrowDown" ? (active + 1) % count : (active <= 0 ? count : active) - 1);
+        return true;
+      }
+      if (event.key === "Enter") {
+        if (active !== -1) {
+          event.preventDefault();
+          choose(offered[active]);
+          return true;
+        }
+        closeList();
+        if (repeating) return false;
+        event.preventDefault();
+        return true;
+      }
+      if (event.key !== "Escape") return false;
+      event.preventDefault();
+      closeList();
+      return true;
+    };
+
+    input.addEventListener("input", debounce(function () {
+      var value = input.value.trim();
+      if (value.length < 3) { closeList(); return; }
+      places.AutocompleteSuggestion.fetchAutocompleteSuggestions({
+        input: value,
+        sessionToken: token,
+        includedPrimaryTypes: ["street_address", "premise", "subpremise", "route"],
+        includedRegionCodes: field.tokens.country || undefined,
+        locationRestriction: field.tokens.within || undefined,
+      }).then(function (response) {
+        if (document.activeElement !== input || input.value.trim() !== value) return;
+        recent = {
+          query: value,
+          items: ((response && response.suggestions) || []).map(function (suggestion) {
+            var prediction = suggestion.placePrediction;
+            var label = prediction && prediction.text ? String(prediction.text) : "";
+            return {
+              label: label,
+              accept: function () {
+                var place = prediction.toPlace();
+                place.fetchFields({ fields: ["formattedAddress", "location"] }).then(function () {
+                  pick(place.formattedAddress, place.location);
+                }, function () { pick(label, null); });
+              },
+            };
+          }).filter(function (item) { return item.label; }),
+        };
+        offer(recent.items);
+      }).catch(closeList);
+    }, 250));
+    input.addEventListener("blur", closeList);
+  };
+
+  global.PortalForm = PortalForm;
+  global.PortalForm.normalizeSchema = normalizeSchema;
+  global.PortalForm.parseTokens = parseTokens;
+  global.PortalForm.applyMask = applyMask;
+  global.PortalForm.maskComplete = maskComplete;
+  global.PortalForm.javaType = javaType;
+  global.PortalForm.parseBehavior = parseBehavior;
+})(typeof window !== "undefined" ? window : globalThis);
+
+(function () {
+  "use strict";
+  var COPY_KEYS = {"TITLE":"title","SUBTITLE":"subtitle","NOTE":"note","SUBMIT_LABEL":"submitLabel","SUBMITTING_LABEL":"submittingLabel","NEXT_LABEL":"nextLabel","BACK_LABEL":"backLabel","RETRY_LABEL":"retryLabel","STEP_FALLBACK":"stepFallback","SELECT_PLACEHOLDER":"selectPlaceholder","REQUIRED_ERROR":"requiredError","FORMAT_ERROR":"formatError","INCOMPLETE_ERROR":"incompleteError","EMAIL_ERROR":"emailError","URL_ERROR":"urlError","NUMBER_ERROR":"numberError","MIN_ERROR":"minError","MAX_ERROR":"maxError","MIN_LENGTH_ERROR":"minLengthError","MAX_LENGTH_ERROR":"maxLengthError","ADDRESS_OUTSIDE_ERROR":"addressOutsideError","ADDRESS_UNKNOWN_ERROR":"addressUnknownError","SCHEMA_ERROR_TITLE":"schemaErrorTitle","SCHEMA_ERROR_BODY":"schemaErrorBody","EMPTY_TITLE":"emptyTitle","EMPTY_BODY":"emptyBody","SUCCESS_TITLE":"successTitle","SUCCESS_BODY":"successBody","SUCCESS_SENT_TITLE":"successSentTitle","SUCCESS_SENT_BODY":"successSentBody","SUCCESS_SUMMARY_TITLE":"successSummaryTitle","SUCCESS_PROPERTIES_LABEL":"successPropertiesLabel","SUCCESS_PROPERTIES_ONE":"successPropertiesOne","SUCCESS_PROPERTIES_MANY":"successPropertiesMany","SUCCESS_MORE_LABEL":"successMoreLabel","SUCCESS_LESS_LABEL":"successLessLabel","SUCCESS_CONTACT_LABEL":"successContactLabel","SUCCESS_EMAIL_LABEL":"successEmailLabel","SUCCESS_SUBMITTED_LABEL":"successSubmittedLabel","SUCCESS_SUBMITTED_AT":"successSubmittedAt","SUCCESS_NEXT_TITLE":"successNextTitle","SUCCESS_STEP_1_TITLE":"successStep1Title","SUCCESS_STEP_1_TEXT":"successStep1Text","SUCCESS_STEP_2_TITLE":"successStep2Title","SUCCESS_STEP_2_TEXT":"successStep2Text","SUCCESS_STEP_3_TITLE":"successStep3Title","SUCCESS_STEP_3_TEXT":"successStep3Text","SUCCESS_BACK_LABEL":"successBackLabel","SUCCESS_AGAIN_LABEL":"successAgainLabel","SUBMIT_ERROR_TITLE":"submitErrorTitle","SUBMIT_ERROR_BODY":"submitErrorBody","BLOCKED_TITLE":"blockedTitle","BLOCKED_BODY":"blockedBody"};
+  var THEMES = ["hvac","snow","lawn","pool","roofing","pest","health","beauty"];
+  var MODES = ["light","dark"];
+  function oneOf(value, allowed, fallback) { return allowed.indexOf(value) === -1 ? fallback : value; }
+  function ready(fn) { if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", fn, { once: true }); else fn(); }
+  function attribute(root, name) {
+    var value = String(root.getAttribute(name) || "").trim();
+    return value === "#" ? "" : value;
+  }
+  function safeBase(value) {
+    if (!value) return "";
+    try { var url = new URL(value); return url.protocol === "https:" ? url.origin + url.pathname.replace(/\/+$/, "") : ""; } catch (_) { return ""; }
+  }
+  function copyFrom(root) {
+    var copy = {};
+    Object.keys(COPY_KEYS).forEach(function (code) {
+      var name = "data-copy-" + COPY_KEYS[code].replace(/[A-Z]/g, function (character) { return "-" + character.toLowerCase(); });
+      copy[COPY_KEYS[code]] = attribute(root, name);
+    });
+    return copy;
+  }
+  ready(function () {
+    var root = document.getElementById("portal-form-root");
+    if (!root || typeof window.PortalForm !== "function") return;
+    var mount = root.querySelector("[data-portal-form-mount]");
+    if (!mount) return;
+    var theme = oneOf(attribute(root, "data-form-theme").toLowerCase(), THEMES, "snow");
+    var mode = oneOf(attribute(root, "data-form-mode").toLowerCase(), MODES, "light");
+    document.documentElement.dataset.theme = theme;
+    document.documentElement.dataset.mode = mode;
+    var organizationId = Number(attribute(root, "data-form-organization-id"));
+    new window.PortalForm({
+      apiBaseUrl: safeBase(attribute(root, "data-form-api-base")),
+      formTypeCode: attribute(root, "data-form-type-code"),
+      organizationId: Number.isFinite(organizationId) && organizationId > 0 ? organizationId : null,
+      locale: attribute(root, "data-form-locale") || "en",
+      mapsApiKey: attribute(root, "data-form-maps-api-key"),
+      websiteUrl: attribute(root, "data-form-website-url"),
+      copy: copyFrom(root),
+    }).mount(mount);
+  });
+})();

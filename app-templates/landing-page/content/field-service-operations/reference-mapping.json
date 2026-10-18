@@ -1,0 +1,19 @@
+{
+  "$schema": "landing-page/reference-mapping@1",
+  "source": "content/field-service-operations/landing-copy.md",
+  "rootCode": "FIELD_SERVICE_LANDING",
+  "sections": [
+    { "sourceSection": "H1 hero + CTAs", "block": "hero.composite-photo" },
+    { "sourceSection": "Connected operations narrative", "block": "section.h2-narrative-only" },
+    { "sourceSection": "Modern operations needs", "block": "features.card-grid-4" },
+    { "sourceSection": "Unified platform and feature groups", "block": "features.accordion-2col-numbered" },
+    { "sourceSection": "Mobile workforce operations", "block": "mobile.4-card-glyph" },
+    { "sourceSection": "AI-native operational automation", "block": "signature.ai-shell" },
+    { "sourceSection": "Small business, growing teams, scalable operations", "block": "section.stages-list" },
+    { "sourceSection": "Supported industries", "block": "verticals.glyph-grid-20-slots" },
+    { "sourceSection": "ServiceWand versus other solutions", "block": "comparison.three-col-with-mobile-cards" },
+    { "sourceSection": "Visibility, reporting, integrations", "block": "section.axes-grid" },
+    { "sourceSection": "FAQ", "block": "faq.bubble-light-grouped" },
+    { "sourceSection": "Closing CTA", "block": "decorative.final-cta" }
+  ]
+}

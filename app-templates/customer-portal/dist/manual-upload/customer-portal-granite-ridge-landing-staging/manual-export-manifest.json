@@ -1,0 +1,117 @@
+{
+  "schemaVersion": 1,
+  "uploadPerformed": false,
+  "mode": "staging",
+  "launchState": "staging-only",
+  "input": "app-templates/customer-portal/cms/granite-ridge-snow.landing-staging.json",
+  "designSource": "app-templates/customer-portal/design-inbox",
+  "template": {
+    "code": "CUSTOMER_PORTAL_GRANITE_RIDGE_LANDING_STAGING",
+    "templateLanguage": "JTE",
+    "robots": "noindex,nofollow",
+    "children": [],
+    "parameters": [
+      "META_TITLE",
+      "META_DESCRIPTION",
+      "BRAND_NAME",
+      "LANDING_URL",
+      "REQUEST_QUOTE_URL",
+      "SIGN_IN_URL",
+      "REQUEST_QUOTE_LABEL",
+      "SIGN_IN_LABEL",
+      "NOTICE_SIGNED_OUT_TITLE",
+      "NOTICE_NO_ACCESS_TITLE",
+      "NOTICE_NO_ACCESS_BODY",
+      "NOTICE_NO_ACCESS_SIGN_IN_LABEL",
+      "NOTICE_DISMISS_LABEL",
+      "HERO_TITLE",
+      "HERO_SUB",
+      "SERVICES_EYEBROW",
+      "SERVICES_TITLE",
+      "SERVICES_SUB",
+      "SERVICES_ITEM_1_NAME",
+      "SERVICES_ITEM_1_TEXT",
+      "SERVICES_ITEM_2_NAME",
+      "SERVICES_ITEM_2_TEXT",
+      "HOW_EYEBROW",
+      "HOW_TITLE",
+      "HOW_STEP_1_TITLE",
+      "HOW_STEP_1_TEXT",
+      "HOW_STEP_2_TITLE",
+      "HOW_STEP_2_TEXT",
+      "HOW_STEP_3_TITLE",
+      "HOW_STEP_3_TEXT",
+      "HOW_STEP_4_TITLE",
+      "HOW_STEP_4_TEXT",
+      "AREA_EYEBROW",
+      "AREA_TITLE",
+      "AREA_REGION",
+      "AREA_CITY_1",
+      "AREA_CITY_2",
+      "AREA_CITY_3",
+      "AREA_CITY_4",
+      "AREA_CITY_5",
+      "AREA_NOTE",
+      "FAQ_EYEBROW",
+      "FAQ_TITLE",
+      "FAQ_ITEM_1_QUESTION",
+      "FAQ_ITEM_1_ANSWER",
+      "FAQ_ITEM_2_QUESTION",
+      "FAQ_ITEM_2_ANSWER",
+      "FAQ_ITEM_3_QUESTION",
+      "FAQ_ITEM_3_ANSWER",
+      "FAQ_ITEM_4_QUESTION",
+      "FAQ_ITEM_4_ANSWER",
+      "FINAL_TITLE",
+      "FINAL_SUB"
+    ],
+    "sha256": {
+      "head": "062ac366a4b7b6c29c6ec30dc5f13a1ec12a194909bc40aa99292ff6a601c17d",
+      "html": "e2bebdae663ef7fc096855a136d74fd8dd7ced952277624f23e218e50a4478b0",
+      "css": "e8d2293e4d8bdc8916e8f871c3675c6a126190741bcbf65b49470dbd2db01acc",
+      "javascript": "9be253abb5093e8404c0d5ba3bf82ebd7262e67482959cbadbcb0764cbc81801"
+    }
+  },
+  "destinations": {
+    "landing": "https://dev-1.servicewand.com/pages/SNOWLIMITLESS/home",
+    "requestQuote": "https://dev-1.servicewand.com/pages/SNOWLIMITLESS/request-quote",
+    "signIn": "https://dev-1.servicewand.com/pages/SNOWLIMITLESS/portal#/login"
+  },
+  "serviceArea": {
+    "region": "British Columbia",
+    "cities": [
+      "Vancouver",
+      "Richmond",
+      "Surrey",
+      "Burnaby",
+      "Coquitlam"
+    ]
+  },
+  "notices": {
+    "parameter": "portal",
+    "reasons": [
+      "signed-out",
+      "no-access"
+    ]
+  },
+  "sections": [
+    "public-nav",
+    "reason-notice",
+    "hero",
+    "services",
+    "how-it-works",
+    "service-area",
+    "faq",
+    "final-cta",
+    "footer"
+  ],
+  "openedLiveContracts": [],
+  "constraints": [
+    "The page is public and anonymous: no block calls a backend, reads a session or shows customer, account, order or payment data.",
+    "Every destination is an absolute https address on dev-1.servicewand.com: this landing, the quote form, and the sign-in address portal#/login.",
+    "Only the two reason values the portal sends show a notice: ?portal=signed-out and ?portal=no-access. The notice text is CMS copy; any other value or any extra parameter shows nothing, and without JavaScript no notice shows.",
+    "The copy states only what the tenant's quotation flow does. It carries no reviews, ratings, customer counts, years in business, certifications, guarantees, response times, phone numbers, email addresses, street addresses or prices.",
+    "Every parameter ships a value, because CMS creates no PageContext for a template with an empty parameter. A destination holding the # placeholder is read as not set, and its links are disabled.",
+    "The page emits noindex,nofollow while the tenant is on staging."
+  ]
+}

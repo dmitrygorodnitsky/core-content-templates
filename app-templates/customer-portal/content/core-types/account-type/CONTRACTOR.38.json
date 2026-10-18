@@ -1,0 +1,45 @@
+{
+ "optimistic": 1,
+ "code": "CONTRACTOR",
+ "nls": {
+  "ar": {
+   "DESCRIPTION": "<p></p>"
+  },
+  "en": {
+   "NAME": "Contractor",
+   "DESCRIPTION": "<p>Represents an independent individual or organization engaged by the business to perform work or provide operational services without being classified as a direct employee.</p>"
+  },
+  "he": {
+   "DESCRIPTION": "<p></p>"
+  }
+ },
+ "workflow": {
+  "id": 15,
+  "code": "SNOW_WORKFORCE_LIFECYCLE"
+ },
+ "organization": {
+  "optimistic": 1,
+  "id": 1,
+  "code": "SYSTEM"
+ },
+ "attributeOrder": [
+  {
+   "default": [
+    {
+     "typeId": 36,
+     "attributeCode": "TAX_ID",
+     "visible": true
+    },
+    {
+     "typeId": 35,
+     "attributeCode": "PARTY_TYPE",
+     "visible": true
+    }
+   ]
+  }
+ ],
+ "attributes": [],
+ "id": 38,
+ "isAbstract": false,
+ "attributeGroups": []
+}

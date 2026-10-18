@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<!-- ============================================================
+     core-auth CMS two-factor page — Wave 19 — EVIDENCE HARNESS (GENERATED)
+
+     DO NOT TRANSFER THIS FILE. It is core-auth-2fa.html with every
+     ${NAME@LOCALIZED_STRING_SS} parameter replaced by the safe example copy from
+     the wave-19 parameter inventory, the QR src pointed at a synthetic local
+     stand-in bitmap, and {{TWO_FACTOR_SECRET}} replaced by a sample key — the
+     three things a reviewer cannot see in an un-substituted template. It is
+     regenerated from core-auth-2fa.html; edit that file, never this one.
+
+     {{TWO_FACTOR_ACTION}}, {{CSRF_PARAMETER_NAME}}, {{CSRF_TOKEN}},
+     {{SETUP_DISPLAY}}, {{VERIFY_NOTICE_DISPLAY}} and {{ERROR_DISPLAY}} are left
+     verbatim. The three display placeholders are not valid declarations while
+     un-substituted, so a browser drops them and the pure-CSS :target harness
+     below owns visibility — which is how the four states are captured with
+     JavaScript disabled.
+
+     previews/wave19/qr-harness-sample.png is a SYNTHETIC, NON-SCANNABLE
+     stand-in generated locally for layout evidence. It is not a QR code, it
+     encodes nothing, and the transfer source never references it. At runtime
+     the src is the core-auth data URL.
+     ------------------------------------------------------------
+     Original transfer-source header follows.
+     ============================================================ -->
+<!-- ============================================================
+     core-auth CMS two-factor page — Wave 19 — TRANSFER SOURCE
+
+     The page core-auth serves after login when the account requires a second
+     factor. Counterpart to core-auth-login.html (wave 18): same visual family,
+     same delivery shape. Plain HTML plus the accepted stylesheets: no component
+     factory, no ES modules, no build step, no h() calls, no router, no state
+     object, no delegated action listener. The page is fully functional with
+     JavaScript disabled — submission is a native form POST to
+     {{TWO_FACTOR_ACTION}}. There is NO script tag in this file at all.
+
+     Stylesheets are LINKED, never copied, in the order source.html uses:
+       tokens.css → base.css → shell.css → components.css → routes.css
+       → core-auth-login.css → core-auth-2fa.css
+     core-auth-login.css is the SHARED standalone-auth layer (full-height
+     --app-bg, centering, auth-head / auth-title / auth-sub / auth-note, the
+     assertive message region, the focus convention, the container-query
+     breakpoints). Linking it is deliberate: forking those rules into a second
+     file would create a second system. styles/core-auth-2fa.css adds ONLY the
+     enrollment pieces (setup panel, QR frame, setup key, verify notice, code
+     field). core-auth serves the page and styles/ from the same directory; if
+     the deploy layout differs, prefix each href with the deploy root so every
+     URL is root-relative and valid on the public host.
+
+     lang and dir on <html> are SERVER-rendered by core-auth (ar / he ship in
+     the locale set → dir="rtl"; layout mirrors through logical properties
+     only). data-theme and data-mode are the accepted declarative theme hooks
+     and are server-rendered here too — no script flips them, and there is no
+     second dark palette on this page. Every registered customer-experience
+     theme works from the same layout: only the token pack changes.
+
+     Runtime placeholders — core-auth substitutes these per request, nothing
+     else produces or consumes them. No CMS parameter, default, fixture, log,
+     analytics attribute or JavaScript variable exists for any of them:
+       {{TWO_FACTOR_ACTION}}       form action
+       {{CSRF_PARAMETER_NAME}}     hidden input name
+       {{CSRF_TOKEN}}              hidden input value
+       {{SETUP_DISPLAY}}           block|none on the enrollment block
+       {{VERIFY_NOTICE_DISPLAY}}   block|none on the already-enrolled notice
+       {{ERROR_DISPLAY}}           block|none on the assertive region
+       {{TWO_FACTOR_QR_CODE}}      QR image source — a core-auth DATA URL; the
+                                   browser never fetches it from a third party
+       {{TWO_FACTOR_SECRET}}       generated setup key, rendered as text only
+     {{TWO_FACTOR_OTPAUTH_URI}} is deliberately NOT referenced: no visible
+     control needs it yet, and an unused placeholder is one more protected
+     value on the page. Adding it later is a markup-only change.
+
+     Localized copy: every visible string is one CMS LOCALIZED_STRING_SS
+     parameter, alone in its element, and each element also carries
+     data-copy="<slot>" as in wave 18. No vertical, tenant or business copy is
+     hardcoded here. AUTH_BRAND_NAME and AUTH_PITCH_EYEBROW are the same
+     parameters login uses.
+
+     Verification is core-auth's. This page has no loading state, no disabled
+     state, no reveal control, no copy-to-clipboard control, no resend, no
+     recovery codes, no trust-this-device and no alternate factor: none of
+     those exist in this contract, and each would need script that touches a
+     protected value.
+     ============================================================ -->
+<html lang="en" dir="ltr" data-theme="hvac" data-mode="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title data-copy="page.documentTitle">Two-step verification</title>
+  <link rel="icon" href="data:,">
+
+  <!-- No third-party origin is referenced anywhere on this page or in anything
+       it links: no script, style, font, icon set, QR generator or image, and no
+       analytics, tag manager, session recorder or error reporter — the DOM
+       carries a live CSRF token and, during enrollment, a generated secret.
+       tokens.css declares the local-first Manrope fallback; the Google Fonts
+       <link> used by source.html is NOT used here. -->
+  <link rel="stylesheet" href="styles/tokens.css">
+  <link rel="stylesheet" href="styles/base.css">
+  <link rel="stylesheet" href="styles/shell.css">
+  <link rel="stylesheet" href="styles/components.css">
+  <link rel="stylesheet" href="styles/routes.css">
+  <link rel="stylesheet" href="styles/core-auth-login.css">
+  <link rel="stylesheet" href="styles/core-auth-2fa.css">
+
+  <!-- PREVIEW ONLY: state harness. Pure CSS (:target) — it works with JavaScript
+       disabled, which is how the four server states are captured. In the
+       delivered page the three inline display placeholders are the only
+       visibility mechanism; here they are un-substituted, so this block supplies
+       the setup-ready default and the :target overrides. -->
+  <style data-dev-toolbar>
+    /* preview default = setup-ready */
+    [data-2fa-region="setup"]  { display: block; }
+    [data-2fa-region="notice"] { display: none; }
+    [data-2fa-region="error"]  { display: none; }
+
+    #pv-verify:target       ~ .auth-page [data-2fa-region="setup"],
+    #pv-verify-error:target ~ .auth-page [data-2fa-region="setup"]  { display: none; }
+    #pv-verify:target       ~ .auth-page [data-2fa-region="notice"],
+    #pv-verify-error:target ~ .auth-page [data-2fa-region="notice"] { display: block; }
+    #pv-setup-error:target  ~ .auth-page [data-2fa-region="error"],
+    #pv-verify-error:target ~ .auth-page [data-2fa-region="error"]  { display: block; }
+
+    .pv-anchor { display: block; height: 0; }
+    .dev-toolbar a {
+      background: rgba(255,255,255,.08); color: #eef2f8; border: 1px solid rgba(255,255,255,.12);
+      border-radius: 8px; padding: 5px 8px; font: 500 11.5px var(--font); cursor: pointer;
+      text-decoration: none;
+    }
+    .dev-toolbar a:hover { background: rgba(255,255,255,.16); color: #fff; }
+    body[data-pv-frame] { background: #10141e; }
+    body[data-pv-frame] .auth-page { margin-inline: auto; box-shadow: 0 0 0 1px rgba(255,255,255,.14); }
+  </style>
+</head>
+<body>
+
+  <!-- PREVIEW ONLY: :target anchors for the four server states. -->
+  <i class="pv-anchor" id="pv-setup" data-dev-toolbar></i>
+  <i class="pv-anchor" id="pv-setup-error" data-dev-toolbar></i>
+  <i class="pv-anchor" id="pv-verify" data-dev-toolbar></i>
+  <i class="pv-anchor" id="pv-verify-error" data-dev-toolbar></i>
+
+  <div class="auth-page" data-route="auth.2fa" data-visual-id="core-auth-2fa">
+    <div class="auth-inner">
+      <div class="auth-grid">
+
+        <!-- The card comes first in the DOM: at <=900 it renders above the
+             pitch, so at 390 the form is what the customer meets. -->
+        <main class="auth-card" data-module="core-auth-2fa-card">
+
+          <div class="auth-head">
+            <span class="brand-logo brand-logo--lg" aria-hidden="true"></span>
+            <span class="brand-name" data-copy="brand.name">Aircove</span>
+          </div>
+
+          <h1 class="auth-title" data-copy="card.title">Two-step verification</h1>
+          <p class="auth-sub" data-copy="card.subtitle">Enter the code from your authenticator app to finish signing in.</p>
+
+          <!-- The only <form> on the page, and the only element marked
+               data-core-auth-2fa. Native POST; no fetch, no scripted submit, no
+               second form anywhere in the document. The field name `code` is
+               fixed — never a parameter, never a binding. Element ORDER is the
+               accepted contract order: setup block, verify notice, label, input,
+               assertive error, submit. Everything between them is an inert
+               wrapper or an accessible description. -->
+          <form class="auth-form" method="post" action="{{TWO_FACTOR_ACTION}}" data-core-auth-2fa>
+
+            <input type="hidden" name="{{CSRF_PARAMETER_NAME}}" value="{{CSRF_TOKEN}}">
+
+            <!-- FIRST-TIME ENROLLMENT. Present only when core-auth substitutes
+                 block into the inline display; on a normal verification it does
+                 not occupy layout. It is inside the form so a failed attempt
+                 keeps the same enrollment data on screen without CMS storing,
+                 regenerating or defaulting any of it. -->
+            <div class="tfa-setup"
+                 id="tfa-setup"
+                 data-2fa-region="setup"
+                 data-module="core-auth-2fa-setup"
+                 style="display:{{SETUP_DISPLAY}}">
+              <div class="tfa-setup__inner">
+                <p class="tfa-setup__text" data-copy="setup.body">Set up your authenticator app. Scan this code with the app you use for verification codes, then enter the code it shows.</p>
+
+                <!-- The QR source is the core-auth data URL. The tile stays
+                     light in dark mode on purpose: a scanner needs the quiet
+                     zone and the module contrast, so this is the one element
+                     that does not follow --surface. -->
+                <span class="tfa-qr">
+                  <img class="tfa-qr__img"
+                       src="previews/wave19/qr-harness-sample.png"
+                       alt="Setup code for your authenticator app. If you cannot scan it, use the setup key below."
+                       width="176"
+                       height="176">
+                </span>
+
+                <!-- Manual fallback — the QR is never the only way to enroll.
+                     The key is TEXT: it wraps inside the card, is selectable
+                     with the keyboard, and is read by assistive technology in
+                     document order right after its own label. dir="ltr" keeps
+                     the Latin key in reading order under an RTL locale. Nothing
+                     reveals, formats, groups or copies it: that would mean a
+                     script handling a protected value. -->
+                <span class="tfa-secret">
+                  <span class="tfa-secret__label" data-copy="setup.secretLabel">Setup key</span>
+                  <code class="tfa-secret__code" dir="ltr">K7QM 4ZR2 T9WD 3XPB 6HLS 2VNF 8CYA</code>
+                  <span class="tfa-secret__hint" data-copy="setup.secretHint">Cannot scan? Enter this key in your authenticator app instead. Spaces and letter case do not matter.</span>
+                </span>
+              </div>
+            </div>
+
+            <!-- ALREADY ENROLLED. The quiet counterpart of the setup block:
+                 same placeholder mechanism, opposite condition. Never shows the
+                 QR or the key. -->
+            <p class="tfa-notice"
+               id="tfa-notice"
+               data-2fa-region="notice"
+               data-module="core-auth-2fa-notice"
+               data-copy="verify.notice"
+               style="display:{{VERIFY_NOTICE_DISPLAY}}">Your authenticator app is already set up. Open it to get your current code.</p>
+
+            <div class="field-row">
+              <label class="field-label" for="code" data-copy="field.code.label">Verification code</label>
+              <!-- No autofocus, deliberately: on a first-time setup, focusing
+                   the field would move a screen reader and a zoomed viewport
+                   past the enrollment instructions and the key.
+                   aria-describedby names the hint and the assertive region; the
+                   region exposes nothing while core-auth keeps it hidden, and
+                   is announced with the field when it is shown. -->
+              <input class="field tfa-code"
+                     id="code"
+                     name="code"
+                     type="text"
+                     inputmode="numeric"
+                     autocomplete="one-time-code"
+                     autocapitalize="none"
+                     autocorrect="off"
+                     spellcheck="false"
+                     dir="ltr"
+                     required
+                     aria-describedby="tfa-code-hint tfa-error">
+              <span class="tfa-code__hint" id="tfa-code-hint" data-copy="field.code.hint">Six digits, from your authenticator app.</span>
+            </div>
+
+            <!-- The single assertive region on the page, and the only element
+                 with role="alert". Same treatment as the login failure — glyph,
+                 title weight, border and fill, not color alone. Visible only
+                 when core-auth substitutes block. The copy says nothing beyond
+                 the supplied string: no attempt count, no lockout hint, no
+                 reason the code was rejected. Resubmission happens through this
+                 same form. -->
+            <div class="auth-msg auth-msg--error"
+                 id="tfa-error"
+                 data-2fa-region="error"
+                 data-module="core-auth-2fa-error"
+                 role="alert"
+                 style="display:{{ERROR_DISPLAY}}">
+              <div class="auth-msg__inner">
+                <span class="auth-msg__glyph" aria-hidden="true">!</span>
+                <p class="auth-msg__title" data-copy="error.body">That code did not work. Open your authenticator app for a new code and try again.</p>
+              </div>
+            </div>
+
+            <button class="btn btn--primary btn--lg btn--block auth-submit" type="submit" data-copy="action.submit">Verify</button>
+          </form>
+
+          <p class="auth-note" data-copy="card.note">Codes are generated on your device. We will never ask you for one by email, message or phone.</p>
+        </main>
+
+        <section class="auth-pitch">
+          <span class="eyebrow" data-copy="pitch.eyebrow">Customer account</span>
+          <h2 class="auth-pitch__title" data-copy="pitch.title">One more step before you’re in.</h2>
+          <p class="auth-pitch__sub" data-copy="pitch.body">This second step runs on the account service, not in the portal. Once your code is confirmed, you’ll be taken straight back to where you started.</p>
+        </section>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- PREVIEW ONLY — state / mode / direction / width harness, reusing the
+       accepted .dev-toolbar treatment from components.css. The four state links
+       are plain anchors and need no JavaScript. -->
+  <div class="dev-toolbar" data-dev-toolbar>
+    <span class="dev-toolbar__group">
+      <span class="dev-toolbar__label">state</span>
+      <a href="#pv-setup">setup-ready</a>
+      <a href="#pv-setup-error">setup-error</a>
+      <a href="#pv-verify">verify-ready</a>
+      <a href="#pv-verify-error">verify-error</a>
+    </span>
+    <span class="dev-toolbar__group">
+      <span class="dev-toolbar__label">mode</span>
+      <button type="button" data-pv-mode="light">light</button>
+      <button type="button" data-pv-mode="dark">dark</button>
+    </span>
+    <span class="dev-toolbar__group">
+      <span class="dev-toolbar__label">dir</span>
+      <button type="button" data-pv-dir="ltr">ltr</button>
+      <button type="button" data-pv-dir="rtl">rtl</button>
+    </span>
+    <span class="dev-toolbar__group">
+      <span class="dev-toolbar__label">vw</span>
+      <button type="button" data-pv-w="390">390</button>
+      <button type="button" data-pv-w="768">768</button>
+      <button type="button" data-pv-w="1180">1180</button>
+      <button type="button" data-pv-w="1440">1440</button>
+      <button type="button" data-pv-w="">full</button>
+    </span>
+  </div>
+
+  <!-- PREVIEW ONLY harness script. Not part of the page contract — the
+       transfer source contains no script tag at all. -->
+  <script data-dev-toolbar>
+    (function () {
+      var root = document.documentElement, page = document.querySelector(".auth-page");
+      document.querySelectorAll("[data-pv-mode]").forEach(function (b) {
+        b.addEventListener("click", function () { root.setAttribute("data-mode", b.getAttribute("data-pv-mode")); });
+      });
+      document.querySelectorAll("[data-pv-dir]").forEach(function (b) {
+        b.addEventListener("click", function () { root.setAttribute("dir", b.getAttribute("data-pv-dir")); });
+      });
+      document.querySelectorAll("[data-pv-w]").forEach(function (b) {
+        b.addEventListener("click", function () {
+          var v = b.getAttribute("data-pv-w");
+          if (v) { page.style.width = v + "px"; document.body.setAttribute("data-pv-frame", v); }
+          else { page.style.width = ""; document.body.removeAttribute("data-pv-frame"); }
+        });
+      });
+    })();
+  </script>
+</body>
+</html>

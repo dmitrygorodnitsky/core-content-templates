@@ -1,0 +1,489 @@
+{
+ "code": "EMPLOYEE_ACCOUNT_LIFECYCLE",
+ "initialState": {
+  "id": 149,
+  "code": "INITIAL"
+ },
+ "nls": {
+  "ar": {
+   "DESCRIPTION": "<p></p>"
+  },
+  "en": {
+   "NAME": "Employee Account Lifecycle",
+   "DESCRIPTION": "<p>Manages the operational status of an employee account, including activation, temporary absence, suspension, deactivation, and deletion.</p>"
+  },
+  "he": {
+   "DESCRIPTION": "<p></p>"
+  }
+ },
+ "entityType": "com.pixelnation.account.domain.Account",
+ "organization": {
+  "optimistic": 4,
+  "id": 8,
+  "code": "SERVICE_WAND_WINTER_SERVICES"
+ },
+ "id": 33,
+ "states": [
+  {
+   "style": {
+    "xPos": 898.4605741592113,
+    "yPos": 432.11056064654815
+   },
+   "id": 150,
+   "code": "ACTIVE",
+   "nls": {
+    "ar": {
+     "DESCRIPTION": "<p></p>"
+    },
+    "en": {
+     "NAME": "Active",
+     "DESCRIPTION": "<p>The employee account is active and the employee can participate in applicable business operations.</p>"
+    },
+    "he": {
+     "DESCRIPTION": "<p></p>"
+    }
+   },
+   "events": [
+    {
+     "id": 308,
+     "code": "ACTIVE-INACTIVE",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Deactivate",
+       "DESCRIPTION": "<p>Deactivates the employee account and removes it from regular operational use.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     },
+     "targets": [
+      {
+       "id": 151,
+       "code": "INACTIVE"
+      }
+     ]
+    },
+    {
+     "id": 311,
+     "code": "ACTIVE-SUSPENDED",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Suspend",
+       "DESCRIPTION": "<p>Temporarily suspends the employee account due to an administrative, compliance, access, or operational reason.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     },
+     "targets": [
+      {
+       "id": 152,
+       "code": "SUSPENDED"
+      }
+     ]
+    },
+    {
+     "id": 314,
+     "code": "ACTIVE-VACATION",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Start Vacation",
+       "DESCRIPTION": "<p>Marks the employee as temporarily unavailable because of scheduled vacation.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     },
+     "targets": [
+      {
+       "id": 153,
+       "code": "VACATION"
+      }
+     ]
+    },
+    {
+     "id": 317,
+     "code": "ACTIVE-SICK_LEAVE",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Start Sick Leave",
+       "DESCRIPTION": "<p>Marks the employee as temporarily unavailable because of sick leave.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     },
+     "targets": [
+      {
+       "id": 154,
+       "code": "SICK_LEAVE"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "style": {
+    "xPos": 2463.9045235175295,
+    "yPos": 442.7170822676756
+   },
+   "id": 155,
+   "code": "DELETED",
+   "nls": {
+    "ar": {
+     "DESCRIPTION": "<p></p>"
+    },
+    "en": {
+     "NAME": "Deleted",
+     "DESCRIPTION": "<p>The employee account has been logically deleted and is no longer available for normal operational use.</p>"
+    },
+    "he": {
+     "DESCRIPTION": "<p></p>"
+    }
+   },
+   "events": []
+  },
+  {
+   "style": {
+    "xPos": 1396.4212318601603,
+    "yPos": 428.0643768854894
+   },
+   "id": 151,
+   "code": "INACTIVE",
+   "nls": {
+    "ar": {
+     "DESCRIPTION": "<p></p>"
+    },
+    "en": {
+     "NAME": "Inactive",
+     "DESCRIPTION": "<p>The employee account is not currently active and should not participate in regular business operations.</p>"
+    },
+    "he": {
+     "DESCRIPTION": "<p></p>"
+    }
+   },
+   "events": [
+    {
+     "id": 309,
+     "code": "INACTIVE-ACTIVE",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Activate",
+       "DESCRIPTION": "<p>Reactivates an inactive employee account.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     },
+     "targets": [
+      {
+       "id": 150,
+       "code": "ACTIVE"
+      }
+     ]
+    },
+    {
+     "id": 310,
+     "code": "INACTIVE-DELETED",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Delete",
+       "DESCRIPTION": "<p>Logically deletes an inactive employee account.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     },
+     "targets": [
+      {
+       "id": 155,
+       "code": "DELETED"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "style": {
+    "xPos": 403.0087611593003,
+    "yPos": 430.96760651906703
+   },
+   "id": 149,
+   "code": "INITIAL",
+   "nls": {
+    "ar": {
+     "DESCRIPTION": "<p></p>"
+    },
+    "en": {
+     "NAME": "Initial",
+     "DESCRIPTION": "<p>The employee account has been created but has not yet been activated for operational use.</p>"
+    },
+    "he": {
+     "DESCRIPTION": "<p></p>"
+    }
+   },
+   "events": [
+    {
+     "id": 307,
+     "code": "INITIAL-ACTIVE",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Activate",
+       "DESCRIPTION": "<p>Activates the employee account and makes it available for operational use.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     },
+     "targets": [
+      {
+       "id": 150,
+       "code": "ACTIVE"
+      }
+     ]
+    },
+    {
+     "id": 320,
+     "code": "INITIAL-INACTIVE",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Deactivate",
+       "DESCRIPTION": "<p>Marks the employee account as inactive without first activating it.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     },
+     "targets": [
+      {
+       "id": 151,
+       "code": "INACTIVE"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "style": {
+    "xPos": 2087.0747474952136,
+    "yPos": 445.0593667819345
+   },
+   "id": 154,
+   "code": "SICK_LEAVE",
+   "nls": {
+    "ar": {
+     "DESCRIPTION": "<p></p>"
+    },
+    "en": {
+     "NAME": "On Sick Leave",
+     "DESCRIPTION": "<p>The employee is temporarily unavailable because they are on sick leave.</p>"
+    },
+    "he": {
+     "DESCRIPTION": "<p></p>"
+    }
+   },
+   "events": [
+    {
+     "id": 318,
+     "code": "SICK_LEAVE-ACTIVE",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Return from Sick Leave",
+       "DESCRIPTION": "<p>Returns the employee account to active status after sick leave.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     },
+     "targets": [
+      {
+       "id": 150,
+       "code": "ACTIVE"
+      }
+     ]
+    },
+    {
+     "id": 319,
+     "code": "SICK_LEAVE-INACTIVE",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Deactivate",
+       "DESCRIPTION": "<p>Deactivates the employee account while the employee is on sick leave.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     },
+     "targets": [
+      {
+       "id": 151,
+       "code": "INACTIVE"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "style": {
+    "xPos": 1659.7869963620865,
+    "yPos": 13.09955485155372
+   },
+   "id": 152,
+   "code": "SUSPENDED",
+   "nls": {
+    "ar": {
+     "DESCRIPTION": "<p></p>"
+    },
+    "en": {
+     "NAME": "Suspended",
+     "DESCRIPTION": "<p>The employee account has been temporarily suspended due to an administrative, compliance, access, or operational reason.</p>"
+    },
+    "he": {
+     "DESCRIPTION": "<p></p>"
+    }
+   },
+   "events": [
+    {
+     "id": 312,
+     "code": "SUSPENDED-ACTIVE",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Reinstate",
+       "DESCRIPTION": "<p>Restores a suspended employee account to active status.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     },
+     "targets": [
+      {
+       "id": 150,
+       "code": "ACTIVE"
+      }
+     ]
+    },
+    {
+     "id": 313,
+     "code": "SUSPENDED-INACTIVE",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Deactivate",
+       "DESCRIPTION": "<p>Deactivates a suspended employee account when it should not be returned to active operations.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     },
+     "targets": [
+      {
+       "id": 151,
+       "code": "INACTIVE"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "style": {
+    "xPos": 1757.0953610524643,
+    "yPos": 443.73098932366224
+   },
+   "id": 153,
+   "code": "VACATION",
+   "nls": {
+    "ar": {
+     "DESCRIPTION": "<p></p>"
+    },
+    "en": {
+     "NAME": "On Vacation",
+     "DESCRIPTION": "<p>The employee is temporarily unavailable because they are on scheduled vacation.</p>"
+    },
+    "he": {
+     "DESCRIPTION": "<p></p>"
+    }
+   },
+   "events": [
+    {
+     "id": 315,
+     "code": "VACATION-ACTIVE",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Return from Vacation",
+       "DESCRIPTION": "<p>Returns the employee account to active status after vacation.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     },
+     "targets": [
+      {
+       "id": 150,
+       "code": "ACTIVE"
+      }
+     ]
+    },
+    {
+     "id": 316,
+     "code": "VACATION-INACTIVE",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Deactivate",
+       "DESCRIPTION": "<p>Deactivates the employee account while the employee is on vacation.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     },
+     "targets": [
+      {
+       "id": 151,
+       "code": "INACTIVE"
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

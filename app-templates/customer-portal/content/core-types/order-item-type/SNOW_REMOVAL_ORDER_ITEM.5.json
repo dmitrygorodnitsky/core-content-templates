@@ -1,0 +1,23 @@
+{
+ "optimistic": 3,
+ "code": "SNOW_REMOVAL_ORDER_ITEM",
+ "nls": {
+  "en": {
+   "NAME": "Snow Removal Order Item"
+  }
+ },
+ "workflow": {
+  "id": 46,
+  "code": "GENERAL_FSM_ORDER_ITEM_LIFECYCLE"
+ },
+ "organization": {
+  "optimistic": 4,
+  "id": 8,
+  "code": "SERVICE_WAND_WINTER_SERVICES"
+ },
+ "attributeOrder": [],
+ "attributes": [],
+ "id": 5,
+ "isAbstract": false,
+ "attributeGroups": []
+}

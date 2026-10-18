@@ -1,0 +1,24 @@
+{
+ "optimistic": 0,
+ "code": "MOBILE_RESOURCE",
+ "nls": {
+  "en": {
+   "NAME": "Mobile Resource",
+   "DESCRIPTION": "Abstract base type for mobile resources that can submit geolocation, elevation, and speed telemetry."
+  }
+ },
+ "workflow": {
+  "id": 8,
+  "code": "SIMPLE_RESOURCE"
+ },
+ "organization": {
+  "optimistic": 1,
+  "id": 1,
+  "code": "SYSTEM"
+ },
+ "attributeOrder": [],
+ "attributes": [],
+ "id": 109,
+ "isAbstract": true,
+ "attributeGroups": []
+}

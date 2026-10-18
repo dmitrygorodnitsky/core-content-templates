@@ -1,0 +1,108 @@
+{
+ "optimistic": 3,
+ "code": "SNOW_REMOVAL_VEHICLE",
+ "nls": {
+  "en": {
+   "NAME": "Snow Removal Vehicle"
+  }
+ },
+ "workflow": {
+  "id": 37,
+  "code": "EQUIPMENT_LIFECYCLE"
+ },
+ "organization": {
+  "optimistic": 6,
+  "id": 43,
+  "code": "SNOWLIMITLESS"
+ },
+ "attributeOrder": [
+  {
+   "OPERATIONAL_INFORMATION": [
+    {
+     "typeId": 110,
+     "attributeCode": "TRANSMISSION_TYPE",
+     "visible": true
+    },
+    {
+     "typeId": 110,
+     "attributeCode": "DEPOT",
+     "visible": true
+    },
+    {
+     "typeId": 110,
+     "attributeCode": "FUEL_TYPE",
+     "visible": true
+    }
+   ]
+  },
+  {
+   "IDENTIFICATION": [
+    {
+     "typeId": 146,
+     "attributeCode": "MAKE",
+     "visible": true
+    },
+    {
+     "typeId": 146,
+     "attributeCode": "YEAR",
+     "visible": true
+    },
+    {
+     "typeId": 146,
+     "attributeCode": "MODEL",
+     "visible": true
+    },
+    {
+     "typeId": 146,
+     "attributeCode": "COLOR",
+     "visible": true
+    }
+   ]
+  },
+  {
+   "default": [
+    {
+     "attributeCode": "RESOURCE_WORK_START",
+     "visible": true
+    },
+    {
+     "attributeCode": "RESOURCE_WORK_END",
+     "visible": true
+    }
+   ]
+  }
+ ],
+ "attributes": [
+  {
+   "code": "RESOURCE_WORK_START",
+   "required": true,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.time.LocalTime",
+   "nls": {
+    "en": {
+     "NAME": "Resource Work Start"
+    }
+   },
+   "options": []
+  },
+  {
+   "code": "RESOURCE_WORK_END",
+   "required": true,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.time.LocalTime",
+   "nls": {
+    "en": {
+     "NAME": "Resource Work End"
+    }
+   },
+   "options": []
+  }
+ ],
+ "id": 161,
+ "isAbstract": false,
+ "attributeGroups": []
+}

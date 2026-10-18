@@ -1,0 +1,122 @@
+{
+  "organization": "CALM_HARBOR_SPA_STAGING",
+  "origin": "https://dev-1.servicewand.com",
+  "transcript": [
+    {
+      "step": "resolve-account",
+      "accountCode": "CHS_STG_ELENA_RIOS",
+      "accountId": 1
+    },
+    {
+      "step": "resolve-product",
+      "code": "CHS_BODY_001",
+      "priceId": 77,
+      "productId": 5
+    },
+    {
+      "step": "read-cart",
+      "currencyCode": "USD",
+      "displaySubtotal": "$0.00",
+      "itemCount": 0,
+      "lines": [],
+      "scopeMode": "server-account-bound",
+      "state": "empty",
+      "subtotal": 0
+    },
+    {
+      "step": "add-item",
+      "currencyCode": "USD",
+      "displaySubtotal": "$42.00",
+      "itemCount": 1,
+      "lines": [
+        {
+          "displayTotal": "$42.00",
+          "displayUnitPrice": "$42.00",
+          "lineAmount": 42,
+          "qty": 1,
+          "ref": "cart-line-77",
+          "title": "Harbor body oil",
+          "unitAmount": 42
+        }
+      ],
+      "scopeMode": "server-account-bound",
+      "state": "ready",
+      "subtotal": 42
+    },
+    {
+      "step": "change-count-to-2",
+      "currencyCode": "USD",
+      "displaySubtotal": "$84.00",
+      "itemCount": 2,
+      "lines": [
+        {
+          "displayTotal": "$84.00",
+          "displayUnitPrice": "$42.00",
+          "lineAmount": 84,
+          "qty": 2,
+          "ref": "cart-line-77",
+          "title": "Harbor body oil",
+          "unitAmount": 42
+        }
+      ],
+      "scopeMode": "server-account-bound",
+      "state": "ready",
+      "subtotal": 84,
+      "lineAmountFromServer": 84,
+      "unitAmountFromServer": 42
+    },
+    {
+      "step": "replay-same-count",
+      "currencyCode": "USD",
+      "displaySubtotal": "$84.00",
+      "itemCount": 2,
+      "lines": [
+        {
+          "displayTotal": "$84.00",
+          "displayUnitPrice": "$42.00",
+          "lineAmount": 84,
+          "qty": 2,
+          "ref": "cart-line-77",
+          "title": "Harbor body oil",
+          "unitAmount": 42
+        }
+      ],
+      "scopeMode": "server-account-bound",
+      "state": "ready",
+      "subtotal": 84,
+      "quantityUnchanged": true
+    },
+    {
+      "step": "remove-item",
+      "currencyCode": "USD",
+      "displaySubtotal": "$0.00",
+      "itemCount": 0,
+      "lines": [],
+      "scopeMode": "server-account-bound",
+      "state": "empty",
+      "subtotal": 0
+    },
+    {
+      "step": "clear-cart",
+      "currencyCode": "USD",
+      "displaySubtotal": "$0.00",
+      "itemCount": 0,
+      "lines": [],
+      "scopeMode": "server-account-bound",
+      "state": "empty",
+      "subtotal": 0
+    },
+    {
+      "step": "foreign-account-read",
+      "code": "cart-forbidden",
+      "refused": true,
+      "status": 403
+    },
+    {
+      "step": "no-account-read",
+      "code": "customer-account-required",
+      "refused": true,
+      "status": null
+    }
+  ]
+}

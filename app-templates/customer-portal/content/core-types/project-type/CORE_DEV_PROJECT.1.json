@@ -1,0 +1,128 @@
+{
+ "optimistic": 0,
+ "code": "CORE_DEV_PROJECT",
+ "nls": {
+  "en": {
+   "NAME": "Core Development Project",
+   "DESCRIPTION": "Project type for Core platform self-development."
+  }
+ },
+ "workflow": {
+  "id": 4,
+  "code": "CORE_PROJECT_WORKFLOW"
+ },
+ "organization": {
+  "optimistic": 1,
+  "id": 1,
+  "code": "SYSTEM"
+ },
+ "attributeOrder": [
+  {
+   "REPOSITORIES": [
+    {
+     "attributeCode": "BACKEND_REPOSITORY_KIND",
+     "visible": true
+    },
+    {
+     "attributeCode": "FRONTEND_REPOSITORY_KIND",
+     "visible": true
+    }
+   ]
+  },
+  {
+   "ORCHESTRATION": [
+    {
+     "attributeCode": "TASK_WORKFLOW",
+     "visible": true
+    },
+    {
+     "attributeCode": "TASK_TYPES",
+     "visible": true
+    }
+   ]
+  }
+ ],
+ "attributes": [
+  {
+   "code": "TASK_TYPES",
+   "required": true,
+   "multiselect": true,
+   "freeValue": true,
+   "unique": false,
+   "className": "com.pixelnation.svc.domain.TaskType",
+   "nls": {
+    "en": {
+     "NAME": "Task Types"
+    }
+   },
+   "options": [],
+   "entityTypes": [],
+   "defaultValue": ""
+  },
+  {
+   "code": "FRONTEND_REPOSITORY_KIND",
+   "required": true,
+   "multiselect": false,
+   "freeValue": true,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "en": {
+     "NAME": "Frontend Repository Kind"
+    }
+   },
+   "options": [],
+   "defaultValue": "github"
+  },
+  {
+   "code": "TASK_WORKFLOW",
+   "required": true,
+   "multiselect": false,
+   "freeValue": true,
+   "unique": false,
+   "className": "com.pixelnation.modules.workflow.domain.Workflow",
+   "nls": {
+    "en": {
+     "NAME": "Task Workflow"
+    }
+   },
+   "options": [],
+   "defaultValue": 5
+  },
+  {
+   "code": "BACKEND_REPOSITORY_KIND",
+   "required": true,
+   "multiselect": false,
+   "freeValue": true,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "en": {
+     "NAME": "Backend Repository Kind"
+    }
+   },
+   "options": [],
+   "defaultValue": "svn"
+  }
+ ],
+ "id": 1,
+ "isAbstract": false,
+ "attributeGroups": [
+  {
+   "code": "ORCHESTRATION",
+   "nls": {
+    "en": {
+     "NAME": "Orchestration"
+    }
+   }
+  },
+  {
+   "code": "REPOSITORIES",
+   "nls": {
+    "en": {
+     "NAME": "Repositories"
+    }
+   }
+  }
+ ]
+}

@@ -1,0 +1,149 @@
+{
+  "code": "CUSTOMER_EXPERIENCE_LANDING_03_TRUST",
+  "nls": {
+    "en": {
+      "NAME": "Customer experience | Trust strip"
+    }
+  },
+  "templateLanguage": "JTE",
+  "parent": {
+    "code": "CUSTOMER_EXPERIENCE_LANDING"
+  },
+  "children": [],
+  "head": "",
+  "html": "<section class=\"seo-trust\" data-module=\"seo-trust-strip\" data-visual-id=\"seo-trust-strip\" data-state=\"ready\"><div class=\"seo-trust__item\" data-bind=\"cms.trust.rating\"><span class=\"seo-trust__icon\">★</span><div><div class=\"seo-trust__label\">${CUSTOMER_EXPERIENCE_LANDING_03_TRUST_RATING_LABEL@LOCALIZED_STRING_SS}</div><div class=\"seo-trust__value\"><span class=\"seo-slot\" data-state=\"no-data\">${CUSTOMER_EXPERIENCE_LANDING_03_TRUST_RATING_SLOT@LOCALIZED_STRING_SS}</span></div></div></div><div class=\"seo-trust__item\" data-bind=\"cms.trust.licence\"><span class=\"seo-trust__icon\">⚖</span><div><div class=\"seo-trust__label\">${CUSTOMER_EXPERIENCE_LANDING_03_TRUST_LICENCE_LABEL@LOCALIZED_STRING_SS}</div><div class=\"seo-trust__value\"><span class=\"seo-slot\" data-state=\"no-data\">${CUSTOMER_EXPERIENCE_LANDING_03_TRUST_LICENCE_SLOT@LOCALIZED_STRING_SS}</span></div></div></div><div class=\"seo-trust__item\" data-bind=\"cms.trust.insurance\"><span class=\"seo-trust__icon\">✔</span><div><div class=\"seo-trust__label\">${CUSTOMER_EXPERIENCE_LANDING_03_TRUST_INSURANCE_LABEL@LOCALIZED_STRING_SS}</div><div class=\"seo-trust__value\"><span class=\"seo-slot\" data-state=\"no-data\">${CUSTOMER_EXPERIENCE_LANDING_03_TRUST_INSURANCE_SLOT@LOCALIZED_STRING_SS}</span></div></div></div><div class=\"seo-trust__item\" data-bind=\"cms.trust.guarantee\"><span class=\"seo-trust__icon\">⬚</span><div><div class=\"seo-trust__label\">${CUSTOMER_EXPERIENCE_LANDING_03_TRUST_GUARANTEE_LABEL@LOCALIZED_STRING_SS}</div><div class=\"seo-trust__value\">${CUSTOMER_EXPERIENCE_LANDING_03_TRUST_GUARANTEE_VALUE@LOCALIZED_STRING_SS}</div></div></div><div class=\"seo-trust__item\" data-bind=\"cms.trust.response\"><span class=\"seo-trust__icon\">⏱</span><div><div class=\"seo-trust__label\">${CUSTOMER_EXPERIENCE_LANDING_03_TRUST_APPOINTMENTS_LABEL@LOCALIZED_STRING_SS}</div><div class=\"seo-trust__value\">${CUSTOMER_EXPERIENCE_LANDING_03_TRUST_APPOINTMENTS_VALUE@LOCALIZED_STRING_SS}</div></div></div></section>",
+  "css": "/* ---------- 2 · trust strip ---------- */\n.seo-trust {\n  display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px;\n  background: rgba(var(--glass),.55); border: 1px solid var(--glass-border);\n  border-radius: var(--radius-lg); padding: 18px 22px;\n  backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);\n  box-shadow: var(--shadow-card);\n}\n.seo-trust__item { display: flex; gap: 10px; align-items: flex-start; min-width: 0; }\n.seo-trust__item .seo-skel { display: block; margin: 3px 0; }\n.seo-trust__icon {\n  width: 30px; height: 30px; flex: none; border-radius: 10px; display: grid; place-items: center;\n  background: rgba(var(--accent-rgb),.12); color: var(--accent); font-size: 13px;\n}\n.seo-trust__label { font-size: 10.5px; font-weight: 800; text-transform: uppercase; letter-spacing: .07em; color: var(--ink-3); }\n.seo-trust__value { font-size: 12.5px; color: var(--ink-2); margin-top: 3px; line-height: 1.4; }\n.seo-trust__value b { color: var(--ink); font-size: 14px; }\n.seo-trust__fallback, .seo-price__fallback, .seo-area__fallback, .seo-faq__fallback {\n  grid-column: 1 / -1; font-family: var(--font-mono); font-size: 12px; color: var(--ink-3);\n  padding: 10px 4px; line-height: 1.6;\n}",
+  "javascript": "",
+  "parameters": [
+    {
+      "code": "CUSTOMER_EXPERIENCE_LANDING_03_TRUST_RATING_LABEL",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Customer experience landing 03 trust rating label",
+          "DESCRIPTION": "Customer experience landing section value."
+        }
+      },
+      "value": {
+        "en": ""
+      }
+    },
+    {
+      "code": "CUSTOMER_EXPERIENCE_LANDING_03_TRUST_RATING_SLOT",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Customer experience landing 03 trust rating slot",
+          "DESCRIPTION": "Customer experience landing section value."
+        }
+      },
+      "value": {
+        "en": ""
+      }
+    },
+    {
+      "code": "CUSTOMER_EXPERIENCE_LANDING_03_TRUST_LICENCE_LABEL",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Customer experience landing 03 trust licence label",
+          "DESCRIPTION": "Customer experience landing section value."
+        }
+      },
+      "value": {
+        "en": ""
+      }
+    },
+    {
+      "code": "CUSTOMER_EXPERIENCE_LANDING_03_TRUST_LICENCE_SLOT",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Customer experience landing 03 trust licence slot",
+          "DESCRIPTION": "Customer experience landing section value."
+        }
+      },
+      "value": {
+        "en": ""
+      }
+    },
+    {
+      "code": "CUSTOMER_EXPERIENCE_LANDING_03_TRUST_INSURANCE_LABEL",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Customer experience landing 03 trust insurance label",
+          "DESCRIPTION": "Customer experience landing section value."
+        }
+      },
+      "value": {
+        "en": ""
+      }
+    },
+    {
+      "code": "CUSTOMER_EXPERIENCE_LANDING_03_TRUST_INSURANCE_SLOT",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Customer experience landing 03 trust insurance slot",
+          "DESCRIPTION": "Customer experience landing section value."
+        }
+      },
+      "value": {
+        "en": ""
+      }
+    },
+    {
+      "code": "CUSTOMER_EXPERIENCE_LANDING_03_TRUST_GUARANTEE_LABEL",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Customer experience landing 03 trust guarantee label",
+          "DESCRIPTION": "Customer experience landing section value."
+        }
+      },
+      "value": {
+        "en": ""
+      }
+    },
+    {
+      "code": "CUSTOMER_EXPERIENCE_LANDING_03_TRUST_GUARANTEE_VALUE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Customer experience landing 03 trust guarantee value",
+          "DESCRIPTION": "Customer experience landing section value."
+        }
+      },
+      "value": {
+        "en": ""
+      }
+    },
+    {
+      "code": "CUSTOMER_EXPERIENCE_LANDING_03_TRUST_APPOINTMENTS_LABEL",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Customer experience landing 03 trust appointments label",
+          "DESCRIPTION": "Customer experience landing section value."
+        }
+      },
+      "value": {
+        "en": ""
+      }
+    },
+    {
+      "code": "CUSTOMER_EXPERIENCE_LANDING_03_TRUST_APPOINTMENTS_VALUE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Customer experience landing 03 trust appointments value",
+          "DESCRIPTION": "Customer experience landing section value."
+        }
+      },
+      "value": {
+        "en": ""
+      }
+    }
+  ]
+}

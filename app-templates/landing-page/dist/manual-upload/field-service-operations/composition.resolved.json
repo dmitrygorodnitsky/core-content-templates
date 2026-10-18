@@ -1,0 +1,722 @@
+{
+  "sourceSpec": "compositions/specs/field-service-operations.spec.json",
+  "contentSource": "content/field-service-operations/parameter-values.json",
+  "appliedContentCodes": [
+    "COMPARE_1_1",
+    "COMPARE_1_1_ICON",
+    "COMPARE_1_2_ICON",
+    "COMPARE_2_1",
+    "COMPARE_2_1_ICON",
+    "COMPARE_2_2_ICON",
+    "COMPARE_3_1",
+    "COMPARE_3_1_ICON",
+    "COMPARE_3_2_ICON",
+    "COMPARE_4_1",
+    "COMPARE_4_1_ICON",
+    "COMPARE_4_2_ICON",
+    "COMPARE_5_1",
+    "COMPARE_5_1_ICON",
+    "COMPARE_5_2_ICON",
+    "COMPARE_6_1",
+    "COMPARE_6_1_ICON",
+    "COMPARE_6_2_ICON",
+    "COMPARE_7_1",
+    "COMPARE_7_1_ICON",
+    "COMPARE_7_2_ICON",
+    "COMPARE_8_1",
+    "COMPARE_8_1_ICON",
+    "COMPARE_8_2_ICON",
+    "COMPARE_COLUMN_COUNT",
+    "COMPARE_COL_1_NAME",
+    "COMPARE_COL_2_NAME",
+    "COMPARE_LEDE",
+    "COMPARE_ROW_1",
+    "COMPARE_ROW_2",
+    "COMPARE_ROW_3",
+    "COMPARE_ROW_4",
+    "COMPARE_ROW_5",
+    "COMPARE_ROW_6",
+    "COMPARE_ROW_7",
+    "COMPARE_ROW_8",
+    "COMPARE_TITLE",
+    "FAVICON_DARK_IMG",
+    "FAVICON_DARK_IMG_NAME",
+    "FAVICON_IMG",
+    "FAVICON_IMG_NAME",
+    "FAVICON_LIGHT_IMG",
+    "FAVICON_LIGHT_IMG_NAME",
+    "ROOT_META_DESCRIPTION",
+    "ROOT_META_TITLE",
+    "SECTION_01_HEADER_CORPORATE_REFERENCE_DEMO_REQUEST_HREF",
+    "SECTION_01_HEADER_CORPORATE_REFERENCE_DEMO_REQUEST_LABEL",
+    "SECTION_01_HEADER_CORPORATE_REFERENCE_LOGO_ARIA_LABEL",
+    "SECTION_01_HEADER_CORPORATE_REFERENCE_LOGO_HREF",
+    "SECTION_01_HEADER_CORPORATE_REFERENCE_MENU_ITEM_SHADOW",
+    "SECTION_02_HERO_COMPOSITE_PHOTO_CTA_PRIMARY_HREF",
+    "SECTION_02_HERO_COMPOSITE_PHOTO_CTA_PRIMARY_LABEL",
+    "SECTION_02_HERO_COMPOSITE_PHOTO_CTA_SECONDARY_HREF",
+    "SECTION_02_HERO_COMPOSITE_PHOTO_CTA_SECONDARY_LABEL",
+    "SECTION_02_HERO_COMPOSITE_PHOTO_EYEBROW_LEAF",
+    "SECTION_02_HERO_COMPOSITE_PHOTO_EYEBROW_ROOT",
+    "SECTION_02_HERO_COMPOSITE_PHOTO_LEAD_1",
+    "SECTION_02_HERO_COMPOSITE_PHOTO_LEAD_2",
+    "SECTION_02_HERO_COMPOSITE_PHOTO_PERSON_1_AVATAR_NAME",
+    "SECTION_02_HERO_COMPOSITE_PHOTO_PERSON_1_AVATAR_URL",
+    "SECTION_02_HERO_COMPOSITE_PHOTO_PERSON_2_AVATAR_NAME",
+    "SECTION_02_HERO_COMPOSITE_PHOTO_PERSON_2_AVATAR_URL",
+    "SECTION_02_HERO_COMPOSITE_PHOTO_PHOTO_NAME",
+    "SECTION_02_HERO_COMPOSITE_PHOTO_PHOTO_URL",
+    "SECTION_02_HERO_COMPOSITE_PHOTO_TITLE_ACCENT",
+    "SECTION_02_HERO_COMPOSITE_PHOTO_TITLE_LINE_1",
+    "SECTION_02_HERO_COMPOSITE_PHOTO_TITLE_LINE_2",
+    "SECTION_03_SECTION_H2_NARRATIVE_ONLY_LEDE_1",
+    "SECTION_03_SECTION_H2_NARRATIVE_ONLY_LEDE_2",
+    "SECTION_03_SECTION_H2_NARRATIVE_ONLY_LEDE_3",
+    "SECTION_03_SECTION_H2_NARRATIVE_ONLY_TITLE",
+    "SECTION_04_FEATURES_CARD_GRID_4_CARD_1_NUM",
+    "SECTION_04_FEATURES_CARD_GRID_4_CARD_1_P1",
+    "SECTION_04_FEATURES_CARD_GRID_4_CARD_1_P2",
+    "SECTION_04_FEATURES_CARD_GRID_4_CARD_1_TITLE",
+    "SECTION_04_FEATURES_CARD_GRID_4_CARD_2_NUM",
+    "SECTION_04_FEATURES_CARD_GRID_4_CARD_2_P1",
+    "SECTION_04_FEATURES_CARD_GRID_4_CARD_2_P2",
+    "SECTION_04_FEATURES_CARD_GRID_4_CARD_2_TITLE",
+    "SECTION_04_FEATURES_CARD_GRID_4_LEDE_1",
+    "SECTION_04_FEATURES_CARD_GRID_4_LEDE_2",
+    "SECTION_04_FEATURES_CARD_GRID_4_LEDE_3",
+    "SECTION_04_FEATURES_CARD_GRID_4_TITLE",
+    "SECTION_05_FEATURES_ACCORDION_2COL_NUMBERED_EYEBROW",
+    "SECTION_05_FEATURES_ACCORDION_2COL_NUMBERED_LEDE_1",
+    "SECTION_05_FEATURES_ACCORDION_2COL_NUMBERED_LEDE_2",
+    "SECTION_05_FEATURES_ACCORDION_2COL_NUMBERED_LEDE_3",
+    "SECTION_05_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_01_BODY",
+    "SECTION_05_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_01_TITLE",
+    "SECTION_05_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_02_BODY",
+    "SECTION_05_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_02_TITLE",
+    "SECTION_05_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_03_BODY",
+    "SECTION_05_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_03_TITLE",
+    "SECTION_05_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_04_BODY",
+    "SECTION_05_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_04_TITLE",
+    "SECTION_05_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_05_BODY",
+    "SECTION_05_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_05_TITLE",
+    "SECTION_05_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_06_BODY",
+    "SECTION_05_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_06_TITLE",
+    "SECTION_05_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_07_BODY",
+    "SECTION_05_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_07_TITLE",
+    "SECTION_05_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_08_BODY",
+    "SECTION_05_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_08_TITLE",
+    "SECTION_05_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_09_BODY",
+    "SECTION_05_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_09_TITLE",
+    "SECTION_05_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_10_BODY",
+    "SECTION_05_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_10_TITLE",
+    "SECTION_05_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_11_BODY",
+    "SECTION_05_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_11_TITLE",
+    "SECTION_05_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_12_BODY",
+    "SECTION_05_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_12_TITLE",
+    "SECTION_05_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_13_BODY",
+    "SECTION_05_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_13_TITLE",
+    "SECTION_05_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_14_BODY",
+    "SECTION_05_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_14_TITLE",
+    "SECTION_05_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_15_BODY",
+    "SECTION_05_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_15_TITLE",
+    "SECTION_05_FEATURES_ACCORDION_2COL_NUMBERED_TITLE",
+    "SECTION_06_MOBILE_4_CARD_GLYPH_CARD_1_P1",
+    "SECTION_06_MOBILE_4_CARD_GLYPH_CARD_1_P2",
+    "SECTION_06_MOBILE_4_CARD_GLYPH_CARD_1_TITLE",
+    "SECTION_06_MOBILE_4_CARD_GLYPH_CARD_2_P1",
+    "SECTION_06_MOBILE_4_CARD_GLYPH_CARD_2_P2",
+    "SECTION_06_MOBILE_4_CARD_GLYPH_CARD_2_TITLE",
+    "SECTION_06_MOBILE_4_CARD_GLYPH_CARD_3_P1",
+    "SECTION_06_MOBILE_4_CARD_GLYPH_CARD_3_P2",
+    "SECTION_06_MOBILE_4_CARD_GLYPH_CARD_3_TITLE",
+    "SECTION_06_MOBILE_4_CARD_GLYPH_CARD_4_P1",
+    "SECTION_06_MOBILE_4_CARD_GLYPH_CARD_4_P2",
+    "SECTION_06_MOBILE_4_CARD_GLYPH_CARD_4_TITLE",
+    "SECTION_06_MOBILE_4_CARD_GLYPH_LEDE_1",
+    "SECTION_06_MOBILE_4_CARD_GLYPH_LEDE_2",
+    "SECTION_06_MOBILE_4_CARD_GLYPH_LEDE_3",
+    "SECTION_06_MOBILE_4_CARD_GLYPH_TITLE",
+    "SECTION_07_SIGNATURE_AI_SHELL_LEAD_1",
+    "SECTION_07_SIGNATURE_AI_SHELL_LEAD_2",
+    "SECTION_07_SIGNATURE_AI_SHELL_MEDIA_NAME",
+    "SECTION_07_SIGNATURE_AI_SHELL_MEDIA_URL",
+    "SECTION_07_SIGNATURE_AI_SHELL_TITLE",
+    "SECTION_08_SECTION_STAGES_LIST_STAGE_1_LEAD",
+    "SECTION_08_SECTION_STAGES_LIST_STAGE_1_NUM",
+    "SECTION_08_SECTION_STAGES_LIST_STAGE_1_TITLE",
+    "SECTION_08_SECTION_STAGES_LIST_STAGE_2_LEAD",
+    "SECTION_08_SECTION_STAGES_LIST_STAGE_2_NUM",
+    "SECTION_08_SECTION_STAGES_LIST_STAGE_2_TITLE",
+    "SECTION_08_SECTION_STAGES_LIST_STAGE_3_CHIP_1",
+    "SECTION_08_SECTION_STAGES_LIST_STAGE_3_CHIP_2",
+    "SECTION_08_SECTION_STAGES_LIST_STAGE_3_CHIP_3",
+    "SECTION_08_SECTION_STAGES_LIST_STAGE_3_CHIP_4",
+    "SECTION_08_SECTION_STAGES_LIST_STAGE_3_LEAD",
+    "SECTION_08_SECTION_STAGES_LIST_STAGE_3_NUM",
+    "SECTION_08_SECTION_STAGES_LIST_STAGE_3_TITLE",
+    "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_BODY",
+    "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_LEDE",
+    "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_01_DESC",
+    "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_01_HREF",
+    "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_01_IMAGE_NAME",
+    "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_01_IMAGE_URL",
+    "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_01_TITLE",
+    "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_02_DESC",
+    "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_02_HREF",
+    "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_02_IMAGE_NAME",
+    "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_02_IMAGE_URL",
+    "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_02_TITLE",
+    "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_03_DESC",
+    "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_03_HREF",
+    "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_03_IMAGE_NAME",
+    "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_03_IMAGE_URL",
+    "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_03_TITLE",
+    "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_04_DESC",
+    "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_04_HREF",
+    "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_04_IMAGE_NAME",
+    "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_04_IMAGE_URL",
+    "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_04_TITLE",
+    "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_05_DESC",
+    "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_05_HREF",
+    "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_05_IMAGE_NAME",
+    "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_05_IMAGE_URL",
+    "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_05_TITLE",
+    "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_06_DESC",
+    "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_06_HREF",
+    "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_06_IMAGE_NAME",
+    "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_06_IMAGE_URL",
+    "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_06_TITLE",
+    "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_07_DESC",
+    "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_07_HREF",
+    "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_07_IMAGE_NAME",
+    "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_07_IMAGE_URL",
+    "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_07_TITLE",
+    "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_08_DESC",
+    "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_08_HREF",
+    "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_08_IMAGE_NAME",
+    "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_08_IMAGE_URL",
+    "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_08_TITLE",
+    "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_09_DESC",
+    "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_09_HREF",
+    "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_09_IMAGE_NAME",
+    "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_09_IMAGE_URL",
+    "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_09_TITLE",
+    "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_10_DESC",
+    "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_10_HREF",
+    "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_10_IMAGE_NAME",
+    "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_10_IMAGE_URL",
+    "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_10_TITLE",
+    "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_11_DESC",
+    "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_11_HREF",
+    "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_11_IMAGE_NAME",
+    "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_11_IMAGE_URL",
+    "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_11_TITLE",
+    "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_12_DESC",
+    "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_12_HREF",
+    "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_12_IMAGE_NAME",
+    "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_12_IMAGE_URL",
+    "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_12_TITLE",
+    "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_13_DESC",
+    "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_13_HREF",
+    "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_13_IMAGE_NAME",
+    "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_13_IMAGE_URL",
+    "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_13_TITLE",
+    "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_TITLE",
+    "SECTION_11_SECTION_AXES_GRID_AXIS_1_LABEL",
+    "SECTION_11_SECTION_AXES_GRID_AXIS_2_LABEL",
+    "SECTION_11_SECTION_AXES_GRID_LEDE_1",
+    "SECTION_11_SECTION_AXES_GRID_LEDE_2",
+    "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_GROUP_01_TITLE",
+    "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_GROUP_02_TITLE",
+    "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_GROUP_03_TITLE",
+    "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_GROUP_04_TITLE",
+    "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_01_01_A",
+    "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_01_01_Q",
+    "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_01_02_A",
+    "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_01_02_Q",
+    "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_01_03_A",
+    "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_01_03_Q",
+    "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_01_04_A",
+    "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_01_04_Q",
+    "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_01_05_A",
+    "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_01_05_Q",
+    "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_01_06_A",
+    "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_01_06_Q",
+    "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_01_07_A",
+    "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_01_07_Q",
+    "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_02_01_A",
+    "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_02_01_Q",
+    "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_02_02_A",
+    "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_02_02_Q",
+    "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_02_03_A",
+    "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_02_03_Q",
+    "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_02_04_A",
+    "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_02_04_Q",
+    "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_02_05_A",
+    "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_02_05_Q",
+    "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_02_06_A",
+    "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_02_06_Q",
+    "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_02_07_A",
+    "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_02_07_Q",
+    "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_03_01_A",
+    "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_03_01_Q",
+    "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_03_02_A",
+    "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_03_02_Q",
+    "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_03_03_A",
+    "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_03_03_Q",
+    "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_03_04_A",
+    "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_03_04_Q",
+    "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_03_05_A",
+    "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_03_05_Q",
+    "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_03_06_A",
+    "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_03_06_Q",
+    "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_03_07_A",
+    "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_03_07_Q",
+    "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_04_01_A",
+    "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_04_01_Q",
+    "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_04_02_A",
+    "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_04_02_Q",
+    "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_04_03_A",
+    "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_04_03_Q",
+    "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_04_04_A",
+    "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_04_04_Q",
+    "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_04_05_A",
+    "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_04_05_Q",
+    "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_04_06_A",
+    "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_04_06_Q",
+    "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_04_07_A",
+    "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_04_07_Q",
+    "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_TITLE",
+    "SECTION_13_DECORATIVE_FINAL_CTA_BODY_1",
+    "SECTION_13_DECORATIVE_FINAL_CTA_BODY_2",
+    "SECTION_13_DECORATIVE_FINAL_CTA_EMPHASIS",
+    "SECTION_13_DECORATIVE_FINAL_CTA_PRIMARY_HREF",
+    "SECTION_13_DECORATIVE_FINAL_CTA_PRIMARY_LABEL",
+    "SECTION_13_DECORATIVE_FINAL_CTA_SECONDARY_HREF",
+    "SECTION_13_DECORATIVE_FINAL_CTA_SECONDARY_LABEL",
+    "SECTION_13_DECORATIVE_FINAL_CTA_TITLE",
+    "SECTION_14_FOOTER_CORPORATE_REFERENCE_TAGLINE"
+  ],
+  "root": {
+    "code": "FIELD_SERVICE_LANDING",
+    "name": "Field Service Landing",
+    "templateLanguage": "JTE"
+  },
+  "selectedBlocks": [
+    {
+      "index": 1,
+      "id": "header.corporate-reference",
+      "path": "blocks/01-header/header.corporate-reference",
+      "category": "01-header",
+      "hasJs": true
+    },
+    {
+      "index": 2,
+      "id": "hero.composite-photo",
+      "path": "blocks/05-hero/hero.composite-photo",
+      "category": "05-hero",
+      "hasJs": false
+    },
+    {
+      "index": 3,
+      "id": "section.h2-narrative-only",
+      "path": "blocks/09-vertical-section/section.h2-narrative-only",
+      "category": "09-vertical-section",
+      "hasJs": false
+    },
+    {
+      "index": 4,
+      "id": "features.card-grid-4",
+      "path": "blocks/06-features/features.card-grid-4",
+      "category": "06-features",
+      "hasJs": false
+    },
+    {
+      "index": 5,
+      "id": "features.accordion-2col-numbered",
+      "path": "blocks/06-features/features.accordion-2col-numbered",
+      "category": "06-features",
+      "hasJs": true
+    },
+    {
+      "index": 6,
+      "id": "mobile.4-card-glyph",
+      "path": "blocks/11-mobile-section/mobile.4-card-glyph",
+      "category": "11-mobile-section",
+      "hasJs": false
+    },
+    {
+      "index": 7,
+      "id": "signature.ai-shell",
+      "path": "blocks/13-signature/signature.ai-shell",
+      "category": "13-signature",
+      "hasJs": false
+    },
+    {
+      "index": 8,
+      "id": "section.stages-list",
+      "path": "blocks/09-vertical-section/section.stages-list",
+      "category": "09-vertical-section",
+      "hasJs": false
+    },
+    {
+      "index": 9,
+      "id": "verticals.glyph-grid-20-slots",
+      "path": "blocks/10-verticals-grid/verticals.glyph-grid-20-slots",
+      "category": "10-verticals-grid",
+      "hasJs": true
+    },
+    {
+      "index": 10,
+      "id": "comparison.three-col-with-mobile-cards",
+      "path": "blocks/07-comparison/comparison.three-col-with-mobile-cards",
+      "category": "07-comparison",
+      "hasJs": true
+    },
+    {
+      "index": 11,
+      "id": "section.axes-grid",
+      "path": "blocks/09-vertical-section/section.axes-grid",
+      "category": "09-vertical-section",
+      "hasJs": false
+    },
+    {
+      "index": 12,
+      "id": "faq.bubble-light-grouped",
+      "path": "blocks/08-faq/faq.bubble-light-grouped",
+      "category": "08-faq",
+      "hasJs": true
+    },
+    {
+      "index": 13,
+      "id": "decorative.final-cta",
+      "path": "blocks/12-decorative/decorative.final-cta",
+      "category": "12-decorative",
+      "hasJs": false
+    },
+    {
+      "index": 14,
+      "id": "footer.corporate-reference",
+      "path": "blocks/02-footer/footer.corporate-reference",
+      "category": "02-footer",
+      "hasJs": true
+    }
+  ],
+  "assetOwnership": [
+    {
+      "index": 1,
+      "childCode": "FIELD_SERVICE_LANDING_HEADER",
+      "block": "header.corporate-reference",
+      "assets": [
+        {
+          "id": "cta.btn-base",
+          "path": "blocks/03-cta/cta.btn-base",
+          "hasCss": true,
+          "hasJs": false
+        },
+        {
+          "id": "effect.hover-rise",
+          "path": "blocks/12-decorative/effect.hover-rise",
+          "hasCss": true,
+          "hasJs": false
+        },
+        {
+          "id": "cta.btn-primary-ring",
+          "path": "blocks/03-cta/cta.btn-primary-ring",
+          "hasCss": true,
+          "hasJs": false
+        },
+        {
+          "id": "header.corporate-reference",
+          "path": "blocks/01-header/header.corporate-reference",
+          "hasCss": true,
+          "hasJs": true
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "childCode": "FIELD_SERVICE_LANDING_HERO",
+      "block": "hero.composite-photo",
+      "assets": [
+        {
+          "id": "cta.btn-base",
+          "path": "blocks/03-cta/cta.btn-base",
+          "hasCss": true,
+          "hasJs": false
+        },
+        {
+          "id": "effect.hover-rise",
+          "path": "blocks/12-decorative/effect.hover-rise",
+          "hasCss": true,
+          "hasJs": false
+        },
+        {
+          "id": "cta.btn-primary-ring",
+          "path": "blocks/03-cta/cta.btn-primary-ring",
+          "hasCss": true,
+          "hasJs": false
+        },
+        {
+          "id": "cta.btn-secondary-filled",
+          "path": "blocks/03-cta/cta.btn-secondary-filled",
+          "hasCss": true,
+          "hasJs": false
+        },
+        {
+          "id": "hero.composite-photo",
+          "path": "blocks/05-hero/hero.composite-photo",
+          "hasCss": true,
+          "hasJs": false
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "childCode": "FIELD_SERVICE_LANDING_CONNECTED_OPERATIONS",
+      "block": "section.h2-narrative-only",
+      "assets": [
+        {
+          "id": "section.h2-narrative-only",
+          "path": "blocks/09-vertical-section/section.h2-narrative-only",
+          "hasCss": true,
+          "hasJs": false
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "childCode": "FIELD_SERVICE_LANDING_OPERATIONAL_NEEDS",
+      "block": "features.card-grid-4",
+      "assets": [
+        {
+          "id": "features.card-grid-4",
+          "path": "blocks/06-features/features.card-grid-4",
+          "hasCss": true,
+          "hasJs": false
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "childCode": "FIELD_SERVICE_LANDING_PLATFORM_CAPABILITIES",
+      "block": "features.accordion-2col-numbered",
+      "assets": [
+        {
+          "id": "features.accordion-2col-numbered",
+          "path": "blocks/06-features/features.accordion-2col-numbered",
+          "hasCss": true,
+          "hasJs": true
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "childCode": "FIELD_SERVICE_LANDING_MOBILE_WORKFORCE",
+      "block": "mobile.4-card-glyph",
+      "assets": [
+        {
+          "id": "mobile.4-card-glyph",
+          "path": "blocks/11-mobile-section/mobile.4-card-glyph",
+          "hasCss": true,
+          "hasJs": false
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "childCode": "FIELD_SERVICE_LANDING_AI_AUTOMATION",
+      "block": "signature.ai-shell",
+      "assets": [
+        {
+          "id": "signature.ai-shell",
+          "path": "blocks/13-signature/signature.ai-shell",
+          "hasCss": true,
+          "hasJs": false
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "childCode": "FIELD_SERVICE_LANDING_GROWTH_STAGES",
+      "block": "section.stages-list",
+      "assets": [
+        {
+          "id": "section.stages-list",
+          "path": "blocks/09-vertical-section/section.stages-list",
+          "hasCss": true,
+          "hasJs": false
+        }
+      ]
+    },
+    {
+      "index": 9,
+      "childCode": "FIELD_SERVICE_LANDING_SUPPORTED_INDUSTRIES",
+      "block": "verticals.glyph-grid-20-slots",
+      "assets": [
+        {
+          "id": "verticals.glyph-grid-20-slots",
+          "path": "blocks/10-verticals-grid/verticals.glyph-grid-20-slots",
+          "hasCss": true,
+          "hasJs": true
+        }
+      ]
+    },
+    {
+      "index": 10,
+      "childCode": "FIELD_SERVICE_LANDING_PLATFORM_COMPARISON",
+      "block": "comparison.three-col-with-mobile-cards",
+      "assets": [
+        {
+          "id": "comparison.three-col-with-mobile-cards",
+          "path": "blocks/07-comparison/comparison.three-col-with-mobile-cards",
+          "hasCss": true,
+          "hasJs": true
+        }
+      ]
+    },
+    {
+      "index": 11,
+      "childCode": "FIELD_SERVICE_LANDING_VISIBILITY_REPORTING_INTEGRATIONS",
+      "block": "section.axes-grid",
+      "assets": [
+        {
+          "id": "effect.hover-rise",
+          "path": "blocks/12-decorative/effect.hover-rise",
+          "hasCss": true,
+          "hasJs": false
+        },
+        {
+          "id": "section.axes-grid",
+          "path": "blocks/09-vertical-section/section.axes-grid",
+          "hasCss": true,
+          "hasJs": false
+        }
+      ]
+    },
+    {
+      "index": 12,
+      "childCode": "FIELD_SERVICE_LANDING_FAQ",
+      "block": "faq.bubble-light-grouped",
+      "assets": [
+        {
+          "id": "faq.bubble-light-grouped",
+          "path": "blocks/08-faq/faq.bubble-light-grouped",
+          "hasCss": true,
+          "hasJs": true
+        }
+      ]
+    },
+    {
+      "index": 13,
+      "childCode": "FIELD_SERVICE_LANDING_FINAL_CTA",
+      "block": "decorative.final-cta",
+      "assets": [
+        {
+          "id": "cta.btn-base",
+          "path": "blocks/03-cta/cta.btn-base",
+          "hasCss": true,
+          "hasJs": false
+        },
+        {
+          "id": "effect.hover-rise",
+          "path": "blocks/12-decorative/effect.hover-rise",
+          "hasCss": true,
+          "hasJs": false
+        },
+        {
+          "id": "cta.btn-primary-ring",
+          "path": "blocks/03-cta/cta.btn-primary-ring",
+          "hasCss": true,
+          "hasJs": false
+        },
+        {
+          "id": "cta.btn-secondary-filled",
+          "path": "blocks/03-cta/cta.btn-secondary-filled",
+          "hasCss": true,
+          "hasJs": false
+        },
+        {
+          "id": "decorative.final-cta",
+          "path": "blocks/12-decorative/decorative.final-cta",
+          "hasCss": true,
+          "hasJs": false
+        }
+      ]
+    },
+    {
+      "index": 14,
+      "childCode": "FIELD_SERVICE_LANDING_FOOTER",
+      "block": "footer.corporate-reference",
+      "assets": [
+        {
+          "id": "footer.corporate-reference",
+          "path": "blocks/02-footer/footer.corporate-reference",
+          "hasCss": true,
+          "hasJs": true
+        }
+      ]
+    }
+  ],
+  "tree": {
+    "code": "FIELD_SERVICE_LANDING",
+    "children": [
+      {
+        "code": "FIELD_SERVICE_LANDING_HEADER",
+        "children": []
+      },
+      {
+        "code": "FIELD_SERVICE_LANDING_HERO",
+        "children": []
+      },
+      {
+        "code": "FIELD_SERVICE_LANDING_CONNECTED_OPERATIONS",
+        "children": []
+      },
+      {
+        "code": "FIELD_SERVICE_LANDING_OPERATIONAL_NEEDS",
+        "children": []
+      },
+      {
+        "code": "FIELD_SERVICE_LANDING_PLATFORM_CAPABILITIES",
+        "children": []
+      },
+      {
+        "code": "FIELD_SERVICE_LANDING_MOBILE_WORKFORCE",
+        "children": []
+      },
+      {
+        "code": "FIELD_SERVICE_LANDING_AI_AUTOMATION",
+        "children": []
+      },
+      {
+        "code": "FIELD_SERVICE_LANDING_GROWTH_STAGES",
+        "children": []
+      },
+      {
+        "code": "FIELD_SERVICE_LANDING_SUPPORTED_INDUSTRIES",
+        "children": []
+      },
+      {
+        "code": "FIELD_SERVICE_LANDING_PLATFORM_COMPARISON",
+        "children": []
+      },
+      {
+        "code": "FIELD_SERVICE_LANDING_VISIBILITY_REPORTING_INTEGRATIONS",
+        "children": []
+      },
+      {
+        "code": "FIELD_SERVICE_LANDING_FAQ",
+        "children": []
+      },
+      {
+        "code": "FIELD_SERVICE_LANDING_FINAL_CTA",
+        "children": []
+      },
+      {
+        "code": "FIELD_SERVICE_LANDING_FOOTER",
+        "children": []
+      }
+    ]
+  }
+}

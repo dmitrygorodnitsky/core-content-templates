@@ -1,0 +1,7 @@
+{
+  "schemaVersion": 1,
+  "family": "CUSTOMER_PORTAL_CALM_HARBOR_STAGING",
+  "kind": "single-authenticated-customer-root",
+  "children": [],
+  "reason": "The root owns OIDC, User-to-Account bootstrap, Account-scoped Orders, current-API Appointment and User commands, and the public PIM catalog in one fail-closed runtime."
+}

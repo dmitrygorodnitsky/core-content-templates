@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>pricing.matrix-collapsible · lab-ui harness</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../00-tokens/tokens.css">
+<link rel="stylesheet" href="./block.css">
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  body { margin: 0; min-height: 100vh; font-family: var(--font-family); background: var(--color-bg); color: var(--color-text); }
+  .harness-label {
+    font-family: var(--font-mono); font-size: 11px; text-transform: uppercase;
+    letter-spacing: 0.12em; color: var(--color-gray-blue);
+    padding: 24px var(--container-padding-x) 0;
+    max-width: calc(var(--container-width) + var(--container-padding-x) * 2);
+    margin-inline: auto;
+  }
+  .harness-pad { padding-block: 44px 72px; }
+</style>
+</head>
+<body data-theme="cyan">
+<div class="harness-label">pricing.matrix-collapsible · fixture-backed dynamic pricing · use ?mode=fallback or ?mode=error for fallback checks</div>
+<div class="harness-pad">
+  <section class="mx-matrix" id="pricing-compare" data-block="pricing.matrix-collapsible" data-collapsable="true" data-collapsed="false" data-columns="4" data-groups-collapsible="on" data-hint-style="tooltip" data-tip-label="Explanation" data-pricing-period="monthly" data-feature-column-label="Feature" data-cta-row-label="Ready to start?" data-state-label-yes="Included" data-state-label-no="Not included" data-state-label-partial="Partially included" data-state-label-empty="No value" data-pricing-dynamic="true" data-pricing-api-base="/core-pim/api" data-pricing-organization="SERVICEWAND" data-pricing-product-type-code="SERVICEWAND_SAAS" data-pricing-sort-attribute-code="SORT_ORDER_PRIORITY" data-pricing-price-type-code="RECURRENT" data-pricing-price-attribute-code="INTERVAL" data-pricing-price-attribute-values="1 month" data-pricing-currency="CAD" data-pricing-purchase-url="#pricing" data-pricing-buy-label="Buy now" data-pricing-contact-label="Contact us" data-pricing-error-mode="fallback" data-pricing-fixture-url="../_fixtures/saas.json">
+  <div class="container">
+    <header class="mx-top">
+      <p class="mx-eyebrow">Compare plans</p>
+      <h2 class="mx-title">Every plan, side by side.</h2>
+      <p class="mx-lede">Buildings, dispatch, automations, support and security across every tier.</p>
+    </header>
+
+    <div class="mx-shell mx-shell--skeleton" aria-hidden="true" data-nosnippet>
+      <div class="mx-skel-row mx-skel-row--head"><span class="mx-skel mx-skel--feature"></span><span class="mx-skel mx-skel--plan"></span><span class="mx-skel mx-skel--plan"></span><span class="mx-skel mx-skel--plan"></span></div>
+      <div class="mx-skel-row"><span class="mx-skel mx-skel--feature"></span><span class="mx-skel mx-skel--cell"></span><span class="mx-skel mx-skel--cell"></span><span class="mx-skel mx-skel--cell"></span></div>
+      <div class="mx-skel-row"><span class="mx-skel mx-skel--feature"></span><span class="mx-skel mx-skel--cell"></span><span class="mx-skel mx-skel--cell"></span><span class="mx-skel mx-skel--cell"></span></div>
+      <div class="mx-skel-row"><span class="mx-skel mx-skel--feature"></span><span class="mx-skel mx-skel--cell"></span><span class="mx-skel mx-skel--cell"></span><span class="mx-skel mx-skel--cell"></span></div>
+    </div>
+
+    <div class="mx-shell mx-shell--table" role="table" aria-label="Plan comparison">
+      <div class="mx-row mx-row--head" role="row">
+        <div class="mx-cell mx-cell--feature" role="columnheader">Feature</div>
+        <div class="mx-cell mx-cell--plan" role="columnheader" data-plan-col="01"><span class="mx-plan-name">Starter</span><span class="mx-plan-tag">Base</span></div>
+        <div class="mx-cell mx-cell--plan" role="columnheader" data-plan-col="02"><span class="mx-plan-name">Growth</span><span class="mx-plan-tag">Popular</span></div>
+        <div class="mx-cell mx-cell--plan" role="columnheader" data-plan-col="03"><span class="mx-plan-name">Scale</span><span class="mx-plan-tag">Advanced</span></div>
+        <div class="mx-cell mx-cell--plan" role="columnheader" data-plan-col="04"><span class="mx-plan-name">Enterprise</span><span class="mx-plan-tag">Custom</span></div>
+      </div>
+
+      <div class="mx-group" role="rowgroup" data-group-visible="show">
+        <div class="mx-row--group" role="row"><div class="mx-group-title" role="rowheader">Operations core</div></div>
+        <div class="mx-row" role="row" data-row-visible="show">
+          <div class="mx-cell mx-cell--feature" role="rowheader"><span class="mx-feature-label">Buildings managed</span><span class="mx-feature-hint">How many physical buildings the workspace can actively manage at once.</span></div>
+          <div class="mx-cell" role="cell" data-plan-col="01" data-state="text"><span class="mx-mobile-plan">Starter</span><span class="mx-value">100</span></div>
+          <div class="mx-cell" role="cell" data-plan-col="02" data-state="text"><span class="mx-mobile-plan">Growth</span><span class="mx-value">250</span></div>
+          <div class="mx-cell" role="cell" data-plan-col="03" data-state="text"><span class="mx-mobile-plan">Scale</span><span class="mx-value">750</span></div>
+          <div class="mx-cell" role="cell" data-plan-col="04" data-state="text"><span class="mx-mobile-plan">Enterprise</span><span class="mx-value">Custom</span></div>
+        </div>
+        <div class="mx-row" role="row" data-row-visible="show">
+          <div class="mx-cell mx-cell--feature" role="rowheader"><span class="mx-feature-label">Customer records</span><span class="mx-feature-hint"></span></div>
+          <div class="mx-cell" role="cell" data-plan-col="01" data-state="yes"><span class="mx-mobile-plan">Starter</span><span class="mx-value">Unlimited</span></div>
+          <div class="mx-cell" role="cell" data-plan-col="02" data-state="yes"><span class="mx-mobile-plan">Growth</span><span class="mx-value">Unlimited</span></div>
+          <div class="mx-cell" role="cell" data-plan-col="03" data-state="yes"><span class="mx-mobile-plan">Scale</span><span class="mx-value">Unlimited</span></div>
+          <div class="mx-cell" role="cell" data-plan-col="04" data-state="yes"><span class="mx-mobile-plan">Enterprise</span><span class="mx-value">Unlimited</span></div>
+        </div>
+        <div class="mx-row" role="row" data-row-visible="show">
+          <div class="mx-cell mx-cell--feature" role="rowheader"><span class="mx-feature-label">Work order seats</span><span class="mx-feature-hint">Number of field users who can be assigned to and complete work orders.</span></div>
+          <div class="mx-cell" role="cell" data-plan-col="01" data-state="text"><span class="mx-mobile-plan">Starter</span><span class="mx-value">5</span></div>
+          <div class="mx-cell" role="cell" data-plan-col="02" data-state="text"><span class="mx-mobile-plan">Growth</span><span class="mx-value">15</span></div>
+          <div class="mx-cell" role="cell" data-plan-col="03" data-state="text"><span class="mx-mobile-plan">Scale</span><span class="mx-value">50</span></div>
+          <div class="mx-cell" role="cell" data-plan-col="04" data-state="text"><span class="mx-mobile-plan">Enterprise</span><span class="mx-value">Custom</span></div>
+        </div>
+      </div>
+
+      <div class="mx-group" role="rowgroup" data-group-visible="show">
+        <div class="mx-row--group" role="row"><div class="mx-group-title" role="rowheader">Routing and automation</div></div>
+        <div class="mx-row" role="row" data-row-visible="show">
+          <div class="mx-cell mx-cell--feature" role="rowheader"><span class="mx-feature-label">Routing tokens included</span><span class="mx-feature-hint">Used by the routing tool.</span></div>
+          <div class="mx-cell" role="cell" data-plan-col="01" data-state="no"><span class="mx-mobile-plan">Starter</span><span class="mx-value"></span></div>
+          <div class="mx-cell" role="cell" data-plan-col="02" data-state="text"><span class="mx-mobile-plan">Growth</span><span class="mx-value">10K</span></div>
+          <div class="mx-cell" role="cell" data-plan-col="03" data-state="text"><span class="mx-mobile-plan">Scale</span><span class="mx-value">50K</span></div>
+          <div class="mx-cell" role="cell" data-plan-col="04" data-state="text"><span class="mx-mobile-plan">Enterprise</span><span class="mx-value">Custom</span></div>
+        </div>
+        <div class="mx-row" role="row" data-row-visible="show">
+          <div class="mx-cell mx-cell--feature" role="rowheader"><span class="mx-feature-label">Automated reminders</span><span class="mx-feature-hint"></span></div>
+          <div class="mx-cell" role="cell" data-plan-col="01" data-state="no"><span class="mx-mobile-plan">Starter</span><span class="mx-value"></span></div>
+          <div class="mx-cell" role="cell" data-plan-col="02" data-state="yes"><span class="mx-mobile-plan">Growth</span><span class="mx-value">Included</span></div>
+          <div class="mx-cell" role="cell" data-plan-col="03" data-state="yes"><span class="mx-mobile-plan">Scale</span><span class="mx-value">Included</span></div>
+          <div class="mx-cell" role="cell" data-plan-col="04" data-state="yes"><span class="mx-mobile-plan">Enterprise</span><span class="mx-value">Included</span></div>
+        </div>
+        <div class="mx-row" role="row" data-row-visible="show">
+          <div class="mx-cell mx-cell--feature" role="rowheader"><span class="mx-feature-label">Custom workflows</span><span class="mx-feature-hint">Build multi-step automations triggered by job status, schedule, or customer events.</span></div>
+          <div class="mx-cell" role="cell" data-plan-col="01" data-state="no"><span class="mx-mobile-plan">Starter</span><span class="mx-value"></span></div>
+          <div class="mx-cell" role="cell" data-plan-col="02" data-state="text"><span class="mx-mobile-plan">Growth</span><span class="mx-value">Basic</span></div>
+          <div class="mx-cell" role="cell" data-plan-col="03" data-state="text"><span class="mx-mobile-plan">Scale</span><span class="mx-value">Advanced</span></div>
+          <div class="mx-cell" role="cell" data-plan-col="04" data-state="text"><span class="mx-mobile-plan">Enterprise</span><span class="mx-value">Custom</span></div>
+        </div>
+      </div>
+
+      <div class="mx-group" role="rowgroup" data-group-visible="show">
+        <div class="mx-row--group" role="row"><div class="mx-group-title" role="rowheader">Reporting and access</div></div>
+        <div class="mx-row" role="row" data-row-visible="show">
+          <div class="mx-cell mx-cell--feature" role="rowheader"><span class="mx-feature-label">Dashboards and reports</span><span class="mx-feature-hint"></span></div>
+          <div class="mx-cell" role="cell" data-plan-col="01" data-state="text"><span class="mx-mobile-plan">Starter</span><span class="mx-value">Starter set</span></div>
+          <div class="mx-cell" role="cell" data-plan-col="02" data-state="text"><span class="mx-mobile-plan">Growth</span><span class="mx-value">Standard</span></div>
+          <div class="mx-cell" role="cell" data-plan-col="03" data-state="text"><span class="mx-mobile-plan">Scale</span><span class="mx-value">Advanced</span></div>
+          <div class="mx-cell" role="cell" data-plan-col="04" data-state="text"><span class="mx-mobile-plan">Enterprise</span><span class="mx-value">Custom</span></div>
+        </div>
+        <div class="mx-row" role="row" data-row-visible="show">
+          <div class="mx-cell mx-cell--feature" role="rowheader"><span class="mx-feature-label">Granular permissions</span><span class="mx-feature-hint"></span></div>
+          <div class="mx-cell" role="cell" data-plan-col="01" data-state="no"><span class="mx-mobile-plan">Starter</span><span class="mx-value"></span></div>
+          <div class="mx-cell" role="cell" data-plan-col="02" data-state="no"><span class="mx-mobile-plan">Growth</span><span class="mx-value"></span></div>
+          <div class="mx-cell" role="cell" data-plan-col="03" data-state="yes"><span class="mx-mobile-plan">Scale</span><span class="mx-value">Included</span></div>
+          <div class="mx-cell" role="cell" data-plan-col="04" data-state="yes"><span class="mx-mobile-plan">Enterprise</span><span class="mx-value">Included</span></div>
+        </div>
+        <div class="mx-row" role="row" data-row-visible="show">
+          <div class="mx-cell mx-cell--feature" role="rowheader"><span class="mx-feature-label">API and webhooks</span><span class="mx-feature-hint">Programmatic read/write access and outbound event notifications to your systems.</span></div>
+          <div class="mx-cell" role="cell" data-plan-col="01" data-state="no"><span class="mx-mobile-plan">Starter</span><span class="mx-value"></span></div>
+          <div class="mx-cell" role="cell" data-plan-col="02" data-state="partial"><span class="mx-mobile-plan">Growth</span><span class="mx-value">Read-only</span></div>
+          <div class="mx-cell" role="cell" data-plan-col="03" data-state="text"><span class="mx-mobile-plan">Scale</span><span class="mx-value">Read/write</span></div>
+          <div class="mx-cell" role="cell" data-plan-col="04" data-state="text"><span class="mx-mobile-plan">Enterprise</span><span class="mx-value">Read/write</span></div>
+        </div>
+      </div>
+
+      <div class="mx-group" role="rowgroup" data-group-visible="show" data-group-collapsed="true">
+        <div class="mx-row--group" role="row"><div class="mx-group-title" role="rowheader">Support and security</div></div>
+        <div class="mx-row" role="row" data-row-visible="show">
+          <div class="mx-cell mx-cell--feature" role="rowheader"><span class="mx-feature-label">Support tier</span><span class="mx-feature-hint"></span></div>
+          <div class="mx-cell" role="cell" data-plan-col="01" data-state="text"><span class="mx-mobile-plan">Starter</span><span class="mx-value">Standard</span></div>
+          <div class="mx-cell" role="cell" data-plan-col="02" data-state="text"><span class="mx-mobile-plan">Growth</span><span class="mx-value">Priority</span></div>
+          <div class="mx-cell" role="cell" data-plan-col="03" data-state="text"><span class="mx-mobile-plan">Scale</span><span class="mx-value">Dedicated</span></div>
+          <div class="mx-cell" role="cell" data-plan-col="04" data-state="text"><span class="mx-mobile-plan">Enterprise</span><span class="mx-value">Named team</span></div>
+        </div>
+        <div class="mx-row" role="row" data-row-visible="show">
+          <div class="mx-cell mx-cell--feature" role="rowheader"><span class="mx-feature-label">SSO and audit log</span><span class="mx-feature-hint">Single sign-on plus a tamper-evident log of every admin and data change.</span></div>
+          <div class="mx-cell" role="cell" data-plan-col="01" data-state="no"><span class="mx-mobile-plan">Starter</span><span class="mx-value"></span></div>
+          <div class="mx-cell" role="cell" data-plan-col="02" data-state="no"><span class="mx-mobile-plan">Growth</span><span class="mx-value"></span></div>
+          <div class="mx-cell" role="cell" data-plan-col="03" data-state="yes"><span class="mx-mobile-plan">Scale</span><span class="mx-value">Included</span></div>
+          <div class="mx-cell" role="cell" data-plan-col="04" data-state="yes"><span class="mx-mobile-plan">Enterprise</span><span class="mx-value">Included</span></div>
+        </div>
+        <div class="mx-row" role="row" data-row-visible="show">
+          <div class="mx-cell mx-cell--feature" role="rowheader"><span class="mx-feature-label">Implementation plan</span><span class="mx-feature-hint"></span></div>
+          <div class="mx-cell" role="cell" data-plan-col="01" data-state="text"><span class="mx-mobile-plan">Starter</span><span class="mx-value">Self-serve</span></div>
+          <div class="mx-cell" role="cell" data-plan-col="02" data-state="text"><span class="mx-mobile-plan">Growth</span><span class="mx-value">Guided</span></div>
+          <div class="mx-cell" role="cell" data-plan-col="03" data-state="text"><span class="mx-mobile-plan">Scale</span><span class="mx-value">Managed</span></div>
+          <div class="mx-cell" role="cell" data-plan-col="04" data-state="text"><span class="mx-mobile-plan">Enterprise</span><span class="mx-value">Enterprise</span></div>
+        </div>
+      </div>
+
+        <div class="mx-row mx-row--cta" role="row" data-row-visible="show">
+          <div class="mx-cell mx-cell--feature" role="rowheader"><span class="mx-feature-label">Ready to start?</span></div>
+          <div class="mx-cell" role="cell" data-plan-col="01"><a class="mx-cta" href="#pricing">Start setup</a></div>
+          <div class="mx-cell" role="cell" data-plan-col="02"><a class="mx-cta" href="#pricing">Continue with Growth</a></div>
+          <div class="mx-cell" role="cell" data-plan-col="03"><a class="mx-cta" href="#pricing">Talk to sales</a></div>
+          <div class="mx-cell" role="cell" data-plan-col="04"><a class="mx-cta" href="#pricing">Request quote</a></div>
+        </div>
+      </div>
+
+    <div class="mx-shell mx-shell--accordion" aria-label="Plan comparison">
+      <details class="mx-acc" data-plan-col="01">
+        <summary class="mx-acc-summary"><span class="mx-acc-name">Starter</span><span class="mx-acc-tag">Base</span><span class="mx-acc-chev" aria-hidden="true"></span></summary>
+        <div class="mx-acc-body">
+          <div class="mx-acc-group" data-group-visible="show">
+            <p class="mx-acc-group-title">Operations core</p>
+            <dl class="mx-acc-list">
+              <div class="mx-acc-item" data-row-visible="show">
+                <dt>Buildings managed</dt>
+                <dd data-state="text">100</dd>
+              </div>
+              <div class="mx-acc-item" data-row-visible="show">
+                <dt>Customer records</dt>
+                <dd data-state="yes">Unlimited</dd>
+              </div>
+              <div class="mx-acc-item" data-row-visible="show">
+                <dt>Work order seats</dt>
+                <dd data-state="text">5</dd>
+              </div>
+            </dl>
+          </div>
+          <div class="mx-acc-group" data-group-visible="show">
+            <p class="mx-acc-group-title">Routing and automation</p>
+            <dl class="mx-acc-list">
+              <div class="mx-acc-item" data-row-visible="show">
+                <dt>Routing tokens included</dt>
+                <dd data-state="no"></dd>
+              </div>
+              <div class="mx-acc-item" data-row-visible="show">
+                <dt>Automated reminders</dt>
+                <dd data-state="no"></dd>
+              </div>
+              <div class="mx-acc-item" data-row-visible="show">
+                <dt>Custom workflows</dt>
+                <dd data-state="no"></dd>
+              </div>
+            </dl>
+          </div>
+          <div class="mx-acc-group" data-group-visible="show">
+            <p class="mx-acc-group-title">Reporting and access</p>
+            <dl class="mx-acc-list">
+              <div class="mx-acc-item" data-row-visible="show">
+                <dt>Dashboards and reports</dt>
+                <dd data-state="text">Starter set</dd>
+              </div>
+              <div class="mx-acc-item" data-row-visible="show">
+                <dt>Granular permissions</dt>
+                <dd data-state="no"></dd>
+              </div>
+              <div class="mx-acc-item" data-row-visible="show">
+                <dt>API and webhooks</dt>
+                <dd data-state="no"></dd>
+              </div>
+            </dl>
+          </div>
+          <div class="mx-acc-group" data-group-visible="show">
+            <p class="mx-acc-group-title">Support and security</p>
+            <dl class="mx-acc-list">
+              <div class="mx-acc-item" data-row-visible="show">
+                <dt>Support tier</dt>
+                <dd data-state="text">Standard</dd>
+              </div>
+              <div class="mx-acc-item" data-row-visible="show">
+                <dt>SSO and audit log</dt>
+                <dd data-state="no"></dd>
+              </div>
+              <div class="mx-acc-item" data-row-visible="show">
+                <dt>Implementation plan</dt>
+                <dd data-state="text">Self-serve</dd>
+              </div>
+            </dl>
+          </div>
+          <a class="mx-acc-cta" data-row-visible="show" href="#pricing">Start setup</a>
+        </div>
+      </details>
+      <details class="mx-acc" data-plan-col="02" open>
+        <summary class="mx-acc-summary"><span class="mx-acc-name">Growth</span><span class="mx-acc-tag">Popular</span><span class="mx-acc-chev" aria-hidden="true"></span></summary>
+        <div class="mx-acc-body">
+          <div class="mx-acc-group" data-group-visible="show">
+            <p class="mx-acc-group-title">Operations core</p>
+            <dl class="mx-acc-list">
+              <div class="mx-acc-item" data-row-visible="show">
+                <dt>Buildings managed</dt>
+                <dd data-state="text">250</dd>
+              </div>
+              <div class="mx-acc-item" data-row-visible="show">
+                <dt>Customer records</dt>
+                <dd data-state="yes">Unlimited</dd>
+              </div>
+              <div class="mx-acc-item" data-row-visible="show">
+                <dt>Work order seats</dt>
+                <dd data-state="text">15</dd>
+              </div>
+            </dl>
+          </div>
+          <div class="mx-acc-group" data-group-visible="show">
+            <p class="mx-acc-group-title">Routing and automation</p>
+            <dl class="mx-acc-list">
+              <div class="mx-acc-item" data-row-visible="show">
+                <dt>Routing tokens included</dt>
+                <dd data-state="text">10K</dd>
+              </div>
+              <div class="mx-acc-item" data-row-visible="show">
+                <dt>Automated reminders</dt>
+                <dd data-state="yes">Included</dd>
+              </div>
+              <div class="mx-acc-item" data-row-visible="show">
+                <dt>Custom workflows</dt>
+                <dd data-state="text">Basic</dd>
+              </div>
+            </dl>
+          </div>
+          <div class="mx-acc-group" data-group-visible="show">
+            <p class="mx-acc-group-title">Reporting and access</p>
+            <dl class="mx-acc-list">
+              <div class="mx-acc-item" data-row-visible="show">
+                <dt>Dashboards and reports</dt>
+                <dd data-state="text">Standard</dd>
+              </div>
+              <div class="mx-acc-item" data-row-visible="show">
+                <dt>Granular permissions</dt>
+                <dd data-state="no"></dd>
+              </div>
+              <div class="mx-acc-item" data-row-visible="show">
+                <dt>API and webhooks</dt>
+                <dd data-state="partial">Read-only</dd>
+              </div>
+            </dl>
+          </div>
+          <div class="mx-acc-group" data-group-visible="show">
+            <p class="mx-acc-group-title">Support and security</p>
+            <dl class="mx-acc-list">
+              <div class="mx-acc-item" data-row-visible="show">
+                <dt>Support tier</dt>
+                <dd data-state="text">Priority</dd>
+              </div>
+              <div class="mx-acc-item" data-row-visible="show">
+                <dt>SSO and audit log</dt>
+                <dd data-state="no"></dd>
+              </div>
+              <div class="mx-acc-item" data-row-visible="show">
+                <dt>Implementation plan</dt>
+                <dd data-state="text">Guided</dd>
+              </div>
+            </dl>
+          </div>
+          <a class="mx-acc-cta" data-row-visible="show" href="#pricing">Continue with Growth</a>
+        </div>
+      </details>
+      <details class="mx-acc" data-plan-col="03">
+        <summary class="mx-acc-summary"><span class="mx-acc-name">Scale</span><span class="mx-acc-tag">Advanced</span><span class="mx-acc-chev" aria-hidden="true"></span></summary>
+        <div class="mx-acc-body">
+          <div class="mx-acc-group" data-group-visible="show">
+            <p class="mx-acc-group-title">Operations core</p>
+            <dl class="mx-acc-list">
+              <div class="mx-acc-item" data-row-visible="show">
+                <dt>Buildings managed</dt>
+                <dd data-state="text">750</dd>
+              </div>
+              <div class="mx-acc-item" data-row-visible="show">
+                <dt>Customer records</dt>
+                <dd data-state="yes">Unlimited</dd>
+              </div>
+              <div class="mx-acc-item" data-row-visible="show">
+                <dt>Work order seats</dt>
+                <dd data-state="text">50</dd>
+              </div>
+            </dl>
+          </div>
+          <div class="mx-acc-group" data-group-visible="show">
+            <p class="mx-acc-group-title">Routing and automation</p>
+            <dl class="mx-acc-list">
+              <div class="mx-acc-item" data-row-visible="show">
+                <dt>Routing tokens included</dt>
+                <dd data-state="text">50K</dd>
+              </div>
+              <div class="mx-acc-item" data-row-visible="show">
+                <dt>Automated reminders</dt>
+                <dd data-state="yes">Included</dd>
+              </div>
+              <div class="mx-acc-item" data-row-visible="show">
+                <dt>Custom workflows</dt>
+                <dd data-state="text">Advanced</dd>
+              </div>
+            </dl>
+          </div>
+          <div class="mx-acc-group" data-group-visible="show">
+            <p class="mx-acc-group-title">Reporting and access</p>
+            <dl class="mx-acc-list">
+              <div class="mx-acc-item" data-row-visible="show">
+                <dt>Dashboards and reports</dt>
+                <dd data-state="text">Advanced</dd>
+              </div>
+              <div class="mx-acc-item" data-row-visible="show">
+                <dt>Granular permissions</dt>
+                <dd data-state="yes">Included</dd>
+              </div>
+              <div class="mx-acc-item" data-row-visible="show">
+                <dt>API and webhooks</dt>
+                <dd data-state="text">Read/write</dd>
+              </div>
+            </dl>
+          </div>
+          <div class="mx-acc-group" data-group-visible="show">
+            <p class="mx-acc-group-title">Support and security</p>
+            <dl class="mx-acc-list">
+              <div class="mx-acc-item" data-row-visible="show">
+                <dt>Support tier</dt>
+                <dd data-state="text">Dedicated</dd>
+              </div>
+              <div class="mx-acc-item" data-row-visible="show">
+                <dt>SSO and audit log</dt>
+                <dd data-state="yes">Included</dd>
+              </div>
+              <div class="mx-acc-item" data-row-visible="show">
+                <dt>Implementation plan</dt>
+                <dd data-state="text">Managed</dd>
+              </div>
+            </dl>
+          </div>
+          <a class="mx-acc-cta" data-row-visible="show" href="#pricing">Talk to sales</a>
+        </div>
+      </details>
+      <details class="mx-acc" data-plan-col="04">
+        <summary class="mx-acc-summary"><span class="mx-acc-name">Enterprise</span><span class="mx-acc-tag">Custom</span><span class="mx-acc-chev" aria-hidden="true"></span></summary>
+        <div class="mx-acc-body">
+          <div class="mx-acc-group" data-group-visible="show">
+            <p class="mx-acc-group-title">Operations core</p>
+            <dl class="mx-acc-list">
+              <div class="mx-acc-item" data-row-visible="show">
+                <dt>Buildings managed</dt>
+                <dd data-state="text">Custom</dd>
+              </div>
+              <div class="mx-acc-item" data-row-visible="show">
+                <dt>Customer records</dt>
+                <dd data-state="yes">Unlimited</dd>
+              </div>
+              <div class="mx-acc-item" data-row-visible="show">
+                <dt>Work order seats</dt>
+                <dd data-state="text">Custom</dd>
+              </div>
+            </dl>
+          </div>
+          <div class="mx-acc-group" data-group-visible="show">
+            <p class="mx-acc-group-title">Routing and automation</p>
+            <dl class="mx-acc-list">
+              <div class="mx-acc-item" data-row-visible="show">
+                <dt>Routing tokens included</dt>
+                <dd data-state="text">Custom</dd>
+              </div>
+              <div class="mx-acc-item" data-row-visible="show">
+                <dt>Automated reminders</dt>
+                <dd data-state="yes">Included</dd>
+              </div>
+              <div class="mx-acc-item" data-row-visible="show">
+                <dt>Custom workflows</dt>
+                <dd data-state="text">Custom</dd>
+              </div>
+            </dl>
+          </div>
+          <div class="mx-acc-group" data-group-visible="show">
+            <p class="mx-acc-group-title">Reporting and access</p>
+            <dl class="mx-acc-list">
+              <div class="mx-acc-item" data-row-visible="show">
+                <dt>Dashboards and reports</dt>
+                <dd data-state="text">Custom</dd>
+              </div>
+              <div class="mx-acc-item" data-row-visible="show">
+                <dt>Granular permissions</dt>
+                <dd data-state="yes">Included</dd>
+              </div>
+              <div class="mx-acc-item" data-row-visible="show">
+                <dt>API and webhooks</dt>
+                <dd data-state="text">Read/write</dd>
+              </div>
+            </dl>
+          </div>
+          <div class="mx-acc-group" data-group-visible="show">
+            <p class="mx-acc-group-title">Support and security</p>
+            <dl class="mx-acc-list">
+              <div class="mx-acc-item" data-row-visible="show">
+                <dt>Support tier</dt>
+                <dd data-state="text">Named team</dd>
+              </div>
+              <div class="mx-acc-item" data-row-visible="show">
+                <dt>SSO and audit log</dt>
+                <dd data-state="yes">Included</dd>
+              </div>
+              <div class="mx-acc-item" data-row-visible="show">
+                <dt>Implementation plan</dt>
+                <dd data-state="text">Enterprise</dd>
+              </div>
+            </dl>
+          </div>
+          <a class="mx-acc-cta" data-row-visible="show" href="#pricing">Request quote</a>
+        </div>
+      </details>
+    </div>
+
+    <p class="mx-disclaimer">Final entitlements may depend on CRM rules. Talk to sales for custom matches.</p>
+  </div>
+</section>
+</div>
+<script>
+  (() => {
+    const mode = new URLSearchParams(window.location.search).get("mode");
+    const section = document.querySelector('[data-block="pricing.matrix-collapsible"]');
+    if (!section) return;
+    if (mode === "fallback") section.dataset.pricingDynamic = "false";
+    if (mode === "error") section.dataset.pricingFixtureUrl = "../_fixtures/missing.json";
+    if (mode === "lorem") section.dataset.pricingLorem = "true";
+  })();
+</script>
+<script src="../_shared/pricing-runtime.js"></script>
+<script src="./block.js"></script>
+</body>
+</html>

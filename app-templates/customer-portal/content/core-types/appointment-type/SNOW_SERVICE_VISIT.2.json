@@ -1,0 +1,219 @@
+{
+ "optimistic": 1,
+ "code": "SNOW_SERVICE_VISIT",
+ "nls": {
+  "en": {
+   "NAME": "Service Visit"
+  }
+ },
+ "workflow": {
+  "id": 20,
+  "code": "APPOINTMENT"
+ },
+ "organization": {
+  "optimistic": 4,
+  "id": 8,
+  "code": "SERVICE_WAND_WINTER_SERVICES"
+ },
+ "attributeOrder": [
+  {
+   "VISIT_PLAN": [
+    {
+     "attributeCode": "VISIT_SITE",
+     "visible": true
+    },
+    {
+     "attributeCode": "RESOURCE",
+     "visible": true
+    },
+    {
+     "attributeCode": "CREW_NOTES",
+     "visible": true
+    },
+    {
+     "attributeCode": "PRE_SERVICE_MEDIA",
+     "visible": true
+    }
+   ]
+  },
+  {
+   "FIELD_COMPLETION": [
+    {
+     "attributeCode": "COMPLETION_NOTES",
+     "visible": true
+    },
+    {
+     "attributeCode": "POST_SERVICE_MEDIA",
+     "visible": true
+    },
+    {
+     "attributeCode": "COMPLETION_EVIDENCE",
+     "visible": true
+    }
+   ]
+  },
+  {
+   "default": [
+    {
+     "attributeCode": "BEFORE_MEDIA",
+     "visible": true
+    }
+   ]
+  }
+ ],
+ "attributes": [
+  {
+   "code": "RESOURCE",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "com.pixelnation.rm.domain.Resource",
+   "nls": {
+    "en": {
+     "NAME": "Visit Property / Site"
+    }
+   },
+   "options": [],
+   "entityTypes": [
+    {
+     "value": "SW_FS_WS_PROPERTY_SITE"
+    }
+   ]
+  },
+  {
+   "code": "COMPLETION_NOTES",
+   "required": false,
+   "multiselect": false,
+   "freeValue": true,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "en": {
+     "NAME": "Completion Notes"
+    }
+   },
+   "options": []
+  },
+  {
+   "code": "CREW_NOTES",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "en": {
+     "NAME": "Crew Notes"
+    }
+   },
+   "options": []
+  },
+  {
+   "code": "PRE_SERVICE_MEDIA",
+   "required": false,
+   "multiselect": true,
+   "freeValue": true,
+   "unique": false,
+   "className": "com.pixelnation.common.domain.Media",
+   "nls": {
+    "ar": {
+     "NAME": "وسائل الإعلام قبل الخدمة"
+    },
+    "en": {
+     "NAME": "Pre-Service Media"
+    },
+    "es": {
+     "NAME": "Medios Pre-servicio"
+    },
+    "fr": {
+     "NAME": "Médias Pré-Service"
+    },
+    "he": {
+     "NAME": "מדיה לפני השירות"
+    },
+    "kk": {
+     "NAME": "Қызметке Дейінгі Медиа"
+    },
+    "ru": {
+     "NAME": "Предсервисные Медиа"
+    },
+    "zh": {
+     "NAME": "服务前媒体"
+    }
+   },
+   "options": [],
+   "entityTypes": [
+    {
+     "value": "video"
+    },
+    {
+     "value": "image"
+    }
+   ]
+  },
+  {
+   "code": "POST_SERVICE_MEDIA",
+   "required": false,
+   "multiselect": true,
+   "freeValue": false,
+   "unique": false,
+   "className": "com.pixelnation.common.domain.Media",
+   "nls": {
+    "ar": {
+     "NAME": "وسائط ما بعد الخدمة"
+    },
+    "en": {
+     "NAME": "Post-Service Media"
+    },
+    "es": {
+     "NAME": "Medios posteriores al servicio"
+    },
+    "fr": {
+     "NAME": "Médias après-vente"
+    },
+    "he": {
+     "NAME": "מדיה לאחר השירות"
+    },
+    "kk": {
+     "NAME": "Қызметтен кейінгі медиа"
+    },
+    "ru": {
+     "NAME": "Медиа после обслуживания"
+    },
+    "zh": {
+     "NAME": "售后媒体"
+    }
+   },
+   "options": [],
+   "entityTypes": [
+    {
+     "value": "video"
+    },
+    {
+     "value": "image"
+    }
+   ]
+  }
+ ],
+ "id": 2,
+ "isAbstract": false,
+ "attributeGroups": [
+  {
+   "code": "FIELD_COMPLETION",
+   "nls": {
+    "en": {
+     "NAME": "Field Completion"
+    }
+   }
+  },
+  {
+   "code": "VISIT_PLAN",
+   "nls": {
+    "en": {
+     "NAME": "Visit Plan"
+    }
+   }
+  }
+ ]
+}

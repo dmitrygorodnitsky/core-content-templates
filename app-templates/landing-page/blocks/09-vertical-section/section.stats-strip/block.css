@@ -1,0 +1,102 @@
+/* lab-ui block · section.stats-strip
+   Depends: 00-tokens/tokens.css. Light theme.
+   Adapted from designer styles.css §kit-stats (lines 1992–2041). */
+
+.stats-strip {
+  margin-top: 48px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  font-family: var(--font-family);
+}
+
+.stat-cell {
+  padding: 32px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  position: relative;
+}
+/* Dividers as pseudo-elements instead of border-right — CSS Grid +
+   gap:0 + 1px borders rounds inconsistently at sub-pixel column
+   widths, leaving some hairlines visible and others missing. The
+   pseudo sits at the right edge with explicit top/bottom inset, so
+   it always renders at full opacity and at a uniform position. */
+.stat-cell:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  top: 24px;
+  bottom: 24px;
+  right: 0;
+  width: 1px;
+  background: rgba(0, 0, 0, 0.10);
+  pointer-events: none;
+}
+
+.stat-num {
+  font-family: var(--font-family);
+  font-size: clamp(2rem, 3.4vw, 3rem);
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  color: var(--color-heading);
+}
+.stat-cell.is-accent .stat-num {
+  background: var(--cta-secondary-fill, linear-gradient(90deg, #56422D 0%, #494938 100%));
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+.stat-label {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-gray-second);
+}
+
+.stat-body {
+  margin: 4px 0 0;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: var(--color-gray-blue);
+}
+
+/* Optional auto-hide of empty cells via :has — admins can ship 3 stats
+   leaving the 4th blank; the grid reflows. */
+.stat-cell:has(.stat-num:empty):has(.stat-label:empty) { display: none; }
+
+@media (max-width: 880px) {
+  .stats-strip { grid-template-columns: repeat(2, 1fr); }
+  /* Hide the desktop right-divider on every even (last in row) cell. */
+  .stat-cell:nth-child(even)::after { display: none; }
+  /* 1px bottom divider for the first row, also as a pseudo for parity. */
+  .stat-cell:nth-child(1)::before,
+  .stat-cell:nth-child(2)::before {
+    content: "";
+    position: absolute;
+    left: 24px;
+    right: 24px;
+    bottom: 0;
+    height: 1px;
+    background: rgba(0, 0, 0, 0.10);
+    pointer-events: none;
+  }
+}
+@media (max-width: 480px) {
+  .stats-strip { grid-template-columns: 1fr; }
+  .stat-cell::after { display: none; }
+  .stat-cell:not(:last-child)::before {
+    content: "";
+    position: absolute;
+    left: 24px;
+    right: 24px;
+    bottom: 0;
+    height: 1px;
+    background: rgba(0, 0, 0, 0.10);
+    pointer-events: none;
+  }
+}

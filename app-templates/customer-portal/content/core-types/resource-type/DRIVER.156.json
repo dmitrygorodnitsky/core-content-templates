@@ -1,0 +1,57 @@
+{
+ "optimistic": 4,
+ "code": "DRIVER",
+ "nls": {
+  "en": {
+   "NAME": "Driver"
+  }
+ },
+ "workflow": {
+  "id": 34,
+  "code": "WORKFORCE_LIFECYCLE"
+ },
+ "organization": {
+  "optimistic": 4,
+  "id": 8,
+  "code": "SERVICE_WAND_WINTER_SERVICES"
+ },
+ "attributeOrder": [
+  {
+   "default": [
+    {
+     "typeId": 155,
+     "attributeCode": "ACCOUNT_TYPE",
+     "visible": true
+    },
+    {
+     "attributeCode": "DRIVER_LICENSE",
+     "visible": true
+    }
+   ]
+  }
+ ],
+ "attributes": [
+  {
+   "code": "DRIVER_LICENSE",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "com.pixelnation.common.domain.Document",
+   "nls": {
+    "en": {
+     "NAME": "Driver License"
+    }
+   },
+   "options": [],
+   "entityTypes": [
+    {
+     "value": 13
+    }
+   ]
+  }
+ ],
+ "id": 156,
+ "isAbstract": false,
+ "attributeGroups": []
+}

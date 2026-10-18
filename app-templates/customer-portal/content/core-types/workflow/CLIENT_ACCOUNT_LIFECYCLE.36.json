@@ -1,0 +1,886 @@
+{
+ "code": "CLIENT_ACCOUNT_LIFECYCLE",
+ "initialState": {
+  "id": 162,
+  "code": "INITIAL"
+ },
+ "nls": {
+  "ar": {
+   "DESCRIPTION": "<p></p>"
+  },
+  "en": {
+   "NAME": "Client Account Lifecycle",
+   "DESCRIPTION": "<p>Manages the lifecycle of a client account from registration and onboarding through active use, suspension, deactivation, and deletion.</p>"
+  },
+  "he": {
+   "DESCRIPTION": "<p></p>"
+  }
+ },
+ "entityType": "com.pixelnation.account.domain.Account",
+ "organization": {
+  "optimistic": 6,
+  "id": 8,
+  "code": "SERVICE_WAND_WINTER_SERVICES"
+ },
+ "id": 36,
+ "states": [
+  {
+   "style": {
+    "xPos": 517,
+    "yPos": 443.3333333333333
+   },
+   "id": 163,
+   "code": "UNCONFIRMED",
+   "nls": {
+    "ar": {
+     "DESCRIPTION": "<p></p>"
+    },
+    "en": {
+     "NAME": "Unconfirmed",
+     "DESCRIPTION": "<p>The account has been registered but has not yet completed the required confirmation process.</p>"
+    },
+    "he": {
+     "DESCRIPTION": "<p></p>"
+    }
+   },
+   "events": [
+    {
+     "id": 330,
+     "code": "UNCONFIRMED-CONFIRMED",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Confirm",
+       "DESCRIPTION": "<p>Confirms the account without requiring a separate confirmation request.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     },
+     "targets": [
+      {
+       "id": 164,
+       "code": "CONFIRMED"
+      }
+     ]
+    },
+    {
+     "id": 347,
+     "code": "UNCONFIRMED-CONFIRMATION_REQUEST_SENT",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Send Confirmation Request",
+       "DESCRIPTION": "<p>Sends a confirmation request to the account owner.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     },
+     "targets": [
+      {
+       "id": 168,
+       "code": "CONFIRMATION_REQUEST_SENT"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "style": {
+    "xPos": 3986,
+    "yPos": 34.333333333333314,
+    "backgroundColor": "rgba(255, 255, 6, 1)"
+   },
+   "id": 171,
+   "code": "SUSPENDED_NO_VALUE",
+   "nls": {
+    "ar": {
+     "DESCRIPTION": "<p class=\"ql-align-right ql-direction-rtl\"></p>"
+    },
+    "en": {
+     "NAME": "No Value",
+     "DESCRIPTION": "<p>Suspends the account because it is no longer receiving sufficient value from the service.</p>"
+    },
+    "he": {
+     "DESCRIPTION": "<p class=\"ql-align-right ql-direction-rtl\"></p>"
+    }
+   },
+   "events": [
+    {
+     "id": 337,
+     "code": "SUSPENDED_NO_VALUE-INACTIVE",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Deactivate",
+       "DESCRIPTION": "<p>Permanently ends the suspension period by moving the account to the inactive state.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     },
+     "targets": [
+      {
+       "id": 175,
+       "code": "INACTIVE"
+      }
+     ]
+    },
+    {
+     "id": 665,
+     "code": "SUSPENDED_NO_VALUE-ACTIVE",
+     "nls": {
+      "en": {
+       "NAME": "Activate"
+      }
+     },
+     "targets": [
+      {
+       "id": 174,
+       "code": "ACTIVE"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "style": {
+    "xPos": 3991.5,
+    "yPos": 234.28537742768157,
+    "backgroundColor": "rgba(255, 255, 0, 1)"
+   },
+   "id": 169,
+   "code": "SUSPENDED_NO_PAY",
+   "nls": {
+    "ar": {
+     "DESCRIPTION": "<p class=\"ql-align-right ql-direction-rtl\"></p>"
+    },
+    "en": {
+     "NAME": "Non-Payment",
+     "DESCRIPTION": "<p>Suspends the account because of unpaid invoices or outstanding payments.</p>"
+    },
+    "he": {
+     "DESCRIPTION": "<p class=\"ql-align-right ql-direction-rtl\"></p>"
+    }
+   },
+   "events": [
+    {
+     "id": 343,
+     "code": "SUSPENDED_NO_PAY-INACTIVE",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Deactivate",
+       "DESCRIPTION": "<p>Permanently deactivates an account suspended because of non-payment.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     },
+     "targets": [
+      {
+       "id": 175,
+       "code": "INACTIVE"
+      }
+     ]
+    },
+    {
+     "id": 663,
+     "code": "SUSPENDED_NO_PAY-ACTIVE",
+     "nls": {
+      "en": {
+       "NAME": "Activate"
+      }
+     },
+     "targets": [
+      {
+       "id": 174,
+       "code": "ACTIVE"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "style": {
+    "xPos": 3991.390530026698,
+    "yPos": 443.625644298626,
+    "backgroundColor": "rgba(255, 255, 0, 1)"
+   },
+   "id": 170,
+   "code": "SUSPENDED_CUSTOMER_REQUEST",
+   "nls": {
+    "ar": {
+     "DESCRIPTION": "<p class=\"ql-direction-rtl ql-align-right\"></p>"
+    },
+    "en": {
+     "NAME": "Suspend by Request",
+     "DESCRIPTION": "<p>Suspends the account at the customer’s request.</p>"
+    },
+    "he": {
+     "DESCRIPTION": "<p class=\"ql-direction-rtl ql-align-right\"></p>"
+    }
+   },
+   "events": [
+    {
+     "id": 341,
+     "code": "SUSPENDED_CUSTOMER_REQUEST-INACTIVE",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Deactivate",
+       "DESCRIPTION": "<p>Permanently deactivates an account that was suspended at the customer’s request.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     },
+     "targets": [
+      {
+       "id": 175,
+       "code": "INACTIVE"
+      }
+     ]
+    },
+    {
+     "id": 664,
+     "code": "SUSPENDED_CUSTOMER_REQUEST-ACTIVE",
+     "nls": {
+      "en": {
+       "NAME": "Activate"
+      }
+     },
+     "targets": [
+      {
+       "id": 174,
+       "code": "ACTIVE"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "style": {
+    "xPos": 3034.9983575059255,
+    "yPos": 117.96879808103961
+   },
+   "id": 167,
+   "code": "NOT_INTERESTED",
+   "nls": {
+    "ar": {
+     "DESCRIPTION": "<p></p>"
+    },
+    "en": {
+     "NAME": "Not Interested",
+     "DESCRIPTION": "<p>The prospect has indicated no interest in continuing the sales process and is no longer considered an active opportunity.</p>"
+    },
+    "he": {
+     "DESCRIPTION": "<p></p>"
+    }
+   },
+   "events": [
+    {
+     "id": 662,
+     "code": "NOT_INTERESTED-INACTIVE",
+     "nls": {
+      "en": {
+       "NAME": "Deactivate"
+      }
+     },
+     "targets": [
+      {
+       "id": 175,
+       "code": "INACTIVE"
+      }
+     ]
+    },
+    {
+     "id": 666,
+     "code": "NOT_INTERESTED-INTRODUCED",
+     "nls": {
+      "en": {
+       "NAME": "Reengaged"
+      }
+     },
+     "targets": [
+      {
+       "id": 166,
+       "code": "INTRODUCED"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "style": {
+    "xPos": 2061.8588471795065,
+    "yPos": 284.5559876915879
+   },
+   "id": 165,
+   "code": "INTRODUCTION_SENT",
+   "nls": {
+    "ar": {
+     "DESCRIPTION": "<p></p>"
+    },
+    "en": {
+     "NAME": "Introduction Sent",
+     "DESCRIPTION": "<p>An introductory communication has been sent to the account and the system is awaiting further engagement.</p>"
+    },
+    "he": {
+     "DESCRIPTION": "<p></p>"
+    }
+   },
+   "events": [
+    {
+     "id": 332,
+     "code": "INTRODUCTION_SENT-INTRODUCED",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Complete Introduction",
+       "DESCRIPTION": "<p>Records successful completion of the introduction after the introductory communication has been sent.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     },
+     "targets": [
+      {
+       "id": 166,
+       "code": "INTRODUCED"
+      }
+     ]
+    },
+    {
+     "id": 345,
+     "code": "INTRODUCTION_SENT-NOT_INTERESTED",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Mark as Not Interested",
+       "DESCRIPTION": "<p>Closes the opportunity because the prospect is not interested in continuing the engagement.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     },
+     "targets": [
+      {
+       "id": 167,
+       "code": "NOT_INTERESTED"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "style": {
+    "xPos": 2598,
+    "yPos": 443.3333333333333
+   },
+   "id": 166,
+   "code": "INTRODUCED",
+   "nls": {
+    "ar": {
+     "DESCRIPTION": "<p></p>"
+    },
+    "en": {
+     "NAME": "Introduced",
+     "DESCRIPTION": "<p>Initial communication with the account has been successfully completed and the account is ready for the sales process.</p>"
+    },
+    "he": {
+     "DESCRIPTION": "<p></p>"
+    }
+   },
+   "events": [
+    {
+     "id": 333,
+     "code": "INTRODUCED-NOT_INTERESTED",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Mark as Not Interested",
+       "DESCRIPTION": "<p>Records that the prospect has declined further engagement.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     },
+     "targets": [
+      {
+       "id": 167,
+       "code": "NOT_INTERESTED"
+      }
+     ]
+    },
+    {
+     "id": 334,
+     "code": "INTRODUCED-ACTIVE_LEAD",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Send Quote",
+       "DESCRIPTION": "<p>Sends a quotation and converts the prospect into an active sales opportunity.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     },
+     "targets": [
+      {
+       "id": 173,
+       "code": "ACTIVE_LEAD"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "style": {
+    "xPos": 12,
+    "yPos": 435.3333333333333
+   },
+   "id": 162,
+   "code": "INITIAL",
+   "nls": {
+    "ar": {
+     "DESCRIPTION": "<p></p>"
+    },
+    "en": {
+     "NAME": "Initial",
+     "DESCRIPTION": "<p>The account has been created in the system but has not yet entered the customer onboarding process.</p>"
+    },
+    "he": {
+     "DESCRIPTION": "<p></p>"
+    }
+   },
+   "events": [
+    {
+     "id": 329,
+     "code": "INITIAL-UNCONFIRMED",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Register",
+       "DESCRIPTION": "<p>Registers a new account and starts the onboarding process.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     },
+     "targets": [
+      {
+       "id": 163,
+       "code": "UNCONFIRMED"
+      }
+     ]
+    },
+    {
+     "id": 630,
+     "code": "INITIAL-ACTIVE_LEAD",
+     "nls": {
+      "en": {
+       "NAME": "Set Lead"
+      }
+     },
+     "targets": [
+      {
+       "id": 173,
+       "code": "ACTIVE_LEAD"
+      }
+     ]
+    },
+    {
+     "id": 667,
+     "code": "INITIAL-ARCHIVED",
+     "nls": {
+      "en": {
+       "NAME": "Archive"
+      }
+     },
+     "targets": [
+      {
+       "id": 317,
+       "code": "ARCHIVED"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "style": {
+    "xPos": 4474,
+    "yPos": 309.3333333333333
+   },
+   "id": 175,
+   "code": "INACTIVE",
+   "nls": {
+    "ar": {
+     "DESCRIPTION": "<p></p>"
+    },
+    "en": {
+     "NAME": "Inactive",
+     "DESCRIPTION": "<p>The account is no longer actively used but is retained in the system together with its historical information.</p>"
+    },
+    "he": {
+     "DESCRIPTION": "<p></p>"
+    }
+   },
+   "events": [
+    {
+     "id": 339,
+     "code": "INACTIVE-ACTIVE",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Activate",
+       "DESCRIPTION": "<p>Reactivates an inactive account and restores normal business operations.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     },
+     "targets": [
+      {
+       "id": 174,
+       "code": "ACTIVE"
+      }
+     ]
+    },
+    {
+     "id": 631,
+     "code": "INACTIVE-ARCHIVED",
+     "nls": {
+      "en": {
+       "NAME": "Archive"
+      }
+     },
+     "targets": [
+      {
+       "id": 317,
+       "code": "ARCHIVED"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "style": {
+    "xPos": 1590,
+    "yPos": 443.3333333333333
+   },
+   "id": 164,
+   "code": "CONFIRMED",
+   "nls": {
+    "ar": {
+     "DESCRIPTION": "<p></p>"
+    },
+    "en": {
+     "NAME": "Confirmed",
+     "DESCRIPTION": "<p>The account has been successfully confirmed and is eligible to continue the onboarding process.</p>"
+    },
+    "he": {
+     "DESCRIPTION": "<p></p>"
+    }
+   },
+   "events": [
+    {
+     "id": 331,
+     "code": "CONFIRMED-INTRODUCTION_SENT",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Send Introduction",
+       "DESCRIPTION": "<p>Sends an introductory communication to begin customer engagement.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     },
+     "targets": [
+      {
+       "id": 165,
+       "code": "INTRODUCTION_SENT"
+      }
+     ]
+    },
+    {
+     "id": 346,
+     "code": "CONFIRMED-INTRODUCED",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Complete Introduction",
+       "DESCRIPTION": "<p>Records that the initial introduction has been successfully completed.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     },
+     "targets": [
+      {
+       "id": 166,
+       "code": "INTRODUCED"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "style": {
+    "xPos": 1036,
+    "yPos": 316.3333333333333
+   },
+   "id": 168,
+   "code": "CONFIRMATION_REQUEST_SENT",
+   "nls": {
+    "ar": {
+     "DESCRIPTION": "<p></p>"
+    },
+    "en": {
+     "NAME": "Confirmation Request Sent",
+     "DESCRIPTION": "<p>A confirmation request has been sent to the account owner and the system is awaiting confirmation.</p>"
+    },
+    "he": {
+     "DESCRIPTION": "<p></p>"
+    }
+   },
+   "events": [
+    {
+     "id": 348,
+     "code": "CONFIRMATION_REQUEST_SENT-CONFIRMED",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Receive Confirmation",
+       "DESCRIPTION": "<p>Records successful confirmation and moves the account to the Confirmed state.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     },
+     "targets": [
+      {
+       "id": 164,
+       "code": "CONFIRMED"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "style": {
+    "xPos": 4949.5210480948745,
+    "yPos": 309.11973797628144
+   },
+   "id": 317,
+   "code": "ARCHIVED",
+   "nls": {
+    "ar": {
+     "DESCRIPTION": "<p></p>"
+    },
+    "en": {
+     "NAME": "Archived",
+     "DESCRIPTION": "<p>The account has been logically archived and is no longer available for normal business operations.</p>"
+    },
+    "es": {
+     "DESCRIPTION": "<p></p>"
+    },
+    "fr": {
+     "DESCRIPTION": "<p></p>"
+    },
+    "he": {
+     "DESCRIPTION": "<p></p>"
+    },
+    "kk": {
+     "DESCRIPTION": "<p></p>"
+    },
+    "ru": {
+     "DESCRIPTION": "<p></p>"
+    },
+    "zh": {
+     "DESCRIPTION": "<p></p>"
+    }
+   },
+   "events": []
+  },
+  {
+   "style": {
+    "xPos": 3027.081501537761,
+    "yPos": 434.8740841022139
+   },
+   "id": 173,
+   "code": "ACTIVE_LEAD",
+   "nls": {
+    "ar": {
+     "DESCRIPTION": "<p></p>"
+    },
+    "en": {
+     "NAME": "Active Lead",
+     "DESCRIPTION": "<p>The account has become an active sales opportunity and is currently progressing through the sales pipeline.</p>"
+    },
+    "he": {
+     "DESCRIPTION": "<p></p>"
+    }
+   },
+   "events": [
+    {
+     "id": 668,
+     "code": "ACTIVE_LEAD-NOT_INTERESTED",
+     "nls": {
+      "en": {
+       "NAME": "No Interest"
+      }
+     },
+     "targets": [
+      {
+       "id": 167,
+       "code": "NOT_INTERESTED"
+      }
+     ]
+    },
+    {
+     "id": 335,
+     "code": "ACTIVE_LEAD-ACTIVE",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Activate Account",
+       "DESCRIPTION": "<p>Converts the active sales opportunity into an active customer account after successful onboarding or agreement completion.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     },
+     "targets": [
+      {
+       "id": 174,
+       "code": "ACTIVE"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "style": {
+    "xPos": 3499.1537686731635,
+    "yPos": 435.87746555252534,
+    "backgroundColor": "rgba(0, 255, 0, 1)"
+   },
+   "id": 174,
+   "code": "ACTIVE",
+   "nls": {
+    "ar": {
+     "DESCRIPTION": "<p></p>"
+    },
+    "en": {
+     "NAME": "Active",
+     "DESCRIPTION": "<p>The account is active and can fully participate in applicable business and operational processes.</p>"
+    },
+    "he": {
+     "DESCRIPTION": "<p></p>"
+    }
+   },
+   "events": [
+    {
+     "id": 344,
+     "code": "ACTIVE-INACTIVE",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Deactivate",
+       "DESCRIPTION": "<p>Deactivates the account while preserving its historical business information.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     },
+     "targets": [
+      {
+       "id": 175,
+       "code": "INACTIVE"
+      }
+     ]
+    },
+    {
+     "id": 342,
+     "code": "ACTIVE-SUSPENDED_NO_PAY",
+     "nls": {
+      "en": {
+       "NAME": "No Payment"
+      }
+     },
+     "targets": [
+      {
+       "id": 169,
+       "code": "SUSPENDED_NO_PAY"
+      }
+     ]
+    },
+    {
+     "id": 340,
+     "code": "ACTIVE-SUSPENDED_CUSTOMER_REQUEST",
+     "nls": {
+      "en": {
+       "NAME": "Request Suspension"
+      }
+     },
+     "targets": [
+      {
+       "id": 170,
+       "code": "SUSPENDED_CUSTOMER_REQUEST"
+      }
+     ]
+    },
+    {
+     "id": 336,
+     "code": "ACTIVE-SUSPENDED_NO_VALUE",
+     "nls": {
+      "en": {
+       "NAME": "No Value"
+      }
+     },
+     "targets": [
+      {
+       "id": 171,
+       "code": "SUSPENDED_NO_VALUE"
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}
