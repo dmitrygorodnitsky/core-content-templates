@@ -58,7 +58,7 @@ function accountRow(overrides = {}) {
 
 function context(overrides = {}) {
   return {
-    config: Object.assign({ organization: "SNOWLIMITLESS", accountApiBase: "/core-acct", origin: ORIGIN }, overrides.config || {}),
+    config: Object.assign({ vertical: "snow", organization: "SNOWLIMITLESS", accountApiBase: "/core-acct", origin: ORIGIN }, overrides.config || {}),
     state: Object.assign({
       customerAccount: { id: ACCOUNT, displayName: "Harbourview Strata Council" },
       session: { accessToken: "test-token", tokenType: "Bearer", userId: USER },
@@ -76,7 +76,7 @@ function reply(status, body) {
   const raw = await createCoreAccountProfileAdapter({ fetch: fetchImpl }).load("profile", context());
   assert.equal(requests.length, 1, "the whole profile is one read of the customer Account");
   const [{ url, options }] = requests;
-  assert.equal(url, ORIGIN + "/core-acct/api/account/list.json");
+  assert.equal(url, ORIGIN + "/core-acct/api/tagged/account/list.json");
   assert.equal(options.method, "POST");
   assert.equal(options.credentials, "same-origin");
   assert.equal(options.headers.Authorization, "Bearer test-token");
@@ -110,8 +110,7 @@ function reply(status, body) {
   const mixed = await loadCustomerAccountProfile(context(), async () => reply(200, { resultSize: 3, result: [foreign, unlinked, accountRow()] }));
   assert.equal(mixed.account.id, ACCOUNT);
   assert.equal(mixed.scopeMode, "browser-filtered", "a row Core should not have returned is dropped and the read says so");
-  const userless = await loadCustomerAccountProfile(context(), async () => reply(200, { resultSize: 1, result: [accountRow({ user: undefined })] }));
-  assert.equal(userless.account.id, ACCOUNT, "a row without its user projection still passed the server's user.id filter");
+  await assert.rejects(() => loadCustomerAccountProfile(context(), async () => reply(200, { resultSize: 1, result: [accountRow({ user: undefined })] })), { code: "profile-unavailable" }, "Snow must verify the Account.user projection even when tags authorized the Account");
 
   const failure = async (fetchImpl, ctx = context()) => loadCustomerAccountProfile(ctx, fetchImpl).then(() => null, (error) => error.code);
   assert.equal(await failure(async () => reply(200, { resultSize: 0, result: [] })), "profile-unavailable", "no row for the signed-in User is not an empty profile");

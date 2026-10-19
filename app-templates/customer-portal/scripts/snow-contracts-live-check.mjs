@@ -107,23 +107,23 @@ function coreFetch(table) {
     const ids = (property) => String(filter(property).value).split(",").map(Number);
     if (table.requests && body) table.requests.push({ route, mappings: body.mappings });
     if (route === "/core/api/document-type/list.json") return json({ resultSize: 1, result: [{ id: 17, code: "SERVICE_AGREEMENT" }] });
-    if (route === "/core/api/document/list.json") {
+    if (route === "/core/api/tagged/document/list.json") {
       const rows = table.agreements.filter((row) => String(row.attributes[17].CLIENT.value) === filter("attributes.17.CLIENT.value").value);
       return json({ resultSize: rows.length, result: rows, sequence: 1 });
     }
-    if (route === "/core-bill/api/order/list.json") return json({ resultSize: table.orders.length, result: table.orders, sequence: 1 });
-    if (route === "/core-bill/api/order-item/list.json") return json({ resultSize: 1, result: table.orderItems.filter((row) => ids("order.id").includes(row.order.id)) });
+    if (route === "/core-bill/api/tagged/order/list.json") return json({ resultSize: table.orders.length, result: table.orders, sequence: 1 });
+    if (route === "/core-bill/api/tagged/order-item/list.json") return json({ resultSize: 1, result: table.orderItems.filter((row) => ids("order.id").includes(row.order.id)) });
     if (route === "/core-pim/api/product-price/list.json") return json({ resultSize: 1, result: table.productPrices.filter((row) => ids("id").includes(row.id)) });
     if (route === "/core-pim/api/product/list.json") return json({ resultSize: 1, result: table.products.filter((row) => ids("id").includes(row.id)) });
-    if (route === "/core-bill/api/order/get.json") {
+    if (route === "/core-bill/api/tagged/order/get.json") {
       const row = table.orders.find((candidate) => candidate.id === Number(target.searchParams.get("id")));
       return row ? json(row) : { ok: false, status: 404, async json() { throw new Error("empty"); } };
     }
-    if (route === "/core/api/document/get.json") {
+    if (route === "/core/api/tagged/document/get.json") {
       const row = table.agreements.find((candidate) => candidate.id === Number(target.searchParams.get("id")));
       return row ? json(row) : { ok: false, status: 404, async json() { throw new Error("empty"); } };
     }
-    const event = /^\/(core-bill|core)\/api\/(order|document)\/(\d+)\/send-event\.json$/.exec(route);
+    const event = /^\/(core-bill|core)\/api\/tagged\/(order|document)\/(\d+)\/send-event\.json$/.exec(route);
     if (event) {
       table.events.push({ entity: event[2], id: Number(event[3]), code: target.searchParams.get("event") });
       if (table.eventStatus) return { ok: false, status: table.eventStatus, async json() { return {}; } };
@@ -244,7 +244,7 @@ function quietConsole() {
   await liveRuntime(table).loadAsync("proposals");
   const mappingsOf = (route) => table.requests.find((request) => request.route === route).mappings;
   const names = (mappings) => mappings.map((mapping) => mapping.name);
-  assert.ok(names(mappingsOf("/core-bill/api/order-item/list.json")).includes("metadata"), "order lines are read with their metadata, where the pricer records each line's interval");
+  assert.ok(names(mappingsOf("/core-bill/api/tagged/order-item/list.json")).includes("metadata"), "order lines are read with their metadata, where the pricer records each line's interval");
   assert.ok(["nls", "type"].every((name) => names(mappingsOf("/core-pim/api/product-price/list.json")).includes(name)), "prices are read with their name and type");
   assert.ok(!JSON.stringify(table.requests).includes("SERVICE_PERIOD"), "no read names an Order service period");
   const pkg = quotePackage();
@@ -256,7 +256,7 @@ function quietConsole() {
   const console = quietConsole();
   try {
     const partial = coreTable();
-    partial.fail["/core/api/document/list.json"] = 500;
+    partial.fail["/core/api/tagged/document/list.json"] = 500;
     partial.fail["/core-pim/api/product/list.json"] = 401;
     const runtime = liveRuntime(partial);
     await runtime.loadAsync("proposals");
@@ -279,7 +279,7 @@ function quietConsole() {
     state.quoteViews = {};
 
     const noLines = coreTable();
-    noLines.fail["/core-bill/api/order-item/list.json"] = 500;
+    noLines.fail["/core-bill/api/tagged/order-item/list.json"] = 500;
     await liveRuntime(noLines).loadAsync("proposals");
     state.currentSiteId = "quote-5601-959";
     state.quoteViews = { 4101: "pending" };
@@ -287,7 +287,7 @@ function quietConsole() {
     state.quoteViews = {};
 
     const noOrders = coreTable();
-    noOrders.fail["/core-bill/api/order/list.json"] = 500;
+    noOrders.fail["/core-bill/api/tagged/order/list.json"] = 500;
     await liveRuntime(noOrders).loadAsync("proposals");
     const agreementsOnly = ProposalsList();
     assert.equal(agreementsOnly.getAttribute("data-state"), "partial");
@@ -298,8 +298,8 @@ function quietConsole() {
     assert.equal(all(AgreementDetail(), "[data-module=\"agreement-property\"]").length, 0, "an agreement whose Orders could not be read lists no invented service");
 
     const broken = coreTable();
-    broken.fail["/core/api/document/list.json"] = 500;
-    broken.fail["/core-bill/api/order/list.json"] = 500;
+    broken.fail["/core/api/tagged/document/list.json"] = 500;
+    broken.fail["/core-bill/api/tagged/order/list.json"] = 500;
     await liveRuntime(broken).loadAsync("proposals").catch(() => null);
     assert.equal(state.moduleStatus.proposals, "error");
     const failed = ProposalsList();
@@ -308,8 +308,8 @@ function quietConsole() {
     assert.equal(one(failed, "[data-module=\"error-state\"] [data-action]").getAttribute("data-action"), "ui.retry");
 
     const forbidden = coreTable();
-    forbidden.fail["/core/api/document"] = 403;
-    forbidden.fail["/core-bill/api/order/list.json"] = 403;
+    forbidden.fail["/core/api/tagged/document"] = 403;
+    forbidden.fail["/core-bill/api/tagged/order/list.json"] = 403;
     await liveRuntime(forbidden).loadAsync("proposals").catch(() => null);
     const denied = ProposalsList();
     assert.equal(denied.getAttribute("data-state"), "unauthorized");
@@ -318,7 +318,7 @@ function quietConsole() {
     assert.equal(AgreementDetail().getAttribute("data-state"), "unauthorized");
 
     const expired = coreTable();
-    expired.fail["/core-bill/api/order/list.json"] = 401;
+    expired.fail["/core-bill/api/tagged/order/list.json"] = 401;
     await liveRuntime(expired).loadAsync("proposals").catch(() => null);
     assert.equal(state.account, "session-expired", "a 401 on a customer read sends the customer back through sign-in");
 
@@ -474,7 +474,7 @@ for (const [status, phase] of [[403, "refused"], [409, "refused"], [500, "failed
   const table = coreTable();
   const harness = commandHarness(table);
   await ready(harness);
-  table.fail["/core-bill/api/order/list.json"] = 500;
+  table.fail["/core-bill/api/tagged/order/list.json"] = 500;
   assert.equal(await harness.commands.decide("approve", 4102), false);
   assert.equal(table.events.length, 1);
   assert.equal(state.contractCommand.phase, "readback-failed", "a readback whose Orders could not be read is not reported as a decision that did not register");
@@ -482,14 +482,14 @@ for (const [status, phase] of [[403, "refused"], [409, "refused"], [500, "failed
   const agreementTable = coreTable();
   const agreementHarness = commandHarness(agreementTable);
   await ready(agreementHarness);
-  agreementTable.fail["/core/api/document/list.json"] = 500;
+  agreementTable.fail["/core/api/tagged/document/list.json"] = 500;
   assert.equal(await agreementHarness.commands.approveAgreement(5602), false);
   assert.equal(state.contractCommand.phase, "readback-failed", "the same holds for an agreement whose readback lost the agreements read");
 
   const viewTable = coreTable();
   const viewHarness = commandHarness(viewTable);
   await ready(viewHarness);
-  viewTable.fail["/core-bill/api/order/list.json"] = 500;
+  viewTable.fail["/core-bill/api/tagged/order/list.json"] = 500;
   await viewHarness.commands.view([4101]);
   assert.equal(state.contractCommand.phase, "readback-failed");
   assert.deepEqual(plain(state.quoteViews), { 4101: "failed" });
@@ -640,7 +640,7 @@ for (const [status, phase] of [[403, "refused"], [409, "refused"], [500, "failed
     assert.doesNotMatch(preparing.textContent, /\d/, "a request in preparation is never counted to the customer");
 
     const partialTable = coreTable();
-    partialTable.fail["/core/api/document/list.json"] = 500;
+    partialTable.fail["/core/api/tagged/document/list.json"] = 500;
     const partial = await widget(partialTable);
     assert.equal(partial.getAttribute("data-state"), "partial");
     assert.equal(one(partial, ".ov-lead").textContent, "3quotes1 of 2 properties decided");
@@ -648,8 +648,8 @@ for (const [status, phase] of [[403, "refused"], [409, "refused"], [500, "failed
     assert.equal(one(partial, "[data-module=\"contracts-partial\"]").textContent, "Part of your contracts couldn’t be loaded. Contracts shows what did.");
 
     const brokenTable = coreTable();
-    brokenTable.fail["/core/api/document/list.json"] = 500;
-    brokenTable.fail["/core-bill/api/order/list.json"] = 500;
+    brokenTable.fail["/core/api/tagged/document/list.json"] = 500;
+    brokenTable.fail["/core-bill/api/tagged/order/list.json"] = 500;
     const broken = await widget(brokenTable);
     assert.equal(broken.getAttribute("data-state"), "error");
     assert.equal(one(broken, "[data-module=\"contracts-error\"] .ov-empty__title").textContent, "Couldn’t load your contracts");
@@ -660,8 +660,8 @@ for (const [status, phase] of [[403, "refused"], [409, "refused"], [500, "failed
     assert.equal(one(unreadable, ".prop-fact__note").textContent, "Your contracts couldn’t be loaded.");
 
     const forbiddenTable = coreTable();
-    forbiddenTable.fail["/core/api/document"] = 403;
-    forbiddenTable.fail["/core-bill/api/order/list.json"] = 403;
+    forbiddenTable.fail["/core/api/tagged/document"] = 403;
+    forbiddenTable.fail["/core-bill/api/tagged/order/list.json"] = 403;
     const forbidden = await widget(forbiddenTable);
     assert.equal(forbidden.getAttribute("data-state"), "unauthorized");
     assert.equal(all(forbidden, "[data-action]").length, 0, "an access refusal offers no retry");

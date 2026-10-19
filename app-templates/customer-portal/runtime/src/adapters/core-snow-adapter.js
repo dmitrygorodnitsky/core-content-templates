@@ -34,6 +34,16 @@ const ADDRESS_MAPPINGS = [
   { key: "id", mappings: [{ name: "id" }, { name: "code" }], name: "state", type: "identifier" },
 ];
 
+const ACCOUNT_ADDRESS_MAPPINGS = [
+  { name: "id" },
+  { key: "id", mappings: ID_MAPPINGS, name: "user", type: "identifier" },
+  {
+    name: "addresses",
+    type: "collection",
+    mappings: [{ key: "id", mappings: ADDRESS_MAPPINGS, name: "address", type: "identifier" }],
+  },
+];
+
 const ORDER_MAPPINGS = [
   { name: "attributes" },
   { name: "grandTotal" },
@@ -119,11 +129,11 @@ export function createCoreSnowQuotesAdapter(options = {}) {
     },
     async sendOrderEvent(backendId, event, context) {
       var api = readContext(context, options.origin);
-      return sendEvent(fetchImpl, api, api.billBase + "/api/order/" + commandId(backendId) + "/send-event.json?event=" + eventCode(event));
+      return sendEvent(fetchImpl, api, api.billBase + "/api/tagged/order/" + commandId(backendId) + "/send-event.json?event=" + eventCode(event));
     },
     async sendAgreementEvent(backendId, event, context) {
       var api = readContext(context, options.origin);
-      return sendEvent(fetchImpl, api, api.coreBase + "/api/document/" + commandId(backendId) + "/send-event.json?event=" + eventCode(event));
+      return sendEvent(fetchImpl, api, api.coreBase + "/api/tagged/document/" + commandId(backendId) + "/send-event.json?event=" + eventCode(event));
     },
   };
 }
@@ -136,7 +146,7 @@ export async function loadSnowProperties(context, fetchImpl = globalThis.fetch, 
     state: "ready",
     accountId: api.accountId,
     items: rows.items.map(function (row) { return propertyRecord(row, addresses); }),
-    scopeMode: "browser-filtered",
+    scopeMode: rows.scopeMode,
     truncated: rows.truncated,
   };
 }
@@ -189,7 +199,7 @@ export async function loadSnowQuotes(context, fetchImpl = globalThis.fetch, expl
 export async function readCustomerOrder(context, backendId, fetchImpl = globalThis.fetch, explicitOrigin) {
   var api = readContext(context, explicitOrigin);
   var id = commandId(backendId);
-  var row = await requestJson(fetchImpl, api.billBase + "/api/order/get.json?id=" + id, readOptions(api, ORDER_TARGET_MAPPINGS));
+  var row = await requestJson(fetchImpl, api.billBase + "/api/tagged/order/get.json?id=" + id, readOptions(api, ORDER_TARGET_MAPPINGS));
   if (!row || positiveInteger(row.id) !== id) throw contractError("not-found", "Core did not return the Order");
   if (positiveInteger(row.account && row.account.id) !== api.accountId) throw contractError("customer-forbidden", "The Order does not belong to the signed-in customer");
   return row;
@@ -198,7 +208,7 @@ export async function readCustomerOrder(context, backendId, fetchImpl = globalTh
 export async function readCustomerAgreement(context, backendId, fetchImpl = globalThis.fetch, explicitOrigin) {
   var api = readContext(context, explicitOrigin);
   var id = commandId(backendId);
-  var row = await requestJson(fetchImpl, api.coreBase + "/api/document/get.json?id=" + id, readOptions(api, AGREEMENT_TARGET_MAPPINGS));
+  var row = await requestJson(fetchImpl, api.coreBase + "/api/tagged/document/get.json?id=" + id, readOptions(api, AGREEMENT_TARGET_MAPPINGS));
   if (!row || positiveInteger(row.id) !== id || text(row.type && row.type.code) !== AGREEMENT_TYPE) throw contractError("not-found", "Core did not return the service agreement");
   if (attributeNumber(row, "CLIENT") !== api.accountId) throw contractError("customer-forbidden", "The service agreement does not belong to the signed-in customer");
   return row;
@@ -214,7 +224,7 @@ async function customerAgreements(api, fetchImpl) {
   var type = listResult(types).find(function (row) { return text(row && row.code) === AGREEMENT_TYPE; });
   var typeId = positiveInteger(type && type.id);
   if (!typeId) throw contractError("agreement-type-unavailable", "Core did not return the service agreement type");
-  var reply = await requestJson(fetchImpl, api.coreBase + "/api/document/list.json", readOptions(api, {
+  var reply = await requestJson(fetchImpl, api.coreBase + "/api/tagged/document/list.json", readOptions(api, {
     filters: [
       { type: "STRING", operator: "=", property: "type.code", value: AGREEMENT_TYPE },
       { type: "INTEGER", operator: "=", property: "attributes." + typeId + ".CLIENT.value", value: String(api.accountId) },
@@ -229,7 +239,7 @@ async function customerAgreements(api, fetchImpl) {
 }
 
 async function customerOrders(api, fetchImpl) {
-  var reply = await requestJson(fetchImpl, api.billBase + "/api/order/list.json", readOptions(api, {
+  var reply = await requestJson(fetchImpl, api.billBase + "/api/tagged/order/list.json", readOptions(api, {
     filters: [{ type: "INTEGER", operator: "=", property: "account.id", value: String(api.accountId) }],
     mappings: ORDER_MAPPINGS,
     offset: 0,
@@ -239,7 +249,7 @@ async function customerOrders(api, fetchImpl) {
 }
 
 async function customerOrderItems(api, fetchImpl, orderIds) {
-  var reply = await requestJson(fetchImpl, api.billBase + "/api/order-item/list.json", readOptions(api, {
+  var reply = await requestJson(fetchImpl, api.billBase + "/api/tagged/order-item/list.json", readOptions(api, {
     filters: [
       { type: "INTEGER", operator: "=", property: "order.account.id", value: String(api.accountId) },
       { type: "INTEGER", operator: "IN", property: "order.id", value: orderIds.join(",") },
@@ -355,8 +365,9 @@ function eventCode(event) {
 async function customerProperties(api, fetchImpl) {
   var items = [];
   var truncated = false;
+  var scopeMode = "server-scoped";
   for (var page = 0; page < PROPERTY_PAGE_LIMIT; page += 1) {
-    var response = await requestJson(fetchImpl, api.resourceBase + "/api/resource/list.json", readOptions(api, {
+    var response = await requestJson(fetchImpl, api.resourceBase + "/api/tagged/resource/list.json", readOptions(api, {
       filters: [{ type: "STRING", operator: "=", property: "type.code", value: PROPERTY_TYPE }],
       mappings: RESOURCE_MAPPINGS,
       offset: page * PROPERTY_PAGE_SIZE,
@@ -365,11 +376,12 @@ async function customerProperties(api, fetchImpl) {
     var rows = Array.isArray(response && response.result) ? response.result : [];
     rows.forEach(function (row) {
       if (attributeNumber(row, "ACCOUNT") === api.accountId) items.push(row);
+      else scopeMode = "browser-filtered";
     });
-    if (rows.length < PROPERTY_PAGE_SIZE) return { items: items, truncated: false };
+    if (rows.length < PROPERTY_PAGE_SIZE) return { items: items, truncated: false, scopeMode: scopeMode };
     truncated = page === PROPERTY_PAGE_LIMIT - 1;
   }
-  return { items: items, truncated: truncated };
+  return { items: items, truncated: truncated, scopeMode: scopeMode };
 }
 
 async function resolveAddresses(api, fetchImpl, rows) {
@@ -379,16 +391,17 @@ async function resolveAddresses(api, fetchImpl, rows) {
     var id = attributeNumber(row, "ADDRESS");
     if (id && ids.indexOf(id) < 0) ids.push(id);
   });
-  for (var index = 0; index < ids.length; index += 1) {
-    var response = await requestJson(fetchImpl, api.coreBase + "/api/address/list.json", readOptions(api, {
-      filters: [{ type: "INTEGER", operator: "=", property: "id", value: String(ids[index]) }],
-      mappings: ADDRESS_MAPPINGS,
-      offset: 0,
-      pageSize: 2,
-    }));
-    var row = Array.isArray(response && response.result) ? response.result[0] : null;
-    if (row) resolved[String(ids[index])] = row;
+  if (!ids.length) return resolved;
+  if (!api.userId) throw contractError("session-user-required", "The signed-in Core User is required before reading property addresses");
+  var account = await requestJson(fetchImpl, api.accountBase + "/api/tagged/account/get.json?id=" + api.accountId, readOptions(api, ACCOUNT_ADDRESS_MAPPINGS));
+  if (positiveInteger(account && account.id) !== api.accountId || positiveInteger(account && account.user && account.user.id) !== api.userId) {
+    throw contractError("customer-forbidden", "Property addresses must belong to the signed-in customer's Account");
   }
+  (Array.isArray(account.addresses) ? account.addresses : []).forEach(function (link) {
+    var address = link && link.address;
+    var id = positiveInteger(address && address.id);
+    if (id && ids.indexOf(id) !== -1) resolved[String(id)] = address;
+  });
   return resolved;
 }
 
@@ -445,6 +458,7 @@ function readContext(context, explicitOrigin) {
   if (!organization) throw contractError("organization-required", "A portal organization code is required");
   var origin = explicitOrigin || config.origin || browserOrigin();
   return {
+    accountBase: sameOriginBase(config.accountApiBase || "/core-acct", origin, "Core Account API base"),
     accountId: accountId,
     accountName: text(account && typeof account.displayName === "string" ? account.displayName : ""),
     authorization: text(session.tokenType || session.token_type || "Bearer") + " " + accessToken,
@@ -453,6 +467,7 @@ function readContext(context, explicitOrigin) {
     organization: organization,
     pimBase: sameOriginBase(PIM_SERVICE_BASE, origin, "Core PIM API base"),
     resourceBase: sameOriginBase(config.resourceApiBase || "/core-rm", origin, "Core Resource API base"),
+    userId: positiveInteger(session.userId),
   };
 }
 
@@ -519,6 +534,7 @@ function contractError(code, message) {
 }
 
 export const coreSnowContract = Object.freeze({
+  accountAddressMappings: ACCOUNT_ADDRESS_MAPPINGS,
   addressMappings: ADDRESS_MAPPINGS,
   agreementMappings: AGREEMENT_MAPPINGS,
   agreementType: AGREEMENT_TYPE,
@@ -545,6 +561,6 @@ export const coreSnowContract = Object.freeze({
     orderItems: "server-scoped",
     productPrices: "unscoped",
     products: "unscoped",
-    properties: "browser-filtered",
+    properties: "server-scoped",
   }),
 });

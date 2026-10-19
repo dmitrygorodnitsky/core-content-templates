@@ -68,7 +68,7 @@ export async function resolveCoreAccount(context, fetchImpl = globalThis.fetch, 
   var organizationCode = selectOrganization(config.organization || config.pimOrganization, basicInfo);
   var typeCodes = accountTypeCodes(config.accountTypeCode);
   var typeList = typeCodes.length > 1;
-  var accountReply = await requestJson(fetchImpl, accountBase + "/api/account/list.json", {
+  var accountReply = await requestJson(fetchImpl, accountBase + (config.vertical === "snow" ? "/api/tagged/account/list.json" : "/api/account/list.json"), {
     method: "POST",
     credentials: "same-origin",
     headers: {
@@ -101,7 +101,8 @@ export async function resolveCoreAccount(context, fetchImpl = globalThis.fetch, 
 
   var account = accounts[0] || {};
   if (!positiveInteger(account.id)) throw contractError("invalid-customer-account", "Core Account response did not include an id");
-  if (account.user && positiveInteger(account.user.id) && Number(account.user.id) !== userId) {
+  if ((config.vertical === "snow" && positiveInteger(account.user && account.user.id) !== userId)
+      || (account.user && positiveInteger(account.user.id) && Number(account.user.id) !== userId)) {
     throw contractError("customer-scope-mismatch", "Core Account user does not match the authenticated Core User");
   }
 

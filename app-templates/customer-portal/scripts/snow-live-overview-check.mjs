@@ -202,7 +202,7 @@ function liveRuntime(options = {}) {
     },
   }));
   state.config.origin = "https://portal.example.test";
-  Object.assign(state.session, { authenticated: true, accessToken: "test-token", tokenType: "Bearer" });
+  Object.assign(state.session, { authenticated: true, accessToken: "test-token", tokenType: "Bearer", userId: 42 });
   state.customerAccount = { id: 62 };
   state.account = "ready";
   state.sessionName = null;
@@ -223,8 +223,8 @@ function liveRuntime(options = {}) {
     }
     calls.core.push(target);
     if (outcomes.properties === "fail") return { ok: false, status: 500, json: async () => ({}) };
-    if (target.includes("/core-rm/api/resource/list.json")) return { ok: true, status: 200, json: async () => ({ resultSize: 1, result: [structuredClone(coreProperty)] }) };
-    if (target.includes("/core/api/address/list.json")) return { ok: true, status: 200, json: async () => ({ resultSize: 1, result: [structuredClone(coreAddress)] }) };
+    if (target.includes("/core-rm/api/tagged/resource/list.json")) return { ok: true, status: 200, json: async () => ({ resultSize: 1, result: [structuredClone(coreProperty)] }) };
+    if (target.includes("/core-acct/api/tagged/account/get.json")) return { ok: true, status: 200, json: async () => ({ id: 62, user: { id: 42 }, addresses: [{ address: structuredClone(coreAddress) }] }) };
     throw new Error("unexpected request " + target);
   };
   return { runtime: new PortalRuntime({ state }), calls, outcomes };

@@ -62,7 +62,7 @@ export function createCoreAccountProfileAdapter(options = {}) {
 
 export async function loadCustomerAccountProfile(context, fetchImpl = globalThis.fetch, explicitOrigin) {
   var api = requestContext(context, explicitOrigin);
-  var reply = await requestJson(fetchImpl, api.accountBase + "/api/account/list.json", {
+  var reply = await requestJson(fetchImpl, api.accountBase + api.accountListPath, {
     method: "POST",
     credentials: "same-origin",
     headers: {
@@ -90,7 +90,7 @@ export async function loadCustomerAccountProfile(context, fetchImpl = globalThis
 function ownedBySession(row, api) {
   if (!row || typeof row !== "object" || positiveInteger(row.id) !== api.accountId) return false;
   var linked = row.user && typeof row.user === "object" ? positiveInteger(row.user.id) : null;
-  return linked === null || linked === api.userId;
+  return (linked === null && !api.tagged) || linked === api.userId;
 }
 
 function requestContext(context, explicitOrigin) {
@@ -110,6 +110,8 @@ function requestContext(context, explicitOrigin) {
   return {
     accountBase: sameOriginBase(config.accountApiBase || "/core-acct", origin, "Core Account API base"),
     accountId: accountId,
+    accountListPath: config.vertical === "snow" ? "/api/tagged/account/list.json" : "/api/account/list.json",
+    tagged: config.vertical === "snow",
     authorization: text(session.tokenType || session.token_type || "Bearer") + " " + accessToken,
     organization: organization,
     userId: userId,
@@ -150,6 +152,7 @@ function coded(code, message) {
 
 export const coreAccountProfileContract = Object.freeze({
   endpoint: "/api/account/list.json",
+  snowEndpoint: "/api/tagged/account/list.json",
   filters: Object.freeze(["id", "user.id"]),
   mappings: PROFILE_MAPPINGS,
   scopeMode: "server-scoped",

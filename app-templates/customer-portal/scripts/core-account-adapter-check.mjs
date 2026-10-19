@@ -44,6 +44,7 @@ const context = {
 {
   const listContext = structuredClone(context);
   listContext.config.organization = "SNOWLIMITLESS";
+  listContext.config.vertical = "snow";
   listContext.config.accountTypeCode = "SNOW_RESIDENTIAL_CUSTOMER,SNOW_COMMERCIAL_CUSTOMER,CUSTOMER";
   const snowInfo = () => json({ authenticatedUserId: 42, authenticatedUserName: "Jordan Lee", organizationCode: "SNOWLIMITLESS", authorizedOrganizations: [{ code: "SNOWLIMITLESS" }] });
   const row = (id, typeCode) => ({ id, optimistic: 1, code: "SNOW-" + id, nls: { en: { NAME: "Snow customer " + id } }, user: { id: 42 }, type: { id: 9, code: typeCode } });
@@ -54,6 +55,7 @@ const context = {
   assert.equal(result.account.id, 717);
   assert.equal(result.account.typeCode, "SNOW_RESIDENTIAL_CUSTOMER", "a type list resolves to the type the Account actually has");
   assert.equal(result.scopeMode, "server-scoped", "the server filtered the types, so nothing was dropped in the browser");
+  assert.equal(calls[1].url, origin + "/core-acct/api/tagged/account/list.json", "Snow bootstrap is authorized by personal User tags");
   const listRequest = JSON.parse(calls[1].options.body);
   assert.deepEqual(listRequest.filters, [
     { type: "INTEGER", operator: "=", property: "user.id", value: "42" },
@@ -62,6 +64,7 @@ const context = {
   assert.deepEqual(listRequest.mappings, coreAccountContract.typedAccountMappings, "the type code is read back so the browser can check it");
   assert.equal(listRequest.pageSize, 2);
 
+  await rejectsWith("customer-scope-mismatch", () => resolveWith({ resultSize: 1, result: [{ ...row(717, "SNOW_RESIDENTIAL_CUSTOMER"), user: undefined }] }));
   const filtered = await resolveWith({ resultSize: 2, result: [row(80, "EMPLOYEE"), row(717, "SNOW_COMMERCIAL_CUSTOMER")] });
   assert.equal(filtered.account.id, 717, "a row of an unlisted type is dropped in the browser");
   assert.equal(filtered.account.typeCode, "SNOW_COMMERCIAL_CUSTOMER");

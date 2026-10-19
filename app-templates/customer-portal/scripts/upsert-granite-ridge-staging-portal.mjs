@@ -23,6 +23,7 @@ const staging = {
     "snow-account-profile-check.mjs",
     "snow-contracts-check.mjs",
     "core-snow-adapter-check.mjs",
+    "snow-tagged-api-check.mjs",
     "snow-live-overview-check.mjs",
     "live-weather-check.mjs",
     "property-map-check.mjs",

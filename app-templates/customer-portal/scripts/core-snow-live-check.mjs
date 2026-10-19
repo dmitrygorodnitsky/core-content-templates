@@ -34,6 +34,7 @@ async function accessToken() {
 }
 
 const config = {
+  vertical: "snow",
   origin,
   organization,
   accountApiBase: "/core-acct",
@@ -47,17 +48,11 @@ try {
   const { token, kind } = await accessToken();
   const session = { accessToken: token, tokenType: "Bearer" };
 
-  const forced = Number(process.env.SERVICEWAND_ACCOUNT_ID);
-  let account = null;
-  let accountSource = null;
-  if (Number.isInteger(forced) && forced > 0) {
-    account = { id: forced, code: null, displayName: null, typeCode: accountTypeCode };
-    accountSource = "SERVICEWAND_ACCOUNT_ID";
-  } else {
-    const resolved = await resolveCoreAccount({ config, state: { session } }, globalThis.fetch, origin);
-    account = resolved.account;
-    accountSource = "session";
-  }
+  if (process.env.SERVICEWAND_ACCOUNT_ID) throw new Error("The Snow live check must resolve the signed-in User's Account; SERVICEWAND_ACCOUNT_ID overrides are not supported");
+  const resolved = await resolveCoreAccount({ config, state: { session } }, globalThis.fetch, origin);
+  const account = resolved.account;
+  const accountSource = "session";
+  session.userId = resolved.user.id;
 
   const context = { config, state: { session, customerAccount: account } };
   const properties = await loadSnowProperties(context, globalThis.fetch, origin);

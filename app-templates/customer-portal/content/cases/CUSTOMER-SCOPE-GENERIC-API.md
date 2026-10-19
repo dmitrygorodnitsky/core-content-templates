@@ -1,15 +1,62 @@
-# Customer scope — a generic, type-driven API for signed-in customers
+# Customer scope — tagged API migration for the Snow portal
 
-Status: request to the backend, version 2, 2026-09-11. Nothing here exists.
-Version 1, `SNOW-CUSTOMER-PORTAL-API.md`, lists one method per portal need; this
-version asks for one generic capability that serves every entity type and every
-vertical, and shows the snow portal as its first configuration. Facts marked
-*verified* were read from the dev-1 `api-docs` of each service on 2026-09-11.
+Status: **prepared frontend; deployment waits for backend permission fix**,
+2026-10-19. Source baselines: core-ui `ba2eae1c3` (`codex/snow-crm`) and
+core-content-templates `e257e1c` (`codex/lab-ui-durable-catalog`).
+The user chose Snow first and publication/revocation of personal
+user tags; no general tagged save. Spa purchase/booking and anonymous magic-link
+review are outside this migration.
 
-**Deferred on 2026-09-16.** The backend builds this later. The first dev version
-of the portal reads the generic endpoints and scopes to the customer Account in
-the browser, which is a bounded dev demonstration and not production isolation.
-No signed-in customer reaches production until this exists.
+The live OpenAPI publishes tagged Account, Resource, Document, Order, OrderItem,
+Invoice, BalanceTransaction and SVC entities. Use these existing APIs for row
+access; the historical `/me/` proposal below is superseded and is not an
+implementation plan. OrderItem has independent tags and receives no automatic
+parent access.
+
+The Snow Account/Profile and Resource/Order/OrderItem/Document adapters now use
+`/api/tagged/...`, preserve owner/session checks, and never fall back to ordinary
+CRUD. Property addresses are fetched through the authorized tagged Account's
+nested `addresses.address` relation and intersected with owned Resource ADDRESS
+IDs, requiring no ordinary Address read. Nesting does not introduce independent
+Address tags. Type/catalog and PIM requests retain their separate contracts.
+
+**Blocker confirmed on deployed CORE Document:** both `send-event` and
+`sync-state-history` use `P_TAG_DOCUMENT_E`. The latter directly persists history
+and final state; the inspected helper contains no workflow-event permission
+check. Thus `_E` is wider than the agreed selected-event authority. The user
+chose to send a backend note and wait, rather than deploy a read-only interim.
+The note and acceptance tests are in
+`core-ui/docs/snow-customer-portal-tagged-access.md`. BILL controllers and exploit
+behavior were not tested. The diagnostic was removed without permission residue.
+
+No role replacement, server tag-maintenance hooks, existing-data tag backfill,
+CMS export or deployment has been done. The current staging-only deployment
+retains its previous authorization model; this source change is not production
+acceptance. Tagged mappings do not enforce a DEFAULT read/write ceiling; generic
+`_W`, `_D` and `_AUD` are not approved for customers.
+
+Cross-zone dependency: portal runtime owns the prepared adapter composition;
+portal build tooling owns regeneration/upload; core-ui owns role and trusted
+workflow tag maintenance; backend owns separating history-sync authority.
+Inputs are the corrected backend permission contract and publication receipts.
+Outputs must be tagged-only private reads, selected safe events and preserved
+anonymous links. Acceptance requires two-user/foreign-record negative tests,
+independent OrderItem visibility, publish/revoke/republish and user-reassignment
+checks, plus ordinary-CRUD denial. No delivery deadline is assumed.
+
+Validation completed: targeted Account/Snow/profile/contracts/overview and
+`snow-tagged-api-check.mjs` checks, Spa orders/booking regressions, anonymous
+client-review regression, and temporary bundle build. The owning Snow upsert's
+checks include the new tagged transport check. Generated runtime/manual and dist
+are untouched.
+
+**Exact next action:** after the backend fix, verify customer `_E` cannot call
+history sync (including force=true), then implement the server publication/
+revocation hooks and guarded backfill. Only then replace role 75, run live
+negative tests, rebuild/export with `upsert-granite-ridge-staging-portal.mjs` and
+deploy. Do not run that upsert as the next step before resolving these gates.
+
+## Historical /me/ proposal (2026-09-11, superseded)
 
 ## 1. The idea: a signed-in customer is a dynamic access grant
 
