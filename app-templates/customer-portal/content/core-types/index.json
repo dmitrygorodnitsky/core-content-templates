@@ -50,10 +50,6 @@
    "code": "RESOURCE"
   },
   {
-   "id": 8,
-   "code": "SIMPLE_RESOURCE"
-  },
-  {
    "id": 9,
    "code": "HUMAN_RESOURCE"
   },
@@ -488,7 +484,7 @@
     {
      "id": 109,
      "code": "MOBILE_RESOURCE",
-     "workflow": "SIMPLE_RESOURCE",
+     "workflow": "EQUIPMENT_LIFECYCLE",
      "owner": "SYSTEM",
      "attributeCount": 0
     },
@@ -502,21 +498,21 @@
     {
      "id": 114,
      "code": "PUBLIC_ROAD_VEHICLE",
-     "workflow": "SIMPLE_RESOURCE",
+     "workflow": "EQUIPMENT_LIFECYCLE",
      "owner": "SERVICE_WAND_WINTER_SERVICES",
      "attributeCount": 5
     },
     {
      "id": 126,
      "code": "OFF_ROAD_VEHICLE",
-     "workflow": "SIMPLE_RESOURCE",
+     "workflow": "EQUIPMENT_LIFECYCLE",
      "owner": "SERVICE_WAND_WINTER_SERVICES",
      "attributeCount": 1
     },
     {
      "id": 146,
      "code": "EQUIPMENT",
-     "workflow": "SIMPLE_RESOURCE",
+     "workflow": "EQUIPMENT_LIFECYCLE",
      "owner": "SERVICE_WAND_WINTER_SERVICES",
      "attributeCount": 4
     },
@@ -530,21 +526,21 @@
     {
      "id": 148,
      "code": "PLOW",
-     "workflow": "SIMPLE_RESOURCE",
+     "workflow": "EQUIPMENT_LIFECYCLE",
      "owner": "SERVICE_WAND_WINTER_SERVICES",
      "attributeCount": 2
     },
     {
      "id": 149,
      "code": "SPREADER",
-     "workflow": "SIMPLE_RESOURCE",
+     "workflow": "EQUIPMENT_LIFECYCLE",
      "owner": "SERVICE_WAND_WINTER_SERVICES",
      "attributeCount": 1
     },
     {
      "id": 150,
      "code": "BRINE_TANK",
-     "workflow": "SIMPLE_RESOURCE",
+     "workflow": "EQUIPMENT_LIFECYCLE",
      "owner": "SERVICE_WAND_WINTER_SERVICES",
      "attributeCount": 1
     },
@@ -776,5 +772,6 @@
    ]
   }
  ],
- "clientLifecycleReadAt": "2026-10-18"
+ "clientLifecycleReadAt": "2026-10-18",
+ "workflowCleanupReadAt": "2026-10-19"
 }

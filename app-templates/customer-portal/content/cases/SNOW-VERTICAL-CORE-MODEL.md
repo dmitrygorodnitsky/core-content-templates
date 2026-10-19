@@ -572,3 +572,37 @@ suspension, archival or not-interested decision. See
 The catalog index retains the original inventory date and records this partial
 client lifecycle refresh separately. Other type/workflow evidence remains dated
 to its original extraction.
+
+## DELETE marker audit — 2026-10-19
+
+The live SYSTEM inventory now contains 50 workflows. Only
+`SNOW_WORKFORCE_LIFECYCLE` (15) is marked `(DELETE)`. It remains bound to
+`SNOW_EMPLOYEE` (12), `SNOW_SUBCONTRACTOR` (17) and SYSTEM `CONTRACTOR` (38).
+There are zero Accounts using the old workflow/states or those types, and zero
+historical transitions, but the three type bindings still prevent safe removal.
+Native `EMPLOYEE_ACCOUNT_LIFECYCLE` (33) targets Account; native
+`WORKFORCE_LIFECYCLE` (34) targets Resource. There is no native contractor
+Account lifecycle. No substitute was chosen for contractors, and workflow 15,
+its bindings and all eight permissions are preserved pending that decision.
+
+`SIMPLE_RESOURCE` (8), which the old snapshot called
+`Equipment Lifecycle (DELETE)`, was already deleted on dev-1. The seven types
+MOBILE_RESOURCE, PUBLIC_ROAD_VEHICLE, OFF_ROAD_VEHICLE, EQUIPMENT, PLOW,
+SPREADER and BRINE_TANK already bind native `EQUIPMENT_LIFECYCLE` (37).
+The stale workflow snapshot was removed from this catalog and its index; those
+seven binding fields and the current workforce DELETE label were refreshed.
+`workflowCleanupReadAt` records this partial refresh; it does not re-date the
+remaining August inventory or claim a new equipment migration.
+
+Three orphan `P_WF:SIMPLE_RESOURCE:*` permission definitions and their links
+from ADMIN were deleted on dev-1 after checking types, resources/history,
+474 live scripts, four application configurations, all roles and six direct-ACL
+entity catalogs. ADMIN retains all 1,631 unrelated permissions; all 34 roles
+were checked after deletion. No account, type or active workflow was deleted.
+`core-ui/docs/snow-client-lifecycle.md` records the exact IDs and validation.
+
+Cross-repository handoff: core-ui owns the operational audit/deletion evidence;
+this portal product-docs zone owns the matching catalog snapshots. Acceptance
+requires no snapshot/index reference to workflow 8, all seven equipment bindings
+pointing to 37, and the blocked Account workflow 15 remaining visible. Runtime
+and CMS packages were unchanged and require no upload for this cleanup.

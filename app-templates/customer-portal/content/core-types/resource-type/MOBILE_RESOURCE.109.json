@@ -8,8 +8,8 @@
   }
  },
  "workflow": {
-  "id": 8,
-  "code": "SIMPLE_RESOURCE"
+  "id": 37,
+  "code": "EQUIPMENT_LIFECYCLE"
  },
  "organization": {
   "optimistic": 1,
