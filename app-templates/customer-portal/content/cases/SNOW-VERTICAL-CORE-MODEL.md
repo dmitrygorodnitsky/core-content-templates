@@ -1,6 +1,6 @@
 # Snow Vertical — Core Type and Flow Model
 
-Status: initial inventory read from `dev-1` as organization `SNOWLIMITLESS`, 2026-08-31. Client Account Lifecycle bindings and snapshots refreshed 2026-10-18 after the authorized migration. The original inventory was read-only;
+Status: initial inventory read from `dev-1` as organization `SNOWLIMITLESS`, 2026-08-31. Client Account Lifecycle bindings and snapshots refreshed 2026-10-18 after the authorized migration. Snow document-type duplicate cleanup and the document-type index were refreshed 2026-10-19 after explicit approval. The original inventory was read-only;
 nothing in Core was created, updated or transitioned to produce it.
 Reproduce with:
 
@@ -86,9 +86,25 @@ each with `PRIMARY_SITE` req, `SITES` multi, `SERVICE_SEASON` Project req,
 `CONTRACT_START_DATE`/`CONTRACT_END_DATE`, `PRICING_MODEL`, `BILLING_FREQUENCY`,
 `SERVICE_LEVEL`, `PO_NUMBER`, `CONTRACT_NOTES`.
 
-Both codes exist **four times** — ids 4/6/8/10 and 5/7/9/11 — all owned by
-`…_CANADA` with identical attributes. Resolving a contract type by code is
-ambiguous today.
+The July duplicates were cleaned on **2026-10-19**, limited to our Snow seed
+records and explicitly approved IDs: retained Seasonal **4** and Per-visit **5**;
+removed identical copies **6–11** under `…_CANADA`. Originals 4/5 and all other
+native/test types remain. CONTRACT_AWARE (35), CONTRACT_TERMS now restricts its
+Document selector to Seasonal **4**, replacing `[10,8,6,4]`. Terms document **213**
+already used type 4 and was preserved. No document migration was needed.
+
+The cleanup checked 17 type families, all 150 Documents, inheritance and incoming
+Document-class selectors. Post-delete comparison preserved all other schemas,
+all Documents, 1,635 permission definitions and 35 roles' grants. Backend attribute
+sets may reorder on save; definitions were compared by code and the independent
+UI `attributeOrder` was preserved. The inventory snapshots of the removed six
+types were deleted; the document-type index reflects the ten remaining live types.
+
+The matching `core-ui/scripts/dev/snowTypes.ts` lookup now walks every page in
+stable ID order, rejects duplicate/foreign-owner ambiguity and invalid versions,
+preflights every group before writing and verifies saved IDs. The unsafe
+create-without-lookup path is removed. That historical seed was not reapplied;
+the current native/provider schemas are authoritative.
 
 ### core-bill
 
@@ -511,8 +527,9 @@ the dev-1 script list on 2026-09-11.
   generates the contract as a Document over the approved Orders, so one agreement
   covers many Orders through its `ORDERS` attribute. This replaces the earlier
   reading, made before that spec existed, that the Order itself was the contract.
-  The four `SNOW_SEASONAL_CONTRACT` and `SNOW_PER_VISIT_CONTRACT` types are not
-  used.
+  Seasonal DocumentType 4 is used for the default terms document 213. Per-visit
+  DocumentType 5 and the corresponding Order types are not the quotation package.
+  Six duplicate DocumentTypes were removed on 2026-10-19; the original pair stays.
 - **The service agreement is the quotation package**, decided on 2026-09-11. Core
   has no record that joins the Orders a client decides together, a link cannot
   reach a Form, and the spec wants one email for a package. So the

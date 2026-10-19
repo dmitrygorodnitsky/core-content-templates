@@ -607,7 +607,7 @@
    "endpoint": "document-type",
    "path": "https://dev-1.servicewand.com/core/api/document-type/list.json",
    "status": 200,
-   "resultSize": 14,
+   "resultSize": 10,
    "codes": [
     {
      "id": 1,
@@ -645,48 +645,6 @@
      "attributeCount": 10
     },
     {
-     "id": 6,
-     "code": "SNOW_SEASONAL_CONTRACT",
-     "workflow": "SNOW_CONTRACT_DOCUMENT",
-     "owner": "SERVICE_WAND_WINTER_SERVICES_CANADA",
-     "attributeCount": 10
-    },
-    {
-     "id": 7,
-     "code": "SNOW_PER_VISIT_CONTRACT",
-     "workflow": "SNOW_CONTRACT_DOCUMENT",
-     "owner": "SERVICE_WAND_WINTER_SERVICES_CANADA",
-     "attributeCount": 10
-    },
-    {
-     "id": 8,
-     "code": "SNOW_SEASONAL_CONTRACT",
-     "workflow": "SNOW_CONTRACT_DOCUMENT",
-     "owner": "SERVICE_WAND_WINTER_SERVICES_CANADA",
-     "attributeCount": 10
-    },
-    {
-     "id": 9,
-     "code": "SNOW_PER_VISIT_CONTRACT",
-     "workflow": "SNOW_CONTRACT_DOCUMENT",
-     "owner": "SERVICE_WAND_WINTER_SERVICES_CANADA",
-     "attributeCount": 10
-    },
-    {
-     "id": 10,
-     "code": "SNOW_SEASONAL_CONTRACT",
-     "workflow": "SNOW_CONTRACT_DOCUMENT",
-     "owner": "SERVICE_WAND_WINTER_SERVICES_CANADA",
-     "attributeCount": 10
-    },
-    {
-     "id": 11,
-     "code": "SNOW_PER_VISIT_CONTRACT",
-     "workflow": "SNOW_CONTRACT_DOCUMENT",
-     "owner": "SERVICE_WAND_WINTER_SERVICES_CANADA",
-     "attributeCount": 10
-    },
-    {
      "id": 12,
      "code": "LICENSE",
      "workflow": "LICENSE_LIFECYCLE",
@@ -706,8 +664,23 @@
      "workflow": "KNOWLEDGE_ASSET",
      "owner": "SYSTEM",
      "attributeCount": 5
+    },
+    {
+     "id": 17,
+     "code": "SERVICE_AGREEMENT",
+     "workflow": "SERVICE_AGREEMENT_LIFECYCLE",
+     "owner": "SERVICE_WAND_WINTER_SERVICES",
+     "attributeCount": 23
+    },
+    {
+     "id": 18,
+     "code": "ZZ_TRANSITION_PROBE",
+     "workflow": "SERVICE_AGREEMENT_LIFECYCLE",
+     "owner": "SYSTEM",
+     "attributeCount": 0
     }
-   ]
+   ],
+   "readAt": "2026-10-19"
   },
   {
    "service": "core-bill",
@@ -773,5 +746,6 @@
   }
  ],
  "clientLifecycleReadAt": "2026-10-18",
- "workflowCleanupReadAt": "2026-10-19"
+ "workflowCleanupReadAt": "2026-10-19",
+ "documentTypeCleanupReadAt": "2026-10-19"
 }
