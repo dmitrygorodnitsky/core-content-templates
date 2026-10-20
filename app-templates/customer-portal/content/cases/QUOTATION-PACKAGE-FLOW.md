@@ -1314,8 +1314,9 @@ The page draws the approved plan read-only over a satellite map, read from
 the public `/core/media/{id}/stream.json` without the link's token. On
 2026-10-07 Resource and MediaAsset were not grantable, so the plan was to come
 from the quote Order's `PROPERTY_PLAN`. Since 2026-10-15 it is the granted
-Resource's `PROPERTY_PLAN` (never `PROPERTY_PLAN_DRAFT`); the Order no longer
-contributes (§16).
+Resource's `PROPERTY_PLAN`; the Order no longer contributes (§16). The generated
+draft reference now lives in the internal `metadata.PLAN_GENERATION_DATA` JSON
+receipt as `draftAssetId` and is never requested or read by this page.
 
 Evidence: `scripts/client-review-check.mjs` (73 states),
 `scripts/client-review-pdf-check.mjs`; uploaded to dev-1 with existing API
@@ -1390,7 +1391,9 @@ package. Each grant is introspected and revoked on its own.
   as the backend does: `address1`, `address2`, `city`, `jurisdiction`,
   `state.code`, `postalCode`, `country.id`, trimmed, empty and repeated parts
   skipped, joined with ", ", else `alias`.
-- **Plan.** The Resource's `PROPERTY_PLAN`, never `PROPERTY_PLAN_DRAFT`.
+- **Plan.** The Resource's reviewed `PROPERTY_PLAN`. Internal generation
+  metadata (`PLAN_GENERATION_DATA.draftAssetId`) is excluded, even if a backend
+  response happens to contain it.
 - **Degradation.** A link without `property-token`, or a property grant or
   Address read that fails for any reason (401 and 404 included), shows the page
   the main grant decides, with "Address unavailable" and no plan. The signed-in
@@ -1511,3 +1514,31 @@ registry defect, explicit-config fallback, coordinate handoff gap and acceptance
 tests. This change does not claim that AI generation succeeds at every address,
 replace backend runtime beans, or relax geometry validation. No CMS artifact
 was changed, so this checkpoint required no CMS upload.
+
+### Generated draft metadata — 2026-10-20
+
+The new `core-ui` plan pipeline stores its draft MediaAsset reference only in
+the JSON text `Resource.metadata.PLAN_GENERATION_DATA`, under `draftAssetId`.
+Approve Plan V4 promotes that id to an empty `PROPERTY_PLAN`; an existing
+reviewed plan takes precedence without reading generation metadata. The
+backend migration preserves existing media, reviewed plans, measured areas and
+unrelated metadata before removing retired draft values and layout rows.
+
+Cross-zone dependency: `core-ui` owns generation, approval and stored-value
+migration; portal build tooling consumes the reviewed `PROPERTY_PLAN` contract
+and exports its exclusion policy. The required output is the same anonymous
+review behavior: only a granted Resource's approved plan can be displayed.
+`client-review-check.mjs` injects a valid metadata draft without a reviewed plan
+and verifies that no draft is shown, and checks the generated manifest. No
+review runtime, existing link, grant route or CMS parameter changes; this
+documentation/export checkpoint performs no CMS deployment.
+
+Dev-1 acceptance: fresh browser Request Quote **452** created property **1017**
+and generated its metadata-only draft on attempt **1**. Native Approve Plan
+promoted the same MediaAsset to `PROPERTY_PLAN`, measured **6,374 ft²** from two
+polygons, and dispatched quotes **213/214/215**, read back in `QUOTE_PREPARED`.
+No area or geometry was supplied manually. The shared ResourceType definition
+and editor row were removed after 15 existing draft references were preserved;
+this frontend package still reads only reviewed plans. The exporter changed
+only its README/manifest constraints, with no runtime payload change or CMS
+upload; old review links were preserved.

@@ -2760,10 +2760,17 @@ const later = () => new Promise((resolve) => setTimeout(resolve, 5));
   assert.deepEqual(plain(model().properties.map((property) => property.plan)), [CR.fixtures.planIds[278], CR.fixtures.planIds[430], "", "", ""], "an Order's PROPERTY_PLAN is never read");
   data.resources.forEach((row) => {
     const bucket = row.attributes[154];
-    if (bucket.PROPERTY_PLAN) { bucket.PROPERTY_PLAN_DRAFT = bucket.PROPERTY_PLAN; delete bucket.PROPERTY_PLAN; }
+    row.metadata = {
+      ...row.metadata,
+      PLAN_GENERATION_DATA: JSON.stringify({
+        draftAssetId: bucket.PROPERTY_PLAN ? N.planReference([bucket.PROPERTY_PLAN.value]) : CR.fixtures.planIds[278],
+        receipt: { status: "DRAFT_READY" },
+      }),
+    };
+    delete bucket.PROPERTY_PLAN;
   });
-  assert.deepEqual(plain(model().properties.map((property) => property.plan)), ["", "", "", "", ""], "an AI draft in PROPERTY_PLAN_DRAFT is never shown as the plan");
-  for (const [name, source] of Object.entries(sources)) assert.ok(!source.includes("PROPERTY_PLAN_DRAFT"), name + " never names the draft plan");
+  assert.deepEqual(plain(model().properties.map((property) => property.plan)), ["", "", "", "", ""], "a draftAssetId in Resource generation metadata is never shown as the approved plan");
+  for (const [name, source] of Object.entries(sources)) assert.ok(!source.includes("PLAN_GENERATION_DATA") && !source.includes("draftAssetId"), name + " never requests or reads internal draft metadata");
   assert.equal(CR.contract.propertyAttributes.plan, "PROPERTY_PLAN");
 }
 
@@ -3151,7 +3158,7 @@ try {
   assert.ok(manifest.constraints.some((line) => line.startsWith("Contact us ")), "the manifest states where Contact us and the logo come from");
   assert.ok(manifest.constraints.some((line) => line.startsWith("REVIEW_MAPS_API_KEY ships empty") && line.includes("strict-origin")), "the manifest states what the Maps key turns on and the referrer it costs");
   assert.ok(manifest.constraints.some((line) => line.startsWith("The billing address is the client's own value")), "the manifest states that a service address reaches billing only when the client copies it");
-  assert.ok(manifest.constraints.some((line) => line.includes("PROPERTY_PLAN_DRAFT is never read")), "the manifest states that only the approved plan is shown");
+  assert.ok(manifest.constraints.some((line) => line.includes("PLAN_GENERATION_DATA") && line.includes("draftAssetId") && line.includes("never requested or read")), "the manifest states that internal draft metadata is excluded and only the approved plan is shown");
   assert.ok(manifest.api.reads.some((read) => read.startsWith("GET {apiBase}/core/media/{planId}/stream.json")), "the manual package documents the anonymous plan read");
   assert.ok(manifest.api.reads.some((read) => read.startsWith("GET https://maps.googleapis.com/maps/api/js")), "and the Google script it loads with a key");
   assert.deepEqual(manifest.plannedFields.order, ["SERVICE_PROPERTY", "PRICING_MODEL"], "the manual package lists the only Order attributes the page reads");
