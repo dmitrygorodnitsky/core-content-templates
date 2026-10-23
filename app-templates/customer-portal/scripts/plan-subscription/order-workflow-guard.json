@@ -1,0 +1,199 @@
+{
+  "workflows": [
+    {
+      "code": "SERVICEWAND_SUDSCRIPTION_LIFECYCLE",
+      "entityType": "com.pixelnation.bill.domain.Order",
+      "initialState": "DRAFT",
+      "scriptLanguage": "Java",
+      "states": [
+        {
+          "code": "ACTIVE",
+          "nls": {
+            "en": {
+              "NAME": "Active"
+            }
+          }
+        },
+        {
+          "code": "CANCELED",
+          "nls": {
+            "en": {
+              "NAME": "Canceled"
+            }
+          }
+        },
+        {
+          "code": "DRAFT",
+          "onExitFile": "subscription-draft-exit-guard.java",
+          "nls": {
+            "en": {
+              "NAME": "Draft"
+            }
+          }
+        },
+        {
+          "code": "SUBMITTED",
+          "nls": {
+            "en": {
+              "NAME": "Submitted"
+            }
+          }
+        },
+        {
+          "code": "SUSPENDED_CLIENT_REQUEST",
+          "nls": {
+            "en": {
+              "NAME": "Suspend Client Request"
+            }
+          }
+        },
+        {
+          "code": "SUSPENDED_NO_PAY",
+          "nls": {
+            "en": {
+              "NAME": "Suspended No Pay"
+            }
+          }
+        },
+        {
+          "code": "SUSPEND_ILLEGAL_ACTIVITY",
+          "nls": {
+            "en": {
+              "NAME": "Suspend Illegal Activity"
+            }
+          }
+        }
+      ],
+      "nls": {
+        "en": {
+          "NAME": "ServiceWand Subscription Lifecycle"
+        }
+      },
+      "events": [
+        {
+          "code": "ACTIVE-SUSPENDED_NO_PAY",
+          "source": "ACTIVE",
+          "targets": [
+            "SUSPENDED_NO_PAY"
+          ],
+          "nls": {
+            "en": {
+              "NAME": "Suspend No Pay"
+            }
+          }
+        },
+        {
+          "code": "ACTIVE-SUSPENDED_CLIENT_REQUEST",
+          "source": "ACTIVE",
+          "targets": [
+            "SUSPENDED_CLIENT_REQUEST"
+          ],
+          "nls": {
+            "en": {
+              "NAME": "Suspend"
+            }
+          }
+        },
+        {
+          "code": "ACTIVE-SUSPEND_ILLEGAL_ACTIVITY",
+          "source": "ACTIVE",
+          "targets": [
+            "SUSPEND_ILLEGAL_ACTIVITY"
+          ],
+          "nls": {
+            "en": {
+              "NAME": "Suspend Illegal Activity"
+            }
+          }
+        },
+        {
+          "code": "ACTIVE-CANCELED",
+          "source": "ACTIVE",
+          "targets": [
+            "CANCELED"
+          ],
+          "nls": {
+            "en": {
+              "NAME": "Cancel"
+            }
+          }
+        },
+        {
+          "code": "DRAFT-SUBMITTED",
+          "source": "DRAFT",
+          "targets": [
+            "SUBMITTED"
+          ],
+          "nls": {
+            "en": {
+              "NAME": "Submit"
+            }
+          }
+        },
+        {
+          "code": "SUBMITTED-ACTIVE",
+          "source": "SUBMITTED",
+          "targets": [
+            "ACTIVE"
+          ],
+          "nls": {
+            "en": {
+              "NAME": "Activate"
+            }
+          }
+        },
+        {
+          "code": "SUBMITTED-CANCELED",
+          "source": "SUBMITTED",
+          "targets": [
+            "CANCELED"
+          ],
+          "nls": {
+            "en": {
+              "NAME": "Cancel"
+            }
+          }
+        },
+        {
+          "code": "SUSPENDED_CLIENT_REQUEST-CANCELED",
+          "source": "SUSPENDED_CLIENT_REQUEST",
+          "targets": [
+            "CANCELED"
+          ],
+          "nls": {
+            "en": {
+              "NAME": "Cancel"
+            }
+          }
+        },
+        {
+          "code": "SUSPENDED_NO_PAY-CANCELED",
+          "source": "SUSPENDED_NO_PAY",
+          "targets": [
+            "CANCELED"
+          ],
+          "nls": {
+            "en": {
+              "NAME": "Cancel"
+            }
+          }
+        },
+        {
+          "code": "SUSPEND_ILLEGAL_ACTIVITY-CANCELED",
+          "source": "SUSPEND_ILLEGAL_ACTIVITY",
+          "targets": [
+            "CANCELED"
+          ],
+          "nls": {
+            "en": {
+              "NAME": "Cancel"
+            }
+          }
+        }
+      ],
+      "script": "PLAN_SUBSCRIPTION_DRAFT_V5",
+      "onUpdate": "workflowUtils.assignSubscriptionTaxes(entity);\nworkflowUtils.guardOrderInvoiceSnapshot(entity, java.util.Map.of());\n// entitlement checkout source: e9082d51ea7f",
+      "onDelete": "workflowUtils.guardOrderInvoiceDelete(entity, java.util.Map.of());\n// entitlement checkout source: e9082d51ea7f"
+    }
+  ]
+}

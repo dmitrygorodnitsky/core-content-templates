@@ -1,0 +1,8 @@
+{
+  "schemaVersion": 1,
+  "enabled": true,
+  "pageUrl": "https://dev-1.servicewand.com/subscription-order.html",
+  "ttlHours": 24,
+  "transport": "NATIVE_ORDER_ACCESS_GRANT",
+  "paymentEnabled": false
+}

@@ -1,0 +1,105 @@
+{
+  "workflows": [
+    {
+      "code": "SERVICEWAND_INVOICE",
+      "entityType": "com.pixelnation.bill.domain.Invoice",
+      "initialState": "DRAFT",
+      "script": "PLAN_SUBSCRIPTION_DRAFT_V5",
+      "scriptLanguage": "Java",
+      "nls": {
+        "en": {
+          "NAME": "ServiceWand Invoice Lifecycle"
+        }
+      },
+      "onUpdate": "workflowUtils.guardPreparedInvoice(entity, java.util.Map.of());\n// entitlement checkout source: e9082d51ea7f",
+      "onDelete": "workflowUtils.guardPreparedInvoiceDelete(entity, java.util.Map.of());\n// entitlement checkout source: e9082d51ea7f",
+      "states": [
+        {
+          "code": "CANCELLED",
+          "nls": {
+            "en": {
+              "NAME": "Cancelled"
+            }
+          },
+          "attributes": [],
+          "attributeOrder": []
+        },
+        {
+          "code": "DRAFT",
+          "nls": {
+            "en": {
+              "NAME": "Draft"
+            }
+          },
+          "attributes": [],
+          "attributeOrder": [],
+          "onExit": "workflowUtils.guardPreparedInvoiceExit(entity, java.util.Map.of());\n// entitlement checkout source: e9082d51ea7f"
+        },
+        {
+          "code": "PAID",
+          "nls": {
+            "en": {
+              "NAME": "Paid"
+            }
+          },
+          "attributes": [],
+          "attributeOrder": []
+        },
+        {
+          "code": "SUBMITTED",
+          "nls": {
+            "en": {
+              "NAME": "Submitted"
+            }
+          },
+          "attributes": [],
+          "attributeOrder": []
+        }
+      ],
+      "events": [
+        {
+          "code": "DRAFT-SUBMITTED",
+          "source": "DRAFT",
+          "targets": [
+            "SUBMITTED"
+          ],
+          "nls": {
+            "en": {
+              "NAME": "Submit"
+            }
+          },
+          "attributes": [],
+          "attributeOrder": []
+        },
+        {
+          "code": "SUBMITTED-PAID",
+          "source": "SUBMITTED",
+          "targets": [
+            "PAID"
+          ],
+          "nls": {
+            "en": {
+              "NAME": "Pay"
+            }
+          },
+          "attributes": [],
+          "attributeOrder": []
+        },
+        {
+          "code": "SUBMITTED-CANCELLED",
+          "source": "SUBMITTED",
+          "targets": [
+            "CANCELLED"
+          ],
+          "nls": {
+            "en": {
+              "NAME": "Cancel"
+            }
+          },
+          "attributes": [],
+          "attributeOrder": []
+        }
+      ]
+    }
+  ]
+}

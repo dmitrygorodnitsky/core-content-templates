@@ -1,0 +1,195 @@
+{
+  "workflows": [
+    {
+      "code": "PLAN_SUBSCRIPTION",
+      "entityType": "com.pixelnation.cms.domain.Form",
+      "initialState": "SUBMITTED",
+      "script": "PLAN_SUBSCRIPTION_WORKFLOW_V11",
+      "scriptLanguage": "JavaScript",
+      "nls": {
+        "en": {
+          "NAME": "Plan subscription: email, Checkout and draft order"
+        },
+        "ru": {
+          "NAME": "Подписка: email, Checkout и черновик заказа"
+        }
+      },
+      "onUpdate": "this.workflowUtils.guardUpdate(entity, context);\n// utility source: 5af151cf43ca",
+      "states": [
+        {
+          "code": "SUBMITTED",
+          "nls": {
+            "en": {
+              "NAME": "Submitted"
+            },
+            "ru": {
+              "NAME": "Форма получена"
+            }
+          },
+          "onEnter": "this.workflowUtils.onSubmitted(entity, context);\n// utility source: 5af151cf43ca"
+        },
+        {
+          "code": "AWAITING_EMAIL",
+          "nls": {
+            "en": {
+              "NAME": "Awaiting email confirmation"
+            },
+            "ru": {
+              "NAME": "Ожидает подтверждения email"
+            }
+          },
+          "onEnter": "this.workflowUtils.onAwaitingEmail(entity, context);\n// utility source: 5af151cf43ca",
+          "onExit": "this.workflowUtils.onVerified(entity, context);\n// utility source: 5af151cf43ca"
+        },
+        {
+          "code": "EMAIL_VERIFIED_MODEL_PENDING",
+          "nls": {
+            "en": {
+              "NAME": "Email verified; product model pending"
+            },
+            "ru": {
+              "NAME": "Email подтверждён; ожидается модель продуктов"
+            }
+          },
+          "onEnter": "this.workflowUtils.onEmailVerified(entity, context);\n// utility source: 5af151cf43ca",
+          "onExit": "this.workflowUtils.onCheckoutPrepared(entity, context);\n// utility source: 5af151cf43ca"
+        },
+        {
+          "code": "PREPARATION_FAILED",
+          "nls": {
+            "en": {
+              "NAME": "Verification preparation failed"
+            },
+            "ru": {
+              "NAME": "Ошибка подготовки подтверждения"
+            }
+          }
+        },
+        {
+          "code": "CHECKOUT_PREPARED",
+          "nls": {
+            "en": {
+              "NAME": "Checkout prepared; awaiting purchase confirmation"
+            },
+            "ru": {
+              "NAME": "Checkout подготовлен; ожидается подтверждение покупки"
+            }
+          },
+          "onEnter": "this.workflowUtils.onCheckoutEntered(entity, context);\n// utility source: 5af151cf43ca",
+          "onExit": "this.workflowUtils.onPurchaseConfirmation(entity, context);\n// utility source: 5af151cf43ca"
+        },
+        {
+          "code": "PURCHASE_CONFIRMATION_RECEIVED",
+          "nls": {
+            "en": {
+              "NAME": "Purchase confirmed; preparing draft"
+            },
+            "ru": {
+              "NAME": "Покупка подтверждена; подготовка черновика"
+            }
+          },
+          "onEnter": "this.workflowUtils.onPurchaseConfirmationReceived(entity, context);\n// utility source: 5af151cf43ca",
+          "onExit": "this.workflowUtils.onDraftOrderReady(entity, context);\n// utility source: 5af151cf43ca"
+        },
+        {
+          "code": "DRAFT_ORDER_READY",
+          "nls": {
+            "en": {
+              "NAME": "Draft order ready; pricing model pending"
+            },
+            "ru": {
+              "NAME": "Черновик заказа создан; ожидается модель расчёта"
+            }
+          },
+          "onEnter": "this.workflowUtils.onDraftOrderReady(entity, context);\n// utility source: 5af151cf43ca"
+        }
+      ],
+      "events": [
+        {
+          "code": "PREPARED",
+          "source": "SUBMITTED",
+          "targets": [
+            "AWAITING_EMAIL"
+          ],
+          "nls": {
+            "en": {
+              "NAME": "Verification prepared"
+            }
+          }
+        },
+        {
+          "code": "PREPARATION_FAILED",
+          "source": "SUBMITTED",
+          "targets": [
+            "PREPARATION_FAILED"
+          ],
+          "nls": {
+            "en": {
+              "NAME": "Preparation failed"
+            }
+          }
+        },
+        {
+          "code": "VERIFY_EMAIL",
+          "source": "AWAITING_EMAIL",
+          "targets": [
+            "EMAIL_VERIFIED_MODEL_PENDING"
+          ],
+          "nls": {
+            "en": {
+              "NAME": "Confirm email"
+            },
+            "ru": {
+              "NAME": "Подтвердить email"
+            }
+          }
+        },
+        {
+          "code": "PREPARE_CHECKOUT",
+          "source": "EMAIL_VERIFIED_MODEL_PENDING",
+          "targets": [
+            "CHECKOUT_PREPARED"
+          ],
+          "nls": {
+            "en": {
+              "NAME": "Prepare Checkout"
+            },
+            "ru": {
+              "NAME": "Подготовить Checkout"
+            }
+          }
+        },
+        {
+          "code": "CONFIRM_PURCHASE",
+          "source": "CHECKOUT_PREPARED",
+          "targets": [
+            "PURCHASE_CONFIRMATION_RECEIVED"
+          ],
+          "nls": {
+            "en": {
+              "NAME": "Confirm purchase and create draft order"
+            },
+            "ru": {
+              "NAME": "Подтвердить покупку и создать черновик"
+            }
+          }
+        },
+        {
+          "code": "DRAFT_PREPARED",
+          "source": "PURCHASE_CONFIRMATION_RECEIVED",
+          "targets": [
+            "DRAFT_ORDER_READY"
+          ],
+          "nls": {
+            "en": {
+              "NAME": "Draft purchase prepared"
+            },
+            "ru": {
+              "NAME": "Черновик покупки подготовлен"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

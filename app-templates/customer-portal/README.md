@@ -178,6 +178,23 @@ which dev-1 no longer serves (see
 list. Beside them, `GET_QUOTE_.2026-09-16.en.json` is the single-address
 `GET_QUOTE_` response dev-1 served on 2026-09-16, kept verbatim for the check.
 
+`content/form-types/PLAN_SUBSCRIPTION.json` defines the ServiceWand purchase
+input. Its buyer screens (purchase form, email-link confirmation, read-only
+Order) live in [`runtime/plan-subscription/`](runtime/plan-subscription/) with
+the state harness `runtime/plan-subscription.html`; check them with
+`node app-templates/customer-portal/scripts/plan-subscription-ui-check.mjs`.
+`scripts/export-plan-subscription-site.mjs` packages them as ServiceWand site
+sections; `scripts/upload-plan-subscription-site.mjs --base-url <origin>` adds
+them and their pages under `CORPORATE_LANDING_JTE` (dry run unless `--live`).
+Backend intake, email verification, automatic Checkout and
+a second one-time confirmation email run through the system identity before
+User creation. CUSTOMER/DRAFT Order preparation with catalog-priced
+plan, expansion and Weather OrderItems plus a preparation-only DRAFT Invoice
+when the existing tax configuration is complete is authored under
+[`scripts/plan-subscription/`](scripts/plan-subscription/README.md).
+Fields, deployment evidence and deferred product-model rules are documented in
+[`SERVICEWAND-PLAN-SUBSCRIPTION-FORM-TYPE.md`](content/cases/SERVICEWAND-PLAN-SUBSCRIPTION-FORM-TYPE.md).
+
 ```bash
 node app-templates/customer-portal/scripts/portal-form-check.mjs
 ```

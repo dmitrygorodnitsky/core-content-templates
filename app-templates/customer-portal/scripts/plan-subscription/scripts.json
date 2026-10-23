@@ -1,0 +1,776 @@
+{
+  "environments": {
+    "dev-1": {
+      "baseUrl": "https://dev-1.servicewand.com/core"
+    }
+  },
+  "scripts": [
+    {
+      "code": "PLAN_SUBSCRIPTION_WORKFLOW_V11",
+      "language": "Java",
+      "category": "WORKFLOW",
+      "organization": "SYSTEM",
+      "executable": true,
+      "nls": {
+        "en": {
+          "NAME": "ServiceWand plan subscription email verification"
+        }
+      },
+      "metadata": {
+        "FUNCTIONS": [
+          {
+            "name": "inspectConfiguration",
+            "parameters": []
+          },
+          {
+            "name": "prepareCheckout",
+            "parameters": [
+              {
+                "name": "formId",
+                "type": "java.lang.Integer",
+                "required": true
+              }
+            ]
+          },
+          {
+            "name": "confirmPurchase",
+            "parameters": [
+              {
+                "name": "formId",
+                "type": "java.lang.Integer",
+                "required": true
+              },
+              {
+                "name": "checkoutDigest",
+                "type": "java.lang.String",
+                "required": true
+              }
+            ]
+          },
+          {
+            "name": "prepareInvoice",
+            "parameters": [
+              {
+                "name": "formId",
+                "type": "java.lang.Integer",
+                "required": true
+              },
+              {
+                "name": "checkoutDigest",
+                "type": "java.lang.String",
+                "required": true
+              }
+            ]
+          },
+          {
+            "name": "checkOnboardingReadiness",
+            "parameters": [
+              {
+                "name": "formId",
+                "type": "java.lang.Integer",
+                "required": true
+              },
+              {
+                "name": "checkoutDigest",
+                "type": "java.lang.String",
+                "required": true
+              }
+            ]
+          },
+          {
+            "name": "prepareOnboarding",
+            "parameters": [
+              {
+                "name": "formId",
+                "type": "java.lang.Integer",
+                "required": true
+              },
+              {
+                "name": "checkoutDigest",
+                "type": "java.lang.String",
+                "required": true
+              }
+            ]
+          },
+          {
+            "name": "provisionOnboarding",
+            "parameters": [
+              {
+                "name": "formId",
+                "type": "java.lang.Integer",
+                "required": true
+              },
+              {
+                "name": "checkoutDigest",
+                "type": "java.lang.String",
+                "required": true
+              }
+            ]
+          },
+          {
+            "name": "readCheckout",
+            "parameters": [
+              {
+                "name": "formId",
+                "type": "java.lang.Integer",
+                "required": true
+              }
+            ]
+          },
+          {
+            "name": "reviseCheckout",
+            "parameters": [
+              {
+                "name": "formId",
+                "type": "java.lang.Integer",
+                "required": true
+              },
+              {
+                "name": "expectedRevision",
+                "type": "java.lang.Integer",
+                "required": true
+              },
+              {
+                "name": "expectedCheckoutDigest",
+                "type": "java.lang.String",
+                "required": true
+              },
+              {
+                "name": "changesJson",
+                "type": "java.lang.String",
+                "required": true
+              }
+            ]
+          },
+          {
+            "name": "readPurchaseStatus",
+            "parameters": [
+              {
+                "name": "formId",
+                "type": "java.lang.Integer",
+                "required": true
+              },
+              {
+                "name": "checkoutDigest",
+                "type": "java.lang.String",
+                "required": true
+              }
+            ]
+          },
+          {
+            "name": "deliverPurchaseReadAccess",
+            "parameters": [
+              {
+                "name": "formId",
+                "type": "java.lang.Integer",
+                "required": true
+              },
+              {
+                "name": "checkoutDigest",
+                "type": "java.lang.String",
+                "required": true
+              }
+            ]
+          },
+          {
+            "name": "readPurchaseReadAccess",
+            "parameters": [
+              {
+                "name": "formId",
+                "type": "java.lang.Integer",
+                "required": true
+              },
+              {
+                "name": "checkoutDigest",
+                "type": "java.lang.String",
+                "required": true
+              }
+            ]
+          }
+        ],
+        "CAPABILITIES": [
+          "CORE",
+          "CORE-CMS"
+        ],
+        "LINK_TTL_HOURS": 24,
+        "PIM_CATALOG_URL": "https://dev-1.servicewand.com/core-pim/public/SERVICEWAND/catalog",
+        "PUBLIC_FORM_API_URL": "https://dev-1.servicewand.com/core-cms/api/form",
+        "DEV_CAPTURE_INVALID_EMAIL": true,
+        "DRAFT_HELPER_CODE": "PLAN_SUBSCRIPTION_DRAFT_V5",
+        "CONFIRM_PAGE_URL": "https://dev-1.servicewand.com/subscribe-confirm.html"
+      },
+      "contentFile": "PLAN_SUBSCRIPTION_WORKFLOW_V11.java",
+      "serverUpdated": {
+        "dev-1": 1792761339621
+      }
+    },
+    {
+      "code": "PLAN_SUBSCRIPTION_DRAFT_V5",
+      "language": "Java",
+      "category": "WORKFLOW",
+      "organization": "SYSTEM",
+      "executable": true,
+      "nls": {
+        "en": {
+          "NAME": "ServiceWand subscription Checkout and draft purchase"
+        }
+      },
+      "metadata": {
+        "FUNCTIONS": [
+          {
+            "name": "inspectConfiguration",
+            "parameters": []
+          },
+          {
+            "name": "preview",
+            "parameters": [
+              {
+                "name": "payloadJson",
+                "type": "java.lang.String",
+                "required": true
+              }
+            ]
+          },
+          {
+            "name": "ensureDraft",
+            "parameters": [
+              {
+                "name": "payloadJson",
+                "type": "java.lang.String",
+                "required": true
+              }
+            ]
+          },
+          {
+            "name": "validateSelection",
+            "parameters": [
+              {
+                "name": "payloadJson",
+                "type": "java.lang.String",
+                "required": true
+              }
+            ]
+          },
+          {
+            "name": "checkOnboardingReadiness",
+            "parameters": [
+              {
+                "name": "payloadJson",
+                "type": "java.lang.String",
+                "required": true
+              }
+            ]
+          },
+          {
+            "name": "inspectOnboardingConfiguration",
+            "parameters": []
+          },
+          {
+            "name": "prepareOnboarding",
+            "parameters": [
+              {
+                "name": "payloadJson",
+                "type": "java.lang.String",
+                "required": true
+              }
+            ]
+          },
+          {
+            "name": "provisionOnboarding",
+            "parameters": [
+              {
+                "name": "payloadJson",
+                "type": "java.lang.String",
+                "required": true
+              }
+            ]
+          },
+          {
+            "name": "inspectOnboardingExecutor",
+            "parameters": []
+          },
+          {
+            "name": "readOnboardingStatus",
+            "parameters": [
+              {
+                "name": "payloadJson",
+                "type": "java.lang.String",
+                "required": true
+              }
+            ]
+          },
+          {
+            "name": "deliverPurchaseReadAccess",
+            "parameters": [
+              {
+                "name": "payloadJson",
+                "type": "java.lang.String",
+                "required": true
+              }
+            ]
+          },
+          {
+            "name": "readPurchaseReadAccess",
+            "parameters": [
+              {
+                "name": "payloadJson",
+                "type": "java.lang.String",
+                "required": true
+              }
+            ]
+          }
+        ],
+        "CAPABILITIES": [
+          "CORE",
+          "CORE-PIM",
+          "CORE-BILL",
+          "CORE-ACCT"
+        ],
+        "ACCOUNT_TYPE_CODE": "CUSTOMER",
+        "ORDER_TYPE_CODE": "SERVICEWAND_SUBSCRIPTION",
+        "ORDER_ITEM_TYPE_CODE": "SERVICEWAND_SUBSCRIPTION_ITEM",
+        "INVOICE_TYPE_CODE": "STANDARD",
+        "ENTITLEMENT_CHECKOUT_CONFIG": {
+          "schemaVersion": 1,
+          "planCodes": [
+            "SERVICEWAND_FOUNDATION",
+            "SERVICEWAND_GROWTH",
+            "SERVICEWAND_PROFESSIONAL"
+          ],
+          "featureRules": [
+            {
+              "attribute": "AI_ASSISTED_MAPPING",
+              "definitionCode": "SERVICEWAND.FEATURE.AI_ASSISTED_MAPPING",
+              "decoder": "BOOLEAN",
+              "missingValue": false
+            },
+            {
+              "attribute": "AI_ASSISTED_TRANSLATION",
+              "definitionCode": "SERVICEWAND.FEATURE.AI_ASSISTED_TRANSLATION",
+              "decoder": "BOOLEAN",
+              "missingValue": false
+            },
+            {
+              "attribute": "AREA_MEASUREMENT",
+              "definitionCode": "SERVICEWAND.FEATURE.AREA_MEASUREMENT",
+              "decoder": "BOOLEAN",
+              "missingValue": false
+            },
+            {
+              "attribute": "AUTOMATED_INVOICING",
+              "definitionCode": "SERVICEWAND.FEATURE.AUTOMATED_INVOICING",
+              "decoder": "BOOLEAN",
+              "missingValue": false
+            },
+            {
+              "attribute": "BUSINESS_PERFORMANCE_REPORTING",
+              "definitionCode": "SERVICEWAND.FEATURE.BUSINESS_PERFORMANCE_REPORTING",
+              "decoder": "BOOLEAN",
+              "missingValue": false
+            },
+            {
+              "attribute": "COMPLIANCE_RECORDS",
+              "definitionCode": "SERVICEWAND.FEATURE.COMPLIANCE_RECORDS",
+              "decoder": "BOOLEAN",
+              "missingValue": false
+            },
+            {
+              "attribute": "CONTRACT_MANAGEMENT",
+              "definitionCode": "SERVICEWAND.FEATURE.CONTRACT_MANAGEMENT",
+              "decoder": "BOOLEAN",
+              "missingValue": false
+            },
+            {
+              "attribute": "DISPATCH_SCHEDULING",
+              "definitionCode": "SERVICEWAND.FEATURE.DISPATCH_SCHEDULING",
+              "decoder": "BOOLEAN",
+              "missingValue": false
+            },
+            {
+              "attribute": "FULL-FEATURED_MOBILE_APP",
+              "definitionCode": "SERVICEWAND.FEATURE.FULL-FEATURED_MOBILE_APP",
+              "decoder": "BOOLEAN",
+              "missingValue": false
+            },
+            {
+              "attribute": "IMPORT_CUSTOMER_LIST",
+              "definitionCode": "SERVICEWAND.FEATURE.IMPORT_CUSTOMER_LIST",
+              "decoder": "BOOLEAN",
+              "missingValue": false
+            },
+            {
+              "attribute": "INCIDENT_MANAGEMENT",
+              "definitionCode": "SERVICEWAND.FEATURE.INCIDENT_MANAGEMENT",
+              "decoder": "BOOLEAN",
+              "missingValue": false
+            },
+            {
+              "attribute": "INVOICE_MANAGEMENT",
+              "definitionCode": "SERVICEWAND.FEATURE.INVOICE_MANAGEMENT",
+              "decoder": "BOOLEAN",
+              "missingValue": false
+            },
+            {
+              "attribute": "LEAD_MANAGEMENT",
+              "definitionCode": "SERVICEWAND.FEATURE.LEAD_MANAGEMENT",
+              "decoder": "BOOLEAN",
+              "missingValue": false
+            },
+            {
+              "attribute": "MANUAL_SERVICE_ZONE_MAPPING",
+              "definitionCode": "SERVICEWAND.FEATURE.MANUAL_SERVICE_ZONE_MAPPING",
+              "decoder": "BOOLEAN",
+              "missingValue": false
+            },
+            {
+              "attribute": "MAP_BASED_QUOTATIONS",
+              "definitionCode": "SERVICEWAND.FEATURE.MAP_BASED_QUOTATIONS",
+              "decoder": "BOOLEAN",
+              "missingValue": false
+            },
+            {
+              "attribute": "MULTILINGUAL_UI_DATA",
+              "definitionCode": "SERVICEWAND.FEATURE.MULTILINGUAL_UI_DATA",
+              "decoder": "BOOLEAN",
+              "missingValue": false
+            },
+            {
+              "attribute": "MULTI_PROPERTY_QUOTATIONS",
+              "definitionCode": "SERVICEWAND.FEATURE.MULTI_PROPERTY_QUOTATIONS",
+              "decoder": "BOOLEAN",
+              "missingValue": false
+            },
+            {
+              "attribute": "PAYMENTS_RECEIVABLES",
+              "definitionCode": "SERVICEWAND.FEATURE.PAYMENTS_RECEIVABLES",
+              "decoder": "BOOLEAN",
+              "missingValue": false
+            },
+            {
+              "attribute": "PROPERTY_SERVICE_HISTORY",
+              "definitionCode": "SERVICEWAND.FEATURE.PROPERTY_SERVICE_HISTORY",
+              "decoder": "BOOLEAN",
+              "missingValue": false
+            },
+            {
+              "attribute": "PROPOSAL_MANAGEMENT",
+              "definitionCode": "SERVICEWAND.FEATURE.PROPOSAL_MANAGEMENT",
+              "decoder": "BOOLEAN",
+              "missingValue": false
+            },
+            {
+              "attribute": "RENEWALS_CONTRACT_LIFECYCLE",
+              "definitionCode": "SERVICEWAND.FEATURE.RENEWALS_CONTRACT_LIFECYCLE",
+              "decoder": "BOOLEAN",
+              "missingValue": false
+            },
+            {
+              "attribute": "RESOURCE_AVAILABILITY_READINESS",
+              "definitionCode": "SERVICEWAND.FEATURE.RESOURCE_AVAILABILITY_READINESS",
+              "decoder": "BOOLEAN",
+              "missingValue": false
+            },
+            {
+              "attribute": "ROUTE_PLANNING_BUILDER",
+              "definitionCode": "SERVICEWAND.FEATURE.ROUTE_PLANNING_BUILDER",
+              "decoder": "BOOLEAN",
+              "missingValue": false
+            },
+            {
+              "attribute": "SNOW_REMOVAL_DESIGNED_CRM",
+              "definitionCode": "SERVICEWAND.FEATURE.SNOW_REMOVAL_DESIGNED_CRM",
+              "decoder": "BOOLEAN",
+              "missingValue": false
+            },
+            {
+              "attribute": "STORM_EVENT_TRACKING",
+              "definitionCode": "SERVICEWAND.FEATURE.STORM_EVENT_TRACKING",
+              "decoder": "BOOLEAN",
+              "missingValue": false
+            },
+            {
+              "attribute": "SUBCONTRACTOR_MANAGEMENT",
+              "definitionCode": "SERVICEWAND.FEATURE.SUBCONTRACTOR_MANAGEMENT",
+              "decoder": "BOOLEAN",
+              "missingValue": false
+            },
+            {
+              "attribute": "TAX_MANAGEMENT",
+              "definitionCode": "SERVICEWAND.FEATURE.TAX_MANAGEMENT",
+              "decoder": "BOOLEAN",
+              "missingValue": false
+            },
+            {
+              "attribute": "WEBSITE_REQUEST_FORM",
+              "definitionCode": "SERVICEWAND.FEATURE.WEBSITE_REQUEST_FORM",
+              "decoder": "BOOLEAN",
+              "missingValue": false
+            },
+            {
+              "attribute": "WORKFORCE_MANAGEMENT",
+              "definitionCode": "SERVICEWAND.FEATURE.WORKFORCE_MANAGEMENT",
+              "decoder": "BOOLEAN",
+              "missingValue": false
+            },
+            {
+              "attribute": "CUSTOMER_PORTAL",
+              "definitionCode": "SERVICEWAND.FEATURE.CUSTOMER_PORTAL",
+              "decoder": "LOCALIZED_BOOLEAN",
+              "locale": "en",
+              "field": "NAME",
+              "missingValue": false
+            }
+          ],
+          "levelRules": [
+            {
+              "attribute": "CASE_MANAGEMENT",
+              "definitionCode": "SERVICEWAND.LEVEL.CASE_MANAGEMENT",
+              "decoder": "STRING_LEVEL",
+              "valueType": "STRING",
+              "allowedValues": [
+                "false",
+                "Standard",
+                "Configurable"
+              ],
+              "enforcementType": "FEATURE",
+              "aggregationType": "ANY_TRUE",
+              "status": "LEVEL_COMPARISON_CONTRACT_REQUIRED",
+              "requiresValueComparison": true
+            },
+            {
+              "attribute": "OPERATIONAL_DASHBOARDS",
+              "definitionCode": "SERVICEWAND.LEVEL.OPERATIONAL_DASHBOARDS",
+              "decoder": "STRING_LEVEL",
+              "valueType": "STRING",
+              "allowedValues": [
+                "false",
+                "Standard",
+                "Configurable"
+              ],
+              "enforcementType": "FEATURE",
+              "aggregationType": "ANY_TRUE",
+              "status": "LEVEL_COMPARISON_CONTRACT_REQUIRED",
+              "requiresValueComparison": true
+            },
+            {
+              "attribute": "OPERATIONAL_REASSIGNMENT",
+              "definitionCode": "SERVICEWAND.LEVEL.OPERATIONAL_REASSIGNMENT",
+              "decoder": "STRING_LEVEL",
+              "valueType": "STRING",
+              "allowedValues": [
+                "Individual reassignment",
+                "Individual and bulk reassignment"
+              ],
+              "enforcementType": "FEATURE",
+              "aggregationType": "ANY_TRUE",
+              "status": "LEVEL_COMPARISON_CONTRACT_REQUIRED",
+              "requiresValueComparison": true
+            }
+          ],
+          "propertyDefinitionCode": "SERVICEWAND.PROPERTIES.MAX_ACTIVE",
+          "overallPlanMaximum": {
+            "source": "TEMPORARY_CONFIG",
+            "status": "CONFIGURED_PENDING_MODEL_MIGRATION",
+            "byPlanCode": {
+              "SERVICEWAND_FOUNDATION": 500,
+              "SERVICEWAND_GROWTH": 1000,
+              "SERVICEWAND_PROFESSIONAL": 2000
+            },
+            "allowMarketingTextParsing": false
+          },
+          "weatherFeatureDefinitionCode": "SERVICEWAND.FEATURE.WEATHER_INTELLIGENCE",
+          "weatherLimitDefinitionCode": "SERVICEWAND.WEATHER.MAX_PROPERTIES",
+          "coverage": {
+            "startEvent": "PAYMENT_CONFIRMED",
+            "startSource": "CONFIRMED_PAYMENT_TIMESTAMP",
+            "periods": {
+              "MONTHLY": {
+                "unit": "MONTH",
+                "count": 1
+              },
+              "YEARLY": {
+                "unit": "YEAR",
+                "count": 1
+              }
+            },
+            "renewalConfigured": false
+          }
+        },
+        "ONBOARDING_READINESS_CONFIG": {
+          "schemaVersion": 2,
+          "countryCode": "CA",
+          "sellerCode": "SERVICEWAND",
+          "parentOrganizationCode": "SERVICE_WAND_WINTER_SERVICES_CANADA",
+          "organizationTypeCode": "OPERATOR",
+          "customerTypeCode": "CUSTOMER",
+          "propertyTypeCode": "SNOW_REMOVAL_PROPERTY",
+          "agreementTypeCode": "SERVICE_AGREEMENT",
+          "serviceOrderTypeCode": "WINTER_SERVICES_ORDER",
+          "ledgerAccountTypeCode": "ORGANIZATION",
+          "adminRoleCode": "ADMIN",
+          "adminRoleOwnerOrganizationCode": "SYSTEM",
+          "adminAssignmentScope": "NEW_CLIENT_ORGANIZATION",
+          "organizationTypeConfirmed": true,
+          "purchaserLegalEntityType": "INDIVIDUAL",
+          "starterLegalEntityType": "INDIVIDUAL",
+          "existingAdminPolicy": "REUSE_VERIFIED_EMAIL_KEEP_EXISTING_PASSWORD",
+          "serviceOrderPreparation": {
+            "mode": "DRAFT_PENDING_MANAGER_REVIEW",
+            "initialStateCode": "INITIAL",
+            "referenceScriptCode": "WINTER_SERVICE_QUOTATION_DRAFT_CREATOR_V4",
+            "pricesRequiredForDraft": false,
+            "submitEnabled": false
+          },
+          "accessDeliveryContract": {
+            "mode": "REQUEST_QUOTE_PATTERN",
+            "referenceScriptCode": "SNOW_PORTAL_USER_PROVISION_V5",
+            "credentialMethod": "UserService.generateNewPassword",
+            "issueOnlyForNewUserOrMissingPassword": true,
+            "reuseExistingPassword": true,
+            "adaptationRequired": true
+          },
+          "entitlementEnforcementContract": {
+            "status": "ACCEPTED_BACKEND_CONTRACT",
+            "mode": "NATIVE_ENTITLEMENTS",
+            "workflowCountersRequired": false,
+            "runtimeVerification": "NOT_PERFORMED"
+          },
+          "seasonSettingsContract": {
+            "organizationAttribute": "CONTRACT_SETTINGS",
+            "dictionaryTypeCode": "CONTRACT_AWARE",
+            "defaultSeason": {
+              "source": "TEMPORARY_CA_CONFIG",
+              "countryCode": "CA",
+              "seasonStart": "2026-11-01",
+              "seasonEnd": "2027-03-31"
+            }
+          },
+          "quoteLinkPolicy": {
+            "beforeSeason": "SEASON_START",
+            "afterSeasonStartedDays": 30,
+            "evaluateAt": "QUOTE_LINK_ISSUANCE",
+            "deliveryScriptCode": "SNOW_SERVICE_QUOTATION_DELIVERY_V17",
+            "confirmationScriptCode": "SNOW_QUOTATION_DECISION_CONFIRMATION_V10",
+            "implementationStatus": "READY",
+            "implementationFingerprints": {
+              "SNOW_SERVICE_QUOTATION_DELIVERY_V17": "aa13bb743546c881db447335de7c044ef6763a2c932b4752b545e00c1727cef5",
+              "SNOW_QUOTATION_DECISION_CONFIRMATION_V10": "403cb838df947332834281d26bf61596ed1ba82a7ad4a2cf9f6a4d54cf9293da"
+            }
+          },
+          "creationEnabled": false,
+          "paymentEnabled": false,
+          "grantIssuanceEnabled": false
+        },
+        "ONBOARDING_EXECUTOR_CONFIG": {
+          "schemaVersion": 1,
+          "executionEnabled": false,
+          "grantIssuanceEnabled": false,
+          "accessDeliveryEnabled": false,
+          "paymentEnabled": false,
+          "helperCode": "PLAN_SUBSCRIPTION_WORKFLOW_V11",
+          "readyNotificationEnabled": true,
+          "readyLoginUrl": "https://dev-1.servicewand.com/core/apps/service-wand/index.html",
+          "nativePaidInvoiceRequired": true,
+          "nativePaymentTimestampRequired": true
+        },
+        "ONBOARDING_ENFORCEMENT_CONFIG": {
+          "schemaVersion": 1,
+          "definitionOwnerCode": "SERVICEWAND",
+          "properties": {
+            "source": "NATIVE_PROPERTY_LIFECYCLE",
+            "entityClass": "com.pixelnation.rm.domain.Resource",
+            "resourceTypeCode": "SNOW_REMOVAL_PROPERTY",
+            "activeStateCode": "ACTIVE",
+            "includeCreateActive": true,
+            "includeDeleteActive": true,
+            "installWorkflowBoundaries": true,
+            "nativeMutationHooksAcceptedByUser": true
+          },
+          "weather": {
+            "source": "WEATHER_SETUP_PENDING",
+            "bindings": [],
+            "stub": true
+          }
+        },
+        "PURCHASE_READ_ACCESS_CONFIG": {
+          "schemaVersion": 1,
+          "enabled": true,
+          "pageUrl": "https://dev-1.servicewand.com/subscription-order.html",
+          "ttlHours": 24,
+          "transport": "NATIVE_ORDER_ACCESS_GRANT",
+          "paymentEnabled": false
+        }
+      },
+      "contentFile": "PLAN_SUBSCRIPTION_DRAFT_V5.java",
+      "serverUpdated": {
+        "dev-1": 1792765029721
+      }
+    },
+    {
+      "code": "PLAN_SUBSCRIPTION_ONBOARDING_MODEL_V1",
+      "language": "Java",
+      "category": "WORKFLOW",
+      "organization": "SYSTEM",
+      "executable": true,
+      "nls": {
+        "en": {
+          "NAME": "ServiceWand onboarding read-only Property model"
+        }
+      },
+      "metadata": {
+        "CAPABILITIES": [
+          "CORE",
+          "CORE-RM"
+        ],
+        "FUNCTIONS": [
+          {
+            "name": "inspectPropertyType",
+            "parameters": [
+              {
+                "name": "typeCode",
+                "type": "java.lang.String",
+                "required": true
+              }
+            ]
+          },
+          {
+            "name": "ensureOnboardingProperty",
+            "parameters": [
+              {
+                "name": "payloadJson",
+                "type": "java.lang.String",
+                "required": true
+              }
+            ]
+          },
+          {
+            "name": "verifyOnboardingProperty",
+            "parameters": [
+              {
+                "name": "payloadJson",
+                "type": "java.lang.String",
+                "required": true
+              }
+            ]
+          }
+        ],
+        "ONBOARDING_EXECUTOR_CONFIG": {
+          "schemaVersion": 1,
+          "executionEnabled": false,
+          "grantIssuanceEnabled": false,
+          "accessDeliveryEnabled": false,
+          "paymentEnabled": false,
+          "helperCode": "PLAN_SUBSCRIPTION_WORKFLOW_V11",
+          "readyNotificationEnabled": true,
+          "readyLoginUrl": "https://dev-1.servicewand.com/core/apps/service-wand/index.html",
+          "nativePaidInvoiceRequired": true,
+          "nativePaymentTimestampRequired": true
+        }
+      },
+      "contentFile": "PLAN_SUBSCRIPTION_ONBOARDING_MODEL_V1.java",
+      "serverUpdated": {
+        "dev-1": 1792761435926
+      }
+    }
+  ]
+}

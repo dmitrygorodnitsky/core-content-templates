@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "executionEnabled": false,
+  "grantIssuanceEnabled": false,
+  "accessDeliveryEnabled": false,
+  "paymentEnabled": false,
+  "helperCode": "PLAN_SUBSCRIPTION_WORKFLOW_V11",
+  "readyNotificationEnabled": true,
+  "readyLoginUrl": "https://dev-1.servicewand.com/core/apps/service-wand/index.html",
+  "nativePaidInvoiceRequired": true,
+  "nativePaymentTimestampRequired": true
+}

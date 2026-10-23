@@ -1,0 +1,13 @@
+{
+  "service": "core",
+  "endpoint": "organization-type",
+  "typeCode": "OPERATOR",
+  "changeAttributes": [
+    {
+      "code": "QUOTATION_EXPIRATION",
+      "set": {
+        "required": false
+      }
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "definitionOwnerCode": "SERVICEWAND",
+  "properties": {
+    "source": "NATIVE_PROPERTY_LIFECYCLE",
+    "entityClass": "com.pixelnation.rm.domain.Resource",
+    "resourceTypeCode": "SNOW_REMOVAL_PROPERTY",
+    "activeStateCode": "ACTIVE",
+    "includeCreateActive": true,
+    "includeDeleteActive": true,
+    "installWorkflowBoundaries": true,
+    "nativeMutationHooksAcceptedByUser": true
+  },
+  "weather": {
+    "source": "WEATHER_SETUP_PENDING",
+    "bindings": [],
+    "stub": true
+  }
+}

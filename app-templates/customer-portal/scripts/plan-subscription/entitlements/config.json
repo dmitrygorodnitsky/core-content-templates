@@ -1,0 +1,418 @@
+{
+  "schemaVersion": 1,
+  "mode": "PREPARE_ONLY",
+  "ownerOrganizationCode": "SERVICEWAND",
+  "issuerOrganizationCode": "SERVICEWAND",
+  "backendContract": {
+    "source": "ENTITLEMENT_CONFIGURATION_GUIDE.md",
+    "verifiedConfigurationDate": "2026-10-21",
+    "definitionOwnerConfirmed": false,
+    "policiesRequireExplicitConsumerOrganization": true,
+    "grantCreatesPool": false,
+    "multiplePoolsAreAdditive": false,
+    "sourceReferencesProvideIdempotency": false,
+    "scriptEvaluationImplemented": false,
+    "featureAssertionEnforcesGrant": false,
+    "resourceMutationHooksImplemented": false,
+    "weatherOperationContractConfirmed": false,
+    "reconciliationSafe": false
+  },
+  "safety": {
+    "remoteWritesEnabled": false,
+    "grantIssuanceEnabled": false,
+    "quotaPoolWritesEnabled": false,
+    "paymentEnabled": false,
+    "runtimeBindingsEnabled": false
+  },
+  "coverage": {
+    "startEvent": "PAYMENT_CONFIRMED",
+    "startSource": "CONFIRMED_PAYMENT_TIMESTAMP",
+    "periods": {
+      "MONTHLY": {
+        "unit": "MONTH",
+        "count": 1
+      },
+      "YEARLY": {
+        "unit": "YEAR",
+        "count": 1
+      }
+    },
+    "renewalConfigured": false
+  },
+  "definitionDefaults": {
+    "scopeType": "ORGANIZATION_SELF",
+    "resetPeriod": "NONE",
+    "status": "INACTIVE"
+  },
+  "plans": {
+    "productTypeCode": "SERVICEWAND_SAAS",
+    "productCodes": [
+      "SERVICEWAND_FOUNDATION",
+      "SERVICEWAND_GROWTH",
+      "SERVICEWAND_PROFESSIONAL"
+    ]
+  },
+  "booleanFeatures": [
+    {
+      "attribute": "AI_ASSISTED_MAPPING",
+      "definitionCode": "SERVICEWAND.FEATURE.AI_ASSISTED_MAPPING",
+      "decoder": "BOOLEAN",
+      "missingValue": false
+    },
+    {
+      "attribute": "AI_ASSISTED_TRANSLATION",
+      "definitionCode": "SERVICEWAND.FEATURE.AI_ASSISTED_TRANSLATION",
+      "decoder": "BOOLEAN",
+      "missingValue": false
+    },
+    {
+      "attribute": "AREA_MEASUREMENT",
+      "definitionCode": "SERVICEWAND.FEATURE.AREA_MEASUREMENT",
+      "decoder": "BOOLEAN",
+      "missingValue": false
+    },
+    {
+      "attribute": "AUTOMATED_INVOICING",
+      "definitionCode": "SERVICEWAND.FEATURE.AUTOMATED_INVOICING",
+      "decoder": "BOOLEAN",
+      "missingValue": false
+    },
+    {
+      "attribute": "BUSINESS_PERFORMANCE_REPORTING",
+      "definitionCode": "SERVICEWAND.FEATURE.BUSINESS_PERFORMANCE_REPORTING",
+      "decoder": "BOOLEAN",
+      "missingValue": false
+    },
+    {
+      "attribute": "COMPLIANCE_RECORDS",
+      "definitionCode": "SERVICEWAND.FEATURE.COMPLIANCE_RECORDS",
+      "decoder": "BOOLEAN",
+      "missingValue": false
+    },
+    {
+      "attribute": "CONTRACT_MANAGEMENT",
+      "definitionCode": "SERVICEWAND.FEATURE.CONTRACT_MANAGEMENT",
+      "decoder": "BOOLEAN",
+      "missingValue": false
+    },
+    {
+      "attribute": "DISPATCH_SCHEDULING",
+      "definitionCode": "SERVICEWAND.FEATURE.DISPATCH_SCHEDULING",
+      "decoder": "BOOLEAN",
+      "missingValue": false
+    },
+    {
+      "attribute": "FULL-FEATURED_MOBILE_APP",
+      "definitionCode": "SERVICEWAND.FEATURE.FULL-FEATURED_MOBILE_APP",
+      "decoder": "BOOLEAN",
+      "missingValue": false
+    },
+    {
+      "attribute": "IMPORT_CUSTOMER_LIST",
+      "definitionCode": "SERVICEWAND.FEATURE.IMPORT_CUSTOMER_LIST",
+      "decoder": "BOOLEAN",
+      "missingValue": false
+    },
+    {
+      "attribute": "INCIDENT_MANAGEMENT",
+      "definitionCode": "SERVICEWAND.FEATURE.INCIDENT_MANAGEMENT",
+      "decoder": "BOOLEAN",
+      "missingValue": false
+    },
+    {
+      "attribute": "INVOICE_MANAGEMENT",
+      "definitionCode": "SERVICEWAND.FEATURE.INVOICE_MANAGEMENT",
+      "decoder": "BOOLEAN",
+      "missingValue": false
+    },
+    {
+      "attribute": "LEAD_MANAGEMENT",
+      "definitionCode": "SERVICEWAND.FEATURE.LEAD_MANAGEMENT",
+      "decoder": "BOOLEAN",
+      "missingValue": false
+    },
+    {
+      "attribute": "MANUAL_SERVICE_ZONE_MAPPING",
+      "definitionCode": "SERVICEWAND.FEATURE.MANUAL_SERVICE_ZONE_MAPPING",
+      "decoder": "BOOLEAN",
+      "missingValue": false
+    },
+    {
+      "attribute": "MAP_BASED_QUOTATIONS",
+      "definitionCode": "SERVICEWAND.FEATURE.MAP_BASED_QUOTATIONS",
+      "decoder": "BOOLEAN",
+      "missingValue": false
+    },
+    {
+      "attribute": "MULTILINGUAL_UI_DATA",
+      "definitionCode": "SERVICEWAND.FEATURE.MULTILINGUAL_UI_DATA",
+      "decoder": "BOOLEAN",
+      "missingValue": false
+    },
+    {
+      "attribute": "MULTI_PROPERTY_QUOTATIONS",
+      "definitionCode": "SERVICEWAND.FEATURE.MULTI_PROPERTY_QUOTATIONS",
+      "decoder": "BOOLEAN",
+      "missingValue": false
+    },
+    {
+      "attribute": "PAYMENTS_RECEIVABLES",
+      "definitionCode": "SERVICEWAND.FEATURE.PAYMENTS_RECEIVABLES",
+      "decoder": "BOOLEAN",
+      "missingValue": false
+    },
+    {
+      "attribute": "PROPERTY_SERVICE_HISTORY",
+      "definitionCode": "SERVICEWAND.FEATURE.PROPERTY_SERVICE_HISTORY",
+      "decoder": "BOOLEAN",
+      "missingValue": false
+    },
+    {
+      "attribute": "PROPOSAL_MANAGEMENT",
+      "definitionCode": "SERVICEWAND.FEATURE.PROPOSAL_MANAGEMENT",
+      "decoder": "BOOLEAN",
+      "missingValue": false
+    },
+    {
+      "attribute": "RENEWALS_CONTRACT_LIFECYCLE",
+      "definitionCode": "SERVICEWAND.FEATURE.RENEWALS_CONTRACT_LIFECYCLE",
+      "decoder": "BOOLEAN",
+      "missingValue": false
+    },
+    {
+      "attribute": "RESOURCE_AVAILABILITY_READINESS",
+      "definitionCode": "SERVICEWAND.FEATURE.RESOURCE_AVAILABILITY_READINESS",
+      "decoder": "BOOLEAN",
+      "missingValue": false
+    },
+    {
+      "attribute": "ROUTE_PLANNING_BUILDER",
+      "definitionCode": "SERVICEWAND.FEATURE.ROUTE_PLANNING_BUILDER",
+      "decoder": "BOOLEAN",
+      "missingValue": false
+    },
+    {
+      "attribute": "SNOW_REMOVAL_DESIGNED_CRM",
+      "definitionCode": "SERVICEWAND.FEATURE.SNOW_REMOVAL_DESIGNED_CRM",
+      "decoder": "BOOLEAN",
+      "missingValue": false
+    },
+    {
+      "attribute": "STORM_EVENT_TRACKING",
+      "definitionCode": "SERVICEWAND.FEATURE.STORM_EVENT_TRACKING",
+      "decoder": "BOOLEAN",
+      "missingValue": false
+    },
+    {
+      "attribute": "SUBCONTRACTOR_MANAGEMENT",
+      "definitionCode": "SERVICEWAND.FEATURE.SUBCONTRACTOR_MANAGEMENT",
+      "decoder": "BOOLEAN",
+      "missingValue": false
+    },
+    {
+      "attribute": "TAX_MANAGEMENT",
+      "definitionCode": "SERVICEWAND.FEATURE.TAX_MANAGEMENT",
+      "decoder": "BOOLEAN",
+      "missingValue": false
+    },
+    {
+      "attribute": "WEBSITE_REQUEST_FORM",
+      "definitionCode": "SERVICEWAND.FEATURE.WEBSITE_REQUEST_FORM",
+      "decoder": "BOOLEAN",
+      "missingValue": false
+    },
+    {
+      "attribute": "WORKFORCE_MANAGEMENT",
+      "definitionCode": "SERVICEWAND.FEATURE.WORKFORCE_MANAGEMENT",
+      "decoder": "BOOLEAN",
+      "missingValue": false
+    },
+    {
+      "attribute": "CUSTOMER_PORTAL",
+      "definitionCode": "SERVICEWAND.FEATURE.CUSTOMER_PORTAL",
+      "decoder": "LOCALIZED_BOOLEAN",
+      "locale": "en",
+      "field": "NAME",
+      "missingValue": false
+    }
+  ],
+  "levels": [
+    {
+      "attribute": "CASE_MANAGEMENT",
+      "definitionCode": "SERVICEWAND.LEVEL.CASE_MANAGEMENT",
+      "decoder": "STRING_LEVEL",
+      "valueType": "STRING",
+      "allowedValues": [
+        "false",
+        "Standard",
+        "Configurable"
+      ],
+      "enforcementType": "FEATURE",
+      "aggregationType": "ANY_TRUE",
+      "status": "LEVEL_COMPARISON_CONTRACT_REQUIRED",
+      "requiresValueComparison": true
+    },
+    {
+      "attribute": "OPERATIONAL_DASHBOARDS",
+      "definitionCode": "SERVICEWAND.LEVEL.OPERATIONAL_DASHBOARDS",
+      "decoder": "STRING_LEVEL",
+      "valueType": "STRING",
+      "allowedValues": [
+        "false",
+        "Standard",
+        "Configurable"
+      ],
+      "enforcementType": "FEATURE",
+      "aggregationType": "ANY_TRUE",
+      "status": "LEVEL_COMPARISON_CONTRACT_REQUIRED",
+      "requiresValueComparison": true
+    },
+    {
+      "attribute": "OPERATIONAL_REASSIGNMENT",
+      "definitionCode": "SERVICEWAND.LEVEL.OPERATIONAL_REASSIGNMENT",
+      "decoder": "STRING_LEVEL",
+      "valueType": "STRING",
+      "allowedValues": [
+        "Individual reassignment",
+        "Individual and bulk reassignment"
+      ],
+      "enforcementType": "FEATURE",
+      "aggregationType": "ANY_TRUE",
+      "status": "LEVEL_COMPARISON_CONTRACT_REQUIRED",
+      "requiresValueComparison": true
+    }
+  ],
+  "propertyCapacity": {
+    "definitionCode": "SERVICEWAND.PROPERTIES.MAX_ACTIVE",
+    "includedAttribute": "ACTIVE_PROPERTIES_INCLUDED",
+    "decoder": "POSITIVE_INTEGER_STRING",
+    "valueType": "INTEGER",
+    "enforcementType": "QUOTA_POOL",
+    "aggregationType": "COUNT_ACTIVE",
+    "computation": {
+      "operation": "INCLUDED_PLUS_EXPANSION",
+      "packQuantitySource": "SITE_EXPANSION_PACKS",
+      "packSizeAttribute": "COUNT"
+    },
+    "overallPlanMaximum": {
+      "source": "TEMPORARY_CONFIG",
+      "status": "CONFIGURED_PENDING_MODEL_MIGRATION",
+      "byPlanCode": {
+        "SERVICEWAND_FOUNDATION": 500,
+        "SERVICEWAND_GROWTH": 1000,
+        "SERVICEWAND_PROFESSIONAL": 2000
+      },
+      "allowMarketingTextParsing": false
+    }
+  },
+  "addons": {
+    "compatibilityAttribute": "COMPATIBILITY",
+    "siteExpansion": {
+      "productCodes": [
+        "SERVICEWAND_SAAS_PROPERTY_EXT_FOUNDATION",
+        "SERVICEWAND_SAAS_PROPERTY_EXT_GROWTH",
+        "SERVICEWAND_SAAS_PROPERTY_EXT_PRO"
+      ],
+      "quantitySource": "SITE_EXPANSION_PACKS",
+      "packSizeAttribute": "COUNT",
+      "grantType": "ADDON"
+    },
+    "weather": {
+      "productCode": "SERVICEWAND_WEATHER_INTELLIGENCE",
+      "enabledAttribute": "ENABLED",
+      "featureDefinitionCode": "SERVICEWAND.FEATURE.WEATHER_INTELLIGENCE",
+      "limitDefinitionCode": "SERVICEWAND.WEATHER.MAX_PROPERTIES",
+      "quantitySource": "WEATHER_PROPERTY_COUNT",
+      "grantType": "ADDON",
+      "valueType": "INTEGER",
+      "enforcementType": "QUOTA_POOL",
+      "aggregationType": "COUNT_ACTIVE",
+      "assignmentScope": "EXPLICIT_PROPERTY_SELECTION_LATER",
+      "requiresQuantityWithinPropertyCapacity": true
+    }
+  },
+  "excluded": {
+    "productCodes": [
+      "SERVICEWAND_ENTERPRISE",
+      "SERVICEWAND_CUSTOM_REPORTS",
+      "SERVICEWAND_ROUTE_OPTIMIZATION_CREDITS"
+    ],
+    "productPrefixes": [
+      "SERVICEWAND_SAAS_ROUTING_EXT_",
+      "SERVICEWAND_ROUTE_CREDITS_"
+    ],
+    "planAttributes": [
+      "ROUTE_OPTIMIZATION",
+      "ROUTE_OPTIMIZATION_CREDITS",
+      "CUSTOM_REPORTS"
+    ]
+  },
+  "deferredCatalogAttributes": [
+    {
+      "attribute": "SERVICE_VERIFICATION",
+      "reason": "Photo limits are unstructured text; no automatic numeric extraction"
+    },
+    {
+      "attribute": "USERS",
+      "reason": "Unlimited is not converted to an invented finite quota"
+    },
+    {
+      "attribute": "WEATHER_ALERTS",
+      "reason": "Paid add-on label; use explicitly selected Weather product"
+    },
+    {
+      "attribute": "OPERATIONAL_WEATHER_MONITORING",
+      "reason": "Paid add-on label; use explicitly selected Weather product"
+    },
+    {
+      "attribute": "EXPANSION_PACK",
+      "reason": "Marketing text; use structured COUNT and ACTIVE_PROPERTIES_INCLUDED"
+    }
+  ],
+  "policyIntents": [
+    {
+      "key": "ACTIVE_PROPERTIES",
+      "definitionCode": "SERVICEWAND.PROPERTIES.MAX_ACTIVE",
+      "entityClass": "com.pixelnation.rm.domain.Resource",
+      "resourceTypeCode": "SNOW_REMOVAL_PROPERTY",
+      "operation": null,
+      "policyAction": null,
+      "enabled": false,
+      "requiredCoverage": [
+        "CREATE_ACTIVE",
+        "ACTIVATE",
+        "DEACTIVATE",
+        "DELETE_ACTIVE"
+      ],
+      "status": "RESOURCE_CREATE_DELETE_HOOKS_MISSING"
+    },
+    {
+      "key": "WEATHER_PROPERTIES",
+      "definitionCode": "SERVICEWAND.WEATHER.MAX_PROPERTIES",
+      "entityClass": "com.pixelnation.rm.domain.Resource",
+      "operation": null,
+      "policyAction": null,
+      "enabled": false,
+      "requiredCoverage": [
+        "ENABLE_WEATHER",
+        "DISABLE_WEATHER",
+        "DELETE_WEATHER_PROPERTY"
+      ],
+      "status": "BACKEND_OPERATION_CONTRACT_REQUIRED"
+    }
+  ],
+  "grantPreparation": {
+    "enabled": false,
+    "sourceOrderId": "CONFIRMED_SERVICEWAND_ORDER_ID",
+    "sourcePlanIdSemantics": "OPTIONAL_TRACEABILITY_NOT_PRODUCT_FK_OMIT",
+    "targetOrganization": "CREATED_CUSTOMER_ORGANIZATION",
+    "preserveExistingUsageOnRetry": true,
+    "requiresPaidReceipt": true,
+    "requiresExplicitGranteeScope": true,
+    "crossRootValidation": "DEFINITION_OWNER_DECISION_REQUIRED_NO_AUTOMATIC_POLICY_INHERITANCE",
+    "catalogSnapshotPolicy": "BIND_PROFILE_DIGEST_TO_CHECKOUT_BEFORE_CONFIRMATION",
+    "idempotency": "ONE_CONFIRMED_PURCHASE_RECEIPT_PER_TARGET_ORGANIZATION",
+    "omitDisabledFeatures": true,
+    "omitFalseLevels": true
+  }
+}

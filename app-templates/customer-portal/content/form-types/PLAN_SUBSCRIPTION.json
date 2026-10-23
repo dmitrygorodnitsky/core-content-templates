@@ -1,0 +1,320 @@
+{
+  "code": "PLAN_SUBSCRIPTION",
+  "isAbstract": false,
+  "nls": {
+    "en": {
+      "NAME": "Plan Subscription"
+    },
+    "ru": {
+      "NAME": "Покупка пакета ServiceWand"
+    }
+  },
+  "attributes": [
+    {
+      "code": "PLAN_PRODUCT",
+      "className": "com.pixelnation.pim.domain.Product",
+      "required": true,
+      "multiselect": false,
+      "freeValue": false,
+      "unique": false,
+      "nls": {
+        "en": {
+          "NAME": "ServiceWand plan"
+        },
+        "ru": {
+          "NAME": "Пакет ServiceWand"
+        }
+      },
+      "options": []
+    },
+    {
+      "code": "BILLING_PERIOD",
+      "className": "java.lang.String",
+      "required": true,
+      "multiselect": false,
+      "freeValue": false,
+      "unique": false,
+      "nls": {
+        "en": {
+          "NAME": "Billing period"
+        },
+        "ru": {
+          "NAME": "Период оплаты"
+        }
+      },
+      "options": [
+        {
+          "value": "MONTHLY",
+          "nls": {
+            "en": {
+              "NAME": "Monthly"
+            },
+            "ru": {
+              "NAME": "Месяц"
+            }
+          }
+        },
+        {
+          "value": "YEARLY",
+          "nls": {
+            "en": {
+              "NAME": "Yearly"
+            },
+            "ru": {
+              "NAME": "Год"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "code": "ADDON_PRODUCTS",
+      "className": "com.pixelnation.pim.domain.Product",
+      "required": false,
+      "multiselect": true,
+      "freeValue": false,
+      "unique": false,
+      "nls": {
+        "en": {
+          "NAME": "Add-ons"
+        },
+        "ru": {
+          "NAME": "Дополнения"
+        }
+      },
+      "options": []
+    },
+    {
+      "code": "SITE_EXPANSION_PACKS",
+      "className": "java.lang.Integer",
+      "required": false,
+      "multiselect": false,
+      "freeValue": false,
+      "unique": false,
+      "nls": {
+        "en": {
+          "NAME": "Site expansion packs"
+        },
+        "ru": {
+          "NAME": "Количество пакетов расширения"
+        }
+      },
+      "options": []
+    },
+    {
+      "code": "WEATHER_PROPERTY_COUNT",
+      "className": "java.lang.Integer",
+      "required": false,
+      "multiselect": false,
+      "freeValue": false,
+      "unique": false,
+      "nls": {
+        "en": {
+          "NAME": "Properties with Weather Intelligence"
+        },
+        "ru": {
+          "NAME": "Количество объектов с Weather Intelligence"
+        }
+      },
+      "options": []
+    },
+    {
+      "code": "COMPANY_NAME",
+      "className": "java.lang.String",
+      "required": true,
+      "multiselect": false,
+      "freeValue": false,
+      "unique": false,
+      "nls": {
+        "en": {
+          "NAME": "Company name"
+        },
+        "ru": {
+          "NAME": "Название компании"
+        }
+      },
+      "options": []
+    },
+    {
+      "code": "COMPANY_ADDRESS",
+      "className": "java.lang.String",
+      "inputFormat": "address",
+      "required": true,
+      "multiselect": false,
+      "freeValue": false,
+      "unique": false,
+      "nls": {
+        "en": {
+          "NAME": "Company address"
+        },
+        "ru": {
+          "NAME": "Адрес компании"
+        }
+      },
+      "options": []
+    },
+    {
+      "code": "FIRST_NAME",
+      "className": "java.lang.String",
+      "required": false,
+      "multiselect": false,
+      "freeValue": false,
+      "unique": false,
+      "nls": {
+        "en": {
+          "NAME": "Contact first name"
+        },
+        "ru": {
+          "NAME": "Имя контактного лица"
+        }
+      },
+      "options": []
+    },
+    {
+      "code": "LAST_NAME",
+      "className": "java.lang.String",
+      "required": false,
+      "multiselect": false,
+      "freeValue": false,
+      "unique": false,
+      "nls": {
+        "en": {
+          "NAME": "Contact last name"
+        },
+        "ru": {
+          "NAME": "Фамилия контактного лица"
+        }
+      },
+      "options": []
+    },
+    {
+      "code": "EMAIL",
+      "className": "java.lang.String",
+      "inputFormat": "email",
+      "required": true,
+      "multiselect": false,
+      "freeValue": false,
+      "unique": false,
+      "nls": {
+        "en": {
+          "NAME": "Contact email"
+        },
+        "ru": {
+          "NAME": "Контактный email"
+        }
+      },
+      "options": []
+    },
+    {
+      "code": "PHONE",
+      "className": "java.lang.String",
+      "inputFormat": "tel",
+      "required": false,
+      "multiselect": false,
+      "freeValue": false,
+      "unique": false,
+      "nls": {
+        "en": {
+          "NAME": "Contact phone"
+        },
+        "ru": {
+          "NAME": "Телефон контактного лица"
+        }
+      },
+      "options": []
+    }
+  ],
+  "attributeGroups": [
+    {
+      "code": "PLAN_SELECTION",
+      "nls": {
+        "en": {
+          "NAME": "Plan and billing period"
+        },
+        "ru": {
+          "NAME": "Пакет и период оплаты"
+        }
+      }
+    },
+    {
+      "code": "ADDONS",
+      "nls": {
+        "en": {
+          "NAME": "Add-ons"
+        },
+        "ru": {
+          "NAME": "Дополнения"
+        }
+      }
+    },
+    {
+      "code": "COMPANY_AND_CONTACT",
+      "nls": {
+        "en": {
+          "NAME": "Company and contact details"
+        },
+        "ru": {
+          "NAME": "Компания и контактные данные"
+        }
+      }
+    }
+  ],
+  "attributeOrder": [
+    {
+      "PLAN_SELECTION": [
+        {
+          "attributeCode": "PLAN_PRODUCT",
+          "visible": true
+        },
+        {
+          "attributeCode": "BILLING_PERIOD",
+          "visible": true
+        }
+      ]
+    },
+    {
+      "ADDONS": [
+        {
+          "attributeCode": "ADDON_PRODUCTS",
+          "visible": true
+        },
+        {
+          "attributeCode": "SITE_EXPANSION_PACKS",
+          "visible": true
+        },
+        {
+          "attributeCode": "WEATHER_PROPERTY_COUNT",
+          "visible": true
+        }
+      ]
+    },
+    {
+      "COMPANY_AND_CONTACT": [
+        {
+          "attributeCode": "COMPANY_NAME",
+          "visible": true
+        },
+        {
+          "attributeCode": "COMPANY_ADDRESS",
+          "visible": true
+        },
+        {
+          "attributeCode": "FIRST_NAME",
+          "visible": true
+        },
+        {
+          "attributeCode": "LAST_NAME",
+          "visible": true
+        },
+        {
+          "attributeCode": "EMAIL",
+          "visible": true
+        },
+        {
+          "attributeCode": "PHONE",
+          "visible": true
+        }
+      ]
+    }
+  ]
+}

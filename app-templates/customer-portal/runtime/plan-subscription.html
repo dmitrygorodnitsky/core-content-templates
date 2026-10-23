@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Plan subscription — screens and states</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="plan-subscription/vendor/servicewand-site.css">
+  <link rel="stylesheet" href="plan-subscription/plan-subscription.css">
+  <style>
+    .ps-harness {
+      position: sticky; top: 0; z-index: 50; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px;
+      padding: 10px 16px; background: #0f0f12; border-bottom: 1px solid rgb(255 255 255 / 0.1); font-family: var(--font-family);
+    }
+    .ps-harness label { font-size: 11.5px; font-weight: 700; letter-spacing: .02em; color: #97a2b8; }
+    .ps-harness select, .ps-harness button {
+      max-width: 100%; padding: 6px 9px; border-radius: 10px; font: inherit; font-size: 13px;
+      color: #fff; background: #1b1d25; border: 1px solid rgb(255 255 255 / 0.15);
+    }
+    .ps-harness[hidden] { display: none; }
+    .ps-page { padding-top: 72px; }
+    @media (width < 48rem) { .ps-page { padding-top: 48px; } }
+  </style>
+</head>
+<body>
+  <div class="ps-harness" data-dev-toolbar>
+    <label for="h-screen">Screen</label>
+    <select id="h-screen"><option value="purchase">Purchase</option><option value="confirm">Email link</option><option value="order">Order</option></select>
+    <label for="h-state">State</label>
+    <select id="h-state"></select>
+    <label for="h-theme">Theme</label>
+    <select id="h-theme"><option>dark</option><option>light</option></select>
+    <button type="button" id="h-replay">Replay</button>
+  </div>
+
+  <main>
+    <section class="ps-page" style="--ps-bg-image:url('https://servicewand.com/core/image/ac160291-315d-4109-94be-5a45196ec696/get'); --ps-bg-image-mobile:url('https://servicewand.com/core/image/c0e500d1-b9f6-4ead-8723-e01bc52de63e/get'); --ps-bg-image-light:url('https://servicewand.com/core/image/05cfeadf-3b49-43be-a32f-d335c78cdc46/get');">
+      <div class="container">
+        <div class="ps-page__container">
+          <h2 class="ps-page__title" id="ps-title"></h2>
+          <p class="subtitle ps-page__subtitle" id="ps-subtitle"></p>
+          <div class="ps-page__body" id="ps-root"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="plan-subscription/core.js"></script>
+  <script src="plan-subscription/copy.js"></script>
+  <script src="plan-subscription/ui.js"></script>
+  <script src="plan-subscription/catalog.js"></script>
+  <script src="plan-subscription/selection.js"></script>
+  <script src="plan-subscription/purchase.js"></script>
+  <script src="plan-subscription/confirm.js"></script>
+  <script src="plan-subscription/order.js"></script>
+  <script src="plan-subscription/fixtures.js"></script>
+  <script>
+    (function () {
+      "use strict";
+      var PS = window.PlanSubscription;
+      var fixtures = window.PlanSubscriptionFixtures;
+      var STATES = {
+        purchase: ["step-plan", "step-addons", "step-company", "loading", "load-error", "unavailable", "unconfigured", "submitting", "submit-error", "done"],
+        confirm: ["verify", "purchase", "sending", "used", "unknown", "failed", "missing"],
+        order: ["ready", "taxes", "partial", "order-loading", "closed", "order-failed", "missing"],
+      };
+      var CONTACT = { COMPANY_NAME: "Northline Snow Services", COMPANY_ADDRESS: "1055 W Georgia St, Vancouver, BC V6E 3P3, Canada", FIRST_NAME: "Avery", LAST_NAME: "Chen", EMAIL: "avery@northline.example", PHONE: "+1 604 555 0142" };
+      var params = new URLSearchParams(window.location.search);
+      var harness = document.querySelector("[data-dev-toolbar]");
+      var screen = document.getElementById("h-screen");
+      var state = document.getElementById("h-state");
+      var theme = document.getElementById("h-theme");
+      var root = document.getElementById("ps-root");
+      var title = document.getElementById("ps-title");
+      var subtitle = document.getElementById("ps-subtitle");
+      var current = null;
+
+      harness.hidden = params.get("toolbar") === "0";
+      if (params.get("motion") === "0") {
+        var still = document.createElement("style");
+        still.textContent = "*, *::before, *::after { animation: none !important; transition: none !important; } .df-field > * { opacity: 1 !important; }";
+        document.head.appendChild(still);
+      }
+      screen.value = STATES[params.get("screen")] ? params.get("screen") : "purchase";
+      theme.value = params.get("theme") === "light" ? "light" : "dark";
+
+      function fillStates(selected) {
+        state.replaceChildren();
+        STATES[screen.value].forEach(function (name) {
+          var option = document.createElement("option");
+          option.value = option.textContent = name;
+          state.appendChild(option);
+        });
+        state.value = STATES[screen.value].indexOf(selected) !== -1 ? selected : STATES[screen.value][0];
+      }
+
+      function remember() {
+        var next = new URLSearchParams(window.location.search);
+        next.set("screen", screen.value);
+        next.set("state", state.value);
+        next.set("theme", theme.value);
+        window.history.replaceState(null, "", "?" + next.toString());
+      }
+
+      function whenForm(api, then) {
+        var tries = 0;
+        (function wait() {
+          if (api.state().phase === "form") return then();
+          if (tries++ < 100) window.setTimeout(wait, 20);
+        })();
+      }
+
+      function startPurchase(name) {
+        title.textContent = PS.copy.defaults.purchase.title;
+        subtitle.textContent = PS.copy.defaults.purchase.subtitle;
+        title.hidden = subtitle.hidden = false;
+        var scenario = name === "load-error" || name === "unavailable" || name === "submitting" || name === "submit-error" ? name : "ok";
+        var fetch = name === "loading" ? function () { return new Promise(function () {}); } : fixtures.fetchFor(scenario, 0);
+        current = PS.purchase.mount(root, {
+          fetch: fetch,
+          apiBase: "https://dev-1.servicewand.com",
+          organizationId: name === "unconfigured" ? null : 7,
+          rules: fixtures.rules,
+          locale: "en-US",
+          preset: { plan: "SERVICEWAND_GROWTH", period: "MONTHLY" },
+          scroll: false,
+        });
+        var api = current;
+        if (name.indexOf("step-") !== 0 && ["submitting", "submit-error", "done"].indexOf(name) === -1) return;
+        whenForm(api, function () {
+          var model = api.state();
+          if (name === "step-addons") {
+            model.selection = PS.selection.normalize(model.catalog, Object.assign({}, model.selection, { packs: 2, weatherOn: true, weather: 300 }));
+            model.weatherRaw = "300";
+            api.go(1);
+            return;
+          }
+          if (name === "step-plan") return;
+          Object.assign(model.contact, CONTACT);
+          api.go(2);
+          if (name === "submit-error" || name === "submitting" || name === "done") {
+            root.querySelector(".df-submit").click();
+          }
+        });
+      }
+
+      function startConfirm(name) {
+        title.hidden = subtitle.hidden = true;
+        var step = name === "purchase" ? "purchase" : "verify";
+        var hash = name === "missing" ? "" : "#step=" + step + "&token=demo-fixture-token";
+        current = PS.confirm.mount(root, {
+          fetch: fixtures.fetchFor(name, 250),
+          apiBase: "https://dev-1.servicewand.com",
+          location: { hash: hash, pathname: window.location.pathname, search: window.location.search },
+          history: { replaceState: function () {} },
+        });
+      }
+
+      function startOrder(name) {
+        title.hidden = subtitle.hidden = true;
+        var hash = name === "missing" ? "" : "#orderId=9001&token=demo-fixture-token";
+        current = PS.order.mount(root, {
+          fetch: fixtures.fetchFor(name, 0),
+          apiBase: "https://dev-1.servicewand.com",
+          locale: "en-US",
+          location: { hash: hash, pathname: window.location.pathname, search: window.location.search },
+          history: { replaceState: function () {} },
+        });
+      }
+
+      function start() {
+        document.documentElement.dataset.theme = theme.value;
+        remember();
+        if (current) current.stop();
+        if (screen.value === "confirm") startConfirm(state.value);
+        else if (screen.value === "order") startOrder(state.value);
+        else startPurchase(state.value);
+      }
+
+      fillStates(params.get("state"));
+      screen.addEventListener("change", function () { fillStates(""); start(); });
+      state.addEventListener("change", start);
+      theme.addEventListener("change", function () { document.documentElement.dataset.theme = theme.value; remember(); });
+      document.getElementById("h-replay").addEventListener("click", start);
+      start();
+    })();
+  </script>
+</body>
+</html>
