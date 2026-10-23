@@ -29,6 +29,8 @@
     <select id="h-screen"><option value="purchase">Purchase</option><option value="confirm">Email link</option><option value="order">Order</option></select>
     <label for="h-state">State</label>
     <select id="h-state"></select>
+    <label for="h-lang">Language</label>
+    <select id="h-lang"><option>en</option><option>ru</option><option>fr</option><option>es</option><option>ar</option><option>he</option><option>zh</option></select>
     <label for="h-theme">Theme</label>
     <select id="h-theme"><option>dark</option><option>light</option></select>
     <button type="button" id="h-replay">Replay</button>
@@ -48,6 +50,7 @@
 
   <script src="plan-subscription/core.js"></script>
   <script src="plan-subscription/copy.js"></script>
+  <script src="plan-subscription/locales.js"></script>
   <script src="plan-subscription/ui.js"></script>
   <script src="plan-subscription/catalog.js"></script>
   <script src="plan-subscription/selection.js"></script>
@@ -71,6 +74,7 @@
       var screen = document.getElementById("h-screen");
       var state = document.getElementById("h-state");
       var theme = document.getElementById("h-theme");
+      var lang = document.getElementById("h-lang");
       var root = document.getElementById("ps-root");
       var title = document.getElementById("ps-title");
       var subtitle = document.getElementById("ps-subtitle");
@@ -84,6 +88,12 @@
       }
       screen.value = STATES[params.get("screen")] ? params.get("screen") : "purchase";
       theme.value = params.get("theme") === "light" ? "light" : "dark";
+      lang.value = PS.locales && PS.locales[params.get("lang")] ? params.get("lang") : "en";
+
+      function copyFor(screenName) {
+        var map = lang.value === "en" ? {} : (PS.locales[lang.value] || {});
+        return PS.copy.unflatten(map, PS.copy.defaults)[screenName];
+      }
 
       function fillStates(selected) {
         state.replaceChildren();
@@ -100,6 +110,7 @@
         next.set("screen", screen.value);
         next.set("state", state.value);
         next.set("theme", theme.value);
+        next.set("lang", lang.value);
         window.history.replaceState(null, "", "?" + next.toString());
       }
 
@@ -112,8 +123,8 @@
       }
 
       function startPurchase(name) {
-        title.textContent = PS.copy.defaults.purchase.title;
-        subtitle.textContent = PS.copy.defaults.purchase.subtitle;
+        title.textContent = copyFor("purchase").title;
+        subtitle.textContent = copyFor("purchase").subtitle;
         title.hidden = subtitle.hidden = false;
         var scenario = name === "load-error" || name === "unavailable" || name === "submitting" || name === "submit-error" ? name : "ok";
         var fetch = name === "loading" ? function () { return new Promise(function () {}); } : fixtures.fetchFor(scenario, 0);
@@ -122,7 +133,8 @@
           apiBase: "https://dev-1.servicewand.com",
           organizationId: name === "unconfigured" ? null : 7,
           rules: fixtures.rules,
-          locale: "en-US",
+          locale: lang.value,
+          copy: copyFor("purchase"),
           preset: { plan: "SERVICEWAND_GROWTH", period: "MONTHLY" },
           scroll: false,
         });
@@ -150,6 +162,7 @@
         var step = name === "purchase" ? "purchase" : "verify";
         var hash = name === "missing" ? "" : "#step=" + step + "&token=demo-fixture-token";
         current = PS.confirm.mount(root, {
+          copy: copyFor("confirm"),
           fetch: fixtures.fetchFor(name, 250),
           apiBase: "https://dev-1.servicewand.com",
           location: { hash: hash, pathname: window.location.pathname, search: window.location.search },
@@ -163,7 +176,8 @@
         current = PS.order.mount(root, {
           fetch: fixtures.fetchFor(name, 0),
           apiBase: "https://dev-1.servicewand.com",
-          locale: "en-US",
+          locale: lang.value,
+          copy: copyFor("order"),
           location: { hash: hash, pathname: window.location.pathname, search: window.location.search },
           history: { replaceState: function () {} },
         });
@@ -171,6 +185,8 @@
 
       function start() {
         document.documentElement.dataset.theme = theme.value;
+        document.documentElement.lang = lang.value;
+        document.documentElement.dir = lang.value === "ar" || lang.value === "he" ? "rtl" : "ltr";
         remember();
         if (current) current.stop();
         if (screen.value === "confirm") startConfirm(state.value);
@@ -181,6 +197,7 @@
       fillStates(params.get("state"));
       screen.addEventListener("change", function () { fillStates(""); start(); });
       state.addEventListener("change", start);
+      lang.addEventListener("change", start);
       theme.addEventListener("change", function () { document.documentElement.dataset.theme = theme.value; remember(); });
       document.getElementById("h-replay").addEventListener("click", start);
       start();

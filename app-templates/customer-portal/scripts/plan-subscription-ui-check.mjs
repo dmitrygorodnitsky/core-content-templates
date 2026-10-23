@@ -5,7 +5,7 @@ import vm from "node:vm";
 
 const root = path.resolve("app-templates/customer-portal");
 const runtimeDir = path.join(root, "runtime/plan-subscription");
-const RUNTIME = ["core.js", "copy.js", "ui.js", "catalog.js", "selection.js", "purchase.js", "confirm.js", "order.js"];
+const RUNTIME = ["core.js", "copy.js", "locales.js", "ui.js", "catalog.js", "selection.js", "purchase.js", "confirm.js", "order.js"];
 const context = vm.createContext({ console, URL, URLSearchParams, Intl, setTimeout, clearTimeout, Promise });
 context.window = context;
 for (const name of RUNTIME.concat(["fixtures.js"])) {
@@ -103,6 +103,29 @@ assert.equal(PS.order.normalize(order, typed, null, "en", PS.copy.defaults.order
 const lines = [{ id: 3, itemCount: 1, amount: 1 }, { id: 1, itemCount: 1, amount: 2 }, { id: 2, itemCount: 1, amount: 3 }];
 assert.deepEqual(plain(PS.order.normalize(order, lines, null, "en", PS.copy.defaults.order).lines.map((line) => line.id)), [1, 2, 3], "lines follow creation order");
 assert.equal(PS.order.normalize(order, items, { expiresAt: 1792850587259 }, "en", PS.copy.defaults.order).expiresAt, 1792850587259, "core-bill introspection returns epoch milliseconds");
+
+const truncated = () => Promise.resolve({ status: 200, text: () => Promise.reject(new Error("connection reset")) });
+await assert.rejects(PS.catalog.load({ fetch: truncated, apiBase: "https://dev-1.servicewand.com", organizationCode: "SERVICEWAND", rules: fixtures.rules, locale: "en" }),
+  (error) => error.code === "catalog", "a catalog body cut off mid-stream is a load error, not an empty catalog");
+
+const english = plain(PS.copy.flatten(PS.copy.defaults, ""));
+const placeholders = (text) => (String(text).match(/\{[a-z]+\}/gi) || []).sort().join(" ");
+assert.deepEqual(Object.keys(plain(PS.locales)).sort(), ["ar", "es", "fr", "he", "ru", "zh"]);
+for (const [language, map] of Object.entries(plain(PS.locales))) {
+  assert.deepEqual(Object.keys(map).sort(), Object.keys(english).sort(), `${language} translates every copy key`);
+  for (const [key, text] of Object.entries(map)) {
+    assert.ok(typeof text === "string" && text.trim() && !/[<>]|&[a-z#0-9]+;/i.test(text), `${language} ${key} is plain non-empty text`);
+    assert.equal(placeholders(text), placeholders(english[key]), `${language} ${key} keeps the English placeholders`);
+  }
+  assert.deepEqual(plain(PS.copy.flatten(PS.copy.unflatten(map, PS.copy.defaults), "")), map, `${language} round-trips through unflatten`);
+}
+const partial = plain(PS.copy.unflatten({ "purchase.title": "Titre", "purchase.steps.1": "Options", "purchase.unknown": "x", "order.states.DRAFT": "", "purchase.errors": "x" }, PS.copy.defaults));
+assert.equal(partial.purchase.title, "Titre");
+assert.equal(partial.purchase.steps[1], "Options");
+assert.equal(partial.purchase.unknown, undefined, "unflatten never adds keys");
+assert.equal(partial.order.states.DRAFT, "Draft", "empty values keep the default");
+assert.equal(typeof partial.purchase.errors, "object", "unflatten never replaces a group with text");
+assert.equal(PS.copy.defaults.purchase.title, "Get started with ServiceWand", "unflatten leaves the defaults untouched");
 
 for (const name of RUNTIME) {
   const source = await fs.readFile(path.join(runtimeDir, name), "utf8");

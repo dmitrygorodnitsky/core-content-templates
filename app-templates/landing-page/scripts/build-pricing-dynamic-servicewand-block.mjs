@@ -164,6 +164,7 @@ const params = [
   sourceParam("plans", "pricing_price_attribute_code", "saas_pricing_price_attribute_code"),
   sourceParam("plans", "pricing_price_attribute_values", "saas_pricing_price_attribute_values"),
   sourceParam("plans", "pricing_purchase_url", "saas_pricing_purchase_url"),
+  sourceParam("plans", "pricing_subscribe_url", "saas_pricing_subscribe_url"),
   sourceParam("plans", "pricing_buy_label", "saas_pricing_buy_label"),
 
   sourceParam("addons", "pricing_catalog_specs", "addons_pricing_catalog_specs"),
@@ -215,7 +216,7 @@ const params = [
 
 const html = `<section class="pd-servicewand" data-block="pricing.dynamic-servicewand">
 <!-- lab-ui block · pricing.dynamic-servicewand/plans -->
-<section class="pf-plans" id="pricing" data-block="pricing.plans-flex" data-section-enabled="{{render_plans_section}}" data-billing="{{billing_default}}" data-pricing-period="{{billing_default}}" data-pricing-dynamic="{{pricing_dynamic_enabled}}" data-pricing-api-base="{{pricing_api_base}}" data-pricing-organization="{{pricing_organization}}" data-pricing-product-type-code="{{saas_pricing_product_type_code}}" data-pricing-sort-attribute-code="{{pricing_sort_attribute_code}}" data-pricing-price-type-code="{{saas_pricing_price_type_code}}" data-pricing-price-attribute-code="{{saas_pricing_price_attribute_code}}" data-pricing-price-attribute-values="{{saas_pricing_price_attribute_values}}" data-pricing-currency="{{pricing_currency}}" data-pricing-purchase-url="{{saas_pricing_purchase_url}}" data-pricing-buy-label="{{saas_pricing_buy_label}}" data-pricing-contact-label="{{pricing_contact_label}}" data-pricing-feature-list-label="{{plans_pricing_feature_list_label}}" data-pricing-error-mode="{{pricing_error_mode}}">
+<section class="pf-plans" id="pricing" data-block="pricing.plans-flex" data-section-enabled="{{render_plans_section}}" data-billing="{{billing_default}}" data-pricing-period="{{billing_default}}" data-pricing-dynamic="{{pricing_dynamic_enabled}}" data-pricing-api-base="{{pricing_api_base}}" data-pricing-organization="{{pricing_organization}}" data-pricing-product-type-code="{{saas_pricing_product_type_code}}" data-pricing-sort-attribute-code="{{pricing_sort_attribute_code}}" data-pricing-price-type-code="{{saas_pricing_price_type_code}}" data-pricing-price-attribute-code="{{saas_pricing_price_attribute_code}}" data-pricing-price-attribute-values="{{saas_pricing_price_attribute_values}}" data-pricing-currency="{{pricing_currency}}" data-pricing-purchase-url="{{saas_pricing_purchase_url}}" data-pricing-subscribe-url="{{saas_pricing_subscribe_url}}" data-pricing-buy-label="{{saas_pricing_buy_label}}" data-pricing-contact-label="{{pricing_contact_label}}" data-pricing-feature-list-label="{{plans_pricing_feature_list_label}}" data-pricing-error-mode="{{pricing_error_mode}}">
   <div class="container">
     <header class="pf-top">
       <p class="pf-eyebrow">{{plans_eyebrow}}</p>

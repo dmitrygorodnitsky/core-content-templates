@@ -183,8 +183,11 @@ input. Its buyer screens (purchase form, email-link confirmation, read-only
 Order) live in [`runtime/plan-subscription/`](runtime/plan-subscription/) with
 the state harness `runtime/plan-subscription.html`; check them with
 `node app-templates/customer-portal/scripts/plan-subscription-ui-check.mjs`.
+English copy lives in `runtime/plan-subscription/copy.js` and its ru, fr, es,
+ar, he and zh translations in `locales.js`, keyed by flattened copy path.
 `scripts/export-plan-subscription-site.mjs` packages them as ServiceWand site
-sections; `scripts/upload-plan-subscription-site.mjs --base-url <origin>` adds
+sections, one `PS_*` LOCALIZED_STRING_SS parameter per copy key, and fails on a
+missing translation; `scripts/upload-plan-subscription-site.mjs --base-url <origin>` adds
 them and their pages under `CORPORATE_LANDING_JTE` (dry run unless `--live`).
 Backend intake, email verification, automatic Checkout and
 a second one-time confirmation email run through the system identity before

@@ -164,7 +164,7 @@
         "NAME",
         config.locale,
         localizedScalar(product.name, config.locale)
-      ), config),
+      ) || "Published plan", config),
       description: dynamicText(localizedField(
         product.nls,
         "DESCRIPTION",
@@ -788,6 +788,9 @@
     section.querySelectorAll("[data-period-monthly], [data-period-annual]").forEach((card) => {
       setText(card, ".pf-period", next === "annual" ? card.dataset.periodAnnual : card.dataset.periodMonthly);
     });
+    section.querySelectorAll("[data-subscribe-plan]").forEach((card) => {
+      if (card.dataset.subscribePlan) setHref(card, ".pf-cta", subscribeHref(section, { code: card.dataset.subscribePlan }));
+    });
   };
 
   const broadcast = (mode, source) => {
@@ -838,8 +841,17 @@
     return "";
   };
 
+  const subscribeHref = (section, plan) => {
+    const base = String(section.dataset.pricingSubscribeUrl || "").trim();
+    if (!base || plan.customPrice || !plan.code) return "";
+    const period = normalize(section.dataset.billing) === "annual" ? "YEARLY" : "MONTHLY";
+    const lang = String(document.documentElement.lang || "").toLowerCase();
+    const prefix = lang && /^\/(?!\/)/.test(base) && window.location.pathname.toLowerCase().indexOf("/" + lang + "/") === 0 ? "/" + lang : "";
+    return prefix + base + (base.indexOf("?") === -1 ? "?" : "&") + "plan=" + encodeURIComponent(plan.code) + "&period=" + period;
+  };
+
   const dynamicCtaHref = (section, plan, config) => (
-    plan.ctaUrl || (config && config.purchaseUrl) || section.dataset.pricingPurchaseUrl || "#"
+    subscribeHref(section, plan) || plan.ctaUrl || (config && config.purchaseUrl) || section.dataset.pricingPurchaseUrl || "#"
   );
 
   const periodText = (plan) => {
@@ -931,6 +943,7 @@
       }
       setText(card, ".pf-cta", ctaLabel);
       setHref(card, ".pf-cta", dynamicCtaHref(section, plan, pricing.config));
+      card.dataset.subscribePlan = subscribeHref(section, plan) ? plan.code : "";
 
       const price = card.querySelector(".pf-price");
       if (price) {

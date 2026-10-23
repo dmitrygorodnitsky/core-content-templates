@@ -160,6 +160,7 @@
     var base = options.apiBase;
     return core.request(options.fetch, url(base, options.organizationCode), { method: "POST", body: request() }).then(function (result) {
       if (result.status < 200 || result.status >= 300) throw core.failure("catalog", result.status, core.messageOf(result.payload));
+      if (!result.payload || typeof result.payload !== "object") throw core.failure("catalog", result.status);
       return normalize(result.payload, options.rules, options.locale);
     });
   }

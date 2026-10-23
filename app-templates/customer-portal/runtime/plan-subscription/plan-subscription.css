@@ -95,7 +95,7 @@
   font-size: 0.875rem;
   line-height: 1.45;
   color: var(--ps-muted);
-  padding-left: 0.25rem;
+  padding-inline-start: 0.25rem;
 }
 
 .ps-optional {
@@ -116,6 +116,14 @@
 
 .ps-link:hover {
   text-decoration: underline;
+}
+
+.ps-link--forward::after {
+  content: "\00a0→";
+}
+
+[dir="rtl"] .ps-link--forward::after {
+  content: "\00a0←";
 }
 
 .ps-ring,
@@ -318,7 +326,7 @@
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  text-align: right;
+  text-align: end;
   gap: 0.125rem;
   white-space: nowrap;
 }
@@ -341,7 +349,7 @@
   cursor: default;
   background: transparent;
   box-shadow: inset 0 0 0 1px var(--ps-line);
-  padding-left: calc(1.5rem + 1.25rem + 1rem);
+  padding-inline-start: calc(1.5rem + 1.25rem + 1rem);
 }
 
 .ps-plan--sales::before,
@@ -458,6 +466,10 @@
   width: 0;
   border-radius: inherit;
   background: linear-gradient(90deg, #6bedf9 0%, #ffa72c 100%);
+}
+
+[dir="rtl"] .ps-capacity__fill {
+  background: linear-gradient(270deg, #6bedf9 0%, #ffa72c 100%);
   transition: width 0.3s ease;
 }
 
@@ -468,7 +480,7 @@
 }
 
 .ps-capacity__note {
-  padding-left: 0;
+  padding-inline-start: 0;
 }
 
 .ps-capacity__note--limit {
@@ -662,7 +674,7 @@
   margin: 0.75rem 0 0;
   padding: 0;
   list-style: none;
-  text-align: left;
+  text-align: start;
 }
 
 .ps-timeline__item {
@@ -790,7 +802,7 @@
 .ps-order__columns span:nth-child(n + 2),
 .ps-order__qty,
 .ps-order__amount {
-  text-align: right;
+  text-align: end;
 }
 
 .ps-order__lines {
@@ -840,7 +852,7 @@
   flex-direction: column;
   gap: 0.5rem;
   margin: 0;
-  margin-left: auto;
+  margin-inline-start: auto;
   width: min(100%, 22rem);
 }
 
@@ -860,7 +872,7 @@
 .ps-order__total-row dd {
   color: var(--color-heading);
   font-variant-numeric: tabular-nums;
-  text-align: right;
+  text-align: end;
 }
 
 .ps-order__total-row--grand {
@@ -969,14 +981,14 @@
 
   .ps-plan--sales {
     grid-template-columns: 1fr;
-    padding-left: 1.125rem;
+    padding-inline-start: 1.125rem;
   }
 
   .ps-plan--sales .ps-plan__price {
     grid-column: 1;
     flex-direction: column;
     align-items: flex-start;
-    text-align: left;
+    text-align: start;
   }
 
   .ps-addon {
@@ -1020,7 +1032,7 @@
   .ps-order__qty {
     grid-column: 1;
     grid-row: 2;
-    text-align: left;
+    text-align: start;
     font-size: 0.8125rem;
   }
 

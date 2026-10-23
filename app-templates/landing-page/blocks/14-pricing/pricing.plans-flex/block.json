@@ -181,6 +181,13 @@
       "description": "Fallback CTA destination used when the product CTA_LINK attribute is empty."
     },
     {
+      "code": "pricing_subscribe_url",
+      "type": "URL",
+      "default": "",
+      "name": "Dynamic Pricing Subscribe URL",
+      "description": "Self-service purchase page. When set, priced plans link to it with ?plan=<product code>&period=MONTHLY|YEARLY from the billing toggle; custom-price plans keep the purchase URL."
+    },
+    {
       "code": "pricing_buy_label",
       "type": "LOCALIZED_STRING_SS",
       "default": "Buy now",

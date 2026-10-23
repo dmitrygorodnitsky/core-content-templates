@@ -1806,7 +1806,7 @@ select {
 <section class="composition-section composition-section--pricing-dynamic-servicewand" data-composition-block="pricing.dynamic-servicewand">
 <section class="pd-servicewand" data-block="pricing.dynamic-servicewand">
 <!-- lab-ui block · pricing.dynamic-servicewand/plans -->
-<section class="pf-plans" id="pricing" data-block="pricing.plans-flex" data-section-enabled="true" data-billing="monthly" data-pricing-period="monthly" data-pricing-dynamic="true" data-pricing-api-base="/core-pim/api" data-pricing-organization="SERVICEWAND" data-pricing-product-type-code="SERVICEWAND_SAAS" data-pricing-sort-attribute-code="SORT_ORDER_PRIORITY" data-pricing-price-type-code="RECURRENT" data-pricing-price-attribute-code="INTERVAL" data-pricing-price-attribute-values="1 month" data-pricing-currency="CAD" data-pricing-purchase-url="#pricing" data-pricing-buy-label="[object Object]" data-pricing-contact-label="[object Object]" data-pricing-feature-list-label="[object Object]" data-pricing-error-mode="fallback">
+<section class="pf-plans" id="pricing" data-block="pricing.plans-flex" data-section-enabled="true" data-billing="monthly" data-pricing-period="monthly" data-pricing-dynamic="true" data-pricing-api-base="/core-pim/api" data-pricing-organization="SERVICEWAND" data-pricing-product-type-code="SERVICEWAND_SAAS" data-pricing-sort-attribute-code="SORT_ORDER_PRIORITY" data-pricing-price-type-code="RECURRENT" data-pricing-price-attribute-code="INTERVAL" data-pricing-price-attribute-values="1 month" data-pricing-currency="CAD" data-pricing-purchase-url="#pricing" data-pricing-subscribe-url="" data-pricing-buy-label="[object Object]" data-pricing-contact-label="[object Object]" data-pricing-feature-list-label="[object Object]" data-pricing-error-mode="fallback">
   <div class="container">
     <header class="pf-top">
       <p class="pf-eyebrow">[object Object]</p>
@@ -2114,7 +2114,7 @@ select {
         "NAME",
         config.locale,
         localizedScalar(product.name, config.locale)
-      ), config),
+      ) || "Published plan", config),
       description: dynamicText(localizedField(
         product.nls,
         "DESCRIPTION",
@@ -2738,6 +2738,9 @@ select {
     section.querySelectorAll("[data-period-monthly], [data-period-annual]").forEach((card) => {
       setText(card, ".pf-period", next === "annual" ? card.dataset.periodAnnual : card.dataset.periodMonthly);
     });
+    section.querySelectorAll("[data-subscribe-plan]").forEach((card) => {
+      if (card.dataset.subscribePlan) setHref(card, ".pf-cta", subscribeHref(section, { code: card.dataset.subscribePlan }));
+    });
   };
 
   const broadcast = (mode, source) => {
@@ -2788,8 +2791,17 @@ select {
     return "";
   };
 
+  const subscribeHref = (section, plan) => {
+    const base = String(section.dataset.pricingSubscribeUrl || "").trim();
+    if (!base || plan.customPrice || !plan.code) return "";
+    const period = normalize(section.dataset.billing) === "annual" ? "YEARLY" : "MONTHLY";
+    const lang = String(document.documentElement.lang || "").toLowerCase();
+    const prefix = lang && /^\/(?!\/)/.test(base) && window.location.pathname.toLowerCase().indexOf("/" + lang + "/") === 0 ? "/" + lang : "";
+    return prefix + base + (base.indexOf("?") === -1 ? "?" : "&") + "plan=" + encodeURIComponent(plan.code) + "&period=" + period;
+  };
+
   const dynamicCtaHref = (section, plan, config) => (
-    plan.ctaUrl || (config && config.purchaseUrl) || section.dataset.pricingPurchaseUrl || "#"
+    subscribeHref(section, plan) || plan.ctaUrl || (config && config.purchaseUrl) || section.dataset.pricingPurchaseUrl || "#"
   );
 
   const periodText = (plan) => {
@@ -2881,6 +2893,7 @@ select {
       }
       setText(card, ".pf-cta", ctaLabel);
       setHref(card, ".pf-cta", dynamicCtaHref(section, plan, pricing.config));
+      card.dataset.subscribePlan = subscribeHref(section, plan) ? plan.code : "";
 
       const price = card.querySelector(".pf-price");
       if (price) {

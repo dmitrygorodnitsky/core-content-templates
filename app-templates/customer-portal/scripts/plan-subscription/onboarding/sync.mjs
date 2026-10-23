@@ -63,6 +63,9 @@ await embed('../PLAN_SUBSCRIPTION_WORKFLOW_V11.java','CHECKOUT COMMANDS',await f
 const readAccess=(await fs.readFile(new URL('../purchase-access/PurchaseReadAccess.java',import.meta.url),'utf8')).split('\n').filter(line=>!line.startsWith('import ')).join('\n').trim().replace('public final class PurchaseReadAccess','public static final class PurchaseReadAccess');
 await embed('../PLAN_SUBSCRIPTION_DRAFT_V5.java','PURCHASE READ ACCESS POLICY',readAccess.split('\n').map(line=>'    '+line).join('\n'));
 await embed('../PLAN_SUBSCRIPTION_DRAFT_V5.java','PURCHASE READ ACCESS NATIVE',await fs.readFile(new URL('../purchase-access/native.java.inc',import.meta.url),'utf8'));
+const emailLayout=(await fs.readFile(new URL('../email/EmailLayout.java',import.meta.url),'utf8')).split('\n').filter(line=>!line.startsWith('import ')).join('\n').trim().replace('public final class EmailLayout','public static final class EmailLayout');
+for(const name of ['../PLAN_SUBSCRIPTION_WORKFLOW_V11.java','../PLAN_SUBSCRIPTION_DRAFT_V5.java'])
+  await embed(name,'EMAIL LAYOUT',emailLayout.split('\n').map(line=>line?'    '+line:line).join('\n'));
 
 const seedUrl = new URL('../scripts.json', import.meta.url), seed = JSON.parse(await fs.readFile(seedUrl, 'utf8'));
 const bill = seed.scripts.find(row => row.code === 'PLAN_SUBSCRIPTION_DRAFT_V5');

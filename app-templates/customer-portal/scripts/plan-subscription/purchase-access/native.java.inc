@@ -30,12 +30,11 @@
         if(mail.link()==null)return PurchaseReadAccess.publicReceipt(mail.receipt());
         boolean queued=false;
         try {
-            String href=org.springframework.web.util.HtmlUtils.htmlEscape(mail.link());
             onboardingMail.sendSimpleEmail(new String[]{mail.recipient()},"Your ServiceWand purchase",
-                    "<p>Your subscription request has been confirmed and its draft order is ready.</p>"
-                    +"<p><a href=\""+href+"\">View your purchase</a></p>"
-                    +"<p>This private link permits viewing this purchase only. It expires within 24 hours; do not forward it.</p>"
-                    +"<p>No payment has been taken. Changes require a new request or assistance from ServiceWand.</p>");
+                    EmailLayout.document("Your subscription request has been confirmed and its draft order is ready",
+                            EmailLayout.button("View your purchase",mail.link()),
+                            EmailLayout.note("This private link permits viewing this purchase only. It expires within 24 hours; do not forward it."),
+                            EmailLayout.note("No payment has been taken. Changes require a new request or assistance from ServiceWand.")));
             queued=true;
         } catch(Exception ignored) { /* The mail may have been queued: revoke the capability before any manual retry. */ }
         boolean delivered=queued;

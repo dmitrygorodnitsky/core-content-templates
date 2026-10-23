@@ -11,8 +11,8 @@
       },
       "initialState": "DRAFT",
       "script": "PLAN_SUBSCRIPTION_DRAFT_V5",
-      "onUpdate": "workflowUtils.guardPreparedOrderItem(entity, java.util.Map.of());\n// entitlement checkout source: e9082d51ea7f",
-      "onDelete": "workflowUtils.guardPreparedOrderItemDelete(entity, java.util.Map.of());\n// entitlement checkout source: e9082d51ea7f",
+      "onUpdate": "workflowUtils.guardPreparedOrderItem(entity, java.util.Map.of());\n// entitlement checkout source: 32f4b7780fd6",
+      "onDelete": "workflowUtils.guardPreparedOrderItemDelete(entity, java.util.Map.of());\n// entitlement checkout source: 32f4b7780fd6",
       "states": [
         {
           "code": "ACTIVE",

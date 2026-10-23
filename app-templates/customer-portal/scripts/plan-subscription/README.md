@@ -66,6 +66,7 @@ It does not create a buyer User or test delivery through an actual portal/mailbo
 - `onboarding/`: CA readiness, frozen execution plans, disabled idempotent native
   executor and consumer policy/binding provisioning. No onboarding entities are
   created by the current disabled deployment; see its README for limits.
+- `email/`: the shared email layout embedded into the CMS and billing scripts.
 - `checkout/`: explicit operator-only read/edit DTO commands and shared native
   tax assignment used for both preview and the existing Order workflow.
 - `PLAN_SUBSCRIPTION_ONBOARDING_MODEL_V1.java`: permanent RM-side read-only
@@ -417,6 +418,10 @@ a separate backend dependency. The checker reports the observed HTTP codes
 and asserts business-state outcomes, not fabricated transport success.
 
 The helper uses `sendSimpleEmail`; no email template is created or edited.
+The HTML of all three emails comes from `email/EmailLayout.java`, which
+`onboarding/sync.mjs` embeds into both scripts: the dark site palette, a
+`ServiceWand` wordmark, table layout and inline styles only, with the wording
+unchanged. `email/EmailLayoutTest.java` covers escaping and structure.
 `QUEUED` means that the Core send call returned, not inbox delivery. Dispatching
 or unknown outcomes are not automatically retried because that could send a
 duplicate. A crash between token commit and dispatch requires operator recovery

@@ -150,8 +150,47 @@
     return out;
   }
 
+  function flatten(value, prefix, out) {
+    var result = out || {};
+    if (Array.isArray(value)) {
+      value.forEach(function (item, index) { flatten(item, prefix + "." + index, result); });
+    } else if (value && typeof value === "object") {
+      Object.keys(value).forEach(function (key) { flatten(value[key], prefix ? prefix + "." + key : key, result); });
+    } else {
+      result[prefix] = value;
+    }
+    return result;
+  }
+
+  function unflatten(map, base) {
+    var out = JSON.parse(JSON.stringify(base));
+    Object.keys(map || {}).forEach(function (key) {
+      var path = key.split(".");
+      var node = out;
+      for (var index = 0; index < path.length - 1; index += 1) {
+        if (!node || typeof node !== "object" || !(path[index] in node)) return;
+        node = node[path[index]];
+      }
+      var last = path[path.length - 1];
+      if (node && typeof node === "object" && last in node && typeof node[last] === "string" && typeof map[key] === "string" && map[key]) node[last] = map[key];
+    });
+    return out;
+  }
+
+  function fromDocument(root, screen) {
+    var found = {};
+    Array.prototype.forEach.call(root.querySelectorAll("[data-ps-copy-key]"), function (node) {
+      var text = String(node.textContent || "").replace(/\s+/g, " ").trim();
+      if (text) found[node.getAttribute("data-ps-copy-key")] = text;
+    });
+    return unflatten(found, COPY)[screen];
+  }
+
   ns.copy = Object.freeze({
     defaults: COPY,
     merge: merge,
+    flatten: flatten,
+    unflatten: unflatten,
+    fromDocument: fromDocument,
   });
 })(typeof window !== "undefined" ? window : globalThis);

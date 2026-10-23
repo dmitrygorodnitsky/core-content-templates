@@ -314,7 +314,8 @@ try {
 
   if (process.argv.includes('--purchase-access-only')) {
     const config=(await list('core','script','PLAN_SUBSCRIPTION_DRAFT_V5',names(['metadata']),'SYSTEM'))[0].metadata.PURCHASE_READ_ACCESS_CONFIG;
-    assert.equal(config.pageUrl,undefined,'This focused checkpoint expects no buyer page: it must not email a placeholder');
+    const page=config.pageUrl;
+    assert.ok(page===undefined || /^https:\/\/dev-1\.servicewand\.com\/[^?#]+$/.test(page),'The buyer page must be a dev-1 page without query or fragment');
     const draft=await awaiting();await use(draft,'POST');const review=await confirmationReady(draft.id);
     await confirmLink(review,'POST');const ready=await formState(draft.id,'DRAFT_ORDER_READY');
     const digest=review.metadata.PLAN_SUBSCRIPTION.checkout.checkoutDigest;
@@ -322,13 +323,14 @@ try {
     await fs.writeFile(new URL('../../../../tmp/plan-subscription-magic-onboarding-result.json',import.meta.url),JSON.stringify(prepared,null,2),{mode:0o600});
     assert.equal(prepared.status,'AWAITING_PAYMENT');
     const status=await purchaseAction('deliverPurchaseReadAccess',draft.id,digest);
-    assert.equal(status.status,'WAITING_FOR_PURCHASE_PAGE_URL');assert.equal(status.paymentEnabled,false);
-    assert.ok(!status.grantId && !status.token && !status.link);
+    assert.equal(status.paymentEnabled,false);assert.ok(!status.token && !status.link);
+    if(page===undefined){assert.equal(status.status,'WAITING_FOR_PURCHASE_PAGE_URL');assert.ok(!status.grantId);}
+    else{assert.equal(status.status,'QUEUED');assert.equal(status.deliveryStatus,'QUEUED');assert.ok(Number.isFinite(status.grantId) && status.expiresAt);}
     const repeated=await purchaseAction('deliverPurchaseReadAccess',draft.id,digest);
     assert.deepEqual(repeated,status);
     const read=await purchaseAction('readPurchaseReadAccess',draft.id,digest);assert.deepEqual(read,status);
     const rows=(await ok('/core-bill/api/order/list.json',{json:{filters:[{property:'id',operator:'=',value:ready.metadata.PLAN_SUBSCRIPTION.purchase.orderId}],mappings:names(['id','metadata']),offset:0,pageSize:2}})).result;
-    assert.equal(rows.length,1);assert.equal(rows[0].metadata.PLAN_SUBSCRIPTION_READ_ACCESS.status,'WAITING_FOR_PURCHASE_PAGE_URL');
+    assert.equal(rows.length,1);assert.equal(rows[0].metadata.PLAN_SUBSCRIPTION_READ_ACCESS.status,page===undefined?'WAITING_FOR_PURCHASE_PAGE_URL':'QUEUED');
     if(prepared.status==='AWAITING_PAYMENT')assert.ok(rows[0].metadata.PLAN_SUBSCRIPTION_ONBOARDING,'Read-access receipt discarded frozen onboarding plan');
     await purchaseAction('deliverPurchaseReadAccess',draft.id,'0'.repeat(64),true);
     const anonymous=await call('/core/api/script/PLAN_SUBSCRIPTION_WORKFLOW_V11/deliverPurchaseReadAccess/exec.json',{anonymous:true,json:[{formId:draft.id},{checkoutDigest:digest}]});
@@ -339,8 +341,9 @@ try {
     await ok('/core-bill/api/grant/delete.json',{method:'DELETE',org:'SYSTEM',json:[nativeGrant.grantId]});
     assert.equal(nativeGrant.passed,true,'Native grant check failed: '+nativeGrant.check);
     assert.equal(nativeGrant.itemsChecked,1);
-    checks.push('confirmed FormToken workflow prepares draft and safe read-access waiting receipt; retries preserve it and frozen onboarding metadata');
-    checks.push('invalid digest and anonymous internal Script API cannot issue purchase access; no page placeholder, buyer User or email created');
+    checks.push(page===undefined?'confirmed FormToken workflow prepares draft and safe read-access waiting receipt; retries preserve it and frozen onboarding metadata'
+      :'confirmed FormToken workflow prepares draft and queues one read-access link to the configured page; retries reuse the receipt and keep frozen onboarding metadata');
+    checks.push('invalid digest and anonymous internal Script API cannot issue purchase access; no buyer User created'+(page===undefined?', no page placeholder or email':''));
     checks.push('actual private issuer and mapping policy: anonymous Order/Item reads succeed; other Order, writes, workflow events and revoked credential denied');
   } else if (process.argv.includes('--entitlements-only')) {
     const config = await loadConfig(), catalog = await readDev1Catalog(bearer);
@@ -690,7 +693,9 @@ try {
   const review = await confirmationReady(valid.id);
   const preview = { checkout: review.metadata.PLAN_SUBSCRIPTION.checkout };
   assert.equal(preview.checkout.status, 'PREPARED');
-  assert.ok(preview.checkout.preview.totalPayable == null, 'Pending snapshot contains a payable total');
+  const exactTaxes = preview.checkout.preview.taxStatus === 'CONFIGURED_RATES_APPLIED' && preview.checkout.preview.taxQuote?.roundingStatus === 'EXACT_MINOR_UNITS';
+  assert.ok(exactTaxes ? preview.checkout.preview.totalPayable != null : preview.checkout.preview.totalPayable == null,
+    'A payable total appears only with configured taxes rounded to exact minor units');
   assert.equal(preview.checkout.preview.catalogValidation, 'VALIDATED');
   assert.ok(preview.checkout.preview.planName);
   assert.ok(preview.checkout.preview.addonNames.length === 2);
@@ -937,6 +942,11 @@ try {
       } })).result;
       assert.ok(items.length < 100);
       for (const item of items) assert.ok(created.includes(Number(item.metadata?.PLAN_SUBSCRIPTION?.sourceFormId)), 'Item cleanup escaped test Forms');
+      const grantIds = purchases.orders.map(order => order.metadata?.PLAN_SUBSCRIPTION_READ_ACCESS?.grantId).filter(Number.isFinite);
+      if (grantIds.length) {
+        try { await ok('/core-bill/api/grant/delete.json', { method: 'DELETE', json: grantIds }); }
+        catch { failures.push('Read-access grants require cleanup: ' + grantIds.join(',')); }
+      }
       for (const order of purchases.orders) {
         const invoiceIds = await billingFixture('unlockPreparedInvoiceCleanup', order.id, Number(order.metadata.PLAN_SUBSCRIPTION.sourceFormId));
         if (invoiceIds.length) {

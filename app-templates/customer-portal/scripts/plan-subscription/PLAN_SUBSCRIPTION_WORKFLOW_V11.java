@@ -550,25 +550,24 @@ public class MAIN_CLASS {
             formManager.save(form);
             Map<String, Object> preview = map(checkout.get("preview"));
             String link = confirmationLink(config(), base, raw, "purchase");
-            String body = "<p>Review your ServiceWand subscription request.</p>"
-                    + "<p>Company: " + HtmlUtils.htmlEscape(text(form, "COMPANY_NAME")) + "<br>Address: "
-                    + HtmlUtils.htmlEscape(text(form, "COMPANY_ADDRESS")) + "</p>"
-                    + "<p>Contact: " + HtmlUtils.htmlEscape((text(form, "FIRST_NAME") + " " + text(form, "LAST_NAME")).trim())
-                    + "<br>Email: " + HtmlUtils.htmlEscape(recipient) + "<br>Phone: " + HtmlUtils.htmlEscape(text(form, "PHONE")) + "</p>"
-                    + "<p>Plan: " + HtmlUtils.htmlEscape(String.valueOf(preview.get("planName")))
-                    + "<br>Billing period: " + ("YEARLY".equals(text(form, "BILLING_PERIOD")) ? "Yearly" : "Monthly")
-                    + "<br>Catalog plan price: " + HtmlUtils.htmlEscape(String.valueOf(preview.get("planAmount"))) + " "
-                    + HtmlUtils.htmlEscape(String.valueOf(preview.get("currencyCode"))) + "</p>"
-                    + "<p>Add-ons: " + HtmlUtils.htmlEscape(((Collection<?>) preview.get("addonNames")).isEmpty() ? "None" : String.join(", ", ((Collection<?>) preview.get("addonNames")).stream().map(String::valueOf).toList())) + "</p>"
-                    + purchaseLinesHtml(preview)
-                    + entitlementSummaryHtml(preview)
-                    + "<p>Subtotal before taxes: " + HtmlUtils.htmlEscape(String.valueOf(preview.get("subtotal"))) + " "
-                    + HtmlUtils.htmlEscape(String.valueOf(preview.get("currencyCode"))) + "</p>"
-                    + checkoutTaxHtml(preview)
-                    + "<p>Routing Credits and Custom Reports are excluded. "
-                    + "This confirmation creates a draft order only. No payment is taken.</p>"
-                    + "<p><a href=\"" + HtmlUtils.htmlEscape(link) + "\">Confirm request and create draft order</a></p>"
-                    + "<p>This link can be used once and expires in " + hours + " hours. If these details are incorrect, submit a new request.</p>";
+            String currency = String.valueOf(preview.get("currencyCode"));
+            Collection<?> addonNames = (Collection<?>) preview.get("addonNames");
+            String body = EmailLayout.document("Review your ServiceWand subscription request",
+                    EmailLayout.details("Company", text(form, "COMPANY_NAME"), "Address", text(form, "COMPANY_ADDRESS")),
+                    EmailLayout.details("Contact", (text(form, "FIRST_NAME") + " " + text(form, "LAST_NAME")).trim(),
+                            "Email", recipient, "Phone", text(form, "PHONE")),
+                    EmailLayout.details("Plan", String.valueOf(preview.get("planName")),
+                            "Billing period", "YEARLY".equals(text(form, "BILLING_PERIOD")) ? "Yearly" : "Monthly",
+                            "Catalog plan price", preview.get("planAmount") + " " + currency,
+                            "Add-ons", addonNames.isEmpty() ? "None" : String.join(", ", addonNames.stream().map(String::valueOf).toList())),
+                    purchaseLinesHtml(preview),
+                    EmailLayout.amounts(EmailLayout.amountRow("Subtotal before taxes", preview.get("subtotal") + " " + currency, false)
+                            + checkoutTaxHtml(preview)),
+                    entitlementSummaryHtml(preview),
+                    EmailLayout.paragraph("Routing Credits and Custom Reports are excluded. "
+                            + "This confirmation creates a draft order only. No payment is taken."),
+                    EmailLayout.button("Confirm request and create draft order", link),
+                    EmailLayout.note("This link can be used once and expires in " + hours + " hours. If these details are incorrect, submit a new request."));
             return new ConfirmationMail(recipient, body, capture, token.getId(), String.valueOf(checkout.get("checkoutDigest")));
         });
         if (mail == null || mail.capture()) return;
@@ -675,11 +674,12 @@ public class MAIN_CLASS {
             Map<String, Object> level = map(value);
             if (Boolean.TRUE.equals(level.get("enabled"))) levels.add(String.valueOf(level.get("sourceAttribute")).replace('_', ' ').toLowerCase(Locale.ROOT) + ": " + level.get("value"));
         }
-        return "<p>Purchased active Properties capacity: " + HtmlUtils.htmlEscape(String.valueOf(map(snapshot.get("propertyCapacity")).get("limit")))
-                + "<br>Plan maximum Properties: " + HtmlUtils.htmlEscape(String.valueOf(map(snapshot.get("propertyCapacity")).get("overallMaximum")))
-                + "<br>Weather Properties: " + HtmlUtils.htmlEscape(String.valueOf(map(snapshot.get("weather")).get("propertyCount")))
-                + "<br>Included features: " + HtmlUtils.htmlEscape(String.join(", ", features))
-                + "<br>Feature levels: " + HtmlUtils.htmlEscape(String.join(", ", levels)) + "</p>";
+        return EmailLayout.details(
+                "Purchased active Properties capacity", String.valueOf(map(snapshot.get("propertyCapacity")).get("limit")),
+                "Plan maximum Properties", String.valueOf(map(snapshot.get("propertyCapacity")).get("overallMaximum")),
+                "Weather Properties", String.valueOf(map(snapshot.get("weather")).get("propertyCount")),
+                "Included features", String.join(", ", features),
+                "Feature levels", String.join(", ", levels));
     }
 
     private static Object canonical(Object value) {
@@ -698,17 +698,15 @@ public class MAIN_CLASS {
     }
 
     private String purchaseLinesHtml(Map<String, Object> preview) {
-        StringBuilder html = new StringBuilder("<ul>");
-        if (!(preview.get("lines") instanceof Collection<?> lines)) throw new ApplicationException("Checkout lines are missing");
+        if (!(preview.get("lines") instanceof Collection<?> lines) || lines.isEmpty()) throw new ApplicationException("Checkout lines are missing");
+        List<List<String>> rows = new ArrayList<>();
         for (Object value : lines) {
             Map<String, Object> line = map(value);
-            html.append("<li>").append(HtmlUtils.htmlEscape(String.valueOf(line.get("productName"))))
-                .append(": ").append(HtmlUtils.htmlEscape(String.valueOf(line.get("quantity"))))
-                .append(" x ").append(HtmlUtils.htmlEscape(String.valueOf(line.get("unitAmount"))))
-                .append(" = ").append(HtmlUtils.htmlEscape(String.valueOf(line.get("lineAmount"))))
-                .append(" ").append(HtmlUtils.htmlEscape(String.valueOf(preview.get("currencyCode")))).append("</li>");
+            rows.add(List.of(String.valueOf(line.get("productName")),
+                    line.get("quantity") + " x " + line.get("unitAmount"),
+                    line.get("lineAmount") + " " + preview.get("currencyCode")));
         }
-        return html.append("</ul>").toString();
+        return EmailLayout.lines(rows);
     }
 
     private Map<String, Object> purchasePayload(Form form, Map<String, Object> data) {
@@ -973,10 +971,10 @@ public class MAIN_CLASS {
         if (mail == null || mail.capture()) return;
         String status;
         try {
-            String body = "<p>Confirm your email to continue your ServiceWand purchase.</p>"
-                    + "<p><a href=\"" + HtmlUtils.htmlEscape(mail.link()) + "\">Confirm email</a></p>"
-                    + "<p>This link can be used once and expires in " + mail.hours() + " hours.</p>"
-                    + "<p>If you did not request this purchase, you can ignore this email.</p>";
+            String body = EmailLayout.document("Confirm your email to continue your ServiceWand purchase",
+                    EmailLayout.button("Confirm email", mail.link()),
+                    EmailLayout.note("This link can be used once and expires in " + mail.hours() + " hours."),
+                    EmailLayout.note("If you did not request this purchase, you can ignore this email."));
             scriptUtils.sendSimpleEmail(new String[] {mail.recipient()},
                     "Confirm your ServiceWand email", body);
             status = "QUEUED";
@@ -1582,10 +1580,127 @@ public class MAIN_CLASS {
     private String checkoutTaxHtml(Map<String,Object> preview) {
         Map<String,Object> tax=map(preview.get("taxQuote"));
         if(!"CONFIGURED_RATES_APPLIED".equals(preview.get("taxStatus")) || !"EXACT_MINOR_UNITS".equals(tax.get("roundingStatus")) || preview.get("totalPayable")==null)
-            return "<p>Taxes and the final total require configuration or review. No payment is available.</p>";
-        String currency=HtmlUtils.htmlEscape(String.valueOf(preview.get("currencyCode")));
-        return "<p>Taxes: "+HtmlUtils.htmlEscape(String.valueOf(tax.get("taxAmount")))+" "+currency
-                +"<br>Total including taxes: "+HtmlUtils.htmlEscape(String.valueOf(preview.get("totalPayable")))+" "+currency+"</p>";
+            return EmailLayout.amountNote("Taxes and the final total require configuration or review. No payment is available.");
+        String currency=String.valueOf(preview.get("currencyCode"));
+        return EmailLayout.amountRow("Taxes",tax.get("taxAmount")+" "+currency,false)
+                +EmailLayout.amountRow("Total including taxes",preview.get("totalPayable")+" "+currency,true);
     }
     // END GENERATED CHECKOUT COMMANDS
+
+    // BEGIN GENERATED EMAIL LAYOUT
+    public static final class EmailLayout {
+        private static final String FONT = "font-family:'Vela Sans',Arial,Helvetica,sans-serif;";
+        private static final String TEXT = "color:#D9D9D9;";
+        private static final String MUTED = "color:#97A2B8;";
+        private static final String HEADING = "color:#FFFFFF;";
+        private static final String RULE = "border-top:1px solid #343849;";
+        private static final String TABLE = "<table role=\"presentation\" width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\"";
+        private static final int MIN_HEIGHT = 680;
+        private static final String GRADIENT = "background-color:#6BEAF9;background-image:linear-gradient(90deg,#6BEDF9 0%,#FFA72C 100%);";
+
+        private EmailLayout() {}
+
+        public static String escape(Object value) {
+            String text = String.valueOf(value);
+            StringBuilder out = new StringBuilder(text.length());
+            for (int index = 0; index < text.length(); index++) {
+                char c = text.charAt(index);
+                switch (c) {
+                    case '&' -> out.append("&amp;");
+                    case '<' -> out.append("&lt;");
+                    case '>' -> out.append("&gt;");
+                    case '"' -> out.append("&quot;");
+                    case '\'' -> out.append("&#39;");
+                    default -> out.append(c);
+                }
+            }
+            return out.toString();
+        }
+
+        public static String document(String heading, String... blocks) {
+            StringBuilder content = new StringBuilder();
+            for (String block : blocks) if (block != null) content.append(block);
+            return "<!doctype html><html style=\"height:100%;\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\">"
+                    + "<meta name=\"color-scheme\" content=\"dark\"><meta name=\"supported-color-schemes\" content=\"dark\"></head>"
+                    + "<body style=\"margin:0;padding:0;height:100%;background-color:#17171B;\">"
+                    + TABLE + " height=\"100%\" bgcolor=\"#17171B\" style=\"height:100%;min-height:" + MIN_HEIGHT + "px;background-color:#17171B;\">"
+                    + "<tr><td align=\"center\" valign=\"middle\" height=\"" + MIN_HEIGHT + "\" style=\"height:" + MIN_HEIGHT + "px;padding:48px 12px;\">"
+                    + TABLE + " style=\"max-width:600px;\">"
+                    + "<tr><td style=\"padding:0 4px 18px;" + FONT + "font-size:24px;line-height:1.2;font-weight:700;letter-spacing:-0.01em;" + HEADING + "\">"
+                    + "Service<span style=\"color:#6BEAF9;\">Wand</span></td></tr>"
+                    + "<tr><td bgcolor=\"#20232D\" style=\"background-color:#20232D;background-image:linear-gradient(180deg,#20232D 0%,#2C2D3C 100%);"
+                    + "border:1px solid #3B4258;border-radius:20px;overflow:hidden;\">"
+                    + TABLE + "><tr><td height=\"3\" style=\"height:3px;line-height:3px;font-size:0;" + GRADIENT + "\">&nbsp;</td></tr>"
+                    + "<tr><td style=\"padding:30px 28px 32px;\">"
+                    + "<h1 style=\"margin:0 0 20px;" + FONT + "font-size:22px;line-height:1.3;font-weight:700;" + HEADING + "\">" + escape(heading) + "</h1>"
+                    + content
+                    + "</td></tr></table></td></tr></table></td></tr></table></body></html>";
+        }
+
+        public static String paragraph(String text) {
+            return "<p style=\"margin:0 0 16px;" + FONT + "font-size:15px;line-height:1.6;" + TEXT + "\">" + escape(text) + "</p>";
+        }
+
+        public static String note(String text) {
+            return "<p style=\"margin:0 0 12px;" + FONT + "font-size:13px;line-height:1.55;" + MUTED + "\">" + escape(text) + "</p>";
+        }
+
+        public static String button(String label, String href) {
+            return TABLE.replace("width=\"100%\" ", "") + " style=\"margin:8px 0 22px;\"><tr><td bgcolor=\"#6BEAF9\" style=\"border-radius:100px;" + GRADIENT + "\">"
+                    + "<a href=\"" + escape(href) + "\" target=\"_blank\" style=\"display:inline-block;padding:14px 28px;" + FONT
+                    + "font-size:15px;line-height:1.2;font-weight:700;color:#1B1D25;text-decoration:none;border-radius:100px;\">" + escape(label) + "</a>"
+                    + "</td></tr></table>";
+        }
+
+        public static String details(String... labelsAndValues) {
+            if (labelsAndValues.length == 0 || labelsAndValues.length % 2 != 0) throw new IllegalArgumentException("Details need label and value pairs");
+            StringBuilder rows = new StringBuilder();
+            for (int index = 0; index < labelsAndValues.length; index += 2) {
+                String border = index == 0 ? "" : RULE;
+                rows.append("<tr><td valign=\"top\" style=\"padding:9px 12px 9px 0;width:42%;").append(border).append(FONT)
+                    .append("font-size:13px;line-height:1.5;").append(MUTED).append("\">").append(escape(labelsAndValues[index])).append("</td>")
+                    .append("<td valign=\"top\" style=\"padding:9px 0;").append(border).append(FONT)
+                    .append("font-size:14px;line-height:1.5;").append(HEADING).append("\">").append(escape(labelsAndValues[index + 1])).append("</td></tr>");
+            }
+            return section(rows.toString());
+        }
+
+        public static String lines(List<List<String>> rows) {
+            if (rows.isEmpty()) throw new IllegalArgumentException("Lines are required");
+            StringBuilder html = new StringBuilder();
+            for (int index = 0; index < rows.size(); index++) {
+                List<String> row = rows.get(index);
+                if (row.size() != 3) throw new IllegalArgumentException("A line needs a name, a quantity and an amount");
+                String border = index == 0 ? "" : RULE;
+                html.append("<tr><td valign=\"top\" style=\"padding:10px 10px 10px 0;").append(border).append(FONT)
+                    .append("font-size:14px;line-height:1.45;").append(HEADING).append("\">").append(escape(row.get(0))).append("</td>")
+                    .append("<td valign=\"top\" style=\"padding:10px 10px;white-space:nowrap;").append(border).append(FONT)
+                    .append("font-size:13px;line-height:1.45;").append(MUTED).append("\">").append(escape(row.get(1))).append("</td>")
+                    .append("<td valign=\"top\" align=\"right\" style=\"padding:10px 0;white-space:nowrap;text-align:right;").append(border).append(FONT)
+                    .append("font-size:14px;line-height:1.45;font-weight:700;").append(HEADING).append("\">").append(escape(row.get(2))).append("</td></tr>");
+            }
+            return section(html.toString());
+        }
+
+        public static String amounts(String rows) {
+            return TABLE + " style=\"margin:0 0 20px;" + RULE + "\">" + rows + "</table>";
+        }
+
+        public static String amountRow(String label, String value, boolean strong) {
+            String size = strong ? "font-size:16px;font-weight:700;" : "font-size:14px;";
+            return "<tr><td style=\"padding:10px 12px 0 0;" + FONT + size + "line-height:1.45;" + (strong ? HEADING : TEXT) + "\">" + escape(label) + "</td>"
+                    + "<td align=\"right\" style=\"padding:10px 0 0;white-space:nowrap;text-align:right;" + FONT + size + "line-height:1.45;" + HEADING + "\">"
+                    + escape(value) + "</td></tr>";
+        }
+
+        public static String amountNote(String text) {
+            return "<tr><td colspan=\"2\" style=\"padding:10px 0 0;" + FONT + "font-size:13px;line-height:1.55;" + MUTED + "\">" + escape(text) + "</td></tr>";
+        }
+
+        private static String section(String rows) {
+            return TABLE + " bgcolor=\"#1B1D25\" style=\"margin:0 0 16px;background-color:#1B1D25;border:1px solid #343849;border-radius:14px;\">"
+                    + "<tr><td style=\"padding:6px 16px;\">" + TABLE + ">" + rows + "</table></td></tr></table>";
+        }
+    }
+    // END GENERATED EMAIL LAYOUT
 }

@@ -79,8 +79,8 @@
     private String checkoutTaxHtml(Map<String,Object> preview) {
         Map<String,Object> tax=map(preview.get("taxQuote"));
         if(!"CONFIGURED_RATES_APPLIED".equals(preview.get("taxStatus")) || !"EXACT_MINOR_UNITS".equals(tax.get("roundingStatus")) || preview.get("totalPayable")==null)
-            return "<p>Taxes and the final total require configuration or review. No payment is available.</p>";
-        String currency=HtmlUtils.htmlEscape(String.valueOf(preview.get("currencyCode")));
-        return "<p>Taxes: "+HtmlUtils.htmlEscape(String.valueOf(tax.get("taxAmount")))+" "+currency
-                +"<br>Total including taxes: "+HtmlUtils.htmlEscape(String.valueOf(preview.get("totalPayable")))+" "+currency+"</p>";
+            return EmailLayout.amountNote("Taxes and the final total require configuration or review. No payment is available.");
+        String currency=String.valueOf(preview.get("currencyCode"));
+        return EmailLayout.amountRow("Taxes",tax.get("taxAmount")+" "+currency,false)
+                +EmailLayout.amountRow("Total including taxes",preview.get("totalPayable")+" "+currency,true);
     }

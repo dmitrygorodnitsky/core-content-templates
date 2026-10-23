@@ -1613,7 +1613,7 @@ classes and tokens and add only `ps-*` components.
 
 Source: [`runtime/plan-subscription/`](../../runtime/plan-subscription/), state
 harness [`runtime/plan-subscription.html`](../../runtime/plan-subscription.html)
-(`?screen=purchase|confirm|order&state=…&theme=dark|light&motion=0`), check
+(`?screen=purchase|confirm|order&state=…&lang=en|ru|fr|es|ar|he|zh&theme=dark|light&motion=0`), check
 `node app-templates/customer-portal/scripts/plan-subscription-ui-check.mjs`.
 The harness loads a snapshot of the production site CSS
 (`vendor/servicewand-site.css`, captured 2026-10-23 from servicewand.com) and
@@ -1742,9 +1742,8 @@ grant a price outside the order and a direct Product read return 404, the price
 list holds exactly the order's prices, and a price write returns 401. Grants issued
 before this change (Grant 140) still show the item type name.
 
-Open: the Checkout preview carries `totalPayable` when the configured taxes are
-exact, which contradicts the `totalPayable == null` assertion in
-`check-dev1.mjs --purchase-only`.
+The Checkout preview carries `totalPayable` when the configured taxes are exact;
+`check-dev1.mjs` now expects it exactly then and null otherwise (see below).
 
 Cleanup, approved by the user: Grants 140 and 141 were deleted under SERVICEWAND
 (grants cannot be managed in SYSTEM). The deletion guards then required operator
@@ -1754,6 +1753,79 @@ names) cleared the preparation markers of Invoices 25 and 26, as
 `unlockPreparedInvoiceCleanup` does for checker fixtures. Invoices, Orders (items
 293–298 by cascade), Accounts 801/802, Forms 486/487 and Address 834 (created by the
 first run) were deleted and the Script removed; no PLAN_SUBSCRIPTION Form remains.
+
+### Follow-up — 2026-10-23
+
+The user asked for the remaining non-production items. Not done by decision:
+links and marketing forms of the dev-1 site, production rollout, email resend,
+key rotation and a PR.
+
+Pricing entry (user decision: "Get started" with plan and period). The landing
+zone's `pricing.plans-flex` takes a `pricing_subscribe_url` parameter; when set,
+every priced plan links to `<url>?plan=<product code>&period=MONTHLY|YEARLY`
+and follows the billing toggle, while custom-price plans keep the purchase URL.
+The CMS prefixes only rendered `href` attributes with the page language, so the
+block prepends `/<lang>` itself on a localized page (`/ar/…` →
+`/ar/subscribe.html`). The landing-page dist was regenerated through its
+exporters; the regeneration also carries earlier unrelated block changes. The
+dev-1 copy of the production pricing template diverges from the repository
+build, so it was patched in place (same functions) and pages 34 and 38 set
+`/subscribe.html` with a localized "Get started" label. Known gap, not ours: the
+landscaping page uses CAD while catalog prices are USD, so its block shows the
+lorem fallback on production and dev-1 alike.
+
+Localization (user decision: all site languages, translated here). Copy keys
+are flattened paths of `copy.js`; `locales.js` holds ru, fr, es, ar, he and zh
+for all 119 keys. The exporter emits one `PS_*` LOCALIZED_STRING_SS parameter per
+key into a hidden node list that the runtime reads back, and fails on a missing
+translation. Layout uses logical properties; the site sets `lang`/`dir` from the
+path, so ar and he render right to left (stepper, capacity bar, arrows). The
+harness gained a language selector (`&lang=`). The ui-check asserts identical
+key sets, matching placeholders and plain text for every language. Reviewed in
+the harness (ar, he, ru at 375 px) and live on `/ar/subscribe.html`.
+
+Emails (user decision: same texts, site styling). `email/EmailLayout.java`
+renders the verification, review and order emails: dark site palette, wordmark,
+card, gradient button with dark text, detail and line tables, inline styles
+only. Subjects and sentences are unchanged; headings drop the final period and
+the subtotal/taxes block now follows the lines. `onboarding/sync.mjs` embeds the
+layout into `PLAN_SUBSCRIPTION_WORKFLOW_V11` and `PLAN_SUBSCRIPTION_DRAFT_V5`;
+both were updated in place and the three guards and the form workflow
+re-applied (hook digests only); every plan reads back with zero differences.
+After the first live email the user asked for the card to sit in the middle of a
+taller dark area: the outer cell is at least 680 px high with the card centered
+vertically, and fills the window where the client keeps `height:100%` (Gmail
+drops html/body styles, so there the 680 px minimum applies).
+
+Fixed: a catalog or FormType response cut off mid-body (dev-1 resets
+connections) was parsed as an empty catalog and showed "Online sign-up isn't
+available"; it now shows the load error with a retry.
+
+`check-dev1.mjs`: the Checkout check expects `totalPayable` exactly when taxes
+are CONFIGURED_RATES_APPLIED with EXACT_MINOR_UNITS rounding; with the order
+page configured, `--purchase-access-only` expects a QUEUED receipt with an
+issued grant that retries reuse; cleanup deletes the read grants recorded on
+test Orders. The full run passed 51 business checks and
+`--purchase-access-only` passed 3, each deleting every synthetic record and its
+temporary helpers.
+
+Final live run: user inbox suffix `+20002`, from
+`/fr/industries/field-service/snow-removal-software` (Annuel, Growth
+"Commencer") to `/fr/subscribe.html?plan=SERVICEWAND_GROWTH&period=YEARLY`, one
+expansion pack, Weather for 50 Properties. Form 531 reached AWAITING_EMAIL with
+the first email queued; Address 840 was resolved. The verification link opened
+on `subscribe-confirm.html` (send-event 200); the Form reached CHECKOUT_PREPARED
+with 4490 + 1800 + 50 × 23.40 = 7460 USD, total 8355.20, and the review email
+was queued with the centered layout. Approval from the review email (send-event
+200) created Account 806, DRAFT Order 233 with items 306–308, DRAFT Invoice 29
+and read Grant 145; the order email was queued. The order page read
+introspection, the Order, three items and three prices (all 200) and showed
+Growth, Growth Site Expansion and Weather Intelligence with 7460 / 895.20 /
+8355.20 USD and the link expiry. At the user's request the run's records stay on
+dev-1: Form 531, Account 806, Order 233 (items 306–308), Invoice 29, Grant 145
+and Address 840. Deleting them later needs Grant 145 removed under SERVICEWAND
+and the preparation markers of Order 233 and Invoice 29 cleared first, as in the
+earlier cleanup.
 
 ## Initial FormType publication
 

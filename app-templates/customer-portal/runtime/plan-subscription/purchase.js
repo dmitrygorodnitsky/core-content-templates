@@ -12,7 +12,8 @@
   function loadFormType(fetchImpl, base, code) {
     return core.request(fetchImpl, base + "/core-cms/api/form-type/" + encodeURIComponent(code) + "/get.json").then(function (result) {
       if (result.status < 200 || result.status >= 300) throw core.failure("form-type", result.status, core.messageOf(result.payload));
-      var payload = result.payload || {};
+      var payload = result.payload;
+      if (!payload || typeof payload !== "object") throw core.failure("form-type", result.status);
       if (!Number.isInteger(payload.id) || payload.code !== code) throw core.failure("form-type-shape", result.status);
       return payload.id;
     });
@@ -206,7 +207,7 @@
             ]),
             el("span", "ps-plan__price ps-plan__price--sales", null, [
               el("span", "ps-plan__custom", { text: copy.salesOnlyPrice }),
-              el("a", "ps-link", { href: salesHref, text: copy.salesOnlyAction + " →" }),
+              el("a", "ps-link ps-link--forward", { href: salesHref, text: copy.salesOnlyAction }),
             ]),
           ]));
           return;

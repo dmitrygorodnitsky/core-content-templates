@@ -144,6 +144,17 @@
     "value": "#pricing"
   },
   {
+    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_SAAS_PRICING_SUBSCRIBE_URL",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "ServiceWand · Dynamic Pricing Subscribe URL",
+        "DESCRIPTION": "Self-service purchase page. When set, priced plans link to it with ?plan=<product code>&period=MONTHLY|YEARLY from the billing toggle; custom-price plans keep the purchase URL."
+      }
+    },
+    "value": ""
+  },
+  {
     "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_SAAS_PRICING_BUY_LABEL",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
@@ -179,7 +190,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum magna."
+      "en": "Lorem Ipsum nostrud."
     }
   },
   {
@@ -206,7 +217,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum ea."
+      "en": "Lorem Ipsum voluptate."
     }
   },
   {
@@ -219,7 +230,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum voluptate."
+      "en": "Lorem Ipsum lorem."
     }
   },
   {
@@ -232,7 +243,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et."
+      "en": "Lorem Ipsum elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua enim ad minim veniam."
     }
   },
   {
@@ -245,7 +256,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum elit."
+      "en": "Lorem Ipsum labore."
     }
   },
   {
@@ -258,7 +269,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum labore."
+      "en": "Lorem Ipsum minim."
     }
   },
   {
@@ -271,7 +282,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum minim."
+      "en": "Lorem Ipsum nisi."
     }
   },
   {
@@ -284,7 +295,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum nisi aliquip ex ea."
+      "en": "Lorem Ipsum aute irure reprehenderit voluptate."
     }
   },
   {
@@ -416,7 +427,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum sed."
+      "en": "Lorem Ipsum et."
     }
   },
   {
@@ -429,7 +440,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum et."
+      "en": "Lorem Ipsum veniam."
     }
   },
   {
@@ -442,7 +453,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum veniam quis nostrud exercitation ullamco laboris nisi aliquip ex ea commodo consequat duis aute irure reprehenderit."
+      "en": "Lorem Ipsum aliquip ex ea commodo consequat duis aute irure reprehenderit voluptate velit esse cillum fugiat nulla pariatur."
     }
   },
   {
@@ -481,7 +492,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum nulla pariatur lorem ipsum."
+      "en": "Lorem Ipsum consectetur adipiscing elit sed."
     }
   },
   {
@@ -554,7 +565,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum consequat."
+      "en": "Lorem Ipsum esse."
     }
   },
   {
@@ -567,7 +578,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum esse."
+      "en": "Lorem Ipsum dolor."
     }
   },
   {
@@ -580,7 +591,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum dolor sit amet consectetur."
+      "en": "Lorem Ipsum do eiusmod tempor incididunt."
     }
   },
   {
@@ -593,7 +604,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum do eiusmod tempor incididunt."
+      "en": "Lorem Ipsum dolore magna aliqua enim."
     }
   },
   {
@@ -606,7 +617,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum dolore magna aliqua enim."
+      "en": "Lorem Ipsum quis nostrud exercitation ullamco."
     }
   },
   {
@@ -619,7 +630,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum quis nostrud exercitation ullamco."
+      "en": "Lorem Ipsum ex ea commodo consequat."
     }
   },
   {
@@ -632,7 +643,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum ex."
+      "en": "Lorem Ipsum reprehenderit."
     }
   },
   {
@@ -645,7 +656,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum reprehenderit."
+      "en": "Lorem Ipsum pariatur."
     }
   },
   {
@@ -658,7 +669,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum pariatur."
+      "en": "Lorem Ipsum adipiscing."
     }
   },
   {
@@ -671,7 +682,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua enim ad minim."
+      "en": "Lorem Ipsum ut labore et dolore magna aliqua enim ad minim veniam quis nostrud exercitation ullamco laboris nisi."
     }
   },
   {
@@ -684,7 +695,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum ut."
+      "en": "Lorem Ipsum ad."
     }
   },
   {
@@ -697,7 +708,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum ad minim veniam quis."
+      "en": "Lorem Ipsum laboris nisi aliquip ex."
     }
   }
 ]
