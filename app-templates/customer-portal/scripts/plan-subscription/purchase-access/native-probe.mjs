@@ -46,10 +46,11 @@ export async function withPurchaseAccessProbe(base) {
        if(!priceBody.path("product").has("nls") || priceBody.has("attributes") || priceBody.has("organization") || priceBody.path("product").has("code"))throw new Exception("item price projection");
      }
      if(anon(issued,"order/get.json?id="+issued.other(),"{}").statusCode()!=404)throw new Exception("other order read");
+     String stateBefore=asAdmin(()->owned(orderId,formId,run).getStates().iterator().next().getCode());
      var write=anon(issued,"order/save.json",Json.defaultMapper().writeValueAsString(Map.of("entities",List.of(Map.of("id",issued.orderId(),"notes","blocked")))));result.put("writeStatus",write.statusCode());if(!java.util.Set.of(401,403).contains(write.statusCode())){String message=Json.defaultMapper().readTree(write.body()).path("message").asText();throw new Exception("write authority "+write.statusCode()+" "+message.replace(issued.token(),"[redacted]"));}
      var event=anon(issued,"order/event.json",Json.defaultMapper().writeValueAsString(Map.of("id",issued.orderId(),"event","DRAFT-SUBMITTED","metadata",Map.of())));result.put("eventStatus",event.statusCode());if(!java.util.Set.of(401,403).contains(event.statusCode()))throw new Exception("event authority "+event.statusCode());
      if(anon(issued,"order/get.json?id="+issued.orderId(),"{}").statusCode()!=200)throw new Exception("Read capability stopped working after forbidden calls");
-     asAdmin(()->{Order persisted=owned(orderId,formId,run);if(!java.util.Objects.equals(persisted.getNotes(),issued.notes()) || !persisted.hasState("DRAFT"))throw new ApplicationException("Read grant mutated order");return true;});
+     asAdmin(()->{Order persisted=owned(orderId,formId,run);if(!java.util.Objects.equals(persisted.getNotes(),issued.notes()) || !persisted.hasState(stateBefore))throw new ApplicationException("Read grant mutated order");return true;});
      boolean revoked=asAdmin(()->{var owner=owned(orderId,formId,run).getOrganization();return Auth.withUser(fixtureSystemUser(),owner,(Supplier<Boolean>)()->asPurchaseGrantIssuer(owner,()->purchaseGrantService.revoke(issued.id()))).get();});
      if(!revoked)throw new Exception("native revoke failed");
      var afterRevoke=anon(issued,"order/get.json?id="+issued.orderId(),"{}");result.put("revokedStatus",afterRevoke.statusCode());

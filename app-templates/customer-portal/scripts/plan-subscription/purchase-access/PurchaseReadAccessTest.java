@@ -26,6 +26,10 @@ public final class PurchaseReadAccessTest {
         bad(()->PurchaseReadAccess.entries(1,List.of(2L,3L,4L,5L),List.of(9L)));bad(()->PurchaseReadAccess.entries(1,List.of(-2L),List.of(9L)));
         bad(()->PurchaseReadAccess.entries(1,List.of(2L),List.of()));bad(()->PurchaseReadAccess.entries(1,List.of(2L),List.of(8L,9L)));
         bad(()->PurchaseReadAccess.entries(1,List.of(2L,3L),List.of(9L,9L)));bad(()->PurchaseReadAccess.entries(1,List.of(2L),List.of(-9L)));
+        check(PurchaseReadAccess.link("https://dev-1.servicewand.com/subscription-order.html",233,"a b",null).equals("https://dev-1.servicewand.com/subscription-order.html#orderId=233&token=a+b"));
+        check(PurchaseReadAccess.link("https://dev-1.servicewand.com/subscription-order.html",233,"tok","pi_3Abc_secret_XyZ9").endsWith("#orderId=233&token=tok&pay=pi_3Abc_secret_XyZ9"));
+        bad(()->PurchaseReadAccess.link("https://dev-1.servicewand.com/subscription-order.html",233,"tok","pi_3Abc&token=x"));
+        bad(()->PurchaseReadAccess.link("https://dev-1.servicewand.com/subscription-order.html",233,"tok",""));
         check(PurchaseReadAccess.pageUrl(null)==null);bad(()->PurchaseReadAccess.pageUrl("http://example.com/purchase"));
         bad(()->PurchaseReadAccess.pageUrl("https://someone@example.com/purchase"));bad(()->PurchaseReadAccess.pageUrl("https://example.com/purchase?token=x"));bad(()->PurchaseReadAccess.pageUrl("https://example.com/purchase#token=x"));
         check(PurchaseReadAccess.link("https://example.com/purchase",10,"a&b").equals("https://example.com/purchase#orderId=10&token=a%26b"));

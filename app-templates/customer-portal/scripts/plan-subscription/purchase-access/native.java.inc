@@ -28,11 +28,13 @@
             return new PurchaseAccessMail(saved,text(source,"email"),PurchaseReadAccess.link(page,order.getId(),issued.token()));
         });
         if(mail.link()==null)return PurchaseReadAccess.publicReceipt(mail.receipt());
+        Map<String,Object> payment=createPurchasePayment(source);
+        String link=payment.get("clientSecret") instanceof String secret?PurchaseReadAccess.withPayment(mail.link(),secret):mail.link();
         boolean queued=false;
         try {
             onboardingMail.sendSimpleEmail(new String[]{mail.recipient()},"Your ServiceWand purchase",
                     EmailLayout.document("Your subscription request has been confirmed and its draft order is ready",
-                            EmailLayout.button("View your purchase",mail.link()),
+                            EmailLayout.button("View your purchase",link),
                             EmailLayout.note("This private link permits viewing this purchase only. It expires within 24 hours; do not forward it."),
                             EmailLayout.note("No payment has been taken. Changes require a new request or assistance from ServiceWand.")));
             queued=true;
@@ -45,6 +47,9 @@
             if(number(saved.get("grantId"))!=number(mail.receipt().get("grantId")) || !"DISPATCHING".equals(saved.get("status")))
                 throw new ApplicationException("Purchase access delivery receipt changed; reconcile manually");
             saved=new LinkedHashMap<>(saved);
+            saved.put("paymentStatus",payment.getOrDefault("paymentStatus","NOT_CONFIGURED"));
+            if(payment.get("paymentIntentId")!=null)saved.put("paymentIntentId",payment.get("paymentIntentId"));
+            if(payment.get("paymentError")!=null)saved.put("paymentError",payment.get("paymentError"));
             if(delivered){saved.put("status","QUEUED");saved.put("deliveryStatus","QUEUED");}
             else {
                 saved.put("status",revoked?"REVOKED_DELIVERY_OUTCOME_UNKNOWN":"RECONCILIATION_REQUIRED");saved.put("deliveryStatus","OUTCOME_UNKNOWN");
@@ -113,8 +118,9 @@
         if(account==null || account.getOrganization()==null || order.getOrganization()==null || order.getType()==null
                 || !owner.getId().equals(order.getOrganization().getId()) || !owner.getId().equals(account.getOrganization().getId())
                 || account.getId().longValue()!=number(source.get("accountId")) || !setting("ORDER_TYPE_CODE").equals(order.getType().getCode())
-                || account.getType()==null || !setting("ACCOUNT_TYPE_CODE").equals(account.getType().getCode()) || !order.hasState("DRAFT"))
-            throw new ApplicationException("Confirmed seller subscription draft required");
+                || account.getType()==null || !setting("ACCOUNT_TYPE_CODE").equals(account.getType().getCode()))
+            throw new ApplicationException("Confirmed seller subscription order required");
+        lifecycle(()->PurchaseLifecycle.requireOrder(stateOf(order)));
         requireReceipt(order.getMetadata(),source);requireReceipt(account.getMetadata(),source);receipt(account,order);
         Map<String,Object> proof=objectMap(order.getMetadata().get(KEY));
         if(number(proof.get("confirmationTokenId"))!=number(source.get("confirmationTokenId"))
@@ -123,6 +129,52 @@
                     entry.getType()!=null && "EMAIL".equals(entry.getType().getCode()) && text(source,"email").equals(entry.getValue())))
             throw new ApplicationException("Verified recipient and persisted purchase consent required");
         return order;
+    }
+    @SuppressWarnings("unchecked")
+    private Map<String,Object> createPurchasePayment(Map<String,Object> source) {
+        Object helperCode=purchaseAccessConfig().get("paymentHelperCode");
+        if(!(helperCode instanceof String code) || code.isBlank())return Map.of("paymentStatus","NOT_CONFIGURED");
+        if(text(source,"email").endsWith("@example.invalid"))return Map.of("paymentStatus","SUPPRESSED_FOR_DEV_TEST");
+        try {
+            List<String> nodes=capabilitiesResolver.listNodesWithCapabilities().entrySet().stream()
+                    .filter(entry->entry.getValue().containsAll(Set.of("CORE","CORE-BILL","CORE-PAY"))).map(Map.Entry::getKey).sorted().toList();
+            Script helper=scriptManager.getByCode(code);
+            if(nodes.isEmpty() || helper==null)return Map.of("paymentStatus","PAYMENT_NODE_UNAVAILABLE");
+            String payload=json(Map.of("invoiceId",number(source.get("invoiceId")),"orderId",number(source.get("orderId")),"email",text(source,"email")));
+            java.util.UUID job=transactionUtils.getInNewTxRW(()->{
+                try{return scriptService.submitForExecution(nodes.getFirst(),helper,"createInvoicePayment",List.<Map<String,?>>of(Map.of("payloadJson",payload)),
+                        userManager.getSystemUser(),seller(source));}
+                catch(Exception failure){throw new ApplicationException(failure);}
+            });
+            long deadline=System.nanoTime()+java.time.Duration.ofSeconds(40).toNanos();
+            while(System.nanoTime()<deadline){
+                var info=transactionUtils.getInNewTx(()->scriptService.getScriptExecutionInfo(job));
+                if(info!=null && info.status()==ExecutionStatus.COMPLETED){
+                    Map<String,Object> created=Json.defaultMapper().readValue(info.result(),Map.class);
+                    if(!(created.get("clientSecret") instanceof String))return Map.of("paymentStatus","PAYMENT_CREATION_FAILED","paymentError",String.valueOf(created.get("error"))+" "+created.get("instructionKeys"));
+                    Map<String,Object> result=new LinkedHashMap<>();result.put("paymentStatus","CREATED");
+                    result.put("clientSecret",created.get("clientSecret"));result.put("paymentIntentId",created.get("paymentIntentId"));
+                    return result;
+                }
+                if(info!=null && info.status()==ExecutionStatus.FAILED)return Map.of("paymentStatus","PAYMENT_CREATION_FAILED","paymentError",failureFrames(info.result()));
+                Thread.sleep(300);
+            }
+            return Map.of("paymentStatus","PAYMENT_CREATION_TIMED_OUT");
+        } catch(InterruptedException failure){Thread.currentThread().interrupt();return Map.of("paymentStatus","PAYMENT_CREATION_FAILED");}
+        catch(Exception failure){return Map.of("paymentStatus","PAYMENT_CREATION_FAILED");}
+    }
+    private String failureFrames(String result) {
+        try {
+            StringBuilder frames=new StringBuilder();
+            var trace=Json.defaultMapper().readTree(result);
+            for(int index=0;index<Math.min(4,trace.size());index++)
+                frames.append(trace.get(index).path("className").asText()).append('.').append(trace.get(index).path("methodName").asText()).append(':').append(trace.get(index).path("lineNumber").asInt()).append(' ');
+            for(var frame:trace){
+                String className=frame.path("className").asText();
+                if(className.contains(".generated."))frames.append(className.substring(className.lastIndexOf('.')+1)).append('.').append(frame.path("methodName").asText()).append(':').append(frame.path("lineNumber").asInt()).append(' ');
+            }
+            return frames.toString().trim();
+        } catch(Exception unreadable){return String.valueOf(result).length()>300?String.valueOf(result).substring(0,300):String.valueOf(result);}
     }
     private void saveReadAccess(Order order,Map<String,Object> value) {
         Map<String,Object> metadata=new LinkedHashMap<>(order.getMetadata());metadata.put(PURCHASE_READ_ACCESS,value);order.setMetadata(metadata);orderManager.save(order);

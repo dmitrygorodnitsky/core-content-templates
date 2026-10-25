@@ -1,8 +1,5 @@
     private static final String ONBOARDING = "PLAN_SUBSCRIPTION_ONBOARDING";
-    @Autowired @org.springframework.beans.factory.annotation.Qualifier("organizationTypeManager") private com.pixelnation.common.persistence.iface.IOrganizationTypeManager onboardingOrganizationTypes;
-    @Autowired @org.springframework.beans.factory.annotation.Qualifier("dictionaryTypeManager") private com.pixelnation.common.persistence.iface.IDictionaryTypeManager onboardingDictionaryTypes;
     @Autowired @org.springframework.beans.factory.annotation.Qualifier("documentManager") private com.pixelnation.common.persistence.iface.IDocumentManager onboardingDocuments;
-    @Autowired @org.springframework.beans.factory.annotation.Qualifier("documentTypeManager") private com.pixelnation.common.persistence.iface.IDocumentTypeManager onboardingDocumentTypes;
     @Autowired @org.springframework.beans.factory.annotation.Qualifier("roleManager") private com.pixelnation.common.persistence.iface.IRoleManager onboardingRoles;
     @Autowired @org.springframework.beans.factory.annotation.Qualifier("languageManager") private com.pixelnation.common.persistence.iface.ILanguageManager onboardingLanguages;
     @Autowired @org.springframework.beans.factory.annotation.Qualifier("userService") private com.pixelnation.common.service.UserService onboardingUsers;
@@ -181,7 +178,7 @@
                     if (otherUser != null && number(otherUser) == userId && Set.of("RESET_STARTED","RESET_OUTCOME_UNKNOWN").contains(otherState.get("accessStatus"))) throw new ApplicationException("This User has another unresolved credential delivery; reconciliation required");
                 }
                 String password = userManager.getEncodedPassword(userId);
-                if (password != null && !password.isBlank()) {
+                if (!Boolean.TRUE.equals(state.get("administratorCreated")) && password != null && !password.isBlank()) {
                     state.put("accessStatus", "DELIVERED"); state.put("credentialResult", "EXISTING_PASSWORD_UNCHANGED"); state.put("status", "CREDENTIALS_READY");
                     saveOnboarding(purchase, state); return null;
                 }
@@ -191,7 +188,7 @@
             // generateNewPassword includes the platform's delivery. A timeout/exception is ambiguous:
             // RESET_STARTED is deliberately retained and must never cause an automatic second reset.
             try {
-                if (!Boolean.TRUE.equals(asOnboardingNative(() -> onboardingUsers.generateNewPassword(reset)))) throw new ApplicationException("Password delivery returned false; operator reconciliation required");
+                if (!Boolean.TRUE.equals(asOnboardingNative(() -> asPasswordIssuer(() -> onboardingUsers.generateNewPassword(reset))))) throw new ApplicationException("Password delivery returned false; operator reconciliation required");
                 tx(purchase -> { Map<String, Object> state = state(purchase); state.put("accessStatus", "DELIVERED");
                     state.put("credentialResult", "RESET_METHOD_SUCCEEDED"); state.put("status", "CREDENTIALS_READY"); saveOnboarding(purchase, state); return true;
                 }, true);
@@ -204,7 +201,10 @@
             Map<String, Object> mail = tx(purchase -> {
                 Map<String, Object> state = state(purchase);
                 if (!"DELIVERED".equals(state.get("accessStatus"))) throw new ApplicationException("Credential delivery incomplete");
-                if ("QUEUED".equals(state.get("readyMailStatus"))) return Map.of();
+                if ("QUEUED".equals(state.get("readyMailStatus"))) {
+                    if (!"COMPLETE".equals(state.get("status"))) { state.put("status", "COMPLETE"); saveOnboarding(purchase, state); }
+                    return Map.of();
+                }
                 if (state.get("readyMailStatus") != null) throw new ApplicationException("Previous ready notification requires reconciliation; automatic resend forbidden");
                 Map<String, Object> config = executorConfig();
                 if (!Boolean.TRUE.equals(config.get("readyNotificationEnabled"))) throw new ApplicationException("Ready notification disabled");
@@ -214,10 +214,12 @@
                 return Map.of("recipient", text(objectMap(objectMap(state.get("plan")).get("source")), "email"), "url", login);
             }, true);
             if (mail.isEmpty()) return;
-            String url = org.springframework.web.util.HtmlUtils.htmlEscape(text(mail, "url"));
+            String url = text(mail, "url");
             try {
-            asOnboardingNative(() -> { onboardingMail.sendSimpleEmail(new String[]{text(mail,"recipient")}, "Your ServiceWand organization is ready",
-                    "<p>Your ServiceWand organization is ready.</p><p><a href=\"" + url + "\">Open ServiceWand</a></p><p>Use your existing password, or follow the separate password setup email.</p>"); return true; });
+            onboardingMail.sendSimpleEmail(new String[]{text(mail,"recipient")}, "Your ServiceWand organization is ready",
+                    EmailLayout.document("Your ServiceWand organization is ready",
+                            EmailLayout.button("Open ServiceWand", url),
+                            EmailLayout.note("Use your existing password, or follow the separate password setup email.")));
             tx(purchase -> { Map<String, Object> state = state(purchase); state.put("readyMailStatus", "QUEUED"); state.put("status", "COMPLETE"); saveOnboarding(purchase, state); return true; }, true);
             } catch (RuntimeException unknown) {
                 deliveryFailure("readyMailStatus","DELIVERY_OUTCOME_UNKNOWN","READY_NOTIFICATION_OUTCOME_UNKNOWN"); throw unknown;
@@ -253,7 +255,7 @@
         String code = "PS_ORG_" + purchase.getId();
         if (!organizationManager.selectJPQL("SELECT o FROM Organization o WHERE o.code = :code", Map.of("code", code), Organization.class).isEmpty()) throw new ApplicationException("Unrecorded organization already exists; do not adopt automatically");
         Organization target = new Organization(); target.setCode(code); target.setParent(parent); target.setEnabled(true);
-        var orgType = onboardingOrganizationTypes.get(Math.toIntExact(number(orgSpec.get("typeId"))));
+        var orgType = entityManager.find(com.pixelnation.common.domain.OrganizationType.class, Math.toIntExact(number(orgSpec.get("typeId"))));
         initializeOnboardingEntity(target, orgType, text(objectMap(plan.get("source")), "companyName"));
         setOnboardingAttributes(target, orgType, objectMap(orgSpec.get("attributes")), records);
         target.setMetadata(new LinkedHashMap<>(Map.of(ONBOARDING, onboardingMarker(purchase, state))));
@@ -272,7 +274,7 @@
         target = organizationManager.save(target); organizationManager.flush(); records.put("organization", target.getId());
 
         Map<String, Object> seasonSpec = artifact(state, "seasonSettings");
-        var seasonType = onboardingDictionaryTypes.get(Math.toIntExact(number(seasonSpec.get("typeId"))));
+        var seasonType = entityManager.find(com.pixelnation.common.domain.DictionaryType.class, Math.toIntExact(number(seasonSpec.get("typeId"))));
         Dictionary season = new Dictionary(); season.setOrganization(target); season.setCode("PS_SEASON_" + purchase.getId());
         initializeOnboardingEntity(season, seasonType, "Season settings");
         setOnboardingAttributes(season, seasonType, objectMap(seasonSpec.get("attributes")), records);
@@ -296,6 +298,12 @@
         String email = text(buyer, "email");
         entityManager.createNativeQuery("SELECT 1 FROM pg_advisory_xact_lock(:key)")
                 .setParameter("key", ByteBuffer.wrap(hashBytes("PLAN_SUBSCRIPTION_ADMIN:" + email.toLowerCase(java.util.Locale.ROOT))).getLong()).getSingleResult();
+        Map<String, Object> administrator = objectMap(plan.get("administrator"));
+        var role = onboardingRoles.get(Math.toIntExact(number(objectMap(administrator.get("role")).get("id"))));
+        if (role == null || !"ADMIN".equals(role.getCode()) || role.getOrganization() == null || !"SYSTEM".equals(role.getOrganization().getCode())
+                || "SYSTEM".equals(target.getCode()) || !target.getParent().getId().equals(parent.getId())
+                || role.getPermissions().stream().anyMatch(permission -> "SYSTEM_ADMIN".equals(permission.getId()) || "SYSTEM_ADMIN".equals(permission.getName()))) throw new ApplicationException("Unsafe administrator assignment");
+        final Organization assignmentTarget = target;
         var existingUsers = userManager.selectJPQL("SELECT u FROM User u WHERE lower(u.name) = :email", Map.of("email", email.toLowerCase(java.util.Locale.ROOT)), User.class);
         if (existingUsers.size() > 1) throw new ApplicationException("Duplicate User login requires review");
         User admin = existingUsers.isEmpty() ? null : existingUsers.getFirst();
@@ -303,19 +311,15 @@
             admin = new User(); admin.setName(email); admin.setEmail(email); admin.setEnabled(true);
             String fullname=(text(buyer, "firstName") + " " + text(buyer, "lastName")).trim();
             admin.setFullname(fullname.isBlank()?email:fullname); admin.setRoles(new LinkedHashSet<>());
+            admin.getRoles().add(new com.pixelnation.common.domain.UserOrganizationRole(admin, target, role));
             admin.setLanguage(onboardingLanguages.getByCode2("en"));
             var workflows = entityManager.createQuery("SELECT w FROM Workflow w WHERE w.code = :code", com.pixelnation.modules.workflow.domain.Workflow.class)
                     .setParameter("code", "USER_WORKFLOW").getResultList();
             if (workflows.size() != 1 || admin.getLanguage() == null) throw new ApplicationException("User language/workflow unavailable");
             admin.setWorkflow(workflows.getFirst()); admin = userManager.save(admin);
+            state.put("administratorCreated", true);
         } else if (!email.equalsIgnoreCase(admin.getEmail()) || !Boolean.TRUE.equals(admin.getEnabled())) throw new ApplicationException("Existing User requires operator review");
         if (admin.getId().equals(userManager.getSystemUserId())) throw new ApplicationException("System service User cannot be a buyer administrator");
-        Map<String, Object> administrator = objectMap(plan.get("administrator"));
-        var role = onboardingRoles.get(Math.toIntExact(number(objectMap(administrator.get("role")).get("id"))));
-        if (role == null || !"ADMIN".equals(role.getCode()) || role.getOrganization() == null || !"SYSTEM".equals(role.getOrganization().getCode())
-                || "SYSTEM".equals(target.getCode()) || !target.getParent().getId().equals(parent.getId())
-                || role.getPermissions().stream().anyMatch(permission -> "SYSTEM_ADMIN".equals(permission.getId()) || "SYSTEM_ADMIN".equals(permission.getName()))) throw new ApplicationException("Unsafe administrator assignment");
-        final Organization assignmentTarget = target;
         if (admin.getRoles().stream().noneMatch(assignment -> assignmentTarget.getId().equals(assignment.getOrganization().getId()) && role.getId().equals(assignment.getRole().getId()))) {
             admin.getRoles().add(new com.pixelnation.common.domain.UserOrganizationRole(admin, target, role)); userManager.save(admin);
         }
@@ -413,7 +417,7 @@
         if (legalContacts.size() != 1 || legalContacts.getFirst().getContactEntries().stream().noneMatch(entry -> entry.getType() != null && "EMAIL".equals(entry.getType().getCode()) && text(buyer,"email").equals(entry.getValue()))) throw new ApplicationException("Organization legal contact changed");
         if (target.getParent() == null || !text(onboardingConfig(), "parentOrganizationCode").equals(target.getParent().getCode())
                 || !Boolean.TRUE.equals(target.getEnabled()) || !target.getCode().equals("PS_ORG_" + purchase.getId())) throw new ApplicationException("Onboarding organization changed");
-        Dictionary season = dictionaryManager.get(Math.toIntExact(number(records.get("seasonSettings"))));
+        Dictionary season = entityManager.find(Dictionary.class, Math.toIntExact(number(records.get("seasonSettings"))));
         verifyArtifact(season, artifact(state, "seasonSettings"), target, purchase, state);
         verifyAttributes(season, objectMap(artifact(state, "seasonSettings").get("attributes")), records);
         if (number(target.findFirstAttributeValue("CONTRACT_SETTINGS")) != season.getId().longValue()) throw new ApplicationException("Onboarding season link changed");
@@ -488,7 +492,7 @@
         Organization target = organizationManager.get(Math.toIntExact(number(records.get("organization"))));
         Account customer = accountManager.get(Math.toIntExact(number(records.get("starterCustomer"))));
         Map<String, Object> serviceSpec = artifact(state, "serviceOrder");
-        OrderType orderType = orderTypeManager.get(Math.toIntExact(number(serviceSpec.get("typeId"))));
+        OrderType orderType = entityManager.find(OrderType.class, Math.toIntExact(number(serviceSpec.get("typeId"))));
         Order service = new Order(); service.setOrganization(target); service.setAccount(customer); service.setCurrency(purchase.getCurrency());
         initializeOnboardingEntity(service, orderType, "Snow removal");
         setOnboardingAttributes(service, orderType, objectMap(serviceSpec.get("attributes")), records);
@@ -496,7 +500,7 @@
         service.setMetadata(new LinkedHashMap<>(Map.of(ONBOARDING, onboardingMarker(purchase, state), "PRICING_MODEL", "SEASONAL")));
         service = orderManager.save(service); orderManager.flush(); records.put("serviceOrder", service.getId());
         Map<String, Object> agreementSpec = artifact(state, "agreement");
-        var agreementType = onboardingDocumentTypes.get(Math.toIntExact(number(agreementSpec.get("typeId"))));
+        var agreementType = entityManager.find(com.pixelnation.common.domain.DocumentType.class, Math.toIntExact(number(agreementSpec.get("typeId"))));
         var document = new com.pixelnation.common.domain.Document(); document.setOrganization(target); document.setCode("PS_AGREEMENT_" + purchase.getId());
         initializeOnboardingEntity(document, agreementType, "Snow removal service agreement");
         setOnboardingAttribute(document, agreementType, "CLIENT", customer.getId());
@@ -521,7 +525,7 @@
         Object orders = document.findFirstAttributeValue("ORDERS");
         if (!(orders instanceof Collection<?> values) || values.size() != 1 || number(values.iterator().next()) != service.getId()) throw new ApplicationException("Starter agreement service-order link changed");
         for (String field : List.of("TERM_START_DATE", "TERM_END_DATE")) {
-            if (!String.valueOf(objectMap(artifact(state, "agreement").get("attributes")).get(field)).equals(String.valueOf(document.findFirstAttributeValue(field)))) throw new ApplicationException("Starter agreement season changed");
+            if (!String.valueOf(objectMap(artifact(state, "agreement").get("attributes")).get(field)).equals(String.valueOf((Object) document.findFirstAttributeValue(field)))) throw new ApplicationException("Starter agreement season changed");
         }
     }
     @SuppressWarnings("unchecked")
@@ -556,6 +560,19 @@
             principal.setId(stored.getId()); principal.setName(stored.getName()); principal.setFullname(stored.getFullname()); principal.setRoles(new LinkedHashSet<>());
             return Auth.withUser(principal, organizationManager.getByCode("SYSTEM"), action).get();
         });
+    }
+    private <T> T asPasswordIssuer(Supplier<T> action) {
+        var previous = org.springframework.security.core.context.SecurityContextHolder.getContext();
+        var scoped = org.springframework.security.core.context.SecurityContextHolder.createEmptyContext();
+        scoped.setAuthentication(new com.pixelnation.spring.security.RunAsAuthenticationToken(userManager.getSystemUser(), organizationManager.getByCode("SYSTEM"),
+                List.<org.springframework.security.core.GrantedAuthority>of(new org.springframework.security.core.authority.SimpleGrantedAuthority("P_USER"),
+                        new org.springframework.security.core.authority.SimpleGrantedAuthority("P_PASSWD_W"))));
+        try {
+            org.springframework.security.core.context.SecurityContextHolder.setContext(scoped);
+            return action.get();
+        } finally {
+            org.springframework.security.core.context.SecurityContextHolder.setContext(previous);
+        }
     }
 
     private void verifyOnboardingInvoiceSnapshot(Order order, Invoice invoice) {

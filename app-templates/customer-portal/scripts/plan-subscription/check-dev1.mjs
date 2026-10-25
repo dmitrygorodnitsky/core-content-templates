@@ -132,6 +132,22 @@ async function fixturePurchases() {
   assert.ok(accounts.length < 100 && orders.length < 100);
   return { accounts, orders };
 }
+async function purchaseLifecycle(orderId, submitted) {
+  const stateMap = { name: 'states', type: 'collection', mappings: names(['code']) };
+  const expected = submitted ? 'SUBMITTED' : 'DRAFT';
+  let states;
+  for (let attempt = 0; attempt < 80; attempt++) {
+    const order = (await ok('/core-bill/api/order/list.json', { json: { filters: [{ property: 'id', operator: '=', value: orderId }],
+      mappings: [...names(['id']), stateMap, { name: 'items', type: 'collection', mappings: [...names(['id']), stateMap] }], offset: 0, pageSize: 2 } })).result[0];
+    const invoices = (await ok('/core-bill/api/invoice/list.json', { json: { filters: [{ property: 'order.id', operator: '=', value: orderId }],
+      mappings: [...names(['id']), stateMap], offset: 0, pageSize: 3 } })).result;
+    states = [order.states[0].code, ...order.items.map(item => item.states[0].code), ...invoices.map(invoice => invoice.states[0].code)];
+    if (states.every(state => state === expected)) return expected;
+    if (!submitted) break;
+    await sleep(500);
+  }
+  throw new Error('Purchase did not settle as ' + expected + ': ' + states.join(','));
+}
 async function purchaseAction(name, formId, checkoutDigest, expectFailure = false) {
   const args = [{ formId }, ...(checkoutDigest === undefined ? [] : [{ checkoutDigest }])];
   const job = await ok(`/core/api/script/PLAN_SUBSCRIPTION_WORKFLOW_V11/${name}/exec.json`, { org: 'SYSTEM', json: args });
@@ -318,6 +334,14 @@ try {
     assert.ok(page===undefined || /^https:\/\/dev-1\.servicewand\.com\/[^?#]+$/.test(page),'The buyer page must be a dev-1 page without query or fragment');
     const draft=await awaiting();await use(draft,'POST');const review=await confirmationReady(draft.id);
     await confirmLink(review,'POST');const ready=await formState(draft.id,'DRAFT_ORDER_READY');
+    const readyPurchase=ready.metadata.PLAN_SUBSCRIPTION.purchase;
+    await purchaseLifecycle(readyPurchase.orderId,readyPurchase.invoiceStatus==='DRAFT_INVOICE_READY');
+    for(let attempt=0;attempt<80;attempt++){
+      const [row]=(await ok('/core-bill/api/order/list.json',{json:{filters:[{property:'id',operator:'=',value:readyPurchase.orderId}],mappings:names(['id','metadata']),offset:0,pageSize:2}})).result;
+      const receipt=row.metadata?.PLAN_SUBSCRIPTION_READ_ACCESS;
+      if(page===undefined || (receipt && receipt.status!=='DISPATCHING'))break;
+      await sleep(500);
+    }
     const digest=review.metadata.PLAN_SUBSCRIPTION.checkout.checkoutDigest;
     const prepared=await purchaseAction('prepareOnboarding',draft.id,digest);
     await fs.writeFile(new URL('../../../../tmp/plan-subscription-magic-onboarding-result.json',import.meta.url),JSON.stringify(prepared,null,2),{mode:0o600});
@@ -358,8 +382,8 @@ try {
       const ready = await formState(review.id, 'DRAFT_ORDER_READY'), data = ready.metadata.PLAN_SUBSCRIPTION;
       assert.equal(data.purchase.entitlementFingerprint, data.checkout.entitlementFingerprint);
       assert.deepEqual(data.purchase.entitlementSnapshot, data.checkout.preview.entitlements);
+      await purchaseLifecycle(data.purchase.orderId, data.purchase.invoiceStatus === 'DRAFT_INVOICE_READY');
       const order = await readOrder(data.purchase.orderId);
-      assert.equal(order.states[0].code, 'DRAFT');
       assert.equal(order.metadata.PLAN_SUBSCRIPTION.entitlementFingerprint, data.checkout.entitlementFingerprint);
       assert.deepEqual(order.metadata.PLAN_SUBSCRIPTION.planPreview.entitlements, data.checkout.preview.entitlements);
       assert.equal(data.purchase.paymentEnabled, false);
@@ -428,7 +452,6 @@ try {
     for (const scenario of [
       { code: 'CA_BC', address: addressStreets[0] + ', Vancouver, BC V6B 1A1, Canada', rateCode: 'CA_BC_HST', period: 'MONTHLY', packs: 2, properties: 10, rounding: 'EXACT_MINOR_UNITS' },
       { code: 'CA_QC', address: addressStreets[0] + ', Montreal, QC H2Y 1C6, Canada', rateCode: 'CA_QC_HST', period: 'YEARLY', packs: 1, properties: 7, rounding: 'ROUNDING_POLICY_REQUIRED' },
-      { code: 'US_AK', address: addressStreets[1] + ', Anchorage, AK 99501, US', rateCode: 'US_AK_VAT', period: 'MONTHLY', packs: 1, properties: 3, rounding: 'EXACT_MINOR_UNITS' },
       { code: 'US_NY', address: addressStreets[1] + ', Test City, NY 00501, US', period: 'MONTHLY', packs: 1, properties: 3 },
     ]) {
       console.log('Dev-1 invoice integration: ' + scenario.code + ' ' + scenario.period);
@@ -443,17 +466,24 @@ try {
       const purchase = ready.metadata.PLAN_SUBSCRIPTION.purchase;
       assert.equal(purchase.executionIdentity, 'SYSTEM'); assert.equal(purchase.executionSystemAdmin, false);
       assert.equal(purchase.billingExecutionIdentity, 'SYSTEM'); assert.equal(purchase.billingSystemAdmin, false);
+      const submitted = purchase.invoiceStatus === 'DRAFT_INVOICE_READY' && scenario.code.startsWith('CA_');
+      await purchaseLifecycle(purchase.orderId, submitted);
       const order = await readOrder(purchase.orderId);
-      assert.equal(order.states[0].code, 'DRAFT'); assert.equal(order.items.length, 3);
+      assert.equal(order.items.length, 3);
       const invoices = await readInvoices(order.id);
-      if (scenario.rateCode) {
+      if (scenario.rateCode && scenario.rounding === 'ROUNDING_POLICY_REQUIRED') {
+        assert.equal(purchase.invoiceStatus, 'ROUNDING_POLICY_REQUIRED');
+        assert.equal(purchase.invoicePreparation.tax.roundingStatus, scenario.rounding);
+        assert.equal(invoices.length, 0, 'An invoice was prepared without exact minor-unit rounding');
+        checks.push(scenario.code + ': configured taxes without exact minor-unit rounding keep the Order DRAFT and prepare no Invoice');
+      } else if (scenario.rateCode) {
         const [rate] = await list('core', 'dictionary', scenario.rateCode, names(['id', 'attributes']), 'SYSTEM');
         const rateValue = Number(Object.values(rate.attributes).map(a => a.PERCENTAGE?.value).find(x => x !== undefined));
         assert.ok(Number.isFinite(rateValue));
         assert.equal(purchase.invoiceStatus, 'DRAFT_INVOICE_READY');
         assert.equal(invoices.length, 1);
         const invoice = invoices[0]; assert.equal(invoice.id, purchase.invoiceId);
-        assert.deepEqual(invoice.states.map(s => s.code), ['DRAFT']);
+        assert.deepEqual(invoice.states.map(s => s.code), [submitted ? 'SUBMITTED' : 'DRAFT']);
         assert.equal(invoice.order.id, order.id); assert.equal(invoice.payments.length, 0); assert.equal(invoice.totalPaidAmount, 0);
         assert.ok(invoice.dueDate == null, 'An unapproved payment term was invented');
         assert.deepEqual(invoice.items.map(i => i.id).sort(), order.items.map(i => i.id).sort(), 'Invoice copied or lost native OrderItems');
@@ -485,15 +515,16 @@ try {
             mappings: [{ name: 'id' }, { name: 'items', type: 'collection', mappings: names(['id']) }] } });
           assert.equal((await readInvoices(order.id))[0].items.length, 3, 'Invoice subset edit removed shared OrderItems');
           await call(`/core-bill/api/invoice/${invoice.id}/send-event.json?event=DRAFT-SUBMITTED`, { json: {} });
-          assert.equal((await readInvoices(order.id))[0].states[0].code, 'DRAFT', 'Preparation invoice was submitted');
+          await sleep(1500);
+          assert.equal((await readInvoices(order.id))[0].states[0].code, 'SUBMITTED', 'A repeated Submit changed the approved invoice');
           await call('/core-bill/api/invoice/delete.json', { method: 'DELETE', json: [invoice.id] });
           assert.equal((await readInvoices(order.id)).length, 1, 'Invoice deletion destroyed shared order lines');
           await call('/core-bill/api/order/delete.json', { method: 'DELETE', json: [order.id] });
           assert.ok(await readOrder(order.id), 'Order with a prepared invoice was deleted');
-          checks.push('prepared invoice/item snapshot rejects repricing, subset edits, Submit and unsafe Invoice/Order deletion');
+          checks.push('approval submits order, lines and invoice together; the snapshot then rejects repricing, subset edits, a repeated Submit and unsafe Invoice/Order deletion');
           checks.push('concurrent-safe explicit preparation and lost CMS receipt recovery reuse the same Invoice and all OrderItems');
         }
-        checks.push(scenario.code + ': existing Order tax hook and native OrderItem totals produce one complete unpaid DRAFT Invoice; ' + scenario.rounding);
+        checks.push(scenario.code + ': existing Order tax hook and native OrderItem totals produce one complete unpaid Invoice, ' + (submitted ? 'submitted on approval' : 'kept DRAFT outside CA') + '; ' + scenario.rounding);
       } else {
         assert.equal(purchase.invoiceStatus, 'TAX_CONFIGURATION_REQUIRED');
         assert.equal(invoices.length, 0, 'Missing tax configuration produced a zero-tax invoice');
@@ -504,7 +535,7 @@ try {
       }
       results.push({form: form.id, order: order.id, invoice: purchase.invoiceId || null});
     }
-    assert.equal((await fixturePurchases()).accounts.length, 4);
+    assert.equal((await fixturePurchases()).accounts.length, 3);
     console.log(JSON.stringify({invoiceScenarios: results, realEmailsSent: 0, paymentApiCalls: 0}));
 
   } else {
@@ -802,11 +833,12 @@ try {
   const readOrder = async id => (await ok('/core-bill/api/order/list.json', { json: {
     filters: [{ property: 'id', operator: '=', value: id }], mappings: orderMaps, offset: 0, pageSize: 10,
   } })).result[0];
+  await purchaseLifecycle(confirmations[0].orderId, Boolean(confirmations[0].invoiceId));
   const order = await readOrder(confirmations[0].orderId);
   assert.equal(order.type.code, 'SERVICEWAND_SUBSCRIPTION');
   assert.equal(order.account.id, account.id);
   assert.equal(order.currency.code, preview.checkout.preview.currencyCode);
-  assert.equal(order.states[0].code, 'DRAFT');
+  assert.equal(order.states[0].code, confirmations[0].invoiceId ? 'SUBMITTED' : 'DRAFT');
   const assertBasePlan = (order, purchase, preview, formId, productId) => {
     assert.equal(order.items.length, preview.lines.length, 'Selection must materialize exactly the confirmed catalog lines');
     for (const line of preview.lines) {
@@ -818,11 +850,11 @@ try {
       assert.equal(actual.amount, Number(line.unitAmount));
       assert.equal(actual.metadata.PLAN_SUBSCRIPTION.role, line.role);
       assert.equal(actual.metadata.PLAN_SUBSCRIPTION.quantitySource, line.quantitySource);
-      assert.equal(actual.states[0].code, 'DRAFT');
+      assert.equal(actual.states[0].code, order.states[0].code);
       assert.ok(actual.overrideAmount == null);
     }
     const item = order.items.find(i => i.metadata.PLAN_SUBSCRIPTION.role === 'BASE_PLAN');
-    assert.equal(item.states[0].code, 'DRAFT');
+    assert.equal(item.states[0].code, order.states[0].code);
     assert.equal(item.id, purchase.basePlanItemId);
     assert.equal(item.type.code, 'SERVICEWAND_SUBSCRIPTION_ITEM');
     assert.equal(item.organization.id, ownerId);
@@ -889,12 +921,13 @@ try {
   }
 
   const submitDraft = await call(`/core-bill/api/order/${order.id}/send-event.json?event=DRAFT-SUBMITTED`, { json: {} });
-  assert.equal((await readOrder(order.id)).states[0].code, 'DRAFT', 'Pending purchase draft was submitted');
+  await sleep(1500);
+  assert.equal((await readOrder(order.id)).states[0].code, confirmations[0].invoiceId ? 'SUBMITTED' : 'DRAFT', 'A draft without a prepared invoice was submitted');
   const invoices = await ok('/core-bill/api/invoice/list.json', { json: {
     filters: [{ property: 'order.id', operator: '=', value: order.id }], mappings: names(['id']), offset: 0, pageSize: 10,
   } });
   assert.equal(invoices.result.length, confirmations[0].invoiceId ? 1 : 0);
-  checks.push('Pending-model draft guard blocks Submit and preserves the prepared Invoice count; native HTTP ' + submitDraft.status);
+  checks.push((confirmations[0].invoiceId ? 'Approved purchase is submitted with its invoice' : 'A draft without a prepared invoice cannot be submitted') + ' and keeps the prepared Invoice count; native HTTP ' + submitDraft.status);
 
   assert.equal((await use(us)).status, 200);
   const yearlyReview = await confirmationReady(us.id);

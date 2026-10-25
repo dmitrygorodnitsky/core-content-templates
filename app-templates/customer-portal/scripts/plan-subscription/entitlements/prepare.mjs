@@ -94,15 +94,16 @@ export function prepareConfiguration(catalog, config) {
   const planType = catalog.types.find(type => type.code === config.plans.productTypeCode);
   assert.ok(planType, 'Plan ProductType is missing');
   const sourceTypes = new Map(planType.attributes.map(attribute => [attribute.code, attribute.className]));
+  const labels = new Map(planType.attributes.map(attribute => [attribute.code, attribute.nls?.en?.NAME || attribute.code]));
   const definitions = config.booleanFeatures.map(rule => {
     assert.equal(sourceTypes.get(rule.attribute), rule.decoder === 'BOOLEAN'
       ? 'java.lang.Boolean' : 'com.pixelnation.spring.domain.LocalizationMessage', 'Source type drift: ' + rule.attribute);
-    return definition(config, rule.definitionCode, 'BOOLEAN', 'FEATURE', 'ANY_TRUE', rule.attribute);
+    return definition(config, rule.definitionCode, 'BOOLEAN', 'FEATURE', 'ANY_TRUE', labels.get(rule.attribute));
   });
   for (const rule of config.levels) {
     assert.equal(sourceTypes.get(rule.attribute), 'java.lang.String', 'Source level type drift: ' + rule.attribute);
     definitions.push(definition(config, rule.definitionCode, rule.valueType,
-      rule.enforcementType, rule.aggregationType, rule.attribute + ' level'));
+      rule.enforcementType, rule.aggregationType, labels.get(rule.attribute)));
   }
   const capacity = config.propertyCapacity;
   definitions.push(definition(config, capacity.definitionCode, capacity.valueType,

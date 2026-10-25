@@ -12,7 +12,8 @@
             "en": {
               "NAME": "Active"
             }
-          }
+          },
+          "onEnter": "workflowUtils.guardPreparedOrderActive(entity, java.util.Map.of());\n// entitlement checkout source: e4ac70750815"
         },
         {
           "code": "CANCELED",
@@ -192,8 +193,8 @@
         }
       ],
       "script": "PLAN_SUBSCRIPTION_DRAFT_V5",
-      "onUpdate": "workflowUtils.assignSubscriptionTaxes(entity);\nworkflowUtils.guardOrderInvoiceSnapshot(entity, java.util.Map.of());\n// entitlement checkout source: 32f4b7780fd6",
-      "onDelete": "workflowUtils.guardOrderInvoiceDelete(entity, java.util.Map.of());\n// entitlement checkout source: 32f4b7780fd6"
+      "onUpdate": "workflowUtils.assignSubscriptionTaxes(entity);\nworkflowUtils.guardOrderInvoiceSnapshot(entity, java.util.Map.of());\n// entitlement checkout source: e4ac70750815",
+      "onDelete": "workflowUtils.guardOrderInvoiceDelete(entity, java.util.Map.of());\n// entitlement checkout source: e4ac70750815"
     }
   ]
 }

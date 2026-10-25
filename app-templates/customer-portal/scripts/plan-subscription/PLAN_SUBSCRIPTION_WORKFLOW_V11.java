@@ -287,6 +287,9 @@ public class MAIN_CLASS {
     public Map<String, Object> prepareOnboarding(Integer formId, String checkoutDigest) {
         return onboardingCommand(formId, checkoutDigest, "prepareOnboarding");
     }
+    public Map<String, Object> submitPurchase(Integer formId, String checkoutDigest) {
+        return onboardingCommand(formId, checkoutDigest, "submitPurchase");
+    }
     public Map<String, Object> provisionOnboarding(Integer formId, String checkoutDigest) {
         return onboardingCommand(formId, checkoutDigest, "provisionOnboarding");
     }
@@ -613,6 +616,8 @@ public class MAIN_CLASS {
         afterState(form,"DRAFT_ORDER_READY",()->{
             try { prepareOnboarding(Math.toIntExact(form.getId()),checkoutDigest); }
             catch(Exception failure){recordPurchaseFailure(Math.toIntExact(form.getId()),"onboardingPreparationError",failure);}
+            try { submitPurchase(Math.toIntExact(form.getId()),checkoutDigest); }
+            catch(Exception failure){recordPurchaseFailure(Math.toIntExact(form.getId()),"purchaseSubmissionError",failure);}
             try { return deliverPurchaseReadAccess(Math.toIntExact(form.getId()),checkoutDigest); }
             catch(Exception failure){recordPurchaseFailure(Math.toIntExact(form.getId()),"purchaseReadAccessError",failure);return null;}
         });
@@ -1624,7 +1629,7 @@ public class MAIN_CLASS {
                     + "<meta name=\"color-scheme\" content=\"dark\"><meta name=\"supported-color-schemes\" content=\"dark\"></head>"
                     + "<body style=\"margin:0;padding:0;height:100%;background-color:#17171B;\">"
                     + TABLE + " height=\"100%\" bgcolor=\"#17171B\" style=\"height:100%;min-height:" + MIN_HEIGHT + "px;background-color:#17171B;\">"
-                    + "<tr><td align=\"center\" valign=\"middle\" height=\"" + MIN_HEIGHT + "\" style=\"height:" + MIN_HEIGHT + "px;padding:48px 12px;\">"
+                    + "<tr><td align=\"center\" valign=\"top\" height=\"" + MIN_HEIGHT + "\" style=\"height:" + MIN_HEIGHT + "px;padding:48px 12px;\">"
                     + TABLE + " style=\"max-width:600px;\">"
                     + "<tr><td style=\"padding:0 4px 18px;" + FONT + "font-size:24px;line-height:1.2;font-weight:700;letter-spacing:-0.01em;" + HEADING + "\">"
                     + "Service<span style=\"color:#6BEAF9;\">Wand</span></td></tr>"

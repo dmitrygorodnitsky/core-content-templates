@@ -1792,10 +1792,11 @@ the subtotal/taxes block now follows the lines. `onboarding/sync.mjs` embeds the
 layout into `PLAN_SUBSCRIPTION_WORKFLOW_V11` and `PLAN_SUBSCRIPTION_DRAFT_V5`;
 both were updated in place and the three guards and the form workflow
 re-applied (hook digests only); every plan reads back with zero differences.
-After the first live email the user asked for the card to sit in the middle of a
-taller dark area: the outer cell is at least 680 px high with the card centered
-vertically, and fills the window where the client keeps `height:100%` (Gmail
-drops html/body styles, so there the 680 px minimum applies).
+After the first live email the user asked for a taller dark area: the outer
+cell is at least 680 px high and fills the window where the client keeps
+`height:100%` (Gmail drops html/body styles, so there the 680 px minimum
+applies). Centering the card vertically was tried and dropped at the user's
+request; the card stays at the top, which reads better on phones.
 
 Fixed: a catalog or FormType response cut off mid-body (dev-1 resets
 connections) was parsed as an empty catalog and showed "Online sign-up isn't
@@ -1816,7 +1817,7 @@ expansion pack, Weather for 50 Properties. Form 531 reached AWAITING_EMAIL with
 the first email queued; Address 840 was resolved. The verification link opened
 on `subscribe-confirm.html` (send-event 200); the Form reached CHECKOUT_PREPARED
 with 4490 + 1800 + 50 × 23.40 = 7460 USD, total 8355.20, and the review email
-was queued with the centered layout. Approval from the review email (send-event
+was queued with the centered layout (since changed to top-aligned). Approval from the review email (send-event
 200) created Account 806, DRAFT Order 233 with items 306–308, DRAFT Invoice 29
 and read Grant 145; the order email was queued. The order page read
 introspection, the Order, three items and three prices (all 200) and showed
@@ -1826,6 +1827,87 @@ dev-1: Form 531, Account 806, Order 233 (items 306–308), Invoice 29, Grant 145
 and Address 840. Deleting them later needs Grant 145 removed under SERVICEWAND
 and the preparation markers of Order 233 and Invoice 29 cleared first, as in the
 earlier cleanup.
+
+## Card payment in Stripe test mode — 2026-10-24
+
+User decisions: pay on the buyer order page; create the payment server-side with
+our script (the buyer has only the read grant, and core-pay serves no grant
+route); submit the order, its lines and the invoice together right after
+approval; after full payment the invoice becomes PAID and the order and lines
+ACTIVE; activation then starts automatically (stage 2, not yet built); feature
+Definitions are created from our configuration; Weather is included, with a
+backend request if something is missing. Self-service stays CA-only for now.
+
+Built and deployed to dev-1: lifecycle guards (`payment/PurchaseLifecycle.java`),
+awaited submission, `PLAN_SUBSCRIPTION_PAYMENT_V1` on the core-pay node, the
+`&pay=` link, the order-page card panel (Stripe Elements, test-mode badge and
+test cards, 7 languages, `SUBSCRIPTION_ORDER_STRIPE_PUBLISHABLE_KEY` set to the
+dev-1 `pk_test_` key) and the paid completion job.
+
+Defects found during the first live run and fixed: transitions raced because
+Core applies them asynchronously; a compile error was deployed for about 15
+minutes (2026-10-23 17:50–18:05 UTC), during which team Forms 534–536 failed and
+need new requests; the Stripe controller cannot be called from a Script and a
+detached seller Organization failed to load.
+
+Live run (`+20003`, Form 533, Growth monthly with one pack, Vancouver): Order
+235 with lines 312–313 and Invoice 30 SUBMITTED; a PaymentIntent for 670.88 USD;
+card 4242 on the order page succeeded; core-pay recorded Payment 7 for 670.88
+with its timestamp; Invoice 30 became PAID and Order 235 and both lines ACTIVE;
+the reopened page shows "Active" and "This order is paid". The order email of
+this run went out before the payment fix, so the payment was attached to its
+link by hand; a fresh run is needed to see the `&pay=` link in the email. The
+records of runs +20002 and +20003 remain on dev-1.
+
+`check-dev1.mjs` now waits for approved purchases with a prepared invoice to
+settle as SUBMITTED (order, lines, invoice) and keeps DRAFT for purchases without
+one; repeated confirmation and readiness accept the lifecycle states; payment
+creation is skipped for reserved `@example.invalid` recipients
+(`SUPPRESSED_FOR_DEV_TEST`) so synthetic purchases leave no PaymentIntent. The
+full run passed 51 business checks with complete cleanup. `--invoice-only`
+had two stale scenarios: CA_QC now expects no invoice while rounding is not exact
+(ROUNDING_POLICY_REQUIRED), and US_AK was removed because Checkout tax preview is
+CA-only, so a US address with configured taxes fails draft continuation;
+self-service stays CA-only by decision. The grant probe now compares the order
+state before and after the forbidden calls instead of requiring DRAFT.
+
+Open: the paid text says the subscription is active although onboarding
+(stage 2) has not run.
+
+## Entitlement Definitions on dev-1 — 2026-10-25
+
+All 36 Definitions from `entitlements/config.json` were created under
+SERVICEWAND as ACTIVE with catalog labels by `entitlements/definitions.mjs`
+(30 features, 3 levels, active-Property quota, Weather feature and Weather
+quota). Readiness afterwards: Order 233 (with Weather) keeps only
+WEATHER_SETUP_PENDING; paid Order 235 has no enforcement blockers and native
+paid evidence is confirmed; both wait only on the disabled onboarding executor.
+
+## First activation on dev-1 — 2026-10-25
+
+The onboarding executor was enabled and paid Order 235 (Form 533) activated
+manually through `provisionOnboarding`: Organization 58 "Northline Snow Services
+(test 20003)" with administrator User 64 (access email to `+20003`), Property
+1018, starter Order 255, Agreement 222, 30 Grants and the active-Property Pool;
+status COMPLETE, coverage one month from payment. Two executor defects were
+fixed on the way (see `scripts/plan-subscription/onboarding/README.md`).
+User decision afterwards: activation starts automatically after full payment
+(invoice PAID, order ACTIVE); the paid completion job now calls the WORKFLOW
+`provisionOnboarding` command. The ready email ("Your ServiceWand organization
+is ready") now uses the shared email layout; the password setup email is Core's
+own template.
+
+## Final run on dev-1 — 2026-10-25
+
+`+20005` (Form 601, Order 258): request, confirmation, approval, submission and
+the card payment ran by themselves, and the payment moved the invoice to PAID and
+the order to ACTIVE. Automatic activation then failed on three defects of the
+system path (type lookups owned by SERVICE_WAND_WINTER_SERVICES, the password
+setup right `P_PASSWD_W`, the ready email's user/organization context), all fixed
+(see `scripts/plan-subscription/onboarding/README.md`). User decisions: the admin
+receives the same password setup email as Users 64 and 65, and Order 258 is
+finished; it is COMPLETE with Organization 60 and administrator User 66. A run in
+which payment alone leads to COMPLETE is still to be observed.
 
 ## Initial FormType publication
 

@@ -66,7 +66,7 @@
       var STATES = {
         purchase: ["step-plan", "step-addons", "step-company", "loading", "load-error", "unavailable", "unconfigured", "submitting", "submit-error", "done"],
         confirm: ["verify", "purchase", "sending", "used", "unknown", "failed", "missing"],
-        order: ["ready", "taxes", "partial", "order-loading", "closed", "order-failed", "missing"],
+        order: ["ready", "taxes", "partial", "pay-ready", "pay-live", "pay-processing", "pay-failed", "pay-done", "active", "order-loading", "closed", "order-failed", "missing"],
       };
       var CONTACT = { COMPANY_NAME: "Northline Snow Services", COMPANY_ADDRESS: "1055 W Georgia St, Vancouver, BC V6E 3P3, Canada", FIRST_NAME: "Avery", LAST_NAME: "Chen", EMAIL: "avery@northline.example", PHONE: "+1 604 555 0142" };
       var params = new URLSearchParams(window.location.search);
@@ -172,7 +172,8 @@
 
       function startOrder(name) {
         title.hidden = subtitle.hidden = true;
-        var hash = name === "missing" ? "" : "#orderId=9001&token=demo-fixture-token";
+        var paying = name.indexOf("pay-") === 0 || name === "active";
+        var hash = name === "missing" ? "" : "#orderId=9001&token=demo-fixture-token" + (paying ? "&pay=pi_demo_secret_fixture" : "");
         current = PS.order.mount(root, {
           fetch: fixtures.fetchFor(name, 0),
           apiBase: "https://dev-1.servicewand.com",
@@ -180,7 +181,16 @@
           copy: copyFor("order"),
           location: { hash: hash, pathname: window.location.pathname, search: window.location.search },
           history: { replaceState: function () {} },
+          stripeKey: name === "pay-live" ? "pk_live_harness" : paying ? "pk_test_harness" : "",
+          stripe: paying ? fixtures.stripeFor(name, 400) : null,
         });
+        if (["pay-processing", "pay-failed", "pay-done"].indexOf(name) === -1) return;
+        var tries = 0;
+        (function wait() {
+          var pay = root.querySelector(".ps-pay .df-btn--primary");
+          if (pay) return pay.click();
+          if (tries++ < 100) window.setTimeout(wait, 20);
+        })();
       }
 
       function start() {

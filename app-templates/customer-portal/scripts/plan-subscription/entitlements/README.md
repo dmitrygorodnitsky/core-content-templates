@@ -9,8 +9,8 @@ activate policies, change ProductTypes or enable payment.
 
 `config.json` is the source of configuration. `prepare.mjs` validates it and
 projects the current catalog into reviewable profiles and native definition
-candidates. The generated review is not a seed importer input. There is no
-`apply` command or remote mutation path.
+candidates; it stays read-only. `definitions.mjs` is the only write path: it
+creates the missing Definitions on dev-1 (see "Create Definitions" below).
 
 ## Confirmed decisions and sources
 
@@ -183,3 +183,24 @@ used as an invented RESOURCE or Weather operation key.
 The backend guide's implementation limits take precedence over illustrative
 Javadoc statements, especially scriptId, ASSERT_FEATURE and workflow operation
 key syntax. The current native key is `workflow:event:<eventId>`.
+
+## Create Definitions — 2026-10-25
+
+User decision: create all 36 Definitions from this configuration on dev-1,
+owned by SERVICEWAND, ACTIVE, named after the catalog attribute labels (the
+candidates fall back to the attribute code when a label is missing).
+
+```sh
+node app-templates/customer-portal/scripts/plan-subscription/entitlements/definitions.mjs --dev-1
+node app-templates/customer-portal/scripts/plan-subscription/entitlements/definitions.mjs --dev-1 --apply
+```
+
+The plan lists CREATE, MATCH, MISMATCH (differing native fields) and
+CREATE_BESIDE_FOREIGN (same code under another owner). `--apply` creates only
+missing records and refuses while any mismatch or foreign code exists; it never
+updates an existing Definition. The credential comes from SERVICEWAND_BEARER.
+On 2026-10-25 it created all 36 on dev-1; a second plan reads 36 MATCH.
+Definitions alone issue nothing: Grants, Pools and Policies come from onboarding
+after payment. Property quota hooks, Weather assignment operations and feature
+enforcement remain backend gaps.
+

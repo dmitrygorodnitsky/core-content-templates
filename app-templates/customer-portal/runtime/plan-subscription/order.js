@@ -7,6 +7,13 @@
   var el = core.el;
 
   var CLOSED = [401, 403, 404];
+  var PAYMENT_SECRET = /^pi_[A-Za-z0-9]+_secret_[A-Za-z0-9]+$/;
+  var PUBLISHABLE_KEY = /^pk_(test|live)_[A-Za-z0-9]+$/;
+  var TEST_CARDS = [
+    { key: "payTestSuccess", number: "4242 4242 4242 4242" },
+    { key: "payTestSecure", number: "4000 0027 6000 3184" },
+    { key: "payTestDeclined", number: "4000 0000 0000 0002" },
+  ];
 
   function grantUrl(base, token, tail, service) {
     return base + "/" + (service || "core-bill") + "/i/" + encodeURIComponent(token) + "/" + tail;
@@ -53,6 +60,27 @@
     };
   }
 
+  function open(location, history) {
+    var values = core.fragment(location && location.hash);
+    core.scrubFragment(location, history);
+    return {
+      token: core.acceptableToken(values.token) ? values.token : "",
+      orderId: /^[1-9][0-9]{0,17}$/.test(String(values.orderId || "")) ? values.orderId : "",
+      secret: PAYMENT_SECRET.test(String(values.pay || "")) ? values.pay : "",
+    };
+  }
+
+  function publishableKey(value) {
+    var text = String(value == null ? "" : value).trim();
+    return PUBLISHABLE_KEY.test(text) ? text : "";
+  }
+
+  function payment(stateCode, secret, stripeKey, factory) {
+    if (stateCode === "ACTIVE") return "paid";
+    if (secret && publishableKey(stripeKey) && typeof factory === "function") return "pay";
+    return "none";
+  }
+
   function mount(root, options) {
     var settings = options || {};
     var copy = ns.copy.merge(ns.copy.defaults.order, settings.copy);
@@ -60,16 +88,17 @@
     var base = core.apiBase(settings.apiBase, global.location);
     var locale = settings.locale || (global.document.documentElement.lang || "en");
     var location = settings.location || global.location;
-    var values = core.fragment(location && location.hash);
     var onHash = settings.location ? null : function () {
       if (core.acceptableToken(core.fragment(global.location.hash).token)) global.location.reload();
     };
     if (onHash) global.addEventListener("hashchange", onHash);
-    core.scrubFragment(location, settings.history || global.history);
-    var token = core.acceptableToken(values.token) ? values.token : "";
-    var orderId = /^[1-9][0-9]{0,17}$/.test(String(values.orderId || "")) ? values.orderId : "";
+    var link = open(location, settings.history || global.history);
+    var token = link.token;
+    var orderId = link.orderId;
+    var stripeKey = publishableKey(settings.stripeKey);
     var contactHref = settings.contactHref || "";
     var alive = true;
+    var card = null;
     var shell = el("div", "df-wrapper ps ps--order", { dataset: { psScreen: "order", state: "loading" } });
     root.replaceChildren(shell);
 
@@ -87,8 +116,149 @@
       shell.replaceChildren(view);
     }
 
+    function releaseCard() {
+      if (card && typeof card.destroy === "function") card.destroy();
+      card = null;
+    }
+
+    function note(text, icon, variant) {
+      return el("p", "ps-note" + (variant ? " ps-note--" + variant : ""), null, [ui.icon(icon), el("span", null, { text: text })]);
+    }
+
+    function paidNotice(title, body) {
+      return el("div", "ps-paid", { role: "status", dataset: { state: "paid", visualId: "plan-subscription-paid" } }, [
+        el("div", "ps-paid__icon", null, [ui.icon("check")]),
+        el("div", "ps-paid__text", null, [
+          el("p", "ps-paid__title", { text: title, tabindex: "-1" }),
+          el("p", "ps-paid__body", { text: body }),
+        ]),
+      ]);
+    }
+
+    function payLabel(view) {
+      return view.total === null ? copy.payActionPlain : core.fill(copy.payAction, { amount: money(view.total, view.currency) });
+    }
+
+    function cardStyle() {
+      var light = global.document.documentElement.getAttribute("data-theme") === "light";
+      return {
+        base: {
+          color: light ? "#14161c" : "#ffffff",
+          iconColor: light ? "#4f95ff" : "#6beaf9",
+          fontFamily: "\"Vela Sans\", system-ui, -apple-system, \"Segoe UI\", sans-serif",
+          fontSize: "17px",
+          fontSmoothing: "antialiased",
+          "::placeholder": { color: light ? "#5c6474" : "#97a2b8" },
+        },
+        invalid: { color: "#ff6c56", iconColor: "#ff6c56" },
+      };
+    }
+
+    function testCards() {
+      return el("div", "ps-pay__test", null, [
+        el("p", "ps-pay__test-hint", { text: copy.payTestHint }),
+        el("ul", "ps-pay__test-cards", null, TEST_CARDS.map(function (entry) {
+          return el("li", "ps-pay__test-card", null, [
+            el("span", null, { text: copy[entry.key] }),
+            el("code", "ps-pay__test-number", { dir: "ltr", text: entry.number }),
+          ]);
+        })),
+      ]);
+    }
+
+    function paymentPanel(view, holder, factory) {
+      var stripe = factory(stripeKey, { locale: String(locale).toLowerCase().split("-")[0] || "auto" });
+      card = stripe.elements().create("card", { style: cardStyle() });
+      var element = card;
+      var busy = false;
+      var host = el("div", "ps-pay__card", { role: "group", "aria-labelledby": "ps-pay-card-label" });
+      var error = el("div", "df-error ps-pay__error", { id: "ps-pay-error", role: "alert", dir: "auto" });
+      var action = ui.button(payLabel(view), "primary", { "aria-describedby": "ps-pay-error" });
+      var panel = el("section", "ps-pay", { "aria-labelledby": "ps-pay-title", dataset: { state: "ready", visualId: "plan-subscription-payment" } }, [
+        el("div", "ps-pay__head", null, [
+          el("h4", "ps-pay__title", { id: "ps-pay-title", text: copy.payTitle }),
+          stripeKey.indexOf("pk_test_") === 0 ? el("span", "ps-pay__badge", { text: copy.payTestMode }) : null,
+        ]),
+        el("p", "ps-pay__note", null, [ui.icon("lock"), el("span", null, { text: copy.payNote })]),
+        stripeKey.indexOf("pk_test_") === 0 ? testCards() : null,
+        el("div", "ps-pay__field", null, [
+          el("span", "df-label ps-pay__label", { id: "ps-pay-card-label", text: copy.payCardLabel }),
+          host,
+          error,
+        ]),
+        el("div", "ps-pay__actions", null, [action]),
+      ]);
+
+      function setBusy(on) {
+        busy = on;
+        panel.dataset.state = on ? "processing" : "ready";
+        action.disabled = on;
+        action.textContent = on ? copy.payProcessing : payLabel(view);
+        if (on) action.setAttribute("aria-busy", "true");
+        else action.removeAttribute("aria-busy");
+        if (typeof element.update === "function") element.update({ disabled: on });
+      }
+
+      function fail(message) {
+        setBusy(false);
+        panel.dataset.state = "failed";
+        error.textContent = message ? core.clip(message) : copy.payFailed;
+      }
+
+      function paid() {
+        releaseCard();
+        holder.replaceChildren(paidNotice(copy.payDoneTitle, copy.payDoneBody));
+        var title = holder.querySelector(".ps-paid__title");
+        if (title) title.focus({ preventScroll: true });
+      }
+
+      action.addEventListener("click", function () {
+        if (busy || !alive || card !== element) return;
+        error.textContent = "";
+        setBusy(true);
+        new Promise(function (resolve) {
+          resolve(stripe.confirmCardPayment(link.secret, { payment_method: { card: element } }));
+        }).then(function (result) {
+          if (!alive || card !== element) return;
+          var outcome = result || {};
+          var intent = outcome.paymentIntent || (outcome.error && outcome.error.payment_intent);
+          if (intent && intent.status === "succeeded") return paid();
+          fail(outcome.error && outcome.error.message);
+        }, function () {
+          if (alive && card === element) fail("");
+        });
+      });
+
+      element.on("change", function (event) {
+        if (busy) return;
+        error.textContent = event && event.error && event.error.message ? core.clip(event.error.message) : "";
+        if (!error.textContent && panel.dataset.state === "failed") panel.dataset.state = "ready";
+      });
+
+      return { node: panel, mount: function () { element.mount(host); } };
+    }
+
+    function settlement(view) {
+      var factory = settings.stripe || global.Stripe;
+      var mode = payment(view.stateCode, link.secret, stripeKey, factory);
+      if (mode === "paid") return { node: paidNotice(copy.paidTitle, copy.paidBody) };
+      if (mode === "pay") {
+        var holder = el("div", "ps-settle");
+        try {
+          var panel = paymentPanel(view, holder, factory);
+          holder.append(note(copy.payableNote, "lock", "info"), panel.node);
+          return { node: holder, mount: panel.mount };
+        } catch (_) {
+          releaseCard();
+        }
+      }
+      return { node: note(copy.draftNote, "alert") };
+    }
+
     function render(view, partial) {
       shell.dataset.state = partial ? "partial" : "ready";
+      releaseCard();
+      var settle = settlement(view);
       var rows = view.lines.map(function (line) {
         return el("li", "ps-order__line", { dataset: { item: String(line.id) } }, [
           el("div", "ps-order__item", null, [
@@ -121,9 +291,10 @@
         ]),
         el("ul", "ps-order__lines", null, rows),
         totals,
-        el("p", "ps-note", null, [ui.icon("alert"), el("span", null, { text: copy.draftNote })]),
+        settle.node,
         expires ? el("p", "ps-order__expires", null, [ui.icon("lock"), el("span", null, { text: core.fill(copy.expires, { date: expires }) })]) : null,
       ]));
+      if (settle.mount) settle.mount();
     }
 
     function load() {
@@ -175,11 +346,12 @@
     return {
       stop: function () {
         alive = false;
+        releaseCard();
         if (onHash) global.removeEventListener("hashchange", onHash);
         root.replaceChildren();
       },
     };
   }
 
-  ns.order = Object.freeze({ mount: mount, normalize: normalize });
+  ns.order = Object.freeze({ mount: mount, normalize: normalize, open: open, publishableKey: publishableKey, payment: payment });
 })(typeof window !== "undefined" ? window : globalThis);

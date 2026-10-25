@@ -11,8 +11,8 @@
           "NAME": "ServiceWand Invoice Lifecycle"
         }
       },
-      "onUpdate": "workflowUtils.guardPreparedInvoice(entity, java.util.Map.of());\n// entitlement checkout source: 32f4b7780fd6",
-      "onDelete": "workflowUtils.guardPreparedInvoiceDelete(entity, java.util.Map.of());\n// entitlement checkout source: 32f4b7780fd6",
+      "onUpdate": "workflowUtils.guardPreparedInvoice(entity, java.util.Map.of());\n// entitlement checkout source: e4ac70750815",
+      "onDelete": "workflowUtils.guardPreparedInvoiceDelete(entity, java.util.Map.of());\n// entitlement checkout source: e4ac70750815",
       "states": [
         {
           "code": "CANCELLED",
@@ -33,7 +33,7 @@
           },
           "attributes": [],
           "attributeOrder": [],
-          "onExit": "workflowUtils.guardPreparedInvoiceExit(entity, java.util.Map.of());\n// entitlement checkout source: 32f4b7780fd6"
+          "onExit": "workflowUtils.guardPreparedInvoiceExit(entity, java.util.Map.of());\n// entitlement checkout source: e4ac70750815"
         },
         {
           "code": "PAID",
@@ -43,7 +43,8 @@
             }
           },
           "attributes": [],
-          "attributeOrder": []
+          "attributeOrder": [],
+          "onEnter": "workflowUtils.guardPreparedInvoicePaid(entity, java.util.Map.of());\n// entitlement checkout source: e4ac70750815"
         },
         {
           "code": "SUBMITTED",

@@ -4,8 +4,10 @@ Owns backend intake, email confirmation, automatic Checkout preparation and
 one-time purchase confirmation that creates a CUSTOMER Account plus DRAFT
 subscription Order with catalog-priced plan, site expansion and Weather OrderItems.
 When existing tax configuration is complete, it also prepares one unpaid DRAFT Invoice. The user approved a second email as the review/confirmation
-channel while UI is absent. No UI,
-submitted/payable invoice, payment or ProductType/ProductPriceType changes are included.
+channel while UI is absent. Since 2026-10-24 approval submits the order, its lines and the
+invoice, the order email carries a Stripe test-mode payment, and full payment makes the
+invoice PAID and the order ACTIVE (see "Card payment" below). No ProductType/ProductPriceType
+changes are included.
 The disabled onboarding executor and operator Checkout commands are described in
 `onboarding/README.md`. `purchase-access/` owns read-only native Magic Link access
 to the confirmed Order and its exact items; `UI-API-CONTRACT.md` describes that
@@ -67,6 +69,8 @@ It does not create a buyer User or test delivery through an actual portal/mailbo
   executor and consumer policy/binding provisioning. No onboarding entities are
   created by the current disabled deployment; see its README for limits.
 - `email/`: the shared email layout embedded into the CMS and billing scripts.
+- `payment/`: purchase lifecycle rules embedded into the billing script.
+- `PLAN_SUBSCRIPTION_PAYMENT_V1.java`: creates the Stripe PaymentIntent for a submitted subscription invoice on the core-pay node.
 - `checkout/`: explicit operator-only read/edit DTO commands and shared native
   tax assignment used for both preview and the existing Order workflow.
 - `PLAN_SUBSCRIPTION_ONBOARDING_MODEL_V1.java`: permanent RM-side read-only
@@ -344,9 +348,12 @@ For these preparation invoices, scoped Order/OrderItem/Invoice guards reject
 line or amount drift, unsafe deletion and leaving Invoice DRAFT. Ordinary
 invoices/orders without this preparation receipt retain their existing behavior.
 The Script helper is bound to workflows 66/67/68; their state graphs are preserved.
-No Stripe config, intent, payment API, webhook, User or permission assignment is
-added. These guards control this preparation workflow; no claim is made that
-they change the separate core-pay API's authorization contract.
+`payment/PurchaseLifecycle.java` holds the lifecycle rules the guards apply:
+DRAFT unpaid; SUBMITTED together with its order and accepting exactly one payment
+of the full amount; PAID only fully paid; the order leaves DRAFT only after all
+its lines and becomes ACTIVE only after the invoice is PAID and its lines are
+ACTIVE. No Stripe configuration, webhook, User or permission assignment is added;
+core-pay's own webhook records the payment.
 
 For focused synthetic CA/US, explicit-zero/missing-rate, native totals and
 invoice snapshot/idempotency checks:
@@ -495,3 +502,34 @@ with a nominated recipient.
 
 Product-model decisions and deployment evidence belong in
 `../../content/cases/SERVICEWAND-PLAN-SUBSCRIPTION-FORM-TYPE.md`.
+
+## Card payment (Stripe test mode)
+
+`DRAFT_ORDER_READY` runs prepareOnboarding, then `submitPurchase`, then the
+order email. `submitPurchase` moves each line, then the order, then the invoice
+DRAFT → SUBMITTED. Core applies `sendEventUnsecured` asynchronously in its own
+transaction, so each transition is sent without locks and read back before the
+next one; otherwise the next guard sees the old state and the transition is
+silently dropped.
+
+Before the order email, `createPurchasePayment` submits
+`PLAN_SUBSCRIPTION_PAYMENT_V1.createInvoicePayment` to a CORE-PAY node. The
+helper accepts only the system executor, checks the prepared SUBMITTED unpaid
+invoice and charges its outstanding amount through
+`PaymentRequestBuilderFactory` (the Stripe controller requires an HTTP request).
+The email link gains `&pay=<client_secret>`; the receipt keeps `paymentStatus`,
+`paymentIntentId` and any `paymentError`, never the secret. A failed creation
+still sends the email without payment. `paymentHelperCode` in
+`purchase-access/config.json` enables it.
+
+core-pay's webhook records the payment. The invoice update guard then schedules
+`completePaidPurchase`, which marks the invoice PAID if core-pay did not, then
+activates the lines and the order, all through awaited transitions. It is
+idempotent and may also be run by an administrator. Once the invoice is PAID
+and the order ACTIVE it starts activation: it submits
+`PLAN_SUBSCRIPTION_WORKFLOW_V11.provisionOnboarding(formId, checkoutDigest)` to a
+CORE-CMS node as the system executor (the frozen plan supplies both values) and
+waits up to five minutes. It skips activation when the executor is disabled or
+onboarding is already COMPLETE; a blocked purchase (for example Weather) comes
+back BLOCKED without mutations.
+

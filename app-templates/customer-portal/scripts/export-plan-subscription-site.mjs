@@ -17,6 +17,7 @@ const SHARED = ["core.js", "copy.js", "ui.js"];
 export const LANGUAGES = ["en", "ru", "fr", "es", "ar", "he", "zh"];
 const DESKTOP_BACKGROUND = "ac160291-315d-4109-94be-5a45196ec696";
 const MOBILE_BACKGROUND = "c0e500d1-b9f6-4ead-8723-e01bc52de63e";
+const STRIPE_SCRIPT = `<script src="https://js.stripe.com/v3/"></script>`;
 
 function parameter(code, type, value, name, description) {
   return { code, type, value, nls: { en: description ? { NAME: name, DESCRIPTION: description } : { NAME: name } }, options: [] };
@@ -169,10 +170,10 @@ export async function buildPackage() {
     },
     {
       code: "SUBSCRIPTION_ORDER",
-      nls: { en: { NAME: "Subscription order", DESCRIPTION: "Read-only view of a confirmed DRAFT subscription Order through its native AccessGrant link." } },
-      head: head("SUBSCRIPTION_ORDER"),
+      nls: { en: { NAME: "Subscription order", DESCRIPTION: "Subscription Order view through its native AccessGrant link, with Stripe card payment when the link carries a PaymentIntent secret." } },
+      head: [head("SUBSCRIPTION_ORDER"), STRIPE_SCRIPT].join("\n"),
       html: [
-        sectionOpen("SUBSCRIPTION_ORDER", "order", { "data-ps-contact-url": "SUBSCRIPTION_ORDER_CONTACT_URL@STRING" }),
+        sectionOpen("SUBSCRIPTION_ORDER", "order", { "data-ps-contact-url": "SUBSCRIPTION_ORDER_CONTACT_URL@STRING", "data-ps-stripe-key": "SUBSCRIPTION_ORDER_STRIPE_PUBLISHABLE_KEY@STRING" }),
         `  <div class="container">`,
         `    <div class="ps-page__container">`,
         `      <div class="ps-page__body" data-ps-root></div>`,
@@ -184,9 +185,11 @@ export async function buildPackage() {
       css,
       javascript: (await modules(["order.js"])) + "\n" + boot("order", {
         contactHref: `section.getAttribute("data-ps-contact-url") || ""`,
+        stripeKey: `section.getAttribute("data-ps-stripe-key") || ""`,
       }),
       parameters: [
         parameter("SUBSCRIPTION_ORDER_CONTACT_URL", "STRING", "", "Contact link for expired order links", "Empty hides the contact button."),
+        parameter("SUBSCRIPTION_ORDER_STRIPE_PUBLISHABLE_KEY", "STRING", "", "Stripe publishable key", "pk_test_… or pk_live_… for this environment; empty hides card payment."),
         ...backgrounds("SUBSCRIPTION_ORDER"),
         ...orderCopy.map((entry) => entry.parameter),
       ],

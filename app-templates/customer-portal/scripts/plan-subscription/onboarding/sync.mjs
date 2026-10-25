@@ -63,6 +63,8 @@ await embed('../PLAN_SUBSCRIPTION_WORKFLOW_V11.java','CHECKOUT COMMANDS',await f
 const readAccess=(await fs.readFile(new URL('../purchase-access/PurchaseReadAccess.java',import.meta.url),'utf8')).split('\n').filter(line=>!line.startsWith('import ')).join('\n').trim().replace('public final class PurchaseReadAccess','public static final class PurchaseReadAccess');
 await embed('../PLAN_SUBSCRIPTION_DRAFT_V5.java','PURCHASE READ ACCESS POLICY',readAccess.split('\n').map(line=>'    '+line).join('\n'));
 await embed('../PLAN_SUBSCRIPTION_DRAFT_V5.java','PURCHASE READ ACCESS NATIVE',await fs.readFile(new URL('../purchase-access/native.java.inc',import.meta.url),'utf8'));
+const lifecycle=(await fs.readFile(new URL('../payment/PurchaseLifecycle.java',import.meta.url),'utf8')).split('\n').filter(line=>!line.startsWith('import ')).join('\n').trim().replace('public final class PurchaseLifecycle','public static final class PurchaseLifecycle');
+await embed('../PLAN_SUBSCRIPTION_DRAFT_V5.java','PURCHASE LIFECYCLE',lifecycle.split('\n').map(line=>line?'    '+line:line).join('\n'));
 const emailLayout=(await fs.readFile(new URL('../email/EmailLayout.java',import.meta.url),'utf8')).split('\n').filter(line=>!line.startsWith('import ')).join('\n').trim().replace('public final class EmailLayout','public static final class EmailLayout');
 for(const name of ['../PLAN_SUBSCRIPTION_WORKFLOW_V11.java','../PLAN_SUBSCRIPTION_DRAFT_V5.java'])
   await embed(name,'EMAIL LAYOUT',emailLayout.split('\n').map(line=>line?'    '+line:line).join('\n'));
@@ -102,6 +104,17 @@ add(bill,'readOnboardingStatus',[param('payloadJson','java.lang.String')]);
 add(cms,'readPurchaseStatus',[param('formId','java.lang.Integer'),param('checkoutDigest','java.lang.String')]);
 add(cms,'readCheckout',[param('formId','java.lang.Integer')]);
 add(cms,'reviseCheckout',[param('formId','java.lang.Integer'),param('expectedRevision','java.lang.Integer'),param('expectedCheckoutDigest','java.lang.String'),param('changesJson','java.lang.String')]);
+const paymentCode='PLAN_SUBSCRIPTION_PAYMENT_V1';
+if (!seed.scripts.some(row => row.code === paymentCode)) {
+  assert.ok(write, 'Generate the payment helper declaration');
+  seed.scripts.push({ code: paymentCode, language: 'Java', category: 'WORKFLOW', organization: 'SYSTEM', executable: true,
+    nls: { en: { NAME: 'ServiceWand subscription invoice card payment' } },
+    metadata: { CAPABILITIES: ['CORE', 'CORE-ACCT', 'CORE-BILL', 'CORE-PAY', 'CORE-PIM'], FUNCTIONS: [] }, contentFile: paymentCode + '.java' });
+}
+add(seed.scripts.find(row=>row.code===paymentCode),'createInvoicePayment',[param('payloadJson','java.lang.String')]);
+add(cms,'submitPurchase',[param('formId','java.lang.Integer'),param('checkoutDigest','java.lang.String')]);
+add(bill,'submitPurchase',[param('payloadJson','java.lang.String')]);
+add(bill,'completePaidPurchase',[param('payloadJson','java.lang.String')]);
 for(const name of ['deliverPurchaseReadAccess','readPurchaseReadAccess']) {
   add(cms,name,[param('formId','java.lang.Integer'),param('checkoutDigest','java.lang.String')]);
   add(bill,name,[param('payloadJson','java.lang.String')]);

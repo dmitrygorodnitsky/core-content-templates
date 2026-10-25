@@ -66,6 +66,7 @@ import com.pixelnation.common.util.TransactionUtils;
 import com.pixelnation.common.cluster.CapabilitiesResolver;
 import com.pixelnation.common.script.ScriptService;
 import com.pixelnation.common.script.ScriptService.ExecutionStatus;
+import com.pixelnation.modules.workflow.service.iface.IWorkflowService;
 import com.pixelnation.pim.domain.Product;
 import com.pixelnation.pim.domain.ProductPrice;
 import com.pixelnation.pim.persistence.iface.IProductManager;
@@ -98,6 +99,7 @@ public class MAIN_CLASS {
     @Autowired private IScriptManager scriptManager;
     @Autowired private ScriptService scriptService;
     @Autowired private CapabilitiesResolver capabilitiesResolver;
+    @Autowired private IWorkflowService workflowService;
     @PersistenceContext private EntityManager entityManager;
 
     public Map<String, Object> inspectConfiguration() {
@@ -120,9 +122,10 @@ public class MAIN_CLASS {
                     || !seller.getId().equals(account.getOrganization().getId()) || !seller.getId().equals(order.getOrganization().getId())
                     || account.getType() == null || !setting("ACCOUNT_TYPE_CODE").equals(account.getType().getCode())
                     || order.getAccount() == null || !account.getId().equals(order.getAccount().getId())
-                    || !setting("ORDER_TYPE_CODE").equals(order.getType().getCode()) || !order.hasState("DRAFT")) {
-                throw new ApplicationException("A matching confirmed subscription draft is required");
+                    || !setting("ORDER_TYPE_CODE").equals(order.getType().getCode())) {
+                throw new ApplicationException("A matching confirmed subscription order is required");
             }
+            lifecycle(() -> PurchaseLifecycle.requireOrder(stateOf(order)));
             requireReceipt(account.getMetadata(), input); requireReceipt(order.getMetadata(), input);
             Map<String, Object> committed = receipt(account, order);
             if (input.containsKey("entitlementFingerprint")
@@ -476,10 +479,12 @@ public class MAIN_CLASS {
                 if (!orders.isEmpty()) {
                     Order order = orders.get(0);
                     requireReceipt(order.getMetadata(), input);
-                    if (!setting("ORDER_TYPE_CODE").equals(order.getType().getCode()) || !order.hasState("DRAFT")) {
-                        throw new ApplicationException("Existing purchase order is outside the draft stage");
+                    if (!setting("ORDER_TYPE_CODE").equals(order.getType().getCode())) {
+                        throw new ApplicationException("Existing purchase order has an unexpected type");
                     }
+                    lifecycle(() -> PurchaseLifecycle.requireOrder(stateOf(order)));
                     if (order.getItems().isEmpty()) {
+                        if (!order.hasState("DRAFT")) throw new ApplicationException("Only an empty draft purchase can be recovered");
                         // Explicit same-Form recovery can upgrade an old empty draft;
                         // never reprice a consented snapshot or rewrite existing lines.
                         Map<String, Object> preview = confirmedPreview(input);
@@ -516,8 +521,8 @@ public class MAIN_CLASS {
             order.setStates(new LinkedHashSet<>(Set.of(type.getWorkflow().getInitialState())));
             order.setAccount(account);
             order.setCurrency(dictionaryManager.get(Math.toIntExact(number(preview.get("currencyId")))));
-            order.setNotes("Plan subscription draft from Form " + number(input.get("sourceFormId"))
-                    + ". Properties capacity validated against the configured plan maximum; tax preparation only, not payable.");
+            order.setNotes("Plan subscription order from Form " + number(input.get("sourceFormId"))
+                    + ". Properties capacity validated against the configured plan maximum.");
             Map<String, Object> purchase = marker(input);
             purchase.put("draftOnly", true);
             purchase.put("itemsMaterialized", true);
@@ -1177,10 +1182,11 @@ public class MAIN_CLASS {
         Map<String, Object> purchase = optionalMap(order.getMetadata() == null ? null : order.getMetadata().get(KEY));
         Map<String, Object> preparation = optionalMap(purchase.get("invoicePreparation"));
         if (!"DRAFT_INVOICE_READY".equals(preparation.get("status"))) return;
-        if (!"SERVICEWAND_SUBSCRIPTION".equals(order.getType().getCode()) || !order.hasState("DRAFT")
+        if (!"SERVICEWAND_SUBSCRIPTION".equals(order.getType().getCode())
                 || !invoiceFingerprint(order).equals(preparation.get("snapshotFingerprint"))) {
             throw new ApplicationException("Prepared invoice snapshot is immutable; review before changing the subscription draft");
         }
+        lifecycle(() -> PurchaseLifecycle.requireOrder(stateOf(order)));
     }
     public void guardPreparedOrderItem(OrderItem item, Map<String, Object> context) {
         if (item.getOrder() != null) guardOrderInvoiceSnapshot(item.getOrder(), context);
@@ -1199,11 +1205,12 @@ public class MAIN_CLASS {
         if (!Boolean.TRUE.equals(data.get("preparationOnly"))) return;
         Order order = invoice.getOrder();
         if (order == null || invoice.getType() == null || !setting("INVOICE_TYPE_CODE").equals(invoice.getType().getCode())
-                || !order.hasState("DRAFT") || !invoice.hasState("DRAFT") || invoice.getOrganization() == null
-                || !order.getOrganization().getId().equals(invoice.getOrganization().getId()) || !invoice.getPayments().isEmpty()
-                || invoice.getTotalPaidAmount().signum() != 0 || !Boolean.FALSE.equals(data.get("paymentEnabled"))) {
-            throw new ApplicationException("Prepared subscription invoice must remain an unpaid seller-owned DRAFT");
+                || invoice.getOrganization() == null || !order.getOrganization().getId().equals(invoice.getOrganization().getId())
+                || !Boolean.FALSE.equals(data.get("paymentEnabled"))) {
+            throw new ApplicationException("Prepared subscription invoice must stay seller-owned");
         }
+        lifecycle(() -> PurchaseLifecycle.requireInvoice(stateOf(invoice), stateOf(order), invoice.getAmountDue(),
+                invoice.getTotalPaidAmount(), invoice.getPayments().size()));
         List<Long> actual = invoice.getItems().stream().map(item -> item.getId().longValue()).sorted().toList();
         if (!actual.equals(itemIds(order)) || actual.size() != new LinkedHashSet<>(actual).size()
                 || !invoiceFingerprint(order).equals(data.get("snapshotFingerprint"))
@@ -1215,11 +1222,194 @@ public class MAIN_CLASS {
         if (!data.get("snapshotFingerprint").equals(objectMap(parent.get("invoicePreparation")).get("snapshotFingerprint"))) {
             throw new ApplicationException("Invoice and parent preparation receipts differ");
         }
+        if (PurchaseLifecycle.MARK_INVOICE_PAID.equals(PurchaseLifecycle.nextStep(stateOf(invoice), stateOf(order), invoice.getAmountDue(),
+                invoice.getTotalPaidAmount(), invoice.getPayments().size()))) scheduleCompletion(order);
     }
     public void guardPreparedInvoiceExit(Invoice invoice, Map<String, Object> context) {
-        if (Boolean.TRUE.equals(optionalMap(invoice.getMetadata() == null ? null : invoice.getMetadata().get(KEY)).get("preparationOnly"))) {
-            throw new ApplicationException("Subscription invoice is preparation-only; submission and payment are disabled");
+        if (!Boolean.TRUE.equals(optionalMap(invoice.getMetadata() == null ? null : invoice.getMetadata().get(KEY)).get("preparationOnly"))) return;
+        Order order = invoice.getOrder();
+        if (order == null) throw new ApplicationException("Subscription invoice order is missing");
+        lifecycle(() -> PurchaseLifecycle.requireInvoiceLeavesDraft(stateOf(order)));
+    }
+    public void guardPreparedInvoicePaid(Invoice invoice, Map<String, Object> context) {
+        if (!Boolean.TRUE.equals(optionalMap(invoice.getMetadata() == null ? null : invoice.getMetadata().get(KEY)).get("preparationOnly"))) return;
+        lifecycle(() -> PurchaseLifecycle.requireInvoicePaid(invoice.getAmountDue(), invoice.getTotalPaidAmount(), invoice.getPayments().size()));
+        if (invoice.getOrder() != null) scheduleCompletion(invoice.getOrder());
+    }
+    public void guardPreparedOrderExit(Order order, Map<String, Object> context) {
+        Map<String, Object> purchase = optionalMap(order.getMetadata() == null ? null : order.getMetadata().get(KEY));
+        if (!Boolean.TRUE.equals(purchase.get("draftOnly"))) return;
+        Invoice invoice = preparedPurchaseInvoice(order);
+        if (invoice == null || !invoice.hasState("DRAFT")) {
+            throw new ApplicationException("Subscription draft is submitted only together with its prepared invoice");
         }
+        if (order.getItems().isEmpty() || order.getItems().stream().anyMatch(item -> !"SUBMITTED".equals(stateOf(item)))) {
+            throw new ApplicationException("Subscription order lines are submitted before their order");
+        }
+    }
+    public void guardPreparedOrderActive(Order order, Map<String, Object> context) {
+        Map<String, Object> purchase = optionalMap(order.getMetadata() == null ? null : order.getMetadata().get(KEY));
+        if (!Boolean.TRUE.equals(purchase.get("draftOnly"))) return;
+        Invoice invoice = preparedPurchaseInvoice(order);
+        if (invoice == null) throw new ApplicationException("Subscription order has no prepared invoice");
+        lifecycle(() -> PurchaseLifecycle.requireOrderActivation(stateOf(invoice)));
+        if (order.getItems().stream().anyMatch(item -> !"ACTIVE".equals(stateOf(item)))) {
+            throw new ApplicationException("Subscription order lines are activated before their order");
+        }
+    }
+
+    public Map<String, Object> submitPurchase(String payloadJson) {
+        Map<String, Object> source = input(payloadJson);
+        Map<String, Object> plan = asPurchaseExecutor(() -> {
+            Order order = readAccessOrder(source);
+            Invoice invoice = preparedPurchaseInvoice(order);
+            if (invoice == null) return Map.of("status", "NOT_PAYABLE", "orderState", stateOf(order));
+            return Map.of("status", "SUBMITTING", "orderId", order.getId(), "invoiceId", invoice.getId(), "itemIds", itemKeys(order));
+        });
+        if (!"SUBMITTING".equals(plan.get("status"))) return plan;
+        for (Object itemId : (List<?>) plan.get("itemIds")) advance(OrderItem.class, itemId, "DRAFT", "DRAFT-SUBMITTED", "SUBMITTED");
+        advance(Order.class, plan.get("orderId"), "DRAFT", "DRAFT-SUBMITTED", "SUBMITTED");
+        advance(Invoice.class, plan.get("invoiceId"), "DRAFT", "DRAFT-SUBMITTED", "SUBMITTED");
+        return Map.of("status", "SUBMITTED", "orderId", plan.get("orderId"), "invoiceId", plan.get("invoiceId"));
+    }
+
+    public Map<String, Object> completePaidPurchase(String payloadJson) {
+        User caller = Auth.getAuthenticatedUser();
+        if (caller == null || (!userManager.getSystemUserId().equals(caller.getId()) && !transactionUtils.getInNewTx(() -> Auth.isAuthenticatedSystemAdmin()))) {
+            throw new ApplicationException("Only the purchase system executor or an administrator may complete a payment");
+        }
+        long orderId;
+        try { orderId = number(Json.defaultMapper().readValue(payloadJson, Map.class).get("orderId")); }
+        catch (Exception failure) { throw new ApplicationException("Paid purchase order ID is required"); }
+        String step = PurchaseLifecycle.WAIT;
+        for (int attempt = 0; attempt < 40; attempt++) {
+            Map<String, Object> view = transactionUtils.getInNewTx(() -> paidPurchaseView(orderId));
+            step = String.valueOf(view.get("step"));
+            if (PurchaseLifecycle.COMPLETE.equals(step)) return Map.of("orderId", orderId, "status", "ACTIVE", "activation", startActivation(orderId));
+            if (PurchaseLifecycle.MARK_INVOICE_PAID.equals(step)) {
+                advance(Invoice.class, view.get("invoiceId"), "SUBMITTED", "SUBMITTED-PAID", "PAID");
+            } else if (PurchaseLifecycle.ACTIVATE_ORDER.equals(step)) {
+                for (Object itemId : (List<?>) view.get("itemIds")) advance(OrderItem.class, itemId, "SUBMITTED", "SUBMITTED-ACTIVE", "ACTIVE");
+                advance(Order.class, view.get("orderId"), "SUBMITTED", "SUBMITTED-ACTIVE", "ACTIVE");
+            } else {
+                pause(1000);
+            }
+        }
+        return Map.of("orderId", orderId, "status", PurchaseLifecycle.COMPLETE.equals(step) ? "ACTIVE" : step);
+    }
+
+    @SuppressWarnings("unchecked")
+    private Map<String, Object> startActivation(long orderId) {
+        Map<String, Object> config = executorConfig();
+        if (!Boolean.TRUE.equals(config.get("executionEnabled"))) return Map.of("status", "EXECUTOR_DISABLED");
+        Map<String, Object> request = transactionUtils.getInNewTx(() -> {
+            Order order = orderManager.get(orderId);
+            Map<String, Object> state = optionalMap(order.getMetadata().get(ONBOARDING));
+            if ("COMPLETE".equals(state.get("status"))) return Map.of("status", "COMPLETE");
+            Map<String, Object> source = optionalMap(optionalMap(state.get("plan")).get("source"));
+            if (source.isEmpty()) return Map.of("status", "FROZEN_PLAN_REQUIRED");
+            return Map.of("status", "START", "formId", number(source.get("sourceFormId")), "checkoutDigest", text(source, "checkoutDigest"));
+        });
+        if (!"START".equals(request.get("status"))) return request;
+        try {
+            List<String> nodes = capabilitiesResolver.listNodesWithCapabilities().entrySet().stream()
+                    .filter(entry -> entry.getValue().containsAll(Set.of("CORE", "CORE-CMS"))).map(Map.Entry::getKey).sorted().toList();
+            Script helper = scriptManager.getByCode(text(config, "helperCode"));
+            if (nodes.isEmpty() || helper == null) return Map.of("status", "WORKFLOW_NODE_UNAVAILABLE");
+            java.util.UUID job = transactionUtils.getInNewTxRW(() -> {
+                try {
+                    return scriptService.submitForExecution(nodes.getFirst(), helper, "provisionOnboarding",
+                            List.<Map<String, ?>>of(Map.of("formId", Math.toIntExact(number(request.get("formId")))), Map.of("checkoutDigest", request.get("checkoutDigest"))),
+                            userManager.getSystemUser(), organizationManager.getByCode("SERVICEWAND"));
+                } catch (Exception failure) { throw new ApplicationException(failure); }
+            });
+            long deadline = System.nanoTime() + java.time.Duration.ofMinutes(5).toNanos();
+            while (System.nanoTime() < deadline) {
+                var info = transactionUtils.getInNewTx(() -> scriptService.getScriptExecutionInfo(job));
+                if (info != null && info.status() == ExecutionStatus.COMPLETED) {
+                    Map<String, Object> result = Json.defaultMapper().readValue(info.result(), Map.class);
+                    return Map.of("status", String.valueOf(result.get("status")));
+                }
+                if (info != null && info.status() == ExecutionStatus.FAILED) return Map.of("status", "ACTIVATION_FAILED", "error", failureFrames(info.result()));
+                pause(1000);
+            }
+            return Map.of("status", "ACTIVATION_TIMED_OUT");
+        } catch (Exception failure) {
+            return Map.of("status", "ACTIVATION_FAILED");
+        }
+    }
+
+    private Map<String, Object> paidPurchaseView(long orderId) {
+        Order order = orderManager.get(orderId);
+        if (order == null || order.getType() == null || !setting("ORDER_TYPE_CODE").equals(order.getType().getCode())) {
+            throw new ApplicationException("Paid subscription order is missing");
+        }
+        Invoice invoice = preparedPurchaseInvoice(order);
+        if (invoice == null) throw new ApplicationException("Paid subscription order has no prepared invoice");
+        String step = PurchaseLifecycle.nextStep(stateOf(invoice), stateOf(order), invoice.getAmountDue(),
+                invoice.getTotalPaidAmount(), invoice.getPayments().size());
+        return Map.of("step", step, "orderId", order.getId(), "invoiceId", invoice.getId(), "itemIds", itemKeys(order));
+    }
+
+    private List<Object> itemKeys(Order order) {
+        return order.getItems().stream().sorted(java.util.Comparator.comparing(OrderItem::getId)).map(item -> (Object) item.getId()).toList();
+    }
+
+    private void advance(Class<?> type, Object id, String from, String event, String to) {
+        String current = transactionUtils.getInNewTx(() -> stateOf(entityManager.find(type, id)));
+        if (to.equals(current)) return;
+        if (!from.equals(current)) throw new ApplicationException("{} {} is {} instead of {}", type.getSimpleName(), id, current, from);
+        transactionUtils.getInNewTxRW(() -> {
+            Object entity = entityManager.find(type, id);
+            if (entity instanceof Invoice invoice) workflowService.sendEventUnsecured(event, invoice, Map.of());
+            else if (entity instanceof Order order) workflowService.sendEventUnsecured(event, order, Map.of());
+            else if (entity instanceof OrderItem item) workflowService.sendEventUnsecured(event, item, Map.of());
+            else throw new ApplicationException("Unsupported subscription entity {}", type.getSimpleName());
+            return null;
+        });
+        long deadline = System.nanoTime() + java.time.Duration.ofSeconds(20).toNanos();
+        while (System.nanoTime() < deadline) {
+            pause(150);
+            if (to.equals(transactionUtils.getInNewTx(() -> stateOf(entityManager.find(type, id))))) return;
+        }
+        throw new ApplicationException("{} {} did not reach {}", type.getSimpleName(), id, to);
+    }
+
+    private static void pause(long millis) {
+        try { Thread.sleep(millis); } catch (InterruptedException failure) { Thread.currentThread().interrupt(); throw new ApplicationException(failure); }
+    }
+
+    private Invoice preparedPurchaseInvoice(Order order) {
+        Map<String, Object> preparation = optionalMap(optionalMap(order.getMetadata() == null ? null : order.getMetadata().get(KEY)).get("invoicePreparation"));
+        if (!"DRAFT_INVOICE_READY".equals(preparation.get("status")) || preparation.get("invoiceId") == null) return null;
+        List<Invoice> invoices = invoiceManager.selectJPQL("SELECT i FROM Invoice i WHERE i.order.id = :id", Map.of("id", order.getId()), Invoice.class);
+        if (invoices.size() != 1 || invoices.getFirst().getId().longValue() != number(preparation.get("invoiceId"))) {
+            throw new ApplicationException("Subscription order must have exactly its prepared invoice");
+        }
+        return invoices.getFirst();
+    }
+
+    private void scheduleCompletion(Order order) {
+        try {
+            List<String> nodes = capabilitiesResolver.listNodesWithCapabilities().entrySet().stream()
+                    .filter(entry -> entry.getValue().containsAll(Set.of("CORE", "CORE-ACCT", "CORE-BILL", "CORE-PIM")))
+                    .map(Map.Entry::getKey).sorted().toList();
+            Script self = scriptManager.getByCode(SCRIPT);
+            if (nodes.isEmpty() || self == null) return;
+            scriptService.submitForExecution(nodes.getFirst(), self, "completePaidPurchase",
+                    List.<Map<String, ?>>of(Map.of("payloadJson", json(Map.of("orderId", order.getId())))),
+                    userManager.getSystemUser(), order.getOrganization());
+        } catch (Exception unscheduled) {
+        }
+    }
+
+    private static String stateOf(Object entity) {
+        return collection(property(entity, "states")).stream().map(state -> String.valueOf(property(state, "code"))).findFirst().orElse(null);
+    }
+
+    private static void lifecycle(Runnable rule) {
+        try { rule.run(); }
+        catch (IllegalStateException violation) { throw new ApplicationException(violation.getMessage()); }
     }
     public void guardPreparedInvoiceDelete(Invoice invoice, Map<String, Object> context) {
         if (Boolean.TRUE.equals(optionalMap(invoice.getMetadata() == null ? null : invoice.getMetadata().get(KEY)).get("preparationOnly"))) {
@@ -1762,10 +1952,7 @@ public class MAIN_CLASS {
 
     // BEGIN GENERATED ONBOARDING NATIVE EXECUTOR
     private static final String ONBOARDING = "PLAN_SUBSCRIPTION_ONBOARDING";
-    @Autowired @org.springframework.beans.factory.annotation.Qualifier("organizationTypeManager") private com.pixelnation.common.persistence.iface.IOrganizationTypeManager onboardingOrganizationTypes;
-    @Autowired @org.springframework.beans.factory.annotation.Qualifier("dictionaryTypeManager") private com.pixelnation.common.persistence.iface.IDictionaryTypeManager onboardingDictionaryTypes;
     @Autowired @org.springframework.beans.factory.annotation.Qualifier("documentManager") private com.pixelnation.common.persistence.iface.IDocumentManager onboardingDocuments;
-    @Autowired @org.springframework.beans.factory.annotation.Qualifier("documentTypeManager") private com.pixelnation.common.persistence.iface.IDocumentTypeManager onboardingDocumentTypes;
     @Autowired @org.springframework.beans.factory.annotation.Qualifier("roleManager") private com.pixelnation.common.persistence.iface.IRoleManager onboardingRoles;
     @Autowired @org.springframework.beans.factory.annotation.Qualifier("languageManager") private com.pixelnation.common.persistence.iface.ILanguageManager onboardingLanguages;
     @Autowired @org.springframework.beans.factory.annotation.Qualifier("userService") private com.pixelnation.common.service.UserService onboardingUsers;
@@ -1944,7 +2131,7 @@ public class MAIN_CLASS {
                     if (otherUser != null && number(otherUser) == userId && Set.of("RESET_STARTED","RESET_OUTCOME_UNKNOWN").contains(otherState.get("accessStatus"))) throw new ApplicationException("This User has another unresolved credential delivery; reconciliation required");
                 }
                 String password = userManager.getEncodedPassword(userId);
-                if (password != null && !password.isBlank()) {
+                if (!Boolean.TRUE.equals(state.get("administratorCreated")) && password != null && !password.isBlank()) {
                     state.put("accessStatus", "DELIVERED"); state.put("credentialResult", "EXISTING_PASSWORD_UNCHANGED"); state.put("status", "CREDENTIALS_READY");
                     saveOnboarding(purchase, state); return null;
                 }
@@ -1954,7 +2141,7 @@ public class MAIN_CLASS {
             // generateNewPassword includes the platform's delivery. A timeout/exception is ambiguous:
             // RESET_STARTED is deliberately retained and must never cause an automatic second reset.
             try {
-                if (!Boolean.TRUE.equals(asOnboardingNative(() -> onboardingUsers.generateNewPassword(reset)))) throw new ApplicationException("Password delivery returned false; operator reconciliation required");
+                if (!Boolean.TRUE.equals(asOnboardingNative(() -> asPasswordIssuer(() -> onboardingUsers.generateNewPassword(reset))))) throw new ApplicationException("Password delivery returned false; operator reconciliation required");
                 tx(purchase -> { Map<String, Object> state = state(purchase); state.put("accessStatus", "DELIVERED");
                     state.put("credentialResult", "RESET_METHOD_SUCCEEDED"); state.put("status", "CREDENTIALS_READY"); saveOnboarding(purchase, state); return true;
                 }, true);
@@ -1967,7 +2154,10 @@ public class MAIN_CLASS {
             Map<String, Object> mail = tx(purchase -> {
                 Map<String, Object> state = state(purchase);
                 if (!"DELIVERED".equals(state.get("accessStatus"))) throw new ApplicationException("Credential delivery incomplete");
-                if ("QUEUED".equals(state.get("readyMailStatus"))) return Map.of();
+                if ("QUEUED".equals(state.get("readyMailStatus"))) {
+                    if (!"COMPLETE".equals(state.get("status"))) { state.put("status", "COMPLETE"); saveOnboarding(purchase, state); }
+                    return Map.of();
+                }
                 if (state.get("readyMailStatus") != null) throw new ApplicationException("Previous ready notification requires reconciliation; automatic resend forbidden");
                 Map<String, Object> config = executorConfig();
                 if (!Boolean.TRUE.equals(config.get("readyNotificationEnabled"))) throw new ApplicationException("Ready notification disabled");
@@ -1977,10 +2167,12 @@ public class MAIN_CLASS {
                 return Map.of("recipient", text(objectMap(objectMap(state.get("plan")).get("source")), "email"), "url", login);
             }, true);
             if (mail.isEmpty()) return;
-            String url = org.springframework.web.util.HtmlUtils.htmlEscape(text(mail, "url"));
+            String url = text(mail, "url");
             try {
-            asOnboardingNative(() -> { onboardingMail.sendSimpleEmail(new String[]{text(mail,"recipient")}, "Your ServiceWand organization is ready",
-                    "<p>Your ServiceWand organization is ready.</p><p><a href=\"" + url + "\">Open ServiceWand</a></p><p>Use your existing password, or follow the separate password setup email.</p>"); return true; });
+            onboardingMail.sendSimpleEmail(new String[]{text(mail,"recipient")}, "Your ServiceWand organization is ready",
+                    EmailLayout.document("Your ServiceWand organization is ready",
+                            EmailLayout.button("Open ServiceWand", url),
+                            EmailLayout.note("Use your existing password, or follow the separate password setup email.")));
             tx(purchase -> { Map<String, Object> state = state(purchase); state.put("readyMailStatus", "QUEUED"); state.put("status", "COMPLETE"); saveOnboarding(purchase, state); return true; }, true);
             } catch (RuntimeException unknown) {
                 deliveryFailure("readyMailStatus","DELIVERY_OUTCOME_UNKNOWN","READY_NOTIFICATION_OUTCOME_UNKNOWN"); throw unknown;
@@ -2016,7 +2208,7 @@ public class MAIN_CLASS {
         String code = "PS_ORG_" + purchase.getId();
         if (!organizationManager.selectJPQL("SELECT o FROM Organization o WHERE o.code = :code", Map.of("code", code), Organization.class).isEmpty()) throw new ApplicationException("Unrecorded organization already exists; do not adopt automatically");
         Organization target = new Organization(); target.setCode(code); target.setParent(parent); target.setEnabled(true);
-        var orgType = onboardingOrganizationTypes.get(Math.toIntExact(number(orgSpec.get("typeId"))));
+        var orgType = entityManager.find(com.pixelnation.common.domain.OrganizationType.class, Math.toIntExact(number(orgSpec.get("typeId"))));
         initializeOnboardingEntity(target, orgType, text(objectMap(plan.get("source")), "companyName"));
         setOnboardingAttributes(target, orgType, objectMap(orgSpec.get("attributes")), records);
         target.setMetadata(new LinkedHashMap<>(Map.of(ONBOARDING, onboardingMarker(purchase, state))));
@@ -2035,7 +2227,7 @@ public class MAIN_CLASS {
         target = organizationManager.save(target); organizationManager.flush(); records.put("organization", target.getId());
 
         Map<String, Object> seasonSpec = artifact(state, "seasonSettings");
-        var seasonType = onboardingDictionaryTypes.get(Math.toIntExact(number(seasonSpec.get("typeId"))));
+        var seasonType = entityManager.find(com.pixelnation.common.domain.DictionaryType.class, Math.toIntExact(number(seasonSpec.get("typeId"))));
         Dictionary season = new Dictionary(); season.setOrganization(target); season.setCode("PS_SEASON_" + purchase.getId());
         initializeOnboardingEntity(season, seasonType, "Season settings");
         setOnboardingAttributes(season, seasonType, objectMap(seasonSpec.get("attributes")), records);
@@ -2059,6 +2251,12 @@ public class MAIN_CLASS {
         String email = text(buyer, "email");
         entityManager.createNativeQuery("SELECT 1 FROM pg_advisory_xact_lock(:key)")
                 .setParameter("key", ByteBuffer.wrap(hashBytes("PLAN_SUBSCRIPTION_ADMIN:" + email.toLowerCase(java.util.Locale.ROOT))).getLong()).getSingleResult();
+        Map<String, Object> administrator = objectMap(plan.get("administrator"));
+        var role = onboardingRoles.get(Math.toIntExact(number(objectMap(administrator.get("role")).get("id"))));
+        if (role == null || !"ADMIN".equals(role.getCode()) || role.getOrganization() == null || !"SYSTEM".equals(role.getOrganization().getCode())
+                || "SYSTEM".equals(target.getCode()) || !target.getParent().getId().equals(parent.getId())
+                || role.getPermissions().stream().anyMatch(permission -> "SYSTEM_ADMIN".equals(permission.getId()) || "SYSTEM_ADMIN".equals(permission.getName()))) throw new ApplicationException("Unsafe administrator assignment");
+        final Organization assignmentTarget = target;
         var existingUsers = userManager.selectJPQL("SELECT u FROM User u WHERE lower(u.name) = :email", Map.of("email", email.toLowerCase(java.util.Locale.ROOT)), User.class);
         if (existingUsers.size() > 1) throw new ApplicationException("Duplicate User login requires review");
         User admin = existingUsers.isEmpty() ? null : existingUsers.getFirst();
@@ -2066,19 +2264,15 @@ public class MAIN_CLASS {
             admin = new User(); admin.setName(email); admin.setEmail(email); admin.setEnabled(true);
             String fullname=(text(buyer, "firstName") + " " + text(buyer, "lastName")).trim();
             admin.setFullname(fullname.isBlank()?email:fullname); admin.setRoles(new LinkedHashSet<>());
+            admin.getRoles().add(new com.pixelnation.common.domain.UserOrganizationRole(admin, target, role));
             admin.setLanguage(onboardingLanguages.getByCode2("en"));
             var workflows = entityManager.createQuery("SELECT w FROM Workflow w WHERE w.code = :code", com.pixelnation.modules.workflow.domain.Workflow.class)
                     .setParameter("code", "USER_WORKFLOW").getResultList();
             if (workflows.size() != 1 || admin.getLanguage() == null) throw new ApplicationException("User language/workflow unavailable");
             admin.setWorkflow(workflows.getFirst()); admin = userManager.save(admin);
+            state.put("administratorCreated", true);
         } else if (!email.equalsIgnoreCase(admin.getEmail()) || !Boolean.TRUE.equals(admin.getEnabled())) throw new ApplicationException("Existing User requires operator review");
         if (admin.getId().equals(userManager.getSystemUserId())) throw new ApplicationException("System service User cannot be a buyer administrator");
-        Map<String, Object> administrator = objectMap(plan.get("administrator"));
-        var role = onboardingRoles.get(Math.toIntExact(number(objectMap(administrator.get("role")).get("id"))));
-        if (role == null || !"ADMIN".equals(role.getCode()) || role.getOrganization() == null || !"SYSTEM".equals(role.getOrganization().getCode())
-                || "SYSTEM".equals(target.getCode()) || !target.getParent().getId().equals(parent.getId())
-                || role.getPermissions().stream().anyMatch(permission -> "SYSTEM_ADMIN".equals(permission.getId()) || "SYSTEM_ADMIN".equals(permission.getName()))) throw new ApplicationException("Unsafe administrator assignment");
-        final Organization assignmentTarget = target;
         if (admin.getRoles().stream().noneMatch(assignment -> assignmentTarget.getId().equals(assignment.getOrganization().getId()) && role.getId().equals(assignment.getRole().getId()))) {
             admin.getRoles().add(new com.pixelnation.common.domain.UserOrganizationRole(admin, target, role)); userManager.save(admin);
         }
@@ -2176,7 +2370,7 @@ public class MAIN_CLASS {
         if (legalContacts.size() != 1 || legalContacts.getFirst().getContactEntries().stream().noneMatch(entry -> entry.getType() != null && "EMAIL".equals(entry.getType().getCode()) && text(buyer,"email").equals(entry.getValue()))) throw new ApplicationException("Organization legal contact changed");
         if (target.getParent() == null || !text(onboardingConfig(), "parentOrganizationCode").equals(target.getParent().getCode())
                 || !Boolean.TRUE.equals(target.getEnabled()) || !target.getCode().equals("PS_ORG_" + purchase.getId())) throw new ApplicationException("Onboarding organization changed");
-        Dictionary season = dictionaryManager.get(Math.toIntExact(number(records.get("seasonSettings"))));
+        Dictionary season = entityManager.find(Dictionary.class, Math.toIntExact(number(records.get("seasonSettings"))));
         verifyArtifact(season, artifact(state, "seasonSettings"), target, purchase, state);
         verifyAttributes(season, objectMap(artifact(state, "seasonSettings").get("attributes")), records);
         if (number(target.findFirstAttributeValue("CONTRACT_SETTINGS")) != season.getId().longValue()) throw new ApplicationException("Onboarding season link changed");
@@ -2251,7 +2445,7 @@ public class MAIN_CLASS {
         Organization target = organizationManager.get(Math.toIntExact(number(records.get("organization"))));
         Account customer = accountManager.get(Math.toIntExact(number(records.get("starterCustomer"))));
         Map<String, Object> serviceSpec = artifact(state, "serviceOrder");
-        OrderType orderType = orderTypeManager.get(Math.toIntExact(number(serviceSpec.get("typeId"))));
+        OrderType orderType = entityManager.find(OrderType.class, Math.toIntExact(number(serviceSpec.get("typeId"))));
         Order service = new Order(); service.setOrganization(target); service.setAccount(customer); service.setCurrency(purchase.getCurrency());
         initializeOnboardingEntity(service, orderType, "Snow removal");
         setOnboardingAttributes(service, orderType, objectMap(serviceSpec.get("attributes")), records);
@@ -2259,7 +2453,7 @@ public class MAIN_CLASS {
         service.setMetadata(new LinkedHashMap<>(Map.of(ONBOARDING, onboardingMarker(purchase, state), "PRICING_MODEL", "SEASONAL")));
         service = orderManager.save(service); orderManager.flush(); records.put("serviceOrder", service.getId());
         Map<String, Object> agreementSpec = artifact(state, "agreement");
-        var agreementType = onboardingDocumentTypes.get(Math.toIntExact(number(agreementSpec.get("typeId"))));
+        var agreementType = entityManager.find(com.pixelnation.common.domain.DocumentType.class, Math.toIntExact(number(agreementSpec.get("typeId"))));
         var document = new com.pixelnation.common.domain.Document(); document.setOrganization(target); document.setCode("PS_AGREEMENT_" + purchase.getId());
         initializeOnboardingEntity(document, agreementType, "Snow removal service agreement");
         setOnboardingAttribute(document, agreementType, "CLIENT", customer.getId());
@@ -2284,7 +2478,7 @@ public class MAIN_CLASS {
         Object orders = document.findFirstAttributeValue("ORDERS");
         if (!(orders instanceof Collection<?> values) || values.size() != 1 || number(values.iterator().next()) != service.getId()) throw new ApplicationException("Starter agreement service-order link changed");
         for (String field : List.of("TERM_START_DATE", "TERM_END_DATE")) {
-            if (!String.valueOf(objectMap(artifact(state, "agreement").get("attributes")).get(field)).equals(String.valueOf(document.findFirstAttributeValue(field)))) throw new ApplicationException("Starter agreement season changed");
+            if (!String.valueOf(objectMap(artifact(state, "agreement").get("attributes")).get(field)).equals(String.valueOf((Object) document.findFirstAttributeValue(field)))) throw new ApplicationException("Starter agreement season changed");
         }
     }
     @SuppressWarnings("unchecked")
@@ -2319,6 +2513,19 @@ public class MAIN_CLASS {
             principal.setId(stored.getId()); principal.setName(stored.getName()); principal.setFullname(stored.getFullname()); principal.setRoles(new LinkedHashSet<>());
             return Auth.withUser(principal, organizationManager.getByCode("SYSTEM"), action).get();
         });
+    }
+    private <T> T asPasswordIssuer(Supplier<T> action) {
+        var previous = org.springframework.security.core.context.SecurityContextHolder.getContext();
+        var scoped = org.springframework.security.core.context.SecurityContextHolder.createEmptyContext();
+        scoped.setAuthentication(new com.pixelnation.spring.security.RunAsAuthenticationToken(userManager.getSystemUser(), organizationManager.getByCode("SYSTEM"),
+                List.<org.springframework.security.core.GrantedAuthority>of(new org.springframework.security.core.authority.SimpleGrantedAuthority("P_USER"),
+                        new org.springframework.security.core.authority.SimpleGrantedAuthority("P_PASSWD_W"))));
+        try {
+            org.springframework.security.core.context.SecurityContextHolder.setContext(scoped);
+            return action.get();
+        } finally {
+            org.springframework.security.core.context.SecurityContextHolder.setContext(previous);
+        }
     }
 
     private void verifyOnboardingInvoiceSnapshot(Order order, Invoice invoice) {
@@ -2552,6 +2759,15 @@ public class MAIN_CLASS {
             String base=pageUrl(page);if(base==null || orderId<=0 || token==null || token.isBlank())throw new IllegalArgumentException("Purchase link data missing");
             return base+"#orderId="+orderId+"&token="+URLEncoder.encode(token,StandardCharsets.UTF_8);
         }
+        public static String link(String page,long orderId,String token,String paymentSecret) {
+            String link=link(page,orderId,token);
+            return paymentSecret==null?link:withPayment(link,paymentSecret);
+        }
+        public static String withPayment(String link,String paymentSecret) {
+            if(link==null || !link.contains("#orderId=") || link.contains("&pay="))throw new IllegalArgumentException("Purchase link without payment required");
+            if(paymentSecret==null || !paymentSecret.matches("pi_[A-Za-z0-9]+_secret_[A-Za-z0-9]+"))throw new IllegalArgumentException("Payment client secret has an unexpected format");
+            return link+"&pay="+paymentSecret;
+        }
         public static boolean mayIssue(Map<String,Object> previous) { return previous.isEmpty() || "WAITING_FOR_PURCHASE_PAGE_URL".equals(previous.get("status")); }
         public static Map<String,Object> publicReceipt(Map<String,Object> stored) {
             Map<String,Object> out=new java.util.LinkedHashMap<>();
@@ -2593,11 +2809,13 @@ public class MAIN_CLASS {
             return new PurchaseAccessMail(saved,text(source,"email"),PurchaseReadAccess.link(page,order.getId(),issued.token()));
         });
         if(mail.link()==null)return PurchaseReadAccess.publicReceipt(mail.receipt());
+        Map<String,Object> payment=createPurchasePayment(source);
+        String link=payment.get("clientSecret") instanceof String secret?PurchaseReadAccess.withPayment(mail.link(),secret):mail.link();
         boolean queued=false;
         try {
             onboardingMail.sendSimpleEmail(new String[]{mail.recipient()},"Your ServiceWand purchase",
                     EmailLayout.document("Your subscription request has been confirmed and its draft order is ready",
-                            EmailLayout.button("View your purchase",mail.link()),
+                            EmailLayout.button("View your purchase",link),
                             EmailLayout.note("This private link permits viewing this purchase only. It expires within 24 hours; do not forward it."),
                             EmailLayout.note("No payment has been taken. Changes require a new request or assistance from ServiceWand.")));
             queued=true;
@@ -2610,6 +2828,9 @@ public class MAIN_CLASS {
             if(number(saved.get("grantId"))!=number(mail.receipt().get("grantId")) || !"DISPATCHING".equals(saved.get("status")))
                 throw new ApplicationException("Purchase access delivery receipt changed; reconcile manually");
             saved=new LinkedHashMap<>(saved);
+            saved.put("paymentStatus",payment.getOrDefault("paymentStatus","NOT_CONFIGURED"));
+            if(payment.get("paymentIntentId")!=null)saved.put("paymentIntentId",payment.get("paymentIntentId"));
+            if(payment.get("paymentError")!=null)saved.put("paymentError",payment.get("paymentError"));
             if(delivered){saved.put("status","QUEUED");saved.put("deliveryStatus","QUEUED");}
             else {
                 saved.put("status",revoked?"REVOKED_DELIVERY_OUTCOME_UNKNOWN":"RECONCILIATION_REQUIRED");saved.put("deliveryStatus","OUTCOME_UNKNOWN");
@@ -2678,8 +2899,9 @@ public class MAIN_CLASS {
         if(account==null || account.getOrganization()==null || order.getOrganization()==null || order.getType()==null
                 || !owner.getId().equals(order.getOrganization().getId()) || !owner.getId().equals(account.getOrganization().getId())
                 || account.getId().longValue()!=number(source.get("accountId")) || !setting("ORDER_TYPE_CODE").equals(order.getType().getCode())
-                || account.getType()==null || !setting("ACCOUNT_TYPE_CODE").equals(account.getType().getCode()) || !order.hasState("DRAFT"))
-            throw new ApplicationException("Confirmed seller subscription draft required");
+                || account.getType()==null || !setting("ACCOUNT_TYPE_CODE").equals(account.getType().getCode()))
+            throw new ApplicationException("Confirmed seller subscription order required");
+        lifecycle(()->PurchaseLifecycle.requireOrder(stateOf(order)));
         requireReceipt(order.getMetadata(),source);requireReceipt(account.getMetadata(),source);receipt(account,order);
         Map<String,Object> proof=objectMap(order.getMetadata().get(KEY));
         if(number(proof.get("confirmationTokenId"))!=number(source.get("confirmationTokenId"))
@@ -2688,6 +2910,52 @@ public class MAIN_CLASS {
                     entry.getType()!=null && "EMAIL".equals(entry.getType().getCode()) && text(source,"email").equals(entry.getValue())))
             throw new ApplicationException("Verified recipient and persisted purchase consent required");
         return order;
+    }
+    @SuppressWarnings("unchecked")
+    private Map<String,Object> createPurchasePayment(Map<String,Object> source) {
+        Object helperCode=purchaseAccessConfig().get("paymentHelperCode");
+        if(!(helperCode instanceof String code) || code.isBlank())return Map.of("paymentStatus","NOT_CONFIGURED");
+        if(text(source,"email").endsWith("@example.invalid"))return Map.of("paymentStatus","SUPPRESSED_FOR_DEV_TEST");
+        try {
+            List<String> nodes=capabilitiesResolver.listNodesWithCapabilities().entrySet().stream()
+                    .filter(entry->entry.getValue().containsAll(Set.of("CORE","CORE-BILL","CORE-PAY"))).map(Map.Entry::getKey).sorted().toList();
+            Script helper=scriptManager.getByCode(code);
+            if(nodes.isEmpty() || helper==null)return Map.of("paymentStatus","PAYMENT_NODE_UNAVAILABLE");
+            String payload=json(Map.of("invoiceId",number(source.get("invoiceId")),"orderId",number(source.get("orderId")),"email",text(source,"email")));
+            java.util.UUID job=transactionUtils.getInNewTxRW(()->{
+                try{return scriptService.submitForExecution(nodes.getFirst(),helper,"createInvoicePayment",List.<Map<String,?>>of(Map.of("payloadJson",payload)),
+                        userManager.getSystemUser(),seller(source));}
+                catch(Exception failure){throw new ApplicationException(failure);}
+            });
+            long deadline=System.nanoTime()+java.time.Duration.ofSeconds(40).toNanos();
+            while(System.nanoTime()<deadline){
+                var info=transactionUtils.getInNewTx(()->scriptService.getScriptExecutionInfo(job));
+                if(info!=null && info.status()==ExecutionStatus.COMPLETED){
+                    Map<String,Object> created=Json.defaultMapper().readValue(info.result(),Map.class);
+                    if(!(created.get("clientSecret") instanceof String))return Map.of("paymentStatus","PAYMENT_CREATION_FAILED","paymentError",String.valueOf(created.get("error"))+" "+created.get("instructionKeys"));
+                    Map<String,Object> result=new LinkedHashMap<>();result.put("paymentStatus","CREATED");
+                    result.put("clientSecret",created.get("clientSecret"));result.put("paymentIntentId",created.get("paymentIntentId"));
+                    return result;
+                }
+                if(info!=null && info.status()==ExecutionStatus.FAILED)return Map.of("paymentStatus","PAYMENT_CREATION_FAILED","paymentError",failureFrames(info.result()));
+                Thread.sleep(300);
+            }
+            return Map.of("paymentStatus","PAYMENT_CREATION_TIMED_OUT");
+        } catch(InterruptedException failure){Thread.currentThread().interrupt();return Map.of("paymentStatus","PAYMENT_CREATION_FAILED");}
+        catch(Exception failure){return Map.of("paymentStatus","PAYMENT_CREATION_FAILED");}
+    }
+    private String failureFrames(String result) {
+        try {
+            StringBuilder frames=new StringBuilder();
+            var trace=Json.defaultMapper().readTree(result);
+            for(int index=0;index<Math.min(4,trace.size());index++)
+                frames.append(trace.get(index).path("className").asText()).append('.').append(trace.get(index).path("methodName").asText()).append(':').append(trace.get(index).path("lineNumber").asInt()).append(' ');
+            for(var frame:trace){
+                String className=frame.path("className").asText();
+                if(className.contains(".generated."))frames.append(className.substring(className.lastIndexOf('.')+1)).append('.').append(frame.path("methodName").asText()).append(':').append(frame.path("lineNumber").asInt()).append(' ');
+            }
+            return frames.toString().trim();
+        } catch(Exception unreadable){return String.valueOf(result).length()>300?String.valueOf(result).substring(0,300):String.valueOf(result);}
     }
     private void saveReadAccess(Order order,Map<String,Object> value) {
         Map<String,Object> metadata=new LinkedHashMap<>(order.getMetadata());metadata.put(PURCHASE_READ_ACCESS,value);order.setMetadata(metadata);orderManager.save(order);
@@ -2746,7 +3014,7 @@ public class MAIN_CLASS {
                     + "<meta name=\"color-scheme\" content=\"dark\"><meta name=\"supported-color-schemes\" content=\"dark\"></head>"
                     + "<body style=\"margin:0;padding:0;height:100%;background-color:#17171B;\">"
                     + TABLE + " height=\"100%\" bgcolor=\"#17171B\" style=\"height:100%;min-height:" + MIN_HEIGHT + "px;background-color:#17171B;\">"
-                    + "<tr><td align=\"center\" valign=\"middle\" height=\"" + MIN_HEIGHT + "\" style=\"height:" + MIN_HEIGHT + "px;padding:48px 12px;\">"
+                    + "<tr><td align=\"center\" valign=\"top\" height=\"" + MIN_HEIGHT + "\" style=\"height:" + MIN_HEIGHT + "px;padding:48px 12px;\">"
                     + TABLE + " style=\"max-width:600px;\">"
                     + "<tr><td style=\"padding:0 4px 18px;" + FONT + "font-size:24px;line-height:1.2;font-weight:700;letter-spacing:-0.01em;" + HEADING + "\">"
                     + "Service<span style=\"color:#6BEAF9;\">Wand</span></td></tr>"
@@ -2825,4 +3093,72 @@ public class MAIN_CLASS {
         }
     }
     // END GENERATED EMAIL LAYOUT
+
+    // BEGIN GENERATED PURCHASE LIFECYCLE
+    public static final class PurchaseLifecycle {
+        public static final String MARK_INVOICE_PAID = "MARK_INVOICE_PAID";
+        public static final String ACTIVATE_ORDER = "ACTIVATE_ORDER";
+        public static final String COMPLETE = "COMPLETE";
+        public static final String WAIT = "WAIT";
+        private static final Set<String> ORDER_STATES = Set.of("DRAFT", "SUBMITTED", "ACTIVE");
+
+        private PurchaseLifecycle() {}
+
+        public static void requireOrder(String orderState) {
+            if (!ORDER_STATES.contains(orderState)) throw new IllegalStateException("Subscription order must be DRAFT, SUBMITTED or ACTIVE");
+        }
+
+        public static void requireInvoice(String invoiceState, String orderState, BigDecimal amountDue, BigDecimal paid, int payments) {
+            requireOrder(orderState);
+            requireAmounts(amountDue, paid, payments);
+            switch (String.valueOf(invoiceState)) {
+                case "DRAFT" -> {
+                    if (!unpaid(paid, payments) || "ACTIVE".equals(orderState)) throw new IllegalStateException("A draft subscription invoice must stay unpaid");
+                }
+                case "SUBMITTED" -> {
+                    if (!"SUBMITTED".equals(orderState)) throw new IllegalStateException("A submitted subscription invoice requires its submitted order");
+                    if (!unpaid(paid, payments) && !fullyPaid(amountDue, paid, payments)) throw new IllegalStateException("A subscription invoice accepts one payment of the full amount");
+                }
+                case "PAID" -> {
+                    if ("DRAFT".equals(orderState) || !fullyPaid(amountDue, paid, payments)) throw new IllegalStateException("A paid subscription invoice requires one full payment");
+                }
+                default -> throw new IllegalStateException("Subscription invoice state is not supported");
+            }
+        }
+
+        public static void requireInvoiceLeavesDraft(String orderState) {
+            if (!"SUBMITTED".equals(orderState)) throw new IllegalStateException("A subscription invoice is submitted together with its order");
+        }
+
+        public static void requireInvoicePaid(BigDecimal amountDue, BigDecimal paid, int payments) {
+            requireAmounts(amountDue, paid, payments);
+            if (!fullyPaid(amountDue, paid, payments)) throw new IllegalStateException("A subscription invoice is paid only by one full payment");
+        }
+
+        public static void requireOrderActivation(String invoiceState) {
+            if (!"PAID".equals(invoiceState)) throw new IllegalStateException("A subscription order becomes active only after its invoice is paid");
+        }
+
+        public static String nextStep(String invoiceState, String orderState, BigDecimal amountDue, BigDecimal paid, int payments) {
+            if ("SUBMITTED".equals(invoiceState) && "SUBMITTED".equals(orderState) && fullyPaid(amountDue, paid, payments)) return MARK_INVOICE_PAID;
+            if ("PAID".equals(invoiceState) && "SUBMITTED".equals(orderState)) return ACTIVATE_ORDER;
+            if ("PAID".equals(invoiceState) && "ACTIVE".equals(orderState)) return COMPLETE;
+            return WAIT;
+        }
+
+        private static void requireAmounts(BigDecimal amountDue, BigDecimal paid, int payments) {
+            if (amountDue == null || amountDue.signum() <= 0 || paid == null || paid.signum() < 0 || payments < 0) {
+                throw new IllegalStateException("Subscription invoice amounts are invalid");
+            }
+        }
+
+        private static boolean unpaid(BigDecimal paid, int payments) {
+            return paid.signum() == 0 && payments == 0;
+        }
+
+        private static boolean fullyPaid(BigDecimal amountDue, BigDecimal paid, int payments) {
+            return amountDue != null && paid != null && payments == 1 && paid.compareTo(amountDue) == 0;
+        }
+    }
+    // END GENERATED PURCHASE LIFECYCLE
 }

@@ -371,3 +371,78 @@ This is source/native-compilation and disabled-stage verification, not successfu
 paid onboarding. No real organization, User, starter data, Grant or Pool has been
 created to demonstrate the enabled graph. Do not turn these guards on as a
 substitute for payment integration and a controlled native lifecycle test.
+
+## Executor enabled on dev-1 — 2026-10-25
+
+User decision: enable the executor and activate paid Order 235.
+`executor-config.json` now sets executionEnabled, grantIssuanceEnabled and
+accessDeliveryEnabled to true; the frozen plans compare only the readiness and
+enforcement configuration, so existing plans stay valid. Two executor defects
+surfaced on the first native run and were fixed: a newly created administrator
+was saved twice, and Hibernate's merge of the fresh User cleared an immutable
+collection (the role is now part of the first save); and
+`String.valueOf(document.findFirstAttributeValue(field))` bound to the
+`char[]` overload through the generic return type (now cast to Object).
+
+`provisionOnboarding` for Form 533 / Order 235 returned COMPLETE: Organization
+58 (`PS_ORG_235`, under SERVICE_WAND_WINTER_SERVICES_CANADA), administrator
+User 64, ledger, starter customer, Property 1018, season settings, 30 Grants,
+the active-Property Pool, Policies and Bindings, starter service Order 255 and
+Agreement 222; graph verified, access delivered, ready mail queued; coverage
+2026-10-23 → 2026-11-23. These are real dev-1 records.
+
+Since 2026-10-25 the paid completion job starts activation automatically, and the
+ready notification uses `email/EmailLayout.java` with the same wording. The
+separate password setup email comes from Core's `generateNewPassword` and keeps
+the platform template.
+
+Automatic activation run (`+20004`, Form 600, Order 256, 2026-10-25): payment
+completed by itself (invoice PAID, order ACTIVE), but activation failed on the
+system path. Under the system executor `dictionaryManager.get` returns null for
+the new organization's season Dictionary (the manager filters by caller
+permissions; Account, User and Organization managers do not), so verification
+saw a missing artifact; it now reads that Dictionary with
+`entityManager.find`. Two further fixes: a repeated run of a completed purchase
+keeps status COMPLETE instead of falling back to ACCESS_PENDING, and an
+administrator created by onboarding always receives the platform password
+setup (Core assigns a password on creation, which the executor had read as
+"existing password", so Users 64 and 65 received no setup email).
+At the user's request the password setup was then sent to Users 64 (Order 235)
+and 65 (Order 256) through Core's `generateNewPassword` by a temporary
+administrator-only command, removed right after; both returned sent.
+
+## Final run `+20005` — 2026-10-25
+
+Form 601, Order 258, Invoice 43 (Growth monthly, CA, 502.88). Confirmation,
+approval, submission (items, order and invoice SUBMITTED at 16:54:14), the
+PaymentIntent and the card payment worked without intervention; 1.4 s after the
+Stripe payment the system user had moved the invoice to PAID and the line and
+order to ACTIVE. Activation then failed, for reasons no earlier run reached:
+
+- In a job submitted as the system user with the SERVICEWAND organization (the
+  executor's service path), the organization, dictionary, order and document type
+  managers return null for types owned by SERVICE_WAND_WINTER_SERVICES, even
+  inside `Auth.withUser`. Account, address, contact, role, language, order,
+  document, grant and pool lookups are unaffected. Company and agreement creation
+  now read their four types with `entityManager.find`. Orders 235 and 256 created
+  their company outside this path, so the defect stayed hidden.
+- `UserService.generateNewPassword` is `@Secured("P_PASSWD_W")` and the
+  in-memory system principal has no roles. User decision: keep the email Users 64
+  and 65 received; the call now runs under a `RunAsAuthenticationToken` of the
+  system user carrying only `P_USER` and `P_PASSWD_W`.
+- `ScriptUtils.sendSimpleEmail` refuses under the in-memory principal ("Cannot
+  send email without user/organization context"); the ready notification is now
+  sent in the job's own context.
+- The administrator path of `completePaidPurchase` read the role outside a
+  transaction (LazyInitializationException); the check now runs in one.
+
+Each cause was reproduced by temporary probe scripts that submitted the same job
+as the system user and returned the exception or lookup result; all were removed.
+User decision: finish Order 258. Both failed deliveries were refused before
+dispatch, so one-off scripts (removed) reset first the access marker and then the
+ready-mail marker, and the system completion job activated the order:
+Organization 60, administrator User 66, Property 1020, starter Order 259,
+Agreement 224, Grants and the active-Property Pool; status COMPLETE, access
+DELIVERED, ready mail QUEUED. A purchase whose payment alone reaches COMPLETE has
+not been observed yet; it needs a new run.
+

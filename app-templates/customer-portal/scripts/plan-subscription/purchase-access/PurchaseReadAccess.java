@@ -61,6 +61,15 @@ public final class PurchaseReadAccess {
         String base=pageUrl(page);if(base==null || orderId<=0 || token==null || token.isBlank())throw new IllegalArgumentException("Purchase link data missing");
         return base+"#orderId="+orderId+"&token="+URLEncoder.encode(token,StandardCharsets.UTF_8);
     }
+    public static String link(String page,long orderId,String token,String paymentSecret) {
+        String link=link(page,orderId,token);
+        return paymentSecret==null?link:withPayment(link,paymentSecret);
+    }
+    public static String withPayment(String link,String paymentSecret) {
+        if(link==null || !link.contains("#orderId=") || link.contains("&pay="))throw new IllegalArgumentException("Purchase link without payment required");
+        if(paymentSecret==null || !paymentSecret.matches("pi_[A-Za-z0-9]+_secret_[A-Za-z0-9]+"))throw new IllegalArgumentException("Payment client secret has an unexpected format");
+        return link+"&pay="+paymentSecret;
+    }
     public static boolean mayIssue(Map<String,Object> previous) { return previous.isEmpty() || "WAITING_FOR_PURCHASE_PAGE_URL".equals(previous.get("status")); }
     public static Map<String,Object> publicReceipt(Map<String,Object> stored) {
         Map<String,Object> out=new java.util.LinkedHashMap<>();

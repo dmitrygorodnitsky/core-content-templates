@@ -13,6 +13,10 @@
     totalTaxes: null,
     grandTotal: 1334,
   };
+  var ORDER_STATES = {
+    SUBMITTED: { id: 2, code: "SUBMITTED", nls: { en: { NAME: "Submitted" } } },
+    ACTIVE: { id: 3, code: "ACTIVE", nls: { en: { NAME: "Active" } } },
+  };
   var ITEMS = {
     9101: { id: 9101, itemCount: 1, amount: 449, itemPrice: { id: 242 }, order: { id: 9001 }, type: { id: 5, code: "SERVICEWAND_SUBSCRIPTION_ITEM", nls: { en: { NAME: "Subscription item" } } } },
     9102: { id: 9102, itemCount: 2, amount: 150, itemPrice: { id: 251 }, order: { id: 9001 }, type: { id: 5, code: "SERVICEWAND_SUBSCRIPTION_ITEM", nls: { en: { NAME: "Subscription item" } } } },
@@ -66,6 +70,8 @@
       if (scenario === "order-failed") return respond(503, {});
       if (scenario === "order-loading") return null;
       if (scenario === "taxes") return respond(200, Object.assign({}, ORDER, { totalTaxes: 66.7, grandTotal: 1400.7 }));
+      if (scenario === "active") return respond(200, Object.assign({}, ORDER, { states: [ORDER_STATES.ACTIVE], totalTaxes: 66.7, grandTotal: 1400.7 }));
+      if (scenario.indexOf("pay-") === 0) return respond(200, Object.assign({}, ORDER, { states: [ORDER_STATES.SUBMITTED], totalTaxes: 66.7, grandTotal: 1400.7 }));
       return respond(200, ORDER);
     }
     if (path.indexOf("/product-price/get.json") !== -1) {
@@ -91,5 +97,58 @@
     };
   }
 
-  global.PlanSubscriptionFixtures = Object.freeze({ rules: RULES, fetchFor: fetchFor });
+  function fakeCard(options) {
+    var style = options && options.style && options.style.base || {};
+    var handlers = {};
+    var host = null;
+    var part = function (text, grow) {
+      var node = global.document.createElement("span");
+      node.textContent = text;
+      node.style.cssText = "color:" + (style["::placeholder"] && style["::placeholder"].color || "gray") + ";" + "white-space:nowrap;" + (grow ? "flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;" : "");
+      return node;
+    };
+    return {
+      mount: function (node) {
+        host = node;
+        host.classList.add("StripeElement", "StripeElement--empty");
+        var row = global.document.createElement("div");
+        row.dir = "ltr";
+        row.style.cssText = "display:flex;gap:12px;overflow:hidden;align-items:center;font-size:" + (style.fontSize || "16px") + ";font-family:" + (style.fontFamily || "inherit") + ";line-height:1.2;";
+        var brand = part("▭");
+        brand.style.color = style.iconColor || "currentColor";
+        row.append(brand, part("1234 1234 1234 1234", true), part("MM / YY"), part("CVC"));
+        host.replaceChildren(row);
+      },
+      on: function (name, handler) { handlers[name] = handler; },
+      update: function (next) { if (host) host.style.opacity = next && next.disabled ? "0.5" : ""; },
+      destroy: function () {
+        if (!host) return;
+        host.replaceChildren();
+        host.classList.remove("StripeElement", "StripeElement--empty");
+        host = null;
+      },
+    };
+  }
+
+  function stripeFor(scenario, delay) {
+    return function () {
+      return {
+        elements: function () {
+          return { create: function (type, options) { return fakeCard(options); } };
+        },
+        confirmCardPayment: function () {
+          return new Promise(function (resolve) {
+            if (scenario === "pay-processing") return;
+            global.setTimeout(function () {
+              resolve(scenario === "pay-failed"
+                ? { error: { type: "card_error", code: "card_declined", message: "Your card was declined." } }
+                : { paymentIntent: { id: "pi_demo", status: "succeeded" } });
+            }, delay || 0);
+          });
+        },
+      };
+    };
+  }
+
+  global.PlanSubscriptionFixtures = Object.freeze({ rules: RULES, fetchFor: fetchFor, stripeFor: stripeFor });
 })(typeof window !== "undefined" ? window : globalThis);

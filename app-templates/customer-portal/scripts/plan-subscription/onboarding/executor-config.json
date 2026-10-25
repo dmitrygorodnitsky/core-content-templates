@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "executionEnabled": false,
-  "grantIssuanceEnabled": false,
-  "accessDeliveryEnabled": false,
+  "executionEnabled": true,
+  "grantIssuanceEnabled": true,
+  "accessDeliveryEnabled": true,
   "paymentEnabled": false,
   "helperCode": "PLAN_SUBSCRIPTION_WORKFLOW_V11",
   "readyNotificationEnabled": true,

@@ -38,7 +38,7 @@ public class MAIN_CLASS {
                 boolean ownedReceipt = value instanceof Map<?, ?> receipt
                         && receipt.get("sourceFormId") instanceof Number source && source.longValue() == formId.longValue();
                 boolean alreadyUnlocked = run.equals(invoice.getMetadata().get("DEV_TEST_CLEANUP"));
-                if (!invoice.hasState("DRAFT") || !invoice.getPayments().isEmpty() || !(ownedReceipt || alreadyUnlocked)) {
+                if (!(invoice.hasState("DRAFT") || invoice.hasState("SUBMITTED")) || !invoice.getPayments().isEmpty() || !(ownedReceipt || alreadyUnlocked)) {
                     throw new ApplicationException("Only the exact unpaid synthetic preparation invoice may be unlocked");
                 }
                 invoice.setMetadata(new LinkedHashMap<>(Map.of("DEV_TEST_CLEANUP", run)));
@@ -106,7 +106,7 @@ public class MAIN_CLASS {
         Order order = orderManager.get(orderId.longValue(), LockModeType.PESSIMISTIC_WRITE);
         if (order != null) entityManager.refresh(order, LockModeType.PESSIMISTIC_WRITE);
         if (order == null || order.getType() == null || !"SERVICEWAND_SUBSCRIPTION".equals(order.getType().getCode())
-                || !order.hasState("DRAFT") || order.getOrganization() == null || !"SERVICEWAND".equals(order.getOrganization().getCode())
+                || !(order.hasState("DRAFT") || order.hasState("SUBMITTED")) || order.getOrganization() == null || !"SERVICEWAND".equals(order.getOrganization().getCode())
                 || order.getAccount() == null || !"PLAN_SUBSCRIPTION integration ".concat(run).equals(order.getAccount().getNls().getOrDefault("en", Map.of()).get("NAME"))) {
             throw new ApplicationException("Only the exact synthetic subscription draft may be changed");
         }

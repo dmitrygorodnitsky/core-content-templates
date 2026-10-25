@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import fs from "node:fs/promises";
 import path from "node:path";
+import { pathToFileURL } from "node:url";
 import vm from "node:vm";
 
 const root = path.resolve("app-templates/customer-portal");
@@ -103,6 +104,36 @@ assert.equal(PS.order.normalize(order, typed, null, "en", PS.copy.defaults.order
 const lines = [{ id: 3, itemCount: 1, amount: 1 }, { id: 1, itemCount: 1, amount: 2 }, { id: 2, itemCount: 1, amount: 3 }];
 assert.deepEqual(plain(PS.order.normalize(order, lines, null, "en", PS.copy.defaults.order).lines.map((line) => line.id)), [1, 2, 3], "lines follow creation order");
 assert.equal(PS.order.normalize(order, items, { expiresAt: 1792850587259 }, "en", PS.copy.defaults.order).expiresAt, 1792850587259, "core-bill introspection returns epoch milliseconds");
+
+const page = { pathname: "/subscription-order.html", search: "?lang=fr" };
+const scrubbed = [];
+const link = PS.order.open({ ...page, hash: "#orderId=9001&token=grant-token&pay=pi_3Qx_secret_Ab9" }, { replaceState: (state, title, url) => scrubbed.push(url) });
+assert.deepEqual(plain(link), { token: "grant-token", orderId: "9001", secret: "pi_3Qx_secret_Ab9" });
+assert.deepEqual(scrubbed, ["/subscription-order.html?lang=fr"], "the order id, grant token and payment secret leave the address bar");
+const openHash = (hash) => plain(PS.order.open({ ...page, hash }, { replaceState() {} }));
+assert.equal(openHash("#orderId=9001&token=grant-token").secret, "", "links without a payment secret stay view-only");
+assert.equal(openHash("#orderId=9001&token=grant-token&pay=sk_live_abc").secret, "", "only a PaymentIntent client secret is accepted");
+assert.equal(openHash("#orderId=9001&token=grant-token&pay=pi_1_secret_2%22%3E").secret, "", "a malformed payment secret is dropped");
+
+assert.equal(PS.order.publishableKey(" pk_live_Abc123 "), "pk_live_Abc123");
+assert.equal(PS.order.publishableKey("sk_live_Abc123"), "", "a secret key is never used by the page");
+const stripeFactory = () => ({});
+const SECRET = "pi_1_secret_2";
+assert.equal(PS.order.payment("SUBMITTED", SECRET, "pk_test_abc", stripeFactory), "pay");
+assert.equal(PS.order.payment("DRAFT", SECRET, "pk_live_abc", stripeFactory), "pay");
+assert.equal(PS.order.payment("ACTIVE", SECRET, "pk_test_abc", stripeFactory), "paid", "an active order shows the paid state instead of the panel");
+assert.equal(PS.order.payment("ACTIVE", "", "", null), "paid");
+assert.equal(PS.order.payment("SUBMITTED", "", "pk_test_abc", stripeFactory), "none", "no panel without a payment secret");
+assert.equal(PS.order.payment("SUBMITTED", SECRET, "", stripeFactory), "none", "no panel without a publishable key");
+assert.equal(PS.order.payment("SUBMITTED", SECRET, "sk_test_abc", stripeFactory), "none", "no panel with a non-publishable key");
+assert.equal(PS.order.payment("SUBMITTED", SECRET, "pk_test_abc", undefined), "none", "no panel when Stripe.js did not load");
+
+const { buildPackage } = await import(pathToFileURL(path.join(root, "scripts/export-plan-subscription-site.mjs")).href);
+const orderSection = (await buildPackage()).sections.find((section) => section.code === "SUBSCRIPTION_ORDER");
+assert.deepEqual(plain(orderSection.parameters.filter((entry) => entry.code === "SUBSCRIPTION_ORDER_STRIPE_PUBLISHABLE_KEY").map((entry) => [entry.type, entry.value])), [["STRING", ""]]);
+assert.ok(orderSection.html.includes('data-ps-stripe-key="${SUBSCRIPTION_ORDER_STRIPE_PUBLISHABLE_KEY@STRING}"'), "the publishable key reaches the section as an attribute");
+assert.ok(orderSection.javascript.includes('stripeKey: section.getAttribute("data-ps-stripe-key") || ""'), "the order page mounts with the section's publishable key");
+assert.ok(orderSection.head.includes('<script src="https://js.stripe.com/v3/"></script>'), "the order page loads Stripe.js from Stripe");
 
 const truncated = () => Promise.resolve({ status: 200, text: () => Promise.reject(new Error("connection reset")) });
 await assert.rejects(PS.catalog.load({ fetch: truncated, apiBase: "https://dev-1.servicewand.com", organizationCode: "SERVICEWAND", rules: fixtures.rules, locale: "en" }),

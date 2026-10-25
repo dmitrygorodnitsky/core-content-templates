@@ -15,7 +15,7 @@ public final class EmailLayoutTest {
         check(page.contains("Hello &amp; welcome</p>") && page.contains("Small print</p>"));
         check(page.indexOf("Hello") < page.indexOf("Small print"));
         check(page.contains("bgcolor=\"#17171B\"") && page.contains("max-width:600px"));
-        check(page.contains("valign=\"middle\" height=\"680\"") && page.contains("<body style=\"margin:0;padding:0;height:100%;"));
+        check(page.contains("valign=\"top\" height=\"680\"") && page.contains("<body style=\"margin:0;padding:0;height:100%;"));
         check(page.split("<table", -1).length - 1 == page.split("</table>", -1).length - 1);
         check(!page.contains("<script") && !page.contains("<style"));
 
