@@ -1906,8 +1906,12 @@ system path (type lookups owned by SERVICE_WAND_WINTER_SERVICES, the password
 setup right `P_PASSWD_W`, the ready email's user/organization context), all fixed
 (see `scripts/plan-subscription/onboarding/README.md`). User decisions: the admin
 receives the same password setup email as Users 64 and 65, and Order 258 is
-finished; it is COMPLETE with Organization 60 and administrator User 66. A run in
-which payment alone leads to COMPLETE is still to be observed.
+finished; it is COMPLETE with Organization 60 and administrator User 66.
+
+Control run `+20006` (Form 602, Order 260), 2026-10-26: after the card payment
+nothing was run by hand. Invoice PAID and order ACTIVE followed within 1.4 s,
+activation was COMPLETE about 20 s after the payment (Organization 61,
+administrator User 67), and both emails reached the buyer.
 
 ## Initial FormType publication
 

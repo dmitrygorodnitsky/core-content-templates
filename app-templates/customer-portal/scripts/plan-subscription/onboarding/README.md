@@ -443,6 +443,14 @@ dispatch, so one-off scripts (removed) reset first the access marker and then th
 ready-mail marker, and the system completion job activated the order:
 Organization 60, administrator User 66, Property 1020, starter Order 259,
 Agreement 224, Grants and the active-Property Pool; status COMPLETE, access
-DELIVERED, ready mail QUEUED. A purchase whose payment alone reaches COMPLETE has
-not been observed yet; it needs a new run.
+DELIVERED, ready mail QUEUED.
+
+Control run `+20006` — 2026-10-26: Form 602, Order 260, Invoice 44, with no
+operator step after the buyer's card payment. The webhook recorded the payment
+at 12:24:28.3 (local time); the system user moved the invoice to PAID at 28.98
+and the line and order to ACTIVE by 29.65, and the paid completion job started
+onboarding, which was COMPLETE by 12:24:48: Organization 61, administrator User
+67 (created, `RESET_METHOD_SUCCEEDED`), Property 1023, starter Order 261,
+Agreement 225; graph verified, access DELIVERED, ready mail QUEUED. The buyer
+received both the password setup and the ready email.
 
