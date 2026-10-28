@@ -43,16 +43,17 @@ export var ACTIONS = {
   "order.open":        function (id) { openOrder(id); },
   "order.back":        function ()   { go("orders.list"); },
   "order.cancel":      function (id) {
-    if (isSpa()) return spaApptCancel(id);
+    if (globalThis.__PORTAL_VERTICAL__ !== "snow" && isSpa()) return spaApptCancel(id);
     return runCommand("order.cancel", id, function () { cancelOrder(id); });
   },
-  "order.reschedule":  function (id) { if (isSpa() && state.capability === "target-appointments") return openSpaFlow({ entry: "reschedule", rescheduleOf: id }); openDrawer("booking"); },
+  "order.reschedule":  function (id) { if (globalThis.__PORTAL_VERTICAL__ !== "snow" && isSpa() && state.capability === "target-appointments") return openSpaFlow({ entry: "reschedule", rescheduleOf: id }); openDrawer("booking"); },
   "order.downloadInvoice": function () { failCommand("order.downloadInvoice"); },
-  "order.bookAgain":   function (id) { if (isSpa() && state.capability === "target-appointments") return openSpaFlow({ entry: "book-again", fromAppt: id }); openDrawer("booking"); },
+  "order.bookAgain":   function (id) { if (globalThis.__PORTAL_VERTICAL__ !== "snow" && isSpa() && state.capability === "target-appointments") return openSpaFlow({ entry: "book-again", fromAppt: id }); openDrawer("booking"); },
   "order.filter":      function (id) { setState({ filter: id }); },
   "compliance.unlock": function ()   { toast("Compliance Reports is a Pro add-on \u2014 ask your account manager"); },
-  "booking.open":      function (id) { if (isSpa() && state.capability === "target-appointments") return openSpaFlow(id ? { entry: "service", serviceCode: id } : { entry: "empty" }); openDrawer("booking"); },
+  "booking.open":      function (id) { if (globalThis.__PORTAL_VERTICAL__ !== "snow" && isSpa() && state.capability === "target-appointments") return openSpaFlow(id ? { entry: "service", serviceCode: id } : { entry: "empty" }); openDrawer("booking"); },
   "booking.close":     function ()   { state.spaFlow = null; state.spaBookAck = false; state.spaNote = ""; closeDrawer(); },
+  ...(globalThis.__PORTAL_VERTICAL__ !== "snow" ? {
   "booking.selectService": function (id) { var flow = state.spaFlow; if (!flow) return; flow.serviceCode = id; flow.specialistRef = null; flow.slotRef = null; flow.visitMode = null; flow.locationRef = null; flow.addOns = []; flow.held = false; spaFlowAfterService(flow); render(); },
   "booking.selectVisitMode": function (id) { var flow = state.spaFlow; if (!flow) return; flow.visitMode = id; flow.locationRef = null; spaInvalidateAfterOptions(flow, "visit-mode"); render(); },
   "booking.selectLocation": function (id) { var flow = state.spaFlow; if (!flow) return; flow.locationRef = id; spaInvalidateAfterOptions(flow, "location"); render(); },
@@ -66,7 +67,9 @@ export var ACTIONS = {
   "booking.retry":     function (id) { var flow = state.spaFlow; if (!flow) return; if (id === "hold") { clearSpaCommand("booking.hold:" + flow.slotRef); return spaHoldSlot(flow.slotRef); } clearSpaCommand("booking.confirm:" + spaBookingModel().ref); return spaBookingConfirm(); },
   "booking.back":      function () { return spaFlowBack(); },
   "booking.ackPolicy": function () { setState({ spaBookAck: !state.spaBookAck }); },
-  "booking.confirm":   function ()   { if (isSpa()) return spaBookingConfirm(); closeDrawer(); failCommand("booking.confirm"); },
+  } : null),
+  "booking.confirm":   function ()   { if (globalThis.__PORTAL_VERTICAL__ !== "snow" && isSpa()) return spaBookingConfirm(); closeDrawer(); failCommand("booking.confirm"); },
+  ...(globalThis.__PORTAL_VERTICAL__ !== "snow" ? {
   "appointment.open": function (id) { state.spaCurrentAppointment = id; state.view = "ready"; go("appointment.detail"); },
   "appointment.openPurchase": function (id) { ACTIONS["purchase.open"](id); },
   "appointment.reschedule": function (id) { return openSpaFlow({ entry: "reschedule", rescheduleOf: id }); },
@@ -74,6 +77,7 @@ export var ACTIONS = {
   "appointment.bookAgain": function (id) { return openSpaFlow({ entry: "book-again", fromAppt: id }); },
   "product.open": function (id) { state.spaCurrentProduct = id; state.spaGallery = 0; state.view = "ready"; go("product.detail"); },
   "product.gallerySelect": function (id) { setState({ spaGallery: Math.max(0, Number(id) || 0) }); },
+  } : null),
   "proposal.review":   function ()   { go("proposals.list"); },
   "proposal.open":     function (id) { openProposal(id); },
   "proposal.selectPlan": function (id) { runCommand("proposal.selectPlan", id, function () { selectPlan(id); }); },
@@ -108,22 +112,26 @@ export var ACTIONS = {
   "care.completeTask": function (id, el) { return toggleCareTask(id, el); },
   "care.contactProvider": function (id, el) { return runUnavailableCareCommand("care.contactProvider", id, el); },
   "care.openSecureDoc": function (id, el) { return runUnavailableCareCommand("care.openSecureDoc", id, el); },
+  ...(globalThis.__PORTAL_VERTICAL__ !== "snow" ? {
   "seo.cta.book":    function (id, el) { validateSeoLink(el); },
   "seo.cta.quote":   function (id, el) { validateSeoLink(el); },
   "seo.cta.call":    function (id, el) { validateSeoLink(el); },
   "seo.cta.services": function (id, el, event) { navigateSeoServices(el, event); },
   "seo.service.select": function (id) { selectSeoService(id, render); },
   "seo.faq.toggle": function (id, el, event) { if (event) event.preventDefault(); toggleSeoFaq(id, render); },
-  "cart.open":         function ()   { go(isSpa() && spaRetailOpen() ? "cart" : "checkout"); },
+  } : null),
+  "cart.open":         function ()   { go(globalThis.__PORTAL_VERTICAL__ !== "snow" && isSpa() && spaRetailOpen() ? "cart" : "checkout"); },
   "service.request":   function ()   { openDrawer("booking"); },
   "service.requestForm": function () { return openRequestForm(); },
   "service.requestExtra": function (id) { runCommand("service.requestExtra", id, function () { requestExtraService(id); }); },
   "service.reportIssue": function () { failCommand("service.reportIssue"); },
   "access.confirm":    function (id) { runCommand("access.confirm", id, function () { confirmAccess(id); }); },
   "access.update":     function ()   { failCommand("access.update"); },
-  "cart.addItem":      function (id) { if (isSpa() && state.capability === "target-appointments") { if (spaCurrentApiDemoOpen()) return spaLiveCartAdd(id); return runSpaCommand("cart.addItem:" + id, function () { spaAddLine(id); }); } runCommand("cart.addItem", id, function () { addToCart(id); }); },
-  "cart.removeItem":   function (id) { if (isSpa() && state.capability === "target-appointments") { if (spaCurrentApiDemoOpen()) return spaLiveCartRemove(id); return runSpaCommand("cart.removeItem:" + id, function () { spaSetLines(spaLines().filter(function (line) { return line.ref !== id; })); }); } runCommand("cart.removeItem", id, function () { removeCartItem(id); }); },
+  "cart.addItem":      function (id) { if (globalThis.__PORTAL_VERTICAL__ !== "snow" && isSpa() && state.capability === "target-appointments") { if (spaCurrentApiDemoOpen()) return spaLiveCartAdd(id); return runSpaCommand("cart.addItem:" + id, function () { spaAddLine(id); }); } runCommand("cart.addItem", id, function () { addToCart(id); }); },
+  "cart.removeItem":   function (id) { if (globalThis.__PORTAL_VERTICAL__ !== "snow" && isSpa() && state.capability === "target-appointments") { if (spaCurrentApiDemoOpen()) return spaLiveCartRemove(id); return runSpaCommand("cart.removeItem:" + id, function () { spaSetLines(spaLines().filter(function (line) { return line.ref !== id; })); }); } runCommand("cart.removeItem", id, function () { removeCartItem(id); }); },
+  ...(globalThis.__PORTAL_VERTICAL__ !== "snow" ? {
   "cart.changeQuantity": function (id) { return spaChangeQuantity(id); },
+  } : null),
   "cart.inc":          function (id) { runCommand("cart.inc", id, function () { changeQty(id, 1); }); },
   "cart.dec":          function (id) { runCommand("cart.dec", id, function () { changeQty(id, -1); }); },
   "checkout.placeOrder": function () { runCommand("checkout.placeOrder", null, placeFixtureOrder); },
@@ -134,6 +142,7 @@ export var ACTIONS = {
   "account.openPlan":      function () { go("plan"); },
   "account.openProfile":   function () { go("profile"); },
   "account.menu":          function () { setState({ accountMenu: !state.accountMenu, mobileNav: false }); },
+  ...(globalThis.__PORTAL_VERTICAL__ !== "snow" ? {
   "purchases.filter":      function (id) { setState({ spaPurchFilter: id }); },
   "purchases.more":        function () { spaLoadMore(); },
   "purchase.open":         function (id) { state.spaCurrentPurchase = id; state.view = "ready"; go("purchase.detail"); },
@@ -150,6 +159,7 @@ export var ACTIONS = {
   "checkout.ackPolicy":    function () { setState({ spaPolicyAck: !state.spaPolicyAck }); },
   "checkout.confirm":      function () { return spaConfirmCheckout(); },
   "checkout.retryConfirm": function () { return spaConfirmCheckout(); },
+  } : null),
   "products.filter":   function (id) { setState({ prodCat: id }); },
   "activity.open":     function ()   { go("activity"); },
   "activity.markRead": function ()   { runCommand("activity.markRead", null, function () { state.activityReadAll = true; toast("Activity marked read in fixture state"); }); },
@@ -163,6 +173,7 @@ export var ACTIONS = {
   "profile.addCard":   function ()   { failCommand("profile.addCard"); },
   "profile.updateAddress": function () { failCommand("profile.updateAddress"); },
   "profile.togglePref": function (id) { runCommand("profile.togglePref", id, function () { togglePref(id); }); },
+  ...(globalThis.__PORTAL_VERTICAL__ !== "snow" ? {
   "profile.edit": function () { var value = spaProfileValues(); state.spaProfileDraft = { phone: value.phone, email: value.email, prefs: Object.assign({}, value.prefs) }; state.spaProfileErrors = null; render(); },
   "profile.changeField": function (id) { return spaProfileChange(id); },
   "profile.save": function () { return spaProfileSave(); },
@@ -171,6 +182,7 @@ export var ACTIONS = {
     if (state.config.dataMode === "live") return reloadRuntimeModule("profile").then(function () { toast("Profile reloaded from Core"); });
     render(); toast("Profile reloaded — showing the details on file");
   },
+  } : null),
   "profile.managePlan": function ()  { go("pricing"); },
   "profileEdit.start": function (id) { if (!startProfileEdit(id)) return false; render(); focusProfileInput(false); return true; },
   "profileEdit.cancel": function () { if (!cancelProfileEdit()) return false; render(); return true; },
@@ -1029,10 +1041,10 @@ function spaBuyAgain() {
 }
 
 function retrySpaOrRuntime(id) {
-  if (id === "cart-quote") { state.spaCartDemo = "as-added"; spaSetLines(spaLines()); render(); return true; }
+  if (globalThis.__PORTAL_VERTICAL__ !== "snow" && id === "cart-quote") { state.spaCartDemo = "as-added"; spaSetLines(spaLines()); render(); return true; }
   if (id === "checkout-quote") { setState({ spaCheckoutDemo: "ready" }); return true; }
   if (id === "booking-hold") { setState({ spaHold: "held" }); return true; }
-  if (id === "booking-addons") return spaReloadAddons();
+  if (globalThis.__PORTAL_VERTICAL__ !== "snow" && id === "booking-addons") return spaReloadAddons();
   if (id === "slots") { setState({ spaSlots: "ready" }); return true; }
   if (id === "plan-offers") { setState({ spaOfferDemo: "sellable" }); return true; }
   if (id === "plan-credit") { setState({ spaCredit: "ok" }); return true; }

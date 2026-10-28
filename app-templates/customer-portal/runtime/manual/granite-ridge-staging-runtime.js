@@ -17,26 +17,26 @@
   var careFixtures;
   var init_live_care_fixtures = __esm({
     "app-templates/customer-portal/runtime/data/live-care-fixtures.js"() {
-      careFixtures = Object.freeze({});
+      careFixtures = /* @__PURE__ */ Object.freeze({});
     }
   });
 
   // app-templates/customer-portal/runtime/data/live-fixtures.js
-  var EMPTY_THEME = Object.freeze({
+  var EMPTY_THEME = /* @__PURE__ */ Object.freeze({
     slug: "beauty",
     accent: "#df2f73",
-    hero: Object.freeze({ badge: "", title: "", sub: "" }),
-    svc: Object.freeze([]),
-    orderNames: Object.freeze([]),
-    wt: Object.freeze({ icon: "", trigger: "", past: "", sla: "" }),
-    plan: Object.freeze({ name: "", plusName: "", tag: "", desc: "", headline: "", features: Object.freeze([]), plusFeatures: Object.freeze([]) }),
-    feat: Object.freeze({ badge: "", title: "", desc: "", cta: "", fin: "" }),
-    cats: Object.freeze([]),
-    products: Object.freeze([]),
-    reminder: Object.freeze({ title: "", desc: "" }),
-    prop: Object.freeze({ svc: "", surfaces: Object.freeze([]), months: "", unlimDesc: "", colA: "", colB: "", unitA: "", unitB: "" })
+    hero: /* @__PURE__ */ Object.freeze({ badge: "", title: "", sub: "" }),
+    svc: /* @__PURE__ */ Object.freeze([]),
+    orderNames: /* @__PURE__ */ Object.freeze([]),
+    wt: /* @__PURE__ */ Object.freeze({ icon: "", trigger: "", past: "", sla: "" }),
+    plan: /* @__PURE__ */ Object.freeze({ name: "", plusName: "", tag: "", desc: "", headline: "", features: /* @__PURE__ */ Object.freeze([]), plusFeatures: /* @__PURE__ */ Object.freeze([]) }),
+    feat: /* @__PURE__ */ Object.freeze({ badge: "", title: "", desc: "", cta: "", fin: "" }),
+    cats: /* @__PURE__ */ Object.freeze([]),
+    products: /* @__PURE__ */ Object.freeze([]),
+    reminder: /* @__PURE__ */ Object.freeze({ title: "", desc: "" }),
+    prop: /* @__PURE__ */ Object.freeze({ svc: "", surfaces: /* @__PURE__ */ Object.freeze([]), months: "", unlimDesc: "", colA: "", colB: "", unitA: "", unitB: "" })
   });
-  var EMPTY_THEMES = Object.freeze({
+  var EMPTY_THEMES = /* @__PURE__ */ Object.freeze({
     HVAC: EMPTY_THEME,
     "Snow Removal": EMPTY_THEME,
     "Lawn & Garden": EMPTY_THEME,
@@ -46,42 +46,42 @@
     Health: EMPTY_THEME,
     Beauty: EMPTY_THEME
   });
-  var EMPTY_SPA = Object.freeze({
-    stagingOrders: Object.freeze([]),
-    appointments: Object.freeze({ upcoming: Object.freeze([]), past: Object.freeze([]), nextVariants: Object.freeze({ salon: Object.freeze([]), mobile: Object.freeze([]) }), tzNote: "" }),
+  var EMPTY_SPA = /* @__PURE__ */ Object.freeze({
+    stagingOrders: /* @__PURE__ */ Object.freeze([]),
+    appointments: /* @__PURE__ */ Object.freeze({ upcoming: /* @__PURE__ */ Object.freeze([]), past: /* @__PURE__ */ Object.freeze([]), nextVariants: /* @__PURE__ */ Object.freeze({ salon: /* @__PURE__ */ Object.freeze([]), mobile: /* @__PURE__ */ Object.freeze([]) }), tzNote: "" }),
     longCustomer: "",
-    modeLabels: Object.freeze({ salon: "", mobile: "" }),
-    pim: Object.freeze({ services: Object.freeze([]), products: Object.freeze([]) }),
-    statusBadges: Object.freeze({})
+    modeLabels: /* @__PURE__ */ Object.freeze({ salon: "", mobile: "" }),
+    pim: /* @__PURE__ */ Object.freeze({ services: /* @__PURE__ */ Object.freeze([]), products: /* @__PURE__ */ Object.freeze([]) }),
+    statusBadges: /* @__PURE__ */ Object.freeze({})
   });
-  var EMPTY_COMMERCE = Object.freeze({
-    accountEntries: Object.freeze([]),
-    appointmentDetails: Object.freeze({}),
-    checkout: Object.freeze({ ref: "", planQuote: null, planQuotes: Object.freeze({}) }),
-    confirmations: Object.freeze({ membership: null, plan: null, retail: null }),
-    offerNotes: Object.freeze({ changed: "", unavailable: "" }),
-    planOffers: Object.freeze([]),
-    plans: Object.freeze({ byRef: Object.freeze({}), scenarios: Object.freeze({}), statusBadges: Object.freeze({}) }),
-    purchaseByAppointment: Object.freeze({}),
-    purchaseDetails: Object.freeze({}),
-    purchases: Object.freeze({ filters: Object.freeze([]), kindFilter: Object.freeze({}), kindLabels: Object.freeze({}), list: Object.freeze([]), nextPage: Object.freeze([]), statusBadges: Object.freeze({}) }),
-    retail: Object.freeze({ products: Object.freeze([]) })
+  var EMPTY_COMMERCE = /* @__PURE__ */ Object.freeze({
+    accountEntries: /* @__PURE__ */ Object.freeze([]),
+    appointmentDetails: /* @__PURE__ */ Object.freeze({}),
+    checkout: /* @__PURE__ */ Object.freeze({ ref: "", planQuote: null, planQuotes: /* @__PURE__ */ Object.freeze({}) }),
+    confirmations: /* @__PURE__ */ Object.freeze({ membership: null, plan: null, retail: null }),
+    offerNotes: /* @__PURE__ */ Object.freeze({ changed: "", unavailable: "" }),
+    planOffers: /* @__PURE__ */ Object.freeze([]),
+    plans: /* @__PURE__ */ Object.freeze({ byRef: /* @__PURE__ */ Object.freeze({}), scenarios: /* @__PURE__ */ Object.freeze({}), statusBadges: /* @__PURE__ */ Object.freeze({}) }),
+    purchaseByAppointment: /* @__PURE__ */ Object.freeze({}),
+    purchaseDetails: /* @__PURE__ */ Object.freeze({}),
+    purchases: /* @__PURE__ */ Object.freeze({ filters: /* @__PURE__ */ Object.freeze([]), kindFilter: /* @__PURE__ */ Object.freeze({}), kindLabels: /* @__PURE__ */ Object.freeze({}), list: /* @__PURE__ */ Object.freeze([]), nextPage: /* @__PURE__ */ Object.freeze([]), statusBadges: /* @__PURE__ */ Object.freeze({}) }),
+    retail: /* @__PURE__ */ Object.freeze({ products: /* @__PURE__ */ Object.freeze([]) })
   });
-  var EMPTY_BOOKING = Object.freeze({
+  var EMPTY_BOOKING = /* @__PURE__ */ Object.freeze({
     ref: "",
-    days: Object.freeze([]),
-    eligibleServices: Object.freeze([]),
-    eligibleSpecialists: Object.freeze([]),
-    specialists: Object.freeze([]),
-    serviceForTitle: Object.freeze({}),
+    days: /* @__PURE__ */ Object.freeze([]),
+    eligibleServices: /* @__PURE__ */ Object.freeze([]),
+    eligibleSpecialists: /* @__PURE__ */ Object.freeze([]),
+    specialists: /* @__PURE__ */ Object.freeze([]),
+    serviceForTitle: /* @__PURE__ */ Object.freeze({}),
     displayTotals: null,
-    hold: Object.freeze({ ref: "", untilLabel: "", note: "" }),
+    hold: /* @__PURE__ */ Object.freeze({ ref: "", untilLabel: "", note: "" }),
     reviewLocation: "",
     policy: "",
     policyNote: "",
-    creditNotes: Object.freeze({ ok: "", unavailable: "", exhausted: "", changed: "" })
+    creditNotes: /* @__PURE__ */ Object.freeze({ ok: "", unavailable: "", exhausted: "", changed: "" })
   });
-  var F = Object.freeze({
+  var F = /* @__PURE__ */ Object.freeze({
     // PAL and TINTS are design tokens, not fixture data. The accepted design
     // declares four pairs and every call site indexes `[i % 4]`, so trimming them
     // to one entry both destroyed the accepted four-colour rhythm and made
@@ -92,48 +92,48 @@
     // The fixture boundary exists to keep invented *customer data* out of
     // production. Colours are not customer data, and stripping them is not what
     // it is for.
-    PAL: Object.freeze([
-      Object.freeze(["var(--accent)", "rgba(var(--accent-rgb),.12)"]),
-      Object.freeze(["#1f8a44", "rgba(52,199,89,.16)"]),
-      Object.freeze(["#ff8a3d", "rgba(255,159,10,.16)"]),
-      Object.freeze(["#7a52e0", "rgba(122,82,224,.16)"])
+    PAL: /* @__PURE__ */ Object.freeze([
+      /* @__PURE__ */ Object.freeze(["var(--accent)", "rgba(var(--accent-rgb),.12)"]),
+      /* @__PURE__ */ Object.freeze(["#1f8a44", "rgba(52,199,89,.16)"]),
+      /* @__PURE__ */ Object.freeze(["#ff8a3d", "rgba(255,159,10,.16)"]),
+      /* @__PURE__ */ Object.freeze(["#7a52e0", "rgba(122,82,224,.16)"])
     ]),
-    TINTS: Object.freeze([
-      Object.freeze(["var(--accent)", "linear-gradient(160deg,rgba(var(--accent-rgb),.18),rgba(var(--accent-rgb),.32))"]),
-      Object.freeze(["#1f8a44", "linear-gradient(160deg,#dcf5e2,#bff0cf)"]),
-      Object.freeze(["#ff8a3d", "linear-gradient(160deg,#ffe9d6,#ffd3ad)"]),
-      Object.freeze(["#7a52e0", "linear-gradient(160deg,#eee6ff,#d8c6ff)"])
+    TINTS: /* @__PURE__ */ Object.freeze([
+      /* @__PURE__ */ Object.freeze(["var(--accent)", "linear-gradient(160deg,rgba(var(--accent-rgb),.18),rgba(var(--accent-rgb),.32))"]),
+      /* @__PURE__ */ Object.freeze(["#1f8a44", "linear-gradient(160deg,#dcf5e2,#bff0cf)"]),
+      /* @__PURE__ */ Object.freeze(["#ff8a3d", "linear-gradient(160deg,#ffe9d6,#ffd3ad)"]),
+      /* @__PURE__ */ Object.freeze(["#7a52e0", "linear-gradient(160deg,#eee6ff,#d8c6ff)"])
     ]),
-    themeSlugs: Object.freeze({}),
+    themeSlugs: /* @__PURE__ */ Object.freeze({}),
     themes: EMPTY_THEMES,
-    statusMeta: Object.freeze({}),
-    technician: Object.freeze({}),
-    pstatus: Object.freeze({}),
-    customer: Object.freeze({ firstName: "", fullName: "", name: "", greeting: "", subline: "" }),
-    MONTHS: Object.freeze([]),
+    statusMeta: /* @__PURE__ */ Object.freeze({}),
+    technician: /* @__PURE__ */ Object.freeze({}),
+    pstatus: /* @__PURE__ */ Object.freeze({}),
+    customer: /* @__PURE__ */ Object.freeze({ firstName: "", fullName: "", name: "", greeting: "", subline: "" }),
+    MONTHS: /* @__PURE__ */ Object.freeze([]),
     buildFeed: function() {
       return [];
     },
-    feedTabs: Object.freeze([]),
-    initialMessages: Object.freeze([]),
-    quickReplies: Object.freeze([]),
-    helpTopics: Object.freeze([]),
+    feedTabs: /* @__PURE__ */ Object.freeze([]),
+    initialMessages: /* @__PURE__ */ Object.freeze([]),
+    quickReplies: /* @__PURE__ */ Object.freeze([]),
+    helpTopics: /* @__PURE__ */ Object.freeze([]),
     chatReply: function() {
       return "";
     },
-    stormCalendar: Object.freeze({}),
+    stormCalendar: /* @__PURE__ */ Object.freeze({}),
     spa: EMPTY_SPA,
     spaCommerce: EMPTY_COMMERCE,
     spaServerCart: function() {
       return { version: "", lines: [], displayTotals: null, fulfillment: null };
     },
     spaBooking: EMPTY_BOOKING,
-    spaProfileSrv: Object.freeze({ version: "", phone: "", email: "", preferences: Object.freeze([]), allowedActions: Object.freeze([]) }),
-    addresses: Object.freeze([]),
-    cards: Object.freeze([]),
-    proposal: Object.freeze({}),
-    proposalSites: Object.freeze([]),
-    surfaceDefs: Object.freeze({}),
+    spaProfileSrv: /* @__PURE__ */ Object.freeze({ version: "", phone: "", email: "", preferences: /* @__PURE__ */ Object.freeze([]), allowedActions: /* @__PURE__ */ Object.freeze([]) }),
+    addresses: /* @__PURE__ */ Object.freeze([]),
+    cards: /* @__PURE__ */ Object.freeze([]),
+    proposal: /* @__PURE__ */ Object.freeze({}),
+    proposalSites: /* @__PURE__ */ Object.freeze([]),
+    surfaceDefs: /* @__PURE__ */ Object.freeze({}),
     MOB_CLEAR: 0,
     MOB_DEICE: 0,
     planName: "",
@@ -142,17 +142,7 @@
     }
   });
 
-  // app-templates/customer-portal/runtime/data/live-spa-product-catalog.js
-  var SPA_PRODUCT_CATALOG = Object.freeze({
-    codeToRef: Object.freeze({}),
-    models: Object.freeze([]),
-    othersLabel: "Other products",
-    byRef: Object.freeze({}),
-    reviews: Object.freeze({})
-  });
-
   // app-templates/customer-portal/runtime/data/live-case-fixtures.js
-  var knownCaseIds = Object.freeze([]);
   function caseFixtureFor() {
     return null;
   }
@@ -164,555 +154,11 @@
     return JSON.parse(JSON.stringify(value));
   }
 
-  // app-templates/customer-portal/runtime/src/normalizers/spa-availability.js
-  var DAY_NAMES = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
-  var BUSY_STATES = /* @__PURE__ */ new Set(["REQUESTED", "SCHEDULED", "IN_PROGRESS"]);
-  function normalizeCoreAvailability(providerRows, appointmentRows2, options2 = {}) {
-    var locations = new Map((Array.isArray(options2.locationRows) ? options2.locationRows : []).map(normalizeLocation).filter(Boolean).map(function(location) {
-      return [location.id, location];
-    }));
-    var providers = (Array.isArray(providerRows) ? providerRows : []).map(function(row) {
-      return normalizeProvider(row, locations);
-    }).filter(function(provider) {
-      return provider.bookingEnabled;
-    }).sort(function(left, right) {
-      return left.ref.localeCompare(right.ref);
-    });
-    var busy = (Array.isArray(appointmentRows2) ? appointmentRows2 : []).map(normalizeBusyAppointment).filter(Boolean);
-    return {
-      // An authoritative empty Resource result means that online booking is not
-      // configured. It is not the same fact as a configured provider having no
-      // open slots inside the current horizon.
-      state: providers.length ? "ready" : "unavailable",
-      now: finiteNumber(options2.now, Date.now()),
-      horizonDays: boundedInteger(options2.horizonDays, 14, 1, 60),
-      maxVisibleDays: boundedInteger(options2.maxVisibleDays, 7, 1, 31),
-      providers,
-      busy
-    };
-  }
-  function deriveCoreBookingModel(source, services, options2 = {}) {
-    var empty = emptyBookingModel(source && source.state || "empty");
-    if (!source || source.state !== "ready") return empty;
-    var catalog = (Array.isArray(services) ? services : []).filter(function(service) {
-      return positiveInteger(service && service.backendProductId) && positiveInteger(service && service.durationMinutes);
-    });
-    var providerByServiceId = /* @__PURE__ */ new Map();
-    source.providers.forEach(function(provider) {
-      provider.serviceProductIds.forEach(function(serviceId) {
-        var list = providerByServiceId.get(serviceId) || [];
-        list.push(provider);
-        providerByServiceId.set(serviceId, list);
-      });
-    });
-    var eligible = catalog.filter(function(service) {
-      return providerByServiceId.has(positiveInteger(service.backendProductId));
-    });
-    if (!eligible.length) return emptyBookingModel("unavailable");
-    var selected = eligible.find(function(service) {
-      return service.code === options2.serviceCode;
-    }) || eligible[0];
-    var providers = (providerByServiceId.get(positiveInteger(selected.backendProductId)) || []).filter(function(provider) {
-      return !options2.specialistRef || provider.ref === options2.specialistRef;
-    });
-    var days = deriveDays(source, providers, selected);
-    var specialists = {};
-    source.providers.forEach(function(provider) {
-      specialists[provider.ref] = {
-        ref: provider.ref,
-        name: provider.name,
-        role: "Service provider"
-      };
-    });
-    var eligibleSpecialists = {};
-    eligible.forEach(function(service) {
-      eligibleSpecialists[service.code] = (providerByServiceId.get(positiveInteger(service.backendProductId)) || []).map(function(provider) {
-        return provider.ref;
-      });
-    });
-    var serviceForTitle = {};
-    var displayTotals = {};
-    eligible.forEach(function(service) {
-      serviceForTitle[service.name] = service.code;
-      displayTotals[service.code] = service.displayPrice || "";
-    });
-    return {
-      state: days.length ? "ready" : "empty",
-      ref: "core-booking-v1",
-      version: "core-resource-availability-v1",
-      paymentMode: "SIMULATED",
-      eligibleServices: eligible.map(function(service) {
-        return service.code;
-      }),
-      eligibleSpecialists,
-      specialists,
-      serviceForTitle,
-      displayTotals,
-      days,
-      hold: { ref: "", untilLabel: "", note: "" },
-      reviewLocation: days[0] && days[0].slots[0] ? days[0].slots[0].locationName : "",
-      policy: "I understand this demo has no temporary slot hold.",
-      policyNote: "Your request is recorded in Core and the studio confirms it; another customer could select the same time before confirmation.",
-      creditNotes: {
-        ok: "Plan-credit validation is not available in the current booking API.",
-        unavailable: "Plan-credit validation is not available in the current booking API.",
-        exhausted: "Plan-credit validation is not available in the current booking API.",
-        changed: "Plan-credit validation is not available in the current booking API."
-      }
-    };
-  }
-  function normalizeProvider(row, locations) {
-    var id = positiveInteger(row && row.id);
-    if (!id) throw availabilityError("availability-invalid-provider", "Bookable Resource has no id");
-    var values = ownTypeAttributes(row);
-    var timezone = requiredText(attributeValue(values, "AVAILABILITY_TIMEZONE"), "AVAILABILITY_TIMEZONE");
-    assertTimezone(timezone);
-    var weekly = parseWeeklyAvailability(attributeValue(values, "WEEKLY_AVAILABILITY"));
-    var serviceProductIds = integerList(attributeValue(values, "SERVICE_PRODUCTS"));
-    if (!serviceProductIds.length) throw availabilityError("availability-invalid-provider", "Bookable Resource has no SERVICE_PRODUCTS");
-    var specialistAccountId = positiveInteger(attributeValue(values, "SPECIALIST_ACCOUNT"));
-    var locationResourceId = positiveInteger(attributeValue(values, "LOCATION_RESOURCE"));
-    if (!specialistAccountId || !locationResourceId) {
-      throw availabilityError("availability-invalid-provider", "Bookable Resource is missing its specialist or location reference");
-    }
-    var location = locations.get(locationResourceId) || null;
-    return {
-      ref: opaqueRef("spc-core", row.code || id),
-      backendResourceId: id,
-      code: text(row.code),
-      name: localizedName(row.nls) || "Service provider",
-      // The provider projection currently carries the location Resource id, but
-      // not that Resource's localized name. Keep the customer copy generic until
-      // Core returns the real location instead of inventing a studio name.
-      locationName: location && location.name || localizedName(row.locationNls) || "Service location",
-      locationCode: location && location.code || "",
-      locationResourceId,
-      specialistAccountId,
-      serviceProductIds,
-      timezone,
-      weeklyAvailability: weekly,
-      slotIntervalMinutes: requiredPositiveInteger(attributeValue(values, "SLOT_INTERVAL_MINUTES"), "SLOT_INTERVAL_MINUTES"),
-      bufferMinutes: requiredNonNegativeInteger(attributeValue(values, "BUFFER_MINUTES"), "BUFFER_MINUTES"),
-      bookingEnabled: booleanValue(attributeValue(values, "BOOKING_ENABLED"))
-    };
-  }
-  function normalizeLocation(row) {
-    var id = positiveInteger(row && row.id);
-    var code = text(row && row.code);
-    var name = localizedName(row && row.nls);
-    return id && code && name ? { id, code, name } : null;
-  }
-  function normalizeBusyAppointment(row) {
-    var states = Array.isArray(row && row.states) ? row.states.map(function(state2) {
-      return text(state2 && state2.code);
-    }).filter(Boolean) : [];
-    if (!states.some(function(state2) {
-      return BUSY_STATES.has(state2);
-    })) return null;
-    var values = ownTypeAttributes(row);
-    var resourceIds = integerList(attributeValue(values, "RESOURCES"));
-    var start = Date.parse(row && row.start);
-    var end = Date.parse(row && row.end);
-    if (!resourceIds.length || !Number.isFinite(start) || !Number.isFinite(end) || end <= start) return null;
-    return { resourceIds, start, end, states };
-  }
-  function deriveDays(source, providers, service) {
-    var byDay = /* @__PURE__ */ new Map();
-    providers.forEach(function(provider) {
-      var today = datePartsInZone(new Date(source.now), provider.timezone);
-      for (var offset = 0; offset < source.horizonDays; offset += 1) {
-        var date = addCalendarDays(today, offset);
-        var weekday = DAY_NAMES[new Date(Date.UTC(date.year, date.month - 1, date.day)).getUTCDay()];
-        var windows = provider.weeklyAvailability[weekday] || [];
-        windows.forEach(function(window2) {
-          var windowStart = zonedEpoch(date, window2[0], provider.timezone);
-          var windowEnd = zonedEpoch(date, window2[1], provider.timezone);
-          for (var start = windowStart; start + service.durationMinutes * 6e4 <= windowEnd; start += provider.slotIntervalMinutes * 6e4) {
-            if (start < source.now) continue;
-            var end = start + service.durationMinutes * 6e4;
-            if (conflicts(source.busy, provider, start, end)) continue;
-            var key = "d-core-" + date.year + pad(date.month) + pad(date.day);
-            var day = byDay.get(key) || {
-              key,
-              label: formatDay(start, provider.timezone),
-              slots: []
-            };
-            if (!day.slots.some(function(slot) {
-              return slot.startIso === new Date(start).toISOString();
-            })) {
-              day.slots.push({
-                ref: opaqueRef("sl-core", provider.code + ":" + start),
-                label: formatTime(start, provider.timezone),
-                startIso: new Date(start).toISOString(),
-                endIso: new Date(end).toISOString(),
-                providerRef: provider.ref,
-                resourceIds: [provider.backendResourceId, provider.locationResourceId],
-                specialistAccountId: provider.specialistAccountId,
-                locationName: provider.locationName,
-                timezone: provider.timezone
-              });
-            }
-            byDay.set(key, day);
-          }
-        });
-      }
-    });
-    return Array.from(byDay.values()).sort(function(left, right) {
-      return left.key.localeCompare(right.key);
-    }).slice(0, source.maxVisibleDays);
-  }
-  function conflicts(busy, provider, start, end) {
-    var buffer = provider.bufferMinutes * 6e4;
-    return busy.some(function(appointment) {
-      return appointment.resourceIds.includes(provider.backendResourceId) && start < appointment.end + buffer && end + buffer > appointment.start;
-    });
-  }
-  function parseWeeklyAvailability(value) {
-    var parsed2;
-    try {
-      parsed2 = JSON.parse(requiredText(value, "WEEKLY_AVAILABILITY"));
-    } catch (_) {
-      throw availabilityError("availability-invalid-schedule", "WEEKLY_AVAILABILITY is not valid JSON");
-    }
-    if (!parsed2 || parsed2.schemaVersion !== 1) {
-      throw availabilityError("availability-invalid-schedule", "WEEKLY_AVAILABILITY schemaVersion must be 1");
-    }
-    var result = {};
-    DAY_NAMES.forEach(function(day) {
-      var windows = parsed2[day];
-      if (!Array.isArray(windows)) throw availabilityError("availability-invalid-schedule", "WEEKLY_AVAILABILITY is missing " + day);
-      result[day] = windows.map(function(window2) {
-        if (!Array.isArray(window2) || window2.length !== 2 || !validTime(window2[0]) || !validTime(window2[1]) || window2[0] >= window2[1]) {
-          throw availabilityError("availability-invalid-schedule", "WEEKLY_AVAILABILITY has an invalid " + day + " interval");
-        }
-        return [window2[0], window2[1]];
-      });
-    });
-    return result;
-  }
-  function ownTypeAttributes(row) {
-    var typeId = row && row.type && row.type.id;
-    return row && row.attributes && typeId != null ? row.attributes[String(typeId)] || {} : {};
-  }
-  function attributeValue(group, code) {
-    var entry = group && group[code];
-    return entry && Object.prototype.hasOwnProperty.call(entry, "value") ? entry.value : null;
-  }
-  function integerList(value) {
-    return (Array.isArray(value) ? value : value == null ? [] : [value]).map(positiveInteger).filter(Boolean);
-  }
-  function datePartsInZone(date, timezone) {
-    var parts = new Intl.DateTimeFormat("en-CA", {
-      timeZone: timezone,
-      year: "numeric",
-      month: "2-digit",
-      day: "2-digit"
-    }).formatToParts(date);
-    return {
-      year: Number(part(parts, "year")),
-      month: Number(part(parts, "month")),
-      day: Number(part(parts, "day"))
-    };
-  }
-  function addCalendarDays(parts, offset) {
-    var date = new Date(Date.UTC(parts.year, parts.month - 1, parts.day + offset));
-    return { year: date.getUTCFullYear(), month: date.getUTCMonth() + 1, day: date.getUTCDate() };
-  }
-  function zonedEpoch(date, clock2, timezone) {
-    var time = clock2.split(":").map(Number);
-    var desired = Date.UTC(date.year, date.month - 1, date.day, time[0], time[1]);
-    var guess = desired;
-    for (var index = 0; index < 3; index += 1) {
-      var actual = zonedParts(new Date(guess), timezone);
-      var actualUtc = Date.UTC(actual.year, actual.month - 1, actual.day, actual.hour, actual.minute);
-      guess += desired - actualUtc;
-    }
-    return guess;
-  }
-  function zonedParts(date, timezone) {
-    var parts = new Intl.DateTimeFormat("en-CA", {
-      timeZone: timezone,
-      hourCycle: "h23",
-      year: "numeric",
-      month: "2-digit",
-      day: "2-digit",
-      hour: "2-digit",
-      minute: "2-digit"
-    }).formatToParts(date);
-    return {
-      year: Number(part(parts, "year")),
-      month: Number(part(parts, "month")),
-      day: Number(part(parts, "day")),
-      hour: Number(part(parts, "hour")),
-      minute: Number(part(parts, "minute"))
-    };
-  }
-  function emptyBookingModel(state2) {
-    return {
-      state: state2 === "error" ? "error" : state2 === "loading" ? "loading" : state2 === "unavailable" ? "unavailable" : "empty",
-      ref: "core-booking-v1",
-      eligibleServices: [],
-      eligibleSpecialists: {},
-      specialists: {},
-      serviceForTitle: {},
-      displayTotals: {},
-      days: [],
-      hold: { ref: "", untilLabel: "", note: "" },
-      reviewLocation: "",
-      policy: "",
-      policyNote: "",
-      creditNotes: {}
-    };
-  }
-  function assertTimezone(value) {
-    try {
-      new Intl.DateTimeFormat("en-US", { timeZone: value }).format(/* @__PURE__ */ new Date(0));
-    } catch (_) {
-      throw availabilityError("availability-invalid-timezone", "AVAILABILITY_TIMEZONE is invalid");
-    }
-  }
-  function formatDay(epoch, timezone) {
-    return new Intl.DateTimeFormat("en-US", { weekday: "short", month: "short", day: "numeric", timeZone: timezone }).format(new Date(epoch));
-  }
-  function formatTime(epoch, timezone) {
-    return new Intl.DateTimeFormat("en-US", { hour: "numeric", minute: "2-digit", timeZone: timezone }).format(new Date(epoch));
-  }
-  function opaqueRef(prefix, value) {
-    var hash = 2166136261;
-    var input = String(value || prefix);
-    for (var index = 0; index < input.length; index += 1) hash = Math.imul(hash ^ input.charCodeAt(index), 16777619);
-    return prefix + "-" + (hash >>> 0).toString(36);
-  }
-  function localizedName(value) {
-    if (!value || typeof value !== "object") return "";
-    var localized2 = value.en || value["en-US"] || Object.values(value)[0] || {};
-    return text(localized2.NAME || localized2.name);
-  }
-  function part(parts, type) {
-    return (parts.find(function(item) {
-      return item.type === type;
-    }) || {}).value;
-  }
-  function validTime(value) {
-    return typeof value === "string" && /^(?:[01]\d|2[0-3]):[0-5]\d$/.test(value);
-  }
-  function pad(value) {
-    return String(value).padStart(2, "0");
-  }
-  function text(value) {
-    return typeof value === "string" ? value.trim() : value == null ? "" : String(value).trim();
-  }
-  function requiredText(value, code) {
-    var result = text(value);
-    if (!result) throw availabilityError("availability-invalid-provider", code + " is required");
-    return result;
-  }
-  function positiveInteger(value) {
-    var candidate = value && typeof value === "object" && !Array.isArray(value) ? value.id : value;
-    var number = Number(candidate);
-    return Number.isInteger(number) && number > 0 ? number : null;
-  }
-  function booleanValue(value) {
-    return value === true || String(value || "").trim().toLowerCase() === "true";
-  }
-  function requiredPositiveInteger(value, code) {
-    var number = positiveInteger(value);
-    if (!number) throw availabilityError("availability-invalid-provider", code + " must be a positive integer");
-    return number;
-  }
-  function requiredNonNegativeInteger(value, code) {
-    var number = Number(value);
-    if (!Number.isInteger(number) || number < 0) throw availabilityError("availability-invalid-provider", code + " must be a non-negative integer");
-    return number;
-  }
-  function finiteNumber(value, fallback) {
-    var number = Number(value);
-    return Number.isFinite(number) ? number : fallback;
-  }
-  function boundedInteger(value, fallback, min, max) {
-    var number = Number(value);
-    return Number.isInteger(number) && number >= min && number <= max ? number : fallback;
-  }
-  function availabilityError(code, message) {
-    var error2 = new Error(message);
-    error2.code = code;
-    return error2;
-  }
-
-  // app-templates/customer-portal/runtime/src/normalizers/spa-booking-options.js
-  var EMPTY_COPY = Object.freeze({
-    locationsError: "Places didn\u2019t load \u2014 nothing is shown so nothing is guessed. Try again.",
-    locationsEmpty: "No place is open for this visit right now. Nothing was reserved \u2014 our team can find one for you.",
-    locationsUnavailable: "Choosing a place isn\u2019t connected yet. Your visit will be confirmed with the place the studio assigns \u2014 you\u2019ll see it before you confirm.",
-    locationIneligible: "The place you picked isn\u2019t available with your current choices \u2014 it was cleared. Pick one of the places below.",
-    noSavedPlace: "We don\u2019t have a place on file for at-home visits, so this option can\u2019t be completed here. The studio can add one with you \u2014 nothing was saved or sent.",
-    addOnsError: "Extras didn\u2019t load \u2014 nothing is shown so nothing is guessed. Try again.",
-    addOnsUnavailable: "Extras aren\u2019t connected yet for this treatment. Nothing is added \u2014 you can ask at the studio.",
-    addOnsIneligible: "These extras aren\u2019t eligible for the treatment and time you picked, so they can\u2019t be selected.",
-    addOnRemoved: "The studio removed an extra that is no longer available for this visit. Review the visit below before you confirm.",
-    addOnRepriced: "The amount for one of your extras changed. Review the visit below before you confirm.",
-    addOnPendingNote: "Extras are checked with the studio one at a time \u2014 the rest stay available while one is checked.",
-    optionsChangedSlot: "Your choices changed, so the earlier time was released and new times were loaded. Nothing is booked.",
-    noteTooLong: "Your note is longer than the studio can accept. Please shorten it to {max} characters or fewer.",
-    noteSentWith: "Sent to the studio with your request"
-  });
-  function emptyLiveBookingOptions(selectionVersion = "core-booking-options-unavailable") {
-    return {
-      capabilities: { visitMode: false, location: false, addOns: false, notes: false },
-      visitModes: [],
-      locations: [],
-      addOns: [],
-      notes: { enabled: false, value: "", maxLength: 0, helperText: "" },
-      quotes: {},
-      selectionVersion,
-      copy: EMPTY_COPY
-    };
-  }
-  function normalizeLiveBookingOptions(service, availability) {
-    var raw = productAttribute(service && service.attributes, "BOOKING_OPTIONS");
-    if (!raw) return emptyLiveBookingOptions();
-    var source;
-    try {
-      source = typeof raw === "string" ? JSON.parse(raw) : raw;
-    } catch (_) {
-      return emptyLiveBookingOptions("core-booking-options-invalid");
-    }
-    if (!source || source.schemaVersion !== 1 || !text2(source.selectionVersion)) {
-      return emptyLiveBookingOptions("core-booking-options-invalid");
-    }
-    var visitModes = array(source.visitModes).map(function(mode) {
-      return {
-        code: text2(mode && mode.code),
-        label: text2(mode && mode.label),
-        locationRequired: !!(mode && mode.locationRequired)
-      };
-    }).filter(function(mode) {
-      return mode.code && mode.label;
-    });
-    var providers = array(availability && availability.providers);
-    var locationByCode = /* @__PURE__ */ new Map();
-    providers.forEach(function(provider) {
-      var code = text2(provider && provider.locationCode);
-      var id = positiveInteger2(provider && provider.locationResourceId);
-      if (code && id && !locationByCode.has(code)) locationByCode.set(code, provider);
-    });
-    var locations = array(source.locations).map(function(location) {
-      var resourceCode = text2(location && location.resourceCode);
-      var live = locationByCode.get(resourceCode);
-      if (!live) return null;
-      return {
-        ref: opaqueRef2("loc-core", resourceCode),
-        backendResourceId: live.locationResourceId,
-        resourceCode,
-        label: text2(live.locationName) || text2(location && location.label),
-        kind: text2(location && location.kind) || "STUDIO",
-        visitModeCode: text2(location && location.visitModeCode)
-      };
-    }).filter(function(location) {
-      return location && location.label && location.visitModeCode && visitModes.some(function(mode) {
-        return mode.code === location.visitModeCode;
-      });
-    });
-    var addOns = array(source.addOns).map(function(addon) {
-      var ref = text2(addon && addon.ref);
-      var name = text2(addon && addon.name);
-      if (!ref || !name) return null;
-      var allowed2 = array(addon.allowedActions).map(text2).filter(function(action) {
-        return action === "toggle";
-      });
-      return {
-        ref,
-        name,
-        description: text2(addon.description),
-        required: !!addon.required,
-        selected: !!addon.selected,
-        displayPrice: text2(addon.displayPrice) || null,
-        durationNote: text2(addon.durationNote) || null,
-        allowedActions: allowed2
-      };
-    }).filter(Boolean);
-    var notesSource = source.notes || {};
-    var notesEnabled = notesSource.enabled === true;
-    var maxLength = notesEnabled ? boundedInteger2(notesSource.maxLength, 200, 1, 2e3) : 0;
-    var quotes = {};
-    Object.entries(source.quotes || {}).forEach(function(entry) {
-      var key = canonicalSelectionKey(entry[0] ? entry[0].split("|") : []);
-      var quote = entry[1] || {};
-      var durationMinutes = positiveInteger2(quote.durationMinutes);
-      var displayTotal = text2(quote.displayTotal);
-      if (!durationMinutes || !displayTotal) return;
-      quotes[key] = {
-        version: text2(source.selectionVersion),
-        addOns: addOns.filter(function(addon) {
-          return key.split("|").includes(addon.ref);
-        }),
-        displaySubtotal: text2(quote.displaySubtotal) || null,
-        displayTotal,
-        durationMinutes
-      };
-    });
-    return {
-      capabilities: {
-        visitMode: visitModes.length > 0,
-        location: array(source.locations).length > 0,
-        addOns: addOns.length > 0,
-        notes: notesEnabled
-      },
-      visitModes,
-      locations,
-      addOns,
-      notes: {
-        enabled: notesEnabled,
-        value: "",
-        maxLength,
-        helperText: text2(notesSource.helperText)
-      },
-      quotes,
-      selectionVersion: text2(source.selectionVersion),
-      copy: EMPTY_COPY
-    };
-  }
-  function liveBookingQuote(options2, selectedRefs) {
-    var key = canonicalSelectionKey(selectedRefs);
-    return options2 && options2.quotes && options2.quotes[key] || null;
-  }
-  function canonicalSelectionKey(refs) {
-    return array(refs).map(text2).filter(Boolean).sort().join("|");
-  }
-  function productAttribute(attributes, code) {
-    if (!attributes || typeof attributes !== "object") return null;
-    for (var group of Object.values(attributes)) {
-      var entry = group && group[code];
-      if (entry && Object.prototype.hasOwnProperty.call(entry, "value")) return entry.value;
-    }
-    return null;
-  }
-  function opaqueRef2(prefix, value) {
-    var source = text2(value);
-    var hash = 2166136261;
-    for (var index = 0; index < source.length; index += 1) hash = Math.imul(hash ^ source.charCodeAt(index), 16777619);
-    return prefix + "-" + (hash >>> 0).toString(36);
-  }
-  function array(value) {
-    return Array.isArray(value) ? value : [];
-  }
-  function text2(value) {
-    return typeof value === "string" ? value.trim() : value == null ? "" : String(value).trim();
-  }
-  function positiveInteger2(value) {
-    var number = Number(value);
-    return Number.isInteger(number) && number > 0 ? number : null;
-  }
-  function boundedInteger2(value, fallback, min, max) {
-    var number = Number(value);
-    return Number.isInteger(number) && number >= min && number <= max ? number : fallback;
-  }
-
   // app-templates/customer-portal/runtime/src/config.js
-  var SIGNED_OUT_DESTINATIONS = Object.freeze(["sign-in", "landing"]);
+  var SIGNED_OUT_DESTINATIONS = /* @__PURE__ */ Object.freeze(["sign-in", "landing"]);
   var LANDING_REASON_PARAMETER = "portal";
-  var LANDING_ENTRY_REASONS = Object.freeze({ signedOut: "signed-out", noAccess: "no-access" });
-  var ACCOUNT_NO_ACCESS_STATES = Object.freeze(["customer-not-linked", "organization-forbidden", "customer-forbidden"]);
+  var LANDING_ENTRY_REASONS = /* @__PURE__ */ Object.freeze({ signedOut: "signed-out", noAccess: "no-access" });
+  var ACCOUNT_NO_ACCESS_STATES = /* @__PURE__ */ Object.freeze(["customer-not-linked", "organization-forbidden", "customer-forbidden"]);
   var portalProfiles = {
     onDemand: {
       id: "onDemand",
@@ -940,8 +386,8 @@
       planCommerce: allowed(dataset.portalPlanCommerce, ["closed", "open"], "closed"),
       demoCommands: allowed(dataset.portalDemoCommands, ["closed", "current-api"], "closed"),
       anonymousIntentMode: allowed(dataset.portalAnonymousIntentMode, ["closed", "selection-only"], "closed"),
-      anonymousIntentTtlSeconds: boundedInteger3(dataset.portalAnonymousIntentTtlSeconds, 1800, 60, 86400),
-      anonymousIntentMaxItems: boundedInteger3(dataset.portalAnonymousIntentMaxItems, 10, 1, 50),
+      anonymousIntentTtlSeconds: boundedInteger(dataset.portalAnonymousIntentTtlSeconds, 1800, 60, 86400),
+      anonymousIntentMaxItems: boundedInteger(dataset.portalAnonymousIntentMaxItems, 10, 1, 50),
       anonymousIntentReconciliationMode: allowed(dataset.portalAnonymousIntentReconciliation, ["authenticated-server"], "authenticated-server"),
       registrationMode: allowed(dataset.portalRegistrationMode, ["closed", "core-auth"], "closed"),
       organization: dataset.portalOrganization || dataset.portalPimOrganization || "SERVICEWAND",
@@ -1073,7 +519,7 @@
   function readGeoMap(value) {
     if (!value || typeof value !== "object") return null;
     var center = readGeoPoint(value.center);
-    var zoom = finiteNumber2(value.zoom);
+    var zoom = finiteNumber(value.zoom);
     if (!center) return null;
     if (!Number.isFinite(zoom) || zoom < 0 || zoom > 22) return null;
     return { center, zoom };
@@ -1081,7 +527,7 @@
   function readGeoZones(value) {
     if (!value || typeof value !== "object") return null;
     var zones = {};
-    var names = Object.keys(value);
+    var names = /* @__PURE__ */ Object.keys(value);
     for (var index = 0; index < names.length; index += 1) {
       var point = readGeoPoint(value[names[index]]);
       if (!point) return null;
@@ -1091,13 +537,13 @@
   }
   function readGeoPoint(value) {
     if (!value || typeof value !== "object") return null;
-    var lat = finiteNumber2(value.lat);
-    var lon = finiteNumber2(value.lon);
+    var lat = finiteNumber(value.lat);
+    var lon = finiteNumber(value.lon);
     if (!Number.isFinite(lat) || lat < -90 || lat > 90) return null;
     if (!Number.isFinite(lon) || lon < -180 || lon > 180) return null;
     return { lat, lon };
   }
-  function finiteNumber2(value) {
+  function finiteNumber(value) {
     if (typeof value === "number") return value;
     if (typeof value === "string" && value.trim() !== "") return Number(value);
     return Number.NaN;
@@ -1106,9 +552,9 @@
     var token = String(value || "").trim();
     return /^[A-Za-z0-9_-]+$/.test(token) ? token : "";
   }
-  function vertical(slug2, displayName, profile, careNavLabel, weather) {
+  function vertical(slug, displayName, profile, careNavLabel, weather) {
     return {
-      slug: slug2,
+      slug,
       displayName,
       profile,
       careNavLabel,
@@ -1129,7 +575,7 @@
     var parsed2 = Number(value);
     return Number.isFinite(parsed2) && parsed2 > 0 ? parsed2 : fallback;
   }
-  function boundedInteger3(value, fallback, minimum, maximum) {
+  function boundedInteger(value, fallback, minimum, maximum) {
     var parsed2 = Number(value);
     return Number.isInteger(parsed2) && parsed2 >= minimum && parsed2 <= maximum ? parsed2 : fallback;
   }
@@ -1138,22 +584,22 @@
   }
 
   // app-templates/customer-portal/runtime/src/normalizers/core-record.js
-  function text3(value) {
+  function text(value) {
     return typeof value === "string" ? value.trim() : value == null ? "" : String(value).trim();
   }
-  function positiveInteger3(value) {
+  function positiveInteger(value) {
     var number = typeof value === "number" ? value : typeof value === "string" && value.trim() !== "" ? Number(value) : Number.NaN;
     return Number.isInteger(number) && number > 0 ? number : null;
   }
   function latestStateCode(row) {
     var states = Array.isArray(row && row.states) ? row.states : [];
     var last = states[states.length - 1];
-    return text3(last && last.code);
+    return text(last && last.code);
   }
   function attributeEntry(row, code) {
     var buckets = row && row.attributes;
     if (!buckets || typeof buckets !== "object") return null;
-    var keys = Object.keys(buckets);
+    var keys = /* @__PURE__ */ Object.keys(buckets);
     for (var index = 0; index < keys.length; index += 1) {
       var bucket2 = buckets[keys[index]];
       if (bucket2 && Object.prototype.hasOwnProperty.call(bucket2, code)) return bucket2[code];
@@ -1162,11 +608,11 @@
   }
   function attributeNumber(row, code) {
     var entry = attributeEntry(row, code);
-    return entry ? positiveInteger3(entry.value) : null;
+    return entry ? positiveInteger(entry.value) : null;
   }
   function attributeText(row, code) {
     var entry = attributeEntry(row, code);
-    return entry && entry.value != null ? text3(entry.value) : "";
+    return entry && entry.value != null ? text(entry.value) : "";
   }
 
   // app-templates/customer-portal/runtime/src/normalizers/overview.js
@@ -1274,7 +720,7 @@
   }
 
   // app-templates/customer-portal/runtime/src/normalizers/weather.js
-  var DAY_NAMES2 = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  var DAY_NAMES = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
   var MONTH_NAMES = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
   var SNOW_CODES = ["S", "SI", "BS", "BY", "WM", "SW"];
   var FREEZING_CODES = ["ZR", "ZL", "ZY", "IP", "IC"];
@@ -1282,15 +728,15 @@
   var STORM_TEMP_C = -5;
   var STORM_SNOW_CM = 2;
   var STORM_POP = 40;
-  var WEATHER_LEGEND = Object.freeze([
-    Object.freeze({ key: "clear", label: "Clear" }),
-    Object.freeze({ key: "snow", label: "Snow" }),
-    Object.freeze({ key: "freezing", label: "Freezing rain" }),
-    Object.freeze({ key: "storm", label: "Storm warning" }),
-    Object.freeze({ key: "issue", label: "Issue opened" })
+  var WEATHER_LEGEND = /* @__PURE__ */ Object.freeze([
+    /* @__PURE__ */ Object.freeze({ key: "clear", label: "Clear" }),
+    /* @__PURE__ */ Object.freeze({ key: "snow", label: "Snow" }),
+    /* @__PURE__ */ Object.freeze({ key: "freezing", label: "Freezing rain" }),
+    /* @__PURE__ */ Object.freeze({ key: "storm", label: "Storm warning" }),
+    /* @__PURE__ */ Object.freeze({ key: "issue", label: "Issue opened" })
   ]);
   function frameDay(date, index) {
-    return index === 0 ? "Today" : DAY_NAMES2[date.getDay()];
+    return index === 0 ? "Today" : DAY_NAMES[date.getDay()];
   }
   function frameDate(date) {
     return MONTH_NAMES[date.getMonth()] + " " + date.getDate();
@@ -1456,10 +902,10 @@
   function popupWeather(frame, zoneKind, source, entry, index, sources) {
     var day = frame.day + " " + frame.date;
     if (entry && entry.state === "loading") return { state: "loading", day, source: "xweather" };
-    var own3 = entry && entry.state === "ready" && Array.isArray(entry.days) ? entry.days[index] : null;
-    if (own3) {
-      var note = sourceOpened(sources, "contracts") ? own3.note : own3.forecastNote || "";
-      return { state: "property", day, kind: own3.kind, temp: own3.temp, phrase: own3.phrase, note, source: "xweather" };
+    var own2 = entry && entry.state === "ready" && Array.isArray(entry.days) ? entry.days[index] : null;
+    if (own2) {
+      var note = sourceOpened(sources, "contracts") ? own2.note : own2.forecastNote || "";
+      return { state: "property", day, kind: own2.kind, temp: own2.temp, phrase: own2.phrase, note, source: "xweather" };
     }
     return {
       state: entry && entry.state === "failed" ? "failed" : "area",
@@ -1596,31 +1042,31 @@
   }
 
   // app-templates/customer-portal/runtime/src/normalizers/contracts.js
-  var QUOTE_ORDER_TYPES = Object.freeze(["FIELD_SERVICE_ORDER", "WINTER_SERVICES_ORDER"]);
-  var CUSTOMER_ORDER_STATUS = Object.freeze({
+  var QUOTE_ORDER_TYPES = /* @__PURE__ */ Object.freeze(["FIELD_SERVICE_ORDER", "WINTER_SERVICES_ORDER"]);
+  var CUSTOMER_ORDER_STATUS = /* @__PURE__ */ Object.freeze({
     CLIENT_APPROVED: "approved",
     CUSTOMER_CHANGES_REQUESTED: "revision",
     DECLINED: "declined",
     QUOTE_SENT: "unseen",
     QUOTE_VIEWED: "viewed"
   });
-  var OPERATOR_ORDER_STATES = Object.freeze(["CHANGES_REQUESTED", "INITIAL", "QUOTE_APPROVED_INTERNALLY", "QUOTE_PREPARED"]);
-  var PRICING_MODELS = Object.freeze({
+  var OPERATOR_ORDER_STATES = /* @__PURE__ */ Object.freeze(["CHANGES_REQUESTED", "INITIAL", "QUOTE_APPROVED_INTERNALLY", "QUOTE_PREPARED"]);
+  var PRICING_MODELS = /* @__PURE__ */ Object.freeze({
     PER_SERVICE: "Per service",
     MONTHLY: "Monthly",
     SEASONAL: "Seasonal"
   });
-  var RECURRING_MODEL = Object.freeze({ code: "RECURRING", label: "Recurring" });
-  var PRICE_PERIODS = Object.freeze({
+  var RECURRING_MODEL = /* @__PURE__ */ Object.freeze({ code: "RECURRING", label: "Recurring" });
+  var PRICE_PERIODS = /* @__PURE__ */ Object.freeze({
     PER_SERVICE: "per visit",
     MONTHLY: "/ month",
     SEASONAL: "per season"
   });
-  var CLIENT_TYPES = Object.freeze({
+  var CLIENT_TYPES = /* @__PURE__ */ Object.freeze({
     INDIVIDUAL: "Individual",
     ORGANIZATION: "Organization"
   });
-  var SCOPE_MODES = Object.freeze(["server-scoped", "browser-filtered", "unscoped"]);
+  var SCOPE_MODES = /* @__PURE__ */ Object.freeze(["server-scoped", "browser-filtered", "unscoped"]);
   var ORDER_ACTIONS = { unseen: ["view"], viewed: ["approve", "decline"] };
   var PRICING_MODEL_RANK = ["PER_SERVICE", "MONTHLY", "SEASONAL", RECURRING_MODEL.code];
   var MONTH_UNIT = "MONTH";
@@ -1640,7 +1086,7 @@
   var PREPARING = agreementStage("preparing", "", "");
   var DRAFTING = agreementStage("drafting", "Agreement in preparation", "scheduled");
   var APPROVED = agreementStage("approved", "Approved", "ok");
-  var AGREEMENT_STAGES = Object.freeze({
+  var AGREEMENT_STAGES = /* @__PURE__ */ Object.freeze({
     QUOTATION: PREPARING,
     QUOTATION_SEND_FAILED: PREPARING,
     QUOTATION_SENT: agreementStage("review", "Awaiting your decisions", "info"),
@@ -1674,7 +1120,7 @@
     }).filter(Boolean);
     var orderRows = readRows(source.quoteOrders);
     return {
-      accountId: positiveInteger3(source.accountId),
+      accountId: positiveInteger(source.accountId),
       scopeMode: scopeModeOf(source.scopeMode),
       reads: readSummaries(reads),
       agreements,
@@ -1690,7 +1136,7 @@
         prices: catalog.productPrices ? "ready" : failedRead(reads.productPrices),
         products: catalog.products ? "ready" : failedRead(reads.products)
       },
-      truncated: Object.keys(reads).some(function(key) {
+      truncated: (/* @__PURE__ */ Object.keys(reads)).some(function(key) {
         return !!(reads[key] && reads[key].truncated);
       })
     };
@@ -1702,8 +1148,8 @@
     var preparing = false;
     listRows(payload).forEach(function(row) {
       if (!row || typeof row !== "object") return;
-      if (QUOTE_ORDER_TYPES.indexOf(text3(row.type && row.type.code)) === -1) return;
-      var backendId = positiveInteger3(row.id);
+      if (QUOTE_ORDER_TYPES.indexOf(text(row.type && row.type.code)) === -1) return;
+      var backendId = positiveInteger(row.id);
       if (!backendId) return;
       var stateCode = latestStateCode(row);
       var status = own(CUSTOMER_ORDER_STATUS, stateCode);
@@ -1729,7 +1175,7 @@
           subtotal: formatMoney(row.totalCharges, currency),
           taxes: formatMoney(row.totalTaxes, currency),
           total: formatMoney(row.grandTotal, currency),
-          taxFree: finiteNumber3(row.totalTaxes) === 0
+          taxFree: finiteNumber2(row.totalTaxes) === 0
         } : null,
         lines: quoteLines.lines,
         linesState: quoteLines.state,
@@ -1740,8 +1186,8 @@
   }
   function normalizeServiceAgreement(document2, client) {
     if (!document2 || typeof document2 !== "object") return null;
-    if (text3(document2.type && document2.type.code) !== "SERVICE_AGREEMENT") return null;
-    var backendId = positiveInteger3(document2.id);
+    if (text(document2.type && document2.type.code) !== "SERVICE_AGREEMENT") return null;
+    var backendId = positiveInteger(document2.id);
     var stateCode = latestStateCode(document2);
     var stage = own(AGREEMENT_STAGES, stateCode);
     if (!backendId || !stage) return null;
@@ -1962,9 +1408,9 @@
     }
   }
   function formatMoney(value, currency) {
-    var number = finiteNumber3(value);
+    var number = finiteNumber2(value);
     if (number === null) return "";
-    var code = /^[A-Z]{3}$/.test(text3(currency)) ? text3(currency) : "";
+    var code = /^[A-Z]{3}$/.test(text(currency)) ? text(currency) : "";
     try {
       if (code) return new Intl.NumberFormat("en-US", { style: "currency", currency: code, minimumFractionDigits: 2, maximumFractionDigits: 6 }).format(number);
     } catch (_) {
@@ -1973,7 +1419,7 @@
     return new Intl.NumberFormat("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 6 }).format(number);
   }
   function formatIsoDate(value) {
-    var match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(text3(value));
+    var match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(text(value));
     return match ? MONTHS[Number(match[2]) - 1] + " " + Number(match[3]) + ", " + match[1] : "";
   }
   function formatDatePeriod(period) {
@@ -2086,14 +1532,14 @@
     var last = attributeString(document2, "REPRESENTATIVE_LAST_NAME");
     return {
       provider: {
-        legalName: attributeString(document2, "PROVIDER_LEGAL_NAME") || localizedName2(owner && owner.nls),
+        legalName: attributeString(document2, "PROVIDER_LEGAL_NAME") || localizedName(owner && owner.nls),
         representativeName: attributeString(document2, "PROVIDER_REPRESENTATIVE_NAME"),
         representativeJobTitle: attributeString(document2, "PROVIDER_REPRESENTATIVE_JOB_TITLE"),
         phone: formatPhone(attributeString(document2, "PROVIDER_CONTACT_PHONE")),
         email: attributeString(document2, "PROVIDER_CONTACT_EMAIL")
       },
       client: {
-        legalName: attributeString(document2, "LEGAL_NAME") || text3(client && typeof client.displayName === "string" ? client.displayName : ""),
+        legalName: attributeString(document2, "LEGAL_NAME") || text(client && typeof client.displayName === "string" ? client.displayName : ""),
         clientType: own(CLIENT_TYPES, attributeString(document2, "CLIENT_TYPE")) || "",
         billingAddress: formatAddressLine(attributeString(document2, "BILLING_ADDRESS")),
         representativeName: [first, last].filter(Boolean).join(" "),
@@ -2117,14 +1563,14 @@
       return rankOf(left) - rankOf(right) || left.position - right.position;
     }).map(function(entry) {
       var line = entry.row;
-      var priceId = positiveInteger3(line.itemPrice && line.itemPrice.id);
+      var priceId = positiveInteger(line.itemPrice && line.itemPrice.id);
       var price = priceId && catalog.prices ? catalog.prices.get(priceId) || null : null;
-      var productId = positiveInteger3(price && price.product && price.product.id);
+      var productId = positiveInteger(price && price.product && price.product.id);
       var product = productId && catalog.products ? catalog.products.get(productId) || null : null;
       if (priceId && !price || productId && !product) incomplete = true;
       return {
         key: "line-" + entry.backendId,
-        product: localizedName2(product && product.nls),
+        product: localizedName(product && product.nls),
         quantity: formatQuantity(line.itemCount),
         unitPrice: formatMoney(line.amount, currency),
         total: formatMoney(line.grandTotal, currency)
@@ -2141,16 +1587,16 @@
     var entries = catalog.byOrder.get(backendId) || [];
     if (!entries.length || !catalog.prices) return null;
     var prices = entries.map(function(entry) {
-      return catalog.prices.get(positiveInteger3(entry.row.itemPrice && entry.row.itemPrice.id)) || null;
+      return catalog.prices.get(positiveInteger(entry.row.itemPrice && entry.row.itemPrice.id)) || null;
     });
     var names = prices.map(function(price) {
-      return localizedName2(price && price.nls);
+      return localizedName(price && price.nls);
     });
     var name = names[0] && names.every(function(entry) {
       return entry === names[0];
     }) ? names[0] : "";
     var types = prices.map(function(price) {
-      return text3(price && price.type && price.type.code).toUpperCase();
+      return text(price && price.type && price.type.code).toUpperCase();
     });
     var recurrent = types.filter(function(type) {
       return /(^|_)RECURRENT$/.test(type);
@@ -2172,21 +1618,21 @@
   }
   function intervalMonths(metadata) {
     if (!metadata || typeof metadata !== "object") return null;
-    if (text3(metadata.INTERVAL_UNIT).toUpperCase() !== MONTH_UNIT) return null;
-    return positiveInteger3(metadata.INTERVAL_COUNT);
+    if (text(metadata.INTERVAL_UNIT).toUpperCase() !== MONTH_UNIT) return null;
+    return positiveInteger(metadata.INTERVAL_COUNT);
   }
   function lineCatalog(catalog) {
     var source = catalog || {};
     var items = source.orderItems ? [] : null;
     var byOrder = /* @__PURE__ */ new Map();
     (source.orderItems || []).forEach(function(row, position) {
-      var backendId = positiveInteger3(row && row.id);
-      var orderId2 = positiveInteger3(row && row.order && row.order.id);
-      if (!backendId || !orderId2) return;
+      var backendId = positiveInteger(row && row.id);
+      var orderId = positiveInteger(row && row.order && row.order.id);
+      if (!backendId || !orderId) return;
       var entry = { backendId, position, row };
       items.push(entry);
-      var list = byOrder.get(orderId2);
-      if (!list) byOrder.set(orderId2, list = []);
+      var list = byOrder.get(orderId);
+      if (!list) byOrder.set(orderId, list = []);
       if (!list.some(function(known) {
         return known.backendId === backendId;
       })) list.push(entry);
@@ -2199,7 +1645,7 @@
     };
   }
   function rankOf(entry) {
-    var rank = finiteNumber3(entry.row.sortOrder);
+    var rank = finiteNumber2(entry.row.sortOrder);
     return rank === null ? Number.MAX_SAFE_INTEGER : rank;
   }
   function readRows(value) {
@@ -2208,14 +1654,14 @@
   }
   function readSummaries(reads) {
     var summary = {};
-    Object.keys(reads).forEach(function(key) {
+    (/* @__PURE__ */ Object.keys(reads)).forEach(function(key) {
       var read = reads[key] || {};
-      summary[key] = { state: text3(read.state) || "ready", scopeMode: scopeModeOf(read.scopeMode), truncated: !!read.truncated };
+      summary[key] = { state: text(read.state) || "ready", scopeMode: scopeModeOf(read.scopeMode), truncated: !!read.truncated };
     });
     return summary;
   }
   function failedRead(read) {
-    var state2 = read && text3(read.state);
+    var state2 = read && text(read.state);
     return state2 === "unauthorized" ? "unauthorized" : "error";
   }
   function scopeModeOf(value) {
@@ -2224,7 +1670,7 @@
   function rowsById(rows2) {
     var found = /* @__PURE__ */ new Map();
     (Array.isArray(rows2) ? rows2 : []).forEach(function(row) {
-      var id = positiveInteger3(row && row.id);
+      var id = positiveInteger(row && row.id);
       if (id && !found.has(id)) found.set(id, row);
     });
     return found;
@@ -2232,7 +1678,7 @@
   function propertyIndex(properties) {
     var index = /* @__PURE__ */ new Map();
     (properties || []).forEach(function(property) {
-      var backendId = positiveInteger3(property && property.backendId);
+      var backendId = positiveInteger(property && property.backendId);
       if (backendId && !index.has(backendId)) index.set(backendId, property);
     });
     return index;
@@ -2280,7 +1726,7 @@
     });
   }
   function agreementStage(stage, label, tone) {
-    return Object.freeze({ stage, label, tone });
+    return /* @__PURE__ */ Object.freeze({ stage, label, tone });
   }
   function listRows(payload) {
     if (Array.isArray(payload)) return payload;
@@ -2297,37 +1743,37 @@
   function idList(value) {
     var parts = Array.isArray(value) ? value : typeof value === "string" ? value.split(",") : value == null ? [] : [value];
     var ids = [];
-    parts.forEach(function(part2) {
-      var id = positiveInteger3(part2 && typeof part2 === "object" ? part2.id : part2);
+    parts.forEach(function(part) {
+      var id = positiveInteger(part && typeof part === "object" ? part.id : part);
       if (id && ids.indexOf(id) === -1) ids.push(id);
     });
     return ids;
   }
-  function localizedName2(value) {
+  function localizedName(value) {
     if (!value || typeof value !== "object") return "";
-    var localized2 = value.en || value["en-US"] || Object.values(value)[0] || {};
-    var name = localized2 && (localized2.NAME || localized2.name);
+    var localized = value.en || value["en-US"] || Object.values(value)[0] || {};
+    var name = localized && (localized.NAME || localized.name);
     return typeof name === "string" ? name.trim() : "";
   }
   function currencyCode(currency) {
-    var code = text3(currency && currency.code);
+    var code = text(currency && currency.code);
     return /^[A-Z]{3}$/.test(code) ? code : "";
   }
   function orderTotal(amount, currency) {
-    var value = finiteNumber3(amount);
+    var value = finiteNumber2(amount);
     var code = currencyCode(currency);
     return value !== null && value > 0 && code ? { amount: value, currency: code } : null;
   }
   function formatQuantity(value) {
-    var number = finiteNumber3(value);
+    var number = finiteNumber2(value);
     return number === null ? "" : new Intl.NumberFormat("en-US", { maximumFractionDigits: 6 }).format(number);
   }
-  function finiteNumber3(value) {
+  function finiteNumber2(value) {
     var number = typeof value === "number" ? value : typeof value === "string" && value.trim() !== "" ? Number(value) : Number.NaN;
     return Number.isFinite(number) ? number : null;
   }
   function isoDate(value) {
-    var match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(text3(value));
+    var match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(text(value));
     if (!match) return null;
     var year = Number(match[1]);
     var month = Number(match[2]);
@@ -2557,439 +2003,6 @@
       return Object.assign({}, product, { code: product.sku || product.id });
     });
   }
-  function spaSellInfo(code) {
-    if (state.config.dataMode === "live") {
-      var product = productItems().find(function(item) {
-        return item.code === code;
-      });
-      if (!product) return { state: "unavailable" };
-      var sellability = product.sellability === "sellable" || product.sellability === "out-of-stock" ? product.sellability : "unknown";
-      return {
-        state: sellability,
-        backendPriceId: product.backendPriceId || null,
-        backendProductId: product.backendProductId || null,
-        displayPrice: product.price
-      };
-    }
-    var fixtureRetail = F.spaCommerce.retail.products.find(function(item) {
-      return item.code === code;
-    });
-    if (fixtureRetail) return fixtureRetail;
-    var fixtureProduct = productItems().find(function(item) {
-      return item.code === code;
-    });
-    return fixtureProduct ? { state: "sellable", cents: Math.round(Number(fixtureProduct.priceNum || 0) * 100), displayPrice: fixtureProduct.price } : { state: "unavailable" };
-  }
-  function spaProductRef(code) {
-    var product = productItems().find(function(item) {
-      return item.code === code;
-    });
-    if (product && product.ref) return product.ref;
-    var catalog = SPA_PRODUCT_CATALOG;
-    return catalog && catalog.codeToRef && catalog.codeToRef[code] || opaqueRef3("product", code);
-  }
-  function spaModelsReady() {
-    if (state.config.dataMode !== "live") return state.spaModels === "ready";
-    return !!(state.moduleData.products && state.moduleData.products.enrichment && state.moduleData.products.enrichment.models === "ready");
-  }
-  function spaReviewsState() {
-    if (state.config.dataMode !== "live") return state.spaReviews;
-    var enrichment = state.moduleData.products && state.moduleData.products.enrichment;
-    var value = enrichment && enrichment.reviews;
-    return value === "ready" ? "ready" : value === "error" ? "error" : "unavailable";
-  }
-  function spaProductModels() {
-    if (state.config.dataMode !== "live") {
-      var available = new Set(productItems().map(function(product) {
-        return product.code;
-      }));
-      return SPA_PRODUCT_CATALOG.models.map(function(model) {
-        return Object.assign({}, model, { productCodes: model.productCodes.filter(function(code) {
-          return available.has(code);
-        }) });
-      }).filter(function(model) {
-        return model.productCodes.length;
-      });
-    }
-    return (state.moduleData.products && state.moduleData.products.models || []).map(function(model) {
-      return {
-        ref: model.ref,
-        name: model.name,
-        media: model.media || null,
-        variants: (model.variantAttributes || []).map(displayAttributeLabel),
-        productCodes: model.productCodes || []
-      };
-    });
-  }
-  function productDetailByCode(code) {
-    if (state.config.dataMode !== "live") {
-      var fixtureCatalog = SPA_PRODUCT_CATALOG;
-      var fixtureProduct = productItems().find(function(item) {
-        return item.code === code;
-      });
-      var fixtureDetail = fixtureCatalog && fixtureCatalog.byRef[fixtureCatalog.codeToRef[code]];
-      if (fixtureDetail) return fixtureDetail;
-      return fixtureProduct ? {
-        ref: opaqueRef3("product", code),
-        code,
-        name: fixtureProduct.name,
-        displayPrice: fixtureProduct.price,
-        description: fixtureProduct.description || fixtureProduct.blurb || "",
-        collection: null,
-        displayTag: fixtureProduct.displayTag || fixtureProduct.tag || "",
-        variantFacts: [],
-        media: []
-      } : null;
-    }
-    var product = productItems().find(function(item) {
-      return item.code === code;
-    });
-    if (!product) return null;
-    var model = spaProductModels().find(function(item) {
-      return item.ref === product.modelRef;
-    });
-    return {
-      ref: product.ref,
-      code: product.code,
-      name: product.name,
-      displayPrice: product.price,
-      description: product.description || "",
-      collection: model ? { ref: model.ref, name: model.name } : null,
-      displayTag: product.displayTag || "",
-      variantFacts: product.variantFacts || [],
-      media: product.media || []
-    };
-  }
-  function currentProduct() {
-    if (!state.spaCurrentProduct) return null;
-    if (state.config.dataMode !== "live") {
-      var fixtureDetail = SPA_PRODUCT_CATALOG.byRef[state.spaCurrentProduct];
-      if (fixtureDetail) return fixtureDetail;
-      var fixtureProduct = productItems().find(function(item) {
-        return opaqueRef3("product", item.code) === state.spaCurrentProduct;
-      });
-      return fixtureProduct ? productDetailByCode(fixtureProduct.code) : null;
-    }
-    var product = productItems().find(function(item) {
-      return item.ref === state.spaCurrentProduct;
-    });
-    return product ? productDetailByCode(product.code) : null;
-  }
-  function productReviews(productRef) {
-    if (state.config.dataMode !== "live") {
-      return SPA_PRODUCT_CATALOG.reviews[productRef] || [];
-    }
-    var product = productItems().find(function(item) {
-      return item.ref === productRef;
-    });
-    if (!product) return [];
-    return (state.moduleData.products && state.moduleData.products.reviews || []).filter(function(review) {
-      return review.productCode === product.code;
-    });
-  }
-  function displayAttributeLabel(value) {
-    return String(value || "").toLowerCase().split("_").map(function(part2) {
-      return part2 ? part2.charAt(0).toUpperCase() + part2.slice(1) : "";
-    }).join(" ");
-  }
-  function opaqueRef3(prefix, value) {
-    var text16 = String(value || prefix);
-    var left = 2166136261;
-    var right = 2246822507;
-    for (var index = 0; index < text16.length; index += 1) {
-      var code = text16.charCodeAt(index);
-      left = Math.imul(left ^ code, 16777619);
-      right = Math.imul(right ^ code, 3266489909);
-    }
-    return prefix + "-" + (left >>> 0).toString(36) + (right >>> 0).toString(36);
-  }
-  function spaCatalogServices() {
-    if (state.config.dataMode !== "live") return F.spa.pim.services;
-    var source = state.moduleData.pricing && state.moduleData.pricing.rates || state.moduleData.services && state.moduleData.services.items || [];
-    return source.filter(function(item) {
-      return !item.productTypeCode || item.productTypeCode === "SPA_SERVICE";
-    }).map(function(item) {
-      var durationMinutes = positiveCatalogInteger(spaCatalogAttribute(item.attributes, "DURATION_MIN"));
-      if (!durationMinutes) {
-        var bookingOptions = normalizeLiveBookingOptions(item, { providers: [] });
-        var baseQuote = liveBookingQuote(bookingOptions, []);
-        durationMinutes = positiveCatalogInteger(baseQuote && baseQuote.durationMinutes);
-      }
-      return {
-        code: item.code,
-        name: item.name,
-        shortDescription: item.description || "Published spa service",
-        displayPrice: item.price,
-        interval: isOneTimeInterval(item.interval) ? "" : item.interval || "",
-        backendProductId: item.backendProductId || null,
-        durationMinutes,
-        attributes: item.attributes || {}
-      };
-    });
-  }
-  function liveBookingAvailability() {
-    var appointments = state.moduleData.appointments || {};
-    return appointments.availability || {
-      state: state.moduleStatus.appointments === "error" ? "error" : "loading",
-      providers: []
-    };
-  }
-  function liveBookingOptionsFor(serviceCode) {
-    var service = spaCatalogServices().find(function(item) {
-      return item.code === serviceCode;
-    });
-    return service ? normalizeLiveBookingOptions(service, liveBookingAvailability()) : emptyLiveBookingOptions();
-  }
-  function spaBookingModel(serviceCode, specialistRef) {
-    if (state.config.dataMode !== "live") return F.spaBooking;
-    var flow = state.spaFlow || {};
-    var selectedCode = serviceCode === void 0 ? flow.serviceCode : serviceCode;
-    var services = spaCatalogServices();
-    var options2 = liveBookingOptionsFor(selectedCode);
-    var quote = liveBookingQuote(options2, selectedCode === flow.serviceCode ? flow.addOns : []);
-    if (quote && quote.durationMinutes) services = services.map(function(service) {
-      return service.code === selectedCode ? Object.assign({}, service, { durationMinutes: quote.durationMinutes }) : service;
-    });
-    return deriveCoreBookingModel(liveBookingAvailability(), services, {
-      serviceCode: selectedCode,
-      specialistRef: specialistRef === void 0 ? flow.specialistRef : specialistRef
-    });
-  }
-  function spaBookingSlotState() {
-    return state.config.dataMode === "live" ? spaBookingModel().state : state.spaSlots;
-  }
-  function spaSelectedSlot() {
-    var flow = state.spaFlow;
-    if (!flow || !flow.slotRef) return null;
-    var days = spaBookingModel().days || [];
-    for (var index = 0; index < days.length; index += 1) {
-      var slot = (days[index].slots || []).find(function(item) {
-        return item.ref === flow.slotRef;
-      });
-      if (slot) return slot;
-    }
-    return null;
-  }
-  function spaBookingOpts() {
-    if (state.config.dataMode === "live") {
-      var live = liveBookingOptionsFor(state.spaFlow && state.spaFlow.serviceCode);
-      live.notes = Object.assign({}, live.notes, { value: state.spaNote });
-      return live;
-    }
-    var source = F.spaBookingOptions;
-    var scenario = source.scenarios[state.spaOptScenario] || source.scenarios["fixed-studio"];
-    var flow = state.spaFlow;
-    var capabilities = Object.assign({}, scenario.capabilities);
-    if (state.spaNoteCap === "disabled") capabilities.notes = false;
-    if (flow && flow.entry === "reschedule") capabilities.addOns = false;
-    var addOns = (scenario.addOns || []).map(function(addon) {
-      return Object.assign({}, addon);
-    });
-    var affected = flow && flow.addOns && flow.addOns.length ? flow.addOns[0] : null;
-    if (state.spaAddonSrc === "removed" && affected) addOns = addOns.filter(function(addon) {
-      return addon.ref !== affected;
-    });
-    if (state.spaAddonSrc === "repriced" && affected) addOns = addOns.map(function(addon) {
-      return addon.ref === affected ? Object.assign({}, addon, { displayPrice: "$22.00" }) : addon;
-    });
-    if (state.spaAddonSrc === "ineligible") addOns = addOns.map(function(addon) {
-      return Object.assign({}, addon, { allowedActions: [] });
-    });
-    return {
-      capabilities,
-      visitModes: scenario.visitModes || [],
-      locations: scenario.locations || [],
-      addOns,
-      notes: Object.assign({}, scenario.notes, { enabled: !!capabilities.notes, value: state.spaNote }),
-      selectionVersion: scenario.selectionVersion,
-      copy: source.sourceCopy
-    };
-  }
-  function spaVisitMode(options2) {
-    options2 = options2 || spaBookingOpts();
-    var flow = state.spaFlow;
-    var byCode = function(code) {
-      return options2.visitModes.find(function(mode) {
-        return mode.code === code;
-      }) || null;
-    };
-    if (flow && flow.visitMode) return byCode(flow.visitMode);
-    if (!options2.capabilities.visitMode || options2.visitModes.length === 1) return options2.visitModes[0] || null;
-    return null;
-  }
-  function spaEligibleLocations(options2) {
-    options2 = options2 || spaBookingOpts();
-    var mode = spaVisitMode(options2);
-    if (!mode) return [];
-    if (["loading", "error", "unavailable", "empty"].includes(state.spaLocSrc)) return [];
-    var list = options2.locations.filter(function(location) {
-      return location.visitModeCode === mode.code;
-    });
-    if (state.spaLocSrc === "no-address") list = list.filter(function(location) {
-      return location.kind !== "SAVED_PLACE";
-    });
-    return list;
-  }
-  function spaSelectedLocation(options2) {
-    options2 = options2 || spaBookingOpts();
-    var list = spaEligibleLocations(options2);
-    var flow = state.spaFlow;
-    if (flow && flow.locationRef && state.spaLocSrc !== "ineligible") {
-      var selected = list.find(function(location) {
-        return location.ref === flow.locationRef;
-      });
-      if (selected) return selected;
-    }
-    return list.length === 1 ? list[0] : null;
-  }
-  function spaSelectedAddOns(options2) {
-    options2 = options2 || spaBookingOpts();
-    var flow = state.spaFlow;
-    var selected = flow && flow.addOns || [];
-    return options2.addOns.filter(function(addon) {
-      return selected.indexOf(addon.ref) !== -1 || addon.required && addon.selected && !(addon.allowedActions || []).length;
-    });
-  }
-  function spaBookingQuote(options2) {
-    options2 = options2 || spaBookingOpts();
-    var flow = state.spaFlow;
-    if (!flow) return null;
-    if (state.config.dataMode === "live") {
-      var selected = spaSelectedAddOns(options2).map(function(addon) {
-        return addon.ref;
-      });
-      var liveQuote = liveBookingQuote(options2, selected);
-      if (liveQuote) return liveQuote;
-      if (selected.length) return null;
-      return {
-        version: options2.selectionVersion,
-        addOns: [],
-        displaySubtotal: null,
-        displayTotal: spaBookingModel().displayTotals[flow.serviceCode] || "",
-        durationMinutes: (spaCatalogServices().find(function(service) {
-          return service.code === flow.serviceCode;
-        }) || {}).durationMinutes || null
-      };
-    }
-    var refs = spaSelectedAddOns(options2).map(function(addon) {
-      return addon.ref;
-    });
-    var overrides = null;
-    if (state.spaAddonSrc === "repriced" && flow.addOns && flow.addOns.length) {
-      overrides = {};
-      overrides[flow.addOns[0]] = { cents: 2200, displayPrice: "$22.00" };
-    }
-    return F.spaBookingQuote(flow.serviceCode, refs, state.spaOptScenario, overrides);
-  }
-  function spaAddonChange(options2) {
-    options2 = options2 || spaBookingOpts();
-    if (!options2.capabilities.addOns) return null;
-    if (state.spaAddonSrc === "removed") return { kind: "removed", copy: options2.copy.addOnRemoved };
-    if (state.spaAddonSrc === "repriced") return { kind: "repriced", copy: options2.copy.addOnRepriced };
-    return null;
-  }
-  function spaNoteState(options2) {
-    options2 = options2 || spaBookingOpts();
-    var max = options2.notes.maxLength || 0;
-    var value = state.spaNote || "";
-    return {
-      enabled: !!options2.notes.enabled,
-      value,
-      max,
-      len: value.length,
-      remaining: max - value.length,
-      near: max > 0 && value.length >= max - 30 && value.length <= max,
-      invalid: max > 0 && value.length > max,
-      helperText: options2.notes.helperText,
-      errorCopy: (options2.copy.noteTooLong || "").replace("{max}", String(max))
-    };
-  }
-  function spaOptionsStepOn(options2) {
-    options2 = options2 || spaBookingOpts();
-    var capabilities = options2.capabilities;
-    if (capabilities.visitMode && options2.visitModes.length > 1) return true;
-    if (capabilities.location) {
-      if (state.spaLocSrc !== "ready") return true;
-      if (spaEligibleLocations(options2).length > 1) return true;
-    }
-    if (capabilities.addOns) {
-      if (state.spaAddonSrc !== "ready") return true;
-      if (options2.addOns.length) return true;
-    }
-    return false;
-  }
-  function spaOptionsComplete(options2) {
-    options2 = options2 || spaBookingOpts();
-    var capabilities = options2.capabilities;
-    var flow = state.spaFlow;
-    if (!flow) return false;
-    if (capabilities.visitMode && options2.visitModes.length > 1 && !flow.visitMode) return false;
-    var mode = spaVisitMode(options2);
-    if (capabilities.location && mode && mode.locationRequired) {
-      if (state.spaLocSrc === "unavailable") return true;
-      if (state.spaLocSrc !== "ready" || !spaSelectedLocation(options2)) return false;
-    }
-    if (capabilities.addOns && state.spaAddonSrc === "ready") {
-      var unmet = options2.addOns.filter(function(addon) {
-        return addon.required && (addon.allowedActions || []).indexOf("toggle") !== -1 && (flow.addOns || []).indexOf(addon.ref) === -1;
-      });
-      if (unmet.length) return false;
-      if (!spaBookingQuote(options2)) return false;
-    }
-    return true;
-  }
-  function spaFlowSteps(flow) {
-    flow = flow || state.spaFlow;
-    if (!flow) return [];
-    var steps = [];
-    if (flow.entry !== "reschedule") steps.push({ k: "context", l: "Service" });
-    if (spaOptionsStepOn()) steps.push({ k: "options", l: "Options" });
-    if (flow.entry !== "reschedule" && (spaBookingModel().eligibleSpecialists[flow.serviceCode] || []).length) steps.push({ k: "specialist", l: "Specialist" });
-    steps.push({ k: "slots", l: flow.entry === "reschedule" ? "New time" : "Time" });
-    steps.push({ k: "review", l: "Review" });
-    return steps;
-  }
-  function spaCatalogAttribute(attributes, code) {
-    if (!attributes || typeof attributes !== "object") return null;
-    for (var group of Object.values(attributes)) {
-      var entry = group && group[code];
-      if (entry && Object.prototype.hasOwnProperty.call(entry, "value")) return entry.value;
-    }
-    return null;
-  }
-  function positiveCatalogInteger(value) {
-    var number = Number(value);
-    return Number.isInteger(number) && number > 0 ? number : null;
-  }
-  function isOneTimeInterval(value) {
-    return String(value || "").trim().toLowerCase() === "one time";
-  }
-  function spaPlanOffers() {
-    if (state.config.dataMode !== "live") return F.spaCommerce.planOffers;
-    var source = state.moduleData.pricing && state.moduleData.pricing.rates || [];
-    return source.filter(function(item) {
-      return item.productTypeCode === "SPA_MEMBERSHIP" || item.productTypeCode === "SPA_PACKAGE";
-    }).map(function(item) {
-      var kind = item.productTypeCode === "SPA_MEMBERSHIP" ? "MEMBERSHIP" : "PACKAGE";
-      return {
-        ref: "offer-" + item.code,
-        productCode: item.code,
-        // Carried so confirming an offer can create a typed order line without a
-        // second catalog lookup, exactly as a cart line does.
-        backendPriceId: item.backendPriceId || null,
-        backendProductId: item.backendProductId || null,
-        productTypeCode: item.productTypeCode,
-        kind,
-        title: item.name,
-        displayPrice: item.price + (item.interval && !isOneTimeInterval(item.interval) ? " / " + item.interval : ""),
-        amount: Number(item.priceNum) || 0,
-        termsSummary: item.description || "Published catalog offer",
-        benefits: [],
-        sellability: "sellable",
-        allowedActions: ["purchase"]
-      };
-    });
-  }
   function currentOverview() {
     var fixture = currentFixture();
     var overview = fixture && fixture.overview || null;
@@ -3154,117 +2167,6 @@
   function spaCapability() {
     return state.capability === "target-appointments" ? "target-appointments" : "current-staging";
   }
-  function spaBookingOpen() {
-    if (!isSpa() || spaCapability() !== "target-appointments" || state.spaBooking !== "open") return false;
-    if (state.config.dataMode !== "live") return true;
-    var booking = spaBookingModel();
-    return (booking.state === "ready" || booking.state === "empty") && booking.eligibleServices.length > 0;
-  }
-  function spaCurrentApiDemoOpen() {
-    return isSpa() && state.config.dataMode === "live" && state.config.demoCommands === "current-api";
-  }
-  function spaAppointments() {
-    if (state.config.dataMode === "live") {
-      return state.moduleData.appointments || { state: state.moduleStatus.appointments || "loading", items: [], next: null, upcoming: [], past: [], byRef: {} };
-    }
-    var sc = state.spaAppt;
-    var next = sc === "empty" || sc === "no-history" ? null : F.spa.appointments.nextVariants[sc] || F.spa.appointments.nextVariants.salon;
-    return {
-      state: next || F.spa.appointments.past.length ? "ready" : "empty",
-      next,
-      upcoming: F.spa.appointments.upcoming,
-      past: sc === "no-history" ? [] : F.spa.appointments.past,
-      byRef: F.spaCommerce.appointmentDetails
-    };
-  }
-  function spaCustomer() {
-    if (state.spaLongName) return F.spa.longCustomer;
-    var fixtureCustomer = currentFixture().customer || F.customer;
-    var displayName = state.sessionName || fixtureCustomer.fullName || fixtureCustomer.name || "Customer";
-    var first = fixtureCustomer.firstName || displayName.split(/\s+/, 1)[0] || "Customer";
-    return { first, greeting: fixtureCustomer.greeting || "Welcome back, " + first, fullName: displayName };
-  }
-  function spaRetailOpen() {
-    return isSpa() && spaCapability() === "target-appointments" && state.spaRetail === "retail-commerce-open";
-  }
-  function spaPlanSellOpen() {
-    return isSpa() && spaCapability() === "target-appointments" && state.spaPlanCommerce === "open";
-  }
-  function currentAppointment() {
-    if (state.config.dataMode === "live") {
-      var live = state.moduleData.appointments && state.moduleData.appointments.byRef || {};
-      return state.spaCurrentAppointment ? live[state.spaCurrentAppointment] || null : null;
-    }
-    var appointment = state.spaCurrentAppointment ? F.spaCommerce.appointmentDetails[state.spaCurrentAppointment] || null : null;
-    if (!appointment) return null;
-    var rescheduled = state.spaRescheduled[appointment.ref];
-    if (!rescheduled) return appointment;
-    return Object.assign({}, appointment, {
-      start: rescheduled.start,
-      customerStatus: "Confirmed",
-      attention: "Rescheduled \u2014 confirmed by the studio. The previous time was released."
-    });
-  }
-  function spaProfileValues() {
-    if (state.config.dataMode === "live") {
-      var live = state.moduleData.profile || {};
-      return {
-        phone: live.phone == null ? null : live.phone,
-        email: live.email || "",
-        prefs: live.prefs || {},
-        allowedActions: live.allowedActions || [],
-        unavailableFields: live.unavailableFields || []
-      };
-    }
-    if (state.spaProfile) return state.spaProfile;
-    var prefs = {};
-    F.spaProfileSrv.preferences.forEach(function(preference) {
-      prefs[preference.key] = preference.value;
-    });
-    return { phone: F.spaProfileSrv.phone, email: F.spaProfileSrv.email, prefs };
-  }
-  function spaCartEnvelope() {
-    if (state.config.dataMode === "live") return state.moduleData.cart || null;
-    return state.spaCart;
-  }
-  function spaCartLines() {
-    var envelope2 = spaCartEnvelope();
-    return envelope2 && Array.isArray(envelope2.lines) && envelope2.lines || [];
-  }
-  function spaCartCount() {
-    if (state.config.dataMode === "live") {
-      var envelope2 = state.moduleData.cart;
-      var itemCount = envelope2 == null ? null : envelope2.itemCount;
-      return itemCount == null || !Number.isFinite(Number(itemCount)) ? 0 : Number(itemCount);
-    }
-    return spaCartLines().reduce(function(count, line) {
-      return count + line.qty;
-    }, 0);
-  }
-  function currentPurchase() {
-    if (state.config.dataMode === "live") {
-      var live = state.moduleData.orders && state.moduleData.orders.byRef || {};
-      return state.spaCurrentPurchase ? live[state.spaCurrentPurchase] || null : null;
-    }
-    return state.spaCurrentPurchase ? F.spaCommerce.purchaseDetails[state.spaCurrentPurchase] || null : null;
-  }
-  function spaPlans() {
-    if (state.config.dataMode === "live") {
-      var envelope2 = state.moduleData.plan;
-      var items = envelope2 && Array.isArray(envelope2.items) ? envelope2.items : [];
-      return items;
-    }
-    var refs = F.spaCommerce.plans.scenarios[state.spaPlanScenario] || [];
-    return refs.map(function(ref) {
-      var plan = F.spaCommerce.plans.byRef[ref];
-      if (!state.spaPlanCancelled[ref]) return plan;
-      return Object.assign({}, plan, {
-        status: "Cancelled",
-        note: "Renewal cancelled \u2014 your benefits continue to the end of the paid period.",
-        allowedActions: []
-      });
-    });
-  }
   function routeLabel(routeId) {
     var nav = activeProfile().nav.find(function(item) {
       return item.key === routeId;
@@ -3288,14 +2190,6 @@
   }
   function cmdPhase(key) {
     return state.commands[key] || "idle";
-  }
-  function currentContact() {
-    if (state.config.dataMode === "live") {
-      var profile = state.moduleData.profile || {};
-      return state.contact || { phone: profile.phone || "", email: profile.email || "" };
-    }
-    var customer = currentFixture().customer || F.customer;
-    return state.contact || { phone: customer.phone || "", email: customer.email || "" };
   }
   function isPublic(routeId) {
     var route = routeRegistry[routeId || state.route];
@@ -3490,11 +2384,11 @@
   }
 
   // app-templates/customer-portal/runtime/src/contract-commands.js
-  var CONTRACT_EVENTS = Object.freeze({
-    view: Object.freeze({ entity: "order", source: "QUOTE_SENT", code: "QUOTE_SENT-QUOTE_VIEWED" }),
-    approve: Object.freeze({ entity: "order", source: "QUOTE_VIEWED", code: "QUOTE_VIEWED-CLIENT_APPROVED" }),
-    decline: Object.freeze({ entity: "order", source: "QUOTE_VIEWED", code: "QUOTE_VIEWED-DECLINED" }),
-    agreement: Object.freeze({ entity: "document", source: "SENT_TO_CLIENT", code: "SENT_TO_CLIENT-CLIENT_APPROVED" })
+  var CONTRACT_EVENTS = /* @__PURE__ */ Object.freeze({
+    view: /* @__PURE__ */ Object.freeze({ entity: "order", source: "QUOTE_SENT", code: "QUOTE_SENT-QUOTE_VIEWED" }),
+    approve: /* @__PURE__ */ Object.freeze({ entity: "order", source: "QUOTE_VIEWED", code: "QUOTE_VIEWED-CLIENT_APPROVED" }),
+    decline: /* @__PURE__ */ Object.freeze({ entity: "order", source: "QUOTE_VIEWED", code: "QUOTE_VIEWED-DECLINED" }),
+    agreement: /* @__PURE__ */ Object.freeze({ entity: "document", source: "SENT_TO_CLIENT", code: "SENT_TO_CLIENT-CLIENT_APPROVED" })
   });
   var CONFIRMED_TOAST = {
     approve: "Option approved",
@@ -3724,7 +2618,7 @@
         var target = transition(fixtureRow(state2.porders, backendId), event);
         var orders = withState(state2.porders, [backendId], target);
         var packages = state2.pagreements.filter(function(agreement) {
-          return listedOrderIds(agreement).indexOf(positiveInteger3(backendId)) !== -1;
+          return listedOrderIds(agreement).indexOf(positiveInteger(backendId)) !== -1;
         });
         if (target === "CLIENT_APPROVED") orders = withState(orders, siblingsOf(orders, packages, backendId), "DECLINED");
         state2.porders = orders;
@@ -3754,7 +2648,7 @@
     };
   }
   function fixtureRow(rows2, backendId) {
-    var id = positiveInteger3(backendId);
+    var id = positiveInteger(backendId);
     var row = (rows2 || []).find(function(candidate) {
       return candidate.id === id;
     });
@@ -3778,7 +2672,7 @@
       listed = listed.concat(listedOrderIds(agreement));
     });
     return orders.filter(function(row) {
-      return row.id !== positiveInteger3(backendId) && listed.indexOf(row.id) !== -1 && attributeNumber(row, "SERVICE_PROPERTY") === property && ["QUOTE_SENT", "QUOTE_VIEWED"].indexOf(latestStateCode(row)) !== -1;
+      return row.id !== positiveInteger(backendId) && listed.indexOf(row.id) !== -1 && attributeNumber(row, "SERVICE_PROPERTY") === property && ["QUOTE_SENT", "QUOTE_VIEWED"].indexOf(latestStateCode(row)) !== -1;
     }).map(function(row) {
       return row.id;
     });
@@ -3795,7 +2689,7 @@
         var key = String(attributeNumber(row, "SERVICE_PROPERTY") || 0);
         (byProperty[key] = byProperty[key] || []).push(latestStateCode(row));
       });
-      var keys = Object.keys(byProperty);
+      var keys = /* @__PURE__ */ Object.keys(byProperty);
       return keys.length > 0 && keys.every(function(key) {
         return byProperty[key].indexOf("CLIENT_APPROVED") !== -1 || byProperty[key].every(function(code) {
           return code === "DECLINED";
@@ -3817,11 +2711,11 @@
   function listedOrderIds(agreement) {
     var buckets = agreement && agreement.attributes || {};
     var ids = [];
-    Object.keys(buckets).forEach(function(key) {
+    (/* @__PURE__ */ Object.keys(buckets)).forEach(function(key) {
       var entry = buckets[key] && buckets[key].ORDERS;
       var value = entry ? entry.value : null;
       (Array.isArray(value) ? value : []).forEach(function(id) {
-        var parsed2 = positiveInteger3(id);
+        var parsed2 = positiveInteger(id);
         if (parsed2 && ids.indexOf(parsed2) === -1) ids.push(parsed2);
       });
     });
@@ -3838,12 +2732,12 @@
 
   // app-templates/customer-portal/runtime/src/normalizers/visits.js
   var VISIT_TYPE = "SNOW_SERVICE_VISIT";
-  var VISIT_STATUS = Object.freeze({
-    SCHEDULED: Object.freeze({ label: "Scheduled", tone: "info", phase: "upcoming" }),
-    IN_PROGRESS: Object.freeze({ label: "In progress", tone: "progress", phase: "upcoming" }),
-    COMPLETED: Object.freeze({ label: "Completed", tone: "ok", phase: "past" })
+  var VISIT_STATUS = /* @__PURE__ */ Object.freeze({
+    SCHEDULED: /* @__PURE__ */ Object.freeze({ label: "Scheduled", tone: "info", phase: "upcoming" }),
+    IN_PROGRESS: /* @__PURE__ */ Object.freeze({ label: "In progress", tone: "progress", phase: "upcoming" }),
+    COMPLETED: /* @__PURE__ */ Object.freeze({ label: "Completed", tone: "ok", phase: "past" })
   });
-  var PROGRESS_STEPS = Object.freeze({
+  var PROGRESS_STEPS = /* @__PURE__ */ Object.freeze({
     SCHEDULED: "Scheduled",
     IN_PROGRESS: "Started",
     COMPLETED: "Completed"
@@ -3908,7 +2802,7 @@
   }
   function normalizeVisitProgress(rows2) {
     return (Array.isArray(rows2) ? rows2 : []).map(function(row) {
-      var code = text3(row && row.state && row.state.code);
+      var code = text(row && row.state && row.state.code);
       var ms = epochMs(row && row.observed);
       if (!Object.prototype.hasOwnProperty.call(PROGRESS_STEPS, code) || ms === null) return null;
       return { code, label: PROGRESS_STEPS[code], ms };
@@ -3917,7 +2811,7 @@
     });
   }
   function progressWhen(step, visit, timeZone) {
-    var at = zonedParts2(step.ms, timeZone);
+    var at = zonedParts(step.ms, timeZone);
     var day = MONTHS2[at.month - 1] + " " + at.day;
     var start = visit && visit.start;
     if (start && at.year !== start.year) day += ", " + at.year;
@@ -3926,16 +2820,16 @@
     return start && at.date === start.date ? time : day + ", " + time;
   }
   function localDateKey(date, timeZone) {
-    return zonedParts2((date instanceof Date ? date : /* @__PURE__ */ new Date()).getTime(), timeZone).date;
+    return zonedParts((date instanceof Date ? date : /* @__PURE__ */ new Date()).getTime(), timeZone).date;
   }
   function visitImageUrl(coreBase, id) {
     return MEDIA_ID.test(id) ? String(coreBase || "/core").replace(/\/+$/, "") + "/image/" + id + "/get" : "";
   }
   function visitRecord(row) {
-    var backendId = positiveInteger3(row && row.id);
+    var backendId = positiveInteger(row && row.id);
     var stateCode = latestStateCode(row);
     var status = Object.prototype.hasOwnProperty.call(VISIT_STATUS, stateCode) ? VISIT_STATUS[stateCode] : null;
-    if (!backendId || !status || text3(row.type && row.type.code) !== VISIT_TYPE) return null;
+    if (!backendId || !status || text(row.type && row.type.code) !== VISIT_TYPE) return null;
     var start = wallClock(row.start);
     if (!start) return null;
     return {
@@ -3952,16 +2846,16 @@
       after: mediaIds(row, "POST_SERVICE_MEDIA")
     };
   }
-  function zonedParts2(ms, timeZone) {
+  function zonedParts(ms, timeZone) {
     var at = new Date(ms);
     var parts = { year: at.getFullYear(), month: at.getMonth() + 1, day: at.getDate(), hour: at.getHours(), minute: at.getMinutes() };
     if (timeZone) {
-      new Intl.DateTimeFormat("en-US", { timeZone, hourCycle: "h23", year: "numeric", month: "numeric", day: "numeric", hour: "numeric", minute: "numeric" }).formatToParts(at).forEach(function(part2) {
-        if (Object.prototype.hasOwnProperty.call(parts, part2.type)) parts[part2.type] = Number(part2.value);
+      new Intl.DateTimeFormat("en-US", { timeZone, hourCycle: "h23", year: "numeric", month: "numeric", day: "numeric", hour: "numeric", minute: "numeric" }).formatToParts(at).forEach(function(part) {
+        if (Object.prototype.hasOwnProperty.call(parts, part.type)) parts[part.type] = Number(part.value);
       });
     }
     return {
-      date: parts.year + "-" + pad2(parts.month) + "-" + pad2(parts.day),
+      date: parts.year + "-" + pad(parts.month) + "-" + pad(parts.day),
       year: parts.year,
       month: parts.month,
       day: parts.day,
@@ -3981,7 +2875,7 @@
     var day = instant.getUTCDate();
     return {
       ms,
-      date: year + "-" + pad2(month) + "-" + pad2(day),
+      date: year + "-" + pad(month) + "-" + pad(day),
       year,
       month,
       day,
@@ -4001,8 +2895,8 @@
     }
     return (Array.isArray(value) ? value : []).map(function(item) {
       if (!item || typeof item !== "object") return "";
-      if (item.type != null && text3(item.type) !== "image") return "";
-      var id = text3(item.id).toLowerCase();
+      if (item.type != null && text(item.type) !== "image") return "";
+      var id = text(item.id).toLowerCase();
       return MEDIA_ID.test(id) ? id : "";
     }).filter(function(id, index, ids) {
       return !!id && ids.indexOf(id) === index;
@@ -4015,13 +2909,13 @@
   }
   function clock(minutes, withMeridiem) {
     var hour = Math.floor(minutes / 60);
-    var label = (hour % 12 || 12) + ":" + pad2(minutes % 60);
+    var label = (hour % 12 || 12) + ":" + pad(minutes % 60);
     return withMeridiem ? label + " " + meridiem(minutes) : label;
   }
   function meridiem(minutes) {
     return minutes < 720 ? "AM" : "PM";
   }
-  function pad2(value) {
+  function pad(value) {
     return value < 10 ? "0" + value : String(value);
   }
 
@@ -4155,14 +3049,14 @@
       ]
     }
   ];
-  var VISIT_LIST_BODY = Object.freeze({
+  var VISIT_LIST_BODY = /* @__PURE__ */ Object.freeze({
     filters: [{ operator: "=", property: "type.code", value: VISIT_TYPE }],
     mappings: VISIT_MAPPINGS,
     offset: 0,
     pageSize: VISIT_PAGE_SIZE,
     sorting: [{ field: "start", direction: "DESC" }]
   });
-  var VISIT_TRANSITIONS_BODY = Object.freeze({
+  var VISIT_TRANSITIONS_BODY = /* @__PURE__ */ Object.freeze({
     filters: [],
     mappings: [
       { name: "id" },
@@ -4173,7 +3067,7 @@
     pageSize: VISIT_TRANSITION_PAGE_SIZE,
     sorting: [{ field: "observed", direction: "ASC" }]
   });
-  var INVOICE_LIST_BODY = Object.freeze({
+  var INVOICE_LIST_BODY = /* @__PURE__ */ Object.freeze({
     mappings: INVOICE_MAPPINGS,
     offset: 0,
     pageSize: INVOICE_PAGE_SIZE,
@@ -4207,14 +3101,14 @@
       state: "ready",
       accountId: api.accountId,
       items: rows2.filter(function(row) {
-        return text3(row && row.type && row.type.code) === VISIT_TYPE;
+        return text(row && row.type && row.type.code) === VISIT_TYPE;
       }),
       truncated: resultSizeOf(reply, rows2.length) > rows2.length
     };
   }
   async function readVisitTransitions(context, backendId, fetchImpl = globalThis.fetch, explicitOrigin) {
     var api = readContext(context, explicitOrigin);
-    var id = positiveInteger3(backendId);
+    var id = positiveInteger(backendId);
     if (!id) throw contractError("invalid-target", "A visit id is required before reading its progress");
     var reply = await requestJson(fetchImpl, api.serviceBase + "/api/tagged/appointment/" + id + "/list-transitions.json", readOptions(api, VISIT_TRANSITIONS_BODY));
     return listResult(reply);
@@ -4318,15 +3212,15 @@
     var api = readContext(context, explicitOrigin);
     var id = commandId(backendId);
     var row = await requestJson(fetchImpl, api.billBase + "/api/tagged/order/get.json?id=" + id, readOptions(api, ORDER_TARGET_MAPPINGS));
-    if (!row || positiveInteger3(row.id) !== id) throw contractError("not-found", "Core did not return the Order");
-    if (positiveInteger3(row.account && row.account.id) !== api.accountId) throw contractError("customer-forbidden", "The Order does not belong to the signed-in customer");
+    if (!row || positiveInteger(row.id) !== id) throw contractError("not-found", "Core did not return the Order");
+    if (positiveInteger(row.account && row.account.id) !== api.accountId) throw contractError("customer-forbidden", "The Order does not belong to the signed-in customer");
     return row;
   }
   async function readCustomerAgreement(context, backendId, fetchImpl = globalThis.fetch, explicitOrigin) {
     var api = readContext(context, explicitOrigin);
     var id = commandId(backendId);
     var row = await requestJson(fetchImpl, api.coreBase + "/api/tagged/document/get.json?id=" + id, readOptions(api, AGREEMENT_TARGET_MAPPINGS));
-    if (!row || positiveInteger3(row.id) !== id || text3(row.type && row.type.code) !== AGREEMENT_TYPE) throw contractError("not-found", "Core did not return the service agreement");
+    if (!row || positiveInteger(row.id) !== id || text(row.type && row.type.code) !== AGREEMENT_TYPE) throw contractError("not-found", "Core did not return the service agreement");
     if (attributeNumber(row, "CLIENT") !== api.accountId) throw contractError("customer-forbidden", "The service agreement does not belong to the signed-in customer");
     return row;
   }
@@ -4338,9 +3232,9 @@
       pageSize: 2
     }));
     var type = listResult(types).find(function(row) {
-      return text3(row && row.code) === AGREEMENT_TYPE;
+      return text(row && row.code) === AGREEMENT_TYPE;
     });
-    var typeId = positiveInteger3(type && type.id);
+    var typeId = positiveInteger(type && type.id);
     if (!typeId) throw contractError("agreement-type-unavailable", "Core did not return the service agreement type");
     var reply = await requestJson(fetchImpl, api.coreBase + "/api/tagged/document/list.json", readOptions(api, {
       filters: [
@@ -4352,7 +3246,7 @@
       pageSize: AGREEMENT_PAGE_SIZE
     }));
     return scopedRows(reply, function(row) {
-      return text3(row && row.type && row.type.code) === AGREEMENT_TYPE && attributeNumber(row, "CLIENT") === api.accountId;
+      return text(row && row.type && row.type.code) === AGREEMENT_TYPE && attributeNumber(row, "CLIENT") === api.accountId;
     });
   }
   async function customerOrders(api, fetchImpl) {
@@ -4363,7 +3257,7 @@
       pageSize: ORDER_PAGE_SIZE
     }));
     return scopedRows(reply, function(row) {
-      return positiveInteger3(row && row.account && row.account.id) === api.accountId;
+      return positiveInteger(row && row.account && row.account.id) === api.accountId;
     });
   }
   async function customerOrderItems(api, fetchImpl, orderIds) {
@@ -4377,7 +3271,7 @@
       pageSize: LINE_PAGE_SIZE
     }));
     return scopedRows(reply, function(row) {
-      return orderIds.indexOf(positiveInteger3(row && row.order && row.order.id)) !== -1;
+      return orderIds.indexOf(positiveInteger(row && row.order && row.order.id)) !== -1;
     });
   }
   async function catalogRows(fetchImpl, api, url, ids, mappings) {
@@ -4388,7 +3282,7 @@
       pageSize: CATALOG_PAGE_SIZE
     }));
     var rows2 = listResult(reply).filter(function(row) {
-      return ids.indexOf(positiveInteger3(row && row.id)) !== -1;
+      return ids.indexOf(positiveInteger(row && row.id)) !== -1;
     });
     return { rows: rows2, scopeMode: "unscoped", truncated: resultSizeOf(reply, rows2.length) > rows2.length };
   }
@@ -4404,8 +3298,8 @@
   function customerVisibleOrderIds(rows2) {
     var ids = [];
     (rows2 || []).forEach(function(row) {
-      var id = positiveInteger3(row && row.id);
-      if (!id || QUOTE_ORDER_TYPES.indexOf(text3(row.type && row.type.code)) === -1) return;
+      var id = positiveInteger(row && row.id);
+      if (!id || QUOTE_ORDER_TYPES.indexOf(text(row.type && row.type.code)) === -1) return;
       if (!Object.prototype.hasOwnProperty.call(CUSTOMER_ORDER_STATUS, latestStateCode(row))) return;
       if (ids.indexOf(id) === -1) ids.push(id);
     });
@@ -4414,7 +3308,7 @@
   function referencedIds(rows2, field2) {
     var ids = [];
     (rows2 || []).forEach(function(row) {
-      var id = positiveInteger3(row && row[field2] && row[field2].id);
+      var id = positiveInteger(row && row[field2] && row[field2].id);
       if (id && ids.indexOf(id) === -1) ids.push(id);
     });
     return ids;
@@ -4464,12 +3358,12 @@
     return true;
   }
   function commandId(backendId) {
-    var id = positiveInteger3(backendId);
+    var id = positiveInteger(backendId);
     if (!id) throw contractError("invalid-target", "A Core id is required before sending an event");
     return id;
   }
   function eventCode(event) {
-    var code = text3(event);
+    var code = text(event);
     if (!/^[A-Z][A-Z_]*-[A-Z][A-Z_]*$/.test(code)) throw contractError("invalid-event", "A workflow event code is required");
     return encodeURIComponent(code);
   }
@@ -4504,12 +3398,12 @@
     if (!ids.length) return resolved;
     if (!api.userId) throw contractError("session-user-required", "The signed-in Core User is required before reading property addresses");
     var account = await requestJson(fetchImpl, api.accountBase + "/api/tagged/account/get.json?id=" + api.accountId, readOptions(api, ACCOUNT_ADDRESS_MAPPINGS));
-    if (positiveInteger3(account && account.id) !== api.accountId || positiveInteger3(account && account.user && account.user.id) !== api.userId) {
+    if (positiveInteger(account && account.id) !== api.accountId || positiveInteger(account && account.user && account.user.id) !== api.userId) {
       throw contractError("customer-forbidden", "Property addresses must belong to the signed-in customer's Account");
     }
     (Array.isArray(account.addresses) ? account.addresses : []).forEach(function(link) {
       var address = link && link.address;
-      var id = positiveInteger3(address && address.id);
+      var id = positiveInteger(address && address.id);
       if (id && ids.indexOf(id) !== -1) resolved[String(id)] = address;
     });
     return resolved;
@@ -4518,13 +3412,13 @@
     var address = addresses[String(attributeNumber(row, "ADDRESS"))] || null;
     return {
       id: "prop-core-" + row.id,
-      backendId: positiveInteger3(row.id),
-      name: localizedName3(row.nls) || text3(row.code) || "Property",
+      backendId: positiveInteger(row.id),
+      name: localizedName2(row.nls) || text(row.code) || "Property",
       address: formatPostalAddress(address),
-      city: address ? text3(address.city) : "",
-      postal: address ? text3(address.postalCode) : "",
-      region: address && address.state ? text3(address.state.code) : "",
-      country: address && address.country ? text3(address.country.id || address.country.code) : "",
+      city: address ? text(address.city) : "",
+      postal: address ? text(address.postalCode) : "",
+      region: address && address.state ? text(address.state.code) : "",
+      country: address && address.country ? text(address.country.id || address.country.code) : "",
       category: attributeText(row, "PROPERTY_CATEGORY") || null,
       stateCode: latestStateCode(row) || null,
       lat: attributeCoordinate(row, "COORD_LAT", 90),
@@ -4556,7 +3450,7 @@
       }
     }
     var ids = (Array.isArray(value) ? value : value == null ? [] : [value]).map(function(item) {
-      var id = text3(item && typeof item === "object" ? item.id : item).toLowerCase();
+      var id = text(item && typeof item === "object" ? item.id : item).toLowerCase();
       return MEDIA_ID2.test(id) ? id : "";
     });
     return ids.length === 1 ? ids[0] : "";
@@ -4571,26 +3465,26 @@
     var config = context && context.config || {};
     var runtimeState = context && context.state || {};
     var session2 = runtimeState.session || {};
-    var accessToken = text3(session2.accessToken || session2.access_token);
+    var accessToken = text(session2.accessToken || session2.access_token);
     if (!accessToken) throw contractError("session-required", "A Core access token is required");
     var account = runtimeState.customerAccount || session2.account || null;
-    var accountId = positiveInteger3(account && account.id);
+    var accountId = positiveInteger(account && account.id);
     if (!accountId) throw contractError("customer-unresolved", "A resolved customer Account is required before reading snow records");
-    var organization = text3(config.organization);
+    var organization = text(config.organization);
     if (!organization) throw contractError("organization-required", "A portal organization code is required");
     var origin = explicitOrigin || config.origin || browserOrigin();
     return {
       accountBase: sameOriginBase(config.accountApiBase || "/core-acct", origin, "Core Account API base"),
       accountId,
-      accountName: text3(account && typeof account.displayName === "string" ? account.displayName : ""),
-      authorization: text3(session2.tokenType || session2.token_type || "Bearer") + " " + accessToken,
+      accountName: text(account && typeof account.displayName === "string" ? account.displayName : ""),
+      authorization: text(session2.tokenType || session2.token_type || "Bearer") + " " + accessToken,
       billBase: sameOriginBase(config.billApiBase || "/core-bill", origin, "Core Bill API base"),
       coreBase: sameOriginBase(config.coreApiBase || "/core", origin, "Core API base"),
       organization,
       pimBase: sameOriginBase(PIM_SERVICE_BASE, origin, "Core PIM API base"),
       resourceBase: sameOriginBase(config.resourceApiBase || "/core-rm", origin, "Core Resource API base"),
       serviceBase: sameOriginBase(config.serviceApiBase || "/core-svc", origin, "Core Service API base"),
-      userId: positiveInteger3(session2.userId)
+      userId: positiveInteger(session2.userId)
     };
   }
   function readOptions(api, body) {
@@ -4628,10 +3522,10 @@
   function browserOrigin() {
     return globalThis.location && globalThis.location.origin || "";
   }
-  function localizedName3(value) {
+  function localizedName2(value) {
     if (!value || typeof value !== "object") return "";
-    var localized2 = value.en || value["en-US"] || Object.values(value)[0] || {};
-    return text3(localized2 && (localized2.NAME || localized2.name));
+    var localized = value.en || value["en-US"] || Object.values(value)[0] || {};
+    return text(localized && (localized.NAME || localized.name));
   }
   function failure(status, command) {
     var code = status === 401 ? "session-expired" : status === 403 ? "customer-forbidden" : status === 404 ? "not-found" : command && status >= 400 && status < 500 ? "command-refused" : "core-request-failed";
@@ -4644,14 +3538,14 @@
     error2.code = code;
     return error2;
   }
-  var coreSnowContract = Object.freeze({
+  var coreSnowContract = /* @__PURE__ */ Object.freeze({
     accountAddressMappings: ACCOUNT_ADDRESS_MAPPINGS,
     addressMappings: ADDRESS_MAPPINGS,
     agreementMappings: AGREEMENT_MAPPINGS,
     agreementType: AGREEMENT_TYPE,
     invoiceListBody: INVOICE_LIST_BODY,
-    customerQuoteStatus: Object.freeze(Object.assign({}, CUSTOMER_ORDER_STATUS)),
-    operatorQuoteStates: Object.freeze(OPERATOR_ORDER_STATES.slice()),
+    customerQuoteStatus: /* @__PURE__ */ Object.freeze(Object.assign({}, CUSTOMER_ORDER_STATUS)),
+    operatorQuoteStates: /* @__PURE__ */ Object.freeze(OPERATOR_ORDER_STATES.slice()),
     orderItemMappings: ORDER_ITEM_MAPPINGS,
     orderMappings: ORDER_MAPPINGS,
     productMappings: PRODUCT_MAPPINGS,
@@ -4660,7 +3554,7 @@
     propertyPageLimit: PROPERTY_PAGE_LIMIT,
     propertyPageSize: PROPERTY_PAGE_SIZE,
     propertyType: PROPERTY_TYPE,
-    quoteOrderTypes: Object.freeze(QUOTE_ORDER_TYPES.slice()),
+    quoteOrderTypes: /* @__PURE__ */ Object.freeze(QUOTE_ORDER_TYPES.slice()),
     resourceMappings: RESOURCE_MAPPINGS,
     visitListBody: VISIT_LIST_BODY,
     visitTransitionsBody: VISIT_TRANSITIONS_BODY,
@@ -4669,7 +3563,7 @@
     orderItemFilters: ["order.account.id", "order.id"],
     catalogFilters: ["id"],
     propertyFilters: ["type.code"],
-    scopeModes: Object.freeze({
+    scopeModes: /* @__PURE__ */ Object.freeze({
       agreements: "server-scoped",
       orders: "server-scoped",
       orderItems: "server-scoped",
@@ -4677,1766 +3571,6 @@
       products: "unscoped",
       properties: "server-scoped"
     })
-  });
-
-  // app-templates/customer-portal/runtime/src/adapters/core-cart-adapter.js
-  var LINE_REF_PREFIX = "cart-line-";
-  var CART_PATH = "/api/cart/current.json";
-  var ITEMS_PATH = "/api/cart/current/items.json";
-  function countPath(priceId) {
-    return "/api/cart/current/items/" + priceId + "/count.json";
-  }
-  function itemPath(priceId) {
-    return "/api/cart/current/items/" + priceId + ".json";
-  }
-  var flights = /* @__PURE__ */ new Map();
-  function createCoreCartAdapter(options2 = {}) {
-    var fetchImpl = options2.fetch || globalThis.fetch;
-    if (typeof fetchImpl !== "function") throw contractError2("fetch-unavailable", "Core cart adapter requires fetch");
-    return {
-      load(moduleId, context) {
-        if (moduleId !== "cart") throw contractError2("unsupported-module", "Core cart adapter cannot load " + moduleId);
-        return loadCoreCart(context, fetchImpl, options2.origin);
-      },
-      addItem(input, context) {
-        return addCoreCartItem(input, context, fetchImpl, options2.origin);
-      },
-      setItemCount(input, context) {
-        return setCoreCartItemCount(input, context, fetchImpl, options2.origin);
-      },
-      removeItem(input, context) {
-        return removeCoreCartItem(input, context, fetchImpl, options2.origin);
-      },
-      clear(context) {
-        return clearCoreCart(context, fetchImpl, options2.origin);
-      }
-    };
-  }
-  async function loadCoreCart(context, fetchImpl = globalThis.fetch, explicitOrigin) {
-    var api = cartContext(context, explicitOrigin);
-    return readCart(api, fetchImpl);
-  }
-  function addCoreCartItem(input, context, fetchImpl = globalThis.fetch, explicitOrigin) {
-    var api = cartContext(context, explicitOrigin);
-    var priceId = positiveInteger4(input && input.priceId);
-    if (!priceId) throw contractError2("cart-price-required", "A Core price id is required to add a cart item");
-    var productId = positiveInteger4(input && input.productId);
-    if (!productId) throw contractError2("cart-product-required", "A Core product id is required to add a cart item");
-    var count = positiveInteger4(input && input.count) || 1;
-    var requestRef = text4(input && input.requestRef) || String(priceId) + "x" + count;
-    return singleFlight("cart:add:" + api.accountId + ":" + priceId + ":" + requestRef, async function() {
-      var before = await readCart(api, fetchImpl);
-      var currencyId2 = positiveInteger4(input && input.currencyId) || await currencyIdByCode(api, fetchImpl, text4(input && input.currency) || before.currencyCode || defaultCurrency(api));
-      await requestJson2(fetchImpl, api.billBase + ITEMS_PATH, requestOptions(api, "POST", {
-        accountId: api.accountId,
-        count,
-        currency: currencyId2,
-        metadata: input && input.metadata || null,
-        notes: text4(input && input.notes) || null,
-        priceId,
-        productId
-      }));
-      var after = await readCart(api, fetchImpl);
-      if (!after.byRef[LINE_REF_PREFIX + priceId]) {
-        throw contractError2("cart-add-unconfirmed", "Core did not report the item in the cart after the add");
-      }
-      return after;
-    });
-  }
-  function setCoreCartItemCount(input, context, fetchImpl = globalThis.fetch, explicitOrigin) {
-    var api = cartContext(context, explicitOrigin);
-    var priceId = cartPriceId(input);
-    var count = finiteNumber4(input && input.count, NaN);
-    if (!Number.isInteger(count) || count < 0) throw contractError2("cart-count-invalid", "A cart quantity must be a non-negative integer");
-    if (count === 0) return removeCoreCartItem(input, context, fetchImpl, explicitOrigin);
-    return singleFlight("cart:count:" + api.accountId + ":" + priceId + ":" + count, async function() {
-      var before = await readCart(api, fetchImpl);
-      var line = before.byRef[LINE_REF_PREFIX + priceId];
-      if (!line) throw contractError2("cart-line-missing", "That item is no longer in the cart");
-      var delta = count - line.qty;
-      if (delta === 0) return before;
-      await requestJson2(
-        fetchImpl,
-        api.billBase + countPath(priceId) + "?accountId=" + api.accountId + "&delta=" + delta,
-        requestOptions(api, "POST", null)
-      );
-      var after = await readCart(api, fetchImpl);
-      var updated = after.byRef[LINE_REF_PREFIX + priceId];
-      if (!updated || updated.qty !== count) {
-        throw contractError2("cart-count-unconfirmed", "Core did not report the requested quantity after the change");
-      }
-      return after;
-    });
-  }
-  function removeCoreCartItem(input, context, fetchImpl = globalThis.fetch, explicitOrigin) {
-    var api = cartContext(context, explicitOrigin);
-    var priceId = cartPriceId(input);
-    return singleFlight("cart:remove:" + api.accountId + ":" + priceId, async function() {
-      await requestJson2(
-        fetchImpl,
-        api.billBase + itemPath(priceId) + "?accountId=" + api.accountId,
-        requestOptions(api, "DELETE", null)
-      );
-      var after = await readCart(api, fetchImpl);
-      if (after.byRef[LINE_REF_PREFIX + priceId]) {
-        throw contractError2("cart-remove-unconfirmed", "Core still reports the item in the cart after the removal");
-      }
-      return after;
-    });
-  }
-  function clearCoreCart(context, fetchImpl = globalThis.fetch, explicitOrigin) {
-    var api = cartContext(context, explicitOrigin);
-    return singleFlight("cart:clear:" + api.accountId, async function() {
-      await requestJson2(
-        fetchImpl,
-        api.billBase + ITEMS_PATH + "?accountId=" + api.accountId,
-        requestOptions(api, "DELETE", null)
-      );
-      var after = await readCart(api, fetchImpl);
-      if (after.lines.length) throw contractError2("cart-clear-unconfirmed", "Core still reports items in the cart after the clear");
-      return after;
-    });
-  }
-  async function readCart(api, fetchImpl) {
-    var view = await requestJson2(
-      fetchImpl,
-      api.billBase + CART_PATH + "?accountId=" + api.accountId,
-      requestOptions(api, "GET", null)
-    );
-    var codes = await currencyCodesByIds(api, fetchImpl, currencyIdsIn(view));
-    return normalizeCart(view, api, codes);
-  }
-  function normalizeCart(view, api, codes) {
-    var rows2 = Array.isArray(view && view.items) ? view.items : [];
-    var lineCodes = [];
-    rows2.forEach(function(row) {
-      var code = codes[String(row && row.currency)] || currencyOf(row && row.currency);
-      if (code && lineCodes.indexOf(code) < 0) lineCodes.push(code);
-    });
-    var currencyCode2 = currencyOf(view && view.currency) || (lineCodes.length === 1 ? lineCodes[0] : "") || defaultCurrency(api);
-    var lines = rows2.map(function(row) {
-      return normalizeLine(row, currencyCode2, api, codes);
-    });
-    var byRef = {};
-    lines.forEach(function(line) {
-      byRef[line.ref] = line;
-    });
-    var subtotal = finiteNumber4(view && view.subtotal, null);
-    return {
-      backendId: positiveInteger4(view && view.id) || null,
-      byRef,
-      currencyCode: currencyCode2,
-      displaySubtotal: subtotal == null ? null : formatMoney2(subtotal, currencyCode2),
-      itemCount: finiteNumber4(view && view.itemCount, null),
-      lines,
-      notes: text4(view && view.notes),
-      organizationCode: codeOf(view && view.organization),
-      scopeMode: "server-account-bound",
-      state: lines.length ? "ready" : "empty",
-      subtotal
-    };
-  }
-  function normalizeLine(row, cartCurrency, api, codes) {
-    var priceId = positiveInteger4(row && row.priceId);
-    if (!priceId) throw contractError2("invalid-cart-line", "Core cart item did not include a price id");
-    var currencyCode2 = codes[String(row && row.currency)] || currencyOf(row && row.currency) || cartCurrency;
-    var unitAmount = finiteNumber4(row && row.unitAmount, null);
-    var lineAmount = finiteNumber4(row && row.lineAmount, null);
-    var productCode = text4(row && row.productCode);
-    var productId = positiveInteger4(row && row.productId) || null;
-    var catalogRow = catalogEntry(api, productCode, productId);
-    return {
-      backendId: positiveInteger4(row && row.id) || null,
-      currencyCode: currencyCode2,
-      displayTotal: lineAmount == null ? null : formatMoney2(lineAmount, currencyCode2),
-      displayUnitPrice: unitAmount == null ? null : formatMoney2(unitAmount, currencyCode2),
-      lineAmount,
-      metadata: row && row.metadata || null,
-      notes: text4(row && row.notes),
-      priceId,
-      productCode,
-      productId,
-      // The SPA_* product type, carried so checkout can pick the matching
-      // SPA_ITEM_* line type without a second lookup. See catalogEntry.
-      productTypeCode: text4(catalogRow && catalogRow.productTypeCode),
-      qty: finiteNumber4(row && row.count, 0),
-      ref: LINE_REF_PREFIX + priceId,
-      title: text4(catalogRow && (catalogRow.name || catalogRow.title)) || "Item",
-      unitAmount,
-      variant: null
-    };
-  }
-  function catalogEntry(api, productCode, productId) {
-    var items = api.catalog;
-    for (var index = 0; index < items.length; index += 1) {
-      var item = items[index];
-      var code = text4(item && (item.code || item.sku));
-      if (productCode && code && code === productCode) return item;
-      if (productId && positiveInteger4(item && (item.backendProductId || item.backendId || item.id)) === productId) return item;
-    }
-    return null;
-  }
-  function currencyIdsIn(view) {
-    var ids = [];
-    var rows2 = Array.isArray(view && view.items) ? view.items : [];
-    rows2.concat([view || {}]).forEach(function(row) {
-      var id = positiveInteger4(row && row.currency);
-      if (id && ids.indexOf(id) < 0) ids.push(id);
-    });
-    return ids;
-  }
-  async function currencyCodesByIds(api, fetchImpl, ids) {
-    if (!ids.length) return {};
-    var results = await Promise.all(ids.map(function(id) {
-      return listDictionary(api, fetchImpl, [{ operator: "=", property: "id", type: "INTEGER", value: String(id) }]);
-    }));
-    var byId = {};
-    results.forEach(function(rows2) {
-      rows2.forEach(function(row) {
-        byId[String(row.id)] = text4(row.code);
-      });
-    });
-    return byId;
-  }
-  async function currencyIdByCode(api, fetchImpl, code) {
-    if (!code) throw contractError2("cart-currency-missing", "A currency is required to add a cart item");
-    var rows2 = await listDictionary(api, fetchImpl, [{ operator: "=", property: "code", type: "STRING", value: code }]);
-    var id = positiveInteger4(rows2[0] && rows2[0].id);
-    if (!id) throw contractError2("cart-currency-missing", "Currency " + code + " is not provisioned in this organization");
-    return id;
-  }
-  async function listDictionary(api, fetchImpl, filters) {
-    var response = await requestJson2(fetchImpl, api.coreBase + "/api/dictionary/list.json", requestOptions(api, "POST", {
-      filters,
-      mappings: [{ name: "id" }, { name: "code" }],
-      offset: 0,
-      pageSize: 50
-    }));
-    return Array.isArray(response && response.result) ? response.result : [];
-  }
-  function cartPriceId(input) {
-    var direct = positiveInteger4(input && input.priceId);
-    if (direct) return direct;
-    var ref = text4(input && (input.ref || input));
-    if (ref.indexOf(LINE_REF_PREFIX) === 0) {
-      var parsed2 = positiveInteger4(ref.slice(LINE_REF_PREFIX.length));
-      if (parsed2) return parsed2;
-    }
-    throw contractError2("cart-line-ref-invalid", "A cart line reference is required");
-  }
-  function cartContext(context, explicitOrigin) {
-    var config = context && context.config || {};
-    var state2 = context && context.state || {};
-    var session2 = context && context.session || state2.session || {};
-    var accessToken = text4(session2.accessToken || session2.access_token);
-    if (!accessToken) throw contractError2("session-required", "A Core access token is required");
-    var organization = text4(config.organization);
-    if (!organization) throw contractError2("organization-required", "Verified portal organization is required");
-    var customer = context && context.account || state2.customerAccount || session2.account || {};
-    var accountId = positiveInteger4(customer && customer.id);
-    if (!accountId) throw contractError2("customer-account-required", "Resolved customer Account is required before any cart call");
-    var origin = explicitOrigin || config.origin || browserOrigin2();
-    var products = state2.moduleData && state2.moduleData.products;
-    return {
-      accountId,
-      authorization: text4(session2.tokenType || session2.token_type || "Bearer") + " " + accessToken,
-      billBase: sameOriginBase2(config.billApiBase || "/core-bill", origin, "Core Bill API base"),
-      catalog: products && Array.isArray(products.items) ? products.items : [],
-      config,
-      coreBase: sameOriginBase2(config.coreApiBase || "/core", origin, "Core API base"),
-      organization
-    };
-  }
-  function defaultCurrency(api) {
-    return text4(api.config.currency || api.config.pimCurrency) || "USD";
-  }
-  function requestOptions(api, method, body) {
-    var options2 = {
-      credentials: "same-origin",
-      headers: {
-        Accept: "application/json",
-        Authorization: api.authorization,
-        "X-Organization-Code": api.organization
-      },
-      method
-    };
-    if (body != null) {
-      options2.headers["Content-Type"] = "application/json";
-      options2.body = JSON.stringify(body);
-    }
-    return options2;
-  }
-  async function requestJson2(fetchImpl, url, options2) {
-    var response = await fetchImpl(url, options2);
-    if (!response || typeof response.ok !== "boolean") throw contractError2("invalid-response", "Core cart request returned an invalid response");
-    if (!response.ok) {
-      var code = response.status === 401 ? "session-expired" : response.status === 403 ? "cart-forbidden" : response.status === 404 ? "cart-account-unknown" : response.status === 409 || response.status === 412 ? "cart-conflict" : "cart-unavailable";
-      var error2 = contractError2(code, "Core cart request failed with HTTP " + response.status);
-      error2.status = response.status;
-      throw error2;
-    }
-    if (response.status === 204) return null;
-    try {
-      return await response.json();
-    } catch (_) {
-      return null;
-    }
-  }
-  function singleFlight(key, operation) {
-    if (flights.has(key)) return flights.get(key);
-    var promise = Promise.resolve().then(operation).finally(function() {
-      flights.delete(key);
-    });
-    flights.set(key, promise);
-    return promise;
-  }
-  function currencyOf(value) {
-    if (value == null) return "";
-    if (typeof value === "string") return value.trim();
-    return codeOf(value);
-  }
-  function codeOf(value) {
-    if (value == null) return "";
-    if (typeof value === "string") return value.trim();
-    return text4(value.code);
-  }
-  function formatMoney2(value, currency) {
-    var number = Number(value);
-    if (!Number.isFinite(number) || !currency) return null;
-    return new Intl.NumberFormat("en-US", { currency, style: "currency" }).format(number);
-  }
-  function sameOriginBase2(base, origin, label) {
-    var value = text4(base);
-    if (!value) throw contractError2("api-base-required", label + " is required");
-    if (/^https?:\/\//i.test(value)) {
-      if (value.indexOf(origin) !== 0) throw contractError2("cross-origin-base", label + " must stay same-origin");
-      return value.replace(/\/$/, "");
-    }
-    return (origin || "").replace(/\/$/, "") + (value.charAt(0) === "/" ? value : "/" + value).replace(/\/$/, "");
-  }
-  function browserOrigin2() {
-    return globalThis.location && globalThis.location.origin || "";
-  }
-  function positiveInteger4(value) {
-    var number = Number(value);
-    return Number.isInteger(number) && number > 0 ? number : 0;
-  }
-  function finiteNumber4(value, fallback) {
-    var number = Number(value);
-    return value == null || value === "" || !Number.isFinite(number) ? fallback : number;
-  }
-  function text4(value) {
-    return typeof value === "string" ? value.trim() : value == null ? "" : String(value).trim();
-  }
-  function contractError2(code, message) {
-    var error2 = new Error(message);
-    error2.code = code;
-    return error2;
-  }
-
-  // app-templates/customer-portal/runtime/src/adapters/core-orders-adapter.js
-  var ITEM_KINDS = {
-    SPA_ITEM_MEMBERSHIP: "MEMBERSHIP",
-    SPA_ITEM_PACKAGE: "PACKAGE",
-    SPA_ITEM_RETAIL: "RETAIL",
-    SPA_ITEM_SERVICE: "SERVICE"
-  };
-  var ORDER_STATUS = {
-    CANCELLED: "Cancelled",
-    COMPLETED: "Fulfilled",
-    IN_PROGRESS: "In progress",
-    OPEN: "Confirmed"
-  };
-  var FULFILLMENT_TYPE = "SPA_FULFILLMENT";
-  var REF_MAPPINGS2 = [{ name: "id" }, { name: "code" }, { name: "nls" }];
-  var ORDER_ITEM_MAPPINGS2 = [
-    { name: "amount" },
-    { name: "attributes" },
-    { name: "id" },
-    { name: "itemCount" },
-    { name: "notes" },
-    { name: "sortOrder" },
-    {
-      key: "id",
-      mappings: REF_MAPPINGS2.concat([{ key: "id", mappings: REF_MAPPINGS2, name: "product", type: "identifier" }]),
-      name: "itemPrice",
-      type: "identifier"
-    },
-    { key: "id", mappings: REF_MAPPINGS2, name: "order", type: "identifier" },
-    { key: "id", mappings: REF_MAPPINGS2, name: "type", type: "identifier" }
-  ];
-  var SHIPMENT_MAPPINGS = [
-    { name: "attributes" },
-    { name: "id" },
-    { key: "id", mappings: REF_MAPPINGS2, name: "type", type: "identifier" }
-  ];
-  var ORDER_MAPPINGS2 = [
-    { name: "attributes" },
-    { name: "created" },
-    { name: "grandTotal" },
-    { name: "id" },
-    { name: "notes" },
-    { name: "optimistic" },
-    { name: "totalCharges" },
-    { name: "totalTaxes" },
-    { key: "id", mappings: [{ name: "id" }, { name: "code" }, { name: "nls" }], name: "account", type: "identifier" },
-    { key: "id", mappings: [{ name: "id" }, { name: "code" }, { name: "nls" }], name: "currency", type: "identifier" },
-    { key: "id", name: "organization", type: "identifier" },
-    { mappings: [{ name: "id" }, { name: "code" }, { name: "nls" }], name: "states", type: "collection" },
-    { key: "id", mappings: [{ name: "id" }, { name: "code" }, { name: "nls" }], name: "type", type: "identifier" }
-  ];
-  function createCoreOrdersAdapter(options2 = {}) {
-    var fetchImpl = options2.fetch || globalThis.fetch;
-    if (typeof fetchImpl !== "function") throw contractError3("fetch-unavailable", "Core Orders adapter requires fetch");
-    return {
-      async load(moduleId, context) {
-        if (moduleId !== "orders") throw contractError3("unsupported-module", "Core Orders adapter cannot load " + moduleId);
-        return loadCoreOrders(context, fetchImpl, options2.origin);
-      }
-    };
-  }
-  var STUDIO_TYPE = "SPA_STUDIO";
-  var FULFILLMENT_CODE_PREFIX = "CP_DEMO_FULFILLMENT_";
-  var TYPE_WITH_WORKFLOW_MAPPINGS = [
-    { name: "id" },
-    { name: "code" },
-    { key: "id", mappings: REF_MAPPINGS2, name: "workflow", type: "identifier" }
-  ];
-  function createPickupFulfillment(orderId2, context, fetchImpl = globalThis.fetch, explicitOrigin) {
-    var api = writeContext(context, explicitOrigin);
-    var id = positiveInteger5(orderId2);
-    if (!id) throw contractError3("fulfillment-order-required", "A Core Order id is required to record a pickup");
-    var marker = FULFILLMENT_CODE_PREFIX + id;
-    return (async function() {
-      var existing = await pickupForOrder(api, fetchImpl, id, marker);
-      if (existing) return existing;
-      var resolved = await Promise.all([
-        resolveOne(
-          api,
-          fetchImpl,
-          api.billBase + "/api/shipment-type/list.json",
-          [{ operator: "=", property: "code", type: "STRING", value: FULFILLMENT_TYPE }],
-          TYPE_WITH_WORKFLOW_MAPPINGS,
-          "fulfillment-type-missing"
-        ),
-        resolveOne(
-          api,
-          fetchImpl,
-          api.coreBase + "/api/organization/list.json",
-          [{ operator: "=", property: "code", type: "STRING", value: api.organization }],
-          [{ name: "id" }, { name: "code" }],
-          "organization-missing"
-        ),
-        studioResource(api, fetchImpl)
-      ]);
-      var fulfillmentType = resolved[0];
-      var organization = resolved[1];
-      var studio = resolved[2];
-      var values = {
-        FULFILLMENT_KIND: { value: "PICKUP" },
-        // PENDING is the workflow's initial state and matches the accepted copy:
-        // the studio confirms availability after the order is recorded.
-        FULFILLMENT_STATUS: { value: "PENDING" },
-        RECORD_CODE: { value: marker },
-        SOURCE_ORDER: { value: id }
-      };
-      if (studio.row) values.PICKUP_LOCATION = { value: studio.row.id };
-      var attributes = {};
-      attributes[String(fulfillmentType.id)] = values;
-      var savedIds = await requestJson3(fetchImpl, api.billBase + "/api/shipment/save.json", writeOptions(api, {
-        entities: [{
-          attributes,
-          organization: { id: organization.id },
-          type: { id: fulfillmentType.id },
-          workflow: { id: fulfillmentType.workflow.id }
-        }],
-        mappings: SHIPMENT_MAPPINGS
-      }));
-      if (!positiveInteger5(Array.isArray(savedIds) && savedIds[0])) {
-        throw contractError3("invalid-save-response", "Core Shipment save did not return an id");
-      }
-      var readback = await pickupForOrder(api, fetchImpl, id, marker);
-      if (!readback) throw contractError3("fulfillment-unconfirmed", "Core did not report the pickup record after the save");
-      return Object.assign(readback, { locationUnresolvedReason: studio.reason });
-    })();
-  }
-  async function pickupForOrder(api, fetchImpl, orderId2, marker) {
-    var response = await requestJson3(fetchImpl, api.billBase + "/api/shipment/list.json", writeOptions(api, {
-      filters: [{ operator: "=", property: "type.code", type: "STRING", value: FULFILLMENT_TYPE }],
-      mappings: SHIPMENT_MAPPINGS,
-      offset: 0,
-      pageSize: 200
-    }));
-    var rows2 = Array.isArray(response && response.result) ? response.result : [];
-    var row = rows2.find(function(candidate) {
-      return attributeNumber2(candidate, "SOURCE_ORDER") === orderId2 && attributeText2(candidate, "RECORD_CODE") === marker;
-    });
-    if (!row) return null;
-    var normalized = normalizeFulfillment({
-      kind: attributeText2(row, "FULFILLMENT_KIND"),
-      status: attributeText2(row, "FULFILLMENT_STATUS"),
-      windowEnd: attributeNumber2(row, "WINDOW_END"),
-      windowStart: attributeNumber2(row, "WINDOW_START")
-    });
-    return Object.assign({
-      backendId: positiveInteger5(row.id),
-      locationId: attributeNumber2(row, "PICKUP_LOCATION"),
-      sourceOrderId: orderId2
-    }, normalized);
-  }
-  async function studioResource(api, fetchImpl) {
-    var response;
-    try {
-      response = await requestJson3(fetchImpl, api.rmBase + "/api/resource/list.json", writeOptions(api, {
-        filters: [{ operator: "=", property: "type.code", type: "STRING", value: STUDIO_TYPE }],
-        mappings: [{ name: "id" }, { name: "code" }],
-        offset: 0,
-        pageSize: 10
-      }));
-    } catch (error2) {
-      return { reason: "resource-read-refused", row: null, status: error2 && error2.status || null };
-    }
-    var rows2 = Array.isArray(response && response.result) ? response.result : [];
-    var row = rows2[0] && positiveInteger5(rows2[0].id) ? rows2[0] : null;
-    return { reason: row ? null : "no-studio-row", row, status: null };
-  }
-  async function resolveOne(api, fetchImpl, url, filters, mappings, errorCode) {
-    var response = await requestJson3(fetchImpl, url, writeOptions(api, { filters, mappings, offset: 0, pageSize: 1 }));
-    var row = (Array.isArray(response && response.result) ? response.result : [])[0];
-    if (!row || !positiveInteger5(row.id)) throw contractError3(errorCode, errorCode.replace(/-/g, " "));
-    if (mappings === TYPE_WITH_WORKFLOW_MAPPINGS && !(row.workflow && positiveInteger5(row.workflow.id))) {
-      throw contractError3(errorCode, FULFILLMENT_TYPE + " has no workflow");
-    }
-    return row;
-  }
-  function writeContext(context, explicitOrigin) {
-    var config = context && context.config || {};
-    var state2 = context && context.state || {};
-    var session2 = context && context.session || state2.session || {};
-    var accessToken = text5(session2.accessToken || session2.access_token);
-    if (!accessToken) throw contractError3("session-required", "A Core access token is required");
-    var organization = text5(config.organization);
-    if (!organization) throw contractError3("organization-required", "Verified portal organization is required");
-    var origin = explicitOrigin || config.origin || browserOrigin3();
-    return {
-      authorization: text5(session2.tokenType || session2.token_type || "Bearer") + " " + accessToken,
-      billBase: sameOriginBase3(config.billApiBase || "/core-bill", origin, "Core Bill API base"),
-      coreBase: sameOriginBase3(config.coreApiBase || "/core", origin, "Core API base"),
-      organization,
-      rmBase: sameOriginBase3(config.resourceApiBase || "/core-rm", origin, "Core Resource API base")
-    };
-  }
-  function writeOptions(api, body) {
-    return {
-      body: JSON.stringify(body),
-      credentials: "same-origin",
-      headers: {
-        Accept: "application/json",
-        Authorization: api.authorization,
-        "Content-Type": "application/json",
-        "X-Organization-Code": api.organization
-      },
-      method: "POST"
-    };
-  }
-  async function loadCoreOrders(context, fetchImpl = globalThis.fetch, explicitOrigin) {
-    var config = context && context.config || {};
-    var state2 = context && context.state || {};
-    var session2 = context && context.session || state2.session || {};
-    var customer = context && context.account || state2.customerAccount || state2.session && state2.session.account || {};
-    var accountId = positiveInteger5(customer.id);
-    if (!accountId) throw contractError3("customer-account-required", "Resolved customer Account is required before Orders load");
-    var accessToken = text5(session2.accessToken || session2.access_token);
-    if (!accessToken) throw contractError3("session-required", "A Core access token is required");
-    var organization = text5(config.organization);
-    if (!organization) throw contractError3("organization-required", "Verified portal organization is required");
-    var origin = explicitOrigin || config.origin || browserOrigin3();
-    var billBase = sameOriginBase3(config.billApiBase || "/core-bill", origin, "Core Bill API base");
-    var authorization = text5(session2.tokenType || session2.token_type || "Bearer") + " " + accessToken;
-    var request = {
-      filters: [{ type: "INTEGER", operator: "=", property: "account.id", value: String(accountId) }],
-      mappings: ORDER_MAPPINGS2,
-      offset: 0,
-      pageSize: positiveInteger5(config.ordersPageSize) || 50,
-      sorting: [{ field: "id", direction: "DESC" }]
-    };
-    var response = await requestJson3(fetchImpl, billBase + "/api/order/list.json", {
-      method: "POST",
-      credentials: "same-origin",
-      headers: {
-        Authorization: authorization,
-        "Content-Type": "application/json",
-        Accept: "application/json",
-        "X-Organization-Code": organization
-      },
-      body: JSON.stringify(request)
-    });
-    var rows2 = Array.isArray(response && response.result) ? response.result : [];
-    var headers = {
-      Accept: "application/json",
-      Authorization: authorization,
-      "Content-Type": "application/json",
-      "X-Organization-Code": organization
-    };
-    var context2 = { billBase, fetchImpl, headers };
-    var orderIds = rows2.map(function(row) {
-      return positiveInteger5(row && row.id);
-    }).filter(Boolean);
-    var joined = await Promise.all([linesByOrder(context2, orderIds), fulfillmentByOrder(context2, orderIds)]);
-    rows2.forEach(function(row) {
-      assertOwnedBy(row, accountId);
-    });
-    var withoutLines = 0;
-    var items = rows2.filter(function(row) {
-      var hasLines = (joined[0][String(row.id)] || []).length > 0;
-      if (!hasLines) withoutLines += 1;
-      return hasLines;
-    }).map(function(row) {
-      return normalizeOrder(row, accountId, joined[0][String(row.id)], joined[1][String(row.id)] || null);
-    });
-    var byRef = {};
-    items.forEach(function(item) {
-      byRef[item.ref] = item;
-    });
-    return {
-      state: items.length ? "ready" : "empty",
-      accountId,
-      resultSize: items.length,
-      ordersWithoutLines: withoutLines,
-      accountResultSize: Number.isFinite(Number(response && response.resultSize)) ? Number(response.resultSize) : rows2.length,
-      items,
-      byRef
-    };
-  }
-  async function postList(context, path, body) {
-    return requestJson3(context.fetchImpl, context.billBase + path, {
-      method: "POST",
-      credentials: "same-origin",
-      headers: context.headers,
-      body: JSON.stringify(body)
-    });
-  }
-  async function linesByOrder(context, orderIds) {
-    if (!orderIds.length) return {};
-    var response = await postList(context, "/api/order-item/list.json", {
-      filters: [],
-      mappings: ORDER_ITEM_MAPPINGS2,
-      offset: 0,
-      pageSize: 500,
-      sorting: [{ field: "sortOrder", direction: "ASC" }]
-    });
-    var rows2 = Array.isArray(response && response.result) ? response.result : [];
-    var grouped = {};
-    rows2.forEach(function(row) {
-      var id = positiveInteger5(row.order && row.order.id);
-      if (orderIds.indexOf(id) < 0) return;
-      (grouped[String(id)] = grouped[String(id)] || []).push(row);
-    });
-    return grouped;
-  }
-  async function fulfillmentByOrder(context, orderIds) {
-    if (!orderIds.length) return {};
-    var response = await postList(context, "/api/shipment/list.json", {
-      filters: [{ type: "STRING", operator: "=", property: "type.code", value: FULFILLMENT_TYPE }],
-      mappings: SHIPMENT_MAPPINGS,
-      offset: 0,
-      pageSize: 200
-    });
-    var rows2 = Array.isArray(response && response.result) ? response.result : [];
-    var byOrder = {};
-    rows2.forEach(function(row) {
-      var id = attributeNumber2(row, "SOURCE_ORDER");
-      if (!id || orderIds.indexOf(id) < 0) return;
-      byOrder[String(id)] = {
-        kind: attributeText2(row, "FULFILLMENT_KIND"),
-        location: attributeNumber2(row, "PICKUP_LOCATION"),
-        status: attributeText2(row, "FULFILLMENT_STATUS"),
-        windowEnd: attributeNumber2(row, "WINDOW_END"),
-        windowStart: attributeNumber2(row, "WINDOW_START")
-      };
-    });
-    return byOrder;
-  }
-  function attributeEntry2(row, code) {
-    var typeId = row && row.type && row.type.id;
-    var group = row && row.attributes && typeId != null ? row.attributes[String(typeId)] : null;
-    return group && group[code] ? group[code] : null;
-  }
-  function attributeNumber2(row, code) {
-    var entry = attributeEntry2(row, code);
-    return entry && entry.value != null ? positiveInteger5(entry.value) : null;
-  }
-  function attributeText2(row, code) {
-    var entry = attributeEntry2(row, code);
-    return entry && entry.value != null ? text5(entry.value) : "";
-  }
-  function purchaseKind(lines) {
-    var kinds = [];
-    lines.forEach(function(line) {
-      var kind = ITEM_KINDS[text5(line.type && line.type.code)];
-      if (kind && kinds.indexOf(kind) < 0) kinds.push(kind);
-    });
-    if (!kinds.length) return null;
-    return kinds.length === 1 ? kinds[0] : "MIXED";
-  }
-  function lineTitle(line) {
-    var product = line.itemPrice && line.itemPrice.product;
-    return localizedName4(product && product.nls) || text5(line.notes) || "Item";
-  }
-  function normalizeLine2(line, currencyCode2) {
-    var id = positiveInteger5(line && line.id);
-    var count = positiveInteger5(line.itemCount) || 1;
-    var unit = finiteNumber5(line.amount);
-    return {
-      ref: "pln-core-" + id,
-      kind: ITEM_KINDS[text5(line.type && line.type.code)] || null,
-      title: lineTitle(line),
-      variant: null,
-      quantity: count,
-      displayUnitPrice: unit != null ? formatMoney3(unit, currencyCode2) : null,
-      displayTotal: null
-    };
-  }
-  function itemSummary(lines) {
-    if (!lines.length) return null;
-    return lines.map(function(line) {
-      return line.quantity > 1 ? line.quantity + " \xD7 " + line.title : line.title;
-    }).join(" \xB7 ");
-  }
-  function normalizeFulfillment(raw) {
-    if (!raw || !raw.kind) return null;
-    return {
-      kind: raw.kind,
-      status: raw.status || null,
-      // An absent window stays absent; formatDate would render the epoch.
-      windowEndLabel: raw.windowEnd ? formatDate(raw.windowEnd) : null,
-      windowStartLabel: raw.windowStart ? formatDate(raw.windowStart) : null
-    };
-  }
-  function assertOwnedBy(row, accountId) {
-    var rowAccountId = row && row.account && positiveInteger5(row.account.id);
-    if (rowAccountId !== accountId) throw contractError3("order-scope-mismatch", "Core Order does not belong to the resolved customer Account");
-  }
-  function normalizeOrder(row, accountId, rawLines, rawFulfillment) {
-    assertOwnedBy(row, accountId);
-    var id = positiveInteger5(row && row.id);
-    if (!id) throw contractError3("invalid-order", "Core Order response did not include an id");
-    var states = Array.isArray(row.states) ? row.states.map(function(state2) {
-      return { id: positiveInteger5(state2 && state2.id), code: text5(state2 && state2.code), label: localizedName4(state2 && state2.nls) };
-    }) : [];
-    var stateCode = states.map(function(state2) {
-      return state2.code;
-    }).filter(Boolean)[0] || "";
-    var status = ORDER_STATUS[stateCode];
-    if (!status)
-      throw contractError3(
-        "order-status-unmapped",
-        "Workflow state " + (stateCode || "(none)") + " has no approved customer status for a purchase"
-      );
-    var currencyCode2 = text5(row.currency && row.currency.code) || "USD";
-    var lines = rawLines.map(function(line) {
-      return normalizeLine2(line, currencyCode2);
-    });
-    var kind = purchaseKind(rawLines);
-    var fulfillment = normalizeFulfillment(rawFulfillment);
-    var attention = null;
-    if (fulfillment && fulfillment.status === "READY" && status !== "Cancelled") {
-      status = "Ready for pickup";
-      attention = "Ready \u2014 please pick up" + (fulfillment.windowEndLabel ? " by " + fulfillment.windowEndLabel : "");
-    }
-    return {
-      ref: "order-core-" + id,
-      reference: "order-core-" + id,
-      id,
-      optimistic: Number.isFinite(Number(row.optimistic)) ? Number(row.optimistic) : null,
-      notes: text5(row.notes),
-      grandTotal: finiteNumber5(row.grandTotal),
-      totalCharges: finiteNumber5(row.totalCharges),
-      totalTaxes: finiteNumber5(row.totalTaxes),
-      currency: { code: text5(row.currency && row.currency.code), label: localizedName4(row.currency && row.currency.nls) },
-      type: { code: text5(row.type && row.type.code), label: localizedName4(row.type && row.type.nls) },
-      states,
-      statusCode: stateCode,
-      customerStatus: status,
-      kind,
-      placedAt: formatDate(row.created),
-      itemSummary: itemSummary(lines) || null,
-      displayTotal: formatMoney3(row.grandTotal, currencyCode2),
-      displayCurrency: currencyCode2,
-      attention,
-      allowedActions: [],
-      lines,
-      money: {
-        subtotal: formatMoney3(row.totalCharges, currencyCode2),
-        tax: formatMoney3(row.totalTaxes, currencyCode2),
-        total: formatMoney3(row.grandTotal, currencyCode2),
-        currency: currencyCode2
-      },
-      paymentMode: "SIMULATED",
-      fulfillment,
-      relatedAppointments: [],
-      relatedPlan: null
-    };
-  }
-  async function requestJson3(fetchImpl, url, options2) {
-    var response = await fetchImpl(url, options2);
-    if (!response || typeof response.ok !== "boolean") throw contractError3("invalid-response", "Core Bill returned an invalid response");
-    if (!response.ok) {
-      var code = response.status === 401 ? "session-expired" : response.status === 403 ? "orders-forbidden" : "orders-request-failed";
-      var error2 = contractError3(code, "Core Orders request failed with HTTP " + response.status);
-      error2.status = response.status;
-      throw error2;
-    }
-    try {
-      return await response.json();
-    } catch (_) {
-      throw contractError3("invalid-response", "Core Orders response was not valid JSON");
-    }
-  }
-  function sameOriginBase3(value, origin, label) {
-    if (!origin) throw contractError3("origin-required", label + " requires a browser origin");
-    var target = new URL(String(value || ""), origin);
-    if (target.origin !== new URL(origin).origin) throw contractError3("cross-origin-service", label + " must be same-origin");
-    return target.href.replace(/\/+$/, "");
-  }
-  function browserOrigin3() {
-    return globalThis.location && globalThis.location.origin || "";
-  }
-  function positiveInteger5(value) {
-    var number = Number(value);
-    return Number.isInteger(number) && number > 0 ? number : null;
-  }
-  function finiteNumber5(value) {
-    var number = Number(value);
-    return Number.isFinite(number) ? number : null;
-  }
-  function formatDate(value) {
-    var date = new Date(value);
-    return Number.isFinite(date.getTime()) ? new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", year: "numeric" }).format(date) : "Date not returned";
-  }
-  function formatMoney3(value, currency) {
-    var number = Number(value);
-    return Number.isFinite(number) ? new Intl.NumberFormat("en-US", { style: "currency", currency }).format(number) : "";
-  }
-  function localizedName4(value) {
-    if (!value || typeof value !== "object") return "";
-    var localized2 = value.en || value["en-US"] || Object.values(value)[0] || {};
-    return text5(localized2 && (localized2.NAME || localized2.name));
-  }
-  function text5(value) {
-    return typeof value === "string" ? value.trim() : value == null ? "" : String(value).trim();
-  }
-  function contractError3(code, message) {
-    var error2 = new Error(message);
-    error2.code = code;
-    return error2;
-  }
-  var coreOrdersContract = Object.freeze({
-    filters: ["account.id"],
-    itemKinds: ITEM_KINDS,
-    itemMappings: ORDER_ITEM_MAPPINGS2,
-    mappings: ORDER_MAPPINGS2,
-    orderStatus: ORDER_STATUS,
-    shipmentMappings: SHIPMENT_MAPPINGS
-  });
-
-  // app-templates/customer-portal/runtime/src/adapters/core-spa-demo-adapter.js
-  var REF_PREFIX = "appt-core-";
-  var DEMO_CODE_PREFIX = "CP_DEMO_";
-  var APPOINTMENT_TYPE = "SPA_VISIT";
-  var CARE_TASK_TYPE = "SPA_CARE_TASK";
-  var ORDER_TYPE = "SPA_ORDER";
-  var RESOURCE_TYPE = "SPA_SERVICE_PROVIDER";
-  var LOCATION_TYPE = "SPA_STUDIO";
-  var REF_MAPPINGS3 = [{ name: "id" }, { name: "code" }, { name: "nls" }];
-  var APPOINTMENT_MAPPINGS = [
-    { name: "attributes" },
-    { name: "code" },
-    { name: "end" },
-    { name: "id" },
-    { name: "nls" },
-    { name: "optimistic" },
-    { name: "start" },
-    { key: "id", name: "organization", type: "identifier" },
-    { key: "id", mappings: REF_MAPPINGS3, name: "task", type: "identifier" },
-    { key: "id", mappings: REF_MAPPINGS3, name: "type", type: "identifier" },
-    { key: "id", mappings: REF_MAPPINGS3, name: "workflow", type: "identifier" },
-    { mappings: REF_MAPPINGS3, name: "states", type: "collection" }
-  ];
-  var ORDER_MAPPINGS3 = [
-    { name: "attributes" },
-    { name: "grandTotal" },
-    { name: "id" },
-    { name: "notes" },
-    { name: "optimistic" },
-    { name: "totalCharges" },
-    { name: "totalTaxes" },
-    { key: "id", mappings: REF_MAPPINGS3, name: "account", type: "identifier" },
-    { key: "id", mappings: REF_MAPPINGS3, name: "currency", type: "identifier" },
-    { key: "id", name: "organization", type: "identifier" },
-    { mappings: REF_MAPPINGS3, name: "states", type: "collection" },
-    { key: "id", mappings: REF_MAPPINGS3, name: "type", type: "identifier" },
-    { key: "id", mappings: REF_MAPPINGS3, name: "workflow", type: "identifier" }
-  ];
-  var RESOURCE_MAPPINGS2 = [
-    { name: "attributes" },
-    { name: "code" },
-    { name: "id" },
-    { name: "nls" },
-    { key: "id", mappings: REF_MAPPINGS3, name: "type", type: "identifier" }
-  ];
-  var flights2 = /* @__PURE__ */ new Map();
-  function createCoreSpaDemoAdapter(options2 = {}) {
-    var fetchImpl = options2.fetch || globalThis.fetch;
-    if (typeof fetchImpl !== "function") throw contractError4("fetch-unavailable", "Core SPA demo adapter requires fetch");
-    return {
-      async load(moduleId, context) {
-        if (moduleId !== "appointments") throw contractError4("unsupported-module", "Core SPA demo adapter cannot load " + moduleId);
-        return loadCoreAppointments(context, fetchImpl, options2.origin);
-      },
-      createAppointment(input, context) {
-        return createCoreAppointment(input, context, fetchImpl, options2.origin);
-      },
-      rescheduleAppointment(ref, input, context) {
-        return rescheduleCoreAppointment(ref, input, context, fetchImpl, options2.origin);
-      },
-      cancelAppointment(ref, context) {
-        return cancelCoreAppointment(ref, context, fetchImpl, options2.origin);
-      },
-      createOrder(input, context) {
-        return createCoreOrder(input, context, fetchImpl, options2.origin);
-      }
-    };
-  }
-  var CANCEL_EVENT = "SCHEDULED-CANCELLED";
-  var CONFIRM_EVENT = "REQUESTED-SCHEDULED";
-  function cancelCoreAppointment(ref, context, fetchImpl = globalThis.fetch, explicitOrigin) {
-    var id = appointmentId(ref);
-    return singleFlight2("appointment:cancel:" + id, async function() {
-      var api = requestContext(context, explicitOrigin);
-      var current = await getEntity(fetchImpl, api.serviceBase + "/api/appointment/get.json?id=" + id, api, APPOINTMENT_MAPPINGS);
-      if (!current || positiveInteger6(current.id) !== id) throw contractError4("appointment-not-found", "Core Appointment was not found");
-      var accountId = positiveInteger6(api.customer && api.customer.id);
-      if (!accountId || customerAttributeId(current, "CUSTOMER_ACCOUNT") !== accountId) {
-        throw contractError4("appointment-forbidden", "This appointment does not belong to the signed-in customer");
-      }
-      var before = normalizeAppointment(current);
-      if (before.customerStatus === "Cancelled") return before;
-      if (before.allowedActions.indexOf("cancel") === -1) {
-        throw contractError4("appointment-not-cancellable", "This appointment cannot be cancelled in its current state");
-      }
-      await requestCommand(
-        fetchImpl,
-        api.serviceBase + "/api/appointment/" + id + "/send-event.json?event=" + CANCEL_EVENT,
-        requestOptions2(api, {})
-      );
-      var readback = normalizeAppointment(
-        await getEntity(fetchImpl, api.serviceBase + "/api/appointment/get.json?id=" + id, api, APPOINTMENT_MAPPINGS)
-      );
-      if (readback.customerStatus !== "Cancelled") {
-        throw contractError4("appointment-cancel-unconfirmed", "Core did not report the appointment as cancelled");
-      }
-      return readback;
-    });
-  }
-  async function loadCoreAppointments(context, fetchImpl = globalThis.fetch, explicitOrigin) {
-    var api = requestContext(context, explicitOrigin);
-    var response = await requestJson4(fetchImpl, api.serviceBase + "/api/appointment/list.json", requestOptions2(api, {
-      filters: [{ type: "STRING", operator: "=", property: "type.code", value: APPOINTMENT_TYPE }],
-      mappings: APPOINTMENT_MAPPINGS,
-      offset: 0,
-      pageSize: positiveInteger6(api.config.appointmentsPageSize) || 100,
-      sorting: [{ field: "start", direction: "ASC" }]
-    }));
-    var rows2 = Array.isArray(response && response.result) ? response.result : [];
-    var customerAccountId = positiveInteger6(api.customer && api.customer.id);
-    var scoped = customerAccountId ? rows2.filter(function(row) {
-      return customerAttributeId(row, "CUSTOMER_ACCOUNT") === customerAccountId;
-    }) : [];
-    var items = scoped.map(normalizeAppointment);
-    var now = Number.isFinite(Number(api.config.now)) ? Number(api.config.now) : Date.now();
-    var terminalStatuses = /* @__PURE__ */ new Set(["Completed", "Cancelled", "Rejected"]);
-    var upcoming = items.filter(function(item) {
-      return item.startEpoch >= now && !terminalStatuses.has(item.customerStatus);
-    });
-    var past = items.filter(function(item) {
-      return item.startEpoch < now || terminalStatuses.has(item.customerStatus);
-    }).reverse();
-    var byRef = {};
-    items.forEach(function(item) {
-      byRef[item.ref] = item;
-    });
-    var availability;
-    try {
-      var resourceResults = await Promise.all([RESOURCE_TYPE, LOCATION_TYPE].map(function(typeCode) {
-        return requestJson4(fetchImpl, api.resourceBase + "/api/resource/list.json", requestOptions2(api, {
-          filters: [{ type: "STRING", operator: "=", property: "type.code", value: typeCode }],
-          mappings: RESOURCE_MAPPINGS2,
-          offset: 0,
-          pageSize: positiveInteger6(api.config.resourcesPageSize) || 100,
-          sorting: [{ field: "code", direction: "ASC" }]
-        }));
-      }));
-      var providerResponse = resourceResults[0];
-      var locationResponse = resourceResults[1];
-      availability = normalizeCoreAvailability(providerResponse && providerResponse.result, rows2, {
-        now,
-        horizonDays: api.config.bookingHorizonDays,
-        maxVisibleDays: api.config.bookingVisibleDays,
-        locationRows: locationResponse && locationResponse.result
-      });
-    } catch (error2) {
-      if (error2 && error2.code === "session-expired") throw error2;
-      availability = {
-        state: "error",
-        reasonCode: error2 && error2.code || "availability-load-failed",
-        providers: [],
-        busy: []
-      };
-    }
-    return {
-      state: items.length ? "ready" : "empty",
-      // Named to stay honest: the narrowing is done by this client, not by Core.
-      scopeMode: "customer-filtered-client-side",
-      resultSize: items.length,
-      tenantResultSize: Number.isFinite(Number(response && response.resultSize)) ? Number(response.resultSize) : rows2.length,
-      items,
-      next: upcoming[0] || null,
-      upcoming: upcoming.slice(1),
-      past,
-      byRef,
-      availability
-    };
-  }
-  function createCoreAppointment(input, context, fetchImpl = globalThis.fetch, explicitOrigin) {
-    var key = "appointment:create:" + customerFlightPart(context) + ":" + idempotencyPart(input && input.requestRef || input && input.slotRef || "booking");
-    return singleFlight2(key, async function() {
-      var api = requestContext(context, explicitOrigin);
-      var accountId = positiveInteger6(api.customer && api.customer.id);
-      if (!accountId) throw contractError4("customer-account-required", "Resolved customer Account is required before booking");
-      var requestRef = accountId + "_" + idempotencyPart(input && input.requestRef || input && input.slotRef || Date.now());
-      var code = boundedEntityCode(DEMO_CODE_PREFIX + "APPT_", requestRef, 59);
-      var existing = await listOne(fetchImpl, api.serviceBase + "/api/appointment/list.json", api, [
-        { type: "STRING", operator: "=", property: "code", value: code }
-      ], APPOINTMENT_MAPPINGS);
-      if (existing) return confirmRequestedAppointment(existing, api, fetchImpl, accountId, input);
-      var resolved = await Promise.all([
-        resolveTypeWithWorkflow(fetchImpl, api, api.serviceBase, "appointment-type", APPOINTMENT_TYPE, "appointment-type-missing"),
-        resolveTypeWithWorkflow(fetchImpl, api, api.serviceBase, "task-type", CARE_TASK_TYPE, "task-type-missing"),
-        resolveOrganization(fetchImpl, api),
-        resolveCarePlan(fetchImpl, api)
-      ]);
-      var visitType = resolved[0];
-      var taskType = resolved[1];
-      var organization = resolved[2];
-      var carePlan = resolved[3];
-      var start = validIso(input && input.start);
-      var durationMinutes = positiveInteger6(input && input.durationMinutes) || 60;
-      var end = new Date(Date.parse(start) + durationMinutes * 6e4).toISOString();
-      var serviceName = text6(input && input.serviceName) || "Spa appointment";
-      var serviceProductId = positiveInteger6(input && input.serviceProductId);
-      if (!serviceProductId) throw contractError4("service-product-required", "A Core Product is required before booking");
-      var resourceIds = Array.from(new Set((Array.isArray(input && input.resourceIds) ? input.resourceIds : []).map(positiveInteger6).filter(Boolean)));
-      if (!resourceIds.length) throw contractError4("appointment-resources-required", "A bookable Resource is required before booking");
-      var specialistAccountId = positiveInteger6(input && input.specialistAccountId);
-      if (!specialistAccountId) throw contractError4("specialist-account-required", "A specialist Account is required before booking");
-      var taskId = await ensureVisitTask(fetchImpl, api, {
-        carePlan,
-        code: code + "_TASK",
-        organization,
-        serviceName,
-        taskType
-      });
-      var entity = {
-        attributes: customerAttributes(api, visitType, {
-          ADD_ON_REFS: textList(input && input.addOnRefs),
-          BOOKING_ORIGIN: "CUSTOMER_PORTAL",
-          BOOKING_OPTIONS_VERSION: text6(input && input.bookingOptionsVersion) || null,
-          CUSTOMER_NOTE: text6(input && input.customerNote) || null,
-          LOCATION_LABEL: text6(input && input.locationLabel) || null,
-          LOCATION_RESOURCE: positiveInteger6(input && input.locationResourceId),
-          REQUEST_REF: requestRef,
-          RESOURCES: resourceIds,
-          SERVICE_PRODUCT: serviceProductId,
-          SPECIALIST_ACCOUNT: specialistAccountId,
-          VISIT_MODE: text6(input && input.visitMode) || null
-        }),
-        code,
-        end,
-        nls: { en: { NAME: serviceName } },
-        organization: { id: organization.id },
-        start,
-        task: { id: taskId },
-        type: { id: visitType.id },
-        workflow: { id: visitType.workflow.id }
-      };
-      var savedIds = await requestJson4(fetchImpl, api.serviceBase + "/api/appointment/save.json", requestOptions2(api, {
-        entities: [entity],
-        mappings: APPOINTMENT_MAPPINGS
-      }));
-      var id = positiveInteger6(Array.isArray(savedIds) && savedIds[0]);
-      if (!id) throw contractError4("invalid-save-response", "Core Appointment save did not return an id");
-      var requested = await getEntity(fetchImpl, api.serviceBase + "/api/appointment/get.json?id=" + id, api, APPOINTMENT_MAPPINGS);
-      return confirmRequestedAppointment(requested, api, fetchImpl, accountId, input);
-    });
-  }
-  function customerFlightPart(context) {
-    var state2 = context && context.state || {};
-    var session2 = context && context.session || state2.session || {};
-    var customer = context && context.account || state2.customerAccount || session2.account || {};
-    return positiveInteger6(customer.id) || "unresolved";
-  }
-  async function confirmRequestedAppointment(row, api, fetchImpl, accountId, input) {
-    if (!row || !positiveInteger6(row.id)) throw contractError4("appointment-not-found", "Core Appointment was not found after booking");
-    if (customerAttributeId(row, "CUSTOMER_ACCOUNT") !== accountId) {
-      throw contractError4("appointment-forbidden", "Booking idempotency resolved another customer's appointment");
-    }
-    var before = normalizeAppointment(row);
-    assertBookingSelection(row, input);
-    if (before.customerStatus === "Confirmed") return before;
-    if (before.customerStatus !== "Requested") {
-      throw contractError4("appointment-request-unavailable", "Core did not keep the booking in a confirmable request state");
-    }
-    try {
-      await requestCommand(
-        fetchImpl,
-        api.serviceBase + "/api/appointment/" + before.backendId + "/send-event.json?event=" + CONFIRM_EVENT,
-        requestOptions2(api, {})
-      );
-    } catch (error2) {
-      if (error2 && error2.code === "core-request-failed" && Number(error2.status) >= 500) {
-        return Object.assign({}, before, { confirmationMode: "studio-request" });
-      }
-      throw error2;
-    }
-    var confirmed = normalizeAppointment(
-      await getEntity(fetchImpl, api.serviceBase + "/api/appointment/get.json?id=" + before.backendId, api, APPOINTMENT_MAPPINGS)
-    );
-    if (confirmed.customerStatus === "Requested") {
-      assertNormalizedBookingSelection(confirmed, input);
-      return Object.assign({}, confirmed, { confirmationMode: "studio-request" });
-    }
-    if (confirmed.customerStatus !== "Confirmed") {
-      throw contractError4("appointment-confirm-unconfirmed", "Core did not report the appointment as scheduled");
-    }
-    assertNormalizedBookingSelection(confirmed, input);
-    return Object.assign({}, confirmed, { confirmationMode: "confirmed" });
-  }
-  function rescheduleCoreAppointment(ref, input, context, fetchImpl = globalThis.fetch, explicitOrigin) {
-    var id = appointmentId(ref);
-    return singleFlight2("appointment:reschedule:" + id, async function() {
-      var api = requestContext(context, explicitOrigin);
-      var current = await getEntity(fetchImpl, api.serviceBase + "/api/appointment/get.json?id=" + id, api, APPOINTMENT_MAPPINGS);
-      if (!current || positiveInteger6(current.id) !== id) throw contractError4("appointment-not-found", "Core Appointment was not found");
-      var start = validIso(input && input.start);
-      var currentStart = Date.parse(current.start);
-      var currentEnd = Date.parse(current.end);
-      var currentDuration = Number.isFinite(currentEnd - currentStart) && currentEnd > currentStart ? currentEnd - currentStart : 60 * 6e4;
-      var duration = (positiveInteger6(input && input.durationMinutes) || Math.round(currentDuration / 6e4)) * 6e4;
-      var entity = {
-        attributes: mergeAppointmentAttributes(current.attributes, current.type, {
-          ADD_ON_REFS: textList(input && input.addOnRefs),
-          BOOKING_OPTIONS_VERSION: text6(input && input.bookingOptionsVersion) || null,
-          CUSTOMER_NOTE: text6(input && input.customerNote) || null,
-          LOCATION_LABEL: text6(input && input.locationLabel) || null,
-          LOCATION_RESOURCE: positiveInteger6(input && input.locationResourceId),
-          RESOURCES: Array.from(new Set((Array.isArray(input && input.resourceIds) ? input.resourceIds : []).map(positiveInteger6).filter(Boolean))),
-          SERVICE_PRODUCT: positiveInteger6(input && input.serviceProductId),
-          SPECIALIST_ACCOUNT: positiveInteger6(input && input.specialistAccountId),
-          VISIT_MODE: text6(input && input.visitMode) || null
-        }),
-        code: text6(current.code),
-        end: new Date(Date.parse(start) + duration).toISOString(),
-        id,
-        nls: current.nls || { en: { NAME: "Spa appointment" } },
-        optimistic: finiteNumber6(current.optimistic, 0),
-        organization: requiredRef(current.organization, "Appointment organization"),
-        start,
-        task: optionalRef(current.task),
-        type: requiredRef(current.type, "Appointment type"),
-        workflow: requiredRef(current.workflow, "Appointment workflow")
-      };
-      if (!entity.task) delete entity.task;
-      await requestJson4(fetchImpl, api.serviceBase + "/api/appointment/save.json", requestOptions2(api, {
-        entities: [entity],
-        mappings: APPOINTMENT_MAPPINGS
-      }));
-      var readback = await getEntity(fetchImpl, api.serviceBase + "/api/appointment/get.json?id=" + id, api, APPOINTMENT_MAPPINGS);
-      assertBookingSelection(readback, input);
-      return normalizeAppointment(readback);
-    });
-  }
-  var ITEM_TYPE_BY_PRODUCT_TYPE = {
-    SPA_MEMBERSHIP: "SPA_ITEM_MEMBERSHIP",
-    SPA_PACKAGE: "SPA_ITEM_PACKAGE",
-    SPA_RETAIL: "SPA_ITEM_RETAIL",
-    SPA_SERVICE: "SPA_ITEM_SERVICE"
-  };
-  var ORDER_ITEM_SAVE_MAPPINGS = [
-    { name: "amount" },
-    { name: "attributes" },
-    { name: "id" },
-    { name: "itemCount" },
-    { name: "notes" },
-    { name: "optimistic" },
-    { name: "sortOrder" },
-    { key: "id", name: "itemPrice", type: "identifier" },
-    { key: "id", name: "order", type: "identifier" },
-    { key: "id", name: "organization", type: "identifier" },
-    { key: "id", mappings: REF_MAPPINGS3, name: "type", type: "identifier" },
-    { key: "id", mappings: REF_MAPPINGS3, name: "workflow", type: "identifier" }
-  ];
-  function createCoreOrder(input, context, fetchImpl = globalThis.fetch, explicitOrigin) {
-    var requestRef = idempotencyPart(input && input.requestRef || "checkout");
-    var lines = Array.isArray(input && input.lines) ? input.lines : [];
-    return singleFlight2("order:create:" + requestRef, async function() {
-      var api = requestContext(context, explicitOrigin);
-      var accountId = positiveInteger6(api.customer.id);
-      if (!accountId) throw contractError4("customer-account-required", "Resolved customer Account is required before checkout");
-      if (!lines.length) throw contractError4("order-lines-required", "An order needs at least one cart line");
-      var marker = DEMO_CODE_PREFIX + "ORDER_" + accountId + "_" + requestRef;
-      var rows2 = await listMany(fetchImpl, api.billBase + "/api/order/list.json", api, [
-        { type: "INTEGER", operator: "=", property: "account.id", value: String(accountId) }
-      ], ORDER_MAPPINGS3, [{ field: "id", direction: "DESC" }]);
-      var existing = rows2.find(function(row) {
-        return recordCodeOf(row) === marker || text6(row.notes) === marker;
-      });
-      if (existing) return withOrderLines(fetchImpl, api, normalizeOrder2(existing, accountId), accountId);
-      var resolved = await Promise.all([
-        resolveTypeWithWorkflow(fetchImpl, api, api.billBase, "order-type", ORDER_TYPE, "order-type-missing"),
-        resolveOrganization(fetchImpl, api),
-        resolveByCode(fetchImpl, api, api.coreBase, "dictionary", orderCurrencyCode(api), null, "currency-missing"),
-        itemTypesByCode(fetchImpl, api)
-      ]);
-      var orderType = resolved[0];
-      var organization = resolved[1];
-      var currency = resolved[2];
-      var itemTypes = resolved[3];
-      var planned = lines.map(function(line2, index2) {
-        return plannedLine(line2, index2, itemTypes);
-      });
-      var savedIds = await requestJson4(fetchImpl, api.billBase + "/api/order/save.json", requestOptions2(api, {
-        entities: [{
-          account: { id: accountId },
-          attributes: recordCodeAttributes(orderType, marker),
-          currency: { id: currency.id },
-          // Totals are NOT sent — Core computes grandTotal from the lines.
-          notes: text6(input && input.label) || "Customer portal checkout",
-          organization: { id: organization.id },
-          type: { id: orderType.id },
-          workflow: { id: orderType.workflow.id }
-        }],
-        mappings: ORDER_MAPPINGS3
-      }));
-      var id = positiveInteger6(Array.isArray(savedIds) && savedIds[0]);
-      if (!id) throw contractError4("invalid-save-response", "Core Order save did not return an id");
-      for (var index = 0; index < planned.length; index += 1) {
-        var line = planned[index];
-        await requestJson4(fetchImpl, api.billBase + "/api/order-item/save.json", requestOptions2(api, {
-          entities: [{
-            amount: line.unitAmount,
-            attributes: recordCodeAttributes(line.itemType, marker + "_L" + (index + 1)),
-            itemCount: line.qty,
-            itemPrice: { id: line.priceId },
-            notes: line.productCode,
-            order: { id },
-            organization: { id: organization.id },
-            sortOrder: index + 1,
-            type: { id: line.itemType.id },
-            workflow: { id: line.itemType.workflow.id }
-          }],
-          mappings: ORDER_ITEM_SAVE_MAPPINGS
-        }));
-      }
-      var readback = await getEntity(fetchImpl, api.billBase + "/api/order/get.json?id=" + id, api, ORDER_MAPPINGS3);
-      var order = await withOrderLines(fetchImpl, api, normalizeOrder2(readback, accountId), accountId);
-      if (order.lines.length !== planned.length) {
-        throw contractError4(
-          "order-lines-unconfirmed",
-          "Core reported " + order.lines.length + " of " + planned.length + " order lines after the save"
-        );
-      }
-      return order;
-    });
-  }
-  function plannedLine(line, index, itemTypes) {
-    var priceId = positiveInteger6(line && line.priceId);
-    if (!priceId) throw contractError4("order-line-price-missing", "Cart line " + (index + 1) + " has no price id");
-    var qty = positiveInteger6(line && line.qty);
-    if (!qty) throw contractError4("order-line-count-missing", "Cart line " + (index + 1) + " has no quantity");
-    var unitAmount = finiteNumber6(line && line.unitAmount, null);
-    if (unitAmount == null) throw contractError4("order-line-amount-missing", "Cart line " + (index + 1) + " has no server unit amount");
-    var productTypeCode = text6(line && line.productTypeCode);
-    var itemTypeCode = ITEM_TYPE_BY_PRODUCT_TYPE[productTypeCode];
-    if (!itemTypeCode)
-      throw contractError4(
-        "order-item-type-unmapped",
-        "Product type " + (productTypeCode || "(none)") + " has no SPA_ITEM_* line type"
-      );
-    var itemType = itemTypes[itemTypeCode];
-    if (!itemType) throw contractError4("order-item-type-missing", itemTypeCode + " is not provisioned in this organization");
-    return { itemType, priceId, productCode: text6(line && line.productCode), qty, unitAmount };
-  }
-  async function itemTypesByCode(fetchImpl, api) {
-    var rows2 = await listMany(
-      fetchImpl,
-      api.billBase + "/api/order-item-type/list.json",
-      api,
-      [],
-      TYPE_WITH_WORKFLOW_MAPPINGS2,
-      null,
-      100
-    );
-    var byCode = {};
-    rows2.forEach(function(row) {
-      if (row.workflow && positiveInteger6(row.workflow.id)) byCode[text6(row.code)] = row;
-    });
-    return byCode;
-  }
-  async function withOrderLines(fetchImpl, api, order, accountId) {
-    var rows2 = await listMany(fetchImpl, api.billBase + "/api/order-item/list.json", api, [
-      { type: "INTEGER", operator: "=", property: "order.id", value: String(order.id) }
-    ], ORDER_ITEM_SAVE_MAPPINGS, [{ field: "sortOrder", direction: "ASC" }], 200);
-    return Object.assign({}, order, {
-      accountId,
-      lines: rows2.map(function(row) {
-        return {
-          itemCount: finiteNumber6(row.itemCount, 0),
-          priceId: positiveInteger6(row.itemPrice && row.itemPrice.id),
-          productCode: text6(row.notes),
-          typeCode: text6(row.type && row.type.code),
-          unitAmount: finiteNumber6(row.amount, null)
-        };
-      })
-    });
-  }
-  var TYPE_WITH_WORKFLOW_MAPPINGS2 = [
-    { name: "id" },
-    { name: "code" },
-    { key: "id", mappings: REF_MAPPINGS3, name: "workflow", type: "identifier" }
-  ];
-  async function resolveByCode(fetchImpl, api, base, endpoint, code, mappings, errorCode) {
-    var row = await listOne(fetchImpl, base + "/api/" + endpoint + "/list.json", api, [
-      { type: "STRING", operator: "=", property: "code", value: code }
-    ], mappings || [{ name: "id" }, { name: "code" }]);
-    if (!row) throw contractError4(errorCode || "reference-missing", endpoint + " " + code + " is not provisioned in this organization");
-    return row;
-  }
-  function resolveTypeWithWorkflow(fetchImpl, api, base, endpoint, code, errorCode) {
-    return resolveByCode(fetchImpl, api, base, endpoint, code, TYPE_WITH_WORKFLOW_MAPPINGS2, errorCode).then(function(row) {
-      if (!row.workflow || !positiveInteger6(row.workflow.id))
-        throw contractError4(errorCode || "reference-missing", endpoint + " " + code + " has no workflow");
-      return row;
-    });
-  }
-  function resolveOrganization(fetchImpl, api) {
-    return resolveByCode(fetchImpl, api, api.coreBase, "organization", api.organization, null, "organization-missing");
-  }
-  function orderCurrencyCode(api) {
-    return text6(api.config.currency || api.config.pimCurrency) || "USD";
-  }
-  var TASK_MAPPINGS = [
-    { name: "attributes" },
-    { name: "code" },
-    { name: "id" },
-    { name: "nls" },
-    { name: "optimistic" },
-    { key: "id", name: "organization", type: "identifier" },
-    { key: "id", name: "project", type: "identifier" },
-    { key: "id", mappings: REF_MAPPINGS3, name: "type", type: "identifier" },
-    { key: "id", mappings: REF_MAPPINGS3, name: "workflow", type: "identifier" }
-  ];
-  var CARE_PLAN_TYPE = "SPA_CARE_PLAN";
-  var CARE_PLAN_MAPPINGS = [
-    { name: "attributes" },
-    { name: "code" },
-    { name: "id" },
-    { key: "id", mappings: REF_MAPPINGS3, name: "type", type: "identifier" }
-  ];
-  async function resolveCarePlan(fetchImpl, api) {
-    var accountId = positiveInteger6(api.customer && api.customer.id);
-    if (!accountId) throw contractError4("customer-account-required", "Resolved customer Account is required before booking");
-    var rows2 = await listMany(fetchImpl, api.serviceBase + "/api/project/list.json", api, [
-      { type: "STRING", operator: "=", property: "type.code", value: CARE_PLAN_TYPE }
-    ], CARE_PLAN_MAPPINGS);
-    var owned = rows2.find(function(row) {
-      return customerAttributeId(row, "CUSTOMER_ACCOUNT") === accountId;
-    });
-    if (!owned) throw contractError4("care-plan-missing", "This customer has no care plan to record a visit against");
-    return owned;
-  }
-  async function ensureVisitTask(fetchImpl, api, options2) {
-    var existing = await listOne(fetchImpl, api.serviceBase + "/api/task/list.json", api, [
-      { type: "STRING", operator: "=", property: "code", value: options2.code }
-    ], TASK_MAPPINGS);
-    if (existing) return positiveInteger6(existing.id);
-    var careTasks = await listMany(fetchImpl, api.serviceBase + "/api/task/list.json", api, [
-      { type: "STRING", operator: "=", property: "type.code", value: CARE_TASK_TYPE }
-    ], TASK_MAPPINGS);
-    var reusable = careTasks.find(function(row) {
-      return positiveInteger6(row && row.project && row.project.id) === positiveInteger6(options2.carePlan && options2.carePlan.id);
-    });
-    if (reusable && positiveInteger6(reusable.id)) return positiveInteger6(reusable.id);
-    var savedIds = await requestJson4(fetchImpl, api.serviceBase + "/api/task/save.json", requestOptions2(api, {
-      entities: [{
-        attributes: customerAttributes(api, options2.taskType),
-        code: options2.code,
-        nls: { en: { NAME: options2.serviceName } },
-        organization: { id: options2.organization.id },
-        project: { id: options2.carePlan.id },
-        type: { id: options2.taskType.id },
-        workflow: { id: options2.taskType.workflow.id }
-      }],
-      mappings: TASK_MAPPINGS
-    }));
-    var id = positiveInteger6(Array.isArray(savedIds) && savedIds[0]);
-    if (!id) throw contractError4("invalid-save-response", "Core Task save did not return an id");
-    return id;
-  }
-  async function listOne(fetchImpl, url, api, filters, mappings, sorting) {
-    var body = { filters, mappings, offset: 0, pageSize: 1 };
-    if (sorting) body.sorting = sorting;
-    var response = await requestJson4(fetchImpl, url, requestOptions2(api, body));
-    var rows2 = Array.isArray(response && response.result) ? response.result : [];
-    return rows2[0] || null;
-  }
-  async function listMany(fetchImpl, url, api, filters, mappings, sorting, pageSize) {
-    var body = { filters, mappings, offset: 0, pageSize: pageSize || 200 };
-    if (sorting) body.sorting = sorting;
-    var response = await requestJson4(fetchImpl, url, requestOptions2(api, body));
-    return Array.isArray(response && response.result) ? response.result : [];
-  }
-  function recordCodeOf(row) {
-    var typeId = row && row.type && row.type.id;
-    var group = row && row.attributes && typeId != null ? row.attributes[String(typeId)] : null;
-    var entry = group && group.RECORD_CODE;
-    return entry && entry.value != null ? String(entry.value) : "";
-  }
-  function recordCodeAttributes(typeRef, code) {
-    var typeId = typeRef && typeRef.id;
-    if (typeId == null) return {};
-    var attributes = {};
-    attributes[String(typeId)] = { RECORD_CODE: { value: code } };
-    return attributes;
-  }
-  function customerAttributeId(row, code) {
-    var typeId = row && row.type && row.type.id;
-    var group = row && row.attributes && typeId != null ? row.attributes[String(typeId)] : null;
-    var entry = group && group[code];
-    return entry && entry.value != null ? positiveInteger6(entry.value) : null;
-  }
-  function customerAttributes(api, typeRef, extra) {
-    var typeId = typeRef && typeRef.id;
-    if (typeId == null) return {};
-    var values = {};
-    var accountId = positiveInteger6(api.customer && api.customer.id);
-    if (accountId) values.CUSTOMER_ACCOUNT = { value: accountId };
-    if (api.customerUserId) values.CUSTOMER_USER = { value: api.customerUserId };
-    Object.keys(extra || {}).forEach(function(key) {
-      if (extra[key] != null) values[key] = { value: extra[key] };
-    });
-    var attributes = {};
-    attributes[String(typeId)] = values;
-    return attributes;
-  }
-  function mergeAppointmentAttributes(attributes, typeRef, extra) {
-    var result = Object.assign({}, attributes || {});
-    var typeId = typeRef && typeRef.id;
-    if (typeId == null) return result;
-    var group = Object.assign({}, result[String(typeId)] || {});
-    Object.keys(extra || {}).forEach(function(key) {
-      if (extra[key] == null) delete group[key];
-      else group[key] = { value: extra[key] };
-    });
-    result[String(typeId)] = group;
-    return result;
-  }
-  function appointmentAttributeValue(row, code) {
-    var typeId = row && row.type && row.type.id;
-    var group = row && row.attributes && typeId != null ? row.attributes[String(typeId)] : null;
-    var entry = group && group[code];
-    return entry && Object.prototype.hasOwnProperty.call(entry, "value") ? entry.value : null;
-  }
-  function assertBookingSelection(row, input) {
-    if (!input) return;
-    var expected = {
-      addOnRefs: textList(input.addOnRefs),
-      bookingOptionsVersion: text6(input.bookingOptionsVersion),
-      customerNote: text6(input.customerNote),
-      locationLabel: text6(input.locationLabel),
-      locationResourceId: positiveInteger6(input.locationResourceId),
-      visitMode: text6(input.visitMode)
-    };
-    var observed = {
-      addOnRefs: textList(appointmentAttributeValue(row, "ADD_ON_REFS")),
-      bookingOptionsVersion: text6(appointmentAttributeValue(row, "BOOKING_OPTIONS_VERSION")),
-      customerNote: text6(appointmentAttributeValue(row, "CUSTOMER_NOTE")),
-      locationLabel: text6(appointmentAttributeValue(row, "LOCATION_LABEL")),
-      locationResourceId: positiveInteger6(appointmentAttributeValue(row, "LOCATION_RESOURCE")),
-      visitMode: text6(appointmentAttributeValue(row, "VISIT_MODE"))
-    };
-    if (JSON.stringify(expected) !== JSON.stringify(observed)) {
-      throw contractError4("booking-selection-readback-mismatch", "Core Appointment did not retain the selected booking options");
-    }
-  }
-  function assertNormalizedBookingSelection(appointment, input) {
-    if (!input) return;
-    var expectedRefs = textList(input.addOnRefs);
-    if (appointment.visitMode !== text6(input.visitMode) || appointment.location !== text6(input.locationLabel) || appointment.bookingOptionsVersion !== text6(input.bookingOptionsVersion) || appointment.customerNote !== text6(input.customerNote) || JSON.stringify(appointment.addOnRefs) !== JSON.stringify(expectedRefs)) {
-      throw contractError4("booking-selection-readback-mismatch", "Confirmed Appointment did not retain the selected booking options");
-    }
-  }
-  function getEntity(fetchImpl, url, api, mappings) {
-    return requestJson4(fetchImpl, url, requestOptions2(api, mappings));
-  }
-  function requestContext(context, explicitOrigin) {
-    var config = context && context.config || {};
-    var state2 = context && context.state || {};
-    var session2 = context && context.session || state2.session || {};
-    var customer = context && context.account || state2.customerAccount || session2.account || {};
-    var accessToken = text6(session2.accessToken || session2.access_token);
-    if (!accessToken) throw contractError4("session-required", "A Core access token is required");
-    var organization = text6(config.organization);
-    if (!organization) throw contractError4("organization-required", "Verified portal organization is required");
-    var origin = explicitOrigin || config.origin || browserOrigin4();
-    return {
-      authorization: text6(session2.tokenType || session2.token_type || "Bearer") + " " + accessToken,
-      billBase: sameOriginBase4(config.billApiBase || "/core-bill", origin, "Core Bill API base"),
-      config,
-      coreBase: sameOriginBase4(config.coreApiBase || "/core", origin, "Core API base"),
-      customer,
-      customerUserId: positiveInteger6(session2.userId || state2.session && state2.session.userId) || null,
-      organization,
-      resourceBase: sameOriginBase4(config.resourceApiBase || "/core-rm", origin, "Core Resource API base"),
-      serviceBase: sameOriginBase4(config.serviceApiBase || "/core-svc", origin, "Core Service API base")
-    };
-  }
-  function requestOptions2(api, body) {
-    return {
-      method: "POST",
-      credentials: "same-origin",
-      headers: {
-        Authorization: api.authorization,
-        "Content-Type": "application/json",
-        Accept: "application/json",
-        "X-Organization-Code": api.organization
-      },
-      body: JSON.stringify(body)
-    };
-  }
-  async function requestJson4(fetchImpl, url, options2) {
-    var response = await requestResponse(fetchImpl, url, options2);
-    try {
-      return await response.json();
-    } catch (_) {
-      throw contractError4("invalid-response", "Core response was not valid JSON");
-    }
-  }
-  async function requestCommand(fetchImpl, url, options2) {
-    await requestResponse(fetchImpl, url, options2);
-    return true;
-  }
-  async function requestResponse(fetchImpl, url, options2) {
-    var response = await fetchImpl(url, options2);
-    if (!response || typeof response.ok !== "boolean") throw contractError4("invalid-response", "Core request returned an invalid response");
-    if (!response.ok) {
-      var code = response.status === 401 ? "session-expired" : response.status === 403 ? "customer-forbidden" : response.status === 409 || response.status === 412 ? "conflict" : "core-request-failed";
-      var detail = await failureDetail(response);
-      var error2 = contractError4(code, "Core request failed with HTTP " + response.status + (detail ? " \u2014 " + detail : ""));
-      error2.status = response.status;
-      if (detail) error2.serverDetail = detail;
-      throw error2;
-    }
-    return response;
-  }
-  async function failureDetail(response) {
-    try {
-      var raw = "";
-      if (response && typeof response.clone === "function") raw = await response.clone().text();
-      else if (response && typeof response.json === "function") raw = JSON.stringify(await response.json());
-      raw = text6(raw).replace(/\s+/g, " ").slice(0, 500);
-      if (!raw || raw === "{}") return "";
-      try {
-        var parsed2 = JSON.parse(raw);
-        return text6(parsed2 && (parsed2.message || parsed2.error || parsed2.detail)) || raw;
-      } catch (_) {
-        return raw;
-      }
-    } catch (_) {
-      return "";
-    }
-  }
-  function normalizeAppointment(row) {
-    var id = positiveInteger6(row && row.id);
-    if (!id) throw contractError4("invalid-appointment", "Core Appointment response did not include an id");
-    var start = validIso(row.start);
-    var end = validIso(row.end);
-    var states = Array.isArray(row.states) ? row.states.map(function(state2) {
-      return text6(state2 && state2.code);
-    }).filter(Boolean) : [];
-    var status = appointmentStatus(states);
-    var allowedActions = [];
-    if (status === "Confirmed") allowedActions.push("reschedule", "cancel");
-    if (status === "Completed") allowedActions.push("bookAgain");
-    return {
-      ref: REF_PREFIX + id,
-      id: REF_PREFIX + id,
-      backendId: id,
-      optimistic: Number.isFinite(Number(row.optimistic)) ? Number(row.optimistic) : null,
-      code: text6(row.code),
-      service: localizedName5(row.nls) || "Spa appointment",
-      startIso: start,
-      endIso: end,
-      startEpoch: Date.parse(start),
-      start: formatDateTime(start),
-      date: formatDate2(start),
-      time: formatTime2(start),
-      specialist: "",
-      mode: text6(appointmentAttributeValue(row, "VISIT_MODE")) || "salon",
-      visitMode: text6(appointmentAttributeValue(row, "VISIT_MODE")) || "salon",
-      location: text6(appointmentAttributeValue(row, "LOCATION_LABEL")),
-      locationResourceId: positiveInteger6(appointmentAttributeValue(row, "LOCATION_RESOURCE")),
-      addOnRefs: textList(appointmentAttributeValue(row, "ADD_ON_REFS")),
-      customerNote: text6(appointmentAttributeValue(row, "CUSTOMER_NOTE")),
-      bookingOptionsVersion: text6(appointmentAttributeValue(row, "BOOKING_OPTIONS_VERSION")),
-      price: null,
-      displayPrice: null,
-      reference: REF_PREFIX + id,
-      timezoneNote: "America/Chicago",
-      status,
-      customerStatus: status,
-      rawStates: states,
-      allowedActions
-    };
-  }
-  function normalizeOrder2(row, accountId) {
-    var rowAccountId = row && row.account && positiveInteger6(row.account.id);
-    if (rowAccountId !== accountId) throw contractError4("order-scope-mismatch", "Core Order does not belong to the resolved customer Account");
-    var id = positiveInteger6(row && row.id);
-    if (!id) throw contractError4("invalid-order", "Core Order response did not include an id");
-    var states = Array.isArray(row.states) ? row.states.map(function(state2) {
-      return text6(state2 && state2.code);
-    }).filter(Boolean) : [];
-    return {
-      ref: "order-core-" + id,
-      id,
-      optimistic: Number.isFinite(Number(row.optimistic)) ? Number(row.optimistic) : null,
-      notes: text6(row.notes),
-      grandTotal: finiteNumber6(row.grandTotal, 0),
-      totalCharges: finiteNumber6(row.totalCharges, 0),
-      totalTaxes: finiteNumber6(row.totalTaxes, 0),
-      currencyCode: text6(row.currency && row.currency.code),
-      typeCode: text6(row.type && row.type.code),
-      statusCode: states.join(" \xB7 ")
-    };
-  }
-  function appointmentStatus(states) {
-    if (states.includes("COMPLETED")) return "Completed";
-    if (states.includes("CANCELLED")) return "Cancelled";
-    if (states.includes("REJECTED")) return "Rejected";
-    if (states.includes("IN_PROGRESS")) return "In progress";
-    if (states.includes("SCHEDULED")) return "Confirmed";
-    if (states.includes("REQUESTED")) return "Requested";
-    return "Unknown";
-  }
-  function appointmentId(ref) {
-    var value = text6(ref);
-    if (!value.startsWith(REF_PREFIX)) throw contractError4("invalid-appointment-ref", "Appointment reference is invalid");
-    var id = positiveInteger6(value.slice(REF_PREFIX.length));
-    if (!id) throw contractError4("invalid-appointment-ref", "Appointment reference is invalid");
-    return id;
-  }
-  function singleFlight2(key, operation) {
-    if (flights2.has(key)) return flights2.get(key);
-    var promise = Promise.resolve().then(operation).finally(function() {
-      flights2.delete(key);
-    });
-    flights2.set(key, promise);
-    return promise;
-  }
-  function sameOriginBase4(value, origin, label) {
-    if (!origin) throw contractError4("origin-required", label + " requires a browser origin");
-    var target = new URL(String(value || ""), origin);
-    if (target.origin !== new URL(origin).origin) throw contractError4("cross-origin-service", label + " must be same-origin");
-    return target.href.replace(/\/+$/, "");
-  }
-  function browserOrigin4() {
-    return globalThis.location && globalThis.location.origin || "";
-  }
-  function positiveInteger6(value) {
-    var candidate = value && typeof value === "object" && !Array.isArray(value) ? value.id : value;
-    var number = Number(candidate);
-    return Number.isInteger(number) && number > 0 ? number : null;
-  }
-  function finiteNumber6(value, fallback) {
-    var number = Number(value);
-    return Number.isFinite(number) ? number : fallback;
-  }
-  function text6(value) {
-    return typeof value === "string" ? value.trim() : value == null ? "" : String(value).trim();
-  }
-  function textList(value) {
-    return (Array.isArray(value) ? value : value == null || value === "" ? [] : [value]).map(text6).filter(Boolean).sort();
-  }
-  function localizedName5(value) {
-    if (!value || typeof value !== "object") return "";
-    var localized2 = value.en || value["en-US"] || Object.values(value)[0] || {};
-    return text6(localized2 && (localized2.NAME || localized2.name));
-  }
-  function requiredRef(value, label) {
-    var id = value && positiveInteger6(value.id);
-    if (!id) throw contractError4("template-reference-missing", label + " is missing");
-    return { id };
-  }
-  function optionalRef(value) {
-    var id = value && positiveInteger6(value.id);
-    return id ? { id } : null;
-  }
-  function validIso(value) {
-    var date = new Date(value);
-    if (!Number.isFinite(date.getTime())) throw contractError4("invalid-date", "Appointment date is invalid");
-    return date.toISOString();
-  }
-  function idempotencyPart(value, maxLength) {
-    var clean = text6(value).toUpperCase().replace(/[^A-Z0-9]+/g, "_").replace(/^_+|_+$/g, "") || "REQUEST";
-    var limit = positiveInteger6(maxLength) || 32;
-    if (clean.length <= limit) return clean;
-    var suffix = "_" + stableCodeHash(clean);
-    return clean.slice(0, Math.max(1, limit - suffix.length)) + suffix;
-  }
-  function boundedEntityCode(prefix, value, maxLength) {
-    var room = Math.max(10, Number(maxLength) - String(prefix).length);
-    return String(prefix) + idempotencyPart(value, room);
-  }
-  function stableCodeHash(value) {
-    var hash = 2166136261;
-    var input = String(value || "");
-    for (var index = 0; index < input.length; index += 1) hash = Math.imul(hash ^ input.charCodeAt(index), 16777619);
-    return (hash >>> 0).toString(36).toUpperCase().padStart(7, "0");
-  }
-  function formatDate2(value) {
-    return new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", timeZone: "America/Chicago" }).format(new Date(value));
-  }
-  function formatTime2(value) {
-    return new Intl.DateTimeFormat("en-US", { hour: "numeric", minute: "2-digit", timeZone: "America/Chicago" }).format(new Date(value));
-  }
-  function formatDateTime(value) {
-    return new Intl.DateTimeFormat("en-US", { weekday: "short", month: "short", day: "numeric", hour: "numeric", minute: "2-digit", timeZone: "America/Chicago" }).format(new Date(value));
-  }
-  function contractError4(code, message) {
-    var error2 = new Error(message);
-    error2.code = code;
-    return error2;
-  }
-  var coreSpaDemoContract = Object.freeze({
-    appointmentMappings: APPOINTMENT_MAPPINGS,
-    appointmentTypeCode: APPOINTMENT_TYPE,
-    confirmEvent: CONFIRM_EVENT,
-    locationTypeCode: LOCATION_TYPE,
-    orderMappings: ORDER_MAPPINGS3,
-    resourceMappings: RESOURCE_MAPPINGS2,
-    resourceTypeCode: RESOURCE_TYPE,
-    scopeMode: "tenant-demo-unscoped"
   });
 
   // app-templates/customer-portal/runtime/src/adapters/core-oidc-adapter.js
@@ -6454,7 +3588,7 @@
   }
   async function loadCoreOidcSession(config) {
     if (!globalThis.oidc || !globalThis.oidc.UserManager || !globalThis.oidc.WebStorageStateStore) {
-      throw contractError5("oidc-library-unavailable", "Core sign-in library did not load");
+      throw contractError2("oidc-library-unavailable", "Core sign-in library did not load");
     }
     var coreBase = sameOriginUrl(config.authCoreBase || "/core", "Core authentication base").replace(/\/+$/, "");
     var expectedCallback = sameOriginUrl(config.authCallbackPath || "/core/oauth2-callback.html", "Core callback");
@@ -6462,20 +3596,20 @@
       credentials: "omit",
       headers: { Accept: "application/json" }
     });
-    if (!response.ok) throw contractError5("oidc-discovery-failed", "Core authentication discovery failed with HTTP " + response.status);
+    if (!response.ok) throw contractError2("oidc-discovery-failed", "Core authentication discovery failed with HTTP " + response.status);
     var metadata = await response.json();
     var authority = Array.isArray(metadata.authorization_servers) ? metadata.authorization_servers[0] : "";
     if (!authority || !metadata.resource || !metadata.x_client_id || !metadata.x_redirect_uri || !metadata.x_post_logout_redirect_uri) {
-      throw contractError5("oidc-discovery-incomplete", "Core authentication discovery is incomplete");
+      throw contractError2("oidc-discovery-incomplete", "Core authentication discovery is incomplete");
     }
     if (new URL(metadata.resource, globalThis.location.origin).origin !== globalThis.location.origin) {
-      throw contractError5("oidc-cross-origin-resource", "Core authentication resource must be same-origin");
+      throw contractError2("oidc-cross-origin-resource", "Core authentication resource must be same-origin");
     }
     if (new URL(authority, globalThis.location.origin).origin !== globalThis.location.origin) {
-      throw contractError5("oidc-cross-origin-authority", "Core authorization server must be same-origin");
+      throw contractError2("oidc-cross-origin-authority", "Core authorization server must be same-origin");
     }
     if (new URL(metadata.x_redirect_uri, globalThis.location.origin).href !== expectedCallback || new URL(metadata.x_post_logout_redirect_uri, globalThis.location.origin).href !== expectedCallback) {
-      throw contractError5("oidc-callback-mismatch", "Core authentication callback does not match the portal contract");
+      throw contractError2("oidc-callback-mismatch", "Core authentication callback does not match the portal contract");
     }
     manager = new globalThis.oidc.UserManager({
       authority,
@@ -6500,43 +3634,43 @@
     });
   }
   function startCoreOidcSignIn(config) {
-    if (!manager) return Promise.reject(contractError5("oidc-manager-unavailable", "Core sign-in is not ready"));
+    if (!manager) return Promise.reject(contractError2("oidc-manager-unavailable", "Core sign-in is not ready"));
     var returnUrl = portalRouteUrl(config, config.defaultRoute || "orders.list");
     globalThis.sessionStorage.setItem(config.authReturnStorageKey || "oidc-return-url", returnUrl.href);
     return manager.signinRedirect();
   }
   function startCoreOidcSignOut(config) {
-    if (!manager) return Promise.reject(contractError5("oidc-manager-unavailable", "Core sign-out is not ready"));
+    if (!manager) return Promise.reject(contractError2("oidc-manager-unavailable", "Core sign-out is not ready"));
     var configured = config && config.logoutReturnUrl;
     var returnUrl = configured ? new URL(configured) : new URL(globalThis.location.href);
     if (!configured) returnUrl.hash = "#/login";
     if (configured && (returnUrl.protocol !== "https:" || !(config.allowedNavOrigins || []).includes(returnUrl.origin))) {
-      return Promise.reject(contractError5("oidc-logout-return-invalid", "Configured sign-out return URL is not allowlisted"));
+      return Promise.reject(contractError2("oidc-logout-return-invalid", "Configured sign-out return URL is not allowlisted"));
     }
     globalThis.sessionStorage.setItem(config.authLogoutReturnStorageKey || "oidc-logout-return-url", returnUrl.href);
     return manager.signoutRedirect();
   }
   function sameOriginUrl(value, label) {
     var url = new URL(value, globalThis.location.origin);
-    if (url.origin !== globalThis.location.origin) throw contractError5("cross-origin-service", label + " must be same-origin");
+    if (url.origin !== globalThis.location.origin) throw contractError2("cross-origin-service", label + " must be same-origin");
     return url.href;
   }
   function portalRouteUrl(config, routeId) {
     var configured = config && config.portalUrl;
     var returnUrl = configured ? new URL(configured) : new URL(globalThis.location.href);
     if (configured && (returnUrl.protocol !== "https:" || !(config.allowedNavOrigins || []).includes(returnUrl.origin))) {
-      throw contractError5("oidc-return-invalid", "Configured portal return URL is not allowlisted");
+      throw contractError2("oidc-return-invalid", "Configured portal return URL is not allowlisted");
     }
     var route = routePath(routeId);
     if (config.routerMode === "history") {
-      if (!returnUrl.pathname.endsWith("/")) throw contractError5("oidc-return-invalid", "History-mode portal URL must end with a slash");
+      if (!returnUrl.pathname.endsWith("/")) throw contractError2("oidc-return-invalid", "History-mode portal URL must end with a slash");
       returnUrl.pathname += route.replace(/^\//, "");
       return returnUrl;
     }
     returnUrl.hash = "#" + route;
     return returnUrl;
   }
-  function contractError5(code, message) {
+  function contractError2(code, message) {
     var error2 = new Error(message);
     error2.code = code;
     return error2;
@@ -6591,54 +3725,54 @@
     };
   }
   async function loadCoreUserProfile(context, fetchImpl = globalThis.fetch, explicitOrigin) {
-    var api = requestContext2(context, explicitOrigin);
-    var row = await requestJson5(fetchImpl, api.base + "/api/user/get.json?id=" + api.userId, options(api, USER_MAPPINGS));
+    var api = requestContext(context, explicitOrigin);
+    var row = await requestJson2(fetchImpl, api.base + "/api/user/get.json?id=" + api.userId, options(api, USER_MAPPINGS));
     var phone = api.accountId ? await loadAccountPhone(api, fetchImpl) : null;
     return normalize(row, api.userId, phone);
   }
   async function loadAccountPhone(api, fetchImpl) {
     if (!api.accountBase) return null;
-    var response = await requestJson5(fetchImpl, api.accountBase + "/api/account/list.json", options(api, {
+    var response = await requestJson2(fetchImpl, api.accountBase + "/api/account/list.json", options(api, {
       filters: [{ type: "INTEGER", operator: "=", property: "id", value: String(api.accountId) }],
       mappings: ACCOUNT_CONTACT_MAPPINGS,
       offset: 0,
       pageSize: 1
     }));
     var account = (Array.isArray(response && response.result) ? response.result : [])[0];
-    if (!account || positiveInteger7(account.id) !== api.accountId) return null;
+    if (!account || positiveInteger2(account.id) !== api.accountId) return null;
     var contacts = Array.isArray(account.contacts) ? account.contacts : [];
     for (var index = 0; index < contacts.length; index += 1) {
       var entries = Array.isArray(contacts[index].contactEntries) ? contacts[index].contactEntries : [];
       for (var entryIndex = 0; entryIndex < entries.length; entryIndex += 1) {
         var entry = entries[entryIndex];
-        if (text7(entry.type && entry.type.code) === "PHONE" && text7(entry.value)) return text7(entry.value);
+        if (text2(entry.type && entry.type.code) === "PHONE" && text2(entry.value)) return text2(entry.value);
       }
     }
     return null;
   }
   async function saveCoreUserProfile(input, context, fetchImpl = globalThis.fetch, explicitOrigin) {
-    var api = requestContext2(context, explicitOrigin);
-    var current = await requestJson5(fetchImpl, api.base + "/api/user/get.json?id=" + api.userId, options(api, USER_MAPPINGS));
+    var api = requestContext(context, explicitOrigin);
+    var current = await requestJson2(fetchImpl, api.base + "/api/user/get.json?id=" + api.userId, options(api, USER_MAPPINGS));
     var entity = {
-      email: text7(input && input.email),
+      email: text2(input && input.email),
       enabled: current.enabled !== false,
-      fullname: text7(current.fullname),
+      fullname: text2(current.fullname),
       id: api.userId,
-      language: requiredRef2(current.language, "User language"),
-      name: text7(current.name),
-      optimistic: finiteNumber7(current.optimistic, 0),
-      workflow: requiredRef2(current.workflow, "User workflow")
+      language: requiredRef(current.language, "User language"),
+      name: text2(current.name),
+      optimistic: finiteNumber3(current.optimistic, 0),
+      workflow: requiredRef(current.workflow, "User workflow")
     };
     if (!entity.email) throw error("profile-email-required", "Email is required");
-    await requestJson5(fetchImpl, api.base + "/api/user/save.json", options(api, { entities: [entity], mappings: USER_MAPPINGS }));
-    var readback = await requestJson5(fetchImpl, api.base + "/api/user/get.json?id=" + api.userId, options(api, USER_MAPPINGS));
+    await requestJson2(fetchImpl, api.base + "/api/user/save.json", options(api, { entities: [entity], mappings: USER_MAPPINGS }));
+    var readback = await requestJson2(fetchImpl, api.base + "/api/user/get.json?id=" + api.userId, options(api, USER_MAPPINGS));
     return normalize(readback, api.userId);
   }
   function normalize(row, userId, phone) {
-    if (!row || positiveInteger7(row.id) !== userId) throw error("profile-scope-mismatch", "Core User readback did not match the signed-in User");
+    if (!row || positiveInteger2(row.id) !== userId) throw error("profile-scope-mismatch", "Core User readback did not match the signed-in User");
     return {
       state: "ready",
-      email: text7(row.email),
+      email: text2(row.email),
       phone: phone || null,
       prefs: {},
       optimistic: Number.isFinite(Number(row.optimistic)) ? Number(row.optimistic) : null,
@@ -6648,30 +3782,30 @@
       unavailableFields: phone ? ["preferences"] : ["phone", "preferences"]
     };
   }
-  function requestContext2(context, explicitOrigin) {
+  function requestContext(context, explicitOrigin) {
     var config = context && context.config || {};
     var state2 = context && context.state || {};
     var session2 = context && context.session || state2.session || {};
-    var token = text7(session2.accessToken || session2.access_token);
-    var userId = positiveInteger7(session2.userId);
+    var token = text2(session2.accessToken || session2.access_token);
+    var userId = positiveInteger2(session2.userId);
     if (!token) throw error("session-required", "A Core access token is required");
     if (!userId) throw error("session-user-required", "The signed-in Core User is required");
     var origin = explicitOrigin || config.origin || globalThis.location && globalThis.location.origin;
-    var base = sameOriginBase5(config.coreApiBase || "/core", origin, "Core API base");
+    var base = sameOriginBase2(config.coreApiBase || "/core", origin, "Core API base");
     var customer = context && context.account || state2.customerAccount || session2.account || {};
     return {
-      accountBase: sameOriginBase5(config.accountApiBase || "/core-acct", origin, "Core Account API base"),
-      accountId: positiveInteger7(customer.id) || null,
+      accountBase: sameOriginBase2(config.accountApiBase || "/core-acct", origin, "Core Account API base"),
+      accountId: positiveInteger2(customer.id) || null,
       base,
-      token: text7(session2.tokenType || session2.token_type || "Bearer") + " " + token,
+      token: text2(session2.tokenType || session2.token_type || "Bearer") + " " + token,
       userId
     };
   }
   function options(api, body) {
     return { method: "POST", credentials: "same-origin", headers: { Authorization: api.token, "Content-Type": "application/json", Accept: "application/json" }, body: JSON.stringify(body) };
   }
-  async function requestJson5(fetchImpl, url, requestOptions4) {
-    var response = await fetchImpl(url, requestOptions4);
+  async function requestJson2(fetchImpl, url, requestOptions) {
+    var response = await fetchImpl(url, requestOptions);
     if (!response || typeof response.ok !== "boolean") throw error("invalid-response", "Core User returned an invalid response");
     if (!response.ok) {
       var code = response.status === 401 ? "session-expired" : response.status === 403 ? "customer-forbidden" : response.status === 409 || response.status === 412 ? "conflict" : "profile-request-failed";
@@ -6685,26 +3819,26 @@
       throw error("invalid-response", "Core User response was not valid JSON");
     }
   }
-  function sameOriginBase5(value, origin, label) {
+  function sameOriginBase2(value, origin, label) {
     if (!origin) throw error("origin-required", label + " requires a browser origin");
     var url = new URL(value, origin);
     if (url.origin !== new URL(origin).origin) throw error("cross-origin-service", label + " must be same-origin");
     return url.href.replace(/\/+$/, "");
   }
-  function requiredRef2(value, label) {
-    var id = value && positiveInteger7(value.id);
+  function requiredRef(value, label) {
+    var id = value && positiveInteger2(value.id);
     if (!id) throw error("profile-reference-missing", label + " is missing");
     return { id };
   }
-  function positiveInteger7(value) {
+  function positiveInteger2(value) {
     var number = Number(value);
     return Number.isInteger(number) && number > 0 ? number : null;
   }
-  function finiteNumber7(value, fallback) {
+  function finiteNumber3(value, fallback) {
     var number = Number(value);
     return Number.isFinite(number) ? number : fallback;
   }
-  function text7(value) {
+  function text2(value) {
     return typeof value === "string" ? value.trim() : value == null ? "" : String(value).trim();
   }
   function error(code, message) {
@@ -6712,13 +3846,12 @@
     failure2.code = code;
     return failure2;
   }
-  var coreUserProfileContract = Object.freeze({ mappings: USER_MAPPINGS, fields: ["email"] });
 
   // app-templates/customer-portal/runtime/src/adapters/core-profile-form-adapter.js
-  var PROFILE_FORM = Object.freeze({ typeCode: "CUSTOMER_PROFILE_UPDATE", preference: "SNOW_CUSTOMER_PROFILE_UPDATE" });
-  var LOGIN_FORM = Object.freeze({ typeCode: "CUSTOMER_LOGIN_CHANGE", preference: "SNOW_CUSTOMER_LOGIN_CHANGE" });
-  var INVOICE_PAYMENT_FORM = Object.freeze({ typeCode: "CUSTOMER_INVOICE_PAYMENT", preference: "SNOW_CUSTOMER_INVOICE_PAYMENT" });
-  var OUTCOMES = Object.freeze(["APPLIED", "REFUSED", "FAILED"]);
+  var PROFILE_FORM = /* @__PURE__ */ Object.freeze({ typeCode: "CUSTOMER_PROFILE_UPDATE", preference: "SNOW_CUSTOMER_PROFILE_UPDATE" });
+  var LOGIN_FORM = /* @__PURE__ */ Object.freeze({ typeCode: "CUSTOMER_LOGIN_CHANGE", preference: "SNOW_CUSTOMER_LOGIN_CHANGE" });
+  var INVOICE_PAYMENT_FORM = /* @__PURE__ */ Object.freeze({ typeCode: "CUSTOMER_INVOICE_PAYMENT", preference: "SNOW_CUSTOMER_INVOICE_PAYMENT" });
+  var OUTCOMES = /* @__PURE__ */ Object.freeze(["APPLIED", "REFUSED", "FAILED"]);
   var FORM_LOCALE = "en";
   var POLL_INTERVAL_MS = 1e3;
   var OUTCOME_TIMEOUT_MS = 45e3;
@@ -6738,25 +3871,25 @@
     var typeIds = {};
     async function formTypeId(form, api) {
       if (typeIds[form.typeCode]) return typeIds[form.typeCode];
-      var type = await requestJson6(fetchImpl, api.origin + "/" + FORM_LOCALE + api.cmsPath + "/api/form-type/" + encodeURIComponent(form.typeCode) + "/get.json", {
+      var type = await requestJson3(fetchImpl, api.origin + "/" + FORM_LOCALE + api.cmsPath + "/api/form-type/" + encodeURIComponent(form.typeCode) + "/get.json", {
         method: "GET",
         credentials: "same-origin",
         headers: { Accept: "application/json" }
       }, "form-type-unavailable");
-      var id = positiveInteger3(type && type.id);
-      if (!id || text3(type.code) !== form.typeCode) throw coded3("form-type-unavailable", "Core did not answer the " + form.typeCode + " form type");
+      var id = positiveInteger(type && type.id);
+      if (!id || text(type.code) !== form.typeCode) throw coded3("form-type-unavailable", "Core did not answer the " + form.typeCode + " form type");
       typeIds[form.typeCode] = id;
       return id;
     }
     var adapter = {
       async submit(form, values, context) {
-        var api = requestContext3(context);
+        var api = requestContext2(context);
         var typeId = await formTypeId(form, api);
         var attributes = {};
-        Object.keys(values).forEach(function(code) {
+        (/* @__PURE__ */ Object.keys(values)).forEach(function(code) {
           attributes[code] = { value: values[code] };
         });
-        var formId = await requestJson6(fetchImpl, api.cmsBase + "/api/form/submit.json", {
+        var formId = await requestJson3(fetchImpl, api.cmsBase + "/api/form/submit.json", {
           method: "POST",
           credentials: "same-origin",
           headers: api.headers({ "Content-Type": "application/json" }),
@@ -6767,7 +3900,7 @@
             metadata: { language: FORM_LOCALE }
           })
         }, "profile-submit-failed");
-        var id = positiveInteger3(formId);
+        var id = positiveInteger(formId);
         if (!id) throw coded3("profile-submit-failed", "Core accepted the form without a form id");
         return id;
       },
@@ -6775,22 +3908,22 @@
         var reported = await adapter.report(form, formId, context, OUTCOMES);
         return {
           outcome: reported.outcome,
-          field: text3(reported.field) || null,
-          message: text3(reported.message),
-          changed: Array.isArray(reported.changed) ? reported.changed.map(text3).filter(Boolean) : []
+          field: text(reported.field) || null,
+          message: text(reported.message),
+          changed: Array.isArray(reported.changed) ? reported.changed.map(text).filter(Boolean) : []
         };
       },
       async report(form, formId, context, outcomes) {
-        var api = requestContext3(context);
+        var api = requestContext2(context);
         var deadline = now() + timeout;
         while (true) {
-          var preferences = await requestJson6(fetchImpl, api.coreBase + "/api/user/preferences.json", {
+          var preferences = await requestJson3(fetchImpl, api.coreBase + "/api/user/preferences.json", {
             method: "GET",
             credentials: "same-origin",
             headers: api.headers({})
           }, "outcome-unreadable");
           var reported = parsed(preferences && preferences[form.preference]);
-          if (reported && positiveInteger3(reported.form) === formId && outcomes.indexOf(reported.outcome) !== -1) return reported;
+          if (reported && positiveInteger(reported.form) === formId && outcomes.indexOf(reported.outcome) !== -1) return reported;
           if (now() >= deadline) throw coded3("outcome-unknown", "Core did not report the outcome of form " + formId + " in time");
           await wait(pollInterval);
         }
@@ -6807,29 +3940,29 @@
       return null;
     }
   }
-  function requestContext3(context) {
+  function requestContext2(context) {
     var config = context && context.config || {};
     var session2 = context && context.state && context.state.session || {};
-    var accessToken = text3(session2.accessToken || session2.access_token);
+    var accessToken = text(session2.accessToken || session2.access_token);
     if (!accessToken) throw coded3("session-expired", "A Core access token is required");
-    var organization = text3(config.organization);
-    var organizationId = positiveInteger3(session2.organizationId);
+    var organization = text(config.organization);
+    var organizationId = positiveInteger(session2.organizationId);
     if (!organization || !organizationId) throw coded3("organization-required", "The portal organization and its id are required");
     var origin = config.origin || globalThis.location && globalThis.location.origin || "";
-    var cmsBase = sameOriginBase6(config.cmsApiBase || "/core-cms", origin, "Core CMS API base");
-    var authorization = text3(session2.tokenType || session2.token_type || "Bearer") + " " + accessToken;
+    var cmsBase = sameOriginBase3(config.cmsApiBase || "/core-cms", origin, "Core CMS API base");
+    var authorization = text(session2.tokenType || session2.token_type || "Bearer") + " " + accessToken;
     return {
       origin: new URL(origin).origin,
       cmsBase,
       cmsPath: new URL(cmsBase).pathname.replace(/\/+$/, ""),
-      coreBase: sameOriginBase6(config.coreApiBase || "/core", origin, "Core API base"),
+      coreBase: sameOriginBase3(config.coreApiBase || "/core", origin, "Core API base"),
       organizationId,
       headers: function(extra) {
         return Object.assign({ Authorization: authorization, Accept: "application/json", "X-Organization-Code": organization }, extra);
       }
     };
   }
-  async function requestJson6(fetchImpl, url, options2, failureCode) {
+  async function requestJson3(fetchImpl, url, options2, failureCode) {
     var response = await fetchImpl(url, options2);
     if (!response || typeof response.ok !== "boolean") throw coded3(failureCode, "Core request returned an invalid response");
     if (!response.ok) {
@@ -6843,7 +3976,7 @@
       throw coded3(failureCode, "Core response was not valid JSON");
     }
   }
-  function sameOriginBase6(value, origin, label) {
+  function sameOriginBase3(value, origin, label) {
     if (!origin) throw coded3("origin-required", label + " requires a browser origin");
     var target = new URL(String(value || ""), origin);
     if (target.origin !== new URL(origin).origin) throw coded3("cross-origin-service", label + " must be same-origin");
@@ -6862,13 +3995,13 @@
   var EMAIL_SHAPE = /^[A-Za-z0-9.!#$%&'*+/=?^_`{|}~-]+@[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?(?:\.[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?)+$/;
   var PHONE_CHARACTERS = /^\+?[0-9 ().-]+$/;
   var CONTROL_CHARACTERS = /[\u0000-\u001f\u007f]/;
-  var field = (code, key, label, type, autocomplete, placeholder) => Object.freeze({ code, key, label, type, autocomplete, placeholder });
-  var PROFILE_EDIT_ROWS = Object.freeze({
-    contact: Object.freeze({ label: "Name", form: PROFILE_FORM, fields: Object.freeze([field("FIRST_NAME", "firstName", "First name", "text", "given-name"), field("LAST_NAME", "lastName", "Last name", "text", "family-name")]) }),
-    email: Object.freeze({ label: "Email", form: PROFILE_FORM, fields: Object.freeze([field("EMAIL", "email", "Email", "email", "email")]) }),
-    phone: Object.freeze({ label: "Phone", form: PROFILE_FORM, fields: Object.freeze([field("PHONE", "phone", "Phone", "tel", "tel")]) }),
-    billing: Object.freeze({ label: "Billing address", form: PROFILE_FORM, fields: Object.freeze([field("BILLING_ADDRESS", "billingAddress", "Billing address", "text", "street-address")]) }),
-    login: Object.freeze({ label: "Account name", form: LOGIN_FORM, fields: Object.freeze([field("LOGIN", "login", "Account name", "email", "username", "name@example.com")]) })
+  var field = (code, key, label, type, autocomplete, placeholder) => /* @__PURE__ */ Object.freeze({ code, key, label, type, autocomplete, placeholder });
+  var PROFILE_EDIT_ROWS = /* @__PURE__ */ Object.freeze({
+    contact: /* @__PURE__ */ Object.freeze({ label: "Name", form: PROFILE_FORM, fields: /* @__PURE__ */ Object.freeze([field("FIRST_NAME", "firstName", "First name", "text", "given-name"), field("LAST_NAME", "lastName", "Last name", "text", "family-name")]) }),
+    email: /* @__PURE__ */ Object.freeze({ label: "Email", form: PROFILE_FORM, fields: /* @__PURE__ */ Object.freeze([field("EMAIL", "email", "Email", "email", "email")]) }),
+    phone: /* @__PURE__ */ Object.freeze({ label: "Phone", form: PROFILE_FORM, fields: /* @__PURE__ */ Object.freeze([field("PHONE", "phone", "Phone", "tel", "tel")]) }),
+    billing: /* @__PURE__ */ Object.freeze({ label: "Billing address", form: PROFILE_FORM, fields: /* @__PURE__ */ Object.freeze([field("BILLING_ADDRESS", "billingAddress", "Billing address", "text", "street-address")]) }),
+    login: /* @__PURE__ */ Object.freeze({ label: "Account name", form: LOGIN_FORM, fields: /* @__PURE__ */ Object.freeze([field("LOGIN", "login", "Account name", "email", "username", "name@example.com")]) })
   });
   var SESSION_ENDED = "Your session ended while the sign-in was changing. Sign in again: with {next} if the change went through, otherwise with {current}.";
   var UNCONFIRMED = "We couldn't confirm the change yet. Reload the page in a minute to see the details on file.";
@@ -6919,7 +4052,7 @@
         fields.push(item.code);
       }
     });
-    if (Object.keys(errors).length) return { errors, values: null };
+    if ((/* @__PURE__ */ Object.keys(errors)).length) return { errors, values: null };
     if (!fields.length) return { errors: {}, values: null };
     if (definition.form === LOGIN_FORM) return { errors: {}, values: { LOGIN: values.LOGIN } };
     return { errors: {}, values: Object.assign({ FIELDS: fields }, values) };
@@ -6959,7 +4092,7 @@
     var changed = options2.onChange;
     var definition = PROFILE_EDIT_ROWS[edit.row];
     var request = profileEditRequest(edit.row, edit.initial, edit.draft);
-    if (Object.keys(request.errors).length) {
+    if ((/* @__PURE__ */ Object.keys(request.errors)).length) {
       edit.errors = request.errors;
       edit.message = null;
       edit.phase = "editing";
@@ -7062,11 +4195,11 @@
   }
 
   // app-templates/customer-portal/runtime/src/normalizers/invoices.js
-  var INVOICE_STATUS = Object.freeze({
-    OVERDUE: Object.freeze({ label: "Overdue", tone: "danger", open: true }),
-    SENT: Object.freeze({ label: "Due", tone: "info", open: true }),
-    PAID: Object.freeze({ label: "Paid", tone: "ok", open: false }),
-    VOID: Object.freeze({ label: "Void", tone: "scheduled", open: false })
+  var INVOICE_STATUS = /* @__PURE__ */ Object.freeze({
+    OVERDUE: /* @__PURE__ */ Object.freeze({ label: "Overdue", tone: "danger", open: true }),
+    SENT: /* @__PURE__ */ Object.freeze({ label: "Due", tone: "info", open: true }),
+    PAID: /* @__PURE__ */ Object.freeze({ label: "Paid", tone: "ok", open: false }),
+    VOID: /* @__PURE__ */ Object.freeze({ label: "Void", tone: "scheduled", open: false })
   });
   function normalizeInvoices(raw) {
     var rows2 = Array.isArray(raw && raw.items) ? raw.items : [];
@@ -7103,11 +4236,11 @@
     return invoice.netDays ? "Net " + invoice.netDays : "";
   }
   function invoiceRecord(row) {
-    var backendId = positiveInteger3(row && row.id);
+    var backendId = positiveInteger(row && row.id);
     var stateCode = latestStateCode(row);
     var status = Object.prototype.hasOwnProperty.call(INVOICE_STATUS, stateCode) ? INVOICE_STATUS[stateCode] : null;
     if (!backendId || !status) return null;
-    var currency = text3(row.order && row.order.currency && row.order.currency.code);
+    var currency = text(row.order && row.order.currency && row.order.currency.code);
     return {
       id: "invoice-core-" + backendId,
       backendId,
@@ -7119,42 +4252,42 @@
       due: isoDate2(row.dueDate),
       netDays: attributeNumber(row, "PAYMENT_NET_TERMS"),
       currency,
-      total: finiteNumber8(row.amountDue),
-      paid: finiteNumber8(row.totalPaidAmount),
+      total: finiteNumber4(row.amountDue),
+      paid: finiteNumber4(row.totalPaidAmount),
       lines: (Array.isArray(row.items) ? row.items : []).map(function(item) {
         return lineRecord(item, currency);
       }).filter(Boolean)
     };
   }
   function lineRecord(item, currency) {
-    var amount = finiteNumber8(item && item.amount);
+    var amount = finiteNumber4(item && item.amount);
     if (amount === null) return null;
-    var count = finiteNumber8(item.itemCount);
+    var count = finiteNumber4(item.itemCount);
     var quantity = count !== null && count > 0 ? count : 1;
     var product = item.itemPrice && item.itemPrice.product;
     return {
-      id: positiveInteger3(item.id),
-      name: localizedName6(product && product.nls) || "Service",
+      id: positiveInteger(item.id),
+      name: localizedName3(product && product.nls) || "Service",
       quantity,
       amount: formatMoney(amount * quantity, currency)
     };
   }
   function isoDate2(value) {
-    var parts = Array.isArray(value) ? value : /^(\d{4})-(\d{2})-(\d{2})$/.exec(text3(value));
+    var parts = Array.isArray(value) ? value : /^(\d{4})-(\d{2})-(\d{2})$/.exec(text(value));
     if (!parts) return "";
     var numbers = Array.isArray(value) ? parts.slice(0, 3).map(Number) : parts.slice(1, 4).map(Number);
     var date = new Date(Date.UTC(numbers[0], numbers[1] - 1, numbers[2]));
     if (date.getUTCFullYear() !== numbers[0] || date.getUTCMonth() !== numbers[1] - 1 || date.getUTCDate() !== numbers[2]) return "";
     return numbers[0] + "-" + String(numbers[1]).padStart(2, "0") + "-" + String(numbers[2]).padStart(2, "0");
   }
-  function finiteNumber8(value) {
+  function finiteNumber4(value) {
     var number = typeof value === "number" ? value : typeof value === "string" && value.trim() !== "" ? Number(value) : Number.NaN;
     return Number.isFinite(number) ? number : null;
   }
-  function localizedName6(value) {
+  function localizedName3(value) {
     if (!value || typeof value !== "object") return "";
-    var localized2 = value.en || value["en-US"] || Object.values(value)[0] || {};
-    return text3(localized2 && (localized2.NAME || localized2.name));
+    var localized = value.en || value["en-US"] || Object.values(value)[0] || {};
+    return text(localized && (localized.NAME || localized.name));
   }
 
   // app-templates/customer-portal/runtime/src/adapters/core-user-preference-adapter.js
@@ -7162,7 +4295,7 @@
     var fetchImpl = options2.fetch || globalThis.fetch;
     return {
       async overwrite(key, value, context) {
-        var api = requestContext3(context);
+        var api = requestContext2(context);
         var response = await fetchImpl(api.coreBase + "/api/user/preference.json", {
           method: "PUT",
           credentials: "same-origin",
@@ -7215,15 +4348,15 @@
   }
 
   // app-templates/customer-portal/runtime/src/invoice-payment.js
-  var PAYABLE_STATES = Object.freeze(["SENT", "OVERDUE"]);
-  var PAYMENT_OUTCOMES = Object.freeze(["READY", "PROCESSING", "REFUSED", "FAILED"]);
+  var PAYABLE_STATES = /* @__PURE__ */ Object.freeze(["SENT", "OVERDUE"]);
+  var PAYMENT_OUTCOMES = /* @__PURE__ */ Object.freeze(["READY", "PROCESSING", "REFUSED", "FAILED"]);
   var TEST_CARD = "4242 4242 4242 4242";
   var OUTCOME_TIMEOUT_MS2 = 6e4;
   var RECORDING_TIMEOUT_MS = 6e4;
   var RECORDING_POLL_MS = 2e3;
-  var BUSY_PHASES = Object.freeze(["starting", "confirming"]);
-  var CLOSABLE_PHASES = Object.freeze(["card", "recording", "paid", "slow", "refused", "failed"]);
-  var PAYMENT_COPY = Object.freeze({
+  var BUSY_PHASES = /* @__PURE__ */ Object.freeze(["starting", "confirming"]);
+  var CLOSABLE_PHASES = /* @__PURE__ */ Object.freeze(["card", "recording", "paid", "slow", "refused", "failed"]);
+  var PAYMENT_COPY = /* @__PURE__ */ Object.freeze({
     title: "Pay invoice",
     starting: "Preparing a secure card payment\u2026",
     cardLabel: "Card details",
@@ -7572,122 +4705,9 @@
     return svg;
   }
 
-  // app-templates/customer-portal/runtime/src/components/shell/SpaTopNav.js
-  function spaBrand() {
-    return h("div", { "class": "top-nav__brand", "data-action": "nav.go", "data-id": "orders.list" }, [
-      h("div", { "class": "brand-logo" }),
-      h("span", { "class": "brand-name", "data-bind": "brand.name" }, state.config.brandName || "Calm Harbor Spa")
-    ]);
-  }
-  function linkActive(key) {
-    if (key === "orders.list") return state.route === "orders.list" || state.route === "order.detail";
-    if (key === "services") return state.route === "services" || state.route === "pricing";
-    if (key === "products") return state.route === "products" || state.route === "cart" || state.route === "checkout";
-    if (key === "account") return ["account", "purchases.list", "purchase.detail", "plan", "profile"].indexOf(state.route) !== -1;
-    return key === state.route;
-  }
-  function SpaTopNav(gated) {
-    var cap = spaCapability();
-    var profile = activeProfile();
-    var open = spaBookingOpen();
-    var cust = spaCustomer();
-    if (gated) {
-      return h("div", { "class": "top-nav-wrap" }, h("nav", { "class": "top-nav", "data-module": "top-nav", "data-visual-id": "top-nav", "data-state": "gated", "data-capability": cap }, [
-        spaBrand(),
-        h("div", { "class": "nav-links" }),
-        h("div", { "class": "top-nav__actions" }, [
-          h("div", { "class": "icon-btn", "data-action": "ui.toggleMode", title: "Toggle light/dark" }, state.mode === "Dark" ? "\u2600" : "\u263E")
-        ])
-      ]));
-    }
-    var links = profile.nav.map(function(n) {
-      var active = linkActive(n.key);
-      return h("span", {
-        "class": "nav-link" + (n.secondary ? " nav-link--secondary" : "") + (active ? " nav-link--active" : ""),
-        "data-action": "nav.go",
-        "data-id": n.key,
-        "data-state": active ? "active" : void 0
-      }, navLabel(n));
-    });
-    var cta = open ? ActionButton({ variant: "btn--primary", label: state.config.primaryCtaLabel || "+ Book", action: "booking.open", visualId: "primary-cta" }) : ActionButton({ variant: "btn--ghost", label: state.config.primaryCtaLabel || "Browse services", action: "nav.go", id: "services", visualId: "primary-cta" });
-    cta.classList.add("spa-cta");
-    if (!open) cta.classList.add("spa-cta--browse");
-    var initial = (cust.fullName || "?").charAt(0).toUpperCase();
-    var accountBtn = h("button", {
-      "class": "account-btn",
-      "data-module": "account-control",
-      "data-visual-id": "account-control",
-      "data-action": "account.menu",
-      "data-state": state.accountMenu ? "open" : void 0,
-      "aria-haspopup": "menu",
-      "aria-expanded": state.accountMenu ? "true" : "false",
-      title: "Account"
-    }, [
-      h("span", { "class": "account-btn__ava" }, initial),
-      h("span", { "class": "account-btn__name", "data-bind": "session.displayName" }, cust.fullName)
-    ]);
-    var nav = h("nav", { "class": "top-nav", "data-module": "top-nav", "data-visual-id": "top-nav", "data-capability": cap, "data-booking": cap === "target-appointments" ? open ? "open" : "closed" : void 0, "data-retail": cap === "target-appointments" ? spaRetailOpen() ? "retail-commerce-open" : "browse-only" : void 0, "data-state": state.accountMenu ? "account-menu-open" : void 0 }, [
-      spaBrand(),
-      h("div", { "class": "nav-links" }, [h("div", { "class": "nav-pill", "data-nav-pill": "true" })].concat(links)),
-      h("div", { "class": "top-nav__actions" }, [
-        h("div", { "class": "icon-btn icon-btn--optional", "data-action": "ui.toggleMode", title: "Toggle light/dark" }, state.mode === "Dark" ? "\u2600" : "\u263E"),
-        /* wave 15 — the bag opens ONLY under retail-commerce-open; the count is the
-           server cart's line count and never implies a reservation */
-        spaRetailOpen() ? h("button", { "class": "icon-btn spa-bag", "data-module": "cart-indicator", "data-visual-id": "cart-indicator", "data-action": "cart.open", title: "Your bag", "data-state": spaCartCount() ? "filled" : "empty" }, [
-          "\u25A1",
-          spaCartCount() ? h("span", { "class": "spa-bag__count", "data-bind": "cart.lines.length" }, String(spaCartCount())) : null
-        ]) : null,
-        cta,
-        accountBtn,
-        h("div", { "class": "icon-btn hamburger", "data-action": "ui.toggleMobileNav", title: "Menu" }, "\u2630")
-      ])
-    ]);
-    if (state.accountMenu) {
-      nav.appendChild(h("div", { "class": "account-menu", "data-module": "account-menu", "data-visual-id": "account-menu", "data-state": "account-menu-open", role: "menu" }, [
-        h("div", { "class": "account-menu__head" }, [
-          h("span", { "class": "account-btn__ava account-menu__ava" }, initial),
-          h("div", { style: "min-width:0;flex:1" }, [
-            h("div", { "class": "account-menu__name", "data-bind": "session.displayName" }, cust.fullName),
-            h("div", { "class": "account-menu__sub" }, "Signed in with the secure account service")
-          ])
-        ]),
-        h("button", { "class": "account-menu__item", "data-action": "support.open", role: "menuitem" }, state.config.navigation && state.config.navigation.support || "Support"),
-        h("button", { "class": "account-menu__item", "data-action": "ui.toggleMode", role: "menuitem" }, state.mode === "Dark" ? "Switch to light mode" : "Switch to dark mode"),
-        h("div", { "class": "account-menu__divider" }),
-        h("button", { "class": "account-menu__item account-menu__item--danger", "data-action": "auth.signOut", role: "menuitem" }, "Sign out")
-      ]));
-    }
-    if (state.mobileNav) {
-      var mob = h(
-        "div",
-        { "class": "mobile-nav", "data-state": "mobile-navigation-open" },
-        profile.nav.map(function(n) {
-          var active = linkActive(n.key);
-          return h("span", { "class": "nav-link" + (active ? " nav-link--active" : ""), "data-action": "nav.go", "data-id": n.key }, navLabel(n));
-        })
-      );
-      mob.appendChild(h("div", { "class": "mobile-nav__divider" }));
-      mob.appendChild(h("span", { "class": "nav-link", "data-action": "support.open" }, state.config.navigation && state.config.navigation.support || "Support"));
-      mob.appendChild(h("span", { "class": "nav-link", "data-action": "auth.signOut" }, "Sign out"));
-      nav.appendChild(mob);
-    }
-    return h("div", { "class": "top-nav-wrap" }, nav);
-  }
-  function navLabel(item) {
-    var configured = state.config.navigation || {};
-    var key = {
-      "orders.list": "primary",
-      services: "services",
-      pricing: "pricing",
-      products: "products",
-      account: "account"
-    }[item.key];
-    return configured[key] || item.label;
-  }
-
   // app-templates/customer-portal/runtime/src/components/shell/TopNav.js
   function TopNav(gated) {
-    if (isSpa()) return SpaTopNav(gated);
+    if (false) return SpaTopNav(gated);
     var profile = activeProfile();
     if (gated) {
       return h("div", { "class": "top-nav-wrap" }, h("nav", { "class": "top-nav", "data-module": "top-nav", "data-visual-id": "top-nav", "data-state": "gated" }, [
@@ -7704,7 +4724,7 @@
         "data-action": "nav.go",
         "data-id": n.key,
         "data-state": active ? "active" : void 0
-      }, navLabel2(n));
+      }, navLabel(n));
     });
     var actions = [
       h("div", { "class": "icon-btn icon-btn--optional", "data-action": "ui.toggleMode", title: "Toggle light/dark" }, state.mode === "Dark" ? "\u2600" : "\u263E")
@@ -7742,9 +4762,9 @@
         { "class": "mobile-nav", "data-state": "mobile-navigation-open" },
         navItems.map(function(n) {
           var active = navActive(n);
-          return h("span", { "class": "nav-link" + (active ? " nav-link--active" : ""), "data-action": "nav.go", "data-id": n.key }, navLabel2(n));
+          return h("span", { "class": "nav-link" + (active ? " nav-link--active" : ""), "data-action": "nav.go", "data-id": n.key }, navLabel(n));
         }).concat(profileEnabled || signInRequired ? [h("div", { "class": "mobile-nav__divider" })] : [], profileEnabled ? [
-          h("span", { "class": "nav-link" + (state.route === "profile" ? " nav-link--active" : ""), "data-action": "profile.open" }, navLabel2({ key: "profile", label: "Profile" }))
+          h("span", { "class": "nav-link" + (state.route === "profile" ? " nav-link--active" : ""), "data-action": "profile.open" }, navLabel({ key: "profile", label: "Profile" }))
         ] : [], signInRequired ? [
           h("span", { "class": "nav-link", "data-module": "mobile-sign-out", "data-action": "auth.signOut" }, "Sign out")
         ] : [])
@@ -7761,10 +4781,10 @@
     return profile && (profile.contact && profile.contact.name || profile.accountName) || "";
   }
   function initials(name) {
-    return String(name || "").split(/\s+/).filter(function(part2) {
-      return /^\p{L}/u.test(part2);
-    }).slice(0, 2).map(function(part2) {
-      return part2.charAt(0).toUpperCase();
+    return String(name || "").split(/\s+/).filter(function(part) {
+      return /^\p{L}/u.test(part);
+    }).slice(0, 2).map(function(part) {
+      return part.charAt(0).toUpperCase();
     }).join("");
   }
   function primaryConnected(primary) {
@@ -7785,7 +4805,7 @@
     var route = routeRegistry[item.key];
     return !!(route && (route.public || isModuleEnabled(route.module) && navListShown(route.module)));
   }
-  function navLabel2(item) {
+  function navLabel(item) {
     var configured = state.config.navigation || {};
     var key = {
       "orders.list": "primary",
@@ -8930,7 +5950,7 @@
     var source = weatherSource(config, fixtureWeather);
     var centroids = source && source.zoneCentroids || null;
     if (!centroids) return Promise.resolve(null);
-    var zoneOrder = Object.keys(centroids);
+    var zoneOrder = /* @__PURE__ */ Object.keys(centroids);
     if (!zoneOrder.length) return Promise.resolve(null);
     var client = adapter || createXweatherAdapter({
       clientId: config.weatherClientId,
@@ -9023,17 +6043,6 @@
       ActionButton({ variant: "btn--primary", label: "Back to " + (props.backLabel || "overview"), action: "nav.go", id: props.backRoute || "orders.list", visualId: "not-found-back" })
     ]);
   }
-  function ConflictBanner(props) {
-    props = props || {};
-    return h("div", { "class": "conflict-banner", "data-module": "conflict-banner", "data-visual-id": "conflict-banner", "data-state": "conflict", role: "alert" }, [
-      h("div", { "class": "conflict-banner__icon" }, "\u21BA"),
-      h("div", { "class": "conflict-banner__body" }, [
-        h("div", { style: "font-weight:700;font-size:13.5px" }, "This " + (props.noun || "page") + " changed since you opened it"),
-        h("div", { style: "font-size:12.5px;line-height:1.45;color:var(--ink-2);margin-top:2px" }, props.desc || "Load the latest version and review it before deciding \u2014 nothing was submitted.")
-      ]),
-      ActionButton({ variant: "btn--primary", label: "Load latest", action: "ui.retry", id: props.retryId, visualId: "conflict-refresh" })
-    ]);
-  }
   function InlineFailure(props) {
     props = props || {};
     return h("div", { "class": "inline-fail", "data-module": "command-failure", "data-visual-id": "command-failure", "data-state": "failed", role: "alert" }, [
@@ -9044,25 +6053,6 @@
   }
   function skel(style) {
     return h("div", { "class": "skeleton", style });
-  }
-  function listSkeleton(n) {
-    var card = h("div", { "class": "card", "data-state": "loading", "aria-busy": "true" });
-    for (var i = 0; i < (n || 4); i++) card.appendChild(skeletonRow());
-    return card;
-  }
-  function gridSkeleton(cls, n, height) {
-    var g = h("div", { "class": cls, "data-state": "loading", "aria-busy": "true" });
-    for (var i = 0; i < n; i++) g.appendChild(skel("height:" + height + "px;border-radius:20px"));
-    return g;
-  }
-  function routeStateBody(cfg) {
-    var v = cfg.view || state.view;
-    if (!cfg.states || cfg.states.indexOf(v) === -1) return null;
-    if (v === "loading") return cfg.skeleton ? cfg.skeleton() : listSkeleton(4);
-    if (v === "error") return ErrorState(cfg.error || {});
-    if (v === "empty" && cfg.empty) return EmptyState(cfg.empty);
-    if (v === "unauthorized") return UnauthorizedState({ scope: cfg.scope, backRoute: cfg.backRoute });
-    return null;
   }
 
   // app-templates/customer-portal/runtime/src/components/storm/PropertyMap.js
@@ -9389,7 +6379,7 @@
     return h("button", Object.assign(attributes, { type: "button", "data-action": place.action, "aria-label": place.actionLabel || label }), [icon("pin", "ov-pin__glyph")]);
   }
   function WeatherAttribution(source, className) {
-    return text8("div", "ov-attr" + (className ? " " + className : ""), source === "xweather" ? "Weather \xB7 Xweather" : "Sample conditions");
+    return text3("div", "ov-attr" + (className ? " " + className : ""), source === "xweather" ? "Weather \xB7 Xweather" : "Sample conditions");
   }
   function closeOnEscape(target, isOpen2, close) {
     target.addEventListener("keydown", function(event) {
@@ -9473,8 +6463,8 @@
   function PropertyList(key, entries, props, popup) {
     if (!entries.length) {
       return h("div", { "class": "ov-empty", "data-state": "empty" }, [
-        text8("div", "ov-empty__title", "No properties yet"),
-        sourceOpened(props.sources, "contracts") ? text8("div", "ov-empty__desc", "A property appears here once it is under contract.") : null
+        text3("div", "ov-empty__title", "No properties yet"),
+        sourceOpened(props.sources, "contracts") ? text3("div", "ov-empty__desc", "A property appears here once it is under contract.") : null
       ]);
     }
     var list = h(
@@ -9499,8 +6489,8 @@
   function UnplacedProperties(entries, props, popup) {
     return h("div", { "class": "ov-map__unplaced", "data-module": "unplaced-properties", "data-visual-id": "unplaced-properties" }, [
       h("div", { "class": "ov-map__unplaced-head" }, [
-        text8("span", "ov-map__unplaced-title", "Not on the map"),
-        text8("span", "ov-map__unplaced-count", String(entries.length))
+        text3("span", "ov-map__unplaced-title", "Not on the map"),
+        text3("span", "ov-map__unplaced-count", String(entries.length))
       ]),
       PropertyList("unplaced", entries, props, popup)
     ]);
@@ -9522,13 +6512,13 @@
     }, [
       h("span", { "class": "ov-prow__pin" }, [icon("pin", "ov-prow__glyph")]),
       h("span", { "class": "ov-prow__read" }, [
-        text8("span", "ov-prow__name", property.name),
-        line ? text8("span", "ov-prow__addr", line) : null,
-        note ? text8("span", "ov-prow__why", note) : null
+        text3("span", "ov-prow__name", property.name),
+        line ? text3("span", "ov-prow__addr", line) : null,
+        note ? text3("span", "ov-prow__why", note) : null
       ]),
       h("span", { "class": "ov-prow__meta" }, [
-        props.frame ? text8("span", "ov-prow__wx", weatherReading(zoneWeather(property, props.frame), props.frame, props.weather.legend)) : null,
-        status ? text8("span", "ov-tip__tag ov-tip__tag--" + status, OVERVIEW_STATUS[status].label) : null
+        props.frame ? text3("span", "ov-prow__wx", weatherReading(zoneWeather(property, props.frame), props.frame, props.weather.legend)) : null,
+        status ? text3("span", "ov-tip__tag ov-tip__tag--" + status, OVERVIEW_STATUS[status].label) : null
       ])
     ]);
   }
@@ -9542,21 +6532,21 @@
     return h("div", { "class": "ov-tip", "data-module": "property-tooltip", "data-visual-id": "property-tooltip", "data-state": status || void 0, role: "dialog", "aria-label": property.name }, [
       h("div", { "class": "ov-tip__head" }, [
         h("div", { style: "flex:1;min-width:0" }, [
-          text8("div", "ov-tip__name", property.name),
-          property.address && !addressRepeats(property.name, property.address) ? text8("div", "ov-tip__addr", property.address) : null
+          text3("div", "ov-tip__name", property.name),
+          property.address && !addressRepeats(property.name, property.address) ? text3("div", "ov-tip__addr", property.address) : null
         ]),
         h("button", { "class": "ov-tip__close", "data-action": "overview.closeProperty", "aria-label": "Close" }, "\u2715")
       ]),
       status ? h("div", { "class": "ov-tip__tags" }, [
-        text8("span", "ov-tip__tag ov-tip__tag--" + status, OVERVIEW_STATUS[status].label)
+        text3("span", "ov-tip__tag ov-tip__tag--" + status, OVERVIEW_STATUS[status].label)
       ]) : null,
-      line ? text8("div", "ov-tip__line", line) : null,
+      line ? text3("div", "ov-tip__line", line) : null,
       weather ? PopupWeather(weather, legend) : null,
       h("button", { "class": "link-action ov-tip__link", "data-action": "overview.openProperty", "data-id": property.id, "data-visual-id": "property-details" }, "Go to Property \u203A")
     ]);
   }
   function PopupWeather(view, legend) {
-    var own3 = view.state === "property" || view.state === "loading";
+    var own2 = view.state === "property" || view.state === "loading";
     var reading = view.state === "loading" ? "Loading forecast\u2026" : (view.phrase || weatherLabel(view.kind, legend)) + " \xB7 " + view.temp;
     var note = view.state === "failed" ? "This property\u2019s own forecast is unavailable right now." : view.note;
     return h("div", {
@@ -9569,9 +6559,9 @@
       "aria-live": "polite",
       "aria-busy": view.state === "loading" ? "true" : void 0
     }, [
-      text8("div", "ov-tip__wx-scope", (own3 ? "This property" : "Area forecast") + " \xB7 " + view.day),
-      h("div", { "class": "ov-tip__wx-read" }, [h("i"), text8("span", "", reading)]),
-      note ? text8("div", "ov-tip__wx-note", note) : null,
+      text3("div", "ov-tip__wx-scope", (own2 ? "This property" : "Area forecast") + " \xB7 " + view.day),
+      h("div", { "class": "ov-tip__wx-read" }, [h("i"), text3("span", "", reading)]),
+      note ? text3("div", "ov-tip__wx-note", note) : null,
       view.state === "loading" ? h("div", { "class": "ov-tip__wx-note", "aria-hidden": "true" }, "\xA0") : null
     ]);
   }
@@ -9589,17 +6579,17 @@
     popup.setAttribute("data-place", "dock");
     return popup;
   }
-  function text8(tag, className, value) {
+  function text3(tag, className, value) {
     return h(tag, className ? { "class": className } : null, value == null ? "" : String(value));
   }
 
   // app-templates/customer-portal/runtime/src/components/proposals/QuotePackage.js
-  var QUOTE_STATUS = Object.freeze({
-    approved: Object.freeze({ label: "\u2713 Approved", badge: "status-badge--ok", dot: "#34c759" }),
-    revision: Object.freeze({ label: "\u27F3 Revision pending", badge: "status-badge--warn", dot: "#ff9f0a" }),
-    declined: Object.freeze({ label: "\u2715 Declined", badge: "status-badge--danger", dot: "#ff3b30" }),
-    unseen: Object.freeze({ label: "\u25D4 Unseen", badge: "status-badge--scheduled", dot: "#8a94a6" }),
-    viewed: Object.freeze({ label: "\u2022 Reviewing", badge: "status-badge--scheduled", dot: "#8a94a6" })
+  var QUOTE_STATUS = /* @__PURE__ */ Object.freeze({
+    approved: /* @__PURE__ */ Object.freeze({ label: "\u2713 Approved", badge: "status-badge--ok", dot: "#34c759" }),
+    revision: /* @__PURE__ */ Object.freeze({ label: "\u27F3 Revision pending", badge: "status-badge--warn", dot: "#ff9f0a" }),
+    declined: /* @__PURE__ */ Object.freeze({ label: "\u2715 Declined", badge: "status-badge--danger", dot: "#ff3b30" }),
+    unseen: /* @__PURE__ */ Object.freeze({ label: "\u25D4 Unseen", badge: "status-badge--scheduled", dot: "#8a94a6" }),
+    viewed: /* @__PURE__ */ Object.freeze({ label: "\u2022 Reviewing", badge: "status-badge--scheduled", dot: "#8a94a6" })
   });
   var DECISION_META = { approved: "approved", declined: "declined", revision: "revision", open: "unseen" };
   var DECISION_LABEL = {
@@ -9722,7 +6712,7 @@
     return h("div", { "class": "site-list", "data-module": "proposal-list", "data-visual-id": "proposal-list" }, groups.map(function(group, index) {
       var offMap = mapShown && !!group.propertyBackendId && !placements[index].point;
       var summary = [group.address, plural(group.orders.length, "quote", "quotes")].filter(Boolean).join(" \xB7 ");
-      var head2 = [
+      var head = [
         h("span", { "class": "proposal-card__diamond", style: "background:" + QUOTE_STATUS[DECISION_META[group.decision]].dot }),
         h("span", { "class": "proposal-card__body" }, [
           h("span", { "class": "proposal-card__name" }, group.title),
@@ -9733,7 +6723,7 @@
         h("span", { "class": "proposal-card__chev", "aria-hidden": "true" }, "\u203A")
       ];
       return h("section", { "class": "proposal-group", "data-module": "quote-property", "data-visual-id": "quote-property", "data-state": group.decision }, [
-        h("button", { "class": "proposal-card proposal-group__head", "data-action": "proposal.open", "data-id": group.id, "aria-label": "Open the quotes for " + group.title }, head2),
+        h("button", { "class": "proposal-card proposal-group__head", "data-action": "proposal.open", "data-id": group.id, "aria-label": "Open the quotes for " + group.title }, head),
         h("ul", { "class": "proposal-options", "aria-label": "Quotes for " + group.title }, group.orders.map(QuoteOption))
       ]);
     }));
@@ -9966,12 +6956,12 @@
       "aria-label": [settings.label, visitDay(visit, settings.today), visit.status.label].filter(Boolean).join(" \xB7 ")
     }, [
       h("span", { "class": "record-row__main" }, [
-        settings.label ? text9("record-row__eyebrow", settings.label) : null,
-        text9("prop-visit__title", when),
-        settings.place ? text9("prop-visit__meta", settings.place) : null
+        settings.label ? text4("record-row__eyebrow", settings.label) : null,
+        text4("prop-visit__title", when),
+        settings.place ? text4("prop-visit__meta", settings.place) : null
       ]),
-      text9("status-badge status-badge--" + visit.status.tone, visit.status.label),
-      text9("prop-visit__caret", "\u203A")
+      text4("status-badge status-badge--" + visit.status.tone, visit.status.label),
+      text4("prop-visit__caret", "\u203A")
     ]);
   }
   function InvoiceRow(invoice) {
@@ -9989,11 +6979,11 @@
       "aria-label": [title, amount, status].filter(Boolean).join(" \xB7 ")
     }, [
       h("span", { "class": "record-row__main" }, [
-        text9("prop-visit__title", title),
-        amount ? text9("prop-visit__meta record-row__amount", amount) : null
+        text4("prop-visit__title", title),
+        amount ? text4("prop-visit__meta record-row__amount", amount) : null
       ]),
-      text9("status-badge status-badge--" + invoice.status.tone, status),
-      text9("prop-visit__caret", "\u203A")
+      text4("status-badge status-badge--" + invoice.status.tone, status),
+      text4("prop-visit__caret", "\u203A")
     ]);
   }
   function RecordSection(id, title, rows2) {
@@ -10002,7 +6992,7 @@
       h("div", { "class": "record-list" }, rows2)
     ]);
   }
-  function text9(className, value) {
+  function text4(className, value) {
     return h("span", { "class": className }, value == null ? "" : String(value));
   }
 
@@ -10107,8 +7097,8 @@
         skel("width:132px;height:15px;margin:3px 0 7px"),
         skel("width:188px;height:11px")
       ] : [
-        text10("div", "ov-wx__label", "Forecast unavailable"),
-        text10("div", "ov-wx__note", failed ? "The forecast didn\u2019t load. Your properties are shown without it." : "The forecast isn\u2019t set up for this portal yet."),
+        text5("div", "ov-wx__label", "Forecast unavailable"),
+        text5("div", "ov-wx__note", failed ? "The forecast didn\u2019t load. Your properties are shown without it." : "The forecast isn\u2019t set up for this portal yet."),
         failed ? h("button", { "class": "link-action", "data-action": "overview.retryWeather", type: "button", style: "margin-top:6px" }, "Try again \u203A") : null
       ])
     ]);
@@ -10120,15 +7110,15 @@
     return h("div", { "class": "ov-wx", "data-module": "weather-summary", "data-visual-id": "weather-summary", "data-weather": frame.kind }, [
       h("span", { "class": "ov-wx__mark" }, [icon("snowflake", "ov-wx__glyph")]),
       h("div", { "class": "ov-wx__read" }, [
-        text10("div", "ov-wx__temp", frame.temp),
-        text10("div", "ov-wx__label", frame.label),
-        line ? text10("div", "ov-wx__note", line) : null,
+        text5("div", "ov-wx__temp", frame.temp),
+        text5("div", "ov-wx__label", frame.label),
+        line ? text5("div", "ov-wx__note", line) : null,
         WeatherAttribution(source)
       ]),
       stats.length ? h("div", { "class": "ov-wx__stats" }, stats.map(function(stat) {
         return h("div", { "class": "ov-wx__stat" }, [
-          text10("span", "ov-wx__stat-label", stat.label),
-          text10("span", "ov-wx__stat-value", stat.value)
+          text5("span", "ov-wx__stat-label", stat.label),
+          text5("span", "ov-wx__stat-value", stat.value)
         ]);
       })) : null
     ]);
@@ -10152,11 +7142,11 @@
     return h("div", { "class": "ov-map card", "data-module": "property-map", "data-visual-id": "property-map" }, [
       h("div", { "class": "ov-map__head" }, [
         h("span", { "class": "ov-card__icon" }, [icon("map", "ov-icon")]),
-        text10("h2", "ov-card__title", "Your properties"),
+        text5("h2", "ov-card__title", "Your properties"),
         weather ? h("div", { "class": "ov-legend" }, weather.legend.filter(function(item) {
           return statusKnown || item.key !== "issue";
         }).map(function(item) {
-          return h("span", { "class": "ov-legend__item", "data-weather": item.key }, [h("i"), text10("span", "", item.label)]);
+          return h("span", { "class": "ov-legend__item", "data-weather": item.key }, [h("i"), text5("span", "", item.label)]);
         })) : null
       ]),
       stage,
@@ -10202,12 +7192,12 @@
         "aria-label": item.day + " " + item.date + " \u2014 " + item.label + (visits ? " \u2014 " + visits + (visits === 1 ? " visit" : " visits") : visitsKnown ? " \u2014 no visit" : ""),
         "aria-pressed": position === index ? "true" : "false"
       }, [
-        text10("span", "ov-day__name", item.day),
-        text10("span", "ov-day__date", item.date),
+        text5("span", "ov-day__name", item.day),
+        text5("span", "ov-day__date", item.date),
         h("i"),
         h("span", { "class": "ov-day__svc" }, visits ? [
-          text10("b", "", String(visits)),
-          text10("span", "ov-day__svc-word", visits === 1 ? " visit" : " visits")
+          text5("b", "", String(visits)),
+          text5("span", "ov-day__svc-word", visits === 1 ? " visit" : " visits")
         ] : [])
       ]);
     }));
@@ -10240,7 +7230,7 @@
     scheduled.slice(0, 3).forEach(function(property) {
       var appointment = property.appointment;
       card.appendChild(h("div", { "class": "ov-slot", "data-module": "upcoming-row", "data-visual-id": "upcoming-row" }, [
-        appointment.time ? text10("span", "ov-slot__time", appointment.time) : null,
+        appointment.time ? text5("span", "ov-slot__time", appointment.time) : null,
         h("span", { "class": "ov-slot__pin" }, [icon("pin", "ov-slot__glyph")]),
         h("button", {
           "class": "ov-slot__link",
@@ -10248,8 +7238,8 @@
           "data-id": property.id,
           "aria-label": "Open the " + appointment.service + " visit at " + property.name
         }, [
-          text10("span", "ov-row__title", property.name),
-          text10("span", "ov-row__meta", metaOf(appointmentDay(appointment, timeline), appointment.service))
+          text5("span", "ov-row__title", property.name),
+          text5("span", "ov-row__meta", metaOf(appointmentDay(appointment, timeline), appointment.service))
         ])
       ]));
     });
@@ -10287,7 +7277,7 @@
     var card = h("div", { "class": "card card--pad ov-card ov-bill" + (overdue.count ? " ov-bill--alarm" : ""), "data-module": "invoices", "data-visual-id": "invoices", "data-state": overdue.count ? "overdue" : "current" }, [
       h("div", { "class": "ov-card__head" }, [
         h("span", { "class": "ov-card__icon" }, [icon("invoice", "ov-icon")]),
-        text10("h2", "ov-card__title", "Invoices"),
+        text5("h2", "ov-card__title", "Invoices"),
         h("div", { "class": "link-action ov-bill__all", "data-action": "overview.openInvoices" }, "View all \u203A")
       ])
     ]);
@@ -10308,10 +7298,10 @@
     return h("div", { "class": "ov-alarm", "data-module": "overdue-alert", "data-visual-id": "overdue-alert", role: "alert" }, [
       h("span", { "class": "ov-alarm__mark" }, [icon("alert", "ov-alarm__glyph")]),
       h("div", { "class": "ov-alarm__read" }, [
-        text10("div", "ov-alarm__eyebrow", "Overdue amount"),
-        text10("div", "ov-alarm__amount", money(overdue.amount)),
-        text10("div", "ov-alarm__count", "Across " + overdue.count + (overdue.count === 1 ? " overdue invoice" : " overdue invoices")),
-        text10("div", "ov-alarm__warn", "Please make a payment to avoid service interruption.")
+        text5("div", "ov-alarm__eyebrow", "Overdue amount"),
+        text5("div", "ov-alarm__amount", money(overdue.amount)),
+        text5("div", "ov-alarm__count", "Across " + overdue.count + (overdue.count === 1 ? " overdue invoice" : " overdue invoices")),
+        text5("div", "ov-alarm__warn", "Please make a payment to avoid service interruption.")
       ]),
       h("div", { "class": "ov-alarm__act" }, [
         ActionButton({ variant: "btn--danger", label: "View overdue invoices \u2192", action: "overview.openInvoices", visualId: "view-overdue-invoices" })
@@ -10320,9 +7310,9 @@
   }
   function billStat(label, value, count, valueClass) {
     return h("div", { "class": "ov-bill__stat" }, [
-      text10("div", "ov-bill__stat-label", label),
-      text10("div", "ov-bill__stat-value " + valueClass, value),
-      text10("div", "ov-bill__stat-count", String(count) + (count === 1 ? " invoice" : " invoices"))
+      text5("div", "ov-bill__stat-label", label),
+      text5("div", "ov-bill__stat-value " + valueClass, value),
+      text5("div", "ov-bill__stat-count", String(count) + (count === 1 ? " invoice" : " invoices"))
     ]);
   }
   function ContractsWidget(model) {
@@ -10340,10 +7330,10 @@
     contracts.slice(0, 3).forEach(function(contract) {
       card.appendChild(h("div", { "class": "ov-row", "data-module": "contract-row", "data-visual-id": "contract-row" }, [
         h("div", { style: "flex:1;min-width:0" }, [
-          text10("div", "ov-row__title", "Contract #" + contract.number),
-          text10("div", "ov-row__meta", contract.plan)
+          text5("div", "ov-row__title", "Contract #" + contract.number),
+          text5("div", "ov-row__meta", contract.plan)
         ]),
-        text10("span", "status-badge status-badge--ok", "Active")
+        text5("span", "status-badge status-badge--ok", "Active")
       ]));
     });
     if (preparing) card.appendChild(QuotePreparingRow());
@@ -10384,10 +7374,10 @@
     var meta = agreementSummary(row);
     return h("div", { "class": "ov-row", "data-module": "contract-row", "data-visual-id": "contract-row", "data-state": agreement.stage }, [
       h("div", { style: "flex:1;min-width:0" }, [
-        text10("div", "ov-row__title", agreementTitle(row)),
+        text5("div", "ov-row__title", agreementTitle(row)),
         h("div", { "class": "ov-row__line", style: "margin-top:4px;flex-wrap:wrap;row-gap:4px" }, [
-          text10("span", "status-badge status-badge--" + agreement.tone, agreement.label),
-          meta ? text10("span", "ov-row__meta", meta) : null
+          text5("span", "status-badge status-badge--" + agreement.tone, agreement.label),
+          meta ? text5("span", "ov-row__meta", meta) : null
         ])
       ]),
       chevron("agreement.open", row.id, "Open the service agreement " + agreementTitle(row) + " \u2014 " + agreement.label)
@@ -10395,7 +7385,7 @@
   }
   function QuotesWaitingLink(count) {
     return h("button", { "class": "ov-waiting", type: "button", "data-module": "quote-decision", "data-visual-id": "quote-decision", "data-action": "overview.openContracts" }, [
-      text10("span", "ov-waiting__label", plural(count, "quote", "quotes") + " waiting for your decision"),
+      text5("span", "ov-waiting__label", plural(count, "quote", "quotes") + " waiting for your decision"),
       h("span", { "class": "ov-waiting__chev", "aria-hidden": "true" }, "\u203A")
     ]);
   }
@@ -10403,8 +7393,8 @@
     return h("div", { "class": "ov-row", "data-module": "quote-revision", "data-visual-id": "quote-revision", "data-tone": "info" }, [
       h("i", { "class": "ov-dot" }),
       h("div", { style: "flex:1;min-width:0" }, [
-        text10("div", "ov-row__title", "Changes requested"),
-        text10("div", "ov-row__meta", "We\u2019re reviewing the changes you asked for.")
+        text5("div", "ov-row__title", "Changes requested"),
+        text5("div", "ov-row__meta", "We\u2019re reviewing the changes you asked for.")
       ]),
       chevron("overview.openContracts", "", "Go to Contracts")
     ]);
@@ -10423,16 +7413,16 @@
   function contractsProblem(card, stateName, title, desc, retry) {
     card.setAttribute("data-state", stateName);
     card.appendChild(h("div", { "class": "ov-empty", "data-module": "contracts-" + stateName, "data-visual-id": "contracts-" + stateName, "data-state": stateName, role: stateName === "error" ? "alert" : "status" }, [
-      text10("div", "ov-empty__title", title),
-      text10("div", "ov-empty__desc", desc),
+      text5("div", "ov-empty__title", title),
+      text5("div", "ov-empty__desc", desc),
       retry ? h("button", { "class": "link-action", "data-action": "contracts.refresh", type: "button" }, "Try again \u203A") : null
     ]));
     return card;
   }
   function QuotePreparingLine() {
     return h("div", { "class": "ov-empty", "data-module": "quote-preparing", "data-visual-id": "quote-preparing", "data-state": "preparing", role: "status" }, [
-      text10("div", "ov-empty__title", "We have your request"),
-      text10("div", "ov-empty__desc", "We\u2019re preparing your quote. It appears under Contracts once we send it."),
+      text5("div", "ov-empty__title", "We have your request"),
+      text5("div", "ov-empty__desc", "We\u2019re preparing your quote. It appears under Contracts once we send it."),
       h("div", { "class": "link-action", "data-action": "overview.openContracts" }, "Go to Contracts \u203A")
     ]);
   }
@@ -10440,8 +7430,8 @@
     return h("div", { "class": "ov-row", "data-module": "quote-preparing", "data-visual-id": "quote-preparing", "data-state": "preparing", "data-tone": "info", role: "status" }, [
       h("i", { "class": "ov-dot" }),
       h("div", { style: "flex:1;min-width:0" }, [
-        text10("div", "ov-row__title", "Request in preparation"),
-        text10("div", "ov-row__meta", "We have your request and are preparing your quote.")
+        text5("div", "ov-row__title", "Request in preparation"),
+        text5("div", "ov-row__meta", "We have your request and are preparing your quote.")
       ]),
       chevron("overview.openContracts", "", "Go to Contracts")
     ]);
@@ -10452,8 +7442,8 @@
     var card = widget("support-requests", "Support requests", "support");
     if (!requests.length) {
       card.appendChild(h("div", { "class": "ov-empty", "data-state": "empty" }, [
-        text10("div", "ov-empty__title", "No open requests"),
-        text10("div", "ov-empty__desc", "Everything looks good. Need help?"),
+        text5("div", "ov-empty__title", "No open requests"),
+        text5("div", "ov-empty__desc", "Everything looks good. Need help?"),
         h("div", { "class": "link-action", "data-action": "overview.newRequest" }, "Submit a request \u203A")
       ]));
       return card;
@@ -10463,10 +7453,10 @@
       card.appendChild(h("div", { "class": "ov-row", "data-module": "support-row", "data-visual-id": "support-row", "data-tone": request.tone || "info" }, [
         h("i", { "class": "ov-dot" }),
         h("div", { style: "flex:1;min-width:0" }, [
-          text10("div", "ov-row__title", request.title),
+          text5("div", "ov-row__title", request.title),
           h("div", { "class": "ov-row__meta" }, [
-            text10("span", "ov-row__status", request.status),
-            text10("span", "", " \xB7 " + request.when)
+            text5("span", "ov-row__status", request.status),
+            text5("span", "", " \xB7 " + request.when)
           ])
         ]),
         chevron("overview.openSupport", String(position), "Open " + request.title)
@@ -10479,8 +7469,8 @@
     return h("div", { "class": "card card--pad ov-banner", "data-module": "storm-banner", "data-visual-id": "storm-banner" }, [
       h("span", { "class": "ov-banner__mark" }, [icon("snowflake", "ov-icon")]),
       h("div", { style: "flex:1;min-width:0" }, [
-        text10("div", "ov-banner__title", banner.title),
-        text10("div", "ov-banner__copy", banner.copy)
+        text5("div", "ov-banner__title", banner.title),
+        text5("div", "ov-banner__copy", banner.copy)
       ]),
       ActionButton({ variant: "btn--ghost", label: banner.action, action: "overview.newRequest", visualId: "storm-banner-cta" })
     ]);
@@ -10489,17 +7479,17 @@
     return h("div", { "class": "card card--pad ov-card", "data-module": id, "data-visual-id": id }, [
       h("div", { "class": "ov-card__head" }, [
         h("span", { "class": "ov-card__icon" }, [icon(iconName, "ov-icon")]),
-        text10("h2", "ov-card__title", title)
+        text5("h2", "ov-card__title", title)
       ])
     ]);
   }
   function lead(value, label, meta) {
     return h("div", { "class": "ov-lead" }, [
       h("div", { "class": "ov-lead__main" }, [
-        text10("span", "ov-lead__value", value),
-        text10("span", "ov-lead__label", label)
+        text5("span", "ov-lead__value", value),
+        text5("span", "ov-lead__label", label)
       ]),
-      meta ? text10("div", "ov-lead__meta", meta) : null
+      meta ? text5("div", "ov-lead__meta", meta) : null
     ]);
   }
   function metaOf(day, service) {
@@ -10513,11 +7503,11 @@
   }
   function emptyLine(title, desc) {
     return h("div", { "class": "ov-empty", "data-state": "empty" }, [
-      text10("div", "ov-empty__title", title),
-      text10("div", "ov-empty__desc", desc)
+      text5("div", "ov-empty__title", title),
+      text5("div", "ov-empty__desc", desc)
     ]);
   }
-  function text10(tag, className, value) {
+  function text5(tag, className, value) {
     return h(tag, className ? { "class": className } : null, value == null ? "" : String(value));
   }
 
@@ -10631,8 +7621,8 @@
     var card = h("div", { "class": "card card--pad appt", "data-module": "appointments-table", "data-visual-id": "appointments-table" });
     if (!rows2.length) {
       card.appendChild(h("div", { "class": "appt__empty" }, [
-        text11("div", "ov-empty__title", "No visits on this day"),
-        text11("div", "ov-empty__desc", "Pick another date, or clear the filter to see the whole week."),
+        text6("div", "ov-empty__title", "No visits on this day"),
+        text6("div", "ov-empty__desc", "Pick another date, or clear the filter to see the whole week."),
         h("div", { "class": "link-action", "data-action": "appointments.filterDay", "data-id": "" }, "Show all dates \u203A")
       ]));
       page.appendChild(card);
@@ -10640,7 +7630,7 @@
     }
     card.appendChild(Table(rows2, direction));
     page.appendChild(card);
-    page.appendChild(text11("div", "appt__count", rows2.length === all.length ? String(all.length) + (all.length === 1 ? " appointment" : " appointments") : String(rows2.length) + " of " + all.length + " appointments"));
+    page.appendChild(text6("div", "appt__count", rows2.length === all.length ? String(all.length) + (all.length === 1 ? " appointment" : " appointments") : String(rows2.length) + " of " + all.length + " appointments"));
     return page;
   }
   function subline2(rows2, timeline) {
@@ -10658,7 +7648,7 @@
       chips.push(dayChip(frame.day + " " + frame.date, String(index), String(day) === String(index), count));
     });
     return h("div", { "class": "appt-filters", "data-module": "appointment-filters", "data-visual-id": "appointment-filters" }, [
-      text11("span", "appt-filters__label", "Date"),
+      text6("span", "appt-filters__label", "Date"),
       h("div", { "class": "appt-filters__chips", role: "group", "aria-label": "Filter appointments by date" }, chips)
     ]);
   }
@@ -10668,25 +7658,25 @@
       "data-action": "appointments.filterDay",
       "data-id": id,
       "aria-pressed": active ? "true" : "false"
-    }, count ? [text11("span", "", label), text11("span", "appt-chip__count", String(count))] : [text11("span", "", label)]);
+    }, count ? [text6("span", "", label), text6("span", "appt-chip__count", String(count))] : [text6("span", "", label)]);
   }
   function Table(rows2, direction) {
-    var head2 = h("tr", null, COLUMNS.map(function(column) {
+    var head = h("tr", null, COLUMNS.map(function(column) {
       if (!column.sortable) return h("th", { scope: "col" }, column.label);
       return h("th", { scope: "col", "aria-sort": direction === "desc" ? "descending" : "ascending" }, [
         h("button", {
           "class": "appt__sort",
           "data-action": "appointments.sortResource",
           "aria-label": "Sort by resource, currently " + (direction === "desc" ? "descending" : "ascending")
-        }, [text11("span", "", column.label), text11("span", "appt__caret", direction === "desc" ? "\u2193" : "\u2191")])
+        }, [text6("span", "", column.label), text6("span", "appt__caret", direction === "desc" ? "\u2193" : "\u2191")])
       ]);
     }));
     var body = h("tbody", null, rows2.map(function(row) {
       var meta = stateMeta(row.state);
       return h("tr", { "data-module": "appointment-row", "data-visual-id": "appointment-row", "data-state": row.state.toLowerCase() }, [
         h("td", null, [
-          text11("div", "appt__resource", row.resource),
-          row.day ? text11("div", "appt__sub", row.day) : null
+          text6("div", "appt__resource", row.resource),
+          row.day ? text6("div", "appt__sub", row.day) : null
         ]),
         h("td", null, [
           h("button", {
@@ -10695,8 +7685,8 @@
             "data-id": row.id,
             "aria-label": "Open " + row.name
           }, [
-            text11("span", "appt__name", row.name),
-            text11("span", "appt__sub", row.address)
+            text6("span", "appt__name", row.name),
+            text6("span", "appt__sub", row.address)
           ])
         ]),
         h("td", null, [
@@ -10706,8 +7696,8 @@
             "data-id": row.id,
             "aria-label": "Open the " + row.service + " visit at " + row.name
           }, [
-            text11("span", "status-badge status-badge--" + meta.tone, meta.label),
-            text11("span", "appt__sub", row.service)
+            text6("span", "status-badge status-badge--" + meta.tone, meta.label),
+            text6("span", "appt__sub", row.service)
           ])
         ]),
         h("td", { "class": "appt__time" }, row.est || "\u2014"),
@@ -10715,10 +7705,10 @@
       ]);
     }));
     return h("div", { "class": "appt__scroll" }, [
-      h("table", { "class": "appt__table" }, [h("thead", null, [head2]), body])
+      h("table", { "class": "appt__table" }, [h("thead", null, [head]), body])
     ]);
   }
-  function text11(tag, className, value) {
+  function text6(tag, className, value) {
     return h(tag, className ? { "class": className } : null, value == null ? "" : String(value));
   }
 
@@ -10742,10 +7732,10 @@
     var meta = stateMeta(visit.state);
     page.appendChild(h("div", { "class": "prop-head", "data-state": visit.state.toLowerCase() }, [
       h("div", { style: "flex:1;min-width:0" }, [
-        text12("h1", "prop-head__title", visit.service),
-        text12("div", "prop-head__addr", visit.day)
+        text7("h1", "prop-head__title", visit.service),
+        text7("div", "prop-head__addr", visit.day)
       ]),
-      text12("span", "status-badge status-badge--" + meta.tone, meta.label)
+      text7("span", "status-badge status-badge--" + meta.tone, meta.label)
     ]));
     page.appendChild(h("div", { "class": "card card--pad prop-facts", "data-module": "visit-facts", "data-visual-id": "visit-facts" }, [
       fact("Resource", visit.resource),
@@ -10758,11 +7748,11 @@
   }
   function fact(label, value, action, id) {
     return h("div", { "class": "prop-fact" }, [
-      text12("div", "prop-fact__label", label),
-      action ? h("div", { "class": "link-action prop-fact__value", "data-action": action, "data-id": id }, value + " \u203A") : text12("div", "prop-fact__value", value)
+      text7("div", "prop-fact__label", label),
+      action ? h("div", { "class": "link-action prop-fact__value", "data-action": action, "data-id": id }, value + " \u203A") : text7("div", "prop-fact__value", value)
     ]);
   }
-  function text12(tag, className, value) {
+  function text7(tag, className, value) {
     return h(tag, className ? { "class": className } : null, value == null ? "" : String(value));
   }
 
@@ -10813,12 +7803,12 @@
     var height = Math.max(bounds.north - bounds.south, MIN_SPAN) * SCALE;
     var centerX = (bounds.east - bounds.west) * cos * SCALE / 2;
     var centerY = (bounds.north - bounds.south) * SCALE / 2;
-    var pad3 = Math.max(width, height) * PADDING;
+    var pad2 = Math.max(width, height) * PADDING;
     return {
-      x: centerX - width / 2 - pad3,
-      y: centerY - height / 2 - pad3,
-      width: width + pad3 * 2,
-      height: height + pad3 * 2,
+      x: centerX - width / 2 - pad2,
+      y: centerY - height / 2 - pad2,
+      width: width + pad2 * 2,
+      height: height + pad2 * 2,
       dot: Math.max(width, height) / 70,
       project: function(point) {
         return [(point.lng - bounds.west) * cos * SCALE, (bounds.north - point.lat) * SCALE];
@@ -10853,7 +7843,7 @@
   }
   function svgNode(tag, attributes) {
     var node = document.createElementNS(SVG, tag);
-    Object.keys(attributes).forEach(function(name) {
+    (/* @__PURE__ */ Object.keys(attributes)).forEach(function(name) {
       node.setAttribute(name, String(attributes[name]));
     });
     return node;
@@ -10923,9 +7913,9 @@
         if (!Array.isArray(coordinates) || !coordinates.length) return null;
         var polygons = [];
         for (var index = 0; index < coordinates.length; index += 1) {
-          var part2 = polygon(coordinates[index]);
-          if (!part2) return null;
-          polygons.push(part2);
+          var part = polygon(coordinates[index]);
+          if (!part) return null;
+          polygons.push(part);
         }
         return { kind: "area", polygons };
       }
@@ -10999,9 +7989,9 @@
       return bounds;
     }
     function nameOf(element, locale) {
-      var localized2 = ns.normalizer && typeof ns.normalizer.localizedName === "function" ? ns.normalizer.localizedName(element.nls, locale) : "";
+      var localized = ns.normalizer && typeof ns.normalizer.localizedName === "function" ? ns.normalizer.localizedName(element.nls, locale) : "";
       var label = typeof element.label === "string" ? element.label.replace(/\s+/g, " ").trim() : "";
-      return localized2 || label;
+      return localized || label;
     }
     function parse(raw, locale) {
       if (!raw || typeof raw !== "object" || raw.type !== "PropertyPlan" || raw.schemaVersion !== 1 || !Array.isArray(raw.elements)) return null;
@@ -11053,7 +8043,7 @@
         return new Intl.NumberFormat("en", { maximumFractionDigits: 0 }).format(squareFeet);
       }
     }
-    ns.plan = Object.freeze({
+    ns.plan = /* @__PURE__ */ Object.freeze({
       tones: TONES,
       parse,
       formatArea: formatArea2
@@ -11372,10 +8362,10 @@
     page.appendChild(BackLink(model));
     page.appendChild(h("div", { "class": "prop-head" }, [
       h("div", { style: "flex:1;min-width:0" }, [
-        text13("h1", "prop-head__title", property.name),
-        property.address && !addressRepeats(property.name, property.address) ? text13("div", "prop-head__addr", property.address) : null
+        text8("h1", "prop-head__title", property.name),
+        property.address && !addressRepeats(property.name, property.address) ? text8("div", "prop-head__addr", property.address) : null
       ]),
-      status ? text13("span", "status-badge status-badge--" + statusTone(status), OVERVIEW_STATUS[status].label) : null
+      status ? text8("span", "status-badge status-badge--" + statusTone(status), OVERVIEW_STATUS[status].label) : null
     ]));
     var rows2 = facts(property, contract, model, service);
     if (rows2.length) {
@@ -11384,8 +8374,8 @@
         { "class": "card card--pad prop-facts", "data-module": "property-facts", "data-visual-id": "property-facts" },
         rows2.map(function(item) {
           return h("div", { "class": "prop-fact", "data-fact": item.key }, [
-            text13("div", "prop-fact__label", item.label),
-            item.action ? h("div", { "class": "link-action prop-fact__value", "data-action": item.action, "data-id": item.id }, item.value + " \u203A") : text13("div", "prop-fact__value", item.value)
+            text8("div", "prop-fact__label", item.label),
+            item.action ? h("div", { "class": "link-action prop-fact__value", "data-action": item.action, "data-id": item.id }, item.value + " \u203A") : text8("div", "prop-fact__value", item.value)
           ]);
         })
       ));
@@ -11404,8 +8394,8 @@
     if (location) page.appendChild(location);
     if (property.ticket && sectionAvailable(model, "support")) {
       page.appendChild(h("div", { "class": "card card--pad prop-ticket", "data-module": "property-ticket", "data-visual-id": "property-ticket" }, [
-        text13("div", "prop-section__title", "Open request"),
-        text13("div", "prop-ticket__title", property.ticket.title),
+        text8("div", "prop-section__title", "Open request"),
+        text8("div", "prop-ticket__title", property.ticket.title),
         h("div", { "class": "link-action", "data-action": "nav.go", "data-id": "support" }, "Open support \u203A")
       ]));
     }
@@ -11427,13 +8417,13 @@
       return h("div", { "class": "prop-service__entry", "data-module": "property-service-option" }, [
         h("div", { "class": "prop-service__head" }, [
           h("div", { style: "flex:1;min-width:0" }, [
-            text13("div", "prop-service__option", order.pricingModel ? order.pricingModel.label : "Service"),
-            price ? text13("div", "prop-service__price", price) : null
+            text8("div", "prop-service__option", order.pricingModel ? order.pricingModel.label : "Service"),
+            price ? text8("div", "prop-service__price", price) : null
           ]),
           StatusBadge({ variant: "status-badge--" + agreement.tone, label: agreement.label, bind: "agreement.stateLabel", state: agreement.stage })
         ]),
         products.length ? h("ul", { "class": "prop-service__lines", "aria-label": "Services" }, products.map(function(name) {
-          return text13("li", "prop-service__line", name);
+          return text8("li", "prop-service__line", name);
         })) : null
       ]);
     }), [
@@ -11465,25 +8455,25 @@
   }
   function VisitCard(property) {
     var card = h("div", { "class": "card card--pad prop-visits", "data-module": "property-visits", "data-visual-id": "property-visits" }, [
-      text13("div", "prop-section__title", "Service")
+      text8("div", "prop-section__title", "Service")
     ]);
     if (property.appointment) {
       var meta = stateMeta(property.appointment.state);
       card.appendChild(h("div", { "class": "prop-visit", "data-action": "appointments.openVisit", "data-id": property.id, "data-state": property.appointment.state.toLowerCase() }, [
         h("div", { style: "flex:1;min-width:0" }, [
-          text13("div", "prop-visit__title", property.appointment.service),
-          text13("div", "prop-visit__meta", property.appointment.when)
+          text8("div", "prop-visit__title", property.appointment.service),
+          text8("div", "prop-visit__meta", property.appointment.when)
         ]),
-        text13("span", "status-badge status-badge--" + meta.tone, meta.label),
-        text13("span", "prop-visit__caret", "\u203A")
+        text8("span", "status-badge status-badge--" + meta.tone, meta.label),
+        text8("span", "prop-visit__caret", "\u203A")
       ]));
     } else {
-      card.appendChild(text13("div", "prop-visit__meta", "No visit booked. Dispatch happens automatically when your trigger is met."));
+      card.appendChild(text8("div", "prop-visit__meta", "No visit booked. Dispatch happens automatically when your trigger is met."));
     }
     if (property.lastService) {
       card.appendChild(h("div", { "class": "prop-last" }, [
-        text13("div", "prop-fact__label", "Last service"),
-        text13("div", "prop-visit__meta", property.lastService.service + " \xB7 " + property.lastService.when)
+        text8("div", "prop-fact__label", "Last service"),
+        text8("div", "prop-visit__meta", property.lastService.service + " \xB7 " + property.lastService.when)
       ]));
     }
     card.appendChild(h("div", { "class": "prop-visits__foot" }, [
@@ -11557,7 +8547,7 @@
   function statusTone(status) {
     return { issue: "danger", enroute: "progress", scheduled: "info", monitoring: "scheduled" }[status] || "scheduled";
   }
-  function text13(tag, className, value) {
+  function text8(tag, className, value) {
     return h(tag, className ? { "class": className } : null, value == null ? "" : String(value));
   }
 
@@ -11626,10 +8616,10 @@
     if (partial.truncated) notes.push("Only part of your contract history could be shown.");
     return notes.map(PartialNotice);
   }
-  function PartialNotice(text16) {
+  function PartialNotice(text10) {
     return h("div", { "class": "alert-banner alert-banner--partial", "data-module": "contracts-partial", "data-visual-id": "contracts-partial", "data-state": "partial", role: "status" }, [
       h("div", { "class": "alert-banner__icon alert-banner__icon--partial", "aria-hidden": "true" }, "!"),
-      h("div", { "class": "alert-banner__body" }, [h("div", { "class": "alert-banner__desc" }, text16)])
+      h("div", { "class": "alert-banner__body" }, [h("div", { "class": "alert-banner__desc" }, text10)])
     ]);
   }
   function CommandOutcome(phase) {
@@ -11652,10 +8642,10 @@
       ActionButton({ variant: "btn--ghost", label: retry.label, action: retry.action, id: retry.id, visualId: "command-retry" })
     ]);
   }
-  function PendingNote(text16) {
+  function PendingNote(text10) {
     return h("div", { "class": "decision-note", "data-module": "command-pending", "data-visual-id": "command-pending", "data-state": "pending", role: "status" }, [
       h("span", { "class": "decision-note__spinner", "aria-hidden": "true" }),
-      h("span", null, text16)
+      h("span", null, text10)
     ]);
   }
   function ReadbackFailed(kind) {
@@ -12910,10 +9900,10 @@
   }
 
   // app-templates/customer-portal/runtime/src/routes/AuthPage.js
-  function pitchRow(dot, bg, text16) {
+  function pitchRow(dot, bg, text10) {
     return h("div", { style: "display:flex;align-items:center;gap:12px" }, [
       h("div", { style: "width:34px;height:34px;border-radius:10px;background:" + bg + ";display:grid;place-items:center" }, h("i", { style: "width:12px;height:12px;border-radius:4px;background:" + dot + ";display:block" })),
-      h("div", { style: "font-size:14px;color:var(--ink-2)" }, text16)
+      h("div", { style: "font-size:14px;color:var(--ink-2)" }, text10)
     ]);
   }
   function Auth() {
@@ -12998,31 +9988,6 @@
   }
 
   // app-templates/customer-portal/runtime/src/activation-policy.js
-  var HEALTH_CONTROL_SET = Object.freeze([
-    "rbac",
-    "consent",
-    "audit",
-    "secureViewerOrDownload",
-    "leastData"
-  ]);
-  var HEALTH_SENSITIVE_IDS = Object.freeze([
-    "care.live",
-    "care.contactProvider",
-    "care.openSecureDoc",
-    "care.health.order.open",
-    "care.health.order.reschedule",
-    "care.health.support.call"
-  ]);
-  var CARE_SURFACE_CLOSED_IDS = Object.freeze([
-    "care.hvac.booking.open",
-    "care.lawn.service.requestExtra",
-    "care.pool.service.requestExtra",
-    "care.health.order.open",
-    "care.health.order.reschedule",
-    "care.health.support.call",
-    "care.beauty.order.reschedule",
-    "care.beauty.booking.open"
-  ]);
   function markCareControlUnavailable(control, reason) {
     control.setAttribute("disabled", "");
     control.setAttribute("aria-disabled", "true");
@@ -13049,78 +10014,6 @@
         role: "link",
         tabindex: "-1"
       }, "Download"), "Download is unavailable: no approved document destination")
-    ]);
-  }
-  function kvRow(label, val) {
-    return h("div", { "class": "kv-row", style: "padding:5px 0" }, [h("span", null, label), h("b", null, val)]);
-  }
-
-  // app-templates/customer-portal/runtime/src/components/care/EquipmentHub.js
-  var CHECK_DOT = { ok: "var(--ok)", warn: "#ff9f0a", issue: "#ff3b30" };
-  function healthColor(n) {
-    return n >= 80 ? "var(--ok)" : n >= 60 ? "#ff9f0a" : "#ff3b30";
-  }
-  function EquipmentHub(m, ui) {
-    var u = m.units.find(function(x) {
-      return x.id === ui.selectedUnitId;
-    }) || m.units[0];
-    var picker = h(
-      "div",
-      { "class": "unit-row", "data-module": "unit-picker", "data-visual-id": "unit-picker" },
-      m.units.map(function(unit) {
-        var active = unit.id === u.id;
-        return h("button", {
-          "class": "unit-pick" + (active ? " unit-pick--active" : ""),
-          "data-action": "care.selectUnit",
-          "data-id": unit.id,
-          "data-state": active ? "active" : void 0
-        }, [
-          h("div", { style: "display:flex;align-items:center;gap:8px" }, [
-            h("span", { style: "font-weight:700;font-size:14.5px;flex:1", "data-bind": "unit.name" }, unit.name),
-            h("span", { style: "font-weight:700;font-size:12.5px;color:" + healthColor(unit.health), "data-bind": "unit.health" }, unit.health + "%")
-          ]),
-          h("div", { style: "font-size:12px;color:var(--ink-3);margin:2px 0 8px" }, unit.model + " \xB7 " + unit.place),
-          h("div", { "class": "health-bar" }, [h("div", { "class": "health-bar__fill", style: "width:" + unit.health + "%;background:" + healthColor(unit.health) })])
-        ]);
-      })
-    );
-    var report = h("div", { "class": "card card--pad", "data-module": "diagnostic-report", "data-visual-id": "diagnostic-report" }, [
-      h("div", { style: "display:flex;align-items:center;gap:9px" }, [
-        h("div", { "class": "card__title", style: "flex:1" }, "Latest diagnostic"),
-        h("span", { style: "font-size:12.5px;color:var(--ink-3)" }, u.lastVisit)
-      ])
-    ]);
-    u.checks.forEach(function(g) {
-      report.appendChild(h("div", { "class": "check-group" }, g.group));
-      g.items.forEach(function(c) {
-        report.appendChild(h("div", { "class": "check-row", "data-module": "check-row", "data-state": c.state }, [
-          h("span", { "class": "check-dot", style: "background:" + (CHECK_DOT[c.state] || CHECK_DOT.ok) }),
-          h("span", { style: "flex:1;min-width:0" }, c.name),
-          c.note ? h("span", { style: "font-size:12px;color:var(--ink-3)" }, c.note) : null,
-          h("span", { style: "font-weight:600" }, c.val)
-        ]));
-      });
-    });
-    var passport = h("div", { "class": "card card--pad", "data-module": "equipment-passport", "data-visual-id": "equipment-passport" }, [
-      h("div", { "class": "card__title", style: "margin-bottom:10px" }, "Unit passport"),
-      kvRow("Model", u.model),
-      kvRow("Location", u.place),
-      kvRow("Serial", u.serial),
-      kvRow("Installed", u.installed),
-      kvRow("Warranty", u.warranty),
-      kvRow("Last serviced", u.lastVisit),
-      h("div", { style: "margin-top:14px;background:rgba(var(--accent-rgb),.06);border:1px solid rgba(var(--accent-rgb),.14);border-radius:14px;padding:12px 14px;font-size:13px;color:var(--ink-2)" }, [
-        h("b", { style: "color:var(--ink)" }, "Technician\u2019s note \xB7 "),
-        u.note
-      ]),
-      h("div", { style: "margin-top:14px" }, markCareControlUnavailable(ActionButton({ variant: "btn--primary", label: "Book service for this unit", action: "booking.open", block: true, visualId: "care-book-unit" }), "Booking is unavailable: no approved booking destination"))
-    ]);
-    var docs = h("div", { "class": "list-panel", "data-module": "document-vault", "data-visual-id": "document-vault" }, [
-      h("div", { "class": "list-panel__head" }, [h("div", { "class": "list-panel__title", style: "flex:1" }, "Reports & warranties")])
-    ].concat(m.docs.map(DocRow)));
-    return h("div", { "class": "care-grid" }, [
-      h("div", { "class": "care-col" }, [picker, report]),
-      h("div", { "class": "care-col" }, [passport, docs])
     ]);
   }
 
@@ -13177,534 +10070,8 @@
     ])]);
   }
 
-  // app-templates/customer-portal/runtime/src/components/care/LawnProgram.js
-  var STEP_CHIP = { done: ["ok", "Done"], next: ["info", "Next up"], upcoming: ["muted", "Planned"] };
-  function LawnProgram(m) {
-    var program = h("div", { "class": "card card--pad", "data-module": "program-steps", "data-visual-id": "program-steps" }, [
-      h("div", { style: "display:flex;align-items:center" }, [
-        h("div", { "class": "card__title", style: "flex:1" }, "5-step season program"),
-        markCareControlUnavailable(h("div", { "class": "link-action", "data-action": "service.requestExtra", role: "button", tabindex: "-1" }, "Add a visit"), "Extra visits are unavailable: no approved request contract")
-      ])
-    ]);
-    m.steps.forEach(function(s) {
-      var c = STEP_CHIP[s.status] || STEP_CHIP.upcoming;
-      var numStyle = s.status === "done" ? "background:rgba(52,199,89,.16);color:#1f8a44" : s.status === "next" ? "background:rgba(var(--accent-rgb),.14);color:var(--accent)" : "background:rgba(120,120,128,.12);color:var(--ink-3)";
-      program.appendChild(h("div", { "class": "step-row", "data-module": "program-step", "data-state": s.status }, [
-        h("div", { "class": "step-num", style: numStyle }, String(s.n)),
-        h("div", { style: "flex:1;min-width:0" }, [
-          h("div", { style: "font-weight:600;font-size:14px", "data-bind": "step.name" }, s.name),
-          h("div", { style: "font-size:12.5px;color:var(--ink-2);margin-top:1px" }, s.detail + " \xB7 " + s.window)
-        ]),
-        h("div", { style: "text-align:right" }, [
-          careChip(c[0], c[1]),
-          h("div", { style: "font-size:11.5px;color:var(--ink-3);margin-top:4px" }, s.when)
-        ])
-      ]));
-    });
-    var reentry = h("div", { "class": "reentry-card", "data-module": "reentry-card", "data-visual-id": "reentry-card", "data-state": m.reentry.active ? "pending-action" : "ready" }, [
-      h("div", { style: "display:flex;align-items:center;gap:8px" }, [
-        h("span", { style: "font-weight:700;font-size:14.5px;flex:1;color:#b5670a" }, "Kids & pets \u2014 re-entry"),
-        careChip("warn", "Active")
-      ]),
-      h("div", { style: "font-weight:800;font-size:21px;letter-spacing:-.02em;margin:10px 0 2px", "data-bind": "reentry.safeAfter" }, m.reentry.safeAfter),
-      h("div", { style: "font-size:13px;color:var(--ink-2)" }, m.reentry.treatment),
-      h("div", { style: "font-size:12.5px;color:var(--ink-2);margin-top:8px" }, m.reentry.note)
-    ]);
-    var soil = h("div", { "class": "card card--pad", "data-module": "soil-snapshot", "data-visual-id": "soil-snapshot" }, [
-      h("div", { "class": "card__title", style: "margin-bottom:8px" }, "Soil snapshot")
-    ].concat(m.soil.map(function(r) {
-      return kvRow(r.label, r.value);
-    })));
-    var photos = h("div", { "class": "card card--pad", "data-module": "progress-photos", "data-visual-id": "progress-photos" }, [
-      h("div", { "class": "card__title", style: "margin-bottom:12px" }, "Lawn progress"),
-      h(
-        "div",
-        { style: "display:grid;grid-template-columns:repeat(3,1fr);gap:8px" },
-        m.photos.map(function(p) {
-          return h("div", null, [
-            h("div", { "class": "photo-tile" + (p.tone === "after" ? " photo-tile--after" : "") }, [h("span", null, "lawn photo")]),
-            h("div", { style: "font-size:11.5px;color:var(--ink-3);margin-top:5px;text-align:center" }, p.label)
-          ]);
-        })
-      )
-    ]);
-    return h("div", { "class": "care-grid" }, [
-      h("div", { "class": "care-col" }, [program]),
-      h("div", { "class": "care-col" }, [reentry, soil, photos])
-    ]);
-  }
-
-  // app-templates/customer-portal/runtime/src/components/care/WaterQuality.js
-  function WaterQuality(m) {
-    var readings = h(
-      "div",
-      { "class": "reading-grid", "data-module": "water-readings", "data-visual-id": "water-readings" },
-      m.readings.map(function(r) {
-        return h("div", { "class": "reading-card", "data-module": "reading-card", "data-state": r.state }, [
-          h("div", { style: "display:flex;align-items:center;gap:8px" }, [
-            h("span", { style: "font-size:12.5px;color:var(--ink-2);flex:1", "data-bind": "reading.name" }, r.name),
-            careChip(r.state, r.state === "ok" ? "In range" : "Low")
-          ]),
-          h("div", { style: "font-weight:800;font-size:24px;letter-spacing:-.02em;margin-top:6px", "data-bind": "reading.value" }, r.value),
-          h("div", { style: "font-size:11.5px;color:var(--ink-3);margin-top:2px" }, r.target),
-          h("div", { "class": "spark", title: "last 5 visits" }, r.series.map(function(v) {
-            return h("span", { style: "height:" + v + "%" });
-          })),
-          r.note ? h("div", { style: "font-size:12px;color:#b5670a;margin-top:8px;font-weight:600" }, r.note) : null
-        ]);
-      })
-    );
-    var doses = h("div", { "class": "list-panel", "data-module": "dose-log", "data-visual-id": "dose-log" }, [
-      h("div", { "class": "list-panel__head" }, [
-        h("div", { "class": "list-panel__title", style: "flex:1" }, "Dosing log"),
-        h("span", { style: "font-size:12.5px;color:var(--ink-3)" }, "what was added, and why")
-      ])
-    ]);
-    m.doses.forEach(function(d) {
-      doses.appendChild(h("div", { "class": "log-row", "data-module": "dose-row" }, [
-        h("div", { "class": "log-date" }, d.date),
-        h("div", { style: "flex:1;min-width:0" }, [
-          h("div", { style: "font-weight:600;font-size:13.5px" }, d.what),
-          h("div", { style: "font-size:12px;color:var(--ink-3);margin-top:1px" }, d.why)
-        ])
-      ]));
-    });
-    var status = h("div", { "class": "status-banner status-banner--ok", "data-module": "status-banner", "data-visual-id": "swim-ready" }, [
-      h("div", { style: "flex:1" }, [
-        h("div", { style: "font-weight:700;font-size:15px" }, "Swim-ready"),
-        h("div", { style: "font-size:13px;color:var(--ink-2);margin-top:2px" }, "Alkalinity is being corrected \u2014 dose added at the last visit; safe to swim.")
-      ])
-    ]);
-    var cadence = h("div", { "class": "card card--pad", "data-module": "test-cadence", "data-visual-id": "test-cadence" }, [
-      h("div", { "class": "card__title", style: "margin-bottom:10px" }, "Testing cadence"),
-      h("div", { style: "font-size:13.5px;font-weight:600" }, m.tested),
-      h("div", { style: "font-size:13px;color:var(--ink-2);margin-top:6px" }, m.nextTest),
-      h("div", { style: "margin-top:14px" }, markCareControlUnavailable(ActionButton({ variant: "btn--ghost", label: "Request an extra test", action: "service.requestExtra", block: true, visualId: "care-extra-test" }), "Extra tests are unavailable: no approved request contract"))
-    ]);
-    return h("div", { "class": "care-grid" }, [
-      h("div", { "class": "care-col" }, [readings, doses]),
-      h("div", { "class": "care-col" }, [status, cadence])
-    ]);
-  }
-
-  // app-templates/customer-portal/runtime/src/components/care/RoofReport.js
-  var SEV = { ok: ["ok", "Sound"], warn: ["warn", "Monitor"], issue: ["issue", "Repair"] };
-  function RoofReport(m) {
-    var zones = h("div", { "class": "card card--pad", "data-module": "roof-zones", "data-visual-id": "roof-zones" }, [
-      h("div", { style: "display:flex;align-items:center" }, [
-        h("div", { "class": "card__title", style: "flex:1" }, "Findings by zone"),
-        h("span", { style: "font-size:12.5px;color:var(--ink-3)" }, "drone survey \xB7 18 photos")
-      ])
-    ]);
-    m.zones.forEach(function(z) {
-      var s = SEV[z.sev] || SEV.ok;
-      zones.appendChild(h("div", { "class": "log-row", "data-module": "zone-row", "data-state": z.sev }, [
-        h("div", { style: "flex:1;min-width:0" }, [
-          h("div", { style: "font-weight:600;font-size:13.5px", "data-bind": "zone.name" }, z.zone),
-          h("div", { style: "font-size:12.5px;color:var(--ink-2);margin-top:1px" }, z.note)
-        ]),
-        careChip(s[0], s[1])
-      ]));
-    });
-    var steps = h("div", { "class": "timeline" }, [h("div", { "class": "timeline__line" })].concat(
-      m.project.steps.map(function(st) {
-        return h("div", { "class": "timeline-step", "data-module": "timeline-step" }, [
-          h("div", { "class": "timeline-step__dot", style: "background:" + st.dot }),
-          h("div", null, [
-            h("div", { "class": "timeline-step__title", style: st.muted ? "color:var(--ink-3)" : "" }, st.label),
-            h("div", { "class": "timeline-step__sub" }, st.sub)
-          ])
-        ]);
-      })
-    ));
-    var project = h("div", { "class": "card card--pad", "data-module": "project-tracker", "data-visual-id": "project-tracker" }, [
-      h("div", { style: "display:flex;align-items:center;gap:9px" }, [
-        h("div", { "class": "card__title", style: "flex:1" }, m.project.name),
-        careChip("info", "In progress")
-      ]),
-      h("div", { style: "font-size:12.5px;color:var(--ink-2);margin:2px 0 16px" }, m.project.eta),
-      steps
-    ]);
-    var score = h("div", { "class": "card card--pad", "data-module": "roof-score", "data-visual-id": "roof-score" }, [
-      h("div", { style: "display:flex;align-items:center;gap:9px" }, [
-        h("div", { "class": "card__title", style: "flex:1" }, "Roof condition"),
-        careChip("ok", m.grade)
-      ]),
-      h("div", { style: "display:flex;align-items:baseline;gap:6px;margin-top:10px" }, [
-        h("span", { "class": "score-big", "data-bind": "roof.score" }, m.score),
-        h("span", { style: "font-size:14px;color:var(--ink-3);font-weight:600" }, "/ 100")
-      ]),
-      h("div", { style: "font-size:12.5px;color:var(--ink-2);margin-top:8px" }, m.inspected),
-      h("div", { style: "font-size:12.5px;color:var(--ink-2)" }, m.nextDue)
-    ]);
-    var docs = h("div", { "class": "list-panel", "data-module": "document-vault", "data-visual-id": "document-vault" }, [
-      h("div", { "class": "list-panel__head" }, [h("div", { "class": "list-panel__title", style: "flex:1" }, "Documents")])
-    ].concat(m.docs.map(DocRow)));
-    return h("div", { "class": "care-grid" }, [
-      h("div", { "class": "care-col" }, [zones, project]),
-      h("div", { "class": "care-col" }, [score, docs])
-    ]);
-  }
-
-  // app-templates/customer-portal/runtime/src/components/care/PestMonitoring.js
-  var ST = { clear: ["ok", "Clear"], alert: ["issue", "Activity"], refreshed: ["info", "Refreshed"] };
-  var PIN = { clear: "#1f8a44", alert: "#ff3b30", refreshed: "var(--accent)" };
-  function PestMonitoring(m, ui) {
-    var summary = h(
-      "div",
-      { "class": "care-stats", style: "grid-template-columns:repeat(3,1fr)", "data-module": "monitoring-summary", "data-visual-id": "monitoring-summary" },
-      m.summary.map(function(s) {
-        return h("div", { "class": "care-stat" }, [
-          h("div", { style: "font-size:12px;color:var(--ink-3)" }, s.label),
-          h("div", { style: "font-weight:800;font-size:20px;margin-top:2px" }, s.value)
-        ]);
-      })
-    );
-    var map = h("div", { "class": "station-map", "data-module": "station-map", "data-visual-id": "station-map" }, [
-      h("span", { "class": "map-label" }, "station map \xB7 your property")
-    ].concat(m.stations.map(function(s) {
-      return h("div", {
-        "class": "station-pin",
-        title: s.label,
-        "data-state": s.status,
-        style: "left:" + s.x + "%;top:" + s.y + "%;background:" + (PIN[s.status] || PIN.clear)
-      }, s.id);
-    })));
-    var list = h("div", { "class": "card", "data-module": "station-list", "data-visual-id": "station-list" }, [
-      h("div", { "class": "card__head" }, [h("span", { "class": "card__title" }, "Stations & sensors")]),
-      h("div", { style: "padding:0 18px" }, [map])
-    ]);
-    var rows2 = h("div", { style: "padding:0 18px 12px" });
-    m.stations.forEach(function(s) {
-      var c = ST[s.status] || ST.clear;
-      rows2.appendChild(h("div", { "class": "log-row", "data-module": "station-row", "data-state": s.status }, [
-        h("div", { "class": "log-date" }, s.id),
-        h("div", { style: "flex:1;min-width:0" }, [
-          h("div", { style: "font-weight:600;font-size:13.5px", "data-bind": "station.label" }, s.label),
-          h("div", { style: "font-size:12px;color:var(--ink-3);margin-top:1px" }, s.type + " \xB7 " + s.last + (s.note ? " \xB7 " + s.note : ""))
-        ]),
-        careChip(c[0], c[1])
-      ]));
-    });
-    list.appendChild(rows2);
-    var rStatus = ui.retreatPending || ui.retreatRequest && ui.retreatRequest.status === "submitting" ? "requesting" : ui.retreatRequest && ui.retreatRequest.status === "submitted" ? "used" : m.guarantee.status || "available";
-    var sc = m.guarantee.scope;
-    var retreatBody;
-    if (rStatus === "requesting") {
-      retreatBody = h("button", {
-        "class": "btn btn--primary btn--block",
-        disabled: true,
-        "aria-busy": "true",
-        "data-module": "action-button",
-        "data-visual-id": "care-retreat",
-        "data-state": "requesting"
-      }, [h("span", { "class": "btn-spinner" }), "Requesting\u2026"]);
-    } else if (rStatus === "used") {
-      retreatBody = h("button", {
-        "class": "btn btn--ghost btn--block",
-        disabled: true,
-        "data-module": "action-button",
-        "data-visual-id": "care-retreat",
-        "data-state": "unavailable"
-      }, "Re-treat used this quarter");
-    } else {
-      retreatBody = h("button", {
-        "class": "btn btn--primary btn--block",
-        "data-module": "action-button",
-        "data-visual-id": "care-retreat",
-        "data-state": "available",
-        "data-action": "care.requestRetreat",
-        "data-id": sc.planId,
-        "data-property-id": sc.propertyId,
-        "data-service-id": sc.serviceId
-      }, "Request free re-treat");
-    }
-    var guarantee = h("div", { "class": "card card--pad", "data-module": "retreat-card", "data-visual-id": "retreat-card", "data-state": rStatus }, [
-      h("div", { "class": "card__title" }, m.guarantee.title),
-      h(
-        "div",
-        { style: "font-size:13px;color:var(--ink-2);margin-top:6px", "data-bind": "guarantee.note" },
-        rStatus === "used" ? m.guarantee.usedNote : m.guarantee.note
-      ),
-      rStatus === "requesting" ? h("div", { style: "font-size:12px;color:var(--ink-3);margin-top:8px" }, "Sending your request \u2014 your technician confirms the visit window.") : null,
-      ui.retreatError ? h("div", { style: "font-size:12px;color:var(--danger);margin-top:8px", "data-state": "error" }, ui.retreatError) : null,
-      h("div", { style: "margin-top:14px" }, [retreatBody])
-    ]);
-    var alerts = h("div", { "class": "list-panel", "data-module": "alert-log", "data-visual-id": "alert-log" }, [
-      h("div", { "class": "list-panel__head" }, [h("div", { "class": "list-panel__title", style: "flex:1" }, "Sensor alerts")])
-    ]);
-    m.alerts.forEach(function(a) {
-      alerts.appendChild(h("div", { "class": "log-row", "data-module": "alert-row", "data-state": a.state }, [
-        h("span", { "class": "check-dot", style: "background:" + (a.state === "alert" ? "#ff3b30" : "var(--ok)") }),
-        h("div", { style: "flex:1;min-width:0" }, [
-          h("div", { style: "font-weight:600;font-size:13px" }, a.text),
-          h("div", { style: "font-size:11.5px;color:var(--ink-3);margin-top:2px" }, a.when)
-        ])
-      ]));
-    });
-    return h("div", null, [summary, h("div", { "class": "care-grid" }, [
-      h("div", { "class": "care-col" }, [list]),
-      h("div", { "class": "care-col" }, [guarantee, alerts])
-    ])]);
-  }
-
-  // app-templates/customer-portal/runtime/src/components/care/HealthCareHub.js
-  var STEP_CHIP2 = { done: ["ok", "Done"], next: ["info", "Next up"], upcoming: ["muted", "Planned"] };
-  function taskDone(t, ui) {
-    return t.id in ui.tasksDone ? ui.tasksDone[t.id] : !!t.done;
-  }
-  function HealthCareHub(m, ui) {
-    var a = m.appointment;
-    var appt = h("div", { "class": "card card--pad", "data-module": "care-appointment", "data-visual-id": "care-appointment", "data-appointment-id": a.id, "data-provider-id": a.providerId }, [
-      h("div", { style: "display:flex;align-items:center;gap:9px" }, [
-        h("div", { "class": "card__title", style: "flex:1" }, "Next appointment"),
-        careChip("info", "Scheduled")
-      ]),
-      h("div", { style: "font-weight:800;font-size:20px;letter-spacing:-.02em;margin:10px 0 2px", "data-bind": "appointment.when" }, a.when),
-      h("div", { style: "font-size:13.5px;color:var(--ink-2)", "data-bind": "appointment.name" }, a.name + " \xB7 " + a.provider),
-      h("div", { style: "font-size:12.5px;color:var(--ink-3);margin-top:2px" }, a.where),
-      h("div", { style: "margin-top:12px;background:rgba(var(--accent-rgb),.06);border:1px solid rgba(var(--accent-rgb),.14);border-radius:14px;padding:11px 14px;font-size:12.5px;color:var(--ink-2)" }, [
-        h("b", { style: "color:var(--ink)" }, "Before the visit \xB7 "),
-        a.prep
-      ]),
-      h("div", { style: "display:flex;gap:10px;margin-top:14px" }, [
-        markCareControlUnavailable(ActionButton({ variant: "btn--primary", label: "Reschedule", action: "order.reschedule", id: a.orderId, visualId: "care-appt-reschedule" }), "Rescheduling is unavailable: no approved scheduling contract"),
-        markCareControlUnavailable(ActionButton({ variant: "btn--ghost", label: "Visit details", action: "order.open", id: a.orderId, visualId: "care-appt-open" }), "Visit details are unavailable: Health access controls are not complete")
-      ])
-    ]);
-    var plan = h("div", { "class": "card card--pad", "data-module": "care-plan", "data-visual-id": "care-plan", "data-plan-id": m.plan.id }, [
-      h("div", { style: "display:flex;align-items:center;gap:9px" }, [
-        h("div", { "class": "card__title", style: "flex:1", "data-bind": "plan.name" }, m.plan.name),
-        h("span", { style: "font-size:12.5px;color:var(--ink-3)" }, m.plan.cadence)
-      ])
-    ]);
-    m.plan.milestones.forEach(function(s) {
-      var c = STEP_CHIP2[s.status] || STEP_CHIP2.upcoming;
-      var numStyle = s.status === "done" ? "background:rgba(52,199,89,.16);color:#1f8a44" : s.status === "next" ? "background:rgba(var(--accent-rgb),.14);color:var(--accent)" : "background:rgba(120,120,128,.12);color:var(--ink-3)";
-      plan.appendChild(h("div", { "class": "step-row", "data-module": "plan-milestone", "data-state": s.status }, [
-        h("div", { "class": "step-num", style: numStyle }, String(s.n)),
-        h("div", { style: "flex:1;min-width:0" }, [
-          h("div", { style: "font-weight:600;font-size:14px", "data-bind": "milestone.name" }, s.name),
-          h("div", { style: "font-size:12.5px;color:var(--ink-2);margin-top:1px" }, s.detail)
-        ]),
-        h("div", { style: "text-align:right" }, [
-          careChip(c[0], c[1]),
-          h("div", { style: "font-size:11.5px;color:var(--ink-3);margin-top:4px" }, s.when)
-        ])
-      ]));
-    });
-    var doneCount = m.tasks.filter(function(task) {
-      return taskDone(task, ui);
-    }).length;
-    var tasks = h("div", { "class": "list-panel", "data-module": "follow-up-tasks", "data-visual-id": "follow-up-tasks" }, [
-      h("div", { "class": "list-panel__head" }, [
-        h("div", { "class": "list-panel__title", style: "flex:1" }, "Follow-up tasks"),
-        h("span", { style: "font-size:12px;color:var(--ink-3)" }, doneCount + " of " + m.tasks.length + " done")
-      ])
-    ]);
-    m.tasks.forEach(function(t) {
-      var done = taskDone(t, ui);
-      tasks.appendChild(h("div", { "class": "log-row", "data-module": "task-row", "data-task-id": t.id, "data-state": done ? "done" : "open" }, [
-        h("button", {
-          "data-action": "care.completeTask",
-          "data-id": t.id,
-          "aria-pressed": done ? "true" : "false",
-          title: done ? "Mark as not done" : "Mark as done",
-          style: "width:24px;height:24px;border-radius:999px;flex-shrink:0;cursor:pointer;display:grid;place-items:center;font-family:inherit;font-size:12px;padding:0;border:1.5px solid " + (done ? "var(--accent)" : "rgba(120,120,128,.4)") + ";background:" + (done ? "var(--accent)" : "transparent") + ";color:#fff"
-        }, done ? "\u2713" : ""),
-        h("div", { style: "flex:1;min-width:0" }, [
-          h("div", { style: "font-weight:600;font-size:13.5px;" + (done ? "text-decoration:line-through;color:var(--ink-3)" : ""), "data-bind": "task.label" }, t.label),
-          h("div", { style: "font-size:12px;color:var(--ink-3);margin-top:1px" }, t.due)
-        ])
-      ]));
-    });
-    var p = m.provider;
-    var provider = h("div", { "class": "card card--pad", "data-module": "provider-card", "data-visual-id": "provider-card", "data-provider-id": p.id }, [
-      h("div", { style: "display:flex;align-items:center;gap:12px" }, [
-        h(
-          "div",
-          { style: "width:46px;height:46px;border-radius:999px;background:rgba(var(--accent-rgb),.14);color:var(--accent);display:grid;place-items:center;font-weight:800;font-size:16px;flex-shrink:0" },
-          p.name.split(" ").map(function(w) {
-            return w[0];
-          }).join("").slice(0, 2)
-        ),
-        h("div", { style: "flex:1;min-width:0" }, [
-          h("div", { style: "font-weight:700;font-size:15px", "data-bind": "provider.name" }, p.name),
-          h("div", { style: "font-size:12.5px;color:var(--ink-2)" }, p.role)
-        ])
-      ]),
-      h("div", { style: "font-size:12.5px;color:var(--ink-3);margin-top:8px" }, p.org + " \xB7 " + p.since),
-      h("div", { style: "display:flex;flex-direction:column;gap:8px;margin-top:14px" }, [
-        markCareControlUnavailable(ActionButton({ variant: "btn--primary", label: "Message the care team", action: "care.contactProvider", id: p.id, block: true, visualId: "care-contact-provider" }), "Provider contact is unavailable: secure authorization and audit controls are not complete"),
-        markCareControlUnavailable(ActionButton({ variant: "btn--ghost", label: "Call", action: "support.call", block: true, visualId: "care-call-provider" }), "Provider calling is unavailable: no approved destination or audit contract")
-      ]),
-      h("div", { style: "font-size:12px;color:var(--ink-3);margin-top:10px" }, p.note)
-    ]);
-    var docs = h("div", { "class": "list-panel", "data-module": "secure-documents", "data-visual-id": "secure-documents" }, [
-      h("div", { "class": "list-panel__head" }, [
-        h("div", { "class": "list-panel__title", style: "flex:1" }, "Secure documents"),
-        careChip("muted", "\u26BF Secure")
-      ])
-    ]);
-    m.docs.forEach(function(d) {
-      docs.appendChild(h("div", { "class": "log-row", "data-module": "secure-document-row", "data-document-id": d.id }, [
-        h("div", { style: "flex:1;min-width:0" }, [
-          h("div", { style: "font-weight:600;font-size:13.5px", "data-bind": "doc.name" }, d.name),
-          h("div", { style: "font-size:12px;color:var(--ink-3);margin-top:1px", "data-bind": "doc.meta" }, d.meta)
-        ]),
-        h("div", { "class": "link-action", "data-action": "care.openSecureDoc", "data-id": d.id, "data-state": "unavailable", role: "link", "aria-disabled": "true", tabindex: "-1", title: "Secure viewer is unavailable in fixture mode" }, "Open \u203A")
-      ]));
-    });
-    docs.appendChild(h("div", { style: "font-size:12px;color:var(--ink-3);margin-top:10px" }, m.docsNote));
-    var disclaimer = h("div", { "data-module": "care-disclaimer", "data-visual-id": "care-disclaimer", style: "border:1px dashed rgba(var(--hair),.18);border-radius:14px;padding:11px 14px;font-size:12px;color:var(--ink-3)" }, m.disclaimer);
-    return h("div", { "class": "care-grid" }, [
-      h("div", { "class": "care-col" }, [appt, plan, tasks]),
-      h("div", { "class": "care-col" }, [provider, docs, disclaimer])
-    ]);
-  }
-
-  // app-templates/customer-portal/runtime/src/components/care/BeautyCareHub.js
-  function taskDone2(task, ui) {
-    return Object.prototype.hasOwnProperty.call(ui.tasksDone || {}, task.id) ? ui.tasksDone[task.id] : !!task.done;
-  }
-  function BeautyCareHub(m, ui) {
-    var a = m.appointment;
-    var appt = h("div", { "class": "card card--pad", "data-module": "care-appointment", "data-visual-id": "care-appointment", "data-appointment-id": a.id, "data-specialist-id": a.specialistId }, [
-      h("div", { style: "display:flex;align-items:center;gap:9px" }, [
-        h("div", { "class": "card__title", style: "flex:1" }, "Next appointment"),
-        careChip("info", "Scheduled")
-      ]),
-      h("div", { style: "font-weight:800;font-size:20px;letter-spacing:-.02em;margin:10px 0 2px", "data-bind": "appointment.when" }, a.when),
-      h("div", { style: "font-size:13.5px;color:var(--ink-2)", "data-bind": "appointment.name" }, a.name + " \xB7 " + a.specialist),
-      h("div", { style: "font-size:12.5px;color:var(--ink-3);margin-top:2px" }, a.where),
-      h("div", { style: "margin-top:12px;background:rgba(var(--accent-rgb),.06);border:1px solid rgba(var(--accent-rgb),.14);border-radius:14px;padding:11px 14px;font-size:12.5px;color:var(--ink-2)" }, [
-        h("b", { style: "color:var(--ink)" }, "Good to know \xB7 "),
-        a.prep
-      ]),
-      h("div", { style: "display:flex;gap:10px;margin-top:14px" }, [
-        markCareControlUnavailable(ActionButton({ variant: "btn--primary", label: "Reschedule", action: "order.reschedule", id: a.orderId, visualId: "care-appt-reschedule" }), "Rescheduling is unavailable: no approved scheduling contract"),
-        ActionButton({ variant: "btn--ghost", label: "Visit details", action: "order.open", id: a.orderId, visualId: "care-appt-open" })
-      ])
-    ]);
-    var pk = m.pkg;
-    var pct = Math.round(pk.used / pk.total * 100);
-    var pkg = h("div", { "class": "card card--pad", "data-module": "package-card", "data-visual-id": "package-card", "data-package-id": pk.id }, [
-      h("div", { style: "display:flex;align-items:center;gap:9px;flex-wrap:wrap" }, [
-        h("div", { "class": "card__title", style: "flex:1", "data-bind": "pkg.name" }, pk.name),
-        h("span", { style: "font-size:12.5px;color:var(--ink-3)" }, pk.detail)
-      ]),
-      h("div", { style: "font-weight:800;font-size:20px;letter-spacing:-.02em;margin:10px 0 0", "data-bind": "pkg.used" }, pk.used + " of " + pk.total + " sessions used"),
-      h("div", { "class": "meter" }, [h("div", { "class": "meter__fill", style: "width:" + pct + "%" })]),
-      h("div", { style: "display:flex;align-items:center;gap:10px;margin-top:12px;flex-wrap:wrap" }, [
-        h("div", { style: "flex:1;min-width:180px;font-size:12.5px;color:var(--ink-2)" }, pk.next),
-        markCareControlUnavailable(ActionButton({ variant: "btn--primary", label: "Book next session", action: "booking.open", visualId: "care-book-session" }), "Booking is unavailable: no approved booking destination")
-      ])
-    ]);
-    var history = h("div", { "class": "list-panel", "data-module": "treatment-history", "data-visual-id": "treatment-history" }, [
-      h("div", { "class": "list-panel__head" }, [
-        h("div", { "class": "list-panel__title", style: "flex:1" }, "Treatment history"),
-        h("span", { style: "font-size:12.5px;color:var(--ink-3)" }, "formulas & notes saved")
-      ])
-    ]);
-    m.history.forEach(function(ev) {
-      history.appendChild(h("div", { "class": "log-row", "data-module": "treatment-row" }, [
-        h("div", { "class": "log-date" }, ev.date),
-        h("div", { style: "flex:1;min-width:0" }, [
-          h("div", { style: "font-weight:600;font-size:13.5px", "data-bind": "visit.what" }, ev.what + " \xB7 " + ev.who),
-          h("div", { style: "font-size:12px;color:var(--ink-3);margin-top:2px" }, ev.note)
-        ])
-      ]));
-    });
-    var routineTasks = m.tasks || [];
-    var doneCount = routineTasks.filter(function(task) {
-      return taskDone2(task, ui);
-    }).length;
-    var tasks = routineTasks.length ? h("div", { "class": "list-panel", "data-module": "routine-tasks", "data-visual-id": "routine-tasks" }, [
-      h("div", { "class": "list-panel__head" }, [
-        h("div", { "class": "list-panel__title", style: "flex:1" }, "This week's routine"),
-        h("span", { style: "font-size:12px;color:var(--ink-3)" }, doneCount + " of " + routineTasks.length + " done")
-      ])
-    ]) : null;
-    routineTasks.forEach(function(t) {
-      var done = taskDone2(t, ui);
-      if (tasks) tasks.appendChild(h("div", { "class": "log-row", "data-module": "routine-task-row", "data-task-id": t.id, "data-state": done ? "done" : "open" }, [
-        h("button", {
-          "data-action": "care.completeTask",
-          "data-id": t.id,
-          "aria-pressed": done ? "true" : "false",
-          title: done ? "Mark as not done" : "Mark as done",
-          style: "width:24px;height:24px;border-radius:999px;flex-shrink:0;cursor:pointer;display:grid;place-items:center;font-family:inherit;font-size:12px;padding:0;border:1.5px solid " + (done ? "var(--accent)" : "rgba(120,120,128,.4)") + ";background:" + (done ? "var(--accent)" : "transparent") + ";color:#fff"
-        }, done ? "\u2713" : ""),
-        h("div", { style: "flex:1;min-width:0" }, [
-          h("div", { style: "font-weight:600;font-size:13.5px;" + (done ? "text-decoration:line-through;color:var(--ink-3)" : ""), "data-bind": "task.label" }, t.label),
-          h("div", { style: "font-size:12px;color:var(--ink-3);margin-top:1px" }, t.due)
-        ])
-      ]));
-    });
-    var activeId = ui.selectedSpecialistId || m.preferredId;
-    var picker = h("div", { "class": "card card--pad", "data-module": "specialist-picker", "data-visual-id": "specialist-picker" }, [
-      h("div", { "class": "card__title" }, "Preferred specialist"),
-      h("div", { style: "font-size:12.5px;color:var(--ink-2);margin:4px 0 12px" }, "Gets priority when we book your routine."),
-      h("div", { "class": "unit-row", style: "flex-direction:column" }, m.specialists.map(function(s) {
-        var active = s.id === activeId;
-        return h("button", {
-          "class": "unit-pick" + (active ? " unit-pick--active" : ""),
-          "data-action": "care.selectSpecialist",
-          "data-id": s.id,
-          "data-state": active ? "active" : void 0
-        }, [
-          h("div", { style: "display:flex;align-items:center;gap:8px" }, [
-            h("span", { style: "font-weight:700;font-size:14.5px;flex:1", "data-bind": "specialist.name" }, s.name),
-            active ? careChip("info", "Preferred") : h("span", { style: "font-size:12px;color:var(--ink-3)" }, "\u2605 " + s.rating)
-          ]),
-          h("div", { style: "font-size:12px;color:var(--ink-3);margin-top:2px" }, s.role + " \xB7 " + s.visits + (active ? " \xB7 \u2605 " + s.rating : ""))
-        ]);
-      }))
-    ]);
-    var routine = h("div", { "class": "card card--pad", "data-module": "routine-card", "data-visual-id": "routine-card" }, [
-      h("div", { "class": "card__title" }, m.routine.title),
-      h("div", { style: "font-size:13.5px;color:var(--ink-2);margin-top:8px;line-height:1.55", "data-bind": "routine.note" }, m.routine.note),
-      h("div", { style: "font-size:12px;color:var(--ink-3);margin-top:8px" }, m.routine.by)
-    ]);
-    var lo = m.loyalty;
-    var lpct = Math.min(100, Math.round(lo.points / lo.nextAt * 100));
-    var loyalty = h("div", { "class": "card card--pad", "data-module": "loyalty-card", "data-visual-id": "loyalty-card", "data-plan-id": lo.id }, [
-      h("div", { style: "display:flex;align-items:center;gap:9px" }, [
-        h("div", { "class": "card__title", style: "flex:1" }, "Loyalty"),
-        careChip("info", lo.tier)
-      ]),
-      h("div", { "class": "score-big", style: "margin-top:10px", "data-bind": "loyalty.points" }, String(lo.points)),
-      h("div", { style: "font-size:12.5px;color:var(--ink-2);margin-top:2px" }, "of " + lo.nextAt + " pts \xB7 " + lo.reward),
-      h("div", { "class": "meter" }, [h("div", { "class": "meter__fill", style: "width:" + lpct + "%" })]),
-      h("div", { style: "display:flex;align-items:center;gap:10px;margin-top:12px" }, [
-        h("div", { style: "flex:1;font-size:12px;color:var(--ink-3)" }, lo.renews),
-        h("div", { "class": "link-action", "data-action": "profile.managePlan" }, "Manage \u203A")
-      ])
-    ]);
-    var recs = m.productRecs.items;
-    var products = h("div", { "class": "list-panel", "data-module": "care-products", "data-visual-id": "care-products" }, [
-      h("div", { "class": "list-panel__head" }, [
-        h("div", { "class": "list-panel__title", style: "flex:1" }, "For your routine"),
-        h("span", { style: "font-size:12px;color:var(--ink-3)" }, m.productRecs.note)
-      ])
-    ]);
-    recs.forEach(function(p) {
-      products.appendChild(h("div", { "class": "log-row", "data-module": "care-product-row" }, [
-        h("div", { style: "flex:1;min-width:0" }, [
-          h("div", { style: "font-weight:600;font-size:13.5px", "data-bind": "product.name" }, p.name),
-          h("div", { style: "font-size:12px;color:var(--ink-3);margin-top:1px" }, p.blurb + " \xB7 " + p.price)
-        ]),
-        h("div", { "class": "link-action", "data-action": "cart.addItem", "data-id": p.name }, "Add \u203A")
-      ]));
-    });
-    return h("div", { "class": "care-grid" }, [
-      h("div", { "class": "care-col" }, [appt, pkg, history, tasks]),
-      h("div", { "class": "care-col" }, [picker, routine, loyalty, products])
-    ]);
-  }
-
   // app-templates/customer-portal/runtime/src/routes/CarePage.js
-  var RENDERERS = {
+  var RENDERERS = false ? {
     equipment: EquipmentHub,
     seasonLog: SeasonLog,
     program: LawnProgram,
@@ -13713,6 +10080,8 @@
     monitoring: PestMonitoring,
     healthCare: HealthCareHub,
     beautyCare: BeautyCareHub
+  } : {
+    seasonLog: SeasonLog
   };
   function careSkeleton() {
     return h("div", { "class": "care-grid", "data-state": "loading" }, [
@@ -13782,581 +10151,6 @@
     return page;
   }
 
-  // app-templates/customer-portal/runtime/data/live-seo-fixtures.js
-  var SEO = Object.freeze({});
-  var SEO_FOOTER = Object.freeze({});
-
-  // app-templates/customer-portal/runtime/src/normalizers/seo.js
-  var MERGE_TAG = /\{([a-z][a-z0-9-]*)\}/gi;
-  var EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  var TEL = /^tel:\+[1-9][0-9]{6,14}$/;
-  var PHONE = /^\+[1-9][0-9]{6,14}$/;
-  var SEO_PUBLIC_REQUIRED_COLLECTIONS = Object.freeze([
-    "services",
-    "how",
-    "proof.items",
-    "area.cities",
-    "faq"
-  ]);
-  function own2(object2, key, path) {
-    if (!object2 || typeof object2 !== "object" || Array.isArray(object2) || !Object.prototype.hasOwnProperty.call(object2, key)) {
-      throw new Error(path + "." + key + " is required");
-    }
-    return object2[key];
-  }
-  function object(value, path) {
-    if (!value || typeof value !== "object" || Array.isArray(value)) throw new Error(path + " must be an object");
-    return value;
-  }
-  function string(value, path) {
-    if (typeof value !== "string" || !value.trim()) throw new Error(path + " must be a nonempty string");
-    return value.trim();
-  }
-  function nullableString(value, path) {
-    if (value === null) return null;
-    return string(value, path);
-  }
-  function array2(value, path, minimum) {
-    if (!Array.isArray(value) || value.length < (minimum || 0)) throw new Error(path + " must contain at least " + String(minimum || 0) + " item(s)");
-    return value;
-  }
-  function slug(value, path) {
-    var result = string(value, path);
-    if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(result)) throw new Error(path + " must be a lowercase URL slug");
-    return result;
-  }
-  function merge(value, tags, path) {
-    var source = string(value, path);
-    var result = source.replace(MERGE_TAG, function(_, key) {
-      if (!Object.prototype.hasOwnProperty.call(tags, key)) throw new Error(path + " contains unknown merge tag {" + key + "}");
-      return tags[key];
-    });
-    if (/[{}]/.test(result)) throw new Error(path + " contains an unresolved or malformed merge tag");
-    return result.replace(/\s+/g, " ").trim();
-  }
-  function optionalMerge(value, tags, path) {
-    return value === null ? null : merge(value, tags, path);
-  }
-  function parseOrigin(value, path) {
-    var url;
-    try {
-      url = new URL(string(value, path));
-    } catch (_) {
-      throw new Error(path + " must be an absolute HTTPS origin");
-    }
-    if (url.protocol !== "https:" || url.username || url.password || url.search || url.hash || url.pathname !== "/") {
-      throw new Error(path + " must be an absolute HTTPS origin without credentials, path, query, or fragment");
-    }
-    return url.origin;
-  }
-  function assertPublicDnsHost(origin, path, allowTestHosts) {
-    var hostname = new URL(origin).hostname.toLowerCase();
-    var isIpLiteral = hostname.indexOf(":") !== -1 || /^\d{1,3}(?:\.\d{1,3}){3}$/.test(hostname);
-    if (isIpLiteral) throw new Error(path + " must use a public DNS hostname, not an IP literal");
-    if (hostname.indexOf(".") === -1) throw new Error(path + " must use a multi-label public DNS hostname");
-    var reservedSuffixes = [".example", ".invalid", ".localhost", ".local", ".internal", ".lan", ".localdomain", ".home.arpa", ".onion"];
-    var reservedDomains = ["example.com", "example.net", "example.org"];
-    if (hostname === "localhost" || reservedSuffixes.some(function(suffix) {
-      return hostname.endsWith(suffix);
-    }) || reservedDomains.some(function(domain) {
-      return hostname === domain || hostname.endsWith("." + domain);
-    })) {
-      throw new Error(path + " must use a public DNS hostname, not a reserved or local hostname");
-    }
-    var labels = hostname.split(".");
-    if (labels.some(function(label) {
-      return !label || label.length > 63 || !/^[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/.test(label);
-    })) {
-      throw new Error(path + " must use a syntactically valid public DNS hostname");
-    }
-    var topLevel = labels[labels.length - 1];
-    if (/^\d+$/.test(topLevel) || topLevel.length < 2) throw new Error(path + " must use a credible public DNS hostname");
-    if (hostname.endsWith(".test")) {
-      if (allowTestHosts) return;
-      throw new Error(path + " must use a credible public DNS hostname; .test is reference-only");
-    }
-  }
-  function normalizePolicy(deployment, allowTestHosts) {
-    deployment = object(deployment, "deployment");
-    var canonicalOrigin = parseOrigin(own2(deployment, "canonicalOrigin", "deployment"), "deployment.canonicalOrigin");
-    var allowedOrigins = array2(own2(deployment, "allowedOrigins", "deployment"), "deployment.allowedOrigins", 1).map(function(value, index) {
-      return parseOrigin(value, "deployment.allowedOrigins[" + index + "]");
-    });
-    if (!allowedOrigins.includes(canonicalOrigin)) throw new Error("deployment.allowedOrigins must include deployment.canonicalOrigin");
-    assertPublicDnsHost(canonicalOrigin, "deployment.canonicalOrigin", allowTestHosts);
-    allowedOrigins.forEach(function(origin, index) {
-      assertPublicDnsHost(origin, "deployment.allowedOrigins[" + index + "]", allowTestHosts);
-    });
-    var assetBase = string(own2(deployment, "assetBase", "deployment"), "deployment.assetBase");
-    var publicScriptUrl = string(own2(deployment, "publicScriptUrl", "deployment"), "deployment.publicScriptUrl");
-    if (!/^\/(?!\/)(?!.*\.\.)(?:[a-zA-Z0-9._~!$&'()*+,;=:@%/-]+)$/.test(assetBase)) throw new Error("deployment.assetBase must be a root-relative path without traversal");
-    if (!/^\/(?!\/)(?!.*\.\.)(?:[a-zA-Z0-9._~!$&'()*+,;=:@%/-]+\.js)$/.test(publicScriptUrl)) throw new Error("deployment.publicScriptUrl must be a root-relative JavaScript path without traversal");
-    return {
-      canonicalOrigin,
-      allowedOrigins: Array.from(new Set(allowedOrigins)),
-      allowCanonicalQuery: own2(deployment, "allowCanonicalQuery", "deployment") === true,
-      assetBase: assetBase.replace(/\/$/, ""),
-      publicScriptUrl
-    };
-  }
-  function httpsUrl(value, policy, path, options2) {
-    options2 = options2 || {};
-    var raw = nullableString(value, path);
-    if (raw === null) return null;
-    var url;
-    try {
-      url = new URL(raw);
-    } catch (_) {
-      throw new Error(path + " must be an absolute HTTPS URL");
-    }
-    if (url.protocol !== "https:") throw new Error(path + " must use HTTPS");
-    if (url.username || url.password) throw new Error(path + " must not contain credentials");
-    if (url.hash) throw new Error(path + " must not contain a fragment");
-    if (!policy.allowedOrigins.includes(url.origin)) throw new Error(path + " origin is not deployment-approved");
-    if (options2.canonical) {
-      if (url.origin !== policy.canonicalOrigin) throw new Error(path + " must match deployment.canonicalOrigin");
-      if (url.search && !policy.allowCanonicalQuery) throw new Error(path + " query is not permitted");
-    }
-    return url.href;
-  }
-  function destination(value, policy, path, options2) {
-    options2 = options2 || {};
-    if (value === null) return null;
-    var raw = string(value, path);
-    if (options2.anchor && raw === "#seo-services") return raw;
-    if (options2.tel && raw.startsWith("tel:")) {
-      if (!TEL.test(raw)) throw new Error(path + " must be an international tel:+number destination");
-      return raw;
-    }
-    return httpsUrl(raw, policy, path);
-  }
-  function normalizeCta(raw, action, policy, tags, path, options2) {
-    if (raw === null) return null;
-    raw = object(raw, path);
-    var label = merge(own2(raw, "label", path), tags, path + ".label");
-    var target = own2(raw, "destination", path);
-    var resolved = target === null ? null : destination(merge(target, tags, path + ".destination"), policy, path + ".destination", options2);
-    return { action, label, destination: resolved, available: Boolean(resolved) };
-  }
-  function normalizeAuthored(payload, options2) {
-    options2 = options2 || {};
-    payload = object(payload, "payload");
-    var expected = options2.classification;
-    if (own2(payload, "classification", "payload") !== expected) throw new Error("payload.classification must be " + expected);
-    var policy = normalizePolicy(own2(payload, "deployment", "payload"), options2.allowTestHosts === true);
-    var content = object(own2(payload, "content", "payload"), "content");
-    var brand = object(own2(content, "brand", "content"), "content.brand");
-    var vertical2 = object(own2(content, "vertical", "content"), "content.vertical");
-    var meta = object(own2(content, "meta", "content"), "content.meta");
-    var locality = string(own2(meta, "locality", "content.meta"), "content.meta.locality");
-    var localitySlug = slug(own2(meta, "localitySlug", "content.meta"), "content.meta.localitySlug");
-    var tags = { locality, "locality-slug": localitySlug };
-    var hero = object(own2(content, "hero", "content"), "content.hero");
-    var ctas = object(own2(content, "ctas", "content"), "content.ctas");
-    var proof = object(own2(content, "proof", "content"), "content.proof");
-    var pricing = object(own2(content, "pricing", "content"), "content.pricing");
-    var area = object(own2(content, "area", "content"), "content.area");
-    var final = object(own2(content, "final", "content"), "content.final");
-    var footer = object(own2(content, "footer", "content"), "content.footer");
-    var canonical = httpsUrl(merge(own2(meta, "canonical", "content.meta"), tags, "content.meta.canonical"), policy, "content.meta.canonical", { canonical: true });
-    var media = own2(hero, "media", "content.hero");
-    var normalizedMedia = null;
-    if (media !== null) {
-      media = object(media, "content.hero.media");
-      normalizedMedia = {
-        url: httpsUrl(merge(own2(media, "url", "content.hero.media"), tags, "content.hero.media.url"), policy, "content.hero.media.url"),
-        alt: merge(own2(media, "alt", "content.hero.media"), tags, "content.hero.media.alt")
-      };
-    }
-    var primaryAction = own2(ctas, "primaryAction", "content.ctas");
-    if (primaryAction !== "seo.cta.book" && primaryAction !== "seo.cta.quote") throw new Error("content.ctas.primaryAction must be seo.cta.book or seo.cta.quote");
-    var primaryCta = normalizeCta(own2(ctas, "primary", "content.ctas"), primaryAction, policy, tags, "content.ctas.primary");
-    var secondary = own2(ctas, "secondary", "content.ctas");
-    var secondaryCta = secondary === null ? null : normalizeCta(secondary, own2(ctas, "secondaryAction", "content.ctas"), policy, tags, "content.ctas.secondary", { anchor: own2(ctas, "secondaryAction", "content.ctas") === "seo.cta.services", tel: own2(ctas, "secondaryAction", "content.ctas") === "seo.cta.call" });
-    if (secondaryCta && !["seo.cta.services", "seo.cta.call"].includes(secondaryCta.action)) throw new Error("content.ctas.secondaryAction must be seo.cta.services or seo.cta.call");
-    var callCta = normalizeCta(own2(ctas, "call", "content.ctas"), "seo.cta.call", policy, tags, "content.ctas.call", { tel: true });
-    var services = array2(own2(content, "services", "content"), "content.services", 1).map(function(service, index) {
-      var path = "content.services[" + index + "]";
-      service = object(service, path);
-      return {
-        id: slug(own2(service, "id", path), path + ".id"),
-        name: merge(own2(service, "name", path), tags, path + ".name"),
-        benefit: merge(own2(service, "benefit", path), tags, path + ".benefit"),
-        priceFrom: optionalMerge(own2(service, "priceFrom", path), tags, path + ".priceFrom"),
-        destination: own2(service, "destination", path) === null ? null : destination(merge(own2(service, "destination", path), tags, path + ".destination"), policy, path + ".destination"),
-        palette: null
-      };
-    });
-    if (new Set(services.map(function(service) {
-      return service.id;
-    })).size !== services.length) throw new Error("content.services ids must be unique");
-    var faq = array2(own2(content, "faq", "content"), "content.faq", 1).map(function(item, index) {
-      var path = "content.faq[" + index + "]";
-      item = object(item, path);
-      return { id: slug(own2(item, "id", path), path + ".id"), q: merge(own2(item, "question", path), tags, path + ".question"), a: merge(own2(item, "answer", path), tags, path + ".answer") };
-    });
-    if (new Set(faq.map(function(item) {
-      return item.id;
-    })).size !== faq.length) throw new Error("content.faq ids must be unique");
-    var trust = array2(own2(content, "trust", "content"), "content.trust", 0).map(function(fact4, index) {
-      var path = "content.trust[" + index + "]";
-      fact4 = object(fact4, path);
-      return { key: "trust-" + index, icon: ["\u2605", "\u2696", "\u2714", "\u2B1A", "\u23F1"][index % 5], label: merge(own2(fact4, "label", path), tags, path + ".label"), value: merge(own2(fact4, "value", path), tags, path + ".value"), count: optionalMerge(own2(fact4, "count", path), tags, path + ".count"), slot: null };
-    });
-    var reviews = array2(own2(content, "reviews", "content"), "content.reviews", 0).map(function(review, index) {
-      var path = "content.reviews[" + index + "]";
-      review = object(review, path);
-      var rating = Number(own2(review, "rating", path));
-      if (!Number.isInteger(rating) || rating < 1 || rating > 5) throw new Error(path + ".rating must be an integer from 1 to 5");
-      return { name: merge(own2(review, "name", path), tags, path + ".name"), rating, text: merge(own2(review, "text", path), tags, path + ".text"), media: false };
-    });
-    var normalized = {
-      mode: options2.mode,
-      classification: expected,
-      deployment: policy,
-      brand: {
-        name: merge(own2(brand, "name", "content.brand"), tags, "content.brand.name"),
-        url: own2(brand, "url", "content.brand") === null ? null : httpsUrl(merge(own2(brand, "url", "content.brand"), tags, "content.brand.url"), policy, "content.brand.url")
-      },
-      vertical: { name: merge(own2(vertical2, "name", "content.vertical"), tags, "content.vertical.name"), slug: slug(own2(vertical2, "slug", "content.vertical"), "content.vertical.slug") },
-      meta: {
-        title: merge(own2(meta, "title", "content.meta"), tags, "content.meta.title"),
-        description: merge(own2(meta, "description", "content.meta"), tags, "content.meta.description"),
-        h1: merge(own2(meta, "h1", "content.meta"), tags, "content.meta.h1"),
-        locality,
-        serviceArea: merge(own2(meta, "serviceArea", "content.meta"), tags, "content.meta.serviceArea"),
-        canonicalUrl: canonical,
-        canonicalPath: new URL(canonical).pathname + new URL(canonical).search,
-        primaryCta,
-        secondaryCta,
-        callCta
-      },
-      hero: {
-        service: merge(own2(hero, "service", "content.hero"), tags, "content.hero.service"),
-        note: optionalMerge(own2(hero, "note", "content.hero"), tags, "content.hero.note"),
-        offer: normalizeOffer(own2(hero, "offer", "content.hero"), tags),
-        media: normalizedMedia
-      },
-      services,
-      trust,
-      how: normalizeItems(array2(own2(content, "how", "content"), "content.how", 1), tags, "content.how", "title", "description"),
-      proof: { title: merge(own2(proof, "title", "content.proof"), tags, "content.proof.title"), items: normalizeItems(array2(own2(proof, "items", "content.proof"), "content.proof.items", 1), tags, "content.proof.items", "title", "description") },
-      pricing: { note: optionalMerge(own2(pricing, "note", "content.pricing"), tags, "content.pricing.note"), rows: normalizePricingRows(array2(own2(pricing, "rows", "content.pricing"), "content.pricing.rows", 0), tags) },
-      area: { cities: array2(own2(area, "cities", "content.area"), "content.area.cities", 1).map(function(city, index) {
-        return merge(city, tags, "content.area.cities[" + index + "]");
-      }), note: optionalMerge(own2(area, "note", "content.area"), tags, "content.area.note") },
-      reviews,
-      faq,
-      final: { heading: merge(own2(final, "heading", "content.final"), tags, "content.final.heading"), body: optionalMerge(own2(final, "body", "content.final"), tags, "content.final.body") },
-      footer: normalizeFooter(footer, policy, tags)
-    };
-    return Object.freeze(normalized);
-  }
-  function normalizeOffer(raw, tags) {
-    if (raw === null) return null;
-    raw = object(raw, "content.hero.offer");
-    return { tag: merge(own2(raw, "tag", "content.hero.offer"), tags, "content.hero.offer.tag"), text: merge(own2(raw, "text", "content.hero.offer"), tags, "content.hero.offer.text"), until: optionalMerge(own2(raw, "until", "content.hero.offer"), tags, "content.hero.offer.until") };
-  }
-  function normalizeItems(items, tags, base, titleKey, descriptionKey) {
-    return items.map(function(item, index) {
-      var path = base + "[" + index + "]";
-      item = object(item, path);
-      return { title: merge(own2(item, titleKey, path), tags, path + "." + titleKey), desc: merge(own2(item, descriptionKey, path), tags, path + "." + descriptionKey) };
-    });
-  }
-  function normalizePricingRows(rows2, tags) {
-    return rows2.map(function(row, index) {
-      var path = "content.pricing.rows[" + index + "]";
-      row = object(row, path);
-      return { name: merge(own2(row, "name", path), tags, path + ".name"), from: optionalMerge(own2(row, "from", path), tags, path + ".from"), unit: optionalMerge(own2(row, "unit", path), tags, path + ".unit"), reason: optionalMerge(own2(row, "reason", path), tags, path + ".reason") };
-    });
-  }
-  function normalizeFooter(footer, policy, tags) {
-    var phone = own2(footer, "phone", "content.footer");
-    if (phone !== null && !PHONE.test(phone)) throw new Error("content.footer.phone must be null or an international +number");
-    var email = own2(footer, "email", "content.footer");
-    if (email !== null && !EMAIL.test(email)) throw new Error("content.footer.email must be null or a valid email address");
-    return {
-      phone: phone === null ? null : phone,
-      email: email === null ? null : email,
-      hours: array2(own2(footer, "hours", "content.footer"), "content.footer.hours", 0).map(function(row, index) {
-        var path = "content.footer.hours[" + index + "]";
-        row = object(row, path);
-        return { days: merge(own2(row, "days", path), tags, path + ".days"), hours: merge(own2(row, "hours", path), tags, path + ".hours") };
-      }),
-      legal: array2(own2(footer, "legal", "content.footer"), "content.footer.legal", 0).map(function(link, index) {
-        var path = "content.footer.legal[" + index + "]";
-        link = object(link, path);
-        return { label: merge(own2(link, "label", path), tags, path + ".label"), href: httpsUrl(merge(own2(link, "url", path), tags, path + ".url"), policy, path + ".url") };
-      })
-    };
-  }
-  function normalizeSeoReference(rawSeo, rawVertical, rawFooter, verticalName, rawPalette) {
-    if (!rawSeo || !rawVertical || !rawFooter) throw new Error("reference SEO fixtures are required");
-    var name = verticalName || "Reference service";
-    var primaryKind = rawSeo.meta.primaryCta.kind === "quote" ? "seo.cta.quote" : "seo.cta.book";
-    var secondaryAction = rawSeo.meta.secondaryCta.kind === "services" ? "seo.cta.services" : "seo.cta.call";
-    var payload = {
-      classification: "reference-only",
-      deployment: { canonicalOrigin: "https://reference-seo.test", allowedOrigins: ["https://reference-seo.test"], allowCanonicalQuery: false, assetBase: "/runtime", publicScriptUrl: "/public/src/seo-public.js" },
-      content: {
-        brand: { name: "Aircove reference fixture", url: null },
-        vertical: { name, slug: rawVertical.slug },
-        meta: { title: rawSeo.meta.seoTitle, description: rawSeo.meta.metaDescription, h1: rawSeo.meta.h1, locality: rawSeo.meta.locality, localitySlug: rawSeo.meta.canonicalPath.split("/").pop() === "{locality-slug}" ? rawSeo.meta.locality.split(",")[0].toLowerCase().replace(/[^a-z0-9]+/g, "-") : "reference", serviceArea: rawSeo.meta.serviceArea, canonical: "https://reference-seo.test" + rawSeo.meta.canonicalPath },
-        hero: { service: rawSeo.hero.service, note: "No account needed. Price shown before you confirm.", offer: rawSeo.hero.offer, media: null },
-        services: rawVertical.svc.slice(0, 6).map(function(service) {
-          return { id: service.name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, ""), name: service.name, benefit: service.tagline, priceFrom: service.price, destination: null };
-        }),
-        trust: [rawSeo.trust.rating, rawSeo.trust.licence, rawSeo.trust.insurance, rawSeo.trust.guarantee, rawSeo.trust.response].filter(function(fact4) {
-          return fact4 && fact4.value;
-        }).map(function(fact4) {
-          return { label: fact4.label || "Rating", value: fact4.value, count: fact4.count || null };
-        }),
-        how: rawSeo.how.map(function(item) {
-          return { title: item.title, description: item.desc };
-        }),
-        proof: { title: rawSeo.proof.title, items: rawSeo.proof.items.map(function(item) {
-          return { title: item.title, description: item.desc };
-        }) },
-        pricing: { note: rawSeo.pricing.note, rows: rawSeo.pricing.rows.map(function(row) {
-          return { name: row.name, from: row.from || null, unit: row.unit || null, reason: row.reason || null };
-        }) },
-        area: { cities: rawSeo.area.cities, note: rawSeo.area.note || null },
-        reviews: rawSeo.reviews.map(function(review) {
-          return { name: review.name, rating: review.rating, text: review.text };
-        }),
-        faq: rawSeo.faq.map(function(item, index) {
-          return { id: "faq-" + String(index + 1), question: item.q, answer: item.a };
-        }),
-        ctas: { primaryAction: primaryKind, primary: { label: rawSeo.meta.primaryCta.label, destination: null }, secondaryAction, secondary: { label: rawSeo.meta.secondaryCta.label, destination: secondaryAction === "seo.cta.services" ? "#seo-services" : null }, call: { label: "Call us", destination: null } },
-        final: { heading: "Ready when you are in {locality}", body: "Price up front, photo report after \u2014 every visit in your portal." },
-        footer: { phone: null, email: null, hours: rawFooter.hours.map(function(row) {
-          return { days: row.d, hours: row.h };
-        }), legal: [] }
-      }
-    };
-    var normalized = normalizeAuthored(payload, { classification: "reference-only", mode: "reference", allowTestHosts: true });
-    var palette = array2(rawPalette, "reference.palette", 4).map(function(pair, index) {
-      pair = array2(pair, "reference.palette[" + index + "]", 2);
-      return [string(pair[0], "reference.palette[" + index + "][0]"), string(pair[1], "reference.palette[" + index + "][1]")];
-    });
-    var trustSource = rawSeo.trust;
-    return Object.freeze(Object.assign({}, normalized, {
-      brand: Object.freeze({ name: "Aircove", url: null }),
-      meta: Object.freeze(Object.assign({}, normalized.meta, { canonicalPath: string(rawSeo.meta.canonicalPath, "reference.meta.canonicalPath") })),
-      hero: Object.freeze(Object.assign({}, normalized.hero, { note: "No account needed \xB7 price shown before you confirm" })),
-      trust: Object.freeze([
-        referenceTrustFact("\u2605", "Rating", trustSource.rating, "rating", "rating"),
-        referenceTrustFact("\u2696", trustSource.licence.label, trustSource.licence, "licence \u2116", "licence"),
-        referenceTrustFact("\u2714", trustSource.insurance.label, trustSource.insurance, "policy", "insurance"),
-        referenceTrustFact("\u2B1A", trustSource.guarantee.label, trustSource.guarantee, null, "guarantee"),
-        referenceTrustFact("\u23F1", trustSource.response.label, trustSource.response, null, "response")
-      ]),
-      services: Object.freeze(normalized.services.map(function(service, index) {
-        return Object.freeze(Object.assign({}, service, { palette: palette[index % 4] }));
-      })),
-      reviews: Object.freeze(normalized.reviews.map(function(review, index) {
-        return Object.freeze(Object.assign({}, review, { media: rawSeo.reviews[index].media === true }));
-      })),
-      footer: Object.freeze(Object.assign({}, normalized.footer, {
-        legal: rawFooter.legal.map(function(link, index) {
-          return { label: string(link.label, "reference.footer.legal[" + index + "].label"), href: string(link.href, "reference.footer.legal[" + index + "].href") };
-        })
-      }))
-    }));
-  }
-  function referenceTrustFact(icon2, label, source, slot, key) {
-    source = object(source, "reference.trust." + key);
-    return {
-      icon: icon2,
-      label: string(label, "reference.trust." + key + ".label"),
-      value: source.value === null ? null : string(source.value, "reference.trust." + key + ".value"),
-      count: source.count == null ? null : string(source.count, "reference.trust." + key + ".count"),
-      slot,
-      key
-    };
-  }
-
-  // app-templates/customer-portal/runtime/src/modules/seo.js
-  var SEO_VERTICALS = Object.freeze(Object.keys(SEO));
-  function loadSeoModel(verticalName, authored) {
-    var name = SEO[verticalName] ? verticalName : "HVAC";
-    if (authored) throw new Error("The parity SEO loader accepts reference fixtures only");
-    return normalizeSeoReference(SEO[name], F.themes[name], SEO_FOOTER, name, F.PAL);
-  }
-
-  // app-templates/customer-portal/runtime/src/components/seo/SeoSections.js
-  function esc(value) {
-    return String(value == null ? "" : value).replace(/[&<>"']/g, function(char) {
-      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[char];
-    });
-  }
-  function attr(value) {
-    return esc(value);
-  }
-  function skel2(width) {
-    return '<span class="seo-skel" style="width:' + attr(width) + '"></span>';
-  }
-  function head(eyebrow, title, sub) {
-    return '<div class="seo-sec__head">' + (eyebrow ? '<span class="eyebrow">' + esc(eyebrow) + "</span>" : "") + '<h2 class="seo-sec__title">' + esc(title) + "</h2>" + (sub ? '<p class="seo-sec__sub">' + esc(sub) + "</p>" : "") + "</div>";
-  }
-  function slotChip(label) {
-    return '<span class="seo-slot" data-state="no-data">' + esc(label) + " &middot; from CMS</span>";
-  }
-  function ctaState(view, action) {
-    return view.parity && view.ctaStates && view.ctaStates[action] || "idle";
-  }
-  function SeoCta(cta, props, view) {
-    if (!cta) return "";
-    props = props || {};
-    var state2 = ctaState(view, cta.action);
-    var label = props.label || cta.label;
-    var inner = state2 === "pending" ? '<span class="seo-cta__spin"></span>Sending&hellip;' : state2 === "success" ? "&#10003; " + esc(props.successLabel || "Done") : state2 === "error" ? "&#9888; Try again" : esc(label);
-    var classes = "btn " + (props.variant || "btn--primary") + (props.large ? " btn--lg" : "") + " seo-cta";
-    var shared = 'class="' + classes + '" data-module="seo-cta" data-visual-id="' + attr(props.visualId || "seo-cta") + '" data-action="' + attr(cta.action) + '" data-state="' + attr(view.parity ? state2 : cta.available ? state2 : "unavailable") + '"' + (props.bind ? ' data-bind="' + attr(props.bind) + '"' : "");
-    if (!view.parity) {
-      if (cta.available) return "<a " + shared + ' href="' + attr(cta.destination) + '">' + inner + "</a>";
-      return "<button " + shared + ' type="button" disabled aria-disabled="true" title="Destination unavailable">' + esc(label) + "</button>";
-    }
-    var available = cta.available || cta.action === "seo.cta.services";
-    return "<button " + shared + (cta.action === "seo.cta.services" ? ' href="#seo-services"' : "") + (!available ? ' aria-disabled="true"' : "") + (state2 === "pending" ? " disabled" : "") + ' aria-live="polite">' + inner + "</button>";
-  }
-  function SeoMetaPreview(model) {
-    return '<div class="seo-meta" data-dev-toolbar="true" data-module="seo-meta-preview"><div class="seo-meta__head">&#9881; head-level CMS fields (dev preview &mdash; stripped on integration)</div><div class="seo-meta__row"><span class="seo-meta__k">seoTitle</span><span class="seo-meta__v">' + esc(model.meta.title) + '</span></div><div class="seo-meta__row"><span class="seo-meta__k">metaDescription</span><span class="seo-meta__v">' + esc(model.meta.description) + '</span></div><div class="seo-meta__row"><span class="seo-meta__k">canonical</span><span class="seo-meta__v">' + esc(model.meta.canonicalPath) + '</span></div><div class="seo-meta__row"><span class="seo-meta__k">locality</span><span class="seo-meta__v">' + esc(model.meta.locality + " \xB7 " + model.meta.serviceArea) + "</span></div></div>";
-  }
-  function SeoHero(model, view) {
-    var localityIndex = model.meta.h1.indexOf(model.meta.locality);
-    var before = localityIndex === -1 ? model.meta.h1 : model.meta.h1.slice(0, localityIndex);
-    var after = localityIndex === -1 ? "" : model.meta.h1.slice(localityIndex + model.meta.locality.length);
-    var offer = view.dataState === "loading" ? '<div class="seo-offer" data-state="loading">' + skel2("220px") + "</div>" : view.dataState === "ready" && model.hero.offer ? '<div class="seo-offer" data-module="seo-offer" data-visual-id="seo-offer" data-bind="cms.hero.offer" data-state="ready"><span class="seo-offer__tag">' + esc(model.hero.offer.tag) + "</span><span>" + esc(model.hero.offer.text) + '</span><span class="seo-offer__until">' + esc(model.hero.offer.until || "") + "</span></div>" : "";
-    var secondaryLabel = model.meta.secondaryCta && model.meta.secondaryCta.action === "seo.cta.call" ? "\u260E " + model.meta.secondaryCta.label : model.meta.secondaryCta && model.meta.secondaryCta.label;
-    var media;
-    var mediaClass = "";
-    if (model.hero.media) media = '<img class="seo-hero__media" src="' + attr(model.hero.media.url) + '" alt="' + attr(model.hero.media.alt) + '">';
-    else if (view.parity) media = '<div class="seo-media-slot seo-hero__media" data-state="no-data"><span class="seo-media-slot__label">hero image &middot; ' + esc(model.vertical.slug) + " crew on site</span></div>";
-    else {
-      media = "";
-      mediaClass = " seo-hero--no-media";
-    }
-    return '<section class="seo-hero' + mediaClass + '" data-module="seo-hero" data-visual-id="seo-hero" data-media-state="' + (model.hero.media ? "available" : "absent") + '" data-offer-state="' + attr(view.dataState) + '"><div class="seo-hero__inner' + (mediaClass ? " seo-hero__inner--no-media" : "") + '"><div class="seo-hero__copy"><span class="eyebrow seo-hero__area" data-bind="cms.meta.serviceArea">\u25C9 Serving ' + esc(model.meta.serviceArea) + '</span><h1 class="seo-hero__title" data-bind="cms.meta.h1 + cms.meta.locality">' + esc(before) + '<span class="seo-hero__geo" data-bind="cms.meta.locality">' + esc(model.meta.locality) + "</span>" + esc(after) + '</h1><p class="seo-hero__sub" data-bind="cms.hero.service">' + esc(model.hero.service) + "</p>" + offer + '<div class="seo-hero__ctas">' + SeoCta(model.meta.primaryCta, { variant: "btn--onaccent", large: true, visualId: "seo-hero-primary-cta", bind: "cms.meta.primaryCta", successLabel: model.meta.primaryCta.action === "seo.cta.quote" ? "Request sent" : "Slot held" }, view) + SeoCta(model.meta.secondaryCta, { label: secondaryLabel, variant: "btn--glass-hero", large: true, visualId: "seo-hero-secondary-cta", bind: "cms.meta.secondaryCta", successLabel: "Calling\u2026" }, view) + "</div>" + (model.hero.note ? '<div class="seo-hero__note">' + esc(model.hero.note) + "</div>" : "") + "</div>" + media + "</div></section>";
-  }
-  function SeoTrustStrip(model, view) {
-    if (view.dataState === "loading") return '<section class="seo-trust" data-module="seo-trust-strip" data-visual-id="seo-trust-strip" data-state="loading">' + Array(5).fill('<div class="seo-trust__item">' + skel2("40%") + skel2("70%") + "</div>").join("") + "</section>";
-    if (view.dataState === "empty" || !model.trust.length) return '<section class="seo-trust" data-module="seo-trust-strip" data-visual-id="seo-trust-strip" data-state="empty"><div class="seo-trust__fallback" data-state="no-data">Trust claims (rating, licence, insurance) appear here once supplied in the CMS &mdash; nothing is shown unverified.</div></section>';
-    return '<section class="seo-trust" data-module="seo-trust-strip" data-visual-id="seo-trust-strip" data-state="ready">' + model.trust.map(function(fact4) {
-      var value = fact4.value ? fact4.key === "rating" ? "<b>" + esc(fact4.value) + "</b> &middot; " + esc(fact4.count || "") : esc(fact4.value) : slotChip(fact4.slot || fact4.label.toLowerCase());
-      return '<div class="seo-trust__item" data-bind="cms.trust.' + attr(fact4.key) + '"><span class="seo-trust__icon">' + esc(fact4.icon) + '</span><div><div class="seo-trust__label">' + esc(fact4.label) + '</div><div class="seo-trust__value">' + value + "</div></div></div>";
-    }).join("") + "</section>";
-  }
-  function serviceControl(service, view) {
-    var selected = service.id === view.selectedServiceId;
-    var palette = service.palette || ["var(--accent)", "rgba(var(--accent-rgb),.12)"];
-    var content = '<div class="seo-svc__icon" style="background:' + attr(palette[1]) + '"><i style="background:' + attr(palette[0]) + '"></i></div><div class="seo-svc__name">' + esc(service.name) + '</div><div class="seo-svc__benefit" data-bind="cms.services[].benefit">' + esc(service.benefit) + '</div><div class="seo-svc__meta"><span data-bind="cms.services[].priceFrom">' + (service.priceFrom ? "from " + esc(service.priceFrom) : "") + '</span><span class="seo-svc__go">' + (view.parity ? "Book \u2192" : service.destination ? "Continue" : "Unavailable") + "</span></div>";
-    var shared = 'class="seo-svc' + (selected ? " is-selected" : "") + '" data-module="seo-service-card" data-visual-id="seo-service-card" data-action="seo.service.select" data-id="' + attr(service.id) + '" data-bind="cms.services[]"';
-    if (view.parity) return "<div " + shared + ' role="button" tabindex="0"' + (selected ? ' aria-pressed="true"' : "") + ">" + content + "</div>";
-    if (service.destination) return "<a " + shared + ' data-state="available" href="' + attr(service.destination) + '">' + content + "</a>";
-    return '<button type="button" ' + shared + ' data-state="unavailable" disabled aria-disabled="true">' + content + "</button>";
-  }
-  function SeoServicesGrid(model, view) {
-    var selected = model.services.find(function(service) {
-      return service.id === view.selectedServiceId;
-    });
-    var readback = view.parity && selected ? '<p class="seo-selection-readback" data-seo-selection data-state="selected" aria-live="polite">Selected service: ' + esc(selected.name) + "</p>" : "";
-    return '<section class="seo-sec" id="seo-services" data-module="seo-services-grid" data-visual-id="seo-services-grid">' + head("Services", "What we do", "Choose a service, then review availability before booking.") + '<div class="seo-svc-grid">' + model.services.map(function(service) {
-      return serviceControl(service, view);
-    }).join("") + "</div>" + readback + "</section>";
-  }
-  function SeoHowItWorks(model) {
-    return '<section class="seo-sec" data-module="seo-how-it-works" data-visual-id="seo-how-it-works">' + head("How it works", "Your service, step by step") + '<div class="seo-how">' + model.how.map(function(step, index) {
-      return '<div class="seo-how__step" data-bind="cms.how[' + index + ']"><div class="seo-how__num">' + (index + 1) + '</div><div class="seo-how__title">' + esc(step.title) + '</div><div class="seo-how__desc">' + esc(step.desc) + "</div></div>";
-    }).join("") + "</div></section>";
-  }
-  function SeoProofBlock(model) {
-    return '<section class="seo-sec seo-sec--tint" data-module="seo-proof" data-visual-id="seo-proof">' + head("Why " + model.brand.name, model.proof.title) + '<div class="seo-proof">' + model.proof.items.map(function(item, index) {
-      return '<div class="seo-proof__card" data-bind="cms.proof.items[' + index + ']"><div class="seo-proof__glyph"><i></i></div><div class="seo-proof__title">' + esc(item.title) + '</div><div class="seo-proof__desc">' + esc(item.desc) + "</div></div>";
-    }).join("") + "</div></section>";
-  }
-  function SeoPricing(model, view) {
-    var body = view.dataState === "loading" ? '<div class="seo-price">' + Array(3).fill('<div class="seo-price__row">' + skel2("30%") + skel2("18%") + "</div>").join("") + "</div>" : view.dataState === "empty" || !model.pricing.rows.length ? '<div class="seo-price__fallback" data-state="no-data">' + esc(model.pricing.note || "Pricing is confirmed before you book.") + "</div>" : '<div class="seo-price">' + model.pricing.rows.map(function(row, index) {
-      return '<div class="seo-price__row" data-bind="cms.pricing.rows[' + index + ']"><span class="seo-price__name">' + esc(row.name) + "</span>" + (row.from ? '<span class="seo-price__val"><b>from ' + esc(row.from) + '</b><span class="seo-price__unit"> / ' + esc(row.unit || "") + "</span></span>" : '<span class="seo-price__val seo-price__val--quote">' + esc(row.reason || "") + "</span>") + "</div>";
-    }).join("") + "</div>";
-    var ctaLabel = model.meta.primaryCta.action === "seo.cta.quote" ? "Get an exact quote" : "See exact price & book";
-    return '<section class="seo-sec" data-module="seo-pricing" data-visual-id="seo-pricing" data-state="' + attr(view.dataState) + '">' + head("Pricing", "What to expect", view.dataState === "ready" ? model.pricing.note : "") + body + '<div class="seo-price__cta">' + SeoCta(model.meta.primaryCta, { label: ctaLabel, visualId: "seo-pricing-cta", successLabel: "Request sent" }, view) + "</div></section>";
-  }
-  function SeoServiceArea(model, view) {
-    var list = view.dataState === "loading" ? '<div class="seo-area__cities">' + ["80px", "110px", "90px", "100px"].map(skel2).join("") + "</div>" : view.dataState === "empty" ? '<div class="seo-area__fallback" data-state="no-data">Service-area list comes from dispatch coverage in the CMS.</div>' : '<div class="seo-area__cities" data-bind="cms.area.cities">' + model.area.cities.map(function(city) {
-      return '<span class="seo-area__chip">' + esc(city) + "</span>";
-    }).join("") + "</div>";
-    var svg = '<svg viewBox="0 0 200 140" class="seo-area__visual"><circle cx="100" cy="70" r="64" fill="none" stroke="rgba(var(--accent-rgb),0.35)" stroke-dasharray="3 5"></circle><circle cx="100" cy="70" r="42" fill="none" stroke="rgba(var(--accent-rgb),0.26999999999999996)" stroke-dasharray="none"></circle><circle cx="100" cy="70" r="22" fill="rgba(var(--accent-rgb),.18)" stroke="rgba(var(--accent-rgb),0.18999999999999997)" stroke-dasharray="none"></circle><circle cx="100" cy="70" r="5" fill="var(--accent)"></circle></svg>';
-    var region = view.dataState === "ready" ? '<div class="seo-area__region" data-bind="cms.meta.serviceArea">' + esc(model.meta.serviceArea) + "</div>" : "";
-    var mapLabel = view.parity ? "coverage map \xB7 real map or polygon from CMS" : "coverage visualization";
-    return '<section class="seo-sec" data-module="seo-service-area" data-visual-id="seo-service-area" data-state="' + attr(view.dataState) + '"><div class="seo-area"><div>' + head("Coverage", "Where we work") + region + list + (view.dataState === "ready" ? '<p class="seo-area__note">' + esc(model.area.note || "") + "</p>" : "") + '</div><div class="seo-area__map">' + svg + '<span class="seo-media-slot__label">' + esc(mapLabel) + "</span></div></div></section>";
-  }
-  function SeoReviews(model, view) {
-    var body;
-    if (view.dataState === "loading") body = '<div class="seo-reviews">' + Array(2).fill('<div class="seo-review">' + skel2("35%") + skel2("100%") + skel2("85%") + "</div>").join("") + "</div>";
-    else if (view.dataState === "empty" || !model.reviews.length) body = '<div class="seo-reviews__fallback" data-state="no-data"><div class="seo-reviews__fallback-title">Reviews appear here</div><div>Verified customer feedback is shown only when it is available.</div></div>';
-    else body = '<div class="seo-reviews">' + model.reviews.map(function(review, index) {
-      return '<div class="seo-review" data-bind="cms.reviews[' + index + ']">' + (review.media ? '<div class="seo-review__media"><span class="seo-media-slot__label">customer photo &middot; media slot</span></div>' : "") + '<div class="seo-review__stars">' + esc("\u2605\u2605\u2605\u2605\u2605".slice(0, review.rating) + "\u2606\u2606\u2606\u2606\u2606".slice(review.rating)) + '</div><p class="seo-review__text">&ldquo;' + esc(review.text) + '&rdquo;</p><div class="seo-review__name">' + esc(review.name) + "</div></div>";
-    }).join("") + "</div>";
-    return '<section class="seo-sec seo-sec--tint" data-module="seo-reviews" data-visual-id="seo-reviews" data-state="' + attr(view.dataState === "ready" && !model.reviews.length ? "empty" : view.dataState) + '">' + head("Reviews", "What customers say") + body + "</section>";
-  }
-  function SeoFaq(model, view) {
-    var body;
-    if (view.dataState === "loading") body = '<div class="seo-faq">' + Array(3).fill('<div class="seo-faq__item"><div class="seo-faq__q">' + skel2("60%") + "</div></div>").join("") + "</div>";
-    else if (view.dataState === "empty") body = '<div class="seo-faq__fallback" data-state="no-data">FAQ collection is empty &mdash; section is omitted from the page and from FAQ schema.</div>';
-    else if (view.parity) body = '<div class="seo-faq" itemscope itemtype="https://schema.org/FAQPage">' + model.faq.map(function(faq, index) {
-      var open = faq.id === view.faqOpenId;
-      return '<div class="seo-faq__item' + (open ? " is-open" : "") + '" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question" data-bind="cms.faq[' + index + ']"><button class="seo-faq__q" data-action="seo.faq.toggle" data-id="' + attr(faq.id) + '" aria-expanded="' + String(open) + '"><span itemprop="name">' + esc(faq.q) + '</span><span class="seo-faq__chev">' + (open ? "&minus;" : "+") + '</span></button><div class="seo-faq__a" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer"' + (open ? "" : " hidden") + '><p itemprop="text">' + esc(faq.a) + "</p></div></div>";
-    }).join("") + "</div>";
-    else body = '<div class="seo-faq">' + model.faq.map(function(faq, index) {
-      var open = index === 0;
-      return '<details class="seo-faq__item' + (open ? " is-open" : "") + '" data-id="' + attr(faq.id) + '"' + (open ? " open" : "") + '><summary class="seo-faq__q" data-action="seo.faq.toggle" data-id="' + attr(faq.id) + '"><span>' + esc(faq.q) + '</span><span class="seo-faq__chev" aria-hidden="true"></span></summary><div class="seo-faq__a"><p>' + esc(faq.a) + "</p></div></details>";
-    }).join("") + "</div>";
-    return '<section class="seo-sec" data-module="seo-faq" data-visual-id="seo-faq" data-state="' + attr(view.dataState) + '">' + head("FAQ", "Common questions") + body + "</section>";
-  }
-  function SeoFinalCta(model, view) {
-    var callLabel = model.meta.callCta ? "\u260E " + model.meta.callCta.label : "\u260E Call us";
-    return '<section class="seo-final" data-module="seo-final-cta" data-visual-id="seo-final-cta"><h2 class="seo-final__title" data-bind="cms.meta.h1">' + esc(model.final.heading) + '</h2><p class="seo-final__sub">' + esc(model.final.body || "") + '</p><div class="seo-final__ctas">' + SeoCta(model.meta.primaryCta, { variant: "btn--onaccent", large: true, visualId: "seo-final-primary-cta", successLabel: "Request sent" }, view) + SeoCta(model.meta.callCta, { label: callLabel, variant: "btn--glass-hero", large: true, visualId: "seo-final-call-cta", successLabel: "Calling\u2026" }, view) + "</div></section>";
-  }
-  function SeoFooter(model, view) {
-    function col(title, body) {
-      return '<div class="seo-footer__col"><div class="seo-footer__head">' + esc(title) + "</div>" + body + "</div>";
-    }
-    var contact = model.footer.phone || model.footer.email || view.parity ? '<div data-bind="cms.footer.contacts.phone">' + (model.footer.phone ? esc(model.footer.phone) : slotChip("phone")) + '</div><div data-bind="cms.footer.contacts.email">' + (model.footer.email ? esc(model.footer.email) : slotChip("email")) + "</div>" : "";
-    var hours = model.footer.hours.map(function(row) {
-      return '<div class="seo-footer__row" data-bind="cms.footer.hours"><span>' + esc(row.days) + "</span><span>" + esc(row.hours) + "</span></div>";
-    }).join("");
-    var area = '<div data-bind="cms.meta.serviceArea">' + esc(model.meta.serviceArea) + '</div><div class="seo-footer__muted" data-bind="cms.area.cities">' + esc(model.area.cities.join(" \xB7 ")) + "</div>";
-    var legal = model.footer.legal.map(function(link) {
-      return '<a class="seo-footer__link" href="' + attr(link.href) + '" data-bind="cms.footer.legal">' + esc(link.label) + "</a>";
-    }).join("");
-    return '<footer class="seo-footer" data-module="seo-footer" data-visual-id="seo-footer"><div class="seo-footer__grid">' + (contact ? col("Contact", contact) : "") + col("Hours", hours) + col("Service area", area) + (legal ? col("Legal", legal) : "") + '</div><div class="seo-footer__base"><span data-bind="brand.name">' + esc(model.brand.name) + '</span><span class="seo-footer__muted" data-bind="cms.meta.canonicalPath">' + (view.parity ? "canonical: " + esc(model.meta.canonicalPath) : esc(model.meta.serviceArea)) + "</span></div></footer>";
-  }
-  function renderSeoSections(model, view) {
-    view = Object.assign({ dataState: "ready", faqOpenId: null, selectedServiceId: null, ctaStates: {}, parity: false }, view || {});
-    return (view.parity ? SeoMetaPreview(model) : "") + SeoHero(model, view) + SeoTrustStrip(model, view) + SeoServicesGrid(model, view) + SeoHowItWorks(model, view) + SeoProofBlock(model, view) + SeoPricing(model, view) + SeoServiceArea(model, view) + SeoReviews(model, view) + SeoFaq(model, view) + SeoFinalCta(model, view) + SeoFooter(model, view);
-  }
-
-  // app-templates/customer-portal/runtime/src/routes/SeoLandingPage.js
-  function SeoLanding() {
-    var model = loadSeoModel(state.theme);
-    var page = h("section", {
-      "class": "page seo-page",
-      "data-route": "seo.landing",
-      "data-visual-id": "seo-landing",
-      "data-state": state.view === "loading" || state.view === "empty" ? state.view : "ready"
-    });
-    page.innerHTML = renderSeoSections(model, {
-      dataState: page.getAttribute("data-state"),
-      faqOpenId: state.seoFaqOpenId,
-      selectedServiceId: state.seoSelectedServiceId,
-      ctaStates: state.seoCtaStates,
-      parity: true
-    });
-    return page;
-  }
-
   // app-templates/customer-portal/runtime/src/routes/AuthOidcPage.js
   function AuthOidc() {
     var s = state.oidc || "ready-signed-out";
@@ -14378,8 +10172,8 @@
     page.appendChild(grid);
     return page;
   }
-  function oidcStep(n, text16) {
-    return h("div", { "class": "oidc-step" }, [h("span", { "class": "oidc-step__num" }, String(n)), text16]);
+  function oidcStep(n, text10) {
+    return h("div", { "class": "oidc-step" }, [h("span", { "class": "oidc-step__num" }, String(n)), text10]);
   }
   function OidcSignedOut() {
     return h("div", { "data-state": "ready-signed-out" }, [
@@ -14422,1912 +10216,6 @@
         LandingReturnButton({ variant: "btn--ghost", block: true, visualId: "oidc-back-catalog" })
       ])
     ]);
-  }
-
-  // app-templates/customer-portal/runtime/src/components/spa/CommerceBits.js
-  function UnavailableState(props) {
-    props = props || {};
-    return h("div", { "class": "state-block", "data-module": "unavailable-state", "data-visual-id": "unavailable-state", "data-state": "unavailable" }, [
-      h("div", { "class": "state-block__glyph" }, "\u25CC"),
-      h("div", { "class": "state-block__title" }, props.title || "This isn\u2019t available yet"),
-      h("div", { "class": "state-block__desc" }, props.desc || "This part of the portal isn\u2019t connected yet. Nothing is shown in the meantime \u2014 we don\u2019t invent records."),
-      props.action ? ActionButton(props.action) : null
-    ]);
-  }
-  function spaGate(cfg) {
-    if (state.view === "unavailable") return UnavailableState(cfg.unavailable || {});
-    if (state.view === "not-found" && cfg.notFound) return NotFoundState(cfg.notFound);
-    return routeStateBody(cfg);
-  }
-  function SimulationBadge(block) {
-    return h("div", { "class": "sim-badge" + (block ? " sim-badge--block" : ""), "data-module": "simulation-notice", "data-visual-id": "simulation-notice", "data-bind": "checkout.paymentMode", role: "note" }, [
-      h("i", { "class": "sim-badge__dot" }),
-      h("b", null, "Simulation"),
-      "\u2014 no charge will be made"
-    ]);
-  }
-  function KindChip(kind) {
-    return h("span", { "class": "kind-chip kind-chip--" + kind.toLowerCase(), "data-bind": "purchase.kind" }, F.spaCommerce.purchases.kindLabels[kind] || kind);
-  }
-  function purchaseStatusBadge(label) {
-    return StatusBadge({ variant: F.spaCommerce.purchases.statusBadges[label] || "status-badge--scheduled", label, bind: "purchase.customerStatus" });
-  }
-  function MoneyRows(money3) {
-    var rows2 = [["Subtotal", money3.subtotal, "money.subtotal"]];
-    if (money3.discount) rows2.push(["Discount", money3.discount, "money.discount"]);
-    rows2.push(["Tax", money3.tax, "money.tax"]);
-    var wrap = h("div", { "class": "money-rows", "data-module": "commercial-totals", "data-visual-id": "commercial-totals" });
-    rows2.forEach(function(r) {
-      if (r[1] == null) return;
-      wrap.appendChild(h("div", { "class": "money-rows__row" }, [h("span", null, r[0]), h("span", { "data-bind": r[2] }, r[1])]));
-    });
-    wrap.appendChild(h("div", { "class": "money-rows__row money-rows__row--total" }, [
-      h("span", null, "Total"),
-      h("span", { "data-bind": "money.total" }, money3.total + (money3.currency ? " " + money3.currency : ""))
-    ]));
-    return wrap;
-  }
-
-  // app-templates/customer-portal/runtime/src/routes/SpaAccountPage.js
-  var ACCOUNT_ENTRIES = Object.freeze([
-    { key: "purchases", action: "account.openPurchases", title: "Purchases", desc: "Everything you\u2019ve ordered \u2014 services, shop items and plans, with their current state.", unavailableDesc: "Purchase history with customer statuses isn\u2019t available on this portal yet. Your raw order records are on the Orders page." },
-    { key: "plan", action: "account.openPlan", title: "My plan", desc: "Your packages and membership \u2014 remaining visits, renewal and valid actions.", unavailableDesc: "Plan and membership balances aren\u2019t connected yet. Published membership options are in Services & prices." },
-    { key: "profile", action: "account.openProfile", title: "Profile", desc: "Your contact details and preferences.", unavailableDesc: "Profile editing isn\u2019t connected yet \u2014 our team can update your details for you." },
-    { key: "support", action: "support.open", title: "Support", desc: "Get help with a visit, an order or your plan.", unavailableDesc: "A support destination hasn\u2019t been set up for this portal yet." }
-  ]);
-  function entryAvailability(key) {
-    if (spaCurrentApiDemoOpen()) {
-      if (key === "support" || key === "plan") return "unavailable";
-      return "available";
-    }
-    var staging = spaCapability() === "current-staging";
-    if (key === "support") return "unavailable";
-    if (staging) return "unavailable";
-    if (state.spaAccountPartial && (key === "plan" || key === "profile")) return "unavailable";
-    return "available";
-  }
-  function SpaAccount() {
-    var page = h("section", { "class": "page", "data-route": "account", "data-state": state.view, "data-visual-id": "spa-account", "data-module": "spa-account", "data-capability": spaCapability(), "data-screen-label": "Account overview" });
-    page.appendChild(PageHeader({ title: "Account", sub: h("span", { "data-bind": "session.displayName" }, "Signed in as " + spaCustomer().fullName) }));
-    var gate = spaGate({
-      states: ["loading", "error", "unauthorized"],
-      skeleton: function() {
-        var w = h("div", { "class": "account-grid", "data-state": "loading", "aria-busy": "true" });
-        for (var i = 0; i < 4; i++) w.appendChild(skel("height:120px;border-radius:20px"));
-        return w;
-      },
-      error: { title: "Couldn\u2019t load your account", desc: "Your account overview didn\u2019t load, so nothing is shown \u2014 we never show stale sections. Nothing was changed; try again.", retryId: "account" },
-      scope: "your account",
-      backRoute: "orders.list",
-      unavailable: { title: "Account isn\u2019t available yet", desc: "This part of the portal isn\u2019t connected yet. Your visits and catalog pages still work as usual." }
-    });
-    if (gate) {
-      page.appendChild(gate);
-      return page;
-    }
-    var grid = h("div", { "class": "account-grid", "data-module": "account-entry-list", "data-visual-id": "account-entry-list" });
-    ACCOUNT_ENTRIES.forEach(function(e) {
-      var avail = entryAvailability(e.key);
-      var card = h("div", {
-        "class": "card card--pad account-entry" + (avail === "unavailable" ? " account-entry--unavailable" : ""),
-        "data-module": "account-entry",
-        "data-visual-id": "account-entry-" + e.key,
-        "data-state": avail
-      }, [
-        h("div", { style: "display:flex;align-items:center;gap:9px" }, [
-          h("div", { "class": "card__title", style: "flex:1" }, e.title),
-          avail === "unavailable" ? h("span", { "class": "readonly-chip" }, "Not available yet") : null
-        ]),
-        h("div", { "class": "account-entry__desc" }, avail === "available" ? e.desc : spaCurrentApiDemoOpen() && e.key === "plan" ? "Published packages and memberships can be ordered now. A personal balance or renewal record is not exposed by the current API." : e.unavailableDesc),
-        h(
-          "div",
-          { "class": "account-entry__foot" },
-          avail === "available" ? h("span", { "class": "link-action", "data-action": e.action }, "Open " + e.title.toLowerCase() + " \u203A") : e.key === "purchases" && spaCapability() === "current-staging" ? h("span", { "class": "link-action", "data-action": "nav.go", "data-id": "orders.list" }, "See your orders \u203A") : e.key === "plan" ? h("span", { "class": "link-action", "data-action": "nav.go", "data-id": "pricing" }, "Membership options \u203A") : null
-        )
-      ]);
-      grid.appendChild(card);
-    });
-    page.appendChild(grid);
-    page.appendChild(h("div", { "class": "catalog-note" }, "Sections appear here as they\u2019re connected for your account \u2014 nothing is shown from guesses."));
-    return page;
-  }
-
-  // app-templates/customer-portal/runtime/src/normalizers/spa-visit-mode.js
-  function spaVisitModeLabel(mode, labels) {
-    var value = String(mode || "").trim();
-    var normalized = value.toUpperCase();
-    var configured = labels && (labels[value] || labels[value.toLowerCase()] || labels[normalized]);
-    if (configured) return configured;
-    if (normalized === "STUDIO" || normalized === "SALON") return "At Calm Harbor";
-    if (normalized === "HOME" || normalized === "MOBILE") return "At your place";
-    return "Visit location pending";
-  }
-  function spaVisitModeClass(mode) {
-    var normalized = String(mode || "").trim().toLowerCase().replace(/[^a-z0-9_-]+/g, "-");
-    return normalized || "pending";
-  }
-
-  // app-templates/customer-portal/runtime/src/routes/SpaAppointmentsPage.js
-  function modeChip(mode) {
-    return h("span", { "class": "visit-mode visit-mode--" + spaVisitModeClass(mode), "data-module": "visit-mode", "data-bind": "appointment.visitMode" }, [
-      h("i", { "class": "visit-mode__dot" }),
-      spaVisitModeLabel(mode, F.spa.modeLabels)
-    ]);
-  }
-  function statusBadge(label) {
-    return StatusBadge({ variant: F.spa.statusBadges[label] || "status-badge--scheduled", label, bind: "appointment.status" });
-  }
-  function apptRow(a, opts) {
-    opts = opts || {};
-    var meta = [a.time, a.specialist, spaVisitModeLabel(a.mode, F.spa.modeLabels)].filter(Boolean).join(" \xB7 ");
-    var row = h("div", { "class": "appt-row appt-row--link", "data-module": "appointment-row", "data-visual-id": "appointment-row", "data-appointment-id": a.id, "data-appointment-ref": a.id, "data-action": "appointment.open", "data-id": a.id, role: "link", tabindex: "0" }, [
-      h("div", { "class": "log-date" }, a.date),
-      h("div", { "class": "appt-row__body" }, [
-        h("div", { "class": "appt-row__name", "data-bind": "appointment.service" }, a.service),
-        h("div", { "class": "appt-row__meta", "data-bind": "appointment.time,appointment.specialist,appointment.visitMode" }, meta)
-      ]),
-      statusBadge(a.status),
-      a.price ? h("div", { "class": "appt-row__price", "data-bind": "appointment.displayPrice" }, a.price) : null,
-      opts.bookAgain && a.status === "Completed" ? h("span", { "class": "link-action", "data-action": "appointment.bookAgain", "data-id": a.id, "data-appointment-ref": a.id }, "Book again \u203A") : h("span", { "class": "appt-row__chev", "aria-hidden": "true" }, "\u203A")
-    ]);
-    return row;
-  }
-  function pastPanel(items, open) {
-    var panel = h("div", { "class": "list-panel", "data-module": "appointment-list", "data-visual-id": "appointments-past" }, [
-      h("div", { "class": "list-panel__head" }, [
-        h("div", { "class": "list-panel__title", style: "flex:1" }, "Past"),
-        h("span", { style: "font-size:12px;color:var(--ink-3)" }, "your visit history")
-      ])
-    ]);
-    items.forEach(function(a) {
-      panel.appendChild(apptRow(a, { bookAgain: open }));
-    });
-    return panel;
-  }
-  function loadingSkeleton() {
-    var w = h("div", { "data-state": "loading", "aria-busy": "true" });
-    w.appendChild(skel("height:210px;border-radius:24px"));
-    w.appendChild(skel("height:150px;border-radius:24px;margin-top:18px"));
-    w.appendChild(skel("height:150px;border-radius:24px;margin-top:18px"));
-    return w;
-  }
-  function SpaAppointments() {
-    var open = spaBookingOpen();
-    var appointments = spaAppointments();
-    var view = state.config.dataMode === "live" ? state.moduleStatus.appointments || appointments.state || "loading" : state.view;
-    var sc = state.spaAppt;
-    var next = view === "empty" ? null : appointments.next;
-    var cancelled = next && !!state.spaCancelled[next.id];
-    var resched = next ? state.spaRescheduled[next.id] : null;
-    var page = h("section", { "class": "page", "data-route": "orders.list", "data-state": view, "data-visual-id": "spa-appointments", "data-capability": "target-appointments", "data-booking": open ? "open" : "closed", "data-screen-label": "Appointments (target)" });
-    var sub = next ? cancelled ? "Your " + next.date + " visit was cancelled." : "Your next visit \u2014 " + next.date + ", " + spaVisitModeLabel(next.mode, F.spa.modeLabels).toLowerCase() + "." : "You have no upcoming visits.";
-    page.appendChild(PageHeader({ title: spaCustomer().greeting, sub }));
-    var gate = routeStateBody({
-      view,
-      states: ["loading", "error", "unauthorized"],
-      skeleton: loadingSkeleton,
-      error: { title: "Couldn\u2019t load your appointments", desc: "Your appointments didn\u2019t load, so nothing is shown \u2014 we never show stale or guessed visits. Nothing was changed; try again.", retryId: "appointments" },
-      scope: "your appointments",
-      backRoute: "services"
-    });
-    if (gate) {
-      page.appendChild(gate);
-      return page;
-    }
-    var grid = h("div", { "class": "appt-grid" });
-    var left = h("div", { "class": "appt-col" });
-    var right = h("div", { "class": "appt-col" });
-    if (!next) {
-      var emptyCard = h("div", { "class": "card appt-empty", "data-module": "appointment-empty", "data-visual-id": "appointment-empty", "data-state": "empty" }, [
-        h("div", { "class": "state-block__glyph" }, "\u2740"),
-        h("div", { "class": "state-block__title" }, "No upcoming appointments"),
-        h("div", { "class": "state-block__desc" }, open ? "Nothing is booked right now \u2014 book your next visit whenever you\u2019re ready." : "Nothing is booked right now. Online booking isn\u2019t available yet \u2014 browse treatments and prices, and our team takes it from there."),
-        h("div", { "class": "appt-empty__actions" }, open ? [
-          ActionButton({ variant: "btn--primary", label: "Book an appointment", action: "booking.open", lg: true, visualId: "appt-empty-book" }),
-          ActionButton({ variant: "btn--ghost", label: "Browse services", action: "nav.go", id: "services", visualId: "appt-empty-browse" })
-        ] : [
-          ActionButton({ variant: "btn--primary", label: "Browse services", action: "nav.go", id: "services", lg: true, visualId: "appt-empty-browse" }),
-          ActionButton({ variant: "btn--ghost", label: "See prices", action: "nav.go", id: "pricing", visualId: "appt-empty-prices" })
-        ])
-      ]);
-      if (sc === "no-history") {
-        emptyCard.appendChild(h("div", { style: "font-size:12px;color:var(--ink-3)" }, "Visits you complete will build your history here."));
-        left.appendChild(emptyCard);
-      } else {
-        left.appendChild(emptyCard);
-        left.appendChild(pastPanel(appointments.past || [], open));
-      }
-    } else {
-      var cKey = "order.cancel:" + next.id;
-      var phase = cmdPhase(cKey);
-      var hero = h("div", { "class": "card card--pad appt-hero", "data-module": "next-appointment", "data-visual-id": "next-appointment", "data-appointment-id": next.id, "data-state": cancelled ? "cancelled" : phase !== "idle" ? phase : "ready" }, [
-        h("div", { style: "display:flex;align-items:center;gap:9px;flex-wrap:wrap" }, [
-          h("div", { "class": "card__title", style: "flex:1" }, "Next appointment"),
-          modeChip(next.mode),
-          cancelled ? statusBadge("Cancelled") : statusBadge(next.status)
-        ]),
-        h("div", { "class": "appt-hero__service", "data-bind": "appointment.service" }, next.service),
-        h("div", { "class": "appt-hero__when" }, [
-          h("span", { "data-bind": "appointment.start" }, resched ? resched.start : next.date + " \xB7 " + next.time),
-          h("span", { "class": "appt-hero__tz" }, F.spa.appointments.tzNote)
-        ])
-      ]);
-      var details = h("div", { "class": "appt-details", "data-visual-id": "visit-details" }, [
-        h("div", { "class": "appt-details__row" }, [
-          h("div", { "class": "appt-details__label" }, "Where"),
-          h("div", { "class": "appt-details__val", "data-bind": "appointment.visitMode,appointment.location" }, [
-            h("b", null, spaVisitModeLabel(next.mode, F.spa.modeLabels)),
-            next.location ? " \xB7 " + next.location : h("span", { style: "color:var(--ink-3)" }, " \xB7 location details not provided yet")
-          ])
-        ]),
-        h("div", { "class": "appt-details__row" }, [
-          h("div", { "class": "appt-details__label" }, "With"),
-          h(
-            "div",
-            { "class": "appt-details__val", "data-bind": "appointment.specialist" },
-            next.specialist ? [h("b", null, next.specialist)] : [h("span", { style: "color:var(--ink-3)" }, "No specialist assigned yet")]
-          )
-        ])
-      ]);
-      if (next.price) details.appendChild(h("div", { "class": "appt-details__row" }, [
-        h("div", { "class": "appt-details__label" }, "Price"),
-        h("div", { "class": "appt-details__val", "data-bind": "appointment.displayPrice" }, [h("b", null, next.price), " \xB7 as booked"])
-      ]));
-      hero.appendChild(h("div", { style: "font-size:12px;font-weight:650;color:var(--ink-3);margin-top:14px;letter-spacing:.04em;text-transform:uppercase" }, "Visit details"));
-      hero.appendChild(details);
-      hero.appendChild(h("div", { "class": "appt-hero__ref", "data-bind": "appointment.reference" }, [
-        "Reference " + next.ref,
-        h("span", null, [" \xB7 ", h("span", { "class": "link-action", "data-action": "appointment.open", "data-id": next.id, "data-appointment-ref": next.id }, "View details \u203A")]),
-        /* wave 15 — appointment detail may deep-link to its purchase (never the reverse priority) */
-        state.config.dataMode !== "live" && F.spaCommerce.purchaseByAppointment[next.id] ? h("span", null, [" \xB7 ", h("span", { "class": "link-action", "data-action": "purchase.open", "data-id": F.spaCommerce.purchaseByAppointment[next.id], "data-purchase-ref": F.spaCommerce.purchaseByAppointment[next.id] }, "View purchase \u203A")]) : null
-      ]));
-      if (resched && !cancelled) {
-        hero.appendChild(h("div", { "class": "appt-hero__note", "data-state": "succeeded" }, "Rescheduled \u2014 confirmed by the studio. The previous time was released."));
-      }
-      if (cancelled) {
-        hero.appendChild(h("div", { "class": "appt-hero__note", "data-state": "succeeded" }, "Cancelled \u2014 confirmed by the studio. Nothing further is scheduled for this visit."));
-        hero.appendChild(h("div", { "class": "appt-hero__actions" }, [
-          open ? ActionButton({ variant: "btn--primary", label: "Book a new visit", action: "booking.open", visualId: "appt-rebook" }) : ActionButton({ variant: "btn--ghost", label: "Browse services", action: "nav.go", id: "services", visualId: "appt-rebook-browse" })
-        ]));
-      } else if (open) {
-        if (phase === "failed") hero.appendChild(h("div", { style: "margin-top:12px" }, InlineFailure({
-          msg: "Your appointment wasn\u2019t cancelled \u2014 it\u2019s still booked exactly as shown.",
-          retryAction: "appointment.cancel",
-          retryId: next.id,
-          retryLabel: "Try cancelling again"
-        })));
-        if (phase === "conflict") hero.appendChild(h("div", { style: "margin-top:12px" }, InlineFailure({
-          msg: "This appointment changed since you opened it \u2014 reload the latest version before making changes.",
-          retryAction: "ui.retry",
-          retryId: cKey,
-          retryLabel: "Reload"
-        })));
-        var allowed2 = next.allowedActions || ["reschedule", "cancel"];
-        var heroActions = h("div", { "class": "appt-hero__actions" });
-        if (allowed2.indexOf("reschedule") !== -1) heroActions.appendChild(ActionButton({ variant: "btn--ghost", label: "Reschedule", action: "appointment.reschedule", id: next.id, disabled: phase === "pending" || phase === "conflict", visualId: "appt-reschedule" }));
-        if (allowed2.indexOf("cancel") !== -1) heroActions.appendChild(ActionButton({ variant: "btn--ghost", label: "Cancel visit", action: "appointment.cancel", id: next.id, confirm: true, pending: phase === "pending", pendingLabel: "Cancelling\u2026", disabled: phase === "conflict", visualId: "appt-cancel" }));
-        if (heroActions.childNodes.length) hero.appendChild(heroActions);
-      } else {
-        hero.appendChild(h("div", { "class": "appt-hero__actions" }, [
-          ActionButton({ variant: "btn--ghost", label: "Reschedule", action: "order.reschedule", id: next.id, disabled: true, visualId: "appt-reschedule" }),
-          ActionButton({ variant: "btn--ghost", label: "Cancel visit", action: "order.cancel", id: next.id, disabled: true, visualId: "appt-cancel" })
-        ]));
-        hero.appendChild(h("div", { "class": "appt-hero__note", "data-state": "unavailable" }, [
-          "Online changes aren\u2019t available yet for this visit \u2014 our team can reschedule or cancel it for you. ",
-          h("span", { "class": "link-action", "data-action": "support.open" }, "Contact support \u203A")
-        ]));
-      }
-      left.appendChild(hero);
-      var upcoming = h("div", { "class": "list-panel", "data-module": "appointment-list", "data-visual-id": "appointments-upcoming" }, [
-        h("div", { "class": "list-panel__head" }, [h("div", { "class": "list-panel__title", style: "flex:1" }, "Upcoming")])
-      ]);
-      (appointments.upcoming || []).forEach(function(a) {
-        upcoming.appendChild(apptRow(a));
-      });
-      left.appendChild(upcoming);
-      left.appendChild(pastPanel(appointments.past || [], open));
-    }
-    var rail = h("div", { "class": "card card--pad", "data-module": "catalog-teaser", "data-visual-id": "catalog-teaser" }, [
-      h("div", { "class": "card__title" }, "Treatments & prices"),
-      h("div", { style: "font-size:12.5px;color:var(--ink-2);margin:4px 0 8px" }, "Live from the public catalog \u2014 shown as published.")
-    ]);
-    F.spa.pim.services.slice(0, 3).forEach(function(s) {
-      rail.appendChild(h("div", { "class": "rate-row", "data-product-code": s.code }, [
-        h("div", { style: "flex:1;min-width:0" }, [
-          h("div", { style: "font-weight:600;font-size:13.5px", "data-bind": "pim.services[].name" }, s.name),
-          h("div", { style: "font-size:12px;color:var(--ink-3)" }, s.shortDescription)
-        ]),
-        h("div", { style: "font-weight:700;font-size:13.5px", "data-bind": "pim.services[].displayPrice" }, s.displayPrice)
-      ]));
-    });
-    rail.appendChild(h("div", { style: "margin-top:10px" }, h("span", { "class": "link-action", "data-action": "nav.go", "data-id": "services" }, "All services & prices \u203A")));
-    right.appendChild(rail);
-    grid.appendChild(left);
-    grid.appendChild(right);
-    page.appendChild(grid);
-    return page;
-  }
-
-  // app-templates/customer-portal/runtime/src/routes/SpaAppointmentDetailPage.js
-  function modeChip2(mode) {
-    return h("span", { "class": "visit-mode visit-mode--" + spaVisitModeClass(mode), "data-module": "visit-mode", "data-bind": "appointment.visitMode" }, [
-      h("i", { "class": "visit-mode__dot" }),
-      spaVisitModeLabel(mode, F.spa.modeLabels)
-    ]);
-  }
-  function detailRow(label, val) {
-    return h("div", { "class": "appt-details__row" }, [
-      h("div", { "class": "appt-details__label" }, label),
-      h("div", { "class": "appt-details__val" }, val)
-    ]);
-  }
-  function SpaAppointmentDetail() {
-    var a = currentAppointment();
-    var view = state.config.dataMode === "live" ? state.moduleStatus.appointments || "loading" : state.view;
-    var page = h("section", { "class": "page page--narrow", "data-route": "appointment.detail", "data-state": view, "data-visual-id": "appointment-detail", "data-module": "appointment-detail", "data-capability": spaCapability(), "data-appointment-ref": a ? a.ref : void 0, "data-screen-label": "Appointment detail" });
-    page.appendChild(h("div", { "class": "detail-back" }, h("span", { "class": "link-action", "data-action": "nav.go", "data-id": "orders.list" }, "\u2039 Appointments")));
-    var gate = routeStateBody({
-      view,
-      states: ["loading", "error", "unauthorized"],
-      skeleton: function() {
-        return h("div", { "data-state": "loading", "aria-busy": "true" }, [
-          skel("height:300px;border-radius:24px"),
-          skel("height:90px;border-radius:20px;margin-top:16px")
-        ]);
-      },
-      error: { title: "Couldn\u2019t load this visit", desc: "The visit didn\u2019t load, so nothing is shown \u2014 we never show a stale or guessed visit. Nothing was changed; try again.", retryId: "appointment-detail" },
-      scope: "this visit",
-      backRoute: "orders.list"
-    });
-    if (gate) {
-      page.appendChild(gate);
-      return page;
-    }
-    if (!a || view === "not-found") {
-      page.appendChild(NotFoundState({ noun: "visit", backLabel: "appointments", backRoute: "orders.list" }));
-      return page;
-    }
-    var open = spaBookingOpen();
-    var cancelled = !!state.spaCancelled[a.ref];
-    var rescheduled = !!state.spaRescheduled[a.ref];
-    var cKey = "order.cancel:" + a.ref;
-    var phase = cmdPhase(cKey);
-    var conflict = view === "conflict";
-    var allowed2 = cancelled ? [] : a.allowedActions || [];
-    var isPast = a.customerStatus === "Completed" || a.customerStatus === "Cancelled";
-    page.appendChild(PageHeader({ title: "Your visit", sub: "Everything about this appointment, exactly as recorded by the studio." }));
-    if (conflict) page.appendChild(ConflictBanner({ noun: "visit", desc: "This visit changed since you opened it. Load the latest version before making changes \u2014 nothing was submitted.", retryId: "appointment-detail" }));
-    var hero = h("div", { "class": "card card--pad appt-hero", "data-module": "next-appointment", "data-visual-id": "appointment-detail-card", "data-appointment-ref": a.ref, "data-state": cancelled ? "cancelled" : phase !== "idle" ? phase : conflict ? "conflict" : "ready" }, [
-      h("div", { style: "display:flex;align-items:center;gap:9px;flex-wrap:wrap" }, [
-        modeChip2(a.visitMode),
-        h("div", { style: "flex:1" }),
-        StatusBadge({ variant: F.spa.statusBadges[cancelled ? "Cancelled" : a.customerStatus] || "status-badge--scheduled", label: cancelled ? "Cancelled" : a.customerStatus, bind: "appointment.customerStatus" })
-      ]),
-      h("div", { "class": "appt-hero__service", "data-bind": "appointment.service" }, a.service),
-      h("div", { "class": "appt-hero__when" }, [
-        h("span", { "data-bind": "appointment.start" }, a.start),
-        h("span", { "class": "appt-hero__tz", "data-bind": "appointment.timezoneNote" }, a.timezoneNote)
-      ])
-    ]);
-    var details = h("div", { "class": "appt-details", "data-visual-id": "visit-details" });
-    details.appendChild(detailRow("Where", h("span", { "data-bind": "appointment.visitMode,appointment.location" }, [
-      h("b", null, spaVisitModeLabel(a.visitMode, F.spa.modeLabels)),
-      a.location ? " \xB7 " + a.location : h("span", { style: "color:var(--ink-3)" }, " \xB7 location details not provided yet")
-    ])));
-    details.appendChild(detailRow("With", a.specialist ? h("b", { "data-bind": "appointment.specialist" }, a.specialist) : h("span", { style: "color:var(--ink-3)", "data-bind": "appointment.specialist" }, "No specialist assigned yet")));
-    if (a.displayPrice) details.appendChild(detailRow("Price", h("span", { "data-bind": "appointment.displayPrice" }, [h("b", null, a.displayPrice), " \xB7 as booked"])));
-    hero.appendChild(h("div", { style: "font-size:12px;font-weight:650;color:var(--ink-3);margin-top:14px;letter-spacing:.04em;text-transform:uppercase" }, "Visit details"));
-    hero.appendChild(details);
-    hero.appendChild(h("div", { "class": "appt-hero__ref", "data-bind": "appointment.reference" }, [
-      "Reference " + a.reference,
-      a.relatedPurchaseRef && allowed2.indexOf("openPurchase") !== -1 ? h("span", null, [" \xB7 ", h("span", { "class": "link-action", "data-action": "appointment.openPurchase", "data-id": a.relatedPurchaseRef, "data-purchase-ref": a.relatedPurchaseRef }, "View purchase \u203A")]) : null
-    ]));
-    if (a.attention && !cancelled) hero.appendChild(h("div", { "class": "purch-row__attention", "data-bind": "appointment.attention", role: "note", style: "margin-top:12px" }, a.attention));
-    if (cancelled) {
-      hero.appendChild(h("div", { "class": "appt-hero__note", "data-state": "succeeded" }, "Cancelled \u2014 confirmed by the studio. Nothing further is scheduled for this visit."));
-      hero.appendChild(h("div", { "class": "appt-hero__actions" }, [
-        open ? ActionButton({ variant: "btn--primary", label: "Book a new visit", action: "booking.open", visualId: "adet-rebook" }) : ActionButton({ variant: "btn--ghost", label: "Browse services", action: "nav.go", id: "services", visualId: "adet-rebook-browse" })
-      ]));
-    } else {
-      if (rescheduled) hero.appendChild(h("div", { "class": "appt-hero__note", "data-state": "succeeded" }, "Rescheduled \u2014 confirmed by the studio. The previous time was released."));
-      if (phase === "failed") hero.appendChild(h("div", { style: "margin-top:12px" }, InlineFailure({
-        msg: "Your appointment wasn\u2019t cancelled \u2014 it\u2019s still booked exactly as shown.",
-        retryAction: "appointment.cancel",
-        retryId: a.ref,
-        retryLabel: "Try cancelling again"
-      })));
-      if (phase === "conflict") hero.appendChild(h("div", { style: "margin-top:12px" }, InlineFailure({
-        msg: "This appointment changed since you opened it \u2014 reload the latest version before making changes.",
-        retryAction: "ui.retry",
-        retryId: cKey,
-        retryLabel: "Reload"
-      })));
-      var actions = h("div", { "class": "appt-hero__actions" });
-      if (allowed2.indexOf("reschedule") !== -1) actions.appendChild(ActionButton({ variant: "btn--ghost", label: "Reschedule", action: "appointment.reschedule", id: a.ref, disabled: !open || conflict || phase === "pending" || phase === "conflict", visualId: "adet-reschedule" }));
-      if (allowed2.indexOf("cancel") !== -1) actions.appendChild(ActionButton({ variant: "btn--ghost", label: "Cancel visit", action: "appointment.cancel", id: a.ref, confirm: true, pending: phase === "pending", pendingLabel: "Cancelling\u2026", disabled: !open || conflict || phase === "conflict", visualId: "adet-cancel" }));
-      if (allowed2.indexOf("bookAgain") !== -1) actions.appendChild(ActionButton({ variant: "btn--primary", label: "Book again", action: "appointment.bookAgain", id: a.ref, disabled: !open || conflict, visualId: "adet-book-again" }));
-      if (actions.childNodes.length) actions.childNodes.forEach(function(b) {
-        b.setAttribute("data-appointment-ref", a.ref);
-      });
-      if (actions.childNodes.length) hero.appendChild(actions);
-      if (!open && allowed2.length && !(allowed2.length === 1 && allowed2[0] === "openPurchase")) {
-        hero.appendChild(h("div", { "class": "appt-hero__note", "data-state": "unavailable" }, [
-          "Online changes aren\u2019t available yet for this visit \u2014 our team can " + (isPast ? "book it again" : "reschedule or cancel it") + " for you. ",
-          h("span", { "class": "link-action", "data-action": "support.open" }, "Contact support \u203A")
-        ]));
-      }
-    }
-    page.appendChild(hero);
-    page.appendChild(h("div", { "class": "catalog-note" }, "Times, prices and statuses are shown exactly as recorded \u2014 this page never estimates deadlines or eligibility."));
-    return page;
-  }
-
-  // app-templates/customer-portal/runtime/src/routes/spa-cart-view.js
-  function spaCartRouteState(live, moduleStatus, envelope2, fixtureView) {
-    if (!live) return fixtureView;
-    return moduleStatus || envelope2 && envelope2.state || "loading";
-  }
-  function spaCartDisplayTotals(live, source) {
-    if (live) return { subtotal: source && source.displaySubtotal || null, tax: null, total: null };
-    var totals = source && source.displayTotals || null;
-    return {
-      subtotal: totals && totals.subtotal != null ? totals.subtotal : null,
-      tax: totals && totals.tax != null ? totals.tax : null,
-      total: totals && totals.total != null ? totals.total : null
-    };
-  }
-
-  // app-templates/customer-portal/runtime/src/routes/SpaCartPage.js
-  function cartLineRow(l, i, demo) {
-    var lineState = i === 0 && demo === "stale-price" ? "stale-price" : i === 0 && demo === "inventory-conflict" ? "inventory-conflict" : null;
-    var qPhase = cmdPhase("cart.changeQuantity:" + l.ref);
-    var rPhase = cmdPhase("cart.removeItem:" + l.ref);
-    var busy = qPhase === "pending" || rPhase === "pending";
-    var row = h("div", { "class": "cart-row spa-cart-row", "data-module": "cart-line", "data-visual-id": "cart-line", "data-line-ref": l.ref, "data-state": lineState || (busy ? "pending" : qPhase !== "idle" ? qPhase : void 0) }, [
-      h("div", { "class": "cart-row__body" }, [
-        h("div", { style: "font-weight:700;font-size:14.5px", "data-bind": "cart.lines[].title" }, l.title + (l.variant ? " \xB7 " + l.variant : "")),
-        /* both line figures are server strings: a line Core priced without one
-           keeps its place in the row and shows nothing there */
-        h("div", { style: "font-size:13px;color:var(--ink-2)", "data-bind": "cart.lines[].displayUnitPrice" }, l.displayUnitPrice ? l.displayUnitPrice + " each" : ""),
-        qPhase === "failed" ? h("div", { "class": "cart-row__note", role: "alert" }, "Didn\u2019t save \u2014 quantity unchanged. Try again.") : null,
-        lineState === "stale-price" ? h("div", { "class": "cart-row__note", role: "alert", "data-bind": "cart.lines[].priceNote" }, "The price of this item changed since you added it \u2014 refresh the bag to see current totals.") : null,
-        lineState === "inventory-conflict" ? h("div", { "class": "cart-row__note", role: "alert" }, [
-          "Only 1 is available right now. ",
-          h("span", { "class": "link-action", "data-action": "cart.changeQuantity", "data-id": l.ref + "|1" }, "Keep 1"),
-          " \xB7 ",
-          h("span", { "class": "link-action", "data-action": "cart.removeItem", "data-id": l.ref }, "Remove")
-        ]) : null
-      ]),
-      h("div", { "class": "qty" }, [
-        h("button", { "class": "qty__btn qty__btn--minus", "data-action": "cart.changeQuantity", "data-id": l.ref + "|" + (l.qty - 1), "aria-label": "Decrease", disabled: busy ? true : void 0 }, "\u2212"),
-        h("div", { "class": "qty__val", "data-bind": "cart.lines[].quantity" }, String(l.qty)),
-        h("button", { "class": "qty__btn qty__btn--plus", "data-action": "cart.changeQuantity", "data-id": l.ref + "|" + (l.qty + 1), "aria-label": "Increase", disabled: busy ? true : void 0 }, "+")
-      ]),
-      h("div", { "class": "cart-row__total", "data-bind": "cart.lines[].displayTotal" }, l.displayTotal || ""),
-      h("button", { "class": "cart-remove", "data-action": "cart.removeItem", "data-id": l.ref, disabled: busy ? true : void 0 }, rPhase === "pending" ? "Removing\u2026" : "Remove")
-    ]);
-    return row;
-  }
-  function moneyRow(label, value, bind, isTotal) {
-    return h("div", { "class": "money-rows__row" + (isTotal ? " money-rows__row--total" : "") }, [
-      h("span", null, label),
-      h("span", { "data-bind": bind }, value)
-    ]);
-  }
-  function SpaCart() {
-    var live = state.config.dataMode === "live";
-    var source = live ? state.moduleData.cart : state.spaCart;
-    var view = spaCartRouteState(live, state.moduleStatus.cart, source, state.view);
-    var page = h("section", { "class": "page", "data-route": "cart", "data-state": view, "data-visual-id": "spa-cart", "data-module": "spa-cart", "data-capability": spaCapability(), "data-cart-ref": !live && state.spaCart ? state.spaCart.version : void 0, "data-screen-label": "Your bag" });
-    page.appendChild(h("div", { "class": "detail-back" }, h("span", { "class": "link-action", "data-action": "nav.products" }, "\u2039 Keep shopping")));
-    page.appendChild(PageHeader({ title: "Your bag", sub: "Items you\u2019re planning to buy \u2014 totals come from the store, and nothing is reserved yet." }));
-    if (!spaRetailOpen()) {
-      page.appendChild(UnavailableState({ title: "Online shopping isn\u2019t open yet", desc: "The shop is browse-only on this portal for now \u2014 nothing can be added to a bag or purchased online.", action: { variant: "btn--ghost", label: "Browse the shop", action: "nav.products", visualId: "cart-unavailable-shop" } }));
-      return page;
-    }
-    if (live && !isModuleEnabled("cart")) {
-      page.appendChild(UnavailableState({ title: "The bag isn\u2019t available right now", desc: "The store can\u2019t open your bag at the moment. Your items aren\u2019t lost \u2014 try again in a bit." }));
-      return page;
-    }
-    var gate = spaGate({
-      view,
-      states: ["loading", "error", "unauthorized"],
-      skeleton: function() {
-        var w = h("div", { "data-state": "loading", "aria-busy": "true" });
-        w.appendChild(skel("height:220px;border-radius:24px"));
-        w.appendChild(skel("height:130px;border-radius:24px;margin-top:18px"));
-        return w;
-      },
-      error: { title: "Couldn\u2019t load your bag", desc: "Your bag didn\u2019t load, so nothing is shown \u2014 we never show a stale bag. Nothing was changed; try again.", retryId: "cart" },
-      scope: "your bag",
-      backRoute: "products",
-      unavailable: { title: "The bag isn\u2019t available right now", desc: "The store can\u2019t open your bag at the moment. Your items aren\u2019t lost \u2014 try again in a bit." }
-    });
-    if (gate) {
-      page.appendChild(gate);
-      return page;
-    }
-    var lines = spaCartLines();
-    if (view === "empty" || lines.length === 0) {
-      page.appendChild(h("div", { "class": "state-block", "data-module": "empty-state", "data-visual-id": "cart-empty", "data-state": "empty" }, [
-        h("div", { "class": "state-block__glyph" }, "\u25A1"),
-        h("div", { "class": "state-block__title" }, "Your bag is empty"),
-        h("div", { "class": "state-block__desc" }, "Products you add from the shop will wait here. Adding something doesn\u2019t reserve it \u2014 stock is confirmed at checkout."),
-        ActionButton({ variant: "btn--primary", label: "Browse the shop", action: "nav.products", visualId: "cart-empty-shop" })
-      ]));
-      return page;
-    }
-    var demo = live ? null : state.spaCartDemo;
-    var grid = h("div", { "class": "purch-grid" });
-    var left = h("div", { "class": "appt-col" });
-    var right = h("div", { "class": "appt-col" });
-    if (demo === "stale-price") {
-      left.appendChild(ConflictBanner({ noun: "bag", desc: "The store re-checked your items and a price changed. Load the latest bag before checking out \u2014 nothing was ordered.", retryId: "cart-quote" }));
-    }
-    var card = h("div", { "class": "card", "data-module": "cart-list", "data-visual-id": "cart-list", "data-state": demo && demo !== "as-added" ? demo : void 0 }, [
-      h("div", { "class": "card__head" }, [
-        h("span", { "class": "card__title" }, "Items"),
-        h("span", { style: "font-size:12px;color:var(--ink-3)", "data-bind": "cart.version" }, "kept in your account \u2014 not reserved")
-      ])
-    ]);
-    var listWrap = h("div", { style: "padding:0 16px 8px" });
-    lines.forEach(function(l, i) {
-      listWrap.appendChild(cartLineRow(l, i, demo));
-    });
-    card.appendChild(listWrap);
-    left.appendChild(card);
-    var totals = spaCartDisplayTotals(live, source);
-    var moneyRows = h("div", { "class": "money-rows" });
-    if (totals.subtotal != null) moneyRows.appendChild(moneyRow("Subtotal", totals.subtotal, "cart.displayTotals.subtotal", false));
-    if (totals.tax != null) moneyRows.appendChild(moneyRow("Tax", totals.tax, "cart.displayTotals.tax", false));
-    if (totals.total != null) moneyRows.appendChild(moneyRow("Total", totals.total, "cart.displayTotals.total", true));
-    if (moneyRows.childNodes.length) {
-      right.appendChild(h("div", { "class": "card card--pad", "data-module": "cart-totals", "data-visual-id": "cart-totals" }, [
-        h("div", { "class": "card__title" }, "Totals"),
-        moneyRows,
-        demo === "stale-price" ? h("div", { "class": "purch-ful__note", "data-state": "stale" }, "Shown totals are the last confirmed ones \u2014 they update when you load the latest bag.") : null
-      ]));
-    }
-    var ful = source && source.fulfillment;
-    if (ful) {
-      right.appendChild(h("div", { "class": "card card--pad", "data-module": "cart-fulfillment", "data-visual-id": "cart-fulfillment" }, [
-        h("div", { "class": "card__title" }, "How you\u2019ll get it"),
-        h("div", { style: "font-weight:600;font-size:13.5px;margin-top:6px", "data-bind": "cart.fulfillment.label" }, ful.label),
-        h("div", { style: "font-size:12.5px;color:var(--ink-2);margin-top:2px", "data-bind": "cart.fulfillment.detail" }, ful.detail),
-        h("div", { "class": "purch-ful__note", style: "margin-top:10px" }, "Items in your bag aren\u2019t reserved \u2014 stock and prices are confirmed at checkout.")
-      ]));
-    }
-    var blocked = demo === "stale-price" || demo === "inventory-conflict";
-    right.appendChild(h("div", { style: "display:flex;flex-direction:column;gap:8px" }, [
-      ActionButton({ variant: "btn--primary", label: "Go to checkout", action: "checkout.start", id: "cart", lg: true, block: true, disabled: blocked, visualId: "cart-checkout" }),
-      blocked ? h("div", { "class": "purch-ful__note", "data-state": demo }, demo === "stale-price" ? "Checkout opens after you load the latest prices." : "Checkout opens after the stock issue above is resolved.") : null
-    ]));
-    grid.appendChild(left);
-    grid.appendChild(right);
-    page.appendChild(grid);
-    return page;
-  }
-
-  // app-templates/customer-portal/runtime/src/routes/SpaCatalogPage.js
-  function offerCard(o) {
-    var sellability = state.spaOfferDemo === "sellable" ? o.sellability : state.spaOfferDemo;
-    var isPkg = o.kind === "PACKAGE";
-    var canBuy = o.allowedActions.indexOf("purchase") !== -1;
-    var card = h("div", { "class": "card card--pad offer-card", "data-module": "plan-offer-card", "data-visual-id": "plan-offer-card", "data-plan-offer-ref": o.ref, "data-offer-kind": o.kind, "data-state": sellability }, [
-      h("div", { style: "display:flex;align-items:center;gap:9px;flex-wrap:wrap" }, [
-        h("span", { "class": "kind-chip kind-chip--" + (isPkg ? "package" : "membership"), "data-bind": "planOffer.kind" }, isPkg ? "Package" : "Membership"),
-        h("div", { style: "flex:1" }),
-        h("span", { "class": "readonly-chip" }, "Published offer")
-      ]),
-      h("div", { "class": "plan-card__title", "data-bind": "planOffer.title" }, o.title),
-      h("div", { "class": "offer-card__price", "data-bind": "planOffer.displayPrice" }, o.displayPrice),
-      h("div", { style: "font-size:12.5px;color:var(--ink-2);margin-top:2px", "data-bind": "planOffer.termsSummary" }, o.termsSummary),
-      h("ul", { "class": "offer-benefits", "data-bind": "planOffer.benefits" }, o.benefits.map(function(b) {
-        return h("li", null, b);
-      }))
-    ]);
-    if (sellability === "changed") {
-      card.appendChild(h("div", { "class": "purch-row__attention", role: "alert", style: "margin-top:10px" }, F.spaCommerce.offerNotes.changed));
-      card.appendChild(h("div", { style: "margin-top:10px" }, ActionButton({ variant: "btn--ghost", label: "Reload offer", action: "ui.retry", id: "plan-offers", visualId: "offer-reload" })));
-    }
-    if (sellability === "unavailable") card.appendChild(h("div", { "class": "purch-ful__note", "data-state": "unavailable", style: "margin-top:10px" }, F.spaCommerce.offerNotes.unavailable));
-    card.appendChild(h("div", { style: "margin-top:12px" }, ActionButton({
-      variant: "btn--primary",
-      label: isPkg ? "Buy package" : "Join membership",
-      action: "plan.purchase",
-      id: o.ref,
-      block: true,
-      disabled: !canBuy || sellability !== "sellable",
-      visualId: isPkg ? "offer-buy-package" : "offer-join-membership"
-    })));
-    card.appendChild(h("div", { style: "font-size:11.5px;color:var(--ink-3);margin-top:8px;text-align:center" }, "Checkout is a demonstration \u2014 no charge will be made."));
-    return card;
-  }
-  function SpaCatalog() {
-    var tab = state.route === "pricing" ? "pricing" : "services";
-    var open = spaBookingOpen();
-    var services = spaCatalogServices();
-    var planOffers = spaPlanOffers();
-    var liveView = state.config.dataMode === "live" ? state.moduleStatus.pricing || state.moduleStatus.services || "loading" : state.view;
-    var page = h("section", { "class": "page", "data-route": state.route, "data-state": liveView, "data-visual-id": "spa-catalog", "data-module": "spa-catalog", "data-screen-label": "Services & prices (" + tab + ")" });
-    page.appendChild(h("div", { "class": "section-head" }, [
-      h("div", { "class": "section-head__title" }, "Services & prices"),
-      h("div", { "class": "section-head__sub" }, "Every treatment with its live published price \u2014 at the studio or your place.")
-    ]));
-    page.appendChild(h("div", { "class": "spa-tabs" }, Tabs({
-      items: [{ key: "services", label: "Treatments" }, { key: "pricing", label: "Prices & memberships" }],
-      active: tab,
-      action: "nav.go"
-    })));
-    var gate = routeStateBody({
-      view: liveView,
-      states: ["loading", "empty", "error"],
-      skeleton: function() {
-        return gridSkeleton("spa-svc-grid", 4, 170);
-      },
-      empty: {
-        glyph: "\u25A3",
-        title: "Nothing is published right now",
-        desc: "No treatments or membership options are published in the catalog at the moment. They\u2019ll appear here the moment they are \u2014 nothing is estimated in the meantime.",
-        action: { variant: "btn--ghost", label: "Contact support", action: "support.email", visualId: "catalog-empty-support" }
-      },
-      error: { title: "Couldn\u2019t load the catalog", desc: "Published treatments and prices didn\u2019t load, so no numbers are shown. Nothing was changed \u2014 try again.", retryId: tab }
-    });
-    if (gate) {
-      page.appendChild(gate);
-      return page;
-    }
-    if (tab === "services") {
-      var grid = h("div", { "class": "spa-svc-grid", "data-module": "spa-service-list", "data-visual-id": "spa-service-list" });
-      services.forEach(function(s) {
-        grid.appendChild(h("div", { "class": "card card--pad spa-svc-card", "data-module": "spa-service-card", "data-visual-id": "spa-service-card", "data-product-code": s.code }, [
-          h("div", { style: "font-weight:700;font-size:16px;letter-spacing:-.01em;overflow-wrap:anywhere", "data-bind": "pim.services[].name" }, s.name),
-          h("div", { style: "font-size:13px;color:var(--ink-2);margin-top:4px;line-height:1.5", "data-bind": "pim.services[].shortDescription" }, s.shortDescription),
-          h("div", { "class": "spa-svc-card__price" }, [
-            h("b", { "data-bind": "pim.services[].displayPrice" }, s.displayPrice),
-            s.interval ? h("span", { "data-bind": "pim.services[].interval" }, "/ " + s.interval) : null
-          ]),
-          h("div", { "class": "spa-svc-card__foot", style: "justify-content:flex-end" }, [
-            open ? ActionButton({ variant: "btn--primary", label: "Book", action: "booking.open", id: s.code, visualId: "spa-svc-book" }) : h("span", { "class": "link-action", "data-action": "nav.go", "data-id": "pricing" }, "See in the price list \u203A")
-          ])
-        ]));
-      });
-      page.appendChild(grid);
-      page.appendChild(h("div", { "class": "catalog-note" }, "Prices are shown exactly as published in the public catalog. Availability isn\u2019t shown on this page" + (open ? "." : ", and booking online isn\u2019t available yet.")));
-    } else {
-      var rates = h("div", { "class": "rates-card", "data-module": "spa-pricing-list", "data-visual-id": "spa-pricing-list" }, [
-        h("div", { "class": "panel__title", style: "font-size:16px;padding:14px 0 6px" }, "Treatments")
-      ]);
-      services.forEach(function(s, i) {
-        var pal = F.PAL[i % 4];
-        rates.appendChild(h("div", { "class": "rate-row", "data-module": "spa-pricing-row", "data-visual-id": "spa-pricing-row", "data-product-code": s.code }, [
-          h("div", { "class": "rate-row__icon", style: "background:" + pal[1] }, h("i", { style: "background:" + pal[0] })),
-          h("div", { style: "flex:1;min-width:0" }, [
-            h("div", { style: "font-weight:600;font-size:14px;overflow-wrap:anywhere", "data-bind": "pim.services[].name" }, s.name),
-            h("div", { style: "font-size:12px;color:var(--ink-2)", "data-bind": "pim.services[].shortDescription" }, s.shortDescription)
-          ]),
-          h("div", { style: "font-weight:700;font-size:15px;white-space:nowrap", "data-bind": "pim.services[].displayPrice" }, s.displayPrice + (s.interval ? " / " + s.interval : ""))
-        ]));
-      });
-      page.appendChild(rates);
-      var sellOpen = spaPlanSellOpen();
-      if (sellOpen) {
-        var offers = h("div", { style: "margin-top:18px", "data-module": "membership-options", "data-visual-id": "membership-options", "data-plan-commerce": "open" }, [
-          h("div", { "class": "list-panel__head", style: "padding:0 2px 10px" }, [
-            h("div", { "class": "list-panel__title", style: "flex:1" }, "Membership & package options"),
-            h("span", { style: "font-size:12px;color:var(--ink-3)" }, "public offers from the catalog")
-          ])
-        ]);
-        var ogrid = h("div", { "class": "offer-grid", "data-module": "plan-offer-list", "data-visual-id": "plan-offer-list" });
-        planOffers.forEach(function(o) {
-          ogrid.appendChild(offerCard(o));
-        });
-        offers.appendChild(ogrid);
-        offers.appendChild(h("div", { "class": "catalog-note", style: "margin-top:12px" }, [
-          "These are published offers with their exact recorded price and terms \u2014 not your plan or a balance. Already have one? ",
-          h("span", { "class": "link-action", "data-action": "account.openPlan" }, "Open My plan \u203A")
-        ]));
-        page.appendChild(offers);
-      } else {
-        var mem = h("div", { "class": "list-panel", style: "margin-top:18px", "data-module": "membership-options", "data-visual-id": "membership-options", "data-plan-commerce": "closed" }, [
-          h("div", { "class": "list-panel__head" }, [
-            h("div", { "class": "list-panel__title", style: "flex:1" }, "Membership options"),
-            h("span", { style: "font-size:12px;color:var(--ink-3)" }, "public offers from the catalog")
-          ])
-        ]);
-        planOffers.filter(function(offer) {
-          return offer.kind === "MEMBERSHIP";
-        }).forEach(function(offer) {
-          var m = { code: offer.productCode || offer.ref, name: offer.title, shortDescription: offer.termsSummary, displayPrice: offer.displayPrice, interval: "" };
-          mem.appendChild(h("div", { "class": "rate-row", "data-module": "spa-pricing-row", "data-visual-id": "spa-pricing-row", "data-product-code": m.code }, [
-            h("div", { style: "flex:1;min-width:0" }, [
-              h("div", { style: "font-weight:600;font-size:14px", "data-bind": "pim.memberships[].name" }, m.name),
-              h("div", { style: "font-size:12px;color:var(--ink-2)", "data-bind": "pim.memberships[].shortDescription" }, m.shortDescription)
-            ]),
-            h("div", { style: "font-weight:700;font-size:15px;white-space:nowrap", "data-bind": "pim.memberships[].displayPrice" }, m.displayPrice + (m.interval ? " / " + m.interval : ""))
-          ]));
-        });
-        mem.appendChild(h("div", { "class": "catalog-note", style: "margin-top:10px" }, [
-          "These are published offers \u2014 not your membership or a balance. Joining or managing a plan happens with our team. ",
-          h("span", { "class": "link-action", "data-action": "support.email" }, "Ask about membership \u203A")
-        ]));
-        page.appendChild(mem);
-      }
-      page.appendChild(h("div", { "class": "catalog-note" }, "Every price on this page comes verbatim from the public catalog \u2014 nothing is calculated, estimated or compared here."));
-    }
-    return page;
-  }
-
-  // app-templates/customer-portal/runtime/src/routes/SpaCheckoutPage.js
-  var LIVE_CHECKOUT = Object.freeze({
-    ref: "customer-portal-checkout",
-    expiresNote: "Prices and availability are re-checked when you confirm.",
-    fulfillmentOptions: Object.freeze([
-      Object.freeze({ ref: "ful-pickup", kind: "PICKUP", label: "Pickup at the studio", detail: "The studio confirms availability after the order is recorded" })
-    ]),
-    fulfillmentNote: "Delivery isn\u2019t offered on this portal yet \u2014 pickup only.",
-    policy: "I understand this is a simulated checkout and no payment will be taken."
-  });
-  function checkoutContract() {
-    return state.config.dataMode === "live" ? LIVE_CHECKOUT : F.spaCommerce.checkout;
-  }
-  function quoteSource() {
-    if (state.spaCheckoutSource === "plan") {
-      if (state.config.dataMode === "live") {
-        var offer = spaPlanOffers().find(function(item) {
-          return item.ref === state.spaPlanOffer;
-        });
-        if (!offer) return null;
-        return {
-          lines: [{ ref: "line-" + offer.ref, title: offer.title, variant: null, qty: 1, displayUnitPrice: offer.displayPrice, displayTotal: offer.displayPrice }],
-          displayTotals: { subtotal: offer.displayPrice, tax: "$0.00", total: offer.displayPrice },
-          recurringNote: offer.kind === "MEMBERSHIP" ? offer.termsSummary : null
-        };
-      }
-      return F.spaCommerce.checkout.planQuotes[state.spaPlanOffer || "off-pkg-4c21"] || F.spaCommerce.checkout.planQuote;
-    }
-    if (state.config.dataMode === "live") {
-      var envelope2 = spaCartEnvelope();
-      var liveLines = envelope2 && envelope2.lines || [];
-      if (!liveLines.length) return null;
-      return { lines: liveLines, displayTotals: { subtotal: envelope2.displaySubtotal }, serverPriced: true };
-    }
-    var cart = state.spaCart;
-    return cart && cart.lines.length ? { lines: cart.lines, displayTotals: cart.displayTotals } : null;
-  }
-  function Confirmation(res) {
-    var card = h("div", { "class": "card card--pad co-confirm", "data-module": "spa-confirmation", "data-visual-id": "spa-confirmation", "data-state": "confirmed", "data-result-kind": res.kind }, [
-      h("div", { "class": "co-confirm__glyph" }, "\u2713"),
-      h("div", { "class": "co-confirm__title", "data-bind": "result.headline" }, res.headline),
-      h("div", { "class": "co-confirm__sub", "data-bind": "result.sub" }, res.sub),
-      SimulationBadge(true)
-    ]);
-    var facts2 = h("div", { "class": "appt-details", style: "margin-top:14px;text-align:left" });
-    if (res.purchase) {
-      facts2.appendChild(h("div", { "class": "appt-details__row" }, [
-        h("div", { "class": "appt-details__label" }, "Purchase"),
-        h("div", { "class": "appt-details__val" }, [
-          h("b", { "data-bind": "result.purchase.reference" }, res.purchase.reference),
-          " \xB7 ",
-          h("span", { "class": "link-action", "data-action": "purchase.open", "data-id": res.purchase.ref, "data-purchase-ref": res.purchase.ref }, "view purchase \u203A")
-        ])
-      ]));
-    }
-    if (res.appointment) {
-      facts2.appendChild(h("div", { "class": "appt-details__row" }, [
-        h("div", { "class": "appt-details__label" }, "Visit"),
-        h("div", { "class": "appt-details__val" }, [
-          h("b", { "data-bind": "result.appointment.service" }, res.appointment.service),
-          " \xB7 " + res.appointment.start + " \xB7 ",
-          h("span", { "class": "link-action", "data-action": "purchase.openAppointment", "data-id": res.appointment.ref, "data-appointment-ref": res.appointment.ref }, "see appointments \u203A")
-        ])
-      ]));
-    }
-    if (res.plan) {
-      facts2.appendChild(h("div", { "class": "appt-details__row" }, [
-        h("div", { "class": "appt-details__label" }, "Plan"),
-        h("div", { "class": "appt-details__val" }, [
-          h("b", { "data-bind": "result.plan.title" }, res.plan.title),
-          " \xB7 " + res.plan.status + " \xB7 ",
-          h("span", { "class": "link-action", "data-action": "account.openPlan" }, "open My plan \u203A")
-        ])
-      ]));
-    }
-    if (res.fulfillment) {
-      facts2.appendChild(h("div", { "class": "appt-details__row" }, [
-        h("div", { "class": "appt-details__label" }, "Pickup"),
-        h("div", { "class": "appt-details__val", "data-bind": "result.fulfillment" }, res.fulfillment)
-      ]));
-    }
-    card.appendChild(facts2);
-    card.appendChild(h("div", { "class": "appt-hero__actions", style: "justify-content:center" }, [
-      ActionButton({ variant: "btn--primary", label: "All purchases", action: "account.openPurchases", visualId: "confirm-purchases" }),
-      ActionButton({ variant: "btn--ghost", label: "Back to appointments", action: "nav.go", id: "orders.list", visualId: "confirm-home" })
-    ]));
-    return card;
-  }
-  function SpaCheckout() {
-    var demo = state.spaCheckoutDemo;
-    var res = state.spaResult;
-    var co = checkoutContract();
-    var page = h("section", { "class": "page", "data-route": "checkout", "data-state": res ? "confirmed" : state.view !== "ready" ? state.view : demo, "data-visual-id": "spa-checkout", "data-module": "spa-checkout", "data-capability": spaCapability(), "data-checkout-ref": co.ref, "data-payment-mode": "SIMULATED", "data-screen-label": "Checkout (simulated)" });
-    if (res) {
-      page.appendChild(h("div", { style: "max-width:560px;margin:26px auto 0" }, Confirmation(res)));
-      return page;
-    }
-    page.appendChild(h("div", { "class": "detail-back" }, h("span", { "class": "link-action", "data-action": state.spaCheckoutSource === "cart" ? "cart.open" : "account.openPlan" }, state.spaCheckoutSource === "cart" ? "\u2039 Back to your bag" : "\u2039 Back")));
-    page.appendChild(PageHeader({ title: "Review & confirm", sub: "Check everything below \u2014 nothing is ordered until you confirm." }));
-    if (!spaRetailOpen() && state.spaCheckoutSource === "cart") {
-      page.appendChild(UnavailableState({ title: "Checkout isn\u2019t open yet", desc: "Online purchasing isn\u2019t enabled on this portal. Nothing can be ordered here yet.", action: { variant: "btn--ghost", label: "Browse the shop", action: "nav.products", visualId: "co-unavailable-shop" } }));
-      return page;
-    }
-    var gate = spaGate({
-      states: ["loading", "error", "unauthorized"],
-      skeleton: function() {
-        var w = h("div", { "data-state": "loading", "aria-busy": "true" });
-        w.appendChild(skel("height:320px;border-radius:24px"));
-        return w;
-      },
-      error: { title: "Couldn\u2019t prepare your checkout", desc: "The review didn\u2019t load, so nothing is shown and nothing was ordered. Try again.", retryId: "checkout" },
-      scope: "checkout",
-      backRoute: "cart",
-      unavailable: { title: "Checkout isn\u2019t available right now", desc: "The store can\u2019t take orders at the moment. Your bag is safe \u2014 nothing was ordered." }
-    });
-    if (gate) {
-      page.appendChild(gate);
-      return page;
-    }
-    var q = quoteSource();
-    if (!q) {
-      page.appendChild(UnavailableState({ title: "There\u2019s nothing to check out", desc: "Your bag is empty, so there\u2019s nothing to review here.", action: { variant: "btn--ghost", label: "Browse the shop", action: "nav.products", visualId: "co-empty-shop" } }));
-      return page;
-    }
-    var key = "checkout.confirm:" + co.ref;
-    var phase = cmdPhase(key);
-    var blocked = demo !== "ready";
-    var contact = currentContact();
-    var grid = h("div", { "class": "purch-grid" });
-    var left = h("div", { "class": "appt-col" });
-    var right = h("div", { "class": "appt-col" });
-    if (demo === "repriced") left.appendChild(ConflictBanner({ noun: "quote", desc: "Prices changed while you were reviewing. Load the latest quote and check the new totals \u2014 nothing was ordered.", retryId: "checkout-quote" }));
-    if (demo === "inventory-conflict") left.appendChild(ConflictBanner({ noun: "quote", desc: "Something in your order just went out of stock. Go back to your bag to fix it \u2014 nothing was ordered.", retryId: "checkout-quote" }));
-    if (demo === "slot-expired") left.appendChild(ConflictBanner({ noun: "held time", desc: "Your held appointment time expired during review. Pick a new time to continue \u2014 nothing was booked or ordered.", retryId: "checkout-quote" }));
-    left.appendChild(h("div", { "class": "card card--pad", "data-module": "checkout-contact", "data-visual-id": "checkout-contact" }, [
-      h("div", { "class": "card__title" }, "Contact"),
-      h("div", { "class": "co-contact" }, [
-        h("div", { "data-bind": "session.displayName" }, state.sessionName || "Customer"),
-        h("div", { style: "color:var(--ink-2)", "data-bind": "profile.email,profile.phone" }, contact.email + " \xB7 " + contact.phone)
-      ]),
-      h("div", { "class": "purch-ful__note" }, "We use these only to tell you about this order.")
-    ]));
-    var fulCard = h("div", { "class": "card card--pad", "data-module": "checkout-fulfillment", "data-visual-id": "checkout-fulfillment" }, [h("div", { "class": "card__title" }, "How you\u2019ll get it")]);
-    co.fulfillmentOptions.forEach(function(o) {
-      fulCard.appendChild(h("label", { "class": "co-ful" + (o.ref === "ful-pickup" ? " co-ful--on" : ""), "data-action": "checkout.selectFulfillment", "data-id": o.ref, "data-fulfillment-ref": o.ref, "data-state": "active" }, [
-        h("i", { "class": "co-ful__dot" }),
-        h("div", { style: "flex:1;min-width:0" }, [
-          h("div", { style: "font-weight:600;font-size:13.5px", "data-bind": "checkout.fulfillment.label" }, o.label),
-          h("div", { style: "font-size:12px;color:var(--ink-3)", "data-bind": "checkout.fulfillment.detail" }, o.detail)
-        ])
-      ]));
-    });
-    fulCard.appendChild(h("div", { "class": "purch-ful__note" }, co.fulfillmentNote));
-    left.appendChild(fulCard);
-    var linesCard = h("div", { "class": "card card--pad", "data-module": "checkout-lines", "data-visual-id": "checkout-lines" }, [h("div", { "class": "card__title" }, "Your order")]);
-    q.lines.forEach(function(l) {
-      linesCard.appendChild(h("div", { "class": "co-line", "data-line-ref": l.ref }, [
-        h("span", { style: "flex:1;min-width:0", "data-bind": "checkout.lines[].title" }, l.title + (l.variant ? " \xB7 " + l.variant : "") + " \xD7 " + l.qty),
-        h("b", { "data-bind": "checkout.lines[].displayTotal" }, l.displayTotal)
-      ]));
-    });
-    linesCard.appendChild(h("div", { "class": "purch-ful__note" }, co.expiresNote));
-    if (q.recurringNote) linesCard.appendChild(h("div", { "class": "purch-row__attention", "data-bind": "checkout.recurringNote", role: "note", style: "margin-top:8px" }, q.recurringNote));
-    left.appendChild(linesCard);
-    var t = q.displayTotals;
-    var moneyRows = [];
-    if (t.subtotal != null) moneyRows.push(h("div", { "class": "money-rows__row" }, [h("span", null, "Subtotal"), h("span", { "data-bind": "checkout.displayTotals.subtotal" }, t.subtotal)]));
-    if (t.tax != null) moneyRows.push(h("div", { "class": "money-rows__row" }, [h("span", null, "Tax"), h("span", { "data-bind": "checkout.displayTotals.tax" }, t.tax)]));
-    if (t.total != null) moneyRows.push(h("div", { "class": "money-rows__row money-rows__row--total" }, [h("span", null, "Total"), h("span", { "data-bind": "checkout.displayTotals.total" }, t.total)]));
-    var payCard = h("div", { "class": "card card--pad", "data-module": "checkout-payment", "data-visual-id": "checkout-payment", "data-payment-mode": "SIMULATED" }, [
-      h("div", { "class": "card__title" }, "Totals & confirmation"),
-      h("div", { "class": "money-rows", "data-state": q.serverPriced ? "subtotal-only" : void 0 }, moneyRows),
-      SimulationBadge(true),
-      h("div", { "class": "purch-ful__note" }, "This is a demonstration checkout: confirming records your order without any payment. There\u2019s nothing to enter \u2014 no card, no charge, no receipt."),
-      h("label", { "class": "co-policy", "data-module": "policy-ack", "data-visual-id": "policy-ack", "data-state": state.spaPolicyAck ? "acked" : "required" }, [
-        h("button", { "class": "co-policy__box" + (state.spaPolicyAck ? " co-policy__box--on" : ""), "data-action": "checkout.ackPolicy", role: "checkbox", "aria-checked": state.spaPolicyAck ? "true" : "false" }, state.spaPolicyAck ? "\u2713" : ""),
-        h("span", { "data-bind": "checkout.policy" }, co.policy)
-      ])
-    ]);
-    if (phase === "failed") payCard.appendChild(InlineFailure({
-      msg: "Your order wasn\u2019t confirmed \u2014 nothing was created. You can try again.",
-      retryAction: "checkout.retryConfirm",
-      retryId: co.ref,
-      retryLabel: "Try confirming again"
-    }));
-    if (phase === "conflict") payCard.appendChild(InlineFailure({
-      msg: "The quote changed at the last moment \u2014 reload it and review before confirming. Nothing was ordered.",
-      retryAction: "ui.retry",
-      retryId: key,
-      retryLabel: "Reload quote"
-    }));
-    payCard.appendChild(h("div", { style: "margin-top:12px" }, ActionButton({
-      variant: "btn--primary",
-      label: "Confirm order",
-      action: "checkout.confirm",
-      id: co.ref,
-      block: true,
-      lg: true,
-      pending: phase === "pending",
-      pendingLabel: "Confirming\u2026",
-      disabled: blocked || !state.spaPolicyAck || phase === "conflict",
-      visualId: "checkout-confirm"
-    })));
-    if (!state.spaPolicyAck && !blocked) payCard.appendChild(h("div", { style: "font-size:11.5px;color:var(--ink-3);margin-top:7px;text-align:center" }, "Tick the box above to confirm"));
-    right.appendChild(payCard);
-    grid.appendChild(left);
-    grid.appendChild(right);
-    page.appendChild(grid);
-    return page;
-  }
-
-  // app-templates/customer-portal/runtime/src/routes/SpaOrdersPage.js
-  function orderThumb(order) {
-    var mode = state.spaOrderMedia;
-    var attrs = { "class": "order-card__icon spa-order-thumb", "data-visual-id": "order-thumb", "data-media-kind": order.media && order.media.kind || "none", "aria-hidden": "true" };
-    if (mode === "loading") {
-      attrs["class"] += " skeleton";
-      attrs["data-state"] = "loading";
-      return h("div", attrs);
-    }
-    var showImage = mode === "broken" || mode !== "missing" && mode !== "forbidden" && order.media && order.media.url;
-    if (!showImage) {
-      attrs["data-state"] = "no-media";
-      return h("div", attrs);
-    }
-    attrs["data-state"] = "ready";
-    var wrap = h("div", attrs);
-    var image = h("img", { "class": "spa-order-thumb__img", src: mode === "broken" ? "media/orders/__unresolved__.webp" : order.media.url, alt: "", "data-bind": "order.media.url" });
-    image.addEventListener("error", function() {
-      wrap.setAttribute("data-state", "no-media");
-      if (image.parentNode) wrap.removeChild(image);
-    });
-    wrap.appendChild(image);
-    return wrap;
-  }
-  function SpaOrders() {
-    var liveEnvelope = state.config.dataMode === "live" ? state.moduleData.orders : null;
-    var routeState = liveEnvelope && liveEnvelope.state || state.moduleStatus.orders || state.view;
-    var page = h("section", { "class": "page", "data-route": "orders.list", "data-state": routeState, "data-visual-id": "spa-orders", "data-capability": "current-staging", "data-screen-label": "Orders (current staging)" });
-    page.appendChild(PageHeader({ title: spaCustomer().greeting, sub: "Here\u2019s what\u2019s on your account." }));
-    var gate = routeStateBody({
-      states: ["error", "unauthorized"],
-      error: { title: "Couldn\u2019t load your orders", desc: "Your orders didn\u2019t load, so nothing is shown \u2014 we never show stale records. Nothing was changed; try again.", retryId: "orders" },
-      scope: "your orders",
-      backRoute: "services"
-    });
-    if (gate) {
-      page.appendChild(gate);
-      return page;
-    }
-    var card = h("div", { "class": "card", "data-module": "spa-order-list", "data-visual-id": "spa-order-list" });
-    card.appendChild(h("div", { "class": "card__head" }, [
-      h("span", { "class": "card__title" }, "Your orders"),
-      h("span", { "class": "readonly-chip" }, "Read-only")
-    ]));
-    var listWrap = h("div", { "class": "order-list" });
-    var fixtureRows = state.spaRows === "one" ? F.spa.stagingOrders.slice(0, 1) : F.spa.stagingOrders;
-    var rows2 = liveEnvelope && Array.isArray(liveEnvelope.items) ? liveEnvelope.items.map(liveOrder) : fixtureRows;
-    if (routeState === "loading") {
-      for (var i = 0; i < 3; i++) listWrap.appendChild(skeletonRow());
-    } else if (routeState === "empty" || rows2.length === 0) {
-      listWrap.appendChild(EmptyState({
-        glyph: "\u25CE",
-        title: "No orders on your account yet",
-        desc: "Anything recorded on your account will appear here, exactly as our records show it.",
-        action: { variant: "btn--ghost", label: "Browse services", action: "nav.go", id: "services", visualId: "orders-empty-browse" }
-      }));
-    } else {
-      rows2.forEach(function(o, i2) {
-        listWrap.appendChild(h("article", { "class": "spa-order-row", "data-module": "spa-order-row", "data-visual-id": "spa-order-row", "data-order-ref": o.ref }, [
-          orderThumb(o),
-          h("div", { "class": "spa-order-row__body" }, [
-            h("div", { "class": "order-card__name", "data-bind": "order.typeLabel" }, o.typeLabel),
-            h("div", { "class": "order-card__meta" }, [
-              h("span", { "data-bind": "order.reference" }, "Reference " + o.ref)
-            ])
-          ]),
-          StatusBadge({ variant: "status-badge--unmapped", label: o.status, bind: "order.rawStatus", state: "unmapped" }),
-          h("div", { "class": "spa-order-row__amount" }, [
-            h("b", { "data-bind": "order.displayTotal" }, o.total),
-            h("span", { "data-bind": "order.currency" }, o.currency)
-          ])
-        ]));
-      });
-    }
-    card.appendChild(listWrap);
-    card.appendChild(h("div", { "class": "card__footnote" }, "Statuses and amounts appear exactly as recorded on your account \u2014 this view is read-only. Scheduling details and online changes aren\u2019t part of these records."));
-    page.appendChild(card);
-    return page;
-  }
-  function liveOrder(order) {
-    var currency = order.currency && order.currency.code || "";
-    var total = Number.isFinite(order.grandTotal) ? new Intl.NumberFormat("en", { style: "currency", currency: currency || "USD" }).format(order.grandTotal) : "\u2014";
-    return {
-      ref: String(order.id),
-      typeLabel: order.type && order.type.label || "Order",
-      status: order.statusCode || "UNMAPPED",
-      total,
-      currency,
-      media: order.media || null
-    };
-  }
-
-  // app-templates/customer-portal/runtime/src/routes/SpaPlanPage.js
-  function usageMeter(p) {
-    if (p.remainingUses == null || p.totalUses == null) return null;
-    var pct = p.totalUses ? Math.round(p.remainingUses / p.totalUses * 100) : 0;
-    return h("div", { "class": "plan-meter", "data-module": "plan-usage", "data-visual-id": "plan-usage", "data-bind": "plan.remainingUses,plan.totalUses" }, [
-      h("div", { "class": "plan-meter__bar" }, h("i", { style: "width:" + pct + "%" })),
-      h("div", { "class": "plan-meter__label" }, [h("b", null, String(p.remainingUses)), " of " + p.totalUses + " visits left"])
-    ]);
-  }
-  function planCard(p) {
-    var isPkg = p.kind === "PACKAGE";
-    var cKey = "plan.cancelRenewal:" + p.ref;
-    var phase = cmdPhase(cKey);
-    var badge = F.spaCommerce.plans.statusBadges[p.status] || "status-badge--scheduled";
-    var card = h("div", { "class": "card card--pad plan-card", "data-module": "plan-card", "data-visual-id": "plan-card", "data-plan-ref": p.ref, "data-plan-kind": p.kind, "data-state": p.status === "Used up" ? "exhausted" : void 0 }, [
-      h("div", { style: "display:flex;align-items:center;gap:9px;flex-wrap:wrap" }, [
-        h("span", { "class": "kind-chip kind-chip--" + (isPkg ? "package" : "membership"), "data-bind": "plan.kind" }, isPkg ? "Package" : "Membership"),
-        h("div", { style: "flex:1" }),
-        StatusBadge({ variant: badge, label: p.status, bind: "plan.status" })
-      ]),
-      h("div", { "class": "plan-card__title", "data-bind": "plan.title" }, p.title),
-      usageMeter(p)
-    ]);
-    var facts2 = h("div", { "class": "appt-details" });
-    if (p.renewsAt) facts2.appendChild(factRow("Renews", p.renewsAt, "plan.renewsAt"));
-    if (p.expiresAt) facts2.appendChild(factRow(p.status === "Cancelled" ? "Ends" : "Expires", p.expiresAt, "plan.expiresAt"));
-    if (p.displayRecurringPrice) facts2.appendChild(factRow("Price", p.displayRecurringPrice, "plan.displayRecurringPrice"));
-    if (facts2.childNodes.length) card.appendChild(facts2);
-    if (p.attention) card.appendChild(h("div", { "class": "purch-row__attention", "data-bind": "plan.attention", role: "note", style: "margin-top:10px" }, p.attention));
-    if (p.note) card.appendChild(h("div", { "class": "purch-ful__note", style: "margin-top:10px" }, p.note));
-    var actions = h("div", { "class": "appt-hero__actions" });
-    if (p.allowedActions.indexOf("bookWithCredit") !== -1) {
-      var bookOpen = spaBookingOpen();
-      actions.appendChild(ActionButton({ variant: "btn--primary", label: "Book with a credit", action: "plan.bookWithCredit", id: p.ref, disabled: !bookOpen, visualId: "plan-book-credit" }));
-      if (!bookOpen) card.appendChild(h("div", { "class": "purch-ful__note", "data-state": "unavailable", style: "margin-top:10px" }, "Online booking isn\u2019t available yet \u2014 the studio books credit visits for you."));
-    }
-    if (p.allowedActions.indexOf("cancelRenewal") !== -1) {
-      if (phase === "failed") card.appendChild(h("div", { style: "margin-top:10px" }, InlineFailure({ msg: "Renewal wasn\u2019t cancelled \u2014 your membership is unchanged.", retryAction: "plan.cancelRenewal", retryId: p.ref, retryLabel: "Try again" })));
-      if (phase === "conflict") card.appendChild(h("div", { style: "margin-top:10px" }, InlineFailure({ msg: "Your plan changed since you opened it \u2014 reload before making changes.", retryAction: "ui.retry", retryId: cKey, retryLabel: "Reload" })));
-      actions.appendChild(ActionButton({ variant: "btn--ghost", label: "Cancel renewal", action: "plan.cancelRenewal", id: p.ref, confirm: true, pending: phase === "pending", pendingLabel: "Cancelling\u2026", disabled: phase === "conflict", visualId: "plan-cancel-renewal" }));
-    }
-    if (p.status === "Used up") {
-      actions.appendChild(ActionButton({ variant: "btn--primary", label: "Buy this package again", action: "checkout.start", id: "plan", visualId: "plan-buy-again" }));
-    }
-    if (actions.childNodes.length) card.appendChild(actions);
-    return card;
-  }
-  function factRow(label, val, bind) {
-    return h("div", { "class": "appt-details__row" }, [
-      h("div", { "class": "appt-details__label" }, label),
-      h("div", { "class": "appt-details__val", "data-bind": bind }, h("b", null, val))
-    ]);
-  }
-  function SpaPlan() {
-    var live = state.config.dataMode === "live";
-    var source = live ? state.moduleData.plan : null;
-    var view = live ? state.moduleStatus.plan || source && source.state || "loading" : state.view;
-    var page = h("section", { "class": "page", "data-route": "plan", "data-state": view, "data-visual-id": "spa-plan", "data-module": "spa-plan", "data-capability": spaCapability(), "data-screen-label": "My plan" });
-    page.appendChild(h("div", { "class": "detail-back" }, h("span", { "class": "link-action", "data-action": "account.open" }, "\u2039 Account")));
-    page.appendChild(PageHeader({ title: "My plan", sub: "Your packages and membership \u2014 balances and renewal, exactly as recorded." }));
-    if (spaCurrentApiDemoOpen() && !isModuleEnabled("plan")) {
-      page.appendChild(h("div", { "class": "state-block", "data-module": "unavailable-state", "data-visual-id": "plan-current-api-unavailable", "data-state": "unavailable" }, [
-        h("div", { "class": "state-block__glyph" }, "\u2740"),
-        h("div", { "class": "state-block__title" }, "Personal plan details aren\u2019t in the current API"),
-        h("div", { "class": "state-block__desc" }, "You can order a published package or membership now. The resulting Core Order appears in Purchases, but visit balances and renewal controls need a customer entitlement API."),
-        ActionButton({ variant: "btn--primary", label: "See membership options", action: "nav.go", id: "pricing", visualId: "plan-current-api-options" })
-      ]));
-      return page;
-    }
-    var gate = spaGate({
-      view,
-      states: ["loading", "error", "unauthorized"],
-      skeleton: function() {
-        var w = h("div", { "class": "plan-grid", "data-state": "loading", "aria-busy": "true" });
-        w.appendChild(skel("height:220px;border-radius:24px"));
-        w.appendChild(skel("height:220px;border-radius:24px"));
-        return w;
-      },
-      error: { title: "Couldn\u2019t load your plan", desc: "Your plan didn\u2019t load, so no balance is shown \u2014 we never guess remaining visits. Nothing was changed; try again.", retryId: "plan" },
-      scope: "your plan",
-      backRoute: "account",
-      unavailable: {
-        title: "My plan isn\u2019t available yet",
-        desc: "Plan balances aren\u2019t connected on this portal yet. Published membership options are in Services & prices.",
-        action: { variant: "btn--ghost", label: "Membership options", action: "nav.go", id: "pricing", visualId: "plan-unavailable-options" }
-      }
-    });
-    if (gate) {
-      page.appendChild(gate);
-      return page;
-    }
-    var plans2 = view === "empty" ? [] : spaPlans();
-    if (!plans2.length) {
-      page.appendChild(h("div", { "class": "state-block", "data-module": "empty-state", "data-visual-id": "plan-empty", "data-state": "empty" }, [
-        h("div", { "class": "state-block__glyph" }, "\u2740"),
-        h("div", { "class": "state-block__title" }, "You don\u2019t have a plan yet"),
-        h("div", { "class": "state-block__desc" }, "Packages and membership you buy will live here with their balance and renewal. The published options are in the catalog."),
-        ActionButton({ variant: "btn--primary", label: "See membership options", action: "nav.go", id: "pricing", visualId: "plan-empty-options" })
-      ]));
-      return page;
-    }
-    var grid = h("div", { "class": "plan-grid", "data-module": "plan-list", "data-visual-id": "plan-list" });
-    plans2.forEach(function(p) {
-      grid.appendChild(planCard(p));
-    });
-    page.appendChild(grid);
-    page.appendChild(h("div", { "class": "catalog-note" }, "Balances, renewal dates and prices are shown exactly as recorded on your plan \u2014 this page never estimates or projects them."));
-    return page;
-  }
-
-  // app-templates/customer-portal/runtime/src/routes/SpaPurchaseDetailPage.js
-  function lineRow(l, d) {
-    var retState = state.spaReturns[l.ref];
-    var phase = cmdPhase("purchase.returnRequest:" + l.ref);
-    var canReturn = l.returnable && d.allowedActions.indexOf("returnRequest") !== -1 && !retState;
-    return h("div", { "class": "purch-line", "data-module": "purchase-line", "data-visual-id": "purchase-line", "data-line-ref": l.ref, "data-state": retState ? "return-" + retState : phase !== "idle" ? phase : void 0 }, [
-      h("div", { style: "flex:1;min-width:0" }, [
-        h("div", { "class": "purch-line__title", "data-bind": "purchase.lines[].title" }, l.title + (l.variant ? " \xB7 " + l.variant : "")),
-        h("div", { "class": "purch-line__meta", "data-bind": "purchase.lines[].quantity,purchase.lines[].displayUnitPrice" }, l.quantity + " \xD7 " + l.displayUnitPrice),
-        retState === "accepted-for-review" ? h("div", { "class": "purch-line__note", "data-state": "accepted-for-review" }, "Return requested \u2014 accepted for review. We\u2019ll confirm the next step; nothing is refunded or promised yet.") : null,
-        phase === "failed" ? InlineFailure({ msg: "Your return request didn\u2019t go through \u2014 nothing was requested.", retryAction: "purchase.returnRequest", retryId: l.ref, retryLabel: "Try again" }) : null,
-        phase === "conflict" ? InlineFailure({ msg: "This order changed since you opened it \u2014 reload before requesting a return.", retryAction: "ui.retry", retryId: "purchase.returnRequest:" + l.ref, retryLabel: "Reload" }) : null
-      ]),
-      h("div", { "class": "purch-line__side" }, [
-        h("b", { "data-bind": "purchase.lines[].displayTotal" }, l.displayTotal),
-        canReturn ? ActionButton({ variant: "btn--ghost", label: "Request return", action: "purchase.returnRequest", id: l.ref, pending: phase === "pending", pendingLabel: "Requesting\u2026", visualId: "line-return-request" }) : null
-      ])
-    ]);
-  }
-  function linesBlock(d) {
-    var wrap = h("div", { "class": "purch-lines", "data-module": "purchase-lines", "data-visual-id": "purchase-lines" });
-    if (d.groups) {
-      d.groups.forEach(function(g) {
-        wrap.appendChild(h("div", { "class": "purch-lines__group" }, g.label));
-        g.lines.forEach(function(ref) {
-          var l = d.lines.find(function(x) {
-            return x.ref === ref;
-          });
-          if (l) wrap.appendChild(lineRow(l, d));
-        });
-      });
-    } else {
-      d.lines.forEach(function(l) {
-        wrap.appendChild(lineRow(l, d));
-      });
-    }
-    return wrap;
-  }
-  function SpaPurchaseDetail() {
-    var d = currentPurchase();
-    var page = h("section", { "class": "page", "data-route": "purchase.detail", "data-state": state.view, "data-visual-id": "spa-purchase-detail", "data-module": "spa-purchase-detail", "data-capability": spaCapability(), "data-purchase-ref": d ? d.ref : void 0, "data-screen-label": "Purchase detail" });
-    page.appendChild(h("div", { "class": "detail-back" }, h("span", { "class": "link-action", "data-action": "account.openPurchases" }, "\u2039 All purchases")));
-    var gate = spaGate({
-      states: ["loading", "error", "unauthorized"],
-      skeleton: function() {
-        var w = h("div", { "data-state": "loading", "aria-busy": "true" });
-        w.appendChild(skel("height:200px;border-radius:24px"));
-        w.appendChild(skel("height:140px;border-radius:24px;margin-top:18px"));
-        return w;
-      },
-      error: { title: "Couldn\u2019t load this purchase", desc: "This purchase didn\u2019t load, so nothing is shown \u2014 we never show stale records. Nothing was changed; try again.", retryId: "purchase" },
-      scope: "this purchase",
-      backRoute: "purchases.list",
-      notFound: { noun: "purchase", backLabel: "purchases", backRoute: "purchases.list" },
-      unavailable: { title: "Purchase details aren\u2019t available yet", desc: "The detailed view isn\u2019t connected on this portal yet. Your purchase list still shows current states." }
-    });
-    if (gate) {
-      page.appendChild(gate);
-      return page;
-    }
-    if (!d) {
-      page.appendChild(NotFoundState({ noun: "purchase", backLabel: "purchases", backRoute: "purchases.list" }));
-      return page;
-    }
-    var cancelState = state.spaCancelReqs[d.ref];
-    var cPhase = cmdPhase("purchase.cancelRequest:" + d.ref);
-    var bPhase = cmdPhase("purchase.buyAgain:" + d.ref);
-    var head2 = h("div", { "class": "card card--pad purch-head", "data-module": "purchase-summary", "data-visual-id": "purchase-summary", "data-purchase-ref": d.ref }, [
-      h("div", { style: "display:flex;align-items:center;gap:9px;flex-wrap:wrap" }, [
-        h("div", { "class": "card__title", style: "flex:1" }, "Purchase"),
-        KindChip(d.kind),
-        purchaseStatusBadge(d.customerStatus)
-      ]),
-      h("div", { "class": "purch-head__ref", "data-bind": "purchase.reference" }, d.reference),
-      h("div", { "class": "purch-head__meta" }, [
-        h("span", { "data-bind": "purchase.placedAt" }, "Placed " + d.placedAt),
-        h("span", { "class": "purch-head__dot" }, "\xB7"),
-        h("span", { "data-bind": "purchase.displayTotal" }, d.money.total + " " + d.money.currency)
-      ]),
-      cancelState === "accepted-for-review" ? h(
-        "div",
-        { "class": "purch-line__note", "data-state": "accepted-for-review", style: "margin-top:10px" },
-        "Cancellation requested \u2014 accepted for review. The order stays as shown until the studio confirms; nothing is undone yet."
-      ) : null
-    ]);
-    page.appendChild(head2);
-    var grid = h("div", { "class": "purch-grid" });
-    var left = h("div", { "class": "appt-col" });
-    var right = h("div", { "class": "appt-col" });
-    var itemsCard = h("div", { "class": "card card--pad", "data-module": "purchase-items", "data-visual-id": "purchase-items" }, [
-      h("div", { "class": "card__title" }, "Items"),
-      d.lines && d.lines.length ? linesBlock(d) : h("div", { "class": "purch-ful__note", "data-state": "unavailable" }, "Line items are not returned by the current Core Order API. The recorded total and raw state are shown without guessing the contents.")
-    ]);
-    left.appendChild(itemsCard);
-    var totalsCard = h("div", { "class": "card card--pad", "data-module": "purchase-totals", "data-visual-id": "purchase-totals" }, [
-      h("div", { "class": "card__title" }, "Totals"),
-      MoneyRows(d.money),
-      h("div", { "class": "purch-paynote" }, [SimulationBadge(), h("span", { "class": "purch-paynote__txt" }, "Totals are recorded amounts \u2014 no payment was taken through this portal.")])
-    ]);
-    right.appendChild(totalsCard);
-    if (d.fulfillment) {
-      right.appendChild(h("div", { "class": "card card--pad", "data-module": "purchase-fulfillment", "data-visual-id": "purchase-fulfillment", "data-state": void 0 }, [
-        h("div", { style: "display:flex;align-items:center;gap:9px" }, [
-          h("div", { "class": "card__title", style: "flex:1" }, d.fulfillment.kind === "PICKUP" ? "Pickup" : d.fulfillment.kind === "ENTITLEMENT" ? "Your plan credit" : "Fulfillment"),
-          StatusBadge({ variant: "status-badge--scheduled", label: d.fulfillment.status, bind: "purchase.fulfillment.status" })
-        ]),
-        d.fulfillment.pickupWindow ? h("div", { "class": "purch-ful__row", "data-bind": "purchase.fulfillment.pickupWindow" }, d.fulfillment.pickupWindow) : null,
-        d.fulfillment.note ? h("div", { "class": "purch-ful__note" }, d.fulfillment.note) : null
-      ]));
-    }
-    if (d.relatedAppointments && d.relatedAppointments.length) {
-      var ap = h("div", { "class": "card card--pad", "data-module": "purchase-appointments", "data-visual-id": "purchase-appointments" }, [h("div", { "class": "card__title" }, "Appointment")]);
-      d.relatedAppointments.forEach(function(a) {
-        ap.appendChild(h("div", { "class": "purch-appt", "data-appointment-ref": a.ref }, [
-          h("div", { style: "flex:1;min-width:0" }, [
-            h("div", { style: "font-weight:600;font-size:13.5px", "data-bind": "purchase.relatedAppointments[].service" }, a.service),
-            h("div", { style: "font-size:12px;color:var(--ink-3)", "data-bind": "purchase.relatedAppointments[].start" }, a.start)
-          ]),
-          StatusBadge({ variant: F.spa.statusBadges[a.customerStatus] || "status-badge--scheduled", label: a.customerStatus, bind: "purchase.relatedAppointments[].customerStatus" }),
-          d.allowedActions.indexOf("openAppointment") !== -1 ? h("span", { "class": "link-action", "data-action": "purchase.openAppointment", "data-id": a.ref, "data-appointment-ref": a.ref }, "View \u203A") : null
-        ]));
-      });
-      right.appendChild(ap);
-    }
-    if (d.relatedPlan) {
-      right.appendChild(h("div", { "class": "card card--pad", "data-module": "purchase-plan", "data-visual-id": "purchase-plan", "data-plan-ref": d.relatedPlan.ref }, [
-        h("div", { style: "display:flex;align-items:center;gap:9px" }, [
-          h("div", { "class": "card__title", style: "flex:1" }, "Your plan"),
-          StatusBadge({ variant: "status-badge--ok", label: d.relatedPlan.status, bind: "purchase.relatedPlan.status" })
-        ]),
-        h("div", { style: "font-weight:600;font-size:13.5px;margin-top:6px", "data-bind": "purchase.relatedPlan.title" }, d.relatedPlan.title),
-        h("div", { style: "margin-top:8px" }, h("span", { "class": "link-action", "data-action": "account.openPlan" }, "Open My plan \u203A"))
-      ]));
-    }
-    var actions = h("div", { "class": "purch-actions", "data-module": "purchase-actions", "data-visual-id": "purchase-actions" });
-    if (d.allowedActions.indexOf("cancelRequest") !== -1 && !cancelState) {
-      if (cPhase === "failed") actions.appendChild(InlineFailure({ msg: "Your cancellation request didn\u2019t go through \u2014 the order is unchanged.", retryAction: "purchase.cancelRequest", retryId: d.ref, retryLabel: "Try again" }));
-      if (cPhase === "conflict") actions.appendChild(InlineFailure({ msg: "This order changed since you opened it \u2014 reload before requesting changes.", retryAction: "ui.retry", retryId: "purchase.cancelRequest:" + d.ref, retryLabel: "Reload" }));
-      actions.appendChild(ActionButton({ variant: "btn--ghost", label: "Request cancellation", action: "purchase.cancelRequest", id: d.ref, confirm: true, pending: cPhase === "pending", pendingLabel: "Requesting\u2026", disabled: cPhase === "conflict", visualId: "purchase-cancel-request" }));
-    }
-    if (d.allowedActions.indexOf("buyAgain") !== -1) {
-      var retailOk = spaRetailOpen() && d.kind === "RETAIL";
-      if (bPhase === "failed") actions.appendChild(InlineFailure({ msg: "Couldn\u2019t add these items to your bag \u2014 your bag is unchanged.", retryAction: "purchase.buyAgain", retryId: d.ref, retryLabel: "Try again" }));
-      actions.appendChild(ActionButton({
-        variant: "btn--primary",
-        label: d.kind === "RETAIL" ? "Buy again" : "Buy this plan again",
-        action: "purchase.buyAgain",
-        id: d.ref,
-        pending: bPhase === "pending",
-        pendingLabel: "Adding\u2026",
-        disabled: d.kind === "RETAIL" && !retailOk,
-        visualId: "purchase-buy-again"
-      }));
-      if (d.kind === "RETAIL" && !retailOk) actions.appendChild(h("div", { "class": "purch-ful__note", "data-state": "unavailable" }, "Online shopping isn\u2019t open on this portal yet \u2014 the studio can help you reorder."));
-    }
-    if (actions.childNodes.length) left.appendChild(actions);
-    grid.appendChild(left);
-    grid.appendChild(right);
-    page.appendChild(grid);
-    return page;
-  }
-
-  // app-templates/customer-portal/runtime/src/routes/SpaPurchasesPage.js
-  function purchaseRow(p) {
-    return h("article", { "class": "purch-row", "data-module": "purchase-row", "data-visual-id": "purchase-row", "data-purchase-ref": p.ref, "data-action": "purchase.open", "data-id": p.ref, tabindex: "0", role: "link" }, [
-      h("div", { "class": "purch-row__body" }, [
-        h("div", { "class": "purch-row__top" }, [
-          h("span", { "class": "purch-row__ref", "data-bind": "purchase.reference" }, p.reference),
-          KindChip(p.kind),
-          h("span", { "class": "purch-row__date", "data-bind": "purchase.placedAt" }, p.placedAt)
-        ]),
-        h("div", { "class": "purch-row__summary", "data-bind": "purchase.itemSummary" }, p.itemSummary),
-        p.attention ? h("div", { "class": "purch-row__attention", "data-bind": "purchase.attention", role: "note" }, p.attention) : null
-      ]),
-      h("div", { "class": "purch-row__side" }, [
-        purchaseStatusBadge(p.customerStatus),
-        h("div", { "class": "purch-row__total" }, [
-          h("b", { "data-bind": "purchase.displayTotal" }, p.displayTotal),
-          h("span", { "data-bind": "purchase.currency" }, p.displayCurrency || p.currency && p.currency.code || "")
-        ])
-      ]),
-      h("span", { "class": "purch-row__chev", "aria-hidden": "true" }, "\u203A")
-    ]);
-  }
-  function SpaPurchases() {
-    var live = state.config.dataMode === "live";
-    var source = live ? state.moduleData.orders : null;
-    var view = live ? state.moduleStatus.orders || source && source.state || "loading" : state.view;
-    var page = h("section", { "class": "page", "data-route": "purchases.list", "data-state": view, "data-visual-id": "spa-purchases", "data-module": "spa-purchases", "data-capability": spaCapability(), "data-screen-label": "Purchases" });
-    page.appendChild(PageHeader({ title: "Purchases", sub: "Everything you\u2019ve ordered, with its current state \u2014 exactly as our records show it." }));
-    if (spaCapability() === "current-staging" && view === "ready") {
-      page.appendChild(spaGateUnavailable());
-      return page;
-    }
-    var gate = spaGate({
-      view,
-      states: ["loading", "empty", "error", "unauthorized"],
-      skeleton: function() {
-        var card2 = h("div", { "class": "card", "data-state": "loading", "aria-busy": "true" });
-        for (var i = 0; i < 4; i++) card2.appendChild(skeletonRow());
-        return card2;
-      },
-      empty: {
-        glyph: "\u25CE",
-        title: "No purchases yet",
-        desc: "Anything you order \u2014 a visit, shop items or a plan \u2014 will appear here with its current state.",
-        action: { variant: "btn--ghost", label: "Browse services", action: "nav.go", id: "services", visualId: "purchases-empty-browse" }
-      },
-      error: { title: "Couldn\u2019t load your purchases", desc: "Your purchases didn\u2019t load, so nothing is shown \u2014 we never show stale records. Nothing was changed; try again.", retryId: "purchases" },
-      scope: "your purchases",
-      backRoute: "account",
-      unavailable: { title: "Purchases aren\u2019t available yet", desc: "Purchase history isn\u2019t connected on this portal yet. Nothing is shown in the meantime.", action: { variant: "btn--ghost", label: "Back to account", action: "account.open", visualId: "purchases-unavailable-back" } }
-    });
-    if (gate) {
-      page.appendChild(gate);
-      return page;
-    }
-    var list = live ? source.items : F.spaCommerce.purchases.list;
-    var loaded = !live && state.spaPurchMore === "loaded" ? list.concat(F.spaCommerce.purchases.nextPage) : list;
-    var kindsPresent = {};
-    loaded.forEach(function(p) {
-      kindsPresent[p.kind] = true;
-    });
-    var filters = F.spaCommerce.purchases.filters.filter(function(f) {
-      if (f.key === "all") return true;
-      return (F.spaCommerce.purchases.kindFilter[f.key] || []).some(function(k) {
-        return kindsPresent[k];
-      });
-    });
-    if (filters.length > 1) {
-      page.appendChild(h("div", { "class": "spa-tabs" }, Tabs({
-        items: filters.map(function(f) {
-          return { key: f.key, label: f.label };
-        }),
-        active: state.spaPurchFilter,
-        action: "purchases.filter"
-      })));
-    }
-    var visible = loaded.filter(function(p) {
-      if (state.spaPurchFilter === "all") return true;
-      return (F.spaCommerce.purchases.kindFilter[state.spaPurchFilter] || []).indexOf(p.kind) !== -1;
-    });
-    var card = h("div", { "class": "card", "data-module": "purchase-list", "data-visual-id": "purchase-list" });
-    if (visible.length === 0) {
-      card.appendChild(EmptyState({ glyph: "\u25CE", title: "Nothing under this filter", desc: "You have purchases, just not of this kind. Switch back to All to see everything." }));
-    } else {
-      visible.forEach(function(p) {
-        card.appendChild(purchaseRow(p));
-      });
-    }
-    if (!live && state.spaPurchMore === "loading") {
-      card.appendChild(skeletonRow());
-      card.appendChild(skeletonRow());
-    }
-    page.appendChild(card);
-    if (!live && state.spaPurchMore === "idle") {
-      page.appendChild(h(
-        "div",
-        { style: "display:flex;justify-content:center;margin-top:14px" },
-        h("button", { "class": "btn btn--ghost", "data-action": "purchases.more", "data-module": "action-button", "data-visual-id": "purchases-load-more" }, "Show earlier purchases")
-      ));
-    }
-    page.appendChild(h("div", { "class": "card__footnote", style: "border-top:0;padding:12px 4px 0" }, live ? "Amounts and raw Order states come from Core exactly as returned. Line items, receipts and payment history are not returned by this API." : "Amounts and statuses come from our records exactly as written \u2014 receipts and payment history aren\u2019t part of this portal yet."));
-    return page;
-  }
-  function spaGateUnavailable() {
-    return h("div", { "class": "state-block", "data-module": "unavailable-state", "data-visual-id": "unavailable-state", "data-state": "unavailable" }, [
-      h("div", { "class": "state-block__glyph" }, "\u25CC"),
-      h("div", { "class": "state-block__title" }, "Purchases aren\u2019t available on this portal yet"),
-      h("div", { "class": "state-block__desc" }, "Purchase history with customer statuses isn\u2019t connected yet. Your raw order records \u2014 exactly as recorded \u2014 are on the Orders page."),
-      h("button", { "class": "btn btn--primary", "data-action": "nav.go", "data-id": "orders.list", "data-module": "action-button", "data-visual-id": "purchases-unavailable-orders" }, "See your orders")
-    ]);
-  }
-
-  // app-templates/customer-portal/runtime/src/routes/SpaProfilePage.js
-  function isDirty(d, v) {
-    if (d.phone !== v.phone || d.email !== v.email) return true;
-    return Object.keys(d.prefs).some(function(k) {
-      return d.prefs[k] !== v.prefs[k];
-    });
-  }
-  function SpaProfile() {
-    var live = state.config.dataMode === "live";
-    var view = live ? state.moduleStatus.profile || "loading" : state.view;
-    var page = h("section", { "class": "page page--narrow", "data-route": "profile", "data-state": view, "data-visual-id": "spa-profile", "data-module": "spa-profile", "data-capability": spaCapability(), "data-screen-label": "Profile (Calm Harbor)" });
-    page.appendChild(h("div", { "class": "detail-back" }, h("span", { "class": "link-action", "data-action": "account.open" }, "\u2039 Account")));
-    page.appendChild(PageHeader({ title: "Profile", sub: live ? "Your email from Core. Phone and preferences are not exposed by the current API." : "Your contact details and preferences \u2014 nothing else is stored here." }));
-    var gate = spaGate({
-      view,
-      states: ["loading", "error", "unauthorized"],
-      skeleton: function() {
-        return h("div", { "data-state": "loading", "aria-busy": "true" }, [
-          skel("height:210px;border-radius:22px"),
-          skel("height:160px;border-radius:22px;margin-top:16px")
-        ]);
-      },
-      error: { title: "Couldn\u2019t load your profile", desc: "Your details didn\u2019t load, so nothing is shown \u2014 we never show stale or guessed values. Nothing was changed; try again.", retryId: "profile" },
-      scope: "your profile",
-      backRoute: "account",
-      unavailable: { title: "Profile isn\u2019t available yet", desc: "Profile editing isn\u2019t connected on this portal yet \u2014 our team can update your details for you." }
-    });
-    if (gate) {
-      page.appendChild(gate);
-      return page;
-    }
-    var confirmed = spaProfileValues();
-    var draft = state.spaProfileDraft;
-    var errs = state.spaProfileErrors || {};
-    var phase = cmdPhase("profile.save:profile");
-    var conflict = phase === "conflict";
-    var saving = phase === "pending";
-    var editing = !!draft;
-    var dirty = editing && isDirty(draft, confirmed);
-    var panelState = conflict ? "conflict" : saving ? "saving" : phase === "failed" ? "save-failed" : errs.phone || errs.email ? "invalid" : editing ? dirty ? "dirty" : "unchanged" : "ready";
-    var canEdit = live ? confirmed.allowedActions.indexOf("edit-email") !== -1 : F.spaProfileSrv.allowedActions.indexOf("edit") !== -1;
-    var panel = h("div", { "class": "list-panel", "data-module": "spa-profile-contact", "data-visual-id": "spa-profile-contact", "data-state": panelState, "data-profile-version": live ? void 0 : F.spaProfileSrv.version }, [
-      h("div", { "class": "list-panel__head" }, [
-        h("div", { "class": "list-panel__title", style: "flex:1" }, "Contact details"),
-        saving ? h("span", { style: "font-size:12.5px;color:var(--ink-3)" }, "Saving\u2026") : null,
-        editing && !saving && !conflict ? h("span", { "class": "readonly-chip", "data-dirty-chip": "true", "data-state": dirty ? "dirty" : "unchanged" }, dirty ? "Unsaved changes" : "No changes yet") : null
-      ])
-    ]);
-    if (conflict) {
-      panel.appendChild(h("div", { "class": "conflict-banner", "data-module": "conflict-banner", "data-visual-id": "profile-conflict", "data-state": "conflict", role: "alert" }, [
-        h("div", { "class": "conflict-banner__icon" }, "\u21BA"),
-        h("div", { "class": "conflict-banner__body" }, [
-          h("div", { style: "font-weight:700;font-size:13.5px" }, "Your profile changed since you opened it"),
-          h("div", { style: "font-size:12.5px;line-height:1.45;color:var(--ink-2);margin-top:2px" }, "Nothing was saved. Reload the latest details and review them before editing again.")
-        ]),
-        ActionButton({ variant: "btn--primary", label: "Reload profile", action: "profile.reload", visualId: "profile-conflict-reload" })
-      ]));
-    }
-    if (!editing) {
-      var ro = h("div", { "class": "appt-details" });
-      if (confirmed.phone != null) ro.appendChild(h("div", { "class": "appt-details__row" }, [h("div", { "class": "appt-details__label" }, "Phone"), h("div", { "class": "appt-details__val" }, h("b", { "data-bind": "profile.phone" }, confirmed.phone))]));
-      ro.appendChild(h("div", { "class": "appt-details__row" }, [h("div", { "class": "appt-details__label" }, "Email"), h("div", { "class": "appt-details__val" }, h("b", { "data-bind": "profile.email" }, confirmed.email))]));
-      panel.appendChild(ro);
-      if (canEdit) panel.appendChild(h("div", { style: "margin-top:14px" }, ActionButton({ variant: "btn--ghost", label: "Edit details", action: "profile.edit", visualId: "profile-edit" })));
-    } else {
-      var form = h("div", { "class": "contact-form" });
-      (live ? [["Email", "email", "email"]] : [["Phone", "phone", "tel"], ["Email", "email", "email"]]).forEach(function(fd) {
-        var label = fd[0], key = fd[1], type = fd[2];
-        var input = h("input", { "class": "field", type, value: draft[key] || "", "aria-label": label, "data-action": "profile.changeField", "data-field": key, "data-bind": "profile." + key, "data-state": errs[key] ? "invalid" : void 0, disabled: saving || conflict ? true : void 0, "aria-invalid": errs[key] ? "true" : void 0, "aria-describedby": errs[key] ? "profile-err-" + key : void 0 });
-        input.addEventListener("input", function() {
-          ACTIONS["profile.changeField"](key + "|" + input.value);
-          var chip = page.querySelector("[data-dirty-chip]");
-          if (chip) {
-            var d2 = state.spaProfileDraft, dr = d2 && isDirty(d2, spaProfileValues());
-            chip.textContent = dr ? "Unsaved changes" : "No changes yet";
-            chip.setAttribute("data-state", dr ? "dirty" : "unchanged");
-          }
-        });
-        form.appendChild(h("div", { "class": "field-row" }, [
-          h("span", { "class": "field-label" }, label),
-          input,
-          errs[key] ? h("div", { "class": "field-error", id: "profile-err-" + key, role: "alert" }, errs[key]) : null
-        ]));
-      });
-      panel.appendChild(form);
-      if (phase === "failed") panel.appendChild(h("div", { style: "margin-top:12px" }, InlineFailure({
-        msg: "Your changes weren\u2019t saved \u2014 the details on file are unchanged.",
-        retryAction: "profile.save",
-        retryLabel: "Retry save"
-      })));
-      panel.appendChild(h("div", { style: "margin-top:14px;display:flex;gap:12px;align-items:center;flex-wrap:wrap" }, [
-        ActionButton({ variant: "btn--primary", label: "Save changes", action: "profile.save", visualId: "profile-save", pending: saving, pendingLabel: "Saving\u2026", disabled: conflict }),
-        ActionButton({ variant: "btn--ghost", label: "Discard", action: "profile.reload", visualId: "profile-discard", disabled: saving }),
-        h("span", { style: "font-size:12px;color:var(--ink-3)" }, "Changes apply only once the studio\u2019s system confirms them.")
-      ]));
-    }
-    page.appendChild(panel);
-    if (!live) {
-      var prefsPanel = h("div", { "class": "list-panel", "data-module": "spa-profile-preferences", "data-visual-id": "spa-profile-preferences", "data-state": editing ? "editing" : "ready" }, [
-        h("div", { "class": "list-panel__head" }, [
-          h("div", { "class": "list-panel__title", style: "flex:1" }, "Preferences"),
-          h("span", { style: "font-size:12px;color:var(--ink-3)" }, "about your visits only")
-        ])
-      ]);
-      F.spaProfileSrv.preferences.forEach(function(p) {
-        var val = editing ? draft.prefs[p.key] : confirmed.prefs[p.key];
-        prefsPanel.appendChild(h("div", { "class": "pref-row", "data-module": "profile-preference", "data-visual-id": "profile-preference", "data-pref-key": p.key, "data-state": val ? "on" : "off" }, [
-          h("div", { style: "flex:1" }, [
-            h("div", { style: "font-weight:600;font-size:14px", "data-bind": "profile.preferences[].label" }, p.label),
-            h("div", { style: "font-size:12.5px;color:var(--ink-2)" }, p.desc)
-          ]),
-          editing ? h("div", { "class": "toggle" + (val ? " toggle--on" : ""), "data-action": "profile.changeField", "data-id": "pref:" + p.key, role: "switch", "aria-checked": val ? "true" : "false", "aria-label": p.label, disabled: saving || conflict ? true : void 0, "data-state": val ? "on" : "off" }, h("div", { "class": "toggle__knob" })) : h("span", { "class": "readonly-chip", "data-bind": "profile.preferences[].value" }, val ? "On" : "Off")
-        ]));
-      });
-      if (!editing) prefsPanel.appendChild(h("div", { "class": "purch-ful__note", style: "margin-top:10px" }, "Use Edit details above to change these."));
-      page.appendChild(prefsPanel);
-    } else {
-      page.appendChild(h("div", { "class": "purch-ful__note", "data-state": "unavailable" }, "Phone and visit preferences are not returned by the current Core User API, so this portal does not show or edit them."));
-    }
-    page.appendChild(h("div", { "class": "catalog-note" }, live ? "The email above is read from the signed-in Core User and saved back only after Core confirms it." : "This page holds only your contact details and the preferences above \u2014 exactly as the studio\u2019s system returns them."));
-    return page;
-  }
-
-  // app-templates/customer-portal/runtime/src/routes/SpaShopPage.js
-  function pimByCode(code) {
-    return productItems().find(function(product) {
-      return product.code === code;
-    });
-  }
-  function cardThumb(detail) {
-    var media = detail && detail.media && detail.media[0];
-    var thumb = h("div", { "class": "spa-shop-card__thumb", "data-state": media && media.url ? "ready" : "no-data", "aria-hidden": "true" });
-    if (media && media.url) thumb.appendChild(h("img", { "class": "spa-shop-card__thumb-img", src: media.url, alt: "" }));
-    return thumb;
-  }
-  function productCard(code, open) {
-    var product = pimByCode(code);
-    if (!product) return null;
-    var detail = productDetailByCode(code);
-    var ref = detail && detail.ref || spaProductRef(code);
-    var retail = open ? spaSellInfo(code) : null;
-    var pickedRef = state.spaVariantPick[code] || null;
-    var picked = retail && retail.variants ? retail.variants.find(function(variant) {
-      return variant.ref === pickedRef;
-    }) : null;
-    var phase = open ? cmdPhase("cart.addItem:" + code) : "idle";
-    var canAdd = retail && (retail.state === "sellable" || retail.state === "price-changed" || retail.state === "variant-required" && picked);
-    var muted = retail && (retail.state === "out-of-stock" || retail.state === "unavailable");
-    var card = h("div", { "class": "card spa-shop-card" + (muted ? " spa-shop-card--muted" : ""), "data-module": "spa-shop-card", "data-visual-id": "spa-shop-card", "data-product-code": code, "data-product-ref": ref, "data-state": phase !== "idle" ? phase : retail ? retail.state : void 0 });
-    card.appendChild(h("button", { "class": "spa-shop-card__open", "data-action": "product.open", "data-id": ref, "data-product-ref": ref, "aria-label": "View " + product.name }, [
-      cardThumb(detail),
-      h("div", { "class": "spa-shop-card__id" }, [
-        detail && detail.collection && spaModelsReady() ? h("div", { "class": "spa-shop-card__collection", "data-product-model-ref": detail.collection.ref, "data-bind": "product.collection.name" }, detail.collection.name) : null,
-        h("div", { "class": "spa-shop-card__name", "data-bind": "pim.products[].name" }, product.name),
-        h("div", { "class": "spa-shop-card__blurb", "data-bind": "pim.products[].shortDescription" }, product.blurb || product.description || "Published retail product"),
-        detail && detail.variantFacts && detail.variantFacts.length ? h("div", { "class": "spa-shop-card__facts", "data-bind": "product.variantFacts[]" }, detail.variantFacts.map(function(fact4) {
-          return h("span", { "class": "fact-chip" }, fact4.value);
-        })) : null
-      ])
-    ]));
-    var body = h("div", { "class": "spa-shop-card__buy" });
-    if (open) {
-      if (retail.state === "out-of-stock") body.appendChild(h("div", { "class": "shop-chip shop-chip--stock", "data-bind": "retail.state" }, "Out of stock"));
-      else if (retail.state === "unavailable") body.appendChild(h("div", { "class": "shop-chip", "data-bind": "retail.state" }, retail.note || "Not sold online"));
-      else if (retail.state === "variant-required") {
-        var variants = h("div", { "class": "shop-variants", "data-module": "variant-picker", "data-visual-id": "variant-picker" });
-        retail.variants.forEach(function(variant) {
-          variants.appendChild(h("button", {
-            "class": "shop-variant" + (pickedRef === variant.ref ? " shop-variant--on" : ""),
-            "data-action": "shop.pickVariant",
-            "data-id": code + "|" + variant.ref,
-            "data-variant-ref": variant.ref,
-            "data-state": pickedRef === variant.ref ? "active" : void 0
-          }, variant.label + " \xB7 " + variant.displayPrice));
-        });
-        body.appendChild(variants);
-      }
-    }
-    var displayPrice = open ? retail.state === "variant-required" ? picked ? picked.displayPrice : "from " + retail.variants[0].displayPrice : retail.displayPrice || product.price : product.price;
-    body.appendChild(h("div", { "class": "spa-shop-card__price" }, [
-      h("b", { "data-bind": open ? "retail.displayPrice" : "pim.products[].displayPrice" }, displayPrice),
-      open && retail.state === "price-changed" ? h("span", { "class": "shop-chip shop-chip--price", "data-bind": "retail.priceNote" }, "Price updated") : null,
-      product.displayTag ? h("span", { "class": "code-chip", style: "margin-left:auto", "data-bind": "pim.products[].displayTag" }, product.displayTag) : null
-    ]));
-    if (open && !muted) {
-      body.appendChild(h("div", { style: "margin-top:10px" }, ActionButton({
-        variant: "btn--primary",
-        label: "Add to bag",
-        action: "cart.addItem",
-        id: code,
-        block: true,
-        pending: phase === "pending",
-        pendingLabel: "Adding\u2026",
-        disabled: !canAdd,
-        visualId: "shop-add-to-bag"
-      })));
-      if (retail.state === "variant-required" && !picked) body.appendChild(h("div", { style: "font-size:11.5px;color:var(--ink-3);margin-top:6px" }, "Pick a size first"));
-      if (phase === "failed") body.appendChild(h("div", { "class": "cart-row__note", role: "alert" }, "Not added \u2014 your bag is unchanged. Try again."));
-      if (phase === "conflict") body.appendChild(h("div", { "class": "cart-row__note", role: "alert" }, "Stock changed just now \u2014 nothing was added."));
-    }
-    card.appendChild(body);
-    return card;
-  }
-  function productGrid(codes, open) {
-    var grid = h("div", { "class": "spa-shop-grid", "data-module": "spa-shop-list", "data-visual-id": "spa-shop-list" });
-    codes.forEach(function(code) {
-      var card = productCard(code, open);
-      if (card) grid.appendChild(card);
-    });
-    return grid;
-  }
-  function modelSection(model, open) {
-    var codes = (model.productCodes || []).filter(pimByCode);
-    var section = h("section", { "class": "product-model-section", "data-module": "product-model-section", "data-visual-id": "product-model-section", "data-product-model-ref": model.ref });
-    var header = [];
-    if (model.media) {
-      var media = h("div", { "class": "pmodel-head__media", "data-state": model.media.url ? "ready" : "no-data", "aria-hidden": "true" });
-      if (model.media.url) media.appendChild(h("img", { "class": "pmodel-head__img", src: model.media.url, alt: "" }));
-      header.push(media);
-    }
-    header.push(h("div", { "class": "pmodel-head__body" }, [
-      h("h2", { "class": "pmodel-head__name", "data-bind": "model.name" }, model.name),
-      h("div", { "class": "pmodel-head__meta" }, [
-        h("span", { "data-bind": "model.productCount" }, codes.length === 1 ? "1 product" : codes.length + " products"),
-        model.variants && model.variants.length ? h("span", { "class": "pmodel-head__dims", "data-bind": "model.variants" }, "Varies by " + model.variants.join(", ")) : null
-      ])
-    ]));
-    section.appendChild(h("div", { "class": "pmodel-head" }, header));
-    section.appendChild(productGrid(codes, open));
-    return section;
-  }
-  function othersSection(codes, open) {
-    var section = h("section", { "class": "product-model-section product-model-section--others", "data-module": "product-model-section", "data-visual-id": "product-model-section-others" });
-    section.appendChild(h("div", { "class": "pmodel-head" }, h("div", { "class": "pmodel-head__body" }, [
-      h("h2", { "class": "pmodel-head__name" }, "Other products"),
-      h("div", { "class": "pmodel-head__meta" }, h("span", null, codes.length === 1 ? "1 product" : codes.length + " products"))
-    ])));
-    section.appendChild(productGrid(codes, open));
-    return section;
-  }
-  function SpaShop() {
-    var open = spaRetailOpen();
-    var liveView = state.config.dataMode === "live" ? state.moduleStatus.products || "loading" : state.view;
-    var page = h("section", { "class": "page", "data-route": "products", "data-state": liveView, "data-visual-id": "spa-shop", "data-module": "spa-shop", "data-retail": open ? "retail-commerce-open" : "browse-only", "data-capability": spaCapability(), "data-screen-label": open ? "Shop (sellable)" : "Shop (browse-only)" });
-    page.appendChild(h("div", { "class": "section-head", style: "display:flex;align-items:flex-end;gap:14px;flex-wrap:wrap" }, [
-      h("div", { style: "flex:1;min-width:220px" }, [
-        h("div", { style: "display:flex;align-items:center;gap:10px" }, [h("div", { "class": "section-head__title" }, "Spa shop"), open ? null : h("span", { "class": "readonly-chip", style: "margin-left:0" }, "Browse-only")]),
-        h("div", { "class": "section-head__sub" }, "Retail from the public catalog \u2014 the products our specialists use.")
-      ]),
-      open ? h("span", { "class": "link-action", "data-action": "cart.open", "data-visual-id": "shop-open-cart" }, "Your bag" + (spaCartCount() ? " \xB7 " + spaCartCount() : "") + " \u203A") : h("span", { "class": "link-action", "data-action": "nav.go", "data-id": "services" }, "Services & prices \u203A")
-    ]));
-    var gate = routeStateBody({
-      view: liveView,
-      states: ["loading", "empty", "error"],
-      skeleton: function() {
-        return gridSkeleton("spa-shop-grid", 4, 220);
-      },
-      empty: { glyph: "\u25A1", title: "The shelf is empty right now", desc: "No retail products are published in the catalog at the moment \u2014 nothing is invented in the meantime." },
-      error: { title: "Couldn\u2019t load the shelf", desc: "Retail products didn\u2019t load, so nothing stale is shown. Nothing was changed \u2014 try again.", retryId: "products" }
-    });
-    if (gate) {
-      page.appendChild(gate);
-      return page;
-    }
-    var codes = productItems().map(function(product) {
-      return product.code;
-    });
-    if (spaModelsReady()) {
-      var list = h("div", { "class": "product-model-list", "data-module": "product-model-list", "data-visual-id": "product-model-list", "data-state": "ready" });
-      var claimed = {};
-      spaProductModels().forEach(function(model) {
-        model.productCodes.forEach(function(code) {
-          claimed[code] = true;
-        });
-        list.appendChild(modelSection(model, open));
-      });
-      var others = codes.filter(function(code) {
-        return !claimed[code];
-      });
-      if (others.length) list.appendChild(othersSection(others, open));
-      page.appendChild(list);
-    } else {
-      page.appendChild(h("div", { "class": "shop-models-note", "data-module": "product-model-list", "data-visual-id": "product-model-list", "data-state": "unavailable" }, "Collections couldn\u2019t load right now \u2014 showing all products. Grouping will return automatically; nothing is grouped by guesswork."));
-      page.appendChild(productGrid(codes, open));
-    }
-    page.appendChild(h("div", { "class": "catalog-note" }, open ? "Prices and stock come from the store at this moment. Adding something to your bag doesn\u2019t reserve it \u2014 availability and prices are confirmed at checkout." : "Prices as published in the public catalog. There\u2019s no cart or checkout here \u2014 nothing on this page starts a purchase."));
-    return page;
-  }
-
-  // app-templates/customer-portal/runtime/src/routes/SpaProductDetailPage.js
-  function mediaFrame(media, cls) {
-    var wrap = h("div", { "class": "pd-media " + (cls || ""), "data-media-ref": media ? media.ref : void 0, "data-state": media && media.url ? "ready" : "no-data" });
-    if (media && media.url) {
-      var image = h("img", { "class": "pd-media__img", src: media.url, alt: media.alt || "", loading: "lazy" });
-      image.addEventListener("error", function() {
-        wrap.setAttribute("data-state", "no-data");
-        if (image.parentNode) wrap.removeChild(image);
-        wrap.appendChild(h("span", { "class": "pd-media__label" }, media.alt || "product image"));
-      });
-      wrap.appendChild(image);
-    } else {
-      wrap.appendChild(h("span", { "class": "pd-media__label" }, media && media.alt ? media.alt : "product image"));
-    }
-    return wrap;
-  }
-  function gallery(product) {
-    var media = product.media || [];
-    var root = h("div", { "class": "product-gallery", "data-module": "product-gallery", "data-visual-id": "product-gallery" });
-    if (!media.length) {
-      root.appendChild(h("div", { "class": "pd-media pd-media--empty", "data-visual-id": "product-gallery-primary", "data-state": "no-media" }, [
-        h("div", { "class": "pd-media__glyph", "aria-hidden": "true" }, "\u25A1"),
-        h("div", { "class": "pd-media__empty-title" }, "No product photos yet"),
-        h("div", { "class": "pd-media__empty-desc" }, "Photos appear here once the studio adds them \u2014 we don\u2019t show a stand-in image in the meantime.")
-      ]));
-      return root;
-    }
-    var selected = Math.min(state.spaGallery || 0, media.length - 1);
-    var primary = mediaFrame(media[selected], "pd-media--primary");
-    primary.setAttribute("data-visual-id", "product-gallery-primary");
-    root.appendChild(primary);
-    if (media.length > 1) {
-      var thumbs = h("div", { "class": "product-gallery__thumbs", role: "group", "aria-label": "Product images" });
-      media.forEach(function(item, index) {
-        var active = index === selected;
-        thumbs.appendChild(h("button", {
-          "class": "product-gallery-thumb" + (active ? " product-gallery-thumb--on" : ""),
-          "data-module": "product-gallery-thumb",
-          "data-visual-id": "product-gallery-thumb",
-          "data-action": "product.gallerySelect",
-          "data-id": String(index),
-          "data-media-ref": item.ref,
-          "data-state": active ? "active" : void 0,
-          "aria-current": active ? "true" : void 0,
-          "aria-label": "Show image " + (index + 1) + " of " + media.length + (item.alt ? ": " + item.alt : "")
-        }, mediaFrame(item, "pd-media--thumb")));
-      });
-      root.appendChild(thumbs);
-    } else {
-      root.appendChild(h("div", { "class": "pd-media__single-note" }, "One photo provided for this product."));
-    }
-    return root;
-  }
-  function stars(rating) {
-    var full = Math.max(0, Math.min(5, rating | 0));
-    return h("span", { "class": "pd-stars", role: "img", "aria-label": full + " out of 5" }, [
-      h("span", { "class": "pd-stars__on", "aria-hidden": "true" }, "\u2605\u2605\u2605\u2605\u2605".slice(0, full)),
-      h("span", { "class": "pd-stars__off", "aria-hidden": "true" }, "\u2605\u2605\u2605\u2605\u2605".slice(full))
-    ]);
-  }
-  function reviewCard(review) {
-    var footer = [h("span", { "class": "pd-review__author", "data-bind": "review.authorName" }, review.authorName)];
-    if (review.verified) footer.push(h("span", { "class": "pd-review__verified", "data-bind": "review.verified" }, [h("i", { "aria-hidden": "true" }, "\u2713"), "Verified purchase"]));
-    if (review.publishedAt) footer.push(h("span", { "class": "pd-review__date", "data-bind": "review.publishedAt" }, review.publishedAt));
-    return h("div", { "class": "product-review-card", "data-module": "product-review-card", "data-visual-id": "product-review-card", "data-review-ref": review.ref }, [
-      h("div", { "class": "pd-review__head" }, [stars(review.rating), review.title ? h("div", { "class": "pd-review__title", "data-bind": "review.title" }, review.title) : null]),
-      h("p", { "class": "pd-review__body", "data-bind": "review.body" }, review.body),
-      h("div", { "class": "pd-review__foot" }, footer)
-    ]);
-  }
-  function reviewsRegion(product) {
-    var view = spaReviewsState();
-    var reviews = productReviews(product.ref);
-    var panel = h("div", { "class": "list-panel product-review-list", "data-module": "product-review-list", "data-visual-id": "product-review-list", "data-product-ref": product.ref, "data-state": view });
-    panel.appendChild(h("div", { "class": "list-panel__head" }, [
-      h("div", { "class": "list-panel__title", style: "flex:1" }, "Reviews"),
-      view === "ready" && reviews.length ? h("span", { "class": "pd-review__count", "data-bind": "reviews.loadedCount" }, reviews.length === 1 ? "1 published review" : reviews.length + " published reviews") : null
-    ]));
-    if (view === "loading") {
-      panel.appendChild(h("div", { "data-state": "loading", "aria-busy": "true" }, [skel("height:64px;border-radius:14px"), skel("height:64px;border-radius:14px;margin-top:10px")]));
-      return panel;
-    }
-    if (view === "unavailable") {
-      panel.appendChild(h("div", { "class": "pd-region-state", "data-state": "unavailable" }, [
-        h("div", { "class": "pd-region-state__title" }, "Reviews aren\u2019t available right now"),
-        h("div", { "class": "pd-region-state__desc" }, "We couldn\u2019t load reviews for this product \u2014 this doesn\u2019t affect anything else on the page. You can still see the product and add it to your bag.")
-      ]));
-      return panel;
-    }
-    if (view === "error") {
-      panel.appendChild(h("div", { "class": "pd-region-state", "data-state": "error" }, [
-        h("div", { "class": "pd-region-state__title" }, "Couldn\u2019t load reviews"),
-        h("div", { "class": "pd-region-state__desc" }, "Reviews didn\u2019t load, so nothing is shown here \u2014 we never show stale or guessed reviews. The rest of the page is fine."),
-        h("div", { style: "margin-top:12px" }, ActionButton({ variant: "btn--ghost", label: "Try again", action: "ui.retry", id: "product-reviews", visualId: "pd-reviews-retry" }))
-      ]));
-      return panel;
-    }
-    if (view === "empty" || !reviews.length) {
-      panel.appendChild(h("div", { "class": "pd-region-state", "data-state": "empty" }, [
-        h("div", { "class": "pd-region-state__title" }, "No reviews yet"),
-        h("div", { "class": "pd-region-state__desc" }, "This product doesn\u2019t have any published reviews yet.")
-      ]));
-      return panel;
-    }
-    panel.appendChild(h("div", { "class": "pd-review__scope" }, "Showing every published review for this product. We don\u2019t show an average score."));
-    reviews.forEach(function(review) {
-      panel.appendChild(reviewCard(review));
-    });
-    return panel;
-  }
-  function buyRegion(product) {
-    var open = spaRetailOpen();
-    var root = h("div", { "class": "pd-buy" });
-    if (!open) {
-      root.appendChild(h("div", { "class": "pd-price" }, [
-        h("b", { "data-bind": "product.displayPrice" }, product.displayPrice),
-        product.displayTag ? h("span", { "class": "code-chip", "data-bind": "product.displayTag" }, product.displayTag) : null
-      ]));
-      root.appendChild(h("div", { "class": "pd-buy__note", "data-state": "browse-only" }, "This is a browse-only catalogue \u2014 there\u2019s no cart or checkout here. Nothing on this page starts a purchase."));
-      return root;
-    }
-    var retail = spaSellInfo(product.code);
-    var pickedRef = state.spaVariantPick[product.code] || null;
-    var picked = retail.variants ? retail.variants.find(function(variant) {
-      return variant.ref === pickedRef;
-    }) : null;
-    var phase = cmdPhase("cart.addItem:" + product.code);
-    var canAdd = retail.state === "sellable" || retail.state === "price-changed" || retail.state === "variant-required" && picked;
-    var muted = retail.state === "out-of-stock" || retail.state === "unavailable";
-    var displayPrice = retail.state === "variant-required" ? picked ? picked.displayPrice : "from " + retail.variants[0].displayPrice : retail.displayPrice || product.displayPrice;
-    root.appendChild(h("div", { "class": "pd-price" }, [
-      h("b", { "data-bind": "retail.displayPrice" }, displayPrice),
-      retail.state === "price-changed" ? h("span", { "class": "shop-chip shop-chip--price", "data-bind": "retail.priceNote" }, "Price updated") : null,
-      product.displayTag ? h("span", { "class": "code-chip", "data-bind": "product.displayTag" }, product.displayTag) : null
-    ]));
-    if (retail.state === "out-of-stock") root.appendChild(h("div", { "class": "shop-chip shop-chip--stock", "data-bind": "retail.state" }, "Out of stock"));
-    else if (retail.state === "unavailable") root.appendChild(h("div", { "class": "shop-chip", "data-bind": "retail.state" }, retail.note || "Not sold online"));
-    else if (retail.state === "variant-required") {
-      var variants = h("div", { "class": "shop-variants", "data-module": "variant-picker", "data-visual-id": "variant-picker" });
-      retail.variants.forEach(function(variant) {
-        variants.appendChild(h("button", { "class": "shop-variant" + (pickedRef === variant.ref ? " shop-variant--on" : ""), "data-action": "shop.pickVariant", "data-id": product.code + "|" + variant.ref, "data-variant-ref": variant.ref, "data-state": pickedRef === variant.ref ? "active" : void 0 }, variant.label + " \xB7 " + variant.displayPrice));
-      });
-      root.appendChild(variants);
-    }
-    if (!muted) {
-      root.appendChild(h("div", { style: "margin-top:12px" }, ActionButton({ variant: "btn--primary", label: "Add to bag", action: "cart.addItem", id: product.code, block: true, lg: true, pending: phase === "pending", pendingLabel: "Adding\u2026", disabled: !canAdd, visualId: "pd-add-to-bag" })));
-      if (retail.state === "variant-required" && !picked) root.appendChild(h("div", { style: "font-size:11.5px;color:var(--ink-3);margin-top:6px" }, "Pick a size first"));
-      if (phase === "failed") root.appendChild(h("div", { "class": "cart-row__note", role: "alert", style: "margin-top:8px" }, "Not added \u2014 your bag is unchanged. Try again."));
-      if (phase === "conflict") root.appendChild(h("div", { "class": "cart-row__note", role: "alert", style: "margin-top:8px" }, "Stock changed just now \u2014 nothing was added."));
-    }
-    root.appendChild(h("div", { "class": "pd-buy__note" }, "Adding something to your bag doesn\u2019t reserve it \u2014 availability and prices are confirmed at checkout."));
-    return root;
-  }
-  function SpaProductDetail() {
-    var liveView = state.config.dataMode === "live" ? state.moduleStatus.products || "loading" : state.view;
-    var product = currentProduct();
-    var open = spaRetailOpen();
-    var page = h("section", { "class": "page page--narrow", "data-route": "product.detail", "data-state": liveView, "data-visual-id": "product-detail", "data-module": "product-detail", "data-capability": spaCapability(), "data-retail": open ? "retail-commerce-open" : "browse-only", "data-product-ref": product ? product.ref : void 0, "data-screen-label": "Product detail" });
-    page.appendChild(h("div", { "class": "detail-back" }, h("span", { "class": "link-action", "data-action": "nav.products", "data-visual-id": "pd-back" }, "\u2039 Shop")));
-    var gate = routeStateBody({
-      view: liveView,
-      states: ["loading", "error", "unauthorized"],
-      skeleton: function() {
-        return h("div", { "class": "pd-grid", "data-state": "loading", "aria-busy": "true" }, [skel("height:340px;border-radius:22px"), h("div", null, [skel("height:26px;border-radius:9px"), skel("height:80px;border-radius:12px;margin-top:12px"), skel("height:48px;border-radius:14px;margin-top:16px")])]);
-      },
-      error: { title: "Couldn\u2019t load this product", desc: "The product didn\u2019t load, so nothing is shown \u2014 we never show a stale or guessed product. Nothing was changed; try again.", retryId: "product.detail" },
-      scope: "this product",
-      backRoute: "products"
-    });
-    if (gate) {
-      page.appendChild(gate);
-      return page;
-    }
-    if (!product || liveView === "not-found") {
-      page.appendChild(NotFoundState({ noun: "product", backLabel: "shop", backRoute: "products" }));
-      return page;
-    }
-    var info = h("div", { "class": "pd-info" }, [
-      product.collection && spaModelsReady() ? h("div", { "class": "pd-collection", "data-product-model-ref": product.collection.ref }, [h("span", { "class": "pd-collection__label" }, "Collection"), h("span", { "class": "link-action pd-collection__link", "data-action": "nav.products", "data-visual-id": "pd-collection-link", "data-bind": "product.collection.name" }, product.collection.name + " \u203A")]) : null,
-      h("h1", { "class": "pd-name", "data-bind": "product.name" }, product.name),
-      h("p", { "class": "pd-desc", "data-bind": "product.description" }, product.description)
-    ]);
-    if (product.variantFacts && product.variantFacts.length) {
-      var facts2 = h("dl", { "class": "pd-facts", "data-visual-id": "product-facts" });
-      product.variantFacts.forEach(function(fact4) {
-        facts2.appendChild(h("div", { "class": "pd-facts__row" }, [h("dt", { "class": "pd-facts__label" }, fact4.label), h("dd", { "class": "pd-facts__val", "data-bind": "product.variantFacts[]" }, fact4.value)]));
-      });
-      info.appendChild(facts2);
-    }
-    info.appendChild(buyRegion(product));
-    page.appendChild(h("div", { "class": "card card--pad pd-hero" }, h("div", { "class": "pd-grid" }, [gallery(product), info])));
-    page.appendChild(reviewsRegion(product));
-    page.appendChild(h("div", { "class": "catalog-note" }, "Photos, prices and reviews are shown exactly as provided by the studio \u2014 this page never invents an image, a rating average or a review."));
-    return page;
   }
 
   // app-templates/customer-portal/runtime/src/router.js
@@ -16466,31 +10354,31 @@
       case "property.detail":
         return PropertyDetail();
       case "orders.list":
-        return isSpa() ? spaCapability() === "target-appointments" ? SpaAppointments() : SpaOrders() : Cabinet();
+        return false ? spaCapability() === "target-appointments" ? SpaAppointments() : SpaOrders() : Cabinet();
       case "order.detail":
         return OrderDetail();
       case "appointment.detail":
-        return isSpa() && spaCapability() === "target-appointments" ? SpaAppointmentDetail() : ComingSoon("appointment.detail", "a later wave");
+        return false ? SpaAppointmentDetail() : ComingSoon("appointment.detail", "a later wave");
       case "services":
-        return isSpa() ? SpaCatalog() : Services();
+        return false ? SpaCatalog() : Services();
       case "pricing":
-        return isSpa() ? SpaCatalog() : Pricing();
+        return false ? SpaCatalog() : Pricing();
       case "products":
-        return isSpa() ? SpaShop() : Products();
+        return false ? SpaShop() : Products();
       case "product.detail":
-        return isSpa() ? SpaProductDetail() : ComingSoon("product.detail", "a later wave");
+        return false ? SpaProductDetail() : ComingSoon("product.detail", "a later wave");
       case "checkout":
-        return isSpa() ? SpaCheckout() : Checkout();
+        return false ? SpaCheckout() : Checkout();
       case "account":
-        return isSpa() ? SpaAccount() : ComingSoon("account", "a later wave");
+        return false ? SpaAccount() : ComingSoon("account", "a later wave");
       case "purchases.list":
-        return isSpa() ? SpaPurchases() : ComingSoon("purchases.list", "a later wave");
+        return false ? SpaPurchases() : ComingSoon("purchases.list", "a later wave");
       case "purchase.detail":
-        return isSpa() ? SpaPurchaseDetail() : ComingSoon("purchase.detail", "a later wave");
+        return false ? SpaPurchaseDetail() : ComingSoon("purchase.detail", "a later wave");
       case "plan":
-        return isSpa() ? SpaPlan() : ComingSoon("plan", "a later wave");
+        return false ? SpaPlan() : ComingSoon("plan", "a later wave");
       case "cart":
-        return isSpa() ? SpaCart() : Checkout();
+        return false ? SpaCart() : Checkout();
       case "proposals.list":
         return ProposalsList();
       case "proposal.detail":
@@ -16498,7 +10386,7 @@
       case "agreement.detail":
         return AgreementDetail();
       case "profile":
-        return isSpa() ? SpaProfile() : customerAccountProfile(state.config) ? AccountProfile() : Profile();
+        return false ? SpaProfile() : customerAccountProfile(state.config) ? AccountProfile() : Profile();
       case "activity":
         return Activity();
       case "calendar":
@@ -16514,7 +10402,7 @@
       case "care":
         return Care();
       case "seo.landing":
-        return SeoLanding();
+        return false ? SeoLanding() : RouteFallback(resolved.reason);
       default:
         return RouteFallback(resolved.reason);
     }
@@ -16589,25 +10477,6 @@
     state.routeQueryOwner = null;
   }
 
-  // app-templates/customer-portal/runtime/src/seo-actions.js
-  function currentModel() {
-    return loadSeoModel(state.theme);
-  }
-  function selectSeoService(id, render2) {
-    if (!currentModel().services.some(function(service) {
-      return service.id === id;
-    })) throw new Error("SEO service not found");
-    state.seoSelectedServiceId = id;
-    render2();
-  }
-  function toggleSeoFaq(id, render2) {
-    if (!currentModel().faq.some(function(faq) {
-      return faq.id === id;
-    })) throw new Error("SEO FAQ not found");
-    state.seoFaqOpenId = state.seoFaqOpenId === id ? null : id;
-    render2();
-  }
-
   // app-templates/customer-portal/runtime/src/actions.js
   var ACTIONS = {
     "nav.go": function(id) {
@@ -16667,20 +10536,20 @@
       go("orders.list");
     },
     "order.cancel": function(id) {
-      if (isSpa()) return spaApptCancel(id);
+      if (false) return spaApptCancel(id);
       return runCommand("order.cancel", id, function() {
         cancelOrder(id);
       });
     },
     "order.reschedule": function(id) {
-      if (isSpa() && state.capability === "target-appointments") return openSpaFlow({ entry: "reschedule", rescheduleOf: id });
+      if (false) return openSpaFlow({ entry: "reschedule", rescheduleOf: id });
       openDrawer("booking");
     },
     "order.downloadInvoice": function() {
       failCommand("order.downloadInvoice");
     },
     "order.bookAgain": function(id) {
-      if (isSpa() && state.capability === "target-appointments") return openSpaFlow({ entry: "book-again", fromAppt: id });
+      if (false) return openSpaFlow({ entry: "book-again", fromAppt: id });
       openDrawer("booking");
     },
     "order.filter": function(id) {
@@ -16690,7 +10559,7 @@
       toast("Compliance Reports is a Pro add-on \u2014 ask your account manager");
     },
     "booking.open": function(id) {
-      if (isSpa() && state.capability === "target-appointments") return openSpaFlow(id ? { entry: "service", serviceCode: id } : { entry: "empty" });
+      if (false) return openSpaFlow(id ? { entry: "service", serviceCode: id } : { entry: "empty" });
       openDrawer("booking");
     },
     "booking.close": function() {
@@ -16699,124 +10568,128 @@
       state.spaNote = "";
       closeDrawer();
     },
-    "booking.selectService": function(id) {
-      var flow = state.spaFlow;
-      if (!flow) return;
-      flow.serviceCode = id;
-      flow.specialistRef = null;
-      flow.slotRef = null;
-      flow.visitMode = null;
-      flow.locationRef = null;
-      flow.addOns = [];
-      flow.held = false;
-      spaFlowAfterService(flow);
-      render();
-    },
-    "booking.selectVisitMode": function(id) {
-      var flow = state.spaFlow;
-      if (!flow) return;
-      flow.visitMode = id;
-      flow.locationRef = null;
-      spaInvalidateAfterOptions(flow, "visit-mode");
-      render();
-    },
-    "booking.selectLocation": function(id) {
-      var flow = state.spaFlow;
-      if (!flow) return;
-      flow.locationRef = id;
-      spaInvalidateAfterOptions(flow, "location");
-      render();
-    },
-    "booking.reloadLocations": function() {
-      return spaReloadLocations();
-    },
-    "booking.toggleAddon": function(id) {
-      return spaToggleAddon(id);
-    },
-    "booking.changeNotes": function(value) {
-      state.spaNote = String(value || "");
-    },
-    "booking.next": function() {
-      return spaFlowNext();
-    },
-    "booking.selectSpecialist": function(id) {
-      var flow = state.spaFlow;
-      if (!flow) return;
-      flow.specialistRef = id === "any" ? null : id;
-      flow.slotRef = null;
-      flow.held = false;
-      var booking = spaBookingModel(flow.serviceCode, flow.specialistRef);
-      flow.dayKey = (booking.days[0] || {}).key || null;
-      flow.step = "slots";
-      render();
-    },
-    "booking.selectSlot": function(id) {
-      var flow = state.spaFlow;
-      if (!flow) return;
-      if (String(id).indexOf("day:") === 0) {
-        flow.dayKey = String(id).slice(4);
+    ...false ? {
+      "booking.selectService": function(id) {
+        var flow = state.spaFlow;
+        if (!flow) return;
+        flow.serviceCode = id;
+        flow.specialistRef = null;
         flow.slotRef = null;
-      } else {
-        flow.slotRef = id;
-        var day = spaBookingModel().days.find(function(item) {
-          return (item.slots || []).some(function(slot) {
-            return slot.ref === id;
+        flow.visitMode = null;
+        flow.locationRef = null;
+        flow.addOns = [];
+        flow.held = false;
+        spaFlowAfterService(flow);
+        render();
+      },
+      "booking.selectVisitMode": function(id) {
+        var flow = state.spaFlow;
+        if (!flow) return;
+        flow.visitMode = id;
+        flow.locationRef = null;
+        spaInvalidateAfterOptions(flow, "visit-mode");
+        render();
+      },
+      "booking.selectLocation": function(id) {
+        var flow = state.spaFlow;
+        if (!flow) return;
+        flow.locationRef = id;
+        spaInvalidateAfterOptions(flow, "location");
+        render();
+      },
+      "booking.reloadLocations": function() {
+        return spaReloadLocations();
+      },
+      "booking.toggleAddon": function(id) {
+        return spaToggleAddon(id);
+      },
+      "booking.changeNotes": function(value) {
+        state.spaNote = String(value || "");
+      },
+      "booking.next": function() {
+        return spaFlowNext();
+      },
+      "booking.selectSpecialist": function(id) {
+        var flow = state.spaFlow;
+        if (!flow) return;
+        flow.specialistRef = id === "any" ? null : id;
+        flow.slotRef = null;
+        flow.held = false;
+        var booking = spaBookingModel(flow.serviceCode, flow.specialistRef);
+        flow.dayKey = (booking.days[0] || {}).key || null;
+        flow.step = "slots";
+        render();
+      },
+      "booking.selectSlot": function(id) {
+        var flow = state.spaFlow;
+        if (!flow) return;
+        if (String(id).indexOf("day:") === 0) {
+          flow.dayKey = String(id).slice(4);
+          flow.slotRef = null;
+        } else {
+          flow.slotRef = id;
+          var day = spaBookingModel().days.find(function(item) {
+            return (item.slots || []).some(function(slot) {
+              return slot.ref === id;
+            });
           });
-        });
-        if (day) flow.dayKey = day.key;
+          if (day) flow.dayKey = day.key;
+        }
+        render();
+      },
+      "booking.hold": function(id) {
+        return spaHoldSlot(id);
+      },
+      "booking.retry": function(id) {
+        var flow = state.spaFlow;
+        if (!flow) return;
+        if (id === "hold") {
+          clearSpaCommand("booking.hold:" + flow.slotRef);
+          return spaHoldSlot(flow.slotRef);
+        }
+        clearSpaCommand("booking.confirm:" + spaBookingModel().ref);
+        return spaBookingConfirm();
+      },
+      "booking.back": function() {
+        return spaFlowBack();
+      },
+      "booking.ackPolicy": function() {
+        setState({ spaBookAck: !state.spaBookAck });
       }
-      render();
-    },
-    "booking.hold": function(id) {
-      return spaHoldSlot(id);
-    },
-    "booking.retry": function(id) {
-      var flow = state.spaFlow;
-      if (!flow) return;
-      if (id === "hold") {
-        clearSpaCommand("booking.hold:" + flow.slotRef);
-        return spaHoldSlot(flow.slotRef);
-      }
-      clearSpaCommand("booking.confirm:" + spaBookingModel().ref);
-      return spaBookingConfirm();
-    },
-    "booking.back": function() {
-      return spaFlowBack();
-    },
-    "booking.ackPolicy": function() {
-      setState({ spaBookAck: !state.spaBookAck });
-    },
+    } : null,
     "booking.confirm": function() {
-      if (isSpa()) return spaBookingConfirm();
+      if (false) return spaBookingConfirm();
       closeDrawer();
       failCommand("booking.confirm");
     },
-    "appointment.open": function(id) {
-      state.spaCurrentAppointment = id;
-      state.view = "ready";
-      go("appointment.detail");
-    },
-    "appointment.openPurchase": function(id) {
-      ACTIONS["purchase.open"](id);
-    },
-    "appointment.reschedule": function(id) {
-      return openSpaFlow({ entry: "reschedule", rescheduleOf: id });
-    },
-    "appointment.cancel": function(id) {
-      return spaApptCancel(id);
-    },
-    "appointment.bookAgain": function(id) {
-      return openSpaFlow({ entry: "book-again", fromAppt: id });
-    },
-    "product.open": function(id) {
-      state.spaCurrentProduct = id;
-      state.spaGallery = 0;
-      state.view = "ready";
-      go("product.detail");
-    },
-    "product.gallerySelect": function(id) {
-      setState({ spaGallery: Math.max(0, Number(id) || 0) });
-    },
+    ...false ? {
+      "appointment.open": function(id) {
+        state.spaCurrentAppointment = id;
+        state.view = "ready";
+        go("appointment.detail");
+      },
+      "appointment.openPurchase": function(id) {
+        ACTIONS["purchase.open"](id);
+      },
+      "appointment.reschedule": function(id) {
+        return openSpaFlow({ entry: "reschedule", rescheduleOf: id });
+      },
+      "appointment.cancel": function(id) {
+        return spaApptCancel(id);
+      },
+      "appointment.bookAgain": function(id) {
+        return openSpaFlow({ entry: "book-again", fromAppt: id });
+      },
+      "product.open": function(id) {
+        state.spaCurrentProduct = id;
+        state.spaGallery = 0;
+        state.view = "ready";
+        go("product.detail");
+      },
+      "product.gallerySelect": function(id) {
+        setState({ spaGallery: Math.max(0, Number(id) || 0) });
+      }
+    } : null,
     "proposal.review": function() {
       go("proposals.list");
     },
@@ -16945,27 +10818,29 @@
     "care.openSecureDoc": function(id, el) {
       return runUnavailableCareCommand("care.openSecureDoc", id, el);
     },
-    "seo.cta.book": function(id, el) {
-      validateSeoLink(el);
-    },
-    "seo.cta.quote": function(id, el) {
-      validateSeoLink(el);
-    },
-    "seo.cta.call": function(id, el) {
-      validateSeoLink(el);
-    },
-    "seo.cta.services": function(id, el, event) {
-      navigateSeoServices(el, event);
-    },
-    "seo.service.select": function(id) {
-      selectSeoService(id, render);
-    },
-    "seo.faq.toggle": function(id, el, event) {
-      if (event) event.preventDefault();
-      toggleSeoFaq(id, render);
-    },
+    ...false ? {
+      "seo.cta.book": function(id, el) {
+        validateSeoLink(el);
+      },
+      "seo.cta.quote": function(id, el) {
+        validateSeoLink(el);
+      },
+      "seo.cta.call": function(id, el) {
+        validateSeoLink(el);
+      },
+      "seo.cta.services": function(id, el, event) {
+        navigateSeoServices(el, event);
+      },
+      "seo.service.select": function(id) {
+        selectSeoService(id, render);
+      },
+      "seo.faq.toggle": function(id, el, event) {
+        if (event) event.preventDefault();
+        toggleSeoFaq(id, render);
+      }
+    } : null,
     "cart.open": function() {
-      go(isSpa() && spaRetailOpen() ? "cart" : "checkout");
+      go(false ? "cart" : "checkout");
     },
     "service.request": function() {
       openDrawer("booking");
@@ -16990,7 +10865,7 @@
       failCommand("access.update");
     },
     "cart.addItem": function(id) {
-      if (isSpa() && state.capability === "target-appointments") {
+      if (false) {
         if (spaCurrentApiDemoOpen()) return spaLiveCartAdd(id);
         return runSpaCommand("cart.addItem:" + id, function() {
           spaAddLine(id);
@@ -17001,7 +10876,7 @@
       });
     },
     "cart.removeItem": function(id) {
-      if (isSpa() && state.capability === "target-appointments") {
+      if (false) {
         if (spaCurrentApiDemoOpen()) return spaLiveCartRemove(id);
         return runSpaCommand("cart.removeItem:" + id, function() {
           spaSetLines(spaLines().filter(function(line) {
@@ -17013,9 +10888,11 @@
         removeCartItem(id);
       });
     },
-    "cart.changeQuantity": function(id) {
-      return spaChangeQuantity(id);
-    },
+    ...false ? {
+      "cart.changeQuantity": function(id) {
+        return spaChangeQuantity(id);
+      }
+    } : null,
     "cart.inc": function(id) {
       runCommand("cart.inc", id, function() {
         changeQty(id, 1);
@@ -17055,67 +10932,69 @@
     "account.menu": function() {
       setState({ accountMenu: !state.accountMenu, mobileNav: false });
     },
-    "purchases.filter": function(id) {
-      setState({ spaPurchFilter: id });
-    },
-    "purchases.more": function() {
-      spaLoadMore();
-    },
-    "purchase.open": function(id) {
-      state.spaCurrentPurchase = id;
-      state.view = "ready";
-      go("purchase.detail");
-    },
-    "purchase.openAppointment": function() {
-      go("orders.list");
-    },
-    "purchase.cancelRequest": function(id) {
-      return runSpaCommand("purchase.cancelRequest:" + id, function() {
-        state.spaCancelReqs = Object.assign({}, state.spaCancelReqs, { [id]: "accepted-for-review" });
-      });
-    },
-    "purchase.returnRequest": function(id) {
-      return runSpaCommand("purchase.returnRequest:" + id, function() {
-        state.spaReturns = Object.assign({}, state.spaReturns, { [id]: "accepted-for-review" });
-      });
-    },
-    "purchase.buyAgain": function(id) {
-      return spaBuyAgain(id);
-    },
-    "plan.bookWithCredit": function(id) {
-      if (isSpa() && state.capability === "target-appointments") return openSpaFlow({ entry: "credit", planRef: id });
-      openDrawer("booking");
-    },
-    "plan.purchase": function(id) {
-      if (!spaPlanSellOpen() || state.spaOfferDemo !== "sellable") return false;
-      state.spaPlanOffer = id;
-      return spaCheckoutStart("plan");
-    },
-    "plan.cancelRenewal": function(id) {
-      return runSpaCommand("plan.cancelRenewal:" + id, function() {
-        state.spaPlanCancelled = Object.assign({}, state.spaPlanCancelled, { [id]: true });
-      });
-    },
-    "shop.pickVariant": function(id) {
-      var parts = String(id || "").split("|");
-      state.spaVariantPick = Object.assign({}, state.spaVariantPick, { [parts[0]]: parts[1] });
-      render();
-    },
-    "checkout.start": function(id) {
-      return spaCheckoutStart(id);
-    },
-    "checkout.selectFulfillment": function() {
-      render();
-    },
-    "checkout.ackPolicy": function() {
-      setState({ spaPolicyAck: !state.spaPolicyAck });
-    },
-    "checkout.confirm": function() {
-      return spaConfirmCheckout();
-    },
-    "checkout.retryConfirm": function() {
-      return spaConfirmCheckout();
-    },
+    ...false ? {
+      "purchases.filter": function(id) {
+        setState({ spaPurchFilter: id });
+      },
+      "purchases.more": function() {
+        spaLoadMore();
+      },
+      "purchase.open": function(id) {
+        state.spaCurrentPurchase = id;
+        state.view = "ready";
+        go("purchase.detail");
+      },
+      "purchase.openAppointment": function() {
+        go("orders.list");
+      },
+      "purchase.cancelRequest": function(id) {
+        return runSpaCommand("purchase.cancelRequest:" + id, function() {
+          state.spaCancelReqs = Object.assign({}, state.spaCancelReqs, { [id]: "accepted-for-review" });
+        });
+      },
+      "purchase.returnRequest": function(id) {
+        return runSpaCommand("purchase.returnRequest:" + id, function() {
+          state.spaReturns = Object.assign({}, state.spaReturns, { [id]: "accepted-for-review" });
+        });
+      },
+      "purchase.buyAgain": function(id) {
+        return spaBuyAgain(id);
+      },
+      "plan.bookWithCredit": function(id) {
+        if (isSpa() && state.capability === "target-appointments") return openSpaFlow({ entry: "credit", planRef: id });
+        openDrawer("booking");
+      },
+      "plan.purchase": function(id) {
+        if (!spaPlanSellOpen() || state.spaOfferDemo !== "sellable") return false;
+        state.spaPlanOffer = id;
+        return spaCheckoutStart("plan");
+      },
+      "plan.cancelRenewal": function(id) {
+        return runSpaCommand("plan.cancelRenewal:" + id, function() {
+          state.spaPlanCancelled = Object.assign({}, state.spaPlanCancelled, { [id]: true });
+        });
+      },
+      "shop.pickVariant": function(id) {
+        var parts = String(id || "").split("|");
+        state.spaVariantPick = Object.assign({}, state.spaVariantPick, { [parts[0]]: parts[1] });
+        render();
+      },
+      "checkout.start": function(id) {
+        return spaCheckoutStart(id);
+      },
+      "checkout.selectFulfillment": function() {
+        render();
+      },
+      "checkout.ackPolicy": function() {
+        setState({ spaPolicyAck: !state.spaPolicyAck });
+      },
+      "checkout.confirm": function() {
+        return spaConfirmCheckout();
+      },
+      "checkout.retryConfirm": function() {
+        return spaConfirmCheckout();
+      }
+    } : null,
     "products.filter": function(id) {
       setState({ prodCat: id });
     },
@@ -17164,28 +11043,30 @@
         togglePref(id);
       });
     },
-    "profile.edit": function() {
-      var value = spaProfileValues();
-      state.spaProfileDraft = { phone: value.phone, email: value.email, prefs: Object.assign({}, value.prefs) };
-      state.spaProfileErrors = null;
-      render();
-    },
-    "profile.changeField": function(id) {
-      return spaProfileChange(id);
-    },
-    "profile.save": function() {
-      return spaProfileSave();
-    },
-    "profile.reload": function() {
-      clearSpaCommand("profile.save:profile");
-      state.spaProfileDraft = null;
-      state.spaProfileErrors = null;
-      if (state.config.dataMode === "live") return reloadRuntimeModule("profile").then(function() {
-        toast("Profile reloaded from Core");
-      });
-      render();
-      toast("Profile reloaded \u2014 showing the details on file");
-    },
+    ...false ? {
+      "profile.edit": function() {
+        var value = spaProfileValues();
+        state.spaProfileDraft = { phone: value.phone, email: value.email, prefs: Object.assign({}, value.prefs) };
+        state.spaProfileErrors = null;
+        render();
+      },
+      "profile.changeField": function(id) {
+        return spaProfileChange(id);
+      },
+      "profile.save": function() {
+        return spaProfileSave();
+      },
+      "profile.reload": function() {
+        clearSpaCommand("profile.save:profile");
+        state.spaProfileDraft = null;
+        state.spaProfileErrors = null;
+        if (state.config.dataMode === "live") return reloadRuntimeModule("profile").then(function() {
+          toast("Profile reloaded from Core");
+        });
+        render();
+        toast("Profile reloaded \u2014 showing the details on file");
+      }
+    } : null,
     "profile.managePlan": function() {
       go("pricing");
     },
@@ -17344,19 +11225,6 @@
     failCommand("nav.external." + configKey);
     return false;
   }
-  function validateSeoLink(el) {
-    var href = el && el.getAttribute("href");
-    if (!href || !(href.charAt(0) === "#" || /^https?:\/\//i.test(href) || /^tel:/i.test(href))) {
-      throw new Error("SEO destination is unavailable");
-    }
-  }
-  function navigateSeoServices(el, event) {
-    validateSeoLink(el);
-    if (state.route !== "seo.landing" || state.config.routerMode !== "hash") return;
-    if (event) event.preventDefault();
-    var target = document.getElementById("seo-services");
-    if (target) target.scrollIntoView({ block: "start" });
-  }
   function bindActions(root) {
     root.addEventListener("click", function(e) {
       var el = e.target.closest("[data-action]");
@@ -17400,718 +11268,8 @@
       render();
     }
   }
-  var spaCommandTimers = {};
-  var spaLiveCommandFlights = /* @__PURE__ */ new Map();
-  function runSpaCommand(key, onReadback, options2) {
-    options2 = options2 || {};
-    if (state.config.dataMode !== "fixture") {
-      state.commands = Object.assign({}, state.commands, { [key]: "failed" });
-      render();
-      return false;
-    }
-    if (state.commands[key] === "pending") return false;
-    clearTimeout(spaCommandTimers[key]);
-    state.commands = Object.assign({}, state.commands, { [key]: "pending" });
-    render();
-    spaCommandTimers[key] = setTimeout(function() {
-      var outcome = state.cmdForce || "succeeded";
-      state.commands = Object.assign({}, state.commands);
-      if (outcome === "session-lost") {
-        delete state.commands[key];
-        state.drawer = null;
-        state.spaFlow = null;
-        state.spaBookAck = false;
-        state.spaNote = "";
-        state.account = "session-expired";
-        render();
-        return;
-      }
-      if (outcome !== "succeeded") {
-        state.commands[key] = outcome;
-        render();
-        return;
-      }
-      delete state.commands[key];
-      if (onReadback) onReadback();
-      render();
-      if (options2.toast) toast(options2.toast);
-    }, options2.ms || 650);
-    return true;
-  }
-  function runLiveSpaCommand(key, operation, onReadback, options2) {
-    options2 = options2 || {};
-    if (!spaCurrentApiDemoOpen()) return false;
-    if (spaLiveCommandFlights.has(key)) return spaLiveCommandFlights.get(key);
-    state.commands = Object.assign({}, state.commands, { [key]: "pending" });
-    render();
-    var flight = Promise.resolve().then(operation).then(function(result) {
-      state.commands = Object.assign({}, state.commands);
-      delete state.commands[key];
-      if (onReadback) onReadback(result);
-      if (options2.toast) toast(options2.toast);
-      return result;
-    }).catch(function(error2) {
-      state.commands = Object.assign({}, state.commands, {
-        [key]: error2 && error2.code === "conflict" ? "conflict" : "failed"
-      });
-      if (error2 && error2.code === "session-expired") {
-        delete state.commands[key];
-        state.drawer = null;
-        state.spaFlow = null;
-        state.spaBookAck = false;
-        state.spaNote = "";
-        state.account = "session-expired";
-      }
-      console.error("[aircove] live SPA command failed", key, error2);
-      return false;
-    }).finally(function() {
-      spaLiveCommandFlights.delete(key);
-      render();
-    });
-    spaLiveCommandFlights.set(key, flight);
-    return flight;
-  }
-  function spaLiveAdapter() {
-    return createCoreSpaDemoAdapter();
-  }
-  function spaLiveContext() {
-    return { config: state.config, state };
-  }
-  function spaLines() {
-    return state.spaCart && state.spaCart.lines || [];
-  }
-  var spaCartVersion = 0;
-  function spaSetLines(lines) {
-    var subtotal = lines.reduce(function(sum, line) {
-      return sum + Number(line.cents || 0) * Number(line.qty || 0);
-    }, 0);
-    var taxes = Math.round(subtotal * 0.08);
-    var displayMoney = function(cents) {
-      return "$" + (cents / 100).toFixed(2);
-    };
-    spaCartVersion += 1;
-    state.spaCart = {
-      version: "cart-" + spaCartVersion,
-      lines: lines.map(function(line) {
-        return Object.assign({}, line, {
-          displayUnitPrice: displayMoney(Number(line.cents || 0)),
-          displayTotal: displayMoney(Number(line.cents || 0) * Number(line.qty || 0))
-        });
-      }),
-      displayTotals: lines.length ? { subtotal: displayMoney(subtotal), tax: displayMoney(taxes), total: displayMoney(subtotal + taxes) } : null,
-      fulfillment: { kind: "PICKUP", label: "Pickup at the studio", detail: "Availability is confirmed by the studio" }
-    };
-  }
-  function spaAddLine(code) {
-    if (!spaRetailOpen()) return;
-    if (spaCurrentApiDemoOpen()) {
-      var liveProduct = productItems().find(function(item) {
-        return item.code === code;
-      });
-      if (!liveProduct || !Number.isFinite(Number(liveProduct.priceNum))) return;
-      var liveRef = "cln-" + String(code).toLowerCase().replace(/[^a-z0-9]+/g, "-");
-      var liveLines = spaLines().slice();
-      var liveExisting = liveLines.find(function(line) {
-        return line.ref === liveRef;
-      });
-      if (liveExisting) liveLines = liveLines.map(function(line) {
-        return line.ref === liveRef ? Object.assign({}, line, { qty: line.qty + 1 }) : line;
-      });
-      else liveLines.push({ ref: liveRef, code, variantRef: null, title: liveProduct.name, variant: null, qty: 1, cents: Math.round(Number(liveProduct.priceNum) * 100) });
-      spaSetLines(liveLines);
-      return;
-    }
-    var retail = F.spaCommerce.retail.products.find(function(product2) {
-      return product2.code === code;
-    });
-    var product = F.themes.Beauty.products.find(function(item) {
-      return item.code === code;
-    });
-    if (!retail || !product) return;
-    var variant = retail.variants && retail.variants.find(function(item) {
-      return item.ref === state.spaVariantPick[code];
-    });
-    if (retail.variants && !variant) return;
-    var lineRef = "cln-" + code.replace("rtl-beauty-", "") + (variant ? "-" + variant.ref.split("-").pop() : "");
-    var lines = spaLines().slice();
-    var existing = lines.find(function(line) {
-      return line.ref === lineRef;
-    });
-    if (existing) lines = lines.map(function(line) {
-      return line.ref === lineRef ? Object.assign({}, line, { qty: line.qty + 1 }) : line;
-    });
-    else lines.push({ ref: lineRef, code, variantRef: variant ? variant.ref : null, title: product.name, variant: variant ? variant.label : null, qty: 1, cents: variant ? variant.cents : retail.cents });
-    spaSetLines(lines);
-  }
-  function spaLiveCartAdapter() {
-    return createCoreCartAdapter();
-  }
-  function spaLiveCartCommand(key, run, toastText) {
-    return runLiveSpaCommand(key, function() {
-      return run().then(function(cart) {
-        return reloadRuntimeModule("cart").then(function() {
-          return cart;
-        });
-      });
-    }, null, { toast: toastText });
-  }
-  function spaLiveCartAdd(code) {
-    var sell = spaSellInfo(code);
-    if (!sell || sell.state !== "sellable" || !sell.backendPriceId || !sell.backendProductId) return false;
-    return spaLiveCartCommand("cart.addItem:" + code, function() {
-      return spaLiveCartAdapter().addItem({
-        count: 1,
-        priceId: sell.backendPriceId,
-        productId: sell.backendProductId,
-        requestRef: "add-" + code
-      }, spaLiveContext());
-    }, "Added to your bag \u2014 confirmed by the store");
-  }
-  function spaLiveCartRemove(ref) {
-    return spaLiveCartCommand("cart.removeItem:" + ref, function() {
-      return spaLiveCartAdapter().removeItem({ ref }, spaLiveContext());
-    }, "Removed from your bag");
-  }
-  function spaLiveCartCount(ref, qty) {
-    return spaLiveCartCommand("cart.changeQuantity:" + ref, function() {
-      return spaLiveCartAdapter().setItemCount({ count: qty, ref }, spaLiveContext());
-    }, "Bag updated \u2014 totals recalculated by the store");
-  }
-  function spaChangeQuantity(id) {
-    var parts = String(id || "").split("|");
-    var ref = parts[0];
-    var qty = Math.max(0, Number(parts[1] || 0));
-    if (spaCurrentApiDemoOpen()) return spaLiveCartCount(ref, qty);
-    return runSpaCommand("cart.changeQuantity:" + ref, function() {
-      spaSetLines(qty === 0 ? spaLines().filter(function(line) {
-        return line.ref !== ref;
-      }) : spaLines().map(function(line) {
-        return line.ref === ref ? Object.assign({}, line, { qty }) : line;
-      }));
-      if (state.spaCartDemo === "inventory-conflict" && qty <= 1) state.spaCartDemo = "as-added";
-    });
-  }
-  var spaPurchMoreTimer;
-  function spaLoadMore() {
-    if (state.spaPurchMore !== "idle") return;
-    state.spaPurchMore = "loading";
-    render();
-    clearTimeout(spaPurchMoreTimer);
-    spaPurchMoreTimer = setTimeout(function() {
-      state.spaPurchMore = "loaded";
-      render();
-    }, 650);
-  }
-  function spaCheckoutStart(source) {
-    if (source !== "plan" && (state.spaCartDemo === "stale-price" || state.spaCartDemo === "inventory-conflict")) return false;
-    if (source === "plan" && !state.spaPlanOffer) state.spaPlanOffer = "off-pkg-4c21";
-    state.spaCheckoutSource = source === "plan" ? "plan" : "cart";
-    state.spaResult = null;
-    state.spaPolicyAck = false;
-    state.spaCheckoutDemo = "ready";
-    delete state.commands["checkout.confirm:" + spaCheckoutRef()];
-    go("checkout");
-    return true;
-  }
-  function spaConfirmCheckout() {
-    var commerceOpen = state.spaCheckoutSource === "plan" ? spaPlanSellOpen() : spaRetailOpen();
-    if (!commerceOpen || state.spaCheckoutDemo !== "ready" || !state.spaPolicyAck) return false;
-    var checkoutRef = spaCheckoutRef();
-    var key = "checkout.confirm:" + checkoutRef;
-    if (spaCurrentApiDemoOpen()) {
-      if (state.spaCheckoutSource === "plan") return spaConfirmLivePlanCheckout(key, checkoutRef);
-      return spaConfirmLiveCartCheckout(key, checkoutRef);
-    }
-    return runSpaCommand(key, function() {
-      if (state.spaCheckoutSource === "plan") {
-        var offer = F.spaCommerce.planOffers.find(function(item) {
-          return item.ref === state.spaPlanOffer;
-        });
-        state.spaResult = offer && offer.kind === "MEMBERSHIP" ? F.spaCommerce.confirmations.membership : F.spaCommerce.confirmations.plan;
-      } else state.spaResult = F.spaCommerce.confirmations.retail;
-      if (state.spaCheckoutSource === "cart") {
-        spaSetLines([]);
-        state.spaCartDemo = "as-added";
-      }
-    }, { ms: 900 });
-  }
-  function spaConfirmLiveCartCheckout(key, checkoutRef) {
-    var reviewed = spaCartEnvelope();
-    var reviewedLines = reviewed && reviewed.lines || [];
-    if (!reviewedLines.length) return false;
-    var requestRef = checkoutRef + "-cart-" + cartFingerprint(reviewedLines);
-    return runLiveSpaCommand(key, function() {
-      var cartAdapter = spaLiveCartAdapter();
-      return cartAdapter.load("cart", spaLiveContext()).then(function(current) {
-        if (cartFingerprint(current.lines) !== cartFingerprint(reviewedLines)) {
-          var conflict = new Error("The bag changed while you were reviewing it");
-          conflict.code = "conflict";
-          throw conflict;
-        }
-        return spaLiveAdapter().createOrder({
-          label: "Customer portal checkout",
-          // `unitAmount` is the server's own unit price. It is passed through, not
-          // multiplied: Core multiplies by itemCount for the order total.
-          lines: current.lines.map(function(line) {
-            return {
-              priceId: line.priceId,
-              productCode: line.productCode,
-              productId: line.productId,
-              productTypeCode: line.productTypeCode,
-              qty: line.qty,
-              unitAmount: line.unitAmount
-            };
-          }),
-          requestRef
-        }, spaLiveContext()).then(function(order) {
-          return spaRecordPickup(order).then(function(pickup) {
-            return cartAdapter.clear(spaLiveContext()).then(function() {
-              return Promise.all([reloadRuntimeModule("orders"), reloadRuntimeModule("cart")]);
-            }).then(function() {
-              return Object.assign({}, order, { pickup });
-            });
-          });
-        });
-      });
-    }, function(order) {
-      state.spaResult = {
-        kind: "purchase",
-        headline: "Order confirmed",
-        sub: "The order was recorded in Core. This demo did not take a payment.",
-        purchase: { ref: order.ref, reference: order.ref },
-        // Shown only when Core actually returned a pickup record, and only with
-        // the window Core stated — an absent window renders as absent.
-        fulfillment: order.pickup ? pickupLabel(order.pickup) : null
-      };
-    }, { toast: "Order created \u2014 confirmed by Core" });
-  }
-  function spaRecordPickup(order) {
-    var hasRetail = (order.lines || []).some(function(line) {
-      return line.typeCode === "SPA_ITEM_RETAIL";
-    });
-    if (!hasRetail) return Promise.resolve(null);
-    return createPickupFulfillment(order.id, spaLiveContext()).catch(function(error2) {
-      console.error("[aircove] pickup record not created for order", order.ref, error2);
-      return null;
-    });
-  }
-  function pickupLabel(pickup) {
-    if (!pickup || pickup.kind !== "PICKUP") return null;
-    return pickup.windowStartLabel ? "Pickup \xB7 " + pickup.windowStartLabel : "Pickup";
-  }
-  function spaConfirmLivePlanCheckout(key, checkoutRef) {
-    var offer = spaPlanOffers().find(function(item) {
-      return item.ref === state.spaPlanOffer;
-    });
-    if (!offer || !offer.backendPriceId || !offer.backendProductId) return false;
-    return runLiveSpaCommand(key, function() {
-      return spaLiveAdapter().createOrder({
-        label: "Customer portal plan checkout",
-        lines: [{
-          priceId: offer.backendPriceId,
-          productCode: offer.productCode || null,
-          productId: offer.backendProductId,
-          productTypeCode: offer.productTypeCode,
-          qty: 1,
-          unitAmount: offer.amount
-        }],
-        requestRef: checkoutRef + "-plan-" + (state.spaPlanOffer || "offer")
-      }, spaLiveContext()).then(function(order) {
-        return reloadRuntimeModule("orders").then(function() {
-          return order;
-        });
-      });
-    }, function(order) {
-      state.spaResult = {
-        kind: "purchase",
-        headline: "Order confirmed",
-        sub: "The order was recorded in Core. This demo did not take a payment.",
-        purchase: { ref: order.ref, reference: order.ref }
-      };
-    }, { toast: "Order created \u2014 confirmed by Core" });
-  }
-  function cartFingerprint(lines) {
-    return (lines || []).map(function(line) {
-      return line.priceId + "x" + line.qty + "@" + line.unitAmount;
-    }).sort().join("|");
-  }
-  function spaCheckoutRef() {
-    return state.config.dataMode === "live" ? "customer-portal-checkout" : F.spaCommerce.checkout.ref;
-  }
-  function spaBookingConfirm() {
-    if (state.capability !== "target-appointments" || state.spaBooking !== "open" || state.spaHold !== "held") return false;
-    var flow = state.spaFlow;
-    var booking = spaBookingModel();
-    var key = flow ? "booking.confirm:" + booking.ref : "booking.confirm:booking";
-    if (flow && (!flow.held || !state.spaBookAck || flow.entry === "credit" && state.spaCredit !== "ok")) return false;
-    if (flow && (state.spaAddonSrc === "removed" || state.spaAddonSrc === "repriced")) return false;
-    var note = spaNoteState();
-    if (flow && note.enabled && note.invalid) return false;
-    if (flow && spaCurrentApiDemoOpen()) {
-      var service = spaCatalogServices().find(function(item) {
-        return item.code === flow.serviceCode;
-      });
-      var slot = spaSelectedSlot();
-      if (!service || !slot) return false;
-      var options2 = spaBookingOpts();
-      var quote = spaBookingQuote(options2);
-      var visitMode = spaVisitMode(options2);
-      var location = spaSelectedLocation(options2);
-      var addOns = spaSelectedAddOns(options2);
-      if (options2.capabilities.addOns && !quote) return false;
-      var resourceIds = Array.from(new Set((slot.resourceIds || []).concat(location && location.backendResourceId || []).filter(Boolean)));
-      var input = {
-        requestRef: booking.ref + "-" + (flow.slotRef || "slot") + "-" + (flow.serviceCode || "service"),
-        serviceName: service && service.name || "Spa appointment",
-        start: slot.startIso,
-        durationMinutes: quote && quote.durationMinutes || service.durationMinutes,
-        serviceProductId: service.backendProductId,
-        resourceIds,
-        specialistAccountId: slot.specialistAccountId,
-        visitMode: visitMode && visitMode.code || null,
-        locationResourceId: location && location.backendResourceId || null,
-        locationLabel: location && location.label || slot.locationName || null,
-        addOnRefs: addOns.map(function(addon) {
-          return addon.ref;
-        }),
-        customerNote: spaNoteState(options2).value || null,
-        bookingOptionsVersion: options2.selectionVersion
-      };
-      var command = flow.entry === "reschedule" && flow.rescheduleOf ? spaLiveAdapter().rescheduleAppointment.bind(null, flow.rescheduleOf, input, spaLiveContext()) : spaLiveAdapter().createAppointment.bind(null, input, spaLiveContext());
-      return runLiveSpaCommand(key, function() {
-        return command().then(function(appointment) {
-          return reloadRuntimeModule("appointments").then(function() {
-            return appointment;
-          });
-        });
-      }, function(appointment) {
-        var requested = appointment && appointment.customerStatus === "Requested";
-        state.spaResult = {
-          kind: "appointment",
-          headline: requested ? "Request sent" : flow.entry === "reschedule" ? "Booking updated" : "Booking confirmed",
-          sub: requested ? "Your appointment request was recorded in Core and is waiting for the studio to confirm it. No payment was taken." : "The appointment was recorded in Core. No payment was taken.",
-          appointment: { ref: appointment.ref, service: appointment.service, start: appointment.start }
-        };
-        if (flow.entry === "reschedule" && flow.rescheduleOf) {
-          state.spaRescheduled = Object.assign({}, state.spaRescheduled, { [flow.rescheduleOf]: { start: appointment.start } });
-        }
-        state.spaCurrentAppointment = appointment.ref;
-        state.drawer = null;
-        state.spaFlow = null;
-        state.spaBookAck = false;
-        state.spaNote = "";
-        state.route = "checkout";
-        writeRouteToLocation("checkout");
-      }, { toast: flow.entry === "reschedule" ? "Appointment update recorded in Core" : "Booking request recorded in Core" });
-    }
-    return runSpaCommand(key, function() {
-      state.spaResult = flow ? spaFlowResult() : F.spaCommerce.confirmations[state.spaBookResult] || F.spaCommerce.confirmations["appointment-only"];
-      if (flow && flow.entry === "reschedule" && flow.rescheduleOf) {
-        state.spaRescheduled = Object.assign({}, state.spaRescheduled, { [flow.rescheduleOf]: { start: spaSlotLabel() } });
-      }
-      state.drawer = null;
-      state.spaFlow = null;
-      state.spaBookAck = false;
-      state.spaNote = "";
-      state.route = "checkout";
-      writeRouteToLocation("checkout");
-    }, { ms: 900 });
-  }
-  function clearSpaCommand(key) {
-    if (!state.commands[key]) return;
-    state.commands = Object.assign({}, state.commands);
-    delete state.commands[key];
-  }
-  function spaBookingDays(serviceCode, specialistRef) {
-    var booking = spaBookingModel(serviceCode, specialistRef);
-    var days = booking && booking.days;
-    return Array.isArray(days) ? days : [];
-  }
-  function spaFlowCapable() {
-    return spaBookingOpen();
-  }
-  function openSpaFlow(config) {
-    if (!spaFlowCapable()) return false;
-    var initialBooking = spaBookingModel(config.serviceCode || null, null);
-    clearSpaCommand("booking.confirm:" + initialBooking.ref);
-    Object.keys(state.commands).forEach(function(key) {
-      if (key.indexOf("booking.hold:") === 0 || key.indexOf("booking.toggleAddon:") === 0) clearSpaCommand(key);
-    });
-    var flow = {
-      entry: config.entry,
-      // A flow can open only after spaBookingOpen() proves at least one eligible
-      // Resource/service relationship. Never skip the service context to disguise
-      // missing booking configuration as an empty calendar.
-      step: "context",
-      serviceCode: config.serviceCode || null,
-      planRef: config.planRef || null,
-      specialistRef: null,
-      dayKey: (initialBooking.days[0] || {}).key || null,
-      slotRef: null,
-      rescheduleOf: config.rescheduleOf || null,
-      held: false,
-      visitMode: null,
-      locationRef: null,
-      addOns: [],
-      reloadedBy: null
-    };
-    if (config.entry === "reschedule" && config.rescheduleOf) state.spaCurrentAppointment = config.rescheduleOf;
-    if (config.fromAppt) {
-      state.spaCurrentAppointment = config.fromAppt;
-      var source = state.config.dataMode === "live" ? currentAppointment() : F.spaCommerce.appointmentDetails[config.fromAppt];
-      if (source) flow.serviceCode = state.config.dataMode === "live" ? ((state.moduleData.pricing && state.moduleData.pricing.rates || []).find(function(item) {
-        return item.name === source.service;
-      }) || {}).code || null : spaBookingModel().serviceForTitle[source.service] || null;
-    }
-    if (config.entry === "reschedule" && flow.rescheduleOf) {
-      var appointment = state.config.dataMode === "live" ? currentAppointment() : F.spaCommerce.appointmentDetails[flow.rescheduleOf];
-      if (appointment) flow.serviceCode = state.config.dataMode === "live" ? ((state.moduleData.pricing && state.moduleData.pricing.rates || []).find(function(item) {
-        return item.name === appointment.service;
-      }) || {}).code || null : spaBookingModel().serviceForTitle[appointment.service] || null;
-      flow.step = "slots";
-    }
-    if (config.entry === "credit") flow.serviceCode = "svc-spa-03";
-    state.spaFlow = flow;
-    var flowBooking = spaBookingModel(flow.serviceCode, flow.specialistRef);
-    flow.dayKey = (flowBooking.days[0] || {}).key || null;
-    state.spaBookAck = false;
-    state.spaHold = "held";
-    state.spaNote = "";
-    spaSeedOptionDefaults(flow);
-    if (flow.step === "slots" && spaOptionsStepOn()) flow.step = "options";
-    state.drawer = "booking";
-    state.mobileNav = false;
-    state.accountMenu = false;
-    render();
-    return true;
-  }
-  function spaFlowAfterService(flow) {
-    var booking = spaBookingModel(flow.serviceCode, null);
-    flow.dayKey = (booking.days[0] || {}).key || null;
-    flow.slotRef = null;
-    spaSeedOptionDefaults(flow);
-    if (spaOptionsStepOn()) {
-      flow.step = "options";
-      return;
-    }
-    flow.step = (booking.eligibleSpecialists[flow.serviceCode] || []).length ? "specialist" : "slots";
-  }
-  function spaSeedOptionDefaults(flow) {
-    var options2 = spaBookingOpts();
-    flow.addOns = options2.addOns.filter(function(addon) {
-      return addon.selected && (addon.allowedActions || []).indexOf("toggle") !== -1;
-    }).map(function(addon) {
-      return addon.ref;
-    });
-    if (options2.visitModes.length === 1) flow.visitMode = options2.visitModes[0].code;
-    var locations = options2.locations || [];
-    if (locations.length === 1 && (!flow.visitMode || !locations[0].visitModes || locations[0].visitModes.indexOf(flow.visitMode) !== -1)) flow.locationRef = locations[0].ref;
-  }
-  function spaInvalidateAfterOptions(flow, cause) {
-    var hadSelection = !!(flow.slotRef || flow.held);
-    flow.specialistRef = null;
-    flow.slotRef = null;
-    flow.held = false;
-    flow.reloadedBy = hadSelection ? cause || null : null;
-    Object.keys(state.commands).forEach(function(key) {
-      if (key.indexOf("booking.hold:") === 0) clearSpaCommand(key);
-    });
-    clearSpaCommand("booking.confirm:" + spaBookingModel().ref);
-    state.spaHold = "held";
-    state.spaBookAck = false;
-    if (flow.step === "slots" || flow.step === "review") flow.step = "slots";
-  }
-  var spaOptionsTimer;
-  function spaReloadLocations() {
-    if (state.config.dataMode === "live") return false;
-    clearTimeout(spaOptionsTimer);
-    setState({ spaLocSrc: "loading" });
-    spaOptionsTimer = setTimeout(function() {
-      setState({ spaLocSrc: "ready" });
-    }, 900);
-    return true;
-  }
-  function spaReloadAddons() {
-    if (state.config.dataMode === "live") return false;
-    var flow = state.spaFlow;
-    if (flow && state.spaAddonSrc === "removed") flow.addOns = (flow.addOns || []).slice(1);
-    clearTimeout(spaOptionsTimer);
-    setState({ spaAddonSrc: "loading" });
-    spaOptionsTimer = setTimeout(function() {
-      setState({ spaAddonSrc: "ready" });
-      toast("Extras reloaded \u2014 current amounts shown");
-    }, 900);
-    return true;
-  }
-  function spaToggleAddon(addonRef) {
-    var flow = state.spaFlow;
-    var options2 = spaBookingOpts();
-    var addon = options2.addOns.find(function(item) {
-      return item.ref === addonRef;
-    });
-    if (!flow || !addon || (addon.allowedActions || []).indexOf("toggle") === -1) return false;
-    if (state.config.dataMode === "live") {
-      var liveSelected = (flow.addOns || []).slice();
-      var liveIndex = liveSelected.indexOf(addonRef);
-      if (liveIndex === -1) liveSelected.push(addonRef);
-      else liveSelected.splice(liveIndex, 1);
-      flow.addOns = liveSelected;
-      spaInvalidateAfterOptions(flow, "add-on");
-      render();
-      return true;
-    }
-    return runSpaCommand("booking.toggleAddon:" + addonRef, function() {
-      var selected = (flow.addOns || []).slice();
-      var index = selected.indexOf(addonRef);
-      if (index === -1) selected.push(addonRef);
-      else selected.splice(index, 1);
-      flow.addOns = selected;
-      spaInvalidateAfterOptions(flow, "add-on");
-    }, { ms: 520 });
-  }
-  function spaFlowNext() {
-    var flow = state.spaFlow;
-    if (!flow || flow.step === "options" && !spaOptionsComplete()) return false;
-    var steps = spaFlowSteps(flow);
-    var index = steps.findIndex(function(step) {
-      return step.k === flow.step;
-    });
-    if (index === -1 || index === steps.length - 1) return false;
-    var next = steps[index + 1].k;
-    if (next === "review" && !flow.held) next = "slots";
-    flow.step = next;
-    render();
-    return true;
-  }
-  function spaFlowBack() {
-    var flow = state.spaFlow;
-    if (!flow) return false;
-    var steps = spaFlowSteps(flow);
-    var index = steps.findIndex(function(step) {
-      return step.k === flow.step;
-    });
-    if (flow.step === "review") flow.held = false;
-    flow.step = index > 0 ? steps[index - 1].k : steps[0].k;
-    render();
-    return true;
-  }
-  function spaHoldSlot(slotRef) {
-    var flow = state.spaFlow;
-    if (!flow || !slotRef || spaBookingSlotState() !== "ready") return false;
-    flow.slotRef = slotRef;
-    if (spaCurrentApiDemoOpen()) {
-      flow.held = true;
-      flow.step = "review";
-      state.spaHold = "held";
-      render();
-      return true;
-    }
-    return runSpaCommand("booking.hold:" + slotRef, function() {
-      flow.held = true;
-      flow.step = "review";
-      state.spaHold = "held";
-    }, { ms: 900 });
-  }
-  function spaSlotLabel() {
-    var flow = state.spaFlow;
-    if (!flow) return "";
-    var days = spaBookingModel().days;
-    for (var index = 0; index < days.length; index += 1) {
-      var day = days[index];
-      var slot = (day.slots || []).find(function(item) {
-        return item.ref === flow.slotRef;
-      });
-      if (slot) return day.label + " \xB7 " + slot.label;
-    }
-    var fallback = spaBookingDays().find(function(item) {
-      return item.key === flow.dayKey;
-    }) || spaBookingDays()[0];
-    return fallback ? fallback.label : "";
-  }
-  function spaFlowResult() {
-    var flow = state.spaFlow;
-    var confirmations = F.spaCommerce.confirmations;
-    var service = F.spa.pim.services.find(function(item) {
-      return flow && item.code === flow.serviceCode;
-    }) || null;
-    var start = spaSlotLabel();
-    var stamp = function(base, ref) {
-      return Object.assign({}, base, { appointment: Object.assign({}, base.appointment, {
-        ref: ref || base.appointment.ref,
-        service: service ? service.name : base.appointment.service,
-        start: start || base.appointment.start
-      }) });
-    };
-    if (flow.entry === "reschedule") return stamp(confirmations.reschedule, flow.rescheduleOf);
-    if (flow.entry === "credit") return stamp(confirmations.credit, null);
-    return stamp(confirmations[state.spaBookResult] || confirmations["appointment-only"], null);
-  }
-  function spaApptCancel(id) {
-    return runSpaCommand("order.cancel:" + id, function() {
-      state.spaCancelled = Object.assign({}, state.spaCancelled, { [id]: true });
-    }, { toast: "Appointment cancelled \u2014 confirmed" });
-  }
-  function spaProfileChange(id) {
-    var confirmed = spaProfileValues();
-    var draft = state.spaProfileDraft || { phone: confirmed.phone, email: confirmed.email, prefs: Object.assign({}, confirmed.prefs) };
-    state.spaProfileDraft = draft;
-    var value = String(id || "");
-    if (value.indexOf("pref:") === 0) {
-      var key = value.slice(5);
-      draft.prefs = Object.assign({}, draft.prefs, { [key]: !draft.prefs[key] });
-      render();
-      return true;
-    }
-    var separator = value.indexOf("|");
-    if (separator === -1) return false;
-    draft[value.slice(0, separator)] = value.slice(separator + 1);
-    return true;
-  }
-  function spaProfileSave() {
-    if (cmdPhase("profile.save:profile") === "conflict") return false;
-    var draft = state.spaProfileDraft || spaProfileValues();
-    var errors = {};
-    if (draft.phone != null && (draft.phone || "").replace(/\D/g, "").length < 7) errors.phone = "Enter a valid phone number";
-    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(draft.email || "")) errors.email = "Enter a valid email address";
-    if (Object.keys(errors).length) {
-      setState({ spaProfileErrors: errors });
-      return false;
-    }
-    state.spaProfileErrors = null;
-    if (spaCurrentApiDemoOpen()) {
-      return runLiveSpaCommand("profile.save:profile", function() {
-        return createCoreUserProfileAdapter().save({ email: draft.email }, spaLiveContext()).then(function(profile) {
-          return reloadRuntimeModule("profile").then(function() {
-            return profile;
-          });
-        });
-      }, function() {
-        state.spaProfileDraft = null;
-      }, { toast: "Profile email saved \u2014 confirmed by Core" });
-    }
-    return runSpaCommand("profile.save:profile", function() {
-      state.spaProfile = { phone: draft.phone, email: draft.email, prefs: Object.assign({}, draft.prefs) };
-      state.spaProfileDraft = null;
-    }, { toast: "Profile saved \u2014 confirmed" });
-  }
-  function spaBuyAgain() {
-    var purchase = currentPurchase();
-    if (!purchase) return false;
-    if (purchase.kind === "PACKAGE" || purchase.kind === "MEMBERSHIP") return spaCheckoutStart("plan");
-    if (!spaRetailOpen()) return false;
-    return runSpaCommand("purchase.buyAgain:" + purchase.ref, function() {
-      purchase.lines.forEach(function(line) {
-        var product = F.themes.Beauty.products.find(function(item) {
-          return item.name === line.title;
-        });
-        if (product) spaAddLine(product.code);
-      });
-      state.route = "cart";
-      writeRouteToLocation("cart");
-    });
-  }
   function retrySpaOrRuntime(id) {
-    if (id === "cart-quote") {
+    if (false) {
       state.spaCartDemo = "as-added";
       spaSetLines(spaLines());
       render();
@@ -18125,7 +11283,7 @@
       setState({ spaHold: "held" });
       return true;
     }
-    if (id === "booking-addons") return spaReloadAddons();
+    if (false) return spaReloadAddons();
     if (id === "slots") {
       setState({ spaSlots: "ready" });
       return true;
@@ -18199,7 +11357,7 @@
     return { envelope: envelope2, content: envelope2.content, entity, epoch, vertical: state.config.vertical, entityId: id };
   }
   function clearGeneralCareCommandErrors() {
-    for (const key of Object.keys(state.commandErrors || {})) {
+    for (const key of /* @__PURE__ */ Object.keys(state.commandErrors || {})) {
       if (key.startsWith("care.") && key.endsWith(":_")) delete state.commandErrors[key];
     }
   }
@@ -18445,9 +11603,9 @@
       if (w) openOrder(w.id);
     }
   }
-  function pushChat(text16) {
-    if (!text16 || !text16.trim()) throw new Error("Message is empty");
-    state.messages = state.messages.concat([{ from: "user", text: text16.trim() }]);
+  function pushChat(text10) {
+    if (!text10 || !text10.trim()) throw new Error("Message is empty");
+    state.messages = state.messages.concat([{ from: "user", text: text10.trim() }]);
     state.chatInput = "";
     if (state.route !== "support") state.route = "support";
     toast("Message queued in fixture state");
@@ -18637,10 +11795,10 @@
     toast(status === "approved" ? "Plan approved in fixture state" : status === "revision" ? "Revision requested in fixture state" : "Proposal declined in fixture state");
   }
   function pickTheme(name) {
-    var slug2 = normalizeVertical(name);
-    var profile = verticalProfiles[slug2];
-    state.config.vertical = slug2;
-    state.config.theme = slug2;
+    var slug = normalizeVertical(name);
+    var profile = verticalProfiles[slug];
+    state.config.vertical = slug;
+    state.config.theme = slug;
     state.config.profile = profile.profile;
     state.config.defaultRoute = profile.defaultRoute;
     state.config.enabledModules = profile.modules.slice();
@@ -18658,10 +11816,10 @@
     state.spaProfile = null;
     state.spaProfileDraft = null;
     state.spaProfileErrors = null;
-    for (const moduleId of Object.keys(state.moduleData || {})) {
+    for (const moduleId of /* @__PURE__ */ Object.keys(state.moduleData || {})) {
       if (moduleId !== "auth") delete state.moduleData[moduleId];
     }
-    for (const moduleId of Object.keys(state.moduleStatus || {})) {
+    for (const moduleId of /* @__PURE__ */ Object.keys(state.moduleStatus || {})) {
       if (moduleId !== "auth") delete state.moduleStatus[moduleId];
     }
     pickThemeResetCart();
@@ -18819,7 +11977,7 @@
   // app-templates/customer-portal/runtime/src/dom.js
   function h(tag, attrs, children) {
     var el = document.createElement(tag);
-    if (attrs) Object.keys(attrs).forEach(function(k) {
+    if (attrs) (/* @__PURE__ */ Object.keys(attrs)).forEach(function(k) {
       var v = attrs[k];
       if (v == null || v === false) return;
       if (k === "class") el.className = v;
@@ -18914,8 +12072,8 @@
     };
   }
   async function loadCustomerAccountProfile(context, fetchImpl = globalThis.fetch, explicitOrigin) {
-    var api = requestContext4(context, explicitOrigin);
-    var reply = await requestJson7(fetchImpl, api.accountBase + api.accountListPath, {
+    var api = requestContext3(context, explicitOrigin);
+    var reply = await requestJson4(fetchImpl, api.accountBase + api.accountListPath, {
       method: "POST",
       credentials: "same-origin",
       headers: {
@@ -18942,35 +12100,35 @@
     return { account: owned[0], scopeMode: owned.length === rows2.length ? "server-scoped" : "browser-filtered" };
   }
   function ownedBySession(row, api) {
-    if (!row || typeof row !== "object" || positiveInteger3(row.id) !== api.accountId) return false;
-    var linked = row.user && typeof row.user === "object" ? positiveInteger3(row.user.id) : null;
+    if (!row || typeof row !== "object" || positiveInteger(row.id) !== api.accountId) return false;
+    var linked = row.user && typeof row.user === "object" ? positiveInteger(row.user.id) : null;
     return linked === null && !api.tagged || linked === api.userId;
   }
-  function requestContext4(context, explicitOrigin) {
+  function requestContext3(context, explicitOrigin) {
     var config = context && context.config || {};
     var runtimeState = context && context.state || {};
     var session2 = runtimeState.session || {};
-    var accessToken = text3(session2.accessToken || session2.access_token);
+    var accessToken = text(session2.accessToken || session2.access_token);
     if (!accessToken) throw coded5("session-required", "A Core access token is required");
-    var userId = positiveInteger3(session2.userId);
+    var userId = positiveInteger(session2.userId);
     if (!userId) throw coded5("session-user-required", "The signed-in Core User is required");
     var account = runtimeState.customerAccount || session2.account || null;
-    var accountId = positiveInteger3(account && account.id);
+    var accountId = positiveInteger(account && account.id);
     if (!accountId) throw coded5("customer-unresolved", "A resolved customer Account is required before reading its profile");
-    var organization = text3(config.organization);
+    var organization = text(config.organization);
     if (!organization) throw coded5("organization-required", "A portal organization code is required");
     var origin = explicitOrigin || config.origin || globalThis.location && globalThis.location.origin || "";
     return {
-      accountBase: sameOriginBase7(config.accountApiBase || "/core-acct", origin, "Core Account API base"),
+      accountBase: sameOriginBase4(config.accountApiBase || "/core-acct", origin, "Core Account API base"),
       accountId,
       accountListPath: config.vertical === "snow" ? "/api/tagged/account/list.json" : "/api/account/list.json",
       tagged: config.vertical === "snow",
-      authorization: text3(session2.tokenType || session2.token_type || "Bearer") + " " + accessToken,
+      authorization: text(session2.tokenType || session2.token_type || "Bearer") + " " + accessToken,
       organization,
       userId
     };
   }
-  async function requestJson7(fetchImpl, url, options2) {
+  async function requestJson4(fetchImpl, url, options2) {
     var response = await fetchImpl(url, options2);
     if (!response || typeof response.ok !== "boolean") throw coded5("invalid-response", "Core request returned an invalid response");
     if (!response.ok) {
@@ -18988,7 +12146,7 @@
     if (!payload || typeof payload !== "object") throw coded5("invalid-response", "Core answered with an unprojected body");
     return payload;
   }
-  function sameOriginBase7(value, origin, label) {
+  function sameOriginBase4(value, origin, label) {
     if (!origin) throw coded5("origin-required", label + " requires a browser origin");
     var target = new URL(String(value || ""), origin);
     if (target.origin !== new URL(origin).origin) throw coded5("cross-origin-service", label + " must be same-origin");
@@ -18999,16 +12157,9 @@
     error2.code = code;
     return error2;
   }
-  var coreAccountProfileContract = Object.freeze({
-    endpoint: "/api/account/list.json",
-    snowEndpoint: "/api/tagged/account/list.json",
-    filters: Object.freeze(["id", "user.id"]),
-    mappings: PROFILE_MAPPINGS,
-    scopeMode: "server-scoped"
-  });
 
   // app-templates/customer-portal/runtime/src/normalizers/account-profile.js
-  var ACCOUNT_PROFILE_SCOPE_MODES = Object.freeze(["server-scoped", "browser-filtered"]);
+  var ACCOUNT_PROFILE_SCOPE_MODES = /* @__PURE__ */ Object.freeze(["server-scoped", "browser-filtered"]);
   var LEGAL_CONTACT = "LEGAL";
   var BILLING_ADDRESS = "BILLING";
   var EMAIL_ENTRY = "EMAIL";
@@ -19034,7 +12185,7 @@
       state: filled.every(Boolean) ? "ready" : filled.some(Boolean) ? "partial" : "empty",
       reasonCode: null,
       scopeMode: ACCOUNT_PROFILE_SCOPE_MODES.indexOf(source.scopeMode) === -1 ? null : source.scopeMode,
-      accountName: localizedName7(account.nls),
+      accountName: localizedName4(account.nls),
       contact,
       emails,
       phones,
@@ -19062,14 +12213,14 @@
   }
   function primaryContact(contacts) {
     var primaries = rows(contacts).filter(function(contact) {
-      return text3(contact.type && contact.type.code) === LEGAL_CONTACT;
+      return text(contact.type && contact.type.code) === LEGAL_CONTACT;
     });
     return primaries.sort(byIdAscending)[0] || null;
   }
   function entryValues(entries, typeCode) {
     var values = [];
     rows(entries).forEach(function(entry) {
-      if (text3(entry.type && entry.type.code) !== typeCode) return;
+      if (text(entry.type && entry.type.code) !== typeCode) return;
       var value = plain2(entry.value);
       if (value && values.indexOf(value) === -1) values.push(value);
     });
@@ -19077,14 +12228,14 @@
   }
   function firstEntryValue(entries, typeCode) {
     var entry = rows(entries).filter(function(row) {
-      return text3(row.type && row.type.code) === typeCode && plain2(row.value);
+      return text(row.type && row.type.code) === typeCode && plain2(row.value);
     }).sort(byIdAscending)[0];
     return entry ? plain2(entry.value) : "";
   }
   function oldestTypedAddress(addresses, typeCode) {
     var link = rows(addresses).filter(function(row) {
       return rows(row.types).some(function(type) {
-        return text3(type.code) === typeCode;
+        return text(type.code) === typeCode;
       });
     }).sort(byIdAscending)[0];
     return link ? formatAccountAddress(link.address) : "";
@@ -19093,7 +12244,7 @@
     var formatted = [];
     rows(addresses).filter(function(row) {
       return rows(row.types).some(function(type) {
-        return text3(type.code) === typeCode;
+        return text(type.code) === typeCode;
       });
     }).sort(byIdDescending).forEach(function(row) {
       var line = formatAccountAddress(row.address);
@@ -19108,8 +12259,8 @@
     return compareIds(left, right, -1);
   }
   function compareIds(left, right, direction) {
-    var a = positiveInteger3(left && left.id);
-    var b = positiveInteger3(right && right.id);
+    var a = positiveInteger(left && left.id);
+    var b = positiveInteger(right && right.id);
     if (a === b) return 0;
     if (a === null) return 1;
     if (b === null) return -1;
@@ -19120,461 +12271,14 @@
       return row && typeof row === "object";
     }) : [];
   }
-  function localizedName7(value) {
+  function localizedName4(value) {
     if (!value || typeof value !== "object") return "";
-    var localized2 = value.en || value["en-US"] || Object.values(value)[0] || {};
-    return plain2(localized2 && (localized2.NAME || localized2.name));
+    var localized = value.en || value["en-US"] || Object.values(value)[0] || {};
+    return plain2(localized && (localized.NAME || localized.name));
   }
   function plain2(value) {
     if (typeof value === "string") return value.trim();
     return typeof value === "number" && Number.isFinite(value) ? String(value) : "";
-  }
-
-  // app-templates/customer-portal/runtime/src/adapters/core-pim-adapter.js
-  var API_PATH = "/public/{organization}/catalog/price-comparison.json";
-  var INVENTORY_TYPE_CODE = "SPA_STOCK";
-  var SELLABLE = "sellable";
-  var OUT_OF_STOCK = "out-of-stock";
-  var STOCK_UNKNOWN = "unknown";
-  var corePimAdapter = {
-    supports(moduleId) {
-      return moduleId === "services" || moduleId === "pricing" || moduleId === "products";
-    },
-    async load(moduleId, context) {
-      if (!this.supports(moduleId)) throw new Error("Core PIM adapter does not support " + moduleId);
-      var config = context.config || {};
-      var requests = productTypeCodes(config, moduleId).map(function(productTypeCode) {
-        return buildRequest(config, productTypeCode);
-      });
-      var responses = await Promise.all(requests.map(async function(request) {
-        return { data: await fetchPim(request), productTypeCode: request.payload.productTypeCode };
-      }));
-      var plans2 = normalizePimRows({ prices: responses.flatMap(function(response) {
-        return (Array.isArray(response.data && response.data.prices) ? response.data.prices : []).map(function(row) {
-          return Object.assign({ __productTypeCode: response.productTypeCode }, row);
-        });
-      }) }, config);
-      if (moduleId === "pricing" || moduleId === "services") return { pimPlans: plans2 };
-      var enrichment = await loadProductEnrichment(context, plans2);
-      return {
-        pimProducts: plans2.map(function(product) {
-          var model = enrichment.modelsByProductCode[product.code] || null;
-          var sellability = enrichment.sellabilityByProductCode[product.code] || STOCK_UNKNOWN;
-          return Object.assign({}, product, {
-            ref: opaqueRef4("product", product.code),
-            modelRef: model && model.ref || null,
-            modelName: model && model.name || null,
-            media: [],
-            reviews: enrichment.reviewsByProductCode[product.code] || [],
-            sellability,
-            allowedActions: buyActions(product.allowedActions, sellability)
-          });
-        }),
-        pimProductModels: enrichment.models,
-        pimProductReviews: enrichment.reviews,
-        pimEnrichment: enrichment.state
-      };
-    }
-  };
-  async function loadProductEnrichment(context, products) {
-    var config = context.config || {};
-    var session2 = context.state && context.state.session || {};
-    var token = session2.accessToken;
-    var empty = {
-      models: [],
-      reviews: [],
-      modelsByProductCode: {},
-      reviewsByProductCode: {},
-      sellabilityByProductCode: unknownSellability(products),
-      state: { models: "unavailable", reviews: "unavailable", inventory: "unavailable" }
-    };
-    if (!token || config.pimFixtureUrl || config.pimEnrichmentMode !== "current-api") return empty;
-    var headers = {
-      Accept: "application/json",
-      Authorization: (session2.tokenType || "Bearer") + " " + token,
-      "Content-Type": "application/json",
-      "X-Organization-Code": config.pimOrganization || config.organization || "SERVICEWAND"
-    };
-    var [modelResult, reviewResult, inventoryResult] = await Promise.all([
-      fetchPrivateList(privateUrl(config, "product-model"), productModelRequest(), headers),
-      fetchPrivateList(privateUrl(config, "product-review"), productReviewRequest(), headers),
-      fetchPrivateList(privateUrl(config, "inventory"), inventoryRequest(), headers)
-    ]);
-    var productCodes = new Set(products.map(function(product) {
-      return product.code;
-    }));
-    var models = modelResult.ok ? normalizeModels(modelResult.items, productCodes) : [];
-    var reviews = reviewResult.ok ? normalizeReviews(reviewResult.items, productCodes) : [];
-    var modelsByProductCode = {};
-    models.forEach(function(model) {
-      model.productCodes.forEach(function(code) {
-        modelsByProductCode[code] = model;
-      });
-    });
-    var reviewsByProductCode = {};
-    reviews.forEach(function(review) {
-      if (!reviewsByProductCode[review.productCode]) reviewsByProductCode[review.productCode] = [];
-      reviewsByProductCode[review.productCode].push(review);
-    });
-    return {
-      models,
-      reviews,
-      modelsByProductCode,
-      reviewsByProductCode,
-      sellabilityByProductCode: sellabilityByProductCode(inventoryResult.ok ? inventoryResult.items : [], products),
-      state: { models: modelResult.state, reviews: reviewResult.state, inventory: inventoryResult.state }
-    };
-  }
-  function inventoryRequest() {
-    return {
-      filters: [{ type: "STRING", operator: "=", property: "type.code", value: INVENTORY_TYPE_CODE }],
-      offset: 0,
-      pageSize: 500,
-      mappings: [
-        { name: "id" },
-        { name: "count" },
-        { key: "id", mappings: [{ name: "id" }, { name: "code" }], name: "product", type: "identifier" },
-        { key: "id", mappings: [{ name: "id" }, { name: "code" }], name: "type", type: "identifier" }
-      ]
-    };
-  }
-  function sellabilityByProductCode(rows2, products) {
-    var inStockByProductId = /* @__PURE__ */ new Map();
-    rows2.forEach(function(row) {
-      if (!isStockRow(row)) return;
-      var productId = referenceId(row && row.product);
-      if (productId === null) return;
-      var count = Number(row && row.count);
-      if (!Number.isFinite(count)) return;
-      inStockByProductId.set(productId, inStockByProductId.get(productId) === true || count > 0);
-    });
-    var byProductCode = {};
-    products.forEach(function(product) {
-      var productId = referenceId(productFromRow(product.row));
-      var inStock = productId === null ? void 0 : inStockByProductId.get(productId);
-      byProductCode[product.code] = inStock === void 0 ? STOCK_UNKNOWN : inStock ? SELLABLE : OUT_OF_STOCK;
-    });
-    return byProductCode;
-  }
-  function unknownSellability(products) {
-    var byProductCode = {};
-    (products || []).forEach(function(product) {
-      byProductCode[product.code] = STOCK_UNKNOWN;
-    });
-    return byProductCode;
-  }
-  function isStockRow(row) {
-    var typeCode = String(row && row.type && row.type.code || "");
-    return !typeCode || typeCode === INVENTORY_TYPE_CODE;
-  }
-  function referenceId(reference) {
-    var id = Number(reference && reference.id);
-    return Number.isInteger(id) ? id : null;
-  }
-  function buyActions(actions, sellability) {
-    var list = Array.isArray(actions) ? actions.slice() : [];
-    if (sellability === SELLABLE) return list;
-    return list.filter(function(action) {
-      return action !== "cart.addItem";
-    });
-  }
-  async function fetchPrivateList(url, payload, headers) {
-    try {
-      var response = await window.fetch(url, { method: "POST", headers, credentials: "include", body: JSON.stringify(payload) });
-      if (!response.ok) return { ok: false, state: response.status === 401 ? "session-expired" : response.status === 403 ? "forbidden" : "error", items: [] };
-      var data = await response.json();
-      return { ok: true, state: "ready", items: Array.isArray(data && data.result) ? data.result : [] };
-    } catch (error2) {
-      return { ok: false, state: "error", items: [] };
-    }
-  }
-  function privateUrl(config, entity) {
-    var base = String(config.pimApiBase || "/core-pim/api").trim().replace(/\/+$/, "");
-    if (!/\/api$/i.test(base)) base += "/api";
-    return base + "/" + entity + "/list.json";
-  }
-  function productModelRequest() {
-    return {
-      filters: [],
-      offset: 0,
-      pageSize: 200,
-      mappings: [
-        { name: "id" },
-        { name: "code" },
-        { name: "nls" },
-        { name: "variants" },
-        { key: "id", mappings: [{ name: "id" }, { name: "code" }, { name: "nls" }], name: "products", type: "collection" }
-      ]
-    };
-  }
-  function productReviewRequest() {
-    return {
-      filters: [],
-      offset: 0,
-      pageSize: 500,
-      mappings: [
-        { name: "id" },
-        { name: "attributes" },
-        { name: "created" },
-        { name: "updated" },
-        { key: "id", mappings: [{ name: "id" }, { name: "code" }, { name: "nls" }], name: "product", type: "identifier" },
-        { key: "id", mappings: [{ name: "id" }, { name: "code" }, { name: "nls" }], name: "type", type: "identifier" },
-        { key: "id", mappings: [{ name: "id" }, { name: "code" }, { name: "nls" }], name: "states", type: "collection" }
-      ]
-    };
-  }
-  function normalizeModels(rows2, productCodes) {
-    return rows2.map(function(row) {
-      var products = Array.isArray(row && row.products) ? row.products : [];
-      var codes = products.map(function(product) {
-        return String(product && product.code || "");
-      }).filter(function(code) {
-        return productCodes.has(code);
-      });
-      var nls = localized(row && row.nls, "en");
-      var variantAttributes = [];
-      Object.values(row && row.variants || {}).forEach(function(values) {
-        if (Array.isArray(values)) values.forEach(function(value) {
-          if (!variantAttributes.includes(String(value))) variantAttributes.push(String(value));
-        });
-      });
-      return {
-        ref: opaqueRef4("product-model", row.code),
-        code: String(row.code || ""),
-        name: nls.NAME || "Collection",
-        description: stripHtml(nls.DESCRIPTION || ""),
-        productCodes: codes,
-        variantAttributes
-      };
-    }).filter(function(model) {
-      return model.code && model.productCodes.length;
-    });
-  }
-  function normalizeReviews(rows2, productCodes) {
-    return rows2.map(function(row) {
-      var states = Array.isArray(row && row.states) ? row.states.map(function(state2) {
-        return String(state2 && state2.code || "");
-      }) : [];
-      var productCode = String(row && row.product && row.product.code || "");
-      if (!states.includes("PUBLISHED") || !productCodes.has(productCode)) return null;
-      var rating = Number(reviewAttribute(row, "RATING"));
-      var body = String(reviewAttribute(row, "BODY") || "").trim();
-      var authorName = String(reviewAttribute(row, "AUTHOR_NAME") || "").trim();
-      if (!Number.isInteger(rating) || rating < 1 || rating > 5 || !body || !authorName) return null;
-      var identity = reviewAttribute(row, "REVIEW_KEY") || [row.id, productCode, authorName, body, row.created].join("|");
-      return {
-        ref: opaqueRef4("product-review", identity),
-        productCode,
-        rating,
-        title: String(reviewAttribute(row, "TITLE") || "").trim() || null,
-        body,
-        authorName,
-        verified: reviewAttribute(row, "VERIFIED") === true || String(reviewAttribute(row, "VERIFIED")).toLowerCase() === "true",
-        publishedAt: row.updated || row.created || null
-      };
-    }).filter(Boolean);
-  }
-  function reviewAttribute(row, code) {
-    var groups = row && row.attributes;
-    if (!groups || typeof groups !== "object") return null;
-    for (var group of Object.values(groups)) {
-      if (group && group[code] && group[code].value !== void 0) return group[code].value;
-    }
-    return null;
-  }
-  function opaqueRef4(prefix, value) {
-    var text16 = String(value || prefix);
-    var left = 2166136261;
-    var right = 2246822507;
-    for (var index = 0; index < text16.length; index += 1) {
-      var code = text16.charCodeAt(index);
-      left = Math.imul(left ^ code, 16777619);
-      right = Math.imul(right ^ code, 3266489909);
-    }
-    return prefix + "-" + (left >>> 0).toString(36) + (right >>> 0).toString(36);
-  }
-  function buildRequest(config, productTypeCode) {
-    var payload = {
-      productTypeCode,
-      includeChildProductTypes: true,
-      priceTypeCode: config.pimPriceTypeCode || "RECURRENT",
-      includeChildPriceTypes: true,
-      currencyAttributeCode: config.pimCurrencyAttributeCode || "CURRENCY",
-      currencyAttributeValues: configuredValues(config.pimCurrencyAttributeValues, [config.pimCurrency || "CAD"]),
-      nlsKeys: ["NAME", "DESCRIPTION", "PLACEHOLDER"]
-    };
-    var priceAttributeCode = typeof config.pimPriceAttributeCode === "string" ? config.pimPriceAttributeCode.trim() : "";
-    var priceAttributeValues = configuredValues(config.pimPriceAttributeValues, []);
-    if (priceAttributeCode && priceAttributeValues.length) {
-      payload.priceAttributeCode = priceAttributeCode;
-      payload.priceAttributeValues = priceAttributeValues;
-    }
-    return {
-      url: config.pimFixtureUrl || buildUrl(config),
-      fixture: !!config.pimFixtureUrl,
-      payload
-    };
-  }
-  function productTypeCodes(config, moduleId) {
-    var configured = moduleId === "pricing" || moduleId === "services" ? config.pimPricingProductTypeCodes : config.pimProductsProductTypeCodes;
-    var values = configuredValues(configured, [config.pimProductTypeCode || "SERVICEWAND_SAAS"]);
-    return Array.from(new Set(values));
-  }
-  async function fetchPim(request) {
-    if (!window.fetch) throw new Error("fetch is not available");
-    var options2 = request.fixture ? { method: "GET", headers: { Accept: "application/json" } } : {
-      method: "POST",
-      headers: { "Content-Type": "application/json", Accept: "application/json" },
-      // `omit`, not `include`. This is the PUBLIC catalog endpoint and the
-      // portal is same-origin with it, so `include` makes the browser attach
-      // the ACCESS_TOKEN cookie; the endpoint then takes its authenticated
-      // path and answers 404. Verified on staging 2026-07-28: the identical
-      // POST returns 200 anonymously on both core-pim nodes and 401 with a
-      // bogus ACCESS_TOKEN cookie, so the cookie alone decides the branch.
-      // A public read must be anonymous.
-      credentials: "omit",
-      body: JSON.stringify(request.payload)
-    };
-    var response = await window.fetch(request.url, options2);
-    if (!response.ok) throw new Error("Core PIM HTTP " + response.status);
-    return response.json();
-  }
-  function buildUrl(config) {
-    var organization = encodeURIComponent(config.pimOrganization || "SERVICEWAND");
-    var path = API_PATH.replace("{organization}", organization);
-    var base = String(config.pimApiBase || "/core-pim/api").trim().replace(/\/+$/, "");
-    base = base.replace(/\/api$/, "");
-    if (/^https?:\/\//i.test(base)) return base + path;
-    return "/" + base.replace(/^\/+/, "") + path;
-  }
-  function normalizePimRows(data, config) {
-    var rows2 = Array.isArray(data && data.prices) ? data.prices.slice() : [];
-    rows2.sort(function(left, right) {
-      return sortPriority(left) - sortPriority(right);
-    });
-    return rows2.map(function(row, index) {
-      var product = productFromRow(row);
-      var nls = localized(product.nls, "en");
-      var display = row.price && row.price.display || {};
-      var currency = display.currency || attributeValue2(row.price, config.pimCurrencyAttributeCode || "CURRENCY") || config.pimCurrency || "CAD";
-      var interval = typeof display.intervalLabel === "string" ? display.intervalLabel.trim() : "";
-      var amount = displayAmount(row.price, config);
-      var customPrice = !!display.customPrice || !Number.isFinite(amount) || amount >= 2147483647;
-      return {
-        id: product.code || "pim-" + index,
-        code: product.code || "pim-" + index,
-        // The Core ids behind this catalog row. `id`/`code` above are the
-        // internal product code; adding to the server cart needs the real
-        // Product and ProductPrice ids, and reaching into `row` for them from a
-        // route or a command is exactly the brittleness this avoids.
-        backendProductId: Number.isInteger(Number(product.id)) ? Number(product.id) : null,
-        backendPriceId: Number.isInteger(Number(row.price && row.price.price && row.price.price.id)) ? Number(row.price.price.id) : null,
-        name: nls.NAME || "Published item",
-        description: stripHtml(nls.DESCRIPTION || ""),
-        price: customPrice ? "Custom" : formatCurrency(amount, currency),
-        priceNum: customPrice ? 0 : amount,
-        currency: customPrice ? "" : currency,
-        interval: formatInterval(interval),
-        cta: customPrice ? "Contact us" : config.pimCta || "Choose plan",
-        attributes: product.attributes || {},
-        displayTag: textValue(productAttribute2(product.attributes, "DISPLAY_TAG")),
-        variantFacts: variantFacts(product.attributes),
-        productTypeCode: product.type && product.type.code || row.productTypeCode || row.__productTypeCode || "",
-        allowedActions: customPrice ? ["support.open"] : ["cart.addItem"],
-        row
-      };
-    });
-  }
-  function textValue(value) {
-    return value === void 0 || value === null ? "" : String(value).trim();
-  }
-  function variantFacts(attributes) {
-    return [
-      fact3("Format", productAttribute2(attributes, "FORMAT")),
-      fact3("Size", volumeLabel(productAttribute2(attributes, "VOLUME_ML"))),
-      fact3("Scent", productAttribute2(attributes, "SCENT_PROFILE"))
-    ].filter(Boolean);
-  }
-  function fact3(label, value) {
-    if (value === void 0 || value === null || value === "") return null;
-    return { label, value: String(value) };
-  }
-  function volumeLabel(value) {
-    if (value === void 0 || value === null || value === "") return null;
-    return String(value) + " ml";
-  }
-  function productAttribute2(attributes, code) {
-    if (!attributes || typeof attributes !== "object") return null;
-    for (var group of Object.values(attributes)) {
-      var attribute = group && group[code];
-      if (attribute && attribute.value !== void 0 && attribute.value !== null) return attribute.value;
-    }
-    return null;
-  }
-  function configuredValues(value, fallback) {
-    if (Array.isArray(value) && value.length) return value.map(String);
-    if (typeof value === "string" && value.trim()) return value.split(",").map(function(item) {
-      return item.trim();
-    }).filter(Boolean);
-    return fallback;
-  }
-  function displayAmount(price, config) {
-    var display = price && price.display || {};
-    var displayed = Number(display.amount);
-    if (Number.isFinite(displayed)) return displayed;
-    var minor = Number(attributeValue2(price, config.pimAmountAttributeCode || "AMOUNT_MINOR"));
-    if (!Number.isFinite(minor)) return NaN;
-    var divisor = Number(config.pimAmountMinorDivisor);
-    return minor / (Number.isFinite(divisor) && divisor > 0 ? divisor : 100);
-  }
-  function attributeValue2(price, code) {
-    var groups = price && price.attributes;
-    if (!groups || typeof groups !== "object") return null;
-    for (var group of Object.values(groups)) {
-      var attribute = group && group[code];
-      if (attribute && attribute.value !== void 0 && attribute.value !== null) return attribute.value;
-    }
-    return null;
-  }
-  function formatInterval(value) {
-    var raw = String(value || "").trim();
-    if (!raw) return "";
-    var normalized = raw.toUpperCase();
-    if (normalized === "ONE_TIME") return "One time";
-    if (normalized === "MONTH") return "Monthly";
-    return raw;
-  }
-  function productFromRow(row) {
-    var wrapper = row && row.product || {};
-    var product = wrapper.product || wrapper;
-    if (product === wrapper) return product;
-    return Object.assign({}, product, {
-      attributes: wrapper.attributes || product.attributes || {},
-      type: wrapper.type || product.type || null
-    });
-  }
-  function localized(nls, locale) {
-    return nls && (nls[locale] || nls.en) || {};
-  }
-  function sortPriority(row) {
-    var attributes = (row.product || {}).attributes || {};
-    for (var group of Object.values(attributes)) {
-      if (group && group.SORT_ORDER_PRIORITY && Number.isFinite(Number(group.SORT_ORDER_PRIORITY.value))) {
-        return Number(group.SORT_ORDER_PRIORITY.value);
-      }
-    }
-    return 999;
-  }
-  function stripHtml(value) {
-    return String(value || "").replace(/<[^>]*>/g, "").trim();
-  }
-  function formatCurrency(amount, currency) {
-    if (!Number.isFinite(amount)) return "Custom";
-    return new Intl.NumberFormat("en", {
-      style: "currency",
-      currency: currency || "CAD",
-      maximumFractionDigits: amount % 1 ? 2 : 0
-    }).format(amount);
   }
 
   // app-templates/customer-portal/runtime/src/adapters/care-fixture-adapter.js
@@ -19641,10 +12345,10 @@
   }
   function createCoreAccountAdapter(options2 = {}) {
     var fetchImpl = options2.fetch || globalThis.fetch;
-    if (typeof fetchImpl !== "function") throw contractError6("fetch-unavailable", "Core account adapter requires fetch");
+    if (typeof fetchImpl !== "function") throw contractError3("fetch-unavailable", "Core account adapter requires fetch");
     return {
       async load(moduleId, context) {
-        if (moduleId !== "account") throw contractError6("unsupported-module", "Core account adapter cannot load " + moduleId);
+        if (moduleId !== "account") throw contractError3("unsupported-module", "Core account adapter cannot load " + moduleId);
         return resolveCoreAccount(context, fetchImpl, options2.origin);
       },
       async resolve(context) {
@@ -19655,25 +12359,25 @@
   async function resolveCoreAccount(context, fetchImpl = globalThis.fetch, explicitOrigin) {
     var config = context && context.config || {};
     var session2 = context && context.session || context && context.state && context.state.session || {};
-    var accessToken = text14(session2.accessToken || session2.access_token);
-    if (!accessToken) throw contractError6("session-required", "A Core access token is required");
-    var origin = explicitOrigin || config.origin || browserOrigin5();
-    var coreBase = sameOriginBase8(config.coreApiBase || "/core", origin, "Core API base");
-    var accountBase = sameOriginBase8(config.accountApiBase || "/core-acct", origin, "Core Account API base");
-    var tokenType = text14(session2.tokenType || session2.token_type || "Bearer");
+    var accessToken = text9(session2.accessToken || session2.access_token);
+    if (!accessToken) throw contractError3("session-required", "A Core access token is required");
+    var origin = explicitOrigin || config.origin || browserOrigin2();
+    var coreBase = sameOriginBase5(config.coreApiBase || "/core", origin, "Core API base");
+    var accountBase = sameOriginBase5(config.accountApiBase || "/core-acct", origin, "Core Account API base");
+    var tokenType = text9(session2.tokenType || session2.token_type || "Bearer");
     var authorization = tokenType + " " + accessToken;
-    var basicInfo = await requestJson8(fetchImpl, coreBase + "/api/user/basic-info.json", {
+    var basicInfo = await requestJson5(fetchImpl, coreBase + "/api/user/basic-info.json", {
       method: "POST",
       credentials: "same-origin",
       headers: { Authorization: authorization, "Content-Type": "application/json", Accept: "application/json" },
       body: JSON.stringify(BASIC_INFO_MAPPINGS)
     });
-    var userId = positiveInteger8(basicInfo.authenticatedUserId || basicInfo.id);
-    if (!userId) throw contractError6("invalid-session-user", "Core basic-info did not return authenticatedUserId");
+    var userId = positiveInteger3(basicInfo.authenticatedUserId || basicInfo.id);
+    if (!userId) throw contractError3("invalid-session-user", "Core basic-info did not return authenticatedUserId");
     var organizationCode = selectOrganization(config.organization || config.pimOrganization, basicInfo);
     var typeCodes = accountTypeCodes(config.accountTypeCode);
     var typeList = typeCodes.length > 1;
-    var accountReply = await requestJson8(fetchImpl, accountBase + (config.vertical === "snow" ? "/api/tagged/account/list.json" : "/api/account/list.json"), {
+    var accountReply = await requestJson5(fetchImpl, accountBase + (config.vertical === "snow" ? "/api/tagged/account/list.json" : "/api/account/list.json"), {
       method: "POST",
       credentials: "same-origin",
       headers: {
@@ -19694,17 +12398,17 @@
     });
     var returned = Array.isArray(accountReply && accountReply.result) ? accountReply.result : [];
     var accounts = typeList ? returned.filter(function(row) {
-      return typeCodes.indexOf(text14(row && row.type && row.type.code)) !== -1;
+      return typeCodes.indexOf(text9(row && row.type && row.type.code)) !== -1;
     }) : returned;
     var total = Number(accountReply.resultSize || returned.length);
-    if (!accounts.length) throw contractError6("customer-not-linked", "No customer Account is linked to the signed-in Core User");
+    if (!accounts.length) throw contractError3("customer-not-linked", "No customer Account is linked to the signed-in Core User");
     if (accounts.length !== 1 || (typeList ? total > returned.length : total > 1)) {
-      throw contractError6("customer-account-ambiguous", "The signed-in Core User must resolve to exactly one customer Account");
+      throw contractError3("customer-account-ambiguous", "The signed-in Core User must resolve to exactly one customer Account");
     }
     var account = accounts[0] || {};
-    if (!positiveInteger8(account.id)) throw contractError6("invalid-customer-account", "Core Account response did not include an id");
-    if (config.vertical === "snow" && positiveInteger8(account.user && account.user.id) !== userId || account.user && positiveInteger8(account.user.id) && Number(account.user.id) !== userId) {
-      throw contractError6("customer-scope-mismatch", "Core Account user does not match the authenticated Core User");
+    if (!positiveInteger3(account.id)) throw contractError3("invalid-customer-account", "Core Account response did not include an id");
+    if (config.vertical === "snow" && positiveInteger3(account.user && account.user.id) !== userId || account.user && positiveInteger3(account.user.id) && Number(account.user.id) !== userId) {
+      throw contractError3("customer-scope-mismatch", "Core Account user does not match the authenticated Core User");
     }
     return {
       state: "ready",
@@ -19712,432 +12416,75 @@
       organization: { code: organizationCode, id: authorizedOrganizationId(basicInfo, organizationCode) },
       user: {
         id: userId,
-        displayName: text14(basicInfo.authenticatedUserName || basicInfo.authenticatedUser || basicInfo.name),
-        login: text14(basicInfo.authenticatedUserName)
+        displayName: text9(basicInfo.authenticatedUserName || basicInfo.authenticatedUser || basicInfo.name),
+        login: text9(basicInfo.authenticatedUserName)
       },
       account: {
         id: Number(account.id),
-        code: text14(account.code),
-        displayName: localizedName8(account.nls) || "Customer account",
+        code: text9(account.code),
+        displayName: localizedName5(account.nls) || "Customer account",
         optimistic: Number.isFinite(Number(account.optimistic)) ? Number(account.optimistic) : null,
-        typeCode: typeList ? text14(account.type && account.type.code) : typeCodes[0]
+        typeCode: typeList ? text9(account.type && account.type.code) : typeCodes[0]
       }
     };
   }
   function authorizedOrganizationId(basicInfo, code) {
     var authorized = Array.isArray(basicInfo && basicInfo.authorizedOrganizations) ? basicInfo.authorizedOrganizations : [];
     var match = authorized.find(function(item) {
-      return item && text14(item.code) === code;
+      return item && text9(item.code) === code;
     });
-    return match ? positiveInteger8(match.id) : null;
+    return match ? positiveInteger3(match.id) : null;
   }
   function selectOrganization(configuredCode, basicInfo) {
-    var configured = text14(configuredCode);
+    var configured = text9(configuredCode);
     var authorized = Array.isArray(basicInfo && basicInfo.authorizedOrganizations) ? basicInfo.authorizedOrganizations.map(function(item) {
-      return text14(item && item.code);
+      return text9(item && item.code);
     }).filter(Boolean) : [];
-    var current = text14(basicInfo && (basicInfo.organizationCode || basicInfo.defaultOrganizationCode));
+    var current = text9(basicInfo && (basicInfo.organizationCode || basicInfo.defaultOrganizationCode));
     var selected = configured || current || authorized[0];
-    if (!selected) throw contractError6("organization-required", "Core basic-info did not provide an organization");
+    if (!selected) throw contractError3("organization-required", "Core basic-info did not provide an organization");
     if (authorized.length && !authorized.includes(selected)) {
-      throw contractError6("organization-forbidden", "Configured portal organization is not authorized for the signed-in Core User");
+      throw contractError3("organization-forbidden", "Configured portal organization is not authorized for the signed-in Core User");
     }
     return selected;
   }
-  async function requestJson8(fetchImpl, url, options2) {
+  async function requestJson5(fetchImpl, url, options2) {
     var response = await fetchImpl(url, options2);
-    if (!response || typeof response.ok !== "boolean") throw contractError6("invalid-response", "Core request returned an invalid response");
+    if (!response || typeof response.ok !== "boolean") throw contractError3("invalid-response", "Core request returned an invalid response");
     if (!response.ok) {
       var code = response.status === 401 ? "session-expired" : response.status === 403 ? "customer-forbidden" : "core-request-failed";
-      var error2 = contractError6(code, "Core request failed with HTTP " + response.status);
+      var error2 = contractError3(code, "Core request failed with HTTP " + response.status);
       error2.status = response.status;
       throw error2;
     }
     try {
       return await response.json();
     } catch (_) {
-      throw contractError6("invalid-response", "Core response was not valid JSON");
+      throw contractError3("invalid-response", "Core response was not valid JSON");
     }
   }
-  function sameOriginBase8(value, origin, label) {
-    if (!origin) throw contractError6("origin-required", label + " requires a browser origin");
+  function sameOriginBase5(value, origin, label) {
+    if (!origin) throw contractError3("origin-required", label + " requires a browser origin");
     var target = new URL(String(value || ""), origin);
-    if (target.origin !== new URL(origin).origin) throw contractError6("cross-origin-service", label + " must be same-origin");
+    if (target.origin !== new URL(origin).origin) throw contractError3("cross-origin-service", label + " must be same-origin");
     return target.href.replace(/\/+$/, "");
   }
-  function browserOrigin5() {
+  function browserOrigin2() {
     return globalThis.location && globalThis.location.origin || "";
   }
-  function positiveInteger8(value) {
+  function positiveInteger3(value) {
     var number = Number(value);
     return Number.isInteger(number) && number > 0 ? number : null;
   }
-  function localizedName8(value) {
+  function localizedName5(value) {
     if (!value || typeof value !== "object") return "";
-    var localized2 = value.en || value["en-US"] || Object.values(value)[0] || {};
-    return text14(localized2 && (localized2.NAME || localized2.name));
+    var localized = value.en || value["en-US"] || Object.values(value)[0] || {};
+    return text9(localized && (localized.NAME || localized.name));
   }
-  function text14(value) {
+  function text9(value) {
     return typeof value === "string" ? value.trim() : value == null ? "" : String(value).trim();
   }
-  function contractError6(code, message) {
-    var error2 = new Error(message);
-    error2.code = code;
-    return error2;
-  }
-  var coreAccountContract = Object.freeze({
-    basicInfoMappings: BASIC_INFO_MAPPINGS,
-    accountMappings: ACCOUNT_MAPPINGS,
-    typedAccountMappings: TYPED_ACCOUNT_MAPPINGS,
-    accountFilters: ["user.id", "type.code"]
-  });
-
-  // app-templates/customer-portal/runtime/src/adapters/core-plans-adapter.js
-  var ENROLLMENT_TYPE = "SPA_PLAN_ENROLLMENT";
-  var MEMBERSHIP_ITEM_TYPE = "SPA_ITEM_MEMBERSHIP";
-  var PLAN_REF_PREFIX = "plan-core-";
-  var PURCHASE_REF_PREFIX = "order-core-";
-  var REF_MAPPINGS4 = [{ name: "id" }, { name: "code" }, { name: "nls" }];
-  var ENROLLMENT_MAPPINGS = [
-    { name: "attributes" },
-    { name: "code" },
-    { name: "id" },
-    { name: "nls" },
-    { name: "optimistic" },
-    { key: "id", mappings: REF_MAPPINGS4, name: "type", type: "identifier" },
-    { mappings: REF_MAPPINGS4, name: "states", type: "collection" }
-  ];
-  var SUBSCRIPTION_MAPPINGS = [
-    { name: "autoRenew" },
-    { name: "expiresOn" },
-    { name: "id" },
-    { name: "nextBillingAt" },
-    { name: "optimistic" },
-    { name: "period" },
-    { name: "startsOn" },
-    { key: "id", mappings: REF_MAPPINGS4, name: "account", type: "identifier" },
-    { key: "id", mappings: REF_MAPPINGS4, name: "order", type: "identifier" },
-    { mappings: REF_MAPPINGS4, name: "states", type: "collection" }
-  ];
-  var ORDER_ITEM_MAPPINGS3 = [
-    { name: "amount" },
-    { name: "attributes" },
-    { name: "id" },
-    { name: "itemCount" },
-    { name: "notes" },
-    {
-      key: "id",
-      // The membership's display name lives on the Product behind the price.
-      mappings: REF_MAPPINGS4.concat([
-        { name: "attributes" },
-        { key: "id", mappings: REF_MAPPINGS4, name: "product", type: "identifier" }
-      ]),
-      name: "itemPrice",
-      type: "identifier"
-    },
-    { key: "id", mappings: REF_MAPPINGS4, name: "order", type: "identifier" },
-    { key: "id", mappings: REF_MAPPINGS4, name: "type", type: "identifier" }
-  ];
-  var ENROLLMENT_STATUS = { ACTIVE: "Active", CANCELLED: "Cancelled", EXHAUSTED: "Used up" };
-  var SUBSCRIPTION_STATUS = { ACTIVE: "Active", CANCELLED: "Cancelled" };
-  function createCorePlansAdapter(options2 = {}) {
-    var fetchImpl = options2.fetch || globalThis.fetch;
-    if (typeof fetchImpl !== "function") throw contractError7("fetch-unavailable", "Core plans adapter requires fetch");
-    return {
-      load(moduleId, context) {
-        if (moduleId !== "plan") throw contractError7("unsupported-module", "Core plans adapter cannot load " + moduleId);
-        return loadCorePlans(context, fetchImpl, options2.origin);
-      }
-    };
-  }
-  async function loadCorePlans(context, fetchImpl = globalThis.fetch, explicitOrigin) {
-    var api = planContext(context, explicitOrigin);
-    var accountId = positiveInteger9(api.customer && api.customer.id);
-    if (!accountId) return { items: [], byRef: {}, scopeMode: "customer-filtered-client-side", state: "empty" };
-    var results = await Promise.all([
-      loadEnrollments(api, accountId, fetchImpl),
-      loadMemberships(api, accountId, fetchImpl)
-    ]);
-    var items = results[0].concat(results[1]);
-    var byRef = {};
-    items.forEach(function(item) {
-      byRef[item.ref] = item;
-    });
-    return {
-      byRef,
-      items,
-      scopeMode: "customer-filtered-client-side",
-      state: items.length ? "ready" : "empty"
-    };
-  }
-  async function loadEnrollments(api, accountId, fetchImpl) {
-    var response = await requestJson9(fetchImpl, api.serviceBase + "/api/project/list.json", requestOptions3(api, {
-      filters: [{ type: "STRING", operator: "=", property: "type.code", value: ENROLLMENT_TYPE }],
-      mappings: ENROLLMENT_MAPPINGS,
-      offset: 0,
-      pageSize: positiveInteger9(api.config.plansPageSize) || 100
-    }));
-    var rows2 = Array.isArray(response && response.result) ? response.result : [];
-    return rows2.filter(function(row) {
-      return attributeNumber3(row, "CUSTOMER_ACCOUNT") === accountId;
-    }).map(normalizeEnrollment);
-  }
-  function normalizeEnrollment(row) {
-    var id = positiveInteger9(row && row.id);
-    if (!id) throw contractError7("invalid-plan", "Core plan enrollment response did not include an id");
-    var state2 = firstState(row);
-    var status = ENROLLMENT_STATUS[state2];
-    if (!status)
-      throw contractError7(
-        "plan-status-unmapped",
-        "Workflow state " + (state2 || "(none)") + " has no approved customer status for a package plan"
-      );
-    var total = attributeNumber3(row, "CREDITS_TOTAL");
-    var used = attributeNumber3(row, "CREDITS_USED");
-    var remaining = total != null && used != null ? Math.max(total - used, 0) : null;
-    var sourceOrder = attributeNumber3(row, "SOURCE_ORDER");
-    return {
-      allowedActions: status === "Active" && remaining > 0 ? ["bookWithCredit"] : [],
-      backendId: id,
-      expiresAt: formatDate3(attributeText3(row, "VALID_UNTIL")),
-      kind: "PACKAGE",
-      optimistic: finiteNumber9(row.optimistic, null),
-      ref: PLAN_REF_PREFIX + id,
-      remainingUses: remaining,
-      sourcePurchase: sourceOrder ? PURCHASE_REF_PREFIX + sourceOrder : null,
-      status,
-      title: localizedName9(row.nls) || "Package",
-      totalUses: total
-    };
-  }
-  async function loadMemberships(api, accountId, fetchImpl) {
-    var response = await requestJson9(fetchImpl, api.billBase + "/api/subscription/list.json", requestOptions3(api, {
-      filters: [{ type: "INTEGER", operator: "=", property: "account.id", value: String(accountId) }],
-      mappings: SUBSCRIPTION_MAPPINGS,
-      offset: 0,
-      pageSize: positiveInteger9(api.config.plansPageSize) || 100
-    }));
-    var rows2 = Array.isArray(response && response.result) ? response.result : [];
-    if (!rows2.length) return [];
-    var lines = await membershipLines(api, rows2, fetchImpl);
-    var lineRows = Object.values(lines);
-    var resolved = await Promise.all([
-      codesById(api, api.coreBase, "dictionary", uniqueIds(lineRows, currencyId), fetchImpl),
-      codesById(api, api.coreBase, "unit", uniqueIds(lineRows, intervalUnitId), fetchImpl)
-    ]);
-    return rows2.map(function(row) {
-      var line = lines[String(orderId(row))] || null;
-      return normalizeMembership(row, line, {
-        currency: resolved[0][String(currencyId(line))] || "",
-        intervalUnit: resolved[1][String(intervalUnitId(line))] || ""
-      });
-    });
-  }
-  function priceAttributeEntry(line, code) {
-    var groups = line && line.itemPrice && line.itemPrice.attributes ? Object.values(line.itemPrice.attributes) : [];
-    for (var index = 0; index < groups.length; index += 1) {
-      var entry = groups[index] && groups[index][code];
-      if (entry && entry.value != null) return entry;
-    }
-    return null;
-  }
-  function currencyId(line) {
-    var entry = priceAttributeEntry(line, "CURRENCY");
-    return entry ? positiveInteger9(entry.value) : 0;
-  }
-  function intervalUnitId(line) {
-    var entry = priceAttributeEntry(line, "INTERVAL");
-    return entry ? positiveInteger9(entry.unit) : 0;
-  }
-  async function codesById(api, base, endpoint, ids, fetchImpl) {
-    if (!ids.length) return {};
-    var response = await requestJson9(fetchImpl, base + "/api/" + endpoint + "/list.json", requestOptions3(api, {
-      filters: ids.map(function(id) {
-        return { type: "INTEGER", operator: "=", property: "id", value: String(id) };
-      }),
-      mappings: [{ name: "id" }, { name: "code" }],
-      offset: 0,
-      pageSize: 50
-    }));
-    var byId = {};
-    (Array.isArray(response && response.result) ? response.result : []).forEach(function(row) {
-      byId[String(row.id)] = text15(row.code);
-    });
-    return byId;
-  }
-  function uniqueIds(lines, pick) {
-    var ids = [];
-    lines.forEach(function(line) {
-      var id = pick(line);
-      if (id && ids.indexOf(id) < 0) ids.push(id);
-    });
-    return ids;
-  }
-  async function membershipLines(api, subscriptions, fetchImpl) {
-    var orderIds = subscriptions.map(orderId).filter(Boolean);
-    if (!orderIds.length) return {};
-    var response = await requestJson9(fetchImpl, api.billBase + "/api/order-item/list.json", requestOptions3(api, {
-      filters: [{ type: "STRING", operator: "=", property: "type.code", value: MEMBERSHIP_ITEM_TYPE }],
-      mappings: ORDER_ITEM_MAPPINGS3,
-      offset: 0,
-      pageSize: 200
-    }));
-    var rows2 = Array.isArray(response && response.result) ? response.result : [];
-    var byOrder = {};
-    rows2.forEach(function(row) {
-      var key = String(row.order && row.order.id);
-      if (orderIds.indexOf(positiveInteger9(row.order && row.order.id)) >= 0 && !byOrder[key]) byOrder[key] = row;
-    });
-    return byOrder;
-  }
-  function recurringPrice(line, labels) {
-    var unitPrice = priceAttributeEntry(line, "UNIT_PRICE");
-    if (!unitPrice || !labels.currency) return null;
-    var interval = priceAttributeEntry(line, "INTERVAL");
-    var period = interval ? Number(interval.value) : 0;
-    var suffix = period && labels.intervalUnit ? " / " + (period === 1 ? "" : period + " ") + labels.intervalUnit.toLowerCase() : "";
-    return formatMoney4(Number(unitPrice.value), labels.currency) + suffix;
-  }
-  function normalizeMembership(row, line, labels) {
-    var id = positiveInteger9(row && row.id);
-    if (!id) throw contractError7("invalid-plan", "Core subscription response did not include an id");
-    var state2 = firstState(row);
-    var status = SUBSCRIPTION_STATUS[state2];
-    if (!status)
-      throw contractError7(
-        "plan-status-unmapped",
-        "Workflow state " + (state2 || "(none)") + " has no approved customer status for a membership plan"
-      );
-    var source = orderId(row);
-    return {
-      allowedActions: status === "Active" && row.autoRenew ? ["cancelRenewal"] : [],
-      backendId: id,
-      displayRecurringPrice: recurringPrice(line, labels),
-      expiresAt: formatDate3(row.expiresOn),
-      kind: "MEMBERSHIP",
-      optimistic: finiteNumber9(row.optimistic, null),
-      ref: PLAN_REF_PREFIX + "sub-" + id,
-      remainingUses: null,
-      renewsAt: formatDate3(row.nextBillingAt || null),
-      sourcePurchase: source ? PURCHASE_REF_PREFIX + source : null,
-      status,
-      title: membershipTitle(line),
-      totalUses: null
-    };
-  }
-  function planContext(context, explicitOrigin) {
-    var config = context && context.config || {};
-    var state2 = context && context.state || {};
-    var session2 = context && context.session || state2.session || {};
-    var accessToken = text15(session2.accessToken || session2.access_token);
-    if (!accessToken) throw contractError7("session-required", "A Core access token is required");
-    var organization = text15(config.organization);
-    if (!organization) throw contractError7("organization-required", "Verified portal organization is required");
-    var origin = explicitOrigin || config.origin || browserOrigin6();
-    return {
-      authorization: text15(session2.tokenType || session2.token_type || "Bearer") + " " + accessToken,
-      billBase: sameOriginBase9(config.billApiBase || "/core-bill", origin, "Core Bill API base"),
-      coreBase: sameOriginBase9(config.coreApiBase || "/core", origin, "Core API base"),
-      config,
-      customer: context && context.account || state2.customerAccount || session2.account || {},
-      organization,
-      serviceBase: sameOriginBase9(config.serviceApiBase || "/core-svc", origin, "Core Service API base")
-    };
-  }
-  function requestOptions3(api, body) {
-    return {
-      body: JSON.stringify(body),
-      credentials: "same-origin",
-      headers: {
-        Accept: "application/json",
-        Authorization: api.authorization,
-        "Content-Type": "application/json",
-        "X-Organization-Code": api.organization
-      },
-      method: "POST"
-    };
-  }
-  async function requestJson9(fetchImpl, url, options2) {
-    var response = await fetchImpl(url, options2);
-    if (response.status === 401) throw contractError7("session-expired", "Core rejected the portal session");
-    if (response.status === 403) throw contractError7("customer-forbidden", "Core refused the plan read for this customer");
-    if (!response.ok) throw contractError7("plans-unavailable", "Core plan read failed with HTTP " + response.status);
-    return response.json();
-  }
-  function attributeGroup(row) {
-    var typeId = row && row.type && row.type.id;
-    if (typeId == null || !row.attributes) return null;
-    return row.attributes[String(typeId)] || null;
-  }
-  function attributeNumber3(row, code) {
-    var group = attributeGroup(row);
-    var entry = group && group[code];
-    return entry && entry.value != null ? Number(entry.value) : null;
-  }
-  function attributeText3(row, code) {
-    var group = attributeGroup(row);
-    var entry = group && group[code];
-    return entry && entry.value != null ? String(entry.value) : "";
-  }
-  function firstState(row) {
-    var states = Array.isArray(row && row.states) ? row.states : [];
-    for (var index = 0; index < states.length; index += 1) {
-      var code = text15(states[index] && states[index].code);
-      if (code) return code;
-    }
-    return "";
-  }
-  function orderId(row) {
-    return positiveInteger9(row && row.order && row.order.id);
-  }
-  function membershipTitle(line) {
-    if (!line) return "Membership";
-    var product = line.itemPrice && line.itemPrice.product;
-    return localizedName9(product && product.nls) || localizedName9(line.itemPrice && line.itemPrice.nls) || "Membership";
-  }
-  function formatMoney4(amount, currency) {
-    return new Intl.NumberFormat("en-US", { currency, style: "currency" }).format(Number(amount)).replace(/\.00$/, "");
-  }
-  function formatDate3(value) {
-    if (!value) return null;
-    var date = Array.isArray(value) ? new Date(Date.UTC(value[0], (value[1] || 1) - 1, value[2] || 1)) : new Date(value);
-    if (Number.isNaN(date.getTime())) return null;
-    return date.toLocaleDateString("en-US", { day: "numeric", month: "short", timeZone: "UTC", year: "numeric" });
-  }
-  function localizedName9(nls) {
-    if (!nls || typeof nls !== "object") return "";
-    var locales = Object.keys(nls);
-    for (var index = 0; index < locales.length; index += 1) {
-      var entry = nls[locales[index]];
-      var name = entry && text15(entry.NAME);
-      if (name) return name;
-    }
-    return "";
-  }
-  function sameOriginBase9(base, origin, label) {
-    var value = text15(base);
-    if (!value) throw contractError7("api-base-required", label + " is required");
-    if (/^https?:\/\//i.test(value)) {
-      if (value.indexOf(origin) !== 0) throw contractError7("cross-origin-base", label + " must stay same-origin");
-      return value.replace(/\/$/, "");
-    }
-    return (origin || "").replace(/\/$/, "") + (value.charAt(0) === "/" ? value : "/" + value).replace(/\/$/, "");
-  }
-  function browserOrigin6() {
-    return typeof window !== "undefined" && window.location ? window.location.origin : "";
-  }
-  function positiveInteger9(value) {
-    var number = Number(value);
-    return Number.isInteger(number) && number > 0 ? number : 0;
-  }
-  function finiteNumber9(value, fallback) {
-    var number = Number(value);
-    return Number.isFinite(number) ? number : fallback;
-  }
-  function text15(value) {
-    return typeof value === "string" ? value.trim() : value == null ? "" : String(value);
-  }
-  function contractError7(code, message) {
+  function contractError3(code, message) {
     var error2 = new Error(message);
     error2.code = code;
     return error2;
@@ -20363,7 +12710,7 @@
       id,
       adapter(context) {
         if (context.config.dataMode === "live") {
-          if (corePimAdapter.supports(id)) return corePimAdapter;
+          if (false) return corePimAdapter;
           throw new Error("Live adapter is not opened for module " + id);
         }
         return fixtureAdapter;
@@ -20380,13 +12727,13 @@
     runtimeState.careSelectedSpecialistId = null;
     runtimeState.careTasksDone = {};
     runtimeState.careRetreatRequests = {};
-    for (const key of Object.keys(runtimeState.pending || {})) if (key.startsWith("care.")) delete runtimeState.pending[key];
-    for (const key of Object.keys(runtimeState.commandErrors || {})) {
+    for (const key of /* @__PURE__ */ Object.keys(runtimeState.pending || {})) if (key.startsWith("care.")) delete runtimeState.pending[key];
+    for (const key of /* @__PURE__ */ Object.keys(runtimeState.commandErrors || {})) {
       if (key.startsWith("care.") && !key.endsWith(":_")) delete runtimeState.commandErrors[key];
     }
   }
   function clearGeneralCareCommandErrors2(runtimeState) {
-    for (const key of Object.keys(runtimeState.commandErrors || {})) {
+    for (const key of /* @__PURE__ */ Object.keys(runtimeState.commandErrors || {})) {
       if (key.startsWith("care.") && key.endsWith(":_")) delete runtimeState.commandErrors[key];
     }
   }
@@ -20444,7 +12791,7 @@
       return normalizeCare(raw, context);
     }
   };
-  var ACCOUNT_GATE_STATES = Object.freeze(["customer-not-linked", "customer-account-ambiguous", "organization-forbidden", "customer-forbidden", "session-expired"]);
+  var ACCOUNT_GATE_STATES = /* @__PURE__ */ Object.freeze(["customer-not-linked", "customer-account-ambiguous", "organization-forbidden", "customer-forbidden", "session-expired"]);
   var accountModule = {
     id: "account",
     asyncOnly: true,
@@ -20545,7 +12892,9 @@
     id: "orders",
     asyncOnly: true,
     adapter(context) {
-      return context.config.dataMode === "live" ? createCoreOrdersAdapter() : fixtureAdapter;
+      if (context.config.dataMode !== "live") return fixtureAdapter;
+      if (false) return createCoreOrdersAdapter();
+      throw liveAdapterClosed("orders");
     },
     normalize(raw, context) {
       return context.config.dataMode === "live" ? raw : normalizeOrders(raw);
@@ -20561,7 +12910,10 @@
     id: "appointments",
     asyncOnly: true,
     adapter(context) {
-      if (context.config.dataMode === "live") return createCoreSpaDemoAdapter();
+      if (context.config.dataMode === "live") {
+        if (false) return createCoreSpaDemoAdapter();
+        throw liveAdapterClosed("appointments");
+      }
       return {
         load() {
           return { state: "ready", items: [], next: null, upcoming: [], past: [], byRef: {} };
@@ -20590,7 +12942,10 @@
     id: "plan",
     asyncOnly: true,
     adapter(context) {
-      if (context.config.dataMode === "live") return createCorePlansAdapter();
+      if (context.config.dataMode === "live") {
+        if (false) return createCorePlansAdapter();
+        throw liveAdapterClosed("plan");
+      }
       return { load() {
         return { state: "ready", items: [], byRef: {} };
       } };
@@ -20628,7 +12983,10 @@
     id: "cart",
     asyncOnly: true,
     adapter(context) {
-      if (context.config.dataMode === "live") return createCoreCartAdapter();
+      if (context.config.dataMode === "live") {
+        if (false) return createCoreCartAdapter();
+        throw liveAdapterClosed("cart");
+      }
       return { load() {
         return localCartEnvelope("empty");
       } };
@@ -20801,7 +13159,7 @@
     care: careModule,
     invoices: invoicesModule
   };
-  var openedModuleIds = Object.keys(modules);
+  var openedModuleIds = /* @__PURE__ */ Object.keys(modules);
 
   // app-templates/customer-portal/runtime/src/portal-runtime.js
   var PortalRuntime = class {
@@ -21009,515 +13367,6 @@
     }
   };
 
-  // app-templates/customer-portal/runtime/src/components/spa/SpaBookingFlow.js
-  function svcByCode(code) {
-    return spaCatalogServices().find(function(s) {
-      return s.code === code;
-    }) || null;
-  }
-  function dayByKey(key) {
-    var booking = spaBookingModel();
-    var days = booking && Array.isArray(booking.days) ? booking.days : [];
-    return days.find(function(d) {
-      return d.key === key;
-    }) || days[0] || null;
-  }
-  function slotLabel(f) {
-    var days = spaBookingModel().days || [];
-    for (var i = 0; i < days.length; i++) {
-      var d = days[i];
-      var s = (d.slots || []).find(function(x) {
-        return x.ref === f.slotRef;
-      });
-      if (s) return d.label + " \xB7 " + s.label;
-    }
-    return null;
-  }
-  function flowTitle(f) {
-    if (f.entry === "reschedule") return "Reschedule your visit";
-    if (f.entry === "credit") return "Book with a credit";
-    if (f.entry === "book-again") return "Book again";
-    return "Book a visit";
-  }
-  function stepsBar(f) {
-    var steps = spaFlowSteps(f);
-    var idx = steps.findIndex(function(s) {
-      return s.k === f.step;
-    });
-    if (idx === -1) idx = 0;
-    return h("div", { "class": "bk-steps", "data-module": "booking-steps", "data-visual-id": "booking-steps", "data-step-count": String(steps.length) }, steps.map(function(s, i) {
-      return h("span", { "class": "bk-step" + (i === idx ? " bk-step--on" : i < idx ? " bk-step--done" : ""), "data-step": s.k, "data-state": i === idx ? "active" : void 0 }, [
-        h("i", null, i < idx ? "\u2713" : String(i + 1)),
-        s.l
-      ]);
-    }));
-  }
-  function rescheduleCurrent(f) {
-    var a = f.rescheduleOf ? currentAppointment() : null;
-    if (!a) return null;
-    return h("div", { "class": "bk-current", "data-module": "reschedule-current", "data-visual-id": "reschedule-current", "data-appointment-ref": a.ref }, [
-      h("div", { "class": "bk-current__label" }, "Currently booked \u2014 unchanged until you confirm"),
-      h("div", { style: "font-weight:700;font-size:13.5px", "data-bind": "appointment.service" }, a.service),
-      h("div", { style: "font-size:12.5px;color:var(--ink-2)", "data-bind": "appointment.start" }, a.start + " \xB7 " + a.timezoneNote + (a.specialist ? " \xB7 " + a.specialist : ""))
-    ]);
-  }
-  function creditCard(blockingOnly) {
-    var f = state.spaFlow;
-    if (!f || f.entry !== "credit") return null;
-    var cs = state.spaCredit;
-    var wrap = h("div", { "class": "bk-credit", "data-module": "plan-credit-context", "data-visual-id": "plan-credit-context", "data-plan-ref": f.planRef || "plan-4e19c3", "data-state": cs }, [
-      h("div", { style: "display:flex;align-items:center;gap:8px" }, [
-        h("span", { "class": "kind-chip kind-chip--package" }, "Package"),
-        h("b", { style: "font-size:13.5px", "data-bind": "plan.title" }, "Six-visit facial series")
-      ]),
-      h("div", { style: "font-size:12.5px;line-height:1.5;color:var(--ink-2);margin-top:6px", "data-bind": "booking.creditNote" }, spaBookingModel().creditNotes[cs])
-    ]);
-    if (cs === "changed") wrap.appendChild(h("div", { style: "margin-top:8px" }, ActionButton({ variant: "btn--ghost", label: "Reload balance", action: "ui.retry", id: "plan-credit", visualId: "credit-reload" })));
-    if (cs === "exhausted") wrap.appendChild(h("div", { style: "margin-top:8px;font-size:12px" }, h("span", { "class": "link-action", "data-action": "account.openPlan" }, "Open My plan \u203A")));
-    if (cs === "unavailable") wrap.appendChild(h("div", { style: "margin-top:8px;font-size:12px" }, h("span", { "class": "link-action", "data-action": "support.open" }, "Contact support \u203A")));
-    if (blockingOnly && cs === "ok") return null;
-    return wrap;
-  }
-  function stepContext(f) {
-    var booking = spaBookingModel();
-    var parts = [];
-    if (f.entry === "reschedule") parts.push(rescheduleCurrent(f));
-    var credit = creditCard(false);
-    if (credit) parts.push(credit);
-    var creditBlocked = f.entry === "credit" && state.spaCredit !== "ok";
-    var picked = svcByCode(f.serviceCode);
-    var fixedService = f.entry === "credit" || f.entry === "reschedule";
-    if (picked && fixedService) {
-      parts.push(h("div", { "class": "bk-opt bk-opt--on", "data-module": "booking-context", "data-visual-id": "booking-service", "data-product-code": picked.code }, [
-        h("i", { "class": "bk-opt__dot" }),
-        h("div", { style: "flex:1;min-width:0" }, [
-          h("div", { style: "font-weight:650;font-size:13.5px", "data-bind": "booking.service.name" }, picked.name),
-          h("div", { style: "font-size:12px;color:var(--ink-3)" }, picked.shortDescription)
-        ]),
-        f.entry === "credit" ? h("b", { style: "font-size:13px" }, "1 credit") : h("b", { style: "font-size:13px", "data-bind": "booking.service.displayPrice" }, picked.displayPrice)
-      ]));
-      parts.push(h("div", { style: "margin-top:14px" }, ActionButton({ variant: "btn--primary", label: "Choose a time", action: "booking.selectService", id: picked.code, block: true, disabled: creditBlocked, visualId: "bk-continue" })));
-    } else {
-      parts.push(h("div", { "class": "bk-section-label" }, "Choose a treatment"));
-      var list = h("div", { "class": "bk-opts", "data-module": "booking-context", "data-visual-id": "booking-service-list" });
-      booking.eligibleServices.forEach(function(code) {
-        var s = svcByCode(code);
-        if (!s) return;
-        list.appendChild(h("button", { "class": "bk-opt" + (f.serviceCode === code ? " bk-opt--on" : ""), "data-action": "booking.selectService", "data-id": code, "data-product-code": code, "data-state": f.serviceCode === code ? "active" : void 0 }, [
-          h("i", { "class": "bk-opt__dot" }),
-          h("div", { style: "flex:1;min-width:0;text-align:left" }, [
-            h("div", { style: "font-weight:650;font-size:13.5px", "data-bind": "pim.services[].name" }, s.name),
-            h("div", { style: "font-size:12px;color:var(--ink-3)" }, s.shortDescription)
-          ]),
-          h("b", { style: "font-size:13px", "data-bind": "pim.services[].displayPrice" }, s.displayPrice)
-        ]));
-      });
-      parts.push(list);
-      parts.push(h("div", { "class": "bk-note" }, "Prices come from the public catalog \u2014 the exact total is shown before you confirm."));
-    }
-    return parts;
-  }
-  function srcBlock(cfg) {
-    var wrap = h("div", { "class": "bk-empty", "data-state": cfg.state, "data-visual-id": cfg.visualId }, [
-      h("div", { style: "font-weight:700;font-size:13.5px" }, cfg.title),
-      h("div", { style: "font-size:12.5px;color:var(--ink-2);line-height:1.5;margin-top:4px", "data-bind": cfg.bind }, cfg.copy)
-    ]);
-    if (cfg.support) wrap.appendChild(h("div", { style: "margin-top:8px;font-size:12px" }, h("span", { "class": "link-action", "data-action": "support.open" }, "Contact support \u203A")));
-    return wrap;
-  }
-  function visitModeGroup(f, o) {
-    if (!o.capabilities.visitMode || !o.visitModes.length) return null;
-    var modes = o.visitModes;
-    var group = h("div", { "class": "bk-group", "data-module": "visit-mode-options", "data-visual-id": "booking-visit-mode", "data-state": modes.length > 1 ? "ready" : "fixed" });
-    group.appendChild(h("div", { "class": "bk-section-label" }, modes.length > 1 ? "How would you like your visit?" : "Your visit"));
-    if (modes.length === 1) {
-      group.appendChild(h("div", { "class": "bk-opt bk-opt--fixed", "data-visit-mode": modes[0].code }, [
-        h("div", { style: "flex:1;min-width:0" }, h("div", { style: "font-weight:650;font-size:13.5px", "data-bind": "bookingOptions.visitModes[].label" }, modes[0].label)),
-        h("span", { "class": "bk-tag" }, "Set by the studio")
-      ]));
-      return group;
-    }
-    var list = h("div", { "class": "bk-opts" });
-    var cur = spaVisitMode(o);
-    modes.forEach(function(m) {
-      var on = !!(cur && cur.code === m.code);
-      list.appendChild(h("button", { "class": "bk-opt" + (on ? " bk-opt--on" : ""), "data-action": "booking.selectVisitMode", "data-id": m.code, "data-visit-mode": m.code, "data-state": on ? "active" : void 0, role: "radio", "aria-checked": on ? "true" : "false" }, [
-        h("i", { "class": "bk-opt__dot" }),
-        h("div", { style: "flex:1;min-width:0;text-align:left" }, [
-          h("div", { style: "font-weight:650;font-size:13.5px", "data-bind": "bookingOptions.visitModes[].label" }, m.label),
-          m.locationRequired ? h("div", { style: "font-size:12px;color:var(--ink-3)" }, "You\u2019ll choose the place next") : null
-        ])
-      ]));
-    });
-    group.appendChild(list);
-    return group;
-  }
-  function locationGroup(f, o) {
-    if (!o.capabilities.location) return null;
-    var mode = spaVisitMode(o);
-    if (o.capabilities.visitMode && o.visitModes.length > 1 && !mode) return null;
-    var src = state.spaLocSrc;
-    var group = h("div", { "class": "bk-group", "data-module": "location-options", "data-visual-id": "booking-locations", "data-state": src });
-    group.appendChild(h("div", { "class": "bk-section-label" }, "Where should we see you?"));
-    if (src === "loading") {
-      group.setAttribute("aria-busy", "true");
-      group.appendChild(h("div", null, [skel("height:52px;border-radius:14px"), skel("height:52px;border-radius:14px;margin-top:9px")]));
-      return group;
-    }
-    if (src === "error") {
-      group.appendChild(InlineFailure({ msg: o.copy.locationsError, retryAction: "booking.reloadLocations", retryLabel: "Reload places" }));
-      return group;
-    }
-    if (src === "unavailable") {
-      group.appendChild(srcBlock({ state: "unavailable", visualId: "booking-locations-unavailable", title: "The studio will confirm the place", copy: o.copy.locationsUnavailable, bind: "bookingOptions.locations" }));
-      return group;
-    }
-    if (src === "empty") {
-      group.appendChild(srcBlock({ state: "empty", visualId: "booking-locations-empty", title: "No place is open for this visit", copy: o.copy.locationsEmpty, bind: "bookingOptions.locations", support: true }));
-      return group;
-    }
-    var locations = spaEligibleLocations(o);
-    if (!locations.length) {
-      group.appendChild(srcBlock({ state: "empty", visualId: "booking-locations-no-place", title: "No place on file for at-home visits", copy: o.copy.noSavedPlace, bind: "bookingOptions.locations", support: true }));
-      return group;
-    }
-    if (src === "ineligible") group.appendChild(InlineFailure({ msg: o.copy.locationIneligible, retryAction: "booking.reloadLocations", retryLabel: "Reload places" }));
-    if (locations.length === 1 && src !== "ineligible") {
-      group.appendChild(h("div", { "class": "bk-opt bk-opt--fixed", "data-location-ref": locations[0].ref }, [h("div", { style: "flex:1;min-width:0" }, h("div", { style: "font-weight:650;font-size:13.5px", "data-bind": "bookingOptions.locations[].label" }, locations[0].label)), h("span", { "class": "bk-tag" }, "Only place available")]));
-      return group;
-    }
-    var picked = spaSelectedLocation(o);
-    var opts = h("div", { "class": "bk-opts" });
-    locations.forEach(function(loc) {
-      var on = !!(picked && picked.ref === loc.ref);
-      opts.appendChild(h("button", { "class": "bk-opt" + (on ? " bk-opt--on" : ""), "data-action": "booking.selectLocation", "data-id": loc.ref, "data-location-ref": loc.ref, "data-state": on ? "active" : void 0, role: "radio", "aria-checked": on ? "true" : "false" }, [h("i", { "class": "bk-opt__dot" }), h("div", { style: "flex:1;min-width:0;text-align:left" }, h("div", { style: "font-weight:650;font-size:13.5px", "data-bind": "bookingOptions.locations[].label" }, loc.label))]));
-    });
-    group.appendChild(opts);
-    group.appendChild(h("div", { "class": "bk-note" }, "Places come from your account \u2014 only the short label is shown here."));
-    return group;
-  }
-  function addonGroup(f, o) {
-    if (!o.capabilities.addOns) return null;
-    var src = state.spaAddonSrc;
-    var group = h("div", { "class": "bk-group", "data-module": "addon-options", "data-visual-id": "booking-addons", "data-state": src });
-    group.appendChild(h("div", { "class": "bk-section-label" }, "Add to your visit"));
-    if (src === "loading") {
-      group.setAttribute("aria-busy", "true");
-      group.appendChild(h("div", null, [skel("height:58px;border-radius:14px"), skel("height:58px;border-radius:14px;margin-top:9px")]));
-      return group;
-    }
-    if (src === "error") {
-      group.appendChild(InlineFailure({ msg: o.copy.addOnsError, retryAction: "ui.retry", retryId: "booking-addons", retryLabel: "Reload extras" }));
-      return group;
-    }
-    if (src === "unavailable") {
-      group.appendChild(srcBlock({ state: "unavailable", visualId: "booking-addons-unavailable", title: "Extras aren\u2019t connected yet", copy: o.copy.addOnsUnavailable, bind: "bookingOptions.addOns" }));
-      return group;
-    }
-    if (!o.addOns.length) return null;
-    if (src === "ineligible") group.appendChild(h("div", { "class": "bk-note", "data-bind": "bookingOptions.addOns", style: "margin:0 0 10px" }, o.copy.addOnsIneligible));
-    var change = spaAddonChange(o);
-    if (change) group.appendChild(InlineFailure({ msg: change.copy, retryAction: "ui.retry", retryId: "booking-addons", retryLabel: "Reload extras" }));
-    var selected = f.addOns || [];
-    var list = h("div", { "class": "bk-opts" });
-    o.addOns.forEach(function(addon) {
-      var togglable = (addon.allowedActions || []).indexOf("toggle") !== -1;
-      var on = selected.indexOf(addon.ref) !== -1 || addon.required && addon.selected && !togglable;
-      var phase = cmdPhase("booking.toggleAddon:" + addon.ref);
-      var meta = h("div", { "class": "bk-addon__meta" }, [addon.displayPrice ? h("b", { style: "font-size:13px", "data-bind": "bookingOptions.addOns[].displayPrice" }, addon.displayPrice) : null, addon.durationNote ? h("span", { "class": "bk-addon__dur", "data-bind": "bookingOptions.addOns[].durationNote" }, addon.durationNote) : null]);
-      var body = h("div", { "class": "bk-addon__body" }, [h("div", { "class": "bk-addon__name", "data-bind": "bookingOptions.addOns[].name" }, addon.name), addon.description ? h("div", { "class": "bk-addon__desc", "data-bind": "bookingOptions.addOns[].description" }, addon.description) : null, addon.required ? h("span", { "class": "bk-tag bk-tag--req" }, togglable ? "Required" : "Added by the studio") : null]);
-      var box = h("span", { "class": "bk-check" + (on ? " bk-check--on" : "") }, on ? "\u2713" : "");
-      if (!togglable) {
-        list.appendChild(h("div", { "class": "bk-opt bk-addon bk-opt--fixed", "data-addon-ref": addon.ref, "data-state": "fixed" }, [box, body, meta]));
-        return;
-      }
-      list.appendChild(h("button", { "class": "bk-opt bk-addon" + (on ? " bk-opt--on" : ""), "data-action": "booking.toggleAddon", "data-id": addon.ref, "data-addon-ref": addon.ref, "data-state": phase !== "idle" ? phase : on ? "active" : void 0, role: "checkbox", "aria-checked": on ? "true" : "false", "aria-busy": phase === "pending" ? "true" : void 0, disabled: phase === "pending" ? true : void 0 }, [box, body, phase === "pending" ? h("span", { "class": "btn-spinner" }) : meta]));
-    });
-    group.appendChild(list);
-    group.appendChild(h("div", { "class": "bk-note" }, Object.keys(state.commands).some(function(key) {
-      return key.indexOf("booking.toggleAddon:") === 0 && state.commands[key] === "pending";
-    }) ? o.copy.addOnPendingNote : "Amounts and added time come from the studio \u2014 the total is shown before you confirm."));
-    return group;
-  }
-  function stepOptions(f) {
-    var o = spaBookingOpts();
-    var parts = [];
-    if (f.entry === "reschedule") parts.push(rescheduleCurrent(f));
-    [visitModeGroup(f, o), locationGroup(f, o), addonGroup(f, o)].forEach(function(group) {
-      if (group) parts.push(group);
-    });
-    var steps = spaFlowSteps(f);
-    var index = steps.findIndex(function(step) {
-      return step.k === "options";
-    });
-    var next = steps[index + 1] || { k: "slots" };
-    var ready = spaOptionsComplete(o);
-    parts.push(h("div", { style: "margin-top:16px" }, ActionButton({ variant: "btn--primary", label: next.k === "specialist" ? "Choose a specialist" : "Choose a time", action: "booking.next", block: true, disabled: !ready, visualId: "bk-options-continue" })));
-    if (!ready) {
-      var why = "Choose how you\u2019d like your visit to continue";
-      var mode = spaVisitMode(o);
-      if (mode && o.capabilities.location && !spaSelectedLocation(o)) why = "Pick a place to continue";
-      if (state.spaLocSrc === "loading") why = "Loading the places you can choose\u2026";
-      if (state.spaLocSrc === "error" || state.spaLocSrc === "empty") why = "Nothing can be booked until places load \u2014 nothing was reserved";
-      parts.push(h("div", { style: "font-size:11.5px;color:var(--ink-3);margin-top:7px;text-align:center" }, why));
-    }
-    parts.push(backLink());
-    return parts;
-  }
-  function stepSpecialist(f) {
-    var booking = spaBookingModel();
-    var refs = booking.eligibleSpecialists[f.serviceCode] || [];
-    var list = h("div", { "class": "bk-opts", "data-module": "specialist-options", "data-visual-id": "specialist-options" });
-    refs.forEach(function(ref) {
-      var sp = booking.specialists[ref];
-      list.appendChild(h("button", { "class": "bk-opt" + (f.specialistRef === ref ? " bk-opt--on" : ""), "data-action": "booking.selectSpecialist", "data-id": ref, "data-specialist-ref": ref }, [
-        h("i", { "class": "bk-opt__dot" }),
-        h("div", { style: "flex:1;min-width:0;text-align:left" }, [
-          h("div", { style: "font-weight:650;font-size:13.5px", "data-bind": "booking.eligibleSpecialists[].name" }, sp.name),
-          h("div", { style: "font-size:12px;color:var(--ink-3)" }, sp.role)
-        ])
-      ]));
-    });
-    list.appendChild(h("button", { "class": "bk-opt" + (!f.specialistRef ? " bk-opt--muted" : ""), "data-action": "booking.selectSpecialist", "data-id": "any" }, [
-      h("i", { "class": "bk-opt__dot" }),
-      h("div", { style: "flex:1;text-align:left;font-weight:650;font-size:13.5px" }, "No preference"),
-      h("span", { style: "font-size:12px;color:var(--ink-3)" }, "first available")
-    ]));
-    return [
-      h("div", { "class": "bk-section-label" }, "Who would you like?"),
-      list,
-      backLink()
-    ];
-  }
-  function stepSlots(f) {
-    var parts = [];
-    if (f.entry === "reschedule") parts.push(rescheduleCurrent(f));
-    if (f.reloadedBy) parts.push(h("div", { "class": "bk-changed", "data-visual-id": "booking-options-changed", "data-state": "changed", role: "status", "data-bind": "bookingOptions.selectionVersion" }, spaBookingOpts().copy.optionsChangedSlot));
-    parts.push(h("div", { "class": "bk-section-label" }, f.entry === "reschedule" ? "Pick a new time" : "Pick a time"));
-    var slotState = spaBookingSlotState();
-    if (slotState === "loading") {
-      var sk = h("div", { "data-state": "loading", "aria-busy": "true" }, [skel("height:34px;border-radius:10px"), skel("height:120px;border-radius:14px;margin-top:10px")]);
-      parts.push(sk);
-      return parts;
-    }
-    if (slotState === "error") {
-      parts.push(InlineFailure({ msg: "Available times didn\u2019t load \u2014 nothing is shown so nothing is guessed. Try again.", retryAction: "ui.retry", retryId: "slots", retryLabel: "Reload times" }));
-      if (hasPrev(f)) parts.push(backLink());
-      return parts;
-    }
-    if (slotState === "empty") {
-      parts.push(h("div", { "class": "bk-empty", "data-state": "empty" }, [
-        h("div", { style: "font-weight:700;font-size:14px" }, "No times are open right now"),
-        h("div", { style: "font-size:12.5px;color:var(--ink-2);line-height:1.5;margin-top:4px" }, "The studio opens new times regularly \u2014 check back soon, or our team can find one for you."),
-        h("div", { style: "margin-top:8px" }, h("span", { "class": "link-action", "data-action": "support.open" }, "Contact support \u203A"))
-      ]));
-      if (hasPrev(f)) parts.push(backLink());
-      return parts;
-    }
-    var days = h("div", { "class": "bk-days", "data-module": "slot-days", "data-visual-id": "slot-days" });
-    spaBookingModel().days.forEach(function(d) {
-      days.appendChild(h("button", { "class": "bk-day" + (d.key === f.dayKey ? " bk-day--on" : ""), "data-action": "booking.selectSlot", "data-id": "day:" + d.key, "data-day-key": d.key }, d.label));
-    });
-    parts.push(days);
-    var day = dayByKey(f.dayKey);
-    var grid = h("div", { "class": "bk-slots", "data-module": "slot-grid", "data-visual-id": "slot-grid", "data-bind": "booking.eligibleSlots" });
-    (day && Array.isArray(day.slots) ? day.slots : []).forEach(function(s) {
-      grid.appendChild(h("button", { "class": "bk-slot" + (f.slotRef === s.ref ? " bk-slot--on" : ""), "data-action": "booking.selectSlot", "data-id": s.ref, "data-slot-ref": s.ref, "data-state": f.slotRef === s.ref ? "active" : void 0 }, s.label));
-    });
-    parts.push(grid);
-    var holdKey = "booking.hold:" + f.slotRef;
-    var holdPhase = f.slotRef ? cmdPhase(holdKey) : "idle";
-    if (holdPhase === "failed") parts.push(InlineFailure({ msg: "That time couldn\u2019t be held \u2014 nothing is booked. Pick it again or choose another time.", retryAction: "booking.retry", retryId: "hold", retryLabel: "Try holding again" }));
-    if (holdPhase === "conflict") parts.push(InlineFailure({ msg: "That time was just taken \u2014 nothing is booked. Choose another time.", retryAction: "ui.retry", retryId: holdKey, retryLabel: "OK" }));
-    parts.push(h("div", { style: "margin-top:14px" }, ActionButton({
-      variant: "btn--primary",
-      label: spaCurrentApiDemoOpen() ? "Review this time" : "Hold this time",
-      action: "booking.hold",
-      id: f.slotRef || void 0,
-      block: true,
-      pending: holdPhase === "pending",
-      pendingLabel: "Holding\u2026",
-      disabled: !f.slotRef || holdPhase === "conflict",
-      visualId: "bk-hold"
-    })));
-    parts.push(h("div", { "class": "bk-note" }, spaCurrentApiDemoOpen() ? "This demo API has no availability hold. The time is only selected in this browser until Core confirms the appointment." : "Holding keeps the time briefly while you review \u2014 nothing is booked yet."));
-    if (hasPrev(f)) parts.push(backLink());
-    return parts;
-  }
-  function noteField(confirmableOtherwise) {
-    var note = spaNoteState();
-    if (!note.enabled) return null;
-    var stateName = note.invalid ? "invalid" : note.near ? "near-limit" : note.len ? "filled" : "empty";
-    var wrap = h("div", { "class": "bk-note-field", "data-module": "booking-notes", "data-visual-id": "booking-note", "data-state": stateName });
-    var input = h("textarea", { "class": "field bk-note-field__input", id: "bk-note-input", rows: "3", "data-action": "booking.changeNotes", "data-bind": "bookingOptions.notes.value", "aria-describedby": "bk-note-help bk-note-err", "aria-invalid": note.invalid ? "true" : "false", "data-state": note.invalid ? "invalid" : void 0 }, note.value);
-    var counter = h("span", { "class": "bk-counter" + (note.invalid ? " bk-counter--over" : ""), "data-bind": "bookingOptions.notes.maxLength" }, note.len + "/" + note.max);
-    var error2 = h("div", { "class": "field-error", id: "bk-note-err", role: "alert" }, note.invalid ? note.errorCopy : "");
-    if (!note.invalid) error2.hidden = true;
-    input.addEventListener("input", function() {
-      ACTIONS["booking.changeNotes"](input.value);
-      var length = input.value.length;
-      var over = length > note.max;
-      counter.textContent = length + "/" + note.max;
-      counter.classList.toggle("bk-counter--over", over);
-      input.setAttribute("aria-invalid", over ? "true" : "false");
-      if (over) {
-        input.setAttribute("data-state", "invalid");
-        error2.textContent = note.errorCopy;
-        error2.hidden = false;
-      } else {
-        input.removeAttribute("data-state");
-        error2.hidden = true;
-        error2.textContent = "";
-      }
-      wrap.setAttribute("data-state", over ? "invalid" : length >= note.max - 30 ? "near-limit" : length ? "filled" : "empty");
-      var button = document.querySelector('[data-visual-id="confirm-booking"]');
-      if (button) {
-        if (over || !confirmableOtherwise) button.setAttribute("disabled", "");
-        else button.removeAttribute("disabled");
-      }
-    });
-    wrap.appendChild(h("div", { "class": "bk-note-field__head" }, [h("label", { "class": "field-label", "for": "bk-note-input" }, "Note for the studio"), counter]));
-    wrap.appendChild(input);
-    wrap.appendChild(error2);
-    wrap.appendChild(h("div", { "class": "bk-note", id: "bk-note-help", "data-bind": "bookingOptions.notes.helperText" }, note.helperText));
-    wrap.appendChild(h("div", { "class": "bk-note-field__sent", "data-bind": "bookingOptions.notes" }, spaBookingOpts().copy.noteSentWith));
-    return wrap;
-  }
-  function stepReview(f) {
-    var parts = [];
-    var booking = spaBookingModel();
-    var options2 = spaBookingOpts();
-    var svc = svcByCode(f.serviceCode);
-    var picked = slotLabel(f);
-    var selectedSlot = spaSelectedSlot();
-    var sp = f.specialistRef ? booking.specialists[f.specialistRef] : null;
-    var specialistsOffered = (booking.eligibleSpecialists[f.serviceCode] || []).length > 0;
-    var confirmKey = "booking.confirm:" + booking.ref;
-    var phase = cmdPhase(confirmKey);
-    var holdOk = state.spaHold === "held";
-    var creditBlocked = f.entry === "credit" && state.spaCredit !== "ok";
-    var origin = f.rescheduleOf ? currentAppointment() : null;
-    var addonChange = spaAddonChange(options2);
-    var note = spaNoteState(options2);
-    var quote = spaBookingQuote(options2);
-    var selectedAddOns = spaSelectedAddOns(options2);
-    if (f.entry === "reschedule" && origin) {
-      parts.push(h("div", { "class": "bk-compare", "data-module": "reschedule-compare", "data-visual-id": "reschedule-compare", "data-appointment-ref": origin.ref }, [
-        h("div", { "class": "bk-compare__cell" }, [
-          h("div", { "class": "bk-current__label" }, "Currently booked"),
-          h("div", { style: "font-weight:650;font-size:13px", "data-bind": "appointment.start" }, origin.start),
-          h("div", { style: "font-size:11.5px;color:var(--ink-3)" }, "stays until you confirm")
-        ]),
-        h("div", { "class": "bk-compare__arrow" }, "\u2192"),
-        h("div", { "class": "bk-compare__cell bk-compare__cell--new" }, [
-          h("div", { "class": "bk-current__label" }, "Proposed new time"),
-          h("div", { style: "font-weight:650;font-size:13px", "data-bind": "booking.hold.slot" }, picked || "\u2014"),
-          h("div", { style: "font-size:11.5px;color:var(--ink-3)" }, "not booked yet")
-        ])
-      ]));
-    }
-    var review = h("div", { "class": "booking-review", "data-module": "booking-review", "data-visual-id": "booking-review", "data-payment-mode": "SIMULATED", "data-state": addonChange ? addonChange.kind : holdOk ? "held" : state.spaHold, "data-selection-version": options2.selectionVersion });
-    if (holdOk) review.appendChild(h("div", { "class": "booking-review__hold", "data-module": "booking-hold", "data-visual-id": "booking-hold", "data-hold-ref": spaCurrentApiDemoOpen() ? void 0 : booking.hold.ref, "data-bind": "booking.hold.untilLabel" }, spaCurrentApiDemoOpen() ? [h("b", null, "Current API demo"), " \xB7 Core will validate the save when you confirm; no slot hold exists yet."] : [h("b", null, booking.hold.untilLabel), " \xB7 " + booking.hold.note]));
-    if (state.spaHold === "slot-expired") review.appendChild(InlineFailure({ msg: "Your held time expired \u2014 nothing was booked" + (f.entry === "reschedule" ? " and your original visit is unchanged" : "") + ". Pick a new time to continue.", retryAction: "ui.retry", retryId: "booking-hold", retryLabel: "Find a new time" }));
-    if (state.spaHold === "repriced") review.appendChild(InlineFailure({ msg: "The price for this time changed while you were reviewing \u2014 reload and check it before confirming.", retryAction: "ui.retry", retryId: "booking-hold", retryLabel: "Reload & review" }));
-    if (addonChange) review.appendChild(InlineFailure({ msg: addonChange.copy, retryAction: "ui.retry", retryId: "booking-addons", retryLabel: "Reload extras" }));
-    var det = h("div", { "class": "appt-details", style: "margin-top:10px" });
-    var row = function(l, v) {
-      return h("div", { "class": "appt-details__row" }, [h("div", { "class": "appt-details__label" }, l), h("div", { "class": "appt-details__val" }, v)]);
-    };
-    det.appendChild(row("Visit", h("b", { "data-bind": "booking.service" }, svc ? svc.name : "\u2014")));
-    det.appendChild(row("When", h("span", null, [h("b", null, picked || "\u2014"), h("span", { style: "color:var(--ink-3)" }, " \xB7 local time")])));
-    if (sp) det.appendChild(row("With", h("b", { "data-bind": "booking.specialist" }, sp.name)));
-    else if (f.entry === "reschedule" && origin && origin.specialist) det.appendChild(row("With", h("span", null, [h("b", { "data-bind": "appointment.specialist" }, origin.specialist), h("span", { style: "color:var(--ink-3)" }, " \xB7 unchanged")])));
-    else if (specialistsOffered && f.entry !== "reschedule") det.appendChild(row("With", h("span", { style: "color:var(--ink-3)", "data-bind": "booking.specialist" }, "No preference \u2014 first available")));
-    var mode = spaVisitMode(options2);
-    var location = spaSelectedLocation(options2);
-    var whereBits = [];
-    if (mode) whereBits.push(h("b", { "data-bind": "bookingOptions.visitModes[].label" }, mode.label));
-    if (location) whereBits.push(h("span", { "data-bind": "bookingOptions.locations[].label" }, (whereBits.length ? " \xB7 " : "") + location.label));
-    if (!whereBits.length && origin) {
-      if (origin.visitMode && F.spa.modeLabels[origin.visitMode]) whereBits.push(h("b", { "data-bind": "appointment.visitMode" }, F.spa.modeLabels[origin.visitMode]));
-      if (origin.location) whereBits.push(h("span", { "data-bind": "appointment.location" }, (whereBits.length ? " \xB7 " : "") + origin.location));
-    }
-    if (!whereBits.length && selectedSlot && selectedSlot.locationName) whereBits.push(h("span", { "data-bind": "booking.slot.locationName" }, selectedSlot.locationName));
-    if (options2.capabilities.location && state.spaLocSrc === "unavailable") whereBits.push(h("div", { style: "font-size:11.5px;color:var(--ink-3);line-height:1.45;margin-top:3px", "data-bind": "bookingOptions.locations" }, options2.copy.locationsUnavailable));
-    if (whereBits.length) det.appendChild(row("Where", h("span", null, whereBits)));
-    if (selectedAddOns.length) {
-      var addonList = h("div", { "class": "bk-review-addons", "data-module": "booking-review-addons", "data-visual-id": "booking-review-addons" });
-      selectedAddOns.forEach(function(addon) {
-        addonList.appendChild(h("div", { "class": "bk-review-addon", "data-addon-ref": addon.ref }, [h("span", { "class": "bk-review-addon__name", "data-bind": "bookingOptions.addOns[].name" }, addon.name), addon.displayPrice ? h("span", { "class": "bk-review-addon__amt", "data-bind": "bookingOptions.addOns[].displayPrice" }, addon.displayPrice) : null]));
-      });
-      det.appendChild(row(selectedAddOns.length > 1 ? "Extras" : "Extra", addonList));
-    }
-    if (f.entry === "credit") det.appendChild(row("Price", h("span", { "data-bind": "booking.creditNote" }, [h("b", null, "1 visit credit"), " \xB7 no charge for this visit"])));
-    else if (quote && quote.displaySubtotal) {
-      det.appendChild(row("Subtotal", h("span", { "data-bind": "booking.displaySubtotal" }, quote.displaySubtotal)));
-      det.appendChild(row("Total", h("b", { "data-bind": "booking.displayTotal" }, quote.displayTotal)));
-    } else det.appendChild(row("Price", h("b", { "data-bind": "booking.displayTotal" }, quote && quote.displayTotal || booking.displayTotals[f.serviceCode] || svc && svc.displayPrice || "\u2014")));
-    review.appendChild(det);
-    var creditBlock = creditCard(true);
-    if (creditBlock) review.appendChild(creditBlock);
-    var confirmable = holdOk && state.spaBookAck && !creditBlocked && !addonChange && phase !== "conflict";
-    var noteBlock = noteField(confirmable);
-    if (noteBlock) review.appendChild(noteBlock);
-    review.appendChild(h("div", { "class": "bk-note", "data-bind": "booking.policyNote", style: "margin-top:10px" }, booking.policyNote));
-    review.appendChild(h("label", { "class": "co-policy", "data-module": "policy-ack", "data-visual-id": "booking-policy-ack", "data-state": state.spaBookAck ? "acked" : "required" }, [
-      h("button", { "class": "co-policy__box" + (state.spaBookAck ? " co-policy__box--on" : ""), "data-action": "booking.ackPolicy", role: "checkbox", "aria-checked": state.spaBookAck ? "true" : "false" }, state.spaBookAck ? "\u2713" : ""),
-      h("span", { "data-bind": "booking.policy" }, booking.policy)
-    ]));
-    review.appendChild(SimulationBadge(true));
-    review.appendChild(h("div", { style: "font-size:11.5px;color:var(--ink-3);line-height:1.5;margin-top:6px" }, "No charge is made when you confirm \u2014 you pay at the studio as usual."));
-    parts.push(review);
-    if (phase === "failed") parts.push(InlineFailure({
-      msg: f.entry === "reschedule" ? "Your visit wasn\u2019t moved \u2014 it\u2019s still booked at the original time." : "Your booking wasn\u2019t confirmed \u2014 nothing is scheduled yet." + (note.enabled && note.len ? " Your note is kept here." : ""),
-      retryAction: "booking.retry",
-      retryId: "confirm",
-      retryLabel: "Try again"
-    }));
-    if (phase === "conflict") parts.push(InlineFailure({
-      msg: "That time window just changed \u2014 pick again before confirming. Nothing was booked.",
-      retryAction: "ui.retry",
-      retryId: confirmKey,
-      retryLabel: "OK"
-    }));
-    parts.push(h("div", { style: "margin-top:14px" }, ActionButton({
-      variant: "btn--primary",
-      label: f.entry === "reschedule" ? "Request new time \u2014 no charge" : "Send booking request \u2014 no charge",
-      action: "booking.confirm",
-      id: booking.ref,
-      block: true,
-      lg: true,
-      visualId: "confirm-booking",
-      pending: phase === "pending",
-      pendingLabel: "Confirming\u2026",
-      disabled: !confirmable || note.enabled && note.invalid
-    })));
-    if (holdOk && !state.spaBookAck && phase === "idle" && !addonChange) parts.push(h("div", { style: "font-size:11.5px;color:var(--ink-3);margin-top:7px;text-align:center" }, "Tick the policy box above to confirm"));
-    if (addonChange) parts.push(h("div", { style: "font-size:11.5px;color:var(--ink-3);margin-top:7px;text-align:center" }, "Reload the extras above to review the change before confirming"));
-    parts.push(backLink("\u2039 Back to times"));
-    return parts;
-  }
-  function backLink(label) {
-    return h("div", { style: "margin-top:12px" }, h("span", { "class": "link-action", "data-action": "booking.back" }, label || "\u2039 Back"));
-  }
-  function hasPrev(f) {
-    var steps = spaFlowSteps(f);
-    return steps.findIndex(function(step) {
-      return step.k === f.step;
-    }) > 0;
-  }
-  function SpaBookingFlow() {
-    var f = state.spaFlow;
-    var options2 = spaBookingOpts();
-    var body = h("div", { "class": "bk-flow", "data-module": "booking-flow", "data-visual-id": "booking-flow", "data-booking-ref": spaBookingModel().ref, "data-payment-mode": "SIMULATED", "data-state": f.step, "data-entry": f.entry, "data-selection-version": options2.selectionVersion });
-    body.appendChild(stepsBar(f));
-    var parts = f.step === "context" ? stepContext(f) : f.step === "options" ? stepOptions(f) : f.step === "specialist" ? stepSpecialist(f) : f.step === "slots" ? stepSlots(f) : stepReview(f);
-    parts.forEach(function(p) {
-      if (p) body.appendChild(p);
-    });
-    return body;
-  }
-
   // app-templates/customer-portal/runtime/src/components/shell/AccountBootstrap.js
   function gateActions(list) {
     return h("div", { "class": "account-gate__actions" }, list);
@@ -21583,7 +13432,7 @@
 
   // app-templates/customer-portal/runtime/src/app.js
   function BookingDrawer() {
-    if (state.spaFlow) {
+    if (false) {
       return h("div", null, [
         h("div", { "class": "scrim", "data-action": "booking.close", "data-visual-id": "scrim" }),
         h("aside", { "class": "drawer", "data-module": "drawer", "data-visual-id": "booking-drawer", "data-state": "drawer-open", role: "dialog", "aria-label": flowTitle(state.spaFlow) }, [
@@ -21599,7 +13448,7 @@
     var phase = cmdPhase("booking.confirm:booking");
     var spaBridge = isSpa() && state.capability === "target-appointments";
     var holdBlocked = spaBridge && state.spaHold !== "held";
-    var spaReview = spaBridge ? h("div", { "class": "booking-review", "data-module": "booking-review", "data-visual-id": "booking-review", "data-payment-mode": "SIMULATED", "data-state": state.spaHold }, [
+    var spaReview = false ? h("div", { "class": "booking-review", "data-module": "booking-review", "data-visual-id": "booking-review", "data-payment-mode": "SIMULATED", "data-state": state.spaHold }, [
       state.spaHold === "held" ? h("div", { "class": "booking-review__hold" }, "Your time is held for 10 minutes while you review \u2014 confirming books it.") : null,
       state.spaHold === "slot-expired" ? InlineFailure({ msg: "Your held time expired \u2014 nothing was booked. Pick a new time to continue.", retryAction: "ui.retry", retryId: "booking-hold", retryLabel: "Find a new time" }) : null,
       state.spaHold === "repriced" ? InlineFailure({ msg: "The price for this time changed while you were reviewing \u2014 reload and check it before confirming.", retryAction: "ui.retry", retryId: "booking-hold", retryLabel: "Reload & review" }) : null,
@@ -21641,10 +13490,10 @@
   var SETTLED_SIGN_IN_STATES = ["ready-signed-out", "ready-signed-in", "unavailable"];
   function leaveForPublicEntry() {
     if (leavingFor) return true;
-    var destination2 = publicEntryDestination();
-    if (!destination2) return false;
-    leavingFor = destination2;
-    globalThis.location.replace(destination2);
+    var destination = publicEntryDestination();
+    if (!destination) return false;
+    leavingFor = destination;
+    globalThis.location.replace(destination);
     return true;
   }
   function loadGrantedCareTransition() {

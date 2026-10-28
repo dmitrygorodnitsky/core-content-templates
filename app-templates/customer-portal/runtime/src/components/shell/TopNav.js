@@ -7,7 +7,7 @@ import { icon } from "../storm/overview-icons.js";
 import { SpaTopNav } from "./SpaTopNav.js";
 
 export function TopNav(gated) {
-  if (isSpa()) return SpaTopNav(gated);
+  if (globalThis.__PORTAL_VERTICAL__ !== "snow" && isSpa()) return SpaTopNav(gated);
   var profile = activeProfile();
   if (gated) {
     return h("div", { "class": "top-nav-wrap" }, h("nav", { "class": "top-nav", "data-module": "top-nav", "data-visual-id": "top-nav", "data-state": "gated" }, [

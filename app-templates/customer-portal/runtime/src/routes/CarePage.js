@@ -13,7 +13,7 @@ import { PestMonitoring } from "../components/care/PestMonitoring.js";
 import { HealthCareHub } from "../components/care/HealthCareHub.js";
 import { BeautyCareHub } from "../components/care/BeautyCareHub.js";
 
-const RENDERERS = {
+const RENDERERS = globalThis.__PORTAL_VERTICAL__ !== "snow" ? {
   equipment: EquipmentHub,
   seasonLog: SeasonLog,
   program: LawnProgram,
@@ -22,6 +22,8 @@ const RENDERERS = {
   monitoring: PestMonitoring,
   healthCare: HealthCareHub,
   beautyCare: BeautyCareHub,
+} : {
+  seasonLog: SeasonLog,
 };
 
 function careSkeleton() {

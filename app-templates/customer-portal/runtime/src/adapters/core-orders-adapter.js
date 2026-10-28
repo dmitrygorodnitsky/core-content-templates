@@ -36,7 +36,7 @@ const ORDER_ITEM_MAPPINGS = [
   { name: "sortOrder" },
   {
     key: "id",
-    mappings: REF_MAPPINGS.concat([{ key: "id", mappings: REF_MAPPINGS, name: "product", type: "identifier" }]),
+    mappings: /* @__PURE__ */ REF_MAPPINGS.concat([{ key: "id", mappings: REF_MAPPINGS, name: "product", type: "identifier" }]),
     name: "itemPrice",
     type: "identifier",
   },

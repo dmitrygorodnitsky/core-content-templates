@@ -3,7 +3,7 @@ import os from "node:os";
 import path from "node:path";
 import process from "node:process";
 import { pathToFileURL } from "node:url";
-import { assertLiveBundle } from "./build-live-portal-runtime.mjs";
+import { assertLiveBundle, liveRuntimeVertical, minifiedRuntimePath, minifyStylesheet } from "./build-live-portal-runtime.mjs";
 import { controlCharacterOffsets } from "./export-client-review-manual.mjs";
 import { assertJteSafeTemplate } from "./export-portal-form-manual.mjs";
 import {
@@ -69,9 +69,11 @@ export async function exportLivePortalManual(options = {}) {
 
   const source = JSON.parse(await fs.readFile(sourcePath, "utf8"));
   const geography = await validateSource(source);
-  const javascript = await fs.readFile(path.resolve(options.runtimePath), "utf8");
+  const runtimePath = path.resolve(options.runtimePath);
+  assertLiveBundle(await fs.readFile(runtimePath, "utf8"));
+  const javascript = await fs.readFile(minifiedRuntimePath(runtimePath), "utf8");
   assertLiveBundle(javascript);
-  const css = await readStyles();
+  const css = await minifyStylesheet(await readStyles());
   const template = templateFor(source, geography, css, javascript);
   assertLiveTemplate(template);
   const manifest = manifestFor(sourcePath, source, geography, template);
@@ -114,6 +116,9 @@ async function validateSource(source) {
   if (!profile) throw new Error("Unknown profile " + runtime.profile);
   if (resolveProfile(runtime.vertical, runtime.profile) !== runtime.profile) {
     throw new Error("Profile " + runtime.profile + " cannot serve vertical " + runtime.vertical + "; the runtime would replace it");
+  }
+  if (runtime.vertical !== liveRuntimeVertical) {
+    throw new Error("The live runtime is the " + liveRuntimeVertical + "-only build and carries no code for vertical " + runtime.vertical);
   }
   assertEnabledModules(runtime, profile);
   const route = routeRegistry[runtime.defaultRoute];

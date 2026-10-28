@@ -37,17 +37,30 @@ function resolveEsbuild() {
   return found;
 }
 
-export async function buildLivePortalRuntime(options) {
-  if (!options || !options.output) throw new Error("--output=<path> is required");
-  const output = path.resolve(options.output);
-  const esbuild = await import(pathToFileURL(resolveEsbuild()).href);
-  await esbuild.build({
+export const liveRuntimeVertical = "snow";
+
+export function minifiedRuntimePath(runtimePath) {
+  return runtimePath.replace(/\.js$/, ".min.js");
+}
+
+async function loadEsbuild() {
+  return import(pathToFileURL(resolveEsbuild()).href);
+}
+
+function runtimeBuildOptions(vertical, minify) {
+  return {
     entryPoints: [entry],
     bundle: true,
     format: "iife",
     platform: "browser",
     target: "es2020",
-    outfile: output,
+    write: false,
+    metafile: true,
+    outfile: path.join(portalRoot, "runtime/manual/live-runtime.js"),
+    define: vertical ? { "globalThis.__PORTAL_VERTICAL__": JSON.stringify(vertical) } : {},
+    pure: ["Object.freeze", "Object.keys"],
+    minify,
+    legalComments: minify ? "none" : undefined,
     plugins: [{
       name: "live-data-boundary",
       setup(build) {
@@ -58,11 +71,45 @@ export async function buildLivePortalRuntime(options) {
         });
       },
     }],
-  });
+  };
+}
 
-  const bundled = fs.readFileSync(output, "utf8");
-  assertLiveBundle(bundled);
-  return { output, bytes: Buffer.byteLength(bundled) };
+export async function bundleLivePortalRuntime(options = {}) {
+  const esbuild = await loadEsbuild();
+  const [readable, minified] = await Promise.all([false, true].map(async (minify) => {
+    const result = await esbuild.build(runtimeBuildOptions(options.vertical, minify));
+    return { text: result.outputFiles[0].text, metafile: result.metafile };
+  }));
+  assertLiveBundle(readable.text);
+  if (JSON.stringify(bundledInputs(readable.metafile)) !== JSON.stringify(bundledInputs(minified.metafile))) {
+    throw new Error("The readable and the minified live runtime did not bundle the same source");
+  }
+  return { readable, minified };
+}
+
+export function bundledInputs(metafile) {
+  const [output] = Object.values(metafile.outputs);
+  return Object.keys(output.inputs).sort().map((input) => [input, metafile.inputs[input].bytes]);
+}
+
+export async function minifyStylesheet(css) {
+  const esbuild = await loadEsbuild();
+  return (await esbuild.transform(css, { loader: "css", minify: true, legalComments: "none" })).code;
+}
+
+export async function buildLivePortalRuntime(options) {
+  if (!options || !options.output) throw new Error("--output=<path> is required");
+  const output = path.resolve(options.output);
+  const { readable, minified } = await bundleLivePortalRuntime({ vertical: options.vertical });
+  fs.mkdirSync(path.dirname(output), { recursive: true });
+  fs.writeFileSync(output, readable.text);
+  const result = { output, bytes: Buffer.byteLength(readable.text) };
+  if (options.minifiedOutput) {
+    result.minifiedOutput = path.resolve(options.minifiedOutput);
+    fs.writeFileSync(result.minifiedOutput, minified.text);
+    result.minifiedBytes = Buffer.byteLength(minified.text);
+  }
+  return result;
 }
 
 export function assertLiveBundle(bundled) {

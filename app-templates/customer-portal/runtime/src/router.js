@@ -191,23 +191,23 @@ export function renderRoute() {
     case "invoices":    return Invoices();
     case "invoice.detail": return InvoiceDetail();
     case "property.detail": return PropertyDetail();
-    case "orders.list": return isSpa() ? (spaCapability() === "target-appointments" ? SpaAppointments() : SpaOrders()) : Cabinet();
+    case "orders.list": return globalThis.__PORTAL_VERTICAL__ !== "snow" && isSpa() ? (spaCapability() === "target-appointments" ? SpaAppointments() : SpaOrders()) : Cabinet();
     case "order.detail": return OrderDetail();
-    case "appointment.detail": return isSpa() && spaCapability() === "target-appointments" ? SpaAppointmentDetail() : ComingSoon("appointment.detail", "a later wave");
-    case "services":    return isSpa() ? SpaCatalog() : Services();
-    case "pricing":     return isSpa() ? SpaCatalog() : Pricing();
-    case "products":    return isSpa() ? SpaShop() : Products();
-    case "product.detail": return isSpa() ? SpaProductDetail() : ComingSoon("product.detail", "a later wave");
-    case "checkout":    return isSpa() ? SpaCheckout() : Checkout();
-    case "account":     return isSpa() ? SpaAccount() : ComingSoon("account", "a later wave");
-    case "purchases.list": return isSpa() ? SpaPurchases() : ComingSoon("purchases.list", "a later wave");
-    case "purchase.detail": return isSpa() ? SpaPurchaseDetail() : ComingSoon("purchase.detail", "a later wave");
-    case "plan":        return isSpa() ? SpaPlan() : ComingSoon("plan", "a later wave");
-    case "cart":        return isSpa() ? SpaCart() : Checkout();
+    case "appointment.detail": return globalThis.__PORTAL_VERTICAL__ !== "snow" && isSpa() && spaCapability() === "target-appointments" ? SpaAppointmentDetail() : ComingSoon("appointment.detail", "a later wave");
+    case "services":    return globalThis.__PORTAL_VERTICAL__ !== "snow" && isSpa() ? SpaCatalog() : Services();
+    case "pricing":     return globalThis.__PORTAL_VERTICAL__ !== "snow" && isSpa() ? SpaCatalog() : Pricing();
+    case "products":    return globalThis.__PORTAL_VERTICAL__ !== "snow" && isSpa() ? SpaShop() : Products();
+    case "product.detail": return globalThis.__PORTAL_VERTICAL__ !== "snow" && isSpa() ? SpaProductDetail() : ComingSoon("product.detail", "a later wave");
+    case "checkout":    return globalThis.__PORTAL_VERTICAL__ !== "snow" && isSpa() ? SpaCheckout() : Checkout();
+    case "account":     return globalThis.__PORTAL_VERTICAL__ !== "snow" && isSpa() ? SpaAccount() : ComingSoon("account", "a later wave");
+    case "purchases.list": return globalThis.__PORTAL_VERTICAL__ !== "snow" && isSpa() ? SpaPurchases() : ComingSoon("purchases.list", "a later wave");
+    case "purchase.detail": return globalThis.__PORTAL_VERTICAL__ !== "snow" && isSpa() ? SpaPurchaseDetail() : ComingSoon("purchase.detail", "a later wave");
+    case "plan":        return globalThis.__PORTAL_VERTICAL__ !== "snow" && isSpa() ? SpaPlan() : ComingSoon("plan", "a later wave");
+    case "cart":        return globalThis.__PORTAL_VERTICAL__ !== "snow" && isSpa() ? SpaCart() : Checkout();
     case "proposals.list": return ProposalsList();
     case "proposal.detail": return ProposalDetail();
     case "agreement.detail": return AgreementDetail();
-    case "profile":     return isSpa() ? SpaProfile() : customerAccountProfile(state.config) ? AccountProfile() : Profile();
+    case "profile":     return globalThis.__PORTAL_VERTICAL__ !== "snow" && isSpa() ? SpaProfile() : customerAccountProfile(state.config) ? AccountProfile() : Profile();
     case "activity":    return Activity();
     case "calendar":    return Calendar();
     case "support":     return Support();
@@ -215,7 +215,7 @@ export function renderRoute() {
     case "auth.code":   return Auth();
     case "auth.oidc":   return AuthOidc();
     case "care":        return Care();
-    case "seo.landing": return SeoLanding();
+    case "seo.landing": return globalThis.__PORTAL_VERTICAL__ !== "snow" ? SeoLanding() : RouteFallback(resolved.reason);
     default:            return RouteFallback(resolved.reason);
   }
 }

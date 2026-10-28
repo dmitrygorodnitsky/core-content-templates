@@ -17,7 +17,7 @@ import { AppShell } from "./components/shell/AppShell.js";
 import { AccountBootstrap } from "./components/shell/AccountBootstrap.js";
 
 export function BookingDrawer() {
-  if (state.spaFlow) {
+  if (globalThis.__PORTAL_VERTICAL__ !== "snow" && state.spaFlow) {
     return h("div", null, [
       h("div", { "class": "scrim", "data-action": "booking.close", "data-visual-id": "scrim" }),
       h("aside", { "class": "drawer", "data-module": "drawer", "data-visual-id": "booking-drawer", "data-state": "drawer-open", role: "dialog", "aria-label": flowTitle(state.spaFlow) }, [
@@ -33,7 +33,7 @@ export function BookingDrawer() {
   var phase = cmdPhase("booking.confirm:booking");
   var spaBridge = isSpa() && state.capability === "target-appointments";
   var holdBlocked = spaBridge && state.spaHold !== "held";
-  var spaReview = spaBridge ? h("div", { "class": "booking-review", "data-module": "booking-review", "data-visual-id": "booking-review", "data-payment-mode": "SIMULATED", "data-state": state.spaHold }, [
+  var spaReview = globalThis.__PORTAL_VERTICAL__ !== "snow" && spaBridge ? h("div", { "class": "booking-review", "data-module": "booking-review", "data-visual-id": "booking-review", "data-payment-mode": "SIMULATED", "data-state": state.spaHold }, [
     state.spaHold === "held" ? h("div", { "class": "booking-review__hold" }, "Your time is held for 10 minutes while you review — confirming books it.") : null,
     state.spaHold === "slot-expired" ? InlineFailure({ msg: "Your held time expired — nothing was booked. Pick a new time to continue.", retryAction: "ui.retry", retryId: "booking-hold", retryLabel: "Find a new time" }) : null,
     state.spaHold === "repriced" ? InlineFailure({ msg: "The price for this time changed while you were reviewing — reload and check it before confirming.", retryAction: "ui.retry", retryId: "booking-hold", retryLabel: "Reload & review" }) : null,

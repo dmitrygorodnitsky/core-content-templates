@@ -51,8 +51,15 @@ The live pair is its counterpart. `build-live-portal-runtime.mjs` bundles
 `runtime/src/app.js` with every fixture data module aliased to its `live-*`
 stub and refuses a bundle that still carries a fixture marker;
 `build-calm-harbor-target-runtime.mjs` is that builder with the Calm Harbor
-output path. `export-live-portal-manual.mjs` refuses a source that leaves live
-data mode, lacks the Core OIDC or customer Account contract, names a service
+output path. Given a vertical, the builder defines `globalThis.__PORTAL_VERTICAL__`
+so esbuild drops every branch guarded with `!== "snow"` together with the Spa,
+SEO, PIM, cart, orders and plans modules only those branches import, and writes
+the readable bundle next to its minified build (`*.min.js`) from the same
+options. `upsert-granite-ridge-staging-portal.mjs` builds the Snow staging
+runtime this way: its checks read the readable bundle, and the template ships
+the minified one with the stylesheet minified by esbuild.
+`export-live-portal-manual.mjs` refuses a source that leaves live
+data mode, names a vertical other than the Snow-only runtime's, lacks the Core OIDC or customer Account contract, names a service
 base that is not a same-origin path, enables a module its profile does not own
 or a PIM module without a PIM contract, carries a key it does not ship,
 ships an operator-owned parameter with anything but the `#` placeholder, which

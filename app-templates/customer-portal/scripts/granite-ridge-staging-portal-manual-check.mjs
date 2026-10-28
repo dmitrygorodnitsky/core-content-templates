@@ -2,8 +2,10 @@ import assert from "node:assert/strict";
 import fs from "node:fs/promises";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
-import { assertLiveBundle, liveFixtureMarkers } from "./build-live-portal-runtime.mjs";
+import { assertLiveBundle, bundledInputs, bundleLivePortalRuntime, liveFixtureMarkers, liveRuntimeVertical, minifiedRuntimePath, minifyStylesheet } from "./build-live-portal-runtime.mjs";
 import { assertLiveTemplate, coreOidcCallback, exportLivePortalManual, liveDeploymentParameters, operatorParameterPlaceholder } from "./export-live-portal-manual.mjs";
+import { assertJteSafeTemplate } from "./export-portal-form-manual.mjs";
+import { readStyles } from "./portal-manual-package.mjs";
 
 const root = path.resolve("app-templates/customer-portal");
 const inputPath = path.join(root, "cms/granite-ridge-snow.customer-portal-staging.json");
@@ -25,6 +27,7 @@ try {
   const readme = await fs.readFile(path.join(outputDir, "README.md"), "utf8");
   const preview = await fs.readFile(path.join(outputDir, "preview.html"), "utf8");
   const { head, html, css, javascript } = template;
+  const readableJavascript = await fs.readFile(runtimePath, "utf8");
   const dataset = rootDataset(html);
 
   assert.equal(template.code, "CUSTOMER_PORTAL_GRANITE_RIDGE_STAGING");
@@ -107,22 +110,45 @@ try {
     assert.ok(css.includes(selector), "missing stylesheet selector " + selector);
   }
 
-  assert.doesNotThrow(() => assertLiveBundle(javascript));
-  for (const marker of liveFixtureMarkers) assert.equal(javascript.includes(marker), false, "fixture marker " + marker + " leaked into the live runtime");
-  assert.doesNotMatch(javascript, /granite-ridge-snow|Granite Ridge/, "the snow demonstration case must not ship in the live runtime");
-  assert.doesNotMatch(javascript, /^\s*import\s/m);
-  assert.doesNotThrow(() => Function(javascript));
-  assert.match(javascript, /signinRedirect/);
-  assert.match(javascript, /signoutRedirect/);
-  assert.match(javascript, /oauth-protected-resource/);
-  assert.match(javascript, /core-oidc-auth/);
-  assert.match(javascript, /account-bootstrap/);
-  assert.match(javascript, /customerAccountRequired/, "the runtime must resolve the customer Account without the module list naming it");
-  assert.match(javascript, /property: "user\.id"/);
-  assert.match(javascript, /property: "type\.code"/);
-  assert.match(javascript, /operator: "IN", property: "type\.code"/, "a list of Account types is read through one IN filter");
-  assert.match(javascript, /SNOW_REMOVAL_PROPERTY/);
-  assert.match(javascript, /browser-filtered/);
+  for (const bundle of [readableJavascript, javascript]) {
+    assert.doesNotThrow(() => assertLiveBundle(bundle));
+    for (const marker of liveFixtureMarkers) assert.equal(bundle.includes(marker), false, "fixture marker " + marker + " leaked into the live runtime");
+    assert.doesNotMatch(bundle, /granite-ridge-snow|Granite Ridge/, "the snow demonstration case must not ship in the live runtime");
+    assert.doesNotMatch(bundle, /^\s*import\s/m);
+    assert.doesNotThrow(() => Function(bundle));
+  }
+  assert.match(readableJavascript, /signinRedirect/);
+  assert.match(readableJavascript, /signoutRedirect/);
+  assert.match(readableJavascript, /oauth-protected-resource/);
+  assert.match(readableJavascript, /core-oidc-auth/);
+  assert.match(readableJavascript, /account-bootstrap/);
+  assert.match(readableJavascript, /customerAccountRequired/, "the runtime must resolve the customer Account without the module list naming it");
+  assert.match(readableJavascript, /property: "user\.id"/);
+  assert.match(readableJavascript, /property: "type\.code"/);
+  assert.match(readableJavascript, /operator: "IN", property: "type\.code"/, "a list of Account types is read through one IN filter");
+  assert.match(readableJavascript, /SNOW_REMOVAL_PROPERTY/);
+  assert.match(readableJavascript, /browser-filtered/);
+
+  const snowBuild = await bundleLivePortalRuntime({ vertical: liveRuntimeVertical });
+  assert.equal(readableJavascript, snowBuild.readable.text, "the readable runtime the checks read is the current Snow-only build of runtime/src");
+  assert.equal(javascript, snowBuild.minified.text, "the template ships the minified build of that same source");
+  assert.equal(await fs.readFile(minifiedRuntimePath(runtimePath), "utf8"), javascript);
+  assert.deepEqual(bundledInputs(snowBuild.minified.metafile), bundledInputs(snowBuild.readable.metafile), "both builds bundle the same modules from the same bytes");
+  assert.ok(javascript.length < readableJavascript.length * 0.7, "the shipped runtime is minified");
+  assert.doesNotThrow(() => assertJteSafeTemplate(template), "the minified runtime stays JTE-safe");
+  assert.equal(css, await minifyStylesheet(await readStyles()), "the template ships the minified portal stylesheet");
+  assert.ok(css.length < (await readStyles()).length, "the shipped stylesheet is minified");
+
+  const fullBuild = await bundleLivePortalRuntime();
+  const verticalOnlyModule = /\/(components\/(spa|seo)\/|components\/shell\/SpaTopNav\.js|components\/care\/(Beauty|Health|Equipment|Lawn|Pest|Roof|Water)|routes\/(Spa|Seo|spa-)|normalizers\/(spa-|seo\.js)|modules\/seo\.js|seo-actions\.js|adapters\/core-(spa-demo|pim|cart|orders|plans)-adapter\.js)/;
+  const verticalOnly = (build) => bundledInputs(build.readable.metafile).map(([input]) => input).filter((input) => verticalOnlyModule.test(input));
+  assert.deepEqual(verticalOnly(snowBuild), [], "the Snow-only build bundles no Spa, SEO, PIM, cart, orders or plans module");
+  assert.ok(verticalOnly(fullBuild).length > 0, "the build every other vertical uses still bundles them");
+  for (const [module, marker] of [["components/spa/SpaBookingFlow.js", '"booking-steps"'], ["adapters/core-spa-demo-adapter.js", '"SPA_SERVICE_PROVIDER"'], ["components/seo/SeoSections.js", '"seo-final-call-cta"']]) {
+    assert.ok(fullBuild.readable.text.includes(module) && fullBuild.minified.text.includes(marker), module + " stays in the build every other vertical uses");
+    assert.equal(readableJavascript.includes(module), false, module + " must not reach the Snow-only build");
+    assert.equal(javascript.includes(marker), false, module + " must not ship in the Snow-only template");
+  }
   for (const [field, value] of Object.entries({ head, html, css, javascript })) {
     assert.doesNotMatch(value, /@\{|!\{|<%|%>|@(param|import|template|if|for|while|switch|else)\b/, field + " must stay JTE-safe");
     assert.equal(value.replace(/\$\{[A-Z0-9_]+@STRING\}/g, "").includes("${"), false, field + " carries a ${ opener that is not a declared parameter marker");
@@ -139,7 +165,7 @@ try {
   assert.match(readme, /same origin as Core/);
   assert.equal(preview.includes("${"), false, "the preview resolves every parameter marker");
   assert.match(preview, /data-portal-weather-client-id="#"/, "the preview renders the placeholder the way CMS will");
-  assert.ok(preview.length > 500_000, "the standalone preview must inline the whole runtime");
+  assert.ok(preview.includes(javascript), "the standalone preview must inline the whole shipped runtime");
 
   const refusals = [
     ["fixture data mode", (s) => { s.runtime.dataMode = "fixture"; }, /live data mode/],
@@ -160,6 +186,7 @@ try {
     ["the account module the profile does not own", (s) => { s.runtime.enabledModules.push("account"); }, /Module account is not part of profile stormRetail/],
     ["a default route whose module is off", (s) => { s.runtime.defaultRoute = "calendar"; }, /Default route calendar/],
     ["a profile the vertical cannot use", (s) => { s.runtime.vertical = "beauty"; s.runtime.theme = "beauty"; }, /cannot serve vertical beauty/],
+    ["a vertical the Snow-only runtime does not carry", (s) => { s.runtime.vertical = "lawn"; s.runtime.theme = "lawn"; }, /snow-only build and carries no code for vertical lawn/],
     ["a malformed service geography", (s) => { s.serviceGeography.map.zoom = null; }, /serviceGeography/],
     ["no service geography", (s) => { delete s.serviceGeography; }, /needs serviceGeography/],
     ["a weather credential in the source", (s) => { s.runtime.weather = { clientId: "id", clientSecret: "secret" }; }, /does not ship: weather/],

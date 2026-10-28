@@ -38,7 +38,7 @@ function module(id, normalize) {
     id: id,
     adapter(context) {
       if (context.config.dataMode === "live") {
-        if (corePimAdapter.supports(id)) return corePimAdapter;
+        if (globalThis.__PORTAL_VERTICAL__ !== "snow" && corePimAdapter.supports(id)) return corePimAdapter;
         throw new Error("Live adapter is not opened for module " + id);
       }
       return fixtureAdapter;
@@ -217,7 +217,9 @@ const ordersModule = {
   id: "orders",
   asyncOnly: true,
   adapter(context) {
-    return context.config.dataMode === "live" ? createCoreOrdersAdapter() : fixtureAdapter;
+    if (context.config.dataMode !== "live") return fixtureAdapter;
+    if (globalThis.__PORTAL_VERTICAL__ !== "snow") return createCoreOrdersAdapter();
+    throw liveAdapterClosed("orders");
   },
   normalize(raw, context) {
     return context.config.dataMode === "live" ? raw : normalizeOrders(raw);
@@ -232,7 +234,10 @@ const appointmentsModule = {
   id: "appointments",
   asyncOnly: true,
   adapter(context) {
-    if (context.config.dataMode === "live") return createCoreSpaDemoAdapter();
+    if (context.config.dataMode === "live") {
+      if (globalThis.__PORTAL_VERTICAL__ !== "snow") return createCoreSpaDemoAdapter();
+      throw liveAdapterClosed("appointments");
+    }
     return {
       load() { return { state: "ready", items: [], next: null, upcoming: [], past: [], byRef: {} }; },
     };
@@ -254,7 +259,10 @@ const planModule = {
   id: "plan",
   asyncOnly: true,
   adapter(context) {
-    if (context.config.dataMode === "live") return createCorePlansAdapter();
+    if (context.config.dataMode === "live") {
+      if (globalThis.__PORTAL_VERTICAL__ !== "snow") return createCorePlansAdapter();
+      throw liveAdapterClosed("plan");
+    }
     return { load() { return { state: "ready", items: [], byRef: {} }; } };
   },
   normalize(raw) { return raw; },
@@ -295,7 +303,10 @@ const cartModule = {
   id: "cart",
   asyncOnly: true,
   adapter(context) {
-    if (context.config.dataMode === "live") return createCoreCartAdapter();
+    if (context.config.dataMode === "live") {
+      if (globalThis.__PORTAL_VERTICAL__ !== "snow") return createCoreCartAdapter();
+      throw liveAdapterClosed("cart");
+    }
     // No fixture cart is ever published through the module: the fixture cart
     // lives in `state.spaCart` and the page reads it there. This path exists so
     // a non-live deployment can enable the module without reaching Core.

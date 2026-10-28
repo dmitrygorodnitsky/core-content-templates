@@ -2,7 +2,7 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import process from "node:process";
 import { pathToFileURL } from "node:url";
-import { buildLivePortalRuntime } from "./build-live-portal-runtime.mjs";
+import { buildLivePortalRuntime, liveRuntimeVertical, minifiedRuntimePath } from "./build-live-portal-runtime.mjs";
 import { exportLivePortalManual, liveDeploymentParameters, operatorParameterPlaceholder } from "./export-live-portal-manual.mjs";
 import { sha256 } from "./portal-manual-package.mjs";
 import { parseArgs, upsertPortalPackage } from "./upsert-granite-ridge-portal.mjs";
@@ -31,7 +31,7 @@ const staging = {
     "property-map-check.mjs",
   ].map((name) => path.join(portalRoot, "scripts", name)),
   buildRuntime() {
-    return buildLivePortalRuntime({ output: staging.runtime });
+    return buildLivePortalRuntime({ output: staging.runtime, minifiedOutput: minifiedRuntimePath(staging.runtime), vertical: liveRuntimeVertical });
   },
   exportPackage() {
     return exportLivePortalManual({ inputPath: staging.source, runtimePath: staging.runtime, outputDir: staging.package });
@@ -68,7 +68,8 @@ const usage = () => `Usage:
     [--expected-root-id <uuid>] [--require-existing | --require-missing] \\
     [--skip-build] [--skip-checks]
 
-Rebuilds the live runtime from runtime/src, regenerates the manual package from
+Rebuilds the Snow-only live runtime from runtime/src (a readable bundle for the
+checks and its minified build for CMS), regenerates the manual package from
 cms/granite-ridge-snow.customer-portal-staging.json, runs its checks, then
 creates or updates BlockTemplate ${staging.templateCode} by code.
 It never creates or changes a PageContext.

@@ -51,7 +51,7 @@ const ORDER_ITEM_MAPPINGS = [
   {
     key: "id",
     // The membership's display name lives on the Product behind the price.
-    mappings: REF_MAPPINGS.concat([
+    mappings: /* @__PURE__ */ REF_MAPPINGS.concat([
       { name: "attributes" },
       { key: "id", mappings: REF_MAPPINGS, name: "product", type: "identifier" },
     ]),
