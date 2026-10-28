@@ -1,11 +1,17 @@
 import { h } from "../dom.js";
-import { liveListStatus, liveProperties, liveVisits, state } from "../state.js";
+import { render } from "../app.js";
+import { isModuleEnabled, liveListStatus, liveProperties, liveVisits, quotePackage, state } from "../state.js";
 import { EmptyState } from "../components/primitives/EmptyState.js";
 import { ErrorState } from "../components/primitives/ErrorState.js";
 import { UnauthorizedState, skel } from "../components/primitives/RouteStates.js";
 import { PageHeader } from "../components/shell/PageHeader.js";
+import { PropertyPlan } from "../components/storm/PropertyPlan.js";
 import { RecordSection, VisitRow } from "../components/storm/RecordRows.js";
-import { findVisit, localDateKey, visitDay, visitImageUrl, visitPlace, visitWindow } from "../normalizers/visits.js";
+import { activeServiceNames } from "../normalizers/contracts.js";
+import { formatArea } from "../normalizers/overview.js";
+import { findVisit, localDateKey, progressWhen, visitDay, visitImageUrl, visitPlace, visitWindow } from "../normalizers/visits.js";
+import { propertyPlan } from "../property-plan.js";
+import { visitProgress } from "../visit-progress.js";
 
 export function LiveVisits() {
   var page = h("section", { "class": "page page--narrow", "data-route": "appointments", "data-visual-id": "visits" });
@@ -39,15 +45,25 @@ export function LiveVisitDetail() {
   }
 
   var today = localDateKey(new Date());
-  var place = visitPlace(visit, liveProperties());
+  var property = liveProperties().find(function (item) { return item.backendId === visit.propertyBackendId; }) || null;
   page.setAttribute("data-state", visit.stateCode.toLowerCase());
   page.appendChild(h("div", { "class": "prop-head" }, [
     h("div", { style: "flex:1;min-width:0" }, [
       h("h1", { "class": "prop-head__title" }, visitDay(visit, today)),
-      h("div", { "class": "prop-head__addr", "data-module": "visit-when" }, [visitWindow(visit), place].filter(Boolean).join(" · ")),
+      h("div", { "class": "prop-head__addr", "data-module": "visit-when" }, visitWindow(visit)),
     ]),
     h("span", { "class": "status-badge status-badge--" + visit.status.tone }, visit.status.label),
   ]));
+
+  if (property) {
+    page.appendChild(PropertyFacts(property));
+    var plan = PropertyPlan(propertyPlan(property.planId, render));
+    if (plan) page.appendChild(plan);
+    var services = ServicesCard(property);
+    if (services) page.appendChild(services);
+  }
+  var progress = ProgressCard(visit);
+  if (progress) page.appendChild(progress);
 
   if (visit.completionNotes) {
     page.appendChild(h("section", { "class": "card card--pad record-section", "data-module": "visit-notes", "data-visual-id": "visit-notes" }, [
@@ -63,6 +79,46 @@ export function LiveVisitDetail() {
     ].concat(photos)));
   }
   return page;
+}
+
+function PropertyFacts(property) {
+  var area = formatArea(property.areaSqft);
+  return h("section", { "class": "card card--pad prop-facts", "data-module": "visit-property", "data-visual-id": "visit-property" }, [
+    h("div", { "class": "prop-fact", "data-fact": "property" }, [
+      h("div", { "class": "prop-fact__label" }, "Property"),
+      h("a", { "class": "link-action prop-fact__value", href: "#/properties/" + encodeURIComponent(property.id), "data-visual-id": "visit-property-link" }, (property.address || property.name) + " ›"),
+    ]),
+    area ? h("div", { "class": "prop-fact", "data-fact": "area" }, [
+      h("div", { "class": "prop-fact__label" }, "Area"),
+      h("div", { "class": "prop-fact__value" }, area),
+    ]) : null,
+  ]);
+}
+
+function ServicesCard(property) {
+  if (!isModuleEnabled("proposals")) return null;
+  var names = activeServiceNames(quotePackage(), property.backendId);
+  if (!names.length) return null;
+  return h("section", { "class": "card card--pad record-section", "data-module": "visit-services", "data-visual-id": "visit-services" }, [
+    h("h2", { "class": "prop-section__title" }, "Services"),
+    h("ul", { "class": "prop-service__lines", "aria-label": "Services" }, names.map(function (name) {
+      return h("li", { "class": "prop-service__line" }, name);
+    })),
+  ]);
+}
+
+function ProgressCard(visit) {
+  var entry = visitProgress(visit, render);
+  if (!entry || entry.status !== "ready" || !entry.steps.length) return null;
+  return h("section", { "class": "card card--pad record-section", "data-module": "visit-progress", "data-visual-id": "visit-progress" }, [
+    h("h2", { "class": "prop-section__title" }, "Progress"),
+    h("div", { "class": "timeline" }, [h("div", { "class": "timeline__line" })].concat(entry.steps.map(function (step) {
+      return h("div", { "class": "timeline-step", "data-module": "visit-progress-step", "data-state": step.code.toLowerCase() }, [
+        h("div", { "class": "timeline-step__dot", style: "background:" + (step.code === "COMPLETED" ? "var(--ok)" : "var(--accent)") }),
+        h("div", { "class": "timeline-step__title" }, step.label + " · " + progressWhen(step, visit)),
+      ]);
+    }))),
+  ]);
 }
 
 function photoGroup(label, ids) {

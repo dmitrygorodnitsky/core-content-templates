@@ -17,8 +17,11 @@ const load = (file) => import(new URL(file, runtimeRoot));
 const { readPortalConfig, portalProfiles } = await load("src/config.js");
 const { applyPortalConfig, state } = await load("src/state.js");
 const { PortalRuntime } = await load("src/portal-runtime.js");
-const { createCoreSnowInvoicesAdapter, createCoreSnowVisitsAdapter } = await load("src/adapters/core-snow-adapter.js");
-const { normalizeVisits, visitDay, visitWhen, visitWindow } = await load("src/normalizers/visits.js");
+const { coreSnowContract, createCoreSnowInvoicesAdapter, createCoreSnowVisitsAdapter, readVisitTransitions } = await load("src/adapters/core-snow-adapter.js");
+const { normalizeVisitProgress, normalizeVisits, visitDay, visitWhen, visitWindow } = await load("src/normalizers/visits.js");
+const { normalizeProposals } = await load("src/normalizers/index.js");
+const { visitProgress } = await load("src/visit-progress.js");
+const { propertyPlan } = await load("src/property-plan.js");
 const { invoiceStatusLine, normalizeInvoices, openInvoices } = await load("src/normalizers/invoices.js");
 const { TopNav } = await load("src/components/shell/TopNav.js");
 const { renderRoute } = await load("src/router.js");
@@ -62,6 +65,8 @@ const INVOICE_BODY = {
 const ACCOUNT = 732;
 const USER = 42;
 const PRE = "cde4f537-7ad4-4c85-8f43-d71b84038de1";
+const PRE_78 = "5b0c7a1e-2f4d-4e8a-9c61-0d3f2a7b9e14";
+const PLAN = "c08d28dc-0f70-4fb9-9d6e-1b881975d923";
 const POST = "473582bc-82ac-4613-b005-64b9e38a9c30";
 const CREW = "dev-1 test crew: gate code 4417";
 const visitType = { id: 2, code: "SNOW_SERVICE_VISIT", nls: { en: { NAME: "Service Visit" } } };
@@ -72,7 +77,7 @@ const visit = (id, start, end, stateCode, property, extra = {}) => ({
 });
 const VISITS_732 = [
   visit(79, 1793430000000, 1793433000000, "SCHEDULED", 983),
-  visit(78, 1793169000000, 1793172600000, "IN_PROGRESS", 983),
+  visit(78, 1793169000000, 1793172600000, "IN_PROGRESS", 983, { PRE_SERVICE_MEDIA: { value: [{ id: PRE_78, type: "image" }] } }),
   visit(77, 1792910700000, 1792913700000, "COMPLETED", 983, {
     COMPLETION_NOTES: { value: "dev-1 test: 8 cm cleared, parkade ramp and loading bay de-iced." },
     CREW_NOTES: { value: CREW },
@@ -96,10 +101,47 @@ const INVOICES_732 = [
   invoice(46, "PAID", [2026, 10, 16], "October 2026", "2026-10-01", 4217.94),
   invoice(8, "DRAFT", [2026, 9, 25], "", "", 100, [line(9, 100, "Draft line")]),
 ];
-const property = (id, address) => ({
+const property = (id, address, extra = {}) => ({
   id, code: "RES-" + id, nls: { en: { NAME: "dev-1 test property " + id } }, type: { id: 154, code: "SNOW_REMOVAL_PROPERTY" },
-  states: [{ id: 1, code: "ACTIVE" }], attributes: { 153: { ACCOUNT: { value: ACCOUNT }, ADDRESS: { value: address } } },
+  states: [{ id: 1, code: "ACTIVE" }], attributes: { 153: Object.assign({ ACCOUNT: { value: ACCOUNT }, ADDRESS: { value: address } }, extra) },
 });
+const transition = (id, code, observed) => ({ metadata: {}, id, state: { id: 100 + id, code, nls: { en: { NAME: code } } }, user: { optimistic: 591, id: 1 }, observed });
+const TRANSITIONS = {
+  76: [transition(209, "IN_PROGRESS", 1793190046589), transition(210, "COMPLETED", 1793190058938)],
+  77: [transition(300, "DRAFT", Date.UTC(2026, 9, 21, 16, 0)), transition(301, "SCHEDULED", Date.UTC(2026, 9, 22, 17, 5)), transition(303, "COMPLETED", Date.UTC(2026, 9, 25, 14, 33)), transition(302, "IN_PROGRESS", Date.UTC(2026, 9, 25, 13, 47))],
+  78: [transition(213, "IN_PROGRESS", 1793190076446)],
+  79: [],
+  80: [], 81: [],
+};
+const transitionsFetch = async (url) => {
+  const id = Number(/\/appointment\/(\d+)\/list-transitions\.json$/.exec(new URL(url).pathname)[1]);
+  return TRANSITIONS[id] === "forbidden" ? json({ message: "Entity is not accessible", status: 403 }, 403) : json({ resultSize: TRANSITIONS[id].length, result: TRANSITIONS[id], sequence: 519 });
+};
+const settle = () => new Promise((resolve) => setImmediate(resolve));
+async function preloadProgress() {
+  const envelope = state.moduleData.appointmentsTimeline;
+  for (const item of [...envelope.upcoming, ...envelope.past]) visitProgress(item, () => {}, transitionsFetch);
+  await settle();
+}
+const SENT = ["INITIAL", "QUOTE_PREPARED", "QUOTE_APPROVED_INTERNALLY", "QUOTE_SENT", "QUOTE_VIEWED"];
+const ready = { state: "ready", scopeMode: "server-scoped", truncated: false };
+const quoteOrder = (id, final, items) => ({ id, type: { id: 5, code: "FIELD_SERVICE_ORDER" }, states: SENT.concat(final).map((code, index) => ({ id: index + 1, code })), attributes: { 5: { SERVICE_PROPERTY: { value: 983 } } }, grandTotal: 4217.94, totalCharges: 4217.94, totalTaxes: 0, currency: { id: 2, code: "CAD" }, items: items.map((item) => ({ id: item })) });
+const orderItem = (id, order, price, total) => ({ id, order: { id: order }, itemPrice: { id: price }, grandTotal: total, sortOrder: id, metadata: { INTERVAL_UNIT: "MONTH", INTERVAL_COUNT: 1 } });
+const agreement169 = (codes) => normalizeProposals({
+  accountId: ACCOUNT, scopeMode: "server-scoped",
+  reads: { agreements: ready, orders: ready, orderItems: ready, productPrices: ready, products: ready },
+  client: { displayName: "Bilbo Baggins" },
+  agreements: [{ id: 169, type: { id: 17, code: "SERVICE_AGREEMENT" }, states: codes.map((code, index) => ({ id: index + 1, code })), attributes: { 17: { CLIENT: { value: ACCOUNT }, ORDERS: { value: [113, 114] } } } }],
+  quoteOrders: [quoteOrder(113, "DECLINED", [142]), quoteOrder(114, "CLIENT_APPROVED", [140, 141])],
+  orderItems: [orderItem(140, 114, 52, 747.99), orderItem(141, 114, 58, 3469.95), orderItem(142, 113, 27, 934.99)],
+  productPrices: [{ id: 52, product: { id: 25 }, type: { id: 2, code: "TIERED_RECURRENT" } }, { id: 58, product: { id: 28 }, type: { id: 2, code: "TIERED_RECURRENT" } }, { id: 27, product: { id: 30 }, type: { id: 1, code: "TIERED" } }],
+  products: [{ id: 25, nls: { en: { NAME: "Snow Removal" } } }, { id: 28, nls: { en: { NAME: "Rock Salt De-Icing" } } }, { id: 30, nls: { en: { NAME: "Sidewalk Sanding" } } }],
+});
+const ACTIVE_169 = ["QUOTATION", "QUOTATION_SENT", "AWAITING_CLIENT_DETAILS", "DRAFT", "SENT_TO_CLIENT", "CLIENT_APPROVED", "ACTIVE"];
+const PLAN_JSON = {
+  type: "PropertyPlan", schemaVersion: 1,
+  elements: [{ label: "Parkade ramp", elementTypeDictionaryId: 1, overlays: [{ map: "GOOGLE_MAPS", geometry: { type: "Polygon", coordinates: [[[-123.1141, 49.2608], [-123.1139, 49.2608], [-123.1139, 49.2609], [-123.1141, 49.2609], [-123.1141, 49.2608]]] } }] }],
+};
 const ADDRESSES = {
   610: { id: 610, address1: "12 Frost Lane", city: "Surrey", postalCode: "V3W 1J8", state: { id: 2, code: "BC" }, country: { id: "CA" } },
   611: { id: 611, address1: "88 Harbour Road", city: "Richmond", postalCode: "V6X 2A1", state: { id: 2, code: "BC" }, country: { id: "CA" } },
@@ -203,6 +245,7 @@ const page = (route, params = {}) => { Object.assign(state, params); state.route
 {
   const { failure, calls } = await liveLoad({ properties: [property(983, 610)], visits: VISITS_732, invoices: INVOICES_732 });
   assert.equal(failure, null);
+  await preloadProgress();
   assert.ok(calls.includes("/core-svc/api/tagged/appointment/list.json") && calls.includes("/core-bill/api/tagged/invoice/list.json"));
   assert.deepEqual(navLabels(), ["Home", "Visits", "Invoices", "Contracts"], "the snow nav reads Home, Visits, Invoices, Contracts");
 
@@ -273,6 +316,11 @@ const page = (route, params = {}) => { Object.assign(state, params); state.route
   assert.match(rows["visit-core-81"], /88 Harbour Road/);
   for (const text of Object.values(rows)) assert.equal(text.split("Frost Lane").length + text.split("Harbour Road").length, 3, "the address appears once per row");
   assert.match(one(Overview(), "[data-module=\"next-visit\"]").textContent, /12 Frost Lane/, "the home names the property of the next visit when there are several");
+  await preloadProgress();
+  const other = page("visit.detail", { visitId: "visit-core-81" });
+  assert.equal(one(other, "[data-module=\"visit-when\"]").textContent, "7:30 – 8:40 AM", "the header keeps the window; the property block names the address");
+  assert.equal(other.textContent.split("88 Harbour Road").length, 2, "with several properties the visit names its own address once");
+  assert.equal(one(other, "[data-visual-id=\"visit-property-link\"]").getAttribute("href"), "#/properties/prop-core-1033");
   state.propertyId = "prop-core-1033";
   const section = one(PropertyDetail(), "[data-module=\"property-live-visits\"]");
   assert.deepEqual(ids(section, "[data-module=\"visit-row\"]"), ["visit-core-81", "visit-core-80"], "a property lists only its own visits");
@@ -308,6 +356,74 @@ const page = (route, params = {}) => { Object.assign(state, params); state.route
 }
 
 {
+  const calls = [];
+  const rows = await readVisitTransitions(context, 78, async (url, options) => { calls.push({ path: new URL(url).pathname, options }); return transitionsFetch(url); });
+  assert.deepEqual(calls.map((call) => call.path), ["/core-svc/api/tagged/appointment/78/list-transitions.json"], "progress comes from the tagged transition list of the visit");
+  assert.equal(calls[0].options.headers.Authorization, "Bearer test-token");
+  assert.equal(calls[0].options.headers["X-Organization-Code"], "SNOWLIMITLESS");
+  const body = JSON.parse(calls[0].options.body);
+  assert.deepEqual(body, coreSnowContract.visitTransitionsBody);
+  assert.deepEqual(body.mappings.map((mapping) => mapping.name), ["id", "observed", "state"], "the crew member who moved the visit is not requested");
+  assert.deepEqual(body.sorting, [{ field: "observed", direction: "ASC" }]);
+  assert.equal(rows[0].observed, 1793190076446);
+  await assert.rejects(readVisitTransitions(context, 78, async () => json({}, 403)), { code: "customer-forbidden" });
+
+  const steps = normalizeVisitProgress(TRANSITIONS[77]);
+  assert.deepEqual(steps.map((step) => step.code), ["SCHEDULED", "IN_PROGRESS", "COMPLETED"], "steps run in time order and a state the customer never sees is dropped");
+}
+
+{
+  await liveLoad({ properties: [property(983, 610, { SERVICE_AREA_SQFT: { value: 50000 }, PROPERTY_PLAN: { value: PLAN } })], visits: VISITS_732, invoices: INVOICES_732 });
+  state.moduleData.proposals = agreement169(ACTIVE_169);
+  await preloadProgress();
+  const planEntry = propertyPlan(PLAN, () => {}, async () => ({ ok: true, json: async () => structuredClone(PLAN_JSON) }));
+  await settle();
+  assert.equal(planEntry.status, "ready");
+  const sections = (root) => root.children.map((node) => node.getAttribute("data-module")).filter(Boolean);
+  const steps = (root) => all(root, "[data-module=\"visit-progress-step\"]").map((node) => node.textContent);
+
+  const done = page("visit.detail", { visitId: "visit-core-77" });
+  assert.deepEqual(sections(done), ["visit-property", "property-plan", "visit-services", "visit-progress", "visit-notes", "visit-photos"]);
+  const facts = one(done, "[data-module=\"visit-property\"]");
+  assert.deepEqual(all(facts, "[data-fact]").map((fact) => [fact.getAttribute("data-fact"), one(fact, ".prop-fact__value").textContent]), [["property", "12 Frost Lane, Surrey, BC V3W 1J8, Canada ›"], ["area", "50,000 ft²"]], "a single-property customer still sees which property the visit is at, and its area");
+  assert.equal(one(facts, "a").getAttribute("href"), "#/properties/prop-core-983");
+  assert.equal(done.textContent.split("12 Frost Lane").length, 2, "the address appears once on the visit page");
+  assert.equal(all(one(done, "[data-module=\"property-plan\"]"), ".prop-plan__shape").length, 1, "the approved plan is drawn");
+  assert.deepEqual(all(one(done, "[data-module=\"visit-services\"]"), ".prop-service__line").map((node) => node.textContent), ["Snow Removal", "Rock Salt De-Icing"], "the services are the chosen option of the active agreement, not the declined one");
+  assert.doesNotMatch(one(done, "[data-module=\"visit-services\"]").textContent, /\$|747|Monthly/, "the visit page shows no prices");
+  assert.deepEqual(steps(done), ["Scheduled · Oct 22", "Started · 6:47 AM", "Completed · 7:33 AM"], "transition instants read in the customer's zone, beside the wall-clock window 6:45 – 7:35 AM");
+  assert.doesNotMatch(one(done, "[data-module=\"visit-progress\"]").textContent, /1:47 PM|2:33 PM/, "observed is a real instant, not a wall-clock value read as UTC");
+
+  const live = page("visit.detail", { visitId: "visit-core-78" });
+  assert.equal(one(live, ".prop-head__title").textContent, "Today");
+  assert.equal(one(live, "[data-module=\"visit-when\"]").textContent, "6:30 – 7:30 AM", "the planned window renders without a zone shift");
+  assert.deepEqual(steps(live), ["Started · 5:21 AM"], "the dev-1 transition of visit 78, observed 12:21 UTC, is 5:21 AM in Vancouver");
+  assert.deepEqual(sections(live), ["visit-property", "property-plan", "visit-services", "visit-progress", "visit-photos"]);
+  assert.deepEqual(all(live, ".record-photos__label").map((node) => node.textContent), ["Before"], "before photos show while the visit is in progress");
+  assert.deepEqual(all(live, "img").map((img) => img.getAttribute("src")), ["/core/image/" + PRE_78 + "/get"]);
+
+  const old = page("visit.detail", { visitId: "visit-core-76" });
+  assert.deepEqual(steps(old), ["Started · Oct 28, 5:20 AM", "Completed · Oct 28, 5:20 AM"], "a transition on another day than the visit names its date");
+
+  const upcoming = page("visit.detail", { visitId: "visit-core-79" });
+  assert.deepEqual(sections(upcoming), ["visit-property", "property-plan", "visit-services"], "an upcoming visit shows the property and the services and no empty section");
+  assert.doesNotMatch(upcoming.textContent, /Progress|Photos|Completion notes|No |not available/);
+
+  state.moduleData.proposals = agreement169(ACTIVE_169.slice(0, 5));
+  assert.equal(all(page("visit.detail", { visitId: "visit-core-79" }), "[data-module=\"visit-services\"]").length, 0, "an agreement awaiting approval lists no services on a visit");
+  delete state.moduleData.proposals;
+  assert.equal(all(page("visit.detail", { visitId: "visit-core-79" }), "[data-module=\"visit-services\"]").length, 0, "without an agreement there is no Services block");
+
+  const forbidden = visit(92, 1793430000000, 1793433000000, "IN_PROGRESS", 983);
+  TRANSITIONS[92] = "forbidden";
+  await liveLoad({ properties: [property(983, 610)], visits: [forbidden], invoices: [] });
+  await preloadProgress();
+  const unread = page("visit.detail", { visitId: "visit-core-92" });
+  assert.deepEqual(sections(unread), ["visit-property"], "a transition list the customer cannot read leaves no Progress block, and a property without area or plan shows only its address");
+  assert.deepEqual(all(unread, "[data-fact]").map((fact) => fact.getAttribute("data-fact")), ["property"]);
+}
+
+{
   applyPortalConfig(readPortalConfig({ dataset: { portalVertical: "snow", portalProfile: "stormRetail", portalTheme: "snow", portalDataMode: "fixture", portalAuthMode: "fixture", portalCase: "granite-ridge-snow", portalNavAppointmentsLabel: "Appointments" } }));
   const runtime = new PortalRuntime({ state });
   runtime.loadAll();
@@ -327,7 +443,7 @@ const page = (route, params = {}) => { Object.assign(state, params); state.route
   assert.deepEqual(order, ["overview", "appointments", "invoices", "proposals.list"]);
 }
 
-console.log("snow visits and invoices check ok: tagged visit and invoice reads with the dev-1 bodies, wall-clock visit times, DRAFT invoices and canceled visits hidden, single-property address omission, home next-visit and invoice-due cards, property visits, and empty lists hidden from the nav and the screens");
+console.log("snow visits and invoices check ok: tagged visit and invoice reads with the dev-1 bodies, wall-clock visit times, the visit page's property, plan, active-agreement services and progress from tagged transitions read as real instants, DRAFT invoices and canceled visits hidden, single-property address omission, home next-visit and invoice-due cards, property visits, and empty lists hidden from the nav and the screens");
 
 function createDom() {
   class Text {

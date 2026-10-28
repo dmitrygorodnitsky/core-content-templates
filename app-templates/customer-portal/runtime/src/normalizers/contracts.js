@@ -248,6 +248,19 @@ export function currentServiceAgreement(pkg, propertyBackendId) {
   return rows.find(function (row) { return row.agreement.stage === "active"; }) || rows[0] || null;
 }
 
+export function activeServiceNames(pkg, propertyBackendId) {
+  var row = currentServiceAgreement(pkg, propertyBackendId);
+  if (!row || row.agreement.stage !== "active") return [];
+  var entry = row.properties.find(function (item) { return item.propertyBackendId === propertyBackendId; });
+  var names = [];
+  (entry ? entry.orders : []).forEach(function (order) {
+    order.lines.forEach(function (line) {
+      if (line.product && names.indexOf(line.product) === -1) names.push(line.product);
+    });
+  });
+  return names;
+}
+
 export function groupDecision(orders) {
   var list = orders || [];
   if (list.some(hasStatus("approved"))) return "approved";

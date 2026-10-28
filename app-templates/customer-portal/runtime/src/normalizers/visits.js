@@ -8,6 +8,12 @@ export var VISIT_STATUS = Object.freeze({
   COMPLETED: Object.freeze({ label: "Completed", tone: "ok", phase: "past" }),
 });
 
+var PROGRESS_STEPS = Object.freeze({
+  SCHEDULED: "Scheduled",
+  IN_PROGRESS: "Started",
+  COMPLETED: "Completed",
+});
+
 var MEDIA_ID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
 var WEEKDAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 var MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
@@ -68,6 +74,25 @@ export function visitWhen(visit, today) {
   return [visitDay(visit, today), visitWindow(visit)].filter(Boolean).join(", ");
 }
 
+export function normalizeVisitProgress(rows) {
+  return (Array.isArray(rows) ? rows : []).map(function (row) {
+    var code = text(row && row.state && row.state.code);
+    var ms = epochMs(row && row.observed);
+    if (!Object.prototype.hasOwnProperty.call(PROGRESS_STEPS, code) || ms === null) return null;
+    return { code: code, label: PROGRESS_STEPS[code], ms: ms };
+  }).filter(Boolean).sort(function (left, right) { return left.ms - right.ms; });
+}
+
+export function progressWhen(step, visit) {
+  var at = new Date(step.ms);
+  var day = MONTHS[at.getMonth()] + " " + at.getDate();
+  var start = visit && visit.start;
+  if (start && at.getFullYear() !== start.year) day += ", " + at.getFullYear();
+  if (step.code === "SCHEDULED") return day;
+  var time = clock(at.getHours() * 60 + at.getMinutes(), true);
+  return start && localDateKey(at) === start.date ? time : day + ", " + time;
+}
+
 export function localDateKey(date) {
   var value = date instanceof Date ? date : new Date();
   return value.getFullYear() + "-" + pad(value.getMonth() + 1) + "-" + pad(value.getDate());
@@ -99,9 +124,14 @@ function visitRecord(row) {
   };
 }
 
-function wallClock(value) {
+function epochMs(value) {
   var ms = typeof value === "number" ? value : typeof value === "string" && value.trim() !== "" ? Number(value) : Number.NaN;
-  if (!Number.isFinite(ms)) return null;
+  return Number.isFinite(ms) ? ms : null;
+}
+
+function wallClock(value) {
+  var ms = epochMs(value);
+  if (ms === null) return null;
   var instant = new Date(ms);
   var year = instant.getUTCFullYear();
   var month = instant.getUTCMonth() + 1;

@@ -15,6 +15,7 @@ const ORDER_PAGE_SIZE = 100;
 const LINE_PAGE_SIZE = 200;
 const CATALOG_PAGE_SIZE = 200;
 const VISIT_PAGE_SIZE = 50;
+const VISIT_TRANSITION_PAGE_SIZE = 20;
 const INVOICE_PAGE_SIZE = 50;
 
 const MEDIA_ID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
@@ -157,6 +158,18 @@ const VISIT_LIST_BODY = Object.freeze({
   sorting: [{ field: "start", direction: "DESC" }],
 });
 
+const VISIT_TRANSITIONS_BODY = Object.freeze({
+  filters: [],
+  mappings: [
+    { name: "id" },
+    { name: "observed" },
+    { name: "state", type: "identifier", mappings: TAGGED_REF_MAPPINGS },
+  ],
+  offset: 0,
+  pageSize: VISIT_TRANSITION_PAGE_SIZE,
+  sorting: [{ field: "observed", direction: "ASC" }],
+});
+
 const INVOICE_LIST_BODY = Object.freeze({
   mappings: INVOICE_MAPPINGS,
   offset: 0,
@@ -196,6 +209,14 @@ export async function loadSnowVisits(context, fetchImpl = globalThis.fetch, expl
     items: rows.filter(function (row) { return text(row && row.type && row.type.code) === VISIT_TYPE; }),
     truncated: resultSizeOf(reply, rows.length) > rows.length,
   };
+}
+
+export async function readVisitTransitions(context, backendId, fetchImpl = globalThis.fetch, explicitOrigin) {
+  var api = readContext(context, explicitOrigin);
+  var id = positiveInteger(backendId);
+  if (!id) throw contractError("invalid-target", "A visit id is required before reading its progress");
+  var reply = await requestJson(fetchImpl, api.serviceBase + "/api/tagged/appointment/" + id + "/list-transitions.json", readOptions(api, VISIT_TRANSITIONS_BODY));
+  return listResult(reply);
 }
 
 export async function loadSnowInvoices(context, fetchImpl = globalThis.fetch, explicitOrigin) {
@@ -682,6 +703,7 @@ export const coreSnowContract = Object.freeze({
   quoteOrderTypes: Object.freeze(QUOTE_ORDER_TYPES.slice()),
   resourceMappings: RESOURCE_MAPPINGS,
   visitListBody: VISIT_LIST_BODY,
+  visitTransitionsBody: VISIT_TRANSITIONS_BODY,
   quoteFilters: ["account.id"],
   agreementFilters: ["type.code", "attributes.{SERVICE_AGREEMENT type id}.CLIENT.value"],
   orderItemFilters: ["order.account.id", "order.id"],

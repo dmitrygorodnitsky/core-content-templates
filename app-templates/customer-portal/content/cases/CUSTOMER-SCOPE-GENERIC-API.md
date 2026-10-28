@@ -29,6 +29,7 @@ appointmentsTimeline, invoices, proposals, profile):
 | `/core-bill/api/tagged/order/{id}/send-event.json` | `P_TAG_ORDER_E` + the three `P_WF:GENERAL_FSM_ORDER:` quote events |
 | `/core-pim/api/product-price/list.json`, `/core-pim/api/product/list.json` | `P_PRICE_R`, `P_PRODUCT_R` |
 | `/core-svc/api/tagged/appointment/list.json` (`type.code = SNOW_SERVICE_VISIT`) | `P_TAG_APPOINTMENT_R` |
+| `/core-svc/api/tagged/appointment/{id}/list-transitions.json` (visit progress; maps `id`, `observed`, `state`) | `P_TAG_APPOINTMENT_R` |
 | `/core-bill/api/tagged/invoice/list.json` | `P_TAG_INVOICE_R` |
 | `/core/image/{id}/get` (visit photos) | none |
 | `GET /en/core-cms/api/form-type/{code}/get.json` (`CUSTOMER_PROFILE_UPDATE`, `CUSTOMER_LOGIN_CHANGE`) | none; sent without the session, as the public quote form does |
@@ -129,6 +130,21 @@ recording, paid, slow, refused, failed) were rendered from `runtime/src` with a
 stand-in Stripe card field at desktop, tablet and mobile widths in light and
 dark mode; the deployed page was not opened with a customer session and no card
 was entered.
+
+Deployment, 2026-10-28, visit page: a visit shows its property (address linked
+to the property page, area, approved plan), the services of the active
+agreement's chosen option without prices, its progress from the tagged
+transition list, before photos as soon as they exist, and after photos and
+completion notes when present; a section without data is left out. Transition
+`observed` values are server UTC instants, unlike the wall-clock `start` and
+`end`, so progress is read in the viewer's zone. A visit created directly in
+`SCHEDULED` has no transition, so no "Scheduled" step. The deploy key gets 403
+"Entity is not accessible" from the tagged transition list of visit 78; the
+customer's read of it is unverified until a signed-in browser test. The dry run
+passed the thirteen checks the upsert lists; after `--live`, `clear-cache.json`
+answered 200 on app-1-core-cms and app-3-core-cms, and twelve fetches of
+`/pages/SNOWLIMITLESS/portal` (six per node) served the new bundle,
+byte-identical on both nodes.
 
 History: on 2026-10-19 the deployment was held because `P_TAG_DOCUMENT_E` also
 authorized `sync-state-history`; the backend was told. On 2026-10-28 the user
