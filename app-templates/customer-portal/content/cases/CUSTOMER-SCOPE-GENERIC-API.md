@@ -34,6 +34,9 @@ appointmentsTimeline, invoices, proposals, profile):
 | `GET /en/core-cms/api/form-type/{code}/get.json` (`CUSTOMER_PROFILE_UPDATE`, `CUSTOMER_LOGIN_CHANGE`) | none; sent without the session, as the public quote form does |
 | `POST /core-cms/api/form/submit.json` with the session (profile and sign-in edits) | none |
 | `GET /core/api/user/preferences.json` (the edit's outcome) | `P_UI_USER_PREF` |
+| `GET /en/core-cms/api/form-type/CUSTOMER_INVOICE_PAYMENT/get.json`, then `POST /core-cms/api/form/submit.json` with the session (card payment) | none |
+| `PUT /core/api/user/preference.json` (removes the client secret from `SNOW_CUSTOMER_INVOICE_PAYMENT` once read) | `P_UI_USER_PREF` is assumed; not exercised with a customer session, and the server also removes it when the invoice is paid |
+| `https://js.stripe.com/v3/` and Stripe's API from Stripe.js (card field and `confirmCardPayment`) | none; Stripe test mode on dev-1 |
 
 The PIM adapter's private product-model, product-review and inventory lists are
 not called: the staging configuration leaves `pimEnrichmentMode` at `closed`.
@@ -86,6 +89,46 @@ session: the profile and sign-in rows, the inline editor, a browser-side
 refusal and the saving and refused states rendered at desktop, tablet and
 mobile widths in light and dark mode; nothing was saved and no form was
 submitted from the browser.
+
+Deployment, 2026-10-28, invoice card payment: the detail of a `SENT` or
+`OVERDUE` invoice with its full amount due offers "Pay CA$…" below the charges;
+`PAID`, `VOID` and partly paid invoices offer nothing, and `DRAFT` invoices are
+not listed. Pay submits a `CUSTOMER_INVOICE_PAYMENT` form carrying only
+`INVOICE_ID`, waits up to 60 s for the outcome in the User's
+`SNOW_CUSTOMER_INVOICE_PAYMENT` preference, then overwrites that preference
+without the client secret and publishable key. `READY` loads Stripe.js from
+`https://js.stripe.com/v3/` with the publishable key from the answer and mounts
+the card field in a payment sheet appended to `document.body`, outside the
+portal's re-rendered tree, because a re-render would destroy Stripe's iframe.
+In test mode the sheet names the test card 4242 4242 4242 4242. Pay confirms
+with `confirmCardPayment`; a decline or a Stripe field error is shown under the
+card field and the card form stays open; `succeeded` or `processing` re-reads
+the tagged invoice list every 2 s for up to 60 s until the invoice is `PAID`,
+otherwise the sheet says the payment went through and the invoice will update
+within minutes, and the invoice page shows "Payment received" with no second
+Pay button. `PROCESSING` skips the card form; `REFUSED` shows the server's
+message; a lost outcome offers Try again. One payment runs at a time. The
+backend side, including why SNOWLIMITLESS refuses card payment until it has a
+Ledger Account, is in `core-ui/docs/snow-customer-portal-tagged-access.md`.
+
+The same deployment renames the Profile page's sign-in row from "Sign-in email"
+to "Account name" (label, editor label and `aria-label`); the field stays an
+email input with placeholder `name@example.com` and the same validation. Its
+help text reads "The name you sign in to this portal with. Changing it does not
+change your contact email." and, after a change, "Use this account name the
+next time you sign in. Your password stays the same."
+
+`upsert-granite-ridge-staging-portal.mjs` ran its thirteen checks, including the
+new `snow-invoice-payment-check.mjs`, in the dry run and again with `--live` at
+15:39 UTC, which updated BlockTemplate `CUSTOMER_PORTAL_GRANITE_RIDGE_STAGING`;
+`block-template/clear-cache.json` answered 200 on app-1-core-cms and
+app-3-core-cms, and eight fetches of `/pages/SNOWLIMITLESS/portal` (four per
+node) answered the same bytes carrying the payment sheet, the Stripe.js URL and
+"Account name". The sheet's states (starting, card with test mode, declined,
+recording, paid, slow, refused, failed) were rendered from `runtime/src` with a
+stand-in Stripe card field at desktop, tablet and mobile widths in light and
+dark mode; the deployed page was not opened with a customer session and no card
+was entered.
 
 History: on 2026-10-19 the deployment was held because `P_TAG_DOCUMENT_E` also
 authorized `sync-state-history`; the backend was told. On 2026-10-28 the user

@@ -2,6 +2,7 @@ import { positiveInteger, text } from "../normalizers/core-record.js";
 
 export const PROFILE_FORM = Object.freeze({ typeCode: "CUSTOMER_PROFILE_UPDATE", preference: "SNOW_CUSTOMER_PROFILE_UPDATE" });
 export const LOGIN_FORM = Object.freeze({ typeCode: "CUSTOMER_LOGIN_CHANGE", preference: "SNOW_CUSTOMER_LOGIN_CHANGE" });
+export const INVOICE_PAYMENT_FORM = Object.freeze({ typeCode: "CUSTOMER_INVOICE_PAYMENT", preference: "SNOW_CUSTOMER_INVOICE_PAYMENT" });
 
 const OUTCOMES = Object.freeze(["APPLIED", "REFUSED", "FAILED"]);
 const FORM_LOCALE = "en";
@@ -30,7 +31,7 @@ export function createCoreProfileFormAdapter(options = {}) {
     return id;
   }
 
-  return {
+  var adapter = {
     async submit(form, values, context) {
       var api = requestContext(context);
       var typeId = await formTypeId(form, api);
@@ -53,6 +54,16 @@ export function createCoreProfileFormAdapter(options = {}) {
     },
 
     async outcome(form, formId, context) {
+      var reported = await adapter.report(form, formId, context, OUTCOMES);
+      return {
+        outcome: reported.outcome,
+        field: text(reported.field) || null,
+        message: text(reported.message),
+        changed: Array.isArray(reported.changed) ? reported.changed.map(text).filter(Boolean) : [],
+      };
+    },
+
+    async report(form, formId, context, outcomes) {
       var api = requestContext(context);
       var deadline = now() + timeout;
       while (true) {
@@ -62,19 +73,13 @@ export function createCoreProfileFormAdapter(options = {}) {
           headers: api.headers({}),
         }, "outcome-unreadable");
         var reported = parsed(preferences && preferences[form.preference]);
-        if (reported && positiveInteger(reported.form) === formId && OUTCOMES.indexOf(reported.outcome) !== -1) {
-          return {
-            outcome: reported.outcome,
-            field: text(reported.field) || null,
-            message: text(reported.message),
-            changed: Array.isArray(reported.changed) ? reported.changed.map(text).filter(Boolean) : [],
-          };
-        }
+        if (reported && positiveInteger(reported.form) === formId && outcomes.indexOf(reported.outcome) !== -1) return reported;
         if (now() >= deadline) throw coded("outcome-unknown", "Core did not report the outcome of form " + formId + " in time");
         await wait(pollInterval);
       }
     },
   };
+  return adapter;
 }
 
 function parsed(value) {
@@ -87,7 +92,7 @@ function parsed(value) {
   }
 }
 
-function requestContext(context) {
+export function requestContext(context) {
   var config = context && context.config || {};
   var session = context && context.state && context.state.session || {};
   var accessToken = text(session.accessToken || session.access_token);

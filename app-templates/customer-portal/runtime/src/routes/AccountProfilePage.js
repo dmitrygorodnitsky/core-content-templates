@@ -85,7 +85,7 @@ function SignInFacts() {
   var changed = state.profileLoginChanged;
   var login = currentSignIn();
   return h("div", { "class": "card card--pad prop-facts prop-facts--single", "data-module": "profile-sign-in", "data-visual-id": "profile-sign-in" }, [
-    EditableFact("login", login ? [login] : [], changed ? "Use this email the next time you sign in. Your password stays the same." : "The email you sign in to this portal with. Changing it does not change your contact email."),
+    EditableFact("login", login ? [login] : [], changed ? "Use this account name the next time you sign in. Your password stays the same." : "The name you sign in to this portal with. Changing it does not change your contact email."),
   ]);
 }
 
@@ -130,6 +130,7 @@ function EditingFact(key, definition, edit) {
       type: item.type,
       autocomplete: item.code === "BILLING_ADDRESS" && addressSuggestionsOpen() ? "off" : item.autocomplete,
       value: edit.draft[item.key] || "",
+      placeholder: item.placeholder,
       "data-profile-input": item.code,
       "data-state": error ? "invalid" : undefined,
       "aria-invalid": error ? "true" : undefined,

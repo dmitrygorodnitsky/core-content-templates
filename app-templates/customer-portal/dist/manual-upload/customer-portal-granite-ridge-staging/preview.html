@@ -1016,6 +1016,60 @@ button { font-family: inherit; }
 
 .invoice__total { display: flex; justify-content: space-between; font-weight: 800; font-size: 17px; padding-top: 12px; margin-top: 3px; border-top: 1px solid rgba(var(--hair),.08); }
 
+.invoice-pay { display: grid; gap: 10px; margin-top: 14px; }
+
+.invoice-pay__title { font-weight: 800; font-size: 15px; color: var(--ok); }
+
+.invoice-pay__note { font-size: 12.5px; line-height: 1.45; color: var(--ink-3); text-align: center; }
+
+.invoice-pay[data-state="recording"] .invoice-pay__note { text-align: left; color: var(--ink-2); }
+
+.pay-sheet { display: flex; flex-direction: column; gap: 14px; }
+
+.pay-sheet [hidden] { display: none !important; }
+
+.pay-sheet__title { margin: 0; outline: none; }
+
+.pay-sheet__summary { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; padding: 14px 16px; border-radius: var(--radius-md); background: var(--surface-2); }
+
+.pay-sheet__invoice { font-size: 14px; font-weight: 600; color: var(--ink-2); overflow-wrap: anywhere; }
+
+.pay-sheet__amount { font-size: 20px; font-weight: 800; letter-spacing: -.01em; font-variant-numeric: tabular-nums; color: var(--ink); white-space: nowrap; }
+
+.pay-sheet__test { display: flex; align-items: flex-start; gap: 8px; font-size: 12.5px; line-height: 1.45; color: var(--ink-2); }
+
+.pay-sheet__test .status-badge { flex: none; }
+
+.pay-sheet__card { min-height: 46px; padding: 13px; background: var(--surface-2); border-color: rgba(var(--hair), .14); }
+
+.pay-sheet__card.StripeElement--focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(var(--accent-rgb), .14); }
+
+.pay-sheet__card.StripeElement--invalid { border-color: var(--danger); }
+
+.pay-sheet__error:empty { display: none; }
+
+.pay-sheet__note { margin: 0; font-size: 12px; line-height: 1.45; color: var(--ink-3); }
+
+.pay-sheet__status { display: flex; align-items: center; gap: 10px; font-size: 13.5px; line-height: 1.45; color: var(--ink-2); }
+
+.pay-sheet__spinner { flex: none; width: 16px; height: 16px; border-radius: var(--radius-pill); border: 2px solid rgba(var(--accent-rgb), .22); border-top-color: var(--accent); animation: care-spin .7s linear infinite; }
+
+.pay-sheet__status:empty { display: none; }
+
+.pay-sheet__result { display: grid; gap: 4px; padding: 14px 16px; border-radius: var(--radius-md); font-size: 13.5px; line-height: 1.5; }
+
+.pay-sheet__result[data-state="ok"] { background: var(--ok-bg); color: var(--ink); }
+
+.pay-sheet__result[data-state="info"] { background: var(--info-bg); color: var(--ink); }
+
+.pay-sheet__result[data-state="danger"] { background: var(--danger-bg); color: var(--ink); }
+
+.pay-sheet__result-title { font-weight: 800; font-size: 15px; }
+
+.pay-sheet__result[data-state="ok"] .pay-sheet__result-title { color: var(--ok); }
+
+.pay-sheet__actions { display: grid; gap: 10px; margin-top: 4px; }
+
 .action-stack { display: flex; flex-direction: column; gap: 10px; }
 
 /* ============================================================
@@ -5504,8 +5558,8 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     return MONTH_NAMES[date.getMonth()] + " " + date.getDate();
   }
   function periodKind(period) {
-    var coded5 = String(period && period.weatherPrimaryCoded || "");
-    var precipitation = coded5.split(":")[2] || "";
+    var coded6 = String(period && period.weatherPrimaryCoded || "");
+    var precipitation = coded6.split(":")[2] || "";
     if (FREEZING_CODES.indexOf(precipitation) !== -1) return "freezing";
     if (SNOW_CODES.indexOf(precipitation) !== -1) {
       var snow = num(period.snowCM);
@@ -6640,6 +6694,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     apptDay: null,
     visitId: null,
     invoiceId: null,
+    invoicePayment: null,
     propertyId: null,
     apptSort: "asc",
     liveWeather: null,
@@ -7702,16 +7757,16 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     function run(command, operation) {
       if (flight) return null;
       deps.state.contractCommand = Object.assign({ phase: "pending" }, command);
-      var started = Promise.resolve().then(operation).catch(function(error2) {
+      var started2 = Promise.resolve().then(operation).catch(function(error2) {
         return settle2(command, error2);
       }).finally(function() {
         flight = null;
         if (command.kind !== "view") deps.state.contractConfirm = null;
         deps.render();
       });
-      flight = started;
+      flight = started2;
       deps.render();
-      return started;
+      return started2;
     }
     function decide(kind, backendId) {
       var definition = CONTRACT_EVENTS[kind];
@@ -8701,10 +8756,10 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
   function readContext(context, explicitOrigin) {
     var config = context && context.config || {};
     var runtimeState = context && context.state || {};
-    var session = runtimeState.session || {};
-    var accessToken = text3(session.accessToken || session.access_token);
+    var session2 = runtimeState.session || {};
+    var accessToken = text3(session2.accessToken || session2.access_token);
     if (!accessToken) throw contractError("session-required", "A Core access token is required");
-    var account = runtimeState.customerAccount || session.account || null;
+    var account = runtimeState.customerAccount || session2.account || null;
     var accountId = positiveInteger3(account && account.id);
     if (!accountId) throw contractError("customer-unresolved", "A resolved customer Account is required before reading snow records");
     var organization = text3(config.organization);
@@ -8714,14 +8769,14 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
       accountBase: sameOriginBase(config.accountApiBase || "/core-acct", origin, "Core Account API base"),
       accountId,
       accountName: text3(account && typeof account.displayName === "string" ? account.displayName : ""),
-      authorization: text3(session.tokenType || session.token_type || "Bearer") + " " + accessToken,
+      authorization: text3(session2.tokenType || session2.token_type || "Bearer") + " " + accessToken,
       billBase: sameOriginBase(config.billApiBase || "/core-bill", origin, "Core Bill API base"),
       coreBase: sameOriginBase(config.coreApiBase || "/core", origin, "Core API base"),
       organization,
       pimBase: sameOriginBase(PIM_SERVICE_BASE, origin, "Core PIM API base"),
       resourceBase: sameOriginBase(config.resourceApiBase || "/core-rm", origin, "Core Resource API base"),
       serviceBase: sameOriginBase(config.serviceApiBase || "/core-svc", origin, "Core Service API base"),
-      userId: positiveInteger3(session.userId)
+      userId: positiveInteger3(session2.userId)
     };
   }
   function readOptions(api, body) {
@@ -9057,19 +9112,19 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
   function cartContext(context, explicitOrigin) {
     var config = context && context.config || {};
     var state2 = context && context.state || {};
-    var session = context && context.session || state2.session || {};
-    var accessToken = text4(session.accessToken || session.access_token);
+    var session2 = context && context.session || state2.session || {};
+    var accessToken = text4(session2.accessToken || session2.access_token);
     if (!accessToken) throw contractError2("session-required", "A Core access token is required");
     var organization = text4(config.organization);
     if (!organization) throw contractError2("organization-required", "Verified portal organization is required");
-    var customer = context && context.account || state2.customerAccount || session.account || {};
+    var customer = context && context.account || state2.customerAccount || session2.account || {};
     var accountId = positiveInteger4(customer && customer.id);
     if (!accountId) throw contractError2("customer-account-required", "Resolved customer Account is required before any cart call");
     var origin = explicitOrigin || config.origin || browserOrigin2();
     var products = state2.moduleData && state2.moduleData.products;
     return {
       accountId,
-      authorization: text4(session.tokenType || session.token_type || "Bearer") + " " + accessToken,
+      authorization: text4(session2.tokenType || session2.token_type || "Bearer") + " " + accessToken,
       billBase: sameOriginBase2(config.billApiBase || "/core-bill", origin, "Core Bill API base"),
       catalog: products && Array.isArray(products.items) ? products.items : [],
       config,
@@ -9342,14 +9397,14 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
   function writeContext(context, explicitOrigin) {
     var config = context && context.config || {};
     var state2 = context && context.state || {};
-    var session = context && context.session || state2.session || {};
-    var accessToken = text5(session.accessToken || session.access_token);
+    var session2 = context && context.session || state2.session || {};
+    var accessToken = text5(session2.accessToken || session2.access_token);
     if (!accessToken) throw contractError3("session-required", "A Core access token is required");
     var organization = text5(config.organization);
     if (!organization) throw contractError3("organization-required", "Verified portal organization is required");
     var origin = explicitOrigin || config.origin || browserOrigin3();
     return {
-      authorization: text5(session.tokenType || session.token_type || "Bearer") + " " + accessToken,
+      authorization: text5(session2.tokenType || session2.token_type || "Bearer") + " " + accessToken,
       billBase: sameOriginBase3(config.billApiBase || "/core-bill", origin, "Core Bill API base"),
       coreBase: sameOriginBase3(config.coreApiBase || "/core", origin, "Core API base"),
       organization,
@@ -9372,17 +9427,17 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
   async function loadCoreOrders(context, fetchImpl = globalThis.fetch, explicitOrigin) {
     var config = context && context.config || {};
     var state2 = context && context.state || {};
-    var session = context && context.session || state2.session || {};
+    var session2 = context && context.session || state2.session || {};
     var customer = context && context.account || state2.customerAccount || state2.session && state2.session.account || {};
     var accountId = positiveInteger5(customer.id);
     if (!accountId) throw contractError3("customer-account-required", "Resolved customer Account is required before Orders load");
-    var accessToken = text5(session.accessToken || session.access_token);
+    var accessToken = text5(session2.accessToken || session2.access_token);
     if (!accessToken) throw contractError3("session-required", "A Core access token is required");
     var organization = text5(config.organization);
     if (!organization) throw contractError3("organization-required", "Verified portal organization is required");
     var origin = explicitOrigin || config.origin || browserOrigin3();
     var billBase = sameOriginBase3(config.billApiBase || "/core-bill", origin, "Core Bill API base");
-    var authorization = text5(session.tokenType || session.token_type || "Bearer") + " " + accessToken;
+    var authorization = text5(session2.tokenType || session2.token_type || "Bearer") + " " + accessToken;
     var request = {
       filters: [{ type: "INTEGER", operator: "=", property: "account.id", value: String(accountId) }],
       mappings: ORDER_MAPPINGS2,
@@ -9912,8 +9967,8 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
   }
   function customerFlightPart(context) {
     var state2 = context && context.state || {};
-    var session = context && context.session || state2.session || {};
-    var customer = context && context.account || state2.customerAccount || session.account || {};
+    var session2 = context && context.session || state2.session || {};
+    var customer = context && context.account || state2.customerAccount || session2.account || {};
     return positiveInteger6(customer.id) || "unresolved";
   }
   async function confirmRequestedAppointment(row, api, fetchImpl, accountId, input) {
@@ -10322,20 +10377,20 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
   function requestContext(context, explicitOrigin) {
     var config = context && context.config || {};
     var state2 = context && context.state || {};
-    var session = context && context.session || state2.session || {};
-    var customer = context && context.account || state2.customerAccount || session.account || {};
-    var accessToken = text6(session.accessToken || session.access_token);
+    var session2 = context && context.session || state2.session || {};
+    var customer = context && context.account || state2.customerAccount || session2.account || {};
+    var accessToken = text6(session2.accessToken || session2.access_token);
     if (!accessToken) throw contractError4("session-required", "A Core access token is required");
     var organization = text6(config.organization);
     if (!organization) throw contractError4("organization-required", "Verified portal organization is required");
     var origin = explicitOrigin || config.origin || browserOrigin4();
     return {
-      authorization: text6(session.tokenType || session.token_type || "Bearer") + " " + accessToken,
+      authorization: text6(session2.tokenType || session2.token_type || "Bearer") + " " + accessToken,
       billBase: sameOriginBase4(config.billApiBase || "/core-bill", origin, "Core Bill API base"),
       config,
       coreBase: sameOriginBase4(config.coreApiBase || "/core", origin, "Core API base"),
       customer,
-      customerUserId: positiveInteger6(session.userId || state2.session && state2.session.userId) || null,
+      customerUserId: positiveInteger6(session2.userId || state2.session && state2.session.userId) || null,
       organization,
       resourceBase: sameOriginBase4(config.resourceApiBase || "/core-rm", origin, "Core Resource API base"),
       serviceBase: sameOriginBase4(config.serviceApiBase || "/core-svc", origin, "Core Service API base")
@@ -10781,19 +10836,19 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
   function requestContext2(context, explicitOrigin) {
     var config = context && context.config || {};
     var state2 = context && context.state || {};
-    var session = context && context.session || state2.session || {};
-    var token = text7(session.accessToken || session.access_token);
-    var userId = positiveInteger7(session.userId);
+    var session2 = context && context.session || state2.session || {};
+    var token = text7(session2.accessToken || session2.access_token);
+    var userId = positiveInteger7(session2.userId);
     if (!token) throw error("session-required", "A Core access token is required");
     if (!userId) throw error("session-user-required", "The signed-in Core User is required");
     var origin = explicitOrigin || config.origin || globalThis.location && globalThis.location.origin;
     var base = sameOriginBase5(config.coreApiBase || "/core", origin, "Core API base");
-    var customer = context && context.account || state2.customerAccount || session.account || {};
+    var customer = context && context.account || state2.customerAccount || session2.account || {};
     return {
       accountBase: sameOriginBase5(config.accountApiBase || "/core-acct", origin, "Core Account API base"),
       accountId: positiveInteger7(customer.id) || null,
       base,
-      token: text7(session.tokenType || session.token_type || "Bearer") + " " + token,
+      token: text7(session2.tokenType || session2.token_type || "Bearer") + " " + token,
       userId
     };
   }
@@ -10847,6 +10902,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
   // app-templates/customer-portal/runtime/src/adapters/core-profile-form-adapter.js
   var PROFILE_FORM = Object.freeze({ typeCode: "CUSTOMER_PROFILE_UPDATE", preference: "SNOW_CUSTOMER_PROFILE_UPDATE" });
   var LOGIN_FORM = Object.freeze({ typeCode: "CUSTOMER_LOGIN_CHANGE", preference: "SNOW_CUSTOMER_LOGIN_CHANGE" });
+  var INVOICE_PAYMENT_FORM = Object.freeze({ typeCode: "CUSTOMER_INVOICE_PAYMENT", preference: "SNOW_CUSTOMER_INVOICE_PAYMENT" });
   var OUTCOMES = Object.freeze(["APPLIED", "REFUSED", "FAILED"]);
   var FORM_LOCALE = "en";
   var POLL_INTERVAL_MS = 1e3;
@@ -10877,7 +10933,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
       typeIds[form.typeCode] = id;
       return id;
     }
-    return {
+    var adapter = {
       async submit(form, values, context) {
         var api = requestContext3(context);
         var typeId = await formTypeId(form, api);
@@ -10901,6 +10957,15 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
         return id;
       },
       async outcome(form, formId, context) {
+        var reported = await adapter.report(form, formId, context, OUTCOMES);
+        return {
+          outcome: reported.outcome,
+          field: text3(reported.field) || null,
+          message: text3(reported.message),
+          changed: Array.isArray(reported.changed) ? reported.changed.map(text3).filter(Boolean) : []
+        };
+      },
+      async report(form, formId, context, outcomes) {
         var api = requestContext3(context);
         var deadline = now() + timeout;
         while (true) {
@@ -10910,19 +10975,13 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
             headers: api.headers({})
           }, "outcome-unreadable");
           var reported = parsed(preferences && preferences[form.preference]);
-          if (reported && positiveInteger3(reported.form) === formId && OUTCOMES.indexOf(reported.outcome) !== -1) {
-            return {
-              outcome: reported.outcome,
-              field: text3(reported.field) || null,
-              message: text3(reported.message),
-              changed: Array.isArray(reported.changed) ? reported.changed.map(text3).filter(Boolean) : []
-            };
-          }
+          if (reported && positiveInteger3(reported.form) === formId && outcomes.indexOf(reported.outcome) !== -1) return reported;
           if (now() >= deadline) throw coded3("outcome-unknown", "Core did not report the outcome of form " + formId + " in time");
           await wait(pollInterval);
         }
       }
     };
+    return adapter;
   }
   function parsed(value) {
     if (typeof value !== "string" || !value) return null;
@@ -10935,15 +10994,15 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
   }
   function requestContext3(context) {
     var config = context && context.config || {};
-    var session = context && context.state && context.state.session || {};
-    var accessToken = text3(session.accessToken || session.access_token);
+    var session2 = context && context.state && context.state.session || {};
+    var accessToken = text3(session2.accessToken || session2.access_token);
     if (!accessToken) throw coded3("session-expired", "A Core access token is required");
     var organization = text3(config.organization);
-    var organizationId = positiveInteger3(session.organizationId);
+    var organizationId = positiveInteger3(session2.organizationId);
     if (!organization || !organizationId) throw coded3("organization-required", "The portal organization and its id are required");
     var origin = config.origin || globalThis.location && globalThis.location.origin || "";
     var cmsBase = sameOriginBase6(config.cmsApiBase || "/core-cms", origin, "Core CMS API base");
-    var authorization = text3(session.tokenType || session.token_type || "Bearer") + " " + accessToken;
+    var authorization = text3(session2.tokenType || session2.token_type || "Bearer") + " " + accessToken;
     return {
       origin: new URL(origin).origin,
       cmsBase,
@@ -10988,13 +11047,13 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
   var EMAIL_SHAPE = /^[A-Za-z0-9.!#$%&'*+/=?^_`{|}~-]+@[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?(?:\.[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?)+$/;
   var PHONE_CHARACTERS = /^\+?[0-9 ().-]+$/;
   var CONTROL_CHARACTERS = /[\u0000-\u001f\u007f]/;
-  var field = (code, key, label, type, autocomplete) => Object.freeze({ code, key, label, type, autocomplete });
+  var field = (code, key, label, type, autocomplete, placeholder) => Object.freeze({ code, key, label, type, autocomplete, placeholder });
   var PROFILE_EDIT_ROWS = Object.freeze({
     contact: Object.freeze({ label: "Name", form: PROFILE_FORM, fields: Object.freeze([field("FIRST_NAME", "firstName", "First name", "text", "given-name"), field("LAST_NAME", "lastName", "Last name", "text", "family-name")]) }),
     email: Object.freeze({ label: "Email", form: PROFILE_FORM, fields: Object.freeze([field("EMAIL", "email", "Email", "email", "email")]) }),
     phone: Object.freeze({ label: "Phone", form: PROFILE_FORM, fields: Object.freeze([field("PHONE", "phone", "Phone", "tel", "tel")]) }),
     billing: Object.freeze({ label: "Billing address", form: PROFILE_FORM, fields: Object.freeze([field("BILLING_ADDRESS", "billingAddress", "Billing address", "text", "street-address")]) }),
-    login: Object.freeze({ label: "Sign-in email", form: LOGIN_FORM, fields: Object.freeze([field("LOGIN", "login", "Sign-in email", "email", "username")]) })
+    login: Object.freeze({ label: "Account name", form: LOGIN_FORM, fields: Object.freeze([field("LOGIN", "login", "Account name", "email", "username", "name@example.com")]) })
   });
   var SESSION_ENDED = "Your session ended while the sign-in was changing. Sign in again: with {next} if the change went through, otherwise with {current}.";
   var UNCONFIRMED = "We couldn't confirm the change yet. Reload the page in a minute to see the details on file.";
@@ -11185,6 +11244,478 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
   }
   function accepted(value) {
     return { error: null, value };
+  }
+
+  // app-templates/customer-portal/runtime/src/normalizers/invoices.js
+  var INVOICE_STATUS = Object.freeze({
+    OVERDUE: Object.freeze({ label: "Overdue", tone: "danger", open: true }),
+    SENT: Object.freeze({ label: "Due", tone: "info", open: true }),
+    PAID: Object.freeze({ label: "Paid", tone: "ok", open: false }),
+    VOID: Object.freeze({ label: "Void", tone: "scheduled", open: false })
+  });
+  function normalizeInvoices(raw) {
+    var rows2 = Array.isArray(raw && raw.items) ? raw.items : [];
+    return {
+      state: "ready",
+      truncated: !!(raw && raw.truncated),
+      items: rows2.map(invoiceRecord).filter(Boolean)
+    };
+  }
+  function openInvoices(envelope2) {
+    return (envelope2 && envelope2.items || []).filter(function(invoice) {
+      return invoice.open;
+    }).sort(function(left, right) {
+      var overdue = Number(right.stateCode === "OVERDUE") - Number(left.stateCode === "OVERDUE");
+      return overdue || (left.due || "9999-99-99").localeCompare(right.due || "9999-99-99") || left.backendId - right.backendId;
+    });
+  }
+  function findInvoice(envelope2, id) {
+    return (envelope2 && envelope2.items || []).find(function(invoice) {
+      return invoice.id === id;
+    }) || null;
+  }
+  function invoiceTitle(invoice) {
+    return invoice.period || formatIsoDate(invoice.issued) || "Invoice";
+  }
+  function invoiceStatusLine(invoice) {
+    if (invoice.stateCode === "SENT" && invoice.due) return "Due on " + formatIsoDate(invoice.due);
+    return invoice.status.label;
+  }
+  function invoiceAmount(invoice) {
+    return formatMoney(invoice.total, invoice.currency);
+  }
+  function invoiceTerms(invoice) {
+    return invoice.netDays ? "Net " + invoice.netDays : "";
+  }
+  function invoiceRecord(row) {
+    var backendId = positiveInteger3(row && row.id);
+    var stateCode = latestStateCode(row);
+    var status = Object.prototype.hasOwnProperty.call(INVOICE_STATUS, stateCode) ? INVOICE_STATUS[stateCode] : null;
+    if (!backendId || !status) return null;
+    var currency = text3(row.order && row.order.currency && row.order.currency.code);
+    return {
+      id: "invoice-core-" + backendId,
+      backendId,
+      stateCode,
+      status: { label: status.label, tone: status.tone },
+      open: status.open,
+      period: attributeText(row, "SERVICE_PERIOD"),
+      issued: isoDate2(attributeText(row, "DATE")),
+      due: isoDate2(row.dueDate),
+      netDays: attributeNumber(row, "PAYMENT_NET_TERMS"),
+      currency,
+      total: finiteNumber8(row.amountDue),
+      paid: finiteNumber8(row.totalPaidAmount),
+      lines: (Array.isArray(row.items) ? row.items : []).map(function(item) {
+        return lineRecord(item, currency);
+      }).filter(Boolean)
+    };
+  }
+  function lineRecord(item, currency) {
+    var amount = finiteNumber8(item && item.amount);
+    if (amount === null) return null;
+    var count = finiteNumber8(item.itemCount);
+    var quantity = count !== null && count > 0 ? count : 1;
+    var product = item.itemPrice && item.itemPrice.product;
+    return {
+      id: positiveInteger3(item.id),
+      name: localizedName6(product && product.nls) || "Service",
+      quantity,
+      amount: formatMoney(amount * quantity, currency)
+    };
+  }
+  function isoDate2(value) {
+    var parts = Array.isArray(value) ? value : /^(\d{4})-(\d{2})-(\d{2})$/.exec(text3(value));
+    if (!parts) return "";
+    var numbers = Array.isArray(value) ? parts.slice(0, 3).map(Number) : parts.slice(1, 4).map(Number);
+    var date = new Date(Date.UTC(numbers[0], numbers[1] - 1, numbers[2]));
+    if (date.getUTCFullYear() !== numbers[0] || date.getUTCMonth() !== numbers[1] - 1 || date.getUTCDate() !== numbers[2]) return "";
+    return numbers[0] + "-" + String(numbers[1]).padStart(2, "0") + "-" + String(numbers[2]).padStart(2, "0");
+  }
+  function finiteNumber8(value) {
+    var number = typeof value === "number" ? value : typeof value === "string" && value.trim() !== "" ? Number(value) : Number.NaN;
+    return Number.isFinite(number) ? number : null;
+  }
+  function localizedName6(value) {
+    if (!value || typeof value !== "object") return "";
+    var localized2 = value.en || value["en-US"] || Object.values(value)[0] || {};
+    return text3(localized2 && (localized2.NAME || localized2.name));
+  }
+
+  // app-templates/customer-portal/runtime/src/adapters/core-user-preference-adapter.js
+  function createCoreUserPreferenceAdapter(options2 = {}) {
+    var fetchImpl = options2.fetch || globalThis.fetch;
+    return {
+      async overwrite(key, value, context) {
+        var api = requestContext3(context);
+        var response = await fetchImpl(api.coreBase + "/api/user/preference.json", {
+          method: "PUT",
+          credentials: "same-origin",
+          headers: api.headers({ "Content-Type": "application/json" }),
+          body: JSON.stringify({ key, value: JSON.stringify(value) })
+        });
+        return !!(response && response.ok);
+      }
+    };
+  }
+
+  // app-templates/customer-portal/runtime/src/adapters/stripe-js-adapter.js
+  var STRIPE_JS_URL = "https://js.stripe.com/v3/";
+  var LOAD_TIMEOUT_MS = 2e4;
+  var loads = /* @__PURE__ */ new WeakMap();
+  function loadStripeJs(options2 = {}) {
+    var scope = options2.scope || globalThis;
+    if (typeof scope.Stripe === "function") return Promise.resolve(scope.Stripe);
+    if (loads.has(scope)) return loads.get(scope);
+    var root = scope.document;
+    if (!root || typeof root.createElement !== "function") return Promise.reject(coded4("stripe-unavailable", "Stripe.js needs a document"));
+    var loading = new Promise(function(resolve, reject) {
+      var script = root.createElement("script");
+      var timer = setTimeout(function() {
+        reject(coded4("stripe-unavailable", "Stripe.js did not load in time"));
+      }, options2.timeoutMs || LOAD_TIMEOUT_MS);
+      script.setAttribute("src", STRIPE_JS_URL);
+      script.setAttribute("async", "");
+      script.addEventListener("load", function() {
+        clearTimeout(timer);
+        if (typeof scope.Stripe === "function") resolve(scope.Stripe);
+        else reject(coded4("stripe-unavailable", "Stripe.js loaded without Stripe"));
+      });
+      script.addEventListener("error", function() {
+        clearTimeout(timer);
+        reject(coded4("stripe-unavailable", "Stripe.js could not be loaded"));
+      });
+      (root.head || root.body).appendChild(script);
+    });
+    loads.set(scope, loading);
+    loading.catch(function() {
+      loads.delete(scope);
+    });
+    return loading;
+  }
+  function coded4(code, message) {
+    var error2 = new Error(message);
+    error2.code = code;
+    return error2;
+  }
+
+  // app-templates/customer-portal/runtime/src/invoice-payment.js
+  var PAYABLE_STATES = Object.freeze(["SENT", "OVERDUE"]);
+  var PAYMENT_OUTCOMES = Object.freeze(["READY", "PROCESSING", "REFUSED", "FAILED"]);
+  var TEST_CARD = "4242 4242 4242 4242";
+  var OUTCOME_TIMEOUT_MS2 = 6e4;
+  var RECORDING_TIMEOUT_MS = 6e4;
+  var RECORDING_POLL_MS = 2e3;
+  var BUSY_PHASES = Object.freeze(["starting", "confirming"]);
+  var CLOSABLE_PHASES = Object.freeze(["card", "recording", "paid", "slow", "refused", "failed"]);
+  var PAYMENT_COPY = Object.freeze({
+    title: "Pay invoice",
+    starting: "Preparing a secure card payment\u2026",
+    cardLabel: "Card details",
+    note: "Payments are processed by Stripe. We never see or store your card number.",
+    testMode: "Test mode",
+    testHint: "No real charge. Use the test card " + TEST_CARD + " with any future date and any CVC.",
+    confirming: "Confirming your payment\u2026",
+    recording: "Payment received. Updating your invoice\u2026",
+    paidTitle: "Paid",
+    paidBody: "Thank you. This invoice is now paid.",
+    slowTitle: "Payment received",
+    slowBody: "Your payment went through, but the invoice hasn't updated yet. It will show as paid within a few minutes; you don't need to pay again.",
+    notSent: "We couldn't start the payment. Nothing was charged. Check your connection and try again.",
+    unconfirmed: "We couldn't confirm that the payment was set up. Nothing was charged. Reload the page in a minute and try again.",
+    stripeUnavailable: "The secure card form couldn't load. Nothing was charged. Check your connection and try again.",
+    cardFailed: "Your card wasn't charged. Check the details and try again.",
+    close: "Close",
+    cancel: "Cancel",
+    done: "Done",
+    retry: "Try again",
+    processing: "Processing\u2026"
+  });
+  var session = null;
+  function invoicePaymentOpen(config) {
+    return !!config && config.vertical === "snow" && config.dataMode === "live";
+  }
+  function invoicePayable(invoice) {
+    return !!invoice && PAYABLE_STATES.indexOf(invoice.stateCode) !== -1 && typeof invoice.total === "number" && invoice.total > 0 && !(invoice.paid > 0) && /^[A-Z]{3}$/.test(String(invoice.currency || ""));
+  }
+  function invoicePaymentFor(invoiceId) {
+    var payment = state.invoicePayment;
+    return payment && payment.invoiceId === invoiceId ? payment : null;
+  }
+  function invoicePaymentBusy() {
+    return !!(state.invoicePayment && (BUSY_PHASES.indexOf(state.invoicePayment.phase) !== -1 || state.invoicePayment.phase === "card" || state.invoicePayment.phase === "recording"));
+  }
+  function payInvoice(invoiceId, options2) {
+    var settings = options2 || {};
+    var invoice = findInvoice(liveInvoices(), invoiceId);
+    if (!invoicePaymentOpen(state.config) || !invoicePayable(invoice) || invoicePaymentBusy()) return Promise.resolve(false);
+    closeSheet();
+    var amountLabel = formatMoney(invoice.total, invoice.currency);
+    var payment = { invoiceId: invoice.id, backendId: invoice.backendId, title: invoiceTitle(invoice), amountLabel, phase: "starting", message: "", testMode: false };
+    state.invoicePayment = payment;
+    session = {
+      payment,
+      forms: settings.forms || createCoreProfileFormAdapter({ timeoutMs: OUTCOME_TIMEOUT_MS2 }),
+      preferences: settings.preferences || createCoreUserPreferenceAdapter(),
+      loadStripe: settings.loadStripe || loadStripeJs,
+      reload: settings.reload,
+      render: settings.render || function() {
+      },
+      wait: settings.wait || function(ms) {
+        return new Promise(function(resolve) {
+          setTimeout(resolve, ms);
+        });
+      },
+      now: settings.now || function() {
+        return Date.now();
+      },
+      document: settings.document || globalThis.document,
+      stripe: null,
+      card: null,
+      secret: "",
+      sheet: null
+    };
+    var current = session;
+    openSheet(current);
+    update(current, "starting", "");
+    var context = { config: state.config, state };
+    return Promise.resolve().then(function() {
+      return current.forms.submit(INVOICE_PAYMENT_FORM, { INVOICE_ID: payment.backendId }, context);
+    }).then(function(formId) {
+      return current.forms.report(INVOICE_PAYMENT_FORM, formId, context, PAYMENT_OUTCOMES);
+    }).then(function(report) {
+      return started(current, report, context);
+    }, function(error2) {
+      if (session !== current) return false;
+      if (error2 && error2.code === "session-expired") {
+        closeSheet();
+        state.invoicePayment = null;
+        state.account = "session-expired";
+        current.render();
+        return false;
+      }
+      update(current, "failed", error2 && error2.code === "outcome-unknown" ? PAYMENT_COPY.unconfirmed : PAYMENT_COPY.notSent);
+      return false;
+    });
+  }
+  function started(current, report, context) {
+    if (session !== current) return false;
+    if (report.outcome === "PROCESSING") return recording(current);
+    if (report.outcome !== "READY") {
+      update(current, report.outcome === "REFUSED" ? "refused" : "failed", String(report.message || PAYMENT_COPY.notSent));
+      return false;
+    }
+    var secret = String(report.clientSecret || "");
+    var key = String(report.publishableKey || "");
+    if (!/^pi_[A-Za-z0-9]+_secret_[A-Za-z0-9]+$/.test(secret) || !/^pk_(test|live)_[A-Za-z0-9]+$/.test(key) || Number(report.invoiceId) !== current.payment.backendId) {
+      update(current, "failed", PAYMENT_COPY.unconfirmed);
+      return false;
+    }
+    current.secret = secret;
+    current.payment.testMode = key.indexOf("pk_test_") === 0;
+    Promise.resolve().then(function() {
+      return current.preferences.overwrite(INVOICE_PAYMENT_FORM.preference, Object.assign({}, report, { clientSecret: null, publishableKey: null }), context);
+    }).catch(function() {
+      return false;
+    });
+    return Promise.resolve(current.loadStripe()).then(function(Stripe) {
+      if (session !== current) return false;
+      current.stripe = Stripe(key);
+      current.card = current.stripe.elements().create("card", { style: cardStyle(current.document) });
+      current.card.mount(current.sheet.cardHost);
+      current.card.on("change", function(event) {
+        if (session !== current || current.payment.phase !== "card") return;
+        current.sheet.error.textContent = event && event.error && event.error.message ? String(event.error.message) : "";
+      });
+      update(current, "card", "");
+      return true;
+    }, function() {
+      if (session === current) update(current, "failed", PAYMENT_COPY.stripeUnavailable);
+      return false;
+    });
+  }
+  function confirmInvoicePayment() {
+    var current = session;
+    if (!current || current.payment.phase !== "card" || !current.stripe || !current.card) return Promise.resolve(false);
+    update(current, "confirming", "");
+    return Promise.resolve().then(function() {
+      return current.stripe.confirmCardPayment(current.secret, { payment_method: { card: current.card } });
+    }).then(function(result) {
+      if (session !== current) return false;
+      var outcome = result || {};
+      var intent = outcome.paymentIntent || outcome.error && outcome.error.payment_intent;
+      if (intent && (intent.status === "succeeded" || intent.status === "processing")) return recording(current);
+      update(current, "card", String(outcome.error && outcome.error.message || PAYMENT_COPY.cardFailed));
+      return false;
+    }, function() {
+      if (session === current) update(current, "card", PAYMENT_COPY.cardFailed);
+      return false;
+    });
+  }
+  function recording(current) {
+    releaseCard(current);
+    update(current, "recording", "");
+    var deadline = current.now() + RECORDING_TIMEOUT_MS;
+    function poll() {
+      if (session !== current && state.invoicePayment !== current.payment) return Promise.resolve(false);
+      return Promise.resolve(current.reload ? current.reload("invoices") : null).catch(function() {
+        return null;
+      }).then(function() {
+        var invoice = findInvoice(liveInvoices(), current.payment.invoiceId);
+        if (invoice && invoice.stateCode === "PAID") {
+          update(current, "paid", "");
+          return true;
+        }
+        if (current.now() >= deadline) {
+          update(current, "slow", "");
+          return false;
+        }
+        return current.wait(RECORDING_POLL_MS).then(poll);
+      });
+    }
+    return poll();
+  }
+  function closeInvoicePayment() {
+    var current = session;
+    var payment = state.invoicePayment;
+    if (!payment || CLOSABLE_PHASES.indexOf(payment.phase) === -1) return false;
+    if (current) releaseCard(current);
+    closeSheet();
+    if (payment.phase !== "recording") state.invoicePayment = null;
+    if (current) current.render();
+    return true;
+  }
+  function retryInvoicePayment() {
+    var payment = state.invoicePayment;
+    if (!payment || payment.phase !== "failed" || !session) return Promise.resolve(false);
+    var options2 = { forms: session.forms, preferences: session.preferences, loadStripe: session.loadStripe, reload: session.reload, render: session.render, wait: session.wait, now: session.now, document: session.document };
+    var invoiceId = payment.invoiceId;
+    closeSheet();
+    state.invoicePayment = null;
+    return payInvoice(invoiceId, options2);
+  }
+  function update(current, phase, message) {
+    current.payment.phase = phase;
+    current.payment.message = message;
+    if (current.sheet) paint(current);
+    current.render();
+  }
+  function releaseCard(current) {
+    if (current.card && typeof current.card.destroy === "function") current.card.destroy();
+    current.card = null;
+  }
+  function closeSheet() {
+    if (session && session.sheet) {
+      session.sheet.scrim.remove();
+      session.sheet.panel.remove();
+      session.sheet = null;
+    }
+  }
+  function openSheet(current) {
+    var root = current.document;
+    var title = h("h2", { "class": "drawer__title pay-sheet__title", id: "pay-sheet-title", tabindex: "-1" }, PAYMENT_COPY.title);
+    var closeButton = h("button", { "class": "drawer__close", type: "button", "aria-label": PAYMENT_COPY.close, "data-visual-id": "pay-sheet-close" }, "\u2715");
+    var summary = h("div", { "class": "pay-sheet__summary", "data-module": "pay-summary" }, [
+      h("span", { "class": "pay-sheet__invoice" }, current.payment.title),
+      h("b", { "class": "pay-sheet__amount" }, current.payment.amountLabel)
+    ]);
+    var status = h("div", { "class": "pay-sheet__status", role: "status", "aria-live": "polite", "data-module": "pay-status" });
+    var testNote = h("div", { "class": "pay-sheet__test", "data-module": "pay-test-mode", hidden: true }, [
+      h("span", { "class": "status-badge status-badge--warn" }, PAYMENT_COPY.testMode),
+      h("span", null, PAYMENT_COPY.testHint)
+    ]);
+    var cardLabel = h("div", { "class": "field-label", id: "pay-sheet-card-label" }, PAYMENT_COPY.cardLabel);
+    var cardHost = h("div", { "class": "field pay-sheet__card", role: "group", "aria-labelledby": "pay-sheet-card-label", "data-module": "pay-card" });
+    var error2 = h("div", { "class": "field-error pay-sheet__error", role: "alert", "data-module": "pay-error" });
+    var cardField = h("div", { "class": "field-row pay-sheet__field", "data-module": "pay-card-field", hidden: true }, [cardLabel, cardHost, error2]);
+    var note = h("p", { "class": "pay-sheet__note", hidden: true }, PAYMENT_COPY.note);
+    var result = h("div", { "class": "pay-sheet__result", "data-module": "pay-result", hidden: true });
+    var primary = h("button", { "class": "btn btn--primary btn--block btn--lg", type: "button", "data-visual-id": "pay-sheet-confirm" });
+    var secondary = h("button", { "class": "btn btn--ghost btn--block", type: "button", "data-visual-id": "pay-sheet-secondary" });
+    var actions = h("div", { "class": "pay-sheet__actions" }, [primary, secondary]);
+    var panel = h("aside", { "class": "drawer pay-sheet", role: "dialog", "aria-modal": "true", "aria-labelledby": "pay-sheet-title", "data-module": "invoice-pay-sheet", "data-visual-id": "invoice-pay-sheet" }, [
+      h("div", { "class": "drawer__head" }, [title, closeButton]),
+      summary,
+      testNote,
+      status,
+      cardField,
+      note,
+      result,
+      actions
+    ]);
+    var scrim = h("div", { "class": "scrim pay-sheet__scrim", "data-visual-id": "invoice-pay-scrim" });
+    closeButton.addEventListener("click", closeInvoicePayment);
+    scrim.addEventListener("click", closeInvoicePayment);
+    panel.addEventListener("keydown", function(event) {
+      if (event.key === "Escape") closeInvoicePayment();
+    });
+    primary.addEventListener("click", function() {
+      var phase = current.payment.phase;
+      if (phase === "card") confirmInvoicePayment();
+      else if (phase === "failed") retryInvoicePayment();
+      else closeInvoicePayment();
+    });
+    secondary.addEventListener("click", closeInvoicePayment);
+    var host = root.body || root;
+    host.appendChild(scrim);
+    host.appendChild(panel);
+    current.sheet = { scrim, panel, title, closeButton, status, testNote, cardField, cardHost, error: error2, note, result, primary, secondary };
+    paint(current);
+    if (typeof title.focus === "function") title.focus();
+  }
+  function paint(current) {
+    var sheet = current.sheet;
+    var payment = current.payment;
+    var phase = payment.phase;
+    var cardShown = phase === "card" || phase === "confirming";
+    sheet.panel.setAttribute("data-state", phase);
+    sheet.panel.setAttribute("aria-busy", BUSY_PHASES.indexOf(phase) !== -1 ? "true" : "false");
+    toggle(sheet.testNote, payment.testMode && cardShown);
+    toggle(sheet.cardField, cardShown);
+    toggle(sheet.note, cardShown);
+    sheet.error.textContent = phase === "card" ? payment.message : "";
+    var progress = phase === "starting" ? PAYMENT_COPY.starting : phase === "confirming" ? PAYMENT_COPY.confirming : phase === "recording" ? PAYMENT_COPY.recording : "";
+    sheet.status.replaceChildren.apply(sheet.status, progress ? [h("span", { "class": "pay-sheet__spinner", "aria-hidden": "true" }), h("span", null, progress)] : []);
+    var outcome = phase === "paid" ? [PAYMENT_COPY.paidTitle, PAYMENT_COPY.paidBody, "ok"] : phase === "slow" ? [PAYMENT_COPY.slowTitle, PAYMENT_COPY.slowBody, "info"] : phase === "refused" || phase === "failed" ? ["", payment.message, "danger"] : null;
+    toggle(sheet.result, !!outcome);
+    sheet.result.setAttribute("data-state", outcome ? outcome[2] : "");
+    sheet.result.replaceChildren.apply(sheet.result, outcome ? [
+      outcome[0] ? h("div", { "class": "pay-sheet__result-title" }, outcome[0]) : null,
+      h("div", { "class": "pay-sheet__result-body" }, outcome[1])
+    ].filter(Boolean) : []);
+    var primaryLabel = phase === "card" ? "Pay " + payment.amountLabel : phase === "confirming" ? PAYMENT_COPY.processing : phase === "failed" ? PAYMENT_COPY.retry : phase === "paid" ? PAYMENT_COPY.done : phase === "slow" || phase === "refused" ? PAYMENT_COPY.close : "";
+    sheet.primary.textContent = primaryLabel;
+    toggle(sheet.primary, !!primaryLabel);
+    setDisabled(sheet.primary, phase === "confirming");
+    var secondaryLabel = phase === "card" ? PAYMENT_COPY.cancel : phase === "failed" ? PAYMENT_COPY.close : "";
+    sheet.secondary.textContent = secondaryLabel;
+    toggle(sheet.secondary, !!secondaryLabel);
+    setDisabled(sheet.closeButton, CLOSABLE_PHASES.indexOf(phase) === -1);
+  }
+  function toggle(node, shown) {
+    if (shown) node.removeAttribute("hidden");
+    else node.setAttribute("hidden", "");
+  }
+  function setDisabled(node, disabled) {
+    if (disabled) node.setAttribute("disabled", "");
+    else node.removeAttribute("disabled");
+  }
+  function cardStyle(root) {
+    var view = root && root.defaultView || globalThis;
+    var styles = view && typeof view.getComputedStyle === "function" && root.documentElement ? view.getComputedStyle(root.documentElement) : null;
+    var token = function(name, fallback) {
+      return styles && styles.getPropertyValue(name).trim() || fallback;
+    };
+    return {
+      base: {
+        color: token("--ink", "#1d1d1f"),
+        iconColor: token("--accent", "#0a84ff"),
+        fontFamily: "Manrope, system-ui, -apple-system, sans-serif",
+        fontSize: "16px",
+        "::placeholder": { color: token("--ink-3", "#9aa0ad") }
+      },
+      invalid: { color: token("--danger", "#c0392b"), iconColor: token("--danger", "#c0392b") }
+    };
   }
 
   // app-templates/customer-portal/runtime/src/components/primitives/ErrorState.js
@@ -13585,102 +14116,6 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     if (action) action(id);
   }
 
-  // app-templates/customer-portal/runtime/src/normalizers/invoices.js
-  var INVOICE_STATUS = Object.freeze({
-    OVERDUE: Object.freeze({ label: "Overdue", tone: "danger", open: true }),
-    SENT: Object.freeze({ label: "Due", tone: "info", open: true }),
-    PAID: Object.freeze({ label: "Paid", tone: "ok", open: false }),
-    VOID: Object.freeze({ label: "Void", tone: "scheduled", open: false })
-  });
-  function normalizeInvoices(raw) {
-    var rows2 = Array.isArray(raw && raw.items) ? raw.items : [];
-    return {
-      state: "ready",
-      truncated: !!(raw && raw.truncated),
-      items: rows2.map(invoiceRecord).filter(Boolean)
-    };
-  }
-  function openInvoices(envelope2) {
-    return (envelope2 && envelope2.items || []).filter(function(invoice) {
-      return invoice.open;
-    }).sort(function(left, right) {
-      var overdue = Number(right.stateCode === "OVERDUE") - Number(left.stateCode === "OVERDUE");
-      return overdue || (left.due || "9999-99-99").localeCompare(right.due || "9999-99-99") || left.backendId - right.backendId;
-    });
-  }
-  function findInvoice(envelope2, id) {
-    return (envelope2 && envelope2.items || []).find(function(invoice) {
-      return invoice.id === id;
-    }) || null;
-  }
-  function invoiceTitle(invoice) {
-    return invoice.period || formatIsoDate(invoice.issued) || "Invoice";
-  }
-  function invoiceStatusLine(invoice) {
-    if (invoice.stateCode === "SENT" && invoice.due) return "Due on " + formatIsoDate(invoice.due);
-    return invoice.status.label;
-  }
-  function invoiceAmount(invoice) {
-    return formatMoney(invoice.total, invoice.currency);
-  }
-  function invoiceTerms(invoice) {
-    return invoice.netDays ? "Net " + invoice.netDays : "";
-  }
-  function invoiceRecord(row) {
-    var backendId = positiveInteger3(row && row.id);
-    var stateCode = latestStateCode(row);
-    var status = Object.prototype.hasOwnProperty.call(INVOICE_STATUS, stateCode) ? INVOICE_STATUS[stateCode] : null;
-    if (!backendId || !status) return null;
-    var currency = text3(row.order && row.order.currency && row.order.currency.code);
-    return {
-      id: "invoice-core-" + backendId,
-      backendId,
-      stateCode,
-      status: { label: status.label, tone: status.tone },
-      open: status.open,
-      period: attributeText(row, "SERVICE_PERIOD"),
-      issued: isoDate2(attributeText(row, "DATE")),
-      due: isoDate2(row.dueDate),
-      netDays: attributeNumber(row, "PAYMENT_NET_TERMS"),
-      currency,
-      total: finiteNumber8(row.amountDue),
-      paid: finiteNumber8(row.totalPaidAmount),
-      lines: (Array.isArray(row.items) ? row.items : []).map(function(item) {
-        return lineRecord(item, currency);
-      }).filter(Boolean)
-    };
-  }
-  function lineRecord(item, currency) {
-    var amount = finiteNumber8(item && item.amount);
-    if (amount === null) return null;
-    var count = finiteNumber8(item.itemCount);
-    var quantity = count !== null && count > 0 ? count : 1;
-    var product = item.itemPrice && item.itemPrice.product;
-    return {
-      id: positiveInteger3(item.id),
-      name: localizedName6(product && product.nls) || "Service",
-      quantity,
-      amount: formatMoney(amount * quantity, currency)
-    };
-  }
-  function isoDate2(value) {
-    var parts = Array.isArray(value) ? value : /^(\d{4})-(\d{2})-(\d{2})$/.exec(text3(value));
-    if (!parts) return "";
-    var numbers = Array.isArray(value) ? parts.slice(0, 3).map(Number) : parts.slice(1, 4).map(Number);
-    var date = new Date(Date.UTC(numbers[0], numbers[1] - 1, numbers[2]));
-    if (date.getUTCFullYear() !== numbers[0] || date.getUTCMonth() !== numbers[1] - 1 || date.getUTCDate() !== numbers[2]) return "";
-    return numbers[0] + "-" + String(numbers[1]).padStart(2, "0") + "-" + String(numbers[2]).padStart(2, "0");
-  }
-  function finiteNumber8(value) {
-    var number = typeof value === "number" ? value : typeof value === "string" && value.trim() !== "" ? Number(value) : Number.NaN;
-    return Number.isFinite(number) ? number : null;
-  }
-  function localizedName6(value) {
-    if (!value || typeof value !== "object") return "";
-    var localized2 = value.en || value["en-US"] || Object.values(value)[0] || {};
-    return text3(localized2 && (localized2.NAME || localized2.name));
-  }
-
   // app-templates/customer-portal/runtime/src/components/storm/RecordRows.js
   function VisitRow(visit, options2) {
     var settings = options2 || {};
@@ -14627,7 +15062,31 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
         h("h2", { "class": "prop-section__title" }, "Charges")
       ].concat(rows2, total ? [h("div", { "class": "invoice__total", "data-module": "invoice-total" }, [h("span", null, "Total"), h("span", null, total)])] : [], balance)));
     }
+    var pay = PaySection(invoice);
+    if (pay) page.appendChild(pay);
     return page;
+  }
+  function PaySection(invoice) {
+    if (!invoicePaymentOpen(state.config) || !invoicePayable(invoice)) return null;
+    var payment = invoicePaymentFor(invoice.id);
+    if (payment && (payment.phase === "recording" || payment.phase === "slow")) {
+      return h("section", { "class": "card card--pad invoice-pay", "data-module": "invoice-pay", "data-visual-id": "invoice-pay", "data-state": "recording", role: "status" }, [
+        h("div", { "class": "invoice-pay__title" }, "Payment received"),
+        h("div", { "class": "invoice-pay__note" }, "Your invoice will show as paid shortly. You don't need to pay again.")
+      ]);
+    }
+    var busy = invoicePaymentBusy();
+    return h("section", { "class": "card card--pad invoice-pay", "data-module": "invoice-pay", "data-visual-id": "invoice-pay", "data-state": busy ? "busy" : "ready" }, [
+      h("button", {
+        "class": "btn btn--primary btn--block btn--lg",
+        type: "button",
+        "data-action": "invoice.pay",
+        "data-id": invoice.id,
+        "data-visual-id": "invoice-pay-button",
+        disabled: busy ? true : void 0
+      }, "Pay " + invoiceAmount(invoice)),
+      h("div", { "class": "invoice-pay__note" }, "Pay by card. Payments are processed securely by Stripe.")
+    ]);
   }
   function fact2(key, label, value) {
     return h("div", { "class": "prop-fact", "data-fact": key }, [
@@ -16359,7 +16818,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     var changed = state.profileLoginChanged;
     var login = currentSignIn();
     return h("div", { "class": "card card--pad prop-facts prop-facts--single", "data-module": "profile-sign-in", "data-visual-id": "profile-sign-in" }, [
-      EditableFact("login", login ? [login] : [], changed ? "Use this email the next time you sign in. Your password stays the same." : "The email you sign in to this portal with. Changing it does not change your contact email.")
+      EditableFact("login", login ? [login] : [], changed ? "Use this account name the next time you sign in. Your password stays the same." : "The name you sign in to this portal with. Changing it does not change your contact email.")
     ]);
   }
   function EditableFact(key, values, note, label) {
@@ -16404,6 +16863,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
         type: item.type,
         autocomplete: item.code === "BILLING_ADDRESS" && addressSuggestionsOpen() ? "off" : item.autocomplete,
         value: edit.draft[item.key] || "",
+        placeholder: item.placeholder,
         "data-profile-input": item.code,
         "data-state": error2 ? "invalid" : void 0,
         "aria-invalid": error2 ? "true" : void 0,
@@ -20880,6 +21340,9 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
       if (id) state.invoiceId = id;
       go("invoice.detail");
     },
+    "invoice.pay": function(id) {
+      return payInvoice(id, { reload: reloadRuntimeModule, render });
+    },
     "appointments.openProperty": function(id) {
       state.propertyId = id;
       go("property.detail");
@@ -22538,10 +23001,10 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
   ];
   function createCoreAccountProfileAdapter(options2 = {}) {
     var fetchImpl = options2.fetch || globalThis.fetch;
-    if (typeof fetchImpl !== "function") throw coded4("fetch-unavailable", "Core account profile adapter requires fetch");
+    if (typeof fetchImpl !== "function") throw coded5("fetch-unavailable", "Core account profile adapter requires fetch");
     return {
       async load(moduleId, context) {
-        if (moduleId !== "profile") throw coded4("unsupported-module", "Core account profile adapter cannot load " + moduleId);
+        if (moduleId !== "profile") throw coded5("unsupported-module", "Core account profile adapter cannot load " + moduleId);
         return loadCustomerAccountProfile(context, fetchImpl, options2.origin);
       }
     };
@@ -22571,7 +23034,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     var owned = rows2.filter(function(row) {
       return ownedBySession(row, api);
     });
-    if (!owned.length) throw coded4("profile-unavailable", "Core did not return the signed-in customer's Account");
+    if (!owned.length) throw coded5("profile-unavailable", "Core did not return the signed-in customer's Account");
     return { account: owned[0], scopeMode: owned.length === rows2.length ? "server-scoped" : "browser-filtered" };
   }
   function ownedBySession(row, api) {
@@ -22582,33 +23045,33 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
   function requestContext4(context, explicitOrigin) {
     var config = context && context.config || {};
     var runtimeState = context && context.state || {};
-    var session = runtimeState.session || {};
-    var accessToken = text3(session.accessToken || session.access_token);
-    if (!accessToken) throw coded4("session-required", "A Core access token is required");
-    var userId = positiveInteger3(session.userId);
-    if (!userId) throw coded4("session-user-required", "The signed-in Core User is required");
-    var account = runtimeState.customerAccount || session.account || null;
+    var session2 = runtimeState.session || {};
+    var accessToken = text3(session2.accessToken || session2.access_token);
+    if (!accessToken) throw coded5("session-required", "A Core access token is required");
+    var userId = positiveInteger3(session2.userId);
+    if (!userId) throw coded5("session-user-required", "The signed-in Core User is required");
+    var account = runtimeState.customerAccount || session2.account || null;
     var accountId = positiveInteger3(account && account.id);
-    if (!accountId) throw coded4("customer-unresolved", "A resolved customer Account is required before reading its profile");
+    if (!accountId) throw coded5("customer-unresolved", "A resolved customer Account is required before reading its profile");
     var organization = text3(config.organization);
-    if (!organization) throw coded4("organization-required", "A portal organization code is required");
+    if (!organization) throw coded5("organization-required", "A portal organization code is required");
     var origin = explicitOrigin || config.origin || globalThis.location && globalThis.location.origin || "";
     return {
       accountBase: sameOriginBase7(config.accountApiBase || "/core-acct", origin, "Core Account API base"),
       accountId,
       accountListPath: config.vertical === "snow" ? "/api/tagged/account/list.json" : "/api/account/list.json",
       tagged: config.vertical === "snow",
-      authorization: text3(session.tokenType || session.token_type || "Bearer") + " " + accessToken,
+      authorization: text3(session2.tokenType || session2.token_type || "Bearer") + " " + accessToken,
       organization,
       userId
     };
   }
   async function requestJson7(fetchImpl, url, options2) {
     var response = await fetchImpl(url, options2);
-    if (!response || typeof response.ok !== "boolean") throw coded4("invalid-response", "Core request returned an invalid response");
+    if (!response || typeof response.ok !== "boolean") throw coded5("invalid-response", "Core request returned an invalid response");
     if (!response.ok) {
       var code = response.status === 401 ? "session-expired" : response.status === 403 ? "customer-forbidden" : "profile-request-failed";
-      var failure2 = coded4(code, "Core Account request failed with HTTP " + response.status);
+      var failure2 = coded5(code, "Core Account request failed with HTTP " + response.status);
       failure2.status = response.status;
       throw failure2;
     }
@@ -22616,18 +23079,18 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     try {
       payload = await response.json();
     } catch (_) {
-      throw coded4("invalid-response", "Core response was not valid JSON");
+      throw coded5("invalid-response", "Core response was not valid JSON");
     }
-    if (!payload || typeof payload !== "object") throw coded4("invalid-response", "Core answered with an unprojected body");
+    if (!payload || typeof payload !== "object") throw coded5("invalid-response", "Core answered with an unprojected body");
     return payload;
   }
   function sameOriginBase7(value, origin, label) {
-    if (!origin) throw coded4("origin-required", label + " requires a browser origin");
+    if (!origin) throw coded5("origin-required", label + " requires a browser origin");
     var target = new URL(String(value || ""), origin);
-    if (target.origin !== new URL(origin).origin) throw coded4("cross-origin-service", label + " must be same-origin");
+    if (target.origin !== new URL(origin).origin) throw coded5("cross-origin-service", label + " must be same-origin");
     return target.href.replace(/\/+$/, "");
   }
-  function coded4(code, message) {
+  function coded5(code, message) {
     var error2 = new Error(message);
     error2.code = code;
     return error2;
@@ -22811,8 +23274,8 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
   };
   async function loadProductEnrichment(context, products) {
     var config = context.config || {};
-    var session = context.state && context.state.session || {};
-    var token = session.accessToken;
+    var session2 = context.state && context.state.session || {};
+    var token = session2.accessToken;
     var empty = {
       models: [],
       reviews: [],
@@ -22824,7 +23287,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     if (!token || config.pimFixtureUrl || config.pimEnrichmentMode !== "current-api") return empty;
     var headers = {
       Accept: "application/json",
-      Authorization: (session.tokenType || "Bearer") + " " + token,
+      Authorization: (session2.tokenType || "Bearer") + " " + token,
       "Content-Type": "application/json",
       "X-Organization-Code": config.pimOrganization || config.organization || "SERVICEWAND"
     };
@@ -23287,13 +23750,13 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
   }
   async function resolveCoreAccount(context, fetchImpl = globalThis.fetch, explicitOrigin) {
     var config = context && context.config || {};
-    var session = context && context.session || context && context.state && context.state.session || {};
-    var accessToken = text14(session.accessToken || session.access_token);
+    var session2 = context && context.session || context && context.state && context.state.session || {};
+    var accessToken = text14(session2.accessToken || session2.access_token);
     if (!accessToken) throw contractError6("session-required", "A Core access token is required");
     var origin = explicitOrigin || config.origin || browserOrigin5();
     var coreBase = sameOriginBase8(config.coreApiBase || "/core", origin, "Core API base");
     var accountBase = sameOriginBase8(config.accountApiBase || "/core-acct", origin, "Core Account API base");
-    var tokenType = text14(session.tokenType || session.token_type || "Bearer");
+    var tokenType = text14(session2.tokenType || session2.token_type || "Bearer");
     var authorization = tokenType + " " + accessToken;
     var basicInfo = await requestJson8(fetchImpl, coreBase + "/api/user/basic-info.json", {
       method: "POST",
@@ -23661,18 +24124,18 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
   function planContext(context, explicitOrigin) {
     var config = context && context.config || {};
     var state2 = context && context.state || {};
-    var session = context && context.session || state2.session || {};
-    var accessToken = text15(session.accessToken || session.access_token);
+    var session2 = context && context.session || state2.session || {};
+    var accessToken = text15(session2.accessToken || session2.access_token);
     if (!accessToken) throw contractError7("session-required", "A Core access token is required");
     var organization = text15(config.organization);
     if (!organization) throw contractError7("organization-required", "Verified portal organization is required");
     var origin = explicitOrigin || config.origin || browserOrigin6();
     return {
-      authorization: text15(session.tokenType || session.token_type || "Bearer") + " " + accessToken,
+      authorization: text15(session2.tokenType || session2.token_type || "Bearer") + " " + accessToken,
       billBase: sameOriginBase9(config.billApiBase || "/core-bill", origin, "Core Bill API base"),
       coreBase: sameOriginBase9(config.coreApiBase || "/core", origin, "Core API base"),
       config,
-      customer: context && context.account || state2.customerAccount || session.account || {},
+      customer: context && context.account || state2.customerAccount || session2.account || {},
       organization,
       serviceBase: sameOriginBase9(config.serviceApiBase || "/core-svc", origin, "Core Service API base")
     };

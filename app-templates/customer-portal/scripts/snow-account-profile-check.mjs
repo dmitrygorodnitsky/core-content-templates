@@ -279,7 +279,7 @@ function renderWith(envelope, status) {
     ["email", "ready", ["jordan.lee@example.test"], "", "Edit"],
     ["phone", "ready", ["+1 604-555-0148"], "", "Edit"],
     ["billing", "ready", ["1200 West Pender Street, Suite 400, Vancouver, BC V6E 2S9", "133 Acceptance Way, Toronto, ON M5V 2T6"], "", "Edit"],
-    ["login", "ready", ["jordan.lee@example.test"], "The email you sign in to this portal with. Changing it does not change your contact email.", "Edit"],
+    ["login", "ready", ["jordan.lee@example.test"], "The name you sign in to this portal with. Changing it does not change your contact email.", "Edit"],
   ]);
   assert.deepEqual(all(ready, "[data-action=\"profileEdit.start\"]").map((node) => node.getAttribute("data-id")), ["contact", "email", "phone", "billing", "login"]);
   assert.equal(all(one(ready, "[data-module=\"profile-facts\"]"), "[data-fact=\"login\"]").length, 0, "the sign-in is not one of the contact details");
@@ -505,6 +505,8 @@ function renderWith(envelope, status) {
   startProfileEdit("login");
   page = AccountProfile();
   assert.equal(one(row(page, "login"), "input").getAttribute("value"), "jordan.lee@example.test");
+  assert.equal(one(row(page, "login"), ".prop-fact__label").textContent, "Account name");
+  assert.deepEqual(["type", "placeholder", "aria-label"].map((name) => one(row(page, "login"), "input").getAttribute(name)), ["email", "name@example.com", "Account name"], "the account name is still the sign-in email");
   assert.equal(all(one(page, "[data-module=\"profile-facts\"]"), "input").length, 0, "the sign-in is edited in its own card");
   changeProfileDraft("login", "New.Login@Example.test");
   login.next = { outcome: "APPLIED", field: null, message: "Saved. Use your new email the next time you sign in.", changed: ["LOGIN"] };
@@ -513,7 +515,7 @@ function renderWith(envelope, status) {
   assert.deepEqual(login.submits, [["CUSTOMER_LOGIN_CHANGE", { LOGIN: "new.login@example.test" }]]);
   page = AccountProfile();
   assert.equal(one(row(page, "login"), ".prop-fact__value").textContent, "new.login@example.test");
-  assert.equal(one(row(page, "login"), ".prop-fact__note").textContent, "Use this email the next time you sign in. Your password stays the same.");
+  assert.equal(one(row(page, "login"), ".prop-fact__note").textContent, "Use this account name the next time you sign in. Your password stays the same.");
   assert.equal(one(row(page, "email"), ".prop-fact__value").textContent, "jordan.lee@example.test", "the contact email is not the sign-in and does not change with it");
   assert.deepEqual(reloads, [], "a sign-in change does not re-read the Account");
 

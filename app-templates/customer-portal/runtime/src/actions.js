@@ -11,6 +11,7 @@ import { createCoreSpaDemoAdapter } from "./adapters/core-spa-demo-adapter.js";
 import { startCoreOidcSignIn, startCoreOidcSignOut } from "./adapters/core-oidc-adapter.js";
 import { createCoreUserProfileAdapter } from "./adapters/core-user-profile-adapter.js";
 import { cancelProfileEdit, focusProfileInput, saveProfileEdit, startProfileEdit } from "./profile-edit.js";
+import { payInvoice } from "./invoice-payment.js";
 import { configuredExternalUrl, normalizeVertical, verticalProfiles } from "./config.js";
 import { resolveRoute, writeRouteToLocation } from "./router.js";
 import { selectSeoService, toggleSeoFaq } from "./seo-actions.js";
@@ -186,6 +187,7 @@ export var ACTIONS = {
   "appointments.filterDay": function (id) { var day = Number(id); state.apptDay = id === null || id === "" || id === undefined || !Number.isInteger(day) ? null : day; render(); },
   "appointments.openVisit": function (id) { state.visitId = id; go("visit.detail"); },
   "invoice.open":      function (id) { if (id) state.invoiceId = id; go("invoice.detail"); },
+  "invoice.pay":       function (id) { return payInvoice(id, { reload: reloadRuntimeModule, render: render }); },
   "appointments.openProperty": function (id) { state.propertyId = id; go("property.detail"); },
   "property.showOnMap": function (id) { if (id) state.ovProperty = id; go("overview"); },
   "appointments.sortResource": function () { state.apptSort = state.apptSort === "desc" ? "asc" : "desc"; render(); },

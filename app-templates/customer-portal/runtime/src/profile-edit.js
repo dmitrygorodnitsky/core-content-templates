@@ -9,14 +9,14 @@ const EMAIL_SHAPE = /^[A-Za-z0-9.!#$%&'*+/=?^_`{|}~-]+@[A-Za-z0-9](?:[A-Za-z0-9-
 const PHONE_CHARACTERS = /^\+?[0-9 ().-]+$/;
 const CONTROL_CHARACTERS = /[\u0000-\u001f\u007f]/;
 
-const field = (code, key, label, type, autocomplete) => Object.freeze({ code, key, label, type, autocomplete });
+const field = (code, key, label, type, autocomplete, placeholder) => Object.freeze({ code, key, label, type, autocomplete, placeholder });
 
 export const PROFILE_EDIT_ROWS = Object.freeze({
   contact: Object.freeze({ label: "Name", form: PROFILE_FORM, fields: Object.freeze([field("FIRST_NAME", "firstName", "First name", "text", "given-name"), field("LAST_NAME", "lastName", "Last name", "text", "family-name")]) }),
   email: Object.freeze({ label: "Email", form: PROFILE_FORM, fields: Object.freeze([field("EMAIL", "email", "Email", "email", "email")]) }),
   phone: Object.freeze({ label: "Phone", form: PROFILE_FORM, fields: Object.freeze([field("PHONE", "phone", "Phone", "tel", "tel")]) }),
   billing: Object.freeze({ label: "Billing address", form: PROFILE_FORM, fields: Object.freeze([field("BILLING_ADDRESS", "billingAddress", "Billing address", "text", "street-address")]) }),
-  login: Object.freeze({ label: "Sign-in email", form: LOGIN_FORM, fields: Object.freeze([field("LOGIN", "login", "Sign-in email", "email", "username")]) }),
+  login: Object.freeze({ label: "Account name", form: LOGIN_FORM, fields: Object.freeze([field("LOGIN", "login", "Account name", "email", "username", "name@example.com")]) }),
 });
 
 const SESSION_ENDED = "Your session ended while the sign-in was changing. Sign in again: with {next} if the change went through, otherwise with {current}.";

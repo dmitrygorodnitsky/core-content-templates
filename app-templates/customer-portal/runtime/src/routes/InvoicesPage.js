@@ -7,6 +7,7 @@ import { PageHeader } from "../components/shell/PageHeader.js";
 import { InvoiceRow, RecordSection } from "../components/storm/RecordRows.js";
 import { findInvoice, invoiceAmount, invoiceTerms, invoiceTitle } from "../normalizers/invoices.js";
 import { formatIsoDate, formatMoney } from "../normalizers/contracts.js";
+import { invoicePayable, invoicePaymentBusy, invoicePaymentFor, invoicePaymentOpen } from "../invoice-payment.js";
 
 export function Invoices() {
   var page = h("section", { "class": "page page--narrow", "data-route": "invoices", "data-visual-id": "invoices-page" });
@@ -63,7 +64,32 @@ export function InvoiceDetail() {
       h("h2", { "class": "prop-section__title" }, "Charges"),
     ].concat(rows, total ? [h("div", { "class": "invoice__total", "data-module": "invoice-total" }, [h("span", null, "Total"), h("span", null, total)])] : [], balance)));
   }
+  var pay = PaySection(invoice);
+  if (pay) page.appendChild(pay);
   return page;
+}
+
+function PaySection(invoice) {
+  if (!invoicePaymentOpen(state.config) || !invoicePayable(invoice)) return null;
+  var payment = invoicePaymentFor(invoice.id);
+  if (payment && (payment.phase === "recording" || payment.phase === "slow")) {
+    return h("section", { "class": "card card--pad invoice-pay", "data-module": "invoice-pay", "data-visual-id": "invoice-pay", "data-state": "recording", role: "status" }, [
+      h("div", { "class": "invoice-pay__title" }, "Payment received"),
+      h("div", { "class": "invoice-pay__note" }, "Your invoice will show as paid shortly. You don't need to pay again."),
+    ]);
+  }
+  var busy = invoicePaymentBusy();
+  return h("section", { "class": "card card--pad invoice-pay", "data-module": "invoice-pay", "data-visual-id": "invoice-pay", "data-state": busy ? "busy" : "ready" }, [
+    h("button", {
+      "class": "btn btn--primary btn--block btn--lg",
+      type: "button",
+      "data-action": "invoice.pay",
+      "data-id": invoice.id,
+      "data-visual-id": "invoice-pay-button",
+      disabled: busy ? true : undefined,
+    }, "Pay " + invoiceAmount(invoice)),
+    h("div", { "class": "invoice-pay__note" }, "Pay by card. Payments are processed securely by Stripe."),
+  ]);
 }
 
 function fact(key, label, value) {

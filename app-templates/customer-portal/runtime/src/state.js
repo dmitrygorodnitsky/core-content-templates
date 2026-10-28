@@ -73,6 +73,7 @@ export var state = {
   apptDay: null,
   visitId: null,
   invoiceId: null,
+  invoicePayment: null,
   propertyId: null,
   apptSort: "asc",
   liveWeather: null,
