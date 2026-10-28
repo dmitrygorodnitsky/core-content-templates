@@ -17,6 +17,13 @@ export function normalizeAccountProfile(raw) {
   var emails = primary ? entryValues(primary.contactEntries, EMAIL_ENTRY) : [];
   var phones = primary ? entryValues(primary.contactEntries, PHONE_ENTRY).map(formatPhone) : [];
   var billingAddresses = typedAddresses(account.addresses, BILLING_ADDRESS);
+  var editable = {
+    firstName: primary ? plain(primary.firstName) : "",
+    lastName: primary ? plain(primary.lastName) : "",
+    email: primary ? firstEntryValue(primary.contactEntries, EMAIL_ENTRY) : "",
+    phone: primary ? formatPhone(firstEntryValue(primary.contactEntries, PHONE_ENTRY)) : "",
+    billingAddress: oldestTypedAddress(account.addresses, BILLING_ADDRESS),
+  };
   var filled = [!!(contact && contact.name), emails.length > 0, phones.length > 0, billingAddresses.length > 0];
   return {
     state: filled.every(Boolean) ? "ready" : filled.some(Boolean) ? "partial" : "empty",
@@ -27,6 +34,7 @@ export function normalizeAccountProfile(raw) {
     emails: emails,
     phones: phones,
     billingAddresses: billingAddresses,
+    editable: editable,
     allowedActions: [],
   };
 }
@@ -41,6 +49,7 @@ export function accountProfileFailure(code) {
     emails: [],
     phones: [],
     billingAddresses: [],
+    editable: null,
     allowedActions: [],
   };
 }
@@ -64,6 +73,20 @@ function entryValues(entries, typeCode) {
     if (value && values.indexOf(value) === -1) values.push(value);
   });
   return values;
+}
+
+function firstEntryValue(entries, typeCode) {
+  var entry = rows(entries)
+    .filter(function (row) { return text(row.type && row.type.code) === typeCode && plain(row.value); })
+    .sort(byIdAscending)[0];
+  return entry ? plain(entry.value) : "";
+}
+
+function oldestTypedAddress(addresses, typeCode) {
+  var link = rows(addresses)
+    .filter(function (row) { return rows(row.types).some(function (type) { return text(type.code) === typeCode; }); })
+    .sort(byIdAscending)[0];
+  return link ? formatAccountAddress(link.address) : "";
 }
 
 function typedAddresses(addresses, typeCode) {

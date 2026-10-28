@@ -109,10 +109,11 @@ export async function resolveCoreAccount(context, fetchImpl = globalThis.fetch, 
   return {
     state: "ready",
     scopeMode: accounts.length === returned.length ? "server-scoped" : "browser-filtered",
-    organization: { code: organizationCode },
+    organization: { code: organizationCode, id: authorizedOrganizationId(basicInfo, organizationCode) },
     user: {
       id: userId,
       displayName: text(basicInfo.authenticatedUserName || basicInfo.authenticatedUser || basicInfo.name),
+      login: text(basicInfo.authenticatedUserName),
     },
     account: {
       id: Number(account.id),
@@ -122,6 +123,12 @@ export async function resolveCoreAccount(context, fetchImpl = globalThis.fetch, 
       typeCode: typeList ? text(account.type && account.type.code) : typeCodes[0],
     },
   };
+}
+
+function authorizedOrganizationId(basicInfo, code) {
+  var authorized = Array.isArray(basicInfo && basicInfo.authorizedOrganizations) ? basicInfo.authorizedOrganizations : [];
+  var match = authorized.find(function (item) { return item && text(item.code) === code; });
+  return match ? positiveInteger(match.id) : null;
 }
 
 function selectOrganization(configuredCode, basicInfo) {

@@ -31,6 +31,9 @@ appointmentsTimeline, invoices, proposals, profile):
 | `/core-svc/api/tagged/appointment/list.json` (`type.code = SNOW_SERVICE_VISIT`) | `P_TAG_APPOINTMENT_R` |
 | `/core-bill/api/tagged/invoice/list.json` | `P_TAG_INVOICE_R` |
 | `/core/image/{id}/get` (visit photos) | none |
+| `GET /en/core-cms/api/form-type/{code}/get.json` (`CUSTOMER_PROFILE_UPDATE`, `CUSTOMER_LOGIN_CHANGE`) | none; sent without the session, as the public quote form does |
+| `POST /core-cms/api/form/submit.json` with the session (profile and sign-in edits) | none |
+| `GET /core/api/user/preferences.json` (the edit's outcome) | `P_UI_USER_PREF` |
 
 The PIM adapter's private product-model, product-review and inventory lists are
 not called: the staging configuration leaves `pimEnrichmentMode` at `closed`.
@@ -53,6 +56,36 @@ BlockTemplate. After `block-template/clear-cache.json` answered 200 on
 app-1-core-cms and app-3-core-cms, six fetches of `/pages/SNOWLIMITLESS/portal`
 (three per node) served the new bundle, byte-identical on both nodes. No
 signed-in browser test with a customer session has been run.
+
+Deployment, 2026-10-28, profile editing: the Profile page edits the LEGAL
+contact's name, the email, the phone and the billing address in place, each
+row with its own Edit (or Add when nothing is on file), Save and Cancel, and
+the sign-in email in a separate card. The browser checks a value with the
+server's rules and messages before sending, submits only the changed fields
+(named in `FIELDS`) as a `CUSTOMER_PROFILE_UPDATE` form, or the new login as a
+`CUSTOMER_LOGIN_CHANGE` form, with the session's Bearer and the organization id
+from `basic-info.json`, allows one save at a time, and waits up to 45 s for the
+outcome in the User's `SNOW_CUSTOMER_PROFILE_UPDATE` or
+`SNOW_CUSTOMER_LOGIN_CHANGE` preference. An applied profile change re-reads the
+tagged Account; a refusal is shown next to the field it names, or in the row;
+no outcome in time is shown as unconfirmed. An applied sign-in change shows the
+new login with a note to use it next time; a 401 while waiting for it tells the
+client to sign in again with either login. The billing address offers Google
+Places suggestions only when `PORTAL_MAPS_API_KEY` is set; on 2026-10-28 the
+deployed staging page had no key, so it is plain text. A fixture portal stays
+read-only. The backend side is recorded in
+`core-ui/docs/snow-customer-portal-tagged-access.md`.
+
+`upsert-granite-ridge-staging-portal.mjs` ran its twelve checks in the dry
+run and again with `--live`, which updated BlockTemplate
+`CUSTOMER_PORTAL_GRANITE_RIDGE_STAGING`; `block-template/clear-cache.json`
+answered 200 on app-1-core-cms and app-3-core-cms; twelve fetches of
+`/pages/SNOWLIMITLESS/portal` answered the same bytes from both nodes, and eight
+more carried the new profile-editing code on both. The page was opened in the Browser pane in an existing signed-in
+session: the profile and sign-in rows, the inline editor, a browser-side
+refusal and the saving and refused states rendered at desktop, tablet and
+mobile widths in light and dark mode; nothing was saved and no form was
+submitted from the browser.
 
 History: on 2026-10-19 the deployment was held because `P_TAG_DOCUMENT_E` also
 authorized `sync-state-history`; the backend was told. On 2026-10-28 the user
@@ -229,7 +262,10 @@ are hidden; question 7 in §5 asks for that signal.
    entity, as `Appointment.RESOURCE → Resource.ACCOUNT` needs?
 4. A User owning several customer Accounts: refuse, or pick one through a header
    the server checks against the subject?
-5. Can a hook read the subject on a signed-in form submit?
+5. Can a hook read the subject on a signed-in form submit? Answered by a
+   dev-1 probe on 2026-10-28: a Bearer submission sets `Form.user` to the
+   session User and ignores a `user` in the body, and the hooks run in the
+   submitter's security context.
 6. A quote sent back for changes returns to `QUOTE_PREPARED` and leaves the
    client's list until it is sent again. Is a state history the right way to
    keep it visible, or should the workflow gain a client-visible revision state?

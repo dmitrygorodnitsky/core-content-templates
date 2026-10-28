@@ -149,6 +149,8 @@ const accountModule = {
     context.state.session.account = envelope.account;
     context.state.sessionName = envelope.user && envelope.user.displayName || envelope.account && envelope.account.displayName || null;
     context.state.session.userId = envelope.user && envelope.user.id || null;
+    context.state.session.login = envelope.user && envelope.user.login || null;
+    context.state.session.organizationId = envelope.organization && envelope.organization.id || null;
     context.state.account = "ready";
   },
   onError(error, context) {

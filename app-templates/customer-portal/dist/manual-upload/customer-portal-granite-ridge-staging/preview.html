@@ -3426,6 +3426,40 @@ h1.proposal-detail-head__title { margin: 0; }
 
 .prop-fact__note { font-size: 12.5px; color: var(--ink-2); margin-top: 3px; }
 
+.prop-facts--single { grid-template-columns: minmax(0, 1fr); }
+
+.prop-fact__head { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
+
+.prop-fact__edit { font-size: 12.5px; flex: none; }
+
+.prop-fact__edit[disabled] { opacity: .45; cursor: not-allowed; }
+
+.prop-fact__saved { font-size: 12px; font-weight: 700; color: var(--ok); margin-top: 4px; }
+
+.prop-fact--editing { grid-column: 1 / -1; padding: 14px; margin: -6px -8px; border-radius: 14px; background: rgba(var(--accent-rgb), .05); border: 1px solid rgba(var(--accent-rgb), .22); }
+
+.prop-edit { display: grid; gap: 10px; margin-top: 8px; }
+
+.prop-edit--pair { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+.prop-edit__field { position: relative; }
+
+.prop-edit__message { margin-top: 10px; font-size: 12.5px; line-height: 1.45; color: var(--danger); }
+
+.prop-edit__message[data-state="session-ended"] { color: var(--ink-2); }
+
+.prop-edit__actions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-top: 12px; }
+
+.prop-edit__status { font-size: 12.5px; color: var(--ink-3); }
+
+.prop-suggest { list-style: none; margin: 4px 0 0; padding: 4px; position: absolute; left: 0; right: 0; top: 100%; z-index: 5; background: var(--surface); border: 1px solid var(--glass-border); border-radius: 12px; box-shadow: var(--shadow-card); }
+
+.prop-suggest[hidden] { display: none; }
+
+.prop-suggest__option { padding: 9px 11px; border-radius: 9px; font-size: 13.5px; cursor: pointer; }
+
+.prop-suggest__option[aria-selected="true"], .prop-suggest__option:hover { background: rgba(var(--accent-rgb), .1); }
+
 .prop-section__title { font-size: 12px; font-weight: 700; letter-spacing: .03em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 10px; }
 
 .prop-ticket { margin-bottom: 16px; }
@@ -3813,6 +3847,8 @@ h1.proposal-detail-head__title { margin: 0; }
 .vw-mobile .appt-chip { padding: 7px 11px; font-size: 12.5px; }
 
 .vw-mobile .prop-facts { grid-template-columns: 1fr; }
+
+.vw-mobile .prop-edit--pair { grid-template-columns: 1fr; }
 
 .vw-mobile .prop-head__title { font-size: 24px; }
 
@@ -4550,18 +4586,18 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     });
   }
   function parseWeeklyAvailability(value) {
-    var parsed;
+    var parsed2;
     try {
-      parsed = JSON.parse(requiredText(value, "WEEKLY_AVAILABILITY"));
+      parsed2 = JSON.parse(requiredText(value, "WEEKLY_AVAILABILITY"));
     } catch (_) {
       throw availabilityError("availability-invalid-schedule", "WEEKLY_AVAILABILITY is not valid JSON");
     }
-    if (!parsed || parsed.schemaVersion !== 1) {
+    if (!parsed2 || parsed2.schemaVersion !== 1) {
       throw availabilityError("availability-invalid-schedule", "WEEKLY_AVAILABILITY schemaVersion must be 1");
     }
     var result = {};
     DAY_NAMES.forEach(function(day) {
-      var windows = parsed[day];
+      var windows = parsed2[day];
       if (!Array.isArray(windows)) throw availabilityError("availability-invalid-schedule", "WEEKLY_AVAILABILITY is missing " + day);
       result[day] = windows.map(function(window2) {
         if (!Array.isArray(window2) || window2.length !== 2 || !validTime(window2[0]) || !validTime(window2[1]) || window2[0] >= window2[1]) {
@@ -5188,15 +5224,15 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
   function configuredExternalUrl(config, key) {
     var value = config && config[key];
     if (!value) return "";
-    var parsed;
+    var parsed2;
     try {
-      parsed = new URL(value, globalThis.location && globalThis.location.href);
+      parsed2 = new URL(value, globalThis.location && globalThis.location.href);
     } catch (_) {
       return "";
     }
-    if (parsed.protocol !== "https:") return "";
+    if (parsed2.protocol !== "https:") return "";
     var allowedOrigins = config.allowedNavOrigins || [];
-    return allowedOrigins.includes(parsed.origin) ? parsed.href : "";
+    return allowedOrigins.includes(parsed2.origin) ? parsed2.href : "";
   }
   function landingEntryUrl(config, reason) {
     var landing = configuredExternalUrl(config, "landingUrl");
@@ -5211,8 +5247,8 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
   function safeConfiguredUrl(value) {
     if (!value) return "";
     try {
-      var parsed = new URL(value);
-      return parsed.protocol === "https:" ? parsed.href : "";
+      var parsed2 = new URL(value);
+      return parsed2.protocol === "https:" ? parsed2.href : "";
     } catch (_) {
       return "";
     }
@@ -5230,15 +5266,15 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
   }
   function readServiceGeography(raw) {
     if (typeof raw !== "string" || !raw.trim()) return null;
-    var parsed;
+    var parsed2;
     try {
-      parsed = JSON.parse(raw);
+      parsed2 = JSON.parse(raw);
     } catch (_) {
       return null;
     }
-    if (!parsed || typeof parsed !== "object") return null;
-    var map = readGeoMap(parsed.map);
-    var zones = readGeoZones(parsed.zones);
+    if (!parsed2 || typeof parsed2 !== "object") return null;
+    var map = readGeoMap(parsed2.map);
+    var zones = readGeoZones(parsed2.zones);
     if (!map || !zones) return null;
     return { map, zones };
   }
@@ -5298,12 +5334,12 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     }).filter(Boolean);
   }
   function positiveNumber(value, fallback) {
-    var parsed = Number(value);
-    return Number.isFinite(parsed) && parsed > 0 ? parsed : fallback;
+    var parsed2 = Number(value);
+    return Number.isFinite(parsed2) && parsed2 > 0 ? parsed2 : fallback;
   }
   function boundedInteger3(value, fallback, minimum, maximum) {
-    var parsed = Number(value);
-    return Number.isInteger(parsed) && parsed >= minimum && parsed <= maximum ? parsed : fallback;
+    var parsed2 = Number(value);
+    return Number.isInteger(parsed2) && parsed2 >= minimum && parsed2 <= maximum ? parsed2 : fallback;
   }
   function escapeRegExp(value) {
     return value.replace(/[|\\{}()[\]^$+*?.]/g, "\\$&");
@@ -5468,8 +5504,8 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     return MONTH_NAMES[date.getMonth()] + " " + date.getDate();
   }
   function periodKind(period) {
-    var coded4 = String(period && period.weatherPrimaryCoded || "");
-    var precipitation = coded4.split(":")[2] || "";
+    var coded5 = String(period && period.weatherPrimaryCoded || "");
+    var precipitation = coded5.split(":")[2] || "";
     if (FREEZING_CODES.indexOf(precipitation) !== -1) return "freezing";
     if (SNOW_CODES.indexOf(precipitation) !== -1) {
       var snow = num(period.snowCM);
@@ -6584,6 +6620,9 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     authError: null,
     oidc: "ready-signed-out",
     sessionName: null,
+    profileEdit: null,
+    profileSaved: null,
+    profileLoginChanged: null,
     session: { authenticated: true, intendedRoute: null, hasCustomerScope: true, hasTenantScope: true },
     access: { care: { status: "granted", reasonCode: null } },
     carePayloadState: "ready",
@@ -7664,7 +7703,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
       if (flight) return null;
       deps.state.contractCommand = Object.assign({ phase: "pending" }, command);
       var started = Promise.resolve().then(operation).catch(function(error2) {
-        return settle(command, error2);
+        return settle2(command, error2);
       }).finally(function() {
         flight = null;
         if (command.kind !== "view") deps.state.contractConfirm = null;
@@ -7767,7 +7806,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
       if (deps.notify) deps.notify(CONFIRMED_TOAST[kind]);
       return true;
     }
-    async function settle(command, error2) {
+    async function settle2(command, error2) {
       var code = error2 && error2.code;
       if (code === "session-expired") {
         deps.state.contractCommand = null;
@@ -7975,8 +8014,8 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
       var entry = buckets[key] && buckets[key].ORDERS;
       var value = entry ? entry.value : null;
       (Array.isArray(value) ? value : []).forEach(function(id) {
-        var parsed = positiveInteger3(id);
-        if (parsed && ids.indexOf(parsed) === -1) ids.push(parsed);
+        var parsed2 = positiveInteger3(id);
+        if (parsed2 && ids.indexOf(parsed2) === -1) ids.push(parsed2);
       });
     });
     return ids;
@@ -8503,10 +8542,10 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     });
     return ids;
   }
-  function referencedIds(rows2, field) {
+  function referencedIds(rows2, field2) {
     var ids = [];
     (rows2 || []).forEach(function(row) {
-      var id = positiveInteger3(row && row[field] && row[field].id);
+      var id = positiveInteger3(row && row[field2] && row[field2].id);
       if (id && ids.indexOf(id) === -1) ids.push(id);
     });
     return ids;
@@ -9010,8 +9049,8 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     if (direct) return direct;
     var ref = text4(input && (input.ref || input));
     if (ref.indexOf(LINE_REF_PREFIX) === 0) {
-      var parsed = positiveInteger4(ref.slice(LINE_REF_PREFIX.length));
-      if (parsed) return parsed;
+      var parsed2 = positiveInteger4(ref.slice(LINE_REF_PREFIX.length));
+      if (parsed2) return parsed2;
     }
     throw contractError2("cart-line-ref-invalid", "A cart line reference is required");
   }
@@ -10348,8 +10387,8 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
       raw = text6(raw).replace(/\s+/g, " ").slice(0, 500);
       if (!raw || raw === "{}") return "";
       try {
-        var parsed = JSON.parse(raw);
-        return text6(parsed && (parsed.message || parsed.error || parsed.detail)) || raw;
+        var parsed2 = JSON.parse(raw);
+        return text6(parsed2 && (parsed2.message || parsed2.error || parsed2.detail)) || raw;
       } catch (_) {
         return raw;
       }
@@ -10804,6 +10843,349 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     return failure2;
   }
   var coreUserProfileContract = Object.freeze({ mappings: USER_MAPPINGS, fields: ["email"] });
+
+  // app-templates/customer-portal/runtime/src/adapters/core-profile-form-adapter.js
+  var PROFILE_FORM = Object.freeze({ typeCode: "CUSTOMER_PROFILE_UPDATE", preference: "SNOW_CUSTOMER_PROFILE_UPDATE" });
+  var LOGIN_FORM = Object.freeze({ typeCode: "CUSTOMER_LOGIN_CHANGE", preference: "SNOW_CUSTOMER_LOGIN_CHANGE" });
+  var OUTCOMES = Object.freeze(["APPLIED", "REFUSED", "FAILED"]);
+  var FORM_LOCALE = "en";
+  var POLL_INTERVAL_MS = 1e3;
+  var OUTCOME_TIMEOUT_MS = 45e3;
+  function createCoreProfileFormAdapter(options2 = {}) {
+    var fetchImpl = options2.fetch || globalThis.fetch;
+    if (typeof fetchImpl !== "function") throw coded3("fetch-unavailable", "Core profile form adapter requires fetch");
+    var wait = options2.wait || function(ms) {
+      return new Promise(function(resolve) {
+        setTimeout(resolve, ms);
+      });
+    };
+    var now = options2.now || function() {
+      return Date.now();
+    };
+    var pollInterval = options2.pollIntervalMs || POLL_INTERVAL_MS;
+    var timeout = options2.timeoutMs || OUTCOME_TIMEOUT_MS;
+    var typeIds = {};
+    async function formTypeId(form, api) {
+      if (typeIds[form.typeCode]) return typeIds[form.typeCode];
+      var type = await requestJson6(fetchImpl, api.origin + "/" + FORM_LOCALE + api.cmsPath + "/api/form-type/" + encodeURIComponent(form.typeCode) + "/get.json", {
+        method: "GET",
+        credentials: "same-origin",
+        headers: { Accept: "application/json" }
+      }, "form-type-unavailable");
+      var id = positiveInteger3(type && type.id);
+      if (!id || text3(type.code) !== form.typeCode) throw coded3("form-type-unavailable", "Core did not answer the " + form.typeCode + " form type");
+      typeIds[form.typeCode] = id;
+      return id;
+    }
+    return {
+      async submit(form, values, context) {
+        var api = requestContext3(context);
+        var typeId = await formTypeId(form, api);
+        var attributes = {};
+        Object.keys(values).forEach(function(code) {
+          attributes[code] = { value: values[code] };
+        });
+        var formId = await requestJson6(fetchImpl, api.cmsBase + "/api/form/submit.json", {
+          method: "POST",
+          credentials: "same-origin",
+          headers: api.headers({ "Content-Type": "application/json" }),
+          body: JSON.stringify({
+            type: { id: typeId },
+            organization: { id: api.organizationId },
+            attributes: { [String(typeId)]: attributes },
+            metadata: { language: FORM_LOCALE }
+          })
+        }, "profile-submit-failed");
+        var id = positiveInteger3(formId);
+        if (!id) throw coded3("profile-submit-failed", "Core accepted the form without a form id");
+        return id;
+      },
+      async outcome(form, formId, context) {
+        var api = requestContext3(context);
+        var deadline = now() + timeout;
+        while (true) {
+          var preferences = await requestJson6(fetchImpl, api.coreBase + "/api/user/preferences.json", {
+            method: "GET",
+            credentials: "same-origin",
+            headers: api.headers({})
+          }, "outcome-unreadable");
+          var reported = parsed(preferences && preferences[form.preference]);
+          if (reported && positiveInteger3(reported.form) === formId && OUTCOMES.indexOf(reported.outcome) !== -1) {
+            return {
+              outcome: reported.outcome,
+              field: text3(reported.field) || null,
+              message: text3(reported.message),
+              changed: Array.isArray(reported.changed) ? reported.changed.map(text3).filter(Boolean) : []
+            };
+          }
+          if (now() >= deadline) throw coded3("outcome-unknown", "Core did not report the outcome of form " + formId + " in time");
+          await wait(pollInterval);
+        }
+      }
+    };
+  }
+  function parsed(value) {
+    if (typeof value !== "string" || !value) return null;
+    try {
+      var result = JSON.parse(value);
+      return result && typeof result === "object" ? result : null;
+    } catch (_) {
+      return null;
+    }
+  }
+  function requestContext3(context) {
+    var config = context && context.config || {};
+    var session = context && context.state && context.state.session || {};
+    var accessToken = text3(session.accessToken || session.access_token);
+    if (!accessToken) throw coded3("session-expired", "A Core access token is required");
+    var organization = text3(config.organization);
+    var organizationId = positiveInteger3(session.organizationId);
+    if (!organization || !organizationId) throw coded3("organization-required", "The portal organization and its id are required");
+    var origin = config.origin || globalThis.location && globalThis.location.origin || "";
+    var cmsBase = sameOriginBase6(config.cmsApiBase || "/core-cms", origin, "Core CMS API base");
+    var authorization = text3(session.tokenType || session.token_type || "Bearer") + " " + accessToken;
+    return {
+      origin: new URL(origin).origin,
+      cmsBase,
+      cmsPath: new URL(cmsBase).pathname.replace(/\/+$/, ""),
+      coreBase: sameOriginBase6(config.coreApiBase || "/core", origin, "Core API base"),
+      organizationId,
+      headers: function(extra) {
+        return Object.assign({ Authorization: authorization, Accept: "application/json", "X-Organization-Code": organization }, extra);
+      }
+    };
+  }
+  async function requestJson6(fetchImpl, url, options2, failureCode) {
+    var response = await fetchImpl(url, options2);
+    if (!response || typeof response.ok !== "boolean") throw coded3(failureCode, "Core request returned an invalid response");
+    if (!response.ok) {
+      var failure2 = coded3(response.status === 401 ? "session-expired" : failureCode, "Core request failed with HTTP " + response.status);
+      failure2.status = response.status;
+      throw failure2;
+    }
+    try {
+      return await response.json();
+    } catch (_) {
+      throw coded3(failureCode, "Core response was not valid JSON");
+    }
+  }
+  function sameOriginBase6(value, origin, label) {
+    if (!origin) throw coded3("origin-required", label + " requires a browser origin");
+    var target = new URL(String(value || ""), origin);
+    if (target.origin !== new URL(origin).origin) throw coded3("cross-origin-service", label + " must be same-origin");
+    return target.href.replace(/\/+$/, "");
+  }
+  function coded3(code, message) {
+    var error2 = new Error(message);
+    error2.code = code;
+    return error2;
+  }
+
+  // app-templates/customer-portal/runtime/src/profile-edit.js
+  var NAME_LIMIT = 32;
+  var EMAIL_LIMIT = 254;
+  var ADDRESS_LIMIT = 255;
+  var EMAIL_SHAPE = /^[A-Za-z0-9.!#$%&'*+/=?^_`{|}~-]+@[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?(?:\.[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?)+$/;
+  var PHONE_CHARACTERS = /^\+?[0-9 ().-]+$/;
+  var CONTROL_CHARACTERS = /[\u0000-\u001f\u007f]/;
+  var field = (code, key, label, type, autocomplete) => Object.freeze({ code, key, label, type, autocomplete });
+  var PROFILE_EDIT_ROWS = Object.freeze({
+    contact: Object.freeze({ label: "Name", form: PROFILE_FORM, fields: Object.freeze([field("FIRST_NAME", "firstName", "First name", "text", "given-name"), field("LAST_NAME", "lastName", "Last name", "text", "family-name")]) }),
+    email: Object.freeze({ label: "Email", form: PROFILE_FORM, fields: Object.freeze([field("EMAIL", "email", "Email", "email", "email")]) }),
+    phone: Object.freeze({ label: "Phone", form: PROFILE_FORM, fields: Object.freeze([field("PHONE", "phone", "Phone", "tel", "tel")]) }),
+    billing: Object.freeze({ label: "Billing address", form: PROFILE_FORM, fields: Object.freeze([field("BILLING_ADDRESS", "billingAddress", "Billing address", "text", "street-address")]) }),
+    login: Object.freeze({ label: "Sign-in email", form: LOGIN_FORM, fields: Object.freeze([field("LOGIN", "login", "Sign-in email", "email", "username")]) })
+  });
+  var SESSION_ENDED = "Your session ended while the sign-in was changing. Sign in again: with {next} if the change went through, otherwise with {current}.";
+  var UNCONFIRMED = "We couldn't confirm the change yet. Reload the page in a minute to see the details on file.";
+  var NOT_SENT = "Your change wasn't sent. Check your connection and try again.";
+  var FAILED = "We couldn't save your change right now. Please try again in a few minutes.";
+  function profileEditing(config) {
+    return !!config && config.vertical === "snow" && config.dataMode === "live" && customerAccountProfile(config);
+  }
+  function profileEditBusy() {
+    return !!(state.profileEdit && state.profileEdit.phase === "saving");
+  }
+  function currentSignIn() {
+    return state.profileLoginChanged || state.session && state.session.login || "";
+  }
+  function startProfileEdit(row) {
+    var definition = PROFILE_EDIT_ROWS[row];
+    if (!definition || profileEditBusy()) return false;
+    var initial = initialValues(row);
+    state.profileSaved = null;
+    state.profileEdit = { row, initial, draft: Object.assign({}, initial), errors: {}, phase: "editing", message: null };
+    return true;
+  }
+  function changeProfileDraft(key, value) {
+    var edit = state.profileEdit;
+    if (!edit || edit.phase === "saving") return false;
+    edit.draft[key] = String(value == null ? "" : value);
+    return true;
+  }
+  function cancelProfileEdit() {
+    if (!state.profileEdit || profileEditBusy()) return false;
+    state.profileEdit = null;
+    return true;
+  }
+  function profileEditRequest(row, initial, draft) {
+    var definition = PROFILE_EDIT_ROWS[row];
+    var errors = {};
+    var values = {};
+    var fields = [];
+    definition.fields.forEach(function(item) {
+      var raw = String(draft[item.key] == null ? "" : draft[item.key]);
+      var before = String(initial[item.key] == null ? "" : initial[item.key]);
+      var unchanged = item.code === "LOGIN" ? comparable2(raw).toLowerCase() === comparable2(before).toLowerCase() : comparable2(raw) === comparable2(before);
+      if (unchanged && item.code !== "LOGIN") return;
+      var checked = validateProfileValue(item.code, raw, before);
+      if (checked.error) errors[item.code] = checked.error;
+      else {
+        values[item.code] = checked.value;
+        fields.push(item.code);
+      }
+    });
+    if (Object.keys(errors).length) return { errors, values: null };
+    if (!fields.length) return { errors: {}, values: null };
+    if (definition.form === LOGIN_FORM) return { errors: {}, values: { LOGIN: values.LOGIN } };
+    return { errors: {}, values: Object.assign({ FIELDS: fields }, values) };
+  }
+  function validateProfileValue(code, raw, current) {
+    var collapsed = comparable2(raw);
+    if (code === "FIRST_NAME" || code === "LAST_NAME") {
+      if (!collapsed) return refusal(code === "FIRST_NAME" ? "Enter your first name." : "Enter your last name.");
+      if (CONTROL_CHARACTERS.test(collapsed)) return refusal("Use letters, spaces and punctuation only.");
+      if (collapsed.length > NAME_LIMIT) return refusal("Use " + NAME_LIMIT + " characters or fewer.");
+      return accepted(collapsed);
+    }
+    if (code === "EMAIL" || code === "LOGIN") {
+      var email = String(raw == null ? "" : raw).trim().toLowerCase();
+      if (!email) return refusal(code === "EMAIL" ? "Enter your email address." : "Enter the email you want to sign in with.");
+      if (email.length > EMAIL_LIMIT || !EMAIL_SHAPE.test(email)) return refusal("Enter a valid email address, like name@example.com.");
+      if (code === "LOGIN" && email === comparable2(current).toLowerCase()) return refusal("This is already the email you sign in with.");
+      return accepted(email);
+    }
+    if (code === "PHONE") {
+      if (!collapsed) return refusal("Enter your phone number.");
+      var digits = collapsed.replace(/\D/g, "");
+      if (!PHONE_CHARACTERS.test(collapsed) || digits.length < 7 || digits.length > 15) return refusal("Enter a valid phone number with its area code.");
+      return accepted(collapsed);
+    }
+    if (code === "BILLING_ADDRESS") {
+      if (!collapsed) return refusal("Enter your billing address.");
+      if (collapsed.length > ADDRESS_LIMIT) return refusal("Use " + ADDRESS_LIMIT + " characters or fewer.");
+      if (CONTROL_CHARACTERS.test(collapsed) || !/[0-9]/.test(collapsed) || !/\p{L}/u.test(collapsed)) return refusal("Enter the full street address, including the building number.");
+      return accepted(collapsed);
+    }
+    return refusal("This detail can't be changed here.");
+  }
+  function saveProfileEdit(options2) {
+    var edit = state.profileEdit;
+    if (!edit || edit.phase === "saving") return Promise.resolve(false);
+    var changed = options2.onChange;
+    var definition = PROFILE_EDIT_ROWS[edit.row];
+    var request = profileEditRequest(edit.row, edit.initial, edit.draft);
+    if (Object.keys(request.errors).length) {
+      edit.errors = request.errors;
+      edit.message = null;
+      edit.phase = "editing";
+      changed("invalid");
+      return Promise.resolve(false);
+    }
+    if (!request.values) {
+      state.profileEdit = null;
+      changed("closed");
+      return Promise.resolve(true);
+    }
+    var forms = options2.forms || createCoreProfileFormAdapter();
+    var context = { config: state.config, state };
+    edit.phase = "saving";
+    edit.errors = {};
+    edit.message = null;
+    changed("saving");
+    return Promise.resolve().then(function() {
+      return forms.submit(definition.form, request.values, context);
+    }).then(function(formId) {
+      return forms.outcome(definition.form, formId, context);
+    }).then(function(result) {
+      return settle(edit, definition, request.values, result, options2.reload, changed);
+    }, function(error2) {
+      return fail(edit, request.values, error2, changed);
+    });
+  }
+  function settle(edit, definition, values, result, reloadProfile, changed) {
+    if (state.profileEdit !== edit) return false;
+    if (result.outcome === "APPLIED") {
+      if (definition.form === LOGIN_FORM) {
+        state.profileLoginChanged = values.LOGIN;
+        state.session.login = values.LOGIN;
+        state.profileEdit = null;
+        changed("applied");
+        return true;
+      }
+      return Promise.resolve().then(function() {
+        return reloadProfile("profile");
+      }).then(function() {
+        return true;
+      }, function() {
+        return true;
+      }).then(function(done) {
+        if (state.profileEdit === edit) state.profileEdit = null;
+        state.profileSaved = edit.row;
+        changed("applied");
+        return done;
+      });
+    }
+    edit.phase = result.outcome === "REFUSED" ? "refused" : "failed";
+    var codes = definition.fields.map(function(item) {
+      return item.code;
+    });
+    if (result.outcome === "REFUSED" && result.field && codes.indexOf(result.field) !== -1) edit.errors = { [result.field]: result.message };
+    else edit.message = result.message || FAILED;
+    changed(edit.phase);
+    return false;
+  }
+  function fail(edit, values, error2, changed) {
+    if (state.profileEdit !== edit) return false;
+    var code = error2 && error2.code;
+    if (code === "session-expired" && edit.row === "login") {
+      edit.phase = "session-ended";
+      edit.message = SESSION_ENDED.replace("{next}", values.LOGIN).replace("{current}", edit.initial.login || "your current email");
+    } else if (code === "session-expired") {
+      state.profileEdit = null;
+      state.account = "session-expired";
+    } else {
+      edit.phase = "failed";
+      edit.message = code === "outcome-unknown" ? UNCONFIRMED : NOT_SENT;
+    }
+    changed(edit.phase || "closed");
+    return false;
+  }
+  function initialValues(row) {
+    if (row === "login") return { login: currentSignIn() };
+    var envelope2 = state.moduleData.profile || {};
+    var editable = envelope2.editable || {};
+    var values = {};
+    PROFILE_EDIT_ROWS[row].fields.forEach(function(item) {
+      values[item.key] = editable[item.key] || "";
+    });
+    return values;
+  }
+  function focusProfileInput(invalidFirst) {
+    var root = globalThis.document;
+    if (!root || typeof root.querySelector !== "function") return;
+    var input = invalidFirst && root.querySelector('[data-profile-input][aria-invalid="true"]') || root.querySelector("[data-profile-input]");
+    if (input && typeof input.focus === "function") input.focus();
+  }
+  function comparable2(value) {
+    return String(value == null ? "" : value).replace(/\s+/g, " ").trim();
+  }
+  function refusal(message) {
+    return { error: message, value: null };
+  }
+  function accepted(value) {
+    return { error: null, value };
+  }
 
   // app-templates/customer-portal/runtime/src/components/primitives/ErrorState.js
   function ErrorState(props) {
@@ -12396,7 +12778,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
       }));
       popupHost.replaceChildren.apply(popupHost, next.popup && !narrow ? [next.popup.element] : []);
       draw();
-      Promise.resolve().then(settle);
+      Promise.resolve().then(settle2);
       return canvas;
     }
     function statusText(next) {
@@ -12405,7 +12787,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
       if (next.locating) return next.locatingText || "Finding your properties on the map\u2026";
       return "None of your properties could be placed on the map";
     }
-    function settle() {
+    function settle2() {
       fit(view.pins);
       draw();
     }
@@ -12437,7 +12819,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     }
     function start(viewport) {
       status = "loading";
-      adapter.onFailure(fail);
+      adapter.onFailure(fail2);
       adapter.load().then(function(loaded) {
         if (status === "failed") return;
         maps = loaded;
@@ -12447,9 +12829,9 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
         status = "ready";
         drain();
         onChange();
-      }).catch(fail);
+      }).catch(fail2);
     }
-    function fail(error2) {
+    function fail2(error2) {
       if (status === "failed") return;
       status = "failed";
       console.warn("[portal] Google map unavailable, listing the properties instead", error2 && error2.message);
@@ -13033,13 +13415,15 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
   var SCRIPT_URL = "https://maps.googleapis.com/maps/api/js";
   var LIBRARIES = ["core", "maps", "geocoding"];
   var GEOCODE_PREFIX = "portal.geocode:";
+  var SUGGESTION_LIMIT = 5;
+  var SUGGESTION_TYPES = ["street_address", "premise", "subpremise", "route"];
   function createGoogleMapsAdapter(options2) {
     var apiKey = options2 && options2.apiKey || "";
     var scope = options2 && options2.scope || globalThis;
     var failureListeners = [];
     var loading = null;
     var maps = null;
-    function fail(error2) {
+    function fail2(error2) {
       failureListeners.slice().forEach(function(listener) {
         listener(error2);
       });
@@ -13057,11 +13441,30 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
           loading = Promise.reject(new Error("Google Maps adapter is not opened"));
           return loading;
         }
-        loading = scriptNamespace(scope, apiKey, fail).then(importLibraries).then(function(loaded) {
+        loading = scriptNamespace(scope, apiKey, fail2).then(importLibraries).then(function(loaded) {
           maps = loaded;
           return loaded;
         });
         return loading;
+      },
+      suggestAddresses: function(query) {
+        return this.load().then(function(loaded) {
+          return typeof loaded.importLibrary === "function" ? loaded.importLibrary("places") : loaded.places;
+        }).then(function(places) {
+          var finder = places && places.AutocompleteSuggestion;
+          if (!finder || typeof finder.fetchAutocompleteSuggestions !== "function") return [];
+          return Promise.resolve(finder.fetchAutocompleteSuggestions({ input: query, includedPrimaryTypes: SUGGESTION_TYPES })).then(function(response) {
+            return (response && response.suggestions || []).map(function(suggestion) {
+              var prediction = suggestion && suggestion.placePrediction;
+              var label = prediction && prediction.text ? String(prediction.text) : "";
+              return { label, address: function() {
+                return formattedAddress(prediction, label);
+              } };
+            }).filter(function(item) {
+              return item.label;
+            }).slice(0, SUGGESTION_LIMIT);
+          });
+        });
       },
       geocode: function(address) {
         if (!maps || typeof maps.Geocoder !== "function") return Promise.reject(new Error("Google Maps is not loaded"));
@@ -13107,7 +13510,16 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
       return null;
     }
   }
-  function scriptNamespace(scope, apiKey, fail) {
+  function formattedAddress(prediction, label) {
+    var place = prediction && typeof prediction.toPlace === "function" ? prediction.toPlace() : null;
+    if (!place || typeof place.fetchFields !== "function") return Promise.resolve(label);
+    return Promise.resolve(place.fetchFields({ fields: ["formattedAddress"] })).then(function() {
+      return String(place.formattedAddress || label);
+    }, function() {
+      return label;
+    });
+  }
+  function scriptNamespace(scope, apiKey, fail2) {
     var present = scope.google && scope.google.maps;
     if (present && (typeof present.importLibrary === "function" || typeof present.Map === "function")) {
       return Promise.resolve(present);
@@ -13117,7 +13529,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
       scope.gm_authFailure = function() {
         var error2 = new Error("Google Maps rejected the browser key");
         reject(error2);
-        fail(error2);
+        fail2(error2);
         if (typeof previous === "function") previous();
       };
       var script = scope.document.createElement("script");
@@ -15876,6 +16288,9 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
   }
 
   // app-templates/customer-portal/runtime/src/routes/AccountProfilePage.js
+  var SUGGESTION_DELAY = 250;
+  var SUGGESTION_MINIMUM = 3;
+  var addressFinder = null;
   function accountProfileView() {
     var envelope2 = state.moduleData.profile;
     if (state.moduleStatus.profile === "loading" || !envelope2) return "loading";
@@ -15884,25 +16299,27 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
   function AccountProfile() {
     var view = accountProfileView();
     var envelope2 = state.moduleData.profile;
+    var editable = profileEditing(state.config);
     var page = h("section", { "class": "page page--narrow", "data-route": "profile", "data-visual-id": "profile", "data-state": view });
     if (view === "loading") page.appendChild(ProfileSkeleton());
     else if (view === "unauthorized") page.appendChild(UnauthorizedState({ scope: "your account details", backRoute: state.config.defaultRoute }));
     else if (view === "error") page.appendChild(ErrorState({ title: "Couldn\u2019t load your account details", desc: "Nothing was changed. Check your connection and try again." }));
     else if (view === "unavailable") page.appendChild(stateBlock(EmptyState({ glyph: "\u25CB", title: "Your account details aren\u2019t available", desc: "They didn\u2019t come back for this sign-in. Sign out and sign in again, or try later." }), "unavailable"));
     else {
-      page.appendChild(ProfileHead(envelope2));
-      var facts2 = view === "empty" ? null : ProfileFacts(envelope2);
+      page.appendChild(ProfileHead(envelope2, editable));
+      var facts2 = editable ? EditableFacts(envelope2) : view === "empty" ? null : ProfileFacts(envelope2);
       if (facts2) page.appendChild(facts2);
       else page.appendChild(EmptyState({ glyph: "\u25CC", title: "No contact details on file", desc: "We don\u2019t have a contact, email, phone or billing address for your account yet." }));
+      if (editable) page.appendChild(SignInFacts());
     }
     page.appendChild(h("button", { "class": "signout-btn", "data-action": "auth.signOut", "data-visual-id": "sign-out", type: "button", style: "width:100%;margin-top:18px" }, "Sign out"));
     return page;
   }
-  function ProfileHead(envelope2) {
+  function ProfileHead(envelope2, editable) {
     return h("div", { "class": "prop-head", "data-module": "profile-head", "data-visual-id": "profile-head" }, [
       h("div", { style: "flex:1;min-width:0" }, [
         h("h1", { "class": "prop-head__title", style: "overflow-wrap:anywhere" }, envelope2.accountName || "Your account"),
-        h("div", { "class": "prop-head__addr" }, "The details we have on file for your account.")
+        h("div", { "class": "prop-head__addr" }, editable ? "The details we have on file for your account. Select Edit to change one." : "The details we have on file for your account.")
       ])
     ]);
   }
@@ -15927,6 +16344,193 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     });
     if (note) children.push(h("div", { "class": "prop-fact__note" }, note));
     return h("div", { "class": "prop-fact", "data-fact": key, "data-state": "ready" }, children);
+  }
+  function EditableFacts(envelope2) {
+    var contact = envelope2.contact;
+    var billing = envelope2.billingAddresses || [];
+    return h("div", { "class": "card card--pad prop-facts", "data-module": "profile-facts", "data-visual-id": "profile-facts", "data-state": envelope2.state }, [
+      EditableFact("contact", contact && contact.name ? [contact.name] : [], contact && contact.title),
+      EditableFact("email", envelope2.emails || []),
+      EditableFact("phone", envelope2.phones || []),
+      EditableFact("billing", billing, null, billing.length > 1 ? "Billing addresses" : null)
+    ]);
+  }
+  function SignInFacts() {
+    var changed = state.profileLoginChanged;
+    var login = currentSignIn();
+    return h("div", { "class": "card card--pad prop-facts prop-facts--single", "data-module": "profile-sign-in", "data-visual-id": "profile-sign-in" }, [
+      EditableFact("login", login ? [login] : [], changed ? "Use this email the next time you sign in. Your password stays the same." : "The email you sign in to this portal with. Changing it does not change your contact email.")
+    ]);
+  }
+  function EditableFact(key, values, note, label) {
+    var definition = PROFILE_EDIT_ROWS[key];
+    var edit = state.profileEdit;
+    if (edit && edit.row === key) return EditingFact(key, definition, edit);
+    var busy = profileEditBusy();
+    var title = label || definition.label;
+    var children = [h("div", { "class": "prop-fact__head" }, [
+      h("div", { "class": "prop-fact__label" }, title),
+      h("button", {
+        "class": "link-action prop-fact__edit",
+        type: "button",
+        "data-action": "profileEdit.start",
+        "data-id": key,
+        "data-visual-id": "profile-edit-" + key,
+        "aria-label": (values.length ? "Edit " : "Add ") + definition.label.toLowerCase(),
+        disabled: busy ? true : void 0
+      }, values.length ? "Edit" : "Add")
+    ])];
+    values.forEach(function(value) {
+      children.push(h("div", { "class": "prop-fact__value", style: "overflow-wrap:anywhere" }, value));
+    });
+    if (state.profileSaved === key) children.push(h("div", { "class": "prop-fact__saved", role: "status" }, "Saved"));
+    if (note) children.push(h("div", { "class": "prop-fact__note" }, note));
+    return h("div", { "class": "prop-fact", "data-fact": key, "data-state": values.length ? "ready" : "missing" }, children);
+  }
+  function EditingFact(key, definition, edit) {
+    var saving = edit.phase === "saving";
+    var ended = edit.phase === "session-ended";
+    var row = h("div", { "class": "prop-fact prop-fact--editing", "data-fact": key, "data-state": edit.phase, "data-visual-id": "profile-editing-" + key }, [
+      h("div", { "class": "prop-fact__label", id: "profile-edit-" + key + "-label" }, definition.label)
+    ]);
+    var group = h("div", { "class": "prop-edit" + (definition.fields.length > 1 ? " prop-edit--pair" : ""), role: "group", "aria-labelledby": "profile-edit-" + key + "-label", "aria-busy": saving ? "true" : void 0 });
+    definition.fields.forEach(function(item) {
+      var id = "profile-edit-" + item.key;
+      var error2 = edit.errors[item.code];
+      var input = h("input", {
+        "class": "field",
+        id,
+        name: item.key,
+        type: item.type,
+        autocomplete: item.code === "BILLING_ADDRESS" && addressSuggestionsOpen() ? "off" : item.autocomplete,
+        value: edit.draft[item.key] || "",
+        "data-profile-input": item.code,
+        "data-state": error2 ? "invalid" : void 0,
+        "aria-invalid": error2 ? "true" : void 0,
+        "aria-describedby": error2 ? id + "-error" : void 0,
+        "aria-label": definition.fields.length > 1 ? void 0 : item.label,
+        disabled: saving || ended ? true : void 0,
+        spellcheck: item.type === "text" && item.code !== "BILLING_ADDRESS" ? void 0 : "false"
+      });
+      input.addEventListener("input", function() {
+        changeProfileDraft(item.key, input.value);
+      });
+      input.addEventListener("keydown", function(event) {
+        if (event.defaultPrevented) return;
+        if (event.key === "Enter" && !input.getAttribute("aria-activedescendant")) {
+          event.preventDefault();
+          ACTIONS["profileEdit.save"]();
+        }
+        if (event.key === "Escape" && input.getAttribute("aria-expanded") !== "true") {
+          event.preventDefault();
+          ACTIONS["profileEdit.cancel"]();
+        }
+      });
+      var cell = h("div", { "class": "field-row prop-edit__field" }, [
+        definition.fields.length > 1 ? h("label", { "class": "field-label", "for": id }, item.label) : null,
+        input,
+        error2 ? h("div", { "class": "field-error", id: id + "-error", role: "alert" }, error2) : null
+      ]);
+      if (item.code === "BILLING_ADDRESS" && addressSuggestionsOpen() && !saving && !ended) suggestAddresses(input, cell, item.key);
+      group.appendChild(cell);
+    });
+    row.appendChild(group);
+    if (edit.message) row.appendChild(h("div", { "class": "prop-edit__message", role: "alert", "data-state": edit.phase }, edit.message));
+    row.appendChild(h("div", { "class": "prop-edit__actions" }, ended ? [
+      h("button", { "class": "btn btn--primary", type: "button", "data-action": "auth.signOut", "data-visual-id": "profile-edit-sign-in" }, "Sign in again")
+    ] : [
+      h("button", { "class": "btn btn--primary", type: "button", "data-action": "profileEdit.save", "data-visual-id": "profile-edit-save", disabled: saving ? true : void 0 }, saving ? "Saving\u2026" : "Save"),
+      h("button", { "class": "btn btn--ghost", type: "button", "data-action": "profileEdit.cancel", "data-visual-id": "profile-edit-cancel", disabled: saving ? true : void 0 }, "Cancel"),
+      h("span", { "class": "prop-edit__status", role: "status", "aria-live": "polite" }, saving ? key === "login" ? "Changing your sign-in\u2026" : "Saving and waiting for confirmation\u2026" : "")
+    ]));
+    return row;
+  }
+  function addressSuggestionsOpen() {
+    return !!(state.config && state.config.mapsApiKey);
+  }
+  function suggestAddresses(input, cell, key) {
+    if (!addressFinder) addressFinder = createGoogleMapsAdapter({ apiKey: state.config.mapsApiKey });
+    var listId = input.getAttribute("id") + "-suggestions";
+    var list = h("ul", { "class": "prop-suggest", id: listId, role: "listbox", "aria-label": "Suggested addresses", hidden: true });
+    var offered = [];
+    var active = -1;
+    var timer = null;
+    cell.appendChild(list);
+    input.setAttribute("role", "combobox");
+    input.setAttribute("aria-autocomplete", "list");
+    input.setAttribute("aria-controls", listId);
+    input.setAttribute("aria-expanded", "false");
+    function highlight(index) {
+      active = index;
+      offered.forEach(function(option, position) {
+        option.node.setAttribute("aria-selected", position === index ? "true" : "false");
+      });
+      if (index === -1) input.removeAttribute("aria-activedescendant");
+      else input.setAttribute("aria-activedescendant", offered[index].node.getAttribute("id"));
+    }
+    function close() {
+      list.replaceChildren();
+      list.setAttribute("hidden", "");
+      offered = [];
+      highlight(-1);
+      input.setAttribute("aria-expanded", "false");
+    }
+    function take(option) {
+      close();
+      Promise.resolve(option.item.address()).then(function(address) {
+        input.value = address;
+        changeProfileDraft(key, address);
+        input.focus();
+      });
+    }
+    input.addEventListener("keydown", function(event) {
+      if (list.hasAttribute("hidden")) return;
+      if (event.key === "ArrowDown" || event.key === "ArrowUp") {
+        event.preventDefault();
+        var count = offered.length;
+        highlight(event.key === "ArrowDown" ? (active + 1) % count : (active <= 0 ? count : active) - 1);
+      } else if (event.key === "Enter" && active !== -1) {
+        event.preventDefault();
+        take(offered[active]);
+      } else if (event.key === "Escape") {
+        event.preventDefault();
+        close();
+      }
+    });
+    input.addEventListener("blur", function() {
+      setTimeout(close, 150);
+    });
+    input.addEventListener("input", function() {
+      if (timer !== null) clearTimeout(timer);
+      var value = input.value.trim();
+      if (value.length < SUGGESTION_MINIMUM) {
+        timer = null;
+        close();
+        return;
+      }
+      timer = setTimeout(function() {
+        timer = null;
+        addressFinder.suggestAddresses(value).then(function(items) {
+          if (input.value.trim() !== value || !input.isConnected) return;
+          close();
+          offered = items.map(function(item, index) {
+            var node = h("li", { "class": "prop-suggest__option", id: listId + "-" + index, role: "option", "aria-selected": "false" }, item.label);
+            var option = { node, item };
+            node.addEventListener("mousedown", function(event) {
+              event.preventDefault();
+            });
+            node.addEventListener("click", function() {
+              take(option);
+            });
+            list.appendChild(node);
+            return option;
+          });
+          if (!offered.length) return;
+          list.removeAttribute("hidden");
+          input.setAttribute("aria-expanded", "true");
+        }, close);
+      }, SUGGESTION_DELAY);
+    });
   }
   function ProfileSkeleton() {
     return h("div", { "data-module": "profile-loading", "data-visual-id": "profile-loading", "data-state": "loading", "aria-busy": "true" }, [
@@ -20221,6 +20825,23 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     "profile.managePlan": function() {
       go("pricing");
     },
+    "profileEdit.start": function(id) {
+      if (!startProfileEdit(id)) return false;
+      render();
+      focusProfileInput(false);
+      return true;
+    },
+    "profileEdit.cancel": function() {
+      if (!cancelProfileEdit()) return false;
+      render();
+      return true;
+    },
+    "profileEdit.save": function() {
+      return saveProfileEdit({ reload: reloadRuntimeModule, onChange: function(phase) {
+        render();
+        if (phase === "invalid" || phase === "refused") focusProfileInput(true);
+      } });
+    },
     "overview.selectProperty": function(id) {
       state.ovProperty = state.ovProperty === id ? null : id;
       render();
@@ -21917,17 +22538,17 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
   ];
   function createCoreAccountProfileAdapter(options2 = {}) {
     var fetchImpl = options2.fetch || globalThis.fetch;
-    if (typeof fetchImpl !== "function") throw coded3("fetch-unavailable", "Core account profile adapter requires fetch");
+    if (typeof fetchImpl !== "function") throw coded4("fetch-unavailable", "Core account profile adapter requires fetch");
     return {
       async load(moduleId, context) {
-        if (moduleId !== "profile") throw coded3("unsupported-module", "Core account profile adapter cannot load " + moduleId);
+        if (moduleId !== "profile") throw coded4("unsupported-module", "Core account profile adapter cannot load " + moduleId);
         return loadCustomerAccountProfile(context, fetchImpl, options2.origin);
       }
     };
   }
   async function loadCustomerAccountProfile(context, fetchImpl = globalThis.fetch, explicitOrigin) {
-    var api = requestContext3(context, explicitOrigin);
-    var reply = await requestJson6(fetchImpl, api.accountBase + api.accountListPath, {
+    var api = requestContext4(context, explicitOrigin);
+    var reply = await requestJson7(fetchImpl, api.accountBase + api.accountListPath, {
       method: "POST",
       credentials: "same-origin",
       headers: {
@@ -21950,7 +22571,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     var owned = rows2.filter(function(row) {
       return ownedBySession(row, api);
     });
-    if (!owned.length) throw coded3("profile-unavailable", "Core did not return the signed-in customer's Account");
+    if (!owned.length) throw coded4("profile-unavailable", "Core did not return the signed-in customer's Account");
     return { account: owned[0], scopeMode: owned.length === rows2.length ? "server-scoped" : "browser-filtered" };
   }
   function ownedBySession(row, api) {
@@ -21958,22 +22579,22 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     var linked = row.user && typeof row.user === "object" ? positiveInteger3(row.user.id) : null;
     return linked === null && !api.tagged || linked === api.userId;
   }
-  function requestContext3(context, explicitOrigin) {
+  function requestContext4(context, explicitOrigin) {
     var config = context && context.config || {};
     var runtimeState = context && context.state || {};
     var session = runtimeState.session || {};
     var accessToken = text3(session.accessToken || session.access_token);
-    if (!accessToken) throw coded3("session-required", "A Core access token is required");
+    if (!accessToken) throw coded4("session-required", "A Core access token is required");
     var userId = positiveInteger3(session.userId);
-    if (!userId) throw coded3("session-user-required", "The signed-in Core User is required");
+    if (!userId) throw coded4("session-user-required", "The signed-in Core User is required");
     var account = runtimeState.customerAccount || session.account || null;
     var accountId = positiveInteger3(account && account.id);
-    if (!accountId) throw coded3("customer-unresolved", "A resolved customer Account is required before reading its profile");
+    if (!accountId) throw coded4("customer-unresolved", "A resolved customer Account is required before reading its profile");
     var organization = text3(config.organization);
-    if (!organization) throw coded3("organization-required", "A portal organization code is required");
+    if (!organization) throw coded4("organization-required", "A portal organization code is required");
     var origin = explicitOrigin || config.origin || globalThis.location && globalThis.location.origin || "";
     return {
-      accountBase: sameOriginBase6(config.accountApiBase || "/core-acct", origin, "Core Account API base"),
+      accountBase: sameOriginBase7(config.accountApiBase || "/core-acct", origin, "Core Account API base"),
       accountId,
       accountListPath: config.vertical === "snow" ? "/api/tagged/account/list.json" : "/api/account/list.json",
       tagged: config.vertical === "snow",
@@ -21982,12 +22603,12 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
       userId
     };
   }
-  async function requestJson6(fetchImpl, url, options2) {
+  async function requestJson7(fetchImpl, url, options2) {
     var response = await fetchImpl(url, options2);
-    if (!response || typeof response.ok !== "boolean") throw coded3("invalid-response", "Core request returned an invalid response");
+    if (!response || typeof response.ok !== "boolean") throw coded4("invalid-response", "Core request returned an invalid response");
     if (!response.ok) {
       var code = response.status === 401 ? "session-expired" : response.status === 403 ? "customer-forbidden" : "profile-request-failed";
-      var failure2 = coded3(code, "Core Account request failed with HTTP " + response.status);
+      var failure2 = coded4(code, "Core Account request failed with HTTP " + response.status);
       failure2.status = response.status;
       throw failure2;
     }
@@ -21995,18 +22616,18 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     try {
       payload = await response.json();
     } catch (_) {
-      throw coded3("invalid-response", "Core response was not valid JSON");
+      throw coded4("invalid-response", "Core response was not valid JSON");
     }
-    if (!payload || typeof payload !== "object") throw coded3("invalid-response", "Core answered with an unprojected body");
+    if (!payload || typeof payload !== "object") throw coded4("invalid-response", "Core answered with an unprojected body");
     return payload;
   }
-  function sameOriginBase6(value, origin, label) {
-    if (!origin) throw coded3("origin-required", label + " requires a browser origin");
+  function sameOriginBase7(value, origin, label) {
+    if (!origin) throw coded4("origin-required", label + " requires a browser origin");
     var target = new URL(String(value || ""), origin);
-    if (target.origin !== new URL(origin).origin) throw coded3("cross-origin-service", label + " must be same-origin");
+    if (target.origin !== new URL(origin).origin) throw coded4("cross-origin-service", label + " must be same-origin");
     return target.href.replace(/\/+$/, "");
   }
-  function coded3(code, message) {
+  function coded4(code, message) {
     var error2 = new Error(message);
     error2.code = code;
     return error2;
@@ -22034,6 +22655,13 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     var emails = primary ? entryValues(primary.contactEntries, EMAIL_ENTRY) : [];
     var phones = primary ? entryValues(primary.contactEntries, PHONE_ENTRY).map(formatPhone) : [];
     var billingAddresses = typedAddresses(account.addresses, BILLING_ADDRESS);
+    var editable = {
+      firstName: primary ? plain2(primary.firstName) : "",
+      lastName: primary ? plain2(primary.lastName) : "",
+      email: primary ? firstEntryValue(primary.contactEntries, EMAIL_ENTRY) : "",
+      phone: primary ? formatPhone(firstEntryValue(primary.contactEntries, PHONE_ENTRY)) : "",
+      billingAddress: oldestTypedAddress(account.addresses, BILLING_ADDRESS)
+    };
     var filled = [!!(contact && contact.name), emails.length > 0, phones.length > 0, billingAddresses.length > 0];
     return {
       state: filled.every(Boolean) ? "ready" : filled.some(Boolean) ? "partial" : "empty",
@@ -22044,6 +22672,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
       emails,
       phones,
       billingAddresses,
+      editable,
       allowedActions: []
     };
   }
@@ -22057,6 +22686,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
       emails: [],
       phones: [],
       billingAddresses: [],
+      editable: null,
       allowedActions: []
     };
   }
@@ -22077,6 +22707,20 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
       if (value && values.indexOf(value) === -1) values.push(value);
     });
     return values;
+  }
+  function firstEntryValue(entries, typeCode) {
+    var entry = rows(entries).filter(function(row) {
+      return text3(row.type && row.type.code) === typeCode && plain2(row.value);
+    }).sort(byIdAscending)[0];
+    return entry ? plain2(entry.value) : "";
+  }
+  function oldestTypedAddress(addresses, typeCode) {
+    var link = rows(addresses).filter(function(row) {
+      return rows(row.types).some(function(type) {
+        return text3(type.code) === typeCode;
+      });
+    }).sort(byIdAscending)[0];
+    return link ? formatAccountAddress(link.address) : "";
   }
   function typedAddresses(addresses, typeCode) {
     var formatted = [];
@@ -22647,11 +23291,11 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     var accessToken = text14(session.accessToken || session.access_token);
     if (!accessToken) throw contractError6("session-required", "A Core access token is required");
     var origin = explicitOrigin || config.origin || browserOrigin5();
-    var coreBase = sameOriginBase7(config.coreApiBase || "/core", origin, "Core API base");
-    var accountBase = sameOriginBase7(config.accountApiBase || "/core-acct", origin, "Core Account API base");
+    var coreBase = sameOriginBase8(config.coreApiBase || "/core", origin, "Core API base");
+    var accountBase = sameOriginBase8(config.accountApiBase || "/core-acct", origin, "Core Account API base");
     var tokenType = text14(session.tokenType || session.token_type || "Bearer");
     var authorization = tokenType + " " + accessToken;
-    var basicInfo = await requestJson7(fetchImpl, coreBase + "/api/user/basic-info.json", {
+    var basicInfo = await requestJson8(fetchImpl, coreBase + "/api/user/basic-info.json", {
       method: "POST",
       credentials: "same-origin",
       headers: { Authorization: authorization, "Content-Type": "application/json", Accept: "application/json" },
@@ -22662,7 +23306,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     var organizationCode = selectOrganization(config.organization || config.pimOrganization, basicInfo);
     var typeCodes = accountTypeCodes(config.accountTypeCode);
     var typeList = typeCodes.length > 1;
-    var accountReply = await requestJson7(fetchImpl, accountBase + (config.vertical === "snow" ? "/api/tagged/account/list.json" : "/api/account/list.json"), {
+    var accountReply = await requestJson8(fetchImpl, accountBase + (config.vertical === "snow" ? "/api/tagged/account/list.json" : "/api/account/list.json"), {
       method: "POST",
       credentials: "same-origin",
       headers: {
@@ -22698,10 +23342,11 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     return {
       state: "ready",
       scopeMode: accounts.length === returned.length ? "server-scoped" : "browser-filtered",
-      organization: { code: organizationCode },
+      organization: { code: organizationCode, id: authorizedOrganizationId(basicInfo, organizationCode) },
       user: {
         id: userId,
-        displayName: text14(basicInfo.authenticatedUserName || basicInfo.authenticatedUser || basicInfo.name)
+        displayName: text14(basicInfo.authenticatedUserName || basicInfo.authenticatedUser || basicInfo.name),
+        login: text14(basicInfo.authenticatedUserName)
       },
       account: {
         id: Number(account.id),
@@ -22711,6 +23356,13 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
         typeCode: typeList ? text14(account.type && account.type.code) : typeCodes[0]
       }
     };
+  }
+  function authorizedOrganizationId(basicInfo, code) {
+    var authorized = Array.isArray(basicInfo && basicInfo.authorizedOrganizations) ? basicInfo.authorizedOrganizations : [];
+    var match = authorized.find(function(item) {
+      return item && text14(item.code) === code;
+    });
+    return match ? positiveInteger8(match.id) : null;
   }
   function selectOrganization(configuredCode, basicInfo) {
     var configured = text14(configuredCode);
@@ -22725,7 +23377,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     }
     return selected;
   }
-  async function requestJson7(fetchImpl, url, options2) {
+  async function requestJson8(fetchImpl, url, options2) {
     var response = await fetchImpl(url, options2);
     if (!response || typeof response.ok !== "boolean") throw contractError6("invalid-response", "Core request returned an invalid response");
     if (!response.ok) {
@@ -22740,7 +23392,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
       throw contractError6("invalid-response", "Core response was not valid JSON");
     }
   }
-  function sameOriginBase7(value, origin, label) {
+  function sameOriginBase8(value, origin, label) {
     if (!origin) throw contractError6("origin-required", label + " requires a browser origin");
     var target = new URL(String(value || ""), origin);
     if (target.origin !== new URL(origin).origin) throw contractError6("cross-origin-service", label + " must be same-origin");
@@ -22852,7 +23504,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     };
   }
   async function loadEnrollments(api, accountId, fetchImpl) {
-    var response = await requestJson8(fetchImpl, api.serviceBase + "/api/project/list.json", requestOptions3(api, {
+    var response = await requestJson9(fetchImpl, api.serviceBase + "/api/project/list.json", requestOptions3(api, {
       filters: [{ type: "STRING", operator: "=", property: "type.code", value: ENROLLMENT_TYPE }],
       mappings: ENROLLMENT_MAPPINGS,
       offset: 0,
@@ -22892,7 +23544,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     };
   }
   async function loadMemberships(api, accountId, fetchImpl) {
-    var response = await requestJson8(fetchImpl, api.billBase + "/api/subscription/list.json", requestOptions3(api, {
+    var response = await requestJson9(fetchImpl, api.billBase + "/api/subscription/list.json", requestOptions3(api, {
       filters: [{ type: "INTEGER", operator: "=", property: "account.id", value: String(accountId) }],
       mappings: SUBSCRIPTION_MAPPINGS,
       offset: 0,
@@ -22932,7 +23584,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
   }
   async function codesById(api, base, endpoint, ids, fetchImpl) {
     if (!ids.length) return {};
-    var response = await requestJson8(fetchImpl, base + "/api/" + endpoint + "/list.json", requestOptions3(api, {
+    var response = await requestJson9(fetchImpl, base + "/api/" + endpoint + "/list.json", requestOptions3(api, {
       filters: ids.map(function(id) {
         return { type: "INTEGER", operator: "=", property: "id", value: String(id) };
       }),
@@ -22957,7 +23609,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
   async function membershipLines(api, subscriptions, fetchImpl) {
     var orderIds = subscriptions.map(orderId).filter(Boolean);
     if (!orderIds.length) return {};
-    var response = await requestJson8(fetchImpl, api.billBase + "/api/order-item/list.json", requestOptions3(api, {
+    var response = await requestJson9(fetchImpl, api.billBase + "/api/order-item/list.json", requestOptions3(api, {
       filters: [{ type: "STRING", operator: "=", property: "type.code", value: MEMBERSHIP_ITEM_TYPE }],
       mappings: ORDER_ITEM_MAPPINGS3,
       offset: 0,
@@ -23017,12 +23669,12 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     var origin = explicitOrigin || config.origin || browserOrigin6();
     return {
       authorization: text15(session.tokenType || session.token_type || "Bearer") + " " + accessToken,
-      billBase: sameOriginBase8(config.billApiBase || "/core-bill", origin, "Core Bill API base"),
-      coreBase: sameOriginBase8(config.coreApiBase || "/core", origin, "Core API base"),
+      billBase: sameOriginBase9(config.billApiBase || "/core-bill", origin, "Core Bill API base"),
+      coreBase: sameOriginBase9(config.coreApiBase || "/core", origin, "Core API base"),
       config,
       customer: context && context.account || state2.customerAccount || session.account || {},
       organization,
-      serviceBase: sameOriginBase8(config.serviceApiBase || "/core-svc", origin, "Core Service API base")
+      serviceBase: sameOriginBase9(config.serviceApiBase || "/core-svc", origin, "Core Service API base")
     };
   }
   function requestOptions3(api, body) {
@@ -23038,7 +23690,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
       method: "POST"
     };
   }
-  async function requestJson8(fetchImpl, url, options2) {
+  async function requestJson9(fetchImpl, url, options2) {
     var response = await fetchImpl(url, options2);
     if (response.status === 401) throw contractError7("session-expired", "Core rejected the portal session");
     if (response.status === 403) throw contractError7("customer-forbidden", "Core refused the plan read for this customer");
@@ -23095,7 +23747,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     }
     return "";
   }
-  function sameOriginBase8(base, origin, label) {
+  function sameOriginBase9(base, origin, label) {
     var value = text15(base);
     if (!value) throw contractError7("api-base-required", label + " is required");
     if (/^https?:\/\//i.test(value)) {
@@ -23451,6 +24103,8 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
       context.state.session.account = envelope2.account;
       context.state.sessionName = envelope2.user && envelope2.user.displayName || envelope2.account && envelope2.account.displayName || null;
       context.state.session.userId = envelope2.user && envelope2.user.id || null;
+      context.state.session.login = envelope2.user && envelope2.user.login || null;
+      context.state.session.organizationId = envelope2.organization && envelope2.organization.id || null;
       context.state.account = "ready";
     },
     onError(error2, context) {

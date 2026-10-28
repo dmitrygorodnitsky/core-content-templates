@@ -21,6 +21,8 @@ const { graniteRidgeSnowFixture } = await load("data/cases/granite-ridge-snow.js
 const { TopNav } = await load("src/components/shell/TopNav.js");
 const { AccountProfile } = await load("src/routes/AccountProfilePage.js");
 const { renderRoute } = await load("src/router.js");
+const { LOGIN_FORM, PROFILE_FORM, createCoreProfileFormAdapter } = await load("src/adapters/core-profile-form-adapter.js");
+const { PROFILE_EDIT_ROWS, cancelProfileEdit, changeProfileDraft, profileEditRequest, profileEditing, saveProfileEdit, startProfileEdit, validateProfileValue } = await load("src/profile-edit.js");
 
 const ORIGIN = "https://portal.example.test";
 const ACCOUNT = 7801;
@@ -140,7 +142,8 @@ function reply(status, body) {
     "1200 West Pender Street, Suite 400, Vancouver, BC V6E 2S9",
     "133 Acceptance Way, Toronto, ON M5V 2T6",
   ], "billing addresses, newest first, the same address once, a service address never");
-  assert.deepEqual(plain(ready.allowedActions), [], "the profile is read-only");
+  assert.deepEqual(plain(ready.allowedActions), [], "the Account read grants no record action; a change goes through a form");
+  assert.deepEqual(plain(ready.editable), { firstName: "Jordan", lastName: "Lee", email: "jordan.lee@example.test", phone: "+1 604-555-0148", billingAddress: "133 Acceptance Way, Toronto, ON M5V 2T6" }, "an edit starts from the LEGAL contact's names, its oldest EMAIL and PHONE entries and the oldest BILLING link: the ones the server changes");
   assert.equal("preferences" in ready, false, "notification preferences have no Core source, so none are modelled");
 
   const partial = normalizeAccountProfile({ account: accountRow({ contacts: [contactRow(1, "Jordan", "", "", "LEGAL", [entry(2, "EMAIL", "jordan.lee@example.test")])], addresses: [] }), scopeMode: "server-scoped" });
@@ -224,6 +227,8 @@ function reply(status, body) {
   const routed = renderRoute();
   assert.equal(routed.getAttribute("data-visual-id"), "profile");
   assert.equal(all(routed, "[data-module=\"profile-facts\"]").length, 1, "stormRetail renders the customer Account profile, not the generic one");
+  assert.equal(profileEditing(state.config), false, "a fixture portal has no Core to submit to");
+  assert.equal(all(routed, "[data-action=\"profileEdit.start\"], [data-module=\"profile-sign-in\"], input").length, 0, "so its profile stays read-only");
   assert.equal(all(routed, "[data-module=\"order-list\"], [data-module=\"payment-method-card\"], [data-module=\"preferences\"]").length, 0);
   assert.doesNotMatch(routed.textContent, /Manage plan|Order history|Saved addresses|Payment methods|Add card|Add address/, "no order history, saved places, payment or plan on the snow profile");
 
@@ -234,6 +239,10 @@ function reply(status, body) {
 
 function renderWith(envelope, status) {
   applyPortalConfig(readPortalConfig({ dataset: { portalVertical: "snow", portalProfile: "stormRetail", portalTheme: "snow", portalDataMode: "live", portalAuthMode: "required", portalOrganization: "SNOWLIMITLESS", portalDefaultRoute: "overview" } }));
+  state.profileEdit = null;
+  state.profileSaved = null;
+  state.profileLoginChanged = null;
+  state.session.login = "jordan.lee@example.test";
   if (envelope === undefined) delete state.moduleData.profile;
   else state.moduleData.profile = envelope;
   state.moduleStatus.profile = status || (envelope && envelope.state) || "loading";
@@ -256,25 +265,32 @@ function renderWith(envelope, status) {
     const signOut = one(page, "[data-visual-id=\"sign-out\"]");
     assert.equal(signOut.tagName, "BUTTON", view + ": Sign out is a real button");
     assert.equal(signOut.getAttribute("data-action"), "auth.signOut", view + ": Sign out is always on the profile page");
-    assert.deepEqual(all(page, "[data-action]").map((node) => node.getAttribute("data-action")).filter((action) => !["auth.signOut", "ui.retry", "nav.go"].includes(action)), [], view + ": no edit, save, toggle or support action");
-    assert.equal(all(page, "input, textarea, select, .toggle").length, 0, view + ": no edit control");
+    const editable = ["ready", "partial", "empty"].includes(view);
+    assert.deepEqual(all(page, "[data-action]").map((node) => node.getAttribute("data-action")).filter((action) => !["auth.signOut", "ui.retry", "nav.go"].includes(action)), editable ? ["profileEdit.start", "profileEdit.start", "profileEdit.start", "profileEdit.start", "profileEdit.start"] : [], view + ": an Account on screen offers only an Edit or Add on each detail; no save, toggle or support action");
+    assert.equal(all(page, "input, textarea, select, .toggle").length, 0, view + ": no edit control until Edit is chosen");
     assert.doesNotMatch(page.textContent, /7801|5101|CUSTOMER-|test-token/, view + ": no Account id, User id, code or token reaches the page");
   }
 
   const ready = renderWith(expectations[0][1]);
   assert.equal(one(ready, ".prop-head__title").textContent, "Harbourview Strata Council");
-  const facts = all(ready, "[data-fact]").map((fact) => [fact.getAttribute("data-fact"), fact.getAttribute("data-state"), all(fact, ".prop-fact__value").map((node) => node.textContent), (one(fact, ".prop-fact__note") || { textContent: "" }).textContent]);
+  const facts = all(ready, "[data-fact]").map((fact) => [fact.getAttribute("data-fact"), fact.getAttribute("data-state"), all(fact, ".prop-fact__value").map((node) => node.textContent), (one(fact, ".prop-fact__note") || { textContent: "" }).textContent, one(fact, "[data-action=\"profileEdit.start\"]").textContent]);
   assert.deepEqual(facts, [
-    ["contact", "ready", ["Jordan Lee"], "Strata Council President"],
-    ["email", "ready", ["jordan.lee@example.test"], ""],
-    ["phone", "ready", ["+1 604-555-0148"], ""],
-    ["billing", "ready", ["1200 West Pender Street, Suite 400, Vancouver, BC V6E 2S9", "133 Acceptance Way, Toronto, ON M5V 2T6"], ""],
+    ["contact", "ready", ["Jordan Lee"], "Strata Council President", "Edit"],
+    ["email", "ready", ["jordan.lee@example.test"], "", "Edit"],
+    ["phone", "ready", ["+1 604-555-0148"], "", "Edit"],
+    ["billing", "ready", ["1200 West Pender Street, Suite 400, Vancouver, BC V6E 2S9", "133 Acceptance Way, Toronto, ON M5V 2T6"], "", "Edit"],
+    ["login", "ready", ["jordan.lee@example.test"], "The email you sign in to this portal with. Changing it does not change your contact email.", "Edit"],
   ]);
-  assert.equal(one(one(ready, "[data-fact=\"contact\"]"), ".prop-fact__label").textContent, "Contact", "a contact other than the account itself is labelled Contact");
+  assert.deepEqual(all(ready, "[data-action=\"profileEdit.start\"]").map((node) => node.getAttribute("data-id")), ["contact", "email", "phone", "billing", "login"]);
+  assert.equal(all(one(ready, "[data-module=\"profile-facts\"]"), "[data-fact=\"login\"]").length, 0, "the sign-in is not one of the contact details");
+  assert.equal(all(one(ready, "[data-module=\"profile-sign-in\"]"), "[data-fact]").length, 1, "the sign-in has its own card with its own Edit");
+  assert.equal(one(one(ready, "[data-fact=\"contact\"]"), ".prop-fact__label").textContent, "Name", "the LEGAL contact's name is the editable Name");
   assert.equal(one(one(ready, "[data-fact=\"billing\"]"), ".prop-fact__label").textContent, "Billing addresses", "two billing addresses on file are both shown and labelled as such");
 
   const partial = renderWith(expectations[1][1]);
-  assert.deepEqual(all(partial, "[data-fact]").map((fact) => fact.getAttribute("data-fact")), ["contact", "email"], "a detail that is not on file is left out, never shown as a placeholder");
+  assert.deepEqual(all(partial, "[data-fact]").map((fact) => [fact.getAttribute("data-fact"), fact.getAttribute("data-state"), all(fact, ".prop-fact__value").length, one(fact, "[data-action]").textContent]), [
+    ["contact", "ready", 1, "Edit"], ["email", "ready", 1, "Edit"], ["phone", "missing", 0, "Add"], ["billing", "missing", 0, "Add"], ["login", "ready", 1, "Edit"],
+  ], "a detail that is not on file offers Add and shows no value");
   assert.doesNotMatch(partial.textContent, /Not on file/);
 
   const bilbo = renderWith(normalizeAccountProfile({
@@ -287,16 +303,18 @@ function renderWith(envelope, status) {
   }));
   assert.equal(one(bilbo, ".prop-head__title").textContent, "Bilbo Baggins");
   assert.deepEqual(all(bilbo, "[data-fact]").map((fact) => [fact.getAttribute("data-fact"), all(fact, ".prop-fact__value").map((node) => node.textContent).join("|")]), [
+    ["contact", "Bilbo Baggins"],
     ["email", "bilbo@example.test"],
     ["phone", "+1 999-111-2233"],
     ["billing", "1239 W Georgia St, Vancouver, BC V6E 4R8, Canada"],
-  ], "a contact who is the account itself is not repeated under the title");
+    ["login", "jordan.lee@example.test"],
+  ], "the contact's name is shown even when it is the account's name, so it can be edited");
   assert.doesNotMatch(bilbo.textContent, /Primary contact|V6E 4R8, CA|, CA,/);
   assert.equal(one(one(bilbo, "[data-fact=\"billing\"]"), ".prop-fact__label").textContent, "Billing address");
 
   const empty = renderWith(expectations[2][1]);
-  assert.equal(one(empty, "[data-module=\"empty-state\"] .state-block__title").textContent, "No contact details on file");
-  assert.equal(all(empty, "[data-module=\"profile-facts\"]").length, 0);
+  assert.deepEqual(all(one(empty, "[data-module=\"profile-facts\"]"), "[data-action]").map((node) => node.textContent), ["Add", "Add", "Add", "Add"], "an Account with no contact details offers to add each of them");
+  assert.equal(all(empty, "[data-module=\"empty-state\"]").length, 0);
 
   const loading = renderWith(undefined);
   assert.equal(one(loading, "[data-module=\"profile-loading\"]").getAttribute("aria-busy"), "true");
@@ -329,13 +347,204 @@ function renderWith(envelope, status) {
 }
 
 {
-  const source = fs.readFileSync(path.resolve("app-templates/customer-portal/runtime/src/routes/AccountProfilePage.js"), "utf8")
-    + fs.readFileSync(path.resolve("app-templates/customer-portal/runtime/src/adapters/core-account-profile-adapter.js"), "utf8")
-    + fs.readFileSync(path.resolve("app-templates/customer-portal/runtime/src/normalizers/account-profile.js"), "utf8");
-  assert.doesNotMatch(source, /save\.json|send-event|PATCH|innerHTML|kind"/, "the snow profile reads and renders; it writes nothing and injects no markup");
+  const refusedAs = (code, raw, message, current) => assert.equal(validateProfileValue(code, raw, current).error, message, code + " " + JSON.stringify(raw));
+  refusedAs("FIRST_NAME", "   ", "Enter your first name.");
+  refusedAs("LAST_NAME", "B".repeat(33), "Use 32 characters or fewer.");
+  refusedAs("FIRST_NAME", "Bil\u0000bo", "Use letters, spaces and punctuation only.");
+  for (const email of ["bilbo", "bilbo@example", "bil bo@example.com", "bilbo@@example.com"]) refusedAs("EMAIL", email, "Enter a valid email address, like name@example.com.");
+  refusedAs("EMAIL", " ", "Enter your email address.");
+  for (const phone of ["12345", "+1 604 555 0199 ext 4", "1234567890123456"]) refusedAs("PHONE", phone, "Enter a valid phone number with its area code.");
+  refusedAs("BILLING_ADDRESS", "Bagshot Row, Hobbiton", "Enter the full street address, including the building number.");
+  refusedAs("BILLING_ADDRESS", "1 " + "a".repeat(254), "Use 255 characters or fewer.");
+  refusedAs("LOGIN", "Jordan.Lee@Example.test", "This is already the email you sign in with.", "jordan.lee@example.test");
+  refusedAs("LOGIN", "", "Enter the email you want to sign in with.");
+  assert.deepEqual(plain(validateProfileValue("FIRST_NAME", "  Bilbo   Took ")), { error: null, value: "Bilbo Took" });
+  assert.deepEqual(plain(validateProfileValue("EMAIL", " Bilbo.Baggins@Example.COM ")), { error: null, value: "bilbo.baggins@example.com" }, "the browser checks with the server's rules and messages before anything is sent");
+
+  const initial = { firstName: "Jordan", lastName: "Lee" };
+  assert.deepEqual(plain(profileEditRequest("contact", initial, { firstName: " Jordan ", lastName: "Lee-Smith" })), { errors: {}, values: { FIELDS: ["LAST_NAME"], LAST_NAME: "Lee-Smith" } }, "only a field whose value changed is named in FIELDS and sent; an untouched first name is not sent at all");
+  assert.deepEqual(plain(profileEditRequest("contact", initial, { firstName: "Jordan", lastName: " Lee " })), { errors: {}, values: null }, "an unchanged row sends nothing");
+  assert.deepEqual(plain(profileEditRequest("phone", { phone: "+1 604-555-0148" }, { phone: "604 555 0199" })), { errors: {}, values: { FIELDS: ["PHONE"], PHONE: "604 555 0199" } });
+  assert.deepEqual(plain(profileEditRequest("email", { email: "jordan.lee@example.test" }, { email: "nope" })), { errors: { EMAIL: "Enter a valid email address, like name@example.com." }, values: null });
+  assert.deepEqual(plain(profileEditRequest("login", { login: "jordan.lee@example.test" }, { login: " New.Login@Example.test " })), { errors: {}, values: { LOGIN: "new.login@example.test" } }, "the sign-in form carries only the new login");
+  assert.deepEqual(plain(profileEditRequest("login", { login: "jordan.lee@example.test" }, { login: "jordan.lee@example.test" })), { errors: { LOGIN: "This is already the email you sign in with." }, values: null }, "an unchanged sign-in is refused, not silently dropped");
+  assert.equal(PROFILE_EDIT_ROWS.login.form, LOGIN_FORM);
+  for (const row of ["contact", "email", "phone", "billing"]) assert.equal(PROFILE_EDIT_ROWS[row].form, PROFILE_FORM, row + " goes through the profile form");
+  assert.deepEqual(plain(PROFILE_FORM), { typeCode: "CUSTOMER_PROFILE_UPDATE", preference: "SNOW_CUSTOMER_PROFILE_UPDATE" });
+  assert.deepEqual(plain(LOGIN_FORM), { typeCode: "CUSTOMER_LOGIN_CHANGE", preference: "SNOW_CUSTOMER_LOGIN_CHANGE" });
 }
 
-console.log("snow-account-profile-check ok: the snow profile is one server-scoped read of the resolved customer Account filtered by id and the signed-in User, with contacts, entries and typed addresses projected and no entry kind, a row outside the session dropped and named browser-filtered, every Core failure mapped, a normalizer that shows the LEGAL contact, its e-mail and phone and the billing addresses newest first without codes, preferences or invented values, fixture data read through the same normalizer, stormRetail routed to it while every other profile keeps its page, and ready, partial, empty, loading, error, unauthorized and unavailable states with Sign out always present and no edit control");
+{
+  const calls = [];
+  let polls = 0;
+  const outcome = (form, extra) => JSON.stringify(Object.assign({ form, outcome: "APPLIED", field: null, message: "Saved.", changed: ["PHONE"] }, extra));
+  const fetchImpl = async (url, options) => {
+    calls.push({ url, options });
+    if (url.endsWith("/form-type/CUSTOMER_PROFILE_UPDATE/get.json")) return reply(200, { id: 8, code: "CUSTOMER_PROFILE_UPDATE" });
+    if (url.endsWith("/api/form/submit.json")) return reply(200, 631);
+    if (url.endsWith("/api/user/preferences.json")) {
+      polls += 1;
+      if (polls === 1) return reply(200, {});
+      if (polls === 2) return reply(200, { SNOW_CUSTOMER_PROFILE_UPDATE: outcome(630) });
+      return reply(200, { SNOW_CUSTOMER_PROFILE_UPDATE: outcome(631, { outcome: "REFUSED", field: "PHONE", message: "Enter a valid phone number with its area code.", changed: [] }), SNOW_CUSTOMER_LOGIN_CHANGE: outcome(631) });
+    }
+    throw new Error("unexpected request " + url);
+  };
+  const forms = createCoreProfileFormAdapter({ fetch: fetchImpl, wait: async () => {}, now: () => 0 });
+  const ctx = { config: { vertical: "snow", organization: "SNOWLIMITLESS", origin: ORIGIN }, state: { session: { accessToken: "test-token", tokenType: "Bearer", organizationId: 43 } } };
+  assert.equal(await forms.submit(PROFILE_FORM, { FIELDS: ["PHONE"], PHONE: "604 555 0199" }, ctx), 631);
+  assert.equal(calls[0].url, ORIGIN + "/en/core-cms/api/form-type/CUSTOMER_PROFILE_UPDATE/get.json", "the form type is found by its code, as the public form finds it");
+  assert.equal(calls[0].options.headers.Authorization, undefined);
+  assert.equal(calls[1].url, ORIGIN + "/core-cms/api/form/submit.json");
+  assert.equal(calls[1].options.method, "POST");
+  assert.equal(calls[1].options.headers.Authorization, "Bearer test-token", "the form is submitted with the session, so Core sets Form.user to the signed-in User");
+  assert.equal(calls[1].options.headers["X-Organization-Code"], "SNOWLIMITLESS");
+  assert.deepEqual(JSON.parse(calls[1].options.body), { type: { id: 8 }, organization: { id: 43 }, attributes: { 8: { FIELDS: { value: ["PHONE"] }, PHONE: { value: "604 555 0199" } } }, metadata: { language: "en" } }, "only the changed field and FIELDS are submitted; no Account, User or contact id");
+  const result = await forms.outcome(PROFILE_FORM, 631, ctx);
+  assert.deepEqual(plain(result), { outcome: "REFUSED", field: "PHONE", message: "Enter a valid phone number with its area code.", changed: [] }, "the outcome is the one reported for this form in the profile preference");
+  assert.equal(polls, 3, "no report yet and a report for an earlier form are both waited past");
+  assert.ok(calls.slice(2).every(({ url, options }) => url === ORIGIN + "/core/api/user/preferences.json" && options.method === "GET" && options.headers.Authorization === "Bearer test-token"), "the outcome is read from the signed-in User's own preferences");
+  await forms.submit(PROFILE_FORM, { FIELDS: ["EMAIL"], EMAIL: "a@example.test" }, ctx);
+  assert.equal(calls.filter(({ url }) => url.includes("/form-type/")).length, 1, "the form type id is read once");
+
+  let clock = 0;
+  const silent = createCoreProfileFormAdapter({ fetch: async () => reply(200, {}), wait: async () => { clock += 1000; }, now: () => clock, timeoutMs: 5000 });
+  await assert.rejects(() => silent.outcome(PROFILE_FORM, 9, ctx), { code: "outcome-unknown" }, "no report in time is an unknown outcome, never a success");
+  const expired = createCoreProfileFormAdapter({ fetch: async () => reply(401, {}), wait: async () => {} });
+  await assert.rejects(() => expired.outcome(LOGIN_FORM, 9, ctx), { code: "session-expired" });
+  await assert.rejects(() => forms.submit(PROFILE_FORM, { FIELDS: ["PHONE"], PHONE: "1" }, { config: ctx.config, state: { session: { accessToken: "t" } } }), { code: "organization-required" }, "no form is sent without the organization the User is signed in to");
+}
+
+{
+  const before = normalizeAccountProfile({ account: accountRow(), scopeMode: "server-scoped" });
+  const after = normalizeAccountProfile({ account: accountRow({ contacts: [contactRow(6601, "Jordan", "Lee", "Strata Council President", "LEGAL", [entry(6611, "EMAIL", "jordan.lee@example.test"), entry(6612, "PHONE", "+16045550199")])] }), scopeMode: "server-scoped" });
+  const fake = () => {
+    const forms = { submits: [], next: null, error: null, gate: null };
+    forms.submit = async (form, values) => { forms.submits.push([form.typeCode, plain(values)]); return 700 + forms.submits.length; };
+    forms.outcome = async () => { if (forms.gate) await forms.gate; if (forms.error) throw forms.error; return forms.next; };
+    return forms;
+  };
+  const coded = (code) => Object.assign(new Error(code), { code });
+  const row = (page, key) => one(page, "[data-fact=\"" + key + "\"]");
+  const phases = [];
+  const reloads = [];
+  const options = (forms, onSaving) => ({ forms, reload: async (id) => { reloads.push(id); state.moduleData.profile = after; }, onChange: (phase) => { phases.push(phase); if (phase === "saving" && onSaving) onSaving(AccountProfile()); } });
+
+  renderWith(before);
+  assert.equal(startProfileEdit("phone"), true);
+  let page = AccountProfile();
+  const input = one(row(page, "phone"), "[data-profile-input=\"PHONE\"]");
+  assert.equal(row(page, "phone").getAttribute("data-state"), "editing", "Edit turns the row itself into an editor, in place");
+  assert.equal(input.getAttribute("value"), "+1 604-555-0148");
+  assert.equal(input.getAttribute("type"), "tel");
+  assert.deepEqual(all(row(page, "phone"), "[data-action]").map((node) => node.getAttribute("data-action")), ["profileEdit.save", "profileEdit.cancel"]);
+  assert.equal(all(page, "input").length, 1, "only the chosen row is edited");
+
+  const forms = fake();
+  changeProfileDraft("phone", "12");
+  assert.equal(await saveProfileEdit(options(forms)), false);
+  assert.deepEqual(phases, ["invalid"]);
+  assert.equal(forms.submits.length, 0, "an invalid value is caught in the browser and nothing is sent");
+  page = AccountProfile();
+  assert.equal(one(row(page, "phone"), ".field-error").textContent, "Enter a valid phone number with its area code.");
+  assert.equal(one(row(page, "phone"), "input").getAttribute("aria-invalid"), "true");
+  assert.equal(one(row(page, "phone"), "input").getAttribute("aria-describedby"), one(row(page, "phone"), ".field-error").getAttribute("id"));
+
+  changeProfileDraft("phone", "604 555 0199");
+  forms.next = { outcome: "APPLIED", field: null, message: "Saved.", changed: ["PHONE"] };
+  let release;
+  forms.gate = new Promise((resolve) => { release = resolve; });
+  let savingPage = null;
+  const saving = saveProfileEdit(options(forms, (snapshot) => { savingPage = snapshot; }));
+  assert.equal(await saveProfileEdit(options(forms)), false, "a second save while one is in flight does nothing");
+  assert.equal(startProfileEdit("email"), false, "and no other detail can be opened meanwhile");
+  assert.equal(cancelProfileEdit(), false, "nor the save abandoned");
+  assert.equal(one(row(savingPage, "phone"), "[data-action=\"profileEdit.save\"]").textContent, "Saving…");
+  assert.equal(one(row(savingPage, "phone"), "[data-action=\"profileEdit.save\"]").hasAttribute("disabled"), true);
+  assert.equal(one(row(savingPage, "phone"), "input").hasAttribute("disabled"), true);
+  assert.match(one(row(savingPage, "phone"), "[role=\"status\"]").textContent, /waiting for confirmation/);
+  assert.ok(all(savingPage, "[data-action=\"profileEdit.start\"]").every((node) => node.hasAttribute("disabled")), "every other Edit waits for the save");
+  release();
+  assert.equal(await saving, true);
+  assert.deepEqual(forms.submits, [["CUSTOMER_PROFILE_UPDATE", { FIELDS: ["PHONE"], PHONE: "604 555 0199" }]], "one submission carrying only the phone");
+  assert.deepEqual(reloads, ["profile"], "after Core applied it the profile is read again");
+  assert.equal(state.profileEdit, null);
+  page = AccountProfile();
+  assert.equal(one(row(page, "phone"), ".prop-fact__value").textContent, "+1 604-555-0199", "the page shows what the re-read returned");
+  assert.equal(one(row(page, "phone"), ".prop-fact__saved").textContent, "Saved");
+
+  const refusing = fake();
+  startProfileEdit("email");
+  changeProfileDraft("email", "taken@example.test");
+  refusing.next = { outcome: "REFUSED", field: "EMAIL", message: "Server says no to this email.", changed: [] };
+  assert.equal(await saveProfileEdit(options(refusing)), false);
+  page = AccountProfile();
+  assert.equal(row(page, "email").getAttribute("data-state"), "refused");
+  assert.equal(one(row(page, "email"), ".field-error").textContent, "Server says no to this email.", "the server's reason is shown next to the field it names");
+  assert.equal(one(row(page, "email"), "input").getAttribute("value"), "taken@example.test", "and the value the client typed is kept");
+  assert.equal(one(row(page, "email"), "[data-action=\"profileEdit.save\"]").hasAttribute("disabled"), false);
+  refusing.next = { outcome: "REFUSED", field: null, message: "This sign-in is linked to more than one account. Contact us to update your details.", changed: [] };
+  await saveProfileEdit(options(refusing));
+  page = AccountProfile();
+  assert.equal(one(row(page, "email"), ".prop-edit__message").textContent, "This sign-in is linked to more than one account. Contact us to update your details.", "a reason that names no field is shown in the row");
+  refusing.next = { outcome: "FAILED", field: null, message: "We couldn't save your change right now. Please try again in a few minutes.", changed: [] };
+  await saveProfileEdit(options(refusing));
+  assert.equal(row(AccountProfile(), "email").getAttribute("data-state"), "failed");
+  refusing.error = coded("outcome-unknown");
+  await saveProfileEdit(options(refusing));
+  assert.match(one(row(AccountProfile(), "email"), ".prop-edit__message").textContent, /couldn't confirm the change yet/);
+  assert.equal(cancelProfileEdit(), true);
+  assert.equal(all(AccountProfile(), "input").length, 0, "Cancel puts the row back as it was");
+
+  const quiet = fake();
+  startProfileEdit("billing");
+  assert.equal(await saveProfileEdit(options(quiet)), true);
+  assert.equal(quiet.submits.length, 0, "Save without a change closes the editor without a submission");
+
+  const login = fake();
+  startProfileEdit("login");
+  page = AccountProfile();
+  assert.equal(one(row(page, "login"), "input").getAttribute("value"), "jordan.lee@example.test");
+  assert.equal(all(one(page, "[data-module=\"profile-facts\"]"), "input").length, 0, "the sign-in is edited in its own card");
+  changeProfileDraft("login", "New.Login@Example.test");
+  login.next = { outcome: "APPLIED", field: null, message: "Saved. Use your new email the next time you sign in.", changed: ["LOGIN"] };
+  reloads.length = 0;
+  assert.equal(await saveProfileEdit(options(login)), true);
+  assert.deepEqual(login.submits, [["CUSTOMER_LOGIN_CHANGE", { LOGIN: "new.login@example.test" }]]);
+  page = AccountProfile();
+  assert.equal(one(row(page, "login"), ".prop-fact__value").textContent, "new.login@example.test");
+  assert.equal(one(row(page, "login"), ".prop-fact__note").textContent, "Use this email the next time you sign in. Your password stays the same.");
+  assert.equal(one(row(page, "email"), ".prop-fact__value").textContent, "jordan.lee@example.test", "the contact email is not the sign-in and does not change with it");
+  assert.deepEqual(reloads, [], "a sign-in change does not re-read the Account");
+
+  const ended = fake();
+  startProfileEdit("login");
+  changeProfileDraft("login", "another@example.test");
+  ended.error = coded("session-expired");
+  await saveProfileEdit(options(ended));
+  page = AccountProfile();
+  assert.equal(row(page, "login").getAttribute("data-state"), "session-ended");
+  assert.match(one(row(page, "login"), ".prop-edit__message").textContent, /with another@example\.test if the change went through, otherwise with new\.login@example\.test/);
+  assert.equal(one(row(page, "login"), "[data-visual-id=\"profile-edit-sign-in\"]").getAttribute("data-action"), "auth.signOut");
+
+  state.profileEdit = null;
+  const expiredProfile = fake();
+  startProfileEdit("phone");
+  changeProfileDraft("phone", "604 555 0100");
+  expiredProfile.error = coded("session-expired");
+  await saveProfileEdit(options(expiredProfile));
+  assert.equal(state.account, "session-expired", "an expired session during a profile save goes to the session gate");
+  assert.equal(state.profileEdit, null);
+}
+
+{
+  const read = (file) => fs.readFileSync(path.resolve("app-templates/customer-portal/runtime/src/" + file), "utf8");
+  const source = ["routes/AccountProfilePage.js", "adapters/core-account-profile-adapter.js", "normalizers/account-profile.js", "adapters/core-profile-form-adapter.js", "profile-edit.js"].map(read).join("\n");
+  assert.doesNotMatch(source, /save\.json|send-event|PATCH|innerHTML|kind"/, "the snow profile never saves an Account, contact or address through CRUD, sends no record event and injects no markup");
+  assert.deepEqual([...read("adapters/core-profile-form-adapter.js").matchAll(/"(\/api\/[\w/.-]+)"/g)].map(([, route]) => route), ["/api/form-type/", "/api/form/submit.json", "/api/user/preferences.json"], "the only write is a form submission; the rest are reads");
+}
+
+console.log("snow-account-profile-check ok: the snow profile is one server-scoped read of the resolved customer Account filtered by id and the signed-in User, with contacts, entries and typed addresses projected and no entry kind, a row outside the session dropped and named browser-filtered, every Core failure mapped, a normalizer that shows the LEGAL contact, its e-mail and phone and the billing addresses newest first without codes, preferences or invented values, fixture data read through the same normalizer, stormRetail routed to it while every other profile keeps its page, ready, partial, empty, loading, error, unauthorized and unavailable states with Sign out always present, and inline Edit on the name, email, phone, billing address and sign-in that checks the server's rules in the browser, submits only changed fields as a CUSTOMER_PROFILE_UPDATE or CUSTOMER_LOGIN_CHANGE form with the session, saves one at a time, waits for the outcome in the User's preference, re-reads the profile after a change and shows a refusal next to its field");
 
 function createDom() {
   class Text {

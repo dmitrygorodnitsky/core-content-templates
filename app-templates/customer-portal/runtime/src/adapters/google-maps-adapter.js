@@ -1,6 +1,8 @@
 var SCRIPT_URL = "https://maps.googleapis.com/maps/api/js";
 var LIBRARIES = ["core", "maps", "geocoding"];
 var GEOCODE_PREFIX = "portal.geocode:";
+var SUGGESTION_LIMIT = 5;
+var SUGGESTION_TYPES = ["street_address", "premise", "subpremise", "route"];
 
 export function createGoogleMapsAdapter(options) {
   var apiKey = (options && options.apiKey) || "";
@@ -33,6 +35,22 @@ export function createGoogleMapsAdapter(options) {
         return loaded;
       });
       return loading;
+    },
+
+    suggestAddresses: function (query) {
+      return this.load().then(function (loaded) {
+        return typeof loaded.importLibrary === "function" ? loaded.importLibrary("places") : loaded.places;
+      }).then(function (places) {
+        var finder = places && places.AutocompleteSuggestion;
+        if (!finder || typeof finder.fetchAutocompleteSuggestions !== "function") return [];
+        return Promise.resolve(finder.fetchAutocompleteSuggestions({ input: query, includedPrimaryTypes: SUGGESTION_TYPES })).then(function (response) {
+          return ((response && response.suggestions) || []).map(function (suggestion) {
+            var prediction = suggestion && suggestion.placePrediction;
+            var label = prediction && prediction.text ? String(prediction.text) : "";
+            return { label: label, address: function () { return formattedAddress(prediction, label); } };
+          }).filter(function (item) { return item.label; }).slice(0, SUGGESTION_LIMIT);
+        });
+      });
     },
 
     geocode: function (address) {
@@ -81,6 +99,16 @@ export function browserStorage() {
   } catch (_) {
     return null;
   }
+}
+
+function formattedAddress(prediction, label) {
+  var place = prediction && typeof prediction.toPlace === "function" ? prediction.toPlace() : null;
+  if (!place || typeof place.fetchFields !== "function") return Promise.resolve(label);
+  return Promise.resolve(place.fetchFields({ fields: ["formattedAddress"] })).then(function () {
+    return String(place.formattedAddress || label);
+  }, function () {
+    return label;
+  });
 }
 
 function scriptNamespace(scope, apiKey, fail) {

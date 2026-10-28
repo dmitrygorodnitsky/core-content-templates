@@ -10,6 +10,7 @@ import { createPickupFulfillment } from "./adapters/core-orders-adapter.js";
 import { createCoreSpaDemoAdapter } from "./adapters/core-spa-demo-adapter.js";
 import { startCoreOidcSignIn, startCoreOidcSignOut } from "./adapters/core-oidc-adapter.js";
 import { createCoreUserProfileAdapter } from "./adapters/core-user-profile-adapter.js";
+import { cancelProfileEdit, focusProfileInput, saveProfileEdit, startProfileEdit } from "./profile-edit.js";
 import { configuredExternalUrl, normalizeVertical, verticalProfiles } from "./config.js";
 import { resolveRoute, writeRouteToLocation } from "./router.js";
 import { selectSeoService, toggleSeoFaq } from "./seo-actions.js";
@@ -170,6 +171,11 @@ export var ACTIONS = {
     render(); toast("Profile reloaded — showing the details on file");
   },
   "profile.managePlan": function ()  { go("pricing"); },
+  "profileEdit.start": function (id) { if (!startProfileEdit(id)) return false; render(); focusProfileInput(false); return true; },
+  "profileEdit.cancel": function () { if (!cancelProfileEdit()) return false; render(); return true; },
+  "profileEdit.save": function () {
+    return saveProfileEdit({ reload: reloadRuntimeModule, onChange: function (phase) { render(); if (phase === "invalid" || phase === "refused") focusProfileInput(true); } });
+  },
   "overview.selectProperty": function (id) { state.ovProperty = state.ovProperty === id ? null : id; render(); },
   "overview.closeProperty": function () { state.ovProperty = null; render(); },
   "overview.scrubWeather": function (id) { state.ovWeatherIndex = Number(id); render(); },

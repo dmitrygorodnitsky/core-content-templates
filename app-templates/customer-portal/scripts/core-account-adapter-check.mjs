@@ -18,8 +18,8 @@ const context = {
   const adapter = createCoreAccountAdapter({ origin, fetch: successfulFetch(calls) });
   const result = await adapter.resolve(context);
   assert.equal(result.state, "ready");
-  assert.deepEqual(result.organization, { code: "CALM_HARBOR_SPA_STAGING" });
-  assert.deepEqual(result.user, { id: 42, displayName: "Elena Rios" });
+  assert.deepEqual(result.organization, { code: "CALM_HARBOR_SPA_STAGING", id: null }, "an organization basic-info lists without an id resolves without one");
+  assert.deepEqual(result.user, { id: 42, displayName: "Elena Rios", login: "Elena Rios" });
   assert.deepEqual(result.account, {
     id: 1042, code: "CHS_STG_ELENA_RIOS", displayName: "Elena Rios", optimistic: 3, typeCode: "SPA_CUSTOMER",
   });
@@ -46,13 +46,15 @@ const context = {
   listContext.config.organization = "SNOWLIMITLESS";
   listContext.config.vertical = "snow";
   listContext.config.accountTypeCode = "SNOW_RESIDENTIAL_CUSTOMER,SNOW_COMMERCIAL_CUSTOMER,CUSTOMER";
-  const snowInfo = () => json({ authenticatedUserId: 42, authenticatedUserName: "Jordan Lee", organizationCode: "SNOWLIMITLESS", authorizedOrganizations: [{ code: "SNOWLIMITLESS" }] });
+  const snowInfo = () => json({ authenticatedUserId: 42, authenticatedUserName: "jordan.lee@example.test", authenticatedUser: "Jordan Lee", organizationCode: "SNOWLIMITLESS", authorizedOrganizations: [{ code: "SERVICEWAND", id: 3 }, { code: "SNOWLIMITLESS", id: 43 }] });
   const row = (id, typeCode) => ({ id, optimistic: 1, code: "SNOW-" + id, nls: { en: { NAME: "Snow customer " + id } }, user: { id: 42 }, type: { id: 9, code: typeCode } });
   const resolveWith = (reply, calls) => createCoreAccountAdapter({ origin, fetch: responseSequence([snowInfo(), json(reply)], calls) }).resolve(listContext);
 
   const calls = [];
   const result = await resolveWith({ resultSize: 1, result: [row(717, "SNOW_RESIDENTIAL_CUSTOMER")] }, calls);
   assert.equal(result.account.id, 717);
+  assert.deepEqual(result.organization, { code: "SNOWLIMITLESS", id: 43 }, "the portal organization's id comes from the signed-in User's own basic-info, for the forms it submits");
+  assert.equal(result.user.login, "jordan.lee@example.test", "the sign-in login is the User name basic-info answers");
   assert.equal(result.account.typeCode, "SNOW_RESIDENTIAL_CUSTOMER", "a type list resolves to the type the Account actually has");
   assert.equal(result.scopeMode, "server-scoped", "the server filtered the types, so nothing was dropped in the browser");
   assert.equal(calls[1].url, origin + "/core-acct/api/tagged/account/list.json", "Snow bootstrap is authorized by personal User tags");

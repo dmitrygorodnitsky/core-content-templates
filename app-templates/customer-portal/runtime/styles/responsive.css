@@ -277,6 +277,8 @@
 
 .vw-mobile .prop-facts { grid-template-columns: 1fr; }
 
+.vw-mobile .prop-edit--pair { grid-template-columns: 1fr; }
+
 .vw-mobile .prop-head__title { font-size: 24px; }
 
 .vw-mobile .proposals-head { flex-wrap: wrap; align-items: flex-start; row-gap: 10px; }
