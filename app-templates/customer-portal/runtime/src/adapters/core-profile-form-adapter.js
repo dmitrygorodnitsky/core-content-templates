@@ -1,4 +1,5 @@
 import { positiveInteger, text } from "../normalizers/core-record.js";
+import { coreSessionFetch } from "./core-oidc-adapter.js";
 
 export const PROFILE_FORM = Object.freeze({ typeCode: "CUSTOMER_PROFILE_UPDATE", preference: "SNOW_CUSTOMER_PROFILE_UPDATE" });
 export const LOGIN_FORM = Object.freeze({ typeCode: "CUSTOMER_LOGIN_CHANGE", preference: "SNOW_CUSTOMER_LOGIN_CHANGE" });
@@ -10,7 +11,7 @@ const POLL_INTERVAL_MS = 1000;
 const OUTCOME_TIMEOUT_MS = 45000;
 
 export function createCoreProfileFormAdapter(options = {}) {
-  var fetchImpl = options.fetch || globalThis.fetch;
+  var fetchImpl = options.fetch || coreSessionFetch;
   if (typeof fetchImpl !== "function") throw coded("fetch-unavailable", "Core profile form adapter requires fetch");
   var wait = options.wait || function (ms) { return new Promise(function (resolve) { setTimeout(resolve, ms); }); };
   var now = options.now || function () { return Date.now(); };

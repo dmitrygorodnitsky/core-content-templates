@@ -2,6 +2,7 @@ import { attributeEntry, attributeNumber, attributeText, latestStateCode, positi
 import { CUSTOMER_ORDER_STATUS, OPERATOR_ORDER_STATES, QUOTE_ORDER_TYPES } from "../normalizers/contracts.js";
 import { formatPostalAddress } from "../normalizers/postal-address.js";
 import { VISIT_TYPE } from "../normalizers/visits.js";
+import { coreSessionFetch } from "./core-oidc-adapter.js";
 
 const PROPERTY_TYPE = "SNOW_REMOVAL_PROPERTY";
 const PROPERTY_BASE_TYPE = "PROPERTY";
@@ -178,7 +179,7 @@ const INVOICE_LIST_BODY = Object.freeze({
 });
 
 export function createCoreSnowVisitsAdapter(options = {}) {
-  var fetchImpl = options.fetch || globalThis.fetch;
+  var fetchImpl = options.fetch || coreSessionFetch;
   if (typeof fetchImpl !== "function") throw contractError("fetch-unavailable", "Core snow adapter requires fetch");
   return {
     async load(moduleId, context) {
@@ -189,7 +190,7 @@ export function createCoreSnowVisitsAdapter(options = {}) {
 }
 
 export function createCoreSnowInvoicesAdapter(options = {}) {
-  var fetchImpl = options.fetch || globalThis.fetch;
+  var fetchImpl = options.fetch || coreSessionFetch;
   if (typeof fetchImpl !== "function") throw contractError("fetch-unavailable", "Core snow adapter requires fetch");
   return {
     async load(moduleId, context) {
@@ -199,7 +200,7 @@ export function createCoreSnowInvoicesAdapter(options = {}) {
   };
 }
 
-export async function loadSnowVisits(context, fetchImpl = globalThis.fetch, explicitOrigin) {
+export async function loadSnowVisits(context, fetchImpl = coreSessionFetch, explicitOrigin) {
   var api = readContext(context, explicitOrigin);
   var reply = await requestJson(fetchImpl, api.serviceBase + "/api/tagged/appointment/list.json", readOptions(api, VISIT_LIST_BODY));
   var rows = listResult(reply);
@@ -211,7 +212,7 @@ export async function loadSnowVisits(context, fetchImpl = globalThis.fetch, expl
   };
 }
 
-export async function readVisitTransitions(context, backendId, fetchImpl = globalThis.fetch, explicitOrigin) {
+export async function readVisitTransitions(context, backendId, fetchImpl = coreSessionFetch, explicitOrigin) {
   var api = readContext(context, explicitOrigin);
   var id = positiveInteger(backendId);
   if (!id) throw contractError("invalid-target", "A visit id is required before reading its progress");
@@ -219,7 +220,7 @@ export async function readVisitTransitions(context, backendId, fetchImpl = globa
   return listResult(reply);
 }
 
-export async function loadSnowInvoices(context, fetchImpl = globalThis.fetch, explicitOrigin) {
+export async function loadSnowInvoices(context, fetchImpl = coreSessionFetch, explicitOrigin) {
   var api = readContext(context, explicitOrigin);
   var reply = await requestJson(fetchImpl, api.billBase + "/api/tagged/invoice/list.json", readOptions(api, INVOICE_LIST_BODY));
   var rows = listResult(reply);
@@ -232,7 +233,7 @@ export async function loadSnowInvoices(context, fetchImpl = globalThis.fetch, ex
 }
 
 export function createCoreSnowPropertiesAdapter(options = {}) {
-  var fetchImpl = options.fetch || globalThis.fetch;
+  var fetchImpl = options.fetch || coreSessionFetch;
   if (typeof fetchImpl !== "function") throw contractError("fetch-unavailable", "Core snow adapter requires fetch");
   return {
     async load(moduleId, context) {
@@ -243,7 +244,7 @@ export function createCoreSnowPropertiesAdapter(options = {}) {
 }
 
 export function createCoreSnowQuotesAdapter(options = {}) {
-  var fetchImpl = options.fetch || globalThis.fetch;
+  var fetchImpl = options.fetch || coreSessionFetch;
   if (typeof fetchImpl !== "function") throw contractError("fetch-unavailable", "Core snow adapter requires fetch");
   return {
     async load(moduleId, context) {
@@ -267,7 +268,7 @@ export function createCoreSnowQuotesAdapter(options = {}) {
   };
 }
 
-export async function loadSnowProperties(context, fetchImpl = globalThis.fetch, explicitOrigin) {
+export async function loadSnowProperties(context, fetchImpl = coreSessionFetch, explicitOrigin) {
   var api = readContext(context, explicitOrigin);
   var rows = await customerProperties(api, fetchImpl);
   var addresses = await resolveAddresses(api, fetchImpl, rows.items);
@@ -280,7 +281,7 @@ export async function loadSnowProperties(context, fetchImpl = globalThis.fetch, 
   };
 }
 
-export async function loadSnowQuotes(context, fetchImpl = globalThis.fetch, explicitOrigin) {
+export async function loadSnowQuotes(context, fetchImpl = coreSessionFetch, explicitOrigin) {
   var api = readContext(context, explicitOrigin);
   var primary = await Promise.all([
     settled(customerAgreements(api, fetchImpl)),
@@ -325,7 +326,7 @@ export async function loadSnowQuotes(context, fetchImpl = globalThis.fetch, expl
   };
 }
 
-export async function readCustomerOrder(context, backendId, fetchImpl = globalThis.fetch, explicitOrigin) {
+export async function readCustomerOrder(context, backendId, fetchImpl = coreSessionFetch, explicitOrigin) {
   var api = readContext(context, explicitOrigin);
   var id = commandId(backendId);
   var row = await requestJson(fetchImpl, api.billBase + "/api/tagged/order/get.json?id=" + id, readOptions(api, ORDER_TARGET_MAPPINGS));
@@ -334,7 +335,7 @@ export async function readCustomerOrder(context, backendId, fetchImpl = globalTh
   return row;
 }
 
-export async function readCustomerAgreement(context, backendId, fetchImpl = globalThis.fetch, explicitOrigin) {
+export async function readCustomerAgreement(context, backendId, fetchImpl = coreSessionFetch, explicitOrigin) {
   var api = readContext(context, explicitOrigin);
   var id = commandId(backendId);
   var row = await requestJson(fetchImpl, api.coreBase + "/api/tagged/document/get.json?id=" + id, readOptions(api, AGREEMENT_TARGET_MAPPINGS));

@@ -1,7 +1,8 @@
 import { requestContext } from "./core-profile-form-adapter.js";
+import { coreSessionFetch } from "./core-oidc-adapter.js";
 
 export function createCoreUserPreferenceAdapter(options = {}) {
-  var fetchImpl = options.fetch || globalThis.fetch;
+  var fetchImpl = options.fetch || coreSessionFetch;
   return {
     async overwrite(key, value, context) {
       var api = requestContext(context);

@@ -1,4 +1,5 @@
 import { positiveInteger, text } from "../normalizers/core-record.js";
+import { coreSessionFetch } from "./core-oidc-adapter.js";
 
 const CODE_MAPPINGS = [{ name: "id" }, { name: "code" }];
 
@@ -51,7 +52,7 @@ const PROFILE_MAPPINGS = [
 ];
 
 export function createCoreAccountProfileAdapter(options = {}) {
-  var fetchImpl = options.fetch || globalThis.fetch;
+  var fetchImpl = options.fetch || coreSessionFetch;
   if (typeof fetchImpl !== "function") throw coded("fetch-unavailable", "Core account profile adapter requires fetch");
   return {
     async load(moduleId, context) {
@@ -61,7 +62,7 @@ export function createCoreAccountProfileAdapter(options = {}) {
   };
 }
 
-export async function loadCustomerAccountProfile(context, fetchImpl = globalThis.fetch, explicitOrigin) {
+export async function loadCustomerAccountProfile(context, fetchImpl = coreSessionFetch, explicitOrigin) {
   var api = requestContext(context, explicitOrigin);
   var reply = await requestJson(fetchImpl, api.accountBase + api.accountListPath, {
     method: "POST",

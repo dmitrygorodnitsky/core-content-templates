@@ -138,6 +138,14 @@ async function main() {
     { id: "a signed-in page restored with the same session", hash: "#/overview", session: "signed-in", account: "ready", steps: [{ pageshow: true }], replaced: [], reloads: 0, last: "route:overview" },
     { id: "a signed-out page restored with no session", hash: "#/login", session: "signed-out", steps: [{ pageshow: true }], replaced: [], reloads: 0, last: "oidc:ready-signed-out" },
     { id: "a first page load", hash: "#/login", session: "signed-out", steps: [{ click: "oidc-signin" }, { pageshow: false }], replaced: [], reloads: 0, last: "oidc:redirecting" },
+    { id: "a reload with an expired session that can still be refreshed", hash: "#/overview", session: "expired", refreshable: true, staleToken: "everywhere", replaced: [], last: "route:overview", route: "overview", signinSilent: 1, sessionToken: "renewed-access-token" },
+    { id: "a reload with an expired session whose refresh is rejected", hash: "#/overview", session: "expired", refreshable: true, refresh: "rejected", replaced: [LANDING], last: "oidc:checking-session", signinSilent: 1, removedUser: 1 },
+    { id: "a reload with an expired session and no refresh token", hash: "#/overview", session: "expired", replaced: [LANDING], last: "oidc:checking-session", removedUser: 1 },
+    { id: "a 401 on a refreshable session renews once and retries", hash: "#/overview", session: "signed-in", account: "ready", refreshable: true, staleToken: "everywhere", replaced: [], last: "route:overview", route: "overview", signinSilent: 1, sessionToken: "renewed-access-token", retried: true },
+    { id: "concurrent 401s after the Account resolved share one renewal", hash: "#/overview", session: "signed-in", account: "ready", refreshable: true, staleToken: "after-account", replaced: [], last: "route:overview", route: "overview", signinSilent: 1, sessionToken: "renewed-access-token", concurrent: true },
+    { id: "an access token about to expire is renewed in place", hash: "#/overview", session: "signed-in", account: "ready", refreshable: true, steps: [{ tokenEvent: "expiring" }], replaced: [], last: "route:overview", route: "overview", signinSilent: 1, sessionToken: "renewed-access-token" },
+    { id: "an expiring access token whose refresh is rejected leaves for the landing", hash: "#/overview", session: "signed-in", account: "ready", refreshable: true, refresh: "rejected", steps: [{ tokenEvent: "expiring" }], replaced: [LANDING], last: "route:overview", signinSilent: 1, removedUser: 1 },
+    { id: "a 401 on a refreshable session whose refresh is rejected leaves for the landing", hash: "#/overview", session: "signed-in", account: "ready", refreshable: true, refresh: "rejected", staleToken: "everywhere", replaced: [LANDING], last: "gate:resolving-customer", signinSilent: 1, removedUser: 1 },
     { id: "sign-out from the no-access gate", hash: "#/login", session: "signed-in", account: "customer-not-linked", click: "account-signout", replaced: [], signedOutTo: SIGNED_OUT_RETURN },
     { id: "setting off, signed out on a private route", hash: "#/overview", session: "signed-out", off: true, replaced: [], last: "oidc:ready-signed-out" },
     ...NO_ACCESS_STATES.map((gate) => ({ id: "setting off, " + gate + " on a private route", hash: "#/overview", session: "signed-in", account: gate, off: true, replaced: [], last: "gate:" + gate })),
@@ -169,7 +177,11 @@ async function main() {
     } else {
       assert.equal(result.calls.signoutRedirect, 0, label + ": nobody is signed out");
     }
-    assert.equal(result.calls.removeUser, 0, label + ": the shared Core Auth session is kept");
+    assert.equal(result.calls.removeUser, scenario.removedUser || 0, label + (scenario.removedUser ? ": a session that cannot be renewed is removed" : ": the shared Core Auth session is kept"));
+    assert.equal(result.calls.signinSilent, scenario.signinSilent || 0, label + ": Core refresh-token renewals");
+    if (scenario.sessionToken) assert.equal(result.sessionToken, scenario.sessionToken, label + ": the portal session carries the renewed access token");
+    if (scenario.retried) assert.ok(result.calls.renewedRequests >= 1 && result.calls.unauthorized === 1, label + ": the rejected request is retried with the renewed token");
+    if (scenario.concurrent) assert.ok(result.calls.unauthorized >= 2, label + ": several requests were rejected at once");
     if (scenario.replaced.length) {
       assert.equal(result.history.some(([kind]) => kind === "push"), false, label + ": leaving adds no history entry");
       assert.equal(result.rendersAfterLeaving, 0, label + ": nothing renders once the portal is leaving");
@@ -177,7 +189,7 @@ async function main() {
   }
 
   console.log("snow-portal-public-entry-check ok: " + decisions + " decisions over the opt-in, the session and the account gate, and " + scenarios.length
-    + " boots of runtime/src against the shipped root. A private route that settles signed out replaces itself with the landing; customer-not-linked, organization-forbidden and customer-forbidden replace it with ?portal=no-access without signing out; the session check, an unavailable sign-in, #/login, the ambiguous, unavailable and expired gates, and the setting off never leave; Sign out stores the landing with ?portal=signed-out for the shared Core callback. With or without the landing, the portal pushes no history entry of its own around sign-in: the session check and the continue from #/login replace theirs, a jump to #/login while signed in with access shows the default route in place, and never the signed-in sign-in card; the Account still resolving keeps the checking gate and a missing access keeps its gate. A page restored from the back/forward cache reloads when it was leaving for Core sign-in or sign-out, or when its session changed, and stays when it did not");
+    + " boots of runtime/src against the shipped root. A private route that settles signed out replaces itself with the landing; customer-not-linked, organization-forbidden and customer-forbidden replace it with ?portal=no-access without signing out; the session check, an unavailable sign-in, #/login, the ambiguous, unavailable and expired gates, and the setting off never leave; Sign out stores the landing with ?portal=signed-out for the shared Core callback. With or without the landing, the portal pushes no history entry of its own around sign-in: the session check and the continue from #/login replace theirs, a jump to #/login while signed in with access shows the default route in place, and never the signed-in sign-in card; the Account still resolving keeps the checking gate and a missing access keeps its gate. A page restored from the back/forward cache reloads when it was leaving for Core sign-in or sign-out, or when its session changed, and stays when it did not. An expired or rejected access token is renewed with the stored refresh token, on load, before expiry and after a 401, with one renewal for concurrent 401s and one retry each; only a session whose refresh is rejected, or that has expired with no refresh token, is removed and leaves for the landing");
 }
 
 function runWorker(file, data) {
@@ -211,6 +223,10 @@ async function boot({ scenario, runtimeRoot, dataset }) {
     if (step.signOutElsewhere) browser.session.user = null;
     if (step.signInElsewhere) browser.session.user = signedInUser();
     if (step.expireStoredSession) browser.session.user = Object.assign(signedInUser(), { expired: true });
+    if (step.tokenEvent) {
+      browser.session.user = Object.assign({}, browser.session.user, { expires_in: 45 });
+      browser.session.manager.raise(step.tokenEvent);
+    }
     if (step.release) browser.release(step.release);
     if (step.pageshow !== undefined) browser.pageshow(step.pageshow);
     await browser.settle();
@@ -230,6 +246,7 @@ async function boot({ scenario, runtimeRoot, dataset }) {
     calls: browser.calls,
     logoutReturn: browser.sessionStorage.getItem("oidc-logout-return-url"),
     errors: browser.errors,
+    sessionToken: state.session.accessToken || null,
   });
 }
 
@@ -256,8 +273,8 @@ function installBrowser({ hash, dataset = {}, scenario = {} }) {
   const cards = [];
   const errors = [];
   const reloads = [];
-  const calls = { signoutRedirect: 0, removeUser: 0, signinRedirect: 0 };
-  const session = { user: scenario.session === "signed-in" ? signedInUser() : null };
+  const calls = { signoutRedirect: 0, removeUser: 0, signinRedirect: 0, signinSilent: 0, unauthorized: 0, renewedRequests: 0 };
+  const session = { user: scenario.session === "signed-in" ? signedInUser(scenario) : scenario.session === "expired" ? Object.assign(signedInUser(scenario), { expired: true, expires_in: -30 }) : null };
   const pending = {};
   let renders = 0;
   let rendersAtLeave = null;
@@ -306,10 +323,10 @@ function installBrowser({ hash, dataset = {}, scenario = {} }) {
     requestAnimationFrame: (callback) => setTimeout(callback, 0),
     addEventListener: (type, listener) => { windowListeners[type] = listener; },
     removeEventListener: () => {},
-    fetch: coreFetch(scenario, pending),
+    fetch: coreFetch(scenario, pending, calls),
   });
   if (scenario.oidcLibrary === false) delete globalThis.oidc;
-  else globalThis.oidc = oidcLibrary(session, calls);
+  else globalThis.oidc = oidcLibrary(session, calls, scenario);
 
   return {
     document, replaced, assigned, history, cards, errors, calls, sessionStorage, reloads, session,
@@ -336,28 +353,65 @@ function installBrowser({ hash, dataset = {}, scenario = {} }) {
   };
 }
 
-function signedInUser() {
-  return { access_token: "stub-access-token", token_type: "Bearer", expired: false, profile: { name: "Jordan Lee" } };
+function signedInUser(scenario = {}) {
+  return Object.assign({ access_token: "stub-access-token", token_type: "Bearer", expired: false, expires_in: 900, profile: { name: "Jordan Lee" } }, scenario.refreshable ? { refresh_token: "stub-refresh-token" } : {});
 }
 
-function oidcLibrary(session, calls) {
+function oidcLibrary(session, calls, scenario) {
+  class ErrorResponse extends Error {
+    constructor(error) { super(error); this.error = error; }
+  }
   return {
+    ErrorResponse,
     WebStorageStateStore: class { constructor(options) { this.options = options; } },
     UserManager: class {
+      constructor() {
+        const handlers = {};
+        const add = (name) => (handler) => {
+          (handlers[name] = handlers[name] || []).push(handler);
+          return () => { handlers[name] = handlers[name].filter((item) => item !== handler); };
+        };
+        this.raise = (name, user) => (handlers[name] || []).forEach((handler) => handler(user));
+        this.events = {
+          addAccessTokenExpiring: add("expiring"),
+          addAccessTokenExpired: add("expired"),
+          addUserLoaded: add("loaded"),
+          load: async (user) => this.raise("loaded", user),
+        };
+        session.manager = this;
+      }
       async getUser() { return session.user; }
-      async removeUser() { calls.removeUser += 1; }
+      async removeUser() { calls.removeUser += 1; session.user = null; }
       async signinRedirect() { calls.signinRedirect += 1; }
       async signoutRedirect() { calls.signoutRedirect += 1; }
+      async signinSilent() {
+        calls.signinSilent += 1;
+        await new Promise((resolve) => setTimeout(resolve, 0));
+        if (scenario.refresh === "rejected") throw new ErrorResponse("invalid_grant");
+        session.user = Object.assign({}, session.user, { access_token: "renewed-access-token", expired: false, expires_in: 900 });
+        this.raise("loaded", session.user);
+        return session.user;
+      }
     },
   };
 }
 
-function coreFetch(scenario, pending) {
+function coreFetch(scenario, pending, calls) {
   let discoveryFailures = 0;
   const reply = (status, body) => Promise.resolve({ ok: status >= 200 && status < 300, status, headers: { get: () => null }, json: async () => body, text: async () => JSON.stringify(body) });
   const account = (id) => ({ id, code: "CUST-" + id, nls: { en: { NAME: "Harbourview Strata Council" } }, optimistic: 3, user: { id: 7001 }, type: { id: 2, code: "CUSTOMER" }, attributes: {} });
-  return (input) => {
+  const accountPaths = ["/core/api/user/basic-info.json", "/core-acct/api/tagged/account/list.json"];
+  return (input, init = {}) => {
     const url = new URL(String(input), PORTAL_ORIGIN);
+    const headers = init.headers || {};
+    const token = String(headers.Authorization || headers.authorization || "").split(" ")[1] || "";
+    if (token === "renewed-access-token") calls.renewedRequests += 1;
+    const stale = token === "stub-access-token"
+      && (scenario.staleToken === "everywhere" || (scenario.staleToken === "after-account" && !accountPaths.includes(url.pathname)));
+    if (stale) {
+      calls.unauthorized += 1;
+      return reply(401, {});
+    }
     if (url.pathname === "/core/.well-known/oauth-protected-resource/") {
       if (scenario.discovery === "pending") return new Promise(() => {});
       if (scenario.discovery === "fail" || (scenario.discovery === "fail-once" && discoveryFailures++ === 0)) return reply(500, {});

@@ -7,7 +7,7 @@ import { loadLiveWeather } from "./live-weather.js";
 import { ACTIONS, bindActions, go, setState, toast } from "./actions.js";
 import { initRouter, publicEntryDestination, renderRoute } from "./router.js";
 import { PortalRuntime } from "./portal-runtime.js";
-import { storedCoreOidcUser } from "./adapters/core-oidc-adapter.js";
+import { onCoreOidcSessionChange, storedCoreOidcUser } from "./adapters/core-oidc-adapter.js";
 import { ActionButton } from "./components/primitives/ActionButton.js";
 import { InlineFailure } from "./components/primitives/RouteStates.js";
 import { SimulationBadge } from "./components/spa/CommerceBits.js";
@@ -246,6 +246,24 @@ function recheckRestoredSession(event) {
   });
 }
 
+function applyRenewedSession(user) {
+  if (!state.session.authenticated || !user || !user.access_token) return;
+  state.session.accessToken = user.access_token;
+  state.session.tokenType = user.token_type || "Bearer";
+}
+
+function endExpiredSession() {
+  if (!state.session.authenticated || leavingFor) return;
+  state.session.authenticated = false;
+  state.oidc = "ready-signed-out";
+  state.account = "session-required";
+  delete state.session.accessToken;
+  delete state.session.tokenType;
+  if (!isPublic(state.route)) state.session.intendedRoute = state.route;
+  if (leaveForPublicEntry()) return;
+  go(state.route, true);
+}
+
 export function invalidateCareRuntime() {
   if (!runtime) return null;
   return runtime.invalidate("care");
@@ -284,6 +302,7 @@ document.addEventListener("DOMContentLoaded", function () {
   runtime = new PortalRuntime({ state: state });
   var signingIn = customerPortalAccessRequired();
   if (signingIn) state.oidc = "checking-session";
+  onCoreOidcSessionChange(applyRenewedSession, endExpiredSession);
   var loaded = runtime.loadAllAsync();
   initRouter(render);
   bindActions(mount);

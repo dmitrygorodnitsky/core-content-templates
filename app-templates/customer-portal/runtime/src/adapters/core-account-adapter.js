@@ -1,6 +1,7 @@
 // Resolves the signed-in Core User to the one customer Account used by the portal.
 // The request shape follows core-ui: Bearer token, user/basic-info, mapped list
 // requests, and an authorized X-Organization-Code header.
+import { coreSessionFetch } from "./core-oidc-adapter.js";
 
 const BASIC_INFO_MAPPINGS = ["code", "id", "name", "nls"].map(function (name) {
   return { name: name };
@@ -30,7 +31,7 @@ export function accountTypeCodes(value) {
 }
 
 export function createCoreAccountAdapter(options = {}) {
-  var fetchImpl = options.fetch || globalThis.fetch;
+  var fetchImpl = options.fetch || coreSessionFetch;
   if (typeof fetchImpl !== "function") throw contractError("fetch-unavailable", "Core account adapter requires fetch");
 
   return {
@@ -44,7 +45,7 @@ export function createCoreAccountAdapter(options = {}) {
   };
 }
 
-export async function resolveCoreAccount(context, fetchImpl = globalThis.fetch, explicitOrigin) {
+export async function resolveCoreAccount(context, fetchImpl = coreSessionFetch, explicitOrigin) {
   var config = context && context.config || {};
   var session = context && context.session || context && context.state && context.state.session || {};
   var accessToken = text(session.accessToken || session.access_token);

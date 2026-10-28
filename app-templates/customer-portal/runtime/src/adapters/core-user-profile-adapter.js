@@ -3,6 +3,8 @@
 // storage in Core — UserOrganizationPreferences holds only {id, user} and both
 // preference endpoints return empty — so they stay explicitly unavailable
 // rather than being faked client-side.
+import { coreSessionFetch } from "./core-oidc-adapter.js";
+
 const CONTACT_ENTRY_MAPPINGS = [
   { name: "id" },
   { name: "value" },
@@ -39,7 +41,7 @@ const USER_MAPPINGS = [
 var saveFlight = null;
 
 export function createCoreUserProfileAdapter(options = {}) {
-  var fetchImpl = options.fetch || globalThis.fetch;
+  var fetchImpl = options.fetch || coreSessionFetch;
   return {
     async load(moduleId, context) {
       if (moduleId !== "profile") throw error("unsupported-module", "Core User profile adapter cannot load " + moduleId);
@@ -53,7 +55,7 @@ export function createCoreUserProfileAdapter(options = {}) {
   };
 }
 
-export async function loadCoreUserProfile(context, fetchImpl = globalThis.fetch, explicitOrigin) {
+export async function loadCoreUserProfile(context, fetchImpl = coreSessionFetch, explicitOrigin) {
   var api = requestContext(context, explicitOrigin);
   var row = await requestJson(fetchImpl, api.base + "/api/user/get.json?id=" + api.userId, options(api, USER_MAPPINGS));
   var phone = api.accountId ? await loadAccountPhone(api, fetchImpl) : null;
@@ -83,7 +85,7 @@ async function loadAccountPhone(api, fetchImpl) {
   return null;
 }
 
-export async function saveCoreUserProfile(input, context, fetchImpl = globalThis.fetch, explicitOrigin) {
+export async function saveCoreUserProfile(input, context, fetchImpl = coreSessionFetch, explicitOrigin) {
   var api = requestContext(context, explicitOrigin);
   var current = await requestJson(fetchImpl, api.base + "/api/user/get.json?id=" + api.userId, options(api, USER_MAPPINGS));
   var entity = {

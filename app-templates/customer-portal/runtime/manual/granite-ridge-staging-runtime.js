@@ -2919,6 +2919,229 @@
     return value < 10 ? "0" + value : String(value);
   }
 
+  // app-templates/customer-portal/runtime/src/adapters/core-oidc-adapter.js
+  var CORE_OIDC_REFRESH_LOCK = "oidc-token-refresh";
+  var EXPIRING_THRESHOLD_SECONDS = 60;
+  var manager = null;
+  var renewal = null;
+  var detachRenewal = null;
+  var sessionListeners = { renewed: null, ended: null };
+  function createCoreOidcAdapter() {
+    return {
+      async load(moduleId, context) {
+        if (moduleId !== "auth") throw new Error("Core OIDC adapter cannot load " + moduleId);
+        if (context.config.dataMode !== "live" || context.config.authMode !== "required") {
+          return { state: "ready-signed-in", user: null };
+        }
+        return loadCoreOidcSession(context.config);
+      }
+    };
+  }
+  async function loadCoreOidcSession(config) {
+    if (!globalThis.oidc || !globalThis.oidc.UserManager || !globalThis.oidc.WebStorageStateStore) {
+      throw contractError("oidc-library-unavailable", "Core sign-in library did not load");
+    }
+    var coreBase = sameOriginUrl(config.authCoreBase || "/core", "Core authentication base").replace(/\/+$/, "");
+    var expectedCallback = sameOriginUrl(config.authCallbackPath || "/core/oauth2-callback.html", "Core callback");
+    var response = await globalThis.fetch(coreBase + "/.well-known/oauth-protected-resource/", {
+      credentials: "omit",
+      headers: { Accept: "application/json" }
+    });
+    if (!response.ok) throw contractError("oidc-discovery-failed", "Core authentication discovery failed with HTTP " + response.status);
+    var metadata = await response.json();
+    var authority = Array.isArray(metadata.authorization_servers) ? metadata.authorization_servers[0] : "";
+    if (!authority || !metadata.resource || !metadata.x_client_id || !metadata.x_redirect_uri || !metadata.x_post_logout_redirect_uri) {
+      throw contractError("oidc-discovery-incomplete", "Core authentication discovery is incomplete");
+    }
+    if (new URL(metadata.resource, globalThis.location.origin).origin !== globalThis.location.origin) {
+      throw contractError("oidc-cross-origin-resource", "Core authentication resource must be same-origin");
+    }
+    if (new URL(authority, globalThis.location.origin).origin !== globalThis.location.origin) {
+      throw contractError("oidc-cross-origin-authority", "Core authorization server must be same-origin");
+    }
+    if (new URL(metadata.x_redirect_uri, globalThis.location.origin).href !== expectedCallback || new URL(metadata.x_post_logout_redirect_uri, globalThis.location.origin).href !== expectedCallback) {
+      throw contractError("oidc-callback-mismatch", "Core authentication callback does not match the portal contract");
+    }
+    manager = new globalThis.oidc.UserManager({
+      authority,
+      client_id: metadata.x_client_id,
+      post_logout_redirect_uri: expectedCallback,
+      redirect_uri: expectedCallback,
+      response_type: "code",
+      scope: "openid profile email roles",
+      automaticSilentRenew: false,
+      monitorSession: false,
+      userStore: new globalThis.oidc.WebStorageStateStore({ store: globalThis.localStorage })
+    });
+    attachRenewal(manager);
+    var user = await settleStoredUser(await manager.getUser());
+    return { state: user ? "ready-signed-in" : "ready-signed-out", user: user || null };
+  }
+  function onCoreOidcSessionChange(renewed, ended) {
+    sessionListeners = { renewed: renewed || null, ended: ended || null };
+  }
+  async function coreSessionFetch(input, init) {
+    var sent = authorizationHeader(init);
+    if (!manager || !sent) return globalThis.fetch(input, init);
+    var user = await manager.getUser();
+    if (user && user.expired && user.refresh_token) {
+      user = await renewCoreOidcUser(user.access_token).catch(function() {
+        return user;
+      }) || user;
+    }
+    var request = user ? withAuthorization(init, sent.name, user) : init;
+    var response = await globalThis.fetch(input, request);
+    if (response.status !== 401) return response;
+    var renewed = await renewAfterUnauthorized(user ? user.access_token : bearerToken(sent.value));
+    return renewed ? globalThis.fetch(input, withAuthorization(init, sent.name, renewed)) : response;
+  }
+  function renewCoreOidcUser(staleAccessToken) {
+    if (!manager) return Promise.resolve(null);
+    var owner = manager;
+    if (!renewal) {
+      renewal = withRefreshLock(async function() {
+        var user = await owner.getUser();
+        if (!user) return null;
+        if (user.access_token !== staleAccessToken && !expiring(user)) {
+          await owner.events.load(user);
+          return user;
+        }
+        if (!user.refresh_token) return null;
+        return owner.signinSilent();
+      }).finally(function() {
+        renewal = null;
+      });
+    }
+    return renewal;
+  }
+  async function settleStoredUser(user) {
+    if (!user || !user.expired) return user;
+    try {
+      var renewed = await renewCoreOidcUser(user.access_token);
+      if (renewed) return renewed;
+    } catch (error2) {
+      if (!rejectedRenewal(error2)) throw contractError("oidc-renewal-failed", "Core session could not be renewed");
+    }
+    await manager.removeUser();
+    return null;
+  }
+  async function renewAfterUnauthorized(staleAccessToken) {
+    try {
+      var renewed = await renewCoreOidcUser(staleAccessToken);
+      if (renewed) return renewed;
+    } catch (error2) {
+      if (rejectedRenewal(error2)) await endSession();
+      return null;
+    }
+    var stored = await manager.getUser();
+    if (!stored || stored.expired) await endSession();
+    return null;
+  }
+  function renewInBackground() {
+    return manager.getUser().then(function(user) {
+      if (!user || !user.refresh_token) return null;
+      if (!expiring(user)) return manager.events.load(user);
+      return renewCoreOidcUser(user.access_token).catch(function(error2) {
+        return rejectedRenewal(error2) ? endSession() : null;
+      });
+    });
+  }
+  async function endSession() {
+    if (await manager.getUser()) await manager.removeUser();
+    if (sessionListeners.ended) sessionListeners.ended();
+  }
+  function attachRenewal(next) {
+    if (detachRenewal) detachRenewal();
+    renewal = null;
+    var removers = [
+      next.events.addAccessTokenExpiring(renewInBackground),
+      next.events.addAccessTokenExpired(renewInBackground),
+      next.events.addUserLoaded(function(user) {
+        if (sessionListeners.renewed) sessionListeners.renewed(user);
+      })
+    ];
+    detachRenewal = function() {
+      removers.forEach(function(remove) {
+        remove();
+      });
+    };
+  }
+  function withRefreshLock(callback) {
+    var locks = globalThis.navigator && globalThis.navigator.locks;
+    if (!locks) return Promise.resolve().then(callback);
+    return locks.request(CORE_OIDC_REFRESH_LOCK, callback);
+  }
+  function expiring(user) {
+    return user.expires_in !== void 0 && user.expires_in <= EXPIRING_THRESHOLD_SECONDS;
+  }
+  function rejectedRenewal(error2) {
+    return !!(globalThis.oidc && globalThis.oidc.ErrorResponse && error2 instanceof globalThis.oidc.ErrorResponse);
+  }
+  function authorizationHeader(init) {
+    var headers = init && init.headers;
+    if (!headers || typeof headers !== "object") return null;
+    var name = (/* @__PURE__ */ Object.keys(headers)).find(function(key) {
+      return key.toLowerCase() === "authorization";
+    });
+    return name && headers[name] ? { name, value: String(headers[name]) } : null;
+  }
+  function bearerToken(value) {
+    return value.split(" ").slice(1).join(" ");
+  }
+  function withAuthorization(init, name, user) {
+    var headers = Object.assign({}, init.headers);
+    headers[name] = (user.token_type || "Bearer") + " " + user.access_token;
+    return Object.assign({}, init, { headers });
+  }
+  function storedCoreOidcUser() {
+    if (!manager) return Promise.resolve(null);
+    return manager.getUser().then(function(user) {
+      return user && !user.expired ? user : null;
+    });
+  }
+  function startCoreOidcSignIn(config) {
+    if (!manager) return Promise.reject(contractError("oidc-manager-unavailable", "Core sign-in is not ready"));
+    var returnUrl = portalRouteUrl(config, config.defaultRoute || "orders.list");
+    globalThis.sessionStorage.setItem(config.authReturnStorageKey || "oidc-return-url", returnUrl.href);
+    return manager.signinRedirect();
+  }
+  function startCoreOidcSignOut(config) {
+    if (!manager) return Promise.reject(contractError("oidc-manager-unavailable", "Core sign-out is not ready"));
+    var configured = config && config.logoutReturnUrl;
+    var returnUrl = configured ? new URL(configured) : new URL(globalThis.location.href);
+    if (!configured) returnUrl.hash = "#/login";
+    if (configured && (returnUrl.protocol !== "https:" || !(config.allowedNavOrigins || []).includes(returnUrl.origin))) {
+      return Promise.reject(contractError("oidc-logout-return-invalid", "Configured sign-out return URL is not allowlisted"));
+    }
+    globalThis.sessionStorage.setItem(config.authLogoutReturnStorageKey || "oidc-logout-return-url", returnUrl.href);
+    return manager.signoutRedirect();
+  }
+  function sameOriginUrl(value, label) {
+    var url = new URL(value, globalThis.location.origin);
+    if (url.origin !== globalThis.location.origin) throw contractError("cross-origin-service", label + " must be same-origin");
+    return url.href;
+  }
+  function portalRouteUrl(config, routeId) {
+    var configured = config && config.portalUrl;
+    var returnUrl = configured ? new URL(configured) : new URL(globalThis.location.href);
+    if (configured && (returnUrl.protocol !== "https:" || !(config.allowedNavOrigins || []).includes(returnUrl.origin))) {
+      throw contractError("oidc-return-invalid", "Configured portal return URL is not allowlisted");
+    }
+    var route = routePath(routeId);
+    if (config.routerMode === "history") {
+      if (!returnUrl.pathname.endsWith("/")) throw contractError("oidc-return-invalid", "History-mode portal URL must end with a slash");
+      returnUrl.pathname += route.replace(/^\//, "");
+      return returnUrl;
+    }
+    returnUrl.hash = "#" + route;
+    return returnUrl;
+  }
+  function contractError(code, message) {
+    var error2 = new Error(message);
+    error2.code = code;
+    return error2;
+  }
+
   // app-templates/customer-portal/runtime/src/adapters/core-snow-adapter.js
   var PROPERTY_TYPE = "SNOW_REMOVAL_PROPERTY";
   var PROPERTY_BASE_TYPE = "PROPERTY";
@@ -3074,26 +3297,26 @@
     sorting: [{ field: "dueDate", direction: "DESC" }]
   });
   function createCoreSnowVisitsAdapter(options2 = {}) {
-    var fetchImpl = options2.fetch || globalThis.fetch;
-    if (typeof fetchImpl !== "function") throw contractError("fetch-unavailable", "Core snow adapter requires fetch");
+    var fetchImpl = options2.fetch || coreSessionFetch;
+    if (typeof fetchImpl !== "function") throw contractError2("fetch-unavailable", "Core snow adapter requires fetch");
     return {
       async load(moduleId, context) {
-        if (moduleId !== "appointmentsTimeline") throw contractError("unsupported-module", "Core snow visits adapter cannot load " + moduleId);
+        if (moduleId !== "appointmentsTimeline") throw contractError2("unsupported-module", "Core snow visits adapter cannot load " + moduleId);
         return loadSnowVisits(context, fetchImpl, options2.origin);
       }
     };
   }
   function createCoreSnowInvoicesAdapter(options2 = {}) {
-    var fetchImpl = options2.fetch || globalThis.fetch;
-    if (typeof fetchImpl !== "function") throw contractError("fetch-unavailable", "Core snow adapter requires fetch");
+    var fetchImpl = options2.fetch || coreSessionFetch;
+    if (typeof fetchImpl !== "function") throw contractError2("fetch-unavailable", "Core snow adapter requires fetch");
     return {
       async load(moduleId, context) {
-        if (moduleId !== "invoices") throw contractError("unsupported-module", "Core snow invoices adapter cannot load " + moduleId);
+        if (moduleId !== "invoices") throw contractError2("unsupported-module", "Core snow invoices adapter cannot load " + moduleId);
         return loadSnowInvoices(context, fetchImpl, options2.origin);
       }
     };
   }
-  async function loadSnowVisits(context, fetchImpl = globalThis.fetch, explicitOrigin) {
+  async function loadSnowVisits(context, fetchImpl = coreSessionFetch, explicitOrigin) {
     var api = readContext(context, explicitOrigin);
     var reply = await requestJson(fetchImpl, api.serviceBase + "/api/tagged/appointment/list.json", readOptions(api, VISIT_LIST_BODY));
     var rows2 = listResult(reply);
@@ -3106,14 +3329,14 @@
       truncated: resultSizeOf(reply, rows2.length) > rows2.length
     };
   }
-  async function readVisitTransitions(context, backendId, fetchImpl = globalThis.fetch, explicitOrigin) {
+  async function readVisitTransitions(context, backendId, fetchImpl = coreSessionFetch, explicitOrigin) {
     var api = readContext(context, explicitOrigin);
     var id = positiveInteger(backendId);
-    if (!id) throw contractError("invalid-target", "A visit id is required before reading its progress");
+    if (!id) throw contractError2("invalid-target", "A visit id is required before reading its progress");
     var reply = await requestJson(fetchImpl, api.serviceBase + "/api/tagged/appointment/" + id + "/list-transitions.json", readOptions(api, VISIT_TRANSITIONS_BODY));
     return listResult(reply);
   }
-  async function loadSnowInvoices(context, fetchImpl = globalThis.fetch, explicitOrigin) {
+  async function loadSnowInvoices(context, fetchImpl = coreSessionFetch, explicitOrigin) {
     var api = readContext(context, explicitOrigin);
     var reply = await requestJson(fetchImpl, api.billBase + "/api/tagged/invoice/list.json", readOptions(api, INVOICE_LIST_BODY));
     var rows2 = listResult(reply);
@@ -3125,21 +3348,21 @@
     };
   }
   function createCoreSnowPropertiesAdapter(options2 = {}) {
-    var fetchImpl = options2.fetch || globalThis.fetch;
-    if (typeof fetchImpl !== "function") throw contractError("fetch-unavailable", "Core snow adapter requires fetch");
+    var fetchImpl = options2.fetch || coreSessionFetch;
+    if (typeof fetchImpl !== "function") throw contractError2("fetch-unavailable", "Core snow adapter requires fetch");
     return {
       async load(moduleId, context) {
-        if (moduleId !== "properties") throw contractError("unsupported-module", "Core snow properties adapter cannot load " + moduleId);
+        if (moduleId !== "properties") throw contractError2("unsupported-module", "Core snow properties adapter cannot load " + moduleId);
         return loadSnowProperties(context, fetchImpl, options2.origin);
       }
     };
   }
   function createCoreSnowQuotesAdapter(options2 = {}) {
-    var fetchImpl = options2.fetch || globalThis.fetch;
-    if (typeof fetchImpl !== "function") throw contractError("fetch-unavailable", "Core snow adapter requires fetch");
+    var fetchImpl = options2.fetch || coreSessionFetch;
+    if (typeof fetchImpl !== "function") throw contractError2("fetch-unavailable", "Core snow adapter requires fetch");
     return {
       async load(moduleId, context) {
-        if (moduleId !== "proposals") throw contractError("unsupported-module", "Core snow quotes adapter cannot load " + moduleId);
+        if (moduleId !== "proposals") throw contractError2("unsupported-module", "Core snow quotes adapter cannot load " + moduleId);
         return loadSnowQuotes(context, fetchImpl, options2.origin);
       },
       async readOrder(backendId, context) {
@@ -3158,7 +3381,7 @@
       }
     };
   }
-  async function loadSnowProperties(context, fetchImpl = globalThis.fetch, explicitOrigin) {
+  async function loadSnowProperties(context, fetchImpl = coreSessionFetch, explicitOrigin) {
     var api = readContext(context, explicitOrigin);
     var rows2 = await customerProperties(api, fetchImpl);
     var addresses = await resolveAddresses(api, fetchImpl, rows2.items);
@@ -3172,7 +3395,7 @@
       truncated: rows2.truncated
     };
   }
-  async function loadSnowQuotes(context, fetchImpl = globalThis.fetch, explicitOrigin) {
+  async function loadSnowQuotes(context, fetchImpl = coreSessionFetch, explicitOrigin) {
     var api = readContext(context, explicitOrigin);
     var primary = await Promise.all([
       settled(customerAgreements(api, fetchImpl)),
@@ -3208,20 +3431,20 @@
       products: products.rows
     };
   }
-  async function readCustomerOrder(context, backendId, fetchImpl = globalThis.fetch, explicitOrigin) {
+  async function readCustomerOrder(context, backendId, fetchImpl = coreSessionFetch, explicitOrigin) {
     var api = readContext(context, explicitOrigin);
     var id = commandId(backendId);
     var row = await requestJson(fetchImpl, api.billBase + "/api/tagged/order/get.json?id=" + id, readOptions(api, ORDER_TARGET_MAPPINGS));
-    if (!row || positiveInteger(row.id) !== id) throw contractError("not-found", "Core did not return the Order");
-    if (positiveInteger(row.account && row.account.id) !== api.accountId) throw contractError("customer-forbidden", "The Order does not belong to the signed-in customer");
+    if (!row || positiveInteger(row.id) !== id) throw contractError2("not-found", "Core did not return the Order");
+    if (positiveInteger(row.account && row.account.id) !== api.accountId) throw contractError2("customer-forbidden", "The Order does not belong to the signed-in customer");
     return row;
   }
-  async function readCustomerAgreement(context, backendId, fetchImpl = globalThis.fetch, explicitOrigin) {
+  async function readCustomerAgreement(context, backendId, fetchImpl = coreSessionFetch, explicitOrigin) {
     var api = readContext(context, explicitOrigin);
     var id = commandId(backendId);
     var row = await requestJson(fetchImpl, api.coreBase + "/api/tagged/document/get.json?id=" + id, readOptions(api, AGREEMENT_TARGET_MAPPINGS));
-    if (!row || positiveInteger(row.id) !== id || text(row.type && row.type.code) !== AGREEMENT_TYPE) throw contractError("not-found", "Core did not return the service agreement");
-    if (attributeNumber(row, "CLIENT") !== api.accountId) throw contractError("customer-forbidden", "The service agreement does not belong to the signed-in customer");
+    if (!row || positiveInteger(row.id) !== id || text(row.type && row.type.code) !== AGREEMENT_TYPE) throw contractError2("not-found", "Core did not return the service agreement");
+    if (attributeNumber(row, "CLIENT") !== api.accountId) throw contractError2("customer-forbidden", "The service agreement does not belong to the signed-in customer");
     return row;
   }
   async function customerAgreements(api, fetchImpl) {
@@ -3235,7 +3458,7 @@
       return text(row && row.code) === AGREEMENT_TYPE;
     });
     var typeId = positiveInteger(type && type.id);
-    if (!typeId) throw contractError("agreement-type-unavailable", "Core did not return the service agreement type");
+    if (!typeId) throw contractError2("agreement-type-unavailable", "Core did not return the service agreement type");
     var reply = await requestJson(fetchImpl, api.coreBase + "/api/tagged/document/list.json", readOptions(api, {
       filters: [
         { type: "STRING", operator: "=", property: "type.code", value: AGREEMENT_TYPE },
@@ -3353,18 +3576,18 @@
   }
   async function sendEvent(fetchImpl, api, url) {
     var response = await fetchImpl(url, readOptions(api, {}));
-    if (!response || typeof response.ok !== "boolean") throw contractError("invalid-response", "Core request returned an invalid response");
+    if (!response || typeof response.ok !== "boolean") throw contractError2("invalid-response", "Core request returned an invalid response");
     if (!response.ok) throw failure(response.status, true);
     return true;
   }
   function commandId(backendId) {
     var id = positiveInteger(backendId);
-    if (!id) throw contractError("invalid-target", "A Core id is required before sending an event");
+    if (!id) throw contractError2("invalid-target", "A Core id is required before sending an event");
     return id;
   }
   function eventCode(event) {
     var code = text(event);
-    if (!/^[A-Z][A-Z_]*-[A-Z][A-Z_]*$/.test(code)) throw contractError("invalid-event", "A workflow event code is required");
+    if (!/^[A-Z][A-Z_]*-[A-Z][A-Z_]*$/.test(code)) throw contractError2("invalid-event", "A workflow event code is required");
     return encodeURIComponent(code);
   }
   async function customerProperties(api, fetchImpl) {
@@ -3396,10 +3619,10 @@
       if (id && ids.indexOf(id) < 0) ids.push(id);
     });
     if (!ids.length) return resolved;
-    if (!api.userId) throw contractError("session-user-required", "The signed-in Core User is required before reading property addresses");
+    if (!api.userId) throw contractError2("session-user-required", "The signed-in Core User is required before reading property addresses");
     var account = await requestJson(fetchImpl, api.accountBase + "/api/tagged/account/get.json?id=" + api.accountId, readOptions(api, ACCOUNT_ADDRESS_MAPPINGS));
     if (positiveInteger(account && account.id) !== api.accountId || positiveInteger(account && account.user && account.user.id) !== api.userId) {
-      throw contractError("customer-forbidden", "Property addresses must belong to the signed-in customer's Account");
+      throw contractError2("customer-forbidden", "Property addresses must belong to the signed-in customer's Account");
     }
     (Array.isArray(account.addresses) ? account.addresses : []).forEach(function(link) {
       var address = link && link.address;
@@ -3466,12 +3689,12 @@
     var runtimeState = context && context.state || {};
     var session2 = runtimeState.session || {};
     var accessToken = text(session2.accessToken || session2.access_token);
-    if (!accessToken) throw contractError("session-required", "A Core access token is required");
+    if (!accessToken) throw contractError2("session-required", "A Core access token is required");
     var account = runtimeState.customerAccount || session2.account || null;
     var accountId = positiveInteger(account && account.id);
-    if (!accountId) throw contractError("customer-unresolved", "A resolved customer Account is required before reading snow records");
+    if (!accountId) throw contractError2("customer-unresolved", "A resolved customer Account is required before reading snow records");
     var organization = text(config.organization);
-    if (!organization) throw contractError("organization-required", "A portal organization code is required");
+    if (!organization) throw contractError2("organization-required", "A portal organization code is required");
     var origin = explicitOrigin || config.origin || browserOrigin();
     return {
       accountBase: sameOriginBase(config.accountApiBase || "/core-acct", origin, "Core Account API base"),
@@ -3502,21 +3725,21 @@
   }
   async function requestJson(fetchImpl, url, options2) {
     var response = await fetchImpl(url, options2);
-    if (!response || typeof response.ok !== "boolean") throw contractError("invalid-response", "Core request returned an invalid response");
+    if (!response || typeof response.ok !== "boolean") throw contractError2("invalid-response", "Core request returned an invalid response");
     if (!response.ok) throw failure(response.status);
     var payload;
     try {
       payload = await response.json();
     } catch (_) {
-      throw contractError("invalid-response", "Core response was not valid JSON");
+      throw contractError2("invalid-response", "Core response was not valid JSON");
     }
-    if (typeof payload === "string") throw contractError("unprojectable-response", "Core answered with an unprojected body");
+    if (typeof payload === "string") throw contractError2("unprojectable-response", "Core answered with an unprojected body");
     return payload;
   }
   function sameOriginBase(value, origin, label) {
-    if (!origin) throw contractError("origin-required", label + " requires a browser origin");
+    if (!origin) throw contractError2("origin-required", label + " requires a browser origin");
     var target = new URL(String(value || ""), origin);
-    if (target.origin !== new URL(origin).origin) throw contractError("cross-origin-service", label + " must be same-origin");
+    if (target.origin !== new URL(origin).origin) throw contractError2("cross-origin-service", label + " must be same-origin");
     return target.href.replace(/\/+$/, "");
   }
   function browserOrigin() {
@@ -3529,11 +3752,11 @@
   }
   function failure(status, command) {
     var code = status === 401 ? "session-expired" : status === 403 ? "customer-forbidden" : status === 404 ? "not-found" : command && status >= 400 && status < 500 ? "command-refused" : "core-request-failed";
-    var error2 = contractError(code, "Core request failed with HTTP " + status);
+    var error2 = contractError2(code, "Core request failed with HTTP " + status);
     error2.status = status;
     return error2;
   }
-  function contractError(code, message) {
+  function contractError2(code, message) {
     var error2 = new Error(message);
     error2.code = code;
     return error2;
@@ -3573,109 +3796,6 @@
     })
   });
 
-  // app-templates/customer-portal/runtime/src/adapters/core-oidc-adapter.js
-  var manager = null;
-  function createCoreOidcAdapter() {
-    return {
-      async load(moduleId, context) {
-        if (moduleId !== "auth") throw new Error("Core OIDC adapter cannot load " + moduleId);
-        if (context.config.dataMode !== "live" || context.config.authMode !== "required") {
-          return { state: "ready-signed-in", user: null };
-        }
-        return loadCoreOidcSession(context.config);
-      }
-    };
-  }
-  async function loadCoreOidcSession(config) {
-    if (!globalThis.oidc || !globalThis.oidc.UserManager || !globalThis.oidc.WebStorageStateStore) {
-      throw contractError2("oidc-library-unavailable", "Core sign-in library did not load");
-    }
-    var coreBase = sameOriginUrl(config.authCoreBase || "/core", "Core authentication base").replace(/\/+$/, "");
-    var expectedCallback = sameOriginUrl(config.authCallbackPath || "/core/oauth2-callback.html", "Core callback");
-    var response = await globalThis.fetch(coreBase + "/.well-known/oauth-protected-resource/", {
-      credentials: "omit",
-      headers: { Accept: "application/json" }
-    });
-    if (!response.ok) throw contractError2("oidc-discovery-failed", "Core authentication discovery failed with HTTP " + response.status);
-    var metadata = await response.json();
-    var authority = Array.isArray(metadata.authorization_servers) ? metadata.authorization_servers[0] : "";
-    if (!authority || !metadata.resource || !metadata.x_client_id || !metadata.x_redirect_uri || !metadata.x_post_logout_redirect_uri) {
-      throw contractError2("oidc-discovery-incomplete", "Core authentication discovery is incomplete");
-    }
-    if (new URL(metadata.resource, globalThis.location.origin).origin !== globalThis.location.origin) {
-      throw contractError2("oidc-cross-origin-resource", "Core authentication resource must be same-origin");
-    }
-    if (new URL(authority, globalThis.location.origin).origin !== globalThis.location.origin) {
-      throw contractError2("oidc-cross-origin-authority", "Core authorization server must be same-origin");
-    }
-    if (new URL(metadata.x_redirect_uri, globalThis.location.origin).href !== expectedCallback || new URL(metadata.x_post_logout_redirect_uri, globalThis.location.origin).href !== expectedCallback) {
-      throw contractError2("oidc-callback-mismatch", "Core authentication callback does not match the portal contract");
-    }
-    manager = new globalThis.oidc.UserManager({
-      authority,
-      client_id: metadata.x_client_id,
-      post_logout_redirect_uri: expectedCallback,
-      redirect_uri: expectedCallback,
-      response_type: "code",
-      scope: "openid profile email roles",
-      userStore: new globalThis.oidc.WebStorageStateStore({ store: globalThis.localStorage })
-    });
-    var user = await manager.getUser();
-    if (user && user.expired) {
-      await manager.removeUser();
-      user = null;
-    }
-    return { state: user ? "ready-signed-in" : "ready-signed-out", user: user || null };
-  }
-  function storedCoreOidcUser() {
-    if (!manager) return Promise.resolve(null);
-    return manager.getUser().then(function(user) {
-      return user && !user.expired ? user : null;
-    });
-  }
-  function startCoreOidcSignIn(config) {
-    if (!manager) return Promise.reject(contractError2("oidc-manager-unavailable", "Core sign-in is not ready"));
-    var returnUrl = portalRouteUrl(config, config.defaultRoute || "orders.list");
-    globalThis.sessionStorage.setItem(config.authReturnStorageKey || "oidc-return-url", returnUrl.href);
-    return manager.signinRedirect();
-  }
-  function startCoreOidcSignOut(config) {
-    if (!manager) return Promise.reject(contractError2("oidc-manager-unavailable", "Core sign-out is not ready"));
-    var configured = config && config.logoutReturnUrl;
-    var returnUrl = configured ? new URL(configured) : new URL(globalThis.location.href);
-    if (!configured) returnUrl.hash = "#/login";
-    if (configured && (returnUrl.protocol !== "https:" || !(config.allowedNavOrigins || []).includes(returnUrl.origin))) {
-      return Promise.reject(contractError2("oidc-logout-return-invalid", "Configured sign-out return URL is not allowlisted"));
-    }
-    globalThis.sessionStorage.setItem(config.authLogoutReturnStorageKey || "oidc-logout-return-url", returnUrl.href);
-    return manager.signoutRedirect();
-  }
-  function sameOriginUrl(value, label) {
-    var url = new URL(value, globalThis.location.origin);
-    if (url.origin !== globalThis.location.origin) throw contractError2("cross-origin-service", label + " must be same-origin");
-    return url.href;
-  }
-  function portalRouteUrl(config, routeId) {
-    var configured = config && config.portalUrl;
-    var returnUrl = configured ? new URL(configured) : new URL(globalThis.location.href);
-    if (configured && (returnUrl.protocol !== "https:" || !(config.allowedNavOrigins || []).includes(returnUrl.origin))) {
-      throw contractError2("oidc-return-invalid", "Configured portal return URL is not allowlisted");
-    }
-    var route = routePath(routeId);
-    if (config.routerMode === "history") {
-      if (!returnUrl.pathname.endsWith("/")) throw contractError2("oidc-return-invalid", "History-mode portal URL must end with a slash");
-      returnUrl.pathname += route.replace(/^\//, "");
-      return returnUrl;
-    }
-    returnUrl.hash = "#" + route;
-    return returnUrl;
-  }
-  function contractError2(code, message) {
-    var error2 = new Error(message);
-    error2.code = code;
-    return error2;
-  }
-
   // app-templates/customer-portal/runtime/src/adapters/core-user-profile-adapter.js
   var CONTACT_ENTRY_MAPPINGS = [
     { name: "id" },
@@ -3709,7 +3829,7 @@
   ];
   var saveFlight = null;
   function createCoreUserProfileAdapter(options2 = {}) {
-    var fetchImpl = options2.fetch || globalThis.fetch;
+    var fetchImpl = options2.fetch || coreSessionFetch;
     return {
       async load(moduleId, context) {
         if (moduleId !== "profile") throw error("unsupported-module", "Core User profile adapter cannot load " + moduleId);
@@ -3724,7 +3844,7 @@
       }
     };
   }
-  async function loadCoreUserProfile(context, fetchImpl = globalThis.fetch, explicitOrigin) {
+  async function loadCoreUserProfile(context, fetchImpl = coreSessionFetch, explicitOrigin) {
     var api = requestContext(context, explicitOrigin);
     var row = await requestJson2(fetchImpl, api.base + "/api/user/get.json?id=" + api.userId, options(api, USER_MAPPINGS));
     var phone = api.accountId ? await loadAccountPhone(api, fetchImpl) : null;
@@ -3750,7 +3870,7 @@
     }
     return null;
   }
-  async function saveCoreUserProfile(input, context, fetchImpl = globalThis.fetch, explicitOrigin) {
+  async function saveCoreUserProfile(input, context, fetchImpl = coreSessionFetch, explicitOrigin) {
     var api = requestContext(context, explicitOrigin);
     var current = await requestJson2(fetchImpl, api.base + "/api/user/get.json?id=" + api.userId, options(api, USER_MAPPINGS));
     var entity = {
@@ -3856,7 +3976,7 @@
   var POLL_INTERVAL_MS = 1e3;
   var OUTCOME_TIMEOUT_MS = 45e3;
   function createCoreProfileFormAdapter(options2 = {}) {
-    var fetchImpl = options2.fetch || globalThis.fetch;
+    var fetchImpl = options2.fetch || coreSessionFetch;
     if (typeof fetchImpl !== "function") throw coded3("fetch-unavailable", "Core profile form adapter requires fetch");
     var wait = options2.wait || function(ms) {
       return new Promise(function(resolve) {
@@ -4292,7 +4412,7 @@
 
   // app-templates/customer-portal/runtime/src/adapters/core-user-preference-adapter.js
   function createCoreUserPreferenceAdapter(options2 = {}) {
-    var fetchImpl = options2.fetch || globalThis.fetch;
+    var fetchImpl = options2.fetch || coreSessionFetch;
     return {
       async overwrite(key, value, context) {
         var api = requestContext2(context);
@@ -8172,7 +8292,7 @@
     if (entry) return entry;
     entry = { status: "loading", steps: [] };
     progress.set(key, entry);
-    readVisitTransitions({ config: state.config, state }, visit.backendId, fetchImpl || globalThis.fetch).then(function(rows2) {
+    readVisitTransitions({ config: state.config, state }, visit.backendId, fetchImpl || coreSessionFetch).then(function(rows2) {
       entry.steps = normalizeVisitProgress(rows2);
       entry.status = "ready";
     }, function() {
@@ -12141,7 +12261,7 @@
     }
   ];
   function createCoreAccountProfileAdapter(options2 = {}) {
-    var fetchImpl = options2.fetch || globalThis.fetch;
+    var fetchImpl = options2.fetch || coreSessionFetch;
     if (typeof fetchImpl !== "function") throw coded5("fetch-unavailable", "Core account profile adapter requires fetch");
     return {
       async load(moduleId, context) {
@@ -12150,7 +12270,7 @@
       }
     };
   }
-  async function loadCustomerAccountProfile(context, fetchImpl = globalThis.fetch, explicitOrigin) {
+  async function loadCustomerAccountProfile(context, fetchImpl = coreSessionFetch, explicitOrigin) {
     var api = requestContext3(context, explicitOrigin);
     var reply = await requestJson4(fetchImpl, api.accountBase + api.accountListPath, {
       method: "POST",
@@ -12423,7 +12543,7 @@
     return codes.length ? codes : ["SPA_CUSTOMER"];
   }
   function createCoreAccountAdapter(options2 = {}) {
-    var fetchImpl = options2.fetch || globalThis.fetch;
+    var fetchImpl = options2.fetch || coreSessionFetch;
     if (typeof fetchImpl !== "function") throw contractError3("fetch-unavailable", "Core account adapter requires fetch");
     return {
       async load(moduleId, context) {
@@ -12435,7 +12555,7 @@
       }
     };
   }
-  async function resolveCoreAccount(context, fetchImpl = globalThis.fetch, explicitOrigin) {
+  async function resolveCoreAccount(context, fetchImpl = coreSessionFetch, explicitOrigin) {
     var config = context && context.config || {};
     var session2 = context && context.session || context && context.state && context.state.session || {};
     var accessToken = text9(session2.accessToken || session2.access_token);
@@ -13729,6 +13849,22 @@
       globalThis.location.reload();
     });
   }
+  function applyRenewedSession(user) {
+    if (!state.session.authenticated || !user || !user.access_token) return;
+    state.session.accessToken = user.access_token;
+    state.session.tokenType = user.token_type || "Bearer";
+  }
+  function endExpiredSession() {
+    if (!state.session.authenticated || leavingFor) return;
+    state.session.authenticated = false;
+    state.oidc = "ready-signed-out";
+    state.account = "session-required";
+    delete state.session.accessToken;
+    delete state.session.tokenType;
+    if (!isPublic(state.route)) state.session.intendedRoute = state.route;
+    if (leaveForPublicEntry()) return;
+    go(state.route, true);
+  }
   function invalidateCareRuntime() {
     if (!runtime) return null;
     return runtime.invalidate("care");
@@ -13763,6 +13899,7 @@
     runtime = new PortalRuntime({ state });
     var signingIn = customerPortalAccessRequired();
     if (signingIn) state.oidc = "checking-session";
+    onCoreOidcSessionChange(applyRenewedSession, endExpiredSession);
     var loaded = runtime.loadAllAsync();
     initRouter(render);
     bindActions(mount);

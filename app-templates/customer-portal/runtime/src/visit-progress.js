@@ -1,6 +1,7 @@
 import { readVisitTransitions } from "./adapters/core-snow-adapter.js";
 import { normalizeVisitProgress } from "./normalizers/visits.js";
 import { state } from "./state.js";
+import { coreSessionFetch } from "./adapters/core-oidc-adapter.js";
 
 var progress = new Map();
 
@@ -12,7 +13,7 @@ export function visitProgress(visit, onChange, fetchImpl) {
   if (entry) return entry;
   entry = { status: "loading", steps: [] };
   progress.set(key, entry);
-  readVisitTransitions({ config: state.config, state: state }, visit.backendId, fetchImpl || globalThis.fetch).then(function (rows) {
+  readVisitTransitions({ config: state.config, state: state }, visit.backendId, fetchImpl || coreSessionFetch).then(function (rows) {
     entry.steps = normalizeVisitProgress(rows);
     entry.status = "ready";
   }, function () {
