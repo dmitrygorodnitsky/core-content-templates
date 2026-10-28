@@ -2208,8 +2208,6 @@ h1.proposal-detail-head__title { margin: 0; }
 
 .ov-map__canvas[data-state="ready"][data-pins="0"][data-locating="false"] { height: 132px; }
 
-.ov-map__canvas[data-state="ready"][data-pins="0"][data-locating="false"] ~ .ov-map__unplaced .ov-plist { max-height: 380px; }
-
 .ov-map__pins,
 .ov-map__popup { position: absolute; left: 0; top: 0; pointer-events: none; }
 
@@ -2218,15 +2216,21 @@ h1.proposal-detail-head__title { margin: 0; }
 
 .ov-map__popup .ov-tip { cursor: auto; -webkit-user-select: text; user-select: text; }
 
-.ov-map__unplaced { margin-top: 12px; }
+.ov-map__hover { position: absolute; left: 0; top: 0; pointer-events: none; }
 
-.ov-map__unplaced-head { display: flex; align-items: baseline; gap: 8px; margin: 0 4px 8px; }
+.ov-pincard {
+  position: absolute; z-index: 5; width: max-content; max-width: 240px;
+  padding: 9px 12px; border-radius: var(--radius-md);
+  background: var(--surface); border: 1px solid var(--glass-border);
+  box-shadow: 0 10px 28px rgba(13,38,76,.2);
+  font-family: var(--font); line-height: 1.35; color: var(--ink); text-align: left;
+}
 
-.ov-map__unplaced-title { font-size: 13px; font-weight: 700; }
+.ov-pincard__name { font-size: 13.5px; font-weight: 750; overflow-wrap: anywhere; }
 
-.ov-map__unplaced-count { font-size: 12px; font-weight: 650; color: var(--ink-3); }
+.ov-pincard__line { margin-top: 2px; font-size: 12.5px; color: var(--ink-2); overflow-wrap: anywhere; }
 
-.ov-map__unplaced .ov-plist { max-height: 240px; }
+.ov-places { margin-top: 16px; }
 
 .ov-map__attr { margin-top: 10px; text-align: right; }
 

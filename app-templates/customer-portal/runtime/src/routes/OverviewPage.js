@@ -9,7 +9,7 @@ import { EmptyState } from "../components/primitives/EmptyState.js";
 import { ErrorState } from "../components/primitives/ErrorState.js";
 import { skel } from "../components/primitives/RouteStates.js";
 import { PageHeader } from "../components/shell/PageHeader.js";
-import { PropertyStage, WeatherAttribution, closeOnEscape, createFocusKeeper } from "../components/storm/PropertyMap.js";
+import { PropertyIndex, PropertyStage, WeatherAttribution, closeOnEscape, createFocusKeeper } from "../components/storm/PropertyMap.js";
 import { icon } from "../components/storm/overview-icons.js";
 import { agreementSeason, agreementSummary, agreementTitle, plural } from "../components/proposals/QuotePackage.js";
 import { currentServiceAgreement } from "../normalizers/contracts.js";
@@ -45,7 +45,8 @@ export function Overview() {
 
   var forecastShown = !!frame || (!!model.forecast && model.forecast !== "unconfigured");
   page.appendChild(h("div", { "class": "ov-head" }, [header, frame ? WeatherPanel(frame, index === weather.nowIndex, weather.source, sectionAvailable(model, "contracts")) : forecastShown ? ForecastUnavailable(model.forecast) : null]));
-  page.appendChild(MapPanel(model, frame, index));
+  var places = stageProps(model, frame, index);
+  page.appendChild(MapPanel(model, places));
   var invoices = InvoicesWidget(model);
   if (invoices) page.appendChild(invoices);
 
@@ -53,6 +54,8 @@ export function Overview() {
   if (cards.length) page.appendChild(h("div", { "class": "ov-grid", "data-count": String(cards.length) }, cards));
 
   if (model.banner) page.appendChild(Banner(model.banner));
+  var listing = PropertyIndex(places);
+  if (listing) page.appendChild(PropertyIndexCard(listing));
   return page;
 }
 
@@ -156,21 +159,26 @@ function WeatherPanel(frame, isNow, source, serviceNotes) {
   ]);
 }
 
-function MapPanel(model, frame, index) {
-  var weather = frame ? model.weather : null;
-  var statusKnown = propertyStatusKnown(model.sources);
-  var stage = PropertyStage({
+function stageProps(model, frame, index) {
+  return {
     direct: state.config.dataMode === "live",
     properties: model.properties,
     frame: frame,
     index: index,
-    weather: weather,
+    weather: frame ? model.weather : null,
     viewport: model.map,
     selectedId: state.ovProperty,
     map: sharedPropertyMap(),
     forecasts: propertyForecasts(),
     sources: model.sources,
-  });
+  };
+}
+
+function MapPanel(model, places) {
+  var weather = places.weather;
+  var index = places.index;
+  var statusKnown = propertyStatusKnown(model.sources);
+  var stage = PropertyStage(places);
   followSelection();
   return h("div", { "class": "ov-map card", "data-module": "property-map", "data-visual-id": "property-map" }, [
     h("div", { "class": "ov-map__head" }, [
@@ -183,6 +191,16 @@ function MapPanel(model, frame, index) {
     stage,
     weather ? DayTimeline(weather, index, model.properties, sectionAvailable(model, "appointments")) : null,
     weather ? WeatherAttribution(weather.source, "ov-map__attr") : null,
+  ]);
+}
+
+function PropertyIndexCard(list) {
+  return h("section", { "class": "card card--pad ov-card ov-places", "data-module": "property-index", "data-visual-id": "property-index", "aria-labelledby": "property-index-title" }, [
+    h("div", { "class": "ov-card__head" }, [
+      h("span", { "class": "ov-card__icon" }, [icon("pin", "ov-icon")]),
+      h("h2", { "class": "ov-card__title", id: "property-index-title" }, "Properties"),
+    ]),
+    list,
   ]);
 }
 

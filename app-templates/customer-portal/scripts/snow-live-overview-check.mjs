@@ -27,7 +27,7 @@ const GEOGRAPHY = JSON.stringify({
 
 const geography = (map, zones = { a: { lat: 1, lon: 2 } }) => readServiceGeography(JSON.stringify({ map, zones }));
 
-function configure(dataMode, geography = GEOGRAPHY) {
+function configure(dataMode, geography = GEOGRAPHY, mapsApiKey = "") {
   const config = readPortalConfig({
     dataset: {
       portalVertical: "snow",
@@ -38,6 +38,7 @@ function configure(dataMode, geography = GEOGRAPHY) {
       portalCase: "granite-ridge-snow",
       portalOrganization: "SNOWLIMITLESS",
       portalServiceGeography: geography,
+      portalMapsApiKey: mapsApiKey,
     },
   });
   applyPortalConfig(config);
@@ -529,7 +530,37 @@ function quietConsole() {
   }
 }
 
-console.log("snow-live-overview-check ok: service geography is deployment configuration with a centre and zoom only, live mode reads properties from Core, a fabricated forecast, a fixture book, a null coordinate and an unplaceable pin are all refused, and the overview module loads its live forecast without error and without holding back the properties, a failed or unconfigured forecast leaves the properties on screen with the weather card in its own state while a failed properties read reaches the designed error state, a property row reads the forecast the weather card reads, a deep link waits for the list, and a home section or forecast with no live source is left out instead of claiming it is empty or unavailable, while fixture mode keeps its empty copy, a live property row shows its address once with its area and plan and opens the property page directly, the greeting uses the LEGAL contact's first name, and live mode derives no property status, visit, contract or trigger reading from sources it has not opened while fixture mode keeps them");
+{
+  configure("live", GEOGRAPHY, "AIza-test_key");
+  const address = "1239 W Georgia St, Vancouver, BC V6E 4R8, Canada";
+  const base = { zone: null, contract: null, quoteSiteId: null, appointment: null, ticket: null, lastService: null, stateCode: "ACTIVE", category: null };
+  state.moduleData.properties = {
+    state: "ready", accountId: 732, scopeMode: "server-scoped", truncated: false,
+    items: [
+      Object.assign({ id: "prop-core-983", backendId: 983, name: address, address, areaSqft: 50000, planId: "", lat: 49.28, lon: -123.12 }, base),
+      Object.assign({ id: "prop-core-998", backendId: 998, name: "Main lot", address: "2916 Highway 7, Vaughan, ON L4K 0K6, Canada", areaSqft: 1250, planId: "ad81696a-86c7-458f-b32e-4ffc254d312c", lat: 43.8, lon: -79.5 }, base),
+    ],
+  };
+  try {
+    const page = Overview();
+    const mapCard = page.querySelector("[data-module=\"property-map\"]");
+    assert.equal(mapCard.querySelector("[data-surface]").getAttribute("data-surface"), "google", "with a maps key the home card draws the map");
+    assert.equal(mapCard.querySelectorAll("[data-module=\"property-row\"]").length, 0, "the map card shows the map alone");
+    const listing = page.children[page.children.length - 1];
+    assert.equal(listing.getAttribute("data-module"), "property-index", "the property list is the last section of the home");
+    const rows = page.querySelectorAll("[data-module=\"property-row\"]");
+    assert.deepEqual(rows.map((row) => [row.querySelector(".ov-prow__name").textContent, (row.querySelector(".ov-prow__addr") || { textContent: "" }).textContent, row.getAttribute("data-action"), row.getAttribute("data-id")]), [
+      [address, "50,000 ft²", "overview.openProperty", "prop-core-983"],
+      ["Main lot", "2916 Highway 7, Vaughan, ON L4K 0K6, Canada · 1,250 ft² · Plan approved", "overview.openProperty", "prop-core-998"],
+    ], "each row shows the address once with its area and plan and opens the property page");
+    assert.ok(rows.every((row) => listing.contains(row)), "every row sits in that one list");
+    assert.equal(page.textContent.split("1239 W Georgia St").length - 1, 1, "the address appears once on the home");
+  } finally {
+    state.moduleData.properties = null;
+  }
+}
+
+console.log("snow-live-overview-check ok: service geography is deployment configuration with a centre and zoom only, live mode reads properties from Core, a fabricated forecast, a fixture book, a null coordinate and an unplaceable pin are all refused, and the overview module loads its live forecast without error and without holding back the properties, a failed or unconfigured forecast leaves the properties on screen with the weather card in its own state while a failed properties read reaches the designed error state, a property row reads the forecast the weather card reads, a deep link waits for the list, and a home section or forecast with no live source is left out instead of claiming it is empty or unavailable, while fixture mode keeps its empty copy, a live property row shows its address once with its area and plan and opens the property page directly, with a maps key the map card shows the map alone and the same rows close the home in their own list, the greeting uses the LEGAL contact's first name, and live mode derives no property status, visit, contract or trigger reading from sources it has not opened while fixture mode keeps them");
 
 function createDom() {
   class Text {

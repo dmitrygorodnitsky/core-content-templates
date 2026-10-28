@@ -27,7 +27,7 @@ const { readPortalConfig } = await import(new URL("src/config.js", runtimeRoot))
 const { createPropertyForecasts } = await import(new URL("src/live-weather.js", runtimeRoot));
 const { createXweatherAdapter } = await import(new URL("src/adapters/xweather-adapter.js", runtimeRoot));
 const { browserStorage, createGeocodeCache, createGoogleMapsAdapter } = await import(new URL("src/adapters/google-maps-adapter.js", runtimeRoot));
-const { LocationMap, PropertyLocation, PropertyStage, closeOnEscape, createFocusKeeper, createPropertyMap } = await import(new URL("src/components/storm/PropertyMap.js", runtimeRoot));
+const { LocationMap, PropertyIndex, PropertyLocation, PropertyStage, closeOnEscape, createFocusKeeper, createPropertyMap } = await import(new URL("src/components/storm/PropertyMap.js", runtimeRoot));
 const { PortfolioMap, QuoteGroups } = await import(new URL("src/components/proposals/QuotePackage.js", runtimeRoot));
 const { addressKey, forecastPoint, geoPoint, popupDocks, popupPlacement, popupWeather, propertyPoint, weatherReading } = await import(new URL("src/normalizers/property-map.js", runtimeRoot));
 const { propertyStatus, propertyWeather } = await import(new URL("src/normalizers/overview.js", runtimeRoot));
@@ -226,7 +226,7 @@ const PERIODS = Array.from({ length: 7 }, (_, index) => ({
   assert.equal(controller.status(), "loading");
   assert.equal(firstCanvas.getAttribute("data-state"), "loading");
   assert.equal(firstCanvas.querySelector(".ov-map__status-label").textContent, "Loading map…");
-  assert.equal(loading.querySelectorAll("[data-module=\"unplaced-properties\"]").length, 0, "every fixture property has a coordinate, so nothing is listed off the map");
+  assert.equal(loading.querySelectorAll("[data-module=\"property-row\"]").length, 0, "with a map the card carries the map alone; the property list is rendered apart from it");
 
   await flush();
   assert.equal(controller.status(), "ready");
@@ -277,6 +277,65 @@ const PERIODS = Array.from({ length: 7 }, (_, index) => ({
   fire(glyph, "click");
   assert.deepEqual(dispatched, [["overview.selectProperty", "prop-foothill"]], "clicking a pin's glyph selects its property");
   assert.equal(reachedMap, 0, "a pin click is not also a map click");
+
+  const hoverStage = stage();
+  hoverStage.children[0].offsetWidth = 1000;
+  hoverStage.children[0].offsetHeight = 380;
+  const cardHost = google.log.maps[0].panes.floatPane.children[1];
+  const hovered = pinFor(hoverStage, "prop-foothill");
+  const neighbour = pinFor(hoverStage, "prop-tabor");
+  assert.equal(cardHost.children.length, 0, "no card shows before a pin is hovered");
+  fire(hovered, "pointerenter", { pointerType: "mouse" });
+  const hoverCard = cardHost.children[0];
+  assert.equal(hoverCard && hoverCard.getAttribute("data-module"), "property-pin-card", "hovering a pin shows its card");
+  assert.equal(hoverCard.getAttribute("role"), "tooltip");
+  assert.equal(hovered.getAttribute("aria-describedby"), hoverCard.getAttribute("id"), "the pin is described by the card it shows");
+  assert.equal(hoverCard.textContent, "Foothill Court4820 Foothill Court, Lakewood, CO 80215");
+  assert.equal(hoverCard.querySelectorAll(".ov-tip__close").length + hoverCard.querySelectorAll("[data-action]").length, 0, "the hover card is read-only; the popup keeps the actions");
+  const foothillAnchor = new google.maps.LatLng(39.73336, -105.12205);
+  const foothillAt = google.projection.fromLatLngToDivPixel(foothillAnchor);
+  const foothillBox = google.projection.fromLatLngToContainerPixel(foothillAnchor);
+  const cardPlace = popupPlacement(foothillBox, { width: 1000, height: 380 }, { width: 0, height: 0 });
+  assert.equal(hoverCard.style.left, (foothillAt.x + cardPlace.left - foothillBox.x) + "px", "the card is anchored to its pin the way the popup is");
+  assert.equal(hoverCard.style.top, (foothillAt.y + cardPlace.top - foothillBox.y) + "px");
+  fire(hovered, "pointerleave", { pointerType: "mouse" });
+  assert.equal(cardHost.children.length, 0, "leaving the pin hides its card");
+  assert.equal(hovered.getAttribute("aria-describedby"), null);
+
+  fire(hovered, "pointerenter", { pointerType: "mouse" });
+  fire(neighbour, "pointerenter", { pointerType: "mouse" });
+  fire(hovered, "pointerleave", { pointerType: "mouse" });
+  assert.deepEqual(cardHost.children.map((node) => node.textContent.slice(0, 12)), ["Tabor Street"], "moving to another pin swaps the card, and leaving the first pin late does not hide the second's");
+  fire(neighbour, "pointerleave", { pointerType: "mouse" });
+
+  fire(hovered, "pointerenter", { pointerType: "touch" });
+  assert.equal(cardHost.children.length, 0, "a touch shows no hover card; the tap opens the popup as before");
+
+  fire(hovered, "focus");
+  assert.equal(cardHost.children[0], hoverCard, "keyboard focus shows the same card as hover");
+  fire(hovered, "keydown", { key: "Escape" });
+  assert.equal(cardHost.children.length, 0, "Escape dismisses the card");
+  fire(hovered, "focus");
+  fire(hovered, "blur");
+  assert.equal(cardHost.children.length, 0, "blur hides the card");
+  hovered.matches = (selector) => selector !== ":focus-visible";
+  fire(hovered, "focus");
+  assert.equal(cardHost.children.length, 0, "focus a tap or a script gave the pin, without the keyboard, shows no card");
+  delete hovered.matches;
+
+  fire(hovered, "pointerenter", { pointerType: "mouse" });
+  fire(hovered.children[0], "click");
+  assert.deepEqual(dispatched[dispatched.length - 1], ["overview.selectProperty", "prop-foothill"], "a click on a hovered pin still opens its popup");
+  const withPopup = stage({ selectedId: "prop-foothill" });
+  assert.equal(cardHost.children.length, 0, "the render that opens the popup takes the hover card away");
+  fire(pinFor(withPopup, "prop-tabor"), "pointerenter", { pointerType: "mouse" });
+  fire(pinFor(withPopup, "prop-tabor"), "focus");
+  assert.equal(cardHost.children.length, 0, "while a popup is open no pin shows a hover card beside it");
+  const quiet = stage();
+  fire(pinFor(quiet, "prop-tabor"), "pointerenter", { pointerType: "mouse" });
+  assert.equal(cardHost.children.length, 1);
+  stage();
+  assert.equal(cardHost.children.length, 0, "a re-render replaces the pins, so a card is never left behind on a pin that is gone");
 
   const opened = stage({ selectedId: "prop-foothill" });
   opened.children[0].offsetWidth = 1000;
@@ -467,15 +526,18 @@ const PERIODS = Array.from({ length: 7 }, (_, index) => ({
     onChange: () => { changes += 1; },
   });
   const controller = session(google.maps, storage);
-  const stage = (map, overrides = {}) => PropertyStage(Object.assign({
+  const bookProps = (map, overrides) => Object.assign({
     properties: book, frame: liveWeather.timeline[0], index: 0, weather: liveWeather,
     viewport: { center: { lat: 49.19, lon: -122.85 }, zoom: 10 }, selectedId: null, map: map, forecasts: null,
-  }, overrides));
+  }, overrides);
+  const stage = (map, overrides = {}) => PropertyStage(bookProps(map, overrides));
+  const index = (map, overrides = {}) => PropertyIndex(bookProps(map, overrides));
 
   const before = stage(controller);
-  assert.deepEqual(rowIds(before), ["prop-core-1", "prop-core-2", "prop-core-3"], "a property without a coordinate is listed without a pin");
+  assert.equal(rowIds(before).length, 0, "the map card lists no property, not even one without a pin");
+  assert.deepEqual(rowIds(index(controller)), ["prop-core-1", "prop-core-2", "prop-core-3", "prop-core-4"], "the property list carries every property once, pinned or not");
   assert.deepEqual(google.log.geocode, [], "nothing is geocoded before the map has loaded");
-  assert.deepEqual(rowNotes(before), ["Finding it on the map…", "Finding it on the map…", "No address on file"], "each property off the map says why it has no pin");
+  assert.deepEqual(rowNotes(index(controller)), ["Finding it on the map…", "Finding it on the map…", "No address on file", ""], "each property off the map says why it has no pin");
 
   await flush();
   assert.deepEqual(google.log.geocode, ["12 Frost Lane, Surrey, BC, V3W 1J8", "1 Nowhere Road, Atlantis"], "each address is geocoded once, one at a time, and a property with no address is not guessed at");
@@ -483,13 +545,14 @@ const PERIODS = Array.from({ length: 7 }, (_, index) => ({
   assert.deepEqual(JSON.parse(storage.values.get("portal.geocode:12 frost lane, surrey, bc, v3w 1j8")), { lat: 49.12, lon: -122.84 });
 
   const after = stage(controller);
+  const afterList = index(controller);
   assert.deepEqual(pinIds(google), ["prop-core-1", "prop-core-4"]);
-  assert.deepEqual(rowIds(after), ["prop-core-2", "prop-core-3"]);
-  assert.deepEqual(rowNotes(after), ["Address not found on the map", "No address on file"], "a failed geocode stops saying it is being located");
-  assert.deepEqual(after.querySelectorAll("[data-module=\"property-row\"]").map((row) => row.getAttribute("data-placement")), ["not-found", "no-address"]);
+  assert.deepEqual(rowIds(afterList), ["prop-core-1", "prop-core-2", "prop-core-3", "prop-core-4"]);
+  assert.deepEqual(rowNotes(afterList), ["", "Address not found on the map", "No address on file", ""], "a failed geocode stops saying it is being located");
+  assert.deepEqual(afterList.querySelectorAll("[data-module=\"property-row\"]").map((row) => row.getAttribute("data-placement")), [null, "not-found", "no-address", null]);
   assert.equal(after.children[0].getAttribute("data-pins"), "2");
   assert.equal(after.querySelector(".ov-map__status-label").textContent, "", "a map that carries pins shows no status over itself");
-  assert.match(after.querySelector("[data-module=\"unplaced-properties\"]").textContent, /^Not on the map2/);
+  assert.equal(rowIds(after).length, 0, "a property without a pin is not listed a second time inside the map card");
   const frost = pinsOf(google).find((pin) => pin.getAttribute("data-id") === "prop-core-1");
   const at = google.projection.fromLatLngToDivPixel(new google.maps.LatLng(49.12, -122.84));
   assert.equal(frost.style.left, at.x + "px", "a geocoded property is drawn at the geocoded coordinate");
@@ -499,16 +562,18 @@ const PERIODS = Array.from({ length: 7 }, (_, index) => ({
   stage(controller);
   assert.equal(google.log.geocode.length, 2, "a failed address is not retried within the page session");
 
-  const addresslessPopup = stage(controller, { selectedId: "prop-core-3" }).querySelector("[data-module=\"property-tooltip\"]");
+  const addresslessPopup = index(controller, { selectedId: "prop-core-3" }).querySelector("[data-module=\"property-tooltip\"]");
   assert.equal(addresslessPopup.querySelectorAll(".ov-tip__addr").length, 0, "a property with no address shows no empty address line");
-  const unplacedPopup = stage(controller, { selectedId: "prop-core-2" });
+  assert.equal(stage(controller, { selectedId: "prop-core-2" }).querySelectorAll("[data-module=\"property-tooltip\"]").length, 0, "a property with no pin opens no popup on the map");
+  const unplacedPopup = index(controller, { selectedId: "prop-core-2" });
   const inline = unplacedPopup.querySelector("[data-module=\"property-tooltip\"]");
   assert.equal(inline.getAttribute("data-place"), "inline", "a property with no pin opens the same popup inside its row");
   assert.equal(inline.querySelector("[data-module=\"property-weather\"]").getAttribute("data-state"), "area");
 
   const nextGoogle = createGoogleStub();
   const nextSession = session(nextGoogle.maps, storage);
-  assert.deepEqual(rowIds(stage(nextSession)), ["prop-core-2", "prop-core-3"], "a later page session places the property from the cache straight away");
+  stage(nextSession);
+  assert.deepEqual(rowNotes(index(nextSession)), ["", "Finding it on the map…", "No address on file", ""], "a later page session places the property from the cache straight away");
   await flush();
   stage(nextSession);
   assert.deepEqual(pinIds(nextGoogle), ["prop-core-1", "prop-core-4"]);
@@ -643,7 +708,8 @@ const PERIODS = Array.from({ length: 7 }, (_, index) => ({
     dispatch: () => {},
     onChange: () => {},
   });
-  const stageOf = (controller) => PropertyStage({ properties: book, frame: liveWeather.timeline[0], index: 0, weather: liveWeather, viewport: { center: { lat: 49.19, lon: -122.85 }, zoom: 10 }, selectedId: null, map: controller, forecasts: null });
+  const bookProps = (controller) => ({ properties: book, frame: liveWeather.timeline[0], index: 0, weather: liveWeather, viewport: { center: { lat: 49.19, lon: -122.85 }, zoom: 10 }, selectedId: null, map: controller, forecasts: null });
+  const stageOf = (controller) => PropertyStage(bookProps(controller));
   const status = (stage) => ["data-state", "data-pins", "data-locating"].map((name) => stage.children[0].getAttribute(name)).concat(stage.querySelector(".ov-map__status-label").textContent);
 
   const waiting = session(unanswered.maps);
@@ -652,7 +718,7 @@ const PERIODS = Array.from({ length: 7 }, (_, index) => ({
   const locating = stageOf(waiting);
   assert.deepEqual(status(locating), ["ready", "0", "true", "Finding your properties on the map…"], "a ready map with nothing placed yet says it is still looking, and keeps its height so the first pin does not move the page");
   assert.deepEqual(unanswered.log.geocode, ["11 North Lot, Surrey, BC"], "addresses are still geocoded one at a time");
-  assert.deepEqual(rowNotes(locating), ["Finding it on the map…", "Finding it on the map…"]);
+  assert.deepEqual(rowNotes(PropertyIndex(bookProps(waiting))), ["Finding it on the map…", "Finding it on the map…"]);
 
   const refusing = createGoogleStub();
   const nowhere = session(refusing.maps);
@@ -660,13 +726,17 @@ const PERIODS = Array.from({ length: 7 }, (_, index) => ({
   await flush();
   const none = stageOf(nowhere);
   assert.deepEqual(status(none), ["ready", "0", "false", "None of your properties could be placed on the map"], "when every address has failed, the empty map shrinks to its status and the list below explains each one");
-  assert.deepEqual(rowNotes(none), ["Address not found on the map", "Address not found on the map"]);
-  assert.equal(none.querySelector("[data-module=\"unplaced-properties\"]").textContent.startsWith("Not on the map2"), true);
+  assert.deepEqual(rowNotes(PropertyIndex(bookProps(nowhere))), ["Address not found on the map", "Address not found on the map"]);
+  assert.equal(rowIds(none).length, 0);
 }
 
 {
   applyPortalConfig(readPortalConfig({ dataset: { portalVertical: "snow", portalProfile: "stormRetail", portalTheme: "snow", portalDataMode: "fixture", portalAuthMode: "fixture", portalCase: "granite-ridge-snow" } }));
-  const badges = Overview().querySelector("[data-module=\"weather-timeline\"]").querySelectorAll(".ov-day__svc");
+  const keylessHome = Overview();
+  assert.equal(keylessHome.querySelectorAll("[data-module=\"property-index\"]").length, 0, "without a map the list stays inside the properties card and is not repeated at the end");
+  assert.deepEqual(rowIds(keylessHome.querySelector("[data-module=\"property-map\"]")), overview.properties.map((property) => property.id));
+  assert.equal(rowIds(keylessHome).length, overview.properties.length);
+  const badges = keylessHome.querySelector("[data-module=\"weather-timeline\"]").querySelectorAll(".ov-day__svc");
   assert.deepEqual(badges.map((badge) => badge.textContent), ["4 visits", "5 visits", "2 visits", "2 visits", "", "", "1 visit"], "a day with service names its visits, with a space between the count and the word");
   for (const badge of badges.filter((candidate) => candidate.textContent)) {
     assert.deepEqual(badge.children.map((part) => part.tagName + "." + part.className), ["B.", "SPAN.ov-day__svc-word"]);
@@ -818,6 +888,60 @@ const PERIODS = Array.from({ length: 7 }, (_, index) => ({
   assert.equal(dom.document.head.children.filter((node) => node.tagName === "SCRIPT").length, 1);
   PropertyDetail();
   assert.equal(dom.document.head.children.filter((node) => node.tagName === "SCRIPT").length, 1, "the detail map shares the one Google map load with the home screen");
+
+  const home = Overview();
+  const sections = home.children;
+  const listing = sections[sections.length - 1];
+  assert.equal(listing.getAttribute("data-module"), "property-index", "with a map the property list closes the home, after every other section");
+  assert.ok(sections.indexOf(home.querySelector(".ov-grid")) !== -1 && sections.indexOf(home.querySelector(".ov-grid")) < sections.length - 1, "the visit, invoice and contract cards come before the list");
+  assert.ok(sections.indexOf(home.querySelector("[data-module=\"property-map\"]")) < sections.indexOf(home.querySelector(".ov-grid")), "the map card keeps its place above them");
+  assert.equal(home.querySelector("[data-module=\"property-map\"]").querySelector("[data-surface]").getAttribute("data-surface"), "google");
+  assert.equal(rowIds(home.querySelector("[data-module=\"property-map\"]")).length, 0, "the map card shows the map alone");
+  assert.deepEqual(rowIds(listing), overview.properties.map((property) => property.id), "every property is listed once, in the book's order");
+  assert.equal(rowIds(home).length, overview.properties.length, "and nowhere else on the home");
+  assert.equal(listing.querySelector("h2").textContent, "Properties");
+}
+
+{
+  const google = createGoogleStub();
+  const dispatched = [];
+  const controller = createPropertyMap({
+    adapter: createGoogleMapsAdapter({ apiKey: "AIza-test_key", scope: { document: dom.fresh(), google: { maps: google.maps } } }),
+    cache: createGeocodeCache(memoryStorage()),
+    dispatch: (name, id) => dispatched.push([name, id]),
+    onChange: () => {},
+  });
+  const address = "1239 W Georgia St, Vancouver, BC V6E 4R8, Canada";
+  const plotted = [
+    Object.assign(liveProperty("prop-core-983", address, address, 49.28, -123.12), { areaSqft: 50000, planId: "" }),
+    Object.assign(liveProperty("prop-core-998", "Main lot", "2916 Highway 7, Vaughan, ON L4K 0K6, Canada", 43.8, -79.5), { areaSqft: 1250, planId: "ad81696a-86c7-458f-b32e-4ffc254d312c" }),
+  ];
+  const props = { direct: true, properties: plotted, frame: null, index: 0, weather: null, viewport: { center: { lat: 49.19, lon: -122.85 }, zoom: 10 }, selectedId: null, map: controller, forecasts: null, sources: { invoices: "unavailable", appointments: "unavailable", contracts: "unavailable", support: "unavailable" } };
+  PropertyStage(props);
+  await flush();
+  const plottedStage = PropertyStage(props);
+  const cards = google.log.maps[0].panes.floatPane.children[1];
+  const read = plotted.map((property) => {
+    const pin = plottedStage.querySelectorAll("[data-module=\"property-pin\"]").find((item) => item.getAttribute("data-id") === property.id);
+    fire(pin, "pointerenter", { pointerType: "mouse" });
+    const shown = cards.textContent;
+    fire(pin, "pointerleave", { pointerType: "mouse" });
+    return shown;
+  });
+  assert.deepEqual(read, [
+    address + "50,000 ft²",
+    "Main lot2916 Highway 7, Vaughan, ON L4K 0K6, Canada · 1,250 ft² · Plan approved",
+  ], "a live hover card shows the address once with the area, and the plan when one is approved");
+  const listed = PropertyIndex(props).querySelectorAll("[data-module=\"property-row\"]");
+  assert.deepEqual(listed.map((row) => [row.getAttribute("data-action"), row.getAttribute("data-id"), (row.querySelector(".ov-prow__addr") || { textContent: "" }).textContent]), [
+    ["overview.openProperty", "prop-core-983", "50,000 ft²"],
+    ["overview.openProperty", "prop-core-998", "2916 Highway 7, Vaughan, ON L4K 0K6, Canada · 1,250 ft² · Plan approved"],
+  ], "each listed row opens its property page and carries the same line as the card");
+  fire(plottedStage.querySelectorAll("[data-module=\"property-pin\"]")[0].children[0], "click");
+  assert.deepEqual(dispatched, [["overview.openProperty", "prop-core-983"]], "a live pin click still goes straight to the property page");
+  const lone = PropertyIndex(Object.assign({}, props, { properties: [plotted[0]] }));
+  assert.equal(rowIds(lone).length, 1, "a single property is still listed, since its row carries the area and the link");
+  assert.equal(PropertyIndex(Object.assign({}, props, { map: null })), null, "without a map there is no separate list; the card lists the properties itself");
 }
 
 for (const address of ["Frost Lane", "Nowhere Road", "Foothill Court", "Tabor Street", "Thaw Road", "Lost Lane"]) {
@@ -825,7 +949,7 @@ for (const address of ["Frost Lane", "Nowhere Road", "Foothill Court", "Tabor St
 }
 assert.ok(warnings.length > 0, "the failure paths above did warn");
 
-console.log("property-map-check ok: pins drawn at each coordinate with zone colouring, the issue red and the en-route ring, one map load across renders, a popup anchored to its pin that opens, closes and takes Escape, the same popup docked below a map too narrow to hold it beside a pin, a property forecast fetched once on open with the area forecast as its fallback, addresses geocoded once with only successes cached, a keyless or rejected map that lists every property instead, timeline badges that read 4 visits, a property detail map with its own pin or no location block at all, and a Contracts map whose pins open their quotes");
+console.log("property-map-check ok: pins drawn at each coordinate with zone colouring, the issue red and the en-route ring, one map load across renders, a popup anchored to its pin that opens, closes and takes Escape, the same popup docked below a map too narrow to hold it beside a pin, a property forecast fetched once on open with the area forecast as its fallback, addresses geocoded once with only successes cached, a keyless or rejected map that lists every property instead, a home with a map that lists every property once in its own card after all other sections, pin hover cards shown on pointer hover and keyboard focus and hidden on leave, blur, Escape, touch and an open popup, timeline badges that read 4 visits, a property detail map with its own pin or no location block at all, and a Contracts map whose pins open their quotes");
 
 function liveProperty(id, name, address, lat, lon) {
   return { id, name, address, lat, lon, zone: null, contract: null, quoteSiteId: null, appointment: null, ticket: null, lastService: null };
@@ -931,6 +1055,7 @@ function fire(target, type, init = {}) {
     type,
     target,
     key: init.key,
+    pointerType: init.pointerType,
     defaultPrevented: false,
     stopped: false,
     stopPropagation() { this.stopped = true; },

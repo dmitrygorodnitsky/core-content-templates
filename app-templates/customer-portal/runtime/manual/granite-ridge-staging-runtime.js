@@ -6058,6 +6058,7 @@
   // app-templates/customer-portal/runtime/src/components/storm/PropertyMap.js
   var SINGLE_PIN_ZOOM = 14;
   var FIT_PADDING = 56;
+  var PIN_CARD_ID = "property-pin-card";
   var FOCUS_ACTIONS = ["overview.selectProperty", "overview.closeProperty", "overview.openProperty"];
   var PLACEMENT_NOTES = {
     locating: "Finding it on the map\u2026",
@@ -6080,6 +6081,8 @@
     var statusLabel = null;
     var pinsHost = null;
     var popupHost = null;
+    var cardHost = null;
+    var carded = null;
     var view = null;
     var fitted = null;
     var narrow = false;
@@ -6104,6 +6107,7 @@
     function stage(next) {
       if (!canvas) build();
       if (status === "idle") start(next.viewport);
+      hideCard();
       view = next;
       canvas.setAttribute("data-state", status);
       canvas.setAttribute("data-pins", String(next.pins.length));
@@ -6113,6 +6117,9 @@
         return pin.element;
       }));
       popupHost.replaceChildren.apply(popupHost, next.popup && !narrow ? [next.popup.element] : []);
+      next.pins.forEach(function(pin) {
+        if (pin.card) bindCard(pin);
+      });
       draw();
       Promise.resolve().then(settle2);
       return canvas;
@@ -6136,6 +6143,7 @@
       ]);
       pinsHost = h("div", { "class": "ov-map__pins" });
       popupHost = h("div", { "class": "ov-map__popup" });
+      cardHost = h("div", { "class": "ov-map__hover" });
       pinsHost.addEventListener("click", relay);
       popupHost.addEventListener("click", relay);
       new ResizeObserver(resized).observe(canvas);
@@ -6145,6 +6153,39 @@
       if (!width || popupDocks(width) === narrow) return;
       narrow = !narrow;
       if (view && view.popup) onChange();
+    }
+    function bindCard(pin) {
+      var element = pin.element;
+      element.addEventListener("pointerenter", function(event) {
+        if (event.pointerType !== "touch") showCard(pin);
+      });
+      element.addEventListener("pointerleave", function() {
+        if (carded === pin) hideCard();
+      });
+      element.addEventListener("focus", function() {
+        if (keyboardFocus(element)) showCard(pin);
+      });
+      element.addEventListener("blur", function() {
+        if (carded === pin) hideCard();
+      });
+      element.addEventListener("keydown", function(event) {
+        if (event.key === "Escape" && carded === pin) hideCard();
+      });
+    }
+    function showCard(pin) {
+      if (!view || view.popup || carded === pin) return;
+      hideCard();
+      carded = pin;
+      pin.element.setAttribute("aria-describedby", PIN_CARD_ID);
+      cardHost.replaceChildren(pin.card);
+      var projection = layer ? layer.getProjection() : null;
+      if (projection) place(projection, pin.point, pin.card);
+    }
+    function hideCard() {
+      if (!carded) return;
+      carded.element.removeAttribute("aria-describedby");
+      carded = null;
+      cardHost.replaceChildren();
     }
     function relay(event) {
       var host = event.currentTarget;
@@ -6179,6 +6220,7 @@
         var panes = overlay.getPanes();
         panes.overlayMouseTarget.appendChild(pinsHost);
         panes.floatPane.appendChild(popupHost);
+        panes.floatPane.appendChild(cardHost);
         if (typeof maps.OverlayView.preventMapHitsAndGesturesFrom === "function") {
           maps.OverlayView.preventMapHitsAndGesturesFrom(pinsHost);
           maps.OverlayView.preventMapHitsAndGesturesFrom(popupHost);
@@ -6188,6 +6230,7 @@
       overlay.onRemove = function() {
         pinsHost.remove();
         popupHost.remove();
+        cardHost.remove();
       };
       return overlay;
     }
@@ -6200,21 +6243,22 @@
         pin.element.style.left = at.x + "px";
         pin.element.style.top = at.y + "px";
       });
-      if (view.popup && !narrow) placePopup(projection, view.popup);
+      if (view.popup && !narrow) place(projection, view.popup.point, view.popup.element);
+      if (carded) place(projection, carded.point, carded.card);
     }
-    function placePopup(projection, popup) {
-      var anchor = latLng(popup.point);
+    function place(projection, point, element) {
+      var anchor = latLng(point);
       var at = projection.fromLatLngToDivPixel(anchor);
       var box = projection.fromLatLngToContainerPixel(anchor);
       if (!at || !box) return;
-      var place = popupPlacement(
+      var spot = popupPlacement(
         box,
         { width: canvas.offsetWidth, height: canvas.offsetHeight },
-        { width: popup.element.offsetWidth, height: popup.element.offsetHeight }
+        { width: element.offsetWidth, height: element.offsetHeight }
       );
-      popup.element.style.left = at.x + place.left - box.x + "px";
-      popup.element.style.top = at.y + place.top - box.y + "px";
-      popup.element.setAttribute("data-place", place.side);
+      element.style.left = at.x + spot.left - box.x + "px";
+      element.style.top = at.y + spot.top - box.y + "px";
+      element.setAttribute("data-place", spot.side);
     }
     function fit(pins) {
       if (!map) return;
@@ -6285,43 +6329,64 @@
     return point ? { point, reason: "located" } : { point: null, reason: "unplaced" };
   }
   function PropertyStage(props) {
-    var controller2 = props.map || null;
-    var failed = !!controller2 && controller2.status() === "failed";
-    var map = controller2 && props.viewport && !failed ? controller2 : null;
-    var placed = [];
-    var listed = [];
-    props.properties.forEach(function(property) {
-      var place = controller2 ? controller2.placement(property) : { point: propertyPoint(property), reason: null };
-      var entry = { property, point: place.point, reason: map ? place.reason : null };
-      if (map && entry.point) placed.push(entry);
-      else listed.push(entry);
-    });
-    var chosen = props.direct ? null : placed.concat(listed).find(function(entry) {
-      return entry.property.id === props.selectedId;
-    }) || null;
-    var popup = chosen ? PropertyPopup(chosen.property, props.frame ? popupView(chosen, props) : null, props.weather ? props.weather.legend : null, props.sources) : null;
-    var pinned = !!chosen && placed.indexOf(chosen) !== -1;
-    if (!map) {
-      return h("div", { "class": "ov-map__stage", "data-surface": "list", "data-state": failed ? "failed" : void 0 }, [
-        failed ? h("div", { "class": "ov-map__note", "data-module": "map-unavailable", "data-visual-id": "map-unavailable", role: "status" }, "The map couldn\u2019t load, so your properties are listed instead.") : null,
-        PropertyList("all", listed, props, popup)
+    var view = arrange(props);
+    var chosen = view.chosen;
+    if (!view.map) {
+      return h("div", { "class": "ov-map__stage", "data-surface": "list", "data-state": view.failed ? "failed" : void 0 }, [
+        view.failed ? h("div", { "class": "ov-map__note", "data-module": "map-unavailable", "data-visual-id": "map-unavailable", role: "status" }, "The map couldn\u2019t load, so your properties are listed instead.") : null,
+        PropertyList("all", view.entries, props, chosen ? popupFor(chosen, props) : null)
       ]);
     }
-    var docked = pinned && map.docked();
+    var popup = view.pinned ? popupFor(chosen, props) : null;
     return h("div", { "class": "ov-map__stage", "data-surface": "google" }, [
-      map.stage({
+      view.map.stage({
         viewport: props.viewport,
-        pins: placed.map(function(entry) {
-          return { id: entry.property.id, point: entry.point, element: PropertyPin(entry.property, props.frame, !!chosen && entry.property.id === props.selectedId, props.sources, props.direct) };
+        pins: view.placed.map(function(entry) {
+          return {
+            id: entry.property.id,
+            point: entry.point,
+            element: PropertyPin(entry.property, props.frame, entry === chosen, props.sources, props.direct),
+            card: PinCard(entry.property)
+          };
         }),
-        popup: pinned ? { point: chosen.point, element: popup } : null,
-        locating: listed.some(function(entry) {
+        popup: popup ? { point: chosen.point, element: popup } : null,
+        locating: view.entries.some(function(entry) {
           return entry.reason === "locating";
         })
       }),
-      docked ? dock(popup) : null,
-      listed.length ? UnplacedProperties(listed, props, pinned ? null : popup) : null
+      popup && view.map.docked() ? dock(popup) : null
     ]);
+  }
+  function PropertyIndex(props) {
+    var view = arrange(props);
+    if (!view.map || !view.entries.length) return null;
+    return PropertyList("index", view.entries, props, view.chosen && !view.pinned ? popupFor(view.chosen, props) : null);
+  }
+  function arrange(props) {
+    var controller2 = props.map || null;
+    var failed = !!controller2 && controller2.status() === "failed";
+    var map = controller2 && props.viewport && !failed ? controller2 : null;
+    var entries = props.properties.map(function(property) {
+      var spot = controller2 ? controller2.placement(property) : { point: propertyPoint(property), reason: null };
+      return { property, point: spot.point, reason: map ? spot.reason : null };
+    });
+    var placed = map ? entries.filter(function(entry) {
+      return !!entry.point;
+    }) : [];
+    var chosen = props.direct ? null : entries.find(function(entry) {
+      return entry.property.id === props.selectedId;
+    }) || null;
+    return { failed, map, entries, placed, chosen, pinned: !!chosen && placed.indexOf(chosen) !== -1 };
+  }
+  function popupFor(entry, props) {
+    return PropertyPopup(entry.property, props.frame ? popupView(entry, props) : null, props.weather ? props.weather.legend : null, props.sources);
+  }
+  function keyboardFocus(element) {
+    try {
+      return element.matches(":focus-visible");
+    } catch (error2) {
+      return true;
+    }
   }
   function placeEach(map, properties) {
     return properties.map(function(property) {
@@ -6486,15 +6551,6 @@
     });
     return list;
   }
-  function UnplacedProperties(entries, props, popup) {
-    return h("div", { "class": "ov-map__unplaced", "data-module": "unplaced-properties", "data-visual-id": "unplaced-properties" }, [
-      h("div", { "class": "ov-map__unplaced-head" }, [
-        text3("span", "ov-map__unplaced-title", "Not on the map"),
-        text3("span", "ov-map__unplaced-count", String(entries.length))
-      ]),
-      PropertyList("unplaced", entries, props, popup)
-    ]);
-  }
   function PropertyRow(property, props, selected, reason) {
     var status = knownPropertyStatus(property, props.sources);
     var note = reason ? placementNote(reason) : "";
@@ -6520,6 +6576,13 @@
         props.frame ? text3("span", "ov-prow__wx", weatherReading(zoneWeather(property, props.frame), props.frame, props.weather.legend)) : null,
         status ? text3("span", "ov-tip__tag ov-tip__tag--" + status, OVERVIEW_STATUS[status].label) : null
       ])
+    ]);
+  }
+  function PinCard(property) {
+    var line = propertyLine(property);
+    return h("div", { "class": "ov-pincard", id: PIN_CARD_ID, role: "tooltip", "data-module": "property-pin-card", "data-visual-id": "property-pin-card" }, [
+      text3("div", "ov-pincard__name", property.name),
+      line ? text3("div", "ov-pincard__line", line) : null
     ]);
   }
   function propertyLine(property) {
@@ -7018,12 +7081,15 @@
     var frame = weather ? weather.timeline[index] : null;
     var forecastShown = !!frame || !!model.forecast && model.forecast !== "unconfigured";
     page.appendChild(h("div", { "class": "ov-head" }, [header, frame ? WeatherPanel(frame, index === weather.nowIndex, weather.source, sectionAvailable(model, "contracts")) : forecastShown ? ForecastUnavailable(model.forecast) : null]));
-    page.appendChild(MapPanel(model, frame, index));
+    var places = stageProps(model, frame, index);
+    page.appendChild(MapPanel(model, places));
     var invoices = InvoicesWidget(model);
     if (invoices) page.appendChild(invoices);
     var cards = [NextVisitWidget(), InvoiceDueWidget(), UpcomingWidget(model, weather ? weather.timeline : []), ContractsWidget(model), SupportWidget(model)].filter(Boolean);
     if (cards.length) page.appendChild(h("div", { "class": "ov-grid", "data-count": String(cards.length) }, cards));
     if (model.banner) page.appendChild(Banner(model.banner));
+    var listing = PropertyIndex(places);
+    if (listing) page.appendChild(PropertyIndexCard(listing));
     return page;
   }
   function overviewCustomer() {
@@ -7123,21 +7189,25 @@
       })) : null
     ]);
   }
-  function MapPanel(model, frame, index) {
-    var weather = frame ? model.weather : null;
-    var statusKnown = propertyStatusKnown(model.sources);
-    var stage = PropertyStage({
+  function stageProps(model, frame, index) {
+    return {
       direct: state.config.dataMode === "live",
       properties: model.properties,
       frame,
       index,
-      weather,
+      weather: frame ? model.weather : null,
       viewport: model.map,
       selectedId: state.ovProperty,
       map: sharedPropertyMap(),
       forecasts: propertyForecasts(),
       sources: model.sources
-    });
+    };
+  }
+  function MapPanel(model, places) {
+    var weather = places.weather;
+    var index = places.index;
+    var statusKnown = propertyStatusKnown(model.sources);
+    var stage = PropertyStage(places);
     followSelection();
     return h("div", { "class": "ov-map card", "data-module": "property-map", "data-visual-id": "property-map" }, [
       h("div", { "class": "ov-map__head" }, [
@@ -7152,6 +7222,15 @@
       stage,
       weather ? DayTimeline(weather, index, model.properties, sectionAvailable(model, "appointments")) : null,
       weather ? WeatherAttribution(weather.source, "ov-map__attr") : null
+    ]);
+  }
+  function PropertyIndexCard(list) {
+    return h("section", { "class": "card card--pad ov-card ov-places", "data-module": "property-index", "data-visual-id": "property-index", "aria-labelledby": "property-index-title" }, [
+      h("div", { "class": "ov-card__head" }, [
+        h("span", { "class": "ov-card__icon" }, [icon("pin", "ov-icon")]),
+        h("h2", { "class": "ov-card__title", id: "property-index-title" }, "Properties")
+      ]),
+      list
     ]);
   }
   function propertyForecasts() {
