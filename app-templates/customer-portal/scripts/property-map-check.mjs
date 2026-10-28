@@ -754,6 +754,7 @@ const PERIODS = Array.from({ length: 7 }, (_, index) => ({
   const styling = (subject) => rules.filter((rule) => rule.selectors.some((selector) => selector.split(" ").pop() === subject));
   const livePin = rules.find((rule) => rule.selectors.includes(".ov-pin:not([data-weather])"));
   assert.ok(livePin && /color\s*:\s*var\(--pin-marker\)/.test(livePin.body), "a pin with no weather reading is drawn in the marker red");
+  assert.match(livePin.body, /width:\s*40px;\s*height:\s*40px;/, "a live pin is 40px so it reads against the map's own icons");
   assert.match(fs.readFileSync(path.resolve("app-templates/customer-portal/runtime/styles/tokens.css"), "utf8"), /--pin-marker:\s*#ea4335;/);
   assert.ok(styling(".ov-day__svc").length, "the badge is styled");
   for (const rule of styling(".ov-day__svc")) {
