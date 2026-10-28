@@ -1,6 +1,6 @@
 import { h } from "../../dom.js";
 import { StatusBadge } from "../primitives/StatusBadge.js";
-import { formatDatePeriod, formatIsoDate, formatOrderTotal, schematicPositions } from "../../normalizers/contracts.js";
+import { chosenOrders, formatDatePeriod, formatIsoDate, formatOrderPrice, optionSummary, schematicPositions } from "../../normalizers/contracts.js";
 import { LocationMap, placementNote } from "../storm/PropertyMap.js";
 
 export var QUOTE_STATUS = Object.freeze({
@@ -21,18 +21,12 @@ var DECISION_LABEL = {
 
 export function ContractsHead(quotes) {
   var counts = quotes.counts;
-  var facts = [];
-  if (quotes.agreements.length) facts.push(plural(quotes.agreements.length, "service agreement", "service agreements"));
-  if (counts.orders) {
-    facts.push(plural(counts.orders, "quote", "quotes") + (counts.properties ? " for " + plural(counts.properties, "property", "properties") : ""));
-  }
   var deciding = quotes.deciding && counts.properties > 0;
   return h("div", { "class": "proposals-head", "data-module": "quote-package-head", "data-visual-id": "quote-package-head", "data-state": deciding ? "deciding" : "settled" }, [
     h("div", { "class": "proposals-head__read" }, [
       h("div", { "class": "proposals-head__title-row" }, [
-        h("h1", { "class": "proposals-head__title" }, quotes.groups.length && !quotes.agreements.length ? "Your quotes" : "Your contracts"),
+        h("h1", { "class": "proposals-head__title" }, quotes.pending.length && !quotes.agreements.length ? "Your quotes" : "Your contracts"),
       ]),
-      facts.length ? h("div", { "class": "proposals-head__sub" }, facts.join(" · ")) : null,
     ]),
     deciding ? h("span", { "class": "proposals-head__pill" }, counts.decided + " of " + plural(counts.properties, "property", "properties") + " decided") : null,
   ]);
@@ -45,6 +39,7 @@ export function ContractsSectionTitle(label, count) {
 export function AgreementList(rows) {
   return h("div", { "class": "site-list agreement-list", "data-module": "agreement-list", "data-visual-id": "agreement-list" }, rows.map(function (row) {
     var agreement = row.agreement;
+    var summary = agreementSummary(row);
     return h("button", {
       "class": "proposal-card agreement-row",
       "data-module": "agreement-row",
@@ -54,10 +49,9 @@ export function AgreementList(rows) {
       "data-state": agreement.stage,
       "aria-label": "Open the service agreement " + agreementTitle(row) + " — " + agreement.label,
     }, [
-      h("span", { "class": "proposal-card__diamond agreement-row__diamond", "data-tone": agreement.tone }),
       h("span", { "class": "proposal-card__body" }, [
         h("span", { "class": "proposal-card__name" }, agreementTitle(row)),
-        h("span", { "class": "proposal-card__meta" }, agreementMeta(row)),
+        summary ? h("span", { "class": "proposal-card__meta" }, summary) : null,
       ]),
       StatusBadge({ variant: "status-badge--" + agreement.tone, label: agreement.label, bind: "agreement.stateLabel", state: agreement.stage }),
       h("span", { "class": "proposal-card__chev", "aria-hidden": "true" }, "›"),
@@ -73,17 +67,23 @@ export function agreementTitle(row) {
   return names[0] + " and " + (names.length - 1) + " more";
 }
 
-export function agreementMeta(row) {
+export function agreementSummary(row) {
   var agreement = row.agreement;
+  var chosen = chosenOrders(row);
   var facts = [];
-  if (row.propertyNames.length) facts.push("Service agreement");
-  if (agreement.stage === "review" && row.quoteCount) {
+  if (chosen.length === 1) facts.push(optionSummary(chosen[0]));
+  else if (chosen.length > 1) facts.push(plural(chosen.length, "option", "options") + " approved");
+  else if (agreement.stage === "review" && row.quoteCount) {
     facts.push(plural(row.quoteCount, "quote", "quotes") + (row.propertyCount ? " for " + plural(row.propertyCount, "property", "properties") : ""));
   }
-  if (agreement.term) facts.push("Term " + formatDatePeriod(agreement.term));
+  var season = agreementSeason(agreement);
+  if (season) facts.push(season);
   else if (agreement.effectiveDate) facts.push("Effective " + formatIsoDate(agreement.effectiveDate));
-  if (!facts.length) facts.push(row.propertyCount ? plural(row.propertyCount, "property", "properties") : "No properties listed yet");
-  return facts.join(" · ");
+  return facts.filter(Boolean).join(" · ");
+}
+
+export function agreementSeason(agreement) {
+  return agreement && agreement.term ? "Season " + formatDatePeriod(agreement.term) : "";
 }
 
 export function QuotesPreparing() {
@@ -163,7 +163,7 @@ export function QuotesFooter() {
 
 function QuoteOption(order) {
   var meta = QUOTE_STATUS[order.status];
-  var total = formatOrderTotal(order.total);
+  var total = formatOrderPrice(order);
   return h("li", { "class": "proposal-option", "data-module": "quote-row", "data-visual-id": "quote-row", "data-state": order.status }, [
     h("span", { "class": "proposal-option__model" }, order.pricingModel ? order.pricingModel.label : "Quote"),
     total ? h("span", { "class": "proposal-option__total" }, total) : null,

@@ -30,6 +30,7 @@ export var state = {
   porders: [],
   pagreements: [],
   agreementId: null,
+  agreementTermsOpen: false,
   quoteViews: {},
   contractCommand: null,
   contractConfirm: null,

@@ -19,6 +19,7 @@ const {
   formatDatePeriod,
   formatIsoDate,
   formatMoney,
+  formatOrderPrice,
   formatOrderTotal,
   groupStatus,
   normalizeContracts,
@@ -39,6 +40,8 @@ const { QuoteOptionCard } = await load("src/components/proposals/QuoteOptionCard
 const { AgreementDetail } = await load("src/routes/AgreementDetailPage.js");
 const { Overview } = await load("src/routes/OverviewPage.js");
 const { PropertyDetail } = await load("src/routes/PropertyDetailPage.js");
+const { propertyPlan } = await load("src/property-plan.js");
+const { PropertyPlan } = await load("src/components/storm/PropertyPlan.js");
 
 const plain = (value) => JSON.parse(JSON.stringify(value));
 const PERIOD = { SERVICE_PERIOD_START: { value: "2026-11-01" }, SERVICE_PERIOD_END: { value: "2027-03-31" } };
@@ -137,7 +140,8 @@ const orderList = {
     { key: "line-72", product: "Rock Salt De-Icing", quantity: "1", unitPrice: "CA$916.24", total: "CA$916.24" },
   ], "Order, OrderItem, ProductPrice and Product are joined by id, lines run in sortOrder, and every figure is the server's");
   assert.equal(orders[0].linesState, "ready");
-  assert.deepEqual(plain(orders[0].money), { subtotal: "CA$2,444.72", taxes: "CA$0.00", total: "CA$2,444.72" }, "taxes Core returned as zero are shown as zero, not hidden");
+  assert.deepEqual(plain(orders[0].money), { subtotal: "CA$2,444.72", taxes: "CA$0.00", total: "CA$2,444.72", taxFree: true }, "taxes Core returned as zero are kept and flagged, so the card can show the total alone");
+  assert.equal(normalizeQuoteOrders([Object.assign({}, rows[0], { totalTaxes: 12.5 })], catalog).orders[0].money.taxFree, false);
   assert.deepEqual(orders.map((order) => Object.prototype.hasOwnProperty.call(order, "serviceAddress")), [false, false], "an Order's SERVICE_ADDRESS is never read: a property's address is its Resource's");
   assert.deepEqual(plain(orders[1].lines), [
     { key: "line-81", product: "", quantity: "12", unitPrice: "CA$12.50", total: "" },
@@ -200,6 +204,11 @@ const orderList = {
   assert.equal(normalizeQuoteOrders([quoted(602)], { orderItems: catalog.orderItems, productPrices: null, products: null }).orders[0].pricingModel, null, "an unreadable price list names no variant");
   const ranked = contractsPackage(normalizeQuoteOrders([604, 603, 607, 601, 602].map((id) => quoted(id)), catalog), []);
   assert.deepEqual(ranked.groups[0].orders.map((order) => order.backendId), [601, 602, 603, 604, 607], "derived variants keep the per service, monthly, seasonal order, recurring last");
+  const priced = (code, amount = 4217.94) => ({ total: { amount, currency: "CAD" }, pricingModel: code ? { code, label: code } : null });
+  assert.deepEqual([priced("MONTHLY"), priced("SEASONAL", 16871.75), priced("PER_SERVICE", 1512.5), priced("RECURRING"), priced(null)].map(formatOrderPrice), [
+    "CA$4,217.94 / month", "CA$16,871.75 per season", "CA$1,512.50 per visit", "CA$4,217.94", "CA$4,217.94",
+  ], "every price carries the period of its pricing model, and a model without a known period shows the price alone");
+  assert.equal(formatOrderPrice({ total: null, pricingModel: { code: "MONTHLY" } }), "", "no period without a price");
 
   assert.equal(formatMoney("8625.5", "USD"), "$8,625.50");
   assert.equal(formatMoney(0.02374, "CAD"), "CA$0.02374", "a unit price keeps the precision Core stored");
@@ -247,9 +256,15 @@ const orderList = {
   }, { organization: { id: 43, code: "GRANITE", nls: { en: { NAME: "Granite Ridge Snow Removal" } } } }), { displayName: "Account display name" });
   assert.deepEqual(sent.allowedActions, ["approve"]);
   assert.deepEqual(plain(sent.parties), {
-    provider: { legalName: "Granite Ridge Snow Removal", representativeName: "Morgan Ellis", representativeJobTitle: "Contracts Manager" },
-    client: { legalName: "Harbour View Strata", clientType: "Organization", billingAddress: "100 Harbour Way, Vancouver", representativeName: "Avery Flow", representativeJobTitle: "Director", email: "avery@example.test", phone: "+1 604 555 0100" },
+    provider: { legalName: "Granite Ridge Snow Removal", representativeName: "Morgan Ellis", representativeJobTitle: "Contracts Manager", phone: "", email: "" },
+    client: { legalName: "Harbour View Strata", clientType: "Organization", billingAddress: "100 Harbour Way, Vancouver", representativeName: "Avery Flow", representativeJobTitle: "Director", email: "avery@example.test", phone: "+1 604-555-0100" },
   }, "the agreement's own snapshot names the parties, and the provider falls back to the owning organization");
+  const contactable = normalizeServiceAgreement(agreementDocument(["ACTIVE"], {
+    PROVIDER_CONTACT_PHONE: { value: "+16046700591" }, PROVIDER_CONTACT_EMAIL: { value: "support@snowlimitless.example.test" },
+    BILLING_ADDRESS: { value: "1239 W Georgia St, Vancouver, BC, V6E 4R8, CA" }, REPRESENTATIVE_PHONE: { value: "+19991112233" },
+  }));
+  assert.deepEqual([contactable.parties.provider.phone, contactable.parties.provider.email], ["+1 604-670-0591", "support@snowlimitless.example.test"], "the provider contact is read from the agreement the client already reads, as the review page does");
+  assert.deepEqual([contactable.parties.client.billingAddress, contactable.parties.client.phone], ["1239 W Georgia St, Vancouver, BC V6E 4R8, Canada", "+1 999-111-2233"], "the billing address and phone on the agreement read like the profile");
   assert.equal(normalizeServiceAgreement(agreementDocument(["SENT_TO_CLIENT"], { CLIENT_TYPE: { value: "PARTNERSHIP" } }), { displayName: "Harbour View Strata" }).parties.client.clientType, "", "a client type without a known label is not shown as a code");
   assert.equal(normalizeServiceAgreement(agreementDocument(["SENT_TO_CLIENT"]), { displayName: "Harbour View Strata" }).parties.client.legalName, "Harbour View Strata", "before the client sends details the Account's own name is the client");
 
@@ -422,7 +437,7 @@ const RETIRED = ["Proposal #", "valid until", "sent Dec", "sq ft", "Beam AI", "l
   assert.equal(page.getAttribute("data-state"), "ready");
   const head = one(page, "[data-module=\"quote-package-head\"]");
   assert.equal(one(head, "h1").textContent, "Your contracts");
-  assert.equal(one(head, ".proposals-head__sub").textContent, "10 service agreements · 12 quotes for 4 properties", "the head shows no service period: an Order's period is never read");
+  assert.equal(all(head, ".proposals-head__sub").length, 0, "the head no longer counts agreements and quotes under the title");
   assert.equal(one(head, ".proposals-head__pill").textContent, "2 of 4 properties decided", "a property with changes requested is not decided");
   for (const invented of RETIRED) assert.ok(!text.includes(invented), "the contracts page must not claim " + JSON.stringify(invented));
 
@@ -434,18 +449,20 @@ const RETIRED = ["Proposal #", "valid until", "sent Dec", "sq ft", "Beam AI", "l
   const rows = all(page, "[data-module=\"agreement-row\"]");
   assert.deepEqual(rows.map((row) => row.getAttribute("data-state")), ["approval", "review", "details", "drafting", "approved", "active", "suspended", "expired", "archived", "canceled"], "an agreement waiting for the customer comes first");
   assert.deepEqual(rows.map((row) => one(row, ".proposal-card__name").textContent), ["Alkire Street and Braun Court", "Foothill Court and 3 more", "Coal Creek Lane", "Dover Way", "Lamar Terrace", "Eldridge Circle and Flatiron Parkway", "Independence Way", "Holland Street", "Jellison Place", "Kipling Crossing"]);
-  assert.deepEqual(rows.map((row) => one(row, ".proposal-card__meta").textContent), [
-    "Service agreement · Term Nov 1, 2026 – Mar 31, 2027",
-    "Service agreement · 12 quotes for 4 properties",
-    "Service agreement · Term Nov 1, 2026 – Mar 31, 2027",
-    "Service agreement · Term Nov 1, 2026 – Mar 31, 2027",
-    "Service agreement · Term Nov 1, 2026 – Mar 31, 2027",
-    "Service agreement · Term Nov 1, 2025 – Mar 31, 2026",
-    "Service agreement · Term Nov 1, 2025 – Mar 31, 2026",
-    "Service agreement · Term Nov 1, 2024 – Mar 31, 2025",
-    "Service agreement · Term Nov 1, 2024 – Mar 31, 2025",
-    "Service agreement",
-  ], "an agreement row dates itself from the agreement's own term or effective date, never from its Orders");
+  assert.deepEqual(rows.map((row) => (one(row, ".proposal-card__meta") || { textContent: null }).textContent), [
+    "2 options approved · Season Nov 1, 2026 – Mar 31, 2027",
+    "12 quotes for 4 properties",
+    "Seasonal · $8,334.90 per season · Season Nov 1, 2026 – Mar 31, 2027",
+    "Monthly · $9,080.93 / month · Season Nov 1, 2026 – Mar 31, 2027",
+    "Seasonal · $7,954.17 per season · Season Nov 1, 2026 – Mar 31, 2027",
+    "2 options approved · Season Nov 1, 2025 – Mar 31, 2026",
+    "Monthly · $9,569.70 / month · Season Nov 1, 2025 – Mar 31, 2026",
+    "Seasonal · $7,398.51 per season · Season Nov 1, 2024 – Mar 31, 2025",
+    "Seasonal · $7,666.05 per season · Season Nov 1, 2024 – Mar 31, 2025",
+    null,
+  ], "an agreement row names its chosen option with its price and period, and its season from the agreement's own term, never from its Orders; a row with nothing to say has no second line");
+  assert.ok(rows.every((row) => !one(row, ".proposal-card__meta") || !/Service agreement|Active|Approved/.test(one(row, ".proposal-card__meta").textContent)), "the status is shown once, as the badge");
+  assert.equal(all(page, ".agreement-row__diamond").length + all(page, "[data-module=\"agreement-row\"] .proposal-card__diamond").length, 0, "agreement rows carry no coloured leaf or drop icon");
   assert.deepEqual(rows.map((row) => one(row, "[data-module=\"status-badge\"]").textContent), ["Ready for your approval", "Awaiting your decisions", "Contract details needed", "Agreement in preparation", "Approved", "Active", "Suspended", "Expired", "Archived", "Cancelled"]);
   assert.deepEqual(rows.map((row) => [row.getAttribute("data-action"), row.getAttribute("data-id")]), [
     ["agreement.open", "agreement-core-9102"], ["agreement.open", "agreement-core-9101"], ["agreement.open", "agreement-core-9103"],
@@ -458,25 +475,27 @@ const RETIRED = ["Proposal #", "valid until", "sent Dec", "sq ft", "Beam AI", "l
   assert.equal(map.getAttribute("data-surface"), "schematic");
   assert.equal(one(map, ".portfolio-map__label").textContent, "portfolio map");
   assert.equal(all(map, ".portfolio-map__river").length, 0, "the drawn river implied a geography nobody measured");
-  const expected = schematicPositions(quotedProperties.map((property) => ({ lat: property.lat, lon: property.lon })));
+  const pending = quotedProperties.filter((property) => ["prop-tabor", "prop-cinnamon"].includes(property.id));
+  const expected = schematicPositions(pending.map((property) => ({ lat: property.lat, lon: property.lon })));
   assert.deepEqual(all(map, ".map-pin-wrap").map((pin) => pin.getAttribute("style")), expected.map((point) => "left:" + point.x + "%;top:" + point.y + "%"), "pins are placed from the properties' own coordinates");
-  assert.deepEqual(all(map, ".map-pin-label").map((label) => label.textContent), ["Foothill Court", "Tabor Street", "Yarrow Ridge", "Cinnamon Bear Way"]);
+  assert.deepEqual(all(map, ".map-pin-label").map((label) => label.textContent), ["Tabor Street", "Cinnamon Bear Way"], "only the properties whose quotes still wait are mapped");
 
-  assert.deepEqual(all(page, ".rollup-card__num").map((cell) => cell.textContent), ["1", "3", "5", "3"]);
+  assert.equal(all(page, "[data-module=\"proposal-rollup\"]").length + all(page, ".rollup-card").length, 0, "no Approved, Revision, Declined or Open counters");
+  assert.deepEqual(all(page, ".contracts-section__count").map((count) => count.textContent), ["10", "6"], "the Quotes section counts only the quotes it lists");
   const groups = all(page, "[data-module=\"quote-property\"]");
-  assert.deepEqual(groups.map((group) => group.getAttribute("data-state")), ["approved", "revision", "declined", "open"]);
-  const foothill = groups[0];
-  const button = one(foothill, "button");
+  assert.deepEqual(groups.map((group) => group.getAttribute("data-state")), ["revision", "open"], "only quotes awaiting a decision or in revision are listed; the approved and declined properties are not");
+  const tabor = groups[0];
+  const button = one(tabor, "button");
   assert.equal(button.getAttribute("data-action"), "proposal.open");
-  assert.equal(button.getAttribute("data-id"), "quote-9101-7101");
-  assert.equal(one(foothill, ".proposal-card__meta").textContent, "4820 Foothill Court, Lakewood, CO 80215 · 3 quotes");
-  assert.equal(one(foothill, ".proposal-group__decision").textContent, "Option approved");
-  assert.deepEqual(all(foothill, "[data-module=\"quote-row\"]").map((row) => [one(row, ".proposal-option__model").textContent, (one(row, ".proposal-option__total") || { textContent: null }).textContent, one(row, "[data-module=\"status-badge\"]").textContent]), [
-    ["Per service", "$266.51", "✕ Declined"],
-    ["Monthly", "$9,322.74", "✓ Approved"],
-    ["Seasonal", "$8,875.13", "✕ Declined"],
-  ], "each option shows Core's grand total, never one computed from an area");
-  assert.deepEqual(groups.map((group) => all(group, "[data-module=\"quote-row\"]").length), [3, 3, 3, 3]);
+  assert.equal(button.getAttribute("data-id"), "quote-9101-7102");
+  assert.equal(one(tabor, ".proposal-card__meta").textContent, "1190 Tabor Street, Golden, CO 80401 · 3 quotes");
+  assert.equal(one(tabor, ".proposal-group__decision").textContent, "Changes requested");
+  assert.deepEqual(all(groups[1], "[data-module=\"quote-row\"]").map((row) => [one(row, ".proposal-option__model").textContent, (one(row, ".proposal-option__total") || { textContent: null }).textContent, one(row, "[data-module=\"status-badge\"]").textContent]), [
+    ["Per service", "$992.99 per visit", "• Reviewing"],
+    ["Monthly", "$33,766.64 / month", "◔ Unseen"],
+    ["Seasonal", "$32,156.25 per season", "◔ Unseen"],
+  ], "each option shows Core's grand total with the period of its pricing model, never one computed from an area");
+  assert.deepEqual(groups.map((group) => all(group, "[data-module=\"quote-row\"]").length), [3, 3]);
   assert.equal(all(page, ".proposal-card__tag").length, 0, "every quoted property is on the map, so none is marked off it");
   assert.equal(one(page, "[data-module=\"quote-package-footer\"]").textContent, "✦Decide each property on its own. Approving one option for a property declines its other options. Once every property has a decision, we’ll ask for your contract details and prepare your service agreement.");
   for (const id of all(page, "[data-id]").map((element) => element.getAttribute("data-id"))) {
@@ -490,16 +509,16 @@ const RETIRED = ["Proposal #", "valid until", "sent Dec", "sq ft", "Beam AI", "l
   withProperties(() => { cinnamon.lat = null; cinnamon.lon = null; }, () => {
     const page = ProposalsList();
     const map = one(page, "[data-module=\"portfolio-map\"]");
-    assert.equal(one(map, ".portfolio-map__label").textContent, "portfolio map · 3 of 4 properties on the map");
-    assert.equal(all(map, ".map-pin-wrap").length, 3, "a property without a coordinate is listed but not pinned");
+    assert.equal(one(map, ".portfolio-map__label").textContent, "portfolio map · 1 of 2 properties on the map");
+    assert.equal(all(map, ".map-pin-wrap").length, 1, "a property without a coordinate is listed but not pinned");
     const tags = all(page, "[data-module=\"quote-property\"]").map((group) => (one(group, ".proposal-card__tag") || { textContent: "" }).textContent);
-    assert.deepEqual(tags, ["", "", "", "Not on the map"]);
+    assert.deepEqual(tags, ["", "Not on the map"]);
   });
   withProperties(() => { quotedProperties.forEach((property) => { property.lat = null; property.lon = null; }); }, () => {
     const page = ProposalsList();
     assert.equal(all(page, "[data-module=\"portfolio-map\"]").length, 0, "with nothing to place there is no map, and nothing lands at its centre");
     assert.equal(all(page, ".proposal-card__tag").length, 0, "without a map no property is marked off it");
-    assert.equal(all(page, "[data-module=\"quote-property\"]").length, 4, "every property is still listed");
+    assert.equal(all(page, "[data-module=\"quote-property\"]").length, 2, "every property still waiting is listed");
   });
 }
 
@@ -541,7 +560,7 @@ const RETIRED = ["Proposal #", "valid until", "sent Dec", "sq ft", "Beam AI", "l
   const page = ProposalsList();
   const head = one(page, "[data-module=\"quote-package-head\"]");
   assert.equal(one(head, "h1").textContent, "Your contracts");
-  assert.equal(one(head, ".proposals-head__sub").textContent, "10 service agreements", "once every package is past review the page counts agreements, not quotes");
+  assert.equal(all(head, ".proposals-head__sub").length, 0, "the head counts nothing");
   assert.equal(all(head, ".proposals-head__pill").length, 0, "there is nothing left to decide");
   assert.equal(all(page, "[data-module=\"quote-package-footer\"]").length, 0);
   assert.equal(all(page, "[data-module=\"quote-preparing\"]").length, 0);
@@ -587,7 +606,7 @@ const RETIRED = ["Proposal #", "valid until", "sent Dec", "sq ft", "Beam AI", "l
     ["Snow clearing", "5 × $1,256.00", "$6,280.00"],
     ["De-icing", "5 × $556.00", "$2,780.00"],
   ], "each line is its product, quantity, unit price and Core's line total");
-  assert.deepEqual(all(monthly, ".money-rows__row").map((row) => row.textContent), ["Subtotal$9,060.00", "Taxes$262.74", "Total$9,322.74"]);
+  assert.deepEqual(all(monthly, ".money-rows__row").map((row) => row.textContent), ["Subtotal$9,060.00", "Taxes$262.74", "Total$9,322.74 / month"], "taxes that are charged keep their rows, and the total carries its period");
   assert.equal(all(decided, "[data-action=\"quote.approve\"]").length + all(decided, "[data-action=\"quote.decline\"]").length, 0, "a decided property offers no decision a terminal Order could not take");
   for (const retired of RETIRED) assert.ok(!decided.textContent.includes(retired), "the quote detail must not show " + JSON.stringify(retired));
   assert.equal(all(decided, "[data-module=\"beam-report\"]").length + all(decided, "[data-module=\"plan-option\"]").length, 0, "the Beam AI block and the hard-coded plans are gone from the package");
@@ -694,9 +713,14 @@ const RETIRED = ["Proposal #", "valid until", "sent Dec", "sq ft", "Beam AI", "l
   assert.equal(one(page, "[data-visual-id=\"agreement-back\"]").textContent, "‹ Back to your contracts");
   assert.equal(one(page, ".agreement-detail-head__eyebrow").textContent, "Service agreement");
   assert.equal(one(page, "h1").textContent, "Alkire Street and Braun Court");
-  assert.equal(one(page, ".proposal-detail-head__meta").textContent, "2 properties · 4 quotes");
+  assert.equal(one(page, ".proposal-detail-head__meta").textContent, "Season Nov 1, 2026 – Mar 31, 2027", "the season replaces the property and quote counts under the title");
   assert.equal(one(page, "[data-module=\"agreement-detail-head\"] [data-module=\"status-badge\"]").textContent, "Ready for your approval");
-  assert.equal(one(page, "[data-module=\"agreement-notice\"]").textContent, "Read the parties, services and terms below, then approve the agreement.");
+  assert.equal(all(page, "[data-module=\"agreement-notice\"]").length, 0, "the approval itself is the banner, so no second notice repeats the status");
+  const banner = page.children.find((node) => node.getAttribute("data-module") === "agreement-approve");
+  assert.ok(banner, "the coloured approval banner sits in the page flow above the parties");
+  assert.equal(page.children.indexOf(banner) < page.children.indexOf(one(page, "[data-module=\"agreement-parties\"]")), true);
+  assert.equal(banner.getAttribute("data-tone"), "warn");
+  assert.equal(one(banner, "h2").textContent, "Waiting for your approval");
   const facts = (card) => all(card, ".agreement-facts__row").map((row) => [one(row, "dt").textContent, one(row, "dd").textContent]);
   const parties = all(page, "[data-module=\"agreement-party\"]");
   assert.deepEqual(facts(parties[0]), [["Legal name", "Granite Ridge Snow Removal LLC"], ["Representative", "Jordan Pike, Contracts Manager"]]);
@@ -706,9 +730,9 @@ const RETIRED = ["Proposal #", "valid until", "sent Dec", "sq ft", "Beam AI", "l
     ["Billing address", "1550 Wynkoop Street, Suite 400, Denver, CO 80202"],
     ["Representative", "Dana Whitlock, Portfolio Manager"],
     ["Email", "dana.whitlock@example.test"],
-    ["Phone", "+1 (303) 555-0164"],
+    ["Phone", "+1 303-555-0164"],
   ]);
-  assert.deepEqual(facts(one(page, "[data-module=\"agreement-term\"]")), [["Effective date", "Oct 20, 2026"], ["Starts", "Nov 1, 2026"], ["Ends", "Mar 31, 2027"]]);
+  assert.deepEqual(facts(one(page, "[data-module=\"agreement-term\"]")), [["Effective date", "Oct 20, 2026"]], "the season is under the title, so the term card keeps only the effective date");
   const services = one(page, "[data-module=\"agreement-services\"]");
   assert.equal(one(services, ".agreement-section-head__sub").textContent, "The options you approved");
   assert.deepEqual(all(services, "[data-module=\"agreement-property\"]").map((entry) => [one(entry, ".agreement-property__title").textContent, (one(entry, ".agreement-property__address") || { textContent: "" }).textContent, all(entry, "[data-module=\"quote-option\"]").map((card) => one(card, ".quote-option__model").textContent).join("|")]), [
@@ -716,7 +740,15 @@ const RETIRED = ["Proposal #", "valid until", "sent Dec", "sq ft", "Beam AI", "l
     ["Braun Court", "247 Braun Court, Golden, CO 80401", "Monthly"],
   ], "an agreement lists each property with its approved option and the property's own address");
   assert.equal(all(services, "[data-action]").length, 0, "services inside an agreement are read-only");
-  const terms = one(page, "[data-module=\"agreement-terms\"]");
+  const collapsed = one(page, "[data-module=\"agreement-terms\"]");
+  assert.equal(collapsed.getAttribute("data-state"), "closed", "the terms are collapsed by default");
+  assert.equal(all(collapsed, ".terms-heading").length + all(collapsed, ".terms-num").length, 0);
+  const toggle = one(collapsed, "[data-action=\"agreement.toggleTerms\"]");
+  assert.deepEqual([toggle.textContent, toggle.getAttribute("aria-expanded")], ["Show terms", "false"]);
+  state.agreementTermsOpen = true;
+  const terms = one(AgreementDetail(), "[data-module=\"agreement-terms\"]");
+  assert.deepEqual([one(terms, "[data-action=\"agreement.toggleTerms\"]").textContent, one(terms, "[data-action=\"agreement.toggleTerms\"]").getAttribute("aria-expanded")], ["Hide terms", "true"]);
+  state.agreementTermsOpen = false;
   assert.equal(one(terms, ".terms-heading").textContent, "Winter service terms");
   assert.deepEqual(all(terms, ".terms-num").map((row) => [row.getAttribute("data-depth"), one(row, ".terms-num__marker").textContent, one(row, ".terms-num__text").textContent.slice(0, 18)]), [
     ["1", "1.", "Services"], ["2", "1.1", "Granite Ridge clea"], ["2", "1.2", "Every visit is log"],
@@ -725,6 +757,7 @@ const RETIRED = ["Proposal #", "valid until", "sent Dec", "sq ft", "Beam AI", "l
   ]);
   assert.equal(all(terms, ".terms-list li").length, 3);
   assert.equal(all(terms, "*").filter((node) => node.tagName === "SCRIPT" || node.tagName === "A").length, 0);
+  assert.deepEqual(all(services, ".money-rows__row").map((row) => row.textContent).filter((row) => row.startsWith("Total")), ["Total$9,127.23 per season", "Total$9,929.85 / month"], "each option price in the agreement carries its period");
   assert.equal(all(page, "[data-module=\"agreement-approve\"]").length, 1);
   assert.deepEqual(all(one(page, "[data-module=\"agreement-approve\"]"), "[data-action]").map((button) => [button.getAttribute("data-action"), button.getAttribute("data-id"), button.textContent]), [["agreement.approve", "9102", "Approve agreement"]]);
   for (const retired of ["PDF", "Download", "Request changes"]) assert.ok(!page.textContent.includes(retired), "the agreement page offers no " + retired);
@@ -746,6 +779,7 @@ const RETIRED = ["Proposal #", "valid until", "sent Dec", "sq ft", "Beam AI", "l
   const changed = AgreementDetail();
   assert.equal(one(changed, "[data-module=\"agreement-approve\"]").getAttribute("data-state"), "conflict", "an agreement that left SENT_TO_CLIENT still explains why nothing was sent");
   assert.equal(one(changed, "[data-module=\"agreement-approve\"]").textContent, "Your approval↺This changed since you opened itIts current state is shown here. Nothing was sent.");
+  assert.equal(all(changed, "[data-module=\"agreement-notice\"]").length, 0, "an active agreement shows no banner: its badge already says it is active");
   assert.equal(all(changed, "[data-action=\"agreement.approve\"]").length, 0);
   state.contractCommand = null;
 
@@ -753,27 +787,29 @@ const RETIRED = ["Proposal #", "valid until", "sent Dec", "sq ft", "Beam AI", "l
   const review = AgreementDetail();
   assert.equal(one(review, "[data-module=\"agreement-notice\"]").textContent, "The quotes in this agreement are waiting for your decisions.Go to your quotes ›");
   assert.equal(facts(all(review, "[data-module=\"agreement-party\"]")[0])[0][1], "Granite Ridge Snow Removal", "before the provider fields are written the owning organization names the provider");
-  assert.deepEqual(facts(all(review, "[data-module=\"agreement-party\"]")[1]).map((row) => row[1]), ["Dana Whitlock", "Not stated", "Not stated", "Not stated", "Not stated", "Not stated"]);
+  assert.deepEqual(facts(all(review, "[data-module=\"agreement-party\"]")[1]), [["Legal name", "Dana Whitlock"]], "a party detail that is not stated is left out, never shown as a placeholder");
+  assert.doesNotMatch(review.textContent, /Not stated|isn’t included yet/);
   assert.equal(all(review, "[data-module=\"agreement-term\"]").length, 0, "no term is shown before the agreement carries one");
-  assert.equal(one(review, "[data-module=\"agreement-terms\"] .quote-option__note").textContent, "The agreement text isn’t included yet.");
+  assert.equal(all(review, "[data-module=\"agreement-terms\"]").length, 0, "an agreement without terms has no terms card");
   assert.equal(all(review, "[data-module=\"agreement-approve\"]").length, 0);
   assert.equal(all(review, "[data-module=\"agreement-property\"]").length, 4, "in review the agreement lists every option it collects");
 
   for (const [id, stage, notice] of [
     ["agreement-core-9103", "details", "We need your contract details before we can prepare this agreement."],
-    ["agreement-core-9104", "drafting", "We’re preparing this agreement. It appears here for your approval once it’s ready."],
-    ["agreement-core-9100", "active", "This agreement is active."],
-    ["agreement-core-9099", "expired", "This agreement has expired. It is shown for reference."],
-    ["agreement-core-9095", "approved", "You approved this agreement."],
-    ["agreement-core-9098", "suspended", "This agreement is suspended. It is shown for reference."],
-    ["agreement-core-9097", "archived", "This agreement is archived. It is shown for reference."],
-    ["agreement-core-9096", "canceled", "This agreement was cancelled. It is shown for reference."],
+    ["agreement-core-9104", "drafting", null],
+    ["agreement-core-9100", "active", null],
+    ["agreement-core-9099", "expired", null],
+    ["agreement-core-9095", "approved", null],
+    ["agreement-core-9098", "suspended", null],
+    ["agreement-core-9097", "archived", null],
+    ["agreement-core-9096", "canceled", null],
   ]) {
     state.agreementId = id;
     const detail = AgreementDetail();
     assert.equal(detail.getAttribute("data-state"), stage);
-    assert.equal(one(detail, "[data-module=\"agreement-notice\"]").textContent, notice);
+    assert.equal((one(detail, "[data-module=\"agreement-notice\"]") || { textContent: null }).textContent, notice, stage + ": a banner appears only when the client must act");
     assert.equal(all(detail, "[data-module=\"agreement-approve\"]").length, 0, stage + " offers no approval");
+    assert.doesNotMatch(detail.textContent, /This agreement is active|shown for reference|You approved this agreement/);
   }
 
   state.agreementId = "agreement-core-1";
@@ -844,10 +880,11 @@ const RETIRED = ["Proposal #", "valid until", "sent Dec", "sq ft", "Beam AI", "l
     assert.ok(!page.textContent.includes(fixtureFact), "live mode never shows the fixture customer: " + fixtureFact);
   }
 
-  state.sessionName = "Priya Natarajan";
-  assert.equal(header(Overview()), "Welcome back, Priya");
   state.sessionName = "priya@example.test";
-  assert.equal(header(Overview()), "Welcome back", "an e-mail address is not a first name");
+  assert.equal(header(Overview()), "Welcome back", "a sign-in name is never the greeting; only the Account's own contact is");
+  state.moduleData.profile = { state: "ready", accountName: "Natarajan Holdings", contact: { name: "Priya Natarajan", firstName: "Priya", title: "" }, emails: [], phones: [], billingAddresses: [] };
+  assert.equal(header(Overview()), "Welcome back, Priya");
+  delete state.moduleData.profile;
 
   state.moduleData.properties = { state: "error", items: [] };
   assert.equal(one(Overview(), "[data-module=\"error-state\"]").textContent.startsWith("⚠Couldn’t load your home screen"), true);
@@ -863,8 +900,7 @@ const RETIRED = ["Proposal #", "valid until", "sent Dec", "sq ft", "Beam AI", "l
   configureLive({ portalServiceGeography: "" });
   state.moduleData.properties = { state: "ready", items: [] };
   const noGeography = Overview();
-  assert.equal(one(noGeography, "[data-module=\"weather-summary\"]").getAttribute("data-state"), "unavailable");
-  assert.match(one(noGeography, "[data-module=\"weather-summary\"]").textContent, /isn’t set up for this portal yet/);
+  assert.equal(all(noGeography, "[data-module=\"weather-summary\"]").length, 0, "without a configured forecast there is no forecast card");
   assert.ok(one(noGeography, "[data-module=\"property-map\"]"), "a home without a service area still lists the properties");
 
   configureLive();
@@ -877,7 +913,7 @@ const RETIRED = ["Proposal #", "valid until", "sent Dec", "sq ft", "Beam AI", "l
   state.liveWeatherState = "ready";
   state.liveWeather = { source: "xweather", nowIndex: 0, zoneCentroids: {}, legend: graniteRidgeSnowFixture.overview.weather.legend, timeline: [{ day: "Today", date: "Feb 2", kind: "snow", temp: "−4°C", label: "Snowfall 2 cm", note: "", stats: [], zones: {} }] };
   page = Overview();
-  assert.equal(one(page, ".page-header__sub").textContent, "Snowfall 2 cm · 1 property", "a live property is not called under contract");
+  assert.equal(one(page, ".page-header__sub").textContent, "Snowfall 2 cm", "a live home counts no properties and calls none under contract");
   const liveContracts = one(page, "[data-module=\"active-contracts\"]");
   assert.equal(liveContracts.getAttribute("data-state"), "loading", "the home widget waits for the live Contracts read instead of saying there is no contract");
   assert.equal(all(liveContracts, "[data-module=\"section-unavailable\"]").length, 0, "Contracts is live, so the home no longer says it is not in the portal");
@@ -891,16 +927,11 @@ const RETIRED = ["Proposal #", "valid until", "sent Dec", "sq ft", "Beam AI", "l
   const LIVE_CLAIMS = ["Not under contract", "No visit booked", "Dispatch", "dispatch", "trigger", "Active Monitoring", "En Route", "Issue Opened", "Back to appointments", "not on your contract"];
   state.propertyId = "prop-core-278";
   const detail = PropertyDetail();
-  assert.deepEqual(all(detail, "[data-fact]").map((fact) => fact.getAttribute("data-fact")), ["contract"], "no zone, lot, quote or map fact is invented for a live property");
+  assert.deepEqual(all(detail, "[data-fact]").map((fact) => fact.getAttribute("data-fact")), [], "no contract, zone, lot, quote or map fact is invented for a live property");
+  assert.equal(all(detail, "[data-module=\"property-facts\"]").length, 0, "with no fact to show there is no empty facts card");
   assert.equal(all(detail, ".prop-head__addr").length, 0);
   assert.equal(all(detail, ".status-badge").length, 0, "a live property header shows no status rather than Active Monitoring");
-  const contractFact = one(detail, "[data-fact=\"contract\"]");
-  assert.equal(contractFact.getAttribute("data-state"), "loading", "the agreement fact waits for the live Contracts read");
-  assert.equal(one(contractFact, ".prop-fact__label").textContent, "Service agreement");
-  const visits = one(detail, "[data-module=\"property-visits\"]");
-  assert.equal(visits.getAttribute("data-state"), "unavailable");
-  assert.equal(one(visits, "[data-module=\"section-unavailable\"]").textContent, "Not available yetScheduled visits aren’t in the portal yet.");
-  assert.equal(all(visits, "[data-action]").length, 0, "the week view is not reachable live, so the section offers nothing");
+  assert.equal(all(detail, "[data-module=\"property-visits\"]").length + all(detail, "[data-module=\"section-unavailable\"]").length, 0, "visits have no live source, so the page has no Service — Not available yet card");
   assert.equal(one(detail, ".detail-back").getAttribute("data-id"), "overview");
   assert.equal(one(detail, ".detail-back").textContent, "‹ Back to home");
   for (const claim of LIVE_CLAIMS) assert.ok(!detail.textContent.includes(claim), "live property detail never says \"" + claim + "\"");
@@ -918,10 +949,13 @@ const RETIRED = ["Proposal #", "valid until", "sent Dec", "sq ft", "Beam AI", "l
     ["contract", "#1234 · Seasonal Unlimited Coverage ›", ""],
     ["zone", "Central", ""],
     ["lot", "19,400 sq ft", ""],
-    ["quotes", "3 quotes · option approved ›", ""],
-  ], "without a map on the portal there is no map fact, and a plan id is never shown as a price");
-  assert.doesNotMatch(keyless.textContent, /\$898/);
-  assert.equal(one(keyless, "[data-fact=\"quotes\"] .link-action").getAttribute("data-id"), "quote-9101-7101", "the property's quotes open their package group");
+  ], "without a map on the portal there is no map fact, a plan id is never shown as a price, and decided quotes are not listed");
+  assert.doesNotMatch(keyless.textContent, /\$898|option approved|declined/);
+  state.propertyId = "prop-cinnamon";
+  const waiting = one(PropertyDetail(), "[data-fact=\"quotes\"]");
+  assert.equal(one(waiting, ".prop-fact__value").textContent, "3 quotes · awaiting your decision ›", "quotes are shown on a property only while one awaits a decision");
+  assert.equal(one(waiting, ".link-action").getAttribute("data-id"), "quote-9101-7104", "the property's quotes open their package group");
+  state.propertyId = "prop-foothill";
   assert.equal(one(keyless, ".detail-back").textContent, "‹ Back to appointments", "fixture mode keeps its appointments week");
   assert.equal(all(keyless, ".prop-head .status-badge").length, 1, "fixture mode still states the property status");
 
@@ -941,7 +975,7 @@ const RETIRED = ["Proposal #", "valid until", "sent Dec", "sq ft", "Beam AI", "l
   configureFixture({ portalMapsApiKey: "stubkey" });
   state.propertyId = "prop-foothill";
   const keyed = PropertyDetail();
-  assert.deepEqual(all(keyed, "[data-fact]").map((fact) => fact.getAttribute("data-fact")), ["contract", "zone", "lot", "quotes"], "the Location card shows the map, so no map fact repeats it");
+  assert.deepEqual(all(keyed, "[data-fact]").map((fact) => fact.getAttribute("data-fact")), ["contract", "zone", "lot"], "the Location card shows the map, so no map fact repeats it");
   const pinned = one(keyed, "[data-module=\"property-location\"]");
   assert.equal(pinned.getAttribute("data-state"), "placed");
   assert.equal(one(pinned, "[data-visual-id=\"property-location-link\"]").getAttribute("data-action"), "property.showOnMap");
@@ -950,10 +984,8 @@ const RETIRED = ["Proposal #", "valid until", "sent Dec", "sq ft", "Beam AI", "l
   const alkire = overviewProperties.find((property) => property.name === "Alkire Street");
   withProperties(() => { alkire.lat = null; alkire.lon = null; alkire.address = ""; }, () => {
     state.propertyId = alkire.id;
-    const unplaced = one(PropertyDetail(), "[data-module=\"property-location\"]");
-    assert.equal(unplaced.getAttribute("data-state"), "unavailable");
-    assert.equal(one(unplaced, "[data-module=\"location-unavailable\"]").getAttribute("data-state"), "no-address");
-    assert.equal(all(unplaced, "[data-visual-id=\"property-location-link\"]").length, 0, "a property off the map offers no way to the home map pin it does not have");
+    const unplaced = PropertyDetail();
+    assert.equal(all(unplaced, "[data-module=\"property-location\"]").length + all(unplaced, "[data-module=\"location-unavailable\"]").length, 0, "a property that cannot be placed has no location block and no way to a home map pin it does not have");
   });
   withProperties(() => { alkire.lat = null; alkire.lon = null; }, () => {
     state.propertyId = alkire.id;
@@ -968,14 +1000,182 @@ const RETIRED = ["Proposal #", "valid until", "sent Dec", "sq ft", "Beam AI", "l
   assert.equal(all(quoteLocation, "[data-visual-id=\"property-location-link\"]").length, 0);
   configureFixture();
   state.currentSiteId = "quote-9101-7101";
-  assert.equal(one(one(ProposalDetail(), "[data-module=\"property-location\"]"), "[data-module=\"location-unavailable\"]").getAttribute("data-state"), "no-map", "without a map key the quote detail keeps the address with a quiet note");
+  assert.equal(all(ProposalDetail(), "[data-module=\"property-location\"]").length, 0, "without a map key the quote detail shows no location block; its address is already in the header");
+}
+
+{
+  const ADDRESS = "1239 W Georgia St, Vancouver, BC V6E 4R8, Canada";
+  const PLAN = "c08d28dc-0f70-4fb9-9d6e-1b881975d923";
+  const ready = { state: "ready", scopeMode: "server-scoped", truncated: false };
+  const viewed = (final) => SENT.concat("QUOTE_VIEWED", final);
+  const quote = (id, codes, total, items) => orderRow(id, codes, { SERVICE_PROPERTY: { value: 983 }, SERVICE_ADDRESS: { value: "1239 W Georgia St, Vancouver, BC, V6E 4R8, CA" } }, { grandTotal: total, totalCharges: total, totalTaxes: 0, items: items.map((id) => ({ id })) });
+  const month = (count) => ({ INTERVAL_UNIT: "MONTH", INTERVAL_COUNT: count });
+  const item = (id, order, price, total, metadata) => Object.assign({ id, order: { id: order }, itemPrice: { id: price }, grandTotal: total, sortOrder: id }, metadata ? { metadata } : {});
+  const recurring = (id, product) => ({ id, product: { id: product }, type: { id: 2, code: "TIERED_RECURRENT" } });
+  const tiered = (id, product) => ({ id, product: { id: product }, type: { id: 1, code: "TIERED" } });
+  const bilbo = (agreement = {}, extraOrders = []) => normalizeProposals({
+    accountId: 732,
+    scopeMode: "server-scoped",
+    reads: { agreements: ready, orders: ready, orderItems: ready, productPrices: Object.assign({}, ready, { scopeMode: "unscoped" }), products: Object.assign({}, ready, { scopeMode: "unscoped" }) },
+    client: { displayName: "Bilbo Baggins" },
+    agreements: [agreementDocument(["QUOTATION", "QUOTATION_SENT", "AWAITING_CLIENT_DETAILS", "DRAFT", "SENT_TO_CLIENT", "CLIENT_APPROVED", "ACTIVE"], Object.assign({
+      CLIENT: { value: 732 }, ORDERS: { value: [114] }, LEGAL_NAME: { value: "Bilbo Baggins" }, CLIENT_TYPE: { value: "ORGANIZATION" },
+      BILLING_ADDRESS: { value: "1239 W Georgia St, Vancouver, BC, V6E 4R8, CA" }, PROVIDER_LEGAL_NAME: { value: "Limitless Snow Removal Corp." },
+      REPRESENTATIVE_FIRST_NAME: { value: "Bilbo" }, REPRESENTATIVE_LAST_NAME: { value: "Baggins" }, REPRESENTATIVE_PHONE: { value: "+19991112233" },
+      CONTRACT_TERMS: { value: "# Test terms\n\n1. Services\n1.1 Snow is cleared." },
+    }, agreement), { id: 169 })],
+    quoteOrders: [
+      quote(113, viewed("DECLINED"), 1512.5, [142, 143]),
+      quote(114, viewed("CLIENT_APPROVED"), 4217.94, [140, 141]),
+      quote(115, viewed("DECLINED"), 16871.75, [138, 139]),
+    ].concat(extraOrders),
+    orderItems: [
+      item(138, 115, 226, 2991.95, month(5)), item(139, 115, 232, 13879.8, month(5)),
+      item(140, 114, 52, 747.99, month(1)), item(141, 114, 58, 3469.95, month(1)),
+      item(142, 113, 27, 934.99), item(143, 113, 35, 577.51),
+    ],
+    productPrices: [tiered(27, 25), tiered(35, 28), recurring(52, 25), recurring(58, 28), recurring(226, 25), recurring(232, 28)],
+    products: [{ id: 25, nls: { en: { NAME: "Snow Removal" } } }, { id: 28, nls: { en: { NAME: "Rock Salt De-Icing" } } }],
+  });
+  const property = (planId = "") => ({
+    id: "prop-core-983", backendId: 983, name: ADDRESS, address: ADDRESS, city: "Vancouver", postal: "V6E 4R8", region: "BC", country: "CA",
+    category: null, stateCode: null, lat: null, lon: null, areaSqft: 50000, planId,
+    zone: null, contract: null, quoteSiteId: null, appointment: null, ticket: null, lastService: null,
+  });
+  const live = (proposals, planId) => {
+    applyPortalConfig(readPortalConfig({ dataset: { portalVertical: "snow", portalProfile: "stormRetail", portalTheme: "snow", portalDataMode: "live", portalAuthMode: "required", portalOrganization: "SNOWLIMITLESS", portalEnabledModules: "overview,properties,proposals,profile" } }));
+    state.liveWeather = null;
+    state.liveWeatherState = "off";
+    state.contractCommand = null;
+    state.contractConfirm = null;
+    state.agreementTermsOpen = false;
+    state.moduleData.properties = { state: "ready", accountId: 732, items: [property(planId)], scopeMode: "browser-filtered", truncated: false };
+    state.moduleData.proposals = proposals;
+    state.moduleStatus.proposals = "ready";
+    state.moduleData.profile = { state: "ready", accountName: "Bilbo Baggins", contact: { name: "Bilbo Baggins", firstName: "Bilbo", title: "" }, emails: [], phones: ["+1 999-111-2233"], billingAddresses: [ADDRESS] };
+  };
+  const once = (root, text) => root.textContent.split(text).length - 1;
+  const SEASON = { TERM_START_DATE: { value: "2026-11-01" }, TERM_END_DATE: { value: "2027-03-31" } };
+  const PROVIDER_CONTACT = { PROVIDER_CONTACT_PHONE: { value: "+16046700591" }, PROVIDER_CONTACT_EMAIL: { value: "support@snowlimitless.example.test" } };
+
+  live(bilbo());
+  const home = Overview();
+  assert.equal(one(home, ".page-header__title").textContent, "Welcome back, Bilbo");
+  assert.equal(all(home, ".page-header__sub").length, 0, "agreement 169 has no season dates, so the greeting has no subtitle and never counts properties");
+  for (const id of ["weather-summary", "invoices", "upcoming-services", "support-requests", "section-unavailable"]) assert.equal(all(home, `[data-module="${id}"]`).length, 0, id + " has no live source and is not on the home");
+  assert.equal(one(home, ".ov-grid").getAttribute("data-count"), "1");
+  const card = one(home, "[data-module=\"active-contracts\"]");
+  const contractRow = one(card, "[data-module=\"contract-row\"]");
+  assert.equal(one(contractRow, ".ov-row__title").textContent, ADDRESS);
+  assert.deepEqual(all(contractRow, ".status-badge").map((badge) => badge.textContent), ["Active"]);
+  assert.equal(one(contractRow, ".ov-row__meta").textContent, "Monthly · CA$4,217.94 / month", "the home shows the active agreement's chosen option and its price per period");
+  assert.equal(all(card, "[data-module=\"quote-decision\"]").length, 0, "no decision link while no quote waits");
+  assert.equal(all(card, ".ov-lead").length, 0, "no \"1 service agreement\" count above the agreement");
+  for (const block of [card, one(home, "[data-module=\"property-map\"]")]) assert.equal(once(block, "1239 W Georgia St"), 1, "the address appears once on each card");
+  assert.equal(one(one(home, "[data-module=\"property-row\"]"), ".ov-prow__addr").textContent, "50,000 ft²");
+  assert.doesNotMatch(home.textContent, /1 property|Not available yet|Forecast unavailable|1,512\.50|16,871\.75/);
+
+  const contracts = ProposalsList();
+  assert.equal(all(contracts, ".proposals-head__sub").length + all(contracts, "[data-module=\"proposal-rollup\"]").length, 0, "no subtitle and no counters");
+  assert.equal(all(contracts, "[data-module=\"contracts-quotes\"]").length, 0, "113 and 115 were declined and 114 was approved: no quote waits, so there is no Quotes section");
+  const agreementRow = one(contracts, "[data-module=\"agreement-row\"]");
+  assert.equal(one(agreementRow, ".proposal-card__name").textContent, ADDRESS);
+  assert.equal(one(agreementRow, ".proposal-card__meta").textContent, "Monthly · CA$4,217.94 / month");
+  assert.equal(once(agreementRow, "Active"), 1, "the status shows once, as the badge");
+  assert.equal(all(agreementRow, ".proposal-card__diamond").length, 0);
+  assert.doesNotMatch(contracts.textContent, /declined|Declined|quote/, "nothing about the decided quotes reaches the list");
+
+  state.agreementId = "agreement-core-169";
+  const plainAgreement = AgreementDetail();
+  assert.equal(all(plainAgreement, ".proposal-detail-head__meta").length, 0, "no season without dates, and no property or quote count");
+  assert.equal(all(plainAgreement, "[data-module=\"agreement-notice\"]").length + all(plainAgreement, "[data-module=\"agreement-approve\"]").length, 0, "an active agreement needs nothing from the client, so there is no banner");
+  assert.deepEqual(all(one(plainAgreement, "[data-module=\"agreement-party\"]"), "dt").map((label) => label.textContent), ["Legal name"], "agreement 169 carries no provider phone or e-mail, so none is shown");
+  const services = one(plainAgreement, "[data-module=\"agreement-services\"]");
+  assert.equal(once(services, "1239 W Georgia St"), 1, "the property address appears once among the services");
+  assert.equal(all(services, ".agreement-property__address").length, 0);
+  assert.deepEqual(all(services, ".money-rows__row").map((row) => row.textContent), ["TotalCA$4,217.94 / month"], "with no taxes only the total is shown, with its period");
+  assert.deepEqual(all(services, ".purch-line__title").map((line) => line.textContent), ["Snow Removal", "Rock Salt De-Icing"]);
+  assert.equal(one(plainAgreement, "[data-module=\"agreement-terms\"]").getAttribute("data-state"), "closed");
+  assert.equal(one(plainAgreement, "[data-action=\"agreement.toggleTerms\"]").textContent, "Show terms");
+  assert.equal(all(plainAgreement, ".terms-heading").length, 0);
+  const client = all(plainAgreement, "[data-module=\"agreement-party\"]")[1];
+  assert.equal(all(client, "dd").find((value) => value.textContent.startsWith("1239")).textContent, ADDRESS, "the billing address reads like the property address");
+  assert.equal(all(client, "dd").map((value) => value.textContent).includes("+1 999-111-2233"), true);
+
+  state.propertyId = "prop-core-983";
+  const detail = PropertyDetail();
+  assert.equal(one(detail, ".prop-head__title").textContent, ADDRESS);
+  assert.equal(all(detail, ".prop-head__addr").length, 0, "the address is the title and is not repeated under it");
+  assert.deepEqual(all(detail, "[data-fact]").map((fact) => [fact.getAttribute("data-fact"), one(fact, ".prop-fact__value").textContent]), [["area", "50,000 ft²"]]);
+  const service = one(detail, "[data-module=\"property-service\"]");
+  assert.equal(one(service, ".prop-service__option").textContent, "Monthly");
+  assert.equal(one(service, ".prop-service__price").textContent, "CA$4,217.94 / month");
+  assert.deepEqual(all(service, ".prop-service__line").map((line) => line.textContent), ["Snow Removal", "Rock Salt De-Icing"], "the service block names the services on the chosen option");
+  assert.deepEqual([one(service, "[data-action=\"agreement.open\"]").getAttribute("data-id"), one(service, "[data-action=\"agreement.open\"]").textContent], ["agreement-core-169", "View agreement ›"]);
+  for (const absent of ["property-visits", "property-location", "location-unavailable", "section-unavailable", "property-plan"]) assert.equal(all(detail, `[data-module="${absent}"]`).length, 0, absent + " has nothing to show for this property");
+  assert.equal(all(detail, "[data-fact=\"quotes\"]").length, 0, "no quote waits, so the declined quotes are not linked");
+  assert.doesNotMatch(detail.textContent, /Not available yet|declined|2 quotes|Location unavailable/);
+
+  live(bilbo(Object.assign({}, SEASON, PROVIDER_CONTACT)), PLAN);
+  const fetched = [];
+  globalThis.fetch = (url, options) => { fetched.push([url, options.credentials]); return new Promise(() => {}); };
+  assert.equal(one(Overview(), ".page-header__sub").textContent, "Season Nov 1, 2026 – Mar 31, 2027", "the subtitle is the active agreement's season");
+  assert.equal(one(Overview(), "[data-module=\"contract-row\"] .ov-row__meta").textContent, "Monthly · CA$4,217.94 / month · Season Nov 1, 2026 – Mar 31, 2027");
+  assert.equal(one(Overview(), "[data-module=\"property-row\"] .ov-prow__addr").textContent, "50,000 ft² · Plan approved");
+  assert.equal(one(ProposalsList(), "[data-module=\"agreement-row\"] .proposal-card__meta").textContent, "Monthly · CA$4,217.94 / month · Season Nov 1, 2026 – Mar 31, 2027", "the agreement row adds the season when the agreement has dates");
+  state.agreementId = "agreement-core-169";
+  const seasoned = AgreementDetail();
+  assert.equal(one(seasoned, ".proposal-detail-head__meta").textContent, "Season Nov 1, 2026 – Mar 31, 2027");
+  assert.equal(all(seasoned, "[data-module=\"agreement-term\"]").length, 0, "the season is under the title and not repeated in a term card");
+  const provider = one(seasoned, "[data-module=\"agreement-party\"]");
+  assert.deepEqual(all(provider, ".agreement-facts__row").map((row) => [one(row, "dt").textContent, one(row, "dd").textContent, (one(row, "a") || { getAttribute: () => null }).getAttribute("href")]), [
+    ["Legal name", "Limitless Snow Removal Corp.", null],
+    ["Phone", "+1 604-670-0591", "tel:+16046700591"],
+    ["Email", "support@snowlimitless.example.test", "mailto:support@snowlimitless.example.test"],
+  ], "the provider's phone and e-mail come from the agreement the client already reads");
+  const plannedDetail = PropertyDetail();
+  assert.deepEqual(all(plannedDetail, "[data-fact]").map((fact) => [fact.getAttribute("data-fact"), one(fact, ".prop-fact__value").textContent]), [["area", "50,000 ft²"], ["plan", "Approved"], ["season", "Nov 1, 2026 – Mar 31, 2027"]]);
+  assert.equal(one(plannedDetail, "[data-module=\"property-plan\"]").getAttribute("data-state"), "loading", "an approved plan is read and drawn on the property page");
+  assert.deepEqual(fetched, [["/core/media/" + PLAN + "/stream.json", "omit"]], "the plan drawing is the public MediaAsset stream the review page reads, without credentials");
+
+  const drawn = [];
+  const planEntry = propertyPlan("8b6962ae-d617-438b-8aa3-4db8d089fc47", () => drawn.push("changed"), async () => ({ ok: true, json: async () => ({
+    type: "PropertyPlan", schemaVersion: 1,
+    elements: [
+      { label: "Entrance walkway", elementTypeDictionaryId: 1, overlays: [{ map: "GOOGLE_MAPS", geometry: { type: "Polygon", coordinates: [[[-123.1141, 49.2608], [-123.1139, 49.2608], [-123.1139, 49.2609], [-123.1141, 49.2609], [-123.1141, 49.2608]]] } }] },
+      { label: "Salt bin", elementTypeDictionaryId: 2, overlays: [{ map: "GOOGLE_MAPS", geometry: { type: "Point", coordinates: [-123.114, 49.26085] } }] },
+    ],
+  }) }));
+  await new Promise((resolve) => setImmediate(resolve));
+  assert.deepEqual([planEntry.status, drawn.length], ["ready", 1], "a plan that loads re-renders the page once");
+  const drawing = PropertyPlan(planEntry);
+  assert.equal(all(drawing, "path.prop-plan__shape").length + all(drawing, "circle.prop-plan__shape").length, 2, "each plan element is drawn from its geometry");
+  assert.deepEqual(all(drawing, ".prop-plan__name").map((name) => name.textContent), ["Entrance walkway", "Salt bin"]);
+  const missing = propertyPlan("6d6d69a3-32f5-47f5-afbf-08cdc61b35d8", () => {}, async () => ({ ok: false, status: 404 }));
+  await new Promise((resolve) => setImmediate(resolve));
+  assert.equal(PropertyPlan(missing), null, "a plan that cannot be read shows nothing");
+  assert.equal(propertyPlan("", () => {}), null, "a property without a plan shows nothing");
+
+  const sentQuote = (id) => quote(id, SENT, 2100, []);
+  live(bilbo({}, [sentQuote(116)]));
+  const waitingCard = one(Overview(), "[data-module=\"active-contracts\"]");
+  const link = one(waitingCard, "[data-module=\"quote-decision\"]");
+  assert.deepEqual([link.textContent, link.getAttribute("data-action")], ["1 quote waiting for your decision›", "overview.openContracts"], "a quote awaiting the client is a prominent link to Contracts");
+  const listed = ProposalsList();
+  assert.deepEqual(all(listed, "[data-module=\"quote-property\"]").map((group) => [group.getAttribute("data-state"), one(group, ".proposal-card__meta").textContent]), [["open", "1 quote"]], "only the quote that waits is listed, and its header names the address once");
+  assert.equal(once(one(listed, "[data-module=\"quote-property\"]"), "1239 W Georgia St"), 1);
+  assert.equal(one(PropertyDetail(), "[data-fact=\"quotes\"] .prop-fact__value").textContent, "1 quote · awaiting your decision ›");
+  live(bilbo({}, [sentQuote(116), sentQuote(117)]));
+  assert.equal(one(Overview(), "[data-module=\"quote-decision\"]").textContent, "2 quotes waiting for your decision›");
+  state.moduleData.properties = null;
+  delete state.moduleData.profile;
 }
 
 for (const property of overviewProperties) {
   assert.ok(!warnings.some((line) => line.includes(property.address)), "a console warning must never carry a customer address");
 }
 
-console.log("snow-contracts-check ok: Orders, their lines and the agreement document normalize with absent data left absent and every figure taken from Core, the terms keep their headings, items and numbered outline as text, the Contracts page lists agreements by what they need from the customer and quotes by property with a true rollup, the quote detail shows each option's lines and server totals with approve and decline only for a viewed quote and no retired Beam or plan claims, the agreement detail shows parties, term, approved services and terms with approval only when sent, and live mode opens Contracts through the snow adapter while other verticals stay closed");
+console.log("snow-contracts-check ok: Orders, their lines and the agreement document normalize with absent data left absent and every figure taken from Core, the terms keep their headings, items and numbered outline as text, the Contracts page lists agreements by what they need from the customer with their chosen option, price per period and season, and only the quotes that still wait, with no subtitle or counters, the quote detail shows each option's lines and server totals with approve and decline only for a viewed quote and no retired Beam or plan claims, the agreement detail shows the season under the title, a banner only when the client must act, parties without placeholders, the provider contact the agreement carries, approved services with the total alone when untaxed and collapsed terms, the live home, Contracts, agreement and property pages for a real client show each address once, the active option, waiting quotes and the plan drawing and nothing without data, and live mode opens Contracts through the snow adapter while other verticals stay closed");
 
 function createDom() {
   class Text {

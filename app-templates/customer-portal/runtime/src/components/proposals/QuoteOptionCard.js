@@ -3,6 +3,7 @@ import { state } from "../../state.js";
 import { StatusBadge } from "../primitives/StatusBadge.js";
 import { ActionButton } from "../primitives/ActionButton.js";
 import { QUOTE_STATUS } from "./QuotePackage.js";
+import { pricePeriod } from "../../normalizers/contracts.js";
 import { CommandOutcome, DecisionFailure, PendingNote } from "./ContractStates.js";
 
 export function QuoteOptionCard(order, options) {
@@ -55,12 +56,13 @@ function QuoteMoney(order) {
   if (!order.money) {
     return h("div", { "class": "quote-option__note", "data-module": "quote-totals", "data-state": "unpriced" }, "No price is stated on this quote yet.");
   }
-  var rows = [["Subtotal", order.money.subtotal, "subtotal"], ["Taxes", order.money.taxes, "taxes"]].filter(function (row) { return !!row[1]; });
+  var rows = order.money.taxFree ? [] : [["Subtotal", order.money.subtotal, "subtotal"], ["Taxes", order.money.taxes, "taxes"]].filter(function (row) { return !!row[1]; });
   var wrap = h("div", { "class": "money-rows quote-totals", "data-module": "quote-totals", "data-visual-id": "quote-totals" }, rows.map(function (row) {
     return h("div", { "class": "money-rows__row", "data-kind": row[2] }, [h("span", null, row[0]), h("span", null, row[1])]);
   }));
   if (order.money.total) {
-    wrap.appendChild(h("div", { "class": "money-rows__row money-rows__row--total", "data-kind": "total" }, [h("span", null, "Total"), h("span", null, order.money.total)]));
+    var period = pricePeriod(order);
+    wrap.appendChild(h("div", { "class": "money-rows__row money-rows__row--total", "data-kind": "total" }, [h("span", null, "Total"), h("span", null, period ? order.money.total + " " + period : order.money.total)]));
   }
   return wrap;
 }

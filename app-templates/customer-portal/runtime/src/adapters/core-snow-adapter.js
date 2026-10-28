@@ -1,5 +1,6 @@
 import { attributeEntry, attributeNumber, attributeText, latestStateCode, positiveInteger, text } from "../normalizers/core-record.js";
 import { CUSTOMER_ORDER_STATUS, OPERATOR_ORDER_STATES, QUOTE_ORDER_TYPES } from "../normalizers/contracts.js";
+import { formatPostalAddress } from "../normalizers/postal-address.js";
 
 const PROPERTY_TYPE = "SNOW_REMOVAL_PROPERTY";
 const PROPERTY_BASE_TYPE = "PROPERTY";
@@ -12,6 +13,8 @@ const AGREEMENT_PAGE_SIZE = 100;
 const ORDER_PAGE_SIZE = 100;
 const LINE_PAGE_SIZE = 200;
 const CATALOG_PAGE_SIZE = 200;
+
+const MEDIA_ID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
 
 const REF_MAPPINGS = [{ name: "id" }, { name: "code" }, { name: "nls" }];
 const ID_MAPPINGS = [{ name: "id" }];
@@ -411,7 +414,7 @@ function propertyRecord(row, addresses) {
     id: "prop-core-" + row.id,
     backendId: positiveInteger(row.id),
     name: localizedName(row.nls) || text(row.code) || "Property",
-    address: formatAddress(address),
+    address: formatPostalAddress(address),
     city: address ? text(address.city) : "",
     postal: address ? text(address.postalCode) : "",
     region: address && address.state ? text(address.state.code) : "",
@@ -420,6 +423,8 @@ function propertyRecord(row, addresses) {
     stateCode: latestStateCode(row) || null,
     lat: attributeCoordinate(row, "COORD_LAT", 90),
     lon: attributeCoordinate(row, "COORD_LNG", 180),
+    areaSqft: attributeArea(row, "SERVICE_AREA_SQFT"),
+    planId: attributeMediaId(row, "PROPERTY_PLAN"),
     zone: null,
     contract: null,
     quoteSiteId: null,
@@ -429,11 +434,30 @@ function propertyRecord(row, addresses) {
   };
 }
 
-function formatAddress(address) {
-  if (!address) return "";
-  var region = address.state ? text(address.state.code) : "";
-  var tail = [text(address.city), region].filter(Boolean).join(", ");
-  return [text(address.address1), tail, text(address.postalCode)].filter(Boolean).join(", ");
+function attributeArea(row, code) {
+  var entry = attributeEntry(row, code);
+  var value = entry ? entry.value : null;
+  var number = typeof value === "number" ? value
+    : typeof value === "string" && value.trim() !== "" ? Number(value)
+    : Number.NaN;
+  return Number.isFinite(number) && number > 0 ? number : null;
+}
+
+function attributeMediaId(row, code) {
+  var entry = attributeEntry(row, code);
+  var value = entry ? entry.value : null;
+  if (typeof value === "string" && /^\s*\[/.test(value)) {
+    try {
+      value = JSON.parse(value);
+    } catch (_) {
+      return "";
+    }
+  }
+  var ids = (Array.isArray(value) ? value : value == null ? [] : [value]).map(function (item) {
+    var id = text(item && typeof item === "object" ? item.id : item).toLowerCase();
+    return MEDIA_ID.test(id) ? id : "";
+  });
+  return ids.length === 1 ? ids[0] : "";
 }
 
 function attributeCoordinate(row, code, limit) {

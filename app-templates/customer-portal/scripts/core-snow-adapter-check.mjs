@@ -78,7 +78,7 @@ function coreFetch(table, calls) {
   const first = result.items[0];
   assert.equal(first.id, "prop-core-278");
   assert.equal(first.name, "123 Main Street");
-  assert.equal(first.address, "#1001 - 7445 132nd Street, Surrey, BC, V3W 1J8");
+  assert.equal(first.address, "#1001 - 7445 132nd Street, Surrey, BC V3W 1J8, Canada", "a property address reads like a postal address: region and postal code together, the country by name");
   assert.equal(first.region, "BC");
   assert.equal(first.country, "CA");
   assert.equal(first.category, "COMMERCIAL");
@@ -88,6 +88,8 @@ function coreFetch(table, calls) {
   }
   assert.equal(first.lat, null, "a property without COORD_LAT has no latitude, never 0");
   assert.equal(first.lon, null, "a property without COORD_LNG has no longitude, never 0");
+  assert.equal(first.areaSqft, null, "a property without SERVICE_AREA_SQFT has no area, never 0");
+  assert.equal(first.planId, "", "a property without PROPERTY_PLAN has no plan");
 
   const withoutAddress = result.items[1];
   assert.equal(withoutAddress.address, "", "a missing ADDRESS must not resolve to address id 0");
@@ -103,7 +105,27 @@ function coreFetch(table, calls) {
   const adapter = createCoreSnowPropertiesAdapter({ origin, fetch: coreFetch(table) });
   const result = await adapter.load("properties", context);
   assert.deepEqual(result.items.map((item) => item.backendId), [278, 430], "Core stores the same attribute as a number on one row and a string on the next");
-  assert.equal(result.items[1].address, "460 Nanaimo St, Vancouver, BC, V5L 4W3");
+  assert.equal(result.items[1].address, "460 Nanaimo St, Vancouver, BC V5L 4W3, Canada");
+}
+
+{
+  const planned = (id, attributes) => {
+    const row = property(id, 62, null, "Planned " + id);
+    row.attributes[154] = attributes;
+    return row;
+  };
+  const table = {
+    properties: [
+      planned(983, { SERVICE_AREA_SQFT: { value: 50000, unit: 26 } }),
+      planned(998, { PROPERTY_PLAN: { value: [{ id: "AD81696A-86C7-458F-B32E-4FFC254D312C", type: "mediaAsset" }] }, SERVICE_AREA_SQFT: { value: "1250.5" } }),
+      planned(999, { PROPERTY_PLAN: { value: "[{\"id\":\"ad81696a-86c7-458f-b32e-4ffc254d312c\"}]" }, SERVICE_AREA_SQFT: { value: 0 } }),
+      planned(1000, { PROPERTY_PLAN: { value: [{ id: "ad81696a-86c7-458f-b32e-4ffc254d312c" }, { id: "c08d28dc-0f70-4fb9-9d6e-1b881975d923" }] } }),
+      planned(1001, { PROPERTY_PLAN: { value: [{ id: "not-a-media-id" }] }, SERVICE_AREA_SQFT: { value: "lots" } }),
+    ],
+  };
+  const result = await createCoreSnowPropertiesAdapter({ origin, fetch: coreFetch(table) }).load("properties", context);
+  assert.deepEqual(result.items.map((item) => item.areaSqft), [50000, 1250.5, null, null, null], "SERVICE_AREA_SQFT is read from its {value, unit} entry; zero or text is no area");
+  assert.deepEqual(result.items.map((item) => item.planId), ["", "ad81696a-86c7-458f-b32e-4ffc254d312c", "ad81696a-86c7-458f-b32e-4ffc254d312c", "", ""], "PROPERTY_PLAN names exactly one MediaAsset, as a list or as stored JSON text");
 }
 
 {

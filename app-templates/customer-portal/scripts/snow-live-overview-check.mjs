@@ -262,12 +262,10 @@ function quietConsole() {
     assert.ok(page.querySelector("[data-module=\"property-map\"]"));
     assert.ok(!page.textContent.includes("Dana") && !page.textContent.includes("Foothill"), "nothing from the demonstration tenant reaches the live home");
     for (const claim of EMPTY_CLAIMS) assert.ok(!page.textContent.includes(claim), "the live home never says \"" + claim + "\" about a source it has not opened");
-    for (const id of HOME_SECTIONS) {
-      const card = page.querySelector(`[data-module="${id}"]`);
-      assert.equal(card.getAttribute("data-state"), "unavailable", id + " is unavailable, not empty");
-      assert.match(card.querySelector("[data-module=\"section-unavailable\"]").textContent, /^Not available yet.+ aren’t in the portal yet\.$/);
-      assert.equal(card.querySelectorAll("[data-action]").length, 0, id + " offers no action that cannot work without Core");
-    }
+    for (const id of HOME_SECTIONS) assert.equal(page.querySelectorAll(`[data-module="${id}"]`).length, 0, id + " has no live source, so the home shows no card for it");
+    assert.equal(page.querySelectorAll("[data-module=\"section-unavailable\"]").length, 0, "no section says it is not available yet");
+    assert.doesNotMatch(page.textContent, /Not available yet|aren’t in the portal yet/);
+    assert.equal(page.querySelectorAll(".ov-grid").length, 0, "with no card to show the home has no empty card grid");
     assert.ok(page.querySelectorAll(".ov-day").every((day) => !day.getAttribute("aria-label").includes("no visit")), "a day is never announced as having no visit while visits are not read");
     assert.equal(page.querySelector(".ov-wx__note").textContent, "Snowfall 2.4 cm forecast", "the live weather card keeps the forecast and drops the contract trigger");
     assert.deepEqual(page.querySelectorAll(".ov-legend__item").map((item) => item.getAttribute("data-weather")), ["clear", "snow", "freezing", "storm"], "no key is shown for a status live mode cannot read");
@@ -311,7 +309,7 @@ function quietConsole() {
     assert.equal(card.querySelector("[data-action=\"overview.retryWeather\"]").textContent, "Try again ›");
     assert.deepEqual(page.querySelectorAll("[data-module=\"property-row\"]").map((row) => row.querySelector(".ov-prow__name").textContent), ["Frost Lane Strata"]);
     assert.equal(page.querySelectorAll(".ov-prow__wx").length + page.querySelectorAll(".ov-legend__item").length + page.querySelectorAll("[data-module=\"weather-timeline\"]").length, 0, "no weather reading, legend or day strip without a forecast");
-    assert.equal(page.querySelector(".page-header__sub").textContent, "1 property");
+    assert.equal(page.querySelectorAll(".page-header__sub").length, 0, "the home no longer counts properties under the greeting");
 
     outcomes.weather = "ok";
     await runtime.reloadAsync("overview");
@@ -354,13 +352,10 @@ function quietConsole() {
     assert.equal(calls.xweather.length, 0);
     assert.equal(liveOverviewStatus(), "ready", "the properties loaded, so the home is ready without a forecast");
     const page = Overview();
-    const card = page.querySelector("[data-module=\"weather-summary\"]");
-    assert.equal(card.getAttribute("data-state"), "unavailable");
-    assert.equal(card.textContent, "Forecast unavailableThe forecast isn’t set up for this portal yet.");
-    assert.equal(card.querySelectorAll("[data-action]").length, 0, "nothing to retry when nothing is configured");
+    assert.equal(page.querySelectorAll("[data-module=\"weather-summary\"]").length, 0, "a portal without weather keys shows no forecast card at all");
     assert.deepEqual(page.querySelectorAll("[data-module=\"property-row\"]").map((row) => row.querySelector(".ov-prow__name").textContent), ["Frost Lane Strata"], "properties that loaded are listed without a forecast");
-    assert.doesNotMatch(page.textContent, /no service area or forecast configured|isn’t set up yet/);
-    assert.equal(page.querySelector(".page-header__sub").textContent, "1 property");
+    assert.doesNotMatch(page.textContent, /Forecast unavailable|no service area or forecast configured|isn’t set up yet/);
+    assert.equal(page.querySelectorAll(".page-header__sub").length, 0);
     const detail = PropertyDetail();
     assert.equal(detail.querySelector(".prop-head__title").textContent, "Frost Lane Strata", "the property page opens without a forecast");
     assert.equal(detail.getAttribute("data-state"), null);
@@ -425,9 +420,8 @@ function quietConsole() {
     const mixed = Overview();
     assert.match(mixed.querySelector("[data-module=\"active-contracts\"]").textContent, /No active contracts/, "a source declared ready with zero rows still says it is empty");
     assert.match(mixed.querySelector("[data-module=\"upcoming-services\"]").textContent, /No scheduled visits/);
-    assert.equal(mixed.querySelector("[data-module=\"invoices\"]").getAttribute("data-state"), "unavailable");
-    assert.equal(mixed.querySelector("[data-module=\"support-requests\"]").getAttribute("data-state"), "unavailable");
-    assert.ok(!mixed.textContent.includes("No invoices yet") && !mixed.textContent.includes("No open requests"), "only the undeclared sources lose their empty copy");
+    assert.equal(mixed.querySelectorAll("[data-module=\"invoices\"]").length + mixed.querySelectorAll("[data-module=\"support-requests\"]").length, 0, "a section whose source is absent is dropped, not marked unavailable");
+    assert.equal(mixed.querySelector(".ov-grid").getAttribute("data-count"), "2", "the card grid sizes itself to the cards it holds");
   } finally {
     delete overview.sources;
     Object.assign(overview, saved);
@@ -494,7 +488,48 @@ function quietConsole() {
   }
 }
 
-console.log("snow-live-overview-check ok: service geography is deployment configuration with a centre and zoom only, live mode reads properties from Core, a fabricated forecast, a fixture book, a null coordinate and an unplaceable pin are all refused, and the overview module loads its live forecast without error and without holding back the properties, a failed or unconfigured forecast leaves the properties on screen with the weather card in its own state while a failed properties read reaches the designed error state, a property row reads the forecast the weather card reads, a deep link waits for the list, and a home section with no live source says it is not in the portal yet instead of claiming it is empty, while fixture mode keeps its empty copy, and live mode derives no property status, visit, contract or trigger reading from sources it has not opened while fixture mode keeps them");
+{
+  configure("live");
+  const address = "1239 W Georgia St, Vancouver, BC V6E 4R8, Canada";
+  const base = { lat: null, lon: null, zone: null, contract: null, quoteSiteId: null, appointment: null, ticket: null, lastService: null, stateCode: "ACTIVE", category: null };
+  state.moduleData.properties = {
+    state: "ready", accountId: 732, scopeMode: "server-scoped", truncated: false,
+    items: [
+      Object.assign({ id: "prop-core-983", backendId: 983, name: address, address, areaSqft: 50000, planId: "" }, base),
+      Object.assign({ id: "prop-core-998", backendId: 998, name: "Main lot", address: "2916 Highway 7, Vaughan, ON L4K 0K6, Canada", areaSqft: 1250, planId: "ad81696a-86c7-458f-b32e-4ffc254d312c" }, base),
+    ],
+  };
+  state.ovProperty = "prop-core-983";
+  state.moduleData.profile = { state: "ready", accountName: "Bilbo Baggins", contact: { name: "Bilbo Baggins", firstName: "Bilbo", title: "" }, emails: [], phones: [], billingAddresses: [] };
+  try {
+    const page = Overview();
+    assert.equal(page.querySelector(".page-header__title").textContent, "Welcome back, Bilbo", "the greeting uses the first name of the LEGAL contact");
+    const rows = page.querySelectorAll("[data-module=\"property-row\"]");
+    assert.deepEqual(rows.map((row) => [row.querySelector(".ov-prow__name").textContent, (row.querySelector(".ov-prow__addr") || { textContent: "" }).textContent]), [
+      [address, "50,000 ft²"],
+      ["Main lot", "2916 Highway 7, Vaughan, ON L4K 0K6, Canada · 1,250 ft² · Plan approved"],
+    ], "a property named by its address shows it once and its second line carries the area and the plan");
+    assert.equal(page.textContent.split("1239 W Georgia St").length - 1, 1, "the address appears once on the home");
+    assert.deepEqual(rows.map((row) => [row.getAttribute("data-action"), row.getAttribute("data-id"), row.getAttribute("aria-expanded")]), [
+      ["overview.openProperty", "prop-core-983", null],
+      ["overview.openProperty", "prop-core-998", null],
+    ], "a live property opens its own page directly");
+    assert.equal(page.querySelectorAll("[data-module=\"property-tooltip\"]").length, 0, "no intermediate popover, even with a property still remembered as selected");
+    assert.equal(page.querySelectorAll("[data-module=\"weather-summary\"]").length + page.querySelectorAll("[data-module=\"section-unavailable\"]").length, 0);
+
+    state.moduleData.profile = Object.assign({}, state.moduleData.profile, { contact: null });
+    assert.equal(Overview().querySelector(".page-header__title").textContent, "Welcome back, Bilbo Baggins", "without a LEGAL contact the greeting falls back to the account name");
+    delete state.moduleData.profile;
+    state.sessionName = "bilbo@example.test";
+    assert.equal(Overview().querySelector(".page-header__title").textContent, "Welcome back", "with no name on file the greeting stays plain, never a login");
+  } finally {
+    state.ovProperty = null;
+    state.sessionName = null;
+    delete state.moduleData.profile;
+  }
+}
+
+console.log("snow-live-overview-check ok: service geography is deployment configuration with a centre and zoom only, live mode reads properties from Core, a fabricated forecast, a fixture book, a null coordinate and an unplaceable pin are all refused, and the overview module loads its live forecast without error and without holding back the properties, a failed or unconfigured forecast leaves the properties on screen with the weather card in its own state while a failed properties read reaches the designed error state, a property row reads the forecast the weather card reads, a deep link waits for the list, and a home section or forecast with no live source is left out instead of claiming it is empty or unavailable, while fixture mode keeps its empty copy, a live property row shows its address once with its area and plan and opens the property page directly, the greeting uses the LEGAL contact's first name, and live mode derives no property status, visit, contract or trigger reading from sources it has not opened while fixture mode keeps them");
 
 function createDom() {
   class Text {

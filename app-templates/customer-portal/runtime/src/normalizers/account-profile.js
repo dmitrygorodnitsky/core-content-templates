@@ -1,4 +1,5 @@
 import { positiveInteger, text } from "./core-record.js";
+import { formatPhone, formatPostalAddress } from "./postal-address.js";
 
 export var ACCOUNT_PROFILE_SCOPE_MODES = Object.freeze(["server-scoped", "browser-filtered"]);
 
@@ -12,9 +13,9 @@ export function normalizeAccountProfile(raw) {
   var account = source.account && typeof source.account === "object" && !Array.isArray(source.account) ? source.account : null;
   if (!account) return accountProfileFailure("profile-unavailable");
   var primary = primaryContact(account.contacts);
-  var contact = primary ? { name: [plain(primary.firstName), plain(primary.lastName)].filter(Boolean).join(" "), title: plain(primary.title) } : null;
+  var contact = primary ? { name: [plain(primary.firstName), plain(primary.lastName)].filter(Boolean).join(" "), firstName: plain(primary.firstName), title: plain(primary.title) } : null;
   var emails = primary ? entryValues(primary.contactEntries, EMAIL_ENTRY) : [];
-  var phones = primary ? entryValues(primary.contactEntries, PHONE_ENTRY) : [];
+  var phones = primary ? entryValues(primary.contactEntries, PHONE_ENTRY).map(formatPhone) : [];
   var billingAddresses = typedAddresses(account.addresses, BILLING_ADDRESS);
   var filled = [!!(contact && contact.name), emails.length > 0, phones.length > 0, billingAddresses.length > 0];
   return {
@@ -45,9 +46,7 @@ export function accountProfileFailure(code) {
 }
 
 export function formatAccountAddress(address) {
-  if (!address || typeof address !== "object") return "";
-  var region = address.state && typeof address.state === "object" ? plain(address.state.code) : "";
-  return [plain(address.address1), plain(address.address2), plain(address.city), region, plain(address.postalCode)].filter(Boolean).join(", ");
+  return formatPostalAddress(address);
 }
 
 function primaryContact(contacts) {

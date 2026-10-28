@@ -1,6 +1,6 @@
 // customer-portal/runtime/src/components/shell/TopNav.js — production transfer module.
 import { h } from "../../dom.js";
-import { activeProfile, activeVerticalConfig, activityUnread, cartCount, isModuleEnabled, isSpa, state } from "../../state.js";
+import { activeProfile, activeVerticalConfig, activityUnread, cartCount, currentFixture, isModuleEnabled, isSpa, state } from "../../state.js";
 import { configuredExternalUrl, routeRegistry } from "../../config.js";
 import { ActionButton } from "../primitives/ActionButton.js";
 import { icon } from "../storm/overview-icons.js";
@@ -31,19 +31,19 @@ export function TopNav(gated) {
   if (primaryConnected(profile.primary)) actions.push(ActionButton({ variant: "btn--primary", label: state.config.primaryCtaLabel || profile.primary.label, action: profile.primary.action, visualId: "primary-cta" }));
   if (!profile.weatherCalendar && isModuleEnabled("calendar")) actions.push(h("div", { "class": "icon-btn icon-btn--optional", "data-action": "calendar.open", title: "Calendar" }, "\ud83d\udcc5"));
   if (profile.showCart && isModuleEnabled("checkout")) actions.push(h("div", { "class": "icon-btn", "data-action": "cart.open", title: "Cart", "data-state": cartCount() ? "filled" : "empty" }, ["\ud83d\uded2", cartCount() ? h("span", { "class": "cart-badge", "data-bind": "cart.count" }, String(cartCount())) : null]));
-  var activityEnabled = isModuleEnabled("activity");
-  var unread = activityUnread();
-  actions.push(h("div", {
-    "class": "icon-btn icon-btn--optional",
-    "data-module": "activity-control",
-    "data-action": activityEnabled ? "activity.open" : undefined,
-    "data-state": unread ? "unread" : undefined,
-    title: activityEnabled ? "Activity" : undefined,
-    "aria-disabled": activityEnabled ? undefined : "true",
-  }, ["\ud83d\udd14", unread ? h("span", { "class": "dot-badge" }) : null]));
+  if (isModuleEnabled("activity")) {
+    var unread = activityUnread();
+    actions.push(h("div", {
+      "class": "icon-btn icon-btn--optional",
+      "data-module": "activity-control",
+      "data-action": "activity.open",
+      "data-state": unread ? "unread" : undefined,
+      title: "Activity",
+    }, ["\ud83d\udd14", unread ? h("span", { "class": "dot-badge" }) : null]));
+  }
   var profileEnabled = isModuleEnabled("profile");
   var signInRequired = state.config.authMode === "required";
-  if (profileEnabled) actions.push(h("div", { "class": "avatar", "data-action": "profile.open", title: "Profile" }));
+  if (profileEnabled) actions.push(h("div", { "class": "avatar", "data-module": "profile-avatar", "data-action": "profile.open", title: "Profile", "aria-label": "Profile" }, initials(avatarName())));
   else if (signInRequired) actions.push(h("button", { "class": "icon-btn icon-btn--optional", "data-module": "sign-out-control", "data-visual-id": "sign-out-control", "data-action": "auth.signOut", title: "Sign out", "aria-label": "Sign out", type: "button" }, [icon("signOut", "ov-icon")]));
   actions.push(h("div", { "class": "icon-btn hamburger", "data-action": "ui.toggleMobileNav", title: "Menu" }, "\u2630"));
 
@@ -70,6 +70,21 @@ export function TopNav(gated) {
     ));
   }
   return h("div", { "class": "top-nav-wrap" }, nav);
+}
+
+function avatarName() {
+  if (state.config.dataMode !== "live") {
+    var customer = currentFixture().customer;
+    return (customer && customer.fullName) || "";
+  }
+  var profile = state.moduleData.profile;
+  return (profile && ((profile.contact && profile.contact.name) || profile.accountName)) || "";
+}
+
+function initials(name) {
+  return String(name || "").split(/\s+/).filter(function (part) { return /^\p{L}/u.test(part); }).slice(0, 2).map(function (part) {
+    return part.charAt(0).toUpperCase();
+  }).join("");
 }
 
 function primaryConnected(primary) {

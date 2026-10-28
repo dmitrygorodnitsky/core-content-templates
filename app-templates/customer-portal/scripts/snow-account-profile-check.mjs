@@ -18,6 +18,7 @@ const { coreAccountProfileContract, createCoreAccountProfileAdapter, loadCustome
 const { fixtureAccountProfileAdapter, fixtureAdapter } = await load("src/adapters/fixture-adapter.js");
 const { accountProfileFailure, formatAccountAddress, normalizeAccountProfile } = await load("src/normalizers/account-profile.js");
 const { graniteRidgeSnowFixture } = await load("data/cases/granite-ridge-snow.js");
+const { TopNav } = await load("src/components/shell/TopNav.js");
 const { AccountProfile } = await load("src/routes/AccountProfilePage.js");
 const { renderRoute } = await load("src/router.js");
 
@@ -97,7 +98,7 @@ function reply(status, body) {
   const addresses = byName(body.mappings, "addresses");
   assert.deepEqual(names(addresses.mappings), ["id", "types", "address"]);
   assert.equal(byName(addresses.mappings, "types").type, "collection", "an AccountAddress carries its types as a collection");
-  assert.deepEqual(names(byName(addresses.mappings, "address").mappings), ["id", "address1", "address2", "city", "postalCode", "state"]);
+  assert.deepEqual(names(byName(addresses.mappings, "address").mappings), ["id", "address1", "address2", "city", "postalCode", "state", "country"], "the country is read so a billing address can name it");
   assert.deepEqual(plain(coreAccountProfileContract.filters), ["id", "user.id"]);
   assert.equal(coreAccountProfileContract.scopeMode, "server-scoped");
   assert.equal(raw.scopeMode, "server-scoped", "every row Core returned passed the browser check");
@@ -132,11 +133,11 @@ function reply(status, body) {
   assert.equal(ready.state, "ready");
   assert.equal(ready.scopeMode, "server-scoped");
   assert.equal(ready.accountName, "Harbourview Strata Council");
-  assert.deepEqual(plain(ready.contact), { name: "Jordan Lee", title: "Strata Council President" }, "the LEGAL contact with the lowest id is the primary contact; a secondary contact is never promoted");
+  assert.deepEqual(plain(ready.contact), { name: "Jordan Lee", firstName: "Jordan", title: "Strata Council President" }, "the LEGAL contact with the lowest id is the primary contact; a secondary contact is never promoted");
   assert.deepEqual(plain(ready.emails), ["jordan.lee@example.test"], "entries are trimmed and a repeated value is shown once");
-  assert.deepEqual(plain(ready.phones), ["+1 604 555 0148"], "only PHONE entries are phones");
+  assert.deepEqual(plain(ready.phones), ["+1 604-555-0148"], "only PHONE entries are phones, and a North American number is shown as +1 NNN-NNN-NNNN");
   assert.deepEqual(plain(ready.billingAddresses), [
-    "1200 West Pender Street, Suite 400, Vancouver, BC, V6E 2S9",
+    "1200 West Pender Street, Suite 400, Vancouver, BC V6E 2S9",
     "133 Acceptance Way, Toronto, ON M5V 2T6",
   ], "billing addresses, newest first, the same address once, a service address never");
   assert.deepEqual(plain(ready.allowedActions), [], "the profile is read-only");
@@ -144,7 +145,7 @@ function reply(status, body) {
 
   const partial = normalizeAccountProfile({ account: accountRow({ contacts: [contactRow(1, "Jordan", "", "", "LEGAL", [entry(2, "EMAIL", "jordan.lee@example.test")])], addresses: [] }), scopeMode: "server-scoped" });
   assert.equal(partial.state, "partial");
-  assert.deepEqual(plain(partial.contact), { name: "Jordan", title: "" });
+  assert.deepEqual(plain(partial.contact), { name: "Jordan", firstName: "Jordan", title: "" });
   assert.deepEqual(plain(partial.phones), []);
   assert.deepEqual(plain(partial.billingAddresses), []);
 
@@ -159,13 +160,16 @@ function reply(status, body) {
   assert.equal(bare.scopeMode, null);
 
   const odd = normalizeAccountProfile({ account: accountRow({ contacts: [contactRow(1, { first: "x" }, 42, null, "LEGAL", [entry(2, "EMAIL", { value: "x" }), entry(3, "PHONE", 6045550148)])], addresses: [typed(1, ["BILLING"], { address1: "", city: null })] }), scopeMode: "unscoped" });
-  assert.deepEqual(plain(odd.contact), { name: "42", title: "" }, "only strings and finite numbers become text");
+  assert.deepEqual(plain(odd.contact), { name: "42", firstName: "", title: "" }, "only strings and finite numbers become text");
   assert.deepEqual(plain(odd.emails), []);
-  assert.deepEqual(plain(odd.phones), ["6045550148"]);
+  assert.deepEqual(plain(odd.phones), ["6045550148"], "a number without a +1 country code is left as stored");
   assert.deepEqual(plain(odd.billingAddresses), [], "an empty address is not an address");
   assert.equal(odd.scopeMode, null, "an unscoped profile read is not a scope the profile accepts");
 
-  assert.equal(formatAccountAddress({ address1: "1550 Wynkoop Street", address2: "Suite 400", city: "Denver", postalCode: "80202", state: { code: "CO" } }), "1550 Wynkoop Street, Suite 400, Denver, CO, 80202");
+  assert.equal(formatAccountAddress({ address1: "1550 Wynkoop Street", address2: "Suite 400", city: "Denver", postalCode: "80202", state: { code: "CO" } }), "1550 Wynkoop Street, Suite 400, Denver, CO 80202");
+  assert.equal(formatAccountAddress({ address1: "1239 W Georgia St, Vancouver, BC, V6E 4R8, CA", postalCode: "V6E 4R8" }), "1239 W Georgia St, Vancouver, BC V6E 4R8, Canada", "a billing address stored as one line keeps its postal code once and names its country");
+  assert.equal(formatAccountAddress({ address1: "1239 W Georgia St", city: "Vancouver", postalCode: "V6E 4R8", state: { code: "BC" }, country: { id: "CA", code: "CA" } }), "1239 W Georgia St, Vancouver, BC V6E 4R8, Canada", "a structured address reads like the property address");
+  assert.equal(formatAccountAddress({ address1: "1 Main St", city: "Los Angeles", postalCode: "90210", state: { code: "CA" } }), "1 Main St, Los Angeles, CA 90210", "a region code is never mistaken for a country");
   assert.equal(formatAccountAddress(null), "");
 
   assert.equal(normalizeAccountProfile({ account: null }).state, "unavailable");
@@ -212,10 +216,10 @@ function reply(status, body) {
   const envelope = state.moduleData.profile;
   assert.equal(envelope.state, "ready");
   assert.equal(envelope.accountName, "Whitlock Property Group");
-  assert.deepEqual(plain(envelope.contact), { name: "Dana Whitlock", title: "Portfolio Manager" });
+  assert.deepEqual(plain(envelope.contact), { name: "Dana Whitlock", firstName: "Dana", title: "Portfolio Manager" });
   assert.deepEqual(plain(envelope.emails), ["dana.whitlock@example.test"]);
-  assert.deepEqual(plain(envelope.phones), ["+1 (303) 555-0164"]);
-  assert.deepEqual(plain(envelope.billingAddresses), ["1550 Wynkoop Street, Suite 400, Denver, CO, 80202"], "the service address of a property is not a billing address");
+  assert.deepEqual(plain(envelope.phones), ["+1 303-555-0164"]);
+  assert.deepEqual(plain(envelope.billingAddresses), ["1550 Wynkoop Street, Suite 400, Denver, CO 80202"], "the service address of a property is not a billing address");
   state.route = "profile";
   const routed = renderRoute();
   assert.equal(routed.getAttribute("data-visual-id"), "profile");
@@ -263,14 +267,32 @@ function renderWith(envelope, status) {
   assert.deepEqual(facts, [
     ["contact", "ready", ["Jordan Lee"], "Strata Council President"],
     ["email", "ready", ["jordan.lee@example.test"], ""],
-    ["phone", "ready", ["+1 604 555 0148"], ""],
-    ["billing", "ready", ["1200 West Pender Street, Suite 400, Vancouver, BC, V6E 2S9", "133 Acceptance Way, Toronto, ON M5V 2T6"], ""],
+    ["phone", "ready", ["+1 604-555-0148"], ""],
+    ["billing", "ready", ["1200 West Pender Street, Suite 400, Vancouver, BC V6E 2S9", "133 Acceptance Way, Toronto, ON M5V 2T6"], ""],
   ]);
+  assert.equal(one(one(ready, "[data-fact=\"contact\"]"), ".prop-fact__label").textContent, "Contact", "a contact other than the account itself is labelled Contact");
   assert.equal(one(one(ready, "[data-fact=\"billing\"]"), ".prop-fact__label").textContent, "Billing addresses", "two billing addresses on file are both shown and labelled as such");
 
   const partial = renderWith(expectations[1][1]);
-  assert.deepEqual(all(partial, "[data-fact][data-state=\"missing\"]").map((fact) => [fact.getAttribute("data-fact"), one(fact, ".prop-fact__note").textContent]), [["phone", "Not on file"], ["billing", "Not on file"]]);
-  assert.equal(one(one(partial, "[data-fact=\"billing\"]"), ".prop-fact__label").textContent, "Billing address");
+  assert.deepEqual(all(partial, "[data-fact]").map((fact) => fact.getAttribute("data-fact")), ["contact", "email"], "a detail that is not on file is left out, never shown as a placeholder");
+  assert.doesNotMatch(partial.textContent, /Not on file/);
+
+  const bilbo = renderWith(normalizeAccountProfile({
+    account: accountRow({
+      nls: { en: { NAME: "Bilbo Baggins" } },
+      contacts: [contactRow(731, "Bilbo", "Baggins", "", "LEGAL", [entry(959, "EMAIL", "bilbo@example.test"), entry(960, "PHONE", "+19991112233")])],
+      addresses: [typed(767, ["BILLING"], { id: 742, address1: "1239 W Georgia St, Vancouver, BC, V6E 4R8, CA", postalCode: "V6E 4R8" })],
+    }),
+    scopeMode: "server-scoped",
+  }));
+  assert.equal(one(bilbo, ".prop-head__title").textContent, "Bilbo Baggins");
+  assert.deepEqual(all(bilbo, "[data-fact]").map((fact) => [fact.getAttribute("data-fact"), all(fact, ".prop-fact__value").map((node) => node.textContent).join("|")]), [
+    ["email", "bilbo@example.test"],
+    ["phone", "+1 999-111-2233"],
+    ["billing", "1239 W Georgia St, Vancouver, BC V6E 4R8, Canada"],
+  ], "a contact who is the account itself is not repeated under the title");
+  assert.doesNotMatch(bilbo.textContent, /Primary contact|V6E 4R8, CA|, CA,/);
+  assert.equal(one(one(bilbo, "[data-fact=\"billing\"]"), ".prop-fact__label").textContent, "Billing address");
 
   const empty = renderWith(expectations[2][1]);
   assert.equal(one(empty, "[data-module=\"empty-state\"] .state-block__title").textContent, "No contact details on file");
@@ -292,6 +314,18 @@ function renderWith(envelope, status) {
   const unavailable = renderWith(expectations[6][1]);
   assert.equal(one(unavailable, "[data-module=\"empty-state\"]").getAttribute("data-state"), "unavailable");
   assert.match(unavailable.textContent, /Your account details aren’t available/);
+}
+
+{
+  applyPortalConfig(readPortalConfig({ dataset: { portalVertical: "snow", portalProfile: "stormRetail", portalTheme: "snow", portalDataMode: "live", portalAuthMode: "required", portalOrganization: "SNOWLIMITLESS", portalEnabledModules: "overview,properties,proposals,profile" } }));
+  state.moduleData.profile = normalizeAccountProfile({ account: accountRow({ nls: { en: { NAME: "Bilbo Baggins" } }, contacts: [contactRow(731, "Bilbo", "Baggins", "", "LEGAL", [])] }) });
+  const nav = TopNav(false);
+  assert.equal(one(nav, "[data-module=\"profile-avatar\"]").textContent, "BB", "the avatar carries the contact's initials instead of an empty circle");
+  assert.equal(all(nav, "[data-module=\"activity-control\"]").length, 0, "no notification bell when the portal has no notifications");
+  state.moduleData.profile = normalizeAccountProfile({ account: accountRow({ nls: { en: { NAME: "01953720 B.C. Ltd" } }, contacts: [] }) });
+  assert.equal(one(TopNav(false), "[data-module=\"profile-avatar\"]").textContent, "BL", "initials skip words that do not start with a letter");
+  delete state.moduleData.profile;
+  assert.equal(one(TopNav(false), "[data-module=\"profile-avatar\"]").textContent, "", "before the profile loads the avatar stays empty rather than guessing");
 }
 
 {

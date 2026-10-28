@@ -1,5 +1,6 @@
 import { h } from "../../dom.js";
-import { OVERVIEW_STATUS as STATUS, knownPropertyStatus, propertyWeather, sourceOpened, zoneWeather } from "../../normalizers/overview.js";
+import { OVERVIEW_STATUS as STATUS, knownPropertyStatus, propertyHighlights, propertyWeather, sourceOpened, zoneWeather } from "../../normalizers/overview.js";
+import { addressRepeats } from "../../normalizers/postal-address.js";
 import { addressKey, forecastPoint, geoPoint, popupDocks, popupPlacement, popupWeather, propertyPoint, weatherLabel, weatherReading } from "../../normalizers/property-map.js";
 import { icon } from "./overview-icons.js";
 
@@ -10,12 +11,6 @@ var PLACEMENT_NOTES = {
   locating: "Finding it on the map…",
   "not-found": "Address not found on the map",
   "no-address": "No address on file",
-};
-var LOCATION_UNAVAILABLE = {
-  "no-map": "The map isn’t available in this portal yet.",
-  failed: "The map couldn’t load.",
-  "not-found": "We couldn’t find this address on the map.",
-  "no-address": "We place a property on the map from its address.",
 };
 var listScroll = {};
 
@@ -254,7 +249,7 @@ export function PropertyStage(props) {
     if (map && entry.point) placed.push(entry);
     else listed.push(entry);
   });
-  var chosen = placed.concat(listed).find(function (entry) { return entry.property.id === props.selectedId; }) || null;
+  var chosen = props.direct ? null : placed.concat(listed).find(function (entry) { return entry.property.id === props.selectedId; }) || null;
   var popup = chosen ? PropertyPopup(chosen.property, props.frame ? popupView(chosen, props) : null, props.weather ? props.weather.legend : null, props.sources) : null;
   var pinned = !!chosen && placed.indexOf(chosen) !== -1;
 
@@ -269,7 +264,7 @@ export function PropertyStage(props) {
     map.stage({
       viewport: props.viewport,
       pins: placed.map(function (entry) {
-        return { id: entry.property.id, point: entry.point, element: PropertyPin(entry.property, props.frame, entry.property.id === props.selectedId, props.sources) };
+        return { id: entry.property.id, point: entry.point, element: PropertyPin(entry.property, props.frame, !!chosen && entry.property.id === props.selectedId, props.sources, props.direct) };
       }),
       popup: pinned ? { point: chosen.point, element: popup } : null,
       locating: listed.some(function (entry) { return entry.reason === "locating"; }),
@@ -308,32 +303,22 @@ export function PropertyLocation(props) {
   var property = props.property;
   var controller = props.map || null;
   var map = controller && props.viewport && controller.status() !== "failed" ? controller : null;
-  var placement = map ? placeEach(map, [property])[0] : { point: null, reason: controller && props.viewport ? "failed" : "no-map" };
-  var shown = !!placement.point || placement.reason === "locating";
+  var placement = map ? placeEach(map, [property])[0] : null;
+  if (!placement || (!placement.point && placement.reason !== "locating")) return null;
   return h("section", {
     "class": "card ov-map", "data-module": "property-location", "data-visual-id": "property-location",
-    "data-state": placement.point ? "placed" : shown ? "locating" : "unavailable", "aria-labelledby": "property-location-title",
+    "data-state": placement.point ? "placed" : "locating", "aria-labelledby": "property-location-title",
   }, [
     h("div", { "class": "ov-map__head" }, [
       h("span", { "class": "ov-card__icon" }, [icon("map", "ov-icon")]),
       h("h2", { "class": "ov-card__title", id: "property-location-title" }, "Location"),
     ]),
-    shown
-      ? h("div", { "class": "ov-map__stage", "data-surface": "google" }, [
-        LocationMap(map, props.viewport, [{ id: property.id, name: property.name }], [placement], "Finding it on the map…"),
-      ])
-      : LocationUnavailable(property, placement.reason),
+    h("div", { "class": "ov-map__stage", "data-surface": "google" }, [
+      LocationMap(map, props.viewport, [{ id: property.id, name: property.name }], [placement], "Finding it on the map…"),
+    ]),
     placement.point && props.link
       ? h("button", { "class": "link-action", type: "button", "data-action": props.link.action, "data-id": props.link.id, "data-visual-id": "property-location-link", style: "margin-top:12px" }, props.link.label + " ›")
       : null,
-  ]);
-}
-
-function LocationUnavailable(property, reason) {
-  return h("div", { "class": "ov-empty", "data-module": "location-unavailable", "data-visual-id": "location-unavailable", "data-state": reason, role: "status" }, [
-    h("span", { "class": "readonly-chip", style: "margin-bottom:9px" }, "Location unavailable"),
-    text("div", "ov-empty__title", property.address || "No address on file"),
-    h("div", { "class": "ov-empty__desc", style: "margin-bottom:0" }, LOCATION_UNAVAILABLE[reason] || LOCATION_UNAVAILABLE["not-found"]),
   ]);
 }
 
@@ -419,15 +404,15 @@ function weatherKey(property, frame, status) {
   return frame ? zoneWeather(property, frame) : undefined;
 }
 
-function PropertyPin(property, frame, selected, sources) {
+function PropertyPin(property, frame, selected, sources, direct) {
   var status = knownPropertyStatus(property, sources);
   return h("button", {
     "class": "ov-pin" + (status === "enroute" ? " ov-pin--active" : "") + (selected ? " ov-pin--on" : ""),
-    "data-action": "overview.selectProperty", "data-id": property.id,
+    "data-action": direct ? "overview.openProperty" : "overview.selectProperty", "data-id": property.id,
     "data-module": "property-pin", "data-visual-id": "property-pin",
     "data-state": status || undefined, "data-weather": weatherKey(property, frame, status),
     "aria-label": status ? property.name + " — " + STATUS[status].label : property.name,
-    "aria-pressed": selected ? "true" : "false",
+    "aria-pressed": direct ? undefined : selected ? "true" : "false",
   }, [icon("pin", "ov-pin__glyph")]);
 }
 
@@ -440,7 +425,7 @@ function PropertyList(key, entries, props, popup) {
   }
   var list = h("ul", { "class": "ov-plist", "data-module": "property-list", "data-visual-id": "property-list", "aria-label": "Your properties" },
     entries.map(function (entry) {
-      var selected = entry.property.id === props.selectedId;
+      var selected = !props.direct && entry.property.id === props.selectedId;
       return h("li", { "class": "ov-plist__item" }, [
         PropertyRow(entry.property, props, selected, entry.reason),
         selected && popup ? inline(popup) : null,
@@ -464,18 +449,19 @@ function UnplacedProperties(entries, props, popup) {
 function PropertyRow(property, props, selected, reason) {
   var status = knownPropertyStatus(property, props.sources);
   var note = reason ? placementNote(reason) : "";
+  var line = propertyLine(property);
   return h("button", {
     "class": "ov-prow" + (status === "enroute" ? " ov-prow--active" : "") + (selected ? " ov-prow--on" : ""),
-    "data-action": "overview.selectProperty", "data-id": property.id,
+    "data-action": props.direct ? "overview.openProperty" : "overview.selectProperty", "data-id": property.id,
     "data-module": "property-row", "data-visual-id": "property-row",
     "data-state": status || undefined, "data-weather": weatherKey(property, props.frame, status),
     "data-placement": note ? reason : undefined,
-    "aria-expanded": selected ? "true" : "false",
+    "aria-expanded": props.direct ? undefined : selected ? "true" : "false",
   }, [
     h("span", { "class": "ov-prow__pin" }, [icon("pin", "ov-prow__glyph")]),
     h("span", { "class": "ov-prow__read" }, [
       text("span", "ov-prow__name", property.name),
-      property.address ? text("span", "ov-prow__addr", property.address) : null,
+      line ? text("span", "ov-prow__addr", line) : null,
       note ? text("span", "ov-prow__why", note) : null,
     ]),
     h("span", { "class": "ov-prow__meta" }, [
@@ -485,6 +471,11 @@ function PropertyRow(property, props, selected, reason) {
   ]);
 }
 
+function propertyLine(property) {
+  var address = property.address && !addressRepeats(property.name, property.address) ? property.address : "";
+  return [address].concat(propertyHighlights(property)).filter(Boolean).join(" · ");
+}
+
 function PropertyPopup(property, weather, legend, sources) {
   var status = knownPropertyStatus(property, sources);
   var line = sourceOpened(sources, "appointments") ? visitLine(property) : "";
@@ -492,7 +483,7 @@ function PropertyPopup(property, weather, legend, sources) {
     h("div", { "class": "ov-tip__head" }, [
       h("div", { style: "flex:1;min-width:0" }, [
         text("div", "ov-tip__name", property.name),
-        property.address ? text("div", "ov-tip__addr", property.address) : null,
+        property.address && !addressRepeats(property.name, property.address) ? text("div", "ov-tip__addr", property.address) : null,
       ]),
       h("button", { "class": "ov-tip__close", "data-action": "overview.closeProperty", "aria-label": "Close" }, "✕"),
     ]),

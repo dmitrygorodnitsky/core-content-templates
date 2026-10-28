@@ -21,9 +21,9 @@ export function AccountProfile() {
   else if (view === "unavailable") page.appendChild(stateBlock(EmptyState({ glyph: "○", title: "Your account details aren’t available", desc: "They didn’t come back for this sign-in. Sign out and sign in again, or try later." }), "unavailable"));
   else {
     page.appendChild(ProfileHead(envelope));
-    page.appendChild(view === "empty"
-      ? EmptyState({ glyph: "◌", title: "No contact details on file", desc: "We don’t have a contact, email, phone or billing address for your account yet." })
-      : ProfileFacts(envelope));
+    var facts = view === "empty" ? null : ProfileFacts(envelope);
+    if (facts) page.appendChild(facts);
+    else page.appendChild(EmptyState({ glyph: "◌", title: "No contact details on file", desc: "We don’t have a contact, email, phone or billing address for your account yet." }));
   }
 
   page.appendChild(h("button", { "class": "signout-btn", "data-action": "auth.signOut", "data-visual-id": "sign-out", type: "button", style: "width:100%;margin-top:18px" }, "Sign out"));
@@ -42,23 +42,23 @@ function ProfileHead(envelope) {
 function ProfileFacts(envelope) {
   var contact = envelope.contact;
   var billing = envelope.billingAddresses || [];
-  return h("div", { "class": "card card--pad prop-facts", "data-module": "profile-facts", "data-visual-id": "profile-facts", "data-state": envelope.state }, [
-    Fact("contact", "Primary contact", contact && contact.name ? [contact.name] : [], contact && contact.name ? contact.title : ""),
+  var named = !!(contact && contact.name) && contact.name !== envelope.accountName;
+  var facts = [
+    named ? Fact("contact", "Contact", [contact.name], contact.title) : null,
     Fact("email", "Email", envelope.emails || []),
     Fact("phone", "Phone", envelope.phones || []),
     Fact("billing", billing.length > 1 ? "Billing addresses" : "Billing address", billing),
-  ]);
+  ].filter(Boolean);
+  if (!facts.length) return null;
+  return h("div", { "class": "card card--pad prop-facts", "data-module": "profile-facts", "data-visual-id": "profile-facts", "data-state": envelope.state }, facts);
 }
 
 function Fact(key, label, values, note) {
+  if (!values.length) return null;
   var children = [h("div", { "class": "prop-fact__label" }, label)];
-  if (values.length) {
-    values.forEach(function (value) { children.push(h("div", { "class": "prop-fact__value", style: "overflow-wrap:anywhere" }, value)); });
-    if (note) children.push(h("div", { "class": "prop-fact__note" }, note));
-  } else {
-    children.push(h("div", { "class": "prop-fact__note" }, "Not on file"));
-  }
-  return h("div", { "class": "prop-fact", "data-fact": key, "data-state": values.length ? "ready" : "missing" }, children);
+  values.forEach(function (value) { children.push(h("div", { "class": "prop-fact__value", style: "overflow-wrap:anywhere" }, value)); });
+  if (note) children.push(h("div", { "class": "prop-fact__note" }, note));
+  return h("div", { "class": "prop-fact", "data-fact": key, "data-state": "ready" }, children);
 }
 
 function ProfileSkeleton() {

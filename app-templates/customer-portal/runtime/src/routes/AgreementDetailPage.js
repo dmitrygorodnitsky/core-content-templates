@@ -3,7 +3,7 @@ import { contractAgreementFor, state } from "../state.js";
 import { contractCommandsBusy } from "../actions.js";
 import { StatusBadge } from "../components/primitives/StatusBadge.js";
 import { NotFoundState } from "../components/primitives/RouteStates.js";
-import { agreementTitle, plural } from "../components/proposals/QuotePackage.js";
+import { agreementSeason, agreementTitle } from "../components/proposals/QuotePackage.js";
 import { ContractDetailSkeleton, PartialNotice, contractsGate } from "../components/proposals/ContractStates.js";
 import { LocationMap, placeEach } from "../components/storm/PropertyMap.js";
 import { mapViewport, usablePropertyMap } from "../property-map-session.js";
@@ -27,20 +27,19 @@ export function AgreementDetail() {
   var agreement = row.agreement;
   page.setAttribute("data-state", agreement.stage);
 
-  var facts = [];
-  if (row.propertyCount) facts.push(plural(row.propertyCount, "property", "properties"));
-  if (row.quoteCount) facts.push(plural(row.quoteCount, "quote", "quotes"));
+  var season = agreementSeason(agreement);
   var title = agreementTitle(row);
   page.appendChild(h("div", { "class": "proposal-detail-head", "data-module": "agreement-detail-head", "data-visual-id": "agreement-detail-head" }, [
     h("div", { style: "flex:1;min-width:0" }, [
       row.propertyNames.length ? h("div", { "class": "agreement-detail-head__eyebrow" }, "Service agreement") : null,
       h("h1", { "class": "proposal-detail-head__title", "data-bind": "agreement.title" }, title),
-      facts.length ? h("div", { "class": "proposal-detail-head__meta" }, facts.join(" · ")) : null,
+      season ? h("div", { "class": "proposal-detail-head__meta", "data-bind": "agreement.season" }, season) : null,
     ]),
     StatusBadge({ variant: "status-badge--" + agreement.tone, label: agreement.label, bind: "agreement.stateLabel", state: agreement.stage }),
   ]));
 
-  var notice = AgreementStageNotice(agreement);
+  var approvable = agreement.allowedActions.indexOf("approve") !== -1;
+  var notice = approvable ? AgreementApproval(row, contractCommandsBusy()) : AgreementStageNotice(agreement);
   if (notice) page.appendChild(notice);
   if (row.unreadableOrders) {
     page.appendChild(PartialNotice(row.unreadableOrders === 1 ? "1 quote listed in this agreement couldn’t be loaded." : row.unreadableOrders + " quotes listed in this agreement couldn’t be loaded."));
@@ -53,9 +52,10 @@ export function AgreementDetail() {
   var term = AgreementTerm(agreement);
   if (term) page.appendChild(term);
   page.appendChild(AgreementServices(row, AgreementMap(row.properties)));
-  page.appendChild(AgreementTerms(agreement.terms));
-  var decision = agreement.allowedActions.indexOf("approve") !== -1 ? AgreementApproval(row, contractCommandsBusy()) : AgreementOutcome(agreement);
-  if (decision) page.appendChild(decision);
+  var terms = AgreementTerms(agreement.terms, state.agreementTermsOpen);
+  if (terms) page.appendChild(terms);
+  var outcome = approvable ? null : AgreementOutcome(agreement);
+  if (outcome) page.appendChild(outcome);
   return page;
 }
 

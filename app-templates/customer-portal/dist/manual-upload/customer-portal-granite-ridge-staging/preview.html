@@ -285,6 +285,7 @@ button { font-family: inherit; }
   width: 34px; height: 34px; border-radius: var(--radius-pill);
   background: linear-gradient(160deg, #ffd27a, #ff9b6a);
   border: 1px solid var(--glass-border); cursor: pointer; flex-shrink: 0;
+  display: grid; place-items: center; color: #5b2a06; font-weight: 800; font-size: 12.5px; letter-spacing: .02em;
 }
 
 .dot-badge {
@@ -1429,14 +1430,6 @@ h1.proposal-detail-head__title { margin: 0; }
 
 .agreement-row .status-badge { flex-shrink: 0; }
 
-.agreement-row__diamond { background: #8a94a6; }
-
-.agreement-row__diamond[data-tone="ok"] { background: #34c759; }
-
-.agreement-row__diamond[data-tone="info"] { background: var(--info); }
-
-.agreement-row__diamond[data-tone="warn"] { background: #ff9f0a; }
-
 .alert-banner--partial { background: rgba(255,159,10,.08); border: 1px solid rgba(255,159,10,.28); cursor: default; padding: 12px 15px; gap: 12px; margin-bottom: 12px; }
 
 .alert-banner--partial .alert-banner__desc { margin-top: 0; color: var(--ink); line-height: 1.45; }
@@ -1533,8 +1526,6 @@ h1.proposal-detail-head__title { margin: 0; }
 
 .agreement-facts__value { margin: 0; font-weight: 600; overflow-wrap: anywhere; }
 
-.agreement-facts__value--missing { font-weight: 500; color: var(--ink-3); }
-
 .agreement-term, .agreement-terms, .agreement-approve { margin-bottom: 14px; }
 
 .agreement-services { margin: 22px 0 14px; }
@@ -1559,9 +1550,19 @@ h1.proposal-detail-head__title { margin: 0; }
 
 .agreement-approve .proposal-actions { flex-wrap: wrap; }
 
+.agreement-approve[data-tone="warn"] { background: rgba(255,159,10,.10); border-color: rgba(255,159,10,.30); }
+
+.agreement-terms__head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+
+.agreement-terms__head .agreement-card__title { margin: 0; }
+
+.agreement-terms__toggle { flex-shrink: 0; padding: 0; border: 0; background: none; font: inherit; cursor: pointer; }
+
+.agreement-terms__body { margin-top: 8px; }
+
 .terms-heading { margin: 18px 0 6px; font-weight: 750; font-size: 14.5px; }
 
-.agreement-card__title + .terms-heading { margin-top: 4px; }
+.agreement-terms__body > .terms-heading:first-child { margin-top: 4px; }
 
 .terms-paragraph { margin: 6px 0; font-size: 13.5px; line-height: 1.55; color: var(--ink-2); white-space: pre-line; overflow-wrap: anywhere; }
 
@@ -3115,6 +3116,10 @@ h1.proposal-detail-head__title { margin: 0; }
 
 .ov-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
 
+.ov-grid[data-count="1"] { grid-template-columns: minmax(0, 1fr); }
+
+.ov-grid[data-count="2"] { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
 .ov-card { display: flex; flex-direction: column; gap: 8px; }
 
 .ov-card__head { display: flex; align-items: center; gap: 10px; margin-bottom: 2px; }
@@ -3177,6 +3182,20 @@ h1.proposal-detail-head__title { margin: 0; }
 }
 
 .ov-chev:hover { color: var(--accent); }
+
+.ov-waiting {
+  display: flex; align-items: center; gap: 10px; width: 100%; margin: 2px 0 4px; padding: 12px 14px;
+  border: 0; border-radius: 14px; background: var(--accent); color: #fff;
+  font: inherit; font-weight: 700; font-size: 14px; text-align: left; cursor: pointer;
+}
+
+.ov-waiting:hover { filter: brightness(1.06); }
+
+.ov-waiting:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.ov-waiting__label { flex: 1; min-width: 0; }
+
+.ov-waiting__chev { flex: none; font-size: 18px; line-height: 1; }
 
 .ov-slot { display: flex; align-items: center; gap: 9px; padding: 9px 0; border-top: 1px solid var(--hair); }
 
@@ -3411,6 +3430,60 @@ h1.proposal-detail-head__title { margin: 0; }
 
 .prop-ticket { margin-bottom: 16px; }
 
+.prop-plan, .prop-service { margin-bottom: 16px; }
+
+.prop-plan__drawing { display: block; width: 100%; height: auto; max-height: 360px; border-radius: 14px; background: rgba(var(--hair), .05); border: 1px solid var(--glass-border); }
+
+.prop-plan__shape { fill: var(--accent); fill-opacity: .32; stroke: var(--accent); stroke-width: 2px; vector-effect: non-scaling-stroke; stroke-linejoin: round; }
+
+.prop-plan__shape[data-tone="2"] { fill: var(--warn); stroke: var(--warn); }
+
+.prop-plan__shape[data-tone="3"] { fill: var(--ok); stroke: var(--ok); }
+
+.prop-plan__shape[data-tone="4"] { fill: var(--danger); stroke: var(--danger); }
+
+.prop-plan__shape[data-tone="5"] { fill: var(--accent-3); stroke: var(--accent-3); }
+
+.prop-plan__shape[data-kind="line"] { fill: none; stroke-width: 4px; stroke-linecap: round; }
+
+.prop-plan__shape[data-kind="point"] { fill-opacity: 1; }
+
+.prop-plan__legend { display: flex; flex-wrap: wrap; gap: 8px 18px; margin: 12px 0 0; padding: 0; list-style: none; font-size: 13px; }
+
+.prop-plan__item { display: flex; align-items: center; gap: 8px; min-width: 0; }
+
+.prop-plan__swatch { flex: none; width: 14px; height: 14px; border-radius: 4px; background: var(--accent); }
+
+.prop-plan__swatch[data-kind="line"] { height: 4px; border-radius: var(--radius-pill); }
+
+.prop-plan__swatch[data-kind="point"] { border-radius: var(--radius-pill); }
+
+.prop-plan__swatch[data-tone="2"] { background: var(--warn); }
+
+.prop-plan__swatch[data-tone="3"] { background: var(--ok); }
+
+.prop-plan__swatch[data-tone="4"] { background: var(--danger); }
+
+.prop-plan__swatch[data-tone="5"] { background: var(--accent-3); }
+
+.prop-plan__name { font-weight: 600; overflow-wrap: anywhere; }
+
+.prop-plan__size { color: var(--ink-3); font-variant-numeric: tabular-nums; }
+
+.prop-service__entry + .prop-service__entry { margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--glass-border); }
+
+.prop-service__head { display: flex; align-items: flex-start; gap: 12px; }
+
+.prop-service__option { font-weight: 750; font-size: 17px; }
+
+.prop-service__price { margin-top: 2px; font-size: 14px; color: var(--ink-2); font-variant-numeric: tabular-nums; }
+
+.prop-service__lines { display: flex; flex-wrap: wrap; gap: 6px; margin: 12px 0 0; padding: 0; list-style: none; }
+
+.prop-service__line { padding: 4px 10px; border-radius: var(--radius-pill); background: rgba(var(--hair), .07); font-size: 12.5px; font-weight: 600; }
+
+.prop-service__link { display: inline-block; margin-top: 14px; }
+
 .prop-ticket__title { font-weight: 700; font-size: 15px; margin-bottom: 8px; }
 
 .prop-visit {
@@ -3628,6 +3701,8 @@ h1.proposal-detail-head__title { margin: 0; }
 
 /* Overview — single column and a shorter map on narrow containers */
 .vw-compact .ov-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+.vw-compact .ov-grid[data-count="1"] { grid-template-columns: minmax(0, 1fr); }
 
 .vw-compact .ov-alarm { flex-wrap: wrap; }
 
@@ -5329,6 +5404,12 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
   function money(amount) {
     return "$" + Number(amount || 0).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   }
+  function formatArea(squareFeet) {
+    return Number.isFinite(squareFeet) && squareFeet > 0 ? new Intl.NumberFormat("en-US", { maximumFractionDigits: 0 }).format(squareFeet) + " ft\xB2" : "";
+  }
+  function propertyHighlights(property) {
+    return [formatArea(property && property.areaSqft), property && property.planId ? "Plan approved" : ""].filter(Boolean);
+  }
 
   // app-templates/customer-portal/runtime/src/normalizers/weather.js
   var DAY_NAMES2 = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
@@ -5560,6 +5641,98 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     return Math.min(Math.max(value, low), high);
   }
 
+  // app-templates/customer-portal/runtime/src/normalizers/postal-address.js
+  var POSTAL_CODE = /^(?:[A-Z]\d[A-Z] ?\d[A-Z]\d|\d{5}(?:-\d{4})?)$/i;
+  var COUNTRY_CODE = /^[A-Z]{2}$/;
+  var REGION_CODE = /^[A-Z]{2,3}$/;
+  var NORTH_AMERICAN_PHONE = /^\+?1(\d{3})(\d{3})(\d{4})$/;
+  var PHONE_PUNCTUATION = /[\s().-]/g;
+  function formatPostalAddress(address) {
+    if (!address || typeof address !== "object") return "";
+    return formatAddressParts({
+      lines: [address.address1, address.address2],
+      city: address.city,
+      region: address.state && typeof address.state === "object" ? address.state.code : "",
+      postalCode: address.postalCode,
+      country: address.country && typeof address.country === "object" ? address.country.code || address.country.id : ""
+    });
+  }
+  function formatAddressLine(value) {
+    return formatAddressParts({ lines: [value] });
+  }
+  function formatAddressParts(parts) {
+    var segments = [];
+    var country = plain(parts.country);
+    appendSegments(segments, parts.lines || []);
+    var last = segments[segments.length - 1];
+    if (last && COUNTRY_CODE.test(last) && segments.slice(0, -1).some(isPostalCode)) {
+      country = country || last;
+      segments.pop();
+    }
+    appendSegments(segments, [parts.city, parts.region]);
+    var postal = plain(parts.postalCode) || segments.filter(isPostalCode).pop() || "";
+    if (postal) {
+      segments = segments.filter(function(segment) {
+        return comparable(segment) !== comparable(postal);
+      });
+      if (segments.some(function(segment) {
+        return comparable(segment).indexOf(comparable(postal)) !== -1;
+      })) postal = "";
+    }
+    if (country) {
+      segments = segments.filter(function(segment) {
+        return comparable(segment) !== comparable(country);
+      });
+    }
+    last = segments[segments.length - 1];
+    if (postal && last && REGION_CODE.test(last)) {
+      segments[segments.length - 1] = last + " " + postal;
+      postal = "";
+    }
+    if (postal) segments.push(postal);
+    if (country) segments.push(countryName(country));
+    return segments.join(", ");
+  }
+  function addressRepeats(title, address) {
+    var street = comparable(plain(address).split(",")[0]);
+    return !!street && comparable(title).indexOf(street) !== -1;
+  }
+  function formatPhone(value) {
+    var stored = plain(value);
+    var match = NORTH_AMERICAN_PHONE.exec(stored.replace(PHONE_PUNCTUATION, ""));
+    return match ? "+1 " + match[1] + "-" + match[2] + "-" + match[3] : stored;
+  }
+  function countryName(code) {
+    var value = plain(code);
+    if (!COUNTRY_CODE.test(value)) return value;
+    try {
+      var name = new Intl.DisplayNames(["en"], { type: "region" }).of(value);
+      return name || value;
+    } catch (_) {
+      return value;
+    }
+  }
+  function appendSegments(segments, values) {
+    values.forEach(function(value) {
+      plain(value).split(",").forEach(function(piece) {
+        var segment = piece.replace(/\s+/g, " ").trim();
+        if (segment && !segments.some(function(known) {
+          return comparable(known) === comparable(segment);
+        })) segments.push(segment);
+      });
+    });
+  }
+  function isPostalCode(segment) {
+    return POSTAL_CODE.test(segment);
+  }
+  function comparable(value) {
+    return plain(value).toLowerCase().replace(/[^a-z0-9]/g, "");
+  }
+  function plain(value) {
+    if (typeof value === "string") return value.trim();
+    return typeof value === "number" && Number.isFinite(value) ? String(value) : "";
+  }
+
   // app-templates/customer-portal/runtime/src/normalizers/contracts.js
   var QUOTE_ORDER_TYPES = Object.freeze(["FIELD_SERVICE_ORDER", "WINTER_SERVICES_ORDER"]);
   var CUSTOMER_ORDER_STATUS = Object.freeze({
@@ -5576,6 +5749,11 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     SEASONAL: "Seasonal"
   });
   var RECURRING_MODEL = Object.freeze({ code: "RECURRING", label: "Recurring" });
+  var PRICE_PERIODS = Object.freeze({
+    PER_SERVICE: "per visit",
+    MONTHLY: "/ month",
+    SEASONAL: "per season"
+  });
   var CLIENT_TYPES = Object.freeze({
     INDIVIDUAL: "Individual",
     ORGANIZATION: "Organization"
@@ -5591,6 +5769,8 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
   var STAGE_ORDER = ["approval", "review", "details", "drafting", "approved", "active", "suspended", "expired", "archived", "canceled"];
   var QUOTE_STAGES = ["preparing", "review"];
   var APPROVED_SERVICE_STAGES = ["details", "drafting", "approval", "approved", "active", "suspended", "expired", "archived"];
+  var CURRENT_SERVICE_STAGES = ["active", "approved", "approval", "drafting", "details", "suspended"];
+  var PENDING_STATUSES = ["unseen", "viewed", "revision"];
   var TERMS_DEPTH_LIMIT = 4;
   var HEADING_LINE = /^#{1,6}\s+(.+)$/;
   var ITEM_LINE = /^[-*•]\s+(.+)$/;
@@ -5686,7 +5866,8 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
         money: total ? {
           subtotal: formatMoney(row.totalCharges, currency),
           taxes: formatMoney(row.totalTaxes, currency),
-          total: formatMoney(row.grandTotal, currency)
+          total: formatMoney(row.grandTotal, currency),
+          taxFree: finiteNumber3(row.totalTaxes) === 0
         } : null,
         lines: quoteLines.lines,
         linesState: quoteLines.state,
@@ -5731,6 +5912,12 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
       return isOpen(order) || !owner || QUOTE_STAGES.indexOf(owner.stage) !== -1;
     });
     var groups = quoteGroups(quoted, packageOf, byProperty);
+    var pending = groups.map(function(group) {
+      var waiting = group.orders.filter(function(order) {
+        return PENDING_STATUSES.indexOf(order.status) !== -1;
+      });
+      return waiting.length ? Object.assign({}, group, { orders: waiting }) : null;
+    }).filter(Boolean);
     var counts = { orders: quoted.length, properties: 0, decided: 0, approved: 0, revision: 0, declined: 0, open: 0 };
     groups.forEach(function(group) {
       if (!group.propertyBackendId) return;
@@ -5749,6 +5936,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     return {
       agreements: rows2,
       groups,
+      pending,
       counts,
       deciding: counts.open > 0,
       preparing: !!data.preparing,
@@ -5757,6 +5945,34 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
       scopeMode: data.scopeMode || null,
       partial: partialOf(data, orders, rows2)
     };
+  }
+  function pricePeriod(order) {
+    return order && order.pricingModel ? own(PRICE_PERIODS, order.pricingModel.code) || "" : "";
+  }
+  function formatOrderPrice(order) {
+    var total = formatOrderTotal(order && order.total);
+    var period = pricePeriod(order);
+    return total && period ? total + " " + period : total;
+  }
+  function optionSummary(order) {
+    return [order.pricingModel ? order.pricingModel.label : "", formatOrderPrice(order)].filter(Boolean).join(" \xB7 ");
+  }
+  function chosenOrders(row) {
+    if (!row || row.servicesScope !== "approved") return [];
+    return row.properties.reduce(function(found, entry) {
+      return found.concat(entry.orders);
+    }, []);
+  }
+  function currentServiceAgreement(pkg, propertyBackendId) {
+    var rows2 = (pkg && Array.isArray(pkg.agreements) ? pkg.agreements : []).filter(function(row) {
+      if (CURRENT_SERVICE_STAGES.indexOf(row.agreement.stage) === -1 || row.servicesScope !== "approved") return false;
+      return propertyBackendId == null || row.properties.some(function(entry) {
+        return entry.propertyBackendId === propertyBackendId;
+      });
+    });
+    return rows2.find(function(row) {
+      return row.agreement.stage === "active";
+    }) || rows2[0] || null;
   }
   function groupDecision(orders) {
     var list = orders || [];
@@ -5996,16 +6212,18 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
       provider: {
         legalName: attributeString(document2, "PROVIDER_LEGAL_NAME") || localizedName2(owner && owner.nls),
         representativeName: attributeString(document2, "PROVIDER_REPRESENTATIVE_NAME"),
-        representativeJobTitle: attributeString(document2, "PROVIDER_REPRESENTATIVE_JOB_TITLE")
+        representativeJobTitle: attributeString(document2, "PROVIDER_REPRESENTATIVE_JOB_TITLE"),
+        phone: formatPhone(attributeString(document2, "PROVIDER_CONTACT_PHONE")),
+        email: attributeString(document2, "PROVIDER_CONTACT_EMAIL")
       },
       client: {
         legalName: attributeString(document2, "LEGAL_NAME") || text3(client && typeof client.displayName === "string" ? client.displayName : ""),
         clientType: own(CLIENT_TYPES, attributeString(document2, "CLIENT_TYPE")) || "",
-        billingAddress: attributeString(document2, "BILLING_ADDRESS"),
+        billingAddress: formatAddressLine(attributeString(document2, "BILLING_ADDRESS")),
         representativeName: [first, last].filter(Boolean).join(" "),
         representativeJobTitle: attributeString(document2, "REPRESENTATIVE_JOB_TITLE"),
         email: attributeString(document2, "REPRESENTATIVE_EMAIL"),
-        phone: attributeString(document2, "REPRESENTATIVE_PHONE")
+        phone: formatPhone(attributeString(document2, "REPRESENTATIVE_PHONE"))
       }
     };
   }
@@ -6159,7 +6377,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
   }
   function propertyAddress(property, title) {
     var address = property && property.address || "";
-    return address && address !== title ? address : "";
+    return address && address !== title && !addressRepeats(title, address) ? address : "";
   }
   function byStage(left, right) {
     return stageRank(left.agreement) - stageRank(right.agreement) || right.agreement.backendId - left.agreement.backendId;
@@ -6305,6 +6523,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     porders: [],
     pagreements: [],
     agreementId: null,
+    agreementTermsOpen: false,
     quoteViews: {},
     contractCommand: null,
     contractConfirm: null,
@@ -7721,6 +7940,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
   var ORDER_PAGE_SIZE = 100;
   var LINE_PAGE_SIZE = 200;
   var CATALOG_PAGE_SIZE = 200;
+  var MEDIA_ID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
   var REF_MAPPINGS = [{ name: "id" }, { name: "code" }, { name: "nls" }];
   var ID_MAPPINGS = [{ name: "id" }];
   var RESOURCE_MAPPINGS = [
@@ -8088,7 +8308,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
       id: "prop-core-" + row.id,
       backendId: positiveInteger3(row.id),
       name: localizedName3(row.nls) || text3(row.code) || "Property",
-      address: formatAddress(address),
+      address: formatPostalAddress(address),
       city: address ? text3(address.city) : "",
       postal: address ? text3(address.postalCode) : "",
       region: address && address.state ? text3(address.state.code) : "",
@@ -8097,6 +8317,8 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
       stateCode: latestStateCode(row) || null,
       lat: attributeCoordinate(row, "COORD_LAT", 90),
       lon: attributeCoordinate(row, "COORD_LNG", 180),
+      areaSqft: attributeArea(row, "SERVICE_AREA_SQFT"),
+      planId: attributeMediaId(row, "PROPERTY_PLAN"),
       zone: null,
       contract: null,
       quoteSiteId: null,
@@ -8105,11 +8327,27 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
       lastService: null
     };
   }
-  function formatAddress(address) {
-    if (!address) return "";
-    var region = address.state ? text3(address.state.code) : "";
-    var tail = [text3(address.city), region].filter(Boolean).join(", ");
-    return [text3(address.address1), tail, text3(address.postalCode)].filter(Boolean).join(", ");
+  function attributeArea(row, code) {
+    var entry = attributeEntry(row, code);
+    var value = entry ? entry.value : null;
+    var number = typeof value === "number" ? value : typeof value === "string" && value.trim() !== "" ? Number(value) : Number.NaN;
+    return Number.isFinite(number) && number > 0 ? number : null;
+  }
+  function attributeMediaId(row, code) {
+    var entry = attributeEntry(row, code);
+    var value = entry ? entry.value : null;
+    if (typeof value === "string" && /^\s*\[/.test(value)) {
+      try {
+        value = JSON.parse(value);
+      } catch (_) {
+        return "";
+      }
+    }
+    var ids = (Array.isArray(value) ? value : value == null ? [] : [value]).map(function(item) {
+      var id = text3(item && typeof item === "object" ? item.id : item).toLowerCase();
+      return MEDIA_ID.test(id) ? id : "";
+    });
+    return ids.length === 1 ? ids[0] : "";
   }
   function attributeCoordinate(row, code, limit) {
     var entry = attributeEntry(row, code);
@@ -10439,19 +10677,19 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     if (primaryConnected(profile.primary)) actions.push(ActionButton({ variant: "btn--primary", label: state.config.primaryCtaLabel || profile.primary.label, action: profile.primary.action, visualId: "primary-cta" }));
     if (!profile.weatherCalendar && isModuleEnabled("calendar")) actions.push(h("div", { "class": "icon-btn icon-btn--optional", "data-action": "calendar.open", title: "Calendar" }, "\u{1F4C5}"));
     if (profile.showCart && isModuleEnabled("checkout")) actions.push(h("div", { "class": "icon-btn", "data-action": "cart.open", title: "Cart", "data-state": cartCount() ? "filled" : "empty" }, ["\u{1F6D2}", cartCount() ? h("span", { "class": "cart-badge", "data-bind": "cart.count" }, String(cartCount())) : null]));
-    var activityEnabled = isModuleEnabled("activity");
-    var unread = activityUnread();
-    actions.push(h("div", {
-      "class": "icon-btn icon-btn--optional",
-      "data-module": "activity-control",
-      "data-action": activityEnabled ? "activity.open" : void 0,
-      "data-state": unread ? "unread" : void 0,
-      title: activityEnabled ? "Activity" : void 0,
-      "aria-disabled": activityEnabled ? void 0 : "true"
-    }, ["\u{1F514}", unread ? h("span", { "class": "dot-badge" }) : null]));
+    if (isModuleEnabled("activity")) {
+      var unread = activityUnread();
+      actions.push(h("div", {
+        "class": "icon-btn icon-btn--optional",
+        "data-module": "activity-control",
+        "data-action": "activity.open",
+        "data-state": unread ? "unread" : void 0,
+        title: "Activity"
+      }, ["\u{1F514}", unread ? h("span", { "class": "dot-badge" }) : null]));
+    }
     var profileEnabled = isModuleEnabled("profile");
     var signInRequired = state.config.authMode === "required";
-    if (profileEnabled) actions.push(h("div", { "class": "avatar", "data-action": "profile.open", title: "Profile" }));
+    if (profileEnabled) actions.push(h("div", { "class": "avatar", "data-module": "profile-avatar", "data-action": "profile.open", title: "Profile", "aria-label": "Profile" }, initials(avatarName())));
     else if (signInRequired) actions.push(h("button", { "class": "icon-btn icon-btn--optional", "data-module": "sign-out-control", "data-visual-id": "sign-out-control", "data-action": "auth.signOut", title: "Sign out", "aria-label": "Sign out", type: "button" }, [icon("signOut", "ov-icon")]));
     actions.push(h("div", { "class": "icon-btn hamburger", "data-action": "ui.toggleMobileNav", title: "Menu" }, "\u2630"));
     var landingOpen = !!configuredExternalUrl(state.config, "landingUrl");
@@ -10478,6 +10716,21 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
       ));
     }
     return h("div", { "class": "top-nav-wrap" }, nav);
+  }
+  function avatarName() {
+    if (state.config.dataMode !== "live") {
+      var customer = currentFixture().customer;
+      return customer && customer.fullName || "";
+    }
+    var profile = state.moduleData.profile;
+    return profile && (profile.contact && profile.contact.name || profile.accountName) || "";
+  }
+  function initials(name) {
+    return String(name || "").split(/\s+/).filter(function(part2) {
+      return /^\p{L}/u.test(part2);
+    }).slice(0, 2).map(function(part2) {
+      return part2.charAt(0).toUpperCase();
+    }).join("");
   }
   function primaryConnected(primary) {
     if (!primary) return false;
@@ -11766,17 +12019,6 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     return null;
   }
 
-  // app-templates/customer-portal/runtime/src/components/primitives/SectionUnavailable.js
-  function UnavailableChip() {
-    return h("span", { "class": "readonly-chip" }, "Not available yet");
-  }
-  function SectionUnavailable(subject) {
-    return h("div", { "class": "ov-empty", "data-module": "section-unavailable", "data-visual-id": "section-unavailable" }, [
-      UnavailableChip(),
-      h("div", { "class": "ov-empty__desc" }, subject + " aren\u2019t in the portal yet.")
-    ]);
-  }
-
   // app-templates/customer-portal/runtime/src/components/storm/PropertyMap.js
   var SINGLE_PIN_ZOOM = 14;
   var FIT_PADDING = 56;
@@ -11785,12 +12027,6 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     locating: "Finding it on the map\u2026",
     "not-found": "Address not found on the map",
     "no-address": "No address on file"
-  };
-  var LOCATION_UNAVAILABLE = {
-    "no-map": "The map isn\u2019t available in this portal yet.",
-    failed: "The map couldn\u2019t load.",
-    "not-found": "We couldn\u2019t find this address on the map.",
-    "no-address": "We place a property on the map from its address."
   };
   var listScroll = {};
   function createPropertyMap(options2) {
@@ -12024,7 +12260,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
       if (map && entry.point) placed.push(entry);
       else listed.push(entry);
     });
-    var chosen = placed.concat(listed).find(function(entry) {
+    var chosen = props.direct ? null : placed.concat(listed).find(function(entry) {
       return entry.property.id === props.selectedId;
     }) || null;
     var popup = chosen ? PropertyPopup(chosen.property, props.frame ? popupView(chosen, props) : null, props.weather ? props.weather.legend : null, props.sources) : null;
@@ -12040,7 +12276,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
       map.stage({
         viewport: props.viewport,
         pins: placed.map(function(entry) {
-          return { id: entry.property.id, point: entry.point, element: PropertyPin(entry.property, props.frame, entry.property.id === props.selectedId, props.sources) };
+          return { id: entry.property.id, point: entry.point, element: PropertyPin(entry.property, props.frame, !!chosen && entry.property.id === props.selectedId, props.sources, props.direct) };
         }),
         popup: pinned ? { point: chosen.point, element: popup } : null,
         locating: listed.some(function(entry) {
@@ -12079,30 +12315,23 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     var property = props.property;
     var controller2 = props.map || null;
     var map = controller2 && props.viewport && controller2.status() !== "failed" ? controller2 : null;
-    var placement = map ? placeEach(map, [property])[0] : { point: null, reason: controller2 && props.viewport ? "failed" : "no-map" };
-    var shown = !!placement.point || placement.reason === "locating";
+    var placement = map ? placeEach(map, [property])[0] : null;
+    if (!placement || !placement.point && placement.reason !== "locating") return null;
     return h("section", {
       "class": "card ov-map",
       "data-module": "property-location",
       "data-visual-id": "property-location",
-      "data-state": placement.point ? "placed" : shown ? "locating" : "unavailable",
+      "data-state": placement.point ? "placed" : "locating",
       "aria-labelledby": "property-location-title"
     }, [
       h("div", { "class": "ov-map__head" }, [
         h("span", { "class": "ov-card__icon" }, [icon("map", "ov-icon")]),
         h("h2", { "class": "ov-card__title", id: "property-location-title" }, "Location")
       ]),
-      shown ? h("div", { "class": "ov-map__stage", "data-surface": "google" }, [
+      h("div", { "class": "ov-map__stage", "data-surface": "google" }, [
         LocationMap(map, props.viewport, [{ id: property.id, name: property.name }], [placement], "Finding it on the map\u2026")
-      ]) : LocationUnavailable(property, placement.reason),
+      ]),
       placement.point && props.link ? h("button", { "class": "link-action", type: "button", "data-action": props.link.action, "data-id": props.link.id, "data-visual-id": "property-location-link", style: "margin-top:12px" }, props.link.label + " \u203A") : null
-    ]);
-  }
-  function LocationUnavailable(property, reason) {
-    return h("div", { "class": "ov-empty", "data-module": "location-unavailable", "data-visual-id": "location-unavailable", "data-state": reason, role: "status" }, [
-      h("span", { "class": "readonly-chip", style: "margin-bottom:9px" }, "Location unavailable"),
-      text8("div", "ov-empty__title", property.address || "No address on file"),
-      h("div", { "class": "ov-empty__desc", style: "margin-bottom:0" }, LOCATION_UNAVAILABLE[reason] || LOCATION_UNAVAILABLE["not-found"])
     ]);
   }
   function LocationPin(place) {
@@ -12181,18 +12410,18 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     if (status) return propertyWeather(property, frame);
     return frame ? zoneWeather(property, frame) : void 0;
   }
-  function PropertyPin(property, frame, selected, sources) {
+  function PropertyPin(property, frame, selected, sources, direct) {
     var status = knownPropertyStatus(property, sources);
     return h("button", {
       "class": "ov-pin" + (status === "enroute" ? " ov-pin--active" : "") + (selected ? " ov-pin--on" : ""),
-      "data-action": "overview.selectProperty",
+      "data-action": direct ? "overview.openProperty" : "overview.selectProperty",
       "data-id": property.id,
       "data-module": "property-pin",
       "data-visual-id": "property-pin",
       "data-state": status || void 0,
       "data-weather": weatherKey(property, frame, status),
       "aria-label": status ? property.name + " \u2014 " + OVERVIEW_STATUS[status].label : property.name,
-      "aria-pressed": selected ? "true" : "false"
+      "aria-pressed": direct ? void 0 : selected ? "true" : "false"
     }, [icon("pin", "ov-pin__glyph")]);
   }
   function PropertyList(key, entries, props, popup) {
@@ -12206,7 +12435,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
       "ul",
       { "class": "ov-plist", "data-module": "property-list", "data-visual-id": "property-list", "aria-label": "Your properties" },
       entries.map(function(entry) {
-        var selected = entry.property.id === props.selectedId;
+        var selected = !props.direct && entry.property.id === props.selectedId;
         return h("li", { "class": "ov-plist__item" }, [
           PropertyRow(entry.property, props, selected, entry.reason),
           selected && popup ? inline(popup) : null
@@ -12233,21 +12462,22 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
   function PropertyRow(property, props, selected, reason) {
     var status = knownPropertyStatus(property, props.sources);
     var note = reason ? placementNote(reason) : "";
+    var line = propertyLine(property);
     return h("button", {
       "class": "ov-prow" + (status === "enroute" ? " ov-prow--active" : "") + (selected ? " ov-prow--on" : ""),
-      "data-action": "overview.selectProperty",
+      "data-action": props.direct ? "overview.openProperty" : "overview.selectProperty",
       "data-id": property.id,
       "data-module": "property-row",
       "data-visual-id": "property-row",
       "data-state": status || void 0,
       "data-weather": weatherKey(property, props.frame, status),
       "data-placement": note ? reason : void 0,
-      "aria-expanded": selected ? "true" : "false"
+      "aria-expanded": props.direct ? void 0 : selected ? "true" : "false"
     }, [
       h("span", { "class": "ov-prow__pin" }, [icon("pin", "ov-prow__glyph")]),
       h("span", { "class": "ov-prow__read" }, [
         text8("span", "ov-prow__name", property.name),
-        property.address ? text8("span", "ov-prow__addr", property.address) : null,
+        line ? text8("span", "ov-prow__addr", line) : null,
         note ? text8("span", "ov-prow__why", note) : null
       ]),
       h("span", { "class": "ov-prow__meta" }, [
@@ -12256,6 +12486,10 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
       ])
     ]);
   }
+  function propertyLine(property) {
+    var address = property.address && !addressRepeats(property.name, property.address) ? property.address : "";
+    return [address].concat(propertyHighlights(property)).filter(Boolean).join(" \xB7 ");
+  }
   function PropertyPopup(property, weather, legend, sources) {
     var status = knownPropertyStatus(property, sources);
     var line = sourceOpened(sources, "appointments") ? visitLine(property) : "";
@@ -12263,7 +12497,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
       h("div", { "class": "ov-tip__head" }, [
         h("div", { style: "flex:1;min-width:0" }, [
           text8("div", "ov-tip__name", property.name),
-          property.address ? text8("div", "ov-tip__addr", property.address) : null
+          property.address && !addressRepeats(property.name, property.address) ? text8("div", "ov-tip__addr", property.address) : null
         ]),
         h("button", { "class": "ov-tip__close", "data-action": "overview.closeProperty", "aria-label": "Close" }, "\u2715")
       ]),
@@ -12330,18 +12564,12 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
   };
   function ContractsHead(quotes) {
     var counts = quotes.counts;
-    var facts2 = [];
-    if (quotes.agreements.length) facts2.push(plural(quotes.agreements.length, "service agreement", "service agreements"));
-    if (counts.orders) {
-      facts2.push(plural(counts.orders, "quote", "quotes") + (counts.properties ? " for " + plural(counts.properties, "property", "properties") : ""));
-    }
     var deciding = quotes.deciding && counts.properties > 0;
     return h("div", { "class": "proposals-head", "data-module": "quote-package-head", "data-visual-id": "quote-package-head", "data-state": deciding ? "deciding" : "settled" }, [
       h("div", { "class": "proposals-head__read" }, [
         h("div", { "class": "proposals-head__title-row" }, [
-          h("h1", { "class": "proposals-head__title" }, quotes.groups.length && !quotes.agreements.length ? "Your quotes" : "Your contracts")
-        ]),
-        facts2.length ? h("div", { "class": "proposals-head__sub" }, facts2.join(" \xB7 ")) : null
+          h("h1", { "class": "proposals-head__title" }, quotes.pending.length && !quotes.agreements.length ? "Your quotes" : "Your contracts")
+        ])
       ]),
       deciding ? h("span", { "class": "proposals-head__pill" }, counts.decided + " of " + plural(counts.properties, "property", "properties") + " decided") : null
     ]);
@@ -12352,6 +12580,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
   function AgreementList(rows2) {
     return h("div", { "class": "site-list agreement-list", "data-module": "agreement-list", "data-visual-id": "agreement-list" }, rows2.map(function(row) {
       var agreement = row.agreement;
+      var summary = agreementSummary(row);
       return h("button", {
         "class": "proposal-card agreement-row",
         "data-module": "agreement-row",
@@ -12361,10 +12590,9 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
         "data-state": agreement.stage,
         "aria-label": "Open the service agreement " + agreementTitle(row) + " \u2014 " + agreement.label
       }, [
-        h("span", { "class": "proposal-card__diamond agreement-row__diamond", "data-tone": agreement.tone }),
         h("span", { "class": "proposal-card__body" }, [
           h("span", { "class": "proposal-card__name" }, agreementTitle(row)),
-          h("span", { "class": "proposal-card__meta" }, agreementMeta(row))
+          summary ? h("span", { "class": "proposal-card__meta" }, summary) : null
         ]),
         StatusBadge({ variant: "status-badge--" + agreement.tone, label: agreement.label, bind: "agreement.stateLabel", state: agreement.stage }),
         h("span", { "class": "proposal-card__chev", "aria-hidden": "true" }, "\u203A")
@@ -12378,17 +12606,22 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     if (names.length === 2) return names[0] + " and " + names[1];
     return names[0] + " and " + (names.length - 1) + " more";
   }
-  function agreementMeta(row) {
+  function agreementSummary(row) {
     var agreement = row.agreement;
+    var chosen = chosenOrders(row);
     var facts2 = [];
-    if (row.propertyNames.length) facts2.push("Service agreement");
-    if (agreement.stage === "review" && row.quoteCount) {
+    if (chosen.length === 1) facts2.push(optionSummary(chosen[0]));
+    else if (chosen.length > 1) facts2.push(plural(chosen.length, "option", "options") + " approved");
+    else if (agreement.stage === "review" && row.quoteCount) {
       facts2.push(plural(row.quoteCount, "quote", "quotes") + (row.propertyCount ? " for " + plural(row.propertyCount, "property", "properties") : ""));
     }
-    if (agreement.term) facts2.push("Term " + formatDatePeriod(agreement.term));
+    var season = agreementSeason(agreement);
+    if (season) facts2.push(season);
     else if (agreement.effectiveDate) facts2.push("Effective " + formatIsoDate(agreement.effectiveDate));
-    if (!facts2.length) facts2.push(row.propertyCount ? plural(row.propertyCount, "property", "properties") : "No properties listed yet");
-    return facts2.join(" \xB7 ");
+    return facts2.filter(Boolean).join(" \xB7 ");
+  }
+  function agreementSeason(agreement) {
+    return agreement && agreement.term ? "Season " + formatDatePeriod(agreement.term) : "";
   }
   function QuotesPreparing() {
     return h("div", { "class": "state-block", "data-module": "quote-preparing", "data-visual-id": "quote-preparing", "data-state": "preparing", role: "status" }, [
@@ -12467,7 +12700,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
   }
   function QuoteOption(order) {
     var meta = QUOTE_STATUS[order.status];
-    var total = formatOrderTotal(order.total);
+    var total = formatOrderPrice(order);
     return h("li", { "class": "proposal-option", "data-module": "quote-row", "data-visual-id": "quote-row", "data-state": order.status }, [
       h("span", { "class": "proposal-option__model" }, order.pricingModel ? order.pricingModel.label : "Quote"),
       total ? h("span", { "class": "proposal-option__total" }, total) : null,
@@ -12642,22 +12875,22 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     var weather = model.weather;
     var index = weather ? clampFrameIndex(weather.timeline, state.ovWeatherIndex == null ? weather.nowIndex : state.ovWeatherIndex) : 0;
     var frame = weather ? weather.timeline[index] : null;
-    page.appendChild(h("div", { "class": "ov-head" }, [header, frame ? WeatherPanel(frame, index === weather.nowIndex, weather.source, sectionAvailable(model, "contracts")) : ForecastUnavailable(model.forecast)]));
+    var forecastShown = !!frame || !!model.forecast && model.forecast !== "unconfigured";
+    page.appendChild(h("div", { "class": "ov-head" }, [header, frame ? WeatherPanel(frame, index === weather.nowIndex, weather.source, sectionAvailable(model, "contracts")) : forecastShown ? ForecastUnavailable(model.forecast) : null]));
     page.appendChild(MapPanel(model, frame, index));
-    page.appendChild(InvoicesWidget(model));
-    var grid = h("div", { "class": "ov-grid" });
-    grid.appendChild(UpcomingWidget(model, weather ? weather.timeline : []));
-    grid.appendChild(ContractsWidget(model));
-    grid.appendChild(SupportWidget(model));
-    page.appendChild(grid);
+    var invoices = InvoicesWidget(model);
+    if (invoices) page.appendChild(invoices);
+    var cards = [UpcomingWidget(model, weather ? weather.timeline : []), ContractsWidget(model), SupportWidget(model)].filter(Boolean);
+    if (cards.length) page.appendChild(h("div", { "class": "ov-grid", "data-count": String(cards.length) }, cards));
     if (model.banner) page.appendChild(Banner(model.banner));
     return page;
   }
   function overviewCustomer() {
     if (state.config.dataMode !== "live") return currentFixture().customer;
-    var name = String(state.sessionName || "").trim();
-    var first = name && name.indexOf("@") === -1 ? name.split(/\s+/)[0] : "";
-    return { greeting: first ? "Welcome back, " + first : "Welcome back", subline: "" };
+    var profile = state.moduleData.profile;
+    var contact = profile && profile.contact;
+    var name = contact && contact.firstName || profile && profile.accountName || "";
+    return { greeting: name ? "Welcome back, " + name : "Welcome back", subline: "" };
   }
   function OverviewUnavailable() {
     if (state.config.dataMode !== "live") {
@@ -12689,9 +12922,15 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     return null;
   }
   function subline(model, customer) {
-    if (!model || !model.weather || !state.liveWeather) return customer.subline || propertyCount(model);
-    var frame = model.weather.timeline[model.weather.nowIndex] || model.weather.timeline[0];
+    var frame = model && model.weather && state.liveWeather ? model.weather.timeline[model.weather.nowIndex] || model.weather.timeline[0] : null;
+    if (state.config.dataMode === "live") return [frame ? frame.label : "", activeSeason()].filter(Boolean).join(" \xB7 ");
+    if (!frame) return customer.subline || propertyCount(model);
     return frame.label + " \xB7 " + propertyCount(model);
+  }
+  function activeSeason() {
+    if (!isModuleEnabled("proposals")) return "";
+    var row = currentServiceAgreement(quotePackage());
+    return row ? agreementSeason(row.agreement) : "";
   }
   function propertyCount(model) {
     if (!model) return "";
@@ -12747,6 +12986,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     var weather = frame ? model.weather : null;
     var statusKnown = propertyStatusKnown(model.sources);
     var stage = PropertyStage({
+      direct: state.config.dataMode === "live",
       properties: model.properties,
       frame,
       index,
@@ -12839,8 +13079,8 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     var scheduled = model.properties.filter(function(property) {
       return property.appointment && property.appointment.state === "SCHEDULED";
     });
+    if (!sectionAvailable(model, "appointments")) return null;
     var card = widget("upcoming-services", "Upcoming services", "calendar");
-    if (!sectionAvailable(model, "appointments")) return unavailableSection(card, "Scheduled visits");
     if (!scheduled.length) {
       card.appendChild(emptyLine("No scheduled visits", "Dispatch happens automatically when your trigger is met."));
       return card;
@@ -12868,17 +13108,16 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     return card;
   }
   function InvoicesWidget(model) {
-    var available = sectionAvailable(model, "invoices");
+    if (!sectionAvailable(model, "invoices")) return null;
     var buckets = invoiceBuckets(model.invoices);
     var overdue = buckets.overdue;
     var card = h("div", { "class": "card card--pad ov-card ov-bill" + (overdue.count ? " ov-bill--alarm" : ""), "data-module": "invoices", "data-visual-id": "invoices", "data-state": overdue.count ? "overdue" : "current" }, [
       h("div", { "class": "ov-card__head" }, [
         h("span", { "class": "ov-card__icon" }, [icon("invoice", "ov-icon")]),
         text9("h2", "ov-card__title", "Invoices"),
-        available ? h("div", { "class": "link-action ov-bill__all", "data-action": "overview.openInvoices" }, "View all \u203A") : null
+        h("div", { "class": "link-action ov-bill__all", "data-action": "overview.openInvoices" }, "View all \u203A")
       ])
     ]);
-    if (!available) return unavailableSection(card, "Invoices");
     if (!buckets.outstanding.count && !buckets.paidThisMonth.count) {
       card.appendChild(emptyLine("No invoices yet", "Invoices appear here once the season is billed."));
       return card;
@@ -12918,8 +13157,8 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     var contracts = model.contracts || [];
     var quotes = quotePackage();
     var preparing = !!(quotes && quotes.preparing);
+    if (!sectionAvailable(model, "contracts")) return null;
     var card = widget("active-contracts", "Active contracts", "contract");
-    if (!sectionAvailable(model, "contracts")) return unavailableSection(card, "Contracts");
     if (!contracts.length) {
       card.appendChild(preparing ? QuotePreparingLine() : emptyLine("No active contracts", "A contract appears here once your service agreement is approved."));
       return card;
@@ -12946,28 +13185,22 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     if (!envelope2) return contractsLoading(card);
     if (envelope2.state === "unauthorized") return contractsProblem(card, "unauthorized", "No access to contracts", "Your account doesn\u2019t include access to your contracts.", false);
     var quotes = quotePackage();
-    if (envelope2.state === "unavailable" || !quotes) return unavailableSection(card, "Contracts");
+    if (envelope2.state === "unavailable" || !quotes) return null;
     var agreements = quotes.agreements;
+    var waiting = quotes.counts.open;
+    var revising = !waiting && quotes.pending.length > 0;
     var partial = !!(quotes.partial && (quotes.partial.agreements || quotes.partial.orders));
-    card.setAttribute("data-state", partial ? "partial" : agreements.length || quotes.groups.length ? "ready" : quotes.preparing ? "preparing" : "empty");
-    if (!agreements.length && !quotes.groups.length) {
+    card.setAttribute("data-state", partial ? "partial" : agreements.length || quotes.pending.length ? "ready" : quotes.preparing ? "preparing" : "empty");
+    if (!agreements.length && !quotes.pending.length) {
       card.appendChild(quotes.preparing ? QuotePreparingLine() : emptyLine("No contracts yet", "When we send you a quote or a service agreement, it appears here."));
       if (partial) card.appendChild(ContractsPartialLine());
       return card;
     }
-    if (agreements.length) {
-      card.appendChild(lead(String(agreements.length), agreements.length === 1 ? "service agreement" : "service agreements"));
-      agreements.slice(0, 3).forEach(function(row) {
-        card.appendChild(AgreementLine(row));
-      });
-    } else {
-      card.appendChild(lead(
-        String(quotes.counts.orders),
-        quotes.counts.orders === 1 ? "quote" : "quotes",
-        quotes.counts.properties ? quotes.counts.decided + " of " + plural(quotes.counts.properties, "property", "properties") + " decided" : ""
-      ));
-      if (quotes.deciding) card.appendChild(QuotesDecisionLine(quotes));
-    }
+    if (waiting) card.appendChild(QuotesWaitingLink(waiting));
+    agreements.slice(0, 3).forEach(function(row) {
+      card.appendChild(AgreementLine(row));
+    });
+    if (revising) card.appendChild(QuotesRevisionLine());
     if (quotes.preparing) card.appendChild(QuotePreparingRow());
     if (partial) card.appendChild(ContractsPartialLine());
     card.appendChild(moreLine(agreements.length > 3 ? agreements.length - 3 : null, agreements.length > 3 ? "more in Contracts" : "View all contracts", "overview.openContracts"));
@@ -12975,7 +13208,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
   }
   function AgreementLine(row) {
     var agreement = row.agreement;
-    var meta = agreementLineMeta(row);
+    var meta = agreementSummary(row);
     return h("div", { "class": "ov-row", "data-module": "contract-row", "data-visual-id": "contract-row", "data-state": agreement.stage }, [
       h("div", { style: "flex:1;min-width:0" }, [
         text9("div", "ov-row__title", agreementTitle(row)),
@@ -12987,18 +13220,18 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
       chevron("agreement.open", row.id, "Open the service agreement " + agreementTitle(row) + " \u2014 " + agreement.label)
     ]);
   }
-  function agreementLineMeta(row) {
-    var agreement = row.agreement;
-    if (agreement.stage === "review" && row.quoteCount) return plural(row.quoteCount, "quote", "quotes") + (row.propertyCount ? " for " + plural(row.propertyCount, "property", "properties") : "");
-    if (agreement.term) return formatDatePeriod(agreement.term);
-    return agreement.effectiveDate ? "Effective " + formatIsoDate(agreement.effectiveDate) : "";
+  function QuotesWaitingLink(count) {
+    return h("button", { "class": "ov-waiting", type: "button", "data-module": "quote-decision", "data-visual-id": "quote-decision", "data-action": "overview.openContracts" }, [
+      text9("span", "ov-waiting__label", plural(count, "quote", "quotes") + " waiting for your decision"),
+      h("span", { "class": "ov-waiting__chev", "aria-hidden": "true" }, "\u203A")
+    ]);
   }
-  function QuotesDecisionLine(quotes) {
-    return h("div", { "class": "ov-row", "data-module": "quote-decision", "data-visual-id": "quote-decision", "data-tone": "info" }, [
+  function QuotesRevisionLine() {
+    return h("div", { "class": "ov-row", "data-module": "quote-revision", "data-visual-id": "quote-revision", "data-tone": "info" }, [
       h("i", { "class": "ov-dot" }),
       h("div", { style: "flex:1;min-width:0" }, [
-        text9("div", "ov-row__title", "Quotes awaiting your decision"),
-        text9("div", "ov-row__meta", plural(quotes.counts.open, "option", "options") + " still open")
+        text9("div", "ov-row__title", "Changes requested"),
+        text9("div", "ov-row__meta", "We\u2019re reviewing the changes you asked for.")
       ]),
       chevron("overview.openContracts", "", "Go to Contracts")
     ]);
@@ -13041,9 +13274,9 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     ]);
   }
   function SupportWidget(model) {
+    if (!sectionAvailable(model, "support")) return null;
     var requests = model.support || [];
     var card = widget("support-requests", "Support requests", "support");
-    if (!sectionAvailable(model, "support")) return unavailableSection(card, "Support requests");
     if (!requests.length) {
       card.appendChild(h("div", { "class": "ov-empty", "data-state": "empty" }, [
         text9("div", "ov-empty__title", "No open requests"),
@@ -13110,11 +13343,6 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
       text9("div", "ov-empty__title", title),
       text9("div", "ov-empty__desc", desc)
     ]);
-  }
-  function unavailableSection(card, subject) {
-    card.setAttribute("data-state", "unavailable");
-    card.appendChild(SectionUnavailable(subject));
-    return card;
   }
   function text9(tag, className, value) {
     return h(tag, className ? { "class": className } : null, value == null ? "" : String(value));
@@ -13365,18 +13593,334 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     return h(tag, className ? { "class": className } : null, value == null ? "" : String(value));
   }
 
+  // app-templates/customer-portal/runtime/src/components/storm/PropertyPlan.js
+  var SVG = "http://www.w3.org/2000/svg";
+  var SCALE = 1e5;
+  var METERS_PER_DEGREE = 111320;
+  var MIN_SPAN = 2e-4;
+  var PADDING = 0.08;
+  function PropertyPlan(entry) {
+    if (!entry || entry.status === "unavailable") return null;
+    var card = h("section", { "class": "card card--pad prop-plan", "data-module": "property-plan", "data-visual-id": "property-plan", "data-state": entry.status, "aria-labelledby": "property-plan-title" }, [
+      h("div", { "class": "prop-section__title", id: "property-plan-title" }, "Service plan")
+    ]);
+    if (entry.status !== "ready") {
+      card.setAttribute("aria-busy", "true");
+      card.appendChild(skel("height:220px;border-radius:14px"));
+      return card;
+    }
+    card.appendChild(planDrawing(entry.plan));
+    card.appendChild(h("ul", { "class": "prop-plan__legend", "aria-label": "Plan elements" }, entry.plan.elements.map(function(element) {
+      return h("li", { "class": "prop-plan__item" }, [
+        h("span", { "class": "prop-plan__swatch", "data-tone": String(element.tone), "data-kind": element.kind, "aria-hidden": "true" }),
+        h("span", { "class": "prop-plan__name" }, element.name || "Element " + element.position),
+        element.areaText ? h("span", { "class": "prop-plan__size" }, element.areaText + " ft\xB2") : null
+      ]);
+    })));
+    return card;
+  }
+  function planDrawing(plan) {
+    var frame = planFrame(plan.bounds);
+    var svg = svgNode("svg", {
+      "class": "prop-plan__drawing",
+      viewBox: [frame.x, frame.y, frame.width, frame.height].map(round).join(" "),
+      role: "img",
+      "aria-label": "Plan drawing with " + plan.elements.length + (plan.elements.length === 1 ? " element" : " elements")
+    });
+    plan.elements.forEach(function(element) {
+      element.shapes.forEach(function(shape) {
+        svg.appendChild(shapeNode(shape, element, frame));
+      });
+    });
+    return svg;
+  }
+  function planFrame(bounds) {
+    var cos = Math.cos((bounds.north + bounds.south) / 2 * Math.PI / 180);
+    var width = Math.max((bounds.east - bounds.west) * cos, MIN_SPAN) * SCALE;
+    var height = Math.max(bounds.north - bounds.south, MIN_SPAN) * SCALE;
+    var centerX = (bounds.east - bounds.west) * cos * SCALE / 2;
+    var centerY = (bounds.north - bounds.south) * SCALE / 2;
+    var pad2 = Math.max(width, height) * PADDING;
+    return {
+      x: centerX - width / 2 - pad2,
+      y: centerY - height / 2 - pad2,
+      width: width + pad2 * 2,
+      height: height + pad2 * 2,
+      dot: Math.max(width, height) / 70,
+      project: function(point) {
+        return [(point.lng - bounds.west) * cos * SCALE, (bounds.north - point.lat) * SCALE];
+      }
+    };
+  }
+  function shapeNode(shape, element, frame) {
+    var project = frame.project;
+    var attributes = { "class": "prop-plan__shape", "data-tone": String(element.tone), "data-kind": shape.kind };
+    if (shape.kind === "area") {
+      attributes.d = shape.polygons.map(function(rings) {
+        return rings.map(function(ring) {
+          return "M" + ring.map(function(point) {
+            return project(point).map(round).join(" ");
+          }).join("L") + "Z";
+        }).join("");
+      }).join("");
+      attributes["fill-rule"] = "evenodd";
+      return svgNode("path", attributes);
+    }
+    if (shape.kind === "line") {
+      attributes.points = shape.path.map(function(point) {
+        return project(point).map(round).join(",");
+      }).join(" ");
+      return svgNode("polyline", attributes);
+    }
+    var center = project(shape.kind === "circle" ? shape.center : shape.position);
+    attributes.cx = round(center[0]);
+    attributes.cy = round(center[1]);
+    attributes.r = round(shape.kind === "circle" ? shape.radius / METERS_PER_DEGREE * SCALE : frame.dot);
+    return svgNode("circle", attributes);
+  }
+  function svgNode(tag, attributes) {
+    var node = document.createElementNS(SVG, tag);
+    Object.keys(attributes).forEach(function(name) {
+      node.setAttribute(name, String(attributes[name]));
+    });
+    return node;
+  }
+  function round(value) {
+    return Math.round(value * 10) / 10;
+  }
+
+  // app-templates/customer-portal/runtime/client-review/plan.js
+  (function(global) {
+    "use strict";
+    var ns = global.ClientReview || (global.ClientReview = {});
+    var EARTH_RADIUS_METERS = 6378137;
+    var SQUARE_FOOT_IN_SQUARE_METERS = 0.09290304;
+    var MAP_SURFACE = "GOOGLE_MAPS";
+    var TONES = 5;
+    function finite(value) {
+      return typeof value === "number" && isFinite(value);
+    }
+    function radians(degrees) {
+      return degrees * Math.PI / 180;
+    }
+    function position(value) {
+      if (!Array.isArray(value) || value.length < 2 || value.length > 3) return null;
+      var lng = value[0];
+      var lat = value[1];
+      if (!finite(lng) || !finite(lat) || Math.abs(lng) > 180 || Math.abs(lat) > 90) return null;
+      if (value.length === 3 && !finite(value[2])) return null;
+      return { lat, lng };
+    }
+    function path(value, minimum) {
+      if (!Array.isArray(value) || value.length < minimum) return null;
+      var points = [];
+      for (var index = 0; index < value.length; index += 1) {
+        var point = position(value[index]);
+        if (!point) return null;
+        points.push(point);
+      }
+      return points;
+    }
+    function polygon(value) {
+      if (!Array.isArray(value) || !value.length) return null;
+      var rings = [];
+      for (var index = 0; index < value.length; index += 1) {
+        var ring = path(value[index], 4);
+        if (!ring) return null;
+        rings.push(ring);
+      }
+      return rings;
+    }
+    function shapeOf(geometry) {
+      if (!geometry || typeof geometry !== "object") return null;
+      var coordinates = geometry.coordinates;
+      if (geometry.type === "Point") {
+        var point = position(coordinates);
+        return point ? { kind: "point", position: point } : null;
+      }
+      if (geometry.type === "LineString") {
+        var line = path(coordinates, 2);
+        return line ? { kind: "line", path: line } : null;
+      }
+      if (geometry.type === "Polygon") {
+        var single = polygon(coordinates);
+        return single ? { kind: "area", polygons: [single] } : null;
+      }
+      if (geometry.type === "MultiPolygon") {
+        if (!Array.isArray(coordinates) || !coordinates.length) return null;
+        var polygons = [];
+        for (var index = 0; index < coordinates.length; index += 1) {
+          var part2 = polygon(coordinates[index]);
+          if (!part2) return null;
+          polygons.push(part2);
+        }
+        return { kind: "area", polygons };
+      }
+      if (geometry.type === "Circle") {
+        var center = position(coordinates);
+        return center && finite(geometry.radius) && geometry.radius > 0 ? { kind: "circle", center, radius: geometry.radius } : null;
+      }
+      return null;
+    }
+    function projector(origin) {
+      var scale = Math.cos(radians(origin.lat));
+      return function(point) {
+        return [EARTH_RADIUS_METERS * radians(point.lng - origin.lng) * scale, EARTH_RADIUS_METERS * radians(point.lat - origin.lat)];
+      };
+    }
+    function ringArea(ring, project) {
+      var twice = 0;
+      ring.forEach(function(point, index) {
+        var here = project(point);
+        var next = project(ring[(index + 1) % ring.length]);
+        twice += here[0] * next[1] - next[0] * here[1];
+      });
+      return Math.abs(twice) / 2;
+    }
+    function polygonArea(rings, project) {
+      var holes = 0;
+      rings.slice(1).forEach(function(ring) {
+        holes += ringArea(ring, project);
+      });
+      return Math.max(0, ringArea(rings[0], project) - holes);
+    }
+    function shapeArea(shape) {
+      if (shape.kind === "circle") return Math.PI * shape.radius * shape.radius;
+      if (shape.kind !== "area") return 0;
+      var project = projector(shape.polygons[0][0][0]);
+      var area = 0;
+      shape.polygons.forEach(function(rings) {
+        area += polygonArea(rings, project);
+      });
+      return area;
+    }
+    function shapePoints(shape) {
+      if (shape.kind === "point") return [shape.position];
+      if (shape.kind === "line") return shape.path;
+      if (shape.kind === "circle") {
+        var latSpan = shape.radius / EARTH_RADIUS_METERS * 180 / Math.PI;
+        var lngSpan = latSpan / Math.max(Math.cos(radians(shape.center.lat)), 0.01);
+        return [
+          { lat: shape.center.lat + latSpan, lng: shape.center.lng + lngSpan },
+          { lat: shape.center.lat - latSpan, lng: shape.center.lng - lngSpan }
+        ];
+      }
+      var points = [];
+      shape.polygons.forEach(function(rings) {
+        points = points.concat(rings[0]);
+      });
+      return points;
+    }
+    function boundsOf(elements) {
+      var bounds = { north: -90, south: 90, east: -180, west: 180 };
+      elements.forEach(function(element) {
+        element.shapes.forEach(function(shape) {
+          shapePoints(shape).forEach(function(point) {
+            bounds.north = Math.max(bounds.north, point.lat);
+            bounds.south = Math.min(bounds.south, point.lat);
+            bounds.east = Math.max(bounds.east, point.lng);
+            bounds.west = Math.min(bounds.west, point.lng);
+          });
+        });
+      });
+      return bounds;
+    }
+    function nameOf(element, locale) {
+      var localized2 = ns.normalizer && typeof ns.normalizer.localizedName === "function" ? ns.normalizer.localizedName(element.nls, locale) : "";
+      var label = typeof element.label === "string" ? element.label.replace(/\s+/g, " ").trim() : "";
+      return localized2 || label;
+    }
+    function parse(raw, locale) {
+      if (!raw || typeof raw !== "object" || raw.type !== "PropertyPlan" || raw.schemaVersion !== 1 || !Array.isArray(raw.elements)) return null;
+      var tones = {};
+      var toneCount = 0;
+      var elements = [];
+      var area = 0;
+      raw.elements.forEach(function(element) {
+        if (!element || typeof element !== "object" || !Array.isArray(element.overlays)) return;
+        var shapes = [];
+        element.overlays.forEach(function(overlay) {
+          if (!overlay || typeof overlay !== "object" || overlay.map !== MAP_SURFACE) return;
+          var shape = shapeOf(overlay.geometry);
+          if (shape) shapes.push(shape);
+        });
+        if (!shapes.length) return;
+        var type = "type-" + String(element.elementTypeDictionaryId);
+        if (!Object.prototype.hasOwnProperty.call(tones, type)) {
+          tones[type] = toneCount % TONES + 1;
+          toneCount += 1;
+        }
+        var elementArea = 0;
+        shapes.forEach(function(shape) {
+          elementArea += shapeArea(shape);
+        });
+        area += elementArea;
+        var kind = shapes[0].kind === "circle" ? "area" : shapes[0].kind;
+        var squareFeet = elementArea / SQUARE_FOOT_IN_SQUARE_METERS;
+        elements.push({
+          key: "element-" + (elements.length + 1),
+          position: elements.length + 1,
+          name: nameOf(element, locale),
+          tone: tones[type],
+          kind,
+          shapes,
+          squareFeet,
+          areaText: kind === "area" ? formatArea2(squareFeet, locale) : ""
+        });
+      });
+      if (!elements.length) return null;
+      var planSquareFeet = area / SQUARE_FOOT_IN_SQUARE_METERS;
+      return { elements, squareFeet: planSquareFeet, areaText: formatArea2(planSquareFeet, locale), bounds: boundsOf(elements) };
+    }
+    function formatArea2(squareFeet, locale) {
+      if (!finite(squareFeet) || squareFeet <= 0) return "";
+      try {
+        return new Intl.NumberFormat(locale, { maximumFractionDigits: 0 }).format(squareFeet);
+      } catch (_) {
+        return new Intl.NumberFormat("en", { maximumFractionDigits: 0 }).format(squareFeet);
+      }
+    }
+    ns.plan = Object.freeze({
+      tones: TONES,
+      parse,
+      formatArea: formatArea2
+    });
+  })(typeof window !== "undefined" ? window : globalThis);
+
+  // app-templates/customer-portal/runtime/src/property-plan.js
+  var MEDIA_ID2 = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
+  var plans = /* @__PURE__ */ new Map();
+  function propertyPlan(planId, onChange, fetchImpl) {
+    if (!MEDIA_ID2.test(String(planId || ""))) return null;
+    var entry = plans.get(planId);
+    if (entry) return entry;
+    entry = { status: "loading", plan: null };
+    plans.set(planId, entry);
+    readPlan(planId, fetchImpl || globalThis.fetch).then(function(raw) {
+      var plan = globalThis.ClientReview.plan.parse(raw, "en");
+      entry.status = plan ? "ready" : "unavailable";
+      entry.plan = plan;
+    }, function() {
+      entry.status = "unavailable";
+    }).then(function() {
+      if (typeof onChange === "function") onChange();
+    });
+    return entry;
+  }
+  function readPlan(planId, fetchImpl) {
+    var base = String(state.config.coreApiBase || "/core").replace(/\/+$/, "");
+    return Promise.resolve(fetchImpl(base + "/media/" + planId + "/stream.json", {
+      method: "GET",
+      credentials: "omit",
+      referrerPolicy: "no-referrer",
+      headers: { Accept: "application/json" }
+    })).then(function(response) {
+      if (!response || !response.ok) throw new Error("The property plan could not be read");
+      return response.json();
+    });
+  }
+
   // app-templates/customer-portal/runtime/src/routes/PropertyDetailPage.js
-  var AGREEMENT_FACT_NOTES = {
-    unauthorized: "Your account doesn\u2019t include access to contracts.",
-    unavailable: "Contracts aren\u2019t in the portal yet.",
-    error: "Your contracts couldn\u2019t be loaded."
-  };
-  var QUOTE_DECISION = {
-    approved: "option approved",
-    declined: "declined",
-    revision: "changes requested",
-    open: "awaiting your decision"
-  };
   function currentProperty() {
     var model = currentOverview();
     var properties = model && model.properties || [];
@@ -13407,31 +13951,38 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     }
     var status = knownPropertyStatus(property, model.sources);
     var contract = contractFor(property);
+    var service = serviceFor(property);
     page.appendChild(BackLink(model));
     page.appendChild(h("div", { "class": "prop-head" }, [
       h("div", { style: "flex:1;min-width:0" }, [
         text12("h1", "prop-head__title", property.name),
-        property.address ? text12("div", "prop-head__addr", property.address) : null
+        property.address && !addressRepeats(property.name, property.address) ? text12("div", "prop-head__addr", property.address) : null
       ]),
       status ? text12("span", "status-badge status-badge--" + statusTone(status), OVERVIEW_STATUS[status].label) : null
     ]));
-    page.appendChild(h(
-      "div",
-      { "class": "card card--pad prop-facts", "data-module": "property-facts", "data-visual-id": "property-facts" },
-      facts(property, contract, model).map(function(item) {
-        return h("div", { "class": "prop-fact", "data-fact": item.key, "data-state": item.state }, [
-          text12("div", "prop-fact__label", item.label),
-          item.state === "unavailable" ? h("div", { "class": "prop-fact__value" }, [UnavailableChip()]) : item.state === "loading" ? h("div", { "class": "prop-fact__value", "aria-busy": "true" }, [skel("width:62%;height:15px")]) : item.action ? h("div", { "class": "link-action prop-fact__value", "data-action": item.action, "data-id": item.id }, item.value + " \u203A") : text12("div", "prop-fact__value", item.value),
-          item.note ? text12("div", "prop-fact__note", item.note) : null
-        ]);
-      })
-    ));
-    page.appendChild(PropertyLocation({
+    var rows2 = facts(property, contract, model, service);
+    if (rows2.length) {
+      page.appendChild(h(
+        "div",
+        { "class": "card card--pad prop-facts", "data-module": "property-facts", "data-visual-id": "property-facts" },
+        rows2.map(function(item) {
+          return h("div", { "class": "prop-fact", "data-fact": item.key }, [
+            text12("div", "prop-fact__label", item.label),
+            item.action ? h("div", { "class": "link-action prop-fact__value", "data-action": item.action, "data-id": item.id }, item.value + " \u203A") : text12("div", "prop-fact__value", item.value)
+          ]);
+        })
+      ));
+    }
+    if (service) page.appendChild(ServiceCard2(service));
+    var plan = PropertyPlan(propertyPlan(property.planId, render));
+    if (plan) page.appendChild(plan);
+    var location = PropertyLocation({
       property,
       map: sharedPropertyMap(),
       viewport: mapViewport(),
       link: { label: "See it with your other properties", action: "property.showOnMap", id: property.id }
-    }));
+    });
+    if (location) page.appendChild(location);
     if (property.ticket && sectionAvailable(model, "support")) {
       page.appendChild(h("div", { "class": "card card--pad prop-ticket", "data-module": "property-ticket", "data-visual-id": "property-ticket" }, [
         text12("div", "prop-section__title", "Open request"),
@@ -13439,18 +13990,51 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
         h("div", { "class": "link-action", "data-action": "nav.go", "data-id": "support" }, "Open support \u203A")
       ]));
     }
-    page.appendChild(VisitCard(property, model));
+    if (sectionAvailable(model, "appointments")) page.appendChild(VisitCard(property));
     return page;
   }
-  function VisitCard(property, model) {
+  function ServiceCard2(service) {
+    var row = service.row;
+    var agreement = row.agreement;
+    return h("section", { "class": "card card--pad prop-service", "data-module": "property-service", "data-visual-id": "property-service", "data-state": agreement.stage, "aria-labelledby": "property-service-title" }, [
+      h("div", { "class": "prop-section__title", id: "property-service-title" }, "Your service")
+    ].concat(service.orders.map(function(order) {
+      var price = formatOrderPrice(order);
+      var products = order.lines.map(function(line) {
+        return line.product;
+      }).filter(function(name, index, names) {
+        return !!name && names.indexOf(name) === index;
+      });
+      return h("div", { "class": "prop-service__entry", "data-module": "property-service-option" }, [
+        h("div", { "class": "prop-service__head" }, [
+          h("div", { style: "flex:1;min-width:0" }, [
+            text12("div", "prop-service__option", order.pricingModel ? order.pricingModel.label : "Service"),
+            price ? text12("div", "prop-service__price", price) : null
+          ]),
+          StatusBadge({ variant: "status-badge--" + agreement.tone, label: agreement.label, bind: "agreement.stateLabel", state: agreement.stage })
+        ]),
+        products.length ? h("ul", { "class": "prop-service__lines", "aria-label": "Services" }, products.map(function(name) {
+          return text12("li", "prop-service__line", name);
+        })) : null
+      ]);
+    }), [
+      h("button", { "class": "link-action prop-service__link", type: "button", "data-action": "agreement.open", "data-id": row.id, "data-visual-id": "property-service-agreement" }, "View agreement \u203A")
+    ]));
+  }
+  function serviceFor(property) {
+    if (state.config.dataMode !== "live" || !isModuleEnabled("proposals")) return null;
+    var envelope2 = state.moduleData.proposals;
+    if (!envelope2 || envelope2.state === "unauthorized" || envelope2.state === "unavailable" || envelope2.state === "error") return null;
+    var row = currentServiceAgreement(quotePackage(), property.backendId);
+    var entry = row ? row.properties.find(function(item) {
+      return item.propertyBackendId === property.backendId;
+    }) : null;
+    return entry && entry.orders.length ? { row, orders: entry.orders } : null;
+  }
+  function VisitCard(property) {
     var card = h("div", { "class": "card card--pad prop-visits", "data-module": "property-visits", "data-visual-id": "property-visits" }, [
       text12("div", "prop-section__title", "Service")
     ]);
-    if (!sectionAvailable(model, "appointments")) {
-      card.setAttribute("data-state", "unavailable");
-      card.appendChild(SectionUnavailable("Scheduled visits"));
-      return card;
-    }
     if (property.appointment) {
       var meta = stateMeta(property.appointment.state);
       card.appendChild(h("div", { "class": "prop-visit", "data-action": "appointments.openVisit", "data-id": property.id, "data-state": property.appointment.state.toLowerCase() }, [
@@ -13478,37 +14062,35 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
   function BackLink(model) {
     return sectionAvailable(model, "appointments") ? h("div", { "class": "detail-back", "data-action": "nav.go", "data-id": "appointments" }, "\u2039 Back to appointments") : h("div", { "class": "detail-back", "data-action": "nav.go", "data-id": "overview" }, "\u2039 Back to home");
   }
-  function facts(property, contract, model) {
-    var rows2 = [
-      sectionAvailable(model, "contracts") ? { key: "contract", label: "Contract", value: contract ? "#" + contract.number + " \xB7 " + contract.plan : "Not under contract", action: contract ? "nav.go" : void 0, id: contract ? "proposals.list" : void 0 } : state.config.dataMode === "live" && isModuleEnabled("proposals") ? liveAgreementFact(property) : { key: "contract", label: "Contract", state: "unavailable", note: "Contracts aren\u2019t in the portal yet." }
-    ];
+  function facts(property, contract, model, service) {
+    var rows2 = [];
+    if (sectionAvailable(model, "contracts")) {
+      rows2.push({ key: "contract", label: "Contract", value: contract ? "#" + contract.number + " \xB7 " + contract.plan : "Not under contract", action: contract ? "nav.go" : void 0, id: contract ? "proposals.list" : void 0 });
+    }
+    var area = formatArea(property.areaSqft);
+    if (area) rows2.push({ key: "area", label: "Area", value: area });
+    if (property.planId) rows2.push({ key: "plan", label: "Plan", value: "Approved" });
+    if (service && service.row.agreement.term) rows2.push({ key: "season", label: "Season", value: formatDatePeriod(service.row.agreement.term) });
     if (property.zone) rows2.push({ key: "zone", label: "Service zone", value: zoneLabel(property.zone) });
     var site = quoteSiteFor(property);
     if (site && site.lot) rows2.push({ key: "lot", label: "Lot", value: site.lot + " sq ft" });
-    var quotes = quoteGroupFor(property.quoteSiteId || property.id);
-    if (quotes) {
+    var group = quoteGroupFor(property.quoteSiteId || property.id);
+    var listed = group ? (quotePackage() || { pending: [] }).pending.find(function(item) {
+      return item.id === group.id;
+    }) : null;
+    var waiting = listed ? listed.orders.filter(function(order) {
+      return order.status === "unseen" || order.status === "viewed";
+    }).length : 0;
+    if (waiting) {
       rows2.push({
         key: "quotes",
         label: "Quotes",
-        value: quotes.orders.length + (quotes.orders.length === 1 ? " quote" : " quotes") + " \xB7 " + QUOTE_DECISION[quotes.decision],
+        value: waiting + (waiting === 1 ? " quote" : " quotes") + " \xB7 awaiting your decision",
         action: "proposal.open",
-        id: quotes.id
+        id: group.id
       });
     }
     return rows2;
-  }
-  function liveAgreementFact(property) {
-    var envelope2 = state.moduleData.proposals;
-    if (!envelope2 && state.moduleStatus.proposals !== "error") return { key: "contract", label: "Service agreement", state: "loading" };
-    var readable = !!envelope2 && !AGREEMENT_FACT_NOTES[envelope2.state] && !(state.contractCommand && state.contractCommand.phase === "readback-failed");
-    var quotes = readable ? quotePackage() : null;
-    if (!quotes) return { key: "contract", label: "Service agreement", state: "unavailable", note: AGREEMENT_FACT_NOTES[envelope2 && envelope2.state] || AGREEMENT_FACT_NOTES.error };
-    var row = quotes.agreements.find(function(agreement) {
-      return agreement.properties.some(function(entry) {
-        return entry.propertyBackendId === property.backendId;
-      });
-    });
-    return row ? { key: "contract", label: "Service agreement", value: row.agreement.label, action: "agreement.open", id: row.id } : { key: "contract", label: "Service agreement", value: "None yet" };
   }
   function PropertySkeleton() {
     return h("div", { "data-module": "property-loading", "data-visual-id": "property-loading", "data-state": "loading", "aria-busy": "true" }, [
@@ -13711,14 +14293,15 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     if (!order.money) {
       return h("div", { "class": "quote-option__note", "data-module": "quote-totals", "data-state": "unpriced" }, "No price is stated on this quote yet.");
     }
-    var rows2 = [["Subtotal", order.money.subtotal, "subtotal"], ["Taxes", order.money.taxes, "taxes"]].filter(function(row) {
+    var rows2 = order.money.taxFree ? [] : [["Subtotal", order.money.subtotal, "subtotal"], ["Taxes", order.money.taxes, "taxes"]].filter(function(row) {
       return !!row[1];
     });
     var wrap = h("div", { "class": "money-rows quote-totals", "data-module": "quote-totals", "data-visual-id": "quote-totals" }, rows2.map(function(row) {
       return h("div", { "class": "money-rows__row", "data-kind": row[2] }, [h("span", null, row[0]), h("span", null, row[1])]);
     }));
     if (order.money.total) {
-      wrap.appendChild(h("div", { "class": "money-rows__row money-rows__row--total", "data-kind": "total" }, [h("span", null, "Total"), h("span", null, order.money.total)]));
+      var period = pricePeriod(order);
+      wrap.appendChild(h("div", { "class": "money-rows__row money-rows__row--total", "data-kind": "total" }, [h("span", null, "Total"), h("span", null, period ? order.money.total + " " + period : order.money.total)]));
     }
     return wrap;
   }
@@ -14111,12 +14694,12 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
       h("div", { style: "font-weight:800;font-size:19px;letter-spacing:-.01em" }, v.prop.svc + " \u2014 choose your plan"),
       h("div", { style: "font-size:13px;color:var(--ink-2);margin-top:3px" }, "Approving one option declines the other two. Request a revision and we\u2019ll re-quote all three.")
     ]));
-    var plans = [
+    var plans2 = [
       { id: "897", name: "Flex Service Plan", tag: "Pay-as-you-go \xB7 Order #34897", isFlex: true, desc: "Best for smaller or low-exposure sites. Billed per service at the rates above." },
       { id: "898", name: "Seasonal Unlimited Coverage", tag: "Order #34898", badge: "MOST SELECTED", priceMain: comp.monthlyStr, priceSub: "/ mo \xD7 5 \xB7 " + v.prop.months, desc: "Predictable budget, full-season protection. " + v.prop.unlimDesc + " GPS logs + photos after every visit." },
       { id: "899", name: "Season-Lock Prepaid", tag: "Order #34899", badge: "BEST VALUE", badgeGreen: true, priceMain: comp.lockStr, priceSub: "one-time \xB7 season", desc: "Maximum cost certainty for the whole season. 10% saving vs. monthly. " + v.prop.unlimDesc }
     ];
-    plans.forEach(function(pl) {
+    plans2.forEach(function(pl) {
       var sel = pl.id === p.selected;
       var opt = h("div", { "class": "plan-option" + (sel ? " plan-option--sel" : ""), "data-module": "plan-option", "data-visual-id": "plan-option", "data-action": "proposal.selectPlan", "data-id": pl.id, "data-state": sel ? "selected" : void 0 });
       if (pl.badge) opt.appendChild(h("span", { "class": "plan-badge2" + (pl.badgeGreen ? " plan-badge2--green" : "") }, pl.badge));
@@ -14221,7 +14804,8 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
         h("div", { "class": "proposal-footer__copy" }, "Approving one option for this property declines its other options.")
       ]));
     }
-    page.appendChild(PropertyLocation({ property: quotedProperty(group), map: sharedPropertyMap(), viewport: mapViewport() }));
+    var location = PropertyLocation({ property: quotedProperty(group), map: sharedPropertyMap(), viewport: mapViewport() });
+    if (location) page.appendChild(location);
     return page;
   }
   function quotedProperty(group) {
@@ -14364,7 +14948,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
       return page;
     }
     var hasAgreements = quotes.agreements.length > 0;
-    var hasQuotes = quotes.groups.length > 0;
+    var hasQuotes = quotes.pending.length > 0;
     var partial = ContractsNotices(quotes);
     page.setAttribute("data-state", hasAgreements || hasQuotes ? partial.length ? "partial" : "ready" : quotes.preparing ? "preparing" : "empty");
     page.appendChild(ContractsHead(quotes));
@@ -14387,24 +14971,20 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     }
     if (hasQuotes) {
       var section = h("section", { "class": "contracts-section", "data-module": "contracts-quotes", "aria-label": "Quotes" }, [
-        hasAgreements ? ContractsSectionTitle("Quotes", quotes.counts.orders) : null
+        hasAgreements ? ContractsSectionTitle("Quotes", quotes.pending.reduce(function(sum, group) {
+          return sum + group.orders.length;
+        }, 0)) : null
       ]);
       var map = usablePropertyMap();
       var cache = createGeocodeCache(browserStorage());
-      var placements = map ? placeEach(map, quotes.groups.map(function(group) {
+      var placements = map ? placeEach(map, quotes.pending.map(function(group) {
         return group.property;
-      })) : quotes.groups.map(function(group) {
+      })) : quotes.pending.map(function(group) {
         return group.property ? knownPlacement(group.property, cache) : { point: null, reason: "unknown" };
       });
-      var portfolio = map ? PortfolioMap(quotes.groups, placements, map, mapViewport()) : PortfolioSchematic(quotes.groups, placements);
+      var portfolio = map ? PortfolioMap(quotes.pending, placements, map, mapViewport()) : PortfolioSchematic(quotes.pending, placements);
       if (portfolio) section.appendChild(portfolio);
-      section.appendChild(h("div", { "class": "rollup-grid", "data-module": "proposal-rollup", "aria-label": "Quotes by decision" }, [
-        rollupCard("Approved", quotes.counts.approved, "var(--ok)"),
-        rollupCard("Revision", quotes.counts.revision, "var(--warn)"),
-        rollupCard("Declined", quotes.counts.declined, "var(--danger)"),
-        rollupCard("Open", quotes.counts.open, "var(--ink-3)")
-      ]));
-      section.appendChild(QuoteGroups(quotes.groups, placements, !!portfolio));
+      section.appendChild(QuoteGroups(quotes.pending, placements, !!portfolio));
       if (quotes.deciding) section.appendChild(QuotesFooter());
       page.appendChild(section);
     }
@@ -14420,15 +15000,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
   // app-templates/customer-portal/runtime/src/components/proposals/AgreementParts.js
   var STAGE_NOTICE = {
     review: { tone: "info", text: "The quotes in this agreement are waiting for your decisions.", link: { label: "Go to your quotes \u203A", action: "nav.go", id: "proposals.list" } },
-    details: { tone: "warn", text: "We need your contract details before we can prepare this agreement." },
-    drafting: { tone: "info", text: "We\u2019re preparing this agreement. It appears here for your approval once it\u2019s ready." },
-    approval: { tone: "warn", text: "Read the parties, services and terms below, then approve the agreement." },
-    approved: { tone: "ok", text: "You approved this agreement." },
-    active: { tone: "ok", text: "This agreement is active." },
-    suspended: { tone: "warn", text: "This agreement is suspended. It is shown for reference." },
-    expired: { tone: "neutral", text: "This agreement has expired. It is shown for reference." },
-    archived: { tone: "neutral", text: "This agreement is archived. It is shown for reference." },
-    canceled: { tone: "neutral", text: "This agreement was cancelled. It is shown for reference." }
+    details: { tone: "warn", text: "We need your contract details before we can prepare this agreement." }
   };
   function AgreementStageNotice(agreement) {
     var notice = STAGE_NOTICE[agreement.stage];
@@ -14443,7 +15015,9 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     return h("div", { "class": "agreement-parties", "data-module": "agreement-parties", "data-visual-id": "agreement-parties" }, [
       FactsCard("Provider", "agreement-party", [
         ["Legal name", parties.provider.legalName],
-        ["Representative", joinName(parties.provider.representativeName, parties.provider.representativeJobTitle)]
+        ["Representative", joinName(parties.provider.representativeName, parties.provider.representativeJobTitle)],
+        ["Phone", parties.provider.phone, "tel:" + parties.provider.phone.replace(/[^+\d]/g, "")],
+        ["Email", parties.provider.email, "mailto:" + parties.provider.email]
       ]),
       FactsCard("Client", "agreement-party", [
         ["Legal name", parties.client.legalName],
@@ -14456,15 +15030,8 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     ]);
   }
   function AgreementTerm(agreement) {
-    var rows2 = [
-      ["Effective date", agreement.effectiveDate ? formatIsoDate(agreement.effectiveDate) : ""],
-      ["Starts", agreement.term ? formatIsoDate(agreement.term.start) : ""],
-      ["Ends", agreement.term ? formatIsoDate(agreement.term.end) : ""]
-    ].filter(function(row) {
-      return !!row[1];
-    });
-    if (!rows2.length) return null;
-    return FactsCard("Term", "agreement-term", rows2);
+    if (!agreement.effectiveDate) return null;
+    return FactsCard("Term", "agreement-term", [["Effective date", formatIsoDate(agreement.effectiveDate)]]);
   }
   function AgreementServices(row, map) {
     var section = h("section", { "class": "agreement-services", "data-module": "agreement-services", "data-visual-id": "agreement-services", "aria-labelledby": "agreement-services-title" }, [
@@ -14491,32 +15058,35 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     });
     return section;
   }
-  function AgreementTerms(blocks) {
-    var card = h("section", { "class": "card card--pad agreement-terms", "data-module": "agreement-terms", "data-visual-id": "agreement-terms", "aria-labelledby": "agreement-terms-title" }, [
-      h("h2", { "class": "agreement-card__title", id: "agreement-terms-title" }, "Terms")
+  function AgreementTerms(blocks, open) {
+    if (!blocks.length) return null;
+    var card = h("section", { "class": "card card--pad agreement-terms", "data-module": "agreement-terms", "data-visual-id": "agreement-terms", "data-state": open ? "open" : "closed", "aria-labelledby": "agreement-terms-title" }, [
+      h("div", { "class": "agreement-terms__head" }, [
+        h("h2", { "class": "agreement-card__title", id: "agreement-terms-title" }, "Terms"),
+        h("button", { "class": "link-action agreement-terms__toggle", type: "button", "data-action": "agreement.toggleTerms", "aria-expanded": open ? "true" : "false", "aria-controls": "agreement-terms-body", "data-visual-id": "agreement-terms-toggle" }, open ? "Hide terms" : "Show terms")
+      ])
     ]);
-    if (!blocks.length) {
-      card.appendChild(h("p", { "class": "quote-option__note", "data-state": "empty" }, "The agreement text isn\u2019t included yet."));
-      return card;
-    }
+    if (!open) return card;
+    var body = h("div", { "class": "agreement-terms__body", id: "agreement-terms-body" });
+    card.appendChild(body);
     var list = null;
     blocks.forEach(function(block) {
       if (block.kind === "item") {
         if (!list || list.getAttribute("data-depth") !== String(block.depth)) {
           list = h("ul", { "class": "terms-list", "data-depth": String(block.depth) });
-          card.appendChild(list);
+          body.appendChild(list);
         }
         list.appendChild(h("li", null, block.text));
         return;
       }
       list = null;
-      if (block.kind === "heading") card.appendChild(h("h3", { "class": "terms-heading" }, block.text));
+      if (block.kind === "heading") body.appendChild(h("h3", { "class": "terms-heading" }, block.text));
       else if (block.kind === "numbered") {
-        card.appendChild(h("div", { "class": "terms-num", "data-depth": String(block.depth) }, [
+        body.appendChild(h("div", { "class": "terms-num", "data-depth": String(block.depth) }, [
           h("span", { "class": "terms-num__marker" }, block.marker),
           h("span", { "class": "terms-num__text" }, block.text)
         ]));
-      } else card.appendChild(h("p", { "class": "terms-paragraph", "data-depth": String(block.depth) }, block.text));
+      } else body.appendChild(h("p", { "class": "terms-paragraph", "data-depth": String(block.depth) }, block.text));
     });
     return card;
   }
@@ -14537,7 +15107,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     var pending = targeted && command.phase === "pending";
     var confirm = state.contractConfirm;
     var confirming = !!confirm && confirm.kind === "agreement" && confirm.backendId === agreement.backendId;
-    var card = h("section", { "class": "card card--pad agreement-approve", "data-module": "agreement-approve", "data-visual-id": "agreement-approve", "data-state": pending ? "pending" : confirming ? "confirming" : "idle", "aria-labelledby": "agreement-approve-title" });
+    var card = h("section", { "class": "card card--pad agreement-approve", "data-module": "agreement-approve", "data-visual-id": "agreement-approve", "data-tone": "warn", "data-state": pending ? "pending" : confirming ? "confirming" : "idle", "aria-labelledby": "agreement-approve-title" });
     if (confirming) {
       var client = agreement.parties.client.legalName;
       var confirmButton = ActionButton({ variant: "btn--primary", label: pending ? "Sending\u2026" : "Confirm approval", action: "agreement.confirm", id: String(agreement.backendId), lg: true, disabled: pending || busy, visualId: "agreement-confirm" });
@@ -14551,7 +15121,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
         ])
       ]));
     } else {
-      card.appendChild(h("h2", { "class": "agreement-card__title", id: "agreement-approve-title" }, "Your approval"));
+      card.appendChild(h("h2", { "class": "agreement-card__title", id: "agreement-approve-title" }, "Waiting for your approval"));
       card.appendChild(h("p", { "class": "agreement-approve__copy" }, "Approving accepts the parties, services and terms shown on this page."));
       card.appendChild(h("div", { "class": "proposal-actions" }, [
         ActionButton({ variant: "btn--primary", label: "Approve agreement", action: "agreement.approve", id: String(agreement.backendId), lg: true, disabled: busy, visualId: "agreement-approve" })
@@ -14564,12 +15134,16 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     return card;
   }
   function FactsCard(title, className, rows2) {
+    var stated = rows2.filter(function(row) {
+      return !!row[1];
+    });
+    if (!stated.length) return null;
     return h("section", { "class": "card card--pad " + className, "data-module": className, "data-visual-id": className }, [
       h("h2", { "class": "agreement-card__title" }, title),
-      h("dl", { "class": "agreement-facts" }, rows2.map(function(row) {
+      h("dl", { "class": "agreement-facts" }, stated.map(function(row) {
         return h("div", { "class": "agreement-facts__row" }, [
           h("dt", { "class": "agreement-facts__label" }, row[0]),
-          h("dd", { "class": "agreement-facts__value" + (row[1] ? "" : " agreement-facts__value--missing") }, row[1] || "Not stated")
+          h("dd", { "class": "agreement-facts__value" }, row[2] ? h("a", { "class": "link-action", href: row[2] }, row[1]) : row[1])
         ]);
       }))
     ]);
@@ -14597,19 +15171,18 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     }
     var agreement = row.agreement;
     page.setAttribute("data-state", agreement.stage);
-    var facts2 = [];
-    if (row.propertyCount) facts2.push(plural(row.propertyCount, "property", "properties"));
-    if (row.quoteCount) facts2.push(plural(row.quoteCount, "quote", "quotes"));
+    var season = agreementSeason(agreement);
     var title = agreementTitle(row);
     page.appendChild(h("div", { "class": "proposal-detail-head", "data-module": "agreement-detail-head", "data-visual-id": "agreement-detail-head" }, [
       h("div", { style: "flex:1;min-width:0" }, [
         row.propertyNames.length ? h("div", { "class": "agreement-detail-head__eyebrow" }, "Service agreement") : null,
         h("h1", { "class": "proposal-detail-head__title", "data-bind": "agreement.title" }, title),
-        facts2.length ? h("div", { "class": "proposal-detail-head__meta" }, facts2.join(" \xB7 ")) : null
+        season ? h("div", { "class": "proposal-detail-head__meta", "data-bind": "agreement.season" }, season) : null
       ]),
       StatusBadge({ variant: "status-badge--" + agreement.tone, label: agreement.label, bind: "agreement.stateLabel", state: agreement.stage })
     ]));
-    var notice = AgreementStageNotice(agreement);
+    var approvable = agreement.allowedActions.indexOf("approve") !== -1;
+    var notice = approvable ? AgreementApproval(row, contractCommandsBusy()) : AgreementStageNotice(agreement);
     if (notice) page.appendChild(notice);
     if (row.unreadableOrders) {
       page.appendChild(PartialNotice(row.unreadableOrders === 1 ? "1 quote listed in this agreement couldn\u2019t be loaded." : row.unreadableOrders + " quotes listed in this agreement couldn\u2019t be loaded."));
@@ -14623,9 +15196,10 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     var term = AgreementTerm(agreement);
     if (term) page.appendChild(term);
     page.appendChild(AgreementServices(row, AgreementMap(row.properties)));
-    page.appendChild(AgreementTerms(agreement.terms));
-    var decision = agreement.allowedActions.indexOf("approve") !== -1 ? AgreementApproval(row, contractCommandsBusy()) : AgreementOutcome(agreement);
-    if (decision) page.appendChild(decision);
+    var terms = AgreementTerms(agreement.terms, state.agreementTermsOpen);
+    if (terms) page.appendChild(terms);
+    var outcome = approvable ? null : AgreementOutcome(agreement);
+    if (outcome) page.appendChild(outcome);
     return page;
   }
   function AgreementMap(entries) {
@@ -14660,7 +15234,9 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     else if (view === "unavailable") page.appendChild(stateBlock(EmptyState({ glyph: "\u25CB", title: "Your account details aren\u2019t available", desc: "They didn\u2019t come back for this sign-in. Sign out and sign in again, or try later." }), "unavailable"));
     else {
       page.appendChild(ProfileHead(envelope2));
-      page.appendChild(view === "empty" ? EmptyState({ glyph: "\u25CC", title: "No contact details on file", desc: "We don\u2019t have a contact, email, phone or billing address for your account yet." }) : ProfileFacts(envelope2));
+      var facts2 = view === "empty" ? null : ProfileFacts(envelope2);
+      if (facts2) page.appendChild(facts2);
+      else page.appendChild(EmptyState({ glyph: "\u25CC", title: "No contact details on file", desc: "We don\u2019t have a contact, email, phone or billing address for your account yet." }));
     }
     page.appendChild(h("button", { "class": "signout-btn", "data-action": "auth.signOut", "data-visual-id": "sign-out", type: "button", style: "width:100%;margin-top:18px" }, "Sign out"));
     return page;
@@ -14676,24 +15252,24 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
   function ProfileFacts(envelope2) {
     var contact = envelope2.contact;
     var billing = envelope2.billingAddresses || [];
-    return h("div", { "class": "card card--pad prop-facts", "data-module": "profile-facts", "data-visual-id": "profile-facts", "data-state": envelope2.state }, [
-      Fact("contact", "Primary contact", contact && contact.name ? [contact.name] : [], contact && contact.name ? contact.title : ""),
+    var named = !!(contact && contact.name) && contact.name !== envelope2.accountName;
+    var facts2 = [
+      named ? Fact("contact", "Contact", [contact.name], contact.title) : null,
       Fact("email", "Email", envelope2.emails || []),
       Fact("phone", "Phone", envelope2.phones || []),
       Fact("billing", billing.length > 1 ? "Billing addresses" : "Billing address", billing)
-    ]);
+    ].filter(Boolean);
+    if (!facts2.length) return null;
+    return h("div", { "class": "card card--pad prop-facts", "data-module": "profile-facts", "data-visual-id": "profile-facts", "data-state": envelope2.state }, facts2);
   }
   function Fact(key, label, values, note) {
+    if (!values.length) return null;
     var children = [h("div", { "class": "prop-fact__label" }, label)];
-    if (values.length) {
-      values.forEach(function(value) {
-        children.push(h("div", { "class": "prop-fact__value", style: "overflow-wrap:anywhere" }, value));
-      });
-      if (note) children.push(h("div", { "class": "prop-fact__note" }, note));
-    } else {
-      children.push(h("div", { "class": "prop-fact__note" }, "Not on file"));
-    }
-    return h("div", { "class": "prop-fact", "data-fact": key, "data-state": values.length ? "ready" : "missing" }, children);
+    values.forEach(function(value) {
+      children.push(h("div", { "class": "prop-fact__value", style: "overflow-wrap:anywhere" }, value));
+    });
+    if (note) children.push(h("div", { "class": "prop-fact__note" }, note));
+    return h("div", { "class": "prop-fact", "data-fact": key, "data-state": "ready" }, children);
   }
   function ProfileSkeleton() {
     return h("div", { "data-module": "profile-loading", "data-visual-id": "profile-loading", "data-state": "loading", "aria-busy": "true" }, [
@@ -17351,8 +17927,8 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
       page.appendChild(gate);
       return page;
     }
-    var plans = view === "empty" ? [] : spaPlans();
-    if (!plans.length) {
+    var plans2 = view === "empty" ? [] : spaPlans();
+    if (!plans2.length) {
       page.appendChild(h("div", { "class": "state-block", "data-module": "empty-state", "data-visual-id": "plan-empty", "data-state": "empty" }, [
         h("div", { "class": "state-block__glyph" }, "\u2740"),
         h("div", { "class": "state-block__title" }, "You don\u2019t have a plan yet"),
@@ -17362,7 +17938,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
       return page;
     }
     var grid = h("div", { "class": "plan-grid", "data-module": "plan-list", "data-visual-id": "plan-list" });
-    plans.forEach(function(p) {
+    plans2.forEach(function(p) {
       grid.appendChild(planCard(p));
     });
     page.appendChild(grid);
@@ -18662,6 +19238,10 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     },
     "agreement.cancel": function() {
       return cancelContractConfirm();
+    },
+    "agreement.toggleTerms": function() {
+      state.agreementTermsOpen = !state.agreementTermsOpen;
+      render();
     },
     "contracts.refresh": function() {
       return refreshContracts();
@@ -20284,6 +20864,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
   function openAgreement(id) {
     if (!contractAgreementFor(id)) throw new Error("Agreement not found");
     state.agreementId = id;
+    state.agreementTermsOpen = false;
     state.contractConfirm = null;
     go("agreement.detail");
   }
@@ -20656,7 +21237,8 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
             { name: "address2" },
             { name: "city" },
             { name: "postalCode" },
-            { key: "id", mappings: CODE_MAPPINGS, name: "state", type: "identifier" }
+            { key: "id", mappings: CODE_MAPPINGS, name: "state", type: "identifier" },
+            { key: "id", mappings: CODE_MAPPINGS, name: "country", type: "identifier" }
           ],
           name: "address",
           type: "identifier"
@@ -20781,9 +21363,9 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     var account = source.account && typeof source.account === "object" && !Array.isArray(source.account) ? source.account : null;
     if (!account) return accountProfileFailure("profile-unavailable");
     var primary = primaryContact(account.contacts);
-    var contact = primary ? { name: [plain(primary.firstName), plain(primary.lastName)].filter(Boolean).join(" "), title: plain(primary.title) } : null;
+    var contact = primary ? { name: [plain2(primary.firstName), plain2(primary.lastName)].filter(Boolean).join(" "), firstName: plain2(primary.firstName), title: plain2(primary.title) } : null;
     var emails = primary ? entryValues(primary.contactEntries, EMAIL_ENTRY) : [];
-    var phones = primary ? entryValues(primary.contactEntries, PHONE_ENTRY) : [];
+    var phones = primary ? entryValues(primary.contactEntries, PHONE_ENTRY).map(formatPhone) : [];
     var billingAddresses = typedAddresses(account.addresses, BILLING_ADDRESS);
     var filled = [!!(contact && contact.name), emails.length > 0, phones.length > 0, billingAddresses.length > 0];
     return {
@@ -20812,9 +21394,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     };
   }
   function formatAccountAddress(address) {
-    if (!address || typeof address !== "object") return "";
-    var region = address.state && typeof address.state === "object" ? plain(address.state.code) : "";
-    return [plain(address.address1), plain(address.address2), plain(address.city), region, plain(address.postalCode)].filter(Boolean).join(", ");
+    return formatPostalAddress(address);
   }
   function primaryContact(contacts) {
     var primaries = rows(contacts).filter(function(contact) {
@@ -20826,7 +21406,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     var values = [];
     rows(entries).forEach(function(entry) {
       if (text3(entry.type && entry.type.code) !== typeCode) return;
-      var value = plain(entry.value);
+      var value = plain2(entry.value);
       if (value && values.indexOf(value) === -1) values.push(value);
     });
     return values;
@@ -20865,9 +21445,9 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
   function localizedName6(value) {
     if (!value || typeof value !== "object") return "";
     var localized2 = value.en || value["en-US"] || Object.values(value)[0] || {};
-    return plain(localized2 && (localized2.NAME || localized2.name));
+    return plain2(localized2 && (localized2.NAME || localized2.name));
   }
-  function plain(value) {
+  function plain2(value) {
     if (typeof value === "string") return value.trim();
     return typeof value === "number" && Number.isFinite(value) ? String(value) : "";
   }
@@ -20891,15 +21471,15 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
       var responses = await Promise.all(requests.map(async function(request) {
         return { data: await fetchPim(request), productTypeCode: request.payload.productTypeCode };
       }));
-      var plans = normalizePimRows({ prices: responses.flatMap(function(response) {
+      var plans2 = normalizePimRows({ prices: responses.flatMap(function(response) {
         return (Array.isArray(response.data && response.data.prices) ? response.data.prices : []).map(function(row) {
           return Object.assign({ __productTypeCode: response.productTypeCode }, row);
         });
       }) }, config);
-      if (moduleId === "pricing" || moduleId === "services") return { pimPlans: plans };
-      var enrichment = await loadProductEnrichment(context, plans);
+      if (moduleId === "pricing" || moduleId === "services") return { pimPlans: plans2 };
+      var enrichment = await loadProductEnrichment(context, plans2);
       return {
-        pimProducts: plans.map(function(product) {
+        pimProducts: plans2.map(function(product) {
           var model = enrichment.modelsByProductCode[product.code] || null;
           var sellability = enrichment.sellabilityByProductCode[product.code] || STOCK_UNKNOWN;
           return Object.assign({}, product, {

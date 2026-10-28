@@ -101,3 +101,11 @@ function bucket(rows) {
 export function money(amount) {
   return "$" + Number(amount || 0).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 }
+
+export function formatArea(squareFeet) {
+  return Number.isFinite(squareFeet) && squareFeet > 0 ? new Intl.NumberFormat("en-US", { maximumFractionDigits: 0 }).format(squareFeet) + " ft²" : "";
+}
+
+export function propertyHighlights(property) {
+  return [formatArea(property && property.areaSqft), property && property.planId ? "Plan approved" : ""].filter(Boolean);
+}

@@ -680,12 +680,8 @@ const PERIODS = Array.from({ length: 7 }, (_, index) => ({
   const lost = liveProperty("prop-core-40", "Lost Lane", "40 Lost Lane, Nowhere", null, null);
   const bare = liveProperty("prop-core-41", "Bare Lot", "", null, null);
   const card = (property, map, frame = viewport) => PropertyLocation({ property, map, viewport: frame });
-  const quiet = (root) => {
-    const note = root.querySelector("[data-module=\"location-unavailable\"]");
-    return [root.getAttribute("data-state"), note.getAttribute("data-state"), note.getAttribute("role"), note.textContent, root.querySelectorAll(".ov-map__canvas").length];
-  };
 
-  assert.deepEqual(quiet(card(frost, null)), ["unavailable", "no-map", "status", "Location unavailable21 Frost Lane, Surrey, BCThe map isn’t available in this portal yet.", 0], "a portal without a map key shows the address and says the map is unavailable instead of drawing an empty map");
+  assert.equal(card(frost, null), null, "a portal without a map key shows no location block at all, neither an empty map nor a Location unavailable note");
 
   const google = createGoogleStub({ "34 Thaw Road, Surrey, BC": { lat: 49.2, lon: -122.8 } });
   const controller = createPropertyMap({
@@ -694,7 +690,7 @@ const PERIODS = Array.from({ length: 7 }, (_, index) => ({
     dispatch: () => {},
     onChange: () => {},
   });
-  assert.deepEqual(quiet(card(frost, controller, null)), ["unavailable", "no-map", "status", "Location unavailable21 Frost Lane, Surrey, BCThe map isn’t available in this portal yet.", 0], "a map with no service geography to open on is not drawn");
+  assert.equal(card(frost, controller, null), null, "a map with no service geography to open on is not drawn");
   assert.equal(controller.status(), "idle", "and its script is never requested");
 
   const loading = card(frost, controller);
@@ -734,8 +730,8 @@ const PERIODS = Array.from({ length: 7 }, (_, index) => ({
 
   card(lost, controller);
   await flush();
-  assert.deepEqual(quiet(card(lost, controller)), ["unavailable", "not-found", "status", "Location unavailable40 Lost Lane, NowhereWe couldn’t find this address on the map.", 0], "an address the geocoder cannot place shows the address quietly and never a pin at the map centre");
-  assert.deepEqual(quiet(card(bare, controller)), ["unavailable", "no-address", "status", "Location unavailableNo address on fileWe place a property on the map from its address.", 0]);
+  assert.equal(card(lost, controller), null, "an address the geocoder cannot place leaves the location out and never puts a pin at the map centre");
+  assert.equal(card(bare, controller), null);
   assert.equal(google.log.geocode.length, 2, "nothing is geocoded for a property without an address");
 
   const scope = { document: dom.fresh() };
@@ -748,7 +744,7 @@ const PERIODS = Array.from({ length: 7 }, (_, index) => ({
   assert.equal(card(frost, failing).getAttribute("data-state"), "placed");
   scope.gm_authFailure();
   await flush();
-  assert.deepEqual(quiet(card(frost, failing)), ["unavailable", "failed", "status", "Location unavailable21 Frost Lane, Surrey, BCThe map couldn’t load.", 0], "a rejected key leaves the address and a quiet note instead of a grey map");
+  assert.equal(card(frost, failing), null, "a rejected key leaves the location out instead of a grey map");
 
   const dispatched = [];
   const portfolioGoogle = createGoogleStub();
@@ -786,9 +782,8 @@ const PERIODS = Array.from({ length: 7 }, (_, index) => ({
 {
   applyPortalConfig(readPortalConfig({ dataset: { portalVertical: "snow", portalProfile: "stormRetail", portalTheme: "snow", portalDataMode: "fixture", portalAuthMode: "fixture", portalCase: "granite-ridge-snow" } }));
   state.propertyId = "prop-foothill";
-  const keyless = PropertyDetail().querySelector("[data-module=\"property-location\"]");
-  assert.equal(keyless.getAttribute("data-state"), "unavailable");
-  assert.equal(keyless.querySelector("[data-module=\"location-unavailable\"]").textContent, "Location unavailable4820 Foothill Court, Lakewood, CO 80215The map isn’t available in this portal yet.");
+  const keyless = PropertyDetail();
+  assert.equal(keyless.querySelectorAll("[data-module=\"property-location\"]").length + keyless.querySelectorAll("[data-module=\"location-unavailable\"]").length, 0, "without a map key the property page has no location block");
   applyPortalConfig(readPortalConfig({ dataset: { portalVertical: "snow", portalProfile: "stormRetail", portalTheme: "snow", portalDataMode: "fixture", portalAuthMode: "fixture", portalCase: "granite-ridge-snow", portalMapsApiKey: "AIza-test_key" } }));
   state.propertyId = "prop-foothill";
   const detail = PropertyDetail();
@@ -807,7 +802,7 @@ for (const address of ["Frost Lane", "Nowhere Road", "Foothill Court", "Tabor St
 }
 assert.ok(warnings.length > 0, "the failure paths above did warn");
 
-console.log("property-map-check ok: pins drawn at each coordinate with zone colouring, the issue red and the en-route ring, one map load across renders, a popup anchored to its pin that opens, closes and takes Escape, the same popup docked below a map too narrow to hold it beside a pin, a property forecast fetched once on open with the area forecast as its fallback, addresses geocoded once with only successes cached, a keyless or rejected map that lists every property instead, timeline badges that read 4 visits, a property detail map with its own pin or a quiet location-unavailable note, and a Contracts map whose pins open their quotes");
+console.log("property-map-check ok: pins drawn at each coordinate with zone colouring, the issue red and the en-route ring, one map load across renders, a popup anchored to its pin that opens, closes and takes Escape, the same popup docked below a map too narrow to hold it beside a pin, a property forecast fetched once on open with the area forecast as its fallback, addresses geocoded once with only successes cached, a keyless or rejected map that lists every property instead, timeline badges that read 4 visits, a property detail map with its own pin or no location block at all, and a Contracts map whose pins open their quotes");
 
 function liveProperty(id, name, address, lat, lon) {
   return { id, name, address, lat, lon, zone: null, contract: null, quoteSiteId: null, appointment: null, ticket: null, lastService: null };

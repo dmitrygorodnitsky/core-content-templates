@@ -203,7 +203,8 @@ function QuoteDetail() {
       h("div", { "class": "proposal-footer__copy" }, "Approving one option for this property declines its other options."),
     ]));
   }
-  page.appendChild(PropertyLocation({ property: quotedProperty(group), map: sharedPropertyMap(), viewport: mapViewport() }));
+  var location = PropertyLocation({ property: quotedProperty(group), map: sharedPropertyMap(), viewport: mapViewport() });
+  if (location) page.appendChild(location);
   return page;
 }
 

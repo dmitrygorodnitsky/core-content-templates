@@ -133,9 +133,7 @@ function configure(dataset, extra = {}) {
   assert.equal(brand.getAttribute("data-action"), "nav.go", "without a landing address the brand goes to the portal home");
   assert.equal(brand.getAttribute("data-id"), "overview");
   assert.equal(one(nav, "[data-visual-id=\"primary-cta\"]").getAttribute("data-action"), "service.requestForm");
-  const bell = one(nav, "[data-module=\"activity-control\"]");
-  assert.equal(all(bell, ".dot-badge").length, 0, "no unread dot when Activity is disabled");
-  assert.equal(bell.getAttribute("aria-disabled"), "true");
+  assert.equal(all(nav, "[data-module=\"activity-control\"]").length, 0, "no notification bell while the portal has no notifications to show");
   assert.equal(one(nav, ".avatar").getAttribute("data-action"), "profile.open", "the header reaches the profile page, where Sign out lives");
   assert.equal(all(nav, "[data-module=\"sign-out-control\"]").length, 0);
   state.mobileNav = true;
@@ -171,6 +169,7 @@ function configure(dataset, extra = {}) {
   assert.equal(all(one(TopNav(false), "[data-module=\"activity-control\"]"), ".dot-badge").length, 0, "the dot clears once the feed is marked read");
   configure(SNOW_FIXTURE, { portalEnabledModules: "overview,properties,profile" });
   assert.equal(activityUnread(), false, "no dot when Activity is disabled");
+  assert.equal(all(TopNav(false), "[data-module=\"activity-control\"]").length, 0, "no bell when Activity is disabled");
   configure(SNOW_LIVE, { portalEnabledModules: "account,overview,properties,activity" });
   assert.equal(activityUnread(), false, "no dot when Activity has no live source");
 }

@@ -91,7 +91,7 @@ function ContractsPage() {
     return page;
   }
   var hasAgreements = quotes.agreements.length > 0;
-  var hasQuotes = quotes.groups.length > 0;
+  var hasQuotes = quotes.pending.length > 0;
   var partial = ContractsNotices(quotes);
   page.setAttribute("data-state", hasAgreements || hasQuotes ? (partial.length ? "partial" : "ready") : quotes.preparing ? "preparing" : "empty");
   page.appendChild(ContractsHead(quotes));
@@ -116,24 +116,18 @@ function ContractsPage() {
 
   if (hasQuotes) {
     var section = h("section", { "class": "contracts-section", "data-module": "contracts-quotes", "aria-label": "Quotes" }, [
-      hasAgreements ? ContractsSectionTitle("Quotes", quotes.counts.orders) : null,
+      hasAgreements ? ContractsSectionTitle("Quotes", quotes.pending.reduce(function (sum, group) { return sum + group.orders.length; }, 0)) : null,
     ]);
     var map = usablePropertyMap();
     var cache = createGeocodeCache(browserStorage());
     var placements = map
-      ? placeEach(map, quotes.groups.map(function (group) { return group.property; }))
-      : quotes.groups.map(function (group) {
+      ? placeEach(map, quotes.pending.map(function (group) { return group.property; }))
+      : quotes.pending.map(function (group) {
         return group.property ? knownPlacement(group.property, cache) : { point: null, reason: "unknown" };
       });
-    var portfolio = map ? PortfolioMap(quotes.groups, placements, map, mapViewport()) : PortfolioSchematic(quotes.groups, placements);
+    var portfolio = map ? PortfolioMap(quotes.pending, placements, map, mapViewport()) : PortfolioSchematic(quotes.pending, placements);
     if (portfolio) section.appendChild(portfolio);
-    section.appendChild(h("div", { "class": "rollup-grid", "data-module": "proposal-rollup", "aria-label": "Quotes by decision" }, [
-      rollupCard("Approved", quotes.counts.approved, "var(--ok)"),
-      rollupCard("Revision", quotes.counts.revision, "var(--warn)"),
-      rollupCard("Declined", quotes.counts.declined, "var(--danger)"),
-      rollupCard("Open", quotes.counts.open, "var(--ink-3)"),
-    ]));
-    section.appendChild(QuoteGroups(quotes.groups, placements, !!portfolio));
+    section.appendChild(QuoteGroups(quotes.pending, placements, !!portfolio));
     if (quotes.deciding) section.appendChild(QuotesFooter());
     page.appendChild(section);
   }

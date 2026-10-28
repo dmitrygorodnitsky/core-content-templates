@@ -87,6 +87,7 @@ export var ACTIONS = {
   "agreement.approve": function (id) { return openContractConfirm("agreement", id); },
   "agreement.confirm": function (id) { return confirmContractCommand("agreement", id); },
   "agreement.cancel":  function ()   { return cancelContractConfirm(); },
+  "agreement.toggleTerms": function () { state.agreementTermsOpen = !state.agreementTermsOpen; render(); },
   "contracts.refresh": function ()   { return refreshContracts(); },
   "weather.confirm":   function (id) { runCommand("weather.confirm", id, function () { confirmWeather(id, "confirmed"); }); },
   "weather.decline":   function (id) { runCommand("weather.decline", id, function () { confirmWeather(id, "declined"); }); },
@@ -1378,6 +1379,7 @@ export function openProposal(id) {
 export function openAgreement(id) {
   if (!contractAgreementFor(id)) throw new Error("Agreement not found");
   state.agreementId = id;
+  state.agreementTermsOpen = false;
   state.contractConfirm = null;
   go("agreement.detail");
 }

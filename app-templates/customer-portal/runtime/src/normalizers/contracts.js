@@ -1,5 +1,6 @@
 import { attributeEntry, attributeNumber, attributeText, latestStateCode, positiveInteger, text } from "./core-record.js";
 import { geoPoint } from "./property-map.js";
+import { addressRepeats, formatAddressLine, formatPhone } from "./postal-address.js";
 
 export var QUOTE_ORDER_TYPES = Object.freeze(["FIELD_SERVICE_ORDER", "WINTER_SERVICES_ORDER"]);
 
@@ -21,6 +22,12 @@ export var PRICING_MODELS = Object.freeze({
 
 export var RECURRING_MODEL = Object.freeze({ code: "RECURRING", label: "Recurring" });
 
+export var PRICE_PERIODS = Object.freeze({
+  PER_SERVICE: "per visit",
+  MONTHLY: "/ month",
+  SEASONAL: "per season",
+});
+
 export var CLIENT_TYPES = Object.freeze({
   INDIVIDUAL: "Individual",
   ORGANIZATION: "Organization",
@@ -38,6 +45,8 @@ var SCHEMATIC_MIN_SPAN = 0.01;
 var STAGE_ORDER = ["approval", "review", "details", "drafting", "approved", "active", "suspended", "expired", "archived", "canceled"];
 var QUOTE_STAGES = ["preparing", "review"];
 var APPROVED_SERVICE_STAGES = ["details", "drafting", "approval", "approved", "active", "suspended", "expired", "archived"];
+var CURRENT_SERVICE_STAGES = ["active", "approved", "approval", "drafting", "details", "suspended"];
+var PENDING_STATUSES = ["unseen", "viewed", "revision"];
 var TERMS_DEPTH_LIMIT = 4;
 var HEADING_LINE = /^#{1,6}\s+(.+)$/;
 var ITEM_LINE = /^[-*•]\s+(.+)$/;
@@ -132,6 +141,7 @@ export function normalizeQuoteOrders(payload, catalog) {
         subtotal: formatMoney(row.totalCharges, currency),
         taxes: formatMoney(row.totalTaxes, currency),
         total: formatMoney(row.grandTotal, currency),
+        taxFree: finiteNumber(row.totalTaxes) === 0,
       } : null,
       lines: quoteLines.lines,
       linesState: quoteLines.state,
@@ -177,6 +187,10 @@ export function contractsPackage(source, properties) {
     return isOpen(order) || !owner || QUOTE_STAGES.indexOf(owner.stage) !== -1;
   });
   var groups = quoteGroups(quoted, packageOf, byProperty);
+  var pending = groups.map(function (group) {
+    var waiting = group.orders.filter(function (order) { return PENDING_STATUSES.indexOf(order.status) !== -1; });
+    return waiting.length ? Object.assign({}, group, { orders: waiting }) : null;
+  }).filter(Boolean);
   var counts = { orders: quoted.length, properties: 0, decided: 0, approved: 0, revision: 0, declined: 0, open: 0 };
   groups.forEach(function (group) {
     if (!group.propertyBackendId) return;
@@ -196,6 +210,7 @@ export function contractsPackage(source, properties) {
   return {
     agreements: rows,
     groups: groups,
+    pending: pending,
     counts: counts,
     deciding: counts.open > 0,
     preparing: !!data.preparing,
@@ -204,6 +219,33 @@ export function contractsPackage(source, properties) {
     scopeMode: data.scopeMode || null,
     partial: partialOf(data, orders, rows),
   };
+}
+
+export function pricePeriod(order) {
+  return order && order.pricingModel ? own(PRICE_PERIODS, order.pricingModel.code) || "" : "";
+}
+
+export function formatOrderPrice(order) {
+  var total = formatOrderTotal(order && order.total);
+  var period = pricePeriod(order);
+  return total && period ? total + " " + period : total;
+}
+
+export function optionSummary(order) {
+  return [order.pricingModel ? order.pricingModel.label : "", formatOrderPrice(order)].filter(Boolean).join(" · ");
+}
+
+export function chosenOrders(row) {
+  if (!row || row.servicesScope !== "approved") return [];
+  return row.properties.reduce(function (found, entry) { return found.concat(entry.orders); }, []);
+}
+
+export function currentServiceAgreement(pkg, propertyBackendId) {
+  var rows = (pkg && Array.isArray(pkg.agreements) ? pkg.agreements : []).filter(function (row) {
+    if (CURRENT_SERVICE_STAGES.indexOf(row.agreement.stage) === -1 || row.servicesScope !== "approved") return false;
+    return propertyBackendId == null || row.properties.some(function (entry) { return entry.propertyBackendId === propertyBackendId; });
+  });
+  return rows.find(function (row) { return row.agreement.stage === "active"; }) || rows[0] || null;
 }
 
 export function groupDecision(orders) {
@@ -442,15 +484,17 @@ function agreementParties(document, client) {
       legalName: attributeString(document, "PROVIDER_LEGAL_NAME") || localizedName(owner && owner.nls),
       representativeName: attributeString(document, "PROVIDER_REPRESENTATIVE_NAME"),
       representativeJobTitle: attributeString(document, "PROVIDER_REPRESENTATIVE_JOB_TITLE"),
+      phone: formatPhone(attributeString(document, "PROVIDER_CONTACT_PHONE")),
+      email: attributeString(document, "PROVIDER_CONTACT_EMAIL"),
     },
     client: {
       legalName: attributeString(document, "LEGAL_NAME") || text(client && typeof client.displayName === "string" ? client.displayName : ""),
       clientType: own(CLIENT_TYPES, attributeString(document, "CLIENT_TYPE")) || "",
-      billingAddress: attributeString(document, "BILLING_ADDRESS"),
+      billingAddress: formatAddressLine(attributeString(document, "BILLING_ADDRESS")),
       representativeName: [first, last].filter(Boolean).join(" "),
       representativeJobTitle: attributeString(document, "REPRESENTATIVE_JOB_TITLE"),
       email: attributeString(document, "REPRESENTATIVE_EMAIL"),
-      phone: attributeString(document, "REPRESENTATIVE_PHONE"),
+      phone: formatPhone(attributeString(document, "REPRESENTATIVE_PHONE")),
     },
   };
 }
@@ -600,7 +644,7 @@ function propertyTitle(propertyBackendId, property) {
 
 function propertyAddress(property, title) {
   var address = (property && property.address) || "";
-  return address && address !== title ? address : "";
+  return address && address !== title && !addressRepeats(title, address) ? address : "";
 }
 
 function byStage(left, right) {

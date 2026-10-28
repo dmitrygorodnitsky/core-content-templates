@@ -39,6 +39,7 @@ const PROFILE_MAPPINGS = [
           { name: "city" },
           { name: "postalCode" },
           { key: "id", mappings: CODE_MAPPINGS, name: "state", type: "identifier" },
+          { key: "id", mappings: CODE_MAPPINGS, name: "country", type: "identifier" },
         ],
         name: "address",
         type: "identifier",
