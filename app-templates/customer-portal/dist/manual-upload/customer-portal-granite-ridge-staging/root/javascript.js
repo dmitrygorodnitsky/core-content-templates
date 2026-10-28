@@ -9787,7 +9787,9 @@
           loading = Promise.reject(new Error("Google Maps adapter is not opened"));
           return loading;
         }
-        loading = scriptNamespace(scope, apiKey, fail2).then(importLibraries).then(function(loaded) {
+        loading = scriptNamespace(scope, apiKey, fail2).then(function(namespace) {
+          return importLibraries(namespace, scope);
+        }).then(function(loaded) {
           maps = loaded;
           return loaded;
         });
@@ -9892,12 +9894,16 @@
       scope.document.head.appendChild(script);
     });
   }
-  function importLibraries(maps) {
+  function importLibraries(maps, scope) {
     if (typeof maps.importLibrary !== "function") return maps;
     return Promise.all(LIBRARIES.map(function(name) {
       return maps.importLibrary(name);
-    })).then(function() {
-      return maps;
+    })).then(function(libraries) {
+      var current = scope && scope.google && scope.google.maps || maps;
+      if (typeof current.Map === "function") return current;
+      return libraries.reduce(function(merged, library) {
+        return Object.assign(merged, library);
+      }, Object.assign({}, current));
     });
   }
 

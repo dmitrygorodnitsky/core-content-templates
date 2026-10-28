@@ -155,6 +155,20 @@ const PERIODS = Array.from({ length: 7 }, (_, index) => ({
 }
 
 {
+  class LibraryMap {}
+  const bootstrap = { importLibrary: async (name) => (name === "maps" ? { Map: LibraryMap } : {}) };
+  const asyncLoaded = { document: dom.fresh(), google: { maps: bootstrap } };
+  const loaded = await createGoogleMapsAdapter({ apiKey: "AIza-test_key", scope: asyncLoaded }).load();
+  assert.equal(loaded.Map, LibraryMap, "a namespace loaded with loading=async still yields the Map class its library returned");
+
+  class NamespaceMap {}
+  const replaced = { document: dom.fresh(), google: { maps: { importLibrary: async () => ({}) } } };
+  const pending = createGoogleMapsAdapter({ apiKey: "AIza-test_key", scope: replaced }).load();
+  replaced.google.maps = { Map: NamespaceMap, importLibrary: async () => ({}) };
+  assert.equal((await pending).Map, NamespaceMap, "the namespace Google completes after the libraries load is the one used");
+}
+
+{
   const storage = memoryStorage();
   const cache = createGeocodeCache(storage);
   assert.equal(cache.write("12 frost lane", { lat: 49.12, lon: -122.84 }), true);
