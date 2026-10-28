@@ -24,9 +24,9 @@ appointmentsTimeline, invoices, proposals, profile):
 | `/core-rm/api/tagged/resource/list.json` | `P_TAG_RESOURCE_R` |
 | `/core/api/document-type/list.json` | `P_DOCUMENT_TYPE_R` |
 | `/core/api/tagged/document/list.json`, `get.json` | `P_TAG_DOCUMENT_R` |
-| `/core/api/tagged/document/{id}/send-event.json` | `P_TAG_DOCUMENT_E` + `P_WF:SERVICE_AGREEMENT_LIFECYCLE:SENT_TO_CLIENT-CLIENT_APPROVED` |
+| `/core/api/tagged/document/{id}/send-event.json` | `P_TAG_DOCUMENT_E` + `P_WF:SERVICE_AGREEMENT_LIFECYCLE:SENT_TO_CLIENT-CLIENT_APPROVED`; the contract details event `AWAITING_CLIENT_DETAILS-CLIENT_DETAILS_RECEIVED` with its permission of the same name |
 | `/core-bill/api/tagged/order/list.json`, `get.json`, `/core-bill/api/tagged/order-item/list.json` | `P_TAG_ORDER_R` |
-| `/core-bill/api/tagged/order/{id}/send-event.json` | `P_TAG_ORDER_E` + the three `P_WF:GENERAL_FSM_ORDER:` quote events |
+| `/core-bill/api/tagged/order/{id}/send-event.json` | `P_TAG_ORDER_E` + the four `P_WF:GENERAL_FSM_ORDER:` quote events, `QUOTE_VIEWED-CUSTOMER_CHANGES_REQUESTED` included |
 | `/core-pim/api/product-price/list.json`, `/core-pim/api/product/list.json` | `P_PRICE_R`, `P_PRODUCT_R` |
 | `/core-svc/api/tagged/appointment/list.json` (`type.code = SNOW_SERVICE_VISIT`) | `P_TAG_APPOINTMENT_R` |
 | `/core-svc/api/tagged/appointment/{id}/list-transitions.json` (visit progress; maps `id`, `observed`, `state`) | `P_TAG_APPOINTMENT_R` |
@@ -38,6 +38,9 @@ appointmentsTimeline, invoices, proposals, profile):
 | `GET /en/core-cms/api/form-type/CUSTOMER_INVOICE_PAYMENT/get.json`, then `POST /core-cms/api/form/submit.json` with the session (card payment) | none |
 | `PUT /core/api/user/preference.json` (removes the client secret from `SNOW_CUSTOMER_INVOICE_PAYMENT` once read) | `P_UI_USER_PREF` is assumed; not exercised with a customer session, and the server also removes it when the invoice is paid |
 | `https://js.stripe.com/v3/` and Stripe's API from Stripe.js (card field and `confirmCardPayment`) | none; Stripe test mode on dev-1 |
+| `GET /en/core-cms/api/form-type/PORTAL_QUOTE_REQUEST/get.json`, then `POST /core-cms/api/form/submit.json` with the session (quote request) | none |
+| `GET /core/api/user/preferences.json` read with Contracts (the last `SNOW_PORTAL_QUOTE_REQUEST` report, for the preparing step) | `P_UI_USER_PREF`; a failed read leaves Contracts as it was |
+| `/core-acct/api/tagged/account/list.json` with the profile mappings plus `attributes` (contract details pre-fill) | `P_TAG_ACCT_R` |
 
 The PIM adapter's private product-model, product-review and inventory lists are
 not called: the staging configuration leaves `pimEnrichmentMode` at `closed`.
@@ -157,6 +160,97 @@ only for organization codes. So the zone comes from the staging configuration
 (`account.timeZone`) and ships as the template parameter `PORTAL_TIME_ZONE`,
 `America/Vancouver`; a value that is not an IANA zone falls back to the device
 zone. Visit 78 then reads "Started · 5:21 AM".
+
+Deployment, 2026-10-29, portal quote flow (interface:
+`core-ui/docs/snow-portal-quote-flow.md`): the header's Request a quote opens
+`#/quote/new` in a live portal whose Contracts module is enabled, and the
+public form at `PORTAL_REQUEST_FORM_URL` otherwise (a fixture portal never
+reaches the page). The page offers the client's own properties from the tagged
+Resource list as cards with the address and area each has, and Add another
+address: with `PORTAL_MAPS_API_KEY` set, Google Places suggestions restricted to
+the `within:` box of `PROPERTY_ADDRESSES`, the picked place's location sent in
+`PROPERTY_COORDINATES`, a typed address geocoded, and an address outside the box
+or unknown to Google refused with the public form's messages; without the key a
+typed address is added as text without coordinates. Risk factors, their labels
+and the notes field come from the `PORTAL_QUOTE_REQUEST` form type itself; the
+page has no contact field. Selected properties and located addresses are pinned
+on the shared property map.
+
+The submission is the documented body (property ids as strings, attributes
+without a value left out, `metadata.language` `en`) with the session's Bearer.
+The outcome is read from the User's `SNOW_PORTAL_QUOTE_REQUEST` preference every
+3 s for up to 300 s (`QUOTE_REQUEST_OUTCOME_TIMEOUT_MS` in
+`runtime/src/quote-request.js`), not the 45 s of a profile edit, because the hook
+waits up to 130 s for each worker and checks every new address with an AI region
+check. The page says "Sending your request…", then "Request sent. Waiting for
+our system to pick it up…", then, once `PROCESSING` of this form is reported,
+"We're checking your properties and preparing quote drafts…", with a note that
+it can take a few minutes and that the quotes arrive in Contracts and by email.
+With no final outcome after 300 s it shows "We're still working on your
+request" with Go to Contracts and Check again, never an error. A refusal is
+shown under the property cards (`PROPERTY_IDS`), under the address input
+(`PROPERTY_ADDRESSES`) or above the button (no field, and `FAILED`), with the
+choices kept. `ACCEPTED` shows "Request received" and what happens next, with
+Go to Contracts, and re-reads Contracts and properties. Contracts reads the same
+preference: `PROCESSING`, or `ACCEPTED` with an order id the client cannot read
+yet, shows the preparing step.
+
+A quote in `QUOTE_VIEWED` offers Request changes between Approve and Decline.
+It opens a comment box; an empty or blank comment is refused in the browser
+("Write what you would like changed before sending.") and nothing is sent;
+otherwise `QUOTE_VIEWED-CUSTOMER_CHANGES_REQUESTED` is sent with
+`{ "MESSAGE": { "value": "<text>" } }`, the quotes are re-read and the option
+shows "Changes requested". A failed send keeps the comment.
+
+An agreement in `AWAITING_CLIENT_DETAILS` shows a details step instead of the
+old notice, and its Client facts card is left out while the step is open. The
+pre-fill reads the Account through the tagged list with the profile mappings
+plus `attributes`: legal name from the Account name, client type from
+`LEGAL_ENTITY_TYPE` only when it is one of the five accepted values, billing
+address from `address1` of the lowest-id `BILLING` address, and the
+representative from the `LEGAL` contact with its lowest-id `EMAIL` and `PHONE`
+entries (the profile's reading of "first"); the confirmations are never
+pre-filled. Client type is a required choice of `INDIVIDUAL`,
+`UNINCORPORATED_BUSINESS`, `CORPORATE`, `ASSOCIATION` and `GOVERNMENT`;
+`ORGANIZATION`, which the processor refuses and Account 732's old agreement
+holds, is not offered. The browser checks every field with the profile's rules
+and both confirmations, then sends
+`AWAITING_CLIENT_DETAILS-CLIENT_DETAILS_RECEIVED` with every attribute as
+`{ "value": ... }`, reads the agreement every 1.5 s for up to 45 s and re-reads
+Contracts. Accepted details show "Pending management approval" and what comes
+next; details the processor returned are marked field by field from
+`CLIENT_DETAILS_ERRORS` with the client's input kept; no state change in 45 s
+is shown as unconfirmed with Refresh status.
+
+Status labels follow the interface's step tables. Quotes: Sent (`QUOTE_SENT`),
+Viewed, Changes requested (also `CHANGES_NOTIFICATION_FAILED` and
+`_CONFIRMED`), Approved (also `APPROVAL_PROCESSING_FAILED`), Declined (also
+`DECLINE_PROCESSING_FAILED`); `WAITING_FOR_AREA` and `PRICING_FAILED` join the
+manager-side states that keep Contracts in preparing. Agreements: Awaiting your
+decisions (`QUOTATION_SENT`, `QUOTATION_UPDATE`, `QUOTATION_SEND_FAILED`),
+Awaiting your details, Checking your details (`CLIENT_DETAILS_RECEIVED`),
+Pending management approval (`DRAFT`, `PENDING_MANAGEMENT_APPROVAL`,
+`INTERNALLY_APPROVED`, `CLIENT_CHANGES_REQUESTED`), Sent for your approval
+(`SENT_TO_CLIENT`; `AGREEMENT_SEND_FAILED` reads "Being sent to you" and offers
+no approval), Approved (`CLIENT_APPROVED`, `ACTIVATION_FAILED`) and Active.
+Nothing reads Order or agreement `metadata`: the portal's tagged reads do not
+map it, so they do not return it, and no screen depends on `ORIGIN`.
+
+`upsert-granite-ridge-staging-portal.mjs` now lists fifteen checks, the new
+`snow-portal-quote-flow-check.mjs` included; it boots `runtime/src` in a fake
+DOM against a stand-in Core and drives the real actions. The dry run and the
+`--live` run (expected root `3e57675e-c967-47b2-9501-9235830f3bc3`, existing
+required) passed all fifteen and updated BlockTemplate
+`CUSTOMER_PORTAL_GRANITE_RIDGE_STAGING`; PageContext 22 was not written.
+`block-template/clear-cache.json` answered 200 from app-3-core-cms and
+app-1-core-cms, and twelve complete downloads of `/pages/SNOWLIMITLESS/portal`
+(six per node, gzip decoded, ending with `</html>`) were byte-identical and
+carried the package's script and stylesheet verbatim apart from the trailing
+newline the CMS drops; the page keeps its maps key. The screens were rendered
+from `runtime/src` against a stand-in Core at desktop, tablet and mobile widths
+in light and dark mode. No signed-in browser test with a customer session has
+been run; the request, the change request and the details event have not yet
+reached Core from a customer session.
 
 History: on 2026-10-19 the deployment was held because `P_TAG_DOCUMENT_E` also
 authorized `sync-state-history`; the backend was told. On 2026-10-28 the user

@@ -5,10 +5,10 @@ import { LocationMap, placementNote } from "../storm/PropertyMap.js";
 
 export var QUOTE_STATUS = Object.freeze({
   approved: Object.freeze({ label: "✓ Approved", badge: "status-badge--ok", dot: "#34c759" }),
-  revision: Object.freeze({ label: "⟳ Revision pending", badge: "status-badge--warn", dot: "#ff9f0a" }),
+  revision: Object.freeze({ label: "⟳ Changes requested", badge: "status-badge--warn", dot: "#ff9f0a" }),
   declined: Object.freeze({ label: "✕ Declined", badge: "status-badge--danger", dot: "#ff3b30" }),
-  unseen: Object.freeze({ label: "◔ Unseen", badge: "status-badge--scheduled", dot: "#8a94a6" }),
-  viewed: Object.freeze({ label: "• Reviewing", badge: "status-badge--scheduled", dot: "#8a94a6" }),
+  unseen: Object.freeze({ label: "◔ Sent", badge: "status-badge--scheduled", dot: "#8a94a6" }),
+  viewed: Object.freeze({ label: "• Viewed", badge: "status-badge--scheduled", dot: "#8a94a6" }),
 });
 
 var DECISION_META = { approved: "approved", declined: "declined", revision: "revision", open: "unseen" };
@@ -89,8 +89,8 @@ export function agreementSeason(agreement) {
 export function QuotesPreparing() {
   return h("div", { "class": "state-block", "data-module": "quote-preparing", "data-visual-id": "quote-preparing", "data-state": "preparing", role: "status" }, [
     h("div", { "class": "state-block__glyph quote-preparing__glyph" }, "◔"),
-    h("div", { "class": "state-block__title" }, "We have your request"),
-    h("div", { "class": "state-block__desc" }, "We’re preparing your quote. It appears here as soon as we send it to you."),
+    h("div", { "class": "state-block__title" }, "We’re preparing your quotes"),
+    h("div", { "class": "state-block__desc" }, "A manager prepares and approves them. They appear here and arrive by email once they’re sent to you."),
   ]);
 }
 

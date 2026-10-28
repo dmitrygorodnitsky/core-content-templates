@@ -1,4 +1,4 @@
-import { positiveInteger, text } from "./core-record.js";
+import { attributeText, positiveInteger, text } from "./core-record.js";
 import { formatPhone, formatPostalAddress } from "./postal-address.js";
 
 export var ACCOUNT_PROFILE_SCOPE_MODES = Object.freeze(["server-scoped", "browser-filtered"]);
@@ -36,6 +36,25 @@ export function normalizeAccountProfile(raw) {
     billingAddresses: billingAddresses,
     editable: editable,
     allowedActions: [],
+  };
+}
+
+export function contractDetailsPrefill(account, clientTypes) {
+  var row = account && typeof account === "object" && !Array.isArray(account) ? account : {};
+  var legal = primaryContact(row.contacts);
+  var legalType = attributeText(row, "LEGAL_ENTITY_TYPE").toUpperCase();
+  var billing = rows(row.addresses)
+    .filter(function (link) { return rows(link.types).some(function (type) { return text(type.code) === BILLING_ADDRESS; }); })
+    .sort(byIdAscending)[0];
+  return {
+    LEGAL_NAME: localizedName(row.nls),
+    CLIENT_TYPE: clientTypes.indexOf(legalType) === -1 ? "" : legalType,
+    BILLING_ADDRESS: billing && billing.address ? plain(billing.address.address1) : "",
+    REPRESENTATIVE_FIRST_NAME: legal ? plain(legal.firstName) : "",
+    REPRESENTATIVE_LAST_NAME: legal ? plain(legal.lastName) : "",
+    REPRESENTATIVE_JOB_TITLE: legal ? plain(legal.title) : "",
+    REPRESENTATIVE_EMAIL: legal ? firstEntryValue(legal.contactEntries, EMAIL_ENTRY) : "",
+    REPRESENTATIVE_PHONE: legal ? firstEntryValue(legal.contactEntries, PHONE_ENTRY) : "",
   };
 }
 

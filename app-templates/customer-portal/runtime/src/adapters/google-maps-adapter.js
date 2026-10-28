@@ -40,17 +40,24 @@ export function createGoogleMapsAdapter(options) {
       return loading;
     },
 
-    suggestAddresses: function (query) {
+    suggestAddresses: function (query, options) {
+      var within = options && options.within;
       return this.load().then(function (loaded) {
         return typeof loaded.importLibrary === "function" ? loaded.importLibrary("places") : loaded.places;
       }).then(function (places) {
         var finder = places && places.AutocompleteSuggestion;
         if (!finder || typeof finder.fetchAutocompleteSuggestions !== "function") return [];
-        return Promise.resolve(finder.fetchAutocompleteSuggestions({ input: query, includedPrimaryTypes: SUGGESTION_TYPES })).then(function (response) {
+        var request = { input: query, includedPrimaryTypes: SUGGESTION_TYPES };
+        if (within) request.locationRestriction = within;
+        return Promise.resolve(finder.fetchAutocompleteSuggestions(request)).then(function (response) {
           return ((response && response.suggestions) || []).map(function (suggestion) {
             var prediction = suggestion && suggestion.placePrediction;
             var label = prediction && prediction.text ? String(prediction.text) : "";
-            return { label: label, address: function () { return formattedAddress(prediction, label); } };
+            return {
+              label: label,
+              address: function () { return formattedAddress(prediction, label); },
+              place: function () { return locatedPlace(prediction, label); },
+            };
           }).filter(function (item) { return item.label; }).slice(0, SUGGESTION_LIMIT);
         });
       });
@@ -62,7 +69,9 @@ export function createGoogleMapsAdapter(options) {
         new maps.Geocoder().geocode({ address: address }, function (results, status) {
           var location = status === "OK" && results && results[0] && results[0].geometry && results[0].geometry.location;
           if (!location || typeof location.lat !== "function" || typeof location.lng !== "function") {
-            reject(new Error("Geocoder answered " + status));
+            var failure = new Error("Geocoder answered " + status);
+            failure.status = status;
+            reject(failure);
             return;
           }
           resolve({ lat: location.lat(), lon: location.lng() });
@@ -112,6 +121,23 @@ function formattedAddress(prediction, label) {
   }, function () {
     return label;
   });
+}
+
+function locatedPlace(prediction, label) {
+  var place = prediction && typeof prediction.toPlace === "function" ? prediction.toPlace() : null;
+  if (!place || typeof place.fetchFields !== "function") return Promise.resolve({ address: label, point: null });
+  return Promise.resolve(place.fetchFields({ fields: ["formattedAddress", "location"] })).then(function () {
+    return { address: String(place.formattedAddress || label), point: placePoint(place.location) };
+  }, function () {
+    return { address: label, point: null };
+  });
+}
+
+function placePoint(location) {
+  if (!location) return null;
+  var lat = typeof location.lat === "function" ? location.lat() : location.lat;
+  var lon = typeof location.lng === "function" ? location.lng() : location.lng;
+  return typeof lat === "number" && typeof lon === "number" && isFinite(lat) && isFinite(lon) && Math.abs(lat) <= 90 && Math.abs(lon) <= 180 ? { lat: lat, lon: lon } : null;
 }
 
 function scriptNamespace(scope, apiKey, fail) {

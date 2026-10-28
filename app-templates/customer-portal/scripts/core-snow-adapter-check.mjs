@@ -216,6 +216,7 @@ function quoteTable(overrides = {}) {
     orderItems: [line(38, 1, 227, 4891.92), line(38, 2, 233, 21859.68), line(41, 1, 227, 4891.92), line(41, 2, 233, 21859.68), line(42, 1, 28, 1528.48), line(42, 2, 36, 916.24), line(43, 1, 53, 1222.98)],
     productPrices: [{ id: 227, product: { id: 25 } }, { id: 233, product: { id: 28 } }, { id: 28, product: { id: 25 } }, { id: 36, product: { id: 28 } }, { id: 53, product: { id: 25 } }],
     products: [{ id: 25, code: "PARKING_LOT_SNOW_REMOVAL", nls: { en: { NAME: "Snow Removal" } } }, { id: 28, code: "ROCK_SALT_DE_ICING", nls: { en: { NAME: "Rock Salt De-Icing" } } }],
+    preferences: { SNOW_PORTAL_QUOTE_REQUEST: JSON.stringify({ form: 912, outcome: "ACCEPTED", field: null, message: "Thank you.", propertyIds: [958], newPropertyIds: [], orderIds: [41, 42, 43] }), OTHER: "x" },
     fail: {},
     serverFiltersClient: true,
   }, overrides);
@@ -232,6 +233,7 @@ function quoteFetch(table, calls = []) {
     const filterValue = (property) => ((body && body.filters) || []).find((filter) => filter.property === property);
     const inIds = (property) => String(filterValue(property).value).split(",").map(Number);
     if (route === "/core/api/document-type/list.json") return json({ resultSize: 1, result: [{ id: 17, code: "SERVICE_AGREEMENT" }] });
+    if (route === "/core/api/user/preferences.json") return json(table.preferences);
     if (route === "/core/api/tagged/document/list.json") {
       const client = filterValue("attributes.17.CLIENT.value");
       const rows = table.serverFiltersClient ? table.agreements.filter((row) => String(row.attributes[17].CLIENT.value) === client.value) : table.agreements;
@@ -293,7 +295,13 @@ function quoteFetch(table, calls = []) {
   ]);
   assert.deepEqual(byRoute("/core-pim/api/product-price/list.json")[0].body.filters, [{ type: "INTEGER", operator: "IN", property: "id", value: "227,233,28,36" }]);
   assert.deepEqual(byRoute("/core-pim/api/product/list.json")[0].body.filters, [{ type: "INTEGER", operator: "IN", property: "id", value: "25,28" }]);
-  assert.ok(calls.every((call) => call.method === "POST" && call.headers["X-Organization-Code"] === "SNOWLIMITLESS" && call.headers.Authorization === "Bearer test-token"));
+  const preference = byRoute("/core/api/user/preferences.json");
+  assert.equal(preference.length, 1, "the contracts read also reads the User's last quote request report once");
+  assert.equal(preference[0].method, "GET");
+  assert.equal(preference[0].body, null);
+  assert.equal(result.quoteRequest, quoteTable().preferences.SNOW_PORTAL_QUOTE_REQUEST, "only the SNOW_PORTAL_QUOTE_REQUEST preference is passed on, as Core stored it");
+  assert.ok(calls.filter((call) => call.route !== "/core/api/user/preferences.json").every((call) => call.method === "POST"), "every record read is a POST list or get");
+  assert.ok(calls.every((call) => call.headers["X-Organization-Code"] === "SNOWLIMITLESS" && call.headers.Authorization === "Bearer test-token"));
   assert.ok(calls.every((call) => call.url.startsWith(origin + "/")), "every service is reached same-origin");
   assert.equal(calls.filter((call) => call.route.endsWith("/send-event.json")).length, 0, "a read sends no event");
 }
@@ -310,6 +318,15 @@ function quoteFetch(table, calls = []) {
   assert.deepEqual(result.quoteOrders.map((row) => row.id), [41]);
   assert.equal(result.reads.orders.scopeMode, "browser-filtered");
   assert.equal(result.scopeMode, "browser-filtered", "the envelope never claims more isolation than its weakest customer read");
+}
+
+{
+  const unread = await createCoreSnowQuotesAdapter({ origin, fetch: quoteFetch(quoteTable({ fail: { "/core/api/user/preferences.json": 500 } })) }).load("proposals", context);
+  assert.equal(unread.state, "ready", "a failed preference read never fails Contracts");
+  assert.equal(unread.quoteRequest, null);
+  assert.deepEqual(unread.quoteOrders.map((row) => row.id), [38, 41, 42, 43]);
+  const none = await createCoreSnowQuotesAdapter({ origin, fetch: quoteFetch(quoteTable({ preferences: {} })) }).load("proposals", context);
+  assert.equal(none.quoteRequest, null, "a User who never requested a quote in the portal has no report");
 }
 
 {
@@ -399,6 +416,15 @@ function quoteFetch(table, calls = []) {
   assert.equal(calls[1].url, origin + "/core/api/tagged/document/136/send-event.json?event=SENT_TO_CLIENT-CLIENT_APPROVED");
   await rejectsWith("invalid-event", () => adapter.sendOrderEvent(42, "approve&admin=1", context));
 
+  calls.length = 0;
+  assert.equal(await adapter.sendOrderEvent(42, "QUOTE_VIEWED-CUSTOMER_CHANGES_REQUESTED", context, { MESSAGE: { value: "Add sidewalk de-icing" } }), true);
+  assert.equal(calls[0].url, origin + "/core-bill/api/tagged/order/42/send-event.json?event=QUOTE_VIEWED-CUSTOMER_CHANGES_REQUESTED");
+  assert.deepEqual(calls[0].body, { MESSAGE: { value: "Add sidewalk de-icing" } }, "a change request carries its MESSAGE as the event body");
+  const detailsBody = { LEGAL_NAME: { value: "Harbour View Strata" }, INFORMATION_CONFIRMED: { value: true } };
+  assert.equal(await adapter.sendAgreementEvent(136, "AWAITING_CLIENT_DETAILS-CLIENT_DETAILS_RECEIVED", context, detailsBody), true);
+  assert.equal(calls[1].url, origin + "/core/api/tagged/document/136/send-event.json?event=AWAITING_CLIENT_DETAILS-CLIENT_DETAILS_RECEIVED");
+  assert.deepEqual(calls[1].body, detailsBody, "contract details travel as the event body");
+
   const answering = (status) => createCoreSnowQuotesAdapter({ origin, fetch: async () => ({ ok: status < 300, status, async json() { return {}; } }) });
   await rejectsWith("session-expired", () => answering(401).sendOrderEvent(42, "QUOTE_VIEWED-DECLINED", context));
   await rejectsWith("customer-forbidden", () => answering(403).sendOrderEvent(42, "QUOTE_VIEWED-DECLINED", context));
@@ -420,9 +446,11 @@ assert.deepEqual(plain(coreSnowContract.scopeModes), {
 assert.deepEqual(coreSnowContract.propertyFilters, ["type.code"]);
 assert.equal(coreSnowContract.propertyType, "SNOW_REMOVAL_PROPERTY");
 assert.deepEqual(Object.keys(coreSnowContract.customerQuoteStatus).sort(), [
-  "CLIENT_APPROVED", "CUSTOMER_CHANGES_REQUESTED", "DECLINED", "QUOTE_SENT", "QUOTE_VIEWED",
+  "APPROVAL_PROCESSING_FAILED", "CHANGES_NOTIFICATION_CONFIRMED", "CHANGES_NOTIFICATION_FAILED", "CLIENT_APPROVED", "CUSTOMER_CHANGES_REQUESTED",
+  "DECLINED", "DECLINE_PROCESSING_FAILED", "QUOTE_SENT", "QUOTE_VIEWED",
 ]);
-assert.deepEqual(coreSnowContract.operatorQuoteStates, ["CHANGES_REQUESTED", "INITIAL", "QUOTE_APPROVED_INTERNALLY", "QUOTE_PREPARED"]);
+assert.deepEqual(coreSnowContract.operatorQuoteStates, ["CHANGES_REQUESTED", "INITIAL", "PRICING_FAILED", "QUOTE_APPROVED_INTERNALLY", "QUOTE_PREPARED", "WAITING_FOR_AREA"]);
+assert.equal(coreSnowContract.quoteRequestPreference, "SNOW_PORTAL_QUOTE_REQUEST");
 
 console.log("core-snow-adapter-check ok: properties filtered in the browser against an inherited ACCOUNT attribute, coordinates read from COORD_LAT and COORD_LNG with a missing value left missing, agreements, quotes and their lines filtered to the Account in the request with any foreign row dropped and reported as browser-filtered, catalog rows reported as unscoped, a failed read left absent as a partial result, a catalog 401 kept from signing the customer out, and the pre-read, ownership check and tagged event request of every contract command")
 

@@ -4,6 +4,7 @@ import { coreSessionFetch } from "./core-oidc-adapter.js";
 export const PROFILE_FORM = Object.freeze({ typeCode: "CUSTOMER_PROFILE_UPDATE", preference: "SNOW_CUSTOMER_PROFILE_UPDATE" });
 export const LOGIN_FORM = Object.freeze({ typeCode: "CUSTOMER_LOGIN_CHANGE", preference: "SNOW_CUSTOMER_LOGIN_CHANGE" });
 export const INVOICE_PAYMENT_FORM = Object.freeze({ typeCode: "CUSTOMER_INVOICE_PAYMENT", preference: "SNOW_CUSTOMER_INVOICE_PAYMENT" });
+export const QUOTE_REQUEST_FORM = Object.freeze({ typeCode: "PORTAL_QUOTE_REQUEST", preference: "SNOW_PORTAL_QUOTE_REQUEST" });
 
 const OUTCOMES = Object.freeze(["APPLIED", "REFUSED", "FAILED"]);
 const FORM_LOCALE = "en";
@@ -17,10 +18,10 @@ export function createCoreProfileFormAdapter(options = {}) {
   var now = options.now || function () { return Date.now(); };
   var pollInterval = options.pollIntervalMs || POLL_INTERVAL_MS;
   var timeout = options.timeoutMs || OUTCOME_TIMEOUT_MS;
-  var typeIds = {};
+  var types = {};
 
-  async function formTypeId(form, api) {
-    if (typeIds[form.typeCode]) return typeIds[form.typeCode];
+  async function formType(form, api) {
+    if (types[form.typeCode]) return types[form.typeCode];
     var type = await requestJson(fetchImpl, api.origin + "/" + FORM_LOCALE + api.cmsPath + "/api/form-type/" + encodeURIComponent(form.typeCode) + "/get.json", {
       method: "GET",
       credentials: "same-origin",
@@ -28,14 +29,18 @@ export function createCoreProfileFormAdapter(options = {}) {
     }, "form-type-unavailable");
     var id = positiveInteger(type && type.id);
     if (!id || text(type.code) !== form.typeCode) throw coded("form-type-unavailable", "Core did not answer the " + form.typeCode + " form type");
-    typeIds[form.typeCode] = id;
-    return id;
+    types[form.typeCode] = type;
+    return type;
   }
 
   var adapter = {
+    async type(form, context) {
+      return formType(form, requestContext(context));
+    },
+
     async submit(form, values, context) {
       var api = requestContext(context);
-      var typeId = await formTypeId(form, api);
+      var typeId = positiveInteger((await formType(form, api)).id);
       var attributes = {};
       Object.keys(values).forEach(function (code) { attributes[code] = { value: values[code] }; });
       var formId = await requestJson(fetchImpl, api.cmsBase + "/api/form/submit.json", {
@@ -64,7 +69,7 @@ export function createCoreProfileFormAdapter(options = {}) {
       };
     },
 
-    async report(form, formId, context, outcomes) {
+    async report(form, formId, context, outcomes, observe) {
       var api = requestContext(context);
       var deadline = now() + timeout;
       while (true) {
@@ -74,7 +79,9 @@ export function createCoreProfileFormAdapter(options = {}) {
           headers: api.headers({}),
         }, "outcome-unreadable");
         var reported = parsed(preferences && preferences[form.preference]);
-        if (reported && positiveInteger(reported.form) === formId && outcomes.indexOf(reported.outcome) !== -1) return reported;
+        var own = !!reported && positiveInteger(reported.form) === formId;
+        if (own && observe) observe(reported);
+        if (own && outcomes.indexOf(reported.outcome) !== -1) return reported;
         if (now() >= deadline) throw coded("outcome-unknown", "Core did not report the outcome of form " + formId + " in time");
         await wait(pollInterval);
       }

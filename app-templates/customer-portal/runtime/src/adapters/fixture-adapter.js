@@ -78,7 +78,7 @@ export function createFixtureContractsGateway(state) {
     },
     async sendAgreementEvent(backendId, event) {
       var target = transition(fixtureRow(state.pagreements, backendId), event);
-      state.pagreements = withState(state.pagreements, [backendId], target);
+      state.pagreements = withState(state.pagreements, [backendId], target === "CLIENT_DETAILS_RECEIVED" ? "PENDING_MANAGEMENT_APPROVAL" : target);
       return true;
     },
   };

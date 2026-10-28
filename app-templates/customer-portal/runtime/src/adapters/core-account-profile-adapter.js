@@ -51,6 +51,8 @@ const PROFILE_MAPPINGS = [
   },
 ];
 
+const CONTRACT_DETAILS_MAPPINGS = PROFILE_MAPPINGS.concat([{ name: "attributes" }]);
+
 export function createCoreAccountProfileAdapter(options = {}) {
   var fetchImpl = options.fetch || coreSessionFetch;
   if (typeof fetchImpl !== "function") throw coded("fetch-unavailable", "Core account profile adapter requires fetch");
@@ -63,6 +65,14 @@ export function createCoreAccountProfileAdapter(options = {}) {
 }
 
 export async function loadCustomerAccountProfile(context, fetchImpl = coreSessionFetch, explicitOrigin) {
+  return readCustomerAccount(context, fetchImpl, explicitOrigin, PROFILE_MAPPINGS);
+}
+
+export async function loadContractDetailsAccount(context, fetchImpl = coreSessionFetch, explicitOrigin) {
+  return readCustomerAccount(context, fetchImpl, explicitOrigin, CONTRACT_DETAILS_MAPPINGS);
+}
+
+async function readCustomerAccount(context, fetchImpl, explicitOrigin, mappings) {
   var api = requestContext(context, explicitOrigin);
   var reply = await requestJson(fetchImpl, api.accountBase + api.accountListPath, {
     method: "POST",
@@ -78,7 +88,7 @@ export async function loadCustomerAccountProfile(context, fetchImpl = coreSessio
         { type: "INTEGER", operator: "=", property: "id", value: String(api.accountId) },
         { type: "INTEGER", operator: "=", property: "user.id", value: String(api.userId) },
       ],
-      mappings: PROFILE_MAPPINGS,
+      mappings: mappings,
       offset: 0,
       pageSize: 2,
     }),
@@ -157,5 +167,6 @@ export const coreAccountProfileContract = Object.freeze({
   snowEndpoint: "/api/tagged/account/list.json",
   filters: Object.freeze(["id", "user.id"]),
   mappings: PROFILE_MAPPINGS,
+  contractDetailsMappings: CONTRACT_DETAILS_MAPPINGS,
   scopeMode: "server-scoped",
 });

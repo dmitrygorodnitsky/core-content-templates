@@ -1,7 +1,7 @@
 // customer-portal/runtime/src/actions.js — production transfer module.
 import { F } from "../data/fixtures.js";
 import { createContractCommands } from "./contract-commands.js";
-import { createFixtureContractsGateway } from "./adapters/fixture-adapter.js";
+import { createFixtureContractsGateway, fixtureAccountProfileAdapter } from "./adapters/fixture-adapter.js";
 import { createCoreSnowQuotesAdapter } from "./adapters/core-snow-adapter.js";
 import { cmdPhase, contractAgreementFor, currentAppointment, currentFixture, currentPurchase, findProduct, isSpa, orderItems, productItems, proposalSites, quoteGroupFor, quotePackage, spaBookingModel, spaBookingOpen, spaBookingOpts, spaBookingQuote, spaBookingSlotState, spaCartEnvelope, spaCatalogServices, spaCurrentApiDemoOpen, spaFlowSteps, spaNoteState, spaOptionsComplete, spaOptionsStepOn, spaPlanOffers, spaPlanSellOpen, spaProfileValues, spaRetailOpen, spaSelectedAddOns, spaSelectedLocation, spaSelectedSlot, spaSellInfo, spaVisitMode, state } from "./state.js";
 import { invalidateCareRuntime, reloadCareRuntime, reloadRuntimeModule, render, retryRuntimeLoad } from "./app.js";
@@ -13,7 +13,9 @@ import { createCoreUserProfileAdapter } from "./adapters/core-user-profile-adapt
 import { cancelProfileEdit, focusProfileInput, saveProfileEdit, startProfileEdit } from "./profile-edit.js";
 import { payInvoice } from "./invoice-payment.js";
 import { configuredExternalUrl, normalizeVertical, verticalProfiles } from "./config.js";
-import { resolveRoute, writeRouteToLocation } from "./router.js";
+import { isRouteReachable, resolveRoute, writeRouteToLocation } from "./router.js";
+import { addTypedQuoteAddress, checkQuoteRequestAgain, loadQuoteRequestSchema, quoteRequestOpen, removeQuoteAddress, resetQuoteRequest, submitQuoteRequest, toggleQuoteProperty } from "./quote-request.js";
+import { contractDetailsFor, contractDetailsRequest, openContractDetails } from "./contract-details.js";
 import { selectSeoService, toggleSeoFaq } from "./seo-actions.js";
 import { VISIT_PHOTO_ACTION, openVisitPhotos } from "./visit-photo-viewer.js";
 
@@ -91,6 +93,16 @@ export var ACTIONS = {
   "quote.confirm":     function (id) { return confirmContractCommand("quote", id); },
   "quote.cancel":      function ()   { return cancelContractConfirm(); },
   "quote.retryView":   function (id) { return retryQuoteView(id); },
+  "quote.requestChanges": function (id) { if (!openContractConfirm("changes", id)) return false; focusElement("[data-quote-changes=\"" + id + "\"]"); return true; },
+  "quote.sendChanges": function (id) { return sendChangeRequest(id); },
+  "agreement.sendDetails": function (id) { return sendContractDetails(id); },
+  "quoteRequest.toggleProperty": function (id) { if (!toggleQuoteProperty(id)) return false; render(); focusElement("[data-action=\"quoteRequest.toggleProperty\"][data-id=\"" + id + "\"]"); return true; },
+  "quoteRequest.addAddress": function () { return addTypedQuoteAddress({ onChange: render }).then(function (added) { render(); focusElement("#quote-request-address"); return added; }); },
+  "quoteRequest.removeAddress": function (id) { if (!removeQuoteAddress(id)) return false; render(); focusElement("#quote-request-address"); return true; },
+  "quoteRequest.refresh": function () { render(); focusElement("#quote-request-address"); return true; },
+  "quoteRequest.submit": function () { return sendQuoteRequest(); },
+  "quoteRequest.checkAgain": function () { return checkQuoteRequestAgain({ onChange: function () { render(); }, reload: reloadRuntimeModule }); },
+  "quoteRequest.retry": function () { state.quoteRequestSchema = null; render(); return true; },
   "agreement.approve": function (id) { return openContractConfirm("agreement", id); },
   "agreement.confirm": function (id) { return confirmContractCommand("agreement", id); },
   "agreement.cancel":  function ()   { return cancelContractConfirm(); },
@@ -123,7 +135,7 @@ export var ACTIONS = {
   } : null),
   "cart.open":         function ()   { go(globalThis.__PORTAL_VERTICAL__ !== "snow" && isSpa() && spaRetailOpen() ? "cart" : "checkout"); },
   "service.request":   function ()   { openDrawer("booking"); },
-  "service.requestForm": function () { return openRequestForm(); },
+  "service.requestForm": function () { return openQuoteRequest(); },
   "service.requestExtra": function (id) { runCommand("service.requestExtra", id, function () { requestExtraService(id); }); },
   "service.reportIssue": function () { failCommand("service.reportIssue"); },
   "access.confirm":    function (id) { runCommand("access.confirm", id, function () { confirmAccess(id); }); },
@@ -236,6 +248,51 @@ export var ACTIONS = {
 function retryForecast() {
   if (state.config.dataMode !== "live" || state.liveWeatherState === "loading") return false;
   return reloadRuntimeModule("overview").catch(function () { return null; });
+}
+
+function openQuoteRequest() {
+  if (!quoteRequestOpen(state.config) || !isRouteReachable("quote.new")) return openRequestForm();
+  if (state.quoteRequest && state.quoteRequest.phase === "accepted") resetQuoteRequest();
+  go("quote.new");
+  return true;
+}
+
+export function ensureQuoteRequestSchema() {
+  if (!state.quoteRequestSchema) loadQuoteRequestSchema({ onChange: function () { render(); } });
+  return state.quoteRequestSchema;
+}
+
+function sendQuoteRequest() {
+  return addTypedQuoteAddress({ onChange: render }).then(function (added) {
+    if (!added) {
+      render();
+      focusElement("#quote-request-address");
+      return false;
+    }
+    return submitQuoteRequest({
+      reload: reloadRuntimeModule,
+      onChange: function (phase) {
+        render();
+        if (phase === "invalid" || phase === "refused") focusQuoteRequestError();
+        if (phase === "accepted" || phase === "slow") focusElement("[data-module=\"quote-request-outcome\"]");
+      },
+    });
+  });
+}
+
+function focusQuoteRequestError() {
+  var errors = state.quoteRequest ? state.quoteRequest.errors : {};
+  if (errors.PROPERTY_ADDRESSES) return focusElement("#quote-request-address");
+  if (errors.PROPERTY_IDS) return focusElement("[data-action=\"quoteRequest.toggleProperty\"]") || focusElement("#quote-request-address");
+  return false;
+}
+
+function focusElement(selector) {
+  var root = globalThis.document;
+  var node = root && typeof root.querySelector === "function" ? root.querySelector(selector) : null;
+  if (!node || typeof node.focus !== "function") return false;
+  node.focus();
+  return true;
 }
 
 function openRequestForm() {
@@ -1416,6 +1473,8 @@ export function openAgreement(id) {
   go("agreement.detail");
 }
 
+var CHANGES_REQUIRED = "Write what you would like changed before sending.";
+
 var contractCommands = createContractCommands({
   state: state,
   render: function () { render(); },
@@ -1463,7 +1522,7 @@ function contractTarget(id) {
 function openContractConfirm(kind, id) {
   var backendId = contractTarget(id);
   if (!backendId || contractCommands.busy()) return false;
-  state.contractConfirm = { kind: kind, backendId: backendId };
+  state.contractConfirm = kind === "changes" ? { kind: kind, backendId: backendId, message: "", error: "" } : { kind: kind, backendId: backendId };
   if (state.contractCommand && state.contractCommand.phase !== "pending") state.contractCommand = null;
   render();
   return true;
@@ -1483,6 +1542,46 @@ function cancelContractConfirm() {
   state.contractConfirm = null;
   render();
   return true;
+}
+
+function sendChangeRequest(id) {
+  var backendId = contractTarget(id);
+  var confirm = state.contractConfirm;
+  if (!backendId || !confirm || confirm.kind !== "changes" || confirm.backendId !== backendId || contractCommands.busy()) return false;
+  var message = String(confirm.message || "").trim();
+  if (!message) {
+    confirm.error = CHANGES_REQUIRED;
+    render();
+    focusElement("[data-quote-changes=\"" + backendId + "\"]");
+    return false;
+  }
+  confirm.error = "";
+  return contractCommands.requestChanges(backendId, message);
+}
+
+export function ensureContractDetails(backendId) {
+  if (contractDetailsFor(backendId)) return;
+  var load = state.config.dataMode === "live" ? undefined : function (context) { return fixtureAccountProfileAdapter.load("profile", context); };
+  openContractDetails(backendId, { load: load, onChange: function () { render(); } });
+}
+
+function sendContractDetails(id) {
+  var backendId = contractTarget(id);
+  var details = backendId ? contractDetailsFor(backendId) : null;
+  if (!details || details.prefill === "loading" || contractCommands.busy()) return false;
+  var request = contractDetailsRequest(details.draft);
+  details.errors = request.errors;
+  if (!request.values) {
+    if (state.contractCommand && state.contractCommand.kind === "details") state.contractCommand = null;
+    render();
+    focusElement("[data-contract-detail][aria-invalid=\"true\"]") || focusElement("[aria-invalid=\"true\"] input");
+    return false;
+  }
+  return contractCommands.sendDetails(backendId, request.values).then(function (sent) {
+    if (sent && state.contractDetails === details) state.contractDetails = null;
+    render();
+    return sent;
+  });
 }
 
 function retryQuoteView(id) {

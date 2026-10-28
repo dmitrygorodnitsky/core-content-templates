@@ -18,6 +18,7 @@ import { PropertyDetail } from "./routes/PropertyDetailPage.js";
 import { ProposalsList } from "./routes/ProposalsPage.js";
 import { ProposalDetail } from "./routes/ProposalDetailPage.js";
 import { AgreementDetail } from "./routes/AgreementDetailPage.js";
+import { QuoteRequest } from "./routes/QuoteRequestPage.js";
 import { Profile } from "./routes/ProfilePage.js";
 import { AccountProfile } from "./routes/AccountProfilePage.js";
 import { Activity } from "./routes/ActivityPage.js";
@@ -66,6 +67,12 @@ export function resolveRoute(routeId) {
     reason = "preview-only";
   }
 
+  if (activeRoute && activeRoute.liveOnly && state.config.dataMode !== "live") {
+    requested = defaultRoute;
+    activeRoute = routeRegistry[requested];
+    reason = "live-only";
+  }
+
   if (!activeRoute) return { id: "auth.oidc", reason: "invalid-config" };
 
   if (!isPublic(requested) && !state.session.authenticated) {
@@ -112,9 +119,9 @@ function reachableDefaultRoute() {
   return enabledRoute ? enabledRoute.id : "auth.oidc";
 }
 
-function isRouteReachable(routeId) {
+export function isRouteReachable(routeId) {
   var route = routeRegistry[routeId];
-  if (!route || (route.parityOnly && state.config.dataMode === "live")) return false;
+  if (!route || (route.parityOnly && state.config.dataMode === "live") || (route.liveOnly && state.config.dataMode !== "live")) return false;
   return !!(route.public || privateRouteOpen(route));
 }
 
@@ -207,6 +214,7 @@ export function renderRoute() {
     case "proposals.list": return ProposalsList();
     case "proposal.detail": return ProposalDetail();
     case "agreement.detail": return AgreementDetail();
+    case "quote.new":   return QuoteRequest();
     case "profile":     return globalThis.__PORTAL_VERTICAL__ !== "snow" && isSpa() ? SpaProfile() : customerAccountProfile(state.config) ? AccountProfile() : Profile();
     case "activity":    return Activity();
     case "calendar":    return Calendar();
@@ -276,7 +284,7 @@ function queryFrom(value) {
 function routeFamily(routeId) {
   if (routeId === "orders.list" || routeId === "order.detail" || routeId === "appointment.detail") return "appointments";
   if (routeId === "appointments" || routeId === "visit.detail" || routeId === "property.detail") return "appointments-timeline";
-  if (routeId === "proposals.list" || routeId === "proposal.detail" || routeId === "agreement.detail") return "proposals";
+  if (routeId === "proposals.list" || routeId === "proposal.detail" || routeId === "agreement.detail" || routeId === "quote.new") return "proposals";
   if (routeId === "purchases.list" || routeId === "purchase.detail") return "purchases";
   if (routeId === "products" || routeId === "product.detail") return "products";
   return null;

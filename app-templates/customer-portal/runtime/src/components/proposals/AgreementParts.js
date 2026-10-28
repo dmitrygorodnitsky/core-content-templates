@@ -7,11 +7,17 @@ import { QuoteOptionCard } from "./QuoteOptionCard.js";
 
 var STAGE_NOTICE = {
   review: { tone: "info", text: "The quotes in this agreement are waiting for your decisions.", link: { label: "Go to your quotes ›", action: "nav.go", id: "proposals.list" } },
-  details: { tone: "warn", text: "We need your contract details before we can prepare this agreement." },
+  drafting: { tone: "info", text: "Thank you, we have your details. A manager prepares and approves your service agreement next; it appears here for your approval and we email you when it’s ready." },
+};
+
+var STATE_NOTICE = {
+  CLIENT_DETAILS_RECEIVED: { tone: "info", text: "We’re checking your details. This page shows the result once the check is done." },
+  CLIENT_CHANGES_REQUESTED: { tone: "info", text: "We’re revising this agreement as you asked. It appears here for your approval and we email you when it’s ready." },
+  AGREEMENT_SEND_FAILED: { tone: "info", text: "We’re sending this agreement to you. You can approve it here as soon as it arrives." },
 };
 
 export function AgreementStageNotice(agreement) {
-  var notice = STAGE_NOTICE[agreement.stage];
+  var notice = STATE_NOTICE[agreement.stateCode] || STAGE_NOTICE[agreement.stage];
   if (!notice) return null;
   return h("div", { "class": "agreement-notice", "data-module": "agreement-notice", "data-visual-id": "agreement-notice", "data-state": agreement.stage, "data-tone": notice.tone, role: "status" }, [
     h("span", { "class": "agreement-notice__dot", "aria-hidden": "true" }),
@@ -20,7 +26,7 @@ export function AgreementStageNotice(agreement) {
   ]);
 }
 
-export function AgreementParties(parties) {
+export function AgreementParties(parties, withClient) {
   return h("div", { "class": "agreement-parties", "data-module": "agreement-parties", "data-visual-id": "agreement-parties" }, [
     FactsCard("Provider", "agreement-party", [
       ["Legal name", parties.provider.legalName],
@@ -28,7 +34,7 @@ export function AgreementParties(parties) {
       ["Phone", parties.provider.phone, "tel:" + parties.provider.phone.replace(/[^+\d]/g, "")],
       ["Email", parties.provider.email, "mailto:" + parties.provider.email],
     ]),
-    FactsCard("Client", "agreement-party", [
+    withClient === false ? null : FactsCard("Client", "agreement-party", [
       ["Legal name", parties.client.legalName],
       ["Client type", parties.client.clientType],
       ["Billing address", parties.client.billingAddress],

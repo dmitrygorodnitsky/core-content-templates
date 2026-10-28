@@ -1,17 +1,25 @@
 import { findAgreement, findQuote } from "./normalizers/contracts.js";
-import { latestStateCode } from "./normalizers/core-record.js";
+import { attributeText, latestStateCode } from "./normalizers/core-record.js";
 
 export var CONTRACT_EVENTS = Object.freeze({
   view: Object.freeze({ entity: "order", source: "QUOTE_SENT", code: "QUOTE_SENT-QUOTE_VIEWED" }),
   approve: Object.freeze({ entity: "order", source: "QUOTE_VIEWED", code: "QUOTE_VIEWED-CLIENT_APPROVED" }),
   decline: Object.freeze({ entity: "order", source: "QUOTE_VIEWED", code: "QUOTE_VIEWED-DECLINED" }),
+  changes: Object.freeze({ entity: "order", source: "QUOTE_VIEWED", code: "QUOTE_VIEWED-CUSTOMER_CHANGES_REQUESTED" }),
   agreement: Object.freeze({ entity: "document", source: "SENT_TO_CLIENT", code: "SENT_TO_CLIENT-CLIENT_APPROVED" }),
+  details: Object.freeze({ entity: "document", source: "AWAITING_CLIENT_DETAILS", code: "AWAITING_CLIENT_DETAILS-CLIENT_DETAILS_RECEIVED" }),
 });
+
+export var DETAILS_RECEIVED_STATE = "CLIENT_DETAILS_RECEIVED";
+export var DETAILS_SETTLE_TIMEOUT_MS = 45000;
+export var DETAILS_SETTLE_POLL_MS = 1500;
 
 var CONFIRMED_TOAST = {
   approve: "Option approved",
   decline: "Option declined",
+  changes: "Change request sent",
   agreement: "Agreement approved",
+  details: "Details sent",
 };
 
 export function createContractCommands(deps) {
@@ -29,7 +37,8 @@ export function createContractCommands(deps) {
       .catch(function (error) { return settle(command, error); })
       .finally(function () {
         flight = null;
-        if (command.kind !== "view") deps.state.contractConfirm = null;
+        var kept = command.kind === "changes" && !!deps.state.contractCommand;
+        if (command.kind !== "view" && !kept) deps.state.contractConfirm = null;
         deps.render();
       });
     flight = started;
@@ -37,7 +46,7 @@ export function createContractCommands(deps) {
     return started;
   }
 
-  function decide(kind, backendId) {
+  function decide(kind, backendId, input) {
     var definition = CONTRACT_EVENTS[kind];
     if (!definition || definition.entity !== "order") return Promise.resolve(false);
     var quote = findQuote(deps.current(), backendId);
@@ -46,7 +55,7 @@ export function createContractCommands(deps) {
       var gateway = deps.gateway();
       var row = await gateway.readOrder(backendId, deps.context());
       if (latestStateCode(row) !== definition.source) throw coded("conflict");
-      await gateway.sendOrderEvent(backendId, definition.code, deps.context());
+      await gateway.sendOrderEvent(backendId, definition.code, deps.context(), input);
       return confirm(kind, backendId, definition.source, function (pkg) {
         var read = findQuote(pkg, backendId);
         return read ? read.stateCode : null;
@@ -68,6 +77,58 @@ export function createContractCommands(deps) {
         return read ? read.agreement.stateCode : null;
       });
     }) || Promise.resolve(false);
+  }
+
+  function requestChanges(backendId, message) {
+    var text = typeof message === "string" ? message.trim() : "";
+    if (!text) return Promise.resolve(false);
+    return decide("changes", backendId, { MESSAGE: { value: text } });
+  }
+
+  function sendDetails(backendId, values) {
+    var definition = CONTRACT_EVENTS.details;
+    var row = findAgreement(deps.current(), backendId);
+    if (!row || row.agreement.stateCode !== definition.source || row.agreement.allowedActions.indexOf("details") === -1) return Promise.resolve(false);
+    var input = {};
+    Object.keys(values).forEach(function (code) { input[code] = { value: values[code] }; });
+    return run({ kind: "details", targets: [backendId] }, async function () {
+      var gateway = deps.gateway();
+      var document = await gateway.readAgreement(backendId, deps.context());
+      if (latestStateCode(document) !== definition.source) throw coded("conflict");
+      var errorsBefore = attributeText(document, "CLIENT_DETAILS_ERRORS");
+      await gateway.sendAgreementEvent(backendId, definition.code, deps.context(), input);
+      var outcome = await settleDetails(gateway, backendId, errorsBefore);
+      var read;
+      try {
+        read = await deps.reload();
+      } catch (error) {
+        throw readbackFailure(error);
+      }
+      if (!findAgreement(read, backendId)) throw readbackFailure(null);
+      if (outcome === "unconfirmed" || outcome === "returned") {
+        deps.state.contractCommand = { kind: "details", targets: [backendId], phase: outcome };
+        return false;
+      }
+      deps.state.contractCommand = null;
+      if (deps.notify) deps.notify(CONFIRMED_TOAST.details);
+      return true;
+    }) || Promise.resolve(false);
+  }
+
+  async function settleDetails(gateway, backendId, errorsBefore) {
+    var wait = deps.wait || function (ms) { return new Promise(function (resolve) { setTimeout(resolve, ms); }); };
+    var now = deps.now || function () { return Date.now(); };
+    var deadline = now() + (deps.detailsTimeoutMs || DETAILS_SETTLE_TIMEOUT_MS);
+    var received = false;
+    while (true) {
+      await wait(deps.detailsPollMs || DETAILS_SETTLE_POLL_MS);
+      var document = await gateway.readAgreement(backendId, deps.context());
+      var stateCode = latestStateCode(document);
+      if (stateCode === DETAILS_RECEIVED_STATE) received = true;
+      else if (stateCode !== CONTRACT_EVENTS.details.source) return "accepted";
+      else if (received || attributeText(document, "CLIENT_DETAILS_ERRORS") !== errorsBefore) return "returned";
+      if (now() >= deadline) return received ? "checking" : "unconfirmed";
+    }
   }
 
   function view(backendIds) {
@@ -157,6 +218,8 @@ export function createContractCommands(deps) {
   return {
     busy: busy,
     decide: decide,
+    requestChanges: requestChanges,
+    sendDetails: sendDetails,
     approveAgreement: approveAgreement,
     view: view,
   };

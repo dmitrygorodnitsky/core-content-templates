@@ -334,3 +334,7 @@
 .vw-mobile .terms-list[data-depth="2"], .vw-mobile .terms-list[data-depth="3"], .vw-mobile .terms-list[data-depth="4"] { padding-left: 4.4em; }
 
 .vw-mobile .map-pin-label { max-width: 104px; font-size: 11px; }
+
+.vw-mobile .quote-request__properties, .vw-mobile .contract-form__pair { grid-template-columns: 1fr; }
+
+.vw-mobile .quote-request__submit .btn { flex: 1 1 auto; }

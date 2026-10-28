@@ -85,16 +85,52 @@ function QuoteDecisions(order, settings) {
   if (order.status !== "viewed") return outcome ? h("div", { "class": "quote-option__decide" }, outcome) : null;
   var confirm = state.contractConfirm;
   var confirming = !!confirm && confirm.backendId === order.backendId && (confirm.kind === "approve" || confirm.kind === "decline");
+  var changing = !!confirm && confirm.backendId === order.backendId && confirm.kind === "changes";
   var section = h("div", { "class": "quote-option__decide" });
   if (confirming) section.appendChild(DecisionConfirm(confirm.kind, order, settings, targeted && command.phase === "pending"));
+  else if (changing) section.appendChild(ChangeRequest(confirm, order, settings, targeted && command.phase === "pending"));
   else {
     section.appendChild(h("div", { "class": "proposal-actions" }, [
       ActionButton({ variant: "btn--primary", label: "Approve", action: "quote.approve", id: String(order.backendId), lg: true, disabled: busy, visualId: "quote-approve" }),
+      ActionButton({ variant: "btn--ghost", label: "Request changes", action: "quote.requestChanges", id: String(order.backendId), lg: true, disabled: busy, visualId: "quote-request-changes" }),
       ActionButton({ variant: "btn--danger", label: "Decline", action: "quote.decline", id: String(order.backendId), lg: true, disabled: busy, visualId: "quote-decline" }),
     ]));
   }
   if (outcome) section.appendChild(outcome);
   return section;
+}
+
+function ChangeRequest(confirm, order, settings, pending) {
+  var id = "quote-changes-" + order.backendId;
+  var titleId = id + "-title";
+  var errorId = id + "-error";
+  var input = h("textarea", {
+    "class": "field decision-confirm__message",
+    id: id,
+    rows: "4",
+    placeholder: "For example: add sidewalk de-icing, or quote weekly visits instead.",
+    "data-quote-changes": String(order.backendId),
+    "data-state": confirm.error ? "invalid" : undefined,
+    "aria-labelledby": titleId,
+    "aria-invalid": confirm.error ? "true" : undefined,
+    "aria-describedby": confirm.error ? errorId : undefined,
+    disabled: pending ? true : undefined,
+  }, confirm.message || "");
+  input.addEventListener("input", function () {
+    if (state.contractConfirm === confirm) confirm.message = input.value;
+  });
+  var sendButton = ActionButton({ variant: "btn--primary", label: pending ? "Sending…" : "Send request", action: "quote.sendChanges", id: String(order.backendId), lg: true, disabled: pending || settings.busy, visualId: "quote-send-changes" });
+  if (pending) sendButton.setAttribute("data-state", "pending");
+  return h("div", { "class": "decision-confirm", "data-module": "change-request", "data-visual-id": "change-request", "data-state": pending ? "pending" : confirm.error ? "invalid" : "open", "data-kind": "changes", role: "group", "aria-labelledby": titleId }, [
+    h("label", { "class": "decision-confirm__title", id: titleId, "for": id }, "What should change?"),
+    h("p", { "class": "decision-confirm__body" }, "Our team reviews your request and sends you revised quotes."),
+    input,
+    confirm.error ? h("div", { "class": "field-error", id: errorId, role: "alert" }, confirm.error) : null,
+    h("div", { "class": "proposal-actions" }, [
+      sendButton,
+      ActionButton({ variant: "btn--ghost", label: "Cancel", action: "quote.cancel", lg: true, disabled: pending, visualId: "quote-cancel" }),
+    ]),
+  ]);
 }
 
 function DecisionConfirm(kind, order, settings, pending) {

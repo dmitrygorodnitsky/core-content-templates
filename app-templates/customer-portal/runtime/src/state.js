@@ -34,6 +34,9 @@ export var state = {
   quoteViews: {},
   contractCommand: null,
   contractConfirm: null,
+  contractDetails: null,
+  quoteRequest: null,
+  quoteRequestSchema: null,
   ovProperty: null,
   ovWeatherIndex: null,
   currentSiteId: "s2", // open proposal site
@@ -977,6 +980,9 @@ export function applyPortalConfig(config) {
   state.quoteViews = {};
   state.contractCommand = null;
   state.contractConfirm = null;
+  state.contractDetails = null;
+  state.quoteRequest = null;
+  state.quoteRequestSchema = null;
   state.prefs = fixture ? cloneCaseValue(fixture.prefs) : { receipts: true, sms: true, marketing: false };
   state.messages = fixture ? cloneCaseValue(fixture.initialMessages) : F.initialMessages.slice();
   state.filter = "all";

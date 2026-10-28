@@ -3,6 +3,7 @@ import { h } from "../../dom.js";
 import { activeProfile, activeVerticalConfig, activityUnread, cartCount, currentFixture, isModuleEnabled, isSpa, navListShown, state } from "../../state.js";
 import { configuredExternalUrl, routeRegistry } from "../../config.js";
 import { ActionButton } from "../primitives/ActionButton.js";
+import { isRouteReachable } from "../../router.js";
 import { icon } from "../storm/overview-icons.js";
 import { SpaTopNav } from "./SpaTopNav.js";
 
@@ -89,13 +90,13 @@ function initials(name) {
 
 function primaryConnected(primary) {
   if (!primary) return false;
-  return primary.action !== "service.requestForm" || !!state.config.requestFormUrl;
+  return primary.action !== "service.requestForm" || isRouteReachable("quote.new") || !!state.config.requestFormUrl;
 }
 
 var NAV_DETAIL_ROUTES = {
   "orders.list": ["order.detail"],
   products: ["checkout"],
-  "proposals.list": ["proposal.detail", "agreement.detail"],
+  "proposals.list": ["proposal.detail", "agreement.detail", "quote.new"],
   appointments: ["visit.detail"],
   invoices: ["invoice.detail"],
 };

@@ -7,6 +7,7 @@ import { coreSessionFetch } from "./core-oidc-adapter.js";
 const PROPERTY_TYPE = "SNOW_REMOVAL_PROPERTY";
 const PROPERTY_BASE_TYPE = "PROPERTY";
 const AGREEMENT_TYPE = "SERVICE_AGREEMENT";
+const QUOTE_REQUEST_PREFERENCE = "SNOW_PORTAL_QUOTE_REQUEST";
 const PIM_SERVICE_BASE = "/core-pim";
 
 const PROPERTY_PAGE_SIZE = 200;
@@ -257,13 +258,13 @@ export function createCoreSnowQuotesAdapter(options = {}) {
     async readAgreement(backendId, context) {
       return readCustomerAgreement(context, backendId, fetchImpl, options.origin);
     },
-    async sendOrderEvent(backendId, event, context) {
+    async sendOrderEvent(backendId, event, context, input) {
       var api = readContext(context, options.origin);
-      return sendEvent(fetchImpl, api, api.billBase + "/api/tagged/order/" + commandId(backendId) + "/send-event.json?event=" + eventCode(event));
+      return sendEvent(fetchImpl, api, api.billBase + "/api/tagged/order/" + commandId(backendId) + "/send-event.json?event=" + eventCode(event), input);
     },
-    async sendAgreementEvent(backendId, event, context) {
+    async sendAgreementEvent(backendId, event, context, input) {
       var api = readContext(context, options.origin);
-      return sendEvent(fetchImpl, api, api.coreBase + "/api/tagged/document/" + commandId(backendId) + "/send-event.json?event=" + eventCode(event));
+      return sendEvent(fetchImpl, api, api.coreBase + "/api/tagged/document/" + commandId(backendId) + "/send-event.json?event=" + eventCode(event), input);
     },
   };
 }
@@ -286,10 +287,12 @@ export async function loadSnowQuotes(context, fetchImpl = coreSessionFetch, expl
   var primary = await Promise.all([
     settled(customerAgreements(api, fetchImpl)),
     settled(customerOrders(api, fetchImpl)),
+    quoteRequestReport(api, fetchImpl),
   ]);
   var agreements = primary[0];
   var orders = primary[1];
-  rethrowSessionLoss(primary);
+  var quoteRequest = primary[2];
+  rethrowSessionLoss(primary.slice(0, 2));
   if (agreements.state !== "ready" && orders.state !== "ready") throw orders.error;
 
   var visibleOrderIds = orders.state === "ready" ? customerVisibleOrderIds(orders.rows) : [];
@@ -318,6 +321,7 @@ export async function loadSnowQuotes(context, fetchImpl = coreSessionFetch, expl
       products: readSummary(products),
     },
     client: { displayName: api.accountName },
+    quoteRequest: quoteRequest,
     agreements: agreements.rows,
     quoteOrders: orders.rows,
     orderItems: orderItems.rows,
@@ -342,6 +346,20 @@ export async function readCustomerAgreement(context, backendId, fetchImpl = core
   if (!row || positiveInteger(row.id) !== id || text(row.type && row.type.code) !== AGREEMENT_TYPE) throw contractError("not-found", "Core did not return the service agreement");
   if (attributeNumber(row, "CLIENT") !== api.accountId) throw contractError("customer-forbidden", "The service agreement does not belong to the signed-in customer");
   return row;
+}
+
+async function quoteRequestReport(api, fetchImpl) {
+  try {
+    var preferences = await requestJson(fetchImpl, api.coreBase + "/api/user/preferences.json", {
+      method: "GET",
+      credentials: "same-origin",
+      headers: { Authorization: api.authorization, Accept: "application/json", "X-Organization-Code": api.organization },
+    });
+    var value = preferences && preferences[QUOTE_REQUEST_PREFERENCE];
+    return value == null ? null : value;
+  } catch (_) {
+    return null;
+  }
 }
 
 async function customerAgreements(api, fetchImpl) {
@@ -473,8 +491,8 @@ function resultSizeOf(reply, fallback) {
   return reply && typeof reply.resultSize === "number" && Number.isFinite(reply.resultSize) ? reply.resultSize : fallback;
 }
 
-async function sendEvent(fetchImpl, api, url) {
-  var response = await fetchImpl(url, readOptions(api, {}));
+async function sendEvent(fetchImpl, api, url, input) {
+  var response = await fetchImpl(url, readOptions(api, input && typeof input === "object" ? input : {}));
   if (!response || typeof response.ok !== "boolean") throw contractError("invalid-response", "Core request returned an invalid response");
   if (!response.ok) throw failure(response.status, true);
   return true;
@@ -701,6 +719,7 @@ export const coreSnowContract = Object.freeze({
   propertyPageLimit: PROPERTY_PAGE_LIMIT,
   propertyPageSize: PROPERTY_PAGE_SIZE,
   propertyType: PROPERTY_TYPE,
+  quoteRequestPreference: QUOTE_REQUEST_PREFERENCE,
   quoteOrderTypes: Object.freeze(QUOTE_ORDER_TYPES.slice()),
   resourceMappings: RESOURCE_MAPPINGS,
   visitListBody: VISIT_LIST_BODY,

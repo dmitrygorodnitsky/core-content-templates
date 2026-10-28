@@ -5,14 +5,18 @@ import { addressRepeats, formatAddressLine, formatPhone } from "./postal-address
 export var QUOTE_ORDER_TYPES = Object.freeze(["FIELD_SERVICE_ORDER", "WINTER_SERVICES_ORDER"]);
 
 export var CUSTOMER_ORDER_STATUS = Object.freeze({
+  APPROVAL_PROCESSING_FAILED: "approved",
+  CHANGES_NOTIFICATION_CONFIRMED: "revision",
+  CHANGES_NOTIFICATION_FAILED: "revision",
   CLIENT_APPROVED: "approved",
   CUSTOMER_CHANGES_REQUESTED: "revision",
+  DECLINE_PROCESSING_FAILED: "declined",
   DECLINED: "declined",
   QUOTE_SENT: "unseen",
   QUOTE_VIEWED: "viewed",
 });
 
-export var OPERATOR_ORDER_STATES = Object.freeze(["CHANGES_REQUESTED", "INITIAL", "QUOTE_APPROVED_INTERNALLY", "QUOTE_PREPARED"]);
+export var OPERATOR_ORDER_STATES = Object.freeze(["CHANGES_REQUESTED", "INITIAL", "PRICING_FAILED", "QUOTE_APPROVED_INTERNALLY", "QUOTE_PREPARED", "WAITING_FOR_AREA"]);
 
 export var PRICING_MODELS = Object.freeze({
   PER_SERVICE: "Per service",
@@ -28,14 +32,25 @@ export var PRICE_PERIODS = Object.freeze({
   SEASONAL: "per season",
 });
 
-export var CLIENT_TYPES = Object.freeze({
-  INDIVIDUAL: "Individual",
-  ORGANIZATION: "Organization",
-});
+export var CONTRACT_CLIENT_TYPES = Object.freeze([
+  Object.freeze({ code: "INDIVIDUAL", label: "Individual" }),
+  Object.freeze({ code: "UNINCORPORATED_BUSINESS", label: "Unincorporated business" }),
+  Object.freeze({ code: "CORPORATE", label: "Corporation" }),
+  Object.freeze({ code: "ASSOCIATION", label: "Association" }),
+  Object.freeze({ code: "GOVERNMENT", label: "Government" }),
+]);
+
+export var CLIENT_TYPES = Object.freeze(CONTRACT_CLIENT_TYPES.reduce(function (labels, type) {
+  labels[type.code] = type.label;
+  return labels;
+}, { ORGANIZATION: "Organization" }));
+
+export var QUOTE_REQUEST_OUTCOMES = Object.freeze(["PROCESSING", "ACCEPTED", "REFUSED", "FAILED"]);
 
 export var SCOPE_MODES = Object.freeze(["server-scoped", "browser-filtered", "unscoped"]);
 
-var ORDER_ACTIONS = { unseen: ["view"], viewed: ["approve", "decline"] };
+var ORDER_ACTIONS = { unseen: ["view"], viewed: ["approve", "changes", "decline"] };
+var AGREEMENT_ACTIONS = { AWAITING_CLIENT_DETAILS: ["details"], SENT_TO_CLIENT: ["approve"] };
 var PRICING_MODEL_RANK = ["PER_SERVICE", "MONTHLY", "SEASONAL", RECURRING_MODEL.code];
 var MONTH_UNIT = "MONTH";
 var MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
@@ -53,20 +68,23 @@ var ITEM_LINE = /^[-*•]\s+(.+)$/;
 var NUMBERED_LINE = /^(\d+(?:\.\d+)+[.)]?|\d+[.)])\s+(.+)$/;
 
 var PREPARING = agreementStage("preparing", "", "");
-var DRAFTING = agreementStage("drafting", "Agreement in preparation", "scheduled");
+var REVIEW = agreementStage("review", "Awaiting your decisions", "info");
+var MANAGEMENT = agreementStage("drafting", "Pending management approval", "scheduled");
 var APPROVED = agreementStage("approved", "Approved", "ok");
 
 export var AGREEMENT_STAGES = Object.freeze({
   QUOTATION: PREPARING,
-  QUOTATION_SEND_FAILED: PREPARING,
-  QUOTATION_SENT: agreementStage("review", "Awaiting your decisions", "info"),
-  AWAITING_CLIENT_DETAILS: agreementStage("details", "Contract details needed", "warn"),
-  CLIENT_DETAILS_RECEIVED: DRAFTING,
-  DRAFT: DRAFTING,
-  PENDING_MANAGEMENT_APPROVAL: DRAFTING,
-  INTERNALLY_APPROVED: DRAFTING,
-  AGREEMENT_SEND_FAILED: DRAFTING,
-  SENT_TO_CLIENT: agreementStage("approval", "Ready for your approval", "warn"),
+  QUOTATION_SENT: REVIEW,
+  QUOTATION_UPDATE: REVIEW,
+  QUOTATION_SEND_FAILED: REVIEW,
+  AWAITING_CLIENT_DETAILS: agreementStage("details", "Awaiting your details", "warn"),
+  CLIENT_DETAILS_RECEIVED: agreementStage("drafting", "Checking your details", "scheduled"),
+  DRAFT: MANAGEMENT,
+  PENDING_MANAGEMENT_APPROVAL: MANAGEMENT,
+  INTERNALLY_APPROVED: MANAGEMENT,
+  CLIENT_CHANGES_REQUESTED: MANAGEMENT,
+  SENT_TO_CLIENT: agreementStage("approval", "Sent for your approval", "warn"),
+  AGREEMENT_SEND_FAILED: agreementStage("approval", "Being sent to you", "warn"),
   CLIENT_APPROVED: APPROVED,
   ACTIVATION_FAILED: APPROVED,
   ACTIVE: agreementStage("active", "Active", "ok"),
@@ -88,6 +106,7 @@ export function normalizeContracts(raw) {
   var agreementRows = readRows(source.agreements);
   var agreements = (agreementRows || []).map(function (row) { return normalizeServiceAgreement(row, source.client); }).filter(Boolean);
   var orderRows = readRows(source.quoteOrders);
+  var request = quoteRequestOf(source.quoteRequest);
   return {
     accountId: positiveInteger(source.accountId),
     scopeMode: scopeModeOf(source.scopeMode),
@@ -95,7 +114,7 @@ export function normalizeContracts(raw) {
     agreements: agreements,
     orders: quotes.orders,
     withheldBackendIds: quotes.withheldBackendIds,
-    preparing: quotes.preparing || agreements.some(function (agreement) { return agreement.stage === "preparing"; }),
+    preparing: quotes.preparing || agreements.some(function (agreement) { return agreement.stage === "preparing"; }) || requestPreparing(request, quotes.orders),
     sources: {
       agreements: agreementRows ? "ready" : failedRead(reads.agreements),
       orders: orderRows ? "ready" : failedRead(reads.orders),
@@ -170,8 +189,39 @@ export function normalizeServiceAgreement(document, client) {
     term: datePeriod(attributeText(document, "TERM_START_DATE"), attributeText(document, "TERM_END_DATE")),
     parties: agreementParties(document, client),
     terms: termsBlocks(attributeString(document, "CONTRACT_TERMS")),
-    allowedActions: stateCode === "SENT_TO_CLIENT" ? ["approve"] : [],
+    detailsErrors: stateCode === "AWAITING_CLIENT_DETAILS" ? codeList(attributeString(document, "CLIENT_DETAILS_ERRORS")) : [],
+    allowedActions: (own(AGREEMENT_ACTIONS, stateCode) || []).slice(),
   };
+}
+
+export function quoteRequestOf(value) {
+  var report = value;
+  if (typeof report === "string") {
+    try {
+      report = JSON.parse(report);
+    } catch (_) {
+      return null;
+    }
+  }
+  if (!report || typeof report !== "object") return null;
+  var form = positiveInteger(report.form);
+  var outcome = text(report.outcome);
+  if (!form || QUOTE_REQUEST_OUTCOMES.indexOf(outcome) === -1) return null;
+  return { form: form, outcome: outcome, orderIds: idList(report.orderIds), propertyIds: idList(report.propertyIds) };
+}
+
+function requestPreparing(request, orders) {
+  if (!request) return false;
+  if (request.outcome === "PROCESSING") return true;
+  if (request.outcome !== "ACCEPTED") return false;
+  var shown = new Set(orders.map(function (order) { return order.backendId; }));
+  return request.orderIds.some(function (id) { return !shown.has(id); });
+}
+
+function codeList(value) {
+  return value.split(",").map(function (part) { return part.trim().toUpperCase(); }).filter(function (code, index, all) {
+    return /^[A-Z][A-Z0-9_]*$/.test(code) && all.indexOf(code) === index;
+  });
 }
 
 export function contractsPackage(source, properties) {

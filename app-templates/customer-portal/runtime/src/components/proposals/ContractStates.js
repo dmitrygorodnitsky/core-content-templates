@@ -9,7 +9,9 @@ var READBACK_COPY = {
   view: "We let the provider know you opened this quote, but its current status couldn’t be loaded",
   approve: "Your approval was sent, but the quote’s current status couldn’t be loaded",
   decline: "Your decline was sent, but the quote’s current status couldn’t be loaded",
+  changes: "Your change request was sent, but the quote’s current status couldn’t be loaded",
   agreement: "Your approval was sent, but the agreement’s current status couldn’t be loaded",
+  details: "Your details were sent, but the agreement’s current status couldn’t be loaded",
 };
 
 var OUTCOME_COPY = {
