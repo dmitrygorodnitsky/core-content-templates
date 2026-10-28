@@ -1,0 +1,281 @@
+{
+  "id": "care-error-beauty-1180",
+  "surface": "care",
+  "vertical": "Beauty",
+  "width": 1180,
+  "height": 900,
+  "mode": "light",
+  "state": "error",
+  "referenceState": "error",
+  "variant": "default",
+  "comparisonMode": "strict-full",
+  "reference": {
+    "url": "/design-inbox/source.html",
+    "sha256": "f62bd9ca91396a5a2ded5408aef856c0fcf6ccae7838609676cd257bd5f006ec",
+    "failures": [],
+    "metrics": {
+      "shell": {
+        "x": 0,
+        "y": 0,
+        "width": 1180,
+        "height": 900,
+        "fontFamily": "Manrope, system-ui, -apple-system, sans-serif",
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "lineHeight": "normal",
+        "color": "rgb(29, 29, 31)",
+        "background": "rgb(238, 241, 246)",
+        "border": "0px none rgb(29, 29, 31)",
+        "borderRadius": "0px",
+        "display": "block",
+        "gridTemplateColumns": "none"
+      },
+      "topNav": {
+        "x": 30,
+        "y": 16,
+        "width": 1120,
+        "height": 54,
+        "fontFamily": "Manrope, system-ui, -apple-system, sans-serif",
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "lineHeight": "normal",
+        "color": "rgb(29, 29, 31)",
+        "background": "rgba(255, 255, 255, 0.55)",
+        "border": "1px solid rgba(255, 255, 255, 0.7)",
+        "borderRadius": "999px",
+        "display": "flex",
+        "gridTemplateColumns": "none"
+      },
+      "page": {
+        "x": 30,
+        "y": 78,
+        "width": 1120,
+        "height": 431.03,
+        "fontFamily": "Manrope, system-ui, -apple-system, sans-serif",
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "lineHeight": "normal",
+        "color": "rgb(29, 29, 31)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "0px none rgb(29, 29, 31)",
+        "borderRadius": "0px",
+        "display": "block",
+        "gridTemplateColumns": "none"
+      },
+      "title": null,
+      "subtitle": null,
+      "grid": null,
+      "firstCard": null,
+      "primaryAction": {
+        "x": 544.86,
+        "y": 361.03,
+        "width": 90.27,
+        "height": 34,
+        "fontFamily": "Manrope, system-ui, -apple-system, sans-serif",
+        "fontSize": "13px",
+        "fontWeight": "600",
+        "lineHeight": "normal",
+        "color": "rgb(255, 255, 255)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "0px none rgb(255, 255, 255)",
+        "borderRadius": "999px",
+        "display": "flex",
+        "gridTemplateColumns": "none"
+      },
+      "mobileNav": null
+    },
+    "readiness": {
+      "fontsStatus": "loaded",
+      "fontCount": 1,
+      "framesObserved": 2,
+      "twoFrameLayoutStable": true,
+      "prepaintSegments": 1,
+      "prepaintPositions": [
+        0
+      ],
+      "prepaintReturnedToOrigin": true
+    },
+    "captureViewport": {
+      "width": 1180,
+      "height": 900
+    },
+    "captureStability": {
+      "method": "dual-browser-phase-normalized-ready-contexts",
+      "warmupSha256": [
+        "f62bd9ca91396a5a2ded5408aef856c0fcf6ccae7838609676cd257bd5f006ec",
+        "f62bd9ca91396a5a2ded5408aef856c0fcf6ccae7838609676cd257bd5f006ec"
+      ],
+      "firstSha256": "f62bd9ca91396a5a2ded5408aef856c0fcf6ccae7838609676cd257bd5f006ec",
+      "secondSha256": "f62bd9ca91396a5a2ded5408aef856c0fcf6ccae7838609676cd257bd5f006ec",
+      "twoCapturePixelsStable": true
+    }
+  },
+  "implementation": {
+    "url": "/runtime/source.html#/care",
+    "sha256": "f62bd9ca91396a5a2ded5408aef856c0fcf6ccae7838609676cd257bd5f006ec",
+    "failures": [],
+    "metrics": {
+      "shell": {
+        "x": 0,
+        "y": 0,
+        "width": 1180,
+        "height": 900,
+        "fontFamily": "Manrope, system-ui, -apple-system, sans-serif",
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "lineHeight": "normal",
+        "color": "rgb(29, 29, 31)",
+        "background": "rgb(238, 241, 246)",
+        "border": "0px none rgb(29, 29, 31)",
+        "borderRadius": "0px",
+        "display": "block",
+        "gridTemplateColumns": "none"
+      },
+      "topNav": {
+        "x": 30,
+        "y": 16,
+        "width": 1120,
+        "height": 54,
+        "fontFamily": "Manrope, system-ui, -apple-system, sans-serif",
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "lineHeight": "normal",
+        "color": "rgb(29, 29, 31)",
+        "background": "rgba(255, 255, 255, 0.55)",
+        "border": "1px solid rgba(255, 255, 255, 0.7)",
+        "borderRadius": "999px",
+        "display": "flex",
+        "gridTemplateColumns": "none"
+      },
+      "page": {
+        "x": 30,
+        "y": 78,
+        "width": 1120,
+        "height": 431.03,
+        "fontFamily": "Manrope, system-ui, -apple-system, sans-serif",
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "lineHeight": "normal",
+        "color": "rgb(29, 29, 31)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "0px none rgb(29, 29, 31)",
+        "borderRadius": "0px",
+        "display": "block",
+        "gridTemplateColumns": "none"
+      },
+      "title": null,
+      "subtitle": null,
+      "grid": null,
+      "firstCard": null,
+      "primaryAction": {
+        "x": 544.86,
+        "y": 361.03,
+        "width": 90.27,
+        "height": 34,
+        "fontFamily": "Manrope, system-ui, -apple-system, sans-serif",
+        "fontSize": "13px",
+        "fontWeight": "600",
+        "lineHeight": "normal",
+        "color": "rgb(255, 255, 255)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "0px none rgb(255, 255, 255)",
+        "borderRadius": "999px",
+        "display": "flex",
+        "gridTemplateColumns": "none"
+      },
+      "mobileNav": null
+    },
+    "readiness": {
+      "fontsStatus": "loaded",
+      "fontCount": 1,
+      "framesObserved": 2,
+      "twoFrameLayoutStable": true,
+      "prepaintSegments": 1,
+      "prepaintPositions": [
+        0
+      ],
+      "prepaintReturnedToOrigin": true
+    },
+    "captureViewport": {
+      "width": 1180,
+      "height": 900
+    },
+    "captureStability": {
+      "method": "dual-browser-phase-normalized-ready-contexts",
+      "warmupSha256": [
+        "f62bd9ca91396a5a2ded5408aef856c0fcf6ccae7838609676cd257bd5f006ec",
+        "f62bd9ca91396a5a2ded5408aef856c0fcf6ccae7838609676cd257bd5f006ec"
+      ],
+      "firstSha256": "f62bd9ca91396a5a2ded5408aef856c0fcf6ccae7838609676cd257bd5f006ec",
+      "secondSha256": "f62bd9ca91396a5a2ded5408aef856c0fcf6ccae7838609676cd257bd5f006ec",
+      "twoCapturePixelsStable": true
+    }
+  },
+  "raw": {
+    "changed": 0,
+    "changedPct": 0,
+    "rms": 0
+  },
+  "accepted": {
+    "changed": 0,
+    "changedPct": 0,
+    "rms": 0
+  },
+  "effectBounds": [],
+  "unavailableInventory": {
+    "applies": false,
+    "expected": [],
+    "actual": [],
+    "expectedCount": 0,
+    "actualCount": 0,
+    "truthfulCount": 0,
+    "exactMatch": true,
+    "countMatch": true,
+    "allTruthful": true,
+    "expectedMode": "strict-full",
+    "modeMatch": true
+  },
+  "changedComponents": [],
+  "unassociatedComponents": [],
+  "assertions": {
+    "activityControlNonDispatching": true
+  },
+  "dimensions": {
+    "width": 1180,
+    "height": 900,
+    "referenceHeight": 900,
+    "implementationHeight": 900
+  },
+  "metricsEqual": true,
+  "metricDelta": {},
+  "metricDeltaDisposition": {
+    "applies": false,
+    "fields": [],
+    "exactUnavailableControlBounds": true
+  },
+  "persistedImages": {
+    "reference": {
+      "file": "reference.webp",
+      "sha256": "856bdd86320bd17135c78fdc606a1955002d99a9c36bec4b103bf68bec10e15a",
+      "decodedPixelSha256": "9e630e7d55b6dba14f09ea8d4c67d474c7e041cea54fcf5ca7c6fa91875e07a4",
+      "width": 1180,
+      "height": 900
+    },
+    "implementation": {
+      "file": "implementation.webp",
+      "sha256": "856bdd86320bd17135c78fdc606a1955002d99a9c36bec4b103bf68bec10e15a",
+      "decodedPixelSha256": "9e630e7d55b6dba14f09ea8d4c67d474c7e041cea54fcf5ca7c6fa91875e07a4",
+      "width": 1180,
+      "height": 900
+    },
+    "diff": {
+      "file": "diff.webp",
+      "sha256": "4ef62e1ddcd0337676b9ce1ae32695b5c213ca98b34972e8c9693f201118cc41",
+      "decodedPixelSha256": "5ef87b525e95999e0e45cc1742b81b598b073aa71ee97e680915dddef56ece9f",
+      "width": 1180,
+      "height": 900
+    }
+  },
+  "persistedImagesVerified": true,
+  "passed": true
+}

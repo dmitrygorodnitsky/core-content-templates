@@ -1,0 +1,134 @@
+{
+ "optimistic": 3,
+ "code": "TYPE_AWARE",
+ "nls": {
+  "ar": {
+   "DESCRIPTION": "<p></p>"
+  },
+  "en": {
+   "NAME": "Type Aware",
+   "DESCRIPTION": "<p>Abstract parent account type that provides the inherited <code>ACCOUNT_TYPE</code> attribute used to classify an account as personal or corporate. It is intended for reuse by business account types and prevents duplication of the classification attribute across multiple account definitions.</p>"
+  },
+  "he": {
+   "DESCRIPTION": "<p></p>"
+  }
+ },
+ "organization": {
+  "optimistic": 1,
+  "id": 1,
+  "code": "SYSTEM"
+ },
+ "attributeOrder": [
+  {
+   "default": [
+    {
+     "attributeCode": "ACCOUNT_TYPE",
+     "visible": true
+    },
+    {
+     "attributeCode": "PARTY_TYPE",
+     "visible": true
+    },
+    {
+     "attributeCode": "LEGAL_ENTITY_TYPE",
+     "visible": true
+    }
+   ]
+  }
+ ],
+ "attributes": [
+  {
+   "code": "LEGAL_ENTITY_TYPE",
+   "required": true,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "en": {
+     "NAME": "Legal Entity Type"
+    }
+   },
+   "options": [
+    {
+     "value": "INDIVIDUAL",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Individual",
+       "DESCRIPTION": "<p>A&nbsp;natural&nbsp;person&nbsp;acting&nbsp;in&nbsp;a&nbsp;personal&nbsp;capacity&nbsp;rather&nbsp;than&nbsp;as&nbsp;a&nbsp;business&nbsp;or&nbsp;organization.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     }
+    },
+    {
+     "value": "UNINCORPORATED_BUSINESS",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Unincorporated Business",
+       "DESCRIPTION": "<p>A&nbsp;business&nbsp;operating&nbsp;without&nbsp;a&nbsp;separate&nbsp;legal&nbsp;corporate&nbsp;entity,&nbsp;such&nbsp;as&nbsp;a&nbsp;sole&nbsp;proprietorship&nbsp;or&nbsp;partnership.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     }
+    },
+    {
+     "value": "CORPORATE",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Corporation",
+       "DESCRIPTION": "<p>A&nbsp;legally&nbsp;incorporated&nbsp;business&nbsp;or&nbsp;other&nbsp;registered&nbsp;corporate&nbsp;entity.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     }
+    },
+    {
+     "value": "ASSOCIATION",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Association",
+       "DESCRIPTION": "<p>A&nbsp;member-based&nbsp;or&nbsp;governing&nbsp;organization&nbsp;representing&nbsp;a&nbsp;community,&nbsp;shared&nbsp;property,&nbsp;or&nbsp;common&nbsp;interests,&nbsp;such&nbsp;as&nbsp;a&nbsp;Strata&nbsp;Corporation,&nbsp;HOA,&nbsp;Condominium&nbsp;Association,&nbsp;or&nbsp;Cooperative.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     }
+    },
+    {
+     "value": "GOVERNMENT",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Government",
+       "DESCRIPTION": "<p>A&nbsp;government&nbsp;authority,&nbsp;municipality,&nbsp;public&nbsp;agency,&nbsp;or&nbsp;other&nbsp;public-sector&nbsp;organization.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     }
+    }
+   ]
+  }
+ ],
+ "id": 35,
+ "isAbstract": false,
+ "attributeGroups": []
+}

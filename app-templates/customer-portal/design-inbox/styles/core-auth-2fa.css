@@ -1,0 +1,162 @@
+/* core-auth-2fa.css — Wave 19: core-auth CMS two-factor page (core-auth-2fa.html)
+   9th stylesheet. PAGE-SPECIFIC ONLY.
+
+   NOTHING is copied here. core-auth-2fa.html links, in the order source.html
+   uses: tokens.css → base.css → shell.css → components.css → routes.css →
+   core-auth-login.css → this file.
+
+   core-auth-login.css is the SHARED standalone-auth layer and is linked as-is:
+   the full-height --app-bg page, .auth-inner centering, .auth-grid columns and
+   ordering, .auth-head / .auth-title / .auth-sub / .auth-note, the assertive
+   .auth-msg--error region, the page-wide focus convention and the
+   container-query breakpoints (<=900 tablet, <=560 mobile) all come from it, so
+   login and 2FA cannot drift. Tokens, the base reset, .brand-logo, .btn,
+   .field* and .eyebrow stay owned by their existing files.
+
+   This file adds only what 2FA introduces: the enrollment panel, the QR frame,
+   the setup-key block, the already-enrolled notice and the code field. No
+   animation and no transition is declared anywhere in it, so reduced-motion
+   behavior is unchanged. Dark mode is the accepted declarative contract — no
+   second palette, no script.
+   ============================================================ */
+
+/* ============================================================
+   Enrollment panel — display is core-auth's ({{SETUP_DISPLAY}}), so the
+   element itself carries no layout mode. The inner wrapper does the stacking.
+   ============================================================ */
+.tfa-setup {
+  border-radius: 18px;
+  padding: 15px 15px 16px;
+  background: rgba(var(--hair), .028);
+  border: 1px solid rgba(var(--hair), .07);
+}
+
+.tfa-setup__inner { display: flex; flex-direction: column; align-items: center; gap: 14px; }
+
+.tfa-setup__text {
+  margin: 0;
+  align-self: stretch;
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--ink-2);
+  text-wrap: pretty;
+}
+
+/* ============================================================
+   QR frame — the tile stays light in every mode: a scanner needs the quiet
+   zone and full module contrast. This is the only element on the page that
+   does not follow --surface, and it is intentional.
+   image-rendering keeps the modules of a small data-URL bitmap square when the
+   box is larger than the source. overflow:hidden keeps a long alt string
+   inside the card if the image ever fails to decode.
+   ============================================================ */
+.tfa-qr {
+  width: 176px;
+  height: 176px;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  padding: 10px;
+  box-sizing: border-box;
+  border-radius: 16px;
+  background: #fff;
+  border: 1px solid rgba(0, 0, 0, .10);
+  box-shadow: 0 2px 10px rgba(13, 38, 76, .10);
+}
+
+.tfa-qr__img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  image-rendering: pixelated;
+  /* only ever seen as broken-image alt text */
+  font-size: 11px;
+  line-height: 1.4;
+  color: #56607a;
+}
+
+/* ============================================================
+   Setup key — the manual enrollment path, so it is never smaller or quieter
+   than the QR. Text only: it wraps inside the card (overflow-wrap: anywhere),
+   is selectable with the keyboard, and is read in document order straight
+   after its label. No reveal, format, group or copy control — each of those
+   would mean script handling a protected value.
+   ============================================================ */
+.tfa-secret { align-self: stretch; display: flex; flex-direction: column; gap: 6px; }
+
+.tfa-secret__label { font-size: 12px; font-weight: 700; letter-spacing: .02em; color: var(--ink-2); }
+
+.tfa-secret__code {
+  display: block;
+  padding: 11px 13px;
+  border-radius: 12px;
+  background: rgba(var(--glass), .72);
+  border: 1px solid var(--glass-border);
+  font-family: var(--font-mono);
+  font-size: 14px;
+  line-height: 1.55;
+  letter-spacing: .08em;
+  color: var(--ink);
+  text-align: center;
+  overflow-wrap: anywhere;
+}
+
+.tfa-secret__hint { font-size: 12px; line-height: 1.5; color: var(--ink-3); text-wrap: pretty; }
+
+/* ============================================================
+   Already-enrolled notice — the quiet counterpart of the enrollment panel.
+   A neutral hairline block, not a warning: it must not read like the assertive
+   region below it.
+   ============================================================ */
+.tfa-notice {
+  margin: 0;
+  padding: 12px 14px;
+  border-radius: 16px;
+  background: rgba(var(--glass), .55);
+  border: 1px solid rgba(var(--hair), .10);
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: var(--ink-2);
+  text-wrap: pretty;
+}
+
+/* ============================================================
+   Code field — the accepted .field primitive, spaced for a short numeric
+   string. text-indent compensates for the trailing letter-space so the value
+   stays optically centered.
+   ============================================================ */
+.tfa-code {
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: .22em;
+  text-indent: .22em;
+  text-align: center;
+  padding: 13px;
+}
+
+.tfa-code__hint { font-size: 12px; line-height: 1.5; color: var(--ink-3); text-wrap: pretty; }
+
+/* The assertive region sits inside the form's flex column, which already
+   supplies the gap; the shared 16px bottom margin would double it. */
+.auth-form .auth-msg { margin-bottom: 0; }
+
+.auth-form .auth-msg__title { font-weight: 700; font-size: 13.5px; line-height: 1.5; text-wrap: pretty; }
+
+/* ============================================================
+   Responsive — container-driven, the thresholds core-auth-login.css already
+   uses. Only the enrollment pieces need adjusting; the page, card and pitch
+   are handled by the shared layer.
+   ============================================================ */
+@container authpage (max-width: 560px) {
+  .tfa-setup { padding: 13px 13px 14px; border-radius: 16px; }
+  .tfa-setup__inner { gap: 12px; }
+  .tfa-setup__text { font-size: 13px; }
+  .tfa-qr { width: 152px; height: 152px; padding: 8px; border-radius: 14px; }
+  .tfa-secret__code { font-size: 13.5px; padding: 10px 12px; }
+  .tfa-notice { padding: 11px 13px; font-size: 13px; }
+  /* 16px minimum prevents the iOS focus zoom; the taller box keeps the hit
+     target >=44px */
+  .auth-form .tfa-code { font-size: 17px; padding: 14px 13px; }
+}

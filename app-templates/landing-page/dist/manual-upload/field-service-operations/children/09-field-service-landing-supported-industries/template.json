@@ -1,0 +1,1514 @@
+{
+  "code": "FIELD_SERVICE_LANDING_SUPPORTED_INDUSTRIES",
+  "nls": {
+    "en": {
+      "NAME": "Field Service Landing | Supported Industries"
+    }
+  },
+  "templateLanguage": "JTE",
+  "parent": {
+    "code": "FIELD_SERVICE_LANDING"
+  },
+  "children": [],
+  "head": "",
+  "html": "<section class=\"composition-section composition-section--verticals-glyph-grid-20-slots\" data-composition-block=\"verticals.glyph-grid-20-slots\">\n<!-- lab-ui block · verticals.glyph-grid-20-slots\n     Signature industry catalog. Photo-card pattern adapted from the\n     Lorem ipsum hub: uniform photo-card catalog with editable status\n     labels and CTAs across 13 CMS-addressable slots.\n-->\n<section class=\"verticals\" data-block=\"verticals.glyph-grid-20-slots\" aria-labelledby=\"verticals-heading\">\n  <div class=\"container\">\n    <header class=\"verticals-head\">\n      <p class=\"eyebrow\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_EYEBROW@LOCALIZED_STRING_SS}</p>\n      <h2 id=\"verticals-heading\" class=\"verticals-title\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_TITLE@LOCALIZED_STRING_SS}</h2>\n      <p class=\"verticals-lede\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_LEDE@LOCALIZED_STRING_SS}</p>\n      <p class=\"verticals-body\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_BODY@LOCALIZED_STRING_SS}</p>\n    </header>\n\n    <div class=\"verticals-grid\" role=\"list\">\n      <article class=\"vertical-card\" role=\"listitem\">\n        <span class=\"vertical-photo\"><img class=\"vertical-photo-img\" src=\"/core/image/${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_01_IMAGE_URL@IMAGE}/get/${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_01_IMAGE_NAME@STRING}\" alt=\"${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_01_IMAGE_ALT@LOCALIZED_STRING_SS}\" loading=\"lazy\" decoding=\"async\" width=\"1280\" height=\"800\"><span class=\"vertical-photo-meta\"><span class=\"dim\">640 × 400</span><span class=\"hint\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_01_PHOTO@LOCALIZED_STRING_SS}</span></span></span>\n        <div class=\"vertical-body\"><h3 class=\"vertical-title\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_01_TITLE@LOCALIZED_STRING_SS}</h3><p class=\"vertical-desc\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_01_DESC@LOCALIZED_STRING_SS}</p><span class=\"vertical-foot\"><span class=\"vertical-status badge-soon\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_01_STATUS_LABEL@LOCALIZED_STRING_SS}</span><a class=\"vertical-waitlist-btn\" href=\"${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_01_HREF@STRING}\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_01_CTA_LABEL@LOCALIZED_STRING_SS} <svg width=\"10\" height=\"10\" viewBox=\"0 0 12 12\" fill=\"none\"><path d=\"M3 9L9 3M9 3H4M9 3v5\" stroke=\"currentColor\" stroke-width=\"1.7\" stroke-linecap=\"round\"/></svg></a></span></div>\n      </article>\n\n      <article class=\"vertical-card\" role=\"listitem\">\n        <span class=\"vertical-photo\"><img class=\"vertical-photo-img\" src=\"/core/image/${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_02_IMAGE_URL@IMAGE}/get/${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_02_IMAGE_NAME@STRING}\" alt=\"${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_02_IMAGE_ALT@LOCALIZED_STRING_SS}\" loading=\"lazy\" decoding=\"async\" width=\"1280\" height=\"800\"><span class=\"vertical-photo-meta\"><span class=\"dim\">640 × 400</span><span class=\"hint\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_02_PHOTO@LOCALIZED_STRING_SS}</span></span></span>\n        <div class=\"vertical-body\"><h3 class=\"vertical-title\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_02_TITLE@LOCALIZED_STRING_SS}</h3><p class=\"vertical-desc\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_02_DESC@LOCALIZED_STRING_SS}</p><span class=\"vertical-foot\"><span class=\"vertical-status badge-soon\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_02_STATUS_LABEL@LOCALIZED_STRING_SS}</span><a class=\"vertical-waitlist-btn\" href=\"${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_02_HREF@STRING}\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_02_CTA_LABEL@LOCALIZED_STRING_SS} <svg width=\"10\" height=\"10\" viewBox=\"0 0 12 12\" fill=\"none\"><path d=\"M3 9L9 3M9 3H4M9 3v5\" stroke=\"currentColor\" stroke-width=\"1.7\" stroke-linecap=\"round\"/></svg></a></span></div>\n      </article>\n\n      <article class=\"vertical-card\" role=\"listitem\">\n        <span class=\"vertical-photo\"><img class=\"vertical-photo-img\" src=\"/core/image/${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_03_IMAGE_URL@IMAGE}/get/${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_03_IMAGE_NAME@STRING}\" alt=\"${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_03_IMAGE_ALT@LOCALIZED_STRING_SS}\" loading=\"lazy\" decoding=\"async\" width=\"1280\" height=\"800\"><span class=\"vertical-photo-meta\"><span class=\"dim\">640 × 400</span><span class=\"hint\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_03_PHOTO@LOCALIZED_STRING_SS}</span></span></span>\n        <div class=\"vertical-body\"><h3 class=\"vertical-title\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_03_TITLE@LOCALIZED_STRING_SS}</h3><p class=\"vertical-desc\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_03_DESC@LOCALIZED_STRING_SS}</p><span class=\"vertical-foot\"><span class=\"vertical-status badge-soon\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_03_STATUS_LABEL@LOCALIZED_STRING_SS}</span><a class=\"vertical-waitlist-btn\" href=\"${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_03_HREF@STRING}\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_03_CTA_LABEL@LOCALIZED_STRING_SS} <svg width=\"10\" height=\"10\" viewBox=\"0 0 12 12\" fill=\"none\"><path d=\"M3 9L9 3M9 3H4M9 3v5\" stroke=\"currentColor\" stroke-width=\"1.7\" stroke-linecap=\"round\"/></svg></a></span></div>\n      </article>\n\n      <article class=\"vertical-card\" role=\"listitem\">\n        <span class=\"vertical-photo\"><img class=\"vertical-photo-img\" src=\"/core/image/${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_04_IMAGE_URL@IMAGE}/get/${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_04_IMAGE_NAME@STRING}\" alt=\"${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_04_IMAGE_ALT@LOCALIZED_STRING_SS}\" loading=\"lazy\" decoding=\"async\" width=\"1280\" height=\"800\"><span class=\"vertical-photo-meta\"><span class=\"dim\">640 × 400</span><span class=\"hint\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_04_PHOTO@LOCALIZED_STRING_SS}</span></span></span>\n        <div class=\"vertical-body\"><h3 class=\"vertical-title\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_04_TITLE@LOCALIZED_STRING_SS}</h3><p class=\"vertical-desc\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_04_DESC@LOCALIZED_STRING_SS}</p><span class=\"vertical-foot\"><span class=\"vertical-status badge-soon\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_04_STATUS_LABEL@LOCALIZED_STRING_SS}</span><a class=\"vertical-waitlist-btn\" href=\"${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_04_HREF@STRING}\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_04_CTA_LABEL@LOCALIZED_STRING_SS} <svg width=\"10\" height=\"10\" viewBox=\"0 0 12 12\" fill=\"none\"><path d=\"M3 9L9 3M9 3H4M9 3v5\" stroke=\"currentColor\" stroke-width=\"1.7\" stroke-linecap=\"round\"/></svg></a></span></div>\n      </article>\n\n      <article class=\"vertical-card\" role=\"listitem\">\n        <span class=\"vertical-photo\"><img class=\"vertical-photo-img\" src=\"/core/image/${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_05_IMAGE_URL@IMAGE}/get/${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_05_IMAGE_NAME@STRING}\" alt=\"${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_05_IMAGE_ALT@LOCALIZED_STRING_SS}\" loading=\"lazy\" decoding=\"async\" width=\"1280\" height=\"800\"><span class=\"vertical-photo-meta\"><span class=\"dim\">640 × 400</span><span class=\"hint\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_05_PHOTO@LOCALIZED_STRING_SS}</span></span></span>\n        <div class=\"vertical-body\"><h3 class=\"vertical-title\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_05_TITLE@LOCALIZED_STRING_SS}</h3><p class=\"vertical-desc\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_05_DESC@LOCALIZED_STRING_SS}</p><span class=\"vertical-foot\"><span class=\"vertical-status badge-soon\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_05_STATUS_LABEL@LOCALIZED_STRING_SS}</span><a class=\"vertical-waitlist-btn\" href=\"${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_05_HREF@STRING}\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_05_CTA_LABEL@LOCALIZED_STRING_SS} <svg width=\"10\" height=\"10\" viewBox=\"0 0 12 12\" fill=\"none\"><path d=\"M3 9L9 3M9 3H4M9 3v5\" stroke=\"currentColor\" stroke-width=\"1.7\" stroke-linecap=\"round\"/></svg></a></span></div>\n      </article>\n\n      <article class=\"vertical-card\" role=\"listitem\">\n        <span class=\"vertical-photo\"><img class=\"vertical-photo-img\" src=\"/core/image/${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_06_IMAGE_URL@IMAGE}/get/${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_06_IMAGE_NAME@STRING}\" alt=\"${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_06_IMAGE_ALT@LOCALIZED_STRING_SS}\" loading=\"lazy\" decoding=\"async\" width=\"1280\" height=\"800\"><span class=\"vertical-photo-meta\"><span class=\"dim\">640 × 400</span><span class=\"hint\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_06_PHOTO@LOCALIZED_STRING_SS}</span></span></span>\n        <div class=\"vertical-body\"><h3 class=\"vertical-title\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_06_TITLE@LOCALIZED_STRING_SS}</h3><p class=\"vertical-desc\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_06_DESC@LOCALIZED_STRING_SS}</p><span class=\"vertical-foot\"><span class=\"vertical-status badge-soon\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_06_STATUS_LABEL@LOCALIZED_STRING_SS}</span><a class=\"vertical-waitlist-btn\" href=\"${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_06_HREF@STRING}\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_06_CTA_LABEL@LOCALIZED_STRING_SS} <svg width=\"10\" height=\"10\" viewBox=\"0 0 12 12\" fill=\"none\"><path d=\"M3 9L9 3M9 3H4M9 3v5\" stroke=\"currentColor\" stroke-width=\"1.7\" stroke-linecap=\"round\"/></svg></a></span></div>\n      </article>\n\n      <article class=\"vertical-card\" role=\"listitem\">\n        <span class=\"vertical-photo\"><img class=\"vertical-photo-img\" src=\"/core/image/${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_07_IMAGE_URL@IMAGE}/get/${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_07_IMAGE_NAME@STRING}\" alt=\"${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_07_IMAGE_ALT@LOCALIZED_STRING_SS}\" loading=\"lazy\" decoding=\"async\" width=\"1280\" height=\"800\"><span class=\"vertical-photo-meta\"><span class=\"dim\">640 × 400</span><span class=\"hint\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_07_PHOTO@LOCALIZED_STRING_SS}</span></span></span>\n        <div class=\"vertical-body\"><h3 class=\"vertical-title\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_07_TITLE@LOCALIZED_STRING_SS}</h3><p class=\"vertical-desc\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_07_DESC@LOCALIZED_STRING_SS}</p><span class=\"vertical-foot\"><span class=\"vertical-status badge-soon\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_07_STATUS_LABEL@LOCALIZED_STRING_SS}</span><a class=\"vertical-waitlist-btn\" href=\"${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_07_HREF@STRING}\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_07_CTA_LABEL@LOCALIZED_STRING_SS} <svg width=\"10\" height=\"10\" viewBox=\"0 0 12 12\" fill=\"none\"><path d=\"M3 9L9 3M9 3H4M9 3v5\" stroke=\"currentColor\" stroke-width=\"1.7\" stroke-linecap=\"round\"/></svg></a></span></div>\n      </article>\n\n      <article class=\"vertical-card\" role=\"listitem\">\n        <span class=\"vertical-photo\"><img class=\"vertical-photo-img\" src=\"/core/image/${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_08_IMAGE_URL@IMAGE}/get/${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_08_IMAGE_NAME@STRING}\" alt=\"${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_08_IMAGE_ALT@LOCALIZED_STRING_SS}\" loading=\"lazy\" decoding=\"async\" width=\"1280\" height=\"800\"><span class=\"vertical-photo-meta\"><span class=\"dim\">640 × 400</span><span class=\"hint\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_08_PHOTO@LOCALIZED_STRING_SS}</span></span></span>\n        <div class=\"vertical-body\"><h3 class=\"vertical-title\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_08_TITLE@LOCALIZED_STRING_SS}</h3><p class=\"vertical-desc\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_08_DESC@LOCALIZED_STRING_SS}</p><span class=\"vertical-foot\"><span class=\"vertical-status badge-soon\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_08_STATUS_LABEL@LOCALIZED_STRING_SS}</span><a class=\"vertical-waitlist-btn\" href=\"${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_08_HREF@STRING}\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_08_CTA_LABEL@LOCALIZED_STRING_SS} <svg width=\"10\" height=\"10\" viewBox=\"0 0 12 12\" fill=\"none\"><path d=\"M3 9L9 3M9 3H4M9 3v5\" stroke=\"currentColor\" stroke-width=\"1.7\" stroke-linecap=\"round\"/></svg></a></span></div>\n      </article>\n\n      <article class=\"vertical-card\" role=\"listitem\">\n        <span class=\"vertical-photo\"><img class=\"vertical-photo-img\" src=\"/core/image/${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_09_IMAGE_URL@IMAGE}/get/${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_09_IMAGE_NAME@STRING}\" alt=\"${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_09_IMAGE_ALT@LOCALIZED_STRING_SS}\" loading=\"lazy\" decoding=\"async\" width=\"1280\" height=\"800\"><span class=\"vertical-photo-meta\"><span class=\"dim\">640 × 400</span><span class=\"hint\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_09_PHOTO@LOCALIZED_STRING_SS}</span></span></span>\n        <div class=\"vertical-body\"><h3 class=\"vertical-title\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_09_TITLE@LOCALIZED_STRING_SS}</h3><p class=\"vertical-desc\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_09_DESC@LOCALIZED_STRING_SS}</p><span class=\"vertical-foot\"><span class=\"vertical-status badge-soon\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_09_STATUS_LABEL@LOCALIZED_STRING_SS}</span><a class=\"vertical-waitlist-btn\" href=\"${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_09_HREF@STRING}\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_09_CTA_LABEL@LOCALIZED_STRING_SS} <svg width=\"10\" height=\"10\" viewBox=\"0 0 12 12\" fill=\"none\"><path d=\"M3 9L9 3M9 3H4M9 3v5\" stroke=\"currentColor\" stroke-width=\"1.7\" stroke-linecap=\"round\"/></svg></a></span></div>\n      </article>\n\n      <article class=\"vertical-card\" role=\"listitem\">\n        <span class=\"vertical-photo\"><img class=\"vertical-photo-img\" src=\"/core/image/${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_10_IMAGE_URL@IMAGE}/get/${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_10_IMAGE_NAME@STRING}\" alt=\"${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_10_IMAGE_ALT@LOCALIZED_STRING_SS}\" loading=\"lazy\" decoding=\"async\" width=\"1280\" height=\"800\"><span class=\"vertical-photo-meta\"><span class=\"dim\">640 × 400</span><span class=\"hint\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_10_PHOTO@LOCALIZED_STRING_SS}</span></span></span>\n        <div class=\"vertical-body\"><h3 class=\"vertical-title\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_10_TITLE@LOCALIZED_STRING_SS}</h3><p class=\"vertical-desc\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_10_DESC@LOCALIZED_STRING_SS}</p><span class=\"vertical-foot\"><span class=\"vertical-status badge-soon\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_10_STATUS_LABEL@LOCALIZED_STRING_SS}</span><a class=\"vertical-waitlist-btn\" href=\"${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_10_HREF@STRING}\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_10_CTA_LABEL@LOCALIZED_STRING_SS} <svg width=\"10\" height=\"10\" viewBox=\"0 0 12 12\" fill=\"none\"><path d=\"M3 9L9 3M9 3H4M9 3v5\" stroke=\"currentColor\" stroke-width=\"1.7\" stroke-linecap=\"round\"/></svg></a></span></div>\n      </article>\n\n      <article class=\"vertical-card\" role=\"listitem\">\n        <span class=\"vertical-photo\"><img class=\"vertical-photo-img\" src=\"/core/image/${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_11_IMAGE_URL@IMAGE}/get/${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_11_IMAGE_NAME@STRING}\" alt=\"${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_11_IMAGE_ALT@LOCALIZED_STRING_SS}\" loading=\"lazy\" decoding=\"async\" width=\"1280\" height=\"800\"><span class=\"vertical-photo-meta\"><span class=\"dim\">640 × 400</span><span class=\"hint\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_11_PHOTO@LOCALIZED_STRING_SS}</span></span></span>\n        <div class=\"vertical-body\"><h3 class=\"vertical-title\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_11_TITLE@LOCALIZED_STRING_SS}</h3><p class=\"vertical-desc\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_11_DESC@LOCALIZED_STRING_SS}</p><span class=\"vertical-foot\"><span class=\"vertical-status badge-soon\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_11_STATUS_LABEL@LOCALIZED_STRING_SS}</span><a class=\"vertical-waitlist-btn\" href=\"${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_11_HREF@STRING}\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_11_CTA_LABEL@LOCALIZED_STRING_SS} <svg width=\"10\" height=\"10\" viewBox=\"0 0 12 12\" fill=\"none\"><path d=\"M3 9L9 3M9 3H4M9 3v5\" stroke=\"currentColor\" stroke-width=\"1.7\" stroke-linecap=\"round\"/></svg></a></span></div>\n      </article>\n\n      <article class=\"vertical-card\" role=\"listitem\">\n        <span class=\"vertical-photo\"><img class=\"vertical-photo-img\" src=\"/core/image/${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_12_IMAGE_URL@IMAGE}/get/${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_12_IMAGE_NAME@STRING}\" alt=\"${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_12_IMAGE_ALT@LOCALIZED_STRING_SS}\" loading=\"lazy\" decoding=\"async\" width=\"1280\" height=\"800\"><span class=\"vertical-photo-meta\"><span class=\"dim\">640 × 400</span><span class=\"hint\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_12_PHOTO@LOCALIZED_STRING_SS}</span></span></span>\n        <div class=\"vertical-body\"><h3 class=\"vertical-title\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_12_TITLE@LOCALIZED_STRING_SS}</h3><p class=\"vertical-desc\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_12_DESC@LOCALIZED_STRING_SS}</p><span class=\"vertical-foot\"><span class=\"vertical-status badge-soon\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_12_STATUS_LABEL@LOCALIZED_STRING_SS}</span><a class=\"vertical-waitlist-btn\" href=\"${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_12_HREF@STRING}\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_12_CTA_LABEL@LOCALIZED_STRING_SS} <svg width=\"10\" height=\"10\" viewBox=\"0 0 12 12\" fill=\"none\"><path d=\"M3 9L9 3M9 3H4M9 3v5\" stroke=\"currentColor\" stroke-width=\"1.7\" stroke-linecap=\"round\"/></svg></a></span></div>\n      </article>\n\n      <article class=\"vertical-card\" role=\"listitem\">\n        <span class=\"vertical-photo\"><img class=\"vertical-photo-img\" src=\"/core/image/${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_13_IMAGE_URL@IMAGE}/get/${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_13_IMAGE_NAME@STRING}\" alt=\"${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_13_IMAGE_ALT@LOCALIZED_STRING_SS}\" loading=\"lazy\" decoding=\"async\" width=\"1280\" height=\"800\"><span class=\"vertical-photo-meta\"><span class=\"dim\">640 × 400</span><span class=\"hint\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_13_PHOTO@LOCALIZED_STRING_SS}</span></span></span>\n        <div class=\"vertical-body\"><h3 class=\"vertical-title\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_13_TITLE@LOCALIZED_STRING_SS}</h3><p class=\"vertical-desc\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_13_DESC@LOCALIZED_STRING_SS}</p><span class=\"vertical-foot\"><span class=\"vertical-status badge-soon\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_13_STATUS_LABEL@LOCALIZED_STRING_SS}</span><a class=\"vertical-waitlist-btn\" href=\"${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_13_HREF@STRING}\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_13_CTA_LABEL@LOCALIZED_STRING_SS} <svg width=\"10\" height=\"10\" viewBox=\"0 0 12 12\" fill=\"none\"><path d=\"M3 9L9 3M9 3H4M9 3v5\" stroke=\"currentColor\" stroke-width=\"1.7\" stroke-linecap=\"round\"/></svg></a></span></div>\n      </article>\n    </div>\n  </div>\n</section>\n\n</section>",
+  "css": "/* generated child CSS: blocks/10-verticals-grid/verticals.glyph-grid-20-slots/block.css */\n/* lab-ui block · verticals.glyph-grid-20-slots\n   Depends: 00-tokens/tokens.css. Light theme.\n   13-card CMS-addressable industry catalog. */\n\n.verticals {\n  background: var(--color-bg);\n  color: var(--color-text);\n  font-family: var(--font-family);\n}\n\n.verticals .container {\n  max-width: calc(var(--container-width) + var(--container-padding-x) * 2);\n  margin-inline: auto;\n  padding-inline: var(--container-padding-x);\n}\n\n.verticals-head {\n  max-width: 58rem;\n  margin-bottom: clamp(2.5rem, 4.5vw, 4rem);\n}\n.verticals-head .eyebrow {\n  font-family: var(--font-mono);\n  font-size: 0.8125rem;\n  text-transform: uppercase;\n  letter-spacing: 0.12em;\n  background: var(--cta-secondary-fill, linear-gradient(90deg, #56422D 0%, #494938 100%));\n  background-clip: text;\n  -webkit-background-clip: text;\n  color: transparent;\n  margin: 0 0 1.75rem;\n}\n.verticals-title {\n  max-width: 64rem;\n  font-weight: 600;\n  font-size: clamp(2.45rem, 4.3vw, 4.65rem);\n  line-height: 1.03;\n  letter-spacing: -0.045em;\n  color: var(--color-heading);\n  margin: 0 0 1.65rem;\n}\n.verticals-lede,\n.verticals-body {\n  font-size: clamp(1rem, 1.2vw, 1.25rem);\n  line-height: 1.5;\n  color: var(--color-text);\n  margin: 0;\n  max-width: 62rem;\n}\n.verticals-body {\n  margin-top: 1.35rem;\n  max-width: 54rem;\n}\n\n.verticals-grid {\n  display: grid;\n  grid-template-columns: repeat(4, minmax(0, 1fr));\n  gap: 0.75rem;\n}\n\n.vertical-card {\n  position: relative;\n  isolation: isolate;\n  min-width: 0;\n  min-height: 420px;\n  display: flex;\n  flex-direction: column;\n  overflow: hidden;\n  transform: translateZ(0);\n  backface-visibility: hidden;\n  border-radius: var(--radius-card, 1.25rem);\n  border: 1px solid rgba(15, 17, 22, 0.08);\n  background: var(--color-white);\n  color: inherit;\n  text-decoration: none;\n  transition:\n    background var(--transition-duration, 0.25s) ease,\n    border-color var(--transition-duration, 0.25s) ease,\n    box-shadow var(--transition-duration, 0.25s) ease,\n    transform var(--transition-duration, 0.25s) ease;\n}\n.vertical-card:hover {\n  background: #f4f5f8;\n  border-color: rgba(15, 17, 22, 0.16);\n  transform: translate3d(0, -2px, 0);\n  box-shadow:\n    0 20px 48px -30px rgba(15, 17, 22, 0.28),\n    0 0 32px -4px var(--cta-accent, #6BEAF9);\n}\n.vertical-card[hidden] { display: none; }\n\n.vertical-card::before {\n  content: \"\";\n  position: absolute;\n  inset: 0;\n  z-index: 0;\n  border-radius: inherit;\n  pointer-events: none;\n  background: radial-gradient(\n    ellipse 58% 78% at 50% 100%,\n    var(--cta-accent, #6BEAF9) 0%,\n    transparent 60%\n  );\n  opacity: 0;\n  mix-blend-mode: screen;\n  transition: opacity var(--transition-duration, 0.25s) ease;\n}\n.vertical-card:hover::before {\n  opacity: 0.48;\n}\n.vertical-card > * {\n  position: relative;\n  z-index: 1;\n}\n\n.vertical-photo {\n  position: relative;\n  flex: 0 0 auto;\n  display: block;\n  width: 100%;\n  aspect-ratio: 16 / 10;\n  overflow: hidden;\n  transform: translateZ(0);\n  backface-visibility: hidden;\n  border-radius: calc(var(--radius-card, 1.25rem) - 1px) calc(var(--radius-card, 1.25rem) - 1px) 0 0;\n  border-bottom: 1px solid rgba(15, 17, 22, 0.08);\n  background-color: #eff1f4;\n  background-image:\n    radial-gradient(circle at 25% 20%, rgba(107, 234, 249, 0.06), transparent 60%),\n    repeating-linear-gradient(135deg,\n      rgba(15, 17, 22, 0.035) 0 7px,\n      rgba(15, 17, 22, 0.06) 7px 14px);\n}\n.vertical-desc[hidden],\n.vertical-foot[hidden],\n.vertical-status[hidden],\n.vertical-waitlist-btn[hidden],\n.vertical-photo-meta .hint[hidden] {\n  display: none;\n}\n.vertical-photo-img {\n  position: absolute;\n  inset: 0;\n  z-index: 2;\n  display: block;\n  width: 100%;\n  height: 100%;\n  object-fit: cover;\n}\n.vertical-photo-img:not([src]),\n.vertical-photo-img[src=\"\"],\n.vertical-photo-img[src=\"#\"],\n.vertical-photo-img[src^=\"/core/image//\"],\n.vertical-photo-img[src^=\"/core/image/null\"],\n.vertical-photo-img[src^=\"/core/image/undefined\"],\n.vertical-photo-img[src$=\"/get\"],\n.vertical-photo-img[src$=\"/get/\"],\n.vertical-photo-img[src*=\"/get//\"] {\n  opacity: 0;\n}\n.vertical-photo-img[src]:not([src=\"\"]):not([src=\"#\"]):not([src^=\"/core/image//\"]):not([src^=\"/core/image/null\"]):not([src^=\"/core/image/undefined\"]):not([src$=\"/get\"]):not([src$=\"/get/\"]):not([src*=\"/get//\"]) + .vertical-photo-meta {\n  display: none;\n}\n.vertical-photo-meta {\n  position: absolute;\n  inset: 0;\n  z-index: 1;\n  pointer-events: none;\n  padding: 0.75rem;\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  justify-content: center;\n  gap: 0.375rem;\n  text-align: center;\n  font-family: var(--font-mono);\n  letter-spacing: 0.12em;\n  text-transform: uppercase;\n}\n.vertical-photo-meta .dim {\n  color: var(--color-gray-blue);\n  font-size: 0.6875rem;\n}\n.vertical-photo-meta .hint {\n  max-width: 24ch;\n  color: var(--color-gray-second);\n  font-size: 0.6875rem;\n  line-height: 1.4;\n}\n.vertical-body {\n  position: relative;\n  z-index: 2;\n  flex: 1;\n  min-height: 0;\n  padding: 1.25rem 1.5rem 1.5rem;\n  display: flex;\n  flex-direction: column;\n  background: var(--color-white);\n}\n.vertical-title {\n  margin: 0;\n  color: var(--color-heading);\n  font-size: 1.125rem;\n  font-weight: 600;\n  line-height: 1.25;\n  letter-spacing: -0.015em;\n}\n.vertical-desc {\n  margin: 0.65rem 0 0;\n  color: var(--color-gray-blue);\n  font-size: 0.875rem;\n  line-height: 1.5;\n}\n.vertical-foot {\n  margin-top: auto;\n  padding-top: 1.35rem;\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  gap: 0.75rem;\n}\n\n.vertical-status {\n  font-family: var(--font-mono);\n  font-size: 0.625rem;\n  text-transform: uppercase;\n  letter-spacing: 0.12em;\n  color: var(--color-gray-second);\n}\n.vertical-waitlist-btn {\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n  gap: 0.4rem;\n  min-height: 2.25rem;\n  padding: 0 0.875rem;\n  border-radius: 999px;\n  border: 0;\n  background: var(--color-heading);\n  color: var(--color-bg);\n  font: inherit;\n  font-size: 0.8125rem;\n  font-weight: 500;\n  letter-spacing: -0.005em;\n  white-space: nowrap;\n  text-decoration: none;\n  cursor: pointer;\n  transition:\n    background var(--transition-duration, 0.25s) ease,\n    color var(--transition-duration, 0.25s) ease,\n    transform var(--transition-duration, 0.25s) ease,\n    box-shadow var(--transition-duration, 0.25s) ease;\n}\n.vertical-waitlist-btn:hover {\n  background: var(--cta-secondary-fill, linear-gradient(90deg, #56422D 0%, #494938 100%));\n  color: var(--cta-secondary-color, #ffffff);\n  transform: translateY(-1px);\n  box-shadow: 0 0 32px -8px var(--cta-accent, #6BEAF9);\n}\n.vertical-waitlist-btn svg {\n  flex: 0 0 auto;\n  transition: transform var(--transition-duration, 0.25s) ease;\n}\n.vertical-waitlist-btn:hover svg {\n  transform: translate(2px, -2px);\n}\n\n@media (max-width: 1180px) {\n  .verticals-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }\n}\n@media (max-width: 880px) {\n  .verticals-title { max-width: 13ch; }\n  .verticals-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }\n}\n@media (max-width: 560px) {\n  .verticals-grid { grid-template-columns: 1fr; }\n  .vertical-card { min-height: 0; }\n  .vertical-foot { align-items: flex-end; }\n}\n",
+  "javascript": "/* generated child JS: blocks/10-verticals-grid/verticals.glyph-grid-20-slots/block.js */\n// lab-ui block · verticals.glyph-grid-20-slots\n// Hides only empty cards and optional empty card controls. Idempotent.\n\n(() => {\n  const ready = (fn) => {\n    if (document.readyState === \"loading\") {\n      document.addEventListener(\"DOMContentLoaded\", fn, { once: true });\n    } else fn();\n  };\n\n  const isBlankOrPlaceholder = (value) => {\n    const text = String(value || \"\").trim();\n    return !text || /^\\{\\{[a-z0-9_]+\\}\\}$/i.test(text);\n  };\n\n  const isEmptyHref = (value) => {\n    const href = String(value || \"\").trim();\n    return isBlankOrPlaceholder(href) || href === \"#\";\n  };\n\n  const setHiddenWhenEmpty = (element) => {\n    if (!element) return true;\n    const shouldHide = isBlankOrPlaceholder(element.textContent);\n    element.hidden = shouldHide;\n    return shouldHide;\n  };\n\n  ready(() => {\n    document\n      .querySelectorAll('[data-block=\"verticals.glyph-grid-20-slots\"] .vertical-card')\n      .forEach((card) => {\n        const title = card.querySelector(\".vertical-title\")?.textContent?.trim();\n        if (isBlankOrPlaceholder(title)) {\n          card.hidden = true;\n          return;\n        }\n\n        card.hidden = false;\n        setHiddenWhenEmpty(card.querySelector(\".vertical-desc\"));\n        const statusHidden = setHiddenWhenEmpty(card.querySelector(\".vertical-status\"));\n        const photoHint = card.querySelector(\".vertical-photo-meta .hint\");\n        if (photoHint) photoHint.hidden = isBlankOrPlaceholder(photoHint.textContent);\n\n        const cta = card.querySelector(\".vertical-waitlist-btn\");\n        const ctaHidden =\n          !cta || isBlankOrPlaceholder(cta.textContent) || isEmptyHref(cta.getAttribute(\"href\"));\n        if (cta) cta.hidden = ctaHidden;\n\n        const foot = card.querySelector(\".vertical-foot\");\n        if (foot) foot.hidden = statusHidden && ctaHidden;\n      });\n  });\n})();\n",
+  "parameters": [
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_EYEBROW",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Eyebrow",
+          "DESCRIPTION": "Text value for the Eyebrow field in Verticals grid · photo-card catalog."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum ut."
+      }
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_TITLE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Title",
+          "DESCRIPTION": "Text value for the Title field in Verticals grid · photo-card catalog."
+        }
+      },
+      "value": {
+        "en": "Field Service Industries ServiceWand Supports"
+      }
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_LEDE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Lede",
+          "DESCRIPTION": "Text value for the Lede field in Verticals grid · photo-card catalog."
+        }
+      },
+      "value": {
+        "en": "Different field service industries often share the same operational foundation: scheduling, dispatching, routing, mobile work, customer management, billing, reporting, and workforce coordination."
+      }
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_BODY",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Body",
+          "DESCRIPTION": "Text value for the Body field in Verticals grid · photo-card catalog."
+        }
+      },
+      "value": {
+        "en": "ServiceWand is designed to support different operational models while allowing industry-specific workflows and processes. For companies researching field service industry software, the key question is whether the platform can adapt to different service models without becoming fragmented."
+      }
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_01_IMAGE_URL",
+      "type": "IMAGE",
+      "nls": {
+        "en": {
+          "NAME": "Slot 1 Image",
+          "DESCRIPTION": "Optional image for industry card slot 1. Leave empty to show the striped placeholder."
+        }
+      },
+      "value": "77084eeb-daa5-47ee-8dd7-fad0fbbd0806"
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_01_IMAGE_ALT",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 1 Image Alt Text",
+          "DESCRIPTION": "Alternative text for the image in industry card slot 1."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum sit amet consectetur adipiscing."
+      }
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_01_PHOTO",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 01 Photo",
+          "DESCRIPTION": "Fallback placeholder label shown when the related image is not set in Verticals grid · photo-card catalog."
+        }
+      },
+      "value": {
+        "en": " "
+      }
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_01_TITLE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 01 Title",
+          "DESCRIPTION": "Text value for the Slot 01 Title field in Verticals grid · photo-card catalog."
+        }
+      },
+      "value": {
+        "en": "Snow Removal Software"
+      }
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_01_DESC",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 01 Desc",
+          "DESCRIPTION": "Text value for the Slot 01 Desc field in Verticals grid · photo-card catalog."
+        }
+      },
+      "value": {
+        "en": "Route-based dispatch, seasonal crews, weather-triggered service, customer updates, billing, and operational visibility."
+      }
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_01_STATUS_LABEL",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 01 Status Label",
+          "DESCRIPTION": "Editable status label shown in industry card slot 1."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum ea."
+      }
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_01_HREF",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Slot 01 Href",
+          "DESCRIPTION": "URL target for the Slot 01 Href link in Verticals grid · photo-card catalog."
+        }
+      },
+      "value": "/verticals/snow-removal"
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_01_CTA_LABEL",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 01 CTA Label",
+          "DESCRIPTION": "Editable CTA label shown in industry card slot 1."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum lorem."
+      }
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_02_IMAGE_URL",
+      "type": "IMAGE",
+      "nls": {
+        "en": {
+          "NAME": "Slot 2 Image",
+          "DESCRIPTION": "Optional image for industry card slot 2. Leave empty to show the striped placeholder."
+        }
+      },
+      "value": "77084eeb-daa5-47ee-8dd7-fad0fbbd0806"
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_02_IMAGE_ALT",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 2 Image Alt Text",
+          "DESCRIPTION": "Alternative text for the image in industry card slot 2."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum labore et dolore magna."
+      }
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_02_PHOTO",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 02 Photo",
+          "DESCRIPTION": "Fallback placeholder label shown when the related image is not set in Verticals grid · photo-card catalog."
+        }
+      },
+      "value": {
+        "en": " "
+      }
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_02_TITLE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 02 Title",
+          "DESCRIPTION": "Text value for the Slot 02 Title field in Verticals grid · photo-card catalog."
+        }
+      },
+      "value": {
+        "en": "HVAC Service Platform"
+      }
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_02_DESC",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 02 Desc",
+          "DESCRIPTION": "Text value for the Slot 02 Desc field in Verticals grid · photo-card catalog."
+        }
+      },
+      "value": {
+        "en": "Technician scheduling, service appointments, recurring maintenance, customer history, invoices, and field documentation."
+      }
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_02_STATUS_LABEL",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 02 Status Label",
+          "DESCRIPTION": "Editable status label shown in industry card slot 2."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum fugiat."
+      }
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_02_HREF",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Slot 02 Href",
+          "DESCRIPTION": "URL target for the Slot 02 Href link in Verticals grid · photo-card catalog."
+        }
+      },
+      "value": "#"
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_02_CTA_LABEL",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 02 CTA Label",
+          "DESCRIPTION": "Editable waitlist CTA label shown in industry card slot 2."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum tempor."
+      }
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_03_IMAGE_URL",
+      "type": "IMAGE",
+      "nls": {
+        "en": {
+          "NAME": "Slot 3 Image",
+          "DESCRIPTION": "Optional image for industry card slot 3. Leave empty to show the striped placeholder."
+        }
+      },
+      "value": "77084eeb-daa5-47ee-8dd7-fad0fbbd0806"
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_03_IMAGE_ALT",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 3 Image Alt Text",
+          "DESCRIPTION": "Alternative text for the image in industry card slot 3."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum exercitation ullamco laboris nisi."
+      }
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_03_PHOTO",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 03 Photo",
+          "DESCRIPTION": "Fallback placeholder label shown when the related image is not set in Verticals grid · photo-card catalog."
+        }
+      },
+      "value": {
+        "en": " "
+      }
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_03_TITLE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 03 Title",
+          "DESCRIPTION": "Text value for the Slot 03 Title field in Verticals grid · photo-card catalog."
+        }
+      },
+      "value": {
+        "en": "Lawn Care Operations"
+      }
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_03_DESC",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 03 Desc",
+          "DESCRIPTION": "Text value for the Slot 03 Desc field in Verticals grid · photo-card catalog."
+        }
+      },
+      "value": {
+        "en": "Recurring routes, crew scheduling, customer communication, service notes, and mobile job tracking."
+      }
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_03_STATUS_LABEL",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 03 Status Label",
+          "DESCRIPTION": "Editable status label shown in industry card slot 3."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum sed."
+      }
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_03_HREF",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Slot 03 Href",
+          "DESCRIPTION": "URL target for the Slot 03 Href link in Verticals grid · photo-card catalog."
+        }
+      },
+      "value": "#"
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_03_CTA_LABEL",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 03 CTA Label",
+          "DESCRIPTION": "Editable waitlist CTA label shown in industry card slot 3."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum veniam."
+      }
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_04_IMAGE_URL",
+      "type": "IMAGE",
+      "nls": {
+        "en": {
+          "NAME": "Slot 4 Image",
+          "DESCRIPTION": "Optional image for industry card slot 4. Leave empty to show the striped placeholder."
+        }
+      },
+      "value": "77084eeb-daa5-47ee-8dd7-fad0fbbd0806"
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_04_IMAGE_ALT",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 4 Image Alt Text",
+          "DESCRIPTION": "Alternative text for the image in industry card slot 4."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum irure reprehenderit voluptate velit."
+      }
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_04_PHOTO",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 04 Photo",
+          "DESCRIPTION": "Fallback placeholder label shown when the related image is not set in Verticals grid · photo-card catalog."
+        }
+      },
+      "value": {
+        "en": " "
+      }
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_04_TITLE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 04 Title",
+          "DESCRIPTION": "Text value for the Slot 04 Title field in Verticals grid · photo-card catalog."
+        }
+      },
+      "value": {
+        "en": "Plumbing Service Software"
+      }
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_04_DESC",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 04 Desc",
+          "DESCRIPTION": "Text value for the Slot 04 Desc field in Verticals grid · photo-card catalog."
+        }
+      },
+      "value": {
+        "en": "Urgent requests, scheduled jobs, dispatching, estimates, work orders, invoices, and customer records."
+      }
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_04_STATUS_LABEL",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 04 Status Label",
+          "DESCRIPTION": "Editable status label shown in industry card slot 4."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum enim."
+      }
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_04_HREF",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Slot 04 Href",
+          "DESCRIPTION": "URL target for the Slot 04 Href link in Verticals grid · photo-card catalog."
+        }
+      },
+      "value": "#"
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_04_CTA_LABEL",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 04 CTA Label",
+          "DESCRIPTION": "Editable waitlist CTA label shown in industry card slot 4."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum consequat."
+      }
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_05_IMAGE_URL",
+      "type": "IMAGE",
+      "nls": {
+        "en": {
+          "NAME": "Slot 5 Image",
+          "DESCRIPTION": "Optional image for industry card slot 5. Leave empty to show the striped placeholder."
+        }
+      },
+      "value": "77084eeb-daa5-47ee-8dd7-fad0fbbd0806"
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_05_IMAGE_ALT",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 5 Image Alt Text",
+          "DESCRIPTION": "Alternative text for the image in industry card slot 5."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum dolor sit amet consectetur."
+      }
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_05_PHOTO",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 05 Photo",
+          "DESCRIPTION": "Fallback placeholder label shown when the related image is not set in Verticals grid · photo-card catalog."
+        }
+      },
+      "value": {
+        "en": " "
+      }
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_05_TITLE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 05 Title",
+          "DESCRIPTION": "Text value for the Slot 05 Title field in Verticals grid · photo-card catalog."
+        }
+      },
+      "value": {
+        "en": "Electrical Contractor Platform"
+      }
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_05_DESC",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 05 Desc",
+          "DESCRIPTION": "Text value for the Slot 05 Desc field in Verticals grid · photo-card catalog."
+        }
+      },
+      "value": {
+        "en": "Field teams, service requests, job documentation, customer communication, and billing workflows."
+      }
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_05_STATUS_LABEL",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 05 Status Label",
+          "DESCRIPTION": "Editable status label shown in industry card slot 5."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum ex."
+      }
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_05_HREF",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Slot 05 Href",
+          "DESCRIPTION": "URL target for the Slot 05 Href link in Verticals grid · photo-card catalog."
+        }
+      },
+      "value": "#"
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_05_CTA_LABEL",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 05 CTA Label",
+          "DESCRIPTION": "Editable waitlist CTA label shown in industry card slot 5."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum pariatur."
+      }
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_06_IMAGE_URL",
+      "type": "IMAGE",
+      "nls": {
+        "en": {
+          "NAME": "Slot 6 Image",
+          "DESCRIPTION": "Optional image for industry card slot 6. Leave empty to show the striped placeholder."
+        }
+      },
+      "value": "77084eeb-daa5-47ee-8dd7-fad0fbbd0806"
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_06_IMAGE_ALT",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 6 Image Alt Text",
+          "DESCRIPTION": "Alternative text for the image in industry card slot 6."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum ut labore et dolore."
+      }
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_06_PHOTO",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 06 Photo",
+          "DESCRIPTION": "Fallback placeholder label shown when the related image is not set in Verticals grid · photo-card catalog."
+        }
+      },
+      "value": {
+        "en": " "
+      }
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_06_TITLE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 06 Title",
+          "DESCRIPTION": "Text value for the Slot 06 Title field in Verticals grid · photo-card catalog."
+        }
+      },
+      "value": {
+        "en": "Property Maintenance Operations"
+      }
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_06_DESC",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 06 Desc",
+          "DESCRIPTION": "Text value for the Slot 06 Desc field in Verticals grid · photo-card catalog."
+        }
+      },
+      "value": {
+        "en": "Recurring work, inspections, repairs, crews, routes, customer requests, and completion reporting."
+      }
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_06_STATUS_LABEL",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 06 Status Label",
+          "DESCRIPTION": "Editable status label shown in industry card slot 6."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum cillum."
+      }
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_06_HREF",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Slot 06 Href",
+          "DESCRIPTION": "URL target for the Slot 06 Href link in Verticals grid · photo-card catalog."
+        }
+      },
+      "value": "#"
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_06_CTA_LABEL",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 06 CTA Label",
+          "DESCRIPTION": "Editable waitlist CTA label shown in industry card slot 6."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum eiusmod."
+      }
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_07_IMAGE_URL",
+      "type": "IMAGE",
+      "nls": {
+        "en": {
+          "NAME": "Slot 7 Image",
+          "DESCRIPTION": "Optional image for industry card slot 7. Leave empty to show the striped placeholder."
+        }
+      },
+      "value": "77084eeb-daa5-47ee-8dd7-fad0fbbd0806"
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_07_IMAGE_ALT",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 7 Image Alt Text",
+          "DESCRIPTION": "Alternative text for the image in industry card slot 7."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum nostrud exercitation ullamco laboris."
+      }
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_07_PHOTO",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 07 Photo",
+          "DESCRIPTION": "Fallback placeholder label shown when the related image is not set in Verticals grid · photo-card catalog."
+        }
+      },
+      "value": {
+        "en": " "
+      }
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_07_TITLE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 07 Title",
+          "DESCRIPTION": "Text value for the Slot 07 Title field in Verticals grid · photo-card catalog."
+        }
+      },
+      "value": {
+        "en": "Cleaning Services"
+      }
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_07_DESC",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 07 Desc",
+          "DESCRIPTION": "Text value for the Slot 07 Desc field in Verticals grid · photo-card catalog."
+        }
+      },
+      "value": {
+        "en": "Recurring schedules, mobile teams, checklists, customer communication, job tracking, and billing."
+      }
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_07_STATUS_LABEL",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 07 Status Label",
+          "DESCRIPTION": "Editable status label shown in industry card slot 7."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum elit."
+      }
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_07_HREF",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Slot 07 Href",
+          "DESCRIPTION": "URL target for the Slot 07 Href link in Verticals grid · photo-card catalog."
+        }
+      },
+      "value": "#"
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_07_CTA_LABEL",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 07 CTA Label",
+          "DESCRIPTION": "Editable waitlist CTA label shown in industry card slot 7."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum minim."
+      }
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_08_IMAGE_URL",
+      "type": "IMAGE",
+      "nls": {
+        "en": {
+          "NAME": "Slot 8 Image",
+          "DESCRIPTION": "Optional image for industry card slot 8. Leave empty to show the striped placeholder."
+        }
+      },
+      "value": "77084eeb-daa5-47ee-8dd7-fad0fbbd0806"
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_08_IMAGE_ALT",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 8 Image Alt Text",
+          "DESCRIPTION": "Alternative text for the image in industry card slot 8."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum aute irure reprehenderit voluptate."
+      }
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_08_PHOTO",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 08 Photo",
+          "DESCRIPTION": "Fallback placeholder label shown when the related image is not set in Verticals grid · photo-card catalog."
+        }
+      },
+      "value": {
+        "en": " "
+      }
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_08_TITLE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 08 Title",
+          "DESCRIPTION": "Text value for the Slot 08 Title field in Verticals grid · photo-card catalog."
+        }
+      },
+      "value": {
+        "en": "Pest Control Operations"
+      }
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_08_DESC",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 08 Desc",
+          "DESCRIPTION": "Text value for the Slot 08 Desc field in Verticals grid · photo-card catalog."
+        }
+      },
+      "value": {
+        "en": "Recurring service visits, technician routes, customer communication, inspection notes, treatment records, billing, and reporting."
+      }
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_08_STATUS_LABEL",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 08 Status Label",
+          "DESCRIPTION": "Editable status label shown in industry card slot 8."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum aliqua."
+      }
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_08_HREF",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Slot 08 Href",
+          "DESCRIPTION": "URL target for the Slot 08 Href link in Verticals grid · photo-card catalog."
+        }
+      },
+      "value": "#"
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_08_CTA_LABEL",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 08 CTA Label",
+          "DESCRIPTION": "Editable waitlist CTA label shown in industry card slot 8."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum commodo."
+      }
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_09_IMAGE_URL",
+      "type": "IMAGE",
+      "nls": {
+        "en": {
+          "NAME": "Slot 9 Image",
+          "DESCRIPTION": "Optional image for industry card slot 9. Leave empty to show the striped placeholder."
+        }
+      },
+      "value": "77084eeb-daa5-47ee-8dd7-fad0fbbd0806"
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_09_IMAGE_ALT",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 9 Image Alt Text",
+          "DESCRIPTION": "Alternative text for the image in industry card slot 9."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum ipsum dolor sit amet."
+      }
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_09_PHOTO",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 09 Photo",
+          "DESCRIPTION": "Fallback placeholder label shown when the related image is not set in Verticals grid · photo-card catalog."
+        }
+      },
+      "value": {
+        "en": " "
+      }
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_09_TITLE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 09 Title",
+          "DESCRIPTION": "Text value for the Slot 09 Title field in Verticals grid · photo-card catalog."
+        }
+      },
+      "value": {
+        "en": "Landscaping Operations"
+      }
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_09_DESC",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 09 Desc",
+          "DESCRIPTION": "Text value for the Slot 09 Desc field in Verticals grid · photo-card catalog."
+        }
+      },
+      "value": {
+        "en": "Crews, recurring routes, seasonal work, job notes, customer communication, field documentation, and route-based service delivery."
+      }
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_09_STATUS_LABEL",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 09 Status Label",
+          "DESCRIPTION": "Editable status label shown in industry card slot 9."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum aliquip."
+      }
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_09_HREF",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Slot 09 Href",
+          "DESCRIPTION": "URL target for the Slot 09 Href link in Verticals grid · photo-card catalog."
+        }
+      },
+      "value": "#"
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_09_CTA_LABEL",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 09 CTA Label",
+          "DESCRIPTION": "Editable waitlist CTA label shown in industry card slot 9."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum nulla."
+      }
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_10_IMAGE_URL",
+      "type": "IMAGE",
+      "nls": {
+        "en": {
+          "NAME": "Slot 10 Image",
+          "DESCRIPTION": "Optional image for industry card slot 10. Leave empty to show the striped placeholder."
+        }
+      },
+      "value": "77084eeb-daa5-47ee-8dd7-fad0fbbd0806"
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_10_IMAGE_ALT",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 10 Image Alt Text",
+          "DESCRIPTION": "Alternative text for the image in industry card slot 10."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum incididunt ut labore et."
+      }
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_10_PHOTO",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 10 Photo",
+          "DESCRIPTION": "Fallback placeholder label shown when the related image is not set in Verticals grid · photo-card catalog."
+        }
+      },
+      "value": {
+        "en": " "
+      }
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_10_TITLE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 10 Title",
+          "DESCRIPTION": "Text value for the Slot 10 Title field in Verticals grid · photo-card catalog."
+        }
+      },
+      "value": {
+        "en": "Appliance Repair Software"
+      }
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_10_DESC",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 10 Desc",
+          "DESCRIPTION": "Text value for the Slot 10 Desc field in Verticals grid · photo-card catalog."
+        }
+      },
+      "value": {
+        "en": "Service calls, technician schedules, customer history, parts visibility, job notes, invoices, and completion reporting."
+      }
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_10_STATUS_LABEL",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 10 Status Label",
+          "DESCRIPTION": "Editable status label shown in industry card slot 10."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum esse."
+      }
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_10_HREF",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Slot 10 Href",
+          "DESCRIPTION": "URL target for the Slot 10 Href link in Verticals grid · photo-card catalog."
+        }
+      },
+      "value": "#"
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_10_CTA_LABEL",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 10 CTA Label",
+          "DESCRIPTION": "Editable waitlist CTA label shown in industry card slot 10."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum do."
+      }
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_11_IMAGE_URL",
+      "type": "IMAGE",
+      "nls": {
+        "en": {
+          "NAME": "Slot 11 Image",
+          "DESCRIPTION": "Optional image for industry card slot 11. Leave empty to show the striped placeholder."
+        }
+      },
+      "value": "77084eeb-daa5-47ee-8dd7-fad0fbbd0806"
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_11_IMAGE_ALT",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 11 Image Alt Text",
+          "DESCRIPTION": "Alternative text for the image in industry card slot 11."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum quis nostrud exercitation ullamco."
+      }
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_11_PHOTO",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 11 Photo",
+          "DESCRIPTION": "Fallback placeholder label shown when the related image is not set in Verticals grid · photo-card catalog."
+        }
+      },
+      "value": {
+        "en": " "
+      }
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_11_TITLE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 11 Title",
+          "DESCRIPTION": "Text value for the Slot 11 Title field in Verticals grid · photo-card catalog."
+        }
+      },
+      "value": {
+        "en": "Commercial Services"
+      }
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_11_DESC",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 11 Desc",
+          "DESCRIPTION": "Text value for the Slot 11 Desc field in Verticals grid · photo-card catalog."
+        }
+      },
+      "value": {
+        "en": "Multi-site customers, recurring agreements, service teams, documentation, billing workflows, and operational visibility."
+      }
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_11_STATUS_LABEL",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 11 Status Label",
+          "DESCRIPTION": "Editable status label shown in industry card slot 11."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum adipiscing."
+      }
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_11_HREF",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Slot 11 Href",
+          "DESCRIPTION": "URL target for the Slot 11 Href link in Verticals grid · photo-card catalog."
+        }
+      },
+      "value": "#"
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_11_CTA_LABEL",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 11 CTA Label",
+          "DESCRIPTION": "Editable waitlist CTA label shown in industry card slot 11."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum ad."
+      }
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_12_IMAGE_URL",
+      "type": "IMAGE",
+      "nls": {
+        "en": {
+          "NAME": "Slot 12 Image",
+          "DESCRIPTION": "Optional image for industry card slot 12. Leave empty to show the striped placeholder."
+        }
+      },
+      "value": "77084eeb-daa5-47ee-8dd7-fad0fbbd0806"
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_12_IMAGE_ALT",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 12 Image Alt Text",
+          "DESCRIPTION": "Alternative text for the image in industry card slot 12."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum duis aute irure reprehenderit."
+      }
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_12_PHOTO",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 12 Photo",
+          "DESCRIPTION": "Fallback placeholder label shown when the related image is not set in Verticals grid · photo-card catalog."
+        }
+      },
+      "value": {
+        "en": " "
+      }
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_12_TITLE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 12 Title",
+          "DESCRIPTION": "Text value for the Slot 12 Title field in Verticals grid · photo-card catalog."
+        }
+      },
+      "value": {
+        "en": "Telecom Field Operations"
+      }
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_12_DESC",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 12 Desc",
+          "DESCRIPTION": "Text value for the Slot 12 Desc field in Verticals grid · photo-card catalog."
+        }
+      },
+      "value": {
+        "en": "Field-based teams, service areas, job assignments, equipment, routing, and operational reporting."
+      }
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_12_STATUS_LABEL",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 12 Status Label",
+          "DESCRIPTION": "Editable status label shown in industry card slot 12."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum magna."
+      }
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_12_HREF",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Slot 12 Href",
+          "DESCRIPTION": "URL target for the Slot 12 Href link in Verticals grid · photo-card catalog."
+        }
+      },
+      "value": "#"
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_12_CTA_LABEL",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 12 CTA Label",
+          "DESCRIPTION": "Editable waitlist CTA label shown in industry card slot 12."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum ea."
+      }
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_13_IMAGE_URL",
+      "type": "IMAGE",
+      "nls": {
+        "en": {
+          "NAME": "Slot 13 Image",
+          "DESCRIPTION": "Optional image for industry card slot 13. Leave empty to show the striped placeholder."
+        }
+      },
+      "value": "77084eeb-daa5-47ee-8dd7-fad0fbbd0806"
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_13_IMAGE_ALT",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 13 Image Alt Text",
+          "DESCRIPTION": "Alternative text for the image in industry card slot 13."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum lorem ipsum dolor sit."
+      }
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_13_PHOTO",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 13 Photo",
+          "DESCRIPTION": "Fallback placeholder label shown when the related image is not set in Verticals grid · photo-card catalog."
+        }
+      },
+      "value": {
+        "en": " "
+      }
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_13_TITLE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 13 Title",
+          "DESCRIPTION": "Text value for the Slot 13 Title field in Verticals grid · photo-card catalog."
+        }
+      },
+      "value": {
+        "en": "Facility Services"
+      }
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_13_DESC",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 13 Desc",
+          "DESCRIPTION": "Text value for the Slot 13 Desc field in Verticals grid · photo-card catalog."
+        }
+      },
+      "value": {
+        "en": "Multi-site work, recurring service, asset records, mobile documentation, and customer-facing workflows."
+      }
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_13_STATUS_LABEL",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 13 Status Label",
+          "DESCRIPTION": "Editable status label shown in industry card slot 13."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum nisi."
+      }
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_13_HREF",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Slot 13 Href",
+          "DESCRIPTION": "URL target for the Slot 13 Href link in Verticals grid · photo-card catalog."
+        }
+      },
+      "value": "#"
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_13_CTA_LABEL",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 13 CTA Label",
+          "DESCRIPTION": "Editable waitlist CTA label shown in industry card slot 13."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum fugiat."
+      }
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_01_IMAGE_NAME",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Slot 1 Image Image Name",
+          "DESCRIPTION": "CMS image file name/path segment for the Slot 01 Photo image in Verticals grid · photo-card catalog. Required image size: 1280 × 800. Required aspect ratio: 16:10."
+        }
+      },
+      "value": "/"
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_02_IMAGE_NAME",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Slot 2 Image Image Name",
+          "DESCRIPTION": "CMS image file name/path segment for the Slot 02 Photo image in Verticals grid · photo-card catalog. Required image size: 1280 × 800. Required aspect ratio: 16:10."
+        }
+      },
+      "value": "/"
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_03_IMAGE_NAME",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Slot 3 Image Image Name",
+          "DESCRIPTION": "CMS image file name/path segment for the Slot 03 Photo image in Verticals grid · photo-card catalog. Required image size: 1280 × 800. Required aspect ratio: 16:10."
+        }
+      },
+      "value": "/"
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_04_IMAGE_NAME",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Slot 4 Image Image Name",
+          "DESCRIPTION": "CMS image file name/path segment for the Slot 04 Photo image in Verticals grid · photo-card catalog. Required image size: 1280 × 800. Required aspect ratio: 16:10."
+        }
+      },
+      "value": "/"
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_05_IMAGE_NAME",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Slot 5 Image Image Name",
+          "DESCRIPTION": "CMS image file name/path segment for the Slot 05 Photo image in Verticals grid · photo-card catalog. Required image size: 1280 × 800. Required aspect ratio: 16:10."
+        }
+      },
+      "value": "/"
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_06_IMAGE_NAME",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Slot 6 Image Image Name",
+          "DESCRIPTION": "CMS image file name/path segment for the Slot 06 Photo image in Verticals grid · photo-card catalog. Required image size: 1280 × 800. Required aspect ratio: 16:10."
+        }
+      },
+      "value": "/"
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_07_IMAGE_NAME",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Slot 7 Image Image Name",
+          "DESCRIPTION": "CMS image file name/path segment for the Slot 07 Photo image in Verticals grid · photo-card catalog. Required image size: 1280 × 800. Required aspect ratio: 16:10."
+        }
+      },
+      "value": "/"
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_08_IMAGE_NAME",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Slot 8 Image Image Name",
+          "DESCRIPTION": "CMS image file name/path segment for the Slot 08 Photo image in Verticals grid · photo-card catalog. Required image size: 1280 × 800. Required aspect ratio: 16:10."
+        }
+      },
+      "value": "/"
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_09_IMAGE_NAME",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Slot 9 Image Image Name",
+          "DESCRIPTION": "CMS image file name/path segment for the Slot 09 Photo image in Verticals grid · photo-card catalog. Required image size: 1280 × 800. Required aspect ratio: 16:10."
+        }
+      },
+      "value": "/"
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_10_IMAGE_NAME",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Slot 10 Image Image Name",
+          "DESCRIPTION": "CMS image file name/path segment for the Slot 10 Photo image in Verticals grid · photo-card catalog. Required image size: 1280 × 800. Required aspect ratio: 16:10."
+        }
+      },
+      "value": "/"
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_11_IMAGE_NAME",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Slot 11 Image Image Name",
+          "DESCRIPTION": "CMS image file name/path segment for the Slot 11 Photo image in Verticals grid · photo-card catalog. Required image size: 1280 × 800. Required aspect ratio: 16:10."
+        }
+      },
+      "value": "/"
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_12_IMAGE_NAME",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Slot 12 Image Image Name",
+          "DESCRIPTION": "CMS image file name/path segment for the Slot 12 Photo image in Verticals grid · photo-card catalog. Required image size: 1280 × 800. Required aspect ratio: 16:10."
+        }
+      },
+      "value": "/"
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_13_IMAGE_NAME",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Slot 13 Image Image Name",
+          "DESCRIPTION": "CMS image file name/path segment for the Slot 13 Photo image in Verticals grid · photo-card catalog. Required image size: 1280 × 800. Required aspect ratio: 16:10."
+        }
+      },
+      "value": "/"
+    }
+  ]
+}

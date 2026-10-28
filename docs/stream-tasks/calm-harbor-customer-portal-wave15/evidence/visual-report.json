@@ -1,0 +1,285 @@
+{
+  "schemaVersion": 1,
+  "tolerance": {
+    "x": 2,
+    "width": 2
+  },
+  "rows": [
+    {
+      "width": 390,
+      "surface": "account",
+      "deltas": [
+        {
+          "id": "spa-account",
+          "x": 0,
+          "width": 0
+        },
+        {
+          "id": "account-entry-list",
+          "x": 0,
+          "width": 0
+        },
+        {
+          "id": "account-entry-purchases",
+          "x": 0,
+          "width": 0
+        }
+      ],
+      "reference": "docs/stream-tasks/calm-harbor-customer-portal-wave15/evidence/screenshots/reference-account-390.png",
+      "implementation": "docs/stream-tasks/calm-harbor-customer-portal-wave15/evidence/screenshots/implementation-account-390.png"
+    },
+    {
+      "width": 390,
+      "surface": "purchases",
+      "deltas": [
+        {
+          "id": "spa-purchases",
+          "x": 0,
+          "width": 0
+        },
+        {
+          "id": "purchase-list",
+          "x": 0,
+          "width": 0
+        },
+        {
+          "id": "purchase-row",
+          "x": 0,
+          "width": 0
+        }
+      ],
+      "reference": "docs/stream-tasks/calm-harbor-customer-portal-wave15/evidence/screenshots/reference-purchases-390.png",
+      "implementation": "docs/stream-tasks/calm-harbor-customer-portal-wave15/evidence/screenshots/implementation-purchases-390.png"
+    },
+    {
+      "width": 390,
+      "surface": "purchase",
+      "deltas": [
+        {
+          "id": "spa-purchase-detail",
+          "x": 0,
+          "width": 0
+        },
+        {
+          "id": "purchase-summary",
+          "x": 0,
+          "width": 0
+        },
+        {
+          "id": "purchase-items",
+          "x": 0,
+          "width": 0
+        }
+      ],
+      "reference": "docs/stream-tasks/calm-harbor-customer-portal-wave15/evidence/screenshots/reference-purchase-390.png",
+      "implementation": "docs/stream-tasks/calm-harbor-customer-portal-wave15/evidence/screenshots/implementation-purchase-390.png"
+    },
+    {
+      "width": 390,
+      "surface": "plan",
+      "deltas": [
+        {
+          "id": "spa-plan",
+          "x": 0,
+          "width": 0
+        },
+        {
+          "id": "plan-list",
+          "x": 0,
+          "width": 0
+        },
+        {
+          "id": "plan-card",
+          "x": 0,
+          "width": 0
+        }
+      ],
+      "reference": "docs/stream-tasks/calm-harbor-customer-portal-wave15/evidence/screenshots/reference-plan-390.png",
+      "implementation": "docs/stream-tasks/calm-harbor-customer-portal-wave15/evidence/screenshots/implementation-plan-390.png"
+    },
+    {
+      "width": 390,
+      "surface": "cart",
+      "deltas": [
+        {
+          "id": "spa-cart",
+          "x": 0,
+          "width": 0
+        },
+        {
+          "id": "cart-list",
+          "x": 0,
+          "width": 0
+        },
+        {
+          "id": "cart-line",
+          "x": 0,
+          "width": 0
+        }
+      ],
+      "reference": "docs/stream-tasks/calm-harbor-customer-portal-wave15/evidence/screenshots/reference-cart-390.png",
+      "implementation": "docs/stream-tasks/calm-harbor-customer-portal-wave15/evidence/screenshots/implementation-cart-390.png"
+    },
+    {
+      "width": 390,
+      "surface": "checkout",
+      "deltas": [
+        {
+          "id": "spa-checkout",
+          "x": 0,
+          "width": 0
+        },
+        {
+          "id": "checkout-contact",
+          "x": 0,
+          "width": 0
+        },
+        {
+          "id": "checkout-payment",
+          "x": 0,
+          "width": 0
+        }
+      ],
+      "reference": "docs/stream-tasks/calm-harbor-customer-portal-wave15/evidence/screenshots/reference-checkout-390.png",
+      "implementation": "docs/stream-tasks/calm-harbor-customer-portal-wave15/evidence/screenshots/implementation-checkout-390.png"
+    },
+    {
+      "width": 1180,
+      "surface": "account",
+      "deltas": [
+        {
+          "id": "spa-account",
+          "x": 0,
+          "width": 0
+        },
+        {
+          "id": "account-entry-list",
+          "x": 0,
+          "width": 0
+        },
+        {
+          "id": "account-entry-purchases",
+          "x": 0,
+          "width": 0
+        }
+      ],
+      "reference": "docs/stream-tasks/calm-harbor-customer-portal-wave15/evidence/screenshots/reference-account-1180.png",
+      "implementation": "docs/stream-tasks/calm-harbor-customer-portal-wave15/evidence/screenshots/implementation-account-1180.png"
+    },
+    {
+      "width": 1180,
+      "surface": "purchases",
+      "deltas": [
+        {
+          "id": "spa-purchases",
+          "x": 0,
+          "width": 0
+        },
+        {
+          "id": "purchase-list",
+          "x": 0,
+          "width": 0
+        },
+        {
+          "id": "purchase-row",
+          "x": 0,
+          "width": 0
+        }
+      ],
+      "reference": "docs/stream-tasks/calm-harbor-customer-portal-wave15/evidence/screenshots/reference-purchases-1180.png",
+      "implementation": "docs/stream-tasks/calm-harbor-customer-portal-wave15/evidence/screenshots/implementation-purchases-1180.png"
+    },
+    {
+      "width": 1180,
+      "surface": "purchase",
+      "deltas": [
+        {
+          "id": "spa-purchase-detail",
+          "x": 0,
+          "width": 0
+        },
+        {
+          "id": "purchase-summary",
+          "x": 0,
+          "width": 0
+        },
+        {
+          "id": "purchase-items",
+          "x": 0,
+          "width": 0
+        }
+      ],
+      "reference": "docs/stream-tasks/calm-harbor-customer-portal-wave15/evidence/screenshots/reference-purchase-1180.png",
+      "implementation": "docs/stream-tasks/calm-harbor-customer-portal-wave15/evidence/screenshots/implementation-purchase-1180.png"
+    },
+    {
+      "width": 1180,
+      "surface": "plan",
+      "deltas": [
+        {
+          "id": "spa-plan",
+          "x": 0,
+          "width": 0
+        },
+        {
+          "id": "plan-list",
+          "x": 0,
+          "width": 0
+        },
+        {
+          "id": "plan-card",
+          "x": 0,
+          "width": 0
+        }
+      ],
+      "reference": "docs/stream-tasks/calm-harbor-customer-portal-wave15/evidence/screenshots/reference-plan-1180.png",
+      "implementation": "docs/stream-tasks/calm-harbor-customer-portal-wave15/evidence/screenshots/implementation-plan-1180.png"
+    },
+    {
+      "width": 1180,
+      "surface": "cart",
+      "deltas": [
+        {
+          "id": "spa-cart",
+          "x": 0,
+          "width": 0
+        },
+        {
+          "id": "cart-list",
+          "x": 0,
+          "width": 0
+        },
+        {
+          "id": "cart-line",
+          "x": 0,
+          "width": 0
+        }
+      ],
+      "reference": "docs/stream-tasks/calm-harbor-customer-portal-wave15/evidence/screenshots/reference-cart-1180.png",
+      "implementation": "docs/stream-tasks/calm-harbor-customer-portal-wave15/evidence/screenshots/implementation-cart-1180.png"
+    },
+    {
+      "width": 1180,
+      "surface": "checkout",
+      "deltas": [
+        {
+          "id": "spa-checkout",
+          "x": 0,
+          "width": 0
+        },
+        {
+          "id": "checkout-contact",
+          "x": 0,
+          "width": 0
+        },
+        {
+          "id": "checkout-payment",
+          "x": 0,
+          "width": 0
+        }
+      ],
+      "reference": "docs/stream-tasks/calm-harbor-customer-portal-wave15/evidence/screenshots/reference-checkout-1180.png",
+      "implementation": "docs/stream-tasks/calm-harbor-customer-portal-wave15/evidence/screenshots/implementation-checkout-1180.png"
+    }
+  ]
+}

@@ -1,0 +1,160 @@
+{
+  "$schema": "lab-ui/block@1",
+  "id": "mobile.4-card-glyph",
+  "category": "11-mobile-section",
+  "title": "Mobile section · 4 cards with glyphs",
+  "description": "Mobile-experience section for hub pages. Centered H2 + 3 ledes + 4 cards, each with a glyph chip, title, and 2 body paragraphs. Light tinted background (--color-gray-bg) so the section sits visually between white sections.",
+  "canonical": true,
+  "theme": "light",
+  "source": {
+    "primary": "tmp/Lorem ipsum/src/sections-3.jsx (MobileExperience4Cards)",
+    "adapted_from": "v5 dark → light tokens. Glyphs simplified to neutral stroke-only icons.",
+    "decision": "PM lock 2026-05-21 — mobile section pattern = 4-card glyph (vs photo composite)"
+  },
+  "depends_on": {
+    "tokens": [
+      "--color-bg",
+      "--color-gray-bg",
+      "--color-text",
+      "--color-heading",
+      "--cta-secondary-fill",
+      "--cta-accent",
+      "--font-family",
+      "--font-mono",
+      "--container-width",
+      "--container-padding-x",
+      "--radius-card",
+      "--type-h2-size",
+      "--type-h2-weight",
+      "--type-lead-size",
+      "--type-eyebrow-size",
+      "--type-eyebrow-tracking"
+    ],
+    "other_blocks": []
+  },
+  "background": {
+    "optional": true,
+    "default": "none",
+    "modes": [
+      "none",
+      "gradient",
+      "image"
+    ],
+    "role": "decorative section background",
+    "image": {
+      "recommended_size": "2880 × 1400",
+      "fit": "cover",
+      "position": "center",
+      "alt": ""
+    },
+    "gradient": {
+      "recommended": "subtle neutral/accent gradient only; do not use freeform decorative orbs"
+    },
+    "url_params": {
+      "mode": "bg",
+      "image": "bgImage",
+      "gradient": "bgGradient"
+    },
+    "notes": [
+      "Full-width mobile section background.",
+      "Background is decorative and must not replace content media slots or block copy.",
+      "Preview in any supported harness with ?bg=gradient or ?bg=image&bgImage=<encoded-url>."
+    ]
+  },
+  "params": [
+    {
+      "code": "eyebrow",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum"
+    },
+    {
+      "code": "title",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet."
+    },
+    {
+      "code": "lede_1",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor."
+    },
+    {
+      "code": "lede_2",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et."
+    },
+    {
+      "code": "lede_3",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt."
+    },
+    {
+      "code": "card_1_title",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor"
+    },
+    {
+      "code": "card_1_p1",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do."
+    },
+    {
+      "code": "card_1_p2",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing."
+    },
+    {
+      "code": "card_2_title",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum"
+    },
+    {
+      "code": "card_2_p1",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt."
+    },
+    {
+      "code": "card_2_p2",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed."
+    },
+    {
+      "code": "card_3_title",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor"
+    },
+    {
+      "code": "card_3_p1",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor."
+    },
+    {
+      "code": "card_3_p2",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do."
+    },
+    {
+      "code": "card_4_title",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum"
+    },
+    {
+      "code": "card_4_p1",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore."
+    },
+    {
+      "code": "card_4_p2",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do."
+    }
+  ],
+  "preview": {
+    "390": "preview-390.png",
+    "1440": "preview-1440.png"
+  },
+  "notes": [
+    "Section background is intentionally tinted (--color-gray-bg) so this section reads as a visual break between two white sections.",
+    "Glyphs are neutral stroke icons (notepad, check-circle, trending-up, clock). Replace per CMS by editing the inline SVG inside [data-glyph-slot='NN'].",
+    "Breakpoints: 4 → 2 cols at 1180px, 2 → 1 col at 720px (matches features.card-grid-4)."
+  ]
+}

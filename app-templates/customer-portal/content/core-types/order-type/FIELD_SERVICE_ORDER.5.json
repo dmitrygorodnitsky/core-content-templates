@@ -1,0 +1,156 @@
+{
+ "optimistic": 8,
+ "code": "FIELD_SERVICE_ORDER",
+ "nls": {
+  "en": {
+   "NAME": "Field Service Order"
+  }
+ },
+ "workflow": {
+  "id": 45,
+  "code": "GENERAL_FSM_ORDER"
+ },
+ "organization": {
+  "optimistic": 4,
+  "id": 8,
+  "code": "SERVICE_WAND_WINTER_SERVICES"
+ },
+ "attributeOrder": [
+  {
+   "default": [
+    {
+     "attributeCode": "SERVICE_PERIOD_START",
+     "visible": true
+    },
+    {
+     "attributeCode": "SERVICE_PERIOD_END",
+     "visible": true
+    },
+    {
+     "attributeCode": "SERVICE_PROPERTIES",
+     "visible": true
+    },
+    {
+     "attributeCode": "EFFECTIVE_DATE",
+     "visible": true
+    },
+    {
+     "attributeCode": "CLIENT",
+     "visible": true
+    },
+    {
+     "attributeCode": "SERVICE_PROPERTY",
+     "visible": true
+    },
+    {
+     "attributeCode": "PROPERTY_PLAN",
+     "visible": true
+    }
+   ]
+  }
+ ],
+ "attributes": [
+  {
+   "code": "SERVICE_PERIOD_START",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.time.LocalDate",
+   "nls": {
+    "en": {
+     "NAME": "Period Start"
+    }
+   },
+   "options": []
+  },
+  {
+   "code": "PROPERTY_PLAN",
+   "required": false,
+   "multiselect": true,
+   "freeValue": false,
+   "unique": false,
+   "className": "com.pixelnation.common.domain.Media",
+   "nls": {
+    "en": {
+     "NAME": "Property Plan"
+    }
+   },
+   "options": [],
+   "entityTypes": [
+    {
+     "value": "image"
+    }
+   ]
+  },
+  {
+   "code": "SERVICE_PERIOD_END",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.time.LocalDate",
+   "nls": {
+    "en": {
+     "NAME": "Period End"
+    }
+   },
+   "options": []
+  },
+  {
+   "code": "CLIENT",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "com.pixelnation.account.domain.Account",
+   "nls": {
+    "en": {
+     "NAME": "Client"
+    }
+   },
+   "options": [],
+   "entityTypes": [
+    {
+     "value": 2
+    }
+   ]
+  },
+  {
+   "code": "SERVICE_PROPERTY",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "com.pixelnation.rm.domain.Resource",
+   "nls": {
+    "en": {
+     "NAME": "Service Property"
+    }
+   },
+   "options": [],
+   "entityTypes": [
+    {
+     "value": 154
+    }
+   ]
+  },
+  {
+   "code": "EFFECTIVE_DATE",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.time.LocalDate",
+   "nls": {
+    "en": {
+     "NAME": "Effective Date"
+    }
+   },
+   "options": []
+  }
+ ],
+ "id": 5,
+ "isAbstract": false,
+ "attributeGroups": []
+}

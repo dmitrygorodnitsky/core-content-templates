@@ -1,0 +1,208 @@
+{
+  "schemaVersion": 1,
+  "stage": "S5 remediation cycle 1",
+  "captures": [
+    {
+      "vertical": "HVAC",
+      "width": 1180,
+      "file": "care-hvac-unavailable-1180.png",
+      "sha256": "fa26b327d693376275c732035cf01052b126e36a3bddf3732474061312ec7c74",
+      "controls": [
+        {
+          "action": "care.selectUnit",
+          "entity": "unit-ac-01",
+          "state": "active",
+          "disabled": false
+        },
+        {
+          "action": "care.selectUnit",
+          "entity": "unit-furnace-01",
+          "state": null,
+          "disabled": false
+        },
+        {
+          "action": "booking.open",
+          "entity": "_",
+          "state": "unavailable",
+          "disabled": true
+        },
+        {
+          "action": "care.download",
+          "entity": "doc-hvac-diag-2026-01",
+          "state": "unavailable",
+          "disabled": true
+        },
+        {
+          "action": "care.download",
+          "entity": "doc-hvac-warranty-carrier",
+          "state": "unavailable",
+          "disabled": true
+        }
+      ]
+    },
+    {
+      "vertical": "Lawn & Garden",
+      "width": 1180,
+      "file": "care-lawn-unavailable-1180.png",
+      "sha256": "f8588148dff884c334a54d266d82b661a82c846ec90bc53d090dfccc4a97e40b",
+      "controls": [
+        {
+          "action": "service.requestExtra",
+          "entity": "_",
+          "state": "unavailable",
+          "disabled": true
+        }
+      ]
+    },
+    {
+      "vertical": "Pool & Spa",
+      "width": 1180,
+      "file": "care-pool-unavailable-1180.png",
+      "sha256": "c00c8088b7ad243bab62b34a17e87f413f30805ec3eb46b8636c3c547901f016",
+      "controls": [
+        {
+          "action": "service.requestExtra",
+          "entity": "_",
+          "state": "unavailable",
+          "disabled": true
+        }
+      ]
+    },
+    {
+      "vertical": "Health",
+      "width": 1180,
+      "file": "care-health-unavailable-1180.png",
+      "sha256": "4c6939761909bcc2cc6896c633eb1d819a726fd446bdfc018430f09d4f88d3d3",
+      "controls": [
+        {
+          "action": "order.reschedule",
+          "entity": "#SV-2410",
+          "state": "unavailable",
+          "disabled": true
+        },
+        {
+          "action": "order.open",
+          "entity": "#SV-2410",
+          "state": "unavailable",
+          "disabled": true
+        },
+        {
+          "action": "care.completeTask",
+          "entity": "task-health-01",
+          "state": null,
+          "disabled": false
+        },
+        {
+          "action": "care.completeTask",
+          "entity": "task-health-02",
+          "state": null,
+          "disabled": false
+        },
+        {
+          "action": "care.completeTask",
+          "entity": "task-health-03",
+          "state": null,
+          "disabled": false
+        },
+        {
+          "action": "care.contactProvider",
+          "entity": "prov-health-pt-01",
+          "state": "unavailable",
+          "disabled": true
+        },
+        {
+          "action": "support.call",
+          "entity": "_",
+          "state": "unavailable",
+          "disabled": true
+        },
+        {
+          "action": "care.openSecureDoc",
+          "entity": "doc-health-plan-2025-11",
+          "state": "unavailable",
+          "disabled": true
+        },
+        {
+          "action": "care.openSecureDoc",
+          "entity": "doc-health-visit-2026-01-12",
+          "state": "unavailable",
+          "disabled": true
+        },
+        {
+          "action": "care.openSecureDoc",
+          "entity": "doc-health-results-2026-01",
+          "state": "unavailable",
+          "disabled": true
+        }
+      ]
+    },
+    {
+      "vertical": "Beauty",
+      "width": 1180,
+      "file": "care-beauty-unavailable-1180.png",
+      "sha256": "f8c5025a06dd69175bf359968ab28b36ecc1fefd15b865fbbdc27bcefb3ad7fe",
+      "controls": [
+        {
+          "action": "order.reschedule",
+          "entity": "#SV-3312",
+          "state": "unavailable",
+          "disabled": true
+        },
+        {
+          "action": "order.open",
+          "entity": "#SV-3312",
+          "state": null,
+          "disabled": false
+        },
+        {
+          "action": "booking.open",
+          "entity": "_",
+          "state": "unavailable",
+          "disabled": true
+        },
+        {
+          "action": "care.selectSpecialist",
+          "entity": "spec-beauty-01",
+          "state": "active",
+          "disabled": false
+        },
+        {
+          "action": "care.selectSpecialist",
+          "entity": "spec-beauty-02",
+          "state": null,
+          "disabled": false
+        },
+        {
+          "action": "care.selectSpecialist",
+          "entity": "spec-beauty-03",
+          "state": null,
+          "disabled": false
+        },
+        {
+          "action": "profile.managePlan",
+          "entity": "_",
+          "state": null,
+          "disabled": false
+        },
+        {
+          "action": "cart.addItem",
+          "entity": "Silk Repair Set",
+          "state": null,
+          "disabled": false
+        },
+        {
+          "action": "cart.addItem",
+          "entity": "Hydration Serum",
+          "state": null,
+          "disabled": false
+        },
+        {
+          "action": "cart.addItem",
+          "entity": "Overnight Mask",
+          "state": null,
+          "disabled": false
+        }
+      ]
+    }
+  ]
+}

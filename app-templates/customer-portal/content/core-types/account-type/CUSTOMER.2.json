@@ -1,0 +1,67 @@
+{
+ "optimistic": 8,
+ "code": "CUSTOMER",
+ "nls": {
+  "ar": {
+   "DESCRIPTION": "<p class=\"ql-align-right ql-direction-rtl\"></p>"
+  },
+  "en": {
+   "NAME": "Client",
+   "DESCRIPTION": "<p>Represents a person or organization that purchases, receives, or may receive services from the business. A client may own or manage properties, enter into service agreements, receive quotes and invoices, and participate in the customer lifecycle.</p>"
+  },
+  "he": {
+   "DESCRIPTION": "<p class=\"ql-align-right ql-direction-rtl\"></p>"
+  }
+ },
+ "workflow": {
+  "id": 36,
+  "code": "CLIENT_ACCOUNT_LIFECYCLE"
+ },
+ "organization": {
+  "optimistic": 8,
+  "id": 1,
+  "code": "SYSTEM"
+ },
+ "attributeOrder": [
+  {
+   "default": [
+    {
+     "attributeCode": "MANAGEMENT_COMPANY",
+     "visible": true
+    },
+    {
+     "attributeCode": "ACCOUNT_MANAGER",
+     "visible": true
+    },
+    {
+     "attributeCode": "ACCOUNT_OWNER",
+     "visible": true
+    },
+    {
+     "typeId": 35,
+     "attributeCode": "LEGAL_ENTITY_TYPE",
+     "visible": true
+    }
+   ]
+  }
+ ],
+ "attributes": [
+  {
+   "code": "MANAGEMENT_COMPANY",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "en": {
+     "NAME": "Management Company"
+    }
+   },
+   "options": []
+  }
+ ],
+ "id": 2,
+ "isAbstract": false,
+ "attributeGroups": []
+}

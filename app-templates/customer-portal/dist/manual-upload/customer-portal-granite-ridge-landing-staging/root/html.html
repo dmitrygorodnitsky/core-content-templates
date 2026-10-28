@@ -1,0 +1,75 @@
+<div class="app-shell snow-landing" id="snow-landing" data-module="app-shell" data-visual-id="app-shell">
+  <header class="top-nav-wrap">
+    <nav class="top-nav" data-module="public-nav" data-visual-id="public-nav">
+      <a class="top-nav__brand" href="${LANDING_URL@STRING}" data-destination="landing"><span class="brand-logo" aria-hidden="true"></span><span class="brand-name">${BRAND_NAME@LOCALIZED_STRING_SS}</span></a>
+      <div class="top-nav__actions"><a class="btn btn--ghost" href="${SIGN_IN_URL@STRING}" data-destination="sign-in" data-visual-id="public-signin">${SIGN_IN_LABEL@LOCALIZED_STRING_SS}</a></div>
+    </nav>
+  </header>
+  <div class="page seo-page" data-visual-id="seo-landing">
+    <main class="snow-main">
+      <div class="alert-banner alert-banner--info snow-notice" data-notice="signed-out" data-module="reason-notice" data-visual-id="reason-notice-signed-out" role="status" hidden>
+        <span class="alert-banner__icon snow-notice__icon" aria-hidden="true">✓</span>
+        <div class="alert-banner__body"><div class="alert-banner__title">${NOTICE_SIGNED_OUT_TITLE@LOCALIZED_STRING_SS}</div></div>
+        <button type="button" class="icon-btn snow-notice__dismiss" data-notice-dismiss aria-label="${NOTICE_DISMISS_LABEL@LOCALIZED_STRING_SS}">×</button>
+      </div>
+      <div class="alert-banner alert-banner--glass snow-notice snow-notice--warn" data-notice="no-access" data-module="reason-notice" data-visual-id="reason-notice-no-access" role="status" hidden>
+        <span class="alert-banner__icon snow-notice__icon" aria-hidden="true">!</span>
+        <div class="alert-banner__body">
+          <div class="alert-banner__title">${NOTICE_NO_ACCESS_TITLE@LOCALIZED_STRING_SS}</div>
+          <div class="alert-banner__desc">${NOTICE_NO_ACCESS_BODY@LOCALIZED_STRING_SS}</div>
+          <div class="snow-notice__actions"><a class="btn btn--primary" href="${REQUEST_QUOTE_URL@STRING}" data-destination="request-quote">${REQUEST_QUOTE_LABEL@LOCALIZED_STRING_SS}</a><a class="btn btn--ghost" href="${SIGN_IN_URL@STRING}" data-destination="sign-in">${NOTICE_NO_ACCESS_SIGN_IN_LABEL@LOCALIZED_STRING_SS}</a></div>
+        </div>
+        <button type="button" class="icon-btn snow-notice__dismiss" data-notice-dismiss aria-label="${NOTICE_DISMISS_LABEL@LOCALIZED_STRING_SS}">×</button>
+      </div>
+      <section class="seo-hero" data-module="seo-hero" data-visual-id="seo-hero">
+        <div class="seo-hero__inner snow-hero__inner">
+          <div class="seo-hero__copy">
+            <h1 class="seo-hero__title">${HERO_TITLE@LOCALIZED_STRING_SS}</h1>
+            <p class="seo-hero__sub">${HERO_SUB@LOCALIZED_STRING_SS}</p>
+            <div class="seo-hero__ctas"><a class="btn btn--onaccent btn--lg seo-cta" href="${REQUEST_QUOTE_URL@STRING}" data-destination="request-quote" data-module="seo-cta" data-visual-id="seo-hero-primary-cta">${REQUEST_QUOTE_LABEL@LOCALIZED_STRING_SS}</a><a class="btn btn--glass-hero btn--lg seo-cta" href="${SIGN_IN_URL@STRING}" data-destination="sign-in" data-module="seo-cta" data-visual-id="seo-hero-secondary-cta">${SIGN_IN_LABEL@LOCALIZED_STRING_SS}</a></div>
+          </div>
+          <div class="snow-hero-art" data-visual-id="seo-hero-art" aria-hidden="true"><div class="snow-hero-art__head"><span class="brand-logo"></span><i></i></div><i class="snow-hero-art__field"></i><i class="snow-hero-art__field"></i><i class="snow-hero-art__field snow-hero-art__field--short"></i><i class="snow-hero-art__action"></i></div>
+        </div>
+      </section>
+      <section class="seo-sec" data-module="seo-services-grid" data-visual-id="seo-services-grid">
+        <div class="seo-sec__head"><span class="eyebrow">${SERVICES_EYEBROW@LOCALIZED_STRING_SS}</span><h2 class="seo-sec__title">${SERVICES_TITLE@LOCALIZED_STRING_SS}</h2><p class="seo-sec__sub">${SERVICES_SUB@LOCALIZED_STRING_SS}</p></div>
+        <div class="seo-svc-grid seo-svc-grid--pair">
+          <div class="seo-svc seo-svc--static" data-module="seo-service-card" data-visual-id="seo-service-card"><div class="seo-svc__icon" style="background:rgba(var(--accent-rgb),.12)"><i style="background:var(--accent)"></i></div><div class="seo-svc__name">${SERVICES_ITEM_1_NAME@LOCALIZED_STRING_SS}</div><div class="seo-svc__benefit">${SERVICES_ITEM_1_TEXT@LOCALIZED_STRING_SS}</div></div>
+          <div class="seo-svc seo-svc--static" data-module="seo-service-card" data-visual-id="seo-service-card"><div class="seo-svc__icon" style="background:rgba(52,199,89,.16)"><i style="background:#1f8a44"></i></div><div class="seo-svc__name">${SERVICES_ITEM_2_NAME@LOCALIZED_STRING_SS}</div><div class="seo-svc__benefit">${SERVICES_ITEM_2_TEXT@LOCALIZED_STRING_SS}</div></div>
+        </div>
+      </section>
+      <section class="seo-sec" data-module="seo-how-it-works" data-visual-id="seo-how-it-works">
+        <div class="seo-sec__head"><span class="eyebrow">${HOW_EYEBROW@LOCALIZED_STRING_SS}</span><h2 class="seo-sec__title">${HOW_TITLE@LOCALIZED_STRING_SS}</h2></div>
+        <div class="seo-how">
+          <div class="seo-how__step"><div class="seo-how__num">1</div><div class="seo-how__title">${HOW_STEP_1_TITLE@LOCALIZED_STRING_SS}</div><div class="seo-how__desc">${HOW_STEP_1_TEXT@LOCALIZED_STRING_SS}</div></div>
+          <div class="seo-how__step"><div class="seo-how__num">2</div><div class="seo-how__title">${HOW_STEP_2_TITLE@LOCALIZED_STRING_SS}</div><div class="seo-how__desc">${HOW_STEP_2_TEXT@LOCALIZED_STRING_SS}</div></div>
+          <div class="seo-how__step"><div class="seo-how__num">3</div><div class="seo-how__title">${HOW_STEP_3_TITLE@LOCALIZED_STRING_SS}</div><div class="seo-how__desc">${HOW_STEP_3_TEXT@LOCALIZED_STRING_SS}</div></div>
+          <div class="seo-how__step"><div class="seo-how__num">4</div><div class="seo-how__title">${HOW_STEP_4_TITLE@LOCALIZED_STRING_SS}</div><div class="seo-how__desc">${HOW_STEP_4_TEXT@LOCALIZED_STRING_SS}</div></div>
+        </div>
+      </section>
+      <section class="seo-sec seo-sec--tint" data-module="seo-service-area" data-visual-id="seo-service-area">
+        <div class="seo-area">
+          <div class="snow-area__intro"><div class="seo-sec__head"><span class="eyebrow">${AREA_EYEBROW@LOCALIZED_STRING_SS}</span><h2 class="seo-sec__title">${AREA_TITLE@LOCALIZED_STRING_SS}</h2></div><p class="seo-area__note">${AREA_NOTE@LOCALIZED_STRING_SS}</p></div>
+          <div><div class="seo-area__region">${AREA_REGION@LOCALIZED_STRING_SS}</div><div class="seo-area__cities"><span class="seo-area__chip">${AREA_CITY_1@LOCALIZED_STRING_SS}</span><span class="seo-area__chip">${AREA_CITY_2@LOCALIZED_STRING_SS}</span><span class="seo-area__chip">${AREA_CITY_3@LOCALIZED_STRING_SS}</span><span class="seo-area__chip">${AREA_CITY_4@LOCALIZED_STRING_SS}</span><span class="seo-area__chip">${AREA_CITY_5@LOCALIZED_STRING_SS}</span></div></div>
+        </div>
+      </section>
+      <section class="seo-sec" data-module="seo-faq" data-visual-id="seo-faq">
+        <div class="seo-sec__head"><span class="eyebrow">${FAQ_EYEBROW@LOCALIZED_STRING_SS}</span><h2 class="seo-sec__title">${FAQ_TITLE@LOCALIZED_STRING_SS}</h2></div>
+        <div class="seo-faq">
+          <details class="seo-faq__item"><summary class="seo-faq__q"><span>${FAQ_ITEM_1_QUESTION@LOCALIZED_STRING_SS}</span><span class="seo-faq__chev" aria-hidden="true"></span></summary><div class="seo-faq__a"><p>${FAQ_ITEM_1_ANSWER@LOCALIZED_STRING_SS}</p></div></details>
+          <details class="seo-faq__item"><summary class="seo-faq__q"><span>${FAQ_ITEM_2_QUESTION@LOCALIZED_STRING_SS}</span><span class="seo-faq__chev" aria-hidden="true"></span></summary><div class="seo-faq__a"><p>${FAQ_ITEM_2_ANSWER@LOCALIZED_STRING_SS}</p></div></details>
+          <details class="seo-faq__item"><summary class="seo-faq__q"><span>${FAQ_ITEM_3_QUESTION@LOCALIZED_STRING_SS}</span><span class="seo-faq__chev" aria-hidden="true"></span></summary><div class="seo-faq__a"><p>${FAQ_ITEM_3_ANSWER@LOCALIZED_STRING_SS}</p></div></details>
+          <details class="seo-faq__item"><summary class="seo-faq__q"><span>${FAQ_ITEM_4_QUESTION@LOCALIZED_STRING_SS}</span><span class="seo-faq__chev" aria-hidden="true"></span></summary><div class="seo-faq__a"><p>${FAQ_ITEM_4_ANSWER@LOCALIZED_STRING_SS}</p></div></details>
+        </div>
+      </section>
+      <section class="seo-final" data-module="seo-final-cta" data-visual-id="seo-final-cta">
+        <h2 class="seo-final__title">${FINAL_TITLE@LOCALIZED_STRING_SS}</h2>
+        <p class="seo-final__sub">${FINAL_SUB@LOCALIZED_STRING_SS}</p>
+        <div class="seo-final__ctas"><a class="btn btn--onaccent btn--lg seo-cta" href="${REQUEST_QUOTE_URL@STRING}" data-destination="request-quote" data-module="seo-cta" data-visual-id="seo-final-primary-cta">${REQUEST_QUOTE_LABEL@LOCALIZED_STRING_SS}</a><a class="btn btn--glass-hero btn--lg seo-cta" href="${SIGN_IN_URL@STRING}" data-destination="sign-in" data-module="seo-cta" data-visual-id="seo-final-secondary-cta">${SIGN_IN_LABEL@LOCALIZED_STRING_SS}</a></div>
+      </section>
+    </main>
+    <footer class="seo-footer snow-footer" data-module="seo-footer" data-visual-id="seo-footer">
+      <div class="seo-footer__base snow-footer__base"><a class="snow-footer__brand" href="${LANDING_URL@STRING}" data-destination="landing">${BRAND_NAME@LOCALIZED_STRING_SS}</a><div class="snow-footer__links"><a class="seo-footer__link" href="${REQUEST_QUOTE_URL@STRING}" data-destination="request-quote">${REQUEST_QUOTE_LABEL@LOCALIZED_STRING_SS}</a><a class="seo-footer__link" href="${SIGN_IN_URL@STRING}" data-destination="sign-in">${SIGN_IN_LABEL@LOCALIZED_STRING_SS}</a></div></div>
+    </footer>
+  </div>
+</div>

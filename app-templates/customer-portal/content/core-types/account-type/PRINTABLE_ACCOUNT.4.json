@@ -1,0 +1,68 @@
+{
+ "optimistic": 0,
+ "code": "PRINTABLE_ACCOUNT",
+ "nls": {
+  "en": {
+   "NAME": "Printable Account",
+   "DESCRIPTION": "Abstract account type that contributes print actions to account screens."
+  }
+ },
+ "organization": {
+  "optimistic": 1,
+  "id": 1,
+  "code": "SYSTEM"
+ },
+ "attributeOrder": [
+  {
+   "PRINT": [
+    {
+     "attributeCode": "ACCOUNT_PRINT",
+     "visible": false
+    }
+   ]
+  }
+ ],
+ "attributes": [
+  {
+   "code": "ACCOUNT_PRINT",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "com.pixelnation.report.domain.Report",
+   "nls": {
+    "en": {
+     "NAME": "Account Card",
+     "DESCRIPTION": "Print the account card report."
+    }
+   },
+   "options": [
+    {
+     "value": "ACCOUNT_CARD",
+     "nls": {
+      "en": {
+       "NAME": "Account Card",
+       "DESCRIPTION": "Account card report"
+      }
+     }
+    }
+   ],
+   "inputFormat": "PRINT_ACTION",
+   "defaultValue": "ACCOUNT_CARD",
+   "uiBehavior": "{\"parameterBindings\":{\"ACCOUNT_ID\":\"$entity.id\"}}"
+  }
+ ],
+ "id": 4,
+ "isAbstract": true,
+ "attributeGroups": [
+  {
+   "code": "PRINT",
+   "nls": {
+    "en": {
+     "NAME": "Print",
+     "DESCRIPTION": "Account print actions"
+    }
+   }
+  }
+ ]
+}

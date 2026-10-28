@@ -1,0 +1,142 @@
+{
+ "optimistic": 2,
+ "code": "WINTER_SERVICES_ORDER",
+ "nls": {
+  "en": {
+   "NAME": "Winter Services Order"
+  }
+ },
+ "workflow": {
+  "id": 45,
+  "code": "GENERAL_FSM_ORDER"
+ },
+ "organization": {
+  "optimistic": 4,
+  "id": 8,
+  "code": "SERVICE_WAND_WINTER_SERVICES"
+ },
+ "attributeOrder": [
+  {
+   "default": [
+    {
+     "attributeCode": "SERVICE_PROPERTIES",
+     "visible": true
+    },
+    {
+     "typeId": 5,
+     "attributeCode": "CLIENT",
+     "visible": true
+    },
+    {
+     "typeId": 5,
+     "attributeCode": "SERVICE_PROPERTY",
+     "visible": true
+    },
+    {
+     "typeId": 5,
+     "attributeCode": "PROPERTY_PLAN",
+     "visible": true
+    },
+    {
+     "typeId": 5,
+     "attributeCode": "SERVICE_PERIOD_START",
+     "visible": true
+    },
+    {
+     "typeId": 5,
+     "attributeCode": "SERVICE_PERIOD_END",
+     "visible": true
+    },
+    {
+     "typeId": 5,
+     "attributeCode": "EFFECTIVE_DATE",
+     "visible": true
+    },
+    {
+     "attributeCode": "SNOW_TRIGGER",
+     "visible": true
+    },
+    {
+     "attributeCode": "DE_ICING_TRIGGER",
+     "visible": true
+    }
+   ]
+  }
+ ],
+ "attributes": [
+  {
+   "code": "SNOW_TRIGGER",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.Float",
+   "nls": {
+    "ar": {
+     "NAME": "مُحفّز الثلج"
+    },
+    "en": {
+     "NAME": "Snow Trigger"
+    },
+    "es": {
+     "NAME": "Disparador de nieve"
+    },
+    "fr": {
+     "NAME": "Déclencheur de neige"
+    },
+    "he": {
+     "NAME": "טריגר שלג"
+    },
+    "kk": {
+     "NAME": "Қар триггері"
+    },
+    "ru": {
+     "NAME": "Снежный триггер"
+    },
+    "zh": {
+     "NAME": "雪触发器"
+    }
+   },
+   "options": [],
+   "unitCategory": {
+    "code": "LENGTH",
+    "label": "Length/Distance",
+    "value": 1,
+    "property": "id",
+    "isDisabled": false
+   },
+   "defaultValue": {
+    "unit": 2,
+    "value": 2
+   }
+  },
+  {
+   "code": "DE_ICING_TRIGGER",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.Float",
+   "nls": {
+    "en": {
+     "NAME": "De-Icing Trigger"
+    }
+   },
+   "options": [],
+   "unitCategory": {
+    "code": "TEMPERATURE",
+    "label": "Temperature",
+    "value": 5,
+    "property": "id",
+    "isDisabled": false
+   },
+   "defaultValue": {
+    "unit": 44,
+    "value": 0
+   }
+  }
+ ],
+ "id": 6,
+ "isAbstract": false,
+ "attributeGroups": []
+}

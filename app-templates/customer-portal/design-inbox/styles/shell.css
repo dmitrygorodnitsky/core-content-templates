@@ -1,0 +1,225 @@
+/* shell.css — app-shell, page layout, top-nav */
+
+/* ============================================================
+   AppShell  — data-module="app-shell"
+   ============================================================ */
+.app-shell {
+  min-height: 100vh;
+  background: var(--app-bg);
+  background-attachment: fixed;
+}
+
+.page {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 22px 22px 60px;
+}
+
+.page--narrow { max-width: 880px; }
+
+/* frosted surface primitive */
+.glass {
+  background: rgba(var(--glass), .55);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--shadow-card);
+}
+
+/* ============================================================
+   TopNav  — data-module="top-nav"
+   ============================================================ */
+.top-nav-wrap { position: sticky; top: 0; z-index: 120; padding: 16px 22px 8px; }
+
+.top-nav {
+  max-width: 1120px; margin: 0 auto; position: relative;
+  display: flex; align-items: center; gap: 16px;
+  background: rgba(var(--glass), .55);
+  backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-pill);
+  padding: 9px 14px;
+  box-shadow: 0 8px 26px rgba(13,38,76,.10), inset 0 1px 0 rgba(255,255,255,.75);
+}
+
+.top-nav__brand { display: flex; align-items: center; gap: 9px; cursor: pointer; flex-shrink: 0; }
+
+.brand-logo {
+  width: 30px; height: 30px; border-radius: 9px;
+  background: linear-gradient(160deg, var(--accent-3), var(--accent));
+  display: grid; place-items: center;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.5);
+  flex-shrink: 0;
+}
+
+.brand-logo::after {
+  content: ""; width: 11px; height: 11px;
+  background: var(--surface); border-radius: 3px; transform: rotate(45deg);
+}
+
+.brand-logo--lg { width: 46px; height: 46px; border-radius: 13px; box-shadow: 0 4px 12px rgba(var(--accent-rgb),.3); }
+
+.brand-logo--lg::after { width: 16px; height: 16px; border-radius: 4px; }
+
+.brand-name { font-weight: 700; font-size: 17px; letter-spacing: -.01em; white-space: nowrap; }
+
+.nav-links { display: flex; gap: 2px; margin-left: 6px; min-width: 0; overflow: hidden; position: relative; }
+
+.nav-pill {
+  position: absolute; top: 0; bottom: 0; left: 0; width: 0;
+  border-radius: var(--radius-pill); background: rgba(var(--glass), .9);
+  box-shadow: 0 1px 4px rgba(var(--hair), .1); pointer-events: none; z-index: 0;
+  transition: transform .32s cubic-bezier(.5,.05,.2,1.05), width .32s cubic-bezier(.5,.05,.2,1.05), opacity .2s;
+}
+
+.nav-link {
+  padding: 8px 15px; font-weight: 530; font-size: 13.5px;
+  color: var(--ink-2); cursor: pointer; border-radius: var(--radius-pill);
+  white-space: nowrap; user-select: none; position: relative; z-index: 1; transition: color .2s;
+}
+
+.nav-link:hover { color: var(--ink); }
+
+.nav-link--active { font-weight: 600; color: var(--ink); }
+
+.top-nav__actions { margin-left: auto; display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+
+.theme-picker {
+  display: flex; align-items: center; gap: 8px;
+  background: rgba(var(--glass), .55); border: 1px solid var(--glass-border);
+  border-radius: var(--radius-pill); padding: 7px 12px;
+}
+
+.theme-swatch {
+  width: 16px; height: 16px; border-radius: var(--radius-pill); cursor: pointer;
+  transition: transform .12s; box-shadow: 0 0 0 1px rgba(var(--hair), .12); opacity: .55;
+}
+
+.theme-swatch:hover { transform: scale(1.15); opacity: 1; }
+
+.theme-swatch--active { opacity: 1; box-shadow: 0 0 0 2px var(--surface), 0 0 0 4px currentColor; }
+
+.icon-btn {
+  position: relative; width: 34px; height: 34px; border-radius: var(--radius-pill);
+  background: rgba(var(--glass), .65); border: 1px solid var(--glass-border);
+  display: grid; place-items: center; font-size: 15px; cursor: pointer;
+}
+
+.icon-btn:hover { background: rgba(var(--glass), .95); }
+
+.avatar {
+  width: 34px; height: 34px; border-radius: var(--radius-pill);
+  background: linear-gradient(160deg, #ffd27a, #ff9b6a);
+  border: 1px solid var(--glass-border); cursor: pointer; flex-shrink: 0;
+}
+
+.dot-badge {
+  position: absolute; top: 5px; right: 6px; width: 7px; height: 7px;
+  border-radius: var(--radius-pill); background: #ff3b30; border: 1.5px solid var(--surface);
+}
+
+.cart-badge {
+  position: absolute; top: -4px; right: -4px; min-width: 18px; height: 18px; padding: 0 4px;
+  border-radius: var(--radius-pill); background: var(--accent); color: #fff;
+  font-weight: 700; font-size: 11px; display: grid; place-items: center; border: 1.5px solid var(--surface);
+}
+
+.hamburger { display: none; }
+
+/* collapsed nav popover — data-state="mobile-navigation-open" */
+.mobile-nav {
+  position: absolute; top: calc(100% + 10px); right: 8px; z-index: 130;
+  display: flex; flex-direction: column; gap: 2px;
+  width: 220px; max-width: calc(100vw - 44px);
+  background: var(--surface); border: 1px solid var(--glass-border);
+  border-radius: 18px; box-shadow: 0 18px 44px rgba(13,38,76,.20);
+  padding: 8px; animation: pop .18s ease;
+}
+
+.mobile-nav .nav-link { display: block; padding: 11px 14px; border-radius: 12px; font-size: 14.5px; }
+
+.mobile-nav .nav-link--active { background: rgba(var(--glass), .9); }
+
+:root[data-mode="dark"] .mobile-nav .nav-link--active { background: rgba(var(--glass), 1); }
+
+.avatar-stack { display: flex; }
+
+.avatar-stack__a { width: 32px; height: 32px; border-radius: 999px; border: 2px solid #143a8c; }
+
+.avatar-stack__a + .avatar-stack__a { margin-left: -9px; }
+
+
+/* ============================================================
+   Wave 14 — Calm Harbor spa shell: secondary nav link, account
+   control + menu (session identity + sign-out only)
+   ============================================================ */
+.nav-link--secondary { color: var(--ink-2); }
+
+.nav-link--secondary.nav-link--active { color: var(--ink); }
+
+.account-btn {
+  display: flex; align-items: center; gap: 8px; max-width: 200px; flex-shrink: 0;
+  background: rgba(var(--glass), .65); border: 1px solid var(--glass-border);
+  border-radius: var(--radius-pill); padding: 3px 12px 3px 3px; cursor: pointer;
+  font: inherit; color: var(--ink);
+}
+
+.account-btn:hover, .account-btn[data-state="open"] { background: rgba(var(--glass), .95); }
+
+.account-btn__ava {
+  width: 28px; height: 28px; border-radius: var(--radius-pill); flex-shrink: 0;
+  background: linear-gradient(160deg, rgba(var(--accent-rgb), .3), rgba(var(--accent-rgb), .6));
+  color: var(--ink); font-weight: 700; font-size: 12.5px;
+  display: grid; place-items: center;
+}
+
+.account-btn__name {
+  font-weight: 600; font-size: 13px; max-width: 140px;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+
+.account-menu {
+  position: absolute; top: calc(100% + 10px); right: 8px; z-index: 140;
+  min-width: 252px; max-width: 320px; padding: 8px;
+  background: var(--surface);
+  border: 1px solid var(--glass-border); border-radius: 18px;
+  box-shadow: 0 18px 44px rgba(13, 38, 76, .18); animation: fadein .18s ease;
+}
+
+.account-menu__head { display: flex; gap: 10px; align-items: center; padding: 8px 8px 12px; border-bottom: 1px solid var(--glass-border); margin-bottom: 6px; }
+
+.account-menu__ava { width: 34px; height: 34px; font-size: 14px; }
+
+.account-menu__name { font-weight: 700; font-size: 14px; line-height: 1.3; overflow-wrap: anywhere; }
+
+.account-menu__sub { font-size: 11.5px; color: var(--ink-3); margin-top: 2px; }
+
+.account-menu__item {
+  display: block; width: 100%; text-align: left; font: inherit; font-size: 13.5px; font-weight: 550;
+  color: var(--ink-2); background: transparent; border: 0; border-radius: 10px; padding: 10px; cursor: pointer;
+}
+
+.account-menu__item:hover { background: rgba(var(--glass), .95); color: var(--ink); }
+
+.account-menu__divider, .mobile-nav__divider { height: 1px; background: var(--glass-border); margin: 6px 4px; }
+
+.account-menu__item--danger { color: var(--danger); }
+
+
+/* Wave 14.1 — honest support-unavailable notice (Calm Harbor: no approved
+   support destination configured; fixture chat is unreachable via spa nav) */
+.spa-support-scrim {
+  position: fixed; inset: 0; z-index: 220; background: rgba(15, 23, 42, .38);
+  display: grid; place-items: center; padding: 20px; animation: fadein .18s ease;
+}
+
+.spa-support-card {
+  width: min(420px, 100%); background: var(--surface);
+  border: 1px solid var(--glass-border); border-radius: 20px; padding: 28px 24px;
+  box-shadow: 0 24px 60px rgba(13, 38, 76, .28); text-align: center;
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+}
+
+.spa-support-card .state-block__title { line-height: 1.35; font-size: 17px; white-space: nowrap; }
+
+.spa-support-card .state-block__desc { line-height: 1.55; }

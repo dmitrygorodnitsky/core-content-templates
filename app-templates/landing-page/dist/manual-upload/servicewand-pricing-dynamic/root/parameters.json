@@ -1,0 +1,107 @@
+[
+  {
+    "code": "ROOT_META_TITLE",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Meta Title",
+        "DESCRIPTION": "SEO title for the generated landing page."
+      }
+    },
+    "value": "Lorem Ipsum dolor sit amet consectetur adipiscing elit."
+  },
+  {
+    "code": "ROOT_META_DESCRIPTION",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Meta Description",
+        "DESCRIPTION": "SEO meta description for the generated landing page."
+      }
+    },
+    "value": "Lorem Ipsum consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua enim ad minim veniam quis nostrud exercitation ullamco."
+  },
+  {
+    "code": "SEO_LD_SCHEMA",
+    "type": "LOCALIZED_JSON_OBJECT",
+    "nls": {
+      "en": {
+        "NAME": "SEO LD Schema",
+        "DESCRIPTION": "Localized JSON-LD structured data object rendered in the root head as application/ld+json."
+      }
+    },
+    "value": {
+      "en": {
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        "name": "ServiceWand Pricing Dynamic"
+      }
+    }
+  },
+  {
+    "code": "FAVICON_IMG",
+    "type": "IMAGE",
+    "nls": {
+      "en": {
+        "NAME": "Favicon Image",
+        "DESCRIPTION": "Default favicon image asset rendered by the root template."
+      }
+    },
+    "value": null
+  },
+  {
+    "code": "FAVICON_IMG_NAME",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Favicon Image Name",
+        "DESCRIPTION": "Default favicon image file name rendered by the root template."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "FAVICON_LIGHT_IMG",
+    "type": "IMAGE",
+    "nls": {
+      "en": {
+        "NAME": "Light Favicon Image",
+        "DESCRIPTION": "Optional light color-scheme favicon image asset reserved by the production root template."
+      }
+    },
+    "value": null
+  },
+  {
+    "code": "FAVICON_LIGHT_IMG_NAME",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Light Favicon Image Name",
+        "DESCRIPTION": "Optional light color-scheme favicon image file name reserved by the production root template."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "FAVICON_DARK_IMG",
+    "type": "IMAGE",
+    "nls": {
+      "en": {
+        "NAME": "Dark Favicon Image",
+        "DESCRIPTION": "Optional dark color-scheme favicon image asset reserved by the production root template."
+      }
+    },
+    "value": null
+  },
+  {
+    "code": "FAVICON_DARK_IMG_NAME",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Dark Favicon Image Name",
+        "DESCRIPTION": "Optional dark color-scheme favicon image file name reserved by the production root template."
+      }
+    },
+    "value": ""
+  }
+]

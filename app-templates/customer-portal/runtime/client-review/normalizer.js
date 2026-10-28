@@ -1,0 +1,917 @@
+(function (global) {
+  "use strict";
+
+  var ns = global.ClientReview || (global.ClientReview = {});
+
+  var ORDER_STATUS = {
+    QUOTE_SENT: "new",
+    QUOTE_VIEWED: "viewed",
+    CLIENT_APPROVED: "approved",
+    DECLINED: "declined",
+    CUSTOMER_CHANGES_REQUESTED: "changes",
+    INITIAL: "revising",
+    QUOTE_PREPARED: "revising",
+    CHANGES_REQUESTED: "revising",
+    QUOTE_APPROVED_INTERNALLY: "revising",
+    WAITING_FOR_AREA: "revising",
+    PRICING_FAILED: "revising",
+    PACKAGE_ATTACHMENT_FAILED: "revising",
+    APPROVAL_PROCESSING_FAILED: "approved",
+    DECLINE_PROCESSING_FAILED: "declined",
+    CHANGES_NOTIFICATION_FAILED: "changes",
+    CHANGES_NOTIFICATION_CONFIRMED: "changes",
+  };
+
+  var PRICED_STATUSES = ["new", "viewed", "approved", "declined", "changes"];
+
+  var AGREEMENT_DISPOSITION = {
+    QUOTATION: { kind: "preparing" },
+    QUOTATION_SENT: { kind: "quote-review" },
+    QUOTATION_UPDATE: { kind: "unavailable", reason: "updating" },
+    QUOTATION_SEND_FAILED: { kind: "unavailable", reason: "send-failed" },
+    AWAITING_CLIENT_DETAILS: { kind: "contract-details" },
+    CLIENT_DETAILS_RECEIVED: { kind: "checking" },
+    DRAFT: { kind: "preparing" },
+    DETAILS_FINALIZATION_RETRY: { kind: "preparing" },
+    PENDING_MANAGEMENT_APPROVAL: { kind: "preparing" },
+    INTERNALLY_APPROVED: { kind: "preparing" },
+    SENT_TO_CLIENT: { kind: "agreement-review" },
+    CLIENT_CHANGES_REQUESTED: { kind: "reference", banner: "changes" },
+    AGREEMENT_SEND_FAILED: { kind: "unavailable", reason: "send-failed" },
+    CLIENT_APPROVED: { kind: "completion", completion: "approved" },
+    ACTIVATION_FAILED: { kind: "completion", completion: "finishing" },
+    ACTIVE: { kind: "completion", completion: "active" },
+    SUSPENDED: { kind: "reference", banner: "suspended" },
+    EXPIRED: { kind: "reference", banner: "expired" },
+    ARCHIVED: { kind: "closed", reason: "archived" },
+    CANCELED: { kind: "closed", reason: "canceled" },
+    ACCESS_CLEANUP_RETRY: { kind: "closed", reason: "canceled" },
+  };
+
+  function text(value) {
+    if (typeof value === "string") return value.trim();
+    if (typeof value === "number" && isFinite(value)) return String(value);
+    return "";
+  }
+
+  function positiveInteger(value) {
+    if (value === null || value === undefined || value === "" || typeof value === "boolean") return null;
+    var number = Number(value);
+    return Number.isInteger(number) && number > 0 ? number : null;
+  }
+
+  function finiteOrNull(value) {
+    if (value === null || value === undefined || value === "" || typeof value === "boolean") return null;
+    var number = Number(value);
+    return isFinite(number) ? number : null;
+  }
+
+  function ascending(left, right) {
+    if (left < right) return -1;
+    if (left > right) return 1;
+    return 0;
+  }
+
+  function localizedText(nls, locale, key) {
+    if (!nls || typeof nls !== "object") return "";
+    var language = String(locale || "en").split("-")[0];
+    var bag = nls[locale] || nls[language] || nls.en || nls[Object.keys(nls)[0]];
+    if (!bag || typeof bag !== "object") return "";
+    return text(bag[key]).replace(/<[^>]*>/g, "").replace(/\s+/g, " ").trim();
+  }
+
+  function localizedName(nls, locale) {
+    return localizedText(nls, locale, "NAME") || localizedText(nls, locale, "name");
+  }
+
+  function attributeEntry(row, code) {
+    var buckets = row && row.attributes;
+    if (!buckets || typeof buckets !== "object") return null;
+    var keys = Object.keys(buckets);
+    for (var index = 0; index < keys.length; index += 1) {
+      var bucket = buckets[keys[index]];
+      if (bucket && typeof bucket === "object" && Object.prototype.hasOwnProperty.call(bucket, code)) return bucket[code];
+    }
+    return null;
+  }
+
+  function attributeValue(row, code) {
+    var entry = attributeEntry(row, code);
+    if (entry && typeof entry === "object" && !Array.isArray(entry)) return entry.value;
+    return entry === null ? undefined : entry;
+  }
+
+  function attributeText(row, code) {
+    return text(attributeValue(row, code));
+  }
+
+  function idList(value) {
+    var source = Array.isArray(value) ? value : typeof value === "string" ? value.split(",") : value === null || value === undefined ? [] : [value];
+    var ids = [];
+    source.forEach(function (item) {
+      var id = positiveInteger(item && typeof item === "object" ? item.id : item);
+      if (id && ids.indexOf(id) === -1) ids.push(id);
+    });
+    return ids;
+  }
+
+  function mediaId(value) {
+    var id = text(value);
+    return /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id) ? id.toLowerCase() : "";
+  }
+
+  function mediaIds(value) {
+    var source = value;
+    if (typeof source === "string" && /^\s*\[/.test(source)) {
+      try {
+        source = JSON.parse(source);
+      } catch (_) {
+        return null;
+      }
+    }
+    var list = Array.isArray(source) ? source : source === null || source === undefined || source === "" ? [] : [source];
+    var ids = [];
+    var invalid = false;
+    list.forEach(function (entry) {
+      var id = mediaId(entry && typeof entry === "object" ? entry.id : entry);
+      if (!id) invalid = true;
+      else if (ids.indexOf(id) === -1) ids.push(id);
+    });
+    return invalid ? null : ids;
+  }
+
+  function planReference(values) {
+    var ids = [];
+    var invalid = false;
+    values.forEach(function (value) {
+      var found = mediaIds(value);
+      if (!found) invalid = true;
+      else found.forEach(function (id) { if (ids.indexOf(id) === -1) ids.push(id); });
+    });
+    return !invalid && ids.length === 1 ? ids[0] : "";
+  }
+
+  function pathValue(row, path) {
+    var value = row;
+    path.split(".").forEach(function (key) {
+      value = value && typeof value === "object" ? value[key] : undefined;
+    });
+    return value;
+  }
+
+  function addressText(row, format) {
+    if (!row || typeof row !== "object") return "";
+    var parts = [];
+    var seen = [];
+    format.parts.forEach(function (path) {
+      var part = text(pathValue(row, path));
+      var folded = part.toLowerCase();
+      if (!part || seen.indexOf(folded) !== -1) return;
+      seen.push(folded);
+      parts.push(part);
+    });
+    return parts.length ? parts.join(format.separator) : text(row[format.fallback]);
+  }
+
+  function propertyAddress(resource, addresses, contract) {
+    var value = attributeValue(resource, contract.propertyAttributes.address);
+    var id = positiveInteger(value && typeof value === "object" ? value.id : value);
+    return id && addresses[id] ? addressText(addresses[id], contract.addressFormat) : "";
+  }
+
+  function stateCode(row, known) {
+    var codes = [];
+    var states = row && Array.isArray(row.states) ? row.states : [];
+    states.forEach(function (entry) {
+      var code = text(entry && typeof entry === "object" ? entry.code : entry);
+      if (code && known.indexOf(code) !== -1 && codes.indexOf(code) === -1) codes.push(code);
+    });
+    if (!codes.length && row && row.state && typeof row.state === "object") {
+      var single = text(row.state.code);
+      if (known.indexOf(single) !== -1) codes.push(single);
+    }
+    return codes.length === 1 ? codes[0] : "";
+  }
+
+  function entityKind(entityType) {
+    var tail = text(entityType).split(".").pop() || "";
+    var compact = tail.replace(/[^A-Za-z]/g, "").toLowerCase();
+    if (compact === "orderitem") return "order-item";
+    if (compact === "productprice") return "product-price";
+    return compact;
+  }
+
+  function eventCodeOf(entry) {
+    var code = text(entry && typeof entry === "object" ? entry.code : entry);
+    var separator = code.lastIndexOf(":");
+    return separator === -1 ? code : code.slice(separator).replace(/^:/, "");
+  }
+
+  function grantOf(raw) {
+    var grant = { expiresAt: raw && typeof raw.expiresAt === "string" ? raw.expiresAt : "", entities: {} };
+    var types = raw && Array.isArray(raw.types) ? raw.types : [];
+    types.forEach(function (type) {
+      if (!type || typeof type !== "object") return;
+      var kind = entityKind(type.entityType);
+      if (!kind) return;
+      var slot = grant.entities[kind] || (grant.entities[kind] = { readable: false, writable: false, events: [], entries: {} });
+      var events = (Array.isArray(type.events) ? type.events : []).map(eventCodeOf).filter(Boolean);
+      var scoped = idList(type.entityIds !== undefined ? type.entityIds : type.entityId);
+      if (type.canRead === true) slot.readable = true;
+      if (type.canWrite === true) slot.writable = true;
+      if (scoped.length) {
+        scoped.forEach(function (id) {
+          var bucket = slot.entries[id] || (slot.entries[id] = []);
+          events.forEach(function (code) { if (bucket.indexOf(code) === -1) bucket.push(code); });
+        });
+        return;
+      }
+      events.forEach(function (code) { if (slot.events.indexOf(code) === -1) slot.events.push(code); });
+    });
+    return grant;
+  }
+
+  function canRead(grant, kind) {
+    return Boolean(grant && grant.entities && grant.entities[kind] && grant.entities[kind].readable);
+  }
+
+  function eventGranted(grant, kind, id, code) {
+    var slot = grant && grant.entities && grant.entities[kind];
+    if (!slot) return false;
+    if (slot.events.indexOf(code) !== -1) return true;
+    var entry = slot.entries[id];
+    return Boolean(entry && entry.indexOf(code) !== -1);
+  }
+
+  function formatMoney(value, currency, locale) {
+    var number = finiteOrNull(value);
+    if (number === null) return "";
+    var code = /^[A-Z]{3}$/.test(text(currency)) ? text(currency) : "";
+    var digits = { minimumFractionDigits: 2, maximumFractionDigits: 6 };
+    try {
+      if (code) return new Intl.NumberFormat(locale, { style: "currency", currency: code, minimumFractionDigits: 2, maximumFractionDigits: 6 }).format(number);
+    } catch (_) {
+      return new Intl.NumberFormat(locale, digits).format(number);
+    }
+    return new Intl.NumberFormat(locale, digits).format(number);
+  }
+
+  function formatQuantity(value, locale) {
+    var number = finiteOrNull(value);
+    if (number === null) return "";
+    return new Intl.NumberFormat(locale, { maximumFractionDigits: 6 }).format(number);
+  }
+
+  function formatDate(value, locale) {
+    var date = null;
+    var utc = false;
+    if (typeof value === "number" && isFinite(value)) {
+      date = new Date(value);
+    } else if (typeof value === "string" && value.trim()) {
+      var day = /^(\d{4})-(\d{2})-(\d{2})$/.exec(value.trim());
+      if (day) {
+        date = new Date(Date.UTC(Number(day[1]), Number(day[2]) - 1, Number(day[3])));
+        utc = true;
+      } else {
+        date = new Date(value.trim());
+      }
+    }
+    if (!date || !isFinite(date.getTime())) return "";
+    try {
+      return new Intl.DateTimeFormat(locale, utc ? { dateStyle: "medium", timeZone: "UTC" } : { dateStyle: "medium" }).format(date);
+    } catch (_) {
+      return "";
+    }
+  }
+
+  function decodeEntities(value) {
+    return value.replace(/&(#x[0-9a-f]+|#\d+|amp|lt|gt|quot|apos|nbsp);/gi, function (match, name) {
+      var lower = name.toLowerCase();
+      if (lower === "amp") return "&";
+      if (lower === "lt") return "<";
+      if (lower === "gt") return ">";
+      if (lower === "quot") return "\"";
+      if (lower === "apos") return "'";
+      if (lower === "nbsp") return " ";
+      var point = lower.charAt(1) === "x" ? parseInt(lower.slice(2), 16) : parseInt(lower.slice(1), 10);
+      return isFinite(point) && point > 0 && point <= 1114111 ? String.fromCodePoint(point) : match;
+    });
+  }
+
+  function termsBlocks(value) {
+    var source = typeof value === "string" ? value.replace(/\r\n?/g, "\n") : "";
+    if (!source.trim()) return [];
+    if (/<\/?[a-z][^>]*>/i.test(source)) {
+      source = decodeEntities(source
+        .replace(/<\s*br\s*\/?\s*>/gi, "\n")
+        .replace(/<\s*h[1-6](\s[^>]*)?>/gi, "\n\n# ")
+        .replace(/<\s*li(\s[^>]*)?>/gi, "\n- ")
+        .replace(/<\s*\/\s*(p|div|h[1-6]|ul|ol|li|section|article|blockquote|table|tr)\s*>/gi, "\n\n")
+        .replace(/<\s*(p|div|ul|ol|section|article|blockquote|table|tr)(\s[^>]*)?>/gi, "\n\n")
+        .replace(/<[^>]*>/g, ""));
+    }
+    var blocks = [];
+    source.split(/\n[ \t]*\n+/).forEach(function (chunk) {
+      var paragraph = [];
+      var clause = null;
+      function flush() {
+        if (paragraph.length) blocks.push({ kind: "paragraph", text: paragraph.join("\n") });
+        paragraph = [];
+      }
+      chunk.split("\n").forEach(function (line) {
+        var trimmed = line.replace(/\s+/g, " ").trim();
+        if (!trimmed) return;
+        var heading = /^#{1,6}\s+(.+)$/.exec(trimmed);
+        var item = /^[-*•]\s+(.+)$/.exec(trimmed);
+        var numbered = heading || item ? null : clauseOf(trimmed);
+        if (heading) {
+          flush();
+          clause = null;
+          blocks.push({ kind: "heading", text: heading[1] });
+        } else if (item) {
+          flush();
+          clause = null;
+          blocks.push({ kind: "item", text: item[1] });
+        } else if (numbered) {
+          flush();
+          clause = numbered;
+          blocks.push(clause);
+        } else if (clause) {
+          clause.text += "\n" + trimmed;
+        } else {
+          paragraph.push(trimmed);
+        }
+      });
+      flush();
+    });
+    return blocks;
+  }
+
+  function clauseOf(line) {
+    var match = /^(\d{1,3}(?:\.\d{1,3})*)([.)]?)\s+(.+)$/.exec(line);
+    if (!match || (!match[2] && match[1].indexOf(".") === -1)) return null;
+    return { kind: "clause", number: match[1] + match[2], depth: match[1].split(".").length, text: match[3] };
+  }
+
+  function owns(map, key) {
+    return Boolean(map) && Object.prototype.hasOwnProperty.call(map, key);
+  }
+
+  function detailsCodes(value) {
+    var source = Array.isArray(value) ? value : typeof value === "string" ? value.split(",") : [];
+    var codes = [];
+    source.forEach(function (entry) {
+      var code = text(entry);
+      if (code && codes.indexOf(code) === -1) codes.push(code);
+    });
+    return codes;
+  }
+
+  function returnedDetails(value, fields, vocabulary) {
+    var codes = detailsCodes(value);
+    var kinds = {};
+    fields.forEach(function (field) { kinds[field.code] = field.kind; });
+    var result = { returned: codes.length > 0, processingFailed: false, unexplained: false, fields: {} };
+    codes.forEach(function (code) {
+      if (code === vocabulary.processingFailed) {
+        result.processingFailed = true;
+        return;
+      }
+      var invalid = owns(vocabulary.invalid, code) ? vocabulary.invalid[code] : null;
+      var field = invalid ? invalid.field : code;
+      if (!owns(kinds, field)) {
+        result.unexplained = true;
+        return;
+      }
+      if (owns(result.fields, field)) return;
+      result.fields[field] = invalid ? invalid.reason : kinds[field] === "boolean" ? "unconfirmed" : "missing";
+    });
+    return result;
+  }
+
+  function inputTokens(inputFormat) {
+    return String(inputFormat || "").split(/[\s;]+/).filter(Boolean);
+  }
+
+  function fieldOf(definition, locale) {
+    var tokens = inputTokens(definition.inputFormat);
+    var choices = (Array.isArray(definition.options) ? definition.options : []).map(function (option) {
+      var value = text(option && option.value);
+      return { value: value, label: localizedName(option && option.nls, locale) || value };
+    }).filter(function (option) { return option.value; });
+    var kind = "text";
+    if (choices.length) kind = tokens.indexOf("expanded") !== -1 ? "radio" : "select";
+    else if (/Boolean$|^boolean$/.test(text(definition.className))) kind = "boolean";
+    else if (tokens.indexOf("address") !== -1) kind = "address";
+    else if (tokens.indexOf("textarea") !== -1) kind = "textarea";
+    else if (tokens.indexOf("email") !== -1) kind = "email";
+    else if (tokens.indexOf("tel") !== -1) kind = "tel";
+    return {
+      code: definition.code,
+      kind: kind,
+      label: localizedName(definition.nls, locale) || definition.code,
+      description: localizedText(definition.nls, locale, "DESCRIPTION"),
+      required: definition.required === true,
+      choices: choices,
+    };
+  }
+
+  function detailFields(definition, locale) {
+    var attributes = definition && Array.isArray(definition.attributes) ? definition.attributes : [];
+    var byCode = {};
+    attributes.forEach(function (attribute) { if (attribute && attribute.code) byCode[attribute.code] = attribute; });
+    var ordered = [];
+    var hidden = [];
+    (definition && Array.isArray(definition.attributeOrder) ? definition.attributeOrder : []).forEach(function (entry) {
+      Object.keys(entry || {}).forEach(function (group) {
+        (Array.isArray(entry[group]) ? entry[group] : []).forEach(function (row) {
+          var code = row && row.attributeCode;
+          if (!byCode[code] || ordered.indexOf(code) !== -1 || hidden.indexOf(code) !== -1) return;
+          if (row.visible === false) hidden.push(code);
+          else ordered.push(code);
+        });
+      });
+    });
+    attributes.forEach(function (attribute) {
+      if (attribute && ordered.indexOf(attribute.code) === -1 && hidden.indexOf(attribute.code) === -1) ordered.push(attribute.code);
+    });
+    return ordered.map(function (code) { return fieldOf(byCode[code], locale); });
+  }
+
+  function legalContact(account) {
+    var contacts = account && Array.isArray(account.contacts)
+      ? account.contacts.filter(function (contact) { return contact && typeof contact === "object"; })
+      : [];
+    return contacts.filter(function (contact) { return text(contact.type && contact.type.code).toUpperCase() === "LEGAL"; }).sort(function(a,b){return Number(a.id)-Number(b.id);})[0] || null;
+  }
+
+  function contactEntry(contact, typeCode) {
+    var entries = (contact && Array.isArray(contact.contactEntries) ? contact.contactEntries : []).filter(function(entry){return entry && text(entry.type && entry.type.code).toUpperCase() === typeCode && text(entry.value);});
+    function unique(rows) { var values=[]; rows.forEach(function(entry){var value=text(entry.value);if(values.indexOf(value)<0)values.push(value);});return values; }
+    for(var i=0;i<2;i++){var kind=["PRIMARY","WORK"][i];var selected=unique(entries.filter(function(entry){return text(entry.kind && entry.kind.code).toUpperCase() === kind;}));if(selected.length)return selected.length===1?selected[0]:"";}
+    var values=unique(entries);return values.length===1?values[0]:"";
+  }
+
+  function primaryEmail(account) { return contactEntry(legalContact(account),"EMAIL"); }
+
+  function formatAddress(address, locale) {
+    if (!address || typeof address !== "object") return "";
+    var region = text(address.state && address.state.code) || localizedName(address.state && address.state.nls, locale);
+    var country = localizedName(address.country && address.country.nls, locale) || text(address.country && address.country.code);
+    var regionLine = [region, text(address.postalCode)].filter(Boolean).join(" ");
+    var cityLine = [text(address.city), regionLine].filter(Boolean).join(", ");
+    return [text(address.address1), text(address.address2), cityLine, country].filter(Boolean).join(", ");
+  }
+
+  function billingAddress(account, locale) {
+    var entries = account && Array.isArray(account.addresses) ? account.addresses : [];
+    var billing = entries.filter(function (entry) {
+      return entry && Array.isArray(entry.types) && entry.types.some(function (type) {
+        return text(type && type.code).toUpperCase() === "BILLING";
+      });
+    })[0];
+    return billing ? formatAddress(billing.address, locale) : "";
+  }
+
+  function detailsPrefill(account, fields, locale, contract) {
+    var values = {};
+    if (!account || typeof account !== "object") return values;
+    var contact = legalContact(account);
+    var derived = {
+      CLIENT_TYPE: attributeText(account, "LEGAL_ENTITY_TYPE"),
+      LEGAL_NAME: localizedName(account.nls, locale),
+      BILLING_ADDRESS: billingAddress(account, locale),
+      REPRESENTATIVE_FIRST_NAME: contact ? text(contact.firstName) : "",
+      REPRESENTATIVE_JOB_TITLE: contact ? text(contact.title) : "",
+      REPRESENTATIVE_LAST_NAME: contact ? text(contact.lastName) : "",
+      REPRESENTATIVE_EMAIL: contactEntry(contact, "EMAIL"),
+      REPRESENTATIVE_PHONE: contactEntry(contact, "PHONE"),
+    };
+    fields.forEach(function (field) {
+      if (field.kind === "boolean") return;
+      var value = text(derived[field.code]);
+      if (!value) return;
+      if (field.choices.length && !field.choices.some(function (option) { return option.value === value; })) return;
+      values[field.code] = value;
+    });
+    return values;
+  }
+
+  function telHref(value) {
+    var match = /^(\+?[\d\s().-]+?)(?:\s*(?:ext\.?|x)\s*\d+)?$/i.exec(value);
+    var number = match ? match[1].replace(/[^\d+]/g, "") : "";
+    return number.replace(/\D/g, "").length < 3 ? "" : "tel:" + number;
+  }
+
+  function mailHref(value) {
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) return "";
+    return "mailto:" + encodeURIComponent(value).replace(/%40/g, "@");
+  }
+
+  function contactOf(agreement, contract, provider) {
+    var codes = contract.agreementAttributes;
+    var phone = attributeText(agreement, codes.providerContactPhone);
+    var email = attributeText(agreement, codes.providerContactEmail);
+    return { name: provider, phone: phone, phoneHref: telHref(phone), email: email, emailHref: mailHref(email) };
+  }
+
+  function partiesOf(agreement, account, fields, locale, contract) {
+    var codes = contract.agreementAttributes;
+    var owner = agreement && agreement[contract.rawShape.documentOwner];
+    var contact = legalContact(account);
+    function stated(code) {
+      return attributeText(agreement, code);
+    }
+    var typeField = fields.filter(function (field) { return field.code === "CLIENT_TYPE"; })[0];
+    var typeValue = stated("CLIENT_TYPE") || attributeText(account,"LEGAL_ENTITY_TYPE");
+    var typeChoice = typeField ? typeField.choices.filter(function (option) { return option.value === typeValue; })[0] : null;
+    var first = stated("REPRESENTATIVE_FIRST_NAME") || (contact ? text(contact.firstName) : "");
+    var last = stated("REPRESENTATIVE_LAST_NAME") || (contact ? text(contact.lastName) : "");
+    return {
+      provider: {
+        legalName: attributeText(agreement, codes.providerLegalName) || localizedName(owner && owner.nls, locale),
+        representativeName: attributeText(agreement, codes.providerRepresentativeName),
+        representativeJobTitle: attributeText(agreement, codes.providerRepresentativeJobTitle),
+        logo: attributeText(agreement, codes.providerLogo),
+      },
+      client: {
+        legalName: stated("LEGAL_NAME") || localizedName(account && account.nls, locale),
+        clientType: typeChoice ? typeChoice.label : "",
+        billingAddress: stated("BILLING_ADDRESS") || billingAddress(account, locale),
+        representativeName: [first, last].filter(Boolean).join(" "),
+        representativeJobTitle: stated("REPRESENTATIVE_JOB_TITLE") || (contact ? text(contact.title) : ""),
+        email: stated("REPRESENTATIVE_EMAIL") || contactEntry(contact, "EMAIL"),
+        phone: stated("REPRESENTATIVE_PHONE") || contactEntry(contact, "PHONE"),
+      },
+    };
+  }
+
+  function rowsById(rows) {
+    var found = {};
+    (Array.isArray(rows) ? rows : []).forEach(function (row) {
+      var id = positiveInteger(row && row.id);
+      if (id && !found[id]) found[id] = row;
+    });
+    return found;
+  }
+
+  function referenced(value, rows) {
+    if (!value || typeof value !== "object") return null;
+    var id = positiveInteger(value.id);
+    return id && rows[id] ? rows[id] : value;
+  }
+
+  function priceTypeCode(price) {
+    return text(price && price.type && price.type.code).toUpperCase();
+  }
+
+  function recurrentPrice(price) {
+    return /(^|_)RECURRENT$/.test(priceTypeCode(price));
+  }
+
+  function intervalMonths(line, variants) {
+    var metadata = line[variants.lineMetadata];
+    if (!metadata || typeof metadata !== "object") return null;
+    if (text(metadata[variants.intervalUnit]).toUpperCase() !== variants.monthUnit) return null;
+    return positiveInteger(metadata[variants.intervalCount]);
+  }
+
+  function priceIntervalMonths(price, units, variants) {
+    var interval = attributeEntry(price, variants.priceInterval);
+    if (!interval || typeof interval !== "object") return null;
+    var reference = interval[variants.priceIntervalUnit];
+    var unitId = positiveInteger(reference && typeof reference === "object" ? reference.id : reference);
+    var unit = unitId && units ? units[unitId] : null;
+    if (!unit || text(unit.code).toUpperCase() !== variants.monthUnit) return null;
+    return positiveInteger(interval.value);
+  }
+
+  function recurringModel(months, variants) {
+    var first = months[0];
+    var shared = first !== null && months.every(function (count) { return count === first; });
+    if (!shared) return variants.recurring;
+    return first === 1 ? variants.monthly : variants.seasonal;
+  }
+
+  function priceVariant(row, context) {
+    var contract = context.contract;
+    var variants = contract.priceVariants;
+    var raw = row && Array.isArray(row[contract.rawShape.orderLines]) ? row[contract.rawShape.orderLines] : [];
+    var lines = raw
+      .map(function (line) { return referenced(line, context.catalog.orderItems); })
+      .filter(function (line) { return line && typeof line === "object"; });
+    if (!lines.length) return { model: "", name: "" };
+    var prices = lines.map(function (line) { return referenced(line.itemPrice, context.catalog.productPrices); });
+    var names = lines.map(function (line, index) {
+      return localizedName(prices[index] && prices[index].nls, context.locale) || localizedName(line.itemPrice && line.itemPrice.nls, context.locale);
+    });
+    var name = names[0] && names.every(function (entry) { return entry === names[0]; }) ? names[0] : "";
+    var typed = prices.every(function (price) { return Boolean(priceTypeCode(price)); });
+    var recurrent = prices.filter(recurrentPrice).length;
+    var model = "";
+    if (typed && recurrent === 0) model = variants.perService;
+    if (typed && recurrent === prices.length) {
+      model = recurringModel(lines.map(function (line, index) {
+        var months = priceIntervalMonths(prices[index], context.catalog.units, variants);
+        return months !== null ? months : intervalMonths(line, variants);
+      }), variants);
+    }
+    return { model: model, name: name };
+  }
+
+  function linesOf(row, currency, locale, contract, catalog) {
+    var raw = row && Array.isArray(row[contract.rawShape.orderLines]) ? row[contract.rawShape.orderLines] : [];
+    return raw
+      .map(function (line, position) {
+        var resolved = referenced(line, catalog.orderItems);
+        return { line: resolved, position: position, rank: resolved ? finiteOrNull(resolved.sortOrder) : null };
+      })
+      .filter(function (entry) { return entry.line && typeof entry.line === "object"; })
+      .sort(function (left, right) {
+        if (left.rank === null && right.rank === null) return ascending(left.position, right.position);
+        if (left.rank === null) return 1;
+        if (right.rank === null) return -1;
+        return ascending(left.rank, right.rank) || ascending(left.position, right.position);
+      })
+      .map(function (entry) {
+        var line = entry.line;
+        var price = referenced(line.itemPrice, catalog.productPrices);
+        var product = referenced(price && price.product, catalog.products);
+        var lineId = positiveInteger(line.id);
+        return {
+          key: lineId ? "line-" + lineId : "position-" + entry.position,
+          product: localizedName(product && product.nls, locale) || localizedName(price && price.product && price.product.nls, locale) || localizedName(price && price.nls, locale),
+          quantity: formatQuantity(line.itemCount, locale),
+          unitPrice: formatMoney(line.amount, currency, locale),
+          recurrent: recurrentPrice(price),
+        };
+      });
+  }
+
+  function optionOf(row, position, context) {
+    var contract = context.contract;
+    var id = positiveInteger(row.id);
+    var state = stateCode(row, contract.orderStates);
+    var status = ORDER_STATUS[state] || "unknown";
+    var currency = text(row.currency && row.currency.code);
+    var attributeModel = attributeText(row, contract.orderAttributes.pricingModel).toUpperCase();
+    var variant = contract.pricingModels.indexOf(attributeModel) !== -1 ? { model: attributeModel, name: "" } : priceVariant(row, context);
+    var priced = PRICED_STATUSES.indexOf(status) !== -1;
+    var lines = priced ? linesOf(row, currency, context.locale, contract, context.catalog) : [];
+    return {
+      id: id,
+      recordKey: "order:" + id,
+      position: position,
+      model: variant.model,
+      priceName: variant.name,
+      state: state,
+      status: status,
+      priced: priced,
+      lines: lines,
+      recurrent: lines.length > 0 && lines.every(function (line) { return line.recurrent; }),
+      subtotal: priced ? formatMoney(row.totalCharges, currency, context.locale) : "",
+      taxes: priced ? formatMoney(row.totalTaxes, currency, context.locale) : "",
+      total: priced ? formatMoney(row.grandTotal, currency, context.locale) : "",
+      awaitingClient: state === contract.orderEvents.view.source || state === contract.orderEvents.approve.source,
+      siblingApproved: false,
+      actions: { view: false, approve: false, decline: false, changes: false },
+    };
+  }
+
+  function propertyStatus(options) {
+    var statuses = options.map(function (option) { return option.status; });
+    if (statuses.indexOf("approved") !== -1) return "approved";
+    if (statuses.length && statuses.every(function (status) { return status === "declined"; })) return "declined";
+    if (statuses.indexOf("changes") !== -1 || statuses.indexOf("revising") !== -1) return "changes";
+    if (statuses.indexOf("new") !== -1 || statuses.indexOf("viewed") !== -1) return "awaiting";
+    return "unknown";
+  }
+
+  function propertiesOf(rows, context) {
+    var contract = context.contract;
+    var groups = [];
+    var byKey = {};
+    rows.forEach(function (row) {
+      var propertyId = positiveInteger(attributeValue(row, contract.orderAttributes.property));
+      var key = propertyId ? "property-" + propertyId : "order-" + row.id;
+      var group = byKey[key];
+      if (!group) {
+        group = byKey[key] = { key: key, resource: propertyId ? context.catalog.resources[propertyId] || null : null, rows: [] };
+        groups.push(group);
+      }
+      group.rows.push(row);
+    });
+    return groups.map(function (group) {
+      var options = group.rows.map(function (row, index) { return optionOf(row, index + 1, context); });
+      options.forEach(function (option) {
+        option.siblingApproved = options.some(function (other) { return other.id !== option.id && other.status === "approved"; });
+      });
+      return {
+        key: group.key,
+        address: group.resource ? propertyAddress(group.resource, context.catalog.addresses, contract) : "",
+        plan: group.resource ? planReference([attributeValue(group.resource, contract.propertyAttributes.plan)]) : "",
+        options: options,
+        status: propertyStatus(options),
+      };
+    });
+  }
+
+  function serviceAddresses(properties) {
+    var found = [];
+    properties.forEach(function (property) {
+      var approved = property.options.some(function (option) { return option.status === "approved"; });
+      if (approved && property.address && found.indexOf(property.address) === -1) found.push(property.address);
+    });
+    return found;
+  }
+
+  function grantActions(properties, grant, contract) {
+    var events = contract.orderEvents;
+    properties.forEach(function (property) {
+      property.options.forEach(function (option) {
+        function allowed(event) {
+          return !option.siblingApproved && option.state === event.source && eventGranted(grant, "order", option.id, event.code);
+        }
+        option.actions = {
+          view: allowed(events.view),
+          approve: allowed(events.approve),
+          decline: allowed(events.decline),
+          changes: allowed(events.changes),
+        };
+      });
+    });
+  }
+
+  function summaryOf(properties) {
+    var counts = { properties: properties.length, awaiting: 0, approved: 0, declined: 0, changes: 0 };
+    properties.forEach(function (property) {
+      if (["awaiting", "approved", "declined", "changes"].indexOf(property.status) !== -1) counts[property.status] += 1;
+    });
+    return counts;
+  }
+
+  function pickAgreement(rows, contract) {
+    var documents = (Array.isArray(rows) ? rows : []).filter(function (row) {
+      return row && typeof row === "object" && positiveInteger(row.id);
+    });
+    var typed = documents.filter(function (row) { return text(row.type && row.type.code) === contract.agreementType; });
+    var untyped = documents.filter(function (row) { return !text(row.type && row.type.code); });
+    var candidates = typed.length ? typed : untyped;
+    if (candidates.length === 1) return { row: candidates[0], ambiguous: false };
+    return { row: null, ambiguous: candidates.length > 1 };
+  }
+
+  function pickAccount(accounts, agreement, contract) {
+    var rows = (Array.isArray(accounts) ? accounts : []).filter(function (row) { return row && typeof row === "object"; });
+    var clientId = positiveInteger(attributeValue(agreement, contract.agreementAttributes.client));
+    var matched = clientId ? rows.filter(function (row) { return positiveInteger(row.id) === clientId; })[0] : null;
+    return matched || (rows.length === 1 ? rows[0] : null);
+  }
+
+  function packageOrderIds(documents, contract) {
+    var picked = pickAgreement(documents, contract);
+    if (!picked.row || attributeEntry(picked.row, contract.agreementAttributes.orders) === null) return null;
+    return idList(attributeValue(picked.row, contract.agreementAttributes.orders));
+  }
+
+  function requestLocale(input, fallback, contract) {
+    var picked = pickAgreement(input.documents, contract);
+    var account = picked.row ? pickAccount(input.accounts, picked.row, contract) : null;
+    var contact = legalContact(account);
+    var language = contact && contact.language;
+    var code = language && (language.code2 || language.id);
+    var aliases = { eng: "en", fre: "fr", fra: "fr", rus: "ru", spa: "es", heb: "he", kaz: "kk", chi: "zh", zho: "zh", ara: "ar" };
+    code = aliases[code] || code;
+    return typeof code === "string" && /^[a-z]{2,3}(?:-[A-Za-z0-9]+)*$/.test(code) ? code : fallback;
+  }
+
+  function reviewModel(input, options) {
+    var locale = options.locale;
+    var contract = options.contract;
+    var grant = input.grant || grantOf(null);
+    var expiresAt = formatDate(grant.expiresAt, locale);
+    var picked = pickAgreement(input.documents, contract);
+    if (!picked.row) {
+      return {
+        kind: picked.ambiguous ? "unavailable" : "empty",
+        reason: picked.ambiguous ? "ambiguous" : "no-agreement",
+        expiresAt: expiresAt,
+      };
+    }
+
+    var agreement = picked.row;
+    var agreementId = positiveInteger(agreement.id);
+    var state = stateCode(agreement, contract.agreementStates);
+    var disposition = AGREEMENT_DISPOSITION[state] || { kind: "unavailable", reason: "unknown-state" };
+    var account = pickAccount(input.accounts, agreement, contract);
+    var fields = detailFields(contract.contractDetails, locale);
+    var parties = partiesOf(agreement, account, fields, locale, contract);
+
+    var ordersById = {};
+    (Array.isArray(input.orders) ? input.orders : []).forEach(function (row) {
+      var id = positiveInteger(row && row.id);
+      if (id && !ordersById[id]) ordersById[id] = row;
+    });
+    var listed = packageOrderIds([agreement], contract);
+    var wanted = listed || Object.keys(ordersById).map(Number).sort(ascending);
+    var readable = [];
+    var unreadable = 0;
+    wanted.forEach(function (id) {
+      if (ordersById[id]) readable.push(ordersById[id]);
+      else unreadable += 1;
+    });
+
+    var properties = propertiesOf(readable, {
+      locale: locale,
+      contract: contract,
+      catalog: {
+        orderItems: rowsById(input.orderItems),
+        productPrices: rowsById(input.productPrices),
+        products: rowsById(input.products),
+        resources: rowsById(input.resources),
+        addresses: rowsById(input.addresses),
+        units: rowsById(input.units),
+      },
+    });
+    if (state === "QUOTATION_SENT") grantActions(properties, grant, contract);
+    var detailsEvent = contract.agreementEvents.details;
+    var approveEvent = contract.agreementEvents.approve;
+    var changesEvent = contract.agreementEvents.changes;
+    var awaitingDetails = state === detailsEvent.source;
+
+    return {
+      kind: disposition.kind,
+      reason: disposition.reason || "",
+      banner: disposition.banner || "",
+      completion: disposition.completion || "",
+      expiresAt: expiresAt,
+      agreement: {
+        id: agreementId,
+        recordKey: "document:" + agreementId,
+        state: state,
+        effectiveDate: formatDate(attributeValue(agreement, contract.agreementAttributes.effectiveDate), locale),
+        termStart: formatDate(attributeValue(agreement, contract.agreementAttributes.termStart), locale),
+        termEnd: formatDate(attributeValue(agreement, contract.agreementAttributes.termEnd), locale),
+        terms: termsBlocks(attributeValue(agreement, contract.agreementAttributes.terms)),
+        detailsErrors: detailsCodes(attributeValue(agreement, contract.agreementAttributes.detailsErrors)).join(","),
+      },
+      names: {
+        provider: parties.provider.legalName,
+        client: localizedName(account && account.nls, locale) || parties.client.legalName,
+      },
+      parties: parties,
+      contact: contactOf(agreement, contract, parties.provider.legalName),
+      properties: properties,
+      summary: summaryOf(properties),
+      allDecided: properties.length > 0 && properties.every(function (property) {
+        return property.status === "approved" || property.status === "declined";
+      }),
+      unreadableOrders: unreadable,
+      accountUnavailable: Boolean(input.accountFailed),
+      details: {
+        available: awaitingDetails && eventGranted(grant, "document", agreementId, detailsEvent.code),
+        fields: fields,
+        prefill: detailsPrefill(account, fields, locale, contract),
+        serviceAddresses: serviceAddresses(properties),
+        returned: returnedDetails(awaitingDetails ? attributeValue(agreement, contract.agreementAttributes.detailsErrors) : null, fields, contract.detailsReturn),
+      },
+      canApproveAgreement: state === approveEvent.source && eventGranted(grant, "document", agreementId, approveEvent.code),
+      canRequestAgreementChanges: state === changesEvent.source && eventGranted(grant, "document", agreementId, changesEvent.code),
+      primaryEmail: primaryEmail(account, contract),
+    };
+  }
+
+  ns.normalizer = Object.freeze({
+    orderStatus: Object.freeze(Object.assign({}, ORDER_STATUS)),
+    agreementDisposition: Object.freeze(Object.assign({}, AGREEMENT_DISPOSITION)),
+    positiveInteger: positiveInteger,
+    localizedName: localizedName,
+    planReference: planReference,
+    addressText: addressText,
+    attributeValue: attributeValue,
+    idList: idList,
+    stateCode: stateCode,
+    entityKind: entityKind,
+    grantOf: grantOf,
+    canRead: canRead,
+    eventGranted: eventGranted,
+    formatMoney: formatMoney,
+    formatQuantity: formatQuantity,
+    recurrentPrice: recurrentPrice,
+    priceVariant: priceVariant,
+    formatDate: formatDate,
+    termsBlocks: termsBlocks,
+    returnedDetails: returnedDetails,
+    primaryEmail: primaryEmail,
+    telHref: telHref,
+    mailHref: mailHref,
+    detailFields: detailFields,
+    detailsPrefill: detailsPrefill,
+    pickAgreement: pickAgreement,
+    pickAccount: pickAccount,
+    packageOrderIds: packageOrderIds,
+    propertyStatus: propertyStatus,
+    requestLocale: requestLocale,
+    reviewModel: reviewModel,
+  });
+})(typeof window !== "undefined" ? window : globalThis);

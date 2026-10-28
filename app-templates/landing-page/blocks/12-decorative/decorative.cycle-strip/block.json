@@ -1,0 +1,73 @@
+{
+  "$schema": "lab-ui/block@1",
+  "id": "decorative.cycle-strip",
+  "category": "12-decorative",
+  "title": "Decorative · cycle strip (this replaces …)",
+  "description": "Small horizontal flow with a label and a series of mono-typed items joined by arrows. Two tones via data-tone: 'warn' (secondary-gradient eyebrow + accent struck-through items, default — used for 'the cycle this replaces' patterns) and 'neutral' (gray eyebrow + plain items — used for positive 'this flows into' patterns). Up to 5 slot items; empty slots auto-hide.",
+  "canonical": true,
+  "theme": "light",
+  "source": {
+    "primary": "tmp/landing-template-design/src/kit/signature-blocks.jsx (CycleStrip)",
+    "adapted_from": "designer kit 2026-05-24 → light tokens",
+    "decision": "PM lock 2026-05-24 — cycle-strip pattern adopted as standalone decorative block (typically paired with StagesList)"
+  },
+  "depends_on": {
+    "tokens": [
+      "--color-gray-second",
+      "--color-gray-blue",
+      "--cta-secondary-fill",
+      "--cta-accent",
+      "--font-family",
+      "--font-mono",
+      "--radius-card"
+    ],
+    "other_blocks": []
+  },
+  "params": [
+    {
+      "code": "tone",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lor"
+    },
+    {
+      "code": "label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor"
+    },
+    {
+      "code": "item_1",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum"
+    },
+    {
+      "code": "item_2",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem"
+    },
+    {
+      "code": "item_3",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem"
+    },
+    {
+      "code": "item_4",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem"
+    },
+    {
+      "code": "item_5",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum"
+    }
+  ],
+  "preview": {
+    "390": "preview-390.png",
+    "1440": "preview-1440.png"
+  },
+  "notes": [
+    "Drop inside a Section right above or below a StagesList. The dashed border + struck-through warn tone signals 'something you'd want to avoid' without introducing a separate red accent family.",
+    "data-tone='neutral' switches the eyebrow to gray and removes the strike-through, suitable for positive forward flows like 'Request → Schedule → Dispatch → Mobile → Bill'.",
+    "Below 720px, arrows are hidden and items stack vertically so the flow does not wrap with dangling separators.",
+    "Slots are 1–5. If a CMS admin leaves later items empty, set [hidden] on the empty .cycle-strip-item AND the .cycle-strip-arrow that precedes it (pairwise hide so arrows don't dangle)."
+  ]
+}

@@ -1,0 +1,97 @@
+{
+ "optimistic": 6,
+ "code": "SNOW_RESIDENTIAL_CUSTOMER",
+ "nls": {
+  "en": {
+   "NAME": "Residential Customer"
+  }
+ },
+ "workflow": {
+  "id": 36,
+  "code": "CLIENT_ACCOUNT_LIFECYCLE"
+ },
+ "organization": {
+  "optimistic": 4,
+  "id": 9,
+  "code": "SERVICE_WAND_WINTER_SERVICES_CANADA"
+ },
+ "attributeOrder": [
+  {
+   "CUSTOMER_PROFILE": []
+  },
+  {
+   "BILLING_PROFILE": [
+    {
+     "attributeCode": "TAX_EXEMPT",
+     "visible": true
+    }
+   ]
+  },
+  {
+   "CUSTOMER_CONTEXT": [
+    {
+     "attributeCode": "CUSTOMER_NOTES",
+     "visible": true
+    }
+   ]
+  }
+ ],
+ "attributes": [
+  {
+   "code": "CUSTOMER_NOTES",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "en": {
+     "NAME": "Customer Notes"
+    }
+   },
+   "options": []
+  },
+  {
+   "code": "TAX_EXEMPT",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.Boolean",
+   "nls": {
+    "en": {
+     "NAME": "Tax Exempt"
+    }
+   },
+   "options": []
+  }
+ ],
+ "id": 5,
+ "isAbstract": true,
+ "attributeGroups": [
+  {
+   "code": "CUSTOMER_CONTEXT",
+   "nls": {
+    "en": {
+     "NAME": "Customer Context"
+    }
+   }
+  },
+  {
+   "code": "BILLING_PROFILE",
+   "nls": {
+    "en": {
+     "NAME": "Billing Profile"
+    }
+   }
+  },
+  {
+   "code": "CUSTOMER_PROFILE",
+   "nls": {
+    "en": {
+     "NAME": "Customer Profile"
+    }
+   }
+  }
+ ]
+}

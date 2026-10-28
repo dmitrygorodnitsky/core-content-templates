@@ -1,0 +1,516 @@
+/* lab-ui block · pricing.plans-flex
+   Depends: 00-tokens/tokens.css. Light theme.
+   Visual identity differs from pricing.plan-cards:
+     · flat card surface (no internal white-on-gray gradient),
+     · featured plan uses a 2px cta-accent ring + lifted shadow,
+     · monospace price digits keep the ledger/operations feel,
+     · sliding indicator inside the billing toggle,
+     · per-card Save chip that fade-scales in for Annual,
+     · price + billed-caption crossfade between billing modes,
+     · static fallback slots controlled per slot via data-plan-visible.
+     Dynamic mode can render any returned plan count. */
+
+.pf-plans {
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-family);
+  overflow-x: clip;
+}
+.pf-plans .container {
+  max-width: calc(var(--container-width) + var(--container-padding-x) * 2);
+  margin-inline: auto;
+  padding-inline: var(--container-padding-x);
+}
+
+/* ─── Header ────────────────────────────────────────────────── */
+.pf-top {
+  max-width: 58rem;
+  margin-inline: auto;
+  text-align: center;
+  margin-bottom: 44px;
+}
+.pf-eyebrow {
+  margin: 0 0 14px;
+  font-family: var(--font-mono);
+  font-size: var(--type-eyebrow-size);
+  letter-spacing: var(--type-eyebrow-tracking);
+  text-transform: uppercase;
+  color: var(--color-text-accent);
+}
+.pf-title {
+  margin: 0;
+  color: var(--color-heading);
+  font-size: var(--type-h1-size);
+  font-weight: var(--type-h1-weight);
+  line-height: var(--type-h1-leading);
+  letter-spacing: var(--type-h1-tracking);
+  overflow-wrap: break-word;
+}
+.pf-lede {
+  max-width: 45rem;
+  margin: 18px auto 0;
+  font-size: 1.0625rem;
+  line-height: 1.55;
+}
+
+/* ─── Toggle · sliding pill indicator ───────────────────────── */
+.pf-toggle {
+  position: relative;
+  display: inline-grid;
+  grid-template-columns: minmax(120px, 1fr) minmax(120px, 1fr);
+  margin-top: 28px;
+  padding: 4px;
+  border: 1px solid rgba(146, 170, 205, 0.30);
+  border-radius: var(--radius-pill);
+  background: var(--color-gray-bg);
+  isolation: isolate;
+}
+.pf-toggle::before {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  top: 4px;
+  bottom: 4px;
+  left: 4px;
+  width: calc(50% - 4px);
+  border-radius: var(--radius-pill);
+  background: var(--color-white);
+  box-shadow: var(--shadow-1);
+  transition: transform 0.34s cubic-bezier(0.32, 0.72, 0, 1);
+}
+.pf-plans[data-billing="annual"] .pf-toggle::before {
+  transform: translateX(100%);
+}
+.pf-toggle-opt {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0 18px;
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--color-text);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: color 0.24s ease;
+}
+.pf-toggle-opt.is-active {
+  color: var(--color-heading);
+}
+
+.pf-note {
+  margin: 14px 0 0;
+  color: var(--color-gray-blue);
+  font-size: 0.8125rem;
+  line-height: 1.45;
+}
+
+/* ─── Grid · flexible static fallback slots ───────────────────
+   Parent grid defines 8 explicit row tracks that match a card's
+   8 logical sections (head, name, subtitle, price, billed, cta,
+   features, disclaimer). Cards opt-in via grid-template-rows: subgrid
+   so every card's track-N is sized to the tallest card's track-N —
+   head row, subtitle row, price row, CTA row all align horizontally
+   regardless of how long any one card's text is. The final track is
+   1fr so each card stretches to fill the row-band's max height; the
+   disclaimer self-aligns to the bottom of that flexible track.
+   Dynamic mode disables the static subgrid tracks so any plan count can
+   wrap naturally. */
+.pf-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  /* Two explicit 8-track bands: when the grid wraps to two columns
+     (tablet), the second card band still ends in a flexible track so
+     its disclaimers bottom-align the same way as the first band. */
+  grid-template-rows: repeat(7, auto) 1fr repeat(7, auto) 1fr;
+  column-gap: 20px;
+  /* Separates card bands when the grid wraps; inside a card the
+     subgrid's own row-gap: 0 absorbs these gutters, so internal
+     spacing is unaffected. */
+  row-gap: 20px;
+  max-width: 100%;
+}
+.pf-card[data-plan-visible="hide"] { display: none; }
+.pf-card--skeleton {
+  display: none;
+  pointer-events: none;
+}
+
+.pf-plans[data-pricing-dynamic="true"]:not([data-pricing-state="dynamic"]):not([data-pricing-state="fallback"]) .pf-card--skeleton {
+  display: grid;
+}
+
+.pf-plans[data-pricing-dynamic="true"]:not([data-pricing-state="dynamic"]):not([data-pricing-state="fallback"]) [data-plan-slot] {
+  display: none;
+}
+
+.pf-skel {
+  display: block;
+  border-radius: var(--radius-pill);
+  background: linear-gradient(90deg, rgba(146, 170, 205, 0.14), rgba(146, 170, 205, 0.28), rgba(146, 170, 205, 0.14));
+  background-size: 200% 100%;
+  animation: pf-skeleton 1.2s ease-in-out infinite;
+}
+.pf-skel--kicker { width: 38%; height: 22px; }
+.pf-skel--title { width: 64%; height: 30px; margin-top: 18px; }
+.pf-skel--text { width: 100%; height: 52px; margin-top: 12px; border-radius: 12px; }
+.pf-skel--price { width: 54%; height: 42px; margin-top: 24px; }
+.pf-skel--button { width: 100%; height: 46px; margin-top: 18px; }
+.pf-skel--line { width: 92%; height: 14px; margin-top: 18px; }
+.pf-skel--short { width: 68%; margin-top: 10px; }
+
+@keyframes pf-skeleton {
+  to { background-position-x: -200%; }
+}
+
+.pf-plans[data-pricing-state="dynamic"] .pf-grid {
+  grid-template-rows: none;
+  align-items: stretch;
+}
+
+.pf-plans[data-pricing-state="dynamic"] .pf-card {
+  display: grid;
+  grid-template-rows:
+    minmax(26px, auto)
+    auto
+    minmax(4.35rem, auto)
+    minmax(4.75rem, auto)
+    minmax(4.125rem, auto)
+    1fr
+    auto;
+  grid-row: auto;
+}
+
+.pf-plans[data-pricing-state="dynamic"] .pf-billed-stack {
+  display: none;
+}
+
+.pf-plans[data-pricing-state="dynamic"] .pf-features {
+  align-content: start;
+}
+
+.pf-plans[data-pricing-state="dynamic"] .pf-disclaimer {
+  margin-top: auto;
+}
+
+.pf-plans[data-pricing-state="dynamic"] .pf-disclaimer:empty {
+  display: none;
+}
+
+/* ─── Plan card · flat surface ──────────────────────────────── */
+.pf-card {
+  position: relative;
+  display: grid;
+  grid-template-rows: subgrid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-row: span 8;
+  row-gap: 0;
+  min-width: 0;
+  padding: 24px;
+  border: 1px solid rgba(146, 170, 205, 0.28);
+  border-radius: var(--radius-card);
+  background: var(--color-white);
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+.pf-card--muted {
+  background: var(--color-gray-bg);
+}
+.pf-card--featured {
+  border-color: var(--cta-accent);
+  box-shadow: 0 0 0 1px var(--cta-accent), 0 22px 48px -30px rgba(27, 29, 37, 0.32);
+  transform: translateY(-4px);
+}
+@media (hover: hover) {
+  .pf-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-2);
+  }
+  .pf-card--featured:hover {
+    transform: translateY(-6px);
+  }
+}
+
+.pf-card-head {
+  display: flex;
+  min-height: 26px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+.pf-card-head:has(.pf-kicker:empty):has(.pf-badge:empty) {
+  display: none;
+}
+.pf-kicker,
+.pf-badge {
+  display: inline-flex;
+  max-width: 100%;
+  align-items: center;
+  min-height: 22px;
+  border-radius: var(--radius-pill);
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.pf-kicker { color: var(--color-gray-blue); }
+.pf-kicker:empty,
+.pf-badge:empty {
+  display: none;
+}
+.pf-badge {
+  padding: 3px 9px;
+  color: var(--color-heading);
+  background: var(--cta-accent-soft);
+}
+.pf-card--featured .pf-badge { background: var(--cta-accent); }
+
+.pf-name {
+  margin: 18px 0 0;
+  color: var(--color-heading);
+  font-size: 1.5rem;
+  font-weight: 650;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+}
+.pf-subtitle {
+  min-height: 52px;
+  margin: 8px 0 0;
+  font-size: 0.9375rem;
+  line-height: 1.45;
+}
+
+/* ─── Price block · crossfade between monthly/annual ────────── */
+.pf-price {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 22px;
+  color: var(--color-heading);
+}
+.pf-currency {
+  font-size: 1rem;
+  font-weight: 600;
+}
+.pf-amount-stack {
+  display: inline-grid;
+  align-items: baseline;
+}
+.pf-amount {
+  grid-column: 1;
+  grid-row: 1;
+  font-family: var(--font-mono);
+  font-size: 2.5rem;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  transition:
+    opacity 0.24s ease-out,
+    transform 0.34s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+.pf-period {
+  color: var(--color-gray-blue);
+  font-size: 0.875rem;
+}
+
+/* Per-card Save chip · appears in Annual mode */
+.pf-card-save {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 9px;
+  border-radius: var(--radius-pill);
+  background: var(--cta-accent-soft);
+  color: var(--color-heading);
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  transform-origin: left center;
+  opacity: 0;
+  transform: scale(0.78) translateY(2px);
+  transition:
+    opacity 0.22s ease-out,
+    transform 0.22s ease-out;
+  transition-delay: 0s;
+}
+.pf-card-save:empty { display: none; }
+.pf-plans[data-billing="annual"] .pf-card-save {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+  transition:
+    opacity 0.32s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.34s cubic-bezier(0.16, 1, 0.3, 1);
+  transition-delay: 0.34s;
+}
+
+/* Billed caption crossfade · stacks monthly/annual in same cell */
+.pf-billed-stack {
+  display: grid;
+  margin-top: 6px;
+  min-height: 16px;
+}
+.pf-billed {
+  grid-column: 1;
+  grid-row: 1;
+  color: var(--color-gray-blue);
+  font-size: 0.75rem;
+  letter-spacing: 0.02em;
+  transition:
+    opacity 0.22s ease-out,
+    transform 0.30s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Crossfade rules · outgoing leaves immediately, incoming arrives with a delay
+   so the swap reads as motion instead of an instant flip. */
+.pf-plans[data-billing="monthly"] [data-price-annual],
+.pf-plans[data-billing="monthly"] [data-billed-annual] {
+  opacity: 0;
+  transform: translateY(-14px);
+  pointer-events: none;
+}
+.pf-plans[data-billing="annual"] [data-price-monthly],
+.pf-plans[data-billing="annual"] [data-billed-monthly] {
+  opacity: 0;
+  transform: translateY(14px);
+  pointer-events: none;
+}
+.pf-plans[data-billing="monthly"] [data-price-monthly],
+.pf-plans[data-billing="monthly"] [data-billed-monthly],
+.pf-plans[data-billing="annual"]  [data-price-annual],
+.pf-plans[data-billing="annual"]  [data-billed-annual] {
+  transition:
+    opacity 0.30s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.40s cubic-bezier(0.16, 1, 0.3, 1);
+  transition-delay: 0.18s;
+}
+
+/* ─── CTA · 3 styles, matches token vocabulary ──────────────── */
+.pf-cta {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 44px;
+  margin-top: 22px;
+  padding: 0 18px;
+  border-radius: var(--radius-pill);
+  font-weight: 650;
+  font-size: 0.9375rem;
+  text-decoration: none;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+.pf-cta:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-glow-soft);
+}
+.pf-cta[aria-disabled="true"] {
+  cursor: not-allowed;
+  color: var(--color-gray-blue);
+  background: var(--color-gray-bg);
+  border: 1px solid rgba(146, 170, 205, 0.28);
+  box-shadow: none;
+  opacity: 0.72;
+}
+.pf-cta[aria-disabled="true"]:hover {
+  transform: none;
+  box-shadow: none;
+}
+.pf-cta--primary {
+  color: var(--button-primary-color);
+  background:
+    linear-gradient(var(--color-white), var(--color-white)) padding-box,
+    var(--gradient-cta-ring) border-box;
+  border: 1px solid transparent;
+}
+.pf-cta--filled {
+  color: var(--cta-secondary-color, var(--color-white));
+  background: var(--cta-secondary-fill);
+  border: 1px solid var(--cta-secondary-border, rgba(255, 255, 255, 0.18));
+}
+.pf-cta--ghost {
+  color: var(--color-heading);
+  background: var(--color-white);
+  border: 1px solid rgba(146, 170, 205, 0.35);
+}
+
+/* ─── Features list ─────────────────────────────────────────── */
+.pf-features {
+  display: grid;
+  gap: 10px;
+  margin: 22px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.pf-features:empty { display: none; }
+.pf-features li {
+  position: relative;
+  padding-left: 22px;
+  font-size: 0.875rem;
+  line-height: 1.45;
+}
+.pf-features li:empty { display: none; }
+.pf-features li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.5em;
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: var(--cta-accent);
+  box-shadow: 0 0 0 3px var(--cta-accent-soft);
+}
+.pf-disclaimer {
+  align-self: end;
+  margin: 0;
+  padding-top: 22px;
+  color: var(--color-gray-blue);
+  font-size: 0.75rem;
+  line-height: 1.45;
+}
+.pf-disclaimer:empty { visibility: hidden; }
+
+/* ─── Responsive ────────────────────────────────────────────── */
+@media (max-width: 1100px) {
+  .pf-grid {
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  }
+  /* In the wrapped 2-column zone the -4px lift makes the featured card
+     visibly misalign with its band neighbor; keep the ring, drop the lift. */
+  .pf-card--featured { transform: none; }
+}
+@media (max-width: 720px) {
+  .pf-plans .container {
+    max-width: 100%;
+    padding-inline: 20px;
+  }
+  .pf-top { text-align: left; }
+  .pf-title { font-size: 2.125rem; line-height: 1.08; }
+  .pf-lede { margin-inline: 0; }
+  .pf-toggle { width: 100%; grid-template-columns: 1fr 1fr; }
+  .pf-grid { grid-template-columns: 1fr; gap: 14px; }
+  .pf-card--featured {
+    transform: none;
+  }
+  .pf-subtitle { min-height: 0; }
+}
+
+/* ─── Accessibility ─────────────────────────────────────────── */
+.pf-toggle-opt:focus-visible,
+.pf-cta:focus-visible {
+  outline: 2px solid var(--cta-accent);
+  outline-offset: 2px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .pf-plans *,
+  .pf-plans *::before,
+  .pf-plans *::after {
+    transition-duration: 0.01ms !important;
+    transition-delay: 0s !important;
+  }
+}

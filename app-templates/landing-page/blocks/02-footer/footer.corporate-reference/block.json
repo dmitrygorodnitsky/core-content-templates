@@ -1,0 +1,270 @@
+{
+  "$schema": "lab-ui/block@1",
+  "id": "footer.corporate-reference",
+  "category": "02-footer",
+  "title": "Footer · corporate reference",
+  "description": "Reference footer imported from the Corporate Landing CMS template with its nested footer fragments expanded into one lab-ui block.",
+  "canonical": false,
+  "theme": "dark-image",
+  "source": {
+    "kind": "cms-block-template-import",
+    "primary": "CMS template 3eab232f-9567-4535-a1bf-c59ab746da58 · FOOTER",
+    "rootTemplateId": "3eab232f-9567-4535-a1bf-c59ab746da58",
+    "rootCode": "CORPORATE_LANDING",
+    "sourceBlockId": "8d9f72c2-51ae-4f40-a726-3562be0e75e5",
+    "sourceBlockCode": "FOOTER",
+    "fragmentBlockIds": [
+      "8535e8fc-0ee2-4e67-807d-74d5de9ece12",
+      "0ef16c2c-f5fb-422f-9b4b-c69af2f48f47",
+      "bf39cab7-3f7b-4f2a-9abe-741f0fc7e22f",
+      "6b9fc740-47ab-4527-a099-0356a8ce03ee",
+      "df5f82bf-6d95-4e94-ba6c-82eeb81078e0",
+      "a2f5d889-fc70-48cf-b2da-62183195b2f5"
+    ],
+    "importedAt": "2026-06-09"
+  },
+  "depends_on": {
+    "tokens": [],
+    "other_blocks": []
+  },
+  "params": [
+    {
+      "code": "address",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "<p class=\"footer-address\"><strong>Lorem Ipsum Inc.</strong></p><p>Lorem ipsum dolor sit amet</p><p>Lorem ipsum consectetur adipiscing</p><p>Lorem ipsum dolor sit</p>",
+      "name": "Footer address",
+      "description": "Address block shown in the footer."
+    },
+    {
+      "code": "bg_pic",
+      "type": "IMAGE",
+      "default": "728d0287-96c3-4430-b830-477f87d5ac5e",
+      "name": "Footer bg pic",
+      "description": "Imported from FOOTER in CMS template 3eab232f-9567-4535-a1bf-c59ab746da58."
+    },
+    {
+      "code": "bg_image_url",
+      "type": "URL",
+      "default": "/core/image/728d0287-96c3-4430-b830-477f87d5ac5e/get",
+      "name": "Footer background image URL",
+      "description": "URL target for the footer background image."
+    },
+    {
+      "code": "copyright_rights",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "All rights reserved.",
+      "name": "Footer rights line",
+      "description": "Secondary rights notice shown in the footer bottom bar."
+    },
+    {
+      "code": "copyright_text",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "© 2025 ServiceWand Inc.",
+      "name": "Footer copyright line",
+      "description": "Primary copyright text shown in the footer bottom bar."
+    },
+    {
+      "code": "email_partnerships",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "partners@servicewand.com",
+      "name": "Footer partnerships email",
+      "description": "Partnerships contact email shown in the footer."
+    },
+    {
+      "code": "email_partnerships_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Partnerships",
+      "name": "Footer partnerships label",
+      "description": "Label above the partnerships email address."
+    },
+    {
+      "code": "email_support",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "support@servicewand.com",
+      "name": "Footer support email",
+      "description": "Support contact email shown in the footer."
+    },
+    {
+      "code": "email_support_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Support",
+      "name": "Footer support label",
+      "description": "Label above the support email address."
+    },
+    {
+      "code": "nav_faq",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "FAQ",
+      "name": "Footer nav - FAQ",
+      "description": "Footer navigation label for the FAQ section."
+    },
+    {
+      "code": "nav_how_it_works",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "How It Works",
+      "name": "Footer nav - How It Works",
+      "description": "Footer navigation label for the features section."
+    },
+    {
+      "code": "nav_industries",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem Ipsum labore et dolore magna.",
+      "name": "Footer nav - Industries",
+      "description": "Footer navigation label for the foundation section."
+    },
+    {
+      "code": "nav_partners",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Partners",
+      "name": "Footer nav - Partners",
+      "description": "Footer navigation label for the partners section."
+    },
+    {
+      "code": "nav_platform",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Platform",
+      "name": "Footer nav - Platform",
+      "description": "Footer navigation label for the platform section."
+    },
+    {
+      "code": "privacy_policy_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Privacy Policy",
+      "name": "Footer legal - Privacy Policy",
+      "description": "Footer legal link label for the privacy policy page."
+    },
+    {
+      "code": "social_github_aria_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "GitHub",
+      "name": "Footer social GitHub aria label",
+      "description": "Accessible label for the GitHub social link in the footer."
+    },
+    {
+      "code": "social_linkedin_aria_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "LinkedIn",
+      "name": "Footer social LinkedIn aria label",
+      "description": "Accessible label for the LinkedIn social link in the footer."
+    },
+    {
+      "code": "social_x_aria_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "X",
+      "name": "Footer social X aria label",
+      "description": "Accessible label for the X social link in the footer."
+    },
+    {
+      "code": "social_youtube_aria_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "YouTube",
+      "name": "Footer social YouTube aria label",
+      "description": "Accessible label for the YouTube social link in the footer."
+    },
+    {
+      "code": "tagline",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Build. Automate. Scale.<br />The AI-native platform for intelligent operations.",
+      "name": "Footer tagline",
+      "description": "Tagline text shown under the footer logo."
+    },
+    {
+      "code": "terms_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Terms & Conditions",
+      "name": "Footer legal - Terms & Conditions",
+      "description": "Footer legal link label for the terms and conditions page."
+    },
+    {
+      "code": "nav_platform_href",
+      "type": "URL",
+      "default": "index.html#hero",
+      "name": "Footer nav Platform href",
+      "description": "URL target for the footer Platform navigation link."
+    },
+    {
+      "code": "nav_how_it_works_href",
+      "type": "URL",
+      "default": "index.html#features",
+      "name": "Footer nav How It Works href",
+      "description": "URL target for the footer How It Works navigation link."
+    },
+    {
+      "code": "nav_industries_href",
+      "type": "URL",
+      "default": "index.html#foundation",
+      "name": "Footer nav Industries href",
+      "description": "URL target for the footer Industries navigation link."
+    },
+    {
+      "code": "nav_partners_href",
+      "type": "URL",
+      "default": "index.html#partners",
+      "name": "Footer nav Partners href",
+      "description": "URL target for the footer Partners navigation link."
+    },
+    {
+      "code": "nav_faq_href",
+      "type": "URL",
+      "default": "index.html#faq",
+      "name": "Footer nav FAQ href",
+      "description": "URL target for the footer FAQ navigation link."
+    },
+    {
+      "code": "social_linkedin_href",
+      "type": "URL",
+      "default": "#",
+      "name": "Footer LinkedIn href",
+      "description": "URL target for the footer LinkedIn social link."
+    },
+    {
+      "code": "social_github_href",
+      "type": "URL",
+      "default": "#",
+      "name": "Footer GitHub href",
+      "description": "URL target for the footer GitHub social link."
+    },
+    {
+      "code": "social_youtube_href",
+      "type": "URL",
+      "default": "#",
+      "name": "Footer YouTube href",
+      "description": "URL target for the footer YouTube social link."
+    },
+    {
+      "code": "social_x_href",
+      "type": "URL",
+      "default": "#",
+      "name": "Footer X href",
+      "description": "URL target for the footer X social link."
+    },
+    {
+      "code": "email_partnerships_href",
+      "type": "URL",
+      "default": "mailto:partners@servicewand.com",
+      "name": "Footer partnerships email href",
+      "description": "URL target for the footer partnerships email link."
+    },
+    {
+      "code": "email_support_href",
+      "type": "URL",
+      "default": "mailto:support@servicewand.com",
+      "name": "Footer support email href",
+      "description": "URL target for the footer support email link."
+    },
+    {
+      "code": "privacy_policy_href",
+      "type": "URL",
+      "default": "privacy-policy.html",
+      "name": "Footer privacy policy href",
+      "description": "URL target for the footer Privacy Policy legal link."
+    },
+    {
+      "code": "terms_href",
+      "type": "URL",
+      "default": "terms-and-conditions.html",
+      "name": "Footer terms href",
+      "description": "URL target for the footer Terms legal link."
+    }
+  ]
+}

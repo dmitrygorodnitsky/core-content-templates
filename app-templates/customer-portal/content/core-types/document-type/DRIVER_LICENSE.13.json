@@ -1,0 +1,434 @@
+{
+ "optimistic": 1,
+ "code": "DRIVER_LICENSE",
+ "nls": {
+  "ar": {
+   "DESCRIPTION": "<p></p>"
+  },
+  "en": {
+   "NAME": "Driver License",
+   "DESCRIPTION": "<p>Government-issued license authorizing an individual to operate one or more classes of motor vehicles.</p>"
+  },
+  "he": {
+   "DESCRIPTION": "<p></p>"
+  }
+ },
+ "workflow": {
+  "id": 38,
+  "code": "LICENSE_LIFECYCLE"
+ },
+ "organization": {
+  "optimistic": 1,
+  "id": 1,
+  "code": "SYSTEM"
+ },
+ "attributeOrder": [
+  {
+   "default": [
+    {
+     "typeId": 12,
+     "attributeCode": "STATUS",
+     "visible": true
+    },
+    {
+     "typeId": 12,
+     "attributeCode": "LICENSE_NUMBER",
+     "visible": true
+    },
+    {
+     "typeId": 12,
+     "attributeCode": "BACK_IMAGE",
+     "visible": true
+    },
+    {
+     "typeId": 12,
+     "attributeCode": "FRONT_IMAGE",
+     "visible": true
+    },
+    {
+     "typeId": 12,
+     "attributeCode": "ISSUING_AUTHORITY",
+     "visible": true
+    },
+    {
+     "typeId": 12,
+     "attributeCode": "JURISDICTION",
+     "visible": true
+    },
+    {
+     "typeId": 12,
+     "attributeCode": "EXPIRATION_DATE",
+     "visible": true
+    },
+    {
+     "typeId": 12,
+     "attributeCode": "ISSUE_DATE",
+     "visible": true
+    },
+    {
+     "attributeCode": "LICENSE_CLASSES",
+     "visible": true
+    },
+    {
+     "attributeCode": "ENDORSEMENTS",
+     "visible": true
+    },
+    {
+     "attributeCode": "RESTRICTIONS",
+     "visible": true
+    },
+    {
+     "attributeCode": "RESTRICTION_DETAILS",
+     "visible": true
+    },
+    {
+     "attributeCode": "JURISDICTION_RESTRICTION_CODES",
+     "visible": true
+    },
+    {
+     "attributeCode": "COMMERCIAL_LICENSE",
+     "visible": true
+    },
+    {
+     "attributeCode": "MEDICAL_CERTIFICATE_EXPIRATION",
+     "visible": true
+    }
+   ]
+  }
+ ],
+ "attributes": [
+  {
+   "code": "MEDICAL_CERTIFICATE_EXPIRATION",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.time.LocalDate",
+   "nls": {
+    "en": {
+     "NAME": "Medical Certificate Expiration"
+    }
+   },
+   "options": []
+  },
+  {
+   "code": "JURISDICTION_RESTRICTION_CODES",
+   "required": false,
+   "multiselect": true,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "ar": {
+     "DESCRIPTION": "<p></p>"
+    },
+    "en": {
+     "NAME": "Jurisdiction Restriction Codes",
+     "DESCRIPTION": "<p>Restriction codes printed on the licence or recorded by the issuing authority, preserved exactly as issued.</p>"
+    },
+    "he": {
+     "DESCRIPTION": "<p></p>"
+    }
+   },
+   "options": []
+  },
+  {
+   "code": "RESTRICTIONS",
+   "required": false,
+   "multiselect": true,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "en": {
+     "NAME": "Restrictions"
+    }
+   },
+   "options": [
+    {
+     "value": "CORRECTIVE_LENSES_REQUIRED",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Corrective Lenses Required",
+       "DESCRIPTION": "<p>The&nbsp;driver&nbsp;must&nbsp;wear&nbsp;corrective&nbsp;lenses&nbsp;while&nbsp;operating&nbsp;a&nbsp;motor&nbsp;vehicle.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     }
+    },
+    {
+     "value": "AUTOMATIC_TRANSMISSION_ONLY",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Automatic Transmission Only",
+       "DESCRIPTION": "<p>The&nbsp;driver&nbsp;is&nbsp;not&nbsp;authorized&nbsp;to&nbsp;operate&nbsp;applicable&nbsp;vehicles&nbsp;equipped&nbsp;with&nbsp;a&nbsp;manual&nbsp;transmission.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     }
+    },
+    {
+     "value": "NO_AIR_BRAKE_VEHICLES",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "No Air Brake Vehicles",
+       "DESCRIPTION": "<p>The&nbsp;driver&nbsp;is&nbsp;not&nbsp;authorized&nbsp;to&nbsp;operate&nbsp;vehicles&nbsp;equipped&nbsp;with&nbsp;an&nbsp;air&nbsp;brake&nbsp;system.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     }
+    },
+    {
+     "value": "NO_FULL_AIR_BRAKE_VEHICLES",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "No Full Air Brake Vehicles",
+       "DESCRIPTION": "<p>The&nbsp;driver&nbsp;may&nbsp;operate&nbsp;only&nbsp;certain&nbsp;air-over-hydraulic&nbsp;systems&nbsp;and&nbsp;is&nbsp;not&nbsp;authorized&nbsp;to&nbsp;operate&nbsp;vehicles&nbsp;equipped&nbsp;with&nbsp;full&nbsp;air&nbsp;brakes.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     }
+    },
+    {
+     "value": "OPERATING_AREA_LIMITED",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Operating Area Limited",
+       "DESCRIPTION": "<p>The&nbsp;driver&nbsp;is&nbsp;restricted&nbsp;to&nbsp;operating&nbsp;within&nbsp;a&nbsp;specified&nbsp;state,&nbsp;province,&nbsp;territory,&nbsp;region,&nbsp;or&nbsp;type&nbsp;of&nbsp;commerce.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     }
+    },
+    {
+     "value": "DAYLIGHT_DRIVING_ONLY",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Daylight Driving Only",
+       "DESCRIPTION": "<p>The&nbsp;driver&nbsp;may&nbsp;operate&nbsp;a&nbsp;vehicle&nbsp;only&nbsp;during&nbsp;daylight&nbsp;hours.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     }
+    },
+    {
+     "value": "ADAPTIVE_EQUIPMENT_REQUIRED",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Adaptive Equipment Required",
+       "DESCRIPTION": "<p>The&nbsp;driver&nbsp;must&nbsp;use&nbsp;specified&nbsp;assistive&nbsp;equipment&nbsp;or&nbsp;operate&nbsp;a&nbsp;specially&nbsp;equipped&nbsp;vehicle.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "code": "COMMERCIAL_LICENSE",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.Boolean",
+   "nls": {
+    "ar": {
+     "DESCRIPTION": "<p></p>"
+    },
+    "en": {
+     "NAME": "Commercial License",
+     "DESCRIPTION": "<p>Indicates whether the license is valid for commercial vehicle operation.</p>"
+    },
+    "he": {
+     "DESCRIPTION": "<p></p>"
+    }
+   },
+   "options": []
+  },
+  {
+   "code": "ENDORSEMENTS",
+   "required": false,
+   "multiselect": true,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "ar": {
+     "DESCRIPTION": "<p></p>"
+    },
+    "en": {
+     "NAME": "Endorsements",
+     "DESCRIPTION": "<p>Additional operating privileges granted to the license holder.</p>"
+    },
+    "he": {
+     "DESCRIPTION": "<p></p>"
+    }
+   },
+   "options": [
+    {
+     "value": "AIR_BRAKE",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Air Brake",
+       "DESCRIPTION": "<p>Authorized&nbsp;to&nbsp;operate&nbsp;vehicles&nbsp;equipped&nbsp;with&nbsp;air&nbsp;brake&nbsp;systems.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     }
+    },
+    {
+     "value": "HAZMAT",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Hazardous Materials",
+       "DESCRIPTION": "<p>Authorized&nbsp;to&nbsp;transport&nbsp;hazardous&nbsp;materials&nbsp;requiring&nbsp;regulatory&nbsp;compliance.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     }
+    },
+    {
+     "value": "TANK_VEHICLE",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Tank Vehicle",
+       "DESCRIPTION": "<p>Authorized&nbsp;to&nbsp;operate&nbsp;tank&nbsp;vehicles&nbsp;transporting&nbsp;liquids&nbsp;or&nbsp;gases.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     }
+    },
+    {
+     "value": "DOUBLE_TRIPLE_TRAILER",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Double / Triple Trailer",
+       "DESCRIPTION": "<p>Authorized&nbsp;to&nbsp;operate&nbsp;vehicles&nbsp;towing&nbsp;multiple&nbsp;trailers.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     }
+    },
+    {
+     "value": "PASSENGER",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Passenger",
+       "DESCRIPTION": "<p>Authorized&nbsp;to&nbsp;transport&nbsp;passengers&nbsp;in&nbsp;buses&nbsp;or&nbsp;similar&nbsp;vehicles.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     }
+    },
+    {
+     "value": "MOTORCYCLE",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Motorcycle",
+       "DESCRIPTION": "<p>Authorized&nbsp;to&nbsp;operate&nbsp;motorcycles&nbsp;where&nbsp;recognized&nbsp;by&nbsp;the&nbsp;jurisdiction.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "code": "RESTRICTION_DETAILS",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "ar": {
+     "DESCRIPTION": "<p></p>"
+    },
+    "en": {
+     "NAME": "Restriction Details",
+     "DESCRIPTION": "<p>Official or operational details describing how the recorded restrictions apply.</p>"
+    },
+    "he": {
+     "DESCRIPTION": "<p></p>"
+    }
+   },
+   "options": []
+  },
+  {
+   "code": "LICENSE_CLASSES",
+   "required": false,
+   "multiselect": true,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "ar": {
+     "DESCRIPTION": "<p></p>"
+    },
+    "en": {
+     "NAME": "License Classes",
+     "DESCRIPTION": "<p>Vehicle classes the holder is authorized to operate.</p>"
+    },
+    "he": {
+     "DESCRIPTION": "<p></p>"
+    }
+   },
+   "options": []
+  }
+ ],
+ "id": 13,
+ "isAbstract": false,
+ "attributeGroups": []
+}

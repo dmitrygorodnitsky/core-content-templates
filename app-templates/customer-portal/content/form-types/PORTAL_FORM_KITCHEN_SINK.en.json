@@ -1,0 +1,619 @@
+{
+ "id": 9001,
+ "code": "PORTAL_FORM_KITCHEN_SINK",
+ "isAbstract": false,
+ "permissions": [],
+ "children": [],
+ "parents": [],
+ "nls": {
+  "en": {
+   "NAME": "Every field variant"
+  }
+ },
+ "attributeGroups": [
+  {
+   "code": "TEXTS",
+   "nls": {
+    "en": {
+     "NAME": "Text and typed inputs"
+    }
+   }
+  },
+  {
+   "code": "NUMBERS",
+   "nls": {
+    "en": {
+     "NAME": "Numbers"
+    }
+   }
+  },
+  {
+   "code": "CHOICES",
+   "nls": {
+    "en": {
+     "NAME": "Choices"
+    }
+   }
+  },
+  {
+   "code": "CONDITIONAL",
+   "nls": {
+    "en": {
+     "NAME": "Shown only for a commercial property"
+    }
+   }
+  }
+ ],
+ "attributes": [
+  {
+   "code": "PLAIN_TEXT",
+   "required": true,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "en": {
+     "NAME": "Plain text"
+    }
+   },
+   "options": [],
+   "inputFormat": "placeholder:Your answer"
+  },
+  {
+   "code": "LONG_TEXT",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "en": {
+     "NAME": "Long text"
+    }
+   },
+   "options": [],
+   "inputFormat": "textarea rows:5 placeholder:Tell us more"
+  },
+  {
+   "code": "SECRET",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "en": {
+     "NAME": "Password"
+    }
+   },
+   "options": [],
+   "inputFormat": "password minLength:8"
+  },
+  {
+   "code": "EMAIL",
+   "required": true,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "en": {
+     "NAME": "Email"
+    }
+   },
+   "options": [],
+   "inputFormat": "email placeholder:name@example.com"
+  },
+  {
+   "code": "PHONE",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "en": {
+     "NAME": "Phone"
+    }
+   },
+   "options": [],
+   "inputFormat": "tel"
+  },
+  {
+   "code": "WEBSITE",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "en": {
+     "NAME": "Website"
+    }
+   },
+   "options": [],
+   "inputFormat": "url placeholder:https://"
+  },
+  {
+   "code": "BRAND_COLOR",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "en": {
+     "NAME": "Brand colour"
+    }
+   },
+   "options": [],
+   "inputFormat": "color"
+  },
+  {
+   "code": "START_DATE",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "en": {
+     "NAME": "Start date"
+    }
+   },
+   "options": [],
+   "inputFormat": "date"
+  },
+  {
+   "code": "POSTAL_CODE",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "en": {
+     "NAME": "Postal code"
+    }
+   },
+   "options": [],
+   "inputFormat": "re:^[A-Z]\\d[A-Z]\\s?\\d[A-Z]\\d$ mask:A9A 9A9; placeholder:K1A 0B1"
+  },
+  {
+   "code": "CREW_SIZE",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.Integer",
+   "nls": {
+    "en": {
+     "NAME": "Crew size"
+    }
+   },
+   "options": [],
+   "inputFormat": "min:1 max:40 step:1"
+  },
+  {
+   "code": "BUDGET",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.math.BigDecimal",
+   "nls": {
+    "en": {
+     "NAME": "Season budget"
+    }
+   },
+   "options": [],
+   "inputFormat": "slider min:0 max:50000 step:500"
+  },
+  {
+   "code": "ACCEPT_TERMS",
+   "required": true,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.Boolean",
+   "nls": {
+    "en": {
+     "NAME": "I accept the service terms"
+    }
+   },
+   "options": []
+  },
+  {
+   "code": "PROPERTY_TYPE",
+   "required": true,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "en": {
+     "NAME": "Property type"
+    }
+   },
+   "options": [
+    {
+     "value": "RESIDENTIAL",
+     "nls": {
+      "en": {
+       "NAME": "Residential"
+      }
+     }
+    },
+    {
+     "value": "COMMERCIAL",
+     "nls": {
+      "en": {
+       "NAME": "Commercial"
+      }
+     }
+    },
+    {
+     "value": "MUNICIPAL",
+     "nls": {
+      "en": {
+       "NAME": "Municipal"
+      }
+     }
+    }
+   ],
+   "uiBehavior": "applyBehavior({ COMMERCIAL: \"CONDITIONAL\" });"
+  },
+  {
+   "code": "SURFACES",
+   "required": false,
+   "multiselect": true,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "en": {
+     "NAME": "Surfaces to clear"
+    }
+   },
+   "options": [
+    {
+     "value": "DRIVE",
+     "nls": {
+      "en": {
+       "NAME": "Drive lanes"
+      }
+     }
+    },
+    {
+     "value": "WALK",
+     "nls": {
+      "en": {
+       "NAME": "Walkways"
+      }
+     }
+    },
+    {
+     "value": "STAIRS",
+     "nls": {
+      "en": {
+       "NAME": "Entry stairs"
+      }
+     }
+    },
+    {
+     "value": "LOT",
+     "nls": {
+      "en": {
+       "NAME": "Parking lot"
+      }
+     }
+    },
+    {
+     "value": "FIRE",
+     "nls": {
+      "en": {
+       "NAME": "Fire lane"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "code": "TRIGGER",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "en": {
+     "NAME": "Snowfall trigger"
+    }
+   },
+   "options": [
+    {
+     "value": "2CM",
+     "nls": {
+      "en": {
+       "NAME": "2 cm"
+      }
+     }
+    },
+    {
+     "value": "5CM",
+     "nls": {
+      "en": {
+       "NAME": "5 cm"
+      }
+     }
+    },
+    {
+     "value": "10CM",
+     "nls": {
+      "en": {
+       "NAME": "10 cm"
+      }
+     }
+    }
+   ],
+   "inputFormat": "expanded"
+  },
+  {
+   "code": "EXTRAS",
+   "required": false,
+   "multiselect": true,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "en": {
+     "NAME": "Optional add-ons"
+    }
+   },
+   "options": [
+    {
+     "value": "BRINE",
+     "nls": {
+      "en": {
+       "NAME": "Pre-storm brine"
+      }
+     }
+    },
+    {
+     "value": "HAUL",
+     "nls": {
+      "en": {
+       "NAME": "Snow hauling"
+      }
+     }
+    },
+    {
+     "value": "ROOF",
+     "nls": {
+      "en": {
+       "NAME": "Roof clearing"
+      }
+     }
+    }
+   ],
+   "inputFormat": "expanded"
+  },
+  {
+   "code": "REFERRAL",
+   "required": false,
+   "multiselect": false,
+   "freeValue": true,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "en": {
+     "NAME": "How did you hear about us"
+    }
+   },
+   "options": [
+    {
+     "value": "SEARCH",
+     "nls": {
+      "en": {
+       "NAME": "Search"
+      }
+     }
+    },
+    {
+     "value": "NEIGHBOUR",
+     "nls": {
+      "en": {
+       "NAME": "Neighbour"
+      }
+     }
+    },
+    {
+     "value": "SIGN",
+     "nls": {
+      "en": {
+       "NAME": "Truck signage"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "code": "ACCOUNT_MANAGER",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "com.servicewand.core.User",
+   "nls": {
+    "en": {
+     "NAME": "Assigned manager"
+    }
+   },
+   "options": [
+    {
+     "value": "41",
+     "nls": {
+      "en": {
+       "NAME": "Marcus Hale"
+      }
+     }
+    },
+    {
+     "value": "42",
+     "nls": {
+      "en": {
+       "NAME": "Dana Whitlock"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "code": "SITE_COUNT",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.Integer",
+   "nls": {
+    "en": {
+     "NAME": "Number of sites"
+    }
+   },
+   "options": []
+  },
+  {
+   "code": "LOADING_DOCKS",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.Boolean",
+   "nls": {
+    "en": {
+     "NAME": "Loading docks on site"
+    }
+   },
+   "options": []
+  },
+  {
+   "code": "SITE_ADDRESS",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "en": {
+     "NAME": "Property address",
+     "PLACEHOLDER": "Start typing the address"
+    }
+   },
+   "options": [],
+   "inputFormat": "address country:us,ca"
+  }
+ ],
+ "attributeOrder": [
+  {
+   "TEXTS": [
+    {
+     "attributeCode": "PLAIN_TEXT",
+     "visible": true
+    },
+    {
+     "attributeCode": "SITE_ADDRESS",
+     "visible": true
+    },
+    {
+     "attributeCode": "EMAIL",
+     "visible": true
+    },
+    {
+     "attributeCode": "PHONE",
+     "visible": true
+    },
+    {
+     "attributeCode": "WEBSITE",
+     "visible": true
+    },
+    {
+     "attributeCode": "POSTAL_CODE",
+     "visible": true
+    },
+    {
+     "attributeCode": "START_DATE",
+     "visible": true
+    },
+    {
+     "attributeCode": "BRAND_COLOR",
+     "visible": true
+    },
+    {
+     "attributeCode": "SECRET",
+     "visible": true
+    },
+    {
+     "attributeCode": "LONG_TEXT",
+     "visible": true
+    }
+   ]
+  },
+  {
+   "NUMBERS": [
+    {
+     "attributeCode": "CREW_SIZE",
+     "visible": true
+    },
+    {
+     "attributeCode": "BUDGET",
+     "visible": true
+    },
+    {
+     "attributeCode": "SITE_COUNT",
+     "visible": true
+    }
+   ]
+  },
+  {
+   "CHOICES": [
+    {
+     "attributeCode": "PROPERTY_TYPE",
+     "visible": true
+    },
+    {
+     "attributeCode": "TRIGGER",
+     "visible": true
+    },
+    {
+     "attributeCode": "SURFACES",
+     "visible": true
+    },
+    {
+     "attributeCode": "EXTRAS",
+     "visible": true
+    },
+    {
+     "attributeCode": "REFERRAL",
+     "visible": true
+    },
+    {
+     "attributeCode": "ACCOUNT_MANAGER",
+     "visible": true
+    },
+    {
+     "attributeCode": "ACCEPT_TERMS",
+     "visible": true
+    }
+   ]
+  },
+  {
+   "CONDITIONAL": [
+    {
+     "attributeCode": "LOADING_DOCKS",
+     "visible": true
+    }
+   ]
+  }
+ ]
+}

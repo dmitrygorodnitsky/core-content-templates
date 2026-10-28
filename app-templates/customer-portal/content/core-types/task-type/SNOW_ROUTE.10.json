@@ -1,0 +1,315 @@
+{
+ "optimistic": 1,
+ "code": "SNOW_ROUTE",
+ "nls": {
+  "en": {
+   "NAME": "Route"
+  }
+ },
+ "workflow": {
+  "id": 19,
+  "code": "SNOW_ROUTE_TASK"
+ },
+ "organization": {
+  "optimistic": 3,
+  "id": 9,
+  "code": "SERVICE_WAND_WINTER_SERVICES_CANADA"
+ },
+ "attributeOrder": [
+  {
+   "JOB_CONTEXT": [
+    {
+     "attributeCode": "SUPERVISOR",
+     "visible": true
+    },
+    {
+     "attributeCode": "SCHEDULE_WINDOW",
+     "visible": true
+    },
+    {
+     "attributeCode": "JOB_MANAGER",
+     "visible": true
+    }
+   ]
+  },
+  {
+   "DISPATCH": [
+    {
+     "attributeCode": "CHECK_LIST",
+     "visible": true
+    },
+    {
+     "attributeCode": "ASSIGNED_CREW",
+     "visible": true
+    },
+    {
+     "attributeCode": "ASSIGNED_VEHICLE",
+     "visible": true
+    },
+    {
+     "attributeCode": "ASSIGNED_EQUIPMENT",
+     "visible": true
+    },
+    {
+     "attributeCode": "DISPATCH_NOTES",
+     "visible": true
+    }
+   ]
+  },
+  {
+   "FIELD_COMPLETION": [
+    {
+     "attributeCode": "COMPLETION_NOTES",
+     "visible": true
+    }
+   ]
+  },
+  {
+   "ROUTE_PLAN": [
+    {
+     "attributeCode": "ROUTE_DATE",
+     "visible": true
+    }
+   ]
+  }
+ ],
+ "attributes": [
+  {
+   "code": "ASSIGNED_EQUIPMENT",
+   "required": false,
+   "multiselect": true,
+   "freeValue": false,
+   "unique": false,
+   "className": "com.pixelnation.rm.domain.Resource",
+   "nls": {
+    "en": {
+     "NAME": "Assigned Equipment"
+    }
+   },
+   "options": [],
+   "entityTypes": [
+    {
+     "value": "SNOW_SALT_TRUCK"
+    },
+    {
+     "value": "SNOW_PLOW_TRUCK"
+    },
+    {
+     "value": "SNOW_EQUIPMENT"
+    },
+    {
+     "value": "SNOW_LOADER"
+    }
+   ]
+  },
+  {
+   "code": "SUPERVISOR",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "com.pixelnation.common.domain.User",
+   "nls": {
+    "ar": {
+     "NAME": "مشرف"
+    },
+    "en": {
+     "NAME": "Supervisor"
+    },
+    "es": {
+     "NAME": "Supervisor"
+    },
+    "fr": {
+     "NAME": "Superviseur"
+    },
+    "he": {
+     "NAME": "מפקח"
+    },
+    "kk": {
+     "NAME": "Қадағалаушы"
+    },
+    "ru": {
+     "NAME": "Супервайзер"
+    },
+    "zh": {
+     "NAME": "主管"
+    }
+   },
+   "options": []
+  },
+  {
+   "code": "ASSIGNED_CREW",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "com.pixelnation.rm.domain.Resource",
+   "nls": {
+    "en": {
+     "NAME": "Assigned Crew"
+    }
+   },
+   "options": [],
+   "entityTypes": [
+    {
+     "value": "SNOW_CREW"
+    }
+   ]
+  },
+  {
+   "code": "SCHEDULE_WINDOW",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "en": {
+     "NAME": "Schedule Window"
+    }
+   },
+   "options": []
+  },
+  {
+   "code": "CHECK_LIST",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "com.pixelnation.cms.domain.FormType",
+   "nls": {
+    "ar": {
+     "NAME": "قائمة فحص قبل المسار"
+    },
+    "en": {
+     "NAME": "Pre-route Check List"
+    },
+    "es": {
+     "NAME": "Lista de verificación previa a la ruta"
+    },
+    "fr": {
+     "NAME": "Liste de contrôle pré-itinéraire"
+    },
+    "he": {
+     "NAME": "רשימת בדיקות לפני המסלול"
+    },
+    "kk": {
+     "NAME": "Маршрутқа дейінгі тексеру тізімі"
+    },
+    "ru": {
+     "NAME": "Контрольный список перед маршрутом"
+    },
+    "zh": {
+     "NAME": "路由前检查清单"
+    }
+   },
+   "options": []
+  },
+  {
+   "code": "ASSIGNED_VEHICLE",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "com.pixelnation.rm.domain.Resource",
+   "nls": {
+    "en": {
+     "NAME": "Assigned Vehicle"
+    }
+   },
+   "options": [],
+   "entityTypes": [
+    {
+     "value": "SNOW_SALT_TRUCK"
+    },
+    {
+     "value": "SNOW_PLOW_TRUCK"
+    },
+    {
+     "value": "SNOW_VEHICLE"
+    },
+    {
+     "value": "SNOW_LOADER"
+    }
+   ]
+  },
+  {
+   "code": "DISPATCH_NOTES",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "en": {
+     "NAME": "Dispatch Notes"
+    }
+   },
+   "options": []
+  },
+  {
+   "code": "COMPLETION_NOTES",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "en": {
+     "NAME": "Completion Notes"
+    }
+   },
+   "options": []
+  },
+  {
+   "code": "ROUTE_DATE",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.time.LocalDate",
+   "nls": {
+    "en": {
+     "NAME": "Route Date"
+    }
+   },
+   "options": []
+  }
+ ],
+ "id": 10,
+ "isAbstract": false,
+ "attributeGroups": [
+  {
+   "code": "DISPATCH",
+   "nls": {
+    "en": {
+     "NAME": "Dispatch"
+    }
+   }
+  },
+  {
+   "code": "ROUTE_PLAN",
+   "nls": {
+    "en": {
+     "NAME": "Route Plan"
+    }
+   }
+  },
+  {
+   "code": "FIELD_COMPLETION",
+   "nls": {
+    "en": {
+     "NAME": "Field Completion"
+    }
+   }
+  },
+  {
+   "code": "JOB_CONTEXT",
+   "nls": {
+    "en": {
+     "NAME": "Job Context"
+    }
+   }
+  }
+ ]
+}

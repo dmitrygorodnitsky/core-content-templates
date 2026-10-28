@@ -1,0 +1,703 @@
+[
+  {
+    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_RENDER_PLANS_SECTION",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "ServiceWand · Render Plans Section",
+        "DESCRIPTION": "Controls whether the plans section is visible in this monoblock."
+      }
+    },
+    "value": "true",
+    "options": [
+      "false",
+      "true"
+    ]
+  },
+  {
+    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_BILLING_DEFAULT",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "ServiceWand · Default Billing Cycle",
+        "DESCRIPTION": "Selects which billing cycle is active when the pricing section first renders."
+      }
+    },
+    "value": "monthly",
+    "options": [
+      "monthly",
+      "annual"
+    ]
+  },
+  {
+    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_PRICING_DYNAMIC_ENABLED",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "ServiceWand · Dynamic Pricing Enabled",
+        "DESCRIPTION": "Opts this block into loading Core PIM pricing. When false or when loading fails, the static plan fields remain the rendered fallback."
+      }
+    },
+    "value": "true",
+    "options": [
+      "false",
+      "true"
+    ]
+  },
+  {
+    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_PRICING_API_BASE",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "ServiceWand · Pricing API Base",
+        "DESCRIPTION": "Core PIM API base path or origin. The runtime removes a trailing /api and posts to /public/{organization}/catalog/price-comparison.json."
+      }
+    },
+    "value": "/core-pim/api"
+  },
+  {
+    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_PRICING_ORGANIZATION",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "ServiceWand · Pricing Organization",
+        "DESCRIPTION": "Core PIM organization code used in the public catalog URL."
+      }
+    },
+    "value": "SERVICEWAND"
+  },
+  {
+    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_SAAS_PRICING_PRODUCT_TYPE_CODE",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "ServiceWand · Pricing Product Type Code",
+        "DESCRIPTION": "Core PIM product type to request, for example SERVICEWAND_SAAS, SERVICEWAND_SAAS_EXT, or SERVICEWAND_SAAS_ROUTING_TOKENS."
+      }
+    },
+    "value": "SERVICEWAND_SAAS"
+  },
+  {
+    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_PRICING_SORT_ATTRIBUTE_CODE",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "ServiceWand · Pricing Sort Attribute Code",
+        "DESCRIPTION": "Product attribute used to sort plans before falling back to amount."
+      }
+    },
+    "value": "SORT_ORDER_PRIORITY"
+  },
+  {
+    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_SAAS_PRICING_PRICE_TYPE_CODE",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "ServiceWand · Pricing Price Type Code",
+        "DESCRIPTION": "Core PIM price type code for the request."
+      }
+    },
+    "value": "RECURRENT"
+  },
+  {
+    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_SAAS_PRICING_PRICE_ATTRIBUTE_CODE",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "ServiceWand · Pricing Price Attribute Code",
+        "DESCRIPTION": "Core PIM price attribute used to filter prices."
+      }
+    },
+    "value": "INTERVAL"
+  },
+  {
+    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_SAAS_PRICING_PRICE_ATTRIBUTE_VALUES",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "ServiceWand · Pricing Price Attribute Values",
+        "DESCRIPTION": "Comma-separated price attribute values used by Core PIM filtering."
+      }
+    },
+    "value": "1 month"
+  },
+  {
+    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_PRICING_CURRENCY",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "ServiceWand · Pricing Currency",
+        "DESCRIPTION": "Currency attribute value requested from Core PIM."
+      }
+    },
+    "value": "CAD"
+  },
+  {
+    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_SAAS_PRICING_PURCHASE_URL",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "ServiceWand · Dynamic Pricing Purchase URL",
+        "DESCRIPTION": "Fallback CTA destination used when the product CTA_LINK attribute is empty."
+      }
+    },
+    "value": "#pricing"
+  },
+  {
+    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_SAAS_PRICING_BUY_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "ServiceWand · Dynamic Pricing Buy Label",
+        "DESCRIPTION": "Fallback CTA label used when the product CTA_LABEL attribute is empty for numeric pricing."
+      }
+    },
+    "value": {
+      "en": "Buy now"
+    }
+  },
+  {
+    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_PRICING_CONTACT_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "ServiceWand · Dynamic Pricing Contact Label",
+        "DESCRIPTION": "CTA and price label for custom/contact pricing."
+      }
+    },
+    "value": {
+      "en": "Contact us"
+    }
+  },
+  {
+    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_PLANS_PRICING_FEATURE_LIST_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Plans · Dynamic Pricing Feature List Label",
+        "DESCRIPTION": "Accessible label for dynamically rendered plan feature lists. This is a localized CMS fallback, not a JavaScript string."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum magna."
+    }
+  },
+  {
+    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_PRICING_ERROR_MODE",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "ServiceWand · Dynamic Pricing Error Mode",
+        "DESCRIPTION": "Currently only fallback is supported: keep the static CMS-authored cards if Core PIM loading fails."
+      }
+    },
+    "value": "fallback",
+    "options": [
+      "fallback"
+    ]
+  },
+  {
+    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_PLANS_EYEBROW",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Plans · Pricing Eyebrow",
+        "DESCRIPTION": "Small uppercase label above the pricing headline."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ea."
+    }
+  },
+  {
+    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_PLANS_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Plans · Pricing Headline",
+        "DESCRIPTION": "Main headline for the pricing plans section."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum voluptate."
+    }
+  },
+  {
+    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_PLANS_LEDE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Plans · Pricing Lede",
+        "DESCRIPTION": "Introductory paragraph below the pricing headline."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et."
+    }
+  },
+  {
+    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_PLANS_BILLING_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Plans · Billing Toggle Accessible Label",
+        "DESCRIPTION": "Accessible label for the billing cycle toggle group."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum elit."
+    }
+  },
+  {
+    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_PLANS_MONTHLY_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Plans · Monthly Billing Label",
+        "DESCRIPTION": "Label for the monthly billing toggle option."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum labore."
+    }
+  },
+  {
+    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_PLANS_ANNUAL_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Plans · Annual Billing Label",
+        "DESCRIPTION": "Label for the annual billing toggle option."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum minim."
+    }
+  },
+  {
+    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_PLANS_BILLING_NOTE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Plans · Billing Note",
+        "DESCRIPTION": "Short note shown below the billing toggle."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum nisi aliquip ex ea."
+    }
+  },
+  {
+    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_RENDER_ADDONS_SECTION",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "ServiceWand · Render Add-ons Section",
+        "DESCRIPTION": "Controls whether the dynamic add-ons section is visible in this monoblock."
+      }
+    },
+    "value": "true",
+    "options": [
+      "false",
+      "true"
+    ]
+  },
+  {
+    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_ADDONS_COLLAPSABLE",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "ServiceWand · Collapsable",
+        "DESCRIPTION": "When true, shows the add-ons teaser band and toggle so the add-on cards can collapse behind the section header."
+      }
+    },
+    "value": "true",
+    "options": [
+      "false",
+      "true"
+    ]
+  },
+  {
+    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_ADDONS_COLLAPSED",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "ServiceWand · Collapsed by Default",
+        "DESCRIPTION": "Initial add-ons body state when Collapsable is true. Ignored when Collapsable is false."
+      }
+    },
+    "value": "true",
+    "options": [
+      "false",
+      "true"
+    ]
+  },
+  {
+    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_ADDONS_SUMMARY_ADDONS_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "ServiceWand · Summary Add-ons Label",
+        "DESCRIPTION": "Localized label used by JS in the generated collapsed summary after the add-on count."
+      }
+    },
+    "value": {
+      "en": "add-ons"
+    }
+  },
+  {
+    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_ADDONS_SUMMARY_CATEGORIES_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "ServiceWand · Summary Categories Label",
+        "DESCRIPTION": "Localized label used by JS in the generated collapsed summary after the category count."
+      }
+    },
+    "value": {
+      "en": "categories"
+    }
+  },
+  {
+    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_ADDONS_SUMMARY_FROM_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "ServiceWand · Summary From Label",
+        "DESCRIPTION": "Localized prefix used by JS before the lowest numeric add-on price in the generated collapsed summary."
+      }
+    },
+    "value": {
+      "en": "from"
+    }
+  },
+  {
+    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_ADDONS_PRICING_CATALOG_SPECS",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "ServiceWand · Pricing Catalog Specs",
+        "DESCRIPTION": "Semicolon-separated dynamic catalogs. Format per item: productTypeCode|priceTypeCode|priceAttributeCode|priceAttributeValues|fixtureUrl. The fixtureUrl part stays empty in CMS production."
+      }
+    },
+    "value": "SERVICEWAND_SAAS_EXT|RECURRENT|INTERVAL|1 month|"
+  },
+  {
+    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_ADDONS_PRICING_PURCHASE_URL",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "ServiceWand · Dynamic Pricing Purchase URL",
+        "DESCRIPTION": "Fallback purchase/contact URL used when the add-on product CTA_LINK attribute is empty."
+      }
+    },
+    "value": "#pricing-addons"
+  },
+  {
+    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_ADDONS_PRICING_BUY_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "ServiceWand · Dynamic Pricing Buy Label",
+        "DESCRIPTION": "Fallback buy label used when the add-on product CTA_LABEL attribute is empty for numeric pricing."
+      }
+    },
+    "value": {
+      "en": "Buy add-on"
+    }
+  },
+  {
+    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_ADDONS_EYEBROW",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Addons · Add-ons Eyebrow",
+        "DESCRIPTION": "Small uppercase label above the add-ons heading."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum sed."
+    }
+  },
+  {
+    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_ADDONS_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Addons · Add-ons Heading",
+        "DESCRIPTION": "Main heading for the add-ons section."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum et."
+    }
+  },
+  {
+    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_ADDONS_LEDE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Addons · Add-ons Lede",
+        "DESCRIPTION": "Introductory paragraph for the add-ons section."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum veniam quis nostrud exercitation ullamco laboris nisi aliquip ex ea commodo consequat duis aute irure reprehenderit."
+    }
+  },
+  {
+    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_ADDONS_MORE_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "ServiceWand · Expand Label",
+        "DESCRIPTION": "Band toggle label shown while the section is collapsed."
+      }
+    },
+    "value": {
+      "en": "View add-ons"
+    }
+  },
+  {
+    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_ADDONS_LESS_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "ServiceWand · Collapse Label",
+        "DESCRIPTION": "Band toggle label shown while the section is expanded."
+      }
+    },
+    "value": {
+      "en": "Hide add-ons"
+    }
+  },
+  {
+    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_ADDONS_DISCLAIMER",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Addons · Add-ons Disclaimer",
+        "DESCRIPTION": "Small disclaimer shown below the add-on cards."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum nulla pariatur lorem ipsum."
+    }
+  },
+  {
+    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_RENDER_MATRIX_SECTION",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "ServiceWand · Render Matrix Section",
+        "DESCRIPTION": "Controls whether the plan comparison matrix section is visible in this monoblock."
+      }
+    },
+    "value": "true",
+    "options": [
+      "false",
+      "true"
+    ]
+  },
+  {
+    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_MATRIX_COLLAPSABLE",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Matrix · Collapsable",
+        "DESCRIPTION": "When true, desktop matrix feature groups can collapse behind their group headers. When false, groups stay open and no group collapse UI is initialized."
+      }
+    },
+    "value": "true",
+    "options": [
+      "false",
+      "true"
+    ]
+  },
+  {
+    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_MATRIX_COLLAPSED",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Matrix · Collapsed by Default",
+        "DESCRIPTION": "Initial group state when Collapsable is true: true starts all desktop groups collapsed, false starts them open. Ignored when Collapsable is false."
+      }
+    },
+    "value": "false",
+    "options": [
+      "false",
+      "true"
+    ]
+  },
+  {
+    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_MATRIX_HINT_STYLE",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Matrix · Row Hint Style",
+        "DESCRIPTION": "Controls whether attribute Placeholder text is exposed as a tooltip trigger. Descriptions remain rendered as normal row descriptions."
+      }
+    },
+    "value": "tooltip",
+    "options": [
+      "inline",
+      "tooltip"
+    ]
+  },
+  {
+    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_MATRIX_TIP_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Matrix · Tooltip Button Label",
+        "DESCRIPTION": "Accessible label prefix for matrix row tooltip triggers."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum consequat."
+    }
+  },
+  {
+    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_MATRIX_FEATURE_COLUMN_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Matrix · Feature Column Label",
+        "DESCRIPTION": "Label for the leftmost feature column."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum esse."
+    }
+  },
+  {
+    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_MATRIX_STATE_LABEL_YES",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Matrix · State Label · Yes",
+        "DESCRIPTION": "Screen-reader label applied to icon-only 'yes' cells."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum dolor sit amet consectetur."
+    }
+  },
+  {
+    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_MATRIX_STATE_LABEL_NO",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Matrix · State Label · No",
+        "DESCRIPTION": "Screen-reader label applied to icon-only 'no' cells."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum do eiusmod tempor incididunt."
+    }
+  },
+  {
+    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_MATRIX_STATE_LABEL_PARTIAL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Matrix · State Label · Partial",
+        "DESCRIPTION": "Screen-reader label applied to icon-only 'partial' cells."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum dolore magna aliqua enim."
+    }
+  },
+  {
+    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_MATRIX_STATE_LABEL_EMPTY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Matrix · State Label · Empty",
+        "DESCRIPTION": "Screen-reader label applied to empty dynamic cells."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum quis nostrud exercitation ullamco."
+    }
+  },
+  {
+    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_MATRIX_CTA_ROW_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Matrix · CTA Row Label",
+        "DESCRIPTION": "Feature-column label for the closing CTA row."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ex."
+    }
+  },
+  {
+    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_MATRIX_EYEBROW",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Matrix · Matrix Eyebrow",
+        "DESCRIPTION": "Small uppercase label above the matrix heading."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum reprehenderit."
+    }
+  },
+  {
+    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_MATRIX_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Matrix · Matrix Heading",
+        "DESCRIPTION": "Main heading for the comparison matrix."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum pariatur."
+    }
+  },
+  {
+    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_MATRIX_LEDE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Matrix · Matrix Lede",
+        "DESCRIPTION": "Introductory paragraph for the matrix."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua enim ad minim."
+    }
+  },
+  {
+    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_MATRIX_TABLE_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Matrix · Table Accessible Label",
+        "DESCRIPTION": "Accessible label for the matrix table."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ut."
+    }
+  },
+  {
+    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_MATRIX_DISCLAIMER",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Matrix · Matrix Disclaimer",
+        "DESCRIPTION": "Small disclaimer shown below the matrix."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ad minim veniam quis."
+    }
+  }
+]
