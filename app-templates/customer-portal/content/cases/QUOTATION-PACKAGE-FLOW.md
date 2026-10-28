@@ -1371,6 +1371,32 @@ CMS and PageContext values kept; `app-3-core-cms` served the old version of each
 until one identical save was steered to it, after which both nodes served the
 new pages.
 
+### Interval from the price and the granted Unit, 2026-10-28
+
+On dev-1 the ProductPrice grant profile 96 includes `attributes`. A
+SNOWLIMITLESS recurring price carries `INTERVAL` as `{value, unit}` (price 50:
+`{"value":1,"unit":55}`, price 224: `{"value":5,"unit":55}`); `TIERED` prices
+carry no `INTERVAL`. Unit is grantable: an anonymous
+`POST /core/i/{token}/unit/list.json` returned `{id:55, code:"MONTH"}`.
+
+The review page now lists Unit through the link whenever the grant lists it,
+and names a recurring option from each line's ProductPrice `INTERVAL`: its
+`unit` resolved through the granted Unit rows, code `MONTH`, 1 month Monthly,
+more Seasonal. A price whose unit is not among the granted rows falls back to
+the line's `OrderItem.metadata`; without either, or when the lines disagree, the
+option stays Recurring. A link whose grant lists no Unit makes no Unit request.
+
+The portal is unchanged: its session read of ProductPrice asks only for `id`,
+`nls`, `product` and `type`, it reads no Unit, and it keeps reading the
+interval from `OrderItem.metadata`.
+
+Evidence: `client-review-check.mjs` (79 states, new `quote-price-intervals`):
+INTERVAL 1 in MONTH reads Monthly, INTERVAL 5 in MONTH Seasonal, a link without
+a granted Unit Recurring, prices with different intervals Recurring even where
+the line metadata agrees, a `TIERED` price Per service, and a live-mode run that
+lists `/core/i/{token}/unit/list.json` only when the grant lists Unit. Nothing
+was uploaded to dev-1.
+
 ## 16. Property address and plan from a second grant, 2026-10-15
 
 The quote Order type is losing `SERVICE_ADDRESS` and `PROPERTY_PLAN`. The

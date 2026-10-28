@@ -32,6 +32,7 @@ POST {apiBase}/core-bill/i/{token}/order-item/list.json
 POST {apiBase}/core-pim/i/{token}/product-price/list.json
 POST {apiBase}/core-pim/i/{token}/product/list.json
 POST {apiBase}/core/i/{token}/address/list.json (while the main grant lists Address)
+POST {apiBase}/core/i/{token}/unit/list.json (while the main grant lists Unit)
 POST {apiBase}/core/i/{propertyToken}/introspect.json (only when the link carries #property-token=; any failure means no property is readable)
 POST {apiBase}/core-rm/i/{propertyToken}/resource/list.json (only while the property grant introspects Resource as readable)
 GET {apiBase}/core/image/{imageId}/get?width=440 (the provider logo, loaded by the browser as an image, without the token)

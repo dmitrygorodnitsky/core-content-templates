@@ -353,6 +353,9 @@
       intervalCount: "INTERVAL_COUNT",
       intervalUnit: "INTERVAL_UNIT",
       monthUnit: "MONTH",
+      priceInterval: "INTERVAL",
+      priceIntervalUnit: "unit",
+      unitEntity: "unit",
     },
     rawShape: {
       orderLines: "items",
@@ -410,6 +413,7 @@
       "product-price": { service: "core-pim", segment: "product-price" },
       product: { service: "core-pim", segment: "product" },
       address: { service: "core", segment: "address" },
+      unit: { service: "core", segment: "unit" },
       resource: { service: "core-rm", segment: "resource", grant: "property" },
     },
     fragment: { token: "token", propertyToken: "property-token" },
@@ -1287,6 +1291,16 @@
     return positiveInteger(metadata[variants.intervalCount]);
   }
 
+  function priceIntervalMonths(price, units, variants) {
+    var interval = attributeEntry(price, variants.priceInterval);
+    if (!interval || typeof interval !== "object") return null;
+    var reference = interval[variants.priceIntervalUnit];
+    var unitId = positiveInteger(reference && typeof reference === "object" ? reference.id : reference);
+    var unit = unitId && units ? units[unitId] : null;
+    if (!unit || text(unit.code).toUpperCase() !== variants.monthUnit) return null;
+    return positiveInteger(interval.value);
+  }
+
   function recurringModel(months, variants) {
     var first = months[0];
     var shared = first !== null && months.every(function (count) { return count === first; });
@@ -1311,7 +1325,12 @@
     var recurrent = prices.filter(recurrentPrice).length;
     var model = "";
     if (typed && recurrent === 0) model = variants.perService;
-    if (typed && recurrent === prices.length) model = recurringModel(lines.map(function (line) { return intervalMonths(line, variants); }), variants);
+    if (typed && recurrent === prices.length) {
+      model = recurringModel(lines.map(function (line, index) {
+        var months = priceIntervalMonths(prices[index], context.catalog.units, variants);
+        return months !== null ? months : intervalMonths(line, variants);
+      }), variants);
+    }
     return { model: model, name: name };
   }
 
@@ -1526,6 +1545,7 @@
         products: rowsById(input.products),
         resources: rowsById(input.resources),
         addresses: rowsById(input.addresses),
+        units: rowsById(input.units),
       },
     });
     if (state === "QUOTATION_SENT") grantActions(properties, grant, contract);
@@ -4006,11 +4026,21 @@
       });
     }
 
+    function readUnits(grant) {
+      var entity = contract.priceVariants.unitEntity;
+      if (!normalizer.canRead(grant, entity)) return Promise.resolve([]);
+      return Promise.resolve().then(function () { return adapter.list(entity); }).then(function (rows) {
+        return Array.isArray(rows) ? rows : [];
+      }, function () {
+        return [];
+      });
+    }
+
     function readAll() {
       return adapter.introspect().then(function (rawGrant) {
         var grant = normalizer.grantOf(rawGrant);
         if (!normalizer.canRead(grant, "document")) {
-          return { grant: grant, documents: [], orders: [], accounts: [], orderItems: [], productPrices: [], products: [], resources: [], addresses: [], accountFailed: false };
+          return { grant: grant, documents: [], orders: [], accounts: [], orderItems: [], productPrices: [], products: [], resources: [], addresses: [], units: [], accountFailed: false };
         }
         var ordersReadable = normalizer.canRead(grant, "order");
         var accountRead = normalizer.canRead(grant, "account")
@@ -4023,7 +4053,7 @@
         var orderItemsRead = normalizer.canRead(grant, "order-item") ? adapter.list("order-item") : Promise.resolve([]);
         var productPricesRead = normalizer.canRead(grant, "product-price") ? adapter.list("product-price") : Promise.resolve([]);
         var productsRead = normalizer.canRead(grant, "product") ? adapter.list("product") : Promise.resolve([]);
-        return Promise.all([adapter.list("document"), accountRead, ordersRead, orderItemsRead, productPricesRead, productsRead, readProperties(), readAddresses(grant)]).then(function (parts) {
+        return Promise.all([adapter.list("document"), accountRead, ordersRead, orderItemsRead, productPricesRead, productsRead, readProperties(), readAddresses(grant), readUnits(grant)]).then(function (parts) {
           var documents = parts[0];
           var orders = parts[2].slice();
           var present = {};
@@ -4053,6 +4083,7 @@
               products: parts[5],
               resources: parts[6],
               addresses: parts[7],
+              units: parts[8],
               accountFailed: parts[1].failed,
             };
           });

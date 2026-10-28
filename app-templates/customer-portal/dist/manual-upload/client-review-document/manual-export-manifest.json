@@ -10,7 +10,7 @@
       "head": "b5e252b604ad732492b218098f257bf497097a28f69355e257736c578a5a213e",
       "html": "fbe3f2e4e13c9f9daea214d95852524ff52ccfc114611df4b3777960de8122ce",
       "css": "f60deb6fa3dc08bc8245b6ef54b5dcd70c28417d2c4727ee5e11e2dc311601ec",
-      "javascript": "20655d16ca1c7099fab3371bda2b19e0d1354b2c6969623698cc1e65d4fac3f6"
+      "javascript": "2ef813f12a301f52299358e69552f42648424e6ad5de8856f2fa6fcb62a0450c"
     }
   },
   "runtime": {
@@ -63,6 +63,7 @@
       "POST {apiBase}/core-pim/i/{token}/product-price/list.json",
       "POST {apiBase}/core-pim/i/{token}/product/list.json",
       "POST {apiBase}/core/i/{token}/address/list.json (while the main grant lists Address)",
+      "POST {apiBase}/core/i/{token}/unit/list.json (while the main grant lists Unit)",
       "POST {apiBase}/core/i/{propertyToken}/introspect.json (only when the link carries #property-token=; any failure means no property is readable)",
       "POST {apiBase}/core-rm/i/{propertyToken}/resource/list.json (only while the property grant introspects Resource as readable)",
       "GET {apiBase}/core/image/{imageId}/get?width=440 (the provider logo, loaded by the browser as an image, without the token)",
@@ -123,7 +124,7 @@
       "alias"
     ],
     "orderLines": "items",
-    "optionLabel": "the Order's PRICING_MODEL while it still carries one; otherwise the NAME its lines' ProductPrice rows share, else the price type (PER_SERVICE when no price is recurrent, RECURRING when every one is) refined to MONTHLY or SEASONAL only by OrderItem.metadata INTERVAL_COUNT/INTERVAL_UNIT in MONTH (1 or more), else Option {n}",
+    "optionLabel": "the Order's PRICING_MODEL while it still carries one; otherwise the NAME its lines' ProductPrice rows share, else the price type (PER_SERVICE when no price is recurrent, RECURRING when every one is) refined to MONTHLY or SEASONAL by the ProductPrice attribute INTERVAL whose unit is a granted Unit with code MONTH, else by OrderItem.metadata INTERVAL_COUNT/INTERVAL_UNIT in MONTH (1 or more), else Option {n}",
     "agreement": [
       "PROVIDER_LEGAL_NAME",
       "PROVIDER_REPRESENTATIVE_NAME",

@@ -13,6 +13,7 @@
       "product-price": { service: "core-pim", segment: "product-price" },
       product: { service: "core-pim", segment: "product" },
       address: { service: "core", segment: "address" },
+      unit: { service: "core", segment: "unit" },
       resource: { service: "core-rm", segment: "resource", grant: "property" },
     },
     fragment: { token: "token", propertyToken: "property-token" },

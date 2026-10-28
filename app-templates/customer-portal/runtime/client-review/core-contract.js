@@ -96,6 +96,9 @@
       intervalCount: "INTERVAL_COUNT",
       intervalUnit: "INTERVAL_UNIT",
       monthUnit: "MONTH",
+      priceInterval: "INTERVAL",
+      priceIntervalUnit: "unit",
+      unitEntity: "unit",
     },
     rawShape: {
       orderLines: "items",

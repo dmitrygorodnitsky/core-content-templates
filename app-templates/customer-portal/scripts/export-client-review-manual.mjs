@@ -211,6 +211,7 @@ function manifestFor(template, contract) {
         entity("product-price", "list.json"),
         entity("product", "list.json"),
         entity("address", "list.json") + " (while the main grant lists Address)",
+        entity(core.priceVariants.unitEntity, "list.json") + " (while the main grant lists Unit)",
         "POST {apiBase}/" + grant.introspect.service + "/i/{propertyToken}/" + grant.introspect.tail + " (only when the link carries " + propertyFragment + "; any failure means no property is readable)",
         entity("resource", "list.json") + " (only while the property grant introspects Resource as readable)",
         "GET {apiBase}/" + grant.image.service + "/" + grant.image.head + "/{imageId}/" + grant.image.tail + "?width=" + grant.image.width + " (the provider logo, loaded by the browser as an image, without the token)",
@@ -236,7 +237,7 @@ function manifestFor(template, contract) {
       resource: [core.propertyAttributes.address, core.propertyAttributes.plan],
       address: core.addressFormat.parts.concat([core.addressFormat.fallback]),
       orderLines: core.rawShape.orderLines,
-      optionLabel: "the Order's " + core.orderAttributes.pricingModel + " while it still carries one; otherwise the NAME its lines' ProductPrice rows share, else the price type (" + core.priceVariants.perService + " when no price is recurrent, " + core.priceVariants.recurring + " when every one is) refined to " + core.priceVariants.monthly + " or " + core.priceVariants.seasonal + " only by OrderItem." + core.priceVariants.lineMetadata + " " + core.priceVariants.intervalCount + "/" + core.priceVariants.intervalUnit + " in " + core.priceVariants.monthUnit + " (1 or more), else Option {n}",
+      optionLabel: "the Order's " + core.orderAttributes.pricingModel + " while it still carries one; otherwise the NAME its lines' ProductPrice rows share, else the price type (" + core.priceVariants.perService + " when no price is recurrent, " + core.priceVariants.recurring + " when every one is) refined to " + core.priceVariants.monthly + " or " + core.priceVariants.seasonal + " by the ProductPrice attribute " + core.priceVariants.priceInterval + " whose " + core.priceVariants.priceIntervalUnit + " is a granted Unit with code " + core.priceVariants.monthUnit + ", else by OrderItem." + core.priceVariants.lineMetadata + " " + core.priceVariants.intervalCount + "/" + core.priceVariants.intervalUnit + " in " + core.priceVariants.monthUnit + " (1 or more), else Option {n}",
       agreement: [
         core.agreementAttributes.providerLegalName,
         core.agreementAttributes.providerRepresentativeName,

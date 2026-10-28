@@ -576,6 +576,16 @@
     return positiveInteger(metadata[variants.intervalCount]);
   }
 
+  function priceIntervalMonths(price, units, variants) {
+    var interval = attributeEntry(price, variants.priceInterval);
+    if (!interval || typeof interval !== "object") return null;
+    var reference = interval[variants.priceIntervalUnit];
+    var unitId = positiveInteger(reference && typeof reference === "object" ? reference.id : reference);
+    var unit = unitId && units ? units[unitId] : null;
+    if (!unit || text(unit.code).toUpperCase() !== variants.monthUnit) return null;
+    return positiveInteger(interval.value);
+  }
+
   function recurringModel(months, variants) {
     var first = months[0];
     var shared = first !== null && months.every(function (count) { return count === first; });
@@ -600,7 +610,12 @@
     var recurrent = prices.filter(recurrentPrice).length;
     var model = "";
     if (typed && recurrent === 0) model = variants.perService;
-    if (typed && recurrent === prices.length) model = recurringModel(lines.map(function (line) { return intervalMonths(line, variants); }), variants);
+    if (typed && recurrent === prices.length) {
+      model = recurringModel(lines.map(function (line, index) {
+        var months = priceIntervalMonths(prices[index], context.catalog.units, variants);
+        return months !== null ? months : intervalMonths(line, variants);
+      }), variants);
+    }
     return { model: model, name: name };
   }
 
@@ -815,6 +830,7 @@
         products: rowsById(input.products),
         resources: rowsById(input.resources),
         addresses: rowsById(input.addresses),
+        units: rowsById(input.units),
       },
     });
     if (state === "QUOTATION_SENT") grantActions(properties, grant, contract);

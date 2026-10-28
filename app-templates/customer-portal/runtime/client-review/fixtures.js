@@ -214,6 +214,7 @@
     { id: "error", label: "Load error — retry recovers" },
     { id: "partial", label: "Partial data — one option unreadable" },
     { id: "quote-price-labels", label: "Quote review — options named from their prices, no PRICING_MODEL" },
+    { id: "quote-price-intervals", label: "Quote review — options named from the price INTERVAL and the granted Unit" },
     { id: "link-copied", label: "Copy link — copied on the contract details step" },
     { id: "link-copy-failed", label: "Copy link — the browser refused to copy" },
     { id: "contact-phone-only", label: "Contact us — the provider shows a phone and no email" },
@@ -705,6 +706,7 @@
             if (settings.addresses === "fail") throw reviewError("failed", 500);
             return clone(served.addresses || []);
           }
+          if (entity === "unit") return clone(served.units || []);
           if (entity === "resource") {
             if (settings.properties === "missing") throw reviewError("link-missing", 0);
             if (settings.properties === "unauthorized") throw reviewError("link-closed", 401);
@@ -759,6 +761,25 @@
       if (!name) return;
       row.items.forEach(function (line) { line.itemPrice.nls = { en: { NAME: name } }; });
     });
+    return data;
+  }
+
+  var MONTH_UNIT = { id: 55, code: "MONTH", nls: { en: { NAME: "Month" } } };
+  var INTERVAL_MONTHS = { SEASONAL: 5, MONTHLY: 1 };
+
+  function priceIntervals(data) {
+    var models = {};
+    ORDERS.forEach(function (spec) { models[spec.id] = spec.model; });
+    data.orders.forEach(function (row) {
+      var months = INTERVAL_MONTHS[models[row.id]];
+      row.items.forEach(function (line) {
+        var attributes = { 2: { CURRENCY: { value: CURRENCY.id } } };
+        if (months) attributes[4] = { INTERVAL: { value: months, unit: MONTH_UNIT.id }, USAGE_TYPE: { value: "Licensed" } };
+        line.itemPrice.attributes = attributes;
+      });
+    });
+    data.grant.types.push({ entityType: "Unit", canRead: true, canWrite: false, events: [] });
+    data.units = [clone(MONTH_UNIT)];
     return data;
   }
 
@@ -1055,6 +1076,9 @@
         break;
       case "quote-price-labels":
         priceLabelled(data);
+        break;
+      case "quote-price-intervals":
+        priceIntervals(priceLabelled(data));
         break;
       case "link-copied":
         data = quotationData("AWAITING_CLIENT_DETAILS", DECIDED);
@@ -1399,6 +1423,7 @@
     agreementData: agreementData,
     detailsErrors: detailsErrors,
     priceLabelled: priceLabelled,
+    priceIntervals: priceIntervals,
     idOnlyAccount: idOnlyAccount,
     completeAccount: completeAccount,
     numberedTerms: NUMBERED_TERMS,

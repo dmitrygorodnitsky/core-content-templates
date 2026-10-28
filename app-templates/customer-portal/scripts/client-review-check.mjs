@@ -281,6 +281,7 @@ const N = loadRuntime().CR.normalizer;
     products: data.products,
     resources: data.resources,
     addresses: data.addresses,
+    units: data.units,
     accountFailed: data.accountFails,
   }, { locale: "en-CA", contract });
 
@@ -398,6 +399,45 @@ const N = loadRuntime().CR.normalizer;
   assert.deepEqual(plain(model(intervals).properties.flatMap((property) => property.options.map((option) => [option.id, option.model]))).filter((entry) => [3104, 3106, 3107, 3109, 3110].includes(entry[0])), [
     [3104, "SEASONAL"], [3106, "RECURRING"], [3107, "MONTHLY"], [3109, "SEASONAL"], [3110, "RECURRING"],
   ], "when a line exposes its interval, 1 month is monthly and more months are seasonal; lines that disagree or count in other units stay recurring");
+
+  const optionModels = (data) => model(data).properties.flatMap((property) => property.options.map((option) => [option.id, option.model]));
+  const optionById = (data, id) => model(data).properties.flatMap((property) => property.options).find((option) => option.id === id);
+  const byPrice = () => CR.fixtures.priceIntervals(CR.fixtures.priceLabelled(CR.fixtures.quotationData()));
+  assert.deepEqual(plain(optionModels(byPrice())), [
+    [3101, "SEASONAL"], [3102, "MONTHLY"], [3103, "PER_SERVICE"], [3104, "SEASONAL"], [3105, "PER_SERVICE"],
+    [3106, "SEASONAL"], [3107, "MONTHLY"], [3108, ""], [3109, "SEASONAL"], [3110, "MONTHLY"],
+  ], "a recurring price's own INTERVAL counted in the granted MONTH Unit names every option, with no OrderItem metadata");
+  assert.equal(CR.optionLabel(optionById(byPrice(), 3107), defaultCopy), "Monthly", "a price INTERVAL of 1 in the granted Unit MONTH reads Monthly");
+  assert.equal(CR.optionLabel(optionById(byPrice(), 3104), defaultCopy), "Seasonal", "a price INTERVAL of 5 in the granted Unit MONTH reads Seasonal");
+  assert.equal(CR.optionLabel(optionById(byPrice(), 3103), defaultCopy), "Per service", "TIERED prices carry no INTERVAL and read Per service");
+  const oldLink = byPrice();
+  oldLink.units = [];
+  oldLink.grant.types = oldLink.grant.types.filter((type) => type.entityType !== "Unit");
+  assert.deepEqual(plain(optionModels(oldLink)).filter((entry) => [3104, 3107].includes(entry[0])), [[3104, "RECURRING"], [3107, "RECURRING"]], "a link issued before Unit was granted cannot tell what INTERVAL counts and reads Recurring");
+  assert.equal(CR.optionLabel(optionById(oldLink, 3107), defaultCopy), "Recurring");
+  const otherUnit = byPrice();
+  otherUnit.units = [{ id: 55, code: "WEEK" }];
+  assert.equal(optionById(otherUnit, 3107).model, "RECURRING", "an INTERVAL counted in a Unit other than MONTH reads Recurring");
+  const mixedIntervals = byPrice();
+  const mixedOrder = mixedIntervals.orders.find((row) => row.id === 3106);
+  mixedOrder.items[1].itemPrice.attributes[4].INTERVAL.value = 1;
+  mixedOrder.items.forEach((line) => { line.metadata = { INTERVAL_UNIT: "MONTH", INTERVAL_COUNT: 5 }; });
+  assert.equal(optionById(mixedIntervals, 3106).model, "RECURRING", "lines whose prices count different intervals read Recurring, even where the OrderItem metadata agrees");
+  assert.equal(CR.optionLabel(optionById(mixedIntervals, 3106), defaultCopy), "Recurring");
+  const priceOverLine = byPrice();
+  priceOverLine.orders.find((row) => row.id === 3104).items.forEach((line) => { line.metadata = { INTERVAL_UNIT: "MONTH", INTERVAL_COUNT: 1 }; });
+  assert.equal(optionById(priceOverLine, 3104).model, "SEASONAL", "the price's own INTERVAL wins over OrderItem metadata");
+  const lineFallback = byPrice();
+  lineFallback.units = [];
+  lineFallback.orders.find((row) => row.id === 3107).items.forEach((line) => { line.metadata = { INTERVAL_UNIT: "MONTH", INTERVAL_COUNT: 1 }; });
+  assert.equal(optionById(lineFallback, 3107).model, "MONTHLY", "without a granted Unit the OrderItem metadata still names the option");
+  const liveShape = CR.fixtures.priceLabelled(CR.fixtures.quotationData());
+  const liveOrder = liveShape.orders.find((row) => row.id === 3104);
+  liveShape.orderItems = liveOrder.items.map((line) => ({ id: line.id, itemPrice: { id: line.itemPrice.id } }));
+  liveShape.productPrices = liveOrder.items.map((line) => ({ id: line.itemPrice.id, type: { code: "TIERED_RECURRENT" }, attributes: { 2: { CURRENCY: { value: 21 } }, 4: { INTERVAL: { value: 5, unit: 55 }, USAGE_TYPE: { value: "Licensed" } } } }));
+  liveShape.units = [{ id: 55, code: "MONTH" }];
+  liveOrder.items = liveOrder.items.map((line) => ({ id: line.id }));
+  assert.equal(optionById(liveShape, 3104).model, "SEASONAL", "the INTERVAL joins through the granted OrderItem.itemPrice and ProductPrice rows, as dev-1 returns them");
 
   const mixed = CR.fixtures.priceLabelled(CR.fixtures.quotationData());
   mixed.orders.find((row) => row.id === 3103).items[1].itemPrice.type = { code: "TIERED_RECURRENT" };
@@ -675,7 +715,7 @@ const N = loadRuntime().CR.normalizer;
 const EXPECTED_SCENARIOS = {
   "quote-review": ["ready", "quote-review"], loading: ["loading", null], "link-missing": ["link-missing", null],
   "link-closed": ["link-closed", null], unconfigured: ["unconfigured", null], empty: ["ready", "empty"],
-  error: ["error", null], partial: ["ready", "quote-review"], "quote-price-labels": ["ready", "quote-review"], "option-open": ["ready", "quote-review"],
+  error: ["error", null], partial: ["ready", "quote-review"], "quote-price-labels": ["ready", "quote-review"], "quote-price-intervals": ["ready", "quote-review"], "option-open": ["ready", "quote-review"],
   "link-copied": ["ready", "contract-details"], "link-copy-failed": ["ready", "quote-review"],
   "contact-phone-only": ["ready", "quote-review"], "contact-none": ["ready", "quote-review"], "agreement-no-logo": ["ready", "agreement-review"],
   "view-pending": ["ready", "quote-review"], "view-failed": ["ready", "quote-review"], "approve-confirm": ["ready", "quote-review"],
@@ -974,6 +1014,11 @@ function assertForm(run, expected, message) {
       case "quote-price-labels": {
         const labels = byClass(run.mount, "cr-option__label").map((node) => node.textContent);
         assert.deepEqual(labels, ["Seasonal plan", "Monthly plan", copy.modelPerService, copy.modelRecurring, copy.modelPerService, copy.modelRecurring, copy.modelRecurring, "Option 1", copy.modelRecurring, copy.modelRecurring], "options without PRICING_MODEL are labelled from their prices");
+        break;
+      }
+      case "quote-price-intervals": {
+        const labels = byClass(run.mount, "cr-option__label").map((node) => node.textContent);
+        assert.deepEqual(labels, ["Seasonal plan", "Monthly plan", copy.modelPerService, copy.modelSeasonal, copy.modelPerService, copy.modelSeasonal, copy.modelMonthly, "Option 1", copy.modelSeasonal, copy.modelMonthly], "options without PRICING_MODEL are labelled Monthly or Seasonal from the price INTERVAL and the Unit the grant lists");
         break;
       }
       case "quote-review": {
@@ -2444,6 +2489,59 @@ for (const state of ["CLIENT_APPROVED", "ACTIVE", "EXPIRED"]) {
   assert.equal(byClass(mount, "cr-party").length, 2, "and the parties are drawn all the same");
 }
 
+for (const unitGranted of [true, false]) {
+  const runtime = loadRuntime({ fixtures: true });
+  const data = runtime.CR.fixtures.priceLabelled(runtime.CR.fixtures.quotationData());
+  const orderItems = [];
+  const productPrices = {};
+  data.orders.forEach((order) => {
+    order.items = order.items.map((line) => {
+      const price = line.itemPrice;
+      orderItems.push({ id: line.id, sortOrder: line.sortOrder, itemCount: line.itemCount, amount: line.amount, itemPrice: { id: price.id } });
+      const months = { 3104: 5, 3107: 1 }[order.id];
+      const attributes = { 2: { CURRENCY: { value: 21 } } };
+      if (months) attributes[4] = { INTERVAL: { value: months, unit: 55 }, USAGE_TYPE: { value: "Licensed" } };
+      productPrices[price.id] = { id: price.id, type: price.type, nls: price.nls, attributes };
+      return { id: line.id };
+    });
+  });
+  data.grant.types.push(
+    { entityType: "OrderItem", canRead: true, canWrite: false, events: [] },
+    { entityType: "ProductPrice", canRead: true, canWrite: false, events: [] },
+  );
+  if (unitGranted) data.grant.types.push({ entityType: "com.pixelnation.core.domain.Unit", canRead: true, canWrite: false, events: [] });
+  const serverAdapter = runtime.CR.fixtures.createFixtureAdapter(data, {});
+  const calls = [];
+  const reply = (status, body) => ({ status, ok: status >= 200 && status < 300, text: () => Promise.resolve(JSON.stringify(body)) });
+  const fetch = async (url, init) => {
+    calls.push({ url, init });
+    const route = url.slice("https://core.example/".length).split("?")[0].replace("/i/unit-token/", "/i/TOKEN/");
+    const answer = (work) => work.then((value) => reply(200, value), (error) => reply(error.status || 500, {}));
+    if (route === "core/i/TOKEN/introspect.json") return answer(serverAdapter.introspect());
+    if (route === "core/i/TOKEN/document/list.json") return answer(serverAdapter.list("document").then((result) => ({ result })));
+    if (route === "core-acct/i/TOKEN/account/list.json") return answer(serverAdapter.list("account").then((result) => ({ result })));
+    if (route === "core-bill/i/TOKEN/order/list.json") return answer(serverAdapter.list("order").then((result) => ({ result })));
+    if (route === "core-bill/i/TOKEN/order-item/list.json") return reply(200, { result: orderItems });
+    if (route === "core-pim/i/TOKEN/product-price/list.json") return reply(200, { result: Object.values(productPrices) });
+    if (route === "core/i/TOKEN/unit/list.json") return reply(200, { result: [{ id: 55, code: "MONTH" }] });
+    return reply(404, {});
+  };
+  const mount = runtime.document.createElement("div");
+  const host = section(runtime.document, { "data-review-data-mode": "live", "data-review-api-base": "https://core.example" });
+  const controller = runtime.CR.boot(host, { location: { hash: "#token=unit-token", href: "https://pages.example/review#token=unit-token" }, navigator: { language: "en-CA", clipboard: recordingClipboard() }, fetch, mount, locale: "en-CA" });
+  await controller.idle();
+  const unitReads = calls.filter((call) => call.url === "https://core.example/core/i/unit-token/unit/list.json");
+  const models = Object.fromEntries(controller.snapshot().view.properties.flatMap((property) => property.options.map((option) => [option.id, option.model])));
+  if (unitGranted) {
+    assert.equal(unitReads.length, 1, "live mode lists the granted Unit rows once");
+    assert.deepEqual(JSON.parse(unitReads[0].init.body), { offset: 0, pageSize: 200 }, "the Unit list is an anonymous page read like every other grant list");
+    assert.deepEqual([models[3104], models[3107], models[3103]], ["SEASONAL", "MONTHLY", "PER_SERVICE"], "live mode names options from the ProductPrice INTERVAL and the granted Unit");
+  } else {
+    assert.equal(unitReads.length, 0, "a link whose grant lists no Unit never asks for one");
+    assert.deepEqual([models[3104], models[3107], models[3103]], ["RECURRING", "RECURRING", "PER_SERVICE"], "and its recurring options read Recurring");
+  }
+}
+
 for (const [state, links] of [["SENT_TO_CLIENT", 0], ["SUSPENDED", 0], ["EXPIRED", 0], ["CLIENT_APPROVED", 2], ["ACTIVATION_FAILED", 2], ["ACTIVE", 2]]) {
   const run = await stagedController((F) => F.agreementData(state, false), {}, undefined, { portalUrl: "https://portal.example.com/" });
   assert.equal(portalLinks(run.mount).length, links, state + (links ? " offers the portal above and below the agreement" : " offers no portal: only an approved agreement does"));
@@ -3149,7 +3247,7 @@ try {
   assert.doesNotMatch(Object.values({ head: template.head, html: template.html, javascript: template.javascript }).join("\n"), /servicewand\.com|pixelnation\.com/, "no deployment host is baked in");
   assert.equal(manifest.uploadPerformed, false);
   assert.equal(manifest.kind, "client-review-document");
-  for (const path of ["/core-bill/i/{token}/order-item/list.json", "/core-pim/i/{token}/product-price/list.json", "/core-pim/i/{token}/product/list.json"]) {
+  for (const path of ["/core-bill/i/{token}/order-item/list.json", "/core-pim/i/{token}/product-price/list.json", "/core-pim/i/{token}/product/list.json", "/core/i/{token}/unit/list.json"]) {
     assert.ok(manifest.api.reads.some((read) => read.includes(path)), "the manual package documents the grant read " + path);
   }
   assert.deepEqual(manifest.plannedFields.account, ["LEGAL_ENTITY_TYPE"], "the manual package lists the Account attributes the page reads, as the contract names them");
