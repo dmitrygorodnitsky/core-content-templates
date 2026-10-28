@@ -5,7 +5,7 @@
 
   var ACCOUNT_ID = 694;
   var AGREEMENT_ID = 5205;
-  var ACCOUNT_TYPE = { id: 2, code: "SNOW_COMMERCIAL_CUSTOMER", nls: { en: { NAME: "Commercial customer" } } };
+  var ACCOUNT_TYPE = { id: 2, code: "CUSTOMER", nls: { en: { NAME: "Client" } } };
   var ORDER_TYPE = { id: 5, code: "FIELD_SERVICE_ORDER" };
   var CURRENCY = { id: 3, code: "CAD" };
   var PRICE_TYPES = { SEASONAL: { id: 6, code: "TIERED_RECURRENT" }, MONTHLY: { id: 6, code: "TIERED_RECURRENT" }, PER_SERVICE: { id: 5, code: "TIERED" } };
@@ -279,7 +279,7 @@
     { id: "completion", label: "Completion — CLIENT_APPROVED, no portal address" },
     { id: "completion-portal", label: "Completion — ACTIVE, portal address configured" },
     { id: "completion-finishing", label: "Completion — ACTIVATION_FAILED, no primary email in the link" },
-    { id: "completion-attributes", label: "Completion — CLIENT_APPROVED, sign-in email from PRIMARY contact" },
+    { id: "completion-attributes", label: "Completion — CLIENT_APPROVED, sign-in email from LEGAL contact" },
     { id: "link-closed-portal", label: "Link expired or revoked — portal address configured" },
     { id: "reference-expired", label: "Expired agreement — read only" },
     { id: "closed-canceled", label: "Canceled — closed" },
@@ -369,7 +369,7 @@
         middleName: null,
         lastName: "Reyes",
         title: "",
-        type: { code: "PRIMARY", nls: { en: { NAME: "Primary" } } },
+        type: { code: "LEGAL", nls: { en: { NAME: "Legal" } } },
         contactEntries: [
           { value: "dana.reyes@harbourview.example", kind: { code: "WORK" }, type: { code: "EMAIL" } },
           { value: "+1 604 555 0164", kind: { code: "WORK" }, type: { code: "PHONE" } },

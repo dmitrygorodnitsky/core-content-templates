@@ -370,7 +370,7 @@ export const graniteRidgeSnowFixture = Object.freeze({
         firstName: "Dana",
         lastName: "Whitlock",
         title: "Portfolio Manager",
-        type: { id: 1, code: "PRIMARY" },
+        type: { id: 15, code: "LEGAL" },
         contactEntries: [
           { id: 6111, type: { id: 1, code: "EMAIL" }, value: "dana.whitlock@example.test" },
           { id: 6112, type: { id: 2, code: "PHONE" }, value: "+1 (303) 555-0164" },

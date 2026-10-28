@@ -257,6 +257,7 @@ const N = loadRuntime().CR.normalizer;
   const { CR } = loadRuntime({ fixtures: true });
   const contract = CR.contract;
   const normalizer = CR.normalizer;
+  assert.equal(CR.fixtures.quotationData().accounts[0].type.code, "CUSTOMER", "review fixtures use the same Client type as Request Quote");
   const EXPECTED_STATUS = {
     QUOTE_SENT: "new", QUOTE_VIEWED: "viewed", CLIENT_APPROVED: "approved", DECLINED: "declined",
     CUSTOMER_CHANGES_REQUESTED: "changes", INITIAL: "revising", QUOTE_PREPARED: "revising",
@@ -631,7 +632,7 @@ const N = loadRuntime().CR.normalizer;
     REPRESENTATIVE_LAST_NAME: "Reyes",
     REPRESENTATIVE_EMAIL: "dana.reyes@harbourview.example",
     REPRESENTATIVE_PHONE: "+1 604 555 0164",
-  }, "pre-fill takes only what the account holds: a billing-typed address, the primary contact and its EMAIL and PHONE entries, never the contact's role as a job title and never a confirmation");
+  }, "pre-fill takes only what the account holds: a billing-typed address, the legal contact and its EMAIL and PHONE entries, never the contact's role as a job title and never a confirmation");
   const serviceOnly = plain(account);
   serviceOnly.addresses = serviceOnly.addresses.filter((entry) => entry.types[0].code === "SERVICE");
   assert.equal(prefillOf(serviceOnly).BILLING_ADDRESS, undefined, "a service address is never offered as the billing address");
@@ -649,7 +650,7 @@ const N = loadRuntime().CR.normalizer;
   priorities.contacts[0].contactEntries.push({type:{code:"EMAIL"},kind:{code:"PRIMARY"},value:"other@example.test"});
   assert.equal(prefillOf(priorities).REPRESENTATIVE_EMAIL,undefined,"ambiguous PRIMARY email is not guessed");
   const noPrimary=plain(account);noPrimary.contacts[0].type.code="SECONDARY";
-  assert.equal(prefillOf(noPrimary).REPRESENTATIVE_EMAIL,undefined,"a secondary contact is not substituted for PRIMARY");
+  assert.equal(prefillOf(noPrimary).REPRESENTATIVE_EMAIL,undefined,"a secondary contact is not substituted for LEGAL");
   const frenchRequest = CR.fixtures.agreementData("SENT_TO_CLIENT", false);
   frenchRequest.accounts[0].contacts[0].language = { id: "fre", code2: "fr" };
   assert.equal(normalizer.requestLocale(frenchRequest, "en", contract), "fr", "the contract locale comes from the saved request contact, independently of the reviewing browser");
@@ -1387,7 +1388,7 @@ function assertForm(run, expected, message) {
         break;
       }
       case "completion-attributes": {
-        assert.equal(run.runtime.CR.fixtures.setup(id).data.accounts[0].contacts[0].type.code,"PRIMARY","the link returns a native PRIMARY contact");
+        assert.equal(run.runtime.CR.fixtures.setup(id).data.accounts[0].contacts[0].type.code,"LEGAL","the link returns a native LEGAL contact");
         const invitation = byAttribute(run.mount, "data-portal", "invitation")[0];
         assert.ok(visibleText(invitation).includes("dana.reyes@harbourview.example"), "so the invitation names the sign-in address the native Account contact carries");
         assert.equal(run.controller.snapshot().primaryEmail, "dana.reyes@harbourview.example");
@@ -1494,10 +1495,10 @@ function assertForm(run, expected, message) {
   const contract = CR.contract;
   const account = plain(CR.fixtures.agreementData("CLIENT_APPROVED", false).accounts[0]);
   const emailOf = (mutate, source = contract) => { const row = plain(account); mutate(row); return CR.normalizer.primaryEmail(row, source); };
-  assert.equal(emailOf(() => {}), "dana.reyes@harbourview.example", "the portal sign-in is the PRIMARY contact's EMAIL entry");
+  assert.equal(emailOf(() => {}), "dana.reyes@harbourview.example", "the portal sign-in is the LEGAL contact's EMAIL entry");
   assert.equal(emailOf((row) => { delete row.contacts; }), "", "a link that returns no contacts names no email");
   assert.equal(emailOf((row) => { row.contacts = [{ id: 7 }]; }), "", "an id-only contact names no email");
-  assert.equal(emailOf((row) => { row.contacts[0].type.code = "BILLING"; }), "", "only a PRIMARY contact carries the sign-in");
+  assert.equal(emailOf((row) => { row.contacts[0].type.code = "BILLING"; }), "", "only a LEGAL contact carries the sign-in");
   assert.equal(emailOf((row) => { row.contacts[0].contactEntries.push({ value: "office@harbourview.example", type: { code: "EMAIL" } }); }), "dana.reyes@harbourview.example", "WORK precedes an unranked contact entry");
   assert.equal(emailOf((row) => { row.contacts[0].contactEntries[0].value = "  "; }), "", "a blank entry is not an email");
   assert.equal(emailOf((row) => { row.contacts.push({ type: { code: "SECONDARY" }, contactEntries: [{ value: "x@y.example", type: { code: "EMAIL" } }] }); }), "dana.reyes@harbourview.example", "another contact's email is not the sign-in");

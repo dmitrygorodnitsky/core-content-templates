@@ -2,7 +2,7 @@ import { positiveInteger, text } from "./core-record.js";
 
 export var ACCOUNT_PROFILE_SCOPE_MODES = Object.freeze(["server-scoped", "browser-filtered"]);
 
-var PRIMARY_CONTACT = "PRIMARY";
+var LEGAL_CONTACT = "LEGAL";
 var BILLING_ADDRESS = "BILLING";
 var EMAIL_ENTRY = "EMAIL";
 var PHONE_ENTRY = "PHONE";
@@ -52,7 +52,7 @@ export function formatAccountAddress(address) {
 
 function primaryContact(contacts) {
   var primaries = rows(contacts).filter(function (contact) {
-    return text(contact.type && contact.type.code) === PRIMARY_CONTACT;
+    return text(contact.type && contact.type.code) === LEGAL_CONTACT;
   });
   return primaries.sort(byIdAscending)[0] || null;
 }

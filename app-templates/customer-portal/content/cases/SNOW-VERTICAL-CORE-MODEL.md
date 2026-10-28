@@ -43,12 +43,22 @@ entity's **id** as its value. `et` lists the `entityTypes` the attribute accepts
 
 | type | id | owner | workflow | attributes |
 | --- | --- | --- | --- | --- |
-| `CUSTOMER` | 2 | `SYSTEM` | `CLIENT_ACCOUNT_LIFECYCLE` | `MANAGEMENT_COMPANY`, `PARTY_TYPE` |
-| `SNOW_RESIDENTIAL_CUSTOMER` | 5 | `…_CANADA` | `CLIENT_ACCOUNT_LIFECYCLE` | `CUSTOMER_STATUS`, `CUSTOMER_PRIORITY`, `BILLING_TERMS`, `PREFERRED_CONTACT_METHOD`, `TAX_EXEMPT`, `CUSTOMER_NOTES` |
-| `SNOW_COMMERCIAL_CUSTOMER` | 6 | `…_CANADA` | `CLIENT_ACCOUNT_LIFECYCLE` | same six |
-| `SNOW_PROPERTY_MANAGER` | 7 | `…_CANADA` | `CLIENT_ACCOUNT_LIFECYCLE` | same six |
+| `CUSTOMER` | 2 | `SYSTEM` | `CLIENT_ACCOUNT_LIFECYCLE` | `MANAGEMENT_COMPANY` |
+| `SNOW_RESIDENTIAL_CUSTOMER` | 5 | `…_CANADA` | `CLIENT_ACCOUNT_LIFECYCLE` | `TAX_EXEMPT`, `CUSTOMER_NOTES` (retired abstract type) |
+| `SNOW_COMMERCIAL_CUSTOMER` | 6 | `…_CANADA` | `CLIENT_ACCOUNT_LIFECYCLE` | same two; retired abstract type |
+| `SNOW_PROPERTY_MANAGER` | 7 | `…_CANADA` | `CLIENT_ACCOUNT_LIFECYCLE` | same two; retired abstract type |
 | `SNOW_EMPLOYEE` | 12 | `…_CANADA` | `SNOW_WORKFORCE_LIFECYCLE` | 7 |
 | `SNOW_SUBCONTRACTOR` | 17 | `…_CANADA` | `SNOW_WORKFORCE_LIFECYCLE` | 7 |
+
+On 2026-10-26, the authorized Account attribute cleanup removed
+`CUSTOMER_PRIORITY`, `PREFERRED_CONTACT_METHOD`, and the six obsolete prefill
+copies (`BILLING_ADDRESS` and `REPRESENTATIVE_FIRST_NAME`, `LAST_NAME`,
+`JOB_TITLE`, `EMAIL`, `PHONE`, each with the `REPRESENTATIVE_` prefix) wherever
+present in types 5, 6, and 7. The current review page uses native Account
+contacts and addresses. The corresponding confirmed fields on the
+`SERVICE_AGREEMENT` Document remain unchanged. The three local type snapshots
+and the Account definitions in `core-ui/scripts/dev/seeds/snowTypes.json` were
+updated together so those sources do not restore the removed fields.
 
 Every customer record in the tenant is the generic `CUSTOMER` (2), not one of
 the three snow-specific customer types.
@@ -623,3 +633,51 @@ this portal product-docs zone owns the matching catalog snapshots. Acceptance
 requires no snapshot/index reference to workflow 8, all seven equipment bindings
 pointing to 37, and the blocked Account workflow 15 remaining visible. Runtime
 and CMS packages were unchanged and require no upload for this cleanup.
+
+## Client type and LEGAL contact transition — 2026-10-26
+
+The approved target is the existing Client Account type `CUSTOMER` (2). No
+`CUSTOMER_CATEGORY` or replacement Residential/Commercial classification was
+added. On dev-1, 49 Residential and 3 Commercial Accounts changed to Client;
+Property Manager had no Accounts. The old three definitions remain abstract
+for historical references, with their workflow unchanged. New Request Quote
+Accounts use Client.
+
+All 688 scoped Accounts were read back against the pre-migration plan. Account
+IDs, Contact IDs, 15 existing User links, organizations, workflows, states,
+addresses and metadata were preserved. The 48 populated Customer Notes were
+merged into native `nls.en.DESCRIPTION`, retaining existing text. Empty legacy
+Billing Terms was removed from the three retired definitions. Optional
+`TAX_EXEMPT` definitions and their access rules were retained; tax calculation
+and tax dictionaries were not changed.
+
+687 contact roles changed from `PRIMARY` to `LEGAL`, including contacts of
+636 already-Client Accounts so the same email/detail/provisioning consumers
+continue to work. One Account has no contact and was left that way. Contact
+Entry kind `PRIMARY` still marks the preferred email or phone; it is unrelated
+to the Contact role and was preserved. The six active quotation/agreement/
+portal-provisioning scripts and both published review/portal CMS packages now
+use `LEGAL`. SNOW-CRM customer filters and counts use Client; its data models,
+presentation models and unrelated configuration were preserved.
+
+A REST pilot exposed that saving `Account.contacts` reconstructs its nested
+graph. Its Contact values were restored from the private backup; that one
+Contact retained its ID but received replacement technical email/phone Entry
+IDs. Remaining writes used managed server entities with locks, version checks,
+full prevalidation and transactional rollback, preserving Entry IDs. No raw SQL
+or audit rewriting was used. The temporary migration Script was removed after
+verification. No user, permission, email, payment or additional business entity
+was created by the transition.
+
+Cross-zone handoff — parent task: consolidate Snow customers on Client/LEGAL.
+Core-ui owns creation/delivery/provisioning scripts, seeds and SNOW-CRM filters;
+portal runtime/CMS owns native contact selection and the Client account gate;
+portal product docs owns these matching catalog snapshots. Required inputs are
+the existing Client type/workflow and LEGAL Contact type. Expected outputs are
+the six updated live scripts, two regenerated/published CMS packages and the
+unchanged Account identities. Acceptance: no live Account uses the three
+retired types; all planned records match readback; no PRIMARY fallback remains
+in the active consumers. Owner: current migration task; backup: owning
+repository zones. Delivery: 2026-10-26. Focused Java/portal checks and live
+invalid-ID compilation probes passed. The original catalog extraction date is
+retained; `accountTransitionReadAt` records this partial refresh.

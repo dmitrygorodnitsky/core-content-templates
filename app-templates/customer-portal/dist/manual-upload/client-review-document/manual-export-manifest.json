@@ -10,7 +10,7 @@
       "head": "b5e252b604ad732492b218098f257bf497097a28f69355e257736c578a5a213e",
       "html": "fbe3f2e4e13c9f9daea214d95852524ff52ccfc114611df4b3777960de8122ce",
       "css": "f60deb6fa3dc08bc8245b6ef54b5dcd70c28417d2c4727ee5e11e2dc311601ec",
-      "javascript": "2ef813f12a301f52299358e69552f42648424e6ad5de8856f2fa6fcb62a0450c"
+      "javascript": "36bbd27beee367a42dc96fc786e6556b64afa6406795f437e4a86c7539d834e5"
     }
   },
   "runtime": {
@@ -148,7 +148,7 @@
     "account": [
       "LEGAL_ENTITY_TYPE"
     ],
-    "accountPrimaryEmail": "contacts[type PRIMARY].contactEntries[type EMAIL], PRIMARY then WORK then one unambiguous populated value"
+    "accountPrimaryEmail": "contacts[type LEGAL].contactEntries[type EMAIL], PRIMARY then WORK then one unambiguous populated value"
   },
   "verified": [
     "On 2026-10-15 dev-1 agreement 208 was sent with both grants: the main one carried the quotes, the Account, the Document and the property's Address, the core-rm one the property Resource; through #property-token= the page read the Resource's ADDRESS and PROPERTY_PLAN and showed the address, and a link without it or with a revoked property token showed the address as unavailable without an error.",

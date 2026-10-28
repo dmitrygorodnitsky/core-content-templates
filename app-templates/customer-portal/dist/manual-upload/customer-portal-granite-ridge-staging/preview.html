@@ -4073,7 +4073,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
 </style>
 </head>
 <body>
-<section id="app" data-portal-experience-id="granite-ridge-snow-staging" data-portal-brand-name="Limitless Snow Removal" data-portal-vertical="snow" data-portal-profile="stormRetail" data-portal-theme="snow" data-portal-default-mode="light" data-portal-router-mode="hash" data-portal-default-route="overview" data-portal-enabled-modules="overview,properties,proposals,profile" data-portal-auth-mode="required" data-portal-error-mode="error" data-portal-data-mode="live" data-portal-primary-cta-label="Request a quote" data-portal-nav-primary-label="Home" data-portal-nav-appointments-label="Appointments" data-portal-nav-calendar-label="Calendar" data-portal-nav-care-label="Season log" data-portal-nav-proposals-label="Contracts" data-portal-nav-support-label="Support" data-portal-request-form-url="https://dev-1.servicewand.com/pages/SNOWLIMITLESS/request-quote" data-portal-weather-client-id="#" data-portal-weather-client-secret="#" data-portal-maps-api-key="#" data-portal-maps-map-id="#" data-portal-service-geography="{&quot;map&quot;:{&quot;center&quot;:{&quot;lat&quot;:49.23,&quot;lon&quot;:-122.98},&quot;zoom&quot;:10},&quot;zones&quot;:{&quot;vancouver&quot;:{&quot;lat&quot;:49.2827,&quot;lon&quot;:-123.1207},&quot;richmond&quot;:{&quot;lat&quot;:49.1666,&quot;lon&quot;:-123.1336},&quot;surrey&quot;:{&quot;lat&quot;:49.1913,&quot;lon&quot;:-122.849},&quot;burnaby&quot;:{&quot;lat&quot;:49.2488,&quot;lon&quot;:-122.9805},&quot;coquitlam&quot;:{&quot;lat&quot;:49.2838,&quot;lon&quot;:-122.7932}}}" data-portal-organization="SNOWLIMITLESS" data-portal-account-type-code="SNOW_RESIDENTIAL_CUSTOMER,SNOW_COMMERCIAL_CUSTOMER,CUSTOMER" data-portal-core-api-base="/core" data-portal-account-api-base="/core-acct" data-portal-bill-api-base="/core-bill" data-portal-resource-api-base="/core-rm" data-portal-auth-core-base="/core" data-portal-auth-callback-path="/core/oauth2-callback.html" data-portal-auth-return-storage-key="oidc-return-url" data-portal-auth-logout-return-storage-key="oidc-logout-return-url" data-portal-signed-out-destination="landing" data-portal-landing-url="https://dev-1.servicewand.com/pages/SNOWLIMITLESS/home" data-portal-logout-return-url="https://dev-1.servicewand.com/pages/SNOWLIMITLESS/home?portal=signed-out" data-portal-allowed-nav-origins="https://dev-1.servicewand.com"></section>
+<section id="app" data-portal-experience-id="granite-ridge-snow-staging" data-portal-brand-name="Limitless Snow Removal" data-portal-vertical="snow" data-portal-profile="stormRetail" data-portal-theme="snow" data-portal-default-mode="light" data-portal-router-mode="hash" data-portal-default-route="overview" data-portal-enabled-modules="overview,properties,proposals,profile" data-portal-auth-mode="required" data-portal-error-mode="error" data-portal-data-mode="live" data-portal-primary-cta-label="Request a quote" data-portal-nav-primary-label="Home" data-portal-nav-appointments-label="Appointments" data-portal-nav-calendar-label="Calendar" data-portal-nav-care-label="Season log" data-portal-nav-proposals-label="Contracts" data-portal-nav-support-label="Support" data-portal-request-form-url="https://dev-1.servicewand.com/pages/SNOWLIMITLESS/request-quote" data-portal-weather-client-id="#" data-portal-weather-client-secret="#" data-portal-maps-api-key="#" data-portal-maps-map-id="#" data-portal-service-geography="{&quot;map&quot;:{&quot;center&quot;:{&quot;lat&quot;:49.23,&quot;lon&quot;:-122.98},&quot;zoom&quot;:10},&quot;zones&quot;:{&quot;vancouver&quot;:{&quot;lat&quot;:49.2827,&quot;lon&quot;:-123.1207},&quot;richmond&quot;:{&quot;lat&quot;:49.1666,&quot;lon&quot;:-123.1336},&quot;surrey&quot;:{&quot;lat&quot;:49.1913,&quot;lon&quot;:-122.849},&quot;burnaby&quot;:{&quot;lat&quot;:49.2488,&quot;lon&quot;:-122.9805},&quot;coquitlam&quot;:{&quot;lat&quot;:49.2838,&quot;lon&quot;:-122.7932}}}" data-portal-organization="SNOWLIMITLESS" data-portal-account-type-code="CUSTOMER" data-portal-core-api-base="/core" data-portal-account-api-base="/core-acct" data-portal-bill-api-base="/core-bill" data-portal-resource-api-base="/core-rm" data-portal-auth-core-base="/core" data-portal-auth-callback-path="/core/oauth2-callback.html" data-portal-auth-return-storage-key="oidc-return-url" data-portal-auth-logout-return-storage-key="oidc-logout-return-url" data-portal-signed-out-destination="landing" data-portal-landing-url="https://dev-1.servicewand.com/pages/SNOWLIMITLESS/home" data-portal-logout-return-url="https://dev-1.servicewand.com/pages/SNOWLIMITLESS/home?portal=signed-out" data-portal-allowed-nav-origins="https://dev-1.servicewand.com"></section>
 <script>
 (() => {
   var __defProp = Object.defineProperty;
@@ -7739,6 +7739,15 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     { key: "id", mappings: [{ name: "id" }, { name: "code" }], name: "country", type: "identifier" },
     { key: "id", mappings: [{ name: "id" }, { name: "code" }], name: "state", type: "identifier" }
   ];
+  var ACCOUNT_ADDRESS_MAPPINGS = [
+    { name: "id" },
+    { key: "id", mappings: ID_MAPPINGS, name: "user", type: "identifier" },
+    {
+      name: "addresses",
+      type: "collection",
+      mappings: [{ key: "id", mappings: ADDRESS_MAPPINGS, name: "address", type: "identifier" }]
+    }
+  ];
   var ORDER_MAPPINGS = [
     { name: "attributes" },
     { name: "grandTotal" },
@@ -7815,11 +7824,11 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
       },
       async sendOrderEvent(backendId, event, context) {
         var api = readContext(context, options2.origin);
-        return sendEvent(fetchImpl, api, api.billBase + "/api/order/" + commandId(backendId) + "/send-event.json?event=" + eventCode(event));
+        return sendEvent(fetchImpl, api, api.billBase + "/api/tagged/order/" + commandId(backendId) + "/send-event.json?event=" + eventCode(event));
       },
       async sendAgreementEvent(backendId, event, context) {
         var api = readContext(context, options2.origin);
-        return sendEvent(fetchImpl, api, api.coreBase + "/api/document/" + commandId(backendId) + "/send-event.json?event=" + eventCode(event));
+        return sendEvent(fetchImpl, api, api.coreBase + "/api/tagged/document/" + commandId(backendId) + "/send-event.json?event=" + eventCode(event));
       }
     };
   }
@@ -7833,7 +7842,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
       items: rows2.items.map(function(row) {
         return propertyRecord(row, addresses);
       }),
-      scopeMode: "browser-filtered",
+      scopeMode: rows2.scopeMode,
       truncated: rows2.truncated
     };
   }
@@ -7876,7 +7885,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
   async function readCustomerOrder(context, backendId, fetchImpl = globalThis.fetch, explicitOrigin) {
     var api = readContext(context, explicitOrigin);
     var id = commandId(backendId);
-    var row = await requestJson(fetchImpl, api.billBase + "/api/order/get.json?id=" + id, readOptions(api, ORDER_TARGET_MAPPINGS));
+    var row = await requestJson(fetchImpl, api.billBase + "/api/tagged/order/get.json?id=" + id, readOptions(api, ORDER_TARGET_MAPPINGS));
     if (!row || positiveInteger3(row.id) !== id) throw contractError("not-found", "Core did not return the Order");
     if (positiveInteger3(row.account && row.account.id) !== api.accountId) throw contractError("customer-forbidden", "The Order does not belong to the signed-in customer");
     return row;
@@ -7884,7 +7893,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
   async function readCustomerAgreement(context, backendId, fetchImpl = globalThis.fetch, explicitOrigin) {
     var api = readContext(context, explicitOrigin);
     var id = commandId(backendId);
-    var row = await requestJson(fetchImpl, api.coreBase + "/api/document/get.json?id=" + id, readOptions(api, AGREEMENT_TARGET_MAPPINGS));
+    var row = await requestJson(fetchImpl, api.coreBase + "/api/tagged/document/get.json?id=" + id, readOptions(api, AGREEMENT_TARGET_MAPPINGS));
     if (!row || positiveInteger3(row.id) !== id || text3(row.type && row.type.code) !== AGREEMENT_TYPE) throw contractError("not-found", "Core did not return the service agreement");
     if (attributeNumber(row, "CLIENT") !== api.accountId) throw contractError("customer-forbidden", "The service agreement does not belong to the signed-in customer");
     return row;
@@ -7901,7 +7910,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     });
     var typeId = positiveInteger3(type && type.id);
     if (!typeId) throw contractError("agreement-type-unavailable", "Core did not return the service agreement type");
-    var reply = await requestJson(fetchImpl, api.coreBase + "/api/document/list.json", readOptions(api, {
+    var reply = await requestJson(fetchImpl, api.coreBase + "/api/tagged/document/list.json", readOptions(api, {
       filters: [
         { type: "STRING", operator: "=", property: "type.code", value: AGREEMENT_TYPE },
         { type: "INTEGER", operator: "=", property: "attributes." + typeId + ".CLIENT.value", value: String(api.accountId) }
@@ -7915,7 +7924,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     });
   }
   async function customerOrders(api, fetchImpl) {
-    var reply = await requestJson(fetchImpl, api.billBase + "/api/order/list.json", readOptions(api, {
+    var reply = await requestJson(fetchImpl, api.billBase + "/api/tagged/order/list.json", readOptions(api, {
       filters: [{ type: "INTEGER", operator: "=", property: "account.id", value: String(api.accountId) }],
       mappings: ORDER_MAPPINGS,
       offset: 0,
@@ -7926,7 +7935,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     });
   }
   async function customerOrderItems(api, fetchImpl, orderIds) {
-    var reply = await requestJson(fetchImpl, api.billBase + "/api/order-item/list.json", readOptions(api, {
+    var reply = await requestJson(fetchImpl, api.billBase + "/api/tagged/order-item/list.json", readOptions(api, {
       filters: [
         { type: "INTEGER", operator: "=", property: "order.account.id", value: String(api.accountId) },
         { type: "INTEGER", operator: "IN", property: "order.id", value: orderIds.join(",") }
@@ -8035,8 +8044,9 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
   async function customerProperties(api, fetchImpl) {
     var items = [];
     var truncated = false;
+    var scopeMode = "server-scoped";
     for (var page = 0; page < PROPERTY_PAGE_LIMIT; page += 1) {
-      var response = await requestJson(fetchImpl, api.resourceBase + "/api/resource/list.json", readOptions(api, {
+      var response = await requestJson(fetchImpl, api.resourceBase + "/api/tagged/resource/list.json", readOptions(api, {
         filters: [{ type: "STRING", operator: "=", property: "type.code", value: PROPERTY_TYPE }],
         mappings: RESOURCE_MAPPINGS,
         offset: page * PROPERTY_PAGE_SIZE,
@@ -8045,29 +8055,31 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
       var rows2 = Array.isArray(response && response.result) ? response.result : [];
       rows2.forEach(function(row) {
         if (attributeNumber(row, "ACCOUNT") === api.accountId) items.push(row);
+        else scopeMode = "browser-filtered";
       });
-      if (rows2.length < PROPERTY_PAGE_SIZE) return { items, truncated: false };
+      if (rows2.length < PROPERTY_PAGE_SIZE) return { items, truncated: false, scopeMode };
       truncated = page === PROPERTY_PAGE_LIMIT - 1;
     }
-    return { items, truncated };
+    return { items, truncated, scopeMode };
   }
   async function resolveAddresses(api, fetchImpl, rows2) {
     var resolved = {};
     var ids = [];
-    rows2.forEach(function(row2) {
-      var id = attributeNumber(row2, "ADDRESS");
+    rows2.forEach(function(row) {
+      var id = attributeNumber(row, "ADDRESS");
       if (id && ids.indexOf(id) < 0) ids.push(id);
     });
-    for (var index = 0; index < ids.length; index += 1) {
-      var response = await requestJson(fetchImpl, api.coreBase + "/api/address/list.json", readOptions(api, {
-        filters: [{ type: "INTEGER", operator: "=", property: "id", value: String(ids[index]) }],
-        mappings: ADDRESS_MAPPINGS,
-        offset: 0,
-        pageSize: 2
-      }));
-      var row = Array.isArray(response && response.result) ? response.result[0] : null;
-      if (row) resolved[String(ids[index])] = row;
+    if (!ids.length) return resolved;
+    if (!api.userId) throw contractError("session-user-required", "The signed-in Core User is required before reading property addresses");
+    var account = await requestJson(fetchImpl, api.accountBase + "/api/tagged/account/get.json?id=" + api.accountId, readOptions(api, ACCOUNT_ADDRESS_MAPPINGS));
+    if (positiveInteger3(account && account.id) !== api.accountId || positiveInteger3(account && account.user && account.user.id) !== api.userId) {
+      throw contractError("customer-forbidden", "Property addresses must belong to the signed-in customer's Account");
     }
+    (Array.isArray(account.addresses) ? account.addresses : []).forEach(function(link) {
+      var address = link && link.address;
+      var id = positiveInteger3(address && address.id);
+      if (id && ids.indexOf(id) !== -1) resolved[String(id)] = address;
+    });
     return resolved;
   }
   function propertyRecord(row, addresses) {
@@ -8118,6 +8130,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     if (!organization) throw contractError("organization-required", "A portal organization code is required");
     var origin = explicitOrigin || config.origin || browserOrigin();
     return {
+      accountBase: sameOriginBase(config.accountApiBase || "/core-acct", origin, "Core Account API base"),
       accountId,
       accountName: text3(account && typeof account.displayName === "string" ? account.displayName : ""),
       authorization: text3(session.tokenType || session.token_type || "Bearer") + " " + accessToken,
@@ -8125,7 +8138,8 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
       coreBase: sameOriginBase(config.coreApiBase || "/core", origin, "Core API base"),
       organization,
       pimBase: sameOriginBase(PIM_SERVICE_BASE, origin, "Core PIM API base"),
-      resourceBase: sameOriginBase(config.resourceApiBase || "/core-rm", origin, "Core Resource API base")
+      resourceBase: sameOriginBase(config.resourceApiBase || "/core-rm", origin, "Core Resource API base"),
+      userId: positiveInteger3(session.userId)
     };
   }
   function readOptions(api, body) {
@@ -8180,6 +8194,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     return error2;
   }
   var coreSnowContract = Object.freeze({
+    accountAddressMappings: ACCOUNT_ADDRESS_MAPPINGS,
     addressMappings: ADDRESS_MAPPINGS,
     agreementMappings: AGREEMENT_MAPPINGS,
     agreementType: AGREEMENT_TYPE,
@@ -8206,7 +8221,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
       orderItems: "server-scoped",
       productPrices: "unscoped",
       products: "unscoped",
-      properties: "browser-filtered"
+      properties: "server-scoped"
     })
   });
 
@@ -20663,7 +20678,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
   }
   async function loadCustomerAccountProfile(context, fetchImpl = globalThis.fetch, explicitOrigin) {
     var api = requestContext3(context, explicitOrigin);
-    var reply = await requestJson6(fetchImpl, api.accountBase + "/api/account/list.json", {
+    var reply = await requestJson6(fetchImpl, api.accountBase + api.accountListPath, {
       method: "POST",
       credentials: "same-origin",
       headers: {
@@ -20692,7 +20707,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
   function ownedBySession(row, api) {
     if (!row || typeof row !== "object" || positiveInteger3(row.id) !== api.accountId) return false;
     var linked = row.user && typeof row.user === "object" ? positiveInteger3(row.user.id) : null;
-    return linked === null || linked === api.userId;
+    return linked === null && !api.tagged || linked === api.userId;
   }
   function requestContext3(context, explicitOrigin) {
     var config = context && context.config || {};
@@ -20711,6 +20726,8 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     return {
       accountBase: sameOriginBase6(config.accountApiBase || "/core-acct", origin, "Core Account API base"),
       accountId,
+      accountListPath: config.vertical === "snow" ? "/api/tagged/account/list.json" : "/api/account/list.json",
+      tagged: config.vertical === "snow",
       authorization: text3(session.tokenType || session.token_type || "Bearer") + " " + accessToken,
       organization,
       userId
@@ -20747,6 +20764,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
   }
   var coreAccountProfileContract = Object.freeze({
     endpoint: "/api/account/list.json",
+    snowEndpoint: "/api/tagged/account/list.json",
     filters: Object.freeze(["id", "user.id"]),
     mappings: PROFILE_MAPPINGS,
     scopeMode: "server-scoped"
@@ -20754,7 +20772,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
 
   // app-templates/customer-portal/runtime/src/normalizers/account-profile.js
   var ACCOUNT_PROFILE_SCOPE_MODES = Object.freeze(["server-scoped", "browser-filtered"]);
-  var PRIMARY_CONTACT = "PRIMARY";
+  var LEGAL_CONTACT = "LEGAL";
   var BILLING_ADDRESS = "BILLING";
   var EMAIL_ENTRY = "EMAIL";
   var PHONE_ENTRY = "PHONE";
@@ -20800,7 +20818,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
   }
   function primaryContact(contacts) {
     var primaries = rows(contacts).filter(function(contact) {
-      return text3(contact.type && contact.type.code) === PRIMARY_CONTACT;
+      return text3(contact.type && contact.type.code) === LEGAL_CONTACT;
     });
     return primaries.sort(byIdAscending)[0] || null;
   }
@@ -21397,7 +21415,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     var organizationCode = selectOrganization(config.organization || config.pimOrganization, basicInfo);
     var typeCodes = accountTypeCodes(config.accountTypeCode);
     var typeList = typeCodes.length > 1;
-    var accountReply = await requestJson7(fetchImpl, accountBase + "/api/account/list.json", {
+    var accountReply = await requestJson7(fetchImpl, accountBase + (config.vertical === "snow" ? "/api/tagged/account/list.json" : "/api/account/list.json"), {
       method: "POST",
       credentials: "same-origin",
       headers: {
@@ -21427,7 +21445,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     }
     var account = accounts[0] || {};
     if (!positiveInteger8(account.id)) throw contractError6("invalid-customer-account", "Core Account response did not include an id");
-    if (account.user && positiveInteger8(account.user.id) && Number(account.user.id) !== userId) {
+    if (config.vertical === "snow" && positiveInteger8(account.user && account.user.id) !== userId || account.user && positiveInteger8(account.user.id) && Number(account.user.id) !== userId) {
       throw contractError6("customer-scope-mismatch", "Core Account user does not match the authenticated Core User");
     }
     return {

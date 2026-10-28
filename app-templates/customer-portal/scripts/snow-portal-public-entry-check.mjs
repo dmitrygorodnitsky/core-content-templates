@@ -355,7 +355,7 @@ function oidcLibrary(session, calls) {
 function coreFetch(scenario, pending) {
   let discoveryFailures = 0;
   const reply = (status, body) => Promise.resolve({ ok: status >= 200 && status < 300, status, headers: { get: () => null }, json: async () => body, text: async () => JSON.stringify(body) });
-  const account = (id) => ({ id, code: "CUST-" + id, nls: { en: { NAME: "Harbourview Strata Council" } }, optimistic: 3, user: { id: 7001 }, type: { id: 5, code: "SNOW_RESIDENTIAL_CUSTOMER" }, attributes: {} });
+  const account = (id) => ({ id, code: "CUST-" + id, nls: { en: { NAME: "Harbourview Strata Council" } }, optimistic: 3, user: { id: 7001 }, type: { id: 2, code: "CUSTOMER" }, attributes: {} });
   return (input) => {
     const url = new URL(String(input), PORTAL_ORIGIN);
     if (url.pathname === "/core/.well-known/oauth-protected-resource/") {
@@ -369,7 +369,7 @@ function coreFetch(scenario, pending) {
       const organizations = scenario.account === "organization-forbidden" ? ["CALM_HARBOR_SPA_STAGING"] : ["SNOWLIMITLESS"];
       return reply(200, { authenticatedUserId: 7001, authenticatedUserName: "Jordan Lee", authorizedOrganizations: organizations.map((code, index) => ({ id: 43 + index, code })) });
     }
-    if (url.pathname === "/core-acct/api/account/list.json") {
+    if (url.pathname === "/core-acct/api/tagged/account/list.json") {
       if (scenario.account === "pending" && !pending.account) return new Promise((resolve) => { pending.account = () => resolve(reply(200, { resultSize: 1, result: [account(5001)] })); });
       if (scenario.account === "customer-forbidden") return reply(403, {});
       if (scenario.account === "customer-unavailable") return reply(500, {});
