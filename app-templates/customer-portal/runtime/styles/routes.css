@@ -2296,6 +2296,10 @@ h1.proposal-detail-head__title { margin: 0; }
 
 .ov-pin__glyph { width: 28px; height: 28px; display: block; }
 
+.ov-pin:not([data-weather]) { width: 32px; height: 32px; color: var(--pin-marker); }
+
+.ov-pin:not([data-weather]) .ov-pin__glyph { width: 32px; height: 32px; }
+
 .ov-pin__glyph path { fill: currentColor; stroke: #fff; stroke-width: 1.4; }
 
 .ov-pin[data-weather="clear"] { color: var(--wx-clear); }

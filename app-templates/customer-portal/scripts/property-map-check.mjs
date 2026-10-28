@@ -752,6 +752,9 @@ const PERIODS = Array.from({ length: 7 }, (_, index) => ({
       body: rule.slice(rule.indexOf("{") + 1, -1),
     }));
   const styling = (subject) => rules.filter((rule) => rule.selectors.some((selector) => selector.split(" ").pop() === subject));
+  const livePin = rules.find((rule) => rule.selectors.includes(".ov-pin:not([data-weather])"));
+  assert.ok(livePin && /color\s*:\s*var\(--pin-marker\)/.test(livePin.body), "a pin with no weather reading is drawn in the marker red");
+  assert.match(fs.readFileSync(path.resolve("app-templates/customer-portal/runtime/styles/tokens.css"), "utf8"), /--pin-marker:\s*#ea4335;/);
   assert.ok(styling(".ov-day__svc").length, "the badge is styled");
   for (const rule of styling(".ov-day__svc")) {
     assert.doesNotMatch(rule.body, /display\s*:\s*(inline-)?(flex|grid)\b/, rule.selectors.join(", ") + " makes the badge a flex or grid box, which turns ' visits' into a block that drops its opening space");
