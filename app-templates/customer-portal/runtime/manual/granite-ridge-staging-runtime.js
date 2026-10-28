@@ -8303,6 +8303,154 @@
     return entry;
   }
 
+  // app-templates/customer-portal/runtime/src/visit-photo-viewer.js
+  var PHOTOSWIPE = /* @__PURE__ */ Object.freeze({
+    version: "5.4.4",
+    script: /* @__PURE__ */ Object.freeze({
+      src: "https://cdnjs.cloudflare.com/ajax/libs/photoswipe/5.4.4/umd/photoswipe.umd.min.js",
+      integrity: "sha384-k8EKyYcONphQ7zH4cQ0888JapXwrLTXQl/Ue1/jYgjVYahln1NWpnt2S4IC56LNh"
+    }),
+    style: /* @__PURE__ */ Object.freeze({
+      href: "https://cdnjs.cloudflare.com/ajax/libs/photoswipe/5.4.4/photoswipe.css",
+      integrity: "sha384-s2AldnnzPSlbjXKTGuicXrolvAtPwQBv9ndvaRLccssYIi3A2bjWOv3p+poD8LUk"
+    })
+  });
+  var VISIT_PHOTO_ACTION = "visit.photo.open";
+  var THUMBNAIL = '[data-action="' + VISIT_PHOTO_ACTION + '"]';
+  var LOAD_TIMEOUT_MS2 = 2e4;
+  var UNMEASURED = /* @__PURE__ */ Object.freeze({ width: 1600, height: 1200 });
+  var loads2 = /* @__PURE__ */ new WeakMap();
+  function loadPhotoSwipe(scope) {
+    scope = scope || globalThis;
+    if (loads2.has(scope)) return loads2.get(scope);
+    var loading = Promise.all([
+      attach(scope, "link", { rel: "stylesheet", href: PHOTOSWIPE.style.href, integrity: PHOTOSWIPE.style.integrity, crossorigin: "anonymous", referrerpolicy: "no-referrer" }),
+      attach(scope, "script", { src: PHOTOSWIPE.script.src, integrity: PHOTOSWIPE.script.integrity, crossorigin: "anonymous", referrerpolicy: "no-referrer", async: "" })
+    ]).then(function() {
+      if (typeof scope.PhotoSwipe !== "function") throw new Error("PhotoSwipe loaded without its constructor");
+      return scope.PhotoSwipe;
+    });
+    loads2.set(scope, loading);
+    loading.catch(function() {
+      loads2.delete(scope);
+    });
+    return loading;
+  }
+  function visitPhotoGallery(trigger) {
+    var section = trigger.closest('[data-module="visit-photos"]');
+    var thumbnails = section ? Array.prototype.slice.call(section.querySelectorAll(THUMBNAIL)) : [trigger];
+    return {
+      index: Math.max(0, thumbnails.indexOf(trigger)),
+      items: thumbnails.map(function(thumbnail) {
+        var image = thumbnail.querySelector("img");
+        return {
+          src: thumbnail.getAttribute("href"),
+          caption: thumbnail.getAttribute("data-caption") || "",
+          alt: image ? image.getAttribute("alt") || "" : "",
+          thumbnail: image
+        };
+      })
+    };
+  }
+  function openVisitPhotos(trigger, options2) {
+    options2 = options2 || {};
+    var scope = options2.scope || globalThis;
+    var load = options2.load || loadPhotoSwipe;
+    var gallery = visitPhotoGallery(trigger);
+    var openedFrom = trigger.getAttribute("data-id");
+    return Promise.all([load(scope), Promise.all(gallery.items.map(function(item) {
+      return measured(item, scope);
+    }))]).then(function(ready) {
+      var PhotoSwipe = ready[0];
+      var viewer = new PhotoSwipe({
+        dataSource: ready[1],
+        index: gallery.index,
+        returnFocus: false,
+        bgOpacity: 0.92,
+        showHideAnimationType: "zoom",
+        indexIndicatorSep: " of ",
+        closeTitle: "Close photo",
+        zoomTitle: "Zoom photo",
+        arrowPrevTitle: "Previous photo",
+        arrowNextTitle: "Next photo",
+        errorMsg: "This photo could not be loaded."
+      });
+      viewer.addFilter("thumbEl", function(thumbnail, data, index) {
+        var current = thumbnailFor(scope, String(index));
+        return current && current.querySelector("img") || thumbnail;
+      });
+      viewer.on("uiRegister", function() {
+        viewer.ui.registerElement({
+          name: "caption",
+          order: 9,
+          isButton: false,
+          appendTo: "root",
+          onInit: function(element) {
+            element.setAttribute("aria-live", "polite");
+            viewer.on("change", function() {
+              element.textContent = viewer.currSlide ? viewer.currSlide.data.caption : "";
+            });
+          }
+        });
+      });
+      viewer.on("destroy", function() {
+        var thumbnail = thumbnailFor(scope, openedFrom) || trigger;
+        if (thumbnail && typeof thumbnail.focus === "function") thumbnail.focus({ preventScroll: true });
+      });
+      viewer.init();
+      return viewer;
+    });
+  }
+  function thumbnailFor(scope, id) {
+    var root = scope.document;
+    if (!root || id == null) return null;
+    return root.querySelector(THUMBNAIL + '[data-id="' + id + '"]');
+  }
+  function measured(item, scope) {
+    var image = item.thumbnail;
+    if (image && image.complete && image.naturalWidth > 0) return Promise.resolve(slide(item, image.naturalWidth, image.naturalHeight));
+    if (typeof scope.Image !== "function") return Promise.resolve(slide(item, UNMEASURED.width, UNMEASURED.height));
+    return new Promise(function(resolve) {
+      var probe = new scope.Image();
+      probe.onload = function() {
+        resolve(slide(item, probe.naturalWidth || UNMEASURED.width, probe.naturalHeight || UNMEASURED.height));
+      };
+      probe.onerror = function() {
+        resolve(slide(item, UNMEASURED.width, UNMEASURED.height));
+      };
+      probe.src = item.src;
+    });
+  }
+  function slide(item, width, height) {
+    return { src: item.src, msrc: item.src, width, height, alt: item.alt, caption: item.caption, thumbCropped: true };
+  }
+  function attach(scope, tag, attributes) {
+    var root = scope.document;
+    if (!root) return Promise.reject(new Error("PhotoSwipe needs a document"));
+    return new Promise(function(resolve, reject) {
+      var node = root.createElement(tag);
+      (/* @__PURE__ */ Object.keys(attributes)).forEach(function(name) {
+        node.setAttribute(name, attributes[name]);
+      });
+      var timer = setTimeout(function() {
+        fail2("did not load in time");
+      }, LOAD_TIMEOUT_MS2);
+      function fail2(reason) {
+        clearTimeout(timer);
+        if (node.parentNode) node.parentNode.removeChild(node);
+        reject(new Error("PhotoSwipe " + tag + " " + reason));
+      }
+      node.addEventListener("load", function() {
+        clearTimeout(timer);
+        resolve();
+      });
+      node.addEventListener("error", function() {
+        fail2("could not be loaded");
+      });
+      (root.head || root.body).appendChild(node);
+    });
+  }
+
   // app-templates/customer-portal/runtime/src/routes/LiveVisitsPage.js
   function LiveVisits() {
     var page = h("section", { "class": "page page--narrow", "data-route": "appointments", "data-visual-id": "visits" });
@@ -8360,7 +8508,7 @@
         h("p", { "class": "record-notes" }, visit.completionNotes)
       ]));
     }
-    var photos = [photoGroup("Before", visit.before), photoGroup("After", visit.after)].filter(Boolean);
+    var photos = photoGroups([["Before", visit.before], ["After", visit.after]]);
     if (photos.length) {
       page.appendChild(h("section", { "class": "card card--pad record-section", "data-module": "visit-photos", "data-visual-id": "visit-photos" }, [
         h("h2", { "class": "prop-section__title" }, "Photos")
@@ -8405,15 +8553,22 @@
       })))
     ]);
   }
-  function photoGroup(label, ids) {
-    var urls = ids.map(function(id) {
-      return visitImageUrl(state.config.coreApiBase, id);
+  function photoGroups(groups) {
+    var offset = 0;
+    return groups.map(function(group) {
+      var urls = group[1].map(function(id) {
+        return visitImageUrl(state.config.coreApiBase, id);
+      }).filter(Boolean);
+      var element = urls.length ? photoGroup(group[0], urls, offset) : null;
+      offset += urls.length;
+      return element;
     }).filter(Boolean);
-    if (!urls.length) return null;
+  }
+  function photoGroup(label, urls, offset) {
     return h("div", { "class": "record-photos", "data-module": "visit-photos-" + label.toLowerCase() }, [
       h("div", { "class": "record-photos__label" }, label),
       h("div", { "class": "record-photos__grid" }, urls.map(function(url, index) {
-        return h("a", { "class": "record-photos__item", href: url, target: "_blank", rel: "noopener" }, [
+        return h("a", { "class": "record-photos__item", href: url, "data-action": VISIT_PHOTO_ACTION, "data-id": String(offset + index), "data-caption": label, "aria-haspopup": "dialog" }, [
           h("img", { src: url, alt: label + " service photo " + (index + 1), loading: "lazy", decoding: "async" })
         ]);
       }))
@@ -11320,6 +11475,9 @@
       state.visitId = id;
       go("visit.detail");
     },
+    [VISIT_PHOTO_ACTION]: function(id, el, event) {
+      return openVisitPhoto(el, event);
+    },
     "invoice.open": function(id) {
       if (id) state.invoiceId = id;
       go("invoice.detail");
@@ -11443,6 +11601,14 @@
           });
         }
       } else failCommand(name);
+    });
+  }
+  function openVisitPhoto(trigger, event) {
+    if (event && (event.button > 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey)) return false;
+    if (event) event.preventDefault();
+    return openVisitPhotos(trigger).catch(function() {
+      toast("The photo viewer could not open. Try again.");
+      return false;
     });
   }
   function failCommand(name) {

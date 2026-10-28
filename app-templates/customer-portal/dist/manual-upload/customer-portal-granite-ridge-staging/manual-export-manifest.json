@@ -18,8 +18,8 @@
     "sha256": {
       "head": "2d73a4975671d61afa33139b86357240a81ca29c3d64c8094335705c978ae9ab",
       "html": "7c93648aa0ef4c7a7e6016d1c8501a644e0a18821ca41c0a402634162c84f7c9",
-      "css": "567aca1d2655cdd972760dbb5a1ecc5e034b22e9abffd4b6fc8f2133abd5fa79",
-      "javascript": "1f5181d24eedb5c968d2ebcb0f39d6fde0d6cea5406e817c0c054cb86e601e97"
+      "css": "947fb26dc631c6fccbe596c0b81c72c4eb795a0d9519355a3237fac3ce142096",
+      "javascript": "1a929ba5d722f31e4d007fe67e02bec7c9a24ab8923648761062338cd036bd71"
     }
   },
   "runtime": {

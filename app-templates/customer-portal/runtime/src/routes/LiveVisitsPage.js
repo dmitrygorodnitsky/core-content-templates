@@ -12,6 +12,7 @@ import { formatArea } from "../normalizers/overview.js";
 import { findVisit, localDateKey, progressWhen, visitDay, visitImageUrl, visitPlace, visitWindow } from "../normalizers/visits.js";
 import { propertyPlan } from "../property-plan.js";
 import { visitProgress } from "../visit-progress.js";
+import { VISIT_PHOTO_ACTION } from "../visit-photo-viewer.js";
 
 export function LiveVisits() {
   var page = h("section", { "class": "page page--narrow", "data-route": "appointments", "data-visual-id": "visits" });
@@ -72,7 +73,7 @@ export function LiveVisitDetail() {
     ]));
   }
 
-  var photos = [photoGroup("Before", visit.before), photoGroup("After", visit.after)].filter(Boolean);
+  var photos = photoGroups([["Before", visit.before], ["After", visit.after]]);
   if (photos.length) {
     page.appendChild(h("section", { "class": "card card--pad record-section", "data-module": "visit-photos", "data-visual-id": "visit-photos" }, [
       h("h2", { "class": "prop-section__title" }, "Photos"),
@@ -121,13 +122,21 @@ function ProgressCard(visit) {
   ]);
 }
 
-function photoGroup(label, ids) {
-  var urls = ids.map(function (id) { return visitImageUrl(state.config.coreApiBase, id); }).filter(Boolean);
-  if (!urls.length) return null;
+function photoGroups(groups) {
+  var offset = 0;
+  return groups.map(function (group) {
+    var urls = group[1].map(function (id) { return visitImageUrl(state.config.coreApiBase, id); }).filter(Boolean);
+    var element = urls.length ? photoGroup(group[0], urls, offset) : null;
+    offset += urls.length;
+    return element;
+  }).filter(Boolean);
+}
+
+function photoGroup(label, urls, offset) {
   return h("div", { "class": "record-photos", "data-module": "visit-photos-" + label.toLowerCase() }, [
     h("div", { "class": "record-photos__label" }, label),
     h("div", { "class": "record-photos__grid" }, urls.map(function (url, index) {
-      return h("a", { "class": "record-photos__item", href: url, target: "_blank", rel: "noopener" }, [
+      return h("a", { "class": "record-photos__item", href: url, "data-action": VISIT_PHOTO_ACTION, "data-id": String(offset + index), "data-caption": label, "aria-haspopup": "dialog" }, [
         h("img", { src: url, alt: label + " service photo " + (index + 1), loading: "lazy", decoding: "async" }),
       ]);
     })),

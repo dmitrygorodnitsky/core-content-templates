@@ -434,6 +434,124 @@ const page = (route, params = {}) => { Object.assign(state, params); state.route
 }
 
 {
+  const AFTER_2 = "9d1e6b2c-4a7f-4c3e-8b5d-2f6a1c9e7b30";
+  const photographed = visit(80, 1792400000000, 1792403600000, "COMPLETED", 983, {
+    PRE_SERVICE_MEDIA: { value: [{ id: PRE, type: "image" }, { id: PRE_78, type: "image" }] },
+    POST_SERVICE_MEDIA: { value: [{ id: POST, type: "image" }, { id: AFTER_2, type: "image" }] },
+  });
+  await liveLoad({ properties: [property(983, 610)], visits: [photographed], invoices: [] });
+  await preloadProgress();
+  const { PHOTOSWIPE, VISIT_PHOTO_ACTION, loadPhotoSwipe } = await load("src/visit-photo-viewer.js");
+  const { bindActions } = await load("src/actions.js");
+  const image = (id) => "/core/image/" + id + "/get";
+
+  const detail = page("visit.detail", { visitId: "visit-core-80" });
+  const thumbs = all(one(detail, "[data-module=\"visit-photos\"]"), "a.record-photos__item");
+  assert.deepEqual(thumbs.map((thumb) => [thumb.getAttribute("data-action"), thumb.getAttribute("data-id"), thumb.getAttribute("href"), thumb.getAttribute("data-caption")]), [
+    [VISIT_PHOTO_ACTION, "0", image(PRE), "Before"],
+    [VISIT_PHOTO_ACTION, "1", image(PRE_78), "Before"],
+    [VISIT_PHOTO_ACTION, "2", image(POST), "After"],
+    [VISIT_PHOTO_ACTION, "3", image(AFTER_2), "After"],
+  ], "every thumbnail is a link to its image that opens the viewer, numbered across one gallery with the before photos first");
+  assert.ok(thumbs.every((thumb) => thumb.getAttribute("target") === null), "a thumbnail no longer opens the raw image in a new tab");
+  assert.deepEqual(thumbs.map((thumb) => one(thumb, "img").getAttribute("alt")), ["Before service photo 1", "Before service photo 2", "After service photo 1", "After service photo 2"]);
+  assert.ok(thumbs.every((thumb) => one(thumb, "img").getAttribute("loading") === "lazy"));
+  assert.deepEqual(all(detail, ".record-photos__label").map((node) => node.textContent), ["Before", "After"]);
+
+  Object.assign(one(thumbs[0], "img"), { complete: true, naturalWidth: 4032, naturalHeight: 3024 });
+  Object.assign(one(thumbs[1], "img"), { complete: true, naturalWidth: 3024, naturalHeight: 4032 });
+  const probes = [];
+  globalThis.Image = class {
+    set src(value) { probes.push(value); setImmediate(() => { Object.assign(this, { naturalWidth: 1200, naturalHeight: 900 }); this.onload(); }); }
+  };
+  const opened = [];
+  globalThis.PhotoSwipe = class {
+    constructor(options) { this.options = options; this.handlers = {}; this.filters = {}; this.ui = { registerElement: (element) => { this.caption = element; } }; opened.push(this); }
+    addFilter(name, filter) { this.filters[name] = filter; }
+    on(name, handler) { (this.handlers[name] = this.handlers[name] || []).push(handler); }
+    fire(name) { (this.handlers[name] || []).forEach((handler) => handler()); }
+    init() { this.initialized = true; }
+  };
+  const app = dom.document.createElement("div");
+  bindActions(app);
+  app.appendChild(detail);
+  dom.document.replaceChildren(app);
+  const click = (target, extra = {}) => {
+    const event = Object.assign({ target, button: 0, prevented: false, preventDefault() { this.prevented = true; } }, extra);
+    app.listeners.click.forEach((listener) => listener(event));
+    return event;
+  };
+
+  assert.equal(dom.document.head.children.length, 0, "the viewer library is not on the page before a photo is opened");
+  const modified = click(one(thumbs[2], "img"), { metaKey: true });
+  assert.equal(modified.prevented, false, "a modified click keeps the browser's open-in-new-tab behaviour");
+  assert.equal(dom.document.head.children.length, 0, "and loads nothing");
+
+  const first = click(one(thumbs[2], "img"));
+  assert.equal(first.prevented, true, "a click on a thumbnail never follows the link away from the portal");
+  assert.equal(globalThis.location.href, "https://portal.example.test/pages/SNOWLIMITLESS/portal");
+  const [style, script] = dom.document.head.children;
+  assert.deepEqual([style.tagName, style.getAttribute("rel"), style.getAttribute("href"), style.getAttribute("integrity"), style.getAttribute("crossorigin")],
+    ["LINK", "stylesheet", "https://cdnjs.cloudflare.com/ajax/libs/photoswipe/5.4.4/photoswipe.css", "sha384-s2AldnnzPSlbjXKTGuicXrolvAtPwQBv9ndvaRLccssYIi3A2bjWOv3p+poD8LUk", "anonymous"], "the PhotoSwipe stylesheet comes from its pinned cdnjs address with SRI");
+  assert.deepEqual([script.tagName, script.getAttribute("src"), script.getAttribute("integrity"), script.getAttribute("crossorigin")],
+    ["SCRIPT", "https://cdnjs.cloudflare.com/ajax/libs/photoswipe/5.4.4/umd/photoswipe.umd.min.js", "sha384-k8EKyYcONphQ7zH4cQ0888JapXwrLTXQl/Ue1/jYgjVYahln1NWpnt2S4IC56LNh", "anonymous"], "the PhotoSwipe script comes from its pinned cdnjs address with SRI");
+  assert.deepEqual([PHOTOSWIPE.style.href, PHOTOSWIPE.script.src], [style.getAttribute("href"), script.getAttribute("src")]);
+  style.listeners.load.forEach((listener) => listener());
+  script.listeners.load.forEach((listener) => listener());
+  await settle();
+  await settle();
+
+  assert.equal(opened.length, 1, "the viewer opens once the library has loaded");
+  const viewer = opened[0];
+  assert.equal(viewer.initialized, true);
+  assert.equal(viewer.options.index, 2, "the viewer opens on the clicked photo");
+  assert.deepEqual(viewer.options.dataSource.map((slide) => [slide.src, slide.caption, slide.alt, slide.width, slide.height]), [
+    [image(PRE), "Before", "Before service photo 1", 4032, 3024],
+    [image(PRE_78), "Before", "Before service photo 2", 3024, 4032],
+    [image(POST), "After", "After service photo 1", 1200, 900],
+    [image(AFTER_2), "After", "After service photo 2", 1200, 900],
+  ], "the gallery runs before photos then after photos, captioned, sized from the loaded thumbnail or a preload");
+  assert.deepEqual(probes, [image(POST), image(AFTER_2)], "only photos whose thumbnail has not loaded are preloaded");
+  assert.equal(viewer.options.returnFocus, false);
+
+  viewer.fire("uiRegister");
+  const caption = dom.document.createElement("div");
+  viewer.caption.onInit(caption, viewer);
+  viewer.currSlide = { data: viewer.options.dataSource[2] };
+  viewer.fire("change");
+  assert.equal(caption.textContent, "After", "the viewer caption names the photo's group");
+  assert.equal(viewer.filters.thumbEl(null, viewer.options.dataSource[1], 1), one(thumbs[1], "img"), "the zoom animation starts from the thumbnail on the page");
+
+  let focused = null;
+  thumbs[2].focus = () => { focused = thumbs[2]; };
+  viewer.fire("destroy");
+  assert.equal(focused, thumbs[2], "closing the viewer returns focus to the thumbnail that opened it");
+
+  click(one(thumbs[0], "img"));
+  await settle();
+  await settle();
+  assert.equal(dom.document.head.children.length, 2, "the library is loaded once, not on every open");
+  assert.equal(opened.length, 2);
+  assert.equal(opened[1].options.index, 0);
+
+  const failing = { document: dom.document.createElement("#document") };
+  failing.document.head = dom.document.createElement("head");
+  failing.document.createElement = (tag) => dom.document.createElement(tag);
+  const attempt = loadPhotoSwipe(failing);
+  failing.document.head.children[1].listeners.error.forEach((listener) => listener());
+  failing.document.head.children[0].listeners.load.forEach((listener) => listener());
+  await assert.rejects(attempt, /PhotoSwipe script could not be loaded/);
+  assert.deepEqual(failing.document.head.children.map((node) => node.tagName), ["LINK"], "a script that fails to load is removed");
+  loadPhotoSwipe(failing).catch(() => {});
+  assert.equal(failing.document.head.children.length, 3, "a later open retries the load");
+
+  delete globalThis.Image;
+  delete globalThis.PhotoSwipe;
+  dom.document.replaceChildren();
+  dom.document.head.replaceChildren();
+}
+
+{
   applyPortalConfig(readPortalConfig({ dataset: { portalVertical: "snow", portalProfile: "stormRetail", portalTheme: "snow", portalDataMode: "fixture", portalAuthMode: "fixture", portalCase: "granite-ridge-snow", portalNavAppointmentsLabel: "Appointments" } }));
   const runtime = new PortalRuntime({ state });
   runtime.loadAll();
@@ -453,7 +571,7 @@ const page = (route, params = {}) => { Object.assign(state, params); state.route
   assert.deepEqual(order, ["overview", "appointments", "invoices", "proposals.list"]);
 }
 
-console.log("snow visits and invoices check ok: tagged visit and invoice reads with the dev-1 bodies, wall-clock visit times, the visit page's property, plan, active-agreement services and progress from tagged transitions read as real instants, DRAFT invoices and canceled visits hidden, single-property address omission, home next-visit and invoice-due cards, property visits, and empty lists hidden from the nav and the screens");
+console.log("snow visits and invoices check ok: tagged visit and invoice reads with the dev-1 bodies, wall-clock visit times, the visit page's property, plan, active-agreement services and progress from tagged transitions read as real instants, DRAFT invoices and canceled visits hidden, single-property address omission, home next-visit and invoice-due cards, property visits, visit photos opened in-page in one before-then-after PhotoSwipe gallery loaded lazily from its pinned SRI address, and empty lists hidden from the nav and the screens");
 
 function createDom() {
   class Text {

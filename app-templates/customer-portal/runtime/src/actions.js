@@ -15,6 +15,7 @@ import { payInvoice } from "./invoice-payment.js";
 import { configuredExternalUrl, normalizeVertical, verticalProfiles } from "./config.js";
 import { resolveRoute, writeRouteToLocation } from "./router.js";
 import { selectSeoService, toggleSeoFaq } from "./seo-actions.js";
+import { VISIT_PHOTO_ACTION, openVisitPhotos } from "./visit-photo-viewer.js";
 
 export var ACTIONS = {
   "nav.go":            function (id) { go(id); },
@@ -198,6 +199,7 @@ export var ACTIONS = {
   "overview.openAppointments": function () { go("appointments"); },
   "appointments.filterDay": function (id) { var day = Number(id); state.apptDay = id === null || id === "" || id === undefined || !Number.isInteger(day) ? null : day; render(); },
   "appointments.openVisit": function (id) { state.visitId = id; go("visit.detail"); },
+  [VISIT_PHOTO_ACTION]: function (id, el, event) { return openVisitPhoto(el, event); },
   "invoice.open":      function (id) { if (id) state.invoiceId = id; go("invoice.detail"); },
   "invoice.pay":       function (id) { return payInvoice(id, { reload: reloadRuntimeModule, render: render }); },
   "appointments.openProperty": function (id) { state.propertyId = id; go("property.detail"); },
@@ -291,6 +293,15 @@ export function bindActions(root) {
       }
     }
     else failCommand(name);
+  });
+}
+
+function openVisitPhoto(trigger, event) {
+  if (event && (event.button > 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey)) return false;
+  if (event) event.preventDefault();
+  return openVisitPhotos(trigger).catch(function () {
+    toast("The photo viewer could not open. Try again.");
+    return false;
   });
 }
 

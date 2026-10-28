@@ -2879,8 +2879,20 @@ a.prop-fact__value { display: block; }
 
 .record-photos__label { font-size: 13px; font-weight: 700; color: var(--ink-2); margin-bottom: 8px; }
 
-.record-photos__grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 10px; }
+.record-photos__grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(112px, 1fr)); gap: 10px; }
 
-.record-photos__item { display: block; border-radius: 14px; overflow: hidden; border: 1px solid var(--glass-border); background: rgba(var(--hair), .05); aspect-ratio: 4 / 3; }
+.record-photos__item { position: relative; display: block; border-radius: 14px; overflow: hidden; border: 1px solid var(--glass-border); background: rgba(var(--hair), .05); aspect-ratio: 4 / 3; cursor: zoom-in; transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease; }
 
-.record-photos__item img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.record-photos__item img { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform .25s ease; }
+
+.record-photos__item:hover, .record-photos__item:focus-visible { transform: translateY(-1px); border-color: rgba(var(--accent-rgb), .45); box-shadow: 0 8px 20px rgba(0, 0, 0, .14); }
+
+.record-photos__item:hover img, .record-photos__item:focus-visible img { transform: scale(1.04); }
+
+.record-photos__item:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+@media (prefers-reduced-motion: reduce) { .record-photos__item, .record-photos__item img { transition: none; } .record-photos__item:hover, .record-photos__item:focus-visible, .record-photos__item:hover img, .record-photos__item:focus-visible img { transform: none; } }
+
+.pswp__caption { position: absolute; left: 50%; bottom: max(20px, env(safe-area-inset-bottom)); transform: translateX(-50%); padding: 6px 14px; border-radius: 999px; background: rgba(0, 0, 0, .55); color: #fff; font: 600 14px/1.3 Manrope, system-ui, sans-serif; letter-spacing: .01em; pointer-events: none; }
+
+.pswp__caption:empty { display: none; }
