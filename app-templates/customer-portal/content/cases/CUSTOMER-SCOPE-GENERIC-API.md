@@ -1,60 +1,50 @@
 # Customer scope — tagged API migration for the Snow portal
 
-Status: **prepared frontend; deployment waits for backend permission fix**,
-2026-10-19. Source baselines: core-ui `ba2eae1c3` (`codex/snow-crm`) and
-core-content-templates `e257e1c` (`codex/lab-ui-durable-catalog`).
-The user chose Snow first and publication/revocation of personal
-user tags; no general tagged save. Spa purchase/booking and anonymous magic-link
-review are outside this migration.
+Status: **live on dev-1 since 2026-10-28.** The deployed Snow portal reads and
+acts only through Core's tagged API; role 75 and the server-side tag
+maintenance that makes those reads answer are recorded in
+`core-ui/docs/snow-customer-portal-tagged-access.md`. No signed-in browser
+test with a customer session has been run.
 
-The live OpenAPI publishes tagged Account, Resource, Document, Order, OrderItem,
-Invoice, BalanceTransaction and SVC entities. Use these existing APIs for row
-access; the historical `/me/` proposal below is superseded and is not an
-implementation plan. OrderItem has independent tags and receives no automatic
-parent access.
+The Snow Account/Profile and Resource/Order/OrderItem/Document adapters use
+`/api/tagged/...`, preserve owner/session checks, and never fall back to
+ordinary CRUD. Property addresses are read through the tagged Account's nested
+`addresses.address` relation and intersected with the owned Resources'
+`ADDRESS` ids. OrderItem lines are read through their own tagged list; a line
+carries its own tag. Spa purchase/booking and the anonymous magic-link review
+are unchanged.
 
-The Snow Account/Profile and Resource/Order/OrderItem/Document adapters now use
-`/api/tagged/...`, preserve owner/session checks, and never fall back to ordinary
-CRUD. Property addresses are fetched through the authorized tagged Account's
-nested `addresses.address` relation and intersected with owned Resource ADDRESS
-IDs, requiring no ordinary Address read. Nesting does not introduce independent
-Address tags. Type/catalog and PIM requests retain their separate contracts.
+Core requests the deployed portal makes (staging modules overview, properties,
+proposals, profile):
 
-**Blocker confirmed on deployed CORE Document:** both `send-event` and
-`sync-state-history` use `P_TAG_DOCUMENT_E`. The latter directly persists history
-and final state; the inspected helper contains no workflow-event permission
-check. Thus `_E` is wider than the agreed selected-event authority. The user
-chose to send a backend note and wait, rather than deploy a read-only interim.
-The note and acceptance tests are in
-`core-ui/docs/snow-customer-portal-tagged-access.md`. BILL controllers and exploit
-behavior were not tested. The diagnostic was removed without permission residue.
+| Request | Permission held by role 75 |
+| --- | --- |
+| `/core/api/user/basic-info.json` | session and self permissions |
+| `/core-acct/api/tagged/account/list.json`, `get.json` | `P_TAG_ACCT_R` |
+| `/core-rm/api/tagged/resource/list.json` | `P_TAG_RESOURCE_R` |
+| `/core/api/document-type/list.json` | `P_DOCUMENT_TYPE_R` |
+| `/core/api/tagged/document/list.json`, `get.json` | `P_TAG_DOCUMENT_R` |
+| `/core/api/tagged/document/{id}/send-event.json` | `P_TAG_DOCUMENT_E` + `P_WF:SERVICE_AGREEMENT_LIFECYCLE:SENT_TO_CLIENT-CLIENT_APPROVED` |
+| `/core-bill/api/tagged/order/list.json`, `get.json`, `/core-bill/api/tagged/order-item/list.json` | `P_TAG_ORDER_R` |
+| `/core-bill/api/tagged/order/{id}/send-event.json` | `P_TAG_ORDER_E` + the three `P_WF:GENERAL_FSM_ORDER:` quote events |
+| `/core-pim/api/product-price/list.json`, `/core-pim/api/product/list.json` | `P_PRICE_R`, `P_PRODUCT_R` |
 
-No role replacement, server tag-maintenance hooks, existing-data tag backfill,
-CMS export or deployment has been done. The current staging-only deployment
-retains its previous authorization model; this source change is not production
-acceptance. Tagged mappings do not enforce a DEFAULT read/write ceiling; generic
-`_W`, `_D` and `_AUD` are not approved for customers.
+The PIM adapter's private product-model, product-review and inventory lists are
+not called: the staging configuration leaves `pimEnrichmentMode` at `closed`.
+dev-1 has no `P_TAG_ORDER_ITEM_*` permission; the order-item tagged list has not
+been exercised with a customer session.
 
-Cross-zone dependency: portal runtime owns the prepared adapter composition;
-portal build tooling owns regeneration/upload; core-ui owns role and trusted
-workflow tag maintenance; backend owns separating history-sync authority.
-Inputs are the corrected backend permission contract and publication receipts.
-Outputs must be tagged-only private reads, selected safe events and preserved
-anonymous links. Acceptance requires two-user/foreign-record negative tests,
-independent OrderItem visibility, publish/revoke/republish and user-reassignment
-checks, plus ordinary-CRUD denial. No delivery deadline is assumed.
+Deployment, 2026-10-28: `upsert-granite-ridge-staging-portal.mjs --live`
+rebuilt the runtime and package byte-identical to the committed ones, ran
+its eleven checks (all passed) and updated BlockTemplate
+`CUSTOMER_PORTAL_GRANITE_RIDGE_STAGING` (`3e57675e-c967-47b2-9501-9235830f3bc3`);
+operator parameters kept their CMS values. After `block-template/clear-cache.json`
+answered 200 on app-1-core-cms and app-3-core-cms, twelve fetches of
+`/pages/SNOWLIMITLESS/portal` (six per node) served the uploaded bundle.
 
-Validation completed: targeted Account/Snow/profile/contracts/overview and
-`snow-tagged-api-check.mjs` checks, Spa orders/booking regressions, anonymous
-client-review regression, and temporary bundle build. The owning Snow upsert's
-checks include the new tagged transport check. Generated runtime/manual and dist
-are untouched.
-
-**Exact next action:** after the backend fix, verify customer `_E` cannot call
-history sync (including force=true), then implement the server publication/
-revocation hooks and guarded backfill. Only then replace role 75, run live
-negative tests, rebuild/export with `upsert-granite-ridge-staging-portal.mjs` and
-deploy. Do not run that upsert as the next step before resolving these gates.
+History: on 2026-10-19 the deployment was held because `P_TAG_DOCUMENT_E` also
+authorized `sync-state-history`; the backend was told. On 2026-10-28 the user
+decided to go fully tagged, `_E` included.
 
 ## Historical /me/ proposal (2026-09-11, superseded)
 
