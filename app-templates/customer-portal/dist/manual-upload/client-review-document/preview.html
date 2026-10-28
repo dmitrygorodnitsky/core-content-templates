@@ -2670,11 +2670,11 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     return ordered.map(function (code) { return fieldOf(byCode[code], locale); });
   }
 
-  function primaryContact(account) {
+  function legalContact(account) {
     var contacts = account && Array.isArray(account.contacts)
       ? account.contacts.filter(function (contact) { return contact && typeof contact === "object"; })
       : [];
-    return contacts.filter(function (contact) { return text(contact.type && contact.type.code).toUpperCase() === "PRIMARY"; }).sort(function(a,b){return Number(a.id)-Number(b.id);})[0] || null;
+    return contacts.filter(function (contact) { return text(contact.type && contact.type.code).toUpperCase() === "LEGAL"; }).sort(function(a,b){return Number(a.id)-Number(b.id);})[0] || null;
   }
 
   function contactEntry(contact, typeCode) {
@@ -2684,7 +2684,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     var values=unique(entries);return values.length===1?values[0]:"";
   }
 
-  function primaryEmail(account) { return contactEntry(primaryContact(account),"EMAIL"); }
+  function primaryEmail(account) { return contactEntry(legalContact(account),"EMAIL"); }
 
   function formatAddress(address, locale) {
     if (!address || typeof address !== "object") return "";
@@ -2708,7 +2708,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
   function detailsPrefill(account, fields, locale, contract) {
     var values = {};
     if (!account || typeof account !== "object") return values;
-    var contact = primaryContact(account);
+    var contact = legalContact(account);
     var derived = {
       CLIENT_TYPE: attributeText(account, "LEGAL_ENTITY_TYPE"),
       LEGAL_NAME: localizedName(account.nls, locale),
@@ -2750,7 +2750,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
   function partiesOf(agreement, account, fields, locale, contract) {
     var codes = contract.agreementAttributes;
     var owner = agreement && agreement[contract.rawShape.documentOwner];
-    var contact = primaryContact(account);
+    var contact = legalContact(account);
     function stated(code) {
       return attributeText(agreement, code);
     }
@@ -2994,7 +2994,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
   function requestLocale(input, fallback, contract) {
     var picked = pickAgreement(input.documents, contract);
     var account = picked.row ? pickAccount(input.accounts, picked.row, contract) : null;
-    var contact = primaryContact(account);
+    var contact = legalContact(account);
     var language = contact && contact.language;
     var code = language && (language.code2 || language.id);
     var aliases = { eng: "en", fre: "fr", fra: "fr", rus: "ru", spa: "es", heb: "he", kaz: "kk", chi: "zh", zho: "zh", ara: "ar" };
@@ -6311,7 +6311,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
 
   var ACCOUNT_ID = 694;
   var AGREEMENT_ID = 5205;
-  var ACCOUNT_TYPE = { id: 2, code: "SNOW_COMMERCIAL_CUSTOMER", nls: { en: { NAME: "Commercial customer" } } };
+  var ACCOUNT_TYPE = { id: 2, code: "CUSTOMER", nls: { en: { NAME: "Client" } } };
   var ORDER_TYPE = { id: 5, code: "FIELD_SERVICE_ORDER" };
   var CURRENCY = { id: 3, code: "CAD" };
   var PRICE_TYPES = { SEASONAL: { id: 6, code: "TIERED_RECURRENT" }, MONTHLY: { id: 6, code: "TIERED_RECURRENT" }, PER_SERVICE: { id: 5, code: "TIERED" } };
@@ -6584,7 +6584,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     { id: "completion", label: "Completion — CLIENT_APPROVED, no portal address" },
     { id: "completion-portal", label: "Completion — ACTIVE, portal address configured" },
     { id: "completion-finishing", label: "Completion — ACTIVATION_FAILED, no primary email in the link" },
-    { id: "completion-attributes", label: "Completion — CLIENT_APPROVED, sign-in email from PRIMARY contact" },
+    { id: "completion-attributes", label: "Completion — CLIENT_APPROVED, sign-in email from LEGAL contact" },
     { id: "link-closed-portal", label: "Link expired or revoked — portal address configured" },
     { id: "reference-expired", label: "Expired agreement — read only" },
     { id: "closed-canceled", label: "Canceled — closed" },
@@ -6674,7 +6674,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
         middleName: null,
         lastName: "Reyes",
         title: "",
-        type: { code: "PRIMARY", nls: { en: { NAME: "Primary" } } },
+        type: { code: "LEGAL", nls: { en: { NAME: "Legal" } } },
         contactEntries: [
           { value: "dana.reyes@harbourview.example", kind: { code: "WORK" }, type: { code: "EMAIL" } },
           { value: "+1 604 555 0164", kind: { code: "WORK" }, type: { code: "PHONE" } },

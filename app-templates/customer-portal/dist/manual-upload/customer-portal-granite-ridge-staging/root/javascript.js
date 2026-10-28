@@ -3662,6 +3662,15 @@
     { key: "id", mappings: [{ name: "id" }, { name: "code" }], name: "country", type: "identifier" },
     { key: "id", mappings: [{ name: "id" }, { name: "code" }], name: "state", type: "identifier" }
   ];
+  var ACCOUNT_ADDRESS_MAPPINGS = [
+    { name: "id" },
+    { key: "id", mappings: ID_MAPPINGS, name: "user", type: "identifier" },
+    {
+      name: "addresses",
+      type: "collection",
+      mappings: [{ key: "id", mappings: ADDRESS_MAPPINGS, name: "address", type: "identifier" }]
+    }
+  ];
   var ORDER_MAPPINGS = [
     { name: "attributes" },
     { name: "grandTotal" },
@@ -3738,11 +3747,11 @@
       },
       async sendOrderEvent(backendId, event, context) {
         var api = readContext(context, options2.origin);
-        return sendEvent(fetchImpl, api, api.billBase + "/api/order/" + commandId(backendId) + "/send-event.json?event=" + eventCode(event));
+        return sendEvent(fetchImpl, api, api.billBase + "/api/tagged/order/" + commandId(backendId) + "/send-event.json?event=" + eventCode(event));
       },
       async sendAgreementEvent(backendId, event, context) {
         var api = readContext(context, options2.origin);
-        return sendEvent(fetchImpl, api, api.coreBase + "/api/document/" + commandId(backendId) + "/send-event.json?event=" + eventCode(event));
+        return sendEvent(fetchImpl, api, api.coreBase + "/api/tagged/document/" + commandId(backendId) + "/send-event.json?event=" + eventCode(event));
       }
     };
   }
@@ -3756,7 +3765,7 @@
       items: rows2.items.map(function(row) {
         return propertyRecord(row, addresses);
       }),
-      scopeMode: "browser-filtered",
+      scopeMode: rows2.scopeMode,
       truncated: rows2.truncated
     };
   }
@@ -3799,7 +3808,7 @@
   async function readCustomerOrder(context, backendId, fetchImpl = globalThis.fetch, explicitOrigin) {
     var api = readContext(context, explicitOrigin);
     var id = commandId(backendId);
-    var row = await requestJson(fetchImpl, api.billBase + "/api/order/get.json?id=" + id, readOptions(api, ORDER_TARGET_MAPPINGS));
+    var row = await requestJson(fetchImpl, api.billBase + "/api/tagged/order/get.json?id=" + id, readOptions(api, ORDER_TARGET_MAPPINGS));
     if (!row || positiveInteger3(row.id) !== id) throw contractError("not-found", "Core did not return the Order");
     if (positiveInteger3(row.account && row.account.id) !== api.accountId) throw contractError("customer-forbidden", "The Order does not belong to the signed-in customer");
     return row;
@@ -3807,7 +3816,7 @@
   async function readCustomerAgreement(context, backendId, fetchImpl = globalThis.fetch, explicitOrigin) {
     var api = readContext(context, explicitOrigin);
     var id = commandId(backendId);
-    var row = await requestJson(fetchImpl, api.coreBase + "/api/document/get.json?id=" + id, readOptions(api, AGREEMENT_TARGET_MAPPINGS));
+    var row = await requestJson(fetchImpl, api.coreBase + "/api/tagged/document/get.json?id=" + id, readOptions(api, AGREEMENT_TARGET_MAPPINGS));
     if (!row || positiveInteger3(row.id) !== id || text3(row.type && row.type.code) !== AGREEMENT_TYPE) throw contractError("not-found", "Core did not return the service agreement");
     if (attributeNumber(row, "CLIENT") !== api.accountId) throw contractError("customer-forbidden", "The service agreement does not belong to the signed-in customer");
     return row;
@@ -3824,7 +3833,7 @@
     });
     var typeId = positiveInteger3(type && type.id);
     if (!typeId) throw contractError("agreement-type-unavailable", "Core did not return the service agreement type");
-    var reply = await requestJson(fetchImpl, api.coreBase + "/api/document/list.json", readOptions(api, {
+    var reply = await requestJson(fetchImpl, api.coreBase + "/api/tagged/document/list.json", readOptions(api, {
       filters: [
         { type: "STRING", operator: "=", property: "type.code", value: AGREEMENT_TYPE },
         { type: "INTEGER", operator: "=", property: "attributes." + typeId + ".CLIENT.value", value: String(api.accountId) }
@@ -3838,7 +3847,7 @@
     });
   }
   async function customerOrders(api, fetchImpl) {
-    var reply = await requestJson(fetchImpl, api.billBase + "/api/order/list.json", readOptions(api, {
+    var reply = await requestJson(fetchImpl, api.billBase + "/api/tagged/order/list.json", readOptions(api, {
       filters: [{ type: "INTEGER", operator: "=", property: "account.id", value: String(api.accountId) }],
       mappings: ORDER_MAPPINGS,
       offset: 0,
@@ -3849,7 +3858,7 @@
     });
   }
   async function customerOrderItems(api, fetchImpl, orderIds) {
-    var reply = await requestJson(fetchImpl, api.billBase + "/api/order-item/list.json", readOptions(api, {
+    var reply = await requestJson(fetchImpl, api.billBase + "/api/tagged/order-item/list.json", readOptions(api, {
       filters: [
         { type: "INTEGER", operator: "=", property: "order.account.id", value: String(api.accountId) },
         { type: "INTEGER", operator: "IN", property: "order.id", value: orderIds.join(",") }
@@ -3958,8 +3967,9 @@
   async function customerProperties(api, fetchImpl) {
     var items = [];
     var truncated = false;
+    var scopeMode = "server-scoped";
     for (var page = 0; page < PROPERTY_PAGE_LIMIT; page += 1) {
-      var response = await requestJson(fetchImpl, api.resourceBase + "/api/resource/list.json", readOptions(api, {
+      var response = await requestJson(fetchImpl, api.resourceBase + "/api/tagged/resource/list.json", readOptions(api, {
         filters: [{ type: "STRING", operator: "=", property: "type.code", value: PROPERTY_TYPE }],
         mappings: RESOURCE_MAPPINGS,
         offset: page * PROPERTY_PAGE_SIZE,
@@ -3968,29 +3978,31 @@
       var rows2 = Array.isArray(response && response.result) ? response.result : [];
       rows2.forEach(function(row) {
         if (attributeNumber(row, "ACCOUNT") === api.accountId) items.push(row);
+        else scopeMode = "browser-filtered";
       });
-      if (rows2.length < PROPERTY_PAGE_SIZE) return { items, truncated: false };
+      if (rows2.length < PROPERTY_PAGE_SIZE) return { items, truncated: false, scopeMode };
       truncated = page === PROPERTY_PAGE_LIMIT - 1;
     }
-    return { items, truncated };
+    return { items, truncated, scopeMode };
   }
   async function resolveAddresses(api, fetchImpl, rows2) {
     var resolved = {};
     var ids = [];
-    rows2.forEach(function(row2) {
-      var id = attributeNumber(row2, "ADDRESS");
+    rows2.forEach(function(row) {
+      var id = attributeNumber(row, "ADDRESS");
       if (id && ids.indexOf(id) < 0) ids.push(id);
     });
-    for (var index = 0; index < ids.length; index += 1) {
-      var response = await requestJson(fetchImpl, api.coreBase + "/api/address/list.json", readOptions(api, {
-        filters: [{ type: "INTEGER", operator: "=", property: "id", value: String(ids[index]) }],
-        mappings: ADDRESS_MAPPINGS,
-        offset: 0,
-        pageSize: 2
-      }));
-      var row = Array.isArray(response && response.result) ? response.result[0] : null;
-      if (row) resolved[String(ids[index])] = row;
+    if (!ids.length) return resolved;
+    if (!api.userId) throw contractError("session-user-required", "The signed-in Core User is required before reading property addresses");
+    var account = await requestJson(fetchImpl, api.accountBase + "/api/tagged/account/get.json?id=" + api.accountId, readOptions(api, ACCOUNT_ADDRESS_MAPPINGS));
+    if (positiveInteger3(account && account.id) !== api.accountId || positiveInteger3(account && account.user && account.user.id) !== api.userId) {
+      throw contractError("customer-forbidden", "Property addresses must belong to the signed-in customer's Account");
     }
+    (Array.isArray(account.addresses) ? account.addresses : []).forEach(function(link) {
+      var address = link && link.address;
+      var id = positiveInteger3(address && address.id);
+      if (id && ids.indexOf(id) !== -1) resolved[String(id)] = address;
+    });
     return resolved;
   }
   function propertyRecord(row, addresses) {
@@ -4041,6 +4053,7 @@
     if (!organization) throw contractError("organization-required", "A portal organization code is required");
     var origin = explicitOrigin || config.origin || browserOrigin();
     return {
+      accountBase: sameOriginBase(config.accountApiBase || "/core-acct", origin, "Core Account API base"),
       accountId,
       accountName: text3(account && typeof account.displayName === "string" ? account.displayName : ""),
       authorization: text3(session.tokenType || session.token_type || "Bearer") + " " + accessToken,
@@ -4048,7 +4061,8 @@
       coreBase: sameOriginBase(config.coreApiBase || "/core", origin, "Core API base"),
       organization,
       pimBase: sameOriginBase(PIM_SERVICE_BASE, origin, "Core PIM API base"),
-      resourceBase: sameOriginBase(config.resourceApiBase || "/core-rm", origin, "Core Resource API base")
+      resourceBase: sameOriginBase(config.resourceApiBase || "/core-rm", origin, "Core Resource API base"),
+      userId: positiveInteger3(session.userId)
     };
   }
   function readOptions(api, body) {
@@ -4103,6 +4117,7 @@
     return error2;
   }
   var coreSnowContract = Object.freeze({
+    accountAddressMappings: ACCOUNT_ADDRESS_MAPPINGS,
     addressMappings: ADDRESS_MAPPINGS,
     agreementMappings: AGREEMENT_MAPPINGS,
     agreementType: AGREEMENT_TYPE,
@@ -4129,7 +4144,7 @@
       orderItems: "server-scoped",
       productPrices: "unscoped",
       products: "unscoped",
-      properties: "browser-filtered"
+      properties: "server-scoped"
     })
   });
 
@@ -16586,7 +16601,7 @@
   }
   async function loadCustomerAccountProfile(context, fetchImpl = globalThis.fetch, explicitOrigin) {
     var api = requestContext3(context, explicitOrigin);
-    var reply = await requestJson6(fetchImpl, api.accountBase + "/api/account/list.json", {
+    var reply = await requestJson6(fetchImpl, api.accountBase + api.accountListPath, {
       method: "POST",
       credentials: "same-origin",
       headers: {
@@ -16615,7 +16630,7 @@
   function ownedBySession(row, api) {
     if (!row || typeof row !== "object" || positiveInteger3(row.id) !== api.accountId) return false;
     var linked = row.user && typeof row.user === "object" ? positiveInteger3(row.user.id) : null;
-    return linked === null || linked === api.userId;
+    return linked === null && !api.tagged || linked === api.userId;
   }
   function requestContext3(context, explicitOrigin) {
     var config = context && context.config || {};
@@ -16634,6 +16649,8 @@
     return {
       accountBase: sameOriginBase6(config.accountApiBase || "/core-acct", origin, "Core Account API base"),
       accountId,
+      accountListPath: config.vertical === "snow" ? "/api/tagged/account/list.json" : "/api/account/list.json",
+      tagged: config.vertical === "snow",
       authorization: text3(session.tokenType || session.token_type || "Bearer") + " " + accessToken,
       organization,
       userId
@@ -16670,6 +16687,7 @@
   }
   var coreAccountProfileContract = Object.freeze({
     endpoint: "/api/account/list.json",
+    snowEndpoint: "/api/tagged/account/list.json",
     filters: Object.freeze(["id", "user.id"]),
     mappings: PROFILE_MAPPINGS,
     scopeMode: "server-scoped"
@@ -16677,7 +16695,7 @@
 
   // app-templates/customer-portal/runtime/src/normalizers/account-profile.js
   var ACCOUNT_PROFILE_SCOPE_MODES = Object.freeze(["server-scoped", "browser-filtered"]);
-  var PRIMARY_CONTACT = "PRIMARY";
+  var LEGAL_CONTACT = "LEGAL";
   var BILLING_ADDRESS = "BILLING";
   var EMAIL_ENTRY = "EMAIL";
   var PHONE_ENTRY = "PHONE";
@@ -16723,7 +16741,7 @@
   }
   function primaryContact(contacts) {
     var primaries = rows(contacts).filter(function(contact) {
-      return text3(contact.type && contact.type.code) === PRIMARY_CONTACT;
+      return text3(contact.type && contact.type.code) === LEGAL_CONTACT;
     });
     return primaries.sort(byIdAscending)[0] || null;
   }
@@ -17320,7 +17338,7 @@
     var organizationCode = selectOrganization(config.organization || config.pimOrganization, basicInfo);
     var typeCodes = accountTypeCodes(config.accountTypeCode);
     var typeList = typeCodes.length > 1;
-    var accountReply = await requestJson7(fetchImpl, accountBase + "/api/account/list.json", {
+    var accountReply = await requestJson7(fetchImpl, accountBase + (config.vertical === "snow" ? "/api/tagged/account/list.json" : "/api/account/list.json"), {
       method: "POST",
       credentials: "same-origin",
       headers: {
@@ -17350,7 +17368,7 @@
     }
     var account = accounts[0] || {};
     if (!positiveInteger8(account.id)) throw contractError6("invalid-customer-account", "Core Account response did not include an id");
-    if (account.user && positiveInteger8(account.user.id) && Number(account.user.id) !== userId) {
+    if (config.vertical === "snow" && positiveInteger8(account.user && account.user.id) !== userId || account.user && positiveInteger8(account.user.id) && Number(account.user.id) !== userId) {
       throw contractError6("customer-scope-mismatch", "Core Account user does not match the authenticated Core User");
     }
     return {

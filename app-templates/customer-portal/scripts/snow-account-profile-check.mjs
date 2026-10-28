@@ -39,13 +39,13 @@ function accountRow(overrides = {}) {
     user: { id: USER },
     contacts: [
       contactRow(6602, "Priya", "Sandhu", "Building Manager", "SECONDARY", [entry(6621, "EMAIL", "priya.sandhu@example.test")]),
-      contactRow(6601, "Jordan", "Lee", "Strata Council President", "PRIMARY", [
+      contactRow(6601, "Jordan", "Lee", "Strata Council President", "LEGAL", [
         entry(6611, "EMAIL", "jordan.lee@example.test"),
         entry(6612, "PHONE", "+1 604 555 0148"),
         entry(6613, "EMAIL", " jordan.lee@example.test "),
         entry(6614, "FAX", "+1 604 555 0199"),
       ]),
-      contactRow(6609, "Morgan", "Hale", "Treasurer", "PRIMARY", [entry(6691, "EMAIL", "morgan.hale@example.test")]),
+      contactRow(6609, "Morgan", "Hale", "Treasurer", "LEGAL", [entry(6691, "EMAIL", "morgan.hale@example.test")]),
     ],
     addresses: [
       typed(1901, ["BILLING"], { id: 8801, address1: "133 Acceptance Way, Toronto, ON M5V 2T6" }),
@@ -132,7 +132,7 @@ function reply(status, body) {
   assert.equal(ready.state, "ready");
   assert.equal(ready.scopeMode, "server-scoped");
   assert.equal(ready.accountName, "Harbourview Strata Council");
-  assert.deepEqual(plain(ready.contact), { name: "Jordan Lee", title: "Strata Council President" }, "the PRIMARY contact with the lowest id is the primary contact; a secondary contact is never promoted");
+  assert.deepEqual(plain(ready.contact), { name: "Jordan Lee", title: "Strata Council President" }, "the LEGAL contact with the lowest id is the primary contact; a secondary contact is never promoted");
   assert.deepEqual(plain(ready.emails), ["jordan.lee@example.test"], "entries are trimmed and a repeated value is shown once");
   assert.deepEqual(plain(ready.phones), ["+1 604 555 0148"], "only PHONE entries are phones");
   assert.deepEqual(plain(ready.billingAddresses), [
@@ -142,14 +142,14 @@ function reply(status, body) {
   assert.deepEqual(plain(ready.allowedActions), [], "the profile is read-only");
   assert.equal("preferences" in ready, false, "notification preferences have no Core source, so none are modelled");
 
-  const partial = normalizeAccountProfile({ account: accountRow({ contacts: [contactRow(1, "Jordan", "", "", "PRIMARY", [entry(2, "EMAIL", "jordan.lee@example.test")])], addresses: [] }), scopeMode: "server-scoped" });
+  const partial = normalizeAccountProfile({ account: accountRow({ contacts: [contactRow(1, "Jordan", "", "", "LEGAL", [entry(2, "EMAIL", "jordan.lee@example.test")])], addresses: [] }), scopeMode: "server-scoped" });
   assert.equal(partial.state, "partial");
   assert.deepEqual(plain(partial.contact), { name: "Jordan", title: "" });
   assert.deepEqual(plain(partial.phones), []);
   assert.deepEqual(plain(partial.billingAddresses), []);
 
   const secondaryOnly = normalizeAccountProfile({ account: accountRow({ contacts: [contactRow(1, "Priya", "Sandhu", "", "SECONDARY", [entry(2, "PHONE", "+1 604 555 0101")])], addresses: [] }) });
-  assert.equal(secondaryOnly.state, "empty", "without a PRIMARY contact nothing is shown as the primary contact");
+  assert.equal(secondaryOnly.state, "empty", "without a LEGAL contact nothing is shown as the primary contact");
   assert.equal(secondaryOnly.contact, null);
   assert.deepEqual(plain(secondaryOnly.phones), []);
 
@@ -158,7 +158,7 @@ function reply(status, body) {
   assert.equal(bare.accountName, "", "an Account without a name is never named by its code");
   assert.equal(bare.scopeMode, null);
 
-  const odd = normalizeAccountProfile({ account: accountRow({ contacts: [contactRow(1, { first: "x" }, 42, null, "PRIMARY", [entry(2, "EMAIL", { value: "x" }), entry(3, "PHONE", 6045550148)])], addresses: [typed(1, ["BILLING"], { address1: "", city: null })] }), scopeMode: "unscoped" });
+  const odd = normalizeAccountProfile({ account: accountRow({ contacts: [contactRow(1, { first: "x" }, 42, null, "LEGAL", [entry(2, "EMAIL", { value: "x" }), entry(3, "PHONE", 6045550148)])], addresses: [typed(1, ["BILLING"], { address1: "", city: null })] }), scopeMode: "unscoped" });
   assert.deepEqual(plain(odd.contact), { name: "42", title: "" }, "only strings and finite numbers become text");
   assert.deepEqual(plain(odd.emails), []);
   assert.deepEqual(plain(odd.phones), ["6045550148"]);
@@ -239,7 +239,7 @@ function renderWith(envelope, status) {
 {
   const expectations = [
     ["ready", normalizeAccountProfile({ account: accountRow(), scopeMode: "server-scoped" })],
-    ["partial", normalizeAccountProfile({ account: accountRow({ contacts: [contactRow(1, "Jordan", "Lee", "", "PRIMARY", [entry(2, "EMAIL", "jordan.lee@example.test")])], addresses: [] }) })],
+    ["partial", normalizeAccountProfile({ account: accountRow({ contacts: [contactRow(1, "Jordan", "Lee", "", "LEGAL", [entry(2, "EMAIL", "jordan.lee@example.test")])], addresses: [] }) })],
     ["empty", normalizeAccountProfile({ account: accountRow({ contacts: [], addresses: [] }) })],
     ["loading", undefined],
     ["error", accountProfileFailure("profile-request-failed")],
@@ -301,7 +301,7 @@ function renderWith(envelope, status) {
   assert.doesNotMatch(source, /save\.json|send-event|PATCH|innerHTML|kind"/, "the snow profile reads and renders; it writes nothing and injects no markup");
 }
 
-console.log("snow-account-profile-check ok: the snow profile is one server-scoped read of the resolved customer Account filtered by id and the signed-in User, with contacts, entries and typed addresses projected and no entry kind, a row outside the session dropped and named browser-filtered, every Core failure mapped, a normalizer that shows the PRIMARY contact, its e-mail and phone and the billing addresses newest first without codes, preferences or invented values, fixture data read through the same normalizer, stormRetail routed to it while every other profile keeps its page, and ready, partial, empty, loading, error, unauthorized and unavailable states with Sign out always present and no edit control");
+console.log("snow-account-profile-check ok: the snow profile is one server-scoped read of the resolved customer Account filtered by id and the signed-in User, with contacts, entries and typed addresses projected and no entry kind, a row outside the session dropped and named browser-filtered, every Core failure mapped, a normalizer that shows the LEGAL contact, its e-mail and phone and the billing addresses newest first without codes, preferences or invented values, fixture data read through the same normalizer, stormRetail routed to it while every other profile keeps its page, and ready, partial, empty, loading, error, unauthorized and unavailable states with Sign out always present and no edit control");
 
 function createDom() {
   class Text {

@@ -1,5 +1,5 @@
 {
- "optimistic": 7,
+ "optimistic": 8,
  "code": "CUSTOMER",
  "nls": {
   "ar": {
@@ -26,11 +26,6 @@
   {
    "default": [
     {
-     "typeId": 35,
-     "attributeCode": "LEGAL_ENTITY_TYPE",
-     "visible": true
-    },
-    {
      "attributeCode": "MANAGEMENT_COMPANY",
      "visible": true
     },
@@ -43,27 +38,14 @@
      "visible": true
     },
     {
-     "attributeCode": "ACCOUNT_REPRESENTATIVE",
+     "typeId": 35,
+     "attributeCode": "LEGAL_ENTITY_TYPE",
      "visible": true
     }
    ]
   }
  ],
  "attributes": [
-  {
-   "code": "ACCOUNT_REPRESENTATIVE",
-   "required": false,
-   "multiselect": false,
-   "freeValue": false,
-   "unique": false,
-   "className": "com.pixelnation.common.domain.User",
-   "nls": {
-    "en": {
-     "NAME": "Account Representative"
-    }
-   },
-   "options": []
-  },
   {
    "code": "MANAGEMENT_COMPANY",
    "required": false,

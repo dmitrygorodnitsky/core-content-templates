@@ -1149,11 +1149,11 @@
     return ordered.map(function (code) { return fieldOf(byCode[code], locale); });
   }
 
-  function primaryContact(account) {
+  function legalContact(account) {
     var contacts = account && Array.isArray(account.contacts)
       ? account.contacts.filter(function (contact) { return contact && typeof contact === "object"; })
       : [];
-    return contacts.filter(function (contact) { return text(contact.type && contact.type.code).toUpperCase() === "PRIMARY"; }).sort(function(a,b){return Number(a.id)-Number(b.id);})[0] || null;
+    return contacts.filter(function (contact) { return text(contact.type && contact.type.code).toUpperCase() === "LEGAL"; }).sort(function(a,b){return Number(a.id)-Number(b.id);})[0] || null;
   }
 
   function contactEntry(contact, typeCode) {
@@ -1163,7 +1163,7 @@
     var values=unique(entries);return values.length===1?values[0]:"";
   }
 
-  function primaryEmail(account) { return contactEntry(primaryContact(account),"EMAIL"); }
+  function primaryEmail(account) { return contactEntry(legalContact(account),"EMAIL"); }
 
   function formatAddress(address, locale) {
     if (!address || typeof address !== "object") return "";
@@ -1187,7 +1187,7 @@
   function detailsPrefill(account, fields, locale, contract) {
     var values = {};
     if (!account || typeof account !== "object") return values;
-    var contact = primaryContact(account);
+    var contact = legalContact(account);
     var derived = {
       CLIENT_TYPE: attributeText(account, "LEGAL_ENTITY_TYPE"),
       LEGAL_NAME: localizedName(account.nls, locale),
@@ -1229,7 +1229,7 @@
   function partiesOf(agreement, account, fields, locale, contract) {
     var codes = contract.agreementAttributes;
     var owner = agreement && agreement[contract.rawShape.documentOwner];
-    var contact = primaryContact(account);
+    var contact = legalContact(account);
     function stated(code) {
       return attributeText(agreement, code);
     }
@@ -1473,7 +1473,7 @@
   function requestLocale(input, fallback, contract) {
     var picked = pickAgreement(input.documents, contract);
     var account = picked.row ? pickAccount(input.accounts, picked.row, contract) : null;
-    var contact = primaryContact(account);
+    var contact = legalContact(account);
     var language = contact && contact.language;
     var code = language && (language.code2 || language.id);
     var aliases = { eng: "en", fre: "fr", fra: "fr", rus: "ru", spa: "es", heb: "he", kaz: "kk", chi: "zh", zho: "zh", ara: "ar" };

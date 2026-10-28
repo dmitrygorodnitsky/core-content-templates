@@ -1,5 +1,5 @@
 {
- "optimistic": 4,
+ "optimistic": 6,
  "code": "SNOW_COMMERCIAL_CUSTOMER",
  "nls": {
   "en": {
@@ -17,23 +17,10 @@
  },
  "attributeOrder": [
   {
-   "CUSTOMER_PROFILE": [
-    {
-     "attributeCode": "CUSTOMER_PRIORITY",
-     "visible": true
-    },
-    {
-     "attributeCode": "PREFERRED_CONTACT_METHOD",
-     "visible": true
-    }
-   ]
+   "CUSTOMER_PROFILE": []
   },
   {
    "BILLING_PROFILE": [
-    {
-     "attributeCode": "BILLING_TERMS",
-     "visible": true
-    },
     {
      "attributeCode": "TAX_EXEMPT",
      "visible": true
@@ -77,227 +64,10 @@
     }
    },
    "options": []
-  },
-  {
-   "code": "REPRESENTATIVE_EMAIL",
-   "required": false,
-   "multiselect": false,
-   "freeValue": false,
-   "unique": false,
-   "className": "java.lang.String",
-   "nls": {
-    "en": {
-     "NAME": "Prefill Representative Email"
-    }
-   },
-   "options": []
-  },
-  {
-   "code": "CUSTOMER_PRIORITY",
-   "required": false,
-   "multiselect": false,
-   "freeValue": false,
-   "unique": false,
-   "className": "java.lang.String",
-   "nls": {
-    "en": {
-     "NAME": "Customer Priority"
-    }
-   },
-   "options": [
-    {
-     "value": "LOW",
-     "nls": {
-      "en": {
-       "NAME": "Low"
-      }
-     }
-    },
-    {
-     "value": "NORMAL",
-     "nls": {
-      "en": {
-       "NAME": "Normal"
-      }
-     }
-    },
-    {
-     "value": "HIGH",
-     "nls": {
-      "en": {
-       "NAME": "High"
-      }
-     }
-    },
-    {
-     "value": "VIP",
-     "nls": {
-      "en": {
-       "NAME": "VIP"
-      }
-     }
-    }
-   ]
-  },
-  {
-   "code": "REPRESENTATIVE_FIRST_NAME",
-   "required": false,
-   "multiselect": false,
-   "freeValue": false,
-   "unique": false,
-   "className": "java.lang.String",
-   "nls": {
-    "en": {
-     "NAME": "Prefill Representative First Name"
-    }
-   },
-   "options": []
-  },
-  {
-   "code": "REPRESENTATIVE_JOB_TITLE",
-   "required": false,
-   "multiselect": false,
-   "freeValue": false,
-   "unique": false,
-   "className": "java.lang.String",
-   "nls": {
-    "en": {
-     "NAME": "Prefill Representative Job Title"
-    }
-   },
-   "options": []
-  },
-  {
-   "code": "BILLING_ADDRESS",
-   "required": false,
-   "multiselect": false,
-   "freeValue": false,
-   "unique": false,
-   "className": "java.lang.String",
-   "nls": {
-    "en": {
-     "NAME": "Prefill Billing Address"
-    }
-   },
-   "options": []
-  },
-  {
-   "code": "REPRESENTATIVE_PHONE",
-   "required": false,
-   "multiselect": false,
-   "freeValue": false,
-   "unique": false,
-   "className": "java.lang.String",
-   "nls": {
-    "en": {
-     "NAME": "Prefill Representative Phone"
-    }
-   },
-   "options": []
-  },
-  {
-   "code": "BILLING_TERMS",
-   "required": false,
-   "multiselect": false,
-   "freeValue": false,
-   "unique": false,
-   "className": "java.lang.String",
-   "nls": {
-    "en": {
-     "NAME": "Billing Terms"
-    }
-   },
-   "options": [
-    {
-     "value": "DUE_ON_RECEIPT",
-     "nls": {
-      "en": {
-       "NAME": "Due on receipt"
-      }
-     }
-    },
-    {
-     "value": "NET_15",
-     "nls": {
-      "en": {
-       "NAME": "Net 15"
-      }
-     }
-    },
-    {
-     "value": "NET_30",
-     "nls": {
-      "en": {
-       "NAME": "Net 30"
-      }
-     }
-    },
-    {
-     "value": "SEASONAL_PREPAY",
-     "nls": {
-      "en": {
-       "NAME": "Seasonal prepay"
-      }
-     }
-    }
-   ]
-  },
-  {
-   "code": "REPRESENTATIVE_LAST_NAME",
-   "required": false,
-   "multiselect": false,
-   "freeValue": false,
-   "unique": false,
-   "className": "java.lang.String",
-   "nls": {
-    "en": {
-     "NAME": "Prefill Representative Last Name"
-    }
-   },
-   "options": []
-  },
-  {
-   "code": "PREFERRED_CONTACT_METHOD",
-   "required": false,
-   "multiselect": false,
-   "freeValue": false,
-   "unique": false,
-   "className": "java.lang.String",
-   "nls": {
-    "en": {
-     "NAME": "Preferred Contact Method"
-    }
-   },
-   "options": [
-    {
-     "value": "PHONE",
-     "nls": {
-      "en": {
-       "NAME": "Phone"
-      }
-     }
-    },
-    {
-     "value": "EMAIL",
-     "nls": {
-      "en": {
-       "NAME": "Email"
-      }
-     }
-    },
-    {
-     "value": "SMS",
-     "nls": {
-      "en": {
-       "NAME": "SMS"
-      }
-     }
-    }
-   ]
   }
  ],
  "id": 6,
- "isAbstract": false,
+ "isAbstract": true,
  "attributeGroups": [
   {
    "code": "CUSTOMER_CONTEXT",

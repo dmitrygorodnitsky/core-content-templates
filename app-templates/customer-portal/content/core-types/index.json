@@ -226,7 +226,8 @@
      "code": "CUSTOMER",
      "workflow": "CLIENT_ACCOUNT_LIFECYCLE",
      "owner": "SYSTEM",
-     "attributeCount": 2
+     "attributeCount": 1,
+     "isAbstract": false
     },
     {
      "id": 3,
@@ -247,21 +248,24 @@
      "code": "SNOW_RESIDENTIAL_CUSTOMER",
      "workflow": "CLIENT_ACCOUNT_LIFECYCLE",
      "owner": "SERVICE_WAND_WINTER_SERVICES_CANADA",
-     "attributeCount": 11
+     "attributeCount": 2,
+     "isAbstract": true
     },
     {
      "id": 6,
      "code": "SNOW_COMMERCIAL_CUSTOMER",
      "workflow": "CLIENT_ACCOUNT_LIFECYCLE",
      "owner": "SERVICE_WAND_WINTER_SERVICES_CANADA",
-     "attributeCount": 11
+     "attributeCount": 2,
+     "isAbstract": true
     },
     {
      "id": 7,
      "code": "SNOW_PROPERTY_MANAGER",
      "workflow": "CLIENT_ACCOUNT_LIFECYCLE",
      "owner": "SERVICE_WAND_WINTER_SERVICES_CANADA",
-     "attributeCount": 5
+     "attributeCount": 2,
+     "isAbstract": true
     },
     {
      "id": 12,
@@ -747,5 +751,6 @@
  ],
  "clientLifecycleReadAt": "2026-10-18",
  "workflowCleanupReadAt": "2026-10-19",
- "documentTypeCleanupReadAt": "2026-10-19"
+ "documentTypeCleanupReadAt": "2026-10-19",
+ "accountTransitionReadAt": "2026-10-26"
 }

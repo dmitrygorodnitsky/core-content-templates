@@ -248,7 +248,7 @@ function manifestFor(template, contract) {
         core.agreementAttributes.detailsErrors,
       ].concat(core.contractDetails.attributes.map((attribute) => attribute.code)),
       account: ["LEGAL_ENTITY_TYPE"],
-      accountPrimaryEmail: "contacts[type PRIMARY].contactEntries[type EMAIL], PRIMARY then WORK then one unambiguous populated value",
+      accountPrimaryEmail: "contacts[type LEGAL].contactEntries[type EMAIL], PRIMARY then WORK then one unambiguous populated value",
     },
     verified: [
       "On 2026-10-15 dev-1 agreement 208 was sent with both grants: the main one carried the quotes, the Account, the Document and the property's Address, the core-rm one the property Resource; through " + propertyFragment + " the page read the Resource's ADDRESS and PROPERTY_PLAN and showed the address, and a link without it or with a revoked property token showed the address as unavailable without an error.",
