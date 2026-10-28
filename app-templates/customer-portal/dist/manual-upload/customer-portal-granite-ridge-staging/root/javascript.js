@@ -9760,6 +9760,7 @@
   // app-templates/customer-portal/runtime/src/adapters/google-maps-adapter.js
   var SCRIPT_URL = "https://maps.googleapis.com/maps/api/js";
   var LIBRARIES = ["core", "maps", "geocoding"];
+  var READY_CALLBACK = "__portalGoogleMapsReady";
   var GEOCODE_PREFIX = "portal.geocode:";
   var SUGGESTION_LIMIT = 5;
   var SUGGESTION_TYPES = ["street_address", "premise", "subpremise", "route"];
@@ -9873,23 +9874,36 @@
       return Promise.resolve(present);
     }
     return new Promise(function(resolve, reject) {
+      var settled2 = false;
+      function ready() {
+        var loaded = scope.google && scope.google.maps;
+        if (settled2 || !loaded || typeof loaded.importLibrary !== "function" && typeof loaded.Map !== "function") return false;
+        settled2 = true;
+        resolve(loaded);
+        return true;
+      }
       var previous = scope.gm_authFailure;
       scope.gm_authFailure = function() {
         var error2 = new Error("Google Maps rejected the browser key");
+        settled2 = true;
         reject(error2);
         fail2(error2);
         if (typeof previous === "function") previous();
       };
+      scope[READY_CALLBACK] = ready;
       var script = scope.document.createElement("script");
       script.async = true;
-      script.src = SCRIPT_URL + "?key=" + encodeURIComponent(apiKey) + "&loading=async&v=weekly";
+      script.src = SCRIPT_URL + "?key=" + encodeURIComponent(apiKey) + "&loading=async&v=weekly&callback=" + READY_CALLBACK;
       script.addEventListener("error", function() {
+        settled2 = true;
         reject(new Error("The Google Maps script did not load"));
       });
       script.addEventListener("load", function() {
-        var loaded = scope.google && scope.google.maps;
-        if (loaded) resolve(loaded);
-        else reject(new Error("The Google Maps script loaded without google.maps"));
+        if (ready()) return;
+        if (!(scope.google && scope.google.maps)) {
+          settled2 = true;
+          reject(new Error("The Google Maps script loaded without google.maps"));
+        }
       });
       scope.document.head.appendChild(script);
     });

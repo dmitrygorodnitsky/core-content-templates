@@ -125,7 +125,7 @@ const PERIODS = Array.from({ length: 7 }, (_, index) => ({
   assert.equal(first, second, "the script is requested once however many times the card renders");
   const scripts = scope.document.head.children;
   assert.equal(scripts.length, 1);
-  assert.equal(scripts[0].src, "https://maps.googleapis.com/maps/api/js?key=AIza-test_key&loading=async&v=weekly");
+  assert.equal(scripts[0].src, "https://maps.googleapis.com/maps/api/js?key=AIza-test_key&loading=async&v=weekly&callback=__portalGoogleMapsReady");
   assert.equal(scripts[0].async, true);
   const google = createGoogleStub();
   scope.google = { maps: google.maps };
@@ -160,6 +160,15 @@ const PERIODS = Array.from({ length: 7 }, (_, index) => ({
   const asyncLoaded = { document: dom.fresh(), google: { maps: bootstrap } };
   const loaded = await createGoogleMapsAdapter({ apiKey: "AIza-test_key", scope: asyncLoaded }).load();
   assert.equal(loaded.Map, LibraryMap, "a namespace loaded with loading=async still yields the Map class its library returned");
+
+  class EarlyMap {}
+  const early = { document: dom.fresh() };
+  const earlyLoad = createGoogleMapsAdapter({ apiKey: "AIza-test_key", scope: early }).load();
+  early.google = { maps: {} };
+  fire(early.document.head.children[0], "load");
+  early.google.maps = { importLibrary: async (name) => (name === "maps" ? { Map: EarlyMap } : {}) };
+  early.__portalGoogleMapsReady();
+  assert.equal((await earlyLoad).Map, EarlyMap, "a load event that arrives before Google finishes waits for its ready callback");
 
   class NamespaceMap {}
   const replaced = { document: dom.fresh(), google: { maps: { importLibrary: async () => ({}) } } };
