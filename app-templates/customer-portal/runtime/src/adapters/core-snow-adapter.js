@@ -1,6 +1,7 @@
 import { attributeEntry, attributeNumber, attributeText, latestStateCode, positiveInteger, text } from "../normalizers/core-record.js";
 import { CUSTOMER_ORDER_STATUS, OPERATOR_ORDER_STATES, QUOTE_ORDER_TYPES } from "../normalizers/contracts.js";
 import { formatPostalAddress } from "../normalizers/postal-address.js";
+import { VISIT_TYPE } from "../normalizers/visits.js";
 
 const PROPERTY_TYPE = "SNOW_REMOVAL_PROPERTY";
 const PROPERTY_BASE_TYPE = "PROPERTY";
@@ -13,6 +14,8 @@ const AGREEMENT_PAGE_SIZE = 100;
 const ORDER_PAGE_SIZE = 100;
 const LINE_PAGE_SIZE = 200;
 const CATALOG_PAGE_SIZE = 200;
+const VISIT_PAGE_SIZE = 50;
+const INVOICE_PAGE_SIZE = 50;
 
 const MEDIA_ID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
 
@@ -104,6 +107,108 @@ const AGREEMENT_TARGET_MAPPINGS = [
   { mappings: REF_MAPPINGS, name: "states", type: "collection" },
   { key: "id", mappings: REF_MAPPINGS, name: "type", type: "identifier" },
 ];
+
+const TAGGED_REF_MAPPINGS = [{ name: "id" }, { name: "code" }, { name: "nls" }];
+
+const VISIT_MAPPINGS = [
+  { name: "id" },
+  { name: "code" },
+  { name: "nls" },
+  { name: "start" },
+  { name: "end" },
+  { name: "attributes" },
+  { name: "type", type: "identifier", mappings: TAGGED_REF_MAPPINGS },
+  { name: "states", type: "collection", mappings: TAGGED_REF_MAPPINGS },
+];
+
+const INVOICE_MAPPINGS = [
+  { name: "id" },
+  { name: "created" },
+  { name: "dueDate" },
+  { name: "notes" },
+  { name: "amountDue" },
+  { name: "totalPaidAmount" },
+  { name: "attributes" },
+  { name: "type", type: "identifier", mappings: TAGGED_REF_MAPPINGS },
+  { name: "states", type: "collection", mappings: TAGGED_REF_MAPPINGS },
+  { name: "order", type: "reference", mappings: [{ name: "id" }, { name: "currency", type: "identifier", mappings: [{ name: "id" }, { name: "code" }] }] },
+  {
+    name: "items",
+    type: "collection",
+    mappings: [
+      { name: "id" },
+      { name: "amount" },
+      { name: "itemCount" },
+      { name: "notes" },
+      {
+        name: "itemPrice",
+        type: "reference",
+        mappings: [{ name: "id" }, { name: "product", type: "reference", mappings: TAGGED_REF_MAPPINGS }],
+      },
+    ],
+  },
+];
+
+const VISIT_LIST_BODY = Object.freeze({
+  filters: [{ operator: "=", property: "type.code", value: VISIT_TYPE }],
+  mappings: VISIT_MAPPINGS,
+  offset: 0,
+  pageSize: VISIT_PAGE_SIZE,
+  sorting: [{ field: "start", direction: "DESC" }],
+});
+
+const INVOICE_LIST_BODY = Object.freeze({
+  mappings: INVOICE_MAPPINGS,
+  offset: 0,
+  pageSize: INVOICE_PAGE_SIZE,
+  sorting: [{ field: "dueDate", direction: "DESC" }],
+});
+
+export function createCoreSnowVisitsAdapter(options = {}) {
+  var fetchImpl = options.fetch || globalThis.fetch;
+  if (typeof fetchImpl !== "function") throw contractError("fetch-unavailable", "Core snow adapter requires fetch");
+  return {
+    async load(moduleId, context) {
+      if (moduleId !== "appointmentsTimeline") throw contractError("unsupported-module", "Core snow visits adapter cannot load " + moduleId);
+      return loadSnowVisits(context, fetchImpl, options.origin);
+    },
+  };
+}
+
+export function createCoreSnowInvoicesAdapter(options = {}) {
+  var fetchImpl = options.fetch || globalThis.fetch;
+  if (typeof fetchImpl !== "function") throw contractError("fetch-unavailable", "Core snow adapter requires fetch");
+  return {
+    async load(moduleId, context) {
+      if (moduleId !== "invoices") throw contractError("unsupported-module", "Core snow invoices adapter cannot load " + moduleId);
+      return loadSnowInvoices(context, fetchImpl, options.origin);
+    },
+  };
+}
+
+export async function loadSnowVisits(context, fetchImpl = globalThis.fetch, explicitOrigin) {
+  var api = readContext(context, explicitOrigin);
+  var reply = await requestJson(fetchImpl, api.serviceBase + "/api/tagged/appointment/list.json", readOptions(api, VISIT_LIST_BODY));
+  var rows = listResult(reply);
+  return {
+    state: "ready",
+    accountId: api.accountId,
+    items: rows.filter(function (row) { return text(row && row.type && row.type.code) === VISIT_TYPE; }),
+    truncated: resultSizeOf(reply, rows.length) > rows.length,
+  };
+}
+
+export async function loadSnowInvoices(context, fetchImpl = globalThis.fetch, explicitOrigin) {
+  var api = readContext(context, explicitOrigin);
+  var reply = await requestJson(fetchImpl, api.billBase + "/api/tagged/invoice/list.json", readOptions(api, INVOICE_LIST_BODY));
+  var rows = listResult(reply);
+  return {
+    state: "ready",
+    accountId: api.accountId,
+    items: rows,
+    truncated: resultSizeOf(reply, rows.length) > rows.length,
+  };
+}
 
 export function createCoreSnowPropertiesAdapter(options = {}) {
   var fetchImpl = options.fetch || globalThis.fetch;
@@ -491,6 +596,7 @@ function readContext(context, explicitOrigin) {
     organization: organization,
     pimBase: sameOriginBase(PIM_SERVICE_BASE, origin, "Core PIM API base"),
     resourceBase: sameOriginBase(config.resourceApiBase || "/core-rm", origin, "Core Resource API base"),
+    serviceBase: sameOriginBase(config.serviceApiBase || "/core-svc", origin, "Core Service API base"),
     userId: positiveInteger(session.userId),
   };
 }
@@ -562,6 +668,7 @@ export const coreSnowContract = Object.freeze({
   addressMappings: ADDRESS_MAPPINGS,
   agreementMappings: AGREEMENT_MAPPINGS,
   agreementType: AGREEMENT_TYPE,
+  invoiceListBody: INVOICE_LIST_BODY,
   customerQuoteStatus: Object.freeze(Object.assign({}, CUSTOMER_ORDER_STATUS)),
   operatorQuoteStates: Object.freeze(OPERATOR_ORDER_STATES.slice()),
   orderItemMappings: ORDER_ITEM_MAPPINGS,
@@ -574,6 +681,7 @@ export const coreSnowContract = Object.freeze({
   propertyType: PROPERTY_TYPE,
   quoteOrderTypes: Object.freeze(QUOTE_ORDER_TYPES.slice()),
   resourceMappings: RESOURCE_MAPPINGS,
+  visitListBody: VISIT_LIST_BODY,
   quoteFilters: ["account.id"],
   agreementFilters: ["type.code", "attributes.{SERVICE_AGREEMENT type id}.CLIENT.value"],
   orderItemFilters: ["order.account.id", "order.id"],

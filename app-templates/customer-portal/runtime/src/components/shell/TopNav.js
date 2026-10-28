@@ -1,6 +1,6 @@
 // customer-portal/runtime/src/components/shell/TopNav.js — production transfer module.
 import { h } from "../../dom.js";
-import { activeProfile, activeVerticalConfig, activityUnread, cartCount, currentFixture, isModuleEnabled, isSpa, state } from "../../state.js";
+import { activeProfile, activeVerticalConfig, activityUnread, cartCount, currentFixture, isModuleEnabled, isSpa, navListShown, state } from "../../state.js";
 import { configuredExternalUrl, routeRegistry } from "../../config.js";
 import { ActionButton } from "../primitives/ActionButton.js";
 import { icon } from "../storm/overview-icons.js";
@@ -18,7 +18,7 @@ export function TopNav(gated) {
   }
   var navItems = profile.nav.filter(isNavItemEnabled);
   var links = navItems.map(function (n) {
-    var active = n.key === state.route || (n.key === "orders.list" && state.route === "order.detail") || (n.key === "products" && state.route === "checkout") || (n.key === "proposals.list" && (state.route === "proposal.detail" || state.route === "agreement.detail"));
+    var active = navActive(n);
     return h("span", {
       "class": "nav-link" + (active ? " nav-link--active" : ""),
       "data-action": "nav.go", "data-id": n.key, "data-state": active ? "active" : undefined
@@ -60,7 +60,7 @@ export function TopNav(gated) {
   if (state.mobileNav) {
     nav.appendChild(h("div", { "class": "mobile-nav", "data-state": "mobile-navigation-open" },
       navItems.map(function (n) {
-        var active = n.key === state.route || (n.key === "orders.list" && state.route === "order.detail") || (n.key === "products" && state.route === "checkout") || (n.key === "proposals.list" && (state.route === "proposal.detail" || state.route === "agreement.detail"));
+        var active = navActive(n);
         return h("span", { "class": "nav-link" + (active ? " nav-link--active" : ""), "data-action": "nav.go", "data-id": n.key }, navLabel(n));
       }).concat(profileEnabled || signInRequired ? [h("div", { "class": "mobile-nav__divider" })] : [], profileEnabled ? [
         h("span", { "class": "nav-link" + (state.route === "profile" ? " nav-link--active" : ""), "data-action": "profile.open" }, navLabel({ key: "profile", label: "Profile" })),
@@ -92,9 +92,21 @@ function primaryConnected(primary) {
   return primary.action !== "service.requestForm" || !!state.config.requestFormUrl;
 }
 
+var NAV_DETAIL_ROUTES = {
+  "orders.list": ["order.detail"],
+  products: ["checkout"],
+  "proposals.list": ["proposal.detail", "agreement.detail"],
+  appointments: ["visit.detail"],
+  invoices: ["invoice.detail"],
+};
+
+function navActive(item) {
+  return item.key === state.route || (NAV_DETAIL_ROUTES[item.key] || []).indexOf(state.route) !== -1;
+}
+
 function isNavItemEnabled(item) {
   var route = routeRegistry[item.key];
-  return !!(route && (route.public || isModuleEnabled(route.module)));
+  return !!(route && (route.public || (isModuleEnabled(route.module) && navListShown(route.module))));
 }
 
 function navLabel(item) {
@@ -102,6 +114,7 @@ function navLabel(item) {
   var key = {
     "orders.list": "primary",
     appointments: "appointments",
+    invoices: "invoices",
     calendar: "calendar",
     activity: "activity",
     care: "care",

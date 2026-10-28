@@ -12,6 +12,8 @@ import { Checkout } from "./routes/CheckoutPage.js";
 import { Overview } from "./routes/OverviewPage.js";
 import { Appointments as AppointmentsTimeline } from "./routes/AppointmentsPage.js";
 import { VisitDetail } from "./routes/VisitDetailPage.js";
+import { LiveVisitDetail, LiveVisits } from "./routes/LiveVisitsPage.js";
+import { InvoiceDetail, Invoices } from "./routes/InvoicesPage.js";
 import { PropertyDetail } from "./routes/PropertyDetailPage.js";
 import { ProposalsList } from "./routes/ProposalsPage.js";
 import { ProposalDetail } from "./routes/ProposalDetailPage.js";
@@ -184,8 +186,10 @@ export function renderRoute() {
 
   switch (resolved.id) {
     case "overview":    return Overview();
-    case "appointments": return AppointmentsTimeline();
-    case "visit.detail": return VisitDetail();
+    case "appointments": return state.config.dataMode === "live" ? LiveVisits() : AppointmentsTimeline();
+    case "visit.detail": return state.config.dataMode === "live" ? LiveVisitDetail() : VisitDetail();
+    case "invoices":    return Invoices();
+    case "invoice.detail": return InvoiceDetail();
     case "property.detail": return PropertyDetail();
     case "orders.list": return isSpa() ? (spaCapability() === "target-appointments" ? SpaAppointments() : SpaOrders()) : Cabinet();
     case "order.detail": return OrderDetail();
@@ -241,6 +245,7 @@ function applyRouteParams(match) {
   if (match.id === "proposal.detail" && match.params.id) state.currentSiteId = match.params.id;
   if (match.id === "agreement.detail" && match.params.id) state.agreementId = match.params.id;
   if (match.id === "visit.detail" && match.params.id) state.visitId = match.params.id;
+  if (match.id === "invoice.detail" && match.params.id) state.invoiceId = match.params.id;
   if (match.id === "property.detail" && match.params.id) state.propertyId = match.params.id;
   if (match.id === "purchase.detail" && match.params.id) state.spaCurrentPurchase = match.params.id;
   if (match.id === "appointment.detail" && match.params.id) state.spaCurrentAppointment = match.params.id;
@@ -255,6 +260,7 @@ function paramsForRoute(routeId) {
   if (routeId === "proposal.detail") return { id: state.currentSiteId };
   if (routeId === "agreement.detail") return { id: state.agreementId };
   if (routeId === "visit.detail") return { id: state.visitId };
+  if (routeId === "invoice.detail") return { id: state.invoiceId };
   if (routeId === "property.detail") return { id: state.propertyId };
   if (routeId === "purchase.detail") return { id: state.spaCurrentPurchase };
   if (routeId === "appointment.detail") return { id: state.spaCurrentAppointment };

@@ -69,6 +69,7 @@ export var state = {
   moduleData: {},
   apptDay: null,
   visitId: null,
+  invoiceId: null,
   propertyId: null,
   apptSort: "asc",
   liveWeather: null,
@@ -624,6 +625,37 @@ export function liveOverviewStatus() {
   if (envelope && envelope.state === "error") return "error";
   if (!envelope || envelope.state !== "ready") return "loading";
   return "ready";
+}
+
+export function liveVisits() {
+  var envelope = state.config.dataMode === "live" && isModuleEnabled("appointmentsTimeline") ? state.moduleData.appointmentsTimeline : null;
+  return envelope && envelope.state === "ready" && Array.isArray(envelope.upcoming) && Array.isArray(envelope.past) ? envelope : null;
+}
+
+export function liveInvoices() {
+  var envelope = isModuleEnabled("invoices") ? state.moduleData.invoices : null;
+  return envelope && envelope.state === "ready" && Array.isArray(envelope.items) ? envelope : null;
+}
+
+export function liveListStatus(moduleId) {
+  var envelope = state.moduleData[moduleId];
+  if (!envelope || !envelope.state || envelope.state === "loading") return "loading";
+  if (envelope.state !== "ready") return envelope.state === "unauthorized" ? "unauthorized" : "error";
+  var rows = moduleId === "invoices" ? (envelope.items || []).length : (envelope.upcoming || []).length + (envelope.past || []).length;
+  return rows ? "ready" : "empty";
+}
+
+export function navListShown(moduleId) {
+  if (moduleId === "invoices" || (moduleId === "appointmentsTimeline" && state.config.dataMode === "live")) {
+    var status = liveListStatus(moduleId);
+    return status === "ready" || status === "error";
+  }
+  return true;
+}
+
+export function liveProperties() {
+  var envelope = state.moduleData.properties;
+  return envelope && envelope.state === "ready" && Array.isArray(envelope.items) ? envelope.items : [];
 }
 
 export function liveForecastState() {

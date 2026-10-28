@@ -155,7 +155,7 @@ try {
     ["a spa module", (s) => { s.runtime.enabledModules.push("appointments"); }, /Module appointments is not part of profile stormRetail/],
     ["a PIM module without a PIM contract", (s) => { s.runtime.enabledModules.push("pricing"); }, /carries no PIM contract/],
     ["the account module the profile does not own", (s) => { s.runtime.enabledModules.push("account"); }, /Module account is not part of profile stormRetail/],
-    ["a default route whose module is off", (s) => { s.runtime.defaultRoute = "appointments"; }, /Default route appointments/],
+    ["a default route whose module is off", (s) => { s.runtime.defaultRoute = "calendar"; }, /Default route calendar/],
     ["a profile the vertical cannot use", (s) => { s.runtime.vertical = "beauty"; s.runtime.theme = "beauty"; }, /cannot serve vertical beauty/],
     ["a malformed service geography", (s) => { s.serviceGeography.map.zoom = null; }, /serviceGeography/],
     ["no service geography", (s) => { delete s.serviceGeography; }, /needs serviceGeography/],

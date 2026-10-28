@@ -25,6 +25,7 @@ const staging = {
     "core-snow-adapter-check.mjs",
     "snow-tagged-api-check.mjs",
     "snow-live-overview-check.mjs",
+    "snow-visits-invoices-check.mjs",
     "live-weather-check.mjs",
     "property-map-check.mjs",
   ].map((name) => path.join(portalRoot, "scripts", name)),

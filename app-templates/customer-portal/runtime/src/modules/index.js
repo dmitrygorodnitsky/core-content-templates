@@ -9,7 +9,9 @@ import { createCoreCartAdapter } from "../adapters/core-cart-adapter.js";
 import { createCoreOrdersAdapter } from "../adapters/core-orders-adapter.js";
 import { createCorePlansAdapter } from "../adapters/core-plans-adapter.js";
 import { createCoreSpaDemoAdapter } from "../adapters/core-spa-demo-adapter.js";
-import { createCoreSnowPropertiesAdapter, createCoreSnowQuotesAdapter } from "../adapters/core-snow-adapter.js";
+import { createCoreSnowInvoicesAdapter, createCoreSnowPropertiesAdapter, createCoreSnowQuotesAdapter, createCoreSnowVisitsAdapter } from "../adapters/core-snow-adapter.js";
+import { normalizeInvoices } from "../normalizers/invoices.js";
+import { normalizeVisits } from "../normalizers/visits.js";
 import { liveWeatherOpened, loadLiveWeather, weatherSource } from "../live-weather.js";
 import { createCoreOidcAdapter } from "../adapters/core-oidc-adapter.js";
 import { createCoreUserProfileAdapter } from "../adapters/core-user-profile-adapter.js";
@@ -333,6 +335,55 @@ const propertiesModule = {
   },
 };
 
+function liveAdapterClosed(moduleId) {
+  var closed = new Error("Live adapter is not opened for module " + moduleId);
+  closed.code = "live-adapter-not-opened";
+  return closed;
+}
+
+function liveListFailure(error) {
+  var code = error && error.code;
+  return code === "customer-forbidden" ? "unauthorized" : code === "live-adapter-not-opened" ? "unavailable" : "error";
+}
+
+const appointmentsTimelineModule = {
+  id: "appointmentsTimeline",
+  gatesFirstRender: false,
+  adapter(context) {
+    if (context.config.dataMode !== "live") return fixtureAdapter;
+    if (context.config.vertical === "snow") return createCoreSnowVisitsAdapter();
+    throw liveAdapterClosed("appointmentsTimeline");
+  },
+  normalize(raw, context) {
+    return context.config.dataMode === "live" ? normalizeVisits(raw) : raw;
+  },
+  onError(error, context) {
+    if (error && error.code === "session-expired") context.state.account = "session-expired";
+  },
+  failureEnvelope(context, error) {
+    return { state: liveListFailure(error), reasonCode: error && error.code || "visits-load-failed", truncated: false, upcoming: [], past: [] };
+  },
+};
+
+const invoicesModule = {
+  id: "invoices",
+  gatesFirstRender: false,
+  adapter(context) {
+    if (context.config.dataMode !== "live") return { load() { return { state: "ready", truncated: false, items: [] }; } };
+    if (context.config.vertical === "snow") return createCoreSnowInvoicesAdapter();
+    throw liveAdapterClosed("invoices");
+  },
+  normalize(raw, context) {
+    return context.config.dataMode === "live" ? normalizeInvoices(raw) : raw;
+  },
+  onError(error, context) {
+    if (error && error.code === "session-expired") context.state.account = "session-expired";
+  },
+  failureEnvelope(context, error) {
+    return { state: liveListFailure(error), reasonCode: error && error.code || "invoices-load-failed", truncated: false, items: [] };
+  },
+};
+
 const proposalsModule = {
   id: "proposals",
   adapter(context) {
@@ -405,13 +456,14 @@ export const modules = {
   checkout: checkoutModule,
   plan: planModule,
   overview: overviewModule,
-  appointmentsTimeline: module("appointmentsTimeline", function (raw) { return raw; }),
+  appointmentsTimeline: appointmentsTimelineModule,
   properties: propertiesModule,
   calendar: module("calendar", normalizeCalendar),
   activity: module("activity", normalizeActivity),
   profile: profileModule,
   support: module("support", normalizeSupport),
   care: careModule,
+  invoices: invoicesModule,
 };
 
 export const openedModuleIds = Object.keys(modules);

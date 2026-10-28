@@ -1,6 +1,6 @@
 import { h } from "../dom.js";
 import { render } from "../app.js";
-import { currentFixture, currentOverview, isModuleEnabled, liveOverviewStatus, quoteGroupFor, quotePackage, state } from "../state.js";
+import { currentFixture, currentOverview, isModuleEnabled, liveOverviewStatus, liveVisits, quoteGroupFor, quotePackage, state } from "../state.js";
 import { ActionButton } from "../components/primitives/ActionButton.js";
 import { EmptyState } from "../components/primitives/EmptyState.js";
 import { ErrorState } from "../components/primitives/ErrorState.js";
@@ -14,6 +14,8 @@ import { OVERVIEW_STATUS as STATUS, formatArea, knownPropertyStatus, sectionAvai
 import { currentServiceAgreement, formatDatePeriod, formatOrderPrice } from "../normalizers/contracts.js";
 import { addressRepeats } from "../normalizers/postal-address.js";
 import { stateMeta } from "../normalizers/appointments.js";
+import { localDateKey, visitsForProperty } from "../normalizers/visits.js";
+import { VisitRow } from "../components/storm/RecordRows.js";
 
 export function currentProperty() {
   var model = currentOverview();
@@ -72,6 +74,8 @@ export function PropertyDetail() {
   }
 
   if (service) page.appendChild(ServiceCard(service));
+  var visits = LiveVisitsCard(property);
+  if (visits) page.appendChild(visits);
   var plan = PropertyPlan(propertyPlan(property.planId, render));
   if (plan) page.appendChild(plan);
 
@@ -123,6 +127,20 @@ function serviceFor(property) {
   var row = currentServiceAgreement(quotePackage(), property.backendId);
   var entry = row ? row.properties.find(function (item) { return item.propertyBackendId === property.backendId; }) : null;
   return entry && entry.orders.length ? { row: row, orders: entry.orders } : null;
+}
+
+function LiveVisitsCard(property) {
+  var found = visitsForProperty(liveVisits(), property.backendId);
+  if (!found.next && !found.last) return null;
+  var today = localDateKey(new Date());
+  return h("section", { "class": "card card--pad prop-visits record-section", "data-module": "property-live-visits", "data-visual-id": "property-live-visits" }, [
+    h("h2", { "class": "prop-section__title" }, "Visits"),
+    h("div", { "class": "record-list" }, [
+      found.next ? VisitRow(found.next, { today: today, label: "Next visit" }) : null,
+      found.last ? VisitRow(found.last, { today: today, label: "Last visit" }) : null,
+    ]),
+    h("div", { "class": "link-action prop-visits__foot", "data-action": "nav.go", "data-id": "appointments", "data-visual-id": "property-all-visits" }, "All visits ›"),
+  ]);
 }
 
 function VisitCard(property) {

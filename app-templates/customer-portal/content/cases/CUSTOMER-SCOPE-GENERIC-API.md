@@ -15,7 +15,7 @@ carries its own tag. Spa purchase/booking and the anonymous magic-link review
 are unchanged.
 
 Core requests the deployed portal makes (staging modules overview, properties,
-proposals, profile):
+appointmentsTimeline, invoices, proposals, profile):
 
 | Request | Permission held by role 75 |
 | --- | --- |
@@ -28,6 +28,9 @@ proposals, profile):
 | `/core-bill/api/tagged/order/list.json`, `get.json`, `/core-bill/api/tagged/order-item/list.json` | `P_TAG_ORDER_R` |
 | `/core-bill/api/tagged/order/{id}/send-event.json` | `P_TAG_ORDER_E` + the three `P_WF:GENERAL_FSM_ORDER:` quote events |
 | `/core-pim/api/product-price/list.json`, `/core-pim/api/product/list.json` | `P_PRICE_R`, `P_PRODUCT_R` |
+| `/core-svc/api/tagged/appointment/list.json` (`type.code = SNOW_SERVICE_VISIT`) | `P_TAG_APPOINTMENT_R` |
+| `/core-bill/api/tagged/invoice/list.json` | `P_TAG_INVOICE_R` |
+| `/core/image/{id}/get` (visit photos) | none |
 
 The PIM adapter's private product-model, product-review and inventory lists are
 not called: the staging configuration leaves `pimEnrichmentMode` at `closed`.
@@ -41,6 +44,15 @@ its eleven checks (all passed) and updated BlockTemplate
 operator parameters kept their CMS values. After `block-template/clear-cache.json`
 answered 200 on app-1-core-cms and app-3-core-cms, twelve fetches of
 `/pages/SNOWLIMITLESS/portal` (six per node) served the uploaded bundle.
+
+Deployment, 2026-10-28, Visits and Invoices: the staging package enables
+`appointmentsTimeline` (nav label Visits) and `invoices`. A dry run rebuilt the
+runtime and package and ran the twelve checks the upsert lists (all passed),
+including `snow-visits-invoices-check.mjs`; `--live` then updated the same
+BlockTemplate. After `block-template/clear-cache.json` answered 200 on
+app-1-core-cms and app-3-core-cms, six fetches of `/pages/SNOWLIMITLESS/portal`
+(three per node) served the new bundle, byte-identical on both nodes. No
+signed-in browser test with a customer session has been run.
 
 History: on 2026-10-19 the deployment was held because `P_TAG_DOCUMENT_E` also
 authorized `sync-state-history`; the backend was told. On 2026-10-28 the user

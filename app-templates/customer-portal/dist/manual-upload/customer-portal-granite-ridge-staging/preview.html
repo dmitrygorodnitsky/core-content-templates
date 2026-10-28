@@ -3504,6 +3504,36 @@ h1.proposal-detail-head__title { margin: 0; }
 
 .prop-visits__foot { margin-top: 14px; }
 
+.record-section { margin-bottom: 16px; }
+
+.record-list { display: flex; flex-direction: column; gap: 10px; }
+
+.record-row { font: inherit; color: inherit; text-align: left; }
+
+.record-row__main { flex: 1; min-width: 0; }
+
+.record-row__main > span { display: block; }
+
+.record-row__eyebrow { font-size: 11.5px; font-weight: 700; letter-spacing: .03em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 3px; }
+
+.record-row__amount { font-variant-numeric: tabular-nums; }
+
+.record-row .status-badge { flex: none; }
+
+.ov-card .record-row { margin-top: 4px; }
+
+.record-notes { margin: 0; font-size: 14.5px; line-height: 1.55; color: var(--ink); white-space: pre-line; }
+
+.record-photos + .record-photos { margin-top: 16px; }
+
+.record-photos__label { font-size: 13px; font-weight: 700; color: var(--ink-2); margin-bottom: 8px; }
+
+.record-photos__grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 10px; }
+
+.record-photos__item { display: block; border-radius: 14px; overflow: hidden; border: 1px solid var(--glass-border); background: rgba(var(--hair), .05); aspect-ratio: 4 / 3; }
+
+.record-photos__item img { display: block; width: 100%; height: 100%; object-fit: cover; }
+
 /* manual portal source: runtime/styles/responsive.css */
 /* responsive.css — container-width (.vw-mobile / .vw-tablet / .vw-compact) overrides */
 
@@ -4148,7 +4178,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
 </style>
 </head>
 <body>
-<section id="app" data-portal-experience-id="granite-ridge-snow-staging" data-portal-brand-name="Limitless Snow Removal" data-portal-vertical="snow" data-portal-profile="stormRetail" data-portal-theme="snow" data-portal-default-mode="light" data-portal-router-mode="hash" data-portal-default-route="overview" data-portal-enabled-modules="overview,properties,proposals,profile" data-portal-auth-mode="required" data-portal-error-mode="error" data-portal-data-mode="live" data-portal-primary-cta-label="Request a quote" data-portal-nav-primary-label="Home" data-portal-nav-appointments-label="Appointments" data-portal-nav-calendar-label="Calendar" data-portal-nav-care-label="Season log" data-portal-nav-proposals-label="Contracts" data-portal-nav-support-label="Support" data-portal-request-form-url="https://dev-1.servicewand.com/pages/SNOWLIMITLESS/request-quote" data-portal-weather-client-id="#" data-portal-weather-client-secret="#" data-portal-maps-api-key="#" data-portal-maps-map-id="#" data-portal-service-geography="{&quot;map&quot;:{&quot;center&quot;:{&quot;lat&quot;:49.23,&quot;lon&quot;:-122.98},&quot;zoom&quot;:10},&quot;zones&quot;:{&quot;vancouver&quot;:{&quot;lat&quot;:49.2827,&quot;lon&quot;:-123.1207},&quot;richmond&quot;:{&quot;lat&quot;:49.1666,&quot;lon&quot;:-123.1336},&quot;surrey&quot;:{&quot;lat&quot;:49.1913,&quot;lon&quot;:-122.849},&quot;burnaby&quot;:{&quot;lat&quot;:49.2488,&quot;lon&quot;:-122.9805},&quot;coquitlam&quot;:{&quot;lat&quot;:49.2838,&quot;lon&quot;:-122.7932}}}" data-portal-organization="SNOWLIMITLESS" data-portal-account-type-code="CUSTOMER" data-portal-core-api-base="/core" data-portal-account-api-base="/core-acct" data-portal-bill-api-base="/core-bill" data-portal-resource-api-base="/core-rm" data-portal-auth-core-base="/core" data-portal-auth-callback-path="/core/oauth2-callback.html" data-portal-auth-return-storage-key="oidc-return-url" data-portal-auth-logout-return-storage-key="oidc-logout-return-url" data-portal-signed-out-destination="landing" data-portal-landing-url="https://dev-1.servicewand.com/pages/SNOWLIMITLESS/home" data-portal-logout-return-url="https://dev-1.servicewand.com/pages/SNOWLIMITLESS/home?portal=signed-out" data-portal-allowed-nav-origins="https://dev-1.servicewand.com"></section>
+<section id="app" data-portal-experience-id="granite-ridge-snow-staging" data-portal-brand-name="Limitless Snow Removal" data-portal-vertical="snow" data-portal-profile="stormRetail" data-portal-theme="snow" data-portal-default-mode="light" data-portal-router-mode="hash" data-portal-default-route="overview" data-portal-enabled-modules="overview,properties,appointmentsTimeline,invoices,proposals,profile" data-portal-auth-mode="required" data-portal-error-mode="error" data-portal-data-mode="live" data-portal-primary-cta-label="Request a quote" data-portal-nav-primary-label="Home" data-portal-nav-appointments-label="Visits" data-portal-nav-invoices-label="Invoices" data-portal-nav-calendar-label="Calendar" data-portal-nav-care-label="Season log" data-portal-nav-proposals-label="Contracts" data-portal-nav-support-label="Support" data-portal-request-form-url="https://dev-1.servicewand.com/pages/SNOWLIMITLESS/request-quote" data-portal-weather-client-id="#" data-portal-weather-client-secret="#" data-portal-maps-api-key="#" data-portal-maps-map-id="#" data-portal-service-geography="{&quot;map&quot;:{&quot;center&quot;:{&quot;lat&quot;:49.23,&quot;lon&quot;:-122.98},&quot;zoom&quot;:10},&quot;zones&quot;:{&quot;vancouver&quot;:{&quot;lat&quot;:49.2827,&quot;lon&quot;:-123.1207},&quot;richmond&quot;:{&quot;lat&quot;:49.1666,&quot;lon&quot;:-123.1336},&quot;surrey&quot;:{&quot;lat&quot;:49.1913,&quot;lon&quot;:-122.849},&quot;burnaby&quot;:{&quot;lat&quot;:49.2488,&quot;lon&quot;:-122.9805},&quot;coquitlam&quot;:{&quot;lat&quot;:49.2838,&quot;lon&quot;:-122.7932}}}" data-portal-organization="SNOWLIMITLESS" data-portal-account-type-code="CUSTOMER" data-portal-core-api-base="/core" data-portal-account-api-base="/core-acct" data-portal-bill-api-base="/core-bill" data-portal-resource-api-base="/core-rm" data-portal-service-api-base="/core-svc" data-portal-auth-core-base="/core" data-portal-auth-callback-path="/core/oauth2-callback.html" data-portal-auth-return-storage-key="oidc-return-url" data-portal-auth-logout-return-storage-key="oidc-logout-return-url" data-portal-signed-out-destination="landing" data-portal-landing-url="https://dev-1.servicewand.com/pages/SNOWLIMITLESS/home" data-portal-logout-return-url="https://dev-1.servicewand.com/pages/SNOWLIMITLESS/home?portal=signed-out" data-portal-allowed-nav-origins="https://dev-1.servicewand.com"></section>
 <script>
 (() => {
   var __defProp = Object.defineProperty;
@@ -4570,8 +4600,8 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     var date = new Date(Date.UTC(parts.year, parts.month - 1, parts.day + offset));
     return { year: date.getUTCFullYear(), month: date.getUTCMonth() + 1, day: date.getUTCDate() };
   }
-  function zonedEpoch(date, clock, timezone) {
-    var time = clock.split(":").map(Number);
+  function zonedEpoch(date, clock2, timezone) {
+    var time = clock2.split(":").map(Number);
     var desired = Date.UTC(date.year, date.month - 1, date.day, time[0], time[1]);
     var guess = desired;
     for (var index = 0; index < 3; index += 1) {
@@ -4922,13 +4952,14 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
       nav: [
         { key: "overview", label: "Home" },
         { key: "appointments", label: "Appointments" },
+        { key: "invoices", label: "Invoices" },
         { key: "calendar", label: "Calendar" },
         { key: "care" },
         { key: "proposals.list", label: "Contracts" },
         { key: "support", label: "Support" }
       ],
       primary: { label: "Request a quote", action: "service.requestForm" },
-      modules: ["overview", "appointmentsTimeline", "properties", "orders", "calendar", "activity", "proposals", "care", "pricing", "profile", "support"],
+      modules: ["overview", "appointmentsTimeline", "properties", "invoices", "orders", "calendar", "activity", "proposals", "care", "pricing", "profile", "support"],
       weatherCalendar: true,
       showCart: false,
       drawerTitle: "Request service",
@@ -4982,6 +5013,8 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     appointments: { id: "appointments", path: "/appointments", module: "appointmentsTimeline" },
     "visit.detail": { id: "visit.detail", path: "/visits/:id", module: "appointmentsTimeline", param: "id" },
     "property.detail": { id: "property.detail", path: "/properties/:id", module: "properties", param: "id" },
+    invoices: { id: "invoices", path: "/invoices", module: "invoices" },
+    "invoice.detail": { id: "invoice.detail", path: "/invoices/:id", module: "invoices", param: "id" },
     "orders.list": { id: "orders.list", path: "/orders", module: "orders" },
     "order.detail": { id: "order.detail", path: "/orders/:id", module: "orders", param: "id" },
     "appointment.detail": { id: "appointment.detail", path: "/appointments/:id", module: "appointments", param: "id" },
@@ -5068,6 +5101,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
       navigation: {
         primary: dataset.portalNavPrimaryLabel || "",
         appointments: dataset.portalNavAppointmentsLabel || "",
+        invoices: dataset.portalNavInvoicesLabel || "",
         calendar: dataset.portalNavCalendarLabel || "",
         activity: dataset.portalNavActivityLabel || "",
         care: dataset.portalNavCareLabel || "",
@@ -6566,6 +6600,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     moduleData: {},
     apptDay: null,
     visitId: null,
+    invoiceId: null,
     propertyId: null,
     apptSort: "asc",
     liveWeather: null,
@@ -6812,11 +6847,11 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     }).join(" ");
   }
   function opaqueRef3(prefix, value) {
-    var text15 = String(value || prefix);
+    var text16 = String(value || prefix);
     var left = 2166136261;
     var right = 2246822507;
-    for (var index = 0; index < text15.length; index += 1) {
-      var code = text15.charCodeAt(index);
+    for (var index = 0; index < text16.length; index += 1) {
+      var code = text16.charCodeAt(index);
       left = Math.imul(left ^ code, 16777619);
       right = Math.imul(right ^ code, 3266489909);
     }
@@ -7141,6 +7176,32 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     if (envelope2 && envelope2.state === "error") return "error";
     if (!envelope2 || envelope2.state !== "ready") return "loading";
     return "ready";
+  }
+  function liveVisits() {
+    var envelope2 = state.config.dataMode === "live" && isModuleEnabled("appointmentsTimeline") ? state.moduleData.appointmentsTimeline : null;
+    return envelope2 && envelope2.state === "ready" && Array.isArray(envelope2.upcoming) && Array.isArray(envelope2.past) ? envelope2 : null;
+  }
+  function liveInvoices() {
+    var envelope2 = isModuleEnabled("invoices") ? state.moduleData.invoices : null;
+    return envelope2 && envelope2.state === "ready" && Array.isArray(envelope2.items) ? envelope2 : null;
+  }
+  function liveListStatus(moduleId) {
+    var envelope2 = state.moduleData[moduleId];
+    if (!envelope2 || !envelope2.state || envelope2.state === "loading") return "loading";
+    if (envelope2.state !== "ready") return envelope2.state === "unauthorized" ? "unauthorized" : "error";
+    var rows2 = moduleId === "invoices" ? (envelope2.items || []).length : (envelope2.upcoming || []).length + (envelope2.past || []).length;
+    return rows2 ? "ready" : "empty";
+  }
+  function navListShown(moduleId) {
+    if (moduleId === "invoices" || moduleId === "appointmentsTimeline" && state.config.dataMode === "live") {
+      var status = liveListStatus(moduleId);
+      return status === "ready" || status === "error";
+    }
+    return true;
+  }
+  function liveProperties() {
+    var envelope2 = state.moduleData.properties;
+    return envelope2 && envelope2.state === "ready" && Array.isArray(envelope2.items) ? envelope2.items : [];
   }
   function liveForecastState() {
     if (!state.config.serviceGeography || !state.config.weatherClientId || !state.config.weatherClientSecret) return "unconfigured";
@@ -7929,6 +7990,152 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     return error2;
   }
 
+  // app-templates/customer-portal/runtime/src/normalizers/visits.js
+  var VISIT_TYPE = "SNOW_SERVICE_VISIT";
+  var VISIT_STATUS = Object.freeze({
+    SCHEDULED: Object.freeze({ label: "Scheduled", tone: "info", phase: "upcoming" }),
+    IN_PROGRESS: Object.freeze({ label: "In progress", tone: "progress", phase: "upcoming" }),
+    COMPLETED: Object.freeze({ label: "Completed", tone: "ok", phase: "past" })
+  });
+  var MEDIA_ID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
+  var WEEKDAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  var MONTHS2 = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  function normalizeVisits(raw) {
+    var rows2 = Array.isArray(raw && raw.items) ? raw.items : [];
+    var visits = rows2.map(visitRecord).filter(Boolean);
+    return {
+      state: "ready",
+      truncated: !!(raw && raw.truncated),
+      upcoming: visits.filter(inPhase("upcoming")).sort(function(left, right) {
+        return left.start.ms - right.start.ms;
+      }),
+      past: visits.filter(inPhase("past")).sort(function(left, right) {
+        return right.start.ms - left.start.ms;
+      })
+    };
+  }
+  function findVisit(envelope2, id) {
+    if (!envelope2 || !id) return null;
+    return (envelope2.upcoming || []).concat(envelope2.past || []).find(function(visit) {
+      return visit.id === id;
+    }) || null;
+  }
+  function visitsForProperty(envelope2, propertyBackendId) {
+    var owned = function(visit) {
+      return visit.propertyBackendId === propertyBackendId;
+    };
+    return {
+      next: (envelope2 && envelope2.upcoming || []).find(owned) || null,
+      last: (envelope2 && envelope2.past || []).find(owned) || null
+    };
+  }
+  function visitPlace(visit, properties) {
+    var list = Array.isArray(properties) ? properties : [];
+    if (list.length < 2 || !visit) return "";
+    var property = list.find(function(item) {
+      return item.backendId === visit.propertyBackendId;
+    });
+    return property ? property.address || property.name || "" : "";
+  }
+  function visitDay(visit, today) {
+    var start = visit && visit.start;
+    if (!start) return "";
+    if (today && start.date === today) return "Today";
+    var label = WEEKDAYS[start.weekday] + ", " + MONTHS2[start.month - 1] + " " + start.day;
+    return today && today.slice(0, 4) !== String(start.year) ? label + ", " + start.year : label;
+  }
+  function visitWindow(visit) {
+    var start = visit && visit.start;
+    if (!start) return "";
+    var end = visit.end && visit.end.ms > start.ms ? visit.end : null;
+    if (!end) return clock(start.minutes, true);
+    var samePeriod = meridiem(start.minutes) === meridiem(end.minutes) && start.date === end.date;
+    return clock(start.minutes, !samePeriod) + " \u2013 " + clock(end.minutes, true);
+  }
+  function visitWhen(visit, today) {
+    return [visitDay(visit, today), visitWindow(visit)].filter(Boolean).join(", ");
+  }
+  function localDateKey(date) {
+    var value = date instanceof Date ? date : /* @__PURE__ */ new Date();
+    return value.getFullYear() + "-" + pad2(value.getMonth() + 1) + "-" + pad2(value.getDate());
+  }
+  function visitImageUrl(coreBase, id) {
+    return MEDIA_ID.test(id) ? String(coreBase || "/core").replace(/\/+$/, "") + "/image/" + id + "/get" : "";
+  }
+  function visitRecord(row) {
+    var backendId = positiveInteger3(row && row.id);
+    var stateCode = latestStateCode(row);
+    var status = Object.prototype.hasOwnProperty.call(VISIT_STATUS, stateCode) ? VISIT_STATUS[stateCode] : null;
+    if (!backendId || !status || text3(row.type && row.type.code) !== VISIT_TYPE) return null;
+    var start = wallClock(row.start);
+    if (!start) return null;
+    return {
+      id: "visit-core-" + backendId,
+      backendId,
+      stateCode,
+      status: { label: status.label, tone: status.tone },
+      phase: status.phase,
+      start,
+      end: wallClock(row.end),
+      propertyBackendId: attributeNumber(row, "RESOURCE"),
+      completionNotes: attributeText(row, "COMPLETION_NOTES"),
+      before: mediaIds(row, "PRE_SERVICE_MEDIA"),
+      after: mediaIds(row, "POST_SERVICE_MEDIA")
+    };
+  }
+  function wallClock(value) {
+    var ms = typeof value === "number" ? value : typeof value === "string" && value.trim() !== "" ? Number(value) : Number.NaN;
+    if (!Number.isFinite(ms)) return null;
+    var instant = new Date(ms);
+    var year = instant.getUTCFullYear();
+    var month = instant.getUTCMonth() + 1;
+    var day = instant.getUTCDate();
+    return {
+      ms,
+      date: year + "-" + pad2(month) + "-" + pad2(day),
+      year,
+      month,
+      day,
+      weekday: instant.getUTCDay(),
+      minutes: instant.getUTCHours() * 60 + instant.getUTCMinutes()
+    };
+  }
+  function mediaIds(row, code) {
+    var entry = attributeEntry(row, code);
+    var value = entry ? entry.value : null;
+    if (typeof value === "string" && /^\s*\[/.test(value)) {
+      try {
+        value = JSON.parse(value);
+      } catch (_) {
+        return [];
+      }
+    }
+    return (Array.isArray(value) ? value : []).map(function(item) {
+      if (!item || typeof item !== "object") return "";
+      if (item.type != null && text3(item.type) !== "image") return "";
+      var id = text3(item.id).toLowerCase();
+      return MEDIA_ID.test(id) ? id : "";
+    }).filter(function(id, index, ids) {
+      return !!id && ids.indexOf(id) === index;
+    });
+  }
+  function inPhase(phase) {
+    return function(visit) {
+      return visit.phase === phase;
+    };
+  }
+  function clock(minutes, withMeridiem) {
+    var hour = Math.floor(minutes / 60);
+    var label = (hour % 12 || 12) + ":" + pad2(minutes % 60);
+    return withMeridiem ? label + " " + meridiem(minutes) : label;
+  }
+  function meridiem(minutes) {
+    return minutes < 720 ? "AM" : "PM";
+  }
+  function pad2(value) {
+    return value < 10 ? "0" + value : String(value);
+  }
+
   // app-templates/customer-portal/runtime/src/adapters/core-snow-adapter.js
   var PROPERTY_TYPE = "SNOW_REMOVAL_PROPERTY";
   var PROPERTY_BASE_TYPE = "PROPERTY";
@@ -7940,7 +8147,9 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
   var ORDER_PAGE_SIZE = 100;
   var LINE_PAGE_SIZE = 200;
   var CATALOG_PAGE_SIZE = 200;
-  var MEDIA_ID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
+  var VISIT_PAGE_SIZE = 50;
+  var INVOICE_PAGE_SIZE = 50;
+  var MEDIA_ID2 = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
   var REF_MAPPINGS = [{ name: "id" }, { name: "code" }, { name: "nls" }];
   var ID_MAPPINGS = [{ name: "id" }];
   var RESOURCE_MAPPINGS = [
@@ -8018,6 +8227,101 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     { mappings: REF_MAPPINGS, name: "states", type: "collection" },
     { key: "id", mappings: REF_MAPPINGS, name: "type", type: "identifier" }
   ];
+  var TAGGED_REF_MAPPINGS = [{ name: "id" }, { name: "code" }, { name: "nls" }];
+  var VISIT_MAPPINGS = [
+    { name: "id" },
+    { name: "code" },
+    { name: "nls" },
+    { name: "start" },
+    { name: "end" },
+    { name: "attributes" },
+    { name: "type", type: "identifier", mappings: TAGGED_REF_MAPPINGS },
+    { name: "states", type: "collection", mappings: TAGGED_REF_MAPPINGS }
+  ];
+  var INVOICE_MAPPINGS = [
+    { name: "id" },
+    { name: "created" },
+    { name: "dueDate" },
+    { name: "notes" },
+    { name: "amountDue" },
+    { name: "totalPaidAmount" },
+    { name: "attributes" },
+    { name: "type", type: "identifier", mappings: TAGGED_REF_MAPPINGS },
+    { name: "states", type: "collection", mappings: TAGGED_REF_MAPPINGS },
+    { name: "order", type: "reference", mappings: [{ name: "id" }, { name: "currency", type: "identifier", mappings: [{ name: "id" }, { name: "code" }] }] },
+    {
+      name: "items",
+      type: "collection",
+      mappings: [
+        { name: "id" },
+        { name: "amount" },
+        { name: "itemCount" },
+        { name: "notes" },
+        {
+          name: "itemPrice",
+          type: "reference",
+          mappings: [{ name: "id" }, { name: "product", type: "reference", mappings: TAGGED_REF_MAPPINGS }]
+        }
+      ]
+    }
+  ];
+  var VISIT_LIST_BODY = Object.freeze({
+    filters: [{ operator: "=", property: "type.code", value: VISIT_TYPE }],
+    mappings: VISIT_MAPPINGS,
+    offset: 0,
+    pageSize: VISIT_PAGE_SIZE,
+    sorting: [{ field: "start", direction: "DESC" }]
+  });
+  var INVOICE_LIST_BODY = Object.freeze({
+    mappings: INVOICE_MAPPINGS,
+    offset: 0,
+    pageSize: INVOICE_PAGE_SIZE,
+    sorting: [{ field: "dueDate", direction: "DESC" }]
+  });
+  function createCoreSnowVisitsAdapter(options2 = {}) {
+    var fetchImpl = options2.fetch || globalThis.fetch;
+    if (typeof fetchImpl !== "function") throw contractError("fetch-unavailable", "Core snow adapter requires fetch");
+    return {
+      async load(moduleId, context) {
+        if (moduleId !== "appointmentsTimeline") throw contractError("unsupported-module", "Core snow visits adapter cannot load " + moduleId);
+        return loadSnowVisits(context, fetchImpl, options2.origin);
+      }
+    };
+  }
+  function createCoreSnowInvoicesAdapter(options2 = {}) {
+    var fetchImpl = options2.fetch || globalThis.fetch;
+    if (typeof fetchImpl !== "function") throw contractError("fetch-unavailable", "Core snow adapter requires fetch");
+    return {
+      async load(moduleId, context) {
+        if (moduleId !== "invoices") throw contractError("unsupported-module", "Core snow invoices adapter cannot load " + moduleId);
+        return loadSnowInvoices(context, fetchImpl, options2.origin);
+      }
+    };
+  }
+  async function loadSnowVisits(context, fetchImpl = globalThis.fetch, explicitOrigin) {
+    var api = readContext(context, explicitOrigin);
+    var reply = await requestJson(fetchImpl, api.serviceBase + "/api/tagged/appointment/list.json", readOptions(api, VISIT_LIST_BODY));
+    var rows2 = listResult(reply);
+    return {
+      state: "ready",
+      accountId: api.accountId,
+      items: rows2.filter(function(row) {
+        return text3(row && row.type && row.type.code) === VISIT_TYPE;
+      }),
+      truncated: resultSizeOf(reply, rows2.length) > rows2.length
+    };
+  }
+  async function loadSnowInvoices(context, fetchImpl = globalThis.fetch, explicitOrigin) {
+    var api = readContext(context, explicitOrigin);
+    var reply = await requestJson(fetchImpl, api.billBase + "/api/tagged/invoice/list.json", readOptions(api, INVOICE_LIST_BODY));
+    var rows2 = listResult(reply);
+    return {
+      state: "ready",
+      accountId: api.accountId,
+      items: rows2,
+      truncated: resultSizeOf(reply, rows2.length) > rows2.length
+    };
+  }
   function createCoreSnowPropertiesAdapter(options2 = {}) {
     var fetchImpl = options2.fetch || globalThis.fetch;
     if (typeof fetchImpl !== "function") throw contractError("fetch-unavailable", "Core snow adapter requires fetch");
@@ -8345,7 +8649,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     }
     var ids = (Array.isArray(value) ? value : value == null ? [] : [value]).map(function(item) {
       var id = text3(item && typeof item === "object" ? item.id : item).toLowerCase();
-      return MEDIA_ID.test(id) ? id : "";
+      return MEDIA_ID2.test(id) ? id : "";
     });
     return ids.length === 1 ? ids[0] : "";
   }
@@ -8377,6 +8681,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
       organization,
       pimBase: sameOriginBase(PIM_SERVICE_BASE, origin, "Core PIM API base"),
       resourceBase: sameOriginBase(config.resourceApiBase || "/core-rm", origin, "Core Resource API base"),
+      serviceBase: sameOriginBase(config.serviceApiBase || "/core-svc", origin, "Core Service API base"),
       userId: positiveInteger3(session.userId)
     };
   }
@@ -8436,6 +8741,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     addressMappings: ADDRESS_MAPPINGS,
     agreementMappings: AGREEMENT_MAPPINGS,
     agreementType: AGREEMENT_TYPE,
+    invoiceListBody: INVOICE_LIST_BODY,
     customerQuoteStatus: Object.freeze(Object.assign({}, CUSTOMER_ORDER_STATUS)),
     operatorQuoteStates: Object.freeze(OPERATOR_ORDER_STATES.slice()),
     orderItemMappings: ORDER_ITEM_MAPPINGS,
@@ -8448,6 +8754,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     propertyType: PROPERTY_TYPE,
     quoteOrderTypes: Object.freeze(QUOTE_ORDER_TYPES.slice()),
     resourceMappings: RESOURCE_MAPPINGS,
+    visitListBody: VISIT_LIST_BODY,
     quoteFilters: ["account.id"],
     agreementFilters: ["type.code", "attributes.{SERVICE_AGREEMENT type id}.CLIENT.value"],
     orderItemFilters: ["order.account.id", "order.id"],
@@ -10663,7 +10970,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     }
     var navItems = profile.nav.filter(isNavItemEnabled);
     var links = navItems.map(function(n) {
-      var active = n.key === state.route || n.key === "orders.list" && state.route === "order.detail" || n.key === "products" && state.route === "checkout" || n.key === "proposals.list" && (state.route === "proposal.detail" || state.route === "agreement.detail");
+      var active = navActive(n);
       return h("span", {
         "class": "nav-link" + (active ? " nav-link--active" : ""),
         "data-action": "nav.go",
@@ -10706,7 +11013,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
         "div",
         { "class": "mobile-nav", "data-state": "mobile-navigation-open" },
         navItems.map(function(n) {
-          var active = n.key === state.route || n.key === "orders.list" && state.route === "order.detail" || n.key === "products" && state.route === "checkout" || n.key === "proposals.list" && (state.route === "proposal.detail" || state.route === "agreement.detail");
+          var active = navActive(n);
           return h("span", { "class": "nav-link" + (active ? " nav-link--active" : ""), "data-action": "nav.go", "data-id": n.key }, navLabel2(n));
         }).concat(profileEnabled || signInRequired ? [h("div", { "class": "mobile-nav__divider" })] : [], profileEnabled ? [
           h("span", { "class": "nav-link" + (state.route === "profile" ? " nav-link--active" : ""), "data-action": "profile.open" }, navLabel2({ key: "profile", label: "Profile" }))
@@ -10736,15 +11043,26 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     if (!primary) return false;
     return primary.action !== "service.requestForm" || !!state.config.requestFormUrl;
   }
+  var NAV_DETAIL_ROUTES = {
+    "orders.list": ["order.detail"],
+    products: ["checkout"],
+    "proposals.list": ["proposal.detail", "agreement.detail"],
+    appointments: ["visit.detail"],
+    invoices: ["invoice.detail"]
+  };
+  function navActive(item) {
+    return item.key === state.route || (NAV_DETAIL_ROUTES[item.key] || []).indexOf(state.route) !== -1;
+  }
   function isNavItemEnabled(item) {
     var route = routeRegistry[item.key];
-    return !!(route && (route.public || isModuleEnabled(route.module)));
+    return !!(route && (route.public || isModuleEnabled(route.module) && navListShown(route.module)));
   }
   function navLabel2(item) {
     var configured = state.config.navigation || {};
     var key = {
       "orders.list": "primary",
       appointments: "appointments",
+      invoices: "invoices",
       calendar: "calendar",
       activity: "activity",
       care: "care",
@@ -12855,6 +13173,157 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     if (action) action(id);
   }
 
+  // app-templates/customer-portal/runtime/src/normalizers/invoices.js
+  var INVOICE_STATUS = Object.freeze({
+    OVERDUE: Object.freeze({ label: "Overdue", tone: "danger", open: true }),
+    SENT: Object.freeze({ label: "Due", tone: "info", open: true }),
+    PAID: Object.freeze({ label: "Paid", tone: "ok", open: false }),
+    VOID: Object.freeze({ label: "Void", tone: "scheduled", open: false })
+  });
+  function normalizeInvoices(raw) {
+    var rows2 = Array.isArray(raw && raw.items) ? raw.items : [];
+    return {
+      state: "ready",
+      truncated: !!(raw && raw.truncated),
+      items: rows2.map(invoiceRecord).filter(Boolean)
+    };
+  }
+  function openInvoices(envelope2) {
+    return (envelope2 && envelope2.items || []).filter(function(invoice) {
+      return invoice.open;
+    }).sort(function(left, right) {
+      var overdue = Number(right.stateCode === "OVERDUE") - Number(left.stateCode === "OVERDUE");
+      return overdue || (left.due || "9999-99-99").localeCompare(right.due || "9999-99-99") || left.backendId - right.backendId;
+    });
+  }
+  function findInvoice(envelope2, id) {
+    return (envelope2 && envelope2.items || []).find(function(invoice) {
+      return invoice.id === id;
+    }) || null;
+  }
+  function invoiceTitle(invoice) {
+    return invoice.period || formatIsoDate(invoice.issued) || "Invoice";
+  }
+  function invoiceStatusLine(invoice) {
+    if (invoice.stateCode === "SENT" && invoice.due) return "Due on " + formatIsoDate(invoice.due);
+    return invoice.status.label;
+  }
+  function invoiceAmount(invoice) {
+    return formatMoney(invoice.total, invoice.currency);
+  }
+  function invoiceTerms(invoice) {
+    return invoice.netDays ? "Net " + invoice.netDays : "";
+  }
+  function invoiceRecord(row) {
+    var backendId = positiveInteger3(row && row.id);
+    var stateCode = latestStateCode(row);
+    var status = Object.prototype.hasOwnProperty.call(INVOICE_STATUS, stateCode) ? INVOICE_STATUS[stateCode] : null;
+    if (!backendId || !status) return null;
+    var currency = text3(row.order && row.order.currency && row.order.currency.code);
+    return {
+      id: "invoice-core-" + backendId,
+      backendId,
+      stateCode,
+      status: { label: status.label, tone: status.tone },
+      open: status.open,
+      period: attributeText(row, "SERVICE_PERIOD"),
+      issued: isoDate2(attributeText(row, "DATE")),
+      due: isoDate2(row.dueDate),
+      netDays: attributeNumber(row, "PAYMENT_NET_TERMS"),
+      currency,
+      total: finiteNumber8(row.amountDue),
+      paid: finiteNumber8(row.totalPaidAmount),
+      lines: (Array.isArray(row.items) ? row.items : []).map(function(item) {
+        return lineRecord(item, currency);
+      }).filter(Boolean)
+    };
+  }
+  function lineRecord(item, currency) {
+    var amount = finiteNumber8(item && item.amount);
+    if (amount === null) return null;
+    var count = finiteNumber8(item.itemCount);
+    var quantity = count !== null && count > 0 ? count : 1;
+    var product = item.itemPrice && item.itemPrice.product;
+    return {
+      id: positiveInteger3(item.id),
+      name: localizedName6(product && product.nls) || "Service",
+      quantity,
+      amount: formatMoney(amount * quantity, currency)
+    };
+  }
+  function isoDate2(value) {
+    var parts = Array.isArray(value) ? value : /^(\d{4})-(\d{2})-(\d{2})$/.exec(text3(value));
+    if (!parts) return "";
+    var numbers = Array.isArray(value) ? parts.slice(0, 3).map(Number) : parts.slice(1, 4).map(Number);
+    var date = new Date(Date.UTC(numbers[0], numbers[1] - 1, numbers[2]));
+    if (date.getUTCFullYear() !== numbers[0] || date.getUTCMonth() !== numbers[1] - 1 || date.getUTCDate() !== numbers[2]) return "";
+    return numbers[0] + "-" + String(numbers[1]).padStart(2, "0") + "-" + String(numbers[2]).padStart(2, "0");
+  }
+  function finiteNumber8(value) {
+    var number = typeof value === "number" ? value : typeof value === "string" && value.trim() !== "" ? Number(value) : Number.NaN;
+    return Number.isFinite(number) ? number : null;
+  }
+  function localizedName6(value) {
+    if (!value || typeof value !== "object") return "";
+    var localized2 = value.en || value["en-US"] || Object.values(value)[0] || {};
+    return text3(localized2 && (localized2.NAME || localized2.name));
+  }
+
+  // app-templates/customer-portal/runtime/src/components/storm/RecordRows.js
+  function VisitRow(visit, options2) {
+    var settings = options2 || {};
+    var when = visitWhen(visit, settings.today);
+    return h("button", {
+      "class": "prop-visit record-row",
+      type: "button",
+      "data-module": "visit-row",
+      "data-visual-id": "visit-row",
+      "data-action": "appointments.openVisit",
+      "data-id": visit.id,
+      "data-state": visit.stateCode.toLowerCase(),
+      "aria-label": [settings.label, visitDay(visit, settings.today), visit.status.label].filter(Boolean).join(" \xB7 ")
+    }, [
+      h("span", { "class": "record-row__main" }, [
+        settings.label ? text9("record-row__eyebrow", settings.label) : null,
+        text9("prop-visit__title", when),
+        settings.place ? text9("prop-visit__meta", settings.place) : null
+      ]),
+      text9("status-badge status-badge--" + visit.status.tone, visit.status.label),
+      text9("prop-visit__caret", "\u203A")
+    ]);
+  }
+  function InvoiceRow(invoice) {
+    var title = invoiceTitle(invoice);
+    var amount = invoiceAmount(invoice);
+    var status = invoiceStatusLine(invoice);
+    return h("button", {
+      "class": "prop-visit record-row",
+      type: "button",
+      "data-module": "invoice-row",
+      "data-visual-id": "invoice-row",
+      "data-action": "invoice.open",
+      "data-id": invoice.id,
+      "data-state": invoice.stateCode.toLowerCase(),
+      "aria-label": [title, amount, status].filter(Boolean).join(" \xB7 ")
+    }, [
+      h("span", { "class": "record-row__main" }, [
+        text9("prop-visit__title", title),
+        amount ? text9("prop-visit__meta record-row__amount", amount) : null
+      ]),
+      text9("status-badge status-badge--" + invoice.status.tone, status),
+      text9("prop-visit__caret", "\u203A")
+    ]);
+  }
+  function RecordSection(id, title, rows2) {
+    return h("section", { "class": "card card--pad record-section", "data-module": id, "data-visual-id": id }, [
+      title ? h("h2", { "class": "prop-section__title" }, title) : null,
+      h("div", { "class": "record-list" }, rows2)
+    ]);
+  }
+  function text9(className, value) {
+    return h("span", { "class": className }, value == null ? "" : String(value));
+  }
+
   // app-templates/customer-portal/runtime/src/routes/OverviewPage.js
   var propertyForecastStore = null;
   var focusKeeper = null;
@@ -12880,7 +13349,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     page.appendChild(MapPanel(model, frame, index));
     var invoices = InvoicesWidget(model);
     if (invoices) page.appendChild(invoices);
-    var cards = [UpcomingWidget(model, weather ? weather.timeline : []), ContractsWidget(model), SupportWidget(model)].filter(Boolean);
+    var cards = [NextVisitWidget(), InvoiceDueWidget(), UpcomingWidget(model, weather ? weather.timeline : []), ContractsWidget(model), SupportWidget(model)].filter(Boolean);
     if (cards.length) page.appendChild(h("div", { "class": "ov-grid", "data-count": String(cards.length) }, cards));
     if (model.banner) page.appendChild(Banner(model.banner));
     return page;
@@ -12956,8 +13425,8 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
         skel("width:132px;height:15px;margin:3px 0 7px"),
         skel("width:188px;height:11px")
       ] : [
-        text9("div", "ov-wx__label", "Forecast unavailable"),
-        text9("div", "ov-wx__note", failed ? "The forecast didn\u2019t load. Your properties are shown without it." : "The forecast isn\u2019t set up for this portal yet."),
+        text10("div", "ov-wx__label", "Forecast unavailable"),
+        text10("div", "ov-wx__note", failed ? "The forecast didn\u2019t load. Your properties are shown without it." : "The forecast isn\u2019t set up for this portal yet."),
         failed ? h("button", { "class": "link-action", "data-action": "overview.retryWeather", type: "button", style: "margin-top:6px" }, "Try again \u203A") : null
       ])
     ]);
@@ -12969,15 +13438,15 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     return h("div", { "class": "ov-wx", "data-module": "weather-summary", "data-visual-id": "weather-summary", "data-weather": frame.kind }, [
       h("span", { "class": "ov-wx__mark" }, [icon("snowflake", "ov-wx__glyph")]),
       h("div", { "class": "ov-wx__read" }, [
-        text9("div", "ov-wx__temp", frame.temp),
-        text9("div", "ov-wx__label", frame.label),
-        line ? text9("div", "ov-wx__note", line) : null,
+        text10("div", "ov-wx__temp", frame.temp),
+        text10("div", "ov-wx__label", frame.label),
+        line ? text10("div", "ov-wx__note", line) : null,
         WeatherAttribution(source)
       ]),
       stats.length ? h("div", { "class": "ov-wx__stats" }, stats.map(function(stat) {
         return h("div", { "class": "ov-wx__stat" }, [
-          text9("span", "ov-wx__stat-label", stat.label),
-          text9("span", "ov-wx__stat-value", stat.value)
+          text10("span", "ov-wx__stat-label", stat.label),
+          text10("span", "ov-wx__stat-value", stat.value)
         ]);
       })) : null
     ]);
@@ -13001,11 +13470,11 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     return h("div", { "class": "ov-map card", "data-module": "property-map", "data-visual-id": "property-map" }, [
       h("div", { "class": "ov-map__head" }, [
         h("span", { "class": "ov-card__icon" }, [icon("map", "ov-icon")]),
-        text9("h2", "ov-card__title", "Your properties"),
+        text10("h2", "ov-card__title", "Your properties"),
         weather ? h("div", { "class": "ov-legend" }, weather.legend.filter(function(item) {
           return statusKnown || item.key !== "issue";
         }).map(function(item) {
-          return h("span", { "class": "ov-legend__item", "data-weather": item.key }, [h("i"), text9("span", "", item.label)]);
+          return h("span", { "class": "ov-legend__item", "data-weather": item.key }, [h("i"), text10("span", "", item.label)]);
         })) : null
       ]),
       stage,
@@ -13051,12 +13520,12 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
         "aria-label": item.day + " " + item.date + " \u2014 " + item.label + (visits ? " \u2014 " + visits + (visits === 1 ? " visit" : " visits") : visitsKnown ? " \u2014 no visit" : ""),
         "aria-pressed": position === index ? "true" : "false"
       }, [
-        text9("span", "ov-day__name", item.day),
-        text9("span", "ov-day__date", item.date),
+        text10("span", "ov-day__name", item.day),
+        text10("span", "ov-day__date", item.date),
         h("i"),
         h("span", { "class": "ov-day__svc" }, visits ? [
-          text9("b", "", String(visits)),
-          text9("span", "ov-day__svc-word", visits === 1 ? " visit" : " visits")
+          text10("b", "", String(visits)),
+          text10("span", "ov-day__svc-word", visits === 1 ? " visit" : " visits")
         ] : [])
       ]);
     }));
@@ -13089,7 +13558,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     scheduled.slice(0, 3).forEach(function(property) {
       var appointment = property.appointment;
       card.appendChild(h("div", { "class": "ov-slot", "data-module": "upcoming-row", "data-visual-id": "upcoming-row" }, [
-        appointment.time ? text9("span", "ov-slot__time", appointment.time) : null,
+        appointment.time ? text10("span", "ov-slot__time", appointment.time) : null,
         h("span", { "class": "ov-slot__pin" }, [icon("pin", "ov-slot__glyph")]),
         h("button", {
           "class": "ov-slot__link",
@@ -13097,8 +13566,8 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
           "data-id": property.id,
           "aria-label": "Open the " + appointment.service + " visit at " + property.name
         }, [
-          text9("span", "ov-row__title", property.name),
-          text9("span", "ov-row__meta", metaOf(appointmentDay(appointment, timeline), appointment.service))
+          text10("span", "ov-row__title", property.name),
+          text10("span", "ov-row__meta", metaOf(appointmentDay(appointment, timeline), appointment.service))
         ])
       ]));
     });
@@ -13107,6 +13576,28 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     ]));
     return card;
   }
+  function NextVisitWidget() {
+    var visits = liveVisits();
+    var next = visits && visits.upcoming[0];
+    if (!next) return null;
+    var card = widget("next-visit", "Next visit", "calendar");
+    card.appendChild(VisitRow(next, { today: localDateKey(/* @__PURE__ */ new Date()), place: visitPlace(next, liveProperties()) }));
+    card.appendChild(navLine("All visits", "appointments"));
+    return card;
+  }
+  function InvoiceDueWidget() {
+    var due = openInvoices(liveInvoices());
+    if (!due.length) return null;
+    var card = widget("invoice-due", due.length === 1 ? "Invoice due" : "Invoices due", "invoice");
+    due.slice(0, 3).forEach(function(invoice) {
+      card.appendChild(InvoiceRow(invoice));
+    });
+    card.appendChild(navLine(due.length > 3 ? due.length - 3 + " more in Invoices" : "All invoices", "invoices"));
+    return card;
+  }
+  function navLine(label, route) {
+    return h("div", { "class": "link-action ov-more", "data-action": "nav.go", "data-id": route }, label + " \u203A");
+  }
   function InvoicesWidget(model) {
     if (!sectionAvailable(model, "invoices")) return null;
     var buckets = invoiceBuckets(model.invoices);
@@ -13114,7 +13605,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     var card = h("div", { "class": "card card--pad ov-card ov-bill" + (overdue.count ? " ov-bill--alarm" : ""), "data-module": "invoices", "data-visual-id": "invoices", "data-state": overdue.count ? "overdue" : "current" }, [
       h("div", { "class": "ov-card__head" }, [
         h("span", { "class": "ov-card__icon" }, [icon("invoice", "ov-icon")]),
-        text9("h2", "ov-card__title", "Invoices"),
+        text10("h2", "ov-card__title", "Invoices"),
         h("div", { "class": "link-action ov-bill__all", "data-action": "overview.openInvoices" }, "View all \u203A")
       ])
     ]);
@@ -13135,10 +13626,10 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     return h("div", { "class": "ov-alarm", "data-module": "overdue-alert", "data-visual-id": "overdue-alert", role: "alert" }, [
       h("span", { "class": "ov-alarm__mark" }, [icon("alert", "ov-alarm__glyph")]),
       h("div", { "class": "ov-alarm__read" }, [
-        text9("div", "ov-alarm__eyebrow", "Overdue amount"),
-        text9("div", "ov-alarm__amount", money(overdue.amount)),
-        text9("div", "ov-alarm__count", "Across " + overdue.count + (overdue.count === 1 ? " overdue invoice" : " overdue invoices")),
-        text9("div", "ov-alarm__warn", "Please make a payment to avoid service interruption.")
+        text10("div", "ov-alarm__eyebrow", "Overdue amount"),
+        text10("div", "ov-alarm__amount", money(overdue.amount)),
+        text10("div", "ov-alarm__count", "Across " + overdue.count + (overdue.count === 1 ? " overdue invoice" : " overdue invoices")),
+        text10("div", "ov-alarm__warn", "Please make a payment to avoid service interruption.")
       ]),
       h("div", { "class": "ov-alarm__act" }, [
         ActionButton({ variant: "btn--danger", label: "View overdue invoices \u2192", action: "overview.openInvoices", visualId: "view-overdue-invoices" })
@@ -13147,9 +13638,9 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
   }
   function billStat(label, value, count, valueClass) {
     return h("div", { "class": "ov-bill__stat" }, [
-      text9("div", "ov-bill__stat-label", label),
-      text9("div", "ov-bill__stat-value " + valueClass, value),
-      text9("div", "ov-bill__stat-count", String(count) + (count === 1 ? " invoice" : " invoices"))
+      text10("div", "ov-bill__stat-label", label),
+      text10("div", "ov-bill__stat-value " + valueClass, value),
+      text10("div", "ov-bill__stat-count", String(count) + (count === 1 ? " invoice" : " invoices"))
     ]);
   }
   function ContractsWidget(model) {
@@ -13167,10 +13658,10 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     contracts.slice(0, 3).forEach(function(contract) {
       card.appendChild(h("div", { "class": "ov-row", "data-module": "contract-row", "data-visual-id": "contract-row" }, [
         h("div", { style: "flex:1;min-width:0" }, [
-          text9("div", "ov-row__title", "Contract #" + contract.number),
-          text9("div", "ov-row__meta", contract.plan)
+          text10("div", "ov-row__title", "Contract #" + contract.number),
+          text10("div", "ov-row__meta", contract.plan)
         ]),
-        text9("span", "status-badge status-badge--ok", "Active")
+        text10("span", "status-badge status-badge--ok", "Active")
       ]));
     });
     if (preparing) card.appendChild(QuotePreparingRow());
@@ -13211,10 +13702,10 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     var meta = agreementSummary(row);
     return h("div", { "class": "ov-row", "data-module": "contract-row", "data-visual-id": "contract-row", "data-state": agreement.stage }, [
       h("div", { style: "flex:1;min-width:0" }, [
-        text9("div", "ov-row__title", agreementTitle(row)),
+        text10("div", "ov-row__title", agreementTitle(row)),
         h("div", { "class": "ov-row__line", style: "margin-top:4px;flex-wrap:wrap;row-gap:4px" }, [
-          text9("span", "status-badge status-badge--" + agreement.tone, agreement.label),
-          meta ? text9("span", "ov-row__meta", meta) : null
+          text10("span", "status-badge status-badge--" + agreement.tone, agreement.label),
+          meta ? text10("span", "ov-row__meta", meta) : null
         ])
       ]),
       chevron("agreement.open", row.id, "Open the service agreement " + agreementTitle(row) + " \u2014 " + agreement.label)
@@ -13222,7 +13713,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
   }
   function QuotesWaitingLink(count) {
     return h("button", { "class": "ov-waiting", type: "button", "data-module": "quote-decision", "data-visual-id": "quote-decision", "data-action": "overview.openContracts" }, [
-      text9("span", "ov-waiting__label", plural(count, "quote", "quotes") + " waiting for your decision"),
+      text10("span", "ov-waiting__label", plural(count, "quote", "quotes") + " waiting for your decision"),
       h("span", { "class": "ov-waiting__chev", "aria-hidden": "true" }, "\u203A")
     ]);
   }
@@ -13230,8 +13721,8 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     return h("div", { "class": "ov-row", "data-module": "quote-revision", "data-visual-id": "quote-revision", "data-tone": "info" }, [
       h("i", { "class": "ov-dot" }),
       h("div", { style: "flex:1;min-width:0" }, [
-        text9("div", "ov-row__title", "Changes requested"),
-        text9("div", "ov-row__meta", "We\u2019re reviewing the changes you asked for.")
+        text10("div", "ov-row__title", "Changes requested"),
+        text10("div", "ov-row__meta", "We\u2019re reviewing the changes you asked for.")
       ]),
       chevron("overview.openContracts", "", "Go to Contracts")
     ]);
@@ -13250,16 +13741,16 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
   function contractsProblem(card, stateName, title, desc, retry) {
     card.setAttribute("data-state", stateName);
     card.appendChild(h("div", { "class": "ov-empty", "data-module": "contracts-" + stateName, "data-visual-id": "contracts-" + stateName, "data-state": stateName, role: stateName === "error" ? "alert" : "status" }, [
-      text9("div", "ov-empty__title", title),
-      text9("div", "ov-empty__desc", desc),
+      text10("div", "ov-empty__title", title),
+      text10("div", "ov-empty__desc", desc),
       retry ? h("button", { "class": "link-action", "data-action": "contracts.refresh", type: "button" }, "Try again \u203A") : null
     ]));
     return card;
   }
   function QuotePreparingLine() {
     return h("div", { "class": "ov-empty", "data-module": "quote-preparing", "data-visual-id": "quote-preparing", "data-state": "preparing", role: "status" }, [
-      text9("div", "ov-empty__title", "We have your request"),
-      text9("div", "ov-empty__desc", "We\u2019re preparing your quote. It appears under Contracts once we send it."),
+      text10("div", "ov-empty__title", "We have your request"),
+      text10("div", "ov-empty__desc", "We\u2019re preparing your quote. It appears under Contracts once we send it."),
       h("div", { "class": "link-action", "data-action": "overview.openContracts" }, "Go to Contracts \u203A")
     ]);
   }
@@ -13267,8 +13758,8 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     return h("div", { "class": "ov-row", "data-module": "quote-preparing", "data-visual-id": "quote-preparing", "data-state": "preparing", "data-tone": "info", role: "status" }, [
       h("i", { "class": "ov-dot" }),
       h("div", { style: "flex:1;min-width:0" }, [
-        text9("div", "ov-row__title", "Request in preparation"),
-        text9("div", "ov-row__meta", "We have your request and are preparing your quote.")
+        text10("div", "ov-row__title", "Request in preparation"),
+        text10("div", "ov-row__meta", "We have your request and are preparing your quote.")
       ]),
       chevron("overview.openContracts", "", "Go to Contracts")
     ]);
@@ -13279,8 +13770,8 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     var card = widget("support-requests", "Support requests", "support");
     if (!requests.length) {
       card.appendChild(h("div", { "class": "ov-empty", "data-state": "empty" }, [
-        text9("div", "ov-empty__title", "No open requests"),
-        text9("div", "ov-empty__desc", "Everything looks good. Need help?"),
+        text10("div", "ov-empty__title", "No open requests"),
+        text10("div", "ov-empty__desc", "Everything looks good. Need help?"),
         h("div", { "class": "link-action", "data-action": "overview.newRequest" }, "Submit a request \u203A")
       ]));
       return card;
@@ -13290,10 +13781,10 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
       card.appendChild(h("div", { "class": "ov-row", "data-module": "support-row", "data-visual-id": "support-row", "data-tone": request.tone || "info" }, [
         h("i", { "class": "ov-dot" }),
         h("div", { style: "flex:1;min-width:0" }, [
-          text9("div", "ov-row__title", request.title),
+          text10("div", "ov-row__title", request.title),
           h("div", { "class": "ov-row__meta" }, [
-            text9("span", "ov-row__status", request.status),
-            text9("span", "", " \xB7 " + request.when)
+            text10("span", "ov-row__status", request.status),
+            text10("span", "", " \xB7 " + request.when)
           ])
         ]),
         chevron("overview.openSupport", String(position), "Open " + request.title)
@@ -13306,8 +13797,8 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     return h("div", { "class": "card card--pad ov-banner", "data-module": "storm-banner", "data-visual-id": "storm-banner" }, [
       h("span", { "class": "ov-banner__mark" }, [icon("snowflake", "ov-icon")]),
       h("div", { style: "flex:1;min-width:0" }, [
-        text9("div", "ov-banner__title", banner.title),
-        text9("div", "ov-banner__copy", banner.copy)
+        text10("div", "ov-banner__title", banner.title),
+        text10("div", "ov-banner__copy", banner.copy)
       ]),
       ActionButton({ variant: "btn--ghost", label: banner.action, action: "overview.newRequest", visualId: "storm-banner-cta" })
     ]);
@@ -13316,17 +13807,17 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     return h("div", { "class": "card card--pad ov-card", "data-module": id, "data-visual-id": id }, [
       h("div", { "class": "ov-card__head" }, [
         h("span", { "class": "ov-card__icon" }, [icon(iconName, "ov-icon")]),
-        text9("h2", "ov-card__title", title)
+        text10("h2", "ov-card__title", title)
       ])
     ]);
   }
   function lead(value, label, meta) {
     return h("div", { "class": "ov-lead" }, [
       h("div", { "class": "ov-lead__main" }, [
-        text9("span", "ov-lead__value", value),
-        text9("span", "ov-lead__label", label)
+        text10("span", "ov-lead__value", value),
+        text10("span", "ov-lead__label", label)
       ]),
-      meta ? text9("div", "ov-lead__meta", meta) : null
+      meta ? text10("div", "ov-lead__meta", meta) : null
     ]);
   }
   function metaOf(day, service) {
@@ -13340,11 +13831,11 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
   }
   function emptyLine(title, desc) {
     return h("div", { "class": "ov-empty", "data-state": "empty" }, [
-      text9("div", "ov-empty__title", title),
-      text9("div", "ov-empty__desc", desc)
+      text10("div", "ov-empty__title", title),
+      text10("div", "ov-empty__desc", desc)
     ]);
   }
-  function text9(tag, className, value) {
+  function text10(tag, className, value) {
     return h(tag, className ? { "class": className } : null, value == null ? "" : String(value));
   }
 
@@ -13418,8 +13909,8 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     if (!range || !range.start) return Number.MAX_SAFE_INTEGER;
     return clockMinutes(range.start);
   }
-  function clockMinutes(clock) {
-    var match = /^(\d{1,2}):(\d{2})\s*(AM|PM)$/i.exec(String(clock).trim());
+  function clockMinutes(clock2) {
+    var match = /^(\d{1,2}):(\d{2})\s*(AM|PM)$/i.exec(String(clock2).trim());
     if (!match) return Number.MAX_SAFE_INTEGER;
     var hour = Number(match[1]) % 12;
     if (/PM/i.test(match[3])) hour += 12;
@@ -13458,8 +13949,8 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     var card = h("div", { "class": "card card--pad appt", "data-module": "appointments-table", "data-visual-id": "appointments-table" });
     if (!rows2.length) {
       card.appendChild(h("div", { "class": "appt__empty" }, [
-        text10("div", "ov-empty__title", "No visits on this day"),
-        text10("div", "ov-empty__desc", "Pick another date, or clear the filter to see the whole week."),
+        text11("div", "ov-empty__title", "No visits on this day"),
+        text11("div", "ov-empty__desc", "Pick another date, or clear the filter to see the whole week."),
         h("div", { "class": "link-action", "data-action": "appointments.filterDay", "data-id": "" }, "Show all dates \u203A")
       ]));
       page.appendChild(card);
@@ -13467,7 +13958,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     }
     card.appendChild(Table(rows2, direction));
     page.appendChild(card);
-    page.appendChild(text10("div", "appt__count", rows2.length === all.length ? String(all.length) + (all.length === 1 ? " appointment" : " appointments") : String(rows2.length) + " of " + all.length + " appointments"));
+    page.appendChild(text11("div", "appt__count", rows2.length === all.length ? String(all.length) + (all.length === 1 ? " appointment" : " appointments") : String(rows2.length) + " of " + all.length + " appointments"));
     return page;
   }
   function subline2(rows2, timeline) {
@@ -13485,7 +13976,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
       chips.push(dayChip(frame.day + " " + frame.date, String(index), String(day) === String(index), count));
     });
     return h("div", { "class": "appt-filters", "data-module": "appointment-filters", "data-visual-id": "appointment-filters" }, [
-      text10("span", "appt-filters__label", "Date"),
+      text11("span", "appt-filters__label", "Date"),
       h("div", { "class": "appt-filters__chips", role: "group", "aria-label": "Filter appointments by date" }, chips)
     ]);
   }
@@ -13495,7 +13986,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
       "data-action": "appointments.filterDay",
       "data-id": id,
       "aria-pressed": active ? "true" : "false"
-    }, count ? [text10("span", "", label), text10("span", "appt-chip__count", String(count))] : [text10("span", "", label)]);
+    }, count ? [text11("span", "", label), text11("span", "appt-chip__count", String(count))] : [text11("span", "", label)]);
   }
   function Table(rows2, direction) {
     var head2 = h("tr", null, COLUMNS.map(function(column) {
@@ -13505,15 +13996,15 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
           "class": "appt__sort",
           "data-action": "appointments.sortResource",
           "aria-label": "Sort by resource, currently " + (direction === "desc" ? "descending" : "ascending")
-        }, [text10("span", "", column.label), text10("span", "appt__caret", direction === "desc" ? "\u2193" : "\u2191")])
+        }, [text11("span", "", column.label), text11("span", "appt__caret", direction === "desc" ? "\u2193" : "\u2191")])
       ]);
     }));
     var body = h("tbody", null, rows2.map(function(row) {
       var meta = stateMeta(row.state);
       return h("tr", { "data-module": "appointment-row", "data-visual-id": "appointment-row", "data-state": row.state.toLowerCase() }, [
         h("td", null, [
-          text10("div", "appt__resource", row.resource),
-          row.day ? text10("div", "appt__sub", row.day) : null
+          text11("div", "appt__resource", row.resource),
+          row.day ? text11("div", "appt__sub", row.day) : null
         ]),
         h("td", null, [
           h("button", {
@@ -13522,8 +14013,8 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
             "data-id": row.id,
             "aria-label": "Open " + row.name
           }, [
-            text10("span", "appt__name", row.name),
-            text10("span", "appt__sub", row.address)
+            text11("span", "appt__name", row.name),
+            text11("span", "appt__sub", row.address)
           ])
         ]),
         h("td", null, [
@@ -13533,8 +14024,8 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
             "data-id": row.id,
             "aria-label": "Open the " + row.service + " visit at " + row.name
           }, [
-            text10("span", "status-badge status-badge--" + meta.tone, meta.label),
-            text10("span", "appt__sub", row.service)
+            text11("span", "status-badge status-badge--" + meta.tone, meta.label),
+            text11("span", "appt__sub", row.service)
           ])
         ]),
         h("td", { "class": "appt__time" }, row.est || "\u2014"),
@@ -13545,7 +14036,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
       h("table", { "class": "appt__table" }, [h("thead", null, [head2]), body])
     ]);
   }
-  function text10(tag, className, value) {
+  function text11(tag, className, value) {
     return h(tag, className ? { "class": className } : null, value == null ? "" : String(value));
   }
 
@@ -13569,10 +14060,10 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     var meta = stateMeta(visit.state);
     page.appendChild(h("div", { "class": "prop-head", "data-state": visit.state.toLowerCase() }, [
       h("div", { style: "flex:1;min-width:0" }, [
-        text11("h1", "prop-head__title", visit.service),
-        text11("div", "prop-head__addr", visit.day)
+        text12("h1", "prop-head__title", visit.service),
+        text12("div", "prop-head__addr", visit.day)
       ]),
-      text11("span", "status-badge status-badge--" + meta.tone, meta.label)
+      text12("span", "status-badge status-badge--" + meta.tone, meta.label)
     ]));
     page.appendChild(h("div", { "class": "card card--pad prop-facts", "data-module": "visit-facts", "data-visual-id": "visit-facts" }, [
       fact("Resource", visit.resource),
@@ -13585,12 +14076,163 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
   }
   function fact(label, value, action, id) {
     return h("div", { "class": "prop-fact" }, [
-      text11("div", "prop-fact__label", label),
-      action ? h("div", { "class": "link-action prop-fact__value", "data-action": action, "data-id": id }, value + " \u203A") : text11("div", "prop-fact__value", value)
+      text12("div", "prop-fact__label", label),
+      action ? h("div", { "class": "link-action prop-fact__value", "data-action": action, "data-id": id }, value + " \u203A") : text12("div", "prop-fact__value", value)
     ]);
   }
-  function text11(tag, className, value) {
+  function text12(tag, className, value) {
     return h(tag, className ? { "class": className } : null, value == null ? "" : String(value));
+  }
+
+  // app-templates/customer-portal/runtime/src/routes/LiveVisitsPage.js
+  function LiveVisits() {
+    var page = h("section", { "class": "page page--narrow", "data-route": "appointments", "data-visual-id": "visits" });
+    page.appendChild(PageHeader({ title: "Visits" }));
+    var status = liveListStatus("appointmentsTimeline");
+    page.setAttribute("data-state", status);
+    if (status !== "ready") {
+      page.appendChild(listState(status));
+      return page;
+    }
+    var visits = liveVisits();
+    var today = localDateKey(/* @__PURE__ */ new Date());
+    var properties = liveProperties();
+    var row = function(visit) {
+      return VisitRow(visit, { today, place: visitPlace(visit, properties) });
+    };
+    if (visits.upcoming.length) page.appendChild(RecordSection("visits-upcoming", "Upcoming", visits.upcoming.map(row)));
+    if (visits.past.length) page.appendChild(RecordSection("visits-past", "Past", visits.past.map(row)));
+    return page;
+  }
+  function LiveVisitDetail() {
+    var page = h("section", { "class": "page page--narrow", "data-route": "visit.detail", "data-visual-id": "visit-detail" });
+    page.appendChild(h("div", { "class": "detail-back", "data-action": "nav.go", "data-id": "appointments" }, "\u2039 Back to visits"));
+    var status = liveListStatus("appointmentsTimeline");
+    var visit = status === "ready" ? findVisit(liveVisits(), state.visitId) : null;
+    if (!visit) {
+      page.setAttribute("data-state", status === "ready" || status === "empty" ? "not-found" : status);
+      page.appendChild(status === "ready" || status === "empty" ? EmptyState({ glyph: "\u25CC", title: "Visit not found", desc: "This visit is not on your schedule." }) : listState(status));
+      return page;
+    }
+    var today = localDateKey(/* @__PURE__ */ new Date());
+    var place = visitPlace(visit, liveProperties());
+    page.setAttribute("data-state", visit.stateCode.toLowerCase());
+    page.appendChild(h("div", { "class": "prop-head" }, [
+      h("div", { style: "flex:1;min-width:0" }, [
+        h("h1", { "class": "prop-head__title" }, visitDay(visit, today)),
+        h("div", { "class": "prop-head__addr", "data-module": "visit-when" }, [visitWindow(visit), place].filter(Boolean).join(" \xB7 "))
+      ]),
+      h("span", { "class": "status-badge status-badge--" + visit.status.tone }, visit.status.label)
+    ]));
+    if (visit.completionNotes) {
+      page.appendChild(h("section", { "class": "card card--pad record-section", "data-module": "visit-notes", "data-visual-id": "visit-notes" }, [
+        h("h2", { "class": "prop-section__title" }, "Completion notes"),
+        h("p", { "class": "record-notes" }, visit.completionNotes)
+      ]));
+    }
+    var photos = [photoGroup("Before", visit.before), photoGroup("After", visit.after)].filter(Boolean);
+    if (photos.length) {
+      page.appendChild(h("section", { "class": "card card--pad record-section", "data-module": "visit-photos", "data-visual-id": "visit-photos" }, [
+        h("h2", { "class": "prop-section__title" }, "Photos")
+      ].concat(photos)));
+    }
+    return page;
+  }
+  function photoGroup(label, ids) {
+    var urls = ids.map(function(id) {
+      return visitImageUrl(state.config.coreApiBase, id);
+    }).filter(Boolean);
+    if (!urls.length) return null;
+    return h("div", { "class": "record-photos", "data-module": "visit-photos-" + label.toLowerCase() }, [
+      h("div", { "class": "record-photos__label" }, label),
+      h("div", { "class": "record-photos__grid" }, urls.map(function(url, index) {
+        return h("a", { "class": "record-photos__item", href: url, target: "_blank", rel: "noopener" }, [
+          h("img", { src: url, alt: label + " service photo " + (index + 1), loading: "lazy", decoding: "async" })
+        ]);
+      }))
+    ]);
+  }
+  function listState(status) {
+    if (status === "loading") {
+      return h("div", { "data-module": "visits-loading", "data-visual-id": "visits-loading", "aria-busy": "true" }, [
+        skel("height:72px;border-radius:16px;margin-bottom:12px"),
+        skel("height:72px;border-radius:16px;margin-bottom:12px"),
+        skel("height:72px;border-radius:16px")
+      ]);
+    }
+    if (status === "unauthorized") return UnauthorizedState({ scope: "these visits", backRoute: state.config.defaultRoute });
+    if (status === "error") return ErrorState({ title: "Couldn\u2019t load your visits", desc: "Nothing was changed. Check your connection and try again." });
+    return EmptyState({ glyph: "\u25CC", title: "No visits yet", desc: "Your scheduled and completed visits appear here." });
+  }
+
+  // app-templates/customer-portal/runtime/src/routes/InvoicesPage.js
+  function Invoices() {
+    var page = h("section", { "class": "page page--narrow", "data-route": "invoices", "data-visual-id": "invoices-page" });
+    page.appendChild(PageHeader({ title: "Invoices" }));
+    var status = liveListStatus("invoices");
+    page.setAttribute("data-state", status);
+    if (status !== "ready") {
+      page.appendChild(listState2(status));
+      return page;
+    }
+    page.appendChild(RecordSection("invoice-list", "", liveInvoices().items.map(InvoiceRow)));
+    return page;
+  }
+  function InvoiceDetail() {
+    var page = h("section", { "class": "page page--narrow", "data-route": "invoice.detail", "data-visual-id": "invoice-detail" });
+    page.appendChild(h("div", { "class": "detail-back", "data-action": "nav.go", "data-id": "invoices" }, "\u2039 Back to invoices"));
+    var status = liveListStatus("invoices");
+    var invoice = status === "ready" ? findInvoice(liveInvoices(), state.invoiceId) : null;
+    if (!invoice) {
+      page.setAttribute("data-state", status === "ready" || status === "empty" ? "not-found" : status);
+      page.appendChild(status === "ready" || status === "empty" ? EmptyState({ glyph: "\u25CC", title: "Invoice not found", desc: "This invoice is not on your account." }) : listState2(status));
+      return page;
+    }
+    page.setAttribute("data-state", invoice.stateCode.toLowerCase());
+    page.appendChild(h("div", { "class": "prop-head" }, [
+      h("div", { style: "flex:1;min-width:0" }, [h("h1", { "class": "prop-head__title" }, invoiceTitle(invoice))]),
+      h("span", { "class": "status-badge status-badge--" + invoice.status.tone }, invoice.status.label)
+    ]));
+    var facts2 = [
+      invoice.due ? fact2("due", "Due date", formatIsoDate(invoice.due)) : null,
+      invoiceTerms(invoice) ? fact2("terms", "Payment terms", invoiceTerms(invoice)) : null,
+      invoice.issued && invoice.period ? fact2("issued", "Invoice date", formatIsoDate(invoice.issued)) : null
+    ].filter(Boolean);
+    if (facts2.length) page.appendChild(h("div", { "class": "card card--pad prop-facts", "data-module": "invoice-facts", "data-visual-id": "invoice-facts" }, facts2));
+    var total = invoiceAmount(invoice);
+    var rows2 = invoice.lines.map(function(line) {
+      return h("div", { "class": "invoice__row", "data-module": "invoice-line" }, [
+        h("span", null, line.quantity > 1 ? line.name + " \xD7 " + line.quantity : line.name),
+        h("b", null, line.amount)
+      ]);
+    });
+    var balance = invoice.stateCode !== "PAID" && invoice.paid > 0 && invoice.total !== null ? [
+      h("div", { "class": "invoice__row", "data-module": "invoice-paid" }, [h("span", null, "Paid"), h("b", null, formatMoney(invoice.paid, invoice.currency))]),
+      h("div", { "class": "invoice__row", "data-module": "invoice-balance" }, [h("span", null, "Balance"), h("b", null, formatMoney(invoice.total - invoice.paid, invoice.currency))])
+    ] : [];
+    if (rows2.length || total) {
+      page.appendChild(h("section", { "class": "card card--pad record-section", "data-module": "invoice-lines", "data-visual-id": "invoice-lines" }, [
+        h("h2", { "class": "prop-section__title" }, "Charges")
+      ].concat(rows2, total ? [h("div", { "class": "invoice__total", "data-module": "invoice-total" }, [h("span", null, "Total"), h("span", null, total)])] : [], balance)));
+    }
+    return page;
+  }
+  function fact2(key, label, value) {
+    return h("div", { "class": "prop-fact", "data-fact": key }, [
+      h("div", { "class": "prop-fact__label" }, label),
+      h("div", { "class": "prop-fact__value" }, value)
+    ]);
+  }
+  function listState2(status) {
+    if (status === "loading") {
+      return h("div", { "data-module": "invoices-loading", "data-visual-id": "invoices-loading", "aria-busy": "true" }, [
+        skel("height:72px;border-radius:16px;margin-bottom:12px"),
+        skel("height:72px;border-radius:16px")
+      ]);
+    }
+    if (status === "unauthorized") return UnauthorizedState({ scope: "these invoices", backRoute: state.config.defaultRoute });
+    if (status === "error") return ErrorState({ title: "Couldn\u2019t load your invoices", desc: "Nothing was changed. Check your connection and try again." });
+    return EmptyState({ glyph: "\u25CC", title: "No invoices yet", desc: "Your invoices appear here once we send one." });
   }
 
   // app-templates/customer-portal/runtime/src/components/storm/PropertyPlan.js
@@ -13640,12 +14282,12 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     var height = Math.max(bounds.north - bounds.south, MIN_SPAN) * SCALE;
     var centerX = (bounds.east - bounds.west) * cos * SCALE / 2;
     var centerY = (bounds.north - bounds.south) * SCALE / 2;
-    var pad2 = Math.max(width, height) * PADDING;
+    var pad3 = Math.max(width, height) * PADDING;
     return {
-      x: centerX - width / 2 - pad2,
-      y: centerY - height / 2 - pad2,
-      width: width + pad2 * 2,
-      height: height + pad2 * 2,
+      x: centerX - width / 2 - pad3,
+      y: centerY - height / 2 - pad3,
+      width: width + pad3 * 2,
+      height: height + pad3 * 2,
       dot: Math.max(width, height) / 70,
       project: function(point) {
         return [(point.lng - bounds.west) * cos * SCALE, (bounds.north - point.lat) * SCALE];
@@ -13888,10 +14530,10 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
   })(typeof window !== "undefined" ? window : globalThis);
 
   // app-templates/customer-portal/runtime/src/property-plan.js
-  var MEDIA_ID2 = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
+  var MEDIA_ID3 = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
   var plans = /* @__PURE__ */ new Map();
   function propertyPlan(planId, onChange, fetchImpl) {
-    if (!MEDIA_ID2.test(String(planId || ""))) return null;
+    if (!MEDIA_ID3.test(String(planId || ""))) return null;
     var entry = plans.get(planId);
     if (entry) return entry;
     entry = { status: "loading", plan: null };
@@ -13955,10 +14597,10 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     page.appendChild(BackLink(model));
     page.appendChild(h("div", { "class": "prop-head" }, [
       h("div", { style: "flex:1;min-width:0" }, [
-        text12("h1", "prop-head__title", property.name),
-        property.address && !addressRepeats(property.name, property.address) ? text12("div", "prop-head__addr", property.address) : null
+        text13("h1", "prop-head__title", property.name),
+        property.address && !addressRepeats(property.name, property.address) ? text13("div", "prop-head__addr", property.address) : null
       ]),
-      status ? text12("span", "status-badge status-badge--" + statusTone(status), OVERVIEW_STATUS[status].label) : null
+      status ? text13("span", "status-badge status-badge--" + statusTone(status), OVERVIEW_STATUS[status].label) : null
     ]));
     var rows2 = facts(property, contract, model, service);
     if (rows2.length) {
@@ -13967,13 +14609,15 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
         { "class": "card card--pad prop-facts", "data-module": "property-facts", "data-visual-id": "property-facts" },
         rows2.map(function(item) {
           return h("div", { "class": "prop-fact", "data-fact": item.key }, [
-            text12("div", "prop-fact__label", item.label),
-            item.action ? h("div", { "class": "link-action prop-fact__value", "data-action": item.action, "data-id": item.id }, item.value + " \u203A") : text12("div", "prop-fact__value", item.value)
+            text13("div", "prop-fact__label", item.label),
+            item.action ? h("div", { "class": "link-action prop-fact__value", "data-action": item.action, "data-id": item.id }, item.value + " \u203A") : text13("div", "prop-fact__value", item.value)
           ]);
         })
       ));
     }
     if (service) page.appendChild(ServiceCard2(service));
+    var visits = LiveVisitsCard(property);
+    if (visits) page.appendChild(visits);
     var plan = PropertyPlan(propertyPlan(property.planId, render));
     if (plan) page.appendChild(plan);
     var location = PropertyLocation({
@@ -13985,8 +14629,8 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     if (location) page.appendChild(location);
     if (property.ticket && sectionAvailable(model, "support")) {
       page.appendChild(h("div", { "class": "card card--pad prop-ticket", "data-module": "property-ticket", "data-visual-id": "property-ticket" }, [
-        text12("div", "prop-section__title", "Open request"),
-        text12("div", "prop-ticket__title", property.ticket.title),
+        text13("div", "prop-section__title", "Open request"),
+        text13("div", "prop-ticket__title", property.ticket.title),
         h("div", { "class": "link-action", "data-action": "nav.go", "data-id": "support" }, "Open support \u203A")
       ]));
     }
@@ -14008,13 +14652,13 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
       return h("div", { "class": "prop-service__entry", "data-module": "property-service-option" }, [
         h("div", { "class": "prop-service__head" }, [
           h("div", { style: "flex:1;min-width:0" }, [
-            text12("div", "prop-service__option", order.pricingModel ? order.pricingModel.label : "Service"),
-            price ? text12("div", "prop-service__price", price) : null
+            text13("div", "prop-service__option", order.pricingModel ? order.pricingModel.label : "Service"),
+            price ? text13("div", "prop-service__price", price) : null
           ]),
           StatusBadge({ variant: "status-badge--" + agreement.tone, label: agreement.label, bind: "agreement.stateLabel", state: agreement.stage })
         ]),
         products.length ? h("ul", { "class": "prop-service__lines", "aria-label": "Services" }, products.map(function(name) {
-          return text12("li", "prop-service__line", name);
+          return text13("li", "prop-service__line", name);
         })) : null
       ]);
     }), [
@@ -14031,27 +14675,40 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     }) : null;
     return entry && entry.orders.length ? { row, orders: entry.orders } : null;
   }
+  function LiveVisitsCard(property) {
+    var found = visitsForProperty(liveVisits(), property.backendId);
+    if (!found.next && !found.last) return null;
+    var today = localDateKey(/* @__PURE__ */ new Date());
+    return h("section", { "class": "card card--pad prop-visits record-section", "data-module": "property-live-visits", "data-visual-id": "property-live-visits" }, [
+      h("h2", { "class": "prop-section__title" }, "Visits"),
+      h("div", { "class": "record-list" }, [
+        found.next ? VisitRow(found.next, { today, label: "Next visit" }) : null,
+        found.last ? VisitRow(found.last, { today, label: "Last visit" }) : null
+      ]),
+      h("div", { "class": "link-action prop-visits__foot", "data-action": "nav.go", "data-id": "appointments", "data-visual-id": "property-all-visits" }, "All visits \u203A")
+    ]);
+  }
   function VisitCard(property) {
     var card = h("div", { "class": "card card--pad prop-visits", "data-module": "property-visits", "data-visual-id": "property-visits" }, [
-      text12("div", "prop-section__title", "Service")
+      text13("div", "prop-section__title", "Service")
     ]);
     if (property.appointment) {
       var meta = stateMeta(property.appointment.state);
       card.appendChild(h("div", { "class": "prop-visit", "data-action": "appointments.openVisit", "data-id": property.id, "data-state": property.appointment.state.toLowerCase() }, [
         h("div", { style: "flex:1;min-width:0" }, [
-          text12("div", "prop-visit__title", property.appointment.service),
-          text12("div", "prop-visit__meta", property.appointment.when)
+          text13("div", "prop-visit__title", property.appointment.service),
+          text13("div", "prop-visit__meta", property.appointment.when)
         ]),
-        text12("span", "status-badge status-badge--" + meta.tone, meta.label),
-        text12("span", "prop-visit__caret", "\u203A")
+        text13("span", "status-badge status-badge--" + meta.tone, meta.label),
+        text13("span", "prop-visit__caret", "\u203A")
       ]));
     } else {
-      card.appendChild(text12("div", "prop-visit__meta", "No visit booked. Dispatch happens automatically when your trigger is met."));
+      card.appendChild(text13("div", "prop-visit__meta", "No visit booked. Dispatch happens automatically when your trigger is met."));
     }
     if (property.lastService) {
       card.appendChild(h("div", { "class": "prop-last" }, [
-        text12("div", "prop-fact__label", "Last service"),
-        text12("div", "prop-visit__meta", property.lastService.service + " \xB7 " + property.lastService.when)
+        text13("div", "prop-fact__label", "Last service"),
+        text13("div", "prop-visit__meta", property.lastService.service + " \xB7 " + property.lastService.when)
       ]));
     }
     card.appendChild(h("div", { "class": "prop-visits__foot" }, [
@@ -14125,7 +14782,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
   function statusTone(status) {
     return { issue: "danger", enroute: "progress", scheduled: "info", monitoring: "scheduled" }[status] || "scheduled";
   }
-  function text12(tag, className, value) {
+  function text13(tag, className, value) {
     return h(tag, className ? { "class": className } : null, value == null ? "" : String(value));
   }
 
@@ -14194,10 +14851,10 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     if (partial.truncated) notes.push("Only part of your contract history could be shown.");
     return notes.map(PartialNotice);
   }
-  function PartialNotice(text15) {
+  function PartialNotice(text16) {
     return h("div", { "class": "alert-banner alert-banner--partial", "data-module": "contracts-partial", "data-visual-id": "contracts-partial", "data-state": "partial", role: "status" }, [
       h("div", { "class": "alert-banner__icon alert-banner__icon--partial", "aria-hidden": "true" }, "!"),
-      h("div", { "class": "alert-banner__body" }, [h("div", { "class": "alert-banner__desc" }, text15)])
+      h("div", { "class": "alert-banner__body" }, [h("div", { "class": "alert-banner__desc" }, text16)])
     ]);
   }
   function CommandOutcome(phase) {
@@ -14220,10 +14877,10 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
       ActionButton({ variant: "btn--ghost", label: retry.label, action: retry.action, id: retry.id, visualId: "command-retry" })
     ]);
   }
-  function PendingNote(text15) {
+  function PendingNote(text16) {
     return h("div", { "class": "decision-note", "data-module": "command-pending", "data-visual-id": "command-pending", "data-state": "pending", role: "status" }, [
       h("span", { "class": "decision-note__spinner", "aria-hidden": "true" }),
-      h("span", null, text15)
+      h("span", null, text16)
     ]);
   }
   function ReadbackFailed(kind) {
@@ -15285,10 +15942,10 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
   }
 
   // app-templates/customer-portal/runtime/src/routes/AuthPage.js
-  function pitchRow(dot, bg, text15) {
+  function pitchRow(dot, bg, text16) {
     return h("div", { style: "display:flex;align-items:center;gap:12px" }, [
       h("div", { style: "width:34px;height:34px;border-radius:10px;background:" + bg + ";display:grid;place-items:center" }, h("i", { style: "width:12px;height:12px;border-radius:4px;background:" + dot + ";display:block" })),
-      h("div", { style: "font-size:14px;color:var(--ink-2)" }, text15)
+      h("div", { style: "font-size:14px;color:var(--ink-2)" }, text16)
     ]);
   }
   function Auth() {
@@ -16373,10 +17030,10 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     if (new Set(faq.map(function(item) {
       return item.id;
     })).size !== faq.length) throw new Error("content.faq ids must be unique");
-    var trust = array2(own2(content, "trust", "content"), "content.trust", 0).map(function(fact3, index) {
+    var trust = array2(own2(content, "trust", "content"), "content.trust", 0).map(function(fact4, index) {
       var path = "content.trust[" + index + "]";
-      fact3 = object(fact3, path);
-      return { key: "trust-" + index, icon: ["\u2605", "\u2696", "\u2714", "\u2B1A", "\u23F1"][index % 5], label: merge(own2(fact3, "label", path), tags, path + ".label"), value: merge(own2(fact3, "value", path), tags, path + ".value"), count: optionalMerge(own2(fact3, "count", path), tags, path + ".count"), slot: null };
+      fact4 = object(fact4, path);
+      return { key: "trust-" + index, icon: ["\u2605", "\u2696", "\u2714", "\u2B1A", "\u23F1"][index % 5], label: merge(own2(fact4, "label", path), tags, path + ".label"), value: merge(own2(fact4, "value", path), tags, path + ".value"), count: optionalMerge(own2(fact4, "count", path), tags, path + ".count"), slot: null };
     });
     var reviews = array2(own2(content, "reviews", "content"), "content.reviews", 0).map(function(review, index) {
       var path = "content.reviews[" + index + "]";
@@ -16482,10 +17139,10 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
         services: rawVertical.svc.slice(0, 6).map(function(service) {
           return { id: service.name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, ""), name: service.name, benefit: service.tagline, priceFrom: service.price, destination: null };
         }),
-        trust: [rawSeo.trust.rating, rawSeo.trust.licence, rawSeo.trust.insurance, rawSeo.trust.guarantee, rawSeo.trust.response].filter(function(fact3) {
-          return fact3 && fact3.value;
-        }).map(function(fact3) {
-          return { label: fact3.label || "Rating", value: fact3.value, count: fact3.count || null };
+        trust: [rawSeo.trust.rating, rawSeo.trust.licence, rawSeo.trust.insurance, rawSeo.trust.guarantee, rawSeo.trust.response].filter(function(fact4) {
+          return fact4 && fact4.value;
+        }).map(function(fact4) {
+          return { label: fact4.label || "Rating", value: fact4.value, count: fact4.count || null };
         }),
         how: rawSeo.how.map(function(item) {
           return { title: item.title, description: item.desc };
@@ -16618,9 +17275,9 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
   function SeoTrustStrip(model, view) {
     if (view.dataState === "loading") return '<section class="seo-trust" data-module="seo-trust-strip" data-visual-id="seo-trust-strip" data-state="loading">' + Array(5).fill('<div class="seo-trust__item">' + skel2("40%") + skel2("70%") + "</div>").join("") + "</section>";
     if (view.dataState === "empty" || !model.trust.length) return '<section class="seo-trust" data-module="seo-trust-strip" data-visual-id="seo-trust-strip" data-state="empty"><div class="seo-trust__fallback" data-state="no-data">Trust claims (rating, licence, insurance) appear here once supplied in the CMS &mdash; nothing is shown unverified.</div></section>';
-    return '<section class="seo-trust" data-module="seo-trust-strip" data-visual-id="seo-trust-strip" data-state="ready">' + model.trust.map(function(fact3) {
-      var value = fact3.value ? fact3.key === "rating" ? "<b>" + esc(fact3.value) + "</b> &middot; " + esc(fact3.count || "") : esc(fact3.value) : slotChip(fact3.slot || fact3.label.toLowerCase());
-      return '<div class="seo-trust__item" data-bind="cms.trust.' + attr(fact3.key) + '"><span class="seo-trust__icon">' + esc(fact3.icon) + '</span><div><div class="seo-trust__label">' + esc(fact3.label) + '</div><div class="seo-trust__value">' + value + "</div></div></div>";
+    return '<section class="seo-trust" data-module="seo-trust-strip" data-visual-id="seo-trust-strip" data-state="ready">' + model.trust.map(function(fact4) {
+      var value = fact4.value ? fact4.key === "rating" ? "<b>" + esc(fact4.value) + "</b> &middot; " + esc(fact4.count || "") : esc(fact4.value) : slotChip(fact4.slot || fact4.label.toLowerCase());
+      return '<div class="seo-trust__item" data-bind="cms.trust.' + attr(fact4.key) + '"><span class="seo-trust__icon">' + esc(fact4.icon) + '</span><div><div class="seo-trust__label">' + esc(fact4.label) + '</div><div class="seo-trust__value">' + value + "</div></div></div>";
     }).join("") + "</section>";
   }
   function serviceControl(service, view) {
@@ -16753,8 +17410,8 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     page.appendChild(grid);
     return page;
   }
-  function oidcStep(n, text15) {
-    return h("div", { "class": "oidc-step" }, [h("span", { "class": "oidc-step__num" }, String(n)), text15]);
+  function oidcStep(n, text16) {
+    return h("div", { "class": "oidc-step" }, [h("span", { "class": "oidc-step__num" }, String(n)), text16]);
   }
   function OidcSignedOut() {
     return h("div", { "data-state": "ready-signed-out" }, [
@@ -18375,8 +19032,8 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
         detail && detail.collection && spaModelsReady() ? h("div", { "class": "spa-shop-card__collection", "data-product-model-ref": detail.collection.ref, "data-bind": "product.collection.name" }, detail.collection.name) : null,
         h("div", { "class": "spa-shop-card__name", "data-bind": "pim.products[].name" }, product.name),
         h("div", { "class": "spa-shop-card__blurb", "data-bind": "pim.products[].shortDescription" }, product.blurb || product.description || "Published retail product"),
-        detail && detail.variantFacts && detail.variantFacts.length ? h("div", { "class": "spa-shop-card__facts", "data-bind": "product.variantFacts[]" }, detail.variantFacts.map(function(fact3) {
-          return h("span", { "class": "fact-chip" }, fact3.value);
+        detail && detail.variantFacts && detail.variantFacts.length ? h("div", { "class": "spa-shop-card__facts", "data-bind": "product.variantFacts[]" }, detail.variantFacts.map(function(fact4) {
+          return h("span", { "class": "fact-chip" }, fact4.value);
         })) : null
       ])
     ]));
@@ -18693,8 +19350,8 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     ]);
     if (product.variantFacts && product.variantFacts.length) {
       var facts2 = h("dl", { "class": "pd-facts", "data-visual-id": "product-facts" });
-      product.variantFacts.forEach(function(fact3) {
-        facts2.appendChild(h("div", { "class": "pd-facts__row" }, [h("dt", { "class": "pd-facts__label" }, fact3.label), h("dd", { "class": "pd-facts__val", "data-bind": "product.variantFacts[]" }, fact3.value)]));
+      product.variantFacts.forEach(function(fact4) {
+        facts2.appendChild(h("div", { "class": "pd-facts__row" }, [h("dt", { "class": "pd-facts__label" }, fact4.label), h("dd", { "class": "pd-facts__val", "data-bind": "product.variantFacts[]" }, fact4.value)]));
       });
       info.appendChild(facts2);
     }
@@ -18831,9 +19488,13 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
       case "overview":
         return Overview();
       case "appointments":
-        return Appointments();
+        return state.config.dataMode === "live" ? LiveVisits() : Appointments();
       case "visit.detail":
-        return VisitDetail();
+        return state.config.dataMode === "live" ? LiveVisitDetail() : VisitDetail();
+      case "invoices":
+        return Invoices();
+      case "invoice.detail":
+        return InvoiceDetail();
       case "property.detail":
         return PropertyDetail();
       case "orders.list":
@@ -18913,6 +19574,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     if (match.id === "proposal.detail" && match.params.id) state.currentSiteId = match.params.id;
     if (match.id === "agreement.detail" && match.params.id) state.agreementId = match.params.id;
     if (match.id === "visit.detail" && match.params.id) state.visitId = match.params.id;
+    if (match.id === "invoice.detail" && match.params.id) state.invoiceId = match.params.id;
     if (match.id === "property.detail" && match.params.id) state.propertyId = match.params.id;
     if (match.id === "purchase.detail" && match.params.id) state.spaCurrentPurchase = match.params.id;
     if (match.id === "appointment.detail" && match.params.id) state.spaCurrentAppointment = match.params.id;
@@ -18926,6 +19588,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     if (routeId === "proposal.detail") return { id: state.currentSiteId };
     if (routeId === "agreement.detail") return { id: state.agreementId };
     if (routeId === "visit.detail") return { id: state.visitId };
+    if (routeId === "invoice.detail") return { id: state.invoiceId };
     if (routeId === "property.detail") return { id: state.propertyId };
     if (routeId === "purchase.detail") return { id: state.spaCurrentPurchase };
     if (routeId === "appointment.detail") return { id: state.spaCurrentAppointment };
@@ -19591,6 +20254,10 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     "appointments.openVisit": function(id) {
       state.visitId = id;
       go("visit.detail");
+    },
+    "invoice.open": function(id) {
+      if (id) state.invoiceId = id;
+      go("invoice.detail");
     },
     "appointments.openProperty": function(id) {
       state.propertyId = id;
@@ -20790,9 +21457,9 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
       if (w) openOrder(w.id);
     }
   }
-  function pushChat(text15) {
-    if (!text15 || !text15.trim()) throw new Error("Message is empty");
-    state.messages = state.messages.concat([{ from: "user", text: text15.trim() }]);
+  function pushChat(text16) {
+    if (!text16 || !text16.trim()) throw new Error("Message is empty");
+    state.messages = state.messages.concat([{ from: "user", text: text16.trim() }]);
     state.chatInput = "";
     if (state.route !== "support") state.route = "support";
     toast("Message queued in fixture state");
@@ -21372,7 +22039,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
       state: filled.every(Boolean) ? "ready" : filled.some(Boolean) ? "partial" : "empty",
       reasonCode: null,
       scopeMode: ACCOUNT_PROFILE_SCOPE_MODES.indexOf(source.scopeMode) === -1 ? null : source.scopeMode,
-      accountName: localizedName6(account.nls),
+      accountName: localizedName7(account.nls),
       contact,
       emails,
       phones,
@@ -21442,7 +22109,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
       return row && typeof row === "object";
     }) : [];
   }
-  function localizedName6(value) {
+  function localizedName7(value) {
     if (!value || typeof value !== "object") return "";
     var localized2 = value.en || value["en-US"] || Object.values(value)[0] || {};
     return plain2(localized2 && (localized2.NAME || localized2.name));
@@ -21705,11 +22372,11 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     return null;
   }
   function opaqueRef4(prefix, value) {
-    var text15 = String(value || prefix);
+    var text16 = String(value || prefix);
     var left = 2166136261;
     var right = 2246822507;
-    for (var index = 0; index < text15.length; index += 1) {
-      var code = text15.charCodeAt(index);
+    for (var index = 0; index < text16.length; index += 1) {
+      var code = text16.charCodeAt(index);
       left = Math.imul(left ^ code, 16777619);
       right = Math.imul(right ^ code, 3266489909);
     }
@@ -21812,12 +22479,12 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
   }
   function variantFacts(attributes) {
     return [
-      fact2("Format", productAttribute2(attributes, "FORMAT")),
-      fact2("Size", volumeLabel(productAttribute2(attributes, "VOLUME_ML"))),
-      fact2("Scent", productAttribute2(attributes, "SCENT_PROFILE"))
+      fact3("Format", productAttribute2(attributes, "FORMAT")),
+      fact3("Size", volumeLabel(productAttribute2(attributes, "VOLUME_ML"))),
+      fact3("Scent", productAttribute2(attributes, "SCENT_PROFILE"))
     ].filter(Boolean);
   }
-  function fact2(label, value) {
+  function fact3(label, value) {
     if (value === void 0 || value === null || value === "") return null;
     return { label, value: String(value) };
   }
@@ -21977,12 +22644,12 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
   async function resolveCoreAccount(context, fetchImpl = globalThis.fetch, explicitOrigin) {
     var config = context && context.config || {};
     var session = context && context.session || context && context.state && context.state.session || {};
-    var accessToken = text13(session.accessToken || session.access_token);
+    var accessToken = text14(session.accessToken || session.access_token);
     if (!accessToken) throw contractError6("session-required", "A Core access token is required");
     var origin = explicitOrigin || config.origin || browserOrigin5();
     var coreBase = sameOriginBase7(config.coreApiBase || "/core", origin, "Core API base");
     var accountBase = sameOriginBase7(config.accountApiBase || "/core-acct", origin, "Core Account API base");
-    var tokenType = text13(session.tokenType || session.token_type || "Bearer");
+    var tokenType = text14(session.tokenType || session.token_type || "Bearer");
     var authorization = tokenType + " " + accessToken;
     var basicInfo = await requestJson7(fetchImpl, coreBase + "/api/user/basic-info.json", {
       method: "POST",
@@ -22016,7 +22683,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     });
     var returned = Array.isArray(accountReply && accountReply.result) ? accountReply.result : [];
     var accounts = typeList ? returned.filter(function(row) {
-      return typeCodes.indexOf(text13(row && row.type && row.type.code)) !== -1;
+      return typeCodes.indexOf(text14(row && row.type && row.type.code)) !== -1;
     }) : returned;
     var total = Number(accountReply.resultSize || returned.length);
     if (!accounts.length) throw contractError6("customer-not-linked", "No customer Account is linked to the signed-in Core User");
@@ -22034,23 +22701,23 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
       organization: { code: organizationCode },
       user: {
         id: userId,
-        displayName: text13(basicInfo.authenticatedUserName || basicInfo.authenticatedUser || basicInfo.name)
+        displayName: text14(basicInfo.authenticatedUserName || basicInfo.authenticatedUser || basicInfo.name)
       },
       account: {
         id: Number(account.id),
-        code: text13(account.code),
-        displayName: localizedName7(account.nls) || "Customer account",
+        code: text14(account.code),
+        displayName: localizedName8(account.nls) || "Customer account",
         optimistic: Number.isFinite(Number(account.optimistic)) ? Number(account.optimistic) : null,
-        typeCode: typeList ? text13(account.type && account.type.code) : typeCodes[0]
+        typeCode: typeList ? text14(account.type && account.type.code) : typeCodes[0]
       }
     };
   }
   function selectOrganization(configuredCode, basicInfo) {
-    var configured = text13(configuredCode);
+    var configured = text14(configuredCode);
     var authorized = Array.isArray(basicInfo && basicInfo.authorizedOrganizations) ? basicInfo.authorizedOrganizations.map(function(item) {
-      return text13(item && item.code);
+      return text14(item && item.code);
     }).filter(Boolean) : [];
-    var current = text13(basicInfo && (basicInfo.organizationCode || basicInfo.defaultOrganizationCode));
+    var current = text14(basicInfo && (basicInfo.organizationCode || basicInfo.defaultOrganizationCode));
     var selected = configured || current || authorized[0];
     if (!selected) throw contractError6("organization-required", "Core basic-info did not provide an organization");
     if (authorized.length && !authorized.includes(selected)) {
@@ -22086,12 +22753,12 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     var number = Number(value);
     return Number.isInteger(number) && number > 0 ? number : null;
   }
-  function localizedName7(value) {
+  function localizedName8(value) {
     if (!value || typeof value !== "object") return "";
     var localized2 = value.en || value["en-US"] || Object.values(value)[0] || {};
-    return text13(localized2 && (localized2.NAME || localized2.name));
+    return text14(localized2 && (localized2.NAME || localized2.name));
   }
-  function text13(value) {
+  function text14(value) {
     return typeof value === "string" ? value.trim() : value == null ? "" : String(value).trim();
   }
   function contractError6(code, message) {
@@ -22215,12 +22882,12 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
       backendId: id,
       expiresAt: formatDate3(attributeText3(row, "VALID_UNTIL")),
       kind: "PACKAGE",
-      optimistic: finiteNumber8(row.optimistic, null),
+      optimistic: finiteNumber9(row.optimistic, null),
       ref: PLAN_REF_PREFIX + id,
       remainingUses: remaining,
       sourcePurchase: sourceOrder ? PURCHASE_REF_PREFIX + sourceOrder : null,
       status,
-      title: localizedName8(row.nls) || "Package",
+      title: localizedName9(row.nls) || "Package",
       totalUses: total
     };
   }
@@ -22275,7 +22942,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     }));
     var byId = {};
     (Array.isArray(response && response.result) ? response.result : []).forEach(function(row) {
-      byId[String(row.id)] = text14(row.code);
+      byId[String(row.id)] = text15(row.code);
     });
     return byId;
   }
@@ -22329,7 +22996,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
       displayRecurringPrice: recurringPrice(line, labels),
       expiresAt: formatDate3(row.expiresOn),
       kind: "MEMBERSHIP",
-      optimistic: finiteNumber8(row.optimistic, null),
+      optimistic: finiteNumber9(row.optimistic, null),
       ref: PLAN_REF_PREFIX + "sub-" + id,
       remainingUses: null,
       renewsAt: formatDate3(row.nextBillingAt || null),
@@ -22343,13 +23010,13 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     var config = context && context.config || {};
     var state2 = context && context.state || {};
     var session = context && context.session || state2.session || {};
-    var accessToken = text14(session.accessToken || session.access_token);
+    var accessToken = text15(session.accessToken || session.access_token);
     if (!accessToken) throw contractError7("session-required", "A Core access token is required");
-    var organization = text14(config.organization);
+    var organization = text15(config.organization);
     if (!organization) throw contractError7("organization-required", "Verified portal organization is required");
     var origin = explicitOrigin || config.origin || browserOrigin6();
     return {
-      authorization: text14(session.tokenType || session.token_type || "Bearer") + " " + accessToken,
+      authorization: text15(session.tokenType || session.token_type || "Bearer") + " " + accessToken,
       billBase: sameOriginBase8(config.billApiBase || "/core-bill", origin, "Core Bill API base"),
       coreBase: sameOriginBase8(config.coreApiBase || "/core", origin, "Core API base"),
       config,
@@ -22396,7 +23063,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
   function firstState(row) {
     var states = Array.isArray(row && row.states) ? row.states : [];
     for (var index = 0; index < states.length; index += 1) {
-      var code = text14(states[index] && states[index].code);
+      var code = text15(states[index] && states[index].code);
       if (code) return code;
     }
     return "";
@@ -22407,7 +23074,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
   function membershipTitle(line) {
     if (!line) return "Membership";
     var product = line.itemPrice && line.itemPrice.product;
-    return localizedName8(product && product.nls) || localizedName8(line.itemPrice && line.itemPrice.nls) || "Membership";
+    return localizedName9(product && product.nls) || localizedName9(line.itemPrice && line.itemPrice.nls) || "Membership";
   }
   function formatMoney4(amount, currency) {
     return new Intl.NumberFormat("en-US", { currency, style: "currency" }).format(Number(amount)).replace(/\.00$/, "");
@@ -22418,18 +23085,18 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     if (Number.isNaN(date.getTime())) return null;
     return date.toLocaleDateString("en-US", { day: "numeric", month: "short", timeZone: "UTC", year: "numeric" });
   }
-  function localizedName8(nls) {
+  function localizedName9(nls) {
     if (!nls || typeof nls !== "object") return "";
     var locales = Object.keys(nls);
     for (var index = 0; index < locales.length; index += 1) {
       var entry = nls[locales[index]];
-      var name = entry && text14(entry.NAME);
+      var name = entry && text15(entry.NAME);
       if (name) return name;
     }
     return "";
   }
   function sameOriginBase8(base, origin, label) {
-    var value = text14(base);
+    var value = text15(base);
     if (!value) throw contractError7("api-base-required", label + " is required");
     if (/^https?:\/\//i.test(value)) {
       if (value.indexOf(origin) !== 0) throw contractError7("cross-origin-base", label + " must stay same-origin");
@@ -22444,11 +23111,11 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     var number = Number(value);
     return Number.isInteger(number) && number > 0 ? number : 0;
   }
-  function finiteNumber8(value, fallback) {
+  function finiteNumber9(value, fallback) {
     var number = Number(value);
     return Number.isFinite(number) ? number : fallback;
   }
-  function text14(value) {
+  function text15(value) {
     return typeof value === "string" ? value.trim() : value == null ? "" : String(value);
   }
   function contractError7(code, message) {
@@ -22983,6 +23650,53 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
       };
     }
   };
+  function liveAdapterClosed(moduleId) {
+    var closed = new Error("Live adapter is not opened for module " + moduleId);
+    closed.code = "live-adapter-not-opened";
+    return closed;
+  }
+  function liveListFailure(error2) {
+    var code = error2 && error2.code;
+    return code === "customer-forbidden" ? "unauthorized" : code === "live-adapter-not-opened" ? "unavailable" : "error";
+  }
+  var appointmentsTimelineModule = {
+    id: "appointmentsTimeline",
+    gatesFirstRender: false,
+    adapter(context) {
+      if (context.config.dataMode !== "live") return fixtureAdapter;
+      if (context.config.vertical === "snow") return createCoreSnowVisitsAdapter();
+      throw liveAdapterClosed("appointmentsTimeline");
+    },
+    normalize(raw, context) {
+      return context.config.dataMode === "live" ? normalizeVisits(raw) : raw;
+    },
+    onError(error2, context) {
+      if (error2 && error2.code === "session-expired") context.state.account = "session-expired";
+    },
+    failureEnvelope(context, error2) {
+      return { state: liveListFailure(error2), reasonCode: error2 && error2.code || "visits-load-failed", truncated: false, upcoming: [], past: [] };
+    }
+  };
+  var invoicesModule = {
+    id: "invoices",
+    gatesFirstRender: false,
+    adapter(context) {
+      if (context.config.dataMode !== "live") return { load() {
+        return { state: "ready", truncated: false, items: [] };
+      } };
+      if (context.config.vertical === "snow") return createCoreSnowInvoicesAdapter();
+      throw liveAdapterClosed("invoices");
+    },
+    normalize(raw, context) {
+      return context.config.dataMode === "live" ? normalizeInvoices(raw) : raw;
+    },
+    onError(error2, context) {
+      if (error2 && error2.code === "session-expired") context.state.account = "session-expired";
+    },
+    failureEnvelope(context, error2) {
+      return { state: liveListFailure(error2), reasonCode: error2 && error2.code || "invoices-load-failed", truncated: false, items: [] };
+    }
+  };
   var proposalsModule = {
     id: "proposals",
     adapter(context) {
@@ -23057,15 +23771,14 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     checkout: checkoutModule,
     plan: planModule,
     overview: overviewModule,
-    appointmentsTimeline: module("appointmentsTimeline", function(raw) {
-      return raw;
-    }),
+    appointmentsTimeline: appointmentsTimelineModule,
     properties: propertiesModule,
     calendar: module("calendar", normalizeCalendar),
     activity: module("activity", normalizeActivity),
     profile: profileModule,
     support: module("support", normalizeSupport),
-    care: careModule
+    care: careModule,
+    invoices: invoicesModule
   };
   var openedModuleIds = Object.keys(modules);
 

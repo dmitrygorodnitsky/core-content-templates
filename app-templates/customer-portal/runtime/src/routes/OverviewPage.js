@@ -1,5 +1,5 @@
 import { h } from "../dom.js";
-import { currentFixture, currentOverview, isModuleEnabled, liveOverviewStatus, quotePackage, state } from "../state.js";
+import { currentFixture, currentOverview, isModuleEnabled, liveInvoices, liveOverviewStatus, liveProperties, liveVisits, quotePackage, state } from "../state.js";
 import { configuredExternalUrl } from "../config.js";
 import { render } from "../app.js";
 import { createPropertyForecasts } from "../live-weather.js";
@@ -15,6 +15,9 @@ import { agreementSeason, agreementSummary, agreementTitle, plural } from "../co
 import { currentServiceAgreement } from "../normalizers/contracts.js";
 import { dispatchMapAction, sharedPropertyMap } from "../property-map-session.js";
 import { appointmentDay, clampFrameIndex, invoiceBuckets, money, propertyStatusKnown, sectionAvailable, serviceDayCount } from "../normalizers/overview.js";
+import { localDateKey, visitPlace } from "../normalizers/visits.js";
+import { openInvoices } from "../normalizers/invoices.js";
+import { InvoiceRow, VisitRow } from "../components/storm/RecordRows.js";
 
 var propertyForecastStore = null;
 var focusKeeper = null;
@@ -46,7 +49,7 @@ export function Overview() {
   var invoices = InvoicesWidget(model);
   if (invoices) page.appendChild(invoices);
 
-  var cards = [UpcomingWidget(model, weather ? weather.timeline : []), ContractsWidget(model), SupportWidget(model)].filter(Boolean);
+  var cards = [NextVisitWidget(), InvoiceDueWidget(), UpcomingWidget(model, weather ? weather.timeline : []), ContractsWidget(model), SupportWidget(model)].filter(Boolean);
   if (cards.length) page.appendChild(h("div", { "class": "ov-grid", "data-count": String(cards.length) }, cards));
 
   if (model.banner) page.appendChild(Banner(model.banner));
@@ -273,6 +276,29 @@ function UpcomingWidget(model, timeline) {
     ActionButton({ variant: "btn--ghost", label: "View full calendar", action: "overview.openCalendar", visualId: "view-full-calendar" }),
   ]));
   return card;
+}
+
+function NextVisitWidget() {
+  var visits = liveVisits();
+  var next = visits && visits.upcoming[0];
+  if (!next) return null;
+  var card = widget("next-visit", "Next visit", "calendar");
+  card.appendChild(VisitRow(next, { today: localDateKey(new Date()), place: visitPlace(next, liveProperties()) }));
+  card.appendChild(navLine("All visits", "appointments"));
+  return card;
+}
+
+function InvoiceDueWidget() {
+  var due = openInvoices(liveInvoices());
+  if (!due.length) return null;
+  var card = widget("invoice-due", due.length === 1 ? "Invoice due" : "Invoices due", "invoice");
+  due.slice(0, 3).forEach(function (invoice) { card.appendChild(InvoiceRow(invoice)); });
+  card.appendChild(navLine(due.length > 3 ? due.length - 3 + " more in Invoices" : "All invoices", "invoices"));
+  return card;
+}
+
+function navLine(label, route) {
+  return h("div", { "class": "link-action ov-more", "data-action": "nav.go", "data-id": route }, label + " ›");
 }
 
 function InvoicesWidget(model) {

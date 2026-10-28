@@ -179,6 +179,7 @@ export var ACTIONS = {
   "overview.openAppointments": function () { go("appointments"); },
   "appointments.filterDay": function (id) { var day = Number(id); state.apptDay = id === null || id === "" || id === undefined || !Number.isInteger(day) ? null : day; render(); },
   "appointments.openVisit": function (id) { state.visitId = id; go("visit.detail"); },
+  "invoice.open":      function (id) { if (id) state.invoiceId = id; go("invoice.detail"); },
   "appointments.openProperty": function (id) { state.propertyId = id; go("property.detail"); },
   "property.showOnMap": function (id) { if (id) state.ovProperty = id; go("overview"); },
   "appointments.sortResource": function () { state.apptSort = state.apptSort === "desc" ? "asc" : "desc"; render(); },
