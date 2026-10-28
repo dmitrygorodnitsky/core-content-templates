@@ -956,6 +956,7 @@
       authReturnStorageKey: dataset.portalAuthReturnStorageKey || "oidc-return-url",
       authLogoutReturnStorageKey: dataset.portalAuthLogoutReturnStorageKey || "oidc-logout-return-url",
       requestFormUrl: safeConfiguredUrl(dataset.portalRequestFormUrl),
+      timeZone: readTimeZone(dataset.portalTimeZone),
       weatherClientId: browserCredential(dataset.portalWeatherClientId),
       weatherClientSecret: browserCredential(dataset.portalWeatherClientSecret),
       mapsApiKey: browserCredential(dataset.portalMapsApiKey),
@@ -1025,6 +1026,15 @@
   }
   function landingEntryOpen(config) {
     return !!config && config.signedOutDestination === "landing" && customerAccountRequired(config) && !!landingEntryUrl(config);
+  }
+  function readTimeZone(value) {
+    var zone = typeof value === "string" ? value.trim() : "";
+    if (!zone) return null;
+    try {
+      return new Intl.DateTimeFormat("en-US", { timeZone: zone }).resolvedOptions().timeZone;
+    } catch (_) {
+      return null;
+    }
   }
   function safeConfiguredUrl(value) {
     if (!value) return "";
@@ -3906,18 +3916,17 @@
       return left.ms - right.ms;
     });
   }
-  function progressWhen(step, visit) {
-    var at = new Date(step.ms);
-    var day = MONTHS2[at.getMonth()] + " " + at.getDate();
+  function progressWhen(step, visit, timeZone) {
+    var at = zonedParts2(step.ms, timeZone);
+    var day = MONTHS2[at.month - 1] + " " + at.day;
     var start = visit && visit.start;
-    if (start && at.getFullYear() !== start.year) day += ", " + at.getFullYear();
+    if (start && at.year !== start.year) day += ", " + at.year;
     if (step.code === "SCHEDULED") return day;
-    var time = clock(at.getHours() * 60 + at.getMinutes(), true);
-    return start && localDateKey(at) === start.date ? time : day + ", " + time;
+    var time = clock(at.minutes, true);
+    return start && at.date === start.date ? time : day + ", " + time;
   }
-  function localDateKey(date) {
-    var value = date instanceof Date ? date : /* @__PURE__ */ new Date();
-    return value.getFullYear() + "-" + pad2(value.getMonth() + 1) + "-" + pad2(value.getDate());
+  function localDateKey(date, timeZone) {
+    return zonedParts2((date instanceof Date ? date : /* @__PURE__ */ new Date()).getTime(), timeZone).date;
   }
   function visitImageUrl(coreBase, id) {
     return MEDIA_ID.test(id) ? String(coreBase || "/core").replace(/\/+$/, "") + "/image/" + id + "/get" : "";
@@ -3941,6 +3950,22 @@
       completionNotes: attributeText(row, "COMPLETION_NOTES"),
       before: mediaIds(row, "PRE_SERVICE_MEDIA"),
       after: mediaIds(row, "POST_SERVICE_MEDIA")
+    };
+  }
+  function zonedParts2(ms, timeZone) {
+    var at = new Date(ms);
+    var parts = { year: at.getFullYear(), month: at.getMonth() + 1, day: at.getDate(), hour: at.getHours(), minute: at.getMinutes() };
+    if (timeZone) {
+      new Intl.DateTimeFormat("en-US", { timeZone, hourCycle: "h23", year: "numeric", month: "numeric", day: "numeric", hour: "numeric", minute: "numeric" }).formatToParts(at).forEach(function(part2) {
+        if (Object.prototype.hasOwnProperty.call(parts, part2.type)) parts[part2.type] = Number(part2.value);
+      });
+    }
+    return {
+      date: parts.year + "-" + pad2(parts.month) + "-" + pad2(parts.day),
+      year: parts.year,
+      month: parts.month,
+      day: parts.day,
+      minutes: parts.hour % 24 * 60 + parts.minute
     };
   }
   function epochMs(value) {
@@ -10218,7 +10243,7 @@
     var next = visits && visits.upcoming[0];
     if (!next) return null;
     var card = widget("next-visit", "Next visit", "calendar");
-    card.appendChild(VisitRow(next, { today: localDateKey(/* @__PURE__ */ new Date()), place: visitPlace(next, liveProperties()) }));
+    card.appendChild(VisitRow(next, { today: localDateKey(/* @__PURE__ */ new Date(), state.config.timeZone), place: visitPlace(next, liveProperties()) }));
     card.appendChild(navLine("All visits", "appointments"));
     return card;
   }
@@ -11080,7 +11105,7 @@
       return page;
     }
     var visits = liveVisits();
-    var today = localDateKey(/* @__PURE__ */ new Date());
+    var today = localDateKey(/* @__PURE__ */ new Date(), state.config.timeZone);
     var properties = liveProperties();
     var row = function(visit) {
       return VisitRow(visit, { today, place: visitPlace(visit, properties) });
@@ -11099,7 +11124,7 @@
       page.appendChild(status === "ready" || status === "empty" ? EmptyState({ glyph: "\u25CC", title: "Visit not found", desc: "This visit is not on your schedule." }) : listState(status));
       return page;
     }
-    var today = localDateKey(/* @__PURE__ */ new Date());
+    var today = localDateKey(/* @__PURE__ */ new Date(), state.config.timeZone);
     var property = liveProperties().find(function(item) {
       return item.backendId === visit.propertyBackendId;
     }) || null;
@@ -11166,7 +11191,7 @@
       h("div", { "class": "timeline" }, [h("div", { "class": "timeline__line" })].concat(entry.steps.map(function(step) {
         return h("div", { "class": "timeline-step", "data-module": "visit-progress-step", "data-state": step.code.toLowerCase() }, [
           h("div", { "class": "timeline-step__dot", style: "background:" + (step.code === "COMPLETED" ? "var(--ok)" : "var(--accent)") }),
-          h("div", { "class": "timeline-step__title" }, step.label + " \xB7 " + progressWhen(step, visit))
+          h("div", { "class": "timeline-step__title" }, step.label + " \xB7 " + progressWhen(step, visit, state.config.timeZone))
         ]);
       })))
     ]);
@@ -11408,7 +11433,7 @@
   function LiveVisitsCard(property) {
     var found = visitsForProperty(liveVisits(), property.backendId);
     if (!found.next && !found.last) return null;
-    var today = localDateKey(/* @__PURE__ */ new Date());
+    var today = localDateKey(/* @__PURE__ */ new Date(), state.config.timeZone);
     return h("section", { "class": "card card--pad prop-visits record-section", "data-module": "property-live-visits", "data-visual-id": "property-live-visits" }, [
       h("h2", { "class": "prop-section__title" }, "Visits"),
       h("div", { "class": "record-list" }, [

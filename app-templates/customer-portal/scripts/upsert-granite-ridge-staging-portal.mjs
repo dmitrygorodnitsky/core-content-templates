@@ -55,7 +55,7 @@ const staging = {
       throw new Error("cms-family.payload.json declares parameters its manifest does not: " + codes.join(", "));
     }
     for (const item of payload.root.parameters) {
-      if (item.code !== "PORTAL_REQUEST_FORM_URL" && item.value !== operatorParameterPlaceholder) {
+      if (item.code !== "PORTAL_REQUEST_FORM_URL" && item.code !== "PORTAL_TIME_ZONE" && item.value !== operatorParameterPlaceholder) {
         throw new Error("Refusing to upsert " + item.code + " with anything but the " + operatorParameterPlaceholder + " placeholder: it is operator-owned and is set in CMS, never shipped");
       }
     }

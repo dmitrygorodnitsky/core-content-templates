@@ -12,13 +12,14 @@
       "PORTAL_WEATHER_CLIENT_ID",
       "PORTAL_WEATHER_CLIENT_SECRET",
       "PORTAL_MAPS_API_KEY",
-      "PORTAL_MAPS_MAP_ID"
+      "PORTAL_MAPS_MAP_ID",
+      "PORTAL_TIME_ZONE"
     ],
     "sha256": {
       "head": "2d73a4975671d61afa33139b86357240a81ca29c3d64c8094335705c978ae9ab",
-      "html": "5537154dcf8e39e335f6cf138013b9f6eb8384f8dbbdb8b2256828708ee1668c",
+      "html": "7c93648aa0ef4c7a7e6016d1c8501a644e0a18821ca41c0a402634162c84f7c9",
       "css": "77a840f3168cc517ea51b0c17a8a8fa53985ffbfbbf6574153dc29008757f606",
-      "javascript": "a247078f408b91d94eb6dacc1bff7aa84e5fc93b8841ac431c9fe0ba16e389ee"
+      "javascript": "626fe225af327d6db728b84b23dce55d1708b9c1c91ba622c521dd7fd239417e"
     }
   },
   "runtime": {
@@ -46,6 +47,7 @@
     "account": {
       "organization": "SNOWLIMITLESS",
       "accountTypeCode": "CUSTOMER",
+      "timeZone": "America/Vancouver",
       "coreApiBase": "/core",
       "accountApiBase": "/core-acct",
       "billApiBase": "/core-bill",
@@ -100,7 +102,7 @@
     "PORTAL_WEATHER_CLIENT_ID, PORTAL_WEATHER_CLIENT_SECRET, PORTAL_MAPS_API_KEY and PORTAL_MAPS_MAP_ID are operator-owned CMS parameters. They ship the placeholder #, which the runtime reads as not set, because CMS creates no page for a template whose parameters have no value. The Xweather pair and the Google browser key are visible in page source by design and must be restricted to the serving host.",
     "The CMS template never stores or authors a password, API key, access token, User id, Account id, role or authorization result. SNOWLIMITLESS names the deployment tenant; it does not select a customer.",
     "Contracts reads the customer's quote Orders and service agreements from Core's generic endpoints and opens the customer's own decisions as Core workflow events: marking a sent quote viewed, approving or declining a quote, and approving an agreement sent for approval. Each runs one at a time, checks the record's state first and counts only once a readback shows the new state. Service requests and support replies are not available.",
-    "Visits read SNOW_SERVICE_VISIT Appointments and Invoices read Invoices from Core's tagged lists, which answer only the signed-in User's rows. Visit times are wall-clock times and render without a timezone shift. DRAFT invoices and DRAFT or CANCELED visits are not shown, and the Visits and Invoices nav items and home cards are hidden while their list is empty. The portal sends no visit or invoice event.",
+    "Visits read SNOW_SERVICE_VISIT Appointments and Invoices read Invoices from Core's tagged lists, which answer only the signed-in User's rows. Planned visit windows are wall-clock times and render without a timezone shift. Recorded moments, such as when a visit started or was completed from its tagged transition list, are UTC instants and render in account.timeZone, shipped as the PORTAL_TIME_ZONE parameter, which must equal the SNOWLIMITLESS Organization.timeZone (America/Vancouver on dev-1); today's date is taken in the same zone. DRAFT invoices and DRAFT or CANCELED visits are not shown, and the Visits and Invoices nav items and home cards are hidden while their list is empty. The portal sends no visit or invoice event.",
     "The public landing at landingUrl is the portal's anonymous face. A private route whose session check settles signed out replaces itself with the landing; a signed-in User whose customer Account gate ends in customer-not-linked, organization-forbidden or customer-forbidden replaces it with the landing and ?portal=no-access, without signing out, because the Core Auth session is shared with Core UI on the same origin. Sign-out returns to logoutReturnUrl through the shared Core callback. #/login stays the explicit sign-in entry and never leaves for the landing."
   ]
 }

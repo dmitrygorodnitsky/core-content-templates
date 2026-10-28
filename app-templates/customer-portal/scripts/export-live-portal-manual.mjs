@@ -35,6 +35,7 @@ export const liveDeploymentParameters = Object.freeze([
   "PORTAL_WEATHER_CLIENT_SECRET",
   "PORTAL_MAPS_API_KEY",
   "PORTAL_MAPS_MAP_ID",
+  "PORTAL_TIME_ZONE",
 ]);
 export const operatorParameterPlaceholder = "#";
 
@@ -46,7 +47,7 @@ const packageInventory = [
 const sourceKeys = ["schemaVersion", "purpose", "template", "runtime", "account", "auth", "serviceGeography", "shell", "constraints"];
 const templateKeys = ["code", "title"];
 const runtimeKeys = ["vertical", "theme", "profile", "routerMode", "defaultRoute", "enabledModules", "authMode", "dataMode", "errorMode"];
-const accountKeys = ["organization", "accountTypeCode", "coreApiBase", "accountApiBase", "billApiBase", "resourceApiBase", "serviceApiBase"];
+const accountKeys = ["organization", "accountTypeCode", "timeZone", "coreApiBase", "accountApiBase", "billApiBase", "resourceApiBase", "serviceApiBase"];
 const requiredAccountBases = ["coreApiBase", "accountApiBase"];
 const authKeys = ["coreBase", "callbackPath", "returnStorageKey", "logoutReturnStorageKey"];
 const shellKeys = ["experienceId", "brandName", "defaultMode", "primaryCtaLabel", "navigation", "requestFormUrl", "signedOutDestination", "landingUrl", "logoutReturnUrl", "allowedNavOrigins"];
@@ -184,6 +185,7 @@ function assertAccountContract(account) {
   assertKnownKeys(account, accountKeys, "account");
   assertCode(account.organization, "account.organization");
   assertCodeList(account.accountTypeCode, "account.accountTypeCode");
+  if (!isTimeZone(account.timeZone)) throw new Error("account.timeZone must be the IANA time zone of the service organization (its Organization.timeZone); the portal shows recorded times in it");
   for (const key of requiredAccountBases) {
     if (account[key] === undefined) throw new Error("The customer Account contract is missing account." + key);
   }
@@ -267,6 +269,7 @@ function templateFor(source, geography, css, javascript) {
     "data-portal-weather-client-secret": parameterMarker("PORTAL_WEATHER_CLIENT_SECRET"),
     "data-portal-maps-api-key": parameterMarker("PORTAL_MAPS_API_KEY"),
     "data-portal-maps-map-id": parameterMarker("PORTAL_MAPS_MAP_ID"),
+    "data-portal-time-zone": parameterMarker("PORTAL_TIME_ZONE"),
     "data-portal-service-geography": geography ? JSON.stringify(geography) : undefined,
     "data-portal-organization": account.organization,
     "data-portal-account-type-code": account.accountTypeCode,
@@ -321,8 +324,23 @@ function templateFor(source, geography, css, javascript) {
         operatorParameterPlaceholder,
         "Optional Google Cloud map ID that styles the property map, created in the same Google Cloud project as PORTAL_MAPS_API_KEY. It is not a secret. While it holds the # it ships with, the map uses Google's default style.",
       ),
+      parameter(
+        "PORTAL_TIME_ZONE",
+        account.timeZone,
+        "IANA time zone of the service organization, the same as its Organization.timeZone in Core, for example America/Vancouver. Recorded moments such as when a visit started or was completed, and which day is today, are shown in this zone whatever the viewer's device says. Planned visit windows are stored as local times and are shown as stored. A value that is not a time zone falls back to the viewer's device zone.",
+      ),
     ],
   };
+}
+
+function isTimeZone(value) {
+  if (typeof value !== "string" || !value.trim() || value !== value.trim()) return false;
+  try {
+    new Intl.DateTimeFormat("en-US", { timeZone: value });
+    return true;
+  } catch (_) {
+    return false;
+  }
 }
 
 function parameter(code, value, description) {
@@ -341,6 +359,8 @@ export function assertLiveTemplate(template) {
     if (item.type !== "STRING") throw new Error("Parameter " + item.code + " must be a STRING");
     if (item.code === "PORTAL_REQUEST_FORM_URL") {
       if (item.value !== "" && !isHttpsUrl(item.value)) throw new Error("Parameter PORTAL_REQUEST_FORM_URL must be an absolute https address");
+    } else if (item.code === "PORTAL_TIME_ZONE") {
+      if (!isTimeZone(item.value)) throw new Error("Parameter PORTAL_TIME_ZONE must be an IANA time zone");
     } else if (item.value !== operatorParameterPlaceholder) {
       throw new Error("Parameter " + item.code + " is operator-owned and ships only the " + operatorParameterPlaceholder + " placeholder");
     }
@@ -435,6 +455,7 @@ function readme(source, template, manifest) {
     "| data mode | `" + manifest.runtime.dataMode + "` |",
     "| auth mode | `" + manifest.runtime.authMode + "`, Core OIDC authorization code with PKCE |",
     "| organization | `" + account.organization + "` |",
+    "| time zone | `" + account.timeZone + "` |",
     "| customer Account types | " + account.accountTypeCode.split(",").map((code) => "`" + code + "`").join(", ") + " |",
     "| enabled modules | " + source.runtime.enabledModules.map((id) => "`" + id + "`").join(", ") + " |",
     "| signed-out destination | " + (manifest.runtime.entry.signedOutDestination === "landing" ? "the landing `" + manifest.runtime.entry.landingUrl + "`" : "the portal sign-in card") + " |",

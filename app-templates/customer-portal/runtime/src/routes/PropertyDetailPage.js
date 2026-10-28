@@ -132,7 +132,7 @@ function serviceFor(property) {
 function LiveVisitsCard(property) {
   var found = visitsForProperty(liveVisits(), property.backendId);
   if (!found.next && !found.last) return null;
-  var today = localDateKey(new Date());
+  var today = localDateKey(new Date(), state.config.timeZone);
   return h("section", { "class": "card card--pad prop-visits record-section", "data-module": "property-live-visits", "data-visual-id": "property-live-visits" }, [
     h("h2", { "class": "prop-section__title" }, "Visits"),
     h("div", { "class": "record-list" }, [

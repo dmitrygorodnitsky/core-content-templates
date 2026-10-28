@@ -83,19 +83,18 @@ export function normalizeVisitProgress(rows) {
   }).filter(Boolean).sort(function (left, right) { return left.ms - right.ms; });
 }
 
-export function progressWhen(step, visit) {
-  var at = new Date(step.ms);
-  var day = MONTHS[at.getMonth()] + " " + at.getDate();
+export function progressWhen(step, visit, timeZone) {
+  var at = zonedParts(step.ms, timeZone);
+  var day = MONTHS[at.month - 1] + " " + at.day;
   var start = visit && visit.start;
-  if (start && at.getFullYear() !== start.year) day += ", " + at.getFullYear();
+  if (start && at.year !== start.year) day += ", " + at.year;
   if (step.code === "SCHEDULED") return day;
-  var time = clock(at.getHours() * 60 + at.getMinutes(), true);
-  return start && localDateKey(at) === start.date ? time : day + ", " + time;
+  var time = clock(at.minutes, true);
+  return start && at.date === start.date ? time : day + ", " + time;
 }
 
-export function localDateKey(date) {
-  var value = date instanceof Date ? date : new Date();
-  return value.getFullYear() + "-" + pad(value.getMonth() + 1) + "-" + pad(value.getDate());
+export function localDateKey(date, timeZone) {
+  return zonedParts((date instanceof Date ? date : new Date()).getTime(), timeZone).date;
 }
 
 export function visitImageUrl(coreBase, id) {
@@ -121,6 +120,23 @@ function visitRecord(row) {
     completionNotes: attributeText(row, "COMPLETION_NOTES"),
     before: mediaIds(row, "PRE_SERVICE_MEDIA"),
     after: mediaIds(row, "POST_SERVICE_MEDIA"),
+  };
+}
+
+function zonedParts(ms, timeZone) {
+  var at = new Date(ms);
+  var parts = { year: at.getFullYear(), month: at.getMonth() + 1, day: at.getDate(), hour: at.getHours(), minute: at.getMinutes() };
+  if (timeZone) {
+    new Intl.DateTimeFormat("en-US", { timeZone: timeZone, hourCycle: "h23", year: "numeric", month: "numeric", day: "numeric", hour: "numeric", minute: "numeric" }).formatToParts(at).forEach(function (part) {
+      if (Object.prototype.hasOwnProperty.call(parts, part.type)) parts[part.type] = Number(part.value);
+    });
+  }
+  return {
+    date: parts.year + "-" + pad(parts.month) + "-" + pad(parts.day),
+    year: parts.year,
+    month: parts.month,
+    day: parts.day,
+    minutes: (parts.hour % 24) * 60 + parts.minute,
   };
 }
 

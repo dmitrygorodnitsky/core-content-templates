@@ -137,7 +137,7 @@ agreement's chosen option without prices, its progress from the tagged
 transition list, before photos as soon as they exist, and after photos and
 completion notes when present; a section without data is left out. Transition
 `observed` values are server UTC instants, unlike the wall-clock `start` and
-`end`, so progress is read in the viewer's zone. A visit created directly in
+`end`. A visit created directly in
 `SCHEDULED` has no transition, so no "Scheduled" step. The deploy key gets 403
 "Entity is not accessible" from the tagged transition list of visit 78; the
 customer's read of it is unverified until a signed-in browser test. The dry run
@@ -145,6 +145,18 @@ passed the thirteen checks the upsert lists; after `--live`, `clear-cache.json`
 answered 200 on app-1-core-cms and app-3-core-cms, and twelve fetches of
 `/pages/SNOWLIMITLESS/portal` (six per node) served the new bundle,
 byte-identical on both nodes.
+
+Follow-up, same day, time zone: the operator's signed-in session read the
+transitions, but visit 78 showed "Started · 3:21 PM", the Moscow time of the
+viewer, beside the Vancouver window "6:30 – 7:30 AM". Recorded moments and
+"today" are now formatted in the service organization's zone. The current reads
+do not carry it: SNOWLIMITLESS (Organization 43) has `timeZone`
+`America/Vancouver`, but the agreement's `organization` mapping asks only for
+id, code and name, and the basic-info answer used by the account gate is read
+only for organization codes. So the zone comes from the staging configuration
+(`account.timeZone`) and ships as the template parameter `PORTAL_TIME_ZONE`,
+`America/Vancouver`; a value that is not an IANA zone falls back to the device
+zone. Visit 78 then reads "Started · 5:21 AM".
 
 History: on 2026-10-19 the deployment was held because `P_TAG_DOCUMENT_E` also
 authorized `sync-state-history`; the backend was told. On 2026-10-28 the user

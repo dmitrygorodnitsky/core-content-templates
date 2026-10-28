@@ -283,7 +283,7 @@ function NextVisitWidget() {
   var next = visits && visits.upcoming[0];
   if (!next) return null;
   var card = widget("next-visit", "Next visit", "calendar");
-  card.appendChild(VisitRow(next, { today: localDateKey(new Date()), place: visitPlace(next, liveProperties()) }));
+  card.appendChild(VisitRow(next, { today: localDateKey(new Date(), state.config.timeZone), place: visitPlace(next, liveProperties()) }));
   card.appendChild(navLine("All visits", "appointments"));
   return card;
 }

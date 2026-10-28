@@ -4270,7 +4270,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
 </style>
 </head>
 <body>
-<section id="app" data-portal-experience-id="granite-ridge-snow-staging" data-portal-brand-name="Limitless Snow Removal" data-portal-vertical="snow" data-portal-profile="stormRetail" data-portal-theme="snow" data-portal-default-mode="light" data-portal-router-mode="hash" data-portal-default-route="overview" data-portal-enabled-modules="overview,properties,appointmentsTimeline,invoices,proposals,profile" data-portal-auth-mode="required" data-portal-error-mode="error" data-portal-data-mode="live" data-portal-primary-cta-label="Request a quote" data-portal-nav-primary-label="Home" data-portal-nav-appointments-label="Visits" data-portal-nav-invoices-label="Invoices" data-portal-nav-calendar-label="Calendar" data-portal-nav-care-label="Season log" data-portal-nav-proposals-label="Contracts" data-portal-nav-support-label="Support" data-portal-request-form-url="https://dev-1.servicewand.com/pages/SNOWLIMITLESS/request-quote" data-portal-weather-client-id="#" data-portal-weather-client-secret="#" data-portal-maps-api-key="#" data-portal-maps-map-id="#" data-portal-service-geography="{&quot;map&quot;:{&quot;center&quot;:{&quot;lat&quot;:49.23,&quot;lon&quot;:-122.98},&quot;zoom&quot;:10},&quot;zones&quot;:{&quot;vancouver&quot;:{&quot;lat&quot;:49.2827,&quot;lon&quot;:-123.1207},&quot;richmond&quot;:{&quot;lat&quot;:49.1666,&quot;lon&quot;:-123.1336},&quot;surrey&quot;:{&quot;lat&quot;:49.1913,&quot;lon&quot;:-122.849},&quot;burnaby&quot;:{&quot;lat&quot;:49.2488,&quot;lon&quot;:-122.9805},&quot;coquitlam&quot;:{&quot;lat&quot;:49.2838,&quot;lon&quot;:-122.7932}}}" data-portal-organization="SNOWLIMITLESS" data-portal-account-type-code="CUSTOMER" data-portal-core-api-base="/core" data-portal-account-api-base="/core-acct" data-portal-bill-api-base="/core-bill" data-portal-resource-api-base="/core-rm" data-portal-service-api-base="/core-svc" data-portal-auth-core-base="/core" data-portal-auth-callback-path="/core/oauth2-callback.html" data-portal-auth-return-storage-key="oidc-return-url" data-portal-auth-logout-return-storage-key="oidc-logout-return-url" data-portal-signed-out-destination="landing" data-portal-landing-url="https://dev-1.servicewand.com/pages/SNOWLIMITLESS/home" data-portal-logout-return-url="https://dev-1.servicewand.com/pages/SNOWLIMITLESS/home?portal=signed-out" data-portal-allowed-nav-origins="https://dev-1.servicewand.com"></section>
+<section id="app" data-portal-experience-id="granite-ridge-snow-staging" data-portal-brand-name="Limitless Snow Removal" data-portal-vertical="snow" data-portal-profile="stormRetail" data-portal-theme="snow" data-portal-default-mode="light" data-portal-router-mode="hash" data-portal-default-route="overview" data-portal-enabled-modules="overview,properties,appointmentsTimeline,invoices,proposals,profile" data-portal-auth-mode="required" data-portal-error-mode="error" data-portal-data-mode="live" data-portal-primary-cta-label="Request a quote" data-portal-nav-primary-label="Home" data-portal-nav-appointments-label="Visits" data-portal-nav-invoices-label="Invoices" data-portal-nav-calendar-label="Calendar" data-portal-nav-care-label="Season log" data-portal-nav-proposals-label="Contracts" data-portal-nav-support-label="Support" data-portal-request-form-url="https://dev-1.servicewand.com/pages/SNOWLIMITLESS/request-quote" data-portal-weather-client-id="#" data-portal-weather-client-secret="#" data-portal-maps-api-key="#" data-portal-maps-map-id="#" data-portal-time-zone="America/Vancouver" data-portal-service-geography="{&quot;map&quot;:{&quot;center&quot;:{&quot;lat&quot;:49.23,&quot;lon&quot;:-122.98},&quot;zoom&quot;:10},&quot;zones&quot;:{&quot;vancouver&quot;:{&quot;lat&quot;:49.2827,&quot;lon&quot;:-123.1207},&quot;richmond&quot;:{&quot;lat&quot;:49.1666,&quot;lon&quot;:-123.1336},&quot;surrey&quot;:{&quot;lat&quot;:49.1913,&quot;lon&quot;:-122.849},&quot;burnaby&quot;:{&quot;lat&quot;:49.2488,&quot;lon&quot;:-122.9805},&quot;coquitlam&quot;:{&quot;lat&quot;:49.2838,&quot;lon&quot;:-122.7932}}}" data-portal-organization="SNOWLIMITLESS" data-portal-account-type-code="CUSTOMER" data-portal-core-api-base="/core" data-portal-account-api-base="/core-acct" data-portal-bill-api-base="/core-bill" data-portal-resource-api-base="/core-rm" data-portal-service-api-base="/core-svc" data-portal-auth-core-base="/core" data-portal-auth-callback-path="/core/oauth2-callback.html" data-portal-auth-return-storage-key="oidc-return-url" data-portal-auth-logout-return-storage-key="oidc-logout-return-url" data-portal-signed-out-destination="landing" data-portal-landing-url="https://dev-1.servicewand.com/pages/SNOWLIMITLESS/home" data-portal-logout-return-url="https://dev-1.servicewand.com/pages/SNOWLIMITLESS/home?portal=signed-out" data-portal-allowed-nav-origins="https://dev-1.servicewand.com"></section>
 <script>
 (() => {
   var __defProp = Object.defineProperty;
@@ -5230,6 +5230,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
       authReturnStorageKey: dataset.portalAuthReturnStorageKey || "oidc-return-url",
       authLogoutReturnStorageKey: dataset.portalAuthLogoutReturnStorageKey || "oidc-logout-return-url",
       requestFormUrl: safeConfiguredUrl(dataset.portalRequestFormUrl),
+      timeZone: readTimeZone(dataset.portalTimeZone),
       weatherClientId: browserCredential(dataset.portalWeatherClientId),
       weatherClientSecret: browserCredential(dataset.portalWeatherClientSecret),
       mapsApiKey: browserCredential(dataset.portalMapsApiKey),
@@ -5299,6 +5300,15 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
   }
   function landingEntryOpen(config) {
     return !!config && config.signedOutDestination === "landing" && customerAccountRequired(config) && !!landingEntryUrl(config);
+  }
+  function readTimeZone(value) {
+    var zone = typeof value === "string" ? value.trim() : "";
+    if (!zone) return null;
+    try {
+      return new Intl.DateTimeFormat("en-US", { timeZone: zone }).resolvedOptions().timeZone;
+    } catch (_) {
+      return null;
+    }
   }
   function safeConfiguredUrl(value) {
     if (!value) return "";
@@ -8180,18 +8190,17 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
       return left.ms - right.ms;
     });
   }
-  function progressWhen(step, visit) {
-    var at = new Date(step.ms);
-    var day = MONTHS2[at.getMonth()] + " " + at.getDate();
+  function progressWhen(step, visit, timeZone) {
+    var at = zonedParts2(step.ms, timeZone);
+    var day = MONTHS2[at.month - 1] + " " + at.day;
     var start = visit && visit.start;
-    if (start && at.getFullYear() !== start.year) day += ", " + at.getFullYear();
+    if (start && at.year !== start.year) day += ", " + at.year;
     if (step.code === "SCHEDULED") return day;
-    var time = clock(at.getHours() * 60 + at.getMinutes(), true);
-    return start && localDateKey(at) === start.date ? time : day + ", " + time;
+    var time = clock(at.minutes, true);
+    return start && at.date === start.date ? time : day + ", " + time;
   }
-  function localDateKey(date) {
-    var value = date instanceof Date ? date : /* @__PURE__ */ new Date();
-    return value.getFullYear() + "-" + pad2(value.getMonth() + 1) + "-" + pad2(value.getDate());
+  function localDateKey(date, timeZone) {
+    return zonedParts2((date instanceof Date ? date : /* @__PURE__ */ new Date()).getTime(), timeZone).date;
   }
   function visitImageUrl(coreBase, id) {
     return MEDIA_ID.test(id) ? String(coreBase || "/core").replace(/\/+$/, "") + "/image/" + id + "/get" : "";
@@ -8215,6 +8224,22 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
       completionNotes: attributeText(row, "COMPLETION_NOTES"),
       before: mediaIds(row, "PRE_SERVICE_MEDIA"),
       after: mediaIds(row, "POST_SERVICE_MEDIA")
+    };
+  }
+  function zonedParts2(ms, timeZone) {
+    var at = new Date(ms);
+    var parts = { year: at.getFullYear(), month: at.getMonth() + 1, day: at.getDate(), hour: at.getHours(), minute: at.getMinutes() };
+    if (timeZone) {
+      new Intl.DateTimeFormat("en-US", { timeZone, hourCycle: "h23", year: "numeric", month: "numeric", day: "numeric", hour: "numeric", minute: "numeric" }).formatToParts(at).forEach(function(part2) {
+        if (Object.prototype.hasOwnProperty.call(parts, part2.type)) parts[part2.type] = Number(part2.value);
+      });
+    }
+    return {
+      date: parts.year + "-" + pad2(parts.month) + "-" + pad2(parts.day),
+      year: parts.year,
+      month: parts.month,
+      day: parts.day,
+      minutes: parts.hour % 24 * 60 + parts.minute
     };
   }
   function epochMs(value) {
@@ -14492,7 +14517,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     var next = visits && visits.upcoming[0];
     if (!next) return null;
     var card = widget("next-visit", "Next visit", "calendar");
-    card.appendChild(VisitRow(next, { today: localDateKey(/* @__PURE__ */ new Date()), place: visitPlace(next, liveProperties()) }));
+    card.appendChild(VisitRow(next, { today: localDateKey(/* @__PURE__ */ new Date(), state.config.timeZone), place: visitPlace(next, liveProperties()) }));
     card.appendChild(navLine("All visits", "appointments"));
     return card;
   }
@@ -15354,7 +15379,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
       return page;
     }
     var visits = liveVisits();
-    var today = localDateKey(/* @__PURE__ */ new Date());
+    var today = localDateKey(/* @__PURE__ */ new Date(), state.config.timeZone);
     var properties = liveProperties();
     var row = function(visit) {
       return VisitRow(visit, { today, place: visitPlace(visit, properties) });
@@ -15373,7 +15398,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
       page.appendChild(status === "ready" || status === "empty" ? EmptyState({ glyph: "\u25CC", title: "Visit not found", desc: "This visit is not on your schedule." }) : listState(status));
       return page;
     }
-    var today = localDateKey(/* @__PURE__ */ new Date());
+    var today = localDateKey(/* @__PURE__ */ new Date(), state.config.timeZone);
     var property = liveProperties().find(function(item) {
       return item.backendId === visit.propertyBackendId;
     }) || null;
@@ -15440,7 +15465,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
       h("div", { "class": "timeline" }, [h("div", { "class": "timeline__line" })].concat(entry.steps.map(function(step) {
         return h("div", { "class": "timeline-step", "data-module": "visit-progress-step", "data-state": step.code.toLowerCase() }, [
           h("div", { "class": "timeline-step__dot", style: "background:" + (step.code === "COMPLETED" ? "var(--ok)" : "var(--accent)") }),
-          h("div", { "class": "timeline-step__title" }, step.label + " \xB7 " + progressWhen(step, visit))
+          h("div", { "class": "timeline-step__title" }, step.label + " \xB7 " + progressWhen(step, visit, state.config.timeZone))
         ]);
       })))
     ]);
@@ -15682,7 +15707,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
   function LiveVisitsCard(property) {
     var found = visitsForProperty(liveVisits(), property.backendId);
     if (!found.next && !found.last) return null;
-    var today = localDateKey(/* @__PURE__ */ new Date());
+    var today = localDateKey(/* @__PURE__ */ new Date(), state.config.timeZone);
     return h("section", { "class": "card card--pad prop-visits record-section", "data-module": "property-live-visits", "data-visual-id": "property-live-visits" }, [
       h("h2", { "class": "prop-section__title" }, "Visits"),
       h("div", { "class": "record-list" }, [

@@ -23,7 +23,7 @@ export function LiveVisits() {
     return page;
   }
   var visits = liveVisits();
-  var today = localDateKey(new Date());
+  var today = localDateKey(new Date(), state.config.timeZone);
   var properties = liveProperties();
   var row = function (visit) { return VisitRow(visit, { today: today, place: visitPlace(visit, properties) }); };
   if (visits.upcoming.length) page.appendChild(RecordSection("visits-upcoming", "Upcoming", visits.upcoming.map(row)));
@@ -44,7 +44,7 @@ export function LiveVisitDetail() {
     return page;
   }
 
-  var today = localDateKey(new Date());
+  var today = localDateKey(new Date(), state.config.timeZone);
   var property = liveProperties().find(function (item) { return item.backendId === visit.propertyBackendId; }) || null;
   page.setAttribute("data-state", visit.stateCode.toLowerCase());
   page.appendChild(h("div", { "class": "prop-head" }, [
@@ -115,7 +115,7 @@ function ProgressCard(visit) {
     h("div", { "class": "timeline" }, [h("div", { "class": "timeline__line" })].concat(entry.steps.map(function (step) {
       return h("div", { "class": "timeline-step", "data-module": "visit-progress-step", "data-state": step.code.toLowerCase() }, [
         h("div", { "class": "timeline-step__dot", style: "background:" + (step.code === "COMPLETED" ? "var(--ok)" : "var(--accent)") }),
-        h("div", { "class": "timeline-step__title" }, step.label + " · " + progressWhen(step, visit)),
+        h("div", { "class": "timeline-step__title" }, step.label + " · " + progressWhen(step, visit, state.config.timeZone)),
       ]);
     }))),
   ]);

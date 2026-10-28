@@ -260,6 +260,7 @@ export function readPortalConfig(root) {
     authReturnStorageKey: dataset.portalAuthReturnStorageKey || "oidc-return-url",
     authLogoutReturnStorageKey: dataset.portalAuthLogoutReturnStorageKey || "oidc-logout-return-url",
     requestFormUrl: safeConfiguredUrl(dataset.portalRequestFormUrl),
+    timeZone: readTimeZone(dataset.portalTimeZone),
     weatherClientId: browserCredential(dataset.portalWeatherClientId),
     weatherClientSecret: browserCredential(dataset.portalWeatherClientSecret),
     mapsApiKey: browserCredential(dataset.portalMapsApiKey),
@@ -330,6 +331,16 @@ export function landingEntryUrl(config, reason) {
 
 export function landingEntryOpen(config) {
   return !!config && config.signedOutDestination === "landing" && customerAccountRequired(config) && !!landingEntryUrl(config);
+}
+
+export function readTimeZone(value) {
+  var zone = typeof value === "string" ? value.trim() : "";
+  if (!zone) return null;
+  try {
+    return new Intl.DateTimeFormat("en-US", { timeZone: zone }).resolvedOptions().timeZone;
+  } catch (_) {
+    return null;
+  }
 }
 
 function safeConfiguredUrl(value) {

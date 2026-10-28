@@ -53,5 +53,16 @@
       }
     },
     "value": "#"
+  },
+  {
+    "code": "PORTAL_TIME_ZONE",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "PORTAL TIME ZONE",
+        "DESCRIPTION": "IANA time zone of the service organization, the same as its Organization.timeZone in Core, for example America/Vancouver. Recorded moments such as when a visit started or was completed, and which day is today, are shown in this zone whatever the viewer's device says. Planned visit windows are stored as local times and are shown as stored. A value that is not a time zone falls back to the viewer's device zone."
+      }
+    },
+    "value": "America/Vancouver"
   }
 ]

@@ -3,7 +3,7 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
 
-process.env.TZ = "America/Vancouver";
+process.env.TZ ??= "America/Vancouver";
 
 const dom = createDom();
 globalThis.window = globalThis;
@@ -14,11 +14,11 @@ globalThis.location = { href: "https://portal.example.test/pages/SNOWLIMITLESS/p
 const portalRoot = path.resolve("app-templates/customer-portal");
 const runtimeRoot = pathToFileURL(path.join(portalRoot, "runtime") + "/");
 const load = (file) => import(new URL(file, runtimeRoot));
-const { readPortalConfig, portalProfiles } = await load("src/config.js");
+const { readPortalConfig, readTimeZone, portalProfiles } = await load("src/config.js");
 const { applyPortalConfig, state } = await load("src/state.js");
 const { PortalRuntime } = await load("src/portal-runtime.js");
 const { coreSnowContract, createCoreSnowInvoicesAdapter, createCoreSnowVisitsAdapter, readVisitTransitions } = await load("src/adapters/core-snow-adapter.js");
-const { normalizeVisitProgress, normalizeVisits, visitDay, visitWhen, visitWindow } = await load("src/normalizers/visits.js");
+const { localDateKey, normalizeVisitProgress, normalizeVisits, progressWhen, visitDay, visitWhen, visitWindow } = await load("src/normalizers/visits.js");
 const { normalizeProposals } = await load("src/normalizers/index.js");
 const { visitProgress } = await load("src/visit-progress.js");
 const { propertyPlan } = await load("src/property-plan.js");
@@ -175,7 +175,7 @@ const context = { config: { vertical: "snow", origin: "https://portal.example.te
 }
 
 {
-  assert.equal(new Date(1792567800000).getHours(), 0, "this check runs in a zone where a shifted 07:30 visit would read 00:30");
+  assert.notEqual(new Date(1792567800000).getHours(), 7, "this check runs in a zone where a shifted 07:30 visit would not read 07:30");
   const visits = normalizeVisits({ items: VISITS_732 });
   assert.deepEqual(visits.upcoming.map((item) => item.backendId), [78, 79], "upcoming runs soonest first, in progress included");
   assert.deepEqual(visits.past.map((item) => item.backendId), [77, 76], "past runs newest first");
@@ -207,7 +207,7 @@ function configure(enabled, extra = {}) {
   applyPortalConfig(readPortalConfig({
     dataset: Object.assign({
       portalVertical: "snow", portalProfile: "stormRetail", portalTheme: "snow", portalDataMode: "live", portalAuthMode: "required",
-      portalOrganization: "SNOWLIMITLESS", portalAccountTypeCode: "CUSTOMER", portalDefaultRoute: "overview",
+      portalOrganization: "SNOWLIMITLESS", portalAccountTypeCode: "CUSTOMER", portalDefaultRoute: "overview", portalTimeZone: "America/Vancouver",
       portalNavAppointmentsLabel: "Visits", portalNavInvoicesLabel: "Invoices", portalNavProposalsLabel: "Contracts",
       portalEnabledModules: enabled,
     }, extra),
@@ -370,6 +370,17 @@ const page = (route, params = {}) => { Object.assign(state, params); state.route
 
   const steps = normalizeVisitProgress(TRANSITIONS[77]);
   assert.deepEqual(steps.map((step) => step.code), ["SCHEDULED", "IN_PROGRESS", "COMPLETED"], "steps run in time order and a state the customer never sees is dropped");
+
+  const started = normalizeVisitProgress(TRANSITIONS[78])[0];
+  const visit78 = normalizeVisits({ items: [VISITS_732[1]] }).upcoming[0];
+  assert.equal(progressWhen(started, visit78, "America/Vancouver"), "5:21 AM", "12:21:16 UTC reads 5:21 AM in the organization's zone, in a " + process.env.TZ + " process");
+  assert.equal(progressWhen(started, visit78, "Europe/Moscow"), "3:21 PM");
+  assert.equal(progressWhen(started, visit78, "Pacific/Kiritimati"), "Oct 29, 2:21 AM", "a recorded moment on another local day than the visit names that day");
+  const lateEvening = new Date(Date.UTC(2026, 9, 29, 4, 30));
+  assert.equal(localDateKey(lateEvening, "America/Vancouver"), "2026-10-28", "04:30 UTC on Oct 29 is still Oct 28 in Vancouver");
+  assert.equal(visitDay(visit78, localDateKey(lateEvening, "America/Vancouver")), "Today", "the day label follows the organization's zone");
+  assert.equal(visitDay(visit78, localDateKey(lateEvening, "Europe/Moscow")), "Wed, Oct 28");
+  assert.deepEqual(["America/Vancouver", " UTC", "#", "", "Mars/Olympus", undefined].map(readTimeZone), ["America/Vancouver", "UTC", null, null, null, null], "PORTAL_TIME_ZONE accepts an IANA zone and treats the # placeholder as not set");
 }
 
 {
@@ -391,11 +402,10 @@ const page = (route, params = {}) => { Object.assign(state, params); state.route
   assert.equal(all(one(done, "[data-module=\"property-plan\"]"), ".prop-plan__shape").length, 1, "the approved plan is drawn");
   assert.deepEqual(all(one(done, "[data-module=\"visit-services\"]"), ".prop-service__line").map((node) => node.textContent), ["Snow Removal", "Rock Salt De-Icing"], "the services are the chosen option of the active agreement, not the declined one");
   assert.doesNotMatch(one(done, "[data-module=\"visit-services\"]").textContent, /\$|747|Monthly/, "the visit page shows no prices");
-  assert.deepEqual(steps(done), ["Scheduled · Oct 22", "Started · 6:47 AM", "Completed · 7:33 AM"], "transition instants read in the customer's zone, beside the wall-clock window 6:45 – 7:35 AM");
+  assert.deepEqual(steps(done), ["Scheduled · Oct 22", "Started · 6:47 AM", "Completed · 7:33 AM"], "transition instants read in the organization's zone, beside the wall-clock window 6:45 – 7:35 AM");
   assert.doesNotMatch(one(done, "[data-module=\"visit-progress\"]").textContent, /1:47 PM|2:33 PM/, "observed is a real instant, not a wall-clock value read as UTC");
 
   const live = page("visit.detail", { visitId: "visit-core-78" });
-  assert.equal(one(live, ".prop-head__title").textContent, "Today");
   assert.equal(one(live, "[data-module=\"visit-when\"]").textContent, "6:30 – 7:30 AM", "the planned window renders without a zone shift");
   assert.deepEqual(steps(live), ["Started · 5:21 AM"], "the dev-1 transition of visit 78, observed 12:21 UTC, is 5:21 AM in Vancouver");
   assert.deepEqual(sections(live), ["visit-property", "property-plan", "visit-services", "visit-progress", "visit-photos"]);

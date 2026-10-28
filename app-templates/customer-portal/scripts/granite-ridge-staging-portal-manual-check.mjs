@@ -73,6 +73,7 @@ try {
     assert.equal(item.type, "STRING");
     assert.equal(dataset[attributeFor(item.code)], "${" + item.code + "@STRING}", item.code + " reaches the root element as a CMS marker");
     if (item.code === "PORTAL_REQUEST_FORM_URL") assert.match(item.value, /^https:\/\//);
+    else if (item.code === "PORTAL_TIME_ZONE") assert.equal(item.value, "America/Vancouver", "the time zone ships as the staging configuration sets it, the SNOWLIMITLESS Organization.timeZone on dev-1");
     else assert.equal(item.value, operatorParameterPlaceholder, item.code + " is operator-owned and ships only the placeholder the runtime reads as not set");
   }
   const withValue = (code, value) => Object.assign({}, template, { parameters: template.parameters.map((item) => (item.code === code ? Object.assign({}, item, { value }) : item)) });
@@ -81,6 +82,8 @@ try {
   assert.throws(() => assertLiveTemplate(withValue("PORTAL_WEATHER_CLIENT_SECRET", "s3cretValue")), /ships only the # placeholder/, "a real Xweather secret is refused");
   assert.throws(() => assertLiveTemplate(withValue("PORTAL_WEATHER_CLIENT_ID", "")), /ships only the # placeholder/, "an empty key cannot back a CMS page, so it is refused too");
   assert.throws(() => assertLiveTemplate(withValue("PORTAL_REQUEST_FORM_URL", "http://example.test/form")), /absolute https/);
+  assert.throws(() => assertLiveTemplate(withValue("PORTAL_TIME_ZONE", "#")), /IANA time zone/, "the time zone is shipped, not left to the placeholder");
+  assert.throws(() => assertLiveTemplate(withValue("PORTAL_TIME_ZONE", "Pacific Time")), /IANA time zone/);
   const byCode = Object.fromEntries(template.parameters.map((item) => [item.code, item.nls.en.DESCRIPTION]));
   for (const code of ["PORTAL_WEATHER_CLIENT_ID", "PORTAL_WEATHER_CLIENT_SECRET", "PORTAL_MAPS_API_KEY"]) {
     assert.match(byCode[code], /visible in page source/, code + " must tell the operator the value is public");
@@ -166,6 +169,8 @@ try {
     ["an Account type list with an empty item", (s) => { s.account.accountTypeCode = "SNOW_RESIDENTIAL_CUSTOMER,,CUSTOMER"; }, /comma-separated list/],
     ["an Account type list with a space", (s) => { s.account.accountTypeCode = "SNOW_RESIDENTIAL_CUSTOMER, CUSTOMER"; }, /comma-separated list/],
     ["a lowercase Account type", (s) => { s.account.accountTypeCode = "customer"; }, /upper-snake code/],
+    ["a missing time zone", (s) => { delete s.account.timeZone; }, /account\.timeZone must be the IANA time zone/],
+    ["a time zone that is not IANA", (s) => { s.account.timeZone = "Pacific Time"; }, /account\.timeZone must be the IANA time zone/],
     ["an Account type listed twice", (s) => { s.account.accountTypeCode = "CUSTOMER,CUSTOMER"; }, /lists a code twice/],
     ["an unknown signed-out destination", (s) => { s.shell.signedOutDestination = "elsewhere"; }, /signedOutDestination must be one of sign-in, landing/],
     ["the landing destination without a landing address", (s) => { delete s.shell.landingUrl; }, /needs shell\.landingUrl/],
@@ -234,5 +239,6 @@ function attributeFor(code) {
     PORTAL_WEATHER_CLIENT_SECRET: "data-portal-weather-client-secret",
     PORTAL_MAPS_API_KEY: "data-portal-maps-api-key",
     PORTAL_MAPS_MAP_ID: "data-portal-maps-map-id",
+    PORTAL_TIME_ZONE: "data-portal-time-zone",
   }[code];
 }
