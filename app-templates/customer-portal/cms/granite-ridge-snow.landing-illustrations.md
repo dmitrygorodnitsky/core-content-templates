@@ -62,9 +62,9 @@ Must not appear: text, letters, numbers, logos, street names, people, faces, pho
 Draw one spot illustration and save it as app-templates/customer-portal/assets/snow-landing/step-prepare.webp.
 Slot: step-prepare. Size: exactly 240 x 240 pixels, aspect ratio 1:1. Format: WebP, under 30 KB. Background: transparent. It displays at 72 px, on a light card and on a dark card #1b2230, so it must stay readable at that size on both.
 Shared style: flat modern vector illustration, soft rounded geometric shapes, gentle layered depth, no outlines, consistent with a set of nine. Bold single object centered on a pale circle of #cfe9f6.
-Palette: #0e8fc4, #27a6dd, #46b6e6, #cfe9f6, white, deep blue #0b5c80, and one small warm accent #ff8a3d.
-Subject: a simple top-down outline of a property lot with a measuring tape along one edge, meaning "we measure your property".
-Must not appear: text, letters, numbers, tick labels, logos, prices, currency signs, people, faces, photographic textures.
+Palette: #0e8fc4, #27a6dd, #46b6e6, #cfe9f6, white, deep blue #0b5c80, and one warm accent #ff8a3d used only on the arrows.
+Subject: a bird's-eye plan of one property, meaning "we measure your property". A white square lot with rounded corners fills most of the circle, with one small deep blue house roof seen from directly above in its middle. One thick orange double-headed arrow runs along the bottom edge of the lot and a second along its left edge, like dimension lines on a plan. Use at most four shapes in total, large enough to recognise at 72 px. Check it at 72 px: it must read as a plot of land being measured, not as a device.
+Must not appear: tape measures, rulers, tick marks, devices, screens, gadgets, boxes with a dial or button, text, letters, numbers, logos, prices, currency signs, people, faces, photographic textures.
 ```
 
 ## 6. step-accept
@@ -93,11 +93,11 @@ Must not appear: readable text, letters, numbers, web addresses, logos, people, 
 
 ```text
 Draw one illustration and save it as app-templates/customer-portal/assets/snow-landing/service-area.webp.
-Slot: service-area. Size: exactly 960 x 600 pixels, aspect ratio 8:5. Format: WebP, under 120 KB. Background: transparent; it sits on a pale card in light mode and on #1b2230 in dark mode, so use shapes that read on both.
+Slot: service-area. Size: exactly 1600 x 500 pixels, aspect ratio 16:5. Format: WebP, under 150 KB. Background: transparent; it runs across the full width of a pale card in light mode and of a #1b2230 card in dark mode, so use shapes that read on both. It is also shown about 310 px wide on a phone, so keep the main shapes large.
 Shared style: flat modern vector illustration, soft rounded geometric shapes, gentle layered depth, no outlines, calm winter morning, generous empty space, consistent with a set of nine.
 Palette: #0e8fc4, #27a6dd, #46b6e6, #cfe9f6, #d4eef4, #dee9f7, white, deep blue #0b5c80, and red map pins #ea4335.
-Subject: an abstract, decorative landscape of snow-capped mountains above a coastal plain with a winding river and sea, with five red map pins scattered across the plain. It must look like a mood piece, not a real map: do not try to show accurate geography or the true position of any city.
-Must not appear: text, letters, numbers, place names, scale bars, compass marks, roads with labels, logos, people, faces, real landmarks, photographic textures.
+Subject: a wide panorama of a generic coastal city in winter, and it must read at once as a city. In the middle, a cluster of modern downtown towers of different heights with snow on their roofs. To the left and right, lower apartment blocks and streets of houses with snowy roofs. Snow-capped mountains stand behind the city, and a calm strip of water runs along the front. Five red map pins stand above different parts of the city, spread evenly from left to right, none touching another. The buildings, the water and the ground run off both side edges and reach the bottom edge, with no oval island, frame or vignette. Keep the top sixth of the image empty. It must be a mood piece, not a real place or a map.
+Must not appear: text, letters, numbers, place names, signs, billboards, scale bars, compass marks, logos, people, faces, real landmarks or a recognisable real skyline, photographic textures.
 ```
 
 ## 9. final-cta

@@ -418,7 +418,8 @@ function areaHtml(count, illustrations) {
     '      <section class="seo-sec seo-sec--tint" data-module="seo-service-area" data-visual-id="seo-service-area">',
     '        <div class="seo-area">',
     '          <div class="snow-area__intro"><div class="seo-sec__head"><span class="eyebrow">' + ref("AREA_EYEBROW") + '</span><h2 class="seo-sec__title">' + ref("AREA_TITLE") + '</h2></div><p class="seo-area__note">' + ref("AREA_NOTE") + "</p></div>",
-    '          <div><div class="seo-area__region">' + ref("AREA_REGION") + '</div><div class="seo-area__cities">' + cities + "</div>" + illustrationHtml("service-area", illustrations) + "</div>",
+    '          <div><div class="seo-area__region">' + ref("AREA_REGION") + '</div><div class="seo-area__cities">' + cities + "</div></div>",
+    '          ' + illustrationHtml("service-area", illustrations),
     "        </div>",
     "      </section>",
   ].join("\n");

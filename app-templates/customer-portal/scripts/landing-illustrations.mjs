@@ -14,7 +14,7 @@ export const illustrationSlots = Object.freeze([
   slot("step-prepare", 240, 240, 30 * KB, "step"),
   slot("step-accept", 240, 240, 30 * KB, "step"),
   slot("step-portal", 240, 240, 30 * KB, "step"),
-  slot("service-area", 960, 600, 120 * KB, "area"),
+  slot("service-area", 1600, 500, 150 * KB, "area"),
   slot("final-cta", 1600, 400, 140 * KB, "final"),
 ]);
 
@@ -52,9 +52,11 @@ const PLACEHOLDERS = {
   "step-prepare": glyph("M64 76 H176 V164 H64 Z M64 100 H80 M64 124 H88 M64 148 H80 M96 76 V92 M128 76 V100 M160 76 V92"),
   "step-accept": glyph("M78 56 H146 L166 76 V184 H78 Z M146 56 V76 H166 M98 128 L114 146 L146 106"),
   "step-portal": glyph("M58 72 H182 V168 H58 Z M58 96 H182 M72 84 H80 M90 84 H98 M120 152 C120 152 100 134 100 120 A20 20 0 1 1 140 120 C140 134 120 152 120 152 Z"),
-  "service-area": '<rect class="snow-art__sky" width="960" height="600"/>'
-    + '<g class="snow-art__contour"><path d="M-20 150 C200 70 380 210 560 140 S860 60 980 150"/><path d="M-20 260 C180 180 400 320 600 240 S860 170 980 260"/><path d="M-20 370 C220 300 400 430 620 350 S860 290 980 370"/><path d="M-20 480 C200 420 420 530 640 460 S860 410 980 490"/></g>'
-    + '<g class="snow-art__pins"><circle cx="210" cy="200" r="15"/><circle cx="330" cy="400" r="15"/><circle cx="560" cy="360" r="15"/><circle cx="640" cy="190" r="15"/><circle cx="790" cy="290" r="15"/></g>',
+  "service-area": '<rect class="snow-art__sky" width="1600" height="500"/>'
+    + mist("M0 300 L240 150 L420 270 L640 110 L860 280 L1080 140 L1320 270 L1600 170 V500 H0 Z")
+    + '<g class="snow-art__deep"><rect x="330" y="250" width="70" height="190"/><rect x="420" y="190" width="80" height="250"/><rect x="520" y="280" width="60" height="160"/><rect x="740" y="160" width="90" height="280"/><rect x="850" y="230" width="70" height="210"/><rect x="1080" y="260" width="80" height="180"/><rect x="1180" y="210" width="70" height="230"/></g>'
+    + hill("M0 420 C320 380 640 430 960 410 S1400 390 1600 420 V500 H0 Z")
+    + '<g class="snow-art__pins"><circle cx="200" cy="380" r="15"/><circle cx="460" cy="150" r="15"/><circle cx="785" cy="120" r="15"/><circle cx="1215" cy="170" r="15"/><circle cx="1440" cy="370" r="15"/></g>',
   "final-cta": mist("M0 260 C260 180 520 240 800 260 S1300 300 1600 210 V400 H0 Z") + hill("M0 320 C300 270 620 300 900 330 S1380 350 1600 300 V400 H0 Z")
     + '<g class="snow-art__snow"><path d="M170 300 L204 200 L238 300 Z"/><path d="M240 296 L268 216 L296 296 Z"/><path d="M1270 310 L1304 210 L1338 310 Z"/><path d="M1340 306 L1368 226 L1396 306 Z"/></g>',
 };
@@ -132,10 +134,11 @@ export function illustrationCss() {
 .snow-how__head { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 10px; }
 .snow-how__head .seo-how__num { margin-bottom: 0; }
 .snow-art--step { flex: none; width: 72px; }
-.snow-art--area { margin-top: 18px; border-radius: var(--radius-md); }
-.seo-final { position: relative; overflow: hidden; padding-bottom: 0; }
+.snow-art--area { grid-column: 1 / -1; border-radius: var(--radius-md); }
+.seo-final, .vw-mobile .seo-final { position: relative; overflow: hidden; padding-bottom: 0; }
 .seo-final > :not(.snow-flakes) { position: relative; z-index: 1; }
 .snow-art--final { margin: 26px -30px 0; }
+.vw-mobile .snow-art--final { margin: 20px -22px 0; }
 .snow-flakes { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
 .snow-flakes::before, .snow-flakes::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; background-repeat: repeat; }
 .snow-flakes::before { top: -380px; background-size: 380px 380px; background-image: radial-gradient(circle at 30px 50px, rgba(255,255,255,.75) 0 2px, transparent 2.5px), radial-gradient(circle at 210px 20px, rgba(255,255,255,.55) 0 1.5px, transparent 2px), radial-gradient(circle at 90px 160px, rgba(255,255,255,.6) 0 2px, transparent 2.5px), radial-gradient(circle at 330px 120px, rgba(255,255,255,.5) 0 1.5px, transparent 2px), radial-gradient(circle at 150px 290px, rgba(255,255,255,.55) 0 1.5px, transparent 2px), radial-gradient(circle at 270px 230px, rgba(255,255,255,.7) 0 2px, transparent 2.5px), radial-gradient(circle at 50px 340px, rgba(255,255,255,.5) 0 1.5px, transparent 2px); }

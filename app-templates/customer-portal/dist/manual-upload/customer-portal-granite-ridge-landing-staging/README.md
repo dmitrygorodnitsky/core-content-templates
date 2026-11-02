@@ -17,15 +17,15 @@ A slot shows its placeholder until its file exists under `assets/snow-landing/`;
 
 | slot | file | size | state |
 | --- | --- | --- | --- |
-| `hero` | `assets/snow-landing/hero.webp` | 960 x 720 | placeholder |
-| `service-snow-removal` | `assets/snow-landing/service-snow-removal.webp` | 720 x 480 | placeholder |
-| `service-de-icing` | `assets/snow-landing/service-de-icing.webp` | 720 x 480 | placeholder |
-| `step-request` | `assets/snow-landing/step-request.webp` | 240 x 240 | placeholder |
-| `step-prepare` | `assets/snow-landing/step-prepare.webp` | 240 x 240 | placeholder |
-| `step-accept` | `assets/snow-landing/step-accept.webp` | 240 x 240 | placeholder |
-| `step-portal` | `assets/snow-landing/step-portal.webp` | 240 x 240 | placeholder |
-| `service-area` | `assets/snow-landing/service-area.webp` | 960 x 600 | placeholder |
-| `final-cta` | `assets/snow-landing/final-cta.webp` | 1600 x 400 | placeholder |
+| `hero` | `assets/snow-landing/hero.webp` | 960 x 720 | art |
+| `service-snow-removal` | `assets/snow-landing/service-snow-removal.webp` | 720 x 480 | art |
+| `service-de-icing` | `assets/snow-landing/service-de-icing.webp` | 720 x 480 | art |
+| `step-request` | `assets/snow-landing/step-request.webp` | 240 x 240 | art |
+| `step-prepare` | `assets/snow-landing/step-prepare.webp` | 240 x 240 | art |
+| `step-accept` | `assets/snow-landing/step-accept.webp` | 240 x 240 | art |
+| `step-portal` | `assets/snow-landing/step-portal.webp` | 240 x 240 | art |
+| `service-area` | `assets/snow-landing/service-area.webp` | 1600 x 500 | placeholder |
+| `final-cta` | `assets/snow-landing/final-cta.webp` | 1600 x 400 | art |
 
 ## Destinations
 

@@ -67,8 +67,8 @@
     ],
     "sha256": {
       "head": "062ac366a4b7b6c29c6ec30dc5f13a1ec12a194909bc40aa99292ff6a601c17d",
-      "html": "d50c860358748abbe946cce2053146cb0cd484ae1e73ec810665d2c656ac0a64",
-      "css": "0635dcace7efbf37a301d1e82a17f1b3b817e21070f799ad97fa7b814b45d92f",
+      "html": "5496638f4fe53436bdae3da5ee5f1cb285ef3b8e2c57169cf6dc015ab33b7002",
+      "css": "6c900d5bc80815e2a7f51baec747b416fcc30483985e19d46136fe8f369f9324",
       "javascript": "9be253abb5093e8404c0d5ba3bf82ebd7262e67482959cbadbcb0764cbc81801"
     }
   },
@@ -113,7 +113,7 @@
       "width": 960,
       "height": 720,
       "maxBytes": 184320,
-      "state": "placeholder"
+      "state": "art"
     },
     {
       "slot": "service-snow-removal",
@@ -121,7 +121,7 @@
       "width": 720,
       "height": 480,
       "maxBytes": 92160,
-      "state": "placeholder"
+      "state": "art"
     },
     {
       "slot": "service-de-icing",
@@ -129,7 +129,7 @@
       "width": 720,
       "height": 480,
       "maxBytes": 92160,
-      "state": "placeholder"
+      "state": "art"
     },
     {
       "slot": "step-request",
@@ -137,7 +137,7 @@
       "width": 240,
       "height": 240,
       "maxBytes": 30720,
-      "state": "placeholder"
+      "state": "art"
     },
     {
       "slot": "step-prepare",
@@ -145,7 +145,7 @@
       "width": 240,
       "height": 240,
       "maxBytes": 30720,
-      "state": "placeholder"
+      "state": "art"
     },
     {
       "slot": "step-accept",
@@ -153,7 +153,7 @@
       "width": 240,
       "height": 240,
       "maxBytes": 30720,
-      "state": "placeholder"
+      "state": "art"
     },
     {
       "slot": "step-portal",
@@ -161,14 +161,14 @@
       "width": 240,
       "height": 240,
       "maxBytes": 30720,
-      "state": "placeholder"
+      "state": "art"
     },
     {
       "slot": "service-area",
       "file": "assets/snow-landing/service-area.webp",
-      "width": 960,
-      "height": 600,
-      "maxBytes": 122880,
+      "width": 1600,
+      "height": 500,
+      "maxBytes": 153600,
       "state": "placeholder"
     },
     {
@@ -177,7 +177,7 @@
       "width": 1600,
       "height": 400,
       "maxBytes": 143360,
-      "state": "placeholder"
+      "state": "art"
     }
   ],
   "constraints": [
