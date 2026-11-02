@@ -63,11 +63,29 @@
       "FAQ_ITEM_4_QUESTION",
       "FAQ_ITEM_4_ANSWER",
       "FINAL_TITLE",
-      "FINAL_SUB"
+      "FINAL_SUB",
+      "HERO_ART",
+      "HERO_ART_NAME",
+      "SERVICE_SNOW_REMOVAL_ART",
+      "SERVICE_SNOW_REMOVAL_ART_NAME",
+      "SERVICE_DE_ICING_ART",
+      "SERVICE_DE_ICING_ART_NAME",
+      "STEP_REQUEST_ART",
+      "STEP_REQUEST_ART_NAME",
+      "STEP_PREPARE_ART",
+      "STEP_PREPARE_ART_NAME",
+      "STEP_ACCEPT_ART",
+      "STEP_ACCEPT_ART_NAME",
+      "STEP_PORTAL_ART",
+      "STEP_PORTAL_ART_NAME",
+      "SERVICE_AREA_ART",
+      "SERVICE_AREA_ART_NAME",
+      "FINAL_CTA_ART",
+      "FINAL_CTA_ART_NAME"
     ],
     "sha256": {
       "head": "062ac366a4b7b6c29c6ec30dc5f13a1ec12a194909bc40aa99292ff6a601c17d",
-      "html": "5496638f4fe53436bdae3da5ee5f1cb285ef3b8e2c57169cf6dc015ab33b7002",
+      "html": "336432925ba7b286e970e8dd72c7b467d06f8a8a0914c90d1f93e30cb8caab26",
       "css": "6c900d5bc80815e2a7f51baec747b416fcc30483985e19d46136fe8f369f9324",
       "javascript": "9be253abb5093e8404c0d5ba3bf82ebd7262e67482959cbadbcb0764cbc81801"
     }
@@ -169,7 +187,7 @@
       "width": 1600,
       "height": 500,
       "maxBytes": 153600,
-      "state": "placeholder"
+      "state": "art"
     },
     {
       "slot": "final-cta",

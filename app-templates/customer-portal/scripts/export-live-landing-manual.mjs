@@ -4,7 +4,7 @@ import process from "node:process";
 import { pathToFileURL } from "node:url";
 import { controlCharacterOffsets } from "./export-client-review-manual.mjs";
 import { assertJteSafeFamily, between, readDesignCss } from "./export-granite-ridge-landing-blocks-manual.mjs";
-import { illustrationCss, illustrationHtml, illustrationManifest, readIllustrations, serviceSlotNames, stepSlotNames } from "./landing-illustrations.mjs";
+import { illustrationCss, illustrationHtml, illustrationManifest, illustrationParameters, readIllustrations, serviceSlotNames, stepSlotNames } from "./landing-illustrations.mjs";
 import { assertExactInventory, replaceDirectory, sha256 } from "./portal-manual-package.mjs";
 
 const repoRoot = path.resolve(".");
@@ -248,7 +248,7 @@ function templateFor(source, css, illustrations) {
     html: htmlFor(source, illustrations),
     css,
     javascript: runtimeScript(),
-    parameters: parametersFor(source),
+    parameters: [...parametersFor(source), ...illustrationParameters(illustrations)],
   };
 }
 
@@ -554,9 +554,9 @@ function assertLandingTemplate(template) {
   if (/<\/style/i.test(template.css)) throw new Error("Refusing to inline a css field that contains a style terminator");
   for (const item of template.parameters) {
     if (!referenced.has(item.code)) throw new Error("Parameter " + item.code + " is declared but never referenced");
-    const value = item.type === "STRING" ? item.value : item.type === "LOCALIZED_STRING_SS" && item.value && Object.keys(item.value).join() === "en" ? item.value.en : null;
+    const value = item.type === "STRING" || item.type === "IMAGE" ? item.value : item.type === "LOCALIZED_STRING_SS" && item.value && Object.keys(item.value).join() === "en" ? item.value.en : null;
     if (typeof value !== "string" || !value.trim()) {
-      throw new Error("Parameter " + item.code + " must ship a nonempty " + (item.type === "STRING" ? "value" : "en value") + ": CMS creates no PageContext for a template with an empty parameter");
+      throw new Error("Parameter " + item.code + " must ship a nonempty " + (item.type === "STRING" || item.type === "IMAGE" ? "value" : "en value") + ": CMS creates no PageContext for a template with an empty parameter");
     }
   }
 }
@@ -615,7 +615,7 @@ function readmeFor(source, template, manifest) {
     "",
     "## Illustrations",
     "",
-    "A slot shows its placeholder until its file exists under `assets/snow-landing/`; the exporter then embeds it, refusing a wrong size or an oversized file. Prompts: `cms/granite-ridge-snow.landing-illustrations.md`.",
+    "A slot shows its placeholder until its file exists under `assets/snow-landing/`; `upload-snow-landing-illustrations.mjs` puts it in the media library and records its id in `media.json`; the exporter then references it as an IMAGE parameter, refusing a wrong size, an oversized file or a file that was not uploaded. Prompts: `cms/granite-ridge-snow.landing-illustrations.md`.",
     "",
     "| slot | file | size | state |",
     "| --- | --- | --- | --- |",

@@ -4,11 +4,15 @@ Nine slots of the public landing at `/pages/SNOWLIMITLESS/home`. Each prompt
 below is ready to paste on its own.
 
 Paths are relative to the repository root. To ship the art: save each file at
-its target path, then run
+its target path, compress it with
+`cwebp -q 78 -alpha_q 85 -m 6 -sharp_yuv -metadata none`, and then run
+`node app-templates/customer-portal/scripts/upload-snow-landing-illustrations.mjs --live`,
 `node app-templates/customer-portal/scripts/upsert-granite-ridge-staging-landing.mjs --dry-run`
-and then `--live`. The exporter embeds every file it finds and keeps the
-placeholder for the others. It refuses a file that is not WebP, is not the exact
-size, or is over its byte limit.
+and `--live`. The upload puts each file in the `SNOWLIMITLESS_LANDING` media
+library and records its id in `assets/snow-landing/media.json`. The exporter
+references each uploaded file as an IMAGE parameter and keeps the placeholder
+for the others. It refuses a file that is not WebP, is not the exact size, is
+over its byte limit, or was not uploaded.
 
 Every prompt repeats the shared style so it works when pasted alone.
 

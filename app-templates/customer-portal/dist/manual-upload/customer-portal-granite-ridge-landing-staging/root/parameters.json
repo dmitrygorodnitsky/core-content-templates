@@ -681,5 +681,221 @@
     "value": {
       "en": "Tell us where your properties are, and we'll prepare your quote."
     }
+  },
+  {
+    "code": "HERO_ART",
+    "type": "IMAGE",
+    "value": "b190001c-bf0f-448e-be4d-e8b1ccd66f4b",
+    "nls": {
+      "en": {
+        "NAME": "hero illustration",
+        "DESCRIPTION": "Media library image of the hero illustration."
+      }
+    },
+    "options": []
+  },
+  {
+    "code": "HERO_ART_NAME",
+    "type": "STRING",
+    "value": "hero.webp",
+    "nls": {
+      "en": {
+        "NAME": "hero illustration file name",
+        "DESCRIPTION": "File name in the image address of the hero illustration."
+      }
+    },
+    "options": []
+  },
+  {
+    "code": "SERVICE_SNOW_REMOVAL_ART",
+    "type": "IMAGE",
+    "value": "7004157e-ca3d-4c46-b5e6-f898650a9900",
+    "nls": {
+      "en": {
+        "NAME": "service-snow-removal illustration",
+        "DESCRIPTION": "Media library image of the service-snow-removal illustration."
+      }
+    },
+    "options": []
+  },
+  {
+    "code": "SERVICE_SNOW_REMOVAL_ART_NAME",
+    "type": "STRING",
+    "value": "service-snow-removal.webp",
+    "nls": {
+      "en": {
+        "NAME": "service-snow-removal illustration file name",
+        "DESCRIPTION": "File name in the image address of the service-snow-removal illustration."
+      }
+    },
+    "options": []
+  },
+  {
+    "code": "SERVICE_DE_ICING_ART",
+    "type": "IMAGE",
+    "value": "57c2d71b-e7a3-4bef-be5d-f717af7ebaf3",
+    "nls": {
+      "en": {
+        "NAME": "service-de-icing illustration",
+        "DESCRIPTION": "Media library image of the service-de-icing illustration."
+      }
+    },
+    "options": []
+  },
+  {
+    "code": "SERVICE_DE_ICING_ART_NAME",
+    "type": "STRING",
+    "value": "service-de-icing.webp",
+    "nls": {
+      "en": {
+        "NAME": "service-de-icing illustration file name",
+        "DESCRIPTION": "File name in the image address of the service-de-icing illustration."
+      }
+    },
+    "options": []
+  },
+  {
+    "code": "STEP_REQUEST_ART",
+    "type": "IMAGE",
+    "value": "9e2b6051-4f0e-4740-925b-f9651a30c29c",
+    "nls": {
+      "en": {
+        "NAME": "step-request illustration",
+        "DESCRIPTION": "Media library image of the step-request illustration."
+      }
+    },
+    "options": []
+  },
+  {
+    "code": "STEP_REQUEST_ART_NAME",
+    "type": "STRING",
+    "value": "step-request.webp",
+    "nls": {
+      "en": {
+        "NAME": "step-request illustration file name",
+        "DESCRIPTION": "File name in the image address of the step-request illustration."
+      }
+    },
+    "options": []
+  },
+  {
+    "code": "STEP_PREPARE_ART",
+    "type": "IMAGE",
+    "value": "e7e541a5-f69e-4511-b7f5-934d9a408b02",
+    "nls": {
+      "en": {
+        "NAME": "step-prepare illustration",
+        "DESCRIPTION": "Media library image of the step-prepare illustration."
+      }
+    },
+    "options": []
+  },
+  {
+    "code": "STEP_PREPARE_ART_NAME",
+    "type": "STRING",
+    "value": "step-prepare.webp",
+    "nls": {
+      "en": {
+        "NAME": "step-prepare illustration file name",
+        "DESCRIPTION": "File name in the image address of the step-prepare illustration."
+      }
+    },
+    "options": []
+  },
+  {
+    "code": "STEP_ACCEPT_ART",
+    "type": "IMAGE",
+    "value": "a5984606-d179-4fb5-9013-cc1adc61d35c",
+    "nls": {
+      "en": {
+        "NAME": "step-accept illustration",
+        "DESCRIPTION": "Media library image of the step-accept illustration."
+      }
+    },
+    "options": []
+  },
+  {
+    "code": "STEP_ACCEPT_ART_NAME",
+    "type": "STRING",
+    "value": "step-accept.webp",
+    "nls": {
+      "en": {
+        "NAME": "step-accept illustration file name",
+        "DESCRIPTION": "File name in the image address of the step-accept illustration."
+      }
+    },
+    "options": []
+  },
+  {
+    "code": "STEP_PORTAL_ART",
+    "type": "IMAGE",
+    "value": "d2d5735f-0af6-4df3-a89b-eed142f81829",
+    "nls": {
+      "en": {
+        "NAME": "step-portal illustration",
+        "DESCRIPTION": "Media library image of the step-portal illustration."
+      }
+    },
+    "options": []
+  },
+  {
+    "code": "STEP_PORTAL_ART_NAME",
+    "type": "STRING",
+    "value": "step-portal.webp",
+    "nls": {
+      "en": {
+        "NAME": "step-portal illustration file name",
+        "DESCRIPTION": "File name in the image address of the step-portal illustration."
+      }
+    },
+    "options": []
+  },
+  {
+    "code": "SERVICE_AREA_ART",
+    "type": "IMAGE",
+    "value": "987b5d1f-0700-46cd-bf60-f85caa2082af",
+    "nls": {
+      "en": {
+        "NAME": "service-area illustration",
+        "DESCRIPTION": "Media library image of the service-area illustration."
+      }
+    },
+    "options": []
+  },
+  {
+    "code": "SERVICE_AREA_ART_NAME",
+    "type": "STRING",
+    "value": "service-area.webp",
+    "nls": {
+      "en": {
+        "NAME": "service-area illustration file name",
+        "DESCRIPTION": "File name in the image address of the service-area illustration."
+      }
+    },
+    "options": []
+  },
+  {
+    "code": "FINAL_CTA_ART",
+    "type": "IMAGE",
+    "value": "824fb626-3531-4de1-a81d-9ff9c427e0aa",
+    "nls": {
+      "en": {
+        "NAME": "final-cta illustration",
+        "DESCRIPTION": "Media library image of the final-cta illustration."
+      }
+    },
+    "options": []
+  },
+  {
+    "code": "FINAL_CTA_ART_NAME",
+    "type": "STRING",
+    "value": "final-cta.webp",
+    "nls": {
+      "en": {
+        "NAME": "final-cta illustration file name",
+        "DESCRIPTION": "File name in the image address of the final-cta illustration."
+      }
+    },
+    "options": []
   }
 ]

@@ -1,3 +1,4 @@
+import { createHash } from "node:crypto";
 import fs from "node:fs/promises";
 import path from "node:path";
 
@@ -61,8 +62,22 @@ const PLACEHOLDERS = {
     + '<g class="snow-art__snow"><path d="M170 300 L204 200 L238 300 Z"/><path d="M240 296 L268 216 L296 296 Z"/><path d="M1270 310 L1304 210 L1338 310 Z"/><path d="M1340 306 L1368 226 L1396 306 Z"/></g>',
 };
 
+export const illustrationMediaPath = (directory = illustrationsRoot) => path.join(directory, "media.json");
+
+export const illustrationImageCode = (name) => name.replace(/-/g, "_").toUpperCase() + "_ART";
+
+async function readIllustrationMedia(directory) {
+  try {
+    return JSON.parse(await fs.readFile(illustrationMediaPath(directory), "utf8"));
+  } catch (error) {
+    if (error.code === "ENOENT") return {};
+    throw error;
+  }
+}
+
 export async function readIllustrations(directory = illustrationsRoot) {
   const found = new Map();
+  const media = await readIllustrationMedia(directory);
   for (const item of illustrationSlots) {
     let bytes;
     try {
@@ -75,7 +90,9 @@ export async function readIllustrations(directory = illustrationsRoot) {
     if (!size) throw new Error("Illustration " + item.file + " must be a WebP file");
     if (size.width !== item.width || size.height !== item.height) throw new Error("Illustration " + item.file + " must be exactly " + item.width + "x" + item.height + ", got " + size.width + "x" + size.height);
     if (bytes.length > item.maxBytes) throw new Error("Illustration " + item.file + " is " + bytes.length + " bytes; the slot allows " + item.maxBytes);
-    found.set(item.name, "data:image/webp;base64," + bytes.toString("base64"));
+    const uploaded = media[item.name];
+    if (!uploaded || uploaded.sha256 !== createHash("sha256").update(bytes).digest("hex")) throw new Error("Illustration " + item.file + " is not in the media library; run upload-snow-landing-illustrations.mjs --live");
+    found.set(item.name, { id: uploaded.id, name: uploaded.name });
   }
   return found;
 }
@@ -97,10 +114,22 @@ export function illustrationHtml(name, illustrations) {
   if (!item) throw new Error("Unknown illustration slot " + name);
   const art = illustrations.get(name);
   const open = '<div class="snow-art snow-art--' + item.kind + '" data-illustration="' + name + '" data-illustration-state="' + (art ? "art" : "placeholder") + '" style="aspect-ratio:' + item.width + " / " + item.height + '" aria-hidden="true">';
+  const code = illustrationImageCode(name);
   const body = art
-    ? '<img src="' + art + '" width="' + item.width + '" height="' + item.height + '" alt="" loading="lazy" decoding="async">'
+    ? '<img src="/core/image/${' + code + "@IMAGE}/get/${" + code + '_NAME@STRING}" width="' + item.width + '" height="' + item.height + '" alt="" loading="lazy" decoding="async">'
     : '<svg viewBox="0 0 ' + item.width + " " + item.height + '" focusable="false">' + PLACEHOLDERS[name] + "</svg>";
   return open + body + "</div>";
+}
+
+export function illustrationParameters(illustrations) {
+  return illustrationSlots.filter((item) => illustrations.has(item.name)).flatMap((item) => {
+    const code = illustrationImageCode(item.name);
+    const art = illustrations.get(item.name);
+    return [
+      { code, type: "IMAGE", value: art.id, nls: { en: { NAME: item.name + " illustration", DESCRIPTION: "Media library image of the " + item.name + " illustration." } }, options: [] },
+      { code: code + "_NAME", type: "STRING", value: art.name, nls: { en: { NAME: item.name + " illustration file name", DESCRIPTION: "File name in the image address of the " + item.name + " illustration." } }, options: [] },
+    ];
+  });
 }
 
 export function illustrationManifest(illustrations) {

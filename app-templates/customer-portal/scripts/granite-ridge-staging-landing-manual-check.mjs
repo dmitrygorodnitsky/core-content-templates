@@ -1,3 +1,4 @@
+import { createHash } from "node:crypto";
 import assert from "node:assert/strict";
 import fs from "node:fs/promises";
 import os from "node:os";
@@ -78,15 +79,15 @@ try {
   assert.doesNotMatch(css, /<\/style/i);
 
   for (const item of template.parameters) {
-    assert.ok(["LOCALIZED_STRING_SS", "STRING"].includes(item.type), item.code + " is a copy or an address parameter");
-    const value = item.type === "STRING" ? item.value : item.value.en;
+    assert.ok(["LOCALIZED_STRING_SS", "STRING", "IMAGE"].includes(item.type), item.code + " is a copy, an address or an image parameter");
+    const value = item.type === "LOCALIZED_STRING_SS" ? item.value.en : item.value;
     if (item.type === "LOCALIZED_STRING_SS") assert.deepEqual(Object.keys(item.value), ["en"], item.code + " ships English only, the one language enabled for the tenant");
     assert.equal(typeof value, "string");
     assert.ok(value.trim().length > 0, item.code + " ships a value, because CMS creates no PageContext for a template with an empty parameter");
     assert.notEqual(value, "#", item.code + " has a real value, so no operator placeholder ships");
     assert.ok(item.nls.en.DESCRIPTION.length > 10, item.code + " tells the editor what it controls");
   }
-  const addresses = Object.fromEntries(template.parameters.filter((item) => item.type === "STRING").map((item) => [item.code, item.value]));
+  const addresses = Object.fromEntries(template.parameters.filter((item) => item.type === "STRING" && !item.code.endsWith("_ART_NAME")).map((item) => [item.code, item.value]));
   assert.deepEqual(addresses, { LANDING_URL: landingUrl, REQUEST_QUOTE_URL: requestQuoteUrl, SIGN_IN_URL: signInUrl }, "the three destinations are the fixed interface");
   for (const value of Object.values(addresses)) {
     const url = new URL(value);
@@ -125,8 +126,9 @@ try {
   assert.equal(manifest.template.robots, "noindex,nofollow");
 
   assert.doesNotMatch(html, /seo-trust|seo-proof|seo-price|seo-pricing|seo-review|seo-offer|seo-media|seo-slot|no-data|from CMS|data-pim|ui\.toggleMode/, "the trust, proof, pricing, reviews and media sections are dropped, with their placeholders");
-  const withoutEmbeddedArt = html.replace(/<img src="data:image\/webp;base64,[A-Za-z0-9+/=]+"/g, "<embedded-art");
-  assert.doesNotMatch(withoutEmbeddedArt, /<(?:img|iframe|video|form|input|script)\b|\bsrc=|\son[a-z]+=|javascript:/i, "the markup loads nothing and runs nothing inline; art is embedded");
+  assert.doesNotMatch(html, /data:image/, "no illustration is embedded in the page");
+  const withoutMediaArt = html.replace(/<img src="\/core\/image\/\$\{[A-Z_]+_ART@IMAGE\}\/get\/\$\{[A-Z_]+_ART_NAME@STRING\}"/g, "<media-art");
+  assert.doesNotMatch(withoutMediaArt, /<(?:img|iframe|video|form|input|script)\b|\bsrc=|\son[a-z]+=|javascript:/i, "the markup loads only media library art and runs nothing inline");
   const modules = [...html.matchAll(/data-module="([^"]+)"/g)].map((match) => match[1]);
   for (const module of ["public-nav", "reason-notice", "seo-hero", "seo-services-grid", "seo-how-it-works", "seo-service-area", "seo-faq", "seo-final-cta", "seo-footer"]) {
     assert.ok(modules.includes(module), "the landing keeps its " + module + " section");
@@ -162,9 +164,14 @@ try {
     };
     assert.deepEqual(webpSize(webp(960, 720)), { width: 960, height: 720 });
     await fs.writeFile(path.join(artDir, "hero.webp"), webp(960, 720));
+    await assert.rejects(buildLiveLandingManual(structuredClone(source), sourceLabel(inputPath), { illustrationsDir: artDir }), /is not in the media library/);
+    await fs.writeFile(path.join(artDir, "media.json"), JSON.stringify({ hero: { id: "art-id", name: "hero.webp", sha256: createHash("sha256").update(webp(960, 720)).digest("hex") } }));
     const withArt = await buildLiveLandingManual(structuredClone(source), sourceLabel(inputPath), { illustrationsDir: artDir });
-    assert.match(withArt.template.html, /data-illustration="hero" data-illustration-state="art"[^>]*><img src="data:image\/webp;base64,[A-Za-z0-9+/=]+" width="960" height="720" alt="" loading="lazy" decoding="async">/, "a file at the slot's path replaces its placeholder");
+    assert.match(withArt.template.html, /data-illustration="hero" data-illustration-state="art"[^>]*><img src="\/core\/image\/\$\{HERO_ART@IMAGE\}\/get\/\$\{HERO_ART_NAME@STRING\}" width="960" height="720" alt="" loading="lazy" decoding="async">/, "a file at the slot's path replaces its placeholder");
     assert.equal(withArt.manifest.illustrations.find((item) => item.slot === "hero").state, "art");
+    assert.doesNotMatch(withArt.template.html, /data:image/, "no illustration is embedded in the page");
+    const artParameters = withArt.template.parameters.filter((parameter) => parameter.code.startsWith("HERO_ART"));
+    assert.deepEqual(artParameters.map((parameter) => [parameter.code, parameter.type, parameter.value]), [["HERO_ART", "IMAGE", "art-id"], ["HERO_ART_NAME", "STRING", "hero.webp"]]);
     assert.match(withArt.template.html, /data-illustration="final-cta" data-illustration-state="placeholder"/, "the slots without a file keep their placeholder");
     await fs.writeFile(path.join(artDir, "hero.webp"), webp(800, 600));
     await assert.rejects(buildLiveLandingManual(structuredClone(source), sourceLabel(inputPath), { illustrationsDir: artDir }), /must be exactly 960x720/);
