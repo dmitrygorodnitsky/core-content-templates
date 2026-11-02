@@ -895,13 +895,6 @@ button { font-family: inherit; }
 .snow-hero__inner { display: flex; align-items: center; justify-content: space-between; }
 .snow-hero__inner .seo-hero__copy { flex: 1 1 auto; min-width: 0; }
 .snow-hero__inner .seo-hero__title { text-wrap: pretty; }
-.snow-hero-art { flex: none; display: flex; flex-direction: column; gap: 12px; width: 280px; padding: 22px; border-radius: 20px; background: linear-gradient(160deg, rgba(255,255,255,.9), rgba(255,255,255,.55)); box-shadow: 0 14px 40px rgba(8,24,60,.3); }
-.snow-hero-art i { display: block; }
-.snow-hero-art__head { display: flex; align-items: center; gap: 10px; margin-bottom: 2px; }
-.snow-hero-art__head i { width: 120px; height: 10px; border-radius: 6px; background: rgba(var(--accent-rgb), .3); }
-.snow-hero-art__field { height: 32px; border-radius: 10px; background: #fff; box-shadow: inset 0 0 0 1px rgba(13,38,76,.08); }
-.snow-hero-art__field--short { width: 64%; }
-.snow-hero-art__action { width: 132px; height: 34px; margin-top: 4px; border-radius: 999px; background: linear-gradient(180deg, var(--accent-2), var(--accent)); box-shadow: 0 4px 12px rgba(var(--accent-rgb), .35), inset 0 1px 0 rgba(255,255,255,.4); }
 .seo-svc-grid--pair { grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); }
 .seo-svc--static { cursor: default; }
 .seo-svc--static:hover { transform: none; box-shadow: var(--shadow-card); }
@@ -922,9 +915,6 @@ summary.seo-faq__q::-webkit-details-marker { display: none; }
 .snow-notice__dismiss { flex: none; padding: 0; font: inherit; font-size: 18px; line-height: 1; color: var(--ink-2); }
 .snow-footer__base { margin-top: 0; padding-top: 0; border-top: 0; }
 .snow-footer__links { display: flex; flex-wrap: wrap; gap: 8px 18px; font-size: 13px; font-weight: 600; }
-@media (max-width: 1040px) {
-  .snow-hero-art { display: none; }
-}
 @media (max-width: 560px) {
   .snow-main { gap: 20px; }
   .top-nav { gap: 10px; }
@@ -936,6 +926,78 @@ summary.seo-faq__q::-webkit-details-marker { display: none; }
   .snow-notice { gap: 12px; padding: 14px; }
   .snow-notice__icon { width: 36px; height: 36px; border-radius: 11px; font-size: 16px; }
   .snow-notice__actions .btn { flex: 1 1 100%; }
+}
+
+.snow-landing { --art-sky: rgba(var(--accent-rgb), .12); --art-mist: rgba(var(--accent-rgb), .22); --art-snow: #fff; --art-deep: #0b5c80; --art-warm: #ff8a3d; --art-ink: #1d1d1f; }
+:root[data-mode="dark"] .snow-landing { --art-sky: rgba(var(--accent-rgb), .2); --art-mist: rgba(var(--accent-rgb), .34); --art-snow: #e7f0f8; --art-deep: #9fdcf5; --art-ink: #0d1320; }
+.seo-hero .snow-art, .seo-final .snow-art { --art-sky: rgba(255,255,255,.14); --art-mist: rgba(255,255,255,.28); --art-snow: #fff; --art-deep: #0a5f86; --art-ink: #123a50; }
+.snow-art { display: block; position: relative; overflow: hidden; min-width: 0; }
+.snow-art svg, .snow-art img { display: block; width: 100%; height: 100%; }
+.snow-art img { object-fit: cover; }
+.snow-art__sky { fill: var(--art-sky); }
+.snow-art__mist { fill: var(--art-mist); }
+.snow-art__snow { fill: var(--art-snow); }
+.snow-art__deep { fill: var(--art-deep); }
+.snow-art__warm { fill: var(--art-warm); }
+.snow-art__ink { fill: var(--art-ink); }
+.snow-art__line { fill: none; stroke: var(--art-deep); stroke-width: 7; stroke-linecap: round; stroke-linejoin: round; }
+.snow-art__line--wide { stroke-width: 11; }
+.snow-art__contour { fill: none; stroke: var(--art-mist); stroke-width: 5; }
+.snow-art__pins { fill: var(--pin-marker, #ea4335); stroke: var(--art-snow); stroke-width: 5; }
+.snow-hero__inner { position: relative; z-index: 1; gap: 36px; }
+.snow-art--hero { flex: none; width: min(36%, 360px); }
+.snow-hero__inner .seo-hero__title { font-size: 42px; text-wrap: wrap; }
+.seo-area { align-items: start; }
+.seo-svc--static { display: grid; grid-template-columns: 200px 1fr; column-gap: 18px; align-content: center; align-items: start; }
+.seo-svc--static .seo-svc__name { align-self: end; }
+.snow-art--service { grid-row: 1 / span 2; border-radius: var(--radius-md); }
+.snow-how__head { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 10px; }
+.snow-how__head .seo-how__num { margin-bottom: 0; }
+.snow-art--step { flex: none; width: 72px; }
+.snow-art--area { margin-top: 18px; border-radius: var(--radius-md); }
+.seo-final { position: relative; overflow: hidden; padding-bottom: 0; }
+.seo-final > :not(.snow-flakes) { position: relative; z-index: 1; }
+.snow-art--final { margin: 26px -30px 0; }
+.snow-flakes { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+.snow-flakes::before, .snow-flakes::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; background-repeat: repeat; }
+.snow-flakes::before { top: -380px; background-size: 380px 380px; background-image: radial-gradient(circle at 30px 50px, rgba(255,255,255,.75) 0 2px, transparent 2.5px), radial-gradient(circle at 210px 20px, rgba(255,255,255,.55) 0 1.5px, transparent 2px), radial-gradient(circle at 90px 160px, rgba(255,255,255,.6) 0 2px, transparent 2.5px), radial-gradient(circle at 330px 120px, rgba(255,255,255,.5) 0 1.5px, transparent 2px), radial-gradient(circle at 150px 290px, rgba(255,255,255,.55) 0 1.5px, transparent 2px), radial-gradient(circle at 270px 230px, rgba(255,255,255,.7) 0 2px, transparent 2.5px), radial-gradient(circle at 50px 340px, rgba(255,255,255,.5) 0 1.5px, transparent 2px); }
+.snow-flakes::after { top: -520px; background-size: 520px 520px; background-image: radial-gradient(circle at 70px 90px, rgba(255,255,255,.9) 0 3px, transparent 3.5px), radial-gradient(circle at 390px 40px, rgba(255,255,255,.8) 0 2.5px, transparent 3px), radial-gradient(circle at 240px 240px, rgba(255,255,255,.85) 0 3px, transparent 3.5px), radial-gradient(circle at 460px 370px, rgba(255,255,255,.8) 0 2.5px, transparent 3px), radial-gradient(circle at 120px 450px, rgba(255,255,255,.85) 0 3px, transparent 3.5px); }
+@media (max-width: 1040px) {
+  .snow-hero__inner { flex-direction: column; align-items: stretch; }
+  .snow-art--hero { width: 100%; max-width: 440px; margin: 0 auto; }
+  .snow-hero__inner .seo-hero__title { max-width: none; }
+}
+@media (max-width: 900px) {
+  .seo-svc--static { grid-template-columns: 1fr; }
+  .snow-art--service { grid-row: auto; margin-bottom: 12px; }
+}
+@media (max-width: 560px) {
+  .snow-hero__inner .seo-hero__title { font-size: 32px; }
+  .snow-art--final { margin: 20px -30px 0; }
+}
+@media screen and (prefers-reduced-motion: no-preference) {
+  @keyframes snow-fall-far { to { transform: translateY(380px); } }
+  @keyframes snow-fall-near { to { transform: translateY(520px); } }
+  @keyframes snow-rise { from { opacity: .2; transform: translateY(18px); } to { opacity: 1; transform: none; } }
+  @keyframes snow-float { from { transform: translateY(-6px); } to { transform: translateY(6px); } }
+  @keyframes snow-plow { from { translate: -40px 0; } to { translate: 30px 0; } }
+  .snow-flakes::before { animation: snow-fall-far 30s linear infinite; }
+  .snow-flakes::after { animation: snow-fall-near 18s linear infinite; }
+  .seo-hero__copy > * { animation: snow-rise .7s cubic-bezier(.2,.7,.2,1) backwards; }
+  .seo-hero__copy > :nth-child(2) { animation-delay: .1s; }
+  .seo-hero__copy > :nth-child(3) { animation-delay: .2s; }
+  .snow-art--hero { animation: snow-float 6s ease-in-out infinite alternate; }
+  .snow-art__plow { animation: snow-plow 8s ease-in-out infinite alternate; }
+  .seo-svc--static:hover { transform: translateY(-3px); box-shadow: var(--shadow-float); }
+  .seo-how__step { transition: transform .18s, box-shadow .18s; }
+  .seo-how__step:hover { transform: translateY(-3px); box-shadow: var(--shadow-card); }
+  .seo-how__step .snow-art--step { transition: transform .25s cubic-bezier(.2,.7,.2,1); }
+  .seo-how__step:hover .snow-art--step { transform: scale(1.08) rotate(-2deg); }
+  .seo-area__chip { transition: transform .15s; }
+  .seo-area__chip:hover { transform: translateY(-2px); }
+  @supports (animation-timeline: view()) {
+    .seo-svc, .seo-how__step, .seo-area, .seo-faq__item, .seo-final { animation: snow-rise linear backwards; animation-timeline: view(); animation-range: entry 0% entry 30%; }
+  }
 }
 </style>
 <script type="text/javascript" charset="utf-8">(function () {
@@ -1025,35 +1087,36 @@ summary.seo-faq__q::-webkit-details-marker { display: none; }
         <button type="button" class="icon-btn snow-notice__dismiss" data-notice-dismiss aria-label="Dismiss">×</button>
       </div>
       <section class="seo-hero" data-module="seo-hero" data-visual-id="seo-hero">
+        <div class="snow-flakes" aria-hidden="true"></div>
         <div class="seo-hero__inner snow-hero__inner">
           <div class="seo-hero__copy">
             <h1 class="seo-hero__title">Snow removal and de-icing for your property</h1>
             <p class="seo-hero__sub">Free quotes for properties in Vancouver, Richmond, Surrey, Burnaby and Coquitlam.</p>
             <div class="seo-hero__ctas"><a class="btn btn--onaccent btn--lg seo-cta" href="https://dev-1.servicewand.com/pages/SNOWLIMITLESS/request-quote" data-destination="request-quote" data-module="seo-cta" data-visual-id="seo-hero-primary-cta">Get a free quote</a><a class="btn btn--glass-hero btn--lg seo-cta" href="https://dev-1.servicewand.com/pages/SNOWLIMITLESS/portal#/login" data-destination="sign-in" data-module="seo-cta" data-visual-id="seo-hero-secondary-cta">Sign in</a></div>
           </div>
-          <div class="snow-hero-art" data-visual-id="seo-hero-art" aria-hidden="true"><div class="snow-hero-art__head"><span class="brand-logo"></span><i></i></div><i class="snow-hero-art__field"></i><i class="snow-hero-art__field"></i><i class="snow-hero-art__field snow-hero-art__field--short"></i><i class="snow-hero-art__action"></i></div>
+          <div class="snow-art snow-art--hero" data-illustration="hero" data-illustration-state="placeholder" style="aspect-ratio:960 / 720" aria-hidden="true"><svg viewBox="0 0 960 720" focusable="false"><clipPath id="snow-art-hero-clip"><rect width="960" height="720" rx="56"/></clipPath><g clip-path="url(#snow-art-hero-clip)"><rect class="snow-art__sky" width="960" height="720"/><circle class="snow-art__mist" cx="770" cy="150" r="82"/><path class="snow-art__mist" d="M0 440 C180 370 340 410 480 440 S780 490 960 400 V720 H0 Z"/><rect class="snow-art__deep" x="140" y="350" width="210" height="150" rx="6"/><path class="snow-art__deep" d="M116 356 L245 262 L374 356 Z"/><path class="snow-art__snow" d="M116 356 L245 262 L374 356 L340 356 L245 290 L150 356 Z"/><rect class="snow-art__warm" x="215" y="400" width="60" height="60" rx="5"/><path class="snow-art__snow" d="M0 550 C220 480 420 510 600 550 S860 590 960 530 V720 H0 Z"/><g class="snow-art__plow" transform="translate(560 462) scale(1.25)"><path class="snow-art__warm" d="M-34 20 L0 -4 V52 H-48 Z"/><rect class="snow-art__deep" x="0" y="0" width="118" height="44" rx="10"/><path class="snow-art__deep" d="M60 0 L72 -34 H112 Q118 -34 118 -28 V0 Z"/><path class="snow-art__sky" d="M72 -6 L80 -27 H108 V-6 Z"/><circle class="snow-art__ink" cx="28" cy="48" r="13"/><circle class="snow-art__ink" cx="94" cy="48" r="13"/></g><circle class="snow-art__snow" cx="90" cy="110" r="8"/><circle class="snow-art__snow" cx="210" cy="200" r="6"/><circle class="snow-art__snow" cx="340" cy="90" r="7"/><circle class="snow-art__snow" cx="470" cy="170" r="9"/><circle class="snow-art__snow" cx="600" cy="80" r="6"/><circle class="snow-art__snow" cx="700" cy="260" r="7"/><circle class="snow-art__snow" cx="860" cy="300" r="8"/><circle class="snow-art__snow" cx="420" cy="300" r="5"/><circle class="snow-art__snow" cx="70" cy="300" r="6"/><circle class="snow-art__snow" cx="900" cy="120" r="6"/></g></svg></div>
         </div>
       </section>
       <section class="seo-sec" data-module="seo-services-grid" data-visual-id="seo-services-grid">
         <div class="seo-sec__head"><span class="eyebrow">Services</span><h2 class="seo-sec__title">What we do</h2><p class="seo-sec__sub">Your quote lists the services for each property you send us.</p></div>
         <div class="seo-svc-grid seo-svc-grid--pair">
-          <div class="seo-svc seo-svc--static" data-module="seo-service-card" data-visual-id="seo-service-card"><div class="seo-svc__icon" style="background:rgba(var(--accent-rgb),.12)"><i style="background:var(--accent)"></i></div><div class="seo-svc__name">Snow removal</div><div class="seo-svc__benefit">We clear snow from the areas of your property that your quote covers.</div></div>
-          <div class="seo-svc seo-svc--static" data-module="seo-service-card" data-visual-id="seo-service-card"><div class="seo-svc__icon" style="background:rgba(52,199,89,.16)"><i style="background:#1f8a44"></i></div><div class="seo-svc__name">De-icing</div><div class="seo-svc__benefit">We spread rock salt or ice melt on cleared surfaces to help prevent ice.</div></div>
+          <div class="seo-svc seo-svc--static" data-module="seo-service-card" data-visual-id="seo-service-card"><div class="snow-art snow-art--service" data-illustration="service-snow-removal" data-illustration-state="placeholder" style="aspect-ratio:720 / 480" aria-hidden="true"><svg viewBox="0 0 720 480" focusable="false"><rect class="snow-art__sky" width="720" height="480"/><path class="snow-art__mist" d="M0 300 C160 250 320 280 460 300 S640 330 720 280 V480 H0 Z"/><path class="snow-art__snow" d="M0 370 C200 330 380 350 520 380 S660 400 720 370 V480 H0 Z"/><g class="snow-art__plow" transform="translate(300 306) scale(1.35)"><path class="snow-art__warm" d="M-34 20 L0 -4 V52 H-48 Z"/><rect class="snow-art__deep" x="0" y="0" width="118" height="44" rx="10"/><path class="snow-art__deep" d="M60 0 L72 -34 H112 Q118 -34 118 -28 V0 Z"/><path class="snow-art__sky" d="M72 -6 L80 -27 H108 V-6 Z"/><circle class="snow-art__ink" cx="28" cy="48" r="13"/><circle class="snow-art__ink" cx="94" cy="48" r="13"/></g><circle class="snow-art__snow" cx="80" cy="90" r="7"/><circle class="snow-art__snow" cx="180" cy="170" r="5"/><circle class="snow-art__snow" cx="300" cy="70" r="6"/><circle class="snow-art__snow" cx="430" cy="150" r="8"/><circle class="snow-art__snow" cx="560" cy="80" r="6"/><circle class="snow-art__snow" cx="650" cy="180" r="5"/></svg></div><div class="seo-svc__name">Snow removal</div><div class="seo-svc__benefit">We clear snow from the areas of your property that your quote covers.</div></div>
+          <div class="seo-svc seo-svc--static" data-module="seo-service-card" data-visual-id="seo-service-card"><div class="snow-art snow-art--service" data-illustration="service-de-icing" data-illustration-state="placeholder" style="aspect-ratio:720 / 480" aria-hidden="true"><svg viewBox="0 0 720 480" focusable="false"><rect class="snow-art__sky" width="720" height="480"/><path class="snow-art__mist" d="M0 340 C180 310 360 340 720 300 V480 H0 Z"/><g class="snow-art__line snow-art__line--wide"><path d="M360 70 V290 M265 125 L455 235 M455 125 L265 235"/><path d="M360 110 L334 86 M360 110 L386 86 M360 250 L334 274 M360 250 L386 274"/><path d="M300 160 L266 168 M300 160 L290 126 M420 200 L454 192 M420 200 L430 234 M420 160 L454 168 M420 160 L430 126 M300 200 L266 192 M300 200 L290 234"/></g><circle class="snow-art__snow" cx="120" cy="400" r="7"/><circle class="snow-art__snow" cx="190" cy="430" r="5"/><circle class="snow-art__snow" cx="270" cy="395" r="6"/><circle class="snow-art__snow" cx="350" cy="435" r="7"/><circle class="snow-art__snow" cx="430" cy="400" r="5"/><circle class="snow-art__snow" cx="510" cy="430" r="6"/><circle class="snow-art__snow" cx="590" cy="395" r="7"/><circle class="snow-art__snow" cx="650" cy="430" r="5"/></svg></div><div class="seo-svc__name">De-icing</div><div class="seo-svc__benefit">We spread rock salt or ice melt on cleared surfaces to help prevent ice.</div></div>
         </div>
       </section>
       <section class="seo-sec" data-module="seo-how-it-works" data-visual-id="seo-how-it-works">
         <div class="seo-sec__head"><span class="eyebrow">How it works</span><h2 class="seo-sec__title">From your request to your portal</h2></div>
         <div class="seo-how">
-          <div class="seo-how__step"><div class="seo-how__num">1</div><div class="seo-how__title">Request a free quote</div><div class="seo-how__desc">Send us the address of each property through our online form. No account is needed.</div></div>
-          <div class="seo-how__step"><div class="seo-how__num">2</div><div class="seo-how__title">We prepare your quote</div><div class="seo-how__desc">We measure each property and prepare your quote.</div></div>
-          <div class="seo-how__step"><div class="seo-how__num">3</div><div class="seo-how__title">Accept it online</div><div class="seo-how__desc">We email you a secure link to review and accept your quote online, and then your service agreement.</div></div>
-          <div class="seo-how__step"><div class="seo-how__num">4</div><div class="seo-how__title">Sign in to your portal</div><div class="seo-how__desc">Once your agreement is accepted, we email you sign-in details for the customer portal, where you follow your properties and contracts.</div></div>
+          <div class="seo-how__step"><div class="snow-how__head"><div class="seo-how__num">1</div><div class="snow-art snow-art--step" data-illustration="step-request" data-illustration-state="placeholder" style="aspect-ratio:240 / 240" aria-hidden="true"><svg viewBox="0 0 240 240" focusable="false"><circle class="snow-art__sky" cx="120" cy="120" r="108"/><path class="snow-art__line" d="M120 186 C120 186 72 142 72 106 A48 48 0 1 1 168 106 C168 142 120 186 120 186 Z M120 124 A18 18 0 1 0 120 88 A18 18 0 1 0 120 124 Z"/></svg></div></div><div class="seo-how__title">Request a free quote</div><div class="seo-how__desc">Send us the address of each property through our online form. No account is needed.</div></div>
+          <div class="seo-how__step"><div class="snow-how__head"><div class="seo-how__num">2</div><div class="snow-art snow-art--step" data-illustration="step-prepare" data-illustration-state="placeholder" style="aspect-ratio:240 / 240" aria-hidden="true"><svg viewBox="0 0 240 240" focusable="false"><circle class="snow-art__sky" cx="120" cy="120" r="108"/><path class="snow-art__line" d="M64 76 H176 V164 H64 Z M64 100 H80 M64 124 H88 M64 148 H80 M96 76 V92 M128 76 V100 M160 76 V92"/></svg></div></div><div class="seo-how__title">We prepare your quote</div><div class="seo-how__desc">We measure each property and prepare your quote.</div></div>
+          <div class="seo-how__step"><div class="snow-how__head"><div class="seo-how__num">3</div><div class="snow-art snow-art--step" data-illustration="step-accept" data-illustration-state="placeholder" style="aspect-ratio:240 / 240" aria-hidden="true"><svg viewBox="0 0 240 240" focusable="false"><circle class="snow-art__sky" cx="120" cy="120" r="108"/><path class="snow-art__line" d="M78 56 H146 L166 76 V184 H78 Z M146 56 V76 H166 M98 128 L114 146 L146 106"/></svg></div></div><div class="seo-how__title">Accept it online</div><div class="seo-how__desc">We email you a secure link to review and accept your quote online, and then your service agreement.</div></div>
+          <div class="seo-how__step"><div class="snow-how__head"><div class="seo-how__num">4</div><div class="snow-art snow-art--step" data-illustration="step-portal" data-illustration-state="placeholder" style="aspect-ratio:240 / 240" aria-hidden="true"><svg viewBox="0 0 240 240" focusable="false"><circle class="snow-art__sky" cx="120" cy="120" r="108"/><path class="snow-art__line" d="M58 72 H182 V168 H58 Z M58 96 H182 M72 84 H80 M90 84 H98 M120 152 C120 152 100 134 100 120 A20 20 0 1 1 140 120 C140 134 120 152 120 152 Z"/></svg></div></div><div class="seo-how__title">Sign in to your portal</div><div class="seo-how__desc">Once your agreement is accepted, we email you sign-in details for the customer portal, where you follow your properties and contracts.</div></div>
         </div>
       </section>
       <section class="seo-sec seo-sec--tint" data-module="seo-service-area" data-visual-id="seo-service-area">
         <div class="seo-area">
           <div class="snow-area__intro"><div class="seo-sec__head"><span class="eyebrow">Service area</span><h2 class="seo-sec__title">Where we work</h2></div><p class="seo-area__note">We confirm service availability for each property when we prepare your quote.</p></div>
-          <div><div class="seo-area__region">British Columbia</div><div class="seo-area__cities"><span class="seo-area__chip">Vancouver</span><span class="seo-area__chip">Richmond</span><span class="seo-area__chip">Surrey</span><span class="seo-area__chip">Burnaby</span><span class="seo-area__chip">Coquitlam</span></div></div>
+          <div><div class="seo-area__region">British Columbia</div><div class="seo-area__cities"><span class="seo-area__chip">Vancouver</span><span class="seo-area__chip">Richmond</span><span class="seo-area__chip">Surrey</span><span class="seo-area__chip">Burnaby</span><span class="seo-area__chip">Coquitlam</span></div><div class="snow-art snow-art--area" data-illustration="service-area" data-illustration-state="placeholder" style="aspect-ratio:960 / 600" aria-hidden="true"><svg viewBox="0 0 960 600" focusable="false"><rect class="snow-art__sky" width="960" height="600"/><g class="snow-art__contour"><path d="M-20 150 C200 70 380 210 560 140 S860 60 980 150"/><path d="M-20 260 C180 180 400 320 600 240 S860 170 980 260"/><path d="M-20 370 C220 300 400 430 620 350 S860 290 980 370"/><path d="M-20 480 C200 420 420 530 640 460 S860 410 980 490"/></g><g class="snow-art__pins"><circle cx="210" cy="200" r="15"/><circle cx="330" cy="400" r="15"/><circle cx="560" cy="360" r="15"/><circle cx="640" cy="190" r="15"/><circle cx="790" cy="290" r="15"/></g></svg></div></div>
         </div>
       </section>
       <section class="seo-sec" data-module="seo-faq" data-visual-id="seo-faq">
@@ -1066,9 +1129,11 @@ summary.seo-faq__q::-webkit-details-marker { display: none; }
         </div>
       </section>
       <section class="seo-final" data-module="seo-final-cta" data-visual-id="seo-final-cta">
+        <div class="snow-flakes" aria-hidden="true"></div>
         <h2 class="seo-final__title">Start with a free quote</h2>
         <p class="seo-final__sub">Tell us where your properties are, and we'll prepare your quote.</p>
         <div class="seo-final__ctas"><a class="btn btn--onaccent btn--lg seo-cta" href="https://dev-1.servicewand.com/pages/SNOWLIMITLESS/request-quote" data-destination="request-quote" data-module="seo-cta" data-visual-id="seo-final-primary-cta">Get a free quote</a><a class="btn btn--glass-hero btn--lg seo-cta" href="https://dev-1.servicewand.com/pages/SNOWLIMITLESS/portal#/login" data-destination="sign-in" data-module="seo-cta" data-visual-id="seo-final-secondary-cta">Sign in</a></div>
+        <div class="snow-art snow-art--final" data-illustration="final-cta" data-illustration-state="placeholder" style="aspect-ratio:1600 / 400" aria-hidden="true"><svg viewBox="0 0 1600 400" focusable="false"><path class="snow-art__mist" d="M0 260 C260 180 520 240 800 260 S1300 300 1600 210 V400 H0 Z"/><path class="snow-art__snow" d="M0 320 C300 270 620 300 900 330 S1380 350 1600 300 V400 H0 Z"/><g class="snow-art__snow"><path d="M170 300 L204 200 L238 300 Z"/><path d="M240 296 L268 216 L296 296 Z"/><path d="M1270 310 L1304 210 L1338 310 Z"/><path d="M1340 306 L1368 226 L1396 306 Z"/></g></svg></div>
       </section>
     </main>
     <footer class="seo-footer snow-footer" data-module="seo-footer" data-visual-id="seo-footer">

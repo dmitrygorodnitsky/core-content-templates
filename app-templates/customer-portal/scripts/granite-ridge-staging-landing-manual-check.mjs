@@ -1,11 +1,13 @@
 import assert from "node:assert/strict";
 import fs from "node:fs/promises";
+import os from "node:os";
 import path from "node:path";
 import vm from "node:vm";
 import { SEO, SEO_FOOTER } from "../design-inbox/data/seo-fixtures.js";
 import { graniteRidgeSnowFixture } from "../runtime/data/cases/granite-ridge-snow.js";
 import { assertJteSafeFamily } from "./export-granite-ridge-landing-blocks-manual.mjs";
 import { buildLiveLandingManual, exportLiveLandingManual, packageInventory, sourceLabel } from "./export-live-landing-manual.mjs";
+import { illustrationSlots, webpSize } from "./landing-illustrations.mjs";
 import { sha256 } from "./portal-manual-package.mjs";
 
 const root = path.resolve("app-templates/customer-portal");
@@ -123,7 +125,8 @@ try {
   assert.equal(manifest.template.robots, "noindex,nofollow");
 
   assert.doesNotMatch(html, /seo-trust|seo-proof|seo-price|seo-pricing|seo-review|seo-offer|seo-media|seo-slot|no-data|from CMS|data-pim|ui\.toggleMode/, "the trust, proof, pricing, reviews and media sections are dropped, with their placeholders");
-  assert.doesNotMatch(html, /<(?:img|iframe|video|form|input|script)\b|\bsrc=|\son[a-z]+=|javascript:/i, "the markup loads nothing and runs nothing inline");
+  const withoutEmbeddedArt = html.replace(/<img src="data:image\/webp;base64,[A-Za-z0-9+/=]+"/g, "<embedded-art");
+  assert.doesNotMatch(withoutEmbeddedArt, /<(?:img|iframe|video|form|input|script)\b|\bsrc=|\son[a-z]+=|javascript:/i, "the markup loads nothing and runs nothing inline; art is embedded");
   const modules = [...html.matchAll(/data-module="([^"]+)"/g)].map((match) => match[1]);
   for (const module of ["public-nav", "reason-notice", "seo-hero", "seo-services-grid", "seo-how-it-works", "seo-service-area", "seo-faq", "seo-final-cta", "seo-footer"]) {
     assert.ok(modules.includes(module), "the landing keeps its " + module + " section");
@@ -131,7 +134,47 @@ try {
   assert.deepEqual(manifest.sections, ["public-nav", "reason-notice", "hero", "services", "how-it-works", "service-area", "faq", "final-cta", "footer"]);
   assert.equal((html.match(/<h1\b/g) || []).length, 1, "the hero headline is the only h1");
   assert.doesNotMatch(html, /seo-media-slot|seo-hero__media/, "the hero shows no empty media placeholder");
-  assert.match(html, /class="snow-hero-art"[^>]*aria-hidden="true"/, "the hero art is decoration that assistive technology skips");
+  const slotsInPage = [...html.matchAll(/<div class="snow-art snow-art--[a-z]+" data-illustration="([a-z-]+)" data-illustration-state="(?:placeholder|art)" style="aspect-ratio:(\d+) \/ (\d+)" aria-hidden="true">/g)];
+  assert.deepEqual(slotsInPage.map((match) => [match[1], Number(match[2]), Number(match[3])]), illustrationSlots.map((slot) => [slot.name, slot.width, slot.height]), "every slot reserves its exact size, so art arriving moves nothing, and assistive technology skips it");
+  assert.deepEqual(manifest.illustrations.map((item) => item.slot), illustrationSlots.map((slot) => slot.name));
+  assert.equal((html.match(/<svg\b[^>]*>[\s\S]*?<\/svg>/g) || []).filter((svg) => /<text\b/.test(svg)).length, 0, "a placeholder carries no text");
+  const motionAt = css.indexOf("@media screen and (prefers-reduced-motion: no-preference)");
+  assert.ok(motionAt > 0, "the landing has motion, gated on the reduced-motion preference");
+  const landingCssAt = css.indexOf(".snow-main {");
+  assert.deepEqual([...css.slice(landingCssAt, motionAt).matchAll(/(?:^|[\s;{])animation[a-z-]*\s*:|@keyframes/g)], [], "no landing animation runs outside the reduced-motion gate");
+  assert.match(css.slice(motionAt), /@keyframes snow-fall-far[\s\S]*@keyframes snow-rise[\s\S]*animation-timeline: view\(\)/);
+  const promptsPath = path.join(root, "cms/granite-ridge-snow.landing-illustrations.md");
+  const prompts = await fs.readFile(promptsPath, "utf8");
+  for (const slot of illustrationSlots) {
+    assert.ok(prompts.includes("app-templates/customer-portal/assets/snow-landing/" + slot.file), "the Codex prompts name " + slot.file);
+    assert.ok(prompts.includes(slot.width + " x " + slot.height), "the Codex prompts state the size of " + slot.name);
+  }
+  const artDir = await fs.mkdtemp(path.join(os.tmpdir(), "snow-landing-art-"));
+  try {
+    const webp = (width, height) => {
+      const bytes = Buffer.alloc(40);
+      bytes.write("RIFF", 0, "latin1");
+      bytes.write("WEBP", 8, "latin1");
+      bytes.write("VP8X", 12, "latin1");
+      bytes.writeUIntLE(width - 1, 24, 3);
+      bytes.writeUIntLE(height - 1, 27, 3);
+      return bytes;
+    };
+    assert.deepEqual(webpSize(webp(960, 720)), { width: 960, height: 720 });
+    await fs.writeFile(path.join(artDir, "hero.webp"), webp(960, 720));
+    const withArt = await buildLiveLandingManual(structuredClone(source), sourceLabel(inputPath), { illustrationsDir: artDir });
+    assert.match(withArt.template.html, /data-illustration="hero" data-illustration-state="art"[^>]*><img src="data:image\/webp;base64,[A-Za-z0-9+/=]+" width="960" height="720" alt="" loading="lazy" decoding="async">/, "a file at the slot's path replaces its placeholder");
+    assert.equal(withArt.manifest.illustrations.find((item) => item.slot === "hero").state, "art");
+    assert.match(withArt.template.html, /data-illustration="final-cta" data-illustration-state="placeholder"/, "the slots without a file keep their placeholder");
+    await fs.writeFile(path.join(artDir, "hero.webp"), webp(800, 600));
+    await assert.rejects(buildLiveLandingManual(structuredClone(source), sourceLabel(inputPath), { illustrationsDir: artDir }), /must be exactly 960x720/);
+    await fs.writeFile(path.join(artDir, "hero.webp"), Buffer.alloc(40));
+    await assert.rejects(buildLiveLandingManual(structuredClone(source), sourceLabel(inputPath), { illustrationsDir: artDir }), /must be a WebP file/);
+    await fs.writeFile(path.join(artDir, "hero.webp"), Buffer.concat([webp(960, 720), Buffer.alloc(200 * 1024)]));
+    await assert.rejects(buildLiveLandingManual(structuredClone(source), sourceLabel(inputPath), { illustrationsDir: artDir }), /the slot allows/);
+  } finally {
+    await fs.rm(artDir, { recursive: true, force: true });
+  }
   assert.equal((html.match(/<button\b/g) || []).length, 2, "the only buttons close the two notices; every call to action is a link that works without JavaScript");
   assert.equal((html.match(/<details class="seo-faq__item">/g) || []).length, source.copy.faq.items.length, "every FAQ answer is in the markup and opens without JavaScript");
 

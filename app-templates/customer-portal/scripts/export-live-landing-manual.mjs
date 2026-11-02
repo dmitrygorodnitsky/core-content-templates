@@ -4,6 +4,7 @@ import process from "node:process";
 import { pathToFileURL } from "node:url";
 import { controlCharacterOffsets } from "./export-client-review-manual.mjs";
 import { assertJteSafeFamily, between, readDesignCss } from "./export-granite-ridge-landing-blocks-manual.mjs";
+import { illustrationCss, illustrationHtml, illustrationManifest, readIllustrations, serviceSlotNames, stepSlotNames } from "./landing-illustrations.mjs";
 import { assertExactInventory, replaceDirectory, sha256 } from "./portal-manual-package.mjs";
 
 const repoRoot = path.resolve(".");
@@ -37,18 +38,12 @@ const copyShape = {
   faq: { eyebrow: TEXT, title: TEXT, items: [{ question: TEXT, answer: TEXT }] },
   finalCta: { title: TEXT, sub: TEXT },
 };
-const servicePalettes = [
-  ["var(--accent)", "rgba(var(--accent-rgb),.12)"],
-  ["#1f8a44", "rgba(52,199,89,.16)"],
-  ["#ff8a3d", "rgba(255,159,10,.16)"],
-  ["#7a52e0", "rgba(122,82,224,.16)"],
-];
-
-export async function buildLiveLandingManual(source, input) {
+export async function buildLiveLandingManual(source, input, options = {}) {
   validateSource(source);
-  const template = templateFor(source, await stylesheet());
+  const illustrations = await readIllustrations(options.illustrationsDir);
+  const template = templateFor(source, await stylesheet(), illustrations);
   assertLandingTemplate(template);
-  const manifest = manifestFor(source, template, input);
+  const manifest = manifestFor(source, template, input, illustrations);
   const preview = previewFor(template);
   const readme = readmeFor(source, template, manifest);
   const files = [
@@ -184,6 +179,7 @@ async function stylesheet() {
     design.sections.finalCta,
     design.sections.footer,
     landingCss(),
+    illustrationCss(),
   ].join("\n\n") + "\n";
 }
 
@@ -197,13 +193,6 @@ function landingCss() {
 .snow-hero__inner { display: flex; align-items: center; justify-content: space-between; }
 .snow-hero__inner .seo-hero__copy { flex: 1 1 auto; min-width: 0; }
 .snow-hero__inner .seo-hero__title { text-wrap: pretty; }
-.snow-hero-art { flex: none; display: flex; flex-direction: column; gap: 12px; width: 280px; padding: 22px; border-radius: 20px; background: linear-gradient(160deg, rgba(255,255,255,.9), rgba(255,255,255,.55)); box-shadow: 0 14px 40px rgba(8,24,60,.3); }
-.snow-hero-art i { display: block; }
-.snow-hero-art__head { display: flex; align-items: center; gap: 10px; margin-bottom: 2px; }
-.snow-hero-art__head i { width: 120px; height: 10px; border-radius: 6px; background: rgba(var(--accent-rgb), .3); }
-.snow-hero-art__field { height: 32px; border-radius: 10px; background: #fff; box-shadow: inset 0 0 0 1px rgba(13,38,76,.08); }
-.snow-hero-art__field--short { width: 64%; }
-.snow-hero-art__action { width: 132px; height: 34px; margin-top: 4px; border-radius: 999px; background: linear-gradient(180deg, var(--accent-2), var(--accent)); box-shadow: 0 4px 12px rgba(var(--accent-rgb), .35), inset 0 1px 0 rgba(255,255,255,.4); }
 .seo-svc-grid--pair { grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); }
 .seo-svc--static { cursor: default; }
 .seo-svc--static:hover { transform: none; box-shadow: var(--shadow-card); }
@@ -224,9 +213,6 @@ summary.seo-faq__q::-webkit-details-marker { display: none; }
 .snow-notice__dismiss { flex: none; padding: 0; font: inherit; font-size: 18px; line-height: 1; color: var(--ink-2); }
 .snow-footer__base { margin-top: 0; padding-top: 0; border-top: 0; }
 .snow-footer__links { display: flex; flex-wrap: wrap; gap: 8px 18px; font-size: 13px; font-weight: 600; }
-@media (max-width: 1040px) {
-  .snow-hero-art { display: none; }
-}
 @media (max-width: 560px) {
   .snow-main { gap: 20px; }
   .top-nav { gap: 10px; }
@@ -241,7 +227,7 @@ summary.seo-faq__q::-webkit-details-marker { display: none; }
 }`;
 }
 
-function templateFor(source, css) {
+function templateFor(source, css, illustrations) {
   return {
     code: source.template.code,
     nls: { en: { NAME: source.template.title } },
@@ -259,7 +245,7 @@ function templateFor(source, css) {
       '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>',
       '<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;530;600;700;800&display=swap" rel="stylesheet">',
     ].join("\n"),
-    html: htmlFor(source),
+    html: htmlFor(source, illustrations),
     css,
     javascript: runtimeScript(),
     parameters: parametersFor(source),
@@ -322,7 +308,7 @@ function addressParameter(code, value, description) {
   return { code, type: "STRING", nls: { en: { NAME: code.replace(/_/g, " "), DESCRIPTION: description } }, value };
 }
 
-function htmlFor(source) {
+function htmlFor(source, illustrations) {
   const copy = source.copy;
   return [
     '<div class="app-shell snow-landing" id="' + landingShellId + '" data-module="app-shell" data-visual-id="app-shell">',
@@ -330,12 +316,12 @@ function htmlFor(source) {
     '  <div class="page seo-page" data-visual-id="seo-landing">',
     '    <main class="snow-main">',
     noticesHtml(),
-    heroHtml(),
-    servicesHtml(copy.services.items.length),
-    howHtml(copy.how.steps.length),
-    areaHtml(source.serviceArea.cities.length),
+    heroHtml(illustrations),
+    servicesHtml(copy.services.items.length, illustrations),
+    howHtml(copy.how.steps.length, illustrations),
+    areaHtml(source.serviceArea.cities.length, illustrations),
     faqHtml(copy.faq.items.length),
-    finalHtml(),
+    finalHtml(illustrations),
     "    </main>",
     footerHtml(),
     "  </div>",
@@ -374,27 +360,28 @@ function noticesHtml() {
   ].join("\n");
 }
 
-function heroHtml() {
+function heroHtml(illustrations) {
   return [
     '      <section class="seo-hero" data-module="seo-hero" data-visual-id="seo-hero">',
+    '        <div class="snow-flakes" aria-hidden="true"></div>',
     '        <div class="seo-hero__inner snow-hero__inner">',
     '          <div class="seo-hero__copy">',
     '            <h1 class="seo-hero__title">' + ref("HERO_TITLE") + "</h1>",
     '            <p class="seo-hero__sub">' + ref("HERO_SUB") + "</p>",
     '            <div class="seo-hero__ctas">' + callToAction("btn--onaccent", "seo-hero-primary-cta", "request-quote", "REQUEST_QUOTE_LABEL") + callToAction("btn--glass-hero", "seo-hero-secondary-cta", "sign-in", "SIGN_IN_LABEL") + "</div>",
     "          </div>",
-    '          <div class="snow-hero-art" data-visual-id="seo-hero-art" aria-hidden="true"><div class="snow-hero-art__head"><span class="brand-logo"></span><i></i></div><i class="snow-hero-art__field"></i><i class="snow-hero-art__field"></i><i class="snow-hero-art__field snow-hero-art__field--short"></i><i class="snow-hero-art__action"></i></div>',
+    "          " + illustrationHtml("hero", illustrations),
     "        </div>",
     "      </section>",
   ].join("\n");
 }
 
-function servicesHtml(count) {
+function servicesHtml(count, illustrations) {
   const cards = [];
   for (let index = 1; index <= count; index += 1) {
-    const palette = servicePalettes[(index - 1) % servicePalettes.length];
+    const art = serviceSlotNames[index - 1];
     cards.push('          <div class="seo-svc seo-svc--static" data-module="seo-service-card" data-visual-id="seo-service-card">'
-      + '<div class="seo-svc__icon" style="background:' + palette[1] + '"><i style="background:' + palette[0] + '"></i></div>'
+      + (art ? illustrationHtml(art, illustrations) : "")
       + '<div class="seo-svc__name">' + ref("SERVICES_ITEM_" + index + "_NAME") + "</div>"
       + '<div class="seo-svc__benefit">' + ref("SERVICES_ITEM_" + index + "_TEXT") + "</div></div>");
   }
@@ -408,10 +395,11 @@ function servicesHtml(count) {
   ].join("\n");
 }
 
-function howHtml(count) {
+function howHtml(count, illustrations) {
   const steps = [];
   for (let index = 1; index <= count; index += 1) {
-    steps.push('          <div class="seo-how__step"><div class="seo-how__num">' + index + '</div><div class="seo-how__title">' + ref("HOW_STEP_" + index + "_TITLE") + '</div><div class="seo-how__desc">' + ref("HOW_STEP_" + index + "_TEXT") + "</div></div>");
+    const art = stepSlotNames[index - 1];
+    steps.push('          <div class="seo-how__step"><div class="snow-how__head"><div class="seo-how__num">' + index + "</div>" + (art ? illustrationHtml(art, illustrations) : "") + '</div><div class="seo-how__title">' + ref("HOW_STEP_" + index + "_TITLE") + '</div><div class="seo-how__desc">' + ref("HOW_STEP_" + index + "_TEXT") + "</div></div>");
   }
   return [
     '      <section class="seo-sec" data-module="seo-how-it-works" data-visual-id="seo-how-it-works">',
@@ -423,14 +411,14 @@ function howHtml(count) {
   ].join("\n");
 }
 
-function areaHtml(count) {
+function areaHtml(count, illustrations) {
   let cities = "";
   for (let index = 1; index <= count; index += 1) cities += '<span class="seo-area__chip">' + ref("AREA_CITY_" + index) + "</span>";
   return [
     '      <section class="seo-sec seo-sec--tint" data-module="seo-service-area" data-visual-id="seo-service-area">',
     '        <div class="seo-area">',
     '          <div class="snow-area__intro"><div class="seo-sec__head"><span class="eyebrow">' + ref("AREA_EYEBROW") + '</span><h2 class="seo-sec__title">' + ref("AREA_TITLE") + '</h2></div><p class="seo-area__note">' + ref("AREA_NOTE") + "</p></div>",
-    '          <div><div class="seo-area__region">' + ref("AREA_REGION") + '</div><div class="seo-area__cities">' + cities + "</div></div>",
+    '          <div><div class="seo-area__region">' + ref("AREA_REGION") + '</div><div class="seo-area__cities">' + cities + "</div>" + illustrationHtml("service-area", illustrations) + "</div>",
     "        </div>",
     "      </section>",
   ].join("\n");
@@ -451,12 +439,14 @@ function faqHtml(count) {
   ].join("\n");
 }
 
-function finalHtml() {
+function finalHtml(illustrations) {
   return [
     '      <section class="seo-final" data-module="seo-final-cta" data-visual-id="seo-final-cta">',
+    '        <div class="snow-flakes" aria-hidden="true"></div>',
     '        <h2 class="seo-final__title">' + ref("FINAL_TITLE") + "</h2>",
     '        <p class="seo-final__sub">' + ref("FINAL_SUB") + "</p>",
     '        <div class="seo-final__ctas">' + callToAction("btn--onaccent", "seo-final-primary-cta", "request-quote", "REQUEST_QUOTE_LABEL") + callToAction("btn--glass-hero", "seo-final-secondary-cta", "sign-in", "SIGN_IN_LABEL") + "</div>",
+    "        " + illustrationHtml("final-cta", illustrations),
     "      </section>",
   ].join("\n");
 }
@@ -570,7 +560,7 @@ function assertLandingTemplate(template) {
   }
 }
 
-function manifestFor(source, template, input) {
+function manifestFor(source, template, input, illustrations) {
   return {
     schemaVersion: 1,
     uploadPerformed: false,
@@ -591,6 +581,7 @@ function manifestFor(source, template, input) {
     notices: { parameter: noticeParameter, reasons: noticeReasons.slice() },
     sections: landingSections.slice(),
     openedLiveContracts: [],
+    illustrations: illustrationManifest(illustrations),
     constraints: source.constraints,
   };
 }
@@ -620,6 +611,14 @@ function readmeFor(source, template, manifest) {
     "| robots | `" + landingRobots + "` |",
     "| launch state | `" + manifest.launchState + "` |",
     "| sections | " + landingSections.map((name) => "`" + name + "`").join(", ") + " |",
+    "",
+    "## Illustrations",
+    "",
+    "A slot shows its placeholder until its file exists under `assets/snow-landing/`; the exporter then embeds it, refusing a wrong size or an oversized file. Prompts: `cms/granite-ridge-snow.landing-illustrations.md`.",
+    "",
+    "| slot | file | size | state |",
+    "| --- | --- | --- | --- |",
+    ...manifest.illustrations.map((item) => "| `" + item.slot + "` | `" + item.file + "` | " + item.width + " x " + item.height + " | " + item.state + " |"),
     "",
     "## Destinations",
     "",

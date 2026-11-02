@@ -116,6 +116,7 @@
     "Only the two reason values the portal sends show a notice: ?portal=signed-out and ?portal=no-access. The notice text is CMS copy; any other value or any extra parameter shows nothing, and without JavaScript no notice shows.",
     "The copy states only what the tenant's quotation flow does. It carries no reviews, ratings, customer counts, years in business, certifications, guarantees, response times, phone numbers, email addresses, street addresses or prices.",
     "Every parameter ships a value, because CMS creates no PageContext for a template with an empty parameter. A destination holding the # placeholder is read as not set, and its links are disabled.",
-    "The page emits noindex,nofollow while the tenant is on staging."
+    "The page emits noindex,nofollow while the tenant is on staging.",
+    "Illustrations are decoration without text or claims: each slot shows an inline placeholder until its file exists under assets/snow-landing/, and motion runs only under prefers-reduced-motion: no-preference."
   ]
 }

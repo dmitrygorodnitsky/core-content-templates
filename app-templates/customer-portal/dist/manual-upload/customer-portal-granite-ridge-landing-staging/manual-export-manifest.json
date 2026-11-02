@@ -67,8 +67,8 @@
     ],
     "sha256": {
       "head": "062ac366a4b7b6c29c6ec30dc5f13a1ec12a194909bc40aa99292ff6a601c17d",
-      "html": "e2bebdae663ef7fc096855a136d74fd8dd7ced952277624f23e218e50a4478b0",
-      "css": "e8d2293e4d8bdc8916e8f871c3675c6a126190741bcbf65b49470dbd2db01acc",
+      "html": "d50c860358748abbe946cce2053146cb0cd484ae1e73ec810665d2c656ac0a64",
+      "css": "0635dcace7efbf37a301d1e82a17f1b3b817e21070f799ad97fa7b814b45d92f",
       "javascript": "9be253abb5093e8404c0d5ba3bf82ebd7262e67482959cbadbcb0764cbc81801"
     }
   },
@@ -106,12 +106,87 @@
     "footer"
   ],
   "openedLiveContracts": [],
+  "illustrations": [
+    {
+      "slot": "hero",
+      "file": "assets/snow-landing/hero.webp",
+      "width": 960,
+      "height": 720,
+      "maxBytes": 184320,
+      "state": "placeholder"
+    },
+    {
+      "slot": "service-snow-removal",
+      "file": "assets/snow-landing/service-snow-removal.webp",
+      "width": 720,
+      "height": 480,
+      "maxBytes": 92160,
+      "state": "placeholder"
+    },
+    {
+      "slot": "service-de-icing",
+      "file": "assets/snow-landing/service-de-icing.webp",
+      "width": 720,
+      "height": 480,
+      "maxBytes": 92160,
+      "state": "placeholder"
+    },
+    {
+      "slot": "step-request",
+      "file": "assets/snow-landing/step-request.webp",
+      "width": 240,
+      "height": 240,
+      "maxBytes": 30720,
+      "state": "placeholder"
+    },
+    {
+      "slot": "step-prepare",
+      "file": "assets/snow-landing/step-prepare.webp",
+      "width": 240,
+      "height": 240,
+      "maxBytes": 30720,
+      "state": "placeholder"
+    },
+    {
+      "slot": "step-accept",
+      "file": "assets/snow-landing/step-accept.webp",
+      "width": 240,
+      "height": 240,
+      "maxBytes": 30720,
+      "state": "placeholder"
+    },
+    {
+      "slot": "step-portal",
+      "file": "assets/snow-landing/step-portal.webp",
+      "width": 240,
+      "height": 240,
+      "maxBytes": 30720,
+      "state": "placeholder"
+    },
+    {
+      "slot": "service-area",
+      "file": "assets/snow-landing/service-area.webp",
+      "width": 960,
+      "height": 600,
+      "maxBytes": 122880,
+      "state": "placeholder"
+    },
+    {
+      "slot": "final-cta",
+      "file": "assets/snow-landing/final-cta.webp",
+      "width": 1600,
+      "height": 400,
+      "maxBytes": 143360,
+      "state": "placeholder"
+    }
+  ],
   "constraints": [
     "The page is public and anonymous: no block calls a backend, reads a session or shows customer, account, order or payment data.",
     "Every destination is an absolute https address on dev-1.servicewand.com: this landing, the quote form, and the sign-in address portal#/login.",
     "Only the two reason values the portal sends show a notice: ?portal=signed-out and ?portal=no-access. The notice text is CMS copy; any other value or any extra parameter shows nothing, and without JavaScript no notice shows.",
     "The copy states only what the tenant's quotation flow does. It carries no reviews, ratings, customer counts, years in business, certifications, guarantees, response times, phone numbers, email addresses, street addresses or prices.",
     "Every parameter ships a value, because CMS creates no PageContext for a template with an empty parameter. A destination holding the # placeholder is read as not set, and its links are disabled.",
-    "The page emits noindex,nofollow while the tenant is on staging."
+    "The page emits noindex,nofollow while the tenant is on staging.",
+    "Illustrations are decoration without text or claims: each slot shows an inline placeholder until its file exists under assets/snow-landing/, and motion runs only under prefers-reduced-motion: no-preference."
   ]
 }
