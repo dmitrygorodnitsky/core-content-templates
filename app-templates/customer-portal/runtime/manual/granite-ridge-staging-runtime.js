@@ -3048,6 +3048,8 @@
   // app-templates/customer-portal/runtime/src/adapters/core-oidc-adapter.js
   var CORE_OIDC_REFRESH_LOCK = "oidc-token-refresh";
   var EXPIRING_THRESHOLD_SECONDS = 60;
+  var SIGN_IN_STARTED_KEY = "oidc-sign-in-started-at";
+  var SIGN_IN_RETURN_HOLD_MS = 3e4;
   var manager = null;
   var renewal = null;
   var detachRenewal = null;
@@ -3229,7 +3231,12 @@
     if (!manager) return Promise.reject(contractError("oidc-manager-unavailable", "Core sign-in is not ready"));
     var returnUrl = portalRouteUrl(config, config.defaultRoute || "orders.list");
     globalThis.sessionStorage.setItem(config.authReturnStorageKey || "oidc-return-url", returnUrl.href);
-    return manager.signinRedirect();
+    globalThis.sessionStorage.setItem(SIGN_IN_STARTED_KEY, String(Date.now()));
+    return manager.signinRedirect({ redirectMethod: "replace" });
+  }
+  function coreOidcSignInJustStarted() {
+    var startedAt = Number(globalThis.sessionStorage.getItem(SIGN_IN_STARTED_KEY));
+    return startedAt > 0 && Date.now() - startedAt < SIGN_IN_RETURN_HOLD_MS;
   }
   function startCoreOidcSignOut(config) {
     if (!manager) return Promise.reject(contractError("oidc-manager-unavailable", "Core sign-out is not ready"));
@@ -15323,6 +15330,12 @@
     globalThis.location.replace(destination);
     return true;
   }
+  function continueToCoreSignIn() {
+    if (state.route !== "auth.oidc" || state.oidc !== "ready-signed-out" || state.account !== "session-required") return false;
+    if (!landingEntryOpen(state.config) || coreOidcSignInJustStarted()) return false;
+    ACTIONS["auth.oidcSignIn"]();
+    return true;
+  }
   function loadGrantedCareTransition() {
     var envelope2 = state.moduleData.care;
     var granted = state.config.dataMode === "fixture" && state.config.enabledModules.includes("care") && state.session.authenticated === true && state.session.hasCustomerScope === true && state.session.hasTenantScope === true && state.access && state.access.care && state.access.care.status === "granted";
@@ -15339,7 +15352,7 @@
     });
   }
   function render() {
-    if (leavingFor) return;
+    if (leavingFor || continueToCoreSignIn()) return;
     var root = document.documentElement;
     root.setAttribute("data-theme", state.config.theme);
     root.setAttribute("data-mode", state.mode === "Dark" ? "dark" : "light");

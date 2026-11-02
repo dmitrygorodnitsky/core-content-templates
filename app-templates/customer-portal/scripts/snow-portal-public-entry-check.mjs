@@ -114,7 +114,10 @@ async function main() {
     { id: "signed out on a private route", hash: "#/overview", session: "signed-out", replaced: [LANDING], last: "oidc:checking-session", never: ["oidc:ready-signed-out"] },
     { id: "signed out on the bare portal address", hash: "", session: "signed-out", replaced: [LANDING], last: "oidc:checking-session", never: ["oidc:ready-signed-out"] },
     { id: "signed out on a property link", hash: "#/properties/9101", session: "signed-out", replaced: [LANDING], last: "oidc:checking-session" },
-    { id: "signed out on #/login", hash: "#/login", session: "signed-out", replaced: [], last: "oidc:ready-signed-out", actions: ["auth.oidcSignIn"] },
+    { id: "signed out on #/login", hash: "#/login", session: "signed-out", replaced: [], last: "oidc:redirecting", never: ["oidc:ready-signed-out"], signinRedirect: 1 },
+    { id: "a return to #/login right after sign-in started", hash: "#/login", session: "signed-out", signInStartedAgo: 5000, replaced: [], last: "oidc:ready-signed-out", actions: ["auth.oidcSignIn"], signinRedirect: 0 },
+    { id: "a visit to #/login long after an earlier sign-in", hash: "#/login", session: "signed-out", signInStartedAgo: 600000, replaced: [], last: "oidc:redirecting", never: ["oidc:ready-signed-out"], signinRedirect: 1 },
+    { id: "setting off, signed out on #/login", hash: "#/login", session: "signed-out", off: true, replaced: [], last: "oidc:ready-signed-out", actions: ["auth.oidcSignIn"], signinRedirect: 0 },
     { id: "session check still running", hash: "#/overview", session: "signed-out", discovery: "pending", replaced: [], last: "oidc:checking-session" },
     { id: "sign-in library missing", hash: "#/overview", session: "signed-out", oidcLibrary: false, replaced: [], last: "oidc:unavailable", actions: ["auth.retrySession", "nav.landing"] },
     { id: "Core discovery failing", hash: "#/overview", session: "signed-out", discovery: "fail", replaced: [], last: "oidc:unavailable" },
@@ -130,14 +133,14 @@ async function main() {
     { id: "a jump to #/login while the Account resolves", hash: "#/overview", session: "signed-in", account: "pending", steps: [{ hash: "#/profile" }, { hash: "#/login" }], replaced: [], last: "gate:resolving-customer", address: "#/login", writes: [["replace", "#/login"], ["jump", "#/profile"], ["jump", "#/login"]] },
     { id: "the Account resolving after a jump to #/login", hash: "#/overview", session: "signed-in", account: "pending", steps: [{ hash: "#/profile" }, { hash: "#/login" }, { release: "account" }], replaced: [], last: "route:overview", route: "overview", address: "#/overview", writes: [["replace", "#/login"], ["jump", "#/profile"], ["jump", "#/login"], ["replace", "#/overview"]] },
     { id: "customer-not-linked, a jump to #/login", hash: "#/login", session: "signed-in", account: "customer-not-linked", steps: [{ hash: "#/profile" }, { hash: "#/login" }], replaced: [], last: "gate:customer-not-linked", address: "#/login", actions: ["auth.signOut"], writes: [["jump", "#/profile"], ["jump", "#/login"]] },
-    { id: "a page restored while it was leaving for Core sign-in", hash: "#/login", session: "signed-out", steps: [{ click: "oidc-signin" }, { pageshow: true }], replaced: [], reloads: 1 },
+    { id: "a page restored while it was leaving for Core sign-in", hash: "#/login", session: "signed-out", signInStartedAgo: 5000, steps: [{ click: "oidc-signin" }, { pageshow: true }], replaced: [], reloads: 1 },
     { id: "a page restored while it was signing out", hash: "#/login", session: "signed-in", account: "customer-not-linked", steps: [{ click: "account-signout" }, { signOutElsewhere: true }, { pageshow: true }], replaced: [], reloads: 1, signedOutTo: SIGNED_OUT_RETURN },
     { id: "a page restored after its session ended elsewhere", hash: "#/overview", session: "signed-in", account: "ready", steps: [{ signOutElsewhere: true }, { pageshow: true }], replaced: [], reloads: 1 },
     { id: "a signed-in page restored after its stored session expired", hash: "#/overview", session: "signed-in", account: "ready", steps: [{ expireStoredSession: true }, { pageshow: true }], replaced: [], reloads: 1 },
-    { id: "a signed-out page restored after a sign-in elsewhere", hash: "#/login", session: "signed-out", steps: [{ signInElsewhere: true }, { pageshow: true }], replaced: [], reloads: 1 },
+    { id: "a signed-out page restored after a sign-in elsewhere", hash: "#/login", session: "signed-out", signInStartedAgo: 5000, steps: [{ signInElsewhere: true }, { pageshow: true }], replaced: [], reloads: 1 },
     { id: "a signed-in page restored with the same session", hash: "#/overview", session: "signed-in", account: "ready", steps: [{ pageshow: true }], replaced: [], reloads: 0, last: "route:overview" },
-    { id: "a signed-out page restored with no session", hash: "#/login", session: "signed-out", steps: [{ pageshow: true }], replaced: [], reloads: 0, last: "oidc:ready-signed-out" },
-    { id: "a first page load", hash: "#/login", session: "signed-out", steps: [{ click: "oidc-signin" }, { pageshow: false }], replaced: [], reloads: 0, last: "oidc:redirecting" },
+    { id: "a signed-out page restored with no session", hash: "#/login", session: "signed-out", signInStartedAgo: 5000, steps: [{ pageshow: true }], replaced: [], reloads: 0, last: "oidc:ready-signed-out" },
+    { id: "a first page load", hash: "#/login", session: "signed-out", signInStartedAgo: 5000, steps: [{ click: "oidc-signin" }, { pageshow: false }], replaced: [], reloads: 0, last: "oidc:redirecting" },
     { id: "a reload with an expired session that can still be refreshed", hash: "#/overview", session: "expired", refreshable: true, staleToken: "everywhere", replaced: [], last: "route:overview", route: "overview", signinSilent: 1, sessionToken: "renewed-access-token" },
     { id: "a reload with an expired session whose refresh is rejected", hash: "#/overview", session: "expired", refreshable: true, refresh: "rejected", replaced: [LANDING], last: "oidc:checking-session", signinSilent: 1, removedUser: 1 },
     { id: "a reload with an expired session and no refresh token", hash: "#/overview", session: "expired", replaced: [LANDING], last: "oidc:checking-session", removedUser: 1 },
@@ -171,6 +174,8 @@ async function main() {
     for (const card of scenario.neverAfterSteps || []) assert.equal(result.cardsAfterSteps.includes(card), false, label + ": " + card + " never renders after the jump");
     assert.equal(result.cardsAfterSteps.includes("oidc:ready-signed-in"), false, label + ": no signed-in sign-in card");
     assert.equal(result.reloads, scenario.reloads || 0, label + ": reloads");
+    if (scenario.signinRedirect !== undefined) assert.equal(result.calls.signinRedirect, scenario.signinRedirect, label + ": Core sign-in starts");
+    if (scenario.signinRedirect) assert.equal(result.calls.signinRedirectMethod, "replace", label + ": the sign-in route leaves no history entry to come back to");
     if (scenario.signedOutTo) {
       assert.equal(result.calls.signoutRedirect, 1, label + ": Core sign-out starts once");
       assert.equal(result.logoutReturn, scenario.signedOutTo, label + ": the shared Core callback finds the landing with the signed-out reason");
@@ -307,6 +312,7 @@ function installBrowser({ hash, dataset = {}, scenario = {} }) {
     return { getItem: (key) => (values.has(key) ? values.get(key) : null), setItem: (key, value) => values.set(key, String(value)), removeItem: (key) => values.delete(key), clear: () => values.clear(), key: (index) => Array.from(values.keys())[index] || null, get length() { return values.size; } };
   };
   const sessionStorage = memoryStorage();
+  if (scenario.signInStartedAgo) sessionStorage.setItem("oidc-sign-in-started-at", String(Date.now() - scenario.signInStartedAgo));
   const windowListeners = {};
   Object.assign(globalThis, {
     window: globalThis,
@@ -382,7 +388,7 @@ function oidcLibrary(session, calls, scenario) {
       }
       async getUser() { return session.user; }
       async removeUser() { calls.removeUser += 1; session.user = null; }
-      async signinRedirect() { calls.signinRedirect += 1; }
+      async signinRedirect(args) { calls.signinRedirect += 1; calls.signinRedirectMethod = args && args.redirectMethod; }
       async signoutRedirect() { calls.signoutRedirect += 1; }
       async signinSilent() {
         calls.signinSilent += 1;

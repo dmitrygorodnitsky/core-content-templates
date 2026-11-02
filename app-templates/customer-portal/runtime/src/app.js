@@ -1,13 +1,13 @@
 // customer-portal/runtime/src/app.js — production transfer module.
 import { F } from "../data/fixtures.js";
 import { clear, h } from "./dom.js";
-import { readPortalConfig } from "./config.js";
+import { landingEntryOpen, readPortalConfig } from "./config.js";
 import { activeProfile, applyPortalConfig, cmdPhase, currentFixture, currentTheme, customerPortalAccessRequired, customerPortalGateActive, isPublic, isSpa, state } from "./state.js";
 import { loadLiveWeather } from "./live-weather.js";
 import { ACTIONS, bindActions, go, setState, toast } from "./actions.js";
 import { initRouter, publicEntryDestination, renderRoute } from "./router.js";
 import { PortalRuntime } from "./portal-runtime.js";
-import { onCoreOidcSessionChange, storedCoreOidcUser } from "./adapters/core-oidc-adapter.js";
+import { coreOidcSignInJustStarted, onCoreOidcSessionChange, storedCoreOidcUser } from "./adapters/core-oidc-adapter.js";
 import { ActionButton } from "./components/primitives/ActionButton.js";
 import { InlineFailure } from "./components/primitives/RouteStates.js";
 import { SimulationBadge } from "./components/spa/CommerceBits.js";
@@ -76,6 +76,13 @@ function leaveForPublicEntry() {
   return true;
 }
 
+function continueToCoreSignIn() {
+  if (state.route !== "auth.oidc" || state.oidc !== "ready-signed-out" || state.account !== "session-required") return false;
+  if (!landingEntryOpen(state.config) || coreOidcSignInJustStarted()) return false;
+  ACTIONS["auth.oidcSignIn"]();
+  return true;
+}
+
 function loadGrantedCareTransition() {
   var envelope = state.moduleData.care;
   var granted = state.config.dataMode === "fixture"
@@ -99,7 +106,7 @@ function loadGrantedCareTransition() {
 }
 
 export function render() {
-  if (leavingFor) return;
+  if (leavingFor || continueToCoreSignIn()) return;
   /* theming: declarative attributes only */
   var root = document.documentElement;
   root.setAttribute("data-theme", state.config.theme);

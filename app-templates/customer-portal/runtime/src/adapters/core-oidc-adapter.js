@@ -2,6 +2,8 @@ import { routePath } from "../config.js";
 
 export const CORE_OIDC_REFRESH_LOCK = "oidc-token-refresh";
 const EXPIRING_THRESHOLD_SECONDS = 60;
+const SIGN_IN_STARTED_KEY = "oidc-sign-in-started-at";
+const SIGN_IN_RETURN_HOLD_MS = 30000;
 
 var manager = null;
 var renewal = null;
@@ -193,7 +195,13 @@ export function startCoreOidcSignIn(config) {
   if (!manager) return Promise.reject(contractError("oidc-manager-unavailable", "Core sign-in is not ready"));
   var returnUrl = portalRouteUrl(config, config.defaultRoute || "orders.list");
   globalThis.sessionStorage.setItem(config.authReturnStorageKey || "oidc-return-url", returnUrl.href);
-  return manager.signinRedirect();
+  globalThis.sessionStorage.setItem(SIGN_IN_STARTED_KEY, String(Date.now()));
+  return manager.signinRedirect({ redirectMethod: "replace" });
+}
+
+export function coreOidcSignInJustStarted() {
+  var startedAt = Number(globalThis.sessionStorage.getItem(SIGN_IN_STARTED_KEY));
+  return startedAt > 0 && Date.now() - startedAt < SIGN_IN_RETURN_HOLD_MS;
 }
 
 export function startCoreOidcSignOut(config) {
