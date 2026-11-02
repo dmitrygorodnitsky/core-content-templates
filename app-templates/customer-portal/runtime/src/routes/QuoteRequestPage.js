@@ -5,7 +5,7 @@ import { ActionButton } from "../components/primitives/ActionButton.js";
 import { ErrorState } from "../components/primitives/ErrorState.js";
 import { skel } from "../components/primitives/RouteStates.js";
 import { PendingNote } from "../components/proposals/ContractStates.js";
-import { LocationMap, placeEach } from "../components/storm/PropertyMap.js";
+import { LocationMap, placeEach, propertyPlace } from "../components/storm/PropertyMap.js";
 import { icon } from "../components/storm/overview-icons.js";
 import { formatArea } from "../normalizers/overview.js";
 import { addressRepeats } from "../normalizers/postal-address.js";
@@ -178,8 +178,8 @@ function RequestMap(request, properties) {
   var chosen = properties.filter(function (property) { return request.draft.propertyIds.indexOf(property.backendId) !== -1; });
   var located = request.draft.addresses.filter(function (entry) { return !!entry.point; });
   if (!chosen.length && !located.length) return null;
-  var places = chosen.map(function (property) { return { id: property.id, name: property.name }; })
-    .concat(located.map(function (entry, index) { return { id: "quote-request-address-" + index, name: entry.address, color: "var(--warn)" }; }));
+  var places = chosen.map(propertyPlace)
+    .concat(located.map(function (entry, index) { return { id: "quote-request-address-" + index, name: entry.address }; }));
   var placements = placeEach(map, chosen).concat(located.map(function (entry) { return { point: entry.point, reason: "stored" }; }));
   return h("div", { "class": "ov-map__stage quote-request__map", "data-module": "quote-request-map", "data-visual-id": "quote-request-map", "data-surface": "google" }, [
     LocationMap(map, viewport, places, placements, "Finding these properties on the map…"),

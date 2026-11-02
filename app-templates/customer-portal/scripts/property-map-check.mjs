@@ -806,6 +806,19 @@ const PERIODS = Array.from({ length: 7 }, (_, index) => ({
   assert.equal(pin.getAttribute("role"), "img");
   assert.equal(pin.getAttribute("aria-label"), "Frost Lane on the map");
   assert.equal(pin.getAttribute("data-action"), null);
+  assert.equal(pin.getAttribute("data-weather"), null, "without a weather reading the pin falls under the marker-red rule");
+  assert.doesNotMatch(pin.getAttribute("style") || "", /(^|[;\s])color:/, "no inline colour overrides the marker red");
+  assert.equal(pin.getAttribute("tabindex"), "0", "the keyboard reaches a pin that leads nowhere, so its card can show");
+  const locationCards = google.log.maps[0].panes.floatPane.children[1];
+  fire(pin, "pointerenter", { pointerType: "mouse" });
+  assert.equal(locationCards.children[0].getAttribute("data-module"), "property-pin-card", "hovering any page's pin shows the home page's card");
+  assert.match(locationCards.children[0].textContent, /^Frost Lane/);
+  fire(pin, "pointerleave", { pointerType: "mouse" });
+  assert.equal(locationCards.children.length, 0);
+  fire(pin, "click", { pointerType: "touch" });
+  assert.equal(locationCards.children.length, 1, "a tap shows the card where there is no hover");
+  fire(pin, "click", { pointerType: "touch" });
+  assert.equal(locationCards.children.length, 0);
   const at = google.projection.fromLatLngToDivPixel(new google.maps.LatLng(49.12, -122.84));
   assert.equal(pin.style.left, at.x + "px", "the pin is drawn at the property's stored coordinate");
   assert.equal(pin.style.top, at.y + "px");
@@ -869,6 +882,10 @@ const PERIODS = Array.from({ length: 7 }, (_, index) => ({
   assert.deepEqual(portfolioPins.map((item) => [item.tagName, item.getAttribute("data-action"), item.getAttribute("data-id"), item.getAttribute("aria-label")]), [
     ["BUTTON", "proposal.open", "quote-1-21", "Frost Lane — Awaiting your decision"],
   ], "only placed properties get a pin, and each pin is a button that opens its quotes");
+  fire(portfolioPins[0], "pointerenter", { pointerType: "mouse" });
+  assert.equal(portfolioGoogle.log.maps[0].panes.floatPane.children[1].children[0].textContent, "Frost Lane" + frost.address + " · Awaiting your decision", "the portfolio's card names the property, its address and the decision the pin colour no longer carries");
+  fire(portfolioPins[0], "pointerleave", { pointerType: "mouse" });
+  assert.doesNotMatch(portfolioPins[0].getAttribute("style") || "", /(^|[;\s])color:/, "a decision does not recolour the pin");
   fire(portfolioPins[0].children[0], "click");
   assert.deepEqual(dispatched, [["proposal.open", "quote-1-21"]]);
   const tags = QuoteGroups(groups, settled, true).querySelectorAll(".proposal-card__tag").map((tag) => [tag.getAttribute("data-placement"), tag.textContent]);

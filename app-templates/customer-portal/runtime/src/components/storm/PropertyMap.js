@@ -102,6 +102,13 @@ export function createPropertyMap(options) {
 
   function bindCard(pin) {
     var element = pin.element;
+    if (pin.tapCard) {
+      element.addEventListener("click", function (event) {
+        if (event.pointerType !== "touch") return;
+        if (carded === pin) hideCard();
+        else showCard(pin);
+      });
+    }
     element.addEventListener("pointerenter", function (event) { if (event.pointerType !== "touch") showCard(pin); });
     element.addEventListener("pointerleave", function () { if (carded === pin) hideCard(); });
     element.addEventListener("focus", function () { if (keyboardFocus(element)) showCard(pin); });
@@ -289,7 +296,7 @@ export function PropertyStage(props) {
         return {
           id: entry.property.id, point: entry.point,
           element: PropertyPin(entry.property, props.frame, entry === chosen, props.sources, props.direct),
-          card: PinCard(entry.property),
+          card: PinCard(entry.property.name, propertyLine(entry.property)),
         };
       }),
       popup: popup ? { point: chosen.point, element: popup } : null,
@@ -344,7 +351,7 @@ export function LocationMap(map, viewport, places, placements, locatingText) {
   var pins = [];
   places.forEach(function (place, index) {
     var point = placements[index].point;
-    if (point) pins.push({ id: place.id, point: point, element: LocationPin(place) });
+    if (point) pins.push({ id: place.id, point: point, element: LocationPin(place), card: PinCard(place.name, place.line), tapCard: !place.action });
   });
   return map.stage({
     viewport: viewport,
@@ -370,7 +377,7 @@ export function PropertyLocation(props) {
       h("h2", { "class": "ov-card__title", id: "property-location-title" }, "Location"),
     ]),
     h("div", { "class": "ov-map__stage", "data-surface": "google" }, [
-      LocationMap(map, props.viewport, [{ id: property.id, name: property.name }], [placement], "Finding it on the map…"),
+      LocationMap(map, props.viewport, [propertyPlace(property)], [placement], "Finding it on the map…"),
     ]),
     placement.point && props.link
       ? h("button", { "class": "link-action", type: "button", "data-action": props.link.action, "data-id": props.link.id, "data-visual-id": "property-location-link", style: "margin-top:12px" }, props.link.label + " ›")
@@ -378,11 +385,19 @@ export function PropertyLocation(props) {
   ]);
 }
 
+export function propertyPlace(property) {
+  return { id: property.id, name: property.name, line: propertyLine(property) };
+}
+
+export function placeLine(name, address, note) {
+  return [address && !addressRepeats(name, address) ? address : "", note].filter(Boolean).join(" · ");
+}
+
 function LocationPin(place) {
   var label = place.name + " on the map";
-  var attributes = { "class": "ov-pin", "data-module": "location-pin", "data-visual-id": "location-pin", "data-id": place.id, "data-state": place.state || undefined, style: "color:" + (place.color || "var(--accent)") };
+  var attributes = { "class": "ov-pin", "data-module": "location-pin", "data-visual-id": "location-pin", "data-id": place.id, "data-state": place.state || undefined };
   if (!place.action) {
-    return h("span", Object.assign(attributes, { role: "img", "aria-label": label, style: attributes.style + ";cursor:default" }), [icon("pin", "ov-pin__glyph")]);
+    return h("span", Object.assign(attributes, { role: "img", tabindex: "0", "aria-label": label, style: "cursor:default" }), [icon("pin", "ov-pin__glyph")]);
   }
   return h("button", Object.assign(attributes, { type: "button", "data-action": place.action, "aria-label": place.actionLabel || label }), [icon("pin", "ov-pin__glyph")]);
 }
@@ -517,10 +532,9 @@ function PropertyRow(property, props, selected, reason) {
   ]);
 }
 
-function PinCard(property) {
-  var line = propertyLine(property);
+function PinCard(name, line) {
   return h("div", { "class": "ov-pincard", id: PIN_CARD_ID, role: "tooltip", "data-module": "property-pin-card", "data-visual-id": "property-pin-card" }, [
-    text("div", "ov-pincard__name", property.name),
+    text("div", "ov-pincard__name", name),
     line ? text("div", "ov-pincard__line", line) : null,
   ]);
 }

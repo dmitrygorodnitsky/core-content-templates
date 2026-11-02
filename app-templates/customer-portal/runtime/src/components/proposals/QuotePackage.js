@@ -1,7 +1,7 @@
 import { h } from "../../dom.js";
 import { StatusBadge } from "../primitives/StatusBadge.js";
 import { chosenOrders, formatDatePeriod, formatIsoDate, formatOrderPrice, optionSummary, schematicPositions } from "../../normalizers/contracts.js";
-import { LocationMap, placementNote } from "../storm/PropertyMap.js";
+import { LocationMap, placeLine, placementNote } from "../storm/PropertyMap.js";
 
 export var QUOTE_STATUS = Object.freeze({
   approved: Object.freeze({ label: "✓ Approved", badge: "status-badge--ok", dot: "#34c759" }),
@@ -126,7 +126,7 @@ export function PortfolioSchematic(groups, placements) {
 export function PortfolioMap(groups, placements, map, viewport) {
   if (!groups.some(function (group) { return !!group.property; })) return null;
   var places = groups.map(function (group) {
-    return { id: group.id, name: group.title, state: group.decision, color: QUOTE_STATUS[DECISION_META[group.decision]].dot, action: "proposal.open", actionLabel: group.title + " — " + DECISION_LABEL[group.decision] };
+    return { id: group.id, name: group.title, line: placeLine(group.title, group.address, DECISION_LABEL[group.decision]), state: group.decision, action: "proposal.open", actionLabel: group.title + " — " + DECISION_LABEL[group.decision] };
   });
   return h("div", { "class": "ov-map__stage", "data-module": "portfolio-map", "data-visual-id": "portfolio-map", "data-surface": "google", style: "margin-bottom:16px" }, [
     LocationMap(map, viewport, places, placements, "Finding these properties on the map…"),
