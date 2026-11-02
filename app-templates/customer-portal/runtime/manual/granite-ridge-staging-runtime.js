@@ -1585,6 +1585,7 @@
     return {
       provider: {
         legalName: attributeString(document2, "PROVIDER_LEGAL_NAME") || localizedName(owner && owner.nls),
+        logoImageId: attributeString(document2, "PROVIDER_LOGO"),
         representativeName: attributeString(document2, "PROVIDER_REPRESENTATIVE_NAME"),
         representativeJobTitle: attributeString(document2, "PROVIDER_REPRESENTATIVE_JOB_TITLE"),
         phone: formatPhone(attributeString(document2, "PROVIDER_CONTACT_PHONE")),
@@ -1897,7 +1898,7 @@
     porders: [],
     pagreements: [],
     agreementId: null,
-    agreementTermsOpen: false,
+    agreementTermsOpen: true,
     quoteViews: {},
     contractCommand: null,
     contractConfirm: null,
@@ -4513,6 +4514,7 @@
     return {
       id: "invoice-core-" + backendId,
       backendId,
+      orderBackendId: positiveInteger(row.order && row.order.id),
       stateCode,
       status: { label: status.label, tone: status.tone },
       open: status.open,
@@ -4955,6 +4957,9 @@
     alert: "M12 4.2 21 19.5H3L12 4.2Z M12 10v4.4 M12 16.6v.6",
     pin: "M12 21s-6.5-5.8-6.5-10.5a6.5 6.5 0 1 1 13 0C18.5 15.2 12 21 12 21Z M12 12.8a2.3 2.3 0 1 0 0-4.6 2.3 2.3 0 0 0 0 4.6Z",
     snowflake: "M12 3v18 M4.2 7.5l15.6 9 M19.8 7.5l-15.6 9 M12 7l-2.6-2.2 M12 7l2.6-2.2 M12 17l-2.6 2.2 M12 17l2.6 2.2",
+    person: "M12 12.2a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z M4.5 20.2c.6-3.8 3.7-6 7.5-6s6.900 2.200 7.500 6",
+    phone: "M6.800 3.800 9.500 3.500l1.700 4.300-2.200 1.700a12.500 12.500 0 0 0 5.500 5.500l1.700-2.200 4.300 1.700-.3 2.700a2 2 0 0 1-2.200 1.800C10.800 18.300 5.700 13.200 5 6a2 2 0 0 1 1.800-2.200Z",
+    mail: "M4.500 6h15a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1h-15a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1Z M4 7l8 6 8-6",
     signOut: "M10 4.5H6.5a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2H10 M14.5 8l4 4-4 4 M18.5 12H9.5"
   };
   function icon(name, className) {
@@ -5016,9 +5021,9 @@
     if (profileEnabled) actions.push(h("div", { "class": "avatar", "data-module": "profile-avatar", "data-action": "profile.open", title: "Profile", "aria-label": "Profile" }, initials(avatarName())));
     else if (signInRequired) actions.push(h("button", { "class": "icon-btn icon-btn--optional", "data-module": "sign-out-control", "data-visual-id": "sign-out-control", "data-action": "auth.signOut", title: "Sign out", "aria-label": "Sign out", type: "button" }, [icon("signOut", "ov-icon")]));
     actions.push(h("div", { "class": "icon-btn hamburger", "data-action": "ui.toggleMobileNav", title: "Menu" }, "\u2630"));
-    var landingOpen = !!configuredExternalUrl(state.config, "landingUrl");
+    var brandLeaves = !signedInWithAccess() && !!configuredExternalUrl(state.config, "landingUrl");
     var nav = h("nav", { "class": "top-nav", "data-module": "top-nav", "data-visual-id": "top-nav" }, [
-      h("div", { "class": "top-nav__brand", "data-action": landingOpen ? "nav.landing" : "nav.go", "data-id": landingOpen ? void 0 : state.config.defaultRoute }, [
+      h("div", { "class": "top-nav__brand", "data-action": brandLeaves ? "nav.landing" : "nav.go", "data-id": brandLeaves ? void 0 : state.config.defaultRoute }, [
         h("div", { "class": "brand-logo" }),
         h("span", { "class": "brand-name", "data-bind": "brand.name" }, state.config.brandName || "Aircove")
       ]),
@@ -5105,17 +5110,18 @@
   // app-templates/customer-portal/runtime/src/components/shell/PublicNav.js
   function PublicNav() {
     var landingOpen = isSpa() || !!configuredExternalUrl(state.config, "landingUrl");
+    var signedIn = signedInWithAccess();
     return h(
       "div",
       { "class": "top-nav-wrap" },
       h("nav", { "class": "top-nav", "data-module": "public-nav", "data-visual-id": "public-nav" }, [
-        h("div", { "class": "top-nav__brand", "data-action": landingOpen ? "nav.landing" : void 0 }, [
+        h("div", { "class": "top-nav__brand", "data-action": signedIn ? "nav.go" : landingOpen ? "nav.landing" : void 0, "data-id": signedIn ? state.config.defaultRoute : void 0 }, [
           h("div", { "class": "brand-logo" }),
           h("span", { "class": "brand-name", "data-bind": "brand.name" }, state.config.brandName || "Aircove")
         ]),
         h("div", { "class": "top-nav__actions" }, [
           h("div", { "class": "icon-btn icon-btn--optional", "data-action": "ui.toggleMode", title: "Toggle light/dark" }, state.mode === "Dark" ? "\u2600" : "\u263E"),
-          state.route === "landing" || state.route === "seo.landing" ? ActionButton({ variant: "btn--primary", label: "Sign in", action: "auth.gotoSignin", visualId: "public-signin" }) : landingOpen ? ActionButton({ variant: "btn--ghost", label: "\u2039 Home", action: "nav.landing", visualId: "public-home" }) : null
+          state.route === "landing" || state.route === "seo.landing" ? ActionButton({ variant: "btn--primary", label: "Sign in", action: "auth.gotoSignin", visualId: "public-signin" }) : signedIn ? ActionButton({ variant: "btn--ghost", label: "\u2039 Home", action: "nav.go", id: state.config.defaultRoute, visualId: "public-home" }) : landingOpen ? ActionButton({ variant: "btn--ghost", label: "\u2039 Home", action: "nav.landing", visualId: "public-home" }) : null
         ])
       ])
     );
@@ -6425,6 +6431,13 @@
     }
     function bindCard(pin) {
       var element = pin.element;
+      if (pin.tapCard) {
+        element.addEventListener("click", function(event) {
+          if (event.pointerType !== "touch") return;
+          if (carded === pin) hideCard();
+          else showCard(pin);
+        });
+      }
       element.addEventListener("pointerenter", function(event) {
         if (event.pointerType !== "touch") showCard(pin);
       });
@@ -6615,7 +6628,7 @@
             id: entry.property.id,
             point: entry.point,
             element: PropertyPin(entry.property, props.frame, entry === chosen, props.sources, props.direct),
-            card: PinCard(entry.property)
+            card: PinCard(entry.property.name, propertyLine(entry.property))
           };
         }),
         popup: popup ? { point: chosen.point, element: popup } : null,
@@ -6669,7 +6682,7 @@
     var pins = [];
     places.forEach(function(place, index) {
       var point = placements[index].point;
-      if (point) pins.push({ id: place.id, point, element: LocationPin(place) });
+      if (point) pins.push({ id: place.id, point, element: LocationPin(place), card: PinCard(place.name, place.line), tapCard: !place.action });
     });
     return map.stage({
       viewport,
@@ -6699,16 +6712,22 @@
         h("h2", { "class": "ov-card__title", id: "property-location-title" }, "Location")
       ]),
       h("div", { "class": "ov-map__stage", "data-surface": "google" }, [
-        LocationMap(map, props.viewport, [{ id: property.id, name: property.name }], [placement], "Finding it on the map\u2026")
+        LocationMap(map, props.viewport, [propertyPlace(property)], [placement], "Finding it on the map\u2026")
       ]),
       placement.point && props.link ? h("button", { "class": "link-action", type: "button", "data-action": props.link.action, "data-id": props.link.id, "data-visual-id": "property-location-link", style: "margin-top:12px" }, props.link.label + " \u203A") : null
     ]);
   }
+  function propertyPlace(property) {
+    return { id: property.id, name: property.name, line: propertyLine(property) };
+  }
+  function placeLine(name, address, note) {
+    return [address && !addressRepeats(name, address) ? address : "", note].filter(Boolean).join(" \xB7 ");
+  }
   function LocationPin(place) {
     var label = place.name + " on the map";
-    var attributes = { "class": "ov-pin", "data-module": "location-pin", "data-visual-id": "location-pin", "data-id": place.id, "data-state": place.state || void 0, style: "color:" + (place.color || "var(--accent)") };
+    var attributes = { "class": "ov-pin", "data-module": "location-pin", "data-visual-id": "location-pin", "data-id": place.id, "data-state": place.state || void 0 };
     if (!place.action) {
-      return h("span", Object.assign(attributes, { role: "img", "aria-label": label, style: attributes.style + ";cursor:default" }), [icon("pin", "ov-pin__glyph")]);
+      return h("span", Object.assign(attributes, { role: "img", tabindex: "0", "aria-label": label, style: "cursor:default" }), [icon("pin", "ov-pin__glyph")]);
     }
     return h("button", Object.assign(attributes, { type: "button", "data-action": place.action, "aria-label": place.actionLabel || label }), [icon("pin", "ov-pin__glyph")]);
   }
@@ -6847,10 +6866,9 @@
       ])
     ]);
   }
-  function PinCard(property) {
-    var line = propertyLine(property);
+  function PinCard(name, line) {
     return h("div", { "class": "ov-pincard", id: PIN_CARD_ID, role: "tooltip", "data-module": "property-pin-card", "data-visual-id": "property-pin-card" }, [
-      text3("div", "ov-pincard__name", property.name),
+      text3("div", "ov-pincard__name", name),
       line ? text3("div", "ov-pincard__line", line) : null
     ]);
   }
@@ -7034,7 +7052,7 @@
       return !!group.property;
     })) return null;
     var places = groups.map(function(group) {
-      return { id: group.id, name: group.title, state: group.decision, color: QUOTE_STATUS[DECISION_META[group.decision]].dot, action: "proposal.open", actionLabel: group.title + " \u2014 " + DECISION_LABEL[group.decision] };
+      return { id: group.id, name: group.title, line: placeLine(group.title, group.address, DECISION_LABEL[group.decision]), state: group.decision, action: "proposal.open", actionLabel: group.title + " \u2014 " + DECISION_LABEL[group.decision] };
     });
     return h("div", { "class": "ov-map__stage", "data-module": "portfolio-map", "data-visual-id": "portfolio-map", "data-surface": "google", style: "margin-bottom:16px" }, [
       LocationMap(map, viewport, places, placements, "Finding these properties on the map\u2026")
@@ -8648,7 +8666,9 @@
   }
   function LiveVisitDetail() {
     var page = h("section", { "class": "page page--narrow", "data-route": "visit.detail", "data-visual-id": "visit-detail" });
-    page.appendChild(h("div", { "class": "detail-back", "data-action": "nav.go", "data-id": "appointments" }, "\u2039 Back to visits"));
+    page.appendChild(h("div", { "class": "detail-bar", "data-module": "visit-detail-bar" }, [
+      ActionButton({ variant: "btn--ghost", label: "Show all visits", action: "nav.go", id: "appointments", visualId: "visit-show-all" })
+    ]));
     var status = liveListStatus("appointmentsTimeline");
     var visit = status === "ready" ? findVisit(liveVisits(), state.visitId) : null;
     if (!visit) {
@@ -8762,6 +8782,600 @@
     return EmptyState({ glyph: "\u25CC", title: "No visits yet", desc: "Your scheduled and completed visits appear here." });
   }
 
+  // app-templates/customer-portal/runtime/src/components/proposals/ContractStates.js
+  var READBACK_COPY = {
+    view: "We let the provider know you opened this quote, but its current status couldn\u2019t be loaded",
+    approve: "Your approval was sent, but the quote\u2019s current status couldn\u2019t be loaded",
+    decline: "Your decline was sent, but the quote\u2019s current status couldn\u2019t be loaded",
+    changes: "Your change request was sent, but the quote\u2019s current status couldn\u2019t be loaded",
+    agreement: "Your approval was sent, but the agreement\u2019s current status couldn\u2019t be loaded",
+    details: "Your details were sent, but the agreement\u2019s current status couldn\u2019t be loaded"
+  };
+  var OUTCOME_COPY = {
+    failed: "We couldn\u2019t confirm whether this went through. Refresh the status before trying again.",
+    refused: "This decision wasn\u2019t accepted, so nothing was changed.",
+    unconfirmed: "Your decision didn\u2019t register \u2014 this is still waiting for it. Nothing else was changed."
+  };
+  function contractsGate(skeleton) {
+    var command = state.contractCommand;
+    if (command && command.phase === "readback-failed") return ReadbackFailed(command.kind);
+    var envelope2 = state.moduleData.proposals;
+    if (!envelope2) return state.moduleStatus.proposals === "error" ? ContractsError() : skeleton();
+    if (envelope2.state === "unauthorized") return UnauthorizedState({ scope: "your contracts", backRoute: state.config.defaultRoute });
+    if (envelope2.state === "unavailable") return ContractsUnavailable();
+    if (envelope2.state === "error") return ContractsError();
+    return null;
+  }
+  function ContractsListSkeleton() {
+    var wrap = h("div", { "data-module": "contracts-loading", "data-visual-id": "contracts-loading", "data-state": "loading", "aria-busy": "true" });
+    wrap.appendChild(h("div", { "class": "proposals-head" }, [h("div", { "class": "proposals-head__read" }, [skel("width:42%;height:28px;margin-bottom:9px"), skel("width:58%;height:13px")])]));
+    wrap.appendChild(skel("height:118px;border-radius:22px;margin-bottom:16px"));
+    wrap.appendChild(skel("height:260px;border-radius:24px;margin-bottom:16px"));
+    wrap.appendChild(skel("height:190px;border-radius:22px"));
+    return wrap;
+  }
+  function ContractDetailSkeleton() {
+    var wrap = h("div", { "data-module": "contracts-loading", "data-visual-id": "contracts-loading", "data-state": "loading", "aria-busy": "true" });
+    wrap.appendChild(h("div", { "class": "proposal-detail-head" }, [h("div", { style: "flex:1" }, [skel("width:52%;height:26px;margin-bottom:9px"), skel("width:38%;height:13px")])]));
+    wrap.appendChild(skel("height:220px;border-radius:20px;margin-bottom:14px"));
+    wrap.appendChild(skel("height:220px;border-radius:20px"));
+    return wrap;
+  }
+  function AgreementDetailSkeleton() {
+    var wrap = h("div", { "data-module": "contracts-loading", "data-visual-id": "contracts-loading", "data-state": "loading", "aria-busy": "true" });
+    wrap.appendChild(h("div", { "class": "proposal-detail-head" }, [h("div", { style: "flex:1" }, [skel("width:52%;height:26px;margin-bottom:9px"), skel("width:38%;height:13px")])]));
+    wrap.appendChild(h("div", { "class": "agreement-parties" }, [PartySkeleton(), PartySkeleton()]));
+    wrap.appendChild(skel("height:220px;border-radius:20px"));
+    return wrap;
+  }
+  function PartySkeleton() {
+    return h("div", { "class": "card card--pad agreement-party", "data-module": "agreement-party-loading" }, [
+      h("div", { "class": "agreement-party__head" }, [
+        skel("width:52px;height:52px;border-radius:16px"),
+        h("div", { "class": "agreement-party__identity" }, [skel("width:30%;height:11px;margin-bottom:8px"), skel("width:70%;height:18px")])
+      ]),
+      skel("width:86%;height:13px;margin-bottom:10px"),
+      skel("width:62%;height:13px")
+    ]);
+  }
+  function ContractsNotices(quotes) {
+    var partial = quotes.partial || {};
+    var notes = [];
+    if (partial.agreements) notes.push("Your service agreements couldn\u2019t be loaded, so only your quotes are shown.");
+    if (partial.orders) notes.push("Your quotes couldn\u2019t be loaded, so only your service agreements are shown.");
+    if (!partial.orders && partial.unreadableOrders) notes.push(partial.unreadableOrders === 1 ? "1 quote listed in your agreements couldn\u2019t be loaded." : partial.unreadableOrders + " quotes listed in your agreements couldn\u2019t be loaded.");
+    if (partial.lines) notes.push("Some services on your quotes couldn\u2019t be loaded. Prices and totals shown come from our system as returned.");
+    if (partial.truncated) notes.push("Only part of your contract history could be shown.");
+    return notes.map(PartialNotice);
+  }
+  function PartialNotice(text10) {
+    return h("div", { "class": "alert-banner alert-banner--partial", "data-module": "contracts-partial", "data-visual-id": "contracts-partial", "data-state": "partial", role: "status" }, [
+      h("div", { "class": "alert-banner__icon alert-banner__icon--partial", "aria-hidden": "true" }, "!"),
+      h("div", { "class": "alert-banner__body" }, [h("div", { "class": "alert-banner__desc" }, text10)])
+    ]);
+  }
+  function CommandOutcome(phase) {
+    if (phase === "conflict") {
+      return h("div", { "class": "conflict-banner decision-outcome", "data-module": "command-conflict", "data-visual-id": "command-conflict", "data-state": "conflict", role: "alert" }, [
+        h("div", { "class": "conflict-banner__icon" }, "\u21BA"),
+        h("div", { "class": "conflict-banner__body" }, [
+          h("div", { "class": "decision-outcome__title" }, "This changed since you opened it"),
+          h("div", { "class": "decision-outcome__desc" }, "Its current state is shown here. Nothing was sent.")
+        ])
+      ]);
+    }
+    if (!OUTCOME_COPY[phase]) return null;
+    return DecisionFailure(OUTCOME_COPY[phase], { action: "contracts.refresh", label: "Refresh status" });
+  }
+  function DecisionFailure(message, retry) {
+    return h("div", { "class": "inline-fail decision-outcome", "data-module": "command-failure", "data-visual-id": "command-failure", "data-state": "failed", role: "alert" }, [
+      h("span", { "class": "inline-fail__icon", "aria-hidden": "true" }, "!"),
+      h("div", { "class": "decision-outcome__body" }, message),
+      ActionButton({ variant: "btn--ghost", label: retry.label, action: retry.action, id: retry.id, visualId: "command-retry" })
+    ]);
+  }
+  function PendingNote(text10) {
+    return h("div", { "class": "decision-note", "data-module": "command-pending", "data-visual-id": "command-pending", "data-state": "pending", role: "status" }, [
+      h("span", { "class": "decision-note__spinner", "aria-hidden": "true" }),
+      h("span", null, text10)
+    ]);
+  }
+  function ReadbackFailed(kind) {
+    return h("div", { "class": "state-block", "data-module": "contracts-readback-failed", "data-visual-id": "contracts-readback-failed", "data-state": "readback-failed", role: "alert" }, [
+      h("div", { "class": "state-block__glyph state-block__glyph--error" }, "\u26A0"),
+      h("div", { "class": "state-block__title" }, READBACK_COPY[kind] || READBACK_COPY.approve),
+      h("div", { "class": "state-block__desc" }, "Nothing is shown until it loads, so you never see an out-of-date status."),
+      ActionButton({ variant: "btn--primary", label: "Try again", action: "contracts.refresh", visualId: "contracts-readback-retry" })
+    ]);
+  }
+  function ContractsError() {
+    return ErrorState({ title: "Couldn\u2019t load your contracts", desc: "Nothing was changed. Check your connection and try again." });
+  }
+  function ContractsUnavailable() {
+    var block = EmptyState({ glyph: "\u25CB", title: "Contracts aren\u2019t in the portal yet", desc: "Your quotes and service agreements can\u2019t be shown here yet." });
+    block.setAttribute("data-state", "unavailable");
+    block.setAttribute("data-module", "contracts-unavailable");
+    return block;
+  }
+
+  // app-templates/customer-portal/runtime/src/components/proposals/QuoteOptionCard.js
+  function QuoteOptionCard(order, options2) {
+    var settings = options2 || {};
+    var meta = QUOTE_STATUS[order.status];
+    var label = order.pricingModel ? order.pricingModel.label : "Quote";
+    var card = h("article", {
+      "class": "card card--pad quote-option",
+      "data-module": "quote-option",
+      "data-visual-id": "quote-option",
+      "data-state": order.status,
+      "aria-label": label + " \u2014 " + meta.label
+    }, [
+      h("div", { "class": "quote-option__head" }, [
+        h("h3", { "class": "quote-option__model" }, label),
+        StatusBadge({ variant: meta.badge, label: meta.label, bind: "quote.statusLabel", state: order.status })
+      ]),
+      QuoteLines(order),
+      QuoteMoney(order)
+    ]);
+    if (settings.interactive) {
+      var decisions = QuoteDecisions(order, settings);
+      if (decisions) card.appendChild(decisions);
+    }
+    return card;
+  }
+  function QuoteLines(order) {
+    if (order.linesState === "unavailable") {
+      return h("div", { "class": "quote-option__note", "data-module": "quote-lines", "data-state": "unavailable" }, "The services on this quote couldn\u2019t be loaded.");
+    }
+    if (!order.lines.length) {
+      return h("div", { "class": "quote-option__note", "data-module": "quote-lines", "data-state": "empty" }, "No services are listed on this quote.");
+    }
+    var list = h("div", { "class": "purch-lines quote-lines", "data-module": "quote-lines", "data-visual-id": "quote-lines", "data-state": order.linesState, role: "list", "aria-label": "Services" }, order.lines.map(function(line) {
+      var detail = line.quantity && line.unitPrice ? line.quantity + " \xD7 " + line.unitPrice : line.unitPrice || (line.quantity ? "Quantity " + line.quantity : "");
+      return h("div", { "class": "purch-line quote-line", "data-line": line.key, role: "listitem" }, [
+        h("div", { "class": "quote-line__body" }, [
+          h("div", { "class": "purch-line__title" + (line.product ? "" : " quote-line__title--unnamed") }, line.product || "Unnamed service"),
+          detail ? h("div", { "class": "purch-line__meta" }, detail) : null
+        ]),
+        line.total ? h("div", { "class": "purch-line__side" }, h("b", null, line.total)) : null
+      ]);
+    }));
+    if (order.linesState !== "partial") return list;
+    return h("div", null, [list, h("div", { "class": "quote-option__note", "data-state": "partial" }, "Some details of these services couldn\u2019t be loaded.")]);
+  }
+  function QuoteMoney(order) {
+    if (!order.money) {
+      return h("div", { "class": "quote-option__note", "data-module": "quote-totals", "data-state": "unpriced" }, "No price is stated on this quote yet.");
+    }
+    var rows2 = order.money.taxFree ? [] : [["Subtotal", order.money.subtotal, "subtotal"], ["Taxes", order.money.taxes, "taxes"]].filter(function(row) {
+      return !!row[1];
+    });
+    var wrap = h("div", { "class": "money-rows quote-totals", "data-module": "quote-totals", "data-visual-id": "quote-totals" }, rows2.map(function(row) {
+      return h("div", { "class": "money-rows__row", "data-kind": row[2] }, [h("span", null, row[0]), h("span", null, row[1])]);
+    }));
+    if (order.money.total) {
+      var period = pricePeriod(order);
+      wrap.appendChild(h("div", { "class": "money-rows__row money-rows__row--total", "data-kind": "total" }, [h("span", null, "Total"), h("span", null, period ? order.money.total + " " + period : order.money.total)]));
+    }
+    return wrap;
+  }
+  function QuoteDecisions(order, settings) {
+    var command = state.contractCommand;
+    var targeted = !!command && command.targets.indexOf(order.backendId) !== -1;
+    var outcome = targeted && command.phase !== "pending" ? CommandOutcome(command.phase) : null;
+    var busy = !!settings.busy;
+    if (order.status === "unseen") {
+      var view = state.quoteViews[order.backendId];
+      if (view === "failed") {
+        return h("div", { "class": "quote-option__decide" }, DecisionFailure(
+          "We couldn\u2019t let the provider know you opened this quote, so its decisions aren\u2019t available yet.",
+          { action: "quote.retryView", id: String(order.backendId), label: "Try again" }
+        ));
+      }
+      return h("div", { "class": "quote-option__decide" }, PendingNote("Letting the provider know you opened this quote\u2026"));
+    }
+    if (order.status !== "viewed") return outcome ? h("div", { "class": "quote-option__decide" }, outcome) : null;
+    var confirm = state.contractConfirm;
+    var confirming = !!confirm && confirm.backendId === order.backendId && (confirm.kind === "approve" || confirm.kind === "decline");
+    var changing = !!confirm && confirm.backendId === order.backendId && confirm.kind === "changes";
+    var section = h("div", { "class": "quote-option__decide" });
+    if (confirming) section.appendChild(DecisionConfirm(confirm.kind, order, settings, targeted && command.phase === "pending"));
+    else if (changing) section.appendChild(ChangeRequest(confirm, order, settings, targeted && command.phase === "pending"));
+    else {
+      section.appendChild(h("div", { "class": "proposal-actions" }, [
+        ActionButton({ variant: "btn--primary", label: "Approve", action: "quote.approve", id: String(order.backendId), lg: true, disabled: busy, visualId: "quote-approve" }),
+        ActionButton({ variant: "btn--ghost", label: "Request changes", action: "quote.requestChanges", id: String(order.backendId), lg: true, disabled: busy, visualId: "quote-request-changes" }),
+        ActionButton({ variant: "btn--danger", label: "Decline", action: "quote.decline", id: String(order.backendId), lg: true, disabled: busy, visualId: "quote-decline" })
+      ]));
+    }
+    if (outcome) section.appendChild(outcome);
+    return section;
+  }
+  function ChangeRequest(confirm, order, settings, pending) {
+    var id = "quote-changes-" + order.backendId;
+    var titleId = id + "-title";
+    var errorId = id + "-error";
+    var input = h("textarea", {
+      "class": "field decision-confirm__message",
+      id,
+      rows: "4",
+      placeholder: "For example: add sidewalk de-icing, or quote weekly visits instead.",
+      "data-quote-changes": String(order.backendId),
+      "data-state": confirm.error ? "invalid" : void 0,
+      "aria-labelledby": titleId,
+      "aria-invalid": confirm.error ? "true" : void 0,
+      "aria-describedby": confirm.error ? errorId : void 0,
+      disabled: pending ? true : void 0
+    }, confirm.message || "");
+    input.addEventListener("input", function() {
+      if (state.contractConfirm === confirm) confirm.message = input.value;
+    });
+    var sendButton = ActionButton({ variant: "btn--primary", label: pending ? "Sending\u2026" : "Send request", action: "quote.sendChanges", id: String(order.backendId), lg: true, disabled: pending || settings.busy, visualId: "quote-send-changes" });
+    if (pending) sendButton.setAttribute("data-state", "pending");
+    return h("div", { "class": "decision-confirm", "data-module": "change-request", "data-visual-id": "change-request", "data-state": pending ? "pending" : confirm.error ? "invalid" : "open", "data-kind": "changes", role: "group", "aria-labelledby": titleId }, [
+      h("label", { "class": "decision-confirm__title", id: titleId, "for": id }, "What should change?"),
+      h("p", { "class": "decision-confirm__body" }, "Our team reviews your request and sends you revised quotes."),
+      input,
+      confirm.error ? h("div", { "class": "field-error", id: errorId, role: "alert" }, confirm.error) : null,
+      h("div", { "class": "proposal-actions" }, [
+        sendButton,
+        ActionButton({ variant: "btn--ghost", label: "Cancel", action: "quote.cancel", lg: true, disabled: pending, visualId: "quote-cancel" })
+      ])
+    ]);
+  }
+  function DecisionConfirm(kind, order, settings, pending) {
+    var label = order.pricingModel ? order.pricingModel.label : "this option";
+    var titleId = "decision-title-" + order.backendId;
+    var body = kind === "approve" ? settings.siblingsOpen ? "Approving it declines the other options for this property." : "" : "A declined option can\u2019t be approved later.";
+    var confirmButton = ActionButton({
+      variant: kind === "approve" ? "btn--primary" : "btn--danger",
+      label: pending ? "Sending\u2026" : kind === "approve" ? "Confirm approval" : "Confirm decline",
+      action: "quote.confirm",
+      id: String(order.backendId),
+      lg: true,
+      disabled: pending || settings.busy,
+      visualId: "quote-confirm"
+    });
+    if (pending) confirmButton.setAttribute("data-state", "pending");
+    return h("div", { "class": "decision-confirm", "data-module": "decision-confirm", "data-visual-id": "decision-confirm", "data-state": pending ? "pending" : "open", "data-kind": kind, role: "group", "aria-labelledby": titleId }, [
+      h("p", { "class": "decision-confirm__title", id: titleId }, kind === "approve" ? "Approve " + label + " for this property?" : "Decline " + label + "?"),
+      body ? h("p", { "class": "decision-confirm__body" }, body) : null,
+      h("div", { "class": "proposal-actions" }, [
+        confirmButton,
+        ActionButton({ variant: "btn--ghost", label: "Cancel", action: "quote.cancel", lg: true, disabled: pending, visualId: "quote-cancel" })
+      ])
+    ]);
+  }
+
+  // app-templates/customer-portal/runtime/src/components/proposals/AgreementParts.js
+  var STAGE_NOTICE = {
+    review: { tone: "info", text: "The quotes in this agreement are waiting for your decisions.", link: { label: "Go to your quotes \u203A", action: "nav.go", id: "proposals.list" } },
+    drafting: { tone: "info", text: "Thank you, we have your details. A manager prepares and approves your service agreement next; it appears here for your approval and we email you when it\u2019s ready." }
+  };
+  var STATE_NOTICE = {
+    CLIENT_DETAILS_RECEIVED: { tone: "info", text: "We\u2019re checking your details. This page shows the result once the check is done." },
+    CLIENT_CHANGES_REQUESTED: { tone: "info", text: "We\u2019re revising this agreement as you asked. It appears here for your approval and we email you when it\u2019s ready." },
+    AGREEMENT_SEND_FAILED: { tone: "info", text: "We\u2019re sending this agreement to you. You can approve it here as soon as it arrives." }
+  };
+  var LOGO_WIDTH = 440;
+  var failedLogos = {};
+  function AgreementStageNotice(agreement) {
+    var notice = STATE_NOTICE[agreement.stateCode] || STAGE_NOTICE[agreement.stage];
+    if (!notice) return null;
+    return h("div", { "class": "agreement-notice", "data-module": "agreement-notice", "data-visual-id": "agreement-notice", "data-state": agreement.stage, "data-tone": notice.tone, role: "status" }, [
+      h("span", { "class": "agreement-notice__dot", "aria-hidden": "true" }),
+      h("span", { "class": "agreement-notice__text" }, notice.text),
+      notice.link ? h("span", { "class": "link-action agreement-notice__link", "data-action": notice.link.action, "data-id": notice.link.id }, notice.link.label) : null
+    ]);
+  }
+  function AgreementParties(parties, withClient) {
+    return h("div", { "class": "agreement-parties", "data-module": "agreement-parties", "data-visual-id": "agreement-parties" }, [
+      ProviderCard(parties.provider),
+      withClient === false ? null : ClientCard(parties.client)
+    ]);
+  }
+  function providerLogoUrl(provider) {
+    var url = provider.logoImageId && !failedLogos[provider.logoImageId] ? visitImageUrl(state.config.coreApiBase, provider.logoImageId) : "";
+    return url ? url + "?width=" + LOGO_WIDTH : "";
+  }
+  function ProviderLogo(provider, fallback) {
+    var url = providerLogoUrl(provider);
+    if (!url) return fallback;
+    var image = h("img", { "class": "party-logo__image", src: url, alt: provider.legalName ? provider.legalName + " logo" : "Provider logo", referrerpolicy: "no-referrer", decoding: "async" });
+    var plate = h("span", { "class": "party-logo", "data-module": "provider-logo", "data-visual-id": "provider-logo" }, [image]);
+    image.addEventListener("error", function() {
+      failedLogos[provider.logoImageId] = true;
+      if (typeof plate.replaceWith === "function") {
+        if (fallback) plate.replaceWith(fallback);
+        else plate.remove();
+      }
+    });
+    return plate;
+  }
+  function ProviderCard(provider) {
+    return PartyCard("provider", "Provider", provider.legalName, "", ProviderLogo(provider, Monogram(provider.legalName)), [
+      ["Representative", joinName(provider.representativeName, provider.representativeJobTitle), null, "person"],
+      ["Phone", provider.phone, "tel:" + provider.phone.replace(/[^+\d]/g, ""), "phone"],
+      ["Email", provider.email, "mailto:" + provider.email, "mail"]
+    ]);
+  }
+  function ClientCard(client) {
+    return PartyCard("client", "Client", client.legalName, client.clientType, Monogram(client.legalName), [
+      ["Billing address", client.billingAddress, null, "pin"],
+      ["Representative", joinName(client.representativeName, client.representativeJobTitle), null, "person"],
+      ["Email", client.email, null, "mail"],
+      ["Phone", client.phone, null, "phone"]
+    ]);
+  }
+  function PartyCard(role, label, name, tag, mark, rows2) {
+    var stated = rows2.filter(function(row) {
+      return !!row[1];
+    });
+    if (!name && !stated.length) return null;
+    return h("section", { "class": "card card--pad agreement-party", "data-module": "agreement-party", "data-visual-id": "agreement-party", "data-party": role, "aria-label": label }, [
+      h("div", { "class": "agreement-party__head" }, [
+        mark,
+        h("div", { "class": "agreement-party__identity" }, [
+          h("div", { "class": "agreement-party__role" }, [
+            h("span", null, label),
+            tag ? h("span", { "class": "agreement-party__tag", "data-module": "party-tag" }, tag) : null
+          ]),
+          name ? h("h2", { "class": "agreement-party__name" }, name) : null
+        ])
+      ]),
+      stated.length ? h("dl", { "class": "agreement-facts agreement-party__facts" }, stated.map(function(row) {
+        return h("div", { "class": "agreement-facts__row", "data-fact": row[3] }, [
+          h("dt", { "class": "agreement-facts__label" }, [icon(row[3], "agreement-party__icon"), row[0]]),
+          h("dd", { "class": "agreement-facts__value" }, row[2] ? h("a", { "class": "link-action", href: row[2] }, row[1]) : row[1])
+        ]);
+      })) : null
+    ]);
+  }
+  function Monogram(name) {
+    var letters = String(name || "").split(/\s+/).filter(function(part) {
+      return /^\p{L}/u.test(part);
+    }).slice(0, 2).map(function(part) {
+      return part.charAt(0).toUpperCase();
+    }).join("");
+    return letters ? h("span", { "class": "party-mark", "aria-hidden": "true" }, letters) : null;
+  }
+  function AgreementTerm(agreement) {
+    if (!agreement.effectiveDate) return null;
+    return FactsCard("Term", "agreement-term", [["Effective date", formatIsoDate(agreement.effectiveDate)]]);
+  }
+  function AgreementServices(row, map) {
+    var section = h("section", { "class": "agreement-services", "data-module": "agreement-services", "data-visual-id": "agreement-services", "aria-labelledby": "agreement-services-title" }, [
+      h("div", { "class": "agreement-section-head" }, [
+        h("h2", { "class": "contracts-section__title", id: "agreement-services-title" }, "Properties and services"),
+        row.servicesScope === "approved" ? h("div", { "class": "agreement-section-head__sub" }, "The options you approved") : null
+      ]),
+      map || null
+    ]);
+    if (!row.properties.length) {
+      section.appendChild(h("div", { "class": "card card--pad quote-option__note", "data-state": "empty" }, row.servicesScope === "approved" ? "No approved services are listed on this agreement yet." : "No services are listed on this agreement yet."));
+      return section;
+    }
+    row.properties.forEach(function(entry) {
+      section.appendChild(h("div", { "class": "agreement-property", "data-module": "agreement-property", "data-visual-id": "agreement-property" }, [
+        h("div", { "class": "agreement-property__head" }, [
+          h("h3", { "class": "agreement-property__title" }, entry.title),
+          entry.address ? h("div", { "class": "agreement-property__address" }, entry.address) : null
+        ]),
+        h("div", { "class": "agreement-property__options" }, entry.orders.map(function(order) {
+          return QuoteOptionCard(order);
+        }))
+      ]));
+    });
+    return section;
+  }
+  function AgreementTerms(blocks, open) {
+    if (!blocks.length) return null;
+    var card = h("section", { "class": "card card--pad agreement-terms", "data-module": "agreement-terms", "data-visual-id": "agreement-terms", "data-state": open ? "open" : "closed", "aria-labelledby": "agreement-terms-title" }, [
+      h("div", { "class": "agreement-terms__head" }, [
+        h("h2", { "class": "agreement-card__title", id: "agreement-terms-title" }, "Terms"),
+        h("button", { "class": "link-action agreement-terms__toggle", type: "button", "data-action": "agreement.toggleTerms", "aria-expanded": open ? "true" : "false", "aria-controls": "agreement-terms-body", "data-visual-id": "agreement-terms-toggle" }, open ? "Hide terms" : "Show terms")
+      ])
+    ]);
+    if (!open) return card;
+    var body = h("div", { "class": "agreement-terms__body", id: "agreement-terms-body" });
+    card.appendChild(body);
+    var list = null;
+    blocks.forEach(function(block) {
+      if (block.kind === "item") {
+        if (!list || list.getAttribute("data-depth") !== String(block.depth)) {
+          list = h("ul", { "class": "terms-list", "data-depth": String(block.depth) });
+          body.appendChild(list);
+        }
+        list.appendChild(h("li", null, block.text));
+        return;
+      }
+      list = null;
+      if (block.kind === "heading") body.appendChild(h("h3", { "class": "terms-heading" }, block.text));
+      else if (block.kind === "numbered") {
+        body.appendChild(h("div", { "class": "terms-num", "data-depth": String(block.depth) }, [
+          h("span", { "class": "terms-num__marker" }, block.marker),
+          h("span", { "class": "terms-num__text" }, block.text)
+        ]));
+      } else body.appendChild(h("p", { "class": "terms-paragraph", "data-depth": String(block.depth) }, block.text));
+    });
+    return card;
+  }
+  function AgreementOutcome(agreement) {
+    var command = state.contractCommand;
+    if (!command || command.kind !== "agreement" || command.phase === "pending" || command.targets.indexOf(agreement.backendId) === -1) return null;
+    var outcome = CommandOutcome(command.phase);
+    if (!outcome) return null;
+    return h("section", { "class": "card card--pad agreement-approve", "data-module": "agreement-approve", "data-visual-id": "agreement-approve", "data-state": command.phase, "aria-labelledby": "agreement-approve-title" }, [
+      h("h2", { "class": "agreement-card__title", id: "agreement-approve-title" }, "Your approval"),
+      outcome
+    ]);
+  }
+  function AgreementApproval(row, busy) {
+    var agreement = row.agreement;
+    var command = state.contractCommand;
+    var targeted = !!command && command.kind === "agreement" && command.targets.indexOf(agreement.backendId) !== -1;
+    var pending = targeted && command.phase === "pending";
+    var confirm = state.contractConfirm;
+    var confirming = !!confirm && confirm.kind === "agreement" && confirm.backendId === agreement.backendId;
+    var card = h("section", { "class": "card card--pad agreement-approve", "data-module": "agreement-approve", "data-visual-id": "agreement-approve", "data-tone": "warn", "data-state": pending ? "pending" : confirming ? "confirming" : "idle", "aria-labelledby": "agreement-approve-title" });
+    if (confirming) {
+      var client = agreement.parties.client.legalName;
+      var confirmButton = ActionButton({ variant: "btn--primary", label: pending ? "Sending\u2026" : "Confirm approval", action: "agreement.confirm", id: String(agreement.backendId), lg: true, disabled: pending || busy, visualId: "agreement-confirm" });
+      if (pending) confirmButton.setAttribute("data-state", "pending");
+      card.appendChild(h("div", { "class": "decision-confirm", "data-module": "decision-confirm", "data-visual-id": "decision-confirm", "data-state": pending ? "pending" : "open", "data-kind": "agreement", role: "group", "aria-labelledby": "agreement-approve-title" }, [
+        h("p", { "class": "decision-confirm__title", id: "agreement-approve-title" }, "Approve this service agreement?"),
+        client ? h("p", { "class": "decision-confirm__body" }, "You approve it on behalf of " + client + ".") : null,
+        h("div", { "class": "proposal-actions" }, [
+          confirmButton,
+          ActionButton({ variant: "btn--ghost", label: "Cancel", action: "agreement.cancel", lg: true, disabled: pending, visualId: "agreement-cancel" })
+        ])
+      ]));
+    } else {
+      card.appendChild(h("h2", { "class": "agreement-card__title", id: "agreement-approve-title" }, "Waiting for your approval"));
+      card.appendChild(h("p", { "class": "agreement-approve__copy" }, "Approving accepts the parties, services and terms shown on this page."));
+      card.appendChild(h("div", { "class": "proposal-actions" }, [
+        ActionButton({ variant: "btn--primary", label: "Approve agreement", action: "agreement.approve", id: String(agreement.backendId), lg: true, disabled: busy, visualId: "agreement-approve" })
+      ]));
+    }
+    if (targeted && !pending) {
+      var outcome = CommandOutcome(command.phase);
+      if (outcome) card.appendChild(outcome);
+    }
+    return card;
+  }
+  function FactsCard(title, className, rows2) {
+    var stated = rows2.filter(function(row) {
+      return !!row[1];
+    });
+    if (!stated.length) return null;
+    return h("section", { "class": "card card--pad " + className, "data-module": className, "data-visual-id": className }, [
+      h("h2", { "class": "agreement-card__title" }, title),
+      h("dl", { "class": "agreement-facts" }, stated.map(function(row) {
+        return h("div", { "class": "agreement-facts__row" }, [
+          h("dt", { "class": "agreement-facts__label" }, row[0]),
+          h("dd", { "class": "agreement-facts__value" }, row[2] ? h("a", { "class": "link-action", href: row[2] }, row[1]) : row[1])
+        ]);
+      }))
+    ]);
+  }
+  function joinName(name, title) {
+    if (!name) return "";
+    return title ? name + ", " + title : name;
+  }
+
+  // app-templates/customer-portal/runtime/src/components/storm/InvoiceSheet.js
+  function invoiceParties(invoice) {
+    var quotes = isModuleEnabled("proposals") ? quotePackage() : null;
+    var agreements = quotes ? quotes.agreements.map(function(row) {
+      return row.agreement;
+    }) : [];
+    var own2 = agreements.find(function(agreement) {
+      return !!invoice.orderBackendId && agreement.orderBackendIds.indexOf(invoice.orderBackendId) !== -1;
+    });
+    var active = agreements.filter(function(agreement) {
+      return agreement.stage === "active";
+    });
+    var sole = active.length === 1 ? active[0] : null;
+    var named = agreements.find(function(agreement) {
+      return !!agreement.parties.provider.legalName;
+    });
+    var profile = state.moduleData.profile;
+    var provider = own2 || sole || named;
+    var client = own2 || sole;
+    return {
+      provider: provider ? provider.parties.provider : null,
+      client: client ? client.parties.client : null,
+      brandName: state.config.brandName || "",
+      accountName: profile && profile.accountName || ""
+    };
+  }
+  function InvoiceSheet(invoice) {
+    var parties = invoiceParties(invoice);
+    var provider = parties.provider;
+    var client = parties.client;
+    var providerName = provider && provider.legalName || parties.brandName;
+    var clientName = client && client.legalName || parties.accountName;
+    return h("article", { "class": "invoice-sheet", "data-module": "invoice-sheet", "data-visual-id": "invoice-sheet" }, [
+      h("header", { "class": "invoice-sheet__head" }, [
+        h("div", { "class": "invoice-sheet__brand" }, [
+          provider ? ProviderLogo(provider, null) : null
+        ]),
+        h("div", { "class": "invoice-sheet__title" }, [
+          h("h1", { "class": "invoice-sheet__heading" }, "Invoice"),
+          h("div", { "class": "invoice-sheet__number" }, "#" + invoice.backendId),
+          h("div", { "class": "invoice-sheet__status", "data-state": invoice.stateCode.toLowerCase() }, invoice.status.label)
+        ])
+      ]),
+      h("div", { "class": "invoice-sheet__parties" }, [
+        Party("From", "invoice-sheet-from", providerName, provider ? [provider.phone, provider.email] : []),
+        Party("Bill to", "invoice-sheet-to", clientName, client ? [client.billingAddress, joinName2(client.representativeName, client.representativeJobTitle), client.email, client.phone] : [])
+      ]),
+      Facts(invoice),
+      Charges(invoice)
+    ]);
+  }
+  function Party(label, module2, name, lines) {
+    var stated = lines.filter(Boolean);
+    if (!name && !stated.length) return null;
+    return h("section", { "class": "invoice-sheet__party", "data-module": module2 }, [
+      h("h2", { "class": "invoice-sheet__label" }, label),
+      name ? h("div", { "class": "invoice-sheet__name" }, name) : null
+    ].concat(stated.map(function(line) {
+      return h("div", { "class": "invoice-sheet__line" }, line);
+    })));
+  }
+  function Facts(invoice) {
+    var rows2 = [
+      ["Service period", invoice.period],
+      ["Invoice date", formatIsoDate(invoice.issued)],
+      ["Due date", formatIsoDate(invoice.due)],
+      ["Payment terms", invoiceTerms(invoice)]
+    ].filter(function(row) {
+      return !!row[1];
+    });
+    if (!rows2.length) return null;
+    return h("dl", { "class": "invoice-sheet__facts", "data-module": "invoice-sheet-facts" }, rows2.map(function(row) {
+      return h("div", { "class": "invoice-sheet__fact" }, [
+        h("dt", { "class": "invoice-sheet__label" }, row[0]),
+        h("dd", { "class": "invoice-sheet__value" }, row[1])
+      ]);
+    }));
+  }
+  function Charges(invoice) {
+    var total = invoiceAmount(invoice);
+    if (!invoice.lines.length && !total) return null;
+    var balance = invoice.stateCode !== "PAID" && invoice.paid > 0 && invoice.total !== null;
+    return h("table", { "class": "invoice-sheet__charges", "data-module": "invoice-sheet-charges" }, [
+      h("thead", null, h("tr", null, [
+        h("th", { scope: "col" }, "Description"),
+        h("th", { scope: "col", "class": "invoice-sheet__number-cell" }, "Qty"),
+        h("th", { scope: "col", "class": "invoice-sheet__number-cell" }, "Amount")
+      ])),
+      h("tbody", null, invoice.lines.map(function(line) {
+        return h("tr", { "data-module": "invoice-sheet-line" }, [
+          h("td", null, line.name),
+          h("td", { "class": "invoice-sheet__number-cell" }, String(line.quantity)),
+          h("td", { "class": "invoice-sheet__number-cell" }, line.amount)
+        ]);
+      })),
+      h("tfoot", null, [
+        total ? SummaryRow("Total", total, "invoice-sheet-total") : null,
+        balance ? SummaryRow("Paid", formatMoney(invoice.paid, invoice.currency), "invoice-sheet-paid") : null,
+        balance ? SummaryRow("Balance", formatMoney(invoice.total - invoice.paid, invoice.currency), "invoice-sheet-balance") : null
+      ])
+    ]);
+  }
+  function SummaryRow(label, value, module2) {
+    return h("tr", { "data-module": module2 }, [
+      h("th", { scope: "row", colspan: "2" }, label),
+      h("td", { "class": "invoice-sheet__number-cell" }, value)
+    ]);
+  }
+  function joinName2(name, title) {
+    if (!name) return "";
+    return title ? name + ", " + title : name;
+  }
+
   // app-templates/customer-portal/runtime/src/routes/InvoicesPage.js
   function Invoices() {
     var page = h("section", { "class": "page page--narrow", "data-route": "invoices", "data-visual-id": "invoices-page" });
@@ -8777,7 +9391,8 @@
   }
   function InvoiceDetail() {
     var page = h("section", { "class": "page page--narrow", "data-route": "invoice.detail", "data-visual-id": "invoice-detail" });
-    page.appendChild(h("div", { "class": "detail-back", "data-action": "nav.go", "data-id": "invoices" }, "\u2039 Back to invoices"));
+    var bar = h("div", { "class": "detail-bar", "data-module": "invoice-detail-bar" }, [h("div", { "class": "detail-back", "data-action": "nav.go", "data-id": "invoices" }, "\u2039 Back to invoices")]);
+    page.appendChild(bar);
     var status = liveListStatus("invoices");
     var invoice = status === "ready" ? findInvoice(liveInvoices(), state.invoiceId) : null;
     if (!invoice) {
@@ -8786,6 +9401,7 @@
       return page;
     }
     page.setAttribute("data-state", invoice.stateCode.toLowerCase());
+    bar.appendChild(ActionButton({ variant: "btn--ghost", label: "Print invoice", action: "invoice.print", visualId: "invoice-print" }));
     page.appendChild(h("div", { "class": "prop-head" }, [
       h("div", { style: "flex:1;min-width:0" }, [h("h1", { "class": "prop-head__title" }, invoiceTitle(invoice))]),
       h("span", { "class": "status-badge status-badge--" + invoice.status.tone }, invoice.status.label)
@@ -8814,6 +9430,7 @@
     }
     var pay = PaySection(invoice);
     if (pay) page.appendChild(pay);
+    page.appendChild(InvoiceSheet(invoice));
     return page;
   }
   function PaySection(invoice) {
@@ -9095,254 +9712,6 @@
       fromPrice ? h("div", { "class": "proposal-card__price" }, [fromPrice, h("span", null, "/mo")]) : null,
       StatusBadge({ variant: st.badge, label: st.label, bind: "site.statusLabel" }),
       h("span", { style: "font-weight:600;font-size:18px;color:#c2c7d0" }, "\u203A")
-    ]);
-  }
-
-  // app-templates/customer-portal/runtime/src/components/proposals/ContractStates.js
-  var READBACK_COPY = {
-    view: "We let the provider know you opened this quote, but its current status couldn\u2019t be loaded",
-    approve: "Your approval was sent, but the quote\u2019s current status couldn\u2019t be loaded",
-    decline: "Your decline was sent, but the quote\u2019s current status couldn\u2019t be loaded",
-    changes: "Your change request was sent, but the quote\u2019s current status couldn\u2019t be loaded",
-    agreement: "Your approval was sent, but the agreement\u2019s current status couldn\u2019t be loaded",
-    details: "Your details were sent, but the agreement\u2019s current status couldn\u2019t be loaded"
-  };
-  var OUTCOME_COPY = {
-    failed: "We couldn\u2019t confirm whether this went through. Refresh the status before trying again.",
-    refused: "This decision wasn\u2019t accepted, so nothing was changed.",
-    unconfirmed: "Your decision didn\u2019t register \u2014 this is still waiting for it. Nothing else was changed."
-  };
-  function contractsGate(skeleton) {
-    var command = state.contractCommand;
-    if (command && command.phase === "readback-failed") return ReadbackFailed(command.kind);
-    var envelope2 = state.moduleData.proposals;
-    if (!envelope2) return state.moduleStatus.proposals === "error" ? ContractsError() : skeleton();
-    if (envelope2.state === "unauthorized") return UnauthorizedState({ scope: "your contracts", backRoute: state.config.defaultRoute });
-    if (envelope2.state === "unavailable") return ContractsUnavailable();
-    if (envelope2.state === "error") return ContractsError();
-    return null;
-  }
-  function ContractsListSkeleton() {
-    var wrap = h("div", { "data-module": "contracts-loading", "data-visual-id": "contracts-loading", "data-state": "loading", "aria-busy": "true" });
-    wrap.appendChild(h("div", { "class": "proposals-head" }, [h("div", { "class": "proposals-head__read" }, [skel("width:42%;height:28px;margin-bottom:9px"), skel("width:58%;height:13px")])]));
-    wrap.appendChild(skel("height:118px;border-radius:22px;margin-bottom:16px"));
-    wrap.appendChild(skel("height:260px;border-radius:24px;margin-bottom:16px"));
-    wrap.appendChild(skel("height:190px;border-radius:22px"));
-    return wrap;
-  }
-  function ContractDetailSkeleton() {
-    var wrap = h("div", { "data-module": "contracts-loading", "data-visual-id": "contracts-loading", "data-state": "loading", "aria-busy": "true" });
-    wrap.appendChild(h("div", { "class": "proposal-detail-head" }, [h("div", { style: "flex:1" }, [skel("width:52%;height:26px;margin-bottom:9px"), skel("width:38%;height:13px")])]));
-    wrap.appendChild(skel("height:220px;border-radius:20px;margin-bottom:14px"));
-    wrap.appendChild(skel("height:220px;border-radius:20px"));
-    return wrap;
-  }
-  function ContractsNotices(quotes) {
-    var partial = quotes.partial || {};
-    var notes = [];
-    if (partial.agreements) notes.push("Your service agreements couldn\u2019t be loaded, so only your quotes are shown.");
-    if (partial.orders) notes.push("Your quotes couldn\u2019t be loaded, so only your service agreements are shown.");
-    if (!partial.orders && partial.unreadableOrders) notes.push(partial.unreadableOrders === 1 ? "1 quote listed in your agreements couldn\u2019t be loaded." : partial.unreadableOrders + " quotes listed in your agreements couldn\u2019t be loaded.");
-    if (partial.lines) notes.push("Some services on your quotes couldn\u2019t be loaded. Prices and totals shown come from our system as returned.");
-    if (partial.truncated) notes.push("Only part of your contract history could be shown.");
-    return notes.map(PartialNotice);
-  }
-  function PartialNotice(text10) {
-    return h("div", { "class": "alert-banner alert-banner--partial", "data-module": "contracts-partial", "data-visual-id": "contracts-partial", "data-state": "partial", role: "status" }, [
-      h("div", { "class": "alert-banner__icon alert-banner__icon--partial", "aria-hidden": "true" }, "!"),
-      h("div", { "class": "alert-banner__body" }, [h("div", { "class": "alert-banner__desc" }, text10)])
-    ]);
-  }
-  function CommandOutcome(phase) {
-    if (phase === "conflict") {
-      return h("div", { "class": "conflict-banner decision-outcome", "data-module": "command-conflict", "data-visual-id": "command-conflict", "data-state": "conflict", role: "alert" }, [
-        h("div", { "class": "conflict-banner__icon" }, "\u21BA"),
-        h("div", { "class": "conflict-banner__body" }, [
-          h("div", { "class": "decision-outcome__title" }, "This changed since you opened it"),
-          h("div", { "class": "decision-outcome__desc" }, "Its current state is shown here. Nothing was sent.")
-        ])
-      ]);
-    }
-    if (!OUTCOME_COPY[phase]) return null;
-    return DecisionFailure(OUTCOME_COPY[phase], { action: "contracts.refresh", label: "Refresh status" });
-  }
-  function DecisionFailure(message, retry) {
-    return h("div", { "class": "inline-fail decision-outcome", "data-module": "command-failure", "data-visual-id": "command-failure", "data-state": "failed", role: "alert" }, [
-      h("span", { "class": "inline-fail__icon", "aria-hidden": "true" }, "!"),
-      h("div", { "class": "decision-outcome__body" }, message),
-      ActionButton({ variant: "btn--ghost", label: retry.label, action: retry.action, id: retry.id, visualId: "command-retry" })
-    ]);
-  }
-  function PendingNote(text10) {
-    return h("div", { "class": "decision-note", "data-module": "command-pending", "data-visual-id": "command-pending", "data-state": "pending", role: "status" }, [
-      h("span", { "class": "decision-note__spinner", "aria-hidden": "true" }),
-      h("span", null, text10)
-    ]);
-  }
-  function ReadbackFailed(kind) {
-    return h("div", { "class": "state-block", "data-module": "contracts-readback-failed", "data-visual-id": "contracts-readback-failed", "data-state": "readback-failed", role: "alert" }, [
-      h("div", { "class": "state-block__glyph state-block__glyph--error" }, "\u26A0"),
-      h("div", { "class": "state-block__title" }, READBACK_COPY[kind] || READBACK_COPY.approve),
-      h("div", { "class": "state-block__desc" }, "Nothing is shown until it loads, so you never see an out-of-date status."),
-      ActionButton({ variant: "btn--primary", label: "Try again", action: "contracts.refresh", visualId: "contracts-readback-retry" })
-    ]);
-  }
-  function ContractsError() {
-    return ErrorState({ title: "Couldn\u2019t load your contracts", desc: "Nothing was changed. Check your connection and try again." });
-  }
-  function ContractsUnavailable() {
-    var block = EmptyState({ glyph: "\u25CB", title: "Contracts aren\u2019t in the portal yet", desc: "Your quotes and service agreements can\u2019t be shown here yet." });
-    block.setAttribute("data-state", "unavailable");
-    block.setAttribute("data-module", "contracts-unavailable");
-    return block;
-  }
-
-  // app-templates/customer-portal/runtime/src/components/proposals/QuoteOptionCard.js
-  function QuoteOptionCard(order, options2) {
-    var settings = options2 || {};
-    var meta = QUOTE_STATUS[order.status];
-    var label = order.pricingModel ? order.pricingModel.label : "Quote";
-    var card = h("article", {
-      "class": "card card--pad quote-option",
-      "data-module": "quote-option",
-      "data-visual-id": "quote-option",
-      "data-state": order.status,
-      "aria-label": label + " \u2014 " + meta.label
-    }, [
-      h("div", { "class": "quote-option__head" }, [
-        h("h3", { "class": "quote-option__model" }, label),
-        StatusBadge({ variant: meta.badge, label: meta.label, bind: "quote.statusLabel", state: order.status })
-      ]),
-      QuoteLines(order),
-      QuoteMoney(order)
-    ]);
-    if (settings.interactive) {
-      var decisions = QuoteDecisions(order, settings);
-      if (decisions) card.appendChild(decisions);
-    }
-    return card;
-  }
-  function QuoteLines(order) {
-    if (order.linesState === "unavailable") {
-      return h("div", { "class": "quote-option__note", "data-module": "quote-lines", "data-state": "unavailable" }, "The services on this quote couldn\u2019t be loaded.");
-    }
-    if (!order.lines.length) {
-      return h("div", { "class": "quote-option__note", "data-module": "quote-lines", "data-state": "empty" }, "No services are listed on this quote.");
-    }
-    var list = h("div", { "class": "purch-lines quote-lines", "data-module": "quote-lines", "data-visual-id": "quote-lines", "data-state": order.linesState, role: "list", "aria-label": "Services" }, order.lines.map(function(line) {
-      var detail = line.quantity && line.unitPrice ? line.quantity + " \xD7 " + line.unitPrice : line.unitPrice || (line.quantity ? "Quantity " + line.quantity : "");
-      return h("div", { "class": "purch-line quote-line", "data-line": line.key, role: "listitem" }, [
-        h("div", { "class": "quote-line__body" }, [
-          h("div", { "class": "purch-line__title" + (line.product ? "" : " quote-line__title--unnamed") }, line.product || "Unnamed service"),
-          detail ? h("div", { "class": "purch-line__meta" }, detail) : null
-        ]),
-        line.total ? h("div", { "class": "purch-line__side" }, h("b", null, line.total)) : null
-      ]);
-    }));
-    if (order.linesState !== "partial") return list;
-    return h("div", null, [list, h("div", { "class": "quote-option__note", "data-state": "partial" }, "Some details of these services couldn\u2019t be loaded.")]);
-  }
-  function QuoteMoney(order) {
-    if (!order.money) {
-      return h("div", { "class": "quote-option__note", "data-module": "quote-totals", "data-state": "unpriced" }, "No price is stated on this quote yet.");
-    }
-    var rows2 = order.money.taxFree ? [] : [["Subtotal", order.money.subtotal, "subtotal"], ["Taxes", order.money.taxes, "taxes"]].filter(function(row) {
-      return !!row[1];
-    });
-    var wrap = h("div", { "class": "money-rows quote-totals", "data-module": "quote-totals", "data-visual-id": "quote-totals" }, rows2.map(function(row) {
-      return h("div", { "class": "money-rows__row", "data-kind": row[2] }, [h("span", null, row[0]), h("span", null, row[1])]);
-    }));
-    if (order.money.total) {
-      var period = pricePeriod(order);
-      wrap.appendChild(h("div", { "class": "money-rows__row money-rows__row--total", "data-kind": "total" }, [h("span", null, "Total"), h("span", null, period ? order.money.total + " " + period : order.money.total)]));
-    }
-    return wrap;
-  }
-  function QuoteDecisions(order, settings) {
-    var command = state.contractCommand;
-    var targeted = !!command && command.targets.indexOf(order.backendId) !== -1;
-    var outcome = targeted && command.phase !== "pending" ? CommandOutcome(command.phase) : null;
-    var busy = !!settings.busy;
-    if (order.status === "unseen") {
-      var view = state.quoteViews[order.backendId];
-      if (view === "failed") {
-        return h("div", { "class": "quote-option__decide" }, DecisionFailure(
-          "We couldn\u2019t let the provider know you opened this quote, so its decisions aren\u2019t available yet.",
-          { action: "quote.retryView", id: String(order.backendId), label: "Try again" }
-        ));
-      }
-      return h("div", { "class": "quote-option__decide" }, PendingNote("Letting the provider know you opened this quote\u2026"));
-    }
-    if (order.status !== "viewed") return outcome ? h("div", { "class": "quote-option__decide" }, outcome) : null;
-    var confirm = state.contractConfirm;
-    var confirming = !!confirm && confirm.backendId === order.backendId && (confirm.kind === "approve" || confirm.kind === "decline");
-    var changing = !!confirm && confirm.backendId === order.backendId && confirm.kind === "changes";
-    var section = h("div", { "class": "quote-option__decide" });
-    if (confirming) section.appendChild(DecisionConfirm(confirm.kind, order, settings, targeted && command.phase === "pending"));
-    else if (changing) section.appendChild(ChangeRequest(confirm, order, settings, targeted && command.phase === "pending"));
-    else {
-      section.appendChild(h("div", { "class": "proposal-actions" }, [
-        ActionButton({ variant: "btn--primary", label: "Approve", action: "quote.approve", id: String(order.backendId), lg: true, disabled: busy, visualId: "quote-approve" }),
-        ActionButton({ variant: "btn--ghost", label: "Request changes", action: "quote.requestChanges", id: String(order.backendId), lg: true, disabled: busy, visualId: "quote-request-changes" }),
-        ActionButton({ variant: "btn--danger", label: "Decline", action: "quote.decline", id: String(order.backendId), lg: true, disabled: busy, visualId: "quote-decline" })
-      ]));
-    }
-    if (outcome) section.appendChild(outcome);
-    return section;
-  }
-  function ChangeRequest(confirm, order, settings, pending) {
-    var id = "quote-changes-" + order.backendId;
-    var titleId = id + "-title";
-    var errorId = id + "-error";
-    var input = h("textarea", {
-      "class": "field decision-confirm__message",
-      id,
-      rows: "4",
-      placeholder: "For example: add sidewalk de-icing, or quote weekly visits instead.",
-      "data-quote-changes": String(order.backendId),
-      "data-state": confirm.error ? "invalid" : void 0,
-      "aria-labelledby": titleId,
-      "aria-invalid": confirm.error ? "true" : void 0,
-      "aria-describedby": confirm.error ? errorId : void 0,
-      disabled: pending ? true : void 0
-    }, confirm.message || "");
-    input.addEventListener("input", function() {
-      if (state.contractConfirm === confirm) confirm.message = input.value;
-    });
-    var sendButton = ActionButton({ variant: "btn--primary", label: pending ? "Sending\u2026" : "Send request", action: "quote.sendChanges", id: String(order.backendId), lg: true, disabled: pending || settings.busy, visualId: "quote-send-changes" });
-    if (pending) sendButton.setAttribute("data-state", "pending");
-    return h("div", { "class": "decision-confirm", "data-module": "change-request", "data-visual-id": "change-request", "data-state": pending ? "pending" : confirm.error ? "invalid" : "open", "data-kind": "changes", role: "group", "aria-labelledby": titleId }, [
-      h("label", { "class": "decision-confirm__title", id: titleId, "for": id }, "What should change?"),
-      h("p", { "class": "decision-confirm__body" }, "Our team reviews your request and sends you revised quotes."),
-      input,
-      confirm.error ? h("div", { "class": "field-error", id: errorId, role: "alert" }, confirm.error) : null,
-      h("div", { "class": "proposal-actions" }, [
-        sendButton,
-        ActionButton({ variant: "btn--ghost", label: "Cancel", action: "quote.cancel", lg: true, disabled: pending, visualId: "quote-cancel" })
-      ])
-    ]);
-  }
-  function DecisionConfirm(kind, order, settings, pending) {
-    var label = order.pricingModel ? order.pricingModel.label : "this option";
-    var titleId = "decision-title-" + order.backendId;
-    var body = kind === "approve" ? settings.siblingsOpen ? "Approving it declines the other options for this property." : "" : "A declined option can\u2019t be approved later.";
-    var confirmButton = ActionButton({
-      variant: kind === "approve" ? "btn--primary" : "btn--danger",
-      label: pending ? "Sending\u2026" : kind === "approve" ? "Confirm approval" : "Confirm decline",
-      action: "quote.confirm",
-      id: String(order.backendId),
-      lg: true,
-      disabled: pending || settings.busy,
-      visualId: "quote-confirm"
-    });
-    if (pending) confirmButton.setAttribute("data-state", "pending");
-    return h("div", { "class": "decision-confirm", "data-module": "decision-confirm", "data-visual-id": "decision-confirm", "data-state": pending ? "pending" : "open", "data-kind": kind, role: "group", "aria-labelledby": titleId }, [
-      h("p", { "class": "decision-confirm__title", id: titleId }, kind === "approve" ? "Approve " + label + " for this property?" : "Decline " + label + "?"),
-      body ? h("p", { "class": "decision-confirm__body" }, body) : null,
-      h("div", { "class": "proposal-actions" }, [
-        confirmButton,
-        ActionButton({ variant: "btn--ghost", label: "Cancel", action: "quote.cancel", lg: true, disabled: pending, visualId: "quote-cancel" })
-      ])
     ]);
   }
 
@@ -9983,167 +10352,6 @@
       h("div", { "class": "rollup-card__label" }, label),
       h("div", { "class": "rollup-card__num", style: "color:" + color }, String(num2))
     ]);
-  }
-
-  // app-templates/customer-portal/runtime/src/components/proposals/AgreementParts.js
-  var STAGE_NOTICE = {
-    review: { tone: "info", text: "The quotes in this agreement are waiting for your decisions.", link: { label: "Go to your quotes \u203A", action: "nav.go", id: "proposals.list" } },
-    drafting: { tone: "info", text: "Thank you, we have your details. A manager prepares and approves your service agreement next; it appears here for your approval and we email you when it\u2019s ready." }
-  };
-  var STATE_NOTICE = {
-    CLIENT_DETAILS_RECEIVED: { tone: "info", text: "We\u2019re checking your details. This page shows the result once the check is done." },
-    CLIENT_CHANGES_REQUESTED: { tone: "info", text: "We\u2019re revising this agreement as you asked. It appears here for your approval and we email you when it\u2019s ready." },
-    AGREEMENT_SEND_FAILED: { tone: "info", text: "We\u2019re sending this agreement to you. You can approve it here as soon as it arrives." }
-  };
-  function AgreementStageNotice(agreement) {
-    var notice = STATE_NOTICE[agreement.stateCode] || STAGE_NOTICE[agreement.stage];
-    if (!notice) return null;
-    return h("div", { "class": "agreement-notice", "data-module": "agreement-notice", "data-visual-id": "agreement-notice", "data-state": agreement.stage, "data-tone": notice.tone, role: "status" }, [
-      h("span", { "class": "agreement-notice__dot", "aria-hidden": "true" }),
-      h("span", { "class": "agreement-notice__text" }, notice.text),
-      notice.link ? h("span", { "class": "link-action agreement-notice__link", "data-action": notice.link.action, "data-id": notice.link.id }, notice.link.label) : null
-    ]);
-  }
-  function AgreementParties(parties, withClient) {
-    return h("div", { "class": "agreement-parties", "data-module": "agreement-parties", "data-visual-id": "agreement-parties" }, [
-      FactsCard("Provider", "agreement-party", [
-        ["Legal name", parties.provider.legalName],
-        ["Representative", joinName(parties.provider.representativeName, parties.provider.representativeJobTitle)],
-        ["Phone", parties.provider.phone, "tel:" + parties.provider.phone.replace(/[^+\d]/g, "")],
-        ["Email", parties.provider.email, "mailto:" + parties.provider.email]
-      ]),
-      withClient === false ? null : FactsCard("Client", "agreement-party", [
-        ["Legal name", parties.client.legalName],
-        ["Client type", parties.client.clientType],
-        ["Billing address", parties.client.billingAddress],
-        ["Representative", joinName(parties.client.representativeName, parties.client.representativeJobTitle)],
-        ["Email", parties.client.email],
-        ["Phone", parties.client.phone]
-      ])
-    ]);
-  }
-  function AgreementTerm(agreement) {
-    if (!agreement.effectiveDate) return null;
-    return FactsCard("Term", "agreement-term", [["Effective date", formatIsoDate(agreement.effectiveDate)]]);
-  }
-  function AgreementServices(row, map) {
-    var section = h("section", { "class": "agreement-services", "data-module": "agreement-services", "data-visual-id": "agreement-services", "aria-labelledby": "agreement-services-title" }, [
-      h("div", { "class": "agreement-section-head" }, [
-        h("h2", { "class": "contracts-section__title", id: "agreement-services-title" }, "Properties and services"),
-        row.servicesScope === "approved" ? h("div", { "class": "agreement-section-head__sub" }, "The options you approved") : null
-      ]),
-      map || null
-    ]);
-    if (!row.properties.length) {
-      section.appendChild(h("div", { "class": "card card--pad quote-option__note", "data-state": "empty" }, row.servicesScope === "approved" ? "No approved services are listed on this agreement yet." : "No services are listed on this agreement yet."));
-      return section;
-    }
-    row.properties.forEach(function(entry) {
-      section.appendChild(h("div", { "class": "agreement-property", "data-module": "agreement-property", "data-visual-id": "agreement-property" }, [
-        h("div", { "class": "agreement-property__head" }, [
-          h("h3", { "class": "agreement-property__title" }, entry.title),
-          entry.address ? h("div", { "class": "agreement-property__address" }, entry.address) : null
-        ]),
-        h("div", { "class": "agreement-property__options" }, entry.orders.map(function(order) {
-          return QuoteOptionCard(order);
-        }))
-      ]));
-    });
-    return section;
-  }
-  function AgreementTerms(blocks, open) {
-    if (!blocks.length) return null;
-    var card = h("section", { "class": "card card--pad agreement-terms", "data-module": "agreement-terms", "data-visual-id": "agreement-terms", "data-state": open ? "open" : "closed", "aria-labelledby": "agreement-terms-title" }, [
-      h("div", { "class": "agreement-terms__head" }, [
-        h("h2", { "class": "agreement-card__title", id: "agreement-terms-title" }, "Terms"),
-        h("button", { "class": "link-action agreement-terms__toggle", type: "button", "data-action": "agreement.toggleTerms", "aria-expanded": open ? "true" : "false", "aria-controls": "agreement-terms-body", "data-visual-id": "agreement-terms-toggle" }, open ? "Hide terms" : "Show terms")
-      ])
-    ]);
-    if (!open) return card;
-    var body = h("div", { "class": "agreement-terms__body", id: "agreement-terms-body" });
-    card.appendChild(body);
-    var list = null;
-    blocks.forEach(function(block) {
-      if (block.kind === "item") {
-        if (!list || list.getAttribute("data-depth") !== String(block.depth)) {
-          list = h("ul", { "class": "terms-list", "data-depth": String(block.depth) });
-          body.appendChild(list);
-        }
-        list.appendChild(h("li", null, block.text));
-        return;
-      }
-      list = null;
-      if (block.kind === "heading") body.appendChild(h("h3", { "class": "terms-heading" }, block.text));
-      else if (block.kind === "numbered") {
-        body.appendChild(h("div", { "class": "terms-num", "data-depth": String(block.depth) }, [
-          h("span", { "class": "terms-num__marker" }, block.marker),
-          h("span", { "class": "terms-num__text" }, block.text)
-        ]));
-      } else body.appendChild(h("p", { "class": "terms-paragraph", "data-depth": String(block.depth) }, block.text));
-    });
-    return card;
-  }
-  function AgreementOutcome(agreement) {
-    var command = state.contractCommand;
-    if (!command || command.kind !== "agreement" || command.phase === "pending" || command.targets.indexOf(agreement.backendId) === -1) return null;
-    var outcome = CommandOutcome(command.phase);
-    if (!outcome) return null;
-    return h("section", { "class": "card card--pad agreement-approve", "data-module": "agreement-approve", "data-visual-id": "agreement-approve", "data-state": command.phase, "aria-labelledby": "agreement-approve-title" }, [
-      h("h2", { "class": "agreement-card__title", id: "agreement-approve-title" }, "Your approval"),
-      outcome
-    ]);
-  }
-  function AgreementApproval(row, busy) {
-    var agreement = row.agreement;
-    var command = state.contractCommand;
-    var targeted = !!command && command.kind === "agreement" && command.targets.indexOf(agreement.backendId) !== -1;
-    var pending = targeted && command.phase === "pending";
-    var confirm = state.contractConfirm;
-    var confirming = !!confirm && confirm.kind === "agreement" && confirm.backendId === agreement.backendId;
-    var card = h("section", { "class": "card card--pad agreement-approve", "data-module": "agreement-approve", "data-visual-id": "agreement-approve", "data-tone": "warn", "data-state": pending ? "pending" : confirming ? "confirming" : "idle", "aria-labelledby": "agreement-approve-title" });
-    if (confirming) {
-      var client = agreement.parties.client.legalName;
-      var confirmButton = ActionButton({ variant: "btn--primary", label: pending ? "Sending\u2026" : "Confirm approval", action: "agreement.confirm", id: String(agreement.backendId), lg: true, disabled: pending || busy, visualId: "agreement-confirm" });
-      if (pending) confirmButton.setAttribute("data-state", "pending");
-      card.appendChild(h("div", { "class": "decision-confirm", "data-module": "decision-confirm", "data-visual-id": "decision-confirm", "data-state": pending ? "pending" : "open", "data-kind": "agreement", role: "group", "aria-labelledby": "agreement-approve-title" }, [
-        h("p", { "class": "decision-confirm__title", id: "agreement-approve-title" }, "Approve this service agreement?"),
-        client ? h("p", { "class": "decision-confirm__body" }, "You approve it on behalf of " + client + ".") : null,
-        h("div", { "class": "proposal-actions" }, [
-          confirmButton,
-          ActionButton({ variant: "btn--ghost", label: "Cancel", action: "agreement.cancel", lg: true, disabled: pending, visualId: "agreement-cancel" })
-        ])
-      ]));
-    } else {
-      card.appendChild(h("h2", { "class": "agreement-card__title", id: "agreement-approve-title" }, "Waiting for your approval"));
-      card.appendChild(h("p", { "class": "agreement-approve__copy" }, "Approving accepts the parties, services and terms shown on this page."));
-      card.appendChild(h("div", { "class": "proposal-actions" }, [
-        ActionButton({ variant: "btn--primary", label: "Approve agreement", action: "agreement.approve", id: String(agreement.backendId), lg: true, disabled: busy, visualId: "agreement-approve" })
-      ]));
-    }
-    if (targeted && !pending) {
-      var outcome = CommandOutcome(command.phase);
-      if (outcome) card.appendChild(outcome);
-    }
-    return card;
-  }
-  function FactsCard(title, className, rows2) {
-    var stated = rows2.filter(function(row) {
-      return !!row[1];
-    });
-    if (!stated.length) return null;
-    return h("section", { "class": "card card--pad " + className, "data-module": className, "data-visual-id": className }, [
-      h("h2", { "class": "agreement-card__title" }, title),
-      h("dl", { "class": "agreement-facts" }, stated.map(function(row) {
-        return h("div", { "class": "agreement-facts__row" }, [
-          h("dt", { "class": "agreement-facts__label" }, row[0]),
-          h("dd", { "class": "agreement-facts__value" }, row[2] ? h("a", { "class": "link-action", href: row[2] }, row[1]) : row[1])
-        ]);
-      }))
-    ]);
-  }
-  function joinName(name, title) {
-    if (!name) return "";
-    return title ? name + ", " + title : name;
   }
 
   // app-templates/customer-portal/runtime/src/normalizers/account-profile.js
@@ -11156,7 +11364,7 @@
   function AgreementDetail() {
     var page = h("section", { "class": "page page--narrow", "data-route": "agreement.detail", "data-visual-id": "agreement-detail" });
     page.appendChild(h("div", { "class": "detail-back", "data-action": "proposal.review", "data-visual-id": "agreement-back" }, "\u2039 Back to your contracts"));
-    var gate = contractsGate(ContractDetailSkeleton);
+    var gate = contractsGate(AgreementDetailSkeleton);
     if (gate) {
       page.setAttribute("data-state", gate.getAttribute("data-state") || "loading");
       page.appendChild(gate);
@@ -11210,7 +11418,7 @@
     });
     if (!map || !located.length) return null;
     var places = located.map(function(entry) {
-      return { id: entry.key, name: entry.title };
+      return { id: entry.key, name: entry.title, line: placeLine(entry.title, entry.address) };
     });
     return h("div", { "class": "ov-map__stage", "data-module": "agreement-map", "data-visual-id": "agreement-map", "data-surface": "google", style: "margin-bottom:16px" }, [
       LocationMap(map, mapViewport(), places, placeEach(map, located.map(function(entry) {
@@ -11382,10 +11590,8 @@
       return !!entry.point;
     });
     if (!chosen.length && !located.length) return null;
-    var places = chosen.map(function(property) {
-      return { id: property.id, name: property.name };
-    }).concat(located.map(function(entry, index) {
-      return { id: "quote-request-address-" + index, name: entry.address, color: "var(--warn)" };
+    var places = chosen.map(propertyPlace).concat(located.map(function(entry, index) {
+      return { id: "quote-request-address-" + index, name: entry.address };
     }));
     var placements = placeEach(map, chosen).concat(located.map(function(entry) {
       return { point: entry.point, reason: "stored" };
@@ -12920,6 +13126,9 @@
       if (id) state.invoiceId = id;
       go("invoice.detail");
     },
+    "invoice.print": function() {
+      if (typeof globalThis.print === "function") globalThis.print();
+    },
     "invoice.pay": function(id) {
       return payInvoice(id, { reload: reloadRuntimeModule, render });
     },
@@ -13522,7 +13731,7 @@
   function openAgreement(id) {
     if (!contractAgreementFor(id)) throw new Error("Agreement not found");
     state.agreementId = id;
-    state.agreementTermsOpen = false;
+    state.agreementTermsOpen = true;
     state.contractConfirm = null;
     go("agreement.detail");
   }
