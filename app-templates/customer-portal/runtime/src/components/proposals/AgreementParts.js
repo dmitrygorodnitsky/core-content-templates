@@ -2,6 +2,8 @@ import { h } from "../../dom.js";
 import { state } from "../../state.js";
 import { ActionButton } from "../primitives/ActionButton.js";
 import { formatIsoDate } from "../../normalizers/contracts.js";
+import { visitImageUrl } from "../../normalizers/visits.js";
+import { icon } from "../storm/overview-icons.js";
 import { CommandOutcome } from "./ContractStates.js";
 import { QuoteOptionCard } from "./QuoteOptionCard.js";
 
@@ -16,6 +18,9 @@ var STATE_NOTICE = {
   AGREEMENT_SEND_FAILED: { tone: "info", text: "We’re sending this agreement to you. You can approve it here as soon as it arrives." },
 };
 
+var LOGO_WIDTH = 440;
+var failedLogos = {};
+
 export function AgreementStageNotice(agreement) {
   var notice = STATE_NOTICE[agreement.stateCode] || STAGE_NOTICE[agreement.stage];
   if (!notice) return null;
@@ -28,21 +33,76 @@ export function AgreementStageNotice(agreement) {
 
 export function AgreementParties(parties, withClient) {
   return h("div", { "class": "agreement-parties", "data-module": "agreement-parties", "data-visual-id": "agreement-parties" }, [
-    FactsCard("Provider", "agreement-party", [
-      ["Legal name", parties.provider.legalName],
-      ["Representative", joinName(parties.provider.representativeName, parties.provider.representativeJobTitle)],
-      ["Phone", parties.provider.phone, "tel:" + parties.provider.phone.replace(/[^+\d]/g, "")],
-      ["Email", parties.provider.email, "mailto:" + parties.provider.email],
-    ]),
-    withClient === false ? null : FactsCard("Client", "agreement-party", [
-      ["Legal name", parties.client.legalName],
-      ["Client type", parties.client.clientType],
-      ["Billing address", parties.client.billingAddress],
-      ["Representative", joinName(parties.client.representativeName, parties.client.representativeJobTitle)],
-      ["Email", parties.client.email],
-      ["Phone", parties.client.phone],
-    ]),
+    ProviderCard(parties.provider),
+    withClient === false ? null : ClientCard(parties.client),
   ]);
+}
+
+export function providerLogoUrl(provider) {
+  var url = provider.logoImageId && !failedLogos[provider.logoImageId] ? visitImageUrl(state.config.coreApiBase, provider.logoImageId) : "";
+  return url ? url + "?width=" + LOGO_WIDTH : "";
+}
+
+export function ProviderLogo(provider, fallback) {
+  var url = providerLogoUrl(provider);
+  if (!url) return fallback;
+  var image = h("img", { "class": "party-logo__image", src: url, alt: provider.legalName ? provider.legalName + " logo" : "Provider logo", referrerpolicy: "no-referrer", decoding: "async" });
+  var plate = h("span", { "class": "party-logo", "data-module": "provider-logo", "data-visual-id": "provider-logo" }, [image]);
+  image.addEventListener("error", function () {
+    failedLogos[provider.logoImageId] = true;
+    if (typeof plate.replaceWith === "function") {
+      if (fallback) plate.replaceWith(fallback);
+      else plate.remove();
+    }
+  });
+  return plate;
+}
+
+function ProviderCard(provider) {
+  return PartyCard("provider", "Provider", provider.legalName, "", ProviderLogo(provider, Monogram(provider.legalName)), [
+    ["Representative", joinName(provider.representativeName, provider.representativeJobTitle), null, "person"],
+    ["Phone", provider.phone, "tel:" + provider.phone.replace(/[^+\d]/g, ""), "phone"],
+    ["Email", provider.email, "mailto:" + provider.email, "mail"],
+  ]);
+}
+
+function ClientCard(client) {
+  return PartyCard("client", "Client", client.legalName, client.clientType, Monogram(client.legalName), [
+    ["Billing address", client.billingAddress, null, "pin"],
+    ["Representative", joinName(client.representativeName, client.representativeJobTitle), null, "person"],
+    ["Email", client.email, null, "mail"],
+    ["Phone", client.phone, null, "phone"],
+  ]);
+}
+
+function PartyCard(role, label, name, tag, mark, rows) {
+  var stated = rows.filter(function (row) { return !!row[1]; });
+  if (!name && !stated.length) return null;
+  return h("section", { "class": "card card--pad agreement-party", "data-module": "agreement-party", "data-visual-id": "agreement-party", "data-party": role, "aria-label": label }, [
+    h("div", { "class": "agreement-party__head" }, [
+      mark,
+      h("div", { "class": "agreement-party__identity" }, [
+        h("div", { "class": "agreement-party__role" }, [
+          h("span", null, label),
+          tag ? h("span", { "class": "agreement-party__tag", "data-module": "party-tag" }, tag) : null,
+        ]),
+        name ? h("h2", { "class": "agreement-party__name" }, name) : null,
+      ]),
+    ]),
+    stated.length ? h("dl", { "class": "agreement-facts agreement-party__facts" }, stated.map(function (row) {
+      return h("div", { "class": "agreement-facts__row", "data-fact": row[3] }, [
+        h("dt", { "class": "agreement-facts__label" }, [icon(row[3], "agreement-party__icon"), row[0]]),
+        h("dd", { "class": "agreement-facts__value" }, row[2] ? h("a", { "class": "link-action", href: row[2] }, row[1]) : row[1]),
+      ]);
+    })) : null,
+  ]);
+}
+
+function Monogram(name) {
+  var letters = String(name || "").split(/\s+/).filter(function (part) { return /^\p{L}/u.test(part); }).slice(0, 2).map(function (part) {
+    return part.charAt(0).toUpperCase();
+  }).join("");
+  return letters ? h("span", { "class": "party-mark", "aria-hidden": "true" }, letters) : null;
 }
 
 export function AgreementTerm(agreement) {

@@ -4,8 +4,8 @@ import { contractCommandsBusy, ensureContractDetails } from "../actions.js";
 import { StatusBadge } from "../components/primitives/StatusBadge.js";
 import { NotFoundState } from "../components/primitives/RouteStates.js";
 import { agreementSeason, agreementTitle } from "../components/proposals/QuotePackage.js";
-import { ContractDetailSkeleton, PartialNotice, contractsGate } from "../components/proposals/ContractStates.js";
-import { LocationMap, placeEach } from "../components/storm/PropertyMap.js";
+import { AgreementDetailSkeleton, PartialNotice, contractsGate } from "../components/proposals/ContractStates.js";
+import { LocationMap, placeEach, placeLine } from "../components/storm/PropertyMap.js";
 import { mapViewport, usablePropertyMap } from "../property-map-session.js";
 import { AgreementApproval, AgreementOutcome, AgreementParties, AgreementServices, AgreementStageNotice, AgreementTerm, AgreementTerms } from "../components/proposals/AgreementParts.js";
 import { AgreementDetailsStep } from "../components/proposals/AgreementDetails.js";
@@ -13,7 +13,7 @@ import { AgreementDetailsStep } from "../components/proposals/AgreementDetails.j
 export function AgreementDetail() {
   var page = h("section", { "class": "page page--narrow", "data-route": "agreement.detail", "data-visual-id": "agreement-detail" });
   page.appendChild(h("div", { "class": "detail-back", "data-action": "proposal.review", "data-visual-id": "agreement-back" }, "‹ Back to your contracts"));
-  var gate = contractsGate(ContractDetailSkeleton);
+  var gate = contractsGate(AgreementDetailSkeleton);
   if (gate) {
     page.setAttribute("data-state", gate.getAttribute("data-state") || "loading");
     page.appendChild(gate);
@@ -66,7 +66,7 @@ function AgreementMap(entries) {
   var map = usablePropertyMap();
   var located = entries.filter(function (entry) { return !!entry.property; });
   if (!map || !located.length) return null;
-  var places = located.map(function (entry) { return { id: entry.key, name: entry.title }; });
+  var places = located.map(function (entry) { return { id: entry.key, name: entry.title, line: placeLine(entry.title, entry.address) }; });
   return h("div", { "class": "ov-map__stage", "data-module": "agreement-map", "data-visual-id": "agreement-map", "data-surface": "google", style: "margin-bottom:16px" }, [
     LocationMap(map, mapViewport(), places, placeEach(map, located.map(function (entry) { return entry.property; })), "Finding these properties on the map…"),
   ]);

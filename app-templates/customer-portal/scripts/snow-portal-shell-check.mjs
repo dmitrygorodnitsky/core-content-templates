@@ -154,7 +154,14 @@ function configure(dataset, extra = {}) {
   assert.equal(all(TopNav(false), "[data-visual-id=\"primary-cta\"]").length, 0, "a quote button with nowhere to go is not rendered");
 
   configure(SNOW_LIVE, { portalEnabledModules: "account,overview,properties", portalLandingUrl: "https://www.example.test/", portalAllowedNavOrigins: "https://www.example.test" });
-  assert.equal(one(TopNav(false), ".top-nav__brand").getAttribute("data-action"), "nav.landing", "a configured landing address keeps the brand an external link");
+  const signedInBrand = one(TopNav(false), ".top-nav__brand");
+  assert.deepEqual([signedInBrand.getAttribute("data-action"), signedInBrand.getAttribute("data-id")], ["nav.go", "overview"], "signed in, the logo goes to the portal home, never to the landing that looks signed out");
+  state.session.authenticated = false;
+  assert.equal(one(TopNav(false), ".top-nav__brand").getAttribute("data-action"), "nav.landing", "signed out, a configured landing address keeps the brand an external link");
+  state.session.authenticated = true;
+  state.account = "resolving-customer";
+  assert.equal(one(TopNav(false), ".top-nav__brand").getAttribute("data-action"), "nav.landing", "a session without customer access is not signed in to the portal");
+  state.account = "ready";
   configure(SNOW_LIVE, { portalEnabledModules: "account,overview,properties", portalLandingUrl: "https://elsewhere.example.test/" });
   assert.equal(one(TopNav(false), ".top-nav__brand").getAttribute("data-action"), "nav.go", "a landing address outside the allowed origins is not a destination");
 
@@ -256,6 +263,11 @@ function configure(dataset, extra = {}) {
   const linked = signedOutHeader(SNOW_LIVE, { portalLandingUrl: "https://www.example.test/", portalAllowedNavOrigins: "https://www.example.test" });
   assert.equal(one(linked, "[data-visual-id=\"public-home\"]").getAttribute("data-action"), "nav.landing", "a configured landing address is the Home link");
   assert.equal(one(linked, ".top-nav__brand").getAttribute("data-action"), "nav.landing");
+  state.session.authenticated = true;
+  state.account = "ready";
+  const signedInPublic = PublicNav();
+  assert.deepEqual([one(signedInPublic, ".top-nav__brand").getAttribute("data-action"), one(signedInPublic, ".top-nav__brand").getAttribute("data-id")], ["nav.go", "overview"], "signed in, the public header's logo goes to the portal home too");
+  assert.equal(one(signedInPublic, "[data-visual-id=\"public-home\"]").getAttribute("data-action"), "nav.go");
   const outside = signedOutHeader(SNOW_LIVE, { portalLandingUrl: "https://elsewhere.example.test/" });
   assert.equal(all(outside, "[data-visual-id=\"public-home\"]").length, 0, "a landing address outside the allowed origins is not a destination");
   assert.equal(one(signedOutHeader(SPA_LIVE), "[data-visual-id=\"public-home\"]").getAttribute("data-action"), "nav.landing", "the spa keeps its Home link");

@@ -48,6 +48,25 @@ export function ContractDetailSkeleton() {
   return wrap;
 }
 
+export function AgreementDetailSkeleton() {
+  var wrap = h("div", { "data-module": "contracts-loading", "data-visual-id": "contracts-loading", "data-state": "loading", "aria-busy": "true" });
+  wrap.appendChild(h("div", { "class": "proposal-detail-head" }, [h("div", { style: "flex:1" }, [skel("width:52%;height:26px;margin-bottom:9px"), skel("width:38%;height:13px")])]));
+  wrap.appendChild(h("div", { "class": "agreement-parties" }, [PartySkeleton(), PartySkeleton()]));
+  wrap.appendChild(skel("height:220px;border-radius:20px"));
+  return wrap;
+}
+
+function PartySkeleton() {
+  return h("div", { "class": "card card--pad agreement-party", "data-module": "agreement-party-loading" }, [
+    h("div", { "class": "agreement-party__head" }, [
+      skel("width:52px;height:52px;border-radius:16px"),
+      h("div", { "class": "agreement-party__identity" }, [skel("width:30%;height:11px;margin-bottom:8px"), skel("width:70%;height:18px")]),
+    ]),
+    skel("width:86%;height:13px;margin-bottom:10px"),
+    skel("width:62%;height:13px"),
+  ]);
+}
+
 export function ContractsNotices(quotes) {
   var partial = quotes.partial || {};
   var notes = [];

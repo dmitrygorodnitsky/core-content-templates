@@ -1,10 +1,12 @@
 import { h } from "../dom.js";
 import { liveInvoices, liveListStatus, state } from "../state.js";
+import { ActionButton } from "../components/primitives/ActionButton.js";
 import { EmptyState } from "../components/primitives/EmptyState.js";
 import { ErrorState } from "../components/primitives/ErrorState.js";
 import { UnauthorizedState, skel } from "../components/primitives/RouteStates.js";
 import { PageHeader } from "../components/shell/PageHeader.js";
 import { InvoiceRow, RecordSection } from "../components/storm/RecordRows.js";
+import { InvoiceSheet } from "../components/storm/InvoiceSheet.js";
 import { findInvoice, invoiceAmount, invoiceTerms, invoiceTitle } from "../normalizers/invoices.js";
 import { formatIsoDate, formatMoney } from "../normalizers/contracts.js";
 import { invoicePayable, invoicePaymentBusy, invoicePaymentFor, invoicePaymentOpen } from "../invoice-payment.js";
@@ -24,7 +26,8 @@ export function Invoices() {
 
 export function InvoiceDetail() {
   var page = h("section", { "class": "page page--narrow", "data-route": "invoice.detail", "data-visual-id": "invoice-detail" });
-  page.appendChild(h("div", { "class": "detail-back", "data-action": "nav.go", "data-id": "invoices" }, "‹ Back to invoices"));
+  var bar = h("div", { "class": "detail-bar", "data-module": "invoice-detail-bar" }, [h("div", { "class": "detail-back", "data-action": "nav.go", "data-id": "invoices" }, "‹ Back to invoices")]);
+  page.appendChild(bar);
   var status = liveListStatus("invoices");
   var invoice = status === "ready" ? findInvoice(liveInvoices(), state.invoiceId) : null;
   if (!invoice) {
@@ -36,6 +39,7 @@ export function InvoiceDetail() {
   }
 
   page.setAttribute("data-state", invoice.stateCode.toLowerCase());
+  bar.appendChild(ActionButton({ variant: "btn--ghost", label: "Print invoice", action: "invoice.print", visualId: "invoice-print" }));
   page.appendChild(h("div", { "class": "prop-head" }, [
     h("div", { style: "flex:1;min-width:0" }, [h("h1", { "class": "prop-head__title" }, invoiceTitle(invoice))]),
     h("span", { "class": "status-badge status-badge--" + invoice.status.tone }, invoice.status.label),
@@ -66,6 +70,7 @@ export function InvoiceDetail() {
   }
   var pay = PaySection(invoice);
   if (pay) page.appendChild(pay);
+  page.appendChild(InvoiceSheet(invoice));
   return page;
 }
 

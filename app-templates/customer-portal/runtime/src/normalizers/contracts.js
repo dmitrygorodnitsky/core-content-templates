@@ -545,6 +545,7 @@ function agreementParties(document, client) {
   return {
     provider: {
       legalName: attributeString(document, "PROVIDER_LEGAL_NAME") || localizedName(owner && owner.nls),
+      logoImageId: attributeString(document, "PROVIDER_LOGO"),
       representativeName: attributeString(document, "PROVIDER_REPRESENTATIVE_NAME"),
       representativeJobTitle: attributeString(document, "PROVIDER_REPRESENTATIVE_JOB_TITLE"),
       phone: formatPhone(attributeString(document, "PROVIDER_CONTACT_PHONE")),

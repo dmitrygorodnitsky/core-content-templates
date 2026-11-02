@@ -99,7 +99,7 @@ export function resolveRoute(routeId) {
   return { id: requested, reason: reason };
 }
 
-function signedInWithAccess() {
+export function signedInWithAccess() {
   return customerPortalAccessRequired() && state.session.authenticated === true && state.account === "ready";
 }
 

@@ -3,7 +3,7 @@ import { h } from "../../dom.js";
 import { activeProfile, activeVerticalConfig, activityUnread, cartCount, currentFixture, isModuleEnabled, isSpa, navListShown, state } from "../../state.js";
 import { configuredExternalUrl, routeRegistry } from "../../config.js";
 import { ActionButton } from "../primitives/ActionButton.js";
-import { isRouteReachable } from "../../router.js";
+import { isRouteReachable, signedInWithAccess } from "../../router.js";
 import { icon } from "../storm/overview-icons.js";
 import { SpaTopNav } from "./SpaTopNav.js";
 
@@ -48,9 +48,9 @@ export function TopNav(gated) {
   else if (signInRequired) actions.push(h("button", { "class": "icon-btn icon-btn--optional", "data-module": "sign-out-control", "data-visual-id": "sign-out-control", "data-action": "auth.signOut", title: "Sign out", "aria-label": "Sign out", type: "button" }, [icon("signOut", "ov-icon")]));
   actions.push(h("div", { "class": "icon-btn hamburger", "data-action": "ui.toggleMobileNav", title: "Menu" }, "\u2630"));
 
-  var landingOpen = !!configuredExternalUrl(state.config, "landingUrl");
+  var brandLeaves = !signedInWithAccess() && !!configuredExternalUrl(state.config, "landingUrl");
   var nav = h("nav", { "class": "top-nav", "data-module": "top-nav", "data-visual-id": "top-nav" }, [
-    h("div", { "class": "top-nav__brand", "data-action": landingOpen ? "nav.landing" : "nav.go", "data-id": landingOpen ? undefined : state.config.defaultRoute }, [
+    h("div", { "class": "top-nav__brand", "data-action": brandLeaves ? "nav.landing" : "nav.go", "data-id": brandLeaves ? undefined : state.config.defaultRoute }, [
       h("div", { "class": "brand-logo" }),
       h("span", { "class": "brand-name", "data-bind": "brand.name" }, state.config.brandName || "Aircove")
     ]),

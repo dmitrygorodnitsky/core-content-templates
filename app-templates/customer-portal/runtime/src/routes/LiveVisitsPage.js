@@ -1,6 +1,7 @@
 import { h } from "../dom.js";
 import { render } from "../app.js";
 import { isModuleEnabled, liveListStatus, liveProperties, liveVisits, quotePackage, state } from "../state.js";
+import { ActionButton } from "../components/primitives/ActionButton.js";
 import { EmptyState } from "../components/primitives/EmptyState.js";
 import { ErrorState } from "../components/primitives/ErrorState.js";
 import { UnauthorizedState, skel } from "../components/primitives/RouteStates.js";
@@ -34,7 +35,9 @@ export function LiveVisits() {
 
 export function LiveVisitDetail() {
   var page = h("section", { "class": "page page--narrow", "data-route": "visit.detail", "data-visual-id": "visit-detail" });
-  page.appendChild(h("div", { "class": "detail-back", "data-action": "nav.go", "data-id": "appointments" }, "‹ Back to visits"));
+  page.appendChild(h("div", { "class": "detail-bar", "data-module": "visit-detail-bar" }, [
+    ActionButton({ variant: "btn--ghost", label: "Show all visits", action: "nav.go", id: "appointments", visualId: "visit-show-all" }),
+  ]));
   var status = liveListStatus("appointmentsTimeline");
   var visit = status === "ready" ? findVisit(liveVisits(), state.visitId) : null;
   if (!visit) {

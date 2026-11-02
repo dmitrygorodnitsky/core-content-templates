@@ -800,6 +800,29 @@ show a Google map whose pins open their quotes (without a key, the schematic as
 before), and the agreement detail maps its properties. Checks:
 `scripts/property-map-check.mjs`, `scripts/snow-contracts-check.mjs`.
 
+### Snow portal polish (2026-11-02)
+
+Decisions recorded with the change:
+
+- Every Google map draws the same 40 px marker-red pin with the home page's
+  hover card. A decision no longer colours a portfolio pin; the card names it.
+  Visit pages have no map.
+- The provider card reads `PROVIDER_LOGO` from the agreement and loads
+  `/core/image/{id}/get?width=440`, the anonymous image the review page uses.
+  8 of 25 SNOWLIMITLESS agreements carried a logo on 2026-11-02 (operator
+  read); the others, an id that is not an image and a failed load show the
+  initials of the real legal name.
+- The Terms of an agreement open expanded. A visit's way back is a "Show all
+  visits" button. A signed-in customer's logo goes to the portal home.
+- "Print invoice" prints a sheet hidden on screen. Its parties come from the
+  agreement listing the invoice's order, then the only active agreement; the
+  invoice read itself carries no parties. Without one the sheet names only the
+  configured brand and the Account name.
+- The landing keeps nine illustration slots with inline placeholders. Prompts:
+  `cms/granite-ridge-snow.landing-illustrations.md`.
+- Not seen with a customer session: all of the above was rendered with sample
+  data and a stub map.
+
 ## Universal form document
 
 `runtime/forms/portal-form.js` renders any published Core form type in the

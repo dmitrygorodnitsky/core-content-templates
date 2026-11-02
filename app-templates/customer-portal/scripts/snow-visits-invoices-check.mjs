@@ -26,6 +26,9 @@ const { invoiceStatusLine, normalizeInvoices, openInvoices } = await load("src/n
 const { TopNav } = await load("src/components/shell/TopNav.js");
 const { renderRoute } = await load("src/router.js");
 const { Overview } = await load("src/routes/OverviewPage.js");
+const { ACTIONS } = await load("src/actions.js");
+const { invoiceParties } = await load("src/components/storm/InvoiceSheet.js");
+const { liveInvoices } = await load("src/state.js");
 const { PropertyDetail } = await load("src/routes/PropertyDetailPage.js");
 
 const all = (root, selector) => root.querySelectorAll(selector);
@@ -293,6 +296,32 @@ const page = (route, params = {}) => { Object.assign(state, params); state.route
   assert.equal(one(bill, "[data-module=\"invoice-total\"]").textContent, "TotalCA$4,217.94");
   assert.deepEqual(all(bill, ".prop-fact").map((row) => row.textContent), ["Due dateNov 12, 2026", "Payment termsNet 15", "Invoice dateOct 28, 2026"]);
   assert.equal(page("invoice.detail", { invoiceId: "invoice-core-8" }).getAttribute("data-state"), "not-found", "a DRAFT invoice cannot be opened by its address either");
+  assert.equal(all(page("invoice.detail", { invoiceId: "invoice-core-8" }), "[data-action=\"invoice.print\"]").length, 0, "nothing to print without an invoice");
+  const print = one(bill, "[data-action=\"invoice.print\"]");
+  assert.deepEqual([print.tagName, print.textContent, print.getAttribute("data-visual-id")], ["BUTTON", "Print invoice", "invoice-print"]);
+  const printed = [];
+  globalThis.print = () => printed.push("print");
+  ACTIONS["invoice.print"]();
+  assert.deepEqual(printed, ["print"], "the button opens the browser's print dialog");
+  delete globalThis.print;
+  const sheet = one(bill, "[data-module=\"invoice-sheet\"]");
+  assert.equal(one(sheet, ".invoice-sheet__number").textContent, "#47");
+  assert.equal(one(sheet, ".invoice-sheet__status").textContent, "Due");
+  assert.deepEqual(all(sheet, ".invoice-sheet__fact").map((row) => row.textContent), ["Service periodNovember 2026", "Invoice dateOct 28, 2026", "Due dateNov 12, 2026", "Payment termsNet 15"]);
+  assert.deepEqual(all(sheet, "[data-module=\"invoice-sheet-line\"]").map((row) => row.textContent), ["Snow Removal1CA$747.99", "Rock Salt De-Icing1CA$3,469.95"]);
+  assert.equal(one(sheet, "[data-module=\"invoice-sheet-total\"]").textContent, "TotalCA$4,217.94");
+  assert.equal(one(sheet, "[data-module=\"invoice-sheet-from\"]").textContent, "From" + state.config.brandName, "without an agreement the sheet names only the configured brand");
+  assert.equal(all(sheet, "[data-module=\"invoice-sheet-to\"]").length, 0, "no bill-to is invented");
+  assert.equal(all(sheet, "img").length, 0);
+  const savedProposals = state.moduleData.proposals;
+  state.moduleData.proposals = agreement169(["ACTIVE"]);
+  assert.equal(invoiceParties(liveInvoices().items[0]).client.legalName, "Bilbo Baggins", "the agreement that lists the invoice's order names the parties");
+  state.moduleData.proposals = savedProposals;
+  const printCss = await fs.readFile(path.join(portalRoot, "runtime/styles/routes.css"), "utf8");
+  const printRules = printCss.slice(printCss.indexOf("@media print {"));
+  assert.match(printRules, /\.top-nav-wrap[^{]*\{ display: none !important; \}/, "printing drops the app shell");
+  assert.match(printRules, /\[data-route="invoice\.detail"\] > :not\(\.invoice-sheet\) \{ display: none !important; \}/, "printing shows only the sheet");
+  assert.match(printCss, /^\.invoice-sheet \{ display: none; \}/m, "the sheet stays out of the screen");
 
   state.propertyId = "prop-core-983";
   const detailPage = PropertyDetail();
@@ -394,7 +423,16 @@ const page = (route, params = {}) => { Object.assign(state, params); state.route
   const steps = (root) => all(root, "[data-module=\"visit-progress-step\"]").map((node) => node.textContent);
 
   const done = page("visit.detail", { visitId: "visit-core-77" });
-  assert.deepEqual(sections(done), ["visit-property", "property-plan", "visit-services", "visit-progress", "visit-notes", "visit-photos"]);
+  const showAll = one(one(done, "[data-module=\"visit-detail-bar\"]"), "button");
+  assert.deepEqual([showAll.textContent, showAll.getAttribute("data-action"), showAll.getAttribute("data-id"), showAll.getAttribute("data-visual-id")], ["Show all visits", "nav.go", "appointments", "visit-show-all"], "a visit has an explicit button back to every visit");
+  assert.equal(all(done, ".detail-back").length, 0, "the small back link gave way to the button");
+  for (const status of ["loading", "error", "empty"]) {
+    const saved = state.moduleData.appointmentsTimeline;
+    state.moduleData.appointmentsTimeline = status === "loading" ? { state: "loading" } : status === "error" ? { state: "error" } : Object.assign({}, saved, { upcoming: [], past: [] });
+    assert.equal(all(page("visit.detail", { visitId: "visit-core-77" }), "[data-visual-id=\"visit-show-all\"]").length, 1, "the " + status + " visit page keeps the way back");
+    state.moduleData.appointmentsTimeline = saved;
+  }
+  assert.deepEqual(sections(done), ["visit-detail-bar", "visit-property", "property-plan", "visit-services", "visit-progress", "visit-notes", "visit-photos"]);
   const facts = one(done, "[data-module=\"visit-property\"]");
   assert.deepEqual(all(facts, "[data-fact]").map((fact) => [fact.getAttribute("data-fact"), one(fact, ".prop-fact__value").textContent]), [["property", "12 Frost Lane, Surrey, BC V3W 1J8, Canada ›"], ["area", "50,000 ft²"]], "a single-property customer still sees which property the visit is at, and its area");
   assert.equal(one(facts, "a").getAttribute("href"), "#/properties/prop-core-983");
@@ -408,7 +446,7 @@ const page = (route, params = {}) => { Object.assign(state, params); state.route
   const live = page("visit.detail", { visitId: "visit-core-78" });
   assert.equal(one(live, "[data-module=\"visit-when\"]").textContent, "6:30 – 7:30 AM", "the planned window renders without a zone shift");
   assert.deepEqual(steps(live), ["Started · 5:21 AM"], "the dev-1 transition of visit 78, observed 12:21 UTC, is 5:21 AM in Vancouver");
-  assert.deepEqual(sections(live), ["visit-property", "property-plan", "visit-services", "visit-progress", "visit-photos"]);
+  assert.deepEqual(sections(live), ["visit-detail-bar", "visit-property", "property-plan", "visit-services", "visit-progress", "visit-photos"]);
   assert.deepEqual(all(live, ".record-photos__label").map((node) => node.textContent), ["Before"], "before photos show while the visit is in progress");
   assert.deepEqual(all(live, "img").map((img) => img.getAttribute("src")), ["/core/image/" + PRE_78 + "/get"]);
 
@@ -416,7 +454,7 @@ const page = (route, params = {}) => { Object.assign(state, params); state.route
   assert.deepEqual(steps(old), ["Started · Oct 28, 5:20 AM", "Completed · Oct 28, 5:20 AM"], "a transition on another day than the visit names its date");
 
   const upcoming = page("visit.detail", { visitId: "visit-core-79" });
-  assert.deepEqual(sections(upcoming), ["visit-property", "property-plan", "visit-services"], "an upcoming visit shows the property and the services and no empty section");
+  assert.deepEqual(sections(upcoming), ["visit-detail-bar", "visit-property", "property-plan", "visit-services"], "an upcoming visit shows the property and the services and no empty section");
   assert.doesNotMatch(upcoming.textContent, /Progress|Photos|Completion notes|No |not available/);
 
   state.moduleData.proposals = agreement169(ACTIVE_169.slice(0, 5));
@@ -429,7 +467,7 @@ const page = (route, params = {}) => { Object.assign(state, params); state.route
   await liveLoad({ properties: [property(983, 610)], visits: [forbidden], invoices: [] });
   await preloadProgress();
   const unread = page("visit.detail", { visitId: "visit-core-92" });
-  assert.deepEqual(sections(unread), ["visit-property"], "a transition list the customer cannot read leaves no Progress block, and a property without area or plan shows only its address");
+  assert.deepEqual(sections(unread), ["visit-detail-bar", "visit-property"], "a transition list the customer cannot read leaves no Progress block, and a property without area or plan shows only its address");
   assert.deepEqual(all(unread, "[data-fact]").map((fact) => fact.getAttribute("data-fact")), ["property"]);
 }
 

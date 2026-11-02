@@ -213,6 +213,7 @@ export var ACTIONS = {
   "appointments.openVisit": function (id) { state.visitId = id; go("visit.detail"); },
   [VISIT_PHOTO_ACTION]: function (id, el, event) { return openVisitPhoto(el, event); },
   "invoice.open":      function (id) { if (id) state.invoiceId = id; go("invoice.detail"); },
+  "invoice.print":     function () { if (typeof globalThis.print === "function") globalThis.print(); },
   "invoice.pay":       function (id) { return payInvoice(id, { reload: reloadRuntimeModule, render: render }); },
   "appointments.openProperty": function (id) { state.propertyId = id; go("property.detail"); },
   "property.showOnMap": function (id) { if (id) state.ovProperty = id; go("overview"); },
@@ -1468,7 +1469,7 @@ export function openProposal(id) {
 export function openAgreement(id) {
   if (!contractAgreementFor(id)) throw new Error("Agreement not found");
   state.agreementId = id;
-  state.agreementTermsOpen = false;
+  state.agreementTermsOpen = true;
   state.contractConfirm = null;
   go("agreement.detail");
 }

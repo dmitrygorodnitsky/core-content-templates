@@ -54,6 +54,7 @@ function invoiceRecord(row) {
   return {
     id: "invoice-core-" + backendId,
     backendId: backendId,
+    orderBackendId: positiveInteger(row.order && row.order.id),
     stateCode: stateCode,
     status: { label: status.label, tone: status.tone },
     open: status.open,

@@ -38,6 +38,7 @@ const { ProposalsList } = await load("src/routes/ProposalsPage.js");
 const { ProposalDetail } = await load("src/routes/ProposalDetailPage.js");
 const { QuoteOptionCard } = await load("src/components/proposals/QuoteOptionCard.js");
 const { AgreementDetail } = await load("src/routes/AgreementDetailPage.js");
+const { AgreementParties } = await load("src/components/proposals/AgreementParts.js");
 const { Overview } = await load("src/routes/OverviewPage.js");
 const { PropertyDetail } = await load("src/routes/PropertyDetailPage.js");
 const { propertyPlan } = await load("src/property-plan.js");
@@ -260,7 +261,7 @@ const orderList = {
   }, { organization: { id: 43, code: "GRANITE", nls: { en: { NAME: "Granite Ridge Snow Removal" } } } }), { displayName: "Account display name" });
   assert.deepEqual(sent.allowedActions, ["approve"]);
   assert.deepEqual(plain(sent.parties), {
-    provider: { legalName: "Granite Ridge Snow Removal", representativeName: "Morgan Ellis", representativeJobTitle: "Contracts Manager", phone: "", email: "" },
+    provider: { legalName: "Granite Ridge Snow Removal", representativeName: "Morgan Ellis", representativeJobTitle: "Contracts Manager", phone: "", email: "", logoImageId: "" },
     client: { legalName: "Harbour View Strata", clientType: "Organization", billingAddress: "100 Harbour Way, Vancouver", representativeName: "Avery Flow", representativeJobTitle: "Director", email: "avery@example.test", phone: "+1 604-555-0100" },
   }, "the agreement's own snapshot names the parties, and the provider falls back to the owning organization");
   const contactable = normalizeServiceAgreement(agreementDocument(["ACTIVE"], {
@@ -728,10 +729,16 @@ const RETIRED = ["Proposal #", "valid until", "sent Dec", "sq ft", "Beam AI", "l
   assert.equal(one(banner, "h2").textContent, "Waiting for your approval");
   const facts = (card) => all(card, ".agreement-facts__row").map((row) => [one(row, "dt").textContent, one(row, "dd").textContent]);
   const parties = all(page, "[data-module=\"agreement-party\"]");
-  assert.deepEqual(facts(parties[0]), [["Legal name", "Granite Ridge Snow Removal LLC"], ["Representative", "Jordan Pike, Contracts Manager"]]);
+  const partyName = (card) => one(card, ".agreement-party__name").textContent;
+  assert.deepEqual(parties.map((card) => card.getAttribute("data-party")), ["provider", "client"], "the two cards are a pair");
+  assert.equal(partyName(parties[0]), "Granite Ridge Snow Removal LLC");
+  assert.equal(all(parties[0], "img").length, 0, "no logo id means no image");
+  assert.equal(one(parties[0], ".party-mark").textContent, "GR", "a provider without a logo wears the initials of its real name");
+  assert.deepEqual(facts(parties[0]), [["Representative", "Jordan Pike, Contracts Manager"]]);
+  assert.equal(partyName(parties[1]), "Whitlock Property Group LLC");
+  assert.equal(one(parties[1], "[data-module=\"party-tag\"]").textContent, "Organization");
+  assert.equal(page.textContent.split("Whitlock Property Group LLC").length, 2, "the client's name shows once");
   assert.deepEqual(facts(parties[1]), [
-    ["Legal name", "Whitlock Property Group LLC"],
-    ["Client type", "Organization"],
     ["Billing address", "1550 Wynkoop Street, Suite 400, Denver, CO 80202"],
     ["Representative", "Dana Whitlock, Portfolio Manager"],
     ["Email", "dana.whitlock@example.test"],
@@ -745,15 +752,15 @@ const RETIRED = ["Proposal #", "valid until", "sent Dec", "sq ft", "Beam AI", "l
     ["Braun Court", "247 Braun Court, Golden, CO 80401", "Monthly"],
   ], "an agreement lists each property with its approved option and the property's own address");
   assert.equal(all(services, "[data-action]").length, 0, "services inside an agreement are read-only");
-  const collapsed = one(page, "[data-module=\"agreement-terms\"]");
-  assert.equal(collapsed.getAttribute("data-state"), "closed", "the terms are collapsed by default");
+  const terms = one(page, "[data-module=\"agreement-terms\"]");
+  assert.equal(terms.getAttribute("data-state"), "open", "the document is expanded by default");
+  assert.deepEqual([one(terms, "[data-action=\"agreement.toggleTerms\"]").textContent, one(terms, "[data-action=\"agreement.toggleTerms\"]").getAttribute("aria-expanded")], ["Hide terms", "true"]);
+  state.agreementTermsOpen = false;
+  const collapsed = one(AgreementDetail(), "[data-module=\"agreement-terms\"]");
   assert.equal(all(collapsed, ".terms-heading").length + all(collapsed, ".terms-num").length, 0);
   const toggle = one(collapsed, "[data-action=\"agreement.toggleTerms\"]");
   assert.deepEqual([toggle.textContent, toggle.getAttribute("aria-expanded")], ["Show terms", "false"]);
   state.agreementTermsOpen = true;
-  const terms = one(AgreementDetail(), "[data-module=\"agreement-terms\"]");
-  assert.deepEqual([one(terms, "[data-action=\"agreement.toggleTerms\"]").textContent, one(terms, "[data-action=\"agreement.toggleTerms\"]").getAttribute("aria-expanded")], ["Hide terms", "true"]);
-  state.agreementTermsOpen = false;
   assert.equal(one(terms, ".terms-heading").textContent, "Winter service terms");
   assert.deepEqual(all(terms, ".terms-num").map((row) => [row.getAttribute("data-depth"), one(row, ".terms-num__marker").textContent, one(row, ".terms-num__text").textContent.slice(0, 18)]), [
     ["1", "1.", "Services"], ["2", "1.1", "Granite Ridge clea"], ["2", "1.2", "Every visit is log"],
@@ -791,8 +798,9 @@ const RETIRED = ["Proposal #", "valid until", "sent Dec", "sq ft", "Beam AI", "l
   state.agreementId = "agreement-core-9101";
   const review = AgreementDetail();
   assert.equal(one(review, "[data-module=\"agreement-notice\"]").textContent, "The quotes in this agreement are waiting for your decisions.Go to your quotes ›");
-  assert.equal(facts(all(review, "[data-module=\"agreement-party\"]")[0])[0][1], "Granite Ridge Snow Removal", "before the provider fields are written the owning organization names the provider");
-  assert.deepEqual(facts(all(review, "[data-module=\"agreement-party\"]")[1]), [["Legal name", "Dana Whitlock"]], "a party detail that is not stated is left out, never shown as a placeholder");
+  assert.equal(partyName(all(review, "[data-module=\"agreement-party\"]")[0]), "Granite Ridge Snow Removal", "before the provider fields are written the owning organization names the provider");
+  assert.equal(partyName(all(review, "[data-module=\"agreement-party\"]")[1]), "Dana Whitlock");
+  assert.deepEqual(facts(all(review, "[data-module=\"agreement-party\"]")[1]), [], "a party detail that is not stated is left out, never shown as a placeholder");
   assert.doesNotMatch(review.textContent, /Not stated|isn’t included yet/);
   assert.equal(all(review, "[data-module=\"agreement-term\"]").length, 0, "no term is shown before the agreement carries one");
   assert.equal(all(review, "[data-module=\"agreement-terms\"]").length, 0, "an agreement without terms has no terms card");
@@ -1054,7 +1062,7 @@ const RETIRED = ["Proposal #", "valid until", "sent Dec", "sq ft", "Beam AI", "l
     state.liveWeatherState = "off";
     state.contractCommand = null;
     state.contractConfirm = null;
-    state.agreementTermsOpen = false;
+    state.agreementTermsOpen = true;
     state.moduleData.properties = { state: "ready", accountId: 732, items: [property(planId)], scopeMode: "browser-filtered", truncated: false };
     state.moduleData.proposals = proposals;
     state.moduleStatus.proposals = "ready";
@@ -1095,15 +1103,15 @@ const RETIRED = ["Proposal #", "valid until", "sent Dec", "sq ft", "Beam AI", "l
   const plainAgreement = AgreementDetail();
   assert.equal(all(plainAgreement, ".proposal-detail-head__meta").length, 0, "no season without dates, and no property or quote count");
   assert.equal(all(plainAgreement, "[data-module=\"agreement-notice\"]").length + all(plainAgreement, "[data-module=\"agreement-approve\"]").length, 0, "an active agreement needs nothing from the client, so there is no banner");
-  assert.deepEqual(all(one(plainAgreement, "[data-module=\"agreement-party\"]"), "dt").map((label) => label.textContent), ["Legal name"], "agreement 169 carries no provider phone or e-mail, so none is shown");
+  assert.deepEqual(all(one(plainAgreement, "[data-module=\"agreement-party\"]"), "dt").map((label) => label.textContent), [], "agreement 169 carries no provider phone or e-mail, so none is shown");
   const services = one(plainAgreement, "[data-module=\"agreement-services\"]");
   assert.equal(once(services, "1239 W Georgia St"), 1, "the property address appears once among the services");
   assert.equal(all(services, ".agreement-property__address").length, 0);
   assert.deepEqual(all(services, ".money-rows__row").map((row) => row.textContent), ["TotalCA$4,217.94 / month"], "with no taxes only the total is shown, with its period");
   assert.deepEqual(all(services, ".purch-line__title").map((line) => line.textContent), ["Snow Removal", "Rock Salt De-Icing"]);
-  assert.equal(one(plainAgreement, "[data-module=\"agreement-terms\"]").getAttribute("data-state"), "closed");
-  assert.equal(one(plainAgreement, "[data-action=\"agreement.toggleTerms\"]").textContent, "Show terms");
-  assert.equal(all(plainAgreement, ".terms-heading").length, 0);
+  assert.equal(one(plainAgreement, "[data-module=\"agreement-terms\"]").getAttribute("data-state"), "open");
+  assert.equal(one(plainAgreement, "[data-action=\"agreement.toggleTerms\"]").textContent, "Hide terms");
+  assert.equal(all(plainAgreement, ".terms-heading").length, 1);
   const client = all(plainAgreement, "[data-module=\"agreement-party\"]")[1];
   assert.equal(all(client, "dd").find((value) => value.textContent.startsWith("1239")).textContent, ADDRESS, "the billing address reads like the property address");
   assert.equal(all(client, "dd").map((value) => value.textContent).includes("+1 999-111-2233"), true);
@@ -1135,10 +1143,23 @@ const RETIRED = ["Proposal #", "valid until", "sent Dec", "sq ft", "Beam AI", "l
   assert.equal(all(seasoned, "[data-module=\"agreement-term\"]").length, 0, "the season is under the title and not repeated in a term card");
   const provider = one(seasoned, "[data-module=\"agreement-party\"]");
   assert.deepEqual(all(provider, ".agreement-facts__row").map((row) => [one(row, "dt").textContent, one(row, "dd").textContent, (one(row, "a") || { getAttribute: () => null }).getAttribute("href")]), [
-    ["Legal name", "Limitless Snow Removal Corp.", null],
     ["Phone", "+1 604-670-0591", "tel:+16046700591"],
     ["Email", "support@snowlimitless.example.test", "mailto:support@snowlimitless.example.test"],
   ], "the provider's phone and e-mail come from the agreement the client already reads");
+  const LOGO = "647184d3-a297-42c8-b362-dd7bc758af61";
+  const provided = (value) => normalizeServiceAgreement({ id: 500, type: { id: 17, code: "SERVICE_AGREEMENT" }, states: [{ id: 1, code: "ACTIVE" }], attributes: { 17: { PROVIDER_LEGAL_NAME: { value: "Limitless Snow Removal Corp." }, PROVIDER_LOGO: { value } } } });
+  const logoCard = AgreementParties(provided(LOGO).parties);
+  const logo = one(logoCard, "img");
+  assert.equal(logo.getAttribute("src"), state.config.coreApiBase.replace(/\/+$/, "") + "/image/" + LOGO + "/get?width=440", "the provider logo is the image the agreement names");
+  assert.equal(logo.getAttribute("referrerpolicy"), "no-referrer");
+  assert.equal(logo.getAttribute("alt"), "Limitless Snow Removal Corp. logo");
+  assert.equal(all(logoCard, ".party-mark").length, 0);
+  assert.equal(all(AgreementParties(provided("not-an-image-id").parties), "img").length, 0, "a value that is not an image id is no logo");
+  assert.equal(one(AgreementParties(provided("not-an-image-id").parties), ".party-mark").textContent, "LS");
+  logo.listeners.error[0]();
+  assert.equal(all(AgreementParties(provided(LOGO).parties), "img").length, 0, "an image that fails to load falls back to the initials and stays there");
+  assert.equal(one(AgreementParties(provided(LOGO).parties), ".party-mark").textContent, "LS");
+  assert.equal(AgreementParties({ provider: { legalName: "", phone: "", email: "", logoImageId: "" }, client: {} }).children.length, 0, "a party with nothing stated has no card");
   const plannedDetail = PropertyDetail();
   assert.deepEqual(all(plannedDetail, "[data-fact]").map((fact) => [fact.getAttribute("data-fact"), one(fact, ".prop-fact__value").textContent]), [["area", "50,000 ft²"], ["plan", "Approved"], ["season", "Nov 1, 2026 – Mar 31, 2027"]]);
   assert.equal(one(plannedDetail, "[data-module=\"property-plan\"]").getAttribute("data-state"), "loading", "an approved plan is read and drawn on the property page");
