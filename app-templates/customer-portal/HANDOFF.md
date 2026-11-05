@@ -931,7 +931,7 @@ checkout before treating any of them as broken.
 ## Exact next action
 
 **Since 2026-11-05** workflow 49, the quote form, runs
-`WINTER_SERVICE_REGION_WORKFLOW_UTILS_V42` (script 960) and keeps a request in
+`WINTER_SERVICE_REGION_WORKFLOW_UTILS_V43` (script 963) and keeps a request in
 human states only: `SUBMITTED` (validation and preparation), `READY_FOR_REVIEW`
 (the managers' email and the receipt), `PROCESSED` or `REJECTED`. A failed step
 stays where it failed with `REQUEST_OPERATION_STATUS` and
