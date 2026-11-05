@@ -446,10 +446,9 @@ assert.deepEqual(plain(coreSnowContract.scopeModes), {
 assert.deepEqual(coreSnowContract.propertyFilters, ["type.code"]);
 assert.equal(coreSnowContract.propertyType, "SNOW_REMOVAL_PROPERTY");
 assert.deepEqual(Object.keys(coreSnowContract.customerQuoteStatus).sort(), [
-  "APPROVAL_PROCESSING_FAILED", "CHANGES_NOTIFICATION_CONFIRMED", "CHANGES_NOTIFICATION_FAILED", "CLIENT_APPROVED", "CUSTOMER_CHANGES_REQUESTED",
-  "DECLINED", "DECLINE_PROCESSING_FAILED", "QUOTE_SENT", "QUOTE_VIEWED",
+  "CLIENT_APPROVED", "CUSTOMER_CHANGES_REQUESTED", "DECLINED", "QUOTE_SENT", "QUOTE_VIEWED",
 ]);
-assert.deepEqual(coreSnowContract.operatorQuoteStates, ["CHANGES_REQUESTED", "INITIAL", "PRICING_FAILED", "QUOTE_APPROVED_INTERNALLY", "QUOTE_PREPARED", "WAITING_FOR_AREA"]);
+assert.deepEqual(coreSnowContract.operatorQuoteStates, ["CHANGES_REQUESTED", "INITIAL", "QUOTE_APPROVED_INTERNALLY", "QUOTE_PREPARED"]);
 assert.equal(coreSnowContract.quoteRequestPreference, "SNOW_PORTAL_QUOTE_REQUEST");
 
 console.log("core-snow-adapter-check ok: properties filtered in the browser against an inherited ACCOUNT attribute, coordinates read from COORD_LAT and COORD_LNG with a missing value left missing, agreements, quotes and their lines filtered to the Account in the request with any foreign row dropped and reported as browser-filtered, catalog rows reported as unscoped, a failed read left absent as a partial result, a catalog 401 kept from signing the customer out, and the pre-read, ownership check and tagged event request of every contract command")

@@ -663,14 +663,14 @@ for (const [report, field, rendered] of [
 {
   const quoteSteps = {
     QUOTE_SENT: "◔ Sent", QUOTE_VIEWED: "• Viewed",
-    CUSTOMER_CHANGES_REQUESTED: "⟳ Changes requested", CHANGES_NOTIFICATION_FAILED: "⟳ Changes requested", CHANGES_NOTIFICATION_CONFIRMED: "⟳ Changes requested",
-    CLIENT_APPROVED: "✓ Approved", APPROVAL_PROCESSING_FAILED: "✓ Approved",
-    DECLINED: "✕ Declined", DECLINE_PROCESSING_FAILED: "✕ Declined",
+    CUSTOMER_CHANGES_REQUESTED: "⟳ Changes requested",
+    CLIENT_APPROVED: "✓ Approved",
+    DECLINED: "✕ Declined",
   };
   const quotes = normalizeQuoteOrders({ result: Object.keys(quoteSteps).map((code, index) => order(6000 + index, code, 983, "MONTHLY", 1)) }).orders;
   assert.deepEqual(quotes.map((row) => [row.stateCode, QUOTE_STATUS[row.status].label]), Object.entries(quoteSteps), "each documented quote state shows its portal step");
-  const prepared = normalizeQuoteOrders({ result: ["INITIAL", "QUOTE_PREPARED", "WAITING_FOR_AREA", "PRICING_FAILED", "CHANGES_REQUESTED", "QUOTE_APPROVED_INTERNALLY"].map((code, index) => order(7000 + index, code, 983, "MONTHLY", 1)) });
-  assert.deepEqual([prepared.orders.length, prepared.preparing, prepared.withheldBackendIds.length], [0, true, 6], "a quote with the manager is never listed as a decision and keeps Contracts in preparing");
+  const prepared = normalizeQuoteOrders({ result: ["INITIAL", "QUOTE_PREPARED", "CHANGES_REQUESTED", "QUOTE_APPROVED_INTERNALLY"].map((code, index) => order(7000 + index, code, 983, "MONTHLY", 1)) });
+  assert.deepEqual([prepared.orders.length, prepared.preparing, prepared.withheldBackendIds.length], [0, true, 4], "a quote with the manager is never listed as a decision and keeps Contracts in preparing");
 
   const agreementSteps = {
     QUOTATION_SENT: "Awaiting your decisions", QUOTATION_UPDATE: "Awaiting your decisions", QUOTATION_SEND_FAILED: "Awaiting your decisions",

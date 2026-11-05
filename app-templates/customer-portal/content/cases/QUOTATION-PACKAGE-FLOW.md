@@ -1007,7 +1007,7 @@ that Core lists for the signed-in user; the screens configure none.
 | take or reject a request | Requests to Review | `GET_QUOTE_`, `READY_FOR_REVIEW` | Process, Reject |
 | retry a request | Requests to Retry | `VALIDATION_FAILED`, `PROCESSING_FAILED`, `DELIVERY_FAILED` | Retry Validation, Retry Processing, Retry Customer Delivery |
 | enter the area | Quoted Properties | `SNOW_REMOVAL_PROPERTY`, `INITIAL` | Service Area (sq ft), Save |
-| prepare, revise | Quotes to Prepare | `INITIAL`, `WAITING_FOR_AREA`, `PRICING_FAILED`, `CHANGES_REQUESTED`, `CUSTOMER_CHANGES_REQUESTED` | Prepare Quote, the two pricing retries, Modify, Changes Requested; Price Quotes for many; lines under Order Items |
+| prepare, revise | Quotes to Prepare | `INITIAL`, `CHANGES_REQUESTED`, `CUSTOMER_CHANGES_REQUESTED` (a quote that waits for its area or whose pricing failed sits in `INITIAL` with `metadata.QUOTATION_OPERATION_STATUS` since 2026-11-05) | Prepare Quote, Modify, Changes Requested; Price Quotes for many; lines under Order Items |
 | approve internally | Quotes to Approve | `QUOTE_PREPARED` | Approve Quote, Request Changes; Approve Quotes for many |
 | send | Quotations to Send | `SERVICE_AGREEMENT`, `QUOTATION` | Send Quotation |
 | send an update | Quotations with Client | `QUOTATION_SENT`, `QUOTATION_UPDATE`, `AWAITING_CLIENT_DETAILS`, `CLIENT_DETAILS_RECEIVED` | Send Updated Quotation |
@@ -1128,14 +1128,15 @@ ticked rows, and Run starts one bulk task.
 2026-09-29), from Quotes, Quotes to Prepare and Quotes to Approve. They are the
 team's step after the area is entered: price the waiting quotes, review the
 prices, approve.
-- **The queue:** Quotes to Prepare also lists `WAITING_FOR_AREA` and
-  `PRICING_FAILED` since then. Those quotes had no queue before, only the full
-  Quotes list.
-- **Price Quotes** gives each quote the pricing event of its own state:
-  Prepare Quote from `INITIAL`, or the retry from `WAITING_FOR_AREA` or
-  `PRICING_FAILED`, at most five at a time. A quote counts as priced once its
-  lines pass the checks of `requirePriced` and `QUOTATION_OPERATION_ERROR` is
-  empty. One that lands back in `WAITING_FOR_AREA` or `PRICING_FAILED` comes
+- **The queue:** since 2026-11-05 the technical states `WAITING_FOR_AREA` and
+  `PRICING_FAILED` are retired: such a quote returns to `INITIAL` with
+  `metadata.QUOTATION_OPERATION_STATUS` (`WAITING_FOR_AREA` or `PRICING_FAILED`)
+  and `QUOTATION_OPERATION_ERROR`, so Quotes to Prepare lists it as any other
+  draft and Quotes Needing Attention filters on that status.
+- **Price Quotes** gives each quote in `INITIAL` Prepare Quote, at most five at
+  a time. A quote counts as priced once its lines pass the checks of
+  `requirePriced` and `QUOTATION_OPERATION_ERROR` is empty. One that returns to
+  `INITIAL` with the sub-status `WAITING_FOR_AREA` or `PRICING_FAILED` comes
   back as a failure with its reason; one still pricing when the run ends
   counts as started, as after the button.
 - **Approve Quotes** approves quotes in `QUOTE_PREPARED` whose pricing has

@@ -45,6 +45,7 @@
   /* semantic status colors */
   --ok:     #1f8a44;  --ok-bg:     rgba(52,199,89,.16);
   --warn:   #b5670a;  --warn-bg:   rgba(255,159,10,.16);
+  --pin-marker: #ea4335;
   --danger: #c0392b;  --danger-bg: rgba(255,59,48,.12);
   --info:   #0e8fc4;  --info-bg:   rgba(14,143,196,.16);
 

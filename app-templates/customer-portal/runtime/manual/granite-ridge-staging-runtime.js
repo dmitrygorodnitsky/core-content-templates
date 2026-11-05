@@ -1045,17 +1045,13 @@
   // app-templates/customer-portal/runtime/src/normalizers/contracts.js
   var QUOTE_ORDER_TYPES = /* @__PURE__ */ Object.freeze(["FIELD_SERVICE_ORDER", "WINTER_SERVICES_ORDER"]);
   var CUSTOMER_ORDER_STATUS = /* @__PURE__ */ Object.freeze({
-    APPROVAL_PROCESSING_FAILED: "approved",
-    CHANGES_NOTIFICATION_CONFIRMED: "revision",
-    CHANGES_NOTIFICATION_FAILED: "revision",
     CLIENT_APPROVED: "approved",
     CUSTOMER_CHANGES_REQUESTED: "revision",
-    DECLINE_PROCESSING_FAILED: "declined",
     DECLINED: "declined",
     QUOTE_SENT: "unseen",
     QUOTE_VIEWED: "viewed"
   });
-  var OPERATOR_ORDER_STATES = /* @__PURE__ */ Object.freeze(["CHANGES_REQUESTED", "INITIAL", "PRICING_FAILED", "QUOTE_APPROVED_INTERNALLY", "QUOTE_PREPARED", "WAITING_FOR_AREA"]);
+  var OPERATOR_ORDER_STATES = /* @__PURE__ */ Object.freeze(["CHANGES_REQUESTED", "INITIAL", "QUOTE_APPROVED_INTERNALLY", "QUOTE_PREPARED"]);
   var PRICING_MODELS = /* @__PURE__ */ Object.freeze({
     PER_SERVICE: "Per service",
     MONTHLY: "Monthly",

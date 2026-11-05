@@ -13,13 +13,6 @@
     QUOTE_PREPARED: "revising",
     CHANGES_REQUESTED: "revising",
     QUOTE_APPROVED_INTERNALLY: "revising",
-    WAITING_FOR_AREA: "revising",
-    PRICING_FAILED: "revising",
-    PACKAGE_ATTACHMENT_FAILED: "revising",
-    APPROVAL_PROCESSING_FAILED: "approved",
-    DECLINE_PROCESSING_FAILED: "declined",
-    CHANGES_NOTIFICATION_FAILED: "changes",
-    CHANGES_NOTIFICATION_CONFIRMED: "changes",
   };
 
   var PRICED_STATUSES = ["new", "viewed", "approved", "declined", "changes"];

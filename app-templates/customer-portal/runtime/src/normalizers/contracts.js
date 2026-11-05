@@ -5,18 +5,14 @@ import { addressRepeats, formatAddressLine, formatPhone } from "./postal-address
 export var QUOTE_ORDER_TYPES = Object.freeze(["FIELD_SERVICE_ORDER", "WINTER_SERVICES_ORDER"]);
 
 export var CUSTOMER_ORDER_STATUS = Object.freeze({
-  APPROVAL_PROCESSING_FAILED: "approved",
-  CHANGES_NOTIFICATION_CONFIRMED: "revision",
-  CHANGES_NOTIFICATION_FAILED: "revision",
   CLIENT_APPROVED: "approved",
   CUSTOMER_CHANGES_REQUESTED: "revision",
-  DECLINE_PROCESSING_FAILED: "declined",
   DECLINED: "declined",
   QUOTE_SENT: "unseen",
   QUOTE_VIEWED: "viewed",
 });
 
-export var OPERATOR_ORDER_STATES = Object.freeze(["CHANGES_REQUESTED", "INITIAL", "PRICING_FAILED", "QUOTE_APPROVED_INTERNALLY", "QUOTE_PREPARED", "WAITING_FOR_AREA"]);
+export var OPERATOR_ORDER_STATES = Object.freeze(["CHANGES_REQUESTED", "INITIAL", "QUOTE_APPROVED_INTERNALLY", "QUOTE_PREPARED"]);
 
 export var PRICING_MODELS = Object.freeze({
   PER_SERVICE: "Per service",

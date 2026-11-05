@@ -1045,8 +1045,10 @@ The empty map opens on the service area.
 **Since the evening of 2026-09-29** managers can price and approve many quotes
 at once in Snow CRM: Price Quotes and Approve Quotes under Group actions on
 Quotes, Quotes to Prepare and Quotes to Approve
-(`content/cases/QUOTATION-PACKAGE-FLOW.md` §11). Quotes to Prepare now also
-lists `WAITING_FOR_AREA` and `PRICING_FAILED`. A bulk task runs on `CORE`
+(`content/cases/QUOTATION-PACKAGE-FLOW.md` §11). Since 2026-11-05 a quote that
+waits for its area or whose pricing failed sits in `INITIAL` with
+`metadata.QUOTATION_OPERATION_STATUS`, so Quotes to Prepare lists it as a
+draft. A bulk task runs on `CORE`
 nodes without the billing module, so `SNOW_BULK_QUOTES_DISPATCH_V1` (script
 338) hands each run to `SNOW_BULK_QUOTES_V2` (337) on a billing node. Next: a
 manager prices the waiting quotes of a request after its area is entered,
@@ -1100,8 +1102,9 @@ at a time, and marks the rest Not started. In order:
 ready request no longer waits for the manager: it notifies the manager and
 moves on by itself through `REQUESTER_NOTIFICATION_PENDING` to `PROCESSED`,
 whose email reports receipt only, without an Account link. Pricing waits for
-the property's area in `WAITING_FOR_AREA` and fails visibly in
-`PRICING_FAILED`. A client's approval of the agreement ends in its `ACTIVE`,
+the property's area, and fails visibly, with the quote back in `INITIAL` and
+the sub-status `WAITING_FOR_AREA` or `PRICING_FAILED` in its metadata. A
+client's approval of the agreement ends in its `ACTIVE`,
 and issuing portal credentials leaves a receipt on the agreement
 (`PORTAL_CREDENTIALS_STATUS`). The quote form keeps one submission in flight.
 The dev-1 readback of 2026-09-28 matched every seed except the order of one

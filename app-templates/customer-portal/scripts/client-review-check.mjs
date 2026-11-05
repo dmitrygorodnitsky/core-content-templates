@@ -262,9 +262,6 @@ const N = loadRuntime().CR.normalizer;
     QUOTE_SENT: "new", QUOTE_VIEWED: "viewed", CLIENT_APPROVED: "approved", DECLINED: "declined",
     CUSTOMER_CHANGES_REQUESTED: "changes", INITIAL: "revising", QUOTE_PREPARED: "revising",
     CHANGES_REQUESTED: "revising", QUOTE_APPROVED_INTERNALLY: "revising",
-    WAITING_FOR_AREA: "revising", PRICING_FAILED: "revising", PACKAGE_ATTACHMENT_FAILED: "revising",
-    APPROVAL_PROCESSING_FAILED: "approved", DECLINE_PROCESSING_FAILED: "declined",
-    CHANGES_NOTIFICATION_FAILED: "changes", CHANGES_NOTIFICATION_CONFIRMED: "changes",
   };
   assert.deepEqual(Object.keys(EXPECTED_STATUS).sort(), plain(contract.orderStates).sort(), "every order state has an expected customer status");
   const EXPECTED_PROPERTY = { new: "awaiting", viewed: "awaiting", approved: "approved", declined: "declined", changes: "changes", revising: "changes" };

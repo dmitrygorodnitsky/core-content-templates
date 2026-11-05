@@ -223,10 +223,11 @@ next; details the processor returned are marked field by field from
 is shown as unconfirmed with Refresh status.
 
 Status labels follow the interface's step tables. Quotes: Sent (`QUOTE_SENT`),
-Viewed, Changes requested (also `CHANGES_NOTIFICATION_FAILED` and
-`_CONFIRMED`), Approved (also `APPROVAL_PROCESSING_FAILED`), Declined (also
-`DECLINE_PROCESSING_FAILED`); `WAITING_FOR_AREA` and `PRICING_FAILED` join the
-manager-side states that keep Contracts in preparing. Agreements: Awaiting your
+Viewed, Changes requested (`CUSTOMER_CHANGES_REQUESTED`), Approved
+(`CLIENT_APPROVED`), Declined (`DECLINED`); since 2026-11-05 a failed
+operation is a metadata sub-status of these states, not a state of its own, and
+`INITIAL`, `QUOTE_PREPARED`, `CHANGES_REQUESTED` and `QUOTE_APPROVED_INTERNALLY`
+are the manager-side states that keep Contracts in preparing. Agreements: Awaiting your
 decisions (`QUOTATION_SENT`, `QUOTATION_UPDATE`, `QUOTATION_SEND_FAILED`),
 Awaiting your details, Checking your details (`CLIENT_DETAILS_RECEIVED`),
 Pending management approval (`DRAFT`, `PENDING_MANAGEMENT_APPROVAL`,

@@ -89,10 +89,9 @@ const orderList = {
 
 {
   assert.deepEqual(plain(coreSnowContract.customerQuoteStatus), {
-    APPROVAL_PROCESSING_FAILED: "approved", CHANGES_NOTIFICATION_CONFIRMED: "revision", CHANGES_NOTIFICATION_FAILED: "revision",
-    CLIENT_APPROVED: "approved", CUSTOMER_CHANGES_REQUESTED: "revision", DECLINE_PROCESSING_FAILED: "declined", DECLINED: "declined",
+    CLIENT_APPROVED: "approved", CUSTOMER_CHANGES_REQUESTED: "revision", DECLINED: "declined",
     QUOTE_SENT: "unseen", QUOTE_VIEWED: "viewed",
-  }, "the tenant adapter and the customer-scope normalizer read one set of Order states, the documented portal steps included");
+  }, "the tenant adapter and the customer-scope normalizer read one set of Order states, the documented portal steps included; a failed operation is a metadata sub-status of these states since 2026-11-05");
 
   const { orders, preparing, withheldBackendIds } = normalizeQuoteOrders(orderList);
   assert.deepEqual(orders.map((order) => order.backendId), [501, 502, 503, 504, 505, 510, 511], "operator-side, unknown-state, other-type and id-less rows are not rows");
