@@ -663,9 +663,15 @@ Failure visibility was completed on 2026-09-22. A validation failure is
 retryable through `VALIDATION_FAILED`; Account or Property creation failure is
 retryable through `PROCESSING_FAILED`; client link or email failure is
 retryable through `DELIVERY_FAILED`. `READY_FOR_REVIEW` removes the early
-manager race. Quotation delivery uses `QUOTATION_SEND_FAILED`, agreement
-delivery uses `AGREEMENT_SEND_FAILED`, and post-approval Account activation
-uses `ACTIVATION_FAILED`; each re-enters its processing state on retry. The
+manager race. Until 2026-11-05 quotation delivery used `QUOTATION_SEND_FAILED`,
+agreement delivery `AGREEMENT_SEND_FAILED`, and post-approval Account activation
+`ACTIVATION_FAILED`, each re-entering its processing state on retry; since then a
+failed operation stays in its human state (`QUOTATION_SENT`, `SENT_TO_CLIENT`,
+`CLIENT_APPROVED`) with the outcome in the document's metadata
+`AGREEMENT_OPERATION_STATUS` and the reason in `AGREEMENT_OPERATION_ERROR`, the
+retired states keep only their history, and the CRM bulk action Retry Failed
+Operation re-runs the operation in place. The portal reads the sub-status and
+presents these three failures as it presented the retired states. The
 historical first Property failure of 2026-09-21 cannot be
 reconstructed because its event metadata was stored as `{}`; it did not recur
 for forms 59 or 60. The retry investigation did uncover and fix a separate V4

@@ -234,6 +234,12 @@ const orderList = {
   assert.deepEqual(normalizeServiceAgreement(agreementDocument(["QUOTATION"], { ORDERS: { value: 501 } })).orderBackendIds, [501]);
   assert.deepEqual(normalizeServiceAgreement(agreementDocument(["QUOTATION"], {})).orderBackendIds, []);
   assert.equal(normalizeServiceAgreement(agreementDocument(["QUOTATION"])).stage, "preparing");
+  const failedDelivery = normalizeServiceAgreement(agreementDocument(["SENT_TO_CLIENT"], {}, { metadata: { AGREEMENT_OPERATION_STATUS: "AGREEMENT_DELIVERY_FAILED" } }));
+  assert.deepEqual([failedDelivery.stateCode, failedDelivery.label, failedDelivery.allowedActions], ["AGREEMENT_SEND_FAILED", "Being sent to you", []], "an agreement whose delivery failed stays in SENT_TO_CLIENT since 2026-11-05 and is presented as before: being sent, with no approval offered");
+  assert.deepEqual([normalizeServiceAgreement(agreementDocument(["SENT_TO_CLIENT"], {}, { metadata: { AGREEMENT_OPERATION_STATUS: "AGREEMENT_DELIVERED" } })).stateCode, normalizeServiceAgreement(agreementDocument(["SENT_TO_CLIENT"], {}, { metadata: {} })).allowedActions], ["SENT_TO_CLIENT", ["approve"]], "a delivered or unmarked agreement keeps its state and its approval");
+  assert.equal(normalizeServiceAgreement(agreementDocument(["QUOTATION_SENT"], {}, { metadata: { AGREEMENT_OPERATION_STATUS: "QUOTATION_DELIVERY_FAILED" } })).stateCode, "QUOTATION_SEND_FAILED");
+  assert.equal(normalizeServiceAgreement(agreementDocument(["CLIENT_APPROVED"], {}, { metadata: { AGREEMENT_OPERATION_STATUS: "ACTIVATION_FAILED" } })).stateCode, "ACTIVATION_FAILED");
+  assert.equal(normalizeServiceAgreement(agreementDocument(["QUOTATION"], {}, { metadata: { AGREEMENT_OPERATION_STATUS: "ACTIVATION_FAILED" } })).stateCode, "QUOTATION", "a sub-status is presented only in the state it belongs to");
 
   const active = normalizeServiceAgreement(agreementDocument(["QUOTATION", "QUOTATION_SENT", "AWAITING_CLIENT_DETAILS", "DRAFT", "PENDING_MANAGEMENT_APPROVAL", "INTERNALLY_APPROVED", "SENT_TO_CLIENT", "CLIENT_APPROVED", "ACTIVE"], {
     EFFECTIVE_DATE: { value: "2026-11-01" }, TERM_START_DATE: { value: "2026-11-01" }, TERM_END_DATE: { value: "2027-03-31" },

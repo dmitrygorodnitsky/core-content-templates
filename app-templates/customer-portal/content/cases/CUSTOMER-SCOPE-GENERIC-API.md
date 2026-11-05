@@ -228,12 +228,17 @@ Viewed, Changes requested (`CUSTOMER_CHANGES_REQUESTED`), Approved
 operation is a metadata sub-status of these states, not a state of its own, and
 `INITIAL`, `QUOTE_PREPARED`, `CHANGES_REQUESTED` and `QUOTE_APPROVED_INTERNALLY`
 are the manager-side states that keep Contracts in preparing. Agreements: Awaiting your
-decisions (`QUOTATION_SENT`, `QUOTATION_UPDATE`, `QUOTATION_SEND_FAILED`),
+decisions (`QUOTATION_SENT`, `QUOTATION_UPDATE`; since 2026-11-05 a failed
+delivery stays in `QUOTATION_SENT` with `AGREEMENT_OPERATION_STATUS =
+QUOTATION_DELIVERY_FAILED` in the document's metadata, which the portal reads
+through its `metadata` mapping and presents as the retired `QUOTATION_SEND_FAILED`),
 Awaiting your details, Checking your details (`CLIENT_DETAILS_RECEIVED`),
 Pending management approval (`DRAFT`, `PENDING_MANAGEMENT_APPROVAL`,
 `INTERNALLY_APPROVED`, `CLIENT_CHANGES_REQUESTED`), Sent for your approval
-(`SENT_TO_CLIENT`; `AGREEMENT_SEND_FAILED` reads "Being sent to you" and offers
-no approval), Approved (`CLIENT_APPROVED`, `ACTIVATION_FAILED`) and Active.
+(`SENT_TO_CLIENT`; `AGREEMENT_SEND_FAILED`, now `SENT_TO_CLIENT` reporting
+`AGREEMENT_DELIVERY_FAILED`, reads "Being sent to you" and offers no approval),
+Approved (`CLIENT_APPROVED`, including `ACTIVATION_FAILED`, now `CLIENT_APPROVED`
+reporting `ACTIVATION_FAILED`) and Active.
 Nothing reads Order or agreement `metadata`: the portal's tagged reads do not
 map it, so they do not return it, and no screen depends on `ORIGIN`.
 

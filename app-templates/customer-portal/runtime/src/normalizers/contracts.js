@@ -47,6 +47,12 @@ export var SCOPE_MODES = Object.freeze(["server-scoped", "browser-filtered", "un
 
 var ORDER_ACTIONS = { unseen: ["view"], viewed: ["approve", "changes", "decline"] };
 var AGREEMENT_ACTIONS = { AWAITING_CLIENT_DETAILS: ["details"], SENT_TO_CLIENT: ["approve"] };
+export var AGREEMENT_OPERATION_STATUS_KEY = "AGREEMENT_OPERATION_STATUS";
+export var FAILED_OPERATION_STATES = Object.freeze({
+  QUOTATION_SENT: Object.freeze({ QUOTATION_DELIVERY_FAILED: "QUOTATION_SEND_FAILED" }),
+  SENT_TO_CLIENT: Object.freeze({ AGREEMENT_DELIVERY_FAILED: "AGREEMENT_SEND_FAILED" }),
+  CLIENT_APPROVED: Object.freeze({ ACTIVATION_FAILED: "ACTIVATION_FAILED" }),
+});
 var PRICING_MODEL_RANK = ["PER_SERVICE", "MONTHLY", "SEASONAL", RECURRING_MODEL.code];
 var MONTH_UNIT = "MONTH";
 var MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
@@ -166,11 +172,19 @@ export function normalizeQuoteOrders(payload, catalog) {
   return { orders: orders, preparing: preparing, withheldBackendIds: withheld };
 }
 
+export function presentedAgreementState(document) {
+  var state = latestStateCode(document);
+  var metadata = document && document.metadata;
+  var status = text(metadata && typeof metadata === "object" ? metadata[AGREEMENT_OPERATION_STATUS_KEY] : "");
+  var presented = own(FAILED_OPERATION_STATES, state);
+  return (presented && status && own(presented, status)) || state;
+}
+
 export function normalizeServiceAgreement(document, client) {
   if (!document || typeof document !== "object") return null;
   if (text(document.type && document.type.code) !== "SERVICE_AGREEMENT") return null;
   var backendId = positiveInteger(document.id);
-  var stateCode = latestStateCode(document);
+  var stateCode = presentedAgreementState(document);
   var stage = own(AGREEMENT_STAGES, stateCode);
   if (!backendId || !stage) return null;
   return {

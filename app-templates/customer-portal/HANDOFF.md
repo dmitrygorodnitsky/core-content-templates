@@ -1302,7 +1302,11 @@ transition. Where the whole flow stands is
    the client email. Delivery failures revoke a just-issued grant and enter
    `AGREEMENT_SEND_FAILED`. Approval revokes that grant, clears its ID and
    activates Accounts from `DRAFT`, `PROSPECT` or `INACTIVE`; failures enter
-   retryable `ACTIVATION_FAILED`. `npm run service-agreement-client-details-check`
+   retryable `ACTIVATION_FAILED` (since 2026-11-05 the agreement stays in
+   `CLIENT_APPROVED` with `AGREEMENT_OPERATION_STATUS = ACTIVATION_FAILED`, as
+   a failed send stays in `QUOTATION_SENT` or `SENT_TO_CLIENT` with
+   `QUOTATION_DELIVERY_FAILED` or `AGREEMENT_DELIVERY_FAILED`; the portal reads
+   the sub-status). `npm run service-agreement-client-details-check`
    and `npm run service-agreement-delivery-check` guard the flow. Quotation
    delivery is also automatic and compensated now. Since 2026-09-28 a bulk
    Send Quotation sends many agreements at once. Portal User provisioning now runs after

@@ -1845,6 +1845,14 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
       decline: { code: "QUOTE_VIEWED-DECLINED", source: "QUOTE_VIEWED" },
       changes: { code: "QUOTE_VIEWED-CUSTOMER_CHANGES_REQUESTED", source: "QUOTE_VIEWED", messageAttribute: "MESSAGE" },
     },
+    agreementOperationStatus: {
+      key: "AGREEMENT_OPERATION_STATUS",
+      presentedStates: {
+        QUOTATION_SENT: { QUOTATION_DELIVERY_FAILED: "QUOTATION_SEND_FAILED" },
+        SENT_TO_CLIENT: { AGREEMENT_DELIVERY_FAILED: "AGREEMENT_SEND_FAILED" },
+        CLIENT_APPROVED: { ACTIVATION_FAILED: "ACTIVATION_FAILED" },
+      },
+    },
     agreementEvents: {
       details: { code: "AWAITING_CLIENT_DETAILS-CLIENT_DETAILS_RECEIVED", source: "AWAITING_CLIENT_DETAILS" },
       approve: { code: "SENT_TO_CLIENT-CLIENT_APPROVED", source: "SENT_TO_CLIENT" },
@@ -2418,6 +2426,16 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
       if (known.indexOf(single) !== -1) codes.push(single);
     }
     return codes.length === 1 ? codes[0] : "";
+  }
+
+  function presentedAgreementState(row, contract) {
+    var state = stateCode(row, contract.agreementStates);
+    var spec = contract.agreementOperationStatus;
+    var metadata = row && row.metadata;
+    if (!spec || !metadata || typeof metadata !== "object") return state;
+    var status = text(metadata[spec.key]);
+    var presented = spec.presentedStates && Object.prototype.hasOwnProperty.call(spec.presentedStates, state) ? spec.presentedStates[state] : null;
+    return presented && status && Object.prototype.hasOwnProperty.call(presented, status) ? presented[status] : state;
   }
 
   function entityKind(entityType) {
@@ -3028,7 +3046,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
 
     var agreement = picked.row;
     var agreementId = positiveInteger(agreement.id);
-    var state = stateCode(agreement, contract.agreementStates);
+    var state = presentedAgreementState(agreement, contract);
     var disposition = AGREEMENT_DISPOSITION[state] || { kind: "unavailable", reason: "unknown-state" };
     var account = pickAccount(input.accounts, agreement, contract);
     var fields = detailFields(contract.contractDetails, locale);

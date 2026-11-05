@@ -323,6 +323,12 @@ const N = loadRuntime().CR.normalizer;
   assert.deepEqual(Object.keys(EXPECTED_KIND).sort(), plain(contract.agreementStates).sort(), "every agreement state has an expected page");
   const quotationGrant = CR.fixtures.quotationData().grant;
   const agreementGrant = CR.fixtures.agreementData("SENT_TO_CLIENT").grant;
+  for (const [state, status, expected] of [["SENT_TO_CLIENT", "AGREEMENT_DELIVERY_FAILED", ["unavailable", "send-failed"]], ["CLIENT_APPROVED", "ACTIVATION_FAILED", ["completion", "finishing"]], ["SENT_TO_CLIENT", "AGREEMENT_DELIVERED", ["agreement-review", undefined]], ["QUOTATION", "ACTIVATION_FAILED", ["preparing", undefined]]]) {
+    const data = CR.fixtures.agreementData(state);
+    data.documents[0].metadata = { AGREEMENT_OPERATION_STATUS: status };
+    const presented = model(data);
+    assert.deepEqual([presented.kind, presented.reason || presented.completion || undefined], expected, `${state} reporting ${status} is presented as the failure state it replaced on 2026-11-05, or as its own state otherwise`);
+  }
   for (const state of contract.agreementStates.concat(["NOT_A_STATE"])) {
     const data = CR.fixtures.quotationData(state);
     data.grant = { expiresAt: quotationGrant.expiresAt, types: quotationGrant.types.slice(0, 2).concat([{ entityType: "Document", canRead: true, events: agreementGrant.types[2].events.concat(quotationGrant.types[2].events) }]) };

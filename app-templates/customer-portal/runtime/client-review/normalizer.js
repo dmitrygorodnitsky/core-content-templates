@@ -185,6 +185,16 @@
     return codes.length === 1 ? codes[0] : "";
   }
 
+  function presentedAgreementState(row, contract) {
+    var state = stateCode(row, contract.agreementStates);
+    var spec = contract.agreementOperationStatus;
+    var metadata = row && row.metadata;
+    if (!spec || !metadata || typeof metadata !== "object") return state;
+    var status = text(metadata[spec.key]);
+    var presented = spec.presentedStates && Object.prototype.hasOwnProperty.call(spec.presentedStates, state) ? spec.presentedStates[state] : null;
+    return presented && status && Object.prototype.hasOwnProperty.call(presented, status) ? presented[status] : state;
+  }
+
   function entityKind(entityType) {
     var tail = text(entityType).split(".").pop() || "";
     var compact = tail.replace(/[^A-Za-z]/g, "").toLowerCase();
@@ -793,7 +803,7 @@
 
     var agreement = picked.row;
     var agreementId = positiveInteger(agreement.id);
-    var state = stateCode(agreement, contract.agreementStates);
+    var state = presentedAgreementState(agreement, contract);
     var disposition = AGREEMENT_DISPOSITION[state] || { kind: "unavailable", reason: "unknown-state" };
     var account = pickAccount(input.accounts, agreement, contract);
     var fields = detailFields(contract.contractDetails, locale);

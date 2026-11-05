@@ -71,6 +71,7 @@ const DOCUMENT_TYPE_MAPPINGS = [{ name: "code" }, { name: "id" }];
 const AGREEMENT_MAPPINGS = [
   { name: "attributes" },
   { name: "id" },
+  { name: "metadata" },
   { key: "id", mappings: REF_MAPPINGS, name: "organization", type: "identifier" },
   { mappings: REF_MAPPINGS, name: "states", type: "collection" },
   { key: "id", mappings: REF_MAPPINGS, name: "type", type: "identifier" },

@@ -66,6 +66,14 @@
       decline: { code: "QUOTE_VIEWED-DECLINED", source: "QUOTE_VIEWED" },
       changes: { code: "QUOTE_VIEWED-CUSTOMER_CHANGES_REQUESTED", source: "QUOTE_VIEWED", messageAttribute: "MESSAGE" },
     },
+    agreementOperationStatus: {
+      key: "AGREEMENT_OPERATION_STATUS",
+      presentedStates: {
+        QUOTATION_SENT: { QUOTATION_DELIVERY_FAILED: "QUOTATION_SEND_FAILED" },
+        SENT_TO_CLIENT: { AGREEMENT_DELIVERY_FAILED: "AGREEMENT_SEND_FAILED" },
+        CLIENT_APPROVED: { ACTIVATION_FAILED: "ACTIVATION_FAILED" },
+      },
+    },
     agreementEvents: {
       details: { code: "AWAITING_CLIENT_DETAILS-CLIENT_DETAILS_RECEIVED", source: "AWAITING_CLIENT_DETAILS" },
       approve: { code: "SENT_TO_CLIENT-CLIENT_APPROVED", source: "SENT_TO_CLIENT" },
