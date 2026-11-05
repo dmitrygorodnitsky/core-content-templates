@@ -2542,6 +2542,19 @@
     }
   },
   {
+    "code": "ROUND_AMBIGUOUS_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "ROUND AMBIGUOUS BODY",
+        "DESCRIPTION": "Client review document copy."
+      }
+    },
+    "value": {
+      "en": "This link covers more than one quotation. Open the link in the provider's newest email, or ask them to send you a new one."
+    }
+  },
+  {
     "code": "LINK_MISSING_TITLE",
     "type": "LOCALIZED_STRING_SS",
     "nls": {

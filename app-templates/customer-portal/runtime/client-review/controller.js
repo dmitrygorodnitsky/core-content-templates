@@ -220,10 +220,11 @@
     function readAll() {
       return adapter.introspect().then(function (rawGrant) {
         var grant = normalizer.grantOf(rawGrant);
-        if (!normalizer.canRead(grant, "document")) {
+        var ordersReadable = normalizer.canRead(grant, "order");
+        var documentsReadable = normalizer.canRead(grant, "document");
+        if (!ordersReadable && !documentsReadable) {
           return { grant: grant, documents: [], orders: [], accounts: [], orderItems: [], productPrices: [], products: [], resources: [], addresses: [], units: [], accountFailed: false };
         }
-        var ordersReadable = normalizer.canRead(grant, "order");
         var accountRead = normalizer.canRead(grant, "account")
           ? adapter.list("account").then(function (rows) { return { rows: rows, failed: false }; }, function (error) {
             if (error && error.code === "link-closed") throw error;
@@ -234,7 +235,8 @@
         var orderItemsRead = normalizer.canRead(grant, "order-item") ? adapter.list("order-item") : Promise.resolve([]);
         var productPricesRead = normalizer.canRead(grant, "product-price") ? adapter.list("product-price") : Promise.resolve([]);
         var productsRead = normalizer.canRead(grant, "product") ? adapter.list("product") : Promise.resolve([]);
-        return Promise.all([adapter.list("document"), accountRead, ordersRead, orderItemsRead, productPricesRead, productsRead, readProperties(), readAddresses(grant), readUnits(grant)]).then(function (parts) {
+        var documentsRead = documentsReadable ? adapter.list("document") : Promise.resolve([]);
+        return Promise.all([documentsRead, accountRead, ordersRead, orderItemsRead, productPricesRead, productsRead, readProperties(), readAddresses(grant), readUnits(grant)]).then(function (parts) {
           var documents = parts[0];
           var orders = parts[2].slice();
           var present = {};
@@ -671,7 +673,7 @@
     }
 
     function downloadPdf() {
-      if (exporting || busy() || !ns.pdf || !ns.pdf.available(snapshot())) return;
+      if (exporting || busy() || !ns.pdf || !ns.pdf.available(snapshot()) || !state.view.agreement) return;
       var current = state.view;
       var input = { phase: state.phase, view: JSON.parse(JSON.stringify(current)), contact: state.contact, logoUrl: state.logoUrl };
       state.pdf = "pending";
@@ -802,7 +804,7 @@
           render();
           return;
         case "agreement.cancel":
-          if (!view || inflight[view.agreement.recordKey]) return;
+          if (!view || !view.agreement || inflight[view.agreement.recordKey]) return;
           state.focusKey = state.confirm && state.confirm.kind === "agreement-changes" ? "agreement-changes" : "approve-agreement";
           state.confirm = null;
           delete state.draftInvalid.agreement;

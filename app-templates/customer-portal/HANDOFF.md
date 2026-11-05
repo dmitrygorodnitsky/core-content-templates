@@ -823,6 +823,16 @@ Decisions recorded with the change:
 - Not seen with a customer session: all of the above was rendered with sample
   data and a stub map.
 
+### Review page for quotation rounds (2026-11-05)
+
+The client review page opens a grant without a `SERVICE_AGREEMENT` Document:
+the root is the grant's Orders, the round is their single `QUOTATION_ROUND`
+attribute (two values: an ambiguous-round card; none: one round), and quote
+decisions follow each option's state instead of `QUOTATION_SENT`. Grants with a
+Document behave as before. Details, scope and what is not built:
+[`QUOTATION-PACKAGE-FLOW.md` §18](content/cases/QUOTATION-PACKAGE-FLOW.md#18-review-page-for-quotation-rounds-without-an-agreement-2026-11-05).
+Exported locally, not uploaded, not seen with a live round grant.
+
 ## Universal form document
 
 `runtime/forms/portal-form.js` renders any published Core form type in the

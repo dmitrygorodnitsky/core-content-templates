@@ -215,6 +215,8 @@
     { id: "partial", label: "Partial data — one option unreadable" },
     { id: "quote-price-labels", label: "Quote review — options named from their prices, no PRICING_MODEL" },
     { id: "quote-price-intervals", label: "Quote review — options named from the price INTERVAL and the granted Unit" },
+    { id: "round-review", label: "Quotation round — no agreement in the link, decisions offered by each option's state" },
+    { id: "round-ambiguous", label: "Quotation round — the link's options carry two rounds" },
     { id: "link-copied", label: "Copy link — copied on the contract details step" },
     { id: "link-copy-failed", label: "Copy link — the browser refused to copy" },
     { id: "contact-phone-only", label: "Contact us — the provider shows a phone and no email" },
@@ -467,6 +469,21 @@
     };
   }
 
+  function roundGrant() {
+    return {
+      expiresAt: "2026-11-20T23:59:00",
+      types: [
+        { entityType: "Account", canRead: true, canWrite: false, events: [] },
+        { entityType: "Order", canRead: true, canWrite: false, events: QUOTATION_EVENTS.map(grantEvent) },
+        { entityType: "OrderItem", canRead: true, canWrite: false, events: [] },
+        { entityType: "ProductPrice", canRead: true, canWrite: false, events: [] },
+        { entityType: "Unit", canRead: true, canWrite: false, events: [] },
+        { entityType: "Product", canRead: true, canWrite: false, events: [] },
+        { entityType: "Address", canRead: true, canWrite: false, events: [] },
+      ],
+    };
+  }
+
   function propertyGrant(expiresAt) {
     return {
       expiresAt: expiresAt,
@@ -493,6 +510,52 @@
       accountFails: false,
       closed: false,
     });
+  }
+
+  var ROUND = "A724R1";
+  var OTHER_ROUND = "A724R2";
+  var ROUND_GROUP = 6;
+
+  function shallowLines(data) {
+    var models = {};
+    var products = {};
+    ORDERS.forEach(function (spec) { models[spec.id] = spec.model; });
+    data.orderItems = [];
+    data.productPrices = [];
+    data.orders.forEach(function (row) {
+      var months = INTERVAL_MONTHS[models[row.id]];
+      row.items = row.items.map(function (line) {
+        var price = line.itemPrice;
+        var attributes = { 2: { CURRENCY: { value: CURRENCY.id } } };
+        if (months) attributes[4] = { INTERVAL: { value: months, unit: MONTH_UNIT.id }, USAGE_TYPE: { value: "Licensed" } };
+        data.orderItems.push({ id: line.id, sortOrder: line.sortOrder, itemCount: line.itemCount, amount: line.amount, itemPrice: { id: price.id } });
+        data.productPrices.push({ id: price.id, type: price.type, product: { id: price.product.id }, attributes: attributes });
+        products[price.product.id] = clone(price.product);
+        return { id: line.id };
+      });
+    });
+    data.products = Object.keys(products).map(function (id) { return products[id]; });
+    data.units = [clone(MONTH_UNIT)];
+    return data;
+  }
+
+  function roundData(orderStates, rounds) {
+    var orders = ORDERS.map(orderRow);
+    orders.forEach(function (row) {
+      delete row.attributes[5].PRICING_MODEL;
+      if (orderStates && orderStates[row.id]) row.states = [{ code: orderStates[row.id] }];
+      var round = rounds && Object.prototype.hasOwnProperty.call(rounds, row.id) ? rounds[row.id] : ROUND;
+      if (round) row.attributes[ROUND_GROUP] = { QUOTATION_ROUND: { value: round } };
+    });
+    return shallowLines(withProperties({
+      grant: roundGrant(),
+      accounts: [accountRow(false)],
+      documents: [],
+      orders: orders,
+      unreadable: [],
+      accountFails: false,
+      closed: false,
+    }));
   }
 
   var DECIDED = { 3101: "DECLINED", 3102: "CLIENT_APPROVED", 3103: "DECLINED", 3107: "CLIENT_APPROVED", 3108: "CLIENT_APPROVED" };
@@ -707,6 +770,9 @@
             return clone(served.addresses || []);
           }
           if (entity === "unit") return clone(served.units || []);
+          if (entity === "order-item") return clone(served.orderItems || []);
+          if (entity === "product-price") return clone(served.productPrices || []);
+          if (entity === "product") return clone(served.products || []);
           if (entity === "resource") {
             if (settings.properties === "missing") throw reviewError("link-missing", 0);
             if (settings.properties === "unauthorized") throw reviewError("link-closed", 401);
@@ -1080,6 +1146,12 @@
       case "quote-price-intervals":
         priceIntervals(priceLabelled(data));
         break;
+      case "round-review":
+        data = roundData();
+        break;
+      case "round-ambiguous":
+        data = roundData(null, { 3109: OTHER_ROUND, 3110: OTHER_ROUND });
+        break;
       case "link-copied":
         data = quotationData("AWAITING_CLIENT_DETAILS", DECIDED);
         clipboard = fixtureClipboard(true);
@@ -1421,6 +1493,9 @@
     places: PLACES,
     quotationData: quotationData,
     agreementData: agreementData,
+    roundData: roundData,
+    round: ROUND,
+    otherRound: OTHER_ROUND,
     detailsErrors: detailsErrors,
     priceLabelled: priceLabelled,
     priceIntervals: priceIntervals,

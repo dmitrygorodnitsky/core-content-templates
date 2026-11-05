@@ -776,9 +776,22 @@
     return idList(attributeValue(picked.row, contract.agreementAttributes.orders));
   }
 
+  function documentRooted(input) {
+    return canRead(input.grant, "document") || (Array.isArray(input.documents) && input.documents.length > 0);
+  }
+
+  function pickRound(orders, contract) {
+    var rounds = [];
+    (Array.isArray(orders) ? orders : []).forEach(function (row) {
+      var round = attributeText(row, contract.orderAttributes.quotationRound);
+      if (round && rounds.indexOf(round) === -1) rounds.push(round);
+    });
+    return { round: rounds.length === 1 ? rounds[0] : "", ambiguous: rounds.length > 1 };
+  }
+
   function requestLocale(input, fallback, contract) {
     var picked = pickAgreement(input.documents, contract);
-    var account = picked.row ? pickAccount(input.accounts, picked.row, contract) : null;
+    var account = picked.row || !documentRooted(input) ? pickAccount(input.accounts, picked.row, contract) : null;
     var contact = legalContact(account);
     var language = contact && contact.language;
     var code = language && (language.code2 || language.id);
@@ -787,11 +800,65 @@
     return typeof code === "string" && /^[a-z]{2,3}(?:-[A-Za-z0-9]+)*$/.test(code) ? code : fallback;
   }
 
+  function catalogOf(input) {
+    return {
+      orderItems: rowsById(input.orderItems),
+      productPrices: rowsById(input.productPrices),
+      products: rowsById(input.products),
+      resources: rowsById(input.resources),
+      addresses: rowsById(input.addresses),
+      units: rowsById(input.units),
+    };
+  }
+
+  function summarized(properties) {
+    return {
+      summary: summaryOf(properties),
+      allDecided: properties.length > 0 && properties.every(function (property) {
+        return property.status === "approved" || property.status === "declined";
+      }),
+    };
+  }
+
+  function roundModel(input, grant, locale, contract, expiresAt) {
+    var ordersById = rowsById(input.orders);
+    var orders = Object.keys(ordersById).map(Number).sort(ascending).map(function (id) { return ordersById[id]; });
+    if (!orders.length) return { kind: "empty", reason: "no-orders", expiresAt: expiresAt };
+    var picked = pickRound(orders, contract);
+    if (picked.ambiguous) return { kind: "unavailable", reason: "ambiguous-round", expiresAt: expiresAt };
+    var account = pickAccount(input.accounts, null, contract);
+    var properties = propertiesOf(orders, { locale: locale, contract: contract, catalog: catalogOf(input) });
+    grantActions(properties, grant, contract);
+    var decided = summarized(properties);
+    return {
+      kind: "quote-review",
+      reason: "",
+      banner: "",
+      completion: "",
+      expiresAt: expiresAt,
+      round: picked.round,
+      agreement: null,
+      names: { provider: "", client: localizedName(account && account.nls, locale) },
+      parties: null,
+      contact: null,
+      properties: properties,
+      summary: decided.summary,
+      allDecided: decided.allDecided,
+      unreadableOrders: 0,
+      accountUnavailable: Boolean(input.accountFailed),
+      details: { available: false, fields: [], prefill: {}, serviceAddresses: [], returned: returnedDetails(null, [], contract.detailsReturn) },
+      canApproveAgreement: false,
+      canRequestAgreementChanges: false,
+      primaryEmail: primaryEmail(account, contract),
+    };
+  }
+
   function reviewModel(input, options) {
     var locale = options.locale;
     var contract = options.contract;
     var grant = input.grant || grantOf(null);
     var expiresAt = formatDate(grant.expiresAt, locale);
+    if (!documentRooted(input)) return roundModel(input, grant, locale, contract, expiresAt);
     var picked = pickAgreement(input.documents, contract);
     if (!picked.row) {
       return {
@@ -823,19 +890,9 @@
       else unreadable += 1;
     });
 
-    var properties = propertiesOf(readable, {
-      locale: locale,
-      contract: contract,
-      catalog: {
-        orderItems: rowsById(input.orderItems),
-        productPrices: rowsById(input.productPrices),
-        products: rowsById(input.products),
-        resources: rowsById(input.resources),
-        addresses: rowsById(input.addresses),
-        units: rowsById(input.units),
-      },
-    });
+    var properties = propertiesOf(readable, { locale: locale, contract: contract, catalog: catalogOf(input) });
     if (state === "QUOTATION_SENT") grantActions(properties, grant, contract);
+    var decided = summarized(properties);
     var detailsEvent = contract.agreementEvents.details;
     var approveEvent = contract.agreementEvents.approve;
     var changesEvent = contract.agreementEvents.changes;
@@ -864,10 +921,8 @@
       parties: parties,
       contact: contactOf(agreement, contract, parties.provider.legalName),
       properties: properties,
-      summary: summaryOf(properties),
-      allDecided: properties.length > 0 && properties.every(function (property) {
-        return property.status === "approved" || property.status === "declined";
-      }),
+      summary: decided.summary,
+      allDecided: decided.allDecided,
       unreadableOrders: unreadable,
       accountUnavailable: Boolean(input.accountFailed),
       details: {
@@ -912,6 +967,7 @@
     pickAgreement: pickAgreement,
     pickAccount: pickAccount,
     packageOrderIds: packageOrderIds,
+    pickRound: pickRound,
     propertyStatus: propertyStatus,
     requestLocale: requestLocale,
     reviewModel: reviewModel,

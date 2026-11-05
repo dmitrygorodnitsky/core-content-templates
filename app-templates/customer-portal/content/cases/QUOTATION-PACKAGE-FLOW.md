@@ -1575,3 +1575,30 @@ and editor row were removed after 15 existing draft references were preserved;
 this frontend package still reads only reviewed plans. The exporter changed
 only its README/manifest constraints, with no runtime payload change or CMS
 upload; old review links were preserved.
+
+## 18. Review page for quotation rounds without an agreement, 2026-11-05
+
+The review page also opens a grant that carries no `SERVICE_AGREEMENT`
+Document, linked as `.../review?round=A724R1#token=…&property-token=…`. The
+`round` query is informational; the page reads only the two fragment tokens,
+and `?agreementId=` links behave as before.
+
+- **Boot.** Introspection stops the page only when neither Order nor Document
+  is readable. A Document is listed only when the grant names it; with one,
+  every agreement screen and the `QUOTATION_SENT` gate stay as in §8.
+- **Round.** Without a Document the root is the grant's Orders. The round is
+  the single distinct Order attribute `QUOTATION_ROUND`, read from whichever
+  attribute group holds it; Order `metadata` is not read through the link.
+  Two distinct values show the unavailable card with the new copy parameter
+  `ROUND_AMBIGUOUS_BODY`; no value (a migrated grant) is one round.
+- **Decisions.** The cards are unchanged. View is offered in `QUOTE_SENT`,
+  approve, decline and request changes in `QUOTE_VIEWED`, each only when the
+  grant delegates the event. After view or decline the page re-reads and stays
+  on the review with its partial-decision copy. The combined confirm-and-details
+  step is not built; approve keeps its existing path.
+- **Not shown without a Document.** Provider name, Contact us, logo and the
+  PDF come from the agreement, so a round shows none of them.
+
+Checks: `client-review-check.mjs` (fixtures `roundData` and the scenarios
+`round-review`, `round-ambiguous`). The manual package was regenerated locally
+only; nothing was uploaded and no live grant has been opened yet.

@@ -208,7 +208,7 @@
     if (meta.children.length) head.appendChild(meta);
     var link = linkRow(ctx);
     if (link) head.appendChild(link);
-    if (ns.pdf && ns.pdf.offered(ctx.snapshot)) {
+    if (ns.pdf && view.agreement && ns.pdf.offered(ctx.snapshot)) {
       var pdf = ctx.snapshot.pdf || {};
       var pending = pdf.status === "pending";
       var allowed = ns.pdf.available(ctx.snapshot);
@@ -1122,7 +1122,7 @@
         shell.appendChild(announcedCard(ctx, "neutral", "○", copy.emptyTitle, copy.emptyBody, null));
         return;
       default:
-        shell.appendChild(announcedCard(ctx, "warn", "!", copy.unavailableTitle, copy.unavailableBody, null));
+        shell.appendChild(announcedCard(ctx, "warn", "!", copy.unavailableTitle, view.reason === "ambiguous-round" ? copy.roundAmbiguousBody : copy.unavailableBody, null));
     }
   }
 

@@ -203,6 +203,7 @@
     ["ARCHIVED_BODY", "archivedBody", "It is no longer available through this link."],
     ["UNAVAILABLE_TITLE", "unavailableTitle", "This page is not available right now"],
     ["UNAVAILABLE_BODY", "unavailableBody", "The provider's system has not finished sending it. Try this link again later."],
+    ["ROUND_AMBIGUOUS_BODY", "roundAmbiguousBody", "This link covers more than one quotation. Open the link in the provider's newest email, or ask them to send you a new one."],
     ["LINK_MISSING_TITLE", "linkMissingTitle", "This link is incomplete"],
     ["LINK_MISSING_BODY", "linkMissingBody", "Open the full link from your email. Nothing can be shown without it."],
     ["LINK_CLOSED_TITLE", "linkClosedTitle", "This link has expired or was withdrawn"],

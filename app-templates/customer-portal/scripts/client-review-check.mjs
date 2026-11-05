@@ -469,7 +469,80 @@ const N = loadRuntime().CR.normalizer;
   const withoutRemoved = CR.fixtures.quotationData();
   withoutRemoved.orders.forEach((row) => { delete row.attributes[5].CLIENT; });
   assert.deepEqual(plain(model(removedOnOrders)), plain(model(withoutRemoved)), "Order CLIENT, EFFECTIVE_DATE and SERVICE_PERIOD_START/END change nothing the page shows");
-  assert.deepEqual(Object.keys(contract.orderAttributes).sort(), ["pricingModel", "property"], "the only Order attributes the page reads are SERVICE_PROPERTY and PRICING_MODEL, the last only as a fallback");
+  assert.deepEqual(Object.keys(contract.orderAttributes).sort(), ["pricingModel", "property", "quotationRound"], "the only Order attributes the page reads are SERVICE_PROPERTY, PRICING_MODEL as a fallback, and QUOTATION_ROUND for a link without an agreement");
+  assert.equal(contract.orderAttributes.quotationRound, "QUOTATION_ROUND");
+  {
+    const optionActions = (view) => plain(view.properties.flatMap((property) => property.options.map((option) => [option.id, option.state, option.actions])));
+    const rounds = CR.fixtures.roundData();
+    assert.equal(rounds.documents.length + rounds.grant.types.filter((type) => type.entityType === "Document").length, 0, "the round fixture carries no Document and no Document grant");
+    assert.ok(rounds.orders.every((row) => !("metadata" in row) && row.attributes[6].QUOTATION_ROUND.value === CR.fixtures.round && !("QUOTATION_ROUND" in row.attributes[5])), "each Order holds QUOTATION_ROUND in its own attribute group and no metadata");
+    const view = model(rounds);
+    assert.equal(view.kind, "quote-review", "a grant rooted at its Orders opens the quote review");
+    assert.equal(view.round, CR.fixtures.round, "the round is the one QUOTATION_ROUND the grant's Orders share");
+    assert.equal(view.agreement, null, "a round carries no agreement");
+    assert.deepEqual([view.details.available, view.canApproveAgreement, view.canRequestAgreementChanges, view.unreadableOrders], [false, false, false, 0], "and offers no agreement step");
+    assert.deepEqual(plain(view.properties.map((property) => [property.key, property.status, property.options.map((option) => option.id)])), plain(review.properties.map((property) => [property.key, property.status, property.options.map((option) => option.id)])), "the round groups its Orders by property exactly as an agreement package does");
+    assert.deepEqual(optionActions(view), [
+      [3101, "QUOTE_SENT", { view: true, approve: false, decline: false, changes: false }],
+      [3102, "QUOTE_VIEWED", { view: false, approve: true, decline: true, changes: true }],
+      [3103, "QUOTE_VIEWED", { view: false, approve: true, decline: true, changes: true }],
+      [3104, "CLIENT_APPROVED", { view: false, approve: false, decline: false, changes: false }],
+      [3105, "DECLINED", { view: false, approve: false, decline: false, changes: false }],
+      [3106, "CUSTOMER_CHANGES_REQUESTED", { view: false, approve: false, decline: false, changes: false }],
+      [3107, "QUOTE_VIEWED", { view: false, approve: true, decline: true, changes: true }],
+      [3108, "QUOTE_SENT", { view: true, approve: false, decline: false, changes: false }],
+      [3109, "DECLINED", { view: false, approve: false, decline: false, changes: false }],
+      [3110, "DECLINED", { view: false, approve: false, decline: false, changes: false }],
+    ], "without an agreement each option offers the events whose source state it is in");
+    const options = view.properties.flatMap((property) => property.options);
+    assert.deepEqual(plain(options.filter((option) => [3101, 3102, 3103].includes(option.id)).map((option) => [option.model, option.lines.map((line) => line.product)])), [
+      ["SEASONAL", ["Snow Removal", "Rock Salt De-Icing"]], ["MONTHLY", ["Snow Removal", "Rock Salt De-Icing"]], ["PER_SERVICE", ["Snow Removal", "Rock Salt De-Icing"]],
+    ], "the round's cards join their shallow lines through the granted OrderItem, ProductPrice, Unit and Product rows");
+    assert.equal(options.find((option) => option.id === 3102).total, formatCad(9187.5), "and show the server total");
+    const ungranted = CR.fixtures.roundData();
+    ungranted.grant.types[1].events = ungranted.grant.types[1].events.filter((event) => event.code !== "QUOTE_VIEWED-DECLINED");
+    assert.equal(optionActions(model(ungranted)).find((entry) => entry[0] === 3102)[2].decline, false, "an event the round's grant does not delegate is not offered");
+    const sealed = CR.fixtures.roundData({ 3102: "CLIENT_APPROVED" });
+    assert.deepEqual(optionActions(model(sealed)).filter((entry) => [3101, 3103].includes(entry[0])).map((entry) => entry[2]), [{ view: false, approve: false, decline: false, changes: false }, { view: false, approve: false, decline: false, changes: false }], "an approved sibling closes the other options of its property, as in a package");
+
+    const withMetadata = CR.fixtures.roundData();
+    withMetadata.orders.forEach((row) => { row.metadata = { QUOTATION_ROUND: "M1", AGREEMENT_OPERATION_STATUS: "QUOTATION_DELIVERY_FAILED" }; });
+    assert.deepEqual(plain(model(withMetadata)), plain(view), "nothing the round page shows depends on Order metadata");
+    const regrouped = CR.fixtures.roundData();
+    regrouped.orders.forEach((row) => { row.attributes[11] = row.attributes[6]; delete row.attributes[6]; });
+    assert.equal(model(regrouped).round, CR.fixtures.round, "QUOTATION_ROUND is read from whichever attribute group holds it");
+
+    const migrated = CR.fixtures.roundData(null, Object.fromEntries(rounds.orders.map((row) => [row.id, null])));
+    assert.ok(migrated.orders.every((row) => !row.attributes[6]), "the migrated fixture carries no QUOTATION_ROUND");
+    const migratedView = model(migrated);
+    assert.deepEqual([migratedView.kind, migratedView.round], ["quote-review", ""], "a migrated grant without QUOTATION_ROUND is one round");
+    assert.deepEqual(optionActions(migratedView), optionActions(view), "with every Order of the grant and the same decisions");
+    const partlyMarked = model(CR.fixtures.roundData(null, { 3108: null }));
+    assert.deepEqual([partlyMarked.kind, partlyMarked.round, partlyMarked.properties.flatMap((property) => property.options).length], ["quote-review", CR.fixtures.round, 10], "an Order without the attribute beside a single round keeps that round and stays on the page");
+
+    const ambiguousData = CR.fixtures.roundData(null, { 3109: CR.fixtures.otherRound, 3110: CR.fixtures.otherRound });
+    assert.deepEqual(plain(normalizer.pickRound(ambiguousData.orders, contract)), { round: "", ambiguous: true }, "two distinct QUOTATION_ROUND values are ambiguous");
+    assert.deepEqual(plain(normalizer.pickRound(rounds.orders, contract)), { round: CR.fixtures.round, ambiguous: false });
+    assert.deepEqual(plain(normalizer.pickRound(migrated.orders, contract)), { round: "", ambiguous: false });
+    const ambiguous = model(ambiguousData);
+    assert.deepEqual([ambiguous.kind, ambiguous.reason, ambiguous.properties], ["unavailable", "ambiguous-round", undefined], "a grant whose Orders carry two rounds shows the ambiguous state and no options");
+
+    const unordered = CR.fixtures.roundData();
+    unordered.orders = [];
+    assert.deepEqual([model(unordered).kind, model(unordered).reason], ["empty", "no-orders"], "a round grant without readable Orders has nothing to review");
+
+    const gated = CR.fixtures.quotationData("AWAITING_CLIENT_DETAILS");
+    assert.deepEqual(optionActions(model(gated)).filter((entry) => entry[1] === "QUOTE_VIEWED").map((entry) => entry[2].approve), [false, false, false], "a grant with an agreement keeps the QUOTATION_SENT gate");
+
+    const french = CR.fixtures.roundData();
+    french.accounts[0].contacts[0].language = { code2: "fr" };
+    assert.equal(normalizer.requestLocale({ ...french, grant: normalizer.grantOf(french.grant) }, "en", contract), "fr", "a round reads the client's language from the granted Account");
+    const frenchAgreementless = CR.fixtures.quotationData();
+    frenchAgreementless.accounts[0].contacts[0].language = { code2: "fr" };
+    frenchAgreementless.documents = [];
+    assert.equal(normalizer.requestLocale({ ...frenchAgreementless, grant: normalizer.grantOf(frenchAgreementless.grant) }, "en", contract), "en", "a Document grant without its agreement keeps the fallback language as before");
+    assert.equal(model(rounds).names.client, "Harbourview Strata Corporation", "the round names the client from the granted Account");
+  }
   assert.deepEqual(plain(contract.propertyAttributes), { address: "ADDRESS", plan: "PROPERTY_PLAN" }, "a property's address and plan are the Resource attributes ADDRESS and PROPERTY_PLAN");
   assert.ok(!runtimeSources.includes("\"SERVICE_ADDRESS\""), "the review page never reads the Order's SERVICE_ADDRESS");
 
@@ -720,6 +793,7 @@ const EXPECTED_SCENARIOS = {
   "quote-review": ["ready", "quote-review"], loading: ["loading", null], "link-missing": ["link-missing", null],
   "link-closed": ["link-closed", null], unconfigured: ["unconfigured", null], empty: ["ready", "empty"],
   error: ["error", null], partial: ["ready", "quote-review"], "quote-price-labels": ["ready", "quote-review"], "quote-price-intervals": ["ready", "quote-review"], "option-open": ["ready", "quote-review"],
+  "round-review": ["ready", "quote-review"], "round-ambiguous": ["ready", "unavailable"],
   "link-copied": ["ready", "contract-details"], "link-copy-failed": ["ready", "quote-review"],
   "contact-phone-only": ["ready", "quote-review"], "contact-none": ["ready", "quote-review"], "agreement-no-logo": ["ready", "agreement-review"],
   "view-pending": ["ready", "quote-review"], "view-failed": ["ready", "quote-review"], "approve-confirm": ["ready", "quote-review"],
@@ -787,7 +861,7 @@ const portalLinks = (node) => byAttribute(node, "data-action", "portal.open");
 const stateCardOf = (node) => { const card = byClass(node, "cr-state")[0]; return [card.getAttribute("data-state"), byClass(card, "cr-state__glyph")[0].textContent]; };
 const contactLines = (node) => byClass(node, "cr-contact__item").map((item) => [item.getAttribute("data-contact"), item.children[0].textContent, item.children[1].tagName, item.children[1].textContent, item.children[1].getAttribute("href")]);
 const providerLogos = (node) => byClass(node, "cr-party__logo");
-const CONTACTLESS_SCENARIOS = new Set(["loading", "link-missing", "link-closed", "link-closed-portal", "unconfigured", "empty", "error", "contact-none"]);
+const CONTACTLESS_SCENARIOS = new Set(["loading", "link-missing", "link-closed", "link-closed-portal", "unconfigured", "empty", "error", "contact-none", "round-review", "round-ambiguous"]);
 const FORM_FROM_ATTRIBUTES = {
   LEGAL_NAME: "Harbourview Strata Corporation", CLIENT_TYPE: "",
   BILLING_ADDRESS: "1500 Harbour Green Drive, Suite 210, Vancouver, BC V6C 3T8, Canada",
@@ -3198,6 +3272,131 @@ const later = () => new Promise((resolve) => setTimeout(resolve, 5));
     assert.equal(page.calls.filter((route) => route === "core-rm/i/rm-1/resource/list.json").length, resourceListed ? 1 : 0, label + (resourceListed ? " lists Resource once" : " lists no Resource"));
     assert.equal(page.timers.pending, 0, label + " schedules no re-read");
   }
+}
+
+async function grantController(build, behavior = {}) {
+  const runtime = loadRuntime({ fixtures: true });
+  const { CR } = runtime;
+  const data = build(CR.fixtures);
+  const adapter = CR.fixtures.createFixtureAdapter(data, behavior);
+  const listed = [];
+  const list = adapter.list;
+  adapter.list = (entity) => { listed.push(entity); return list(entity); };
+  const sent = [];
+  const sendEvent = adapter.sendEvent;
+  adapter.sendEvent = (...args) => { sent.push(plain(args)); return sendEvent(...args); };
+  const timers = fakeTimers();
+  const mount = runtime.document.createElement("div");
+  const controller = CR.createController({ adapter, mount, timers, locale: "en-CA" });
+  controller.start();
+  await controller.idle();
+  const option = (id) => controller.snapshot().view.properties.flatMap((property) => property.options).find((candidate) => candidate.id === id);
+  return { runtime, CR, data, listed, sent, timers, mount, controller, option, copy: controller.copy };
+}
+
+{
+  const run = await grantController((F) => F.roundData());
+  assert.deepEqual([run.controller.snapshot().phase, run.controller.snapshot().view.kind], ["ready", "quote-review"], "a link rooted at its Orders boots into the quote review");
+  assert.ok(!run.listed.includes("document"), "and never lists a Document the grant does not carry");
+  assert.deepEqual([...new Set(run.listed)].sort(), ["account", "address", "order", "order-item", "product", "product-price", "resource", "unit"], "it reads every entity the round grant names");
+  assert.equal(byAttribute(run.mount, "data-action", "pdf.download").length, 0, "a round without an agreement offers no agreement PDF");
+  assert.equal(byAttribute(run.mount, "data-action", "link.copy").length, 0, "the review page offers Copy link only when the page has its own address");
+  run.controller.dispatch("option.toggle", { id: 3102 });
+  assert.deepEqual(["option.approve", "option.changes"].map((action) => byAttribute(run.mount, "data-action", action).length), [1, 1], "a viewed option of a round offers approve and request changes");
+  run.controller.dispatch("option.toggle", { id: 3101 });
+  await run.controller.idle();
+  assert.deepEqual(run.sent, [["order", 3101, "QUOTE_SENT-QUOTE_VIEWED", {}]], "opening a sent option of a round sends the view event");
+  assert.deepEqual([run.controller.snapshot().view.kind, run.option(3101).state, run.option(3101).actions.decline], ["quote-review", "QUOTE_VIEWED", true], "and the read-back keeps the review page with the decisions of a viewed option");
+  run.controller.dispatch("option.intent", { id: 3103, kind: "decline" });
+  run.controller.dispatch("option.confirm", { id: 3103 });
+  await run.controller.idle();
+  assert.deepEqual(run.sent[1], ["order", 3103, "QUOTE_VIEWED-DECLINED", {}], "a decline goes to the Order");
+  const afterDecline = run.controller.snapshot();
+  assert.deepEqual([afterDecline.view.kind, run.option(3103).status, afterDecline.view.allDecided, afterDecline.view.summary.awaiting], ["quote-review", "declined", false, 2], "after a decline the round stays on the review page with its partial decisions");
+  assert.equal(byAttribute(run.mount, "data-decided", "following").length + byAttribute(run.mount, "data-decided", "settled").length, 0, "and claims no full decision");
+  assert.equal(run.timers.pending, 0, "a partial decision schedules no re-read");
+}
+
+{
+  const run = await grantController((F) => F.roundData(null, { 3109: F.otherRound, 3110: F.otherRound }));
+  const snapshot = run.controller.snapshot();
+  assert.deepEqual([snapshot.phase, snapshot.view.kind, snapshot.view.reason], ["ready", "unavailable", "ambiguous-round"], "a link whose Orders carry two rounds boots into the ambiguous state");
+  const text = surface(run.mount);
+  assert.ok(text.includes(run.copy.unavailableTitle) && text.includes(run.copy.roundAmbiguousBody) && !text.includes(run.copy.unavailableBody), "which keeps the unavailable card and says the link covers more than one quotation");
+  assert.equal(byAttribute(run.mount, "data-action", "option.toggle").length, 0, "and shows no option");
+  assert.equal(run.CR.defaultCopy().roundAmbiguousBody, "This link covers more than one quotation. Open the link in the provider's newest email, or ask them to send you a new one.");
+}
+
+{
+  const run = await grantController((F) => {
+    const data = F.roundData();
+    data.orders.forEach((row) => { delete row.attributes[6]; });
+    return data;
+  });
+  assert.deepEqual([run.controller.snapshot().view.kind, run.controller.snapshot().view.round, run.controller.snapshot().view.properties.length], ["quote-review", "", 5], "a migrated grant without QUOTATION_ROUND boots as one round with every Order");
+}
+
+{
+  const run = await grantController((F) => {
+    const data = F.roundData();
+    data.grant.types = data.grant.types.filter((type) => type.entityType !== "Order");
+    return data;
+  });
+  assert.deepEqual([run.controller.snapshot().phase, run.controller.snapshot().view.kind], ["ready", "empty"], "a grant with neither a readable Order nor a Document stops at introspection");
+  assert.deepEqual(run.listed, [], "and reads nothing");
+}
+
+{
+  const quote = await grantController((F) => F.quotationData());
+  assert.ok(quote.listed.includes("document"), "a grant carrying the agreement still lists its Document");
+  assert.equal(quote.controller.snapshot().view.agreement.id, 5205, "and boots on the agreement");
+  assert.equal(byAttribute(quote.mount, "data-action", "pdf.download").length, 1, "where the quotation PDF stays offered");
+  assert.equal(quote.option(3102).actions.approve, true, "and decisions follow QUOTATION_SENT");
+  const details = await grantController((F) => F.quotationData("AWAITING_CLIENT_DETAILS"));
+  assert.deepEqual([details.controller.snapshot().view.kind, details.option(3102).actions.approve], ["contract-details", false], "an agreement past QUOTATION_SENT keeps its own step and offers no quote decision");
+  const agreementOnly = await grantController((F) => {
+    const data = F.agreementData("SENT_TO_CLIENT", false);
+    data.grant.types = data.grant.types.filter((type) => type.entityType !== "Order");
+    return data;
+  });
+  assert.equal(agreementOnly.controller.snapshot().view.kind, "agreement-review", "a grant with a Document and no readable Order still opens its agreement");
+}
+
+{
+  const runtime = loadRuntime({ fixtures: true });
+  const { CR } = runtime;
+  const data = CR.fixtures.roundData();
+  const server = CR.fixtures.createFixtureAdapter(data, {});
+  const reply = (status, body) => ({ status, text: () => Promise.resolve(JSON.stringify(body)) });
+  const answer = (work) => work.then((value) => reply(200, value), (error) => reply(error.status || 500, {}));
+  const listed = (name) => answer(server.list(name).then((result) => ({ result })));
+  const routes = {
+    "core/i/main-r/introspect.json": () => answer(server.introspect()),
+    "core-acct/i/main-r/account/list.json": () => listed("account"),
+    "core-bill/i/main-r/order/list.json": () => listed("order"),
+    "core-bill/i/main-r/order-item/list.json": () => listed("order-item"),
+    "core-pim/i/main-r/product-price/list.json": () => listed("product-price"),
+    "core-pim/i/main-r/product/list.json": () => listed("product"),
+    "core/i/main-r/unit/list.json": () => listed("unit"),
+    "core/i/main-r/address/list.json": () => listed("address"),
+    "core/i/rm-r/introspect.json": () => answer(server.introspectProperties()),
+    "core-rm/i/rm-r/resource/list.json": () => listed("resource"),
+  };
+  const calls = [];
+  const fetch = async (url) => {
+    const route = url.replace("https://core.example/", "").split("?")[0];
+    calls.push(url);
+    return routes[route] ? routes[route]() : reply(404, {});
+  };
+  const hash = "#token=main-r&property-token=rm-r";
+  const mount = runtime.document.createElement("div");
+  const controller = CR.boot(section(runtime.document, { "data-review-data-mode": "live", "data-review-api-base": "https://core.example" }), { location: { hash, search: "?round=A724R1", href: "https://pages.example/review?round=A724R1" + hash }, fetch, mount, timers: fakeTimers(), locale: "en-CA" });
+  await controller.idle();
+  const snapshot = controller.snapshot();
+  assert.deepEqual([snapshot.phase, snapshot.view.kind, snapshot.view.round], ["ready", "quote-review", "A724R1"], "a live ?round= link boots from its tokens alone into the round's review");
+  assert.ok(calls.every((url) => !url.includes("/document/") && !url.includes("round=")), "it requests no Document and never passes the round on");
+  assert.deepEqual(plain(snapshot.view.properties.map((property) => property.address)), [278, 430, 512, 661, 702].map((id) => CR.fixtures.addresses[id]), "and reads property addresses through the property token");
+  assert.equal(byAttribute(mount, "data-action", "link.copy").length, 1, "the round's review is a step the client can come back to");
 }
 
 const { exportClientReviewManual } = await import("./export-client-review-manual.mjs");

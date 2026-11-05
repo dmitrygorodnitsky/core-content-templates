@@ -1499,6 +1499,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
   data-copy-archived-body="It is no longer available through this link."
   data-copy-unavailable-title="This page is not available right now"
   data-copy-unavailable-body="The provider's system has not finished sending it. Try this link again later."
+  data-copy-round-ambiguous-body="This link covers more than one quotation. Open the link in the provider's newest email, or ask them to send you a new one."
   data-copy-link-missing-title="This link is incomplete"
   data-copy-link-missing-body="Open the full link from your email. Nothing can be shown without it."
   data-copy-link-closed-title="This link has expired or was withdrawn"
@@ -1725,6 +1726,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     ["ARCHIVED_BODY", "archivedBody", "It is no longer available through this link."],
     ["UNAVAILABLE_TITLE", "unavailableTitle", "This page is not available right now"],
     ["UNAVAILABLE_BODY", "unavailableBody", "The provider's system has not finished sending it. Try this link again later."],
+    ["ROUND_AMBIGUOUS_BODY", "roundAmbiguousBody", "This link covers more than one quotation. Open the link in the provider's newest email, or ask them to send you a new one."],
     ["LINK_MISSING_TITLE", "linkMissingTitle", "This link is incomplete"],
     ["LINK_MISSING_BODY", "linkMissingBody", "Open the full link from your email. Nothing can be shown without it."],
     ["LINK_CLOSED_TITLE", "linkClosedTitle", "This link has expired or was withdrawn"],
@@ -1861,6 +1863,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     orderAttributes: {
       property: "SERVICE_PROPERTY",
       pricingModel: "PRICING_MODEL",
+      quotationRound: "QUOTATION_ROUND",
     },
     propertyAttributes: {
       address: "ADDRESS",
@@ -3019,9 +3022,22 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     return idList(attributeValue(picked.row, contract.agreementAttributes.orders));
   }
 
+  function documentRooted(input) {
+    return canRead(input.grant, "document") || (Array.isArray(input.documents) && input.documents.length > 0);
+  }
+
+  function pickRound(orders, contract) {
+    var rounds = [];
+    (Array.isArray(orders) ? orders : []).forEach(function (row) {
+      var round = attributeText(row, contract.orderAttributes.quotationRound);
+      if (round && rounds.indexOf(round) === -1) rounds.push(round);
+    });
+    return { round: rounds.length === 1 ? rounds[0] : "", ambiguous: rounds.length > 1 };
+  }
+
   function requestLocale(input, fallback, contract) {
     var picked = pickAgreement(input.documents, contract);
-    var account = picked.row ? pickAccount(input.accounts, picked.row, contract) : null;
+    var account = picked.row || !documentRooted(input) ? pickAccount(input.accounts, picked.row, contract) : null;
     var contact = legalContact(account);
     var language = contact && contact.language;
     var code = language && (language.code2 || language.id);
@@ -3030,11 +3046,65 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     return typeof code === "string" && /^[a-z]{2,3}(?:-[A-Za-z0-9]+)*$/.test(code) ? code : fallback;
   }
 
+  function catalogOf(input) {
+    return {
+      orderItems: rowsById(input.orderItems),
+      productPrices: rowsById(input.productPrices),
+      products: rowsById(input.products),
+      resources: rowsById(input.resources),
+      addresses: rowsById(input.addresses),
+      units: rowsById(input.units),
+    };
+  }
+
+  function summarized(properties) {
+    return {
+      summary: summaryOf(properties),
+      allDecided: properties.length > 0 && properties.every(function (property) {
+        return property.status === "approved" || property.status === "declined";
+      }),
+    };
+  }
+
+  function roundModel(input, grant, locale, contract, expiresAt) {
+    var ordersById = rowsById(input.orders);
+    var orders = Object.keys(ordersById).map(Number).sort(ascending).map(function (id) { return ordersById[id]; });
+    if (!orders.length) return { kind: "empty", reason: "no-orders", expiresAt: expiresAt };
+    var picked = pickRound(orders, contract);
+    if (picked.ambiguous) return { kind: "unavailable", reason: "ambiguous-round", expiresAt: expiresAt };
+    var account = pickAccount(input.accounts, null, contract);
+    var properties = propertiesOf(orders, { locale: locale, contract: contract, catalog: catalogOf(input) });
+    grantActions(properties, grant, contract);
+    var decided = summarized(properties);
+    return {
+      kind: "quote-review",
+      reason: "",
+      banner: "",
+      completion: "",
+      expiresAt: expiresAt,
+      round: picked.round,
+      agreement: null,
+      names: { provider: "", client: localizedName(account && account.nls, locale) },
+      parties: null,
+      contact: null,
+      properties: properties,
+      summary: decided.summary,
+      allDecided: decided.allDecided,
+      unreadableOrders: 0,
+      accountUnavailable: Boolean(input.accountFailed),
+      details: { available: false, fields: [], prefill: {}, serviceAddresses: [], returned: returnedDetails(null, [], contract.detailsReturn) },
+      canApproveAgreement: false,
+      canRequestAgreementChanges: false,
+      primaryEmail: primaryEmail(account, contract),
+    };
+  }
+
   function reviewModel(input, options) {
     var locale = options.locale;
     var contract = options.contract;
     var grant = input.grant || grantOf(null);
     var expiresAt = formatDate(grant.expiresAt, locale);
+    if (!documentRooted(input)) return roundModel(input, grant, locale, contract, expiresAt);
     var picked = pickAgreement(input.documents, contract);
     if (!picked.row) {
       return {
@@ -3066,19 +3136,9 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
       else unreadable += 1;
     });
 
-    var properties = propertiesOf(readable, {
-      locale: locale,
-      contract: contract,
-      catalog: {
-        orderItems: rowsById(input.orderItems),
-        productPrices: rowsById(input.productPrices),
-        products: rowsById(input.products),
-        resources: rowsById(input.resources),
-        addresses: rowsById(input.addresses),
-        units: rowsById(input.units),
-      },
-    });
+    var properties = propertiesOf(readable, { locale: locale, contract: contract, catalog: catalogOf(input) });
     if (state === "QUOTATION_SENT") grantActions(properties, grant, contract);
+    var decided = summarized(properties);
     var detailsEvent = contract.agreementEvents.details;
     var approveEvent = contract.agreementEvents.approve;
     var changesEvent = contract.agreementEvents.changes;
@@ -3107,10 +3167,8 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
       parties: parties,
       contact: contactOf(agreement, contract, parties.provider.legalName),
       properties: properties,
-      summary: summaryOf(properties),
-      allDecided: properties.length > 0 && properties.every(function (property) {
-        return property.status === "approved" || property.status === "declined";
-      }),
+      summary: decided.summary,
+      allDecided: decided.allDecided,
       unreadableOrders: unreadable,
       accountUnavailable: Boolean(input.accountFailed),
       details: {
@@ -3155,6 +3213,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     pickAgreement: pickAgreement,
     pickAccount: pickAccount,
     packageOrderIds: packageOrderIds,
+    pickRound: pickRound,
     propertyStatus: propertyStatus,
     requestLocale: requestLocale,
     reviewModel: reviewModel,
@@ -4330,7 +4389,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     if (meta.children.length) head.appendChild(meta);
     var link = linkRow(ctx);
     if (link) head.appendChild(link);
-    if (ns.pdf && ns.pdf.offered(ctx.snapshot)) {
+    if (ns.pdf && view.agreement && ns.pdf.offered(ctx.snapshot)) {
       var pdf = ctx.snapshot.pdf || {};
       var pending = pdf.status === "pending";
       var allowed = ns.pdf.available(ctx.snapshot);
@@ -5244,7 +5303,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
         shell.appendChild(announcedCard(ctx, "neutral", "○", copy.emptyTitle, copy.emptyBody, null));
         return;
       default:
-        shell.appendChild(announcedCard(ctx, "warn", "!", copy.unavailableTitle, copy.unavailableBody, null));
+        shell.appendChild(announcedCard(ctx, "warn", "!", copy.unavailableTitle, view.reason === "ambiguous-round" ? copy.roundAmbiguousBody : copy.unavailableBody, null));
     }
   }
 
@@ -5569,10 +5628,11 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     function readAll() {
       return adapter.introspect().then(function (rawGrant) {
         var grant = normalizer.grantOf(rawGrant);
-        if (!normalizer.canRead(grant, "document")) {
+        var ordersReadable = normalizer.canRead(grant, "order");
+        var documentsReadable = normalizer.canRead(grant, "document");
+        if (!ordersReadable && !documentsReadable) {
           return { grant: grant, documents: [], orders: [], accounts: [], orderItems: [], productPrices: [], products: [], resources: [], addresses: [], units: [], accountFailed: false };
         }
-        var ordersReadable = normalizer.canRead(grant, "order");
         var accountRead = normalizer.canRead(grant, "account")
           ? adapter.list("account").then(function (rows) { return { rows: rows, failed: false }; }, function (error) {
             if (error && error.code === "link-closed") throw error;
@@ -5583,7 +5643,8 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
         var orderItemsRead = normalizer.canRead(grant, "order-item") ? adapter.list("order-item") : Promise.resolve([]);
         var productPricesRead = normalizer.canRead(grant, "product-price") ? adapter.list("product-price") : Promise.resolve([]);
         var productsRead = normalizer.canRead(grant, "product") ? adapter.list("product") : Promise.resolve([]);
-        return Promise.all([adapter.list("document"), accountRead, ordersRead, orderItemsRead, productPricesRead, productsRead, readProperties(), readAddresses(grant), readUnits(grant)]).then(function (parts) {
+        var documentsRead = documentsReadable ? adapter.list("document") : Promise.resolve([]);
+        return Promise.all([documentsRead, accountRead, ordersRead, orderItemsRead, productPricesRead, productsRead, readProperties(), readAddresses(grant), readUnits(grant)]).then(function (parts) {
           var documents = parts[0];
           var orders = parts[2].slice();
           var present = {};
@@ -6020,7 +6081,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     }
 
     function downloadPdf() {
-      if (exporting || busy() || !ns.pdf || !ns.pdf.available(snapshot())) return;
+      if (exporting || busy() || !ns.pdf || !ns.pdf.available(snapshot()) || !state.view.agreement) return;
       var current = state.view;
       var input = { phase: state.phase, view: JSON.parse(JSON.stringify(current)), contact: state.contact, logoUrl: state.logoUrl };
       state.pdf = "pending";
@@ -6151,7 +6212,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
           render();
           return;
         case "agreement.cancel":
-          if (!view || inflight[view.agreement.recordKey]) return;
+          if (!view || !view.agreement || inflight[view.agreement.recordKey]) return;
           state.focusKey = state.confirm && state.confirm.kind === "agreement-changes" ? "agreement-changes" : "approve-agreement";
           state.confirm = null;
           delete state.draftInvalid.agreement;
@@ -6561,6 +6622,8 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     { id: "partial", label: "Partial data — one option unreadable" },
     { id: "quote-price-labels", label: "Quote review — options named from their prices, no PRICING_MODEL" },
     { id: "quote-price-intervals", label: "Quote review — options named from the price INTERVAL and the granted Unit" },
+    { id: "round-review", label: "Quotation round — no agreement in the link, decisions offered by each option's state" },
+    { id: "round-ambiguous", label: "Quotation round — the link's options carry two rounds" },
     { id: "link-copied", label: "Copy link — copied on the contract details step" },
     { id: "link-copy-failed", label: "Copy link — the browser refused to copy" },
     { id: "contact-phone-only", label: "Contact us — the provider shows a phone and no email" },
@@ -6813,6 +6876,21 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     };
   }
 
+  function roundGrant() {
+    return {
+      expiresAt: "2026-11-20T23:59:00",
+      types: [
+        { entityType: "Account", canRead: true, canWrite: false, events: [] },
+        { entityType: "Order", canRead: true, canWrite: false, events: QUOTATION_EVENTS.map(grantEvent) },
+        { entityType: "OrderItem", canRead: true, canWrite: false, events: [] },
+        { entityType: "ProductPrice", canRead: true, canWrite: false, events: [] },
+        { entityType: "Unit", canRead: true, canWrite: false, events: [] },
+        { entityType: "Product", canRead: true, canWrite: false, events: [] },
+        { entityType: "Address", canRead: true, canWrite: false, events: [] },
+      ],
+    };
+  }
+
   function propertyGrant(expiresAt) {
     return {
       expiresAt: expiresAt,
@@ -6839,6 +6917,52 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
       accountFails: false,
       closed: false,
     });
+  }
+
+  var ROUND = "A724R1";
+  var OTHER_ROUND = "A724R2";
+  var ROUND_GROUP = 6;
+
+  function shallowLines(data) {
+    var models = {};
+    var products = {};
+    ORDERS.forEach(function (spec) { models[spec.id] = spec.model; });
+    data.orderItems = [];
+    data.productPrices = [];
+    data.orders.forEach(function (row) {
+      var months = INTERVAL_MONTHS[models[row.id]];
+      row.items = row.items.map(function (line) {
+        var price = line.itemPrice;
+        var attributes = { 2: { CURRENCY: { value: CURRENCY.id } } };
+        if (months) attributes[4] = { INTERVAL: { value: months, unit: MONTH_UNIT.id }, USAGE_TYPE: { value: "Licensed" } };
+        data.orderItems.push({ id: line.id, sortOrder: line.sortOrder, itemCount: line.itemCount, amount: line.amount, itemPrice: { id: price.id } });
+        data.productPrices.push({ id: price.id, type: price.type, product: { id: price.product.id }, attributes: attributes });
+        products[price.product.id] = clone(price.product);
+        return { id: line.id };
+      });
+    });
+    data.products = Object.keys(products).map(function (id) { return products[id]; });
+    data.units = [clone(MONTH_UNIT)];
+    return data;
+  }
+
+  function roundData(orderStates, rounds) {
+    var orders = ORDERS.map(orderRow);
+    orders.forEach(function (row) {
+      delete row.attributes[5].PRICING_MODEL;
+      if (orderStates && orderStates[row.id]) row.states = [{ code: orderStates[row.id] }];
+      var round = rounds && Object.prototype.hasOwnProperty.call(rounds, row.id) ? rounds[row.id] : ROUND;
+      if (round) row.attributes[ROUND_GROUP] = { QUOTATION_ROUND: { value: round } };
+    });
+    return shallowLines(withProperties({
+      grant: roundGrant(),
+      accounts: [accountRow(false)],
+      documents: [],
+      orders: orders,
+      unreadable: [],
+      accountFails: false,
+      closed: false,
+    }));
   }
 
   var DECIDED = { 3101: "DECLINED", 3102: "CLIENT_APPROVED", 3103: "DECLINED", 3107: "CLIENT_APPROVED", 3108: "CLIENT_APPROVED" };
@@ -7053,6 +7177,9 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
             return clone(served.addresses || []);
           }
           if (entity === "unit") return clone(served.units || []);
+          if (entity === "order-item") return clone(served.orderItems || []);
+          if (entity === "product-price") return clone(served.productPrices || []);
+          if (entity === "product") return clone(served.products || []);
           if (entity === "resource") {
             if (settings.properties === "missing") throw reviewError("link-missing", 0);
             if (settings.properties === "unauthorized") throw reviewError("link-closed", 401);
@@ -7426,6 +7553,12 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
       case "quote-price-intervals":
         priceIntervals(priceLabelled(data));
         break;
+      case "round-review":
+        data = roundData();
+        break;
+      case "round-ambiguous":
+        data = roundData(null, { 3109: OTHER_ROUND, 3110: OTHER_ROUND });
+        break;
       case "link-copied":
         data = quotationData("AWAITING_CLIENT_DETAILS", DECIDED);
         clipboard = fixtureClipboard(true);
@@ -7767,6 +7900,9 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     places: PLACES,
     quotationData: quotationData,
     agreementData: agreementData,
+    roundData: roundData,
+    round: ROUND,
+    otherRound: OTHER_ROUND,
     detailsErrors: detailsErrors,
     priceLabelled: priceLabelled,
     priceIntervals: priceIntervals,

@@ -82,6 +82,7 @@
     orderAttributes: {
       property: "SERVICE_PROPERTY",
       pricingModel: "PRICING_MODEL",
+      quotationRound: "QUOTATION_ROUND",
     },
     propertyAttributes: {
       address: "ADDRESS",
