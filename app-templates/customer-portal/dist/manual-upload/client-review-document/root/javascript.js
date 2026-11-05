@@ -315,7 +315,7 @@
       "CLIENT_DETAILS_RECEIVED", "DRAFT",
       "PENDING_MANAGEMENT_APPROVAL", "INTERNALLY_APPROVED", "SENT_TO_CLIENT", "CLIENT_CHANGES_REQUESTED", "AGREEMENT_SEND_FAILED",
       "CLIENT_APPROVED", "ACTIVATION_FAILED", "ACTIVE", "SUSPENDED", "EXPIRED", "ARCHIVED", "CANCELED",
-      "DETAILS_FINALIZATION_RETRY", "ACCESS_CLEANUP_RETRY",
+      "ACCESS_CLEANUP_RETRY",
     ],
     orderEvents: {
       view: { code: "QUOTE_SENT-QUOTE_VIEWED", source: "QUOTE_SENT" },
@@ -738,7 +738,6 @@
     AWAITING_CLIENT_DETAILS: { kind: "contract-details" },
     CLIENT_DETAILS_RECEIVED: { kind: "checking" },
     DRAFT: { kind: "preparing" },
-    DETAILS_FINALIZATION_RETRY: { kind: "preparing" },
     PENDING_MANAGEMENT_APPROVAL: { kind: "preparing" },
     INTERNALLY_APPROVED: { kind: "preparing" },
     SENT_TO_CLIENT: { kind: "agreement-review" },

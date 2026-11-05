@@ -317,7 +317,7 @@ const N = loadRuntime().CR.normalizer;
     PENDING_MANAGEMENT_APPROVAL: "preparing",
     INTERNALLY_APPROVED: "preparing", SENT_TO_CLIENT: "agreement-review", CLIENT_CHANGES_REQUESTED: "reference", AGREEMENT_SEND_FAILED: "unavailable",
     CLIENT_APPROVED: "completion", ACTIVATION_FAILED: "completion", ACTIVE: "completion", SUSPENDED: "reference", EXPIRED: "reference",
-    ARCHIVED: "closed", CANCELED: "closed", DETAILS_FINALIZATION_RETRY: "preparing", ACCESS_CLEANUP_RETRY: "closed",
+    ARCHIVED: "closed", CANCELED: "closed", ACCESS_CLEANUP_RETRY: "closed",
   };
   const EXPECTED_COMPLETION = { CLIENT_APPROVED: "approved", ACTIVATION_FAILED: "finishing", ACTIVE: "active" };
   assert.deepEqual(Object.keys(EXPECTED_KIND).sort(), plain(contract.agreementStates).sort(), "every agreement state has an expected page");
@@ -555,7 +555,7 @@ const N = loadRuntime().CR.normalizer;
     const seedEvent = seedWorkflow.events.find((event) => event.code === contract.contractDetails.event);
     assert.deepEqual(plain(contract.contractDetails.attributes), seedEvent.attributes, "the shipped details contract equals the seed's event attributes");
     assert.deepEqual(plain(contract.contractDetails.attributeOrder), seedEvent.attributeOrder, "the shipped details order equals the seed's event attribute order");
-    assert.deepEqual(plain(contract.agreementStates), seedWorkflow.states.map((state) => state.code), "the page knows every state of the seeded agreement workflow, ACTIVATION_FAILED included");
+    assert.deepEqual(plain(contract.agreementStates), seedWorkflow.states.map((state) => state.code), "the page knows every state of the seeded agreement workflow, the retired ACTIVATION_FAILED included");
     console.log("client-review-check: details contract and agreement states compared with " + path.relative(process.cwd(), seedPath));
   } else {
     console.log("client-review-check: seed " + seedPath + " not present, details contract and agreement states not compared");

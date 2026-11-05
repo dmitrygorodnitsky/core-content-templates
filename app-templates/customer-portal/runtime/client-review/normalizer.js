@@ -25,7 +25,6 @@
     AWAITING_CLIENT_DETAILS: { kind: "contract-details" },
     CLIENT_DETAILS_RECEIVED: { kind: "checking" },
     DRAFT: { kind: "preparing" },
-    DETAILS_FINALIZATION_RETRY: { kind: "preparing" },
     PENDING_MANAGEMENT_APPROVAL: { kind: "preparing" },
     INTERNALLY_APPROVED: { kind: "preparing" },
     SENT_TO_CLIENT: { kind: "agreement-review" },
