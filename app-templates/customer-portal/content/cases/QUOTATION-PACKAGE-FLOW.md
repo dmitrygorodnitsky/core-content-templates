@@ -1595,7 +1595,9 @@ and `?agreementId=` links behave as before.
   approve, decline and request changes in `QUOTE_VIEWED`, each only when the
   grant delegates the event. After view or decline the page re-reads and stays
   on the review with its partial-decision copy. The combined confirm-and-details
-  step is not built; approve keeps its existing path.
+  step is not built; approve keeps its existing path. Once every property of a
+  round is decided the page does not re-read: nothing advances a round yet, so
+  it ends on a thank-you (`DECIDED_ROUND_BODY`) without Check again.
 - **Not shown without a Document.** Provider name, Contact us, logo and the
   PDF come from the agreement, so a round shows none of them.
 

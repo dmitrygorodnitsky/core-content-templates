@@ -1401,6 +1401,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
   data-copy-decided-title="Every property has a decision"
   data-copy-decided-body="The provider opens the next step once its system has processed your decisions."
   data-copy-decided-following-body="The provider's system is processing your decisions. This page updates on its own."
+  data-copy-decided-round-body="Thank you, your decisions are recorded. The provider will contact you about the next step."
   data-copy-check-again="Check again"
   data-copy-details-eyebrow="Contract details"
   data-copy-details-title="Complete your contract details"
@@ -1623,6 +1624,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     ["DECIDED_TITLE", "decidedTitle", "Every property has a decision"],
     ["DECIDED_BODY", "decidedBody", "The provider opens the next step once its system has processed your decisions."],
     ["DECIDED_FOLLOWING_BODY", "decidedFollowingBody", "The provider's system is processing your decisions. This page updates on its own."],
+    ["DECIDED_ROUND_BODY", "decidedRoundBody", "Thank you, your decisions are recorded. The provider will contact you about the next step."],
     ["CHECK_AGAIN", "checkAgain", "Check again"],
 
     ["DETAILS_EYEBROW", "detailsEyebrow", "Contract details"],
@@ -4741,6 +4743,12 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
 
   function decidedNotice(ctx) {
     var copy = ctx.copy;
+    if (!ctx.snapshot.view.agreement) {
+      announce(ctx, [copy.decidedTitle, copy.decidedRoundBody]);
+      var recorded = notice("ok", copy.decidedTitle, copy.decidedRoundBody, null);
+      recorded.setAttribute("data-decided", "recorded");
+      return recorded;
+    }
     var waiting = ctx.snapshot.waiting;
     var following = waiting.decisions && !waiting.exhausted;
     var body = following ? copy.decidedFollowingBody : copy.decidedBody;
@@ -5483,6 +5491,10 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
       return state.phase === "ready" && state.followDecisions && Boolean(state.view) && state.view.kind === "quote-review" && state.view.allDecided;
     }
 
+    function roundRecordedNow() {
+      return state.phase === "ready" && Boolean(state.view) && state.view.kind === "quote-review" && state.view.allDecided && !state.view.agreement;
+    }
+
     function pageWaitingNow() {
       return checkingNow() || followingNow();
     }
@@ -5540,7 +5552,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
         }
         delete state.accepted[recordKey];
         delete state.commands[recordKey];
-        if (expectation.event === contract.orderEvents.approve.code || expectation.event === contract.orderEvents.decline.code) state.followDecisions = true;
+        if (state.view.agreement && (expectation.event === contract.orderEvents.approve.code || expectation.event === contract.orderEvents.decline.code)) state.followDecisions = true;
         if (expectation.event === contract.agreementEvents.changes.code) {
           delete state.drafts.agreement;
           state.focusKey = "page-title";
@@ -5776,6 +5788,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
       if (before.phase !== "ready") return false;
       if (before.pageWaiting !== pageWaitingNow()) return true;
       if (waitingNow() && poll.exhausted && !before.exhausted) return true;
+      if (Boolean(after.event) && !before.recorded && roundRecordedNow()) return true;
       return (Boolean(after.event) || Boolean(after.quiet)) && before.page !== pageKey();
     }
 
@@ -5797,7 +5810,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
       }
       if (loading) return loading;
       var after = context || {};
-      var before = { phase: state.phase, page: pageKey(), pageWaiting: pageWaitingNow(), exhausted: poll.exhausted };
+      var before = { phase: state.phase, page: pageKey(), pageWaiting: pageWaitingNow(), exhausted: poll.exhausted, recorded: roundRecordedNow() };
       if (state.phase === "ready" && state.view) state.refreshing = true;
       else state.phase = "loading";
       render();
@@ -5811,7 +5824,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
         state.contact = state.view.contact || null;
         state.logoUrl = state.view.parties && typeof adapter.imageUrl === "function" ? adapter.imageUrl(state.view.parties.provider.logo) : "";
         settleAccepted();
-        if (state.view.kind !== "quote-review" || !state.view.allDecided) state.followDecisions = false;
+        if (state.view.kind !== "quote-review" || !state.view.allDecided || !state.view.agreement) state.followDecisions = false;
         seedDetails();
         prune();
         readPlans();
@@ -6624,6 +6637,8 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     { id: "quote-price-intervals", label: "Quote review — options named from the price INTERVAL and the granted Unit" },
     { id: "round-review", label: "Quotation round — no agreement in the link, decisions offered by each option's state" },
     { id: "round-ambiguous", label: "Quotation round — the link's options carry two rounds" },
+    { id: "round-decided", label: "Quotation round — last decision sent here, decisions recorded" },
+    { id: "round-recorded", label: "Quotation round — every property decided, link opened again" },
     { id: "link-copied", label: "Copy link — copied on the contract details step" },
     { id: "link-copy-failed", label: "Copy link — the browser refused to copy" },
     { id: "contact-phone-only", label: "Contact us — the provider shows a phone and no email" },
@@ -7558,6 +7573,13 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
         break;
       case "round-ambiguous":
         data = roundData(null, { 3109: OTHER_ROUND, 3110: OTHER_ROUND });
+        break;
+      case "round-decided":
+        data = roundData(LAST_OPEN);
+        steps = lastDecision;
+        break;
+      case "round-recorded":
+        data = roundData(DECIDED);
         break;
       case "link-copied":
         data = quotationData("AWAITING_CLIENT_DETAILS", DECIDED);

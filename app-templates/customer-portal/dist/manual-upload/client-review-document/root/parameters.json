@@ -1268,6 +1268,19 @@
     }
   },
   {
+    "code": "DECIDED_ROUND_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "DECIDED ROUND BODY",
+        "DESCRIPTION": "Client review document copy."
+      }
+    },
+    "value": {
+      "en": "Thank you, your decisions are recorded. The provider will contact you about the next step."
+    }
+  },
+  {
     "code": "CHECK_AGAIN",
     "type": "LOCALIZED_STRING_SS",
     "nls": {

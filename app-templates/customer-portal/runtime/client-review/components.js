@@ -560,6 +560,12 @@
 
   function decidedNotice(ctx) {
     var copy = ctx.copy;
+    if (!ctx.snapshot.view.agreement) {
+      announce(ctx, [copy.decidedTitle, copy.decidedRoundBody]);
+      var recorded = notice("ok", copy.decidedTitle, copy.decidedRoundBody, null);
+      recorded.setAttribute("data-decided", "recorded");
+      return recorded;
+    }
     var waiting = ctx.snapshot.waiting;
     var following = waiting.decisions && !waiting.exhausted;
     var body = following ? copy.decidedFollowingBody : copy.decidedBody;

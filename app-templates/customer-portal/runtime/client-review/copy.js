@@ -100,6 +100,7 @@
     ["DECIDED_TITLE", "decidedTitle", "Every property has a decision"],
     ["DECIDED_BODY", "decidedBody", "The provider opens the next step once its system has processed your decisions."],
     ["DECIDED_FOLLOWING_BODY", "decidedFollowingBody", "The provider's system is processing your decisions. This page updates on its own."],
+    ["DECIDED_ROUND_BODY", "decidedRoundBody", "Thank you, your decisions are recorded. The provider will contact you about the next step."],
     ["CHECK_AGAIN", "checkAgain", "Check again"],
 
     ["DETAILS_EYEBROW", "detailsEyebrow", "Contract details"],

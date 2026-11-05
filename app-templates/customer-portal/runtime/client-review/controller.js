@@ -75,6 +75,10 @@
       return state.phase === "ready" && state.followDecisions && Boolean(state.view) && state.view.kind === "quote-review" && state.view.allDecided;
     }
 
+    function roundRecordedNow() {
+      return state.phase === "ready" && Boolean(state.view) && state.view.kind === "quote-review" && state.view.allDecided && !state.view.agreement;
+    }
+
     function pageWaitingNow() {
       return checkingNow() || followingNow();
     }
@@ -132,7 +136,7 @@
         }
         delete state.accepted[recordKey];
         delete state.commands[recordKey];
-        if (expectation.event === contract.orderEvents.approve.code || expectation.event === contract.orderEvents.decline.code) state.followDecisions = true;
+        if (state.view.agreement && (expectation.event === contract.orderEvents.approve.code || expectation.event === contract.orderEvents.decline.code)) state.followDecisions = true;
         if (expectation.event === contract.agreementEvents.changes.code) {
           delete state.drafts.agreement;
           state.focusKey = "page-title";
@@ -368,6 +372,7 @@
       if (before.phase !== "ready") return false;
       if (before.pageWaiting !== pageWaitingNow()) return true;
       if (waitingNow() && poll.exhausted && !before.exhausted) return true;
+      if (Boolean(after.event) && !before.recorded && roundRecordedNow()) return true;
       return (Boolean(after.event) || Boolean(after.quiet)) && before.page !== pageKey();
     }
 
@@ -389,7 +394,7 @@
       }
       if (loading) return loading;
       var after = context || {};
-      var before = { phase: state.phase, page: pageKey(), pageWaiting: pageWaitingNow(), exhausted: poll.exhausted };
+      var before = { phase: state.phase, page: pageKey(), pageWaiting: pageWaitingNow(), exhausted: poll.exhausted, recorded: roundRecordedNow() };
       if (state.phase === "ready" && state.view) state.refreshing = true;
       else state.phase = "loading";
       render();
@@ -403,7 +408,7 @@
         state.contact = state.view.contact || null;
         state.logoUrl = state.view.parties && typeof adapter.imageUrl === "function" ? adapter.imageUrl(state.view.parties.provider.logo) : "";
         settleAccepted();
-        if (state.view.kind !== "quote-review" || !state.view.allDecided) state.followDecisions = false;
+        if (state.view.kind !== "quote-review" || !state.view.allDecided || !state.view.agreement) state.followDecisions = false;
         seedDetails();
         prune();
         readPlans();

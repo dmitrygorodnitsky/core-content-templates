@@ -217,6 +217,8 @@
     { id: "quote-price-intervals", label: "Quote review — options named from the price INTERVAL and the granted Unit" },
     { id: "round-review", label: "Quotation round — no agreement in the link, decisions offered by each option's state" },
     { id: "round-ambiguous", label: "Quotation round — the link's options carry two rounds" },
+    { id: "round-decided", label: "Quotation round — last decision sent here, decisions recorded" },
+    { id: "round-recorded", label: "Quotation round — every property decided, link opened again" },
     { id: "link-copied", label: "Copy link — copied on the contract details step" },
     { id: "link-copy-failed", label: "Copy link — the browser refused to copy" },
     { id: "contact-phone-only", label: "Contact us — the provider shows a phone and no email" },
@@ -1151,6 +1153,13 @@
         break;
       case "round-ambiguous":
         data = roundData(null, { 3109: OTHER_ROUND, 3110: OTHER_ROUND });
+        break;
+      case "round-decided":
+        data = roundData(LAST_OPEN);
+        steps = lastDecision;
+        break;
+      case "round-recorded":
+        data = roundData(DECIDED);
         break;
       case "link-copied":
         data = quotationData("AWAITING_CLIENT_DETAILS", DECIDED);

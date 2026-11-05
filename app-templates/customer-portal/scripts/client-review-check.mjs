@@ -794,6 +794,7 @@ const EXPECTED_SCENARIOS = {
   "link-closed": ["link-closed", null], unconfigured: ["unconfigured", null], empty: ["ready", "empty"],
   error: ["error", null], partial: ["ready", "quote-review"], "quote-price-labels": ["ready", "quote-review"], "quote-price-intervals": ["ready", "quote-review"], "option-open": ["ready", "quote-review"],
   "round-review": ["ready", "quote-review"], "round-ambiguous": ["ready", "unavailable"],
+  "round-decided": ["ready", "quote-review"], "round-recorded": ["ready", "quote-review"],
   "link-copied": ["ready", "contract-details"], "link-copy-failed": ["ready", "quote-review"],
   "contact-phone-only": ["ready", "quote-review"], "contact-none": ["ready", "quote-review"], "agreement-no-logo": ["ready", "agreement-review"],
   "view-pending": ["ready", "quote-review"], "view-failed": ["ready", "quote-review"], "approve-confirm": ["ready", "quote-review"],
@@ -822,7 +823,7 @@ const EXPECTED_SCENARIOS = {
   "link-closed-portal": ["link-closed", null], "reference-expired": ["ready", "reference"],
   "closed-canceled": ["ready", "closed"], unavailable: ["ready", "unavailable"],
 };
-const POLLED_SCENARIOS = new Set(["details-checking-slow", "details-closed", "details-returned-sent", "decided-following-slow", "decided-next-step", "details-stale-slow", "details-stale-closed", "command-unconfirmed", "view-unconfirmed", "agreement-unconfirmed"]);
+const POLLED_SCENARIOS = new Set(["round-decided", "details-checking-slow", "details-closed", "details-returned-sent", "decided-following-slow", "decided-next-step", "details-stale-slow", "details-stale-closed", "command-unconfirmed", "view-unconfirmed", "agreement-unconfirmed"]);
 const LINK_STEPS = new Set(["quote-review", "contract-details", "agreement-review"]);
 const PAGE_LINK = "https://pages.example/review#token=scenario-link";
 
@@ -861,7 +862,7 @@ const portalLinks = (node) => byAttribute(node, "data-action", "portal.open");
 const stateCardOf = (node) => { const card = byClass(node, "cr-state")[0]; return [card.getAttribute("data-state"), byClass(card, "cr-state__glyph")[0].textContent]; };
 const contactLines = (node) => byClass(node, "cr-contact__item").map((item) => [item.getAttribute("data-contact"), item.children[0].textContent, item.children[1].tagName, item.children[1].textContent, item.children[1].getAttribute("href")]);
 const providerLogos = (node) => byClass(node, "cr-party__logo");
-const CONTACTLESS_SCENARIOS = new Set(["loading", "link-missing", "link-closed", "link-closed-portal", "unconfigured", "empty", "error", "contact-none", "round-review", "round-ambiguous"]);
+const CONTACTLESS_SCENARIOS = new Set(["loading", "link-missing", "link-closed", "link-closed-portal", "unconfigured", "empty", "error", "contact-none", "round-review", "round-ambiguous", "round-decided", "round-recorded"]);
 const FORM_FROM_ATTRIBUTES = {
   LEGAL_NAME: "Harbourview Strata Corporation", CLIENT_TYPE: "",
   BILLING_ADDRESS: "1500 Harbour Green Drive, Suite 210, Vancouver, BC V6C 3T8, Canada",
@@ -1256,6 +1257,25 @@ function assertForm(run, expected, message) {
         assert.deepEqual(run.timers.waits, [300, 300, 300], "the preview scenario runs a shortened budget");
         assert.equal(run.timers.pending, 0, "and stops re-reading");
         assert.ok(run.live.textContent.includes(copy.decidedBody), "the fallback is announced");
+        break;
+      }
+      case "round-decided":
+      case "round-recorded": {
+        const notice = byAttribute(run.mount, "data-decided", "recorded")[0];
+        assert.ok(notice && surface(notice).includes(copy.decidedTitle) && surface(notice).includes(copy.decidedRoundBody), id + ": a fully decided round without an agreement ends on the recorded thank-you");
+        assert.ok(!surface(notice).includes(copy.decidedBody) && !surface(notice).includes(copy.decidedFollowingBody), id + ": and promises no next step on this page");
+        assert.equal(byAttribute(notice, "data-action", "refresh").length, 0, id + ": with no Check again");
+        assert.equal(byClass(notice, "cr-notice__icon--busy").length, 0, id + ": and no working icon");
+        assert.equal(byAttribute(run.mount, "data-decided", "following").length + byAttribute(run.mount, "data-decided", "settled").length, 0, id + ": and none of the agreement package cards");
+        assert.equal(run.controller.snapshot().waiting.decisions, false, id + ": the page does not follow a round's decisions");
+        assert.equal(run.timers.pending, 0, id + ": no follow-up read is scheduled");
+        assert.deepEqual(run.timers.waits, [], id + ": and none ran");
+        if (id === "round-decided") {
+          assert.deepEqual(run.sent.map((call) => call[2]), ["QUOTE_SENT-QUOTE_VIEWED", "QUOTE_VIEWED-CLIENT_APPROVED"], "the round's last decision left the page");
+          assert.ok(run.live.textContent.includes(copy.decidedRoundBody), "and the recorded decisions are announced");
+        } else {
+          assert.equal(run.live.textContent, "", "opening an already decided round announces nothing beyond the page");
+        }
         break;
       }
       case "decided-next-step":
