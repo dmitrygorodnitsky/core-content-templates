@@ -1,0 +1,510 @@
+{
+ "code": "KNOWLEDGE_ASSET",
+ "initialState": {
+  "id": 214,
+  "code": "DRAFT"
+ },
+ "nls": {
+  "ar": {
+   "NAME": "دورة حياة أصول المعرفة"
+  },
+  "en": {
+   "NAME": "Knowledge Asset Lifecycle"
+  },
+  "es": {
+   "NAME": "Ciclo de vida de los activos de conocimiento"
+  },
+  "fr": {
+   "NAME": "Cycle de Vie des Actifs de Connaissance"
+  },
+  "he": {
+   "NAME": "מחזור החיים של נכסי ידע"
+  },
+  "kk": {
+   "NAME": "Білім активінің өмірлік циклі"
+  },
+  "ru": {
+   "NAME": "Жизненный цикл актива знаний"
+  },
+  "zh": {
+   "NAME": "知识资产生命周期"
+  }
+ },
+ "entityType": "com.pixelnation.common.domain.Document",
+ "organization": {
+  "optimistic": 1,
+  "id": 1,
+  "code": "SYSTEM"
+ },
+ "id": 44,
+ "states": [
+  {
+   "style": {
+    "xPos": 1372.5234482989765,
+    "yPos": 422.31856965220527
+   },
+   "id": 216,
+   "code": "APPROVED",
+   "nls": {
+    "ar": {
+     "NAME": "معتمد"
+    },
+    "en": {
+     "NAME": "Approved"
+    },
+    "es": {
+     "NAME": "Aprobado"
+    },
+    "fr": {
+     "NAME": "Approuvé"
+    },
+    "he": {
+     "NAME": "מאושר"
+    },
+    "kk": {
+     "NAME": "Мақұлданған"
+    },
+    "ru": {
+     "NAME": "Одобрено"
+    },
+    "zh": {
+     "NAME": "已批准"
+    }
+   },
+   "events": [
+    {
+     "id": 412,
+     "code": "APPROVED-PUBLISHED",
+     "nls": {
+      "ar": {
+       "NAME": "نشر"
+      },
+      "en": {
+       "NAME": "Publish"
+      },
+      "es": {
+       "NAME": "Publicar"
+      },
+      "fr": {
+       "NAME": "Publier"
+      },
+      "he": {
+       "NAME": "פרסם"
+      },
+      "kk": {
+       "NAME": "Жариялау"
+      },
+      "ru": {
+       "NAME": "Опубликовать"
+      },
+      "zh": {
+       "NAME": "发布"
+      }
+     },
+     "targets": [
+      {
+       "id": 218,
+       "code": "PUBLISHED"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "style": {
+    "xPos": 460.34181084283546,
+    "yPos": 421.315701715803
+   },
+   "id": 214,
+   "code": "DRAFT",
+   "nls": {
+    "ar": {
+     "NAME": "مسودة"
+    },
+    "en": {
+     "NAME": "Draft"
+    },
+    "es": {
+     "NAME": "Borrador"
+    },
+    "fr": {
+     "NAME": "Brouillon"
+    },
+    "he": {
+     "NAME": "טיוטה"
+    },
+    "kk": {
+     "NAME": "ЖОБА"
+    },
+    "ru": {
+     "NAME": "Черновик"
+    },
+    "zh": {
+     "NAME": "草稿"
+    }
+   },
+   "events": [
+    {
+     "id": 410,
+     "code": "DRAFT-FOR_APPROVAL",
+     "nls": {
+      "ar": {
+       "NAME": "استعد"
+      },
+      "en": {
+       "NAME": "Prepare"
+      },
+      "es": {
+       "NAME": "Preparar"
+      },
+      "fr": {
+       "NAME": "Préparer"
+      },
+      "he": {
+       "NAME": "הכן"
+      },
+      "kk": {
+       "NAME": "Дайындал"
+      },
+      "ru": {
+       "NAME": "Подготовиться"
+      },
+      "zh": {
+       "NAME": "准备"
+      }
+     },
+     "targets": [
+      {
+       "id": 215,
+       "code": "FOR_APPROVAL"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "style": {
+    "xPos": 904.1272583910749,
+    "yPos": 427.6485744890773
+   },
+   "id": 215,
+   "code": "FOR_APPROVAL",
+   "nls": {
+    "ar": {
+     "NAME": "للموافقة"
+    },
+    "en": {
+     "NAME": "For approval"
+    },
+    "es": {
+     "NAME": "Para aprobación"
+    },
+    "fr": {
+     "NAME": "Pour approbation"
+    },
+    "he": {
+     "NAME": "לאישור"
+    },
+    "kk": {
+     "NAME": "Құптау үшін"
+    },
+    "ru": {
+     "NAME": "На утверждение"
+    },
+    "zh": {
+     "NAME": "待审批"
+    }
+   },
+   "events": [
+    {
+     "id": 411,
+     "code": "FOR_APPROVAL-APPROVED",
+     "nls": {
+      "ar": {
+       "NAME": "اعتمد"
+      },
+      "en": {
+       "NAME": "Approve"
+      },
+      "es": {
+       "NAME": "Aprobar"
+      },
+      "fr": {
+       "NAME": "Approuver"
+      },
+      "he": {
+       "NAME": "אשר"
+      },
+      "kk": {
+       "NAME": "Растау"
+      },
+      "ru": {
+       "NAME": "Одобрить"
+      },
+      "zh": {
+       "NAME": "批准"
+      }
+     },
+     "targets": [
+      {
+       "id": 216,
+       "code": "APPROVED"
+      }
+     ]
+    },
+    {
+     "id": 413,
+     "code": "FOR_APPROVAL-REJECTED",
+     "nls": {
+      "ar": {
+       "NAME": "إرفض"
+      },
+      "en": {
+       "NAME": "Reject"
+      },
+      "es": {
+       "NAME": "Rechazar"
+      },
+      "fr": {
+       "NAME": "Rejeter"
+      },
+      "he": {
+       "NAME": "סרב"
+      },
+      "kk": {
+       "NAME": "Бас тарту"
+      },
+      "ru": {
+       "NAME": "Отклонить"
+      },
+      "zh": {
+       "NAME": "拒绝"
+      }
+     },
+     "targets": [
+      {
+       "id": 217,
+       "code": "REJECTED"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "style": {
+    "xPos": 1799.9651871309281,
+    "yPos": 426.4446759594072
+   },
+   "id": 218,
+   "code": "PUBLISHED",
+   "nls": {
+    "ar": {
+     "NAME": "منشور"
+    },
+    "en": {
+     "NAME": "Published"
+    },
+    "es": {
+     "NAME": "Publicado"
+    },
+    "fr": {
+     "NAME": "Publié"
+    },
+    "he": {
+     "NAME": "פורסם"
+    },
+    "kk": {
+     "NAME": "Жарияланды"
+    },
+    "ru": {
+     "NAME": "Опубликовано"
+    },
+    "zh": {
+     "NAME": "已发布"
+    }
+   },
+   "events": [
+    {
+     "id": 415,
+     "code": "PUBLISHED-SUSPENDED",
+     "nls": {
+      "ar": {
+       "NAME": "إيقاف"
+      },
+      "en": {
+       "NAME": "Suspend"
+      },
+      "es": {
+       "NAME": "Suspender"
+      },
+      "fr": {
+       "NAME": "Suspendre"
+      },
+      "he": {
+       "NAME": "השהה"
+      },
+      "kk": {
+       "NAME": "Тоқтату"
+      },
+      "ru": {
+       "NAME": "Приостановить"
+      },
+      "zh": {
+       "NAME": "暂停"
+      }
+     },
+     "targets": [
+      {
+       "id": 219,
+       "code": "SUSPENDED"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "style": {
+    "xPos": 1359.2068197681306,
+    "yPos": 595.7795056742516
+   },
+   "id": 217,
+   "code": "REJECTED",
+   "nls": {
+    "ar": {
+     "NAME": "مرفوض"
+    },
+    "en": {
+     "NAME": "Rejected"
+    },
+    "es": {
+     "NAME": "Rechazado"
+    },
+    "fr": {
+     "NAME": "Rejeté"
+    },
+    "he": {
+     "NAME": "נדחה"
+    },
+    "kk": {
+     "NAME": "Қабылданбаған"
+    },
+    "ru": {
+     "NAME": "Отклонено"
+    },
+    "zh": {
+     "NAME": "已拒绝"
+    }
+   },
+   "events": [
+    {
+     "id": 414,
+     "code": "REJECTED-FOR_APPROVAL",
+     "nls": {
+      "ar": {
+       "NAME": "إعادة"
+      },
+      "en": {
+       "NAME": "Redo"
+      },
+      "es": {
+       "NAME": "Rehacer"
+      },
+      "fr": {
+       "NAME": "Rétablir"
+      },
+      "he": {
+       "NAME": "בצע שוב"
+      },
+      "kk": {
+       "NAME": "Қайта жасау"
+      },
+      "ru": {
+       "NAME": "Повторить"
+      },
+      "zh": {
+       "NAME": "重做"
+      }
+     },
+     "targets": [
+      {
+       "id": 215,
+       "code": "FOR_APPROVAL"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "style": {
+    "xPos": 1706.2308433297258,
+    "yPos": 812.3485564518114
+   },
+   "id": 219,
+   "code": "SUSPENDED",
+   "nls": {
+    "ar": {
+     "NAME": "معلق"
+    },
+    "en": {
+     "NAME": "Suspended"
+    },
+    "es": {
+     "NAME": "Suspendido"
+    },
+    "fr": {
+     "NAME": "Suspendu"
+    },
+    "he": {
+     "NAME": "מושהה"
+    },
+    "kk": {
+     "NAME": "Тоқтатылған"
+    },
+    "ru": {
+     "NAME": "Приостановлено"
+    },
+    "zh": {
+     "NAME": "已暂停"
+    }
+   },
+   "events": [
+    {
+     "id": 416,
+     "code": "SUSPENDED-FOR_APPROVAL",
+     "nls": {
+      "ar": {
+       "NAME": "جهز"
+      },
+      "en": {
+       "NAME": "Prepare"
+      },
+      "es": {
+       "NAME": "Preparar"
+      },
+      "fr": {
+       "NAME": "Préparer"
+      },
+      "he": {
+       "NAME": "הכן"
+      },
+      "kk": {
+       "NAME": "ДАЙЫНДАЛ"
+      },
+      "ru": {
+       "NAME": "Подготовить"
+      },
+      "zh": {
+       "NAME": "准备"
+      }
+     },
+     "targets": [
+      {
+       "id": 215,
+       "code": "FOR_APPROVAL"
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

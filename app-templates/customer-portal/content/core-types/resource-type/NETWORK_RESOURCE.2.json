@@ -1,0 +1,46 @@
+{
+ "optimistic": 0,
+ "code": "NETWORK_RESOURCE",
+ "nls": {
+  "en": {
+   "NAME": "Network Resource",
+   "DESCRIPTION": "Resource type for network-accessible resources with attributes for network address"
+  }
+ },
+ "organization": {
+  "optimistic": 1,
+  "id": 1,
+  "code": "SYSTEM"
+ },
+ "attributeOrder": [],
+ "attributes": [
+  {
+   "code": "ADDRESS",
+   "required": true,
+   "multiselect": false,
+   "freeValue": true,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "en": {
+     "NAME": "Network Address",
+     "DESCRIPTION": "The network name or DNS address to access the resource"
+    }
+   },
+   "options": []
+  }
+ ],
+ "id": 2,
+ "isAbstract": true,
+ "attributeGroups": [
+  {
+   "code": "NETWORK",
+   "nls": {
+    "en": {
+     "NAME": "Network Attributes",
+     "DESCRIPTION": "Attributes related to network access of the resource"
+    }
+   }
+  }
+ ]
+}

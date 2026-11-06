@@ -1,0 +1,23 @@
+{
+ "optimistic": 1,
+ "code": "ZZ_TRANSITION_PROBE",
+ "nls": {
+  "en": {
+   "NAME": "Transition metadata probe"
+  }
+ },
+ "workflow": {
+  "id": 53,
+  "code": "SERVICE_AGREEMENT_LIFECYCLE"
+ },
+ "attributeOrder": [],
+ "organization": {
+  "optimistic": 9,
+  "id": 1,
+  "code": "SYSTEM"
+ },
+ "attributes": [],
+ "id": 18,
+ "isAbstract": false,
+ "attributeGroups": []
+}

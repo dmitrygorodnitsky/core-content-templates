@@ -1,0 +1,68 @@
+{
+ "code": "CORE_PROJECT_WORKFLOW",
+ "initialState": {
+  "id": 4,
+  "code": "ACTIVE"
+ },
+ "nls": {
+  "en": {
+   "NAME": "Core Project Workflow",
+   "DESCRIPTION": "Project lifecycle for Core development and orchestration projects."
+  }
+ },
+ "entityType": "com.pixelnation.svc.domain.Project",
+ "organization": {
+  "optimistic": 1,
+  "id": 1,
+  "code": "SYSTEM"
+ },
+ "id": 4,
+ "states": [
+  {
+   "style": {
+    "color": "#2563eb"
+   },
+   "id": 4,
+   "code": "ACTIVE",
+   "nls": {
+    "en": {
+     "NAME": "Active",
+     "DESCRIPTION": "Project is active."
+    }
+   },
+   "events": [
+    {
+     "orderIndex": 10,
+     "id": 1,
+     "code": "ARCHIVE",
+     "nls": {
+      "en": {
+       "NAME": "Archive",
+       "DESCRIPTION": "Archive this project."
+      }
+     },
+     "targets": [
+      {
+       "id": 5,
+       "code": "ARCHIVED"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "style": {
+    "color": "#64748b"
+   },
+   "id": 5,
+   "code": "ARCHIVED",
+   "nls": {
+    "en": {
+     "NAME": "Archived",
+     "DESCRIPTION": "Project is no longer active."
+    }
+   },
+   "events": []
+  }
+ ]
+}

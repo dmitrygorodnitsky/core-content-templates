@@ -1,0 +1,32 @@
+{
+  "code": "CHS_LANDING_01_PUBLIC_NAV",
+  "nls": {
+    "en": {
+      "NAME": "Calm Harbor Spa | Public navigation"
+    }
+  },
+  "templateLanguage": "JTE",
+  "parent": {
+    "code": "CUSTOMER_PORTAL_CALM_HARBOR_LANDING_STAGING"
+  },
+  "children": [],
+  "head": "",
+  "html": "<div class=\"top-nav-wrap\"><nav class=\"top-nav\" data-module=\"public-nav\" data-visual-id=\"public-nav\"><div class=\"top-nav__brand\" data-action=\"nav.landing\"><div class=\"brand-logo\"></div><span class=\"brand-name\" data-bind=\"brand.name\">${CHS_LANDING_01_PUBLIC_NAV_BRAND@LOCALIZED_STRING_SS}</span></div><div class=\"top-nav__actions\"><div class=\"icon-btn icon-btn--optional\" data-action=\"ui.toggleMode\" title=\"Toggle light/dark\">☾</div><button class=\"btn btn--primary\" data-module=\"action-button\" data-visual-id=\"public-signin\" data-action=\"auth.gotoSignin\">Sign in</button></div></nav></div>",
+  "css": "",
+  "javascript": "",
+  "parameters": [
+    {
+      "code": "CHS_LANDING_01_PUBLIC_NAV_BRAND",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "BRAND",
+          "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+        }
+      },
+      "value": {
+        "en": "Calm Harbor Spa"
+      }
+    }
+  ]
+}

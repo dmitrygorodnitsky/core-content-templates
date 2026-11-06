@@ -1,0 +1,262 @@
+{
+ "optimistic": 0,
+ "code": "SNOW_SUBCONTRACTOR",
+ "nls": {
+  "en": {
+   "NAME": "Subcontractor"
+  }
+ },
+ "workflow": {
+  "id": 15,
+  "code": "SNOW_WORKFORCE_LIFECYCLE"
+ },
+ "organization": {
+  "optimistic": 3,
+  "id": 9,
+  "code": "SERVICE_WAND_WINTER_SERVICES_CANADA"
+ },
+ "attributeOrder": [
+  {
+   "WORKFORCE_PROFILE": [
+    {
+     "attributeCode": "WORKFORCE_STATUS",
+     "visible": true
+    },
+    {
+     "attributeCode": "WORKFORCE_ROLE",
+     "visible": true
+    },
+    {
+     "attributeCode": "PRIMARY_SERVICE_ZONE",
+     "visible": true
+    }
+   ]
+  },
+  {
+   "WORKFORCE_CAPABILITY": [
+    {
+     "attributeCode": "LICENSE_STATUS",
+     "visible": true
+    },
+    {
+     "attributeCode": "CERTIFICATIONS",
+     "visible": true
+    },
+    {
+     "attributeCode": "MOBILE_PHONE",
+     "visible": true
+    }
+   ]
+  },
+  {
+   "WORKFORCE_CONTEXT": [
+    {
+     "attributeCode": "WORKFORCE_NOTES",
+     "visible": true
+    }
+   ]
+  }
+ ],
+ "attributes": [
+  {
+   "code": "LICENSE_STATUS",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "en": {
+     "NAME": "License Status"
+    }
+   },
+   "options": [
+    {
+     "value": "VALID",
+     "nls": {
+      "en": {
+       "NAME": "Valid"
+      }
+     }
+    },
+    {
+     "value": "EXPIRING_SOON",
+     "nls": {
+      "en": {
+       "NAME": "Expiring Soon"
+      }
+     }
+    },
+    {
+     "value": "EXPIRED",
+     "nls": {
+      "en": {
+       "NAME": "Expired"
+      }
+     }
+    },
+    {
+     "value": "NOT_REQUIRED",
+     "nls": {
+      "en": {
+       "NAME": "Not Required"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "code": "CERTIFICATIONS",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "en": {
+     "NAME": "Certifications"
+    }
+   },
+   "options": []
+  },
+  {
+   "code": "WORKFORCE_NOTES",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "en": {
+     "NAME": "Workforce Notes"
+    }
+   },
+   "options": []
+  },
+  {
+   "code": "PRIMARY_SERVICE_ZONE",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "en": {
+     "NAME": "Primary Service Zone"
+    }
+   },
+   "options": []
+  },
+  {
+   "code": "WORKFORCE_STATUS",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "en": {
+     "NAME": "Workforce Status"
+    }
+   },
+   "options": [
+    {
+     "value": "DRAFT",
+     "nls": {
+      "en": {
+       "NAME": "Draft"
+      }
+     }
+    },
+    {
+     "value": "ACTIVE",
+     "nls": {
+      "en": {
+       "NAME": "Active"
+      }
+     }
+    },
+    {
+     "value": "ON_HOLD",
+     "nls": {
+      "en": {
+       "NAME": "On Hold"
+      }
+     }
+    },
+    {
+     "value": "INACTIVE",
+     "nls": {
+      "en": {
+       "NAME": "Inactive"
+      }
+     }
+    },
+    {
+     "value": "ARCHIVED",
+     "nls": {
+      "en": {
+       "NAME": "Archived"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "code": "MOBILE_PHONE",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "en": {
+     "NAME": "Mobile Phone"
+    }
+   },
+   "options": []
+  },
+  {
+   "code": "WORKFORCE_ROLE",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "en": {
+     "NAME": "Workforce Role"
+    }
+   },
+   "options": []
+  }
+ ],
+ "id": 17,
+ "isAbstract": false,
+ "attributeGroups": [
+  {
+   "code": "WORKFORCE_CONTEXT",
+   "nls": {
+    "en": {
+     "NAME": "Workforce Context"
+    }
+   }
+  },
+  {
+   "code": "WORKFORCE_PROFILE",
+   "nls": {
+    "en": {
+     "NAME": "Workforce Profile"
+    }
+   }
+  },
+  {
+   "code": "WORKFORCE_CAPABILITY",
+   "nls": {
+    "en": {
+     "NAME": "Workforce Capability"
+    }
+   }
+  }
+ ]
+}

@@ -1,0 +1,77 @@
+{
+  "$schema": "lab-ui/block@1",
+  "id": "language.locale-dropdown",
+  "category": "04-language",
+  "title": "Locale selector · dropdown",
+  "description": "Pill button with chevron-down + current language label on desktop. On mobile it compacts to a two-letter locale code and code-only dropdown. Hydrates from /core/api/language/active.json on a real server; falls back to en/fr/es when offline (file:// or no API).",
+  "canonical": true,
+  "theme": "light",
+  "source": {
+    "primary": "tmp/sw-header.html (.locale-selector + inline JS)",
+    "css": "tmp/source tokens (.locale-trigger, .locale-dropdown, .locale-item)"
+  },
+  "depends_on": {
+    "tokens": [
+      "--header-bg",
+      "--color-heading",
+      "--locale-selector-bg",
+      "--card-border",
+      "--color-cyan",
+      "--transition-duration",
+      "--font-family"
+    ],
+    "other_blocks": []
+  },
+  "params": [
+    {
+      "code": "current_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem",
+      "description": "Default trigger label before JS hydration. After hydration, JS replaces it with the active locale name."
+    },
+    {
+      "code": "api_endpoint",
+      "type": "URL",
+      "default": "#",
+      "description": "API endpoint to fetch available locales. JS expects an array of {code, name} or {items: […]} payload."
+    },
+    {
+      "code": "fallback_locales",
+      "type": "JSON_ARRAY",
+      "default": [
+        {
+          "code": "en-US",
+          "name": "English (US)"
+        },
+        {
+          "code": "fr-CA",
+          "name": "Français (CA)"
+        },
+        {
+          "code": "es",
+          "name": "Español"
+        }
+      ],
+      "description": "Locale list used when the API is unreachable (file:// preview, offline, server error). Edit as raw JSON in CMS."
+    },
+    {
+      "code": "mobile_display",
+      "type": "ENUM",
+      "default": "code",
+      "options": [
+        "code"
+      ],
+      "description": "Mobile presentation uses two-letter language codes in the trigger and dropdown."
+    }
+  ],
+  "preview": {
+    "390": "preview-390.png",
+    "1440": "preview-1440.png"
+  },
+  "notes": [
+    "Block JS is idempotent — running it twice on the same node is a no-op (uses dataset.localeInit guard).",
+    "Outside-click closes the dropdown. Esc also closes.",
+    "Active locale persists in the ?locale= query param (history.replaceState — no navigation).",
+    "Mobile breakpoint is <=600px. Harness includes a forced .locale-selector--mobile preview so the compact version is visible in desktop review."
+  ]
+}

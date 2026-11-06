@@ -1,0 +1,210 @@
+{
+  "schemaVersion": 1,
+  "uploadPerformed": false,
+  "mode": "staging",
+  "launchState": "staging-only",
+  "input": "app-templates/customer-portal/cms/granite-ridge-snow.landing-staging.json",
+  "designSource": "app-templates/customer-portal/design-inbox",
+  "template": {
+    "code": "CUSTOMER_PORTAL_GRANITE_RIDGE_LANDING_STAGING",
+    "templateLanguage": "JTE",
+    "robots": "noindex,nofollow",
+    "children": [],
+    "parameters": [
+      "META_TITLE",
+      "META_DESCRIPTION",
+      "BRAND_NAME",
+      "LANDING_URL",
+      "REQUEST_QUOTE_URL",
+      "SIGN_IN_URL",
+      "REQUEST_QUOTE_LABEL",
+      "SIGN_IN_LABEL",
+      "NOTICE_SIGNED_OUT_TITLE",
+      "NOTICE_NO_ACCESS_TITLE",
+      "NOTICE_NO_ACCESS_BODY",
+      "NOTICE_NO_ACCESS_SIGN_IN_LABEL",
+      "NOTICE_DISMISS_LABEL",
+      "HERO_TITLE",
+      "HERO_SUB",
+      "SERVICES_EYEBROW",
+      "SERVICES_TITLE",
+      "SERVICES_SUB",
+      "SERVICES_ITEM_1_NAME",
+      "SERVICES_ITEM_1_TEXT",
+      "SERVICES_ITEM_2_NAME",
+      "SERVICES_ITEM_2_TEXT",
+      "HOW_EYEBROW",
+      "HOW_TITLE",
+      "HOW_STEP_1_TITLE",
+      "HOW_STEP_1_TEXT",
+      "HOW_STEP_2_TITLE",
+      "HOW_STEP_2_TEXT",
+      "HOW_STEP_3_TITLE",
+      "HOW_STEP_3_TEXT",
+      "HOW_STEP_4_TITLE",
+      "HOW_STEP_4_TEXT",
+      "AREA_EYEBROW",
+      "AREA_TITLE",
+      "AREA_REGION",
+      "AREA_CITY_1",
+      "AREA_CITY_2",
+      "AREA_CITY_3",
+      "AREA_CITY_4",
+      "AREA_CITY_5",
+      "AREA_NOTE",
+      "FAQ_EYEBROW",
+      "FAQ_TITLE",
+      "FAQ_ITEM_1_QUESTION",
+      "FAQ_ITEM_1_ANSWER",
+      "FAQ_ITEM_2_QUESTION",
+      "FAQ_ITEM_2_ANSWER",
+      "FAQ_ITEM_3_QUESTION",
+      "FAQ_ITEM_3_ANSWER",
+      "FAQ_ITEM_4_QUESTION",
+      "FAQ_ITEM_4_ANSWER",
+      "FINAL_TITLE",
+      "FINAL_SUB",
+      "HERO_ART",
+      "HERO_ART_NAME",
+      "SERVICE_SNOW_REMOVAL_ART",
+      "SERVICE_SNOW_REMOVAL_ART_NAME",
+      "SERVICE_DE_ICING_ART",
+      "SERVICE_DE_ICING_ART_NAME",
+      "STEP_REQUEST_ART",
+      "STEP_REQUEST_ART_NAME",
+      "STEP_PREPARE_ART",
+      "STEP_PREPARE_ART_NAME",
+      "STEP_ACCEPT_ART",
+      "STEP_ACCEPT_ART_NAME",
+      "STEP_PORTAL_ART",
+      "STEP_PORTAL_ART_NAME",
+      "SERVICE_AREA_ART",
+      "SERVICE_AREA_ART_NAME",
+      "FINAL_CTA_ART",
+      "FINAL_CTA_ART_NAME"
+    ],
+    "sha256": {
+      "head": "062ac366a4b7b6c29c6ec30dc5f13a1ec12a194909bc40aa99292ff6a601c17d",
+      "html": "336432925ba7b286e970e8dd72c7b467d06f8a8a0914c90d1f93e30cb8caab26",
+      "css": "6c900d5bc80815e2a7f51baec747b416fcc30483985e19d46136fe8f369f9324",
+      "javascript": "9be253abb5093e8404c0d5ba3bf82ebd7262e67482959cbadbcb0764cbc81801"
+    }
+  },
+  "destinations": {
+    "landing": "https://dev-1.servicewand.com/pages/SNOWLIMITLESS/home",
+    "requestQuote": "https://dev-1.servicewand.com/pages/SNOWLIMITLESS/request-quote",
+    "signIn": "https://dev-1.servicewand.com/pages/SNOWLIMITLESS/portal#/login"
+  },
+  "serviceArea": {
+    "region": "British Columbia",
+    "cities": [
+      "Vancouver",
+      "Richmond",
+      "Surrey",
+      "Burnaby",
+      "Coquitlam"
+    ]
+  },
+  "notices": {
+    "parameter": "portal",
+    "reasons": [
+      "signed-out",
+      "no-access"
+    ]
+  },
+  "sections": [
+    "public-nav",
+    "reason-notice",
+    "hero",
+    "services",
+    "how-it-works",
+    "service-area",
+    "faq",
+    "final-cta",
+    "footer"
+  ],
+  "openedLiveContracts": [],
+  "illustrations": [
+    {
+      "slot": "hero",
+      "file": "assets/snow-landing/hero.webp",
+      "width": 960,
+      "height": 720,
+      "maxBytes": 184320,
+      "state": "art"
+    },
+    {
+      "slot": "service-snow-removal",
+      "file": "assets/snow-landing/service-snow-removal.webp",
+      "width": 720,
+      "height": 480,
+      "maxBytes": 92160,
+      "state": "art"
+    },
+    {
+      "slot": "service-de-icing",
+      "file": "assets/snow-landing/service-de-icing.webp",
+      "width": 720,
+      "height": 480,
+      "maxBytes": 92160,
+      "state": "art"
+    },
+    {
+      "slot": "step-request",
+      "file": "assets/snow-landing/step-request.webp",
+      "width": 240,
+      "height": 240,
+      "maxBytes": 30720,
+      "state": "art"
+    },
+    {
+      "slot": "step-prepare",
+      "file": "assets/snow-landing/step-prepare.webp",
+      "width": 240,
+      "height": 240,
+      "maxBytes": 30720,
+      "state": "art"
+    },
+    {
+      "slot": "step-accept",
+      "file": "assets/snow-landing/step-accept.webp",
+      "width": 240,
+      "height": 240,
+      "maxBytes": 30720,
+      "state": "art"
+    },
+    {
+      "slot": "step-portal",
+      "file": "assets/snow-landing/step-portal.webp",
+      "width": 240,
+      "height": 240,
+      "maxBytes": 30720,
+      "state": "art"
+    },
+    {
+      "slot": "service-area",
+      "file": "assets/snow-landing/service-area.webp",
+      "width": 1600,
+      "height": 500,
+      "maxBytes": 153600,
+      "state": "art"
+    },
+    {
+      "slot": "final-cta",
+      "file": "assets/snow-landing/final-cta.webp",
+      "width": 1600,
+      "height": 400,
+      "maxBytes": 143360,
+      "state": "art"
+    }
+  ],
+  "constraints": [
+    "The page is public and anonymous: no block calls a backend, reads a session or shows customer, account, order or payment data.",
+    "Every destination is an absolute https address on dev-1.servicewand.com: this landing, the quote form, and the sign-in address portal#/login.",
+    "Only the two reason values the portal sends show a notice: ?portal=signed-out and ?portal=no-access. The notice text is CMS copy; any other value or any extra parameter shows nothing, and without JavaScript no notice shows.",
+    "The copy states only what the tenant's quotation flow does. It carries no reviews, ratings, customer counts, years in business, certifications, guarantees, response times, phone numbers, email addresses, street addresses or prices.",
+    "Every parameter ships a value, because CMS creates no PageContext for a template with an empty parameter. A destination holding the # placeholder is read as not set, and its links are disabled.",
+    "The page emits noindex,nofollow while the tenant is on staging.",
+    "Illustrations are decoration without text or claims: each slot shows an inline placeholder until its file exists under assets/snow-landing/, and motion runs only under prefers-reduced-motion: no-preference."
+  ]
+}

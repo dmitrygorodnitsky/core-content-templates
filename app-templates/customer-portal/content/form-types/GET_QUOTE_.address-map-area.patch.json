@@ -1,0 +1,11 @@
+{
+  "service": "core-cms",
+  "endpoint": "form-type",
+  "typeCode": "GET_QUOTE_",
+  "changeAttributes": [
+    {
+      "code": "PROPERTY_ADDRESSES",
+      "set": { "inputFormat": "address map:49,-123.3,49.4,-121.8" }
+    }
+  ]
+}

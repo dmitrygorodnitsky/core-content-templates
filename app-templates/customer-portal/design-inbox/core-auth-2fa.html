@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<!-- ============================================================
+     core-auth CMS two-factor page — Wave 19 — TRANSFER SOURCE
+
+     The page core-auth serves after login when the account requires a second
+     factor. Counterpart to core-auth-login.html (wave 18): same visual family,
+     same delivery shape. Plain HTML plus the accepted stylesheets: no component
+     factory, no ES modules, no build step, no h() calls, no router, no state
+     object, no delegated action listener. The page is fully functional with
+     JavaScript disabled — submission is a native form POST to
+     {{TWO_FACTOR_ACTION}}. There is NO script tag in this file at all.
+
+     Stylesheets are LINKED, never copied, in the order source.html uses:
+       tokens.css → base.css → shell.css → components.css → routes.css
+       → core-auth-login.css → core-auth-2fa.css
+     core-auth-login.css is the SHARED standalone-auth layer (full-height
+     --app-bg, centering, auth-head / auth-title / auth-sub / auth-note, the
+     assertive message region, the focus convention, the container-query
+     breakpoints). Linking it is deliberate: forking those rules into a second
+     file would create a second system. styles/core-auth-2fa.css adds ONLY the
+     enrollment pieces (setup panel, QR frame, setup key, verify notice, code
+     field). core-auth serves the page and styles/ from the same directory; if
+     the deploy layout differs, prefix each href with the deploy root so every
+     URL is root-relative and valid on the public host.
+
+     lang and dir on <html> are SERVER-rendered by core-auth (ar / he ship in
+     the locale set → dir="rtl"; layout mirrors through logical properties
+     only). data-theme and data-mode are the accepted declarative theme hooks
+     and are server-rendered here too — no script flips them, and there is no
+     second dark palette on this page. Every registered customer-experience
+     theme works from the same layout: only the token pack changes.
+
+     Runtime placeholders — core-auth substitutes these per request, nothing
+     else produces or consumes them. No CMS parameter, default, fixture, log,
+     analytics attribute or JavaScript variable exists for any of them:
+       {{TWO_FACTOR_ACTION}}       form action
+       {{CSRF_PARAMETER_NAME}}     hidden input name
+       {{CSRF_TOKEN}}              hidden input value
+       {{SETUP_DISPLAY}}           block|none on the enrollment block
+       {{VERIFY_NOTICE_DISPLAY}}   block|none on the already-enrolled notice
+       {{ERROR_DISPLAY}}           block|none on the assertive region
+       {{TWO_FACTOR_QR_CODE}}      QR image source — a core-auth DATA URL; the
+                                   browser never fetches it from a third party
+       {{TWO_FACTOR_SECRET}}       generated setup key, rendered as text only
+     {{TWO_FACTOR_OTPAUTH_URI}} is deliberately NOT referenced: no visible
+     control needs it yet, and an unused placeholder is one more protected
+     value on the page. Adding it later is a markup-only change.
+
+     Localized copy: every visible string is one CMS LOCALIZED_STRING_SS
+     parameter, alone in its element, and each element also carries
+     data-copy="<slot>" as in wave 18. No vertical, tenant or business copy is
+     hardcoded here. AUTH_BRAND_NAME and AUTH_PITCH_EYEBROW are the same
+     parameters login uses.
+
+     Verification is core-auth's. This page has no loading state, no disabled
+     state, no reveal control, no copy-to-clipboard control, no resend, no
+     recovery codes, no trust-this-device and no alternate factor: none of
+     those exist in this contract, and each would need script that touches a
+     protected value.
+     ============================================================ -->
+<html lang="en" dir="ltr" data-theme="hvac" data-mode="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title data-copy="page.documentTitle">${TWO_FACTOR_DOCUMENT_TITLE@LOCALIZED_STRING_SS}</title>
+  <link rel="icon" href="data:,">
+
+  <!-- No third-party origin is referenced anywhere on this page or in anything
+       it links: no script, style, font, icon set, QR generator or image, and no
+       analytics, tag manager, session recorder or error reporter — the DOM
+       carries a live CSRF token and, during enrollment, a generated secret.
+       tokens.css declares the local-first Manrope fallback; the Google Fonts
+       <link> used by source.html is NOT used here. -->
+  <link rel="stylesheet" href="styles/tokens.css">
+  <link rel="stylesheet" href="styles/base.css">
+  <link rel="stylesheet" href="styles/shell.css">
+  <link rel="stylesheet" href="styles/components.css">
+  <link rel="stylesheet" href="styles/routes.css">
+  <link rel="stylesheet" href="styles/core-auth-login.css">
+  <link rel="stylesheet" href="styles/core-auth-2fa.css">
+</head>
+<body>
+
+  <div class="auth-page" data-route="auth.2fa" data-visual-id="core-auth-2fa">
+    <div class="auth-inner">
+      <div class="auth-grid">
+
+        <!-- The card comes first in the DOM: at <=900 it renders above the
+             pitch, so at 390 the form is what the customer meets. -->
+        <main class="auth-card" data-module="core-auth-2fa-card">
+
+          <div class="auth-head">
+            <span class="brand-logo brand-logo--lg" aria-hidden="true"></span>
+            <span class="brand-name" data-copy="brand.name">${AUTH_BRAND_NAME@LOCALIZED_STRING_SS}</span>
+          </div>
+
+          <h1 class="auth-title" data-copy="card.title">${TWO_FACTOR_TITLE@LOCALIZED_STRING_SS}</h1>
+          <p class="auth-sub" data-copy="card.subtitle">${TWO_FACTOR_SUBTITLE@LOCALIZED_STRING_SS}</p>
+
+          <!-- The only <form> on the page, and the only element marked
+               data-core-auth-2fa. Native POST; no fetch, no scripted submit, no
+               second form anywhere in the document. The field name `code` is
+               fixed — never a parameter, never a binding. Element ORDER is the
+               accepted contract order: setup block, verify notice, label, input,
+               assertive error, submit. Everything between them is an inert
+               wrapper or an accessible description. -->
+          <form class="auth-form" method="post" action="{{TWO_FACTOR_ACTION}}" data-core-auth-2fa>
+
+            <input type="hidden" name="{{CSRF_PARAMETER_NAME}}" value="{{CSRF_TOKEN}}">
+
+            <!-- FIRST-TIME ENROLLMENT. Present only when core-auth substitutes
+                 block into the inline display; on a normal verification it does
+                 not occupy layout. It is inside the form so a failed attempt
+                 keeps the same enrollment data on screen without CMS storing,
+                 regenerating or defaulting any of it. -->
+            <div class="tfa-setup"
+                 id="tfa-setup"
+                 data-2fa-region="setup"
+                 data-module="core-auth-2fa-setup"
+                 style="display:{{SETUP_DISPLAY}}">
+              <div class="tfa-setup__inner">
+                <p class="tfa-setup__text" data-copy="setup.body">${TWO_FACTOR_SETUP@LOCALIZED_STRING_SS}</p>
+
+                <!-- The QR source is the core-auth data URL. The tile stays
+                     light in dark mode on purpose: a scanner needs the quiet
+                     zone and the module contrast, so this is the one element
+                     that does not follow --surface. -->
+                <span class="tfa-qr">
+                  <img class="tfa-qr__img"
+                       src="{{TWO_FACTOR_QR_CODE}}"
+                       alt="${TWO_FACTOR_QR_ALT@LOCALIZED_STRING_SS}"
+                       width="176"
+                       height="176">
+                </span>
+
+                <!-- Manual fallback — the QR is never the only way to enroll.
+                     The key is TEXT: it wraps inside the card, is selectable
+                     with the keyboard, and is read by assistive technology in
+                     document order right after its own label. dir="ltr" keeps
+                     the Latin key in reading order under an RTL locale. Nothing
+                     reveals, formats, groups or copies it: that would mean a
+                     script handling a protected value. -->
+                <span class="tfa-secret">
+                  <span class="tfa-secret__label" data-copy="setup.secretLabel">${TWO_FACTOR_SECRET_LABEL@LOCALIZED_STRING_SS}</span>
+                  <code class="tfa-secret__code" dir="ltr">{{TWO_FACTOR_SECRET}}</code>
+                  <span class="tfa-secret__hint" data-copy="setup.secretHint">${TWO_FACTOR_SECRET_HINT@LOCALIZED_STRING_SS}</span>
+                </span>
+              </div>
+            </div>
+
+            <!-- ALREADY ENROLLED. The quiet counterpart of the setup block:
+                 same placeholder mechanism, opposite condition. Never shows the
+                 QR or the key. -->
+            <p class="tfa-notice"
+               id="tfa-notice"
+               data-2fa-region="notice"
+               data-module="core-auth-2fa-notice"
+               data-copy="verify.notice"
+               style="display:{{VERIFY_NOTICE_DISPLAY}}">${TWO_FACTOR_NOTICE@LOCALIZED_STRING_SS}</p>
+
+            <div class="field-row">
+              <label class="field-label" for="code" data-copy="field.code.label">${TWO_FACTOR_CODE_LABEL@LOCALIZED_STRING_SS}</label>
+              <!-- No autofocus, deliberately: on a first-time setup, focusing
+                   the field would move a screen reader and a zoomed viewport
+                   past the enrollment instructions and the key.
+                   aria-describedby names the hint and the assertive region; the
+                   region exposes nothing while core-auth keeps it hidden, and
+                   is announced with the field when it is shown. -->
+              <input class="field tfa-code"
+                     id="code"
+                     name="code"
+                     type="text"
+                     inputmode="numeric"
+                     autocomplete="one-time-code"
+                     autocapitalize="none"
+                     autocorrect="off"
+                     spellcheck="false"
+                     dir="ltr"
+                     required
+                     aria-describedby="tfa-code-hint tfa-error">
+              <span class="tfa-code__hint" id="tfa-code-hint" data-copy="field.code.hint">${TWO_FACTOR_CODE_HINT@LOCALIZED_STRING_SS}</span>
+            </div>
+
+            <!-- The single assertive region on the page, and the only element
+                 with role="alert". Same treatment as the login failure — glyph,
+                 title weight, border and fill, not color alone. Visible only
+                 when core-auth substitutes block. The copy says nothing beyond
+                 the supplied string: no attempt count, no lockout hint, no
+                 reason the code was rejected. Resubmission happens through this
+                 same form. -->
+            <div class="auth-msg auth-msg--error"
+                 id="tfa-error"
+                 data-2fa-region="error"
+                 data-module="core-auth-2fa-error"
+                 role="alert"
+                 style="display:{{ERROR_DISPLAY}}">
+              <div class="auth-msg__inner">
+                <span class="auth-msg__glyph" aria-hidden="true">!</span>
+                <p class="auth-msg__title" data-copy="error.body">${TWO_FACTOR_ERROR@LOCALIZED_STRING_SS}</p>
+              </div>
+            </div>
+
+            <button class="btn btn--primary btn--lg btn--block auth-submit" type="submit" data-copy="action.submit">${TWO_FACTOR_BUTTON@LOCALIZED_STRING_SS}</button>
+          </form>
+
+          <p class="auth-note" data-copy="card.note">${TWO_FACTOR_NOTE@LOCALIZED_STRING_SS}</p>
+        </main>
+
+        <section class="auth-pitch">
+          <span class="eyebrow" data-copy="pitch.eyebrow">${AUTH_PITCH_EYEBROW@LOCALIZED_STRING_SS}</span>
+          <h2 class="auth-pitch__title" data-copy="pitch.title">${TWO_FACTOR_PITCH_TITLE@LOCALIZED_STRING_SS}</h2>
+          <p class="auth-pitch__sub" data-copy="pitch.body">${TWO_FACTOR_PITCH_BODY@LOCALIZED_STRING_SS}</p>
+        </section>
+
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

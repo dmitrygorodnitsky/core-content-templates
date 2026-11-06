@@ -1,0 +1,108 @@
+{
+  "schemaVersion": 1,
+  "classification": "concept-catalog",
+  "launchState": "concept",
+  "brandKey": "luma-beauty-studio",
+  "vertical": "beauty",
+  "services": [
+    {
+      "id": "lbs-signature-cut",
+      "release": "mvp",
+      "publicSurface": ["seo", "portal-services"],
+      "kind": "single",
+      "category": "cut",
+      "name": "Signature cut",
+      "shortDescription": "A cut planned around texture, routine, and at-home styling habits.",
+      "pricePolicy": "booking-total",
+      "scheduling": { "proposedOfferingKey": "lbs.signature-cut", "contractState": "not-opened" },
+      "allowedAddOnIds": [],
+      "allowedActions": []
+    },
+    {
+      "id": "lbs-lived-in-color",
+      "release": "mvp",
+      "publicSurface": ["seo", "portal-services"],
+      "kind": "single",
+      "category": "color",
+      "name": "Lived-in color",
+      "shortDescription": "Dimensional color planned for a soft grow-out.",
+      "pricePolicy": "quote",
+      "scheduling": { "proposedOfferingKey": "lbs.lived-in-color", "contractState": "not-opened" },
+      "allowedAddOnIds": [],
+      "allowedActions": []
+    },
+    {
+      "id": "lbs-skin-reset",
+      "release": "mvp",
+      "publicSurface": ["seo", "portal-services"],
+      "kind": "single",
+      "category": "facial",
+      "name": "Skin reset",
+      "shortDescription": "A consultation-led facial session shaped around the current routine.",
+      "pricePolicy": "booking-total",
+      "scheduling": { "proposedOfferingKey": "lbs.skin-reset", "contractState": "not-opened" },
+      "allowedAddOnIds": [],
+      "allowedActions": []
+    },
+    {
+      "id": "lbs-blowout-and-style",
+      "release": "mvp",
+      "publicSurface": ["portal-services"],
+      "kind": "single",
+      "category": "finish",
+      "name": "Blowout and style",
+      "shortDescription": "A polished finish for a day that calls for one.",
+      "pricePolicy": "booking-total",
+      "scheduling": { "proposedOfferingKey": "lbs.blowout-and-style", "contractState": "not-opened" },
+      "allowedAddOnIds": [],
+      "allowedActions": []
+    },
+    {
+      "id": "lbs-root-refresh",
+      "release": "deferred",
+      "publicSurface": ["portal-services"],
+      "kind": "single",
+      "category": "color",
+      "name": "Root refresh",
+      "shortDescription": "A maintenance color appointment for an established formula.",
+      "pricePolicy": "booking-total",
+      "scheduling": { "proposedOfferingKey": "lbs.root-refresh", "contractState": "not-opened" },
+      "allowedAddOnIds": [],
+      "allowedActions": []
+    },
+    {
+      "id": "lbs-gloss-and-finish",
+      "release": "deferred",
+      "publicSurface": ["portal-services"],
+      "kind": "single",
+      "category": "finish",
+      "name": "Gloss and finish",
+      "shortDescription": "A shine-focused color and finishing appointment.",
+      "pricePolicy": "booking-total",
+      "scheduling": { "proposedOfferingKey": "lbs.gloss-and-finish", "contractState": "not-opened" },
+      "allowedAddOnIds": [],
+      "allowedActions": []
+    },
+    {
+      "id": "lbs-event-ready",
+      "release": "deferred",
+      "publicSurface": ["portal-services"],
+      "kind": "package",
+      "category": "event",
+      "name": "Event-ready session",
+      "shortDescription": "Coordinated styling and beauty preparation for a planned event.",
+      "pricePolicy": "quote",
+      "scheduling": { "proposedOfferingKey": "lbs.event-ready", "contractState": "not-opened" },
+      "allowedAddOnIds": [],
+      "allowedActions": []
+    }
+  ],
+  "products": [
+    { "id": "lbs-bond-wash", "release": "deferred", "proposedSku": "LBS-HAIR-001", "category": "hair-care", "name": "Bond wash", "shortDescription": "Maintenance cleansing after color or heat styling.", "pim": { "catalogState": "not-opened" }, "allowedActions": [] },
+    { "id": "lbs-heat-veil", "release": "deferred", "proposedSku": "LBS-HAIR-002", "category": "hair-care", "name": "Heat veil", "shortDescription": "A heat-protection styling step.", "pim": { "catalogState": "not-opened" }, "allowedActions": [] },
+    { "id": "lbs-finish-oil", "release": "deferred", "proposedSku": "LBS-HAIR-003", "category": "hair-care", "name": "Finish oil", "shortDescription": "Lightweight finishing care for ends and shine.", "pim": { "catalogState": "not-opened" }, "allowedActions": [] },
+    { "id": "lbs-barrier-serum", "release": "deferred", "proposedSku": "LBS-SKIN-001", "category": "skincare", "name": "Barrier serum", "shortDescription": "A simple serum step for a home routine.", "pim": { "catalogState": "not-opened" }, "allowedActions": [] },
+    { "id": "lbs-daily-hydration-cream", "release": "deferred", "proposedSku": "LBS-SKIN-002", "category": "skincare", "name": "Daily hydration cream", "shortDescription": "Everyday moisturizing care.", "pim": { "catalogState": "not-opened" }, "allowedActions": [] },
+    { "id": "lbs-overnight-recovery-mask", "release": "deferred", "proposedSku": "LBS-SKIN-003", "category": "skincare", "name": "Overnight recovery mask", "shortDescription": "An occasional routine step.", "pim": { "catalogState": "not-opened" }, "allowedActions": [] }
+  ]
+}

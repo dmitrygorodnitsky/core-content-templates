@@ -1,0 +1,40 @@
+{
+ "optimistic": 3,
+ "code": "EMPLOYEE",
+ "nls": {
+  "ar": {
+   "DESCRIPTION": "<p></p>"
+  },
+  "en": {
+   "NAME": "Employee",
+   "DESCRIPTION": "<p>Represents a person directly employed by the business. Employee accounts are used to manage workforce participation, employment lifecycle, operational assignments, and tax identification when applicable.</p>"
+  },
+  "he": {
+   "DESCRIPTION": "<p></p>"
+  }
+ },
+ "workflow": {
+  "id": 33,
+  "code": "EMPLOYEE_ACCOUNT_LIFECYCLE"
+ },
+ "organization": {
+  "optimistic": 1,
+  "id": 1,
+  "code": "SYSTEM"
+ },
+ "attributeOrder": [
+  {
+   "default": [
+    {
+     "typeId": 36,
+     "attributeCode": "TAX_ID",
+     "visible": true
+    }
+   ]
+  }
+ ],
+ "attributes": [],
+ "id": 37,
+ "isAbstract": false,
+ "attributeGroups": []
+}

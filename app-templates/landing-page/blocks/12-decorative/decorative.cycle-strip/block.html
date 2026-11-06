@@ -1,0 +1,24 @@
+<!-- lab-ui block · decorative.cycle-strip
+     A small horizontal "this replaces / outgrow / migrate" flow with a
+     dashed border, an accent eyebrow label, and items joined by arrows.
+     Two tones: "warn" (default — accent eyebrow + struck-through items) and
+     "neutral" (gray eyebrow + plain items). Used as a closing band under
+     SMB / growth sections.
+-->
+<div class="cycle-strip"
+     data-block="decorative.cycle-strip"
+     data-tone="warn"
+     aria-label="Cycle flow">
+  <span class="cycle-strip-label">{{label}}</span>
+  <div class="cycle-strip-flow">
+    <span class="cycle-strip-item">{{item_1}}</span>
+    <span class="cycle-strip-arrow" aria-hidden="true">→</span>
+    <span class="cycle-strip-item">{{item_2}}</span>
+    <span class="cycle-strip-arrow" aria-hidden="true">→</span>
+    <span class="cycle-strip-item">{{item_3}}</span>
+    <span class="cycle-strip-arrow" aria-hidden="true">→</span>
+    <span class="cycle-strip-item">{{item_4}}</span>
+    <span class="cycle-strip-arrow" aria-hidden="true">→</span>
+    <span class="cycle-strip-item">{{item_5}}</span>
+  </div>
+</div>

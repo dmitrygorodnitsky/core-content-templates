@@ -1,0 +1,404 @@
+{
+ "optimistic": 11,
+ "code": "SERVICE_AGREEMENT",
+ "nls": {
+  "en": {
+   "NAME": "Service Agreement"
+  }
+ },
+ "workflow": {
+  "id": 53,
+  "code": "SERVICE_AGREEMENT_LIFECYCLE"
+ },
+ "attributeOrder": [],
+ "organization": {
+  "optimistic": 6,
+  "id": 8,
+  "code": "SERVICE_WAND_WINTER_SERVICES"
+ },
+ "attributes": [
+  {
+   "code": "CONTRACT_TERMS",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "en": {
+     "NAME": "Contract Terms"
+    }
+   },
+   "options": [],
+   "inputFormat": "textarea"
+  },
+  {
+   "code": "CLIENT_DETAILS_ERRORS",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "en": {
+     "NAME": "Client Details Errors"
+    }
+   },
+   "options": []
+  },
+  {
+   "code": "ORDERS",
+   "required": true,
+   "multiselect": true,
+   "freeValue": false,
+   "unique": false,
+   "className": "com.pixelnation.bill.domain.Order",
+   "nls": {
+    "en": {
+     "NAME": "Approved Quotations"
+    }
+   },
+   "options": [],
+   "entityTypes": [
+    {
+     "value": 6
+    },
+    {
+     "value": 5
+    }
+   ]
+  },
+  {
+   "code": "PROVIDER_REPRESENTATIVE_JOB_TITLE",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "en": {
+     "NAME": "Provider Representative Job Title"
+    }
+   },
+   "options": []
+  },
+  {
+   "code": "PROVIDER_CONTACT_PHONE",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "en": {
+     "NAME": "Provider Contact Phone"
+    }
+   },
+   "options": []
+  },
+  {
+   "code": "TERM_END_DATE",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.time.LocalDate",
+   "nls": {
+    "en": {
+     "NAME": "Term End Date"
+    }
+   },
+   "options": []
+  },
+  {
+   "code": "REPRESENTATIVE_EMAIL",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "en": {
+     "NAME": "Client Representative Email"
+    }
+   },
+   "options": [],
+   "inputFormat": "email"
+  },
+  {
+   "code": "PROVIDER_CONTACT_EMAIL",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "en": {
+     "NAME": "Provider Contact Email"
+    }
+   },
+   "options": []
+  },
+  {
+   "code": "PROVIDER_REPRESENTATIVE_NAME",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "en": {
+     "NAME": "Provider Representative Name"
+    }
+   },
+   "options": []
+  },
+  {
+   "code": "PROVIDER_LEGAL_NAME",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "en": {
+     "NAME": "Provider Legal Name"
+    }
+   },
+   "options": []
+  },
+  {
+   "code": "INFORMATION_CONFIRMED",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.Boolean",
+   "nls": {
+    "en": {
+     "NAME": "Client Information Confirmed"
+    }
+   },
+   "options": []
+  },
+  {
+   "code": "PROVIDER_LOGO",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "en": {
+     "NAME": "Provider Logo Image"
+    }
+   },
+   "options": []
+  },
+  {
+   "code": "AUTHORITY_CONFIRMED",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.Boolean",
+   "nls": {
+    "en": {
+     "NAME": "Client Authority Confirmed"
+    }
+   },
+   "options": []
+  },
+  {
+   "code": "EFFECTIVE_DATE",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.time.LocalDate",
+   "nls": {
+    "en": {
+     "NAME": "Effective Date"
+    }
+   },
+   "options": []
+  },
+  {
+   "code": "BILLING_ADDRESS",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "en": {
+     "NAME": "Client Billing Address"
+    }
+   },
+   "options": [],
+   "inputFormat": "address"
+  },
+  {
+   "code": "LEGAL_NAME",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "en": {
+     "NAME": "Client Legal Name"
+    }
+   },
+   "options": []
+  },
+  {
+   "code": "REPRESENTATIVE_LAST_NAME",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "en": {
+     "NAME": "Client Representative Last Name"
+    }
+   },
+   "options": []
+  },
+  {
+   "code": "REPRESENTATIVE_PHONE",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "en": {
+     "NAME": "Client Representative Phone"
+    }
+   },
+   "options": [],
+   "inputFormat": "tel"
+  },
+  {
+   "code": "TERM_START_DATE",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.time.LocalDate",
+   "nls": {
+    "en": {
+     "NAME": "Term Start Date"
+    }
+   },
+   "options": []
+  },
+  {
+   "code": "REPRESENTATIVE_FIRST_NAME",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "en": {
+     "NAME": "Client Representative First Name"
+    }
+   },
+   "options": []
+  },
+  {
+   "code": "CLIENT_TYPE",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "en": {
+     "NAME": "Client Type"
+    }
+   },
+   "options": [
+    {
+     "value": "INDIVIDUAL",
+     "nls": {
+      "en": {
+       "NAME": "Individual"
+      }
+     }
+    },
+    {
+     "value": "UNINCORPORATED_BUSINESS",
+     "nls": {
+      "en": {
+       "NAME": "Unincorporated business"
+      }
+     }
+    },
+    {
+     "value": "CORPORATE",
+     "nls": {
+      "en": {
+       "NAME": "Corporation"
+      }
+     }
+    },
+    {
+     "value": "ASSOCIATION",
+     "nls": {
+      "en": {
+       "NAME": "Association"
+      }
+     }
+    },
+    {
+     "value": "GOVERNMENT",
+     "nls": {
+      "en": {
+       "NAME": "Government"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "code": "CLIENT",
+   "required": true,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "com.pixelnation.account.domain.Account",
+   "nls": {
+    "en": {
+     "NAME": "Client"
+    }
+   },
+   "options": [],
+   "entityTypes": [
+    {
+     "value": 2
+    }
+   ]
+  },
+  {
+   "code": "REPRESENTATIVE_JOB_TITLE",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "en": {
+     "NAME": "Client Representative Job Title"
+    }
+   },
+   "options": []
+  }
+ ],
+ "id": 17,
+ "isAbstract": false,
+ "attributeGroups": []
+}

@@ -1,0 +1,1810 @@
+{
+  "$schema": "lab-ui/block@1",
+  "id": "pricing.matrix-collapsible",
+  "category": "14-pricing",
+  "title": "Pricing · matrix (collapsible)",
+  "description": "ServiceWand plan comparison matrix. Static fallback is driven by column_count and numbered rows; dynamic mode rebuilds columns, groups, rows, and mobile accordions for every plan and visible Core PIM attribute returned by the pricing API.",
+  "canonical": false,
+  "theme": "light",
+  "source": {
+    "primary": "https://attio.com/pricing/",
+    "adapted_from": "Information architecture reference only — grouped plan-vs-feature matrix. Second-opinion variant alongside pricing.comparison-matrix: mobile becomes a per-plan accordion (each plan is a disclosure), states drive cell glyphs (yes/no/partial/text), groups and rows can be hidden via ENUM.",
+    "decision": "Stage 1 pricing scaffold — static layout first, CRM/CMS parameterization-ready numbered slots."
+  },
+  "depends_on": {
+    "tokens": [
+      "--color-bg",
+      "--color-text",
+      "--color-heading",
+      "--color-gray-bg",
+      "--color-gray-blue",
+      "--color-status-yes",
+      "--color-status-partial",
+      "--color-text-accent",
+      "--font-family",
+      "--font-mono",
+      "--container-width",
+      "--container-padding-x",
+      "--radius-card",
+      "--radius-pill",
+      "--shadow-1",
+      "--shadow-2",
+      "--type-h2-size",
+      "--type-h2-weight",
+      "--type-h2-leading",
+      "--type-h2-tracking",
+      "--type-eyebrow-size",
+      "--type-eyebrow-tracking",
+      "--transition-fast"
+    ],
+    "other_blocks": []
+  },
+  "params": [
+    {
+      "code": "eyebrow",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Compare plans",
+      "name": "Matrix Eyebrow",
+      "description": "Small uppercase label above the matrix heading."
+    },
+    {
+      "code": "title",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Every plan, side by side.",
+      "name": "Matrix Heading",
+      "description": "Main heading for the comparison matrix."
+    },
+    {
+      "code": "lede",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Buildings, dispatch, automations, support and security across every tier.",
+      "name": "Matrix Lede",
+      "description": "Introductory paragraph for the matrix."
+    },
+    {
+      "code": "collapsable",
+      "type": "ENUM",
+      "options": [
+        "false",
+        "true"
+      ],
+      "default": "false",
+      "name": "Collapsable",
+      "description": "When true, desktop matrix feature groups can collapse behind their group headers. When false, groups stay open and no group collapse UI is initialized."
+    },
+    {
+      "code": "collapsed",
+      "type": "ENUM",
+      "options": [
+        "false",
+        "true"
+      ],
+      "default": "false",
+      "name": "Collapsed by Default",
+      "description": "Initial group state when Collapsable is true: true starts all desktop groups collapsed, false starts them open. Ignored when Collapsable is false."
+    },
+    {
+      "code": "table_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Plan comparison",
+      "name": "Table Accessible Label",
+      "description": "Accessible label for the matrix table."
+    },
+    {
+      "code": "feature_column_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Feature",
+      "name": "Feature Column Label",
+      "description": "Label for the leftmost feature column."
+    },
+    {
+      "code": "column_count",
+      "type": "ENUM",
+      "options": [
+        "2",
+        "3",
+        "4"
+      ],
+      "default": "4",
+      "name": "Plan Column Count",
+      "description": "How many plan columns to render (2, 3, or 4). Hidden columns disappear from the desktop grid and the mobile accordion."
+    },
+    {
+      "code": "groups_collapsible",
+      "type": "ENUM",
+      "options": [
+        "off",
+        "on"
+      ],
+      "default": "off",
+      "name": "Collapsible Row Groups",
+      "description": "When 'on', each desktop feature group gets a clickable title that collapses its rows (the mobile accordion is unaffected). Per-group default state is set by Group N Collapsed."
+    },
+    {
+      "code": "hint_style",
+      "type": "ENUM",
+      "options": [
+        "inline",
+        "tooltip"
+      ],
+      "default": "inline",
+      "name": "Row Hint Style",
+      "description": "How each row's explanation (Row N Hint / Core PIM attribute Placeholder) is shown: 'inline' as gray subtext under the label, or 'tooltip' behind the feature label. The tooltip only appears on rows that actually have Placeholder text."
+    },
+    {
+      "code": "tip_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Explanation",
+      "name": "Tooltip Button Label",
+      "description": "Accessible name for explanation triggers. Only relevant when Row Hint Style is 'tooltip'."
+    },
+    {
+      "code": "billing_default",
+      "type": "ENUM",
+      "options": [
+        "monthly",
+        "annual"
+      ],
+      "default": "monthly",
+      "name": "Default Billing Period",
+      "description": "Initial billing period before any pricing.* block broadcasts a different one."
+    },
+    {
+      "code": "disclaimer",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Final entitlements may depend on CRM rules. Talk to sales for custom matches.",
+      "name": "Matrix Disclaimer",
+      "description": "Small disclaimer shown below the matrix."
+    },
+    {
+      "code": "dynamic_pricing_enabled",
+      "type": "ENUM",
+      "options": [
+        "false",
+        "true"
+      ],
+      "default": "false",
+      "name": "Dynamic Pricing Enabled",
+      "description": "Opts this block into loading Core PIM pricing. When false or when loading fails, the static matrix rows remain the rendered fallback."
+    },
+    {
+      "code": "pricing_api_base",
+      "type": "STRING",
+      "default": "/core-pim/api",
+      "name": "Pricing API Base",
+      "description": "Core PIM API base path or origin. The runtime removes a trailing /api and posts to /public/{organization}/catalog/price-comparison.json."
+    },
+    {
+      "code": "pricing_organization",
+      "type": "STRING",
+      "default": "SERVICEWAND",
+      "name": "Pricing Organization",
+      "description": "Core PIM organization code used in the public catalog URL."
+    },
+    {
+      "code": "pricing_product_type_code",
+      "type": "STRING",
+      "default": "SERVICEWAND_SAAS",
+      "name": "Pricing Product Type Code",
+      "description": "Core PIM product type to request, for example SERVICEWAND_SAAS, SERVICEWAND_SAAS_EXT, or SERVICEWAND_SAAS_ROUTING_TOKENS."
+    },
+    {
+      "code": "pricing_sort_attribute_code",
+      "type": "STRING",
+      "default": "SORT_ORDER_PRIORITY",
+      "name": "Pricing Sort Attribute Code",
+      "description": "Product attribute used to sort plans before falling back to amount."
+    },
+    {
+      "code": "pricing_price_type_code",
+      "type": "STRING",
+      "default": "RECURRENT",
+      "name": "Pricing Price Type Code",
+      "description": "Core PIM price type code for the request."
+    },
+    {
+      "code": "pricing_price_attribute_code",
+      "type": "STRING",
+      "default": "INTERVAL",
+      "name": "Pricing Price Attribute Code",
+      "description": "Core PIM price attribute used to filter prices."
+    },
+    {
+      "code": "pricing_price_attribute_values",
+      "type": "STRING",
+      "default": "1",
+      "name": "Pricing Price Attribute Values",
+      "description": "Comma-separated price attribute values used by Core PIM filtering."
+    },
+    {
+      "code": "pricing_currency",
+      "type": "STRING",
+      "default": "CAD",
+      "name": "Pricing Currency",
+      "description": "Currency attribute value requested from Core PIM."
+    },
+    {
+      "code": "pricing_purchase_url",
+      "type": "URL",
+      "default": "#pricing",
+      "name": "Dynamic Pricing Purchase URL",
+      "description": "Fallback CTA destination used when the product CTA_LINK attribute is empty for dynamic plan columns."
+    },
+    {
+      "code": "pricing_buy_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Buy now",
+      "name": "Dynamic Pricing Buy Label",
+      "description": "Fallback CTA label used when the product CTA_LABEL attribute is empty for numeric pricing."
+    },
+    {
+      "code": "pricing_contact_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Contact us",
+      "name": "Dynamic Pricing Contact Label",
+      "description": "CTA/tag label for custom/contact pricing."
+    },
+    {
+      "code": "pricing_error_mode",
+      "type": "ENUM",
+      "options": [
+        "fallback"
+      ],
+      "default": "fallback",
+      "name": "Dynamic Pricing Error Mode",
+      "description": "Currently only fallback is supported: keep the static CMS-authored matrix if Core PIM loading fails."
+    },
+    {
+      "code": "plan_01_name",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Starter",
+      "name": "Plan 1 Name",
+      "description": "Display name for plan 1 (column header and accordion summary)."
+    },
+    {
+      "code": "plan_01_tag",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Base",
+      "name": "Plan 1 Tag",
+      "description": "Small tag/kicker below the plan name."
+    },
+    {
+      "code": "plan_02_name",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Growth",
+      "name": "Plan 2 Name",
+      "description": "Display name for plan 2 (column header and accordion summary)."
+    },
+    {
+      "code": "plan_02_tag",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Popular",
+      "name": "Plan 2 Tag",
+      "description": "Small tag/kicker below the plan name."
+    },
+    {
+      "code": "plan_03_name",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Scale",
+      "name": "Plan 3 Name",
+      "description": "Display name for plan 3 (column header and accordion summary)."
+    },
+    {
+      "code": "plan_03_tag",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Advanced",
+      "name": "Plan 3 Tag",
+      "description": "Small tag/kicker below the plan name."
+    },
+    {
+      "code": "plan_04_name",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Enterprise",
+      "name": "Plan 4 Name",
+      "description": "Display name for plan 4 (column header and accordion summary)."
+    },
+    {
+      "code": "plan_04_tag",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Custom",
+      "name": "Plan 4 Tag",
+      "description": "Small tag/kicker below the plan name."
+    },
+    {
+      "code": "group_01_visible",
+      "type": "ENUM",
+      "options": [
+        "show",
+        "hide"
+      ],
+      "default": "show",
+      "name": "Group 1 Visible",
+      "description": "Whether this feature group is rendered."
+    },
+    {
+      "code": "group_01_collapsed",
+      "type": "ENUM",
+      "options": [
+        "false",
+        "true"
+      ],
+      "default": "false",
+      "name": "Group 1 Collapsed",
+      "description": "Default desktop state when Collapsible Row Groups is 'on': 'true' starts this group collapsed. No effect when collapsing is off."
+    },
+    {
+      "code": "group_01_title",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Operations core",
+      "name": "Group 1 Title",
+      "description": "Heading shown above the rows in this group."
+    },
+    {
+      "code": "group_02_visible",
+      "type": "ENUM",
+      "options": [
+        "show",
+        "hide"
+      ],
+      "default": "show",
+      "name": "Group 2 Visible",
+      "description": "Whether this feature group is rendered."
+    },
+    {
+      "code": "group_02_collapsed",
+      "type": "ENUM",
+      "options": [
+        "false",
+        "true"
+      ],
+      "default": "false",
+      "name": "Group 2 Collapsed",
+      "description": "Default desktop state when Collapsible Row Groups is 'on': 'true' starts this group collapsed. No effect when collapsing is off."
+    },
+    {
+      "code": "group_02_title",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Routing and automation",
+      "name": "Group 2 Title",
+      "description": "Heading shown above the rows in this group."
+    },
+    {
+      "code": "group_03_visible",
+      "type": "ENUM",
+      "options": [
+        "show",
+        "hide"
+      ],
+      "default": "show",
+      "name": "Group 3 Visible",
+      "description": "Whether this feature group is rendered."
+    },
+    {
+      "code": "group_03_collapsed",
+      "type": "ENUM",
+      "options": [
+        "false",
+        "true"
+      ],
+      "default": "false",
+      "name": "Group 3 Collapsed",
+      "description": "Default desktop state when Collapsible Row Groups is 'on': 'true' starts this group collapsed. No effect when collapsing is off."
+    },
+    {
+      "code": "group_03_title",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Reporting and access",
+      "name": "Group 3 Title",
+      "description": "Heading shown above the rows in this group."
+    },
+    {
+      "code": "group_04_visible",
+      "type": "ENUM",
+      "options": [
+        "show",
+        "hide"
+      ],
+      "default": "show",
+      "name": "Group 4 Visible",
+      "description": "Whether this feature group is rendered."
+    },
+    {
+      "code": "group_04_collapsed",
+      "type": "ENUM",
+      "options": [
+        "false",
+        "true"
+      ],
+      "default": "false",
+      "name": "Group 4 Collapsed",
+      "description": "Default desktop state when Collapsible Row Groups is 'on': 'true' starts this group collapsed. No effect when collapsing is off."
+    },
+    {
+      "code": "group_04_title",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Support and security",
+      "name": "Group 4 Title",
+      "description": "Heading shown above the rows in this group."
+    },
+    {
+      "code": "row_01_visible",
+      "type": "ENUM",
+      "options": [
+        "show",
+        "hide"
+      ],
+      "default": "show",
+      "name": "Row 1 Visible",
+      "description": "Whether this feature row is rendered."
+    },
+    {
+      "code": "row_01_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Buildings managed",
+      "name": "Row 1 Label",
+      "description": "Feature name shown in the leftmost column."
+    },
+    {
+      "code": "row_01_hint",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "",
+      "name": "Row 1 Hint",
+      "description": "Optional sub-label or tooltip-style hint under the feature name."
+    },
+    {
+      "code": "row_01_plan_01_value",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "100",
+      "name": "Row 1 · Plan 1 Value",
+      "description": "Cell value for this feature × plan."
+    },
+    {
+      "code": "row_01_plan_01_state",
+      "type": "ENUM",
+      "options": [
+        "yes",
+        "no",
+        "partial",
+        "text"
+      ],
+      "default": "text",
+      "name": "Row 1 · Plan 1 State",
+      "description": "Visual treatment for the cell value."
+    },
+    {
+      "code": "row_01_plan_02_value",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "250",
+      "name": "Row 1 · Plan 2 Value",
+      "description": "Cell value for this feature × plan."
+    },
+    {
+      "code": "row_01_plan_02_state",
+      "type": "ENUM",
+      "options": [
+        "yes",
+        "no",
+        "partial",
+        "text"
+      ],
+      "default": "text",
+      "name": "Row 1 · Plan 2 State",
+      "description": "Visual treatment for the cell value."
+    },
+    {
+      "code": "row_01_plan_03_value",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "750",
+      "name": "Row 1 · Plan 3 Value",
+      "description": "Cell value for this feature × plan."
+    },
+    {
+      "code": "row_01_plan_03_state",
+      "type": "ENUM",
+      "options": [
+        "yes",
+        "no",
+        "partial",
+        "text"
+      ],
+      "default": "text",
+      "name": "Row 1 · Plan 3 State",
+      "description": "Visual treatment for the cell value."
+    },
+    {
+      "code": "row_01_plan_04_value",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Custom",
+      "name": "Row 1 · Plan 4 Value",
+      "description": "Cell value for this feature × plan."
+    },
+    {
+      "code": "row_01_plan_04_state",
+      "type": "ENUM",
+      "options": [
+        "yes",
+        "no",
+        "partial",
+        "text"
+      ],
+      "default": "text",
+      "name": "Row 1 · Plan 4 State",
+      "description": "Visual treatment for the cell value."
+    },
+    {
+      "code": "row_02_visible",
+      "type": "ENUM",
+      "options": [
+        "show",
+        "hide"
+      ],
+      "default": "show",
+      "name": "Row 2 Visible",
+      "description": "Whether this feature row is rendered."
+    },
+    {
+      "code": "row_02_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Customer records",
+      "name": "Row 2 Label",
+      "description": "Feature name shown in the leftmost column."
+    },
+    {
+      "code": "row_02_hint",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "",
+      "name": "Row 2 Hint",
+      "description": "Optional sub-label or tooltip-style hint under the feature name."
+    },
+    {
+      "code": "row_02_plan_01_value",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Unlimited",
+      "name": "Row 2 · Plan 1 Value",
+      "description": "Cell value for this feature × plan."
+    },
+    {
+      "code": "row_02_plan_01_state",
+      "type": "ENUM",
+      "options": [
+        "yes",
+        "no",
+        "partial",
+        "text"
+      ],
+      "default": "yes",
+      "name": "Row 2 · Plan 1 State",
+      "description": "Visual treatment for the cell value."
+    },
+    {
+      "code": "row_02_plan_02_value",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Unlimited",
+      "name": "Row 2 · Plan 2 Value",
+      "description": "Cell value for this feature × plan."
+    },
+    {
+      "code": "row_02_plan_02_state",
+      "type": "ENUM",
+      "options": [
+        "yes",
+        "no",
+        "partial",
+        "text"
+      ],
+      "default": "yes",
+      "name": "Row 2 · Plan 2 State",
+      "description": "Visual treatment for the cell value."
+    },
+    {
+      "code": "row_02_plan_03_value",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Unlimited",
+      "name": "Row 2 · Plan 3 Value",
+      "description": "Cell value for this feature × plan."
+    },
+    {
+      "code": "row_02_plan_03_state",
+      "type": "ENUM",
+      "options": [
+        "yes",
+        "no",
+        "partial",
+        "text"
+      ],
+      "default": "yes",
+      "name": "Row 2 · Plan 3 State",
+      "description": "Visual treatment for the cell value."
+    },
+    {
+      "code": "row_02_plan_04_value",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Unlimited",
+      "name": "Row 2 · Plan 4 Value",
+      "description": "Cell value for this feature × plan."
+    },
+    {
+      "code": "row_02_plan_04_state",
+      "type": "ENUM",
+      "options": [
+        "yes",
+        "no",
+        "partial",
+        "text"
+      ],
+      "default": "yes",
+      "name": "Row 2 · Plan 4 State",
+      "description": "Visual treatment for the cell value."
+    },
+    {
+      "code": "row_03_visible",
+      "type": "ENUM",
+      "options": [
+        "show",
+        "hide"
+      ],
+      "default": "show",
+      "name": "Row 3 Visible",
+      "description": "Whether this feature row is rendered."
+    },
+    {
+      "code": "row_03_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Work order seats",
+      "name": "Row 3 Label",
+      "description": "Feature name shown in the leftmost column."
+    },
+    {
+      "code": "row_03_hint",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "",
+      "name": "Row 3 Hint",
+      "description": "Optional sub-label or tooltip-style hint under the feature name."
+    },
+    {
+      "code": "row_03_plan_01_value",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "5",
+      "name": "Row 3 · Plan 1 Value",
+      "description": "Cell value for this feature × plan."
+    },
+    {
+      "code": "row_03_plan_01_state",
+      "type": "ENUM",
+      "options": [
+        "yes",
+        "no",
+        "partial",
+        "text"
+      ],
+      "default": "text",
+      "name": "Row 3 · Plan 1 State",
+      "description": "Visual treatment for the cell value."
+    },
+    {
+      "code": "row_03_plan_02_value",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "15",
+      "name": "Row 3 · Plan 2 Value",
+      "description": "Cell value for this feature × plan."
+    },
+    {
+      "code": "row_03_plan_02_state",
+      "type": "ENUM",
+      "options": [
+        "yes",
+        "no",
+        "partial",
+        "text"
+      ],
+      "default": "text",
+      "name": "Row 3 · Plan 2 State",
+      "description": "Visual treatment for the cell value."
+    },
+    {
+      "code": "row_03_plan_03_value",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "50",
+      "name": "Row 3 · Plan 3 Value",
+      "description": "Cell value for this feature × plan."
+    },
+    {
+      "code": "row_03_plan_03_state",
+      "type": "ENUM",
+      "options": [
+        "yes",
+        "no",
+        "partial",
+        "text"
+      ],
+      "default": "text",
+      "name": "Row 3 · Plan 3 State",
+      "description": "Visual treatment for the cell value."
+    },
+    {
+      "code": "row_03_plan_04_value",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Custom",
+      "name": "Row 3 · Plan 4 Value",
+      "description": "Cell value for this feature × plan."
+    },
+    {
+      "code": "row_03_plan_04_state",
+      "type": "ENUM",
+      "options": [
+        "yes",
+        "no",
+        "partial",
+        "text"
+      ],
+      "default": "text",
+      "name": "Row 3 · Plan 4 State",
+      "description": "Visual treatment for the cell value."
+    },
+    {
+      "code": "row_04_visible",
+      "type": "ENUM",
+      "options": [
+        "show",
+        "hide"
+      ],
+      "default": "show",
+      "name": "Row 4 Visible",
+      "description": "Whether this feature row is rendered."
+    },
+    {
+      "code": "row_04_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Routing tokens included",
+      "name": "Row 4 Label",
+      "description": "Feature name shown in the leftmost column."
+    },
+    {
+      "code": "row_04_hint",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Used by the routing tool.",
+      "name": "Row 4 Hint",
+      "description": "Optional sub-label or tooltip-style hint under the feature name."
+    },
+    {
+      "code": "row_04_plan_01_value",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "",
+      "name": "Row 4 · Plan 1 Value",
+      "description": "Cell value for this feature × plan."
+    },
+    {
+      "code": "row_04_plan_01_state",
+      "type": "ENUM",
+      "options": [
+        "yes",
+        "no",
+        "partial",
+        "text"
+      ],
+      "default": "no",
+      "name": "Row 4 · Plan 1 State",
+      "description": "Visual treatment for the cell value."
+    },
+    {
+      "code": "row_04_plan_02_value",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "10K",
+      "name": "Row 4 · Plan 2 Value",
+      "description": "Cell value for this feature × plan."
+    },
+    {
+      "code": "row_04_plan_02_state",
+      "type": "ENUM",
+      "options": [
+        "yes",
+        "no",
+        "partial",
+        "text"
+      ],
+      "default": "text",
+      "name": "Row 4 · Plan 2 State",
+      "description": "Visual treatment for the cell value."
+    },
+    {
+      "code": "row_04_plan_03_value",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "50K",
+      "name": "Row 4 · Plan 3 Value",
+      "description": "Cell value for this feature × plan."
+    },
+    {
+      "code": "row_04_plan_03_state",
+      "type": "ENUM",
+      "options": [
+        "yes",
+        "no",
+        "partial",
+        "text"
+      ],
+      "default": "text",
+      "name": "Row 4 · Plan 3 State",
+      "description": "Visual treatment for the cell value."
+    },
+    {
+      "code": "row_04_plan_04_value",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Custom",
+      "name": "Row 4 · Plan 4 Value",
+      "description": "Cell value for this feature × plan."
+    },
+    {
+      "code": "row_04_plan_04_state",
+      "type": "ENUM",
+      "options": [
+        "yes",
+        "no",
+        "partial",
+        "text"
+      ],
+      "default": "text",
+      "name": "Row 4 · Plan 4 State",
+      "description": "Visual treatment for the cell value."
+    },
+    {
+      "code": "row_05_visible",
+      "type": "ENUM",
+      "options": [
+        "show",
+        "hide"
+      ],
+      "default": "show",
+      "name": "Row 5 Visible",
+      "description": "Whether this feature row is rendered."
+    },
+    {
+      "code": "row_05_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Automated reminders",
+      "name": "Row 5 Label",
+      "description": "Feature name shown in the leftmost column."
+    },
+    {
+      "code": "row_05_hint",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "",
+      "name": "Row 5 Hint",
+      "description": "Optional sub-label or tooltip-style hint under the feature name."
+    },
+    {
+      "code": "row_05_plan_01_value",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "",
+      "name": "Row 5 · Plan 1 Value",
+      "description": "Cell value for this feature × plan."
+    },
+    {
+      "code": "row_05_plan_01_state",
+      "type": "ENUM",
+      "options": [
+        "yes",
+        "no",
+        "partial",
+        "text"
+      ],
+      "default": "no",
+      "name": "Row 5 · Plan 1 State",
+      "description": "Visual treatment for the cell value."
+    },
+    {
+      "code": "row_05_plan_02_value",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Included",
+      "name": "Row 5 · Plan 2 Value",
+      "description": "Cell value for this feature × plan."
+    },
+    {
+      "code": "row_05_plan_02_state",
+      "type": "ENUM",
+      "options": [
+        "yes",
+        "no",
+        "partial",
+        "text"
+      ],
+      "default": "yes",
+      "name": "Row 5 · Plan 2 State",
+      "description": "Visual treatment for the cell value."
+    },
+    {
+      "code": "row_05_plan_03_value",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Included",
+      "name": "Row 5 · Plan 3 Value",
+      "description": "Cell value for this feature × plan."
+    },
+    {
+      "code": "row_05_plan_03_state",
+      "type": "ENUM",
+      "options": [
+        "yes",
+        "no",
+        "partial",
+        "text"
+      ],
+      "default": "yes",
+      "name": "Row 5 · Plan 3 State",
+      "description": "Visual treatment for the cell value."
+    },
+    {
+      "code": "row_05_plan_04_value",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Included",
+      "name": "Row 5 · Plan 4 Value",
+      "description": "Cell value for this feature × plan."
+    },
+    {
+      "code": "row_05_plan_04_state",
+      "type": "ENUM",
+      "options": [
+        "yes",
+        "no",
+        "partial",
+        "text"
+      ],
+      "default": "yes",
+      "name": "Row 5 · Plan 4 State",
+      "description": "Visual treatment for the cell value."
+    },
+    {
+      "code": "row_06_visible",
+      "type": "ENUM",
+      "options": [
+        "show",
+        "hide"
+      ],
+      "default": "show",
+      "name": "Row 6 Visible",
+      "description": "Whether this feature row is rendered."
+    },
+    {
+      "code": "row_06_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Custom workflows",
+      "name": "Row 6 Label",
+      "description": "Feature name shown in the leftmost column."
+    },
+    {
+      "code": "row_06_hint",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "",
+      "name": "Row 6 Hint",
+      "description": "Optional sub-label or tooltip-style hint under the feature name."
+    },
+    {
+      "code": "row_06_plan_01_value",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "",
+      "name": "Row 6 · Plan 1 Value",
+      "description": "Cell value for this feature × plan."
+    },
+    {
+      "code": "row_06_plan_01_state",
+      "type": "ENUM",
+      "options": [
+        "yes",
+        "no",
+        "partial",
+        "text"
+      ],
+      "default": "no",
+      "name": "Row 6 · Plan 1 State",
+      "description": "Visual treatment for the cell value."
+    },
+    {
+      "code": "row_06_plan_02_value",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Basic",
+      "name": "Row 6 · Plan 2 Value",
+      "description": "Cell value for this feature × plan."
+    },
+    {
+      "code": "row_06_plan_02_state",
+      "type": "ENUM",
+      "options": [
+        "yes",
+        "no",
+        "partial",
+        "text"
+      ],
+      "default": "text",
+      "name": "Row 6 · Plan 2 State",
+      "description": "Visual treatment for the cell value."
+    },
+    {
+      "code": "row_06_plan_03_value",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Advanced",
+      "name": "Row 6 · Plan 3 Value",
+      "description": "Cell value for this feature × plan."
+    },
+    {
+      "code": "row_06_plan_03_state",
+      "type": "ENUM",
+      "options": [
+        "yes",
+        "no",
+        "partial",
+        "text"
+      ],
+      "default": "text",
+      "name": "Row 6 · Plan 3 State",
+      "description": "Visual treatment for the cell value."
+    },
+    {
+      "code": "row_06_plan_04_value",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Custom",
+      "name": "Row 6 · Plan 4 Value",
+      "description": "Cell value for this feature × plan."
+    },
+    {
+      "code": "row_06_plan_04_state",
+      "type": "ENUM",
+      "options": [
+        "yes",
+        "no",
+        "partial",
+        "text"
+      ],
+      "default": "text",
+      "name": "Row 6 · Plan 4 State",
+      "description": "Visual treatment for the cell value."
+    },
+    {
+      "code": "row_07_visible",
+      "type": "ENUM",
+      "options": [
+        "show",
+        "hide"
+      ],
+      "default": "show",
+      "name": "Row 7 Visible",
+      "description": "Whether this feature row is rendered."
+    },
+    {
+      "code": "row_07_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Dashboards and reports",
+      "name": "Row 7 Label",
+      "description": "Feature name shown in the leftmost column."
+    },
+    {
+      "code": "row_07_hint",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "",
+      "name": "Row 7 Hint",
+      "description": "Optional sub-label or tooltip-style hint under the feature name."
+    },
+    {
+      "code": "row_07_plan_01_value",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Starter set",
+      "name": "Row 7 · Plan 1 Value",
+      "description": "Cell value for this feature × plan."
+    },
+    {
+      "code": "row_07_plan_01_state",
+      "type": "ENUM",
+      "options": [
+        "yes",
+        "no",
+        "partial",
+        "text"
+      ],
+      "default": "text",
+      "name": "Row 7 · Plan 1 State",
+      "description": "Visual treatment for the cell value."
+    },
+    {
+      "code": "row_07_plan_02_value",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Standard",
+      "name": "Row 7 · Plan 2 Value",
+      "description": "Cell value for this feature × plan."
+    },
+    {
+      "code": "row_07_plan_02_state",
+      "type": "ENUM",
+      "options": [
+        "yes",
+        "no",
+        "partial",
+        "text"
+      ],
+      "default": "text",
+      "name": "Row 7 · Plan 2 State",
+      "description": "Visual treatment for the cell value."
+    },
+    {
+      "code": "row_07_plan_03_value",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Advanced",
+      "name": "Row 7 · Plan 3 Value",
+      "description": "Cell value for this feature × plan."
+    },
+    {
+      "code": "row_07_plan_03_state",
+      "type": "ENUM",
+      "options": [
+        "yes",
+        "no",
+        "partial",
+        "text"
+      ],
+      "default": "text",
+      "name": "Row 7 · Plan 3 State",
+      "description": "Visual treatment for the cell value."
+    },
+    {
+      "code": "row_07_plan_04_value",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Custom",
+      "name": "Row 7 · Plan 4 Value",
+      "description": "Cell value for this feature × plan."
+    },
+    {
+      "code": "row_07_plan_04_state",
+      "type": "ENUM",
+      "options": [
+        "yes",
+        "no",
+        "partial",
+        "text"
+      ],
+      "default": "text",
+      "name": "Row 7 · Plan 4 State",
+      "description": "Visual treatment for the cell value."
+    },
+    {
+      "code": "row_08_visible",
+      "type": "ENUM",
+      "options": [
+        "show",
+        "hide"
+      ],
+      "default": "show",
+      "name": "Row 8 Visible",
+      "description": "Whether this feature row is rendered."
+    },
+    {
+      "code": "row_08_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Granular permissions",
+      "name": "Row 8 Label",
+      "description": "Feature name shown in the leftmost column."
+    },
+    {
+      "code": "row_08_hint",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "",
+      "name": "Row 8 Hint",
+      "description": "Optional sub-label or tooltip-style hint under the feature name."
+    },
+    {
+      "code": "row_08_plan_01_value",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "",
+      "name": "Row 8 · Plan 1 Value",
+      "description": "Cell value for this feature × plan."
+    },
+    {
+      "code": "row_08_plan_01_state",
+      "type": "ENUM",
+      "options": [
+        "yes",
+        "no",
+        "partial",
+        "text"
+      ],
+      "default": "no",
+      "name": "Row 8 · Plan 1 State",
+      "description": "Visual treatment for the cell value."
+    },
+    {
+      "code": "row_08_plan_02_value",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "",
+      "name": "Row 8 · Plan 2 Value",
+      "description": "Cell value for this feature × plan."
+    },
+    {
+      "code": "row_08_plan_02_state",
+      "type": "ENUM",
+      "options": [
+        "yes",
+        "no",
+        "partial",
+        "text"
+      ],
+      "default": "no",
+      "name": "Row 8 · Plan 2 State",
+      "description": "Visual treatment for the cell value."
+    },
+    {
+      "code": "row_08_plan_03_value",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Included",
+      "name": "Row 8 · Plan 3 Value",
+      "description": "Cell value for this feature × plan."
+    },
+    {
+      "code": "row_08_plan_03_state",
+      "type": "ENUM",
+      "options": [
+        "yes",
+        "no",
+        "partial",
+        "text"
+      ],
+      "default": "yes",
+      "name": "Row 8 · Plan 3 State",
+      "description": "Visual treatment for the cell value."
+    },
+    {
+      "code": "row_08_plan_04_value",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Included",
+      "name": "Row 8 · Plan 4 Value",
+      "description": "Cell value for this feature × plan."
+    },
+    {
+      "code": "row_08_plan_04_state",
+      "type": "ENUM",
+      "options": [
+        "yes",
+        "no",
+        "partial",
+        "text"
+      ],
+      "default": "yes",
+      "name": "Row 8 · Plan 4 State",
+      "description": "Visual treatment for the cell value."
+    },
+    {
+      "code": "row_09_visible",
+      "type": "ENUM",
+      "options": [
+        "show",
+        "hide"
+      ],
+      "default": "show",
+      "name": "Row 9 Visible",
+      "description": "Whether this feature row is rendered."
+    },
+    {
+      "code": "row_09_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "API and webhooks",
+      "name": "Row 9 Label",
+      "description": "Feature name shown in the leftmost column."
+    },
+    {
+      "code": "row_09_hint",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "",
+      "name": "Row 9 Hint",
+      "description": "Optional sub-label or tooltip-style hint under the feature name."
+    },
+    {
+      "code": "row_09_plan_01_value",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "",
+      "name": "Row 9 · Plan 1 Value",
+      "description": "Cell value for this feature × plan."
+    },
+    {
+      "code": "row_09_plan_01_state",
+      "type": "ENUM",
+      "options": [
+        "yes",
+        "no",
+        "partial",
+        "text"
+      ],
+      "default": "no",
+      "name": "Row 9 · Plan 1 State",
+      "description": "Visual treatment for the cell value."
+    },
+    {
+      "code": "row_09_plan_02_value",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Read-only",
+      "name": "Row 9 · Plan 2 Value",
+      "description": "Cell value for this feature × plan."
+    },
+    {
+      "code": "row_09_plan_02_state",
+      "type": "ENUM",
+      "options": [
+        "yes",
+        "no",
+        "partial",
+        "text"
+      ],
+      "default": "partial",
+      "name": "Row 9 · Plan 2 State",
+      "description": "Visual treatment for the cell value."
+    },
+    {
+      "code": "row_09_plan_03_value",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Read/write",
+      "name": "Row 9 · Plan 3 Value",
+      "description": "Cell value for this feature × plan."
+    },
+    {
+      "code": "row_09_plan_03_state",
+      "type": "ENUM",
+      "options": [
+        "yes",
+        "no",
+        "partial",
+        "text"
+      ],
+      "default": "text",
+      "name": "Row 9 · Plan 3 State",
+      "description": "Visual treatment for the cell value."
+    },
+    {
+      "code": "row_09_plan_04_value",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Read/write",
+      "name": "Row 9 · Plan 4 Value",
+      "description": "Cell value for this feature × plan."
+    },
+    {
+      "code": "row_09_plan_04_state",
+      "type": "ENUM",
+      "options": [
+        "yes",
+        "no",
+        "partial",
+        "text"
+      ],
+      "default": "text",
+      "name": "Row 9 · Plan 4 State",
+      "description": "Visual treatment for the cell value."
+    },
+    {
+      "code": "row_10_visible",
+      "type": "ENUM",
+      "options": [
+        "show",
+        "hide"
+      ],
+      "default": "show",
+      "name": "Row 10 Visible",
+      "description": "Whether this feature row is rendered."
+    },
+    {
+      "code": "row_10_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Support tier",
+      "name": "Row 10 Label",
+      "description": "Feature name shown in the leftmost column."
+    },
+    {
+      "code": "row_10_hint",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "",
+      "name": "Row 10 Hint",
+      "description": "Optional sub-label or tooltip-style hint under the feature name."
+    },
+    {
+      "code": "row_10_plan_01_value",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Standard",
+      "name": "Row 10 · Plan 1 Value",
+      "description": "Cell value for this feature × plan."
+    },
+    {
+      "code": "row_10_plan_01_state",
+      "type": "ENUM",
+      "options": [
+        "yes",
+        "no",
+        "partial",
+        "text"
+      ],
+      "default": "text",
+      "name": "Row 10 · Plan 1 State",
+      "description": "Visual treatment for the cell value."
+    },
+    {
+      "code": "row_10_plan_02_value",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Priority",
+      "name": "Row 10 · Plan 2 Value",
+      "description": "Cell value for this feature × plan."
+    },
+    {
+      "code": "row_10_plan_02_state",
+      "type": "ENUM",
+      "options": [
+        "yes",
+        "no",
+        "partial",
+        "text"
+      ],
+      "default": "text",
+      "name": "Row 10 · Plan 2 State",
+      "description": "Visual treatment for the cell value."
+    },
+    {
+      "code": "row_10_plan_03_value",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Dedicated",
+      "name": "Row 10 · Plan 3 Value",
+      "description": "Cell value for this feature × plan."
+    },
+    {
+      "code": "row_10_plan_03_state",
+      "type": "ENUM",
+      "options": [
+        "yes",
+        "no",
+        "partial",
+        "text"
+      ],
+      "default": "text",
+      "name": "Row 10 · Plan 3 State",
+      "description": "Visual treatment for the cell value."
+    },
+    {
+      "code": "row_10_plan_04_value",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Named team",
+      "name": "Row 10 · Plan 4 Value",
+      "description": "Cell value for this feature × plan."
+    },
+    {
+      "code": "row_10_plan_04_state",
+      "type": "ENUM",
+      "options": [
+        "yes",
+        "no",
+        "partial",
+        "text"
+      ],
+      "default": "text",
+      "name": "Row 10 · Plan 4 State",
+      "description": "Visual treatment for the cell value."
+    },
+    {
+      "code": "row_11_visible",
+      "type": "ENUM",
+      "options": [
+        "show",
+        "hide"
+      ],
+      "default": "show",
+      "name": "Row 11 Visible",
+      "description": "Whether this feature row is rendered."
+    },
+    {
+      "code": "row_11_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "SSO and audit log",
+      "name": "Row 11 Label",
+      "description": "Feature name shown in the leftmost column."
+    },
+    {
+      "code": "row_11_hint",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "",
+      "name": "Row 11 Hint",
+      "description": "Optional sub-label or tooltip-style hint under the feature name."
+    },
+    {
+      "code": "row_11_plan_01_value",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "",
+      "name": "Row 11 · Plan 1 Value",
+      "description": "Cell value for this feature × plan."
+    },
+    {
+      "code": "row_11_plan_01_state",
+      "type": "ENUM",
+      "options": [
+        "yes",
+        "no",
+        "partial",
+        "text"
+      ],
+      "default": "no",
+      "name": "Row 11 · Plan 1 State",
+      "description": "Visual treatment for the cell value."
+    },
+    {
+      "code": "row_11_plan_02_value",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "",
+      "name": "Row 11 · Plan 2 Value",
+      "description": "Cell value for this feature × plan."
+    },
+    {
+      "code": "row_11_plan_02_state",
+      "type": "ENUM",
+      "options": [
+        "yes",
+        "no",
+        "partial",
+        "text"
+      ],
+      "default": "no",
+      "name": "Row 11 · Plan 2 State",
+      "description": "Visual treatment for the cell value."
+    },
+    {
+      "code": "row_11_plan_03_value",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Included",
+      "name": "Row 11 · Plan 3 Value",
+      "description": "Cell value for this feature × plan."
+    },
+    {
+      "code": "row_11_plan_03_state",
+      "type": "ENUM",
+      "options": [
+        "yes",
+        "no",
+        "partial",
+        "text"
+      ],
+      "default": "yes",
+      "name": "Row 11 · Plan 3 State",
+      "description": "Visual treatment for the cell value."
+    },
+    {
+      "code": "row_11_plan_04_value",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Included",
+      "name": "Row 11 · Plan 4 Value",
+      "description": "Cell value for this feature × plan."
+    },
+    {
+      "code": "row_11_plan_04_state",
+      "type": "ENUM",
+      "options": [
+        "yes",
+        "no",
+        "partial",
+        "text"
+      ],
+      "default": "yes",
+      "name": "Row 11 · Plan 4 State",
+      "description": "Visual treatment for the cell value."
+    },
+    {
+      "code": "row_12_visible",
+      "type": "ENUM",
+      "options": [
+        "show",
+        "hide"
+      ],
+      "default": "show",
+      "name": "Row 12 Visible",
+      "description": "Whether this feature row is rendered."
+    },
+    {
+      "code": "row_12_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Implementation plan",
+      "name": "Row 12 Label",
+      "description": "Feature name shown in the leftmost column."
+    },
+    {
+      "code": "row_12_hint",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "",
+      "name": "Row 12 Hint",
+      "description": "Optional sub-label or tooltip-style hint under the feature name."
+    },
+    {
+      "code": "row_12_plan_01_value",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Self-serve",
+      "name": "Row 12 · Plan 1 Value",
+      "description": "Cell value for this feature × plan."
+    },
+    {
+      "code": "row_12_plan_01_state",
+      "type": "ENUM",
+      "options": [
+        "yes",
+        "no",
+        "partial",
+        "text"
+      ],
+      "default": "text",
+      "name": "Row 12 · Plan 1 State",
+      "description": "Visual treatment for the cell value."
+    },
+    {
+      "code": "row_12_plan_02_value",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Guided",
+      "name": "Row 12 · Plan 2 Value",
+      "description": "Cell value for this feature × plan."
+    },
+    {
+      "code": "row_12_plan_02_state",
+      "type": "ENUM",
+      "options": [
+        "yes",
+        "no",
+        "partial",
+        "text"
+      ],
+      "default": "text",
+      "name": "Row 12 · Plan 2 State",
+      "description": "Visual treatment for the cell value."
+    },
+    {
+      "code": "row_12_plan_03_value",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Managed",
+      "name": "Row 12 · Plan 3 Value",
+      "description": "Cell value for this feature × plan."
+    },
+    {
+      "code": "row_12_plan_03_state",
+      "type": "ENUM",
+      "options": [
+        "yes",
+        "no",
+        "partial",
+        "text"
+      ],
+      "default": "text",
+      "name": "Row 12 · Plan 3 State",
+      "description": "Visual treatment for the cell value."
+    },
+    {
+      "code": "row_12_plan_04_value",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Enterprise",
+      "name": "Row 12 · Plan 4 Value",
+      "description": "Cell value for this feature × plan."
+    },
+    {
+      "code": "row_12_plan_04_state",
+      "type": "ENUM",
+      "options": [
+        "yes",
+        "no",
+        "partial",
+        "text"
+      ],
+      "default": "text",
+      "name": "Row 12 · Plan 4 State",
+      "description": "Visual treatment for the cell value."
+    },
+    {
+      "code": "state_label_yes",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Included",
+      "name": "State Label · Yes",
+      "description": "Screen-reader label applied to icon-only 'yes' cells."
+    },
+    {
+      "code": "state_label_no",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Not included",
+      "name": "State Label · No",
+      "description": "Screen-reader label applied to icon-only 'no' cells."
+    },
+    {
+      "code": "state_label_partial",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Partially included",
+      "name": "State Label · Partial",
+      "description": "Screen-reader label applied to icon-only 'partial' cells."
+    },
+    {
+      "code": "state_label_empty",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "No value",
+      "name": "State Label · Empty",
+      "description": "Screen-reader label applied to empty dynamic cells."
+    },
+    {
+      "code": "cta_row_visible",
+      "type": "ENUM",
+      "options": [
+        "show",
+        "hide"
+      ],
+      "default": "show",
+      "name": "CTA Row Visibility",
+      "description": "Shows a closing row of per-plan CTAs under the table and a CTA at the bottom of each mobile accordion."
+    },
+    {
+      "code": "cta_row_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Ready to start?",
+      "name": "CTA Row Label",
+      "description": "Feature-column label for the closing CTA row."
+    },
+    {
+      "code": "plan_01_cta_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Start setup",
+      "name": "Plan 1 CTA Label",
+      "description": "Label for this plan's CTA in the closing row and mobile accordion."
+    },
+    {
+      "code": "plan_01_cta_url",
+      "type": "URL",
+      "default": "#pricing",
+      "name": "Plan 1 CTA URL",
+      "description": "Destination for this plan's CTA."
+    },
+    {
+      "code": "plan_02_cta_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Continue with Growth",
+      "name": "Plan 2 CTA Label",
+      "description": "Label for this plan's CTA in the closing row and mobile accordion."
+    },
+    {
+      "code": "plan_02_cta_url",
+      "type": "URL",
+      "default": "#pricing",
+      "name": "Plan 2 CTA URL",
+      "description": "Destination for this plan's CTA."
+    },
+    {
+      "code": "plan_03_cta_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Talk to sales",
+      "name": "Plan 3 CTA Label",
+      "description": "Label for this plan's CTA in the closing row and mobile accordion."
+    },
+    {
+      "code": "plan_03_cta_url",
+      "type": "URL",
+      "default": "#pricing",
+      "name": "Plan 3 CTA URL",
+      "description": "Destination for this plan's CTA."
+    },
+    {
+      "code": "plan_04_cta_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Request quote",
+      "name": "Plan 4 CTA Label",
+      "description": "Label for this plan's CTA in the closing row and mobile accordion."
+    },
+    {
+      "code": "plan_04_cta_url",
+      "type": "URL",
+      "default": "#pricing",
+      "name": "Plan 4 CTA URL",
+      "description": "Destination for this plan's CTA."
+    }
+  ],
+  "preview": {
+    "390": "preview-390.png",
+    "1440": "preview-1440.png"
+  },
+  "notes": [
+    "column_count drives the static fallback desktop grid track count. Dynamic mode derives the count from returned plans and sets the grid tracks at runtime.",
+    "Rows and groups can be hidden via row_NN_visible / group_NN_visible ENUMs without removing their params.",
+    "States 'yes' and 'partial' render a colored glyph; 'no' renders a quiet gray dash so the entry plan is not buried in red X marks. Use 'text' for human-readable amounts like '50K'.",
+    "Icon-only state cells get an aria-label from state_label_yes/no/partial via block.js.",
+    "Dynamic pricing is opt-in via dynamic_pricing_enabled. Static plan, group, and row fields remain the editor preview and fallback if the Core PIM request is disabled or fails.",
+    "Dynamic mode uses the shared 14-pricing/_shared/pricing-runtime.js loader and consumes normalized plan/group data; do not copy Core PIM response parsing into this block.",
+    "Dynamic matrix CTAs read product attributes CTA_LABEL and CTA_LINK first; section-level pricing_buy_label / pricing_purchase_url are fallbacks.",
+    "pricing_product_type_code can point at SERVICEWAND_SAAS, SERVICEWAND_SAAS_EXT, or SERVICEWAND_SAAS_ROUTING_TOKENS when the matching price type and attribute filters are supplied.",
+    "Dynamic matrix mode rebuilds table and accordion rows from visible Core PIM attribute groups, so it is not limited to the static twelve-row or four-column parameter model.",
+    "The table shell scrolls horizontally when dynamic mode returns more plan columns than fit comfortably.",
+    "cta_row_visible toggles the closing per-plan CTA row (desktop) and per-plan accordion CTAs (mobile) together.",
+    "The mobile accordion opens plan 02 by default — by catalog convention slot 02 is the featured/popular plan."
+  ]
+}

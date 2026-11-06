@@ -1,0 +1,41 @@
+{
+ "optimistic": 1,
+ "code": "SUPPLIER",
+ "nls": {
+  "ar": {
+   "DESCRIPTION": "<p></p>"
+  },
+  "en": {
+   "NAME": "Supplier",
+   "DESCRIPTION": "<p>Represents a person or organization that supplies goods, materials, equipment, parts, or other resources used by the business. Supplier accounts may include tax identification and purchasing-related information.</p>"
+  },
+  "he": {
+   "DESCRIPTION": "<p></p>"
+  }
+ },
+ "organization": {
+  "optimistic": 1,
+  "id": 1,
+  "code": "SYSTEM"
+ },
+ "attributeOrder": [
+  {
+   "default": [
+    {
+     "typeId": 36,
+     "attributeCode": "TAX_ID",
+     "visible": true
+    },
+    {
+     "typeId": 35,
+     "attributeCode": "PARTY_TYPE",
+     "visible": true
+    }
+   ]
+  }
+ ],
+ "attributes": [],
+ "id": 39,
+ "isAbstract": false,
+ "attributeGroups": []
+}

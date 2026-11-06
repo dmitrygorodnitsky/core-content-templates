@@ -1,0 +1,19 @@
+{
+ "optimistic": 0,
+ "code": "TEST_DOC",
+ "nls": {
+  "en": {
+   "NAME": "Test DOc"
+  }
+ },
+ "organization": {
+  "optimistic": 1,
+  "id": 1,
+  "code": "SYSTEM"
+ },
+ "attributeOrder": [],
+ "attributes": [],
+ "id": 3,
+ "isAbstract": false,
+ "attributeGroups": []
+}

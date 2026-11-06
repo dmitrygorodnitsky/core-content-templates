@@ -1,0 +1,170 @@
+{
+ "optimistic": 2,
+ "code": "SNOW_INSPECTION_VISIT",
+ "nls": {
+  "en": {
+   "NAME": "Inspection Visit"
+  }
+ },
+ "workflow": {
+  "id": 20,
+  "code": "APPOINTMENT"
+ },
+ "organization": {
+  "optimistic": 4,
+  "id": 8,
+  "code": "SERVICE_WAND_WINTER_SERVICES"
+ },
+ "attributeOrder": [
+  {
+   "VISIT_PLAN": [
+    {
+     "attributeCode": "VISIT_SITE",
+     "visible": true
+    },
+    {
+     "attributeCode": "RESOURCE",
+     "visible": true
+    },
+    {
+     "attributeCode": "CREW_NOTES",
+     "visible": true
+    }
+   ]
+  },
+  {
+   "FIELD_COMPLETION": [
+    {
+     "attributeCode": "COMPLETION_NOTES",
+     "visible": true
+    },
+    {
+     "attributeCode": "INSPECTION_MEDIA",
+     "visible": true
+    },
+    {
+     "attributeCode": "COMPLETION_EVIDENCE",
+     "visible": true
+    }
+   ]
+  }
+ ],
+ "attributes": [
+  {
+   "code": "INSPECTION_MEDIA",
+   "required": false,
+   "multiselect": true,
+   "freeValue": true,
+   "unique": false,
+   "className": "com.pixelnation.common.domain.Media",
+   "nls": {
+    "ar": {
+     "NAME": "وسائط التفتيش"
+    },
+    "en": {
+     "NAME": "Inspection Media"
+    },
+    "es": {
+     "NAME": "Medios de inspección"
+    },
+    "fr": {
+     "NAME": "Médias d'inspection"
+    },
+    "he": {
+     "NAME": "מדיה לביקורת"
+    },
+    "kk": {
+     "NAME": "Тексеру медиа"
+    },
+    "ru": {
+     "NAME": "Медиа инспекции"
+    },
+    "zh": {
+     "NAME": "检查媒体"
+    }
+   },
+   "options": [],
+   "entityTypes": [
+    {
+     "value": "sound"
+    },
+    {
+     "value": "mediaAsset"
+    },
+    {
+     "value": "video"
+    },
+    {
+     "value": "image"
+    }
+   ]
+  },
+  {
+   "code": "CREW_NOTES",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "en": {
+     "NAME": "Crew Notes"
+    }
+   },
+   "options": []
+  },
+  {
+   "code": "COMPLETION_NOTES",
+   "required": true,
+   "multiselect": false,
+   "freeValue": true,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "en": {
+     "NAME": "Completion Notes"
+    }
+   },
+   "options": []
+  },
+  {
+   "code": "RESOURCE",
+   "required": true,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "com.pixelnation.rm.domain.Resource",
+   "nls": {
+    "en": {
+     "NAME": "Visit Property / Site"
+    }
+   },
+   "options": [],
+   "entityTypes": [
+    {
+     "value": 154
+    }
+   ]
+  }
+ ],
+ "id": 3,
+ "isAbstract": false,
+ "attributeGroups": [
+  {
+   "code": "FIELD_COMPLETION",
+   "nls": {
+    "en": {
+     "NAME": "Field Completion"
+    }
+   }
+  },
+  {
+   "code": "VISIT_PLAN",
+   "nls": {
+    "en": {
+     "NAME": "Visit Plan"
+    }
+   }
+  }
+ ]
+}

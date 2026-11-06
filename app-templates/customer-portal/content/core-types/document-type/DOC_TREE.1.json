@@ -1,0 +1,196 @@
+{
+ "optimistic": 0,
+ "code": "DOC_TREE",
+ "nls": {
+  "en": {
+   "NAME": "Documentation Tree Document",
+   "DESCRIPTION": "Typed manual and documentation nodes backed by localized markdown content"
+  }
+ },
+ "organization": {
+  "optimistic": 1,
+  "id": 1,
+  "code": "SYSTEM"
+ },
+ "attributeOrder": [
+  {
+   "default": [
+    {
+     "attributeCode": "DOC_SPACE",
+     "visible": true
+    },
+    {
+     "attributeCode": "MODULE",
+     "visible": true
+    },
+    {
+     "attributeCode": "CATEGORY",
+     "visible": true
+    },
+    {
+     "attributeCode": "PARENTS",
+     "visible": true
+    },
+    {
+     "attributeCode": "ORDER_INDEX",
+     "visible": true
+    },
+    {
+     "attributeCode": "SLUG",
+     "visible": true
+    }
+   ]
+  }
+ ],
+ "attributes": [
+  {
+   "code": "DOC_SPACE",
+   "required": true,
+   "multiselect": true,
+   "freeValue": true,
+   "unique": false,
+   "className": "com.pixelnation.common.domain.Dictionary",
+   "nls": {
+    "en": {
+     "NAME": "Documentation Space",
+     "DESCRIPTION": "High-level documentation partition such as user manuals or developer guides"
+    }
+   },
+   "options": [],
+   "entityTypes": [
+    {
+     "value": 11
+    }
+   ]
+  },
+  {
+   "code": "SLUG",
+   "required": false,
+   "multiselect": false,
+   "freeValue": true,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "en": {
+     "NAME": "Slug",
+     "DESCRIPTION": "Human-readable route fragment for manual publishing"
+    }
+   },
+   "options": []
+  },
+  {
+   "code": "PARENTS",
+   "required": false,
+   "multiselect": true,
+   "freeValue": true,
+   "unique": false,
+   "className": "com.pixelnation.common.domain.Document",
+   "nls": {
+    "en": {
+     "NAME": "Parent Codes",
+     "DESCRIPTION": "Business codes of parent documents in the documentation tree"
+    }
+   },
+   "options": [],
+   "entityTypes": [
+    {
+     "value": 1
+    }
+   ]
+  },
+  {
+   "code": "MODULE",
+   "required": false,
+   "multiselect": false,
+   "freeValue": true,
+   "unique": false,
+   "className": "com.pixelnation.common.domain.Dictionary",
+   "nls": {
+    "en": {
+     "NAME": "Module",
+     "DESCRIPTION": "Owning module code for module-specific manual entries"
+    }
+   },
+   "options": [],
+   "entityTypes": [
+    {
+     "value": 1
+    }
+   ]
+  },
+  {
+   "code": "CATEGORY",
+   "required": true,
+   "multiselect": false,
+   "freeValue": true,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "en": {
+     "NAME": "Category",
+     "DESCRIPTION": "Tree role of the document such as root, toc, chapter, module, or addendum"
+    }
+   },
+   "options": [
+    {
+     "value": "ROOT",
+     "nls": {
+      "en": {
+       "NAME": "Root"
+      }
+     }
+    },
+    {
+     "value": "ADDENDUM",
+     "nls": {
+      "en": {
+       "NAME": "Addendum"
+      }
+     }
+    },
+    {
+     "value": "TOC",
+     "nls": {
+      "en": {
+       "NAME": "Table of Content"
+      }
+     }
+    },
+    {
+     "value": "CHAPTER",
+     "nls": {
+      "en": {
+       "NAME": "Chapter"
+      }
+     }
+    },
+    {
+     "value": "MODULE",
+     "nls": {
+      "en": {
+       "NAME": "Module"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "code": "ORDER_INDEX",
+   "required": false,
+   "multiselect": false,
+   "freeValue": true,
+   "unique": false,
+   "className": "java.lang.Integer",
+   "nls": {
+    "en": {
+     "NAME": "Order Index",
+     "DESCRIPTION": "Sort order inside a documentation tree or table of contents"
+    }
+   },
+   "options": []
+  }
+ ],
+ "id": 1,
+ "isAbstract": false,
+ "attributeGroups": []
+}

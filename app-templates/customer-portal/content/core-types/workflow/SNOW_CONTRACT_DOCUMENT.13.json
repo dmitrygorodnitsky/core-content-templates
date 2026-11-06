@@ -1,0 +1,301 @@
+{
+ "code": "SNOW_CONTRACT_DOCUMENT",
+ "initialState": {
+  "id": 74,
+  "code": "DRAFT"
+ },
+ "nls": {
+  "en": {
+   "NAME": "Snow Contract Document",
+   "DESCRIPTION": "Workflow for Snow Removal service agreement documents from draft through activation, hold, expiration, and archive."
+  }
+ },
+ "entityType": "com.pixelnation.common.domain.Document",
+ "organization": {
+  "optimistic": 3,
+  "id": 9,
+  "code": "SERVICE_WAND_WINTER_SERVICES_CANADA"
+ },
+ "id": 13,
+ "states": [
+  {
+   "style": {
+    "xPos": 552,
+    "yPos": 30.6
+   },
+   "id": 76,
+   "code": "ACTIVE",
+   "nls": {
+    "en": {
+     "NAME": "Active"
+    }
+   },
+   "events": [
+    {
+     "orderIndex": 0,
+     "id": 116,
+     "code": "ACTIVE-SUSPENDED",
+     "nls": {
+      "en": {
+       "NAME": "Suspend / Seasonal Hold"
+      }
+     },
+     "targets": [
+      {
+       "id": 77,
+       "code": "SUSPENDED"
+      }
+     ]
+    },
+    {
+     "orderIndex": 1,
+     "id": 119,
+     "code": "ACTIVE-EXPIRED",
+     "nls": {
+      "en": {
+       "NAME": "Expire"
+      }
+     },
+     "targets": [
+      {
+       "id": 78,
+       "code": "EXPIRED"
+      }
+     ]
+    },
+    {
+     "orderIndex": 2,
+     "id": 121,
+     "code": "ACTIVE-ARCHIVED",
+     "nls": {
+      "en": {
+       "NAME": "Archive"
+      }
+     },
+     "targets": [
+      {
+       "id": 79,
+       "code": "ARCHIVED"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "style": {
+    "xPos": 1666,
+    "yPos": 143.66666666666666
+   },
+   "id": 79,
+   "code": "ARCHIVED",
+   "nls": {
+    "en": {
+     "NAME": "Archived"
+    }
+   },
+   "events": []
+  },
+  {
+   "style": {
+    "xPos": 1148,
+    "yPos": 415.1666666666667
+   },
+   "id": 80,
+   "code": "CANCELED",
+   "nls": {
+    "en": {
+     "NAME": "Canceled"
+    }
+   },
+   "events": []
+  },
+  {
+   "style": {
+    "xPos": 552,
+    "yPos": 394.5
+   },
+   "id": 74,
+   "code": "DRAFT",
+   "nls": {
+    "en": {
+     "NAME": "Draft"
+    }
+   },
+   "events": [
+    {
+     "orderIndex": 0,
+     "id": 114,
+     "code": "DRAFT-PENDING_APPROVAL",
+     "nls": {
+      "en": {
+       "NAME": "Submit for Approval"
+      }
+     },
+     "targets": [
+      {
+       "id": 75,
+       "code": "PENDING_APPROVAL"
+      }
+     ]
+    },
+    {
+     "orderIndex": 1,
+     "id": 124,
+     "code": "DRAFT-CANCELED",
+     "nls": {
+      "en": {
+       "NAME": "Cancel"
+      }
+     },
+     "targets": [
+      {
+       "id": 80,
+       "code": "CANCELED"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "style": {
+    "xPos": 1148,
+    "yPos": 12
+   },
+   "id": 78,
+   "code": "EXPIRED",
+   "nls": {
+    "en": {
+     "NAME": "Expired"
+    }
+   },
+   "events": [
+    {
+     "orderIndex": 0,
+     "id": 120,
+     "code": "EXPIRED-ARCHIVED",
+     "nls": {
+      "en": {
+       "NAME": "Archive"
+      }
+     },
+     "targets": [
+      {
+       "id": 79,
+       "code": "ARCHIVED"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "style": {
+    "xPos": -97.72723338710563,
+    "yPos": 32.05511978326474
+   },
+   "id": 75,
+   "code": "PENDING_APPROVAL",
+   "nls": {
+    "en": {
+     "NAME": "Pending Approval"
+    }
+   },
+   "events": [
+    {
+     "orderIndex": 0,
+     "id": 115,
+     "code": "PENDING_APPROVAL-ACTIVE",
+     "nls": {
+      "en": {
+       "NAME": "Activate"
+      }
+     },
+     "targets": [
+      {
+       "id": 76,
+       "code": "ACTIVE"
+      }
+     ]
+    },
+    {
+     "orderIndex": 1,
+     "id": 122,
+     "code": "PENDING_APPROVAL-DRAFT",
+     "nls": {
+      "en": {
+       "NAME": "Return to Draft"
+      }
+     },
+     "targets": [
+      {
+       "id": 74,
+       "code": "DRAFT"
+      }
+     ]
+    },
+    {
+     "orderIndex": 2,
+     "id": 123,
+     "code": "PENDING_APPROVAL-CANCELED",
+     "nls": {
+      "en": {
+       "NAME": "Cancel"
+      }
+     },
+     "targets": [
+      {
+       "id": 80,
+       "code": "CANCELED"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "style": {
+    "xPos": 1148,
+    "yPos": 154
+   },
+   "id": 77,
+   "code": "SUSPENDED",
+   "nls": {
+    "en": {
+     "NAME": "Suspended / Seasonal Hold"
+    }
+   },
+   "events": [
+    {
+     "orderIndex": 0,
+     "id": 117,
+     "code": "SUSPENDED-ACTIVE",
+     "nls": {
+      "en": {
+       "NAME": "Reactivate"
+      }
+     },
+     "targets": [
+      {
+       "id": 76,
+       "code": "ACTIVE"
+      }
+     ]
+    },
+    {
+     "orderIndex": 1,
+     "id": 118,
+     "code": "SUSPENDED-ARCHIVED",
+     "nls": {
+      "en": {
+       "NAME": "Archive"
+      }
+     },
+     "targets": [
+      {
+       "id": 79,
+       "code": "ARCHIVED"
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

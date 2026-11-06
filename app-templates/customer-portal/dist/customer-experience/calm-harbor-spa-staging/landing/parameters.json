@@ -1,0 +1,299 @@
+[
+  {
+    "code": "CX_CONTRACT_VERSION",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Cx contract version",
+        "DESCRIPTION": "Customer experience descriptor value: contract.version."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "CX_EXPERIENCE_ID",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Cx experience id",
+        "DESCRIPTION": "Customer experience descriptor value: experience.id."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "CX_VERTICAL",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Cx vertical",
+        "DESCRIPTION": "Customer experience descriptor value: experience.vertical."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "CX_THEME",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Cx theme",
+        "DESCRIPTION": "Customer experience descriptor value: experience.theme."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "CX_DEFAULT_MODE",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Cx default mode",
+        "DESCRIPTION": "Customer experience descriptor value: experience.defaultMode."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "CX_BRAND_NAME",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Cx brand name",
+        "DESCRIPTION": "Customer experience descriptor value: experience.brandName."
+      }
+    },
+    "value": {
+      "en": ""
+    }
+  },
+  {
+    "code": "CX_LANDING_URL",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Cx landing url",
+        "DESCRIPTION": "Customer experience descriptor value: resolved.landingUrl."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "CX_PORTAL_URL",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Cx portal url",
+        "DESCRIPTION": "Customer experience descriptor value: resolved.portalUrl."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "CX_SUPPORT_URL",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Cx support url",
+        "DESCRIPTION": "Customer experience descriptor value: resolved.supportUrl."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "CX_ALLOWED_NAV_ORIGINS",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Cx allowed nav origins",
+        "DESCRIPTION": "Customer experience descriptor value: experience.allowedNavOrigins."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "NAV_PORTAL_URL",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Nav portal url",
+        "DESCRIPTION": "Customer experience descriptor value: resolved.primaryDestination."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "NAV_PORTAL_SERVICES_URL",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Nav portal services url",
+        "DESCRIPTION": "Customer experience descriptor value: resolved.servicesDestination."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "NAV_PORTAL_PRICING_URL",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Nav portal pricing url",
+        "DESCRIPTION": "Customer experience descriptor value: resolved.pricingDestination."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "NAV_PORTAL_PRODUCTS_URL",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Nav portal products url",
+        "DESCRIPTION": "Customer experience descriptor value: resolved.productsDestination."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "LANDING_META_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Landing meta title",
+        "DESCRIPTION": "Customer experience descriptor value: landing.metaTitle."
+      }
+    },
+    "value": {
+      "en": ""
+    }
+  },
+  {
+    "code": "LANDING_META_DESCRIPTION",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Landing meta description",
+        "DESCRIPTION": "Customer experience descriptor value: landing.metaDescription."
+      }
+    },
+    "value": {
+      "en": ""
+    }
+  },
+  {
+    "code": "LANDING_CANONICAL_URL",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Landing canonical url",
+        "DESCRIPTION": "Customer experience descriptor value: landing.canonicalUrl."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "LANDING_HERO_EYEBROW",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Landing hero eyebrow",
+        "DESCRIPTION": "Customer experience descriptor value: landing.heroEyebrow."
+      }
+    },
+    "value": {
+      "en": ""
+    }
+  },
+  {
+    "code": "LANDING_HERO_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Landing hero title",
+        "DESCRIPTION": "Customer experience descriptor value: landing.heroTitle."
+      }
+    },
+    "value": {
+      "en": ""
+    }
+  },
+  {
+    "code": "LANDING_HERO_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Landing hero body",
+        "DESCRIPTION": "Customer experience descriptor value: landing.heroBody."
+      }
+    },
+    "value": {
+      "en": ""
+    }
+  },
+  {
+    "code": "LANDING_HERO_NOTE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Landing hero note",
+        "DESCRIPTION": "Customer experience descriptor value: landing.heroNote."
+      }
+    },
+    "value": {
+      "en": ""
+    }
+  },
+  {
+    "code": "LANDING_FINAL_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Landing final title",
+        "DESCRIPTION": "Customer experience descriptor value: landing.finalTitle."
+      }
+    },
+    "value": {
+      "en": ""
+    }
+  },
+  {
+    "code": "LANDING_FINAL_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Landing final body",
+        "DESCRIPTION": "Customer experience descriptor value: landing.finalBody."
+      }
+    },
+    "value": {
+      "en": ""
+    }
+  },
+  {
+    "code": "LANDING_PRIMARY_CTA_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Landing primary cta label",
+        "DESCRIPTION": "Customer experience descriptor value: landing.primaryCtaLabel."
+      }
+    },
+    "value": {
+      "en": ""
+    }
+  },
+  {
+    "code": "LANDING_SECONDARY_CTA_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Landing secondary cta label",
+        "DESCRIPTION": "Customer experience descriptor value: landing.secondaryCtaLabel."
+      }
+    },
+    "value": {
+      "en": ""
+    }
+  }
+]

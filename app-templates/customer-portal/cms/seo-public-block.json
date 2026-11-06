@@ -1,0 +1,34 @@
+{
+  "$schema": "app-template/customer-portal-public-seo@1",
+  "id": "customer-portal.public-seo",
+  "title": "Customer Portal Public SEO Landing",
+  "description": "A public, indexable, CMS-authored vertical and locality landing document with no portal authentication, shell, or hash-router dependency.",
+  "inputSchema": "./seo-public.schema.json",
+  "template": "./seo-public-root-template.html",
+  "generator": "../scripts/generate-seo-public.mjs",
+  "runtime": {
+    "entry": "../public/src/seo-public.js",
+    "styles": [
+      "../runtime/styles/tokens.css",
+      "../runtime/styles/base.css",
+      "../runtime/styles/components.css",
+      "../runtime/styles/seo.css"
+    ],
+    "auth": "public",
+    "router": "document",
+    "serverVisibleBody": true,
+    "serving": "Serve as a normal canonical HTML document. JavaScript is progressive enhancement only."
+  },
+  "verticals": ["hvac", "snow", "lawn", "pool", "roofing", "pest", "health", "beauty"],
+  "requiredSlots": [
+    "deployment", "content.brand", "content.vertical", "content.meta", "content.hero",
+    "content.services", "content.trust", "content.how", "content.proof", "content.pricing",
+    "content.area", "content.reviews", "content.faq", "content.ctas", "content.final", "content.footer"
+  ],
+  "uploadGuardrails": [
+    "Do not upload without explicit current-thread approval.",
+    "Do not use portal fixtures or designer reference fixtures as production content.",
+    "Do not invent missing claims, prices, reviews, trust facts, destinations, or regulated facts.",
+    "Production generation requires classification public-authored and a complete schema-valid payload."
+  ]
+}

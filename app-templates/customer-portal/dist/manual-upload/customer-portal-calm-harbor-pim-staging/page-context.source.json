@@ -1,0 +1,59 @@
+{
+  "schemaVersion": 1,
+  "purpose": "Manual CMS portal package for the opened Calm Harbor Spa PIM surfaces",
+  "template": {
+    "code": "CUSTOMER_PORTAL_CALM_HARBOR_PIM_STAGING",
+    "title": "Calm Harbor Spa | Live Catalog"
+  },
+  "runtime": {
+    "vertical": "beauty",
+    "profile": "appointments",
+    "theme": "beauty",
+    "routerMode": "hash",
+    "defaultRoute": "pricing",
+    "enabledModules": [
+      "pricing",
+      "products"
+    ],
+    "authMode": "required",
+    "dataMode": "live",
+    "errorMode": "error"
+  },
+  "pim": {
+    "apiBase": "/core-pim/api",
+    "organization": "CALM_HARBOR_SPA_STAGING",
+    "pricingProductTypeCodes": [
+      "SPA_SERVICE",
+      "SPA_MEMBERSHIP"
+    ],
+    "productsProductTypeCodes": [
+      "SPA_RETAIL"
+    ],
+    "priceTypeCode": "SPA_STANDARD_PRICE",
+    "priceAttributeCode": "INTERVAL",
+    "priceAttributeValues": [
+      "ONE_TIME",
+      "MONTH"
+    ],
+    "currency": "USD",
+    "currencyAttributeCode": "CURRENCY",
+    "currencyAttributeValues": [
+      "USD"
+    ],
+    "amountAttributeCode": "AMOUNT_MINOR",
+    "amountMinorDivisor": 100,
+    "cta": "Book service"
+  },
+  "auth": {
+    "coreBase": "/core",
+    "callbackPath": "/core/oauth2-callback.html",
+    "returnStorageKey": "oidc-return-url",
+    "logoutReturnStorageKey": "oidc-logout-return-url"
+  },
+  "constraints": [
+    "The package must be served from dev-1.servicewand.com so the public PIM request remains same-origin.",
+    "Only pricing and products are opened live. Other portal entities must not be represented as live.",
+    "Customer sign-in uses the Core OIDC redirect flow and its registered same-origin callback. The CMS template never handles a password, API key, or access token.",
+    "A signed-in user does not open private customer data in this package. Orders, appointments, tasks, profile data, and mutations remain closed until their customer-scoped backend contracts are proven."
+  ]
+}

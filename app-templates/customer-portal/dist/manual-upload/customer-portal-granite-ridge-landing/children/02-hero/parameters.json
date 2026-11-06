@@ -1,0 +1,193 @@
+[
+  {
+    "code": "GRS_LANDING_02_HERO_SERVICE_AREA",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "SERVICE AREA",
+        "DESCRIPTION": "CMS-authored value for Granite Ridge Snow Removal."
+      }
+    },
+    "value": {
+      "en": "Denver metro and the Front Range"
+    }
+  },
+  {
+    "code": "GRS_LANDING_02_HERO_TITLE_PREFIX",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "TITLE PREFIX",
+        "DESCRIPTION": "CMS-authored value for Granite Ridge Snow Removal."
+      }
+    },
+    "value": {
+      "en": "Snow removal in "
+    }
+  },
+  {
+    "code": "GRS_LANDING_02_HERO_LOCALITY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "LOCALITY",
+        "DESCRIPTION": "CMS-authored value for Granite Ridge Snow Removal."
+      }
+    },
+    "value": {
+      "en": "Denver, Colorado"
+    }
+  },
+  {
+    "code": "GRS_LANDING_02_HERO_TITLE_SUFFIX",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "TITLE SUFFIX",
+        "DESCRIPTION": "CMS-authored value for Granite Ridge Snow Removal."
+      }
+    },
+    "value": {
+      "en": ", dispatched by the storm"
+    }
+  },
+  {
+    "code": "GRS_LANDING_02_HERO_SERVICE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "SERVICE",
+        "DESCRIPTION": "CMS-authored value for Granite Ridge Snow Removal."
+      }
+    },
+    "value": {
+      "en": "Weather-triggered clearing and de-icing — crews roll before you wake."
+    }
+  },
+  {
+    "code": "GRS_LANDING_02_HERO_OFFER_TAG",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "OFFER TAG",
+        "DESCRIPTION": "CMS-authored value for Granite Ridge Snow Removal."
+      }
+    },
+    "value": {
+      "en": "Early-bird"
+    }
+  },
+  {
+    "code": "GRS_LANDING_02_HERO_OFFER_TEXT",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "OFFER TEXT",
+        "DESCRIPTION": "CMS-authored value for Granite Ridge Snow Removal."
+      }
+    },
+    "value": {
+      "en": "Season-lock pricing before the first snowfall"
+    }
+  },
+  {
+    "code": "GRS_LANDING_02_HERO_OFFER_UNTIL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "OFFER UNTIL",
+        "DESCRIPTION": "CMS-authored value for Granite Ridge Snow Removal."
+      }
+    },
+    "value": {
+      "en": "valid-until: CMS"
+    }
+  },
+  {
+    "code": "GRS_LANDING_02_HERO_PRIMARY_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "PRIMARY LABEL",
+        "DESCRIPTION": "CMS-authored value for Granite Ridge Snow Removal."
+      }
+    },
+    "value": {
+      "en": "Request seasonal quote"
+    }
+  },
+  {
+    "code": "GRS_LANDING_02_HERO_SECONDARY_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "SECONDARY LABEL",
+        "DESCRIPTION": "CMS-authored value for Granite Ridge Snow Removal."
+      }
+    },
+    "value": {
+      "en": "View services"
+    }
+  },
+  {
+    "code": "GRS_LANDING_02_HERO_NOTE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "NOTE",
+        "DESCRIPTION": "CMS-authored value for Granite Ridge Snow Removal."
+      }
+    },
+    "value": {
+      "en": "Dispatch is automatic once your snowfall trigger is met — no phone call at 5 am."
+    }
+  },
+  {
+    "code": "GRS_LANDING_02_HERO_MEDIA_URL",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "MEDIA URL",
+        "DESCRIPTION": "CMS-authored value for Granite Ridge Snow Removal."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "GRS_LANDING_02_HERO_MEDIA_ALT",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "MEDIA ALT",
+        "DESCRIPTION": "CMS-authored value for Granite Ridge Snow Removal."
+      }
+    },
+    "value": {
+      "en": "Granite Ridge crew clearing a lot before dawn"
+    }
+  },
+  {
+    "code": "GRS_LANDING_02_HERO_MEDIA_FOCAL",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "MEDIA FOCAL",
+        "DESCRIPTION": "CMS-authored value for Granite Ridge Snow Removal."
+      }
+    },
+    "value": "50% 50%"
+  },
+  {
+    "code": "GRS_LANDING_02_HERO_MEDIA_SLOT_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "MEDIA SLOT LABEL",
+        "DESCRIPTION": "CMS-authored value for Granite Ridge Snow Removal."
+      }
+    },
+    "value": {
+      "en": "hero photo · from CMS"
+    }
+  }
+]

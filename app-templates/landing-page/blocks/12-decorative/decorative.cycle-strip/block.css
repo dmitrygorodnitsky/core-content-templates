@@ -1,0 +1,82 @@
+/* lab-ui block · decorative.cycle-strip
+   Depends: 00-tokens/tokens.css. Light theme.
+   Adapted from designer styles.css §smb-cycle (lines 1057–1095). */
+
+.cycle-strip {
+  margin-top: 3rem;
+  padding: 20px 24px;
+  border-radius: var(--radius-card);
+  border: 1px dashed color-mix(in srgb, var(--cta-accent, #6BEAF9) 24%, rgba(15, 17, 22, 0.16));
+  background: color-mix(in srgb, var(--cta-accent, #6BEAF9) 5%, rgba(15, 17, 22, 0.025));
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  flex-wrap: wrap;
+  font-family: var(--font-family);
+}
+
+.cycle-strip-label {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  flex-shrink: 0;
+}
+.cycle-strip[data-tone="warn"] .cycle-strip-label {
+  background: var(--cta-secondary-fill, linear-gradient(90deg, #56422D 0%, #494938 100%));
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+.cycle-strip[data-tone="neutral"] .cycle-strip-label { color: var(--color-gray-second); }
+
+.cycle-strip-flow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.cycle-strip-item {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  color: var(--color-gray-blue);
+}
+.cycle-strip[data-tone="warn"] .cycle-strip-item {
+  text-decoration: line-through;
+  text-decoration-color: color-mix(in srgb, var(--cta-accent, #6BEAF9) 55%, rgba(15, 17, 22, 0.25));
+  text-underline-offset: 2px;
+}
+
+.cycle-strip-arrow {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--color-gray-second);
+}
+
+/* Hide empty items so admins can ship 3-step or 5-step flows
+   without editing markup — JS would set [hidden] on empty slots. */
+.cycle-strip-item[hidden],
+.cycle-strip-arrow[hidden] {
+  display: none !important;
+}
+
+@media (max-width: 720px) {
+  .cycle-strip {
+    align-items: flex-start;
+    gap: 14px;
+  }
+  .cycle-strip-flow {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  .cycle-strip-arrow {
+    display: none;
+  }
+  .cycle-strip-item {
+    width: 100%;
+  }
+}

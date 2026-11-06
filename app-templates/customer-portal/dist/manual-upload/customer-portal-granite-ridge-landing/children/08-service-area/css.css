@@ -1,0 +1,15 @@
+/* ---------- 7 · service area ---------- */
+.seo-area { display: grid; grid-template-columns: 1.1fr .9fr; gap: 30px; align-items: center; }
+.seo-area__region { font-weight: 800; font-size: 16px; margin-bottom: 12px; }
+.seo-area__cities { display: flex; flex-wrap: wrap; gap: 8px; }
+.seo-area__chip {
+  background: rgba(var(--accent-rgb),.1); color: var(--accent); font-weight: 700;
+  border-radius: var(--radius-pill); padding: 6px 14px; font-size: 13px;
+}
+.seo-area__note { font-size: 12.5px; color: var(--ink-3); margin: 14px 0 0; max-width: 440px; line-height: 1.55; }
+.seo-area__map {
+  border-radius: var(--radius-card); border: 1px dashed rgba(var(--hair),.2);
+  background: repeating-linear-gradient(-45deg, rgba(var(--hair),.04) 0 10px, transparent 10px 20px), rgba(var(--glass),.4);
+  display: grid; place-items: center; padding: 18px; gap: 4px;
+}
+.seo-area__visual { width: 100%; max-width: 260px; height: auto; }

@@ -1,0 +1,33 @@
+{
+ "optimistic": 2,
+ "code": "FOREMAN",
+ "nls": {
+  "en": {
+   "NAME": "Foreman"
+  }
+ },
+ "workflow": {
+  "id": 34,
+  "code": "WORKFORCE_LIFECYCLE"
+ },
+ "organization": {
+  "optimistic": 4,
+  "id": 8,
+  "code": "SERVICE_WAND_WINTER_SERVICES"
+ },
+ "attributeOrder": [
+  {
+   "default": [
+    {
+     "typeId": 155,
+     "attributeCode": "ACCOUNT_TYPE",
+     "visible": true
+    }
+   ]
+  }
+ ],
+ "attributes": [],
+ "id": 159,
+ "isAbstract": false,
+ "attributeGroups": []
+}

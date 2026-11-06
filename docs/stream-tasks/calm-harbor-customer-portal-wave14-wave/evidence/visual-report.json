@@ -1,0 +1,441 @@
+{
+  "schemaVersion": 1,
+  "tolerance": {
+    "x": 2,
+    "width": 2
+  },
+  "rows": [
+    {
+      "width": 390,
+      "surface": "orders",
+      "deltas": [
+        {
+          "id": "top-nav",
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        {
+          "id": "spa-orders",
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        {
+          "id": "spa-order-list",
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        {
+          "id": "spa-order-row",
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        }
+      ],
+      "reference": "docs/stream-tasks/calm-harbor-customer-portal-wave14-wave/evidence/screenshots/reference-orders-390.png",
+      "implementation": "docs/stream-tasks/calm-harbor-customer-portal-wave14-wave/evidence/screenshots/implementation-orders-390.png"
+    },
+    {
+      "width": 390,
+      "surface": "services",
+      "deltas": [
+        {
+          "id": "top-nav",
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        {
+          "id": "spa-catalog",
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        {
+          "id": "spa-service-list",
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        {
+          "id": "spa-service-card",
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        }
+      ],
+      "reference": "docs/stream-tasks/calm-harbor-customer-portal-wave14-wave/evidence/screenshots/reference-services-390.png",
+      "implementation": "docs/stream-tasks/calm-harbor-customer-portal-wave14-wave/evidence/screenshots/implementation-services-390.png"
+    },
+    {
+      "width": 390,
+      "surface": "products",
+      "deltas": [
+        {
+          "id": "top-nav",
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        {
+          "id": "spa-shop",
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        {
+          "id": "spa-shop-list",
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        {
+          "id": "spa-shop-card",
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        }
+      ],
+      "reference": "docs/stream-tasks/calm-harbor-customer-portal-wave14-wave/evidence/screenshots/reference-products-390.png",
+      "implementation": "docs/stream-tasks/calm-harbor-customer-portal-wave14-wave/evidence/screenshots/implementation-products-390.png"
+    },
+    {
+      "width": 768,
+      "surface": "orders",
+      "deltas": [
+        {
+          "id": "top-nav",
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        {
+          "id": "spa-orders",
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 17
+        },
+        {
+          "id": "spa-order-list",
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 17
+        },
+        {
+          "id": "spa-order-row",
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        }
+      ],
+      "reference": "docs/stream-tasks/calm-harbor-customer-portal-wave14-wave/evidence/screenshots/reference-orders-768.png",
+      "implementation": "docs/stream-tasks/calm-harbor-customer-portal-wave14-wave/evidence/screenshots/implementation-orders-768.png"
+    },
+    {
+      "width": 768,
+      "surface": "services",
+      "deltas": [
+        {
+          "id": "top-nav",
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        {
+          "id": "spa-catalog",
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        {
+          "id": "spa-service-list",
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        {
+          "id": "spa-service-card",
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        }
+      ],
+      "reference": "docs/stream-tasks/calm-harbor-customer-portal-wave14-wave/evidence/screenshots/reference-services-768.png",
+      "implementation": "docs/stream-tasks/calm-harbor-customer-portal-wave14-wave/evidence/screenshots/implementation-services-768.png"
+    },
+    {
+      "width": 768,
+      "surface": "products",
+      "deltas": [
+        {
+          "id": "top-nav",
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        {
+          "id": "spa-shop",
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        {
+          "id": "spa-shop-list",
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        {
+          "id": "spa-shop-card",
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        }
+      ],
+      "reference": "docs/stream-tasks/calm-harbor-customer-portal-wave14-wave/evidence/screenshots/reference-products-768.png",
+      "implementation": "docs/stream-tasks/calm-harbor-customer-portal-wave14-wave/evidence/screenshots/implementation-products-768.png"
+    },
+    {
+      "width": 1180,
+      "surface": "orders",
+      "deltas": [
+        {
+          "id": "top-nav",
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        {
+          "id": "spa-orders",
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        {
+          "id": "spa-order-list",
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        {
+          "id": "spa-order-row",
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        }
+      ],
+      "reference": "docs/stream-tasks/calm-harbor-customer-portal-wave14-wave/evidence/screenshots/reference-orders-1180.png",
+      "implementation": "docs/stream-tasks/calm-harbor-customer-portal-wave14-wave/evidence/screenshots/implementation-orders-1180.png"
+    },
+    {
+      "width": 1180,
+      "surface": "services",
+      "deltas": [
+        {
+          "id": "top-nav",
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        {
+          "id": "spa-catalog",
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        {
+          "id": "spa-service-list",
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        {
+          "id": "spa-service-card",
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        }
+      ],
+      "reference": "docs/stream-tasks/calm-harbor-customer-portal-wave14-wave/evidence/screenshots/reference-services-1180.png",
+      "implementation": "docs/stream-tasks/calm-harbor-customer-portal-wave14-wave/evidence/screenshots/implementation-services-1180.png"
+    },
+    {
+      "width": 1180,
+      "surface": "products",
+      "deltas": [
+        {
+          "id": "top-nav",
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        {
+          "id": "spa-shop",
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        {
+          "id": "spa-shop-list",
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        {
+          "id": "spa-shop-card",
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        }
+      ],
+      "reference": "docs/stream-tasks/calm-harbor-customer-portal-wave14-wave/evidence/screenshots/reference-products-1180.png",
+      "implementation": "docs/stream-tasks/calm-harbor-customer-portal-wave14-wave/evidence/screenshots/implementation-products-1180.png"
+    },
+    {
+      "width": 1440,
+      "surface": "orders",
+      "deltas": [
+        {
+          "id": "top-nav",
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        {
+          "id": "spa-orders",
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        {
+          "id": "spa-order-list",
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        {
+          "id": "spa-order-row",
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        }
+      ],
+      "reference": "docs/stream-tasks/calm-harbor-customer-portal-wave14-wave/evidence/screenshots/reference-orders-1440.png",
+      "implementation": "docs/stream-tasks/calm-harbor-customer-portal-wave14-wave/evidence/screenshots/implementation-orders-1440.png"
+    },
+    {
+      "width": 1440,
+      "surface": "services",
+      "deltas": [
+        {
+          "id": "top-nav",
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        {
+          "id": "spa-catalog",
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        {
+          "id": "spa-service-list",
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        {
+          "id": "spa-service-card",
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        }
+      ],
+      "reference": "docs/stream-tasks/calm-harbor-customer-portal-wave14-wave/evidence/screenshots/reference-services-1440.png",
+      "implementation": "docs/stream-tasks/calm-harbor-customer-portal-wave14-wave/evidence/screenshots/implementation-services-1440.png"
+    },
+    {
+      "width": 1440,
+      "surface": "products",
+      "deltas": [
+        {
+          "id": "top-nav",
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        {
+          "id": "spa-shop",
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        {
+          "id": "spa-shop-list",
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        {
+          "id": "spa-shop-card",
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        }
+      ],
+      "reference": "docs/stream-tasks/calm-harbor-customer-portal-wave14-wave/evidence/screenshots/reference-products-1440.png",
+      "implementation": "docs/stream-tasks/calm-harbor-customer-portal-wave14-wave/evidence/screenshots/implementation-products-1440.png"
+    }
+  ]
+}
