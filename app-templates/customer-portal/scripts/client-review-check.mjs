@@ -127,6 +127,16 @@ function loadRuntime(options = {}) {
   return { sandbox, CR: sandbox.ClientReview, document, consoleCalls, storageCalls };
 }
 
+async function boundDecisionPath() {
+  const seedsDir = path.resolve("../core-ui/scripts/dev/seeds");
+  const workflowPath = path.join(seedsDir, "quotationPackageOrderWorkflow.json");
+  const scriptsPath = path.join(seedsDir, "quotationPackageScripts.json");
+  if (!existsSync(workflowPath) || !existsSync(scriptsPath)) return null;
+  const bound = JSON.parse(await fs.readFile(workflowPath, "utf8")).workflows.find((workflow) => workflow.code === "GENERAL_FSM_ORDER");
+  const entry = bound && JSON.parse(await fs.readFile(scriptsPath, "utf8")).scripts.find((script) => script.code === bound.script);
+  return entry && entry.contentFile ? path.join(seedsDir, entry.contentFile) : null;
+}
+
 async function boundProcessorPath() {
   const seedsDir = path.resolve("../core-ui/scripts/dev/seeds");
   const workflowsPath = path.join(seedsDir, "serviceAgreementWorkflows.json");
@@ -660,16 +670,26 @@ const N = loadRuntime().CR.normalizer;
   assert.deepEqual(modelled, ["LEGAL_NAME", "BILLING_ADDRESS", "REPRESENTATIVE_FIRST_NAME", "REPRESENTATIVE_LAST_NAME", "REPRESENTATIVE_PHONE", "CLIENT_TYPE_INVALID", "REPRESENTATIVE_EMAIL_INVALID", "INFORMATION_CONFIRMED", "AUTHORITY_CONFIRMED"], "the fixture models the server's rules for the details and their code order");
   assert.equal("detailsReturn" in contract || "detailsErrors" in contract.agreementAttributes || "details" in contract.agreementEvents, false, "the page reads no returned details and sends no details event of its own");
 
+  const confirmations = plain(contract.contractDetails.attributes.filter((attribute) => attribute.className === "java.lang.Boolean").map((attribute) => attribute.code));
+  const javaList = (source, name) => [...((source.match(new RegExp(name + "\\s*=\\s*List\\.of\\(([^)]*)\\)")) || ["", ""])[1]).matchAll(/"([A-Z_]+)"/g)].map((match) => match[1]);
+  const decisionPath = await boundDecisionPath();
+  if (decisionPath && existsSync(decisionPath)) {
+    const decision = await fs.readFile(decisionPath, "utf8");
+    assert.deepEqual(javaList(decision, "REQUIRED_DETAIL_TEXT_FIELDS"), requiredText, "the round decision requires what the page requires");
+    assert.deepEqual(javaList(decision, "DETAIL_BOOLEAN_FIELDS"), confirmations, "and the same confirmations");
+    console.log("client-review-check: details rules compared with " + path.relative(process.cwd(), decisionPath));
+  } else {
+    console.log("client-review-check: no order utilities bound in the seeds, decision rules not compared");
+  }
   const bound = await boundProcessorPath();
   const processorPath = bound && bound.path;
   if (processorPath && existsSync(processorPath)) {
     const processor = await fs.readFile(processorPath, "utf8");
-    const listOf = (name) => [...((processor.match(new RegExp(name + "\\s*=\\s*List\\.of\\(([^)]*)\\)")) || ["", ""])[1]).matchAll(/"([A-Z_]+)"/g)].map((match) => match[1]);
-    assert.deepEqual(listOf("REQUIRED_TEXT_FIELDS"), requiredText, "the server's required text fields are the page's");
-    assert.deepEqual(listOf("BOOLEAN_FIELDS"), plain(contract.contractDetails.attributes.filter((attribute) => attribute.className === "java.lang.Boolean").map((attribute) => attribute.code)), "the server's confirmations are the page's");
-    console.log("client-review-check: details rules compared with " + path.relative(process.cwd(), processorPath));
+    assert.deepEqual(javaList(processor, "REQUIRED_DETAIL_TEXT_FIELDS"), requiredText, "the management-approval check requires what the page requires");
+    assert.deepEqual(javaList(processor, "CONFIRMATION_FIELDS"), confirmations, "and the same confirmations");
+    console.log("client-review-check: approval-time details rules compared with " + path.relative(process.cwd(), processorPath));
   } else {
-    console.log("client-review-check: no details processor bound in the seeds, details rules not compared");
+    console.log("client-review-check: no details processor bound in the seeds, approval-time rules not compared");
   }
 
   const typesPath = path.resolve("../core-ui/scripts/dev/seeds/serviceAgreementTypes.json");
