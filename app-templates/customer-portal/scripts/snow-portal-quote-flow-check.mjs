@@ -36,9 +36,9 @@ const { isRouteReachable, resolveRoute } = await load("src/router.js");
 const { TopNav } = await load("src/components/shell/TopNav.js");
 const { QUOTE_STATUS } = await load("src/components/proposals/QuotePackage.js");
 const { AGREEMENT_STAGES, CLIENT_TYPES, CONTRACT_CLIENT_TYPES, normalizeContracts, normalizeQuoteOrders, normalizeServiceAgreement } = await load("src/normalizers/contracts.js");
-const { CONTRACT_EVENTS, createContractCommands } = await load("src/contract-commands.js");
+const { CONTRACT_EVENTS } = await load("src/contract-commands.js");
 const { QUOTE_REQUEST_COPY, QUOTE_REQUEST_OUTCOME_TIMEOUT_MS, acceptQuoteAddress, addTypedQuoteAddress, changeQuoteRequestDraft, quoteRequestSchema, quoteRequestState, quoteRequestValues, resetQuoteRequest, submitQuoteRequest, toggleQuoteProperty, validateQuoteRequest } = await load("src/quote-request.js");
-const { CONTRACT_DETAILS_FIELDS, contractDetailsRequest } = await load("src/contract-details.js");
+const { CONTRACT_DETAILS_FIELDS, contractDetailsEventInput, contractDetailsRequest } = await load("src/contract-details.js");
 const { contractDetailsPrefill } = await load("src/normalizers/account-profile.js");
 const { coreAccountProfileContract } = await load("src/adapters/core-account-profile-adapter.js");
 
@@ -145,9 +145,8 @@ function coreTable() {
     properties: [property(983, "Harbour View Tower", 703, 75000), property(984, "Coal Harbour Lot", 704, 12000)],
     account: accountRow(),
     agreements: [
-      agreement(5601, "QUOTATION_SENT", [4101, 4102, 4103]),
       agreement(5602, "SENT_TO_CLIENT", [4001], { LEGAL_NAME: { value: "Harbour View Strata" }, CLIENT_TYPE: { value: "ORGANIZATION" } }),
-      agreement(5603, "AWAITING_CLIENT_DETAILS", [4201], { CLIENT_TYPE: { value: "ORGANIZATION" } }),
+      agreement(5603, "DRAFT", [4201], { LEGAL_NAME: { value: "Harbour View Strata" }, CLIENT_TYPE: { value: "CORPORATE" }, CLIENT_DETAILS_ERRORS: { value: "REPRESENTATIVE_PHONE" } }),
     ],
     orders: [
       order(4001, "CLIENT_APPROVED", 983, "SEASONAL", 26751.6),
@@ -160,7 +159,6 @@ function coreTable() {
     submissions: [],
     events: [],
     reads: [],
-    afterDetails: "PENDING_MANAGEMENT_APPROVAL",
     fail: {},
   };
 }
@@ -204,12 +202,6 @@ async function coreFetch(url, options = {}) {
   }
   if (route === "/core/api/tagged/document/get.json") {
     const row = table.agreements.find((candidate) => candidate.id === Number(target.searchParams.get("id")));
-    if (row && row.states[0].code === "CLIENT_DETAILS_RECEIVED") {
-      const answer = structuredClone(row);
-      row.states = [{ id: row.states[0].id + 1, code: table.afterDetails }];
-      if (table.afterDetails === "AWAITING_CLIENT_DETAILS") row.attributes[17].CLIENT_DETAILS_ERRORS = { value: table.returnedErrors };
-      return json(answer);
-    }
     return row ? json(row) : { ok: false, status: 404, async json() { throw new Error("empty"); } };
   }
   const event = /^\/(core-bill|core)\/api\/tagged\/(order|document)\/(\d+)\/send-event\.json$/.exec(route);
@@ -224,12 +216,26 @@ async function coreFetch(url, options = {}) {
         const same = other.attributes[5].SERVICE_PROPERTY.value === row.attributes[5].SERVICE_PROPERTY.value;
         if (other !== row && same && other.states[0].code === "QUOTE_VIEWED") other.states = [{ id: other.states[0].id + 1000, code: "DECLINED" }];
       });
+      row.metadata = { QUOTATION_CLIENT_DETAILS: body };
     }
+    if (event[2] === "order") settleRound();
     return { ok: true, status: 200, async json() { throw new Error("empty body"); } };
   }
   throw new Error("unexpected request " + url);
 }
 globalThis.fetch = coreFetch;
+
+function settleRound() {
+  const held = new Set(table.agreements.flatMap((row) => row.attributes[17].ORDERS.value));
+  const round = table.orders.filter((row) => !held.has(row.id));
+  const byProperty = new Map();
+  round.forEach((row) => byProperty.set(row.attributes[5].SERVICE_PROPERTY.value, (byProperty.get(row.attributes[5].SERVICE_PROPERTY.value) || []).concat(row.states[0].code)));
+  const settled = [...byProperty.values()].every((codes) => codes.includes("CLIENT_APPROVED") || codes.every((code) => code === "DECLINED"));
+  const approved = round.filter((row) => row.states[0].code === "CLIENT_APPROVED");
+  if (!round.length || !settled || !approved.length) return;
+  const details = approved[approved.length - 1].metadata.QUOTATION_CLIENT_DETAILS;
+  table.agreements.push(agreement(5604, "DRAFT", approved.map((row) => row.id), details));
+}
 
 const mount = dom.document.createElement("div");
 mount.setAttribute("id", "app");
@@ -480,18 +486,23 @@ for (const [report, field, rendered] of [
   assert.equal(preparing(null), false);
 }
 
+const DETAIL_VALUE_CODES = ["LEGAL_NAME", "BILLING_ADDRESS", "REPRESENTATIVE_FIRST_NAME", "REPRESENTATIVE_LAST_NAME", "REPRESENTATIVE_JOB_TITLE", "REPRESENTATIVE_EMAIL", "REPRESENTATIVE_PHONE"];
+
 {
   await goLive();
-  state.currentSiteId = "quote-5601-984";
+  state.contractDetails = null;
+  state.currentSiteId = "quote-0-984";
   portal.go("proposal.detail");
   await settle();
   const cards = all(page(), "[data-module=\"quote-option\"]");
   assert.deepEqual(cards.map((card) => all(card, "[data-action]").map((button) => button.textContent)), [["Approve", "Request changes", "Decline"], ["Approve", "Request changes", "Decline"], ["Approve", "Request changes", "Decline"]], "Request changes sits next to Approve and Decline on every viewed quote");
 
   assert.equal(ACTIONS["quote.requestChanges"]("4102"), true);
+  assert.equal(state.contractDetails, null, "a change request asks no contract details");
   const box = one(page(), "[data-module=\"change-request\"]");
   assert.equal(one(box, "label").textContent, "What should change?");
   assert.equal(one(box, "textarea").getAttribute("data-quote-changes"), "4102");
+  assert.equal(all(box, "[data-module=\"agreement-details\"]").length, 0);
   assert.equal(await ACTIONS["quote.sendChanges"]("4102"), false);
   assert.equal(table.events.length, 0, "an empty comment sends nothing");
   const invalid = one(page(), "[data-module=\"change-request\"]");
@@ -514,16 +525,105 @@ for (const [report, field, rendered] of [
   assert.equal(state.toast, "Change request sent");
 
   ACTIONS["quote.approve"]("4101");
+  const loading = one(page(), "[data-module=\"decision-confirm\"]");
+  assert.equal(one(loading, "[data-module=\"agreement-details\"]").getAttribute("data-state"), "loading", "Approve opens the contract details, loaded from the account");
+  assert.equal(one(loading, "[data-action=\"quote.confirm\"]").hasAttribute("disabled"), true);
+  assert.equal(await ACTIONS["quote.confirm"]("4101"), false, "nothing is approved while the details load");
+  await until(() => state.contractDetails && state.contractDetails.prefill === "ready");
+  const names = (mappings) => mappings.map((mapping) => mapping.name);
+  assert.deepEqual(names(table.accountMappings), ["id", "nls", "user", "contacts", "addresses", "attributes"], "the pre-fill reads the profile mappings plus attributes");
+  assert.deepEqual(plain(coreAccountProfileContract.contractDetailsMappings), plain(coreAccountProfileContract.mappings.concat([{ name: "attributes" }])));
+  const form = one(page(), "[data-module=\"decision-confirm\"] [data-module=\"agreement-details\"]");
+  assert.equal(form.getAttribute("data-state"), "editing");
+  const value = (code) => one(form, "[data-contract-detail=\"" + code + "\"]").getAttribute("value");
+  assert.deepEqual(DETAIL_VALUE_CODES.map(value), [
+    "Harbour View Strata", "100 Harbour Way, Vancouver, BC V6B 1A1", "Avery", "Flow", "Strata President", "avery@example.test", "+16045550100",
+  ], "pre-filled from the Account name, the lowest BILLING address's address1 and the LEGAL contact with its first EMAIL and PHONE entries");
+  assert.equal(one(form, "[data-module=\"agreement-details-prefill\"]").textContent, "Filled in from your account. Check every field before sending.");
+  assert.deepEqual(all(form, "[data-client-type]").map((radio) => [radio.getAttribute("value"), radio.hasAttribute("checked")]), [
+    ["INDIVIDUAL", false], ["UNINCORPORATED_BUSINESS", false], ["CORPORATE", false], ["ASSOCIATION", false], ["GOVERNMENT", false],
+  ], "client type is a required choice of the five values the server accepts");
+  assert.deepEqual(texts(form, ".choice-chip__label"), ["Individual", "Unincorporated business", "Corporation", "Association", "Government"]);
+  assert.deepEqual(all(form, "input[type=\"checkbox\"]").map((box) => [box.getAttribute("data-contract-detail"), box.hasAttribute("checked")]), [["INFORMATION_CONFIRMED", false], ["AUTHORITY_CONFIRMED", false]], "the confirmations are never pre-filled");
+  assert.equal(one(form, "label[for=\"contract-detail-representative-job-title\"]").textContent, "Job title (optional)");
+
+  assert.equal(await ACTIONS["quote.confirm"]("4101"), false);
+  assert.equal(table.events.length, 1, "nothing is approved while a required detail is missing: the server cannot refuse the event, so the page checks first");
+  const refused = one(page(), "[data-module=\"agreement-details\"]");
+  assert.deepEqual(all(refused, ".field-error").map((error) => error.textContent), ["Choose the client type.", "Confirm this to send your details.", "Confirm this to send your details."]);
+
+  const legal = one(refused, "[data-contract-detail=\"LEGAL_NAME\"]");
+  legal.value = "  ";
+  fire(legal, "input");
+  const email = one(refused, "[data-contract-detail=\"REPRESENTATIVE_EMAIL\"]");
+  email.value = "avery@";
+  fire(email, "input");
+  assert.equal(await ACTIONS["quote.confirm"]("4101"), false);
+  assert.deepEqual(all(page(), "[data-module=\"agreement-details\"] .field-error").map((error) => error.textContent).slice(0, 3), ["Enter the client’s legal name.", "Choose the client type.", "Enter a valid email address, like name@example.com."]);
+
+  const again = one(page(), "[data-module=\"agreement-details\"]");
+  const legalAgain = one(again, "[data-contract-detail=\"LEGAL_NAME\"]");
+  legalAgain.value = "Harbour View Strata Corp.";
+  fire(legalAgain, "input");
+  const emailAgain = one(again, "[data-contract-detail=\"REPRESENTATIVE_EMAIL\"]");
+  emailAgain.value = "Avery@Example.test";
+  fire(emailAgain, "input");
+  const corporate = one(again, "[data-client-type=\"CORPORATE\"]");
+  corporate.checked = true;
+  fire(corporate, "change");
+  for (const code of ["INFORMATION_CONFIRMED", "AUTHORITY_CONFIRMED"]) {
+    const check = one(again, "[data-contract-detail=\"" + code + "\"]");
+    check.checked = true;
+    fire(check, "change");
+  }
   assert.equal(await ACTIONS["quote.confirm"]("4101"), true, "approve still works beside a change request");
-  assert.deepEqual(table.events.slice(1).map((event) => [event.id, event.code, event.body]), [[4101, "QUOTE_VIEWED-CLIENT_APPROVED", {}]]);
+  assert.deepEqual(table.events.slice(1), [{
+    entity: "order", id: 4101, code: "QUOTE_VIEWED-CLIENT_APPROVED",
+    body: {
+      LEGAL_NAME: { value: "Harbour View Strata Corp." },
+      CLIENT_TYPE: { value: "CORPORATE" },
+      BILLING_ADDRESS: { value: "100 Harbour Way, Vancouver, BC V6B 1A1" },
+      REPRESENTATIVE_FIRST_NAME: { value: "Avery" },
+      REPRESENTATIVE_LAST_NAME: { value: "Flow" },
+      REPRESENTATIVE_JOB_TITLE: { value: "Strata President" },
+      REPRESENTATIVE_EMAIL: { value: "avery@example.test" },
+      REPRESENTATIVE_PHONE: { value: "+16045550100" },
+      INFORMATION_CONFIRMED: { value: true },
+      AUTHORITY_CONFIRMED: { value: true },
+    },
+  }], "the approval carries every contract detail as { value }, the confirmations included, through the tagged event");
   assert.deepEqual(table.orders.filter((row) => row.attributes[5].SERVICE_PROPERTY.value === 984).map((row) => row.states[0].code), ["CLIENT_APPROVED", "CUSTOMER_CHANGES_REQUESTED", "DECLINED"]);
+  assert.equal(state.toast, "Option approved");
+  assert.equal(all(page(), "[data-module=\"agreement-details\"]").length, 0, "the details close with the approval");
+  assert.deepEqual(table.agreements.map((row) => [row.id, row.states[0].code, row.attributes[17].ORDERS.value]), [[5602, "SENT_TO_CLIENT", [4001]], [5603, "DRAFT", [4201]], [5604, "DRAFT", [4101]]], "an approved option settles its property even beside a change request, and the settled round becomes a DRAFT agreement of the approved quote");
 }
 
 {
   await goLive();
-  state.currentSiteId = "quote-5601-984";
+  state.contractDetails = null;
+  state.currentSiteId = "quote-0-984";
+  portal.go("proposal.detail");
+  ACTIONS["quote.approve"]("4103");
+  await until(() => state.contractDetails && state.contractDetails.prefill === "ready");
+  Object.assign(state.contractDetails.draft, { CLIENT_TYPE: "INDIVIDUAL", REPRESENTATIVE_JOB_TITLE: "", INFORMATION_CONFIRMED: true, AUTHORITY_CONFIRMED: true });
+  assert.equal(await ACTIONS["quote.confirm"]("4103"), true);
+  assert.deepEqual(table.events.map((event) => [event.id, event.code, event.body.CLIENT_TYPE, event.body.REPRESENTATIVE_JOB_TITLE]), [[4103, "QUOTE_VIEWED-CLIENT_APPROVED", { value: "INDIVIDUAL" }, { value: "" }]], "an optional job title left empty is sent empty");
+  assert.deepEqual(table.orders.filter((row) => row.attributes[5].SERVICE_PROPERTY.value === 984).map((row) => row.states[0].code), ["DECLINED", "DECLINED", "CLIENT_APPROVED"], "the server declines the other options of the approved property itself; the page sends nothing for them");
+  portal.go("proposals.list");
+  const prepared = all(page(), "[data-module=\"agreement-row\"]").find((row) => row.getAttribute("data-id") === "agreement-core-5604");
+  assert.ok(prepared, "once the round is settled the agreement made from the approved quotes appears in Contracts");
+  assert.equal(one(prepared, "[data-module=\"status-badge\"]").textContent, "Being prepared");
+  state.agreementId = "agreement-core-5604";
+  portal.go("agreement.detail");
+  assert.equal(all(page(), "[data-module=\"agreement-details\"]").length + all(page(), "[data-module=\"agreement-approve\"]").length, 0, "a DRAFT agreement asks the client for nothing");
+}
+
+{
+  await goLive();
+  state.currentSiteId = "quote-0-984";
   portal.go("proposal.detail");
   ACTIONS["quote.decline"]("4103");
+  assert.equal(all(page(), "[data-module=\"decision-confirm\"] [data-module=\"agreement-details\"]").length, 0, "a decline asks no contract details");
   assert.equal(await ACTIONS["quote.confirm"]("4103"), true);
   assert.deepEqual(table.events.map((event) => [event.id, event.code, event.body]), [[4103, "QUOTE_VIEWED-DECLINED", {}]], "decline still sends its empty-bodied event");
   assert.equal(one(page(), "[data-module=\"quote-option\"][data-state=\"declined\"] [data-module=\"status-badge\"]").textContent, "✕ Declined");
@@ -539,125 +639,13 @@ for (const [report, field, rendered] of [
 
 {
   await goLive();
-  state.contractDetails = null;
   state.agreementId = "agreement-core-5603";
   portal.go("agreement.detail");
-  assert.equal(one(page(), "[data-module=\"agreement-details\"]").getAttribute("data-state"), "loading");
-  await until(() => state.contractDetails && state.contractDetails.prefill === "ready");
-  const names = (mappings) => mappings.map((mapping) => mapping.name);
-  assert.deepEqual(names(table.accountMappings), ["id", "nls", "user", "contacts", "addresses", "attributes"], "the pre-fill reads the profile mappings plus attributes");
-  assert.deepEqual(plain(coreAccountProfileContract.contractDetailsMappings), plain(coreAccountProfileContract.mappings.concat([{ name: "attributes" }])));
-  const view = page();
-  assert.equal(one(view, "[data-module=\"agreement-detail-head\"] [data-module=\"status-badge\"]").textContent, "Awaiting your details");
-  assert.equal(all(view, "[data-module=\"agreement-notice\"]").length, 0, "the details step replaces the notice");
-  const form = one(view, "[data-module=\"agreement-details\"]");
-  const value = (code) => one(form, "[data-contract-detail=\"" + code + "\"]").getAttribute("value");
-  assert.deepEqual(["LEGAL_NAME", "BILLING_ADDRESS", "REPRESENTATIVE_FIRST_NAME", "REPRESENTATIVE_LAST_NAME", "REPRESENTATIVE_JOB_TITLE", "REPRESENTATIVE_EMAIL", "REPRESENTATIVE_PHONE"].map(value), [
-    "Harbour View Strata", "100 Harbour Way, Vancouver, BC V6B 1A1", "Avery", "Flow", "Strata President", "avery@example.test", "+16045550100",
-  ], "pre-filled from the Account name, the lowest BILLING address's address1 and the LEGAL contact with its first EMAIL and PHONE entries");
-  assert.equal(one(form, "[data-module=\"agreement-details-prefill\"]").textContent, "Filled in from your account. Check every field before sending.");
-  assert.deepEqual(all(form, "[data-client-type]").map((radio) => [radio.getAttribute("value"), radio.hasAttribute("checked")]), [
-    ["INDIVIDUAL", false], ["UNINCORPORATED_BUSINESS", false], ["CORPORATE", false], ["ASSOCIATION", false], ["GOVERNMENT", false],
-  ], "client type is a required choice of the five values the processor accepts; the old agreement's ORGANIZATION is neither offered nor chosen");
-  assert.deepEqual(texts(form, ".choice-chip__label"), ["Individual", "Unincorporated business", "Corporation", "Association", "Government"]);
-  assert.deepEqual(all(form, "input[type=\"checkbox\"]").map((box) => [box.getAttribute("data-contract-detail"), box.hasAttribute("checked")]), [["INFORMATION_CONFIRMED", false], ["AUTHORITY_CONFIRMED", false]], "the confirmations are never pre-filled");
-  assert.equal(one(form, "label[for=\"contract-detail-representative-job-title\"]").textContent, "Job title (optional)");
-
-  assert.equal(await ACTIONS["agreement.sendDetails"]("5603"), false);
-  assert.equal(table.events.length, 0, "nothing is sent while a required detail is missing");
-  const refused = one(page(), "[data-module=\"agreement-details\"]");
-  assert.deepEqual(all(refused, ".field-error").map((error) => error.textContent), ["Choose the client type.", "Confirm this to send your details.", "Confirm this to send your details."]);
-
-  const legal = one(refused, "[data-contract-detail=\"LEGAL_NAME\"]");
-  legal.value = "  ";
-  fire(legal, "input");
-  const email = one(refused, "[data-contract-detail=\"REPRESENTATIVE_EMAIL\"]");
-  email.value = "avery@";
-  fire(email, "input");
-  assert.equal(await ACTIONS["agreement.sendDetails"]("5603"), false);
-  assert.deepEqual(all(page(), "[data-module=\"agreement-details\"] .field-error").map((error) => error.textContent).slice(0, 3), ["Enter the client’s legal name.", "Choose the client type.", "Enter a valid email address, like name@example.com."]);
-
-  const again = one(page(), "[data-module=\"agreement-details\"]");
-  const legalAgain = one(again, "[data-contract-detail=\"LEGAL_NAME\"]");
-  legalAgain.value = "Harbour View Strata Corp.";
-  fire(legalAgain, "input");
-  const emailAgain = one(again, "[data-contract-detail=\"REPRESENTATIVE_EMAIL\"]");
-  emailAgain.value = "Avery@Example.test";
-  fire(emailAgain, "input");
-  const corporate = one(again, "[data-client-type=\"CORPORATE\"]");
-  corporate.checked = true;
-  fire(corporate, "change");
-  for (const code of ["INFORMATION_CONFIRMED", "AUTHORITY_CONFIRMED"]) {
-    const box = one(again, "[data-contract-detail=\"" + code + "\"]");
-    box.checked = true;
-    fire(box, "change");
-  }
-  assert.equal(await ACTIONS["agreement.sendDetails"]("5603"), true);
-  assert.deepEqual(table.events, [{
-    entity: "document", id: 5603, code: "AWAITING_CLIENT_DETAILS-CLIENT_DETAILS_RECEIVED",
-    body: {
-      LEGAL_NAME: { value: "Harbour View Strata Corp." },
-      CLIENT_TYPE: { value: "CORPORATE" },
-      BILLING_ADDRESS: { value: "100 Harbour Way, Vancouver, BC V6B 1A1" },
-      REPRESENTATIVE_FIRST_NAME: { value: "Avery" },
-      REPRESENTATIVE_LAST_NAME: { value: "Flow" },
-      REPRESENTATIVE_JOB_TITLE: { value: "Strata President" },
-      REPRESENTATIVE_EMAIL: { value: "avery@example.test" },
-      REPRESENTATIVE_PHONE: { value: "+16045550100" },
-      INFORMATION_CONFIRMED: { value: true },
-      AUTHORITY_CONFIRMED: { value: true },
-    },
-  }], "the documented event carries every attribute as { value }, the confirmations included");
-  const sent = page();
-  assert.equal(one(sent, "[data-module=\"agreement-detail-head\"] [data-module=\"status-badge\"]").textContent, "Pending management approval", "after the processor accepts the details the agreement awaits management");
-  assert.equal(one(sent, "[data-module=\"agreement-notice\"]").textContent, "Thank you, we have your details. A manager prepares and approves your service agreement next; it appears here for your approval and we email you when it’s ready.");
-  assert.equal(all(sent, "[data-module=\"agreement-details\"]").length, 0);
-  assert.equal(state.contractDetails, null);
-}
-
-{
-  await goLive();
-  state.contractDetails = null;
-  table.afterDetails = "AWAITING_CLIENT_DETAILS";
-  table.returnedErrors = "CLIENT_TYPE_INVALID,REPRESENTATIVE_PHONE";
-  state.agreementId = "agreement-core-5603";
-  portal.go("agreement.detail");
-  await until(() => state.contractDetails && state.contractDetails.prefill === "ready");
-  const values = { LEGAL_NAME: "Harbour View Strata", CLIENT_TYPE: "INDIVIDUAL", BILLING_ADDRESS: "100 Harbour Way, Vancouver", REPRESENTATIVE_FIRST_NAME: "Avery", REPRESENTATIVE_LAST_NAME: "Flow", REPRESENTATIVE_JOB_TITLE: "", REPRESENTATIVE_EMAIL: "avery@example.test", REPRESENTATIVE_PHONE: "604 555 0100", INFORMATION_CONFIRMED: true, AUTHORITY_CONFIRMED: true };
-  Object.assign(state.contractDetails.draft, values);
-  assert.equal(await ACTIONS["agreement.sendDetails"]("5603"), false);
-  const back = one(page(), "[data-module=\"agreement-details\"]");
-  assert.equal(one(back, "[data-module=\"contracts-partial\"]").textContent, "!Your details came back. Our system could not accept them. Fix the marked fields and send your details again.");
-  assert.deepEqual(all(back, ".field-error").map((error) => error.textContent), ["Choose one of the client types.", "This was missing from the details you sent."], "the processor's CLIENT_DETAILS_ERRORS are marked on their fields");
-  assert.equal(one(back, "[data-contract-detail=\"REPRESENTATIVE_PHONE\"]").getAttribute("value"), "604 555 0100", "what the client typed is kept");
-}
-
-{
-  const pkg = (stateCode, errors) => {
-    const row = normalizeServiceAgreement(agreement(5603, stateCode, [], errors ? { CLIENT_DETAILS_ERRORS: { value: errors } } : {}));
-    return { agreements: [{ id: row.id, agreement: row, orders: [] }], groups: [], sources: { orders: "ready" } };
-  };
-  const reads = [];
-  let current = pkg("AWAITING_CLIENT_DETAILS");
-  let clock = 0;
-  const commands = createContractCommands({
-    state: { contractCommand: null, contractConfirm: null },
-    render() {},
-    current: () => current,
-    context: () => ({}),
-    wait: async (ms) => { clock += ms; },
-    now: () => clock,
-    reload: async () => current,
-    gateway: () => ({
-      readAgreement: async () => { reads.push(clock); return agreement(5603, "AWAITING_CLIENT_DETAILS", []); },
-      sendAgreementEvent: async () => true,
-    }),
-  });
-  const filled = contractDetailsRequest({ LEGAL_NAME: "A", CLIENT_TYPE: "GOVERNMENT", BILLING_ADDRESS: "1 Main St, Vancouver", REPRESENTATIVE_FIRST_NAME: "A", REPRESENTATIVE_LAST_NAME: "B", REPRESENTATIVE_JOB_TITLE: "", REPRESENTATIVE_EMAIL: "a@b.test", REPRESENTATIVE_PHONE: "6045550100", INFORMATION_CONFIRMED: true, AUTHORITY_CONFIRMED: true });
-  assert.deepEqual(filled.errors, {});
-  assert.deepEqual(Object.keys(filled.values), CONTRACT_DETAILS_FIELDS.map((field) => field.code));
-  assert.equal(await commands.sendDetails(5603, filled.values), false);
-  assert.ok(clock >= 45000 && clock < 47000, "a details event Core never applies is waited for about 45 s, then reported as unconfirmed rather than sent");
+  const draft = page();
+  assert.equal(one(draft, "[data-module=\"agreement-detail-head\"] [data-module=\"status-badge\"]").textContent, "Being prepared", "an agreement starts at DRAFT, being prepared by the provider");
+  assert.equal(one(draft, "[data-module=\"agreement-notice\"]").textContent, "We’re preparing your service agreement from the options you approved. A manager approves it next; it appears here for your approval and we email you when it’s ready. Nothing is needed from you.");
+  assert.equal(all(draft, "[data-module=\"agreement-details\"]").length + all(draft, "[data-module=\"agreement-approve\"]").length, 0, "no details step and no approval on a DRAFT agreement");
+  assert.doesNotMatch(draft.textContent, /REPRESENTATIVE_PHONE|missing|Missing/, "the details the manager still has to complete are never shown to the client");
 }
 
 {
@@ -673,26 +661,30 @@ for (const [report, field, rendered] of [
   assert.deepEqual([prepared.orders.length, prepared.preparing, prepared.withheldBackendIds.length], [0, true, 4], "a quote with the manager is never listed as a decision and keeps Contracts in preparing");
 
   const agreementSteps = {
-    QUOTATION_SENT: "Awaiting your decisions", QUOTATION_UPDATE: "Awaiting your decisions", QUOTATION_SEND_FAILED: "Awaiting your decisions",
-    AWAITING_CLIENT_DETAILS: "Awaiting your details",
-    CLIENT_DETAILS_RECEIVED: "Checking your details",
-    DRAFT: "Pending management approval", PENDING_MANAGEMENT_APPROVAL: "Pending management approval", INTERNALLY_APPROVED: "Pending management approval", CLIENT_CHANGES_REQUESTED: "Pending management approval",
+    DRAFT: "Being prepared", PENDING_MANAGEMENT_APPROVAL: "Pending management approval", INTERNALLY_APPROVED: "Pending management approval", CLIENT_CHANGES_REQUESTED: "Pending management approval",
     SENT_TO_CLIENT: "Sent for your approval", AGREEMENT_SEND_FAILED: "Being sent to you",
     CLIENT_APPROVED: "Approved", ACTIVATION_FAILED: "Approved",
     ACTIVE: "Active",
   };
   assert.deepEqual(Object.keys(agreementSteps).map((code) => [code, AGREEMENT_STAGES[code].label]), Object.entries(agreementSteps), "each documented agreement state shows its portal step");
-  assert.deepEqual(Object.keys(agreementSteps).filter((code) => normalizeServiceAgreement(agreement(1, code, [])).allowedActions.length).map((code) => [code, normalizeServiceAgreement(agreement(1, code, [])).allowedActions]), [["AWAITING_CLIENT_DETAILS", ["details"]], ["SENT_TO_CLIENT", ["approve"]]], "only these two states take a client action");
+  assert.deepEqual(Object.keys(agreementSteps).filter((code) => normalizeServiceAgreement(agreement(1, code, [])).allowedActions.length).map((code) => [code, normalizeServiceAgreement(agreement(1, code, [])).allowedActions]), [["SENT_TO_CLIENT", ["approve"]]], "only an agreement sent to the client takes a client action");
+  for (const retired of ["QUOTATION", "QUOTATION_SENT", "QUOTATION_UPDATE", "QUOTATION_SEND_FAILED", "AWAITING_CLIENT_DETAILS", "CLIENT_DETAILS_RECEIVED"]) {
+    assert.equal(AGREEMENT_STAGES[retired], undefined, retired + " is retired on 2026-11-06 and has no portal step");
+  }
   assert.equal(CLIENT_TYPES.ORGANIZATION, "Organization", "an old agreement's ORGANIZATION is still named on its parties card");
   assert.deepEqual(CONTRACT_CLIENT_TYPES.map((type) => type.code), ["INDIVIDUAL", "UNINCORPORATED_BUSINESS", "CORPORATE", "ASSOCIATION", "GOVERNMENT"]);
   assert.deepEqual(contractDetailsPrefill({ attributes: { 35: { LEGAL_ENTITY_TYPE: { value: "organization" } } } }, CONTRACT_CLIENT_TYPES.map((type) => type.code)).CLIENT_TYPE, "", "a legal entity type the processor refuses is not pre-filled");
   assert.deepEqual(contractDetailsPrefill({ attributes: { 35: { LEGAL_ENTITY_TYPE: { value: "corporate" } } } }, CONTRACT_CLIENT_TYPES.map((type) => type.code)).CLIENT_TYPE, "CORPORATE");
   assert.deepEqual(CONTRACT_EVENTS.changes, { entity: "order", source: "QUOTE_VIEWED", code: "QUOTE_VIEWED-CUSTOMER_CHANGES_REQUESTED" });
-  assert.deepEqual(CONTRACT_EVENTS.details, { entity: "document", source: "AWAITING_CLIENT_DETAILS", code: "AWAITING_CLIENT_DETAILS-CLIENT_DETAILS_RECEIVED" });
+  assert.deepEqual(CONTRACT_EVENTS.approve, { entity: "order", source: "QUOTE_VIEWED", code: "QUOTE_VIEWED-CLIENT_APPROVED" });
+  assert.deepEqual(Object.keys(CONTRACT_EVENTS).sort(), ["agreement", "approve", "changes", "decline", "view"], "the client sends no details event of its own any more");
+  const filled = contractDetailsRequest({ LEGAL_NAME: "A", CLIENT_TYPE: "GOVERNMENT", BILLING_ADDRESS: "1 Main St, Vancouver", REPRESENTATIVE_FIRST_NAME: "A", REPRESENTATIVE_LAST_NAME: "B", REPRESENTATIVE_JOB_TITLE: "", REPRESENTATIVE_EMAIL: "a@b.test", REPRESENTATIVE_PHONE: "6045550100", INFORMATION_CONFIRMED: true, AUTHORITY_CONFIRMED: true });
+  assert.deepEqual(filled.errors, {});
+  assert.deepEqual(Object.keys(contractDetailsEventInput(filled.values)), CONTRACT_DETAILS_FIELDS.map((field) => field.code), "the approval carries the ten codes the server reads");
 }
 
 assert.ok(warnings.every((line) => !/command unavailable/.test(line)), "every action the new screens use is connected: " + warnings.join(" | "));
-console.log("snow-portal-quote-flow-check ok: the header's Request a quote opens the in-portal page in a live portal and the public form otherwise; the page offers the client's own properties as cards with address and area, new addresses with suggestions bounded by the form type's within box and refused outside it or when not found, the form type's risk factors and notes and no contact field; it submits PORTAL_QUOTE_REQUEST exactly as documented with the session, shows sending, waiting and processing honestly, keeps waiting past 45 s for up to five minutes, then says the request is still being processed and quotes will arrive in Contracts and by email, and places each refusal next to its input; Contracts shows a running or accepted request as preparing; a viewed quote offers Request changes beside Approve and Decline, refuses an empty comment in the browser and sends MESSAGE with the documented event, then shows Changes requested; an agreement awaiting details shows a details step pre-filled from the Account, LEGAL contact and BILLING address, requires a client type from the five accepted values and both confirmations, sends every attribute as { value }, then shows Pending management approval or marks returned errors; quote and agreement states carry the documented labels; and approve, decline and agreement approval still send their empty-bodied events");
+console.log("snow-portal-quote-flow-check ok: the header's Request a quote opens the in-portal page in a live portal and the public form otherwise; the page offers the client's own properties as cards with address and area, new addresses with suggestions bounded by the form type's within box and refused outside it or when not found, the form type's risk factors and notes and no contact field; it submits PORTAL_QUOTE_REQUEST exactly as documented with the session, shows sending, waiting and processing honestly, keeps waiting past 45 s for up to five minutes, then says the request is still being processed and quotes will arrive in Contracts and by email, and places each refusal next to its input; Contracts shows a running or accepted request as preparing; a viewed quote offers Request changes beside Approve and Decline, refuses an empty comment in the browser and sends MESSAGE with the documented event, then shows Changes requested; Approve opens the contract details pre-filled from the Account, LEGAL contact and BILLING address, requires a client type from the five accepted values and both confirmations, and sends every detail as { value } on QUOTE_VIEWED-CLIENT_APPROVED; a settled round's DRAFT agreement shows as being prepared and asks nothing; quote and agreement states carry the documented labels; and decline and agreement approval still send their empty-bodied events");
 
 function createDom() {
   class Text {

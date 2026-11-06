@@ -222,26 +222,28 @@ const orderList = {
 }
 
 {
-  const review = normalizeServiceAgreement(agreementDocument(["QUOTATION", "QUOTATION_SENT"], { CLIENT: { value: 62 }, ORDERS: { value: [501, "502", 503, 503, "x", 0, true] } }));
+  const review = normalizeServiceAgreement(agreementDocument(["DRAFT"], { CLIENT: { value: 62 }, ORDERS: { value: [501, "502", 503, 503, "x", 0, true] } }));
   assert.deepEqual(plain({ id: review.id, backendId: review.backendId, stateCode: review.stateCode, stage: review.stage, label: review.label, tone: review.tone, orderBackendIds: review.orderBackendIds, effectiveDate: review.effectiveDate, term: review.term }), {
-    id: "agreement-core-9001", backendId: 9001, stateCode: "QUOTATION_SENT", stage: "review",
-    label: "Awaiting your decisions", tone: "info", orderBackendIds: [501, 502, 503], effectiveDate: null, term: null,
-  }, "the package reads its latest state and its listed Orders; no date is invented");
+    id: "agreement-core-9001", backendId: 9001, stateCode: "DRAFT", stage: "drafting",
+    label: "Being prepared", tone: "scheduled", orderBackendIds: [501, 502, 503], effectiveDate: null, term: null,
+  }, "an agreement starts at DRAFT, being prepared by the provider; it reads its latest state and its listed Orders; no date is invented");
   assert.deepEqual(review.allowedActions, [], "only an agreement sent to the client can be approved");
+  assert.equal("detailsErrors" in review, false, "CLIENT_DETAILS_ERRORS is the manager's, never read for the client");
   assert.deepEqual(review.terms, [], "an agreement without CONTRACT_TERMS has no terms, not an empty paragraph");
   assert.deepEqual(plain(review.parties.client), { legalName: "", clientType: "", billingAddress: "", representativeName: "", representativeJobTitle: "", email: "", phone: "" });
-  assert.deepEqual(normalizeServiceAgreement(agreementDocument(["QUOTATION"], { ORDERS: { value: "501, 502" } })).orderBackendIds, [501, 502]);
-  assert.deepEqual(normalizeServiceAgreement(agreementDocument(["QUOTATION"], { ORDERS: { value: 501 } })).orderBackendIds, [501]);
-  assert.deepEqual(normalizeServiceAgreement(agreementDocument(["QUOTATION"], {})).orderBackendIds, []);
-  assert.equal(normalizeServiceAgreement(agreementDocument(["QUOTATION"])).stage, "preparing");
+  assert.deepEqual(normalizeServiceAgreement(agreementDocument(["DRAFT"], { ORDERS: { value: "501, 502" } })).orderBackendIds, [501, 502]);
+  assert.deepEqual(normalizeServiceAgreement(agreementDocument(["DRAFT"], { ORDERS: { value: 501 } })).orderBackendIds, [501]);
+  assert.deepEqual(normalizeServiceAgreement(agreementDocument(["DRAFT"], {})).orderBackendIds, []);
+  for (const retired of ["QUOTATION", "QUOTATION_SENT", "QUOTATION_UPDATE", "QUOTATION_SEND_FAILED", "AWAITING_CLIENT_DETAILS", "CLIENT_DETAILS_RECEIVED"]) {
+    assert.equal(normalizeServiceAgreement(agreementDocument([retired], { ORDERS: { value: [501] } })), null, retired + " is retired since 2026-11-06: no agreement is in it, and one that is shows nowhere");
+  }
   const failedDelivery = normalizeServiceAgreement(agreementDocument(["SENT_TO_CLIENT"], {}, { metadata: { AGREEMENT_OPERATION_STATUS: "AGREEMENT_DELIVERY_FAILED" } }));
   assert.deepEqual([failedDelivery.stateCode, failedDelivery.label, failedDelivery.allowedActions], ["AGREEMENT_SEND_FAILED", "Being sent to you", []], "an agreement whose delivery failed stays in SENT_TO_CLIENT since 2026-11-05 and is presented as before: being sent, with no approval offered");
   assert.deepEqual([normalizeServiceAgreement(agreementDocument(["SENT_TO_CLIENT"], {}, { metadata: { AGREEMENT_OPERATION_STATUS: "AGREEMENT_DELIVERED" } })).stateCode, normalizeServiceAgreement(agreementDocument(["SENT_TO_CLIENT"], {}, { metadata: {} })).allowedActions], ["SENT_TO_CLIENT", ["approve"]], "a delivered or unmarked agreement keeps its state and its approval");
-  assert.equal(normalizeServiceAgreement(agreementDocument(["QUOTATION_SENT"], {}, { metadata: { AGREEMENT_OPERATION_STATUS: "QUOTATION_DELIVERY_FAILED" } })).stateCode, "QUOTATION_SEND_FAILED");
   assert.equal(normalizeServiceAgreement(agreementDocument(["CLIENT_APPROVED"], {}, { metadata: { AGREEMENT_OPERATION_STATUS: "ACTIVATION_FAILED" } })).stateCode, "ACTIVATION_FAILED");
-  assert.equal(normalizeServiceAgreement(agreementDocument(["QUOTATION"], {}, { metadata: { AGREEMENT_OPERATION_STATUS: "ACTIVATION_FAILED" } })).stateCode, "QUOTATION", "a sub-status is presented only in the state it belongs to");
+  assert.equal(normalizeServiceAgreement(agreementDocument(["DRAFT"], {}, { metadata: { AGREEMENT_OPERATION_STATUS: "ACTIVATION_FAILED" } })).stateCode, "DRAFT", "a sub-status is presented only in the state it belongs to");
 
-  const active = normalizeServiceAgreement(agreementDocument(["QUOTATION", "QUOTATION_SENT", "AWAITING_CLIENT_DETAILS", "DRAFT", "PENDING_MANAGEMENT_APPROVAL", "INTERNALLY_APPROVED", "SENT_TO_CLIENT", "CLIENT_APPROVED", "ACTIVE"], {
+  const active = normalizeServiceAgreement(agreementDocument(["DRAFT", "PENDING_MANAGEMENT_APPROVAL", "INTERNALLY_APPROVED", "SENT_TO_CLIENT", "CLIENT_APPROVED", "ACTIVE"], {
     EFFECTIVE_DATE: { value: "2026-11-01" }, TERM_START_DATE: { value: "2026-11-01" }, TERM_END_DATE: { value: "2027-03-31" },
   }));
   assert.equal(active.stage, "active");
@@ -278,15 +280,14 @@ const orderList = {
   assert.equal(normalizeServiceAgreement(agreementDocument(["SENT_TO_CLIENT"], { CLIENT_TYPE: { value: "PARTNERSHIP" } }), { displayName: "Harbour View Strata" }).parties.client.clientType, "", "a client type without a known label is not shown as a code");
   assert.equal(normalizeServiceAgreement(agreementDocument(["SENT_TO_CLIENT"]), { displayName: "Harbour View Strata" }).parties.client.legalName, "Harbour View Strata", "before the client sends details the Account's own name is the client");
 
-  const workflowStates = ["ACTIVATION_FAILED", "ACTIVE", "AGREEMENT_SEND_FAILED", "ARCHIVED", "AWAITING_CLIENT_DETAILS", "CANCELED", "CLIENT_APPROVED", "CLIENT_CHANGES_REQUESTED", "CLIENT_DETAILS_RECEIVED", "DRAFT", "EXPIRED", "INTERNALLY_APPROVED", "PENDING_MANAGEMENT_APPROVAL", "QUOTATION", "QUOTATION_SEND_FAILED", "QUOTATION_SENT", "QUOTATION_UPDATE", "SENT_TO_CLIENT", "SUSPENDED"];
-  assert.deepEqual(Object.keys(AGREEMENT_STAGES).sort(), workflowStates, "every state of SERVICE_AGREEMENT_LIFECYCLE as read from dev-1 on 2026-09-23, and the two the portal quote flow documents on 2026-10-28, has a customer presentation");
+  const workflowStates = ["ACTIVATION_FAILED", "ACTIVE", "AGREEMENT_SEND_FAILED", "ARCHIVED", "CANCELED", "CLIENT_APPROVED", "CLIENT_CHANGES_REQUESTED", "DRAFT", "EXPIRED", "INTERNALLY_APPROVED", "PENDING_MANAGEMENT_APPROVAL", "SENT_TO_CLIENT", "SUSPENDED"];
+  assert.deepEqual(Object.keys(AGREEMENT_STAGES).sort(), workflowStates, "every state an agreement reaches from DRAFT on, since the 2026-11-06 cut-over, has a customer presentation; the quotation states before DRAFT are retired");
   for (const code of workflowStates) {
     const stage = AGREEMENT_STAGES[code];
-    if (stage.stage === "preparing") assert.equal(stage.label, "", code + " is operator-side and shows no label");
-    else assert.ok(stage.label && ["ok", "info", "warn", "scheduled"].includes(stage.tone), code + " needs a label and a badge tone");
+    assert.ok(stage.label && ["ok", "info", "warn", "scheduled"].includes(stage.tone), code + " needs a label and a badge tone");
   }
   assert.equal(AGREEMENT_STAGES.ACTIVATION_FAILED.label, "Approved", "a failed activation is the provider's step; the customer's approval stands");
-  assert.equal(AGREEMENT_STAGES.CLIENT_DETAILS_RECEIVED.label, "Checking your details");
+  assert.equal(AGREEMENT_STAGES.DRAFT.label, "Being prepared", "a DRAFT agreement is being prepared by the provider");
 }
 
 {
@@ -345,7 +346,7 @@ const orderList = {
     { id: "prop-core-278", backendId: 278, name: "123 Main Street", address: "#1001 - 7445 132nd Street, Surrey, BC, V3W 1J8", lat: null, lon: null },
     { id: "prop-core-430", backendId: "430", name: "460 Nanaimo St", address: "460 Nanaimo St, Vancouver, BC, V5L 4W3", lat: 49.28, lon: -123.05 },
   ];
-  const review = normalizeServiceAgreement(agreementDocument(["QUOTATION", "QUOTATION_SENT"]));
+  const review = normalizeServiceAgreement(agreementDocument(["DRAFT"]));
   const source = Object.assign({ agreements: [review] }, normalizeQuoteOrders(orderList));
   const quotes = contractsPackage(source, properties);
   assert.deepEqual(quotes.groups.map((group) => group.id), ["quote-0-278", "quote-0-430", "quote-0-431", "quote-0-0"], "rows are grouped by property in the order Core listed them, and a quote no agreement lists belongs to no package");
@@ -356,23 +357,23 @@ const orderList = {
   assert.equal(quotes.counts.approved + quotes.counts.revision + quotes.counts.declined + quotes.counts.open, quotes.counts.orders, "the rollup counts each independent Order once");
   assert.equal("servicePeriod" in quotes, false, "the quote package states no service period");
   assert.equal(quotes.agreements.length, 1);
-  assert.equal(quotes.agreements[0].agreement.stage, "review");
+  assert.equal(quotes.agreements[0].agreement.stage, "drafting");
   assert.equal(quotes.deciding, true);
 
-  const listed = normalizeServiceAgreement(agreementDocument(["QUOTATION", "QUOTATION_SENT"], { ORDERS: { value: [501, 502, 503, 504, 506, 999] } }));
+  const listed = normalizeServiceAgreement(agreementDocument(["DRAFT"], { ORDERS: { value: [503, 506, 999] } }));
   const packaged = contractsPackage(Object.assign({ agreements: [listed] }, normalizeQuoteOrders(orderList)), properties);
-  assert.deepEqual(packaged.groups.map((group) => group.id), ["quote-9001-278", "quote-9001-430", "quote-0-431", "quote-0-0"], "a quote an agreement lists is grouped inside that package");
-  assert.equal(packaged.groups[0].agreement.id, "agreement-core-9001");
+  assert.deepEqual(packaged.groups.map((group) => group.id), ["quote-0-278", "quote-0-430", "quote-0-431", "quote-0-0"], "a DRAFT agreement takes the approved quote it holds out of the quote list");
+  assert.deepEqual(packaged.groups[1].orders.map((order) => order.backendId), [504], "and its property keeps only the option no agreement holds");
   assert.equal(packaged.agreements[0].unreadableOrders, 1, "Order 999 is listed but was not read, while withheld Order 506 is not called unreadable");
-  assert.equal(packaged.agreements[0].quoteCount, 4);
-  assert.deepEqual(packaged.agreements[0].propertyNames, ["123 Main Street", "460 Nanaimo St"]);
+  assert.deepEqual(packaged.agreements[0].properties.map((entry) => entry.orders.map((order) => order.backendId)), [[503]], "a DRAFT agreement's services are the options the client approved");
+  assert.deepEqual(packaged.agreements[0].propertyNames, ["460 Nanaimo St"]);
   assert.equal(packaged.partial.unreadableOrders, 1);
 
-  const later = normalizeServiceAgreement(agreementDocument(["QUOTATION", "QUOTATION_SENT", "SENT_TO_CLIENT"], { ORDERS: { value: [503, 504] } }, { id: 9002 }));
+  const later = normalizeServiceAgreement(agreementDocument(["DRAFT", "PENDING_MANAGEMENT_APPROVAL", "INTERNALLY_APPROVED", "SENT_TO_CLIENT"], { ORDERS: { value: [503, 504] } }, { id: 9002 }));
   const moved = contractsPackage(Object.assign({ agreements: [listed, later] }, normalizeQuoteOrders(orderList)), properties);
-  assert.deepEqual(moved.groups.map((group) => group.id), ["quote-9001-278", "quote-0-431", "quote-0-0"], "decided quotes of an agreement past review leave the quote list for the agreement page");
+  assert.deepEqual(moved.groups.map((group) => group.id), ["quote-0-278", "quote-0-431", "quote-0-0"], "decided quotes an agreement holds leave the quote list for the agreement page");
   assert.equal(moved.agreements[0].id, "agreement-core-9002", "an agreement waiting for approval comes first");
-  assert.deepEqual(moved.agreements[0].properties.map((entry) => entry.orders.map((order) => order.backendId)), [[503]], "past review an agreement's services are the options that were approved");
+  assert.deepEqual(moved.agreements[0].properties.map((entry) => entry.orders.map((order) => order.backendId)), [[503]], "an agreement's services are the options that were approved");
   assert.equal(moved.agreements[0].servicesScope, "approved");
 
   const shared = contractsPackage(normalizeQuoteOrders({ result: [orderList.result[0], orderList.result[1], orderList.result[2]] }), properties);
@@ -383,10 +384,10 @@ const orderList = {
   assert.equal(declinedEverywhere.groups[0].decision, "declined", "a property whose every option is declined is decided");
   assert.equal(declinedEverywhere.counts.decided, 1);
 
-  const onlyOperator = contractsPackage(Object.assign({ agreements: [normalizeServiceAgreement(agreementDocument(["QUOTATION"]))] }, normalizeQuoteOrders({ result: [orderRow(1, ["INITIAL"])] })), properties);
-  assert.deepEqual(plain({ agreements: onlyOperator.agreements, preparing: onlyOperator.preparing, groups: onlyOperator.groups }), { agreements: [], preparing: true, groups: [] }, "a package still being collected shows no agreement and no quote, only that the request is being prepared");
-  const scopeHidesOperator = normalizeContracts({ quoteOrders: [], agreements: [agreementDocument(["QUOTATION"])] });
-  assert.equal(scopeHidesOperator.preparing, true, "an agreement still in QUOTATION is enough to say the request is being prepared when the Orders themselves are out of scope");
+  const onlyOperator = contractsPackage(normalizeQuoteOrders({ result: [orderRow(1, ["INITIAL"])] }), properties);
+  assert.deepEqual(plain({ agreements: onlyOperator.agreements, preparing: onlyOperator.preparing, groups: onlyOperator.groups }), { agreements: [], preparing: true, groups: [] }, "a round still being prepared shows no agreement and no quote, only that the request is being prepared");
+  const retiredOnly = normalizeContracts({ quoteOrders: [], agreements: [agreementDocument(["QUOTATION"])] });
+  assert.deepEqual([retiredOnly.preparing, retiredOnly.agreements.length], [false, 0], "a Document left in the retired QUOTATION state neither shows nor claims a request in preparation");
   assert.equal(contractsPackage(null, null).counts.orders, 0);
 
   assert.equal(groupStatus(quotes.groups[0].orders), "viewed");
@@ -457,13 +458,12 @@ const RETIRED = ["Proposal #", "valid until", "sent Dec", "sq ft", "Beam AI", "l
   assert.equal(all(page, "[data-module=\"contracts-partial\"]").length, 0, "the fixture reads everything it lists");
 
   const rows = all(page, "[data-module=\"agreement-row\"]");
-  assert.deepEqual(rows.map((row) => row.getAttribute("data-state")), ["approval", "review", "details", "drafting", "approved", "active", "suspended", "expired", "archived", "canceled"], "an agreement waiting for the customer comes first");
-  assert.deepEqual(rows.map((row) => one(row, ".proposal-card__name").textContent), ["Alkire Street and Braun Court", "Foothill Court and 3 more", "Coal Creek Lane", "Dover Way", "Lamar Terrace", "Eldridge Circle and Flatiron Parkway", "Independence Way", "Holland Street", "Jellison Place", "Kipling Crossing"]);
+  assert.deepEqual(rows.map((row) => row.getAttribute("data-state")), ["approval", "drafting", "drafting", "approved", "active", "suspended", "expired", "archived", "canceled"], "an agreement waiting for the customer comes first; no agreement waits for quote decisions or details any more");
+  assert.deepEqual(rows.map((row) => one(row, ".proposal-card__name").textContent), ["Alkire Street and Braun Court", "Dover Way", "Coal Creek Lane", "Lamar Terrace", "Eldridge Circle and Flatiron Parkway", "Independence Way", "Holland Street", "Jellison Place", "Kipling Crossing"]);
   assert.deepEqual(rows.map((row) => (one(row, ".proposal-card__meta") || { textContent: null }).textContent), [
     "2 options approved · Season Nov 1, 2026 – Mar 31, 2027",
-    "12 quotes for 4 properties",
-    "Seasonal · $8,334.90 per season · Season Nov 1, 2026 – Mar 31, 2027",
     "Monthly · $9,080.93 / month · Season Nov 1, 2026 – Mar 31, 2027",
+    "Seasonal · $8,334.90 per season · Season Nov 1, 2026 – Mar 31, 2027",
     "Seasonal · $7,954.17 per season · Season Nov 1, 2026 – Mar 31, 2027",
     "2 options approved · Season Nov 1, 2025 – Mar 31, 2026",
     "Monthly · $9,569.70 / month · Season Nov 1, 2025 – Mar 31, 2026",
@@ -473,10 +473,10 @@ const RETIRED = ["Proposal #", "valid until", "sent Dec", "sq ft", "Beam AI", "l
   ], "an agreement row names its chosen option with its price and period, and its season from the agreement's own term, never from its Orders; a row with nothing to say has no second line");
   assert.ok(rows.every((row) => !one(row, ".proposal-card__meta") || !/Service agreement|Active|Approved/.test(one(row, ".proposal-card__meta").textContent)), "the status is shown once, as the badge");
   assert.equal(all(page, ".agreement-row__diamond").length + all(page, "[data-module=\"agreement-row\"] .proposal-card__diamond").length, 0, "agreement rows carry no coloured leaf or drop icon");
-  assert.deepEqual(rows.map((row) => one(row, "[data-module=\"status-badge\"]").textContent), ["Sent for your approval", "Awaiting your decisions", "Awaiting your details", "Pending management approval", "Approved", "Active", "Suspended", "Expired", "Archived", "Cancelled"]);
+  assert.deepEqual(rows.map((row) => one(row, "[data-module=\"status-badge\"]").textContent), ["Sent for your approval", "Pending management approval", "Being prepared", "Approved", "Active", "Suspended", "Expired", "Archived", "Cancelled"]);
   assert.deepEqual(rows.map((row) => [row.getAttribute("data-action"), row.getAttribute("data-id")]), [
-    ["agreement.open", "agreement-core-9102"], ["agreement.open", "agreement-core-9101"], ["agreement.open", "agreement-core-9103"],
-    ["agreement.open", "agreement-core-9104"], ["agreement.open", "agreement-core-9095"], ["agreement.open", "agreement-core-9100"],
+    ["agreement.open", "agreement-core-9102"], ["agreement.open", "agreement-core-9104"], ["agreement.open", "agreement-core-9103"],
+    ["agreement.open", "agreement-core-9095"], ["agreement.open", "agreement-core-9100"],
     ["agreement.open", "agreement-core-9098"], ["agreement.open", "agreement-core-9099"], ["agreement.open", "agreement-core-9097"],
     ["agreement.open", "agreement-core-9096"],
   ]);
@@ -491,13 +491,13 @@ const RETIRED = ["Proposal #", "valid until", "sent Dec", "sq ft", "Beam AI", "l
   assert.deepEqual(all(map, ".map-pin-label").map((label) => label.textContent), ["Tabor Street", "Cinnamon Bear Way"], "only the properties whose quotes still wait are mapped");
 
   assert.equal(all(page, "[data-module=\"proposal-rollup\"]").length + all(page, ".rollup-card").length, 0, "no Approved, Revision, Declined or Open counters");
-  assert.deepEqual(all(page, ".contracts-section__count").map((count) => count.textContent), ["10", "6"], "the Quotes section counts only the quotes it lists");
+  assert.deepEqual(all(page, ".contracts-section__count").map((count) => count.textContent), ["9", "6"], "the Quotes section counts only the quotes it lists");
   const groups = all(page, "[data-module=\"quote-property\"]");
   assert.deepEqual(groups.map((group) => group.getAttribute("data-state")), ["revision", "open"], "only quotes awaiting a decision or in revision are listed; the approved and declined properties are not");
   const tabor = groups[0];
   const button = one(tabor, "button");
   assert.equal(button.getAttribute("data-action"), "proposal.open");
-  assert.equal(button.getAttribute("data-id"), "quote-9101-7102");
+  assert.equal(button.getAttribute("data-id"), "quote-0-7102");
   assert.equal(one(tabor, ".proposal-card__meta").textContent, "1190 Tabor Street, Golden, CO 80401 · 3 quotes");
   assert.equal(one(tabor, ".proposal-group__decision").textContent, "Changes requested");
   assert.deepEqual(all(groups[1], "[data-module=\"quote-row\"]").map((row) => [one(row, ".proposal-option__model").textContent, (one(row, ".proposal-option__total") || { textContent: null }).textContent, one(row, "[data-module=\"status-badge\"]").textContent]), [
@@ -507,7 +507,7 @@ const RETIRED = ["Proposal #", "valid until", "sent Dec", "sq ft", "Beam AI", "l
   ], "each option shows Core's grand total with the period of its pricing model, never one computed from an area");
   assert.deepEqual(groups.map((group) => all(group, "[data-module=\"quote-row\"]").length), [3, 3]);
   assert.equal(all(page, ".proposal-card__tag").length, 0, "every quoted property is on the map, so none is marked off it");
-  assert.equal(one(page, "[data-module=\"quote-package-footer\"]").textContent, "✦Decide each property on its own. Approving one option for a property declines its other options. Once every property has a decision, we’ll ask for your contract details and prepare your service agreement.");
+  assert.equal(one(page, "[data-module=\"quote-package-footer\"]").textContent, "✦Decide each property on its own. Approving one option for a property declines its other options, and your contract details go with the approval. Once every property has a decision, we prepare your service agreement.");
   for (const id of all(page, "[data-id]").map((element) => element.getAttribute("data-id"))) {
     assert.match(id, /^[a-z0-9-]+$/, "a page link carries an id, never a name or an address");
   }
@@ -535,7 +535,7 @@ const RETIRED = ["Proposal #", "valid until", "sent Dec", "sq ft", "Beam AI", "l
 {
   configureFixture();
   state.porders = graniteRidgeSnowFixture.proposals.orders.filter((order) => order.id === 8113);
-  state.pagreements = [agreementDocument(["QUOTATION"], { ORDERS: { value: [] } })];
+  state.pagreements = [];
   refreshProposals();
   const page = ProposalsList();
   assert.equal(page.getAttribute("data-state"), "preparing");
@@ -565,7 +565,8 @@ const RETIRED = ["Proposal #", "valid until", "sent Dec", "sq ft", "Beam AI", "l
     decidedOnce.add(property);
     return Object.assign({}, order, { states: [{ code: "QUOTE_VIEWED" }, { code: final }] });
   });
-  state.pagreements = state.pagreements.map((agreement) => agreement.id === 9101 ? Object.assign({}, agreement, { states: agreement.states.concat({ code: "DRAFT" }) }) : agreement);
+  const approved = state.porders.filter((order) => Math.floor(order.id / 100) === 81 && order.states[1].code === "CLIENT_APPROVED").map((order) => order.id);
+  state.pagreements = state.pagreements.concat(agreementDocument(["DRAFT"], { CLIENT: { value: 6001 }, ORDERS: { value: approved } }, { id: 9105 }));
   refreshProposals();
   const page = ProposalsList();
   const head = one(page, "[data-module=\"quote-package-head\"]");
@@ -574,8 +575,8 @@ const RETIRED = ["Proposal #", "valid until", "sent Dec", "sq ft", "Beam AI", "l
   assert.equal(all(head, ".proposals-head__pill").length, 0, "there is nothing left to decide");
   assert.equal(all(page, "[data-module=\"quote-package-footer\"]").length, 0);
   assert.equal(all(page, "[data-module=\"quote-preparing\"]").length, 0);
-  assert.equal(all(page, "[data-module=\"contracts-quotes\"]").length, 0, "decided quotes of drafted agreements move to the agreement pages");
-  assert.equal(one(page, "[data-id=\"agreement-core-9101\"] [data-module=\"status-badge\"]").textContent, "Pending management approval");
+  assert.equal(all(page, "[data-module=\"contracts-quotes\"]").length, 0, "the decided round's approved quotes move to the DRAFT agreement made from them, its declined ones leave the list");
+  assert.equal(one(page, "[data-id=\"agreement-core-9105\"] [data-module=\"status-badge\"]").textContent, "Being prepared");
 }
 
 {
@@ -598,16 +599,13 @@ const RETIRED = ["Proposal #", "valid until", "sent Dec", "sq ft", "Beam AI", "l
 
 {
   configureFixture();
-  state.currentSiteId = "quote-9101-7101";
+  state.currentSiteId = "quote-0-7101";
   const decided = ProposalDetail();
   assert.equal(decided.getAttribute("data-state"), "approved");
   assert.equal(one(decided, "[data-visual-id=\"proposal-back\"]").textContent, "‹ Back to your contracts");
   assert.equal(one(decided, "h1").textContent, "Foothill Court");
   assert.equal(one(decided, ".proposal-detail-head__meta").textContent, "4820 Foothill Court, Lakewood, CO 80215", "the address comes from the property's Resource, and no service period follows it");
-  const link = one(decided, "[data-module=\"quote-package-link\"]");
-  assert.equal(link.getAttribute("data-action"), "agreement.open");
-  assert.equal(link.getAttribute("data-id"), "agreement-core-9101");
-  assert.equal(link.textContent, "Part of your service agreementAwaiting your decisions›");
+  assert.equal(all(decided, "[data-module=\"quote-package-link\"]").length, 0, "a quote of an open round belongs to no agreement, so it links to none");
   assert.equal(one(decided, "[data-module=\"quote-decided\"]").textContent, "iYou approved Monthly. The other options for this property are declined.", "the note repeats what Core read back, including the declined siblings");
   const cards = all(decided, "[data-module=\"quote-option\"]");
   assert.deepEqual(cards.map((card) => [one(card, ".quote-option__model").textContent, card.getAttribute("data-state")]), [["Per service", "declined"], ["Monthly", "approved"], ["Seasonal", "declined"]]);
@@ -621,16 +619,16 @@ const RETIRED = ["Proposal #", "valid until", "sent Dec", "sq ft", "Beam AI", "l
   for (const retired of RETIRED) assert.ok(!decided.textContent.includes(retired), "the quote detail must not show " + JSON.stringify(retired));
   assert.equal(all(decided, "[data-module=\"beam-report\"]").length + all(decided, "[data-module=\"plan-option\"]").length, 0, "the Beam AI block and the hard-coded plans are gone from the package");
 
-  state.currentSiteId = "quote-9101-7102";
+  state.currentSiteId = "quote-0-7102";
   const revision = ProposalDetail();
   assert.equal(one(revision, "[data-module=\"quote-decided\"]").textContent, "iYou asked for changes to these quotes. Our team is reviewing your request.");
   assert.equal(all(revision, "[data-action=\"quote.approve\"]").length, 0, "an Order with changes requested waits for the operator, not the customer");
 
-  state.currentSiteId = "quote-9101-7103";
+  state.currentSiteId = "quote-0-7103";
   assert.equal(one(ProposalDetail(), "[data-module=\"quote-decided\"]").textContent, "iYou declined the quotes for this property.");
 
   state.quoteViews = { 8111: "pending", 8112: "failed" };
-  state.currentSiteId = "quote-9101-7104";
+  state.currentSiteId = "quote-0-7104";
   const open = ProposalDetail();
   assert.equal(open.getAttribute("data-state"), "viewed");
   assert.equal(all(open, "[data-module=\"quote-decided\"]").length, 0);
@@ -650,10 +648,16 @@ const RETIRED = ["Proposal #", "valid until", "sent Dec", "sq ft", "Beam AI", "l
   assert.equal(one(open, "[data-module=\"quote-detail-footer\"]").textContent, "✦Approving one option for this property declines its other options.");
 
   state.contractConfirm = { kind: "approve", backendId: 8110 };
+  state.contractDetails = { prefill: "loading", filled: false, draft: {}, errors: {} };
+  const loadingDetails = one(ProposalDetail(), "[data-module=\"decision-confirm\"]");
+  assert.equal(one(loadingDetails, "[data-module=\"agreement-details\"]").getAttribute("data-state"), "loading", "the approval asks for the contract details, loaded from the account first");
+  assert.equal(one(loadingDetails, "[data-action=\"quote.confirm\"]").hasAttribute("disabled"), true, "nothing is approved before the details can be filled in");
+  state.contractDetails = { prefill: "ready", filled: false, draft: {}, errors: {} };
   const confirming = one(ProposalDetail(), "[data-module=\"decision-confirm\"]");
   assert.equal(confirming.getAttribute("data-kind"), "approve");
   assert.equal(one(confirming, ".decision-confirm__title").textContent, "Approve Per service for this property?");
   assert.equal(one(confirming, ".decision-confirm__body").textContent, "Approving it declines the other options for this property.", "the rule is stated before the customer agrees, and the page still waits for Core to apply it");
+  assert.equal(one(confirming, "[data-module=\"agreement-details\"]").getAttribute("data-state"), "editing", "the contract details travel with the approval");
   assert.deepEqual(all(confirming, "[data-action]").map((button) => [button.getAttribute("data-action"), button.textContent, button.hasAttribute("disabled")]), [
     ["quote.confirm", "Confirm approval", false],
     ["quote.cancel", "Cancel", false],
@@ -663,6 +667,8 @@ const RETIRED = ["Proposal #", "valid until", "sent Dec", "sq ft", "Beam AI", "l
   const pending = one(ProposalDetail(), "[data-module=\"decision-confirm\"]");
   assert.equal(pending.getAttribute("data-state"), "pending");
   assert.deepEqual(all(pending, "[data-action]").map((button) => [button.textContent, button.hasAttribute("disabled")]), [["Sending…", true], ["Cancel", true]], "one command at a time: nothing can be sent or cancelled while it is in flight");
+  assert.ok(all(pending, "[data-contract-detail]").filter((node) => node.tagName === "INPUT").concat(all(pending, "[data-client-type]")).every((input) => input.hasAttribute("disabled")), "and the details being sent cannot change");
+  state.contractDetails = null;
 
   state.contractConfirm = null;
   state.contractCommand = { kind: "approve", targets: [8111], phase: "pending" };
@@ -694,7 +700,7 @@ const RETIRED = ["Proposal #", "valid until", "sent Dec", "sq ft", "Beam AI", "l
   }
   state.contractCommand = { kind: "approve", targets: [8110], phase: "conflict" };
   assert.equal(one(all(ProposalDetail(), "[data-module=\"quote-option\"]")[0], "[data-module=\"command-conflict\"]").textContent, "↺This changed since you opened itIts current state is shown here. Nothing was sent.");
-  const settled = quoteGroupFor("quote-9101-7101").orders.find((order) => order.status === "declined");
+  const settled = quoteGroupFor("quote-0-7101").orders.find((order) => order.status === "declined");
   state.contractCommand = { kind: "approve", targets: [settled.backendId], phase: "conflict" };
   const movedOn = QuoteOptionCard(settled, { interactive: true, busy: false });
   assert.equal(one(movedOn, "[data-module=\"command-conflict\"]").textContent, "↺This changed since you opened itIts current state is shown here. Nothing was sent.", "a quote that left its decidable state still explains why nothing was sent");
@@ -800,22 +806,18 @@ const RETIRED = ["Proposal #", "valid until", "sent Dec", "sq ft", "Beam AI", "l
   assert.equal(all(changed, "[data-action=\"agreement.approve\"]").length, 0);
   state.contractCommand = null;
 
-  state.agreementId = "agreement-core-9101";
-  const review = AgreementDetail();
-  assert.equal(one(review, "[data-module=\"agreement-notice\"]").textContent, "The quotes in this agreement are waiting for your decisions.Go to your quotes ›");
-  assert.equal(partyName(all(review, "[data-module=\"agreement-party\"]")[0]), "Granite Ridge Snow Removal", "before the provider fields are written the owning organization names the provider");
-  assert.equal(partyName(all(review, "[data-module=\"agreement-party\"]")[1]), "Dana Whitlock");
-  assert.deepEqual(facts(all(review, "[data-module=\"agreement-party\"]")[1]), [], "a party detail that is not stated is left out, never shown as a placeholder");
-  assert.doesNotMatch(review.textContent, /Not stated|isn’t included yet/);
-  assert.equal(all(review, "[data-module=\"agreement-term\"]").length, 0, "no term is shown before the agreement carries one");
-  assert.equal(all(review, "[data-module=\"agreement-terms\"]").length, 0, "an agreement without terms has no terms card");
-  assert.equal(all(review, "[data-module=\"agreement-approve\"]").length, 0);
-  assert.equal(all(review, "[data-module=\"agreement-property\"]").length, 4, "in review the agreement lists every option it collects");
+  state.agreementId = "agreement-core-9103";
+  const draft = AgreementDetail();
+  assert.equal(draft.getAttribute("data-state"), "drafting");
+  assert.equal(one(draft, "[data-module=\"agreement-detail-head\"] [data-module=\"status-badge\"]").textContent, "Being prepared");
+  assert.equal(one(draft, "[data-module=\"agreement-notice\"]").textContent, "We’re preparing your service agreement from the options you approved. A manager approves it next; it appears here for your approval and we email you when it’s ready. Nothing is needed from you.", "a DRAFT agreement is being prepared by the provider and asks nothing of the client");
+  assert.equal(all(draft, "[data-module=\"agreement-details\"]").length + all(draft, "[data-contract-detail]").length, 0, "no details form: the details came with the approvals");
+  assert.equal(all(draft, "[data-module=\"agreement-approve\"]").length, 0);
+  assert.doesNotMatch(draft.textContent, /CLIENT_DETAILS_ERRORS|MISSING|missing/, "what the manager still has to complete is never shown to the client");
+  assert.deepEqual(all(draft, "[data-module=\"agreement-property\"]").map((entry) => all(entry, "[data-module=\"quote-option\"]").map((card) => card.getAttribute("data-state"))), [["approved"]], "a DRAFT agreement lists the options the client approved");
 
-  state.contractDetails = { agreementId: 9103, prefill: "ready", filled: false, draft: {}, errors: {} };
   for (const [id, stage, notice] of [
-    ["agreement-core-9103", "details", null],
-    ["agreement-core-9104", "drafting", "Thank you, we have your details. A manager prepares and approves your service agreement next; it appears here for your approval and we email you when it’s ready."],
+    ["agreement-core-9104", "drafting", "We’re preparing your service agreement from the options you approved. A manager approves it next; it appears here for your approval and we email you when it’s ready. Nothing is needed from you."],
     ["agreement-core-9100", "active", null],
     ["agreement-core-9099", "expired", null],
     ["agreement-core-9095", "approved", null],
@@ -826,7 +828,7 @@ const RETIRED = ["Proposal #", "valid until", "sent Dec", "sq ft", "Beam AI", "l
     state.agreementId = id;
     const detail = AgreementDetail();
     assert.equal(detail.getAttribute("data-state"), stage);
-    assert.equal((one(detail, "[data-module=\"agreement-notice\"]") || { textContent: null }).textContent, notice, stage + ": a banner appears only when the client must act");
+    assert.equal((one(detail, "[data-module=\"agreement-notice\"]") || { textContent: null }).textContent, notice, stage + ": a banner appears only while the provider has a step to take");
     assert.equal(all(detail, "[data-module=\"agreement-approve\"]").length, 0, stage + " offers no approval");
     assert.doesNotMatch(detail.textContent, /This agreement is active|shown for reference|You approved this agreement/);
   }
@@ -834,7 +836,7 @@ const RETIRED = ["Proposal #", "valid until", "sent Dec", "sq ft", "Beam AI", "l
   state.agreementId = "agreement-core-1";
   assert.equal(AgreementDetail().getAttribute("data-state"), "not-found");
   assert.equal(contractAgreementFor("agreement-core-9102").properties.length, 2);
-  assert.equal(quoteGroupFor("gr-foothill").id, "quote-9101-7101", "a property's fixture key still finds its current quotes");
+  assert.equal(quoteGroupFor("gr-foothill").id, "quote-0-7101", "a property's fixture key still finds its current quotes");
 }
 
 {
@@ -973,7 +975,7 @@ const RETIRED = ["Proposal #", "valid until", "sent Dec", "sq ft", "Beam AI", "l
   state.propertyId = "prop-cinnamon";
   const waiting = one(PropertyDetail(), "[data-fact=\"quotes\"]");
   assert.equal(one(waiting, ".prop-fact__value").textContent, "3 quotes · awaiting your decision ›", "quotes are shown on a property only while one awaits a decision");
-  assert.equal(one(waiting, ".link-action").getAttribute("data-id"), "quote-9101-7104", "the property's quotes open their package group");
+  assert.equal(one(waiting, ".link-action").getAttribute("data-id"), "quote-0-7104", "the property's quotes open their package group");
   state.propertyId = "prop-foothill";
   assert.equal(one(keyless, ".detail-back").textContent, "‹ Back to appointments", "fixture mode keeps its appointments week");
   assert.equal(all(keyless, ".prop-head .status-badge").length, 1, "fixture mode still states the property status");
@@ -1013,12 +1015,12 @@ const RETIRED = ["Proposal #", "valid until", "sent Dec", "sq ft", "Beam AI", "l
     assert.equal(all(locating, "[data-visual-id=\"property-location-link\"]").length, 0);
   });
 
-  state.currentSiteId = "quote-9101-7101";
+  state.currentSiteId = "quote-0-7101";
   const quoteLocation = one(ProposalDetail(), "[data-module=\"property-location\"]");
   assert.equal(quoteLocation.getAttribute("data-state"), "placed", "the quote detail shows its property on the map");
   assert.equal(all(quoteLocation, "[data-visual-id=\"property-location-link\"]").length, 0);
   configureFixture();
-  state.currentSiteId = "quote-9101-7101";
+  state.currentSiteId = "quote-0-7101";
   assert.equal(all(ProposalDetail(), "[data-module=\"property-location\"]").length, 0, "without a map key the quote detail shows no location block; its address is already in the header");
 }
 

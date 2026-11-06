@@ -27,7 +27,7 @@
     "nls": {
       "en": {
         "NAME": "REVIEW MAPS API KEY",
-        "DESCRIPTION": "Google Maps browser key of the contract details step: address suggestions and a map for the billing address, and each approved property's plan drawn over a map. Use the same browser key as the quote form's FORM_MAPS_API_KEY, restricted by HTTP referrer to this host and to the Maps JavaScript, Places and Geocoding APIs; it is visible in page source, as every browser key is. Set the value in the page's PageContext, not in the template: the package ships it empty so an upload never overwrites it. While it is empty or not a key, no Google script is loaded, the billing address stays a plain text field and no plan is shown. With a key the page sends its origin, never its path or link, as the referrer, because Google checks a browser key against it."
+        "DESCRIPTION": "Google Maps browser key of the Confirm your choices step: address suggestions and a map for the billing address, and the plan of each property chosen for approval drawn over a map. Use the same browser key as the quote form's FORM_MAPS_API_KEY, restricted by HTTP referrer to this host and to the Maps JavaScript, Places and Geocoding APIs; it is visible in page source, as every browser key is. Set the value in the page's PageContext, not in the template: the package ships it empty so an upload never overwrites it. While it is empty or not a key, no Google script is loaded, the billing address stays a plain text field and no plan is shown. With a key the page sends its origin, never its path or link, as the referrer, because Google checks a browser key against it."
       }
     },
     "value": ""
@@ -289,7 +289,7 @@
       }
     },
     "value": {
-      "en": "Each property has its own options. Choose one to see its services, then approve it or ask for changes. If none suits you, decline them all."
+      "en": "Each property has its own options. Choose one to see its services, then approve it or ask for changes. If none suits you, decline them all. You send your decisions together at the end."
     }
   },
   {
@@ -865,19 +865,6 @@
     }
   },
   {
-    "code": "DECLINE_LABEL",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "DECLINE LABEL",
-        "DESCRIPTION": "Client review document copy."
-      }
-    },
-    "value": {
-      "en": "Decline"
-    }
-  },
-  {
     "code": "CHANGES_LABEL",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
@@ -914,84 +901,6 @@
     },
     "value": {
       "en": "Sending…"
-    }
-  },
-  {
-    "code": "APPROVE_CONFIRM_TITLE",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "APPROVE CONFIRM TITLE",
-        "DESCRIPTION": "Client review document copy. Keep {option}: the page fills them in."
-      }
-    },
-    "value": {
-      "en": "Approve {option} for this property?"
-    }
-  },
-  {
-    "code": "APPROVE_CONFIRM_OTHERS",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "APPROVE CONFIRM OTHERS",
-        "DESCRIPTION": "Client review document copy."
-      }
-    },
-    "value": {
-      "en": "The provider will decline the other options for this property."
-    }
-  },
-  {
-    "code": "APPROVE_CONFIRM_BUTTON",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "APPROVE CONFIRM BUTTON",
-        "DESCRIPTION": "Client review document copy."
-      }
-    },
-    "value": {
-      "en": "Confirm approval"
-    }
-  },
-  {
-    "code": "DECLINE_CONFIRM_TITLE",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "DECLINE CONFIRM TITLE",
-        "DESCRIPTION": "Client review document copy. Keep {option}: the page fills them in."
-      }
-    },
-    "value": {
-      "en": "Decline {option}?"
-    }
-  },
-  {
-    "code": "DECLINE_CONFIRM_BODY",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "DECLINE CONFIRM BODY",
-        "DESCRIPTION": "Client review document copy."
-      }
-    },
-    "value": {
-      "en": "A declined option cannot be approved later through this link."
-    }
-  },
-  {
-    "code": "DECLINE_CONFIRM_BUTTON",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "DECLINE CONFIRM BUTTON",
-        "DESCRIPTION": "Client review document copy."
-      }
-    },
-    "value": {
-      "en": "Confirm decline"
     }
   },
   {
@@ -1086,42 +995,159 @@
     }
   },
   {
-    "code": "DECLINE_ALL_CONFIRM_TITLE",
+    "code": "CHOICE_APPROVED_NOTE",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "DECLINE ALL CONFIRM TITLE",
+        "NAME": "CHOICE APPROVED NOTE",
         "DESCRIPTION": "Client review document copy."
       }
     },
     "value": {
-      "en": "Decline every option for this property?"
+      "en": "You chose this option. Send your decisions below to approve it."
     }
   },
   {
-    "code": "DECLINE_ALL_CONFIRM_BODY",
+    "code": "CHOICE_DECLINED_NOTE",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "DECLINE ALL CONFIRM BODY",
+        "NAME": "CHOICE DECLINED NOTE",
         "DESCRIPTION": "Client review document copy."
       }
     },
     "value": {
-      "en": "None of them can be approved later through this link. The provider can send you new options."
+      "en": "You chose to decline every option for this property. Send your decisions below."
     }
   },
   {
-    "code": "DECLINE_ALL_CONFIRM_BUTTON",
+    "code": "CHOICE_UNDO",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "DECLINE ALL CONFIRM BUTTON",
+        "NAME": "CHOICE UNDO",
         "DESCRIPTION": "Client review document copy."
       }
     },
     "value": {
-      "en": "Decline all"
+      "en": "Undo"
+    }
+  },
+  {
+    "code": "CHOICES_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "CHOICES TITLE",
+        "DESCRIPTION": "Client review document copy."
+      }
+    },
+    "value": {
+      "en": "Confirm your choices"
+    }
+  },
+  {
+    "code": "CHOICES_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "CHOICES BODY",
+        "DESCRIPTION": "Client review document copy."
+      }
+    },
+    "value": {
+      "en": "Approving an option declines the other options for its property. Declined options cannot be approved later through this link."
+    }
+  },
+  {
+    "code": "CHOICE_APPROVE_ROW",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "CHOICE APPROVE ROW",
+        "DESCRIPTION": "Client review document copy. Keep {option}: the page fills them in."
+      }
+    },
+    "value": {
+      "en": "Approve {option}"
+    }
+  },
+  {
+    "code": "CHOICE_DECLINE_ROW",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "CHOICE DECLINE ROW",
+        "DESCRIPTION": "Client review document copy."
+      }
+    },
+    "value": {
+      "en": "Decline every option"
+    }
+  },
+  {
+    "code": "CHOICES_UNDECIDED_ONE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "CHOICES UNDECIDED ONE",
+        "DESCRIPTION": "Client review document copy."
+      }
+    },
+    "value": {
+      "en": "1 property has no decision in this step. You can decide it later through this link."
+    }
+  },
+  {
+    "code": "CHOICES_UNDECIDED_MANY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "CHOICES UNDECIDED MANY",
+        "DESCRIPTION": "Client review document copy. Keep {n}: the page fills them in."
+      }
+    },
+    "value": {
+      "en": "{n} properties have no decision in this step. You can decide them later through this link."
+    }
+  },
+  {
+    "code": "CHOICES_SUBMIT",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "CHOICES SUBMIT",
+        "DESCRIPTION": "Client review document copy."
+      }
+    },
+    "value": {
+      "en": "Send decisions"
+    }
+  },
+  {
+    "code": "PARTIAL_DECIDED_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "PARTIAL DECIDED TITLE",
+        "DESCRIPTION": "Client review document copy."
+      }
+    },
+    "value": {
+      "en": "Your decisions so far are recorded"
+    }
+  },
+  {
+    "code": "PARTIAL_DECIDED_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "PARTIAL DECIDED BODY",
+        "DESCRIPTION": "Client review document copy."
+      }
+    },
+    "value": {
+      "en": "Decide the properties still awaiting a decision, now or later through this link."
     }
   },
   {
@@ -1242,19 +1268,6 @@
     }
   },
   {
-    "code": "DECIDED_BODY",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "DECIDED BODY",
-        "DESCRIPTION": "Client review document copy."
-      }
-    },
-    "value": {
-      "en": "The provider opens the next step once its system has processed your decisions."
-    }
-  },
-  {
     "code": "DECIDED_FOLLOWING_BODY",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
@@ -1281,45 +1294,6 @@
     }
   },
   {
-    "code": "CHECK_AGAIN",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "CHECK AGAIN",
-        "DESCRIPTION": "Client review document copy."
-      }
-    },
-    "value": {
-      "en": "Check again"
-    }
-  },
-  {
-    "code": "DETAILS_EYEBROW",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "DETAILS EYEBROW",
-        "DESCRIPTION": "Client review document copy."
-      }
-    },
-    "value": {
-      "en": "Contract details"
-    }
-  },
-  {
-    "code": "DETAILS_TITLE",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "DETAILS TITLE",
-        "DESCRIPTION": "Client review document copy."
-      }
-    },
-    "value": {
-      "en": "Complete your contract details"
-    }
-  },
-  {
     "code": "DETAILS_SUBTITLE",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
@@ -1329,20 +1303,7 @@
       }
     },
     "value": {
-      "en": "Every property has a decision. These details go into your service agreement."
-    }
-  },
-  {
-    "code": "DETAILS_APPROVED_TITLE",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "DETAILS APPROVED TITLE",
-        "DESCRIPTION": "Client review document copy."
-      }
-    },
-    "value": {
-      "en": "Approved options"
+      "en": "These details go into your service agreement. You give them once for every option you approve."
     }
   },
   {
@@ -1359,19 +1320,6 @@
     }
   },
   {
-    "code": "DETAILS_SUBMIT",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "DETAILS SUBMIT",
-        "DESCRIPTION": "Client review document copy."
-      }
-    },
-    "value": {
-      "en": "Send details"
-    }
-  },
-  {
     "code": "DETAILS_INVALID",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
@@ -1382,32 +1330,6 @@
     },
     "value": {
       "en": "Check the highlighted fields."
-    }
-  },
-  {
-    "code": "DETAILS_REFUSED_TITLE",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "DETAILS REFUSED TITLE",
-        "DESCRIPTION": "Client review document copy."
-      }
-    },
-    "value": {
-      "en": "The details were not accepted"
-    }
-  },
-  {
-    "code": "DETAILS_UNAVAILABLE",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "DETAILS UNAVAILABLE",
-        "DESCRIPTION": "Client review document copy."
-      }
-    },
-    "value": {
-      "en": "Contract details cannot be sent through this link."
     }
   },
   {
@@ -1642,227 +1564,6 @@
     },
     "value": {
       "en": "I confirm that I am authorized to enter into this agreement on behalf of the client."
-    }
-  },
-  {
-    "code": "DETAILS_RETURNED_TITLE",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "DETAILS RETURNED TITLE",
-        "DESCRIPTION": "Client review document copy."
-      }
-    },
-    "value": {
-      "en": "Your details came back"
-    }
-  },
-  {
-    "code": "DETAILS_RETURNED_BODY",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "DETAILS RETURNED BODY",
-        "DESCRIPTION": "Client review document copy."
-      }
-    },
-    "value": {
-      "en": "The provider's system could not accept them. Fix the marked fields and send your details again."
-    }
-  },
-  {
-    "code": "DETAILS_RETURNED_REENTER",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "DETAILS RETURNED REENTER",
-        "DESCRIPTION": "Client review document copy."
-      }
-    },
-    "value": {
-      "en": "The provider's system could not accept the details you sent, and this page cannot show them again. What is filled in for you comes from your account. Check it, complete the rest and send your details again; the marked fields are why they came back."
-    }
-  },
-  {
-    "code": "DETAILS_RETURNED_UNKNOWN",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "DETAILS RETURNED UNKNOWN",
-        "DESCRIPTION": "Client review document copy."
-      }
-    },
-    "value": {
-      "en": "The provider's system could not accept them, for a reason this page cannot show. Check your details and send them again, or contact the provider."
-    }
-  },
-  {
-    "code": "DETAILS_RETURNED_UNKNOWN_REENTER",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "DETAILS RETURNED UNKNOWN REENTER",
-        "DESCRIPTION": "Client review document copy."
-      }
-    },
-    "value": {
-      "en": "The provider's system could not accept the details you sent, and this page can show neither the reason nor your details. What is filled in for you comes from your account. Check it, complete the rest and send your details again, or contact the provider."
-    }
-  },
-  {
-    "code": "DETAILS_RETURNED_UNEXPLAINED",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "DETAILS RETURNED UNEXPLAINED",
-        "DESCRIPTION": "Client review document copy."
-      }
-    },
-    "value": {
-      "en": "The provider's system also reported a problem this page cannot show. Contact the provider if your details come back again."
-    }
-  },
-  {
-    "code": "DETAILS_PROCESSING_TITLE",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "DETAILS PROCESSING TITLE",
-        "DESCRIPTION": "Client review document copy."
-      }
-    },
-    "value": {
-      "en": "Your details were not saved"
-    }
-  },
-  {
-    "code": "DETAILS_PROCESSING_BODY",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "DETAILS PROCESSING BODY",
-        "DESCRIPTION": "Client review document copy."
-      }
-    },
-    "value": {
-      "en": "Nothing was wrong with what you entered: the provider's system could not save it. Check the form and send your details again."
-    }
-  },
-  {
-    "code": "DETAILS_PROCESSING_REENTER",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "DETAILS PROCESSING REENTER",
-        "DESCRIPTION": "Client review document copy."
-      }
-    },
-    "value": {
-      "en": "Nothing was wrong with the details you sent, but the provider's system could not save them and this page cannot show them again. What is filled in for you comes from your account. Check it, complete the rest and send your details again."
-    }
-  },
-  {
-    "code": "RETURNED_MISSING",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "RETURNED MISSING",
-        "DESCRIPTION": "Client review document copy."
-      }
-    },
-    "value": {
-      "en": "This was missing from the details you sent."
-    }
-  },
-  {
-    "code": "RETURNED_UNCONFIRMED",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "RETURNED UNCONFIRMED",
-        "DESCRIPTION": "Client review document copy."
-      }
-    },
-    "value": {
-      "en": "This confirmation was missing from the details you sent."
-    }
-  },
-  {
-    "code": "RETURNED_CHOICE",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "RETURNED CHOICE",
-        "DESCRIPTION": "Client review document copy."
-      }
-    },
-    "value": {
-      "en": "The choice you sent was not recognized. Choose one of the options."
-    }
-  },
-  {
-    "code": "RETURNED_EMAIL",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "RETURNED EMAIL",
-        "DESCRIPTION": "Client review document copy."
-      }
-    },
-    "value": {
-      "en": "The email address you sent was not accepted. Enter a valid email address."
-    }
-  },
-  {
-    "code": "CHECKING_TITLE",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "CHECKING TITLE",
-        "DESCRIPTION": "Client review document copy."
-      }
-    },
-    "value": {
-      "en": "We are checking your details"
-    }
-  },
-  {
-    "code": "CHECKING_BODY",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "CHECKING BODY",
-        "DESCRIPTION": "Client review document copy."
-      }
-    },
-    "value": {
-      "en": "The provider's system received your details and is checking them. This page updates on its own."
-    }
-  },
-  {
-    "code": "CHECKING_SLOW_TITLE",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "CHECKING SLOW TITLE",
-        "DESCRIPTION": "Client review document copy."
-      }
-    },
-    "value": {
-      "en": "This is taking longer than usual"
-    }
-  },
-  {
-    "code": "CHECKING_SLOW_BODY",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "CHECKING SLOW BODY",
-        "DESCRIPTION": "Client review document copy."
-      }
-    },
-    "value": {
-      "en": "The provider's system received your details but has not finished checking them. Refresh the status in a minute, or open this link again later."
     }
   },
   {
@@ -2500,6 +2201,19 @@
     },
     "value": {
       "en": "The provider canceled it. Contact them if you expected to review it."
+    }
+  },
+  {
+    "code": "DECLINED_CLOSED_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "DECLINED CLOSED BODY",
+        "DESCRIPTION": "Client review document copy."
+      }
+    },
+    "value": {
+      "en": "You declined every option, so the provider closed this quotation. Contact them if you would like new options."
     }
   },
   {

@@ -92,9 +92,9 @@ const fixtureProposals = graniteRidgeSnowFixture.proposals;
 const normalizedProposals = normalizeProposals(proposals);
 const quotes = normalizedProposals.quotes;
 assert.deepEqual(plainValue(quotes.agreements.map((agreement) => [agreement.backendId, agreement.stateCode])), [
-  [9101, "QUOTATION_SENT"], [9102, "SENT_TO_CLIENT"], [9103, "AWAITING_CLIENT_DETAILS"], [9104, "PENDING_MANAGEMENT_APPROVAL"], [9100, "ACTIVE"], [9099, "EXPIRED"],
+  [9102, "SENT_TO_CLIENT"], [9103, "DRAFT"], [9104, "PENDING_MANAGEMENT_APPROVAL"], [9100, "ACTIVE"], [9099, "EXPIRED"],
   [9098, "SUSPENDED"], [9097, "ARCHIVED"], [9096, "CANCELED"], [9095, "CLIENT_APPROVED"],
-], "the customer holds one agreement in every stage the Contracts screens show");
+], "the customer holds one agreement in every stage the Contracts screens show, each started at DRAFT");
 assert.equal(quotes.orders.length, 31, "every sent Order is a row");
 assert.equal(quotes.preparing, true, "the Order still being prepared is withheld and only switches the preparing notice on");
 assert.equal(fixtureProposals.orders.length, 32);
@@ -106,7 +106,9 @@ for (const agreement of quotes.agreements) {
     listedBy.set(id, agreement.backendId);
   }
 }
-assert.deepEqual(plainValue([...listedBy.keys()].sort()), plainValue(quotes.orders.map((order) => order.backendId).sort()), "every sent Order belongs to exactly one agreement, and the withheld one to none");
+const ROUND = [8101, 8102, 8103, 8104, 8105, 8106, 8107, 8108, 8109, 8110, 8111, 8112];
+assert.ok(ROUND.every((id) => !listedBy.has(id)), "the open quotation round belongs to no agreement: a round carries no Document");
+assert.deepEqual(plainValue([...listedBy.keys()].concat(ROUND).sort()), plainValue(quotes.orders.map((order) => order.backendId).sort()), "every other sent Order belongs to exactly one agreement, and the withheld one to none");
 const propertiesByBackendId = new Map(graniteRidgeSnowFixture.overview.properties.map((property) => [property.backendId, property]));
 for (const order of quotes.orders) {
   assert.ok(propertiesByBackendId.has(order.propertyBackendId), `order ${order.backendId} points at a property the fixture does not have`);
@@ -128,8 +130,8 @@ assert.ok(fixtureProposals.orderItems.some((line) => line.order.id === 8113), "t
 
 state.moduleData.proposals = normalizedProposals;
 const pack = quotePackage();
-assert.deepEqual(plainValue(pack.agreements.map((row) => row.agreement.stage)), ["approval", "review", "details", "drafting", "approved", "active", "suspended", "expired", "archived", "canceled"]);
-assert.deepEqual(plainValue(pack.groups.map((group) => group.id)), ["quote-9101-7101", "quote-9101-7102", "quote-9101-7103", "quote-9101-7104"]);
+assert.deepEqual(plainValue(pack.agreements.map((row) => row.agreement.stage)), ["approval", "drafting", "drafting", "approved", "active", "suspended", "expired", "archived", "canceled"]);
+assert.deepEqual(plainValue(pack.groups.map((group) => group.id)), ["quote-0-7101", "quote-0-7102", "quote-0-7103", "quote-0-7104"], "the round's quotes group by property alone");
 assert.deepEqual(plainValue(pack.groups.map((group) => group.decision)), ["approved", "revision", "declined", "open"], "every property decision the page shows is exercised");
 assert.deepEqual(plainValue(pack.groups.map((group) => group.status)), ["approved", "revision", "declined", "viewed"]);
 assert.deepEqual(plainValue(pack.groups[3].orders.map((order) => order.status)), ["viewed", "unseen", "unseen"], "an open property mixes a viewed option with unseen ones, so both the decisions and the view event are exercised");

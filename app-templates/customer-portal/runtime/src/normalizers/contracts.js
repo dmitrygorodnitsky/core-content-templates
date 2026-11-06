@@ -46,10 +46,9 @@ export var QUOTE_REQUEST_OUTCOMES = Object.freeze(["PROCESSING", "ACCEPTED", "RE
 export var SCOPE_MODES = Object.freeze(["server-scoped", "browser-filtered", "unscoped"]);
 
 var ORDER_ACTIONS = { unseen: ["view"], viewed: ["approve", "changes", "decline"] };
-var AGREEMENT_ACTIONS = { AWAITING_CLIENT_DETAILS: ["details"], SENT_TO_CLIENT: ["approve"] };
+var AGREEMENT_ACTIONS = { SENT_TO_CLIENT: ["approve"] };
 export var AGREEMENT_OPERATION_STATUS_KEY = "AGREEMENT_OPERATION_STATUS";
 export var FAILED_OPERATION_STATES = Object.freeze({
-  QUOTATION_SENT: Object.freeze({ QUOTATION_DELIVERY_FAILED: "QUOTATION_SEND_FAILED" }),
   SENT_TO_CLIENT: Object.freeze({ AGREEMENT_DELIVERY_FAILED: "AGREEMENT_SEND_FAILED" }),
   CLIENT_APPROVED: Object.freeze({ ACTIVATION_FAILED: "ACTIVATION_FAILED" }),
 });
@@ -59,29 +58,20 @@ var MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oc
 var SCHEMATIC_X = [18, 82];
 var SCHEMATIC_Y = [24, 76];
 var SCHEMATIC_MIN_SPAN = 0.01;
-var STAGE_ORDER = ["approval", "review", "details", "drafting", "approved", "active", "suspended", "expired", "archived", "canceled"];
-var QUOTE_STAGES = ["preparing", "review"];
-var APPROVED_SERVICE_STAGES = ["details", "drafting", "approval", "approved", "active", "suspended", "expired", "archived"];
-var CURRENT_SERVICE_STAGES = ["active", "approved", "approval", "drafting", "details", "suspended"];
+var STAGE_ORDER = ["approval", "drafting", "approved", "active", "suspended", "expired", "archived", "canceled"];
+var APPROVED_SERVICE_STAGES = ["drafting", "approval", "approved", "active", "suspended", "expired", "archived"];
+var CURRENT_SERVICE_STAGES = ["active", "approved", "approval", "drafting", "suspended"];
 var PENDING_STATUSES = ["unseen", "viewed", "revision"];
 var TERMS_DEPTH_LIMIT = 4;
 var HEADING_LINE = /^#{1,6}\s+(.+)$/;
 var ITEM_LINE = /^[-*•]\s+(.+)$/;
 var NUMBERED_LINE = /^(\d+(?:\.\d+)+[.)]?|\d+[.)])\s+(.+)$/;
 
-var PREPARING = agreementStage("preparing", "", "");
-var REVIEW = agreementStage("review", "Awaiting your decisions", "info");
 var MANAGEMENT = agreementStage("drafting", "Pending management approval", "scheduled");
 var APPROVED = agreementStage("approved", "Approved", "ok");
 
 export var AGREEMENT_STAGES = Object.freeze({
-  QUOTATION: PREPARING,
-  QUOTATION_SENT: REVIEW,
-  QUOTATION_UPDATE: REVIEW,
-  QUOTATION_SEND_FAILED: REVIEW,
-  AWAITING_CLIENT_DETAILS: agreementStage("details", "Awaiting your details", "warn"),
-  CLIENT_DETAILS_RECEIVED: agreementStage("drafting", "Checking your details", "scheduled"),
-  DRAFT: MANAGEMENT,
+  DRAFT: agreementStage("drafting", "Being prepared", "scheduled"),
   PENDING_MANAGEMENT_APPROVAL: MANAGEMENT,
   INTERNALLY_APPROVED: MANAGEMENT,
   CLIENT_CHANGES_REQUESTED: MANAGEMENT,
@@ -116,7 +106,7 @@ export function normalizeContracts(raw) {
     agreements: agreements,
     orders: quotes.orders,
     withheldBackendIds: quotes.withheldBackendIds,
-    preparing: quotes.preparing || agreements.some(function (agreement) { return agreement.stage === "preparing"; }) || requestPreparing(request, quotes.orders),
+    preparing: quotes.preparing || requestPreparing(request, quotes.orders),
     sources: {
       agreements: agreementRows ? "ready" : failedRead(reads.agreements),
       orders: orderRows ? "ready" : failedRead(reads.orders),
@@ -199,7 +189,6 @@ export function normalizeServiceAgreement(document, client) {
     term: datePeriod(attributeText(document, "TERM_START_DATE"), attributeText(document, "TERM_END_DATE")),
     parties: agreementParties(document, client),
     terms: termsBlocks(attributeString(document, "CONTRACT_TERMS")),
-    detailsErrors: stateCode === "AWAITING_CLIENT_DETAILS" ? codeList(attributeString(document, "CLIENT_DETAILS_ERRORS")) : [],
     allowedActions: (own(AGREEMENT_ACTIONS, stateCode) || []).slice(),
   };
 }
@@ -228,12 +217,6 @@ function requestPreparing(request, orders) {
   return request.orderIds.some(function (id) { return !shown.has(id); });
 }
 
-function codeList(value) {
-  return value.split(",").map(function (part) { return part.trim().toUpperCase(); }).filter(function (code, index, all) {
-    return /^[A-Z][A-Z0-9_]*$/.test(code) && all.indexOf(code) === index;
-  });
-}
-
 export function contractsPackage(source, properties) {
   var data = source && typeof source === "object" ? source : {};
   var orders = Array.isArray(data.orders) ? data.orders : [];
@@ -243,8 +226,7 @@ export function contractsPackage(source, properties) {
   var readable = new Set(orders.map(function (order) { return order.backendId; }).concat(data.withheldBackendIds || []));
 
   var quoted = orders.filter(function (order) {
-    var owner = packageOf.get(order.backendId);
-    return isOpen(order) || !owner || QUOTE_STAGES.indexOf(owner.stage) !== -1;
+    return isOpen(order) || !packageOf.get(order.backendId);
   });
   var groups = quoteGroups(quoted, packageOf, byProperty);
   var pending = groups.map(function (group) {
@@ -263,7 +245,6 @@ export function contractsPackage(source, properties) {
   });
 
   var rows = agreements
-    .filter(function (agreement) { return agreement.stage !== "preparing"; })
     .map(function (agreement) { return agreementRow(agreement, orders, readable, byProperty); })
     .sort(byStage);
 

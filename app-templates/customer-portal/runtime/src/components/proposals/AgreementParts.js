@@ -8,12 +8,10 @@ import { CommandOutcome } from "./ContractStates.js";
 import { QuoteOptionCard } from "./QuoteOptionCard.js";
 
 var STAGE_NOTICE = {
-  review: { tone: "info", text: "The quotes in this agreement are waiting for your decisions.", link: { label: "Go to your quotes ›", action: "nav.go", id: "proposals.list" } },
-  drafting: { tone: "info", text: "Thank you, we have your details. A manager prepares and approves your service agreement next; it appears here for your approval and we email you when it’s ready." },
+  drafting: { tone: "info", text: "We’re preparing your service agreement from the options you approved. A manager approves it next; it appears here for your approval and we email you when it’s ready. Nothing is needed from you." },
 };
 
 var STATE_NOTICE = {
-  CLIENT_DETAILS_RECEIVED: { tone: "info", text: "We’re checking your details. This page shows the result once the check is done." },
   CLIENT_CHANGES_REQUESTED: { tone: "info", text: "We’re revising this agreement as you asked. It appears here for your approval and we email you when it’s ready." },
   AGREEMENT_SEND_FAILED: { tone: "info", text: "We’re sending this agreement to you. You can approve it here as soon as it arrives." },
 };
@@ -27,14 +25,13 @@ export function AgreementStageNotice(agreement) {
   return h("div", { "class": "agreement-notice", "data-module": "agreement-notice", "data-visual-id": "agreement-notice", "data-state": agreement.stage, "data-tone": notice.tone, role: "status" }, [
     h("span", { "class": "agreement-notice__dot", "aria-hidden": "true" }),
     h("span", { "class": "agreement-notice__text" }, notice.text),
-    notice.link ? h("span", { "class": "link-action agreement-notice__link", "data-action": notice.link.action, "data-id": notice.link.id }, notice.link.label) : null,
   ]);
 }
 
-export function AgreementParties(parties, withClient) {
+export function AgreementParties(parties) {
   return h("div", { "class": "agreement-parties", "data-module": "agreement-parties", "data-visual-id": "agreement-parties" }, [
     ProviderCard(parties.provider),
-    withClient === false ? null : ClientCard(parties.client),
+    ClientCard(parties.client),
   ]);
 }
 

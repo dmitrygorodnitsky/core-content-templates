@@ -380,6 +380,33 @@
 
 .cr-confirm .cr-actions, .cr-approve .cr-actions { margin-top: 12px; }
 
+.cr-chosen {
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+  margin-top: 14px; padding: 11px 14px; border-radius: 14px;
+  background: var(--ok-bg);
+}
+
+.cr-chosen[data-chosen="decline"] { margin-top: 0; background: var(--danger-bg); }
+
+.cr-chosen__icon {
+  width: 24px; height: 24px; flex: none; border-radius: var(--radius-pill); display: grid; place-items: center;
+  font-size: 12px; font-weight: 800; background: var(--surface); color: var(--ok);
+}
+
+.cr-chosen[data-chosen="decline"] .cr-chosen__icon { color: var(--danger); }
+
+.cr-chosen__text { flex: 1 1 200px; min-width: 0; margin: 0; font-size: 13.5px; line-height: 1.5; }
+
+.cr-chosen + .cr-actions { margin-top: 12px; }
+
+.cr-choices > .cr-note { margin: 0 0 14px; }
+
+.cr-choices__list { margin-bottom: 14px; }
+
+.cr-choices .cr-form-card { margin-top: 8px; padding-top: 16px; border-top: 1px solid rgba(var(--hair), .08); }
+
+.cr-choices .cr-form-card > .cr-note { margin: 0 0 16px; }
+
 .cr-approve[role="group"] { border-color: rgba(var(--accent-rgb), .4); }
 
 .cr-approve .cr-note { margin-top: 0; }

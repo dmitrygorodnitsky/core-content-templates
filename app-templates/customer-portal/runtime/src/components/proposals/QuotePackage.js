@@ -73,9 +73,6 @@ export function agreementSummary(row) {
   var facts = [];
   if (chosen.length === 1) facts.push(optionSummary(chosen[0]));
   else if (chosen.length > 1) facts.push(plural(chosen.length, "option", "options") + " approved");
-  else if (agreement.stage === "review" && row.quoteCount) {
-    facts.push(plural(row.quoteCount, "quote", "quotes") + (row.propertyCount ? " for " + plural(row.propertyCount, "property", "properties") : ""));
-  }
   var season = agreementSeason(agreement);
   if (season) facts.push(season);
   else if (agreement.effectiveDate) facts.push("Effective " + formatIsoDate(agreement.effectiveDate));
@@ -157,7 +154,7 @@ export function QuoteGroups(groups, placements, mapShown) {
 export function QuotesFooter() {
   return h("div", { "class": "proposal-footer", "data-module": "quote-package-footer", "data-visual-id": "quote-package-footer" }, [
     h("div", { "class": "proposal-footer__icon" }, "✦"),
-    h("div", { "class": "proposal-footer__copy" }, "Decide each property on its own. Approving one option for a property declines its other options. Once every property has a decision, we’ll ask for your contract details and prepare your service agreement."),
+    h("div", { "class": "proposal-footer__copy" }, "Decide each property on its own. Approving one option for a property declines its other options, and your contract details go with the approval. Once every property has a decision, we prepare your service agreement."),
   ]);
 }
 

@@ -24,7 +24,7 @@
     ["PDF_PAGE", "pdfPage", "Page {page} of {pages}"],
     ["QUOTE_EYEBROW", "quoteEyebrow", "Quotation"],
     ["QUOTE_TITLE", "quoteTitle", "Review your quotes"],
-    ["QUOTE_SUBTITLE", "quoteSubtitle", "Each property has its own options. Choose one to see its services, then approve it or ask for changes. If none suits you, decline them all."],
+    ["QUOTE_SUBTITLE", "quoteSubtitle", "Each property has its own options. Choose one to see its services, then approve it or ask for changes. If none suits you, decline them all. You send your decisions together at the end."],
     ["SUMMARY_LABEL", "summaryLabel", "Package summary"],
     ["SUMMARY_PROPERTIES", "summaryProperties", "Properties"],
     ["SUMMARY_AWAITING", "summaryAwaiting", "Awaiting decision"],
@@ -69,16 +69,9 @@
     ["VIEW_PENDING", "viewPending", "Letting the provider know you opened this option…"],
     ["VIEW_FAILED", "viewFailed", "We could not let the provider know you opened this option, so its decisions are not available yet."],
     ["APPROVE_LABEL", "approveLabel", "Approve"],
-    ["DECLINE_LABEL", "declineLabel", "Decline"],
     ["CHANGES_LABEL", "changesLabel", "Request changes"],
     ["CANCEL_LABEL", "cancelLabel", "Cancel"],
     ["SENDING_LABEL", "sendingLabel", "Sending…"],
-    ["APPROVE_CONFIRM_TITLE", "approveConfirmTitle", "Approve {option} for this property?"],
-    ["APPROVE_CONFIRM_OTHERS", "approveConfirmOthers", "The provider will decline the other options for this property."],
-    ["APPROVE_CONFIRM_BUTTON", "approveConfirmButton", "Confirm approval"],
-    ["DECLINE_CONFIRM_TITLE", "declineConfirmTitle", "Decline {option}?"],
-    ["DECLINE_CONFIRM_BODY", "declineConfirmBody", "A declined option cannot be approved later through this link."],
-    ["DECLINE_CONFIRM_BUTTON", "declineConfirmButton", "Confirm decline"],
     ["CHANGES_TITLE", "changesTitle", "What should change?"],
     ["CHANGES_PLACEHOLDER", "changesPlaceholder", "For example: add sidewalk de-icing, or quote weekly visits instead."],
     ["CHANGES_REQUIRED", "changesRequired", "Write what you would like changed before sending."],
@@ -86,9 +79,18 @@
     ["CHOICE_LEGEND", "choiceLegend", "Options for {address}"],
     ["CHOOSE_OPTION", "chooseOption", "Choose an option to see its services and approve it or ask for changes."],
     ["DECLINE_ALL_LABEL", "declineAllLabel", "Decline all options"],
-    ["DECLINE_ALL_CONFIRM_TITLE", "declineAllConfirmTitle", "Decline every option for this property?"],
-    ["DECLINE_ALL_CONFIRM_BODY", "declineAllConfirmBody", "None of them can be approved later through this link. The provider can send you new options."],
-    ["DECLINE_ALL_CONFIRM_BUTTON", "declineAllConfirmButton", "Decline all"],
+    ["CHOICE_APPROVED_NOTE", "choiceApprovedNote", "You chose this option. Send your decisions below to approve it."],
+    ["CHOICE_DECLINED_NOTE", "choiceDeclinedNote", "You chose to decline every option for this property. Send your decisions below."],
+    ["CHOICE_UNDO", "choiceUndo", "Undo"],
+    ["CHOICES_TITLE", "choicesTitle", "Confirm your choices"],
+    ["CHOICES_BODY", "choicesBody", "Approving an option declines the other options for its property. Declined options cannot be approved later through this link."],
+    ["CHOICE_APPROVE_ROW", "choiceApproveRow", "Approve {option}"],
+    ["CHOICE_DECLINE_ROW", "choiceDeclineRow", "Decline every option"],
+    ["CHOICES_UNDECIDED_ONE", "choicesUndecidedOne", "1 property has no decision in this step. You can decide it later through this link."],
+    ["CHOICES_UNDECIDED_MANY", "choicesUndecidedMany", "{n} properties have no decision in this step. You can decide them later through this link."],
+    ["CHOICES_SUBMIT", "choicesSubmit", "Send decisions"],
+    ["PARTIAL_DECIDED_TITLE", "partialDecidedTitle", "Your decisions so far are recorded"],
+    ["PARTIAL_DECIDED_BODY", "partialDecidedBody", "Decide the properties still awaiting a decision, now or later through this link."],
     ["REFUSED_TITLE", "refusedTitle", "Not accepted"],
     ["REFUSED_FALLBACK", "refusedFallback", "The provider's system did not accept this request."],
     ["FAILED_BODY", "failedBody", "We could not confirm whether this went through. Refresh the status before trying again."],
@@ -98,20 +100,12 @@
     ["PARTIAL_MANY", "partialMany", "{n} options could not be loaded. Everything else is shown as the provider's system returned it."],
     ["ACCOUNT_PARTIAL", "accountPartial", "Your account details could not be loaded, so nothing is filled in for you."],
     ["DECIDED_TITLE", "decidedTitle", "Every property has a decision"],
-    ["DECIDED_BODY", "decidedBody", "The provider opens the next step once its system has processed your decisions."],
     ["DECIDED_FOLLOWING_BODY", "decidedFollowingBody", "The provider's system is processing your decisions. This page updates on its own."],
     ["DECIDED_ROUND_BODY", "decidedRoundBody", "Thank you, your decisions are recorded. The provider will contact you about the next step."],
-    ["CHECK_AGAIN", "checkAgain", "Check again"],
 
-    ["DETAILS_EYEBROW", "detailsEyebrow", "Contract details"],
-    ["DETAILS_TITLE", "detailsTitle", "Complete your contract details"],
-    ["DETAILS_SUBTITLE", "detailsSubtitle", "Every property has a decision. These details go into your service agreement."],
-    ["DETAILS_APPROVED_TITLE", "detailsApprovedTitle", "Approved options"],
+    ["DETAILS_SUBTITLE", "detailsSubtitle", "These details go into your service agreement. You give them once for every option you approve."],
     ["DETAILS_FORM_TITLE", "detailsFormTitle", "Client and representative"],
-    ["DETAILS_SUBMIT", "detailsSubmit", "Send details"],
     ["DETAILS_INVALID", "detailsInvalid", "Check the highlighted fields."],
-    ["DETAILS_REFUSED_TITLE", "detailsRefusedTitle", "The details were not accepted"],
-    ["DETAILS_UNAVAILABLE", "detailsUnavailable", "Contract details cannot be sent through this link."],
     ["REQUIRED_ERROR", "requiredError", "This field is required."],
     ["EMAIL_ERROR", "emailError", "Enter a valid email address."],
     ["SELECT_PLACEHOLDER", "selectPlaceholder", "Choose one"],
@@ -130,23 +124,6 @@
     ["PLAN_NOTE", "planNote", "The provider prepared this plan for your service. If something on it looks wrong, contact them."],
     ["CONFIRM_INFORMATION_STATEMENT", "confirmInformationStatement", "I confirm that the information above is accurate."],
     ["CONFIRM_AUTHORITY_STATEMENT", "confirmAuthorityStatement", "I confirm that I am authorized to enter into this agreement on behalf of the client."],
-    ["DETAILS_RETURNED_TITLE", "detailsReturnedTitle", "Your details came back"],
-    ["DETAILS_RETURNED_BODY", "detailsReturnedBody", "The provider's system could not accept them. Fix the marked fields and send your details again."],
-    ["DETAILS_RETURNED_REENTER", "detailsReturnedReenter", "The provider's system could not accept the details you sent, and this page cannot show them again. What is filled in for you comes from your account. Check it, complete the rest and send your details again; the marked fields are why they came back."],
-    ["DETAILS_RETURNED_UNKNOWN", "detailsReturnedUnknown", "The provider's system could not accept them, for a reason this page cannot show. Check your details and send them again, or contact the provider."],
-    ["DETAILS_RETURNED_UNKNOWN_REENTER", "detailsReturnedUnknownReenter", "The provider's system could not accept the details you sent, and this page can show neither the reason nor your details. What is filled in for you comes from your account. Check it, complete the rest and send your details again, or contact the provider."],
-    ["DETAILS_RETURNED_UNEXPLAINED", "detailsReturnedUnexplained", "The provider's system also reported a problem this page cannot show. Contact the provider if your details come back again."],
-    ["DETAILS_PROCESSING_TITLE", "detailsProcessingTitle", "Your details were not saved"],
-    ["DETAILS_PROCESSING_BODY", "detailsProcessingBody", "Nothing was wrong with what you entered: the provider's system could not save it. Check the form and send your details again."],
-    ["DETAILS_PROCESSING_REENTER", "detailsProcessingReenter", "Nothing was wrong with the details you sent, but the provider's system could not save them and this page cannot show them again. What is filled in for you comes from your account. Check it, complete the rest and send your details again."],
-    ["RETURNED_MISSING", "returnedMissing", "This was missing from the details you sent."],
-    ["RETURNED_UNCONFIRMED", "returnedUnconfirmed", "This confirmation was missing from the details you sent."],
-    ["RETURNED_CHOICE", "returnedChoice", "The choice you sent was not recognized. Choose one of the options."],
-    ["RETURNED_EMAIL", "returnedEmail", "The email address you sent was not accepted. Enter a valid email address."],
-    ["CHECKING_TITLE", "checkingTitle", "We are checking your details"],
-    ["CHECKING_BODY", "checkingBody", "The provider's system received your details and is checking them. This page updates on its own."],
-    ["CHECKING_SLOW_TITLE", "checkingSlowTitle", "This is taking longer than usual"],
-    ["CHECKING_SLOW_BODY", "checkingSlowBody", "The provider's system received your details but has not finished checking them. Refresh the status in a minute, or open this link again later."],
 
     ["AGREEMENT_EYEBROW", "agreementEyebrow", "Service agreement"],
     ["AGREEMENT_TITLE", "agreementTitle", "Review your service agreement"],
@@ -200,6 +177,7 @@
     ["PREPARING_BODY", "preparingBody", "Nothing is needed from you on this page right now."],
     ["CANCELED_TITLE", "canceledTitle", "This quotation is closed"],
     ["CANCELED_BODY", "canceledBody", "The provider canceled it. Contact them if you expected to review it."],
+    ["DECLINED_CLOSED_BODY", "declinedClosedBody", "You declined every option, so the provider closed this quotation. Contact them if you would like new options."],
     ["ARCHIVED_TITLE", "archivedTitle", "This agreement is archived"],
     ["ARCHIVED_BODY", "archivedBody", "It is no longer available through this link."],
     ["UNAVAILABLE_TITLE", "unavailableTitle", "This page is not available right now"],
@@ -328,13 +306,11 @@
     agreementOperationStatus: {
       key: "AGREEMENT_OPERATION_STATUS",
       presentedStates: {
-        QUOTATION_SENT: { QUOTATION_DELIVERY_FAILED: "QUOTATION_SEND_FAILED" },
         SENT_TO_CLIENT: { AGREEMENT_DELIVERY_FAILED: "AGREEMENT_SEND_FAILED" },
         CLIENT_APPROVED: { ACTIVATION_FAILED: "ACTIVATION_FAILED" },
       },
     },
     agreementEvents: {
-      details: { code: "AWAITING_CLIENT_DETAILS-CLIENT_DETAILS_RECEIVED", source: "AWAITING_CLIENT_DETAILS" },
       approve: { code: "SENT_TO_CLIENT-CLIENT_APPROVED", source: "SENT_TO_CLIENT" },
       changes: { code: "SENT_TO_CLIENT-CLIENT_CHANGES_REQUESTED", source: "SENT_TO_CLIENT", messageAttribute: "MESSAGE" },
     },
@@ -383,17 +359,9 @@
       providerContactPhone: "PROVIDER_CONTACT_PHONE",
       providerContactEmail: "PROVIDER_CONTACT_EMAIL",
       providerLogo: "PROVIDER_LOGO",
-      detailsErrors: "CLIENT_DETAILS_ERRORS",
-    },
-    detailsReturn: {
-      processingFailed: "PROCESSING_FAILED",
-      invalid: {
-        CLIENT_TYPE_INVALID: { field: "CLIENT_TYPE", reason: "choice" },
-        REPRESENTATIVE_EMAIL_INVALID: { field: "REPRESENTATIVE_EMAIL", reason: "email" },
-      },
     },
     contractDetails: {
-      event: "AWAITING_CLIENT_DETAILS-CLIENT_DETAILS_RECEIVED",
+      event: "QUOTE_VIEWED-CLIENT_APPROVED",
       attributes: CONTRACT_DETAILS_ATTRIBUTES,
       attributeOrder: [
         {
@@ -742,12 +710,12 @@
   var PRICED_STATUSES = ["new", "viewed", "approved", "declined", "changes"];
 
   var AGREEMENT_DISPOSITION = {
-    QUOTATION: { kind: "preparing" },
-    QUOTATION_SENT: { kind: "quote-review" },
-    QUOTATION_UPDATE: { kind: "unavailable", reason: "updating" },
-    QUOTATION_SEND_FAILED: { kind: "unavailable", reason: "send-failed" },
-    AWAITING_CLIENT_DETAILS: { kind: "contract-details" },
-    CLIENT_DETAILS_RECEIVED: { kind: "checking" },
+    QUOTATION: { kind: "unavailable", reason: "retired" },
+    QUOTATION_SENT: { kind: "unavailable", reason: "retired" },
+    QUOTATION_UPDATE: { kind: "unavailable", reason: "retired" },
+    QUOTATION_SEND_FAILED: { kind: "unavailable", reason: "retired" },
+    AWAITING_CLIENT_DETAILS: { kind: "unavailable", reason: "retired" },
+    CLIENT_DETAILS_RECEIVED: { kind: "unavailable", reason: "retired" },
     DRAFT: { kind: "preparing" },
     PENDING_MANAGEMENT_APPROVAL: { kind: "preparing" },
     INTERNALLY_APPROVED: { kind: "preparing" },
@@ -1079,42 +1047,6 @@
     return { kind: "clause", number: match[1] + match[2], depth: match[1].split(".").length, text: match[3] };
   }
 
-  function owns(map, key) {
-    return Boolean(map) && Object.prototype.hasOwnProperty.call(map, key);
-  }
-
-  function detailsCodes(value) {
-    var source = Array.isArray(value) ? value : typeof value === "string" ? value.split(",") : [];
-    var codes = [];
-    source.forEach(function (entry) {
-      var code = text(entry);
-      if (code && codes.indexOf(code) === -1) codes.push(code);
-    });
-    return codes;
-  }
-
-  function returnedDetails(value, fields, vocabulary) {
-    var codes = detailsCodes(value);
-    var kinds = {};
-    fields.forEach(function (field) { kinds[field.code] = field.kind; });
-    var result = { returned: codes.length > 0, processingFailed: false, unexplained: false, fields: {} };
-    codes.forEach(function (code) {
-      if (code === vocabulary.processingFailed) {
-        result.processingFailed = true;
-        return;
-      }
-      var invalid = owns(vocabulary.invalid, code) ? vocabulary.invalid[code] : null;
-      var field = invalid ? invalid.field : code;
-      if (!owns(kinds, field)) {
-        result.unexplained = true;
-        return;
-      }
-      if (owns(result.fields, field)) return;
-      result.fields[field] = invalid ? invalid.reason : kinds[field] === "boolean" ? "unconfirmed" : "missing";
-    });
-    return result;
-  }
-
   function inputTokens(inputFormat) {
     return String(inputFormat || "").split(/[\s;]+/).filter(Boolean);
   }
@@ -1442,13 +1374,13 @@
     });
   }
 
-  function serviceAddresses(properties) {
-    var found = [];
-    properties.forEach(function (property) {
-      var approved = property.options.some(function (option) { return option.status === "approved"; });
-      if (approved && property.address && found.indexOf(property.address) === -1) found.push(property.address);
+  function approvalsOffered(properties, grant, contract) {
+    var events = contract.orderEvents;
+    return properties.some(function (property) {
+      return property.options.some(function (option) {
+        return option.actions.approve || (option.actions.view && eventGranted(grant, "order", option.id, events.approve.code));
+      });
     });
-    return found;
   }
 
   function grantActions(properties, grant, contract) {
@@ -1554,6 +1486,7 @@
     var properties = propertiesOf(orders, { locale: locale, contract: contract, catalog: catalogOf(input) });
     grantActions(properties, grant, contract);
     var decided = summarized(properties);
+    var fields = detailFields(contract.contractDetails, locale);
     return {
       kind: "quote-review",
       reason: "",
@@ -1570,7 +1503,11 @@
       allDecided: decided.allDecided,
       unreadableOrders: 0,
       accountUnavailable: Boolean(input.accountFailed),
-      details: { available: false, fields: [], prefill: {}, serviceAddresses: [], returned: returnedDetails(null, [], contract.detailsReturn) },
+      details: {
+        available: approvalsOffered(properties, grant, contract),
+        fields: fields,
+        prefill: detailsPrefill(account, fields, locale, contract),
+      },
       canApproveAgreement: false,
       canRequestAgreementChanges: false,
       primaryEmail: primaryEmail(account, contract),
@@ -1615,12 +1552,9 @@
     });
 
     var properties = propertiesOf(readable, { locale: locale, contract: contract, catalog: catalogOf(input) });
-    if (state === "QUOTATION_SENT") grantActions(properties, grant, contract);
     var decided = summarized(properties);
-    var detailsEvent = contract.agreementEvents.details;
     var approveEvent = contract.agreementEvents.approve;
     var changesEvent = contract.agreementEvents.changes;
-    var awaitingDetails = state === detailsEvent.source;
 
     return {
       kind: disposition.kind,
@@ -1636,7 +1570,6 @@
         termStart: formatDate(attributeValue(agreement, contract.agreementAttributes.termStart), locale),
         termEnd: formatDate(attributeValue(agreement, contract.agreementAttributes.termEnd), locale),
         terms: termsBlocks(attributeValue(agreement, contract.agreementAttributes.terms)),
-        detailsErrors: detailsCodes(attributeValue(agreement, contract.agreementAttributes.detailsErrors)).join(","),
       },
       names: {
         provider: parties.provider.legalName,
@@ -1649,13 +1582,7 @@
       allDecided: decided.allDecided,
       unreadableOrders: unreadable,
       accountUnavailable: Boolean(input.accountFailed),
-      details: {
-        available: awaitingDetails && eventGranted(grant, "document", agreementId, detailsEvent.code),
-        fields: fields,
-        prefill: detailsPrefill(account, fields, locale, contract),
-        serviceAddresses: serviceAddresses(properties),
-        returned: returnedDetails(awaitingDetails ? attributeValue(agreement, contract.agreementAttributes.detailsErrors) : null, fields, contract.detailsReturn),
-      },
+      details: { available: false, fields: [], prefill: {} },
       canApproveAgreement: state === approveEvent.source && eventGranted(grant, "document", agreementId, approveEvent.code),
       canRequestAgreementChanges: state === changesEvent.source && eventGranted(grant, "document", agreementId, changesEvent.code),
       primaryEmail: primaryEmail(account, contract),
@@ -1682,7 +1609,6 @@
     priceVariant: priceVariant,
     formatDate: formatDate,
     termsBlocks: termsBlocks,
-    returnedDetails: returnedDetails,
     primaryEmail: primaryEmail,
     telHref: telHref,
     mailHref: mailHref,
@@ -1907,7 +1833,7 @@
   "use strict";
 
   var ns = global.ClientReview || (global.ClientReview = {});
-  var KINDS = ["quote-review", "contract-details", "agreement-review", "reference", "completion"];
+  var KINDS = ["agreement-review", "reference", "completion"];
   var STATUSES = { new: "optionNew", viewed: "optionViewed", approved: "optionApproved", declined: "optionDeclined", changes: "optionChanges", revising: "optionRevising", unknown: "optionUnknown" };
 
   function offered(snapshot) {
@@ -2071,7 +1997,7 @@
 
     section(copy.servicesTitle);
     view.properties.forEach(function (property) {
-      var options = view.kind === "contract-details" ? property.options.filter(function (option) { return option.status === "approved"; }) : property.options;
+      var options = property.options;
       if (!options.length) return;
       ensure(70);
       paragraph(property.address || copy.addressUnavailable, 12, ink, 10);
@@ -2891,7 +2817,7 @@
       var body = ns.fill(view.unreadableOrders === 1 ? copy.partialOne : copy.partialMany, { n: view.unreadableOrders });
       found.push(notice("warn", "", body, refreshButton(ctx, "", copy.retryLabel)));
     }
-    if (view.accountUnavailable && view.kind === "contract-details") found.push(notice("warn", "", copy.accountPartial, null));
+    if (view.accountUnavailable && view.details.available) found.push(notice("warn", "", copy.accountPartial, null));
     return found;
   }
 
@@ -2984,21 +2910,38 @@
     return box;
   }
 
-  function actionRow(ctx, option) {
+  function chosenOption(ctx, property, option) {
+    var choice = ctx.snapshot.choices[property.key];
+    return Boolean(choice && choice.kind === "approve" && choice.id === option.id);
+  }
+
+  function actionRow(ctx, property, option) {
     var copy = ctx.copy;
     var disabled = ctx.busy || isPending(ctx.snapshot.commands[option.recordKey]);
+    var chosen = chosenOption(ctx, property, option);
     var row = el("div", "cr-actions");
-    function intent(kind) {
-      return function () { ctx.dispatch("option.intent", { id: option.id, kind: kind }); };
+    if (option.actions.approve && !chosen) {
+      row.appendChild(button(copy.approveLabel, "btn--primary btn--lg", function () { ctx.dispatch("option.choose", { id: option.id }); }, { disabled: disabled, "data-action": "option.approve" }));
     }
-    if (option.actions.approve) row.appendChild(button(copy.approveLabel, "btn--primary btn--lg", intent("approve"), { disabled: disabled, "data-action": "option.approve" }));
-    if (option.actions.changes) row.appendChild(button(copy.changesLabel, "btn--ghost btn--lg", intent("changes"), { disabled: disabled, "data-action": "option.changes" }));
+    if (option.actions.changes) {
+      row.appendChild(button(copy.changesLabel, "btn--ghost btn--lg", function () { ctx.dispatch("option.intent", { id: option.id, kind: "changes" }); }, { disabled: disabled, "data-action": "option.changes" }));
+    }
     return row;
+  }
+
+  function chosenNote(ctx, property, kind) {
+    var copy = ctx.copy;
+    var box = el("div", "cr-chosen", { "data-chosen": kind, role: "group", "aria-label": kind === "approve" ? copy.choiceApprovedNote : copy.choiceDeclinedNote });
+    box.appendChild(text("span", "cr-chosen__icon", kind === "approve" ? "✓" : "✕", { "aria-hidden": "true" }));
+    box.appendChild(text("p", "cr-chosen__text", kind === "approve" ? copy.choiceApprovedNote : copy.choiceDeclinedNote));
+    box.appendChild(mark(ctx, button(copy.choiceUndo, "btn--ghost", function () {
+      ctx.dispatch("choice.clear", { key: property.key });
+    }, { disabled: ctx.busy, "data-action": "choice.clear" }), "choice-" + property.key));
+    return box;
   }
 
   function confirmPanel(ctx, property, option, confirm, pending) {
     var copy = ctx.copy;
-    var label = optionLabel(option, copy);
     var kind = confirm.kind;
     var titleId = "cr-confirm-title-" + option.id;
     var panel = el("div", "cr-confirm cr-confirm--" + kind, { role: "group", "aria-labelledby": titleId, "data-state": pending ? "pending" : "open" });
@@ -3022,20 +2965,11 @@
       field.appendChild(area);
       field.appendChild(text("p", "cr-field__error", invalid ? copy.changesRequired : "", { id: "cr-draft-error-" + option.id }));
       panel.appendChild(field);
-    } else {
-      panel.appendChild(text("p", "cr-confirm__title", ns.fill(kind === "approve" ? copy.approveConfirmTitle : copy.declineConfirmTitle, { option: label }), { id: titleId }));
-      var others = property.options.some(function (other) { return other.id !== option.id && other.status !== "declined"; });
-      var body = kind === "approve" ? (others ? copy.approveConfirmOthers : "") : copy.declineConfirmBody;
-      if (body) panel.appendChild(text("p", "cr-confirm__body", body));
     }
     var actions = el("div", "cr-actions");
-    var confirmLabel = pending ? copy.sendingLabel
-      : kind === "approve" ? copy.approveConfirmButton
-        : kind === "decline" ? copy.declineConfirmButton : copy.changesSend;
-    var confirmButton = button(confirmLabel, kind === "decline" ? "btn--danger btn--lg" : "btn--primary btn--lg", function () {
+    var confirmButton = button(pending ? copy.sendingLabel : copy.changesSend, "btn--primary btn--lg", function () {
       ctx.dispatch("option.confirm", { id: option.id });
     }, { disabled: pending || ctx.busy, "data-state": pending ? "pending" : null, "data-action": "option.confirm", "aria-busy": pending ? "true" : null });
-    if (kind !== "changes") mark(ctx, confirmButton, "confirm-" + option.id);
     actions.appendChild(confirmButton);
     actions.appendChild(button(copy.cancelLabel, "btn--ghost btn--lg", function () {
       ctx.dispatch("option.cancel", { id: option.id });
@@ -3078,14 +3012,14 @@
       body.appendChild(text("p", "cr-note", copy.noteSiblingApproved));
       return;
     }
-    var confirmOpen = ctx.snapshot.confirm && ctx.snapshot.confirm.id === option.id;
-    var decisions = option.actions.approve || option.actions.changes || (confirmOpen && option.actions.decline);
+    var decisions = option.actions.approve || option.actions.changes;
     if (!decisions) {
       if (option.awaitingClient && !option.actions.view) body.appendChild(text("p", "cr-note", copy.noteNoActions));
       return;
     }
-    var confirm = ctx.snapshot.confirm && ctx.snapshot.confirm.kind !== "agreement" && ctx.snapshot.confirm.id === option.id ? ctx.snapshot.confirm : null;
-    body.appendChild(confirm ? confirmPanel(ctx, property, option, confirm, pending) : actionRow(ctx, option));
+    var confirm = ctx.snapshot.confirm && ctx.snapshot.confirm.kind === "changes" && ctx.snapshot.confirm.id === option.id ? ctx.snapshot.confirm : null;
+    if (chosenOption(ctx, property, option)) body.appendChild(chosenNote(ctx, property, "approve"));
+    body.appendChild(confirm ? confirmPanel(ctx, property, option, confirm, pending) : actionRow(ctx, property, option));
     if (command && !pending) {
       body.appendChild(outcomeBox(ctx, command, { action: refreshButton(ctx, option.recordKey, copy.refreshLabel) }));
     }
@@ -3133,46 +3067,26 @@
     return item;
   }
 
-  function declineAllPanel(ctx, property) {
-    var copy = ctx.copy;
-    var running = ctx.snapshot.bulk === property.key;
-    var titleId = "cr-decline-title-" + property.key;
-    var panel = el("div", "cr-confirm cr-confirm--decline", { role: "group", "aria-labelledby": titleId, "data-state": running ? "pending" : "open" });
-    panel.appendChild(text("p", "cr-confirm__title", copy.declineAllConfirmTitle, { id: titleId }));
-    panel.appendChild(text("p", "cr-confirm__body", copy.declineAllConfirmBody));
-    var actions = el("div", "cr-actions");
-    var confirmButton = button(running ? copy.sendingLabel : copy.declineAllConfirmButton, "btn--danger btn--lg", function () {
-      ctx.dispatch("property.confirm", { key: property.key });
-    }, { disabled: running || ctx.busy, "data-state": running ? "pending" : null, "data-action": "property.confirm", "aria-busy": running ? "true" : null });
-    mark(ctx, confirmButton, "confirm-" + property.key);
-    actions.appendChild(confirmButton);
-    actions.appendChild(button(copy.cancelLabel, "btn--ghost btn--lg", function () {
-      ctx.dispatch("property.cancel", { key: property.key });
-    }, { disabled: running, "data-action": "property.cancel" }));
-    panel.appendChild(actions);
-    return panel;
-  }
-
   function propertyFooter(ctx, property) {
     var copy = ctx.copy;
     var snapshot = ctx.snapshot;
     var declineCode = ns.contract.orderEvents.decline.code;
     var chosen = property.options.some(function (option) { return snapshot.expanded[option.id]; });
     var declinable = property.options.some(function (option) { return option.actions.decline || option.actions.view; });
-    var confirm = snapshot.confirm && snapshot.confirm.kind === "decline-all" && snapshot.confirm.property === property.key;
+    var choice = snapshot.choices[property.key] || null;
     var failed = property.options.filter(function (option) {
       var command = snapshot.commands[option.recordKey];
       return command && command.event === declineCode && (command.status === "failed" || command.status === "refused") && !snapshot.expanded[option.id];
     })[0];
     var footer = el("div", "cr-property__foot");
-    if (!chosen && property.options.some(function (option) { return option.awaitingClient && !option.siblingApproved; })) {
+    if (!chosen && !choice && property.options.some(function (option) { return option.awaitingClient && !option.siblingApproved; })) {
       footer.appendChild(text("p", "cr-note cr-pick__hint", copy.chooseOption));
     }
     if (failed) {
       footer.appendChild(outcomeBox(ctx, snapshot.commands[failed.recordKey], { action: refreshButton(ctx, failed.recordKey, copy.refreshLabel) }));
     }
-    if (confirm) {
-      footer.appendChild(declineAllPanel(ctx, property));
+    if (choice && choice.kind === "decline") {
+      footer.appendChild(chosenNote(ctx, property, "decline"));
     } else if (declinable) {
       var pending = property.options.some(function (option) { return isPending(snapshot.commands[option.recordKey]); });
       var intent = button(copy.declineAllLabel, "btn--danger", function () {
@@ -3219,19 +3133,91 @@
 
   function decidedNotice(ctx) {
     var copy = ctx.copy;
-    if (!ctx.snapshot.view.agreement) {
-      announce(ctx, [copy.decidedTitle, copy.decidedRoundBody]);
-      var recorded = notice("ok", copy.decidedTitle, copy.decidedRoundBody, null);
-      recorded.setAttribute("data-decided", "recorded");
-      return recorded;
-    }
     var waiting = ctx.snapshot.waiting;
     var following = waiting.decisions && !waiting.exhausted;
-    var body = following ? copy.decidedFollowingBody : copy.decidedBody;
+    var body = following ? copy.decidedFollowingBody : copy.decidedRoundBody;
     announce(ctx, [copy.decidedTitle, body]);
-    var box = notice("ok", copy.decidedTitle, body, following ? null : refreshButton(ctx, "", copy.checkAgain), { quiet: waiting.decisions, busy: following });
-    box.setAttribute("data-decided", following ? "following" : "settled");
+    var box = notice("ok", copy.decidedTitle, body, null, { quiet: waiting.decisions, busy: following });
+    box.setAttribute("data-decided", following ? "following" : "recorded");
     return box;
+  }
+
+  function partialNotice(ctx) {
+    var copy = ctx.copy;
+    var counts = ctx.snapshot.view.summary;
+    if (ctx.snapshot.view.allDecided || !counts.awaiting || !(counts.approved + counts.declined)) return null;
+    var box = notice("ok", copy.partialDecidedTitle, copy.partialDecidedBody, null, { quiet: true });
+    box.setAttribute("data-decided", "partial");
+    return box;
+  }
+
+  function choiceRow(ctx, entry) {
+    var copy = ctx.copy;
+    var item = el("li", "cr-approved__item cr-choices__item", { "data-choice": entry.kind, "data-property": entry.property.key });
+    var row = el("div", "cr-approved__row");
+    var identity = el("div", "cr-approved__identity");
+    identity.appendChild(text("span", "cr-approved__address" + (entry.property.address ? "" : " cr-muted"), entry.property.address || copy.addressUnavailable));
+    identity.appendChild(text("span", "cr-approved__option", entry.kind === "approve" ? ns.fill(copy.choiceApproveRow, { option: optionLabel(entry.option, copy) }) : copy.choiceDeclineRow));
+    row.appendChild(identity);
+    if (entry.kind === "approve") row.appendChild(text("span", "cr-approved__total" + (entry.option.total ? "" : " cr-muted"), entry.option.total || copy.valueNotStated));
+    item.appendChild(row);
+    if (entry.kind === "approve" && ctx.maps && entry.property.plan) item.appendChild(planBlock(ctx, entry.property));
+    var failed = (entry.kind === "approve" ? [entry.option] : entry.property.options).map(function (option) { return ctx.snapshot.commands[option.recordKey]; }).filter(function (command) {
+      return command && (command.status === "failed" || command.status === "refused");
+    })[0];
+    if (failed) item.appendChild(outcomeBox(ctx, failed, { action: refreshButton(ctx, "", copy.refreshLabel) }));
+    return item;
+  }
+
+  function choicesPanel(ctx) {
+    var view = ctx.snapshot.view;
+    var copy = ctx.copy;
+    var entries = view.properties.filter(function (property) { return Boolean(ctx.snapshot.choices[property.key]); }).map(function (property) {
+      var choice = ctx.snapshot.choices[property.key];
+      var option = choice.kind === "approve" ? property.options.filter(function (candidate) { return candidate.id === choice.id; })[0] : null;
+      return { property: property, kind: choice.kind, option: option };
+    }).filter(function (entry) { return entry.kind === "decline" || entry.option; });
+    if (!entries.length) return null;
+    var sending = ctx.snapshot.bulk === "choices";
+    var approvals = entries.some(function (entry) { return entry.kind === "approve"; });
+    var card = el("section", "cr-panel cr-choices", { "aria-labelledby": "cr-choices-title", "data-state": sending ? "pending" : "open" });
+    card.appendChild(mark(ctx, text("h2", "cr-section-title", copy.choicesTitle, { id: "cr-choices-title", tabindex: "-1" }), "choices-title"));
+    card.appendChild(text("p", "cr-note", copy.choicesBody));
+    var list = el("ul", "cr-approved__list cr-choices__list");
+    entries.forEach(function (entry) { list.appendChild(choiceRow(ctx, entry)); });
+    card.appendChild(list);
+    var undecided = view.properties.filter(function (property) {
+      return property.status === "awaiting" && !ctx.snapshot.choices[property.key];
+    }).length;
+    if (undecided) card.appendChild(text("p", "cr-note", ns.fill(undecided === 1 ? copy.choicesUndecidedOne : copy.choicesUndecidedMany, { n: undecided }), { "data-undecided": String(undecided) }));
+    var form = el("form", "cr-form", { novalidate: true, "data-state": sending ? "pending" : "idle" });
+    form.addEventListener("submit", function (event) {
+      event.preventDefault();
+      ctx.dispatch("choices.submit");
+    });
+    if (approvals) {
+      var details = el("div", "cr-form-card", { role: "group", "aria-labelledby": "cr-details-title" });
+      details.appendChild(text("h3", "cr-section-title", copy.detailsFormTitle, { id: "cr-details-title" }));
+      details.appendChild(text("p", "cr-note", copy.detailsSubtitle));
+      var fields = el("div", "cr-fields");
+      view.details.fields.forEach(function (field) { fields.appendChild(fieldNode(ctx, field, sending)); });
+      details.appendChild(fields);
+      var entered = ctx.snapshot.details;
+      var invalid = view.details.fields.some(function (field) { return entered.touched[field.code] && entered.errors[field.code]; });
+      if (entered.invalid && invalid) details.appendChild(notice("warn", "", copy.detailsInvalid, null));
+      form.appendChild(details);
+    }
+    var actions = el("div", "cr-form-actions");
+    actions.appendChild(text("button", "btn btn--primary btn--lg", sending ? copy.sendingLabel : copy.choicesSubmit, {
+      type: "submit",
+      disabled: sending || ctx.busy,
+      "data-state": sending ? "pending" : null,
+      "data-action": "choices.submit",
+      "aria-busy": sending ? "true" : null,
+    }));
+    form.appendChild(actions);
+    card.appendChild(form);
+    return card;
   }
 
   function quoteReview(shell, ctx) {
@@ -3241,6 +3227,8 @@
     shell.appendChild(summary(ctx));
     readNotices(ctx).forEach(function (node) { shell.appendChild(node); });
     if (view.allDecided) shell.appendChild(decidedNotice(ctx));
+    var partial = partialNotice(ctx);
+    if (partial) shell.appendChild(partial);
     if (!view.properties.length && !view.unreadableOrders) {
       shell.appendChild(stateCard("neutral", "○", copy.emptyTitle, copy.emptyBody, null));
       return;
@@ -3248,6 +3236,8 @@
     var list = el("div", "cr-properties");
     view.properties.forEach(function (property) { list.appendChild(propertyCard(ctx, property, true)); });
     shell.appendChild(list);
+    var choices = choicesPanel(ctx);
+    if (choices) shell.appendChild(choices);
     announceUnconfirmed(ctx);
   }
 
@@ -3363,7 +3353,12 @@
 
   function serviceAddressOffer(ctx, field, pending) {
     var copy = ctx.copy;
-    var addresses = ctx.snapshot.view.details.serviceAddresses || [];
+    var choices = ctx.snapshot.choices;
+    var addresses = [];
+    ctx.snapshot.view.properties.forEach(function (property) {
+      var choice = choices[property.key];
+      if (choice && choice.kind === "approve" && property.address && addresses.indexOf(property.address) === -1) addresses.push(property.address);
+    });
     if (!addresses.length) return null;
     var current = String(ctx.snapshot.details.values[field.code] || "").trim();
     var row = el("div", "cr-reuse", { role: "group", "aria-labelledby": "cr-reuse-" + field.code });
@@ -3383,60 +3378,6 @@
     });
     row.appendChild(chips);
     return row;
-  }
-
-  function detailsForm(ctx) {
-    var view = ctx.snapshot.view;
-    var copy = ctx.copy;
-    var card = el("section", "cr-panel cr-form-card", { "aria-labelledby": "cr-details-title" });
-    card.appendChild(text("h2", "cr-section-title", copy.detailsFormTitle, { id: "cr-details-title" }));
-    if (!view.details.available) {
-      card.appendChild(text("p", "cr-note", copy.detailsUnavailable));
-      return card;
-    }
-    var command = ctx.snapshot.commands[view.agreement.recordKey] || null;
-    var pending = isPending(command);
-    var form = el("form", "cr-form", { novalidate: true, "data-state": pending ? "pending" : "idle" });
-    form.addEventListener("submit", function (event) {
-      event.preventDefault();
-      ctx.dispatch("details.submit");
-    });
-    var fields = el("div", "cr-fields");
-    view.details.fields.forEach(function (field) { fields.appendChild(fieldNode(ctx, field, pending)); });
-    form.appendChild(fields);
-    var details = ctx.snapshot.details;
-    var invalid = view.details.fields.some(function (field) { return details.touched[field.code] && details.errors[field.code]; });
-    if (details.invalid && invalid) form.appendChild(notice("warn", "", copy.detailsInvalid, null));
-    if (command && command.status === "refused") {
-      var mapped = Object.keys(details.serverErrors).length > 0;
-      if (command.message || !mapped) {
-        form.appendChild(outcomeBox(ctx, { status: "refused", message: command.message }, { title: copy.detailsRefusedTitle }));
-      }
-    }
-    if (command && command.status === "failed") {
-      form.appendChild(outcomeBox(ctx, command, { action: refreshButton(ctx, view.agreement.recordKey, copy.refreshLabel) }));
-    }
-    var actions = el("div", "cr-form-actions");
-    actions.appendChild(text("button", "btn btn--primary btn--lg", pending ? copy.sendingLabel : copy.detailsSubmit, {
-      type: "submit",
-      disabled: pending || ctx.busy,
-      "data-state": pending ? "pending" : null,
-      "data-action": "details.submit",
-      "aria-busy": pending ? "true" : null,
-    }));
-    form.appendChild(actions);
-    card.appendChild(form);
-    return card;
-  }
-
-  function approvedEntries(view) {
-    var entries = [];
-    view.properties.forEach(function (property) {
-      property.options.forEach(function (option) {
-        if (option.status === "approved") entries.push({ address: property.address, option: option, property: property });
-      });
-    });
-    return entries;
   }
 
   function planBlock(ctx, property) {
@@ -3473,57 +3414,6 @@
     block.appendChild(legend);
     block.appendChild(text("p", "cr-plan__note", copy.planNote));
     return block;
-  }
-
-  function returnedNotice(ctx) {
-    var copy = ctx.copy;
-    var details = ctx.snapshot.view.details;
-    var returned = details.returned;
-    if (!returned.returned || !details.available) return null;
-    var held = ctx.snapshot.details.sent;
-    var marked = Object.keys(returned.fields).length > 0;
-    var processing = !marked && returned.processingFailed;
-    var title = processing ? copy.detailsProcessingTitle : copy.detailsReturnedTitle;
-    var lead = marked ? (held ? copy.detailsReturnedBody : copy.detailsReturnedReenter)
-      : processing ? (held ? copy.detailsProcessingBody : copy.detailsProcessingReenter)
-        : held ? copy.detailsReturnedUnknown : copy.detailsReturnedUnknownReenter;
-    var lines = [lead];
-    if (returned.unexplained && (marked || processing)) lines.push(copy.detailsReturnedUnexplained);
-    announce(ctx, [title].concat(lines));
-    var box = notice(processing ? "info" : "warn", title, lines, null, { quiet: true });
-    box.setAttribute("data-returned", marked ? "fields" : processing ? "processing" : "unexplained");
-    box.setAttribute("data-form", held ? "sent" : "fresh");
-    return box;
-  }
-
-  function contractDetails(shell, ctx) {
-    var view = ctx.snapshot.view;
-    var copy = ctx.copy;
-    shell.appendChild(pageHead(ctx, copy.detailsEyebrow, copy.detailsTitle, copy.detailsSubtitle, null));
-    var returned = returnedNotice(ctx);
-    if (returned) shell.appendChild(returned);
-    readNotices(ctx).forEach(function (node) { shell.appendChild(node); });
-    var approved = approvedEntries(view);
-    if (approved.length) {
-      var section = el("section", "cr-panel cr-approved", { "aria-labelledby": "cr-approved-title" });
-      section.appendChild(text("h2", "cr-section-title", copy.detailsApprovedTitle, { id: "cr-approved-title" }));
-      var list = el("ul", "cr-approved__list");
-      approved.forEach(function (entry) {
-        var item = el("li", "cr-approved__item");
-        var row = el("div", "cr-approved__row");
-        var identity = el("div", "cr-approved__identity");
-        identity.appendChild(text("span", "cr-approved__address" + (entry.address ? "" : " cr-muted"), entry.address || copy.addressUnavailable));
-        identity.appendChild(text("span", "cr-approved__option", optionLabel(entry.option, copy)));
-        row.appendChild(identity);
-        row.appendChild(text("span", "cr-approved__total" + (entry.option.total ? "" : " cr-muted"), entry.option.total || copy.valueNotStated));
-        item.appendChild(row);
-        if (ctx.maps && entry.property.plan) item.appendChild(planBlock(ctx, entry.property));
-        list.appendChild(item);
-      });
-      section.appendChild(list);
-      shell.appendChild(section);
-    }
-    shell.appendChild(detailsForm(ctx));
   }
 
   function portalLink(ctx) {
@@ -3764,16 +3654,10 @@
       case "quote-review":
         quoteReview(shell, ctx);
         return;
-      case "contract-details":
-        contractDetails(shell, ctx);
-        return;
       case "agreement-review":
       case "reference":
       case "completion":
         agreementPage(shell, ctx);
-        return;
-      case "checking":
-        shell.appendChild(checkingCard(ctx));
         return;
       case "preparing":
         shell.appendChild(announcedCard(ctx, "progress", "…", copy.preparingTitle, copy.preparingBody, null));
@@ -3789,17 +3673,6 @@
       default:
         shell.appendChild(announcedCard(ctx, "warn", "!", copy.unavailableTitle, view.reason === "ambiguous-round" ? copy.roundAmbiguousBody : copy.unavailableBody, null));
     }
-  }
-
-  function checkingCard(ctx) {
-    var copy = ctx.copy;
-    var slow = ctx.snapshot.waiting.exhausted;
-    var title = slow ? copy.checkingSlowTitle : copy.checkingTitle;
-    var body = slow ? copy.checkingSlowBody : copy.checkingBody;
-    announce(ctx, [title, body]);
-    var card = stateCard("progress", slow ? "…" : "", title, body, slow ? refreshButton(ctx, "", copy.refreshLabel) : null, true);
-    card.setAttribute("data-checking", slow ? "slow" : "active");
-    return card;
   }
 
   function contactLine(label, value, href, kind) {
@@ -3835,6 +3708,7 @@
     if (after === "approval") {
       return announcedCard(ctx, "ok", "✓", copy.approvalSentTitle, copy.approvalSentBody, portalAside(ctx, copy.portalTitle, portalBody(ctx, "cr-state__aside-text")));
     }
+    if (after === "declined") return announcedCard(ctx, "neutral", "⊘", copy.canceledTitle, copy.declinedClosedBody, null);
     return announcedCard(ctx, "ok", "✓", copy.detailsSentTitle, copy.detailsSentBody, null);
   }
 
@@ -3897,8 +3771,7 @@
 
   var EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   var CHECKING_DELAYS = [2000, 3000, 5000, 8000, 12000, 15000, 15000, 15000];
-  var RETURNED_COPY = { missing: "returnedMissing", unconfirmed: "returnedUnconfirmed", choice: "returnedChoice", email: "returnedEmail" };
-  var LINK_STEPS = { "quote-review": true, "contract-details": true, "agreement-review": true };
+  var LINK_STEPS = { "quote-review": true, "agreement-review": true };
 
   function systemTimers() {
     return {
@@ -3927,6 +3800,7 @@
     var loading = null;
     var copying = null;
     var exporting = null;
+    var submitting = null;
     var listeners = [];
     var stopped = false;
     var poll = { timer: null, attempt: 0, exhausted: false };
@@ -3940,11 +3814,13 @@
       contact: null,
       logoUrl: "",
       followDecisions: false,
+      followClosedAfter: "",
       accepted: {},
       refreshing: false,
       expanded: {},
       bulk: "",
       confirm: null,
+      choices: {},
       drafts: {},
       draftInvalid: {},
       commands: {},
@@ -3955,12 +3831,8 @@
       focusKey: "",
     };
 
-    function emptyDetails(agreementId) {
-      return { seededFor: agreementId, values: {}, errors: {}, touched: {}, serverErrors: {}, invalid: false, returnPending: true, sent: false };
-    }
-
-    function checkingNow() {
-      return state.phase === "ready" && Boolean(state.view) && state.view.kind === "checking";
+    function emptyDetails(seededFor) {
+      return { seededFor: seededFor, values: {}, errors: {}, touched: {}, serverErrors: {}, invalid: false };
     }
 
     function followingNow() {
@@ -3968,11 +3840,11 @@
     }
 
     function roundRecordedNow() {
-      return state.phase === "ready" && Boolean(state.view) && state.view.kind === "quote-review" && state.view.allDecided && !state.view.agreement;
+      return state.phase === "ready" && Boolean(state.view) && state.view.kind === "quote-review" && state.view.allDecided;
     }
 
     function pageWaitingNow() {
-      return checkingNow() || followingNow();
+      return followingNow();
     }
 
     function waitingNow() {
@@ -3988,19 +3860,13 @@
     }
 
     function accept(recordKey, entity, id, event, closedAfter) {
-      var details = event === contract.agreementEvents.details.code;
       state.accepted[recordKey] = {
         entity: entity,
         id: id,
         event: event,
         source: eventSource(event),
         closedAfter: closedAfter,
-        errorsBefore: details && state.view && state.view.agreement ? state.view.agreement.detailsErrors : "",
       };
-      if (details) {
-        state.details.returnPending = true;
-        state.details.sent = true;
-      }
       poll.attempt = 0;
       poll.exhausted = false;
     }
@@ -4014,27 +3880,21 @@
     function landed(expectation, view) {
       var current = currentOf(expectation, view);
       if (current === null) return false;
-      if (current !== expectation.source) return true;
-      return expectation.event === contract.agreementEvents.details.code && view.agreement.detailsErrors !== expectation.errorsBefore;
+      return current !== expectation.source;
     }
 
     function settleAccepted() {
-      var receiving = false;
       Object.keys(state.accepted).forEach(function (recordKey) {
         var expectation = state.accepted[recordKey];
-        if (!landed(expectation, state.view)) {
-          if (expectation.event === contract.agreementEvents.details.code) receiving = true;
-          return;
-        }
+        if (!landed(expectation, state.view)) return;
         delete state.accepted[recordKey];
         delete state.commands[recordKey];
-        if (state.view.agreement && (expectation.event === contract.orderEvents.approve.code || expectation.event === contract.orderEvents.decline.code)) state.followDecisions = true;
+        if (expectation.event === contract.orderEvents.approve.code || expectation.event === contract.orderEvents.decline.code) state.followDecisions = true;
         if (expectation.event === contract.agreementEvents.changes.code) {
           delete state.drafts.agreement;
           state.focusKey = "page-title";
         }
       });
-      if (receiving) state.view.kind = "checking";
     }
 
     function markAccepted() {
@@ -4076,6 +3936,28 @@
       return property.options.filter(function (option) {
         return (option.actions.decline || option.actions.view) && !state.accepted[option.recordKey] && !inflight[option.recordKey];
       });
+    }
+
+    function choiceEntries() {
+      var properties = state.view && state.view.kind === "quote-review" ? state.view.properties : [];
+      return properties.filter(function (property) { return Boolean(state.choices[property.key]); }).map(function (property) {
+        var choice = state.choices[property.key];
+        var option = choice.kind === "approve" ? property.options.filter(function (candidate) { return candidate.id === choice.id; })[0] || null : null;
+        return { property: property, kind: choice.kind, option: option };
+      });
+    }
+
+    function approving() {
+      return choiceEntries().some(function (entry) { return entry.kind === "approve"; });
+    }
+
+    function chosenAddresses() {
+      var found = [];
+      choiceEntries().forEach(function (entry) {
+        var address = entry.property.address;
+        if (entry.kind === "approve" && address && found.indexOf(address) === -1) found.push(address);
+      });
+      return found;
     }
 
     function detailField(code) {
@@ -4172,29 +4054,20 @@
 
     function seedDetails() {
       var view = state.view;
-      if (!view || view.kind !== "contract-details") return;
-      if (state.details.seededFor !== view.agreement.id) {
-        var details = emptyDetails(view.agreement.id);
-        view.details.fields.forEach(function (field) {
-          details.values[field.code] = field.kind === "boolean" ? false : view.details.prefill[field.code] || "";
-        });
-        state.details = details;
-      }
-      if (!state.details.returnPending) return;
-      state.details.returnPending = false;
-      var marked = view.details.returned.fields;
-      Object.keys(marked).forEach(function (code) {
-        state.details.serverErrors[code] = copy[RETURNED_COPY[marked[code]]] || copy.returnedMissing;
+      if (!view || view.kind !== "quote-review" || !view.details.available || state.details.seededFor === "round") return;
+      var details = emptyDetails("round");
+      view.details.fields.forEach(function (field) {
+        details.values[field.code] = field.kind === "boolean" ? false : view.details.prefill[field.code] || "";
       });
+      state.details = details;
     }
 
     function readPlans() {
       var view = state.view;
-      if (!maps || !adapter || typeof adapter.readPlan !== "function" || !view || view.kind !== "contract-details") return;
-      view.properties.forEach(function (property) {
-        var id = property.plan;
-        var approved = property.options.some(function (option) { return option.status === "approved"; });
-        if (!id || !approved || state.plans[id] || planReads[id]) return;
+      if (!maps || !adapter || typeof adapter.readPlan !== "function" || !view || view.kind !== "quote-review") return;
+      choiceEntries().forEach(function (entry) {
+        var id = entry.property.plan;
+        if (!id || entry.kind !== "approve" || state.plans[id] || planReads[id]) return;
         state.plans[id] = { status: "loading", plan: null };
         planReads[id] = Promise.resolve().then(function () { return adapter.readPlan(id); }).then(function (raw) {
           var plan = ns.plan ? ns.plan.parse(raw, locale) : null;
@@ -4222,12 +4095,18 @@
         if (!state.view || !state.view.canRequestAgreementChanges) state.confirm = null;
         return;
       }
-      if (confirm.kind === "decline-all") {
-        var property = findProperty(confirm.property);
-        if (!state.bulk && (!property || !declinableOptions(property).length)) state.confirm = null;
-        return;
-      }
       if (!present[confirm.id] || !present[confirm.id].actions[confirm.kind]) state.confirm = null;
+    }
+
+    function pruneChoices() {
+      if (state.bulk) return;
+      Object.keys(state.choices).forEach(function (key) {
+        var property = findProperty(key);
+        var choice = state.choices[key];
+        var option = property && choice.kind === "approve" ? property.options.filter(function (candidate) { return candidate.id === choice.id; })[0] : null;
+        var standing = choice.kind === "approve" ? Boolean(option && option.actions.approve) : Boolean(property && declinableOptions(property).length);
+        if (!standing) delete state.choices[key];
+      });
     }
 
     function stopPolling() {
@@ -4274,7 +4153,7 @@
     }
 
     function readContext() {
-      var closedAfter = checkingNow() ? "details" : "";
+      var closedAfter = followingNow() ? state.followClosedAfter : "";
       Object.keys(state.accepted).forEach(function (recordKey) { closedAfter = closedAfter || state.accepted[recordKey].closedAfter; });
       return closedAfter ? { afterCommand: true, closedAfter: closedAfter } : {};
     }
@@ -4300,9 +4179,10 @@
         state.contact = state.view.contact || null;
         state.logoUrl = state.view.parties && typeof adapter.imageUrl === "function" ? adapter.imageUrl(state.view.parties.provider.logo) : "";
         settleAccepted();
-        if (state.view.kind !== "quote-review" || !state.view.allDecided || !state.view.agreement) state.followDecisions = false;
+        if (state.view.kind !== "quote-review" || !state.view.allDecided) state.followDecisions = false;
         seedDetails();
         prune();
+        pruneChoices();
         readPlans();
       }, function (error) {
         var closed = Boolean(error && error.code === "link-closed");
@@ -4411,7 +4291,7 @@
           if (sibling.id !== option.id) delete state.expanded[sibling.id];
         });
         var confirm = state.confirm;
-        if (confirm && confirm.kind !== "agreement" && confirm.kind !== "agreement-changes" && confirm.kind !== "decline-all" && confirm.id !== option.id && property
+        if (confirm && confirm.kind !== "agreement" && confirm.kind !== "agreement-changes" && confirm.id !== option.id && property
           && property.options.some(function (sibling) { return sibling.id === confirm.id; }) && !inflight[confirm.recordKey]) {
           state.confirm = null;
         }
@@ -4429,96 +4309,140 @@
     function confirmOption(id) {
       var option = findOption(id);
       var confirm = state.confirm;
-      if (!option || !confirm || confirm.id !== option.id || !option.actions[confirm.kind] || busy() || state.accepted[option.recordKey]) return;
-      var event = contract.orderEvents[confirm.kind];
-      var metadata = {};
-      if (confirm.kind === "changes") {
-        var message = String(state.drafts[option.id] || "").trim();
-        if (!message) {
-          state.draftInvalid[option.id] = true;
-          state.focusKey = "draft-" + option.id;
-          render();
-          return;
-        }
-        metadata[event.messageAttribute] = message;
+      if (!option || !confirm || confirm.id !== option.id || confirm.kind !== "changes" || !option.actions.changes || busy() || state.accepted[option.recordKey]) return;
+      var event = contract.orderEvents.changes;
+      var message = String(state.drafts[option.id] || "").trim();
+      if (!message) {
+        state.draftInvalid[option.id] = true;
+        state.focusKey = "draft-" + option.id;
+        render();
+        return;
       }
+      var metadata = {};
+      metadata[event.messageAttribute] = message;
       delete state.draftInvalid[option.id];
       send(option.recordKey, "order", option.id, event.code, metadata, {
-        onSuccess: function () {
-          if (confirm.kind === "changes") delete state.drafts[option.id];
-        },
+        onSuccess: function () { delete state.drafts[option.id]; },
       });
     }
 
-    function declineOption(id) {
+    function chooseOption(id) {
       var option = findOption(id);
+      var property = option ? propertyOfOption(option.id) : null;
+      if (!option || !property || !option.actions.approve || busy() || state.bulk || inflight[option.recordKey] || state.accepted[option.recordKey]) return;
+      clearOutcome(option.recordKey);
+      if (state.confirm && state.confirm.id === option.id) state.confirm = null;
+      state.choices[property.key] = { kind: "approve", id: option.id };
+      state.focusKey = "choice-" + property.key;
+      readPlans();
+      render();
+    }
+
+    function declineProperty(key) {
+      var property = findProperty(key);
+      if (!property || !declinableOptions(property).length || busy() || state.bulk) return;
+      if (property.options.some(function (option) { return state.accepted[option.recordKey] || inflight[option.recordKey]; })) return;
+      state.choices[key] = { kind: "decline" };
+      state.focusKey = "choice-" + key;
+      render();
+    }
+
+    function clearChoice(key) {
+      if (!state.choices[key] || state.bulk) return;
+      var choice = state.choices[key];
+      delete state.choices[key];
+      state.focusKey = choice.kind === "approve" ? "toggle-" + choice.id : "decline-" + key;
+      render();
+    }
+
+    function decideOption(id, kind, metadata, closedAfter) {
+      var option = findOption(id);
+      var target = kind === "approve" ? "approved" : "declined";
       if (!option) return Promise.resolve(false);
-      if (option.status === "declined") return Promise.resolve(true);
+      if (option.status === target) return Promise.resolve(true);
       if (state.accepted[option.recordKey] || inflight[option.recordKey]) return Promise.resolve(false);
+      var context = { closedAfter: closedAfter };
       if (option.actions.view) {
-        return send(option.recordKey, "order", option.id, contract.orderEvents.view.code, {}, {}).then(function (sent) {
+        return send(option.recordKey, "order", option.id, contract.orderEvents.view.code, {}, context).then(function (sent) {
           var viewed = sent ? findOption(id) : null;
-          if (!viewed || !viewed.actions.decline || state.accepted[viewed.recordKey]) return false;
-          return declineOption(id);
+          if (!viewed || !viewed.actions[kind] || state.accepted[viewed.recordKey]) return false;
+          return decideOption(id, kind, metadata, closedAfter);
         });
       }
-      if (!option.actions.decline) return Promise.resolve(false);
-      return send(option.recordKey, "order", option.id, contract.orderEvents.decline.code, {}, {});
+      if (!option.actions[kind]) return Promise.resolve(false);
+      return send(option.recordKey, "order", option.id, contract.orderEvents[kind].code, metadata, Object.assign({
+        onRefusal: function (error) {
+          if (kind !== "approve") return;
+          Object.keys(error.fieldErrors || {}).forEach(function (code) {
+            if (detailField(code)) state.details.serverErrors[code] = error.fieldErrors[code];
+          });
+        },
+      }, context));
     }
 
-    function declineAll(key) {
-      var property = findProperty(key);
-      var confirm = state.confirm;
-      if (!property || state.bulk || busy() || !confirm || confirm.kind !== "decline-all" || confirm.property !== key) return Promise.resolve(false);
-      var ids = declinableOptions(property).map(function (option) { return option.id; });
-      if (!ids.length) {
-        state.confirm = null;
-        render();
-        return Promise.resolve(false);
-      }
-      state.bulk = key;
-      render();
-      function declineFrom(index) {
-        if (index >= ids.length) return Promise.resolve(true);
-        return declineOption(ids[index]).then(function (ok) { return ok ? declineFrom(index + 1) : false; });
-      }
-      return declineFrom(0).then(function (ok) {
-        state.bulk = "";
-        if (ok) {
-          state.confirm = null;
-          state.focusKey = "property-" + key;
-        }
-        render();
-        return ok;
-      });
-    }
-
-    function submitDetails() {
-      var view = state.view;
-      if (!view || view.kind !== "contract-details" || !view.details.available || busy()) return;
+    function checkDetails() {
+      var fields = state.view.details.fields;
       var firstInvalid = "";
-      view.details.fields.forEach(function (field) {
+      fields.forEach(function (field) {
         state.details.touched[field.code] = true;
         var message = validateDetail(field, state.details.values[field.code]);
         state.details.errors[field.code] = message;
         if (message && !firstInvalid) firstInvalid = field.code;
       });
       state.details.invalid = Boolean(firstInvalid);
-      if (firstInvalid) {
-        clearOutcome(view.agreement.recordKey);
-        state.focusKey = "field-" + firstInvalid;
-        render();
-        return;
+      return firstInvalid;
+    }
+
+    function submitChoices() {
+      var view = state.view;
+      var entries = choiceEntries();
+      if (!view || view.kind !== "quote-review" || !entries.length || busy() || state.bulk) return Promise.resolve(false);
+      var withApproval = approving();
+      var metadata = {};
+      if (withApproval) {
+        if (!view.details.available) return Promise.resolve(false);
+        var firstInvalid = checkDetails();
+        if (firstInvalid) {
+          state.focusKey = "field-" + firstInvalid;
+          render();
+          return Promise.resolve(false);
+        }
+        state.details.serverErrors = {};
+        metadata = detailsMetadata(view.details.fields);
       }
-      state.details.serverErrors = {};
-      send(view.agreement.recordKey, "document", view.agreement.id, contract.agreementEvents.details.code, detailsMetadata(view.details.fields), {
-        closedAfter: "details",
-        onRefusal: function (error) {
-          Object.keys(error.fieldErrors || {}).forEach(function (code) {
-            if (detailField(code)) state.details.serverErrors[code] = error.fieldErrors[code];
-          });
-        },
+      var closedAfter = withApproval || view.summary.approved > 0 ? "details" : "declined";
+      var steps = [];
+      entries.forEach(function (entry) {
+        if (entry.kind === "approve") steps.push({ id: entry.option.id, kind: "approve", metadata: metadata, key: entry.property.key });
+        else declinableOptions(entry.property).forEach(function (option) { steps.push({ id: option.id, kind: "decline", metadata: {}, key: entry.property.key }); });
       });
+      var landedAny = false;
+      state.bulk = "choices";
+      state.followClosedAfter = closedAfter;
+      render();
+      function stepFrom(index) {
+        if (index >= steps.length) return Promise.resolve(true);
+        var step = steps[index];
+        return decideOption(step.id, step.kind, step.metadata, closedAfter).then(function (ok) {
+          if (!ok) return false;
+          landedAny = true;
+          if (!steps.slice(index + 1).some(function (later) { return later.key === step.key; })) delete state.choices[step.key];
+          return stepFrom(index + 1);
+        });
+      }
+      submitting = stepFrom(0).then(function (ok) {
+        submitting = null;
+        state.bulk = "";
+        if (state.phase === "link-closed" && landedAny && !state.closedAfter) state.closedAfter = closedAfter;
+        if (state.phase === "ready") {
+          pruneChoices();
+          state.focusKey = ok ? "page-title" : "choices-title";
+        }
+        track();
+        render();
+        return ok;
+      });
+      return submitting;
     }
 
     function requestAgreementChanges() {
@@ -4621,11 +4545,14 @@
           return;
         case "option.intent":
           option = findOption(data.id);
-          if (!option || !option.actions[data.kind] || busy() || inflight[option.recordKey] || state.accepted[option.recordKey]) return;
+          if (data.kind !== "changes" || !option || !option.actions.changes || busy() || inflight[option.recordKey] || state.accepted[option.recordKey]) return;
           clearOutcome(option.recordKey);
           state.confirm = { recordKey: option.recordKey, id: option.id, kind: data.kind };
-          state.focusKey = data.kind === "changes" ? "draft-" + option.id : "confirm-" + option.id;
+          state.focusKey = "draft-" + option.id;
           render();
+          return;
+        case "option.choose":
+          chooseOption(data.id);
           return;
         case "option.cancel":
           option = findOption(data.id);
@@ -4643,19 +4570,13 @@
           confirmOption(data.id);
           return;
         case "property.decline":
-          if (!findProperty(data.key) || !declinableOptions(findProperty(data.key)).length || busy() || state.bulk) return;
-          state.confirm = { recordKey: "property:" + data.key, property: data.key, kind: "decline-all" };
-          state.focusKey = "confirm-" + data.key;
-          render();
+          declineProperty(data.key);
           return;
-        case "property.cancel":
-          if (state.bulk || !state.confirm || state.confirm.kind !== "decline-all") return;
-          state.confirm = null;
-          state.focusKey = "decline-" + data.key;
-          render();
+        case "choice.clear":
+          clearChoice(data.key);
           return;
-        case "property.confirm":
-          declineAll(data.key);
+        case "choices.submit":
+          submitChoices();
           return;
         case "details.input":
           field = detailField(data.code);
@@ -4681,17 +4602,14 @@
           return state.details.errors[field.code];
         case "details.useAddress":
           field = detailField(data.code);
-          if (!field || field.kind !== "address" || !view || view.kind !== "contract-details" || busy()) return;
-          if (view.details.serviceAddresses.indexOf(data.value) === -1) return;
+          if (!field || field.kind !== "address" || !view || !view.details.available || busy()) return;
+          if (chosenAddresses().indexOf(data.value) === -1) return;
           state.details.values[field.code] = data.value;
           state.details.touched[field.code] = true;
           state.details.errors[field.code] = validateDetail(field, data.value);
           delete state.details.serverErrors[field.code];
           state.focusKey = "field-" + field.code;
           render();
-          return;
-        case "details.submit":
-          submitDetails();
           return;
         case "agreement.intent":
           if (!view || !view.canApproveAgreement || busy() || inflight[view.agreement.recordKey] || state.accepted[view.agreement.recordKey]) return;
@@ -4740,6 +4658,7 @@
         expanded: state.expanded,
         bulk: state.bulk,
         confirm: state.confirm,
+        choices: state.choices,
         drafts: state.drafts,
         draftInvalid: state.draftInvalid,
         commands: state.commands,
@@ -4787,6 +4706,7 @@
       if (loading) waiting.push(loading);
       if (copying) waiting.push(copying);
       if (exporting) waiting.push(exporting);
+      if (submitting) waiting.push(submitting);
       if (!waiting.length) return Promise.resolve();
       return Promise.all(waiting).then(idle);
     }

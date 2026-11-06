@@ -69,7 +69,6 @@ function coreAgreement(id, stateCode, orders, attributes = {}) {
 function coreTable() {
   return {
     agreements: [
-      coreAgreement(5601, "QUOTATION_SENT", [4101, 4102]),
       coreAgreement(5602, "SENT_TO_CLIENT", [4001], {
         LEGAL_NAME: { value: "Harbour View Strata" }, CLIENT_TYPE: { value: "ORGANIZATION" },
         EFFECTIVE_DATE: { value: "2026-10-01" }, TERM_START_DATE: { value: "2026-11-01" }, TERM_END_DATE: { value: "2027-03-31" },
@@ -198,8 +197,8 @@ function quietConsole() {
   assert.equal(envelope.proposal, null);
 
   const pkg = quotePackage();
-  assert.deepEqual(pkg.agreements.map((row) => [row.id, row.agreement.stage]), [["agreement-core-5602", "approval"], ["agreement-core-5601", "review"]]);
-  assert.deepEqual(pkg.groups.map((group) => [group.id, group.title, group.orders.map((order) => order.backendId)]), [["quote-5601-959", "Property details unavailable", [4102, 4101]]], "a property the customer's properties list does not include is not named from another source");
+  assert.deepEqual(pkg.agreements.map((row) => [row.id, row.agreement.stage]), [["agreement-core-5602", "approval"]], "a quotation round carries no agreement");
+  assert.deepEqual(pkg.groups.map((group) => [group.id, group.title, group.orders.map((order) => order.backendId)]), [["quote-0-959", "Property details unavailable", [4102, 4101]]], "a property the customer's properties list does not include is not named from another source");
   assert.equal(pkg.preparing, true, "the INITIAL Order is withheld and only says a request is being prepared");
   assert.deepEqual(findQuote(pkg, 4102).lines.map((line) => [line.product, line.unitPrice, line.total]), [["Snow Removal", "CA$1,528.48", "CA$1,528.48"], ["Rock Salt De-Icing", "CA$916.24", "CA$916.24"]]);
   assert.equal(findQuote(pkg, 4103), null, "the operator-side Order and its lines never reach a page");
@@ -210,12 +209,12 @@ function quietConsole() {
   const list = ProposalsList();
   assert.equal(list.getAttribute("data-state"), "ready");
   assert.equal(one(list, "h1").textContent, "Your contracts");
-  assert.deepEqual(all(list, "[data-module=\"agreement-row\"]").map((row) => one(row, "[data-module=\"status-badge\"]").textContent), ["Ready for your approval", "Awaiting your decisions"]);
+  assert.deepEqual(all(list, "[data-module=\"agreement-row\"]").map((row) => one(row, "[data-module=\"status-badge\"]").textContent), ["Ready for your approval"]);
   assert.equal(all(list, "[data-module=\"quote-property\"]").length, 1);
   assert.equal(one(list, "[data-module=\"quote-property\"] .proposal-card__meta").textContent, "1177 West Hastings Street, Vancouver, BC, V6E 2K3 · 2 quotes");
   assert.ok(!list.textContent.includes("Line note for the operator"), "operator notes on a line are never shown");
 
-  state.currentSiteId = "quote-5601-959";
+  state.currentSiteId = "quote-0-959";
   state.quoteViews = { 4101: "pending" };
   const detail = ProposalDetail();
   assert.deepEqual(all(detail, "[data-module=\"quote-option\"]").map((card) => card.getAttribute("data-state")), ["viewed", "unseen"]);
@@ -281,7 +280,7 @@ function quietConsole() {
     const noLines = coreTable();
     noLines.fail["/core-bill/api/tagged/order-item/list.json"] = 500;
     await liveRuntime(noLines).loadAsync("proposals");
-    state.currentSiteId = "quote-5601-959";
+    state.currentSiteId = "quote-0-959";
     state.quoteViews = { 4101: "pending" };
     assert.deepEqual(all(ProposalDetail(), "[data-module=\"quote-lines\"]").map((node) => node.textContent), ["The services on this quote couldn’t be loaded.", "The services on this quote couldn’t be loaded."]);
     state.quoteViews = {};
@@ -416,7 +415,7 @@ async function ready(harness) {
   assert.equal(state.contractCommand.phase, "conflict");
   assert.equal(harness.reloads(), 1, "the conflict is shown on fresh data");
   assert.equal(findQuote(quotePackage(), 4102).status, "declined");
-  state.currentSiteId = "quote-5601-959";
+  state.currentSiteId = "quote-0-959";
   state.quoteViews = { 4101: "pending" };
   const cards = all(ProposalDetail(), "[data-module=\"quote-option\"]");
   assert.deepEqual(cards.filter((card) => all(card, "[data-module=\"command-conflict\"]").length > 0).map((card) => card.getAttribute("data-state")), ["declined"], "the conflict is explained on the quote that changed, shown as Core now has it");
@@ -430,7 +429,7 @@ async function ready(harness) {
   assert.equal(await harness.commands.decide("approve", 4101), false, "an unseen quote cannot be approved");
   assert.equal(await harness.commands.decide("decline", 4001), false, "an approved quote cannot be declined");
   assert.equal(await harness.commands.decide("requestChanges", 4102), false, "no change request is sent from the portal");
-  assert.equal(await harness.commands.approveAgreement(5601), false, "an agreement under quote review cannot be approved");
+  assert.equal(await harness.commands.approveAgreement(5601), false, "an agreement the client does not hold cannot be approved");
   assert.equal(table.events.length + harness.reloads(), 0, "refused guards do no IO");
   assert.equal(state.contractCommand, null);
 }
@@ -561,14 +560,18 @@ for (const [status, phase] of [[403, "refused"], [409, "refused"], [500, "failed
   await assert.rejects(gateway.sendOrderEvent(8111, "QUOTE_VIEWED-CLIENT_APPROVED"), (error) => error.code === "command-refused", "the fixture refuses an event from the wrong state, as Core would");
   await gateway.sendOrderEvent(8111, "QUOTE_SENT-QUOTE_VIEWED");
   assert.equal(latest(state.porders, 8111), "QUOTE_VIEWED");
-  await gateway.sendOrderEvent(8111, "QUOTE_VIEWED-CLIENT_APPROVED");
-  assert.deepEqual([8110, 8111, 8112].map((id) => latest(state.porders, id)), ["DECLINED", "CLIENT_APPROVED", "DECLINED"], "approving an option declines its open siblings in the same package");
-  assert.equal(latest(state.pagreements, 9101), "QUOTATION_SENT", "a package with a property still under revision is not evaluated as decided");
+  const details = { LEGAL_NAME: { value: "Whitlock Property Group LLC" }, CLIENT_TYPE: { value: "CORPORATE" } };
+  await gateway.sendOrderEvent(8111, "QUOTE_VIEWED-CLIENT_APPROVED", {}, details);
+  assert.deepEqual([8110, 8111, 8112].map((id) => latest(state.porders, id)), ["DECLINED", "CLIENT_APPROVED", "DECLINED"], "approving an option declines its open siblings for the same property");
+  const held = state.pagreements.length;
+  assert.equal(state.pagreements.some((row) => latest(state.pagreements, row.id) === "DRAFT" && row.attributes[17].ORDERS.value.includes(8111)), false, "a round with a property still under revision is not settled");
   for (const id of [8104, 8105, 8106]) state.porders.find((row) => row.id === id).states.push({ code: "QUOTE_VIEWED" });
   await gateway.sendOrderEvent(8104, "QUOTE_VIEWED-DECLINED");
   await gateway.sendOrderEvent(8105, "QUOTE_VIEWED-DECLINED");
-  await gateway.sendOrderEvent(8106, "QUOTE_VIEWED-CLIENT_APPROVED");
-  assert.equal(latest(state.pagreements, 9101), "AWAITING_CLIENT_DETAILS", "once every property is decided the package asks for contract details");
+  await gateway.sendOrderEvent(8106, "QUOTE_VIEWED-CLIENT_APPROVED", {}, details);
+  assert.equal(state.pagreements.length, held + 1, "once every property of the round is settled one agreement is made");
+  const made = state.pagreements.at(-1);
+  assert.deepEqual([made.id, latest(state.pagreements, made.id), made.attributes[17].ORDERS.value, made.attributes[17].LEGAL_NAME.value], [9105, "DRAFT", [8102, 8106, 8111], "Whitlock Property Group LLC"], "the agreement starts at DRAFT with only the approved quotes and the details that came with the approval");
   await gateway.sendAgreementEvent(9102, "SENT_TO_CLIENT-CLIENT_APPROVED");
   assert.equal(latest(state.pagreements, 9102), "CLIENT_APPROVED");
   await assert.rejects(gateway.readOrder(1), (error) => error.code === "not-found");
@@ -577,7 +580,7 @@ for (const [status, phase] of [[403, "refused"], [409, "refused"], [500, "failed
   const normalized = normalizeProposals(raw);
   assert.equal(normalized.quotes.scopeMode, null, "a fixture envelope was scoped by no server and says so");
   const pkg = contractsPackage(normalizeContracts(raw), fixture.overview.properties);
-  assert.equal(pkg.agreements.find((row) => row.id === "agreement-core-9101").agreement.label, "Contract details needed");
+  assert.equal(pkg.agreements.find((row) => row.id === "agreement-core-9105").agreement.label, "Being prepared");
 }
 
 {
@@ -603,13 +606,13 @@ for (const [status, phase] of [[403, "refused"], [409, "refused"], [500, "failed
     const ready = await widget(coreTable());
     assert.equal(ready.getAttribute("data-state"), "ready", "the home widget reads the same live module as the Contracts page");
     assert.equal(one(ready, ".ov-card__title").textContent, "Contracts");
-    assert.equal(one(ready, ".ov-lead").textContent, "2service agreements");
+    assert.equal(one(ready, ".ov-lead").textContent, "1service agreement");
     const rows = all(ready, "[data-module=\"contract-row\"]");
-    assert.deepEqual(rows.map((row) => row.getAttribute("data-state")), ["approval", "review"], "an agreement waiting for the customer comes first, as on the Contracts page");
-    assert.deepEqual(rows.map((row) => one(row, ".ov-row__title").textContent), ["Juniper Terrace", "Aspen Commons"]);
-    assert.deepEqual(rows.map((row) => one(row, ".status-badge").textContent), ["Ready for your approval", "Awaiting your decisions"]);
-    assert.deepEqual(rows.map((row) => [one(row, ".ov-chev").getAttribute("data-action"), one(row, ".ov-chev").getAttribute("data-id")]), [["agreement.open", "agreement-core-5602"], ["agreement.open", "agreement-core-5601"]]);
-    assert.deepEqual(rows.map((row) => (one(row, ".ov-row__meta") || { textContent: "" }).textContent), ["Nov 1, 2026 – Mar 31, 2027", "2 quotes for 1 property"]);
+    assert.deepEqual(rows.map((row) => row.getAttribute("data-state")), ["approval"], "the quotation round carries no agreement, so only the agreement waiting for approval is listed");
+    assert.deepEqual(rows.map((row) => one(row, ".ov-row__title").textContent), ["Juniper Terrace"]);
+    assert.deepEqual(rows.map((row) => one(row, ".status-badge").textContent), ["Ready for your approval"]);
+    assert.deepEqual(rows.map((row) => [one(row, ".ov-chev").getAttribute("data-action"), one(row, ".ov-chev").getAttribute("data-id")]), [["agreement.open", "agreement-core-5602"]]);
+    assert.deepEqual(rows.map((row) => (one(row, ".ov-row__meta") || { textContent: "" }).textContent), ["Nov 1, 2026 – Mar 31, 2027"]);
     assert.equal(one(ready, ".ov-more").getAttribute("data-action"), "overview.openContracts");
     assert.doesNotMatch(ready.textContent, /aren’t in the portal yet|No active contracts/);
 
@@ -619,8 +622,6 @@ for (const [status, phase] of [[403, "refused"], [409, "refused"], [500, "failed
     assert.equal(one(approval, ".prop-fact__value").textContent, "Ready for your approval ›");
     assert.equal(one(approval, ".prop-fact__value").getAttribute("data-action"), "agreement.open");
     assert.equal(one(approval, ".prop-fact__value").getAttribute("data-id"), "agreement-core-5602");
-    state.propertyId = "prop-core-959";
-    assert.equal(one(one(PropertyDetail(), "[data-fact=\"contract\"]"), ".prop-fact__value").textContent, "Awaiting your decisions ›", "a property follows the agreement that lists it");
 
     const emptyTable = coreTable();
     emptyTable.agreements = [];

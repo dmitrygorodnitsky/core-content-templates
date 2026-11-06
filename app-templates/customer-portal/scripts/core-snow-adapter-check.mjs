@@ -211,7 +211,7 @@ function agreement(id, stateCode, orderIds, client = 62) {
 
 function quoteTable(overrides = {}) {
   return Object.assign({
-    agreements: [agreement(136, "QUOTATION_SENT", [41, 42]), agreement(133, "CLIENT_APPROVED", [38])],
+    agreements: [agreement(136, "DRAFT", [41, 42]), agreement(133, "CLIENT_APPROVED", [38])],
     orders: [quote(38, "CLIENT_APPROVED", 959), quote(41, "QUOTE_SENT", 959), quote(42, "QUOTE_VIEWED", 958), quote(43, "INITIAL", 958)],
     orderItems: [line(38, 1, 227, 4891.92), line(38, 2, 233, 21859.68), line(41, 1, 227, 4891.92), line(41, 2, 233, 21859.68), line(42, 1, 28, 1528.48), line(42, 2, 36, 916.24), line(43, 1, 53, 1222.98)],
     productPrices: [{ id: 227, product: { id: 25 } }, { id: 233, product: { id: 28 } }, { id: 28, product: { id: 25 } }, { id: 36, product: { id: 28 } }, { id: 53, product: { id: 25 } }],
@@ -309,7 +309,7 @@ function quoteFetch(table, calls = []) {
 {
   const table = quoteTable({
     serverFiltersClient: false,
-    agreements: [agreement(136, "QUOTATION_SENT", [41, 42]), agreement(137, "QUOTATION_SEND_FAILED", [50], 712)],
+    agreements: [agreement(136, "DRAFT", [41, 42]), agreement(137, "DRAFT", [50], 712)],
     orders: [quote(41, "QUOTE_SENT", 959), Object.assign(quote(50, "QUOTE_SENT", 960), { account: { id: 712 } })],
   });
   const result = await createCoreSnowQuotesAdapter({ origin, fetch: quoteFetch(table) }).load("proposals", context);
@@ -421,9 +421,9 @@ function quoteFetch(table, calls = []) {
   assert.equal(calls[0].url, origin + "/core-bill/api/tagged/order/42/send-event.json?event=QUOTE_VIEWED-CUSTOMER_CHANGES_REQUESTED");
   assert.deepEqual(calls[0].body, { MESSAGE: { value: "Add sidewalk de-icing" } }, "a change request carries its MESSAGE as the event body");
   const detailsBody = { LEGAL_NAME: { value: "Harbour View Strata" }, INFORMATION_CONFIRMED: { value: true } };
-  assert.equal(await adapter.sendAgreementEvent(136, "AWAITING_CLIENT_DETAILS-CLIENT_DETAILS_RECEIVED", context, detailsBody), true);
-  assert.equal(calls[1].url, origin + "/core/api/tagged/document/136/send-event.json?event=AWAITING_CLIENT_DETAILS-CLIENT_DETAILS_RECEIVED");
-  assert.deepEqual(calls[1].body, detailsBody, "contract details travel as the event body");
+  assert.equal(await adapter.sendOrderEvent(41, "QUOTE_VIEWED-CLIENT_APPROVED", context, detailsBody), true);
+  assert.equal(calls[1].url, origin + "/core-bill/api/tagged/order/41/send-event.json?event=QUOTE_VIEWED-CLIENT_APPROVED");
+  assert.deepEqual(calls[1].body, detailsBody, "contract details travel as the approval's event body");
 
   const answering = (status) => createCoreSnowQuotesAdapter({ origin, fetch: async () => ({ ok: status < 300, status, async json() { return {}; } }) });
   await rejectsWith("session-expired", () => answering(401).sendOrderEvent(42, "QUOTE_VIEWED-DECLINED", context));

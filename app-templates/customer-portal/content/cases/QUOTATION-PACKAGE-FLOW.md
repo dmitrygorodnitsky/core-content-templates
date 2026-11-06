@@ -1604,3 +1604,84 @@ and `?agreementId=` links behave as before.
 Checks: `client-review-check.mjs` (fixtures `roundData` and the scenarios
 `round-review`, `round-ambiguous`). The manual package was regenerated locally
 only; nothing was uploaded and no live grant has been opened yet.
+
+## 19. Contract details ride on the approval, 2026-11-06
+
+The cut-over of the quotation round without a Document. Sections 4.2, 6 and 8
+describe the agreement as the package that carries the quotes; from this date
+the quotes travel as a round of Orders, and the `SERVICE_AGREEMENT` Document
+starts at `DRAFT` once the round is decided.
+
+- **Details ride on the approval.** `QUOTE_VIEWED-CLIENT_APPROVED` on workflow
+  45 carries the ten contract details as event metadata: `LEGAL_NAME`,
+  `CLIENT_TYPE`, `BILLING_ADDRESS`, `REPRESENTATIVE_FIRST_NAME`,
+  `REPRESENTATIVE_LAST_NAME`, `REPRESENTATIVE_JOB_TITLE`,
+  `REPRESENTATIVE_EMAIL`, `REPRESENTATIVE_PHONE`, `INFORMATION_CONFIRMED`,
+  `AUTHORITY_CONFIRMED`. The review page sends them flat
+  (`{LEGAL_NAME: "…"}`), the signed-in portal wrapped through its tagged event
+  (`{LEGAL_NAME: {value: "…"}}`). Every approval of one submission carries the
+  same details. View, decline and request changes carry none. The event cannot
+  be refused, so both pages check the server's rules first: every field but the
+  job title required, `CLIENT_TYPE` one of `INDIVIDUAL`,
+  `UNINCORPORATED_BUSINESS`, `CORPORATE`, `ASSOCIATION`, `GOVERNMENT`, an email
+  with a domain, both confirmations ticked.
+- **Review page: Confirm your choices.** The option cards stay. Approve now
+  chooses the option for its property and Decline all options marks the
+  property; nothing is sent until the client presses Send decisions in the
+  combined step under the properties. The step lists each choice with its
+  address, option and total, names the properties left for later, and, when
+  anything is approved, holds the details form, pre-filled from the granted
+  Account as before, with the billing-address offer and plan of each property
+  chosen for approval. On submit the page sends, one event at a time with a
+  read-back after each, `QUOTE_SENT-QUOTE_VIEWED` where an option is unopened,
+  `QUOTE_VIEWED-CLIENT_APPROVED` with the details for each chosen option, and
+  `QUOTE_VIEWED-DECLINED` for each option of a declined property. It never
+  declines the other options of an approved property; the server does. Request
+  changes stays per option and asks no details; a submission without an
+  approval asks none.
+- **What the client sees after the decision.** A partial submission keeps the
+  review with "Your decisions so far are recorded". After the page's own last
+  decision it re-reads on the existing backoff until the server revokes the
+  round's link (a few seconds): with any approval in the round the closed link
+  shows "Thank you, we received your details", with every option declined it
+  shows "This quotation is closed" and that the client declined every option.
+  A spent budget ends on the recorded thank-you. A round opened again after it
+  was decided and before the revocation shows the recorded thank-you without
+  re-reading; after the revocation the link answers 401/403 and shows the
+  expired-or-withdrawn card.
+- **Retired screens.** The review page no longer has the `QUOTATION_SENT`
+  quote review rooted at a Document, the `QUOTATION_UPDATE` "updating" card,
+  the `AWAITING_CLIENT_DETAILS` details step, the `CLIENT_DETAILS_RECEIVED`
+  "checking" card, the returned-details notices or the quotation PDF (a round
+  has no Document; the agreement PDF stays). A Document in any retired state
+  (`QUOTATION`, `QUOTATION_SENT`, `QUOTATION_UPDATE`, `QUOTATION_SEND_FAILED`,
+  `AWAITING_CLIENT_DETAILS`, `CLIENT_DETAILS_RECEIVED`) shows the unavailable
+  card. The agreement link from `SENT_TO_CLIENT` on is unchanged. The signed-in
+  portal dropped the agreement details step and its `details` command: its
+  Approve opens the same details form inside the confirmation, and a `DRAFT`
+  agreement shows in Contracts as "Being prepared" with no client action and
+  without `CLIENT_DETAILS_ERRORS`, which belongs to the manager.
+- **Copy.** New review-page parameters: `CHOICE_APPROVED_NOTE`,
+  `CHOICE_DECLINED_NOTE`, `CHOICE_UNDO`, `CHOICES_TITLE`, `CHOICES_BODY`,
+  `CHOICE_APPROVE_ROW`, `CHOICE_DECLINE_ROW`, `CHOICES_UNDECIDED_ONE`,
+  `CHOICES_UNDECIDED_MANY`, `CHOICES_SUBMIT`, `PARTIAL_DECIDED_TITLE`,
+  `PARTIAL_DECIDED_BODY`, `DECLINED_CLOSED_BODY`. Removed: the approve and
+  decline confirmations, the decline-all confirmation, `DECLINE_LABEL`,
+  `DECIDED_BODY`, `CHECK_AGAIN`, the details-step titles, `DETAILS_SUBMIT`,
+  `DETAILS_UNAVAILABLE`, `DETAILS_REFUSED_TITLE`, every `DETAILS_RETURNED_*`,
+  `DETAILS_PROCESSING_*`, `RETURNED_*` and `CHECKING_*` entry.
+  `DETAILS_SUBTITLE` now introduces the form inside the step.
+
+Checks: `client-review-check.mjs` (73 states; new `round-partial`,
+`round-decided-slow`, `round-declined-closed`, `choices-approve`,
+`choices-decline`, `choices-declined`, `retired-quotation`),
+`client-review-pdf-check.mjs`, `snow-portal-quote-flow-check.mjs`,
+`snow-contracts-check.mjs`, `core-snow-adapter-check.mjs`,
+`granite-ridge-fixture-check.mjs`. The client review package and the live Snow
+portal package were regenerated through their exporters and uploaded to dev-1
+on 2026-11-06 (`CLIENT_REVIEW_DOCUMENT`, `CUSTOMER_PORTAL_GRANITE_RIDGE_STAGING`).
+Through the deployed review page one throwaway round was approved with the
+details, which gave an agreement at `PENDING_MANAGEMENT_APPROVAL` holding them,
+and another was declined entirely, which closed it without a Document; the
+records and the backend proof are in core-ui `docs/snow-crm-role-flows.md`
+(checkpoint 4).

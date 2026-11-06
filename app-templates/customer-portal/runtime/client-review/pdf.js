@@ -2,7 +2,7 @@
   "use strict";
 
   var ns = global.ClientReview || (global.ClientReview = {});
-  var KINDS = ["quote-review", "contract-details", "agreement-review", "reference", "completion"];
+  var KINDS = ["agreement-review", "reference", "completion"];
   var STATUSES = { new: "optionNew", viewed: "optionViewed", approved: "optionApproved", declined: "optionDeclined", changes: "optionChanges", revising: "optionRevising", unknown: "optionUnknown" };
 
   function offered(snapshot) {
@@ -166,7 +166,7 @@
 
     section(copy.servicesTitle);
     view.properties.forEach(function (property) {
-      var options = view.kind === "contract-details" ? property.options.filter(function (option) { return option.status === "approved"; }) : property.options;
+      var options = property.options;
       if (!options.length) return;
       ensure(70);
       paragraph(property.address || copy.addressUnavailable, 12, ink, 10);

@@ -15,7 +15,7 @@ import { payInvoice } from "./invoice-payment.js";
 import { configuredExternalUrl, normalizeVertical, verticalProfiles } from "./config.js";
 import { isRouteReachable, resolveRoute, writeRouteToLocation } from "./router.js";
 import { addTypedQuoteAddress, checkQuoteRequestAgain, loadQuoteRequestSchema, quoteRequestOpen, removeQuoteAddress, resetQuoteRequest, submitQuoteRequest, toggleQuoteProperty } from "./quote-request.js";
-import { contractDetailsFor, contractDetailsRequest, openContractDetails } from "./contract-details.js";
+import { contractDetailsEventInput, contractDetailsRequest, openContractDetails } from "./contract-details.js";
 import { selectSeoService, toggleSeoFaq } from "./seo-actions.js";
 import { VISIT_PHOTO_ACTION, openVisitPhotos } from "./visit-photo-viewer.js";
 
@@ -95,7 +95,6 @@ export var ACTIONS = {
   "quote.retryView":   function (id) { return retryQuoteView(id); },
   "quote.requestChanges": function (id) { if (!openContractConfirm("changes", id)) return false; focusElement("[data-quote-changes=\"" + id + "\"]"); return true; },
   "quote.sendChanges": function (id) { return sendChangeRequest(id); },
-  "agreement.sendDetails": function (id) { return sendContractDetails(id); },
   "quoteRequest.toggleProperty": function (id) { if (!toggleQuoteProperty(id)) return false; render(); focusElement("[data-action=\"quoteRequest.toggleProperty\"][data-id=\"" + id + "\"]"); return true; },
   "quoteRequest.addAddress": function () { return addTypedQuoteAddress({ onChange: render }).then(function (added) { render(); focusElement("#quote-request-address"); return added; }); },
   "quoteRequest.removeAddress": function (id) { if (!removeQuoteAddress(id)) return false; render(); focusElement("#quote-request-address"); return true; },
@@ -1525,6 +1524,7 @@ function openContractConfirm(kind, id) {
   if (!backendId || contractCommands.busy()) return false;
   state.contractConfirm = kind === "changes" ? { kind: kind, backendId: backendId, message: "", error: "" } : { kind: kind, backendId: backendId };
   if (state.contractCommand && state.contractCommand.phase !== "pending") state.contractCommand = null;
+  if (kind === "approve") ensureContractDetails();
   render();
   return true;
 }
@@ -1534,8 +1534,22 @@ function confirmContractCommand(kind, id) {
   var confirm = state.contractConfirm;
   if (!backendId || !confirm || confirm.backendId !== backendId) return false;
   if (kind === "agreement") return confirm.kind === "agreement" ? contractCommands.approveAgreement(backendId) : false;
-  if (confirm.kind !== "approve" && confirm.kind !== "decline") return false;
+  if (confirm.kind === "approve") return approveWithDetails(backendId);
+  if (confirm.kind !== "decline") return false;
   return contractCommands.decide(confirm.kind, backendId);
+}
+
+function approveWithDetails(backendId) {
+  var details = state.contractDetails;
+  if (!details || details.prefill === "loading" || contractCommands.busy()) return false;
+  var request = contractDetailsRequest(details.draft);
+  details.errors = request.errors;
+  if (!request.values) {
+    render();
+    focusElement("[data-contract-detail][aria-invalid=\"true\"]") || focusElement("[aria-invalid=\"true\"] input");
+    return false;
+  }
+  return contractCommands.decide("approve", backendId, contractDetailsEventInput(request.values));
 }
 
 function cancelContractConfirm() {
@@ -1560,29 +1574,10 @@ function sendChangeRequest(id) {
   return contractCommands.requestChanges(backendId, message);
 }
 
-export function ensureContractDetails(backendId) {
-  if (contractDetailsFor(backendId)) return;
+function ensureContractDetails() {
+  if (state.contractDetails) return;
   var load = state.config.dataMode === "live" ? undefined : function (context) { return fixtureAccountProfileAdapter.load("profile", context); };
-  openContractDetails(backendId, { load: load, onChange: function () { render(); } });
-}
-
-function sendContractDetails(id) {
-  var backendId = contractTarget(id);
-  var details = backendId ? contractDetailsFor(backendId) : null;
-  if (!details || details.prefill === "loading" || contractCommands.busy()) return false;
-  var request = contractDetailsRequest(details.draft);
-  details.errors = request.errors;
-  if (!request.values) {
-    if (state.contractCommand && state.contractCommand.kind === "details") state.contractCommand = null;
-    render();
-    focusElement("[data-contract-detail][aria-invalid=\"true\"]") || focusElement("[aria-invalid=\"true\"] input");
-    return false;
-  }
-  return contractCommands.sendDetails(backendId, request.values).then(function (sent) {
-    if (sent && state.contractDetails === details) state.contractDetails = null;
-    render();
-    return sent;
-  });
+  openContractDetails({ load: load, onChange: function () { render(); } });
 }
 
 function retryQuoteView(id) {

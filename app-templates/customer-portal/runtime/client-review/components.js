@@ -232,7 +232,7 @@
       var body = ns.fill(view.unreadableOrders === 1 ? copy.partialOne : copy.partialMany, { n: view.unreadableOrders });
       found.push(notice("warn", "", body, refreshButton(ctx, "", copy.retryLabel)));
     }
-    if (view.accountUnavailable && view.kind === "contract-details") found.push(notice("warn", "", copy.accountPartial, null));
+    if (view.accountUnavailable && view.details.available) found.push(notice("warn", "", copy.accountPartial, null));
     return found;
   }
 
@@ -325,21 +325,38 @@
     return box;
   }
 
-  function actionRow(ctx, option) {
+  function chosenOption(ctx, property, option) {
+    var choice = ctx.snapshot.choices[property.key];
+    return Boolean(choice && choice.kind === "approve" && choice.id === option.id);
+  }
+
+  function actionRow(ctx, property, option) {
     var copy = ctx.copy;
     var disabled = ctx.busy || isPending(ctx.snapshot.commands[option.recordKey]);
+    var chosen = chosenOption(ctx, property, option);
     var row = el("div", "cr-actions");
-    function intent(kind) {
-      return function () { ctx.dispatch("option.intent", { id: option.id, kind: kind }); };
+    if (option.actions.approve && !chosen) {
+      row.appendChild(button(copy.approveLabel, "btn--primary btn--lg", function () { ctx.dispatch("option.choose", { id: option.id }); }, { disabled: disabled, "data-action": "option.approve" }));
     }
-    if (option.actions.approve) row.appendChild(button(copy.approveLabel, "btn--primary btn--lg", intent("approve"), { disabled: disabled, "data-action": "option.approve" }));
-    if (option.actions.changes) row.appendChild(button(copy.changesLabel, "btn--ghost btn--lg", intent("changes"), { disabled: disabled, "data-action": "option.changes" }));
+    if (option.actions.changes) {
+      row.appendChild(button(copy.changesLabel, "btn--ghost btn--lg", function () { ctx.dispatch("option.intent", { id: option.id, kind: "changes" }); }, { disabled: disabled, "data-action": "option.changes" }));
+    }
     return row;
+  }
+
+  function chosenNote(ctx, property, kind) {
+    var copy = ctx.copy;
+    var box = el("div", "cr-chosen", { "data-chosen": kind, role: "group", "aria-label": kind === "approve" ? copy.choiceApprovedNote : copy.choiceDeclinedNote });
+    box.appendChild(text("span", "cr-chosen__icon", kind === "approve" ? "✓" : "✕", { "aria-hidden": "true" }));
+    box.appendChild(text("p", "cr-chosen__text", kind === "approve" ? copy.choiceApprovedNote : copy.choiceDeclinedNote));
+    box.appendChild(mark(ctx, button(copy.choiceUndo, "btn--ghost", function () {
+      ctx.dispatch("choice.clear", { key: property.key });
+    }, { disabled: ctx.busy, "data-action": "choice.clear" }), "choice-" + property.key));
+    return box;
   }
 
   function confirmPanel(ctx, property, option, confirm, pending) {
     var copy = ctx.copy;
-    var label = optionLabel(option, copy);
     var kind = confirm.kind;
     var titleId = "cr-confirm-title-" + option.id;
     var panel = el("div", "cr-confirm cr-confirm--" + kind, { role: "group", "aria-labelledby": titleId, "data-state": pending ? "pending" : "open" });
@@ -363,20 +380,11 @@
       field.appendChild(area);
       field.appendChild(text("p", "cr-field__error", invalid ? copy.changesRequired : "", { id: "cr-draft-error-" + option.id }));
       panel.appendChild(field);
-    } else {
-      panel.appendChild(text("p", "cr-confirm__title", ns.fill(kind === "approve" ? copy.approveConfirmTitle : copy.declineConfirmTitle, { option: label }), { id: titleId }));
-      var others = property.options.some(function (other) { return other.id !== option.id && other.status !== "declined"; });
-      var body = kind === "approve" ? (others ? copy.approveConfirmOthers : "") : copy.declineConfirmBody;
-      if (body) panel.appendChild(text("p", "cr-confirm__body", body));
     }
     var actions = el("div", "cr-actions");
-    var confirmLabel = pending ? copy.sendingLabel
-      : kind === "approve" ? copy.approveConfirmButton
-        : kind === "decline" ? copy.declineConfirmButton : copy.changesSend;
-    var confirmButton = button(confirmLabel, kind === "decline" ? "btn--danger btn--lg" : "btn--primary btn--lg", function () {
+    var confirmButton = button(pending ? copy.sendingLabel : copy.changesSend, "btn--primary btn--lg", function () {
       ctx.dispatch("option.confirm", { id: option.id });
     }, { disabled: pending || ctx.busy, "data-state": pending ? "pending" : null, "data-action": "option.confirm", "aria-busy": pending ? "true" : null });
-    if (kind !== "changes") mark(ctx, confirmButton, "confirm-" + option.id);
     actions.appendChild(confirmButton);
     actions.appendChild(button(copy.cancelLabel, "btn--ghost btn--lg", function () {
       ctx.dispatch("option.cancel", { id: option.id });
@@ -419,14 +427,14 @@
       body.appendChild(text("p", "cr-note", copy.noteSiblingApproved));
       return;
     }
-    var confirmOpen = ctx.snapshot.confirm && ctx.snapshot.confirm.id === option.id;
-    var decisions = option.actions.approve || option.actions.changes || (confirmOpen && option.actions.decline);
+    var decisions = option.actions.approve || option.actions.changes;
     if (!decisions) {
       if (option.awaitingClient && !option.actions.view) body.appendChild(text("p", "cr-note", copy.noteNoActions));
       return;
     }
-    var confirm = ctx.snapshot.confirm && ctx.snapshot.confirm.kind !== "agreement" && ctx.snapshot.confirm.id === option.id ? ctx.snapshot.confirm : null;
-    body.appendChild(confirm ? confirmPanel(ctx, property, option, confirm, pending) : actionRow(ctx, option));
+    var confirm = ctx.snapshot.confirm && ctx.snapshot.confirm.kind === "changes" && ctx.snapshot.confirm.id === option.id ? ctx.snapshot.confirm : null;
+    if (chosenOption(ctx, property, option)) body.appendChild(chosenNote(ctx, property, "approve"));
+    body.appendChild(confirm ? confirmPanel(ctx, property, option, confirm, pending) : actionRow(ctx, property, option));
     if (command && !pending) {
       body.appendChild(outcomeBox(ctx, command, { action: refreshButton(ctx, option.recordKey, copy.refreshLabel) }));
     }
@@ -474,46 +482,26 @@
     return item;
   }
 
-  function declineAllPanel(ctx, property) {
-    var copy = ctx.copy;
-    var running = ctx.snapshot.bulk === property.key;
-    var titleId = "cr-decline-title-" + property.key;
-    var panel = el("div", "cr-confirm cr-confirm--decline", { role: "group", "aria-labelledby": titleId, "data-state": running ? "pending" : "open" });
-    panel.appendChild(text("p", "cr-confirm__title", copy.declineAllConfirmTitle, { id: titleId }));
-    panel.appendChild(text("p", "cr-confirm__body", copy.declineAllConfirmBody));
-    var actions = el("div", "cr-actions");
-    var confirmButton = button(running ? copy.sendingLabel : copy.declineAllConfirmButton, "btn--danger btn--lg", function () {
-      ctx.dispatch("property.confirm", { key: property.key });
-    }, { disabled: running || ctx.busy, "data-state": running ? "pending" : null, "data-action": "property.confirm", "aria-busy": running ? "true" : null });
-    mark(ctx, confirmButton, "confirm-" + property.key);
-    actions.appendChild(confirmButton);
-    actions.appendChild(button(copy.cancelLabel, "btn--ghost btn--lg", function () {
-      ctx.dispatch("property.cancel", { key: property.key });
-    }, { disabled: running, "data-action": "property.cancel" }));
-    panel.appendChild(actions);
-    return panel;
-  }
-
   function propertyFooter(ctx, property) {
     var copy = ctx.copy;
     var snapshot = ctx.snapshot;
     var declineCode = ns.contract.orderEvents.decline.code;
     var chosen = property.options.some(function (option) { return snapshot.expanded[option.id]; });
     var declinable = property.options.some(function (option) { return option.actions.decline || option.actions.view; });
-    var confirm = snapshot.confirm && snapshot.confirm.kind === "decline-all" && snapshot.confirm.property === property.key;
+    var choice = snapshot.choices[property.key] || null;
     var failed = property.options.filter(function (option) {
       var command = snapshot.commands[option.recordKey];
       return command && command.event === declineCode && (command.status === "failed" || command.status === "refused") && !snapshot.expanded[option.id];
     })[0];
     var footer = el("div", "cr-property__foot");
-    if (!chosen && property.options.some(function (option) { return option.awaitingClient && !option.siblingApproved; })) {
+    if (!chosen && !choice && property.options.some(function (option) { return option.awaitingClient && !option.siblingApproved; })) {
       footer.appendChild(text("p", "cr-note cr-pick__hint", copy.chooseOption));
     }
     if (failed) {
       footer.appendChild(outcomeBox(ctx, snapshot.commands[failed.recordKey], { action: refreshButton(ctx, failed.recordKey, copy.refreshLabel) }));
     }
-    if (confirm) {
-      footer.appendChild(declineAllPanel(ctx, property));
+    if (choice && choice.kind === "decline") {
+      footer.appendChild(chosenNote(ctx, property, "decline"));
     } else if (declinable) {
       var pending = property.options.some(function (option) { return isPending(snapshot.commands[option.recordKey]); });
       var intent = button(copy.declineAllLabel, "btn--danger", function () {
@@ -560,19 +548,91 @@
 
   function decidedNotice(ctx) {
     var copy = ctx.copy;
-    if (!ctx.snapshot.view.agreement) {
-      announce(ctx, [copy.decidedTitle, copy.decidedRoundBody]);
-      var recorded = notice("ok", copy.decidedTitle, copy.decidedRoundBody, null);
-      recorded.setAttribute("data-decided", "recorded");
-      return recorded;
-    }
     var waiting = ctx.snapshot.waiting;
     var following = waiting.decisions && !waiting.exhausted;
-    var body = following ? copy.decidedFollowingBody : copy.decidedBody;
+    var body = following ? copy.decidedFollowingBody : copy.decidedRoundBody;
     announce(ctx, [copy.decidedTitle, body]);
-    var box = notice("ok", copy.decidedTitle, body, following ? null : refreshButton(ctx, "", copy.checkAgain), { quiet: waiting.decisions, busy: following });
-    box.setAttribute("data-decided", following ? "following" : "settled");
+    var box = notice("ok", copy.decidedTitle, body, null, { quiet: waiting.decisions, busy: following });
+    box.setAttribute("data-decided", following ? "following" : "recorded");
     return box;
+  }
+
+  function partialNotice(ctx) {
+    var copy = ctx.copy;
+    var counts = ctx.snapshot.view.summary;
+    if (ctx.snapshot.view.allDecided || !counts.awaiting || !(counts.approved + counts.declined)) return null;
+    var box = notice("ok", copy.partialDecidedTitle, copy.partialDecidedBody, null, { quiet: true });
+    box.setAttribute("data-decided", "partial");
+    return box;
+  }
+
+  function choiceRow(ctx, entry) {
+    var copy = ctx.copy;
+    var item = el("li", "cr-approved__item cr-choices__item", { "data-choice": entry.kind, "data-property": entry.property.key });
+    var row = el("div", "cr-approved__row");
+    var identity = el("div", "cr-approved__identity");
+    identity.appendChild(text("span", "cr-approved__address" + (entry.property.address ? "" : " cr-muted"), entry.property.address || copy.addressUnavailable));
+    identity.appendChild(text("span", "cr-approved__option", entry.kind === "approve" ? ns.fill(copy.choiceApproveRow, { option: optionLabel(entry.option, copy) }) : copy.choiceDeclineRow));
+    row.appendChild(identity);
+    if (entry.kind === "approve") row.appendChild(text("span", "cr-approved__total" + (entry.option.total ? "" : " cr-muted"), entry.option.total || copy.valueNotStated));
+    item.appendChild(row);
+    if (entry.kind === "approve" && ctx.maps && entry.property.plan) item.appendChild(planBlock(ctx, entry.property));
+    var failed = (entry.kind === "approve" ? [entry.option] : entry.property.options).map(function (option) { return ctx.snapshot.commands[option.recordKey]; }).filter(function (command) {
+      return command && (command.status === "failed" || command.status === "refused");
+    })[0];
+    if (failed) item.appendChild(outcomeBox(ctx, failed, { action: refreshButton(ctx, "", copy.refreshLabel) }));
+    return item;
+  }
+
+  function choicesPanel(ctx) {
+    var view = ctx.snapshot.view;
+    var copy = ctx.copy;
+    var entries = view.properties.filter(function (property) { return Boolean(ctx.snapshot.choices[property.key]); }).map(function (property) {
+      var choice = ctx.snapshot.choices[property.key];
+      var option = choice.kind === "approve" ? property.options.filter(function (candidate) { return candidate.id === choice.id; })[0] : null;
+      return { property: property, kind: choice.kind, option: option };
+    }).filter(function (entry) { return entry.kind === "decline" || entry.option; });
+    if (!entries.length) return null;
+    var sending = ctx.snapshot.bulk === "choices";
+    var approvals = entries.some(function (entry) { return entry.kind === "approve"; });
+    var card = el("section", "cr-panel cr-choices", { "aria-labelledby": "cr-choices-title", "data-state": sending ? "pending" : "open" });
+    card.appendChild(mark(ctx, text("h2", "cr-section-title", copy.choicesTitle, { id: "cr-choices-title", tabindex: "-1" }), "choices-title"));
+    card.appendChild(text("p", "cr-note", copy.choicesBody));
+    var list = el("ul", "cr-approved__list cr-choices__list");
+    entries.forEach(function (entry) { list.appendChild(choiceRow(ctx, entry)); });
+    card.appendChild(list);
+    var undecided = view.properties.filter(function (property) {
+      return property.status === "awaiting" && !ctx.snapshot.choices[property.key];
+    }).length;
+    if (undecided) card.appendChild(text("p", "cr-note", ns.fill(undecided === 1 ? copy.choicesUndecidedOne : copy.choicesUndecidedMany, { n: undecided }), { "data-undecided": String(undecided) }));
+    var form = el("form", "cr-form", { novalidate: true, "data-state": sending ? "pending" : "idle" });
+    form.addEventListener("submit", function (event) {
+      event.preventDefault();
+      ctx.dispatch("choices.submit");
+    });
+    if (approvals) {
+      var details = el("div", "cr-form-card", { role: "group", "aria-labelledby": "cr-details-title" });
+      details.appendChild(text("h3", "cr-section-title", copy.detailsFormTitle, { id: "cr-details-title" }));
+      details.appendChild(text("p", "cr-note", copy.detailsSubtitle));
+      var fields = el("div", "cr-fields");
+      view.details.fields.forEach(function (field) { fields.appendChild(fieldNode(ctx, field, sending)); });
+      details.appendChild(fields);
+      var entered = ctx.snapshot.details;
+      var invalid = view.details.fields.some(function (field) { return entered.touched[field.code] && entered.errors[field.code]; });
+      if (entered.invalid && invalid) details.appendChild(notice("warn", "", copy.detailsInvalid, null));
+      form.appendChild(details);
+    }
+    var actions = el("div", "cr-form-actions");
+    actions.appendChild(text("button", "btn btn--primary btn--lg", sending ? copy.sendingLabel : copy.choicesSubmit, {
+      type: "submit",
+      disabled: sending || ctx.busy,
+      "data-state": sending ? "pending" : null,
+      "data-action": "choices.submit",
+      "aria-busy": sending ? "true" : null,
+    }));
+    form.appendChild(actions);
+    card.appendChild(form);
+    return card;
   }
 
   function quoteReview(shell, ctx) {
@@ -582,6 +642,8 @@
     shell.appendChild(summary(ctx));
     readNotices(ctx).forEach(function (node) { shell.appendChild(node); });
     if (view.allDecided) shell.appendChild(decidedNotice(ctx));
+    var partial = partialNotice(ctx);
+    if (partial) shell.appendChild(partial);
     if (!view.properties.length && !view.unreadableOrders) {
       shell.appendChild(stateCard("neutral", "○", copy.emptyTitle, copy.emptyBody, null));
       return;
@@ -589,6 +651,8 @@
     var list = el("div", "cr-properties");
     view.properties.forEach(function (property) { list.appendChild(propertyCard(ctx, property, true)); });
     shell.appendChild(list);
+    var choices = choicesPanel(ctx);
+    if (choices) shell.appendChild(choices);
     announceUnconfirmed(ctx);
   }
 
@@ -704,7 +768,12 @@
 
   function serviceAddressOffer(ctx, field, pending) {
     var copy = ctx.copy;
-    var addresses = ctx.snapshot.view.details.serviceAddresses || [];
+    var choices = ctx.snapshot.choices;
+    var addresses = [];
+    ctx.snapshot.view.properties.forEach(function (property) {
+      var choice = choices[property.key];
+      if (choice && choice.kind === "approve" && property.address && addresses.indexOf(property.address) === -1) addresses.push(property.address);
+    });
     if (!addresses.length) return null;
     var current = String(ctx.snapshot.details.values[field.code] || "").trim();
     var row = el("div", "cr-reuse", { role: "group", "aria-labelledby": "cr-reuse-" + field.code });
@@ -724,60 +793,6 @@
     });
     row.appendChild(chips);
     return row;
-  }
-
-  function detailsForm(ctx) {
-    var view = ctx.snapshot.view;
-    var copy = ctx.copy;
-    var card = el("section", "cr-panel cr-form-card", { "aria-labelledby": "cr-details-title" });
-    card.appendChild(text("h2", "cr-section-title", copy.detailsFormTitle, { id: "cr-details-title" }));
-    if (!view.details.available) {
-      card.appendChild(text("p", "cr-note", copy.detailsUnavailable));
-      return card;
-    }
-    var command = ctx.snapshot.commands[view.agreement.recordKey] || null;
-    var pending = isPending(command);
-    var form = el("form", "cr-form", { novalidate: true, "data-state": pending ? "pending" : "idle" });
-    form.addEventListener("submit", function (event) {
-      event.preventDefault();
-      ctx.dispatch("details.submit");
-    });
-    var fields = el("div", "cr-fields");
-    view.details.fields.forEach(function (field) { fields.appendChild(fieldNode(ctx, field, pending)); });
-    form.appendChild(fields);
-    var details = ctx.snapshot.details;
-    var invalid = view.details.fields.some(function (field) { return details.touched[field.code] && details.errors[field.code]; });
-    if (details.invalid && invalid) form.appendChild(notice("warn", "", copy.detailsInvalid, null));
-    if (command && command.status === "refused") {
-      var mapped = Object.keys(details.serverErrors).length > 0;
-      if (command.message || !mapped) {
-        form.appendChild(outcomeBox(ctx, { status: "refused", message: command.message }, { title: copy.detailsRefusedTitle }));
-      }
-    }
-    if (command && command.status === "failed") {
-      form.appendChild(outcomeBox(ctx, command, { action: refreshButton(ctx, view.agreement.recordKey, copy.refreshLabel) }));
-    }
-    var actions = el("div", "cr-form-actions");
-    actions.appendChild(text("button", "btn btn--primary btn--lg", pending ? copy.sendingLabel : copy.detailsSubmit, {
-      type: "submit",
-      disabled: pending || ctx.busy,
-      "data-state": pending ? "pending" : null,
-      "data-action": "details.submit",
-      "aria-busy": pending ? "true" : null,
-    }));
-    form.appendChild(actions);
-    card.appendChild(form);
-    return card;
-  }
-
-  function approvedEntries(view) {
-    var entries = [];
-    view.properties.forEach(function (property) {
-      property.options.forEach(function (option) {
-        if (option.status === "approved") entries.push({ address: property.address, option: option, property: property });
-      });
-    });
-    return entries;
   }
 
   function planBlock(ctx, property) {
@@ -814,57 +829,6 @@
     block.appendChild(legend);
     block.appendChild(text("p", "cr-plan__note", copy.planNote));
     return block;
-  }
-
-  function returnedNotice(ctx) {
-    var copy = ctx.copy;
-    var details = ctx.snapshot.view.details;
-    var returned = details.returned;
-    if (!returned.returned || !details.available) return null;
-    var held = ctx.snapshot.details.sent;
-    var marked = Object.keys(returned.fields).length > 0;
-    var processing = !marked && returned.processingFailed;
-    var title = processing ? copy.detailsProcessingTitle : copy.detailsReturnedTitle;
-    var lead = marked ? (held ? copy.detailsReturnedBody : copy.detailsReturnedReenter)
-      : processing ? (held ? copy.detailsProcessingBody : copy.detailsProcessingReenter)
-        : held ? copy.detailsReturnedUnknown : copy.detailsReturnedUnknownReenter;
-    var lines = [lead];
-    if (returned.unexplained && (marked || processing)) lines.push(copy.detailsReturnedUnexplained);
-    announce(ctx, [title].concat(lines));
-    var box = notice(processing ? "info" : "warn", title, lines, null, { quiet: true });
-    box.setAttribute("data-returned", marked ? "fields" : processing ? "processing" : "unexplained");
-    box.setAttribute("data-form", held ? "sent" : "fresh");
-    return box;
-  }
-
-  function contractDetails(shell, ctx) {
-    var view = ctx.snapshot.view;
-    var copy = ctx.copy;
-    shell.appendChild(pageHead(ctx, copy.detailsEyebrow, copy.detailsTitle, copy.detailsSubtitle, null));
-    var returned = returnedNotice(ctx);
-    if (returned) shell.appendChild(returned);
-    readNotices(ctx).forEach(function (node) { shell.appendChild(node); });
-    var approved = approvedEntries(view);
-    if (approved.length) {
-      var section = el("section", "cr-panel cr-approved", { "aria-labelledby": "cr-approved-title" });
-      section.appendChild(text("h2", "cr-section-title", copy.detailsApprovedTitle, { id: "cr-approved-title" }));
-      var list = el("ul", "cr-approved__list");
-      approved.forEach(function (entry) {
-        var item = el("li", "cr-approved__item");
-        var row = el("div", "cr-approved__row");
-        var identity = el("div", "cr-approved__identity");
-        identity.appendChild(text("span", "cr-approved__address" + (entry.address ? "" : " cr-muted"), entry.address || copy.addressUnavailable));
-        identity.appendChild(text("span", "cr-approved__option", optionLabel(entry.option, copy)));
-        row.appendChild(identity);
-        row.appendChild(text("span", "cr-approved__total" + (entry.option.total ? "" : " cr-muted"), entry.option.total || copy.valueNotStated));
-        item.appendChild(row);
-        if (ctx.maps && entry.property.plan) item.appendChild(planBlock(ctx, entry.property));
-        list.appendChild(item);
-      });
-      section.appendChild(list);
-      shell.appendChild(section);
-    }
-    shell.appendChild(detailsForm(ctx));
   }
 
   function portalLink(ctx) {
@@ -1105,16 +1069,10 @@
       case "quote-review":
         quoteReview(shell, ctx);
         return;
-      case "contract-details":
-        contractDetails(shell, ctx);
-        return;
       case "agreement-review":
       case "reference":
       case "completion":
         agreementPage(shell, ctx);
-        return;
-      case "checking":
-        shell.appendChild(checkingCard(ctx));
         return;
       case "preparing":
         shell.appendChild(announcedCard(ctx, "progress", "…", copy.preparingTitle, copy.preparingBody, null));
@@ -1130,17 +1088,6 @@
       default:
         shell.appendChild(announcedCard(ctx, "warn", "!", copy.unavailableTitle, view.reason === "ambiguous-round" ? copy.roundAmbiguousBody : copy.unavailableBody, null));
     }
-  }
-
-  function checkingCard(ctx) {
-    var copy = ctx.copy;
-    var slow = ctx.snapshot.waiting.exhausted;
-    var title = slow ? copy.checkingSlowTitle : copy.checkingTitle;
-    var body = slow ? copy.checkingSlowBody : copy.checkingBody;
-    announce(ctx, [title, body]);
-    var card = stateCard("progress", slow ? "…" : "", title, body, slow ? refreshButton(ctx, "", copy.refreshLabel) : null, true);
-    card.setAttribute("data-checking", slow ? "slow" : "active");
-    return card;
   }
 
   function contactLine(label, value, href, kind) {
@@ -1176,6 +1123,7 @@
     if (after === "approval") {
       return announcedCard(ctx, "ok", "✓", copy.approvalSentTitle, copy.approvalSentBody, portalAside(ctx, copy.portalTitle, portalBody(ctx, "cr-state__aside-text")));
     }
+    if (after === "declined") return announcedCard(ctx, "neutral", "⊘", copy.canceledTitle, copy.declinedClosedBody, null);
     return announcedCard(ctx, "ok", "✓", copy.detailsSentTitle, copy.detailsSentBody, null);
   }
 

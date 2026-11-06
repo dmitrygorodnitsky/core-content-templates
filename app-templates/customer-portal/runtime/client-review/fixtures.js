@@ -205,46 +205,45 @@
   ];
 
   var SCENARIOS = [
-    { id: "quote-review", label: "Quote review — every property status" },
+    { id: "quote-review", label: "Quote review — a quotation round, every property status" },
     { id: "loading", label: "Loading" },
     { id: "link-missing", label: "Link incomplete — no token" },
     { id: "link-closed", label: "Link expired or revoked — 401" },
     { id: "unconfigured", label: "Not set up — no API base" },
     { id: "empty", label: "Valid link, nothing to show" },
     { id: "error", label: "Load error — retry recovers" },
-    { id: "partial", label: "Partial data — one option unreadable" },
+    { id: "partial", label: "Partial data — an agreement lists an option the link cannot read" },
     { id: "quote-price-labels", label: "Quote review — options named from their prices, no PRICING_MODEL" },
     { id: "quote-price-intervals", label: "Quote review — options named from the price INTERVAL and the granted Unit" },
-    { id: "round-review", label: "Quotation round — no agreement in the link, decisions offered by each option's state" },
+    { id: "round-review", label: "Quotation round — shallow lines joined through the granted rows, decisions offered by each option's state" },
     { id: "round-ambiguous", label: "Quotation round — the link's options carry two rounds" },
-    { id: "round-decided", label: "Quotation round — last decision sent here, decisions recorded" },
+    { id: "round-partial", label: "Quotation round — an approval with details sent, other properties still open" },
+    { id: "round-decided", label: "Quotation round — last decision sent here, the provider's system is processing it" },
+    { id: "round-decided-slow", label: "Quotation round — last decision sent here, the link stays open past the budget" },
     { id: "round-recorded", label: "Quotation round — every property decided, link opened again" },
-    { id: "link-copied", label: "Copy link — copied on the contract details step" },
+    { id: "round-declined-closed", label: "Quotation round — every option declined here, the round closes" },
+    { id: "link-copied", label: "Copy link — copied with an approval chosen" },
     { id: "link-copy-failed", label: "Copy link — the browser refused to copy" },
     { id: "contact-phone-only", label: "Contact us — the provider shows a phone and no email" },
     { id: "contact-none", label: "Contact us — the provider shows neither, no block" },
     { id: "option-open", label: "Option open — lines, total, decisions" },
     { id: "view-pending", label: "Unviewed option opened — view event pending" },
     { id: "view-failed", label: "Unviewed option opened — view event failed" },
-    { id: "approve-confirm", label: "Approve — confirmation" },
+    { id: "choices-approve", label: "Confirm your choices — an option approved, contract details pre-filled" },
     { id: "changes-invalid", label: "Request changes — message required" },
-    { id: "decline-all-confirm", label: "Decline all options — confirmation" },
-    { id: "decline-all-done", label: "Decline all options — sent, every option declined" },
-    { id: "command-pending", label: "Decision pending" },
-    { id: "command-refused", label: "Decision refused by the server" },
-    { id: "command-failed", label: "Decision failed" },
-    { id: "command-stale-pending", label: "Decision accepted, readback still shows the option undecided — pending" },
-    { id: "command-unconfirmed", label: "Decision accepted, change not seen within the budget — Refresh status" },
+    { id: "choices-decline", label: "Confirm your choices — every option of a property declined, no details asked" },
+    { id: "choices-declined", label: "Confirm your choices — a decline sent, the other properties still open" },
+    { id: "command-pending", label: "Decisions being sent" },
+    { id: "command-refused", label: "Approval refused by the server" },
+    { id: "command-failed", label: "Approval failed" },
+    { id: "command-stale-pending", label: "Approval accepted, readback still shows the option undecided — pending" },
+    { id: "command-unconfirmed", label: "Approval accepted, change not seen within the budget — Refresh status" },
     { id: "view-unconfirmed", label: "Option opened, view accepted but not seen within the budget — Refresh status" },
-    { id: "decided", label: "Every property decided — link opened, provider not done yet" },
-    { id: "decided-following", label: "Last decision sent here — next step being opened" },
-    { id: "decided-following-slow", label: "Last decision sent here — next step taking longer, Check again" },
-    { id: "decided-next-step", label: "Last decision sent here — details step opens on its own" },
-    { id: "contract-details", label: "Contract details — pre-filled from the account" },
+    { id: "contract-details", label: "Contract details on Confirm your choices — pre-filled from the account" },
     { id: "contract-details-attributes", label: "Contract details — contacts and addresses as ids, pre-filled from Account attributes" },
     { id: "contract-details-ids-only", label: "Contract details — contacts and addresses as ids, no Account attributes" },
-    { id: "contract-details-billing-service", label: "Contract details — billing address taken from a service address" },
-    { id: "contract-details-maps", label: "Contract details — Maps key set: billing address on a map, each approved property's plan" },
+    { id: "contract-details-billing-service", label: "Contract details — billing address taken from a chosen property's address" },
+    { id: "contract-details-maps", label: "Contract details — Maps key set: billing address on a map, the chosen property's plan" },
     { id: "contract-details-address-missing", label: "Contract details — Maps key set: billing address not found on the map" },
     { id: "contract-details-plan-unavailable", label: "Contract details — Maps key set: a property's plan cannot be read" },
     { id: "contract-details-maps-failed", label: "Contract details — Maps key set, the map service does not load" },
@@ -252,19 +251,9 @@
     { id: "property-link-closed", label: "Contract details — Maps key set, property grant expired or revoked (401): no address, no plan" },
     { id: "property-list-failed", label: "Quote review — property grant opens, its Resource list fails: no address" },
     { id: "address-list-failed", label: "Contract details — Maps key set, the Address list fails: plans, no address" },
-    { id: "details-invalid", label: "Contract details — validation errors" },
-    { id: "details-refused", label: "Contract details — refused per field" },
-    { id: "details-checking", label: "Contract details sent — being checked (CLIENT_DETAILS_RECEIVED)" },
-    { id: "details-checking-slow", label: "Contract details check — taking longer than usual" },
-    { id: "details-returned", label: "Contract details returned, link reopened — fields to fix" },
-    { id: "details-returned-attributes", label: "Contract details returned, link reopened — pre-filled from Account attributes" },
-    { id: "details-returned-processing", label: "Contract details returned, link reopened — provider could not save them" },
-    { id: "details-returned-unknown", label: "Contract details returned, link reopened — reason not shown" },
-    { id: "details-returned-sent", label: "Contract details returned after sending here — provider could not save them" },
-    { id: "details-stale-checking", label: "Details sent over an old return, readback still shows it — checking" },
-    { id: "details-stale-slow", label: "Details sent over an old return, no newer read within the budget — slow check" },
-    { id: "details-stale-closed", label: "Details sent over an old return, stale readback, then checked and closed" },
-    { id: "details-closed", label: "Contract details sent — checked, link closed" },
+    { id: "details-invalid", label: "Contract details — validation errors, nothing sent" },
+    { id: "details-refused", label: "Contract details — the approval refused per field" },
+    { id: "details-closed", label: "Last decision sent with the details — round decided, link closed" },
     { id: "preparing", label: "Agreement being prepared — DRAFT" },
     { id: "agreement-review", label: "Agreement review — SENT_TO_CLIENT" },
     { id: "agreement-numbered-terms", label: "Agreement review — numbered contract terms" },
@@ -288,6 +277,7 @@
     { id: "reference-expired", label: "Expired agreement — read only" },
     { id: "closed-canceled", label: "Canceled — closed" },
     { id: "unavailable", label: "Send failed — unavailable" },
+    { id: "retired-quotation", label: "A Document left in a retired quotation state — unavailable" },
   ];
 
   function clone(value) {
@@ -453,7 +443,7 @@
       types: [
         { entityType: "Account", canRead: true, canWrite: false, events: [] },
         { entityType: "Order", canRead: true, canWrite: false, events: QUOTATION_EVENTS.map(grantEvent) },
-        { entityType: "Document", canRead: true, canWrite: false, events: [grantEvent("AWAITING_CLIENT_DETAILS-CLIENT_DETAILS_RECEIVED", 9)] },
+        { entityType: "Document", canRead: true, canWrite: false, events: [] },
         { entityType: "Address", canRead: true, canWrite: false, events: [] },
       ],
     };
@@ -518,6 +508,13 @@
   var OTHER_ROUND = "A724R2";
   var ROUND_GROUP = 6;
 
+  function roundOf(data) {
+    data.documents = [];
+    data.grant.types = data.grant.types.filter(function (type) { return type.entityType !== "Document"; });
+    data.orders.forEach(function (row) { row.attributes[ROUND_GROUP] = { QUOTATION_ROUND: { value: ROUND } }; });
+    return data;
+  }
+
   function shallowLines(data) {
     var models = {};
     var products = {};
@@ -562,6 +559,7 @@
 
   var DECIDED = { 3101: "DECLINED", 3102: "CLIENT_APPROVED", 3103: "DECLINED", 3107: "CLIENT_APPROVED", 3108: "CLIENT_APPROVED" };
   var LAST_OPEN = { 3101: "DECLINED", 3102: "CLIENT_APPROVED", 3103: "DECLINED", 3107: "CLIENT_APPROVED" };
+  var DECLINED_BUT_ONE = { 3101: "DECLINED", 3102: "DECLINED", 3103: "DECLINED", 3104: "DECLINED", 3106: "DECLINED", 3107: "DECLINED" };
 
   function agreementData(state, withUser) {
     var approved = [3102, 3104, 3107, 3108];
@@ -593,23 +591,21 @@
     });
   }
 
-  function evaluatePackage(data) {
-    var agreement = data.documents[0];
-    if (!agreement || currentState(agreement) !== "QUOTATION_SENT") return;
-    var ids = agreement.attributes[17].ORDERS.value;
+  function evaluateRound(data) {
+    if (data.documents.length) return;
     var byProperty = {};
     data.orders.forEach(function (order) {
-      if (ids.indexOf(order.id) === -1) return;
       var key = String(orderAttribute(order, "SERVICE_PROPERTY"));
       (byProperty[key] = byProperty[key] || []).push(currentState(order));
     });
     var keys = Object.keys(byProperty);
-    var decided = keys.length > 0 && keys.every(function (key) {
+    var settled = keys.length > 0 && keys.every(function (key) {
       return byProperty[key].indexOf("CLIENT_APPROVED") !== -1 || byProperty[key].every(function (code) { return code === "DECLINED"; });
     });
-    if (!decided) return;
-    var approved = keys.some(function (key) { return byProperty[key].indexOf("CLIENT_APPROVED") !== -1; });
-    agreement.states = [{ code: approved ? "AWAITING_CLIENT_DETAILS" : "CANCELED" }];
+    if (!settled) return;
+    var approved = data.orders.filter(function (order) { return currentState(order) === "CLIENT_APPROVED"; }).map(function (order) { return order.id; });
+    data.decided = { approved: approved, detailsErrors: approved.length && data.lastApproval ? detailsErrors(data.lastApproval) : null };
+    data.closed = true;
   }
 
   function apply(data, entity, id, code, metadata, hooks) {
@@ -627,6 +623,11 @@
     }
     row.states = [{ code: target }];
     if (entity === "order") {
+      if (target === "CLIENT_APPROVED") {
+        data.approvals = data.approvals || {};
+        data.approvals[row.id] = clone(metadata);
+        data.lastApproval = clone(metadata);
+      }
       if (target === "CLIENT_APPROVED" && hooks.declineSiblings !== false) {
         data.orders.forEach(function (other) {
           var sameProperty = orderAttribute(other, "SERVICE_PROPERTY") === orderAttribute(row, "SERVICE_PROPERTY");
@@ -635,10 +636,7 @@
           }
         });
       }
-      if ((target === "CLIENT_APPROVED" || target === "DECLINED") && hooks.evaluatePackage !== false) data.pendingEvaluation = { reads: 0 };
-    }
-    if (entity === "document" && code === "AWAITING_CLIENT_DETAILS-CLIENT_DETAILS_RECEIVED") {
-      data.pendingDetails = { metadata: clone(metadata), reads: 0 };
+      if (target === "CLIENT_APPROVED" || target === "DECLINED") data.pendingEvaluation = { reads: 0 };
     }
     if (entity === "document" && target === "CLIENT_APPROVED" && hooks.revokeOnApproval === true) data.closed = true;
     if (entity === "document" && target === "CLIENT_CHANGES_REQUESTED" && hooks.revokeOnChanges === true) data.closed = true;
@@ -668,28 +666,7 @@
     pending.reads += 1;
     if (pending.reads < 2) return;
     data.pendingEvaluation = null;
-    evaluatePackage(data);
-  }
-
-  function settleDetails(data, hooks) {
-    var pending = data.pendingDetails;
-    var outcome = hooks.details || "check";
-    if (!pending || outcome === "hold") return;
-    pending.reads += 1;
-    if (pending.reads < (hooks.settleAfter || 2)) return;
-    data.pendingDetails = null;
-    var agreement = data.documents[0];
-    var bucket = agreement.attributes[17];
-    var codes = outcome === "processing-failed" ? ["PROCESSING_FAILED"] : hooks.detailsCodes || detailsErrors(pending.metadata);
-    if (codes.length) {
-      bucket.CLIENT_DETAILS_ERRORS = { value: codes.join(",") };
-      agreement.states = [{ code: "AWAITING_CLIENT_DETAILS" }];
-      return;
-    }
-    Object.keys(pending.metadata).forEach(function (key) { bucket[key] = { value: pending.metadata[key] }; });
-    bucket.CLIENT_DETAILS_ERRORS = { value: "" };
-    agreement.states = [{ code: "DRAFT" }];
-    if (hooks.revokeOnDetails !== false) data.closed = true;
+    evaluateRound(data);
   }
 
   function createFixtureAdapter(data, behavior) {
@@ -743,7 +720,6 @@
         if (settings.introspect === "hold") return never();
         return later(function () {
           settleEvaluation(data, settings.hooks || {});
-          settleDetails(data, settings.hooks || {});
           served = data;
           if (stale.left > 0) {
             stale.left -= 1;
@@ -861,12 +837,6 @@
 
   function completeAccount(data) {
     data.accounts.forEach(function(row){var full=accountRow(Boolean(row.user));row.contacts=full.contacts;row.addresses=full.addresses;row.contacts[0].title="Property Manager";});
-    return data;
-  }
-
-  function returnedData(errors) {
-    var data = idOnlyAccount(quotationData("AWAITING_CLIENT_DETAILS", DECIDED));
-    data.documents[0].attributes[17].CLIENT_DETAILS_ERRORS = { value: errors };
     return data;
   }
 
@@ -1093,7 +1063,7 @@
   }
 
   function build(id, delay) {
-    var data = quotationData();
+    var data = roundOf(quotationData());
     var behavior = { introspect: "ok", events: {}, hooks: {}, delay: delay };
     var steps = [];
     var phase = "";
@@ -1101,20 +1071,17 @@
     var pollDelays = null;
     var clipboard = null;
     var maps = "";
-    var approve = [["option.toggle", { id: 3102 }], ["option.intent", { id: 3102, kind: "approve" }]];
+    var choose = [["option.toggle", { id: 3102 }], ["option.choose", { id: 3102 }]];
+    var chooseBoth = choose.concat([["option.toggle", { id: 3107 }], ["option.choose", { id: 3107 }]]);
+    var secondPlan = { 512: [{ id: PLAN_IDS[430], type: "mediaAsset" }] };
     var confirmBoth = [
       ["details.choose", { code: "CLIENT_TYPE", value: "CORPORATE" }],
       ["details.choose", { code: "INFORMATION_CONFIRMED", value: true }],
       ["details.choose", { code: "AUTHORITY_CONFIRMED", value: true }],
     ];
-    var typeDetails = [
-      ["details.input", { code: "BILLING_ADDRESS", value: "1500 Harbour Green Drive, Suite 210, Vancouver, BC V6C 3T8" }],
-      ["details.input", { code: "REPRESENTATIVE_FIRST_NAME", value: "Dana" }],
-      ["details.input", { code: "REPRESENTATIVE_LAST_NAME", value: "Reyes" }],
-      ["details.input", { code: "REPRESENTATIVE_EMAIL", value: "dana.reyes@harbourview.example" }],
-      ["details.input", { code: "REPRESENTATIVE_PHONE", value: "+1 604 555 0164" }],
-    ];
-    var lastDecision = [["option.toggle", { id: 3108 }], ["option.intent", { id: 3108, kind: "approve" }], ["option.confirm", { id: 3108 }]];
+    var submit = [["choices.submit", {}]];
+    var approveAndSend = choose.concat(confirmBoth, submit);
+    var lastDecision = [["option.toggle", { id: 3108 }], ["option.choose", { id: 3108 }]].concat(confirmBoth, submit);
     var agreementChanges = [
       ["agreement.changes", {}],
       ["agreement.draft", { value: "Please start the service on November 15 and add the side parking lot at 9150 Cedar Hollow Drive." }],
@@ -1140,6 +1107,7 @@
         behavior.introspect = "fail-once";
         break;
       case "partial":
+        data = agreementData("SENT_TO_CLIENT", false);
         data.unreadable = [3107];
         break;
       case "quote-price-labels":
@@ -1154,26 +1122,41 @@
       case "round-ambiguous":
         data = roundData(null, { 3109: OTHER_ROUND, 3110: OTHER_ROUND });
         break;
+      case "round-partial":
+        steps = approveAndSend;
+        break;
       case "round-decided":
         data = roundData(LAST_OPEN);
+        behavior.hooks.evaluation = "hold";
         steps = lastDecision;
+        break;
+      case "round-decided-slow":
+        data = roundData(LAST_OPEN);
+        behavior.hooks.evaluation = "hold";
+        steps = lastDecision;
+        pollDelays = [300, 300, 300];
         break;
       case "round-recorded":
         data = roundData(DECIDED);
         break;
+      case "round-declined-closed":
+        data = roundData(DECLINED_BUT_ONE);
+        steps = [["property.decline", { key: "property-661" }]].concat(submit);
+        break;
       case "link-copied":
-        data = quotationData("AWAITING_CLIENT_DETAILS", DECIDED);
         clipboard = fixtureClipboard(true);
-        steps = [["link.copy", {}]];
+        steps = choose.concat([["link.copy", {}]]);
         break;
       case "link-copy-failed":
         clipboard = fixtureClipboard(false);
         steps = [["link.copy", {}]];
         break;
       case "contact-phone-only":
+        data = agreementData("SENT_TO_CLIENT", false);
         delete data.documents[0].attributes[17].PROVIDER_CONTACT_EMAIL;
         break;
       case "contact-none":
+        data = agreementData("SENT_TO_CLIENT", false);
         delete data.documents[0].attributes[17].PROVIDER_CONTACT_PHONE;
         delete data.documents[0].attributes[17].PROVIDER_CONTACT_EMAIL;
         break;
@@ -1188,40 +1171,40 @@
         behavior.events["QUOTE_SENT-QUOTE_VIEWED"] = { outcome: "fail" };
         steps = [["option.toggle", { id: 3101 }]];
         break;
-      case "approve-confirm":
-        steps = approve;
+      case "choices-approve":
+        steps = choose;
         break;
-      case "decline-all-confirm":
+      case "choices-decline":
         steps = [["property.decline", { key: "property-278" }]];
         break;
-      case "decline-all-done":
-        steps = [["property.decline", { key: "property-278" }], ["property.confirm", { key: "property-278" }]];
+      case "choices-declined":
+        steps = [["property.decline", { key: "property-278" }]].concat(submit);
         break;
       case "changes-invalid":
         steps = [["option.toggle", { id: 3103 }], ["option.intent", { id: 3103, kind: "changes" }], ["option.confirm", { id: 3103 }]];
         break;
       case "command-pending":
         behavior.events["QUOTE_VIEWED-CLIENT_APPROVED"] = { outcome: "hold" };
-        steps = approve.concat([["option.confirm", { id: 3102 }]]);
+        steps = approveAndSend;
         break;
       case "command-refused":
         behavior.events["QUOTE_VIEWED-CLIENT_APPROVED"] = {
           outcome: "refuse",
           message: "This option was revised by the provider after you opened it. Refresh to see the current version.",
         };
-        steps = approve.concat([["option.confirm", { id: 3102 }]]);
+        steps = approveAndSend;
         break;
       case "command-failed":
         behavior.events["QUOTE_VIEWED-CLIENT_APPROVED"] = { outcome: "fail" };
-        steps = approve.concat([["option.confirm", { id: 3102 }]]);
+        steps = approveAndSend;
         break;
       case "command-stale-pending":
         behavior.staleReads = 99;
-        steps = approve.concat([["option.confirm", { id: 3102 }]]);
+        steps = approveAndSend;
         break;
       case "command-unconfirmed":
         behavior.staleReads = 99;
-        steps = approve.concat([["option.confirm", { id: 3102 }]]);
+        steps = approveAndSend;
         pollDelays = [300, 300, 300];
         break;
       case "view-unconfirmed":
@@ -1229,130 +1212,75 @@
         steps = [["option.toggle", { id: 3101 }]];
         pollDelays = [300, 300, 300];
         break;
-      case "decided":
-        data = quotationData("QUOTATION_SENT", DECIDED);
-        break;
-      case "decided-following":
-        data = quotationData("QUOTATION_SENT", LAST_OPEN);
-        behavior.hooks.evaluation = "hold";
-        steps = lastDecision;
-        break;
-      case "decided-following-slow":
-        data = quotationData("QUOTATION_SENT", LAST_OPEN);
-        behavior.hooks.evaluation = "hold";
-        steps = lastDecision;
-        pollDelays = [300, 300, 300];
-        break;
-      case "decided-next-step":
-        data = quotationData("QUOTATION_SENT", LAST_OPEN);
-        steps = lastDecision;
-        break;
       case "contract-details":
-        data = quotationData("AWAITING_CLIENT_DETAILS", DECIDED);
+        steps = choose;
         break;
       case "contract-details-attributes":
-        data = completeAccount(quotationData("AWAITING_CLIENT_DETAILS", DECIDED));
+        data = completeAccount(data);
+        steps = choose;
         break;
       case "contract-details-ids-only":
-        data = idOnlyAccount(quotationData("AWAITING_CLIENT_DETAILS", DECIDED));
+        data = idOnlyAccount(data);
+        steps = choose;
         break;
       case "contract-details-billing-service":
-        data = completeAccount(quotationData("AWAITING_CLIENT_DETAILS", DECIDED));
-        steps = [["details.useAddress", { code: "BILLING_ADDRESS", value: ADDRESSES[430] }]];
+        data = completeAccount(data);
+        steps = choose.concat([["details.useAddress", { code: "BILLING_ADDRESS", value: ADDRESSES[278] }]]);
         break;
       case "contract-details-maps":
-        data = withPlans(completeAccount(quotationData("AWAITING_CLIENT_DETAILS", DECIDED)));
+        data = withPlans(completeAccount(data), secondPlan);
         maps = "stub";
+        steps = chooseBoth;
         break;
       case "contract-details-address-missing":
-        data = withPlans(completeAccount(quotationData("AWAITING_CLIENT_DETAILS", DECIDED)));
+        data = withPlans(completeAccount(data));
         data.accounts[0].addresses.filter(function(link){return link.types.some(function(type){return type.code==="BILLING";});})[0].address = {address1:"PO Box 4471",city:"Station Terminal, Vancouver",postalCode:"V6B 3Z8",state:{code:"BC"}};
         maps = "stub";
+        steps = choose;
         break;
       case "contract-details-plan-unavailable":
-        data = withPlans(completeAccount(quotationData("AWAITING_CLIENT_DETAILS", DECIDED)), { 278: PLAN_IDS.broken });
+        data = withPlans(completeAccount(data), Object.assign({ 278: PLAN_IDS.broken }, secondPlan));
         maps = "stub";
+        steps = chooseBoth;
         break;
       case "contract-details-maps-failed":
-        data = withPlans(completeAccount(quotationData("AWAITING_CLIENT_DETAILS", DECIDED)));
+        data = withPlans(completeAccount(data), secondPlan);
         maps = "fail";
+        steps = chooseBoth;
         break;
       case "old-link":
         data = preGrantLink(data);
         behavior.properties = "missing";
         break;
       case "property-link-closed":
-        data = withPlans(completeAccount(quotationData("AWAITING_CLIENT_DETAILS", DECIDED)));
+        data = withPlans(completeAccount(data), secondPlan);
         behavior.properties = "unauthorized";
         maps = "stub";
+        steps = chooseBoth;
         break;
       case "property-list-failed":
         behavior.properties = "list-fails";
         break;
       case "address-list-failed":
-        data = withPlans(completeAccount(quotationData("AWAITING_CLIENT_DETAILS", DECIDED)));
+        data = withPlans(completeAccount(data), secondPlan);
         behavior.addresses = "fail";
         maps = "stub";
+        steps = chooseBoth;
         break;
       case "details-invalid":
-        data = quotationData("AWAITING_CLIENT_DETAILS", DECIDED);
-        steps = [["details.input", { code: "REPRESENTATIVE_PHONE", value: "" }], ["details.submit", {}]];
+        steps = choose.concat([["details.input", { code: "REPRESENTATIVE_PHONE", value: "" }]], submit);
         break;
       case "details-refused":
-        data = quotationData("AWAITING_CLIENT_DETAILS", DECIDED);
-        behavior.events["AWAITING_CLIENT_DETAILS-CLIENT_DETAILS_RECEIVED"] = {
+        behavior.events["QUOTE_VIEWED-CLIENT_APPROVED"] = {
           outcome: "refuse",
           message: "",
           fieldErrors: { REPRESENTATIVE_EMAIL: "This address cannot receive mail. Enter another email." },
         };
-        steps = confirmBoth.concat([["details.submit", {}]]);
-        break;
-      case "details-checking":
-        data = quotationData("CLIENT_DETAILS_RECEIVED", DECIDED);
-        behavior.hooks.details = "hold";
-        break;
-      case "details-checking-slow":
-        data = quotationData("CLIENT_DETAILS_RECEIVED", DECIDED);
-        behavior.hooks.details = "hold";
-        pollDelays = [300, 300, 300];
-        break;
-      case "details-returned":
-        data = returnedData("CLIENT_TYPE,REPRESENTATIVE_EMAIL_INVALID,AUTHORITY_CONFIRMED");
-        break;
-      case "details-returned-attributes":
-        data = completeAccount(returnedData("CLIENT_TYPE,REPRESENTATIVE_EMAIL_INVALID,AUTHORITY_CONFIRMED"));
-        break;
-      case "details-returned-processing":
-        data = returnedData("PROCESSING_FAILED");
-        break;
-      case "details-returned-unknown":
-        data = returnedData("TAX_NUMBER_MISSING");
-        break;
-      case "details-returned-sent":
-        data = idOnlyAccount(quotationData("AWAITING_CLIENT_DETAILS", DECIDED));
-        behavior.hooks.details = "processing-failed";
-        steps = typeDetails.concat(confirmBoth, [["details.submit", {}]]);
-        break;
-      case "details-stale-checking":
-        data = returnedData("PROCESSING_FAILED");
-        behavior.staleReads = 1;
-        behavior.hooks.details = "hold";
-        steps = typeDetails.concat(confirmBoth, [["details.submit", {}]]);
-        break;
-      case "details-stale-slow":
-        data = returnedData("PROCESSING_FAILED");
-        behavior.staleReads = 99;
-        steps = typeDetails.concat(confirmBoth, [["details.submit", {}]]);
-        pollDelays = [300, 300, 300];
-        break;
-      case "details-stale-closed":
-        data = returnedData("PROCESSING_FAILED");
-        behavior.staleReads = 1;
-        steps = typeDetails.concat(confirmBoth, [["details.submit", {}]]);
+        steps = approveAndSend;
         break;
       case "details-closed":
-        data = quotationData("AWAITING_CLIENT_DETAILS", DECIDED);
-        steps = confirmBoth.concat([["details.submit", {}]]);
+        data = roundData(LAST_OPEN);
+        steps = lastDecision;
         break;
       case "preparing":
         data = quotationData("DRAFT", DECIDED);
@@ -1449,6 +1377,9 @@
       case "unavailable":
         data = agreementData("AGREEMENT_SEND_FAILED", false);
         break;
+      case "retired-quotation":
+        data = quotationData("QUOTATION_SENT");
+        break;
       default:
         break;
     }
@@ -1503,6 +1434,7 @@
     quotationData: quotationData,
     agreementData: agreementData,
     roundData: roundData,
+    roundOf: roundOf,
     round: ROUND,
     otherRound: OTHER_ROUND,
     detailsErrors: detailsErrors,
@@ -1517,5 +1449,6 @@
     logoImage: LOGO_IMAGE,
     decidedStates: Object.freeze(Object.assign({}, DECIDED)),
     lastOpenStates: Object.freeze(Object.assign({}, LAST_OPEN)),
+    declinedButOneStates: Object.freeze(Object.assign({}, DECLINED_BUT_ONE)),
   };
 })(typeof window !== "undefined" ? window : globalThis);

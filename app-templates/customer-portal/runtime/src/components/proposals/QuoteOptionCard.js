@@ -5,6 +5,7 @@ import { ActionButton } from "../primitives/ActionButton.js";
 import { QUOTE_STATUS } from "./QuotePackage.js";
 import { pricePeriod } from "../../normalizers/contracts.js";
 import { CommandOutcome, DecisionFailure, PendingNote } from "./ContractStates.js";
+import { ContractDetailsForm, contractDetailsLoading } from "./ContractDetailsForm.js";
 
 export function QuoteOptionCard(order, options) {
   var settings = options || {};
@@ -139,15 +140,17 @@ function DecisionConfirm(kind, order, settings, pending) {
   var body = kind === "approve"
     ? (settings.siblingsOpen ? "Approving it declines the other options for this property." : "")
     : "A declined option can’t be approved later.";
+  var details = kind === "approve" ? state.contractDetails : null;
   var confirmButton = ActionButton({
     variant: kind === "approve" ? "btn--primary" : "btn--danger",
     label: pending ? "Sending…" : kind === "approve" ? "Confirm approval" : "Confirm decline",
-    action: "quote.confirm", id: String(order.backendId), lg: true, disabled: pending || settings.busy, visualId: "quote-confirm",
+    action: "quote.confirm", id: String(order.backendId), lg: true, disabled: pending || settings.busy || (kind === "approve" && contractDetailsLoading(details)), visualId: "quote-confirm",
   });
   if (pending) confirmButton.setAttribute("data-state", "pending");
   return h("div", { "class": "decision-confirm", "data-module": "decision-confirm", "data-visual-id": "decision-confirm", "data-state": pending ? "pending" : "open", "data-kind": kind, role: "group", "aria-labelledby": titleId }, [
     h("p", { "class": "decision-confirm__title", id: titleId }, kind === "approve" ? "Approve " + label + " for this property?" : "Decline " + label + "?"),
     body ? h("p", { "class": "decision-confirm__body" }, body) : null,
+    kind === "approve" ? ContractDetailsForm(details, pending) : null,
     h("div", { "class": "proposal-actions" }, [
       confirmButton,
       ActionButton({ variant: "btn--ghost", label: "Cancel", action: "quote.cancel", lg: true, disabled: pending, visualId: "quote-cancel" }),

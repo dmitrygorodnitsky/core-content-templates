@@ -29,9 +29,6 @@ export const CONTRACT_DETAILS_COPY = Object.freeze({
   confirm: "Confirm this to send your details.",
   plainText: "Use letters, spaces and punctuation only.",
   tooLong: "Use " + TEXT_LIMIT + " characters or fewer.",
-  returnedMissing: "This was missing from the details you sent.",
-  returnedUnconfirmed: "This confirmation was missing from the details you sent.",
-  returnedEmail: "Enter a valid email address, like name@example.com.",
 });
 
 const PROFILE_RULES = Object.freeze({
@@ -44,15 +41,10 @@ const PROFILE_RULES = Object.freeze({
 
 const CLIENT_TYPE_CODES = CONTRACT_CLIENT_TYPES.map(function (type) { return type.code; });
 
-export function contractDetailsFor(backendId) {
-  var details = state.contractDetails;
-  return details && details.agreementId === backendId ? details : null;
-}
-
-export function openContractDetails(backendId, options) {
-  if (contractDetailsFor(backendId)) return Promise.resolve(state.contractDetails);
+export function openContractDetails(options) {
+  if (state.contractDetails) return Promise.resolve(state.contractDetails);
   var settings = options || {};
-  var details = { agreementId: backendId, prefill: "loading", filled: false, draft: emptyDraft(), errors: {} };
+  var details = { prefill: "loading", filled: false, draft: emptyDraft(), errors: {} };
   state.contractDetails = details;
   var load = settings.load || loadContractDetailsAccount;
   return Promise.resolve()
@@ -72,8 +64,8 @@ export function openContractDetails(backendId, options) {
     });
 }
 
-export function changeContractDetail(backendId, code, value) {
-  var details = contractDetailsFor(backendId);
+export function changeContractDetail(code, value) {
+  var details = state.contractDetails;
   var definition = CONTRACT_DETAILS_FIELDS.find(function (item) { return item.code === code; });
   if (!details || !definition) return false;
   details.draft[code] = definition.kind === "confirm" ? value === true : String(value == null ? "" : value);
@@ -91,17 +83,10 @@ export function contractDetailsRequest(draft) {
   return Object.keys(errors).length ? { errors: errors, values: null } : { errors: {}, values: values };
 }
 
-export function returnedDetailErrors(codes) {
-  var errors = {};
-  (codes || []).forEach(function (code) {
-    if (code === "CLIENT_TYPE_INVALID") errors.CLIENT_TYPE = CONTRACT_DETAILS_COPY.clientTypeInvalid;
-    else if (code === "REPRESENTATIVE_EMAIL_INVALID") errors.REPRESENTATIVE_EMAIL = CONTRACT_DETAILS_COPY.returnedEmail;
-    else {
-      var definition = CONTRACT_DETAILS_FIELDS.find(function (item) { return item.code === code; });
-      if (definition) errors[code] = definition.kind === "confirm" ? CONTRACT_DETAILS_COPY.returnedUnconfirmed : CONTRACT_DETAILS_COPY.returnedMissing;
-    }
-  });
-  return errors;
+export function contractDetailsEventInput(values) {
+  var input = {};
+  CONTRACT_DETAILS_FIELDS.forEach(function (item) { input[item.code] = { value: values[item.code] }; });
+  return input;
 }
 
 function validateDetail(item, raw) {

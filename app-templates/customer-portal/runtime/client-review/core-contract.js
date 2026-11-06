@@ -69,13 +69,11 @@
     agreementOperationStatus: {
       key: "AGREEMENT_OPERATION_STATUS",
       presentedStates: {
-        QUOTATION_SENT: { QUOTATION_DELIVERY_FAILED: "QUOTATION_SEND_FAILED" },
         SENT_TO_CLIENT: { AGREEMENT_DELIVERY_FAILED: "AGREEMENT_SEND_FAILED" },
         CLIENT_APPROVED: { ACTIVATION_FAILED: "ACTIVATION_FAILED" },
       },
     },
     agreementEvents: {
-      details: { code: "AWAITING_CLIENT_DETAILS-CLIENT_DETAILS_RECEIVED", source: "AWAITING_CLIENT_DETAILS" },
       approve: { code: "SENT_TO_CLIENT-CLIENT_APPROVED", source: "SENT_TO_CLIENT" },
       changes: { code: "SENT_TO_CLIENT-CLIENT_CHANGES_REQUESTED", source: "SENT_TO_CLIENT", messageAttribute: "MESSAGE" },
     },
@@ -124,17 +122,9 @@
       providerContactPhone: "PROVIDER_CONTACT_PHONE",
       providerContactEmail: "PROVIDER_CONTACT_EMAIL",
       providerLogo: "PROVIDER_LOGO",
-      detailsErrors: "CLIENT_DETAILS_ERRORS",
-    },
-    detailsReturn: {
-      processingFailed: "PROCESSING_FAILED",
-      invalid: {
-        CLIENT_TYPE_INVALID: { field: "CLIENT_TYPE", reason: "choice" },
-        REPRESENTATIVE_EMAIL_INVALID: { field: "REPRESENTATIVE_EMAIL", reason: "email" },
-      },
     },
     contractDetails: {
-      event: "AWAITING_CLIENT_DETAILS-CLIENT_DETAILS_RECEIVED",
+      event: "QUOTE_VIEWED-CLIENT_APPROVED",
       attributes: CONTRACT_DETAILS_ATTRIBUTES,
       attributeOrder: [
         {

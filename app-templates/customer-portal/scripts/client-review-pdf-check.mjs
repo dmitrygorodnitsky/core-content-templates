@@ -17,20 +17,23 @@ const copy = CR.defaultCopy();
 const options = { engine, font: sandbox.ClientReviewPdfFont, locale: "en-CA", now: new Date("2026-10-02T12:00:00Z") };
 const output = path.resolve("tmp/pdfs/client-review");
 await fs.mkdir(output, { recursive: true });
-function snapshot(scenario) {
-  const data = CR.fixtures.setup(scenario).data;
+function modelOf(data) {
   const view = CR.normalizer.reviewModel({ ...data, grant: CR.normalizer.grantOf(data.grant) }, { locale: "en-CA", contract: CR.contract });
   return { phase: "ready", view, contact: view.contact };
 }
+const snapshot = (scenario) => modelOf(CR.fixtures.setup(scenario).data);
 const quote = snapshot("quote-review");
 const agreement = snapshot("agreement-review");
-for (const [name, input] of [["quotation", quote], ["agreement", agreement]]) {
-  const result = CR.pdf.build(input, copy, options);
-  assert.match(result.filename, name === "agreement" ? /^service-agreement-\d+\.pdf$/ : /^quotation-\d+\.pdf$/);
+assert.equal(quote.view.agreement, null, "a quotation round carries no Document");
+assert.equal(CR.pdf.offered(quote), false, "so it offers no PDF");
+assert.throws(() => CR.pdf.build(quote, copy, options), "and none can be built from it");
+{
+  const result = CR.pdf.build(agreement, copy, options);
+  assert.match(result.filename, /^service-agreement-\d+\.pdf$/);
   const bytes = Buffer.from(result.bytes);
   assert.equal(bytes.subarray(0, 5).toString(), "%PDF-");
   assert.ok(bytes.length > 10000);
-  await fs.writeFile(path.join(output, name + ".pdf"), bytes);
+  await fs.writeFile(path.join(output, "agreement.pdf"), bytes);
 }
 {
   const written = [];
@@ -40,16 +43,16 @@ for (const [name, input] of [["quotation", quote], ["agreement", agreement]]) {
     doc.text = (value, ...rest) => { written.push(...[].concat(value)); return write(value, ...rest); };
     return doc;
   } };
-  CR.pdf.build(snapshot("quote-price-labels"), copy, { ...options, engine: recording });
+  CR.pdf.build(modelOf(CR.fixtures.priceLabelled(CR.fixtures.agreementData("SENT_TO_CLIENT", false))), copy, { ...options, engine: recording });
   const headings = written.filter((line) => / - /.test(line) && Object.values(copy).some((value) => line.endsWith(" - " + value)));
-  assert.deepEqual(headings.map((line) => line.split(" - ")[0]), ["Seasonal plan", "Monthly plan", copy.modelPerService, copy.modelRecurring, copy.modelPerService, copy.modelRecurring, copy.modelRecurring, "Option 1", copy.modelRecurring, copy.modelRecurring], "the PDF labels options from their prices like the page when the Order has no PRICING_MODEL");
+  assert.deepEqual(headings.map((line) => line.split(" - ")[0]), ["Monthly plan", copy.modelRecurring, copy.modelRecurring, "Option 1"], "the PDF labels options from their prices like the page when the Order has no PRICING_MODEL");
 }
 for (const phase of ["loading", "error", "link-closed", "link-missing", "unconfigured"]) {
-  assert.equal(CR.pdf.offered({ ...quote, phase }), false);
-  assert.throws(() => CR.pdf.build({ ...quote, phase }, copy, options));
+  assert.equal(CR.pdf.offered({ ...agreement, phase }), false);
+  assert.throws(() => CR.pdf.build({ ...agreement, phase }, copy, options));
 }
-for (const kind of ["preparing", "checking", "unavailable", "empty", "closed"]) assert.equal(CR.pdf.offered({ ...quote, view: { ...quote.view, kind } }), false);
-assert.equal(CR.pdf.available({ ...quote, view: { ...quote.view, unreadableOrders: 1 } }), false);
+for (const kind of ["quote-review", "preparing", "unavailable", "empty", "closed"]) assert.equal(CR.pdf.offered({ ...agreement, view: { ...agreement.view, kind } }), false);
+assert.equal(CR.pdf.available({ ...agreement, view: { ...agreement.view, unreadableOrders: 1 } }), false);
 assert.equal(CR.pdf.available({ ...agreement, view: { ...agreement.view, accountUnavailable: true } }), false);
 
 const long = JSON.parse(JSON.stringify(agreement));
@@ -100,7 +103,7 @@ assert.equal(saved.length, 1, "a revoked link cannot download the previously rea
 controller.stop();
 
 let attempts = 0;
-const failing = CR.createController({ adapter: CR.fixtures.setup("quote-review").adapter, pdfFactory: () => { attempts++; throw new Error("Unavailable library"); }, pdfSave: () => { throw new Error("Must not save a failed result"); } }).start();
+const failing = CR.createController({ adapter: CR.fixtures.setup("agreement-review").adapter, pdfFactory: () => { attempts++; throw new Error("Unavailable library"); }, pdfSave: () => { throw new Error("Must not save a failed result"); } }).start();
 await failing.idle();
 failing.dispatch("pdf.download");
 await failing.idle();
@@ -109,4 +112,4 @@ failing.dispatch("pdf.download");
 await failing.idle();
 assert.equal(attempts, 2, "export failure releases the guard for an explicit retry");
 failing.stop();
-console.log("client-review-pdf-check ok: real quotation/agreement PDFs, pagination and Unicode, partial/closed states, no drafts or tokens, duplicate protection, stale snapshot refusal and retry; artifacts: " + output);
+console.log("client-review-pdf-check ok: real agreement PDFs and none for a quotation round, pagination and Unicode, partial/closed states, no drafts or tokens, duplicate protection, stale snapshot refusal and retry; artifacts: " + output);

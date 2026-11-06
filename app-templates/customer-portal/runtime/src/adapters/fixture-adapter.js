@@ -59,6 +59,8 @@ export const fixtureAccountProfileAdapter = {
   },
 };
 
+var ROUND_STATES = ["QUOTE_SENT", "QUOTE_VIEWED", "CLIENT_APPROVED", "DECLINED", "CUSTOMER_CHANGES_REQUESTED"];
+
 export function createFixtureContractsGateway(state) {
   return {
     async readOrder(backendId) {
@@ -67,18 +69,22 @@ export function createFixtureContractsGateway(state) {
     async readAgreement(backendId) {
       return clone(fixtureRow(state.pagreements, backendId));
     },
-    async sendOrderEvent(backendId, event) {
+    async sendOrderEvent(backendId, event, context, input) {
       var target = transition(fixtureRow(state.porders, backendId), event);
       var orders = withState(state.porders, [backendId], target);
-      var packages = state.pagreements.filter(function (agreement) { return listedOrderIds(agreement).indexOf(positiveInteger(backendId)) !== -1; });
-      if (target === "CLIENT_APPROVED") orders = withState(orders, siblingsOf(orders, packages, backendId), "DECLINED");
+      if (target === "CLIENT_APPROVED") {
+        orders = withState(orders, siblingsOf(orders, state.pagreements, backendId), "DECLINED");
+        orders = orders.map(function (row) {
+          return row.id === positiveInteger(backendId) ? Object.assign({}, row, { metadata: Object.assign({}, row.metadata, { QUOTATION_CLIENT_DETAILS: detailValues(input) }) }) : row;
+        });
+      }
       state.porders = orders;
-      if (target === "CLIENT_APPROVED" || target === "DECLINED") state.pagreements = evaluatePackages(state.pagreements, packages, orders);
+      if (target === "CLIENT_APPROVED" || target === "DECLINED") state.pagreements = settleRound(state.pagreements, orders, positiveInteger(backendId));
       return true;
     },
     async sendAgreementEvent(backendId, event) {
       var target = transition(fixtureRow(state.pagreements, backendId), event);
-      state.pagreements = withState(state.pagreements, [backendId], target === "CLIENT_DETAILS_RECEIVED" ? "PENDING_MANAGEMENT_APPROVAL" : target);
+      state.pagreements = withState(state.pagreements, [backendId], target);
       return true;
     },
   };
@@ -119,42 +125,54 @@ function withState(rows, ids, code) {
   });
 }
 
-function siblingsOf(orders, packages, backendId) {
+function siblingsOf(orders, agreements, backendId) {
   var property = attributeNumber(fixtureRow(orders, backendId), "SERVICE_PROPERTY");
-  var listed = [];
-  packages.forEach(function (agreement) { listed = listed.concat(listedOrderIds(agreement)); });
+  var listed = agreedOrderIds(agreements);
   return orders.filter(function (row) {
     return row.id !== positiveInteger(backendId)
-      && listed.indexOf(row.id) !== -1
+      && listed.indexOf(row.id) === -1
       && attributeNumber(row, "SERVICE_PROPERTY") === property
       && ["QUOTE_SENT", "QUOTE_VIEWED"].indexOf(latestStateCode(row)) !== -1;
   }).map(function (row) { return row.id; });
 }
 
-function evaluatePackages(agreements, packages, orders) {
-  var decided = packages.filter(function (agreement) {
-    if (latestStateCode(agreement) !== "QUOTATION_SENT") return false;
-    var byProperty = {};
-    listedOrderIds(agreement).forEach(function (id) {
-      var row = orders.find(function (candidate) { return candidate.id === id; });
-      if (!row) return;
-      var key = String(attributeNumber(row, "SERVICE_PROPERTY") || 0);
-      (byProperty[key] = byProperty[key] || []).push(latestStateCode(row));
-    });
-    var keys = Object.keys(byProperty);
-    return keys.length > 0 && keys.every(function (key) {
-      return byProperty[key].indexOf("CLIENT_APPROVED") !== -1 || byProperty[key].every(function (code) { return code === "DECLINED"; });
-    });
+function settleRound(agreements, orders, decidedId) {
+  var listed = agreedOrderIds(agreements);
+  var round = orders.filter(function (row) {
+    return listed.indexOf(row.id) === -1 && ROUND_STATES.indexOf(latestStateCode(row)) !== -1;
   });
-  if (!decided.length) return agreements;
-  return agreements.map(function (agreement) {
-    if (decided.indexOf(agreement) === -1) return agreement;
-    var approved = listedOrderIds(agreement).some(function (id) {
-      var row = orders.find(function (candidate) { return candidate.id === id; });
-      return !!row && latestStateCode(row) === "CLIENT_APPROVED";
-    });
-    return Object.assign({}, agreement, { states: agreement.states.concat({ code: approved ? "AWAITING_CLIENT_DETAILS" : "CANCELED" }) });
+  var byProperty = {};
+  round.forEach(function (row) {
+    var key = String(attributeNumber(row, "SERVICE_PROPERTY") || 0);
+    (byProperty[key] = byProperty[key] || []).push(latestStateCode(row));
   });
+  var keys = Object.keys(byProperty);
+  var settled = keys.length > 0 && keys.every(function (key) {
+    return byProperty[key].indexOf("CLIENT_APPROVED") !== -1 || byProperty[key].every(function (code) { return code === "DECLINED"; });
+  });
+  var approved = round.filter(function (row) { return latestStateCode(row) === "CLIENT_APPROVED"; });
+  if (!settled || !approved.length) return agreements;
+  var carrier = approved.filter(function (row) { return row.id === decidedId; })[0] || approved.filter(function (row) { return row.metadata && row.metadata.QUOTATION_CLIENT_DETAILS; }).pop();
+  var details = carrier && carrier.metadata ? carrier.metadata.QUOTATION_CLIENT_DETAILS : null;
+  var attributes = { ORDERS: { value: approved.map(function (row) { return row.id; }) } };
+  Object.keys(details || {}).forEach(function (code) { attributes[code] = { value: details[code] }; });
+  var id = agreements.reduce(function (highest, agreement) { return Math.max(highest, agreement.id); }, 0) + 1;
+  return agreements.concat({ id: id, type: { id: 17, code: "SERVICE_AGREEMENT" }, states: [{ code: "DRAFT" }], attributes: { 17: attributes } });
+}
+
+function detailValues(input) {
+  var values = {};
+  Object.keys(input || {}).forEach(function (code) {
+    var entry = input[code];
+    values[code] = entry && typeof entry === "object" ? entry.value : entry;
+  });
+  return values;
+}
+
+function agreedOrderIds(agreements) {
+  var ids = [];
+  (agreements || []).forEach(function (agreement) { ids = ids.concat(listedOrderIds(agreement)); });
+  return ids;
 }
 
 function listedOrderIds(agreement) {

@@ -5,8 +5,7 @@
 
   var EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   var CHECKING_DELAYS = [2000, 3000, 5000, 8000, 12000, 15000, 15000, 15000];
-  var RETURNED_COPY = { missing: "returnedMissing", unconfirmed: "returnedUnconfirmed", choice: "returnedChoice", email: "returnedEmail" };
-  var LINK_STEPS = { "quote-review": true, "contract-details": true, "agreement-review": true };
+  var LINK_STEPS = { "quote-review": true, "agreement-review": true };
 
   function systemTimers() {
     return {
@@ -35,6 +34,7 @@
     var loading = null;
     var copying = null;
     var exporting = null;
+    var submitting = null;
     var listeners = [];
     var stopped = false;
     var poll = { timer: null, attempt: 0, exhausted: false };
@@ -48,11 +48,13 @@
       contact: null,
       logoUrl: "",
       followDecisions: false,
+      followClosedAfter: "",
       accepted: {},
       refreshing: false,
       expanded: {},
       bulk: "",
       confirm: null,
+      choices: {},
       drafts: {},
       draftInvalid: {},
       commands: {},
@@ -63,12 +65,8 @@
       focusKey: "",
     };
 
-    function emptyDetails(agreementId) {
-      return { seededFor: agreementId, values: {}, errors: {}, touched: {}, serverErrors: {}, invalid: false, returnPending: true, sent: false };
-    }
-
-    function checkingNow() {
-      return state.phase === "ready" && Boolean(state.view) && state.view.kind === "checking";
+    function emptyDetails(seededFor) {
+      return { seededFor: seededFor, values: {}, errors: {}, touched: {}, serverErrors: {}, invalid: false };
     }
 
     function followingNow() {
@@ -76,11 +74,11 @@
     }
 
     function roundRecordedNow() {
-      return state.phase === "ready" && Boolean(state.view) && state.view.kind === "quote-review" && state.view.allDecided && !state.view.agreement;
+      return state.phase === "ready" && Boolean(state.view) && state.view.kind === "quote-review" && state.view.allDecided;
     }
 
     function pageWaitingNow() {
-      return checkingNow() || followingNow();
+      return followingNow();
     }
 
     function waitingNow() {
@@ -96,19 +94,13 @@
     }
 
     function accept(recordKey, entity, id, event, closedAfter) {
-      var details = event === contract.agreementEvents.details.code;
       state.accepted[recordKey] = {
         entity: entity,
         id: id,
         event: event,
         source: eventSource(event),
         closedAfter: closedAfter,
-        errorsBefore: details && state.view && state.view.agreement ? state.view.agreement.detailsErrors : "",
       };
-      if (details) {
-        state.details.returnPending = true;
-        state.details.sent = true;
-      }
       poll.attempt = 0;
       poll.exhausted = false;
     }
@@ -122,27 +114,21 @@
     function landed(expectation, view) {
       var current = currentOf(expectation, view);
       if (current === null) return false;
-      if (current !== expectation.source) return true;
-      return expectation.event === contract.agreementEvents.details.code && view.agreement.detailsErrors !== expectation.errorsBefore;
+      return current !== expectation.source;
     }
 
     function settleAccepted() {
-      var receiving = false;
       Object.keys(state.accepted).forEach(function (recordKey) {
         var expectation = state.accepted[recordKey];
-        if (!landed(expectation, state.view)) {
-          if (expectation.event === contract.agreementEvents.details.code) receiving = true;
-          return;
-        }
+        if (!landed(expectation, state.view)) return;
         delete state.accepted[recordKey];
         delete state.commands[recordKey];
-        if (state.view.agreement && (expectation.event === contract.orderEvents.approve.code || expectation.event === contract.orderEvents.decline.code)) state.followDecisions = true;
+        if (expectation.event === contract.orderEvents.approve.code || expectation.event === contract.orderEvents.decline.code) state.followDecisions = true;
         if (expectation.event === contract.agreementEvents.changes.code) {
           delete state.drafts.agreement;
           state.focusKey = "page-title";
         }
       });
-      if (receiving) state.view.kind = "checking";
     }
 
     function markAccepted() {
@@ -184,6 +170,28 @@
       return property.options.filter(function (option) {
         return (option.actions.decline || option.actions.view) && !state.accepted[option.recordKey] && !inflight[option.recordKey];
       });
+    }
+
+    function choiceEntries() {
+      var properties = state.view && state.view.kind === "quote-review" ? state.view.properties : [];
+      return properties.filter(function (property) { return Boolean(state.choices[property.key]); }).map(function (property) {
+        var choice = state.choices[property.key];
+        var option = choice.kind === "approve" ? property.options.filter(function (candidate) { return candidate.id === choice.id; })[0] || null : null;
+        return { property: property, kind: choice.kind, option: option };
+      });
+    }
+
+    function approving() {
+      return choiceEntries().some(function (entry) { return entry.kind === "approve"; });
+    }
+
+    function chosenAddresses() {
+      var found = [];
+      choiceEntries().forEach(function (entry) {
+        var address = entry.property.address;
+        if (entry.kind === "approve" && address && found.indexOf(address) === -1) found.push(address);
+      });
+      return found;
     }
 
     function detailField(code) {
@@ -280,29 +288,20 @@
 
     function seedDetails() {
       var view = state.view;
-      if (!view || view.kind !== "contract-details") return;
-      if (state.details.seededFor !== view.agreement.id) {
-        var details = emptyDetails(view.agreement.id);
-        view.details.fields.forEach(function (field) {
-          details.values[field.code] = field.kind === "boolean" ? false : view.details.prefill[field.code] || "";
-        });
-        state.details = details;
-      }
-      if (!state.details.returnPending) return;
-      state.details.returnPending = false;
-      var marked = view.details.returned.fields;
-      Object.keys(marked).forEach(function (code) {
-        state.details.serverErrors[code] = copy[RETURNED_COPY[marked[code]]] || copy.returnedMissing;
+      if (!view || view.kind !== "quote-review" || !view.details.available || state.details.seededFor === "round") return;
+      var details = emptyDetails("round");
+      view.details.fields.forEach(function (field) {
+        details.values[field.code] = field.kind === "boolean" ? false : view.details.prefill[field.code] || "";
       });
+      state.details = details;
     }
 
     function readPlans() {
       var view = state.view;
-      if (!maps || !adapter || typeof adapter.readPlan !== "function" || !view || view.kind !== "contract-details") return;
-      view.properties.forEach(function (property) {
-        var id = property.plan;
-        var approved = property.options.some(function (option) { return option.status === "approved"; });
-        if (!id || !approved || state.plans[id] || planReads[id]) return;
+      if (!maps || !adapter || typeof adapter.readPlan !== "function" || !view || view.kind !== "quote-review") return;
+      choiceEntries().forEach(function (entry) {
+        var id = entry.property.plan;
+        if (!id || entry.kind !== "approve" || state.plans[id] || planReads[id]) return;
         state.plans[id] = { status: "loading", plan: null };
         planReads[id] = Promise.resolve().then(function () { return adapter.readPlan(id); }).then(function (raw) {
           var plan = ns.plan ? ns.plan.parse(raw, locale) : null;
@@ -330,12 +329,18 @@
         if (!state.view || !state.view.canRequestAgreementChanges) state.confirm = null;
         return;
       }
-      if (confirm.kind === "decline-all") {
-        var property = findProperty(confirm.property);
-        if (!state.bulk && (!property || !declinableOptions(property).length)) state.confirm = null;
-        return;
-      }
       if (!present[confirm.id] || !present[confirm.id].actions[confirm.kind]) state.confirm = null;
+    }
+
+    function pruneChoices() {
+      if (state.bulk) return;
+      Object.keys(state.choices).forEach(function (key) {
+        var property = findProperty(key);
+        var choice = state.choices[key];
+        var option = property && choice.kind === "approve" ? property.options.filter(function (candidate) { return candidate.id === choice.id; })[0] : null;
+        var standing = choice.kind === "approve" ? Boolean(option && option.actions.approve) : Boolean(property && declinableOptions(property).length);
+        if (!standing) delete state.choices[key];
+      });
     }
 
     function stopPolling() {
@@ -382,7 +387,7 @@
     }
 
     function readContext() {
-      var closedAfter = checkingNow() ? "details" : "";
+      var closedAfter = followingNow() ? state.followClosedAfter : "";
       Object.keys(state.accepted).forEach(function (recordKey) { closedAfter = closedAfter || state.accepted[recordKey].closedAfter; });
       return closedAfter ? { afterCommand: true, closedAfter: closedAfter } : {};
     }
@@ -408,9 +413,10 @@
         state.contact = state.view.contact || null;
         state.logoUrl = state.view.parties && typeof adapter.imageUrl === "function" ? adapter.imageUrl(state.view.parties.provider.logo) : "";
         settleAccepted();
-        if (state.view.kind !== "quote-review" || !state.view.allDecided || !state.view.agreement) state.followDecisions = false;
+        if (state.view.kind !== "quote-review" || !state.view.allDecided) state.followDecisions = false;
         seedDetails();
         prune();
+        pruneChoices();
         readPlans();
       }, function (error) {
         var closed = Boolean(error && error.code === "link-closed");
@@ -519,7 +525,7 @@
           if (sibling.id !== option.id) delete state.expanded[sibling.id];
         });
         var confirm = state.confirm;
-        if (confirm && confirm.kind !== "agreement" && confirm.kind !== "agreement-changes" && confirm.kind !== "decline-all" && confirm.id !== option.id && property
+        if (confirm && confirm.kind !== "agreement" && confirm.kind !== "agreement-changes" && confirm.id !== option.id && property
           && property.options.some(function (sibling) { return sibling.id === confirm.id; }) && !inflight[confirm.recordKey]) {
           state.confirm = null;
         }
@@ -537,96 +543,140 @@
     function confirmOption(id) {
       var option = findOption(id);
       var confirm = state.confirm;
-      if (!option || !confirm || confirm.id !== option.id || !option.actions[confirm.kind] || busy() || state.accepted[option.recordKey]) return;
-      var event = contract.orderEvents[confirm.kind];
-      var metadata = {};
-      if (confirm.kind === "changes") {
-        var message = String(state.drafts[option.id] || "").trim();
-        if (!message) {
-          state.draftInvalid[option.id] = true;
-          state.focusKey = "draft-" + option.id;
-          render();
-          return;
-        }
-        metadata[event.messageAttribute] = message;
+      if (!option || !confirm || confirm.id !== option.id || confirm.kind !== "changes" || !option.actions.changes || busy() || state.accepted[option.recordKey]) return;
+      var event = contract.orderEvents.changes;
+      var message = String(state.drafts[option.id] || "").trim();
+      if (!message) {
+        state.draftInvalid[option.id] = true;
+        state.focusKey = "draft-" + option.id;
+        render();
+        return;
       }
+      var metadata = {};
+      metadata[event.messageAttribute] = message;
       delete state.draftInvalid[option.id];
       send(option.recordKey, "order", option.id, event.code, metadata, {
-        onSuccess: function () {
-          if (confirm.kind === "changes") delete state.drafts[option.id];
-        },
+        onSuccess: function () { delete state.drafts[option.id]; },
       });
     }
 
-    function declineOption(id) {
+    function chooseOption(id) {
       var option = findOption(id);
+      var property = option ? propertyOfOption(option.id) : null;
+      if (!option || !property || !option.actions.approve || busy() || state.bulk || inflight[option.recordKey] || state.accepted[option.recordKey]) return;
+      clearOutcome(option.recordKey);
+      if (state.confirm && state.confirm.id === option.id) state.confirm = null;
+      state.choices[property.key] = { kind: "approve", id: option.id };
+      state.focusKey = "choice-" + property.key;
+      readPlans();
+      render();
+    }
+
+    function declineProperty(key) {
+      var property = findProperty(key);
+      if (!property || !declinableOptions(property).length || busy() || state.bulk) return;
+      if (property.options.some(function (option) { return state.accepted[option.recordKey] || inflight[option.recordKey]; })) return;
+      state.choices[key] = { kind: "decline" };
+      state.focusKey = "choice-" + key;
+      render();
+    }
+
+    function clearChoice(key) {
+      if (!state.choices[key] || state.bulk) return;
+      var choice = state.choices[key];
+      delete state.choices[key];
+      state.focusKey = choice.kind === "approve" ? "toggle-" + choice.id : "decline-" + key;
+      render();
+    }
+
+    function decideOption(id, kind, metadata, closedAfter) {
+      var option = findOption(id);
+      var target = kind === "approve" ? "approved" : "declined";
       if (!option) return Promise.resolve(false);
-      if (option.status === "declined") return Promise.resolve(true);
+      if (option.status === target) return Promise.resolve(true);
       if (state.accepted[option.recordKey] || inflight[option.recordKey]) return Promise.resolve(false);
+      var context = { closedAfter: closedAfter };
       if (option.actions.view) {
-        return send(option.recordKey, "order", option.id, contract.orderEvents.view.code, {}, {}).then(function (sent) {
+        return send(option.recordKey, "order", option.id, contract.orderEvents.view.code, {}, context).then(function (sent) {
           var viewed = sent ? findOption(id) : null;
-          if (!viewed || !viewed.actions.decline || state.accepted[viewed.recordKey]) return false;
-          return declineOption(id);
+          if (!viewed || !viewed.actions[kind] || state.accepted[viewed.recordKey]) return false;
+          return decideOption(id, kind, metadata, closedAfter);
         });
       }
-      if (!option.actions.decline) return Promise.resolve(false);
-      return send(option.recordKey, "order", option.id, contract.orderEvents.decline.code, {}, {});
+      if (!option.actions[kind]) return Promise.resolve(false);
+      return send(option.recordKey, "order", option.id, contract.orderEvents[kind].code, metadata, Object.assign({
+        onRefusal: function (error) {
+          if (kind !== "approve") return;
+          Object.keys(error.fieldErrors || {}).forEach(function (code) {
+            if (detailField(code)) state.details.serverErrors[code] = error.fieldErrors[code];
+          });
+        },
+      }, context));
     }
 
-    function declineAll(key) {
-      var property = findProperty(key);
-      var confirm = state.confirm;
-      if (!property || state.bulk || busy() || !confirm || confirm.kind !== "decline-all" || confirm.property !== key) return Promise.resolve(false);
-      var ids = declinableOptions(property).map(function (option) { return option.id; });
-      if (!ids.length) {
-        state.confirm = null;
-        render();
-        return Promise.resolve(false);
-      }
-      state.bulk = key;
-      render();
-      function declineFrom(index) {
-        if (index >= ids.length) return Promise.resolve(true);
-        return declineOption(ids[index]).then(function (ok) { return ok ? declineFrom(index + 1) : false; });
-      }
-      return declineFrom(0).then(function (ok) {
-        state.bulk = "";
-        if (ok) {
-          state.confirm = null;
-          state.focusKey = "property-" + key;
-        }
-        render();
-        return ok;
-      });
-    }
-
-    function submitDetails() {
-      var view = state.view;
-      if (!view || view.kind !== "contract-details" || !view.details.available || busy()) return;
+    function checkDetails() {
+      var fields = state.view.details.fields;
       var firstInvalid = "";
-      view.details.fields.forEach(function (field) {
+      fields.forEach(function (field) {
         state.details.touched[field.code] = true;
         var message = validateDetail(field, state.details.values[field.code]);
         state.details.errors[field.code] = message;
         if (message && !firstInvalid) firstInvalid = field.code;
       });
       state.details.invalid = Boolean(firstInvalid);
-      if (firstInvalid) {
-        clearOutcome(view.agreement.recordKey);
-        state.focusKey = "field-" + firstInvalid;
-        render();
-        return;
+      return firstInvalid;
+    }
+
+    function submitChoices() {
+      var view = state.view;
+      var entries = choiceEntries();
+      if (!view || view.kind !== "quote-review" || !entries.length || busy() || state.bulk) return Promise.resolve(false);
+      var withApproval = approving();
+      var metadata = {};
+      if (withApproval) {
+        if (!view.details.available) return Promise.resolve(false);
+        var firstInvalid = checkDetails();
+        if (firstInvalid) {
+          state.focusKey = "field-" + firstInvalid;
+          render();
+          return Promise.resolve(false);
+        }
+        state.details.serverErrors = {};
+        metadata = detailsMetadata(view.details.fields);
       }
-      state.details.serverErrors = {};
-      send(view.agreement.recordKey, "document", view.agreement.id, contract.agreementEvents.details.code, detailsMetadata(view.details.fields), {
-        closedAfter: "details",
-        onRefusal: function (error) {
-          Object.keys(error.fieldErrors || {}).forEach(function (code) {
-            if (detailField(code)) state.details.serverErrors[code] = error.fieldErrors[code];
-          });
-        },
+      var closedAfter = withApproval || view.summary.approved > 0 ? "details" : "declined";
+      var steps = [];
+      entries.forEach(function (entry) {
+        if (entry.kind === "approve") steps.push({ id: entry.option.id, kind: "approve", metadata: metadata, key: entry.property.key });
+        else declinableOptions(entry.property).forEach(function (option) { steps.push({ id: option.id, kind: "decline", metadata: {}, key: entry.property.key }); });
       });
+      var landedAny = false;
+      state.bulk = "choices";
+      state.followClosedAfter = closedAfter;
+      render();
+      function stepFrom(index) {
+        if (index >= steps.length) return Promise.resolve(true);
+        var step = steps[index];
+        return decideOption(step.id, step.kind, step.metadata, closedAfter).then(function (ok) {
+          if (!ok) return false;
+          landedAny = true;
+          if (!steps.slice(index + 1).some(function (later) { return later.key === step.key; })) delete state.choices[step.key];
+          return stepFrom(index + 1);
+        });
+      }
+      submitting = stepFrom(0).then(function (ok) {
+        submitting = null;
+        state.bulk = "";
+        if (state.phase === "link-closed" && landedAny && !state.closedAfter) state.closedAfter = closedAfter;
+        if (state.phase === "ready") {
+          pruneChoices();
+          state.focusKey = ok ? "page-title" : "choices-title";
+        }
+        track();
+        render();
+        return ok;
+      });
+      return submitting;
     }
 
     function requestAgreementChanges() {
@@ -729,11 +779,14 @@
           return;
         case "option.intent":
           option = findOption(data.id);
-          if (!option || !option.actions[data.kind] || busy() || inflight[option.recordKey] || state.accepted[option.recordKey]) return;
+          if (data.kind !== "changes" || !option || !option.actions.changes || busy() || inflight[option.recordKey] || state.accepted[option.recordKey]) return;
           clearOutcome(option.recordKey);
           state.confirm = { recordKey: option.recordKey, id: option.id, kind: data.kind };
-          state.focusKey = data.kind === "changes" ? "draft-" + option.id : "confirm-" + option.id;
+          state.focusKey = "draft-" + option.id;
           render();
+          return;
+        case "option.choose":
+          chooseOption(data.id);
           return;
         case "option.cancel":
           option = findOption(data.id);
@@ -751,19 +804,13 @@
           confirmOption(data.id);
           return;
         case "property.decline":
-          if (!findProperty(data.key) || !declinableOptions(findProperty(data.key)).length || busy() || state.bulk) return;
-          state.confirm = { recordKey: "property:" + data.key, property: data.key, kind: "decline-all" };
-          state.focusKey = "confirm-" + data.key;
-          render();
+          declineProperty(data.key);
           return;
-        case "property.cancel":
-          if (state.bulk || !state.confirm || state.confirm.kind !== "decline-all") return;
-          state.confirm = null;
-          state.focusKey = "decline-" + data.key;
-          render();
+        case "choice.clear":
+          clearChoice(data.key);
           return;
-        case "property.confirm":
-          declineAll(data.key);
+        case "choices.submit":
+          submitChoices();
           return;
         case "details.input":
           field = detailField(data.code);
@@ -789,17 +836,14 @@
           return state.details.errors[field.code];
         case "details.useAddress":
           field = detailField(data.code);
-          if (!field || field.kind !== "address" || !view || view.kind !== "contract-details" || busy()) return;
-          if (view.details.serviceAddresses.indexOf(data.value) === -1) return;
+          if (!field || field.kind !== "address" || !view || !view.details.available || busy()) return;
+          if (chosenAddresses().indexOf(data.value) === -1) return;
           state.details.values[field.code] = data.value;
           state.details.touched[field.code] = true;
           state.details.errors[field.code] = validateDetail(field, data.value);
           delete state.details.serverErrors[field.code];
           state.focusKey = "field-" + field.code;
           render();
-          return;
-        case "details.submit":
-          submitDetails();
           return;
         case "agreement.intent":
           if (!view || !view.canApproveAgreement || busy() || inflight[view.agreement.recordKey] || state.accepted[view.agreement.recordKey]) return;
@@ -848,6 +892,7 @@
         expanded: state.expanded,
         bulk: state.bulk,
         confirm: state.confirm,
+        choices: state.choices,
         drafts: state.drafts,
         draftInvalid: state.draftInvalid,
         commands: state.commands,
@@ -895,6 +940,7 @@
       if (loading) waiting.push(loading);
       if (copying) waiting.push(copying);
       if (exporting) waiting.push(exporting);
+      if (submitting) waiting.push(submitting);
       if (!waiting.length) return Promise.resolve();
       return Promise.all(waiting).then(idle);
     }

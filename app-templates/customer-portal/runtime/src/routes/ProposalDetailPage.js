@@ -166,7 +166,7 @@ function QuoteDetail() {
   ]));
 
   var agreement = group.agreement;
-  if (agreement && agreement.stage !== "preparing") {
+  if (agreement) {
     page.appendChild(h("button", { "class": "quote-package-link", "data-module": "quote-package-link", "data-visual-id": "quote-package-link", "data-action": "agreement.open", "data-id": agreement.id }, [
       h("span", { "class": "quote-package-link__label" }, "Part of your service agreement"),
       StatusBadge({ variant: "status-badge--" + agreement.tone, label: agreement.label, bind: "agreement.stateLabel", state: agreement.stage }),

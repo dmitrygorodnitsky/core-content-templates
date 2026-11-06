@@ -1077,34 +1077,30 @@
   var QUOTE_REQUEST_OUTCOMES = /* @__PURE__ */ Object.freeze(["PROCESSING", "ACCEPTED", "REFUSED", "FAILED"]);
   var SCOPE_MODES = /* @__PURE__ */ Object.freeze(["server-scoped", "browser-filtered", "unscoped"]);
   var ORDER_ACTIONS = { unseen: ["view"], viewed: ["approve", "changes", "decline"] };
-  var AGREEMENT_ACTIONS = { AWAITING_CLIENT_DETAILS: ["details"], SENT_TO_CLIENT: ["approve"] };
+  var AGREEMENT_ACTIONS = { SENT_TO_CLIENT: ["approve"] };
+  var AGREEMENT_OPERATION_STATUS_KEY = "AGREEMENT_OPERATION_STATUS";
+  var FAILED_OPERATION_STATES = /* @__PURE__ */ Object.freeze({
+    SENT_TO_CLIENT: /* @__PURE__ */ Object.freeze({ AGREEMENT_DELIVERY_FAILED: "AGREEMENT_SEND_FAILED" }),
+    CLIENT_APPROVED: /* @__PURE__ */ Object.freeze({ ACTIVATION_FAILED: "ACTIVATION_FAILED" })
+  });
   var PRICING_MODEL_RANK = ["PER_SERVICE", "MONTHLY", "SEASONAL", RECURRING_MODEL.code];
   var MONTH_UNIT = "MONTH";
   var MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
   var SCHEMATIC_X = [18, 82];
   var SCHEMATIC_Y = [24, 76];
   var SCHEMATIC_MIN_SPAN = 0.01;
-  var STAGE_ORDER = ["approval", "review", "details", "drafting", "approved", "active", "suspended", "expired", "archived", "canceled"];
-  var QUOTE_STAGES = ["preparing", "review"];
-  var APPROVED_SERVICE_STAGES = ["details", "drafting", "approval", "approved", "active", "suspended", "expired", "archived"];
-  var CURRENT_SERVICE_STAGES = ["active", "approved", "approval", "drafting", "details", "suspended"];
+  var STAGE_ORDER = ["approval", "drafting", "approved", "active", "suspended", "expired", "archived", "canceled"];
+  var APPROVED_SERVICE_STAGES = ["drafting", "approval", "approved", "active", "suspended", "expired", "archived"];
+  var CURRENT_SERVICE_STAGES = ["active", "approved", "approval", "drafting", "suspended"];
   var PENDING_STATUSES = ["unseen", "viewed", "revision"];
   var TERMS_DEPTH_LIMIT = 4;
   var HEADING_LINE = /^#{1,6}\s+(.+)$/;
   var ITEM_LINE = /^[-*•]\s+(.+)$/;
   var NUMBERED_LINE = /^(\d+(?:\.\d+)+[.)]?|\d+[.)])\s+(.+)$/;
-  var PREPARING = agreementStage("preparing", "", "");
-  var REVIEW = agreementStage("review", "Awaiting your decisions", "info");
   var MANAGEMENT = agreementStage("drafting", "Pending management approval", "scheduled");
   var APPROVED = agreementStage("approved", "Approved", "ok");
   var AGREEMENT_STAGES = /* @__PURE__ */ Object.freeze({
-    QUOTATION: PREPARING,
-    QUOTATION_SENT: REVIEW,
-    QUOTATION_UPDATE: REVIEW,
-    QUOTATION_SEND_FAILED: REVIEW,
-    AWAITING_CLIENT_DETAILS: agreementStage("details", "Awaiting your details", "warn"),
-    CLIENT_DETAILS_RECEIVED: agreementStage("drafting", "Checking your details", "scheduled"),
-    DRAFT: MANAGEMENT,
+    DRAFT: agreementStage("drafting", "Being prepared", "scheduled"),
     PENDING_MANAGEMENT_APPROVAL: MANAGEMENT,
     INTERNALLY_APPROVED: MANAGEMENT,
     CLIENT_CHANGES_REQUESTED: MANAGEMENT,
@@ -1140,9 +1136,7 @@
       agreements,
       orders: quotes.orders,
       withheldBackendIds: quotes.withheldBackendIds,
-      preparing: quotes.preparing || agreements.some(function(agreement) {
-        return agreement.stage === "preparing";
-      }) || requestPreparing(request, quotes.orders),
+      preparing: quotes.preparing || requestPreparing(request, quotes.orders),
       sources: {
         agreements: agreementRows ? "ready" : failedRead(reads.agreements),
         orders: orderRows ? "ready" : failedRead(reads.orders),
@@ -1198,11 +1192,18 @@
     });
     return { orders, preparing, withheldBackendIds: withheld };
   }
+  function presentedAgreementState(document2) {
+    var state2 = latestStateCode(document2);
+    var metadata = document2 && document2.metadata;
+    var status = text(metadata && typeof metadata === "object" ? metadata[AGREEMENT_OPERATION_STATUS_KEY] : "");
+    var presented = own(FAILED_OPERATION_STATES, state2);
+    return presented && status && own(presented, status) || state2;
+  }
   function normalizeServiceAgreement(document2, client) {
     if (!document2 || typeof document2 !== "object") return null;
     if (text(document2.type && document2.type.code) !== "SERVICE_AGREEMENT") return null;
     var backendId = positiveInteger(document2.id);
-    var stateCode = latestStateCode(document2);
+    var stateCode = presentedAgreementState(document2);
     var stage = own(AGREEMENT_STAGES, stateCode);
     if (!backendId || !stage) return null;
     return {
@@ -1217,7 +1218,6 @@
       term: datePeriod(attributeText(document2, "TERM_START_DATE"), attributeText(document2, "TERM_END_DATE")),
       parties: agreementParties(document2, client),
       terms: termsBlocks(attributeString(document2, "CONTRACT_TERMS")),
-      detailsErrors: stateCode === "AWAITING_CLIENT_DETAILS" ? codeList(attributeString(document2, "CLIENT_DETAILS_ERRORS")) : [],
       allowedActions: (own(AGREEMENT_ACTIONS, stateCode) || []).slice()
     };
   }
@@ -1247,13 +1247,6 @@
       return !shown.has(id);
     });
   }
-  function codeList(value) {
-    return value.split(",").map(function(part) {
-      return part.trim().toUpperCase();
-    }).filter(function(code, index, all) {
-      return /^[A-Z][A-Z0-9_]*$/.test(code) && all.indexOf(code) === index;
-    });
-  }
   function contractsPackage(source, properties) {
     var data = source && typeof source === "object" ? source : {};
     var orders = Array.isArray(data.orders) ? data.orders : [];
@@ -1264,8 +1257,7 @@
       return order.backendId;
     }).concat(data.withheldBackendIds || []));
     var quoted = orders.filter(function(order) {
-      var owner = packageOf.get(order.backendId);
-      return isOpen(order) || !owner || QUOTE_STAGES.indexOf(owner.stage) !== -1;
+      return isOpen(order) || !packageOf.get(order.backendId);
     });
     var groups = quoteGroups(quoted, packageOf, byProperty);
     var pending = groups.map(function(group) {
@@ -1284,9 +1276,7 @@
       if (isOpen(order)) counts.open += 1;
       else counts[order.status] += 1;
     });
-    var rows2 = agreements.filter(function(agreement) {
-      return agreement.stage !== "preparing";
-    }).map(function(agreement) {
+    var rows2 = agreements.map(function(agreement) {
       return agreementRow(agreement, orders, readable, byProperty);
     }).sort(byStage);
     return {
@@ -2444,18 +2434,13 @@
     approve: /* @__PURE__ */ Object.freeze({ entity: "order", source: "QUOTE_VIEWED", code: "QUOTE_VIEWED-CLIENT_APPROVED" }),
     decline: /* @__PURE__ */ Object.freeze({ entity: "order", source: "QUOTE_VIEWED", code: "QUOTE_VIEWED-DECLINED" }),
     changes: /* @__PURE__ */ Object.freeze({ entity: "order", source: "QUOTE_VIEWED", code: "QUOTE_VIEWED-CUSTOMER_CHANGES_REQUESTED" }),
-    agreement: /* @__PURE__ */ Object.freeze({ entity: "document", source: "SENT_TO_CLIENT", code: "SENT_TO_CLIENT-CLIENT_APPROVED" }),
-    details: /* @__PURE__ */ Object.freeze({ entity: "document", source: "AWAITING_CLIENT_DETAILS", code: "AWAITING_CLIENT_DETAILS-CLIENT_DETAILS_RECEIVED" })
+    agreement: /* @__PURE__ */ Object.freeze({ entity: "document", source: "SENT_TO_CLIENT", code: "SENT_TO_CLIENT-CLIENT_APPROVED" })
   });
-  var DETAILS_RECEIVED_STATE = "CLIENT_DETAILS_RECEIVED";
-  var DETAILS_SETTLE_TIMEOUT_MS = 45e3;
-  var DETAILS_SETTLE_POLL_MS = 1500;
   var CONFIRMED_TOAST = {
     approve: "Option approved",
     decline: "Option declined",
     changes: "Change request sent",
-    agreement: "Agreement approved",
-    details: "Details sent"
+    agreement: "Agreement approved"
   };
   function createContractCommands(deps) {
     var flight = null;
@@ -2512,58 +2497,6 @@
       var text10 = typeof message === "string" ? message.trim() : "";
       if (!text10) return Promise.resolve(false);
       return decide("changes", backendId, { MESSAGE: { value: text10 } });
-    }
-    function sendDetails(backendId, values) {
-      var definition = CONTRACT_EVENTS.details;
-      var row = findAgreement(deps.current(), backendId);
-      if (!row || row.agreement.stateCode !== definition.source || row.agreement.allowedActions.indexOf("details") === -1) return Promise.resolve(false);
-      var input = {};
-      (/* @__PURE__ */ Object.keys(values)).forEach(function(code) {
-        input[code] = { value: values[code] };
-      });
-      return run({ kind: "details", targets: [backendId] }, async function() {
-        var gateway = deps.gateway();
-        var document2 = await gateway.readAgreement(backendId, deps.context());
-        if (latestStateCode(document2) !== definition.source) throw coded("conflict");
-        var errorsBefore = attributeText(document2, "CLIENT_DETAILS_ERRORS");
-        await gateway.sendAgreementEvent(backendId, definition.code, deps.context(), input);
-        var outcome = await settleDetails(gateway, backendId, errorsBefore);
-        var read;
-        try {
-          read = await deps.reload();
-        } catch (error2) {
-          throw readbackFailure(error2);
-        }
-        if (!findAgreement(read, backendId)) throw readbackFailure(null);
-        if (outcome === "unconfirmed" || outcome === "returned") {
-          deps.state.contractCommand = { kind: "details", targets: [backendId], phase: outcome };
-          return false;
-        }
-        deps.state.contractCommand = null;
-        if (deps.notify) deps.notify(CONFIRMED_TOAST.details);
-        return true;
-      }) || Promise.resolve(false);
-    }
-    async function settleDetails(gateway, backendId, errorsBefore) {
-      var wait = deps.wait || function(ms) {
-        return new Promise(function(resolve) {
-          setTimeout(resolve, ms);
-        });
-      };
-      var now = deps.now || function() {
-        return Date.now();
-      };
-      var deadline = now() + (deps.detailsTimeoutMs || DETAILS_SETTLE_TIMEOUT_MS);
-      var received = false;
-      while (true) {
-        await wait(deps.detailsPollMs || DETAILS_SETTLE_POLL_MS);
-        var document2 = await gateway.readAgreement(backendId, deps.context());
-        var stateCode = latestStateCode(document2);
-        if (stateCode === DETAILS_RECEIVED_STATE) received = true;
-        else if (stateCode !== CONTRACT_EVENTS.details.source) return "accepted";
-        else if (received || attributeText(document2, "CLIENT_DETAILS_ERRORS") !== errorsBefore) return "returned";
-        if (now() >= deadline) return received ? "checking" : "unconfirmed";
-      }
     }
     function view(backendIds) {
       var definition = CONTRACT_EVENTS.view;
@@ -2654,7 +2587,6 @@
       busy,
       decide,
       requestChanges,
-      sendDetails,
       approveAgreement,
       view
     };
@@ -2728,6 +2660,7 @@
       return { account: fixture && fixture.customerAccount ? clone(fixture.customerAccount) : null, scopeMode: null };
     }
   };
+  var ROUND_STATES = ["QUOTE_SENT", "QUOTE_VIEWED", "CLIENT_APPROVED", "DECLINED", "CUSTOMER_CHANGES_REQUESTED"];
   function createFixtureContractsGateway(state2) {
     return {
       async readOrder(backendId) {
@@ -2736,20 +2669,22 @@
       async readAgreement(backendId) {
         return clone(fixtureRow(state2.pagreements, backendId));
       },
-      async sendOrderEvent(backendId, event) {
+      async sendOrderEvent(backendId, event, context, input) {
         var target = transition(fixtureRow(state2.porders, backendId), event);
         var orders = withState(state2.porders, [backendId], target);
-        var packages = state2.pagreements.filter(function(agreement) {
-          return listedOrderIds(agreement).indexOf(positiveInteger(backendId)) !== -1;
-        });
-        if (target === "CLIENT_APPROVED") orders = withState(orders, siblingsOf(orders, packages, backendId), "DECLINED");
+        if (target === "CLIENT_APPROVED") {
+          orders = withState(orders, siblingsOf(orders, state2.pagreements, backendId), "DECLINED");
+          orders = orders.map(function(row) {
+            return row.id === positiveInteger(backendId) ? Object.assign({}, row, { metadata: Object.assign({}, row.metadata, { QUOTATION_CLIENT_DETAILS: detailValues(input) }) }) : row;
+          });
+        }
         state2.porders = orders;
-        if (target === "CLIENT_APPROVED" || target === "DECLINED") state2.pagreements = evaluatePackages(state2.pagreements, packages, orders);
+        if (target === "CLIENT_APPROVED" || target === "DECLINED") state2.pagreements = settleRound(state2.pagreements, orders, positiveInteger(backendId));
         return true;
       },
       async sendAgreementEvent(backendId, event) {
         var target = transition(fixtureRow(state2.pagreements, backendId), event);
-        state2.pagreements = withState(state2.pagreements, [backendId], target === "CLIENT_DETAILS_RECEIVED" ? "PENDING_MANAGEMENT_APPROVAL" : target);
+        state2.pagreements = withState(state2.pagreements, [backendId], target);
         return true;
       }
     };
@@ -2787,48 +2722,66 @@
       return ids.indexOf(row.id) === -1 ? row : Object.assign({}, row, { states: row.states.concat({ code }) });
     });
   }
-  function siblingsOf(orders, packages, backendId) {
+  function siblingsOf(orders, agreements, backendId) {
     var property = attributeNumber(fixtureRow(orders, backendId), "SERVICE_PROPERTY");
-    var listed = [];
-    packages.forEach(function(agreement) {
-      listed = listed.concat(listedOrderIds(agreement));
-    });
+    var listed = agreedOrderIds(agreements);
     return orders.filter(function(row) {
-      return row.id !== positiveInteger(backendId) && listed.indexOf(row.id) !== -1 && attributeNumber(row, "SERVICE_PROPERTY") === property && ["QUOTE_SENT", "QUOTE_VIEWED"].indexOf(latestStateCode(row)) !== -1;
+      return row.id !== positiveInteger(backendId) && listed.indexOf(row.id) === -1 && attributeNumber(row, "SERVICE_PROPERTY") === property && ["QUOTE_SENT", "QUOTE_VIEWED"].indexOf(latestStateCode(row)) !== -1;
     }).map(function(row) {
       return row.id;
     });
   }
-  function evaluatePackages(agreements, packages, orders) {
-    var decided = packages.filter(function(agreement) {
-      if (latestStateCode(agreement) !== "QUOTATION_SENT") return false;
-      var byProperty = {};
-      listedOrderIds(agreement).forEach(function(id) {
-        var row = orders.find(function(candidate) {
-          return candidate.id === id;
-        });
-        if (!row) return;
-        var key = String(attributeNumber(row, "SERVICE_PROPERTY") || 0);
-        (byProperty[key] = byProperty[key] || []).push(latestStateCode(row));
-      });
-      var keys = /* @__PURE__ */ Object.keys(byProperty);
-      return keys.length > 0 && keys.every(function(key) {
-        return byProperty[key].indexOf("CLIENT_APPROVED") !== -1 || byProperty[key].every(function(code) {
-          return code === "DECLINED";
-        });
+  function settleRound(agreements, orders, decidedId) {
+    var listed = agreedOrderIds(agreements);
+    var round2 = orders.filter(function(row) {
+      return listed.indexOf(row.id) === -1 && ROUND_STATES.indexOf(latestStateCode(row)) !== -1;
+    });
+    var byProperty = {};
+    round2.forEach(function(row) {
+      var key = String(attributeNumber(row, "SERVICE_PROPERTY") || 0);
+      (byProperty[key] = byProperty[key] || []).push(latestStateCode(row));
+    });
+    var keys = /* @__PURE__ */ Object.keys(byProperty);
+    var settled2 = keys.length > 0 && keys.every(function(key) {
+      return byProperty[key].indexOf("CLIENT_APPROVED") !== -1 || byProperty[key].every(function(code) {
+        return code === "DECLINED";
       });
     });
-    if (!decided.length) return agreements;
-    return agreements.map(function(agreement) {
-      if (decided.indexOf(agreement) === -1) return agreement;
-      var approved = listedOrderIds(agreement).some(function(id) {
-        var row = orders.find(function(candidate) {
-          return candidate.id === id;
-        });
-        return !!row && latestStateCode(row) === "CLIENT_APPROVED";
-      });
-      return Object.assign({}, agreement, { states: agreement.states.concat({ code: approved ? "AWAITING_CLIENT_DETAILS" : "CANCELED" }) });
+    var approved = round2.filter(function(row) {
+      return latestStateCode(row) === "CLIENT_APPROVED";
     });
+    if (!settled2 || !approved.length) return agreements;
+    var carrier = approved.filter(function(row) {
+      return row.id === decidedId;
+    })[0] || approved.filter(function(row) {
+      return row.metadata && row.metadata.QUOTATION_CLIENT_DETAILS;
+    }).pop();
+    var details = carrier && carrier.metadata ? carrier.metadata.QUOTATION_CLIENT_DETAILS : null;
+    var attributes = { ORDERS: { value: approved.map(function(row) {
+      return row.id;
+    }) } };
+    (/* @__PURE__ */ Object.keys(details || {})).forEach(function(code) {
+      attributes[code] = { value: details[code] };
+    });
+    var id = agreements.reduce(function(highest, agreement) {
+      return Math.max(highest, agreement.id);
+    }, 0) + 1;
+    return agreements.concat({ id, type: { id: 17, code: "SERVICE_AGREEMENT" }, states: [{ code: "DRAFT" }], attributes: { 17: attributes } });
+  }
+  function detailValues(input) {
+    var values = {};
+    (/* @__PURE__ */ Object.keys(input || {})).forEach(function(code) {
+      var entry = input[code];
+      values[code] = entry && typeof entry === "object" ? entry.value : entry;
+    });
+    return values;
+  }
+  function agreedOrderIds(agreements) {
+    var ids = [];
+    (agreements || []).forEach(function(agreement) {
+      ids = ids.concat(listedOrderIds(agreement));
+    });
+    return ids;
   }
   function listedOrderIds(agreement) {
     var buckets = agreement && agreement.attributes || {};
@@ -3330,6 +3283,7 @@
   var AGREEMENT_MAPPINGS = [
     { name: "attributes" },
     { name: "id" },
+    { name: "metadata" },
     { key: "id", mappings: REF_MAPPINGS, name: "organization", type: "identifier" },
     { mappings: REF_MAPPINGS, name: "states", type: "collection" },
     { key: "id", mappings: REF_MAPPINGS, name: "type", type: "identifier" }
@@ -7001,9 +6955,6 @@
     var facts2 = [];
     if (chosen.length === 1) facts2.push(optionSummary(chosen[0]));
     else if (chosen.length > 1) facts2.push(plural(chosen.length, "option", "options") + " approved");
-    else if (agreement.stage === "review" && row.quoteCount) {
-      facts2.push(plural(row.quoteCount, "quote", "quotes") + (row.propertyCount ? " for " + plural(row.propertyCount, "property", "properties") : ""));
-    }
     var season = agreementSeason(agreement);
     if (season) facts2.push(season);
     else if (agreement.effectiveDate) facts2.push("Effective " + formatIsoDate(agreement.effectiveDate));
@@ -7084,7 +7035,7 @@
   function QuotesFooter() {
     return h("div", { "class": "proposal-footer", "data-module": "quote-package-footer", "data-visual-id": "quote-package-footer" }, [
       h("div", { "class": "proposal-footer__icon" }, "\u2726"),
-      h("div", { "class": "proposal-footer__copy" }, "Decide each property on its own. Approving one option for a property declines its other options. Once every property has a decision, we\u2019ll ask for your contract details and prepare your service agreement.")
+      h("div", { "class": "proposal-footer__copy" }, "Decide each property on its own. Approving one option for a property declines its other options, and your contract details go with the approval. Once every property has a decision, we prepare your service agreement.")
     ]);
   }
   function QuoteOption(order) {
@@ -8791,8 +8742,7 @@
     approve: "Your approval was sent, but the quote\u2019s current status couldn\u2019t be loaded",
     decline: "Your decline was sent, but the quote\u2019s current status couldn\u2019t be loaded",
     changes: "Your change request was sent, but the quote\u2019s current status couldn\u2019t be loaded",
-    agreement: "Your approval was sent, but the agreement\u2019s current status couldn\u2019t be loaded",
-    details: "Your details were sent, but the agreement\u2019s current status couldn\u2019t be loaded"
+    agreement: "Your approval was sent, but the agreement\u2019s current status couldn\u2019t be loaded"
   };
   var OUTCOME_COPY = {
     failed: "We couldn\u2019t confirm whether this went through. Refresh the status before trying again.",
@@ -8899,6 +8849,979 @@
     block.setAttribute("data-state", "unavailable");
     block.setAttribute("data-module", "contracts-unavailable");
     return block;
+  }
+
+  // app-templates/customer-portal/runtime/src/normalizers/account-profile.js
+  var ACCOUNT_PROFILE_SCOPE_MODES = /* @__PURE__ */ Object.freeze(["server-scoped", "browser-filtered"]);
+  var LEGAL_CONTACT = "LEGAL";
+  var BILLING_ADDRESS = "BILLING";
+  var EMAIL_ENTRY = "EMAIL";
+  var PHONE_ENTRY = "PHONE";
+  function normalizeAccountProfile(raw) {
+    var source = raw && typeof raw === "object" ? raw : {};
+    var account = source.account && typeof source.account === "object" && !Array.isArray(source.account) ? source.account : null;
+    if (!account) return accountProfileFailure("profile-unavailable");
+    var primary = primaryContact(account.contacts);
+    var contact = primary ? { name: [plain2(primary.firstName), plain2(primary.lastName)].filter(Boolean).join(" "), firstName: plain2(primary.firstName), title: plain2(primary.title) } : null;
+    var emails = primary ? entryValues(primary.contactEntries, EMAIL_ENTRY) : [];
+    var phones = primary ? entryValues(primary.contactEntries, PHONE_ENTRY).map(formatPhone) : [];
+    var billingAddresses = typedAddresses(account.addresses, BILLING_ADDRESS);
+    var editable = {
+      firstName: primary ? plain2(primary.firstName) : "",
+      lastName: primary ? plain2(primary.lastName) : "",
+      email: primary ? firstEntryValue(primary.contactEntries, EMAIL_ENTRY) : "",
+      phone: primary ? formatPhone(firstEntryValue(primary.contactEntries, PHONE_ENTRY)) : "",
+      billingAddress: oldestTypedAddress(account.addresses, BILLING_ADDRESS)
+    };
+    var filled = [!!(contact && contact.name), emails.length > 0, phones.length > 0, billingAddresses.length > 0];
+    return {
+      state: filled.every(Boolean) ? "ready" : filled.some(Boolean) ? "partial" : "empty",
+      reasonCode: null,
+      scopeMode: ACCOUNT_PROFILE_SCOPE_MODES.indexOf(source.scopeMode) === -1 ? null : source.scopeMode,
+      accountName: localizedName4(account.nls),
+      contact,
+      emails,
+      phones,
+      billingAddresses,
+      editable,
+      allowedActions: []
+    };
+  }
+  function contractDetailsPrefill(account, clientTypes) {
+    var row = account && typeof account === "object" && !Array.isArray(account) ? account : {};
+    var legal = primaryContact(row.contacts);
+    var legalType = attributeText(row, "LEGAL_ENTITY_TYPE").toUpperCase();
+    var billing = rows(row.addresses).filter(function(link) {
+      return rows(link.types).some(function(type) {
+        return text(type.code) === BILLING_ADDRESS;
+      });
+    }).sort(byIdAscending)[0];
+    return {
+      LEGAL_NAME: localizedName4(row.nls),
+      CLIENT_TYPE: clientTypes.indexOf(legalType) === -1 ? "" : legalType,
+      BILLING_ADDRESS: billing && billing.address ? plain2(billing.address.address1) : "",
+      REPRESENTATIVE_FIRST_NAME: legal ? plain2(legal.firstName) : "",
+      REPRESENTATIVE_LAST_NAME: legal ? plain2(legal.lastName) : "",
+      REPRESENTATIVE_JOB_TITLE: legal ? plain2(legal.title) : "",
+      REPRESENTATIVE_EMAIL: legal ? firstEntryValue(legal.contactEntries, EMAIL_ENTRY) : "",
+      REPRESENTATIVE_PHONE: legal ? firstEntryValue(legal.contactEntries, PHONE_ENTRY) : ""
+    };
+  }
+  function accountProfileFailure(code) {
+    return {
+      state: code === "customer-forbidden" ? "unauthorized" : code === "profile-unavailable" ? "unavailable" : "error",
+      reasonCode: code || "profile-load-failed",
+      scopeMode: null,
+      accountName: "",
+      contact: null,
+      emails: [],
+      phones: [],
+      billingAddresses: [],
+      editable: null,
+      allowedActions: []
+    };
+  }
+  function formatAccountAddress(address) {
+    return formatPostalAddress(address);
+  }
+  function primaryContact(contacts) {
+    var primaries = rows(contacts).filter(function(contact) {
+      return text(contact.type && contact.type.code) === LEGAL_CONTACT;
+    });
+    return primaries.sort(byIdAscending)[0] || null;
+  }
+  function entryValues(entries, typeCode) {
+    var values = [];
+    rows(entries).forEach(function(entry) {
+      if (text(entry.type && entry.type.code) !== typeCode) return;
+      var value = plain2(entry.value);
+      if (value && values.indexOf(value) === -1) values.push(value);
+    });
+    return values;
+  }
+  function firstEntryValue(entries, typeCode) {
+    var entry = rows(entries).filter(function(row) {
+      return text(row.type && row.type.code) === typeCode && plain2(row.value);
+    }).sort(byIdAscending)[0];
+    return entry ? plain2(entry.value) : "";
+  }
+  function oldestTypedAddress(addresses, typeCode) {
+    var link = rows(addresses).filter(function(row) {
+      return rows(row.types).some(function(type) {
+        return text(type.code) === typeCode;
+      });
+    }).sort(byIdAscending)[0];
+    return link ? formatAccountAddress(link.address) : "";
+  }
+  function typedAddresses(addresses, typeCode) {
+    var formatted = [];
+    rows(addresses).filter(function(row) {
+      return rows(row.types).some(function(type) {
+        return text(type.code) === typeCode;
+      });
+    }).sort(byIdDescending).forEach(function(row) {
+      var line = formatAccountAddress(row.address);
+      if (line && formatted.indexOf(line) === -1) formatted.push(line);
+    });
+    return formatted;
+  }
+  function byIdAscending(left, right) {
+    return compareIds(left, right, 1);
+  }
+  function byIdDescending(left, right) {
+    return compareIds(left, right, -1);
+  }
+  function compareIds(left, right, direction) {
+    var a = positiveInteger(left && left.id);
+    var b = positiveInteger(right && right.id);
+    if (a === b) return 0;
+    if (a === null) return 1;
+    if (b === null) return -1;
+    return (a - b) * direction;
+  }
+  function rows(value) {
+    return Array.isArray(value) ? value.filter(function(row) {
+      return row && typeof row === "object";
+    }) : [];
+  }
+  function localizedName4(value) {
+    if (!value || typeof value !== "object") return "";
+    var localized = value.en || value["en-US"] || Object.values(value)[0] || {};
+    return plain2(localized && (localized.NAME || localized.name));
+  }
+  function plain2(value) {
+    if (typeof value === "string") return value.trim();
+    return typeof value === "number" && Number.isFinite(value) ? String(value) : "";
+  }
+
+  // app-templates/customer-portal/runtime/src/adapters/core-account-profile-adapter.js
+  var CODE_MAPPINGS = [{ name: "id" }, { name: "code" }];
+  var PROFILE_MAPPINGS = [
+    { name: "id" },
+    { name: "nls" },
+    { key: "id", mappings: [{ name: "id" }], name: "user", type: "identifier" },
+    {
+      mappings: [
+        { name: "id" },
+        { name: "firstName" },
+        { name: "lastName" },
+        { name: "title" },
+        { key: "id", mappings: CODE_MAPPINGS, name: "type", type: "identifier" },
+        {
+          mappings: [
+            { name: "id" },
+            { name: "value" },
+            { key: "id", mappings: CODE_MAPPINGS, name: "type", type: "identifier" }
+          ],
+          name: "contactEntries",
+          type: "collection"
+        }
+      ],
+      name: "contacts",
+      type: "collection"
+    },
+    {
+      mappings: [
+        { name: "id" },
+        { mappings: CODE_MAPPINGS, name: "types", type: "collection" },
+        {
+          key: "id",
+          mappings: [
+            { name: "id" },
+            { name: "address1" },
+            { name: "address2" },
+            { name: "city" },
+            { name: "postalCode" },
+            { key: "id", mappings: CODE_MAPPINGS, name: "state", type: "identifier" },
+            { key: "id", mappings: CODE_MAPPINGS, name: "country", type: "identifier" }
+          ],
+          name: "address",
+          type: "identifier"
+        }
+      ],
+      name: "addresses",
+      type: "collection"
+    }
+  ];
+  var CONTRACT_DETAILS_MAPPINGS = PROFILE_MAPPINGS.concat([{ name: "attributes" }]);
+  function createCoreAccountProfileAdapter(options2 = {}) {
+    var fetchImpl = options2.fetch || coreSessionFetch;
+    if (typeof fetchImpl !== "function") throw coded5("fetch-unavailable", "Core account profile adapter requires fetch");
+    return {
+      async load(moduleId, context) {
+        if (moduleId !== "profile") throw coded5("unsupported-module", "Core account profile adapter cannot load " + moduleId);
+        return loadCustomerAccountProfile(context, fetchImpl, options2.origin);
+      }
+    };
+  }
+  async function loadCustomerAccountProfile(context, fetchImpl = coreSessionFetch, explicitOrigin) {
+    return readCustomerAccount(context, fetchImpl, explicitOrigin, PROFILE_MAPPINGS);
+  }
+  async function loadContractDetailsAccount(context, fetchImpl = coreSessionFetch, explicitOrigin) {
+    return readCustomerAccount(context, fetchImpl, explicitOrigin, CONTRACT_DETAILS_MAPPINGS);
+  }
+  async function readCustomerAccount(context, fetchImpl, explicitOrigin, mappings) {
+    var api = requestContext3(context, explicitOrigin);
+    var reply = await requestJson4(fetchImpl, api.accountBase + api.accountListPath, {
+      method: "POST",
+      credentials: "same-origin",
+      headers: {
+        Authorization: api.authorization,
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        "X-Organization-Code": api.organization
+      },
+      body: JSON.stringify({
+        filters: [
+          { type: "INTEGER", operator: "=", property: "id", value: String(api.accountId) },
+          { type: "INTEGER", operator: "=", property: "user.id", value: String(api.userId) }
+        ],
+        mappings,
+        offset: 0,
+        pageSize: 2
+      })
+    });
+    var rows2 = Array.isArray(reply && reply.result) ? reply.result : [];
+    var owned = rows2.filter(function(row) {
+      return ownedBySession(row, api);
+    });
+    if (!owned.length) throw coded5("profile-unavailable", "Core did not return the signed-in customer's Account");
+    return { account: owned[0], scopeMode: owned.length === rows2.length ? "server-scoped" : "browser-filtered" };
+  }
+  function ownedBySession(row, api) {
+    if (!row || typeof row !== "object" || positiveInteger(row.id) !== api.accountId) return false;
+    var linked = row.user && typeof row.user === "object" ? positiveInteger(row.user.id) : null;
+    return linked === null && !api.tagged || linked === api.userId;
+  }
+  function requestContext3(context, explicitOrigin) {
+    var config = context && context.config || {};
+    var runtimeState = context && context.state || {};
+    var session2 = runtimeState.session || {};
+    var accessToken = text(session2.accessToken || session2.access_token);
+    if (!accessToken) throw coded5("session-required", "A Core access token is required");
+    var userId = positiveInteger(session2.userId);
+    if (!userId) throw coded5("session-user-required", "The signed-in Core User is required");
+    var account = runtimeState.customerAccount || session2.account || null;
+    var accountId = positiveInteger(account && account.id);
+    if (!accountId) throw coded5("customer-unresolved", "A resolved customer Account is required before reading its profile");
+    var organization = text(config.organization);
+    if (!organization) throw coded5("organization-required", "A portal organization code is required");
+    var origin = explicitOrigin || config.origin || globalThis.location && globalThis.location.origin || "";
+    return {
+      accountBase: sameOriginBase4(config.accountApiBase || "/core-acct", origin, "Core Account API base"),
+      accountId,
+      accountListPath: config.vertical === "snow" ? "/api/tagged/account/list.json" : "/api/account/list.json",
+      tagged: config.vertical === "snow",
+      authorization: text(session2.tokenType || session2.token_type || "Bearer") + " " + accessToken,
+      organization,
+      userId
+    };
+  }
+  async function requestJson4(fetchImpl, url, options2) {
+    var response = await fetchImpl(url, options2);
+    if (!response || typeof response.ok !== "boolean") throw coded5("invalid-response", "Core request returned an invalid response");
+    if (!response.ok) {
+      var code = response.status === 401 ? "session-expired" : response.status === 403 ? "customer-forbidden" : "profile-request-failed";
+      var failure2 = coded5(code, "Core Account request failed with HTTP " + response.status);
+      failure2.status = response.status;
+      throw failure2;
+    }
+    var payload;
+    try {
+      payload = await response.json();
+    } catch (_) {
+      throw coded5("invalid-response", "Core response was not valid JSON");
+    }
+    if (!payload || typeof payload !== "object") throw coded5("invalid-response", "Core answered with an unprojected body");
+    return payload;
+  }
+  function sameOriginBase4(value, origin, label) {
+    if (!origin) throw coded5("origin-required", label + " requires a browser origin");
+    var target = new URL(String(value || ""), origin);
+    if (target.origin !== new URL(origin).origin) throw coded5("cross-origin-service", label + " must be same-origin");
+    return target.href.replace(/\/+$/, "");
+  }
+  function coded5(code, message) {
+    var error2 = new Error(message);
+    error2.code = code;
+    return error2;
+  }
+
+  // app-templates/customer-portal/runtime/src/contract-details.js
+  var TEXT_LIMIT = 255;
+  var CONTROL_CHARACTERS2 = /[\u0000-\u001f\u007f]/;
+  var field2 = (code, label, kind, autocomplete, required) => /* @__PURE__ */ Object.freeze({ code, label, kind, autocomplete, required });
+  var CONTRACT_DETAILS_FIELDS = /* @__PURE__ */ Object.freeze([
+    field2("LEGAL_NAME", "Legal name", "text", "organization", true),
+    field2("CLIENT_TYPE", "Client type", "choice", null, true),
+    field2("BILLING_ADDRESS", "Billing address", "address", "street-address", true),
+    field2("REPRESENTATIVE_FIRST_NAME", "First name", "text", "given-name", true),
+    field2("REPRESENTATIVE_LAST_NAME", "Last name", "text", "family-name", true),
+    field2("REPRESENTATIVE_JOB_TITLE", "Job title", "text", "organization-title", false),
+    field2("REPRESENTATIVE_EMAIL", "Email", "email", "email", true),
+    field2("REPRESENTATIVE_PHONE", "Phone", "tel", "tel", true),
+    field2("INFORMATION_CONFIRMED", "I confirm that the information above is accurate.", "confirm", null, true),
+    field2("AUTHORITY_CONFIRMED", "I confirm that I am authorized to enter into this agreement on behalf of the client.", "confirm", null, true)
+  ]);
+  var CONTRACT_DETAILS_COPY = /* @__PURE__ */ Object.freeze({
+    legalName: "Enter the client\u2019s legal name.",
+    clientType: "Choose the client type.",
+    clientTypeInvalid: "Choose one of the client types.",
+    confirm: "Confirm this to send your details.",
+    plainText: "Use letters, spaces and punctuation only.",
+    tooLong: "Use " + TEXT_LIMIT + " characters or fewer."
+  });
+  var PROFILE_RULES = /* @__PURE__ */ Object.freeze({
+    BILLING_ADDRESS: "BILLING_ADDRESS",
+    REPRESENTATIVE_FIRST_NAME: "FIRST_NAME",
+    REPRESENTATIVE_LAST_NAME: "LAST_NAME",
+    REPRESENTATIVE_EMAIL: "EMAIL",
+    REPRESENTATIVE_PHONE: "PHONE"
+  });
+  var CLIENT_TYPE_CODES = CONTRACT_CLIENT_TYPES.map(function(type) {
+    return type.code;
+  });
+  function openContractDetails(options2) {
+    if (state.contractDetails) return Promise.resolve(state.contractDetails);
+    var settings = options2 || {};
+    var details = { prefill: "loading", filled: false, draft: emptyDraft(), errors: {} };
+    state.contractDetails = details;
+    var load = settings.load || loadContractDetailsAccount;
+    return Promise.resolve().then(function() {
+      return load({ config: state.config, state });
+    }).then(function(result) {
+      var values = contractDetailsPrefill(result && result.account, CLIENT_TYPE_CODES);
+      (/* @__PURE__ */ Object.keys(values)).forEach(function(code) {
+        details.draft[code] = values[code];
+      });
+      details.filled = (/* @__PURE__ */ Object.keys(values)).some(function(code) {
+        return !!values[code];
+      });
+      details.prefill = "ready";
+    }, function(error2) {
+      if (error2 && error2.code === "session-expired") state.account = "session-expired";
+      details.prefill = "failed";
+    }).then(function() {
+      if (settings.onChange) settings.onChange();
+      return details;
+    });
+  }
+  function changeContractDetail(code, value) {
+    var details = state.contractDetails;
+    var definition = CONTRACT_DETAILS_FIELDS.find(function(item) {
+      return item.code === code;
+    });
+    if (!details || !definition) return false;
+    details.draft[code] = definition.kind === "confirm" ? value === true : String(value == null ? "" : value);
+    return true;
+  }
+  function contractDetailsRequest(draft) {
+    var errors = {};
+    var values = {};
+    CONTRACT_DETAILS_FIELDS.forEach(function(item) {
+      var checked = validateDetail(item, draft[item.code]);
+      if (checked.error) errors[item.code] = checked.error;
+      else values[item.code] = checked.value;
+    });
+    return (/* @__PURE__ */ Object.keys(errors)).length ? { errors, values: null } : { errors: {}, values };
+  }
+  function contractDetailsEventInput(values) {
+    var input = {};
+    CONTRACT_DETAILS_FIELDS.forEach(function(item) {
+      input[item.code] = { value: values[item.code] };
+    });
+    return input;
+  }
+  function validateDetail(item, raw) {
+    if (item.kind === "confirm") return raw === true ? accepted2(true) : refusal2(CONTRACT_DETAILS_COPY.confirm);
+    var collapsed = String(raw == null ? "" : raw).replace(/\s+/g, " ").trim();
+    if (item.kind === "choice") {
+      if (!collapsed) return refusal2(CONTRACT_DETAILS_COPY.clientType);
+      return CLIENT_TYPE_CODES.indexOf(collapsed) === -1 ? refusal2(CONTRACT_DETAILS_COPY.clientTypeInvalid) : accepted2(collapsed);
+    }
+    if (PROFILE_RULES[item.code]) return validateProfileValue(PROFILE_RULES[item.code], collapsed, "");
+    if (!collapsed && item.required) return refusal2(CONTRACT_DETAILS_COPY.legalName);
+    if (CONTROL_CHARACTERS2.test(collapsed)) return refusal2(CONTRACT_DETAILS_COPY.plainText);
+    if (collapsed.length > TEXT_LIMIT) return refusal2(CONTRACT_DETAILS_COPY.tooLong);
+    return accepted2(collapsed);
+  }
+  function emptyDraft() {
+    var draft = {};
+    CONTRACT_DETAILS_FIELDS.forEach(function(item) {
+      draft[item.code] = item.kind === "confirm" ? false : "";
+    });
+    return draft;
+  }
+  function refusal2(message) {
+    return { error: message, value: null };
+  }
+  function accepted2(value) {
+    return { error: null, value };
+  }
+
+  // app-templates/customer-portal/runtime/src/quote-request.js
+  var QUOTE_REQUEST_OUTCOME_TIMEOUT_MS = 3e5;
+  var QUOTE_REQUEST_POLL_MS = 3e3;
+  var QUOTE_REQUEST_LIMIT = 20;
+  var QUOTE_REQUEST_FINAL_OUTCOMES = /* @__PURE__ */ Object.freeze(["ACCEPTED", "REFUSED", "FAILED"]);
+  var QUOTE_REQUEST_FIELDS = /* @__PURE__ */ Object.freeze(["PROPERTY_IDS", "PROPERTY_ADDRESSES"]);
+  var QUOTE_REQUEST_COPY = /* @__PURE__ */ Object.freeze({
+    nothingChosen: "Choose a property or add an address to quote.",
+    tooManyProperties: "Choose at most " + QUOTE_REQUEST_LIMIT + " properties in one request.",
+    tooManyAddresses: "Add at most " + QUOTE_REQUEST_LIMIT + " new addresses in one request.",
+    addressOutside: "This address is outside the area we serve.",
+    addressUnknown: "We could not find this address. Check it or pick one from the suggestions.",
+    notSent: "Your request wasn\u2019t sent. Check your connection and try again.",
+    failed: "We couldn\u2019t take your quote request right now. Please try again in a few minutes."
+  });
+  var BUSY_PHASES2 = /* @__PURE__ */ Object.freeze(["sending", "waiting", "processing", "checking"]);
+  var finder = null;
+  function quoteRequestOpen(config) {
+    return !!config && config.vertical === "snow" && config.dataMode === "live";
+  }
+  function quoteRequestState() {
+    if (!state.quoteRequest) state.quoteRequest = freshRequest();
+    return state.quoteRequest;
+  }
+  function resetQuoteRequest() {
+    var current = state.quoteRequest;
+    if (current && BUSY_PHASES2.indexOf(current.phase) !== -1) return false;
+    state.quoteRequest = freshRequest();
+    return true;
+  }
+  function quoteRequestBusy() {
+    return !!state.quoteRequest && BUSY_PHASES2.indexOf(state.quoteRequest.phase) !== -1;
+  }
+  function freshRequest() {
+    return {
+      phase: "editing",
+      draft: { propertyIds: [], addresses: [], risks: [], notes: "", pendingAddress: "" },
+      errors: {},
+      message: "",
+      addressCheck: "",
+      formId: null
+    };
+  }
+  function quoteRequestSchema(type) {
+    var attributes = typeAttributes(type);
+    var addresses = attributes.PROPERTY_ADDRESSES || {};
+    var risks = attributes.RISK_FACTORS || {};
+    var notes = attributes.ADDITIONAL_NOTES || {};
+    var rows2 = /(?:^|\s)rows:(\d+)/.exec(text(notes.inputFormat));
+    return {
+      within: withinBox(addresses.inputFormat),
+      riskLabel: localizedName5(risks.nls),
+      risks: (Array.isArray(risks.options) ? risks.options : []).map(function(option) {
+        var value = text(option && option.value);
+        return value ? { value, label: localizedName5(option.nls) || value } : null;
+      }).filter(Boolean),
+      notesLabel: localizedName5(notes.nls),
+      notesRows: rows2 ? Math.min(Number(rows2[1]), 12) : 5
+    };
+  }
+  function withinBox(inputFormat) {
+    var match = /(?:^|\s)within:(-?\d+(?:\.\d+)?),(-?\d+(?:\.\d+)?),(-?\d+(?:\.\d+)?),(-?\d+(?:\.\d+)?)(?:\s|;|$)/.exec(text(inputFormat));
+    if (!match) return null;
+    var box = { south: Number(match[1]), west: Number(match[2]), north: Number(match[3]), east: Number(match[4]) };
+    return box.south < box.north && box.west < box.east && Math.abs(box.south) <= 90 && Math.abs(box.north) <= 90 ? box : null;
+  }
+  function insideBox(box, point) {
+    return !box || !point || point.lat >= box.south && point.lat <= box.north && point.lon >= box.west && point.lon <= box.east;
+  }
+  function loadQuoteRequestSchema(options2) {
+    var settings = options2 || {};
+    var current = state.quoteRequestSchema;
+    if (current && current.state !== "error") return Promise.resolve(current);
+    var forms = settings.forms || createCoreProfileFormAdapter();
+    var loading = { state: "loading", schema: null };
+    state.quoteRequestSchema = loading;
+    return Promise.resolve().then(function() {
+      return forms.type(QUOTE_REQUEST_FORM, { config: state.config, state });
+    }).then(function(type) {
+      if (state.quoteRequestSchema !== loading) return state.quoteRequestSchema;
+      state.quoteRequestSchema = { state: "ready", schema: quoteRequestSchema(type) };
+      return state.quoteRequestSchema;
+    }, function(error2) {
+      if (state.quoteRequestSchema !== loading) return state.quoteRequestSchema;
+      if (error2 && error2.code === "session-expired") state.account = "session-expired";
+      state.quoteRequestSchema = { state: "error", schema: null };
+      return state.quoteRequestSchema;
+    }).then(function(result) {
+      if (settings.onChange) settings.onChange();
+      return result;
+    });
+  }
+  function toggleQuoteProperty(backendId) {
+    var request = quoteRequestState();
+    var id = positiveInteger(backendId);
+    if (!id || quoteRequestBusy() || !liveProperties().some(function(property) {
+      return property.backendId === id;
+    })) return false;
+    var chosen = request.draft.propertyIds;
+    request.draft.propertyIds = chosen.indexOf(id) === -1 ? chosen.concat([id]) : chosen.filter(function(other) {
+      return other !== id;
+    });
+    delete request.errors.PROPERTY_IDS;
+    return true;
+  }
+  function changeQuoteRequestDraft(key, value) {
+    var request = quoteRequestState();
+    if (quoteRequestBusy()) return false;
+    if (key === "notes" || key === "pendingAddress") request.draft[key] = String(value == null ? "" : value);
+    else if (key === "risk") {
+      var risks = request.draft.risks;
+      request.draft.risks = risks.indexOf(value) === -1 ? risks.concat([value]) : risks.filter(function(risk) {
+        return risk !== value;
+      });
+    } else return false;
+    return true;
+  }
+  function removeQuoteAddress(index) {
+    var request = quoteRequestState();
+    var position = Number(index);
+    if (quoteRequestBusy() || !Number.isInteger(position) || position < 0 || position >= request.draft.addresses.length) return false;
+    request.draft.addresses = request.draft.addresses.filter(function(_, at) {
+      return at !== position;
+    });
+    delete request.errors.PROPERTY_ADDRESSES;
+    return true;
+  }
+  function acceptQuoteAddress(address, point) {
+    var request = quoteRequestState();
+    var value = text(address).replace(/\s+/g, " ");
+    if (!value) return false;
+    var schema = state.quoteRequestSchema && state.quoteRequestSchema.schema;
+    if (!insideBox(schema && schema.within, point)) {
+      request.errors.PROPERTY_ADDRESSES = QUOTE_REQUEST_COPY.addressOutside;
+      return false;
+    }
+    var known = request.draft.addresses.some(function(entry) {
+      return entry.address.toLowerCase() === value.toLowerCase();
+    });
+    if (!known && request.draft.addresses.length >= QUOTE_REQUEST_LIMIT) {
+      request.errors.PROPERTY_ADDRESSES = QUOTE_REQUEST_COPY.tooManyAddresses;
+      return false;
+    }
+    if (!known) request.draft.addresses = request.draft.addresses.concat([{ address: value, point: point || null }]);
+    request.draft.pendingAddress = "";
+    delete request.errors.PROPERTY_ADDRESSES;
+    delete request.errors.PROPERTY_IDS;
+    return true;
+  }
+  function addTypedQuoteAddress(options2) {
+    var settings = options2 || {};
+    var request = quoteRequestState();
+    var typed = text(request.draft.pendingAddress);
+    if (!typed) return Promise.resolve(true);
+    if (quoteRequestBusy() || request.addressCheck) return Promise.resolve(false);
+    var maps = settings.finder || addressFinder();
+    if (!maps) return Promise.resolve(acceptQuoteAddress(typed, null));
+    request.addressCheck = "checking";
+    if (settings.onChange) settings.onChange();
+    return Promise.resolve().then(function() {
+      return maps.load();
+    }).then(function() {
+      return maps.geocode(typed);
+    }).then(function(point) {
+      return { point, missed: false };
+    }, function(error2) {
+      return { point: null, missed: !!error2 && error2.status === "ZERO_RESULTS" };
+    }).then(function(found) {
+      request.addressCheck = "";
+      if (text(request.draft.pendingAddress) !== typed) return false;
+      if (found.missed) {
+        request.errors.PROPERTY_ADDRESSES = QUOTE_REQUEST_COPY.addressUnknown;
+        return false;
+      }
+      return acceptQuoteAddress(typed, found.point);
+    }).then(function(added) {
+      if (settings.onChange) settings.onChange();
+      return added;
+    });
+  }
+  function addressFinder() {
+    if (!state.config.mapsApiKey) return null;
+    if (!finder) finder = createGoogleMapsAdapter({ apiKey: state.config.mapsApiKey });
+    return finder;
+  }
+  function validateQuoteRequest(draft) {
+    var errors = {};
+    if (!draft.propertyIds.length && !draft.addresses.length) errors.PROPERTY_IDS = QUOTE_REQUEST_COPY.nothingChosen;
+    if (draft.propertyIds.length > QUOTE_REQUEST_LIMIT) errors.PROPERTY_IDS = QUOTE_REQUEST_COPY.tooManyProperties;
+    if (draft.addresses.length > QUOTE_REQUEST_LIMIT) errors.PROPERTY_ADDRESSES = QUOTE_REQUEST_COPY.tooManyAddresses;
+    return errors;
+  }
+  function quoteRequestValues(draft) {
+    var values = {};
+    var located = draft.addresses.filter(function(entry) {
+      return !!entry.point;
+    });
+    var notes = text(draft.notes);
+    if (draft.propertyIds.length) values.PROPERTY_IDS = draft.propertyIds.map(String);
+    if (draft.addresses.length) values.PROPERTY_ADDRESSES = draft.addresses.map(function(entry) {
+      return entry.address;
+    });
+    if (located.length) {
+      values.PROPERTY_COORDINATES = JSON.stringify(located.map(function(entry) {
+        return { address: entry.address, lat: entry.point.lat, lng: entry.point.lon };
+      }));
+    }
+    if (draft.risks.length) values.RISK_FACTORS = draft.risks.slice();
+    if (notes) values.ADDITIONAL_NOTES = notes;
+    return values;
+  }
+  function submitQuoteRequest(options2) {
+    var request = quoteRequestState();
+    var changed = options2.onChange || function() {
+    };
+    if (quoteRequestBusy()) return Promise.resolve(false);
+    var errors = validateQuoteRequest(request.draft);
+    if ((/* @__PURE__ */ Object.keys(errors)).length) {
+      request.errors = errors;
+      request.message = "";
+      changed("invalid");
+      return Promise.resolve(false);
+    }
+    var forms = options2.forms || outcomeForms(options2);
+    var context = { config: state.config, state };
+    request.phase = "sending";
+    request.errors = {};
+    request.message = "";
+    changed("sending");
+    return Promise.resolve().then(function() {
+      return forms.submit(QUOTE_REQUEST_FORM, quoteRequestValues(request.draft), context);
+    }).then(function(formId) {
+      if (state.quoteRequest !== request) return false;
+      request.formId = formId;
+      request.phase = "waiting";
+      changed("waiting");
+      return awaitOutcome(request, forms, context, options2);
+    }, function(error2) {
+      if (state.quoteRequest !== request) return false;
+      if (error2 && error2.code === "session-expired") return sessionEnded(request, changed);
+      request.phase = "editing";
+      request.message = QUOTE_REQUEST_COPY.notSent;
+      changed("not-sent");
+      return false;
+    });
+  }
+  function checkQuoteRequestAgain(options2) {
+    var request = state.quoteRequest;
+    if (!request || request.phase !== "slow" || !request.formId) return Promise.resolve(false);
+    var forms = options2.forms || outcomeForms(options2);
+    request.phase = "checking";
+    (options2.onChange || function() {
+    })("checking");
+    return awaitOutcome(request, forms, { config: state.config, state }, options2);
+  }
+  function outcomeForms(options2) {
+    return createCoreProfileFormAdapter({ timeoutMs: QUOTE_REQUEST_OUTCOME_TIMEOUT_MS, pollIntervalMs: QUOTE_REQUEST_POLL_MS, wait: options2.wait, now: options2.now });
+  }
+  function awaitOutcome(request, forms, context, options2) {
+    var changed = options2.onChange || function() {
+    };
+    return Promise.resolve().then(function() {
+      return forms.report(QUOTE_REQUEST_FORM, request.formId, context, QUOTE_REQUEST_FINAL_OUTCOMES, function(reported) {
+        if (reported.outcome !== "PROCESSING" || request.phase !== "waiting" || state.quoteRequest !== request) return;
+        request.phase = "processing";
+        changed("processing");
+      });
+    }).then(function(report) {
+      if (state.quoteRequest !== request) return false;
+      return settle2(request, report, options2);
+    }, function(error2) {
+      if (state.quoteRequest !== request) return false;
+      if (error2 && error2.code === "session-expired") return sessionEnded(request, changed);
+      request.phase = "slow";
+      changed("slow");
+      return false;
+    });
+  }
+  function settle2(request, report, options2) {
+    var changed = options2.onChange || function() {
+    };
+    if (report.outcome === "ACCEPTED") {
+      request.phase = "accepted";
+      changed("accepted");
+      if (options2.reload) {
+        ["proposals", "properties"].forEach(function(moduleId) {
+          Promise.resolve().then(function() {
+            return options2.reload(moduleId);
+          }).catch(function() {
+            return null;
+          });
+        });
+      }
+      return true;
+    }
+    request.phase = "editing";
+    var field3 = text(report.field);
+    var message = text(report.message);
+    if (report.outcome === "REFUSED" && message && QUOTE_REQUEST_FIELDS.indexOf(field3) !== -1) request.errors = { [field3]: message };
+    else request.message = message || QUOTE_REQUEST_COPY.failed;
+    changed(report.outcome === "REFUSED" ? "refused" : "failed");
+    return false;
+  }
+  function sessionEnded(request, changed) {
+    request.phase = request.formId ? "slow" : "editing";
+    state.account = "session-expired";
+    changed("session-expired");
+    return false;
+  }
+  function typeAttributes(type) {
+    var found = {};
+    [type].concat(type && Array.isArray(type.parents) ? type.parents : []).forEach(function(owner) {
+      (owner && Array.isArray(owner.attributes) ? owner.attributes : []).forEach(function(attribute) {
+        var code = text(attribute && attribute.code);
+        if (code && !found[code]) found[code] = attribute;
+      });
+    });
+    return found;
+  }
+  function localizedName5(nls) {
+    if (!nls || typeof nls !== "object") return "";
+    var bag = nls.en || nls[(/* @__PURE__ */ Object.keys(nls))[0]] || {};
+    return text(bag && bag.NAME).replace(/\s+/g, " ");
+  }
+
+  // app-templates/customer-portal/runtime/src/address-suggestions.js
+  var SUGGESTION_DELAY = 250;
+  var SUGGESTION_MINIMUM = 3;
+  function attachAddressSuggestions(input, cell, options2) {
+    var finder2 = options2.finder;
+    var listId = input.getAttribute("id") + "-suggestions";
+    var list = h("ul", { "class": "prop-suggest", id: listId, role: "listbox", "aria-label": "Suggested addresses", hidden: true });
+    var offered = [];
+    var active = -1;
+    var timer = null;
+    cell.appendChild(list);
+    input.setAttribute("role", "combobox");
+    input.setAttribute("aria-autocomplete", "list");
+    input.setAttribute("aria-controls", listId);
+    input.setAttribute("aria-expanded", "false");
+    function highlight(index) {
+      active = index;
+      offered.forEach(function(option, position) {
+        option.node.setAttribute("aria-selected", position === index ? "true" : "false");
+      });
+      if (index === -1) input.removeAttribute("aria-activedescendant");
+      else input.setAttribute("aria-activedescendant", offered[index].node.getAttribute("id"));
+    }
+    function close() {
+      list.replaceChildren();
+      list.setAttribute("hidden", "");
+      offered = [];
+      highlight(-1);
+      input.setAttribute("aria-expanded", "false");
+    }
+    function take(option) {
+      close();
+      options2.pick(option.item);
+    }
+    input.addEventListener("keydown", function(event) {
+      if (list.hasAttribute("hidden")) return;
+      if (event.key === "ArrowDown" || event.key === "ArrowUp") {
+        event.preventDefault();
+        var count = offered.length;
+        highlight(event.key === "ArrowDown" ? (active + 1) % count : (active <= 0 ? count : active) - 1);
+      } else if (event.key === "Enter" && active !== -1) {
+        event.preventDefault();
+        take(offered[active]);
+      } else if (event.key === "Escape") {
+        event.preventDefault();
+        close();
+      }
+    });
+    input.addEventListener("blur", function() {
+      setTimeout(close, 150);
+    });
+    input.addEventListener("input", function() {
+      if (timer !== null) clearTimeout(timer);
+      var value = input.value.trim();
+      if (value.length < SUGGESTION_MINIMUM) {
+        timer = null;
+        close();
+        return;
+      }
+      timer = setTimeout(function() {
+        timer = null;
+        finder2.suggestAddresses(value, { within: options2.within || null }).then(function(items) {
+          if (input.value.trim() !== value || !input.isConnected) return;
+          close();
+          offered = items.map(function(item, index) {
+            var node = h("li", { "class": "prop-suggest__option", id: listId + "-" + index, role: "option", "aria-selected": "false" }, item.label);
+            var option = { node, item };
+            node.addEventListener("mousedown", function(event) {
+              event.preventDefault();
+            });
+            node.addEventListener("click", function() {
+              take(option);
+            });
+            list.appendChild(node);
+            return option;
+          });
+          if (!offered.length) return;
+          list.removeAttribute("hidden");
+          input.setAttribute("aria-expanded", "true");
+        }, close);
+      }, SUGGESTION_DELAY);
+    });
+  }
+
+  // app-templates/customer-portal/runtime/src/components/proposals/ContractDetailsForm.js
+  var GROUPS = [
+    { title: "Client", codes: ["LEGAL_NAME", "CLIENT_TYPE", "BILLING_ADDRESS"] },
+    { title: "Representative", codes: ["REPRESENTATIVE_FIRST_NAME", "REPRESENTATIVE_LAST_NAME", "REPRESENTATIVE_JOB_TITLE", "REPRESENTATIVE_EMAIL", "REPRESENTATIVE_PHONE"] }
+  ];
+  var PAIRS = { REPRESENTATIVE_FIRST_NAME: "REPRESENTATIVE_LAST_NAME", REPRESENTATIVE_EMAIL: "REPRESENTATIVE_PHONE" };
+  var CONFIRMATIONS = ["INFORMATION_CONFIRMED", "AUTHORITY_CONFIRMED"];
+  var INPUT_TYPES = { text: "text", address: "text", email: "email", tel: "tel" };
+  function contractDetailsLoading(details) {
+    return !details || details.prefill === "loading";
+  }
+  function ContractDetailsForm(details, pending) {
+    var loading = contractDetailsLoading(details);
+    var panel = h("div", {
+      "class": "agreement-details",
+      "data-module": "agreement-details",
+      "data-visual-id": "agreement-details",
+      "data-state": loading ? "loading" : pending ? "pending" : "editing",
+      role: "group",
+      "aria-labelledby": "agreement-details-title"
+    }, [
+      h("p", { "class": "decision-confirm__title", id: "agreement-details-title" }, "Your contract details"),
+      h("p", { "class": "decision-confirm__body" }, "These details go into your service agreement.")
+    ]);
+    if (loading) {
+      panel.setAttribute("aria-busy", "true");
+      panel.appendChild(h("div", { "class": "contract-form", "data-module": "agreement-details-loading" }, [0, 1, 2].map(function() {
+        return h("div", { "class": "field-row" }, [skel("width:28%;height:11px;margin-bottom:4px"), skel("height:40px;border-radius:12px")]);
+      })));
+      return panel;
+    }
+    var notice = prefillNotice(details);
+    if (notice) panel.appendChild(notice);
+    var errors = details.errors;
+    var form = h("div", { "class": "contract-form", "aria-busy": pending ? "true" : void 0 });
+    GROUPS.forEach(function(group) {
+      var section = h("div", { "class": "contract-form__group" }, [h("div", { "class": "contract-form__legend" }, group.title)]);
+      var skip = {};
+      group.codes.forEach(function(code) {
+        if (skip[code]) return;
+        var pair = PAIRS[code];
+        if (pair) {
+          skip[pair] = true;
+          section.appendChild(h("div", { "class": "contract-form__pair" }, [Field(code, details, errors, pending), Field(pair, details, errors, pending)]));
+        } else section.appendChild(Field(code, details, errors, pending));
+      });
+      form.appendChild(section);
+    });
+    form.appendChild(h("div", { "class": "contract-form__group contract-form__confirmations" }, CONFIRMATIONS.map(function(code) {
+      return Confirmation(code, details, errors, pending);
+    })));
+    panel.appendChild(form);
+    return panel;
+  }
+  function prefillNotice(details) {
+    if (details.prefill === "failed") return PartialNotice("Your account details could not be loaded, so nothing is filled in for you.");
+    if (details.filled) {
+      return h("p", { "class": "contract-form__note", "data-module": "agreement-details-prefill" }, "Filled in from your account. Check every field before sending.");
+    }
+    return null;
+  }
+  function Field(code, details, errors, pending) {
+    var definition = definitionOf(code);
+    if (definition.kind === "choice") return ClientType(definition, details, errors, pending);
+    var id = "contract-detail-" + code.toLowerCase().replace(/_/g, "-");
+    var error2 = errors[code];
+    var suggesting = definition.kind === "address" && !!addressFinder() && !pending;
+    var input = h("input", {
+      "class": "field",
+      id,
+      name: code,
+      type: INPUT_TYPES[definition.kind] || "text",
+      autocomplete: suggesting ? "off" : definition.autocomplete,
+      value: details.draft[code] || "",
+      "data-contract-detail": code,
+      "data-state": error2 ? "invalid" : void 0,
+      "aria-invalid": error2 ? "true" : void 0,
+      "aria-describedby": error2 ? id + "-error" : void 0,
+      "aria-required": definition.required ? "true" : void 0,
+      disabled: pending ? true : void 0,
+      spellcheck: definition.kind === "text" ? void 0 : "false"
+    });
+    input.addEventListener("input", function() {
+      changeContractDetail(code, input.value);
+    });
+    var cell = h("div", { "class": "field-row prop-edit__field" }, [
+      h("label", { "class": "field-label", "for": id }, definition.required ? definition.label : definition.label + " (optional)"),
+      input,
+      error2 ? h("div", { "class": "field-error", id: id + "-error", role: "alert" }, error2) : null
+    ]);
+    if (suggesting) {
+      attachAddressSuggestions(input, cell, {
+        finder: addressFinder(),
+        pick: function(item) {
+          Promise.resolve(item.address()).then(function(address) {
+            input.value = address;
+            changeContractDetail(code, address);
+            input.focus();
+          });
+        }
+      });
+    }
+    return cell;
+  }
+  function ClientType(definition, details, errors, pending) {
+    var error2 = errors[definition.code];
+    var legendId = "contract-detail-client-type";
+    var chosen = details.draft[definition.code];
+    return h("div", {
+      "class": "field-row",
+      role: "radiogroup",
+      "aria-labelledby": legendId,
+      "aria-required": "true",
+      "aria-invalid": error2 ? "true" : void 0,
+      "aria-describedby": error2 ? legendId + "-error" : void 0,
+      "data-contract-detail": definition.code
+    }, [
+      h("div", { "class": "field-label", id: legendId }, definition.label),
+      h("div", { "class": "choice-chips" }, CONTRACT_CLIENT_TYPES.map(function(type) {
+        var input = h("input", { "class": "choice-chip__input", type: "radio", name: "contract-detail-client-type", value: type.code, checked: chosen === type.code ? true : void 0, disabled: pending ? true : void 0, "data-client-type": type.code });
+        input.addEventListener("change", function() {
+          if (input.checked) changeContractDetail(definition.code, type.code);
+        });
+        return h("label", { "class": "choice-chip" }, [input, h("span", { "class": "choice-chip__label" }, type.label)]);
+      })),
+      error2 ? h("div", { "class": "field-error", id: legendId + "-error", role: "alert" }, error2) : null
+    ]);
+  }
+  function Confirmation(code, details, errors, pending) {
+    var definition = definitionOf(code);
+    var error2 = errors[code];
+    var id = "contract-detail-" + code.toLowerCase().replace(/_/g, "-");
+    var input = h("input", {
+      "class": "check-line__input",
+      type: "checkbox",
+      id,
+      checked: details.draft[code] === true ? true : void 0,
+      disabled: pending ? true : void 0,
+      "aria-invalid": error2 ? "true" : void 0,
+      "aria-describedby": error2 ? id + "-error" : void 0,
+      "data-contract-detail": code
+    });
+    input.addEventListener("change", function() {
+      changeContractDetail(code, input.checked === true);
+    });
+    return h("div", { "class": "check-line", "data-state": error2 ? "invalid" : void 0 }, [
+      h("label", { "class": "check-line__label", "for": id }, [input, h("span", null, definition.label)]),
+      error2 ? h("div", { "class": "field-error", id: id + "-error", role: "alert" }, error2) : null
+    ]);
+  }
+  function definitionOf(code) {
+    return CONTRACT_DETAILS_FIELDS.find(function(item) {
+      return item.code === code;
+    });
   }
 
   // app-templates/customer-portal/runtime/src/components/proposals/QuoteOptionCard.js
@@ -9030,19 +9953,21 @@
     var label = order.pricingModel ? order.pricingModel.label : "this option";
     var titleId = "decision-title-" + order.backendId;
     var body = kind === "approve" ? settings.siblingsOpen ? "Approving it declines the other options for this property." : "" : "A declined option can\u2019t be approved later.";
+    var details = kind === "approve" ? state.contractDetails : null;
     var confirmButton = ActionButton({
       variant: kind === "approve" ? "btn--primary" : "btn--danger",
       label: pending ? "Sending\u2026" : kind === "approve" ? "Confirm approval" : "Confirm decline",
       action: "quote.confirm",
       id: String(order.backendId),
       lg: true,
-      disabled: pending || settings.busy,
+      disabled: pending || settings.busy || kind === "approve" && contractDetailsLoading(details),
       visualId: "quote-confirm"
     });
     if (pending) confirmButton.setAttribute("data-state", "pending");
     return h("div", { "class": "decision-confirm", "data-module": "decision-confirm", "data-visual-id": "decision-confirm", "data-state": pending ? "pending" : "open", "data-kind": kind, role: "group", "aria-labelledby": titleId }, [
       h("p", { "class": "decision-confirm__title", id: titleId }, kind === "approve" ? "Approve " + label + " for this property?" : "Decline " + label + "?"),
       body ? h("p", { "class": "decision-confirm__body" }, body) : null,
+      kind === "approve" ? ContractDetailsForm(details, pending) : null,
       h("div", { "class": "proposal-actions" }, [
         confirmButton,
         ActionButton({ variant: "btn--ghost", label: "Cancel", action: "quote.cancel", lg: true, disabled: pending, visualId: "quote-cancel" })
@@ -9052,11 +9977,9 @@
 
   // app-templates/customer-portal/runtime/src/components/proposals/AgreementParts.js
   var STAGE_NOTICE = {
-    review: { tone: "info", text: "The quotes in this agreement are waiting for your decisions.", link: { label: "Go to your quotes \u203A", action: "nav.go", id: "proposals.list" } },
-    drafting: { tone: "info", text: "Thank you, we have your details. A manager prepares and approves your service agreement next; it appears here for your approval and we email you when it\u2019s ready." }
+    drafting: { tone: "info", text: "We\u2019re preparing your service agreement from the options you approved. A manager approves it next; it appears here for your approval and we email you when it\u2019s ready. Nothing is needed from you." }
   };
   var STATE_NOTICE = {
-    CLIENT_DETAILS_RECEIVED: { tone: "info", text: "We\u2019re checking your details. This page shows the result once the check is done." },
     CLIENT_CHANGES_REQUESTED: { tone: "info", text: "We\u2019re revising this agreement as you asked. It appears here for your approval and we email you when it\u2019s ready." },
     AGREEMENT_SEND_FAILED: { tone: "info", text: "We\u2019re sending this agreement to you. You can approve it here as soon as it arrives." }
   };
@@ -9067,14 +9990,13 @@
     if (!notice) return null;
     return h("div", { "class": "agreement-notice", "data-module": "agreement-notice", "data-visual-id": "agreement-notice", "data-state": agreement.stage, "data-tone": notice.tone, role: "status" }, [
       h("span", { "class": "agreement-notice__dot", "aria-hidden": "true" }),
-      h("span", { "class": "agreement-notice__text" }, notice.text),
-      notice.link ? h("span", { "class": "link-action agreement-notice__link", "data-action": notice.link.action, "data-id": notice.link.id }, notice.link.label) : null
+      h("span", { "class": "agreement-notice__text" }, notice.text)
     ]);
   }
-  function AgreementParties(parties, withClient) {
+  function AgreementParties(parties) {
     return h("div", { "class": "agreement-parties", "data-module": "agreement-parties", "data-visual-id": "agreement-parties" }, [
       ProviderCard(parties.provider),
-      withClient === false ? null : ClientCard(parties.client)
+      ClientCard(parties.client)
     ]);
   }
   function providerLogoUrl(provider) {
@@ -10125,7 +11047,7 @@
       StatusBadge({ variant: status.badge, label: status.label, bind: "quote.groupStatus", state: group.status })
     ]));
     var agreement = group.agreement;
-    if (agreement && agreement.stage !== "preparing") {
+    if (agreement) {
       page.appendChild(h("button", { "class": "quote-package-link", "data-module": "quote-package-link", "data-visual-id": "quote-package-link", "data-action": "agreement.open", "data-id": agreement.id }, [
         h("span", { "class": "quote-package-link__label" }, "Part of your service agreement"),
         StatusBadge({ variant: "status-badge--" + agreement.tone, label: agreement.label, bind: "agreement.stateLabel", state: agreement.stage }),
@@ -10357,1012 +11279,6 @@
     ]);
   }
 
-  // app-templates/customer-portal/runtime/src/normalizers/account-profile.js
-  var ACCOUNT_PROFILE_SCOPE_MODES = /* @__PURE__ */ Object.freeze(["server-scoped", "browser-filtered"]);
-  var LEGAL_CONTACT = "LEGAL";
-  var BILLING_ADDRESS = "BILLING";
-  var EMAIL_ENTRY = "EMAIL";
-  var PHONE_ENTRY = "PHONE";
-  function normalizeAccountProfile(raw) {
-    var source = raw && typeof raw === "object" ? raw : {};
-    var account = source.account && typeof source.account === "object" && !Array.isArray(source.account) ? source.account : null;
-    if (!account) return accountProfileFailure("profile-unavailable");
-    var primary = primaryContact(account.contacts);
-    var contact = primary ? { name: [plain2(primary.firstName), plain2(primary.lastName)].filter(Boolean).join(" "), firstName: plain2(primary.firstName), title: plain2(primary.title) } : null;
-    var emails = primary ? entryValues(primary.contactEntries, EMAIL_ENTRY) : [];
-    var phones = primary ? entryValues(primary.contactEntries, PHONE_ENTRY).map(formatPhone) : [];
-    var billingAddresses = typedAddresses(account.addresses, BILLING_ADDRESS);
-    var editable = {
-      firstName: primary ? plain2(primary.firstName) : "",
-      lastName: primary ? plain2(primary.lastName) : "",
-      email: primary ? firstEntryValue(primary.contactEntries, EMAIL_ENTRY) : "",
-      phone: primary ? formatPhone(firstEntryValue(primary.contactEntries, PHONE_ENTRY)) : "",
-      billingAddress: oldestTypedAddress(account.addresses, BILLING_ADDRESS)
-    };
-    var filled = [!!(contact && contact.name), emails.length > 0, phones.length > 0, billingAddresses.length > 0];
-    return {
-      state: filled.every(Boolean) ? "ready" : filled.some(Boolean) ? "partial" : "empty",
-      reasonCode: null,
-      scopeMode: ACCOUNT_PROFILE_SCOPE_MODES.indexOf(source.scopeMode) === -1 ? null : source.scopeMode,
-      accountName: localizedName4(account.nls),
-      contact,
-      emails,
-      phones,
-      billingAddresses,
-      editable,
-      allowedActions: []
-    };
-  }
-  function contractDetailsPrefill(account, clientTypes) {
-    var row = account && typeof account === "object" && !Array.isArray(account) ? account : {};
-    var legal = primaryContact(row.contacts);
-    var legalType = attributeText(row, "LEGAL_ENTITY_TYPE").toUpperCase();
-    var billing = rows(row.addresses).filter(function(link) {
-      return rows(link.types).some(function(type) {
-        return text(type.code) === BILLING_ADDRESS;
-      });
-    }).sort(byIdAscending)[0];
-    return {
-      LEGAL_NAME: localizedName4(row.nls),
-      CLIENT_TYPE: clientTypes.indexOf(legalType) === -1 ? "" : legalType,
-      BILLING_ADDRESS: billing && billing.address ? plain2(billing.address.address1) : "",
-      REPRESENTATIVE_FIRST_NAME: legal ? plain2(legal.firstName) : "",
-      REPRESENTATIVE_LAST_NAME: legal ? plain2(legal.lastName) : "",
-      REPRESENTATIVE_JOB_TITLE: legal ? plain2(legal.title) : "",
-      REPRESENTATIVE_EMAIL: legal ? firstEntryValue(legal.contactEntries, EMAIL_ENTRY) : "",
-      REPRESENTATIVE_PHONE: legal ? firstEntryValue(legal.contactEntries, PHONE_ENTRY) : ""
-    };
-  }
-  function accountProfileFailure(code) {
-    return {
-      state: code === "customer-forbidden" ? "unauthorized" : code === "profile-unavailable" ? "unavailable" : "error",
-      reasonCode: code || "profile-load-failed",
-      scopeMode: null,
-      accountName: "",
-      contact: null,
-      emails: [],
-      phones: [],
-      billingAddresses: [],
-      editable: null,
-      allowedActions: []
-    };
-  }
-  function formatAccountAddress(address) {
-    return formatPostalAddress(address);
-  }
-  function primaryContact(contacts) {
-    var primaries = rows(contacts).filter(function(contact) {
-      return text(contact.type && contact.type.code) === LEGAL_CONTACT;
-    });
-    return primaries.sort(byIdAscending)[0] || null;
-  }
-  function entryValues(entries, typeCode) {
-    var values = [];
-    rows(entries).forEach(function(entry) {
-      if (text(entry.type && entry.type.code) !== typeCode) return;
-      var value = plain2(entry.value);
-      if (value && values.indexOf(value) === -1) values.push(value);
-    });
-    return values;
-  }
-  function firstEntryValue(entries, typeCode) {
-    var entry = rows(entries).filter(function(row) {
-      return text(row.type && row.type.code) === typeCode && plain2(row.value);
-    }).sort(byIdAscending)[0];
-    return entry ? plain2(entry.value) : "";
-  }
-  function oldestTypedAddress(addresses, typeCode) {
-    var link = rows(addresses).filter(function(row) {
-      return rows(row.types).some(function(type) {
-        return text(type.code) === typeCode;
-      });
-    }).sort(byIdAscending)[0];
-    return link ? formatAccountAddress(link.address) : "";
-  }
-  function typedAddresses(addresses, typeCode) {
-    var formatted = [];
-    rows(addresses).filter(function(row) {
-      return rows(row.types).some(function(type) {
-        return text(type.code) === typeCode;
-      });
-    }).sort(byIdDescending).forEach(function(row) {
-      var line = formatAccountAddress(row.address);
-      if (line && formatted.indexOf(line) === -1) formatted.push(line);
-    });
-    return formatted;
-  }
-  function byIdAscending(left, right) {
-    return compareIds(left, right, 1);
-  }
-  function byIdDescending(left, right) {
-    return compareIds(left, right, -1);
-  }
-  function compareIds(left, right, direction) {
-    var a = positiveInteger(left && left.id);
-    var b = positiveInteger(right && right.id);
-    if (a === b) return 0;
-    if (a === null) return 1;
-    if (b === null) return -1;
-    return (a - b) * direction;
-  }
-  function rows(value) {
-    return Array.isArray(value) ? value.filter(function(row) {
-      return row && typeof row === "object";
-    }) : [];
-  }
-  function localizedName4(value) {
-    if (!value || typeof value !== "object") return "";
-    var localized = value.en || value["en-US"] || Object.values(value)[0] || {};
-    return plain2(localized && (localized.NAME || localized.name));
-  }
-  function plain2(value) {
-    if (typeof value === "string") return value.trim();
-    return typeof value === "number" && Number.isFinite(value) ? String(value) : "";
-  }
-
-  // app-templates/customer-portal/runtime/src/adapters/core-account-profile-adapter.js
-  var CODE_MAPPINGS = [{ name: "id" }, { name: "code" }];
-  var PROFILE_MAPPINGS = [
-    { name: "id" },
-    { name: "nls" },
-    { key: "id", mappings: [{ name: "id" }], name: "user", type: "identifier" },
-    {
-      mappings: [
-        { name: "id" },
-        { name: "firstName" },
-        { name: "lastName" },
-        { name: "title" },
-        { key: "id", mappings: CODE_MAPPINGS, name: "type", type: "identifier" },
-        {
-          mappings: [
-            { name: "id" },
-            { name: "value" },
-            { key: "id", mappings: CODE_MAPPINGS, name: "type", type: "identifier" }
-          ],
-          name: "contactEntries",
-          type: "collection"
-        }
-      ],
-      name: "contacts",
-      type: "collection"
-    },
-    {
-      mappings: [
-        { name: "id" },
-        { mappings: CODE_MAPPINGS, name: "types", type: "collection" },
-        {
-          key: "id",
-          mappings: [
-            { name: "id" },
-            { name: "address1" },
-            { name: "address2" },
-            { name: "city" },
-            { name: "postalCode" },
-            { key: "id", mappings: CODE_MAPPINGS, name: "state", type: "identifier" },
-            { key: "id", mappings: CODE_MAPPINGS, name: "country", type: "identifier" }
-          ],
-          name: "address",
-          type: "identifier"
-        }
-      ],
-      name: "addresses",
-      type: "collection"
-    }
-  ];
-  var CONTRACT_DETAILS_MAPPINGS = PROFILE_MAPPINGS.concat([{ name: "attributes" }]);
-  function createCoreAccountProfileAdapter(options2 = {}) {
-    var fetchImpl = options2.fetch || coreSessionFetch;
-    if (typeof fetchImpl !== "function") throw coded5("fetch-unavailable", "Core account profile adapter requires fetch");
-    return {
-      async load(moduleId, context) {
-        if (moduleId !== "profile") throw coded5("unsupported-module", "Core account profile adapter cannot load " + moduleId);
-        return loadCustomerAccountProfile(context, fetchImpl, options2.origin);
-      }
-    };
-  }
-  async function loadCustomerAccountProfile(context, fetchImpl = coreSessionFetch, explicitOrigin) {
-    return readCustomerAccount(context, fetchImpl, explicitOrigin, PROFILE_MAPPINGS);
-  }
-  async function loadContractDetailsAccount(context, fetchImpl = coreSessionFetch, explicitOrigin) {
-    return readCustomerAccount(context, fetchImpl, explicitOrigin, CONTRACT_DETAILS_MAPPINGS);
-  }
-  async function readCustomerAccount(context, fetchImpl, explicitOrigin, mappings) {
-    var api = requestContext3(context, explicitOrigin);
-    var reply = await requestJson4(fetchImpl, api.accountBase + api.accountListPath, {
-      method: "POST",
-      credentials: "same-origin",
-      headers: {
-        Authorization: api.authorization,
-        "Content-Type": "application/json",
-        Accept: "application/json",
-        "X-Organization-Code": api.organization
-      },
-      body: JSON.stringify({
-        filters: [
-          { type: "INTEGER", operator: "=", property: "id", value: String(api.accountId) },
-          { type: "INTEGER", operator: "=", property: "user.id", value: String(api.userId) }
-        ],
-        mappings,
-        offset: 0,
-        pageSize: 2
-      })
-    });
-    var rows2 = Array.isArray(reply && reply.result) ? reply.result : [];
-    var owned = rows2.filter(function(row) {
-      return ownedBySession(row, api);
-    });
-    if (!owned.length) throw coded5("profile-unavailable", "Core did not return the signed-in customer's Account");
-    return { account: owned[0], scopeMode: owned.length === rows2.length ? "server-scoped" : "browser-filtered" };
-  }
-  function ownedBySession(row, api) {
-    if (!row || typeof row !== "object" || positiveInteger(row.id) !== api.accountId) return false;
-    var linked = row.user && typeof row.user === "object" ? positiveInteger(row.user.id) : null;
-    return linked === null && !api.tagged || linked === api.userId;
-  }
-  function requestContext3(context, explicitOrigin) {
-    var config = context && context.config || {};
-    var runtimeState = context && context.state || {};
-    var session2 = runtimeState.session || {};
-    var accessToken = text(session2.accessToken || session2.access_token);
-    if (!accessToken) throw coded5("session-required", "A Core access token is required");
-    var userId = positiveInteger(session2.userId);
-    if (!userId) throw coded5("session-user-required", "The signed-in Core User is required");
-    var account = runtimeState.customerAccount || session2.account || null;
-    var accountId = positiveInteger(account && account.id);
-    if (!accountId) throw coded5("customer-unresolved", "A resolved customer Account is required before reading its profile");
-    var organization = text(config.organization);
-    if (!organization) throw coded5("organization-required", "A portal organization code is required");
-    var origin = explicitOrigin || config.origin || globalThis.location && globalThis.location.origin || "";
-    return {
-      accountBase: sameOriginBase4(config.accountApiBase || "/core-acct", origin, "Core Account API base"),
-      accountId,
-      accountListPath: config.vertical === "snow" ? "/api/tagged/account/list.json" : "/api/account/list.json",
-      tagged: config.vertical === "snow",
-      authorization: text(session2.tokenType || session2.token_type || "Bearer") + " " + accessToken,
-      organization,
-      userId
-    };
-  }
-  async function requestJson4(fetchImpl, url, options2) {
-    var response = await fetchImpl(url, options2);
-    if (!response || typeof response.ok !== "boolean") throw coded5("invalid-response", "Core request returned an invalid response");
-    if (!response.ok) {
-      var code = response.status === 401 ? "session-expired" : response.status === 403 ? "customer-forbidden" : "profile-request-failed";
-      var failure2 = coded5(code, "Core Account request failed with HTTP " + response.status);
-      failure2.status = response.status;
-      throw failure2;
-    }
-    var payload;
-    try {
-      payload = await response.json();
-    } catch (_) {
-      throw coded5("invalid-response", "Core response was not valid JSON");
-    }
-    if (!payload || typeof payload !== "object") throw coded5("invalid-response", "Core answered with an unprojected body");
-    return payload;
-  }
-  function sameOriginBase4(value, origin, label) {
-    if (!origin) throw coded5("origin-required", label + " requires a browser origin");
-    var target = new URL(String(value || ""), origin);
-    if (target.origin !== new URL(origin).origin) throw coded5("cross-origin-service", label + " must be same-origin");
-    return target.href.replace(/\/+$/, "");
-  }
-  function coded5(code, message) {
-    var error2 = new Error(message);
-    error2.code = code;
-    return error2;
-  }
-
-  // app-templates/customer-portal/runtime/src/contract-details.js
-  var TEXT_LIMIT = 255;
-  var CONTROL_CHARACTERS2 = /[\u0000-\u001f\u007f]/;
-  var field2 = (code, label, kind, autocomplete, required) => /* @__PURE__ */ Object.freeze({ code, label, kind, autocomplete, required });
-  var CONTRACT_DETAILS_FIELDS = /* @__PURE__ */ Object.freeze([
-    field2("LEGAL_NAME", "Legal name", "text", "organization", true),
-    field2("CLIENT_TYPE", "Client type", "choice", null, true),
-    field2("BILLING_ADDRESS", "Billing address", "address", "street-address", true),
-    field2("REPRESENTATIVE_FIRST_NAME", "First name", "text", "given-name", true),
-    field2("REPRESENTATIVE_LAST_NAME", "Last name", "text", "family-name", true),
-    field2("REPRESENTATIVE_JOB_TITLE", "Job title", "text", "organization-title", false),
-    field2("REPRESENTATIVE_EMAIL", "Email", "email", "email", true),
-    field2("REPRESENTATIVE_PHONE", "Phone", "tel", "tel", true),
-    field2("INFORMATION_CONFIRMED", "I confirm that the information above is accurate.", "confirm", null, true),
-    field2("AUTHORITY_CONFIRMED", "I confirm that I am authorized to enter into this agreement on behalf of the client.", "confirm", null, true)
-  ]);
-  var CONTRACT_DETAILS_COPY = /* @__PURE__ */ Object.freeze({
-    legalName: "Enter the client\u2019s legal name.",
-    clientType: "Choose the client type.",
-    clientTypeInvalid: "Choose one of the client types.",
-    confirm: "Confirm this to send your details.",
-    plainText: "Use letters, spaces and punctuation only.",
-    tooLong: "Use " + TEXT_LIMIT + " characters or fewer.",
-    returnedMissing: "This was missing from the details you sent.",
-    returnedUnconfirmed: "This confirmation was missing from the details you sent.",
-    returnedEmail: "Enter a valid email address, like name@example.com."
-  });
-  var PROFILE_RULES = /* @__PURE__ */ Object.freeze({
-    BILLING_ADDRESS: "BILLING_ADDRESS",
-    REPRESENTATIVE_FIRST_NAME: "FIRST_NAME",
-    REPRESENTATIVE_LAST_NAME: "LAST_NAME",
-    REPRESENTATIVE_EMAIL: "EMAIL",
-    REPRESENTATIVE_PHONE: "PHONE"
-  });
-  var CLIENT_TYPE_CODES = CONTRACT_CLIENT_TYPES.map(function(type) {
-    return type.code;
-  });
-  function contractDetailsFor(backendId) {
-    var details = state.contractDetails;
-    return details && details.agreementId === backendId ? details : null;
-  }
-  function openContractDetails(backendId, options2) {
-    if (contractDetailsFor(backendId)) return Promise.resolve(state.contractDetails);
-    var settings = options2 || {};
-    var details = { agreementId: backendId, prefill: "loading", filled: false, draft: emptyDraft(), errors: {} };
-    state.contractDetails = details;
-    var load = settings.load || loadContractDetailsAccount;
-    return Promise.resolve().then(function() {
-      return load({ config: state.config, state });
-    }).then(function(result) {
-      var values = contractDetailsPrefill(result && result.account, CLIENT_TYPE_CODES);
-      (/* @__PURE__ */ Object.keys(values)).forEach(function(code) {
-        details.draft[code] = values[code];
-      });
-      details.filled = (/* @__PURE__ */ Object.keys(values)).some(function(code) {
-        return !!values[code];
-      });
-      details.prefill = "ready";
-    }, function(error2) {
-      if (error2 && error2.code === "session-expired") state.account = "session-expired";
-      details.prefill = "failed";
-    }).then(function() {
-      if (settings.onChange) settings.onChange();
-      return details;
-    });
-  }
-  function changeContractDetail(backendId, code, value) {
-    var details = contractDetailsFor(backendId);
-    var definition = CONTRACT_DETAILS_FIELDS.find(function(item) {
-      return item.code === code;
-    });
-    if (!details || !definition) return false;
-    details.draft[code] = definition.kind === "confirm" ? value === true : String(value == null ? "" : value);
-    return true;
-  }
-  function contractDetailsRequest(draft) {
-    var errors = {};
-    var values = {};
-    CONTRACT_DETAILS_FIELDS.forEach(function(item) {
-      var checked = validateDetail(item, draft[item.code]);
-      if (checked.error) errors[item.code] = checked.error;
-      else values[item.code] = checked.value;
-    });
-    return (/* @__PURE__ */ Object.keys(errors)).length ? { errors, values: null } : { errors: {}, values };
-  }
-  function returnedDetailErrors(codes) {
-    var errors = {};
-    (codes || []).forEach(function(code) {
-      if (code === "CLIENT_TYPE_INVALID") errors.CLIENT_TYPE = CONTRACT_DETAILS_COPY.clientTypeInvalid;
-      else if (code === "REPRESENTATIVE_EMAIL_INVALID") errors.REPRESENTATIVE_EMAIL = CONTRACT_DETAILS_COPY.returnedEmail;
-      else {
-        var definition = CONTRACT_DETAILS_FIELDS.find(function(item) {
-          return item.code === code;
-        });
-        if (definition) errors[code] = definition.kind === "confirm" ? CONTRACT_DETAILS_COPY.returnedUnconfirmed : CONTRACT_DETAILS_COPY.returnedMissing;
-      }
-    });
-    return errors;
-  }
-  function validateDetail(item, raw) {
-    if (item.kind === "confirm") return raw === true ? accepted2(true) : refusal2(CONTRACT_DETAILS_COPY.confirm);
-    var collapsed = String(raw == null ? "" : raw).replace(/\s+/g, " ").trim();
-    if (item.kind === "choice") {
-      if (!collapsed) return refusal2(CONTRACT_DETAILS_COPY.clientType);
-      return CLIENT_TYPE_CODES.indexOf(collapsed) === -1 ? refusal2(CONTRACT_DETAILS_COPY.clientTypeInvalid) : accepted2(collapsed);
-    }
-    if (PROFILE_RULES[item.code]) return validateProfileValue(PROFILE_RULES[item.code], collapsed, "");
-    if (!collapsed && item.required) return refusal2(CONTRACT_DETAILS_COPY.legalName);
-    if (CONTROL_CHARACTERS2.test(collapsed)) return refusal2(CONTRACT_DETAILS_COPY.plainText);
-    if (collapsed.length > TEXT_LIMIT) return refusal2(CONTRACT_DETAILS_COPY.tooLong);
-    return accepted2(collapsed);
-  }
-  function emptyDraft() {
-    var draft = {};
-    CONTRACT_DETAILS_FIELDS.forEach(function(item) {
-      draft[item.code] = item.kind === "confirm" ? false : "";
-    });
-    return draft;
-  }
-  function refusal2(message) {
-    return { error: message, value: null };
-  }
-  function accepted2(value) {
-    return { error: null, value };
-  }
-
-  // app-templates/customer-portal/runtime/src/quote-request.js
-  var QUOTE_REQUEST_OUTCOME_TIMEOUT_MS = 3e5;
-  var QUOTE_REQUEST_POLL_MS = 3e3;
-  var QUOTE_REQUEST_LIMIT = 20;
-  var QUOTE_REQUEST_FINAL_OUTCOMES = /* @__PURE__ */ Object.freeze(["ACCEPTED", "REFUSED", "FAILED"]);
-  var QUOTE_REQUEST_FIELDS = /* @__PURE__ */ Object.freeze(["PROPERTY_IDS", "PROPERTY_ADDRESSES"]);
-  var QUOTE_REQUEST_COPY = /* @__PURE__ */ Object.freeze({
-    nothingChosen: "Choose a property or add an address to quote.",
-    tooManyProperties: "Choose at most " + QUOTE_REQUEST_LIMIT + " properties in one request.",
-    tooManyAddresses: "Add at most " + QUOTE_REQUEST_LIMIT + " new addresses in one request.",
-    addressOutside: "This address is outside the area we serve.",
-    addressUnknown: "We could not find this address. Check it or pick one from the suggestions.",
-    notSent: "Your request wasn\u2019t sent. Check your connection and try again.",
-    failed: "We couldn\u2019t take your quote request right now. Please try again in a few minutes."
-  });
-  var BUSY_PHASES2 = /* @__PURE__ */ Object.freeze(["sending", "waiting", "processing", "checking"]);
-  var finder = null;
-  function quoteRequestOpen(config) {
-    return !!config && config.vertical === "snow" && config.dataMode === "live";
-  }
-  function quoteRequestState() {
-    if (!state.quoteRequest) state.quoteRequest = freshRequest();
-    return state.quoteRequest;
-  }
-  function resetQuoteRequest() {
-    var current = state.quoteRequest;
-    if (current && BUSY_PHASES2.indexOf(current.phase) !== -1) return false;
-    state.quoteRequest = freshRequest();
-    return true;
-  }
-  function quoteRequestBusy() {
-    return !!state.quoteRequest && BUSY_PHASES2.indexOf(state.quoteRequest.phase) !== -1;
-  }
-  function freshRequest() {
-    return {
-      phase: "editing",
-      draft: { propertyIds: [], addresses: [], risks: [], notes: "", pendingAddress: "" },
-      errors: {},
-      message: "",
-      addressCheck: "",
-      formId: null
-    };
-  }
-  function quoteRequestSchema(type) {
-    var attributes = typeAttributes(type);
-    var addresses = attributes.PROPERTY_ADDRESSES || {};
-    var risks = attributes.RISK_FACTORS || {};
-    var notes = attributes.ADDITIONAL_NOTES || {};
-    var rows2 = /(?:^|\s)rows:(\d+)/.exec(text(notes.inputFormat));
-    return {
-      within: withinBox(addresses.inputFormat),
-      riskLabel: localizedName5(risks.nls),
-      risks: (Array.isArray(risks.options) ? risks.options : []).map(function(option) {
-        var value = text(option && option.value);
-        return value ? { value, label: localizedName5(option.nls) || value } : null;
-      }).filter(Boolean),
-      notesLabel: localizedName5(notes.nls),
-      notesRows: rows2 ? Math.min(Number(rows2[1]), 12) : 5
-    };
-  }
-  function withinBox(inputFormat) {
-    var match = /(?:^|\s)within:(-?\d+(?:\.\d+)?),(-?\d+(?:\.\d+)?),(-?\d+(?:\.\d+)?),(-?\d+(?:\.\d+)?)(?:\s|;|$)/.exec(text(inputFormat));
-    if (!match) return null;
-    var box = { south: Number(match[1]), west: Number(match[2]), north: Number(match[3]), east: Number(match[4]) };
-    return box.south < box.north && box.west < box.east && Math.abs(box.south) <= 90 && Math.abs(box.north) <= 90 ? box : null;
-  }
-  function insideBox(box, point) {
-    return !box || !point || point.lat >= box.south && point.lat <= box.north && point.lon >= box.west && point.lon <= box.east;
-  }
-  function loadQuoteRequestSchema(options2) {
-    var settings = options2 || {};
-    var current = state.quoteRequestSchema;
-    if (current && current.state !== "error") return Promise.resolve(current);
-    var forms = settings.forms || createCoreProfileFormAdapter();
-    var loading = { state: "loading", schema: null };
-    state.quoteRequestSchema = loading;
-    return Promise.resolve().then(function() {
-      return forms.type(QUOTE_REQUEST_FORM, { config: state.config, state });
-    }).then(function(type) {
-      if (state.quoteRequestSchema !== loading) return state.quoteRequestSchema;
-      state.quoteRequestSchema = { state: "ready", schema: quoteRequestSchema(type) };
-      return state.quoteRequestSchema;
-    }, function(error2) {
-      if (state.quoteRequestSchema !== loading) return state.quoteRequestSchema;
-      if (error2 && error2.code === "session-expired") state.account = "session-expired";
-      state.quoteRequestSchema = { state: "error", schema: null };
-      return state.quoteRequestSchema;
-    }).then(function(result) {
-      if (settings.onChange) settings.onChange();
-      return result;
-    });
-  }
-  function toggleQuoteProperty(backendId) {
-    var request = quoteRequestState();
-    var id = positiveInteger(backendId);
-    if (!id || quoteRequestBusy() || !liveProperties().some(function(property) {
-      return property.backendId === id;
-    })) return false;
-    var chosen = request.draft.propertyIds;
-    request.draft.propertyIds = chosen.indexOf(id) === -1 ? chosen.concat([id]) : chosen.filter(function(other) {
-      return other !== id;
-    });
-    delete request.errors.PROPERTY_IDS;
-    return true;
-  }
-  function changeQuoteRequestDraft(key, value) {
-    var request = quoteRequestState();
-    if (quoteRequestBusy()) return false;
-    if (key === "notes" || key === "pendingAddress") request.draft[key] = String(value == null ? "" : value);
-    else if (key === "risk") {
-      var risks = request.draft.risks;
-      request.draft.risks = risks.indexOf(value) === -1 ? risks.concat([value]) : risks.filter(function(risk) {
-        return risk !== value;
-      });
-    } else return false;
-    return true;
-  }
-  function removeQuoteAddress(index) {
-    var request = quoteRequestState();
-    var position = Number(index);
-    if (quoteRequestBusy() || !Number.isInteger(position) || position < 0 || position >= request.draft.addresses.length) return false;
-    request.draft.addresses = request.draft.addresses.filter(function(_, at) {
-      return at !== position;
-    });
-    delete request.errors.PROPERTY_ADDRESSES;
-    return true;
-  }
-  function acceptQuoteAddress(address, point) {
-    var request = quoteRequestState();
-    var value = text(address).replace(/\s+/g, " ");
-    if (!value) return false;
-    var schema = state.quoteRequestSchema && state.quoteRequestSchema.schema;
-    if (!insideBox(schema && schema.within, point)) {
-      request.errors.PROPERTY_ADDRESSES = QUOTE_REQUEST_COPY.addressOutside;
-      return false;
-    }
-    var known = request.draft.addresses.some(function(entry) {
-      return entry.address.toLowerCase() === value.toLowerCase();
-    });
-    if (!known && request.draft.addresses.length >= QUOTE_REQUEST_LIMIT) {
-      request.errors.PROPERTY_ADDRESSES = QUOTE_REQUEST_COPY.tooManyAddresses;
-      return false;
-    }
-    if (!known) request.draft.addresses = request.draft.addresses.concat([{ address: value, point: point || null }]);
-    request.draft.pendingAddress = "";
-    delete request.errors.PROPERTY_ADDRESSES;
-    delete request.errors.PROPERTY_IDS;
-    return true;
-  }
-  function addTypedQuoteAddress(options2) {
-    var settings = options2 || {};
-    var request = quoteRequestState();
-    var typed = text(request.draft.pendingAddress);
-    if (!typed) return Promise.resolve(true);
-    if (quoteRequestBusy() || request.addressCheck) return Promise.resolve(false);
-    var maps = settings.finder || addressFinder();
-    if (!maps) return Promise.resolve(acceptQuoteAddress(typed, null));
-    request.addressCheck = "checking";
-    if (settings.onChange) settings.onChange();
-    return Promise.resolve().then(function() {
-      return maps.load();
-    }).then(function() {
-      return maps.geocode(typed);
-    }).then(function(point) {
-      return { point, missed: false };
-    }, function(error2) {
-      return { point: null, missed: !!error2 && error2.status === "ZERO_RESULTS" };
-    }).then(function(found) {
-      request.addressCheck = "";
-      if (text(request.draft.pendingAddress) !== typed) return false;
-      if (found.missed) {
-        request.errors.PROPERTY_ADDRESSES = QUOTE_REQUEST_COPY.addressUnknown;
-        return false;
-      }
-      return acceptQuoteAddress(typed, found.point);
-    }).then(function(added) {
-      if (settings.onChange) settings.onChange();
-      return added;
-    });
-  }
-  function addressFinder() {
-    if (!state.config.mapsApiKey) return null;
-    if (!finder) finder = createGoogleMapsAdapter({ apiKey: state.config.mapsApiKey });
-    return finder;
-  }
-  function validateQuoteRequest(draft) {
-    var errors = {};
-    if (!draft.propertyIds.length && !draft.addresses.length) errors.PROPERTY_IDS = QUOTE_REQUEST_COPY.nothingChosen;
-    if (draft.propertyIds.length > QUOTE_REQUEST_LIMIT) errors.PROPERTY_IDS = QUOTE_REQUEST_COPY.tooManyProperties;
-    if (draft.addresses.length > QUOTE_REQUEST_LIMIT) errors.PROPERTY_ADDRESSES = QUOTE_REQUEST_COPY.tooManyAddresses;
-    return errors;
-  }
-  function quoteRequestValues(draft) {
-    var values = {};
-    var located = draft.addresses.filter(function(entry) {
-      return !!entry.point;
-    });
-    var notes = text(draft.notes);
-    if (draft.propertyIds.length) values.PROPERTY_IDS = draft.propertyIds.map(String);
-    if (draft.addresses.length) values.PROPERTY_ADDRESSES = draft.addresses.map(function(entry) {
-      return entry.address;
-    });
-    if (located.length) {
-      values.PROPERTY_COORDINATES = JSON.stringify(located.map(function(entry) {
-        return { address: entry.address, lat: entry.point.lat, lng: entry.point.lon };
-      }));
-    }
-    if (draft.risks.length) values.RISK_FACTORS = draft.risks.slice();
-    if (notes) values.ADDITIONAL_NOTES = notes;
-    return values;
-  }
-  function submitQuoteRequest(options2) {
-    var request = quoteRequestState();
-    var changed = options2.onChange || function() {
-    };
-    if (quoteRequestBusy()) return Promise.resolve(false);
-    var errors = validateQuoteRequest(request.draft);
-    if ((/* @__PURE__ */ Object.keys(errors)).length) {
-      request.errors = errors;
-      request.message = "";
-      changed("invalid");
-      return Promise.resolve(false);
-    }
-    var forms = options2.forms || outcomeForms(options2);
-    var context = { config: state.config, state };
-    request.phase = "sending";
-    request.errors = {};
-    request.message = "";
-    changed("sending");
-    return Promise.resolve().then(function() {
-      return forms.submit(QUOTE_REQUEST_FORM, quoteRequestValues(request.draft), context);
-    }).then(function(formId) {
-      if (state.quoteRequest !== request) return false;
-      request.formId = formId;
-      request.phase = "waiting";
-      changed("waiting");
-      return awaitOutcome(request, forms, context, options2);
-    }, function(error2) {
-      if (state.quoteRequest !== request) return false;
-      if (error2 && error2.code === "session-expired") return sessionEnded(request, changed);
-      request.phase = "editing";
-      request.message = QUOTE_REQUEST_COPY.notSent;
-      changed("not-sent");
-      return false;
-    });
-  }
-  function checkQuoteRequestAgain(options2) {
-    var request = state.quoteRequest;
-    if (!request || request.phase !== "slow" || !request.formId) return Promise.resolve(false);
-    var forms = options2.forms || outcomeForms(options2);
-    request.phase = "checking";
-    (options2.onChange || function() {
-    })("checking");
-    return awaitOutcome(request, forms, { config: state.config, state }, options2);
-  }
-  function outcomeForms(options2) {
-    return createCoreProfileFormAdapter({ timeoutMs: QUOTE_REQUEST_OUTCOME_TIMEOUT_MS, pollIntervalMs: QUOTE_REQUEST_POLL_MS, wait: options2.wait, now: options2.now });
-  }
-  function awaitOutcome(request, forms, context, options2) {
-    var changed = options2.onChange || function() {
-    };
-    return Promise.resolve().then(function() {
-      return forms.report(QUOTE_REQUEST_FORM, request.formId, context, QUOTE_REQUEST_FINAL_OUTCOMES, function(reported) {
-        if (reported.outcome !== "PROCESSING" || request.phase !== "waiting" || state.quoteRequest !== request) return;
-        request.phase = "processing";
-        changed("processing");
-      });
-    }).then(function(report) {
-      if (state.quoteRequest !== request) return false;
-      return settle2(request, report, options2);
-    }, function(error2) {
-      if (state.quoteRequest !== request) return false;
-      if (error2 && error2.code === "session-expired") return sessionEnded(request, changed);
-      request.phase = "slow";
-      changed("slow");
-      return false;
-    });
-  }
-  function settle2(request, report, options2) {
-    var changed = options2.onChange || function() {
-    };
-    if (report.outcome === "ACCEPTED") {
-      request.phase = "accepted";
-      changed("accepted");
-      if (options2.reload) {
-        ["proposals", "properties"].forEach(function(moduleId) {
-          Promise.resolve().then(function() {
-            return options2.reload(moduleId);
-          }).catch(function() {
-            return null;
-          });
-        });
-      }
-      return true;
-    }
-    request.phase = "editing";
-    var field3 = text(report.field);
-    var message = text(report.message);
-    if (report.outcome === "REFUSED" && message && QUOTE_REQUEST_FIELDS.indexOf(field3) !== -1) request.errors = { [field3]: message };
-    else request.message = message || QUOTE_REQUEST_COPY.failed;
-    changed(report.outcome === "REFUSED" ? "refused" : "failed");
-    return false;
-  }
-  function sessionEnded(request, changed) {
-    request.phase = request.formId ? "slow" : "editing";
-    state.account = "session-expired";
-    changed("session-expired");
-    return false;
-  }
-  function typeAttributes(type) {
-    var found = {};
-    [type].concat(type && Array.isArray(type.parents) ? type.parents : []).forEach(function(owner) {
-      (owner && Array.isArray(owner.attributes) ? owner.attributes : []).forEach(function(attribute) {
-        var code = text(attribute && attribute.code);
-        if (code && !found[code]) found[code] = attribute;
-      });
-    });
-    return found;
-  }
-  function localizedName5(nls) {
-    if (!nls || typeof nls !== "object") return "";
-    var bag = nls.en || nls[(/* @__PURE__ */ Object.keys(nls))[0]] || {};
-    return text(bag && bag.NAME).replace(/\s+/g, " ");
-  }
-
-  // app-templates/customer-portal/runtime/src/address-suggestions.js
-  var SUGGESTION_DELAY = 250;
-  var SUGGESTION_MINIMUM = 3;
-  function attachAddressSuggestions(input, cell, options2) {
-    var finder2 = options2.finder;
-    var listId = input.getAttribute("id") + "-suggestions";
-    var list = h("ul", { "class": "prop-suggest", id: listId, role: "listbox", "aria-label": "Suggested addresses", hidden: true });
-    var offered = [];
-    var active = -1;
-    var timer = null;
-    cell.appendChild(list);
-    input.setAttribute("role", "combobox");
-    input.setAttribute("aria-autocomplete", "list");
-    input.setAttribute("aria-controls", listId);
-    input.setAttribute("aria-expanded", "false");
-    function highlight(index) {
-      active = index;
-      offered.forEach(function(option, position) {
-        option.node.setAttribute("aria-selected", position === index ? "true" : "false");
-      });
-      if (index === -1) input.removeAttribute("aria-activedescendant");
-      else input.setAttribute("aria-activedescendant", offered[index].node.getAttribute("id"));
-    }
-    function close() {
-      list.replaceChildren();
-      list.setAttribute("hidden", "");
-      offered = [];
-      highlight(-1);
-      input.setAttribute("aria-expanded", "false");
-    }
-    function take(option) {
-      close();
-      options2.pick(option.item);
-    }
-    input.addEventListener("keydown", function(event) {
-      if (list.hasAttribute("hidden")) return;
-      if (event.key === "ArrowDown" || event.key === "ArrowUp") {
-        event.preventDefault();
-        var count = offered.length;
-        highlight(event.key === "ArrowDown" ? (active + 1) % count : (active <= 0 ? count : active) - 1);
-      } else if (event.key === "Enter" && active !== -1) {
-        event.preventDefault();
-        take(offered[active]);
-      } else if (event.key === "Escape") {
-        event.preventDefault();
-        close();
-      }
-    });
-    input.addEventListener("blur", function() {
-      setTimeout(close, 150);
-    });
-    input.addEventListener("input", function() {
-      if (timer !== null) clearTimeout(timer);
-      var value = input.value.trim();
-      if (value.length < SUGGESTION_MINIMUM) {
-        timer = null;
-        close();
-        return;
-      }
-      timer = setTimeout(function() {
-        timer = null;
-        finder2.suggestAddresses(value, { within: options2.within || null }).then(function(items) {
-          if (input.value.trim() !== value || !input.isConnected) return;
-          close();
-          offered = items.map(function(item, index) {
-            var node = h("li", { "class": "prop-suggest__option", id: listId + "-" + index, role: "option", "aria-selected": "false" }, item.label);
-            var option = { node, item };
-            node.addEventListener("mousedown", function(event) {
-              event.preventDefault();
-            });
-            node.addEventListener("click", function() {
-              take(option);
-            });
-            list.appendChild(node);
-            return option;
-          });
-          if (!offered.length) return;
-          list.removeAttribute("hidden");
-          input.setAttribute("aria-expanded", "true");
-        }, close);
-      }, SUGGESTION_DELAY);
-    });
-  }
-
-  // app-templates/customer-portal/runtime/src/components/proposals/AgreementDetails.js
-  var GROUPS = [
-    { title: "Client", codes: ["LEGAL_NAME", "CLIENT_TYPE", "BILLING_ADDRESS"] },
-    { title: "Representative", codes: ["REPRESENTATIVE_FIRST_NAME", "REPRESENTATIVE_LAST_NAME", "REPRESENTATIVE_JOB_TITLE", "REPRESENTATIVE_EMAIL", "REPRESENTATIVE_PHONE"] }
-  ];
-  var PAIRS = { REPRESENTATIVE_FIRST_NAME: "REPRESENTATIVE_LAST_NAME", REPRESENTATIVE_EMAIL: "REPRESENTATIVE_PHONE" };
-  var CONFIRMATIONS = ["INFORMATION_CONFIRMED", "AUTHORITY_CONFIRMED"];
-  var INPUT_TYPES = { text: "text", address: "text", email: "email", tel: "tel" };
-  function AgreementDetailsStep(row, busy) {
-    var agreement = row.agreement;
-    var backendId = agreement.backendId;
-    var details = contractDetailsFor(backendId);
-    var command = state.contractCommand;
-    var targeted = !!command && command.kind === "details" && command.targets.indexOf(backendId) !== -1;
-    var pending = targeted && command.phase === "pending";
-    var card = h("section", {
-      "class": "card card--pad agreement-details",
-      "data-module": "agreement-details",
-      "data-visual-id": "agreement-details",
-      "data-tone": "warn",
-      "data-state": !details || details.prefill === "loading" ? "loading" : pending ? "pending" : "editing",
-      "aria-labelledby": "agreement-details-title"
-    }, [
-      h("h2", { "class": "agreement-card__title", id: "agreement-details-title" }, "Your contract details"),
-      h("p", { "class": "agreement-approve__copy" }, "Every property has a decision. These details go into your service agreement.")
-    ]);
-    if (!details || details.prefill === "loading") {
-      card.setAttribute("aria-busy", "true");
-      card.appendChild(h("div", { "class": "contract-form", "data-module": "agreement-details-loading" }, [0, 1, 2].map(function() {
-        return h("div", { "class": "field-row" }, [skel("width:28%;height:11px;margin-bottom:4px"), skel("height:40px;border-radius:12px")]);
-      })));
-      return card;
-    }
-    var browserErrors = (/* @__PURE__ */ Object.keys(details.errors)).length > 0;
-    var returned = !browserErrors ? agreement.detailsErrors : [];
-    var errors = browserErrors ? details.errors : returnedDetailErrors(returned);
-    var notice = detailsNotice(details, returned, targeted ? command.phase : null);
-    if (notice) card.appendChild(notice);
-    var form = h("div", { "class": "contract-form", role: "group", "aria-labelledby": "agreement-details-title", "aria-busy": pending ? "true" : void 0 });
-    GROUPS.forEach(function(group) {
-      var section = h("div", { "class": "contract-form__group" }, [h("div", { "class": "contract-form__legend" }, group.title)]);
-      var skip = {};
-      group.codes.forEach(function(code) {
-        if (skip[code]) return;
-        var pair = PAIRS[code];
-        if (pair) {
-          skip[pair] = true;
-          section.appendChild(h("div", { "class": "contract-form__pair" }, [Field(backendId, code, details, errors, pending), Field(backendId, pair, details, errors, pending)]));
-        } else section.appendChild(Field(backendId, code, details, errors, pending));
-      });
-      form.appendChild(section);
-    });
-    form.appendChild(h("div", { "class": "contract-form__group contract-form__confirmations" }, CONFIRMATIONS.map(function(code) {
-      return Confirmation(backendId, code, details, errors, pending);
-    })));
-    card.appendChild(form);
-    var sendButton = ActionButton({ variant: "btn--primary", label: pending ? "Sending\u2026" : "Send details", action: "agreement.sendDetails", id: String(backendId), lg: true, disabled: pending || busy, visualId: "agreement-send-details" });
-    if (pending) sendButton.setAttribute("data-state", "pending");
-    card.appendChild(h("div", { "class": "proposal-actions contract-form__actions" }, [sendButton]));
-    if (pending) card.appendChild(PendingNote("Sending your details and waiting for our system to check them\u2026"));
-    else if (targeted && ["conflict", "failed", "refused", "readback-failed"].indexOf(command.phase) !== -1) {
-      var outcome = CommandOutcome(command.phase);
-      if (outcome) card.appendChild(outcome);
-    }
-    return card;
-  }
-  function detailsNotice(details, returned, phase) {
-    if (phase === "unconfirmed") {
-      return DecisionFailure("We couldn\u2019t confirm that your details arrived. Refresh the status in a minute before sending them again.", { action: "contracts.refresh", label: "Refresh status" });
-    }
-    if (returned.indexOf("PROCESSING_FAILED") !== -1) {
-      return PartialNotice("Your details were not saved. Nothing was wrong with what you entered: our system could not save them. Check the form and send your details again.");
-    }
-    if (returned.length) return PartialNotice("Your details came back. Our system could not accept them. Fix the marked fields and send your details again.");
-    if (details.prefill === "failed") return PartialNotice("Your account details could not be loaded, so nothing is filled in for you.");
-    if (details.filled) {
-      return h("p", { "class": "contract-form__note", "data-module": "agreement-details-prefill" }, "Filled in from your account. Check every field before sending.");
-    }
-    return null;
-  }
-  function Field(backendId, code, details, errors, pending) {
-    var definition = definitionOf(code);
-    if (definition.kind === "choice") return ClientType(backendId, definition, details, errors, pending);
-    var id = "contract-detail-" + code.toLowerCase().replace(/_/g, "-");
-    var error2 = errors[code];
-    var suggesting = definition.kind === "address" && !!addressFinder() && !pending;
-    var input = h("input", {
-      "class": "field",
-      id,
-      name: code,
-      type: INPUT_TYPES[definition.kind] || "text",
-      autocomplete: suggesting ? "off" : definition.autocomplete,
-      value: details.draft[code] || "",
-      "data-contract-detail": code,
-      "data-state": error2 ? "invalid" : void 0,
-      "aria-invalid": error2 ? "true" : void 0,
-      "aria-describedby": error2 ? id + "-error" : void 0,
-      "aria-required": definition.required ? "true" : void 0,
-      disabled: pending ? true : void 0,
-      spellcheck: definition.kind === "text" ? void 0 : "false"
-    });
-    input.addEventListener("input", function() {
-      changeContractDetail(backendId, code, input.value);
-    });
-    var cell = h("div", { "class": "field-row prop-edit__field" }, [
-      h("label", { "class": "field-label", "for": id }, definition.required ? definition.label : definition.label + " (optional)"),
-      input,
-      error2 ? h("div", { "class": "field-error", id: id + "-error", role: "alert" }, error2) : null
-    ]);
-    if (suggesting) {
-      attachAddressSuggestions(input, cell, {
-        finder: addressFinder(),
-        pick: function(item) {
-          Promise.resolve(item.address()).then(function(address) {
-            input.value = address;
-            changeContractDetail(backendId, code, address);
-            input.focus();
-          });
-        }
-      });
-    }
-    return cell;
-  }
-  function ClientType(backendId, definition, details, errors, pending) {
-    var error2 = errors[definition.code];
-    var legendId = "contract-detail-client-type";
-    var chosen = details.draft[definition.code];
-    return h("div", {
-      "class": "field-row",
-      role: "radiogroup",
-      "aria-labelledby": legendId,
-      "aria-required": "true",
-      "aria-invalid": error2 ? "true" : void 0,
-      "aria-describedby": error2 ? legendId + "-error" : void 0,
-      "data-contract-detail": definition.code
-    }, [
-      h("div", { "class": "field-label", id: legendId }, definition.label),
-      h("div", { "class": "choice-chips" }, CONTRACT_CLIENT_TYPES.map(function(type) {
-        var input = h("input", { "class": "choice-chip__input", type: "radio", name: "contract-detail-client-type", value: type.code, checked: chosen === type.code ? true : void 0, disabled: pending ? true : void 0, "data-client-type": type.code });
-        input.addEventListener("change", function() {
-          if (input.checked) changeContractDetail(backendId, definition.code, type.code);
-        });
-        return h("label", { "class": "choice-chip" }, [input, h("span", { "class": "choice-chip__label" }, type.label)]);
-      })),
-      error2 ? h("div", { "class": "field-error", id: legendId + "-error", role: "alert" }, error2) : null
-    ]);
-  }
-  function Confirmation(backendId, code, details, errors, pending) {
-    var definition = definitionOf(code);
-    var error2 = errors[code];
-    var id = "contract-detail-" + code.toLowerCase().replace(/_/g, "-");
-    var input = h("input", {
-      "class": "check-line__input",
-      type: "checkbox",
-      id,
-      checked: details.draft[code] === true ? true : void 0,
-      disabled: pending ? true : void 0,
-      "aria-invalid": error2 ? "true" : void 0,
-      "aria-describedby": error2 ? id + "-error" : void 0,
-      "data-contract-detail": code
-    });
-    input.addEventListener("change", function() {
-      changeContractDetail(backendId, code, input.checked === true);
-    });
-    return h("div", { "class": "check-line", "data-state": error2 ? "invalid" : void 0 }, [
-      h("label", { "class": "check-line__label", "for": id }, [input, h("span", null, definition.label)]),
-      error2 ? h("div", { "class": "field-error", id: id + "-error", role: "alert" }, error2) : null
-    ]);
-  }
-  function definitionOf(code) {
-    return CONTRACT_DETAILS_FIELDS.find(function(item) {
-      return item.code === code;
-    });
-  }
-
   // app-templates/customer-portal/runtime/src/routes/AgreementDetailPage.js
   function AgreementDetail() {
     var page = h("section", { "class": "page page--narrow", "data-route": "agreement.detail", "data-visual-id": "agreement-detail" });
@@ -11392,9 +11308,7 @@
       StatusBadge({ variant: "status-badge--" + agreement.tone, label: agreement.label, bind: "agreement.stateLabel", state: agreement.stage })
     ]));
     var approvable = agreement.allowedActions.indexOf("approve") !== -1;
-    var detailing = agreement.allowedActions.indexOf("details") !== -1;
-    if (detailing) ensureContractDetails(agreement.backendId);
-    var notice = approvable ? AgreementApproval(row, contractCommandsBusy()) : detailing ? AgreementDetailsStep(row, contractCommandsBusy()) : AgreementStageNotice(agreement);
+    var notice = approvable ? AgreementApproval(row, contractCommandsBusy()) : AgreementStageNotice(agreement);
     if (notice) page.appendChild(notice);
     if (row.unreadableOrders) {
       page.appendChild(PartialNotice(row.unreadableOrders === 1 ? "1 quote listed in this agreement couldn\u2019t be loaded." : row.unreadableOrders + " quotes listed in this agreement couldn\u2019t be loaded."));
@@ -11404,13 +11318,13 @@
     })) {
       page.appendChild(PartialNotice("Some services in this agreement couldn\u2019t be loaded. Prices and totals shown come from our system as returned."));
     }
-    page.appendChild(AgreementParties(agreement.parties, !detailing));
+    page.appendChild(AgreementParties(agreement.parties));
     var term = AgreementTerm(agreement);
     if (term) page.appendChild(term);
     page.appendChild(AgreementServices(row, AgreementMap(row.properties)));
     var terms = AgreementTerms(agreement.terms, state.agreementTermsOpen);
     if (terms) page.appendChild(terms);
-    var outcome = approvable || detailing ? null : AgreementOutcome(agreement);
+    var outcome = approvable ? null : AgreementOutcome(agreement);
     if (outcome) page.appendChild(outcome);
     return page;
   }
@@ -12695,9 +12609,6 @@
     "quote.sendChanges": function(id) {
       return sendChangeRequest(id);
     },
-    "agreement.sendDetails": function(id) {
-      return sendContractDetails(id);
-    },
     "quoteRequest.toggleProperty": function(id) {
       if (!toggleQuoteProperty(id)) return false;
       render();
@@ -13798,6 +13709,7 @@
     if (!backendId || contractCommands.busy()) return false;
     state.contractConfirm = kind === "changes" ? { kind, backendId, message: "", error: "" } : { kind, backendId };
     if (state.contractCommand && state.contractCommand.phase !== "pending") state.contractCommand = null;
+    if (kind === "approve") ensureContractDetails();
     render();
     return true;
   }
@@ -13806,8 +13718,21 @@
     var confirm = state.contractConfirm;
     if (!backendId || !confirm || confirm.backendId !== backendId) return false;
     if (kind === "agreement") return confirm.kind === "agreement" ? contractCommands.approveAgreement(backendId) : false;
-    if (confirm.kind !== "approve" && confirm.kind !== "decline") return false;
+    if (confirm.kind === "approve") return approveWithDetails(backendId);
+    if (confirm.kind !== "decline") return false;
     return contractCommands.decide(confirm.kind, backendId);
+  }
+  function approveWithDetails(backendId) {
+    var details = state.contractDetails;
+    if (!details || details.prefill === "loading" || contractCommands.busy()) return false;
+    var request = contractDetailsRequest(details.draft);
+    details.errors = request.errors;
+    if (!request.values) {
+      render();
+      focusElement('[data-contract-detail][aria-invalid="true"]') || focusElement('[aria-invalid="true"] input');
+      return false;
+    }
+    return contractCommands.decide("approve", backendId, contractDetailsEventInput(request.values));
   }
   function cancelContractConfirm() {
     if (contractCommands.busy()) return false;
@@ -13829,32 +13754,14 @@
     confirm.error = "";
     return contractCommands.requestChanges(backendId, message);
   }
-  function ensureContractDetails(backendId) {
-    if (contractDetailsFor(backendId)) return;
+  function ensureContractDetails() {
+    if (state.contractDetails) return;
     var load = state.config.dataMode === "live" ? void 0 : function(context) {
       return fixtureAccountProfileAdapter.load("profile", context);
     };
-    openContractDetails(backendId, { load, onChange: function() {
+    openContractDetails({ load, onChange: function() {
       render();
     } });
-  }
-  function sendContractDetails(id) {
-    var backendId = contractTarget(id);
-    var details = backendId ? contractDetailsFor(backendId) : null;
-    if (!details || details.prefill === "loading" || contractCommands.busy()) return false;
-    var request = contractDetailsRequest(details.draft);
-    details.errors = request.errors;
-    if (!request.values) {
-      if (state.contractCommand && state.contractCommand.kind === "details") state.contractCommand = null;
-      render();
-      focusElement('[data-contract-detail][aria-invalid="true"]') || focusElement('[aria-invalid="true"] input');
-      return false;
-    }
-    return contractCommands.sendDetails(backendId, request.values).then(function(sent) {
-      if (sent && state.contractDetails === details) state.contractDetails = null;
-      render();
-      return sent;
-    });
   }
   function retryQuoteView(id) {
     var backendId = contractTarget(id);

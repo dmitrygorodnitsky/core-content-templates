@@ -18,12 +18,12 @@
   var PRICED_STATUSES = ["new", "viewed", "approved", "declined", "changes"];
 
   var AGREEMENT_DISPOSITION = {
-    QUOTATION: { kind: "preparing" },
-    QUOTATION_SENT: { kind: "quote-review" },
-    QUOTATION_UPDATE: { kind: "unavailable", reason: "updating" },
-    QUOTATION_SEND_FAILED: { kind: "unavailable", reason: "send-failed" },
-    AWAITING_CLIENT_DETAILS: { kind: "contract-details" },
-    CLIENT_DETAILS_RECEIVED: { kind: "checking" },
+    QUOTATION: { kind: "unavailable", reason: "retired" },
+    QUOTATION_SENT: { kind: "unavailable", reason: "retired" },
+    QUOTATION_UPDATE: { kind: "unavailable", reason: "retired" },
+    QUOTATION_SEND_FAILED: { kind: "unavailable", reason: "retired" },
+    AWAITING_CLIENT_DETAILS: { kind: "unavailable", reason: "retired" },
+    CLIENT_DETAILS_RECEIVED: { kind: "unavailable", reason: "retired" },
     DRAFT: { kind: "preparing" },
     PENDING_MANAGEMENT_APPROVAL: { kind: "preparing" },
     INTERNALLY_APPROVED: { kind: "preparing" },
@@ -355,42 +355,6 @@
     return { kind: "clause", number: match[1] + match[2], depth: match[1].split(".").length, text: match[3] };
   }
 
-  function owns(map, key) {
-    return Boolean(map) && Object.prototype.hasOwnProperty.call(map, key);
-  }
-
-  function detailsCodes(value) {
-    var source = Array.isArray(value) ? value : typeof value === "string" ? value.split(",") : [];
-    var codes = [];
-    source.forEach(function (entry) {
-      var code = text(entry);
-      if (code && codes.indexOf(code) === -1) codes.push(code);
-    });
-    return codes;
-  }
-
-  function returnedDetails(value, fields, vocabulary) {
-    var codes = detailsCodes(value);
-    var kinds = {};
-    fields.forEach(function (field) { kinds[field.code] = field.kind; });
-    var result = { returned: codes.length > 0, processingFailed: false, unexplained: false, fields: {} };
-    codes.forEach(function (code) {
-      if (code === vocabulary.processingFailed) {
-        result.processingFailed = true;
-        return;
-      }
-      var invalid = owns(vocabulary.invalid, code) ? vocabulary.invalid[code] : null;
-      var field = invalid ? invalid.field : code;
-      if (!owns(kinds, field)) {
-        result.unexplained = true;
-        return;
-      }
-      if (owns(result.fields, field)) return;
-      result.fields[field] = invalid ? invalid.reason : kinds[field] === "boolean" ? "unconfirmed" : "missing";
-    });
-    return result;
-  }
-
   function inputTokens(inputFormat) {
     return String(inputFormat || "").split(/[\s;]+/).filter(Boolean);
   }
@@ -718,13 +682,13 @@
     });
   }
 
-  function serviceAddresses(properties) {
-    var found = [];
-    properties.forEach(function (property) {
-      var approved = property.options.some(function (option) { return option.status === "approved"; });
-      if (approved && property.address && found.indexOf(property.address) === -1) found.push(property.address);
+  function approvalsOffered(properties, grant, contract) {
+    var events = contract.orderEvents;
+    return properties.some(function (property) {
+      return property.options.some(function (option) {
+        return option.actions.approve || (option.actions.view && eventGranted(grant, "order", option.id, events.approve.code));
+      });
     });
-    return found;
   }
 
   function grantActions(properties, grant, contract) {
@@ -830,6 +794,7 @@
     var properties = propertiesOf(orders, { locale: locale, contract: contract, catalog: catalogOf(input) });
     grantActions(properties, grant, contract);
     var decided = summarized(properties);
+    var fields = detailFields(contract.contractDetails, locale);
     return {
       kind: "quote-review",
       reason: "",
@@ -846,7 +811,11 @@
       allDecided: decided.allDecided,
       unreadableOrders: 0,
       accountUnavailable: Boolean(input.accountFailed),
-      details: { available: false, fields: [], prefill: {}, serviceAddresses: [], returned: returnedDetails(null, [], contract.detailsReturn) },
+      details: {
+        available: approvalsOffered(properties, grant, contract),
+        fields: fields,
+        prefill: detailsPrefill(account, fields, locale, contract),
+      },
       canApproveAgreement: false,
       canRequestAgreementChanges: false,
       primaryEmail: primaryEmail(account, contract),
@@ -891,12 +860,9 @@
     });
 
     var properties = propertiesOf(readable, { locale: locale, contract: contract, catalog: catalogOf(input) });
-    if (state === "QUOTATION_SENT") grantActions(properties, grant, contract);
     var decided = summarized(properties);
-    var detailsEvent = contract.agreementEvents.details;
     var approveEvent = contract.agreementEvents.approve;
     var changesEvent = contract.agreementEvents.changes;
-    var awaitingDetails = state === detailsEvent.source;
 
     return {
       kind: disposition.kind,
@@ -912,7 +878,6 @@
         termStart: formatDate(attributeValue(agreement, contract.agreementAttributes.termStart), locale),
         termEnd: formatDate(attributeValue(agreement, contract.agreementAttributes.termEnd), locale),
         terms: termsBlocks(attributeValue(agreement, contract.agreementAttributes.terms)),
-        detailsErrors: detailsCodes(attributeValue(agreement, contract.agreementAttributes.detailsErrors)).join(","),
       },
       names: {
         provider: parties.provider.legalName,
@@ -925,13 +890,7 @@
       allDecided: decided.allDecided,
       unreadableOrders: unreadable,
       accountUnavailable: Boolean(input.accountFailed),
-      details: {
-        available: awaitingDetails && eventGranted(grant, "document", agreementId, detailsEvent.code),
-        fields: fields,
-        prefill: detailsPrefill(account, fields, locale, contract),
-        serviceAddresses: serviceAddresses(properties),
-        returned: returnedDetails(awaitingDetails ? attributeValue(agreement, contract.agreementAttributes.detailsErrors) : null, fields, contract.detailsReturn),
-      },
+      details: { available: false, fields: [], prefill: {} },
       canApproveAgreement: state === approveEvent.source && eventGranted(grant, "document", agreementId, approveEvent.code),
       canRequestAgreementChanges: state === changesEvent.source && eventGranted(grant, "document", agreementId, changesEvent.code),
       primaryEmail: primaryEmail(account, contract),
@@ -958,7 +917,6 @@
     priceVariant: priceVariant,
     formatDate: formatDate,
     termsBlocks: termsBlocks,
-    returnedDetails: returnedDetails,
     primaryEmail: primaryEmail,
     telHref: telHref,
     mailHref: mailHref,
