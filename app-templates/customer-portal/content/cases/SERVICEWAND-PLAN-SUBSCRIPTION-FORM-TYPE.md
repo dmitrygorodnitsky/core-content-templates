@@ -1913,6 +1913,25 @@ nothing was run by hand. Invoice PAID and order ACTIVE followed within 1.4 s,
 activation was COMPLETE about 20 s after the payment (Organization 61,
 administrator User 67), and both emails reached the buyer.
 
+## Plan maxima in the product model — 2026-10-27
+
+User decision: the overall Active Properties maximum belongs to the product
+model. On dev-1, ProductType SERVICEWAND_SAAS (19) got the Integer attribute
+ACTIVE_PROPERTIES_MAXIMUM (optimistic 4 to 5). It sits hidden after
+ACTIVE_PROPERTIES_INCLUDED in "Customers & Properties", so the public pricing
+comparison shows no new row; the other 50 attributes and the order were
+unchanged. Values: Foundation (38) 500, Growth (43) 1000, Business (44,
+SERVICEWAND_PROFESSIONAL) 2000; Enterprise has none. Each product save was read
+back with its other attributes, names, type and organization unchanged, and the
+public catalog returns the values.
+
+Checkout, the purchase form and entitlement preparation now read the maximum
+from the plan product; `entitlements/config.json` holds only the attribute code.
+On dev-1, 12 read-only validateSelection runs accepted the exact maximum and
+rejected one more pack for each plan and billing period, and the live form shows
+"Up to 500 / 1,000 / 2,000" and stops Foundation at nine packs. Production still
+needs the same attribute and values.
+
 ## Initial FormType publication
 
 Created and read back through the authenticated Core CMS API on 2026-10-16:

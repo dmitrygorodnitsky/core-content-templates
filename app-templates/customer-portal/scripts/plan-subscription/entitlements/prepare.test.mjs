@@ -52,7 +52,7 @@ test('purchased capacity composes quantities; yearly billing does not multiply t
   }
 });
 
-test('all configured plan maxima accept the last expansion pack and reject the next for monthly and yearly billing', () => {
+test('all catalog plan maxima accept the last expansion pack and reject the next for monthly and yearly billing', () => {
   const plans = [
     ['SERVICEWAND_FOUNDATION', 'SERVICEWAND_SAAS_PROPERTY_EXT_FOUNDATION', 9, 500],
     ['SERVICEWAND_GROWTH', 'SERVICEWAND_SAAS_PROPERTY_EXT_GROWTH', 8, 1000],
@@ -62,22 +62,24 @@ test('all configured plan maxima accept the last expansion pack and reject the n
     const selection = {planCode, billingPeriod, addons:[{productCode, quantity}]};
     const result = previewSelection(catalogFixture(), config, selection);
     assert.equal(result.activePropertiesLimit, maximum); assert.equal(result.overallMaximum, maximum);
-    assert.equal(result.maximumSource, 'TEMPORARY_CONFIG');
-    assert.throws(() => previewSelection(catalogFixture(), config, {...selection, addons:[{productCode, quantity:quantity + 1}]}), /exceeds configured plan maximum/);
+    assert.equal(result.maximumSource, 'PRODUCT_ATTRIBUTE');
+    assert.throws(() => previewSelection(catalogFixture(), config, {...selection, addons:[{productCode, quantity:quantity + 1}]}), /exceeds the plan maximum/);
   }
 });
 
-test('missing, unsupported or malformed maximum configuration fails closed without reading marketing prose', () => {
+test('a missing or malformed catalog maximum fails closed without reading marketing prose', () => {
   for (const value of [0, -1, 1000.5, '1000', NaN, Infinity, 2147483648]) {
-    const changed = clone(config); changed.propertyCapacity.overallPlanMaximum.byPlanCode.SERVICEWAND_GROWTH = value;
-    assert.throws(() => previewSelection(catalogFixture(), changed, growthSelection));
+    const changed = catalogFixture(); changed.products[1].attributes.source.ACTIVE_PROPERTIES_MAXIMUM.value = value;
+    assert.throws(() => previewSelection(changed, config, growthSelection));
   }
-  const missing = clone(config); delete missing.propertyCapacity.overallPlanMaximum.byPlanCode.SERVICEWAND_GROWTH;
-  assert.throws(() => previewSelection(catalogFixture(), missing, growthSelection), /explicit maximum/);
-  const unknown = clone(config); unknown.propertyCapacity.overallPlanMaximum.source = 'MARKETING_TEXT';
+  const missing = catalogFixture(); delete missing.products[1].attributes.source.ACTIVE_PROPERTIES_MAXIMUM;
+  assert.throws(() => previewSelection(missing, config, growthSelection), /ACTIVE_PROPERTIES_MAXIMUM must be a structured positive integer/);
+  const unknown = clone(config); unknown.propertyCapacity.maximumAttribute = 'EXPANSION_PACK';
   assert.throws(() => previewSelection(catalogFixture(), unknown, growthSelection));
   const changedCatalog = catalogFixture(); changedCatalog.products[1].attributes.source.EXPANSION_PACK = {value:'Up to 999999 Properties'};
   assert.equal(previewSelection(changedCatalog, config, growthSelection).overallMaximum, 1000);
+  const lowered = catalogFixture(); lowered.products[1].attributes.source.ACTIVE_PROPERTIES_MAXIMUM.value = 300;
+  assert.throws(() => previewSelection(lowered, config, growthSelection), /exceeds the plan maximum/);
 });
 
 test('unselected Weather stays disabled even though its product is enabled', () => {

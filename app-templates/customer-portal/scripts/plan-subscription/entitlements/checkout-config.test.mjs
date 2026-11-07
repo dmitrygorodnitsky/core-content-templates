@@ -47,14 +47,15 @@ test('canonical fingerprint survives JSON transport and map ordering; yearly cap
   assert.ok(!('effectiveFrom' in yearly) && !('effectiveTo' in yearly));
 });
 
-test('the reviewed maximum and its configuration are preserved in the snapshot and covered by consent fingerprints', () => {
+test('the catalog maximum is preserved in the snapshot and covered by the consent fingerprint', () => {
   const original = checkoutEntitlements(catalogFixture(), config, selection);
   assert.equal(original.propertyCapacity.overallMaximum, 1000);
-  assert.equal(original.propertyCapacity.maximumSource, 'TEMPORARY_CONFIG');
-  assert.equal(original.propertyCapacity.maximumValidation, 'VALIDATED_CONFIG_MAXIMUM');
-  const changed = structuredClone(config); changed.propertyCapacity.overallPlanMaximum.byPlanCode.SERVICEWAND_GROWTH = 900;
-  const revised = checkoutEntitlements(catalogFixture(), changed, selection);
-  assert.notEqual(revised.configurationFingerprint, original.configurationFingerprint);
+  assert.equal(original.propertyCapacity.maximumSource, 'PRODUCT_ATTRIBUTE');
+  assert.equal(original.propertyCapacity.maximumValidation, 'VALIDATED_PRODUCT_MAXIMUM');
+  const changedCatalog = catalogFixture(); changedCatalog.products[1].attributes.source.ACTIVE_PROPERTIES_MAXIMUM.value = 900;
+  const revised = checkoutEntitlements(changedCatalog, config, selection);
+  assert.equal(revised.configurationFingerprint, original.configurationFingerprint);
+  assert.equal(revised.propertyCapacity.overallMaximum, 900);
   assert.notEqual(fingerprint(revised), fingerprint(original));
   assert.equal(original.propertyCapacity.overallMaximum, 1000, 'Do not rewrite an already reviewed snapshot');
 });

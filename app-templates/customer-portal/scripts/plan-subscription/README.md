@@ -121,17 +121,18 @@ same-seller public licensed recurrent prices. Routing products (old and new),
 Custom Reports and any unsupported product are rejected, without silently
 dropping a requested item or charging it. Enterprise remains sales-only.
 Capacity is ACTIVE_PROPERTIES_INCLUDED + packs × expansion COUNT; Weather
-cannot exceed that purchased capacity. Both values come from the product
-model, not prose. Overall plan maxima temporarily come from
-entitlements/config.json: Foundation 500, Growth 1000, Business
-(SERVICEWAND_PROFESSIONAL) 2000. They are validated before the first Magic Link,
-in Checkout and again before draft creation; capacityValidation is
-VALIDATED_CONFIG_MAXIMUM for new snapshots. Values are not parsed from prose.
+cannot exceed that purchased capacity. The overall plan maximum is the plan's
+Integer attribute ACTIVE_PROPERTIES_MAXIMUM on SERVICEWAND_SAAS (dev-1:
+Foundation 500, Growth 1000, Business (SERVICEWAND_PROFESSIONAL) 2000;
+Enterprise has none). All three come from the product model, not prose, and a
+plan without a maximum cannot be checked out. They are validated before the
+first Magic Link, in Checkout and again before draft creation;
+capacityValidation is VALIDATED_PRODUCT_MAXIMUM and the snapshot's
+maximumSource is PRODUCT_ATTRIBUTE.
 Taxes are previewed with transient native OrderItems using the same assignment
 function as Order.onUpdate, bound to the reviewed digest, and checked again
 during Invoice preparation. Non-minor-unit totals require a rounding policy.
-No ProductType/ProductPriceType changes are made. The temporary configuration
-will be replaced by a product-model source later; payment stays disabled.
+ProductPriceTypes are unchanged.
 
 Initial SUBMITTED entry starts a bounded virtual worker with a server-generated
 preparationRequestId in Form metadata. It resolves the exact committed seller/type

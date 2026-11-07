@@ -16,6 +16,7 @@ export function catalogFixture() {
     OPERATIONAL_DASHBOARDS: ['false', 'Standard', 'Configurable'][index],
     OPERATIONAL_REASSIGNMENT: index === 0 ? 'Individual reassignment' : 'Individual and bulk reassignment',
     ACTIVE_PROPERTIES_INCLUDED: ['50', '200', '500'][index],
+    ACTIVE_PROPERTIES_MAXIMUM: [500, 1000, 2000][index],
     COMPATIBILITY: [addons[index].id, weather.id],
   }));
   return { products: [...plans, ...addons, weather], definitions: [], types: [{

@@ -603,16 +603,6 @@
             }
           ],
           "propertyDefinitionCode": "SERVICEWAND.PROPERTIES.MAX_ACTIVE",
-          "overallPlanMaximum": {
-            "source": "TEMPORARY_CONFIG",
-            "status": "CONFIGURED_PENDING_MODEL_MIGRATION",
-            "byPlanCode": {
-              "SERVICEWAND_FOUNDATION": 500,
-              "SERVICEWAND_GROWTH": 1000,
-              "SERVICEWAND_PROFESSIONAL": 2000
-            },
-            "allowMarketingTextParsing": false
-          },
           "weatherFeatureDefinitionCode": "SERVICEWAND.FEATURE.WEATHER_INTELLIGENCE",
           "weatherLimitDefinitionCode": "SERVICEWAND.WEATHER.MAX_PROPERTIES",
           "coverage": {
@@ -739,7 +729,7 @@
       },
       "contentFile": "PLAN_SUBSCRIPTION_DRAFT_V5.java",
       "serverUpdated": {
-        "dev-1": 1792940262213
+        "dev-1": 1793113948867
       }
     },
     {

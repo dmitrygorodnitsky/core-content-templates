@@ -294,16 +294,7 @@
       "packQuantitySource": "SITE_EXPANSION_PACKS",
       "packSizeAttribute": "COUNT"
     },
-    "overallPlanMaximum": {
-      "source": "TEMPORARY_CONFIG",
-      "status": "CONFIGURED_PENDING_MODEL_MIGRATION",
-      "byPlanCode": {
-        "SERVICEWAND_FOUNDATION": 500,
-        "SERVICEWAND_GROWTH": 1000,
-        "SERVICEWAND_PROFESSIONAL": 2000
-      },
-      "allowMarketingTextParsing": false
-    }
+    "maximumAttribute": "ACTIVE_PROPERTIES_MAXIMUM"
   },
   "addons": {
     "compatibilityAttribute": "COMPATIBILITY",

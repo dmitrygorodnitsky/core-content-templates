@@ -872,7 +872,7 @@ try {
     assert.equal(purchase.subtotal, preview.subtotal);
     assert.equal(purchase.itemIds.length, preview.lines.length);
     assert.equal(preview.quantityValidation, 'VALIDATED');
-    assert.equal(preview.capacityValidation, 'VALIDATED_CONFIG_MAXIMUM');
+    assert.equal(preview.capacityValidation, 'VALIDATED_PRODUCT_MAXIMUM');
     assert.equal(preview.entitlements.propertyCapacity.overallMaximum, 1000);
     assert.equal(order.metadata.PLAN_SUBSCRIPTION.basePlanMaterialized, true);
     assert.equal(order.metadata.PLAN_SUBSCRIPTION.itemsMaterialized, true);

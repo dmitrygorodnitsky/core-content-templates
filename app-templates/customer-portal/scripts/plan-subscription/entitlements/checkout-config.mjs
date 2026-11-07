@@ -13,7 +13,6 @@ export function checkoutConfig(config) {
   return { schemaVersion: 1, planCodes: config.plans.productCodes,
     featureRules: config.booleanFeatures, levelRules: config.levels,
     propertyDefinitionCode: config.propertyCapacity.definitionCode,
-    overallPlanMaximum: config.propertyCapacity.overallPlanMaximum,
     weatherFeatureDefinitionCode: config.addons.weather.featureDefinitionCode,
     weatherLimitDefinitionCode: config.addons.weather.limitDefinitionCode,
     coverage: config.coverage };
@@ -36,7 +35,7 @@ export function checkoutEntitlements(catalog, config, selection) {
       included: Number(attribute(preparedPlan, config.propertyCapacity.includedAttribute)),
       expansionPacks: expansion?.quantity || 0, expansionPackSize: packSize,
       limit: preview.activePropertiesLimit, overallMaximum: preview.overallMaximum,
-      maximumSource: preview.maximumSource, maximumValidation: 'VALIDATED_CONFIG_MAXIMUM' },
+      maximumSource: preview.maximumSource, maximumValidation: 'VALIDATED_PRODUCT_MAXIMUM' },
     weather: { selected: preview.weatherEnabled, featureDefinitionCode: config.addons.weather.featureDefinitionCode,
       limitDefinitionCode: config.addons.weather.limitDefinitionCode, propertyCount: preview.weatherPropertiesLimit },
     coverage: config.coverage, grantIssuanceEnabled: false, enforcementVerified: false };

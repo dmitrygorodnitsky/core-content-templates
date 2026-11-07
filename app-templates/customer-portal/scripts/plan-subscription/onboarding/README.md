@@ -228,6 +228,14 @@ consent-fingerprint changes. On dev-1, 12 native read-only validateSelection
 executions accepted the exact maximum and rejected one extra expansion pack for
 each plan in both billing periods. No persisted purchase fixture was created.
 
+2026-10-27 maximum from the product model: the user moved the maximum into
+SERVICEWAND_SAAS as the Integer attribute ACTIVE_PROPERTIES_MAXIMUM. New
+snapshots save maximumSource=PRODUCT_ATTRIBUTE and
+maximumValidation=VALIDATED_PRODUCT_MAXIMUM, and readiness and the executor
+accept only those values. The Checkout configuration fingerprint changed with
+the removed temporary values, so a Checkout prepared earlier must be prepared
+and confirmed again, and an older unpaid test Order cannot be activated.
+
 Season/expiry investigation (read-only, 2026-10-23): CONTRACT_AWARE already has
 LocalDate SEASON_START and SEASON_END. SNOW_CONTRACT_SOURCES_V1 reads the
 organization's explicit CONTRACT_SETTINGS reference and copies those dates to

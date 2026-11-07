@@ -105,7 +105,6 @@ export async function buildPackage() {
     planCodes: entitlements.plans.productCodes,
     siteExpansionCodes: entitlements.addons.siteExpansion.productCodes,
     weatherCode: entitlements.addons.weather.productCode,
-    maximumByPlanCode: entitlements.propertyCapacity.overallPlanMaximum.byPlanCode,
   };
   const copy = await loadCopy();
   const purchaseCopy = copyParameters("purchase", copy);

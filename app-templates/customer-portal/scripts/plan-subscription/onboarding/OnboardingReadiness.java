@@ -165,7 +165,7 @@ public final class OnboardingReadiness {
     }
 
     private static boolean validatedPropertyMaximum(Map<String, Object> capacity) {
-        if (!"VALIDATED_CONFIG_MAXIMUM".equals(capacity.get("maximumValidation")) || !"TEMPORARY_CONFIG".equals(capacity.get("maximumSource"))) return false;
+        if (!"VALIDATED_PRODUCT_MAXIMUM".equals(capacity.get("maximumValidation")) || !"PRODUCT_ATTRIBUTE".equals(capacity.get("maximumSource"))) return false;
         try {
             long[] values = new long[5]; int i = 0;
             for (String field : List.of("included", "expansionPacks", "expansionPackSize", "limit", "overallMaximum")) {

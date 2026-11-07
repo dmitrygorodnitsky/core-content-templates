@@ -21,7 +21,6 @@ assert.deepEqual(plain(fixtures.rules), {
   planCodes: entitlements.plans.productCodes,
   siteExpansionCodes: entitlements.addons.siteExpansion.productCodes,
   weatherCode: entitlements.addons.weather.productCode,
-  maximumByPlanCode: entitlements.propertyCapacity.overallPlanMaximum.byPlanCode,
 }, "harness rules must equal the backend entitlement configuration");
 
 const formType = JSON.parse(await fs.readFile(path.join(root, "content/form-types/PLAN_SUBSCRIPTION.json"), "utf8"));
@@ -34,6 +33,12 @@ assert.deepEqual(plain(catalog.plans.map((plan) => [plan.code, plan.selfService]
   ["SERVICEWAND_GROWTH", true],
   ["SERVICEWAND_PROFESSIONAL", true],
   ["SERVICEWAND_ENTERPRISE", false],
+]);
+assert.deepEqual(plain(catalog.plans.map((plan) => [plan.code, plan.maximum])), [
+  ["SERVICEWAND_FOUNDATION", 500],
+  ["SERVICEWAND_GROWTH", 1000],
+  ["SERVICEWAND_PROFESSIONAL", 2000],
+  ["SERVICEWAND_ENTERPRISE", null],
 ]);
 assert.deepEqual(plain(Object.values(catalog.addons).map((addon) => [addon.id, addon.role, addon.packSize]).sort((a, b) => a[0] - b[0])), [
   [40, "SITE_EXPANSION", 50],

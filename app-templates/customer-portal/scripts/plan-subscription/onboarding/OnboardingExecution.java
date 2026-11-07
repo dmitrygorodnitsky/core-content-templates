@@ -74,8 +74,8 @@ public final class OnboardingExecution {
         Map<String, Object> capacity = map(snapshot.get("propertyCapacity"));
         long included = integer(capacity.get("included")), packs = integer(capacity.get("expansionPacks")), size = integer(capacity.get("expansionPackSize")), limit = integer(capacity.get("limit")), maximum = integer(capacity.get("overallMaximum"));
         if (included <= 0 || packs < 0 || size < 0 || packs > 0 && size == 0 || limit != Math.addExact(included, Math.multiplyExact(packs, size))
-                || limit > maximum || maximum > Integer.MAX_VALUE || !"VALIDATED_CONFIG_MAXIMUM".equals(capacity.get("maximumValidation"))
-                || !"TEMPORARY_CONFIG".equals(capacity.get("maximumSource"))) throw new IllegalArgumentException("Unverified Properties allowance");
+                || limit > maximum || maximum > Integer.MAX_VALUE || !"VALIDATED_PRODUCT_MAXIMUM".equals(capacity.get("maximumValidation"))
+                || !"PRODUCT_ATTRIBUTE".equals(capacity.get("maximumSource"))) throw new IllegalArgumentException("Unverified Properties allowance");
         allowance(rows, capacity.get("definitionCode"), Long.toString(limit), "INTEGER", "PURCHASED", true);
         Map<String, Object> weather = map(snapshot.get("weather"));
         long count = integer(weather.get("propertyCount"));

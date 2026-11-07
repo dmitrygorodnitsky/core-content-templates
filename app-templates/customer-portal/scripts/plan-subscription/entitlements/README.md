@@ -112,10 +112,10 @@ the successful Account lifecycle tests are reported by the backend guide.
 Remaining backend decisions: where our Definitions belong; Resource mutation
 hook completion; Weather assignment operations; actual Boolean/STRING feature
 enforcement. The later onboarding decision accepts the native backend contract
-without claiming runtime issuance was tested. Overall Properties maxima now
-come from the user-approved temporary configuration: Foundation 500, Growth
-1000, Business (SERVICEWAND_PROFESSIONAL) 2000. Moving this source into the
-product model remains future work, not a blocker for current capacity checks.
+without claiming runtime issuance was tested. Overall Properties maxima come
+from each plan's ACTIVE_PROPERTIES_MAXIMUM product attribute, named by
+`propertyCapacity.maximumAttribute`; a missing or non-integer value fails
+preparation.
 US provisioning is outside the current scope.
 
 ## Prepare a purchase provisioning review

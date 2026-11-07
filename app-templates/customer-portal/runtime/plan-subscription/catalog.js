@@ -77,7 +77,6 @@
     var planCodes = settings.planCodes || [];
     var expansionCodes = settings.siteExpansionCodes || [];
     var weatherCode = settings.weatherCode || "";
-    var maxima = settings.maximumByPlanCode || {};
     var rows = Array.isArray(data && data.prices) ? data.prices : [];
     var currency = settings.currency || "";
     var products = {};
@@ -126,7 +125,7 @@
           description: description,
           features: FEATURE_ATTRIBUTES.map(function (code) { return localized(attrs[code], locale); }).filter(Boolean),
           included: positiveIntegerString(value(attrs.ACTIVE_PROPERTIES_INCLUDED)),
-          maximum: Number.isInteger(maxima[product.code]) ? maxima[product.code] : null,
+          maximum: positiveIntegerString(value(attrs.ACTIVE_PROPERTIES_MAXIMUM)),
           compatibility: idList(value(attrs.COMPATIBILITY)),
           prices: entry.prices,
           featured: state.indexOf("featured") !== -1,

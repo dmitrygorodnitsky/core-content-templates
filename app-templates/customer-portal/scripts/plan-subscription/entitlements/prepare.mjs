@@ -33,15 +33,7 @@ function validateConfig(config) {
   assert.equal(config.coverage.startSource, 'CONFIRMED_PAYMENT_TIMESTAMP');
   assert.ok(config.policyIntents.every(intent => intent.enabled === false && intent.operation === null));
   assert.ok(config.booleanFeatures.every(rule => rule.missingValue === false));
-  const maximum = config.propertyCapacity.overallPlanMaximum;
-  assert.equal(maximum.source, 'TEMPORARY_CONFIG');
-  assert.equal(maximum.status, 'CONFIGURED_PENDING_MODEL_MIGRATION');
-  assert.equal(maximum.allowMarketingTextParsing, false);
-  assert.deepEqual(Object.keys(maximum.byPlanCode).sort(), [...config.plans.productCodes].sort(), 'Every allowed plan needs an explicit maximum');
-  for (const [code, value] of Object.entries(maximum.byPlanCode)) {
-    positiveInteger(value, code + ' maximum');
-    assert.ok(value <= MAX_QUANTITY, code + ' maximum exceeds Integer range');
-  }
+  assert.equal(config.propertyCapacity.maximumAttribute, 'ACTIVE_PROPERTIES_MAXIMUM');
   const codes = [...config.booleanFeatures, ...config.levels].map(rule => rule.definitionCode);
   codes.push(config.propertyCapacity.definitionCode, config.addons.weather.featureDefinitionCode,
     config.addons.weather.limitDefinitionCode);
@@ -149,9 +141,10 @@ export function prepareConfiguration(catalog, config) {
     assert.ok(Array.isArray(compatibleIds) && compatibleIds.every(Number.isInteger), 'Structured compatibility is missing');
     const profile = { productCode: code, grantType: 'PURCHASED', features, levels,
       includedProperties: positiveInteger(values.get(capacity.includedAttribute), code + '.' + capacity.includedAttribute, true),
-      overallMaximum: capacity.overallPlanMaximum.byPlanCode[code], maximumSource: capacity.overallPlanMaximum.source,
+      overallMaximum: positiveInteger(values.get(capacity.maximumAttribute), code + '.' + capacity.maximumAttribute), maximumSource: 'PRODUCT_ATTRIBUTE',
       compatibleAddonCodes: allowedAddonCodes.filter(addonCode => compatibleIds.includes(lookup(catalog, config, addonCode).id)) };
-    assert.ok(profile.includedProperties <= profile.overallMaximum, 'Included Properties exceed the configured plan maximum');
+    assert.ok(profile.overallMaximum <= MAX_QUANTITY, code + ' maximum exceeds Integer range');
+    assert.ok(profile.includedProperties <= profile.overallMaximum, 'Included Properties exceed the plan maximum');
     return { ...profile, profileDigest: fingerprint({ config, profile }) };
   });
 
@@ -196,7 +189,7 @@ export function previewSelection(catalog, config, selection) {
       assert.ok(Number.isSafeInteger(capacity), 'Property capacity overflow');
     } else weatherCount = quantity;
   }
-  assert.ok(capacity <= plan.overallMaximum, 'Purchased Properties capacity exceeds configured plan maximum');
+  assert.ok(capacity <= plan.overallMaximum, 'Purchased Properties capacity exceeds the plan maximum');
   assert.ok(weatherCount <= capacity, 'Weather count exceeds purchased Property capacity');
   return { mode: 'PREVIEW_ONLY', grantIssuanceEnabled: false, paymentEnabled: false,
     planCode: plan.productCode, profileDigest: plan.profileDigest, billingPeriod: selection.billingPeriod,

@@ -604,7 +604,7 @@ public class MAIN_CLASS {
         if (!expansionSelected && packs != 0 || !weatherSelected && weatherCount != 0) {
             throw new ApplicationException("Quantity must be empty or zero when its add-on is not selected");
         }
-        long maximum = propertyMaximum(plan.getCode(), capacity);
+        long maximum = propertyMaximum(plan, capacity);
         if (weatherCount > capacity) throw new ApplicationException("Weather quantity exceeds purchased Active Properties capacity");
         BigDecimal subtotal = BigDecimal.ZERO;
         for (Map<String, Object> line : lines) subtotal = subtotal.add(new BigDecimal(line.get("lineAmount").toString()));
@@ -624,7 +624,7 @@ public class MAIN_CLASS {
         result.put("weatherPropertyCount", weatherCount);
         result.put("activePropertiesIncluded", included);
         result.put("purchasedPropertyCapacity", capacity);
-        result.put("capacityValidation", "VALIDATED_CONFIG_MAXIMUM");
+        result.put("capacityValidation", "VALIDATED_PRODUCT_MAXIMUM");
         result.put("overallPropertyMaximum", maximum);
         result.put("routingOptimizationIncluded", Boolean.TRUE.equals(plan.findFirstAttributeValue("ROUTE_OPTIMIZATION")));
         result.put("lines", lines);
@@ -653,20 +653,14 @@ public class MAIN_CLASS {
         } catch (Exception failure) { throw new ApplicationException("Add-on quantity must be a nonnegative integer"); }
     }
 
-    private long propertyMaximum(String planCode, long capacity) {
-        Script helper = scriptManager.getByCode(SCRIPT);
-        Map<String, Object> configuration = objectMap(helper.getMetadata().get("ENTITLEMENT_CHECKOUT_CONFIG"));
-        Map<String, Object> rule = objectMap(configuration.get("overallPlanMaximum"));
-        Object raw = objectMap(rule.get("byPlanCode")).get(planCode);
-        if (!"TEMPORARY_CONFIG".equals(rule.get("source")) || !"CONFIGURED_PENDING_MODEL_MIGRATION".equals(rule.get("status"))
-                || !Boolean.FALSE.equals(rule.get("allowMarketingTextParsing")) || !(raw instanceof Number)) {
-            throw new ApplicationException("Explicit configured Properties maximum is required for this plan");
-        }
+    private long propertyMaximum(Product plan, long capacity) {
+        Object raw = plan.findFirstAttributeValue("ACTIVE_PROPERTIES_MAXIMUM");
+        if (!(raw instanceof Number)) throw new ApplicationException("The plan has no Active Properties maximum in the catalog");
         long maximum;
         try { maximum = new BigDecimal(raw.toString()).longValueExact(); }
-        catch (RuntimeException failure) { throw new ApplicationException("Configured Properties maximum must be a positive integer"); }
-        if (maximum <= 0 || maximum > Integer.MAX_VALUE) throw new ApplicationException("Configured Properties maximum must be a positive integer");
-        if (capacity <= 0 || capacity > maximum) throw new ApplicationException("Purchased Properties capacity exceeds configured plan maximum: {}", maximum);
+        catch (RuntimeException failure) { throw new ApplicationException("Catalog Active Properties maximum must be a positive integer"); }
+        if (maximum <= 0 || maximum > Integer.MAX_VALUE) throw new ApplicationException("Catalog Active Properties maximum must be a positive integer");
+        if (capacity <= 0 || capacity > maximum) throw new ApplicationException("Purchased Properties capacity exceeds the plan maximum: {}", maximum);
         return maximum;
     }
 
@@ -769,8 +763,8 @@ public class MAIN_CLASS {
         result.put("planCode", plan.getCode()); result.put("billingPeriod", period);
         result.put("features", features); result.put("levels", levels);
         result.put("propertyCapacity", Map.of("definitionCode", config.get("propertyDefinitionCode"), "included", included,
-                "expansionPacks", packs, "expansionPackSize", packSize, "limit", capacity, "overallMaximum", propertyMaximum(plan.getCode(), capacity),
-                "maximumSource", "TEMPORARY_CONFIG", "maximumValidation", "VALIDATED_CONFIG_MAXIMUM"));
+                "expansionPacks", packs, "expansionPackSize", packSize, "limit", capacity, "overallMaximum", propertyMaximum(plan, capacity),
+                "maximumSource", "PRODUCT_ATTRIBUTE", "maximumValidation", "VALIDATED_PRODUCT_MAXIMUM"));
         result.put("weather", Map.of("selected", weatherSelected, "featureDefinitionCode", config.get("weatherFeatureDefinitionCode"),
                 "limitDefinitionCode", config.get("weatherLimitDefinitionCode"), "propertyCount", weatherCount));
         result.put("coverage", config.get("coverage")); result.put("grantIssuanceEnabled", false); result.put("enforcementVerified", false);
@@ -1711,7 +1705,7 @@ public class MAIN_CLASS {
         }
     
         private static boolean validatedPropertyMaximum(Map<String, Object> capacity) {
-            if (!"VALIDATED_CONFIG_MAXIMUM".equals(capacity.get("maximumValidation")) || !"TEMPORARY_CONFIG".equals(capacity.get("maximumSource"))) return false;
+            if (!"VALIDATED_PRODUCT_MAXIMUM".equals(capacity.get("maximumValidation")) || !"PRODUCT_ATTRIBUTE".equals(capacity.get("maximumSource"))) return false;
             try {
                 long[] values = new long[5]; int i = 0;
                 for (String field : List.of("included", "expansionPacks", "expansionPackSize", "limit", "overallMaximum")) {
@@ -1878,8 +1872,8 @@ public class MAIN_CLASS {
             Map<String, Object> capacity = map(snapshot.get("propertyCapacity"));
             long included = integer(capacity.get("included")), packs = integer(capacity.get("expansionPacks")), size = integer(capacity.get("expansionPackSize")), limit = integer(capacity.get("limit")), maximum = integer(capacity.get("overallMaximum"));
             if (included <= 0 || packs < 0 || size < 0 || packs > 0 && size == 0 || limit != Math.addExact(included, Math.multiplyExact(packs, size))
-                    || limit > maximum || maximum > Integer.MAX_VALUE || !"VALIDATED_CONFIG_MAXIMUM".equals(capacity.get("maximumValidation"))
-                    || !"TEMPORARY_CONFIG".equals(capacity.get("maximumSource"))) throw new IllegalArgumentException("Unverified Properties allowance");
+                    || limit > maximum || maximum > Integer.MAX_VALUE || !"VALIDATED_PRODUCT_MAXIMUM".equals(capacity.get("maximumValidation"))
+                    || !"PRODUCT_ATTRIBUTE".equals(capacity.get("maximumSource"))) throw new IllegalArgumentException("Unverified Properties allowance");
             allowance(rows, capacity.get("definitionCode"), Long.toString(limit), "INTEGER", "PURCHASED", true);
             Map<String, Object> weather = map(snapshot.get("weather"));
             long count = integer(weather.get("propertyCount"));

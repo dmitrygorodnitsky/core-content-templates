@@ -11,7 +11,7 @@ public final class OnboardingExecutionTest {
     private static Map<String,Object> snapshot() {
         return m("billingPeriod","MONTHLY","features",List.of(m("definitionCode","SERVICEWAND.FEATURE.A","value",false),m("definitionCode","SERVICEWAND.FEATURE.FULL-FEATURED_MOBILE_APP","value",true)),
                 "levels",List.of(m("definitionCode","SERVICEWAND.LEVEL.X","value","Individual and bulk reassignment","enabled",true)),
-                "propertyCapacity",m("definitionCode","SERVICEWAND.PROPERTIES.MAX_ACTIVE","included",50,"expansionPacks",2,"expansionPackSize",50,"limit",150,"overallMaximum",500,"maximumSource","TEMPORARY_CONFIG","maximumValidation","VALIDATED_CONFIG_MAXIMUM"),
+                "propertyCapacity",m("definitionCode","SERVICEWAND.PROPERTIES.MAX_ACTIVE","included",50,"expansionPacks",2,"expansionPackSize",50,"limit",150,"overallMaximum",500,"maximumSource","PRODUCT_ATTRIBUTE","maximumValidation","VALIDATED_PRODUCT_MAXIMUM"),
                 "weather",m("selected",true,"propertyCount",120,"featureDefinitionCode","SERVICEWAND.FEATURE.WEATHER_INTELLIGENCE","limitDefinitionCode","SERVICEWAND.WEATHER.MAX_PROPERTIES"));
     }
     @SuppressWarnings("unchecked") private static Map<String,Object> map(Object raw){return (Map<String,Object>)raw;}

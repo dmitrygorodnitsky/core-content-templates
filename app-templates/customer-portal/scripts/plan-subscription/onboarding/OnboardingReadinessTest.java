@@ -141,7 +141,7 @@ public final class OnboardingReadinessTest {
         map(config.get("quoteLinkPolicy")).put("implementationStatus", "READY");
         model.put("quoteExpiryPolicy", m("status", "READY", "sourceFingerprintsVerified", true));
         Map<String, Object> capacity = map(map(purchase.get("entitlementSnapshot")).get("propertyCapacity"));
-        capacity.put("maximumValidation", "VALIDATED_CONFIG_MAXIMUM"); capacity.put("maximumSource", "TEMPORARY_CONFIG"); capacity.put("overallMaximum", 1000);
+        capacity.put("maximumValidation", "VALIDATED_PRODUCT_MAXIMUM"); capacity.put("maximumSource", "PRODUCT_ATTRIBUTE"); capacity.put("overallMaximum", 1000);
         report = OnboardingReadiness.evaluate(purchase, model, config);
         check(Boolean.TRUE.equals(report.get("configurationReady")) && Boolean.FALSE.equals(report.get("canProvision")), "Resolved sources still cannot enable provisioning or payment");
         check(((List<?>) report.get("warnings")).size() == 3 && ((List<?>) report.get("executionGates")).contains("PROVISIONING_EXECUTOR_NOT_ENABLED"), "Deferred verification remains distinct from execution gates");
