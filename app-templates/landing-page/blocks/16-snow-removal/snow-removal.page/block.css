@@ -4785,3 +4785,664 @@ main .plan-switch { display: none; }
   main .inv-stage { padding: 0.5rem; }
   main .inv-doc { padding: 1rem; }
 }
+main .closing--chips {
+  gap: 2rem;
+}
+main .cap-chips--row .cap-chip {
+  padding: 0.5rem 0.875rem;
+  font-size: 0.875rem;
+  white-space: nowrap;
+}
+@media (width >= 64rem) {
+  main .cap-chips--row {
+    flex-wrap: nowrap;
+    max-width: none;
+  }
+  main .cap-chips--row .cap-chips-label {
+    display: none;
+  }
+}
+main .tile-grid--one {
+  grid-template-columns: minmax(0, 1fr);
+}
+main .billing-switch {
+  display: inline-grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.25rem;
+  padding: 0.25rem;
+  border-radius: var(--radius-pill);
+  background: #FFFFFF;
+  box-shadow: inset 0 0 0 1px #E0E8F4, 0 0.75rem 1.5rem -1.25rem rgba(15, 30, 60, 0.4);
+}
+main .pricing .billing-switch:not(.billing-switch--addons) {
+  display: grid;
+  width: max-content;
+  margin: 0 auto 1.25rem;
+}
+main .billing-switch button {
+  min-width: 6.5rem;
+  min-height: 2.5rem;
+  padding: 0 1.25rem;
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: transparent;
+  font: inherit;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--body);
+  cursor: pointer;
+}
+main .billing-switch button[aria-checked="true"] {
+  background: #1B1D25;
+  color: #FFFFFF;
+}
+main .billing-switch button:disabled {
+  cursor: default;
+}
+main .billing-switch button:disabled[aria-checked="false"] {
+  opacity: 0.45;
+}
+main .plan-expand, main .cell-expand {
+  display: inline-flex;
+  align-self: flex-start;
+  margin-top: 0.375rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #2B6FD6;
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+main .cell-expand {
+  display: block;
+  width: max-content;
+  font-size: 0.8125rem;
+}
+main .plan-expand:hover, main .cell-expand:hover {
+  color: #1B1D25;
+}
+main .compare {
+  --compare-cols: 34% repeat(4, minmax(0, 1fr));
+}
+main .matrix {
+  min-width: 0;
+}
+main .matrix thead {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+main .compare-head {
+  position: sticky;
+  top: var(--snow-sticky-top, 5.25rem);
+  z-index: 6;
+  display: grid;
+  grid-template-columns: var(--compare-cols);
+  align-items: stretch;
+  margin-top: 2rem;
+  padding: 0.75rem 1rem;
+  border-radius: 1.25rem;
+  background: #FFFFFF;
+  box-shadow: inset 0 0 0 1px #E0E8F4, 0 1.25rem 2.5rem -2rem rgba(15, 30, 60, 0.55);
+}
+main .compare-head-lead {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.25rem;
+  padding: 0.5rem 1.25rem;
+}
+main .compare-head-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  line-height: 1.15;
+  color: var(--heading);
+}
+main .compare-head-billing {
+  font-size: 0.9375rem;
+  color: var(--body);
+}
+main .compare-head-base {
+  font-size: 0.8125rem;
+  color: var(--muted);
+}
+main .compare-head-plan {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+  min-width: 0;
+  padding: 0.75rem 0.75rem 0.75rem 1.25rem;
+  border-radius: 1rem;
+}
+main .compare-head-plan--pick {
+  background: rgba(140, 194, 255, 0.16);
+  box-shadow: inset 0 0 0 2px var(--pick);
+}
+main .compare-head-name {
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: var(--heading);
+}
+main .compare-head-price {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.25rem;
+  min-height: 2.25rem;
+  color: var(--heading);
+}
+main .compare-head-price .currency {
+  font-size: 0.6875rem;
+  font-weight: 500;
+  color: var(--muted);
+}
+main .compare-head-price b, main .compare-head-talk {
+  font-size: clamp(1.25rem, 2vw, 1.75rem);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+main .compare-head-price small {
+  font-size: 0.8125rem;
+  color: var(--body);
+}
+main .compare-head-btn {
+  width: 100%;
+  min-width: 0;
+  height: 2.5rem;
+  margin-top: auto;
+  padding: 0 0.75rem;
+  font-size: 0.8125rem;
+}
+main .compare-head-btn span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+main .plan-switch-bar {
+  display: none;
+}
+main .addons {
+  margin-top: clamp(3rem, 6vw, 4.5rem);
+  padding: clamp(1.5rem, 3vw, 2.5rem);
+  border-radius: calc(var(--radius) + 0.5rem);
+  background: linear-gradient(135deg, #F4F8FF 0%, #FAF7FF 100%);
+  box-shadow: inset 0 0 0 1px rgba(140, 194, 255, 0.45);
+  scroll-margin-top: 6.5rem;
+}
+main .addons-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1.5rem;
+}
+main .addons-head .title {
+  margin-top: 0.75rem;
+}
+main .addons-intro {
+  margin-top: 0.75rem;
+  font-size: var(--type-lead-size);
+  color: var(--body);
+}
+main .addons-plans {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.25rem;
+  margin-top: 1.75rem;
+  padding: 0.25rem;
+  border-radius: var(--radius-pill);
+  background: #FFFFFF;
+  box-shadow: inset 0 0 0 1px #E0E8F4;
+}
+main .addons-plans button {
+  min-height: 3rem;
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: transparent;
+  font: inherit;
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--body);
+  cursor: pointer;
+}
+main .addons-plans button[aria-checked="true"] {
+  background: rgba(79, 149, 255, 0.16);
+  color: #1B1D25;
+  box-shadow: inset 0 0 0 1px rgba(79, 149, 255, 0.45);
+}
+main .addons-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(18rem, 22rem);
+  gap: 1.25rem;
+  align-items: start;
+  margin-top: 1.25rem;
+}
+main .addons-cards {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+main .addon-card {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  min-width: 0;
+  padding: 1.5rem;
+  border-radius: var(--radius);
+  background: #FFFFFF;
+  box-shadow: inset 0 0 0 1px #E6ECF5, 0 1rem 2rem -2rem rgba(15, 30, 60, 0.5);
+  transition: box-shadow var(--transition-duration, 0.4s) ease;
+}
+main .addon-card.is-highlighted {
+  box-shadow: inset 0 0 0 2px var(--sky), 0 0 0 0.375rem rgba(79, 149, 255, 0.18);
+}
+main .addon-top {
+  display: flex;
+  gap: 0.875rem;
+  align-items: flex-start;
+}
+main .addon-glyph {
+  display: grid;
+  flex-shrink: 0;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 50%;
+  background: rgba(79, 149, 255, 0.12);
+  color: #2B6FD6;
+}
+main .addon-glyph svg {
+  width: 1.375rem;
+  height: 1.375rem;
+}
+main .addon-copy {
+  min-width: 0;
+  flex: 1;
+}
+main .addon-copy h3 {
+  font-size: 1.1875rem;
+  font-weight: 600;
+  line-height: 1.25;
+  color: var(--heading);
+}
+main .addon-copy p {
+  margin-top: 0.25rem;
+  font-size: 0.875rem;
+  line-height: 1.45;
+  color: var(--body);
+}
+main .addon-copy .addon-meta {
+  font-size: 0.8125rem;
+  color: var(--muted);
+}
+main .addon-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+}
+main .addon-qty {
+  display: inline-grid;
+  grid-template-columns: 2.5rem 3rem 2.5rem;
+  align-items: center;
+  height: 2.75rem;
+  border-radius: 0.75rem;
+  background: #FFFFFF;
+  box-shadow: inset 0 0 0 1px #DCE4F0;
+}
+main .addon-qty button {
+  height: 100%;
+  border: 0;
+  background: transparent;
+  font: inherit;
+  font-size: 1.25rem;
+  color: var(--heading);
+  cursor: pointer;
+}
+main .addon-qty button:disabled {
+  color: #C5CCD8;
+  cursor: not-allowed;
+}
+main .addon-qty output {
+  font-size: 1.125rem;
+  font-weight: 600;
+  text-align: center;
+  color: var(--heading);
+}
+main .addon-price {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+  min-width: 0;
+}
+main .addon-price-main {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.25rem;
+  color: var(--heading);
+}
+main .addon-price-main b {
+  font-size: 1.625rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+main .addon-price-main small, main .addon-sub {
+  font-size: 0.8125rem;
+  color: var(--body);
+}
+main .addon-total {
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--heading);
+}
+main .addon-bar {
+  height: 0.5rem;
+  border-radius: var(--radius-pill);
+  background: #E7EEFA;
+  overflow: hidden;
+}
+main .addon-bar span {
+  display: block;
+  width: 0;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--sky);
+  transition: width 0.3s ease;
+}
+main .addon-limit, main .addon-hint, main .addon-soon-note {
+  font-size: 0.8125rem;
+  line-height: 1.45;
+  color: var(--muted);
+}
+main .addon-limit.is-limit {
+  color: #A35F0C;
+}
+main .addon-card--soon {
+  background: rgba(255, 255, 255, 0.6);
+}
+main .addon-card--soon .addon-glyph {
+  background: #EEF1F6;
+  color: var(--muted);
+}
+main .addon-card--soon .addon-copy h3, main .addon-card--soon .addon-copy p {
+  color: var(--muted);
+}
+main .addon-weather-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem 1rem;
+}
+main .addon-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.625rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--heading);
+  cursor: pointer;
+}
+main .addon-toggle input {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+}
+main .addon-toggle-track {
+  position: relative;
+  width: 2.75rem;
+  height: 1.5rem;
+  border-radius: var(--radius-pill);
+  background: #D5DCE8;
+  transition: background 0.2s ease;
+}
+main .addon-toggle-track::after {
+  content: "";
+  position: absolute;
+  top: 0.1875rem;
+  left: 0.1875rem;
+  width: 1.125rem;
+  height: 1.125rem;
+  border-radius: 50%;
+  background: #FFFFFF;
+  box-shadow: 0 1px 3px rgba(15, 30, 60, 0.3);
+  transition: transform 0.2s ease;
+}
+main .addon-toggle input:checked + .addon-toggle-track {
+  background: var(--sky);
+}
+main .addon-toggle input:checked + .addon-toggle-track::after {
+  transform: translateX(1.25rem);
+}
+main .addon-toggle input:focus-visible + .addon-toggle-track {
+  outline: 2px solid var(--sky);
+  outline-offset: 2px;
+}
+main .addon-toggle input:disabled ~ * {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+main .addon-weather-count {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem 1rem;
+  font-size: 0.875rem;
+  color: var(--body);
+}
+main .addon-weather-count input {
+  width: 7.5rem;
+  height: 2.75rem;
+  padding: 0 0.875rem;
+  border: 1px solid #DCE4F0;
+  border-radius: 0.75rem;
+  font: inherit;
+  font-size: 1rem;
+  color: var(--heading);
+}
+main .addon-formula {
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: var(--heading);
+}
+main .addons-panel {
+  position: sticky;
+  top: var(--snow-sticky-top, 5.25rem);
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
+  padding: 1.75rem;
+  border-radius: var(--radius);
+  background: #FFFFFF;
+  box-shadow: inset 0 0 0 1px rgba(140, 194, 255, 0.6), 0 1.5rem 3rem -2.5rem rgba(43, 111, 214, 0.7);
+}
+main .addons-panel-title {
+  font-size: 1.625rem;
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--heading);
+}
+main .addons-panel .pill {
+  align-self: flex-start;
+  font-size: 0.875rem;
+}
+main .addons-panel-included {
+  font-size: 0.9375rem;
+  color: var(--body);
+}
+main .addons-lines {
+  display: grid;
+  border-top: 1px solid #E6ECF5;
+}
+main .addons-line {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid #E6ECF5;
+  font-size: 0.9375rem;
+  color: var(--heading);
+}
+main .addons-line b {
+  font-weight: 500;
+  white-space: nowrap;
+}
+main .addons-notice {
+  padding: 0.75rem 0.875rem;
+  border-radius: 0.75rem;
+  background: rgba(255, 167, 44, 0.14);
+  font-size: 0.8125rem;
+  line-height: 1.45;
+  color: #7A4A0B;
+}
+main .addons-total {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+}
+main .addons-total span {
+  display: block;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--heading);
+}
+main .addons-total small {
+  display: block;
+  margin-top: 0.25rem;
+  font-size: 0.8125rem;
+  color: var(--body);
+}
+main .addons-total b {
+  font-size: clamp(1.75rem, 3vw, 2.25rem);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--heading);
+  white-space: nowrap;
+}
+main .addons-continue {
+  width: 100%;
+  min-width: 0;
+}
+main .addons-note {
+  font-size: 0.8125rem;
+  line-height: 1.45;
+  text-align: center;
+  color: var(--muted);
+}
+main .addons[data-state="loading"] [data-pack-price], main .addons[data-state="offline"] [data-pack-price] {
+  color: var(--muted);
+}
+@media (width < 64rem) {
+  main .addons-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  main .addons-panel {
+    position: static;
+  }
+}
+@media (width < 48rem) {
+  main .compare-head {
+    display: none;
+  }
+  main .plan-switch-bar {
+    position: sticky;
+    top: 3.75rem;
+    z-index: 5;
+    display: grid;
+    gap: 0.375rem;
+    margin: 1.75rem 0 0;
+  }
+  main .plan-switch-bar .plan-switch {
+    position: static;
+    margin: 0;
+  }
+  main .plan-switch-buy {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    padding: 0.375rem 0.375rem 0.375rem 1rem;
+    border-radius: var(--radius-pill);
+    background: #FFFFFF;
+    box-shadow: 0 0.75rem 1.5rem -1rem rgba(15, 30, 60, 0.45), inset 0 0 0 1px #E0E8F4;
+  }
+  main .plan-switch-buy[hidden] {
+    display: none;
+  }
+  main .plan-switch-price {
+    min-width: 0;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--heading);
+    white-space: nowrap;
+  }
+  main .plan-switch-choose {
+    min-width: 0;
+    height: 2.25rem;
+    padding: 0 1rem;
+    font-size: 0.8125rem;
+  }
+  main .addons {
+    padding: 1.25rem 1rem;
+  }
+  main .addons-plans {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    border-radius: 1.25rem;
+  }
+  main .addons-plans button {
+    min-height: 2.5rem;
+    font-size: 0.875rem;
+  }
+  main .addons-cards {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  main .addon-card {
+    padding: 1.25rem;
+  }
+  main .addons-panel {
+    padding: 1.25rem;
+  }
+  main .billing-switch--addons {
+    width: 100%;
+  }
+}
+@media (width >= 48rem) {
+  main .matrix tbody tr:first-child .col-pick {
+    border-top: 2px solid var(--pick);
+    border-radius: 1rem 1rem 0 0;
+  }
+  main .matrix tbody tr:first-child:last-child .col-pick {
+    border-radius: 1rem;
+  }
+}
+main .addons [hidden], main .plan-switch-bar [hidden] {
+  display: none;
+}
+@media (width < 48rem) {
+  main .plan-switch-bar {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  main .plan-switch-price {
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  main .plan-switch-choose {
+    flex-shrink: 0;
+  }
+}
+@media (width < 48rem) {
+  main .addon-card--soon .addon-top {
+    flex-wrap: wrap;
+  }
+  main .addon-card--soon .addon-copy {
+    flex-basis: calc(100% - 3.625rem);
+  }
+  main .addon-card--soon .addon-top .pill {
+    margin-left: 3.625rem;
+  }
+}

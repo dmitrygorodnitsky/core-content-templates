@@ -8,9 +8,11 @@
   "theme": "light",
   "source": {
     "primary": "Approved Snow Removal landing v4 (SEO-checked, 2026-11-07 additions), imported into this block",
-    "decision": "Simple monoblock between header.corporate-reference and footer.corporate-reference; illustrative UI mockups keep their markup, prose is parameterized.",
+    "decision": "Simple monoblock between header.corporate-reference and footer.corporate-reference; illustrative UI mockups keep their markup, prose is parameterized. Pricing and the Add-ons configurator run on the subscription flow's own catalog.js and selection.js, so the landing and checkout apply the same catalog rules.",
     "localScripts": [
-      "blocks/14-pricing/_shared/pricing-runtime.js"
+      "../customer-portal/runtime/plan-subscription/core.js",
+      "../customer-portal/runtime/plan-subscription/catalog.js",
+      "../customer-portal/runtime/plan-subscription/selection.js"
     ]
   },
   "depends_on": {
@@ -533,75 +535,11 @@
       "preserve_default": true
     },
     {
-      "code": "pricing_api_base",
-      "type": "STRING",
-      "name": "Pricing Api Base",
-      "description": "core-pim API base path.",
-      "default": "/core-pim/api",
-      "preserve_default": true
-    },
-    {
       "code": "pricing_organization",
       "type": "STRING",
       "name": "Pricing Organization",
       "description": "Catalog organization code.",
       "default": "SERVICEWAND",
-      "preserve_default": true
-    },
-    {
-      "code": "pricing_currency",
-      "type": "STRING",
-      "name": "Pricing Currency",
-      "description": "Catalog currency; rows in another currency are ignored and the reference values stay.",
-      "default": "USD",
-      "preserve_default": true
-    },
-    {
-      "code": "pricing_price_type_code",
-      "type": "STRING",
-      "name": "Pricing Price Type Code",
-      "description": "Catalog price type code.",
-      "default": "RECURRENT",
-      "preserve_default": true
-    },
-    {
-      "code": "pricing_price_attribute_code",
-      "type": "STRING",
-      "name": "Pricing Price Attribute Code",
-      "description": "Price attribute that selects the billing interval.",
-      "default": "INTERVAL",
-      "preserve_default": true
-    },
-    {
-      "code": "pricing_price_attribute_values",
-      "type": "STRING",
-      "name": "Pricing Price Attribute Values",
-      "description": "Billing interval values requested from the catalog.",
-      "default": "1 month",
-      "preserve_default": true
-    },
-    {
-      "code": "pricing_product_type_code",
-      "type": "STRING",
-      "name": "Pricing Product Type Code",
-      "description": "Catalog product type of the plans.",
-      "default": "SERVICEWAND_SAAS",
-      "preserve_default": true
-    },
-    {
-      "code": "pricing_capacity_attribute_code",
-      "type": "STRING",
-      "name": "Pricing Capacity Attribute Code",
-      "description": "Product attribute holding the included active properties.",
-      "default": "ACTIVE_PROPERTIES_INCLUDED",
-      "preserve_default": true
-    },
-    {
-      "code": "pricing_addon_product_type_code",
-      "type": "STRING",
-      "name": "Pricing Addon Product Type Code",
-      "description": "Catalog product type of the Weather add-on.",
-      "default": "FEATURE_ADD_ON",
       "preserve_default": true
     },
     {
@@ -2038,12 +1976,6 @@
     },
     {
       "code": "mobile_text_16",
-      "type": "LOCALIZED_STRING_SS",
-      "name": "Mobile paragraph",
-      "description": "Paragraph in the Mobile section."
-    },
-    {
-      "code": "mobile_text_17",
       "type": "LOCALIZED_STRING_SS",
       "name": "Mobile paragraph",
       "description": "Paragraph in the Mobile section."
@@ -3493,42 +3425,6 @@
       "description": "Text in the Pricing section."
     },
     {
-      "code": "pricing_label_38",
-      "type": "LOCALIZED_STRING_SS",
-      "name": "Pricing text",
-      "description": "Text in the Pricing section."
-    },
-    {
-      "code": "pricing_h3_14",
-      "type": "LOCALIZED_STRING_SS",
-      "name": "Pricing H3 heading",
-      "description": "H3 heading in the Pricing section."
-    },
-    {
-      "code": "pricing_text_24",
-      "type": "LOCALIZED_STRING_SS",
-      "name": "Pricing paragraph",
-      "description": "Paragraph in the Pricing section."
-    },
-    {
-      "code": "pricing_label_39",
-      "type": "LOCALIZED_STRING_SS",
-      "name": "Pricing text",
-      "description": "Text in the Pricing section."
-    },
-    {
-      "code": "pricing_text_25",
-      "type": "LOCALIZED_STRING_SS",
-      "name": "Pricing paragraph",
-      "description": "Paragraph in the Pricing section."
-    },
-    {
-      "code": "pricing_label_40",
-      "type": "LOCALIZED_STRING_SS",
-      "name": "Pricing text",
-      "description": "Text in the Pricing section."
-    },
-    {
       "code": "pricing_text_26",
       "type": "LOCALIZED_STRING_SS",
       "name": "Pricing paragraph",
@@ -3551,42 +3447,6 @@
       "type": "LOCALIZED_STRING_SS",
       "name": "Expansion paragraph",
       "description": "Paragraph in the Expansion section."
-    },
-    {
-      "code": "expansion_h3_1",
-      "type": "LOCALIZED_STRING_SS",
-      "name": "Expansion H3 heading",
-      "description": "H3 heading in the Expansion section."
-    },
-    {
-      "code": "expansion_text_3",
-      "type": "LOCALIZED_STRING_SS",
-      "name": "Expansion paragraph",
-      "description": "Paragraph in the Expansion section."
-    },
-    {
-      "code": "expansion_label_1",
-      "type": "LOCALIZED_STRING_SS",
-      "name": "Expansion text",
-      "description": "Text in the Expansion section."
-    },
-    {
-      "code": "expansion_h3_2",
-      "type": "LOCALIZED_STRING_SS",
-      "name": "Expansion H3 heading",
-      "description": "H3 heading in the Expansion section."
-    },
-    {
-      "code": "expansion_text_4",
-      "type": "LOCALIZED_STRING_SS",
-      "name": "Expansion paragraph",
-      "description": "Paragraph in the Expansion section."
-    },
-    {
-      "code": "expansion_label_2",
-      "type": "LOCALIZED_STRING_SS",
-      "name": "Expansion text",
-      "description": "Text in the Expansion section."
     },
     {
       "code": "expansion_h3_3",
@@ -4007,6 +3867,450 @@
       "type": "STRING",
       "name": "Vela Sans 600 font",
       "description": "Media library asset id of vela-sans-600.woff2, served from /core/api/media-asset/{id}/get."
+    },
+    {
+      "code": "mobile_chip_1",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Mobile workforce chip 1",
+      "description": "Capability chip under the Mobile Workforce cards."
+    },
+    {
+      "code": "mobile_chip_2",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Mobile workforce chip 2",
+      "description": "Capability chip under the Mobile Workforce cards."
+    },
+    {
+      "code": "mobile_chip_3",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Mobile workforce chip 3",
+      "description": "Capability chip under the Mobile Workforce cards."
+    },
+    {
+      "code": "mobile_chip_4",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Mobile workforce chip 4",
+      "description": "Capability chip under the Mobile Workforce cards."
+    },
+    {
+      "code": "mobile_chip_5",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Mobile workforce chip 5",
+      "description": "Capability chip under the Mobile Workforce cards."
+    },
+    {
+      "code": "mobile_chip_6",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Mobile workforce chip 6",
+      "description": "Capability chip under the Mobile Workforce cards."
+    },
+    {
+      "code": "pricing_period_aria",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Billing period switch label",
+      "description": "Accessible label of the Monthly / Yearly switch."
+    },
+    {
+      "code": "pricing_period_monthly",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Monthly billing label",
+      "description": "Monthly option of the billing period switch."
+    },
+    {
+      "code": "pricing_period_yearly",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Yearly billing label",
+      "description": "Yearly option of the billing period switch."
+    },
+    {
+      "code": "pricing_per_month",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Per month suffix",
+      "description": "Billing suffix after a monthly catalog price."
+    },
+    {
+      "code": "pricing_per_year",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Per year suffix",
+      "description": "Billing suffix after a yearly catalog price."
+    },
+    {
+      "code": "pricing_subscribe_url",
+      "type": "URL",
+      "name": "Subscription flow URL",
+      "description": "Purchase page that receives plan, period, packs and weather.",
+      "default": "/subscribe.html",
+      "preserve_default": true
+    },
+    {
+      "code": "pricing_plan_codes",
+      "type": "STRING",
+      "name": "Self-service plan codes",
+      "description": "Comma-separated core-pim plan codes that can be bought online; must equal the subscription flow rules.",
+      "default": "SERVICEWAND_FOUNDATION,SERVICEWAND_GROWTH,SERVICEWAND_PROFESSIONAL",
+      "preserve_default": true
+    },
+    {
+      "code": "pricing_expansion_codes",
+      "type": "STRING",
+      "name": "Site expansion product codes",
+      "description": "Comma-separated core-pim site expansion pack codes; must equal the subscription flow rules.",
+      "default": "SERVICEWAND_SAAS_PROPERTY_EXT_FOUNDATION,SERVICEWAND_SAAS_PROPERTY_EXT_GROWTH,SERVICEWAND_SAAS_PROPERTY_EXT_PRO",
+      "preserve_default": true
+    },
+    {
+      "code": "pricing_expand_label",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Expand capacity link",
+      "description": "Link under the included properties that opens Add-ons with this plan selected."
+    },
+    {
+      "code": "compare_head_title",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Comparison header title",
+      "description": "Title in the pinned comparison header."
+    },
+    {
+      "code": "compare_head_monthly",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Comparison monthly billing note",
+      "description": "Shown in the pinned comparison header while monthly prices are displayed."
+    },
+    {
+      "code": "compare_head_yearly",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Comparison yearly billing note",
+      "description": "Shown in the pinned comparison header while yearly prices are displayed."
+    },
+    {
+      "code": "compare_head_base",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Base plan prices note",
+      "description": "Marks the pinned header prices as base plan prices, not the Add-ons configuration."
+    },
+    {
+      "code": "compare_choose_1",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Choose Foundation button",
+      "description": "Pinned comparison header button that opens the purchase page for Foundation."
+    },
+    {
+      "code": "compare_choose_2",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Choose Growth button",
+      "description": "Pinned comparison header button that opens the purchase page for Growth."
+    },
+    {
+      "code": "compare_choose_3",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Choose Business button",
+      "description": "Pinned comparison header button that opens the purchase page for Business."
+    },
+    {
+      "code": "addons_expansion_meta",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Expansion included and pack size",
+      "description": "Placeholders: {included} properties in the plan, {size} properties per pack."
+    },
+    {
+      "code": "addons_per_pack_month",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pack price monthly suffix",
+      "description": "Suffix after the monthly price of one pack."
+    },
+    {
+      "code": "addons_per_pack_year",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pack price yearly suffix",
+      "description": "Suffix after the yearly price of one pack."
+    },
+    {
+      "code": "addons_packs_summary",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Selected packs summary",
+      "description": "Placeholders: {count} packs, {size} per pack, {added} properties, {amount} cost."
+    },
+    {
+      "code": "addons_packs_none",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "No packs selected",
+      "description": "Shown when the counter is at zero."
+    },
+    {
+      "code": "addons_capacity_total",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Total capacity",
+      "description": "Placeholder: {total} active properties."
+    },
+    {
+      "code": "addons_capacity_limit",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Plan capacity limit",
+      "description": "Placeholders: {max} properties, {plan} name."
+    },
+    {
+      "code": "addons_capacity_reached",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Plan capacity limit reached",
+      "description": "Shown when + is disabled. Placeholders: {plan}, {max}."
+    },
+    {
+      "code": "addons_expansion_unavailable",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Expansion not offered",
+      "description": "Shown when the selected plan has no self-service expansion. Placeholder: {plan}."
+    },
+    {
+      "code": "addons_weather_rate_month",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Weather monthly rate suffix",
+      "description": "Suffix after the monthly Weather rate."
+    },
+    {
+      "code": "addons_weather_rate_year",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Weather yearly rate suffix",
+      "description": "Suffix after the yearly Weather rate."
+    },
+    {
+      "code": "addons_weather_hint",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Weather billing rule",
+      "description": "Explains the Weather count. Placeholder: {capacity}."
+    },
+    {
+      "code": "addons_weather_formula",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Weather formula",
+      "description": "Placeholders: {count}, {rate}, {amount}, {period}."
+    },
+    {
+      "code": "addons_weather_off",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Weather off note",
+      "description": "Shown while Weather Intelligence is off."
+    },
+    {
+      "code": "addons_weather_capped",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Weather capped notice",
+      "description": "Shown when the Weather count is reduced to the capacity. Placeholder: {count}."
+    },
+    {
+      "code": "addons_packs_trimmed",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Packs reduced notice",
+      "description": "Shown when a plan change lowers the pack count. Placeholders: {plan}, {max}, {count}."
+    },
+    {
+      "code": "addons_packs_removed",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Packs removed notice",
+      "description": "Placeholder: {plan}."
+    },
+    {
+      "code": "addons_weather_removed",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Weather removed notice",
+      "description": "Placeholder: {plan}."
+    },
+    {
+      "code": "addons_period_month",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Month word",
+      "description": "Used in formulas."
+    },
+    {
+      "code": "addons_period_year",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Year word",
+      "description": "Used in formulas."
+    },
+    {
+      "code": "addons_panel_included",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Panel included capacity",
+      "description": "Placeholder: {count}."
+    },
+    {
+      "code": "addons_line_plan",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Panel plan line",
+      "description": "Placeholder: {plan}."
+    },
+    {
+      "code": "addons_line_packs",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Panel packs line",
+      "description": "Placeholder: {count}."
+    },
+    {
+      "code": "addons_line_weather",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Panel weather line",
+      "description": "Placeholder: {count}."
+    },
+    {
+      "code": "addons_total_month",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Monthly total label",
+      "description": "Total label while monthly billing is selected."
+    },
+    {
+      "code": "addons_total_year",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Yearly total label",
+      "description": "Total label while yearly billing is selected."
+    },
+    {
+      "code": "addons_continue",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Continue button",
+      "description": "Opens the purchase page with this configuration. Placeholder: {plan}."
+    },
+    {
+      "code": "addons_enterprise_note",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Enterprise note",
+      "description": "Shown when Enterprise is selected."
+    },
+    {
+      "code": "addons_loading",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Loading note",
+      "description": "Shown while the catalog loads."
+    },
+    {
+      "code": "addons_offline",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Offline note",
+      "description": "Shown when the catalog is unavailable."
+    },
+    {
+      "code": "addons_eyebrow",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Add-ons eyebrow",
+      "description": "Eyebrow above the Add-ons heading."
+    },
+    {
+      "code": "addons_h2",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Add-ons heading",
+      "description": "H2 of the Add-ons configurator."
+    },
+    {
+      "code": "addons_intro",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Add-ons intro",
+      "description": "Text under the Add-ons heading."
+    },
+    {
+      "code": "addons_plan_aria",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Add-ons plan switch label",
+      "description": "Accessible label of the Add-ons plan switch."
+    },
+    {
+      "code": "addons_expansion_h3",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Expansion card title",
+      "description": "H3 of the property expansion card."
+    },
+    {
+      "code": "addons_expansion_text",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Expansion card text",
+      "description": "Text of the property expansion card."
+    },
+    {
+      "code": "addons_packs_label",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Packs counter label",
+      "description": "Accessible label of the pack counter."
+    },
+    {
+      "code": "addons_decrease",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Decrease button label",
+      "description": "Accessible label of the − button."
+    },
+    {
+      "code": "addons_increase",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Increase button label",
+      "description": "Accessible label of the + button."
+    },
+    {
+      "code": "addons_soon",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Coming soon badge",
+      "description": "Badge on add-ons that cannot be bought yet."
+    },
+    {
+      "code": "addons_soon_note",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Coming soon note",
+      "description": "Explains that coming-soon add-ons are not part of the configuration."
+    },
+    {
+      "code": "addons_routing_h3",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Routing credits title",
+      "description": "H3 of the Routing Credits card."
+    },
+    {
+      "code": "addons_routing_text",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Routing credits text",
+      "description": "Text of the Routing Credits card."
+    },
+    {
+      "code": "addons_ai_h3",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "AI credits title",
+      "description": "H3 of the AI Credits card."
+    },
+    {
+      "code": "addons_ai_text",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "AI credits text",
+      "description": "Text of the AI Credits card."
+    },
+    {
+      "code": "addons_weather_h3",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Weather card title",
+      "description": "H3 of the Weather Intelligence card."
+    },
+    {
+      "code": "addons_weather_text",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Weather card text",
+      "description": "Text of the Weather Intelligence card."
+    },
+    {
+      "code": "addons_weather_toggle",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Weather toggle label",
+      "description": "Label of the Weather on/off switch."
+    },
+    {
+      "code": "addons_weather_count",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Weather count label",
+      "description": "Label of the Weather property count field."
+    },
+    {
+      "code": "addons_panel_title",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Panel title",
+      "description": "Title of the configuration summary."
+    },
+    {
+      "code": "addons_panel_note",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Panel note",
+      "description": "Note under the Continue button."
     }
   ]
 }

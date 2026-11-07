@@ -1,6 +1,6 @@
 {
   "$schema": "lab-ui/seo-contract@1",
-  "source": "Approved Snow Removal landing v4 and the SEO doc keyword targets.",
+  "source": "Approved Snow Removal landing v4 and the SEO doc keyword targets; headings updated for the PM pricing requirements of 2026-11-06 (Weather moved into Add-ons, two expansion cards removed, Add-ons H2 and four add-on H3s added).",
   "scope": {
     "root": "main",
     "excludeSections": [
@@ -274,20 +274,28 @@
       "text": "Onboarding, Support & Platform Services"
     },
     {
+      "level": 2,
+      "text": "Build your plan. Add room to grow."
+    },
+    {
+      "level": 3,
+      "text": "Active Properties Expansion"
+    },
+    {
+      "level": 3,
+      "text": "Routing Credits"
+    },
+    {
+      "level": 3,
+      "text": "AI Credits"
+    },
+    {
       "level": 3,
       "text": "Weather Intelligence"
     },
     {
       "level": 2,
       "text": "Add capacity. Agree the scope before work starts."
-    },
-    {
-      "level": 3,
-      "text": "Property expansion"
-    },
-    {
-      "level": 3,
-      "text": "Additional optimization"
     },
     {
       "level": 3,

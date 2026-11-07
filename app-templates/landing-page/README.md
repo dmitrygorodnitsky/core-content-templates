@@ -176,6 +176,15 @@ properties and the Weather add-on price are read from core-pim through
 fallback. The comparison rows stay parameters, with the Active Properties row
 filled from `ACTIVE_PROPERTIES_INCLUDED`.
 
+Pricing, the pinned comparison header and the Add-ons configurator run on the
+subscription flow's own `core.js`, `catalog.js` and `selection.js`
+(`app-templates/customer-portal/runtime/plan-subscription/`, bundled through the
+block's `source.localScripts`), so the landing applies the same catalog,
+compatibility and pack-limit rules as checkout. That is a deliberate
+cross-zone input: a change to those files changes this block on its next
+export. Continue and Choose open `/subscribe.html?plan=…&period=…&packs=…&weather=…`;
+Routing and AI Credits show as coming soon and never enter totals or links.
+
 ```bash
 node app-templates/landing-page/scripts/export-snow-removal-landing-manual.mjs
 node app-templates/landing-page/scripts/snow-removal-landing-check.mjs

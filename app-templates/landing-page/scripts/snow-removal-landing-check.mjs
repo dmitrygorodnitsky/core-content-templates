@@ -54,22 +54,23 @@ export const assertSeo = (main) => {
   return report;
 };
 
-const expectedCtaHrefs = () => Object.keys(pack)
+const expectedCtaHrefs = () => [...new Set(Object.keys(pack)
   .filter((code) => /_CTA_\d+_URL$/.test(code))
   .map((code) => {
     const source = pack[code.replace(/_URL$/, "_SOURCE")];
     return source ? `${pack[code]}?cta_source=${source}` : pack[code];
   })
+  .concat(pack.SNOW_PRICING_SUBSCRIBE_URL))]
   .sort();
 
-export const ctaHrefs = (main) => [...main.matchAll(/<a\b[^>]*\bclass="btn\b[^"]*"[^>]*>/g)]
-  .map((match) => decode((match[0].match(/\bhref="([^"]*)"/) || [])[1] || ""))
+export const ctaHrefs = (main) => [...new Set([...main.matchAll(/<a\b[^>]*\bclass="btn\b[^"]*"[^>]*>/g)]
+  .map((match) => decode((match[0].match(/\bhref="([^"]*)"/) || [])[1] || "")))]
   .sort();
 
 export const assertCtas = (main) => {
   const actual = ctaHrefs(main);
   const expected = expectedCtaHrefs();
-  assert.deepEqual(actual, expected, "every CTA href equals its parameter URL and cta_source");
+  assert.deepEqual(actual, expected, "the distinct CTA hrefs equal the parameter URLs with their cta_source");
   assert.equal(actual.some((href) => /^https?:/.test(href)), false, "CTAs are site-relative");
   return actual;
 };
@@ -138,6 +139,13 @@ const checkOffline = () => {
     const lazy = [...main.matchAll(/<img\b[^>]*>/g)].map((match) => match[0]);
     assert.equal(lazy.filter((tag) => !/loading="lazy"/.test(tag) && !/fetchpriority="high"/.test(tag)).length, 0, "every image below the hero is lazy-loaded");
     assert.match(main, /<video\b[^>]*preload="none"[^>]*data-poster=/, "the route replay poster is deferred");
+    assert.equal(/class="weather[ "]/.test(main), false, "the separate Weather plaque is gone");
+    assert.match(main, /<div class="addons" id="addons"[^>]*>[\s\S]*data-addon="expansion"[\s\S]*data-addon="routing"[\s\S]*data-addon="ai"[\s\S]*data-addon="weather"/, "Add-ons holds the four cards in order");
+    assert.ok(main.indexOf('id="plan-comparison"') < main.indexOf('id="addons"'), "Add-ons follows Compare All Features");
+    assert.equal((main.match(/data-expand-plan=/g) || []).length, 6, "three plan cards and three comparison cells link to Add-ons");
+    assert.match(main, /Actual ServiceWand UI · Mobile Property Plan &amp; Dispatch Board/, "the routing caption is the requested text");
+    assert.equal(/Supporting capabilities:/.test(main), false, "the Mobile Workforce supporting line became chips");
+    assert.equal(content.javascript.includes("ns.selection = Object.freeze"), true, "the configurator ships the subscription flow's selection rules");
     const contentBytes = Buffer.byteLength(content.html) + Buffer.byteLength(content.css) + Buffer.byteLength(content.javascript);
     const media = fs.existsSync(path.join(contentDir, "media.json")) ? Object.keys(JSON.parse(fs.readFileSync(path.join(contentDir, "media.json"), "utf8"))).length : 0;
     console.log(`snow-removal-landing-check ok: deterministic ${Object.keys(hashesA).length} files, ${report.headings.length} headings, ${Object.keys(report.counts).length} keyword counts, ${ctas.length} CTAs, ${codes.length} content parameters, media ids ${media}`);

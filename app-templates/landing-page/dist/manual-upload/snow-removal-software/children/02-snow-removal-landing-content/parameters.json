@@ -637,7 +637,7 @@
       }
     },
     "value": {
-      "en": "Actual ServiceWand UI · mobile property plan adapted for NYC"
+      "en": "Actual ServiceWand UI · Mobile Property Plan &amp; Dispatch Board"
     }
   },
   {
@@ -1705,16 +1705,81 @@
     }
   },
   {
-    "code": "SNOW_MOBILE_TEXT_17",
+    "code": "SNOW_MOBILE_CHIP_1",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "Mobile paragraph",
-        "DESCRIPTION": "Paragraph in the Mobile section."
+        "NAME": "Mobile workforce chip 1",
+        "DESCRIPTION": "Capability chip under the Mobile Workforce cards."
       }
     },
     "value": {
-      "en": "Supporting capabilities: Pre-route inspections · Site plans · Time tracking · Route deviation visibility · Chat · Notifications"
+      "en": "Pre-route inspections"
+    }
+  },
+  {
+    "code": "SNOW_MOBILE_CHIP_2",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Mobile workforce chip 2",
+        "DESCRIPTION": "Capability chip under the Mobile Workforce cards."
+      }
+    },
+    "value": {
+      "en": "Site plans"
+    }
+  },
+  {
+    "code": "SNOW_MOBILE_CHIP_3",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Mobile workforce chip 3",
+        "DESCRIPTION": "Capability chip under the Mobile Workforce cards."
+      }
+    },
+    "value": {
+      "en": "Time tracking"
+    }
+  },
+  {
+    "code": "SNOW_MOBILE_CHIP_4",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Mobile workforce chip 4",
+        "DESCRIPTION": "Capability chip under the Mobile Workforce cards."
+      }
+    },
+    "value": {
+      "en": "Route deviation visibility"
+    }
+  },
+  {
+    "code": "SNOW_MOBILE_CHIP_5",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Mobile workforce chip 5",
+        "DESCRIPTION": "Capability chip under the Mobile Workforce cards."
+      }
+    },
+    "value": {
+      "en": "Chat"
+    }
+  },
+  {
+    "code": "SNOW_MOBILE_CHIP_6",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Mobile workforce chip 6",
+        "DESCRIPTION": "Capability chip under the Mobile Workforce cards."
+      }
+    },
+    "value": {
+      "en": "Notifications"
     }
   },
   {
@@ -3153,6 +3218,45 @@
     }
   },
   {
+    "code": "SNOW_PRICING_PERIOD_ARIA",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Billing period switch label",
+        "DESCRIPTION": "Accessible label of the Monthly / Yearly switch."
+      }
+    },
+    "value": {
+      "en": "Billing period"
+    }
+  },
+  {
+    "code": "SNOW_PRICING_PERIOD_MONTHLY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Monthly billing label",
+        "DESCRIPTION": "Monthly option of the billing period switch."
+      }
+    },
+    "value": {
+      "en": "Monthly"
+    }
+  },
+  {
+    "code": "SNOW_PRICING_PERIOD_YEARLY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Yearly billing label",
+        "DESCRIPTION": "Yearly option of the billing period switch."
+      }
+    },
+    "value": {
+      "en": "Yearly"
+    }
+  },
+  {
     "code": "SNOW_PRICING_DYNAMIC",
     "type": "STRING",
     "nls": {
@@ -3162,17 +3266,6 @@
       }
     },
     "value": "true"
-  },
-  {
-    "code": "SNOW_PRICING_API_BASE",
-    "type": "STRING",
-    "nls": {
-      "en": {
-        "NAME": "Pricing Api Base",
-        "DESCRIPTION": "core-pim API base path."
-      }
-    },
-    "value": "/core-pim/api"
   },
   {
     "code": "SNOW_PRICING_ORGANIZATION",
@@ -3186,70 +3279,74 @@
     "value": "SERVICEWAND"
   },
   {
-    "code": "SNOW_PRICING_CURRENCY",
+    "code": "SNOW_PRICING_PLAN_CODES",
     "type": "STRING",
     "nls": {
       "en": {
-        "NAME": "Pricing Currency",
-        "DESCRIPTION": "Catalog currency; rows in another currency are ignored and the reference values stay."
+        "NAME": "Self-service plan codes",
+        "DESCRIPTION": "Comma-separated core-pim plan codes that can be bought online; must equal the subscription flow rules."
       }
     },
-    "value": "USD"
+    "value": "SERVICEWAND_FOUNDATION,SERVICEWAND_GROWTH,SERVICEWAND_PROFESSIONAL"
   },
   {
-    "code": "SNOW_PRICING_PRICE_TYPE_CODE",
+    "code": "SNOW_PRICING_EXPANSION_CODES",
     "type": "STRING",
     "nls": {
       "en": {
-        "NAME": "Pricing Price Type Code",
-        "DESCRIPTION": "Catalog price type code."
+        "NAME": "Site expansion product codes",
+        "DESCRIPTION": "Comma-separated core-pim site expansion pack codes; must equal the subscription flow rules."
       }
     },
-    "value": "RECURRENT"
+    "value": "SERVICEWAND_SAAS_PROPERTY_EXT_FOUNDATION,SERVICEWAND_SAAS_PROPERTY_EXT_GROWTH,SERVICEWAND_SAAS_PROPERTY_EXT_PRO"
   },
   {
-    "code": "SNOW_PRICING_PRICE_ATTRIBUTE_CODE",
+    "code": "SNOW_PRICING_WEATHER_PRODUCT_CODE",
     "type": "STRING",
     "nls": {
       "en": {
-        "NAME": "Pricing Price Attribute Code",
-        "DESCRIPTION": "Price attribute that selects the billing interval."
+        "NAME": "Pricing Weather Product Code",
+        "DESCRIPTION": "Catalog product code of the Weather add-on."
       }
     },
-    "value": "INTERVAL"
+    "value": "SERVICEWAND_WEATHER_INTELLIGENCE"
   },
   {
-    "code": "SNOW_PRICING_PRICE_ATTRIBUTE_VALUES",
+    "code": "SNOW_PRICING_SUBSCRIBE_URL",
     "type": "STRING",
     "nls": {
       "en": {
-        "NAME": "Pricing Price Attribute Values",
-        "DESCRIPTION": "Billing interval values requested from the catalog."
+        "NAME": "Subscription flow URL",
+        "DESCRIPTION": "Purchase page that receives plan, period, packs and weather."
       }
     },
-    "value": "1 month"
+    "value": "/subscribe.html"
   },
   {
-    "code": "SNOW_PRICING_PRODUCT_TYPE_CODE",
-    "type": "STRING",
+    "code": "SNOW_PRICING_PER_MONTH",
+    "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "Pricing Product Type Code",
-        "DESCRIPTION": "Catalog product type of the plans."
+        "NAME": "Per month suffix",
+        "DESCRIPTION": "Billing suffix after a monthly catalog price."
       }
     },
-    "value": "SERVICEWAND_SAAS"
+    "value": {
+      "en": "/ month*"
+    }
   },
   {
-    "code": "SNOW_PRICING_CAPACITY_ATTRIBUTE_CODE",
-    "type": "STRING",
+    "code": "SNOW_PRICING_PER_YEAR",
+    "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "Pricing Capacity Attribute Code",
-        "DESCRIPTION": "Product attribute holding the included active properties."
+        "NAME": "Per year suffix",
+        "DESCRIPTION": "Billing suffix after a yearly catalog price."
       }
     },
-    "value": "ACTIVE_PROPERTIES_INCLUDED"
+    "value": {
+      "en": "/ year*"
+    }
   },
   {
     "code": "SNOW_PRICING_PLAN_1_CODE",
@@ -3351,6 +3448,19 @@
     },
     "value": {
       "en": "25 active properties included*"
+    }
+  },
+  {
+    "code": "SNOW_PRICING_EXPAND_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Expand capacity link",
+        "DESCRIPTION": "Link under the included properties that opens Add-ons with this plan selected."
+      }
+    },
+    "value": {
+      "en": "Expand capacity →"
     }
   },
   {
@@ -4258,6 +4368,165 @@
     },
     "value": {
       "en": "Enterprise"
+    }
+  },
+  {
+    "code": "SNOW_COMPARE_HEAD_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Comparison header title",
+        "DESCRIPTION": "Title in the pinned comparison header."
+      }
+    },
+    "value": {
+      "en": "Compare plans"
+    }
+  },
+  {
+    "code": "SNOW_COMPARE_HEAD_MONTHLY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Comparison monthly billing note",
+        "DESCRIPTION": "Shown in the pinned comparison header while monthly prices are displayed."
+      }
+    },
+    "value": {
+      "en": "Monthly billing"
+    }
+  },
+  {
+    "code": "SNOW_COMPARE_HEAD_YEARLY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Comparison yearly billing note",
+        "DESCRIPTION": "Shown in the pinned comparison header while yearly prices are displayed."
+      }
+    },
+    "value": {
+      "en": "Yearly billing"
+    }
+  },
+  {
+    "code": "SNOW_COMPARE_HEAD_BASE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Base plan prices note",
+        "DESCRIPTION": "Marks the pinned header prices as base plan prices, not the Add-ons configuration."
+      }
+    },
+    "value": {
+      "en": "Base plan prices"
+    }
+  },
+  {
+    "code": "SNOW_PRICING_CTA_5_URL",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Pricing CTA URL",
+        "DESCRIPTION": "Target URL of the \"Continue with Foundation\" button in the Pricing section. Site-relative URLs starting with / get the language prefix."
+      }
+    },
+    "value": "/subscribe.html?plan=SERVICEWAND_FOUNDATION"
+  },
+  {
+    "code": "SNOW_COMPARE_CHOOSE_1",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Choose Foundation button",
+        "DESCRIPTION": "Pinned comparison header button that opens the purchase page for Foundation."
+      }
+    },
+    "value": {
+      "en": "Choose Foundation"
+    }
+  },
+  {
+    "code": "SNOW_PRICING_CTA_6_URL",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Pricing CTA URL",
+        "DESCRIPTION": "Target URL of the \"Continue with Growth\" button in the Pricing section. Site-relative URLs starting with / get the language prefix."
+      }
+    },
+    "value": "/subscribe.html?plan=SERVICEWAND_GROWTH"
+  },
+  {
+    "code": "SNOW_COMPARE_CHOOSE_2",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Choose Growth button",
+        "DESCRIPTION": "Pinned comparison header button that opens the purchase page for Growth."
+      }
+    },
+    "value": {
+      "en": "Choose Growth"
+    }
+  },
+  {
+    "code": "SNOW_PRICING_CTA_7_URL",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Pricing CTA URL",
+        "DESCRIPTION": "Target URL of the \"Continue with Business\" button in the Pricing section. Site-relative URLs starting with / get the language prefix."
+      }
+    },
+    "value": "/subscribe.html?plan=SERVICEWAND_PROFESSIONAL"
+  },
+  {
+    "code": "SNOW_COMPARE_CHOOSE_3",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Choose Business button",
+        "DESCRIPTION": "Pinned comparison header button that opens the purchase page for Business."
+      }
+    },
+    "value": {
+      "en": "Choose Business"
+    }
+  },
+  {
+    "code": "SNOW_PRICING_CTA_8_URL",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Pricing CTA URL",
+        "DESCRIPTION": "Target URL of the \"Talk to Sales\" button in the Pricing section. Site-relative URLs starting with / get the language prefix."
+      }
+    },
+    "value": "/snow-removal-request-demo.html"
+  },
+  {
+    "code": "SNOW_PRICING_CTA_8_SOURCE",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Pricing CTA source",
+        "DESCRIPTION": "cta_source value appended to the \"Talk to Sales\" button URL for lead attribution."
+      }
+    },
+    "value": "pricing_enterprise"
+  },
+  {
+    "code": "SNOW_PRICING_LABEL_37",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Pricing text",
+        "DESCRIPTION": "Text in the Pricing section."
+      }
+    },
+    "value": {
+      "en": "Talk to Sales"
     }
   },
   {
@@ -6783,17 +7052,6 @@
     }
   },
   {
-    "code": "SNOW_PRICING_CTA_5_URL",
-    "type": "STRING",
-    "nls": {
-      "en": {
-        "NAME": "Pricing CTA URL",
-        "DESCRIPTION": "Target URL of the \"Continue with Foundation\" button in the Pricing section. Site-relative URLs starting with / get the language prefix."
-      }
-    },
-    "value": "/subscribe.html?plan=SERVICEWAND_FOUNDATION"
-  },
-  {
     "code": "SNOW_PRICING_LABEL_34",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
@@ -6805,17 +7063,6 @@
     "value": {
       "en": "Continue with Foundation"
     }
-  },
-  {
-    "code": "SNOW_PRICING_CTA_6_URL",
-    "type": "STRING",
-    "nls": {
-      "en": {
-        "NAME": "Pricing CTA URL",
-        "DESCRIPTION": "Target URL of the \"Continue with Growth\" button in the Pricing section. Site-relative URLs starting with / get the language prefix."
-      }
-    },
-    "value": "/subscribe.html?plan=SERVICEWAND_GROWTH"
   },
   {
     "code": "SNOW_PRICING_LABEL_35",
@@ -6831,17 +7078,6 @@
     }
   },
   {
-    "code": "SNOW_PRICING_CTA_7_URL",
-    "type": "STRING",
-    "nls": {
-      "en": {
-        "NAME": "Pricing CTA URL",
-        "DESCRIPTION": "Target URL of the \"Continue with Business\" button in the Pricing section. Site-relative URLs starting with / get the language prefix."
-      }
-    },
-    "value": "/subscribe.html?plan=SERVICEWAND_PROFESSIONAL"
-  },
-  {
     "code": "SNOW_PRICING_LABEL_36",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
@@ -6855,82 +7091,207 @@
     }
   },
   {
-    "code": "SNOW_PRICING_CTA_8_URL",
-    "type": "STRING",
-    "nls": {
-      "en": {
-        "NAME": "Pricing CTA URL",
-        "DESCRIPTION": "Target URL of the \"Talk to Sales\" button in the Pricing section. Site-relative URLs starting with / get the language prefix."
-      }
-    },
-    "value": "/snow-removal-request-demo.html"
-  },
-  {
-    "code": "SNOW_PRICING_CTA_8_SOURCE",
-    "type": "STRING",
-    "nls": {
-      "en": {
-        "NAME": "Pricing CTA source",
-        "DESCRIPTION": "cta_source value appended to the \"Talk to Sales\" button URL for lead attribution."
-      }
-    },
-    "value": "pricing_enterprise"
-  },
-  {
-    "code": "SNOW_PRICING_LABEL_37",
+    "code": "SNOW_ADDONS_EYEBROW",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "Pricing text",
-        "DESCRIPTION": "Text in the Pricing section."
+        "NAME": "Add-ons eyebrow",
+        "DESCRIPTION": "Eyebrow above the Add-ons heading."
       }
     },
     "value": {
-      "en": "Talk to Sales"
+      "en": "Add-ons &amp; expansion packs"
     }
   },
   {
-    "code": "SNOW_PRICING_ADDON_PRODUCT_TYPE_CODE",
-    "type": "STRING",
-    "nls": {
-      "en": {
-        "NAME": "Pricing Addon Product Type Code",
-        "DESCRIPTION": "Catalog product type of the Weather add-on."
-      }
-    },
-    "value": "FEATURE_ADD_ON"
-  },
-  {
-    "code": "SNOW_PRICING_WEATHER_PRODUCT_CODE",
-    "type": "STRING",
-    "nls": {
-      "en": {
-        "NAME": "Pricing Weather Product Code",
-        "DESCRIPTION": "Catalog product code of the Weather add-on."
-      }
-    },
-    "value": "SERVICEWAND_WEATHER_INTELLIGENCE"
-  },
-  {
-    "code": "SNOW_PRICING_LABEL_38",
+    "code": "SNOW_ADDONS_H2",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "Pricing text",
-        "DESCRIPTION": "Text in the Pricing section."
+        "NAME": "Add-ons heading",
+        "DESCRIPTION": "H2 of the Add-ons configurator."
       }
     },
     "value": {
-      "en": "Optional add-on"
+      "en": "Build your plan. Add room to grow."
     }
   },
   {
-    "code": "SNOW_PRICING_H3_14",
+    "code": "SNOW_ADDONS_INTRO",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "Pricing H3 heading",
-        "DESCRIPTION": "H3 heading in the Pricing section."
+        "NAME": "Add-ons intro",
+        "DESCRIPTION": "Text under the Add-ons heading."
+      }
+    },
+    "value": {
+      "en": "Choose your plan, then add the capacity you need."
+    }
+  },
+  {
+    "code": "SNOW_ADDONS_PLAN_ARIA",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Add-ons plan switch label",
+        "DESCRIPTION": "Accessible label of the Add-ons plan switch."
+      }
+    },
+    "value": {
+      "en": "Plan for this configuration"
+    }
+  },
+  {
+    "code": "SNOW_ADDONS_EXPANSION_H3",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Expansion card title",
+        "DESCRIPTION": "H3 of the property expansion card."
+      }
+    },
+    "value": {
+      "en": "Active Properties Expansion"
+    }
+  },
+  {
+    "code": "SNOW_ADDONS_EXPANSION_TEXT",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Expansion card text",
+        "DESCRIPTION": "Text of the property expansion card."
+      }
+    },
+    "value": {
+      "en": "Increase capacity without changing your plan."
+    }
+  },
+  {
+    "code": "SNOW_ADDONS_PACKS_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Packs counter label",
+        "DESCRIPTION": "Accessible label of the pack counter."
+      }
+    },
+    "value": {
+      "en": "Property packs"
+    }
+  },
+  {
+    "code": "SNOW_ADDONS_DECREASE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Decrease button label",
+        "DESCRIPTION": "Accessible label of the − button."
+      }
+    },
+    "value": {
+      "en": "Remove one pack"
+    }
+  },
+  {
+    "code": "SNOW_ADDONS_INCREASE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Increase button label",
+        "DESCRIPTION": "Accessible label of the + button."
+      }
+    },
+    "value": {
+      "en": "Add one pack"
+    }
+  },
+  {
+    "code": "SNOW_ADDONS_ROUTING_H3",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Routing credits title",
+        "DESCRIPTION": "H3 of the Routing Credits card."
+      }
+    },
+    "value": {
+      "en": "Routing Credits"
+    }
+  },
+  {
+    "code": "SNOW_ADDONS_ROUTING_TEXT",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Routing credits text",
+        "DESCRIPTION": "Text of the Routing Credits card."
+      }
+    },
+    "value": {
+      "en": "Extra capacity for route optimization."
+    }
+  },
+  {
+    "code": "SNOW_ADDONS_SOON",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Coming soon badge",
+        "DESCRIPTION": "Badge on add-ons that cannot be bought yet."
+      }
+    },
+    "value": {
+      "en": "Coming soon"
+    }
+  },
+  {
+    "code": "SNOW_ADDONS_SOON_NOTE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Coming soon note",
+        "DESCRIPTION": "Explains that coming-soon add-ons are not part of the configuration."
+      }
+    },
+    "value": {
+      "en": "Not included in totals yet."
+    }
+  },
+  {
+    "code": "SNOW_ADDONS_AI_H3",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "AI credits title",
+        "DESCRIPTION": "H3 of the AI Credits card."
+      }
+    },
+    "value": {
+      "en": "AI Credits"
+    }
+  },
+  {
+    "code": "SNOW_ADDONS_AI_TEXT",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "AI credits text",
+        "DESCRIPTION": "Text of the AI Credits card."
+      }
+    },
+    "value": {
+      "en": "Extra credits for AI-assisted workflows."
+    }
+  },
+  {
+    "code": "SNOW_ADDONS_WEATHER_H3",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Weather card title",
+        "DESCRIPTION": "H3 of the Weather Intelligence card."
       }
     },
     "value": {
@@ -6938,12 +7299,12 @@
     }
   },
   {
-    "code": "SNOW_PRICING_TEXT_24",
+    "code": "SNOW_ADDONS_WEATHER_TEXT",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "Pricing paragraph",
-        "DESCRIPTION": "Paragraph in the Pricing section."
+        "NAME": "Weather card text",
+        "DESCRIPTION": "Text of the Weather Intelligence card."
       }
     },
     "value": {
@@ -6951,42 +7312,445 @@
     }
   },
   {
-    "code": "SNOW_PRICING_LABEL_39",
+    "code": "SNOW_ADDONS_WEATHER_TOGGLE",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "Pricing text",
-        "DESCRIPTION": "Text in the Pricing section."
+        "NAME": "Weather toggle label",
+        "DESCRIPTION": "Label of the Weather on/off switch."
       }
     },
     "value": {
-      "en": "$1.95 <span>USD</span>"
+      "en": "Add Weather Intelligence"
     }
   },
   {
-    "code": "SNOW_PRICING_TEXT_25",
+    "code": "SNOW_ADDONS_WEATHER_COUNT",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "Pricing paragraph",
-        "DESCRIPTION": "Paragraph in the Pricing section."
+        "NAME": "Weather count label",
+        "DESCRIPTION": "Label of the Weather property count field."
       }
     },
     "value": {
-      "en": "per property / month"
+      "en": "Properties with weather"
     }
   },
   {
-    "code": "SNOW_PRICING_LABEL_40",
+    "code": "SNOW_ADDONS_PANEL_TITLE",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "Pricing text",
-        "DESCRIPTION": "Text in the Pricing section."
+        "NAME": "Panel title",
+        "DESCRIPTION": "Title of the configuration summary."
       }
     },
     "value": {
-      "en": "Example: 300 properties × $1.95 = $585 / month."
+      "en": "Your configuration"
+    }
+  },
+  {
+    "code": "SNOW_ADDONS_TOTAL_MONTH",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Monthly total label",
+        "DESCRIPTION": "Total label while monthly billing is selected."
+      }
+    },
+    "value": {
+      "en": "Monthly total"
+    }
+  },
+  {
+    "code": "SNOW_ADDONS_PANEL_NOTE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Panel note",
+        "DESCRIPTION": "Note under the Continue button."
+      }
+    },
+    "value": {
+      "en": "Plan and selected add-ons continue together. Final prices, limits and taxes are confirmed at checkout."
+    }
+  },
+  {
+    "code": "SNOW_ADDONS_EXPANSION_META",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Expansion included and pack size",
+        "DESCRIPTION": "Placeholders: {included} properties in the plan, {size} properties per pack."
+      }
+    },
+    "value": {
+      "en": "{included} included · +{size} properties per pack"
+    }
+  },
+  {
+    "code": "SNOW_ADDONS_PER_PACK_MONTH",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Pack price monthly suffix",
+        "DESCRIPTION": "Suffix after the monthly price of one pack."
+      }
+    },
+    "value": {
+      "en": "/ pack / month"
+    }
+  },
+  {
+    "code": "SNOW_ADDONS_PER_PACK_YEAR",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Pack price yearly suffix",
+        "DESCRIPTION": "Suffix after the yearly price of one pack."
+      }
+    },
+    "value": {
+      "en": "/ pack / year"
+    }
+  },
+  {
+    "code": "SNOW_ADDONS_PACKS_SUMMARY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Selected packs summary",
+        "DESCRIPTION": "Placeholders: {count} packs, {size} per pack, {added} properties, {amount} cost."
+      }
+    },
+    "value": {
+      "en": "{count} × {size} = +{added} properties · {amount}"
+    }
+  },
+  {
+    "code": "SNOW_ADDONS_PACKS_NONE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "No packs selected",
+        "DESCRIPTION": "Shown when the counter is at zero."
+      }
+    },
+    "value": {
+      "en": "No packs added · base capacity only"
+    }
+  },
+  {
+    "code": "SNOW_ADDONS_CAPACITY_TOTAL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Total capacity",
+        "DESCRIPTION": "Placeholder: {total} active properties."
+      }
+    },
+    "value": {
+      "en": "{total} active properties total"
+    }
+  },
+  {
+    "code": "SNOW_ADDONS_CAPACITY_LIMIT",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Plan capacity limit",
+        "DESCRIPTION": "Placeholders: {max} properties, {plan} name."
+      }
+    },
+    "value": {
+      "en": "Up to {max} active properties on {plan}"
+    }
+  },
+  {
+    "code": "SNOW_ADDONS_CAPACITY_REACHED",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Plan capacity limit reached",
+        "DESCRIPTION": "Shown when + is disabled. Placeholders: {plan}, {max}."
+      }
+    },
+    "value": {
+      "en": "Maximum for {plan} reached: {max} active properties"
+    }
+  },
+  {
+    "code": "SNOW_ADDONS_EXPANSION_UNAVAILABLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Expansion not offered",
+        "DESCRIPTION": "Shown when the selected plan has no self-service expansion. Placeholder: {plan}."
+      }
+    },
+    "value": {
+      "en": "Capacity for {plan} is agreed with our team."
+    }
+  },
+  {
+    "code": "SNOW_ADDONS_WEATHER_RATE_MONTH",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Weather monthly rate suffix",
+        "DESCRIPTION": "Suffix after the monthly Weather rate."
+      }
+    },
+    "value": {
+      "en": "/ property / month"
+    }
+  },
+  {
+    "code": "SNOW_ADDONS_WEATHER_RATE_YEAR",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Weather yearly rate suffix",
+        "DESCRIPTION": "Suffix after the yearly Weather rate."
+      }
+    },
+    "value": {
+      "en": "/ property / year"
+    }
+  },
+  {
+    "code": "SNOW_ADDONS_WEATHER_HINT",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Weather billing rule",
+        "DESCRIPTION": "Explains the Weather count. Placeholder: {capacity}."
+      }
+    },
+    "value": {
+      "en": "Billed only for the properties you select, up to your {capacity} active properties."
+    }
+  },
+  {
+    "code": "SNOW_ADDONS_WEATHER_FORMULA",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Weather formula",
+        "DESCRIPTION": "Placeholders: {count}, {rate}, {amount}, {period}."
+      }
+    },
+    "value": {
+      "en": "{count} × {rate} = {amount} / {period}"
+    }
+  },
+  {
+    "code": "SNOW_ADDONS_WEATHER_OFF",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Weather off note",
+        "DESCRIPTION": "Shown while Weather Intelligence is off."
+      }
+    },
+    "value": {
+      "en": "Not added · no Weather charge"
+    }
+  },
+  {
+    "code": "SNOW_ADDONS_WEATHER_CAPPED",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Weather capped notice",
+        "DESCRIPTION": "Shown when the Weather count is reduced to the capacity. Placeholder: {count}."
+      }
+    },
+    "value": {
+      "en": "Weather was set to {count} properties to fit your capacity."
+    }
+  },
+  {
+    "code": "SNOW_ADDONS_PACKS_TRIMMED",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Packs reduced notice",
+        "DESCRIPTION": "Shown when a plan change lowers the pack count. Placeholders: {plan}, {max}, {count}."
+      }
+    },
+    "value": {
+      "en": "{plan} allows up to {max} active properties, so property packs were reduced to {count}."
+    }
+  },
+  {
+    "code": "SNOW_ADDONS_PACKS_REMOVED",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Packs removed notice",
+        "DESCRIPTION": "Placeholder: {plan}."
+      }
+    },
+    "value": {
+      "en": "Property packs are not available on {plan} and were removed."
+    }
+  },
+  {
+    "code": "SNOW_ADDONS_WEATHER_REMOVED",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Weather removed notice",
+        "DESCRIPTION": "Placeholder: {plan}."
+      }
+    },
+    "value": {
+      "en": "Weather Intelligence is not available on {plan} and was removed."
+    }
+  },
+  {
+    "code": "SNOW_ADDONS_PERIOD_MONTH",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Month word",
+        "DESCRIPTION": "Used in formulas."
+      }
+    },
+    "value": {
+      "en": "month"
+    }
+  },
+  {
+    "code": "SNOW_ADDONS_PERIOD_YEAR",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Year word",
+        "DESCRIPTION": "Used in formulas."
+      }
+    },
+    "value": {
+      "en": "year"
+    }
+  },
+  {
+    "code": "SNOW_ADDONS_PANEL_INCLUDED",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Panel included capacity",
+        "DESCRIPTION": "Placeholder: {count}."
+      }
+    },
+    "value": {
+      "en": "{count} active properties included"
+    }
+  },
+  {
+    "code": "SNOW_ADDONS_LINE_PLAN",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Panel plan line",
+        "DESCRIPTION": "Placeholder: {plan}."
+      }
+    },
+    "value": {
+      "en": "{plan} plan"
+    }
+  },
+  {
+    "code": "SNOW_ADDONS_LINE_PACKS",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Panel packs line",
+        "DESCRIPTION": "Placeholder: {count}."
+      }
+    },
+    "value": {
+      "en": "Property packs × {count}"
+    }
+  },
+  {
+    "code": "SNOW_ADDONS_LINE_WEATHER",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Panel weather line",
+        "DESCRIPTION": "Placeholder: {count}."
+      }
+    },
+    "value": {
+      "en": "Weather · {count} properties"
+    }
+  },
+  {
+    "code": "SNOW_ADDONS_TOTAL_YEAR",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Yearly total label",
+        "DESCRIPTION": "Total label while yearly billing is selected."
+      }
+    },
+    "value": {
+      "en": "Yearly total"
+    }
+  },
+  {
+    "code": "SNOW_ADDONS_CONTINUE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Continue button",
+        "DESCRIPTION": "Opens the purchase page with this configuration. Placeholder: {plan}."
+      }
+    },
+    "value": {
+      "en": "Continue with {plan} →"
+    }
+  },
+  {
+    "code": "SNOW_ADDONS_ENTERPRISE_NOTE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Enterprise note",
+        "DESCRIPTION": "Shown when Enterprise is selected."
+      }
+    },
+    "value": {
+      "en": "Enterprise capacity, add-ons and pricing are agreed with our team."
+    }
+  },
+  {
+    "code": "SNOW_ADDONS_LOADING",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Loading note",
+        "DESCRIPTION": "Shown while the catalog loads."
+      }
+    },
+    "value": {
+      "en": "Loading current prices…"
+    }
+  },
+  {
+    "code": "SNOW_ADDONS_OFFLINE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Offline note",
+        "DESCRIPTION": "Shown when the catalog is unavailable."
+      }
+    },
+    "value": {
+      "en": "Current prices could not be loaded. Continue to see prices and add-ons at checkout."
     }
   },
   {
@@ -7039,84 +7803,6 @@
     },
     "value": {
       "en": "Expand your current plan where you need more volume. For implementation and custom work, we agree the deliverables and price with you before starting."
-    }
-  },
-  {
-    "code": "SNOW_EXPANSION_H3_1",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "Expansion H3 heading",
-        "DESCRIPTION": "H3 heading in the Expansion section."
-      }
-    },
-    "value": {
-      "en": "Property expansion"
-    }
-  },
-  {
-    "code": "SNOW_EXPANSION_TEXT_3",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "Expansion paragraph",
-        "DESCRIPTION": "Paragraph in the Expansion section."
-      }
-    },
-    "value": {
-      "en": "Add active property capacity while keeping the capabilities of your current plan."
-    }
-  },
-  {
-    "code": "SNOW_EXPANSION_LABEL_1",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "Expansion text",
-        "DESCRIPTION": "Text in the Expansion section."
-      }
-    },
-    "value": {
-      "en": "All plans · Pack sizes &amp; prices to agree"
-    }
-  },
-  {
-    "code": "SNOW_EXPANSION_H3_2",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "Expansion H3 heading",
-        "DESCRIPTION": "H3 heading in the Expansion section."
-      }
-    },
-    "value": {
-      "en": "Additional optimization"
-    }
-  },
-  {
-    "code": "SNOW_EXPANSION_TEXT_4",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "Expansion paragraph",
-        "DESCRIPTION": "Paragraph in the Expansion section."
-      }
-    },
-    "value": {
-      "en": "Add solver capacity for extra planning or recalculation when your operation needs it."
-    }
-  },
-  {
-    "code": "SNOW_EXPANSION_LABEL_2",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "Expansion text",
-        "DESCRIPTION": "Text in the Expansion section."
-      }
-    },
-    "value": {
-      "en": "Growth and above · Usage terms to agree"
     }
   },
   {
