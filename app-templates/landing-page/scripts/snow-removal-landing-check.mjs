@@ -91,22 +91,27 @@ const treeHashes = (dir) => {
 
 const fetchPage = (url) => new Promise((resolve, reject) => {
   const started = Date.now();
-  const request = https.get(url, { agent: false, timeout: 120000, headers: { Connection: "close", "Accept-Encoding": "identity", "User-Agent": "snow-removal-landing-check" } }, (response) => {
+  const request = https.get(url, { agent: false, timeout: 600000, headers: { Connection: "close", "Accept-Encoding": "identity", "User-Agent": "snow-removal-landing-check" } }, (response) => {
     const chunks = [];
     response.on("data", (chunk) => chunks.push(chunk));
-    response.on("end", () => resolve({ status: response.statusCode, node: response.headers["x-node-id"] || "", html: Buffer.concat(chunks).toString(), ms: Date.now() - started }));
+    response.on("error", reject);
+    response.on("close", () => {
+      if (response.complete) resolve({ status: response.statusCode, node: response.headers["x-node-id"] || "", html: Buffer.concat(chunks).toString(), ms: Date.now() - started });
+      else reject(new Error(`connection closed after ${Buffer.concat(chunks).length} bytes`));
+    });
   });
   request.on("timeout", () => request.destroy(new Error("timeout")));
   request.on("error", reject);
+  request.on("close", () => setTimeout(() => reject(new Error("request closed")), 1000));
 });
 
 const fetchWithRetry = async (url) => {
   for (let attempt = 1; ; attempt += 1) {
     try {
       const page = await fetchPage(url);
-      if (page.status === 200 || attempt >= 4) return page;
+      if (page.status === 200 || attempt >= 6) return page;
     } catch (error) {
-      if (attempt >= 4) throw error;
+      if (attempt >= 6) throw error;
     }
     await new Promise((resolve) => setTimeout(resolve, attempt * 1500));
   }

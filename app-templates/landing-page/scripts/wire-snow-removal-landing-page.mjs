@@ -43,14 +43,18 @@ function send(url, options = {}) {
   return new Promise((resolve, reject) => {
     const body = options.body === undefined ? null : Buffer.from(String(options.body));
     const headers = { ...(options.headers || {}), Connection: "close", ...(body ? { "Content-Length": body.length } : {}) };
-    const request = https.request(new URL(url), { method: options.method || "GET", agent: false, timeout: 120000, headers }, (response) => {
+    const request = https.request(new URL(url), { method: options.method || "GET", agent: false, timeout: 300000, headers }, (response) => {
       const chunks = [];
       response.on("data", (chunk) => chunks.push(chunk));
-      response.on("aborted", () => reject(new Error("aborted " + url)));
-      response.on("end", () => resolve({ status: response.statusCode, node: response.headers["x-node-id"] || "", text: Buffer.concat(chunks).toString() }));
+      response.on("error", reject);
+      response.on("close", () => {
+        if (response.complete) resolve({ status: response.statusCode, node: response.headers["x-node-id"] || "", text: Buffer.concat(chunks).toString() });
+        else reject(new Error("connection closed early " + url));
+      });
     });
     request.on("timeout", () => request.destroy(new Error("timeout " + url)));
     request.on("error", reject);
+    request.on("close", () => setTimeout(() => reject(new Error("request closed " + url)), 1000));
     request.end(body);
   });
 }

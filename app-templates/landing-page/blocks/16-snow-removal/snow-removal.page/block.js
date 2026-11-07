@@ -547,7 +547,13 @@
       renderAll();
       return;
     }
-    PS.catalog.load({ fetch: window.fetch.bind(window), apiBase: location.origin, organizationCode: host.dataset.pricingOrganization || "SERVICEWAND", rules: rules, locale: locale }).then(function (catalog) {
+    var loadCatalog = function (attempt) {
+      return PS.catalog.load({ fetch: window.fetch.bind(window), apiBase: location.origin, organizationCode: host.dataset.pricingOrganization || "SERVICEWAND", rules: rules, locale: locale }).catch(function (error) {
+        if (attempt >= 3) throw error;
+        return new Promise(function (resolve) { setTimeout(resolve, attempt * 1500); }).then(function () { return loadCatalog(attempt + 1); });
+      });
+    };
+    loadCatalog(1).then(function (catalog) {
       if (!catalog || !catalog.currency || !catalog.plans.length) throw new Error("empty catalog");
       state.catalog = catalog;
       state.status = "catalog";
