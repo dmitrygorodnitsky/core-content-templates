@@ -113,6 +113,24 @@
     "kind": "image",
     "sha256": "63dfcb96dd93b41fef30e3292c9fda2866e34cc1d88b7bd592d48bd2279016df"
   },
+  "vela-sans-400.woff2": {
+    "id": "1aa5a29c-d0f1-4ea9-978e-9b16383cf2c8",
+    "name": "vela-sans-400.woff2",
+    "kind": "font",
+    "sha256": "14d5f985f9f603ee7c9d0ef37a35ae7b9e48bd7d900c0142b3531e8162f6ec19"
+  },
+  "vela-sans-500.woff2": {
+    "id": "c83d5ac3-af96-4c0f-95ef-61b56744aa5e",
+    "name": "vela-sans-500.woff2",
+    "kind": "font",
+    "sha256": "17901befbdfde55dfdc8d901fd11c10468d0650d2164ed8d567bb8e80595bd9e"
+  },
+  "vela-sans-600.woff2": {
+    "id": "f47694ce-f96d-4527-9856-ac93bbb942b2",
+    "name": "vela-sans-600.woff2",
+    "kind": "font",
+    "sha256": "192e29a80f296dc3c1e15f73a4f397900fc1c8af0e349b9c20d1ad646d4b261c"
+  },
   "winter-pickup-v2.webp": {
     "id": "de6dcf39-74b8-4b4e-8dec-50c60aa3c635",
     "name": "winter-pickup-v2.webp",

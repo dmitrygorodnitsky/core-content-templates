@@ -8,9 +8,15 @@ import { fileURLToPath } from "node:url";
 const LIBRARY_CODE = "SERVICEWAND_SNOW_REMOVAL_LANDING";
 const PARENT_LIBRARY_CODE = "SERVICEWAND";
 const ORGANIZATION_CODE = "SERVICEWAND";
-const CONTENT_TYPES = { ".webp": "image/webp", ".svg": "image/svg+xml", ".mp4": "video/mp4" };
-const isVideo = (file) => path.extname(file) === ".mp4";
-const publicMediaPath = (file, id) => (isVideo(file) ? `/core/api/video/${id}/stream/${file}` : `/core/image/${id}/get/${file}`);
+const CONTENT_TYPES = { ".webp": "image/webp", ".svg": "image/svg+xml", ".mp4": "video/mp4", ".woff2": "font/woff2" };
+const KINDS = { ".mp4": "video", ".woff2": "font" };
+const kindOf = (file) => KINDS[path.extname(file)] || "image";
+const LIST_ENDPOINTS = { image: "image/list.json", video: "video/list.json", font: "media-asset/list.json" };
+const publicMediaPath = (file, id) => ({
+  image: `/core/image/${id}/get/${file}`,
+  video: `/core/api/video/${id}/stream/${file}`,
+  font: `/core/api/media-asset/${id}/get`,
+})[kindOf(file)];
 
 const landingRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const contentDir = path.join(landingRoot, "content", "snow-removal-software");
@@ -91,7 +97,7 @@ async function ensureLibrary() {
 
 async function listed(library, name) {
   const filters = [{ property: "mediaLibrary.id", operator: "=", type: "LONG", value: library }, { property: "name", operator: "=", type: "STRING", value: name }];
-  const rows = (await call(isVideo(name) ? "video/list.json" : "image/list.json", { filters, mappings: names("id", "name", "created"), offset: 0, pageSize: 20 })).result || [];
+  const rows = (await call(LIST_ENDPOINTS[kindOf(name)], { filters, mappings: names("id", "name", "created"), offset: 0, pageSize: 20 })).result || [];
   return rows.sort((a, b) => String(b.created).localeCompare(String(a.created)))[0];
 }
 
@@ -147,7 +153,7 @@ for (const file of files) {
     await upload(library, file, bytes).catch((error) => console.log(file + ": attempt " + attempt + " failed, " + error.message));
     await new Promise((resolve) => setTimeout(resolve, attempt * 1000));
   }
-  next[file] = { id: row.id, name: file, kind: isVideo(file) ? "video" : "image", sha256 };
+  next[file] = { id: row.id, name: file, kind: kindOf(file), sha256 };
   console.log(file + ": " + row.id + " " + JSON.stringify(check));
 }
 if (live) await fs.writeFile(mediaJson, JSON.stringify(next, null, 2) + "\n");

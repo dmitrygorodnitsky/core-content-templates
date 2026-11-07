@@ -1,9 +1,23 @@
 @font-face {
   font-family: "Vela Sans";
-  font-weight: 100 900;
+  src: url("/core/api/media-asset/{{media_vela_sans_400}}/get") format("woff2");
+  font-weight: 400;
   font-style: normal;
   font-display: swap;
-  src: url("/core/api/media-asset/e5a81a06-5d45-494f-9ca0-97038c4b1692/get") format("woff2");
+}
+@font-face {
+  font-family: "Vela Sans";
+  src: url("/core/api/media-asset/{{media_vela_sans_500}}/get") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Vela Sans";
+  src: url("/core/api/media-asset/{{media_vela_sans_600}}/get") format("woff2");
+  font-weight: 600 700;
+  font-style: normal;
+  font-display: swap;
 }
 :root {
   --color-black: #1B1D25;

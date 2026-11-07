@@ -7973,5 +7973,38 @@
       }
     },
     "value": "4c171e80e9.webp"
+  },
+  {
+    "code": "SNOW_MEDIA_VELA_SANS_400",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Vela Sans 400 font",
+        "DESCRIPTION": "Media library asset id of vela-sans-400.woff2, served from /core/api/media-asset/{id}/get."
+      }
+    },
+    "value": "1aa5a29c-d0f1-4ea9-978e-9b16383cf2c8"
+  },
+  {
+    "code": "SNOW_MEDIA_VELA_SANS_500",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Vela Sans 500 font",
+        "DESCRIPTION": "Media library asset id of vela-sans-500.woff2, served from /core/api/media-asset/{id}/get."
+      }
+    },
+    "value": "c83d5ac3-af96-4c0f-95ef-61b56744aa5e"
+  },
+  {
+    "code": "SNOW_MEDIA_VELA_SANS_600",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Vela Sans 600 font",
+        "DESCRIPTION": "Media library asset id of vela-sans-600.woff2, served from /core/api/media-asset/{id}/get."
+      }
+    },
+    "value": "f47694ce-f96d-4527-9856-ac93bbb942b2"
   }
 ]

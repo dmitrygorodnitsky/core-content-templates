@@ -97,6 +97,18 @@
     {
       "file": "4c171e80e9.webp",
       "code": "media_4c171e80e9"
+    },
+    {
+      "file": "vela-sans-400.woff2",
+      "code": "media_vela_sans_400"
+    },
+    {
+      "file": "vela-sans-500.woff2",
+      "code": "media_vela_sans_500"
+    },
+    {
+      "file": "vela-sans-600.woff2",
+      "code": "media_vela_sans_600"
     }
   ],
   "params": [
@@ -3977,6 +3989,24 @@
       "type": "LOCALIZED_STRING_SS",
       "name": "Dialog accessible label",
       "description": "Accessible label (aria-label) in the Dialog section."
+    },
+    {
+      "code": "media_vela_sans_400",
+      "type": "STRING",
+      "name": "Vela Sans 400 font",
+      "description": "Media library asset id of vela-sans-400.woff2, served from /core/api/media-asset/{id}/get."
+    },
+    {
+      "code": "media_vela_sans_500",
+      "type": "STRING",
+      "name": "Vela Sans 500 font",
+      "description": "Media library asset id of vela-sans-500.woff2, served from /core/api/media-asset/{id}/get."
+    },
+    {
+      "code": "media_vela_sans_600",
+      "type": "STRING",
+      "name": "Vela Sans 600 font",
+      "description": "Media library asset id of vela-sans-600.woff2, served from /core/api/media-asset/{id}/get."
     }
   ]
 }
