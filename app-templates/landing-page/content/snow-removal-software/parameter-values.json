@@ -662,6 +662,27 @@
     "SNOW_ADDONS_WEATHER_TOGGLE": "Add Weather Intelligence",
     "SNOW_ADDONS_WEATHER_COUNT": "Properties with weather",
     "SNOW_ADDONS_PANEL_TITLE": "Your configuration",
-    "SNOW_ADDONS_PANEL_NOTE": "Plan and selected add-ons continue together. Final prices, limits and taxes are confirmed at checkout."
+    "SNOW_ADDONS_PANEL_NOTE": "Plan and selected add-ons continue together. Final prices, limits and taxes are confirmed at checkout.",
+    "SNOW_ADDONS_ENT_MODULE_1_TITLE": "Capacity &amp; Optimization",
+    "SNOW_ADDONS_ENT_MODULE_1_TEXT": "Property and optimization capacity tailored to your scope.",
+    "SNOW_ADDONS_ENT_MODULE_2_TITLE": "Integrations &amp; API",
+    "SNOW_ADDONS_ENT_MODULE_2_TEXT": "Assess the connections your operation needs.",
+    "SNOW_ADDONS_ENT_MODULE_3_TITLE": "Multi-Region Configuration",
+    "SNOW_ADDONS_ENT_MODULE_3_TEXT": "Configure operations across regions.",
+    "SNOW_ADDONS_ENT_MODULE_4_TITLE": "Governance Requirements",
+    "SNOW_ADDONS_ENT_MODULE_4_TEXT": "Agree access and governance requirements.",
+    "SNOW_ADDONS_ENT_MODULE_5_TITLE": "Implementation &amp; Service Terms",
+    "SNOW_ADDONS_ENT_MODULE_5_TEXT": "Define implementation and service scope together.",
+    "SNOW_ADDONS_ENT_MODULE_6_TITLE": "Enterprise-Level Subcontractor Management",
+    "SNOW_ADDONS_ENT_MODULE_6_TEXT": "Configure workflows and permissions for subcontractor teams.",
+    "SNOW_ADDONS_ENT_EYEBROW": "SERVICEWAND ENTERPRISE",
+    "SNOW_ADDONS_ENT_TITLE": "Your operation. Your scope.",
+    "SNOW_ADDONS_ENT_TEXT": "Build on Business capabilities with capacity, integrations and implementation tailored to your operation.",
+    "SNOW_ADDONS_CTA_1_URL": "/snow-removal-request-demo.html",
+    "SNOW_ADDONS_CTA_1_SOURCE": "pricing_enterprise",
+    "SNOW_ADDONS_CTA_1_PLAN": "SERVICEWAND_ENTERPRISE",
+    "SNOW_ADDONS_ENT_CTA": "Talk to Sales →",
+    "SNOW_ADDONS_ENT_NOTE": "Capacity, deliverables, pricing and service terms are agreed with our team.",
+    "SNOW_ADDONS_ENT_ROOT": "Your operation"
   }
 }

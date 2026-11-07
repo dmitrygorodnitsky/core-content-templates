@@ -24,66 +24,6 @@
     }
   },
   {
-    "code": "SNOW_REMOVAL_LANDING_HEADER_MENU_PLATFORM_HREF",
-    "type": "STRING",
-    "nls": {
-      "en": {
-        "NAME": "Header menu Platform href",
-        "DESCRIPTION": "URL target for the desktop Platform navigation link."
-      }
-    },
-    "value": "https://servicewand.com#hero"
-  },
-  {
-    "code": "SNOW_REMOVAL_LANDING_HEADER_MENU_PLATFORM",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "Header menu - Platform",
-        "DESCRIPTION": "Desktop navigation label for the platform section."
-      }
-    },
-    "value": {
-      "ar": "المنصة",
-      "en": "Platform",
-      "es": "Plataforma",
-      "fr": "Plateforme",
-      "he": "פלטפורמה",
-      "ru": "Платформа",
-      "zh": "平台"
-    }
-  },
-  {
-    "code": "SNOW_REMOVAL_LANDING_HEADER_MENU_HOW_IT_WORKS_HREF",
-    "type": "STRING",
-    "nls": {
-      "en": {
-        "NAME": "Header menu How It Works href",
-        "DESCRIPTION": "URL target for the desktop How It Works navigation link."
-      }
-    },
-    "value": "https://servicewand.com#features"
-  },
-  {
-    "code": "SNOW_REMOVAL_LANDING_HEADER_MENU_HOW_IT_WORKS",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "Header menu - How It Works",
-        "DESCRIPTION": "Desktop navigation label for the features section."
-      }
-    },
-    "value": {
-      "ar": "كيفية العمل",
-      "en": "How It Works",
-      "es": "Cómo funciona",
-      "fr": "Comment ça marche",
-      "he": "איך זה עובד",
-      "ru": "Как это работает",
-      "zh": "工作原理"
-    }
-  },
-  {
     "code": "SNOW_REMOVAL_LANDING_HEADER_MENU_INDUSTRIES",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
@@ -2545,7 +2485,7 @@
         "DESCRIPTION": "URL target for the header demo CTA."
       }
     },
-    "value": "/field-service-early-access.html"
+    "value": "/snow-removal-request-demo.html"
   },
   {
     "code": "SNOW_REMOVAL_LANDING_HEADER_DEMO_REQUEST_LABEL",
@@ -2558,7 +2498,7 @@
     },
     "value": {
       "ar": "احصل على وصول مبكر",
-      "en": "Get Early Access",
+      "en": "Book a Demo",
       "es": "Obtén Acceso Anticipado",
       "fr": "Obtenez un accès anticipé",
       "he": "קבל גישה מוקדמת",
@@ -2645,5 +2585,282 @@
       }
     },
     "value": "eafe1edc-102e-4133-bd96-146d40346efa"
+  },
+  {
+    "code": "SNOW_REMOVAL_LANDING_HEADER_SNOW_MENU_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Snow Removal menu label",
+        "DESCRIPTION": "Label of the Snow Removal dropdown in the page header."
+      }
+    },
+    "value": {
+      "en": "Snow Removal"
+    }
+  },
+  {
+    "code": "SNOW_REMOVAL_LANDING_HEADER_PRICING_LINK_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Pricing link label",
+        "DESCRIPTION": "Header link to the plans block."
+      }
+    },
+    "value": {
+      "en": "Pricing"
+    }
+  },
+  {
+    "code": "SNOW_REMOVAL_LANDING_HEADER_PRICING_LINK_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Pricing link target",
+        "DESCRIPTION": "Anchor of the plans block."
+      }
+    },
+    "value": "#pricing"
+  },
+  {
+    "code": "SNOW_REMOVAL_LANDING_HEADER_SNOW_LINK_1_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Snow Removal menu link 1",
+        "DESCRIPTION": "Label of a Snow Removal menu link to a section of this page."
+      }
+    },
+    "value": {
+      "en": "Routing &amp; dispatch"
+    }
+  },
+  {
+    "code": "SNOW_REMOVAL_LANDING_HEADER_SNOW_LINK_1_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Snow Removal menu link 1 target",
+        "DESCRIPTION": "Section anchor of the Snow Removal menu link."
+      }
+    },
+    "value": "#routing"
+  },
+  {
+    "code": "SNOW_REMOVAL_LANDING_HEADER_SNOW_LINK_2_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Snow Removal menu link 2",
+        "DESCRIPTION": "Label of a Snow Removal menu link to a section of this page."
+      }
+    },
+    "value": {
+      "en": "Requests &amp; quotations"
+    }
+  },
+  {
+    "code": "SNOW_REMOVAL_LANDING_HEADER_SNOW_LINK_2_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Snow Removal menu link 2 target",
+        "DESCRIPTION": "Section anchor of the Snow Removal menu link."
+      }
+    },
+    "value": "#requests"
+  },
+  {
+    "code": "SNOW_REMOVAL_LANDING_HEADER_SNOW_LINK_3_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Snow Removal menu link 3",
+        "DESCRIPTION": "Label of a Snow Removal menu link to a section of this page."
+      }
+    },
+    "value": {
+      "en": "Mobile workforce"
+    }
+  },
+  {
+    "code": "SNOW_REMOVAL_LANDING_HEADER_SNOW_LINK_3_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Snow Removal menu link 3 target",
+        "DESCRIPTION": "Section anchor of the Snow Removal menu link."
+      }
+    },
+    "value": "#mobile"
+  },
+  {
+    "code": "SNOW_REMOVAL_LANDING_HEADER_SNOW_LINK_4_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Snow Removal menu link 4",
+        "DESCRIPTION": "Label of a Snow Removal menu link to a section of this page."
+      }
+    },
+    "value": {
+      "en": "Subcontractors"
+    }
+  },
+  {
+    "code": "SNOW_REMOVAL_LANDING_HEADER_SNOW_LINK_4_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Snow Removal menu link 4 target",
+        "DESCRIPTION": "Section anchor of the Snow Removal menu link."
+      }
+    },
+    "value": "#subcontractors"
+  },
+  {
+    "code": "SNOW_REMOVAL_LANDING_HEADER_SNOW_LINK_5_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Snow Removal menu link 5",
+        "DESCRIPTION": "Label of a Snow Removal menu link to a section of this page."
+      }
+    },
+    "value": {
+      "en": "Customer portal"
+    }
+  },
+  {
+    "code": "SNOW_REMOVAL_LANDING_HEADER_SNOW_LINK_5_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Snow Removal menu link 5 target",
+        "DESCRIPTION": "Section anchor of the Snow Removal menu link."
+      }
+    },
+    "value": "#portal"
+  },
+  {
+    "code": "SNOW_REMOVAL_LANDING_HEADER_SNOW_LINK_6_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Snow Removal menu link 6",
+        "DESCRIPTION": "Label of a Snow Removal menu link to a section of this page."
+      }
+    },
+    "value": {
+      "en": "Billing &amp; payments"
+    }
+  },
+  {
+    "code": "SNOW_REMOVAL_LANDING_HEADER_SNOW_LINK_6_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Snow Removal menu link 6 target",
+        "DESCRIPTION": "Section anchor of the Snow Removal menu link."
+      }
+    },
+    "value": "#billing"
+  },
+  {
+    "code": "SNOW_REMOVAL_LANDING_HEADER_SNOW_LINK_7_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Snow Removal menu link 7",
+        "DESCRIPTION": "Label of a Snow Removal menu link to a section of this page."
+      }
+    },
+    "value": {
+      "en": "Onboarding &amp; support"
+    }
+  },
+  {
+    "code": "SNOW_REMOVAL_LANDING_HEADER_SNOW_LINK_7_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Snow Removal menu link 7 target",
+        "DESCRIPTION": "Section anchor of the Snow Removal menu link."
+      }
+    },
+    "value": "#onboarding"
+  },
+  {
+    "code": "SNOW_REMOVAL_LANDING_HEADER_SNOW_LINK_8_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Snow Removal menu link 8",
+        "DESCRIPTION": "Label of a Snow Removal menu link to a section of this page."
+      }
+    },
+    "value": {
+      "en": "Platform &amp; growth"
+    }
+  },
+  {
+    "code": "SNOW_REMOVAL_LANDING_HEADER_SNOW_LINK_8_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Snow Removal menu link 8 target",
+        "DESCRIPTION": "Section anchor of the Snow Removal menu link."
+      }
+    },
+    "value": "#platform"
+  },
+  {
+    "code": "SNOW_REMOVAL_LANDING_HEADER_SNOW_LINK_9_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Snow Removal menu link 9",
+        "DESCRIPTION": "Label of a Snow Removal menu link to a section of this page."
+      }
+    },
+    "value": {
+      "en": "Plans &amp; pricing"
+    }
+  },
+  {
+    "code": "SNOW_REMOVAL_LANDING_HEADER_SNOW_LINK_9_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Snow Removal menu link 9 target",
+        "DESCRIPTION": "Section anchor of the Snow Removal menu link."
+      }
+    },
+    "value": "#pricing"
+  },
+  {
+    "code": "SNOW_REMOVAL_LANDING_HEADER_SNOW_LINK_10_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Snow Removal menu link 10",
+        "DESCRIPTION": "Label of a Snow Removal menu link to a section of this page."
+      }
+    },
+    "value": {
+      "en": "Questions &amp; answers"
+    }
+  },
+  {
+    "code": "SNOW_REMOVAL_LANDING_HEADER_SNOW_LINK_10_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Snow Removal menu link 10 target",
+        "DESCRIPTION": "Section anchor of the Snow Removal menu link."
+      }
+    },
+    "value": "#faq"
   }
 ]

@@ -58,7 +58,9 @@ const expectedCtaHrefs = () => [...new Set(Object.keys(pack)
   .filter((code) => /_CTA_\d+_URL$/.test(code))
   .map((code) => {
     const source = pack[code.replace(/_URL$/, "_SOURCE")];
-    return source ? `${pack[code]}?cta_source=${source}` : pack[code];
+    const plan = pack[code.replace(/_URL$/, "_PLAN")];
+    const href = source ? `${pack[code]}?cta_source=${source}` : pack[code];
+    return plan ? `${href}&plan=${plan}` : href;
   })
   .concat(pack.SNOW_PRICING_SUBSCRIBE_URL))]
   .sort();

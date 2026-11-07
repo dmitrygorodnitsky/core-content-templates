@@ -818,6 +818,8 @@
       totalAmount: addons.querySelector("[data-total-amount]"),
       continueLink: addons.querySelector("[data-continue]"),
       continueLabel: addons.querySelector("[data-continue-label]"),
+      enterprisePanel: addons.querySelector("[data-addons-enterprise]"),
+      layout: addons.querySelector("[data-addons-layout]"),
     };
 
     function planByCode(code) {
@@ -951,7 +953,16 @@
     function renderAddons() {
       addons.dataset.state = state.status;
       addons.dataset.period = state.period;
-      buttons.forEach(function (button) { button.setAttribute("aria-checked", String(button.dataset.planCode === state.planCode)); });
+      buttons.forEach(function (button) {
+        var selected = button.dataset.planCode === state.planCode;
+        button.setAttribute("aria-checked", String(selected));
+        button.tabIndex = selected ? 0 : -1;
+      });
+      var enterprise = rules.planCodes.indexOf(state.planCode) === -1;
+      addons.dataset.mode = enterprise ? "enterprise" : "calculator";
+      if (refs.enterprisePanel) refs.enterprisePanel.hidden = !enterprise;
+      if (refs.layout) refs.layout.hidden = enterprise;
+      if (enterprise) return;
       var current = buttons.filter(function (button) { return button.dataset.planCode === state.planCode; })[0];
       var planName = current ? current.textContent.trim() : "";
       var plan = planByCode(state.planCode);
@@ -1091,8 +1102,16 @@
       renderAll();
     }
 
-    buttons.forEach(function (button) {
+    buttons.forEach(function (button, index) {
       button.addEventListener("click", function () { choosePlan(button.dataset.planCode); });
+      button.addEventListener("keydown", function (event) {
+        var step = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 }[event.key];
+        var target = event.key === "Home" ? 0 : event.key === "End" ? buttons.length - 1 : step ? (index + step + buttons.length) % buttons.length : -1;
+        if (target < 0) return;
+        event.preventDefault();
+        choosePlan(buttons[target].dataset.planCode);
+        buttons[target].focus();
+      });
     });
     main.querySelectorAll("[data-billing-switch] button").forEach(function (button) {
       button.addEventListener("click", function () { setPeriod(button.dataset.period); });

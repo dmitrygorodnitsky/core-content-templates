@@ -7143,6 +7143,273 @@
     }
   },
   {
+    "code": "SNOW_ADDONS_ENT_EYEBROW",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Enterprise eyebrow",
+        "DESCRIPTION": "Label above the Enterprise heading in Add-ons."
+      }
+    },
+    "value": {
+      "en": "SERVICEWAND ENTERPRISE"
+    }
+  },
+  {
+    "code": "SNOW_ADDONS_ENT_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Enterprise heading",
+        "DESCRIPTION": "Heading of the Add-ons Enterprise state."
+      }
+    },
+    "value": {
+      "en": "Your operation. Your scope."
+    }
+  },
+  {
+    "code": "SNOW_ADDONS_ENT_TEXT",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Enterprise description",
+        "DESCRIPTION": "Description of the Add-ons Enterprise state."
+      }
+    },
+    "value": {
+      "en": "Build on Business capabilities with capacity, integrations and implementation tailored to your operation."
+    }
+  },
+  {
+    "code": "SNOW_ADDONS_CTA_1_URL",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Enterprise Talk to Sales URL",
+        "DESCRIPTION": "Sales or demo form opened from the Add-ons Enterprise state."
+      }
+    },
+    "value": "/snow-removal-request-demo.html"
+  },
+  {
+    "code": "SNOW_ADDONS_CTA_1_SOURCE",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Enterprise Talk to Sales source",
+        "DESCRIPTION": "cta_source value of the Add-ons Enterprise Talk to Sales button."
+      }
+    },
+    "value": "pricing_enterprise"
+  },
+  {
+    "code": "SNOW_ADDONS_CTA_1_PLAN",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Enterprise context",
+        "DESCRIPTION": "Plan context passed to the sales form; the form ignores it until it supports the field."
+      }
+    },
+    "value": "SERVICEWAND_ENTERPRISE"
+  },
+  {
+    "code": "SNOW_ADDONS_ENT_CTA",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Enterprise Talk to Sales label",
+        "DESCRIPTION": "Label of the Add-ons Enterprise Talk to Sales button."
+      }
+    },
+    "value": {
+      "en": "Talk to Sales →"
+    }
+  },
+  {
+    "code": "SNOW_ADDONS_ENT_NOTE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Enterprise note",
+        "DESCRIPTION": "Note under the Enterprise Talk to Sales button."
+      }
+    },
+    "value": {
+      "en": "Capacity, deliverables, pricing and service terms are agreed with our team."
+    }
+  },
+  {
+    "code": "SNOW_ADDONS_ENT_ROOT",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Enterprise diagram root",
+        "DESCRIPTION": "Label of the central element of the Enterprise diagram."
+      }
+    },
+    "value": {
+      "en": "Your operation"
+    }
+  },
+  {
+    "code": "SNOW_ADDONS_ENT_MODULE_1_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Enterprise module 1 title",
+        "DESCRIPTION": "Title of an Enterprise capability module in the Add-ons Enterprise state."
+      }
+    },
+    "value": {
+      "en": "Capacity &amp; Optimization"
+    }
+  },
+  {
+    "code": "SNOW_ADDONS_ENT_MODULE_1_TEXT",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Enterprise module 1 text",
+        "DESCRIPTION": "Short description of the Enterprise capability module."
+      }
+    },
+    "value": {
+      "en": "Property and optimization capacity tailored to your scope."
+    }
+  },
+  {
+    "code": "SNOW_ADDONS_ENT_MODULE_2_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Enterprise module 2 title",
+        "DESCRIPTION": "Title of an Enterprise capability module in the Add-ons Enterprise state."
+      }
+    },
+    "value": {
+      "en": "Integrations &amp; API"
+    }
+  },
+  {
+    "code": "SNOW_ADDONS_ENT_MODULE_2_TEXT",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Enterprise module 2 text",
+        "DESCRIPTION": "Short description of the Enterprise capability module."
+      }
+    },
+    "value": {
+      "en": "Assess the connections your operation needs."
+    }
+  },
+  {
+    "code": "SNOW_ADDONS_ENT_MODULE_3_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Enterprise module 3 title",
+        "DESCRIPTION": "Title of an Enterprise capability module in the Add-ons Enterprise state."
+      }
+    },
+    "value": {
+      "en": "Multi-Region Configuration"
+    }
+  },
+  {
+    "code": "SNOW_ADDONS_ENT_MODULE_3_TEXT",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Enterprise module 3 text",
+        "DESCRIPTION": "Short description of the Enterprise capability module."
+      }
+    },
+    "value": {
+      "en": "Configure operations across regions."
+    }
+  },
+  {
+    "code": "SNOW_ADDONS_ENT_MODULE_4_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Enterprise module 4 title",
+        "DESCRIPTION": "Title of an Enterprise capability module in the Add-ons Enterprise state."
+      }
+    },
+    "value": {
+      "en": "Governance Requirements"
+    }
+  },
+  {
+    "code": "SNOW_ADDONS_ENT_MODULE_4_TEXT",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Enterprise module 4 text",
+        "DESCRIPTION": "Short description of the Enterprise capability module."
+      }
+    },
+    "value": {
+      "en": "Agree access and governance requirements."
+    }
+  },
+  {
+    "code": "SNOW_ADDONS_ENT_MODULE_5_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Enterprise module 5 title",
+        "DESCRIPTION": "Title of an Enterprise capability module in the Add-ons Enterprise state."
+      }
+    },
+    "value": {
+      "en": "Implementation &amp; Service Terms"
+    }
+  },
+  {
+    "code": "SNOW_ADDONS_ENT_MODULE_5_TEXT",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Enterprise module 5 text",
+        "DESCRIPTION": "Short description of the Enterprise capability module."
+      }
+    },
+    "value": {
+      "en": "Define implementation and service scope together."
+    }
+  },
+  {
+    "code": "SNOW_ADDONS_ENT_MODULE_6_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Enterprise module 6 title",
+        "DESCRIPTION": "Title of an Enterprise capability module in the Add-ons Enterprise state."
+      }
+    },
+    "value": {
+      "en": "Enterprise-Level Subcontractor Management"
+    }
+  },
+  {
+    "code": "SNOW_ADDONS_ENT_MODULE_6_TEXT",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Enterprise module 6 text",
+        "DESCRIPTION": "Short description of the Enterprise capability module."
+      }
+    },
+    "value": {
+      "en": "Configure workflows and permissions for subcontractor teams."
+    }
+  },
+  {
     "code": "SNOW_ADDONS_EXPANSION_H3",
     "type": "LOCALIZED_STRING_SS",
     "nls": {

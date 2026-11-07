@@ -54,6 +54,47 @@ const mediaValues = (block, media) => {
   return values;
 };
 
+export const applyHeaderVariant = (header, block, blockDir) => {
+  const variant = block.header_variant;
+  if (!variant) return header;
+  const prefix = `${header.code}_`;
+  const types = new Map(variant.params.map((param) => [param.code, param.type]));
+  const fragment = (file) => readFileSync(join(blockDir, file), "utf8").replace(/\{\{([a-z0-9_]+)\}\}/g, (match, code) => {
+    if (!types.has(code)) throw new Error(`Header variant placeholder ${code} is not declared`);
+    return `\${${prefix}${code.toUpperCase()}@${types.get(code)}}`;
+  });
+  const item = (code, linkClass, liPattern) => new RegExp(`${liPattern}\\s*<a\\s+href="\\$\\{${prefix}${code}_HREF@STRING\\}"\\s+class="${linkClass}"[\\s\\S]*?</li>`);
+  let html = header.html;
+  const swap = (codes, linkClass, liPattern, file) => {
+    codes.forEach((code, index) => {
+      const pattern = item(code, linkClass, liPattern);
+      if (!pattern.test(html)) throw new Error(`Header variant target ${code} (${linkClass}) not found`);
+      html = html.replace(pattern, index === 0 ? fragment(file).trim() : "");
+    });
+  };
+  swap(variant.replaces.desktop, "header-menu-link", '<li class="header-menu-item">', variant.desktop);
+  swap(variant.replaces.mobile, "mobile-menu-link", "<li>", variant.mobile);
+  const replaced = new Set(variant.replaces.desktop.flatMap((code) => [code, `${code}_HREF`]).map((code) => `${prefix}${code}`));
+  const stillUsed = [...replaced].filter((code) => html.includes(`\${${code}@`));
+  if (stillUsed.length) throw new Error(`Replaced header parameters are still referenced: ${stillUsed.join(", ")}`);
+  const parameters = header.parameters
+    .filter((param) => !replaced.has(param.code))
+    .map((param) => {
+      const local = param.code.slice(prefix.length);
+      if (!Object.hasOwn(variant.values || {}, local)) return param;
+      const value = variant.values[local];
+      return { ...param, value: value && typeof value === "object" && param.value && typeof param.value === "object" ? { ...param.value, ...value } : value };
+    })
+    .concat(variant.params.map((param) => ({
+      code: `${prefix}${param.code.toUpperCase()}`,
+      type: param.type,
+      nls: { en: { NAME: param.name, DESCRIPTION: param.description } },
+      value: param.type.startsWith("LOCALIZED_") ? { en: param.value } : param.value,
+    })));
+  const css = readFileSync(join(blockDir, "header-nav.css"), "utf8");
+  return { ...header, html, css: `${header.css}\n${minifyCss(css)}`, parameters };
+};
+
 const splitTemplate = (dir, template) => {
   writeJson(join(dir, "template.json"), template);
   writeText(join(dir, "head.html"), template.head || "");
@@ -99,7 +140,7 @@ export const exportSnowRemovalLanding = ({ outputDir = DEFAULT_OUT, quiet = fals
     const family = composeCmsFamily({ specPath: SPEC, outDir: join(staging, "build"), valuesPath });
     const mapped = completeMappedValues(readJson(CHROME_VALUES));
     const children = family.children.map((child) => {
-      if (child.code === `${spec.code}_HEADER`) return applyValues({ template: child, values: mapped.header });
+      if (child.code === `${spec.code}_HEADER`) return applyHeaderVariant(applyValues({ template: child, values: mapped.header }), block, join(landingRoot, "blocks", "16-snow-removal", "snow-removal.page"));
       if (child.code === `${spec.code}_FOOTER`) return applyValues({ template: child, values: mapped.footer });
       if (child.code === CONTENT_CODE) return { ...child, css: minifyCss(child.css), javascript: stripGeneratedHeaders(child.javascript) };
       throw new Error(`Unexpected child template ${child.code}`);

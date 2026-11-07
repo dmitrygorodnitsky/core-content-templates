@@ -4313,6 +4313,321 @@
       "type": "LOCALIZED_STRING_SS",
       "name": "Panel note",
       "description": "Note under the Continue button."
+    },
+    {
+      "code": "addons_ent_module_1_title",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Enterprise module 1 title",
+      "description": "Title of an Enterprise capability module in the Add-ons Enterprise state."
+    },
+    {
+      "code": "addons_ent_module_1_text",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Enterprise module 1 text",
+      "description": "Short description of the Enterprise capability module."
+    },
+    {
+      "code": "addons_ent_module_2_title",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Enterprise module 2 title",
+      "description": "Title of an Enterprise capability module in the Add-ons Enterprise state."
+    },
+    {
+      "code": "addons_ent_module_2_text",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Enterprise module 2 text",
+      "description": "Short description of the Enterprise capability module."
+    },
+    {
+      "code": "addons_ent_module_3_title",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Enterprise module 3 title",
+      "description": "Title of an Enterprise capability module in the Add-ons Enterprise state."
+    },
+    {
+      "code": "addons_ent_module_3_text",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Enterprise module 3 text",
+      "description": "Short description of the Enterprise capability module."
+    },
+    {
+      "code": "addons_ent_module_4_title",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Enterprise module 4 title",
+      "description": "Title of an Enterprise capability module in the Add-ons Enterprise state."
+    },
+    {
+      "code": "addons_ent_module_4_text",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Enterprise module 4 text",
+      "description": "Short description of the Enterprise capability module."
+    },
+    {
+      "code": "addons_ent_module_5_title",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Enterprise module 5 title",
+      "description": "Title of an Enterprise capability module in the Add-ons Enterprise state."
+    },
+    {
+      "code": "addons_ent_module_5_text",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Enterprise module 5 text",
+      "description": "Short description of the Enterprise capability module."
+    },
+    {
+      "code": "addons_ent_module_6_title",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Enterprise module 6 title",
+      "description": "Title of an Enterprise capability module in the Add-ons Enterprise state."
+    },
+    {
+      "code": "addons_ent_module_6_text",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Enterprise module 6 text",
+      "description": "Short description of the Enterprise capability module."
+    },
+    {
+      "code": "addons_ent_eyebrow",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Enterprise eyebrow",
+      "description": "Label above the Enterprise heading in Add-ons."
+    },
+    {
+      "code": "addons_ent_title",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Enterprise heading",
+      "description": "Heading of the Add-ons Enterprise state."
+    },
+    {
+      "code": "addons_ent_text",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Enterprise description",
+      "description": "Description of the Add-ons Enterprise state."
+    },
+    {
+      "code": "addons_cta_1_url",
+      "type": "URL",
+      "name": "Enterprise Talk to Sales URL",
+      "description": "Sales or demo form opened from the Add-ons Enterprise state.",
+      "default": "/snow-removal-request-demo.html",
+      "preserve_default": true
+    },
+    {
+      "code": "addons_cta_1_source",
+      "type": "STRING",
+      "name": "Enterprise Talk to Sales source",
+      "description": "cta_source value of the Add-ons Enterprise Talk to Sales button.",
+      "default": "pricing_enterprise",
+      "preserve_default": true
+    },
+    {
+      "code": "addons_cta_1_plan",
+      "type": "STRING",
+      "name": "Enterprise context",
+      "description": "Plan context passed to the sales form; the form ignores it until it supports the field.",
+      "default": "SERVICEWAND_ENTERPRISE",
+      "preserve_default": true
+    },
+    {
+      "code": "addons_ent_cta",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Enterprise Talk to Sales label",
+      "description": "Label of the Add-ons Enterprise Talk to Sales button."
+    },
+    {
+      "code": "addons_ent_note",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Enterprise note",
+      "description": "Note under the Enterprise Talk to Sales button."
+    },
+    {
+      "code": "addons_ent_root",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Enterprise diagram root",
+      "description": "Label of the central element of the Enterprise diagram."
     }
-  ]
+  ],
+  "header_variant": {
+    "replaces": {
+      "desktop": [
+        "MENU_PLATFORM",
+        "MENU_HOW_IT_WORKS"
+      ],
+      "mobile": [
+        "MENU_PLATFORM",
+        "MENU_HOW_IT_WORKS"
+      ]
+    },
+    "desktop": "header-nav.html",
+    "mobile": "header-nav-mobile.html",
+    "params": [
+      {
+        "code": "snow_menu_label",
+        "type": "LOCALIZED_STRING_SS",
+        "value": "Snow Removal",
+        "name": "Snow Removal menu label",
+        "description": "Label of the Snow Removal dropdown in the page header."
+      },
+      {
+        "code": "pricing_link_label",
+        "type": "LOCALIZED_STRING_SS",
+        "value": "Pricing",
+        "name": "Pricing link label",
+        "description": "Header link to the plans block."
+      },
+      {
+        "code": "pricing_link_href",
+        "type": "STRING",
+        "value": "#pricing",
+        "name": "Pricing link target",
+        "description": "Anchor of the plans block."
+      },
+      {
+        "code": "snow_link_1_label",
+        "type": "LOCALIZED_STRING_SS",
+        "value": "Routing &amp; dispatch",
+        "name": "Snow Removal menu link 1",
+        "description": "Label of a Snow Removal menu link to a section of this page."
+      },
+      {
+        "code": "snow_link_1_href",
+        "type": "STRING",
+        "value": "#routing",
+        "name": "Snow Removal menu link 1 target",
+        "description": "Section anchor of the Snow Removal menu link."
+      },
+      {
+        "code": "snow_link_2_label",
+        "type": "LOCALIZED_STRING_SS",
+        "value": "Requests &amp; quotations",
+        "name": "Snow Removal menu link 2",
+        "description": "Label of a Snow Removal menu link to a section of this page."
+      },
+      {
+        "code": "snow_link_2_href",
+        "type": "STRING",
+        "value": "#requests",
+        "name": "Snow Removal menu link 2 target",
+        "description": "Section anchor of the Snow Removal menu link."
+      },
+      {
+        "code": "snow_link_3_label",
+        "type": "LOCALIZED_STRING_SS",
+        "value": "Mobile workforce",
+        "name": "Snow Removal menu link 3",
+        "description": "Label of a Snow Removal menu link to a section of this page."
+      },
+      {
+        "code": "snow_link_3_href",
+        "type": "STRING",
+        "value": "#mobile",
+        "name": "Snow Removal menu link 3 target",
+        "description": "Section anchor of the Snow Removal menu link."
+      },
+      {
+        "code": "snow_link_4_label",
+        "type": "LOCALIZED_STRING_SS",
+        "value": "Subcontractors",
+        "name": "Snow Removal menu link 4",
+        "description": "Label of a Snow Removal menu link to a section of this page."
+      },
+      {
+        "code": "snow_link_4_href",
+        "type": "STRING",
+        "value": "#subcontractors",
+        "name": "Snow Removal menu link 4 target",
+        "description": "Section anchor of the Snow Removal menu link."
+      },
+      {
+        "code": "snow_link_5_label",
+        "type": "LOCALIZED_STRING_SS",
+        "value": "Customer portal",
+        "name": "Snow Removal menu link 5",
+        "description": "Label of a Snow Removal menu link to a section of this page."
+      },
+      {
+        "code": "snow_link_5_href",
+        "type": "STRING",
+        "value": "#portal",
+        "name": "Snow Removal menu link 5 target",
+        "description": "Section anchor of the Snow Removal menu link."
+      },
+      {
+        "code": "snow_link_6_label",
+        "type": "LOCALIZED_STRING_SS",
+        "value": "Billing &amp; payments",
+        "name": "Snow Removal menu link 6",
+        "description": "Label of a Snow Removal menu link to a section of this page."
+      },
+      {
+        "code": "snow_link_6_href",
+        "type": "STRING",
+        "value": "#billing",
+        "name": "Snow Removal menu link 6 target",
+        "description": "Section anchor of the Snow Removal menu link."
+      },
+      {
+        "code": "snow_link_7_label",
+        "type": "LOCALIZED_STRING_SS",
+        "value": "Onboarding &amp; support",
+        "name": "Snow Removal menu link 7",
+        "description": "Label of a Snow Removal menu link to a section of this page."
+      },
+      {
+        "code": "snow_link_7_href",
+        "type": "STRING",
+        "value": "#onboarding",
+        "name": "Snow Removal menu link 7 target",
+        "description": "Section anchor of the Snow Removal menu link."
+      },
+      {
+        "code": "snow_link_8_label",
+        "type": "LOCALIZED_STRING_SS",
+        "value": "Platform &amp; growth",
+        "name": "Snow Removal menu link 8",
+        "description": "Label of a Snow Removal menu link to a section of this page."
+      },
+      {
+        "code": "snow_link_8_href",
+        "type": "STRING",
+        "value": "#platform",
+        "name": "Snow Removal menu link 8 target",
+        "description": "Section anchor of the Snow Removal menu link."
+      },
+      {
+        "code": "snow_link_9_label",
+        "type": "LOCALIZED_STRING_SS",
+        "value": "Plans &amp; pricing",
+        "name": "Snow Removal menu link 9",
+        "description": "Label of a Snow Removal menu link to a section of this page."
+      },
+      {
+        "code": "snow_link_9_href",
+        "type": "STRING",
+        "value": "#pricing",
+        "name": "Snow Removal menu link 9 target",
+        "description": "Section anchor of the Snow Removal menu link."
+      },
+      {
+        "code": "snow_link_10_label",
+        "type": "LOCALIZED_STRING_SS",
+        "value": "Questions &amp; answers",
+        "name": "Snow Removal menu link 10",
+        "description": "Label of a Snow Removal menu link to a section of this page."
+      },
+      {
+        "code": "snow_link_10_href",
+        "type": "STRING",
+        "value": "#faq",
+        "name": "Snow Removal menu link 10 target",
+        "description": "Section anchor of the Snow Removal menu link."
+      }
+    ],
+    "values": {
+      "DEMO_REQUEST_LABEL": {
+        "en": "Book a Demo"
+      },
+      "DEMO_REQUEST_HREF": "/snow-removal-request-demo.html"
+    }
+  }
 }
