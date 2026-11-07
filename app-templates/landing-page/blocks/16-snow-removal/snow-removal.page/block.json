@@ -2538,7 +2538,7 @@
       "code": "pricing_label_4",
       "type": "LOCALIZED_STRING_SS",
       "name": "Pricing text",
-      "description": "Text in the Pricing section."
+      "description": "Optional note above the plan cards; a blank value hides it."
     },
     {
       "code": "pricing_label_5",
@@ -3926,13 +3926,15 @@
       "code": "pricing_per_month",
       "type": "LOCALIZED_STRING_SS",
       "name": "Per month suffix",
-      "description": "Billing suffix after a monthly catalog price."
+      "description": "Billing suffix after a monthly catalog price.",
+      "default": "/ month"
     },
     {
       "code": "pricing_per_year",
       "type": "LOCALIZED_STRING_SS",
       "name": "Per year suffix",
-      "description": "Billing suffix after a yearly catalog price."
+      "description": "Billing suffix after a yearly catalog price.",
+      "default": "/ year"
     },
     {
       "code": "pricing_subscribe_url",

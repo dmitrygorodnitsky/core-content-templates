@@ -590,6 +590,7 @@
     var main = document.querySelector("main.snow-landing");
     if (!main) return;
     var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    main.querySelectorAll(".review-note").forEach(function (note) { note.hidden = !note.textContent.trim(); });
     initSurfaces(main);
     initReveal(main, reduceMotion);
     initFilms(main);

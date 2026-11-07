@@ -3210,11 +3210,11 @@
     "nls": {
       "en": {
         "NAME": "Pricing text",
-        "DESCRIPTION": "Text in the Pricing section."
+        "DESCRIPTION": "Optional note above the plan cards; a blank value hides it."
       }
     },
     "value": {
-      "en": "<span>Working proposal</span> *Prices and property allowances below are reference values from the existing page, under review for these packages."
+      "en": " "
     }
   },
   {
@@ -3332,7 +3332,7 @@
       }
     },
     "value": {
-      "en": "/ month*"
+      "en": "/ month"
     }
   },
   {
@@ -3345,7 +3345,7 @@
       }
     },
     "value": {
-      "en": "/ year*"
+      "en": "/ year"
     }
   },
   {
@@ -3434,7 +3434,7 @@
       }
     },
     "value": {
-      "en": "/ month*"
+      "en": "/ month"
     }
   },
   {
@@ -3447,7 +3447,7 @@
       }
     },
     "value": {
-      "en": "25 active properties included*"
+      "en": "25 active properties included"
     }
   },
   {
@@ -3664,7 +3664,7 @@
       }
     },
     "value": {
-      "en": "/ month*"
+      "en": "/ month"
     }
   },
   {
@@ -3677,7 +3677,7 @@
       }
     },
     "value": {
-      "en": "200 active properties included*"
+      "en": "200 active properties included"
     }
   },
   {
@@ -3881,7 +3881,7 @@
       }
     },
     "value": {
-      "en": "/ month*"
+      "en": "/ month"
     }
   },
   {
@@ -3894,7 +3894,7 @@
       }
     },
     "value": {
-      "en": "500 active properties included*"
+      "en": "500 active properties included"
     }
   },
   {
@@ -7763,7 +7763,7 @@
       }
     },
     "value": {
-      "en": "Property expansion, additional optimization capacity, and scoped implementation services are available separately. Annual and off-season terms are being finalized."
+      "en": "Off-season terms are being finalized."
     }
   },
   {
@@ -8509,7 +8509,7 @@
       }
     },
     "value": {
-      "en": "Annual billing, off-season access, usage metering, data retention, and support hours will be added once the commercial terms are agreed."
+      "en": "Off-season access, usage metering, data retention, and support hours will be added once the commercial terms are agreed."
     }
   },
   {
