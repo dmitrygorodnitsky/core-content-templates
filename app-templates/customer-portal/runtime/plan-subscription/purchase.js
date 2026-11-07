@@ -27,7 +27,12 @@
       return {};
     }
     var period = String(params.get("period") || "").toUpperCase();
-    return { plan: params.get("plan") || "", period: period === "YEARLY" || period === "ANNUAL" ? "YEARLY" : period === "MONTHLY" ? "MONTHLY" : "" };
+    return {
+      plan: params.get("plan") || "",
+      period: period === "YEARLY" || period === "ANNUAL" ? "YEARLY" : period === "MONTHLY" ? "MONTHLY" : "",
+      packs: params.get("packs") || "",
+      weather: params.get("weather") || "",
+    };
   }
 
   function mount(root, options) {
@@ -88,6 +93,7 @@
           return;
         }
         state.selection = rules.initial(state.catalog, settings.preset || presetFrom(global.location && global.location.search));
+        state.weatherRaw = state.selection.weatherOn ? String(state.selection.weather) : "";
         state.step = 0;
         setPhase("form");
       }, function (error) {

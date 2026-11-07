@@ -22,13 +22,19 @@
     var wanted = preset || {};
     var plans = selfServicePlans(catalog);
     var plan = plans.filter(function (entry) { return entry.code === wanted.plan || String(entry.id) === String(wanted.plan); })[0] || null;
-    return normalize(catalog, {
+    var weather = Math.max(0, whole(wanted.weather) || 0);
+    var selection = normalize(catalog, {
       planId: plan ? plan.id : null,
       period: PERIODS.indexOf(wanted.period) !== -1 ? wanted.period : "MONTHLY",
-      packs: 0,
-      weatherOn: false,
-      weather: 0,
+      packs: plan ? wanted.packs : 0,
+      weatherOn: Boolean(plan) && weather > 0,
+      weather: plan ? weather : 0,
     });
+    if (selection.weatherOn && validateAddons(catalog, selection).weather) {
+      selection.weatherOn = false;
+      selection.weather = 0;
+    }
+    return selection;
   }
 
   function options(catalog, selection) {
