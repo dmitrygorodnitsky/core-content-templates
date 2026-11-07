@@ -4318,7 +4318,7 @@
         }
       },
       "value": {
-        "en": "*Property counts are reference values. Optimization and AI allowances, retention, support hours, and implementation scope remain under review."
+        "en": "Optimization and AI allowances, retention, support hours, and implementation scope remain under review."
       }
     },
     {
@@ -4685,7 +4685,7 @@
         }
       },
       "value": {
-        "en": "25*"
+        "en": "25"
       }
     },
     {
@@ -4698,7 +4698,7 @@
         }
       },
       "value": {
-        "en": "200*"
+        "en": "200"
       }
     },
     {
@@ -4711,7 +4711,7 @@
         }
       },
       "value": {
-        "en": "500*"
+        "en": "500"
       }
     },
     {
