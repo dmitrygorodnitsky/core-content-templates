@@ -57,6 +57,18 @@ assert.equal(optionsFor("SERVICEWAND_GROWTH", { packs: 3 }).capacity, 500);
 assert.equal(PS.selection.initial(catalog, {}).planId, null, "no plan is preselected without a landing preset");
 assert.equal(PS.selection.initial(catalog, { plan: "SERVICEWAND_ENTERPRISE" }).planId, null, "a sales-only preset is not preselected");
 assert.equal(PS.selection.initial(catalog, { plan: "SERVICEWAND_GROWTH" }).planId, plan("SERVICEWAND_GROWTH").id);
+const landingPreset = PS.purchase.presetFrom("?plan=SERVICEWAND_GROWTH&period=yearly&packs=2&weather=300");
+assert.deepEqual(plain(landingPreset), { plan: "SERVICEWAND_GROWTH", period: "YEARLY", packs: "2", weather: "300" });
+assert.deepEqual(plain(PS.selection.initial(catalog, landingPreset)), { planId: plan("SERVICEWAND_GROWTH").id, period: "YEARLY", packs: 2, weatherOn: true, weather: 300 }, "a landing configuration opens with the same composition");
+assert.equal(PS.selection.initial(catalog, { plan: "SERVICEWAND_GROWTH", packs: "99" }).packs, 8, "preset packs are clamped to the plan limit");
+assert.deepEqual(plain(PS.selection.initial(catalog, { plan: "SERVICEWAND_GROWTH", packs: "1", weather: "300" })), { planId: plan("SERVICEWAND_GROWTH").id, period: "MONTHLY", packs: 1, weatherOn: true, weather: 300 }, "preset weather within the preset capacity is kept");
+assert.deepEqual(plain(PS.selection.initial(catalog, { plan: "SERVICEWAND_GROWTH", weather: "301" })), { planId: plan("SERVICEWAND_GROWTH").id, period: "MONTHLY", packs: 0, weatherOn: false, weather: 0 }, "preset weather above the capacity is dropped");
+for (const bad of ["-2", "1.5", "abc", ""]) {
+  const preset = PS.selection.initial(catalog, { plan: "SERVICEWAND_FOUNDATION", packs: bad, weather: bad });
+  assert.equal(preset.packs, 0, `packs ${bad}`);
+  assert.equal(preset.weatherOn, false, `weather ${bad}`);
+}
+assert.deepEqual(plain(PS.selection.initial(catalog, { plan: "SERVICEWAND_ENTERPRISE", packs: "2", weather: "10" })), { planId: null, period: "MONTHLY", packs: 0, weatherOn: false, weather: 0 }, "add-ons never come without a self-service plan");
 let selection = PS.selection.initial(catalog, { plan: "SERVICEWAND_PROFESSIONAL", period: "YEARLY" });
 selection = PS.selection.normalize(catalog, { ...selection, packs: 15 });
 assert.equal(selection.packs, 15);

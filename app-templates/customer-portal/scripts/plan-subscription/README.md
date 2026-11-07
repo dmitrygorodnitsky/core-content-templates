@@ -56,6 +56,15 @@ read grants using the actual private issuer/mapping policy. It cleans its test
 grant, draft, invoice, items, purchaser, Form, address and temporary helpers.
 It does not create a buyer User or test delivery through an actual portal/mailbox.
 
+## Purchase page link
+
+`/subscribe.html` accepts `plan` (product code or id), `period` (`MONTHLY` or
+`YEARLY`), `packs` (site expansion packs) and `weather` (properties with
+Weather Intelligence). `selection.initial` applies the form's own rules: packs
+are clamped to the plan maximum, and a weather count above the resulting
+capacity, or any add-on without a self-service plan, is dropped. The Snow
+Removal landing's Add-ons configurator builds these links.
+
 ## Sources
 
 - `PLAN_SUBSCRIPTION_WORKFLOW_V11.java`: Core CMS workflow helper. Its optional
