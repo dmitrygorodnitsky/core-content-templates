@@ -1,0 +1,408 @@
+{
+  "$schema": "lab-ui/seo-contract@1",
+  "source": "Approved Snow Removal landing v4 and the SEO doc keyword targets.",
+  "scope": {
+    "root": "main",
+    "excludeSections": [
+      "#pricing",
+      "#faq"
+    ]
+  },
+  "headings": [
+    {
+      "level": 1,
+      "text": "Snow Removal Software for the Office. Snow Removal App for the Field."
+    },
+    {
+      "level": 2,
+      "text": "Snow Removal Business Software That Connects Office and Field"
+    },
+    {
+      "level": 3,
+      "text": "Control the work"
+    },
+    {
+      "level": 3,
+      "text": "Reduce routine coordination"
+    },
+    {
+      "level": 3,
+      "text": "Keep a clear service history"
+    },
+    {
+      "level": 3,
+      "text": "Weather Intelligence"
+    },
+    {
+      "level": 3,
+      "text": "Dashboards & Reporting"
+    },
+    {
+      "level": 3,
+      "text": "Workflow Automation"
+    },
+    {
+      "level": 2,
+      "text": "Advanced Route Optimization & Dispatch"
+    },
+    {
+      "level": 3,
+      "text": "Plan & optimize"
+    },
+    {
+      "level": 3,
+      "text": "Reuse route templates"
+    },
+    {
+      "level": 3,
+      "text": "Adapt mid-storm"
+    },
+    {
+      "level": 3,
+      "text": "Snow plow tracking software"
+    },
+    {
+      "level": 3,
+      "text": "Keep crews working"
+    },
+    {
+      "level": 2,
+      "text": "Requests & Quotations"
+    },
+    {
+      "level": 3,
+      "text": "One request, multiple properties"
+    },
+    {
+      "level": 3,
+      "text": "Connected to your website and workflow"
+    },
+    {
+      "level": 3,
+      "text": "From request to approval"
+    },
+    {
+      "level": 2,
+      "text": "Mobile Workforce"
+    },
+    {
+      "level": 3,
+      "text": "Arrive prepared"
+    },
+    {
+      "level": 3,
+      "text": "Know the property"
+    },
+    {
+      "level": 3,
+      "text": "Record the work"
+    },
+    {
+      "level": 3,
+      "text": "Support sidewalk and manual crews"
+    },
+    {
+      "level": 3,
+      "text": "Stay connected"
+    },
+    {
+      "level": 3,
+      "text": "Instructions in the languages your crews need"
+    },
+    {
+      "level": 3,
+      "text": "Keep the detail in your service photos"
+    },
+    {
+      "level": 2,
+      "text": "Subcontractor Management"
+    },
+    {
+      "level": 3,
+      "text": "Manage centrally. Delegate where it makes sense."
+    },
+    {
+      "level": 3,
+      "text": "Connect field work to your operation"
+    },
+    {
+      "level": 3,
+      "text": "Keep issues accountable"
+    },
+    {
+      "level": 3,
+      "text": "Keep business information separate"
+    },
+    {
+      "level": 2,
+      "text": "Customer Portal & Case Management"
+    },
+    {
+      "level": 3,
+      "text": "Keep customers informed"
+    },
+    {
+      "level": 3,
+      "text": "Put account information within reach"
+    },
+    {
+      "level": 3,
+      "text": "Manage issues through resolution"
+    },
+    {
+      "level": 2,
+      "text": "Snow Removal Billing Software"
+    },
+    {
+      "level": 3,
+      "text": "Bill according to the agreement"
+    },
+    {
+      "level": 3,
+      "text": "Make payment convenient"
+    },
+    {
+      "level": 3,
+      "text": "Keep outstanding invoices visible"
+    },
+    {
+      "level": 2,
+      "text": "Onboarding & Support"
+    },
+    {
+      "level": 3,
+      "text": "Data migration assistance"
+    },
+    {
+      "level": 3,
+      "text": "Guided setup and training"
+    },
+    {
+      "level": 3,
+      "text": "Support for active operations"
+    },
+    {
+      "level": 3,
+      "text": "Essential integrations"
+    },
+    {
+      "level": 2,
+      "text": "Platform & Growth"
+    },
+    {
+      "level": 3,
+      "text": "Services & Pricing"
+    },
+    {
+      "level": 3,
+      "text": "Resources & Equipment"
+    },
+    {
+      "level": 3,
+      "text": "Shared Business Data"
+    },
+    {
+      "level": 3,
+      "text": "Automation & AI"
+    },
+    {
+      "level": 3,
+      "text": "Built for winter. Wherever you operate."
+    },
+    {
+      "level": 3,
+      "text": "Need lawn care and snow removal software?"
+    },
+    {
+      "level": 2,
+      "text": "Choose the right level of control for your operation."
+    },
+    {
+      "level": 3,
+      "text": "Foundation"
+    },
+    {
+      "level": 3,
+      "text": "Growth"
+    },
+    {
+      "level": 3,
+      "text": "Business"
+    },
+    {
+      "level": 3,
+      "text": "Enterprise"
+    },
+    {
+      "level": 2,
+      "text": "Compare plans."
+    },
+    {
+      "level": 3,
+      "text": "Customers & Properties"
+    },
+    {
+      "level": 3,
+      "text": "Quotations & Site Planning"
+    },
+    {
+      "level": 3,
+      "text": "Routing & Dispatch"
+    },
+    {
+      "level": 3,
+      "text": "Field Operations & Service Records"
+    },
+    {
+      "level": 3,
+      "text": "Languages & Communication"
+    },
+    {
+      "level": 3,
+      "text": "Customer & Subcontractor Collaboration"
+    },
+    {
+      "level": 3,
+      "text": "Billing & Payments"
+    },
+    {
+      "level": 3,
+      "text": "Reporting & Workflow Control"
+    },
+    {
+      "level": 3,
+      "text": "Onboarding, Support & Platform Services"
+    },
+    {
+      "level": 3,
+      "text": "Weather Intelligence"
+    },
+    {
+      "level": 2,
+      "text": "Add capacity. Agree the scope before work starts."
+    },
+    {
+      "level": 3,
+      "text": "Property expansion"
+    },
+    {
+      "level": 3,
+      "text": "Additional optimization"
+    },
+    {
+      "level": 3,
+      "text": "Implementation & custom work"
+    },
+    {
+      "level": 2,
+      "text": "A little more clarity."
+    },
+    {
+      "level": 3,
+      "text": "Who is ServiceWand for?"
+    },
+    {
+      "level": 3,
+      "text": "Can I start with route optimization?"
+    },
+    {
+      "level": 3,
+      "text": "Do I need to optimize routes for every snowfall?"
+    },
+    {
+      "level": 3,
+      "text": "What does the optimizer consider?"
+    },
+    {
+      "level": 3,
+      "text": "Can I manage subcontractors alongside my own crews?"
+    },
+    {
+      "level": 3,
+      "text": "Can ServiceWand help measure properties and prepare quotations?"
+    },
+    {
+      "level": 3,
+      "text": "Can I connect ServiceWand to my existing website?"
+    },
+    {
+      "level": 3,
+      "text": "Can customers book snow service instantly?"
+    },
+    {
+      "level": 3,
+      "text": "Do we pay for every seasonal worker?"
+    },
+    {
+      "level": 3,
+      "text": "Can crews and customers use different languages?"
+    },
+    {
+      "level": 3,
+      "text": "How is completed work documented?"
+    },
+    {
+      "level": 3,
+      "text": "Does ServiceWand support seasonal contracts and per-visit invoicing?"
+    },
+    {
+      "level": 3,
+      "text": "Can you help us move from spreadsheets or another system?"
+    },
+    {
+      "level": 3,
+      "text": "What if a client requires reports in another portal?"
+    },
+    {
+      "level": 3,
+      "text": "Can we add more properties without changing plans?"
+    },
+    {
+      "level": 3,
+      "text": "Understanding snow & ice operations"
+    },
+    {
+      "level": 3,
+      "text": "What is snow removal software?"
+    },
+    {
+      "level": 3,
+      "text": "What is the difference between route planning and route optimization?"
+    },
+    {
+      "level": 3,
+      "text": "Can the same system support snow clearing and de-icing?"
+    },
+    {
+      "level": 2,
+      "text": "Show Us How You Operate. See How It Connects."
+    }
+  ],
+  "phraseCounts": {
+    "snow removal app": 3,
+    "snow removal application": 1,
+    "snow clearing app": 1,
+    "snow shoveling app": 1,
+    "snow plowing app": 1,
+    "snow removal software": 4,
+    "snow removal management software": 1,
+    "snow removal business software": 2,
+    "snow removal scheduling software": 1,
+    "snow plow tracking software": 1,
+    "snow plow management software": 1,
+    "snow removal billing software": 1,
+    "snow plowing billing software": 1,
+    "snow management software": 1,
+    "snow and ice management software": 1,
+    "snow removal service software": 1,
+    "snow plowing business software": 1,
+    "best snow removal software": 1,
+    "lawn care and snow removal software": 1
+  },
+  "absentPhrases": [
+    "snowplow software",
+    "lawn care snow removal software",
+    "free snow removal software",
+    "snow removal software free"
+  ]
+}

@@ -162,6 +162,39 @@ Because `--require-existing` forbids implicit creation, the renamed child Codes
 must already exist in CMS before authenticated dry-run. Rename or create those
 BlockTemplates manually; a missing Code makes the uploader stop before writes.
 
+## Snow Removal Landing
+
+The approved Snow Removal landing is one content block,
+`blocks/16-snow-removal/snow-removal.page`, between the production header and
+footer (`compositions/specs/snow-removal-software.spec.json`). Copy, CTA URLs,
+`cta_source` values and alt texts live in
+`content/snow-removal-software/parameter-values.json`; the heading and keyword
+contract in `seo-contract.json`; compressed media in `media/` and their dev-1
+media library ids in `media.json`. Plan names, monthly prices, included
+properties and the Weather add-on price are read from core-pim through
+`blocks/14-pricing/_shared/pricing-runtime.js`; the parameter values are the
+fallback. The comparison rows stay parameters, with the Active Properties row
+filled from `ACTIVE_PROPERTIES_INCLUDED`.
+
+```bash
+node app-templates/landing-page/scripts/export-snow-removal-landing-manual.mjs
+node app-templates/landing-page/scripts/snow-removal-landing-check.mjs
+node app-templates/landing-page/scripts/snow-removal-landing-check.mjs --url https://dev-1.servicewand.com/industries/field-service/snow-removal-software-new
+
+SERVICEWAND_API_KEY=... node app-templates/landing-page/scripts/upload-snow-removal-landing-media.mjs [--live]
+SERVICEWAND_API_KEY=... node app-templates/landing-page/scripts/upload-cms-family.mjs \
+  --out app-templates/landing-page/dist/manual-upload/snow-removal-software \
+  --base-url https://dev-1.servicewand.com/core --org SYSTEM \
+  --require-existing --expected-root-id 2e37776a-2861-4b8f-9446-591b9a834acf --dry-run
+SERVICEWAND_API_KEY=... node app-templates/landing-page/scripts/wire-snow-removal-landing-page.mjs \
+  --base-url https://dev-1.servicewand.com \
+  --page-url /industries/field-service/snow-removal-software-new [--live]
+```
+
+The flat upload writes the root's packaged child slot back, so run the wiring
+script after every upload: it restores the include lines, keeps the parent
+links and the page, and clears the render cache on both CMS nodes.
+
 ## CMS Parameter Contract
 
 Every editable text, URL, image id, image name, alt text, icon state, and option

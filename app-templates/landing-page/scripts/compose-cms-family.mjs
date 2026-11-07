@@ -366,7 +366,8 @@ const wrapCompositionSection = (block, html) => {
   if (
     block.category === "01-header" ||
     block.category === "02-footer" ||
-    block.category === "15-blog"
+    block.category === "15-blog" ||
+    block.category === "16-snow-removal"
   ) return html;
   const sectionClass = `composition-section composition-section--${slug(block.id)}`;
   return `<section class="${sectionClass}" data-composition-block="${escapeHtml(block.id)}">\n${html}\n</section>`;

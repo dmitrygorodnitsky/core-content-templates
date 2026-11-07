@@ -1,0 +1,3982 @@
+{
+  "$schema": "lab-ui/block@1",
+  "id": "snow-removal.page",
+  "category": "16-snow-removal",
+  "title": "Snow Removal · landing monoblock",
+  "description": "Every section of the approved Snow Removal landing, from the hero to the final CTA, as one CMS content block placed between the production header and footer. Copy, CTA URLs, cta_source values, alt texts and media are parameters; plan names, monthly prices, included properties and the Weather add-on price are filled from core-pim, with the parameter values as fallback.",
+  "canonical": false,
+  "theme": "light",
+  "source": {
+    "primary": "Approved Snow Removal landing v4 (SEO-checked, 2026-11-07 additions), imported into this block",
+    "decision": "Simple monoblock between header.corporate-reference and footer.corporate-reference; illustrative UI mockups keep their markup, prose is parameterized.",
+    "localScripts": [
+      "blocks/14-pricing/_shared/pricing-runtime.js"
+    ]
+  },
+  "depends_on": {
+    "tokens": [],
+    "other_blocks": []
+  },
+  "media": [
+    {
+      "file": "hero-snow.webp",
+      "code": "media_hero_snow"
+    },
+    {
+      "file": "98855f8899.webp",
+      "code": "media_98855f8899"
+    },
+    {
+      "file": "28b790d668.webp",
+      "code": "media_28b790d668"
+    },
+    {
+      "file": "18931164fa.webp",
+      "code": "media_18931164fa"
+    },
+    {
+      "file": "43d5053f4d.webp",
+      "code": "media_43d5053f4d"
+    },
+    {
+      "file": "394df17a2a.webp",
+      "code": "media_394df17a2a"
+    },
+    {
+      "file": "crm-property-plan.webp",
+      "code": "media_crm_property_plan"
+    },
+    {
+      "file": "sub-manage-centrally-640.webp",
+      "code": "media_sub_manage_centrally_640"
+    },
+    {
+      "file": "sub-manage-centrally.webp",
+      "code": "media_sub_manage_centrally"
+    },
+    {
+      "file": "sub-field-work-640.webp",
+      "code": "media_sub_field_work_640"
+    },
+    {
+      "file": "sub-field-work.webp",
+      "code": "media_sub_field_work"
+    },
+    {
+      "file": "sub-issues-accountable-640.webp",
+      "code": "media_sub_issues_accountable_640"
+    },
+    {
+      "file": "sub-issues-accountable.webp",
+      "code": "media_sub_issues_accountable"
+    },
+    {
+      "file": "sub-info-separate-640.webp",
+      "code": "media_sub_info_separate_640"
+    },
+    {
+      "file": "sub-info-separate.webp",
+      "code": "media_sub_info_separate"
+    },
+    {
+      "file": "efff141366.svg",
+      "code": "media_efff141366"
+    },
+    {
+      "file": "winter-pickup-v2.webp",
+      "code": "media_winter_pickup_v2"
+    },
+    {
+      "file": "46a0d3fd99.webp",
+      "code": "media_46a0d3fd99"
+    },
+    {
+      "file": "27416e9786.mp4",
+      "code": "media_27416e9786"
+    },
+    {
+      "file": "4c171e80e9.webp",
+      "code": "media_4c171e80e9"
+    }
+  ],
+  "params": [
+    {
+      "code": "media_hero_snow",
+      "type": "IMAGE",
+      "name": "Media hero-snow.webp",
+      "description": "Media library item for hero-snow.webp (2400 x 1350)."
+    },
+    {
+      "code": "media_hero_snow_name",
+      "type": "STRING",
+      "name": "Media name hero-snow.webp",
+      "description": "Media library file name segment for hero-snow.webp.",
+      "default": ""
+    },
+    {
+      "code": "media_98855f8899",
+      "type": "IMAGE",
+      "name": "Media 98855f8899.webp",
+      "description": "Media library item for 98855f8899.webp (3024 x 1612)."
+    },
+    {
+      "code": "media_98855f8899_name",
+      "type": "STRING",
+      "name": "Media name 98855f8899.webp",
+      "description": "Media library file name segment for 98855f8899.webp.",
+      "default": ""
+    },
+    {
+      "code": "routing_alt_1",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Routing image alt text",
+      "description": "Alternative text for an image in the Routing section."
+    },
+    {
+      "code": "media_28b790d668",
+      "type": "IMAGE",
+      "name": "Media 28b790d668.webp",
+      "description": "Media library item for 28b790d668.webp (612 x 1344)."
+    },
+    {
+      "code": "media_28b790d668_name",
+      "type": "STRING",
+      "name": "Media name 28b790d668.webp",
+      "description": "Media library file name segment for 28b790d668.webp.",
+      "default": ""
+    },
+    {
+      "code": "routing_alt_2",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Routing image alt text",
+      "description": "Alternative text for an image in the Routing section."
+    },
+    {
+      "code": "media_18931164fa",
+      "type": "IMAGE",
+      "name": "Media 18931164fa.webp",
+      "description": "Media library item for 18931164fa.webp (900 x 640)."
+    },
+    {
+      "code": "media_18931164fa_name",
+      "type": "STRING",
+      "name": "Media name 18931164fa.webp",
+      "description": "Media library file name segment for 18931164fa.webp.",
+      "default": ""
+    },
+    {
+      "code": "routing_alt_3",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Routing image alt text",
+      "description": "Alternative text for an image in the Routing section."
+    },
+    {
+      "code": "routing_alt_4",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Routing image alt text",
+      "description": "Alternative text for an image in the Routing section."
+    },
+    {
+      "code": "media_43d5053f4d",
+      "type": "IMAGE",
+      "name": "Media 43d5053f4d.webp",
+      "description": "Media library item for 43d5053f4d.webp (360 x 802)."
+    },
+    {
+      "code": "media_43d5053f4d_name",
+      "type": "STRING",
+      "name": "Media name 43d5053f4d.webp",
+      "description": "Media library file name segment for 43d5053f4d.webp.",
+      "default": ""
+    },
+    {
+      "code": "routing_alt_5",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Routing image alt text",
+      "description": "Alternative text for an image in the Routing section."
+    },
+    {
+      "code": "media_394df17a2a",
+      "type": "IMAGE",
+      "name": "Media 394df17a2a.webp",
+      "description": "Media library item for 394df17a2a.webp (1536 x 1024)."
+    },
+    {
+      "code": "media_394df17a2a_name",
+      "type": "STRING",
+      "name": "Media name 394df17a2a.webp",
+      "description": "Media library file name segment for 394df17a2a.webp.",
+      "default": ""
+    },
+    {
+      "code": "mobile_alt_1",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Mobile image alt text",
+      "description": "Alternative text for an image in the Mobile section."
+    },
+    {
+      "code": "mobile_alt_2",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Mobile image alt text",
+      "description": "Alternative text for an image in the Mobile section."
+    },
+    {
+      "code": "mobile_alt_3",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Mobile image alt text",
+      "description": "Alternative text for an image in the Mobile section."
+    },
+    {
+      "code": "mobile_alt_4",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Mobile image alt text",
+      "description": "Alternative text for an image in the Mobile section."
+    },
+    {
+      "code": "media_crm_property_plan",
+      "type": "IMAGE",
+      "name": "Media crm-property-plan.webp",
+      "description": "Media library item for crm-property-plan.webp (1800 x 991)."
+    },
+    {
+      "code": "media_crm_property_plan_name",
+      "type": "STRING",
+      "name": "Media name crm-property-plan.webp",
+      "description": "Media library file name segment for crm-property-plan.webp.",
+      "default": ""
+    },
+    {
+      "code": "mobile_alt_5",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Mobile image alt text",
+      "description": "Alternative text for an image in the Mobile section."
+    },
+    {
+      "code": "media_sub_manage_centrally_640",
+      "type": "IMAGE",
+      "name": "Media sub-manage-centrally-640.webp",
+      "description": "Media library item for sub-manage-centrally-640.webp (1200 x 900)."
+    },
+    {
+      "code": "media_sub_manage_centrally_640_name",
+      "type": "STRING",
+      "name": "Media name sub-manage-centrally-640.webp",
+      "description": "Media library file name segment for sub-manage-centrally-640.webp.",
+      "default": ""
+    },
+    {
+      "code": "media_sub_manage_centrally",
+      "type": "IMAGE",
+      "name": "Media sub-manage-centrally.webp",
+      "description": "Media library item for sub-manage-centrally.webp."
+    },
+    {
+      "code": "media_sub_manage_centrally_name",
+      "type": "STRING",
+      "name": "Media name sub-manage-centrally.webp",
+      "description": "Media library file name segment for sub-manage-centrally.webp.",
+      "default": ""
+    },
+    {
+      "code": "subcontractors_alt_1",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Subcontractors image alt text",
+      "description": "Alternative text for an image in the Subcontractors section."
+    },
+    {
+      "code": "media_sub_field_work_640",
+      "type": "IMAGE",
+      "name": "Media sub-field-work-640.webp",
+      "description": "Media library item for sub-field-work-640.webp (1200 x 900)."
+    },
+    {
+      "code": "media_sub_field_work_640_name",
+      "type": "STRING",
+      "name": "Media name sub-field-work-640.webp",
+      "description": "Media library file name segment for sub-field-work-640.webp.",
+      "default": ""
+    },
+    {
+      "code": "media_sub_field_work",
+      "type": "IMAGE",
+      "name": "Media sub-field-work.webp",
+      "description": "Media library item for sub-field-work.webp."
+    },
+    {
+      "code": "media_sub_field_work_name",
+      "type": "STRING",
+      "name": "Media name sub-field-work.webp",
+      "description": "Media library file name segment for sub-field-work.webp.",
+      "default": ""
+    },
+    {
+      "code": "subcontractors_alt_2",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Subcontractors image alt text",
+      "description": "Alternative text for an image in the Subcontractors section."
+    },
+    {
+      "code": "media_sub_issues_accountable_640",
+      "type": "IMAGE",
+      "name": "Media sub-issues-accountable-640.webp",
+      "description": "Media library item for sub-issues-accountable-640.webp (1200 x 900)."
+    },
+    {
+      "code": "media_sub_issues_accountable_640_name",
+      "type": "STRING",
+      "name": "Media name sub-issues-accountable-640.webp",
+      "description": "Media library file name segment for sub-issues-accountable-640.webp.",
+      "default": ""
+    },
+    {
+      "code": "media_sub_issues_accountable",
+      "type": "IMAGE",
+      "name": "Media sub-issues-accountable.webp",
+      "description": "Media library item for sub-issues-accountable.webp."
+    },
+    {
+      "code": "media_sub_issues_accountable_name",
+      "type": "STRING",
+      "name": "Media name sub-issues-accountable.webp",
+      "description": "Media library file name segment for sub-issues-accountable.webp.",
+      "default": ""
+    },
+    {
+      "code": "subcontractors_alt_3",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Subcontractors image alt text",
+      "description": "Alternative text for an image in the Subcontractors section."
+    },
+    {
+      "code": "media_sub_info_separate_640",
+      "type": "IMAGE",
+      "name": "Media sub-info-separate-640.webp",
+      "description": "Media library item for sub-info-separate-640.webp (1200 x 900)."
+    },
+    {
+      "code": "media_sub_info_separate_640_name",
+      "type": "STRING",
+      "name": "Media name sub-info-separate-640.webp",
+      "description": "Media library file name segment for sub-info-separate-640.webp.",
+      "default": ""
+    },
+    {
+      "code": "media_sub_info_separate",
+      "type": "IMAGE",
+      "name": "Media sub-info-separate.webp",
+      "description": "Media library item for sub-info-separate.webp."
+    },
+    {
+      "code": "media_sub_info_separate_name",
+      "type": "STRING",
+      "name": "Media name sub-info-separate.webp",
+      "description": "Media library file name segment for sub-info-separate.webp.",
+      "default": ""
+    },
+    {
+      "code": "subcontractors_alt_4",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Subcontractors image alt text",
+      "description": "Alternative text for an image in the Subcontractors section."
+    },
+    {
+      "code": "media_efff141366",
+      "type": "IMAGE",
+      "name": "Media efff141366.svg",
+      "description": "Media library item for efff141366.svg (560 x 84)."
+    },
+    {
+      "code": "media_efff141366_name",
+      "type": "STRING",
+      "name": "Media name efff141366.svg",
+      "description": "Media library file name segment for efff141366.svg.",
+      "default": ""
+    },
+    {
+      "code": "platform_alt_1",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Platform image alt text",
+      "description": "Alternative text for an image in the Platform section."
+    },
+    {
+      "code": "media_winter_pickup_v2",
+      "type": "IMAGE",
+      "name": "Media winter-pickup-v2.webp",
+      "description": "Media library item for winter-pickup-v2.webp (1536 x 1024)."
+    },
+    {
+      "code": "media_winter_pickup_v2_name",
+      "type": "STRING",
+      "name": "Media name winter-pickup-v2.webp",
+      "description": "Media library file name segment for winter-pickup-v2.webp.",
+      "default": ""
+    },
+    {
+      "code": "media_46a0d3fd99",
+      "type": "IMAGE",
+      "name": "Media 46a0d3fd99.webp",
+      "description": "Media library item for 46a0d3fd99.webp."
+    },
+    {
+      "code": "media_46a0d3fd99_name",
+      "type": "STRING",
+      "name": "Media name 46a0d3fd99.webp",
+      "description": "Media library file name segment for 46a0d3fd99.webp.",
+      "default": ""
+    },
+    {
+      "code": "media_27416e9786",
+      "type": "STRING",
+      "name": "Media 27416e9786.mp4",
+      "description": "Media library video id of 27416e9786.mp4 (1280 x 676), streamed from /core/api/video/{id}/stream/{name}."
+    },
+    {
+      "code": "media_27416e9786_name",
+      "type": "STRING",
+      "name": "Media name 27416e9786.mp4",
+      "description": "Media library file name segment for 27416e9786.mp4.",
+      "default": ""
+    },
+    {
+      "code": "media_4c171e80e9",
+      "type": "IMAGE",
+      "name": "Media 4c171e80e9.webp",
+      "description": "Media library item for 4c171e80e9.webp (1512 x 746)."
+    },
+    {
+      "code": "media_4c171e80e9_name",
+      "type": "STRING",
+      "name": "Media name 4c171e80e9.webp",
+      "description": "Media library file name segment for 4c171e80e9.webp.",
+      "default": ""
+    },
+    {
+      "code": "pricing_column_feature",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing column Feature",
+      "description": "Comparison column name, shared by every comparison table header and the mobile plan switcher."
+    },
+    {
+      "code": "pricing_column_foundation",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing column Foundation",
+      "description": "Comparison column name, shared by every comparison table header and the mobile plan switcher."
+    },
+    {
+      "code": "pricing_column_growth",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing column Growth",
+      "description": "Comparison column name, shared by every comparison table header and the mobile plan switcher."
+    },
+    {
+      "code": "pricing_column_business",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing column Business",
+      "description": "Comparison column name, shared by every comparison table header and the mobile plan switcher."
+    },
+    {
+      "code": "pricing_column_enterprise",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing column Enterprise",
+      "description": "Comparison column name, shared by every comparison table header and the mobile plan switcher."
+    },
+    {
+      "code": "pricing_plan_1_code",
+      "type": "STRING",
+      "name": "Plan 1 catalog code",
+      "description": "core-pim product code whose name, monthly price and included properties fill this plan card.",
+      "default": "SERVICEWAND_FOUNDATION",
+      "preserve_default": true
+    },
+    {
+      "code": "pricing_plan_2_code",
+      "type": "STRING",
+      "name": "Plan 2 catalog code",
+      "description": "core-pim product code whose name, monthly price and included properties fill this plan card.",
+      "default": "SERVICEWAND_GROWTH",
+      "preserve_default": true
+    },
+    {
+      "code": "pricing_plan_3_code",
+      "type": "STRING",
+      "name": "Plan 3 catalog code",
+      "description": "core-pim product code whose name, monthly price and included properties fill this plan card.",
+      "default": "SERVICEWAND_PROFESSIONAL",
+      "preserve_default": true
+    },
+    {
+      "code": "pricing_plan_4_code",
+      "type": "STRING",
+      "name": "Plan 4 catalog code",
+      "description": "core-pim product code whose name, monthly price and included properties fill this plan card.",
+      "default": "SERVICEWAND_ENTERPRISE",
+      "preserve_default": true
+    },
+    {
+      "code": "pricing_dynamic",
+      "type": "STRING",
+      "name": "Pricing Dynamic",
+      "description": "Set to false to show only the CMS reference values.",
+      "default": "true",
+      "preserve_default": true
+    },
+    {
+      "code": "pricing_api_base",
+      "type": "STRING",
+      "name": "Pricing Api Base",
+      "description": "core-pim API base path.",
+      "default": "/core-pim/api",
+      "preserve_default": true
+    },
+    {
+      "code": "pricing_organization",
+      "type": "STRING",
+      "name": "Pricing Organization",
+      "description": "Catalog organization code.",
+      "default": "SERVICEWAND",
+      "preserve_default": true
+    },
+    {
+      "code": "pricing_currency",
+      "type": "STRING",
+      "name": "Pricing Currency",
+      "description": "Catalog currency; rows in another currency are ignored and the reference values stay.",
+      "default": "USD",
+      "preserve_default": true
+    },
+    {
+      "code": "pricing_price_type_code",
+      "type": "STRING",
+      "name": "Pricing Price Type Code",
+      "description": "Catalog price type code.",
+      "default": "RECURRENT",
+      "preserve_default": true
+    },
+    {
+      "code": "pricing_price_attribute_code",
+      "type": "STRING",
+      "name": "Pricing Price Attribute Code",
+      "description": "Price attribute that selects the billing interval.",
+      "default": "INTERVAL",
+      "preserve_default": true
+    },
+    {
+      "code": "pricing_price_attribute_values",
+      "type": "STRING",
+      "name": "Pricing Price Attribute Values",
+      "description": "Billing interval values requested from the catalog.",
+      "default": "1 month",
+      "preserve_default": true
+    },
+    {
+      "code": "pricing_product_type_code",
+      "type": "STRING",
+      "name": "Pricing Product Type Code",
+      "description": "Catalog product type of the plans.",
+      "default": "SERVICEWAND_SAAS",
+      "preserve_default": true
+    },
+    {
+      "code": "pricing_capacity_attribute_code",
+      "type": "STRING",
+      "name": "Pricing Capacity Attribute Code",
+      "description": "Product attribute holding the included active properties.",
+      "default": "ACTIVE_PROPERTIES_INCLUDED",
+      "preserve_default": true
+    },
+    {
+      "code": "pricing_addon_product_type_code",
+      "type": "STRING",
+      "name": "Pricing Addon Product Type Code",
+      "description": "Catalog product type of the Weather add-on.",
+      "default": "FEATURE_ADD_ON",
+      "preserve_default": true
+    },
+    {
+      "code": "pricing_weather_product_code",
+      "type": "STRING",
+      "name": "Pricing Weather Product Code",
+      "description": "Catalog product code of the Weather add-on.",
+      "default": "SERVICEWAND_WEATHER_INTELLIGENCE",
+      "preserve_default": true
+    },
+    {
+      "code": "pricing_included_label",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing included label",
+      "description": "Screen-reader text for a check-mark comparison cell."
+    },
+    {
+      "code": "pricing_cell_1",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing comparison cell",
+      "description": "Comparison cell value. Use ✓ for included and — for not included; any other text is shown as written."
+    },
+    {
+      "code": "pricing_cell_2",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing comparison cell",
+      "description": "Comparison cell value. Use ✓ for included and — for not included; any other text is shown as written."
+    },
+    {
+      "code": "pricing_cell_3",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing comparison cell",
+      "description": "Comparison cell value. Use ✓ for included and — for not included; any other text is shown as written."
+    },
+    {
+      "code": "pricing_cell_4",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing comparison cell",
+      "description": "Comparison cell value. Use ✓ for included and — for not included; any other text is shown as written."
+    },
+    {
+      "code": "pricing_cell_5",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing comparison cell",
+      "description": "Comparison cell value. Use ✓ for included and — for not included; any other text is shown as written."
+    },
+    {
+      "code": "pricing_cell_6",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing comparison cell",
+      "description": "Comparison cell value. Use ✓ for included and — for not included; any other text is shown as written."
+    },
+    {
+      "code": "pricing_cell_7",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing comparison cell",
+      "description": "Comparison cell value. Use ✓ for included and — for not included; any other text is shown as written."
+    },
+    {
+      "code": "pricing_cell_8",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing comparison cell",
+      "description": "Comparison cell value. Use ✓ for included and — for not included; any other text is shown as written."
+    },
+    {
+      "code": "pricing_cell_9",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing comparison cell",
+      "description": "Comparison cell value. Use ✓ for included and — for not included; any other text is shown as written."
+    },
+    {
+      "code": "pricing_cell_10",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing comparison cell",
+      "description": "Comparison cell value. Use ✓ for included and — for not included; any other text is shown as written."
+    },
+    {
+      "code": "pricing_cell_11",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing comparison cell",
+      "description": "Comparison cell value. Use ✓ for included and — for not included; any other text is shown as written."
+    },
+    {
+      "code": "pricing_cell_12",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing comparison cell",
+      "description": "Comparison cell value. Use ✓ for included and — for not included; any other text is shown as written."
+    },
+    {
+      "code": "pricing_cell_13",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing comparison cell",
+      "description": "Comparison cell value. Use ✓ for included and — for not included; any other text is shown as written."
+    },
+    {
+      "code": "pricing_cell_14",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing comparison cell",
+      "description": "Comparison cell value. Use ✓ for included and — for not included; any other text is shown as written."
+    },
+    {
+      "code": "pricing_cell_15",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing comparison cell",
+      "description": "Comparison cell value. Use ✓ for included and — for not included; any other text is shown as written."
+    },
+    {
+      "code": "pricing_cell_16",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing comparison cell",
+      "description": "Comparison cell value. Use ✓ for included and — for not included; any other text is shown as written."
+    },
+    {
+      "code": "pricing_cell_17",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing comparison cell",
+      "description": "Comparison cell value. Use ✓ for included and — for not included; any other text is shown as written."
+    },
+    {
+      "code": "pricing_cell_18",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing comparison cell",
+      "description": "Comparison cell value. Use ✓ for included and — for not included; any other text is shown as written."
+    },
+    {
+      "code": "pricing_cell_19",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing comparison cell",
+      "description": "Comparison cell value. Use ✓ for included and — for not included; any other text is shown as written."
+    },
+    {
+      "code": "pricing_cell_20",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing comparison cell",
+      "description": "Comparison cell value. Use ✓ for included and — for not included; any other text is shown as written."
+    },
+    {
+      "code": "pricing_cell_21",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing comparison cell",
+      "description": "Comparison cell value. Use ✓ for included and — for not included; any other text is shown as written."
+    },
+    {
+      "code": "pricing_cell_22",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing comparison cell",
+      "description": "Comparison cell value. Use ✓ for included and — for not included; any other text is shown as written."
+    },
+    {
+      "code": "pricing_cell_23",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing comparison cell",
+      "description": "Comparison cell value. Use ✓ for included and — for not included; any other text is shown as written."
+    },
+    {
+      "code": "pricing_cell_24",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing comparison cell",
+      "description": "Comparison cell value. Use ✓ for included and — for not included; any other text is shown as written."
+    },
+    {
+      "code": "pricing_cell_25",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing comparison cell",
+      "description": "Comparison cell value. Use ✓ for included and — for not included; any other text is shown as written."
+    },
+    {
+      "code": "pricing_cell_26",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing comparison cell",
+      "description": "Comparison cell value. Use ✓ for included and — for not included; any other text is shown as written."
+    },
+    {
+      "code": "pricing_cell_27",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing comparison cell",
+      "description": "Comparison cell value. Use ✓ for included and — for not included; any other text is shown as written."
+    },
+    {
+      "code": "pricing_cell_28",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing comparison cell",
+      "description": "Comparison cell value. Use ✓ for included and — for not included; any other text is shown as written."
+    },
+    {
+      "code": "pricing_cell_29",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing comparison cell",
+      "description": "Comparison cell value. Use ✓ for included and — for not included; any other text is shown as written."
+    },
+    {
+      "code": "pricing_cell_30",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing comparison cell",
+      "description": "Comparison cell value. Use ✓ for included and — for not included; any other text is shown as written."
+    },
+    {
+      "code": "pricing_cell_31",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing comparison cell",
+      "description": "Comparison cell value. Use ✓ for included and — for not included; any other text is shown as written."
+    },
+    {
+      "code": "pricing_cell_32",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing comparison cell",
+      "description": "Comparison cell value. Use ✓ for included and — for not included; any other text is shown as written."
+    },
+    {
+      "code": "pricing_cell_33",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing comparison cell",
+      "description": "Comparison cell value. Use ✓ for included and — for not included; any other text is shown as written."
+    },
+    {
+      "code": "pricing_cell_34",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing comparison cell",
+      "description": "Comparison cell value. Use ✓ for included and — for not included; any other text is shown as written."
+    },
+    {
+      "code": "pricing_cell_35",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing comparison cell",
+      "description": "Comparison cell value. Use ✓ for included and — for not included; any other text is shown as written."
+    },
+    {
+      "code": "pricing_cell_36",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing comparison cell",
+      "description": "Comparison cell value. Use ✓ for included and — for not included; any other text is shown as written."
+    },
+    {
+      "code": "pricing_cell_37",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing comparison cell",
+      "description": "Comparison cell value. Use ✓ for included and — for not included; any other text is shown as written."
+    },
+    {
+      "code": "pricing_cell_38",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing comparison cell",
+      "description": "Comparison cell value. Use ✓ for included and — for not included; any other text is shown as written."
+    },
+    {
+      "code": "pricing_cell_39",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing comparison cell",
+      "description": "Comparison cell value. Use ✓ for included and — for not included; any other text is shown as written."
+    },
+    {
+      "code": "pricing_cell_40",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing comparison cell",
+      "description": "Comparison cell value. Use ✓ for included and — for not included; any other text is shown as written."
+    },
+    {
+      "code": "pricing_cell_41",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing comparison cell",
+      "description": "Comparison cell value. Use ✓ for included and — for not included; any other text is shown as written."
+    },
+    {
+      "code": "pricing_cell_42",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing comparison cell",
+      "description": "Comparison cell value. Use ✓ for included and — for not included; any other text is shown as written."
+    },
+    {
+      "code": "pricing_cell_43",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing comparison cell",
+      "description": "Comparison cell value. Use ✓ for included and — for not included; any other text is shown as written."
+    },
+    {
+      "code": "pricing_cell_44",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing comparison cell",
+      "description": "Comparison cell value. Use ✓ for included and — for not included; any other text is shown as written."
+    },
+    {
+      "code": "pricing_cell_45",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing comparison cell",
+      "description": "Comparison cell value. Use ✓ for included and — for not included; any other text is shown as written."
+    },
+    {
+      "code": "pricing_cell_46",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing comparison cell",
+      "description": "Comparison cell value. Use ✓ for included and — for not included; any other text is shown as written."
+    },
+    {
+      "code": "pricing_cell_47",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing comparison cell",
+      "description": "Comparison cell value. Use ✓ for included and — for not included; any other text is shown as written."
+    },
+    {
+      "code": "pricing_cell_48",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing comparison cell",
+      "description": "Comparison cell value. Use ✓ for included and — for not included; any other text is shown as written."
+    },
+    {
+      "code": "pricing_cell_49",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing comparison cell",
+      "description": "Comparison cell value. Use ✓ for included and — for not included; any other text is shown as written."
+    },
+    {
+      "code": "pricing_cell_50",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing comparison cell",
+      "description": "Comparison cell value. Use ✓ for included and — for not included; any other text is shown as written."
+    },
+    {
+      "code": "pricing_cell_51",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing comparison cell",
+      "description": "Comparison cell value. Use ✓ for included and — for not included; any other text is shown as written."
+    },
+    {
+      "code": "pricing_cell_52",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing comparison cell",
+      "description": "Comparison cell value. Use ✓ for included and — for not included; any other text is shown as written."
+    },
+    {
+      "code": "pricing_cell_53",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing comparison cell",
+      "description": "Comparison cell value. Use ✓ for included and — for not included; any other text is shown as written."
+    },
+    {
+      "code": "pricing_cell_54",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing comparison cell",
+      "description": "Comparison cell value. Use ✓ for included and — for not included; any other text is shown as written."
+    },
+    {
+      "code": "pricing_cell_55",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing comparison cell",
+      "description": "Comparison cell value. Use ✓ for included and — for not included; any other text is shown as written."
+    },
+    {
+      "code": "pricing_cell_56",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing comparison cell",
+      "description": "Comparison cell value. Use ✓ for included and — for not included; any other text is shown as written."
+    },
+    {
+      "code": "pricing_cell_57",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing comparison cell",
+      "description": "Comparison cell value. Use ✓ for included and — for not included; any other text is shown as written."
+    },
+    {
+      "code": "pricing_cell_58",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing comparison cell",
+      "description": "Comparison cell value. Use ✓ for included and — for not included; any other text is shown as written."
+    },
+    {
+      "code": "pricing_cell_59",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing comparison cell",
+      "description": "Comparison cell value. Use ✓ for included and — for not included; any other text is shown as written."
+    },
+    {
+      "code": "pricing_cell_60",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing comparison cell",
+      "description": "Comparison cell value. Use ✓ for included and — for not included; any other text is shown as written."
+    },
+    {
+      "code": "pricing_cell_61",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing comparison cell",
+      "description": "Comparison cell value. Use ✓ for included and — for not included; any other text is shown as written."
+    },
+    {
+      "code": "pricing_cell_62",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing comparison cell",
+      "description": "Comparison cell value. Use ✓ for included and — for not included; any other text is shown as written."
+    },
+    {
+      "code": "pricing_cell_63",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing comparison cell",
+      "description": "Comparison cell value. Use ✓ for included and — for not included; any other text is shown as written."
+    },
+    {
+      "code": "pricing_cell_64",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing comparison cell",
+      "description": "Comparison cell value. Use ✓ for included and — for not included; any other text is shown as written."
+    },
+    {
+      "code": "pricing_cell_65",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing comparison cell",
+      "description": "Comparison cell value. Use ✓ for included and — for not included; any other text is shown as written."
+    },
+    {
+      "code": "pricing_cell_66",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing comparison cell",
+      "description": "Comparison cell value. Use ✓ for included and — for not included; any other text is shown as written."
+    },
+    {
+      "code": "pricing_cell_67",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing comparison cell",
+      "description": "Comparison cell value. Use ✓ for included and — for not included; any other text is shown as written."
+    },
+    {
+      "code": "pricing_cell_68",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing comparison cell",
+      "description": "Comparison cell value. Use ✓ for included and — for not included; any other text is shown as written."
+    },
+    {
+      "code": "pricing_cell_69",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing comparison cell",
+      "description": "Comparison cell value. Use ✓ for included and — for not included; any other text is shown as written."
+    },
+    {
+      "code": "pricing_cell_70",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing comparison cell",
+      "description": "Comparison cell value. Use ✓ for included and — for not included; any other text is shown as written."
+    },
+    {
+      "code": "pricing_cell_71",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing comparison cell",
+      "description": "Comparison cell value. Use ✓ for included and — for not included; any other text is shown as written."
+    },
+    {
+      "code": "pricing_cell_72",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing comparison cell",
+      "description": "Comparison cell value. Use ✓ for included and — for not included; any other text is shown as written."
+    },
+    {
+      "code": "pricing_cell_73",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing comparison cell",
+      "description": "Comparison cell value. Use ✓ for included and — for not included; any other text is shown as written."
+    },
+    {
+      "code": "pricing_cell_74",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing comparison cell",
+      "description": "Comparison cell value. Use ✓ for included and — for not included; any other text is shown as written."
+    },
+    {
+      "code": "pricing_cell_75",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing comparison cell",
+      "description": "Comparison cell value. Use ✓ for included and — for not included; any other text is shown as written."
+    },
+    {
+      "code": "pricing_cell_76",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing comparison cell",
+      "description": "Comparison cell value. Use ✓ for included and — for not included; any other text is shown as written."
+    },
+    {
+      "code": "pricing_cell_77",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing comparison cell",
+      "description": "Comparison cell value. Use ✓ for included and — for not included; any other text is shown as written."
+    },
+    {
+      "code": "pricing_cell_78",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing comparison cell",
+      "description": "Comparison cell value. Use ✓ for included and — for not included; any other text is shown as written."
+    },
+    {
+      "code": "pricing_cell_79",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing comparison cell",
+      "description": "Comparison cell value. Use ✓ for included and — for not included; any other text is shown as written."
+    },
+    {
+      "code": "pricing_cell_80",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing comparison cell",
+      "description": "Comparison cell value. Use ✓ for included and — for not included; any other text is shown as written."
+    },
+    {
+      "code": "pricing_cell_81",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing comparison cell",
+      "description": "Comparison cell value. Use ✓ for included and — for not included; any other text is shown as written."
+    },
+    {
+      "code": "pricing_cell_82",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing comparison cell",
+      "description": "Comparison cell value. Use ✓ for included and — for not included; any other text is shown as written."
+    },
+    {
+      "code": "pricing_cell_83",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing comparison cell",
+      "description": "Comparison cell value. Use ✓ for included and — for not included; any other text is shown as written."
+    },
+    {
+      "code": "pricing_cell_84",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing comparison cell",
+      "description": "Comparison cell value. Use ✓ for included and — for not included; any other text is shown as written."
+    },
+    {
+      "code": "pricing_cell_85",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing comparison cell",
+      "description": "Comparison cell value. Use ✓ for included and — for not included; any other text is shown as written."
+    },
+    {
+      "code": "pricing_cell_86",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing comparison cell",
+      "description": "Comparison cell value. Use ✓ for included and — for not included; any other text is shown as written."
+    },
+    {
+      "code": "pricing_cell_87",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing comparison cell",
+      "description": "Comparison cell value. Use ✓ for included and — for not included; any other text is shown as written."
+    },
+    {
+      "code": "pricing_cell_88",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing comparison cell",
+      "description": "Comparison cell value. Use ✓ for included and — for not included; any other text is shown as written."
+    },
+    {
+      "code": "pricing_cell_89",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing comparison cell",
+      "description": "Comparison cell value. Use ✓ for included and — for not included; any other text is shown as written."
+    },
+    {
+      "code": "pricing_cell_90",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing comparison cell",
+      "description": "Comparison cell value. Use ✓ for included and — for not included; any other text is shown as written."
+    },
+    {
+      "code": "pricing_cell_91",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing comparison cell",
+      "description": "Comparison cell value. Use ✓ for included and — for not included; any other text is shown as written."
+    },
+    {
+      "code": "pricing_cell_92",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing comparison cell",
+      "description": "Comparison cell value. Use ✓ for included and — for not included; any other text is shown as written."
+    },
+    {
+      "code": "pricing_cell_93",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing comparison cell",
+      "description": "Comparison cell value. Use ✓ for included and — for not included; any other text is shown as written."
+    },
+    {
+      "code": "pricing_cell_94",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing comparison cell",
+      "description": "Comparison cell value. Use ✓ for included and — for not included; any other text is shown as written."
+    },
+    {
+      "code": "pricing_cell_95",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing comparison cell",
+      "description": "Comparison cell value. Use ✓ for included and — for not included; any other text is shown as written."
+    },
+    {
+      "code": "pricing_cell_96",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing comparison cell",
+      "description": "Comparison cell value. Use ✓ for included and — for not included; any other text is shown as written."
+    },
+    {
+      "code": "pricing_cell_97",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing comparison cell",
+      "description": "Comparison cell value. Use ✓ for included and — for not included; any other text is shown as written."
+    },
+    {
+      "code": "pricing_cell_98",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing comparison cell",
+      "description": "Comparison cell value. Use ✓ for included and — for not included; any other text is shown as written."
+    },
+    {
+      "code": "pricing_cell_99",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing comparison cell",
+      "description": "Comparison cell value. Use ✓ for included and — for not included; any other text is shown as written."
+    },
+    {
+      "code": "pricing_cell_100",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing comparison cell",
+      "description": "Comparison cell value. Use ✓ for included and — for not included; any other text is shown as written."
+    },
+    {
+      "code": "pricing_cell_101",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing comparison cell",
+      "description": "Comparison cell value. Use ✓ for included and — for not included; any other text is shown as written."
+    },
+    {
+      "code": "pricing_cell_102",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing comparison cell",
+      "description": "Comparison cell value. Use ✓ for included and — for not included; any other text is shown as written."
+    },
+    {
+      "code": "pricing_cell_103",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing comparison cell",
+      "description": "Comparison cell value. Use ✓ for included and — for not included; any other text is shown as written."
+    },
+    {
+      "code": "pricing_cell_104",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing comparison cell",
+      "description": "Comparison cell value. Use ✓ for included and — for not included; any other text is shown as written."
+    },
+    {
+      "code": "pricing_cell_105",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing comparison cell",
+      "description": "Comparison cell value. Use ✓ for included and — for not included; any other text is shown as written."
+    },
+    {
+      "code": "pricing_cell_106",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing comparison cell",
+      "description": "Comparison cell value. Use ✓ for included and — for not included; any other text is shown as written."
+    },
+    {
+      "code": "pricing_cell_107",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing comparison cell",
+      "description": "Comparison cell value. Use ✓ for included and — for not included; any other text is shown as written."
+    },
+    {
+      "code": "pricing_cell_108",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing comparison cell",
+      "description": "Comparison cell value. Use ✓ for included and — for not included; any other text is shown as written."
+    },
+    {
+      "code": "pricing_cell_109",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing comparison cell",
+      "description": "Comparison cell value. Use ✓ for included and — for not included; any other text is shown as written."
+    },
+    {
+      "code": "pricing_cell_110",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing comparison cell",
+      "description": "Comparison cell value. Use ✓ for included and — for not included; any other text is shown as written."
+    },
+    {
+      "code": "pricing_cell_111",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing comparison cell",
+      "description": "Comparison cell value. Use ✓ for included and — for not included; any other text is shown as written."
+    },
+    {
+      "code": "pricing_cell_112",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing comparison cell",
+      "description": "Comparison cell value. Use ✓ for included and — for not included; any other text is shown as written."
+    },
+    {
+      "code": "pricing_cell_113",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing comparison cell",
+      "description": "Comparison cell value. Use ✓ for included and — for not included; any other text is shown as written."
+    },
+    {
+      "code": "pricing_cell_114",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing comparison cell",
+      "description": "Comparison cell value. Use ✓ for included and — for not included; any other text is shown as written."
+    },
+    {
+      "code": "pricing_cell_115",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing comparison cell",
+      "description": "Comparison cell value. Use ✓ for included and — for not included; any other text is shown as written."
+    },
+    {
+      "code": "pricing_cell_116",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing comparison cell",
+      "description": "Comparison cell value. Use ✓ for included and — for not included; any other text is shown as written."
+    },
+    {
+      "code": "pricing_cell_117",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing comparison cell",
+      "description": "Comparison cell value. Use ✓ for included and — for not included; any other text is shown as written."
+    },
+    {
+      "code": "pricing_cell_118",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing comparison cell",
+      "description": "Comparison cell value. Use ✓ for included and — for not included; any other text is shown as written."
+    },
+    {
+      "code": "pricing_cell_119",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing comparison cell",
+      "description": "Comparison cell value. Use ✓ for included and — for not included; any other text is shown as written."
+    },
+    {
+      "code": "pricing_cell_120",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing comparison cell",
+      "description": "Comparison cell value. Use ✓ for included and — for not included; any other text is shown as written."
+    },
+    {
+      "code": "pricing_cell_121",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing comparison cell",
+      "description": "Comparison cell value. Use ✓ for included and — for not included; any other text is shown as written."
+    },
+    {
+      "code": "pricing_cell_122",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing comparison cell",
+      "description": "Comparison cell value. Use ✓ for included and — for not included; any other text is shown as written."
+    },
+    {
+      "code": "pricing_cell_123",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing comparison cell",
+      "description": "Comparison cell value. Use ✓ for included and — for not included; any other text is shown as written."
+    },
+    {
+      "code": "pricing_cell_124",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing comparison cell",
+      "description": "Comparison cell value. Use ✓ for included and — for not included; any other text is shown as written."
+    },
+    {
+      "code": "pricing_cell_125",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing comparison cell",
+      "description": "Comparison cell value. Use ✓ for included and — for not included; any other text is shown as written."
+    },
+    {
+      "code": "pricing_cell_126",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing comparison cell",
+      "description": "Comparison cell value. Use ✓ for included and — for not included; any other text is shown as written."
+    },
+    {
+      "code": "pricing_cell_127",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing comparison cell",
+      "description": "Comparison cell value. Use ✓ for included and — for not included; any other text is shown as written."
+    },
+    {
+      "code": "pricing_cell_128",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing comparison cell",
+      "description": "Comparison cell value. Use ✓ for included and — for not included; any other text is shown as written."
+    },
+    {
+      "code": "hero_text_1",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Hero paragraph",
+      "description": "Paragraph in the Hero section."
+    },
+    {
+      "code": "hero_h1_1",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Hero H1 heading",
+      "description": "H1 heading in the Hero section."
+    },
+    {
+      "code": "hero_text_2",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Hero paragraph",
+      "description": "Paragraph in the Hero section."
+    },
+    {
+      "code": "hero_text_3",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Hero paragraph",
+      "description": "Paragraph in the Hero section."
+    },
+    {
+      "code": "hero_cta_1_url",
+      "type": "URL",
+      "name": "Hero CTA URL",
+      "description": "Target URL of the \"Book a Demo\" button in the Hero section. Site-relative URLs starting with / get the language prefix.",
+      "default": "/snow-removal-request-demo.html",
+      "preserve_default": true
+    },
+    {
+      "code": "hero_cta_1_source",
+      "type": "STRING",
+      "name": "Hero CTA source",
+      "description": "cta_source value appended to the \"Book a Demo\" button URL for lead attribution.",
+      "default": "hero_demo",
+      "preserve_default": true
+    },
+    {
+      "code": "hero_label_1",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Hero text",
+      "description": "Text in the Hero section."
+    },
+    {
+      "code": "hero_cta_2_url",
+      "type": "URL",
+      "name": "Hero CTA URL",
+      "description": "Target URL of the \"Explore Routing\" button in the Hero section. Site-relative URLs starting with / get the language prefix.",
+      "default": "#routing",
+      "preserve_default": true
+    },
+    {
+      "code": "hero_label_2",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Hero text",
+      "description": "Text in the Hero section."
+    },
+    {
+      "code": "hero_text_4",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Hero paragraph",
+      "description": "Paragraph in the Hero section."
+    },
+    {
+      "code": "hero_text_5",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Hero paragraph",
+      "description": "Paragraph in the Hero section."
+    },
+    {
+      "code": "overview_text_1",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Overview paragraph",
+      "description": "Paragraph in the Overview section."
+    },
+    {
+      "code": "overview_h2_1",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Overview H2 heading",
+      "description": "H2 heading in the Overview section."
+    },
+    {
+      "code": "overview_text_2",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Overview paragraph",
+      "description": "Paragraph in the Overview section."
+    },
+    {
+      "code": "overview_text_3",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Overview paragraph",
+      "description": "Paragraph in the Overview section."
+    },
+    {
+      "code": "overview_text_4",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Overview paragraph",
+      "description": "Paragraph in the Overview section."
+    },
+    {
+      "code": "overview_h3_1",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Overview H3 heading",
+      "description": "H3 heading in the Overview section."
+    },
+    {
+      "code": "overview_text_5",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Overview paragraph",
+      "description": "Paragraph in the Overview section."
+    },
+    {
+      "code": "overview_h3_2",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Overview H3 heading",
+      "description": "H3 heading in the Overview section."
+    },
+    {
+      "code": "overview_text_6",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Overview paragraph",
+      "description": "Paragraph in the Overview section."
+    },
+    {
+      "code": "overview_h3_3",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Overview H3 heading",
+      "description": "H3 heading in the Overview section."
+    },
+    {
+      "code": "overview_text_7",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Overview paragraph",
+      "description": "Paragraph in the Overview section."
+    },
+    {
+      "code": "overview_label_1",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Overview text",
+      "description": "Text in the Overview section."
+    },
+    {
+      "code": "overview_label_2",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Overview text",
+      "description": "Text in the Overview section."
+    },
+    {
+      "code": "overview_text_8",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Overview paragraph",
+      "description": "Paragraph in the Overview section."
+    },
+    {
+      "code": "overview_h3_4",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Overview H3 heading",
+      "description": "H3 heading in the Overview section."
+    },
+    {
+      "code": "overview_text_9",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Overview paragraph",
+      "description": "Paragraph in the Overview section."
+    },
+    {
+      "code": "overview_h3_5",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Overview H3 heading",
+      "description": "H3 heading in the Overview section."
+    },
+    {
+      "code": "overview_text_10",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Overview paragraph",
+      "description": "Paragraph in the Overview section."
+    },
+    {
+      "code": "overview_h3_6",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Overview H3 heading",
+      "description": "H3 heading in the Overview section."
+    },
+    {
+      "code": "overview_text_11",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Overview paragraph",
+      "description": "Paragraph in the Overview section."
+    },
+    {
+      "code": "routing_text_1",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Routing paragraph",
+      "description": "Paragraph in the Routing section."
+    },
+    {
+      "code": "routing_h2_1",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Routing H2 heading",
+      "description": "H2 heading in the Routing section."
+    },
+    {
+      "code": "routing_text_2",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Routing paragraph",
+      "description": "Paragraph in the Routing section."
+    },
+    {
+      "code": "routing_text_3",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Routing paragraph",
+      "description": "Paragraph in the Routing section."
+    },
+    {
+      "code": "routing_label_1",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Routing text",
+      "description": "Text in the Routing section."
+    },
+    {
+      "code": "routing_aria_1",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Routing accessible label",
+      "description": "Accessible label (aria-label) in the Routing section."
+    },
+    {
+      "code": "routing_aria_2",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Routing accessible label",
+      "description": "Accessible label (aria-label) in the Routing section."
+    },
+    {
+      "code": "routing_label_2",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Routing text",
+      "description": "Text in the Routing section."
+    },
+    {
+      "code": "routing_h3_1",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Routing H3 heading",
+      "description": "H3 heading in the Routing section."
+    },
+    {
+      "code": "routing_text_4",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Routing paragraph",
+      "description": "Paragraph in the Routing section."
+    },
+    {
+      "code": "routing_text_5",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Routing paragraph",
+      "description": "Paragraph in the Routing section."
+    },
+    {
+      "code": "routing_text_6",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Routing paragraph",
+      "description": "Paragraph in the Routing section."
+    },
+    {
+      "code": "routing_label_3",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Routing text",
+      "description": "Text in the Routing section."
+    },
+    {
+      "code": "routing_h3_2",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Routing H3 heading",
+      "description": "H3 heading in the Routing section."
+    },
+    {
+      "code": "routing_text_7",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Routing paragraph",
+      "description": "Paragraph in the Routing section."
+    },
+    {
+      "code": "routing_label_4",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Routing text",
+      "description": "Text in the Routing section."
+    },
+    {
+      "code": "routing_h3_3",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Routing H3 heading",
+      "description": "H3 heading in the Routing section."
+    },
+    {
+      "code": "routing_text_8",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Routing paragraph",
+      "description": "Paragraph in the Routing section."
+    },
+    {
+      "code": "routing_text_9",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Routing paragraph",
+      "description": "Paragraph in the Routing section."
+    },
+    {
+      "code": "routing_aria_3",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Routing accessible label",
+      "description": "Accessible label (aria-label) in the Routing section."
+    },
+    {
+      "code": "routing_label_5",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Routing text",
+      "description": "Text in the Routing section."
+    },
+    {
+      "code": "routing_button_1",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Routing button label",
+      "description": "Button label in the Routing section."
+    },
+    {
+      "code": "routing_h3_4",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Routing H3 heading",
+      "description": "H3 heading in the Routing section."
+    },
+    {
+      "code": "routing_text_10",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Routing paragraph",
+      "description": "Paragraph in the Routing section."
+    },
+    {
+      "code": "routing_h3_5",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Routing H3 heading",
+      "description": "H3 heading in the Routing section."
+    },
+    {
+      "code": "routing_text_11",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Routing paragraph",
+      "description": "Paragraph in the Routing section."
+    },
+    {
+      "code": "routing_text_12",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Routing paragraph",
+      "description": "Paragraph in the Routing section."
+    },
+    {
+      "code": "routing_cta_1_url",
+      "type": "URL",
+      "name": "Routing CTA URL",
+      "description": "Target URL of the \"See routing in action\" button in the Routing section. Site-relative URLs starting with / get the language prefix.",
+      "default": "/snow-removal-request-demo.html",
+      "preserve_default": true
+    },
+    {
+      "code": "routing_cta_1_source",
+      "type": "STRING",
+      "name": "Routing CTA source",
+      "description": "cta_source value appended to the \"See routing in action\" button URL for lead attribution.",
+      "default": "routing_demo",
+      "preserve_default": true
+    },
+    {
+      "code": "routing_label_6",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Routing text",
+      "description": "Text in the Routing section."
+    },
+    {
+      "code": "requests_text_1",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Requests paragraph",
+      "description": "Paragraph in the Requests section."
+    },
+    {
+      "code": "requests_h2_1",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Requests H2 heading",
+      "description": "H2 heading in the Requests section."
+    },
+    {
+      "code": "requests_text_2",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Requests paragraph",
+      "description": "Paragraph in the Requests section."
+    },
+    {
+      "code": "requests_text_3",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Requests paragraph",
+      "description": "Paragraph in the Requests section."
+    },
+    {
+      "code": "requests_h3_1",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Requests H3 heading",
+      "description": "H3 heading in the Requests section."
+    },
+    {
+      "code": "requests_text_4",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Requests paragraph",
+      "description": "Paragraph in the Requests section."
+    },
+    {
+      "code": "requests_h3_2",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Requests H3 heading",
+      "description": "H3 heading in the Requests section."
+    },
+    {
+      "code": "requests_text_5",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Requests paragraph",
+      "description": "Paragraph in the Requests section."
+    },
+    {
+      "code": "requests_h3_3",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Requests H3 heading",
+      "description": "H3 heading in the Requests section."
+    },
+    {
+      "code": "requests_text_6",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Requests paragraph",
+      "description": "Paragraph in the Requests section."
+    },
+    {
+      "code": "requests_aria_1",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Requests accessible label",
+      "description": "Accessible label (aria-label) in the Requests section."
+    },
+    {
+      "code": "requests_label_1",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Requests text",
+      "description": "Text in the Requests section."
+    },
+    {
+      "code": "requests_label_2",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Requests text",
+      "description": "Text in the Requests section."
+    },
+    {
+      "code": "requests_cta_1_url",
+      "type": "URL",
+      "name": "Requests CTA URL",
+      "description": "Target URL of the \"Explore your quoting workflow\" button in the Requests section. Site-relative URLs starting with / get the language prefix.",
+      "default": "/snow-removal-request-demo.html",
+      "preserve_default": true
+    },
+    {
+      "code": "requests_cta_1_source",
+      "type": "STRING",
+      "name": "Requests CTA source",
+      "description": "cta_source value appended to the \"Explore your quoting workflow\" button URL for lead attribution.",
+      "default": "quoting_demo",
+      "preserve_default": true
+    },
+    {
+      "code": "requests_label_3",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Requests text",
+      "description": "Text in the Requests section."
+    },
+    {
+      "code": "mobile_text_1",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Mobile paragraph",
+      "description": "Paragraph in the Mobile section."
+    },
+    {
+      "code": "mobile_h2_1",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Mobile H2 heading",
+      "description": "H2 heading in the Mobile section."
+    },
+    {
+      "code": "mobile_text_2",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Mobile paragraph",
+      "description": "Paragraph in the Mobile section."
+    },
+    {
+      "code": "mobile_text_3",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Mobile paragraph",
+      "description": "Paragraph in the Mobile section."
+    },
+    {
+      "code": "mobile_text_4",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Mobile paragraph",
+      "description": "Paragraph in the Mobile section."
+    },
+    {
+      "code": "mobile_text_5",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Mobile paragraph",
+      "description": "Paragraph in the Mobile section."
+    },
+    {
+      "code": "mobile_text_6",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Mobile paragraph",
+      "description": "Paragraph in the Mobile section."
+    },
+    {
+      "code": "mobile_aria_1",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Mobile accessible label",
+      "description": "Accessible label (aria-label) in the Mobile section."
+    },
+    {
+      "code": "mobile_aria_2",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Mobile accessible label",
+      "description": "Accessible label (aria-label) in the Mobile section."
+    },
+    {
+      "code": "mobile_label_1",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Mobile text",
+      "description": "Text in the Mobile section."
+    },
+    {
+      "code": "mobile_label_2",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Mobile text",
+      "description": "Text in the Mobile section."
+    },
+    {
+      "code": "mobile_text_7",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Mobile paragraph",
+      "description": "Paragraph in the Mobile section."
+    },
+    {
+      "code": "mobile_label_3",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Mobile text",
+      "description": "Text in the Mobile section."
+    },
+    {
+      "code": "mobile_label_4",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Mobile text",
+      "description": "Text in the Mobile section."
+    },
+    {
+      "code": "mobile_h3_1",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Mobile H3 heading",
+      "description": "H3 heading in the Mobile section."
+    },
+    {
+      "code": "mobile_text_8",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Mobile paragraph",
+      "description": "Paragraph in the Mobile section."
+    },
+    {
+      "code": "mobile_h3_2",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Mobile H3 heading",
+      "description": "H3 heading in the Mobile section."
+    },
+    {
+      "code": "mobile_text_9",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Mobile paragraph",
+      "description": "Paragraph in the Mobile section."
+    },
+    {
+      "code": "mobile_h3_3",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Mobile H3 heading",
+      "description": "H3 heading in the Mobile section."
+    },
+    {
+      "code": "mobile_text_10",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Mobile paragraph",
+      "description": "Paragraph in the Mobile section."
+    },
+    {
+      "code": "mobile_text_11",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Mobile paragraph",
+      "description": "Paragraph in the Mobile section."
+    },
+    {
+      "code": "mobile_h3_4",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Mobile H3 heading",
+      "description": "H3 heading in the Mobile section."
+    },
+    {
+      "code": "mobile_text_12",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Mobile paragraph",
+      "description": "Paragraph in the Mobile section."
+    },
+    {
+      "code": "mobile_text_13",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Mobile paragraph",
+      "description": "Paragraph in the Mobile section."
+    },
+    {
+      "code": "mobile_h3_5",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Mobile H3 heading",
+      "description": "H3 heading in the Mobile section."
+    },
+    {
+      "code": "mobile_text_14",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Mobile paragraph",
+      "description": "Paragraph in the Mobile section."
+    },
+    {
+      "code": "mobile_h3_6",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Mobile H3 heading",
+      "description": "H3 heading in the Mobile section."
+    },
+    {
+      "code": "mobile_text_15",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Mobile paragraph",
+      "description": "Paragraph in the Mobile section."
+    },
+    {
+      "code": "mobile_h3_7",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Mobile H3 heading",
+      "description": "H3 heading in the Mobile section."
+    },
+    {
+      "code": "mobile_text_16",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Mobile paragraph",
+      "description": "Paragraph in the Mobile section."
+    },
+    {
+      "code": "mobile_text_17",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Mobile paragraph",
+      "description": "Paragraph in the Mobile section."
+    },
+    {
+      "code": "mobile_cta_1_url",
+      "type": "URL",
+      "name": "Mobile CTA URL",
+      "description": "Target URL of the \"See the crew app in action\" button in the Mobile section. Site-relative URLs starting with / get the language prefix.",
+      "default": "/snow-removal-request-demo.html",
+      "preserve_default": true
+    },
+    {
+      "code": "mobile_cta_1_source",
+      "type": "STRING",
+      "name": "Mobile CTA source",
+      "description": "cta_source value appended to the \"See the crew app in action\" button URL for lead attribution.",
+      "default": "mobile_demo",
+      "preserve_default": true
+    },
+    {
+      "code": "mobile_label_5",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Mobile text",
+      "description": "Text in the Mobile section."
+    },
+    {
+      "code": "subcontractors_text_1",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Subcontractors paragraph",
+      "description": "Paragraph in the Subcontractors section."
+    },
+    {
+      "code": "subcontractors_h2_1",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Subcontractors H2 heading",
+      "description": "H2 heading in the Subcontractors section."
+    },
+    {
+      "code": "subcontractors_text_2",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Subcontractors paragraph",
+      "description": "Paragraph in the Subcontractors section."
+    },
+    {
+      "code": "subcontractors_text_3",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Subcontractors paragraph",
+      "description": "Paragraph in the Subcontractors section."
+    },
+    {
+      "code": "subcontractors_h3_1",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Subcontractors H3 heading",
+      "description": "H3 heading in the Subcontractors section."
+    },
+    {
+      "code": "subcontractors_text_4",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Subcontractors paragraph",
+      "description": "Paragraph in the Subcontractors section."
+    },
+    {
+      "code": "subcontractors_h3_2",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Subcontractors H3 heading",
+      "description": "H3 heading in the Subcontractors section."
+    },
+    {
+      "code": "subcontractors_text_5",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Subcontractors paragraph",
+      "description": "Paragraph in the Subcontractors section."
+    },
+    {
+      "code": "subcontractors_h3_3",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Subcontractors H3 heading",
+      "description": "H3 heading in the Subcontractors section."
+    },
+    {
+      "code": "subcontractors_text_6",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Subcontractors paragraph",
+      "description": "Paragraph in the Subcontractors section."
+    },
+    {
+      "code": "subcontractors_h3_4",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Subcontractors H3 heading",
+      "description": "H3 heading in the Subcontractors section."
+    },
+    {
+      "code": "subcontractors_text_7",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Subcontractors paragraph",
+      "description": "Paragraph in the Subcontractors section."
+    },
+    {
+      "code": "portal_text_1",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Portal paragraph",
+      "description": "Paragraph in the Portal section."
+    },
+    {
+      "code": "portal_h2_1",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Portal H2 heading",
+      "description": "H2 heading in the Portal section."
+    },
+    {
+      "code": "portal_text_2",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Portal paragraph",
+      "description": "Paragraph in the Portal section."
+    },
+    {
+      "code": "portal_text_3",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Portal paragraph",
+      "description": "Paragraph in the Portal section."
+    },
+    {
+      "code": "portal_aria_1",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Portal accessible label",
+      "description": "Accessible label (aria-label) in the Portal section."
+    },
+    {
+      "code": "portal_label_1",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Portal text",
+      "description": "Text in the Portal section."
+    },
+    {
+      "code": "portal_h3_1",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Portal H3 heading",
+      "description": "H3 heading in the Portal section."
+    },
+    {
+      "code": "portal_text_4",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Portal paragraph",
+      "description": "Paragraph in the Portal section."
+    },
+    {
+      "code": "portal_h3_2",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Portal H3 heading",
+      "description": "H3 heading in the Portal section."
+    },
+    {
+      "code": "portal_text_5",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Portal paragraph",
+      "description": "Paragraph in the Portal section."
+    },
+    {
+      "code": "portal_h3_3",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Portal H3 heading",
+      "description": "H3 heading in the Portal section."
+    },
+    {
+      "code": "portal_text_6",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Portal paragraph",
+      "description": "Paragraph in the Portal section."
+    },
+    {
+      "code": "portal_text_7",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Portal paragraph",
+      "description": "Paragraph in the Portal section."
+    },
+    {
+      "code": "portal_cta_1_url",
+      "type": "URL",
+      "name": "Portal CTA URL",
+      "description": "Target URL of the \"See your customer experience\" button in the Portal section. Site-relative URLs starting with / get the language prefix.",
+      "default": "/snow-removal-request-demo.html",
+      "preserve_default": true
+    },
+    {
+      "code": "portal_cta_1_source",
+      "type": "STRING",
+      "name": "Portal CTA source",
+      "description": "cta_source value appended to the \"See your customer experience\" button URL for lead attribution.",
+      "default": "portal_demo",
+      "preserve_default": true
+    },
+    {
+      "code": "portal_label_2",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Portal text",
+      "description": "Text in the Portal section."
+    },
+    {
+      "code": "billing_text_1",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Billing paragraph",
+      "description": "Paragraph in the Billing section."
+    },
+    {
+      "code": "billing_h2_1",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Billing H2 heading",
+      "description": "H2 heading in the Billing section."
+    },
+    {
+      "code": "billing_text_2",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Billing paragraph",
+      "description": "Paragraph in the Billing section."
+    },
+    {
+      "code": "billing_text_3",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Billing paragraph",
+      "description": "Paragraph in the Billing section."
+    },
+    {
+      "code": "billing_h3_1",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Billing H3 heading",
+      "description": "H3 heading in the Billing section."
+    },
+    {
+      "code": "billing_text_4",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Billing paragraph",
+      "description": "Paragraph in the Billing section."
+    },
+    {
+      "code": "billing_h3_2",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Billing H3 heading",
+      "description": "H3 heading in the Billing section."
+    },
+    {
+      "code": "billing_text_5",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Billing paragraph",
+      "description": "Paragraph in the Billing section."
+    },
+    {
+      "code": "billing_h3_3",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Billing H3 heading",
+      "description": "H3 heading in the Billing section."
+    },
+    {
+      "code": "billing_text_6",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Billing paragraph",
+      "description": "Paragraph in the Billing section."
+    },
+    {
+      "code": "billing_aria_1",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Billing accessible label",
+      "description": "Accessible label (aria-label) in the Billing section."
+    },
+    {
+      "code": "billing_label_1",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Billing text",
+      "description": "Text in the Billing section."
+    },
+    {
+      "code": "billing_text_7",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Billing paragraph",
+      "description": "Paragraph in the Billing section."
+    },
+    {
+      "code": "onboarding_text_1",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Onboarding paragraph",
+      "description": "Paragraph in the Onboarding section."
+    },
+    {
+      "code": "onboarding_h2_1",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Onboarding H2 heading",
+      "description": "H2 heading in the Onboarding section."
+    },
+    {
+      "code": "onboarding_text_2",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Onboarding paragraph",
+      "description": "Paragraph in the Onboarding section."
+    },
+    {
+      "code": "onboarding_text_3",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Onboarding paragraph",
+      "description": "Paragraph in the Onboarding section."
+    },
+    {
+      "code": "onboarding_h3_1",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Onboarding H3 heading",
+      "description": "H3 heading in the Onboarding section."
+    },
+    {
+      "code": "onboarding_text_4",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Onboarding paragraph",
+      "description": "Paragraph in the Onboarding section."
+    },
+    {
+      "code": "onboarding_h3_2",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Onboarding H3 heading",
+      "description": "H3 heading in the Onboarding section."
+    },
+    {
+      "code": "onboarding_text_5",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Onboarding paragraph",
+      "description": "Paragraph in the Onboarding section."
+    },
+    {
+      "code": "onboarding_h3_3",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Onboarding H3 heading",
+      "description": "H3 heading in the Onboarding section."
+    },
+    {
+      "code": "onboarding_text_6",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Onboarding paragraph",
+      "description": "Paragraph in the Onboarding section."
+    },
+    {
+      "code": "onboarding_h3_4",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Onboarding H3 heading",
+      "description": "H3 heading in the Onboarding section."
+    },
+    {
+      "code": "onboarding_text_7",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Onboarding paragraph",
+      "description": "Paragraph in the Onboarding section."
+    },
+    {
+      "code": "onboarding_cta_1_url",
+      "type": "URL",
+      "name": "Onboarding CTA URL",
+      "description": "Target URL of the \"Discuss Your Setup\" button in the Onboarding section. Site-relative URLs starting with / get the language prefix.",
+      "default": "/snow-removal-request-demo.html",
+      "preserve_default": true
+    },
+    {
+      "code": "onboarding_cta_1_source",
+      "type": "STRING",
+      "name": "Onboarding CTA source",
+      "description": "cta_source value appended to the \"Discuss Your Setup\" button URL for lead attribution.",
+      "default": "onboarding_setup",
+      "preserve_default": true
+    },
+    {
+      "code": "onboarding_label_1",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Onboarding text",
+      "description": "Text in the Onboarding section."
+    },
+    {
+      "code": "platform_text_1",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Platform paragraph",
+      "description": "Paragraph in the Platform section."
+    },
+    {
+      "code": "platform_h2_1",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Platform H2 heading",
+      "description": "H2 heading in the Platform section."
+    },
+    {
+      "code": "platform_text_2",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Platform paragraph",
+      "description": "Paragraph in the Platform section."
+    },
+    {
+      "code": "platform_text_3",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Platform paragraph",
+      "description": "Paragraph in the Platform section."
+    },
+    {
+      "code": "platform_h3_1",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Platform H3 heading",
+      "description": "H3 heading in the Platform section."
+    },
+    {
+      "code": "platform_text_4",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Platform paragraph",
+      "description": "Paragraph in the Platform section."
+    },
+    {
+      "code": "platform_h3_2",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Platform H3 heading",
+      "description": "H3 heading in the Platform section."
+    },
+    {
+      "code": "platform_text_5",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Platform paragraph",
+      "description": "Paragraph in the Platform section."
+    },
+    {
+      "code": "platform_h3_3",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Platform H3 heading",
+      "description": "H3 heading in the Platform section."
+    },
+    {
+      "code": "platform_text_6",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Platform paragraph",
+      "description": "Paragraph in the Platform section."
+    },
+    {
+      "code": "platform_h3_4",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Platform H3 heading",
+      "description": "H3 heading in the Platform section."
+    },
+    {
+      "code": "platform_text_7",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Platform paragraph",
+      "description": "Paragraph in the Platform section."
+    },
+    {
+      "code": "platform_h3_5",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Platform H3 heading",
+      "description": "H3 heading in the Platform section."
+    },
+    {
+      "code": "platform_text_8",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Platform paragraph",
+      "description": "Paragraph in the Platform section."
+    },
+    {
+      "code": "platform_text_9",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Platform paragraph",
+      "description": "Paragraph in the Platform section."
+    },
+    {
+      "code": "platform_label_1",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Platform text",
+      "description": "Text in the Platform section."
+    },
+    {
+      "code": "platform_h3_6",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Platform H3 heading",
+      "description": "H3 heading in the Platform section."
+    },
+    {
+      "code": "platform_text_10",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Platform paragraph",
+      "description": "Paragraph in the Platform section."
+    },
+    {
+      "code": "platform_cta_1_url",
+      "type": "URL",
+      "name": "Platform CTA URL",
+      "description": "Target URL of the \"Notify Me When Demos Are Available\" button in the Platform section. Site-relative URLs starting with / get the language prefix.",
+      "default": "/field-service-early-access.html",
+      "preserve_default": true
+    },
+    {
+      "code": "platform_cta_1_source",
+      "type": "STRING",
+      "name": "Platform CTA source",
+      "description": "cta_source value appended to the \"Notify Me When Demos Are Available\" button URL for lead attribution.",
+      "default": "lawn_care_notify",
+      "preserve_default": true
+    },
+    {
+      "code": "platform_label_2",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Platform text",
+      "description": "Text in the Platform section."
+    },
+    {
+      "code": "platform_cta_2_url",
+      "type": "URL",
+      "name": "Platform CTA URL",
+      "description": "Target URL of the \"Discuss a Strategic Partnership\" button in the Platform section. Site-relative URLs starting with / get the language prefix.",
+      "default": "/partner.html",
+      "preserve_default": true
+    },
+    {
+      "code": "platform_cta_2_source",
+      "type": "STRING",
+      "name": "Platform CTA source",
+      "description": "cta_source value appended to the \"Discuss a Strategic Partnership\" button URL for lead attribution.",
+      "default": "lawn_care_partner",
+      "preserve_default": true
+    },
+    {
+      "code": "platform_label_3",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Platform text",
+      "description": "Text in the Platform section."
+    },
+    {
+      "code": "pricing_text_1",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing paragraph",
+      "description": "Paragraph in the Pricing section."
+    },
+    {
+      "code": "pricing_h2_1",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing H2 heading",
+      "description": "H2 heading in the Pricing section."
+    },
+    {
+      "code": "pricing_text_2",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing paragraph",
+      "description": "Paragraph in the Pricing section."
+    },
+    {
+      "code": "pricing_label_1",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing text",
+      "description": "Text in the Pricing section."
+    },
+    {
+      "code": "pricing_label_2",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing text",
+      "description": "Text in the Pricing section."
+    },
+    {
+      "code": "pricing_label_3",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing text",
+      "description": "Text in the Pricing section."
+    },
+    {
+      "code": "pricing_label_4",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing text",
+      "description": "Text in the Pricing section."
+    },
+    {
+      "code": "pricing_label_5",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing text",
+      "description": "Text in the Pricing section."
+    },
+    {
+      "code": "pricing_h3_1",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing H3 heading",
+      "description": "H3 heading in the Pricing section."
+    },
+    {
+      "code": "pricing_text_3",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing paragraph",
+      "description": "Paragraph in the Pricing section."
+    },
+    {
+      "code": "pricing_label_6",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing text",
+      "description": "Text in the Pricing section."
+    },
+    {
+      "code": "pricing_label_7",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing text",
+      "description": "Text in the Pricing section."
+    },
+    {
+      "code": "pricing_label_8",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing text",
+      "description": "Text in the Pricing section."
+    },
+    {
+      "code": "pricing_label_9",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing text",
+      "description": "Text in the Pricing section."
+    },
+    {
+      "code": "pricing_cta_1_url",
+      "type": "URL",
+      "name": "Pricing CTA URL",
+      "description": "Target URL of the \"Buy\" button in the Pricing section. Site-relative URLs starting with / get the language prefix.",
+      "default": "/subscribe.html?plan=SERVICEWAND_FOUNDATION",
+      "preserve_default": true
+    },
+    {
+      "code": "pricing_label_10",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing text",
+      "description": "Text in the Pricing section."
+    },
+    {
+      "code": "pricing_label_11",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing text",
+      "description": "Text in the Pricing section."
+    },
+    {
+      "code": "pricing_item_1",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing list item",
+      "description": "List item in the Pricing section."
+    },
+    {
+      "code": "pricing_item_2",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing list item",
+      "description": "List item in the Pricing section."
+    },
+    {
+      "code": "pricing_item_3",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing list item",
+      "description": "List item in the Pricing section."
+    },
+    {
+      "code": "pricing_item_4",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing list item",
+      "description": "List item in the Pricing section."
+    },
+    {
+      "code": "pricing_item_5",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing list item",
+      "description": "List item in the Pricing section."
+    },
+    {
+      "code": "pricing_link_1",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing link label",
+      "description": "Link label in the Pricing section."
+    },
+    {
+      "code": "pricing_label_12",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing text",
+      "description": "Text in the Pricing section."
+    },
+    {
+      "code": "pricing_h3_2",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing H3 heading",
+      "description": "H3 heading in the Pricing section."
+    },
+    {
+      "code": "pricing_text_4",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing paragraph",
+      "description": "Paragraph in the Pricing section."
+    },
+    {
+      "code": "pricing_label_13",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing text",
+      "description": "Text in the Pricing section."
+    },
+    {
+      "code": "pricing_label_14",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing text",
+      "description": "Text in the Pricing section."
+    },
+    {
+      "code": "pricing_label_15",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing text",
+      "description": "Text in the Pricing section."
+    },
+    {
+      "code": "pricing_label_16",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing text",
+      "description": "Text in the Pricing section."
+    },
+    {
+      "code": "pricing_cta_2_url",
+      "type": "URL",
+      "name": "Pricing CTA URL",
+      "description": "Target URL of the \"Buy\" button in the Pricing section. Site-relative URLs starting with / get the language prefix.",
+      "default": "/subscribe.html?plan=SERVICEWAND_GROWTH",
+      "preserve_default": true
+    },
+    {
+      "code": "pricing_label_17",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing text",
+      "description": "Text in the Pricing section."
+    },
+    {
+      "code": "pricing_label_18",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing text",
+      "description": "Text in the Pricing section."
+    },
+    {
+      "code": "pricing_item_6",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing list item",
+      "description": "List item in the Pricing section."
+    },
+    {
+      "code": "pricing_item_7",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing list item",
+      "description": "List item in the Pricing section."
+    },
+    {
+      "code": "pricing_item_8",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing list item",
+      "description": "List item in the Pricing section."
+    },
+    {
+      "code": "pricing_item_9",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing list item",
+      "description": "List item in the Pricing section."
+    },
+    {
+      "code": "pricing_item_10",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing list item",
+      "description": "List item in the Pricing section."
+    },
+    {
+      "code": "pricing_link_2",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing link label",
+      "description": "Link label in the Pricing section."
+    },
+    {
+      "code": "pricing_label_19",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing text",
+      "description": "Text in the Pricing section."
+    },
+    {
+      "code": "pricing_h3_3",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing H3 heading",
+      "description": "H3 heading in the Pricing section."
+    },
+    {
+      "code": "pricing_text_5",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing paragraph",
+      "description": "Paragraph in the Pricing section."
+    },
+    {
+      "code": "pricing_label_20",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing text",
+      "description": "Text in the Pricing section."
+    },
+    {
+      "code": "pricing_label_21",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing text",
+      "description": "Text in the Pricing section."
+    },
+    {
+      "code": "pricing_label_22",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing text",
+      "description": "Text in the Pricing section."
+    },
+    {
+      "code": "pricing_label_23",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing text",
+      "description": "Text in the Pricing section."
+    },
+    {
+      "code": "pricing_cta_3_url",
+      "type": "URL",
+      "name": "Pricing CTA URL",
+      "description": "Target URL of the \"Buy\" button in the Pricing section. Site-relative URLs starting with / get the language prefix.",
+      "default": "/subscribe.html?plan=SERVICEWAND_PROFESSIONAL",
+      "preserve_default": true
+    },
+    {
+      "code": "pricing_label_24",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing text",
+      "description": "Text in the Pricing section."
+    },
+    {
+      "code": "pricing_label_25",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing text",
+      "description": "Text in the Pricing section."
+    },
+    {
+      "code": "pricing_item_11",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing list item",
+      "description": "List item in the Pricing section."
+    },
+    {
+      "code": "pricing_item_12",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing list item",
+      "description": "List item in the Pricing section."
+    },
+    {
+      "code": "pricing_item_13",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing list item",
+      "description": "List item in the Pricing section."
+    },
+    {
+      "code": "pricing_item_14",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing list item",
+      "description": "List item in the Pricing section."
+    },
+    {
+      "code": "pricing_item_15",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing list item",
+      "description": "List item in the Pricing section."
+    },
+    {
+      "code": "pricing_link_3",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing link label",
+      "description": "Link label in the Pricing section."
+    },
+    {
+      "code": "pricing_label_26",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing text",
+      "description": "Text in the Pricing section."
+    },
+    {
+      "code": "pricing_h3_4",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing H3 heading",
+      "description": "H3 heading in the Pricing section."
+    },
+    {
+      "code": "pricing_text_6",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing paragraph",
+      "description": "Paragraph in the Pricing section."
+    },
+    {
+      "code": "pricing_label_27",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing text",
+      "description": "Text in the Pricing section."
+    },
+    {
+      "code": "pricing_label_28",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing text",
+      "description": "Text in the Pricing section."
+    },
+    {
+      "code": "pricing_cta_4_url",
+      "type": "URL",
+      "name": "Pricing CTA URL",
+      "description": "Target URL of the \"Talk to Sales\" button in the Pricing section. Site-relative URLs starting with / get the language prefix.",
+      "default": "/snow-removal-request-demo.html",
+      "preserve_default": true
+    },
+    {
+      "code": "pricing_cta_4_source",
+      "type": "STRING",
+      "name": "Pricing CTA source",
+      "description": "cta_source value appended to the \"Talk to Sales\" button URL for lead attribution.",
+      "default": "pricing_enterprise",
+      "preserve_default": true
+    },
+    {
+      "code": "pricing_label_29",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing text",
+      "description": "Text in the Pricing section."
+    },
+    {
+      "code": "pricing_label_30",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing text",
+      "description": "Text in the Pricing section."
+    },
+    {
+      "code": "pricing_item_16",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing list item",
+      "description": "List item in the Pricing section."
+    },
+    {
+      "code": "pricing_item_17",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing list item",
+      "description": "List item in the Pricing section."
+    },
+    {
+      "code": "pricing_item_18",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing list item",
+      "description": "List item in the Pricing section."
+    },
+    {
+      "code": "pricing_item_19",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing list item",
+      "description": "List item in the Pricing section."
+    },
+    {
+      "code": "pricing_item_20",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing list item",
+      "description": "List item in the Pricing section."
+    },
+    {
+      "code": "pricing_link_4",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing link label",
+      "description": "Link label in the Pricing section."
+    },
+    {
+      "code": "pricing_label_31",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing text",
+      "description": "Text in the Pricing section."
+    },
+    {
+      "code": "pricing_label_32",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing text",
+      "description": "Text in the Pricing section."
+    },
+    {
+      "code": "pricing_label_33",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing text",
+      "description": "Text in the Pricing section."
+    },
+    {
+      "code": "pricing_h2_2",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing H2 heading",
+      "description": "H2 heading in the Pricing section."
+    },
+    {
+      "code": "pricing_text_7",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing paragraph",
+      "description": "Paragraph in the Pricing section."
+    },
+    {
+      "code": "pricing_text_8",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing paragraph",
+      "description": "Paragraph in the Pricing section."
+    },
+    {
+      "code": "pricing_aria_1",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing accessible label",
+      "description": "Accessible label (aria-label) in the Pricing section."
+    },
+    {
+      "code": "pricing_h3_5",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing H3 heading",
+      "description": "H3 heading in the Pricing section."
+    },
+    {
+      "code": "pricing_text_9",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing paragraph",
+      "description": "Paragraph in the Pricing section."
+    },
+    {
+      "code": "pricing_aria_2",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing accessible label",
+      "description": "Accessible label (aria-label) in the Pricing section."
+    },
+    {
+      "code": "pricing_header_1",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing table row header",
+      "description": "Table row header in the Pricing section."
+    },
+    {
+      "code": "pricing_header_2",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing table row header",
+      "description": "Table row header in the Pricing section."
+    },
+    {
+      "code": "pricing_header_3",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing table row header",
+      "description": "Table row header in the Pricing section."
+    },
+    {
+      "code": "pricing_h3_6",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing H3 heading",
+      "description": "H3 heading in the Pricing section."
+    },
+    {
+      "code": "pricing_text_10",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing paragraph",
+      "description": "Paragraph in the Pricing section."
+    },
+    {
+      "code": "pricing_aria_3",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing accessible label",
+      "description": "Accessible label (aria-label) in the Pricing section."
+    },
+    {
+      "code": "pricing_header_4",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing table row header",
+      "description": "Table row header in the Pricing section."
+    },
+    {
+      "code": "pricing_header_5",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing table row header",
+      "description": "Table row header in the Pricing section."
+    },
+    {
+      "code": "pricing_header_6",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing table row header",
+      "description": "Table row header in the Pricing section."
+    },
+    {
+      "code": "pricing_header_7",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing table row header",
+      "description": "Table row header in the Pricing section."
+    },
+    {
+      "code": "pricing_h3_7",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing H3 heading",
+      "description": "H3 heading in the Pricing section."
+    },
+    {
+      "code": "pricing_text_11",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing paragraph",
+      "description": "Paragraph in the Pricing section."
+    },
+    {
+      "code": "pricing_aria_4",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing accessible label",
+      "description": "Accessible label (aria-label) in the Pricing section."
+    },
+    {
+      "code": "pricing_header_8",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing table row header",
+      "description": "Table row header in the Pricing section."
+    },
+    {
+      "code": "pricing_header_9",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing table row header",
+      "description": "Table row header in the Pricing section."
+    },
+    {
+      "code": "pricing_header_10",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing table row header",
+      "description": "Table row header in the Pricing section."
+    },
+    {
+      "code": "pricing_header_11",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing table row header",
+      "description": "Table row header in the Pricing section."
+    },
+    {
+      "code": "pricing_h3_8",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing H3 heading",
+      "description": "H3 heading in the Pricing section."
+    },
+    {
+      "code": "pricing_text_12",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing paragraph",
+      "description": "Paragraph in the Pricing section."
+    },
+    {
+      "code": "pricing_aria_5",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing accessible label",
+      "description": "Accessible label (aria-label) in the Pricing section."
+    },
+    {
+      "code": "pricing_header_12",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing table row header",
+      "description": "Table row header in the Pricing section."
+    },
+    {
+      "code": "pricing_header_13",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing table row header",
+      "description": "Table row header in the Pricing section."
+    },
+    {
+      "code": "pricing_header_14",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing table row header",
+      "description": "Table row header in the Pricing section."
+    },
+    {
+      "code": "pricing_header_15",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing table row header",
+      "description": "Table row header in the Pricing section."
+    },
+    {
+      "code": "pricing_h3_9",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing H3 heading",
+      "description": "H3 heading in the Pricing section."
+    },
+    {
+      "code": "pricing_text_13",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing paragraph",
+      "description": "Paragraph in the Pricing section."
+    },
+    {
+      "code": "pricing_aria_6",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing accessible label",
+      "description": "Accessible label (aria-label) in the Pricing section."
+    },
+    {
+      "code": "pricing_header_16",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing table row header",
+      "description": "Table row header in the Pricing section."
+    },
+    {
+      "code": "pricing_header_17",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing table row header",
+      "description": "Table row header in the Pricing section."
+    },
+    {
+      "code": "pricing_h3_10",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing H3 heading",
+      "description": "H3 heading in the Pricing section."
+    },
+    {
+      "code": "pricing_text_14",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing paragraph",
+      "description": "Paragraph in the Pricing section."
+    },
+    {
+      "code": "pricing_aria_7",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing accessible label",
+      "description": "Accessible label (aria-label) in the Pricing section."
+    },
+    {
+      "code": "pricing_header_18",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing table row header",
+      "description": "Table row header in the Pricing section."
+    },
+    {
+      "code": "pricing_header_19",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing table row header",
+      "description": "Table row header in the Pricing section."
+    },
+    {
+      "code": "pricing_header_20",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing table row header",
+      "description": "Table row header in the Pricing section."
+    },
+    {
+      "code": "pricing_header_21",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing table row header",
+      "description": "Table row header in the Pricing section."
+    },
+    {
+      "code": "pricing_h3_11",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing H3 heading",
+      "description": "H3 heading in the Pricing section."
+    },
+    {
+      "code": "pricing_text_15",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing paragraph",
+      "description": "Paragraph in the Pricing section."
+    },
+    {
+      "code": "pricing_aria_8",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing accessible label",
+      "description": "Accessible label (aria-label) in the Pricing section."
+    },
+    {
+      "code": "pricing_header_22",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing table row header",
+      "description": "Table row header in the Pricing section."
+    },
+    {
+      "code": "pricing_header_23",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing table row header",
+      "description": "Table row header in the Pricing section."
+    },
+    {
+      "code": "pricing_header_24",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing table row header",
+      "description": "Table row header in the Pricing section."
+    },
+    {
+      "code": "pricing_h3_12",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing H3 heading",
+      "description": "H3 heading in the Pricing section."
+    },
+    {
+      "code": "pricing_text_16",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing paragraph",
+      "description": "Paragraph in the Pricing section."
+    },
+    {
+      "code": "pricing_aria_9",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing accessible label",
+      "description": "Accessible label (aria-label) in the Pricing section."
+    },
+    {
+      "code": "pricing_header_25",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing table row header",
+      "description": "Table row header in the Pricing section."
+    },
+    {
+      "code": "pricing_header_26",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing table row header",
+      "description": "Table row header in the Pricing section."
+    },
+    {
+      "code": "pricing_header_27",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing table row header",
+      "description": "Table row header in the Pricing section."
+    },
+    {
+      "code": "pricing_header_28",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing table row header",
+      "description": "Table row header in the Pricing section."
+    },
+    {
+      "code": "pricing_h3_13",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing H3 heading",
+      "description": "H3 heading in the Pricing section."
+    },
+    {
+      "code": "pricing_text_17",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing paragraph",
+      "description": "Paragraph in the Pricing section."
+    },
+    {
+      "code": "pricing_aria_10",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing accessible label",
+      "description": "Accessible label (aria-label) in the Pricing section."
+    },
+    {
+      "code": "pricing_header_29",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing table row header",
+      "description": "Table row header in the Pricing section."
+    },
+    {
+      "code": "pricing_header_30",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing table row header",
+      "description": "Table row header in the Pricing section."
+    },
+    {
+      "code": "pricing_header_31",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing table row header",
+      "description": "Table row header in the Pricing section."
+    },
+    {
+      "code": "pricing_header_32",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing table row header",
+      "description": "Table row header in the Pricing section."
+    },
+    {
+      "code": "pricing_text_18",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing paragraph",
+      "description": "Paragraph in the Pricing section."
+    },
+    {
+      "code": "pricing_text_19",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing paragraph",
+      "description": "Paragraph in the Pricing section."
+    },
+    {
+      "code": "pricing_text_20",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing paragraph",
+      "description": "Paragraph in the Pricing section."
+    },
+    {
+      "code": "pricing_text_21",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing paragraph",
+      "description": "Paragraph in the Pricing section."
+    },
+    {
+      "code": "pricing_text_22",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing paragraph",
+      "description": "Paragraph in the Pricing section."
+    },
+    {
+      "code": "pricing_text_23",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing paragraph",
+      "description": "Paragraph in the Pricing section."
+    },
+    {
+      "code": "pricing_cta_5_url",
+      "type": "URL",
+      "name": "Pricing CTA URL",
+      "description": "Target URL of the \"Continue with Foundation\" button in the Pricing section. Site-relative URLs starting with / get the language prefix.",
+      "default": "/subscribe.html?plan=SERVICEWAND_FOUNDATION",
+      "preserve_default": true
+    },
+    {
+      "code": "pricing_label_34",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing text",
+      "description": "Text in the Pricing section."
+    },
+    {
+      "code": "pricing_cta_6_url",
+      "type": "URL",
+      "name": "Pricing CTA URL",
+      "description": "Target URL of the \"Continue with Growth\" button in the Pricing section. Site-relative URLs starting with / get the language prefix.",
+      "default": "/subscribe.html?plan=SERVICEWAND_GROWTH",
+      "preserve_default": true
+    },
+    {
+      "code": "pricing_label_35",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing text",
+      "description": "Text in the Pricing section."
+    },
+    {
+      "code": "pricing_cta_7_url",
+      "type": "URL",
+      "name": "Pricing CTA URL",
+      "description": "Target URL of the \"Continue with Business\" button in the Pricing section. Site-relative URLs starting with / get the language prefix.",
+      "default": "/subscribe.html?plan=SERVICEWAND_PROFESSIONAL",
+      "preserve_default": true
+    },
+    {
+      "code": "pricing_label_36",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing text",
+      "description": "Text in the Pricing section."
+    },
+    {
+      "code": "pricing_cta_8_url",
+      "type": "URL",
+      "name": "Pricing CTA URL",
+      "description": "Target URL of the \"Talk to Sales\" button in the Pricing section. Site-relative URLs starting with / get the language prefix.",
+      "default": "/snow-removal-request-demo.html",
+      "preserve_default": true
+    },
+    {
+      "code": "pricing_cta_8_source",
+      "type": "STRING",
+      "name": "Pricing CTA source",
+      "description": "cta_source value appended to the \"Talk to Sales\" button URL for lead attribution.",
+      "default": "pricing_enterprise",
+      "preserve_default": true
+    },
+    {
+      "code": "pricing_label_37",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing text",
+      "description": "Text in the Pricing section."
+    },
+    {
+      "code": "pricing_label_38",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing text",
+      "description": "Text in the Pricing section."
+    },
+    {
+      "code": "pricing_h3_14",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing H3 heading",
+      "description": "H3 heading in the Pricing section."
+    },
+    {
+      "code": "pricing_text_24",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing paragraph",
+      "description": "Paragraph in the Pricing section."
+    },
+    {
+      "code": "pricing_label_39",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing text",
+      "description": "Text in the Pricing section."
+    },
+    {
+      "code": "pricing_text_25",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing paragraph",
+      "description": "Paragraph in the Pricing section."
+    },
+    {
+      "code": "pricing_label_40",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing text",
+      "description": "Text in the Pricing section."
+    },
+    {
+      "code": "pricing_text_26",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Pricing paragraph",
+      "description": "Paragraph in the Pricing section."
+    },
+    {
+      "code": "expansion_text_1",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Expansion paragraph",
+      "description": "Paragraph in the Expansion section."
+    },
+    {
+      "code": "expansion_h2_1",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Expansion H2 heading",
+      "description": "H2 heading in the Expansion section."
+    },
+    {
+      "code": "expansion_text_2",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Expansion paragraph",
+      "description": "Paragraph in the Expansion section."
+    },
+    {
+      "code": "expansion_h3_1",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Expansion H3 heading",
+      "description": "H3 heading in the Expansion section."
+    },
+    {
+      "code": "expansion_text_3",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Expansion paragraph",
+      "description": "Paragraph in the Expansion section."
+    },
+    {
+      "code": "expansion_label_1",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Expansion text",
+      "description": "Text in the Expansion section."
+    },
+    {
+      "code": "expansion_h3_2",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Expansion H3 heading",
+      "description": "H3 heading in the Expansion section."
+    },
+    {
+      "code": "expansion_text_4",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Expansion paragraph",
+      "description": "Paragraph in the Expansion section."
+    },
+    {
+      "code": "expansion_label_2",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Expansion text",
+      "description": "Text in the Expansion section."
+    },
+    {
+      "code": "expansion_h3_3",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Expansion H3 heading",
+      "description": "H3 heading in the Expansion section."
+    },
+    {
+      "code": "expansion_text_5",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Expansion paragraph",
+      "description": "Paragraph in the Expansion section."
+    },
+    {
+      "code": "expansion_label_3",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Expansion text",
+      "description": "Text in the Expansion section."
+    },
+    {
+      "code": "expansion_label_4",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Expansion text",
+      "description": "Text in the Expansion section."
+    },
+    {
+      "code": "expansion_text_6",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Expansion paragraph",
+      "description": "Paragraph in the Expansion section."
+    },
+    {
+      "code": "expansion_cta_1_url",
+      "type": "URL",
+      "name": "Expansion CTA URL",
+      "description": "Target URL of the \"Discuss Your Requirements\" button in the Expansion section. Site-relative URLs starting with / get the language prefix.",
+      "default": "/snow-removal-request-demo.html",
+      "preserve_default": true
+    },
+    {
+      "code": "expansion_cta_1_source",
+      "type": "STRING",
+      "name": "Expansion CTA source",
+      "description": "cta_source value appended to the \"Discuss Your Requirements\" button URL for lead attribution.",
+      "default": "expansion_requirements",
+      "preserve_default": true
+    },
+    {
+      "code": "expansion_label_5",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Expansion text",
+      "description": "Text in the Expansion section."
+    },
+    {
+      "code": "faq_text_1",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Faq paragraph",
+      "description": "Paragraph in the Faq section."
+    },
+    {
+      "code": "faq_h2_1",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Faq H2 heading",
+      "description": "H2 heading in the Faq section."
+    },
+    {
+      "code": "faq_text_2",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Faq paragraph",
+      "description": "Paragraph in the Faq section."
+    },
+    {
+      "code": "faq_text_3",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Faq paragraph",
+      "description": "Paragraph in the Faq section."
+    },
+    {
+      "code": "faq_cta_1_url",
+      "type": "URL",
+      "name": "Faq CTA URL",
+      "description": "Target URL of the \"Book a Demo\" button in the Faq section. Site-relative URLs starting with / get the language prefix.",
+      "default": "/snow-removal-request-demo.html",
+      "preserve_default": true
+    },
+    {
+      "code": "faq_cta_1_source",
+      "type": "STRING",
+      "name": "Faq CTA source",
+      "description": "cta_source value appended to the \"Book a Demo\" button URL for lead attribution.",
+      "default": "faq_demo",
+      "preserve_default": true
+    },
+    {
+      "code": "faq_label_1",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Faq text",
+      "description": "Text in the Faq section."
+    },
+    {
+      "code": "faq_h3_1",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Faq H3 heading",
+      "description": "H3 heading in the Faq section."
+    },
+    {
+      "code": "faq_text_4",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Faq paragraph",
+      "description": "Paragraph in the Faq section."
+    },
+    {
+      "code": "faq_h3_2",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Faq H3 heading",
+      "description": "H3 heading in the Faq section."
+    },
+    {
+      "code": "faq_text_5",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Faq paragraph",
+      "description": "Paragraph in the Faq section."
+    },
+    {
+      "code": "faq_h3_3",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Faq H3 heading",
+      "description": "H3 heading in the Faq section."
+    },
+    {
+      "code": "faq_text_6",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Faq paragraph",
+      "description": "Paragraph in the Faq section."
+    },
+    {
+      "code": "faq_h3_4",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Faq H3 heading",
+      "description": "H3 heading in the Faq section."
+    },
+    {
+      "code": "faq_text_7",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Faq paragraph",
+      "description": "Paragraph in the Faq section."
+    },
+    {
+      "code": "faq_label_2",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Faq text",
+      "description": "Text in the Faq section."
+    },
+    {
+      "code": "faq_label_3",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Faq text",
+      "description": "Text in the Faq section."
+    },
+    {
+      "code": "faq_h3_5",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Faq H3 heading",
+      "description": "H3 heading in the Faq section."
+    },
+    {
+      "code": "faq_text_8",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Faq paragraph",
+      "description": "Paragraph in the Faq section."
+    },
+    {
+      "code": "faq_h3_6",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Faq H3 heading",
+      "description": "H3 heading in the Faq section."
+    },
+    {
+      "code": "faq_text_9",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Faq paragraph",
+      "description": "Paragraph in the Faq section."
+    },
+    {
+      "code": "faq_h3_7",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Faq H3 heading",
+      "description": "H3 heading in the Faq section."
+    },
+    {
+      "code": "faq_text_10",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Faq paragraph",
+      "description": "Paragraph in the Faq section."
+    },
+    {
+      "code": "faq_h3_8",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Faq H3 heading",
+      "description": "H3 heading in the Faq section."
+    },
+    {
+      "code": "faq_text_11",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Faq paragraph",
+      "description": "Paragraph in the Faq section."
+    },
+    {
+      "code": "faq_h3_9",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Faq H3 heading",
+      "description": "H3 heading in the Faq section."
+    },
+    {
+      "code": "faq_text_12",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Faq paragraph",
+      "description": "Paragraph in the Faq section."
+    },
+    {
+      "code": "faq_h3_10",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Faq H3 heading",
+      "description": "H3 heading in the Faq section."
+    },
+    {
+      "code": "faq_text_13",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Faq paragraph",
+      "description": "Paragraph in the Faq section."
+    },
+    {
+      "code": "faq_h3_11",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Faq H3 heading",
+      "description": "H3 heading in the Faq section."
+    },
+    {
+      "code": "faq_text_14",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Faq paragraph",
+      "description": "Paragraph in the Faq section."
+    },
+    {
+      "code": "faq_h3_12",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Faq H3 heading",
+      "description": "H3 heading in the Faq section."
+    },
+    {
+      "code": "faq_text_15",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Faq paragraph",
+      "description": "Paragraph in the Faq section."
+    },
+    {
+      "code": "faq_h3_13",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Faq H3 heading",
+      "description": "H3 heading in the Faq section."
+    },
+    {
+      "code": "faq_text_16",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Faq paragraph",
+      "description": "Paragraph in the Faq section."
+    },
+    {
+      "code": "faq_h3_14",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Faq H3 heading",
+      "description": "H3 heading in the Faq section."
+    },
+    {
+      "code": "faq_text_17",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Faq paragraph",
+      "description": "Paragraph in the Faq section."
+    },
+    {
+      "code": "faq_h3_15",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Faq H3 heading",
+      "description": "H3 heading in the Faq section."
+    },
+    {
+      "code": "faq_text_18",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Faq paragraph",
+      "description": "Paragraph in the Faq section."
+    },
+    {
+      "code": "faq_h3_16",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Faq H3 heading",
+      "description": "H3 heading in the Faq section."
+    },
+    {
+      "code": "faq_h3_17",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Faq H3 heading",
+      "description": "H3 heading in the Faq section."
+    },
+    {
+      "code": "faq_text_19",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Faq paragraph",
+      "description": "Paragraph in the Faq section."
+    },
+    {
+      "code": "faq_h3_18",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Faq H3 heading",
+      "description": "H3 heading in the Faq section."
+    },
+    {
+      "code": "faq_text_20",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Faq paragraph",
+      "description": "Paragraph in the Faq section."
+    },
+    {
+      "code": "faq_h3_19",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Faq H3 heading",
+      "description": "H3 heading in the Faq section."
+    },
+    {
+      "code": "faq_text_21",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Faq paragraph",
+      "description": "Paragraph in the Faq section."
+    },
+    {
+      "code": "faq_text_22",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Faq paragraph",
+      "description": "Paragraph in the Faq section."
+    },
+    {
+      "code": "demo_text_1",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Demo paragraph",
+      "description": "Paragraph in the Demo section."
+    },
+    {
+      "code": "demo_h2_1",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Demo H2 heading",
+      "description": "H2 heading in the Demo section."
+    },
+    {
+      "code": "demo_text_2",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Demo paragraph",
+      "description": "Paragraph in the Demo section."
+    },
+    {
+      "code": "demo_text_3",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Demo paragraph",
+      "description": "Paragraph in the Demo section."
+    },
+    {
+      "code": "demo_cta_1_url",
+      "type": "URL",
+      "name": "Demo CTA URL",
+      "description": "Target URL of the \"Book a Demo\" button in the Demo section. Site-relative URLs starting with / get the language prefix.",
+      "default": "/snow-removal-request-demo.html",
+      "preserve_default": true
+    },
+    {
+      "code": "demo_cta_1_source",
+      "type": "STRING",
+      "name": "Demo CTA source",
+      "description": "cta_source value appended to the \"Book a Demo\" button URL for lead attribution.",
+      "default": "final_demo",
+      "preserve_default": true
+    },
+    {
+      "code": "demo_label_1",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Demo text",
+      "description": "Text in the Demo section."
+    },
+    {
+      "code": "demo_text_4",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Demo paragraph",
+      "description": "Paragraph in the Demo section."
+    },
+    {
+      "code": "dialog_aria_1",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Dialog accessible label",
+      "description": "Accessible label (aria-label) in the Dialog section."
+    },
+    {
+      "code": "dialog_aria_2",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Dialog accessible label",
+      "description": "Accessible label (aria-label) in the Dialog section."
+    }
+  ]
+}

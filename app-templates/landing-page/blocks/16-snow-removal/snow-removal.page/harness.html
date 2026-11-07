@@ -1,0 +1,798 @@
+<!doctype html>
+<html lang="en" dir="ltr" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>snow-removal.page · lab-ui harness</title>
+<link rel="stylesheet" href="../../00-tokens/tokens.css">
+<link rel="stylesheet" href="../../00-tokens/composition.css">
+<style>@font-face{font-family:"Vela Sans";src:url("../../00-tokens/fonts/vela-sans-400.woff2") format("woff2");font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:"Vela Sans";src:url("../../00-tokens/fonts/vela-sans-500.woff2") format("woff2");font-weight:500;font-style:normal;font-display:swap}
+@font-face{font-family:"Vela Sans";src:url("../../00-tokens/fonts/vela-sans-600.woff2") format("woff2");font-weight:600 700;font-style:normal;font-display:swap}</style>
+<link rel="stylesheet" href="./block.css">
+</head>
+<body>
+<svg class="sprite" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+  <symbol id="i-star" viewBox="0 0 21 21"><path fill="currentColor" d="M10.5 0L13.4698 7.53015L21 10.5L13.4698 13.4698L10.5 21L7.53015 13.4698L0 10.5L7.53015 7.53015L10.5 0Z"></path></symbol>
+  <symbol id="i-check" viewBox="0 0 12 12"><path d="M2.5 6.2l2.3 2.3 4.7-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></symbol>
+  <symbol id="i-plus" viewBox="0 0 11 11"><path d="M5.5 1v9M1 5.5h9" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path></symbol>
+  <symbol id="i-chev" viewBox="0 0 10 6"><path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path></symbol>
+  <symbol id="i-chat" viewBox="0 0 36 36"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 7h22v19H16l-7 5v-5H6Z"></path><path d="M12 13h10M12 19h7"></path></g></symbol>
+  <symbol id="i-calendar" viewBox="0 0 36 36"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="8" width="24" height="23" rx="4"></rect><path d="M5 15h24M11 4v8M23 4v8m-13 12 4 4 9-9"></path></g></symbol>
+  <symbol id="i-shield" viewBox="0 0 36 36"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m17 3 12 5v9c0 8-12 14-12 14S5 25 5 17V8Z"></path><path d="m11 17 4 4 8-9"></path></g></symbol>
+  <symbol id="i-grid" viewBox="0 0 36 36"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="11" height="11" rx="3"></rect><rect x="20" y="4" width="11" height="11" rx="3"></rect><rect x="4" y="20" width="11" height="11" rx="3"></rect><path d="M20 25h11M25 20v11"></path></g></symbol>
+  <symbol id="i-clipboard" viewBox="0 0 36 36"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="6" width="19" height="23" rx="4"></rect><path d="M12 5h9v5h-9zM12 19l4 4 8-9"></path></g></symbol>
+  <symbol id="i-map" viewBox="0 0 36 36"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-4 10 4 9-4v23l-9 4-10-4-9 4ZM12 5v23M22 9v23"></path><path d="m6 19 5-4 8 7 9-9"></path></g></symbol>
+  <symbol id="i-camera" viewBox="0 0 36 36"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="9" width="26" height="20" rx="4"></rect><path d="m10 9 2-4h10l2 4"></path><circle cx="17" cy="19" r="6"></circle></g></symbol>
+  <symbol id="i-people" viewBox="0 0 36 36"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9" r="4"></circle><circle cx="26" cy="11" r="3"></circle><path d="M3 29v-5a9 9 0 0 1 18 0v5ZM24 19a7 7 0 0 1 9 7v3h-8"></path></g></symbol>
+  <symbol id="i-translate" viewBox="0 0 36 36"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h16M12 4v4M7 8c0 8 5 13 12 15M17 8c0 8-5 13-12 15M20 29l6-17 6 17M22 24h8"></path></g></symbol>
+  <symbol id="i-pin" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21Z"></path><circle cx="12" cy="9.5" r="2.5"></circle></g></symbol>
+  <symbol id="i-route" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="18" r="2.5"></circle><circle cx="18" cy="6" r="2.5"></circle><path d="M8.5 18H15a3 3 0 0 0 0-6H9a3 3 0 0 1 0-6h6.5"></path></g></symbol>
+  <symbol id="i-field" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="3" width="12" height="18" rx="2.5"></rect><path d="M10 7h4M9.5 13l2 2 3.5-4"></path></g></symbol>
+  <symbol id="i-service" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 13v-1a8 8 0 0 1 16 0v1"></path><rect x="3" y="13" width="4" height="6" rx="1.5"></rect><rect x="17" y="13" width="4" height="6" rx="1.5"></rect><path d="M19 19c0 1.5-2 2.5-5 2.5"></path></g></symbol>
+  <symbol id="i-invoice" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12v18l-3-2-3 2-3-2-3 2Z"></path><path d="M9 8h6M9 12h6M9 16h3"></path></g></symbol>
+  <symbol id="i-workflow" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="2"></rect><rect x="14" y="14" width="7" height="7" rx="2"></rect><path d="M10 6.5h4a3 3 0 0 1 3 3V14M14 17.5h-4a3 3 0 0 1-3-3V10"></path></g></symbol>
+  <symbol id="i-add" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="3.5" y="3.5" width="17" height="17" rx="5"></rect><path d="M12 8v8M8 12h8"></path></g></symbol>
+  <symbol id="i-up" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 18 10 12l4 4 6-7"></path><path d="M15 9h5v5"></path></g></symbol>
+  <symbol id="i-snow" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M3.3 7l17.4 10M3.3 17 20.7 7"></path><path d="m9.5 3.5 2.5 2 2.5-2M9.5 20.5l2.5-2 2.5 2M3.6 10.2l3-.9-.6-3M18 17.7l.6-3 3 .9M3.6 13.8l3 .9-.6 3M18 6.3l.6 3 3-.9"></path></g></symbol>
+  <symbol id="i-cloud-snow" viewBox="0 0 40 40"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 24h18a7 7 0 0 0 0-14 9 9 0 0 0-17 2.5A5.8 5.8 0 0 0 11 24Z"></path><path d="M13 30v.1M20 32v.1M27 30v.1"></path></g></symbol>
+  <symbol id="i-lock" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="10.5" width="14" height="10" rx="2.5"></rect><path d="M8.5 10.5V8a3.5 3.5 0 0 1 7 0v2.5"></path></g></symbol>
+  <symbol id="i-arrow-down" viewBox="0 0 14 14"><path d="M7 1.5v11M2.5 8 7 12.5 11.5 8" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"></path></symbol>
+  <symbol id="i-caret" viewBox="0 0 16 16"><path d="m4 6 4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></symbol>
+  <symbol id="i-cal" viewBox="0 0 16 16"><g fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="12" height="11" rx="2"></rect><path d="M2 6.5h12M5.5 1.5v3M10.5 1.5v3"></path></g></symbol>
+  <symbol id="i-dash" viewBox="0 0 16 16"><g fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"><rect x="2" y="2" width="5" height="5" rx="1.2"></rect><rect x="9" y="2" width="5" height="5" rx="1.2"></rect><rect x="2" y="9" width="5" height="5" rx="1.2"></rect><rect x="9" y="9" width="5" height="5" rx="1.2"></rect></g></symbol>
+</svg>
+<main class="snow-landing">
+  <section class="hero surface-dark" id="hero" data-surface="dark">
+    <div class="hero-bg" aria-hidden="true"><img src="../../../content/snow-removal-software/media/hero-snow.webp" alt="" width="2400" height="1350" fetchpriority="high"></div>
+    <div class="container hero-inner">
+      <p class="hero-eyebrow"><span class="hero-eyebrow-mark" aria-hidden="true"><svg><use href="#i-snow"></use></svg></span>ServiceWand for Snow &amp; Ice Operations</p>
+      <h1 class="hero-title">Snow Removal Software for the Office. <span>Snow Removal App for the Field.</span></h1>
+      <p class="hero-tagline">More properties. More crews. Keep control as you grow.</p>
+      <p class="hero-description">Connect quoting, scheduling, routing, field work, customer service, and billing in one snow removal software platform. Give employees and subcontractors a connected snow removal app for routes, property information, job updates, photos, and service records—while your office keeps visibility across the operation.</p>
+      <div class="actions actions--center">
+        <a class="btn btn-primary-ring" href="/snow-removal-request-demo.html?cta_source=hero_demo"><svg class="btn-star" aria-hidden="true"><use href="#i-star"></use></svg><span>Book a Demo</span></a>
+        <a class="btn btn-secondary-filled" href="#routing"><svg class="btn-star" aria-hidden="true"><use href="#i-star"></use></svg><span>Explore Routing</span></a>
+      </div>
+      <p class="hero-support">Built for multi-crew, multi-property winter operations worldwide—including Canada, the United States and the UK. Ready for smaller teams with bigger plans.</p>
+      <p class="hero-powered"><svg aria-hidden="true"><use href="#i-star"></use></svg>Powered by ServiceWand, the AI-native platform for snow and ice operations.</p>
+    </div>
+  </section>
+
+  <section class="overview surface-dark" id="overview" data-surface="dark">
+    <div class="container">
+      <div class="lead-split">
+        <div>
+          <p class="eyebrow"><span class="eyebrow-index">01</span> <span class="eyebrow-sep">/</span> <span>Connected operations</span></p>
+          <h2 class="title">Snow Removal Business Software That Connects Office and Field</h2>
+          <p class="subtitle">Grow your operation without multiplying the admin.</p>
+        </div>
+        <div class="lead-copy">
+          <p>Keep customers, properties, crews, subcontractors, equipment, and billing connected. ServiceWand brings your snow removal business software and mobile field workflows together, so you can start with what you need today and expand on the same platform as your business grows.</p>
+          <p>For companies looking for snow plowing business software, that means keeping the operational side of the business connected instead of managing routes, crews, customer information, and billing across separate systems.</p>
+        </div>
+      </div>
+      <div class="glass-cards">
+        <article class="glass-card reveal">
+          <div class="glass-art">
+            <div class="node node--wide">
+              <div class="node-head"><span>North district</span></div>
+              <div class="node-body"><b>All teams, one view</b><div class="crew-bars" aria-hidden="true"><i style="--w:86%"></i><i style="--w:64%"></i><i style="--w:72%"></i></div><small>East Crew · West Crew · Summit Snow</small></div>
+            </div>
+          </div>
+          <div class="glass-body"><h3>Control the work</h3><p>See progress across your crews and subcontractors, identify what needs attention, and adjust assignments. Give people access to the information relevant to their responsibilities.</p></div>
+        </article>
+        <article class="glass-card reveal">
+          <div class="glass-art">
+            <div class="flow-steps"><span>Request</span> <i aria-hidden="true">·</i> <span>Assign</span> <i aria-hidden="true">·</i> <span>Update</span></div>
+            <div class="sync-chip"><span class="sync-check">✓</span> Shared across your operation</div>
+          </div>
+          <div class="glass-body"><h3>Reduce routine coordination</h3><p>Reuse plans, share operational updates, and automate recurring steps across the office, field, and customer experience.</p></div>
+        </article>
+        <article class="glass-card reveal">
+          <div class="glass-art">
+            <div class="node node--record">
+              <div class="node-body"><span class="pill pill--green">Completed</span><b>Maple Court</b><small>06:04–06:28 · Photos · Service record</small></div>
+            </div>
+          </div>
+          <div class="glass-body"><h3>Keep a clear service history</h3><p>Bring together timestamps, GPS records, photos, and issues to review work and answer customer questions.</p></div>
+        </article>
+      </div>
+      <div class="dashboard reveal">
+        <div class="dashboard-intro">
+          <span class="micro-label">ILLUSTRATIVE GRAFANA DASHBOARD</span>
+          <strong class="dashboard-title"><span>Your storm.</span> <span>At a glance.</span></strong>
+          <p>Routes, properties and customer cases in one operational overview.</p>
+        </div>
+        <div class="dashboard-ui">
+          <div class="dash-bar"><b><svg class="ui-ico" aria-hidden="true"><use href="#i-dash"></use></svg>Winter operations</b><span>Today<svg class="ui-ico" aria-hidden="true"><use href="#i-caret"></use></svg></span></div>
+          <div class="dash-stats">
+            <div><small>Active routes</small><b>12<span> in progress</span></b></div>
+            <div><small>Properties completed</small><b>186<span> / 240</span></b></div>
+            <div><small>Open customer cases</small><b>8<span> to review</span></b></div>
+          </div>
+          <div class="dash-lower">
+            <div class="dash-panel">
+              <small>Operation progress</small>
+              <div class="dash-columns" aria-hidden="true"><i style="--v:82%"></i><i style="--v:68%"></i><i style="--v:91%"></i><i style="--v:54%"></i><i style="--v:77%"></i></div>
+              <div class="dash-axis"><span>NORTH</span> <span>WEST</span> <span>EAST</span> <span>SOUTH</span> <span>CENTRAL</span></div>
+            </div>
+            <div class="dash-panel dash-cases"><span>Customer cases</span><b>Access blocked <em>3</em></b><b>Service follow-up <em>5</em></b><small>Example values · not live metrics</small></div>
+          </div>
+        </div>
+      </div>
+      <div class="pair">
+        <article class="pair-item reveal"><span class="ring-icon" aria-hidden="true"><svg><use href="#i-cloud-snow"></use></svg></span><div><h3>Weather Intelligence</h3><p>Monitor weather conditions to inform planning and operational decisions.</p></div></article>
+        <article class="pair-item reveal"><span class="ring-icon" aria-hidden="true"><svg><use href="#i-grid"></use></svg></span><div><h3>Dashboards &amp; Reporting</h3><p>Bring operational information together to monitor progress and review results.</p></div></article>
+        <article class="pair-item reveal"><span class="ring-icon" aria-hidden="true"><svg><use href="#i-workflow"></use></svg></span><div><h3>Workflow Automation</h3><p>Configure recurring actions, notifications, and process steps around how your business works.</p></div></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="routing surface-light" id="routing" data-surface="light">
+    <div class="container">
+      <div class="head-center">
+        <p class="eyebrow"><span class="eyebrow-index">02</span> <span class="eyebrow-sep">/</span> <span>Routing &amp; dispatch</span></p>
+        <h2 class="title">Advanced Route Optimization &amp; Dispatch</h2>
+        <p class="subtitle">Optimize for the work. Stay in control of the plan.</p>
+        <p class="head-intro">Use snow removal scheduling software to build routes for your crews and subcontractors around equipment, property requirements, and service time. Control how long optimization runs, preserve the stops you need to keep fixed, and adapt the plan as conditions change.</p>
+      </div>
+      <div class="scene-stack">
+        <article class="scene scene--stage reveal">
+          <div class="scene-art">
+            <div class="stage-label"><i class="live-dot" aria-hidden="true"></i>ONE CONNECTED WINTER OPERATION</div>
+            <div class="stage-body">
+              <div class="stage-screen"><img src="../../../content/snow-removal-software/media/98855f8899.webp" alt="ServiceWand Demo Routing Run with 21 routes and 265 stops" width="3024" height="1612" loading="lazy" decoding="async"></div>
+              <div class="stage-phone"><div class="phone phone--visit" role="group" aria-label="ServiceWand mobile visit screen, adapted with an illustrative Brooklyn property plan"><div class="visit-top"><img src="../../../content/snow-removal-software/media/28b790d668.webp" alt="ServiceWand scheduled visit controls" width="612" height="1344" loading="lazy" decoding="async"></div><div class="visit-title">Brooklyn waterfront</div><div class="visit-address">⌖ 1 Beard St, Brooklyn, NY <span>Navigate ↗</span></div><div class="visit-plan">▧ Property Plan</div><div class="visit-site"><img src="../../../content/snow-removal-software/media/18931164fa.webp" alt="Satellite image of 1 Beard Street, Brooklyn, New York" width="900" height="640" loading="lazy" decoding="async"><svg viewBox="0 0 900 640" role="img" aria-label="Illustrative parking and sidewalk service zones"><polygon points="92,265 250,81 333,132 207,398" fill="#4F95FF66" stroke="#4F95FF" stroke-width="5"></polygon><polygon points="219,407 340,166 365,179 249,425" fill="#FFA72C66" stroke="#FFA72C" stroke-width="5"></polygon><g font-family="Vela Sans, sans-serif" font-size="22" fill="#FFFFFF" text-anchor="middle"><rect x="173" y="210" width="44" height="30" rx="13" fill="#4F95FF"></rect><text x="195" y="233">P1</text><rect x="264" y="260" width="44" height="30" rx="13" fill="#E8901A"></rect><text x="286" y="283">S1</text></g></svg><span class="map-attribution">Google Maps · imagery ©2026 Google</span></div><div class="visit-bottom"><img src="../../../content/snow-removal-software/media/28b790d668.webp" alt="Visit timing, Proof of work and Start Visit controls" width="612" height="1344" loading="lazy" decoding="async"></div></div></div>
+            </div>
+            <div class="art-caption">Actual ServiceWand UI · mobile property plan adapted for NYC</div>
+          </div>
+          <div class="scene-copy">
+            <span class="index-ring">01</span>
+            <div><h3>Plan &amp; optimize</h3><p>Account for equipment and site requirements alongside travel and service time. Move stops manually and lock them in place to preserve dispatcher decisions.</p><p>Schedule optimization to start when you choose and set how long it runs. ServiceWand uses that time to search for better route plans—without you having to be there to start it.</p><p>Use the mobile workflow as a snow plowing app for assigned routes, property requirements, and service progress while dispatchers manage the wider plan.</p></div>
+          </div>
+        </article>
+        <article class="scene reveal">
+          <div class="scene-art">
+            <div class="ui-window">
+              <div class="ui-bar"><b>Routing Runs</b><span class="ui-chip">▤ Load from template</span></div>
+              <div class="ui-dialog">
+                <div class="ui-dialog-title">Load from template <span aria-hidden="true">×</span></div>
+                <label>Template</label>
+                <div class="ui-select">North district · Winter service <svg class="ui-ico" aria-hidden="true"><use href="#i-caret"></use></svg></div>
+                <label>Planning date</label>
+                <div class="ui-select">November 02, 2026 <svg class="ui-ico" aria-hidden="true"><use href="#i-cal"></use></svg></div>
+                <div class="ui-tags"><span>● Crew assignments</span><span>⌖ Properties</span><span>⇄ Route sequence</span></div>
+                <div class="ui-actions"><span>Cancel</span><b>Load from template</b></div>
+              </div>
+            </div>
+            <div class="art-caption">Interface-based composition · example template</div>
+          </div>
+          <div class="scene-copy">
+            <span class="index-ring">02</span>
+            <div><h3>Reuse route templates</h3><p>Prepare reusable plans for light snow, heavy snowfall, salting or gritting, de-icing, and snow hauling. Clone proven seasonal routes, adjust what has changed, and optimize when needed.</p></div>
+          </div>
+        </article>
+        <article class="scene reveal">
+          <div class="scene-art">
+            <div class="ui-window transfer-demo">
+              <div class="ui-bar"><b>Routing Manager</b><span class="ui-chip">Stop Details</span></div>
+              <div class="lanes">
+                <div class="lane">
+                  <div class="lane-head"><b><i aria-hidden="true"></i>♧ Frank Sinatra</b><div><span>110 Stops</span> <span>455.6 km</span> <span>12h 37m</span></div></div>
+                  <div class="stop stop--moving"><div><span class="grip">⠿</span><i>1</i><b>⌖ KSC Properties Ltd.</b><span class="stop-menu">⋮</span></div><small>1388 Nelson St, Vancouver</small><label>SCHEDULE <span>10:01 AM</span></label></div>
+                  <div class="stop"><div><span class="grip">⠿</span><i>2</i><b>⌖ Majorda Enterprise</b><span class="stop-menu">⋮</span></div><small>1348 Barclay St, Vancouver</small><label>SCHEDULE <span>10:01 AM</span></label></div>
+                </div>
+                <div class="lane lane--alt">
+                  <div class="lane-head"><b><i aria-hidden="true"></i>♧ Donald Duck</b><div><span>111 Stops</span> <span>464.5 km</span> <span>13h 18m</span></div></div>
+                  <div class="stop"><div><span class="grip">⠿</span><i>1</i><b>⌖ Brookmere Investments</b><span class="stop-menu">⋮</span></div><small>599 Keith Rd, West Vancouver</small><label>SCHEDULE <span>10:01 AM</span></label></div>
+                  <div class="drop-zone">Drop stops here</div>
+                </div>
+              </div>
+              <div class="transfer-note">Move a property. Keep the rest of the plan.</div>
+            </div>
+            <div class="art-caption">Recreated from the actual Routing Runs panel · illustrative transfer</div>
+          </div>
+          <div class="scene-copy">
+            <span class="index-ring">03</span>
+            <div><h3>Adapt mid-storm</h3><p>Keep unfinished work moving when equipment, crew availability, or conditions change. Reassign remaining jobs across your crews and subcontractors.</p><p>ServiceWand also functions as snow plow management software for coordinating routes, crews, equipment requirements, and changing assignments throughout a storm.</p></div>
+          </div>
+        </article>
+        <article class="scene scene--film reveal">
+          <div class="scene-art">
+            <div class="film" id="replay-film">
+              <div class="film-bar"><i class="live-dot" aria-hidden="true"></i><b>Route Replay · Follow every route</b><span>RECORDED IN SERVICEWAND</span></div>
+              <div class="film-media">
+                <video muted="" playsinline="" preload="none" width="1600" height="846" aria-label="Route Replay demonstration" data-poster="../../../content/snow-removal-software/media/46a0d3fd99.webp"><source src="../../../content/snow-removal-software/media/27416e9786.mp4" type="video/mp4">Your browser does not support video.</video>
+              </div>
+              <div class="film-foot"><span>Actual product recording · Demo Routing Run</span><button class="play-film" type="button" aria-pressed="false">▶ Watch in action</button></div>
+            </div>
+          </div>
+          <div class="scene-copy">
+            <span class="index-ring">04</span>
+            <div><h3>Snow plow tracking software</h3><p>Follow crews with Live Tracking. Select crews and move through the GPS Replay timeline to review where they travelled and when.</p></div>
+          </div>
+        </article>
+        <article class="scene scene--crew reveal">
+          <div class="scene-art">
+            <div class="crew-view">
+              <div class="phone"><img src="../../../content/snow-removal-software/media/43d5053f4d.webp" alt="ServiceWand mobile Assignments screen with completed, in-progress and scheduled appointments" width="360" height="802" loading="lazy" decoding="async"></div>
+              <div class="crew-label"><span>THE CREW VIEW</span><b>Every stop.</b> <b>One clear list.</b><small>Actual ServiceWand mobile app</small></div>
+            </div>
+          </div>
+          <div class="scene-copy">
+            <span class="index-ring">05</span>
+            <div><h3>Keep crews working</h3><p>Give crews mobile access to their assignments. Supported actions and timestamps are saved when connectivity drops and synchronized when it returns.</p></div>
+          </div>
+        </article>
+      </div>
+      <p class="signoff">Your constraints. Your schedule. Your control.</p>
+      <div class="actions actions--center"><a class="btn btn-primary-ring" href="/snow-removal-request-demo.html?cta_source=routing_demo"><svg class="btn-star" aria-hidden="true"><use href="#i-star"></use></svg><span>See routing in action</span></a></div>
+    </div>
+  </section>
+
+  <section class="requests surface-light" id="requests" data-surface="light">
+    <div class="container">
+      <div class="duo">
+        <div class="duo-copy">
+          <p class="eyebrow"><span class="eyebrow-index">03</span> <span class="eyebrow-sep">/</span> <span>Requests &amp; quotations</span></p>
+          <h2 class="title">Requests &amp; Quotations</h2>
+          <p class="subtitle">See the full opportunity from the first request.</p>
+          <p class="body-copy">Manage snow removal service requests for one property or an entire portfolio within the same snow removal service software your team uses for quotations and operations. Get the scope into one system and prepare quotations around your services and pricing model—with less back-and-forth collecting information.</p>
+          <div class="spark-list">
+            <article><h3>One request, multiple properties</h3><p>Customers can paste a list of addresses or enter properties individually.</p></article>
+            <article><h3>Connected to your website and workflow</h3><p>Use a standalone request page or embed the form on your website. Requests enter the same system your team uses to manage customers and prepare quotations.</p></article>
+            <article><h3>From request to approval</h3><p>Prepare, send, and manage quotations with customer and property information already available.</p></article>
+          </div>
+        </div>
+        <div class="soft-card shot-card shot-card--ui reveal">
+          <figure class="browser portal-ui">
+            <div class="browser-bar"><span class="browser-dots" aria-hidden="true"><i></i><i></i><i></i></span><b>Request a quote · Customer portal</b><span>ServiceWand</span></div>
+            <div class="pui" role="img" aria-label="Customer portal Request a quote form with three selected properties, services and winter risk factors">
+              <div class="pui-nav"><span class="pui-brand"><i></i>Limitless Snow Removal</span><span class="pui-links"><span>Home</span><span>Visits</span><span>Invoices</span><span>Contracts</span></span><span class="pui-cta">Request a quote</span><span class="pui-avatar">BB</span></div>
+              <div class="pui-page">
+                <span class="pui-back">← Back to your contracts</span>
+                <div class="pui-title">Request a quote</div>
+                <p class="pui-sub">Choose your properties or add new addresses. We prepare per-visit, monthly and seasonal options for each.</p>
+                <div class="pui-card">
+                  <div class="pui-card-title">Properties <span>3 selected</span></div>
+                  <div class="pui-row"><i class="pui-check"></i><b>Maple Court Plaza</b><small>1239 W Georgia St, Vancouver · 5,600 m²</small></div>
+                  <div class="pui-row"><i class="pui-check"></i><b>Harbour View Offices</b><small>1150 Hamilton St, Vancouver · 3,100 m²</small></div>
+                  <div class="pui-row"><i class="pui-check"></i><b>Cedar Square</b><small>210 Cedar Lane, Burnaby · 2,450 m²</small></div>
+                  <div class="pui-input"><span>Paste a list of addresses or add one</span><b>Add</b></div>
+                </div>
+                <div class="pui-grid">
+                  <div class="pui-card"><div class="pui-card-title">Services</div><div class="pui-chips"><span class="is-on">Plowing</span><span class="is-on">Salting</span><span class="is-on">Sidewalk clearing</span><span>De-icing</span><span>Snow hauling</span></div></div>
+                  <div class="pui-card"><div class="pui-card-title">Winter risk factors</div><div class="pui-chips"><span class="is-on">Sloped driveways</span><span>Stair-heavy access</span><span class="is-on">Loading zones</span><span>Drainage issues</span></div></div>
+                </div>
+                <div class="pui-submit"><span>3 properties · 3 services · Seasonal and per-visit options</span><b>Send request</b></div>
+              </div>
+            </div>
+            <figcaption>Interface-based composition of the ServiceWand customer portal · demonstration data</figcaption>
+          </figure>
+        </div>
+      </div>
+      <div class="closing">
+        <div class="cap-chips"><span class="cap-chips-label">Supporting capabilities</span><span class="cap-chip">Service catalog</span><span class="cap-chip">Configurable pricing</span><span class="cap-chip">Multi-property requests</span><span class="cap-chip">Centralized customer records</span><span class="cap-chip">Quote approvals</span></div>
+        <div class="actions actions--center"><a class="btn btn-primary-ring" href="/snow-removal-request-demo.html?cta_source=quoting_demo"><svg class="btn-star" aria-hidden="true"><use href="#i-star"></use></svg><span>Explore your quoting workflow</span></a></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="mobile surface-light" id="mobile" data-surface="light">
+    <div class="container">
+      <div class="lead-split">
+        <div>
+          <p class="eyebrow"><span class="eyebrow-index">04</span> <span class="eyebrow-sep">/</span> <span>Mobile workforce</span></p>
+          <h2 class="title">Mobile Workforce</h2>
+          <p class="subtitle">Give every crew the information to work with confidence.</p>
+        </div>
+        <div class="lead-copy">
+          <p>Bring routes, site plans, instructions, and checklists into the field. Whether crews are plowing, salting, de-icing, or shoveling, the ServiceWand snow removal app keeps assigned work and service information available in one mobile workflow.</p>
+          <p>Your employees and subcontractor crews use the same mobile workflow to access assigned work, record progress, and stay connected to the office.</p>
+        </div>
+      </div>
+      <div class="field-scene reveal">
+        <img class="field-photo" src="../../../content/snow-removal-software/media/394df17a2a.webp" alt="" width="1536" height="1024" loading="lazy" decoding="async">
+        <div class="field-words">
+          <p class="field-big">Ready. <span>On site.</span> Recorded.</p>
+          <p class="field-orbit">Your plan. <b>In every crew’s hands.</b></p>
+        </div>
+        <div class="field-phones">
+          <div class="phone phone--tilt"><img src="../../../content/snow-removal-software/media/43d5053f4d.webp" alt="ServiceWand mobile Assignments screen with completed, in-progress and scheduled appointments" width="360" height="802" loading="lazy" decoding="async"></div>
+          <div class="phone phone--visit" role="group" aria-label="ServiceWand mobile visit screen, adapted with an illustrative Brooklyn property plan"><div class="visit-top"><img src="../../../content/snow-removal-software/media/28b790d668.webp" alt="ServiceWand scheduled visit controls" width="612" height="1344" loading="lazy" decoding="async"></div><div class="visit-title">Brooklyn waterfront</div><div class="visit-address">⌖ 1 Beard St, Brooklyn, NY <span>Navigate ↗</span></div><div class="visit-plan">▧ Property Plan</div><div class="visit-site"><img src="../../../content/snow-removal-software/media/18931164fa.webp" alt="Satellite image of 1 Beard Street, Brooklyn, New York" width="900" height="640" loading="lazy" decoding="async"><svg viewBox="0 0 900 640" role="img" aria-label="Illustrative parking and sidewalk service zones"><polygon points="92,265 250,81 333,132 207,398" fill="#4F95FF66" stroke="#4F95FF" stroke-width="5"></polygon><polygon points="219,407 340,166 365,179 249,425" fill="#FFA72C66" stroke="#FFA72C" stroke-width="5"></polygon><g font-family="Vela Sans, sans-serif" font-size="22" fill="#FFFFFF" text-anchor="middle"><rect x="173" y="210" width="44" height="30" rx="13" fill="#4F95FF"></rect><text x="195" y="233">P1</text><rect x="264" y="260" width="44" height="30" rx="13" fill="#E8901A"></rect><text x="286" y="283">S1</text></g></svg><span class="map-attribution">Google Maps · imagery ©2026 Google</span></div><div class="visit-bottom"><img src="../../../content/snow-removal-software/media/28b790d668.webp" alt="Visit timing, Proof of work and Start Visit controls" width="612" height="1344" loading="lazy" decoding="async"></div></div>
+        </div>
+      </div>
+      <div class="soft-card plan-card plan-card--light reveal">
+        <div class="plan-card-copy">
+          <span class="micro-label">THE PLAN BEHIND EVERY VISIT</span>
+          <strong class="plan-card-title"><span>Know the ground.</span> <span>Before the snow.</span></strong>
+          <div class="zone-key"><span class="zone zone--walk">● Sidewalks &amp; walkways</span><span class="zone zone--lot">● Parking lots</span><span class="zone zone--drive">● Driveways</span><span class="zone zone--bed">● Planting beds</span></div>
+          <p>Service areas, measurements and site context in one view.</p>
+        </div>
+        <figure class="browser site-ui">
+          <div class="browser-bar"><span class="browser-dots" aria-hidden="true"><i></i><i></i><i></i></span><b>Plans · 1600 Pennsylvania Ave NW, Washington, DC</b><span>ServiceWand</span></div>
+          <button class="zoom-shot" type="button" data-image="../../../content/snow-removal-software/media/crm-property-plan.webp" data-width="1800" data-height="991"><img src="../../../content/snow-removal-software/media/crm-property-plan.webp" alt="ServiceWand property plan editor showing 1600 Pennsylvania Ave NW with sidewalks, parking lots, a driveway, planting beds and walkways drawn as service polygons over satellite imagery, 10 elements totalling 8,118 square metres" width="1800" height="991" loading="lazy" decoding="async"><span class="zoom-hint">⤢ View full plan</span></button>
+          <figcaption>Actual ServiceWand property plan · 10 service elements · 8,118 m² · satellite imagery © Google</figcaption>
+        </figure>
+      </div>
+      <div class="tile-grid tile-grid--seven">
+        <article class="tile reveal"><span class="tile-mark" aria-hidden="true"><svg><use href="#i-clipboard"></use></svg></span><h3>Arrive prepared</h3><p>Use pre-route checklists to confirm equipment, fuel, materials, and required tools.</p></article>
+        <article class="tile reveal"><span class="tile-mark" aria-hidden="true"><svg><use href="#i-map"></use></svg></span><h3>Know the property</h3><p>Access site plans, service polygons, instructions, notes, and available pre-season inspection information.</p></article>
+        <article class="tile reveal"><span class="tile-mark" aria-hidden="true"><svg><use href="#i-camera"></use></svg></span><h3>Record the work</h3><p>Capture arrival, travel, and service times. Add before-and-after photos, report issues, and update job status.</p><p>The mobile snow removal application connects field activity with the same customer, property, routing, and service information used by your office team.</p></article>
+        <article class="tile reveal"><span class="tile-mark" aria-hidden="true"><svg><use href="#i-people"></use></svg></span><h3>Support sidewalk and manual crews</h3><p>For sidewalk and manual crews, the same workflow can function as a snow shoveling app, giving team members access to assigned properties, instructions, photos, and job status.</p><p>The same mobile workflow can also serve as a snow clearing app for crews handling plowing, sidewalks, salting, or de-icing across different properties.</p></article>
+        <article class="tile reveal"><span class="tile-mark" aria-hidden="true"><svg><use href="#i-chat"></use></svg></span><h3>Stay connected</h3><p>Use chats and notifications to coordinate with dispatchers, customers, and teammates.</p></article>
+        <article class="tile reveal"><span class="tile-mark" aria-hidden="true"><svg><use href="#i-translate"></use></svg></span><h3>Instructions in the languages your crews need</h3><p>Use AI-assisted translation to localize instructions and other entered text. Support multilingual teams with localized interfaces and working information.</p></article>
+        <article class="tile reveal"><span class="tile-mark" aria-hidden="true"><svg><use href="#i-camera"></use></svg></span><h3>Keep the detail in your service photos</h3><p>Capture before-and-after images while preserving the quality available from the device's camera.</p></article>
+      </div>
+      <p class="supporting">Supporting capabilities: Pre-route inspections · Site plans · Time tracking · Route deviation visibility · Chat · Notifications</p>
+      <div class="actions actions--center"><a class="btn btn-primary-ring" href="/snow-removal-request-demo.html?cta_source=mobile_demo"><svg class="btn-star" aria-hidden="true"><use href="#i-star"></use></svg><span>See the crew app in action</span></a></div>
+    </div>
+  </section>
+
+  <section class="subcontractors surface-light" id="subcontractors" data-surface="light">
+    <div class="container">
+      <div class="head-center">
+        <p class="eyebrow"><span class="eyebrow-index">05</span> <span class="eyebrow-sep">/</span> <span>Subcontractor management</span></p>
+        <h2 class="title">Subcontractor Management</h2>
+        <p class="subtitle">Extend your workforce. Keep full visibility.</p>
+        <p class="head-intro">Coordinate subcontractors alongside your own crews in the same snow removal management software. Plan their routes, track job status and GPS activity, and review work times and photos—with the same operational visibility you have across your in-house teams.</p>
+      </div>
+      <div class="scope-stage reveal">
+        <div class="scope-panel">
+          <div class="scope-title"><span class="app-mark" aria-hidden="true">✦</span><b>Northline · All teams</b><span class="panel-dots" aria-hidden="true">•••</span></div>
+          <div class="team-list">
+            <div><i class="dot dot--blue" aria-hidden="true"></i><b>East Crew</b><span>Truck 07</span><em class="pill pill--blue">Assigned</em></div>
+            <div><i class="dot dot--cyan" aria-hidden="true"></i><b>West Crew</b><span>Truck 12</span><em class="pill pill--muted">Available</em></div>
+            <div class="team-partner"><i class="dot dot--orange" aria-hidden="true"></i><b>Summit Snow</b><span>Team A</span><em class="pill pill--orange">Assigned</em></div>
+          </div>
+          <div class="scope-line">Assignments · GPS · Work time · Photos · Cases</div>
+        </div>
+        <div class="scope-link" aria-hidden="true"></div>
+        <div class="scope-panel scope-panel--partner">
+          <div class="scope-title"><span class="lock-icon" aria-hidden="true">⌑</span><div><b>Summit Snow</b><small>Own operational scope</small></div><span class="pill pill--orange">Partner view</span></div>
+          <div class="scope-property"><b>Cedar Square</b><span>Team A · Truck S-01</span><small>210 Cedar Lane · 06:35–07:00</small></div>
+        </div>
+      </div>
+      <div class="glow-grid">
+        <article class="glow-card glow--cyan reveal"><div class="glow-photo"><img src="../../../content/snow-removal-software/media/sub-manage-centrally-640.webp" srcset="../../../content/snow-removal-software/media/sub-manage-centrally-640.webp 640w, ../../../content/snow-removal-software/media/sub-manage-centrally.webp 1200w" sizes="(min-width: 80rem) 20vw, (min-width: 48rem) 45vw, 90vw" alt="A dispatcher at a dual-monitor desk reviews the crew roster while two subcontractor plow trucks wait in the snowy yard outside" width="1200" height="900" loading="lazy" decoding="async"><span class="glow-icon" aria-hidden="true"><svg><use href="#i-grid"></use></svg></span></div><h3>Manage centrally. Delegate where it makes sense.</h3><p>Set up subcontractor users and resources yourself, or let subcontractors manage their own teams and equipment within the permissions you define.</p></article>
+        <article class="glow-card glow--blue reveal"><div class="glow-photo"><img src="../../../content/snow-removal-software/media/sub-field-work-640.webp" srcset="../../../content/snow-removal-software/media/sub-field-work-640.webp 640w, ../../../content/snow-removal-software/media/sub-field-work.webp 1200w" sizes="(min-width: 80rem) 20vw, (min-width: 48rem) 45vw, 90vw" alt="A subcontractor plow driver in a high-visibility jacket updates a job on his phone beside a pickup with a yellow plow blade at night" width="1200" height="900" loading="lazy" decoding="async"><span class="glow-icon" aria-hidden="true"><svg><use href="#i-field"></use></svg></span></div><h3>Connect field work to your operation</h3><p>Subcontractor crews access assigned work through the mobile app and record progress, photos, and issues in the same operational system.</p></article>
+        <article class="glow-card glow--orange reveal"><div class="glow-photo"><img src="../../../content/snow-removal-software/media/sub-issues-accountable-640.webp" srcset="../../../content/snow-removal-software/media/sub-issues-accountable-640.webp 640w, ../../../content/snow-removal-software/media/sub-issues-accountable.webp 1200w" sizes="(min-width: 80rem) 20vw, (min-width: 48rem) 45vw, 90vw" alt="Gloved hands photograph a snow-blocked loading dock entrance with a phone to document the issue" width="1200" height="900" loading="lazy" decoding="async"><span class="glow-icon" aria-hidden="true"><svg><use href="#i-shield"></use></svg></span></div><h3>Keep issues accountable</h3><p>Manage subcontractor-related cases through defined workflows, with clear ownership and access for the people responsible for resolution.</p></article>
+        <article class="glow-card glow--violet reveal"><div class="glow-photo"><img src="../../../content/snow-removal-software/media/sub-info-separate-640.webp" srcset="../../../content/snow-removal-software/media/sub-info-separate-640.webp 640w, ../../../content/snow-removal-software/media/sub-info-separate.webp 1200w" sizes="(min-width: 80rem) 20vw, (min-width: 48rem) 45vw, 90vw" alt="Two separate snow crews, one in orange and one in green, at a depot handover in front of their own trucks" width="1200" height="900" loading="lazy" decoding="async"><span class="glow-icon" aria-hidden="true"><svg><use href="#i-lock"></use></svg></span></div><h3>Keep business information separate</h3><p>Subcontractors access only their own operational scope. Your customer database, pricing, financial information, and unrelated company records remain outside their access.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="portal surface-light" id="portal" data-surface="light">
+    <div class="container">
+      <div class="head-center">
+        <p class="eyebrow"><span class="eyebrow-index">06</span> <span class="eyebrow-sep">/</span> <span>Customer experience</span></p>
+        <h2 class="title">Customer Portal &amp; Case Management</h2>
+        <p class="subtitle">Give customers answers—and a clear path to resolution.</p>
+        <p class="head-intro">Provide a branded portal where customers can check upcoming service, access account documents, and follow their requests across the properties you serve.</p>
+      </div>
+      <div class="frame-panel portal-frame reveal">
+        <figure class="browser browser--glow portal-ui">
+          <div class="browser-bar"><span class="browser-dots" aria-hidden="true"><i></i><i></i><i></i></span><b>Your properties. Your service. One place.</b><span>ServiceWand</span></div>
+          <div class="pui pui--home" role="img" aria-label="Customer portal home with a Google road map of three properties, weather-coloured pins, a seven-day timeline, an open support request and three property cards">
+            <div class="pui-nav"><span class="pui-brand"><i></i>Limitless Snow Removal</span><span class="pui-links"><span class="is-active">Home</span><span>Visits</span><span>Invoices</span><span>Contracts</span><span>Support</span></span><span class="pui-cta">Request a quote</span><span class="pui-avatar">BB</span></div>
+            <div class="pui-page">
+              <div class="pui-welcome">
+                <div><div class="pui-title">Welcome back, Bilbo</div><p class="pui-sub">3 properties under contract · Next visit tomorrow at 05:30</p></div>
+                <div class="pui-weather"><span aria-hidden="true">❄</span><b>−4°C</b> Snow expected tonight</div>
+              </div>
+              <div class="pui-mapcard">
+                <div class="pui-mapcard-head"><b><span class="pui-mapcard-icon" aria-hidden="true">⌖</span>Your properties</b><span class="pui-legend"><span><i style="--c: #93A7B8"></i>Clear</span><span><i style="--c: #2F8FE0"></i>Snow</span><span><i style="--c: #7C5CF0"></i>Freezing rain</span><span><i style="--c: #F0932B"></i>Storm warning</span><span><i style="--c: #C0392B"></i>Issue opened</span></span></div>
+                <div class="pui-map">
+                  <svg viewBox="0 0 960 330" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+                    <rect width="960" height="330" fill="#F4F2EE"></rect>
+                    <path d="M0 0H960V64C870 84 790 58 700 74C600 92 520 60 420 72C320 86 230 52 130 66C80 73 36 86 0 80Z" fill="#AED7F4"></path>
+                    <path d="M612 180C652 158 722 162 750 194C772 220 744 252 702 256C652 260 602 226 612 180Z" fill="#C9E6C4"></path>
+                    <path d="M64 226C96 204 150 210 168 236C182 258 154 286 116 286C78 286 44 252 64 226Z" fill="#C9E6C4"></path>
+                    <g fill="#E9E6E0"><rect x="134" y="146" width="44" height="52" rx="2"></rect><rect x="286" y="226" width="30" height="50" rx="2"></rect><rect x="556" y="226" width="40" height="52" rx="2"></rect><rect x="836" y="226" width="40" height="52" rx="2"></rect><rect x="696" y="86" width="40" height="32" rx="2"></rect></g>
+                    <g stroke="#DCD8D0" stroke-width="9" fill="none" stroke-linecap="round"><path d="M0 132H960M0 212H960M0 292H960M120 72V330M260 68V330M400 74V330M540 72V330M680 72V330M820 68V330"></path></g>
+                    <g stroke="#FFFFFF" stroke-width="6" fill="none" stroke-linecap="round"><path d="M0 132H960M0 212H960M0 292H960M120 72V330M260 68V330M400 74V330M540 72V330M680 72V330M820 68V330"></path></g>
+                    <g stroke="#EFECE6" stroke-width="3" fill="none"><path d="M0 172H960M0 252H960M190 72V330M330 72V330M470 72V330M610 72V330M750 72V330M890 72V330"></path></g>
+                    <path d="M0 330L340 96L960 206" stroke="#EDCB78" stroke-width="11" fill="none" stroke-linejoin="round"></path>
+                    <path d="M0 330L340 96L960 206" stroke="#FBE7A8" stroke-width="7" fill="none" stroke-linejoin="round"></path>
+                    <g font-family="Vela Sans, sans-serif" font-size="10" fill="#8A8A8A"><text x="772" y="44" font-size="11" fill="#5B8DB8">Vancouver Harbour</text><text x="640" y="236" font-size="11" fill="#5E8F5A">Stanley Park</text><text x="84" y="262" font-size="11" fill="#5E8F5A">Coal Harbour</text><text x="28" y="128">Robson St</text><text x="28" y="208">Davie St</text><text transform="translate(252 322) rotate(-90)">Burrard St</text><text transform="translate(532 322) rotate(-90)">Granville St</text><text transform="translate(560 148) rotate(10)" fill="#7A6A3A">W Georgia St</text></g>
+                    <g transform="translate(276 148)"><ellipse cy="1" rx="6" ry="2.5" fill="#000000" fill-opacity="0.16"></ellipse><path d="M0 0C-5.5-7.5-11-12.5-11-19A11 11 0 1 1 11-19C11-12.5 5.5-7.5 0 0Z" fill="#2F8FE0" stroke="#FFFFFF" stroke-width="1.6"></path><circle cy="-19" r="4" fill="#FFFFFF" fill-opacity="0.92"></circle></g>
+                    <g transform="translate(420 238)"><ellipse cy="1" rx="6" ry="2.5" fill="#000000" fill-opacity="0.16"></ellipse><path d="M0 0C-5.5-7.5-11-12.5-11-19A11 11 0 1 1 11-19C11-12.5 5.5-7.5 0 0Z" fill="#C0392B" stroke="#FFFFFF" stroke-width="1.6"></path><circle cy="-19" r="4" fill="#FFFFFF" fill-opacity="0.92"></circle></g>
+                    <g transform="translate(764 164)"><circle cy="-23" r="19" fill="none" stroke="#2F8FE0" stroke-width="2" stroke-opacity="0.55"></circle><ellipse cy="1" rx="7" ry="3" fill="#000000" fill-opacity="0.18"></ellipse><g transform="scale(1.24)"><path d="M0 0C-5.5-7.5-11-12.5-11-19A11 11 0 1 1 11-19C11-12.5 5.5-7.5 0 0Z" fill="#2F8FE0" stroke="#FFFFFF" stroke-width="1.4"></path><circle cy="-19" r="4" fill="#FFFFFF" fill-opacity="0.92"></circle></g></g>
+                    <g transform="translate(590 44)"><rect width="206" height="86" rx="10" fill="#FFFFFF" stroke="#E3E8F0"></rect><path d="M160 86L170 96L180 86Z" fill="#FFFFFF"></path><g font-family="Vela Sans, sans-serif"><text x="14" y="24" font-size="13" font-weight="600" fill="#1B1D25">Harbour View Offices</text><rect x="14" y="34" width="58" height="18" rx="9" fill="#FFF0DD"></rect><text x="43" y="47" font-size="10" font-weight="600" text-anchor="middle" fill="#A35F0C">En Route</text><text x="80" y="47" font-size="10.5" fill="#5C6474">Snow · −4°C · 3 cm expected</text><rect x="14" y="60" width="92" height="18" rx="9" fill="#1A7FCC"></rect><text x="60" y="73" font-size="10.5" font-weight="600" text-anchor="middle" fill="#FFFFFF">Go to Property</text></g></g>
+                    <g transform="translate(916 256)"><rect width="30" height="56" rx="4" fill="#FFFFFF" stroke="#DADCE0"></rect><path d="M0 28H30" stroke="#E0E0E0"></path><g font-family="Vela Sans, sans-serif" font-size="18" fill="#666666" text-anchor="middle"><text x="15" y="21">+</text><text x="15" y="49">−</text></g></g>
+                    <text x="12" y="321" font-family="Vela Sans, sans-serif" font-size="14" font-weight="600" fill="#5F6368" opacity="0.85">Google</text>
+                    <rect x="724" y="314" width="236" height="16" fill="#F1F1F1" fill-opacity="0.92"></rect><text x="842" y="325" font-family="Vela Sans, sans-serif" font-size="8" text-anchor="middle" fill="#444444">Map data ©2026 Google · Terms · Report a map error</text>
+                  </svg>
+                </div>
+                <div class="pui-days"><span class="pui-days-arrow">‹</span><span class="is-on">Today<em>2</em></span><span>Fri<em>1</em></span><span>Sat</span><span>Sun</span><span>Mon<em>3</em></span><span>Tue</span><span>Wed</span><span class="pui-days-arrow">›</span><small>Weather · Xweather</small></div>
+              </div>
+              <div class="pui-support"><div><b>Support requests <span class="pui-pill pui-pill--red">1 open</span></b><small>Cedar Square · Access blocked at loading zone · In review</small></div><span class="pui-btn">+ Open support ticket</span></div>
+              <div class="pui-props">
+                <div class="pui-prop"><div class="pui-prop-head"><b>Maple Court Plaza</b><span class="pui-pill pui-pill--blue">Scheduled</span></div><small>1239 W Georgia St, Vancouver</small><p>Next visit · Tomorrow 05:30 · Plowing, Salting</p></div>
+                <div class="pui-prop"><div class="pui-prop-head"><b>Harbour View Offices</b><span class="pui-pill pui-pill--orange">En route</span></div><small>1150 Hamilton St, Vancouver</small><p>Today · Sidewalk clearing · ETA 12 min</p></div>
+                <div class="pui-prop"><div class="pui-prop-head"><b>Cedar Square</b><span class="pui-pill pui-pill--red">Issue opened</span></div><small>210 Cedar Lane, Burnaby</small><p>Support ticket · Access blocked at loading zone · In review</p></div>
+              </div>
+            </div>
+          </div>
+          <figcaption>Interface-based composition of the ServiceWand customer portal · demonstration data</figcaption>
+        </figure>
+      </div>
+      <div class="column-trio">
+        <article class="reveal"><span class="index-ring" aria-hidden="true"><svg><use href="#i-calendar"></use></svg></span><h3>Keep customers informed</h3><p>Show upcoming visits, assigned crews, and estimated arrival times.</p></article>
+        <article class="reveal"><span class="index-ring" aria-hidden="true"><svg><use href="#i-invoice"></use></svg></span><h3>Put account information within reach</h3><p>Give customers access to quotations, contracts, service history, and invoices.</p></article>
+        <article class="reveal"><span class="index-ring" aria-hidden="true"><svg><use href="#i-service"></use></svg></span><h3>Manage issues through resolution</h3><p>Turn customer concerns into tracked cases with responsible team members and defined workflow steps. Share relevant progress through the portal while controlling access to case information.</p></article>
+      </div>
+      <p class="signoff">Your brand. Their properties. A clear view of service.</p>
+      <div class="actions actions--center"><a class="btn btn-primary-ring" href="/snow-removal-request-demo.html?cta_source=portal_demo"><svg class="btn-star" aria-hidden="true"><use href="#i-star"></use></svg><span>See your customer experience</span></a></div>
+    </div>
+  </section>
+
+  <section class="billing surface-light" id="billing" data-surface="light">
+    <div class="container">
+      <div class="soft-card billing-card reveal">
+        <div class="billing-copy">
+          <p class="eyebrow"><span class="eyebrow-index">07</span> <span class="eyebrow-sep">/</span> <span>Billing</span></p>
+          <h2 class="title">Snow Removal Billing Software</h2>
+          <p class="subtitle">Finish the work. Keep billing moving.</p>
+          <p class="body-copy">Generate invoices for completed plowing, salting, and de-icing work or according to contract schedules. Whether you need seasonal invoicing or snow plowing billing software for completed visits, ServiceWand keeps billing connected to the work performed.</p>
+          <div class="spark-list">
+            <article><h3>Bill according to the agreement</h3><p>Support per-visit invoicing and seasonal billing schedules based on contract terms.</p></article>
+            <article><h3>Make payment convenient</h3><p>Let customers access invoices and pay through Stripe.</p></article>
+            <article><h3>Keep outstanding invoices visible</h3><p>Monitor unpaid balances and send reminders without rebuilding the follow-up process each time.</p></article>
+          </div>
+        </div>
+        <figure class="browser billing-shot invoice-ui">
+          <div class="browser-bar"><span class="browser-dots" aria-hidden="true"><i></i><i></i><i></i></span><b>Invoice INV-2026-0142 · Customer portal</b><span>ServiceWand</span></div>
+          <div class="inv-stage">
+            <div class="inv-doc" role="img" aria-label="Customer invoice INV-2026-0142 for three plowing, two de-icing and three sidewalk visits, total CA$955.50, due November 12, 2026">
+              <div class="inv-top">
+                <div class="inv-brand"><i></i><div><b>Limitless Snow Removal</b><small>1200 Industrial Way, Vancouver, BC</small></div></div>
+                <div class="inv-meta"><span class="inv-word">Invoice</span><b>INV-2026-0142</b><span class="pill pill--orange">Due Nov 12</span></div>
+              </div>
+              <div class="inv-parties">
+                <div><small>Bill to</small><b>Maple Court Strata</b><span>1239 W Georgia St, Vancouver</span></div>
+                <div><small>Invoice date</small><b>Oct 28, 2026</b><small>Due date</small><b>Nov 12, 2026</b></div>
+                <div><small>Contract</small><b>Seasonal · per visit</b><small>Terms</small><b>Net 15</b></div>
+              </div>
+              <div class="inv-lines">
+                <div class="inv-line inv-line--head"><span>Service</span><span>Qty</span><span>Rate</span><span>Amount</span></div>
+                <div class="inv-line"><span><b>Snow plowing</b><small>Parking lot P1 · Oct 21, 24, 27</small></span><span>3</span><span>$180.00</span><span>$540.00</span></div>
+                <div class="inv-line"><span><b>Rock salt de-icing</b><small>Lot and driveway · Oct 21, 27</small></span><span>2</span><span>$95.00</span><span>$190.00</span></div>
+                <div class="inv-line"><span><b>Sidewalk clearing</b><small>S1, S2 · Oct 21, 24, 27</small></span><span>3</span><span>$60.00</span><span>$180.00</span></div>
+              </div>
+              <div class="inv-totals">
+                <div><span>Subtotal</span><b>$910.00</b></div>
+                <div><span>GST 5%</span><b>$45.50</b></div>
+                <div class="inv-total"><span>Total due</span><b>CA$955.50</b></div>
+              </div>
+              <div class="inv-foot"><span><i aria-hidden="true">✓</i>Service records attached · 3 visits · 14 photos</span><span class="inv-pay"><b>Pay invoice</b><small>Secure payment with Stripe</small></span></div>
+            </div>
+          </div>
+          <figcaption>Interface-based composition of a customer invoice · demonstration data</figcaption>
+        </figure>
+      </div>
+      <p class="supporting">Contract-based invoices. Online payments. Less repetitive follow-up.</p>
+    </div>
+  </section>
+
+  <section class="onboarding surface-dark" id="onboarding" data-surface="dark">
+    <div class="onboarding-bg" aria-hidden="true"><span class="onboarding-snow"></span><span class="onboarding-ridge"></span></div>
+    <div class="container">
+      <div class="head-center">
+        <p class="eyebrow"><span class="eyebrow-index">08</span> <span class="eyebrow-sep">/</span> <span>A supported start</span></p>
+        <h2 class="title">Onboarding &amp; Support</h2>
+        <p class="subtitle">Get help bringing your operation into ServiceWand.</p>
+        <p class="head-intro">Our team helps you assess and transfer existing data, configure workflows, and train your team.</p>
+      </div>
+      <div class="step-row">
+        <article class="step reveal"><span class="step-icon" aria-hidden="true"><svg><use href="#i-clipboard"></use></svg></span><h3>Data migration assistance</h3><p>Review data from spreadsheets or existing snow management software with us and agree on what can be brought into ServiceWand.</p></article>
+        <article class="step reveal"><span class="step-icon" aria-hidden="true"><svg><use href="#i-people"></use></svg></span><h3>Guided setup and training</h3><p>Work with our team to configure your operation and help staff get started.</p></article>
+        <article class="step reveal"><span class="step-icon" aria-hidden="true"><svg><use href="#i-shield"></use></svg></span><h3>Support for active operations</h3><p>24/7 support is available on eligible plans. Response times and support scope depend on your package.</p></article>
+        <article class="step reveal"><span class="step-icon" aria-hidden="true"><svg><use href="#i-workflow"></use></svg></span><h3>Essential integrations</h3><p>Stripe payments are available today. Discuss other essential systems with us so we can assess integration options and scope.</p></article>
+      </div>
+      <div class="actions actions--center"><a class="btn btn-secondary-filled" href="/snow-removal-request-demo.html?cta_source=onboarding_setup"><svg class="btn-star" aria-hidden="true"><use href="#i-star"></use></svg><span>Discuss Your Setup</span></a></div>
+    </div>
+  </section>
+
+  <section class="platform surface-light" id="platform" data-surface="light">
+    <div class="container">
+      <div class="lead-split">
+        <div>
+          <p class="eyebrow"><span class="eyebrow-index">09</span> <span class="eyebrow-sep">/</span> <span>Platform &amp; growth</span></p>
+          <h2 class="title">Platform &amp; Growth</h2>
+          <p class="subtitle">Keep the foundation. Expand what you can do.</p>
+        </div>
+        <div class="lead-copy"><p>ServiceWand is snow and ice management software built on an AI-native operational platform. Connect services, pricing, resources, equipment status, and workflows around shared business data.</p></div>
+      </div>
+      <div class="frame-panel hub reveal">
+        <div class="sphere-aura" aria-hidden="true"></div>
+        <div class="hub-core">
+          <img src="../../../content/snow-removal-software/media/efff141366.svg" alt="ServiceWand" width="560" height="84" loading="lazy" decoding="async">
+          <span class="hub-label">ONE CONNECTED PLATFORM</span>
+          <i class="hub-line">Shared data. Connected operations.</i>
+        </div>
+        <div class="hub-modules">
+          <div><span aria-hidden="true">⌖</span><b>Properties</b></div>
+          <div><span aria-hidden="true">⇄</span><b>Routing</b></div>
+          <div><span aria-hidden="true">▤</span><b>Field work</b></div>
+          <div><span aria-hidden="true">◈</span><b>Customer service</b></div>
+          <div><span aria-hidden="true">▥</span><b>Billing</b></div>
+          <div><span aria-hidden="true">⌘</span><b>Workflows</b></div>
+        </div>
+      </div>
+      <div class="tile-grid tile-grid--four">
+        <article class="tile reveal"><span class="tile-mark" aria-hidden="true"><svg><use href="#i-invoice"></use></svg></span><h3>Services &amp; Pricing</h3><p>Define the services you sell and the pricing used in your commercial workflows.</p></article>
+        <article class="tile reveal"><span class="tile-mark" aria-hidden="true"><svg><use href="#i-route"></use></svg></span><h3>Resources &amp; Equipment</h3><p>Manage operational resources and equipment status. Configure workflows to reflect maintenance needs and availability.</p></article>
+        <article class="tile reveal"><span class="tile-mark" aria-hidden="true"><svg><use href="#i-grid"></use></svg></span><h3>Shared Business Data</h3><p>Keep customer, property, service, and financial information connected across your workflows.</p></article>
+        <article class="tile reveal"><span class="tile-mark" aria-hidden="true"><svg><use href="#i-workflow"></use></svg></span><h3>Automation &amp; AI</h3><p>Automate repeatable process steps and use AI-assisted translation to make working information available in the languages your teams need.</p></article>
+      </div>
+      <div class="photo-pair">
+        <article class="winter-card reveal">
+          <img src="../../../content/snow-removal-software/media/winter-pickup-v2.webp" alt="" width="1536" height="1024" loading="lazy" decoding="async">
+          <div class="winter-copy">
+            <span class="winter-icon" aria-hidden="true">❄</span>
+            <h3>Built for winter. Wherever you operate.</h3>
+            <p>Heavy snowfall, overnight frost, and repeated freeze-thaw cycles create different demands from one property to the next. ServiceWand helps you coordinate plowing, salting, de-icing, snow clearing, and other winter work around those demands.</p>
+            <p>Reuse route plans, adjust assignments as conditions change, and keep crews and service records connected throughout the season.</p>
+          </div>
+        </article>
+        <article class="soft-card future-card reveal">
+          <div>
+            <span class="pill pill--muted">In development</span>
+            <h3>Need lawn care and snow removal software?</h3>
+            <p>Dedicated lawn care and landscaping solutions are in development on the same ServiceWand platform. Register your interest for a future demo or help shape these solutions as a strategic partner.</p>
+          </div>
+          <div class="actions actions--stack">
+            <a class="btn btn-primary-ring" href="/field-service-early-access.html?cta_source=lawn_care_notify"><svg class="btn-star" aria-hidden="true"><use href="#i-star"></use></svg><span>Notify Me When Demos Are Available</span></a>
+            <a class="btn btn-secondary-filled" href="/partner.html?cta_source=lawn_care_partner"><svg class="btn-star" aria-hidden="true"><use href="#i-star"></use></svg><span>Discuss a Strategic Partnership</span></a>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="pricing surface-light" id="pricing" data-surface="light">
+    <div class="container">
+      <div class="head-center">
+        <p class="eyebrow"><span>Plans &amp; Pricing</span></p>
+        <h2 class="title">Choose the right level of control <span class="nowrap-break">for your operation.</span></h2>
+        <p class="head-intro">Start with the workflows you need. Add property capacity as you grow, and move to a higher plan when your operation needs more advanced capabilities.</p>
+      </div>
+      <div class="plan-perks"><span><i class="perk-check" aria-hidden="true"><svg><use href="#i-check"></use></svg></i>Unlimited users on every plan</span><span><i class="perk-check" aria-hidden="true"><svg><use href="#i-check"></use></svg></i>Multilingual workflows</span><span><i class="perk-check" aria-hidden="true"><svg><use href="#i-check"></use></svg></i>No per-worker subscription fees</span></div>
+      <div class="review-note"><span>Working proposal</span> *Prices and property allowances below are reference values from the existing page, under review for these packages.</div>
+      <div class="plans" data-pricing-dynamic="true" data-pricing-api-base="/core-pim/api" data-pricing-organization="SERVICEWAND" data-pricing-currency="USD" data-pricing-price-type-code="RECURRENT" data-pricing-price-attribute-code="INTERVAL" data-pricing-price-attribute-values="1 month" data-pricing-product-type-code="SERVICEWAND_SAAS" data-pricing-capacity-attribute="ACTIVE_PROPERTIES_INCLUDED">
+        <article class="plan reveal" data-plan-code="SERVICEWAND_FOUNDATION"><div class="plan-audience">Small Teams</div><h3>Foundation</h3><p class="plan-description">For teams bringing customers, field work, and billing into one organized system.</p><div class="plan-price"><span class="currency">USD</span><b>99</b><small>/ month*</small></div><div class="plan-capacity">25 active properties included*</div><a class="btn btn-primary-ring plan-btn" href="/subscribe.html?plan=SERVICEWAND_FOUNDATION"><svg class="btn-star" aria-hidden="true"><use href="#i-star"></use></svg><span>Buy</span></a><div class="plan-inherit">Core workflows for your team</div><ul><li>Customer &amp; Property Management</li><li>Manual Route Planning &amp; Dispatch</li><li>Crew App &amp; Site Instructions</li><li>GPS, Photos &amp; Service History</li><li>Quotations, Invoicing &amp; Payments</li></ul><a class="plan-compare-link" href="#plan-comparison" data-compare-open="">Compare all features<svg aria-hidden="true"><use href="#i-arrow-down"></use></svg></a></article>
+        <article class="plan reveal" data-plan-code="SERVICEWAND_GROWTH"><div class="plan-audience">Multi-Crew Operations</div><h3>Growth</h3><p class="plan-description">For companies ready to optimize routes, coordinate multiple crews, and automate routine office work.</p><div class="plan-price"><span class="currency">USD</span><b>449</b><small>/ month*</small></div><div class="plan-capacity">200 active properties included*</div><a class="btn btn-primary-ring plan-btn" href="/subscribe.html?plan=SERVICEWAND_GROWTH"><svg class="btn-star" aria-hidden="true"><use href="#i-star"></use></svg><span>Buy</span></a><div class="plan-inherit">Everything in Foundation, plus:</div><ul><li>Advanced Route Optimization</li><li>Bulk Reassignment of Unfinished Work</li><li>Live Operational Dashboards</li><li>Customer Portal &amp; Case Management</li><li>Automated Invoicing &amp; Payment Reminders</li></ul><a class="plan-compare-link" href="#plan-comparison" data-compare-open="">Compare all features<svg aria-hidden="true"><use href="#i-arrow-down"></use></svg></a></article>
+        <article class="plan plan--featured reveal" data-plan-code="SERVICEWAND_PROFESSIONAL"><div class="plan-audience">Advanced Operations</div><h3>Business</h3><p class="plan-description">For companies that need faster property estimating, subcontractor coordination, and tailored workflows.</p><div class="plan-price"><span class="currency">USD</span><b>1,099</b><small>/ month*</small></div><div class="plan-capacity">500 active properties included*</div><a class="btn btn-secondary-filled plan-btn" href="/subscribe.html?plan=SERVICEWAND_PROFESSIONAL"><svg class="btn-star" aria-hidden="true"><use href="#i-star"></use></svg><span>Buy</span></a><div class="plan-inherit">Everything in Growth, plus:</div><ul><li>Area Measurement &amp; AI-Assisted Mapping</li><li>Map-Based, Area-Informed Quotations</li><li>Full Subcontractor Management</li><li>Configurable Workflows &amp; Dashboards</li><li>Business Performance Reporting</li></ul><a class="plan-compare-link" href="#plan-comparison" data-compare-open="">Compare all features<svg aria-hidden="true"><use href="#i-arrow-down"></use></svg></a></article>
+        <article class="plan reveal" data-plan-code="SERVICEWAND_ENTERPRISE"><div class="plan-audience">Custom Requirements</div><h3>Enterprise</h3><p class="plan-description">For operators with complex integration, multi-region, and implementation requirements.</p><div class="plan-price"><b class="plan-talk">Let’s talk</b></div><div class="plan-capacity">Capacity tailored to your operation</div><a class="btn btn-primary-ring plan-btn" href="/snow-removal-request-demo.html?cta_source=pricing_enterprise"><svg class="btn-star" aria-hidden="true"><use href="#i-star"></use></svg><span>Talk to Sales</span></a><div class="plan-inherit">Business capabilities, with agreed scope:</div><ul><li>Custom Property &amp; Optimization Capacity</li><li>Enterprise Integrations &amp; API</li><li>Multi-Region Configuration</li><li>Advanced Governance Requirements</li><li>Tailored Implementation &amp; Service Terms</li></ul><a class="plan-compare-link" href="#plan-comparison" data-compare-open="">Compare all features<svg aria-hidden="true"><use href="#i-arrow-down"></use></svg></a></article>
+      </div>
+      <details class="compare" id="plan-comparison" data-plan="Business" data-included-label="Included">
+        <summary class="compare-summary"><span class="compare-summary-icon" aria-hidden="true"><svg><use href="#i-grid"></use></svg></span><span class="compare-summary-text">Compare all features <small>Every capability, limit and support option side by side for Foundation, Growth, Business and Enterprise.</small></span><span class="compare-toggle"><span class="compare-toggle-open">Show full comparison</span><span class="compare-toggle-close">Hide comparison</span><svg aria-hidden="true"><use href="#i-arrow-down"></use></svg></span></summary>
+        <div class="compare-body">
+          <div class="compare-intro"><h2>Compare plans.</h2><p>Higher plans build on the capabilities below. A check mark = included in the plan. Paid add-on = purchased separately. By agreement = scope and any fees confirmed before work begins.</p><p class="compare-small">*Property counts are reference values. Optimization and AI allowances, retention, support hours, and implementation scope remain under review.</p></div>
+          <div class="plan-switch" role="group" aria-label="Plan shown in the comparison"><button type="button" data-plan="Foundation" aria-pressed="false">Foundation</button><button type="button" data-plan="Growth" aria-pressed="false">Growth</button><button type="button" data-plan="Business" aria-pressed="true">Business</button><button type="button" data-plan="Enterprise" aria-pressed="false">Enterprise</button></div>
+          <div class="compare-group">
+            <div class="compare-title"><h3>Customers &amp; Properties</h3><p>Keep customer accounts, service locations, and operational resources connected.</p></div>
+            <div class="table-wrap" tabindex="0" role="region" aria-label="Customers &amp; Properties plan comparison">
+              <table class="matrix"><colgroup><col class="col-feature"><col><col><col class="col-pick"><col></colgroup>
+                <thead><tr><th scope="col">Feature</th><th scope="col">Foundation</th><th scope="col">Growth</th><th scope="col" class="col-pick">Business</th><th scope="col">Enterprise</th></tr></thead>
+                <tbody>
+                  <tr><th scope="row"><b>Customers &amp; Properties</b><small>Manage customer accounts, contacts, service locations, property requirements, and account history.</small></th><td data-plan="Foundation" class="cell"><span class="cell-value">✓</span></td><td data-plan="Growth" class="cell"><span class="cell-value">✓</span></td><td data-plan="Business" class="cell col-pick"><span class="cell-value">✓</span></td><td data-plan="Enterprise" class="cell"><span class="cell-value">✓</span></td></tr>
+                  <tr data-capacity-row=""><th scope="row"><b>Active Properties</b><small>Active properties can take part in routing and service operations. Inactive properties remain available for viewing.</small></th><td data-plan="Foundation" class="cell"><span class="cell-value">25*</span></td><td data-plan="Growth" class="cell"><span class="cell-value">200*</span></td><td data-plan="Business" class="cell col-pick"><span class="cell-value">500*</span></td><td data-plan="Enterprise" class="cell"><span class="cell-value">By agreement</span></td></tr>
+                  <tr><th scope="row"><b>Property Expansion</b><small>Add active property capacity while keeping the capabilities of your current plan.</small></th><td data-plan="Foundation" class="cell"><span class="cell-value">Paid expansion</span></td><td data-plan="Growth" class="cell"><span class="cell-value">Paid expansion</span></td><td data-plan="Business" class="cell col-pick"><span class="cell-value">Paid expansion</span></td><td data-plan="Enterprise" class="cell"><span class="cell-value">By agreement</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="compare-group">
+            <div class="compare-title"><h3>Quotations &amp; Site Planning</h3><p>Turn property information into clear proposals and practical instructions for field crews.</p></div>
+            <div class="table-wrap" tabindex="0" role="region" aria-label="Quotations &amp; Site Planning plan comparison">
+              <table class="matrix"><colgroup><col class="col-feature"><col><col><col class="col-pick"><col></colgroup>
+                <thead><tr><th scope="col">Feature</th><th scope="col">Foundation</th><th scope="col">Growth</th><th scope="col" class="col-pick">Business</th><th scope="col">Enterprise</th></tr></thead>
+                <tbody>
+                  <tr><th scope="row"><b>Requests, Quotations &amp; Contracts</b><small>Keep service inquiries, proposals, approvals, and agreements connected to customers and properties.</small></th><td data-plan="Foundation" class="cell"><span class="cell-value">Single-property quotations</span></td><td data-plan="Growth" class="cell"><span class="cell-value">Multi-property quotations</span></td><td data-plan="Business" class="cell col-pick"><span class="cell-value">Multi-property quotations</span></td><td data-plan="Enterprise" class="cell"><span class="cell-value">Multi-property quotations</span></td></tr>
+                  <tr><th scope="row"><b>Site Maps &amp; Service Zones</b><small>Draw service polygons and share site areas, notes, and instructions with field crews.</small></th><td data-plan="Foundation" class="cell"><span class="cell-value">✓</span></td><td data-plan="Growth" class="cell"><span class="cell-value">✓</span></td><td data-plan="Business" class="cell col-pick"><span class="cell-value">✓</span></td><td data-plan="Enterprise" class="cell"><span class="cell-value">✓</span></td></tr>
+                  <tr><th scope="row"><b>Area Measurement &amp; AI-Assisted Mapping</b><small>Measure service areas and use AI to help identify and map site features, with review before use.</small></th><td data-plan="Foundation" class="cell"><span class="cell-value">—</span></td><td data-plan="Growth" class="cell"><span class="cell-value">—</span></td><td data-plan="Business" class="cell col-pick"><span class="cell-value">Measurement included; AI allowance to agree</span></td><td data-plan="Enterprise" class="cell"><span class="cell-value">By agreement</span></td></tr>
+                  <tr><th scope="row"><b>Map-Based Quotations</b><small>Use mapped service areas and measurements to define scope and prepare quotations around your pricing.</small></th><td data-plan="Foundation" class="cell"><span class="cell-value">—</span></td><td data-plan="Growth" class="cell"><span class="cell-value">—</span></td><td data-plan="Business" class="cell col-pick"><span class="cell-value">✓</span></td><td data-plan="Enterprise" class="cell"><span class="cell-value">✓</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="compare-group">
+            <div class="compare-title"><h3>Routing &amp; Dispatch</h3><p>Build workable plans and adapt assignments as operational needs change.</p></div>
+            <div class="table-wrap" tabindex="0" role="region" aria-label="Routing &amp; Dispatch plan comparison">
+              <table class="matrix"><colgroup><col class="col-feature"><col><col><col class="col-pick"><col></colgroup>
+                <thead><tr><th scope="col">Feature</th><th scope="col">Foundation</th><th scope="col">Growth</th><th scope="col" class="col-pick">Business</th><th scope="col">Enterprise</th></tr></thead>
+                <tbody>
+                  <tr><th scope="row"><b>Route Planning &amp; Dispatch</b><small>Build routes manually, assign work to crews and vehicles, and reuse route templates.</small></th><td data-plan="Foundation" class="cell"><span class="cell-value">✓</span></td><td data-plan="Growth" class="cell"><span class="cell-value">✓</span></td><td data-plan="Business" class="cell col-pick"><span class="cell-value">✓</span></td><td data-plan="Enterprise" class="cell"><span class="cell-value">✓</span></td></tr>
+                  <tr><th scope="row"><b>Advanced Route Optimization</b><small>Optimize around equipment, property requirements, and service time; control solver duration and preserve selected stops.</small></th><td data-plan="Foundation" class="cell"><span class="cell-value">—</span></td><td data-plan="Growth" class="cell"><span class="cell-value">✓</span></td><td data-plan="Business" class="cell col-pick"><span class="cell-value">✓</span></td><td data-plan="Enterprise" class="cell"><span class="cell-value">✓</span></td></tr>
+                  <tr><th scope="row"><b>Operational Reassignment</b><small>Move unfinished work to available resources when assignments or equipment availability change.</small></th><td data-plan="Foundation" class="cell"><span class="cell-value">Individual reassignment</span></td><td data-plan="Growth" class="cell"><span class="cell-value">Individual &amp; bulk</span></td><td data-plan="Business" class="cell col-pick"><span class="cell-value">Individual &amp; bulk</span></td><td data-plan="Enterprise" class="cell"><span class="cell-value">Individual &amp; bulk</span></td></tr>
+                  <tr><th scope="row"><b>Optimization Capacity</b><small>Included solver capacity, with additional capacity available when needed.</small></th><td data-plan="Foundation" class="cell"><span class="cell-value">—</span></td><td data-plan="Growth" class="cell"><span class="cell-value">Allowance to agree</span></td><td data-plan="Business" class="cell col-pick"><span class="cell-value">Expanded allowance to agree</span></td><td data-plan="Enterprise" class="cell"><span class="cell-value">By agreement</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="compare-group">
+            <div class="compare-title"><h3>Field Operations &amp; Service Records</h3><p>Give crews the information to work and keep a clear record of each visit.</p></div>
+            <div class="table-wrap" tabindex="0" role="region" aria-label="Field Operations &amp; Service Records plan comparison">
+              <table class="matrix"><colgroup><col class="col-feature"><col><col><col class="col-pick"><col></colgroup>
+                <thead><tr><th scope="col">Feature</th><th scope="col">Foundation</th><th scope="col">Growth</th><th scope="col" class="col-pick">Business</th><th scope="col">Enterprise</th></tr></thead>
+                <tbody>
+                  <tr><th scope="row"><b>Mobile Workforce</b><small>Assigned work, site plans, instructions, pre-route checks, time records, messages, and job status.</small></th><td data-plan="Foundation" class="cell"><span class="cell-value">✓</span></td><td data-plan="Growth" class="cell"><span class="cell-value">✓</span></td><td data-plan="Business" class="cell col-pick"><span class="cell-value">✓</span></td><td data-plan="Enterprise" class="cell"><span class="cell-value">✓</span></td></tr>
+                  <tr><th scope="row"><b>Workforce &amp; Equipment</b><small>Manage employees, vehicles, equipment, and the resources used for service delivery.</small></th><td data-plan="Foundation" class="cell"><span class="cell-value">✓</span></td><td data-plan="Growth" class="cell"><span class="cell-value">✓</span></td><td data-plan="Business" class="cell col-pick"><span class="cell-value">✓</span></td><td data-plan="Enterprise" class="cell"><span class="cell-value">✓</span></td></tr>
+                  <tr><th scope="row"><b>GPS &amp; Service History</b><small>Review location activity, movement history, work times, and completed service records.</small></th><td data-plan="Foundation" class="cell"><span class="cell-value">✓</span></td><td data-plan="Growth" class="cell"><span class="cell-value">✓</span></td><td data-plan="Business" class="cell col-pick"><span class="cell-value">✓</span></td><td data-plan="Enterprise" class="cell"><span class="cell-value">✓</span></td></tr>
+                  <tr><th scope="row"><b>Before-and-After Photos</b><small>Document conditions and completed work within the photo allowance for each visit.</small></th><td data-plan="Foundation" class="cell"><span class="cell-value">Up to 10 per visit</span></td><td data-plan="Growth" class="cell"><span class="cell-value">Up to 20 per visit</span></td><td data-plan="Business" class="cell col-pick"><span class="cell-value">Up to 25 per visit</span></td><td data-plan="Enterprise" class="cell"><span class="cell-value">By agreement</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="compare-group">
+            <div class="compare-title"><h3>Languages &amp; Communication</h3><p>Help office staff, crews, and customers work with information in supported languages.</p></div>
+            <div class="table-wrap" tabindex="0" role="region" aria-label="Languages &amp; Communication plan comparison">
+              <table class="matrix"><colgroup><col class="col-feature"><col><col><col class="col-pick"><col></colgroup>
+                <thead><tr><th scope="col">Feature</th><th scope="col">Foundation</th><th scope="col">Growth</th><th scope="col" class="col-pick">Business</th><th scope="col">Enterprise</th></tr></thead>
+                <tbody>
+                  <tr><th scope="row"><b>Multilingual Experience</b><small>Localized interfaces and translated business information for your operation.</small></th><td data-plan="Foundation" class="cell"><span class="cell-value">✓</span></td><td data-plan="Growth" class="cell"><span class="cell-value">✓</span></td><td data-plan="Business" class="cell col-pick"><span class="cell-value">✓</span></td><td data-plan="Enterprise" class="cell"><span class="cell-value">✓</span></td></tr>
+                  <tr><th scope="row"><b>AI-Assisted Translation</b><small>Translate working information, instructions, customer requests, and replies.</small></th><td data-plan="Foundation" class="cell"><span class="cell-value">Allowance to agree</span></td><td data-plan="Growth" class="cell"><span class="cell-value">Allowance to agree</span></td><td data-plan="Business" class="cell col-pick"><span class="cell-value">Expanded allowance to agree</span></td><td data-plan="Enterprise" class="cell"><span class="cell-value">By agreement</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="compare-group">
+            <div class="compare-title"><h3>Customer &amp; Subcontractor Collaboration</h3><p>Connect your website, keep clients informed, and coordinate external teams with appropriate access.</p></div>
+            <div class="table-wrap" tabindex="0" role="region" aria-label="Customer &amp; Subcontractor Collaboration plan comparison">
+              <table class="matrix"><colgroup><col class="col-feature"><col><col><col class="col-pick"><col></colgroup>
+                <thead><tr><th scope="col">Feature</th><th scope="col">Foundation</th><th scope="col">Growth</th><th scope="col" class="col-pick">Business</th><th scope="col">Enterprise</th></tr></thead>
+                <tbody>
+                  <tr><th scope="row"><b>Website Connection</b><small>Connect your website to a ServiceWand request form and, where included, give customers access to their portal.</small></th><td data-plan="Foundation" class="cell"><span class="cell-value">Service requests</span></td><td data-plan="Growth" class="cell"><span class="cell-value">Requests + portal access</span></td><td data-plan="Business" class="cell col-pick"><span class="cell-value">Requests + portal access</span></td><td data-plan="Enterprise" class="cell"><span class="cell-value">Requests + portal access</span></td></tr>
+                  <tr><th scope="row"><b>Customer Portal</b><small>Give customers access to upcoming service, quotations, contracts, service history, invoices, and request updates.</small></th><td data-plan="Foundation" class="cell"><span class="cell-value">—</span></td><td data-plan="Growth" class="cell"><span class="cell-value">✓</span></td><td data-plan="Business" class="cell col-pick"><span class="cell-value">✓</span></td><td data-plan="Enterprise" class="cell"><span class="cell-value">✓</span></td></tr>
+                  <tr><th scope="row"><b>Case Management</b><small>Track customer concerns, assign responsibility, and manage progress through a defined process.</small></th><td data-plan="Foundation" class="cell"><span class="cell-value">—</span></td><td data-plan="Growth" class="cell"><span class="cell-value">Standard workflow</span></td><td data-plan="Business" class="cell col-pick"><span class="cell-value">Configurable workflows</span></td><td data-plan="Enterprise" class="cell"><span class="cell-value">By agreement</span></td></tr>
+                  <tr><th scope="row"><b>Subcontractor Management</b><small>Coordinate external crews and their resources with access limited to their own assignments and related cases.</small></th><td data-plan="Foundation" class="cell"><span class="cell-value">—</span></td><td data-plan="Growth" class="cell"><span class="cell-value">—</span></td><td data-plan="Business" class="cell col-pick"><span class="cell-value">✓</span></td><td data-plan="Enterprise" class="cell"><span class="cell-value">✓</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="compare-group">
+            <div class="compare-title"><h3>Billing &amp; Payments</h3><p>Connect completed work and contract terms to invoices and payment follow-up.</p></div>
+            <div class="table-wrap" tabindex="0" role="region" aria-label="Billing &amp; Payments plan comparison">
+              <table class="matrix"><colgroup><col class="col-feature"><col><col><col class="col-pick"><col></colgroup>
+                <thead><tr><th scope="col">Feature</th><th scope="col">Foundation</th><th scope="col">Growth</th><th scope="col" class="col-pick">Business</th><th scope="col">Enterprise</th></tr></thead>
+                <tbody>
+                  <tr><th scope="row"><b>Invoicing</b><small>Prepare invoices from service records and agreed per-visit or seasonal contract terms.</small></th><td data-plan="Foundation" class="cell"><span class="cell-value">✓</span></td><td data-plan="Growth" class="cell"><span class="cell-value">✓</span></td><td data-plan="Business" class="cell col-pick"><span class="cell-value">✓</span></td><td data-plan="Enterprise" class="cell"><span class="cell-value">✓</span></td></tr>
+                  <tr><th scope="row"><b>Payments &amp; Receivables</b><small>Accept payments through Stripe and track outstanding balances.</small></th><td data-plan="Foundation" class="cell"><span class="cell-value">✓</span></td><td data-plan="Growth" class="cell"><span class="cell-value">✓</span></td><td data-plan="Business" class="cell col-pick"><span class="cell-value">✓</span></td><td data-plan="Enterprise" class="cell"><span class="cell-value">✓</span></td></tr>
+                  <tr><th scope="row"><b>Billing Automation</b><small>Generate invoices from configured service or billing schedules and automate payment reminders.</small></th><td data-plan="Foundation" class="cell"><span class="cell-value">Manual initiation</span></td><td data-plan="Growth" class="cell"><span class="cell-value">✓</span></td><td data-plan="Business" class="cell col-pick"><span class="cell-value">✓</span></td><td data-plan="Enterprise" class="cell"><span class="cell-value">✓</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="compare-group">
+            <div class="compare-title"><h3>Reporting &amp; Workflow Control</h3><p>See how the operation is performing and adapt processes as it grows.</p></div>
+            <div class="table-wrap" tabindex="0" role="region" aria-label="Reporting &amp; Workflow Control plan comparison">
+              <table class="matrix"><colgroup><col class="col-feature"><col><col><col class="col-pick"><col></colgroup>
+                <thead><tr><th scope="col">Feature</th><th scope="col">Foundation</th><th scope="col">Growth</th><th scope="col" class="col-pick">Business</th><th scope="col">Enterprise</th></tr></thead>
+                <tbody>
+                  <tr><th scope="row"><b>Operational Dashboards</b><small>Monitor work progress and operational status across your teams.</small></th><td data-plan="Foundation" class="cell"><span class="cell-value">—</span></td><td data-plan="Growth" class="cell"><span class="cell-value">Standard dashboards</span></td><td data-plan="Business" class="cell col-pick"><span class="cell-value">Configurable dashboards</span></td><td data-plan="Enterprise" class="cell"><span class="cell-value">By agreement</span></td></tr>
+                  <tr><th scope="row"><b>Business Performance Reporting</b><small>Review business results and resource performance using the data recorded in ServiceWand.</small></th><td data-plan="Foundation" class="cell"><span class="cell-value">—</span></td><td data-plan="Growth" class="cell"><span class="cell-value">—</span></td><td data-plan="Business" class="cell col-pick"><span class="cell-value">✓</span></td><td data-plan="Enterprise" class="cell"><span class="cell-value">✓</span></td></tr>
+                  <tr><th scope="row"><b>Custom Reports</b><small>Commission reports for specific management or customer requirements.</small></th><td data-plan="Foundation" class="cell"><span class="cell-value">—</span></td><td data-plan="Growth" class="cell"><span class="cell-value">—</span></td><td data-plan="Business" class="cell col-pick"><span class="cell-value">Paid add-on</span></td><td data-plan="Enterprise" class="cell"><span class="cell-value">By agreement</span></td></tr>
+                  <tr><th scope="row"><b>Workflow Configuration</b><small>Adapt process steps, responsibilities, and recurring actions to your operation.</small></th><td data-plan="Foundation" class="cell"><span class="cell-value">Standard workflows</span></td><td data-plan="Growth" class="cell"><span class="cell-value">Standard workflows</span></td><td data-plan="Business" class="cell col-pick"><span class="cell-value">Configurable workflows</span></td><td data-plan="Enterprise" class="cell"><span class="cell-value">By agreement</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="compare-group">
+            <div class="compare-title"><h3>Onboarding, Support &amp; Platform Services</h3><p>Get help setting up the system and agree additional requirements before work begins.</p></div>
+            <div class="table-wrap" tabindex="0" role="region" aria-label="Onboarding, Support &amp; Platform Services plan comparison">
+              <table class="matrix"><colgroup><col class="col-feature"><col><col><col class="col-pick"><col></colgroup>
+                <thead><tr><th scope="col">Feature</th><th scope="col">Foundation</th><th scope="col">Growth</th><th scope="col" class="col-pick">Business</th><th scope="col">Enterprise</th></tr></thead>
+                <tbody>
+                  <tr><th scope="row"><b>Data Migration Assistance</b><small>Assess and transfer agreed customer, property, workforce, vehicle, and equipment data.</small></th><td data-plan="Foundation" class="cell"><span class="cell-value">Limited scope</span></td><td data-plan="Growth" class="cell"><span class="cell-value">Limited scope</span></td><td data-plan="Business" class="cell col-pick"><span class="cell-value">By agreement</span></td><td data-plan="Enterprise" class="cell"><span class="cell-value">Custom scope</span></td></tr>
+                  <tr><th scope="row"><b>Setup &amp; Training</b><small>Configure the initial operation and introduce teams to their daily workflows.</small></th><td data-plan="Foundation" class="cell"><span class="cell-value">Standard scope</span></td><td data-plan="Growth" class="cell"><span class="cell-value">Standard scope</span></td><td data-plan="Business" class="cell col-pick"><span class="cell-value">Tailored scope</span></td><td data-plan="Enterprise" class="cell"><span class="cell-value">Custom implementation</span></td></tr>
+                  <tr><th scope="row"><b>Customer Support</b><small>Contact our team through the support channels available with your plan.</small></th><td data-plan="Foundation" class="cell"><span class="cell-value">Email, business hours</span></td><td data-plan="Growth" class="cell"><span class="cell-value">Email &amp; phone, business hours</span></td><td data-plan="Business" class="cell col-pick"><span class="cell-value">Email &amp; phone, business hours</span></td><td data-plan="Enterprise" class="cell"><span class="cell-value">By agreement</span></td></tr>
+                  <tr><th scope="row"><b>Enterprise Configuration</b><small>Assess API, integration, multi-region, governance, and service requirements for your organization.</small></th><td data-plan="Foundation" class="cell"><span class="cell-value">—</span></td><td data-plan="Growth" class="cell"><span class="cell-value">—</span></td><td data-plan="Business" class="cell col-pick"><span class="cell-value">—</span></td><td data-plan="Enterprise" class="cell"><span class="cell-value">By agreement</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="compare-notes"><p><b>Photo limits:</b> 10 / 20 / 25 per visit; Enterprise by agreement. Retention terms are still to be defined.</p><p><b>Website connection:</b> a link or embedded request form; custom website development is scoped separately.</p><p><b>Custom connections:</b> discuss requirements on any plan. Enterprise configuration covers broader organizational requirements.</p><p><b>Support:</b> proposed business-hours email on Foundation; email and phone on Growth and Business. Enterprise by agreement. 24/7 support is available by separate agreement. Response times and support scope are agreed individually.</p><p><b>Payments:</b> processing charges are separate from the subscription. Final fee terms to be confirmed.</p><p><b>Configuration:</b> configurable features do not include unlimited implementation labor.</p></div>
+          <div class="compare-cta">
+            <a class="btn btn-primary-ring plan-btn" href="/subscribe.html?plan=SERVICEWAND_FOUNDATION"><svg class="btn-star" aria-hidden="true"><use href="#i-star"></use></svg><span>Continue with Foundation</span></a>
+            <a class="btn btn-primary-ring plan-btn" href="/subscribe.html?plan=SERVICEWAND_GROWTH"><svg class="btn-star" aria-hidden="true"><use href="#i-star"></use></svg><span>Continue with Growth</span></a>
+            <a class="btn btn-secondary-filled plan-btn" href="/subscribe.html?plan=SERVICEWAND_PROFESSIONAL"><svg class="btn-star" aria-hidden="true"><use href="#i-star"></use></svg><span>Continue with Business</span></a>
+            <a class="btn btn-primary-ring plan-btn" href="/snow-removal-request-demo.html?cta_source=pricing_enterprise"><svg class="btn-star" aria-hidden="true"><use href="#i-star"></use></svg><span>Talk to Sales</span></a>
+          </div>
+        </div>
+      </details>
+      <div class="weather reveal" data-pricing-dynamic="true" data-pricing-api-base="/core-pim/api" data-pricing-organization="SERVICEWAND" data-pricing-currency="USD" data-pricing-price-type-code="RECURRENT" data-pricing-price-attribute-code="INTERVAL" data-pricing-price-attribute-values="1 month" data-pricing-product-type-code="FEATURE_ADD_ON" data-pricing-product-code="SERVICEWAND_WEATHER_INTELLIGENCE">
+        <div class="weather-mark" aria-hidden="true"><span class="weather-cloud">☁</span><span class="weather-flakes">❄ ❄ ❄</span></div>
+        <div class="weather-copy"><span class="pill pill--blue">Optional add-on</span><h3>Weather Intelligence</h3><p>Monitor weather conditions to inform planning and operational decisions.</p></div>
+        <div class="weather-price"><b>$1.95 <span>USD</span></b><p>per property / month</p><small>Example: 300 properties × $1.95 = $585 / month.</small></div>
+      </div>
+      <p class="footnote">Property expansion, additional optimization capacity, and scoped implementation services are available separately. Annual and off-season terms are being finalized.</p>
+    </div>
+  </section>
+
+  <section class="expansion surface-light" id="expansion" data-surface="light">
+    <div class="container">
+      <div class="lead-split">
+        <div>
+          <p class="eyebrow"><span>Expansion &amp; Services</span></p>
+          <h2 class="title">Add capacity. <span class="nowrap-break">Agree the scope before work starts.</span></h2>
+        </div>
+        <div class="lead-copy"><p>Expand your current plan where you need more volume. For implementation and custom work, we agree the deliverables and price with you before starting.</p></div>
+      </div>
+      <div class="tile-grid tile-grid--three">
+        <article class="tile tile--addon reveal"><span class="addon-icon" aria-hidden="true">＋</span><h3>Property expansion</h3><p>Add active property capacity while keeping the capabilities of your current plan.</p><small>All plans · Pack sizes &amp; prices to agree</small></article>
+        <article class="tile tile--addon reveal"><span class="addon-icon" aria-hidden="true">↗</span><h3>Additional optimization</h3><p>Add solver capacity for extra planning or recalculation when your operation needs it.</p><small>Growth and above · Usage terms to agree</small></article>
+        <article class="tile tile--addon reveal"><span class="addon-icon" aria-hidden="true">⌘</span><h3>Implementation &amp; custom work</h3><p>Additional migration, training, workflow configuration, dashboards, and custom reporting.</p><small>Quoted after scope review</small></article>
+      </div>
+      <div class="connect-strip reveal">
+        <div><b>Client-required reporting &amp; external connections</b><p>Tell us what information you need to exchange. We’ll assess access, format, and feasibility.</p></div>
+        <a class="btn btn-secondary-filled" href="/snow-removal-request-demo.html?cta_source=expansion_requirements"><svg class="btn-star" aria-hidden="true"><use href="#i-star"></use></svg><span>Discuss Your Requirements</span></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="faq surface-light" id="faq" data-surface="light">
+    <div class="container faq-inner">
+      <div class="head-center">
+        <p class="eyebrow"><span>Questions &amp; Answers</span></p>
+        <h2 class="title">A little more clarity.</h2>
+        <p class="head-intro">Route planning, field work, customer workflows, and choosing your plan.</p>
+      </div>
+      <div class="faq-contact"><p>Have a question about your operation?</p><a class="btn btn-secondary-filled" href="/snow-removal-request-demo.html?cta_source=faq_demo"><svg class="btn-star" aria-hidden="true"><use href="#i-star"></use></svg><span>Book a Demo</span></a></div>
+      <div class="faq-list">
+        <details class="faq-item" name="faq" open=""><summary><h3>Who is ServiceWand for?</h3><span class="round-icon" aria-hidden="true"><svg><use href="#i-arrow-down"></use></svg></span></summary><div class="faq-answer"><p>ServiceWand is built for snow and ice contractors coordinating multiple crews, vehicles, and commercial properties. It connects route planning with field work, customer service, quotations, and billing, with an entry plan for smaller teams.</p></div></details>
+        <details class="faq-item" name="faq"><summary><h3>Can I start with route optimization?</h3><span class="round-icon" aria-hidden="true"><svg><use href="#i-arrow-down"></use></svg></span></summary><div class="faq-answer"><p>Yes. Advanced route optimization is available from Growth. You’ll set up the properties, resources, and service requirements the solver needs, and can introduce the connected field and office workflows as your team is ready.</p></div></details>
+        <details class="faq-item" name="faq"><summary><h3>Do I need to optimize routes for every snowfall?</h3><span class="round-icon" aria-hidden="true"><svg><use href="#i-arrow-down"></use></svg></span></summary><div class="faq-answer"><p>No. You can reuse saved route templates for recurring service. When equipment availability or assignments change, you can reassign work and run optimization when it is needed.</p></div></details>
+        <details class="faq-item" name="faq"><summary><h3>What does the optimizer consider?</h3><span class="round-icon" aria-hidden="true"><svg><use href="#i-arrow-down"></use></svg></span></summary><div class="faq-answer"><p>It can account for equipment capabilities, property requirements, and expected service time. You can control how long optimization runs and preserve selected stops while adjusting the rest of the plan.</p></div></details>
+        <details class="faq-more">
+          <summary><span class="faq-more-label">Show more questions</span><span class="faq-less-label">Show fewer questions</span> <span class="round-icon" aria-hidden="true">＋</span></summary>
+          <div class="faq-list">
+        <details class="faq-item" name="faq"><summary><h3>Can I manage subcontractors alongside my own crews?</h3><span class="round-icon" aria-hidden="true"><svg><use href="#i-arrow-down"></use></svg></span></summary><div class="faq-answer"><p>Yes, on Business and Enterprise. Coordinate assignments, GPS activity, work records, and related cases while limiting subcontractors to their own operational scope. They can manage their own people and resources within the permissions you define.</p></div></details>
+        <details class="faq-item" name="faq"><summary><h3>Can ServiceWand help measure properties and prepare quotations?</h3><span class="round-icon" aria-hidden="true"><svg><use href="#i-arrow-down"></use></svg></span></summary><div class="faq-answer"><p>Business and Enterprise include area measurement and map-based quotations, with AI-assisted mapping capacity defined by the plan. Your team reviews the mapped areas and scope, then prepares the quotation using your services and pricing. Drawing service zones for field instructions is available on every plan.</p></div></details>
+        <details class="faq-item" name="faq"><summary><h3>Can I connect ServiceWand to my existing website?</h3><span class="round-icon" aria-hidden="true"><svg><use href="#i-arrow-down"></use></svg></span></summary><div class="faq-answer"><p>Yes. Add a service request form or link to your website. Plans with Customer Portal also let you give customers a clear entry point to their documents, service information, and requests. Custom website work is scoped separately.</p></div></details>
+        <details class="faq-item" name="faq"><summary><h3>Can customers book snow service instantly?</h3><span class="round-icon" aria-hidden="true"><svg><use href="#i-arrow-down"></use></svg></span></summary><div class="faq-answer"><p>The workflow begins with a service request. Your team reviews the property, requirements, and pricing before preparing a quotation and agreeing the service. The portal supports the customer relationship throughout that process.</p></div></details>
+        <details class="faq-item" name="faq"><summary><h3>Do we pay for every seasonal worker?</h3><span class="round-icon" aria-hidden="true"><svg><use href="#i-arrow-down"></use></svg></span></summary><div class="faq-answer"><p>No. Every plan includes unlimited users. You can add, replace, or remove employees as your workforce changes. Subcontractor management is included on Business and Enterprise.</p></div></details>
+        <details class="faq-item" name="faq"><summary><h3>Can crews and customers use different languages?</h3><span class="round-icon" aria-hidden="true"><svg><use href="#i-arrow-down"></use></svg></span></summary><div class="faq-answer"><p>ServiceWand supports localized interfaces and translated business information. AI-assisted translation can help with instructions, working information, customer requests, and replies. We’ll confirm the languages and translation capacity relevant to your operation during the demo.</p></div></details>
+        <details class="faq-item" name="faq"><summary><h3>How is completed work documented?</h3><span class="round-icon" aria-hidden="true"><svg><use href="#i-arrow-down"></use></svg></span></summary><div class="faq-answer"><p>Crews can record work times, job status, GPS activity, before-and-after photos, and issues. These records stay connected to the property and visit so your team can review work and answer customer questions. Photo limits are defined per visit in the plan comparison.</p></div></details>
+        <details class="faq-item" name="faq"><summary><h3>Does ServiceWand support seasonal contracts and per-visit invoicing?</h3><span class="round-icon" aria-hidden="true"><svg><use href="#i-arrow-down"></use></svg></span></summary><div class="faq-answer"><p>Yes. Invoicing can follow per-visit terms or seasonal billing schedules. Growth and higher plans add configured invoice generation and payment reminders. Customers can pay through Stripe.</p></div></details>
+        <details class="faq-item" name="faq"><summary><h3>Can you help us move from spreadsheets or another system?</h3><span class="round-icon" aria-hidden="true"><svg><use href="#i-arrow-down"></use></svg></span></summary><div class="faq-answer"><p>Yes. We review the customer, property, workforce, vehicle, and equipment data you want to bring across, then agree preparation, migration, setup, and training scope. Complex cleanup or additional implementation work is quoted separately.</p></div></details>
+        <details class="faq-item" name="faq"><summary><h3>What if a client requires reports in another portal?</h3><span class="round-icon" aria-hidden="true"><svg><use href="#i-arrow-down"></use></svg></span></summary><div class="faq-answer"><p>Share the requirements with us. We can assess a suitable report or integration, depending on the external system’s access and technical capabilities. Feasibility, deliverables, and fees are agreed before work begins.</p></div></details>
+        <details class="faq-item" name="faq"><summary><h3>Can we add more properties without changing plans?</h3><span class="round-icon" aria-hidden="true"><svg><use href="#i-arrow-down"></use></svg></span></summary><div class="faq-answer"><p>Property expansion lets you add capacity within your current plan. A higher plan gives access to additional capabilities, such as optimization, subcontractor management, or map-based quotations. Capacity and expansion terms in this preview remain under review.</p></div></details>
+            <h3 class="faq-group">Understanding snow &amp; ice operations</h3>
+        <details class="faq-item" name="faq"><summary><h3>What is snow removal software?</h3><span class="round-icon" aria-hidden="true"><svg><use href="#i-arrow-down"></use></svg></span></summary><div class="faq-answer"><p>Snow removal software helps contractors organize properties, resources, service visits, and customer records. ServiceWand connects those activities with route planning, field documentation, quotations, and invoicing in one operational platform.</p></div></details>
+        <details class="faq-item" name="faq"><summary><h3>What is the difference between route planning and route optimization?</h3><span class="round-icon" aria-hidden="true"><svg><use href="#i-arrow-down"></use></svg></span></summary><div class="faq-answer"><p>Route planning lets a dispatcher build and assign a route. Optimization uses the properties, resources, and constraints provided to the system to calculate a route plan. Dispatchers still control the information, settings, and operational decisions around that plan.</p></div></details>
+        <details class="faq-item" name="faq"><summary><h3>Can the same system support snow clearing and de-icing?</h3><span class="round-icon" aria-hidden="true"><svg><use href="#i-arrow-down"></use></svg></span></summary><div class="faq-answer"><p>Yes. Configure the services you provide, the resources they require, and the instructions for each property or service area. Keep the resulting work records connected to customer agreements and billing.</p></div></details>
+          </div>
+        </details>
+      </div>
+      <p class="faq-draft">Annual billing, off-season access, usage metering, data retention, and support hours will be added once the commercial terms are agreed.</p>
+    </div>
+  </section>
+
+  <section class="demo surface-dark" id="demo" data-surface="dark">
+    <div class="container">
+      <div class="demo-card reveal">
+        <div class="demo-head">
+          <p class="eyebrow"><span>Let’s connect your operation</span></p>
+          <h2 class="title">Show Us How You Operate. See How It Connects.</h2>
+        </div>
+        <div class="demo-copy">
+          <p class="subtitle">Choosing the best snow removal software starts with your properties, routes, crews, subcontractors, and billing requirements.</p>
+          <p class="body-copy">Walk us through how your operation works and see how ServiceWand can reduce manual coordination, connect your office and field teams, and support your operation today and through its next stage of growth.</p>
+          <a class="btn btn-primary-ring" href="/snow-removal-request-demo.html?cta_source=final_demo"><svg class="btn-star" aria-hidden="true"><use href="#i-star"></use></svg><span>Book a Demo</span></a>
+          <p class="demo-sign">Your teams. Your properties. Your workflows. One connected platform.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+<dialog class="shot-dialog" aria-label="ServiceWand interface">
+  <button class="shot-dialog-close" type="button" aria-label="Close image">×</button>
+  <img src="../../../content/snow-removal-software/media/4c171e80e9.webp" alt="" width="1512" height="746" loading="lazy" decoding="async">
+</dialog>
+<script src="../../14-pricing/_shared/pricing-runtime.js"></script>
+<script src="./block.js"></script>
+</body>
+</html>

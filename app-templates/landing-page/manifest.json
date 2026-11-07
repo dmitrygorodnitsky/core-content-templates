@@ -78,6 +78,11 @@
       "id": "15-blog",
       "label": "15 · Blog",
       "count": 2
+    },
+    {
+      "id": "16-snow-removal",
+      "label": "16 · Snow Removal",
+      "count": 1
     }
   ],
   "blocks": [
@@ -1014,6 +1019,20 @@
       "canonical": true,
       "theme": "light",
       "sourceLabel": "cms-templates/BLOG_POST_JTE/block_template_config.json",
+      "preview": {},
+      "previewVariants": [],
+      "background": null,
+      "hasJs": true
+    },
+    {
+      "id": "snow-removal.page",
+      "category": "16-snow-removal",
+      "path": "blocks/16-snow-removal/snow-removal.page",
+      "title": "Snow Removal · landing monoblock",
+      "description": "Every section of the approved Snow Removal landing, from the hero to the final CTA, as one CMS content block placed between the production header and footer. Copy, CTA URLs, cta_source values, alt texts and media are parameters; plan names, monthly prices, included properties and the Weather add-on price are filled from core-pim, with the parameter values as fallback.",
+      "canonical": false,
+      "theme": "light",
+      "sourceLabel": "Approved Snow Removal landing v4 (SEO-checked, 2026-11-07 additions), imported into this block",
       "preview": {},
       "previewVariants": [],
       "background": null,

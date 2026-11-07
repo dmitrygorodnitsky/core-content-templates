@@ -90,7 +90,7 @@ const blankLocalizedLike = (value) => {
   return { en: " " };
 };
 
-const completeMappedValues = (snapshot) => {
+export const completeMappedValues = (snapshot) => {
   const header = { ...snapshot.templates.header.values };
   const footer = { ...snapshot.templates.footer.values };
   if (!Object.hasOwn(header, "locale_selector_trigger_label")) {
@@ -104,7 +104,7 @@ const completeMappedValues = (snapshot) => {
   return { header, footer };
 };
 
-const applyValues = ({ template, values }) => {
+export const applyValues = ({ template, values }) => {
   const prefix = `${template.code}_`;
   const valuesByToken = new Map(
     Object.entries(values).map(([localCode, value]) => [codeToken(localCode), value]),

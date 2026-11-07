@@ -1,0 +1,108 @@
+[
+  {
+    "code": "ROOT_META_TITLE",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Meta Title",
+        "DESCRIPTION": "SEO title for the generated landing page."
+      }
+    },
+    "value": "Snow Removal Software & App | ServiceWand"
+  },
+  {
+    "code": "ROOT_META_DESCRIPTION",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Meta Description",
+        "DESCRIPTION": "SEO meta description for the generated landing page."
+      }
+    },
+    "value": "Connect quoting, scheduling, routing, field work, customer service, and billing in one snow removal software platform with ServiceWand."
+  },
+  {
+    "code": "SEO_LD_SCHEMA",
+    "type": "LOCALIZED_JSON_OBJECT",
+    "nls": {
+      "en": {
+        "NAME": "SEO LD Schema",
+        "DESCRIPTION": "Localized JSON-LD structured data object rendered in the root head as application/ld+json."
+      }
+    },
+    "value": {
+      "en": {
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        "name": "Snow Removal Software & App | ServiceWand",
+        "description": "Connect quoting, scheduling, routing, field work, customer service, and billing in one snow removal software platform with ServiceWand."
+      }
+    }
+  },
+  {
+    "code": "FAVICON_IMG",
+    "type": "IMAGE",
+    "nls": {
+      "en": {
+        "NAME": "Favicon Image",
+        "DESCRIPTION": "Default favicon image asset rendered by the root template."
+      }
+    },
+    "value": "77084eeb-daa5-47ee-8dd7-fad0fbbd0806"
+  },
+  {
+    "code": "FAVICON_IMG_NAME",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Favicon Image Name",
+        "DESCRIPTION": "Default favicon image file name rendered by the root template."
+      }
+    },
+    "value": "favicon.svg"
+  },
+  {
+    "code": "FAVICON_LIGHT_IMG",
+    "type": "IMAGE",
+    "nls": {
+      "en": {
+        "NAME": "Light Favicon Image",
+        "DESCRIPTION": "Optional light color-scheme favicon image asset reserved by the production root template."
+      }
+    },
+    "value": "052bcad4-6e44-4086-968d-85bea89c7ae7"
+  },
+  {
+    "code": "FAVICON_LIGHT_IMG_NAME",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Light Favicon Image Name",
+        "DESCRIPTION": "Optional light color-scheme favicon image file name reserved by the production root template."
+      }
+    },
+    "value": "favicon-dark.svg"
+  },
+  {
+    "code": "FAVICON_DARK_IMG",
+    "type": "IMAGE",
+    "nls": {
+      "en": {
+        "NAME": "Dark Favicon Image",
+        "DESCRIPTION": "Optional dark color-scheme favicon image asset reserved by the production root template."
+      }
+    },
+    "value": "a6048eb6-a6ce-45f8-b727-68f96e5958ea"
+  },
+  {
+    "code": "FAVICON_DARK_IMG_NAME",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Dark Favicon Image Name",
+        "DESCRIPTION": "Optional dark color-scheme favicon image file name reserved by the production root template."
+      }
+    },
+    "value": "favicon-light.svg"
+  }
+]

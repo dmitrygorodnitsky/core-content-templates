@@ -20,6 +20,7 @@ const categoryLabels = {
   "13-signature": "13 · Signature",
   "14-pricing": "14 · Pricing",
   "15-blog": "15 · Blog",
+  "16-snow-removal": "16 · Snow Removal",
 };
 
 const listBlockJsonFiles = (dir) => {
