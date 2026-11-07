@@ -40,11 +40,14 @@ function send(url, options = {}) {
   return new Promise((resolve, reject) => {
     const body = options.body === undefined ? null : Buffer.from(String(options.body));
     const headers = { ...(options.headers || {}), Connection: "close", ...(body ? { "Content-Length": body.length } : {}) };
-    const request = https.request(new URL(url), { method: options.method || "GET", agent: false, headers }, (response) => {
+    const request = https.request(new URL(url), { method: options.method || "GET", agent: false, headers, timeout: 300000 }, (response) => {
       const chunks = [];
       response.on("data", (chunk) => chunks.push(chunk));
+      response.on("aborted", () => reject(new Error(`${options.method || "GET"} ${url} aborted`)));
+      response.on("error", reject);
       response.on("end", () => resolve({ status: response.statusCode, node: response.headers["x-node-id"] || "", text: Buffer.concat(chunks).toString() }));
     });
+    request.on("timeout", () => request.destroy(new Error(`${options.method || "GET"} ${url} timed out`)));
     request.on("error", reject);
     request.end(body);
   });
