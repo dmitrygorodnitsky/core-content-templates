@@ -10,14 +10,6 @@
   "valuesByParamCode": {
     "ROOT_META_TITLE": "Snow Removal Software & App | ServiceWand",
     "ROOT_META_DESCRIPTION": "Connect quoting, scheduling, routing, field work, customer service, and billing in one snow removal software platform with ServiceWand.",
-    "SEO_LD_SCHEMA": {
-      "en": {
-        "@context": "https://schema.org",
-        "@type": "WebPage",
-        "name": "Snow Removal Software & App | ServiceWand",
-        "description": "Connect quoting, scheduling, routing, field work, customer service, and billing in one snow removal software platform with ServiceWand."
-      }
-    },
     "FAVICON_IMG": "77084eeb-daa5-47ee-8dd7-fad0fbbd0806",
     "FAVICON_IMG_NAME": "favicon.svg",
     "FAVICON_LIGHT_IMG": "052bcad4-6e44-4086-968d-85bea89c7ae7",

@@ -54,6 +54,38 @@ export const assertSeo = (main) => {
   return report;
 };
 
+export const structuredData = (html) => {
+  const blocks = [...html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)].map((match) => JSON.parse(match[1]));
+  assert.equal(blocks.length, 1, "the page has one JSON-LD block");
+  const nodes = blocks[0]["@graph"] || [];
+  const byType = (type) => nodes.filter((node) => node["@type"] === type);
+  return { nodes, byType };
+};
+
+export const assertStructuredData = (head, main) => {
+  const { nodes, byType } = structuredData(head);
+  const defined = [];
+  const referenced = [];
+  const walk = (value) => {
+    if (Array.isArray(value)) return value.forEach(walk);
+    if (!value || typeof value !== "object") return;
+    if (value["@id"]) (Object.keys(value).length === 1 ? referenced : defined).push(value["@id"]);
+    Object.values(value).forEach(walk);
+  };
+  walk(nodes);
+  assert.equal(new Set(defined).size, defined.length, "JSON-LD node ids are unique");
+  assert.deepEqual(referenced.filter((id) => !defined.includes(id)), [], "every JSON-LD reference resolves inside the graph");
+  const [page] = byType("WebPage");
+  assert.equal(page.name, plain(head.match(/<title>([\s\S]*?)<\/title>/)[1]), "WebPage name equals the title");
+  assert.equal(page.description, plain(head.match(/<meta name="description" content="([^"]*)"/)[1]), "WebPage description equals the meta description");
+  const visible = [...main.matchAll(/<details class="faq-item"[^>]*><summary><h3>([\s\S]*?)<\/h3>[\s\S]*?<div class="faq-answer">([\s\S]*?)<\/div><\/details>/g)].map((match) => [plain(match[1]), plain(match[2])]);
+  const [faq] = byType("FAQPage");
+  assert.deepEqual(faq.mainEntity.map((item) => [item.name, item.acceptedAnswer.text]), visible, "FAQPage equals the visible FAQ, in order");
+  const [list] = byType("ItemList");
+  for (const item of list.itemListElement) assert.match(main, new RegExp(`<section\\b[^>]*\\bid="${item.url.split("#")[1]}"`), `ItemList anchor ${item.url} exists`);
+  return { nodes: nodes.length, faq: faq.mainEntity.length };
+};
+
 const expectedCtaHrefs = () => [...new Set(Object.keys(pack)
   .filter((code) => /_CTA_\d+_URL$/.test(code))
   .map((code) => {
@@ -143,6 +175,7 @@ const checkOffline = () => {
     const main = extractMain(rendered);
     const report = assertSeo(main);
     const ctas = assertCtas(main);
+    const schema = assertStructuredData(renderTemplate(payload.root.head, payload.root.parameters), main);
     const lazy = [...main.matchAll(/<img\b[^>]*>/g)].map((match) => match[0]);
     assert.equal(lazy.filter((tag) => !/loading="lazy"/.test(tag) && !/fetchpriority="high"/.test(tag)).length, 0, "every image below the hero is lazy-loaded");
     assert.match(main, /<video\b[^>]*preload="none"[^>]*data-poster=/, "the route replay poster is deferred");
@@ -155,7 +188,7 @@ const checkOffline = () => {
     assert.equal(content.javascript.includes("ns.selection = Object.freeze"), true, "the configurator ships the subscription flow's selection rules");
     const contentBytes = Buffer.byteLength(content.html) + Buffer.byteLength(content.css) + Buffer.byteLength(content.javascript);
     const media = fs.existsSync(path.join(contentDir, "media.json")) ? Object.keys(JSON.parse(fs.readFileSync(path.join(contentDir, "media.json"), "utf8"))).length : 0;
-    console.log(`snow-removal-landing-check ok: deterministic ${Object.keys(hashesA).length} files, ${report.headings.length} headings, ${Object.keys(report.counts).length} keyword counts, ${ctas.length} CTAs, ${codes.length} content parameters, media ids ${media}`);
+    console.log(`snow-removal-landing-check ok: deterministic ${Object.keys(hashesA).length} files, ${report.headings.length} headings, ${Object.keys(report.counts).length} keyword counts, ${ctas.length} CTAs, JSON-LD ${schema.nodes} nodes with ${schema.faq} FAQ, ${codes.length} content parameters, media ids ${media}`);
     console.log(`content template weight: html ${content.html.length} + css ${content.css.length} + js ${content.javascript.length} = ${contentBytes} bytes`);
   } finally {
     fs.rmSync(first, { recursive: true, force: true });
@@ -171,6 +204,7 @@ const checkLive = async (url, rounds) => {
     const main = extractMain(page.html);
     const report = assertSeo(main);
     const ctas = assertCtas(main);
+    assertStructuredData(page.html.slice(0, page.html.indexOf("</head>")), main);
     assert.equal(/\$\{[A-Z][A-Z0-9_]*(?:@[A-Z_]+)?\}/.test(main), false, "no unrendered CMS placeholders in the main content");
     nodes.set(page.node || `round-${round}`, { bytes: Buffer.byteLength(page.html), ms: page.ms, ctas: ctas.length, headings: report.headings.length });
   }

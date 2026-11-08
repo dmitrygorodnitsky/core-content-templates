@@ -3,6 +3,7 @@ import { dirname, join, relative, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { composeCmsFamily } from "./compose-cms-family.mjs";
 import { applyValues, completeMappedValues } from "./export-production-chrome-templates.mjs";
+import { buildSeoGraph } from "./snow-removal-landing-seo-graph.mjs";
 
 const scriptsDir = dirname(fileURLToPath(import.meta.url));
 const landingRoot = resolve(scriptsDir, "..");
@@ -136,7 +137,11 @@ export const exportSnowRemovalLanding = ({ outputDir = DEFAULT_OUT, quiet = fals
   mkdirSync(staging, { recursive: true });
   try {
     const valuesPath = join(staging, "values.json");
-    writeJson(valuesPath, { ...pack, valuesByParamCode: { ...pack.valuesByParamCode, ...mediaValues(block, media) } });
+    const blockHtml = readFileSync(join(landingRoot, "blocks", "16-snow-removal", "snow-removal.page", "block.html"), "utf8");
+    const seo = readJson(join(CONTENT_DIR, "seo-graph.json"));
+    const values = { ...pack.valuesByParamCode, ...mediaValues(block, media) };
+    values.SEO_LD_SCHEMA = { [seo.language]: buildSeoGraph({ spec, values, blockHtml, block, media, seo }) };
+    writeJson(valuesPath, { ...pack, valuesByParamCode: values });
     const family = composeCmsFamily({ specPath: SPEC, outDir: join(staging, "build"), valuesPath });
     const mapped = completeMappedValues(readJson(CHROME_VALUES));
     const children = family.children.map((child) => {

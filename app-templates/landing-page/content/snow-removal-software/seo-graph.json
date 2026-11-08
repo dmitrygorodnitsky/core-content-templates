@@ -1,0 +1,120 @@
+{
+  "$schema": "lab-ui/seo-graph@1",
+  "source": "Production servicewand.com page 72 SEO_LD_SCHEMA, read 2026-11-08, reduced to what the new page states.",
+  "origin": "https://dev-1.servicewand.com",
+  "language": "en",
+  "heroImage": "hero-snow.webp",
+  "heroCaption": "Snow plow trucks and a skid steer clearing a commercial parking lot during a night snowfall",
+  "breadcrumb": [
+    {
+      "name": "Home",
+      "path": "/"
+    },
+    {
+      "name": "Field Service",
+      "path": "/industries/field-service"
+    },
+    {
+      "name": "Snow Removal Software"
+    }
+  ],
+  "nodes": [
+    {
+      "@type": "WebSite",
+      "@id": "https://servicewand.com/#website",
+      "url": "https://servicewand.com/",
+      "name": "ServiceWand",
+      "alternateName": "Service Wand",
+      "publisher": {
+        "@id": "https://servicewand.com/#organization"
+      }
+    },
+    {
+      "@type": "Organization",
+      "@id": "https://servicewand.com/#organization",
+      "name": "ServiceWand",
+      "alternateName": "Service Wand",
+      "url": "https://servicewand.com/",
+      "logo": {
+        "@type": "ImageObject",
+        "@id": "https://servicewand.com/#logo",
+        "url": "https://servicewand.com/core/image/9927e431-1812-4786-8bbf-394bd75abb2e/get",
+        "contentUrl": "https://servicewand.com/core/image/9927e431-1812-4786-8bbf-394bd75abb2e/get",
+        "caption": "ServiceWand"
+      },
+      "image": {
+        "@id": "https://servicewand.com/#logo"
+      },
+      "sameAs": [
+        "https://www.linkedin.com/company/service-wand",
+        "https://www.facebook.com/servicewand",
+        "https://twitter.com/servicewand"
+      ],
+      "contactPoint": [
+        {
+          "@type": "ContactPoint",
+          "contactType": "customer support",
+          "email": "support@servicewand.com",
+          "availableLanguage": [
+            "English"
+          ]
+        },
+        {
+          "@type": "ContactPoint",
+          "contactType": "partnerships",
+          "email": "partners@servicewand.com",
+          "availableLanguage": [
+            "English"
+          ]
+        }
+      ]
+    },
+    {
+      "@type": "SoftwareApplication",
+      "@id": "{page}#software",
+      "name": "ServiceWand Snow Removal Software",
+      "url": "{page}",
+      "applicationCategory": "BusinessApplication",
+      "applicationSubCategory": "Snow removal software",
+      "operatingSystem": "Web",
+      "description": "{description}",
+      "publisher": {
+        "@id": "https://servicewand.com/#organization"
+      },
+      "featureList": "{sections}",
+      "offers": {
+        "@type": "Offer",
+        "url": "{page}#pricing",
+        "description": "Foundation, Growth and Business plans with monthly or yearly billing; Enterprise scope and pricing are agreed with sales.",
+        "seller": {
+          "@id": "https://servicewand.com/#organization"
+        }
+      }
+    },
+    {
+      "@type": "Service",
+      "@id": "{page}#service",
+      "name": "Snow removal software implementation",
+      "serviceType": "Snow removal software",
+      "provider": {
+        "@id": "https://servicewand.com/#organization"
+      },
+      "areaServed": [
+        {
+          "@type": "Country",
+          "name": "Canada"
+        },
+        {
+          "@type": "Country",
+          "name": "United States"
+        },
+        {
+          "@type": "Country",
+          "name": "United Kingdom"
+        }
+      ],
+      "description": "Data migration assistance, guided setup and training, support for active operations and essential integrations for snow and ice contractors.",
+      "url": "{page}#onboarding"
+    }
+  ]
+}
