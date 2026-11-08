@@ -2493,6 +2493,14 @@
       "preserve_default": true
     },
     {
+      "code": "platform_cta_2_code",
+      "type": "STRING",
+      "name": "Platform CTA partner type",
+      "description": "Partner type code the partner page needs to show its form (IMPLEMENTATION_PARTNER, STRATEGIC_PARTNER, TECHNOLOGY_PARTNER or REFERRAL_CHANNEL_PARTNER).",
+      "default": "STRATEGIC_PARTNER",
+      "preserve_default": true
+    },
+    {
       "code": "platform_label_3",
       "type": "LOCALIZED_STRING_SS",
       "name": "Platform text",

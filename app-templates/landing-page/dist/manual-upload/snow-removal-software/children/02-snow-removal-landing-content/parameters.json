@@ -3114,6 +3114,17 @@
     "value": "lawn_care_partner"
   },
   {
+    "code": "SNOW_PLATFORM_CTA_2_CODE",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Platform CTA partner type",
+        "DESCRIPTION": "Partner type code the partner page needs to show its form (IMPLEMENTATION_PARTNER, STRATEGIC_PARTNER, TECHNOLOGY_PARTNER or REFERRAL_CHANNEL_PARTNER)."
+      }
+    },
+    "value": "STRATEGIC_PARTNER"
+  },
+  {
     "code": "SNOW_PLATFORM_LABEL_3",
     "type": "LOCALIZED_STRING_SS",
     "nls": {

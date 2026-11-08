@@ -94,8 +94,9 @@ const expectedCtaHrefs = (values) => [...new Set(Object.keys(values)
   .map((code) => {
     const source = values[code.replace(/_URL$/, "_SOURCE")];
     const plan = values[code.replace(/_URL$/, "_PLAN")];
+    const partner = values[code.replace(/_URL$/, "_CODE")];
     const href = source ? `${values[code]}?cta_source=${source}` : values[code];
-    return plan ? `${href}&plan=${plan}` : href;
+    return `${href}${plan ? `&plan=${plan}` : ""}${partner ? `&code=${partner}` : ""}`;
   })
   .concat(values.SNOW_PRICING_SUBSCRIBE_URL))]
   .sort();
