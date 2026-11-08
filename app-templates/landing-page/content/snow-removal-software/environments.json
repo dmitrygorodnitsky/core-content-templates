@@ -1,0 +1,28 @@
+{
+  "$schema": "lab-ui/landing-environments@1",
+  "default": "dev-1",
+  "environments": {
+    "dev-1": {
+      "origin": "https://dev-1.servicewand.com",
+      "media": "media.json",
+      "mediaLibraryParent": "SERVICEWAND",
+      "outputDir": "snow-removal-software",
+      "values": {}
+    },
+    "servicewand": {
+      "origin": "https://servicewand.com",
+      "media": "media.servicewand.json",
+      "mediaLibraryParent": null,
+      "outputDir": "snow-removal-software-servicewand",
+      "values": {
+        "SNOW_PRICING_SUBSCRIBE_URL": "/snow-removal-request-demo.html?cta_source=pricing_subscribe",
+        "SNOW_PRICING_CTA_1_URL": "/snow-removal-request-demo.html?cta_source=pricing_subscribe&plan=SERVICEWAND_FOUNDATION",
+        "SNOW_PRICING_CTA_2_URL": "/snow-removal-request-demo.html?cta_source=pricing_subscribe&plan=SERVICEWAND_GROWTH",
+        "SNOW_PRICING_CTA_3_URL": "/snow-removal-request-demo.html?cta_source=pricing_subscribe&plan=SERVICEWAND_PROFESSIONAL",
+        "SNOW_PRICING_CTA_5_URL": "/snow-removal-request-demo.html?cta_source=pricing_subscribe&plan=SERVICEWAND_FOUNDATION",
+        "SNOW_PRICING_CTA_6_URL": "/snow-removal-request-demo.html?cta_source=pricing_subscribe&plan=SERVICEWAND_GROWTH",
+        "SNOW_PRICING_CTA_7_URL": "/snow-removal-request-demo.html?cta_source=pricing_subscribe&plan=SERVICEWAND_PROFESSIONAL"
+      }
+    }
+  }
+}

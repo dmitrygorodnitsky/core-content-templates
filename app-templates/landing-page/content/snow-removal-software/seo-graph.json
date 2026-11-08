@@ -1,7 +1,6 @@
 {
   "$schema": "lab-ui/seo-graph@1",
   "source": "Production servicewand.com page 72 SEO_LD_SCHEMA, read 2026-11-08, reduced to what the new page states.",
-  "origin": "https://dev-1.servicewand.com",
   "language": "en",
   "heroImage": "hero-snow.webp",
   "heroCaption": "Snow plow trucks and a skid steer clearing a commercial parking lot during a night snowfall",

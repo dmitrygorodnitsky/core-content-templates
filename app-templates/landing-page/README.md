@@ -169,8 +169,11 @@ The approved Snow Removal landing is one content block,
 footer (`compositions/specs/snow-removal-software.spec.json`). Copy, CTA URLs,
 `cta_source` values and alt texts live in
 `content/snow-removal-software/parameter-values.json`; the heading and keyword
-contract in `seo-contract.json`; compressed media in `media/` and their dev-1
-media library ids in `media.json`. Plan names, monthly prices, included
+contract in `seo-contract.json`; compressed media in `media/`. Deploy targets
+live in `environments.json`: each names its origin (used by the JSON-LD graph),
+its media id map (`media.json` for dev-1, `media.servicewand.json` for
+servicewand.com), its package directory under `dist/manual-upload/` and the
+parameter values it overrides. Plan names, monthly prices, included
 properties and the Weather add-on price are read from core-pim through
 `blocks/14-pricing/_shared/pricing-runtime.js`; the parameter values are the
 fallback. The comparison rows stay parameters, with the Active Properties row
@@ -182,13 +185,16 @@ subscription flow's own `core.js`, `catalog.js` and `selection.js`
 block's `source.localScripts`), so the landing applies the same catalog,
 compatibility and pack-limit rules as checkout. That is a deliberate
 cross-zone input: a change to those files changes this block on its next
-export. Continue and Choose open `/subscribe.html?plan=…&period=…&packs=…&weather=…`;
+export. Continue and Choose open `/subscribe.html?plan=…&period=…&packs=…&weather=…`
+on dev-1; servicewand.com has no `/subscribe.html`, so there they open
+`/snow-removal-request-demo.html?cta_source=pricing_subscribe&plan=…&period=…&packs=…&weather=…`.
 Routing and AI Credits show as coming soon and never enter totals or links.
 
 ```bash
-node app-templates/landing-page/scripts/export-snow-removal-landing-manual.mjs
-node app-templates/landing-page/scripts/snow-removal-landing-check.mjs
+node app-templates/landing-page/scripts/export-snow-removal-landing-manual.mjs [--env servicewand]
+node app-templates/landing-page/scripts/snow-removal-landing-check.mjs [--env dev-1|servicewand]
 node app-templates/landing-page/scripts/snow-removal-landing-check.mjs --url https://dev-1.servicewand.com/industries/field-service/snow-removal-software-new
+node app-templates/landing-page/scripts/snow-removal-landing-check.mjs --url https://servicewand.com/industries/field-service/snow-removal-software-new
 
 SERVICEWAND_API_KEY=... node app-templates/landing-page/scripts/upload-snow-removal-landing-media.mjs [--live]
 SERVICEWAND_API_KEY=... node app-templates/landing-page/scripts/upload-cms-family.mjs \
@@ -200,9 +206,14 @@ SERVICEWAND_API_KEY=... node app-templates/landing-page/scripts/wire-snow-remova
   --page-url /industries/field-service/snow-removal-software-new [--live]
 ```
 
+For servicewand.com pass `--env servicewand --allow-production` to the media
+uploader and the wiring script, export with `--env servicewand`, and upload
+`dist/manual-upload/snow-removal-software-servicewand` to
+`https://servicewand.com/core` with `--require-missing` the first time.
+
 The flat upload writes the root's packaged child slot back, so run the wiring
 script after every upload: it restores the include lines, keeps the parent
-links and the page, and clears the render cache on both CMS nodes.
+links and the page, and clears the render cache on every CMS node it reaches.
 
 ## CMS Parameter Contract
 

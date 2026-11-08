@@ -1,18 +1,17 @@
-import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { dirname, join, relative, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { composeCmsFamily } from "./compose-cms-family.mjs";
 import { applyValues, completeMappedValues } from "./export-production-chrome-templates.mjs";
 import { buildSeoGraph } from "./snow-removal-landing-seo-graph.mjs";
+import { SNOW_CONTENT_DIR, snowEnvironment, snowEnvironmentArgument } from "./snow-removal-landing-environments.mjs";
 
 const scriptsDir = dirname(fileURLToPath(import.meta.url));
 const landingRoot = resolve(scriptsDir, "..");
 const SPEC = join(landingRoot, "compositions", "specs", "snow-removal-software.spec.json");
 const CHROME_VALUES = join(landingRoot, "content", "servicewand-production-chrome", "parameter-values.json");
-const CONTENT_DIR = join(landingRoot, "content", "snow-removal-software");
-const DEFAULT_OUT = join(landingRoot, "dist", "manual-upload", "snow-removal-software");
+const CONTENT_DIR = SNOW_CONTENT_DIR;
 const CONTENT_CODE = "SNOW_REMOVAL_LANDING_CONTENT";
-const PREVIEW_ORIGIN = "https://dev-1.servicewand.com";
 
 const readJson = (file) => JSON.parse(readFileSync(file, "utf8"));
 const writeText = (file, value) => {
@@ -105,9 +104,9 @@ const splitTemplate = (dir, template) => {
   writeJson(join(dir, "parameters.json"), template.parameters || []);
 };
 
-const previewDocument = ({ root, children, mediaById }) => {
+const previewDocument = ({ root, children, mediaById, origin }) => {
   const parameters = [root, ...children].flatMap((template) => template.parameters || []);
-  const local = (id, match) => (mediaById.has(id) ? `../../../content/snow-removal-software/media/${mediaById.get(id)}` : `${PREVIEW_ORIGIN}${match}`);
+  const local = (id, match) => (mediaById.has(id) ? `../../../content/snow-removal-software/media/${mediaById.get(id)}` : `${origin}${match}`);
   const localMedia = (html) => html.replace(/\/core\/(?:image\/([^"'\s/]+)\/get\/[^"'\s,)]+|api\/video\/([^"'\s/]+)\/stream\/[^"'\s,)]+|api\/media-asset\/([^"'\s/]+)\/get)/g, (match, image, video, asset) => local(image || video || asset, match));
   const render = (source) => localMedia(renderTemplate(source, parameters));
   const sections = children.map((child) => `<style>${render(child.css)}</style>\n<script>${render(child.javascript)}</script>\n${render(child.html)}`).join("\n");
@@ -124,11 +123,12 @@ ${sections}
 </html>`;
 };
 
-export const exportSnowRemovalLanding = ({ outputDir = DEFAULT_OUT, quiet = false } = {}) => {
+export const exportSnowRemovalLanding = ({ environment = snowEnvironment(), outputDir = environment.outputDir, quiet = false } = {}) => {
   const spec = readJson(SPEC);
   const pack = readJson(join(CONTENT_DIR, "parameter-values.json"));
-  const mediaFile = join(CONTENT_DIR, "media.json");
-  const media = existsSync(mediaFile) ? readJson(mediaFile) : {};
+  const { media } = environment;
+  const unknown = Object.keys(environment.values).filter((code) => !Object.hasOwn(pack.valuesByParamCode, code));
+  if (unknown.length) throw new Error(`Environment ${environment.name} overrides unknown parameters: ${unknown.join(", ")}`);
   const block = readJson(join(landingRoot, "blocks", "16-snow-removal", "snow-removal.page", "block.json"));
   const out = resolve(outputDir);
   const distRoot = join(landingRoot, "dist");
@@ -139,8 +139,8 @@ export const exportSnowRemovalLanding = ({ outputDir = DEFAULT_OUT, quiet = fals
     const valuesPath = join(staging, "values.json");
     const blockHtml = readFileSync(join(landingRoot, "blocks", "16-snow-removal", "snow-removal.page", "block.html"), "utf8");
     const seo = readJson(join(CONTENT_DIR, "seo-graph.json"));
-    const values = { ...pack.valuesByParamCode, ...mediaValues(block, media) };
-    values.SEO_LD_SCHEMA = { [seo.language]: buildSeoGraph({ spec, values, blockHtml, block, media, seo }) };
+    const values = { ...pack.valuesByParamCode, ...environment.values, ...mediaValues(block, media) };
+    values.SEO_LD_SCHEMA = { [seo.language]: buildSeoGraph({ spec, values, blockHtml, block, media, seo, origin: environment.origin }) };
     writeJson(valuesPath, { ...pack, valuesByParamCode: values });
     const family = composeCmsFamily({ specPath: SPEC, outDir: join(staging, "build"), valuesPath });
     const mapped = completeMappedValues(readJson(CHROME_VALUES));
@@ -162,8 +162,8 @@ export const exportSnowRemovalLanding = ({ outputDir = DEFAULT_OUT, quiet = fals
     splitTemplate(join(out, "root"), root);
     children.forEach((child, index) => splitTemplate(join(out, "children", `${String(index + 1).padStart(2, "0")}-${child.code.toLowerCase().replaceAll("_", "-")}`), child));
     const mediaById = new Map(Object.values(media).map((item) => [item.id, item.name]));
-    writeText(join(out, "preview.html"), previewDocument({ root, children, mediaById }));
-    writeText(join(out, "README.md"), `# Manual upload: snow-removal-software
+    writeText(join(out, "preview.html"), previewDocument({ root, children, mediaById, origin: environment.origin }));
+    writeText(join(out, "README.md"), `# Manual upload: ${environment.outputName}
 
 Generated by \`scripts/export-snow-removal-landing-manual.mjs\` from
 \`compositions/specs/snow-removal-software.spec.json\`, the
@@ -171,7 +171,7 @@ Generated by \`scripts/export-snow-removal-landing-manual.mjs\` from
 production chrome snapshot. Do not edit by hand.
 
 Templates: \`${root.code}\` (root), ${children.map((child) => `\`${child.code}\``).join(", ")}.
-Media ids come from \`content/snow-removal-software/media.json\`
+Media ids come from \`content/snow-removal-software/${environment.mediaName}\`
 (\`upload-snow-removal-landing-media.mjs\`). \`preview.html\` uses the local
 media and fonts.
 
@@ -192,6 +192,7 @@ PageContext and render cache.
 };
 
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
+  const environment = snowEnvironmentArgument(process.argv);
   const index = process.argv.indexOf("--out");
-  exportSnowRemovalLanding({ outputDir: index > 0 ? process.argv[index + 1] : DEFAULT_OUT });
+  exportSnowRemovalLanding({ environment, outputDir: index > 0 ? process.argv[index + 1] : environment.outputDir });
 }

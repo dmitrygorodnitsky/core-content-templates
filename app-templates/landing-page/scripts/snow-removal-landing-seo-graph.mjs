@@ -11,14 +11,14 @@ export const plainText = (html) => String(html ?? "")
 
 const NON_FEATURE_ANCHORS = new Set(["#pricing", "#faq"]);
 
-export const buildSeoGraph = ({ spec, values, blockHtml, block, media, seo }) => {
+export const buildSeoGraph = ({ spec, values, blockHtml, block, media, seo, origin }) => {
   const english = (value) => (value && typeof value === "object" ? value.en ?? Object.values(value)[0] : value);
   const text = (placeholder) => {
     const code = `SNOW_${placeholder.toUpperCase()}`;
     if (!(code in values)) throw new Error(`SEO graph: no value for ${code}`);
     return plainText(english(values[code]));
   };
-  const page = `${seo.origin}${spec.url}`;
+  const page = `${origin}${spec.url}`;
   const title = plainText(english(values.ROOT_META_TITLE));
   const description = plainText(english(values.ROOT_META_DESCRIPTION));
 
@@ -35,8 +35,8 @@ export const buildSeoGraph = ({ spec, values, blockHtml, block, media, seo }) =>
   });
 
   const hero = media[seo.heroImage];
-  if (!hero) throw new Error(`SEO graph: ${seo.heroImage} is not in media.json`);
-  const heroUrl = `${seo.origin}/core/image/${hero.id}/get/${hero.name}`;
+  if (!hero) throw new Error(`SEO graph: ${seo.heroImage} has no media id`);
+  const heroUrl = `${origin}/core/image/${hero.id}/get/${hero.name}`;
 
   const fill = (node) => JSON.parse(JSON.stringify(node), (key, value) => {
     if (value === "{sections}") return sections.map((section) => section.name).join(", ");
@@ -48,7 +48,7 @@ export const buildSeoGraph = ({ spec, values, blockHtml, block, media, seo }) =>
     "@type": "ListItem",
     position: index + 1,
     name: item.name,
-    item: item.path ? new URL(item.path, seo.origin).href : page,
+    item: item.path ? new URL(item.path, origin).href : page,
   }));
 
   return {

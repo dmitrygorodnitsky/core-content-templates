@@ -3,10 +3,9 @@ import fs from "node:fs/promises";
 import https from "node:https";
 import path from "node:path";
 import process from "node:process";
-import { fileURLToPath } from "node:url";
+import { snowEnvironmentArgument, requireEnvironmentOrigin, SNOW_CONTENT_DIR } from "./snow-removal-landing-environments.mjs";
 
 const LIBRARY_CODE = "SERVICEWAND_SNOW_REMOVAL_LANDING";
-const PARENT_LIBRARY_CODE = "SERVICEWAND";
 const ORGANIZATION_CODE = "SERVICEWAND";
 const CONTENT_TYPES = { ".webp": "image/webp", ".svg": "image/svg+xml", ".mp4": "video/mp4", ".woff2": "font/woff2" };
 const KINDS = { ".mp4": "video", ".woff2": "font" };
@@ -18,19 +17,19 @@ const publicMediaPath = (file, id) => ({
   font: `/core/api/media-asset/${id}/get`,
 })[kindOf(file)];
 
-const landingRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const contentDir = path.join(landingRoot, "content", "snow-removal-software");
-const mediaDir = path.join(contentDir, "media");
-const mediaJson = path.join(contentDir, "media.json");
+const mediaDir = path.join(SNOW_CONTENT_DIR, "media");
 
 const args = process.argv.slice(2);
+const environment = snowEnvironmentArgument(args);
+const mediaJson = environment.mediaFile;
 const option = (name, fallback) => {
   const index = args.indexOf(name);
   return index >= 0 ? args[index + 1] : fallback;
 };
 const live = args.includes("--live");
-const baseUrl = String(option("--base-url", "https://dev-1.servicewand.com")).replace(/\/+$/, "");
+const baseUrl = String(option("--base-url", environment.origin)).replace(/\/+$/, "");
 if (!/^https:\/\/[a-z0-9.-]+$/.test(baseUrl)) throw new Error("--base-url must be an https origin");
+requireEnvironmentOrigin(environment, baseUrl);
 if (new URL(baseUrl).hostname === "servicewand.com" && !args.includes("--allow-production")) throw new Error("Refusing to target production without --allow-production");
 
 function send(url, { method = "GET", headers = {}, body } = {}) {
@@ -83,11 +82,11 @@ async function ensureLibrary() {
   const existing = await first("media-library", LIBRARY_CODE, mappings);
   if (existing) return existing.id;
   if (!live) return null;
-  const parent = await first("media-library", PARENT_LIBRARY_CODE, mappings);
+  const parent = environment.mediaLibraryParent && (await first("media-library", environment.mediaLibraryParent, mappings));
   const organization = await first("organization", ORGANIZATION_CODE, mappings);
-  if (!parent || !organization) throw new Error("The parent library or the organization is missing");
+  if ((environment.mediaLibraryParent && !parent) || !organization) throw new Error("The parent library or the organization is missing");
   await call("media-library/save.json", {
-    entities: [{ code: LIBRARY_CODE, nls: { en: { NAME: "Snow Removal landing" } }, organization: { id: organization.id }, parent: { id: parent.id } }],
+    entities: [{ code: LIBRARY_CODE, nls: { en: { NAME: "Snow Removal landing" } }, organization: { id: organization.id }, ...(parent ? { parent: { id: parent.id } } : {}) }],
     mappings: [...names("code", "nls"), { name: "organization", type: "identifier", mappings: names("id") }, { name: "parent", type: "identifier", mappings: names("id") }],
   }, 1);
   const created = await first("media-library", LIBRARY_CODE, mappings);
@@ -157,4 +156,4 @@ for (const file of files) {
   console.log(file + ": " + row.id + " " + JSON.stringify(check));
 }
 if (live) await fs.writeFile(mediaJson, JSON.stringify(next, null, 2) + "\n");
-console.log((live ? "LIVE " : "DRY RUN ") + baseUrl + " library " + LIBRARY_CODE + " " + library);
+console.log((live ? "LIVE " : "DRY RUN ") + baseUrl + " library " + LIBRARY_CODE + " " + (library ?? "(new, parent " + (environment.mediaLibraryParent ?? "none") + ")") + " -> " + environment.mediaName);

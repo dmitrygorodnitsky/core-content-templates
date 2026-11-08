@@ -1,0 +1,37 @@
+{
+  "$schema": "lab-ui/landing-spec@1",
+  "code": "SNOW_REMOVAL_LANDING",
+  "name": "Snow Removal Landing",
+  "url": "/industries/field-service/snow-removal-software-new",
+  "locale": "en",
+  "topic": "snow-removal",
+  "theme": "dark",
+  "background": "none",
+  "recipe": "monoblock",
+  "content": "content/snow-removal-software/parameter-values.json",
+  "sourceReference": {
+    "kind": "repo-owned-monoblock",
+    "path": "blocks/16-snow-removal/snow-removal.page",
+    "note": "The approved Snow Removal landing as one content block between the production header and footer. Header and footer values come from content/servicewand-production-chrome/parameter-values.json; media ids from content/snow-removal-software/media.json."
+  },
+  "sections": [
+    {
+      "block": "header.corporate-reference",
+      "code": "SNOW_REMOVAL_LANDING_HEADER",
+      "parameterPrefix": "SNOW_REMOVAL_LANDING_HEADER",
+      "name": "Snow Removal Landing | Header"
+    },
+    {
+      "block": "snow-removal.page",
+      "code": "SNOW_REMOVAL_LANDING_CONTENT",
+      "parameterPrefix": "SNOW",
+      "name": "Snow Removal Landing | Content"
+    },
+    {
+      "block": "footer.corporate-reference",
+      "code": "SNOW_REMOVAL_LANDING_FOOTER",
+      "parameterPrefix": "SNOW_REMOVAL_LANDING_FOOTER",
+      "name": "Snow Removal Landing | Footer"
+    }
+  ]
+}

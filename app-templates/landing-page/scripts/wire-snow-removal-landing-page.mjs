@@ -2,10 +2,8 @@ import fs from "node:fs";
 import https from "node:https";
 import path from "node:path";
 import process from "node:process";
-import { fileURLToPath } from "node:url";
+import { requireEnvironmentOrigin, snowEnvironmentArgument } from "./snow-removal-landing-environments.mjs";
 
-const landingRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const PACKAGE = path.join(landingRoot, "dist", "manual-upload", "snow-removal-software", "cms-family.payload.json");
 const SLOT = "<!-- cms-child-slot:ROOT_SECTIONS -->";
 
 const args = process.argv.slice(2);
@@ -15,12 +13,13 @@ const option = (name, fallback) => {
 };
 const usage = `Usage:
   SERVICEWAND_API_KEY=... node app-templates/landing-page/scripts/wire-snow-removal-landing-page.mjs \\
-    --base-url https://dev-1.servicewand.com --page-url /industries/field-service/snow-removal-software-new [--live]
+    [--env dev-1|servicewand] --base-url https://dev-1.servicewand.com \\
+    --page-url /industries/field-service/snow-removal-software-new [--live]
 
 Run after upload-cms-family.mjs has created the four SNOW_REMOVAL_LANDING*
-templates. Links the three children to the new root through reparent.json
-(save.json refuses a parent change), writes the root include
-lines, creates the PageContext (organization SERVICEWAND) at --page-url if it
+templates from the --env package (default dev-1). Links the three children
+to the new root through reparent.json (save.json refuses a parent change),
+writes the root include lines, creates the PageContext (organization SERVICEWAND) at --page-url if it
 does not exist, and clears the root render cache on every CMS node. It refuses
 to touch a template outside the package or a page that uses another root.
 Without --live nothing is written.`;
@@ -30,14 +29,16 @@ if (args.includes("--help")) {
   process.exit(0);
 }
 const live = args.includes("--live");
+const environment = snowEnvironmentArgument(args);
 const baseUrl = String(option("--base-url", "")).replace(/\/+$/, "");
 const pageUrl = String(option("--page-url", ""));
 const pageOrganizationCode = option("--page-org", "SERVICEWAND");
 if (!/^https:\/\/[a-z0-9.-]+$/.test(baseUrl)) throw new Error("--base-url must be an https origin\n" + usage);
 if (!/^\/[a-z0-9/_-]+$/.test(pageUrl)) throw new Error("--page-url must be a site path\n" + usage);
 if (new URL(baseUrl).hostname === "servicewand.com" && !args.includes("--allow-production")) throw new Error("Refusing to target production without --allow-production");
+requireEnvironmentOrigin(environment, baseUrl);
 
-const pkg = JSON.parse(fs.readFileSync(PACKAGE, "utf8"));
+const pkg = JSON.parse(fs.readFileSync(path.join(environment.outputDir, "cms-family.payload.json"), "utf8"));
 
 function send(url, options = {}) {
   return new Promise((resolve, reject) => {
@@ -182,7 +183,7 @@ if (live) {
   plan.push(`cleared root render cache on ${[...cleared.keys()].join(", ") || "no node"}`);
 }
 
-console.log(`${live ? "LIVE" : "DRY RUN"} ${baseUrl} root ${root.code} ${root.id}`);
+console.log(`${live ? "LIVE" : "DRY RUN"} ${baseUrl} (${environment.name} package) root ${root.code} ${root.id}`);
 for (const child of children) console.log(`  template ${child.code} ${child.id}`);
 for (const step of plan) console.log("  " + step);
 if (!live) console.log("No writes were made. Pass --live to apply.");
