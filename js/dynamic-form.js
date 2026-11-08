@@ -404,7 +404,31 @@ class DynamicForm {
         }
       });
     });
+    const ctaSourceMissing = [undefined, null, ""].includes(merged[DynamicForm.CTA_SOURCE_CODE]);
+    if (ctaSourceMissing && this._getAttributeTypeId(DynamicForm.CTA_SOURCE_CODE) !== null) {
+      const ctaSource = DynamicForm._ctaSourceFromSearch(window.location.search);
+      if (ctaSource) merged[DynamicForm.CTA_SOURCE_CODE] = ctaSource;
+    }
     return merged;
+  }
+
+  static CTA_SOURCE_CODE = "CTA_SOURCE";
+  static CTA_SOURCE_DETAIL_PARAMS = ["plan", "period", "packs", "weather"];
+  static CTA_SOURCE_PART_MAX = 64;
+  static CTA_SOURCE_MAX = 255;
+
+  static _ctaSourceFromSearch(search) {
+    const params = new URLSearchParams(search || "");
+    const plain = (value) =>
+      String(value ?? "")
+        .replace(/[^A-Za-z0-9_.:-]/g, "")
+        .slice(0, DynamicForm.CTA_SOURCE_PART_MAX);
+    const source = plain(params.get("cta_source"));
+    if (!source) return "";
+    const details = DynamicForm.CTA_SOURCE_DETAIL_PARAMS.map((key) => [key, plain(params.get(key))])
+      .filter(([, value]) => value)
+      .map(([key, value]) => `${key}=${value}`);
+    return [source, ...details].join("; ").slice(0, DynamicForm.CTA_SOURCE_MAX);
   }
 
   _getAttributeTypeId(code) {
