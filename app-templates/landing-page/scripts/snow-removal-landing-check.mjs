@@ -212,6 +212,10 @@ const checkOffline = (environment) => {
     assert.match(main, /Actual ServiceWand UI · Mobile Property Plan &amp; Dispatch Board/, "the routing caption is the requested text");
     assert.equal(/Supporting capabilities:/.test(main), false, "the Mobile Workforce supporting line became chips");
     assert.equal(content.javascript.includes("ns.selection = Object.freeze"), true, "the configurator ships the subscription flow's selection rules");
+    const header = payload.children.find((child) => child.code === "SNOW_REMOVAL_LANDING_HEADER");
+    assert.match(header.css, /\.header\.is-open \.header-mobile-menu\{max-height:\s*calc\(100vh - var\(--header-height\)[^}]*overflow-y:\s*auto/, "the open mobile menu fits the viewport and scrolls");
+    assert.match(header.css, /\.header-mobile-menu \.vl-locale-dropdown\{position:\s*static/, "the mobile language list opens inside the scrolling menu");
+    assert.match(header.css, /\.vl-locale-trigger-left\{display:\s*contents\}\.vl-locale-trigger \.vl-locale-flag\{order:\s*-1\}/, "the language trigger shows the flag beside its label");
     const contentBytes = Buffer.byteLength(content.html) + Buffer.byteLength(content.css) + Buffer.byteLength(content.javascript);
     const media = Object.keys(environment.media).length;
     console.log(`snow-removal-landing-check ${environment.name} ok: ${target.origin}, ${target.media} media ids in the page, deterministic ${Object.keys(hashesA).length} files, ${report.headings.length} headings, ${Object.keys(report.counts).length} keyword counts, ${ctas.length} CTAs, JSON-LD ${schema.nodes} nodes with ${schema.faq} FAQ, ${codes.length} content parameters, media ids ${media}`);
