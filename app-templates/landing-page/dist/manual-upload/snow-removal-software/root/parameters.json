@@ -456,5 +456,25 @@
       }
     },
     "value": "favicon-light.svg"
+  },
+  {
+    "code": "ROOT_CANONICAL_URL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Canonical URL",
+        "DESCRIPTION": "Absolute canonical URL of this page in each site language."
+      }
+    },
+    "value": {
+      "en": "https://dev-1.servicewand.com/industries/field-service/snow-removal-software-new",
+      "ar": "https://dev-1.servicewand.com/ar/industries/field-service/snow-removal-software-new",
+      "es": "https://dev-1.servicewand.com/es/industries/field-service/snow-removal-software-new",
+      "fr": "https://dev-1.servicewand.com/fr/industries/field-service/snow-removal-software-new",
+      "he": "https://dev-1.servicewand.com/he/industries/field-service/snow-removal-software-new",
+      "ru": "https://dev-1.servicewand.com/ru/industries/field-service/snow-removal-software-new",
+      "zh": "https://dev-1.servicewand.com/zh/industries/field-service/snow-removal-software-new",
+      "kk": "https://dev-1.servicewand.com/industries/field-service/snow-removal-software-new"
+    }
   }
 ]

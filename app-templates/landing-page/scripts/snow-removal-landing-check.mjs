@@ -128,6 +128,12 @@ export const assertEnvironment = (head, main, environment) => {
   const referenced = new Set([...main.matchAll(MEDIA_ID)].map((match) => match[1]));
   assert.deepEqual([...referenced].filter((id) => !ids.has(id)), [], `every media id in the page belongs to ${environment.mediaName}`);
   assert.ok(referenced.size > 0, "the page references media ids");
+  const pageUrl = `${environment.origin}${environment.pageUrl}`;
+  assert.equal(page.url, pageUrl, `JSON-LD WebPage is ${pageUrl}`);
+  assert.equal(head.match(/<link rel="canonical" href="([^"]*)">/)?.[1], pageUrl, `the English canonical is ${pageUrl}`);
+  const alternates = Object.fromEntries([...head.matchAll(/<link rel="alternate" hreflang="([^"]+)" href="([^"]+)">/g)].map((match) => [match[1], match[2]]));
+  assert.equal(alternates["x-default"], pageUrl, "x-default points at the English page");
+  assert.equal(alternates.ru, `${environment.origin}/ru${environment.pageUrl}`, "the Russian alternate carries the /ru prefix");
   const subscribe = valuesFor(environment).SNOW_PRICING_SUBSCRIBE_URL;
   if (!subscribe.startsWith("/subscribe.html")) assert.equal(/\/subscribe\.html/.test(main), false, `${environment.name} has no /subscribe.html link`);
   return { media: referenced.size, origin: environment.origin };
@@ -186,6 +192,7 @@ const checkOffline = (environment) => {
     const hashesB = treeHashes(second);
     assert.deepEqual(hashesA, hashesB, "repeat export is byte-for-byte deterministic");
     assert.deepEqual([payload.root, ...payload.children].map((template) => template.code), EXPECTED_CODES);
+    assert.equal(payload.pageContext.url, environment.pageUrl, "the package page URL is the environment's pageUrl");
     assert.equal(payload.root.parent, null);
     const templates = [payload.root, ...payload.children];
     assert.equal(templates.some((template) => /lorem ipsum/i.test(JSON.stringify(template.parameters))), false, "no Lorem Ipsum parameter values");

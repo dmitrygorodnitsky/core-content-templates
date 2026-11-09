@@ -4,6 +4,7 @@
   "environments": {
     "dev-1": {
       "origin": "https://dev-1.servicewand.com",
+      "pageUrl": "/industries/field-service/snow-removal-software-new",
       "media": "media.json",
       "mediaLibraryParent": "SERVICEWAND",
       "outputDir": "snow-removal-software",
@@ -11,6 +12,7 @@
     },
     "servicewand": {
       "origin": "https://servicewand.com",
+      "pageUrl": "/industries/field-service/snow-removal-software-new",
       "media": "media.servicewand.json",
       "mediaLibraryParent": null,
       "outputDir": "snow-removal-software-servicewand",

@@ -95,6 +95,32 @@ export const applyHeaderVariant = (header, block, blockDir) => {
   return { ...header, html, css: `${header.css}\n${minifyCss(css)}`, parameters };
 };
 
+export const localeUrl = (environment, seo, language) => `${environment.origin}${language === seo.language ? "" : `/${language}`}${environment.pageUrl}`;
+
+const withLanguageLinks = (root, seo, environment) => {
+  const canonical = Object.fromEntries([
+    ...seo.hreflang.map((language) => [language, localeUrl(environment, seo, language)]),
+    ...Object.entries(seo.canonicalFallback || {}).map(([language, target]) => [language, localeUrl(environment, seo, target)]),
+  ]);
+  const links = [
+    "<link rel=\"canonical\" href=\"${ROOT_CANONICAL_URL@LOCALIZED_STRING_SS}\">",
+    ...seo.hreflang.map((language) => `<link rel="alternate" hreflang="${language}" href="${localeUrl(environment, seo, language)}">`),
+    `<link rel="alternate" hreflang="x-default" href="${localeUrl(environment, seo, seo.language)}">`,
+  ].join("\n");
+  const anchor = /(<meta name="description" content="[^"]*">\n)/;
+  if (!anchor.test(root.head)) throw new Error("Root head has no meta description to anchor the language links");
+  return {
+    ...root,
+    head: root.head.replace(anchor, `$1${links}\n`),
+    parameters: [...root.parameters, {
+      code: "ROOT_CANONICAL_URL",
+      type: "LOCALIZED_STRING_SS",
+      nls: { en: { NAME: "Canonical URL", DESCRIPTION: "Absolute canonical URL of this page in each site language." } },
+      value: canonical,
+    }],
+  };
+};
+
 const splitTemplate = (dir, template) => {
   writeJson(join(dir, "template.json"), template);
   writeText(join(dir, "head.html"), template.head || "");
@@ -140,7 +166,8 @@ export const exportSnowRemovalLanding = ({ environment = snowEnvironment(), outp
     const blockHtml = readFileSync(join(landingRoot, "blocks", "16-snow-removal", "snow-removal.page", "block.html"), "utf8");
     const seo = readJson(join(CONTENT_DIR, "seo-graph.json"));
     const values = { ...pack.valuesByParamCode, ...environment.values, ...mediaValues(block, media) };
-    values.SEO_LD_SCHEMA = { [seo.language]: buildSeoGraph({ spec, values, blockHtml, block, media, seo, origin: environment.origin }) };
+    const pageSpec = { ...spec, url: environment.pageUrl };
+    values.SEO_LD_SCHEMA = { [seo.language]: buildSeoGraph({ spec: pageSpec, values, blockHtml, block, media, seo, origin: environment.origin }) };
     writeJson(valuesPath, { ...pack, valuesByParamCode: values });
     const family = composeCmsFamily({ specPath: SPEC, outDir: join(staging, "build"), valuesPath });
     const mapped = completeMappedValues(readJson(CHROME_VALUES));
@@ -150,15 +177,15 @@ export const exportSnowRemovalLanding = ({ environment = snowEnvironment(), outp
       if (child.code === CONTENT_CODE) return { ...child, css: minifyCss(child.css), javascript: stripGeneratedHeaders(child.javascript) };
       throw new Error(`Unexpected child template ${child.code}`);
     });
-    const root = { ...family.rootTemplate, children: children.map((child) => ({ code: child.code, nls: child.nls })) };
+    const root = withLanguageLinks({ ...family.rootTemplate, children: children.map((child) => ({ code: child.code, nls: child.nls })) }, seo, environment);
     const lorem = children.filter((child) => /lorem ipsum/i.test(JSON.stringify(child.parameters))).map((child) => child.code);
     if (lorem.length) throw new Error(`Lorem Ipsum survived in ${lorem.join(", ")}`);
 
     rmSync(out, { recursive: true, force: true });
     mkdirSync(out, { recursive: true });
-    const payload = { schemaVersion: 1, mode: "dry-run", root, children, pageContext: family.pageContext };
+    const payload = { schemaVersion: 1, mode: "dry-run", root, children, pageContext: { ...family.pageContext, url: environment.pageUrl } };
     writeJson(join(out, "cms-family.payload.json"), payload);
-    writeJson(join(out, "landing.spec.json"), spec);
+    writeJson(join(out, "landing.spec.json"), pageSpec);
     splitTemplate(join(out, "root"), root);
     children.forEach((child, index) => splitTemplate(join(out, "children", `${String(index + 1).padStart(2, "0")}-${child.code.toLowerCase().replaceAll("_", "-")}`), child));
     const mediaById = new Map(Object.values(media).map((item) => [item.id, item.name]));

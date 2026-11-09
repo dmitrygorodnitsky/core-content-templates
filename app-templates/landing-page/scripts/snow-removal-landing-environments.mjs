@@ -11,10 +11,12 @@ export const SNOW_ENVIRONMENT_NAMES = Object.keys(config.environments);
 export const snowEnvironment = (name = config.default) => {
   const environment = config.environments[name];
   if (!environment) throw new Error(`Unknown Snow landing environment "${name}"; expected one of ${SNOW_ENVIRONMENT_NAMES.join(", ")}`);
+  if (!/^\/[a-z0-9/_-]+$/.test(environment.pageUrl || "")) throw new Error(`Snow landing environment "${name}" needs a site-path pageUrl`);
   const mediaFile = join(SNOW_CONTENT_DIR, environment.media);
   return {
     name,
     origin: environment.origin,
+    pageUrl: environment.pageUrl,
     mediaName: environment.media,
     mediaFile,
     media: existsSync(mediaFile) ? JSON.parse(readFileSync(mediaFile, "utf8")) : {},

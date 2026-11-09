@@ -211,6 +211,16 @@ uploader and the wiring script, export with `--env servicewand`, and upload
 `dist/manual-upload/snow-removal-software-servicewand` to
 `https://servicewand.com/core` with `--require-missing` the first time.
 
+Each environment names its `pageUrl` in `environments.json`; the export takes
+the JSON-LD page URL, the canonical link and the hreflang alternates from it.
+`switch-snow-removal-landing-url.mjs` moves the servicewand.com page from
+`-new` to `/industries/field-service/snow-removal-software`, parks the old
+`VERTICAL_LANDING_JTE` page at an internal URL outside the sitemap, and leaves a
+forwarding page at `-new`. It prints its steps without `--apply`, writes with
+`--apply`, and `--rollback --apply` reverses it; `--help` lists the steps.
+After an applied switch set the servicewand `pageUrl` to the main URL and
+export again, which reproduces the uploaded package.
+
 The flat upload writes the root's packaged child slot back, so run the wiring
 script after every upload: it restores the include lines, keeps the parent
 links and the page, and clears the render cache on every CMS node it reaches.
