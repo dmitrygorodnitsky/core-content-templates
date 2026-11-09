@@ -2,7 +2,7 @@
   "$schema": "lab-ui/landing-spec@1",
   "code": "SNOW_REMOVAL_LANDING",
   "name": "Snow Removal Landing",
-  "url": "/industries/field-service/snow-removal-software-new",
+  "url": "/industries/field-service/snow-removal-software",
   "locale": "en",
   "topic": "snow-removal",
   "theme": "dark",

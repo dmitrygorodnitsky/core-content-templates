@@ -12,7 +12,7 @@
     },
     "servicewand": {
       "origin": "https://servicewand.com",
-      "pageUrl": "/industries/field-service/snow-removal-software-new",
+      "pageUrl": "/industries/field-service/snow-removal-software",
       "media": "media.servicewand.json",
       "mediaLibraryParent": null,
       "outputDir": "snow-removal-software-servicewand",

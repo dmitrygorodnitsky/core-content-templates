@@ -86,9 +86,9 @@
           },
           {
             "@type": "SoftwareApplication",
-            "@id": "https://servicewand.com/industries/field-service/snow-removal-software-new#software",
+            "@id": "https://servicewand.com/industries/field-service/snow-removal-software#software",
             "name": "ServiceWand Snow Removal Software",
-            "url": "https://servicewand.com/industries/field-service/snow-removal-software-new",
+            "url": "https://servicewand.com/industries/field-service/snow-removal-software",
             "applicationCategory": "BusinessApplication",
             "applicationSubCategory": "Snow removal software",
             "operatingSystem": "Web",
@@ -99,7 +99,7 @@
             "featureList": "Advanced Route Optimization & Dispatch, Requests & Quotations, Mobile Workforce, Subcontractor Management, Customer Portal & Case Management, Snow Removal Billing Software, Onboarding & Support, Platform & Growth",
             "offers": {
               "@type": "Offer",
-              "url": "https://servicewand.com/industries/field-service/snow-removal-software-new#pricing",
+              "url": "https://servicewand.com/industries/field-service/snow-removal-software#pricing",
               "description": "Foundation, Growth and Business plans with monthly or yearly billing; Enterprise scope and pricing are agreed with sales.",
               "seller": {
                 "@id": "https://servicewand.com/#organization"
@@ -108,7 +108,7 @@
           },
           {
             "@type": "Service",
-            "@id": "https://servicewand.com/industries/field-service/snow-removal-software-new#service",
+            "@id": "https://servicewand.com/industries/field-service/snow-removal-software#service",
             "name": "Snow removal software implementation",
             "serviceType": "Snow removal software",
             "provider": {
@@ -129,12 +129,12 @@
               }
             ],
             "description": "Data migration assistance, guided setup and training, support for active operations and essential integrations for snow and ice contractors.",
-            "url": "https://servicewand.com/industries/field-service/snow-removal-software-new#onboarding"
+            "url": "https://servicewand.com/industries/field-service/snow-removal-software#onboarding"
           },
           {
             "@type": "WebPage",
-            "@id": "https://servicewand.com/industries/field-service/snow-removal-software-new#webpage",
-            "url": "https://servicewand.com/industries/field-service/snow-removal-software-new",
+            "@id": "https://servicewand.com/industries/field-service/snow-removal-software#webpage",
+            "url": "https://servicewand.com/industries/field-service/snow-removal-software",
             "name": "Snow Removal Software & App | ServiceWand",
             "description": "Connect quoting, scheduling, routing, field work, customer service, and billing in one snow removal software platform with ServiceWand.",
             "inLanguage": "en",
@@ -142,18 +142,18 @@
               "@id": "https://servicewand.com/#website"
             },
             "about": {
-              "@id": "https://servicewand.com/industries/field-service/snow-removal-software-new#software"
+              "@id": "https://servicewand.com/industries/field-service/snow-removal-software#software"
             },
             "breadcrumb": {
-              "@id": "https://servicewand.com/industries/field-service/snow-removal-software-new#breadcrumb"
+              "@id": "https://servicewand.com/industries/field-service/snow-removal-software#breadcrumb"
             },
             "primaryImageOfPage": {
-              "@id": "https://servicewand.com/industries/field-service/snow-removal-software-new#hero-image"
+              "@id": "https://servicewand.com/industries/field-service/snow-removal-software#hero-image"
             }
           },
           {
             "@type": "BreadcrumbList",
-            "@id": "https://servicewand.com/industries/field-service/snow-removal-software-new#breadcrumb",
+            "@id": "https://servicewand.com/industries/field-service/snow-removal-software#breadcrumb",
             "itemListElement": [
               {
                 "@type": "ListItem",
@@ -171,75 +171,75 @@
                 "@type": "ListItem",
                 "position": 3,
                 "name": "Snow Removal Software",
-                "item": "https://servicewand.com/industries/field-service/snow-removal-software-new"
+                "item": "https://servicewand.com/industries/field-service/snow-removal-software"
               }
             ]
           },
           {
             "@type": "ImageObject",
-            "@id": "https://servicewand.com/industries/field-service/snow-removal-software-new#hero-image",
+            "@id": "https://servicewand.com/industries/field-service/snow-removal-software#hero-image",
             "url": "https://servicewand.com/core/image/c3b4de80-99c3-470b-a3fe-dd80a0b894d9/get/hero-snow.webp",
             "contentUrl": "https://servicewand.com/core/image/c3b4de80-99c3-470b-a3fe-dd80a0b894d9/get/hero-snow.webp",
             "caption": "Snow plow trucks and a skid steer clearing a commercial parking lot during a night snowfall"
           },
           {
             "@type": "ItemList",
-            "@id": "https://servicewand.com/industries/field-service/snow-removal-software-new#sections",
+            "@id": "https://servicewand.com/industries/field-service/snow-removal-software#sections",
             "name": "Snow Removal Software for the Office. Snow Removal App for the Field.",
             "itemListElement": [
               {
                 "@type": "ListItem",
                 "position": 1,
                 "name": "Advanced Route Optimization & Dispatch",
-                "url": "https://servicewand.com/industries/field-service/snow-removal-software-new#routing"
+                "url": "https://servicewand.com/industries/field-service/snow-removal-software#routing"
               },
               {
                 "@type": "ListItem",
                 "position": 2,
                 "name": "Requests & Quotations",
-                "url": "https://servicewand.com/industries/field-service/snow-removal-software-new#requests"
+                "url": "https://servicewand.com/industries/field-service/snow-removal-software#requests"
               },
               {
                 "@type": "ListItem",
                 "position": 3,
                 "name": "Mobile Workforce",
-                "url": "https://servicewand.com/industries/field-service/snow-removal-software-new#mobile"
+                "url": "https://servicewand.com/industries/field-service/snow-removal-software#mobile"
               },
               {
                 "@type": "ListItem",
                 "position": 4,
                 "name": "Subcontractor Management",
-                "url": "https://servicewand.com/industries/field-service/snow-removal-software-new#subcontractors"
+                "url": "https://servicewand.com/industries/field-service/snow-removal-software#subcontractors"
               },
               {
                 "@type": "ListItem",
                 "position": 5,
                 "name": "Customer Portal & Case Management",
-                "url": "https://servicewand.com/industries/field-service/snow-removal-software-new#portal"
+                "url": "https://servicewand.com/industries/field-service/snow-removal-software#portal"
               },
               {
                 "@type": "ListItem",
                 "position": 6,
                 "name": "Snow Removal Billing Software",
-                "url": "https://servicewand.com/industries/field-service/snow-removal-software-new#billing"
+                "url": "https://servicewand.com/industries/field-service/snow-removal-software#billing"
               },
               {
                 "@type": "ListItem",
                 "position": 7,
                 "name": "Onboarding & Support",
-                "url": "https://servicewand.com/industries/field-service/snow-removal-software-new#onboarding"
+                "url": "https://servicewand.com/industries/field-service/snow-removal-software#onboarding"
               },
               {
                 "@type": "ListItem",
                 "position": 8,
                 "name": "Platform & Growth",
-                "url": "https://servicewand.com/industries/field-service/snow-removal-software-new#platform"
+                "url": "https://servicewand.com/industries/field-service/snow-removal-software#platform"
               }
             ]
           },
           {
             "@type": "FAQPage",
-            "@id": "https://servicewand.com/industries/field-service/snow-removal-software-new#faq",
+            "@id": "https://servicewand.com/industries/field-service/snow-removal-software#faq",
             "mainEntity": [
               {
                 "@type": "Question",
@@ -467,14 +467,14 @@
       }
     },
     "value": {
-      "en": "https://servicewand.com/industries/field-service/snow-removal-software-new",
-      "ar": "https://servicewand.com/ar/industries/field-service/snow-removal-software-new",
-      "es": "https://servicewand.com/es/industries/field-service/snow-removal-software-new",
-      "fr": "https://servicewand.com/fr/industries/field-service/snow-removal-software-new",
-      "he": "https://servicewand.com/he/industries/field-service/snow-removal-software-new",
-      "ru": "https://servicewand.com/ru/industries/field-service/snow-removal-software-new",
-      "zh": "https://servicewand.com/zh/industries/field-service/snow-removal-software-new",
-      "kk": "https://servicewand.com/industries/field-service/snow-removal-software-new"
+      "en": "https://servicewand.com/industries/field-service/snow-removal-software",
+      "ar": "https://servicewand.com/ar/industries/field-service/snow-removal-software",
+      "es": "https://servicewand.com/es/industries/field-service/snow-removal-software",
+      "fr": "https://servicewand.com/fr/industries/field-service/snow-removal-software",
+      "he": "https://servicewand.com/he/industries/field-service/snow-removal-software",
+      "ru": "https://servicewand.com/ru/industries/field-service/snow-removal-software",
+      "zh": "https://servicewand.com/zh/industries/field-service/snow-removal-software",
+      "kk": "https://servicewand.com/industries/field-service/snow-removal-software"
     }
   }
 ]
