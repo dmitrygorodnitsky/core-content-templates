@@ -884,6 +884,10 @@
     return image;
   }
 
+  function statedFact(row) {
+    return !!row[1];
+  }
+
   function factsCard(ctx, title, rows, className, lead) {
     var copy = ctx.copy;
     var card = el("article", "cr-panel " + className);
@@ -1006,7 +1010,7 @@
     partiesSection.appendChild(factsCard(ctx, copy.partyProvider, [
       [copy.partyLegalName, parties.provider.legalName],
       [copy.partyRepresentative, joinName(parties.provider.representativeName, parties.provider.representativeJobTitle)],
-    ], "cr-party", providerLogo(ctx)));
+    ].filter(statedFact), "cr-party", providerLogo(ctx)));
     partiesSection.appendChild(factsCard(ctx, copy.partyClient, [
       [copy.partyLegalName, parties.client.legalName],
       [copy.partyClientType, parties.client.clientType],
@@ -1014,7 +1018,7 @@
       [copy.partyRepresentative, joinName(parties.client.representativeName, parties.client.representativeJobTitle)],
       [copy.partyEmail, parties.client.email],
       [copy.partyPhone, parties.client.phone],
-    ], "cr-party"));
+    ].filter(statedFact), "cr-party"));
     shell.appendChild(partiesSection);
 
     var term = view.agreement;

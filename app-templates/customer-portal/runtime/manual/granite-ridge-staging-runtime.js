@@ -616,6 +616,253 @@
     return entry && entry.value != null ? text(entry.value) : "";
   }
 
+  // app-templates/customer-portal/runtime/src/normalizers/postal-address.js
+  var POSTAL_CODE = /^(?:[A-Z]\d[A-Z] ?\d[A-Z]\d|\d{5}(?:-\d{4})?)$/i;
+  var COUNTRY_CODE = /^[A-Z]{2}$/;
+  var REGION_CODE = /^[A-Z]{2,3}$/;
+  var NORTH_AMERICAN_PHONE = /^\+?1(\d{3})(\d{3})(\d{4})$/;
+  var PHONE_PUNCTUATION = /[\s().-]/g;
+  function formatPostalAddress(address) {
+    if (!address || typeof address !== "object") return "";
+    return formatAddressParts({
+      lines: [address.address1, address.address2],
+      city: address.city,
+      region: address.state && typeof address.state === "object" ? address.state.code : "",
+      postalCode: address.postalCode,
+      country: address.country && typeof address.country === "object" ? address.country.code || address.country.id : ""
+    });
+  }
+  function formatAddressParts(parts) {
+    var segments = [];
+    var country = plain(parts.country);
+    appendSegments(segments, parts.lines || []);
+    var last = segments[segments.length - 1];
+    if (last && COUNTRY_CODE.test(last) && segments.slice(0, -1).some(isPostalCode)) {
+      country = country || last;
+      segments.pop();
+    }
+    appendSegments(segments, [parts.city, parts.region]);
+    var postal = plain(parts.postalCode) || segments.filter(isPostalCode).pop() || "";
+    if (postal) {
+      segments = segments.filter(function(segment) {
+        return comparable(segment) !== comparable(postal);
+      });
+      if (segments.some(function(segment) {
+        return comparable(segment).indexOf(comparable(postal)) !== -1;
+      })) postal = "";
+    }
+    if (country) {
+      segments = segments.filter(function(segment) {
+        return comparable(segment) !== comparable(country);
+      });
+    }
+    last = segments[segments.length - 1];
+    if (postal && last && REGION_CODE.test(last)) {
+      segments[segments.length - 1] = last + " " + postal;
+      postal = "";
+    }
+    if (postal) segments.push(postal);
+    if (country) segments.push(countryName(country));
+    return segments.join(", ");
+  }
+  function addressRepeats(title, address) {
+    var street = comparable(plain(address).split(",")[0]);
+    return !!street && comparable(title).indexOf(street) !== -1;
+  }
+  function formatPhone(value) {
+    var stored = plain(value);
+    var match = NORTH_AMERICAN_PHONE.exec(stored.replace(PHONE_PUNCTUATION, ""));
+    return match ? "+1 " + match[1] + "-" + match[2] + "-" + match[3] : stored;
+  }
+  function countryName(code) {
+    var value = plain(code);
+    if (!COUNTRY_CODE.test(value)) return value;
+    try {
+      var name = new Intl.DisplayNames(["en"], { type: "region" }).of(value);
+      return name || value;
+    } catch (_) {
+      return value;
+    }
+  }
+  function appendSegments(segments, values) {
+    values.forEach(function(value) {
+      plain(value).split(",").forEach(function(piece) {
+        var segment = piece.replace(/\s+/g, " ").trim();
+        if (segment && !segments.some(function(known) {
+          return comparable(known) === comparable(segment);
+        })) segments.push(segment);
+      });
+    });
+  }
+  function isPostalCode(segment) {
+    return POSTAL_CODE.test(segment);
+  }
+  function comparable(value) {
+    return plain(value).toLowerCase().replace(/[^a-z0-9]/g, "");
+  }
+  function plain(value) {
+    if (typeof value === "string") return value.trim();
+    return typeof value === "number" && Number.isFinite(value) ? String(value) : "";
+  }
+
+  // app-templates/customer-portal/runtime/src/normalizers/account-profile.js
+  var ACCOUNT_PROFILE_SCOPE_MODES = /* @__PURE__ */ Object.freeze(["server-scoped", "browser-filtered"]);
+  var LEGAL_CONTACT = "LEGAL";
+  var BILLING_ADDRESS = "BILLING";
+  var EMAIL_ENTRY = "EMAIL";
+  var PHONE_ENTRY = "PHONE";
+  function normalizeAccountProfile(raw) {
+    var source = raw && typeof raw === "object" ? raw : {};
+    var account = source.account && typeof source.account === "object" && !Array.isArray(source.account) ? source.account : null;
+    if (!account) return accountProfileFailure("profile-unavailable");
+    var primary = primaryContact(account.contacts);
+    var contact = primary ? { name: [plain2(primary.firstName), plain2(primary.lastName)].filter(Boolean).join(" "), firstName: plain2(primary.firstName), title: plain2(primary.title) } : null;
+    var emails = primary ? entryValues(primary.contactEntries, EMAIL_ENTRY) : [];
+    var phones = primary ? entryValues(primary.contactEntries, PHONE_ENTRY).map(formatPhone) : [];
+    var billingAddresses = typedAddresses(account.addresses, BILLING_ADDRESS);
+    var editable = {
+      firstName: primary ? plain2(primary.firstName) : "",
+      lastName: primary ? plain2(primary.lastName) : "",
+      email: primary ? firstEntryValue(primary.contactEntries, EMAIL_ENTRY) : "",
+      phone: primary ? formatPhone(firstEntryValue(primary.contactEntries, PHONE_ENTRY)) : "",
+      billingAddress: oldestTypedAddress(account.addresses, BILLING_ADDRESS)
+    };
+    var filled = [!!(contact && contact.name), emails.length > 0, phones.length > 0, billingAddresses.length > 0];
+    return {
+      state: filled.every(Boolean) ? "ready" : filled.some(Boolean) ? "partial" : "empty",
+      reasonCode: null,
+      scopeMode: ACCOUNT_PROFILE_SCOPE_MODES.indexOf(source.scopeMode) === -1 ? null : source.scopeMode,
+      accountName: localizedName(account.nls),
+      contact,
+      emails,
+      phones,
+      billingAddresses,
+      editable,
+      allowedActions: []
+    };
+  }
+  function contractDetailsPrefill(account, clientTypes) {
+    var row = account && typeof account === "object" && !Array.isArray(account) ? account : {};
+    var legal = primaryContact(row.contacts);
+    var legalType = attributeText(row, "LEGAL_ENTITY_TYPE").toUpperCase();
+    var billing = rows(row.addresses).filter(function(link) {
+      return rows(link.types).some(function(type) {
+        return text(type.code) === BILLING_ADDRESS;
+      });
+    }).sort(byIdAscending)[0];
+    return {
+      LEGAL_NAME: localizedName(row.nls),
+      CLIENT_TYPE: clientTypes.indexOf(legalType) === -1 ? "" : legalType,
+      BILLING_ADDRESS: billing && billing.address ? plain2(billing.address.address1) : "",
+      REPRESENTATIVE_FIRST_NAME: legal ? plain2(legal.firstName) : "",
+      REPRESENTATIVE_LAST_NAME: legal ? plain2(legal.lastName) : "",
+      REPRESENTATIVE_JOB_TITLE: legal ? plain2(legal.title) : "",
+      REPRESENTATIVE_EMAIL: legal ? firstEntryValue(legal.contactEntries, EMAIL_ENTRY) : "",
+      REPRESENTATIVE_PHONE: legal ? firstEntryValue(legal.contactEntries, PHONE_ENTRY) : ""
+    };
+  }
+  function accountParty(account, clientTypeLabels) {
+    var row = account && typeof account === "object" && !Array.isArray(account) ? account : null;
+    if (!row) return null;
+    var legal = primaryContact(row.contacts);
+    var legalType = attributeText(row, "LEGAL_ENTITY_TYPE").toUpperCase();
+    return {
+      legalName: localizedName(row.nls),
+      clientType: (clientTypeLabels && Object.prototype.hasOwnProperty.call(clientTypeLabels, legalType) ? clientTypeLabels[legalType] : "") || "",
+      billingAddress: oldestTypedAddress(row.addresses, BILLING_ADDRESS),
+      representativeName: legal ? [plain2(legal.firstName), plain2(legal.lastName)].filter(Boolean).join(" ") : "",
+      representativeJobTitle: legal ? plain2(legal.title) : "",
+      email: legal ? firstEntryValue(legal.contactEntries, EMAIL_ENTRY) : "",
+      phone: legal ? formatPhone(firstEntryValue(legal.contactEntries, PHONE_ENTRY)) : ""
+    };
+  }
+  function accountProfileFailure(code) {
+    return {
+      state: code === "customer-forbidden" ? "unauthorized" : code === "profile-unavailable" ? "unavailable" : "error",
+      reasonCode: code || "profile-load-failed",
+      scopeMode: null,
+      accountName: "",
+      contact: null,
+      emails: [],
+      phones: [],
+      billingAddresses: [],
+      editable: null,
+      allowedActions: []
+    };
+  }
+  function formatAccountAddress(address) {
+    return formatPostalAddress(address);
+  }
+  function primaryContact(contacts) {
+    var primaries = rows(contacts).filter(function(contact) {
+      return text(contact.type && contact.type.code) === LEGAL_CONTACT;
+    });
+    return primaries.sort(byIdAscending)[0] || null;
+  }
+  function entryValues(entries, typeCode) {
+    var values = [];
+    rows(entries).forEach(function(entry) {
+      if (text(entry.type && entry.type.code) !== typeCode) return;
+      var value = plain2(entry.value);
+      if (value && values.indexOf(value) === -1) values.push(value);
+    });
+    return values;
+  }
+  function firstEntryValue(entries, typeCode) {
+    var entry = rows(entries).filter(function(row) {
+      return text(row.type && row.type.code) === typeCode && plain2(row.value);
+    }).sort(byIdAscending)[0];
+    return entry ? plain2(entry.value) : "";
+  }
+  function oldestTypedAddress(addresses, typeCode) {
+    var link = rows(addresses).filter(function(row) {
+      return rows(row.types).some(function(type) {
+        return text(type.code) === typeCode;
+      });
+    }).sort(byIdAscending)[0];
+    return link ? formatAccountAddress(link.address) : "";
+  }
+  function typedAddresses(addresses, typeCode) {
+    var formatted = [];
+    rows(addresses).filter(function(row) {
+      return rows(row.types).some(function(type) {
+        return text(type.code) === typeCode;
+      });
+    }).sort(byIdDescending).forEach(function(row) {
+      var line = formatAccountAddress(row.address);
+      if (line && formatted.indexOf(line) === -1) formatted.push(line);
+    });
+    return formatted;
+  }
+  function byIdAscending(left, right) {
+    return compareIds(left, right, 1);
+  }
+  function byIdDescending(left, right) {
+    return compareIds(left, right, -1);
+  }
+  function compareIds(left, right, direction) {
+    var a = positiveInteger(left && left.id);
+    var b = positiveInteger(right && right.id);
+    if (a === b) return 0;
+    if (a === null) return 1;
+    if (b === null) return -1;
+    return (a - b) * direction;
+  }
+  function rows(value) {
+    return Array.isArray(value) ? value.filter(function(row) {
+      return row && typeof row === "object";
+    }) : [];
+  }
+  function localizedName(value) {
+    if (!value || typeof value !== "object") return "";
+    var localized = value.en || value["en-US"] || Object.values(value)[0] || {};
+    return plain2(localized && (localized.NAME || localized.name));
+  }
+  function plain2(value) {
+    if (typeof value === "string") return value.trim();
+    return typeof value === "number" && Number.isFinite(value) ? String(value) : "";
+  }
+
   // app-templates/customer-portal/runtime/src/normalizers/overview.js
   var OVERVIEW_STATUS = {
     issue: {
@@ -948,98 +1195,6 @@
   function clamp(value, low, high) {
     if (high < low) return low;
     return Math.min(Math.max(value, low), high);
-  }
-
-  // app-templates/customer-portal/runtime/src/normalizers/postal-address.js
-  var POSTAL_CODE = /^(?:[A-Z]\d[A-Z] ?\d[A-Z]\d|\d{5}(?:-\d{4})?)$/i;
-  var COUNTRY_CODE = /^[A-Z]{2}$/;
-  var REGION_CODE = /^[A-Z]{2,3}$/;
-  var NORTH_AMERICAN_PHONE = /^\+?1(\d{3})(\d{3})(\d{4})$/;
-  var PHONE_PUNCTUATION = /[\s().-]/g;
-  function formatPostalAddress(address) {
-    if (!address || typeof address !== "object") return "";
-    return formatAddressParts({
-      lines: [address.address1, address.address2],
-      city: address.city,
-      region: address.state && typeof address.state === "object" ? address.state.code : "",
-      postalCode: address.postalCode,
-      country: address.country && typeof address.country === "object" ? address.country.code || address.country.id : ""
-    });
-  }
-  function formatAddressLine(value) {
-    return formatAddressParts({ lines: [value] });
-  }
-  function formatAddressParts(parts) {
-    var segments = [];
-    var country = plain(parts.country);
-    appendSegments(segments, parts.lines || []);
-    var last = segments[segments.length - 1];
-    if (last && COUNTRY_CODE.test(last) && segments.slice(0, -1).some(isPostalCode)) {
-      country = country || last;
-      segments.pop();
-    }
-    appendSegments(segments, [parts.city, parts.region]);
-    var postal = plain(parts.postalCode) || segments.filter(isPostalCode).pop() || "";
-    if (postal) {
-      segments = segments.filter(function(segment) {
-        return comparable(segment) !== comparable(postal);
-      });
-      if (segments.some(function(segment) {
-        return comparable(segment).indexOf(comparable(postal)) !== -1;
-      })) postal = "";
-    }
-    if (country) {
-      segments = segments.filter(function(segment) {
-        return comparable(segment) !== comparable(country);
-      });
-    }
-    last = segments[segments.length - 1];
-    if (postal && last && REGION_CODE.test(last)) {
-      segments[segments.length - 1] = last + " " + postal;
-      postal = "";
-    }
-    if (postal) segments.push(postal);
-    if (country) segments.push(countryName(country));
-    return segments.join(", ");
-  }
-  function addressRepeats(title, address) {
-    var street = comparable(plain(address).split(",")[0]);
-    return !!street && comparable(title).indexOf(street) !== -1;
-  }
-  function formatPhone(value) {
-    var stored = plain(value);
-    var match = NORTH_AMERICAN_PHONE.exec(stored.replace(PHONE_PUNCTUATION, ""));
-    return match ? "+1 " + match[1] + "-" + match[2] + "-" + match[3] : stored;
-  }
-  function countryName(code) {
-    var value = plain(code);
-    if (!COUNTRY_CODE.test(value)) return value;
-    try {
-      var name = new Intl.DisplayNames(["en"], { type: "region" }).of(value);
-      return name || value;
-    } catch (_) {
-      return value;
-    }
-  }
-  function appendSegments(segments, values) {
-    values.forEach(function(value) {
-      plain(value).split(",").forEach(function(piece) {
-        var segment = piece.replace(/\s+/g, " ").trim();
-        if (segment && !segments.some(function(known) {
-          return comparable(known) === comparable(segment);
-        })) segments.push(segment);
-      });
-    });
-  }
-  function isPostalCode(segment) {
-    return POSTAL_CODE.test(segment);
-  }
-  function comparable(value) {
-    return plain(value).toLowerCase().replace(/[^a-z0-9]/g, "");
-  }
-  function plain(value) {
-    if (typeof value === "string") return value.trim();
-    return typeof value === "number" && Number.isFinite(value) ? String(value) : "";
   }
 
   // app-templates/customer-portal/runtime/src/normalizers/contracts.js
@@ -1566,25 +1721,24 @@
   }
   function agreementParties(document2, client) {
     var owner = document2.organization;
-    var first = attributeString(document2, "REPRESENTATIVE_FIRST_NAME");
-    var last = attributeString(document2, "REPRESENTATIVE_LAST_NAME");
+    var account = accountParty(client && client.account, CLIENT_TYPES);
     return {
       provider: {
-        legalName: attributeString(document2, "PROVIDER_LEGAL_NAME") || localizedName(owner && owner.nls),
-        logoImageId: attributeString(document2, "PROVIDER_LOGO"),
-        representativeName: attributeString(document2, "PROVIDER_REPRESENTATIVE_NAME"),
-        representativeJobTitle: attributeString(document2, "PROVIDER_REPRESENTATIVE_JOB_TITLE"),
-        phone: formatPhone(attributeString(document2, "PROVIDER_CONTACT_PHONE")),
-        email: attributeString(document2, "PROVIDER_CONTACT_EMAIL")
+        legalName: localizedName2(owner && owner.nls),
+        logoImageId: "",
+        representativeName: "",
+        representativeJobTitle: "",
+        phone: "",
+        email: ""
       },
-      client: {
-        legalName: attributeString(document2, "LEGAL_NAME") || text(client && typeof client.displayName === "string" ? client.displayName : ""),
-        clientType: own(CLIENT_TYPES, attributeString(document2, "CLIENT_TYPE")) || "",
-        billingAddress: formatAddressLine(attributeString(document2, "BILLING_ADDRESS")),
-        representativeName: [first, last].filter(Boolean).join(" "),
-        representativeJobTitle: attributeString(document2, "REPRESENTATIVE_JOB_TITLE"),
-        email: attributeString(document2, "REPRESENTATIVE_EMAIL"),
-        phone: formatPhone(attributeString(document2, "REPRESENTATIVE_PHONE"))
+      client: account || {
+        legalName: text(client && typeof client.displayName === "string" ? client.displayName : ""),
+        clientType: "",
+        billingAddress: "",
+        representativeName: "",
+        representativeJobTitle: "",
+        email: "",
+        phone: ""
       }
     };
   }
@@ -1609,7 +1763,7 @@
       if (priceId && !price || productId && !product) incomplete = true;
       return {
         key: "line-" + entry.backendId,
-        product: localizedName(product && product.nls),
+        product: localizedName2(product && product.nls),
         quantity: formatQuantity(line.itemCount),
         unitPrice: formatMoney(line.amount, currency),
         total: formatMoney(line.grandTotal, currency)
@@ -1629,7 +1783,7 @@
       return catalog.prices.get(positiveInteger(entry.row.itemPrice && entry.row.itemPrice.id)) || null;
     });
     var names = prices.map(function(price) {
-      return localizedName(price && price.nls);
+      return localizedName2(price && price.nls);
     });
     var name = names[0] && names.every(function(entry) {
       return entry === names[0];
@@ -1788,7 +1942,7 @@
     });
     return ids;
   }
-  function localizedName(value) {
+  function localizedName2(value) {
     if (!value || typeof value !== "object") return "";
     var localized = value.en || value["en-US"] || Object.values(value)[0] || {};
     var name = localized && (localized.NAME || localized.name);
@@ -2701,7 +2855,7 @@
       orderItems: quotation ? proposals.orderItems || [] : null,
       productPrices: quotation ? proposals.productPrices || [] : null,
       products: quotation ? proposals.products || [] : null,
-      client: quotation ? { displayName: fixture.customer.fullName } : null
+      client: quotation ? Object.assign({ displayName: fixture.customer.fullName }, proposals.client || {}) : null
     };
   }
   function fixtureRow(rows2, backendId) {
@@ -3224,6 +3378,159 @@
     return error2;
   }
 
+  // app-templates/customer-portal/runtime/src/adapters/core-account-profile-adapter.js
+  var CODE_MAPPINGS = [{ name: "id" }, { name: "code" }];
+  var PROFILE_MAPPINGS = [
+    { name: "id" },
+    { name: "nls" },
+    { key: "id", mappings: [{ name: "id" }], name: "user", type: "identifier" },
+    {
+      mappings: [
+        { name: "id" },
+        { name: "firstName" },
+        { name: "lastName" },
+        { name: "title" },
+        { key: "id", mappings: CODE_MAPPINGS, name: "type", type: "identifier" },
+        {
+          mappings: [
+            { name: "id" },
+            { name: "value" },
+            { key: "id", mappings: CODE_MAPPINGS, name: "type", type: "identifier" }
+          ],
+          name: "contactEntries",
+          type: "collection"
+        }
+      ],
+      name: "contacts",
+      type: "collection"
+    },
+    {
+      mappings: [
+        { name: "id" },
+        { mappings: CODE_MAPPINGS, name: "types", type: "collection" },
+        {
+          key: "id",
+          mappings: [
+            { name: "id" },
+            { name: "address1" },
+            { name: "address2" },
+            { name: "city" },
+            { name: "postalCode" },
+            { key: "id", mappings: CODE_MAPPINGS, name: "state", type: "identifier" },
+            { key: "id", mappings: CODE_MAPPINGS, name: "country", type: "identifier" }
+          ],
+          name: "address",
+          type: "identifier"
+        }
+      ],
+      name: "addresses",
+      type: "collection"
+    }
+  ];
+  var CONTRACT_DETAILS_MAPPINGS = PROFILE_MAPPINGS.concat([{ name: "attributes" }]);
+  function createCoreAccountProfileAdapter(options2 = {}) {
+    var fetchImpl = options2.fetch || coreSessionFetch;
+    if (typeof fetchImpl !== "function") throw coded3("fetch-unavailable", "Core account profile adapter requires fetch");
+    return {
+      async load(moduleId, context) {
+        if (moduleId !== "profile") throw coded3("unsupported-module", "Core account profile adapter cannot load " + moduleId);
+        return loadCustomerAccountProfile(context, fetchImpl, options2.origin);
+      }
+    };
+  }
+  async function loadCustomerAccountProfile(context, fetchImpl = coreSessionFetch, explicitOrigin) {
+    return readCustomerAccount(context, fetchImpl, explicitOrigin, PROFILE_MAPPINGS);
+  }
+  async function loadContractDetailsAccount(context, fetchImpl = coreSessionFetch, explicitOrigin) {
+    return readCustomerAccount(context, fetchImpl, explicitOrigin, CONTRACT_DETAILS_MAPPINGS);
+  }
+  async function readCustomerAccount(context, fetchImpl, explicitOrigin, mappings) {
+    var api = requestContext(context, explicitOrigin);
+    var reply = await requestJson(fetchImpl, api.accountBase + api.accountListPath, {
+      method: "POST",
+      credentials: "same-origin",
+      headers: {
+        Authorization: api.authorization,
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        "X-Organization-Code": api.organization
+      },
+      body: JSON.stringify({
+        filters: [
+          { type: "INTEGER", operator: "=", property: "id", value: String(api.accountId) },
+          { type: "INTEGER", operator: "=", property: "user.id", value: String(api.userId) }
+        ],
+        mappings,
+        offset: 0,
+        pageSize: 2
+      })
+    });
+    var rows2 = Array.isArray(reply && reply.result) ? reply.result : [];
+    var owned = rows2.filter(function(row) {
+      return ownedBySession(row, api);
+    });
+    if (!owned.length) throw coded3("profile-unavailable", "Core did not return the signed-in customer's Account");
+    return { account: owned[0], scopeMode: owned.length === rows2.length ? "server-scoped" : "browser-filtered" };
+  }
+  function ownedBySession(row, api) {
+    if (!row || typeof row !== "object" || positiveInteger(row.id) !== api.accountId) return false;
+    var linked = row.user && typeof row.user === "object" ? positiveInteger(row.user.id) : null;
+    return linked === null && !api.tagged || linked === api.userId;
+  }
+  function requestContext(context, explicitOrigin) {
+    var config = context && context.config || {};
+    var runtimeState = context && context.state || {};
+    var session2 = runtimeState.session || {};
+    var accessToken = text(session2.accessToken || session2.access_token);
+    if (!accessToken) throw coded3("session-required", "A Core access token is required");
+    var userId = positiveInteger(session2.userId);
+    if (!userId) throw coded3("session-user-required", "The signed-in Core User is required");
+    var account = runtimeState.customerAccount || session2.account || null;
+    var accountId = positiveInteger(account && account.id);
+    if (!accountId) throw coded3("customer-unresolved", "A resolved customer Account is required before reading its profile");
+    var organization = text(config.organization);
+    if (!organization) throw coded3("organization-required", "A portal organization code is required");
+    var origin = explicitOrigin || config.origin || globalThis.location && globalThis.location.origin || "";
+    return {
+      accountBase: sameOriginBase(config.accountApiBase || "/core-acct", origin, "Core Account API base"),
+      accountId,
+      accountListPath: config.vertical === "snow" ? "/api/tagged/account/list.json" : "/api/account/list.json",
+      tagged: config.vertical === "snow",
+      authorization: text(session2.tokenType || session2.token_type || "Bearer") + " " + accessToken,
+      organization,
+      userId
+    };
+  }
+  async function requestJson(fetchImpl, url, options2) {
+    var response = await fetchImpl(url, options2);
+    if (!response || typeof response.ok !== "boolean") throw coded3("invalid-response", "Core request returned an invalid response");
+    if (!response.ok) {
+      var code = response.status === 401 ? "session-expired" : response.status === 403 ? "customer-forbidden" : "profile-request-failed";
+      var failure2 = coded3(code, "Core Account request failed with HTTP " + response.status);
+      failure2.status = response.status;
+      throw failure2;
+    }
+    var payload;
+    try {
+      payload = await response.json();
+    } catch (_) {
+      throw coded3("invalid-response", "Core response was not valid JSON");
+    }
+    if (!payload || typeof payload !== "object") throw coded3("invalid-response", "Core answered with an unprojected body");
+    return payload;
+  }
+  function sameOriginBase(value, origin, label) {
+    if (!origin) throw coded3("origin-required", label + " requires a browser origin");
+    var target = new URL(String(value || ""), origin);
+    if (target.origin !== new URL(origin).origin) throw coded3("cross-origin-service", label + " must be same-origin");
+    return target.href.replace(/\/+$/, "");
+  }
+  function coded3(code, message) {
+    var error2 = new Error(message);
+    error2.code = code;
+    return error2;
+  }
+
   // app-templates/customer-portal/runtime/src/adapters/core-snow-adapter.js
   var PROPERTY_TYPE = "SNOW_REMOVAL_PROPERTY";
   var PROPERTY_BASE_TYPE = "PROPERTY";
@@ -3402,7 +3709,7 @@
   }
   async function loadSnowVisits(context, fetchImpl = coreSessionFetch, explicitOrigin) {
     var api = readContext(context, explicitOrigin);
-    var reply = await requestJson(fetchImpl, api.serviceBase + "/api/tagged/appointment/list.json", readOptions(api, VISIT_LIST_BODY));
+    var reply = await requestJson2(fetchImpl, api.serviceBase + "/api/tagged/appointment/list.json", readOptions(api, VISIT_LIST_BODY));
     var rows2 = listResult(reply);
     return {
       state: "ready",
@@ -3417,12 +3724,12 @@
     var api = readContext(context, explicitOrigin);
     var id = positiveInteger(backendId);
     if (!id) throw contractError2("invalid-target", "A visit id is required before reading its progress");
-    var reply = await requestJson(fetchImpl, api.serviceBase + "/api/tagged/appointment/" + id + "/list-transitions.json", readOptions(api, VISIT_TRANSITIONS_BODY));
+    var reply = await requestJson2(fetchImpl, api.serviceBase + "/api/tagged/appointment/" + id + "/list-transitions.json", readOptions(api, VISIT_TRANSITIONS_BODY));
     return listResult(reply);
   }
   async function loadSnowInvoices(context, fetchImpl = coreSessionFetch, explicitOrigin) {
     var api = readContext(context, explicitOrigin);
-    var reply = await requestJson(fetchImpl, api.billBase + "/api/tagged/invoice/list.json", readOptions(api, INVOICE_LIST_BODY));
+    var reply = await requestJson2(fetchImpl, api.billBase + "/api/tagged/invoice/list.json", readOptions(api, INVOICE_LIST_BODY));
     var rows2 = listResult(reply);
     return {
       state: "ready",
@@ -3484,11 +3791,15 @@
     var primary = await Promise.all([
       settled(customerAgreements(api, fetchImpl)),
       settled(customerOrders(api, fetchImpl)),
-      quoteRequestReport(api, fetchImpl)
+      quoteRequestReport(api, fetchImpl),
+      settled(loadContractDetailsAccount(context, fetchImpl, explicitOrigin).then(function(read) {
+        return { rows: read.account, scopeMode: read.scopeMode };
+      }))
     ]);
     var agreements = primary[0];
     var orders = primary[1];
     var quoteRequest = primary[2];
+    var account = primary[3];
     rethrowSessionLoss(primary.slice(0, 2));
     if (agreements.state !== "ready" && orders.state !== "ready") throw orders.error;
     var visibleOrderIds = orders.state === "ready" ? customerVisibleOrderIds(orders.rows) : [];
@@ -3509,7 +3820,7 @@
         productPrices: readSummary(productPrices),
         products: readSummary(products)
       },
-      client: { displayName: api.accountName },
+      client: { displayName: api.accountName, account: account.state === "ready" ? account.rows : null },
       quoteRequest,
       agreements: agreements.rows,
       quoteOrders: orders.rows,
@@ -3521,7 +3832,7 @@
   async function readCustomerOrder(context, backendId, fetchImpl = coreSessionFetch, explicitOrigin) {
     var api = readContext(context, explicitOrigin);
     var id = commandId(backendId);
-    var row = await requestJson(fetchImpl, api.billBase + "/api/tagged/order/get.json?id=" + id, readOptions(api, ORDER_TARGET_MAPPINGS));
+    var row = await requestJson2(fetchImpl, api.billBase + "/api/tagged/order/get.json?id=" + id, readOptions(api, ORDER_TARGET_MAPPINGS));
     if (!row || positiveInteger(row.id) !== id) throw contractError2("not-found", "Core did not return the Order");
     if (positiveInteger(row.account && row.account.id) !== api.accountId) throw contractError2("customer-forbidden", "The Order does not belong to the signed-in customer");
     return row;
@@ -3529,14 +3840,14 @@
   async function readCustomerAgreement(context, backendId, fetchImpl = coreSessionFetch, explicitOrigin) {
     var api = readContext(context, explicitOrigin);
     var id = commandId(backendId);
-    var row = await requestJson(fetchImpl, api.coreBase + "/api/tagged/document/get.json?id=" + id, readOptions(api, AGREEMENT_TARGET_MAPPINGS));
+    var row = await requestJson2(fetchImpl, api.coreBase + "/api/tagged/document/get.json?id=" + id, readOptions(api, AGREEMENT_TARGET_MAPPINGS));
     if (!row || positiveInteger(row.id) !== id || text(row.type && row.type.code) !== AGREEMENT_TYPE) throw contractError2("not-found", "Core did not return the service agreement");
     if (attributeNumber(row, "CLIENT") !== api.accountId) throw contractError2("customer-forbidden", "The service agreement does not belong to the signed-in customer");
     return row;
   }
   async function quoteRequestReport(api, fetchImpl) {
     try {
-      var preferences = await requestJson(fetchImpl, api.coreBase + "/api/user/preferences.json", {
+      var preferences = await requestJson2(fetchImpl, api.coreBase + "/api/user/preferences.json", {
         method: "GET",
         credentials: "same-origin",
         headers: { Authorization: api.authorization, Accept: "application/json", "X-Organization-Code": api.organization }
@@ -3548,7 +3859,7 @@
     }
   }
   async function customerAgreements(api, fetchImpl) {
-    var types = await requestJson(fetchImpl, api.coreBase + "/api/document-type/list.json", readOptions(api, {
+    var types = await requestJson2(fetchImpl, api.coreBase + "/api/document-type/list.json", readOptions(api, {
       filters: [{ type: "STRING", operator: "=", property: "code", value: AGREEMENT_TYPE }],
       mappings: DOCUMENT_TYPE_MAPPINGS,
       offset: 0,
@@ -3559,7 +3870,7 @@
     });
     var typeId = positiveInteger(type && type.id);
     if (!typeId) throw contractError2("agreement-type-unavailable", "Core did not return the service agreement type");
-    var reply = await requestJson(fetchImpl, api.coreBase + "/api/tagged/document/list.json", readOptions(api, {
+    var reply = await requestJson2(fetchImpl, api.coreBase + "/api/tagged/document/list.json", readOptions(api, {
       filters: [
         { type: "STRING", operator: "=", property: "type.code", value: AGREEMENT_TYPE },
         { type: "INTEGER", operator: "=", property: "attributes." + typeId + ".CLIENT.value", value: String(api.accountId) }
@@ -3573,7 +3884,7 @@
     });
   }
   async function customerOrders(api, fetchImpl) {
-    var reply = await requestJson(fetchImpl, api.billBase + "/api/tagged/order/list.json", readOptions(api, {
+    var reply = await requestJson2(fetchImpl, api.billBase + "/api/tagged/order/list.json", readOptions(api, {
       filters: [{ type: "INTEGER", operator: "=", property: "account.id", value: String(api.accountId) }],
       mappings: ORDER_MAPPINGS,
       offset: 0,
@@ -3584,7 +3895,7 @@
     });
   }
   async function customerOrderItems(api, fetchImpl, orderIds) {
-    var reply = await requestJson(fetchImpl, api.billBase + "/api/tagged/order-item/list.json", readOptions(api, {
+    var reply = await requestJson2(fetchImpl, api.billBase + "/api/tagged/order-item/list.json", readOptions(api, {
       filters: [
         { type: "INTEGER", operator: "=", property: "order.account.id", value: String(api.accountId) },
         { type: "INTEGER", operator: "IN", property: "order.id", value: orderIds.join(",") }
@@ -3598,7 +3909,7 @@
     });
   }
   async function catalogRows(fetchImpl, api, url, ids, mappings) {
-    var reply = await requestJson(fetchImpl, url, readOptions(api, {
+    var reply = await requestJson2(fetchImpl, url, readOptions(api, {
       filters: [{ type: "INTEGER", operator: "IN", property: "id", value: ids.join(",") }],
       mappings,
       offset: 0,
@@ -3695,7 +4006,7 @@
     var truncated = false;
     var scopeMode = "server-scoped";
     for (var page = 0; page < PROPERTY_PAGE_LIMIT; page += 1) {
-      var response = await requestJson(fetchImpl, api.resourceBase + "/api/tagged/resource/list.json", readOptions(api, {
+      var response = await requestJson2(fetchImpl, api.resourceBase + "/api/tagged/resource/list.json", readOptions(api, {
         filters: [{ type: "STRING", operator: "=", property: "type.code", value: PROPERTY_TYPE }],
         mappings: RESOURCE_MAPPINGS,
         offset: page * PROPERTY_PAGE_SIZE,
@@ -3720,7 +4031,7 @@
     });
     if (!ids.length) return resolved;
     if (!api.userId) throw contractError2("session-user-required", "The signed-in Core User is required before reading property addresses");
-    var account = await requestJson(fetchImpl, api.accountBase + "/api/tagged/account/get.json?id=" + api.accountId, readOptions(api, ACCOUNT_ADDRESS_MAPPINGS));
+    var account = await requestJson2(fetchImpl, api.accountBase + "/api/tagged/account/get.json?id=" + api.accountId, readOptions(api, ACCOUNT_ADDRESS_MAPPINGS));
     if (positiveInteger(account && account.id) !== api.accountId || positiveInteger(account && account.user && account.user.id) !== api.userId) {
       throw contractError2("customer-forbidden", "Property addresses must belong to the signed-in customer's Account");
     }
@@ -3736,7 +4047,7 @@
     return {
       id: "prop-core-" + row.id,
       backendId: positiveInteger(row.id),
-      name: localizedName2(row.nls) || text(row.code) || "Property",
+      name: localizedName3(row.nls) || text(row.code) || "Property",
       address: formatPostalAddress(address),
       city: address ? text(address.city) : "",
       postal: address ? text(address.postalCode) : "",
@@ -3797,16 +4108,16 @@
     if (!organization) throw contractError2("organization-required", "A portal organization code is required");
     var origin = explicitOrigin || config.origin || browserOrigin();
     return {
-      accountBase: sameOriginBase(config.accountApiBase || "/core-acct", origin, "Core Account API base"),
+      accountBase: sameOriginBase2(config.accountApiBase || "/core-acct", origin, "Core Account API base"),
       accountId,
       accountName: text(account && typeof account.displayName === "string" ? account.displayName : ""),
       authorization: text(session2.tokenType || session2.token_type || "Bearer") + " " + accessToken,
-      billBase: sameOriginBase(config.billApiBase || "/core-bill", origin, "Core Bill API base"),
-      coreBase: sameOriginBase(config.coreApiBase || "/core", origin, "Core API base"),
+      billBase: sameOriginBase2(config.billApiBase || "/core-bill", origin, "Core Bill API base"),
+      coreBase: sameOriginBase2(config.coreApiBase || "/core", origin, "Core API base"),
       organization,
-      pimBase: sameOriginBase(PIM_SERVICE_BASE, origin, "Core PIM API base"),
-      resourceBase: sameOriginBase(config.resourceApiBase || "/core-rm", origin, "Core Resource API base"),
-      serviceBase: sameOriginBase(config.serviceApiBase || "/core-svc", origin, "Core Service API base"),
+      pimBase: sameOriginBase2(PIM_SERVICE_BASE, origin, "Core PIM API base"),
+      resourceBase: sameOriginBase2(config.resourceApiBase || "/core-rm", origin, "Core Resource API base"),
+      serviceBase: sameOriginBase2(config.serviceApiBase || "/core-svc", origin, "Core Service API base"),
       userId: positiveInteger(session2.userId)
     };
   }
@@ -3823,7 +4134,7 @@
       body: JSON.stringify(body)
     };
   }
-  async function requestJson(fetchImpl, url, options2) {
+  async function requestJson2(fetchImpl, url, options2) {
     var response = await fetchImpl(url, options2);
     if (!response || typeof response.ok !== "boolean") throw contractError2("invalid-response", "Core request returned an invalid response");
     if (!response.ok) throw failure(response.status);
@@ -3836,7 +4147,7 @@
     if (typeof payload === "string") throw contractError2("unprojectable-response", "Core answered with an unprojected body");
     return payload;
   }
-  function sameOriginBase(value, origin, label) {
+  function sameOriginBase2(value, origin, label) {
     if (!origin) throw contractError2("origin-required", label + " requires a browser origin");
     var target = new URL(String(value || ""), origin);
     if (target.origin !== new URL(origin).origin) throw contractError2("cross-origin-service", label + " must be same-origin");
@@ -3845,7 +4156,7 @@
   function browserOrigin() {
     return globalThis.location && globalThis.location.origin || "";
   }
-  function localizedName2(value) {
+  function localizedName3(value) {
     if (!value || typeof value !== "object") return "";
     var localized = value.en || value["en-US"] || Object.values(value)[0] || {};
     return text(localized && (localized.NAME || localized.name));
@@ -3946,14 +4257,14 @@
     };
   }
   async function loadCoreUserProfile(context, fetchImpl = coreSessionFetch, explicitOrigin) {
-    var api = requestContext(context, explicitOrigin);
-    var row = await requestJson2(fetchImpl, api.base + "/api/user/get.json?id=" + api.userId, options(api, USER_MAPPINGS));
+    var api = requestContext2(context, explicitOrigin);
+    var row = await requestJson3(fetchImpl, api.base + "/api/user/get.json?id=" + api.userId, options(api, USER_MAPPINGS));
     var phone = api.accountId ? await loadAccountPhone(api, fetchImpl) : null;
     return normalize(row, api.userId, phone);
   }
   async function loadAccountPhone(api, fetchImpl) {
     if (!api.accountBase) return null;
-    var response = await requestJson2(fetchImpl, api.accountBase + "/api/account/list.json", options(api, {
+    var response = await requestJson3(fetchImpl, api.accountBase + "/api/account/list.json", options(api, {
       filters: [{ type: "INTEGER", operator: "=", property: "id", value: String(api.accountId) }],
       mappings: ACCOUNT_CONTACT_MAPPINGS,
       offset: 0,
@@ -3972,8 +4283,8 @@
     return null;
   }
   async function saveCoreUserProfile(input, context, fetchImpl = coreSessionFetch, explicitOrigin) {
-    var api = requestContext(context, explicitOrigin);
-    var current = await requestJson2(fetchImpl, api.base + "/api/user/get.json?id=" + api.userId, options(api, USER_MAPPINGS));
+    var api = requestContext2(context, explicitOrigin);
+    var current = await requestJson3(fetchImpl, api.base + "/api/user/get.json?id=" + api.userId, options(api, USER_MAPPINGS));
     var entity = {
       email: text2(input && input.email),
       enabled: current.enabled !== false,
@@ -3985,8 +4296,8 @@
       workflow: requiredRef(current.workflow, "User workflow")
     };
     if (!entity.email) throw error("profile-email-required", "Email is required");
-    await requestJson2(fetchImpl, api.base + "/api/user/save.json", options(api, { entities: [entity], mappings: USER_MAPPINGS }));
-    var readback = await requestJson2(fetchImpl, api.base + "/api/user/get.json?id=" + api.userId, options(api, USER_MAPPINGS));
+    await requestJson3(fetchImpl, api.base + "/api/user/save.json", options(api, { entities: [entity], mappings: USER_MAPPINGS }));
+    var readback = await requestJson3(fetchImpl, api.base + "/api/user/get.json?id=" + api.userId, options(api, USER_MAPPINGS));
     return normalize(readback, api.userId);
   }
   function normalize(row, userId, phone) {
@@ -4003,7 +4314,7 @@
       unavailableFields: phone ? ["preferences"] : ["phone", "preferences"]
     };
   }
-  function requestContext(context, explicitOrigin) {
+  function requestContext2(context, explicitOrigin) {
     var config = context && context.config || {};
     var state2 = context && context.state || {};
     var session2 = context && context.session || state2.session || {};
@@ -4012,10 +4323,10 @@
     if (!token) throw error("session-required", "A Core access token is required");
     if (!userId) throw error("session-user-required", "The signed-in Core User is required");
     var origin = explicitOrigin || config.origin || globalThis.location && globalThis.location.origin;
-    var base = sameOriginBase2(config.coreApiBase || "/core", origin, "Core API base");
+    var base = sameOriginBase3(config.coreApiBase || "/core", origin, "Core API base");
     var customer = context && context.account || state2.customerAccount || session2.account || {};
     return {
-      accountBase: sameOriginBase2(config.accountApiBase || "/core-acct", origin, "Core Account API base"),
+      accountBase: sameOriginBase3(config.accountApiBase || "/core-acct", origin, "Core Account API base"),
       accountId: positiveInteger2(customer.id) || null,
       base,
       token: text2(session2.tokenType || session2.token_type || "Bearer") + " " + token,
@@ -4025,7 +4336,7 @@
   function options(api, body) {
     return { method: "POST", credentials: "same-origin", headers: { Authorization: api.token, "Content-Type": "application/json", Accept: "application/json" }, body: JSON.stringify(body) };
   }
-  async function requestJson2(fetchImpl, url, requestOptions) {
+  async function requestJson3(fetchImpl, url, requestOptions) {
     var response = await fetchImpl(url, requestOptions);
     if (!response || typeof response.ok !== "boolean") throw error("invalid-response", "Core User returned an invalid response");
     if (!response.ok) {
@@ -4040,7 +4351,7 @@
       throw error("invalid-response", "Core User response was not valid JSON");
     }
   }
-  function sameOriginBase2(value, origin, label) {
+  function sameOriginBase3(value, origin, label) {
     if (!origin) throw error("origin-required", label + " requires a browser origin");
     var url = new URL(value, origin);
     if (url.origin !== new URL(origin).origin) throw error("cross-origin-service", label + " must be same-origin");
@@ -4079,7 +4390,7 @@
   var OUTCOME_TIMEOUT_MS = 45e3;
   function createCoreProfileFormAdapter(options2 = {}) {
     var fetchImpl = options2.fetch || coreSessionFetch;
-    if (typeof fetchImpl !== "function") throw coded3("fetch-unavailable", "Core profile form adapter requires fetch");
+    if (typeof fetchImpl !== "function") throw coded4("fetch-unavailable", "Core profile form adapter requires fetch");
     var wait = options2.wait || function(ms) {
       return new Promise(function(resolve) {
         setTimeout(resolve, ms);
@@ -4093,28 +4404,28 @@
     var types = {};
     async function formType(form, api) {
       if (types[form.typeCode]) return types[form.typeCode];
-      var type = await requestJson3(fetchImpl, api.origin + "/" + FORM_LOCALE + api.cmsPath + "/api/form-type/" + encodeURIComponent(form.typeCode) + "/get.json", {
+      var type = await requestJson4(fetchImpl, api.origin + "/" + FORM_LOCALE + api.cmsPath + "/api/form-type/" + encodeURIComponent(form.typeCode) + "/get.json", {
         method: "GET",
         credentials: "same-origin",
         headers: { Accept: "application/json" }
       }, "form-type-unavailable");
       var id = positiveInteger(type && type.id);
-      if (!id || text(type.code) !== form.typeCode) throw coded3("form-type-unavailable", "Core did not answer the " + form.typeCode + " form type");
+      if (!id || text(type.code) !== form.typeCode) throw coded4("form-type-unavailable", "Core did not answer the " + form.typeCode + " form type");
       types[form.typeCode] = type;
       return type;
     }
     var adapter = {
       async type(form, context) {
-        return formType(form, requestContext2(context));
+        return formType(form, requestContext3(context));
       },
       async submit(form, values, context) {
-        var api = requestContext2(context);
+        var api = requestContext3(context);
         var typeId = positiveInteger((await formType(form, api)).id);
         var attributes = {};
         (/* @__PURE__ */ Object.keys(values)).forEach(function(code) {
           attributes[code] = { value: values[code] };
         });
-        var formId = await requestJson3(fetchImpl, api.cmsBase + "/api/form/submit.json", {
+        var formId = await requestJson4(fetchImpl, api.cmsBase + "/api/form/submit.json", {
           method: "POST",
           credentials: "same-origin",
           headers: api.headers({ "Content-Type": "application/json" }),
@@ -4126,7 +4437,7 @@
           })
         }, "profile-submit-failed");
         var id = positiveInteger(formId);
-        if (!id) throw coded3("profile-submit-failed", "Core accepted the form without a form id");
+        if (!id) throw coded4("profile-submit-failed", "Core accepted the form without a form id");
         return id;
       },
       async outcome(form, formId, context) {
@@ -4139,10 +4450,10 @@
         };
       },
       async report(form, formId, context, outcomes, observe) {
-        var api = requestContext2(context);
+        var api = requestContext3(context);
         var deadline = now() + timeout;
         while (true) {
-          var preferences = await requestJson3(fetchImpl, api.coreBase + "/api/user/preferences.json", {
+          var preferences = await requestJson4(fetchImpl, api.coreBase + "/api/user/preferences.json", {
             method: "GET",
             credentials: "same-origin",
             headers: api.headers({})
@@ -4151,7 +4462,7 @@
           var own2 = !!reported && positiveInteger(reported.form) === formId;
           if (own2 && observe) observe(reported);
           if (own2 && outcomes.indexOf(reported.outcome) !== -1) return reported;
-          if (now() >= deadline) throw coded3("outcome-unknown", "Core did not report the outcome of form " + formId + " in time");
+          if (now() >= deadline) throw coded4("outcome-unknown", "Core did not report the outcome of form " + formId + " in time");
           await wait(pollInterval);
         }
       }
@@ -4167,49 +4478,49 @@
       return null;
     }
   }
-  function requestContext2(context) {
+  function requestContext3(context) {
     var config = context && context.config || {};
     var session2 = context && context.state && context.state.session || {};
     var accessToken = text(session2.accessToken || session2.access_token);
-    if (!accessToken) throw coded3("session-expired", "A Core access token is required");
+    if (!accessToken) throw coded4("session-expired", "A Core access token is required");
     var organization = text(config.organization);
     var organizationId = positiveInteger(session2.organizationId);
-    if (!organization || !organizationId) throw coded3("organization-required", "The portal organization and its id are required");
+    if (!organization || !organizationId) throw coded4("organization-required", "The portal organization and its id are required");
     var origin = config.origin || globalThis.location && globalThis.location.origin || "";
-    var cmsBase = sameOriginBase3(config.cmsApiBase || "/core-cms", origin, "Core CMS API base");
+    var cmsBase = sameOriginBase4(config.cmsApiBase || "/core-cms", origin, "Core CMS API base");
     var authorization = text(session2.tokenType || session2.token_type || "Bearer") + " " + accessToken;
     return {
       origin: new URL(origin).origin,
       cmsBase,
       cmsPath: new URL(cmsBase).pathname.replace(/\/+$/, ""),
-      coreBase: sameOriginBase3(config.coreApiBase || "/core", origin, "Core API base"),
+      coreBase: sameOriginBase4(config.coreApiBase || "/core", origin, "Core API base"),
       organizationId,
       headers: function(extra) {
         return Object.assign({ Authorization: authorization, Accept: "application/json", "X-Organization-Code": organization }, extra);
       }
     };
   }
-  async function requestJson3(fetchImpl, url, options2, failureCode) {
+  async function requestJson4(fetchImpl, url, options2, failureCode) {
     var response = await fetchImpl(url, options2);
-    if (!response || typeof response.ok !== "boolean") throw coded3(failureCode, "Core request returned an invalid response");
+    if (!response || typeof response.ok !== "boolean") throw coded4(failureCode, "Core request returned an invalid response");
     if (!response.ok) {
-      var failure2 = coded3(response.status === 401 ? "session-expired" : failureCode, "Core request failed with HTTP " + response.status);
+      var failure2 = coded4(response.status === 401 ? "session-expired" : failureCode, "Core request failed with HTTP " + response.status);
       failure2.status = response.status;
       throw failure2;
     }
     try {
       return await response.json();
     } catch (_) {
-      throw coded3(failureCode, "Core response was not valid JSON");
+      throw coded4(failureCode, "Core response was not valid JSON");
     }
   }
-  function sameOriginBase3(value, origin, label) {
-    if (!origin) throw coded3("origin-required", label + " requires a browser origin");
+  function sameOriginBase4(value, origin, label) {
+    if (!origin) throw coded4("origin-required", label + " requires a browser origin");
     var target = new URL(String(value || ""), origin);
-    if (target.origin !== new URL(origin).origin) throw coded3("cross-origin-service", label + " must be same-origin");
+    if (target.origin !== new URL(origin).origin) throw coded4("cross-origin-service", label + " must be same-origin");
     return target.href.replace(/\/+$/, "");
   }
-  function coded3(code, message) {
+  function coded4(code, message) {
     var error2 = new Error(message);
     error2.code = code;
     return error2;
@@ -4495,7 +4806,7 @@
     var product = item.itemPrice && item.itemPrice.product;
     return {
       id: positiveInteger(item.id),
-      name: localizedName3(product && product.nls) || "Service",
+      name: localizedName4(product && product.nls) || "Service",
       quantity,
       amount: formatMoney(amount * quantity, currency)
     };
@@ -4512,7 +4823,7 @@
     var number = typeof value === "number" ? value : typeof value === "string" && value.trim() !== "" ? Number(value) : Number.NaN;
     return Number.isFinite(number) ? number : null;
   }
-  function localizedName3(value) {
+  function localizedName4(value) {
     if (!value || typeof value !== "object") return "";
     var localized = value.en || value["en-US"] || Object.values(value)[0] || {};
     return text(localized && (localized.NAME || localized.name));
@@ -4523,7 +4834,7 @@
     var fetchImpl = options2.fetch || coreSessionFetch;
     return {
       async overwrite(key, value, context) {
-        var api = requestContext2(context);
+        var api = requestContext3(context);
         var response = await fetchImpl(api.coreBase + "/api/user/preference.json", {
           method: "PUT",
           credentials: "same-origin",
@@ -4544,22 +4855,22 @@
     if (typeof scope.Stripe === "function") return Promise.resolve(scope.Stripe);
     if (loads.has(scope)) return loads.get(scope);
     var root = scope.document;
-    if (!root || typeof root.createElement !== "function") return Promise.reject(coded4("stripe-unavailable", "Stripe.js needs a document"));
+    if (!root || typeof root.createElement !== "function") return Promise.reject(coded5("stripe-unavailable", "Stripe.js needs a document"));
     var loading = new Promise(function(resolve, reject) {
       var script = root.createElement("script");
       var timer = setTimeout(function() {
-        reject(coded4("stripe-unavailable", "Stripe.js did not load in time"));
+        reject(coded5("stripe-unavailable", "Stripe.js did not load in time"));
       }, options2.timeoutMs || LOAD_TIMEOUT_MS);
       script.setAttribute("src", STRIPE_JS_URL);
       script.setAttribute("async", "");
       script.addEventListener("load", function() {
         clearTimeout(timer);
         if (typeof scope.Stripe === "function") resolve(scope.Stripe);
-        else reject(coded4("stripe-unavailable", "Stripe.js loaded without Stripe"));
+        else reject(coded5("stripe-unavailable", "Stripe.js loaded without Stripe"));
       });
       script.addEventListener("error", function() {
         clearTimeout(timer);
-        reject(coded4("stripe-unavailable", "Stripe.js could not be loaded"));
+        reject(coded5("stripe-unavailable", "Stripe.js could not be loaded"));
       });
       (root.head || root.body).appendChild(script);
     });
@@ -4569,7 +4880,7 @@
     });
     return loading;
   }
-  function coded4(code, message) {
+  function coded5(code, message) {
     var error2 = new Error(message);
     error2.code = code;
     return error2;
@@ -8849,302 +9160,6 @@
     block.setAttribute("data-state", "unavailable");
     block.setAttribute("data-module", "contracts-unavailable");
     return block;
-  }
-
-  // app-templates/customer-portal/runtime/src/normalizers/account-profile.js
-  var ACCOUNT_PROFILE_SCOPE_MODES = /* @__PURE__ */ Object.freeze(["server-scoped", "browser-filtered"]);
-  var LEGAL_CONTACT = "LEGAL";
-  var BILLING_ADDRESS = "BILLING";
-  var EMAIL_ENTRY = "EMAIL";
-  var PHONE_ENTRY = "PHONE";
-  function normalizeAccountProfile(raw) {
-    var source = raw && typeof raw === "object" ? raw : {};
-    var account = source.account && typeof source.account === "object" && !Array.isArray(source.account) ? source.account : null;
-    if (!account) return accountProfileFailure("profile-unavailable");
-    var primary = primaryContact(account.contacts);
-    var contact = primary ? { name: [plain2(primary.firstName), plain2(primary.lastName)].filter(Boolean).join(" "), firstName: plain2(primary.firstName), title: plain2(primary.title) } : null;
-    var emails = primary ? entryValues(primary.contactEntries, EMAIL_ENTRY) : [];
-    var phones = primary ? entryValues(primary.contactEntries, PHONE_ENTRY).map(formatPhone) : [];
-    var billingAddresses = typedAddresses(account.addresses, BILLING_ADDRESS);
-    var editable = {
-      firstName: primary ? plain2(primary.firstName) : "",
-      lastName: primary ? plain2(primary.lastName) : "",
-      email: primary ? firstEntryValue(primary.contactEntries, EMAIL_ENTRY) : "",
-      phone: primary ? formatPhone(firstEntryValue(primary.contactEntries, PHONE_ENTRY)) : "",
-      billingAddress: oldestTypedAddress(account.addresses, BILLING_ADDRESS)
-    };
-    var filled = [!!(contact && contact.name), emails.length > 0, phones.length > 0, billingAddresses.length > 0];
-    return {
-      state: filled.every(Boolean) ? "ready" : filled.some(Boolean) ? "partial" : "empty",
-      reasonCode: null,
-      scopeMode: ACCOUNT_PROFILE_SCOPE_MODES.indexOf(source.scopeMode) === -1 ? null : source.scopeMode,
-      accountName: localizedName4(account.nls),
-      contact,
-      emails,
-      phones,
-      billingAddresses,
-      editable,
-      allowedActions: []
-    };
-  }
-  function contractDetailsPrefill(account, clientTypes) {
-    var row = account && typeof account === "object" && !Array.isArray(account) ? account : {};
-    var legal = primaryContact(row.contacts);
-    var legalType = attributeText(row, "LEGAL_ENTITY_TYPE").toUpperCase();
-    var billing = rows(row.addresses).filter(function(link) {
-      return rows(link.types).some(function(type) {
-        return text(type.code) === BILLING_ADDRESS;
-      });
-    }).sort(byIdAscending)[0];
-    return {
-      LEGAL_NAME: localizedName4(row.nls),
-      CLIENT_TYPE: clientTypes.indexOf(legalType) === -1 ? "" : legalType,
-      BILLING_ADDRESS: billing && billing.address ? plain2(billing.address.address1) : "",
-      REPRESENTATIVE_FIRST_NAME: legal ? plain2(legal.firstName) : "",
-      REPRESENTATIVE_LAST_NAME: legal ? plain2(legal.lastName) : "",
-      REPRESENTATIVE_JOB_TITLE: legal ? plain2(legal.title) : "",
-      REPRESENTATIVE_EMAIL: legal ? firstEntryValue(legal.contactEntries, EMAIL_ENTRY) : "",
-      REPRESENTATIVE_PHONE: legal ? firstEntryValue(legal.contactEntries, PHONE_ENTRY) : ""
-    };
-  }
-  function accountProfileFailure(code) {
-    return {
-      state: code === "customer-forbidden" ? "unauthorized" : code === "profile-unavailable" ? "unavailable" : "error",
-      reasonCode: code || "profile-load-failed",
-      scopeMode: null,
-      accountName: "",
-      contact: null,
-      emails: [],
-      phones: [],
-      billingAddresses: [],
-      editable: null,
-      allowedActions: []
-    };
-  }
-  function formatAccountAddress(address) {
-    return formatPostalAddress(address);
-  }
-  function primaryContact(contacts) {
-    var primaries = rows(contacts).filter(function(contact) {
-      return text(contact.type && contact.type.code) === LEGAL_CONTACT;
-    });
-    return primaries.sort(byIdAscending)[0] || null;
-  }
-  function entryValues(entries, typeCode) {
-    var values = [];
-    rows(entries).forEach(function(entry) {
-      if (text(entry.type && entry.type.code) !== typeCode) return;
-      var value = plain2(entry.value);
-      if (value && values.indexOf(value) === -1) values.push(value);
-    });
-    return values;
-  }
-  function firstEntryValue(entries, typeCode) {
-    var entry = rows(entries).filter(function(row) {
-      return text(row.type && row.type.code) === typeCode && plain2(row.value);
-    }).sort(byIdAscending)[0];
-    return entry ? plain2(entry.value) : "";
-  }
-  function oldestTypedAddress(addresses, typeCode) {
-    var link = rows(addresses).filter(function(row) {
-      return rows(row.types).some(function(type) {
-        return text(type.code) === typeCode;
-      });
-    }).sort(byIdAscending)[0];
-    return link ? formatAccountAddress(link.address) : "";
-  }
-  function typedAddresses(addresses, typeCode) {
-    var formatted = [];
-    rows(addresses).filter(function(row) {
-      return rows(row.types).some(function(type) {
-        return text(type.code) === typeCode;
-      });
-    }).sort(byIdDescending).forEach(function(row) {
-      var line = formatAccountAddress(row.address);
-      if (line && formatted.indexOf(line) === -1) formatted.push(line);
-    });
-    return formatted;
-  }
-  function byIdAscending(left, right) {
-    return compareIds(left, right, 1);
-  }
-  function byIdDescending(left, right) {
-    return compareIds(left, right, -1);
-  }
-  function compareIds(left, right, direction) {
-    var a = positiveInteger(left && left.id);
-    var b = positiveInteger(right && right.id);
-    if (a === b) return 0;
-    if (a === null) return 1;
-    if (b === null) return -1;
-    return (a - b) * direction;
-  }
-  function rows(value) {
-    return Array.isArray(value) ? value.filter(function(row) {
-      return row && typeof row === "object";
-    }) : [];
-  }
-  function localizedName4(value) {
-    if (!value || typeof value !== "object") return "";
-    var localized = value.en || value["en-US"] || Object.values(value)[0] || {};
-    return plain2(localized && (localized.NAME || localized.name));
-  }
-  function plain2(value) {
-    if (typeof value === "string") return value.trim();
-    return typeof value === "number" && Number.isFinite(value) ? String(value) : "";
-  }
-
-  // app-templates/customer-portal/runtime/src/adapters/core-account-profile-adapter.js
-  var CODE_MAPPINGS = [{ name: "id" }, { name: "code" }];
-  var PROFILE_MAPPINGS = [
-    { name: "id" },
-    { name: "nls" },
-    { key: "id", mappings: [{ name: "id" }], name: "user", type: "identifier" },
-    {
-      mappings: [
-        { name: "id" },
-        { name: "firstName" },
-        { name: "lastName" },
-        { name: "title" },
-        { key: "id", mappings: CODE_MAPPINGS, name: "type", type: "identifier" },
-        {
-          mappings: [
-            { name: "id" },
-            { name: "value" },
-            { key: "id", mappings: CODE_MAPPINGS, name: "type", type: "identifier" }
-          ],
-          name: "contactEntries",
-          type: "collection"
-        }
-      ],
-      name: "contacts",
-      type: "collection"
-    },
-    {
-      mappings: [
-        { name: "id" },
-        { mappings: CODE_MAPPINGS, name: "types", type: "collection" },
-        {
-          key: "id",
-          mappings: [
-            { name: "id" },
-            { name: "address1" },
-            { name: "address2" },
-            { name: "city" },
-            { name: "postalCode" },
-            { key: "id", mappings: CODE_MAPPINGS, name: "state", type: "identifier" },
-            { key: "id", mappings: CODE_MAPPINGS, name: "country", type: "identifier" }
-          ],
-          name: "address",
-          type: "identifier"
-        }
-      ],
-      name: "addresses",
-      type: "collection"
-    }
-  ];
-  var CONTRACT_DETAILS_MAPPINGS = PROFILE_MAPPINGS.concat([{ name: "attributes" }]);
-  function createCoreAccountProfileAdapter(options2 = {}) {
-    var fetchImpl = options2.fetch || coreSessionFetch;
-    if (typeof fetchImpl !== "function") throw coded5("fetch-unavailable", "Core account profile adapter requires fetch");
-    return {
-      async load(moduleId, context) {
-        if (moduleId !== "profile") throw coded5("unsupported-module", "Core account profile adapter cannot load " + moduleId);
-        return loadCustomerAccountProfile(context, fetchImpl, options2.origin);
-      }
-    };
-  }
-  async function loadCustomerAccountProfile(context, fetchImpl = coreSessionFetch, explicitOrigin) {
-    return readCustomerAccount(context, fetchImpl, explicitOrigin, PROFILE_MAPPINGS);
-  }
-  async function loadContractDetailsAccount(context, fetchImpl = coreSessionFetch, explicitOrigin) {
-    return readCustomerAccount(context, fetchImpl, explicitOrigin, CONTRACT_DETAILS_MAPPINGS);
-  }
-  async function readCustomerAccount(context, fetchImpl, explicitOrigin, mappings) {
-    var api = requestContext3(context, explicitOrigin);
-    var reply = await requestJson4(fetchImpl, api.accountBase + api.accountListPath, {
-      method: "POST",
-      credentials: "same-origin",
-      headers: {
-        Authorization: api.authorization,
-        "Content-Type": "application/json",
-        Accept: "application/json",
-        "X-Organization-Code": api.organization
-      },
-      body: JSON.stringify({
-        filters: [
-          { type: "INTEGER", operator: "=", property: "id", value: String(api.accountId) },
-          { type: "INTEGER", operator: "=", property: "user.id", value: String(api.userId) }
-        ],
-        mappings,
-        offset: 0,
-        pageSize: 2
-      })
-    });
-    var rows2 = Array.isArray(reply && reply.result) ? reply.result : [];
-    var owned = rows2.filter(function(row) {
-      return ownedBySession(row, api);
-    });
-    if (!owned.length) throw coded5("profile-unavailable", "Core did not return the signed-in customer's Account");
-    return { account: owned[0], scopeMode: owned.length === rows2.length ? "server-scoped" : "browser-filtered" };
-  }
-  function ownedBySession(row, api) {
-    if (!row || typeof row !== "object" || positiveInteger(row.id) !== api.accountId) return false;
-    var linked = row.user && typeof row.user === "object" ? positiveInteger(row.user.id) : null;
-    return linked === null && !api.tagged || linked === api.userId;
-  }
-  function requestContext3(context, explicitOrigin) {
-    var config = context && context.config || {};
-    var runtimeState = context && context.state || {};
-    var session2 = runtimeState.session || {};
-    var accessToken = text(session2.accessToken || session2.access_token);
-    if (!accessToken) throw coded5("session-required", "A Core access token is required");
-    var userId = positiveInteger(session2.userId);
-    if (!userId) throw coded5("session-user-required", "The signed-in Core User is required");
-    var account = runtimeState.customerAccount || session2.account || null;
-    var accountId = positiveInteger(account && account.id);
-    if (!accountId) throw coded5("customer-unresolved", "A resolved customer Account is required before reading its profile");
-    var organization = text(config.organization);
-    if (!organization) throw coded5("organization-required", "A portal organization code is required");
-    var origin = explicitOrigin || config.origin || globalThis.location && globalThis.location.origin || "";
-    return {
-      accountBase: sameOriginBase4(config.accountApiBase || "/core-acct", origin, "Core Account API base"),
-      accountId,
-      accountListPath: config.vertical === "snow" ? "/api/tagged/account/list.json" : "/api/account/list.json",
-      tagged: config.vertical === "snow",
-      authorization: text(session2.tokenType || session2.token_type || "Bearer") + " " + accessToken,
-      organization,
-      userId
-    };
-  }
-  async function requestJson4(fetchImpl, url, options2) {
-    var response = await fetchImpl(url, options2);
-    if (!response || typeof response.ok !== "boolean") throw coded5("invalid-response", "Core request returned an invalid response");
-    if (!response.ok) {
-      var code = response.status === 401 ? "session-expired" : response.status === 403 ? "customer-forbidden" : "profile-request-failed";
-      var failure2 = coded5(code, "Core Account request failed with HTTP " + response.status);
-      failure2.status = response.status;
-      throw failure2;
-    }
-    var payload;
-    try {
-      payload = await response.json();
-    } catch (_) {
-      throw coded5("invalid-response", "Core response was not valid JSON");
-    }
-    if (!payload || typeof payload !== "object") throw coded5("invalid-response", "Core answered with an unprojected body");
-    return payload;
-  }
-  function sameOriginBase4(value, origin, label) {
-    if (!origin) throw coded5("origin-required", label + " requires a browser origin");
-    var target = new URL(String(value || ""), origin);
-    if (target.origin !== new URL(origin).origin) throw coded5("cross-origin-service", label + " must be same-origin");
-    return target.href.replace(/\/+$/, "");
-  }
-  function coded5(code, message) {
-    var error2 = new Error(message);
-    error2.code = code;
-    return error2;
   }
 
   // app-templates/customer-portal/runtime/src/contract-details.js

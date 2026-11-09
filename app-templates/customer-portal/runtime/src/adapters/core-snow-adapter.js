@@ -3,6 +3,7 @@ import { CUSTOMER_ORDER_STATUS, OPERATOR_ORDER_STATES, QUOTE_ORDER_TYPES } from 
 import { formatPostalAddress } from "../normalizers/postal-address.js";
 import { VISIT_TYPE } from "../normalizers/visits.js";
 import { coreSessionFetch } from "./core-oidc-adapter.js";
+import { loadContractDetailsAccount } from "./core-account-profile-adapter.js";
 
 const PROPERTY_TYPE = "SNOW_REMOVAL_PROPERTY";
 const PROPERTY_BASE_TYPE = "PROPERTY";
@@ -289,10 +290,12 @@ export async function loadSnowQuotes(context, fetchImpl = coreSessionFetch, expl
     settled(customerAgreements(api, fetchImpl)),
     settled(customerOrders(api, fetchImpl)),
     quoteRequestReport(api, fetchImpl),
+    settled(loadContractDetailsAccount(context, fetchImpl, explicitOrigin).then(function (read) { return { rows: read.account, scopeMode: read.scopeMode }; })),
   ]);
   var agreements = primary[0];
   var orders = primary[1];
   var quoteRequest = primary[2];
+  var account = primary[3];
   rethrowSessionLoss(primary.slice(0, 2));
   if (agreements.state !== "ready" && orders.state !== "ready") throw orders.error;
 
@@ -321,7 +324,7 @@ export async function loadSnowQuotes(context, fetchImpl = coreSessionFetch, expl
       productPrices: readSummary(productPrices),
       products: readSummary(products),
     },
-    client: { displayName: api.accountName },
+    client: { displayName: api.accountName, account: account.state === "ready" ? account.rows : null },
     quoteRequest: quoteRequest,
     agreements: agreements.rows,
     quoteOrders: orders.rows,

@@ -58,6 +58,22 @@ export function contractDetailsPrefill(account, clientTypes) {
   };
 }
 
+export function accountParty(account, clientTypeLabels) {
+  var row = account && typeof account === "object" && !Array.isArray(account) ? account : null;
+  if (!row) return null;
+  var legal = primaryContact(row.contacts);
+  var legalType = attributeText(row, "LEGAL_ENTITY_TYPE").toUpperCase();
+  return {
+    legalName: localizedName(row.nls),
+    clientType: (clientTypeLabels && Object.prototype.hasOwnProperty.call(clientTypeLabels, legalType) ? clientTypeLabels[legalType] : "") || "",
+    billingAddress: oldestTypedAddress(row.addresses, BILLING_ADDRESS),
+    representativeName: legal ? [plain(legal.firstName), plain(legal.lastName)].filter(Boolean).join(" ") : "",
+    representativeJobTitle: legal ? plain(legal.title) : "",
+    email: legal ? firstEntryValue(legal.contactEntries, EMAIL_ENTRY) : "",
+    phone: legal ? formatPhone(firstEntryValue(legal.contactEntries, PHONE_ENTRY)) : "",
+  };
+}
+
 export function accountProfileFailure(code) {
   return {
     state: code === "customer-forbidden" ? "unauthorized" : code === "profile-unavailable" ? "unavailable" : "error",

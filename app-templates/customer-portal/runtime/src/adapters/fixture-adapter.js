@@ -102,7 +102,7 @@ function proposalsFixture(fixture, context) {
     orderItems: quotation ? proposals.orderItems || [] : null,
     productPrices: quotation ? proposals.productPrices || [] : null,
     products: quotation ? proposals.products || [] : null,
-    client: quotation ? { displayName: fixture.customer.fullName } : null,
+    client: quotation ? Object.assign({ displayName: fixture.customer.fullName }, proposals.client || {}) : null,
   };
 }
 

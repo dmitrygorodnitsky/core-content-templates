@@ -275,7 +275,7 @@ function quoteFetch(table, calls = []) {
     productPrices: { state: "ready", scopeMode: "unscoped", truncated: false },
     products: { state: "ready", scopeMode: "unscoped", truncated: false },
   }, "each read states how it was narrowed; catalog rows are tenant records nothing filters to the customer");
-  assert.deepEqual(plain(result.client), { displayName: "Harbour View Strata" });
+  assert.deepEqual(plain(result.client), { displayName: "Harbour View Strata", account: null }, "the client card source is the Account read; when that read fails the display name alone is kept");
   assert.deepEqual(result.agreements.map((row) => row.id), [136, 133]);
   assert.deepEqual(result.quoteOrders.map((row) => row.id), [38, 41, 42, 43], "the adapter passes rows through; the normalizer withholds operator-side Orders");
   assert.deepEqual(result.orderItems.map((row) => row.id), [381, 382, 411, 412, 421, 422], "lines are read only for Orders the customer can see");

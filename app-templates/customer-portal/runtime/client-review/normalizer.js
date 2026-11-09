@@ -474,40 +474,33 @@
     return "mailto:" + encodeURIComponent(value).replace(/%40/g, "@");
   }
 
-  function contactOf(agreement, contract, provider) {
-    var codes = contract.agreementAttributes;
-    var phone = attributeText(agreement, codes.providerContactPhone);
-    var email = attributeText(agreement, codes.providerContactEmail);
-    return { name: provider, phone: phone, phoneHref: telHref(phone), email: email, emailHref: mailHref(email) };
+  function contactOf(provider) {
+    return { name: provider, phone: "", phoneHref: "", email: "", emailHref: "" };
   }
 
   function partiesOf(agreement, account, fields, locale, contract) {
-    var codes = contract.agreementAttributes;
     var owner = agreement && agreement[contract.rawShape.documentOwner];
     var contact = legalContact(account);
-    function stated(code) {
-      return attributeText(agreement, code);
-    }
     var typeField = fields.filter(function (field) { return field.code === "CLIENT_TYPE"; })[0];
-    var typeValue = stated("CLIENT_TYPE") || attributeText(account,"LEGAL_ENTITY_TYPE");
+    var typeValue = attributeText(account, "LEGAL_ENTITY_TYPE");
     var typeChoice = typeField ? typeField.choices.filter(function (option) { return option.value === typeValue; })[0] : null;
-    var first = stated("REPRESENTATIVE_FIRST_NAME") || (contact ? text(contact.firstName) : "");
-    var last = stated("REPRESENTATIVE_LAST_NAME") || (contact ? text(contact.lastName) : "");
+    var first = contact ? text(contact.firstName) : "";
+    var last = contact ? text(contact.lastName) : "";
     return {
       provider: {
-        legalName: attributeText(agreement, codes.providerLegalName) || localizedName(owner && owner.nls, locale),
-        representativeName: attributeText(agreement, codes.providerRepresentativeName),
-        representativeJobTitle: attributeText(agreement, codes.providerRepresentativeJobTitle),
-        logo: attributeText(agreement, codes.providerLogo),
+        legalName: localizedName(owner && owner.nls, locale),
+        representativeName: "",
+        representativeJobTitle: "",
+        logo: "",
       },
       client: {
-        legalName: stated("LEGAL_NAME") || localizedName(account && account.nls, locale),
+        legalName: localizedName(account && account.nls, locale),
         clientType: typeChoice ? typeChoice.label : "",
-        billingAddress: stated("BILLING_ADDRESS") || billingAddress(account, locale),
+        billingAddress: billingAddress(account, locale),
         representativeName: [first, last].filter(Boolean).join(" "),
-        representativeJobTitle: stated("REPRESENTATIVE_JOB_TITLE") || (contact ? text(contact.title) : ""),
-        email: stated("REPRESENTATIVE_EMAIL") || contactEntry(contact, "EMAIL"),
-        phone: stated("REPRESENTATIVE_PHONE") || contactEntry(contact, "PHONE"),
+        representativeJobTitle: contact ? text(contact.title) : "",
+        email: contactEntry(contact, "EMAIL"),
+        phone: contactEntry(contact, "PHONE"),
       },
     };
   }
@@ -884,7 +877,7 @@
         client: localizedName(account && account.nls, locale) || parties.client.legalName,
       },
       parties: parties,
-      contact: contactOf(agreement, contract, parties.provider.legalName),
+      contact: contactOf(parties.provider.legalName),
       properties: properties,
       summary: decided.summary,
       allDecided: decided.allDecided,

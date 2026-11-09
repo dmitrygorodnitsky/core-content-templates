@@ -260,25 +260,29 @@ const orderList = {
   assert.equal(normalizeServiceAgreement(agreementDocument(["ACTIVE"], {}, { id: null })), null);
   assert.equal(normalizeServiceAgreement(null), null);
 
+  const account = {
+    id: 732, nls: { en: { NAME: "Harbour View Strata" } }, attributes: { 35: { LEGAL_ENTITY_TYPE: { value: "corporate" } } },
+    contacts: [
+      { id: 9, type: { code: "PRIMARY" }, firstName: "Not", lastName: "Legal" },
+      { id: 7, type: { code: "LEGAL" }, firstName: "Avery", lastName: "Flow", title: "Director", contactEntries: [{ id: 2, type: { code: "EMAIL" }, value: "avery@example.test" }, { id: 3, type: { code: "PHONE" }, value: "+1 604 555 0100" }] },
+    ],
+    addresses: [
+      { id: 5, types: [{ code: "SERVICE" }], address: { address1: "2 Side St", city: "Vancouver" } },
+      { id: 6, types: [{ code: "BILLING" }], address: { address1: "100 Harbour Way", city: "Vancouver", postalCode: "V6C 3T8", state: { code: "BC" }, country: { code: "CA", nls: { en: { NAME: "Canada" } } } } },
+    ],
+  };
   const sent = normalizeServiceAgreement(agreementDocument(["SENT_TO_CLIENT"], {
-    LEGAL_NAME: { value: "Harbour View Strata" }, CLIENT_TYPE: { value: "ORGANIZATION" }, BILLING_ADDRESS: { value: "100 Harbour Way, Vancouver" },
-    REPRESENTATIVE_FIRST_NAME: { value: "Avery" }, REPRESENTATIVE_LAST_NAME: { value: "Flow" }, REPRESENTATIVE_JOB_TITLE: { value: "Director" },
-    REPRESENTATIVE_EMAIL: { value: "avery@example.test" }, REPRESENTATIVE_PHONE: { value: "+1 604 555 0100" },
-    PROVIDER_REPRESENTATIVE_NAME: { value: "Morgan Ellis" }, PROVIDER_REPRESENTATIVE_JOB_TITLE: { value: "Contracts Manager" },
-  }, { organization: { id: 43, code: "GRANITE", nls: { en: { NAME: "Granite Ridge Snow Removal" } } } }), { displayName: "Account display name" });
+    CONTRACT_TERMS: { value: "# Parties\n\nService provider: Granite Ridge Snow Removal Ltd.\n- Phone: +1 604 670 0591\n\nClient: Harbour View Strata\n\n# Terms\n\n1. Services." },
+  }, { organization: { id: 43, code: "GRANITE", nls: { en: { NAME: "Granite Ridge Snow Removal" } } } }), { displayName: "Account display name", account: account });
   assert.deepEqual(sent.allowedActions, ["approve"]);
   assert.deepEqual(plain(sent.parties), {
-    provider: { legalName: "Granite Ridge Snow Removal", representativeName: "Morgan Ellis", representativeJobTitle: "Contracts Manager", phone: "", email: "", logoImageId: "" },
-    client: { legalName: "Harbour View Strata", clientType: "Organization", billingAddress: "100 Harbour Way, Vancouver", representativeName: "Avery Flow", representativeJobTitle: "Director", email: "avery@example.test", phone: "+1 604-555-0100" },
-  }, "the agreement's own snapshot names the parties, and the provider falls back to the owning organization");
-  const contactable = normalizeServiceAgreement(agreementDocument(["ACTIVE"], {
-    PROVIDER_CONTACT_PHONE: { value: "+16046700591" }, PROVIDER_CONTACT_EMAIL: { value: "support@snowlimitless.example.test" },
-    BILLING_ADDRESS: { value: "1239 W Georgia St, Vancouver, BC, V6E 4R8, CA" }, REPRESENTATIVE_PHONE: { value: "+19991112233" },
-  }));
-  assert.deepEqual([contactable.parties.provider.phone, contactable.parties.provider.email], ["+1 604-670-0591", "support@snowlimitless.example.test"], "the provider contact is read from the agreement the client already reads, as the review page does");
-  assert.deepEqual([contactable.parties.client.billingAddress, contactable.parties.client.phone], ["1239 W Georgia St, Vancouver, BC V6E 4R8, Canada", "+1 999-111-2233"], "the billing address and phone on the agreement read like the profile");
-  assert.equal(normalizeServiceAgreement(agreementDocument(["SENT_TO_CLIENT"], { CLIENT_TYPE: { value: "PARTNERSHIP" } }), { displayName: "Harbour View Strata" }).parties.client.clientType, "", "a client type without a known label is not shown as a code");
-  assert.equal(normalizeServiceAgreement(agreementDocument(["SENT_TO_CLIENT"]), { displayName: "Harbour View Strata" }).parties.client.legalName, "Harbour View Strata", "before the client sends details the Account's own name is the client");
+    provider: { legalName: "Granite Ridge Snow Removal", representativeName: "", representativeJobTitle: "", phone: "", email: "", logoImageId: "" },
+    client: { legalName: "Harbour View Strata", clientType: "Corporation", billingAddress: "100 Harbour Way, Vancouver, BC V6C 3T8, Canada", representativeName: "Avery Flow", representativeJobTitle: "Director", email: "avery@example.test", phone: "+1 604-555-0100" },
+  }, "the provider card is the owning organization's name and the client card is the Account: its name, LEGAL_ENTITY_TYPE, oldest BILLING address and LEGAL contact; the agreement stores no party details of its own");
+  assert.deepEqual(sent.terms.slice(0, 3), [{ kind: "heading", text: "Parties" }, { kind: "paragraph", text: "Service provider: Granite Ridge Snow Removal Ltd.", depth: 0 }, { kind: "item", text: "Phone: +1 604 670 0591" }].map((block) => Object.assign({}, block)).map((block) => plain(sent.terms.find((candidate) => candidate.text === block.text))), "the parties the agreement text fixes read as its first blocks");
+  const unlabelled = Object.assign({}, account, { attributes: { 35: { LEGAL_ENTITY_TYPE: { value: "PARTNERSHIP" } } } });
+  assert.equal(normalizeServiceAgreement(agreementDocument(["SENT_TO_CLIENT"]), { displayName: "Harbour View Strata", account: unlabelled }).parties.client.clientType, "", "a client type without a known label is not shown as a code");
+  assert.deepEqual(plain(normalizeServiceAgreement(agreementDocument(["SENT_TO_CLIENT"]), { displayName: "Harbour View Strata" }).parties.client), { legalName: "Harbour View Strata", clientType: "", billingAddress: "", representativeName: "", representativeJobTitle: "", email: "", phone: "" }, "without the Account read the display name alone names the client");
 
   const workflowStates = ["ACTIVATION_FAILED", "ACTIVE", "AGREEMENT_SEND_FAILED", "ARCHIVED", "CANCELED", "CLIENT_APPROVED", "CLIENT_CHANGES_REQUESTED", "DRAFT", "EXPIRED", "INTERNALLY_APPROVED", "PENDING_MANAGEMENT_APPROVAL", "SENT_TO_CLIENT", "SUSPENDED"];
   assert.deepEqual(Object.keys(AGREEMENT_STAGES).sort(), workflowStates, "every state an agreement reaches from DRAFT on, since the 2026-11-06 cut-over, has a customer presentation; the quotation states before DRAFT are retired");
@@ -742,13 +746,13 @@ const RETIRED = ["Proposal #", "valid until", "sent Dec", "sq ft", "Beam AI", "l
   const parties = all(page, "[data-module=\"agreement-party\"]");
   const partyName = (card) => one(card, ".agreement-party__name").textContent;
   assert.deepEqual(parties.map((card) => card.getAttribute("data-party")), ["provider", "client"], "the two cards are a pair");
-  assert.equal(partyName(parties[0]), "Granite Ridge Snow Removal LLC");
+  assert.equal(partyName(parties[0]), "Granite Ridge Snow Removal", "the provider card is the owning organization");
   assert.equal(all(parties[0], "img").length, 0, "no logo id means no image");
   assert.equal(one(parties[0], ".party-mark").textContent, "GR", "a provider without a logo wears the initials of its real name");
-  assert.deepEqual(facts(parties[0]), [["Representative", "Jordan Pike, Contracts Manager"]]);
+  assert.deepEqual(facts(parties[0]), [], "the provider's representative and contact live in the agreement text");
   assert.equal(partyName(parties[1]), "Whitlock Property Group LLC");
   assert.equal(one(parties[1], "[data-module=\"party-tag\"]").textContent, "Organization");
-  assert.equal(page.textContent.split("Whitlock Property Group LLC").length, 2, "the client's name shows once");
+  assert.equal(page.textContent.split("Whitlock Property Group LLC").length, 3, "the client's name shows on its card and once more where the agreement text names the parties");
   assert.deepEqual(facts(parties[1]), [
     ["Billing address", "1550 Wynkoop Street, Suite 400, Denver, CO 80202"],
     ["Representative", "Dana Whitlock, Portfolio Manager"],
@@ -772,13 +776,13 @@ const RETIRED = ["Proposal #", "valid until", "sent Dec", "sq ft", "Beam AI", "l
   const toggle = one(collapsed, "[data-action=\"agreement.toggleTerms\"]");
   assert.deepEqual([toggle.textContent, toggle.getAttribute("aria-expanded")], ["Show terms", "false"]);
   state.agreementTermsOpen = true;
-  assert.equal(one(terms, ".terms-heading").textContent, "Winter service terms");
+  assert.deepEqual(all(terms, ".terms-heading").map((heading) => heading.textContent).slice(0, 2), ["Parties", "Winter service terms"], "the agreement text opens with the parties it fixes, then the terms");
   assert.deepEqual(all(terms, ".terms-num").map((row) => [row.getAttribute("data-depth"), one(row, ".terms-num__marker").textContent, one(row, ".terms-num__text").textContent.slice(0, 18)]), [
     ["1", "1.", "Services"], ["2", "1.1", "Granite Ridge clea"], ["2", "1.2", "Every visit is log"],
     ["1", "2.", "Service triggers"], ["2", "2.1", "Clearing starts on"], ["2", "2.2", "De-icing is applie"],
     ["1", "3.", "Invoicing"], ["1", "4.", "Access"], ["2", "1)", "Gate codes are sha"], ["2", "2)", "Blackout days are "],
   ]);
-  assert.equal(all(terms, ".terms-list li").length, 3);
+  assert.equal(all(terms, ".terms-list li").length, 11, "the eight party lines of the text and the three term items are list items");
   assert.equal(all(terms, "*").filter((node) => node.tagName === "SCRIPT" || node.tagName === "A").length, 0);
   assert.deepEqual(all(services, ".money-rows__row").map((row) => row.textContent).filter((row) => row.startsWith("Total")), ["Total$9,127.23 per season", "Total$9,929.85 / month"], "each option price in the agreement carries its period");
   assert.equal(all(page, "[data-module=\"agreement-approve\"]").length, 1);
@@ -1038,13 +1042,15 @@ const RETIRED = ["Proposal #", "valid until", "sent Dec", "sq ft", "Beam AI", "l
     accountId: 732,
     scopeMode: "server-scoped",
     reads: { agreements: ready, orders: ready, orderItems: ready, productPrices: Object.assign({}, ready, { scopeMode: "unscoped" }), products: Object.assign({}, ready, { scopeMode: "unscoped" }) },
-    client: { displayName: "Bilbo Baggins" },
+    client: { displayName: "Bilbo Baggins", account: {
+      id: 732, nls: { en: { NAME: "Bilbo Baggins" } }, attributes: {},
+      contacts: [{ id: 731, type: { code: "LEGAL" }, firstName: "Bilbo", lastName: "Baggins", contactEntries: [{ id: 959, type: { code: "EMAIL" }, kind: { code: "WORK" }, value: "opanagushin+104@gmail.com" }, { id: 960, type: { code: "PHONE" }, kind: { code: "WORK" }, value: "+19991112233" }] }],
+      addresses: [{ id: 767, types: [{ code: "BILLING" }], address: { id: 742, address1: "1239 W Georgia St, Vancouver, BC, V6E 4R8, CA", postalCode: "V6E 4R8" } }, { id: 766, types: [{ code: "SERVICE" }], address: { id: 360, city: "Vancouver", address1: "1239 W Georgia St", postalCode: "V6E 4R8" } }],
+    } },
     agreements: [agreementDocument(["QUOTATION", "QUOTATION_SENT", "AWAITING_CLIENT_DETAILS", "DRAFT", "SENT_TO_CLIENT", "CLIENT_APPROVED", "ACTIVE"], Object.assign({
-      CLIENT: { value: 732 }, ORDERS: { value: [114] }, LEGAL_NAME: { value: "Bilbo Baggins" }, CLIENT_TYPE: { value: "ORGANIZATION" },
-      BILLING_ADDRESS: { value: "1239 W Georgia St, Vancouver, BC, V6E 4R8, CA" }, PROVIDER_LEGAL_NAME: { value: "Limitless Snow Removal Corp." },
-      REPRESENTATIVE_FIRST_NAME: { value: "Bilbo" }, REPRESENTATIVE_LAST_NAME: { value: "Baggins" }, REPRESENTATIVE_PHONE: { value: "+19991112233" },
-      CONTRACT_TERMS: { value: "# Test terms\n\n1. Services\n1.1 Snow is cleared." },
-    }, agreement), { id: 169 })],
+      CLIENT: { value: 732 }, ORDERS: { value: [114] },
+      CONTRACT_TERMS: { value: "# Parties\n\nService provider: Limitless Snow Removal Corp.\n- Phone: +1 604 670 0591\n\nClient: Bilbo Baggins\n- Billing address: 1239 W Georgia St, Vancouver, BC, V6E 4R8, CA\n\n# Test terms\n\n1. Services\n1.1 Snow is cleared." },
+    }, agreement), { id: 169, organization: { id: 43, code: "SNOWLIMITLESS", nls: { en: { NAME: "Limitless Snow Removal Corp." } } } })],
     quoteOrders: [
       quote(113, viewed("DECLINED"), 1512.5, [142, 143]),
       quote(114, viewed("CLIENT_APPROVED"), 4217.94, [140, 141]),
@@ -1077,7 +1083,6 @@ const RETIRED = ["Proposal #", "valid until", "sent Dec", "sq ft", "Beam AI", "l
   };
   const once = (root, text) => root.textContent.split(text).length - 1;
   const SEASON = { TERM_START_DATE: { value: "2026-11-01" }, TERM_END_DATE: { value: "2027-03-31" } };
-  const PROVIDER_CONTACT = { PROVIDER_CONTACT_PHONE: { value: "+16046700591" }, PROVIDER_CONTACT_EMAIL: { value: "support@snowlimitless.example.test" } };
 
   live(bilbo());
   const home = Overview();
@@ -1118,7 +1123,7 @@ const RETIRED = ["Proposal #", "valid until", "sent Dec", "sq ft", "Beam AI", "l
   assert.deepEqual(all(services, ".purch-line__title").map((line) => line.textContent), ["Snow Removal", "Rock Salt De-Icing"]);
   assert.equal(one(plainAgreement, "[data-module=\"agreement-terms\"]").getAttribute("data-state"), "open");
   assert.equal(one(plainAgreement, "[data-action=\"agreement.toggleTerms\"]").textContent, "Hide terms");
-  assert.equal(all(plainAgreement, ".terms-heading").length, 1);
+  assert.deepEqual(all(plainAgreement, ".terms-heading").map((heading) => heading.textContent), ["Parties", "Test terms"], "agreement 169 reads its parties and its terms from the one text");
   const client = all(plainAgreement, "[data-module=\"agreement-party\"]")[1];
   assert.equal(all(client, "dd").find((value) => value.textContent.startsWith("1239")).textContent, ADDRESS, "the billing address reads like the property address");
   assert.equal(all(client, "dd").map((value) => value.textContent).includes("+1 999-111-2233"), true);
@@ -1137,7 +1142,7 @@ const RETIRED = ["Proposal #", "valid until", "sent Dec", "sq ft", "Beam AI", "l
   assert.equal(all(detail, "[data-fact=\"quotes\"]").length, 0, "no quote waits, so the declined quotes are not linked");
   assert.doesNotMatch(detail.textContent, /Not available yet|declined|2 quotes|Location unavailable/);
 
-  live(bilbo(Object.assign({}, SEASON, PROVIDER_CONTACT)), PLAN);
+  live(bilbo(SEASON), PLAN);
   const fetched = [];
   globalThis.fetch = (url, options) => { fetched.push([url, options.credentials]); return new Promise(() => {}); };
   assert.equal(one(Overview(), ".page-header__sub").textContent, "Season Nov 1, 2026 – Mar 31, 2027", "the subtitle is the active agreement's season");
@@ -1149,23 +1154,9 @@ const RETIRED = ["Proposal #", "valid until", "sent Dec", "sq ft", "Beam AI", "l
   assert.equal(one(seasoned, ".proposal-detail-head__meta").textContent, "Season Nov 1, 2026 – Mar 31, 2027");
   assert.equal(all(seasoned, "[data-module=\"agreement-term\"]").length, 0, "the season is under the title and not repeated in a term card");
   const provider = one(seasoned, "[data-module=\"agreement-party\"]");
-  assert.deepEqual(all(provider, ".agreement-facts__row").map((row) => [one(row, "dt").textContent, one(row, "dd").textContent, (one(row, "a") || { getAttribute: () => null }).getAttribute("href")]), [
-    ["Phone", "+1 604-670-0591", "tel:+16046700591"],
-    ["Email", "support@snowlimitless.example.test", "mailto:support@snowlimitless.example.test"],
-  ], "the provider's phone and e-mail come from the agreement the client already reads");
-  const LOGO = "647184d3-a297-42c8-b362-dd7bc758af61";
-  const provided = (value) => normalizeServiceAgreement({ id: 500, type: { id: 17, code: "SERVICE_AGREEMENT" }, states: [{ id: 1, code: "ACTIVE" }], attributes: { 17: { PROVIDER_LEGAL_NAME: { value: "Limitless Snow Removal Corp." }, PROVIDER_LOGO: { value } } } });
-  const logoCard = AgreementParties(provided(LOGO).parties);
-  const logo = one(logoCard, "img");
-  assert.equal(logo.getAttribute("src"), state.config.coreApiBase.replace(/\/+$/, "") + "/image/" + LOGO + "/get?width=440", "the provider logo is the image the agreement names");
-  assert.equal(logo.getAttribute("referrerpolicy"), "no-referrer");
-  assert.equal(logo.getAttribute("alt"), "Limitless Snow Removal Corp. logo");
-  assert.equal(all(logoCard, ".party-mark").length, 0);
-  assert.equal(all(AgreementParties(provided("not-an-image-id").parties), "img").length, 0, "a value that is not an image id is no logo");
-  assert.equal(one(AgreementParties(provided("not-an-image-id").parties), ".party-mark").textContent, "LS");
-  logo.listeners.error[0]();
-  assert.equal(all(AgreementParties(provided(LOGO).parties), "img").length, 0, "an image that fails to load falls back to the initials and stays there");
-  assert.equal(one(AgreementParties(provided(LOGO).parties), ".party-mark").textContent, "LS");
+  assert.deepEqual(all(provider, ".agreement-facts__row").length, 0, "the provider card names the owning organization only; its contact details are in the agreement text");
+  assert.equal(one(provider, ".agreement-party__name").textContent, "Limitless Snow Removal Corp.");
+  assert.equal(all(provider, "img").length, 0, "no agreement attribute names a logo any more");
   assert.equal(AgreementParties({ provider: { legalName: "", phone: "", email: "", logoImageId: "" }, client: {} }).children.length, 0, "a party with nothing stated has no card");
   const plannedDetail = PropertyDetail();
   assert.deepEqual(all(plannedDetail, "[data-fact]").map((fact) => [fact.getAttribute("data-fact"), one(fact, ".prop-fact__value").textContent]), [["area", "50,000 ft²"], ["plan", "Approved"], ["season", "Nov 1, 2026 – Mar 31, 2027"]]);

@@ -739,10 +739,8 @@ const N = loadRuntime().CR.normalizer;
   frenchRequest.accounts[0].contacts[0].language = { id: "fre", code2: "fr" };
   assert.equal(normalizer.requestLocale(frenchRequest, "en", contract), "fr", "the contract locale comes from the saved request contact, independently of the reviewing browser");
   const clientParty = (data, source = contract) => plain(normalizer.reviewModel({ grant: normalizer.grantOf(data.grant), documents: data.documents, orders: data.orders, accounts: data.accounts }, { locale: "en-CA", contract: source }).parties.client);
-  assert.equal(clientParty(CR.fixtures.completeAccount(CR.fixtures.agreementData("SENT_TO_CLIENT", false))).representativeJobTitle, "Strata Council President", "the agreement's own client snapshot wins over the Account attributes");
-  const unsnapshotted=CR.fixtures.completeAccount(CR.fixtures.agreementData("SENT_TO_CLIENT",false));
-  ["BILLING_ADDRESS","REPRESENTATIVE_FIRST_NAME","REPRESENTATIVE_LAST_NAME","REPRESENTATIVE_JOB_TITLE","REPRESENTATIVE_EMAIL","REPRESENTATIVE_PHONE"].forEach(function(code){delete unsnapshotted.documents[0].attributes[17][code];});
-  assert.equal(clientParty(unsnapshotted).representativeJobTitle,"Property Manager","a missing client snapshot uses the native contact title");
+  assert.equal(clientParty(CR.fixtures.completeAccount(CR.fixtures.agreementData("SENT_TO_CLIENT", false))).representativeJobTitle, "Property Manager", "the client card reads the Account the link grants; the agreement stores no client snapshot");
+  assert.deepEqual(Object.keys(clientParty(CR.fixtures.agreementData("SENT_TO_CLIENT", false))), ["legalName", "clientType", "billingAddress", "representativeName", "representativeJobTitle", "email", "phone"]);
 
   const blocks = normalizer.termsBlocks("<h2>1. Scope</h2><p>Clear &amp; salt<br>daily.</p><ul><li>One</li><li>Two</li></ul><script>alert(1)</script>");
   assert.deepEqual(plain(blocks), [
@@ -804,7 +802,6 @@ const EXPECTED_SCENARIOS = {
   "round-review": ["ready", "quote-review"], "round-ambiguous": ["ready", "unavailable"], "round-partial": ["ready", "quote-review"],
   "round-decided": ["ready", "quote-review"], "round-decided-slow": ["ready", "quote-review"], "round-recorded": ["ready", "quote-review"], "round-declined-closed": ["link-closed", null],
   "link-copied": ["ready", "quote-review"], "link-copy-failed": ["ready", "quote-review"],
-  "contact-phone-only": ["ready", "agreement-review"], "contact-none": ["ready", "agreement-review"], "agreement-no-logo": ["ready", "agreement-review"],
   "view-pending": ["ready", "quote-review"], "view-failed": ["ready", "quote-review"], "choices-approve": ["ready", "quote-review"],
   "changes-invalid": ["ready", "quote-review"], "choices-decline": ["ready", "quote-review"], "choices-declined": ["ready", "quote-review"], "command-pending": ["ready", "quote-review"], "command-refused": ["ready", "quote-review"],
   "command-failed": ["ready", "quote-review"], "command-stale-pending": ["ready", "quote-review"], "command-unconfirmed": ["ready", "quote-review"],
@@ -867,7 +864,7 @@ const portalLinks = (node) => byAttribute(node, "data-action", "portal.open");
 const stateCardOf = (node) => { const card = byClass(node, "cr-state")[0]; return [card.getAttribute("data-state"), byClass(card, "cr-state__glyph")[0].textContent]; };
 const contactLines = (node) => byClass(node, "cr-contact__item").map((item) => [item.getAttribute("data-contact"), item.children[0].textContent, item.children[1].tagName, item.children[1].textContent, item.children[1].getAttribute("href")]);
 const providerLogos = (node) => byClass(node, "cr-party__logo");
-const AGREEMENT_SCENARIOS = new Set(["partial", "contact-phone-only", "agreement-review", "agreement-numbered-terms", "agreement-no-terms", "agreement-no-logo", "agreement-confirm", "agreement-unconfirmed", "agreement-changes", "agreement-changes-invalid", "agreement-changes-pending", "agreement-changes-refused", "agreement-changes-sent", "agreement-changes-requested", "agreement-approval-only", "approval-closed", "completion", "completion-portal", "completion-finishing", "completion-attributes", "reference-expired", "closed-canceled", "unavailable", "preparing", "retired-quotation"]);
+const AGREEMENT_SCENARIOS = new Set(["partial", "agreement-review", "agreement-numbered-terms", "agreement-no-terms", "agreement-confirm", "agreement-unconfirmed", "agreement-changes", "agreement-changes-invalid", "agreement-changes-pending", "agreement-changes-refused", "agreement-changes-sent", "agreement-changes-requested", "agreement-approval-only", "approval-closed", "completion", "completion-portal", "completion-finishing", "completion-attributes", "reference-expired", "closed-canceled", "unavailable", "preparing", "retired-quotation"]);
 const CONTACTLESS_SCENARIOS = new Set(Object.keys(EXPECTED_SCENARIOS).filter((id) => !AGREEMENT_SCENARIOS.has(id)));
 const FORM_FROM_ATTRIBUTES = {
   LEGAL_NAME: "Harbourview Strata Corporation", CLIENT_TYPE: "",
@@ -908,20 +905,9 @@ function assertForm(run, expected, message) {
     assert.equal(byAttribute(run.mount, "data-action", "link.copy").length, step ? 1 : 0, id + (step ? " is a step the client can come back to and offers Copy link once" : " is no step to come back to and offers no Copy link"));
     assert.deepEqual(run.clipboard.written, [], id + " writes nothing to the browser's clipboard on its own");
     assert.ok(!text.includes(PAGE_LINK), id + " keeps the page address out of its markup");
-    const contact = run.runtime.CR.fixtures.providerContact;
-    if (id !== "contact-phone-only") {
-      assert.deepEqual(contactLines(run.mount), CONTACTLESS_SCENARIOS.has(id) ? [] : [["phone", copy.contactPhone, "A", contact.phone, "tel:+16045550199"], ["email", copy.contactEmail, "A", contact.email, "mailto:" + contact.email]],
-        id + (CONTACTLESS_SCENARIOS.has(id) ? " has read no provider contact and draws no Contact us" : " ends with Contact us: the provider's phone and email as links"));
-    }
-    assert.equal(byClass(run.mount, "cr-contact").length, CONTACTLESS_SCENARIOS.has(id) ? 0 : 1, id + " draws Contact us at most once, and no empty block");
-    for (const block of byClass(run.mount, "cr-contact")) {
-      const shell = run.mount.children[0].children[0];
-      assert.equal(shell.children[shell.children.length - 1], block, id + " closes the page with Contact us");
-      assert.ok(surface(block).includes(copy.contactTitle) && surface(block).includes("Coastline Winter Services"), id + " names the provider under Contact us");
-      for (const link of all(block, (node) => node.tagName === "A")) assert.match(link.getAttribute("href"), /^(tel:\+?\d{3,}|mailto:[^\s@]+@[^\s@]+)$/, id + " links only to a dialable number or a mail address");
-    }
-    const logos = providerLogos(run.mount);
-    assert.equal(logos.length, ["agreement-review", "reference", "completion"].includes(snapshot.view && snapshot.phase === "ready" ? snapshot.view.kind : "") && id !== "agreement-no-logo" ? 1 : 0, id + " draws the provider's logo on an agreement page and nowhere else");
+    assert.deepEqual(contactLines(run.mount), [], id + " draws no Contact us: the provider's details live in the agreement text the client reads");
+    assert.equal(byClass(run.mount, "cr-contact").length, 0, id + " has no contact block");
+    assert.equal(providerLogos(run.mount).length, 0, id + " draws no provider logo: the page reads no logo through the link");
     switch (id) {
       case "loading":
         assert.equal(run.outcome, "held");
@@ -937,18 +923,6 @@ function assertForm(run, expected, message) {
         assert.equal(run.runtime.document.activeElement, button, "the redraw leaves the focus on the button");
         assert.equal(byClass(box, "cr-validity")[0].textContent, run.runtime.CR.fill(copy.linkValidUntil, { date: snapshot.view.expiresAt }), "beside the date the link works until");
         assert.equal(run.sent.length, 0, "copying the link sends no event");
-        break;
-      }
-      case "contact-phone-only":
-        assert.deepEqual(contactLines(run.mount), [["phone", copy.contactPhone, "A", contact.phone, "tel:+16045550199"]], "a provider without a contact email shows the phone alone, and no empty mail link");
-        break;
-      case "contact-none":
-        assert.equal(run.controller.snapshot().contact.phone + run.controller.snapshot().contact.email, "", "a provider that shows neither value leaves the page without the block");
-        break;
-      case "agreement-no-logo": {
-        const card = byClass(run.mount, "cr-party")[0];
-        assert.equal(run.controller.snapshot().logoUrl, "", "an agreement without a logo has no image address");
-        assert.deepEqual(card.children.map((child) => child.tagName), ["H2", "DL"], "and its provider card keeps its title and its facts, with nothing in between");
         break;
       }
       case "link-copy-failed": {
@@ -1273,18 +1247,12 @@ function assertForm(run, expected, message) {
         const panel = byAttribute(run.mount, "aria-labelledby", "cr-terms-title")[0];
         assert.ok(byClass(panel, "cr-terms__heading").length > 0, "written terms keep their headings");
         assert.ok(byClass(panel, "cr-terms__paragraph").length > 0, "their paragraphs");
-        assert.equal(byClass(panel, "cr-terms__list").length, 1, "and one list for their consecutive items");
+        assert.equal(byClass(panel, "cr-terms__list").length, 3, "one list per party block of the text and one for the consecutive term items");
         assert.ok(!surface(panel).includes(copy.termsEmpty), "and the empty note stays away");
         const provider = byClass(run.mount, "cr-party")[0];
-        const logo = providerLogos(provider)[0];
-        assert.deepEqual(provider.children.map((child) => child.tagName), ["H2", "IMG", "DL"], "the provider card shows the logo between its title and its facts");
-        assert.equal(providerLogos(byClass(run.mount, "cr-party")[1]).length, 0, "the client card has none");
-        assert.equal(logo.getAttribute("src"), run.runtime.CR.fixtures.logoImage, "the logo is the image the adapter resolves for the agreement's PROVIDER_LOGO");
-        assert.equal(logo.getAttribute("alt"), "Coastline Winter Services Ltd. logo", "named after the provider");
-        assert.equal(logo.getAttribute("referrerpolicy"), "no-referrer");
-        assert.equal(logo.getAttribute("hidden"), null);
-        logo.fire("error");
-        assert.equal(logo.getAttribute("hidden"), "", "a logo that fails to load is hidden instead of leaving a broken image");
+        assert.deepEqual(provider.children.map((child) => child.tagName), ["H2", "DL"], "the provider card is its title and the organization's name; no logo is read through the link");
+        assert.equal(byClass(provider, "cr-facts__row").length, 1, "an unstated provider representative leaves no row; the agreement text names the representative");
+        assert.ok(byClass(run.mount, "cr-party").every((card) => !surface(card).includes(copy.valueNotStated)), "no party card claims a detail is not stated while the agreement text states it");
         const actions = byClass(byClass(run.mount, "cr-approve")[0], "cr-actions")[0].children.map((node) => [node.getAttribute("data-action"), node.textContent, String(node.className).includes("btn--primary")]);
         assert.deepEqual(actions, [["agreement.approve", copy.agreementApprove, true], ["agreement.changes", copy.changesLabel, false]], "an agreement awaiting approval offers Approve first and Request changes beside it");
         break;
@@ -1413,7 +1381,7 @@ function assertForm(run, expected, message) {
         assert.equal(links.length, 2, "and once more for a client who has read the agreement");
         assert.ok(closing.children.includes(links[1]), "in a block of its own");
         assert.equal(shell.children.indexOf(closing), shell.children.indexOf(byAttribute(run.mount, "aria-labelledby", "cr-terms-title")[0]) + 1, "right below the terms");
-        assert.equal(shell.children.indexOf(closing), shell.children.length - 2, "with only Contact us after it");
+        assert.equal(shell.children.indexOf(closing), shell.children.length - 1, "and nothing after it: the provider's contact is in the agreement text, not in a block of its own");
         assert.ok(shell.children.indexOf(byAttribute(run.mount, "data-portal", "invitation")[0]) < shell.children.indexOf(byClass(run.mount, "cr-parties")[0]), "while the invitation stays above the agreement");
         assert.deepEqual(links.map((entry) => [entry.tagName, entry.getAttribute("href"), entry.textContent]), [["A", run.runtime.CR.fixtures.portalUrl, copy.portalOpen], ["A", run.runtime.CR.fixtures.portalUrl, copy.portalOpen]], "both lead to the same portal under the same label");
         assert.ok(surface(closing).includes(copy.portalTitle) && !surface(closing).includes("@"), "the closing block names the portal access without repeating how to sign in");
@@ -2298,29 +2266,10 @@ for (const state of ["CLIENT_APPROVED", "ACTIVE", "EXPIRED"]) {
 
 {
   const run = await stagedController((F) => F.agreementData("SENT_TO_CLIENT", false));
-  const attributes = run.data.documents[0].attributes[17];
-  assert.equal(run.controller.snapshot().logoUrl, run.CR.fixtures.logoImage);
-  assert.equal(run.controller.snapshot().contact.name, "Coastline Winter Services Ltd.", "Contact us names the provider as the agreement names it");
-  attributes.PROVIDER_CONTACT_PHONE = { value: "1-800-SNOW-NOW" };
-  attributes.PROVIDER_CONTACT_EMAIL = { value: "write to the office" };
-  attributes.PROVIDER_LOGO = { value: "not-an-image" };
-  run.controller.dispatch("refresh", {});
-  await run.controller.idle();
-  assert.deepEqual(contactLines(run.mount), [["phone", run.copy.contactPhone, "SPAN", "1-800-SNOW-NOW", null], ["email", run.copy.contactEmail, "SPAN", "write to the office", null]], "a value that is no number and no address is shown as text, without a link");
-  assert.equal(providerLogos(run.mount).length, 0, "a PROVIDER_LOGO that is no image id draws nothing");
-  delete attributes.PROVIDER_CONTACT_PHONE;
-  attributes.PROVIDER_CONTACT_EMAIL = { value: "office@provider.example" };
-  run.controller.dispatch("refresh", {});
-  await run.controller.idle();
-  assert.deepEqual(contactLines(run.mount), [["email", run.copy.contactEmail, "A", "office@provider.example", "mailto:office@provider.example"]], "a provider without a contact phone shows the email alone, and no empty phone link");
-  delete attributes.PROVIDER_CONTACT_EMAIL;
-  run.controller.dispatch("refresh", {});
-  await run.controller.idle();
-  assert.equal(byClass(run.mount, "cr-contact").length, 0, "a later read without a contact takes Contact us away");
-  attributes.PROVIDER_CONTACT_PHONE = { value: "604 555 0199" };
-  run.controller.dispatch("refresh", {});
-  await run.controller.idle();
-  assert.equal(contactLines(run.mount).length, 1);
+  assert.equal(run.controller.snapshot().logoUrl, "", "no agreement attribute names a logo, so the page has no image address");
+  assert.equal(run.controller.snapshot().contact.name, "Coastline Winter Services", "Contact us names the owning organization");
+  assert.equal(run.controller.snapshot().contact.phone + run.controller.snapshot().contact.email, "", "and carries no phone or email: the provider's contact is fixed in the agreement text");
+  assert.equal(byClass(run.mount, "cr-contact").length, 0, "so no Contact us block is drawn");
   run.data.documents.length = 0;
   run.controller.dispatch("refresh", {});
   await run.controller.idle();
@@ -3258,9 +3207,9 @@ try {
     assert.ok(manifest.api.reads.some((read) => read.includes(path)), "the manual package documents the grant read " + path);
   }
   assert.deepEqual(manifest.plannedFields.account, ["LEGAL_ENTITY_TYPE"], "the manual package lists the Account attributes the page reads, as the contract names them");
-  for (const code of ["PROVIDER_CONTACT_PHONE", "PROVIDER_CONTACT_EMAIL", "PROVIDER_LOGO"]) assert.ok(manifest.plannedFields.agreement.includes(code), "the manual package lists the agreement attribute " + code);
-  assert.ok(manifest.api.reads.some((read) => read.includes("/core/image/{imageId}/get")), "the manual package documents the public logo address");
-  assert.ok(manifest.constraints.some((line) => line.startsWith("Contact us ")), "the manifest states where Contact us and the logo come from");
+  assert.deepEqual(manifest.plannedFields.agreement, ["CONTRACT_TERMS"], "the manual package reads one agreement attribute: the text that fixes the parties and the terms");
+  assert.ok(!manifest.api.reads.some((read) => read.includes("/core/image/{imageId}/get")), "the manual package reads no provider logo");
+  assert.ok(manifest.constraints.some((line) => line.startsWith("The parties ")), "the manifest states that the parties are read from the agreement text and the Account");
   assert.ok(manifest.constraints.some((line) => line.startsWith("REVIEW_MAPS_API_KEY ships empty") && line.includes("strict-origin")), "the manifest states what the Maps key turns on and the referrer it costs");
   assert.ok(manifest.constraints.some((line) => line.startsWith("The billing address is the client's own value")), "the manifest states that a service address reaches billing only when the client copies it");
   assert.ok(manifest.constraints.some((line) => line.includes("PLAN_GENERATION_DATA") && line.includes("draftAssetId") && line.includes("never requested or read")), "the manifest states that internal draft metadata is excluded and only the approved plan is shown");

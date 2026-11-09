@@ -154,11 +154,10 @@
 
     if (agreement) {
       section(copy.partyProvider);
-      fact(copy.partyLegalName, view.parties.provider.legalName);
-      fact(copy.partyRepresentative, joined(view.parties.provider.representativeName, view.parties.provider.representativeJobTitle));
+      [[copy.partyLegalName, view.parties.provider.legalName], [copy.partyRepresentative, joined(view.parties.provider.representativeName, view.parties.provider.representativeJobTitle)]].filter(function (row) { return row[1]; }).forEach(function (row) { fact(row[0], row[1]); });
       section(copy.partyClient);
       var client = view.parties.client;
-      [[copy.partyLegalName, client.legalName], [copy.partyClientType, client.clientType], [copy.partyBillingAddress, client.billingAddress], [copy.partyRepresentative, joined(client.representativeName, client.representativeJobTitle)], [copy.partyEmail, client.email], [copy.partyPhone, client.phone]].forEach(function (row) { fact(row[0], row[1]); });
+      [[copy.partyLegalName, client.legalName], [copy.partyClientType, client.clientType], [copy.partyBillingAddress, client.billingAddress], [copy.partyRepresentative, joined(client.representativeName, client.representativeJobTitle)], [copy.partyEmail, client.email], [copy.partyPhone, client.phone]].filter(function (row) { return row[1]; }).forEach(function (row) { fact(row[0], row[1]); });
       var term = view.agreement;
       var dates = [[copy.termEffective, term.effectiveDate], [copy.termStart, term.termStart], [copy.termEnd, term.termEnd]].filter(function (row) { return row[1]; });
       if (dates.length) { section(copy.termTitle); dates.forEach(function (row) { fact(row[0], row[1]); }); }

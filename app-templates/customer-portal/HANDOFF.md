@@ -833,6 +833,36 @@ Document behave as before. Details, scope and what is not built:
 [`QUOTATION-PACKAGE-FLOW.md` §18](content/cases/QUOTATION-PACKAGE-FLOW.md#18-review-page-for-quotation-rounds-without-an-agreement-2026-11-05).
 Exported locally, not uploaded, not seen with a live round grant.
 
+### Agreement details from the Account and the agreement text (2026-11-09)
+
+Team decision: a `SERVICE_AGREEMENT` no longer stores provider or client
+details. Type 17 on dev-1 lost the six `PROVIDER_*` attributes, the client
+details, `INFORMATION_CONFIRMED`, `AUTHORITY_CONFIRMED` and
+`CLIENT_DETAILS_ERRORS` (core-ui `docs/snow-crm-role-flows.md`, "Agreement
+details live in the Account and the agreement text"). The details are fixed in
+`CONTRACT_TERMS`, whose first block, "Parties", names the provider's
+representative, phone and email and the client's type, billing address,
+representative, email and phone.
+
+- **Review page:** reads no removed attribute. The provider card is the
+  organization's name; the client card is the Account read through the grant,
+  which returns contacts and addresses as ids only, so it shows the name and
+  client type. A card row with no value is left out instead of saying "Not
+  stated"; the text names the rest. No logo and no Contact us strip are read
+  through the link any more.
+- **Portal:** the client card reads the signed-in Account
+  (`loadContractDetailsAccount`); the provider card reads the agreement's
+  owning organization name. Role 75 holds no `P_ORG_R`, the permission of
+  `/core/api/organization/list.json`, and the tagged API has no organization
+  endpoint, so the provider's representative, phone, email and logo are not
+  read; they are in the text. Granting `P_ORG_R` to role 75 is a team
+  decision still open; nobody granted it.
+- **Live on dev-1 on 2026-11-09:** `CLIENT_REVIEW_DOCUMENT` and the Granite
+  Ridge staging portal uploaded, render cache cleared. Agreement 474
+  (Account 1029) opened through a fresh grant shows the Parties text. The
+  signed-in portal was not seen with a customer session: no portal login for
+  a test Account with an agreement is available to the agent.
+
 ## Universal form document
 
 `runtime/forms/portal-form.js` renders any published Core form type in the

@@ -1882,12 +1882,6 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
       termStart: "TERM_START_DATE",
       termEnd: "TERM_END_DATE",
       terms: "CONTRACT_TERMS",
-      providerLegalName: "PROVIDER_LEGAL_NAME",
-      providerRepresentativeName: "PROVIDER_REPRESENTATIVE_NAME",
-      providerRepresentativeJobTitle: "PROVIDER_REPRESENTATIVE_JOB_TITLE",
-      providerContactPhone: "PROVIDER_CONTACT_PHONE",
-      providerContactEmail: "PROVIDER_CONTACT_EMAIL",
-      providerLogo: "PROVIDER_LOGO",
     },
     contractDetails: {
       event: "QUOTE_VIEWED-CLIENT_APPROVED",
@@ -2695,40 +2689,33 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     return "mailto:" + encodeURIComponent(value).replace(/%40/g, "@");
   }
 
-  function contactOf(agreement, contract, provider) {
-    var codes = contract.agreementAttributes;
-    var phone = attributeText(agreement, codes.providerContactPhone);
-    var email = attributeText(agreement, codes.providerContactEmail);
-    return { name: provider, phone: phone, phoneHref: telHref(phone), email: email, emailHref: mailHref(email) };
+  function contactOf(provider) {
+    return { name: provider, phone: "", phoneHref: "", email: "", emailHref: "" };
   }
 
   function partiesOf(agreement, account, fields, locale, contract) {
-    var codes = contract.agreementAttributes;
     var owner = agreement && agreement[contract.rawShape.documentOwner];
     var contact = legalContact(account);
-    function stated(code) {
-      return attributeText(agreement, code);
-    }
     var typeField = fields.filter(function (field) { return field.code === "CLIENT_TYPE"; })[0];
-    var typeValue = stated("CLIENT_TYPE") || attributeText(account,"LEGAL_ENTITY_TYPE");
+    var typeValue = attributeText(account, "LEGAL_ENTITY_TYPE");
     var typeChoice = typeField ? typeField.choices.filter(function (option) { return option.value === typeValue; })[0] : null;
-    var first = stated("REPRESENTATIVE_FIRST_NAME") || (contact ? text(contact.firstName) : "");
-    var last = stated("REPRESENTATIVE_LAST_NAME") || (contact ? text(contact.lastName) : "");
+    var first = contact ? text(contact.firstName) : "";
+    var last = contact ? text(contact.lastName) : "";
     return {
       provider: {
-        legalName: attributeText(agreement, codes.providerLegalName) || localizedName(owner && owner.nls, locale),
-        representativeName: attributeText(agreement, codes.providerRepresentativeName),
-        representativeJobTitle: attributeText(agreement, codes.providerRepresentativeJobTitle),
-        logo: attributeText(agreement, codes.providerLogo),
+        legalName: localizedName(owner && owner.nls, locale),
+        representativeName: "",
+        representativeJobTitle: "",
+        logo: "",
       },
       client: {
-        legalName: stated("LEGAL_NAME") || localizedName(account && account.nls, locale),
+        legalName: localizedName(account && account.nls, locale),
         clientType: typeChoice ? typeChoice.label : "",
-        billingAddress: stated("BILLING_ADDRESS") || billingAddress(account, locale),
+        billingAddress: billingAddress(account, locale),
         representativeName: [first, last].filter(Boolean).join(" "),
-        representativeJobTitle: stated("REPRESENTATIVE_JOB_TITLE") || (contact ? text(contact.title) : ""),
-        email: stated("REPRESENTATIVE_EMAIL") || contactEntry(contact, "EMAIL"),
-        phone: stated("REPRESENTATIVE_PHONE") || contactEntry(contact, "PHONE"),
+        representativeJobTitle: contact ? text(contact.title) : "",
+        email: contactEntry(contact, "EMAIL"),
+        phone: contactEntry(contact, "PHONE"),
       },
     };
   }
@@ -3105,7 +3092,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
         client: localizedName(account && account.nls, locale) || parties.client.legalName,
       },
       parties: parties,
-      contact: contactOf(agreement, contract, parties.provider.legalName),
+      contact: contactOf(parties.provider.legalName),
       properties: properties,
       summary: decided.summary,
       allDecided: decided.allDecided,
@@ -3514,11 +3501,10 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
 
     if (agreement) {
       section(copy.partyProvider);
-      fact(copy.partyLegalName, view.parties.provider.legalName);
-      fact(copy.partyRepresentative, joined(view.parties.provider.representativeName, view.parties.provider.representativeJobTitle));
+      [[copy.partyLegalName, view.parties.provider.legalName], [copy.partyRepresentative, joined(view.parties.provider.representativeName, view.parties.provider.representativeJobTitle)]].filter(function (row) { return row[1]; }).forEach(function (row) { fact(row[0], row[1]); });
       section(copy.partyClient);
       var client = view.parties.client;
-      [[copy.partyLegalName, client.legalName], [copy.partyClientType, client.clientType], [copy.partyBillingAddress, client.billingAddress], [copy.partyRepresentative, joined(client.representativeName, client.representativeJobTitle)], [copy.partyEmail, client.email], [copy.partyPhone, client.phone]].forEach(function (row) { fact(row[0], row[1]); });
+      [[copy.partyLegalName, client.legalName], [copy.partyClientType, client.clientType], [copy.partyBillingAddress, client.billingAddress], [copy.partyRepresentative, joined(client.representativeName, client.representativeJobTitle)], [copy.partyEmail, client.email], [copy.partyPhone, client.phone]].filter(function (row) { return row[1]; }).forEach(function (row) { fact(row[0], row[1]); });
       var term = view.agreement;
       var dates = [[copy.termEffective, term.effectiveDate], [copy.termStart, term.termStart], [copy.termEnd, term.termEnd]].filter(function (row) { return row[1]; });
       if (dates.length) { section(copy.termTitle); dates.forEach(function (row) { fact(row[0], row[1]); }); }
@@ -4998,6 +4984,10 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     return image;
   }
 
+  function statedFact(row) {
+    return !!row[1];
+  }
+
   function factsCard(ctx, title, rows, className, lead) {
     var copy = ctx.copy;
     var card = el("article", "cr-panel " + className);
@@ -5120,7 +5110,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     partiesSection.appendChild(factsCard(ctx, copy.partyProvider, [
       [copy.partyLegalName, parties.provider.legalName],
       [copy.partyRepresentative, joinName(parties.provider.representativeName, parties.provider.representativeJobTitle)],
-    ], "cr-party", providerLogo(ctx)));
+    ].filter(statedFact), "cr-party", providerLogo(ctx)));
     partiesSection.appendChild(factsCard(ctx, copy.partyClient, [
       [copy.partyLegalName, parties.client.legalName],
       [copy.partyClientType, parties.client.clientType],
@@ -5128,7 +5118,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
       [copy.partyRepresentative, joinName(parties.client.representativeName, parties.client.representativeJobTitle)],
       [copy.partyEmail, parties.client.email],
       [copy.partyPhone, parties.client.phone],
-    ], "cr-party"));
+    ].filter(statedFact), "cr-party"));
     shell.appendChild(partiesSection);
 
     var term = view.agreement;
@@ -6403,6 +6393,9 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
   ];
 
   var TERMS = [
+    "<h2>Parties</h2>",
+    "<p>Service provider: Coastline Winter Services Ltd.<br>- Representative: Morgan Ellis, Contracts Manager<br>- Phone: +1 604 555 0199<br>- Email: service@coastline-winter.example</p>",
+    "<p>Client: Harbourview Strata Corporation<br>- Client type: Corporation<br>- Billing address: 1500 Harbour Green Drive, Suite 210, Vancouver, BC V6C 3T8, Canada<br>- Representative: Dana Reyes, Strata Council President<br>- Email: dana.reyes@harbourview.example<br>- Phone: +1 604 555 0164</p>",
     "<h2>1. Services</h2>",
     "<p>The Provider clears snow and applies de-icing material at each property listed in this agreement, under the option approved for that property.</p>",
     "<h2>2. Service triggers</h2>",
@@ -6569,8 +6562,6 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     { id: "round-declined-closed", label: "Quotation round — every option declined here, the round closes" },
     { id: "link-copied", label: "Copy link — copied with an approval chosen" },
     { id: "link-copy-failed", label: "Copy link — the browser refused to copy" },
-    { id: "contact-phone-only", label: "Contact us — the provider shows a phone and no email" },
-    { id: "contact-none", label: "Contact us — the provider shows neither, no block" },
     { id: "option-open", label: "Option open — lines, total, decisions" },
     { id: "view-pending", label: "Unviewed option opened — view event pending" },
     { id: "view-failed", label: "Unviewed option opened — view event failed" },
@@ -6603,7 +6594,6 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     { id: "agreement-review", label: "Agreement review — SENT_TO_CLIENT" },
     { id: "agreement-numbered-terms", label: "Agreement review — numbered contract terms" },
     { id: "agreement-no-terms", label: "Agreement review — no contract terms written" },
-    { id: "agreement-no-logo", label: "Agreement review — the provider has no logo" },
     { id: "agreement-confirm", label: "Agreement approval — confirmation" },
     { id: "agreement-unconfirmed", label: "Agreement approval accepted, change not seen within the budget — Refresh status" },
     { id: "agreement-changes", label: "Agreement — request changes, the form" },
@@ -6748,23 +6738,9 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
       ORDERS: { value: orderIds.slice() },
       TERM_START_DATE: { value: "2026-11-01" },
       TERM_END_DATE: { value: "2027-03-31" },
-      PROVIDER_CONTACT_PHONE: { value: PROVIDER_CONTACT.phone },
-      PROVIDER_CONTACT_EMAIL: { value: PROVIDER_CONTACT.email },
-      PROVIDER_LOGO: { value: LOGO_ID },
     };
     if (withSnapshot) {
       attributes.EFFECTIVE_DATE = { value: "2026-10-20" };
-      attributes.LEGAL_NAME = { value: "Harbourview Strata Corporation" };
-      attributes.CLIENT_TYPE = { value: "CORPORATE" };
-      attributes.BILLING_ADDRESS = { value: "1500 Harbour Green Drive, Suite 210, Vancouver, BC V6C 3T8, Canada" };
-      attributes.REPRESENTATIVE_FIRST_NAME = { value: "Dana" };
-      attributes.REPRESENTATIVE_LAST_NAME = { value: "Reyes" };
-      attributes.REPRESENTATIVE_JOB_TITLE = { value: "Strata Council President" };
-      attributes.REPRESENTATIVE_EMAIL = { value: "dana.reyes@harbourview.example" };
-      attributes.REPRESENTATIVE_PHONE = { value: "+1 604 555 0164" };
-      attributes.PROVIDER_LEGAL_NAME = { value: "Coastline Winter Services Ltd." };
-      attributes.PROVIDER_REPRESENTATIVE_NAME = { value: "Morgan Ellis" };
-      attributes.PROVIDER_REPRESENTATIVE_JOB_TITLE = { value: "Contracts Manager" };
       attributes.CONTRACT_TERMS = { value: TERMS };
     }
     return {
@@ -7496,15 +7472,6 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
         clipboard = fixtureClipboard(false);
         steps = [["link.copy", {}]];
         break;
-      case "contact-phone-only":
-        data = agreementData("SENT_TO_CLIENT", false);
-        delete data.documents[0].attributes[17].PROVIDER_CONTACT_EMAIL;
-        break;
-      case "contact-none":
-        data = agreementData("SENT_TO_CLIENT", false);
-        delete data.documents[0].attributes[17].PROVIDER_CONTACT_PHONE;
-        delete data.documents[0].attributes[17].PROVIDER_CONTACT_EMAIL;
-        break;
       case "option-open":
         steps = [["option.toggle", { id: 3102 }]];
         break;
@@ -7640,10 +7607,6 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
       case "agreement-no-terms":
         data = agreementData("SENT_TO_CLIENT", false);
         delete data.documents[0].attributes[17].CONTRACT_TERMS;
-        break;
-      case "agreement-no-logo":
-        data = agreementData("SENT_TO_CLIENT", false);
-        delete data.documents[0].attributes[17].PROVIDER_LOGO;
         break;
       case "agreement-confirm":
         data = agreementData("SENT_TO_CLIENT", false);

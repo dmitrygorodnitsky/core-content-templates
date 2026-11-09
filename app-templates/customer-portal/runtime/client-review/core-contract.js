@@ -116,12 +116,6 @@
       termStart: "TERM_START_DATE",
       termEnd: "TERM_END_DATE",
       terms: "CONTRACT_TERMS",
-      providerLegalName: "PROVIDER_LEGAL_NAME",
-      providerRepresentativeName: "PROVIDER_REPRESENTATIVE_NAME",
-      providerRepresentativeJobTitle: "PROVIDER_REPRESENTATIVE_JOB_TITLE",
-      providerContactPhone: "PROVIDER_CONTACT_PHONE",
-      providerContactEmail: "PROVIDER_CONTACT_EMAIL",
-      providerLogo: "PROVIDER_LOGO",
     },
     contractDetails: {
       event: "QUOTE_VIEWED-CLIENT_APPROVED",

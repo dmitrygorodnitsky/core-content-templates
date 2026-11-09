@@ -58,6 +58,9 @@
   ];
 
   var TERMS = [
+    "<h2>Parties</h2>",
+    "<p>Service provider: Coastline Winter Services Ltd.<br>- Representative: Morgan Ellis, Contracts Manager<br>- Phone: +1 604 555 0199<br>- Email: service@coastline-winter.example</p>",
+    "<p>Client: Harbourview Strata Corporation<br>- Client type: Corporation<br>- Billing address: 1500 Harbour Green Drive, Suite 210, Vancouver, BC V6C 3T8, Canada<br>- Representative: Dana Reyes, Strata Council President<br>- Email: dana.reyes@harbourview.example<br>- Phone: +1 604 555 0164</p>",
     "<h2>1. Services</h2>",
     "<p>The Provider clears snow and applies de-icing material at each property listed in this agreement, under the option approved for that property.</p>",
     "<h2>2. Service triggers</h2>",
@@ -224,8 +227,6 @@
     { id: "round-declined-closed", label: "Quotation round — every option declined here, the round closes" },
     { id: "link-copied", label: "Copy link — copied with an approval chosen" },
     { id: "link-copy-failed", label: "Copy link — the browser refused to copy" },
-    { id: "contact-phone-only", label: "Contact us — the provider shows a phone and no email" },
-    { id: "contact-none", label: "Contact us — the provider shows neither, no block" },
     { id: "option-open", label: "Option open — lines, total, decisions" },
     { id: "view-pending", label: "Unviewed option opened — view event pending" },
     { id: "view-failed", label: "Unviewed option opened — view event failed" },
@@ -258,7 +259,6 @@
     { id: "agreement-review", label: "Agreement review — SENT_TO_CLIENT" },
     { id: "agreement-numbered-terms", label: "Agreement review — numbered contract terms" },
     { id: "agreement-no-terms", label: "Agreement review — no contract terms written" },
-    { id: "agreement-no-logo", label: "Agreement review — the provider has no logo" },
     { id: "agreement-confirm", label: "Agreement approval — confirmation" },
     { id: "agreement-unconfirmed", label: "Agreement approval accepted, change not seen within the budget — Refresh status" },
     { id: "agreement-changes", label: "Agreement — request changes, the form" },
@@ -403,23 +403,9 @@
       ORDERS: { value: orderIds.slice() },
       TERM_START_DATE: { value: "2026-11-01" },
       TERM_END_DATE: { value: "2027-03-31" },
-      PROVIDER_CONTACT_PHONE: { value: PROVIDER_CONTACT.phone },
-      PROVIDER_CONTACT_EMAIL: { value: PROVIDER_CONTACT.email },
-      PROVIDER_LOGO: { value: LOGO_ID },
     };
     if (withSnapshot) {
       attributes.EFFECTIVE_DATE = { value: "2026-10-20" };
-      attributes.LEGAL_NAME = { value: "Harbourview Strata Corporation" };
-      attributes.CLIENT_TYPE = { value: "CORPORATE" };
-      attributes.BILLING_ADDRESS = { value: "1500 Harbour Green Drive, Suite 210, Vancouver, BC V6C 3T8, Canada" };
-      attributes.REPRESENTATIVE_FIRST_NAME = { value: "Dana" };
-      attributes.REPRESENTATIVE_LAST_NAME = { value: "Reyes" };
-      attributes.REPRESENTATIVE_JOB_TITLE = { value: "Strata Council President" };
-      attributes.REPRESENTATIVE_EMAIL = { value: "dana.reyes@harbourview.example" };
-      attributes.REPRESENTATIVE_PHONE = { value: "+1 604 555 0164" };
-      attributes.PROVIDER_LEGAL_NAME = { value: "Coastline Winter Services Ltd." };
-      attributes.PROVIDER_REPRESENTATIVE_NAME = { value: "Morgan Ellis" };
-      attributes.PROVIDER_REPRESENTATIVE_JOB_TITLE = { value: "Contracts Manager" };
       attributes.CONTRACT_TERMS = { value: TERMS };
     }
     return {
@@ -1151,15 +1137,6 @@
         clipboard = fixtureClipboard(false);
         steps = [["link.copy", {}]];
         break;
-      case "contact-phone-only":
-        data = agreementData("SENT_TO_CLIENT", false);
-        delete data.documents[0].attributes[17].PROVIDER_CONTACT_EMAIL;
-        break;
-      case "contact-none":
-        data = agreementData("SENT_TO_CLIENT", false);
-        delete data.documents[0].attributes[17].PROVIDER_CONTACT_PHONE;
-        delete data.documents[0].attributes[17].PROVIDER_CONTACT_EMAIL;
-        break;
       case "option-open":
         steps = [["option.toggle", { id: 3102 }]];
         break;
@@ -1295,10 +1272,6 @@
       case "agreement-no-terms":
         data = agreementData("SENT_TO_CLIENT", false);
         delete data.documents[0].attributes[17].CONTRACT_TERMS;
-        break;
-      case "agreement-no-logo":
-        data = agreementData("SENT_TO_CLIENT", false);
-        delete data.documents[0].attributes[17].PROVIDER_LOGO;
         break;
       case "agreement-confirm":
         data = agreementData("SENT_TO_CLIENT", false);

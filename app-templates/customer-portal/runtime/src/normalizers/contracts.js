@@ -1,4 +1,5 @@
 import { attributeEntry, attributeNumber, attributeText, latestStateCode, positiveInteger, text } from "./core-record.js";
+import { accountParty } from "./account-profile.js";
 import { geoPoint } from "./property-map.js";
 import { addressRepeats, formatAddressLine, formatPhone } from "./postal-address.js";
 
@@ -531,25 +532,24 @@ function partialOf(data, orders, rows) {
 
 function agreementParties(document, client) {
   var owner = document.organization;
-  var first = attributeString(document, "REPRESENTATIVE_FIRST_NAME");
-  var last = attributeString(document, "REPRESENTATIVE_LAST_NAME");
+  var account = accountParty(client && client.account, CLIENT_TYPES);
   return {
     provider: {
-      legalName: attributeString(document, "PROVIDER_LEGAL_NAME") || localizedName(owner && owner.nls),
-      logoImageId: attributeString(document, "PROVIDER_LOGO"),
-      representativeName: attributeString(document, "PROVIDER_REPRESENTATIVE_NAME"),
-      representativeJobTitle: attributeString(document, "PROVIDER_REPRESENTATIVE_JOB_TITLE"),
-      phone: formatPhone(attributeString(document, "PROVIDER_CONTACT_PHONE")),
-      email: attributeString(document, "PROVIDER_CONTACT_EMAIL"),
+      legalName: localizedName(owner && owner.nls),
+      logoImageId: "",
+      representativeName: "",
+      representativeJobTitle: "",
+      phone: "",
+      email: "",
     },
-    client: {
-      legalName: attributeString(document, "LEGAL_NAME") || text(client && typeof client.displayName === "string" ? client.displayName : ""),
-      clientType: own(CLIENT_TYPES, attributeString(document, "CLIENT_TYPE")) || "",
-      billingAddress: formatAddressLine(attributeString(document, "BILLING_ADDRESS")),
-      representativeName: [first, last].filter(Boolean).join(" "),
-      representativeJobTitle: attributeString(document, "REPRESENTATIVE_JOB_TITLE"),
-      email: attributeString(document, "REPRESENTATIVE_EMAIL"),
-      phone: formatPhone(attributeString(document, "REPRESENTATIVE_PHONE")),
+    client: account || {
+      legalName: text(client && typeof client.displayName === "string" ? client.displayName : ""),
+      clientType: "",
+      billingAddress: "",
+      representativeName: "",
+      representativeJobTitle: "",
+      email: "",
+      phone: "",
     },
   };
 }

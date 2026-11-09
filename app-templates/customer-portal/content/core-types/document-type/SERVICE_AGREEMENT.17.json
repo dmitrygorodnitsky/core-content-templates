@@ -1,5 +1,5 @@
 {
- "optimistic": 11,
+ "optimistic": 15,
  "code": "SERVICE_AGREEMENT",
  "nls": {
   "en": {
@@ -10,9 +10,41 @@
   "id": 53,
   "code": "SERVICE_AGREEMENT_LIFECYCLE"
  },
- "attributeOrder": [],
+ "attributeOrder": [
+  {
+   "default": []
+  },
+  {
+   "CONTRACT_SCOPE": [
+    {
+     "attributeCode": "CLIENT",
+     "visible": true
+    },
+    {
+     "attributeCode": "ORDERS",
+     "visible": true
+    },
+    {
+     "attributeCode": "EFFECTIVE_DATE",
+     "visible": true
+    },
+    {
+     "attributeCode": "TERM_START_DATE",
+     "visible": true
+    },
+    {
+     "attributeCode": "TERM_END_DATE",
+     "visible": true
+    },
+    {
+     "attributeCode": "CONTRACT_TERMS",
+     "visible": true
+    }
+   ]
+  }
+ ],
  "organization": {
-  "optimistic": 6,
+  "optimistic": 7,
   "id": 8,
   "code": "SERVICE_WAND_WINTER_SERVICES"
  },
@@ -31,20 +63,6 @@
    },
    "options": [],
    "inputFormat": "textarea"
-  },
-  {
-   "code": "CLIENT_DETAILS_ERRORS",
-   "required": false,
-   "multiselect": false,
-   "freeValue": false,
-   "unique": false,
-   "className": "java.lang.String",
-   "nls": {
-    "en": {
-     "NAME": "Client Details Errors"
-    }
-   },
-   "options": []
   },
   {
    "code": "ORDERS",
@@ -69,34 +87,6 @@
    ]
   },
   {
-   "code": "PROVIDER_REPRESENTATIVE_JOB_TITLE",
-   "required": false,
-   "multiselect": false,
-   "freeValue": false,
-   "unique": false,
-   "className": "java.lang.String",
-   "nls": {
-    "en": {
-     "NAME": "Provider Representative Job Title"
-    }
-   },
-   "options": []
-  },
-  {
-   "code": "PROVIDER_CONTACT_PHONE",
-   "required": false,
-   "multiselect": false,
-   "freeValue": false,
-   "unique": false,
-   "className": "java.lang.String",
-   "nls": {
-    "en": {
-     "NAME": "Provider Contact Phone"
-    }
-   },
-   "options": []
-  },
-  {
    "code": "TERM_END_DATE",
    "required": false,
    "multiselect": false,
@@ -111,100 +101,15 @@
    "options": []
   },
   {
-   "code": "REPRESENTATIVE_EMAIL",
+   "code": "TERM_START_DATE",
    "required": false,
    "multiselect": false,
    "freeValue": false,
    "unique": false,
-   "className": "java.lang.String",
+   "className": "java.time.LocalDate",
    "nls": {
     "en": {
-     "NAME": "Client Representative Email"
-    }
-   },
-   "options": [],
-   "inputFormat": "email"
-  },
-  {
-   "code": "PROVIDER_CONTACT_EMAIL",
-   "required": false,
-   "multiselect": false,
-   "freeValue": false,
-   "unique": false,
-   "className": "java.lang.String",
-   "nls": {
-    "en": {
-     "NAME": "Provider Contact Email"
-    }
-   },
-   "options": []
-  },
-  {
-   "code": "PROVIDER_REPRESENTATIVE_NAME",
-   "required": false,
-   "multiselect": false,
-   "freeValue": false,
-   "unique": false,
-   "className": "java.lang.String",
-   "nls": {
-    "en": {
-     "NAME": "Provider Representative Name"
-    }
-   },
-   "options": []
-  },
-  {
-   "code": "PROVIDER_LEGAL_NAME",
-   "required": false,
-   "multiselect": false,
-   "freeValue": false,
-   "unique": false,
-   "className": "java.lang.String",
-   "nls": {
-    "en": {
-     "NAME": "Provider Legal Name"
-    }
-   },
-   "options": []
-  },
-  {
-   "code": "INFORMATION_CONFIRMED",
-   "required": false,
-   "multiselect": false,
-   "freeValue": false,
-   "unique": false,
-   "className": "java.lang.Boolean",
-   "nls": {
-    "en": {
-     "NAME": "Client Information Confirmed"
-    }
-   },
-   "options": []
-  },
-  {
-   "code": "PROVIDER_LOGO",
-   "required": false,
-   "multiselect": false,
-   "freeValue": false,
-   "unique": false,
-   "className": "java.lang.String",
-   "nls": {
-    "en": {
-     "NAME": "Provider Logo Image"
-    }
-   },
-   "options": []
-  },
-  {
-   "code": "AUTHORITY_CONFIRMED",
-   "required": false,
-   "multiselect": false,
-   "freeValue": false,
-   "unique": false,
-   "className": "java.lang.Boolean",
-   "nls": {
-    "en": {
-     "NAME": "Client Authority Confirmed"
+     "NAME": "Term Start Date"
     }
    },
    "options": []
@@ -224,147 +129,6 @@
    "options": []
   },
   {
-   "code": "BILLING_ADDRESS",
-   "required": false,
-   "multiselect": false,
-   "freeValue": false,
-   "unique": false,
-   "className": "java.lang.String",
-   "nls": {
-    "en": {
-     "NAME": "Client Billing Address"
-    }
-   },
-   "options": [],
-   "inputFormat": "address"
-  },
-  {
-   "code": "LEGAL_NAME",
-   "required": false,
-   "multiselect": false,
-   "freeValue": false,
-   "unique": false,
-   "className": "java.lang.String",
-   "nls": {
-    "en": {
-     "NAME": "Client Legal Name"
-    }
-   },
-   "options": []
-  },
-  {
-   "code": "REPRESENTATIVE_LAST_NAME",
-   "required": false,
-   "multiselect": false,
-   "freeValue": false,
-   "unique": false,
-   "className": "java.lang.String",
-   "nls": {
-    "en": {
-     "NAME": "Client Representative Last Name"
-    }
-   },
-   "options": []
-  },
-  {
-   "code": "REPRESENTATIVE_PHONE",
-   "required": false,
-   "multiselect": false,
-   "freeValue": false,
-   "unique": false,
-   "className": "java.lang.String",
-   "nls": {
-    "en": {
-     "NAME": "Client Representative Phone"
-    }
-   },
-   "options": [],
-   "inputFormat": "tel"
-  },
-  {
-   "code": "TERM_START_DATE",
-   "required": false,
-   "multiselect": false,
-   "freeValue": false,
-   "unique": false,
-   "className": "java.time.LocalDate",
-   "nls": {
-    "en": {
-     "NAME": "Term Start Date"
-    }
-   },
-   "options": []
-  },
-  {
-   "code": "REPRESENTATIVE_FIRST_NAME",
-   "required": false,
-   "multiselect": false,
-   "freeValue": false,
-   "unique": false,
-   "className": "java.lang.String",
-   "nls": {
-    "en": {
-     "NAME": "Client Representative First Name"
-    }
-   },
-   "options": []
-  },
-  {
-   "code": "CLIENT_TYPE",
-   "required": false,
-   "multiselect": false,
-   "freeValue": false,
-   "unique": false,
-   "className": "java.lang.String",
-   "nls": {
-    "en": {
-     "NAME": "Client Type"
-    }
-   },
-   "options": [
-    {
-     "value": "INDIVIDUAL",
-     "nls": {
-      "en": {
-       "NAME": "Individual"
-      }
-     }
-    },
-    {
-     "value": "UNINCORPORATED_BUSINESS",
-     "nls": {
-      "en": {
-       "NAME": "Unincorporated business"
-      }
-     }
-    },
-    {
-     "value": "CORPORATE",
-     "nls": {
-      "en": {
-       "NAME": "Corporation"
-      }
-     }
-    },
-    {
-     "value": "ASSOCIATION",
-     "nls": {
-      "en": {
-       "NAME": "Association"
-      }
-     }
-    },
-    {
-     "value": "GOVERNMENT",
-     "nls": {
-      "en": {
-       "NAME": "Government"
-      }
-     }
-    }
-   ]
-  },
-  {
    "code": "CLIENT",
    "required": true,
    "multiselect": false,
@@ -382,23 +146,47 @@
      "value": 2
     }
    ]
-  },
-  {
-   "code": "REPRESENTATIVE_JOB_TITLE",
-   "required": false,
-   "multiselect": false,
-   "freeValue": false,
-   "unique": false,
-   "className": "java.lang.String",
-   "nls": {
-    "en": {
-     "NAME": "Client Representative Job Title"
-    }
-   },
-   "options": []
   }
  ],
  "id": 17,
  "isAbstract": false,
- "attributeGroups": []
+ "attributeGroups": [
+  {
+   "code": "CONTRACT_SCOPE",
+   "nls": {
+    "ar": {
+     "NAME": "نطاق العقد ومدته",
+     "DESCRIPTION": "اختر العميل وعروض الأسعار المعتمدة المطلوبة أولاً، ثم حدد تواريخ السريان ومدة الخدمة وشروط العقد."
+    },
+    "en": {
+     "NAME": "Contract Scope & Term",
+     "DESCRIPTION": "Select the required client and approved quotations first, then define effective dates, the service term and contract conditions."
+    },
+    "es": {
+     "NAME": "Alcance y plazo del contrato",
+     "DESCRIPTION": "Seleccione primero el cliente y las cotizaciones aprobadas obligatorias; después defina las fechas, el plazo y las condiciones."
+    },
+    "fr": {
+     "NAME": "Périmètre et durée du contrat",
+     "DESCRIPTION": "Sélectionnez d’abord le client et les devis approuvés obligatoires, puis précisez les dates, la durée et les conditions."
+    },
+    "he": {
+     "NAME": "היקף ותקופת החוזה",
+     "DESCRIPTION": "יש לבחור תחילה את הלקוח והצעות המחיר המאושרות הנדרשים, ולאחר מכן להגדיר תאריכים, תקופה ותנאים."
+    },
+    "kk": {
+     "NAME": "Шарт ауқымы мен мерзімі",
+     "DESCRIPTION": "Алдымен міндетті клиент пен бекітілген ұсыныстарды таңдаңыз, содан кейін күшіне ену күндерін, қызмет мерзімі мен шарт талаптарын көрсетіңіз."
+    },
+    "ru": {
+     "NAME": "Предмет и срок договора",
+     "DESCRIPTION": "Сначала выберите обязательные клиента и утверждённые предложения, затем укажите даты действия, период обслуживания и условия договора."
+    },
+    "zh": {
+     "NAME": "合同范围与期限",
+     "DESCRIPTION": "请先选择必填客户和已批准报价，再确定生效日期、服务期限及合同条款。"
+    }
+   }
+  }
+ ]
 }

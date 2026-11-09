@@ -117,24 +117,39 @@ const QUOTE_ORDERS = [
   [8902, 7212, "MONTHLY", "DECLINED", "2026-27"],
 ];
 
-const PROVIDER = {
-  PROVIDER_LEGAL_NAME: "Granite Ridge Snow Removal LLC",
-  PROVIDER_REPRESENTATIVE_NAME: "Jordan Pike",
-  PROVIDER_REPRESENTATIVE_JOB_TITLE: "Contracts Manager",
+const CLIENT_ACCOUNT_ROW = {
+  id: 0,
+  nls: { en: { NAME: "Whitlock Property Group LLC" } },
+  attributes: { 35: { LEGAL_ENTITY_TYPE: { value: "ORGANIZATION" } } },
+  contacts: [
+    { id: 1, type: { code: "LEGAL" }, firstName: "Dana", lastName: "Whitlock", title: "Portfolio Manager", contactEntries: [
+      { id: 1, type: { code: "EMAIL" }, kind: { code: "PRIMARY" }, value: "dana.whitlock@example.test" },
+      { id: 2, type: { code: "PHONE" }, kind: { code: "PRIMARY" }, value: "+1 (303) 555-0164" },
+    ] },
+  ],
+  addresses: [
+    { id: 1, types: [{ code: "BILLING" }], address: { address1: "1550 Wynkoop Street, Suite 400", city: "Denver", postalCode: "80202", state: { code: "CO" } } },
+  ],
 };
 
-const CLIENT_DETAILS = {
-  LEGAL_NAME: "Whitlock Property Group LLC",
-  CLIENT_TYPE: "ORGANIZATION",
-  BILLING_ADDRESS: "1550 Wynkoop Street, Suite 400, Denver, CO 80202",
-  REPRESENTATIVE_FIRST_NAME: "Dana",
-  REPRESENTATIVE_LAST_NAME: "Whitlock",
-  REPRESENTATIVE_JOB_TITLE: "Portfolio Manager",
-  REPRESENTATIVE_EMAIL: "dana.whitlock@example.test",
-  REPRESENTATIVE_PHONE: "+1 (303) 555-0164",
-};
+const PARTIES_TEXT = [
+  "# Parties",
+  "",
+  "Service provider: Granite Ridge Snow Removal LLC",
+  "- Representative: Jordan Pike, Contracts Manager",
+  "- Phone: +1 (303) 555-0100",
+  "- Email: contracts@graniteridge.example.test",
+  "",
+  "Client: Whitlock Property Group LLC",
+  "- Client type: Organization",
+  "- Billing address: 1550 Wynkoop Street, Suite 400, Denver, CO 80202",
+  "- Representative: Dana Whitlock, Portfolio Manager",
+  "- Email: dana.whitlock@example.test",
+  "- Phone: +1 (303) 555-0164",
+  "",
+];
 
-const CONTRACT_TERMS = [
+const CONTRACT_TERMS = PARTIES_TEXT.concat([
   "# Winter service terms",
   "",
   "1. Services",
@@ -157,18 +172,18 @@ const CONTRACT_TERMS = [
   "",
   "# Cancellation",
   "Either party may cancel with thirty days written notice before the season starts.",
-].join("\n");
+]).join("\n");
 
 const AGREEMENTS = [
-  { id: 9102, state: "SENT_TO_CLIENT", orders: [8201, 8202, 8203, 8204], attributes: Object.assign({ EFFECTIVE_DATE: "2026-10-20", TERM_START_DATE: SEASONS["2026-27"][0], TERM_END_DATE: SEASONS["2026-27"][1], CONTRACT_TERMS: CONTRACT_TERMS }, PROVIDER, CLIENT_DETAILS) },
-  { id: 9103, state: "DRAFT", orders: [8301, 8302], attributes: Object.assign({ TERM_START_DATE: SEASONS["2026-27"][0], TERM_END_DATE: SEASONS["2026-27"][1] }, PROVIDER, CLIENT_DETAILS) },
-  { id: 9104, state: "PENDING_MANAGEMENT_APPROVAL", orders: [8401, 8402], attributes: Object.assign({ TERM_START_DATE: SEASONS["2026-27"][0], TERM_END_DATE: SEASONS["2026-27"][1] }, PROVIDER, CLIENT_DETAILS) },
-  { id: 9100, state: "ACTIVE", orders: [8001, 8002, 8003], attributes: Object.assign({ EFFECTIVE_DATE: "2025-10-15", TERM_START_DATE: SEASONS["2025-26"][0], TERM_END_DATE: SEASONS["2025-26"][1], CONTRACT_TERMS: CONTRACT_TERMS }, PROVIDER, CLIENT_DETAILS) },
-  { id: 9099, state: "EXPIRED", orders: [8501], attributes: Object.assign({ EFFECTIVE_DATE: "2024-10-10", TERM_START_DATE: SEASONS["2024-25"][0], TERM_END_DATE: SEASONS["2024-25"][1], CONTRACT_TERMS: CONTRACT_TERMS }, PROVIDER, CLIENT_DETAILS) },
-  { id: 9098, state: "SUSPENDED", orders: [8601, 8602], attributes: Object.assign({ EFFECTIVE_DATE: "2025-10-12", TERM_START_DATE: SEASONS["2025-26"][0], TERM_END_DATE: SEASONS["2025-26"][1], CONTRACT_TERMS: CONTRACT_TERMS }, PROVIDER, CLIENT_DETAILS) },
-  { id: 9097, state: "ARCHIVED", orders: [8701], attributes: Object.assign({ EFFECTIVE_DATE: "2024-10-08", TERM_START_DATE: SEASONS["2024-25"][0], TERM_END_DATE: SEASONS["2024-25"][1], CONTRACT_TERMS: CONTRACT_TERMS }, PROVIDER, CLIENT_DETAILS) },
+  { id: 9102, state: "SENT_TO_CLIENT", orders: [8201, 8202, 8203, 8204], attributes: Object.assign({ EFFECTIVE_DATE: "2026-10-20", TERM_START_DATE: SEASONS["2026-27"][0], TERM_END_DATE: SEASONS["2026-27"][1], CONTRACT_TERMS: CONTRACT_TERMS }) },
+  { id: 9103, state: "DRAFT", orders: [8301, 8302], attributes: Object.assign({ TERM_START_DATE: SEASONS["2026-27"][0], TERM_END_DATE: SEASONS["2026-27"][1] }) },
+  { id: 9104, state: "PENDING_MANAGEMENT_APPROVAL", orders: [8401, 8402], attributes: Object.assign({ TERM_START_DATE: SEASONS["2026-27"][0], TERM_END_DATE: SEASONS["2026-27"][1] }) },
+  { id: 9100, state: "ACTIVE", orders: [8001, 8002, 8003], attributes: Object.assign({ EFFECTIVE_DATE: "2025-10-15", TERM_START_DATE: SEASONS["2025-26"][0], TERM_END_DATE: SEASONS["2025-26"][1], CONTRACT_TERMS: CONTRACT_TERMS }) },
+  { id: 9099, state: "EXPIRED", orders: [8501], attributes: Object.assign({ EFFECTIVE_DATE: "2024-10-10", TERM_START_DATE: SEASONS["2024-25"][0], TERM_END_DATE: SEASONS["2024-25"][1], CONTRACT_TERMS: CONTRACT_TERMS }) },
+  { id: 9098, state: "SUSPENDED", orders: [8601, 8602], attributes: Object.assign({ EFFECTIVE_DATE: "2025-10-12", TERM_START_DATE: SEASONS["2025-26"][0], TERM_END_DATE: SEASONS["2025-26"][1], CONTRACT_TERMS: CONTRACT_TERMS }) },
+  { id: 9097, state: "ARCHIVED", orders: [8701], attributes: Object.assign({ EFFECTIVE_DATE: "2024-10-08", TERM_START_DATE: SEASONS["2024-25"][0], TERM_END_DATE: SEASONS["2024-25"][1], CONTRACT_TERMS: CONTRACT_TERMS }) },
   { id: 9096, state: "CANCELED", orders: [8801, 8802], attributes: {} },
-  { id: 9095, state: "CLIENT_APPROVED", orders: [8901, 8902], attributes: Object.assign({ EFFECTIVE_DATE: "2026-10-18", TERM_START_DATE: SEASONS["2026-27"][0], TERM_END_DATE: SEASONS["2026-27"][1], CONTRACT_TERMS: CONTRACT_TERMS }, PROVIDER, CLIENT_DETAILS) },
+  { id: 9095, state: "CLIENT_APPROVED", orders: [8901, 8902], attributes: Object.assign({ EFFECTIVE_DATE: "2026-10-18", TERM_START_DATE: SEASONS["2026-27"][0], TERM_END_DATE: SEASONS["2026-27"][1], CONTRACT_TERMS: CONTRACT_TERMS }) },
 ];
 const AGREEMENT_ENDINGS = {
   SUSPENDED: ["ACTIVE", "SUSPENDED"],
@@ -672,6 +687,7 @@ export const graniteRidgeSnowFixture = Object.freeze({
     ],
   },
   proposals: {
+    client: { displayName: "Whitlock Property Group LLC", account: Object.assign({}, CLIENT_ACCOUNT_ROW, { id: CLIENT_ACCOUNT }) },
     agreements: AGREEMENTS.map(serviceAgreement),
     orders: QUOTE_ORDERS.map(quoteOrder),
     orderItems: QUOTE_ORDERS.reduce(function (lines, entry) { return lines.concat(quoteLines(entry)); }, []),
