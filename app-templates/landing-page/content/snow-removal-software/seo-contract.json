@@ -172,23 +172,23 @@
     },
     {
       "level": 2,
-      "text": "Onboarding & Support"
+      "text": "Get Started with Confidence"
     },
     {
       "level": 3,
-      "text": "Data migration assistance"
+      "text": "Data Import Assistance"
     },
     {
       "level": 3,
-      "text": "Guided setup and training"
+      "text": "Guided Setup & Training"
     },
     {
       "level": 3,
-      "text": "Support for active operations"
+      "text": "Product Support"
     },
     {
       "level": 3,
-      "text": "Essential integrations"
+      "text": "Integration Assessment"
     },
     {
       "level": 2,
@@ -409,7 +409,7 @@
     "snow plow management software": 1,
     "snow removal billing software": 1,
     "snow plowing billing software": 1,
-    "snow management software": 1,
+    "snow management software": 0,
     "snow and ice management software": 1,
     "snow removal service software": 1,
     "snow plowing business software": 1,

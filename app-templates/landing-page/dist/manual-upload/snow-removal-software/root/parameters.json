@@ -100,7 +100,7 @@
             "publisher": {
               "@id": "https://servicewand.com/#organization"
             },
-            "featureList": "Advanced Route Optimization & Dispatch, Requests & Quotations, Mobile Workforce, Subcontractor Management, Customer Portal & Case Management, Snow Removal Billing Software, Onboarding & Support, Platform & Growth",
+            "featureList": "Advanced Route Optimization & Dispatch, Requests & Quotations, Mobile Workforce, Subcontractor Management, Customer Portal & Case Management, Snow Removal Billing Software, Get Started with Confidence, Platform & Growth",
             "offers": {
               "@type": "Offer",
               "url": "https://dev-1.servicewand.com/industries/field-service/snow-removal-software-new#pricing",
@@ -132,7 +132,7 @@
                 "name": "United Kingdom"
               }
             ],
-            "description": "Data migration assistance, guided setup and training, support for active operations and essential integrations for snow and ice contractors.",
+            "description": "Data import assistance, guided setup and training, product support and integration assessment for snow and ice contractors.",
             "url": "https://dev-1.servicewand.com/industries/field-service/snow-removal-software-new#onboarding"
           },
           {
@@ -230,7 +230,7 @@
               {
                 "@type": "ListItem",
                 "position": 7,
-                "name": "Onboarding & Support",
+                "name": "Get Started with Confidence",
                 "url": "https://dev-1.servicewand.com/industries/field-service/snow-removal-software-new#onboarding"
               },
               {

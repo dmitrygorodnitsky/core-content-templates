@@ -142,7 +142,7 @@
                 "publisher": {
                   "@id": "https://servicewand.com/#organization"
                 },
-                "featureList": "Advanced Route Optimization & Dispatch, Requests & Quotations, Mobile Workforce, Subcontractor Management, Customer Portal & Case Management, Snow Removal Billing Software, Onboarding & Support, Platform & Growth",
+                "featureList": "Advanced Route Optimization & Dispatch, Requests & Quotations, Mobile Workforce, Subcontractor Management, Customer Portal & Case Management, Snow Removal Billing Software, Get Started with Confidence, Platform & Growth",
                 "offers": {
                   "@type": "Offer",
                   "url": "https://servicewand.com/industries/field-service/snow-removal-software#pricing",
@@ -174,7 +174,7 @@
                     "name": "United Kingdom"
                   }
                 ],
-                "description": "Data migration assistance, guided setup and training, support for active operations and essential integrations for snow and ice contractors.",
+                "description": "Data import assistance, guided setup and training, product support and integration assessment for snow and ice contractors.",
                 "url": "https://servicewand.com/industries/field-service/snow-removal-software#onboarding"
               },
               {
@@ -272,7 +272,7 @@
                   {
                     "@type": "ListItem",
                     "position": 7,
-                    "name": "Onboarding & Support",
+                    "name": "Get Started with Confidence",
                     "url": "https://servicewand.com/industries/field-service/snow-removal-software#onboarding"
                   },
                   {
@@ -7948,7 +7948,7 @@
             }
           },
           "value": {
-            "en": "Onboarding &amp; Support"
+            "en": "Get Started with Confidence"
           }
         },
         {
@@ -7961,7 +7961,7 @@
             }
           },
           "value": {
-            "en": "Get help bringing your operation into ServiceWand."
+            "en": "Bring your operation into ServiceWand with a clear setup plan and practical guidance from our team."
           }
         },
         {
@@ -7974,7 +7974,7 @@
             }
           },
           "value": {
-            "en": "Our team helps you assess and transfer existing data, configure workflows, and train your team."
+            "en": "We’ll review your priorities, agree on the scope of your setup, and help your team get ready for everyday work."
           }
         },
         {
@@ -7987,7 +7987,7 @@
             }
           },
           "value": {
-            "en": "Data migration assistance"
+            "en": "Data Import Assistance"
           }
         },
         {
@@ -8000,7 +8000,7 @@
             }
           },
           "value": {
-            "en": "Review data from spreadsheets or existing snow management software with us and agree on what can be brought into ServiceWand."
+            "en": "Review your existing data with us and agree on what to bring into ServiceWand. We’ll guide you through the required format and help check a sample before the agreed import."
           }
         },
         {
@@ -8013,7 +8013,7 @@
             }
           },
           "value": {
-            "en": "Guided setup and training"
+            "en": "Guided Setup &amp; Training"
           }
         },
         {
@@ -8026,7 +8026,7 @@
             }
           },
           "value": {
-            "en": "Work with our team to configure your operation and help staff get started."
+            "en": "Get help configuring your core workflows and introducing your team to the system. Setup and training sessions follow an agreed plan focused on your operational priorities."
           }
         },
         {
@@ -8039,7 +8039,7 @@
             }
           },
           "value": {
-            "en": "Support for active operations"
+            "en": "Product Support"
           }
         },
         {
@@ -8052,7 +8052,7 @@
             }
           },
           "value": {
-            "en": "24/7 support is available on eligible plans. Response times and support scope depend on your package."
+            "en": "Contact our team for help with product questions and technical issues during published support hours. We’ll review your request and explain the next steps."
           }
         },
         {
@@ -8065,7 +8065,7 @@
             }
           },
           "value": {
-            "en": "Essential integrations"
+            "en": "Integration Assessment"
           }
         },
         {
@@ -8078,7 +8078,7 @@
             }
           },
           "value": {
-            "en": "Stripe payments are available today. Discuss other essential systems with us so we can assess integration options and scope."
+            "en": "Tell us which systems you need to connect. We’ll assess the available options and agree on feasibility, scope, and any additional costs before work begins."
           }
         },
         {
