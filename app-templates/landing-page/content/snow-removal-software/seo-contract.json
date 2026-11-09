@@ -1,6 +1,11 @@
 {
   "$schema": "lab-ui/seo-contract@1",
   "source": "Approved Snow Removal landing v4 and the SEO doc keyword targets; headings updated for the PM pricing requirements of 2026-11-06 (Weather moved into Add-ons, two expansion cards removed, Add-ons H2 and four add-on H3s added; Enterprise state H3 added 2026-11-08).",
+  "meta": {
+    "type": "LOCALIZED_STRING_SS",
+    "title": "Snow Removal Software & App | ServiceWand",
+    "description": "Connect quoting, scheduling, routing, field work, customer service, and billing in one snow removal software platform with ServiceWand."
+  },
   "scope": {
     "root": "main",
     "excludeSections": [

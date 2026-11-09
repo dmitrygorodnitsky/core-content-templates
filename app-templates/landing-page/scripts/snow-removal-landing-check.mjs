@@ -219,6 +219,15 @@ const checkOffline = (environment) => {
     assert.match(main, /Actual ServiceWand UI · Mobile Property Plan &amp; Dispatch Board/, "the routing caption is the requested text");
     assert.equal(/Supporting capabilities:/.test(main), false, "the Mobile Workforce supporting line became chips");
     assert.equal(content.javascript.includes("ns.selection = Object.freeze"), true, "the configurator ships the subscription flow's selection rules");
+    for (const code of ["ROOT_META_TITLE", "ROOT_META_DESCRIPTION"]) {
+      const parameter = payload.root.parameters.find((candidate) => candidate.code === code);
+      assert.equal(parameter.type, contract.meta.type, `${code} is ${contract.meta.type}`);
+      assert.ok(payload.root.head.includes(`\${${code}@${contract.meta.type}}`), `the root head reads ${code} as ${contract.meta.type}`);
+    }
+    assert.deepEqual([payload.root.parameters.find((candidate) => candidate.code === "ROOT_META_TITLE").value.en, payload.root.parameters.find((candidate) => candidate.code === "ROOT_META_DESCRIPTION").value.en], [contract.meta.title, contract.meta.description], "the English title and description are the approved ones");
+    const mockupLabels = content.parameters.filter((parameter) => /^SNOW_[A-Z]+_UI_\d+$/.test(parameter.code));
+    assert.ok(mockupLabels.length >= 150, `the mockup interface text is parameterized (${mockupLabels.length})`);
+    assert.deepEqual(mockupLabels.filter((parameter) => parameter.type !== "LOCALIZED_STRING_SS" || !String(parameter.value?.en || "").trim()).map((parameter) => parameter.code), [], "every mockup label is a localized string with an English value");
     const header = payload.children.find((child) => child.code === "SNOW_REMOVAL_LANDING_HEADER");
     assert.match(header.css, /\.header\.is-open \.header-mobile-menu\{max-height:\s*calc\(100vh - var\(--header-height\)[^}]*overflow-y:\s*auto/, "the open mobile menu fits the viewport and scrolls");
     assert.match(header.css, /\.header-mobile-menu \.vl-locale-dropdown\{position:\s*static/, "the mobile language list opens inside the scrolling menu");

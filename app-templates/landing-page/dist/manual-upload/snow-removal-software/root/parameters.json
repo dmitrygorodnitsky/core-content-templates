@@ -1,25 +1,29 @@
 [
   {
     "code": "ROOT_META_TITLE",
-    "type": "STRING",
+    "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
         "NAME": "Meta Title",
         "DESCRIPTION": "SEO title for the generated landing page."
       }
     },
-    "value": "Snow Removal Software & App | ServiceWand"
+    "value": {
+      "en": "Snow Removal Software & App | ServiceWand"
+    }
   },
   {
     "code": "ROOT_META_DESCRIPTION",
-    "type": "STRING",
+    "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
         "NAME": "Meta Description",
         "DESCRIPTION": "SEO meta description for the generated landing page."
       }
     },
-    "value": "Connect quoting, scheduling, routing, field work, customer service, and billing in one snow removal software platform with ServiceWand."
+    "value": {
+      "en": "Connect quoting, scheduling, routing, field work, customer service, and billing in one snow removal software platform with ServiceWand."
+    }
   },
   {
     "code": "SEO_LD_SCHEMA",

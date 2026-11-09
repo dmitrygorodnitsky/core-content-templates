@@ -121,6 +121,20 @@ const withLanguageLinks = (root, seo, environment) => {
   };
 };
 
+export const LOCALIZED_META_CODES = ["ROOT_META_TITLE", "ROOT_META_DESCRIPTION"];
+
+const withLocalizedMeta = (root) => {
+  let head = root.head;
+  for (const code of LOCALIZED_META_CODES) {
+    if (!head.includes(`\${${code}}`)) throw new Error(`Root head has no \${${code}} placeholder`);
+    head = head.replaceAll(`\${${code}}`, `\${${code}@LOCALIZED_STRING_SS}`);
+  }
+  const parameters = root.parameters.map((parameter) => (LOCALIZED_META_CODES.includes(parameter.code)
+    ? { ...parameter, type: "LOCALIZED_STRING_SS", value: typeof parameter.value === "string" ? { en: parameter.value } : parameter.value }
+    : parameter));
+  return { ...root, head, parameters };
+};
+
 const splitTemplate = (dir, template) => {
   writeJson(join(dir, "template.json"), template);
   writeText(join(dir, "head.html"), template.head || "");
@@ -177,7 +191,7 @@ export const exportSnowRemovalLanding = ({ environment = snowEnvironment(), outp
       if (child.code === CONTENT_CODE) return { ...child, css: minifyCss(child.css), javascript: stripGeneratedHeaders(child.javascript) };
       throw new Error(`Unexpected child template ${child.code}`);
     });
-    const root = withLanguageLinks({ ...family.rootTemplate, children: children.map((child) => ({ code: child.code, nls: child.nls })) }, seo, environment);
+    const root = withLanguageLinks(withLocalizedMeta({ ...family.rootTemplate, children: children.map((child) => ({ code: child.code, nls: child.nls })) }), seo, environment);
     const lorem = children.filter((child) => /lorem ipsum/i.test(JSON.stringify(child.parameters))).map((child) => child.code);
     if (lorem.length) throw new Error(`Lorem Ipsum survived in ${lorem.join(", ")}`);
 

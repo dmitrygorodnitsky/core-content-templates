@@ -224,6 +224,19 @@
     }
   },
   {
+    "code": "SNOW_OVERVIEW_UI_1",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Overview mockup label 1",
+        "DESCRIPTION": "Interface text in the Overview section product mockup."
+      }
+    },
+    "value": {
+      "en": "All teams, one view"
+    }
+  },
+  {
     "code": "SNOW_OVERVIEW_H3_1",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
@@ -250,6 +263,58 @@
     }
   },
   {
+    "code": "SNOW_OVERVIEW_UI_2",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Overview mockup label 2",
+        "DESCRIPTION": "Interface text in the Overview section product mockup."
+      }
+    },
+    "value": {
+      "en": "Request"
+    }
+  },
+  {
+    "code": "SNOW_OVERVIEW_UI_3",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Overview mockup label 3",
+        "DESCRIPTION": "Interface text in the Overview section product mockup."
+      }
+    },
+    "value": {
+      "en": "Assign"
+    }
+  },
+  {
+    "code": "SNOW_OVERVIEW_UI_4",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Overview mockup label 4",
+        "DESCRIPTION": "Interface text in the Overview section product mockup."
+      }
+    },
+    "value": {
+      "en": "Update"
+    }
+  },
+  {
+    "code": "SNOW_OVERVIEW_UI_5",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Overview mockup label 5",
+        "DESCRIPTION": "Interface text in the Overview section product mockup."
+      }
+    },
+    "value": {
+      "en": "Shared across your operation"
+    }
+  },
+  {
     "code": "SNOW_OVERVIEW_H3_2",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
@@ -273,6 +338,32 @@
     },
     "value": {
       "en": "Reuse plans, share operational updates, and automate recurring steps across the office, field, and customer experience."
+    }
+  },
+  {
+    "code": "SNOW_OVERVIEW_UI_6",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Overview mockup label 6",
+        "DESCRIPTION": "Interface text in the Overview section product mockup."
+      }
+    },
+    "value": {
+      "en": "Completed"
+    }
+  },
+  {
+    "code": "SNOW_OVERVIEW_UI_7",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Overview mockup label 7",
+        "DESCRIPTION": "Interface text in the Overview section product mockup."
+      }
+    },
+    "value": {
+      "en": "Photos · Service record"
     }
   },
   {
@@ -338,6 +429,162 @@
     },
     "value": {
       "en": "Routes, properties and customer cases in one operational overview."
+    }
+  },
+  {
+    "code": "SNOW_OVERVIEW_UI_8",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Overview mockup label 8",
+        "DESCRIPTION": "Interface text in the Overview section product mockup."
+      }
+    },
+    "value": {
+      "en": "Winter operations"
+    }
+  },
+  {
+    "code": "SNOW_OVERVIEW_UI_9",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Overview mockup label 9",
+        "DESCRIPTION": "Interface text in the Overview section product mockup."
+      }
+    },
+    "value": {
+      "en": "Today"
+    }
+  },
+  {
+    "code": "SNOW_OVERVIEW_UI_10",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Overview mockup label 10",
+        "DESCRIPTION": "Interface text in the Overview section product mockup."
+      }
+    },
+    "value": {
+      "en": "Active routes"
+    }
+  },
+  {
+    "code": "SNOW_OVERVIEW_UI_11",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Overview mockup label 11",
+        "DESCRIPTION": "Interface text in the Overview section product mockup."
+      }
+    },
+    "value": {
+      "en": "in progress"
+    }
+  },
+  {
+    "code": "SNOW_OVERVIEW_UI_12",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Overview mockup label 12",
+        "DESCRIPTION": "Interface text in the Overview section product mockup."
+      }
+    },
+    "value": {
+      "en": "Properties completed"
+    }
+  },
+  {
+    "code": "SNOW_OVERVIEW_UI_13",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Overview mockup label 13",
+        "DESCRIPTION": "Interface text in the Overview section product mockup."
+      }
+    },
+    "value": {
+      "en": "Open customer cases"
+    }
+  },
+  {
+    "code": "SNOW_OVERVIEW_UI_14",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Overview mockup label 14",
+        "DESCRIPTION": "Interface text in the Overview section product mockup."
+      }
+    },
+    "value": {
+      "en": "to review"
+    }
+  },
+  {
+    "code": "SNOW_OVERVIEW_UI_15",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Overview mockup label 15",
+        "DESCRIPTION": "Interface text in the Overview section product mockup."
+      }
+    },
+    "value": {
+      "en": "Operation progress"
+    }
+  },
+  {
+    "code": "SNOW_OVERVIEW_UI_16",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Overview mockup label 16",
+        "DESCRIPTION": "Interface text in the Overview section product mockup."
+      }
+    },
+    "value": {
+      "en": "Customer cases"
+    }
+  },
+  {
+    "code": "SNOW_OVERVIEW_UI_17",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Overview mockup label 17",
+        "DESCRIPTION": "Interface text in the Overview section product mockup."
+      }
+    },
+    "value": {
+      "en": "Access blocked"
+    }
+  },
+  {
+    "code": "SNOW_OVERVIEW_UI_18",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Overview mockup label 18",
+        "DESCRIPTION": "Interface text in the Overview section product mockup."
+      }
+    },
+    "value": {
+      "en": "Service follow-up"
+    }
+  },
+  {
+    "code": "SNOW_OVERVIEW_UI_19",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Overview mockup label 19",
+        "DESCRIPTION": "Interface text in the Overview section product mockup."
+      }
+    },
+    "value": {
+      "en": "Example values · not live metrics"
     }
   },
   {
@@ -567,6 +814,32 @@
     }
   },
   {
+    "code": "SNOW_ROUTING_UI_1",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Routing mockup label 1",
+        "DESCRIPTION": "Interface text in the Routing section product mockup."
+      }
+    },
+    "value": {
+      "en": "Navigate"
+    }
+  },
+  {
+    "code": "SNOW_ROUTING_UI_2",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Routing mockup label 2",
+        "DESCRIPTION": "Interface text in the Routing section product mockup."
+      }
+    },
+    "value": {
+      "en": "Property Plan"
+    }
+  },
+  {
     "code": "SNOW_MEDIA_18931164FA",
     "type": "IMAGE",
     "nls": {
@@ -693,6 +966,136 @@
     }
   },
   {
+    "code": "SNOW_ROUTING_UI_3",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Routing mockup label 3",
+        "DESCRIPTION": "Interface text in the Routing section product mockup."
+      }
+    },
+    "value": {
+      "en": "Routing Runs"
+    }
+  },
+  {
+    "code": "SNOW_ROUTING_UI_4",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Routing mockup label 4",
+        "DESCRIPTION": "Interface text in the Routing section product mockup."
+      }
+    },
+    "value": {
+      "en": "Load from template"
+    }
+  },
+  {
+    "code": "SNOW_ROUTING_UI_5",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Routing mockup label 5",
+        "DESCRIPTION": "Interface text in the Routing section product mockup."
+      }
+    },
+    "value": {
+      "en": "Load from template"
+    }
+  },
+  {
+    "code": "SNOW_ROUTING_UI_6",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Routing mockup label 6",
+        "DESCRIPTION": "Interface text in the Routing section product mockup."
+      }
+    },
+    "value": {
+      "en": "Template"
+    }
+  },
+  {
+    "code": "SNOW_ROUTING_UI_7",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Routing mockup label 7",
+        "DESCRIPTION": "Interface text in the Routing section product mockup."
+      }
+    },
+    "value": {
+      "en": "Planning date"
+    }
+  },
+  {
+    "code": "SNOW_ROUTING_UI_8",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Routing mockup label 8",
+        "DESCRIPTION": "Interface text in the Routing section product mockup."
+      }
+    },
+    "value": {
+      "en": "Crew assignments"
+    }
+  },
+  {
+    "code": "SNOW_ROUTING_UI_9",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Routing mockup label 9",
+        "DESCRIPTION": "Interface text in the Routing section product mockup."
+      }
+    },
+    "value": {
+      "en": "Properties"
+    }
+  },
+  {
+    "code": "SNOW_ROUTING_UI_10",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Routing mockup label 10",
+        "DESCRIPTION": "Interface text in the Routing section product mockup."
+      }
+    },
+    "value": {
+      "en": "Route sequence"
+    }
+  },
+  {
+    "code": "SNOW_ROUTING_UI_11",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Routing mockup label 11",
+        "DESCRIPTION": "Interface text in the Routing section product mockup."
+      }
+    },
+    "value": {
+      "en": "Cancel"
+    }
+  },
+  {
+    "code": "SNOW_ROUTING_UI_12",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Routing mockup label 12",
+        "DESCRIPTION": "Interface text in the Routing section product mockup."
+      }
+    },
+    "value": {
+      "en": "Load from template"
+    }
+  },
+  {
     "code": "SNOW_ROUTING_LABEL_3",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
@@ -729,6 +1132,97 @@
     },
     "value": {
       "en": "Prepare reusable plans for light snow, heavy snowfall, salting or gritting, de-icing, and snow hauling. Clone proven seasonal routes, adjust what has changed, and optimize when needed."
+    }
+  },
+  {
+    "code": "SNOW_ROUTING_UI_13",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Routing mockup label 13",
+        "DESCRIPTION": "Interface text in the Routing section product mockup."
+      }
+    },
+    "value": {
+      "en": "Routing Manager"
+    }
+  },
+  {
+    "code": "SNOW_ROUTING_UI_14",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Routing mockup label 14",
+        "DESCRIPTION": "Interface text in the Routing section product mockup."
+      }
+    },
+    "value": {
+      "en": "Stop Details"
+    }
+  },
+  {
+    "code": "SNOW_ROUTING_UI_15",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Routing mockup label 15",
+        "DESCRIPTION": "Interface text in the Routing section product mockup."
+      }
+    },
+    "value": {
+      "en": "SCHEDULE"
+    }
+  },
+  {
+    "code": "SNOW_ROUTING_UI_16",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Routing mockup label 16",
+        "DESCRIPTION": "Interface text in the Routing section product mockup."
+      }
+    },
+    "value": {
+      "en": "SCHEDULE"
+    }
+  },
+  {
+    "code": "SNOW_ROUTING_UI_17",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Routing mockup label 17",
+        "DESCRIPTION": "Interface text in the Routing section product mockup."
+      }
+    },
+    "value": {
+      "en": "SCHEDULE"
+    }
+  },
+  {
+    "code": "SNOW_ROUTING_UI_18",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Routing mockup label 18",
+        "DESCRIPTION": "Interface text in the Routing section product mockup."
+      }
+    },
+    "value": {
+      "en": "Drop stops here"
+    }
+  },
+  {
+    "code": "SNOW_ROUTING_UI_19",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Routing mockup label 19",
+        "DESCRIPTION": "Interface text in the Routing section product mockup."
+      }
+    },
+    "value": {
+      "en": "Move a property. Keep the rest of the plan."
     }
   },
   {
@@ -781,6 +1275,32 @@
     },
     "value": {
       "en": "ServiceWand also functions as snow plow management software for coordinating routes, crews, equipment requirements, and changing assignments throughout a storm."
+    }
+  },
+  {
+    "code": "SNOW_ROUTING_UI_20",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Routing mockup label 20",
+        "DESCRIPTION": "Interface text in the Routing section product mockup."
+      }
+    },
+    "value": {
+      "en": "Route Replay · Follow every route"
+    }
+  },
+  {
+    "code": "SNOW_ROUTING_UI_21",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Routing mockup label 21",
+        "DESCRIPTION": "Interface text in the Routing section product mockup."
+      }
+    },
+    "value": {
+      "en": "RECORDED IN SERVICEWAND"
     }
   },
   {
@@ -839,6 +1359,19 @@
       }
     },
     "value": "27416e9786.mp4"
+  },
+  {
+    "code": "SNOW_ROUTING_UI_22",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Routing mockup label 22",
+        "DESCRIPTION": "Interface text in the Routing section product mockup."
+      }
+    },
+    "value": {
+      "en": "Your browser does not support video."
+    }
   },
   {
     "code": "SNOW_ROUTING_LABEL_5",
@@ -925,6 +1458,58 @@
     },
     "value": {
       "en": "ServiceWand mobile Assignments screen with completed, in-progress and scheduled appointments"
+    }
+  },
+  {
+    "code": "SNOW_ROUTING_UI_23",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Routing mockup label 23",
+        "DESCRIPTION": "Interface text in the Routing section product mockup."
+      }
+    },
+    "value": {
+      "en": "THE CREW VIEW"
+    }
+  },
+  {
+    "code": "SNOW_ROUTING_UI_24",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Routing mockup label 24",
+        "DESCRIPTION": "Interface text in the Routing section product mockup."
+      }
+    },
+    "value": {
+      "en": "Every stop."
+    }
+  },
+  {
+    "code": "SNOW_ROUTING_UI_25",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Routing mockup label 25",
+        "DESCRIPTION": "Interface text in the Routing section product mockup."
+      }
+    },
+    "value": {
+      "en": "One clear list."
+    }
+  },
+  {
+    "code": "SNOW_ROUTING_UI_26",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Routing mockup label 26",
+        "DESCRIPTION": "Interface text in the Routing section product mockup."
+      }
+    },
+    "value": {
+      "en": "Actual ServiceWand mobile app"
     }
   },
   {
@@ -1132,6 +1717,19 @@
     }
   },
   {
+    "code": "SNOW_REQUESTS_UI_1",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Requests mockup label 1",
+        "DESCRIPTION": "Interface text in the Requests section product mockup."
+      }
+    },
+    "value": {
+      "en": "Request a quote · Customer portal"
+    }
+  },
+  {
     "code": "SNOW_REQUESTS_ARIA_1",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
@@ -1142,6 +1740,331 @@
     },
     "value": {
       "en": "Customer portal Request a quote form with three selected properties, services and winter risk factors"
+    }
+  },
+  {
+    "code": "SNOW_REQUESTS_UI_2",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Requests mockup label 2",
+        "DESCRIPTION": "Interface text in the Requests section product mockup."
+      }
+    },
+    "value": {
+      "en": "Home"
+    }
+  },
+  {
+    "code": "SNOW_REQUESTS_UI_3",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Requests mockup label 3",
+        "DESCRIPTION": "Interface text in the Requests section product mockup."
+      }
+    },
+    "value": {
+      "en": "Visits"
+    }
+  },
+  {
+    "code": "SNOW_REQUESTS_UI_4",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Requests mockup label 4",
+        "DESCRIPTION": "Interface text in the Requests section product mockup."
+      }
+    },
+    "value": {
+      "en": "Invoices"
+    }
+  },
+  {
+    "code": "SNOW_REQUESTS_UI_5",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Requests mockup label 5",
+        "DESCRIPTION": "Interface text in the Requests section product mockup."
+      }
+    },
+    "value": {
+      "en": "Contracts"
+    }
+  },
+  {
+    "code": "SNOW_REQUESTS_UI_6",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Requests mockup label 6",
+        "DESCRIPTION": "Interface text in the Requests section product mockup."
+      }
+    },
+    "value": {
+      "en": "Request a quote"
+    }
+  },
+  {
+    "code": "SNOW_REQUESTS_UI_7",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Requests mockup label 7",
+        "DESCRIPTION": "Interface text in the Requests section product mockup."
+      }
+    },
+    "value": {
+      "en": "Back to your contracts"
+    }
+  },
+  {
+    "code": "SNOW_REQUESTS_UI_8",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Requests mockup label 8",
+        "DESCRIPTION": "Interface text in the Requests section product mockup."
+      }
+    },
+    "value": {
+      "en": "Request a quote"
+    }
+  },
+  {
+    "code": "SNOW_REQUESTS_UI_9",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Requests mockup label 9",
+        "DESCRIPTION": "Interface text in the Requests section product mockup."
+      }
+    },
+    "value": {
+      "en": "Choose your properties or add new addresses. We prepare per-visit, monthly and seasonal options for each."
+    }
+  },
+  {
+    "code": "SNOW_REQUESTS_UI_10",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Requests mockup label 10",
+        "DESCRIPTION": "Interface text in the Requests section product mockup."
+      }
+    },
+    "value": {
+      "en": "Properties"
+    }
+  },
+  {
+    "code": "SNOW_REQUESTS_UI_11",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Requests mockup label 11",
+        "DESCRIPTION": "Interface text in the Requests section product mockup."
+      }
+    },
+    "value": {
+      "en": "3 selected"
+    }
+  },
+  {
+    "code": "SNOW_REQUESTS_UI_12",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Requests mockup label 12",
+        "DESCRIPTION": "Interface text in the Requests section product mockup."
+      }
+    },
+    "value": {
+      "en": "Paste a list of addresses or add one"
+    }
+  },
+  {
+    "code": "SNOW_REQUESTS_UI_13",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Requests mockup label 13",
+        "DESCRIPTION": "Interface text in the Requests section product mockup."
+      }
+    },
+    "value": {
+      "en": "Add"
+    }
+  },
+  {
+    "code": "SNOW_REQUESTS_UI_14",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Requests mockup label 14",
+        "DESCRIPTION": "Interface text in the Requests section product mockup."
+      }
+    },
+    "value": {
+      "en": "Services"
+    }
+  },
+  {
+    "code": "SNOW_REQUESTS_UI_15",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Requests mockup label 15",
+        "DESCRIPTION": "Interface text in the Requests section product mockup."
+      }
+    },
+    "value": {
+      "en": "Plowing"
+    }
+  },
+  {
+    "code": "SNOW_REQUESTS_UI_16",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Requests mockup label 16",
+        "DESCRIPTION": "Interface text in the Requests section product mockup."
+      }
+    },
+    "value": {
+      "en": "Salting"
+    }
+  },
+  {
+    "code": "SNOW_REQUESTS_UI_17",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Requests mockup label 17",
+        "DESCRIPTION": "Interface text in the Requests section product mockup."
+      }
+    },
+    "value": {
+      "en": "Sidewalk clearing"
+    }
+  },
+  {
+    "code": "SNOW_REQUESTS_UI_18",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Requests mockup label 18",
+        "DESCRIPTION": "Interface text in the Requests section product mockup."
+      }
+    },
+    "value": {
+      "en": "De-icing"
+    }
+  },
+  {
+    "code": "SNOW_REQUESTS_UI_19",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Requests mockup label 19",
+        "DESCRIPTION": "Interface text in the Requests section product mockup."
+      }
+    },
+    "value": {
+      "en": "Snow hauling"
+    }
+  },
+  {
+    "code": "SNOW_REQUESTS_UI_20",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Requests mockup label 20",
+        "DESCRIPTION": "Interface text in the Requests section product mockup."
+      }
+    },
+    "value": {
+      "en": "Winter risk factors"
+    }
+  },
+  {
+    "code": "SNOW_REQUESTS_UI_21",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Requests mockup label 21",
+        "DESCRIPTION": "Interface text in the Requests section product mockup."
+      }
+    },
+    "value": {
+      "en": "Sloped driveways"
+    }
+  },
+  {
+    "code": "SNOW_REQUESTS_UI_22",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Requests mockup label 22",
+        "DESCRIPTION": "Interface text in the Requests section product mockup."
+      }
+    },
+    "value": {
+      "en": "Stair-heavy access"
+    }
+  },
+  {
+    "code": "SNOW_REQUESTS_UI_23",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Requests mockup label 23",
+        "DESCRIPTION": "Interface text in the Requests section product mockup."
+      }
+    },
+    "value": {
+      "en": "Loading zones"
+    }
+  },
+  {
+    "code": "SNOW_REQUESTS_UI_24",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Requests mockup label 24",
+        "DESCRIPTION": "Interface text in the Requests section product mockup."
+      }
+    },
+    "value": {
+      "en": "Drainage issues"
+    }
+  },
+  {
+    "code": "SNOW_REQUESTS_UI_25",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Requests mockup label 25",
+        "DESCRIPTION": "Interface text in the Requests section product mockup."
+      }
+    },
+    "value": {
+      "en": "3 properties · 3 services · Seasonal and per-visit options"
+    }
+  },
+  {
+    "code": "SNOW_REQUESTS_UI_26",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Requests mockup label 26",
+        "DESCRIPTION": "Interface text in the Requests section product mockup."
+      }
+    },
+    "value": {
+      "en": "Send request"
     }
   },
   {
@@ -1358,6 +2281,32 @@
     }
   },
   {
+    "code": "SNOW_MOBILE_UI_1",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Mobile mockup label 1",
+        "DESCRIPTION": "Interface text in the Mobile section product mockup."
+      }
+    },
+    "value": {
+      "en": "Navigate"
+    }
+  },
+  {
+    "code": "SNOW_MOBILE_UI_2",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Mobile mockup label 2",
+        "DESCRIPTION": "Interface text in the Mobile section product mockup."
+      }
+    },
+    "value": {
+      "en": "Property Plan"
+    }
+  },
+  {
     "code": "SNOW_MOBILE_ALT_3",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
@@ -1423,6 +2372,58 @@
     }
   },
   {
+    "code": "SNOW_MOBILE_UI_3",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Mobile mockup label 3",
+        "DESCRIPTION": "Interface text in the Mobile section product mockup."
+      }
+    },
+    "value": {
+      "en": "Sidewalks &amp; walkways"
+    }
+  },
+  {
+    "code": "SNOW_MOBILE_UI_4",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Mobile mockup label 4",
+        "DESCRIPTION": "Interface text in the Mobile section product mockup."
+      }
+    },
+    "value": {
+      "en": "Parking lots"
+    }
+  },
+  {
+    "code": "SNOW_MOBILE_UI_5",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Mobile mockup label 5",
+        "DESCRIPTION": "Interface text in the Mobile section product mockup."
+      }
+    },
+    "value": {
+      "en": "Driveways"
+    }
+  },
+  {
+    "code": "SNOW_MOBILE_UI_6",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Mobile mockup label 6",
+        "DESCRIPTION": "Interface text in the Mobile section product mockup."
+      }
+    },
+    "value": {
+      "en": "Planting beds"
+    }
+  },
+  {
     "code": "SNOW_MOBILE_TEXT_7",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
@@ -1433,6 +2434,19 @@
     },
     "value": {
       "en": "Service areas, measurements and site context in one view."
+    }
+  },
+  {
+    "code": "SNOW_MOBILE_UI_7",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Mobile mockup label 7",
+        "DESCRIPTION": "Interface text in the Mobile section product mockup."
+      }
+    },
+    "value": {
+      "en": "Plans"
     }
   },
   {
@@ -1870,6 +2884,97 @@
     }
   },
   {
+    "code": "SNOW_SUBCONTRACTORS_UI_1",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Subcontractors mockup label 1",
+        "DESCRIPTION": "Interface text in the Subcontractors section product mockup."
+      }
+    },
+    "value": {
+      "en": "All teams"
+    }
+  },
+  {
+    "code": "SNOW_SUBCONTRACTORS_UI_2",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Subcontractors mockup label 2",
+        "DESCRIPTION": "Interface text in the Subcontractors section product mockup."
+      }
+    },
+    "value": {
+      "en": "Assigned"
+    }
+  },
+  {
+    "code": "SNOW_SUBCONTRACTORS_UI_3",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Subcontractors mockup label 3",
+        "DESCRIPTION": "Interface text in the Subcontractors section product mockup."
+      }
+    },
+    "value": {
+      "en": "Available"
+    }
+  },
+  {
+    "code": "SNOW_SUBCONTRACTORS_UI_4",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Subcontractors mockup label 4",
+        "DESCRIPTION": "Interface text in the Subcontractors section product mockup."
+      }
+    },
+    "value": {
+      "en": "Assigned"
+    }
+  },
+  {
+    "code": "SNOW_SUBCONTRACTORS_UI_5",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Subcontractors mockup label 5",
+        "DESCRIPTION": "Interface text in the Subcontractors section product mockup."
+      }
+    },
+    "value": {
+      "en": "Assignments · GPS · Work time · Photos · Cases"
+    }
+  },
+  {
+    "code": "SNOW_SUBCONTRACTORS_UI_6",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Subcontractors mockup label 6",
+        "DESCRIPTION": "Interface text in the Subcontractors section product mockup."
+      }
+    },
+    "value": {
+      "en": "Own operational scope"
+    }
+  },
+  {
+    "code": "SNOW_SUBCONTRACTORS_UI_7",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Subcontractors mockup label 7",
+        "DESCRIPTION": "Interface text in the Subcontractors section product mockup."
+      }
+    },
+    "value": {
+      "en": "Partner view"
+    }
+  },
+  {
     "code": "SNOW_MEDIA_SUB_MANAGE_CENTRALLY_640",
     "type": "IMAGE",
     "nls": {
@@ -2254,6 +3359,19 @@
     }
   },
   {
+    "code": "SNOW_PORTAL_UI_1",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Portal mockup label 1",
+        "DESCRIPTION": "Interface text in the Portal section product mockup."
+      }
+    },
+    "value": {
+      "en": "Your properties. Your service. One place."
+    }
+  },
+  {
     "code": "SNOW_PORTAL_ARIA_1",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
@@ -2264,6 +3382,474 @@
     },
     "value": {
       "en": "Customer portal home with a Google road map of three properties, weather-coloured pins, a seven-day timeline, an open support request and three property cards"
+    }
+  },
+  {
+    "code": "SNOW_PORTAL_UI_2",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Portal mockup label 2",
+        "DESCRIPTION": "Interface text in the Portal section product mockup."
+      }
+    },
+    "value": {
+      "en": "Home"
+    }
+  },
+  {
+    "code": "SNOW_PORTAL_UI_3",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Portal mockup label 3",
+        "DESCRIPTION": "Interface text in the Portal section product mockup."
+      }
+    },
+    "value": {
+      "en": "Visits"
+    }
+  },
+  {
+    "code": "SNOW_PORTAL_UI_4",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Portal mockup label 4",
+        "DESCRIPTION": "Interface text in the Portal section product mockup."
+      }
+    },
+    "value": {
+      "en": "Invoices"
+    }
+  },
+  {
+    "code": "SNOW_PORTAL_UI_5",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Portal mockup label 5",
+        "DESCRIPTION": "Interface text in the Portal section product mockup."
+      }
+    },
+    "value": {
+      "en": "Contracts"
+    }
+  },
+  {
+    "code": "SNOW_PORTAL_UI_6",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Portal mockup label 6",
+        "DESCRIPTION": "Interface text in the Portal section product mockup."
+      }
+    },
+    "value": {
+      "en": "Support"
+    }
+  },
+  {
+    "code": "SNOW_PORTAL_UI_7",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Portal mockup label 7",
+        "DESCRIPTION": "Interface text in the Portal section product mockup."
+      }
+    },
+    "value": {
+      "en": "Request a quote"
+    }
+  },
+  {
+    "code": "SNOW_PORTAL_UI_8",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Portal mockup label 8",
+        "DESCRIPTION": "Interface text in the Portal section product mockup."
+      }
+    },
+    "value": {
+      "en": "Welcome back,"
+    }
+  },
+  {
+    "code": "SNOW_PORTAL_UI_9",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Portal mockup label 9",
+        "DESCRIPTION": "Interface text in the Portal section product mockup."
+      }
+    },
+    "value": {
+      "en": "3 properties under contract · Next visit tomorrow at 05:30"
+    }
+  },
+  {
+    "code": "SNOW_PORTAL_UI_10",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Portal mockup label 10",
+        "DESCRIPTION": "Interface text in the Portal section product mockup."
+      }
+    },
+    "value": {
+      "en": "Snow expected tonight"
+    }
+  },
+  {
+    "code": "SNOW_PORTAL_UI_11",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Portal mockup label 11",
+        "DESCRIPTION": "Interface text in the Portal section product mockup."
+      }
+    },
+    "value": {
+      "en": "Your properties"
+    }
+  },
+  {
+    "code": "SNOW_PORTAL_UI_12",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Portal mockup label 12",
+        "DESCRIPTION": "Interface text in the Portal section product mockup."
+      }
+    },
+    "value": {
+      "en": "Clear"
+    }
+  },
+  {
+    "code": "SNOW_PORTAL_UI_13",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Portal mockup label 13",
+        "DESCRIPTION": "Interface text in the Portal section product mockup."
+      }
+    },
+    "value": {
+      "en": "Snow"
+    }
+  },
+  {
+    "code": "SNOW_PORTAL_UI_14",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Portal mockup label 14",
+        "DESCRIPTION": "Interface text in the Portal section product mockup."
+      }
+    },
+    "value": {
+      "en": "Freezing rain"
+    }
+  },
+  {
+    "code": "SNOW_PORTAL_UI_15",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Portal mockup label 15",
+        "DESCRIPTION": "Interface text in the Portal section product mockup."
+      }
+    },
+    "value": {
+      "en": "Storm warning"
+    }
+  },
+  {
+    "code": "SNOW_PORTAL_UI_16",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Portal mockup label 16",
+        "DESCRIPTION": "Interface text in the Portal section product mockup."
+      }
+    },
+    "value": {
+      "en": "Issue opened"
+    }
+  },
+  {
+    "code": "SNOW_PORTAL_UI_17",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Portal mockup label 17",
+        "DESCRIPTION": "Interface text in the Portal section product mockup."
+      }
+    },
+    "value": {
+      "en": "En Route"
+    }
+  },
+  {
+    "code": "SNOW_PORTAL_UI_18",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Portal mockup label 18",
+        "DESCRIPTION": "Interface text in the Portal section product mockup."
+      }
+    },
+    "value": {
+      "en": "Snow · −4°C · 3 cm expected"
+    }
+  },
+  {
+    "code": "SNOW_PORTAL_UI_19",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Portal mockup label 19",
+        "DESCRIPTION": "Interface text in the Portal section product mockup."
+      }
+    },
+    "value": {
+      "en": "Go to Property"
+    }
+  },
+  {
+    "code": "SNOW_PORTAL_UI_20",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Portal mockup label 20",
+        "DESCRIPTION": "Interface text in the Portal section product mockup."
+      }
+    },
+    "value": {
+      "en": "Today"
+    }
+  },
+  {
+    "code": "SNOW_PORTAL_UI_21",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Portal mockup label 21",
+        "DESCRIPTION": "Interface text in the Portal section product mockup."
+      }
+    },
+    "value": {
+      "en": "Fri"
+    }
+  },
+  {
+    "code": "SNOW_PORTAL_UI_22",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Portal mockup label 22",
+        "DESCRIPTION": "Interface text in the Portal section product mockup."
+      }
+    },
+    "value": {
+      "en": "Sat"
+    }
+  },
+  {
+    "code": "SNOW_PORTAL_UI_23",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Portal mockup label 23",
+        "DESCRIPTION": "Interface text in the Portal section product mockup."
+      }
+    },
+    "value": {
+      "en": "Sun"
+    }
+  },
+  {
+    "code": "SNOW_PORTAL_UI_24",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Portal mockup label 24",
+        "DESCRIPTION": "Interface text in the Portal section product mockup."
+      }
+    },
+    "value": {
+      "en": "Mon"
+    }
+  },
+  {
+    "code": "SNOW_PORTAL_UI_25",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Portal mockup label 25",
+        "DESCRIPTION": "Interface text in the Portal section product mockup."
+      }
+    },
+    "value": {
+      "en": "Tue"
+    }
+  },
+  {
+    "code": "SNOW_PORTAL_UI_26",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Portal mockup label 26",
+        "DESCRIPTION": "Interface text in the Portal section product mockup."
+      }
+    },
+    "value": {
+      "en": "Wed"
+    }
+  },
+  {
+    "code": "SNOW_PORTAL_UI_27",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Portal mockup label 27",
+        "DESCRIPTION": "Interface text in the Portal section product mockup."
+      }
+    },
+    "value": {
+      "en": "Weather"
+    }
+  },
+  {
+    "code": "SNOW_PORTAL_UI_28",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Portal mockup label 28",
+        "DESCRIPTION": "Interface text in the Portal section product mockup."
+      }
+    },
+    "value": {
+      "en": "Support requests"
+    }
+  },
+  {
+    "code": "SNOW_PORTAL_UI_29",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Portal mockup label 29",
+        "DESCRIPTION": "Interface text in the Portal section product mockup."
+      }
+    },
+    "value": {
+      "en": "1 open"
+    }
+  },
+  {
+    "code": "SNOW_PORTAL_UI_30",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Portal mockup label 30",
+        "DESCRIPTION": "Interface text in the Portal section product mockup."
+      }
+    },
+    "value": {
+      "en": "Access blocked at loading zone · In review"
+    }
+  },
+  {
+    "code": "SNOW_PORTAL_UI_31",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Portal mockup label 31",
+        "DESCRIPTION": "Interface text in the Portal section product mockup."
+      }
+    },
+    "value": {
+      "en": "Open support ticket"
+    }
+  },
+  {
+    "code": "SNOW_PORTAL_UI_32",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Portal mockup label 32",
+        "DESCRIPTION": "Interface text in the Portal section product mockup."
+      }
+    },
+    "value": {
+      "en": "Scheduled"
+    }
+  },
+  {
+    "code": "SNOW_PORTAL_UI_33",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Portal mockup label 33",
+        "DESCRIPTION": "Interface text in the Portal section product mockup."
+      }
+    },
+    "value": {
+      "en": "Next visit · Tomorrow 05:30 · Plowing, Salting"
+    }
+  },
+  {
+    "code": "SNOW_PORTAL_UI_34",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Portal mockup label 34",
+        "DESCRIPTION": "Interface text in the Portal section product mockup."
+      }
+    },
+    "value": {
+      "en": "En route"
+    }
+  },
+  {
+    "code": "SNOW_PORTAL_UI_35",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Portal mockup label 35",
+        "DESCRIPTION": "Interface text in the Portal section product mockup."
+      }
+    },
+    "value": {
+      "en": "Today · Sidewalk clearing · ETA 12 min"
+    }
+  },
+  {
+    "code": "SNOW_PORTAL_UI_36",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Portal mockup label 36",
+        "DESCRIPTION": "Interface text in the Portal section product mockup."
+      }
+    },
+    "value": {
+      "en": "Issue opened"
+    }
+  },
+  {
+    "code": "SNOW_PORTAL_UI_37",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Portal mockup label 37",
+        "DESCRIPTION": "Interface text in the Portal section product mockup."
+      }
+    },
+    "value": {
+      "en": "Support ticket · Access blocked at loading zone · In review"
     }
   },
   {
@@ -2536,6 +4122,32 @@
     }
   },
   {
+    "code": "SNOW_BILLING_UI_1",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Billing mockup label 1",
+        "DESCRIPTION": "Interface text in the Billing section product mockup."
+      }
+    },
+    "value": {
+      "en": "Invoice"
+    }
+  },
+  {
+    "code": "SNOW_BILLING_UI_2",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Billing mockup label 2",
+        "DESCRIPTION": "Interface text in the Billing section product mockup."
+      }
+    },
+    "value": {
+      "en": "Customer portal"
+    }
+  },
+  {
     "code": "SNOW_BILLING_ARIA_1",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
@@ -2546,6 +4158,318 @@
     },
     "value": {
       "en": "Customer invoice INV-2026-0142 for three plowing, two de-icing and three sidewalk visits, total CA$955.50, due November 12, 2026"
+    }
+  },
+  {
+    "code": "SNOW_BILLING_UI_3",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Billing mockup label 3",
+        "DESCRIPTION": "Interface text in the Billing section product mockup."
+      }
+    },
+    "value": {
+      "en": "Invoice"
+    }
+  },
+  {
+    "code": "SNOW_BILLING_UI_4",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Billing mockup label 4",
+        "DESCRIPTION": "Interface text in the Billing section product mockup."
+      }
+    },
+    "value": {
+      "en": "Due"
+    }
+  },
+  {
+    "code": "SNOW_BILLING_UI_5",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Billing mockup label 5",
+        "DESCRIPTION": "Interface text in the Billing section product mockup."
+      }
+    },
+    "value": {
+      "en": "Bill to"
+    }
+  },
+  {
+    "code": "SNOW_BILLING_UI_6",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Billing mockup label 6",
+        "DESCRIPTION": "Interface text in the Billing section product mockup."
+      }
+    },
+    "value": {
+      "en": "Invoice date"
+    }
+  },
+  {
+    "code": "SNOW_BILLING_UI_7",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Billing mockup label 7",
+        "DESCRIPTION": "Interface text in the Billing section product mockup."
+      }
+    },
+    "value": {
+      "en": "Due date"
+    }
+  },
+  {
+    "code": "SNOW_BILLING_UI_8",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Billing mockup label 8",
+        "DESCRIPTION": "Interface text in the Billing section product mockup."
+      }
+    },
+    "value": {
+      "en": "Contract"
+    }
+  },
+  {
+    "code": "SNOW_BILLING_UI_9",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Billing mockup label 9",
+        "DESCRIPTION": "Interface text in the Billing section product mockup."
+      }
+    },
+    "value": {
+      "en": "Seasonal · per visit"
+    }
+  },
+  {
+    "code": "SNOW_BILLING_UI_10",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Billing mockup label 10",
+        "DESCRIPTION": "Interface text in the Billing section product mockup."
+      }
+    },
+    "value": {
+      "en": "Terms"
+    }
+  },
+  {
+    "code": "SNOW_BILLING_UI_11",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Billing mockup label 11",
+        "DESCRIPTION": "Interface text in the Billing section product mockup."
+      }
+    },
+    "value": {
+      "en": "Net 15"
+    }
+  },
+  {
+    "code": "SNOW_BILLING_UI_12",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Billing mockup label 12",
+        "DESCRIPTION": "Interface text in the Billing section product mockup."
+      }
+    },
+    "value": {
+      "en": "Service"
+    }
+  },
+  {
+    "code": "SNOW_BILLING_UI_13",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Billing mockup label 13",
+        "DESCRIPTION": "Interface text in the Billing section product mockup."
+      }
+    },
+    "value": {
+      "en": "Qty"
+    }
+  },
+  {
+    "code": "SNOW_BILLING_UI_14",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Billing mockup label 14",
+        "DESCRIPTION": "Interface text in the Billing section product mockup."
+      }
+    },
+    "value": {
+      "en": "Rate"
+    }
+  },
+  {
+    "code": "SNOW_BILLING_UI_15",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Billing mockup label 15",
+        "DESCRIPTION": "Interface text in the Billing section product mockup."
+      }
+    },
+    "value": {
+      "en": "Amount"
+    }
+  },
+  {
+    "code": "SNOW_BILLING_UI_16",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Billing mockup label 16",
+        "DESCRIPTION": "Interface text in the Billing section product mockup."
+      }
+    },
+    "value": {
+      "en": "Snow plowing"
+    }
+  },
+  {
+    "code": "SNOW_BILLING_UI_17",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Billing mockup label 17",
+        "DESCRIPTION": "Interface text in the Billing section product mockup."
+      }
+    },
+    "value": {
+      "en": "Parking lot"
+    }
+  },
+  {
+    "code": "SNOW_BILLING_UI_18",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Billing mockup label 18",
+        "DESCRIPTION": "Interface text in the Billing section product mockup."
+      }
+    },
+    "value": {
+      "en": "Rock salt de-icing"
+    }
+  },
+  {
+    "code": "SNOW_BILLING_UI_19",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Billing mockup label 19",
+        "DESCRIPTION": "Interface text in the Billing section product mockup."
+      }
+    },
+    "value": {
+      "en": "Lot and driveway"
+    }
+  },
+  {
+    "code": "SNOW_BILLING_UI_20",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Billing mockup label 20",
+        "DESCRIPTION": "Interface text in the Billing section product mockup."
+      }
+    },
+    "value": {
+      "en": "Sidewalk clearing"
+    }
+  },
+  {
+    "code": "SNOW_BILLING_UI_21",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Billing mockup label 21",
+        "DESCRIPTION": "Interface text in the Billing section product mockup."
+      }
+    },
+    "value": {
+      "en": "Subtotal"
+    }
+  },
+  {
+    "code": "SNOW_BILLING_UI_22",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Billing mockup label 22",
+        "DESCRIPTION": "Interface text in the Billing section product mockup."
+      }
+    },
+    "value": {
+      "en": "GST 5%"
+    }
+  },
+  {
+    "code": "SNOW_BILLING_UI_23",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Billing mockup label 23",
+        "DESCRIPTION": "Interface text in the Billing section product mockup."
+      }
+    },
+    "value": {
+      "en": "Total due"
+    }
+  },
+  {
+    "code": "SNOW_BILLING_UI_24",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Billing mockup label 24",
+        "DESCRIPTION": "Interface text in the Billing section product mockup."
+      }
+    },
+    "value": {
+      "en": "Service records attached · 3 visits · 14 photos"
+    }
+  },
+  {
+    "code": "SNOW_BILLING_UI_25",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Billing mockup label 25",
+        "DESCRIPTION": "Interface text in the Billing section product mockup."
+      }
+    },
+    "value": {
+      "en": "Pay invoice"
+    }
+  },
+  {
+    "code": "SNOW_BILLING_UI_26",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Billing mockup label 26",
+        "DESCRIPTION": "Interface text in the Billing section product mockup."
+      }
+    },
+    "value": {
+      "en": "Secure payment with Stripe"
     }
   },
   {
@@ -2850,6 +4774,110 @@
     },
     "value": {
       "en": "ServiceWand"
+    }
+  },
+  {
+    "code": "SNOW_PLATFORM_UI_1",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Platform mockup label 1",
+        "DESCRIPTION": "Interface text in the Platform section product mockup."
+      }
+    },
+    "value": {
+      "en": "ONE CONNECTED PLATFORM"
+    }
+  },
+  {
+    "code": "SNOW_PLATFORM_UI_2",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Platform mockup label 2",
+        "DESCRIPTION": "Interface text in the Platform section product mockup."
+      }
+    },
+    "value": {
+      "en": "Shared data. Connected operations."
+    }
+  },
+  {
+    "code": "SNOW_PLATFORM_UI_3",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Platform mockup label 3",
+        "DESCRIPTION": "Interface text in the Platform section product mockup."
+      }
+    },
+    "value": {
+      "en": "Properties"
+    }
+  },
+  {
+    "code": "SNOW_PLATFORM_UI_4",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Platform mockup label 4",
+        "DESCRIPTION": "Interface text in the Platform section product mockup."
+      }
+    },
+    "value": {
+      "en": "Routing"
+    }
+  },
+  {
+    "code": "SNOW_PLATFORM_UI_5",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Platform mockup label 5",
+        "DESCRIPTION": "Interface text in the Platform section product mockup."
+      }
+    },
+    "value": {
+      "en": "Field work"
+    }
+  },
+  {
+    "code": "SNOW_PLATFORM_UI_6",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Platform mockup label 6",
+        "DESCRIPTION": "Interface text in the Platform section product mockup."
+      }
+    },
+    "value": {
+      "en": "Customer service"
+    }
+  },
+  {
+    "code": "SNOW_PLATFORM_UI_7",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Platform mockup label 7",
+        "DESCRIPTION": "Interface text in the Platform section product mockup."
+      }
+    },
+    "value": {
+      "en": "Billing"
+    }
+  },
+  {
+    "code": "SNOW_PLATFORM_UI_8",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Platform mockup label 8",
+        "DESCRIPTION": "Interface text in the Platform section product mockup."
+      }
+    },
+    "value": {
+      "en": "Workflows"
     }
   },
   {

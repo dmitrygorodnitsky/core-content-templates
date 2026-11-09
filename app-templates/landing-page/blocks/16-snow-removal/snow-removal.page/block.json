@@ -1517,6 +1517,120 @@
       "description": "Paragraph in the Overview section."
     },
     {
+      "code": "overview_ui_1",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Overview mockup label 1",
+      "description": "Interface text in the Overview section product mockup."
+    },
+    {
+      "code": "overview_ui_2",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Overview mockup label 2",
+      "description": "Interface text in the Overview section product mockup."
+    },
+    {
+      "code": "overview_ui_3",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Overview mockup label 3",
+      "description": "Interface text in the Overview section product mockup."
+    },
+    {
+      "code": "overview_ui_4",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Overview mockup label 4",
+      "description": "Interface text in the Overview section product mockup."
+    },
+    {
+      "code": "overview_ui_5",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Overview mockup label 5",
+      "description": "Interface text in the Overview section product mockup."
+    },
+    {
+      "code": "overview_ui_6",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Overview mockup label 6",
+      "description": "Interface text in the Overview section product mockup."
+    },
+    {
+      "code": "overview_ui_7",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Overview mockup label 7",
+      "description": "Interface text in the Overview section product mockup."
+    },
+    {
+      "code": "overview_ui_8",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Overview mockup label 8",
+      "description": "Interface text in the Overview section product mockup."
+    },
+    {
+      "code": "overview_ui_9",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Overview mockup label 9",
+      "description": "Interface text in the Overview section product mockup."
+    },
+    {
+      "code": "overview_ui_10",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Overview mockup label 10",
+      "description": "Interface text in the Overview section product mockup."
+    },
+    {
+      "code": "overview_ui_11",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Overview mockup label 11",
+      "description": "Interface text in the Overview section product mockup."
+    },
+    {
+      "code": "overview_ui_12",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Overview mockup label 12",
+      "description": "Interface text in the Overview section product mockup."
+    },
+    {
+      "code": "overview_ui_13",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Overview mockup label 13",
+      "description": "Interface text in the Overview section product mockup."
+    },
+    {
+      "code": "overview_ui_14",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Overview mockup label 14",
+      "description": "Interface text in the Overview section product mockup."
+    },
+    {
+      "code": "overview_ui_15",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Overview mockup label 15",
+      "description": "Interface text in the Overview section product mockup."
+    },
+    {
+      "code": "overview_ui_16",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Overview mockup label 16",
+      "description": "Interface text in the Overview section product mockup."
+    },
+    {
+      "code": "overview_ui_17",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Overview mockup label 17",
+      "description": "Interface text in the Overview section product mockup."
+    },
+    {
+      "code": "overview_ui_18",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Overview mockup label 18",
+      "description": "Interface text in the Overview section product mockup."
+    },
+    {
+      "code": "overview_ui_19",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Overview mockup label 19",
+      "description": "Interface text in the Overview section product mockup."
+    },
+    {
       "code": "routing_text_1",
       "type": "LOCALIZED_STRING_SS",
       "name": "Routing paragraph",
@@ -1701,6 +1815,162 @@
       "description": "Text in the Routing section."
     },
     {
+      "code": "routing_ui_1",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Routing mockup label 1",
+      "description": "Interface text in the Routing section product mockup."
+    },
+    {
+      "code": "routing_ui_2",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Routing mockup label 2",
+      "description": "Interface text in the Routing section product mockup."
+    },
+    {
+      "code": "routing_ui_3",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Routing mockup label 3",
+      "description": "Interface text in the Routing section product mockup."
+    },
+    {
+      "code": "routing_ui_4",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Routing mockup label 4",
+      "description": "Interface text in the Routing section product mockup."
+    },
+    {
+      "code": "routing_ui_5",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Routing mockup label 5",
+      "description": "Interface text in the Routing section product mockup."
+    },
+    {
+      "code": "routing_ui_6",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Routing mockup label 6",
+      "description": "Interface text in the Routing section product mockup."
+    },
+    {
+      "code": "routing_ui_7",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Routing mockup label 7",
+      "description": "Interface text in the Routing section product mockup."
+    },
+    {
+      "code": "routing_ui_8",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Routing mockup label 8",
+      "description": "Interface text in the Routing section product mockup."
+    },
+    {
+      "code": "routing_ui_9",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Routing mockup label 9",
+      "description": "Interface text in the Routing section product mockup."
+    },
+    {
+      "code": "routing_ui_10",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Routing mockup label 10",
+      "description": "Interface text in the Routing section product mockup."
+    },
+    {
+      "code": "routing_ui_11",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Routing mockup label 11",
+      "description": "Interface text in the Routing section product mockup."
+    },
+    {
+      "code": "routing_ui_12",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Routing mockup label 12",
+      "description": "Interface text in the Routing section product mockup."
+    },
+    {
+      "code": "routing_ui_13",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Routing mockup label 13",
+      "description": "Interface text in the Routing section product mockup."
+    },
+    {
+      "code": "routing_ui_14",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Routing mockup label 14",
+      "description": "Interface text in the Routing section product mockup."
+    },
+    {
+      "code": "routing_ui_15",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Routing mockup label 15",
+      "description": "Interface text in the Routing section product mockup."
+    },
+    {
+      "code": "routing_ui_16",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Routing mockup label 16",
+      "description": "Interface text in the Routing section product mockup."
+    },
+    {
+      "code": "routing_ui_17",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Routing mockup label 17",
+      "description": "Interface text in the Routing section product mockup."
+    },
+    {
+      "code": "routing_ui_18",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Routing mockup label 18",
+      "description": "Interface text in the Routing section product mockup."
+    },
+    {
+      "code": "routing_ui_19",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Routing mockup label 19",
+      "description": "Interface text in the Routing section product mockup."
+    },
+    {
+      "code": "routing_ui_20",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Routing mockup label 20",
+      "description": "Interface text in the Routing section product mockup."
+    },
+    {
+      "code": "routing_ui_21",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Routing mockup label 21",
+      "description": "Interface text in the Routing section product mockup."
+    },
+    {
+      "code": "routing_ui_22",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Routing mockup label 22",
+      "description": "Interface text in the Routing section product mockup."
+    },
+    {
+      "code": "routing_ui_23",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Routing mockup label 23",
+      "description": "Interface text in the Routing section product mockup."
+    },
+    {
+      "code": "routing_ui_24",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Routing mockup label 24",
+      "description": "Interface text in the Routing section product mockup."
+    },
+    {
+      "code": "routing_ui_25",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Routing mockup label 25",
+      "description": "Interface text in the Routing section product mockup."
+    },
+    {
+      "code": "routing_ui_26",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Routing mockup label 26",
+      "description": "Interface text in the Routing section product mockup."
+    },
+    {
       "code": "requests_text_1",
       "type": "LOCALIZED_STRING_SS",
       "name": "Requests paragraph",
@@ -1799,6 +2069,162 @@
       "type": "LOCALIZED_STRING_SS",
       "name": "Requests text",
       "description": "Text in the Requests section."
+    },
+    {
+      "code": "requests_ui_1",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Requests mockup label 1",
+      "description": "Interface text in the Requests section product mockup."
+    },
+    {
+      "code": "requests_ui_2",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Requests mockup label 2",
+      "description": "Interface text in the Requests section product mockup."
+    },
+    {
+      "code": "requests_ui_3",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Requests mockup label 3",
+      "description": "Interface text in the Requests section product mockup."
+    },
+    {
+      "code": "requests_ui_4",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Requests mockup label 4",
+      "description": "Interface text in the Requests section product mockup."
+    },
+    {
+      "code": "requests_ui_5",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Requests mockup label 5",
+      "description": "Interface text in the Requests section product mockup."
+    },
+    {
+      "code": "requests_ui_6",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Requests mockup label 6",
+      "description": "Interface text in the Requests section product mockup."
+    },
+    {
+      "code": "requests_ui_7",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Requests mockup label 7",
+      "description": "Interface text in the Requests section product mockup."
+    },
+    {
+      "code": "requests_ui_8",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Requests mockup label 8",
+      "description": "Interface text in the Requests section product mockup."
+    },
+    {
+      "code": "requests_ui_9",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Requests mockup label 9",
+      "description": "Interface text in the Requests section product mockup."
+    },
+    {
+      "code": "requests_ui_10",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Requests mockup label 10",
+      "description": "Interface text in the Requests section product mockup."
+    },
+    {
+      "code": "requests_ui_11",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Requests mockup label 11",
+      "description": "Interface text in the Requests section product mockup."
+    },
+    {
+      "code": "requests_ui_12",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Requests mockup label 12",
+      "description": "Interface text in the Requests section product mockup."
+    },
+    {
+      "code": "requests_ui_13",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Requests mockup label 13",
+      "description": "Interface text in the Requests section product mockup."
+    },
+    {
+      "code": "requests_ui_14",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Requests mockup label 14",
+      "description": "Interface text in the Requests section product mockup."
+    },
+    {
+      "code": "requests_ui_15",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Requests mockup label 15",
+      "description": "Interface text in the Requests section product mockup."
+    },
+    {
+      "code": "requests_ui_16",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Requests mockup label 16",
+      "description": "Interface text in the Requests section product mockup."
+    },
+    {
+      "code": "requests_ui_17",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Requests mockup label 17",
+      "description": "Interface text in the Requests section product mockup."
+    },
+    {
+      "code": "requests_ui_18",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Requests mockup label 18",
+      "description": "Interface text in the Requests section product mockup."
+    },
+    {
+      "code": "requests_ui_19",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Requests mockup label 19",
+      "description": "Interface text in the Requests section product mockup."
+    },
+    {
+      "code": "requests_ui_20",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Requests mockup label 20",
+      "description": "Interface text in the Requests section product mockup."
+    },
+    {
+      "code": "requests_ui_21",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Requests mockup label 21",
+      "description": "Interface text in the Requests section product mockup."
+    },
+    {
+      "code": "requests_ui_22",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Requests mockup label 22",
+      "description": "Interface text in the Requests section product mockup."
+    },
+    {
+      "code": "requests_ui_23",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Requests mockup label 23",
+      "description": "Interface text in the Requests section product mockup."
+    },
+    {
+      "code": "requests_ui_24",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Requests mockup label 24",
+      "description": "Interface text in the Requests section product mockup."
+    },
+    {
+      "code": "requests_ui_25",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Requests mockup label 25",
+      "description": "Interface text in the Requests section product mockup."
+    },
+    {
+      "code": "requests_ui_26",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Requests mockup label 26",
+      "description": "Interface text in the Requests section product mockup."
     },
     {
       "code": "mobile_text_1",
@@ -2075,6 +2501,48 @@
       "description": "Paragraph in the Subcontractors section."
     },
     {
+      "code": "subcontractors_ui_1",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Subcontractors mockup label 1",
+      "description": "Interface text in the Subcontractors section product mockup."
+    },
+    {
+      "code": "subcontractors_ui_2",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Subcontractors mockup label 2",
+      "description": "Interface text in the Subcontractors section product mockup."
+    },
+    {
+      "code": "subcontractors_ui_3",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Subcontractors mockup label 3",
+      "description": "Interface text in the Subcontractors section product mockup."
+    },
+    {
+      "code": "subcontractors_ui_4",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Subcontractors mockup label 4",
+      "description": "Interface text in the Subcontractors section product mockup."
+    },
+    {
+      "code": "subcontractors_ui_5",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Subcontractors mockup label 5",
+      "description": "Interface text in the Subcontractors section product mockup."
+    },
+    {
+      "code": "subcontractors_ui_6",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Subcontractors mockup label 6",
+      "description": "Interface text in the Subcontractors section product mockup."
+    },
+    {
+      "code": "subcontractors_ui_7",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Subcontractors mockup label 7",
+      "description": "Interface text in the Subcontractors section product mockup."
+    },
+    {
       "code": "portal_text_1",
       "type": "LOCALIZED_STRING_SS",
       "name": "Portal paragraph",
@@ -2175,6 +2643,228 @@
       "description": "Text in the Portal section."
     },
     {
+      "code": "portal_ui_1",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Portal mockup label 1",
+      "description": "Interface text in the Portal section product mockup."
+    },
+    {
+      "code": "portal_ui_2",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Portal mockup label 2",
+      "description": "Interface text in the Portal section product mockup."
+    },
+    {
+      "code": "portal_ui_3",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Portal mockup label 3",
+      "description": "Interface text in the Portal section product mockup."
+    },
+    {
+      "code": "portal_ui_4",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Portal mockup label 4",
+      "description": "Interface text in the Portal section product mockup."
+    },
+    {
+      "code": "portal_ui_5",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Portal mockup label 5",
+      "description": "Interface text in the Portal section product mockup."
+    },
+    {
+      "code": "portal_ui_6",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Portal mockup label 6",
+      "description": "Interface text in the Portal section product mockup."
+    },
+    {
+      "code": "portal_ui_7",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Portal mockup label 7",
+      "description": "Interface text in the Portal section product mockup."
+    },
+    {
+      "code": "portal_ui_8",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Portal mockup label 8",
+      "description": "Interface text in the Portal section product mockup."
+    },
+    {
+      "code": "portal_ui_9",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Portal mockup label 9",
+      "description": "Interface text in the Portal section product mockup."
+    },
+    {
+      "code": "portal_ui_10",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Portal mockup label 10",
+      "description": "Interface text in the Portal section product mockup."
+    },
+    {
+      "code": "portal_ui_11",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Portal mockup label 11",
+      "description": "Interface text in the Portal section product mockup."
+    },
+    {
+      "code": "portal_ui_12",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Portal mockup label 12",
+      "description": "Interface text in the Portal section product mockup."
+    },
+    {
+      "code": "portal_ui_13",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Portal mockup label 13",
+      "description": "Interface text in the Portal section product mockup."
+    },
+    {
+      "code": "portal_ui_14",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Portal mockup label 14",
+      "description": "Interface text in the Portal section product mockup."
+    },
+    {
+      "code": "portal_ui_15",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Portal mockup label 15",
+      "description": "Interface text in the Portal section product mockup."
+    },
+    {
+      "code": "portal_ui_16",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Portal mockup label 16",
+      "description": "Interface text in the Portal section product mockup."
+    },
+    {
+      "code": "portal_ui_17",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Portal mockup label 17",
+      "description": "Interface text in the Portal section product mockup."
+    },
+    {
+      "code": "portal_ui_18",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Portal mockup label 18",
+      "description": "Interface text in the Portal section product mockup."
+    },
+    {
+      "code": "portal_ui_19",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Portal mockup label 19",
+      "description": "Interface text in the Portal section product mockup."
+    },
+    {
+      "code": "portal_ui_20",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Portal mockup label 20",
+      "description": "Interface text in the Portal section product mockup."
+    },
+    {
+      "code": "portal_ui_21",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Portal mockup label 21",
+      "description": "Interface text in the Portal section product mockup."
+    },
+    {
+      "code": "portal_ui_22",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Portal mockup label 22",
+      "description": "Interface text in the Portal section product mockup."
+    },
+    {
+      "code": "portal_ui_23",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Portal mockup label 23",
+      "description": "Interface text in the Portal section product mockup."
+    },
+    {
+      "code": "portal_ui_24",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Portal mockup label 24",
+      "description": "Interface text in the Portal section product mockup."
+    },
+    {
+      "code": "portal_ui_25",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Portal mockup label 25",
+      "description": "Interface text in the Portal section product mockup."
+    },
+    {
+      "code": "portal_ui_26",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Portal mockup label 26",
+      "description": "Interface text in the Portal section product mockup."
+    },
+    {
+      "code": "portal_ui_27",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Portal mockup label 27",
+      "description": "Interface text in the Portal section product mockup."
+    },
+    {
+      "code": "portal_ui_28",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Portal mockup label 28",
+      "description": "Interface text in the Portal section product mockup."
+    },
+    {
+      "code": "portal_ui_29",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Portal mockup label 29",
+      "description": "Interface text in the Portal section product mockup."
+    },
+    {
+      "code": "portal_ui_30",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Portal mockup label 30",
+      "description": "Interface text in the Portal section product mockup."
+    },
+    {
+      "code": "portal_ui_31",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Portal mockup label 31",
+      "description": "Interface text in the Portal section product mockup."
+    },
+    {
+      "code": "portal_ui_32",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Portal mockup label 32",
+      "description": "Interface text in the Portal section product mockup."
+    },
+    {
+      "code": "portal_ui_33",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Portal mockup label 33",
+      "description": "Interface text in the Portal section product mockup."
+    },
+    {
+      "code": "portal_ui_34",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Portal mockup label 34",
+      "description": "Interface text in the Portal section product mockup."
+    },
+    {
+      "code": "portal_ui_35",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Portal mockup label 35",
+      "description": "Interface text in the Portal section product mockup."
+    },
+    {
+      "code": "portal_ui_36",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Portal mockup label 36",
+      "description": "Interface text in the Portal section product mockup."
+    },
+    {
+      "code": "portal_ui_37",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Portal mockup label 37",
+      "description": "Interface text in the Portal section product mockup."
+    },
+    {
       "code": "billing_text_1",
       "type": "LOCALIZED_STRING_SS",
       "name": "Billing paragraph",
@@ -2251,6 +2941,162 @@
       "type": "LOCALIZED_STRING_SS",
       "name": "Billing paragraph",
       "description": "Paragraph in the Billing section."
+    },
+    {
+      "code": "billing_ui_1",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Billing mockup label 1",
+      "description": "Interface text in the Billing section product mockup."
+    },
+    {
+      "code": "billing_ui_2",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Billing mockup label 2",
+      "description": "Interface text in the Billing section product mockup."
+    },
+    {
+      "code": "billing_ui_3",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Billing mockup label 3",
+      "description": "Interface text in the Billing section product mockup."
+    },
+    {
+      "code": "billing_ui_4",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Billing mockup label 4",
+      "description": "Interface text in the Billing section product mockup."
+    },
+    {
+      "code": "billing_ui_5",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Billing mockup label 5",
+      "description": "Interface text in the Billing section product mockup."
+    },
+    {
+      "code": "billing_ui_6",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Billing mockup label 6",
+      "description": "Interface text in the Billing section product mockup."
+    },
+    {
+      "code": "billing_ui_7",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Billing mockup label 7",
+      "description": "Interface text in the Billing section product mockup."
+    },
+    {
+      "code": "billing_ui_8",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Billing mockup label 8",
+      "description": "Interface text in the Billing section product mockup."
+    },
+    {
+      "code": "billing_ui_9",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Billing mockup label 9",
+      "description": "Interface text in the Billing section product mockup."
+    },
+    {
+      "code": "billing_ui_10",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Billing mockup label 10",
+      "description": "Interface text in the Billing section product mockup."
+    },
+    {
+      "code": "billing_ui_11",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Billing mockup label 11",
+      "description": "Interface text in the Billing section product mockup."
+    },
+    {
+      "code": "billing_ui_12",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Billing mockup label 12",
+      "description": "Interface text in the Billing section product mockup."
+    },
+    {
+      "code": "billing_ui_13",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Billing mockup label 13",
+      "description": "Interface text in the Billing section product mockup."
+    },
+    {
+      "code": "billing_ui_14",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Billing mockup label 14",
+      "description": "Interface text in the Billing section product mockup."
+    },
+    {
+      "code": "billing_ui_15",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Billing mockup label 15",
+      "description": "Interface text in the Billing section product mockup."
+    },
+    {
+      "code": "billing_ui_16",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Billing mockup label 16",
+      "description": "Interface text in the Billing section product mockup."
+    },
+    {
+      "code": "billing_ui_17",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Billing mockup label 17",
+      "description": "Interface text in the Billing section product mockup."
+    },
+    {
+      "code": "billing_ui_18",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Billing mockup label 18",
+      "description": "Interface text in the Billing section product mockup."
+    },
+    {
+      "code": "billing_ui_19",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Billing mockup label 19",
+      "description": "Interface text in the Billing section product mockup."
+    },
+    {
+      "code": "billing_ui_20",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Billing mockup label 20",
+      "description": "Interface text in the Billing section product mockup."
+    },
+    {
+      "code": "billing_ui_21",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Billing mockup label 21",
+      "description": "Interface text in the Billing section product mockup."
+    },
+    {
+      "code": "billing_ui_22",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Billing mockup label 22",
+      "description": "Interface text in the Billing section product mockup."
+    },
+    {
+      "code": "billing_ui_23",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Billing mockup label 23",
+      "description": "Interface text in the Billing section product mockup."
+    },
+    {
+      "code": "billing_ui_24",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Billing mockup label 24",
+      "description": "Interface text in the Billing section product mockup."
+    },
+    {
+      "code": "billing_ui_25",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Billing mockup label 25",
+      "description": "Interface text in the Billing section product mockup."
+    },
+    {
+      "code": "billing_ui_26",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Billing mockup label 26",
+      "description": "Interface text in the Billing section product mockup."
     },
     {
       "code": "onboarding_text_1",
@@ -2505,6 +3351,54 @@
       "type": "LOCALIZED_STRING_SS",
       "name": "Platform text",
       "description": "Text in the Platform section."
+    },
+    {
+      "code": "platform_ui_1",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Platform mockup label 1",
+      "description": "Interface text in the Platform section product mockup."
+    },
+    {
+      "code": "platform_ui_2",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Platform mockup label 2",
+      "description": "Interface text in the Platform section product mockup."
+    },
+    {
+      "code": "platform_ui_3",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Platform mockup label 3",
+      "description": "Interface text in the Platform section product mockup."
+    },
+    {
+      "code": "platform_ui_4",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Platform mockup label 4",
+      "description": "Interface text in the Platform section product mockup."
+    },
+    {
+      "code": "platform_ui_5",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Platform mockup label 5",
+      "description": "Interface text in the Platform section product mockup."
+    },
+    {
+      "code": "platform_ui_6",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Platform mockup label 6",
+      "description": "Interface text in the Platform section product mockup."
+    },
+    {
+      "code": "platform_ui_7",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Platform mockup label 7",
+      "description": "Interface text in the Platform section product mockup."
+    },
+    {
+      "code": "platform_ui_8",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Platform mockup label 8",
+      "description": "Interface text in the Platform section product mockup."
     },
     {
       "code": "pricing_text_1",
@@ -3911,6 +4805,48 @@
       "type": "LOCALIZED_STRING_SS",
       "name": "Mobile workforce chip 6",
       "description": "Capability chip under the Mobile Workforce cards."
+    },
+    {
+      "code": "mobile_ui_1",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Mobile mockup label 1",
+      "description": "Interface text in the Mobile section product mockup."
+    },
+    {
+      "code": "mobile_ui_2",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Mobile mockup label 2",
+      "description": "Interface text in the Mobile section product mockup."
+    },
+    {
+      "code": "mobile_ui_3",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Mobile mockup label 3",
+      "description": "Interface text in the Mobile section product mockup."
+    },
+    {
+      "code": "mobile_ui_4",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Mobile mockup label 4",
+      "description": "Interface text in the Mobile section product mockup."
+    },
+    {
+      "code": "mobile_ui_5",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Mobile mockup label 5",
+      "description": "Interface text in the Mobile section product mockup."
+    },
+    {
+      "code": "mobile_ui_6",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Mobile mockup label 6",
+      "description": "Interface text in the Mobile section product mockup."
+    },
+    {
+      "code": "mobile_ui_7",
+      "type": "LOCALIZED_STRING_SS",
+      "name": "Mobile mockup label 7",
+      "description": "Interface text in the Mobile section product mockup."
     },
     {
       "code": "pricing_period_aria",
