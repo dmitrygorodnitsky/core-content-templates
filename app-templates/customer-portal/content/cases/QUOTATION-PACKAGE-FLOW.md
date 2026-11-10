@@ -2,6 +2,8 @@
 
 **2026-11-09:** where this names workflow 45 `GENERAL_FSM_ORDER`, `QUOTE_VIEWED` or the agreement's ACTIVE/SUSPENDED/EXPIRED, it is superseded by `ORDER_LIFECYCLE` in `core-ui/docs/snow-unified-order-lifecycle-2026-11-09.md`.
 
+**2026-11-10:** where this names the order item workflow 46 `GENERAL_FSM_ORDER_ITEM_LIFECYCLE` or the invoice workflow 22 `INVOICE`, it is superseded for Snow by `ORDER_ITEM_LIFECYCLE` and `INVOICE_LIFECYCLE` in `core-ui/docs/snow-unified-items-invoices-2026-11-10.md`; the invoice state codes are unchanged.
+
 Status: implementation in progress, decided with the user on 2026-09-11 and
 revised through 2026-09-24; where the flow stands is §10, and the manager's
 screens are §11. Facts marked *verified* were read

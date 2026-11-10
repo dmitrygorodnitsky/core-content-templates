@@ -6,6 +6,10 @@
    "NAME": "Fixed Rate"
   }
  },
+ "workflow": {
+  "id": 88,
+  "code": "INVOICE_LIFECYCLE"
+ },
  "organization": {
   "optimistic": 4,
   "id": 8,

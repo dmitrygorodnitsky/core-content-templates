@@ -99,7 +99,9 @@
   },
   {
    "id": 22,
-   "code": "INVOICE"
+   "code": "INVOICE",
+   "retiredForSnow": "2026-11-10",
+   "replacedBy": "INVOICE_LIFECYCLE"
   },
   {
    "id": 23,
@@ -197,7 +199,9 @@
   },
   {
    "id": 46,
-   "code": "GENERAL_FSM_ORDER_ITEM_LIFECYCLE"
+   "code": "GENERAL_FSM_ORDER_ITEM_LIFECYCLE",
+   "retired": "2026-11-10",
+   "replacedBy": "ORDER_ITEM_LIFECYCLE"
   },
   {
    "id": 47,
@@ -211,6 +215,16 @@
    "code": "ORDER_LIFECYCLE",
    "derivedFrom": "core-ui/scripts/dev/seeds/orderLifecycleWorkflow.json",
    "since": "2026-11-09"
+  },
+  {
+   "code": "ORDER_ITEM_LIFECYCLE",
+   "derivedFrom": "core-ui/scripts/dev/seeds/orderItemLifecycleWorkflow.json",
+   "since": "2026-11-10"
+  },
+  {
+   "code": "INVOICE_LIFECYCLE",
+   "derivedFrom": "core-ui/scripts/dev/seeds/invoiceLifecycleWorkflow.json",
+   "since": "2026-11-10"
   }
  ],
  "types": [
@@ -726,7 +740,7 @@
     {
      "id": 5,
      "code": "SNOW_REMOVAL_ORDER_ITEM",
-     "workflow": "GENERAL_FSM_ORDER_ITEM_LIFECYCLE",
+     "workflow": "ORDER_ITEM_LIFECYCLE",
      "owner": "SERVICE_WAND_WINTER_SERVICES",
      "attributeCount": 0
     }
@@ -749,7 +763,7 @@
     {
      "id": 6,
      "code": "FIXED_RATE",
-     "workflow": null,
+     "workflow": "INVOICE_LIFECYCLE",
      "owner": "SERVICE_WAND_WINTER_SERVICES",
      "attributeCount": 3
     }

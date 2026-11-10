@@ -1,0 +1,157 @@
+{
+ "code": "INVOICE_LIFECYCLE",
+ "initialState": {
+  "code": "DRAFT"
+ },
+ "nls": {
+  "en": {
+   "NAME": "Invoice Lifecycle"
+  }
+ },
+ "entityType": "com.pixelnation.bill.domain.Invoice",
+ "organization": {
+  "id": 1,
+  "code": "SYSTEM"
+ },
+ "states": [
+  {
+   "code": "DRAFT",
+   "nls": {
+    "en": {
+     "NAME": "Draft"
+    }
+   },
+   "events": [
+    {
+     "code": "DRAFT-SENT",
+     "nls": {
+      "en": {
+       "NAME": "Send"
+      }
+     },
+     "targets": [
+      {
+       "code": "SENT"
+      }
+     ]
+    },
+    {
+     "code": "DRAFT-VOID",
+     "nls": {
+      "en": {
+       "NAME": "Void"
+      }
+     },
+     "targets": [
+      {
+       "code": "VOID"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "code": "OVERDUE",
+   "nls": {
+    "en": {
+     "NAME": "Overdue"
+    }
+   },
+   "events": [
+    {
+     "code": "OVERDUE-PAID",
+     "nls": {
+      "en": {
+       "NAME": "Mark Paid"
+      }
+     },
+     "targets": [
+      {
+       "code": "PAID"
+      }
+     ]
+    },
+    {
+     "code": "OVERDUE-VOID",
+     "nls": {
+      "en": {
+       "NAME": "Void"
+      }
+     },
+     "targets": [
+      {
+       "code": "VOID"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "code": "PAID",
+   "nls": {
+    "en": {
+     "NAME": "Paid"
+    }
+   },
+   "events": []
+  },
+  {
+   "code": "SENT",
+   "nls": {
+    "en": {
+     "NAME": "Sent"
+    }
+   },
+   "events": [
+    {
+     "code": "SENT-PAID",
+     "nls": {
+      "en": {
+       "NAME": "Mark Paid"
+      }
+     },
+     "targets": [
+      {
+       "code": "PAID"
+      }
+     ]
+    },
+    {
+     "code": "SENT-OVERDUE",
+     "nls": {
+      "en": {
+       "NAME": "Mark Overdue"
+      }
+     },
+     "targets": [
+      {
+       "code": "OVERDUE"
+      }
+     ]
+    },
+    {
+     "code": "SENT-VOID",
+     "nls": {
+      "en": {
+       "NAME": "Void"
+      }
+     },
+     "targets": [
+      {
+       "code": "VOID"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "code": "VOID",
+   "nls": {
+    "en": {
+     "NAME": "Void"
+    }
+   },
+   "events": []
+  }
+ ]
+}

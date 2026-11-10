@@ -2,6 +2,8 @@
 
 **2026-11-09:** where this names workflow 45 `GENERAL_FSM_ORDER`, `QUOTE_VIEWED` or the agreement's ACTIVE/SUSPENDED/EXPIRED, it is superseded by `ORDER_LIFECYCLE` in `core-ui/docs/snow-unified-order-lifecycle-2026-11-09.md`.
 
+**2026-11-10:** where this names the order item workflow 46 `GENERAL_FSM_ORDER_ITEM_LIFECYCLE` or the invoice workflow 22 `INVOICE`, it is superseded for Snow by `ORDER_ITEM_LIFECYCLE` and `INVOICE_LIFECYCLE` in `core-ui/docs/snow-unified-items-invoices-2026-11-10.md`; the invoice state codes are unchanged.
+
 Status: **live on dev-1 since 2026-10-28.** The deployed Snow portal reads and
 acts only through Core's tagged API; role 75 and the server-side tag
 maintenance that makes those reads answer are recorded in
