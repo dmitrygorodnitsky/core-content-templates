@@ -134,19 +134,20 @@ async function fixturePurchases() {
 }
 async function purchaseLifecycle(orderId, submitted) {
   const stateMap = { name: 'states', type: 'collection', mappings: names(['code']) };
-  const [orderExpected, lineExpected] = submitted ? ['ACCEPTED', 'SUBMITTED'] : ['DRAFT', 'DRAFT'];
+  const [orderExpected, lineExpected, invoiceExpected] = submitted ? ['ACCEPTED', 'DRAFT', 'SENT'] : ['DRAFT', 'DRAFT', 'DRAFT'];
   let states;
   for (let attempt = 0; attempt < 80; attempt++) {
     const order = (await ok('/core-bill/api/order/list.json', { json: { filters: [{ property: 'id', operator: '=', value: orderId }],
       mappings: [...names(['id']), stateMap, { name: 'items', type: 'collection', mappings: [...names(['id']), stateMap] }], offset: 0, pageSize: 2 } })).result[0];
     const invoices = (await ok('/core-bill/api/invoice/list.json', { json: { filters: [{ property: 'order.id', operator: '=', value: orderId }],
       mappings: [...names(['id']), stateMap], offset: 0, pageSize: 3 } })).result;
-    states = [order.states[0].code, ...order.items.map(item => item.states[0].code), ...invoices.map(invoice => invoice.states[0].code)];
-    if (states[0] === orderExpected && states.slice(1).every(state => state === lineExpected)) return orderExpected;
+    const lines = order.items.map(item => item.states[0].code), bills = invoices.map(invoice => invoice.states[0].code);
+    states = [order.states[0].code, ...lines, ...bills];
+    if (states[0] === orderExpected && lines.every(state => state === lineExpected) && bills.every(state => state === invoiceExpected)) return orderExpected;
     if (!submitted) break;
     await sleep(500);
   }
-  throw new Error('Purchase did not settle as ' + orderExpected + '/' + lineExpected + ': ' + states.join(','));
+  throw new Error('Purchase did not settle as ' + orderExpected + '/' + lineExpected + '/' + invoiceExpected + ': ' + states.join(','));
 }
 async function purchaseAction(name, formId, checkoutDigest, expectFailure = false) {
   const args = [{ formId }, ...(checkoutDigest === undefined ? [] : [{ checkoutDigest }])];
@@ -483,7 +484,7 @@ try {
         assert.equal(purchase.invoiceStatus, 'DRAFT_INVOICE_READY');
         assert.equal(invoices.length, 1);
         const invoice = invoices[0]; assert.equal(invoice.id, purchase.invoiceId);
-        assert.deepEqual(invoice.states.map(s => s.code), [submitted ? 'SUBMITTED' : 'DRAFT']);
+        assert.deepEqual(invoice.states.map(s => s.code), [submitted ? 'SENT' : 'DRAFT']);
         assert.equal(invoice.order.id, order.id); assert.equal(invoice.payments.length, 0); assert.equal(invoice.totalPaidAmount, 0);
         assert.ok(invoice.dueDate == null, 'An unapproved payment term was invented');
         assert.deepEqual(invoice.items.map(i => i.id).sort(), order.items.map(i => i.id).sort(), 'Invoice copied or lost native OrderItems');
@@ -514,9 +515,9 @@ try {
           await call('/core-bill/api/invoice/save.json', { json: { entities: [{ id: invoice.id, items: [{ id: order.items[0].id }] }],
             mappings: [{ name: 'id' }, { name: 'items', type: 'collection', mappings: names(['id']) }] } });
           assert.equal((await readInvoices(order.id))[0].items.length, 3, 'Invoice subset edit removed shared OrderItems');
-          await call(`/core-bill/api/invoice/${invoice.id}/send-event.json?event=DRAFT-SUBMITTED`, { json: {} });
+          await call(`/core-bill/api/invoice/${invoice.id}/send-event.json?event=DRAFT-SENT`, { json: {} });
           await sleep(1500);
-          assert.equal((await readInvoices(order.id))[0].states[0].code, 'SUBMITTED', 'A repeated Submit changed the approved invoice');
+          assert.equal((await readInvoices(order.id))[0].states[0].code, 'SENT', 'A repeated Send changed the approved invoice');
           await call('/core-bill/api/invoice/delete.json', { method: 'DELETE', json: [invoice.id] });
           assert.equal((await readInvoices(order.id)).length, 1, 'Invoice deletion destroyed shared order lines');
           await call('/core-bill/api/order/delete.json', { method: 'DELETE', json: [order.id] });

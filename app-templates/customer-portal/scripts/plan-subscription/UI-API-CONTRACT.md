@@ -149,8 +149,11 @@ grant также содержит по entry на каждую различну�
 не является публичным подтверждением всех шагов онбординга. SUSPENDED, COMPLETED и
 CANCELED показываются по названию состояния.
 С 9 ноября 2026 года Order подписки живёт в общем ORDER_LIFECYCLE вместо workflow 66
-(SUBMITTED заказа стал ACCEPTED, строки и счёт по-прежнему SUBMITTED); см. core-ui
-`docs/snow-unified-order-lifecycle-2026-11-09.md`. Внутренний `readPurchaseStatus` с private onboarding/error receipts
+(SUBMITTED заказа стал ACCEPTED); см. core-ui
+`docs/snow-unified-order-lifecycle-2026-11-09.md`. С 10 ноября 2026 года строки живут в
+ORDER_ITEM_LIFECYCLE и идут за заказом (DRAFT до оплаты, затем ACTIVE, SUSPENDED, COMPLETED
+или CANCELED), а счёт — в INVOICE_LIFECYCLE (DRAFT, SENT, OVERDUE, PAID, VOID); см. core-ui
+`docs/snow-unified-items-invoices-2026-11-10.md`. Внутренний `readPurchaseStatus` с private onboarding/error receipts
 через этот Grant не публикуется.
 
 ## Выдача, доставка и восстановление

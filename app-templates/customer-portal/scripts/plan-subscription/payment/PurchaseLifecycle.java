@@ -6,12 +6,15 @@ public final class PurchaseLifecycle {
     public static final String ACTIVATE_ORDER = "ACTIVATE_ORDER";
     public static final String COMPLETE = "COMPLETE";
     public static final String WAIT = "WAIT";
-    private static final Set<String> ORDER_STATES = Set.of("DRAFT", "ACCEPTED", "ACTIVE");
+    private static final Set<String> ORDER_STATES = Set.of("DRAFT", "ACCEPTED", "ACTIVE", "SUSPENDED", "COMPLETED", "CANCELED");
+    private static final Set<String> PAYABLE_INVOICE_STATES = Set.of("SENT", "OVERDUE");
 
     private PurchaseLifecycle() {}
 
     public static void requireOrder(String orderState) {
-        if (!ORDER_STATES.contains(orderState)) throw new IllegalStateException("Subscription order must be DRAFT, ACCEPTED or ACTIVE");
+        if (!ORDER_STATES.contains(orderState)) {
+            throw new IllegalStateException("Subscription order must be DRAFT, ACCEPTED, ACTIVE, SUSPENDED, COMPLETED or CANCELED");
+        }
     }
 
     public static void requireInvoice(String invoiceState, String orderState, BigDecimal amountDue, BigDecimal paid, int payments) {
@@ -19,34 +22,24 @@ public final class PurchaseLifecycle {
         requireAmounts(amountDue, paid, payments);
         switch (String.valueOf(invoiceState)) {
             case "DRAFT" -> {
-                if (!unpaid(paid, payments) || "ACTIVE".equals(orderState)) throw new IllegalStateException("A draft subscription invoice must stay unpaid");
+                if (!unpaid(paid, payments) || !Set.of("DRAFT", "ACCEPTED", "CANCELED").contains(orderState)) {
+                    throw new IllegalStateException("A draft subscription invoice must stay unpaid");
+                }
             }
-            case "SUBMITTED" -> {
-                if (!"ACCEPTED".equals(orderState)) throw new IllegalStateException("A submitted subscription invoice requires its accepted order");
+            case "SENT", "OVERDUE" -> {
+                if (!Set.of("ACCEPTED", "CANCELED").contains(orderState)) throw new IllegalStateException("A sent subscription invoice requires its accepted order");
                 if (!unpaid(paid, payments) && !fullyPaid(amountDue, paid, payments)) throw new IllegalStateException("A subscription invoice accepts one payment of the full amount");
             }
             case "PAID" -> {
                 if ("DRAFT".equals(orderState) || !fullyPaid(amountDue, paid, payments)) throw new IllegalStateException("A paid subscription invoice requires one full payment");
             }
+            case "VOID" -> { }
             default -> throw new IllegalStateException("Subscription invoice state is not supported");
         }
     }
 
-    public static void requireInvoiceLeavesDraft(String orderState) {
-        if (!"ACCEPTED".equals(orderState)) throw new IllegalStateException("A subscription invoice is submitted together with its order");
-    }
-
-    public static void requireInvoicePaid(BigDecimal amountDue, BigDecimal paid, int payments) {
-        requireAmounts(amountDue, paid, payments);
-        if (!fullyPaid(amountDue, paid, payments)) throw new IllegalStateException("A subscription invoice is paid only by one full payment");
-    }
-
-    public static void requireOrderActivation(String invoiceState) {
-        if (!"PAID".equals(invoiceState)) throw new IllegalStateException("A subscription order becomes active only after its invoice is paid");
-    }
-
     public static String nextStep(String invoiceState, String orderState, BigDecimal amountDue, BigDecimal paid, int payments) {
-        if ("SUBMITTED".equals(invoiceState) && "ACCEPTED".equals(orderState) && fullyPaid(amountDue, paid, payments)) return MARK_INVOICE_PAID;
+        if (PAYABLE_INVOICE_STATES.contains(String.valueOf(invoiceState)) && "ACCEPTED".equals(orderState) && fullyPaid(amountDue, paid, payments)) return MARK_INVOICE_PAID;
         if ("PAID".equals(invoiceState) && "ACCEPTED".equals(orderState)) return ACTIVATE_ORDER;
         if ("PAID".equals(invoiceState) && "ACTIVE".equals(orderState)) return COMPLETE;
         return WAIT;

@@ -1172,28 +1172,6 @@ public class MAIN_CLASS {
     @SuppressWarnings("unchecked")
     private Map<String, Object> optionalMap(Object value) { return value instanceof Map<?, ?> ? (Map<String, Object>) value : Map.of(); }
 
-    public void guardOrderInvoiceSnapshot(Order order, Map<String, Object> context) {
-        Map<String, Object> purchase = optionalMap(order.getMetadata() == null ? null : order.getMetadata().get(KEY));
-        Map<String, Object> preparation = optionalMap(purchase.get("invoicePreparation"));
-        if (!"DRAFT_INVOICE_READY".equals(preparation.get("status"))) return;
-        if (!"SERVICEWAND_SUBSCRIPTION".equals(order.getType().getCode())
-                || !invoiceFingerprint(order).equals(preparation.get("snapshotFingerprint"))) {
-            throw new ApplicationException("Prepared invoice snapshot is immutable; review before changing the subscription draft");
-        }
-        lifecycle(() -> PurchaseLifecycle.requireOrder(stateOf(order)));
-    }
-    public void guardPreparedOrderItem(OrderItem item, Map<String, Object> context) {
-        if (item.getOrder() != null) guardOrderInvoiceSnapshot(item.getOrder(), context);
-    }
-    public void guardPreparedOrderItemDelete(OrderItem item, Map<String, Object> context) {
-        if (item.getOrder() != null) guardOrderInvoiceDelete(item.getOrder(), context);
-    }
-    public void guardOrderInvoiceDelete(Order order, Map<String, Object> context) {
-        Map<String, Object> purchase = optionalMap(order.getMetadata() == null ? null : order.getMetadata().get(KEY));
-        if (optionalMap(purchase.get("invoicePreparation")).get("invoiceId") != null) {
-            throw new ApplicationException("Prepared subscription invoice must be reconciled before deleting its order");
-        }
-    }
     public void guardPreparedInvoice(Invoice invoice, Map<String, Object> context) {
         Map<String, Object> data = optionalMap(invoice.getMetadata() == null ? null : invoice.getMetadata().get(KEY));
         if (!Boolean.TRUE.equals(data.get("preparationOnly"))) return;
@@ -1216,40 +1194,6 @@ public class MAIN_CLASS {
         if (!data.get("snapshotFingerprint").equals(objectMap(parent.get("invoicePreparation")).get("snapshotFingerprint"))) {
             throw new ApplicationException("Invoice and parent preparation receipts differ");
         }
-        if (PurchaseLifecycle.MARK_INVOICE_PAID.equals(PurchaseLifecycle.nextStep(stateOf(invoice), stateOf(order), invoice.getAmountDue(),
-                invoice.getTotalPaidAmount(), invoice.getPayments().size()))) scheduleCompletion(order);
-    }
-    public void guardPreparedInvoiceExit(Invoice invoice, Map<String, Object> context) {
-        if (!Boolean.TRUE.equals(optionalMap(invoice.getMetadata() == null ? null : invoice.getMetadata().get(KEY)).get("preparationOnly"))) return;
-        Order order = invoice.getOrder();
-        if (order == null) throw new ApplicationException("Subscription invoice order is missing");
-        lifecycle(() -> PurchaseLifecycle.requireInvoiceLeavesDraft(stateOf(order)));
-    }
-    public void guardPreparedInvoicePaid(Invoice invoice, Map<String, Object> context) {
-        if (!Boolean.TRUE.equals(optionalMap(invoice.getMetadata() == null ? null : invoice.getMetadata().get(KEY)).get("preparationOnly"))) return;
-        lifecycle(() -> PurchaseLifecycle.requireInvoicePaid(invoice.getAmountDue(), invoice.getTotalPaidAmount(), invoice.getPayments().size()));
-        if (invoice.getOrder() != null) scheduleCompletion(invoice.getOrder());
-    }
-    public void guardPreparedOrderExit(Order order, Map<String, Object> context) {
-        Map<String, Object> purchase = optionalMap(order.getMetadata() == null ? null : order.getMetadata().get(KEY));
-        if (!Boolean.TRUE.equals(purchase.get("draftOnly"))) return;
-        Invoice invoice = preparedPurchaseInvoice(order);
-        if (invoice == null || !invoice.hasState("DRAFT")) {
-            throw new ApplicationException("Subscription draft is submitted only together with its prepared invoice");
-        }
-        if (order.getItems().isEmpty() || order.getItems().stream().anyMatch(item -> !"SUBMITTED".equals(stateOf(item)))) {
-            throw new ApplicationException("Subscription order lines are submitted before their order");
-        }
-    }
-    public void guardPreparedOrderActive(Order order, Map<String, Object> context) {
-        Map<String, Object> purchase = optionalMap(order.getMetadata() == null ? null : order.getMetadata().get(KEY));
-        if (!Boolean.TRUE.equals(purchase.get("draftOnly"))) return;
-        Invoice invoice = preparedPurchaseInvoice(order);
-        if (invoice == null) throw new ApplicationException("Subscription order has no prepared invoice");
-        lifecycle(() -> PurchaseLifecycle.requireOrderActivation(stateOf(invoice)));
-        if (order.getItems().stream().anyMatch(item -> !"ACTIVE".equals(stateOf(item)))) {
-            throw new ApplicationException("Subscription order lines are activated before their order");
-        }
     }
 
     public Map<String, Object> submitPurchase(String payloadJson) {
@@ -1258,12 +1202,11 @@ public class MAIN_CLASS {
             Order order = readAccessOrder(source);
             Invoice invoice = preparedPurchaseInvoice(order);
             if (invoice == null) return Map.of("status", "NOT_PAYABLE", "orderState", stateOf(order));
-            return Map.of("status", "SUBMITTING", "orderId", order.getId(), "invoiceId", invoice.getId(), "itemIds", itemKeys(order));
+            return Map.of("status", "SUBMITTING", "orderId", order.getId(), "invoiceId", invoice.getId());
         });
         if (!"SUBMITTING".equals(plan.get("status"))) return plan;
-        for (Object itemId : (List<?>) plan.get("itemIds")) advance(OrderItem.class, itemId, "DRAFT", "DRAFT-SUBMITTED", "SUBMITTED");
         advance(Order.class, plan.get("orderId"), "DRAFT", "DRAFT-ACCEPTED", "ACCEPTED");
-        advance(Invoice.class, plan.get("invoiceId"), "DRAFT", "DRAFT-SUBMITTED", "SUBMITTED");
+        advance(Invoice.class, plan.get("invoiceId"), "DRAFT", "DRAFT-SENT", "SENT");
         return Map.of("status", "SUBMITTED", "orderId", plan.get("orderId"), "invoiceId", plan.get("invoiceId"));
     }
 
@@ -1279,17 +1222,19 @@ public class MAIN_CLASS {
         for (int attempt = 0; attempt < 40; attempt++) {
             Map<String, Object> view = transactionUtils.getInNewTx(() -> paidPurchaseView(orderId));
             step = String.valueOf(view.get("step"));
-            if (PurchaseLifecycle.COMPLETE.equals(step)) return Map.of("orderId", orderId, "status", "ACTIVE", "activation", startActivation(orderId));
+            if (PurchaseLifecycle.COMPLETE.equals(step) && Boolean.TRUE.equals(view.get("linesActive"))) {
+                return Map.of("orderId", orderId, "status", "ACTIVE", "activation", startActivation(orderId));
+            }
             if (PurchaseLifecycle.MARK_INVOICE_PAID.equals(step)) {
-                advance(Invoice.class, view.get("invoiceId"), "SUBMITTED", "SUBMITTED-PAID", "PAID");
+                String invoiceState = String.valueOf(view.get("invoiceState"));
+                advance(Invoice.class, view.get("invoiceId"), invoiceState, invoiceState + "-PAID", "PAID");
             } else if (PurchaseLifecycle.ACTIVATE_ORDER.equals(step)) {
-                for (Object itemId : (List<?>) view.get("itemIds")) advance(OrderItem.class, itemId, "SUBMITTED", "SUBMITTED-ACTIVE", "ACTIVE");
                 advance(Order.class, view.get("orderId"), "ACCEPTED", "ACCEPTED-ACTIVE", "ACTIVE");
             } else {
                 pause(1000);
             }
         }
-        return Map.of("orderId", orderId, "status", PurchaseLifecycle.COMPLETE.equals(step) ? "ACTIVE" : step);
+        return Map.of("orderId", orderId, "status", PurchaseLifecycle.COMPLETE.equals(step) ? "LINES_PENDING" : step);
     }
 
     @SuppressWarnings("unchecked")
@@ -1342,11 +1287,8 @@ public class MAIN_CLASS {
         if (invoice == null) throw new ApplicationException("Paid subscription order has no prepared invoice");
         String step = PurchaseLifecycle.nextStep(stateOf(invoice), stateOf(order), invoice.getAmountDue(),
                 invoice.getTotalPaidAmount(), invoice.getPayments().size());
-        return Map.of("step", step, "orderId", order.getId(), "invoiceId", invoice.getId(), "itemIds", itemKeys(order));
-    }
-
-    private List<Object> itemKeys(Order order) {
-        return order.getItems().stream().sorted(java.util.Comparator.comparing(OrderItem::getId)).map(item -> (Object) item.getId()).toList();
+        boolean linesActive = !order.getItems().isEmpty() && order.getItems().stream().allMatch(item -> "ACTIVE".equals(stateOf(item)));
+        return Map.of("step", step, "orderId", order.getId(), "invoiceId", invoice.getId(), "invoiceState", stateOf(invoice), "linesActive", linesActive);
     }
 
     private void advance(Class<?> type, Object id, String from, String event, String to) {
@@ -1377,24 +1319,13 @@ public class MAIN_CLASS {
         Map<String, Object> preparation = optionalMap(optionalMap(order.getMetadata() == null ? null : order.getMetadata().get(KEY)).get("invoicePreparation"));
         if (!"DRAFT_INVOICE_READY".equals(preparation.get("status")) || preparation.get("invoiceId") == null) return null;
         List<Invoice> invoices = invoiceManager.selectJPQL("SELECT i FROM Invoice i WHERE i.order.id = :id", Map.of("id", order.getId()), Invoice.class);
-        if (invoices.size() != 1 || invoices.getFirst().getId().longValue() != number(preparation.get("invoiceId"))) {
-            throw new ApplicationException("Subscription order must have exactly its prepared invoice");
+        long preparedId = number(preparation.get("invoiceId"));
+        Invoice prepared = invoices.stream().filter(invoice -> invoice.getId().longValue() == preparedId).findFirst()
+                .orElseThrow(() -> new ApplicationException("Subscription order has lost its prepared invoice"));
+        if (invoices.size() != 1 && (order.hasState("DRAFT") || order.hasState("ACCEPTED"))) {
+            throw new ApplicationException("Subscription order must have exactly its prepared invoice until it is active");
         }
-        return invoices.getFirst();
-    }
-
-    private void scheduleCompletion(Order order) {
-        try {
-            List<String> nodes = capabilitiesResolver.listNodesWithCapabilities().entrySet().stream()
-                    .filter(entry -> entry.getValue().containsAll(Set.of("CORE", "CORE-ACCT", "CORE-BILL", "CORE-PIM")))
-                    .map(Map.Entry::getKey).sorted().toList();
-            Script self = scriptManager.getByCode(SCRIPT);
-            if (nodes.isEmpty() || self == null) return;
-            scriptService.submitForExecution(nodes.getFirst(), self, "completePaidPurchase",
-                    List.<Map<String, ?>>of(Map.of("payloadJson", json(Map.of("orderId", order.getId())))),
-                    userManager.getSystemUser(), order.getOrganization());
-        } catch (Exception unscheduled) {
-        }
+        return prepared;
     }
 
     private static String stateOf(Object entity) {
@@ -1404,11 +1335,6 @@ public class MAIN_CLASS {
     private static void lifecycle(Runnable rule) {
         try { rule.run(); }
         catch (IllegalStateException violation) { throw new ApplicationException(violation.getMessage()); }
-    }
-    public void guardPreparedInvoiceDelete(Invoice invoice, Map<String, Object> context) {
-        if (Boolean.TRUE.equals(optionalMap(invoice.getMetadata() == null ? null : invoice.getMetadata().get(KEY)).get("preparationOnly"))) {
-            throw new ApplicationException("Deleting this invoice would cascade to order items; operator reconciliation is required");
-        }
     }
 
     @SuppressWarnings("unchecked")
@@ -3094,12 +3020,15 @@ public class MAIN_CLASS {
         public static final String ACTIVATE_ORDER = "ACTIVATE_ORDER";
         public static final String COMPLETE = "COMPLETE";
         public static final String WAIT = "WAIT";
-        private static final Set<String> ORDER_STATES = Set.of("DRAFT", "ACCEPTED", "ACTIVE");
+        private static final Set<String> ORDER_STATES = Set.of("DRAFT", "ACCEPTED", "ACTIVE", "SUSPENDED", "COMPLETED", "CANCELED");
+        private static final Set<String> PAYABLE_INVOICE_STATES = Set.of("SENT", "OVERDUE");
 
         private PurchaseLifecycle() {}
 
         public static void requireOrder(String orderState) {
-            if (!ORDER_STATES.contains(orderState)) throw new IllegalStateException("Subscription order must be DRAFT, ACCEPTED or ACTIVE");
+            if (!ORDER_STATES.contains(orderState)) {
+                throw new IllegalStateException("Subscription order must be DRAFT, ACCEPTED, ACTIVE, SUSPENDED, COMPLETED or CANCELED");
+            }
         }
 
         public static void requireInvoice(String invoiceState, String orderState, BigDecimal amountDue, BigDecimal paid, int payments) {
@@ -3107,34 +3036,24 @@ public class MAIN_CLASS {
             requireAmounts(amountDue, paid, payments);
             switch (String.valueOf(invoiceState)) {
                 case "DRAFT" -> {
-                    if (!unpaid(paid, payments) || "ACTIVE".equals(orderState)) throw new IllegalStateException("A draft subscription invoice must stay unpaid");
+                    if (!unpaid(paid, payments) || !Set.of("DRAFT", "ACCEPTED", "CANCELED").contains(orderState)) {
+                        throw new IllegalStateException("A draft subscription invoice must stay unpaid");
+                    }
                 }
-                case "SUBMITTED" -> {
-                    if (!"ACCEPTED".equals(orderState)) throw new IllegalStateException("A submitted subscription invoice requires its accepted order");
+                case "SENT", "OVERDUE" -> {
+                    if (!Set.of("ACCEPTED", "CANCELED").contains(orderState)) throw new IllegalStateException("A sent subscription invoice requires its accepted order");
                     if (!unpaid(paid, payments) && !fullyPaid(amountDue, paid, payments)) throw new IllegalStateException("A subscription invoice accepts one payment of the full amount");
                 }
                 case "PAID" -> {
                     if ("DRAFT".equals(orderState) || !fullyPaid(amountDue, paid, payments)) throw new IllegalStateException("A paid subscription invoice requires one full payment");
                 }
+                case "VOID" -> { }
                 default -> throw new IllegalStateException("Subscription invoice state is not supported");
             }
         }
 
-        public static void requireInvoiceLeavesDraft(String orderState) {
-            if (!"ACCEPTED".equals(orderState)) throw new IllegalStateException("A subscription invoice is submitted together with its order");
-        }
-
-        public static void requireInvoicePaid(BigDecimal amountDue, BigDecimal paid, int payments) {
-            requireAmounts(amountDue, paid, payments);
-            if (!fullyPaid(amountDue, paid, payments)) throw new IllegalStateException("A subscription invoice is paid only by one full payment");
-        }
-
-        public static void requireOrderActivation(String invoiceState) {
-            if (!"PAID".equals(invoiceState)) throw new IllegalStateException("A subscription order becomes active only after its invoice is paid");
-        }
-
         public static String nextStep(String invoiceState, String orderState, BigDecimal amountDue, BigDecimal paid, int payments) {
-            if ("SUBMITTED".equals(invoiceState) && "ACCEPTED".equals(orderState) && fullyPaid(amountDue, paid, payments)) return MARK_INVOICE_PAID;
+            if (PAYABLE_INVOICE_STATES.contains(String.valueOf(invoiceState)) && "ACCEPTED".equals(orderState) && fullyPaid(amountDue, paid, payments)) return MARK_INVOICE_PAID;
             if ("PAID".equals(invoiceState) && "ACCEPTED".equals(orderState)) return ACTIVATE_ORDER;
             if ("PAID".equals(invoiceState) && "ACTIVE".equals(orderState)) return COMPLETE;
             return WAIT;

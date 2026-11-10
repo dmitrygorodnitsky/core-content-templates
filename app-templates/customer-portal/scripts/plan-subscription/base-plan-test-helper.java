@@ -38,7 +38,7 @@ public class MAIN_CLASS {
                 boolean ownedReceipt = value instanceof Map<?, ?> receipt
                         && receipt.get("sourceFormId") instanceof Number source && source.longValue() == formId.longValue();
                 boolean alreadyUnlocked = run.equals(invoice.getMetadata().get("DEV_TEST_CLEANUP"));
-                if (!(invoice.hasState("DRAFT") || invoice.hasState("SUBMITTED")) || !invoice.getPayments().isEmpty() || !(ownedReceipt || alreadyUnlocked)) {
+                if (!(invoice.hasState("DRAFT") || invoice.hasState("SENT")) || !invoice.getPayments().isEmpty() || !(ownedReceipt || alreadyUnlocked)) {
                     throw new ApplicationException("Only the exact unpaid synthetic preparation invoice may be unlocked");
                 }
                 invoice.setMetadata(new LinkedHashMap<>(Map.of("DEV_TEST_CLEANUP", run)));
