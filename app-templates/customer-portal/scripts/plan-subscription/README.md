@@ -378,7 +378,11 @@ exactly one payment of the full amount; PAID only fully paid; VOID after a cance
 The order leaves DRAFT with its one prepared DRAFT invoice and its lines, and becomes
 ACTIVE only after that invoice is PAID; its lines then follow it. A later invoice of
 the same order that goes OVERDUE suspends the order for non-payment and its payment
-resumes it. No Stripe configuration, webhook, User or permission assignment is added;
+resumes it; a manual Resume is refused while one of its invoices is still OVERDUE.
+Since the audit of 2026-11-10 the three lifecycle hooks also refuse a save that
+carries a state other than the committed one (states change through events), and a
+subscription invoice gets no due date, so nothing marks it OVERDUE automatically; see
+core-ui `docs/snow-unified-items-invoices-2026-11-10.md`. No Stripe configuration, webhook, User or permission assignment is added;
 core-pay's own webhook records the payment.
 
 For focused synthetic CA/US, explicit-zero/missing-rate, native totals and
