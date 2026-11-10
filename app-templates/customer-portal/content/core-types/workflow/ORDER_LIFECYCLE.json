@@ -26,7 +26,7 @@
      "code": "ACCEPTED-DECLINED",
      "nls": {
       "en": {
-       "NAME": "Resolve conflicting option: decline"
+       "NAME": "Decline Option"
       }
      },
      "targets": [
@@ -88,7 +88,7 @@
      "code": "ACTIVE-COMPLETED",
      "nls": {
       "en": {
-       "NAME": "Term ends"
+       "NAME": "Complete"
       }
      },
      "targets": [
@@ -125,7 +125,7 @@
    "code": "CHANGES_REQUESTED",
    "nls": {
     "en": {
-     "NAME": "Changes Requested"
+     "NAME": "Sent Back"
     }
    },
    "events": [
@@ -133,7 +133,7 @@
      "code": "CHANGES_REQUESTED-QUOTE_PREPARED",
      "nls": {
       "en": {
-       "NAME": "Modify"
+       "NAME": "Resubmit"
       }
      },
      "targets": [
@@ -157,7 +157,7 @@
    "code": "CUSTOMER_CHANGES_REQUESTED",
    "nls": {
     "en": {
-     "NAME": "Customer Changes Requested"
+     "NAME": "Customer Changes"
     }
    },
    "events": [
@@ -165,7 +165,7 @@
      "code": "CUSTOMER_CHANGES_REQUESTED-QUOTE_PREPARED",
      "nls": {
       "en": {
-       "NAME": "Changes Requested"
+       "NAME": "Revise Quote"
       }
      },
      "targets": [
@@ -282,7 +282,7 @@
      "code": "QUOTE_PREPARED-CHANGES_REQUESTED",
      "nls": {
       "en": {
-       "NAME": "Request Changes"
+       "NAME": "Send Back"
       }
      },
      "targets": [
