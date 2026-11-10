@@ -31,7 +31,6 @@ export var state = {
   pagreements: [],
   agreementId: null,
   agreementTermsOpen: true,
-  quoteViews: {},
   contractCommand: null,
   contractConfirm: null,
   contractDetails: null,
@@ -977,7 +976,6 @@ export function applyPortalConfig(config) {
   state.porders = fixture && fixture.proposals && fixture.proposals.orders ? cloneCaseValue(fixture.proposals.orders) : [];
   state.pagreements = fixture && fixture.proposals && fixture.proposals.agreements ? cloneCaseValue(fixture.proposals.agreements) : [];
   state.agreementId = null;
-  state.quoteViews = {};
   state.contractCommand = null;
   state.contractConfirm = null;
   state.contractDetails = null;

@@ -1373,7 +1373,6 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
   data-copy-property-changes="Changes requested"
   data-copy-property-unknown="Status unavailable"
   data-copy-option-new="New"
-  data-copy-option-viewed="Awaiting decision"
   data-copy-option-approved="Approved"
   data-copy-option-declined="Declined"
   data-copy-option-changes="Changes requested"
@@ -1394,8 +1393,6 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
   data-copy-note-revising="The provider is revising this option. Its services and price show here again once it is sent back to you."
   data-copy-note-sibling-approved="You approved another option for this property."
   data-copy-note-no-actions="Decisions on this option cannot be made through this link."
-  data-copy-view-pending="Letting the provider know you opened this option…"
-  data-copy-view-failed="We could not let the provider know you opened this option, so its decisions are not available yet."
   data-copy-approve-label="Approve"
   data-copy-changes-label="Request changes"
   data-copy-cancel-label="Cancel"
@@ -1574,7 +1571,6 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     ["PROPERTY_CHANGES", "propertyChanges", "Changes requested"],
     ["PROPERTY_UNKNOWN", "propertyUnknown", "Status unavailable"],
     ["OPTION_NEW", "optionNew", "New"],
-    ["OPTION_VIEWED", "optionViewed", "Awaiting decision"],
     ["OPTION_APPROVED", "optionApproved", "Approved"],
     ["OPTION_DECLINED", "optionDeclined", "Declined"],
     ["OPTION_CHANGES", "optionChanges", "Changes requested"],
@@ -1595,8 +1591,6 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     ["NOTE_REVISING", "noteRevising", "The provider is revising this option. Its services and price show here again once it is sent back to you."],
     ["NOTE_SIBLING_APPROVED", "noteSiblingApproved", "You approved another option for this property."],
     ["NOTE_NO_ACTIONS", "noteNoActions", "Decisions on this option cannot be made through this link."],
-    ["VIEW_PENDING", "viewPending", "Letting the provider know you opened this option…"],
-    ["VIEW_FAILED", "viewFailed", "We could not let the provider know you opened this option, so its decisions are not available yet."],
     ["APPROVE_LABEL", "approveLabel", "Approve"],
     ["CHANGES_LABEL", "changesLabel", "Request changes"],
     ["CANCEL_LABEL", "cancelLabel", "Cancel"],
@@ -1812,12 +1806,13 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
   ];
 
   var CONTRACT = {
-    orderWorkflow: "GENERAL_FSM_ORDER",
+    orderWorkflow: "ORDER_LIFECYCLE",
     agreementWorkflow: "SERVICE_AGREEMENT_LIFECYCLE",
     agreementType: "SERVICE_AGREEMENT",
     orderStates: [
-      "INITIAL", "QUOTE_PREPARED", "CHANGES_REQUESTED", "QUOTE_APPROVED_INTERNALLY",
-      "QUOTE_SENT", "QUOTE_VIEWED", "CLIENT_APPROVED", "DECLINED", "CUSTOMER_CHANGES_REQUESTED",
+      "DRAFT", "QUOTE_PREPARED", "CHANGES_REQUESTED", "QUOTE_APPROVED",
+      "QUOTE_SENT", "CUSTOMER_CHANGES_REQUESTED", "DECLINED",
+      "ACCEPTED", "ACTIVE", "SUSPENDED", "COMPLETED", "CANCELED",
     ],
     agreementStates: [
       "QUOTATION", "QUOTATION_SENT", "QUOTATION_UPDATE", "QUOTATION_SEND_FAILED", "AWAITING_CLIENT_DETAILS",
@@ -1827,10 +1822,9 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
       "ACCESS_CLEANUP_RETRY",
     ],
     orderEvents: {
-      view: { code: "QUOTE_SENT-QUOTE_VIEWED", source: "QUOTE_SENT" },
-      approve: { code: "QUOTE_VIEWED-CLIENT_APPROVED", source: "QUOTE_VIEWED" },
-      decline: { code: "QUOTE_VIEWED-DECLINED", source: "QUOTE_VIEWED" },
-      changes: { code: "QUOTE_VIEWED-CUSTOMER_CHANGES_REQUESTED", source: "QUOTE_VIEWED", messageAttribute: "MESSAGE" },
+      approve: { code: "QUOTE_SENT-ACCEPTED", source: "QUOTE_SENT" },
+      decline: { code: "QUOTE_SENT-DECLINED", source: "QUOTE_SENT" },
+      changes: { code: "QUOTE_SENT-CUSTOMER_CHANGES_REQUESTED", source: "QUOTE_SENT", messageAttribute: "MESSAGE" },
     },
     agreementOperationStatus: {
       key: "AGREEMENT_OPERATION_STATUS",
@@ -1884,7 +1878,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
       terms: "CONTRACT_TERMS",
     },
     contractDetails: {
-      event: "QUOTE_VIEWED-CLIENT_APPROVED",
+      event: "QUOTE_SENT-ACCEPTED",
       attributes: CONTRACT_DETAILS_ATTRIBUTES,
       attributeOrder: [
         {
@@ -2220,17 +2214,28 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
 
   var ORDER_STATUS = {
     QUOTE_SENT: "new",
-    QUOTE_VIEWED: "viewed",
-    CLIENT_APPROVED: "approved",
+    ACCEPTED: "approved",
+    ACTIVE: "approved",
+    SUSPENDED: "approved",
+    COMPLETED: "approved",
+    CANCELED: "approved",
     DECLINED: "declined",
     CUSTOMER_CHANGES_REQUESTED: "changes",
-    INITIAL: "revising",
+    DRAFT: "revising",
     QUOTE_PREPARED: "revising",
     CHANGES_REQUESTED: "revising",
-    QUOTE_APPROVED_INTERNALLY: "revising",
+    QUOTE_APPROVED: "revising",
   };
 
-  var PRICED_STATUSES = ["new", "viewed", "approved", "declined", "changes"];
+  var PRICED_STATUSES = ["new", "approved", "declined", "changes"];
+
+  var SIGNED_AGREEMENT_STATE = "CLIENT_APPROVED";
+
+  var SERVICE_DISPOSITION = {
+    ACTIVE: { kind: "completion", completion: "active" },
+    SUSPENDED: { kind: "reference", banner: "suspended" },
+    COMPLETED: { kind: "reference", banner: "expired" },
+  };
 
   var AGREEMENT_DISPOSITION = {
     QUOTATION: { kind: "unavailable", reason: "retired" },
@@ -2247,9 +2252,9 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     AGREEMENT_SEND_FAILED: { kind: "unavailable", reason: "send-failed" },
     CLIENT_APPROVED: { kind: "completion", completion: "approved" },
     ACTIVATION_FAILED: { kind: "completion", completion: "finishing" },
-    ACTIVE: { kind: "completion", completion: "active" },
-    SUSPENDED: { kind: "reference", banner: "suspended" },
-    EXPIRED: { kind: "reference", banner: "expired" },
+    ACTIVE: { kind: "unavailable", reason: "retired" },
+    SUSPENDED: { kind: "unavailable", reason: "retired" },
+    EXPIRED: { kind: "unavailable", reason: "retired" },
     ARCHIVED: { kind: "closed", reason: "archived" },
     CANCELED: { kind: "closed", reason: "canceled" },
     ACCESS_CLEANUP_RETRY: { kind: "closed", reason: "canceled" },
@@ -2846,9 +2851,9 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
       subtotal: priced ? formatMoney(row.totalCharges, currency, context.locale) : "",
       taxes: priced ? formatMoney(row.totalTaxes, currency, context.locale) : "",
       total: priced ? formatMoney(row.grandTotal, currency, context.locale) : "",
-      awaitingClient: state === contract.orderEvents.view.source || state === contract.orderEvents.approve.source,
+      awaitingClient: state === contract.orderEvents.approve.source,
       siblingApproved: false,
-      actions: { view: false, approve: false, decline: false, changes: false },
+      actions: { approve: false, decline: false, changes: false },
     };
   }
 
@@ -2857,7 +2862,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     if (statuses.indexOf("approved") !== -1) return "approved";
     if (statuses.length && statuses.every(function (status) { return status === "declined"; })) return "declined";
     if (statuses.indexOf("changes") !== -1 || statuses.indexOf("revising") !== -1) return "changes";
-    if (statuses.indexOf("new") !== -1 || statuses.indexOf("viewed") !== -1) return "awaiting";
+    if (statuses.indexOf("new") !== -1) return "awaiting";
     return "unknown";
   }
 
@@ -2890,11 +2895,10 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     });
   }
 
-  function approvalsOffered(properties, grant, contract) {
-    var events = contract.orderEvents;
+  function approvalsOffered(properties) {
     return properties.some(function (property) {
       return property.options.some(function (option) {
-        return option.actions.approve || (option.actions.view && eventGranted(grant, "order", option.id, events.approve.code));
+        return option.actions.approve;
       });
     });
   }
@@ -2907,7 +2911,6 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
           return !option.siblingApproved && option.state === event.source && eventGranted(grant, "order", option.id, event.code);
         }
         option.actions = {
-          view: allowed(events.view),
           approve: allowed(events.approve),
           decline: allowed(events.decline),
           changes: allowed(events.changes),
@@ -3020,7 +3023,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
       unreadableOrders: 0,
       accountUnavailable: Boolean(input.accountFailed),
       details: {
-        available: approvalsOffered(properties, grant, contract),
+        available: approvalsOffered(properties),
         fields: fields,
         prefill: detailsPrefill(account, fields, locale, contract),
       },
@@ -3028,6 +3031,12 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
       canRequestAgreementChanges: false,
       primaryEmail: primaryEmail(account, contract),
     };
+  }
+
+  function serviceDisposition(orders, contract) {
+    var states = orders.map(function (row) { return stateCode(row, contract.orderStates); });
+    var found = Object.keys(SERVICE_DISPOSITION).filter(function (code) { return states.indexOf(code) !== -1; })[0];
+    return found ? SERVICE_DISPOSITION[found] : null;
   }
 
   function reviewModel(input, options) {
@@ -3048,7 +3057,6 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     var agreement = picked.row;
     var agreementId = positiveInteger(agreement.id);
     var state = presentedAgreementState(agreement, contract);
-    var disposition = AGREEMENT_DISPOSITION[state] || { kind: "unavailable", reason: "unknown-state" };
     var account = pickAccount(input.accounts, agreement, contract);
     var fields = detailFields(contract.contractDetails, locale);
     var parties = partiesOf(agreement, account, fields, locale, contract);
@@ -3067,6 +3075,8 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
       else unreadable += 1;
     });
 
+    var disposition = (state === SIGNED_AGREEMENT_STATE && serviceDisposition(readable, contract))
+      || AGREEMENT_DISPOSITION[state] || { kind: "unavailable", reason: "unknown-state" };
     var properties = propertiesOf(readable, { locale: locale, contract: contract, catalog: catalogOf(input) });
     var decided = summarized(properties);
     var approveEvent = contract.agreementEvents.approve;
@@ -3108,6 +3118,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
   ns.normalizer = Object.freeze({
     orderStatus: Object.freeze(Object.assign({}, ORDER_STATUS)),
     agreementDisposition: Object.freeze(Object.assign({}, AGREEMENT_DISPOSITION)),
+    serviceDisposition: Object.freeze(Object.assign({}, SERVICE_DISPOSITION)),
     positiveInteger: positiveInteger,
     localizedName: localizedName,
     planReference: planReference,
@@ -3350,7 +3361,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
 
   var ns = global.ClientReview || (global.ClientReview = {});
   var KINDS = ["agreement-review", "reference", "completion"];
-  var STATUSES = { new: "optionNew", viewed: "optionViewed", approved: "optionApproved", declined: "optionDeclined", changes: "optionChanges", revising: "optionRevising", unknown: "optionUnknown" };
+  var STATUSES = { new: "optionNew", approved: "optionApproved", declined: "optionDeclined", changes: "optionChanges", revising: "optionRevising", unknown: "optionUnknown" };
 
   function offered(snapshot) {
     return snapshot.phase === "ready" && snapshot.view && KINDS.indexOf(snapshot.view.kind) !== -1;
@@ -4105,7 +4116,6 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
 
   var OPTION_BADGE = {
     new: ["status-badge--info", "optionNew"],
-    viewed: ["status-badge--info", "optionViewed"],
     approved: ["status-badge--ok", "optionApproved"],
     declined: ["status-badge--danger", "optionDeclined"],
     changes: ["status-badge--warn", "optionChanges"],
@@ -4512,24 +4522,13 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
       return;
     }
     var pending = isPending(command);
-    if (command && command.event === ns.contract.orderEvents.view.code) {
-      if (pending) {
-        body.appendChild(text("p", "cr-note cr-note--pending", copy.viewPending, { role: "status", "data-state": "pending" }));
-        return;
-      }
-      body.appendChild(outcomeBox(ctx, command, {
-        title: copy.viewFailed,
-        action: button(copy.retryLabel, "btn--ghost", function () { ctx.dispatch("option.view", { id: option.id }); }, { disabled: ctx.busy, "data-action": "option.view" }),
-      }));
-      return;
-    }
     if (option.siblingApproved && option.awaitingClient) {
       body.appendChild(text("p", "cr-note", copy.noteSiblingApproved));
       return;
     }
     var decisions = option.actions.approve || option.actions.changes;
     if (!decisions) {
-      if (option.awaitingClient && !option.actions.view) body.appendChild(text("p", "cr-note", copy.noteNoActions));
+      if (option.awaitingClient) body.appendChild(text("p", "cr-note", copy.noteNoActions));
       return;
     }
     var confirm = ctx.snapshot.confirm && ctx.snapshot.confirm.kind === "changes" && ctx.snapshot.confirm.id === option.id ? ctx.snapshot.confirm : null;
@@ -4587,7 +4586,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     var snapshot = ctx.snapshot;
     var declineCode = ns.contract.orderEvents.decline.code;
     var chosen = property.options.some(function (option) { return snapshot.expanded[option.id]; });
-    var declinable = property.options.some(function (option) { return option.actions.decline || option.actions.view; });
+    var declinable = property.options.some(function (option) { return option.actions.decline; });
     var choice = snapshot.choices[property.key] || null;
     var failed = property.options.filter(function (option) {
       var command = snapshot.commands[option.recordKey];
@@ -5453,7 +5452,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
 
     function declinableOptions(property) {
       return property.options.filter(function (option) {
-        return (option.actions.decline || option.actions.view) && !state.accepted[option.recordKey] && !inflight[option.recordKey];
+        return option.actions.decline && !state.accepted[option.recordKey] && !inflight[option.recordKey];
       });
     }
 
@@ -5818,10 +5817,6 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
       } else {
         delete state.expanded[option.id];
       }
-      if (opening && option.actions.view && !state.commands[option.recordKey] && !state.accepted[option.recordKey] && !busy()) {
-        send(option.recordKey, "order", option.id, contract.orderEvents.view.code, {}, {});
-        return;
-      }
       render();
     }
 
@@ -5881,13 +5876,6 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
       if (option.status === target) return Promise.resolve(true);
       if (state.accepted[option.recordKey] || inflight[option.recordKey]) return Promise.resolve(false);
       var context = { closedAfter: closedAfter };
-      if (option.actions.view) {
-        return send(option.recordKey, "order", option.id, contract.orderEvents.view.code, {}, context).then(function (sent) {
-          var viewed = sent ? findOption(id) : null;
-          if (!viewed || !viewed.actions[kind] || state.accepted[viewed.recordKey]) return false;
-          return decideOption(id, kind, metadata, closedAfter);
-        });
-      }
       if (!option.actions[kind]) return Promise.resolve(false);
       return send(option.recordKey, "order", option.id, contract.orderEvents[kind].code, metadata, Object.assign({
         onRefusal: function (error) {
@@ -6055,12 +6043,6 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
           return;
         case "option.toggle":
           toggleOption(data.id);
-          return;
-        case "option.view":
-          option = findOption(data.id);
-          if (!option || !option.actions.view || busy() || state.accepted[option.recordKey]) return;
-          clearOutcome(option.recordKey);
-          send(option.recordKey, "order", option.id, contract.orderEvents.view.code, {}, {});
           return;
         case "option.intent":
           option = findOption(data.id);
@@ -6381,12 +6363,12 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
 
   var ORDERS = [
     { id: 3101, property: 278, model: "SEASONAL", state: "QUOTE_SENT", charges: 8750, taxes: 437.5, grand: 9187.5, lines: [[1, "snow", 1, 1400], [2, "rockSalt", 1, 7350]] },
-    { id: 3102, property: 278, model: "MONTHLY", state: "QUOTE_VIEWED", charges: 8750, taxes: 437.5, grand: 9187.5, lines: [[3, "snow", 5, 280], [4, "rockSalt", 5, 1470]] },
-    { id: 3103, property: 278, model: "PER_SERVICE", state: "QUOTE_VIEWED", charges: 595, taxes: 29.75, grand: 624.75, lines: [[5, "snow", 1, 350], [6, "rockSalt", 1, 245]] },
-    { id: 3104, property: 430, model: "SEASONAL", state: "CLIENT_APPROVED", charges: 10200, taxes: 510, grand: 10710, lines: [[7, "snow", 1, 1750], [8, "iceMelt", 1, 8450]] },
+    { id: 3102, property: 278, model: "MONTHLY", state: "QUOTE_SENT", charges: 8750, taxes: 437.5, grand: 9187.5, lines: [[3, "snow", 5, 280], [4, "rockSalt", 5, 1470]] },
+    { id: 3103, property: 278, model: "PER_SERVICE", state: "QUOTE_SENT", charges: 595, taxes: 29.75, grand: 624.75, lines: [[5, "snow", 1, 350], [6, "rockSalt", 1, 245]] },
+    { id: 3104, property: 430, model: "SEASONAL", state: "ACCEPTED", charges: 10200, taxes: 510, grand: 10710, lines: [[7, "snow", 1, 1750], [8, "iceMelt", 1, 8450]] },
     { id: 3105, property: 430, model: "PER_SERVICE", state: "DECLINED", charges: 631.75, taxes: 31.59, grand: 663.34, lines: [[9, "snow", 1, 350], [10, "iceMelt", 1, 281.75]] },
     { id: 3106, property: 512, model: "SEASONAL", state: "CUSTOMER_CHANGES_REQUESTED", charges: 3240, taxes: 162, grand: 3402, lines: [[11, "snow", 1, 2100], [12, "atv", 12, 95]] },
-    { id: 3107, property: 512, model: "MONTHLY", state: "QUOTE_VIEWED", charges: 3240, taxes: 162, grand: 3402, lines: [[13, "snow", 5, 420], [14, "atv", 12, 95]] },
+    { id: 3107, property: 512, model: "MONTHLY", state: "QUOTE_SENT", charges: 3240, taxes: 162, grand: 3402, lines: [[13, "snow", 5, 420], [14, "atv", 12, 95]] },
     { id: 3108, property: 661, model: "", state: "QUOTE_SENT", grand: 288.75, lines: [[15, "snow", 1, 275]] },
     { id: 3109, property: 702, model: "SEASONAL", state: "DECLINED", charges: 1400, taxes: 70, grand: 1470, lines: [[16, "snow", 1, 1400]] },
     { id: 3110, property: 702, model: "MONTHLY", state: "DECLINED", charges: 1400, taxes: 70, grand: 1470, lines: [[17, "snow", 5, 280]] },
@@ -6536,10 +6518,9 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
   PLACES[ADDRESSES[512]] = { lat: 49.1893, lng: -122.8421 };
 
   var QUOTATION_EVENTS = [
-    "QUOTE_SENT-QUOTE_VIEWED",
-    "QUOTE_VIEWED-CLIENT_APPROVED",
-    "QUOTE_VIEWED-DECLINED",
-    "QUOTE_VIEWED-CUSTOMER_CHANGES_REQUESTED",
+    "QUOTE_SENT-ACCEPTED",
+    "QUOTE_SENT-DECLINED",
+    "QUOTE_SENT-CUSTOMER_CHANGES_REQUESTED",
   ];
 
   var SCENARIOS = [
@@ -6563,8 +6544,6 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     { id: "link-copied", label: "Copy link — copied with an approval chosen" },
     { id: "link-copy-failed", label: "Copy link — the browser refused to copy" },
     { id: "option-open", label: "Option open — lines, total, decisions" },
-    { id: "view-pending", label: "Unviewed option opened — view event pending" },
-    { id: "view-failed", label: "Unviewed option opened — view event failed" },
     { id: "choices-approve", label: "Confirm your choices — an option approved, contract details pre-filled" },
     { id: "changes-invalid", label: "Request changes — message required" },
     { id: "choices-decline", label: "Confirm your choices — every option of a property declined, no details asked" },
@@ -6574,7 +6553,6 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     { id: "command-failed", label: "Approval failed" },
     { id: "command-stale-pending", label: "Approval accepted, readback still shows the option undecided — pending" },
     { id: "command-unconfirmed", label: "Approval accepted, change not seen within the budget — Refresh status" },
-    { id: "view-unconfirmed", label: "Option opened, view accepted but not seen within the budget — Refresh status" },
     { id: "contract-details", label: "Contract details on Confirm your choices — pre-filled from the account" },
     { id: "contract-details-attributes", label: "Contract details — contacts and addresses as ids, pre-filled from Account attributes" },
     { id: "contract-details-ids-only", label: "Contract details — contacts and addresses as ids, no Account attributes" },
@@ -6605,11 +6583,11 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     { id: "agreement-approval-only", label: "Agreement — a link issued before change requests, approval only" },
     { id: "approval-closed", label: "Agreement approved — link closed, portal invitation" },
     { id: "completion", label: "Completion — CLIENT_APPROVED, no portal address" },
-    { id: "completion-portal", label: "Completion — ACTIVE, portal address configured" },
+    { id: "completion-portal", label: "Completion — signed, its orders ACTIVE, portal address configured" },
     { id: "completion-finishing", label: "Completion — ACTIVATION_FAILED, no primary email in the link" },
     { id: "completion-attributes", label: "Completion — CLIENT_APPROVED, sign-in email from LEGAL contact" },
     { id: "link-closed-portal", label: "Link expired or revoked — portal address configured" },
-    { id: "reference-expired", label: "Expired agreement — read only" },
+    { id: "reference-expired", label: "Expired agreement — signed, its orders COMPLETED, read only" },
     { id: "closed-canceled", label: "Canceled — closed" },
     { id: "unavailable", label: "Send failed — unavailable" },
     { id: "retired-quotation", label: "A Document left in a retired quotation state — unavailable" },
@@ -6878,14 +6856,14 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     }));
   }
 
-  var DECIDED = { 3101: "DECLINED", 3102: "CLIENT_APPROVED", 3103: "DECLINED", 3107: "CLIENT_APPROVED", 3108: "CLIENT_APPROVED" };
-  var LAST_OPEN = { 3101: "DECLINED", 3102: "CLIENT_APPROVED", 3103: "DECLINED", 3107: "CLIENT_APPROVED" };
+  var DECIDED = { 3101: "DECLINED", 3102: "ACCEPTED", 3103: "DECLINED", 3107: "ACCEPTED", 3108: "ACCEPTED" };
+  var LAST_OPEN = { 3101: "DECLINED", 3102: "ACCEPTED", 3103: "DECLINED", 3107: "ACCEPTED" };
   var DECLINED_BUT_ONE = { 3101: "DECLINED", 3102: "DECLINED", 3103: "DECLINED", 3104: "DECLINED", 3106: "DECLINED", 3107: "DECLINED" };
 
-  function agreementData(state, withUser) {
+  function agreementData(state, withUser, orderState) {
     var approved = [3102, 3104, 3107, 3108];
     var orders = ORDERS.filter(function (spec) { return approved.indexOf(spec.id) !== -1; }).map(orderRow);
-    orders.forEach(function (row) { row.states = [{ code: "CLIENT_APPROVED" }]; });
+    orders.forEach(function (row) { row.states = [{ code: orderState || "ACCEPTED" }]; });
     return withProperties({
       grant: agreementGrant(),
       accounts: [accountRow(withUser)],
@@ -6921,10 +6899,10 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     });
     var keys = Object.keys(byProperty);
     var settled = keys.length > 0 && keys.every(function (key) {
-      return byProperty[key].indexOf("CLIENT_APPROVED") !== -1 || byProperty[key].every(function (code) { return code === "DECLINED"; });
+      return byProperty[key].indexOf("ACCEPTED") !== -1 || byProperty[key].every(function (code) { return code === "DECLINED"; });
     });
     if (!settled) return;
-    var approved = data.orders.filter(function (order) { return currentState(order) === "CLIENT_APPROVED"; }).map(function (order) { return order.id; });
+    var approved = data.orders.filter(function (order) { return currentState(order) === "ACCEPTED"; }).map(function (order) { return order.id; });
     data.decided = { approved: approved, detailsErrors: approved.length && data.lastApproval ? detailsErrors(data.lastApproval) : null };
     data.closed = true;
   }
@@ -6939,25 +6917,25 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     if (!row) throw reviewError("refused", 404, "This record is not available through this link.");
     if (!grantAllows(data.grant, entity, code)) throw reviewError("refused", 403, "This action is not part of this link.");
     if (currentState(row) !== source) throw reviewError("refused", 409, "This record is no longer waiting for that decision.");
-    if ((code === "QUOTE_VIEWED-CUSTOMER_CHANGES_REQUESTED" || code === "SENT_TO_CLIENT-CLIENT_CHANGES_REQUESTED") && !String(metadata.MESSAGE || "").trim()) {
+    if ((code === "QUOTE_SENT-CUSTOMER_CHANGES_REQUESTED" || code === "SENT_TO_CLIENT-CLIENT_CHANGES_REQUESTED") && !String(metadata.MESSAGE || "").trim()) {
       throw reviewError("refused", 400, "", { MESSAGE: "A message is required." });
     }
     row.states = [{ code: target }];
     if (entity === "order") {
-      if (target === "CLIENT_APPROVED") {
+      if (target === "ACCEPTED") {
         data.approvals = data.approvals || {};
         data.approvals[row.id] = clone(metadata);
         data.lastApproval = clone(metadata);
       }
-      if (target === "CLIENT_APPROVED" && hooks.declineSiblings !== false) {
+      if (target === "ACCEPTED" && hooks.declineSiblings !== false) {
         data.orders.forEach(function (other) {
           var sameProperty = orderAttribute(other, "SERVICE_PROPERTY") === orderAttribute(row, "SERVICE_PROPERTY");
-          if (other.id !== row.id && sameProperty && ["QUOTE_SENT", "QUOTE_VIEWED"].indexOf(currentState(other)) !== -1) {
+          if (other.id !== row.id && sameProperty && currentState(other) === "QUOTE_SENT") {
             other.states = [{ code: "DECLINED" }];
           }
         });
       }
-      if (target === "CLIENT_APPROVED" || target === "DECLINED") data.pendingEvaluation = { reads: 0 };
+      if (target === "ACCEPTED" || target === "DECLINED") data.pendingEvaluation = { reads: 0 };
     }
     if (entity === "document" && target === "CLIENT_APPROVED" && hooks.revokeOnApproval === true) data.closed = true;
     if (entity === "document" && target === "CLIENT_CHANGES_REQUESTED" && hooks.revokeOnChanges === true) data.closed = true;
@@ -7475,14 +7453,6 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
       case "option-open":
         steps = [["option.toggle", { id: 3102 }]];
         break;
-      case "view-pending":
-        behavior.events["QUOTE_SENT-QUOTE_VIEWED"] = { outcome: "hold" };
-        steps = [["option.toggle", { id: 3101 }]];
-        break;
-      case "view-failed":
-        behavior.events["QUOTE_SENT-QUOTE_VIEWED"] = { outcome: "fail" };
-        steps = [["option.toggle", { id: 3101 }]];
-        break;
       case "choices-approve":
         steps = choose;
         break;
@@ -7496,18 +7466,18 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
         steps = [["option.toggle", { id: 3103 }], ["option.intent", { id: 3103, kind: "changes" }], ["option.confirm", { id: 3103 }]];
         break;
       case "command-pending":
-        behavior.events["QUOTE_VIEWED-CLIENT_APPROVED"] = { outcome: "hold" };
+        behavior.events["QUOTE_SENT-ACCEPTED"] = { outcome: "hold" };
         steps = approveAndSend;
         break;
       case "command-refused":
-        behavior.events["QUOTE_VIEWED-CLIENT_APPROVED"] = {
+        behavior.events["QUOTE_SENT-ACCEPTED"] = {
           outcome: "refuse",
           message: "This option was revised by the provider after you opened it. Refresh to see the current version.",
         };
         steps = approveAndSend;
         break;
       case "command-failed":
-        behavior.events["QUOTE_VIEWED-CLIENT_APPROVED"] = { outcome: "fail" };
+        behavior.events["QUOTE_SENT-ACCEPTED"] = { outcome: "fail" };
         steps = approveAndSend;
         break;
       case "command-stale-pending":
@@ -7517,11 +7487,6 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
       case "command-unconfirmed":
         behavior.staleReads = 99;
         steps = approveAndSend;
-        pollDelays = [300, 300, 300];
-        break;
-      case "view-unconfirmed":
-        behavior.staleReads = 99;
-        steps = [["option.toggle", { id: 3101 }]];
         pollDelays = [300, 300, 300];
         break;
       case "contract-details":
@@ -7583,7 +7548,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
         steps = choose.concat([["details.input", { code: "REPRESENTATIVE_PHONE", value: "" }]], submit);
         break;
       case "details-refused":
-        behavior.events["QUOTE_VIEWED-CLIENT_APPROVED"] = {
+        behavior.events["QUOTE_SENT-ACCEPTED"] = {
           outcome: "refuse",
           message: "",
           fieldErrors: { REPRESENTATIVE_EMAIL: "This address cannot receive mail. Enter another email." },
@@ -7660,7 +7625,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
         data = agreementData("CLIENT_APPROVED", false);
         break;
       case "completion-portal":
-        data = agreementData("ACTIVE", true);
+        data = agreementData("CLIENT_APPROVED", true, "ACTIVE");
         portalUrl = PORTAL_URL;
         break;
       case "completion-finishing":
@@ -7677,7 +7642,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
         portalUrl = PORTAL_URL;
         break;
       case "reference-expired":
-        data = agreementData("EXPIRED", false);
+        data = agreementData("CLIENT_APPROVED", false, "COMPLETED");
         break;
       case "closed-canceled":
         data = quotationData("CANCELED");

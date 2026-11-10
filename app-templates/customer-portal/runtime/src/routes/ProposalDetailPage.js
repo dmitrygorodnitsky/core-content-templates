@@ -1,7 +1,7 @@
 // customer-portal/runtime/src/routes/ProposalDetailPage.js — production transfer module.
 import { h } from "../dom.js";
 import { computeSite, currentSite, currentTheme, proposalPlanName, proposalStatusMeta, quoteGroupFor, quotePackage, state } from "../state.js";
-import { contractCommandsBusy, go, scheduleQuoteViews, selectPlan } from "../actions.js";
+import { contractCommandsBusy, go, selectPlan } from "../actions.js";
 import { StatusBadge } from "../components/primitives/StatusBadge.js";
 import { ActionButton } from "../components/primitives/ActionButton.js";
 import { NotFoundState } from "../components/primitives/RouteStates.js";
@@ -151,7 +151,6 @@ function QuoteDetail() {
     page.appendChild(NotFoundState({ noun: "quote", backLabel: "contracts", backRoute: "proposals.list" }));
     return page;
   }
-  scheduleQuoteViews(group);
   var status = QUOTE_STATUS[group.status];
   var busy = contractCommandsBusy();
   page.setAttribute("data-state", group.status);
@@ -186,7 +185,7 @@ function QuoteDetail() {
     ]));
   }
 
-  var open = group.orders.filter(function (order) { return order.status === "unseen" || order.status === "viewed"; });
+  var open = group.orders.filter(function (order) { return order.status === "unseen"; });
   var list = h("div", { "class": "quote-options", "data-module": "quote-options", "data-visual-id": "quote-options" });
   group.orders.forEach(function (order) {
     list.appendChild(QuoteOptionCard(order, {

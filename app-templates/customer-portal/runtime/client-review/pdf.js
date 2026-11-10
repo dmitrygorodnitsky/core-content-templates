@@ -3,7 +3,7 @@
 
   var ns = global.ClientReview || (global.ClientReview = {});
   var KINDS = ["agreement-review", "reference", "completion"];
-  var STATUSES = { new: "optionNew", viewed: "optionViewed", approved: "optionApproved", declined: "optionDeclined", changes: "optionChanges", revising: "optionRevising", unknown: "optionUnknown" };
+  var STATUSES = { new: "optionNew", approved: "optionApproved", declined: "optionDeclined", changes: "optionChanges", revising: "optionRevising", unknown: "optionUnknown" };
 
   function offered(snapshot) {
     return snapshot.phase === "ready" && snapshot.view && KINDS.indexOf(snapshot.view.kind) !== -1;

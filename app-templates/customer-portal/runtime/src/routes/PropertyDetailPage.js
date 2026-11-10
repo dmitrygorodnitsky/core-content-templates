@@ -195,7 +195,7 @@ function facts(property, contract, model, service) {
   if (site && site.lot) rows.push({ key: "lot", label: "Lot", value: site.lot + " sq ft" });
   var group = quoteGroupFor(property.quoteSiteId || property.id);
   var listed = group ? (quotePackage() || { pending: [] }).pending.find(function (item) { return item.id === group.id; }) : null;
-  var waiting = listed ? listed.orders.filter(function (order) { return order.status === "unseen" || order.status === "viewed"; }).length : 0;
+  var waiting = listed ? listed.orders.filter(function (order) { return order.status === "unseen"; }).length : 0;
   if (waiting) {
     rows.push({
       key: "quotes", label: "Quotes",

@@ -92,7 +92,6 @@ export var ACTIONS = {
   "quote.decline":     function (id) { return openContractConfirm("decline", id); },
   "quote.confirm":     function (id) { return confirmContractCommand("quote", id); },
   "quote.cancel":      function ()   { return cancelContractConfirm(); },
-  "quote.retryView":   function (id) { return retryQuoteView(id); },
   "quote.requestChanges": function (id) { if (!openContractConfirm("changes", id)) return false; focusElement("[data-quote-changes=\"" + id + "\"]"); return true; },
   "quote.sendChanges": function (id) { return sendChangeRequest(id); },
   "quoteRequest.toggleProperty": function (id) { if (!toggleQuoteProperty(id)) return false; render(); focusElement("[data-action=\"quoteRequest.toggleProperty\"][data-id=\"" + id + "\"]"); return true; },
@@ -1497,23 +1496,6 @@ export function contractCommandsBusy() {
   return contractCommands.busy();
 }
 
-export function scheduleQuoteViews(group) {
-  if (!group || contractCommands.busy()) return;
-  var pending = group.orders.filter(function (order) {
-    return order.status === "unseen" && !state.quoteViews[order.backendId];
-  }).map(function (order) { return order.backendId; });
-  if (!pending.length) return;
-  pending.forEach(function (id) { state.quoteViews[id] = "pending"; });
-  Promise.resolve().then(function () {
-    if (contractCommands.busy()) {
-      pending.forEach(function (id) { if (state.quoteViews[id] === "pending") delete state.quoteViews[id]; });
-      render();
-      return;
-    }
-    contractCommands.view(pending);
-  });
-}
-
 function contractTarget(id) {
   var backendId = Number(id);
   return Number.isInteger(backendId) && backendId > 0 ? backendId : null;
@@ -1578,13 +1560,6 @@ function ensureContractDetails() {
   if (state.contractDetails) return;
   var load = state.config.dataMode === "live" ? undefined : function (context) { return fixtureAccountProfileAdapter.load("profile", context); };
   openContractDetails({ load: load, onChange: function () { render(); } });
-}
-
-function retryQuoteView(id) {
-  var backendId = contractTarget(id);
-  if (!backendId || contractCommands.busy()) return false;
-  delete state.quoteViews[backendId];
-  return contractCommands.view([backendId]);
 }
 
 function refreshContracts() {

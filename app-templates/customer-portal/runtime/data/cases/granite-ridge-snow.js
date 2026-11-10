@@ -44,8 +44,12 @@ const MONITORED_VISITS = {
   "Lamar Terrace": { appointment: { state: "COMPLETED", service: "Refreeze re-treat", when: "Completed 6:07 AM", dayIndex: 0, resource: "Kyle B.", est: { start: "5:15 AM", end: "5:50 AM" }, actual: { start: "5:41 AM", end: "6:07 AM" } } },
 };
 
-const QUOTE_PATH = ["INITIAL", "QUOTE_PREPARED", "QUOTE_APPROVED_INTERNALLY", "QUOTE_SENT", "QUOTE_VIEWED"];
-const AGREEMENT_PATH = ["DRAFT", "PENDING_MANAGEMENT_APPROVAL", "INTERNALLY_APPROVED", "SENT_TO_CLIENT", "CLIENT_APPROVED", "ACTIVE"];
+const QUOTE_PATH = ["DRAFT", "QUOTE_PREPARED", "QUOTE_APPROVED", "QUOTE_SENT", "ACCEPTED", "ACTIVE"];
+const QUOTE_ENDINGS = {
+  DECLINED: ["QUOTE_SENT", "DECLINED"],
+  CUSTOMER_CHANGES_REQUESTED: ["QUOTE_SENT", "CUSTOMER_CHANGES_REQUESTED"],
+};
+const AGREEMENT_PATH = ["DRAFT", "PENDING_MANAGEMENT_APPROVAL", "INTERNALLY_APPROVED", "SENT_TO_CLIENT", "CLIENT_APPROVED"];
 const CLIENT_ACCOUNT = 6001;
 const SALES_TAX_RATE = 0.029;
 const MONTHS_IN_SEASON = 5;
@@ -84,7 +88,7 @@ const PRICE_BOOK = {
 
 const QUOTE_ORDERS = [
   [8101, 7101, "PER_SERVICE", "DECLINED", "2026-27"],
-  [8102, 7101, "MONTHLY", "CLIENT_APPROVED", "2026-27"],
+  [8102, 7101, "MONTHLY", "ACCEPTED", "2026-27"],
   [8103, 7101, "SEASONAL", "DECLINED", "2026-27"],
   [8104, 7102, "PER_SERVICE", "CUSTOMER_CHANGES_REQUESTED", "2026-27"],
   [8105, 7102, "MONTHLY", "CUSTOMER_CHANGES_REQUESTED", "2026-27"],
@@ -92,28 +96,28 @@ const QUOTE_ORDERS = [
   [8107, 7103, "PER_SERVICE", "DECLINED", "2026-27"],
   [8108, 7103, "MONTHLY", "DECLINED", "2026-27"],
   [8109, 7103, "SEASONAL", "DECLINED", "2026-27"],
-  [8110, 7104, "PER_SERVICE", "QUOTE_VIEWED", "2026-27"],
+  [8110, 7104, "PER_SERVICE", "QUOTE_SENT", "2026-27"],
   [8111, 7104, "MONTHLY", "QUOTE_SENT", "2026-27"],
   [8112, 7104, "SEASONAL", "QUOTE_SENT", "2026-27"],
   [8113, 7207, "MONTHLY", "QUOTE_PREPARED", "2026-27"],
-  [8201, 7201, "SEASONAL", "CLIENT_APPROVED", "2026-27"],
+  [8201, 7201, "SEASONAL", "ACCEPTED", "2026-27"],
   [8202, 7201, "PER_SERVICE", "DECLINED", "2026-27"],
-  [8203, 7202, "MONTHLY", "CLIENT_APPROVED", "2026-27"],
+  [8203, 7202, "MONTHLY", "ACCEPTED", "2026-27"],
   [8204, 7202, "SEASONAL", "DECLINED", "2026-27"],
-  [8301, 7203, "SEASONAL", "CLIENT_APPROVED", "2026-27"],
+  [8301, 7203, "SEASONAL", "ACCEPTED", "2026-27"],
   [8302, 7203, "MONTHLY", "DECLINED", "2026-27"],
-  [8401, 7204, "MONTHLY", "CLIENT_APPROVED", "2026-27"],
+  [8401, 7204, "MONTHLY", "ACCEPTED", "2026-27"],
   [8402, 7204, "SEASONAL", "DECLINED", "2026-27"],
-  [8001, 7205, "SEASONAL", "CLIENT_APPROVED", "2025-26"],
+  [8001, 7205, "SEASONAL", "ACTIVE", "2025-26"],
   [8002, 7205, "PER_SERVICE", "DECLINED", "2025-26"],
-  [8003, 7206, "MONTHLY", "CLIENT_APPROVED", "2025-26"],
-  [8501, 7208, "SEASONAL", "CLIENT_APPROVED", "2024-25"],
-  [8601, 7209, "MONTHLY", "CLIENT_APPROVED", "2025-26"],
+  [8003, 7206, "MONTHLY", "ACTIVE", "2025-26"],
+  [8501, 7208, "SEASONAL", "COMPLETED", "2024-25"],
+  [8601, 7209, "MONTHLY", "SUSPENDED", "2025-26"],
   [8602, 7209, "SEASONAL", "DECLINED", "2025-26"],
-  [8701, 7210, "SEASONAL", "CLIENT_APPROVED", "2024-25"],
+  [8701, 7210, "SEASONAL", "COMPLETED", "2024-25"],
   [8801, 7211, "PER_SERVICE", "DECLINED", "2026-27"],
   [8802, 7211, "SEASONAL", "DECLINED", "2026-27"],
-  [8901, 7212, "SEASONAL", "CLIENT_APPROVED", "2026-27"],
+  [8901, 7212, "SEASONAL", "ACCEPTED", "2026-27"],
   [8902, 7212, "MONTHLY", "DECLINED", "2026-27"],
 ];
 
@@ -178,23 +182,27 @@ const AGREEMENTS = [
   { id: 9102, state: "SENT_TO_CLIENT", orders: [8201, 8202, 8203, 8204], attributes: Object.assign({ EFFECTIVE_DATE: "2026-10-20", TERM_START_DATE: SEASONS["2026-27"][0], TERM_END_DATE: SEASONS["2026-27"][1], CONTRACT_TERMS: CONTRACT_TERMS }) },
   { id: 9103, state: "DRAFT", orders: [8301, 8302], attributes: Object.assign({ TERM_START_DATE: SEASONS["2026-27"][0], TERM_END_DATE: SEASONS["2026-27"][1] }) },
   { id: 9104, state: "PENDING_MANAGEMENT_APPROVAL", orders: [8401, 8402], attributes: Object.assign({ TERM_START_DATE: SEASONS["2026-27"][0], TERM_END_DATE: SEASONS["2026-27"][1] }) },
-  { id: 9100, state: "ACTIVE", orders: [8001, 8002, 8003], attributes: Object.assign({ EFFECTIVE_DATE: "2025-10-15", TERM_START_DATE: SEASONS["2025-26"][0], TERM_END_DATE: SEASONS["2025-26"][1], CONTRACT_TERMS: CONTRACT_TERMS }) },
-  { id: 9099, state: "EXPIRED", orders: [8501], attributes: Object.assign({ EFFECTIVE_DATE: "2024-10-10", TERM_START_DATE: SEASONS["2024-25"][0], TERM_END_DATE: SEASONS["2024-25"][1], CONTRACT_TERMS: CONTRACT_TERMS }) },
-  { id: 9098, state: "SUSPENDED", orders: [8601, 8602], attributes: Object.assign({ EFFECTIVE_DATE: "2025-10-12", TERM_START_DATE: SEASONS["2025-26"][0], TERM_END_DATE: SEASONS["2025-26"][1], CONTRACT_TERMS: CONTRACT_TERMS }) },
+  { id: 9100, state: "CLIENT_APPROVED", orders: [8001, 8002, 8003], attributes: Object.assign({ EFFECTIVE_DATE: "2025-10-15", TERM_START_DATE: SEASONS["2025-26"][0], TERM_END_DATE: SEASONS["2025-26"][1], CONTRACT_TERMS: CONTRACT_TERMS }) },
+  { id: 9099, state: "CLIENT_APPROVED", orders: [8501], attributes: Object.assign({ EFFECTIVE_DATE: "2024-10-10", TERM_START_DATE: SEASONS["2024-25"][0], TERM_END_DATE: SEASONS["2024-25"][1], CONTRACT_TERMS: CONTRACT_TERMS }) },
+  { id: 9098, state: "CLIENT_APPROVED", orders: [8601, 8602], attributes: Object.assign({ EFFECTIVE_DATE: "2025-10-12", TERM_START_DATE: SEASONS["2025-26"][0], TERM_END_DATE: SEASONS["2025-26"][1], CONTRACT_TERMS: CONTRACT_TERMS }) },
   { id: 9097, state: "ARCHIVED", orders: [8701], attributes: Object.assign({ EFFECTIVE_DATE: "2024-10-08", TERM_START_DATE: SEASONS["2024-25"][0], TERM_END_DATE: SEASONS["2024-25"][1], CONTRACT_TERMS: CONTRACT_TERMS }) },
   { id: 9096, state: "CANCELED", orders: [8801, 8802], attributes: {} },
   { id: 9095, state: "CLIENT_APPROVED", orders: [8901, 8902], attributes: Object.assign({ EFFECTIVE_DATE: "2026-10-18", TERM_START_DATE: SEASONS["2026-27"][0], TERM_END_DATE: SEASONS["2026-27"][1], CONTRACT_TERMS: CONTRACT_TERMS }) },
 ];
 const AGREEMENT_ENDINGS = {
-  SUSPENDED: ["ACTIVE", "SUSPENDED"],
-  EXPIRED: ["ACTIVE", "EXPIRED"],
-  ARCHIVED: ["ACTIVE", "EXPIRED", "ARCHIVED"],
   CANCELED: ["DRAFT", "CANCELED"],
 };
 
 function statePath(path, target) {
   const reached = path.indexOf(target);
   return (reached === -1 ? path.concat([target]) : path.slice(0, reached + 1)).map(function (code) { return { code: code }; });
+}
+
+function stateHistory(path, endings, target) {
+  const ending = endings[target];
+  return ending
+    ? statePath(path, ending[0]).concat(ending.slice(1).map(function (code) { return { code: code }; }))
+    : statePath(path, target);
 }
 
 function money(value) {
@@ -232,7 +240,7 @@ function quoteOrder(entry) {
     id: entry[0],
     type: { id: 6, code: "WINTER_SERVICES_ORDER" },
     account: { id: CLIENT_ACCOUNT },
-    states: statePath(QUOTE_PATH, entry[3]),
+    states: stateHistory(QUOTE_PATH, QUOTE_ENDINGS, entry[3]),
     totalCharges: charges,
     totalTaxes: taxes,
     grandTotal: money(charges + taxes),
@@ -245,10 +253,7 @@ function quoteOrder(entry) {
 function serviceAgreement(spec) {
   const attributes = { CLIENT: { value: CLIENT_ACCOUNT }, ORDERS: { value: spec.orders.slice() } };
   Object.keys(spec.attributes).forEach(function (code) { attributes[code] = { value: spec.attributes[code] }; });
-  const ending = AGREEMENT_ENDINGS[spec.state];
-  const states = ending
-    ? statePath(AGREEMENT_PATH, ending[0]).concat(ending.slice(1).map(function (code) { return { code: code }; }))
-    : statePath(AGREEMENT_PATH, spec.state);
+  const states = stateHistory(AGREEMENT_PATH, AGREEMENT_ENDINGS, spec.state);
   return {
     id: spec.id,
     type: { id: 17, code: "SERVICE_AGREEMENT" },

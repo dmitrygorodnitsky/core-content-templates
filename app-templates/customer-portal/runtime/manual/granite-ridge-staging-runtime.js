@@ -1200,13 +1200,16 @@
   // app-templates/customer-portal/runtime/src/normalizers/contracts.js
   var QUOTE_ORDER_TYPES = /* @__PURE__ */ Object.freeze(["FIELD_SERVICE_ORDER", "WINTER_SERVICES_ORDER"]);
   var CUSTOMER_ORDER_STATUS = /* @__PURE__ */ Object.freeze({
-    CLIENT_APPROVED: "approved",
+    ACCEPTED: "approved",
+    ACTIVE: "approved",
+    SUSPENDED: "approved",
+    COMPLETED: "approved",
+    CANCELED: "approved",
     CUSTOMER_CHANGES_REQUESTED: "revision",
     DECLINED: "declined",
-    QUOTE_SENT: "unseen",
-    QUOTE_VIEWED: "viewed"
+    QUOTE_SENT: "unseen"
   });
-  var OPERATOR_ORDER_STATES = /* @__PURE__ */ Object.freeze(["CHANGES_REQUESTED", "INITIAL", "QUOTE_APPROVED_INTERNALLY", "QUOTE_PREPARED"]);
+  var OPERATOR_ORDER_STATES = /* @__PURE__ */ Object.freeze(["CHANGES_REQUESTED", "DRAFT", "QUOTE_APPROVED", "QUOTE_PREPARED"]);
   var PRICING_MODELS = /* @__PURE__ */ Object.freeze({
     PER_SERVICE: "Per service",
     MONTHLY: "Monthly",
@@ -1231,7 +1234,7 @@
   }, { ORGANIZATION: "Organization" }));
   var QUOTE_REQUEST_OUTCOMES = /* @__PURE__ */ Object.freeze(["PROCESSING", "ACCEPTED", "REFUSED", "FAILED"]);
   var SCOPE_MODES = /* @__PURE__ */ Object.freeze(["server-scoped", "browser-filtered", "unscoped"]);
-  var ORDER_ACTIONS = { unseen: ["view"], viewed: ["approve", "changes", "decline"] };
+  var ORDER_ACTIONS = { unseen: ["approve", "changes", "decline"] };
   var AGREEMENT_ACTIONS = { SENT_TO_CLIENT: ["approve"] };
   var AGREEMENT_OPERATION_STATUS_KEY = "AGREEMENT_OPERATION_STATUS";
   var FAILED_OPERATION_STATES = /* @__PURE__ */ Object.freeze({
@@ -1247,13 +1250,14 @@
   var STAGE_ORDER = ["approval", "drafting", "approved", "active", "suspended", "expired", "archived", "canceled"];
   var APPROVED_SERVICE_STAGES = ["drafting", "approval", "approved", "active", "suspended", "expired", "archived"];
   var CURRENT_SERVICE_STAGES = ["active", "approved", "approval", "drafting", "suspended"];
-  var PENDING_STATUSES = ["unseen", "viewed", "revision"];
+  var PENDING_STATUSES = ["unseen", "revision"];
   var TERMS_DEPTH_LIMIT = 4;
   var HEADING_LINE = /^#{1,6}\s+(.+)$/;
   var ITEM_LINE = /^[-*•]\s+(.+)$/;
   var NUMBERED_LINE = /^(\d+(?:\.\d+)+[.)]?|\d+[.)])\s+(.+)$/;
   var MANAGEMENT = agreementStage("drafting", "Pending management approval", "scheduled");
   var APPROVED = agreementStage("approved", "Approved", "ok");
+  var SIGNED_AGREEMENT_STATE = "CLIENT_APPROVED";
   var AGREEMENT_STAGES = /* @__PURE__ */ Object.freeze({
     DRAFT: agreementStage("drafting", "Being prepared", "scheduled"),
     PENDING_MANAGEMENT_APPROVAL: MANAGEMENT,
@@ -1263,11 +1267,13 @@
     AGREEMENT_SEND_FAILED: agreementStage("approval", "Being sent to you", "warn"),
     CLIENT_APPROVED: APPROVED,
     ACTIVATION_FAILED: APPROVED,
-    ACTIVE: agreementStage("active", "Active", "ok"),
-    SUSPENDED: agreementStage("suspended", "Suspended", "warn"),
-    EXPIRED: agreementStage("expired", "Expired", "scheduled"),
     ARCHIVED: agreementStage("archived", "Archived", "scheduled"),
     CANCELED: agreementStage("canceled", "Cancelled", "scheduled")
+  });
+  var ORDER_SERVICE_STAGES = /* @__PURE__ */ Object.freeze({
+    ACTIVE: agreementStage("active", "Active", "ok"),
+    SUSPENDED: agreementStage("suspended", "Suspended", "warn"),
+    COMPLETED: agreementStage("expired", "Expired", "scheduled")
   });
   function normalizeContracts(raw) {
     var source = raw && typeof raw === "object" ? raw : {};
@@ -1405,7 +1411,9 @@
   function contractsPackage(source, properties) {
     var data = source && typeof source === "object" ? source : {};
     var orders = Array.isArray(data.orders) ? data.orders : [];
-    var agreements = Array.isArray(data.agreements) ? data.agreements.filter(Boolean) : [];
+    var agreements = Array.isArray(data.agreements) ? data.agreements.filter(Boolean).map(function(agreement) {
+      return withServiceStage(agreement, orders);
+    }) : [];
     var byProperty = propertyIndex(properties);
     var packageOf = packageIndex(agreements);
     var readable = new Set(orders.map(function(order) {
@@ -1446,6 +1454,20 @@
       scopeMode: data.scopeMode || null,
       partial: partialOf(data, orders, rows2)
     };
+  }
+  function withServiceStage(agreement, orders) {
+    if (!agreement || agreement.stateCode !== SIGNED_AGREEMENT_STATE) return agreement;
+    var states = (orders || []).filter(function(order) {
+      return agreement.orderBackendIds.indexOf(order.backendId) !== -1;
+    }).map(function(order) {
+      return order.stateCode;
+    });
+    var service = (/* @__PURE__ */ Object.keys(ORDER_SERVICE_STAGES)).find(function(code) {
+      return states.indexOf(code) !== -1;
+    });
+    if (!service) return agreement;
+    var stage = ORDER_SERVICE_STAGES[service];
+    return Object.assign({}, agreement, { stage: stage.stage, label: stage.label, tone: stage.tone });
   }
   function pricePeriod(order) {
     return order && order.pricingModel ? own(PRICE_PERIODS, order.pricingModel.code) || "" : "";
@@ -1498,8 +1520,7 @@
   }
   function groupStatus(orders) {
     var decision = groupDecision(orders);
-    if (decision !== "open") return decision;
-    return (orders || []).some(hasStatus("viewed")) ? "viewed" : "unseen";
+    return decision === "open" ? "unseen" : decision;
   }
   function findQuote(pkg, backendId) {
     var groups = pkg && Array.isArray(pkg.groups) ? pkg.groups : [];
@@ -1987,7 +2008,7 @@
     return index === -1 ? PRICING_MODEL_RANK.length : index;
   }
   function isOpen(order) {
-    return order.status === "unseen" || order.status === "viewed";
+    return order.status === "unseen";
   }
   function hasStatus(status) {
     return function(order) {
@@ -2039,7 +2060,6 @@
     pagreements: [],
     agreementId: null,
     agreementTermsOpen: true,
-    quoteViews: {},
     contractCommand: null,
     contractConfirm: null,
     contractDetails: null,
@@ -2432,7 +2452,6 @@
     state.porders = fixture && fixture.proposals && fixture.proposals.orders ? cloneCaseValue(fixture.proposals.orders) : [];
     state.pagreements = fixture && fixture.proposals && fixture.proposals.agreements ? cloneCaseValue(fixture.proposals.agreements) : [];
     state.agreementId = null;
-    state.quoteViews = {};
     state.contractCommand = null;
     state.contractConfirm = null;
     state.contractDetails = null;
@@ -2584,10 +2603,9 @@
 
   // app-templates/customer-portal/runtime/src/contract-commands.js
   var CONTRACT_EVENTS = /* @__PURE__ */ Object.freeze({
-    view: /* @__PURE__ */ Object.freeze({ entity: "order", source: "QUOTE_SENT", code: "QUOTE_SENT-QUOTE_VIEWED" }),
-    approve: /* @__PURE__ */ Object.freeze({ entity: "order", source: "QUOTE_VIEWED", code: "QUOTE_VIEWED-CLIENT_APPROVED" }),
-    decline: /* @__PURE__ */ Object.freeze({ entity: "order", source: "QUOTE_VIEWED", code: "QUOTE_VIEWED-DECLINED" }),
-    changes: /* @__PURE__ */ Object.freeze({ entity: "order", source: "QUOTE_VIEWED", code: "QUOTE_VIEWED-CUSTOMER_CHANGES_REQUESTED" }),
+    approve: /* @__PURE__ */ Object.freeze({ entity: "order", source: "QUOTE_SENT", code: "QUOTE_SENT-ACCEPTED" }),
+    decline: /* @__PURE__ */ Object.freeze({ entity: "order", source: "QUOTE_SENT", code: "QUOTE_SENT-DECLINED" }),
+    changes: /* @__PURE__ */ Object.freeze({ entity: "order", source: "QUOTE_SENT", code: "QUOTE_SENT-CUSTOMER_CHANGES_REQUESTED" }),
     agreement: /* @__PURE__ */ Object.freeze({ entity: "document", source: "SENT_TO_CLIENT", code: "SENT_TO_CLIENT-CLIENT_APPROVED" })
   });
   var CONFIRMED_TOAST = {
@@ -2609,7 +2627,7 @@
       }).finally(function() {
         flight = null;
         var kept = command.kind === "changes" && !!deps.state.contractCommand;
-        if (command.kind !== "view" && !kept) deps.state.contractConfirm = null;
+        if (!kept) deps.state.contractConfirm = null;
         deps.render();
       });
       flight = started2;
@@ -2651,51 +2669,6 @@
       var text10 = typeof message === "string" ? message.trim() : "";
       if (!text10) return Promise.resolve(false);
       return decide("changes", backendId, { MESSAGE: { value: text10 } });
-    }
-    function view(backendIds) {
-      var definition = CONTRACT_EVENTS.view;
-      if (flight) return Promise.resolve(false);
-      var pkg = deps.current();
-      var ids = (backendIds || []).filter(function(id, index, all) {
-        var quote = findQuote(pkg, id);
-        return all.indexOf(id) === index && !!quote && quote.stateCode === definition.source;
-      });
-      if (!ids.length) return Promise.resolve(false);
-      ids.forEach(function(id) {
-        deps.state.quoteViews[id] = "pending";
-      });
-      return run({ kind: "view", targets: ids }, async function() {
-        var gateway = deps.gateway();
-        for (var index = 0; index < ids.length; index += 1) {
-          try {
-            await gateway.sendOrderEvent(ids[index], definition.code, deps.context());
-          } catch (error2) {
-            if (error2 && error2.code === "session-expired") throw error2;
-          }
-        }
-        var read;
-        try {
-          read = await deps.reload();
-        } catch (error2) {
-          ids.forEach(function(id) {
-            deps.state.quoteViews[id] = "failed";
-          });
-          throw readbackFailure(error2);
-        }
-        if (!ordersRead(read)) {
-          ids.forEach(function(id) {
-            deps.state.quoteViews[id] = "failed";
-          });
-          throw readbackFailure(null);
-        }
-        ids.forEach(function(id) {
-          var quote = findQuote(read, id);
-          if (quote && quote.stateCode !== definition.source) delete deps.state.quoteViews[id];
-          else deps.state.quoteViews[id] = "failed";
-        });
-        deps.state.contractCommand = null;
-        return true;
-      }) || Promise.resolve(false);
     }
     async function confirm(kind, backendId, source, stateOf) {
       var read;
@@ -2741,12 +2714,8 @@
       busy,
       decide,
       requestChanges,
-      approveAgreement,
-      view
+      approveAgreement
     };
-  }
-  function ordersRead(pkg) {
-    return !!pkg && !!pkg.sources && pkg.sources.orders === "ready";
   }
   function readbackFailure(cause) {
     var error2 = coded("readback-failed");
@@ -2814,7 +2783,7 @@
       return { account: fixture && fixture.customerAccount ? clone(fixture.customerAccount) : null, scopeMode: null };
     }
   };
-  var ROUND_STATES = ["QUOTE_SENT", "QUOTE_VIEWED", "CLIENT_APPROVED", "DECLINED", "CUSTOMER_CHANGES_REQUESTED"];
+  var ROUND_STATES = ["QUOTE_SENT", "ACCEPTED", "DECLINED", "CUSTOMER_CHANGES_REQUESTED"];
   function createFixtureContractsGateway(state2) {
     return {
       async readOrder(backendId) {
@@ -2826,14 +2795,14 @@
       async sendOrderEvent(backendId, event, context, input) {
         var target = transition(fixtureRow(state2.porders, backendId), event);
         var orders = withState(state2.porders, [backendId], target);
-        if (target === "CLIENT_APPROVED") {
+        if (target === "ACCEPTED") {
           orders = withState(orders, siblingsOf(orders, state2.pagreements, backendId), "DECLINED");
           orders = orders.map(function(row) {
             return row.id === positiveInteger(backendId) ? Object.assign({}, row, { metadata: Object.assign({}, row.metadata, { QUOTATION_CLIENT_DETAILS: detailValues(input) }) }) : row;
           });
         }
         state2.porders = orders;
-        if (target === "CLIENT_APPROVED" || target === "DECLINED") state2.pagreements = settleRound(state2.pagreements, orders, positiveInteger(backendId));
+        if (target === "ACCEPTED" || target === "DECLINED") state2.pagreements = settleRound(state2.pagreements, orders, positiveInteger(backendId));
         return true;
       },
       async sendAgreementEvent(backendId, event) {
@@ -2880,7 +2849,7 @@
     var property = attributeNumber(fixtureRow(orders, backendId), "SERVICE_PROPERTY");
     var listed = agreedOrderIds(agreements);
     return orders.filter(function(row) {
-      return row.id !== positiveInteger(backendId) && listed.indexOf(row.id) === -1 && attributeNumber(row, "SERVICE_PROPERTY") === property && ["QUOTE_SENT", "QUOTE_VIEWED"].indexOf(latestStateCode(row)) !== -1;
+      return row.id !== positiveInteger(backendId) && listed.indexOf(row.id) === -1 && attributeNumber(row, "SERVICE_PROPERTY") === property && latestStateCode(row) === "QUOTE_SENT";
     }).map(function(row) {
       return row.id;
     });
@@ -2897,12 +2866,12 @@
     });
     var keys = /* @__PURE__ */ Object.keys(byProperty);
     var settled2 = keys.length > 0 && keys.every(function(key) {
-      return byProperty[key].indexOf("CLIENT_APPROVED") !== -1 || byProperty[key].every(function(code) {
+      return byProperty[key].indexOf("ACCEPTED") !== -1 || byProperty[key].every(function(code) {
         return code === "DECLINED";
       });
     });
     var approved = round2.filter(function(row) {
-      return latestStateCode(row) === "CLIENT_APPROVED";
+      return latestStateCode(row) === "ACCEPTED";
     });
     if (!settled2 || !approved.length) return agreements;
     var carrier = approved.filter(function(row) {
@@ -7206,8 +7175,7 @@
     approved: /* @__PURE__ */ Object.freeze({ label: "\u2713 Approved", badge: "status-badge--ok", dot: "#34c759" }),
     revision: /* @__PURE__ */ Object.freeze({ label: "\u27F3 Changes requested", badge: "status-badge--warn", dot: "#ff9f0a" }),
     declined: /* @__PURE__ */ Object.freeze({ label: "\u2715 Declined", badge: "status-badge--danger", dot: "#ff3b30" }),
-    unseen: /* @__PURE__ */ Object.freeze({ label: "\u25D4 Sent", badge: "status-badge--scheduled", dot: "#8a94a6" }),
-    viewed: /* @__PURE__ */ Object.freeze({ label: "\u2022 Viewed", badge: "status-badge--scheduled", dot: "#8a94a6" })
+    unseen: /* @__PURE__ */ Object.freeze({ label: "\u25D4 Sent", badge: "status-badge--scheduled", dot: "#8a94a6" })
   });
   var DECISION_META = { approved: "approved", declined: "declined", revision: "revision", open: "unseen" };
   var DECISION_LABEL = {
@@ -9905,17 +9873,7 @@
     var targeted = !!command && command.targets.indexOf(order.backendId) !== -1;
     var outcome = targeted && command.phase !== "pending" ? CommandOutcome(command.phase) : null;
     var busy = !!settings.busy;
-    if (order.status === "unseen") {
-      var view = state.quoteViews[order.backendId];
-      if (view === "failed") {
-        return h("div", { "class": "quote-option__decide" }, DecisionFailure(
-          "We couldn\u2019t let the provider know you opened this quote, so its decisions aren\u2019t available yet.",
-          { action: "quote.retryView", id: String(order.backendId), label: "Try again" }
-        ));
-      }
-      return h("div", { "class": "quote-option__decide" }, PendingNote("Letting the provider know you opened this quote\u2026"));
-    }
-    if (order.status !== "viewed") return outcome ? h("div", { "class": "quote-option__decide" }, outcome) : null;
+    if (order.status !== "unseen") return outcome ? h("div", { "class": "quote-option__decide" }, outcome) : null;
     var confirm = state.contractConfirm;
     var confirming = !!confirm && confirm.backendId === order.backendId && (confirm.kind === "approve" || confirm.kind === "decline");
     var changing = !!confirm && confirm.backendId === order.backendId && confirm.kind === "changes";
@@ -10587,7 +10545,7 @@
       return item.id === group.id;
     }) : null;
     var waiting = listed ? listed.orders.filter(function(order) {
-      return order.status === "unseen" || order.status === "viewed";
+      return order.status === "unseen";
     }).length : 0;
     if (waiting) {
       rows2.push({
@@ -11049,7 +11007,6 @@
       page.appendChild(NotFoundState({ noun: "quote", backLabel: "contracts", backRoute: "proposals.list" }));
       return page;
     }
-    scheduleQuoteViews(group);
     var status = QUOTE_STATUS[group.status];
     var busy = contractCommandsBusy();
     page.setAttribute("data-state", group.status);
@@ -11082,7 +11039,7 @@
       ]));
     }
     var open = group.orders.filter(function(order) {
-      return order.status === "unseen" || order.status === "viewed";
+      return order.status === "unseen";
     });
     var list = h("div", { "class": "quote-options", "data-module": "quote-options", "data-visual-id": "quote-options" });
     group.orders.forEach(function(order) {
@@ -12613,9 +12570,6 @@
     "quote.cancel": function() {
       return cancelContractConfirm();
     },
-    "quote.retryView": function(id) {
-      return retryQuoteView(id);
-    },
     "quote.requestChanges": function(id) {
       if (!openContractConfirm("changes", id)) return false;
       focusElement('[data-quote-changes="' + id + '"]');
@@ -13693,28 +13647,6 @@
   function contractCommandsBusy() {
     return contractCommands.busy();
   }
-  function scheduleQuoteViews(group) {
-    if (!group || contractCommands.busy()) return;
-    var pending = group.orders.filter(function(order) {
-      return order.status === "unseen" && !state.quoteViews[order.backendId];
-    }).map(function(order) {
-      return order.backendId;
-    });
-    if (!pending.length) return;
-    pending.forEach(function(id) {
-      state.quoteViews[id] = "pending";
-    });
-    Promise.resolve().then(function() {
-      if (contractCommands.busy()) {
-        pending.forEach(function(id) {
-          if (state.quoteViews[id] === "pending") delete state.quoteViews[id];
-        });
-        render();
-        return;
-      }
-      contractCommands.view(pending);
-    });
-  }
   function contractTarget(id) {
     var backendId = Number(id);
     return Number.isInteger(backendId) && backendId > 0 ? backendId : null;
@@ -13777,12 +13709,6 @@
     openContractDetails({ load, onChange: function() {
       render();
     } });
-  }
-  function retryQuoteView(id) {
-    var backendId = contractTarget(id);
-    if (!backendId || contractCommands.busy()) return false;
-    delete state.quoteViews[backendId];
-    return contractCommands.view([backendId]);
   }
   function refreshContracts() {
     if (contractCommands.busy()) return false;

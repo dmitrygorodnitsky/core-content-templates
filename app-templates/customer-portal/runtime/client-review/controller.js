@@ -168,7 +168,7 @@
 
     function declinableOptions(property) {
       return property.options.filter(function (option) {
-        return (option.actions.decline || option.actions.view) && !state.accepted[option.recordKey] && !inflight[option.recordKey];
+        return option.actions.decline && !state.accepted[option.recordKey] && !inflight[option.recordKey];
       });
     }
 
@@ -533,10 +533,6 @@
       } else {
         delete state.expanded[option.id];
       }
-      if (opening && option.actions.view && !state.commands[option.recordKey] && !state.accepted[option.recordKey] && !busy()) {
-        send(option.recordKey, "order", option.id, contract.orderEvents.view.code, {}, {});
-        return;
-      }
       render();
     }
 
@@ -596,13 +592,6 @@
       if (option.status === target) return Promise.resolve(true);
       if (state.accepted[option.recordKey] || inflight[option.recordKey]) return Promise.resolve(false);
       var context = { closedAfter: closedAfter };
-      if (option.actions.view) {
-        return send(option.recordKey, "order", option.id, contract.orderEvents.view.code, {}, context).then(function (sent) {
-          var viewed = sent ? findOption(id) : null;
-          if (!viewed || !viewed.actions[kind] || state.accepted[viewed.recordKey]) return false;
-          return decideOption(id, kind, metadata, closedAfter);
-        });
-      }
       if (!option.actions[kind]) return Promise.resolve(false);
       return send(option.recordKey, "order", option.id, contract.orderEvents[kind].code, metadata, Object.assign({
         onRefusal: function (error) {
@@ -770,12 +759,6 @@
           return;
         case "option.toggle":
           toggleOption(data.id);
-          return;
-        case "option.view":
-          option = findOption(data.id);
-          if (!option || !option.actions.view || busy() || state.accepted[option.recordKey]) return;
-          clearOutcome(option.recordKey);
-          send(option.recordKey, "order", option.id, contract.orderEvents.view.code, {}, {});
           return;
         case "option.intent":
           option = findOption(data.id);

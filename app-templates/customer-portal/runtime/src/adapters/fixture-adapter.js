@@ -59,7 +59,7 @@ export const fixtureAccountProfileAdapter = {
   },
 };
 
-var ROUND_STATES = ["QUOTE_SENT", "QUOTE_VIEWED", "CLIENT_APPROVED", "DECLINED", "CUSTOMER_CHANGES_REQUESTED"];
+var ROUND_STATES = ["QUOTE_SENT", "ACCEPTED", "DECLINED", "CUSTOMER_CHANGES_REQUESTED"];
 
 export function createFixtureContractsGateway(state) {
   return {
@@ -72,14 +72,14 @@ export function createFixtureContractsGateway(state) {
     async sendOrderEvent(backendId, event, context, input) {
       var target = transition(fixtureRow(state.porders, backendId), event);
       var orders = withState(state.porders, [backendId], target);
-      if (target === "CLIENT_APPROVED") {
+      if (target === "ACCEPTED") {
         orders = withState(orders, siblingsOf(orders, state.pagreements, backendId), "DECLINED");
         orders = orders.map(function (row) {
           return row.id === positiveInteger(backendId) ? Object.assign({}, row, { metadata: Object.assign({}, row.metadata, { QUOTATION_CLIENT_DETAILS: detailValues(input) }) }) : row;
         });
       }
       state.porders = orders;
-      if (target === "CLIENT_APPROVED" || target === "DECLINED") state.pagreements = settleRound(state.pagreements, orders, positiveInteger(backendId));
+      if (target === "ACCEPTED" || target === "DECLINED") state.pagreements = settleRound(state.pagreements, orders, positiveInteger(backendId));
       return true;
     },
     async sendAgreementEvent(backendId, event) {
@@ -132,7 +132,7 @@ function siblingsOf(orders, agreements, backendId) {
     return row.id !== positiveInteger(backendId)
       && listed.indexOf(row.id) === -1
       && attributeNumber(row, "SERVICE_PROPERTY") === property
-      && ["QUOTE_SENT", "QUOTE_VIEWED"].indexOf(latestStateCode(row)) !== -1;
+      && latestStateCode(row) === "QUOTE_SENT";
   }).map(function (row) { return row.id; });
 }
 
@@ -148,9 +148,9 @@ function settleRound(agreements, orders, decidedId) {
   });
   var keys = Object.keys(byProperty);
   var settled = keys.length > 0 && keys.every(function (key) {
-    return byProperty[key].indexOf("CLIENT_APPROVED") !== -1 || byProperty[key].every(function (code) { return code === "DECLINED"; });
+    return byProperty[key].indexOf("ACCEPTED") !== -1 || byProperty[key].every(function (code) { return code === "DECLINED"; });
   });
-  var approved = round.filter(function (row) { return latestStateCode(row) === "CLIENT_APPROVED"; });
+  var approved = round.filter(function (row) { return latestStateCode(row) === "ACCEPTED"; });
   if (!settled || !approved.length) return agreements;
   var carrier = approved.filter(function (row) { return row.id === decidedId; })[0] || approved.filter(function (row) { return row.metadata && row.metadata.QUOTATION_CLIENT_DETAILS; }).pop();
   var details = carrier && carrier.metadata ? carrier.metadata.QUOTATION_CLIENT_DETAILS : null;

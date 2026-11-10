@@ -1,5 +1,7 @@
 # Snow customer portal — customer-scoped API the backend owes
 
+**2026-11-09:** where this names workflow 45 `GENERAL_FSM_ORDER`, `QUOTE_VIEWED` or the agreement's ACTIVE/SUSPENDED/EXPIRED, it is superseded by `ORDER_LIFECYCLE` in `core-ui/docs/snow-unified-order-lifecycle-2026-11-09.md`.
+
 Status: request to the backend, version 1, 2026-09-11. Nothing here exists.
 Version 2, one generic type-driven capability instead of per-screen methods, is
 `CUSTOMER-SCOPE-GENERIC-API.md`. This version is the Granite Ridge counterpart

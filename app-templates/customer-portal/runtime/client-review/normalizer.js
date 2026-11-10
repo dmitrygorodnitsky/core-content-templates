@@ -5,17 +5,28 @@
 
   var ORDER_STATUS = {
     QUOTE_SENT: "new",
-    QUOTE_VIEWED: "viewed",
-    CLIENT_APPROVED: "approved",
+    ACCEPTED: "approved",
+    ACTIVE: "approved",
+    SUSPENDED: "approved",
+    COMPLETED: "approved",
+    CANCELED: "approved",
     DECLINED: "declined",
     CUSTOMER_CHANGES_REQUESTED: "changes",
-    INITIAL: "revising",
+    DRAFT: "revising",
     QUOTE_PREPARED: "revising",
     CHANGES_REQUESTED: "revising",
-    QUOTE_APPROVED_INTERNALLY: "revising",
+    QUOTE_APPROVED: "revising",
   };
 
-  var PRICED_STATUSES = ["new", "viewed", "approved", "declined", "changes"];
+  var PRICED_STATUSES = ["new", "approved", "declined", "changes"];
+
+  var SIGNED_AGREEMENT_STATE = "CLIENT_APPROVED";
+
+  var SERVICE_DISPOSITION = {
+    ACTIVE: { kind: "completion", completion: "active" },
+    SUSPENDED: { kind: "reference", banner: "suspended" },
+    COMPLETED: { kind: "reference", banner: "expired" },
+  };
 
   var AGREEMENT_DISPOSITION = {
     QUOTATION: { kind: "unavailable", reason: "retired" },
@@ -32,9 +43,9 @@
     AGREEMENT_SEND_FAILED: { kind: "unavailable", reason: "send-failed" },
     CLIENT_APPROVED: { kind: "completion", completion: "approved" },
     ACTIVATION_FAILED: { kind: "completion", completion: "finishing" },
-    ACTIVE: { kind: "completion", completion: "active" },
-    SUSPENDED: { kind: "reference", banner: "suspended" },
-    EXPIRED: { kind: "reference", banner: "expired" },
+    ACTIVE: { kind: "unavailable", reason: "retired" },
+    SUSPENDED: { kind: "unavailable", reason: "retired" },
+    EXPIRED: { kind: "unavailable", reason: "retired" },
     ARCHIVED: { kind: "closed", reason: "archived" },
     CANCELED: { kind: "closed", reason: "canceled" },
     ACCESS_CLEANUP_RETRY: { kind: "closed", reason: "canceled" },
@@ -631,9 +642,9 @@
       subtotal: priced ? formatMoney(row.totalCharges, currency, context.locale) : "",
       taxes: priced ? formatMoney(row.totalTaxes, currency, context.locale) : "",
       total: priced ? formatMoney(row.grandTotal, currency, context.locale) : "",
-      awaitingClient: state === contract.orderEvents.view.source || state === contract.orderEvents.approve.source,
+      awaitingClient: state === contract.orderEvents.approve.source,
       siblingApproved: false,
-      actions: { view: false, approve: false, decline: false, changes: false },
+      actions: { approve: false, decline: false, changes: false },
     };
   }
 
@@ -642,7 +653,7 @@
     if (statuses.indexOf("approved") !== -1) return "approved";
     if (statuses.length && statuses.every(function (status) { return status === "declined"; })) return "declined";
     if (statuses.indexOf("changes") !== -1 || statuses.indexOf("revising") !== -1) return "changes";
-    if (statuses.indexOf("new") !== -1 || statuses.indexOf("viewed") !== -1) return "awaiting";
+    if (statuses.indexOf("new") !== -1) return "awaiting";
     return "unknown";
   }
 
@@ -675,11 +686,10 @@
     });
   }
 
-  function approvalsOffered(properties, grant, contract) {
-    var events = contract.orderEvents;
+  function approvalsOffered(properties) {
     return properties.some(function (property) {
       return property.options.some(function (option) {
-        return option.actions.approve || (option.actions.view && eventGranted(grant, "order", option.id, events.approve.code));
+        return option.actions.approve;
       });
     });
   }
@@ -692,7 +702,6 @@
           return !option.siblingApproved && option.state === event.source && eventGranted(grant, "order", option.id, event.code);
         }
         option.actions = {
-          view: allowed(events.view),
           approve: allowed(events.approve),
           decline: allowed(events.decline),
           changes: allowed(events.changes),
@@ -805,7 +814,7 @@
       unreadableOrders: 0,
       accountUnavailable: Boolean(input.accountFailed),
       details: {
-        available: approvalsOffered(properties, grant, contract),
+        available: approvalsOffered(properties),
         fields: fields,
         prefill: detailsPrefill(account, fields, locale, contract),
       },
@@ -813,6 +822,12 @@
       canRequestAgreementChanges: false,
       primaryEmail: primaryEmail(account, contract),
     };
+  }
+
+  function serviceDisposition(orders, contract) {
+    var states = orders.map(function (row) { return stateCode(row, contract.orderStates); });
+    var found = Object.keys(SERVICE_DISPOSITION).filter(function (code) { return states.indexOf(code) !== -1; })[0];
+    return found ? SERVICE_DISPOSITION[found] : null;
   }
 
   function reviewModel(input, options) {
@@ -833,7 +848,6 @@
     var agreement = picked.row;
     var agreementId = positiveInteger(agreement.id);
     var state = presentedAgreementState(agreement, contract);
-    var disposition = AGREEMENT_DISPOSITION[state] || { kind: "unavailable", reason: "unknown-state" };
     var account = pickAccount(input.accounts, agreement, contract);
     var fields = detailFields(contract.contractDetails, locale);
     var parties = partiesOf(agreement, account, fields, locale, contract);
@@ -852,6 +866,8 @@
       else unreadable += 1;
     });
 
+    var disposition = (state === SIGNED_AGREEMENT_STATE && serviceDisposition(readable, contract))
+      || AGREEMENT_DISPOSITION[state] || { kind: "unavailable", reason: "unknown-state" };
     var properties = propertiesOf(readable, { locale: locale, contract: contract, catalog: catalogOf(input) });
     var decided = summarized(properties);
     var approveEvent = contract.agreementEvents.approve;
@@ -893,6 +909,7 @@
   ns.normalizer = Object.freeze({
     orderStatus: Object.freeze(Object.assign({}, ORDER_STATUS)),
     agreementDisposition: Object.freeze(Object.assign({}, AGREEMENT_DISPOSITION)),
+    serviceDisposition: Object.freeze(Object.assign({}, SERVICE_DISPOSITION)),
     positiveInteger: positiveInteger,
     localizedName: localizedName,
     planReference: planReference,

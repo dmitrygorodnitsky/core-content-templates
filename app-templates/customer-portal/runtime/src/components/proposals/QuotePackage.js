@@ -8,7 +8,6 @@ export var QUOTE_STATUS = Object.freeze({
   revision: Object.freeze({ label: "⟳ Changes requested", badge: "status-badge--warn", dot: "#ff9f0a" }),
   declined: Object.freeze({ label: "✕ Declined", badge: "status-badge--danger", dot: "#ff3b30" }),
   unseen: Object.freeze({ label: "◔ Sent", badge: "status-badge--scheduled", dot: "#8a94a6" }),
-  viewed: Object.freeze({ label: "• Viewed", badge: "status-badge--scheduled", dot: "#8a94a6" }),
 });
 
 var DECISION_META = { approved: "approved", declined: "declined", revision: "revision", open: "unseen" };

@@ -4,7 +4,7 @@ import { StatusBadge } from "../primitives/StatusBadge.js";
 import { ActionButton } from "../primitives/ActionButton.js";
 import { QUOTE_STATUS } from "./QuotePackage.js";
 import { pricePeriod } from "../../normalizers/contracts.js";
-import { CommandOutcome, DecisionFailure, PendingNote } from "./ContractStates.js";
+import { CommandOutcome } from "./ContractStates.js";
 import { ContractDetailsForm, contractDetailsLoading } from "./ContractDetailsForm.js";
 
 export function QuoteOptionCard(order, options) {
@@ -73,17 +73,7 @@ function QuoteDecisions(order, settings) {
   var targeted = !!command && command.targets.indexOf(order.backendId) !== -1;
   var outcome = targeted && command.phase !== "pending" ? CommandOutcome(command.phase) : null;
   var busy = !!settings.busy;
-  if (order.status === "unseen") {
-    var view = state.quoteViews[order.backendId];
-    if (view === "failed") {
-      return h("div", { "class": "quote-option__decide" }, DecisionFailure(
-        "We couldn’t let the provider know you opened this quote, so its decisions aren’t available yet.",
-        { action: "quote.retryView", id: String(order.backendId), label: "Try again" },
-      ));
-    }
-    return h("div", { "class": "quote-option__decide" }, PendingNote("Letting the provider know you opened this quote…"));
-  }
-  if (order.status !== "viewed") return outcome ? h("div", { "class": "quote-option__decide" }, outcome) : null;
+  if (order.status !== "unseen") return outcome ? h("div", { "class": "quote-option__decide" }, outcome) : null;
   var confirm = state.contractConfirm;
   var confirming = !!confirm && confirm.backendId === order.backendId && (confirm.kind === "approve" || confirm.kind === "decline");
   var changing = !!confirm && confirm.backendId === order.backendId && confirm.kind === "changes";

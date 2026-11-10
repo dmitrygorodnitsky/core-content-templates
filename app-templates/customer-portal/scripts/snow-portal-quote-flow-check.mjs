@@ -149,11 +149,11 @@ function coreTable() {
       agreement(5603, "DRAFT", [4201], { LEGAL_NAME: { value: "Harbour View Strata" }, CLIENT_TYPE: { value: "CORPORATE" }, CLIENT_DETAILS_ERRORS: { value: "REPRESENTATIVE_PHONE" } }),
     ],
     orders: [
-      order(4001, "CLIENT_APPROVED", 983, "SEASONAL", 26751.6),
-      order(4101, "QUOTE_VIEWED", 984, "PER_SERVICE", 992.99),
-      order(4102, "QUOTE_VIEWED", 984, "MONTHLY", 3376.64),
-      order(4103, "QUOTE_VIEWED", 984, "SEASONAL", 32156.25),
-      order(4201, "CLIENT_APPROVED", 983, "MONTHLY", 6687.9),
+      order(4001, "ACCEPTED", 983, "SEASONAL", 26751.6),
+      order(4101, "QUOTE_SENT", 984, "PER_SERVICE", 992.99),
+      order(4102, "QUOTE_SENT", 984, "MONTHLY", 3376.64),
+      order(4103, "QUOTE_SENT", 984, "SEASONAL", 32156.25),
+      order(4201, "ACCEPTED", 983, "MONTHLY", 6687.9),
     ],
     preferences: {},
     submissions: [],
@@ -211,10 +211,10 @@ async function coreFetch(url, options = {}) {
     const rows = event[2] === "order" ? table.orders : table.agreements;
     const row = rows.find((candidate) => candidate.id === Number(event[3]));
     if (row && row.states[0].code === source) row.states = [{ id: row.states[0].id + 1000, code: next }];
-    if (row && next === "CLIENT_APPROVED" && event[2] === "order") {
+    if (row && next === "ACCEPTED" && event[2] === "order") {
       table.orders.forEach((other) => {
         const same = other.attributes[5].SERVICE_PROPERTY.value === row.attributes[5].SERVICE_PROPERTY.value;
-        if (other !== row && same && other.states[0].code === "QUOTE_VIEWED") other.states = [{ id: other.states[0].id + 1000, code: "DECLINED" }];
+        if (other !== row && same && other.states[0].code === "QUOTE_SENT") other.states = [{ id: other.states[0].id + 1000, code: "DECLINED" }];
       });
       row.metadata = { QUOTATION_CLIENT_DETAILS: body };
     }
@@ -230,8 +230,8 @@ function settleRound() {
   const round = table.orders.filter((row) => !held.has(row.id));
   const byProperty = new Map();
   round.forEach((row) => byProperty.set(row.attributes[5].SERVICE_PROPERTY.value, (byProperty.get(row.attributes[5].SERVICE_PROPERTY.value) || []).concat(row.states[0].code)));
-  const settled = [...byProperty.values()].every((codes) => codes.includes("CLIENT_APPROVED") || codes.every((code) => code === "DECLINED"));
-  const approved = round.filter((row) => row.states[0].code === "CLIENT_APPROVED");
+  const settled = [...byProperty.values()].every((codes) => codes.includes("ACCEPTED") || codes.every((code) => code === "DECLINED"));
+  const approved = round.filter((row) => row.states[0].code === "ACCEPTED");
   if (!round.length || !settled || !approved.length) return;
   const details = approved[approved.length - 1].metadata.QUOTATION_CLIENT_DETAILS;
   table.agreements.push(agreement(5604, "DRAFT", approved.map((row) => row.id), details));
@@ -495,7 +495,7 @@ const DETAIL_VALUE_CODES = ["LEGAL_NAME", "BILLING_ADDRESS", "REPRESENTATIVE_FIR
   portal.go("proposal.detail");
   await settle();
   const cards = all(page(), "[data-module=\"quote-option\"]");
-  assert.deepEqual(cards.map((card) => all(card, "[data-action]").map((button) => button.textContent)), [["Approve", "Request changes", "Decline"], ["Approve", "Request changes", "Decline"], ["Approve", "Request changes", "Decline"]], "Request changes sits next to Approve and Decline on every viewed quote");
+  assert.deepEqual(cards.map((card) => all(card, "[data-action]").map((button) => button.textContent)), [["Approve", "Request changes", "Decline"], ["Approve", "Request changes", "Decline"], ["Approve", "Request changes", "Decline"]], "Request changes sits next to Approve and Decline on every sent quote");
 
   assert.equal(ACTIONS["quote.requestChanges"]("4102"), true);
   assert.equal(state.contractDetails, null, "a change request asks no contract details");
@@ -517,7 +517,7 @@ const DETAIL_VALUE_CODES = ["LEGAL_NAME", "BILLING_ADDRESS", "REPRESENTATIVE_FIR
   typed.value = "  Quote weekly visits instead, and add sidewalk de-icing.  ";
   fire(typed, "input");
   assert.equal(await ACTIONS["quote.sendChanges"]("4102"), true);
-  assert.deepEqual(table.events, [{ entity: "order", id: 4102, code: "QUOTE_VIEWED-CUSTOMER_CHANGES_REQUESTED", body: { MESSAGE: { value: "Quote weekly visits instead, and add sidewalk de-icing." } } }], "the documented tagged event carries the comment as MESSAGE");
+  assert.deepEqual(table.events, [{ entity: "order", id: 4102, code: "QUOTE_SENT-CUSTOMER_CHANGES_REQUESTED", body: { MESSAGE: { value: "Quote weekly visits instead, and add sidewalk de-icing." } } }], "the documented tagged event carries the comment as MESSAGE");
   const after = page();
   const changed = all(after, "[data-module=\"quote-option\"]").find((card) => card.getAttribute("data-state") === "revision");
   assert.equal(one(changed, "[data-module=\"status-badge\"]").textContent, "⟳ Changes requested", "after the re-read the quote shows Changes requested");
@@ -578,7 +578,7 @@ const DETAIL_VALUE_CODES = ["LEGAL_NAME", "BILLING_ADDRESS", "REPRESENTATIVE_FIR
   }
   assert.equal(await ACTIONS["quote.confirm"]("4101"), true, "approve still works beside a change request");
   assert.deepEqual(table.events.slice(1), [{
-    entity: "order", id: 4101, code: "QUOTE_VIEWED-CLIENT_APPROVED",
+    entity: "order", id: 4101, code: "QUOTE_SENT-ACCEPTED",
     body: {
       LEGAL_NAME: { value: "Harbour View Strata Corp." },
       CLIENT_TYPE: { value: "CORPORATE" },
@@ -592,7 +592,7 @@ const DETAIL_VALUE_CODES = ["LEGAL_NAME", "BILLING_ADDRESS", "REPRESENTATIVE_FIR
       AUTHORITY_CONFIRMED: { value: true },
     },
   }], "the approval carries every contract detail as { value }, the confirmations included, through the tagged event");
-  assert.deepEqual(table.orders.filter((row) => row.attributes[5].SERVICE_PROPERTY.value === 984).map((row) => row.states[0].code), ["CLIENT_APPROVED", "CUSTOMER_CHANGES_REQUESTED", "DECLINED"]);
+  assert.deepEqual(table.orders.filter((row) => row.attributes[5].SERVICE_PROPERTY.value === 984).map((row) => row.states[0].code), ["ACCEPTED", "CUSTOMER_CHANGES_REQUESTED", "DECLINED"]);
   assert.equal(state.toast, "Option approved");
   assert.equal(all(page(), "[data-module=\"agreement-details\"]").length, 0, "the details close with the approval");
   assert.deepEqual(table.agreements.map((row) => [row.id, row.states[0].code, row.attributes[17].ORDERS.value]), [[5602, "SENT_TO_CLIENT", [4001]], [5603, "DRAFT", [4201]], [5604, "DRAFT", [4101]]], "an approved option settles its property even beside a change request, and the settled round becomes a DRAFT agreement of the approved quote");
@@ -607,8 +607,8 @@ const DETAIL_VALUE_CODES = ["LEGAL_NAME", "BILLING_ADDRESS", "REPRESENTATIVE_FIR
   await until(() => state.contractDetails && state.contractDetails.prefill === "ready");
   Object.assign(state.contractDetails.draft, { CLIENT_TYPE: "INDIVIDUAL", REPRESENTATIVE_JOB_TITLE: "", INFORMATION_CONFIRMED: true, AUTHORITY_CONFIRMED: true });
   assert.equal(await ACTIONS["quote.confirm"]("4103"), true);
-  assert.deepEqual(table.events.map((event) => [event.id, event.code, event.body.CLIENT_TYPE, event.body.REPRESENTATIVE_JOB_TITLE]), [[4103, "QUOTE_VIEWED-CLIENT_APPROVED", { value: "INDIVIDUAL" }, { value: "" }]], "an optional job title left empty is sent empty");
-  assert.deepEqual(table.orders.filter((row) => row.attributes[5].SERVICE_PROPERTY.value === 984).map((row) => row.states[0].code), ["DECLINED", "DECLINED", "CLIENT_APPROVED"], "the server declines the other options of the approved property itself; the page sends nothing for them");
+  assert.deepEqual(table.events.map((event) => [event.id, event.code, event.body.CLIENT_TYPE, event.body.REPRESENTATIVE_JOB_TITLE]), [[4103, "QUOTE_SENT-ACCEPTED", { value: "INDIVIDUAL" }, { value: "" }]], "an optional job title left empty is sent empty");
+  assert.deepEqual(table.orders.filter((row) => row.attributes[5].SERVICE_PROPERTY.value === 984).map((row) => row.states[0].code), ["DECLINED", "DECLINED", "ACCEPTED"], "the server declines the other options of the approved property itself; the page sends nothing for them");
   portal.go("proposals.list");
   const prepared = all(page(), "[data-module=\"agreement-row\"]").find((row) => row.getAttribute("data-id") === "agreement-core-5604");
   assert.ok(prepared, "once the round is settled the agreement made from the approved quotes appears in Contracts");
@@ -625,7 +625,7 @@ const DETAIL_VALUE_CODES = ["LEGAL_NAME", "BILLING_ADDRESS", "REPRESENTATIVE_FIR
   ACTIONS["quote.decline"]("4103");
   assert.equal(all(page(), "[data-module=\"decision-confirm\"] [data-module=\"agreement-details\"]").length, 0, "a decline asks no contract details");
   assert.equal(await ACTIONS["quote.confirm"]("4103"), true);
-  assert.deepEqual(table.events.map((event) => [event.id, event.code, event.body]), [[4103, "QUOTE_VIEWED-DECLINED", {}]], "decline still sends its empty-bodied event");
+  assert.deepEqual(table.events.map((event) => [event.id, event.code, event.body]), [[4103, "QUOTE_SENT-DECLINED", {}]], "decline still sends its empty-bodied event");
   assert.equal(one(page(), "[data-module=\"quote-option\"][data-state=\"declined\"] [data-module=\"status-badge\"]").textContent, "✕ Declined");
 
   state.agreementId = "agreement-core-5602";
@@ -650,41 +650,44 @@ const DETAIL_VALUE_CODES = ["LEGAL_NAME", "BILLING_ADDRESS", "REPRESENTATIVE_FIR
 
 {
   const quoteSteps = {
-    QUOTE_SENT: "◔ Sent", QUOTE_VIEWED: "• Viewed",
+    QUOTE_SENT: "◔ Sent",
     CUSTOMER_CHANGES_REQUESTED: "⟳ Changes requested",
-    CLIENT_APPROVED: "✓ Approved",
+    ACCEPTED: "✓ Approved", ACTIVE: "✓ Approved", SUSPENDED: "✓ Approved", COMPLETED: "✓ Approved", CANCELED: "✓ Approved",
     DECLINED: "✕ Declined",
   };
   const quotes = normalizeQuoteOrders({ result: Object.keys(quoteSteps).map((code, index) => order(6000 + index, code, 983, "MONTHLY", 1)) }).orders;
   assert.deepEqual(quotes.map((row) => [row.stateCode, QUOTE_STATUS[row.status].label]), Object.entries(quoteSteps), "each documented quote state shows its portal step");
-  const prepared = normalizeQuoteOrders({ result: ["INITIAL", "QUOTE_PREPARED", "CHANGES_REQUESTED", "QUOTE_APPROVED_INTERNALLY"].map((code, index) => order(7000 + index, code, 983, "MONTHLY", 1)) });
+  const prepared = normalizeQuoteOrders({ result: ["DRAFT", "QUOTE_PREPARED", "CHANGES_REQUESTED", "QUOTE_APPROVED"].map((code, index) => order(7000 + index, code, 983, "MONTHLY", 1)) });
   assert.deepEqual([prepared.orders.length, prepared.preparing, prepared.withheldBackendIds.length], [0, true, 4], "a quote with the manager is never listed as a decision and keeps Contracts in preparing");
 
   const agreementSteps = {
     DRAFT: "Being prepared", PENDING_MANAGEMENT_APPROVAL: "Pending management approval", INTERNALLY_APPROVED: "Pending management approval", CLIENT_CHANGES_REQUESTED: "Pending management approval",
     SENT_TO_CLIENT: "Sent for your approval", AGREEMENT_SEND_FAILED: "Being sent to you",
     CLIENT_APPROVED: "Approved", ACTIVATION_FAILED: "Approved",
-    ACTIVE: "Active",
   };
   assert.deepEqual(Object.keys(agreementSteps).map((code) => [code, AGREEMENT_STAGES[code].label]), Object.entries(agreementSteps), "each documented agreement state shows its portal step");
   assert.deepEqual(Object.keys(agreementSteps).filter((code) => normalizeServiceAgreement(agreement(1, code, [])).allowedActions.length).map((code) => [code, normalizeServiceAgreement(agreement(1, code, [])).allowedActions]), [["SENT_TO_CLIENT", ["approve"]]], "only an agreement sent to the client takes a client action");
   for (const retired of ["QUOTATION", "QUOTATION_SENT", "QUOTATION_UPDATE", "QUOTATION_SEND_FAILED", "AWAITING_CLIENT_DETAILS", "CLIENT_DETAILS_RECEIVED"]) {
     assert.equal(AGREEMENT_STAGES[retired], undefined, retired + " is retired on 2026-11-06 and has no portal step");
   }
+  for (const retired of ["ACTIVE", "SUSPENDED", "EXPIRED"]) {
+    assert.equal(AGREEMENT_STAGES[retired], undefined, retired + " is retired on the agreement on 2026-11-09; the service life is read from the orders");
+  }
   assert.equal(CLIENT_TYPES.ORGANIZATION, "Organization", "an old agreement's ORGANIZATION is still named on its parties card");
   assert.deepEqual(CONTRACT_CLIENT_TYPES.map((type) => type.code), ["INDIVIDUAL", "UNINCORPORATED_BUSINESS", "CORPORATE", "ASSOCIATION", "GOVERNMENT"]);
   assert.deepEqual(contractDetailsPrefill({ attributes: { 35: { LEGAL_ENTITY_TYPE: { value: "organization" } } } }, CONTRACT_CLIENT_TYPES.map((type) => type.code)).CLIENT_TYPE, "", "a legal entity type the processor refuses is not pre-filled");
   assert.deepEqual(contractDetailsPrefill({ attributes: { 35: { LEGAL_ENTITY_TYPE: { value: "corporate" } } } }, CONTRACT_CLIENT_TYPES.map((type) => type.code)).CLIENT_TYPE, "CORPORATE");
-  assert.deepEqual(CONTRACT_EVENTS.changes, { entity: "order", source: "QUOTE_VIEWED", code: "QUOTE_VIEWED-CUSTOMER_CHANGES_REQUESTED" });
-  assert.deepEqual(CONTRACT_EVENTS.approve, { entity: "order", source: "QUOTE_VIEWED", code: "QUOTE_VIEWED-CLIENT_APPROVED" });
-  assert.deepEqual(Object.keys(CONTRACT_EVENTS).sort(), ["agreement", "approve", "changes", "decline", "view"], "the client sends no details event of its own any more");
+  assert.deepEqual(CONTRACT_EVENTS.changes, { entity: "order", source: "QUOTE_SENT", code: "QUOTE_SENT-CUSTOMER_CHANGES_REQUESTED" });
+  assert.deepEqual(CONTRACT_EVENTS.approve, { entity: "order", source: "QUOTE_SENT", code: "QUOTE_SENT-ACCEPTED" });
+  assert.deepEqual(CONTRACT_EVENTS.decline, { entity: "order", source: "QUOTE_SENT", code: "QUOTE_SENT-DECLINED" });
+  assert.deepEqual(Object.keys(CONTRACT_EVENTS).sort(), ["agreement", "approve", "changes", "decline"], "the client sends no details event and, since ORDER_LIFECYCLE, no view event of its own");
   const filled = contractDetailsRequest({ LEGAL_NAME: "A", CLIENT_TYPE: "GOVERNMENT", BILLING_ADDRESS: "1 Main St, Vancouver", REPRESENTATIVE_FIRST_NAME: "A", REPRESENTATIVE_LAST_NAME: "B", REPRESENTATIVE_JOB_TITLE: "", REPRESENTATIVE_EMAIL: "a@b.test", REPRESENTATIVE_PHONE: "6045550100", INFORMATION_CONFIRMED: true, AUTHORITY_CONFIRMED: true });
   assert.deepEqual(filled.errors, {});
   assert.deepEqual(Object.keys(contractDetailsEventInput(filled.values)), CONTRACT_DETAILS_FIELDS.map((field) => field.code), "the approval carries the ten codes the server reads");
 }
 
 assert.ok(warnings.every((line) => !/command unavailable/.test(line)), "every action the new screens use is connected: " + warnings.join(" | "));
-console.log("snow-portal-quote-flow-check ok: the header's Request a quote opens the in-portal page in a live portal and the public form otherwise; the page offers the client's own properties as cards with address and area, new addresses with suggestions bounded by the form type's within box and refused outside it or when not found, the form type's risk factors and notes and no contact field; it submits PORTAL_QUOTE_REQUEST exactly as documented with the session, shows sending, waiting and processing honestly, keeps waiting past 45 s for up to five minutes, then says the request is still being processed and quotes will arrive in Contracts and by email, and places each refusal next to its input; Contracts shows a running or accepted request as preparing; a viewed quote offers Request changes beside Approve and Decline, refuses an empty comment in the browser and sends MESSAGE with the documented event, then shows Changes requested; Approve opens the contract details pre-filled from the Account, LEGAL contact and BILLING address, requires a client type from the five accepted values and both confirmations, and sends every detail as { value } on QUOTE_VIEWED-CLIENT_APPROVED; a settled round's DRAFT agreement shows as being prepared and asks nothing; quote and agreement states carry the documented labels; and decline and agreement approval still send their empty-bodied events");
+console.log("snow-portal-quote-flow-check ok: the header's Request a quote opens the in-portal page in a live portal and the public form otherwise; the page offers the client's own properties as cards with address and area, new addresses with suggestions bounded by the form type's within box and refused outside it or when not found, the form type's risk factors and notes and no contact field; it submits PORTAL_QUOTE_REQUEST exactly as documented with the session, shows sending, waiting and processing honestly, keeps waiting past 45 s for up to five minutes, then says the request is still being processed and quotes will arrive in Contracts and by email, and places each refusal next to its input; Contracts shows a running or accepted request as preparing; a sent quote offers Request changes beside Approve and Decline, refuses an empty comment in the browser and sends MESSAGE with the documented event, then shows Changes requested; Approve opens the contract details pre-filled from the Account, LEGAL contact and BILLING address, requires a client type from the five accepted values and both confirmations, and sends every detail as { value } on QUOTE_SENT-ACCEPTED; a settled round's DRAFT agreement shows as being prepared and asks nothing; quote and agreement states carry the documented labels; and decline and agreement approval still send their empty-bodied events");
 
 function createDom() {
   class Text {

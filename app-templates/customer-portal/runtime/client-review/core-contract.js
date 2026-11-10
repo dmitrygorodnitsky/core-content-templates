@@ -46,12 +46,13 @@
   ];
 
   var CONTRACT = {
-    orderWorkflow: "GENERAL_FSM_ORDER",
+    orderWorkflow: "ORDER_LIFECYCLE",
     agreementWorkflow: "SERVICE_AGREEMENT_LIFECYCLE",
     agreementType: "SERVICE_AGREEMENT",
     orderStates: [
-      "INITIAL", "QUOTE_PREPARED", "CHANGES_REQUESTED", "QUOTE_APPROVED_INTERNALLY",
-      "QUOTE_SENT", "QUOTE_VIEWED", "CLIENT_APPROVED", "DECLINED", "CUSTOMER_CHANGES_REQUESTED",
+      "DRAFT", "QUOTE_PREPARED", "CHANGES_REQUESTED", "QUOTE_APPROVED",
+      "QUOTE_SENT", "CUSTOMER_CHANGES_REQUESTED", "DECLINED",
+      "ACCEPTED", "ACTIVE", "SUSPENDED", "COMPLETED", "CANCELED",
     ],
     agreementStates: [
       "QUOTATION", "QUOTATION_SENT", "QUOTATION_UPDATE", "QUOTATION_SEND_FAILED", "AWAITING_CLIENT_DETAILS",
@@ -61,10 +62,9 @@
       "ACCESS_CLEANUP_RETRY",
     ],
     orderEvents: {
-      view: { code: "QUOTE_SENT-QUOTE_VIEWED", source: "QUOTE_SENT" },
-      approve: { code: "QUOTE_VIEWED-CLIENT_APPROVED", source: "QUOTE_VIEWED" },
-      decline: { code: "QUOTE_VIEWED-DECLINED", source: "QUOTE_VIEWED" },
-      changes: { code: "QUOTE_VIEWED-CUSTOMER_CHANGES_REQUESTED", source: "QUOTE_VIEWED", messageAttribute: "MESSAGE" },
+      approve: { code: "QUOTE_SENT-ACCEPTED", source: "QUOTE_SENT" },
+      decline: { code: "QUOTE_SENT-DECLINED", source: "QUOTE_SENT" },
+      changes: { code: "QUOTE_SENT-CUSTOMER_CHANGES_REQUESTED", source: "QUOTE_SENT", messageAttribute: "MESSAGE" },
     },
     agreementOperationStatus: {
       key: "AGREEMENT_OPERATION_STATUS",
@@ -118,7 +118,7 @@
       terms: "CONTRACT_TERMS",
     },
     contractDetails: {
-      event: "QUOTE_VIEWED-CLIENT_APPROVED",
+      event: "QUOTE_SENT-ACCEPTED",
       attributes: CONTRACT_DETAILS_ATTRIBUTES,
       attributeOrder: [
         {

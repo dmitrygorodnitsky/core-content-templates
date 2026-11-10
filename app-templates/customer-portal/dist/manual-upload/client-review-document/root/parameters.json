@@ -553,19 +553,6 @@
     }
   },
   {
-    "code": "OPTION_VIEWED",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "OPTION VIEWED",
-        "DESCRIPTION": "Client review document copy."
-      }
-    },
-    "value": {
-      "en": "Awaiting decision"
-    }
-  },
-  {
     "code": "OPTION_APPROVED",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
@@ -823,32 +810,6 @@
     },
     "value": {
       "en": "Decisions on this option cannot be made through this link."
-    }
-  },
-  {
-    "code": "VIEW_PENDING",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "VIEW PENDING",
-        "DESCRIPTION": "Client review document copy."
-      }
-    },
-    "value": {
-      "en": "Letting the provider know you opened this option…"
-    }
-  },
-  {
-    "code": "VIEW_FAILED",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "VIEW FAILED",
-        "DESCRIPTION": "Client review document copy."
-      }
-    },
-    "value": {
-      "en": "We could not let the provider know you opened this option, so its decisions are not available yet."
     }
   },
   {

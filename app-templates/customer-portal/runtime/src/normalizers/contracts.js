@@ -6,14 +6,17 @@ import { addressRepeats, formatAddressLine, formatPhone } from "./postal-address
 export var QUOTE_ORDER_TYPES = Object.freeze(["FIELD_SERVICE_ORDER", "WINTER_SERVICES_ORDER"]);
 
 export var CUSTOMER_ORDER_STATUS = Object.freeze({
-  CLIENT_APPROVED: "approved",
+  ACCEPTED: "approved",
+  ACTIVE: "approved",
+  SUSPENDED: "approved",
+  COMPLETED: "approved",
+  CANCELED: "approved",
   CUSTOMER_CHANGES_REQUESTED: "revision",
   DECLINED: "declined",
   QUOTE_SENT: "unseen",
-  QUOTE_VIEWED: "viewed",
 });
 
-export var OPERATOR_ORDER_STATES = Object.freeze(["CHANGES_REQUESTED", "INITIAL", "QUOTE_APPROVED_INTERNALLY", "QUOTE_PREPARED"]);
+export var OPERATOR_ORDER_STATES = Object.freeze(["CHANGES_REQUESTED", "DRAFT", "QUOTE_APPROVED", "QUOTE_PREPARED"]);
 
 export var PRICING_MODELS = Object.freeze({
   PER_SERVICE: "Per service",
@@ -46,7 +49,7 @@ export var QUOTE_REQUEST_OUTCOMES = Object.freeze(["PROCESSING", "ACCEPTED", "RE
 
 export var SCOPE_MODES = Object.freeze(["server-scoped", "browser-filtered", "unscoped"]);
 
-var ORDER_ACTIONS = { unseen: ["view"], viewed: ["approve", "changes", "decline"] };
+var ORDER_ACTIONS = { unseen: ["approve", "changes", "decline"] };
 var AGREEMENT_ACTIONS = { SENT_TO_CLIENT: ["approve"] };
 export var AGREEMENT_OPERATION_STATUS_KEY = "AGREEMENT_OPERATION_STATUS";
 export var FAILED_OPERATION_STATES = Object.freeze({
@@ -62,7 +65,7 @@ var SCHEMATIC_MIN_SPAN = 0.01;
 var STAGE_ORDER = ["approval", "drafting", "approved", "active", "suspended", "expired", "archived", "canceled"];
 var APPROVED_SERVICE_STAGES = ["drafting", "approval", "approved", "active", "suspended", "expired", "archived"];
 var CURRENT_SERVICE_STAGES = ["active", "approved", "approval", "drafting", "suspended"];
-var PENDING_STATUSES = ["unseen", "viewed", "revision"];
+var PENDING_STATUSES = ["unseen", "revision"];
 var TERMS_DEPTH_LIMIT = 4;
 var HEADING_LINE = /^#{1,6}\s+(.+)$/;
 var ITEM_LINE = /^[-*•]\s+(.+)$/;
@@ -70,6 +73,7 @@ var NUMBERED_LINE = /^(\d+(?:\.\d+)+[.)]?|\d+[.)])\s+(.+)$/;
 
 var MANAGEMENT = agreementStage("drafting", "Pending management approval", "scheduled");
 var APPROVED = agreementStage("approved", "Approved", "ok");
+var SIGNED_AGREEMENT_STATE = "CLIENT_APPROVED";
 
 export var AGREEMENT_STAGES = Object.freeze({
   DRAFT: agreementStage("drafting", "Being prepared", "scheduled"),
@@ -80,11 +84,14 @@ export var AGREEMENT_STAGES = Object.freeze({
   AGREEMENT_SEND_FAILED: agreementStage("approval", "Being sent to you", "warn"),
   CLIENT_APPROVED: APPROVED,
   ACTIVATION_FAILED: APPROVED,
-  ACTIVE: agreementStage("active", "Active", "ok"),
-  SUSPENDED: agreementStage("suspended", "Suspended", "warn"),
-  EXPIRED: agreementStage("expired", "Expired", "scheduled"),
   ARCHIVED: agreementStage("archived", "Archived", "scheduled"),
   CANCELED: agreementStage("canceled", "Cancelled", "scheduled"),
+});
+
+export var ORDER_SERVICE_STAGES = Object.freeze({
+  ACTIVE: agreementStage("active", "Active", "ok"),
+  SUSPENDED: agreementStage("suspended", "Suspended", "warn"),
+  COMPLETED: agreementStage("expired", "Expired", "scheduled"),
 });
 
 export function normalizeContracts(raw) {
@@ -221,7 +228,7 @@ function requestPreparing(request, orders) {
 export function contractsPackage(source, properties) {
   var data = source && typeof source === "object" ? source : {};
   var orders = Array.isArray(data.orders) ? data.orders : [];
-  var agreements = Array.isArray(data.agreements) ? data.agreements.filter(Boolean) : [];
+  var agreements = Array.isArray(data.agreements) ? data.agreements.filter(Boolean).map(function (agreement) { return withServiceStage(agreement, orders); }) : [];
   var byProperty = propertyIndex(properties);
   var packageOf = packageIndex(agreements);
   var readable = new Set(orders.map(function (order) { return order.backendId; }).concat(data.withheldBackendIds || []));
@@ -261,6 +268,17 @@ export function contractsPackage(source, properties) {
     scopeMode: data.scopeMode || null,
     partial: partialOf(data, orders, rows),
   };
+}
+
+function withServiceStage(agreement, orders) {
+  if (!agreement || agreement.stateCode !== SIGNED_AGREEMENT_STATE) return agreement;
+  var states = (orders || []).filter(function (order) {
+    return agreement.orderBackendIds.indexOf(order.backendId) !== -1;
+  }).map(function (order) { return order.stateCode; });
+  var service = Object.keys(ORDER_SERVICE_STAGES).find(function (code) { return states.indexOf(code) !== -1; });
+  if (!service) return agreement;
+  var stage = ORDER_SERVICE_STAGES[service];
+  return Object.assign({}, agreement, { stage: stage.stage, label: stage.label, tone: stage.tone });
 }
 
 export function pricePeriod(order) {
@@ -313,8 +331,7 @@ export function groupDecision(orders) {
 
 export function groupStatus(orders) {
   var decision = groupDecision(orders);
-  if (decision !== "open") return decision;
-  return (orders || []).some(hasStatus("viewed")) ? "viewed" : "unseen";
+  return decision === "open" ? "unseen" : decision;
 }
 
 export function findQuote(pkg, backendId) {
@@ -821,7 +838,7 @@ function pricingRank(order) {
 }
 
 function isOpen(order) {
-  return order.status === "unseen" || order.status === "viewed";
+  return order.status === "unseen";
 }
 
 function hasStatus(status) {

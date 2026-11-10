@@ -5,7 +5,6 @@
 
   var OPTION_BADGE = {
     new: ["status-badge--info", "optionNew"],
-    viewed: ["status-badge--info", "optionViewed"],
     approved: ["status-badge--ok", "optionApproved"],
     declined: ["status-badge--danger", "optionDeclined"],
     changes: ["status-badge--warn", "optionChanges"],
@@ -412,24 +411,13 @@
       return;
     }
     var pending = isPending(command);
-    if (command && command.event === ns.contract.orderEvents.view.code) {
-      if (pending) {
-        body.appendChild(text("p", "cr-note cr-note--pending", copy.viewPending, { role: "status", "data-state": "pending" }));
-        return;
-      }
-      body.appendChild(outcomeBox(ctx, command, {
-        title: copy.viewFailed,
-        action: button(copy.retryLabel, "btn--ghost", function () { ctx.dispatch("option.view", { id: option.id }); }, { disabled: ctx.busy, "data-action": "option.view" }),
-      }));
-      return;
-    }
     if (option.siblingApproved && option.awaitingClient) {
       body.appendChild(text("p", "cr-note", copy.noteSiblingApproved));
       return;
     }
     var decisions = option.actions.approve || option.actions.changes;
     if (!decisions) {
-      if (option.awaitingClient && !option.actions.view) body.appendChild(text("p", "cr-note", copy.noteNoActions));
+      if (option.awaitingClient) body.appendChild(text("p", "cr-note", copy.noteNoActions));
       return;
     }
     var confirm = ctx.snapshot.confirm && ctx.snapshot.confirm.kind === "changes" && ctx.snapshot.confirm.id === option.id ? ctx.snapshot.confirm : null;
@@ -487,7 +475,7 @@
     var snapshot = ctx.snapshot;
     var declineCode = ns.contract.orderEvents.decline.code;
     var chosen = property.options.some(function (option) { return snapshot.expanded[option.id]; });
-    var declinable = property.options.some(function (option) { return option.actions.decline || option.actions.view; });
+    var declinable = property.options.some(function (option) { return option.actions.decline; });
     var choice = snapshot.choices[property.key] || null;
     var failed = property.options.filter(function (option) {
       var command = snapshot.commands[option.recordKey];

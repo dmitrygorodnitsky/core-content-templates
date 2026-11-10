@@ -191,7 +191,9 @@
   },
   {
    "id": 45,
-   "code": "GENERAL_FSM_ORDER"
+   "code": "GENERAL_FSM_ORDER",
+   "retired": "2026-11-09",
+   "replacedBy": "ORDER_LIFECYCLE"
   },
   {
    "id": 46,
@@ -204,6 +206,11 @@
   {
    "id": 48,
    "code": "SUPPORT_TICKET_LIFECYCLE"
+  },
+  {
+   "code": "ORDER_LIFECYCLE",
+   "derivedFrom": "core-ui/scripts/dev/seeds/orderLifecycleWorkflow.json",
+   "since": "2026-11-09"
   }
  ],
  "types": [

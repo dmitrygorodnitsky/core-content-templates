@@ -92,9 +92,9 @@ const fixtureProposals = graniteRidgeSnowFixture.proposals;
 const normalizedProposals = normalizeProposals(proposals);
 const quotes = normalizedProposals.quotes;
 assert.deepEqual(plainValue(quotes.agreements.map((agreement) => [agreement.backendId, agreement.stateCode])), [
-  [9102, "SENT_TO_CLIENT"], [9103, "DRAFT"], [9104, "PENDING_MANAGEMENT_APPROVAL"], [9100, "ACTIVE"], [9099, "EXPIRED"],
-  [9098, "SUSPENDED"], [9097, "ARCHIVED"], [9096, "CANCELED"], [9095, "CLIENT_APPROVED"],
-], "the customer holds one agreement in every stage the Contracts screens show, each started at DRAFT");
+  [9102, "SENT_TO_CLIENT"], [9103, "DRAFT"], [9104, "PENDING_MANAGEMENT_APPROVAL"], [9100, "CLIENT_APPROVED"], [9099, "CLIENT_APPROVED"],
+  [9098, "CLIENT_APPROVED"], [9097, "ARCHIVED"], [9096, "CANCELED"], [9095, "CLIENT_APPROVED"],
+], "the customer holds one agreement in every stage the Contracts screens show, each started at DRAFT; a signed agreement stays CLIENT_APPROVED and its service life is read from its orders");
 assert.equal(quotes.orders.length, 31, "every sent Order is a row");
 assert.equal(quotes.preparing, true, "the Order still being prepared is withheld and only switches the preparing notice on");
 assert.equal(fixtureProposals.orders.length, 32);
@@ -131,10 +131,19 @@ assert.ok(fixtureProposals.orderItems.some((line) => line.order.id === 8113), "t
 state.moduleData.proposals = normalizedProposals;
 const pack = quotePackage();
 assert.deepEqual(plainValue(pack.agreements.map((row) => row.agreement.stage)), ["approval", "drafting", "drafting", "approved", "active", "suspended", "expired", "archived", "canceled"]);
+assert.deepEqual(plainValue(pack.agreements.filter((row) => ["active", "suspended", "expired"].includes(row.agreement.stage)).map((row) => [row.agreement.backendId, row.agreement.stateCode, row.orders.map((order) => order.stateCode)])), [
+  [9100, "CLIENT_APPROVED", ["ACTIVE", "DECLINED", "ACTIVE"]],
+  [9098, "CLIENT_APPROVED", ["SUSPENDED", "DECLINED"]],
+  [9099, "CLIENT_APPROVED", ["COMPLETED"]],
+], "active, suspended and expired come from the orders of a signed agreement");
 assert.deepEqual(plainValue(pack.groups.map((group) => group.id)), ["quote-0-7101", "quote-0-7102", "quote-0-7103", "quote-0-7104"], "the round's quotes group by property alone");
 assert.deepEqual(plainValue(pack.groups.map((group) => group.decision)), ["approved", "revision", "declined", "open"], "every property decision the page shows is exercised");
-assert.deepEqual(plainValue(pack.groups.map((group) => group.status)), ["approved", "revision", "declined", "viewed"]);
-assert.deepEqual(plainValue(pack.groups[3].orders.map((order) => order.status)), ["viewed", "unseen", "unseen"], "an open property mixes a viewed option with unseen ones, so both the decisions and the view event are exercised");
+assert.deepEqual(plainValue(pack.groups.map((group) => group.status)), ["approved", "revision", "declined", "unseen"]);
+assert.deepEqual(plainValue(pack.groups[3].orders.map((order) => [order.stateCode, order.status, order.allowedActions])), [
+  ["QUOTE_SENT", "unseen", ["approve", "changes", "decline"]],
+  ["QUOTE_SENT", "unseen", ["approve", "changes", "decline"]],
+  ["QUOTE_SENT", "unseen", ["approve", "changes", "decline"]],
+], "a sent quote is decided as it is shown: ORDER_LIFECYCLE has no view event");
 for (const group of pack.groups) {
   assert.deepEqual(plainValue(group.orders.map((order) => order.pricingModel.code)), ["PER_SERVICE", "MONTHLY", "SEASONAL"], group.id + " is quoted once per pricing model");
 }

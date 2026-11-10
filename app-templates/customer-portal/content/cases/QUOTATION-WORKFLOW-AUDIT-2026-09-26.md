@@ -1,5 +1,7 @@
 # Quotation workflow audit — 2026-09-26
 
+**2026-11-09:** where this names workflow 45 `GENERAL_FSM_ORDER`, `QUOTE_VIEWED` or the agreement's ACTIVE/SUSPENDED/EXPIRED, it is superseded by `ORDER_LIFECYCLE` in `core-ui/docs/snow-unified-order-lifecycle-2026-11-09.md`.
+
 The original audit read dev-1, tenant `SNOWLIMITLESS`, from 07:09 to 07:15 UTC
 and changed no configuration. The rollout agreed afterwards is described
 below. No new requests were submitted and no real emails were sent to verify

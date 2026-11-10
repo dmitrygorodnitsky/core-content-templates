@@ -2,10 +2,9 @@ import { findAgreement, findQuote } from "./normalizers/contracts.js";
 import { latestStateCode } from "./normalizers/core-record.js";
 
 export var CONTRACT_EVENTS = Object.freeze({
-  view: Object.freeze({ entity: "order", source: "QUOTE_SENT", code: "QUOTE_SENT-QUOTE_VIEWED" }),
-  approve: Object.freeze({ entity: "order", source: "QUOTE_VIEWED", code: "QUOTE_VIEWED-CLIENT_APPROVED" }),
-  decline: Object.freeze({ entity: "order", source: "QUOTE_VIEWED", code: "QUOTE_VIEWED-DECLINED" }),
-  changes: Object.freeze({ entity: "order", source: "QUOTE_VIEWED", code: "QUOTE_VIEWED-CUSTOMER_CHANGES_REQUESTED" }),
+  approve: Object.freeze({ entity: "order", source: "QUOTE_SENT", code: "QUOTE_SENT-ACCEPTED" }),
+  decline: Object.freeze({ entity: "order", source: "QUOTE_SENT", code: "QUOTE_SENT-DECLINED" }),
+  changes: Object.freeze({ entity: "order", source: "QUOTE_SENT", code: "QUOTE_SENT-CUSTOMER_CHANGES_REQUESTED" }),
   agreement: Object.freeze({ entity: "document", source: "SENT_TO_CLIENT", code: "SENT_TO_CLIENT-CLIENT_APPROVED" }),
 });
 
@@ -32,7 +31,7 @@ export function createContractCommands(deps) {
       .finally(function () {
         flight = null;
         var kept = command.kind === "changes" && !!deps.state.contractCommand;
-        if (command.kind !== "view" && !kept) deps.state.contractConfirm = null;
+        if (!kept) deps.state.contractConfirm = null;
         deps.render();
       });
     flight = started;
@@ -77,46 +76,6 @@ export function createContractCommands(deps) {
     var text = typeof message === "string" ? message.trim() : "";
     if (!text) return Promise.resolve(false);
     return decide("changes", backendId, { MESSAGE: { value: text } });
-  }
-
-  function view(backendIds) {
-    var definition = CONTRACT_EVENTS.view;
-    if (flight) return Promise.resolve(false);
-    var pkg = deps.current();
-    var ids = (backendIds || []).filter(function (id, index, all) {
-      var quote = findQuote(pkg, id);
-      return all.indexOf(id) === index && !!quote && quote.stateCode === definition.source;
-    });
-    if (!ids.length) return Promise.resolve(false);
-    ids.forEach(function (id) { deps.state.quoteViews[id] = "pending"; });
-    return run({ kind: "view", targets: ids }, async function () {
-      var gateway = deps.gateway();
-      for (var index = 0; index < ids.length; index += 1) {
-        try {
-          await gateway.sendOrderEvent(ids[index], definition.code, deps.context());
-        } catch (error) {
-          if (error && error.code === "session-expired") throw error;
-        }
-      }
-      var read;
-      try {
-        read = await deps.reload();
-      } catch (error) {
-        ids.forEach(function (id) { deps.state.quoteViews[id] = "failed"; });
-        throw readbackFailure(error);
-      }
-      if (!ordersRead(read)) {
-        ids.forEach(function (id) { deps.state.quoteViews[id] = "failed"; });
-        throw readbackFailure(null);
-      }
-      ids.forEach(function (id) {
-        var quote = findQuote(read, id);
-        if (quote && quote.stateCode !== definition.source) delete deps.state.quoteViews[id];
-        else deps.state.quoteViews[id] = "failed";
-      });
-      deps.state.contractCommand = null;
-      return true;
-    }) || Promise.resolve(false);
   }
 
   async function confirm(kind, backendId, source, stateOf) {
@@ -168,12 +127,7 @@ export function createContractCommands(deps) {
     decide: decide,
     requestChanges: requestChanges,
     approveAgreement: approveAgreement,
-    view: view,
   };
-}
-
-function ordersRead(pkg) {
-  return !!pkg && !!pkg.sources && pkg.sources.orders === "ready";
 }
 
 function readbackFailure(cause) {

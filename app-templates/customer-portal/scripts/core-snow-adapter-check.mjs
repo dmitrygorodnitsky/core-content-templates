@@ -212,7 +212,7 @@ function agreement(id, stateCode, orderIds, client = 62) {
 function quoteTable(overrides = {}) {
   return Object.assign({
     agreements: [agreement(136, "DRAFT", [41, 42]), agreement(133, "CLIENT_APPROVED", [38])],
-    orders: [quote(38, "CLIENT_APPROVED", 959), quote(41, "QUOTE_SENT", 959), quote(42, "QUOTE_VIEWED", 958), quote(43, "INITIAL", 958)],
+    orders: [quote(38, "ACTIVE", 959), quote(41, "QUOTE_SENT", 959), quote(42, "QUOTE_SENT", 958), quote(43, "DRAFT", 958)],
     orderItems: [line(38, 1, 227, 4891.92), line(38, 2, 233, 21859.68), line(41, 1, 227, 4891.92), line(41, 2, 233, 21859.68), line(42, 1, 28, 1528.48), line(42, 2, 36, 916.24), line(43, 1, 53, 1222.98)],
     productPrices: [{ id: 227, product: { id: 25 } }, { id: 233, product: { id: 28 } }, { id: 28, product: { id: 25 } }, { id: 36, product: { id: 28 } }, { id: 53, product: { id: 25 } }],
     products: [{ id: 25, code: "PARKING_LOT_SNOW_REMOVAL", nls: { en: { NAME: "Snow Removal" } } }, { id: 28, code: "ROCK_SALT_DE_ICING", nls: { en: { NAME: "Rock Salt De-Icing" } } }],
@@ -330,7 +330,7 @@ function quoteFetch(table, calls = []) {
 }
 
 {
-  const empty = await createCoreSnowQuotesAdapter({ origin, fetch: quoteFetch(quoteTable({ agreements: [], orders: [quote(43, "INITIAL", 958)] })) }).load("proposals", context);
+  const empty = await createCoreSnowQuotesAdapter({ origin, fetch: quoteFetch(quoteTable({ agreements: [], orders: [quote(43, "DRAFT", 958)] })) }).load("proposals", context);
   assert.deepEqual(empty.orderItems, [], "without a visible Order no line is read");
   assert.equal(empty.reads.orderItems.state, "ready");
   assert.deepEqual(empty.products, []);
@@ -396,7 +396,7 @@ function quoteFetch(table, calls = []) {
   assert.ok(Array.isArray(calls[0].body), "a get sends its mappings as the body");
   assert.ok(calls[0].body.some((mapping) => mapping.name === "account"), "the pre-read asks for the Order's Account so ownership can be checked");
 
-  table.orders.push(Object.assign(quote(77, "QUOTE_VIEWED", 958), { account: { id: 701 } }));
+  table.orders.push(Object.assign(quote(77, "QUOTE_SENT", 958), { account: { id: 701 } }));
   await rejectsWith("customer-forbidden", () => adapter.readOrder(77, context));
   await rejectsWith("not-found", () => adapter.readOrder(999, context));
   await rejectsWith("invalid-target", () => adapter.readOrder("x", context));
@@ -408,8 +408,8 @@ function quoteFetch(table, calls = []) {
   await rejectsWith("not-found", () => adapter.readAgreement(1, context));
 
   calls.length = 0;
-  assert.equal(await adapter.sendOrderEvent(42, "QUOTE_VIEWED-CLIENT_APPROVED", context), true);
-  assert.equal(calls[0].url, origin + "/core-bill/api/tagged/order/42/send-event.json?event=QUOTE_VIEWED-CLIENT_APPROVED");
+  assert.equal(await adapter.sendOrderEvent(42, "QUOTE_SENT-ACCEPTED", context), true);
+  assert.equal(calls[0].url, origin + "/core-bill/api/tagged/order/42/send-event.json?event=QUOTE_SENT-ACCEPTED");
   assert.equal(calls[0].method, "POST");
   assert.deepEqual(calls[0].body, {}, "the generic event carries no attributes");
   assert.equal(await adapter.sendAgreementEvent(136, "SENT_TO_CLIENT-CLIENT_APPROVED", context), true);
@@ -417,20 +417,20 @@ function quoteFetch(table, calls = []) {
   await rejectsWith("invalid-event", () => adapter.sendOrderEvent(42, "approve&admin=1", context));
 
   calls.length = 0;
-  assert.equal(await adapter.sendOrderEvent(42, "QUOTE_VIEWED-CUSTOMER_CHANGES_REQUESTED", context, { MESSAGE: { value: "Add sidewalk de-icing" } }), true);
-  assert.equal(calls[0].url, origin + "/core-bill/api/tagged/order/42/send-event.json?event=QUOTE_VIEWED-CUSTOMER_CHANGES_REQUESTED");
+  assert.equal(await adapter.sendOrderEvent(42, "QUOTE_SENT-CUSTOMER_CHANGES_REQUESTED", context, { MESSAGE: { value: "Add sidewalk de-icing" } }), true);
+  assert.equal(calls[0].url, origin + "/core-bill/api/tagged/order/42/send-event.json?event=QUOTE_SENT-CUSTOMER_CHANGES_REQUESTED");
   assert.deepEqual(calls[0].body, { MESSAGE: { value: "Add sidewalk de-icing" } }, "a change request carries its MESSAGE as the event body");
   const detailsBody = { LEGAL_NAME: { value: "Harbour View Strata" }, INFORMATION_CONFIRMED: { value: true } };
-  assert.equal(await adapter.sendOrderEvent(41, "QUOTE_VIEWED-CLIENT_APPROVED", context, detailsBody), true);
-  assert.equal(calls[1].url, origin + "/core-bill/api/tagged/order/41/send-event.json?event=QUOTE_VIEWED-CLIENT_APPROVED");
+  assert.equal(await adapter.sendOrderEvent(41, "QUOTE_SENT-ACCEPTED", context, detailsBody), true);
+  assert.equal(calls[1].url, origin + "/core-bill/api/tagged/order/41/send-event.json?event=QUOTE_SENT-ACCEPTED");
   assert.deepEqual(calls[1].body, detailsBody, "contract details travel as the approval's event body");
 
   const answering = (status) => createCoreSnowQuotesAdapter({ origin, fetch: async () => ({ ok: status < 300, status, async json() { return {}; } }) });
-  await rejectsWith("session-expired", () => answering(401).sendOrderEvent(42, "QUOTE_VIEWED-DECLINED", context));
-  await rejectsWith("customer-forbidden", () => answering(403).sendOrderEvent(42, "QUOTE_VIEWED-DECLINED", context));
-  await rejectsWith("not-found", () => answering(404).sendOrderEvent(42, "QUOTE_VIEWED-DECLINED", context));
-  await rejectsWith("command-refused", () => answering(409).sendOrderEvent(42, "QUOTE_VIEWED-DECLINED", context));
-  await rejectsWith("core-request-failed", () => answering(500).sendOrderEvent(42, "QUOTE_VIEWED-DECLINED", context));
+  await rejectsWith("session-expired", () => answering(401).sendOrderEvent(42, "QUOTE_SENT-DECLINED", context));
+  await rejectsWith("customer-forbidden", () => answering(403).sendOrderEvent(42, "QUOTE_SENT-DECLINED", context));
+  await rejectsWith("not-found", () => answering(404).sendOrderEvent(42, "QUOTE_SENT-DECLINED", context));
+  await rejectsWith("command-refused", () => answering(409).sendOrderEvent(42, "QUOTE_SENT-DECLINED", context));
+  await rejectsWith("core-request-failed", () => answering(500).sendOrderEvent(42, "QUOTE_SENT-DECLINED", context));
 }
 
 assert.deepEqual(coreSnowContract.quoteFilters, ["account.id"]);
@@ -446,9 +446,9 @@ assert.deepEqual(plain(coreSnowContract.scopeModes), {
 assert.deepEqual(coreSnowContract.propertyFilters, ["type.code"]);
 assert.equal(coreSnowContract.propertyType, "SNOW_REMOVAL_PROPERTY");
 assert.deepEqual(Object.keys(coreSnowContract.customerQuoteStatus).sort(), [
-  "CLIENT_APPROVED", "CUSTOMER_CHANGES_REQUESTED", "DECLINED", "QUOTE_SENT", "QUOTE_VIEWED",
+  "ACCEPTED", "ACTIVE", "CANCELED", "COMPLETED", "CUSTOMER_CHANGES_REQUESTED", "DECLINED", "QUOTE_SENT", "SUSPENDED",
 ]);
-assert.deepEqual(coreSnowContract.operatorQuoteStates, ["CHANGES_REQUESTED", "INITIAL", "QUOTE_APPROVED_INTERNALLY", "QUOTE_PREPARED"]);
+assert.deepEqual(coreSnowContract.operatorQuoteStates, ["CHANGES_REQUESTED", "DRAFT", "QUOTE_APPROVED", "QUOTE_PREPARED"]);
 assert.equal(coreSnowContract.quoteRequestPreference, "SNOW_PORTAL_QUOTE_REQUEST");
 
 console.log("core-snow-adapter-check ok: properties filtered in the browser against an inherited ACCOUNT attribute, coordinates read from COORD_LAT and COORD_LNG with a missing value left missing, agreements, quotes and their lines filtered to the Account in the request with any foreign row dropped and reported as browser-filtered, catalog rows reported as unscoped, a failed read left absent as a partial result, a catalog 401 kept from signing the customer out, and the pre-read, ownership check and tagged event request of every contract command")

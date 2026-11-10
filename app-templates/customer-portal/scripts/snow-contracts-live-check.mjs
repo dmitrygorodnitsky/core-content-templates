@@ -77,10 +77,10 @@ function coreTable() {
       }),
     ],
     orders: [
-      coreOrder(4001, "CLIENT_APPROVED", 958, "SEASONAL", 26751.6),
+      coreOrder(4001, "ACCEPTED", 958, "SEASONAL", 26751.6),
       coreOrder(4101, "QUOTE_SENT", 959, "SEASONAL", 26751.6),
-      coreOrder(4102, "QUOTE_VIEWED", 959, "PER_SERVICE", 2444.72),
-      coreOrder(4103, "INITIAL", 959, "MONTHLY", 6687.9),
+      coreOrder(4102, "QUOTE_SENT", 959, "PER_SERVICE", 2444.72),
+      coreOrder(4103, "DRAFT", 959, "MONTHLY", 6687.9),
     ],
     orderItems: [
       coreLine(4001, 1, 227, 4891.92), coreLine(4001, 2, 233, 21859.68),
@@ -139,11 +139,11 @@ function applyServerEvent(table, entity, id, code) {
   const row = rows.find((candidate) => candidate.id === id);
   if (!row || row.states[0].code !== source) return;
   row.states = [{ id: row.states[0].id + 1000, code: next }];
-  if (entity === "order" && next === "CLIENT_APPROVED") {
+  if (entity === "order" && next === "ACCEPTED") {
     const property = row.attributes[5].SERVICE_PROPERTY && row.attributes[5].SERVICE_PROPERTY.value;
     table.orders.forEach((other) => {
       const sameProperty = other.attributes[5].SERVICE_PROPERTY && other.attributes[5].SERVICE_PROPERTY.value === property;
-      if (other.id !== id && sameProperty && ["QUOTE_SENT", "QUOTE_VIEWED"].includes(other.states[0].code)) other.states = [{ id: other.states[0].id + 1000, code: "DECLINED" }];
+      if (other.id !== id && sameProperty && other.states[0].code === "QUOTE_SENT") other.states = [{ id: other.states[0].id + 1000, code: "DECLINED" }];
     });
   }
 }
@@ -199,7 +199,7 @@ function quietConsole() {
   const pkg = quotePackage();
   assert.deepEqual(pkg.agreements.map((row) => [row.id, row.agreement.stage]), [["agreement-core-5602", "approval"]], "a quotation round carries no agreement");
   assert.deepEqual(pkg.groups.map((group) => [group.id, group.title, group.orders.map((order) => order.backendId)]), [["quote-0-959", "Property details unavailable", [4102, 4101]]], "a property the customer's properties list does not include is not named from another source");
-  assert.equal(pkg.preparing, true, "the INITIAL Order is withheld and only says a request is being prepared");
+  assert.equal(pkg.preparing, true, "the DRAFT Order is withheld and only says a request is being prepared");
   assert.deepEqual(findQuote(pkg, 4102).lines.map((line) => [line.product, line.unitPrice, line.total]), [["Snow Removal", "CA$1,528.48", "CA$1,528.48"], ["Rock Salt De-Icing", "CA$916.24", "CA$916.24"]]);
   assert.equal(findQuote(pkg, 4103), null, "the operator-side Order and its lines never reach a page");
 
@@ -215,11 +215,9 @@ function quietConsole() {
   assert.ok(!list.textContent.includes("Line note for the operator"), "operator notes on a line are never shown");
 
   state.currentSiteId = "quote-0-959";
-  state.quoteViews = { 4101: "pending" };
   const detail = ProposalDetail();
-  assert.deepEqual(all(detail, "[data-module=\"quote-option\"]").map((card) => card.getAttribute("data-state")), ["viewed", "unseen"]);
+  assert.deepEqual(all(detail, "[data-module=\"quote-option\"]").map((card) => card.getAttribute("data-state")), ["unseen", "unseen"]);
   assert.deepEqual(all(detail, "[data-module=\"quote-option\"] .money-rows__row").map((row) => row.textContent).slice(0, 3), ["SubtotalCA$2,444.72", "TaxesCA$0.00", "TotalCA$2,444.72"], "Core's zero taxes are stated rather than left out");
-  state.quoteViews = {};
 
   state.agreementId = "agreement-core-5602";
   const agreement = AgreementDetail();
@@ -271,19 +269,15 @@ function quietConsole() {
     assert.equal(one(page, "h1").textContent, "Your quotes");
     assert.deepEqual(quotePackage().groups.map((group) => group.id), ["quote-0-958", "quote-0-959"], "without readable agreements every quote stands outside a package");
     state.currentSiteId = "quote-0-959";
-    state.quoteViews = { 4101: "pending" };
     const detail = ProposalDetail();
     assert.deepEqual(all(detail, ".quote-line__title--unnamed").map((node) => node.textContent), ["Unnamed service", "Unnamed service", "Unnamed service", "Unnamed service"], "an unreadable product is unnamed, never guessed");
     assert.equal(all(detail, "[data-module=\"contracts-partial\"]").length, 1);
-    state.quoteViews = {};
 
     const noLines = coreTable();
     noLines.fail["/core-bill/api/tagged/order-item/list.json"] = 500;
     await liveRuntime(noLines).loadAsync("proposals");
     state.currentSiteId = "quote-0-959";
-    state.quoteViews = { 4101: "pending" };
     assert.deepEqual(all(ProposalDetail(), "[data-module=\"quote-lines\"]").map((node) => node.textContent), ["The services on this quote couldn’t be loaded.", "The services on this quote couldn’t be loaded."]);
-    state.quoteViews = {};
 
     const noOrders = coreTable();
     noOrders.fail["/core-bill/api/tagged/order/list.json"] = 500;
@@ -367,34 +361,33 @@ async function ready(harness) {
   await harness.runtime.loadAsync("proposals");
   state.contractCommand = null;
   state.contractConfirm = null;
-  state.quoteViews = {};
 }
 
 {
   assert.deepEqual(plain(CONTRACT_EVENTS), {
-    view: { entity: "order", source: "QUOTE_SENT", code: "QUOTE_SENT-QUOTE_VIEWED" },
-    approve: { entity: "order", source: "QUOTE_VIEWED", code: "QUOTE_VIEWED-CLIENT_APPROVED" },
-    decline: { entity: "order", source: "QUOTE_VIEWED", code: "QUOTE_VIEWED-DECLINED" },
+    approve: { entity: "order", source: "QUOTE_SENT", code: "QUOTE_SENT-ACCEPTED" },
+    decline: { entity: "order", source: "QUOTE_SENT", code: "QUOTE_SENT-DECLINED" },
+    changes: { entity: "order", source: "QUOTE_SENT", code: "QUOTE_SENT-CUSTOMER_CHANGES_REQUESTED" },
     agreement: { entity: "document", source: "SENT_TO_CLIENT", code: "SENT_TO_CLIENT-CLIENT_APPROVED" },
-  }, "the portal sends only the four generic workflow events; a change request is a future form, not an event here");
+  }, "the portal sends the three ORDER_LIFECYCLE client events and the agreement approval; there is no view event");
 
   const table = coreTable();
-  table.orders.push(coreOrder(4104, "QUOTE_VIEWED", 959, "MONTHLY", 6687.9));
+  table.orders.push(coreOrder(4104, "QUOTE_SENT", 959, "MONTHLY", 6687.9));
   table.agreements[0].attributes[17].ORDERS.value.push(4104);
   const harness = commandHarness(table);
   await ready(harness);
   const before = findQuote(quotePackage(), 4104);
-  assert.equal(before.status, "viewed");
+  assert.equal(before.status, "unseen");
   state.contractConfirm = { kind: "approve", backendId: 4102 };
   const flight = harness.commands.decide("approve", 4102);
   assert.equal(state.contractCommand.phase, "pending", "the command is pending the moment it starts");
   assert.deepEqual(harness.busyAtRender, [true], "the pending page is drawn with the command already in flight, so every other decision renders disabled");
   assert.equal(await harness.commands.decide("decline", 4104), false, "a second command while one is in flight is refused");
   assert.equal(await harness.commands.approveAgreement(5602), false);
-  assert.equal(findQuote(quotePackage(), 4104).status, "viewed", "while the approval is in flight the sibling is not predicted to be declined");
+  assert.equal(findQuote(quotePackage(), 4104).status, "unseen", "while the approval is in flight the sibling is not predicted to be declined");
   assert.equal(await flight, true);
   assert.deepEqual(harness.busyAtRender, [true, false], "the readback is drawn once the command has left flight, with the decisions enabled again");
-  assert.deepEqual(table.events, [{ entity: "order", id: 4102, code: "QUOTE_VIEWED-CLIENT_APPROVED" }], "exactly one event was sent");
+  assert.deepEqual(table.events, [{ entity: "order", id: 4102, code: "QUOTE_SENT-ACCEPTED" }], "exactly one event was sent");
   assert.equal(harness.reloads(), 1, "the page reads back once after the event");
   assert.equal(state.contractCommand, null);
   assert.equal(state.contractConfirm, null);
@@ -416,17 +409,15 @@ async function ready(harness) {
   assert.equal(harness.reloads(), 1, "the conflict is shown on fresh data");
   assert.equal(findQuote(quotePackage(), 4102).status, "declined");
   state.currentSiteId = "quote-0-959";
-  state.quoteViews = { 4101: "pending" };
   const cards = all(ProposalDetail(), "[data-module=\"quote-option\"]");
   assert.deepEqual(cards.filter((card) => all(card, "[data-module=\"command-conflict\"]").length > 0).map((card) => card.getAttribute("data-state")), ["declined"], "the conflict is explained on the quote that changed, shown as Core now has it");
-  state.quoteViews = {};
 }
 
 {
   const table = coreTable();
   const harness = commandHarness(table);
   await ready(harness);
-  assert.equal(await harness.commands.decide("approve", 4101), false, "an unseen quote cannot be approved");
+  assert.equal(await harness.commands.decide("approve", 4103), false, "a quote still with the operator cannot be approved");
   assert.equal(await harness.commands.decide("decline", 4001), false, "an approved quote cannot be declined");
   assert.equal(await harness.commands.decide("requestChanges", 4102), false, "no change request is sent from the portal");
   assert.equal(await harness.commands.approveAgreement(5601), false, "an agreement the client does not hold cannot be approved");
@@ -443,7 +434,7 @@ for (const [status, phase] of [[403, "refused"], [409, "refused"], [500, "failed
   assert.equal(state.contractCommand.phase, phase, "HTTP " + status + " is " + phase);
   assert.deepEqual(state.contractCommand.targets, [4102]);
   assert.equal(harness.reloads(), 0);
-  assert.equal(findQuote(quotePackage(), 4102).status, "viewed", "a refused or failed command changes nothing on the page");
+  assert.equal(findQuote(quotePackage(), 4102).status, "unseen", "a refused or failed command changes nothing on the page");
 }
 
 {
@@ -454,7 +445,7 @@ for (const [status, phase] of [[403, "refused"], [409, "refused"], [500, "failed
   assert.equal(await harness.commands.decide("decline", 4102), false);
   assert.equal(table.events.length, 1);
   assert.equal(state.contractCommand.phase, "unconfirmed", "a 200 that Core did not apply is reported from the readback, not as success");
-  assert.equal(findQuote(quotePackage(), 4102).status, "viewed");
+  assert.equal(findQuote(quotePackage(), 4102).status, "unseen");
 }
 
 {
@@ -484,14 +475,6 @@ for (const [status, phase] of [[403, "refused"], [409, "refused"], [500, "failed
   agreementTable.fail["/core/api/tagged/document/list.json"] = 500;
   assert.equal(await agreementHarness.commands.approveAgreement(5602), false);
   assert.equal(state.contractCommand.phase, "readback-failed", "the same holds for an agreement whose readback lost the agreements read");
-
-  const viewTable = coreTable();
-  const viewHarness = commandHarness(viewTable);
-  await ready(viewHarness);
-  viewTable.fail["/core-bill/api/tagged/order/list.json"] = 500;
-  await viewHarness.commands.view([4101]);
-  assert.equal(state.contractCommand.phase, "readback-failed");
-  assert.deepEqual(plain(state.quoteViews), { 4101: "failed" });
 }
 
 {
@@ -528,47 +511,29 @@ for (const [status, phase] of [[403, "refused"], [409, "refused"], [500, "failed
 
 {
   const table = coreTable();
-  table.orders.push(coreOrder(4105, "QUOTE_SENT", 959, "MONTHLY", 6687.9));
-  table.agreements[0].attributes[17].ORDERS.value.push(4105);
   const harness = commandHarness(table);
   await ready(harness);
-  const view = harness.commands.view([4101, 4105, 4102, 4101]);
-  assert.deepEqual(plain(state.quoteViews), { 4101: "pending", 4105: "pending" }, "only unseen quotes are marked, each once");
-  assert.equal(await view, true);
-  assert.deepEqual(table.events.map((event) => [event.id, event.code]), [[4101, "QUOTE_SENT-QUOTE_VIEWED"], [4105, "QUOTE_SENT-QUOTE_VIEWED"]], "view events go out one at a time, in order");
-  assert.equal(harness.reloads(), 1, "and are read back once");
-  assert.deepEqual(plain(state.quoteViews), {});
-  assert.equal(findQuote(quotePackage(), 4105).status, "viewed");
-  assert.equal(state.contractCommand, null);
-
-  const dropped = coreTable();
-  const dropHarness = commandHarness(dropped);
-  await ready(dropHarness);
-  dropped.dropEvents = true;
-  await dropHarness.commands.view([4101]);
-  assert.deepEqual(plain(state.quoteViews), { 4101: "failed" }, "a view Core did not apply is failed, so the page offers a retry instead of decisions");
-  assert.equal(await dropHarness.commands.view([4102]), false, "a viewed quote needs no view event");
+  assert.equal("view" in harness.commands, false, "the portal has no view command: ORDER_LIFECYCLE keeps a shown quote in QUOTE_SENT");
+  assert.equal(table.events.length + harness.reloads(), 0, "loading Contracts sends no event");
 }
 
 {
-  const state = { porders: [], pagreements: [], quoteViews: {} };
+  const state = { porders: [], pagreements: [] };
   const fixture = (await load("data/cases/granite-ridge-snow.js")).graniteRidgeSnowFixture;
   state.porders = structuredClone(fixture.proposals.orders);
   state.pagreements = structuredClone(fixture.proposals.agreements);
   const gateway = createFixtureContractsGateway(state);
   const latest = (rows, id) => rows.find((row) => row.id === id).states.at(-1).code;
-  await assert.rejects(gateway.sendOrderEvent(8111, "QUOTE_VIEWED-CLIENT_APPROVED"), (error) => error.code === "command-refused", "the fixture refuses an event from the wrong state, as Core would");
-  await gateway.sendOrderEvent(8111, "QUOTE_SENT-QUOTE_VIEWED");
-  assert.equal(latest(state.porders, 8111), "QUOTE_VIEWED");
+  await assert.rejects(gateway.sendOrderEvent(8113, "QUOTE_SENT-ACCEPTED"), (error) => error.code === "command-refused", "the fixture refuses an event from the wrong state, as Core would");
   const details = { LEGAL_NAME: { value: "Whitlock Property Group LLC" }, CLIENT_TYPE: { value: "CORPORATE" } };
-  await gateway.sendOrderEvent(8111, "QUOTE_VIEWED-CLIENT_APPROVED", {}, details);
-  assert.deepEqual([8110, 8111, 8112].map((id) => latest(state.porders, id)), ["DECLINED", "CLIENT_APPROVED", "DECLINED"], "approving an option declines its open siblings for the same property");
+  await gateway.sendOrderEvent(8111, "QUOTE_SENT-ACCEPTED", {}, details);
+  assert.deepEqual([8110, 8111, 8112].map((id) => latest(state.porders, id)), ["DECLINED", "ACCEPTED", "DECLINED"], "approving an option declines its open siblings for the same property");
   const held = state.pagreements.length;
   assert.equal(state.pagreements.some((row) => latest(state.pagreements, row.id) === "DRAFT" && row.attributes[17].ORDERS.value.includes(8111)), false, "a round with a property still under revision is not settled");
-  for (const id of [8104, 8105, 8106]) state.porders.find((row) => row.id === id).states.push({ code: "QUOTE_VIEWED" });
-  await gateway.sendOrderEvent(8104, "QUOTE_VIEWED-DECLINED");
-  await gateway.sendOrderEvent(8105, "QUOTE_VIEWED-DECLINED");
-  await gateway.sendOrderEvent(8106, "QUOTE_VIEWED-CLIENT_APPROVED", {}, details);
+  for (const id of [8104, 8105, 8106]) state.porders.find((row) => row.id === id).states.push({ code: "QUOTE_SENT" });
+  await gateway.sendOrderEvent(8104, "QUOTE_SENT-DECLINED");
+  await gateway.sendOrderEvent(8105, "QUOTE_SENT-DECLINED");
+  await gateway.sendOrderEvent(8106, "QUOTE_SENT-ACCEPTED", {}, details);
   assert.equal(state.pagreements.length, held + 1, "once every property of the round is settled one agreement is made");
   const made = state.pagreements.at(-1);
   assert.deepEqual([made.id, latest(state.pagreements, made.id), made.attributes[17].ORDERS.value, made.attributes[17].LEGAL_NAME.value], [9105, "DRAFT", [8102, 8106, 8111], "Whitlock Property Group LLC"], "the agreement starts at DRAFT with only the approved quotes and the details that came with the approval");
@@ -634,7 +599,7 @@ for (const [status, phase] of [[403, "refused"], [409, "refused"], [500, "failed
 
     const preparingTable = coreTable();
     preparingTable.agreements = [];
-    preparingTable.orders = [coreOrder(4103, "INITIAL", 959, "MONTHLY", 6687.9)];
+    preparingTable.orders = [coreOrder(4103, "DRAFT", 959, "MONTHLY", 6687.9)];
     const preparing = await widget(preparingTable);
     assert.equal(preparing.getAttribute("data-state"), "preparing");
     assert.equal(one(preparing, "[data-module=\"quote-preparing\"]").getAttribute("data-state"), "preparing");

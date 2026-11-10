@@ -129,10 +129,10 @@ function loadRuntime(options = {}) {
 
 async function boundDecisionPath() {
   const seedsDir = path.resolve("../core-ui/scripts/dev/seeds");
-  const workflowPath = path.join(seedsDir, "quotationPackageOrderWorkflow.json");
-  const scriptsPath = path.join(seedsDir, "quotationPackageScripts.json");
+  const workflowPath = path.join(seedsDir, "orderLifecycleWorkflow.json");
+  const scriptsPath = path.join(seedsDir, "orderLifecycleScripts.json");
   if (!existsSync(workflowPath) || !existsSync(scriptsPath)) return null;
-  const bound = JSON.parse(await fs.readFile(workflowPath, "utf8")).workflows.find((workflow) => workflow.code === "GENERAL_FSM_ORDER");
+  const bound = JSON.parse(await fs.readFile(workflowPath, "utf8")).workflows.find((workflow) => workflow.code === "ORDER_LIFECYCLE");
   const entry = bound && JSON.parse(await fs.readFile(scriptsPath, "utf8")).scripts.find((script) => script.code === bound.script);
   return entry && entry.contentFile ? path.join(seedsDir, entry.contentFile) : null;
 }
@@ -267,16 +267,16 @@ const N = loadRuntime().CR.normalizer;
   const contract = CR.contract;
   const normalizer = CR.normalizer;
   assert.equal(CR.fixtures.quotationData().accounts[0].type.code, "CUSTOMER", "review fixtures use the same Client type as Request Quote");
+  assert.equal(contract.orderWorkflow, "ORDER_LIFECYCLE");
   const EXPECTED_STATUS = {
-    QUOTE_SENT: "new", QUOTE_VIEWED: "viewed", CLIENT_APPROVED: "approved", DECLINED: "declined",
-    CUSTOMER_CHANGES_REQUESTED: "changes", INITIAL: "revising", QUOTE_PREPARED: "revising",
-    CHANGES_REQUESTED: "revising", QUOTE_APPROVED_INTERNALLY: "revising",
+    QUOTE_SENT: "new", DECLINED: "declined", CUSTOMER_CHANGES_REQUESTED: "changes",
+    ACCEPTED: "approved", ACTIVE: "approved", SUSPENDED: "approved", COMPLETED: "approved", CANCELED: "approved",
+    DRAFT: "revising", QUOTE_PREPARED: "revising", CHANGES_REQUESTED: "revising", QUOTE_APPROVED: "revising",
   };
   assert.deepEqual(Object.keys(EXPECTED_STATUS).sort(), plain(contract.orderStates).sort(), "every order state has an expected customer status");
-  const EXPECTED_PROPERTY = { new: "awaiting", viewed: "awaiting", approved: "approved", declined: "declined", changes: "changes", revising: "changes" };
+  const EXPECTED_PROPERTY = { new: "awaiting", approved: "approved", declined: "declined", changes: "changes", revising: "changes" };
   const EXPECTED_ACTIONS = {
-    QUOTE_SENT: { view: true, approve: false, decline: false, changes: false },
-    QUOTE_VIEWED: { view: false, approve: true, decline: true, changes: true },
+    QUOTE_SENT: { approve: true, decline: true, changes: true },
   };
   const round = (...args) => CR.fixtures.roundOf(CR.fixtures.quotationData(...args));
   const model = (data) => normalizer.reviewModel({
@@ -302,34 +302,34 @@ const N = loadRuntime().CR.normalizer;
     assert.equal(option.status, EXPECTED_STATUS[state], state + " maps to its customer status");
     assert.equal(view.properties[0].status, EXPECTED_PROPERTY[option.status], state + " decides the property status");
     assert.equal(option.priced, option.status !== "revising", state + " shows server prices only when the quote is not being revised");
-    assert.deepEqual(plain(option.actions), EXPECTED_ACTIONS[state] || { view: false, approve: false, decline: false, changes: false }, state + " offers only the events its state allows");
+    assert.deepEqual(plain(option.actions), EXPECTED_ACTIONS[state] || { approve: false, decline: false, changes: false }, state + " offers only the events its state allows; a sent quote is decided as it is shown, with no view event");
   }
   {
     const data = round();
     data.orders[1].states = [{ code: "SOMETHING_NEW" }];
     const option = model(data).properties[0].options[1];
     assert.equal(option.status, "unknown", "an unmapped order state is never guessed");
-    assert.deepEqual(plain(option.actions), { view: false, approve: false, decline: false, changes: false });
+    assert.deepEqual(plain(option.actions), { approve: false, decline: false, changes: false });
   }
 
   assert.equal(normalizer.propertyStatus([{ status: "approved" }, { status: "declined" }]), "approved");
   assert.equal(normalizer.propertyStatus([{ status: "declined" }, { status: "declined" }]), "declined");
   assert.equal(normalizer.propertyStatus([{ status: "declined" }, { status: "new" }]), "awaiting");
-  assert.equal(normalizer.propertyStatus([{ status: "changes" }, { status: "viewed" }]), "changes");
+  assert.equal(normalizer.propertyStatus([{ status: "changes" }, { status: "new" }]), "changes");
   assert.equal(normalizer.propertyStatus([{ status: "revising" }, { status: "declined" }]), "changes");
   assert.equal(normalizer.propertyStatus([{ status: "unknown" }]), "unknown");
   assert.equal(normalizer.propertyStatus([]), "unknown");
 
-  const RETIRED = ["QUOTATION", "QUOTATION_SENT", "QUOTATION_UPDATE", "QUOTATION_SEND_FAILED", "AWAITING_CLIENT_DETAILS", "CLIENT_DETAILS_RECEIVED"];
+  const RETIRED = ["QUOTATION", "QUOTATION_SENT", "QUOTATION_UPDATE", "QUOTATION_SEND_FAILED", "AWAITING_CLIENT_DETAILS", "CLIENT_DETAILS_RECEIVED", "ACTIVE", "SUSPENDED", "EXPIRED"];
   const EXPECTED_KIND = {
     QUOTATION: "unavailable", QUOTATION_SENT: "unavailable", QUOTATION_UPDATE: "unavailable", QUOTATION_SEND_FAILED: "unavailable",
     AWAITING_CLIENT_DETAILS: "unavailable", CLIENT_DETAILS_RECEIVED: "unavailable", DRAFT: "preparing",
     PENDING_MANAGEMENT_APPROVAL: "preparing",
     INTERNALLY_APPROVED: "preparing", SENT_TO_CLIENT: "agreement-review", CLIENT_CHANGES_REQUESTED: "reference", AGREEMENT_SEND_FAILED: "unavailable",
-    CLIENT_APPROVED: "completion", ACTIVATION_FAILED: "completion", ACTIVE: "completion", SUSPENDED: "reference", EXPIRED: "reference",
+    CLIENT_APPROVED: "completion", ACTIVATION_FAILED: "completion", ACTIVE: "unavailable", SUSPENDED: "unavailable", EXPIRED: "unavailable",
     ARCHIVED: "closed", CANCELED: "closed", ACCESS_CLEANUP_RETRY: "closed",
   };
-  const EXPECTED_COMPLETION = { CLIENT_APPROVED: "approved", ACTIVATION_FAILED: "finishing", ACTIVE: "active" };
+  const EXPECTED_COMPLETION = { CLIENT_APPROVED: "approved", ACTIVATION_FAILED: "finishing" };
   assert.deepEqual(Object.keys(EXPECTED_KIND).sort(), plain(contract.agreementStates).sort(), "every agreement state has an expected page");
   const quotationGrant = CR.fixtures.quotationData().grant;
   const agreementGrant = CR.fixtures.agreementData("SENT_TO_CLIENT").grant;
@@ -346,13 +346,36 @@ const N = loadRuntime().CR.normalizer;
     assert.equal(view.kind, EXPECTED_KIND[state] || "unavailable", state + " selects its page");
     assert.equal(view.completion, EXPECTED_COMPLETION[state] || "", state + " selects its completion wording");
     assert.equal(view.reason === "unknown-state", !EXPECTED_KIND[state], state + (EXPECTED_KIND[state] ? " is never answered as an unknown state" : " is an unknown state"));
-    assert.equal(view.reason === "retired", RETIRED.includes(state), state + (RETIRED.includes(state) ? " is a quotation state retired on 2026-11-06 and shows the unavailable card" : " is not retired"));
+    assert.equal(view.reason === "retired", RETIRED.includes(state), state + (RETIRED.includes(state) ? " is retired (the quotation states on 2026-11-06, the agreement service states on 2026-11-09) and shows the unavailable card" : " is not retired"));
     const offered = view.properties.some((property) => property.options.some((option) => Object.values(option.actions).some(Boolean)));
     assert.equal(offered, false, state + ": a Document-rooted link offers no quote decision; a quotation round carries no Document");
     assert.equal(view.details.available, false, state + ": no agreement state takes the contract details any more");
     assert.equal(view.canApproveAgreement, state === "SENT_TO_CLIENT", state + " offers agreement approval only while it is sent to the client");
     assert.equal(view.canRequestAgreementChanges, state === "SENT_TO_CLIENT", state + " offers a change request only while the agreement is sent to the client");
     assert.equal(view.banner === "changes", state === "CLIENT_CHANGES_REQUESTED", state + (state === "CLIENT_CHANGES_REQUESTED" ? " shows the agreement for reference after the client asked for changes" : " is not the changes-requested page"));
+  }
+
+  assert.deepEqual(plain(normalizer.serviceDisposition), {
+    ACTIVE: { kind: "completion", completion: "active" },
+    SUSPENDED: { kind: "reference", banner: "suspended" },
+    COMPLETED: { kind: "reference", banner: "expired" },
+  }, "a signed agreement reads its service life from its orders");
+  for (const [state, orderStates, expected] of [
+    ["CLIENT_APPROVED", ["ACCEPTED"], ["completion", "approved", ""]],
+    ["CLIENT_APPROVED", ["ACTIVE"], ["completion", "active", ""]],
+    ["CLIENT_APPROVED", ["SUSPENDED"], ["reference", "", "suspended"]],
+    ["CLIENT_APPROVED", ["COMPLETED"], ["reference", "", "expired"]],
+    ["CLIENT_APPROVED", ["CANCELED"], ["completion", "approved", ""]],
+    ["CLIENT_APPROVED", ["SUSPENDED", "ACTIVE", "COMPLETED"], ["completion", "active", ""]],
+    ["CLIENT_APPROVED", ["COMPLETED", "SUSPENDED"], ["reference", "", "suspended"]],
+    ["ARCHIVED", ["ACTIVE"], ["closed", "", ""]],
+    ["SENT_TO_CLIENT", ["ACTIVE"], ["agreement-review", "", ""]],
+  ]) {
+    const data = CR.fixtures.agreementData(state, false);
+    data.orders.forEach((row, index) => { row.states = [{ code: orderStates[index % orderStates.length] }]; });
+    const presented = model(data);
+    assert.deepEqual([presented.kind, presented.completion, presented.banner], expected, state + " with orders " + orderStates.join("/") + ": only CLIENT_APPROVED, the signed agreement, reads ACTIVE, else SUSPENDED, else COMPLETED from its orders");
+    assert.equal(presented.agreement.state, state, "the agreement's own state is never replaced by an order's");
   }
 
   const review = model(round());
@@ -495,21 +518,21 @@ const N = loadRuntime().CR.normalizer;
     assert.deepEqual(plain(view.details.fields.map((field) => field.code)), plain(contract.contractDetails.attributes.map((attribute) => attribute.code)), "the round asks the ten details the approval event carries");
     assert.deepEqual(plain(view.details.prefill), { LEGAL_NAME: "Harbourview Strata Corporation", BILLING_ADDRESS: "1500 Harbour Green Drive, Suite 210, Vancouver, BC V6C 3T8, Canada", REPRESENTATIVE_FIRST_NAME: "Dana", REPRESENTATIVE_LAST_NAME: "Reyes", REPRESENTATIVE_EMAIL: "dana.reyes@harbourview.example", REPRESENTATIVE_PHONE: "+1 604 555 0164" }, "pre-filled from the granted Account as the details step was");
     const noApproval = CR.fixtures.roundData();
-    noApproval.grant.types[1].events = noApproval.grant.types[1].events.filter((event) => event.code !== "QUOTE_VIEWED-CLIENT_APPROVED");
+    noApproval.grant.types[1].events = noApproval.grant.types[1].events.filter((event) => event.code !== "QUOTE_SENT-ACCEPTED");
     assert.equal(model(noApproval).details.available, false, "a round whose grant delegates no approval asks no details");
     assert.equal(model(CR.fixtures.roundData(CR.fixtures.decidedStates)).details.available, false, "nor does a round with nothing left to approve");
     assert.deepEqual(plain(view.properties.map((property) => [property.key, property.status, property.options.map((option) => option.id)])), plain(review.properties.map((property) => [property.key, property.status, property.options.map((option) => option.id)])), "the round groups its Orders by property exactly as an agreement package does");
     assert.deepEqual(optionActions(view), [
-      [3101, "QUOTE_SENT", { view: true, approve: false, decline: false, changes: false }],
-      [3102, "QUOTE_VIEWED", { view: false, approve: true, decline: true, changes: true }],
-      [3103, "QUOTE_VIEWED", { view: false, approve: true, decline: true, changes: true }],
-      [3104, "CLIENT_APPROVED", { view: false, approve: false, decline: false, changes: false }],
-      [3105, "DECLINED", { view: false, approve: false, decline: false, changes: false }],
-      [3106, "CUSTOMER_CHANGES_REQUESTED", { view: false, approve: false, decline: false, changes: false }],
-      [3107, "QUOTE_VIEWED", { view: false, approve: true, decline: true, changes: true }],
-      [3108, "QUOTE_SENT", { view: true, approve: false, decline: false, changes: false }],
-      [3109, "DECLINED", { view: false, approve: false, decline: false, changes: false }],
-      [3110, "DECLINED", { view: false, approve: false, decline: false, changes: false }],
+      [3101, "QUOTE_SENT", { approve: true, decline: true, changes: true }],
+      [3102, "QUOTE_SENT", { approve: true, decline: true, changes: true }],
+      [3103, "QUOTE_SENT", { approve: true, decline: true, changes: true }],
+      [3104, "ACCEPTED", { approve: false, decline: false, changes: false }],
+      [3105, "DECLINED", { approve: false, decline: false, changes: false }],
+      [3106, "CUSTOMER_CHANGES_REQUESTED", { approve: false, decline: false, changes: false }],
+      [3107, "QUOTE_SENT", { approve: true, decline: true, changes: true }],
+      [3108, "QUOTE_SENT", { approve: true, decline: true, changes: true }],
+      [3109, "DECLINED", { approve: false, decline: false, changes: false }],
+      [3110, "DECLINED", { approve: false, decline: false, changes: false }],
     ], "without an agreement each option offers the events whose source state it is in");
     const options = view.properties.flatMap((property) => property.options);
     assert.deepEqual(plain(options.filter((option) => [3101, 3102, 3103].includes(option.id)).map((option) => [option.model, option.lines.map((line) => line.product)])), [
@@ -517,10 +540,10 @@ const N = loadRuntime().CR.normalizer;
     ], "the round's cards join their shallow lines through the granted OrderItem, ProductPrice, Unit and Product rows");
     assert.equal(options.find((option) => option.id === 3102).total, formatCad(9187.5), "and show the server total");
     const ungranted = CR.fixtures.roundData();
-    ungranted.grant.types[1].events = ungranted.grant.types[1].events.filter((event) => event.code !== "QUOTE_VIEWED-DECLINED");
+    ungranted.grant.types[1].events = ungranted.grant.types[1].events.filter((event) => event.code !== "QUOTE_SENT-DECLINED");
     assert.equal(optionActions(model(ungranted)).find((entry) => entry[0] === 3102)[2].decline, false, "an event the round's grant does not delegate is not offered");
-    const sealed = CR.fixtures.roundData({ 3102: "CLIENT_APPROVED" });
-    assert.deepEqual(optionActions(model(sealed)).filter((entry) => [3101, 3103].includes(entry[0])).map((entry) => entry[2]), [{ view: false, approve: false, decline: false, changes: false }, { view: false, approve: false, decline: false, changes: false }], "an approved sibling closes the other options of its property, as in a package");
+    const sealed = CR.fixtures.roundData({ 3102: "ACCEPTED" });
+    assert.deepEqual(optionActions(model(sealed)).filter((entry) => [3101, 3103].includes(entry[0])).map((entry) => entry[2]), [{ approve: false, decline: false, changes: false }, { approve: false, decline: false, changes: false }], "an approved sibling closes the other options of its property, as in a package");
 
     const withMetadata = CR.fixtures.roundData();
     withMetadata.orders.forEach((row) => { row.metadata = { QUOTATION_ROUND: "M1", AGREEMENT_OPERATION_STATUS: "QUOTATION_DELIVERY_FAILED" }; });
@@ -550,7 +573,7 @@ const N = loadRuntime().CR.normalizer;
 
     const retired = model(CR.fixtures.quotationData("QUOTATION_SENT"));
     assert.deepEqual([retired.kind, retired.reason], ["unavailable", "retired"], "a Document still carrying a retired quotation state shows the unavailable card");
-    assert.deepEqual(optionActions(retired).filter((entry) => entry[1] === "QUOTE_VIEWED").map((entry) => entry[2].approve), [false, false, false], "and offers no quote decision");
+    assert.deepEqual(optionActions(retired).filter((entry) => entry[1] === "QUOTE_SENT").map((entry) => entry[2].approve), [false, false, false, false, false], "and offers no quote decision");
 
     const french = CR.fixtures.roundData();
     french.accounts[0].contacts[0].language = { code2: "fr" };
@@ -598,20 +621,20 @@ const N = loadRuntime().CR.normalizer;
   assert.equal(normalizer.entityKind("com.pixelnation.pim.domain.ProductPrice"), "product-price", "ProductPrice introspection uses the adapter's product-price key");
 
   const narrowed = round();
-  narrowed.grant.types[1].events = narrowed.grant.types[1].events.filter((event) => event.code !== "QUOTE_VIEWED-DECLINED");
+  narrowed.grant.types[1].events = narrowed.grant.types[1].events.filter((event) => event.code !== "QUOTE_SENT-DECLINED");
   const narrowedOption = model(narrowed).properties[0].options[1];
   assert.equal(narrowedOption.actions.decline, false, "an event the grant does not delegate is not offered");
   assert.equal(narrowedOption.actions.approve, true);
   const scoped = round();
-  scoped.grant.types[1] = { entityType: "com.pixelnation.bill.domain.Order", canRead: true, entityId: 3103, events: [{ code: "P_WF:GENERAL_FSM_ORDER:QUOTE_VIEWED-CLIENT_APPROVED" }] };
+  scoped.grant.types[1] = { entityType: "com.pixelnation.bill.domain.Order", canRead: true, entityId: 3103, events: [{ code: "P_WF:ORDER_LIFECYCLE:QUOTE_SENT-ACCEPTED" }] };
   const scopedOptions = model(scoped).properties[0].options;
   assert.equal(scopedOptions[2].actions.approve, true, "a per-entry event with a workflow prefix is granted to that entry");
   assert.equal(scopedOptions[1].actions.approve, false, "and to no other entry");
   const sibling = round();
-  sibling.orders[0].states = [{ code: "CLIENT_APPROVED" }];
+  sibling.orders[0].states = [{ code: "ACCEPTED" }];
   const siblingOptions = model(sibling).properties[0].options;
   assert.equal(siblingOptions[1].siblingApproved, true);
-  assert.deepEqual(plain(siblingOptions[1].actions), { view: false, approve: false, decline: false, changes: false }, "once a property has an approved option its other options offer nothing");
+  assert.deepEqual(plain(siblingOptions[1].actions), { approve: false, decline: false, changes: false }, "once a property has an approved option its other options offer nothing");
 
   const partial = CR.fixtures.agreementData("SENT_TO_CLIENT", false);
   partial.orders = partial.orders.filter((row) => row.id !== 3107);
@@ -653,7 +676,7 @@ const N = loadRuntime().CR.normalizer;
   } else {
     console.log("client-review-check: seed " + seedPath + " not present, agreement states not compared");
   }
-  const orderSeedPath = path.resolve("../core-ui/scripts/dev/seeds/quotationPackageOrderWorkflow.json");
+  const orderSeedPath = path.resolve("../core-ui/scripts/dev/seeds/orderLifecycleWorkflow.json");
   const orderSeed = existsSync(orderSeedPath) ? JSON.parse(await fs.readFile(orderSeedPath, "utf8")).workflows.find((workflow) => workflow.code === contract.orderWorkflow) : null;
   const approveSeed = orderSeed ? orderSeed.events.find((event) => event.code === contract.contractDetails.event) : null;
   if (approveSeed && Array.isArray(approveSeed.attributes) && approveSeed.attributes.length) {
@@ -802,10 +825,9 @@ const EXPECTED_SCENARIOS = {
   "round-review": ["ready", "quote-review"], "round-ambiguous": ["ready", "unavailable"], "round-partial": ["ready", "quote-review"],
   "round-decided": ["ready", "quote-review"], "round-decided-slow": ["ready", "quote-review"], "round-recorded": ["ready", "quote-review"], "round-declined-closed": ["link-closed", null],
   "link-copied": ["ready", "quote-review"], "link-copy-failed": ["ready", "quote-review"],
-  "view-pending": ["ready", "quote-review"], "view-failed": ["ready", "quote-review"], "choices-approve": ["ready", "quote-review"],
+  "choices-approve": ["ready", "quote-review"],
   "changes-invalid": ["ready", "quote-review"], "choices-decline": ["ready", "quote-review"], "choices-declined": ["ready", "quote-review"], "command-pending": ["ready", "quote-review"], "command-refused": ["ready", "quote-review"],
   "command-failed": ["ready", "quote-review"], "command-stale-pending": ["ready", "quote-review"], "command-unconfirmed": ["ready", "quote-review"],
-  "view-unconfirmed": ["ready", "quote-review"],
   "contract-details": ["ready", "quote-review"],
   "contract-details-attributes": ["ready", "quote-review"], "contract-details-ids-only": ["ready", "quote-review"],
   "contract-details-billing-service": ["ready", "quote-review"], "contract-details-maps": ["ready", "quote-review"],
@@ -823,7 +845,7 @@ const EXPECTED_SCENARIOS = {
   "link-closed-portal": ["link-closed", null], "reference-expired": ["ready", "reference"],
   "closed-canceled": ["ready", "closed"], unavailable: ["ready", "unavailable"], "retired-quotation": ["ready", "unavailable"],
 };
-const POLLED_SCENARIOS = new Set(["round-decided-slow", "round-declined-closed", "details-closed", "command-unconfirmed", "view-unconfirmed", "agreement-unconfirmed"]);
+const POLLED_SCENARIOS = new Set(["round-decided-slow", "round-declined-closed", "details-closed", "command-unconfirmed", "agreement-unconfirmed"]);
 const LINK_STEPS = new Set(["quote-review", "agreement-review"]);
 const PAGE_LINK = "https://pages.example/review#token=scenario-link";
 
@@ -973,15 +995,14 @@ function assertForm(run, expected, message) {
         assert.equal(run.timers.pending, 0, "the page stops re-reading once the link closes");
         assert.ok(run.live.textContent.includes(copy.detailsSentTitle), "the receipt is announced when the link closes while the page follows the decisions");
         assert.equal(byAttribute(run.mount, "data-portal", "invitation").length, 0, "no portal access is promised before an agreement exists");
-        assert.deepEqual(run.sent.map((call) => call.slice(0, 3)), [["order", 3108, "QUOTE_SENT-QUOTE_VIEWED"], ["order", 3108, "QUOTE_VIEWED-CLIENT_APPROVED"]], "the unopened last option is viewed, then approved");
-        assert.deepEqual(run.sent[1][3], {
+        assert.deepEqual(run.sent.map((call) => call.slice(0, 3)), [["order", 3108, "QUOTE_SENT-ACCEPTED"]], "the unopened last option is approved as it is shown, with no view event first");
+        assert.deepEqual(run.sent[0][3], {
           LEGAL_NAME: "Harbourview Strata Corporation", CLIENT_TYPE: "CORPORATE",
           BILLING_ADDRESS: "1500 Harbour Green Drive, Suite 210, Vancouver, BC V6C 3T8, Canada",
           REPRESENTATIVE_FIRST_NAME: "Dana", REPRESENTATIVE_LAST_NAME: "Reyes",
           REPRESENTATIVE_EMAIL: "dana.reyes@harbourview.example", REPRESENTATIVE_PHONE: "+1 604 555 0164",
           INFORMATION_CONFIRMED: true, AUTHORITY_CONFIRMED: true,
         }, "the details travel as the approval's metadata, trimmed, with the optional empty job title left out");
-        assert.deepEqual(run.sent[0][3], {}, "the view carries no details");
         assert.deepEqual(plain(run.data.decided), { approved: [3102, 3104, 3107, 3108], detailsErrors: [] }, "details the page accepts pass the server's own rules");
         break;
       case "partial":
@@ -1052,7 +1073,7 @@ function assertForm(run, expected, message) {
         break;
       }
       case "choices-declined": {
-        assert.deepEqual(run.sent.map((call) => [call[1], call[2], call[3]]), [[3101, "QUOTE_SENT-QUOTE_VIEWED", {}], [3101, "QUOTE_VIEWED-DECLINED", {}], [3102, "QUOTE_VIEWED-DECLINED", {}], [3103, "QUOTE_VIEWED-DECLINED", {}]], "an unopened option is viewed first, then every option of the property is declined in order, with no details");
+        assert.deepEqual(run.sent.map((call) => [call[1], call[2], call[3]]), [[3101, "QUOTE_SENT-DECLINED", {}], [3102, "QUOTE_SENT-DECLINED", {}], [3103, "QUOTE_SENT-DECLINED", {}]], "every option of the property is declined in order, an unopened one too, with no view event and no details");
         const property = run.controller.snapshot().view.properties.find((candidate) => candidate.key === "property-278");
         assert.equal(property.status, "declined", "the property ends declined");
         assert.equal(run.controller.snapshot().bulk, "", "and the page leaves the submission");
@@ -1064,7 +1085,7 @@ function assertForm(run, expected, message) {
         break;
       }
       case "round-partial": {
-        assert.deepEqual(run.sent.map((call) => call.slice(0, 3)), [["order", 3102, "QUOTE_VIEWED-CLIENT_APPROVED"]], "one approval left the page; the server declines the property's other options itself");
+        assert.deepEqual(run.sent.map((call) => call.slice(0, 3)), [["order", 3102, "QUOTE_SENT-ACCEPTED"]], "one approval left the page; the server declines the property's other options itself");
         assert.deepEqual(run.sent[0][3], {
           LEGAL_NAME: "Harbourview Strata Corporation", CLIENT_TYPE: "CORPORATE",
           BILLING_ADDRESS: "1500 Harbour Green Drive, Suite 210, Vancouver, BC V6C 3T8, Canada",
@@ -1078,15 +1099,6 @@ function assertForm(run, expected, message) {
         assert.equal(run.timers.pending, 0);
         break;
       }
-      case "view-pending":
-        assert.equal(run.outcome, "held");
-        assert.equal(byClass(run.mount, "cr-note--pending").length, 1, "the view event shows as pending");
-        assert.deepEqual(run.sent.map((call) => call[2]), ["QUOTE_SENT-QUOTE_VIEWED"], "opening an unviewed option sends the view event once");
-        break;
-      case "view-failed":
-        assert.ok(text.includes(copy.viewFailed));
-        assert.ok(byAttribute(run.mount, "data-action", "option.view")[0], "a failed view event can be tried again");
-        break;
       case "changes-invalid":
         assert.ok(text.includes(copy.changesRequired));
         assert.equal(run.sent.length, 0, "a change request without a message is not sent");
@@ -1108,7 +1120,7 @@ function assertForm(run, expected, message) {
       }
       case "command-refused":
         assert.ok(text.includes("This option was revised by the provider after you opened it."), "the server's refusal message is shown");
-        assert.equal(run.controller.snapshot().view.properties[0].options[1].status, "viewed", "a refusal assumes no state change");
+        assert.equal(run.controller.snapshot().view.properties[0].options[1].status, "new", "a refusal assumes no state change");
         assert.ok(byClass(byClass(run.mount, "cr-choices")[0], "cr-outcome").length === 1, "the refusal shows on the choice that was refused, which stays chosen");
         assert.equal(run.timers.pending, 0, "a refused command is not followed");
         break;
@@ -1127,27 +1139,24 @@ function assertForm(run, expected, message) {
         run.controller.dispatch("property.decline", { key: "property-278" });
         run.controller.dispatch("choices.submit");
         await tick();
-        assert.deepEqual(run.sent.map((call) => call[2]), ["QUOTE_VIEWED-CLIENT_APPROVED"], "no second decision leaves the page");
+        assert.deepEqual(run.sent.map((call) => call[2]), ["QUOTE_SENT-ACCEPTED"], "no second decision leaves the page");
         assert.equal(run.timers.pending, 1, "the page keeps reading");
         assert.equal(run.live.textContent, "", "a pending decision makes no announcement of its own");
         break;
       }
-      case "command-unconfirmed":
-      case "view-unconfirmed": {
-        const orderId = id === "command-unconfirmed" ? 3102 : 3101;
+      case "command-unconfirmed": {
+        const orderId = 3102;
         const body = byAttribute(run.mount, "id", "cr-option-" + orderId)[0];
         const note = byAttribute(body, "data-command", "unconfirmed")[0];
         assert.ok(note && surface(note).includes(copy.commandUnconfirmed), id + ": an accepted command not seen within the budget says so");
         assert.equal(byAttribute(note, "data-action", "refresh").length, 1, "and offers Refresh status");
-        assert.equal(["option.approve", "option.changes", "option.confirm", "option.view"].reduce((count, action) => count + byAttribute(body, "data-action", action).length, 0), 0, "without offering the command again");
+        assert.equal(["option.approve", "option.changes", "option.confirm"].reduce((count, action) => count + byAttribute(body, "data-action", action).length, 0), 0, "without offering the command again");
         assert.equal(byClass(body, "cr-note--pending").length, 0);
         assert.equal(run.controller.snapshot().commands["order:" + orderId].status, "unconfirmed");
         assert.equal(run.timers.pending, 0, "the page stops reading on its own");
         assert.ok(run.live.textContent.includes(copy.commandUnconfirmed), "the fallback is announced");
         assert.equal(run.sent.length, 1);
         run.controller.dispatch("option.toggle", { id: orderId });
-        run.controller.dispatch("option.toggle", { id: orderId });
-        run.controller.dispatch("option.view", { id: orderId });
         run.controller.dispatch("option.choose", { id: orderId });
         run.controller.dispatch("choices.submit");
         await tick();
@@ -1175,7 +1184,7 @@ function assertForm(run, expected, message) {
         assert.equal(run.controller.snapshot().waiting.decisions, true, "the page follows the round until the server closes the link");
         assert.equal(run.timers.pending, 1, "the next read is scheduled");
         assert.ok(run.live.textContent.includes(copy.decidedFollowingBody), "and the wait is announced");
-        assert.deepEqual(run.sent.map((call) => call[2]), ["QUOTE_SENT-QUOTE_VIEWED", "QUOTE_VIEWED-CLIENT_APPROVED"], "the round's last decision left the page");
+        assert.deepEqual(run.sent.map((call) => call[2]), ["QUOTE_SENT-ACCEPTED"], "the round's last decision left the page");
         break;
       }
       case "round-decided-slow":
@@ -1199,7 +1208,7 @@ function assertForm(run, expected, message) {
         assert.deepEqual(stateCardOf(run.mount), ["neutral", "⊘"], "a round whose every option was declined closes on the closed card");
         assert.ok(text.includes(copy.canceledTitle) && text.includes(copy.declinedClosedBody), "saying the client declined every option");
         assert.ok(!text.includes(copy.detailsSentTitle) && !text.includes(copy.linkClosedTitle), "not the details thanks and not the expired-link wording");
-        assert.deepEqual(run.sent.map((call) => [call[1], call[2], call[3]]), [[3108, "QUOTE_SENT-QUOTE_VIEWED", {}], [3108, "QUOTE_VIEWED-DECLINED", {}]], "no details were asked or sent");
+        assert.deepEqual(run.sent.map((call) => [call[1], call[2], call[3]]), [[3108, "QUOTE_SENT-DECLINED", {}]], "no details were asked or sent");
         assert.equal(run.timers.pending, 0);
         assert.ok(run.live.textContent.includes(copy.canceledTitle));
         break;
@@ -1622,7 +1631,7 @@ async function decideLast(controller, kind) {
   const { controller, timers, adapter, data, live, copy } = run;
   const sendEvent = adapter.sendEvent;
   adapter.sendEvent = (...args) => sendEvent(...args).then((result) => {
-    if (args[2] === "QUOTE_VIEWED-CLIENT_APPROVED") data.closed = true;
+    if (args[2] === "QUOTE_SENT-ACCEPTED") data.closed = true;
     return result;
   });
   await decideLast(controller, "approve");
@@ -1637,7 +1646,7 @@ async function decideLast(controller, kind) {
   const { controller, timers, live, copy, sent } = run;
   assert.equal(byClass(run.mount, "cr-form-card").length, 0);
   await decideLast(controller, "decline");
-  assert.deepEqual(sent.map((call) => [call[1], call[2], call[3]]), [[3108, "QUOTE_SENT-QUOTE_VIEWED", {}], [3108, "QUOTE_VIEWED-DECLINED", {}]], "a decline-only submission asks and sends no details");
+  assert.deepEqual(sent.map((call) => [call[1], call[2], call[3]]), [[3108, "QUOTE_SENT-DECLINED", {}]], "a decline-only submission asks and sends no details");
   assert.equal(controller.snapshot().waiting.decisions, true, "a last decline that decides the round is followed too");
   timers.fire();
   await controller.idle();
@@ -1648,7 +1657,7 @@ async function decideLast(controller, kind) {
 }
 
 {
-  const run = await roundController({ orderStates: { 3101: "DECLINED", 3102: "CLIENT_APPROVED", 3103: "DECLINED", 3104: "DECLINED", 3106: "DECLINED", 3107: "DECLINED" } });
+  const run = await roundController({ orderStates: { 3101: "DECLINED", 3102: "ACCEPTED", 3103: "DECLINED", 3104: "DECLINED", 3106: "DECLINED", 3107: "DECLINED" } });
   const { controller, timers } = run;
   await decideLast(controller, "decline");
   timers.fire();
@@ -1675,7 +1684,7 @@ async function decideLast(controller, kind) {
   assert.equal(controller.snapshot().view.properties.find((property) => property.key === "property-661").status, "changes");
   assert.equal(controller.snapshot().waiting.decisions, false, "a change request decides nothing, so nothing is followed");
   assert.equal(timers.pending, 0);
-  assert.deepEqual(run.sent.map((call) => [call[2], call[3]]), [["QUOTE_SENT-QUOTE_VIEWED", {}], ["QUOTE_VIEWED-CUSTOMER_CHANGES_REQUESTED", { MESSAGE: "Please quote weekly visits." }]], "a change request asks no details");
+  assert.deepEqual(run.sent.map((call) => [call[2], call[3]]), [["QUOTE_SENT-CUSTOMER_CHANGES_REQUESTED", { MESSAGE: "Please quote weekly visits." }]], "a change request asks no details");
 }
 
 {
@@ -1691,10 +1700,10 @@ async function decideLast(controller, kind) {
   controller.dispatch("choices.submit");
   await controller.idle();
   const details = sent[0][3];
-  assert.deepEqual(sent.map((call) => [call[1], call[2]]), [[3102, "QUOTE_VIEWED-CLIENT_APPROVED"], [3107, "QUOTE_VIEWED-CLIENT_APPROVED"], [3108, "QUOTE_SENT-QUOTE_VIEWED"], [3108, "QUOTE_VIEWED-DECLINED"]], "one submission approves each chosen option and views, then declines, the declined property's options; it sends nothing for an approved property's other options");
+  assert.deepEqual(sent.map((call) => [call[1], call[2]]), [[3102, "QUOTE_SENT-ACCEPTED"], [3107, "QUOTE_SENT-ACCEPTED"], [3108, "QUOTE_SENT-DECLINED"]], "one submission approves each chosen option and declines the declined property's options; it sends nothing for an approved property's other options");
   assert.deepEqual(sent[1][3], details, "every approval of one submission carries the same details");
   assert.equal(details.REPRESENTATIVE_JOB_TITLE, "Strata Council President", "trimmed");
-  assert.deepEqual([sent[2][3], sent[3][3]], [{}, {}], "views and declines carry no details");
+  assert.deepEqual(sent[2][3], {}, "a decline carries no details");
   assert.deepEqual(plain(data.approvals[3107]), details, "the server receives the details with each approval");
   assert.deepEqual([controller.snapshot().view.allDecided, controller.snapshot().waiting.decisions], [true, true], "with every property settled the page follows the round");
   assert.deepEqual(plain(controller.snapshot().view.properties.map((property) => property.status)), ["approved", "approved", "approved", "declined", "declined"], "the readback shows the server's work");
@@ -1769,10 +1778,9 @@ const kindOf = (run) => run.controller.snapshot().view && run.controller.snapsho
 const roundOf = (F) => F.roundOf(F.quotationData());
 
 for (const [kind, orderId, event, status] of [
-  ["view", 3101, "QUOTE_SENT-QUOTE_VIEWED", "viewed"],
-  ["approve", 3102, "QUOTE_VIEWED-CLIENT_APPROVED", "approved"],
-  ["decline", 3107, "QUOTE_VIEWED-DECLINED", "declined"],
-  ["changes", 3102, "QUOTE_VIEWED-CUSTOMER_CHANGES_REQUESTED", "changes"],
+  ["approve", 3102, "QUOTE_SENT-ACCEPTED", "approved"],
+  ["decline", 3107, "QUOTE_SENT-DECLINED", "declined"],
+  ["changes", 3102, "QUOTE_SENT-CUSTOMER_CHANGES_REQUESTED", "changes"],
 ]) {
   const run = await stagedController(roundOf, { staleReads: 1 });
   const { controller } = run;
@@ -1796,12 +1804,10 @@ for (const [kind, orderId, event, status] of [
   assert.equal(optionOf().state, event.split("-")[0], kind + ": the first readback still shows the source state");
   assert.equal((controller.snapshot().commands["order:" + orderId] || {}).status, "pending", kind + " stays pending instead of being offered again");
   const body = byAttribute(run.mount, "id", "cr-option-" + orderId)[0];
-  const offered = all(body, (node) => ["option.approve", "option.changes", "option.confirm", "option.view"].includes(node.getAttribute("data-action")) && node.getAttribute("disabled") === null);
+  const offered = all(body, (node) => ["option.approve", "option.changes", "option.confirm"].includes(node.getAttribute("data-action")) && node.getAttribute("disabled") === null);
   assert.equal(offered.length, 0, kind + ": nothing in the option can be sent again");
-  if (kind === "view") assert.equal(byClass(body, "cr-note--pending").length, 1, "the view shows as pending");
   controller.dispatch("option.toggle", { id: orderId });
   controller.dispatch("option.toggle", { id: orderId });
-  controller.dispatch("option.view", { id: orderId });
   controller.dispatch("option.choose", { id: orderId });
   controller.dispatch("property.decline", { key: kind === "decline" ? "property-512" : "property-278" });
   controller.dispatch("choices.submit");
@@ -1846,7 +1852,7 @@ for (const [kind, orderId, event, status] of [
   const order = () => data.orders.find((row) => row.id === 3102);
   const sendEvent = run.adapter.sendEvent;
   run.adapter.sendEvent = (...args) => sendEvent(...args).then((result) => {
-    order().states = [{ code: "QUOTE_VIEWED" }];
+    order().states = [{ code: "QUOTE_SENT" }];
     data.unreadable = [3102];
     return result;
   });
@@ -1866,7 +1872,7 @@ for (const [kind, orderId, event, status] of [
   const body = byAttribute(run.mount, "id", "cr-option-3102")[0];
   assert.equal(run.sent.length, 1, "reopening the option sends nothing");
   assert.equal(all(body, (node) => ["option.approve", "option.changes", "option.confirm"].includes(node.getAttribute("data-action")) && node.getAttribute("disabled") === null).length, 0, "so a later read that shows it undecided offers nothing again");
-  order().states = [{ code: "CLIENT_APPROVED" }];
+  order().states = [{ code: "ACCEPTED" }];
   run.timers.fire();
   await controller.idle();
   assert.equal(controller.snapshot().commands["order:3102"], undefined, "it lands once a read shows the decision");
@@ -2063,7 +2069,7 @@ for (const [kind, orderId, event, status] of [
   const runtime = loadRuntime({ fixtures: true });
   const data = roundOf(runtime.CR.fixtures);
   const sent = [];
-  const adapter = runtime.CR.fixtures.createFixtureAdapter(data, { events: { "QUOTE_VIEWED-DECLINED": { outcome: "fail" } } });
+  const adapter = runtime.CR.fixtures.createFixtureAdapter(data, { events: { "QUOTE_SENT-DECLINED": { outcome: "fail" } } });
   const sendEvent = adapter.sendEvent;
   adapter.sendEvent = (entity, id, event, metadata) => { sent.push([id, event]); return sendEvent(entity, id, event, metadata); };
   const mount = runtime.document.createElement("div");
@@ -2074,7 +2080,7 @@ for (const [kind, orderId, event, status] of [
   controller.dispatch("choices.submit");
   await controller.idle();
   await tick();
-  assert.deepEqual(sent, [[3101, "QUOTE_SENT-QUOTE_VIEWED"], [3101, "QUOTE_VIEWED-DECLINED"]], "a failed decline stops the rest of the submission");
+  assert.deepEqual(sent, [[3101, "QUOTE_SENT-DECLINED"]], "a failed decline stops the rest of the submission");
   const snapshot = controller.snapshot();
   assert.equal(snapshot.bulk, "", "the page leaves the submission after a failure");
   assert.equal(snapshot.commands["order:3101"].status, "failed");
@@ -2138,7 +2144,7 @@ const linked = (clipboard) => ({ pageLink: PAGE_LINK, clipboard });
 
 {
   const clipboard = recordingClipboard();
-  const run = await stagedController((F) => { const data = roundOf(F); data.grant.types[1].events = data.grant.types[1].events.filter((event) => event.code !== "QUOTE_VIEWED-CLIENT_APPROVED"); return data; }, {}, undefined, linked(clipboard));
+  const run = await stagedController((F) => { const data = roundOf(F); data.grant.types[1].events = data.grant.types[1].events.filter((event) => event.code !== "QUOTE_SENT-ACCEPTED"); return data; }, {}, undefined, linked(clipboard));
   assert.equal(kindOf(run), "quote-review");
   assert.equal(run.controller.snapshot().view.details.available, false);
   copyButton(run.mount).fire("click");
@@ -2244,9 +2250,10 @@ async function returningController(run) {
   assert.deepEqual(plain(back.controller.snapshot().choices), {}, "and no choice that was not sent");
 }
 
-for (const state of ["CLIENT_APPROVED", "ACTIVE", "EXPIRED"]) {
+for (const [agreementState, orderState] of [["CLIENT_APPROVED", "ACCEPTED"], ["CLIENT_APPROVED", "ACTIVE"], ["CLIENT_APPROVED", "COMPLETED"]]) {
+  const state = agreementState + " with " + orderState + " orders";
   const clipboard = recordingClipboard();
-  const run = await stagedController((F) => F.agreementData(state, false), {}, undefined, linked(clipboard));
+  const run = await stagedController((F) => F.agreementData(agreementState, false, orderState), {}, undefined, linked(clipboard));
   assert.deepEqual(plain(run.controller.snapshot().link), { available: false, status: "" }, state + " is no step the client comes back to");
   run.controller.dispatch("link.copy");
   await run.controller.idle();
@@ -2351,8 +2358,9 @@ for (const unitGranted of [true, false]) {
   }
 }
 
-for (const [state, links] of [["SENT_TO_CLIENT", 0], ["SUSPENDED", 0], ["EXPIRED", 0], ["CLIENT_APPROVED", 2], ["ACTIVATION_FAILED", 2], ["ACTIVE", 2]]) {
-  const run = await stagedController((F) => F.agreementData(state, false), {}, undefined, { portalUrl: "https://portal.example.com/" });
+for (const [agreementState, orderState, links] of [["SENT_TO_CLIENT", "ACCEPTED", 0], ["CLIENT_APPROVED", "SUSPENDED", 0], ["CLIENT_APPROVED", "COMPLETED", 0], ["CLIENT_APPROVED", "ACCEPTED", 2], ["ACTIVATION_FAILED", "ACCEPTED", 2], ["CLIENT_APPROVED", "ACTIVE", 2]]) {
+  const state = agreementState + " with " + orderState + " orders";
+  const run = await stagedController((F) => F.agreementData(agreementState, false, orderState), {}, undefined, { portalUrl: "https://portal.example.com/" });
   assert.equal(portalLinks(run.mount).length, links, state + (links ? " offers the portal above and below the agreement" : " offers no portal: only an approved agreement does"));
   assert.equal(byAttribute(run.mount, "data-portal", "return").length, links ? 1 : 0);
 }
@@ -2442,7 +2450,7 @@ for (const [state, links] of [["SENT_TO_CLIENT", 0], ["SUSPENDED", 0], ["EXPIRED
   assert.deepEqual(plain(approvedView.properties[0].options.map((option) => option.status)), ["declined", "approved", "declined"], "the page renders the read-back state, hooks included");
   assert.equal(controller.snapshot().commands["order:3102"], undefined, "no local outcome outlives the read-back");
   const eventCall = calls.find((call) => call.url.endsWith("/order/event.json"));
-  assert.deepEqual(JSON.parse(eventCall.init.body), { id: 3102, event: "QUOTE_VIEWED-CLIENT_APPROVED", metadata: {
+  assert.deepEqual(JSON.parse(eventCall.init.body), { id: 3102, event: "QUOTE_SENT-ACCEPTED", metadata: {
     LEGAL_NAME: "Harbourview Strata Corporation", CLIENT_TYPE: "CORPORATE",
     BILLING_ADDRESS: "1500 Harbour Green Drive, Suite 210, Vancouver, BC V6C 3T8, Canada",
     REPRESENTATIVE_FIRST_NAME: "Dana", REPRESENTATIVE_LAST_NAME: "Reyes",
@@ -3055,15 +3063,15 @@ async function grantController(build, behavior = {}) {
   assert.equal(byAttribute(run.mount, "data-action", "pdf.download").length, 0, "a round without an agreement offers no agreement PDF");
   assert.equal(byAttribute(run.mount, "data-action", "link.copy").length, 0, "the review page offers Copy link only when the page has its own address");
   run.controller.dispatch("option.toggle", { id: 3102 });
-  assert.deepEqual(["option.approve", "option.changes"].map((action) => byAttribute(run.mount, "data-action", action).length), [1, 1], "a viewed option of a round offers approve and request changes");
+  assert.deepEqual(["option.approve", "option.changes"].map((action) => byAttribute(run.mount, "data-action", action).length), [1, 1], "a sent option of a round offers approve and request changes");
   run.controller.dispatch("option.toggle", { id: 3101 });
   await run.controller.idle();
-  assert.deepEqual(run.sent, [["order", 3101, "QUOTE_SENT-QUOTE_VIEWED", {}]], "opening a sent option of a round sends the view event");
-  assert.deepEqual([run.controller.snapshot().view.kind, run.option(3101).state, run.option(3101).actions.decline], ["quote-review", "QUOTE_VIEWED", true], "and the read-back keeps the review page with the decisions of a viewed option");
+  assert.deepEqual(run.sent, [], "opening a sent option of a round sends nothing: ORDER_LIFECYCLE has no view event");
+  assert.deepEqual([run.controller.snapshot().view.kind, run.option(3101).state, run.option(3101).actions.decline], ["quote-review", "QUOTE_SENT", true], "and the option offers its decisions as it is");
   run.controller.dispatch("property.decline", { key: "property-512" });
   run.controller.dispatch("choices.submit");
   await run.controller.idle();
-  assert.deepEqual(run.sent[1], ["order", 3107, "QUOTE_VIEWED-DECLINED", {}], "a decline goes to the Order");
+  assert.deepEqual(run.sent[0], ["order", 3107, "QUOTE_SENT-DECLINED", {}], "a decline goes to the Order");
   const afterDecline = run.controller.snapshot();
   assert.deepEqual([afterDecline.view.kind, run.option(3107).status, afterDecline.view.allDecided, afterDecline.view.summary.awaiting], ["quote-review", "declined", false, 2], "after a decline the round stays on the review page with its partial decisions");
   assert.equal(byAttribute(run.mount, "data-decided", "following").length + byAttribute(run.mount, "data-decided", "recorded").length, 0, "and claims no full decision");
@@ -3275,4 +3283,4 @@ try {
   await fs.rm(tempDir, { recursive: true, force: true });
 }
 
-console.log("client-review-check ok: " + Object.keys(EXPECTED_SCENARIOS).length + " preview states, every order and agreement state, grouping and counts-only summary, server subtotal and taxes shown only when returned, confirmation statements with description and CMS precedence, contract details and the portal sign-in read from native Account contacts the contract names, never a confirmation and never over what the client typed, a round decided on one Confirm your choices step that checks the details with the server's rules and sends them with every approval of the submission, views before declining, never declines an approved property's other options and asks no details without an approval, grant-gated single-flight commands with read-back, refusals and failures, a bounded one-read-at-a-time follow of the page's own last decision until the server closes the round, retired quotation Document states shown as unavailable, the portal invitation with and without PORTAL_URL and the portal button above and below an approved agreement, a thank-you card after the details and after the approval and a closed card after declining everything, none of which an expired link shows, Copy link with its confirmation, its refusal and no address in the page, Contact us with links only for a dialable number and a mail address, the provider's logo on the agreement pages, Request changes on the agreement with its text required and a thank-you page that keeps the agreement readable, the Maps browser key as the one key parameter with no Google script, map or plan without it, address suggestions and a pinned billing address with it, a service address copied into billing only by the client, property addresses and the chosen properties' plans read from the separate property grant, never closing or failing the page when that grant is missing or refused, the approved property plan drawn read-only with its area, never the draft, and its loading, unreadable and invalid states, ACTIVATION_FAILED as completion, numbered terms, token only in the grant path, no money arithmetic, innerHTML, eval, console or storage, portal tokens only, and a live-only deterministic CMS package");
+console.log("client-review-check ok: " + Object.keys(EXPECTED_SCENARIOS).length + " preview states, every order and agreement state, grouping and counts-only summary, server subtotal and taxes shown only when returned, confirmation statements with description and CMS precedence, contract details and the portal sign-in read from native Account contacts the contract names, never a confirmation and never over what the client typed, a round decided on one Confirm your choices step that checks the details with the server's rules and sends them with every approval of the submission, declines without a view event, never declines an approved property's other options and asks no details without an approval, grant-gated single-flight commands with read-back, refusals and failures, a bounded one-read-at-a-time follow of the page's own last decision until the server closes the round, retired quotation Document states shown as unavailable, the portal invitation with and without PORTAL_URL and the portal button above and below an approved agreement, a thank-you card after the details and after the approval and a closed card after declining everything, none of which an expired link shows, Copy link with its confirmation, its refusal and no address in the page, Contact us with links only for a dialable number and a mail address, the provider's logo on the agreement pages, Request changes on the agreement with its text required and a thank-you page that keeps the agreement readable, the Maps browser key as the one key parameter with no Google script, map or plan without it, address suggestions and a pinned billing address with it, a service address copied into billing only by the client, property addresses and the chosen properties' plans read from the separate property grant, never closing or failing the page when that grant is missing or refused, the approved property plan drawn read-only with its area, never the draft, and its loading, unreadable and invalid states, ACTIVATION_FAILED as completion, numbered terms, token only in the grant path, no money arithmetic, innerHTML, eval, console or storage, portal tokens only, and a live-only deterministic CMS package");

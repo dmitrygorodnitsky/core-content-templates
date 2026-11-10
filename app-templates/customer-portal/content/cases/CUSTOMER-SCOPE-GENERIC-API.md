@@ -1,5 +1,7 @@
 # Customer scope — tagged API migration for the Snow portal
 
+**2026-11-09:** where this names workflow 45 `GENERAL_FSM_ORDER`, `QUOTE_VIEWED` or the agreement's ACTIVE/SUSPENDED/EXPIRED, it is superseded by `ORDER_LIFECYCLE` in `core-ui/docs/snow-unified-order-lifecycle-2026-11-09.md`.
+
 Status: **live on dev-1 since 2026-10-28.** The deployed Snow portal reads and
 acts only through Core's tagged API; role 75 and the server-side tag
 maintenance that makes those reads answer are recorded in

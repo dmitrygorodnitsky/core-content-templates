@@ -128,7 +128,7 @@ const reject = (operation, code) => assert.rejects(operation, { code });
   assert.equal(denied.reads.orderItems.state, "unauthorized");
   await reject(() => adapter.readOrder(91, context), "customer-forbidden");
   await reject(() => adapter.readAgreement(17, context), "customer-forbidden");
-  await reject(() => adapter.sendOrderEvent(91, "QUOTE_SENT-QUOTE_VIEWED", context), "customer-forbidden");
+  await reject(() => adapter.sendOrderEvent(91, "QUOTE_SENT-ACCEPTED", context), "customer-forbidden");
   await reject(() => adapter.sendAgreementEvent(17, "SENT_TO_CLIENT-CLIENT_APPROVED", context), "customer-forbidden");
   assert.equal(calls.filter((path) => path.endsWith("/send-event.json")).length, 2, "refused commands are sent once, without automatic retry or ordinary event fallback");
 }

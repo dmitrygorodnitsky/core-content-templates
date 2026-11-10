@@ -126,21 +126,22 @@ async function preloadProgress() {
   for (const item of [...envelope.upcoming, ...envelope.past]) visitProgress(item, () => {}, transitionsFetch);
   await settle();
 }
-const SENT = ["INITIAL", "QUOTE_PREPARED", "QUOTE_APPROVED_INTERNALLY", "QUOTE_SENT", "QUOTE_VIEWED"];
+const SENT = ["DRAFT", "QUOTE_PREPARED", "QUOTE_APPROVED", "QUOTE_SENT"];
 const ready = { state: "ready", scopeMode: "server-scoped", truncated: false };
 const quoteOrder = (id, final, items) => ({ id, type: { id: 5, code: "FIELD_SERVICE_ORDER" }, states: SENT.concat(final).map((code, index) => ({ id: index + 1, code })), attributes: { 5: { SERVICE_PROPERTY: { value: 983 } } }, grandTotal: 4217.94, totalCharges: 4217.94, totalTaxes: 0, currency: { id: 2, code: "CAD" }, items: items.map((item) => ({ id: item })) });
 const orderItem = (id, order, price, total) => ({ id, order: { id: order }, itemPrice: { id: price }, grandTotal: total, sortOrder: id, metadata: { INTERVAL_UNIT: "MONTH", INTERVAL_COUNT: 1 } });
-const agreement169 = (codes) => normalizeProposals({
+const agreement169 = (codes, accepted = ["ACCEPTED"]) => normalizeProposals({
   accountId: ACCOUNT, scopeMode: "server-scoped",
   reads: { agreements: ready, orders: ready, orderItems: ready, productPrices: ready, products: ready },
   client: { displayName: "Bilbo Baggins" },
   agreements: [{ id: 169, type: { id: 17, code: "SERVICE_AGREEMENT" }, states: codes.map((code, index) => ({ id: index + 1, code })), attributes: { 17: { CLIENT: { value: ACCOUNT }, ORDERS: { value: [113, 114] } } } }],
-  quoteOrders: [quoteOrder(113, "DECLINED", [142]), quoteOrder(114, "CLIENT_APPROVED", [140, 141])],
+  quoteOrders: [quoteOrder(113, "DECLINED", [142]), quoteOrder(114, accepted, [140, 141])],
   orderItems: [orderItem(140, 114, 52, 747.99), orderItem(141, 114, 58, 3469.95), orderItem(142, 113, 27, 934.99)],
   productPrices: [{ id: 52, product: { id: 25 }, type: { id: 2, code: "TIERED_RECURRENT" } }, { id: 58, product: { id: 28 }, type: { id: 2, code: "TIERED_RECURRENT" } }, { id: 27, product: { id: 30 }, type: { id: 1, code: "TIERED" } }],
   products: [{ id: 25, nls: { en: { NAME: "Snow Removal" } } }, { id: 28, nls: { en: { NAME: "Rock Salt De-Icing" } } }, { id: 30, nls: { en: { NAME: "Sidewalk Sanding" } } }],
 });
-const ACTIVE_169 = ["QUOTATION", "QUOTATION_SENT", "AWAITING_CLIENT_DETAILS", "DRAFT", "SENT_TO_CLIENT", "CLIENT_APPROVED", "ACTIVE"];
+const SIGNED_169 = ["QUOTATION", "QUOTATION_SENT", "AWAITING_CLIENT_DETAILS", "DRAFT", "SENT_TO_CLIENT", "CLIENT_APPROVED"];
+const ACTIVE_ORDER = ["ACCEPTED", "ACTIVE"];
 const PLAN_JSON = {
   type: "PropertyPlan", schemaVersion: 1,
   elements: [{ label: "Parkade ramp", elementTypeDictionaryId: 1, overlays: [{ map: "GOOGLE_MAPS", geometry: { type: "Polygon", coordinates: [[[-123.1141, 49.2608], [-123.1139, 49.2608], [-123.1139, 49.2609], [-123.1141, 49.2609], [-123.1141, 49.2608]]] } }] }],
@@ -314,7 +315,7 @@ const page = (route, params = {}) => { Object.assign(state, params); state.route
   assert.equal(all(sheet, "[data-module=\"invoice-sheet-to\"]").length, 0, "no bill-to is invented");
   assert.equal(all(sheet, "img").length, 0);
   const savedProposals = state.moduleData.proposals;
-  state.moduleData.proposals = agreement169(["ACTIVE"]);
+  state.moduleData.proposals = agreement169(["CLIENT_APPROVED"], ACTIVE_ORDER);
   assert.equal(invoiceParties(liveInvoices().items[0]).client.legalName, "Bilbo Baggins", "the agreement that lists the invoice's order names the parties");
   state.moduleData.proposals = savedProposals;
   const printCss = await fs.readFile(path.join(portalRoot, "runtime/styles/routes.css"), "utf8");
@@ -414,7 +415,7 @@ const page = (route, params = {}) => { Object.assign(state, params); state.route
 
 {
   await liveLoad({ properties: [property(983, 610, { SERVICE_AREA_SQFT: { value: 50000 }, PROPERTY_PLAN: { value: PLAN } })], visits: VISITS_732, invoices: INVOICES_732 });
-  state.moduleData.proposals = agreement169(ACTIVE_169);
+  state.moduleData.proposals = agreement169(SIGNED_169, ACTIVE_ORDER);
   await preloadProgress();
   const planEntry = propertyPlan(PLAN, () => {}, async () => ({ ok: true, json: async () => structuredClone(PLAN_JSON) }));
   await settle();
@@ -457,7 +458,7 @@ const page = (route, params = {}) => { Object.assign(state, params); state.route
   assert.deepEqual(sections(upcoming), ["visit-detail-bar", "visit-property", "property-plan", "visit-services"], "an upcoming visit shows the property and the services and no empty section");
   assert.doesNotMatch(upcoming.textContent, /Progress|Photos|Completion notes|No |not available/);
 
-  state.moduleData.proposals = agreement169(ACTIVE_169.slice(0, 5));
+  state.moduleData.proposals = agreement169(SIGNED_169.slice(0, 5));
   assert.equal(all(page("visit.detail", { visitId: "visit-core-79" }), "[data-module=\"visit-services\"]").length, 0, "an agreement awaiting approval lists no services on a visit");
   delete state.moduleData.proposals;
   assert.equal(all(page("visit.detail", { visitId: "visit-core-79" }), "[data-module=\"visit-services\"]").length, 0, "without an agreement there is no Services block");

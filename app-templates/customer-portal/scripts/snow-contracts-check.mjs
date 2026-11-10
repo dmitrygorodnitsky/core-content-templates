@@ -14,6 +14,7 @@ const load = (file) => import(new URL(file, runtimeRoot));
 const { readPortalConfig, routeRegistry } = await load("src/config.js");
 const {
   AGREEMENT_STAGES,
+  ORDER_SERVICE_STAGES,
   contractsPackage,
   findQuote,
   formatDatePeriod,
@@ -46,7 +47,7 @@ const { PropertyPlan } = await load("src/components/storm/PropertyPlan.js");
 
 const plain = (value) => JSON.parse(JSON.stringify(value));
 const PERIOD = { SERVICE_PERIOD_START: { value: "2026-11-01" }, SERVICE_PERIOD_END: { value: "2027-03-31" } };
-const SENT = ["INITIAL", "QUOTE_PREPARED", "QUOTE_APPROVED_INTERNALLY", "QUOTE_SENT"];
+const SENT = ["DRAFT", "QUOTE_PREPARED", "QUOTE_APPROVED", "QUOTE_SENT"];
 
 function orderRow(id, codes, attributes = {}, extra = {}) {
   return Object.assign({
@@ -73,12 +74,12 @@ const orderList = {
   resultSize: 12,
   result: [
     orderRow(501, SENT, Object.assign({ SERVICE_PROPERTY: { value: 278 }, PRICING_MODEL: { value: "PER_SERVICE" } }, PERIOD)),
-    orderRow(502, SENT.concat("QUOTE_VIEWED"), Object.assign({ SERVICE_PROPERTY: { value: "278" }, PRICING_MODEL: { value: "MONTHLY" } }, PERIOD)),
-    orderRow(503, SENT.concat("QUOTE_VIEWED", "CLIENT_APPROVED"), Object.assign({ SERVICE_PROPERTY: { value: 430 }, PRICING_MODEL: { value: "SEASONAL" } }, PERIOD), { grandTotal: "8625.50" }),
-    orderRow(504, SENT.concat("QUOTE_VIEWED", "DECLINED"), { SERVICE_PROPERTY: { value: 430 }, PRICING_MODEL: { value: "MONTHLY" } }, { grandTotal: null }),
-    orderRow(505, SENT.concat("QUOTE_VIEWED", "CUSTOMER_CHANGES_REQUESTED"), { SERVICE_PROPERTY: { value: 431 }, PRICING_MODEL: { value: "toString" } }, { grandTotal: 1200, currency: null }),
-    orderRow(506, ["INITIAL"], { SERVICE_PROPERTY: { value: 432 } }),
-    orderRow(507, ["INITIAL", "QUOTE_PREPARED"], {}),
+    orderRow(502, SENT, Object.assign({ SERVICE_PROPERTY: { value: "278" }, PRICING_MODEL: { value: "MONTHLY" } }, PERIOD)),
+    orderRow(503, SENT.concat("ACCEPTED"), Object.assign({ SERVICE_PROPERTY: { value: 430 }, PRICING_MODEL: { value: "SEASONAL" } }, PERIOD), { grandTotal: "8625.50" }),
+    orderRow(504, SENT.concat("DECLINED"), { SERVICE_PROPERTY: { value: 430 }, PRICING_MODEL: { value: "MONTHLY" } }, { grandTotal: null }),
+    orderRow(505, SENT.concat("CUSTOMER_CHANGES_REQUESTED"), { SERVICE_PROPERTY: { value: 431 }, PRICING_MODEL: { value: "toString" } }, { grandTotal: 1200, currency: null }),
+    orderRow(506, ["DRAFT"], { SERVICE_PROPERTY: { value: 432 } }),
+    orderRow(507, ["DRAFT", "QUOTE_PREPARED"], {}),
     orderRow(508, ["SOMETHING_NEW"], { SERVICE_PROPERTY: { value: 278 } }),
     orderRow(509, SENT, { SERVICE_PROPERTY: { value: 278 } }, { type: { id: 9, code: "SUBSCRIPTION_ORDER" } }),
     orderRow(null, SENT, {}),
@@ -89,13 +90,14 @@ const orderList = {
 
 {
   assert.deepEqual(plain(coreSnowContract.customerQuoteStatus), {
-    CLIENT_APPROVED: "approved", CUSTOMER_CHANGES_REQUESTED: "revision", DECLINED: "declined",
-    QUOTE_SENT: "unseen", QUOTE_VIEWED: "viewed",
-  }, "the tenant adapter and the customer-scope normalizer read one set of Order states, the documented portal steps included; a failed operation is a metadata sub-status of these states since 2026-11-05");
+    ACCEPTED: "approved", ACTIVE: "approved", SUSPENDED: "approved", COMPLETED: "approved", CANCELED: "approved",
+    CUSTOMER_CHANGES_REQUESTED: "revision", DECLINED: "declined", QUOTE_SENT: "unseen",
+  }, "the tenant adapter and the customer-scope normalizer read one set of ORDER_LIFECYCLE states since 2026-11-09: a sent quote, the client's decision, and the service life of an accepted order");
+  assert.deepEqual(plain(coreSnowContract.operatorQuoteStates), ["CHANGES_REQUESTED", "DRAFT", "QUOTE_APPROVED", "QUOTE_PREPARED"], "the quote branch before QUOTE_SENT belongs to the operator");
 
   const { orders, preparing, withheldBackendIds } = normalizeQuoteOrders(orderList);
   assert.deepEqual(orders.map((order) => order.backendId), [501, 502, 503, 504, 505, 510, 511], "operator-side, unknown-state, other-type and id-less rows are not rows");
-  assert.deepEqual(orders.map((order) => order.status), ["unseen", "viewed", "approved", "declined", "revision", "unseen", "unseen"]);
+  assert.deepEqual(orders.map((order) => order.status), ["unseen", "unseen", "approved", "declined", "revision", "unseen", "unseen"]);
   assert.deepEqual(orders.map((order) => order.propertyBackendId), [278, 278, 430, 430, 431, null, null], "a string id is an id, and a boolean is not a property even though Number(true) is 1");
   assert.deepEqual(orders.map((order) => order.pricingModel && order.pricingModel.label), ["Per service", "Monthly", "Seasonal", "Monthly", null, null, null], "an unknown or inherited-name pricing model has no label and never shows its code");
   assert.deepEqual(plain(orders.map((order) => order.total)), [null, null, { amount: 8625.5, currency: "CAD" }, null, null, null, null], "a zero, null, negative or empty total, or one without a currency, renders as absent");
@@ -106,7 +108,8 @@ const orderList = {
   assert.equal(preparing, true, "an Order the operator has not sent switches the preparing state on");
   assert.deepEqual(withheldBackendIds, [506, 507], "withheld Orders are remembered only so an agreement can tell them from unreadable ones");
   assert.ok(orders.every((order) => /^quote-core-\d+$/.test(order.id)), "a row is identified by its Core id only");
-  assert.deepEqual(orders.map((order) => order.allowedActions), [["view"], ["approve", "changes", "decline"], [], [], [], ["view"], ["view"]], "only QUOTE_SENT can be viewed and only QUOTE_VIEWED can be decided or sent back with a change request");
+  const decide = ["approve", "changes", "decline"];
+  assert.deepEqual(orders.map((order) => order.allowedActions), [decide, decide, [], [], [], decide, decide], "QUOTE_SENT is decided or sent back with a change request as it is shown; ORDER_LIFECYCLE has no view event");
   assert.equal(orders[2].money.total, "CA$8,625.50", "the server's total is formatted, never recomputed");
   assert.equal(orders[2].money.subtotal, "", "a subtotal Core did not return is absent");
   assert.equal(orders[0].money, null, "an unpriced Order states no money at all");
@@ -114,6 +117,13 @@ const orderList = {
 
   assert.equal(normalizeQuoteOrders({ resultSize: 1, result: [orderRow(1, SENT)] }).preparing, false);
   assert.equal(normalizeQuoteOrders({ result: [orderRow(1, ["SOMETHING_NEW"])] }).preparing, false, "a state nobody has named is neither a quote nor preparation");
+  for (const retired of ["INITIAL", "QUOTE_APPROVED_INTERNALLY", "QUOTE_VIEWED", "CLIENT_APPROVED"]) {
+    assert.deepEqual(plain(normalizeQuoteOrders({ result: [orderRow(1, [retired])] })), { orders: [], preparing: false, withheldBackendIds: [] }, retired + " is a GENERAL_FSM_ORDER state, retired by ORDER_LIFECYCLE on 2026-11-09");
+  }
+  const service = normalizeQuoteOrders({ result: ["ACCEPTED", "ACTIVE", "SUSPENDED", "COMPLETED", "CANCELED"].map((code, index) => orderRow(index + 1, SENT.concat("ACCEPTED", code))) }).orders;
+  assert.deepEqual(plain(service.map((order) => [order.stateCode, order.status, order.allowedActions])), [
+    ["ACCEPTED", "approved", []], ["ACTIVE", "approved", []], ["SUSPENDED", "approved", []], ["COMPLETED", "approved", []], ["CANCELED", "approved", []],
+  ], "every order after the client's acceptance stays the approved option and offers the client nothing");
   for (const payload of [null, undefined, {}, "<!doctype html>", { result: "nope" }]) {
     assert.deepEqual(plain(normalizeQuoteOrders(payload)), { orders: [], preparing: false, withheldBackendIds: [] });
   }
@@ -242,22 +252,25 @@ const orderList = {
   assert.deepEqual([normalizeServiceAgreement(agreementDocument(["SENT_TO_CLIENT"], {}, { metadata: { AGREEMENT_OPERATION_STATUS: "AGREEMENT_DELIVERED" } })).stateCode, normalizeServiceAgreement(agreementDocument(["SENT_TO_CLIENT"], {}, { metadata: {} })).allowedActions], ["SENT_TO_CLIENT", ["approve"]], "a delivered or unmarked agreement keeps its state and its approval");
   assert.equal(normalizeServiceAgreement(agreementDocument(["CLIENT_APPROVED"], {}, { metadata: { AGREEMENT_OPERATION_STATUS: "ACTIVATION_FAILED" } })).stateCode, "ACTIVATION_FAILED");
   assert.equal(normalizeServiceAgreement(agreementDocument(["DRAFT"], {}, { metadata: { AGREEMENT_OPERATION_STATUS: "ACTIVATION_FAILED" } })).stateCode, "DRAFT", "a sub-status is presented only in the state it belongs to");
+  for (const retired of ["ACTIVE", "SUSPENDED", "EXPIRED"]) {
+    assert.equal(normalizeServiceAgreement(agreementDocument(["CLIENT_APPROVED", retired], { ORDERS: { value: [503] } })), null, retired + " is retired on the agreement since 2026-11-09: the service life is read from its orders");
+  }
 
-  const active = normalizeServiceAgreement(agreementDocument(["DRAFT", "PENDING_MANAGEMENT_APPROVAL", "INTERNALLY_APPROVED", "SENT_TO_CLIENT", "CLIENT_APPROVED", "ACTIVE"], {
+  const signed = normalizeServiceAgreement(agreementDocument(["DRAFT", "PENDING_MANAGEMENT_APPROVAL", "INTERNALLY_APPROVED", "SENT_TO_CLIENT", "CLIENT_APPROVED"], {
     EFFECTIVE_DATE: { value: "2026-11-01" }, TERM_START_DATE: { value: "2026-11-01" }, TERM_END_DATE: { value: "2027-03-31" },
   }));
-  assert.equal(active.stage, "active");
-  assert.equal(active.effectiveDate, "2026-11-01");
-  assert.deepEqual(plain(active.term), { start: "2026-11-01", end: "2027-03-31" });
+  assert.deepEqual([signed.stateCode, signed.stage, signed.label], ["CLIENT_APPROVED", "approved", "Approved"], "CLIENT_APPROVED is the signed agreement");
+  assert.equal(signed.effectiveDate, "2026-11-01");
+  assert.deepEqual(plain(signed.term), { start: "2026-11-01", end: "2027-03-31" });
 
   for (const value of [null, "", 0, [2026, 11, 1], "2026-13-01", "Nov 1, 2026", true]) {
-    assert.equal(normalizeServiceAgreement(agreementDocument(["ACTIVE"], { EFFECTIVE_DATE: { value } })).effectiveDate, null, JSON.stringify(value) + " is not a date, and Number(null) is 0");
+    assert.equal(normalizeServiceAgreement(agreementDocument(["CLIENT_APPROVED"], { EFFECTIVE_DATE: { value } })).effectiveDate, null, JSON.stringify(value) + " is not a date, and Number(null) is 0");
   }
-  assert.equal(normalizeServiceAgreement(agreementDocument(["ACTIVE"], { TERM_START_DATE: { value: "2027-04-01" }, TERM_END_DATE: { value: "2027-03-31" } })).term, null, "a term that ends before it starts is not a term");
-  assert.equal(normalizeServiceAgreement(agreementDocument(["ACTIVE"], {}, { type: { code: "DRIVER_LICENSE" } })), null);
-  assert.equal(normalizeServiceAgreement(agreementDocument(["ACTIVE"], {}, { type: undefined })), null, "a document whose type was not read cannot be taken for an agreement");
+  assert.equal(normalizeServiceAgreement(agreementDocument(["CLIENT_APPROVED"], { TERM_START_DATE: { value: "2027-04-01" }, TERM_END_DATE: { value: "2027-03-31" } })).term, null, "a term that ends before it starts is not a term");
+  assert.equal(normalizeServiceAgreement(agreementDocument(["CLIENT_APPROVED"], {}, { type: { code: "DRIVER_LICENSE" } })), null);
+  assert.equal(normalizeServiceAgreement(agreementDocument(["CLIENT_APPROVED"], {}, { type: undefined })), null, "a document whose type was not read cannot be taken for an agreement");
   assert.equal(normalizeServiceAgreement(agreementDocument(["SOMETHING_NEW"])), null);
-  assert.equal(normalizeServiceAgreement(agreementDocument(["ACTIVE"], {}, { id: null })), null);
+  assert.equal(normalizeServiceAgreement(agreementDocument(["CLIENT_APPROVED"], {}, { id: null })), null);
   assert.equal(normalizeServiceAgreement(null), null);
 
   const account = {
@@ -284,8 +297,13 @@ const orderList = {
   assert.equal(normalizeServiceAgreement(agreementDocument(["SENT_TO_CLIENT"]), { displayName: "Harbour View Strata", account: unlabelled }).parties.client.clientType, "", "a client type without a known label is not shown as a code");
   assert.deepEqual(plain(normalizeServiceAgreement(agreementDocument(["SENT_TO_CLIENT"]), { displayName: "Harbour View Strata" }).parties.client), { legalName: "Harbour View Strata", clientType: "", billingAddress: "", representativeName: "", representativeJobTitle: "", email: "", phone: "" }, "without the Account read the display name alone names the client");
 
-  const workflowStates = ["ACTIVATION_FAILED", "ACTIVE", "AGREEMENT_SEND_FAILED", "ARCHIVED", "CANCELED", "CLIENT_APPROVED", "CLIENT_CHANGES_REQUESTED", "DRAFT", "EXPIRED", "INTERNALLY_APPROVED", "PENDING_MANAGEMENT_APPROVAL", "SENT_TO_CLIENT", "SUSPENDED"];
-  assert.deepEqual(Object.keys(AGREEMENT_STAGES).sort(), workflowStates, "every state an agreement reaches from DRAFT on, since the 2026-11-06 cut-over, has a customer presentation; the quotation states before DRAFT are retired");
+  const workflowStates = ["ACTIVATION_FAILED", "AGREEMENT_SEND_FAILED", "ARCHIVED", "CANCELED", "CLIENT_APPROVED", "CLIENT_CHANGES_REQUESTED", "DRAFT", "INTERNALLY_APPROVED", "PENDING_MANAGEMENT_APPROVAL", "SENT_TO_CLIENT"];
+  assert.deepEqual(Object.keys(AGREEMENT_STAGES).sort(), workflowStates, "every state an agreement reaches from DRAFT on has a customer presentation; the quotation states before DRAFT are retired since 2026-11-06 and ACTIVE, SUSPENDED and EXPIRED since 2026-11-09");
+  assert.deepEqual(plain(ORDER_SERVICE_STAGES), {
+    ACTIVE: { stage: "active", label: "Active", tone: "ok" },
+    SUSPENDED: { stage: "suspended", label: "Suspended", tone: "warn" },
+    COMPLETED: { stage: "expired", label: "Expired", tone: "scheduled" },
+  }, "a signed agreement is presented by the service life of its orders");
   for (const code of workflowStates) {
     const stage = AGREEMENT_STAGES[code];
     assert.ok(stage.label && ["ok", "info", "warn", "scheduled"].includes(stage.tone), code + " needs a label and a badge tone");
@@ -388,14 +406,35 @@ const orderList = {
   assert.equal(declinedEverywhere.groups[0].decision, "declined", "a property whose every option is declined is decided");
   assert.equal(declinedEverywhere.counts.decided, 1);
 
-  const onlyOperator = contractsPackage(normalizeQuoteOrders({ result: [orderRow(1, ["INITIAL"])] }), properties);
+  const onlyOperator = contractsPackage(normalizeQuoteOrders({ result: [orderRow(1, ["DRAFT"])] }), properties);
   assert.deepEqual(plain({ agreements: onlyOperator.agreements, preparing: onlyOperator.preparing, groups: onlyOperator.groups }), { agreements: [], preparing: true, groups: [] }, "a round still being prepared shows no agreement and no quote, only that the request is being prepared");
   const retiredOnly = normalizeContracts({ quoteOrders: [], agreements: [agreementDocument(["QUOTATION"])] });
   assert.deepEqual([retiredOnly.preparing, retiredOnly.agreements.length], [false, 0], "a Document left in the retired QUOTATION state neither shows nor claims a request in preparation");
   assert.equal(contractsPackage(null, null).counts.orders, 0);
 
-  assert.equal(groupStatus(quotes.groups[0].orders), "viewed");
+  assert.equal(groupStatus(quotes.groups[0].orders), "unseen");
+  assert.equal(groupStatus(quotes.groups[1].orders), "approved");
   assert.equal(groupStatus([]), "unseen");
+
+  const lifeOf = (codes) => contractsPackage(Object.assign({
+    agreements: [normalizeServiceAgreement(agreementDocument(["SENT_TO_CLIENT", "CLIENT_APPROVED"], { ORDERS: { value: codes.map((code, index) => 600 + index) } }))],
+  }, normalizeQuoteOrders({ result: codes.map((code, index) => orderRow(600 + index, code === "DECLINED" ? SENT.concat(code) : SENT.concat("ACCEPTED", code === "ACCEPTED" ? [] : code), { SERVICE_PROPERTY: { value: 278 } })) })), properties).agreements[0].agreement;
+  assert.deepEqual(plain([["ACCEPTED", "DECLINED"], ["ACTIVE", "DECLINED"], ["SUSPENDED"], ["COMPLETED"], ["ACTIVE", "SUSPENDED"], ["SUSPENDED", "COMPLETED"], ["CANCELED"]].map((codes) => {
+    const agreement = lifeOf(codes);
+    return [agreement.stateCode, agreement.stage, agreement.label, agreement.tone];
+  })), [
+    ["CLIENT_APPROVED", "approved", "Approved", "ok"],
+    ["CLIENT_APPROVED", "active", "Active", "ok"],
+    ["CLIENT_APPROVED", "suspended", "Suspended", "warn"],
+    ["CLIENT_APPROVED", "expired", "Expired", "scheduled"],
+    ["CLIENT_APPROVED", "active", "Active", "ok"],
+    ["CLIENT_APPROVED", "suspended", "Suspended", "warn"],
+    ["CLIENT_APPROVED", "approved", "Approved", "ok"],
+  ], "a signed agreement is active while any of its orders is ACTIVE, else suspended while any is SUSPENDED, else expired once one is COMPLETED, and otherwise signed; its own state stays CLIENT_APPROVED");
+  const archived = contractsPackage(Object.assign({
+    agreements: [normalizeServiceAgreement(agreementDocument(["CLIENT_APPROVED", "ARCHIVED"], { ORDERS: { value: [600] } }))],
+  }, normalizeQuoteOrders({ result: [orderRow(600, SENT.concat("ACCEPTED", "ACTIVE", "COMPLETED"), { SERVICE_PROPERTY: { value: 278 } })] })), properties).agreements[0].agreement;
+  assert.deepEqual([archived.stateCode, archived.stage], ["ARCHIVED", "archived"], "only a signed agreement reads its stage from its orders; an archived one stays archived");
 
   assert.deepEqual(schematicPositions([]), []);
   assert.deepEqual(schematicPositions([null, { lat: null, lon: null }]), [null, null], "a missing coordinate is never placed, and Number(null) is 0");
@@ -505,7 +544,7 @@ const RETIRED = ["Proposal #", "valid until", "sent Dec", "sq ft", "Beam AI", "l
   assert.equal(one(tabor, ".proposal-card__meta").textContent, "1190 Tabor Street, Golden, CO 80401 · 3 quotes");
   assert.equal(one(tabor, ".proposal-group__decision").textContent, "Changes requested");
   assert.deepEqual(all(groups[1], "[data-module=\"quote-row\"]").map((row) => [one(row, ".proposal-option__model").textContent, (one(row, ".proposal-option__total") || { textContent: null }).textContent, one(row, "[data-module=\"status-badge\"]").textContent]), [
-    ["Per service", "$992.99 per visit", "• Viewed"],
+    ["Per service", "$992.99 per visit", "◔ Sent"],
     ["Monthly", "$33,766.64 / month", "◔ Sent"],
     ["Seasonal", "$32,156.25 per season", "◔ Sent"],
   ], "each option shows Core's grand total with the period of its pricing model, never one computed from an area");
@@ -565,11 +604,11 @@ const RETIRED = ["Proposal #", "valid until", "sent Dec", "sq ft", "Beam AI", "l
   state.porders = state.porders.filter((order) => order.id !== 8113).map((order) => {
     if (Math.floor(order.id / 100) !== 81) return order;
     const property = order.attributes[5].SERVICE_PROPERTY.value;
-    const final = decidedOnce.has(property) ? "DECLINED" : "CLIENT_APPROVED";
+    const final = decidedOnce.has(property) ? "DECLINED" : "ACCEPTED";
     decidedOnce.add(property);
-    return Object.assign({}, order, { states: [{ code: "QUOTE_VIEWED" }, { code: final }] });
+    return Object.assign({}, order, { states: [{ code: "QUOTE_SENT" }, { code: final }] });
   });
-  const approved = state.porders.filter((order) => Math.floor(order.id / 100) === 81 && order.states[1].code === "CLIENT_APPROVED").map((order) => order.id);
+  const approved = state.porders.filter((order) => Math.floor(order.id / 100) === 81 && order.states[1].code === "ACCEPTED").map((order) => order.id);
   state.pagreements = state.pagreements.concat(agreementDocument(["DRAFT"], { CLIENT: { value: 6001 }, ORDERS: { value: approved } }, { id: 9105 }));
   refreshProposals();
   const page = ProposalsList();
@@ -631,24 +670,21 @@ const RETIRED = ["Proposal #", "valid until", "sent Dec", "sq ft", "Beam AI", "l
   state.currentSiteId = "quote-0-7103";
   assert.equal(one(ProposalDetail(), "[data-module=\"quote-decided\"]").textContent, "iYou declined the quotes for this property.");
 
-  state.quoteViews = { 8111: "pending", 8112: "failed" };
   state.currentSiteId = "quote-0-7104";
   const open = ProposalDetail();
-  assert.equal(open.getAttribute("data-state"), "viewed");
+  assert.equal(open.getAttribute("data-state"), "unseen");
   assert.equal(all(open, "[data-module=\"quote-decided\"]").length, 0);
   const openCards = all(open, "[data-module=\"quote-option\"]");
-  assert.deepEqual(openCards.map((card) => card.getAttribute("data-state")), ["viewed", "unseen", "unseen"]);
-  assert.deepEqual(all(openCards[0], "[data-action]").map((button) => [button.getAttribute("data-action"), button.getAttribute("data-id"), button.textContent]), [
-    ["quote.approve", "8110", "Approve"],
-    ["quote.requestChanges", "8110", "Request changes"],
-    ["quote.decline", "8110", "Decline"],
-  ], "a viewed quote offers approve, request changes and decline");
-  assert.equal(one(openCards[1], "[data-module=\"command-pending\"]").textContent, "Letting the provider know you opened this quote…");
-  assert.equal(all(openCards[1], "[data-action=\"quote.approve\"]").length, 0, "an unseen quote cannot be decided before its view is read back");
-  const retry = one(openCards[2], "[data-module=\"command-failure\"]");
-  assert.match(retry.textContent, /couldn’t let the provider know you opened this quote/);
-  assert.equal(one(retry, "[data-action]").getAttribute("data-action"), "quote.retryView");
-  assert.equal(one(retry, "[data-action]").getAttribute("data-id"), "8112");
+  assert.deepEqual(openCards.map((card) => card.getAttribute("data-state")), ["unseen", "unseen", "unseen"]);
+  for (const [index, card] of openCards.entries()) {
+    const id = String(8110 + index);
+    assert.deepEqual(all(card, "[data-action]").map((button) => [button.getAttribute("data-action"), button.getAttribute("data-id"), button.textContent]), [
+      ["quote.approve", id, "Approve"],
+      ["quote.requestChanges", id, "Request changes"],
+      ["quote.decline", id, "Decline"],
+    ], "a sent quote offers approve, request changes and decline as soon as it is shown");
+  }
+  assert.equal(all(open, "[data-module=\"command-pending\"]").length + all(open, "[data-module=\"command-failure\"]").length, 0, "opening a quote sends nothing: ORDER_LIFECYCLE has no view event");
   assert.equal(one(open, "[data-module=\"quote-detail-footer\"]").textContent, "✦Approving one option for this property declines its other options.");
 
   state.contractConfirm = { kind: "approve", backendId: 8110 };
@@ -676,10 +712,10 @@ const RETIRED = ["Proposal #", "valid until", "sent Dec", "sq ft", "Beam AI", "l
 
   state.contractConfirm = null;
   state.contractCommand = { kind: "approve", targets: [8111], phase: "pending" };
-  const viewedOption = findQuote(quotePackage(), 8110);
-  assert.equal(viewedOption.status, "viewed");
-  assert.deepEqual(all(QuoteOptionCard(viewedOption, { interactive: true, busy: true }), "[data-action]").map((button) => [button.textContent, button.hasAttribute("disabled")]), [["Approve", true], ["Request changes", true], ["Decline", true]], "while another option's command is in flight this option cannot be decided");
-  assert.deepEqual(all(QuoteOptionCard(viewedOption, { interactive: true, busy: false }), "[data-action]").map((button) => [button.textContent, button.hasAttribute("disabled")]), [["Approve", false], ["Request changes", false], ["Decline", false]]);
+  const sentOption = findQuote(quotePackage(), 8110);
+  assert.equal(sentOption.status, "unseen");
+  assert.deepEqual(all(QuoteOptionCard(sentOption, { interactive: true, busy: true }), "[data-action]").map((button) => [button.textContent, button.hasAttribute("disabled")]), [["Approve", true], ["Request changes", true], ["Decline", true]], "while another option's command is in flight this option cannot be decided");
+  assert.deepEqual(all(QuoteOptionCard(sentOption, { interactive: true, busy: false }), "[data-action]").map((button) => [button.textContent, button.hasAttribute("disabled")]), [["Approve", false], ["Request changes", false], ["Decline", false]]);
 
   state.contractConfirm = { kind: "decline", backendId: 8110 };
   state.contractCommand = null;
@@ -718,7 +754,6 @@ const RETIRED = ["Proposal #", "valid until", "sent Dec", "sq ft", "Beam AI", "l
   assert.equal(one(readback, "[data-module=\"contracts-readback-failed\"]").textContent, "⚠Your approval was sent, but the quote’s current status couldn’t be loadedNothing is shown until it loads, so you never see an out-of-date status.Try again");
   assert.equal(all(readback, "[data-module=\"quote-option\"]").length, 0, "a stale quote is never shown after its command");
   state.contractCommand = null;
-  state.quoteViews = {};
 
   state.currentSiteId = "quote-9999-1";
   const missing = ProposalDetail();
@@ -1032,7 +1067,7 @@ const RETIRED = ["Proposal #", "valid until", "sent Dec", "sq ft", "Beam AI", "l
   const ADDRESS = "1239 W Georgia St, Vancouver, BC V6E 4R8, Canada";
   const PLAN = "c08d28dc-0f70-4fb9-9d6e-1b881975d923";
   const ready = { state: "ready", scopeMode: "server-scoped", truncated: false };
-  const viewed = (final) => SENT.concat("QUOTE_VIEWED", final);
+  const decided = (...final) => SENT.concat(final);
   const quote = (id, codes, total, items) => orderRow(id, codes, { SERVICE_PROPERTY: { value: 983 }, SERVICE_ADDRESS: { value: "1239 W Georgia St, Vancouver, BC, V6E 4R8, CA" } }, { grandTotal: total, totalCharges: total, totalTaxes: 0, items: items.map((id) => ({ id })) });
   const month = (count) => ({ INTERVAL_UNIT: "MONTH", INTERVAL_COUNT: count });
   const item = (id, order, price, total, metadata) => Object.assign({ id, order: { id: order }, itemPrice: { id: price }, grandTotal: total, sortOrder: id }, metadata ? { metadata } : {});
@@ -1047,14 +1082,14 @@ const RETIRED = ["Proposal #", "valid until", "sent Dec", "sq ft", "Beam AI", "l
       contacts: [{ id: 731, type: { code: "LEGAL" }, firstName: "Bilbo", lastName: "Baggins", contactEntries: [{ id: 959, type: { code: "EMAIL" }, kind: { code: "WORK" }, value: "opanagushin+104@gmail.com" }, { id: 960, type: { code: "PHONE" }, kind: { code: "WORK" }, value: "+19991112233" }] }],
       addresses: [{ id: 767, types: [{ code: "BILLING" }], address: { id: 742, address1: "1239 W Georgia St, Vancouver, BC, V6E 4R8, CA", postalCode: "V6E 4R8" } }, { id: 766, types: [{ code: "SERVICE" }], address: { id: 360, city: "Vancouver", address1: "1239 W Georgia St", postalCode: "V6E 4R8" } }],
     } },
-    agreements: [agreementDocument(["QUOTATION", "QUOTATION_SENT", "AWAITING_CLIENT_DETAILS", "DRAFT", "SENT_TO_CLIENT", "CLIENT_APPROVED", "ACTIVE"], Object.assign({
+    agreements: [agreementDocument(["QUOTATION", "QUOTATION_SENT", "AWAITING_CLIENT_DETAILS", "DRAFT", "SENT_TO_CLIENT", "CLIENT_APPROVED"], Object.assign({
       CLIENT: { value: 732 }, ORDERS: { value: [114] },
       CONTRACT_TERMS: { value: "# Parties\n\nService provider: Limitless Snow Removal Corp.\n- Phone: +1 604 670 0591\n\nClient: Bilbo Baggins\n- Billing address: 1239 W Georgia St, Vancouver, BC, V6E 4R8, CA\n\n# Test terms\n\n1. Services\n1.1 Snow is cleared." },
     }, agreement), { id: 169, organization: { id: 43, code: "SNOWLIMITLESS", nls: { en: { NAME: "Limitless Snow Removal Corp." } } } })],
     quoteOrders: [
-      quote(113, viewed("DECLINED"), 1512.5, [142, 143]),
-      quote(114, viewed("CLIENT_APPROVED"), 4217.94, [140, 141]),
-      quote(115, viewed("DECLINED"), 16871.75, [138, 139]),
+      quote(113, decided("DECLINED"), 1512.5, [142, 143]),
+      quote(114, decided("ACCEPTED", "ACTIVE"), 4217.94, [140, 141]),
+      quote(115, decided("DECLINED"), 16871.75, [138, 139]),
     ].concat(extraOrders),
     orderItems: [
       item(138, 115, 226, 2991.95, month(5)), item(139, 115, 232, 13879.8, month(5)),
@@ -1200,7 +1235,7 @@ for (const property of overviewProperties) {
   assert.ok(!warnings.some((line) => line.includes(property.address)), "a console warning must never carry a customer address");
 }
 
-console.log("snow-contracts-check ok: Orders, their lines and the agreement document normalize with absent data left absent and every figure taken from Core, the terms keep their headings, items and numbered outline as text, the Contracts page lists agreements by what they need from the customer with their chosen option, price per period and season, and only the quotes that still wait, with no subtitle or counters, the quote detail shows each option's lines and server totals with approve, request changes and decline only for a viewed quote and no retired Beam or plan claims, the agreement detail shows the season under the title, a banner only when the client must act, parties without placeholders, the provider contact the agreement carries, approved services with the total alone when untaxed and collapsed terms, the live home, Contracts, agreement and property pages for a real client show each address once, the active option, waiting quotes and the plan drawing and nothing without data, and live mode opens Contracts through the snow adapter while other verticals stay closed");
+console.log("snow-contracts-check ok: Orders, their lines and the agreement document normalize with absent data left absent and every figure taken from Core, the terms keep their headings, items and numbered outline as text, the Contracts page lists agreements by what they need from the customer with their chosen option, price per period and season, and only the quotes that still wait, with no subtitle or counters, the quote detail shows each option's lines and server totals with approve, request changes and decline for a sent quote as soon as it is shown and no retired Beam or plan claims, the agreement detail shows the season under the title, a banner only when the client must act, parties without placeholders, the provider contact the agreement carries, approved services with the total alone when untaxed and collapsed terms, the live home, Contracts, agreement and property pages for a real client show each address once, the active option, waiting quotes and the plan drawing and nothing without data, and live mode opens Contracts through the snow adapter while other verticals stay closed");
 
 function createDom() {
   class Text {

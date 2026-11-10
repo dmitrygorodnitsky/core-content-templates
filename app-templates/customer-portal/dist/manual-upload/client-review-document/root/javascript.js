@@ -45,7 +45,6 @@
     ["PROPERTY_CHANGES", "propertyChanges", "Changes requested"],
     ["PROPERTY_UNKNOWN", "propertyUnknown", "Status unavailable"],
     ["OPTION_NEW", "optionNew", "New"],
-    ["OPTION_VIEWED", "optionViewed", "Awaiting decision"],
     ["OPTION_APPROVED", "optionApproved", "Approved"],
     ["OPTION_DECLINED", "optionDeclined", "Declined"],
     ["OPTION_CHANGES", "optionChanges", "Changes requested"],
@@ -66,8 +65,6 @@
     ["NOTE_REVISING", "noteRevising", "The provider is revising this option. Its services and price show here again once it is sent back to you."],
     ["NOTE_SIBLING_APPROVED", "noteSiblingApproved", "You approved another option for this property."],
     ["NOTE_NO_ACTIONS", "noteNoActions", "Decisions on this option cannot be made through this link."],
-    ["VIEW_PENDING", "viewPending", "Letting the provider know you opened this option…"],
-    ["VIEW_FAILED", "viewFailed", "We could not let the provider know you opened this option, so its decisions are not available yet."],
     ["APPROVE_LABEL", "approveLabel", "Approve"],
     ["CHANGES_LABEL", "changesLabel", "Request changes"],
     ["CANCEL_LABEL", "cancelLabel", "Cancel"],
@@ -283,12 +280,13 @@
   ];
 
   var CONTRACT = {
-    orderWorkflow: "GENERAL_FSM_ORDER",
+    orderWorkflow: "ORDER_LIFECYCLE",
     agreementWorkflow: "SERVICE_AGREEMENT_LIFECYCLE",
     agreementType: "SERVICE_AGREEMENT",
     orderStates: [
-      "INITIAL", "QUOTE_PREPARED", "CHANGES_REQUESTED", "QUOTE_APPROVED_INTERNALLY",
-      "QUOTE_SENT", "QUOTE_VIEWED", "CLIENT_APPROVED", "DECLINED", "CUSTOMER_CHANGES_REQUESTED",
+      "DRAFT", "QUOTE_PREPARED", "CHANGES_REQUESTED", "QUOTE_APPROVED",
+      "QUOTE_SENT", "CUSTOMER_CHANGES_REQUESTED", "DECLINED",
+      "ACCEPTED", "ACTIVE", "SUSPENDED", "COMPLETED", "CANCELED",
     ],
     agreementStates: [
       "QUOTATION", "QUOTATION_SENT", "QUOTATION_UPDATE", "QUOTATION_SEND_FAILED", "AWAITING_CLIENT_DETAILS",
@@ -298,10 +296,9 @@
       "ACCESS_CLEANUP_RETRY",
     ],
     orderEvents: {
-      view: { code: "QUOTE_SENT-QUOTE_VIEWED", source: "QUOTE_SENT" },
-      approve: { code: "QUOTE_VIEWED-CLIENT_APPROVED", source: "QUOTE_VIEWED" },
-      decline: { code: "QUOTE_VIEWED-DECLINED", source: "QUOTE_VIEWED" },
-      changes: { code: "QUOTE_VIEWED-CUSTOMER_CHANGES_REQUESTED", source: "QUOTE_VIEWED", messageAttribute: "MESSAGE" },
+      approve: { code: "QUOTE_SENT-ACCEPTED", source: "QUOTE_SENT" },
+      decline: { code: "QUOTE_SENT-DECLINED", source: "QUOTE_SENT" },
+      changes: { code: "QUOTE_SENT-CUSTOMER_CHANGES_REQUESTED", source: "QUOTE_SENT", messageAttribute: "MESSAGE" },
     },
     agreementOperationStatus: {
       key: "AGREEMENT_OPERATION_STATUS",
@@ -355,7 +352,7 @@
       terms: "CONTRACT_TERMS",
     },
     contractDetails: {
-      event: "QUOTE_VIEWED-CLIENT_APPROVED",
+      event: "QUOTE_SENT-ACCEPTED",
       attributes: CONTRACT_DETAILS_ATTRIBUTES,
       attributeOrder: [
         {
@@ -691,17 +688,28 @@
 
   var ORDER_STATUS = {
     QUOTE_SENT: "new",
-    QUOTE_VIEWED: "viewed",
-    CLIENT_APPROVED: "approved",
+    ACCEPTED: "approved",
+    ACTIVE: "approved",
+    SUSPENDED: "approved",
+    COMPLETED: "approved",
+    CANCELED: "approved",
     DECLINED: "declined",
     CUSTOMER_CHANGES_REQUESTED: "changes",
-    INITIAL: "revising",
+    DRAFT: "revising",
     QUOTE_PREPARED: "revising",
     CHANGES_REQUESTED: "revising",
-    QUOTE_APPROVED_INTERNALLY: "revising",
+    QUOTE_APPROVED: "revising",
   };
 
-  var PRICED_STATUSES = ["new", "viewed", "approved", "declined", "changes"];
+  var PRICED_STATUSES = ["new", "approved", "declined", "changes"];
+
+  var SIGNED_AGREEMENT_STATE = "CLIENT_APPROVED";
+
+  var SERVICE_DISPOSITION = {
+    ACTIVE: { kind: "completion", completion: "active" },
+    SUSPENDED: { kind: "reference", banner: "suspended" },
+    COMPLETED: { kind: "reference", banner: "expired" },
+  };
 
   var AGREEMENT_DISPOSITION = {
     QUOTATION: { kind: "unavailable", reason: "retired" },
@@ -718,9 +726,9 @@
     AGREEMENT_SEND_FAILED: { kind: "unavailable", reason: "send-failed" },
     CLIENT_APPROVED: { kind: "completion", completion: "approved" },
     ACTIVATION_FAILED: { kind: "completion", completion: "finishing" },
-    ACTIVE: { kind: "completion", completion: "active" },
-    SUSPENDED: { kind: "reference", banner: "suspended" },
-    EXPIRED: { kind: "reference", banner: "expired" },
+    ACTIVE: { kind: "unavailable", reason: "retired" },
+    SUSPENDED: { kind: "unavailable", reason: "retired" },
+    EXPIRED: { kind: "unavailable", reason: "retired" },
     ARCHIVED: { kind: "closed", reason: "archived" },
     CANCELED: { kind: "closed", reason: "canceled" },
     ACCESS_CLEANUP_RETRY: { kind: "closed", reason: "canceled" },
@@ -1317,9 +1325,9 @@
       subtotal: priced ? formatMoney(row.totalCharges, currency, context.locale) : "",
       taxes: priced ? formatMoney(row.totalTaxes, currency, context.locale) : "",
       total: priced ? formatMoney(row.grandTotal, currency, context.locale) : "",
-      awaitingClient: state === contract.orderEvents.view.source || state === contract.orderEvents.approve.source,
+      awaitingClient: state === contract.orderEvents.approve.source,
       siblingApproved: false,
-      actions: { view: false, approve: false, decline: false, changes: false },
+      actions: { approve: false, decline: false, changes: false },
     };
   }
 
@@ -1328,7 +1336,7 @@
     if (statuses.indexOf("approved") !== -1) return "approved";
     if (statuses.length && statuses.every(function (status) { return status === "declined"; })) return "declined";
     if (statuses.indexOf("changes") !== -1 || statuses.indexOf("revising") !== -1) return "changes";
-    if (statuses.indexOf("new") !== -1 || statuses.indexOf("viewed") !== -1) return "awaiting";
+    if (statuses.indexOf("new") !== -1) return "awaiting";
     return "unknown";
   }
 
@@ -1361,11 +1369,10 @@
     });
   }
 
-  function approvalsOffered(properties, grant, contract) {
-    var events = contract.orderEvents;
+  function approvalsOffered(properties) {
     return properties.some(function (property) {
       return property.options.some(function (option) {
-        return option.actions.approve || (option.actions.view && eventGranted(grant, "order", option.id, events.approve.code));
+        return option.actions.approve;
       });
     });
   }
@@ -1378,7 +1385,6 @@
           return !option.siblingApproved && option.state === event.source && eventGranted(grant, "order", option.id, event.code);
         }
         option.actions = {
-          view: allowed(events.view),
           approve: allowed(events.approve),
           decline: allowed(events.decline),
           changes: allowed(events.changes),
@@ -1491,7 +1497,7 @@
       unreadableOrders: 0,
       accountUnavailable: Boolean(input.accountFailed),
       details: {
-        available: approvalsOffered(properties, grant, contract),
+        available: approvalsOffered(properties),
         fields: fields,
         prefill: detailsPrefill(account, fields, locale, contract),
       },
@@ -1499,6 +1505,12 @@
       canRequestAgreementChanges: false,
       primaryEmail: primaryEmail(account, contract),
     };
+  }
+
+  function serviceDisposition(orders, contract) {
+    var states = orders.map(function (row) { return stateCode(row, contract.orderStates); });
+    var found = Object.keys(SERVICE_DISPOSITION).filter(function (code) { return states.indexOf(code) !== -1; })[0];
+    return found ? SERVICE_DISPOSITION[found] : null;
   }
 
   function reviewModel(input, options) {
@@ -1519,7 +1531,6 @@
     var agreement = picked.row;
     var agreementId = positiveInteger(agreement.id);
     var state = presentedAgreementState(agreement, contract);
-    var disposition = AGREEMENT_DISPOSITION[state] || { kind: "unavailable", reason: "unknown-state" };
     var account = pickAccount(input.accounts, agreement, contract);
     var fields = detailFields(contract.contractDetails, locale);
     var parties = partiesOf(agreement, account, fields, locale, contract);
@@ -1538,6 +1549,8 @@
       else unreadable += 1;
     });
 
+    var disposition = (state === SIGNED_AGREEMENT_STATE && serviceDisposition(readable, contract))
+      || AGREEMENT_DISPOSITION[state] || { kind: "unavailable", reason: "unknown-state" };
     var properties = propertiesOf(readable, { locale: locale, contract: contract, catalog: catalogOf(input) });
     var decided = summarized(properties);
     var approveEvent = contract.agreementEvents.approve;
@@ -1579,6 +1592,7 @@
   ns.normalizer = Object.freeze({
     orderStatus: Object.freeze(Object.assign({}, ORDER_STATUS)),
     agreementDisposition: Object.freeze(Object.assign({}, AGREEMENT_DISPOSITION)),
+    serviceDisposition: Object.freeze(Object.assign({}, SERVICE_DISPOSITION)),
     positiveInteger: positiveInteger,
     localizedName: localizedName,
     planReference: planReference,
@@ -1821,7 +1835,7 @@
 
   var ns = global.ClientReview || (global.ClientReview = {});
   var KINDS = ["agreement-review", "reference", "completion"];
-  var STATUSES = { new: "optionNew", viewed: "optionViewed", approved: "optionApproved", declined: "optionDeclined", changes: "optionChanges", revising: "optionRevising", unknown: "optionUnknown" };
+  var STATUSES = { new: "optionNew", approved: "optionApproved", declined: "optionDeclined", changes: "optionChanges", revising: "optionRevising", unknown: "optionUnknown" };
 
   function offered(snapshot) {
     return snapshot.phase === "ready" && snapshot.view && KINDS.indexOf(snapshot.view.kind) !== -1;
@@ -2576,7 +2590,6 @@
 
   var OPTION_BADGE = {
     new: ["status-badge--info", "optionNew"],
-    viewed: ["status-badge--info", "optionViewed"],
     approved: ["status-badge--ok", "optionApproved"],
     declined: ["status-badge--danger", "optionDeclined"],
     changes: ["status-badge--warn", "optionChanges"],
@@ -2983,24 +2996,13 @@
       return;
     }
     var pending = isPending(command);
-    if (command && command.event === ns.contract.orderEvents.view.code) {
-      if (pending) {
-        body.appendChild(text("p", "cr-note cr-note--pending", copy.viewPending, { role: "status", "data-state": "pending" }));
-        return;
-      }
-      body.appendChild(outcomeBox(ctx, command, {
-        title: copy.viewFailed,
-        action: button(copy.retryLabel, "btn--ghost", function () { ctx.dispatch("option.view", { id: option.id }); }, { disabled: ctx.busy, "data-action": "option.view" }),
-      }));
-      return;
-    }
     if (option.siblingApproved && option.awaitingClient) {
       body.appendChild(text("p", "cr-note", copy.noteSiblingApproved));
       return;
     }
     var decisions = option.actions.approve || option.actions.changes;
     if (!decisions) {
-      if (option.awaitingClient && !option.actions.view) body.appendChild(text("p", "cr-note", copy.noteNoActions));
+      if (option.awaitingClient) body.appendChild(text("p", "cr-note", copy.noteNoActions));
       return;
     }
     var confirm = ctx.snapshot.confirm && ctx.snapshot.confirm.kind === "changes" && ctx.snapshot.confirm.id === option.id ? ctx.snapshot.confirm : null;
@@ -3058,7 +3060,7 @@
     var snapshot = ctx.snapshot;
     var declineCode = ns.contract.orderEvents.decline.code;
     var chosen = property.options.some(function (option) { return snapshot.expanded[option.id]; });
-    var declinable = property.options.some(function (option) { return option.actions.decline || option.actions.view; });
+    var declinable = property.options.some(function (option) { return option.actions.decline; });
     var choice = snapshot.choices[property.key] || null;
     var failed = property.options.filter(function (option) {
       var command = snapshot.commands[option.recordKey];
@@ -3924,7 +3926,7 @@
 
     function declinableOptions(property) {
       return property.options.filter(function (option) {
-        return (option.actions.decline || option.actions.view) && !state.accepted[option.recordKey] && !inflight[option.recordKey];
+        return option.actions.decline && !state.accepted[option.recordKey] && !inflight[option.recordKey];
       });
     }
 
@@ -4289,10 +4291,6 @@
       } else {
         delete state.expanded[option.id];
       }
-      if (opening && option.actions.view && !state.commands[option.recordKey] && !state.accepted[option.recordKey] && !busy()) {
-        send(option.recordKey, "order", option.id, contract.orderEvents.view.code, {}, {});
-        return;
-      }
       render();
     }
 
@@ -4352,13 +4350,6 @@
       if (option.status === target) return Promise.resolve(true);
       if (state.accepted[option.recordKey] || inflight[option.recordKey]) return Promise.resolve(false);
       var context = { closedAfter: closedAfter };
-      if (option.actions.view) {
-        return send(option.recordKey, "order", option.id, contract.orderEvents.view.code, {}, context).then(function (sent) {
-          var viewed = sent ? findOption(id) : null;
-          if (!viewed || !viewed.actions[kind] || state.accepted[viewed.recordKey]) return false;
-          return decideOption(id, kind, metadata, closedAfter);
-        });
-      }
       if (!option.actions[kind]) return Promise.resolve(false);
       return send(option.recordKey, "order", option.id, contract.orderEvents[kind].code, metadata, Object.assign({
         onRefusal: function (error) {
@@ -4526,12 +4517,6 @@
           return;
         case "option.toggle":
           toggleOption(data.id);
-          return;
-        case "option.view":
-          option = findOption(data.id);
-          if (!option || !option.actions.view || busy() || state.accepted[option.recordKey]) return;
-          clearOutcome(option.recordKey);
-          send(option.recordKey, "order", option.id, contract.orderEvents.view.code, {}, {});
           return;
         case "option.intent":
           option = findOption(data.id);

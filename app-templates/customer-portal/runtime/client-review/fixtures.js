@@ -46,12 +46,12 @@
 
   var ORDERS = [
     { id: 3101, property: 278, model: "SEASONAL", state: "QUOTE_SENT", charges: 8750, taxes: 437.5, grand: 9187.5, lines: [[1, "snow", 1, 1400], [2, "rockSalt", 1, 7350]] },
-    { id: 3102, property: 278, model: "MONTHLY", state: "QUOTE_VIEWED", charges: 8750, taxes: 437.5, grand: 9187.5, lines: [[3, "snow", 5, 280], [4, "rockSalt", 5, 1470]] },
-    { id: 3103, property: 278, model: "PER_SERVICE", state: "QUOTE_VIEWED", charges: 595, taxes: 29.75, grand: 624.75, lines: [[5, "snow", 1, 350], [6, "rockSalt", 1, 245]] },
-    { id: 3104, property: 430, model: "SEASONAL", state: "CLIENT_APPROVED", charges: 10200, taxes: 510, grand: 10710, lines: [[7, "snow", 1, 1750], [8, "iceMelt", 1, 8450]] },
+    { id: 3102, property: 278, model: "MONTHLY", state: "QUOTE_SENT", charges: 8750, taxes: 437.5, grand: 9187.5, lines: [[3, "snow", 5, 280], [4, "rockSalt", 5, 1470]] },
+    { id: 3103, property: 278, model: "PER_SERVICE", state: "QUOTE_SENT", charges: 595, taxes: 29.75, grand: 624.75, lines: [[5, "snow", 1, 350], [6, "rockSalt", 1, 245]] },
+    { id: 3104, property: 430, model: "SEASONAL", state: "ACCEPTED", charges: 10200, taxes: 510, grand: 10710, lines: [[7, "snow", 1, 1750], [8, "iceMelt", 1, 8450]] },
     { id: 3105, property: 430, model: "PER_SERVICE", state: "DECLINED", charges: 631.75, taxes: 31.59, grand: 663.34, lines: [[9, "snow", 1, 350], [10, "iceMelt", 1, 281.75]] },
     { id: 3106, property: 512, model: "SEASONAL", state: "CUSTOMER_CHANGES_REQUESTED", charges: 3240, taxes: 162, grand: 3402, lines: [[11, "snow", 1, 2100], [12, "atv", 12, 95]] },
-    { id: 3107, property: 512, model: "MONTHLY", state: "QUOTE_VIEWED", charges: 3240, taxes: 162, grand: 3402, lines: [[13, "snow", 5, 420], [14, "atv", 12, 95]] },
+    { id: 3107, property: 512, model: "MONTHLY", state: "QUOTE_SENT", charges: 3240, taxes: 162, grand: 3402, lines: [[13, "snow", 5, 420], [14, "atv", 12, 95]] },
     { id: 3108, property: 661, model: "", state: "QUOTE_SENT", grand: 288.75, lines: [[15, "snow", 1, 275]] },
     { id: 3109, property: 702, model: "SEASONAL", state: "DECLINED", charges: 1400, taxes: 70, grand: 1470, lines: [[16, "snow", 1, 1400]] },
     { id: 3110, property: 702, model: "MONTHLY", state: "DECLINED", charges: 1400, taxes: 70, grand: 1470, lines: [[17, "snow", 5, 280]] },
@@ -201,10 +201,9 @@
   PLACES[ADDRESSES[512]] = { lat: 49.1893, lng: -122.8421 };
 
   var QUOTATION_EVENTS = [
-    "QUOTE_SENT-QUOTE_VIEWED",
-    "QUOTE_VIEWED-CLIENT_APPROVED",
-    "QUOTE_VIEWED-DECLINED",
-    "QUOTE_VIEWED-CUSTOMER_CHANGES_REQUESTED",
+    "QUOTE_SENT-ACCEPTED",
+    "QUOTE_SENT-DECLINED",
+    "QUOTE_SENT-CUSTOMER_CHANGES_REQUESTED",
   ];
 
   var SCENARIOS = [
@@ -228,8 +227,6 @@
     { id: "link-copied", label: "Copy link — copied with an approval chosen" },
     { id: "link-copy-failed", label: "Copy link — the browser refused to copy" },
     { id: "option-open", label: "Option open — lines, total, decisions" },
-    { id: "view-pending", label: "Unviewed option opened — view event pending" },
-    { id: "view-failed", label: "Unviewed option opened — view event failed" },
     { id: "choices-approve", label: "Confirm your choices — an option approved, contract details pre-filled" },
     { id: "changes-invalid", label: "Request changes — message required" },
     { id: "choices-decline", label: "Confirm your choices — every option of a property declined, no details asked" },
@@ -239,7 +236,6 @@
     { id: "command-failed", label: "Approval failed" },
     { id: "command-stale-pending", label: "Approval accepted, readback still shows the option undecided — pending" },
     { id: "command-unconfirmed", label: "Approval accepted, change not seen within the budget — Refresh status" },
-    { id: "view-unconfirmed", label: "Option opened, view accepted but not seen within the budget — Refresh status" },
     { id: "contract-details", label: "Contract details on Confirm your choices — pre-filled from the account" },
     { id: "contract-details-attributes", label: "Contract details — contacts and addresses as ids, pre-filled from Account attributes" },
     { id: "contract-details-ids-only", label: "Contract details — contacts and addresses as ids, no Account attributes" },
@@ -270,11 +266,11 @@
     { id: "agreement-approval-only", label: "Agreement — a link issued before change requests, approval only" },
     { id: "approval-closed", label: "Agreement approved — link closed, portal invitation" },
     { id: "completion", label: "Completion — CLIENT_APPROVED, no portal address" },
-    { id: "completion-portal", label: "Completion — ACTIVE, portal address configured" },
+    { id: "completion-portal", label: "Completion — signed, its orders ACTIVE, portal address configured" },
     { id: "completion-finishing", label: "Completion — ACTIVATION_FAILED, no primary email in the link" },
     { id: "completion-attributes", label: "Completion — CLIENT_APPROVED, sign-in email from LEGAL contact" },
     { id: "link-closed-portal", label: "Link expired or revoked — portal address configured" },
-    { id: "reference-expired", label: "Expired agreement — read only" },
+    { id: "reference-expired", label: "Expired agreement — signed, its orders COMPLETED, read only" },
     { id: "closed-canceled", label: "Canceled — closed" },
     { id: "unavailable", label: "Send failed — unavailable" },
     { id: "retired-quotation", label: "A Document left in a retired quotation state — unavailable" },
@@ -543,14 +539,14 @@
     }));
   }
 
-  var DECIDED = { 3101: "DECLINED", 3102: "CLIENT_APPROVED", 3103: "DECLINED", 3107: "CLIENT_APPROVED", 3108: "CLIENT_APPROVED" };
-  var LAST_OPEN = { 3101: "DECLINED", 3102: "CLIENT_APPROVED", 3103: "DECLINED", 3107: "CLIENT_APPROVED" };
+  var DECIDED = { 3101: "DECLINED", 3102: "ACCEPTED", 3103: "DECLINED", 3107: "ACCEPTED", 3108: "ACCEPTED" };
+  var LAST_OPEN = { 3101: "DECLINED", 3102: "ACCEPTED", 3103: "DECLINED", 3107: "ACCEPTED" };
   var DECLINED_BUT_ONE = { 3101: "DECLINED", 3102: "DECLINED", 3103: "DECLINED", 3104: "DECLINED", 3106: "DECLINED", 3107: "DECLINED" };
 
-  function agreementData(state, withUser) {
+  function agreementData(state, withUser, orderState) {
     var approved = [3102, 3104, 3107, 3108];
     var orders = ORDERS.filter(function (spec) { return approved.indexOf(spec.id) !== -1; }).map(orderRow);
-    orders.forEach(function (row) { row.states = [{ code: "CLIENT_APPROVED" }]; });
+    orders.forEach(function (row) { row.states = [{ code: orderState || "ACCEPTED" }]; });
     return withProperties({
       grant: agreementGrant(),
       accounts: [accountRow(withUser)],
@@ -586,10 +582,10 @@
     });
     var keys = Object.keys(byProperty);
     var settled = keys.length > 0 && keys.every(function (key) {
-      return byProperty[key].indexOf("CLIENT_APPROVED") !== -1 || byProperty[key].every(function (code) { return code === "DECLINED"; });
+      return byProperty[key].indexOf("ACCEPTED") !== -1 || byProperty[key].every(function (code) { return code === "DECLINED"; });
     });
     if (!settled) return;
-    var approved = data.orders.filter(function (order) { return currentState(order) === "CLIENT_APPROVED"; }).map(function (order) { return order.id; });
+    var approved = data.orders.filter(function (order) { return currentState(order) === "ACCEPTED"; }).map(function (order) { return order.id; });
     data.decided = { approved: approved, detailsErrors: approved.length && data.lastApproval ? detailsErrors(data.lastApproval) : null };
     data.closed = true;
   }
@@ -604,25 +600,25 @@
     if (!row) throw reviewError("refused", 404, "This record is not available through this link.");
     if (!grantAllows(data.grant, entity, code)) throw reviewError("refused", 403, "This action is not part of this link.");
     if (currentState(row) !== source) throw reviewError("refused", 409, "This record is no longer waiting for that decision.");
-    if ((code === "QUOTE_VIEWED-CUSTOMER_CHANGES_REQUESTED" || code === "SENT_TO_CLIENT-CLIENT_CHANGES_REQUESTED") && !String(metadata.MESSAGE || "").trim()) {
+    if ((code === "QUOTE_SENT-CUSTOMER_CHANGES_REQUESTED" || code === "SENT_TO_CLIENT-CLIENT_CHANGES_REQUESTED") && !String(metadata.MESSAGE || "").trim()) {
       throw reviewError("refused", 400, "", { MESSAGE: "A message is required." });
     }
     row.states = [{ code: target }];
     if (entity === "order") {
-      if (target === "CLIENT_APPROVED") {
+      if (target === "ACCEPTED") {
         data.approvals = data.approvals || {};
         data.approvals[row.id] = clone(metadata);
         data.lastApproval = clone(metadata);
       }
-      if (target === "CLIENT_APPROVED" && hooks.declineSiblings !== false) {
+      if (target === "ACCEPTED" && hooks.declineSiblings !== false) {
         data.orders.forEach(function (other) {
           var sameProperty = orderAttribute(other, "SERVICE_PROPERTY") === orderAttribute(row, "SERVICE_PROPERTY");
-          if (other.id !== row.id && sameProperty && ["QUOTE_SENT", "QUOTE_VIEWED"].indexOf(currentState(other)) !== -1) {
+          if (other.id !== row.id && sameProperty && currentState(other) === "QUOTE_SENT") {
             other.states = [{ code: "DECLINED" }];
           }
         });
       }
-      if (target === "CLIENT_APPROVED" || target === "DECLINED") data.pendingEvaluation = { reads: 0 };
+      if (target === "ACCEPTED" || target === "DECLINED") data.pendingEvaluation = { reads: 0 };
     }
     if (entity === "document" && target === "CLIENT_APPROVED" && hooks.revokeOnApproval === true) data.closed = true;
     if (entity === "document" && target === "CLIENT_CHANGES_REQUESTED" && hooks.revokeOnChanges === true) data.closed = true;
@@ -1140,14 +1136,6 @@
       case "option-open":
         steps = [["option.toggle", { id: 3102 }]];
         break;
-      case "view-pending":
-        behavior.events["QUOTE_SENT-QUOTE_VIEWED"] = { outcome: "hold" };
-        steps = [["option.toggle", { id: 3101 }]];
-        break;
-      case "view-failed":
-        behavior.events["QUOTE_SENT-QUOTE_VIEWED"] = { outcome: "fail" };
-        steps = [["option.toggle", { id: 3101 }]];
-        break;
       case "choices-approve":
         steps = choose;
         break;
@@ -1161,18 +1149,18 @@
         steps = [["option.toggle", { id: 3103 }], ["option.intent", { id: 3103, kind: "changes" }], ["option.confirm", { id: 3103 }]];
         break;
       case "command-pending":
-        behavior.events["QUOTE_VIEWED-CLIENT_APPROVED"] = { outcome: "hold" };
+        behavior.events["QUOTE_SENT-ACCEPTED"] = { outcome: "hold" };
         steps = approveAndSend;
         break;
       case "command-refused":
-        behavior.events["QUOTE_VIEWED-CLIENT_APPROVED"] = {
+        behavior.events["QUOTE_SENT-ACCEPTED"] = {
           outcome: "refuse",
           message: "This option was revised by the provider after you opened it. Refresh to see the current version.",
         };
         steps = approveAndSend;
         break;
       case "command-failed":
-        behavior.events["QUOTE_VIEWED-CLIENT_APPROVED"] = { outcome: "fail" };
+        behavior.events["QUOTE_SENT-ACCEPTED"] = { outcome: "fail" };
         steps = approveAndSend;
         break;
       case "command-stale-pending":
@@ -1182,11 +1170,6 @@
       case "command-unconfirmed":
         behavior.staleReads = 99;
         steps = approveAndSend;
-        pollDelays = [300, 300, 300];
-        break;
-      case "view-unconfirmed":
-        behavior.staleReads = 99;
-        steps = [["option.toggle", { id: 3101 }]];
         pollDelays = [300, 300, 300];
         break;
       case "contract-details":
@@ -1248,7 +1231,7 @@
         steps = choose.concat([["details.input", { code: "REPRESENTATIVE_PHONE", value: "" }]], submit);
         break;
       case "details-refused":
-        behavior.events["QUOTE_VIEWED-CLIENT_APPROVED"] = {
+        behavior.events["QUOTE_SENT-ACCEPTED"] = {
           outcome: "refuse",
           message: "",
           fieldErrors: { REPRESENTATIVE_EMAIL: "This address cannot receive mail. Enter another email." },
@@ -1325,7 +1308,7 @@
         data = agreementData("CLIENT_APPROVED", false);
         break;
       case "completion-portal":
-        data = agreementData("ACTIVE", true);
+        data = agreementData("CLIENT_APPROVED", true, "ACTIVE");
         portalUrl = PORTAL_URL;
         break;
       case "completion-finishing":
@@ -1342,7 +1325,7 @@
         portalUrl = PORTAL_URL;
         break;
       case "reference-expired":
-        data = agreementData("EXPIRED", false);
+        data = agreementData("CLIENT_APPROVED", false, "COMPLETED");
         break;
       case "closed-canceled":
         data = quotationData("CANCELED");

@@ -1,5 +1,7 @@
 # Snow Vertical — Core Type and Flow Model
 
+**2026-11-09:** where this names workflow 45 `GENERAL_FSM_ORDER`, `QUOTE_VIEWED` or the agreement's ACTIVE/SUSPENDED/EXPIRED, it is superseded by `ORDER_LIFECYCLE` in `core-ui/docs/snow-unified-order-lifecycle-2026-11-09.md`.
+
 Status: initial inventory read from `dev-1` as organization `SNOWLIMITLESS`, 2026-08-31. Client Account Lifecycle bindings and snapshots refreshed 2026-10-18 after the authorized migration. Snow document-type duplicate cleanup and the document-type index were refreshed 2026-10-19 after explicit approval. The original inventory was read-only;
 nothing in Core was created, updated or transitioned to produce it.
 Reproduce with:

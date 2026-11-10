@@ -5,12 +5,12 @@
   "template": {
     "code": "CLIENT_REVIEW_DOCUMENT",
     "templateLanguage": "JTE",
-    "parameterCount": 193,
+    "parameterCount": 190,
     "sha256": {
       "head": "b5e252b604ad732492b218098f257bf497097a28f69355e257736c578a5a213e",
-      "html": "17941b6fec09f7f1e308a5fe00a0b8c2b41769c5387916053d2744ead3c7723a",
+      "html": "7816b9f4e6dbb4de7499f30df49e72beb3adc12794187499c5826bc1f0585597",
       "css": "979d23ce3f11d3e69f90c82be06607ac07e308a7fa9003bc0b13ea15c17e913d",
-      "javascript": "ba81d5f28992231c01ee7bfb341dcd6b6caf474f7723a7ba14a7a7c32919a9dc"
+      "javascript": "3b454843fa05f665f89fe3f4c8dbcd1240e8aee233bc719ff111ac111867f2e7"
     }
   },
   "runtime": {
@@ -80,10 +80,9 @@
   },
   "events": {
     "order": [
-      "QUOTE_SENT-QUOTE_VIEWED",
-      "QUOTE_VIEWED-CLIENT_APPROVED",
-      "QUOTE_VIEWED-DECLINED",
-      "QUOTE_VIEWED-CUSTOMER_CHANGES_REQUESTED"
+      "QUOTE_SENT-ACCEPTED",
+      "QUOTE_SENT-DECLINED",
+      "QUOTE_SENT-CUSTOMER_CHANGES_REQUESTED"
     ],
     "agreement": [
       "SENT_TO_CLIENT-CLIENT_APPROVED",
@@ -145,7 +144,7 @@
   "unverified": [
     "Event metadata reaches the workflow hook, and required event attributes are enforced on this path (QUOTATION-PACKAGE-FLOW.md §9).",
     "The generated CLIENT_REVIEW_DOCUMENT package still needs a production CMS upload and browser acceptance with a fresh real link.",
-    "Confirm your choices with the details on QUOTE_VIEWED-CLIENT_APPROVED, the round revoked after its last decision and the portal invitation have not been exercised against dev-1.",
+    "Confirm your choices with the details on QUOTE_SENT-ACCEPTED, the round revoked after its last decision and the portal invitation have not been exercised against dev-1.",
     "Address suggestions, the billing address map and the plan map have not run against Google with this page's own key: REVIEW_MAPS_API_KEY is set by the operator in the page's PageContext, and the preview draws on a stub map."
   ],
   "constraints": [
@@ -162,7 +161,7 @@
     "A property's address is its granted Resource's ADDRESS id looked up among the granted Address rows, written as the backend writes addresses: address1, address2, city, jurisdiction, state.code, postalCode, country.id, each trimmed, empty parts and parts equal to an earlier one (ignoring case) skipped, joined with \", \", else the Address alias. An id that is missing or not among the granted rows gives no address.",
     "Each property chosen for approval whose granted Resource names one plan in PROPERTY_PLAN (a MediaAsset id, or a one-entry media list) shows it on the Confirm your choices step while REVIEW_MAPS_API_KEY is set: the file is read anonymously from /core/media/{id}/stream.json, its GOOGLE_MAPS shapes are drawn read-only over a satellite map, and the page lists each element with the area on the plan in square feet, measured like the Plans editor and Approve Plan (local equirectangular projection, elevation ignored). Image overlays are not drawn. Internal Resource generation metadata, including the PLAN_GENERATION_DATA JSON receipt and its draftAssetId, is never requested or read. Two different plans, an unreadable file or a file without a map shape show that the plan cannot be shown.",
     "Every other parameter is copy. No token, account, order, document or customer value is a parameter.",
-    "A quotation round is decided on one Confirm your choices step: the client chooses an option to approve or declines every option per property, and gives the contract details once when anything is approved. The page checks the details with the server's rules first, because the approval event cannot be refused, then sends QUOTE_SENT-QUOTE_VIEWED where an option is unopened, QUOTE_VIEWED-CLIENT_APPROVED with the details as metadata for each chosen option, and QUOTE_VIEWED-DECLINED for each option of a declined property, one at a time with a read-back after each. It never declines the other options of an approved property; the server does.",
+    "A quotation round is decided on one Confirm your choices step: the client chooses an option to approve or declines every option per property, and gives the contract details once when anything is approved. The page checks the details with the server's rules first, because the approval event cannot be refused, then sends QUOTE_SENT-ACCEPTED with the details as metadata for each chosen option, and QUOTE_SENT-DECLINED for each option of a declined property, one at a time with a read-back after each. It never declines the other options of an approved property; the server does.",
     "After the page's own last decision of a round it re-reads one read at a time after 2, 3, 5, 8, 12, 15, 15, 15 s until the server revokes the link: with an approval the closed link thanks the client for the details, with every option declined it says the quotation is closed. A spent budget ends on a thank-you that the decisions are recorded. A partial submission stays on the review.",
     "A Document in a quotation state retired on 2026-11-06 (QUOTATION, QUOTATION_SENT, QUOTATION_UPDATE, QUOTATION_SEND_FAILED, AWAITING_CLIENT_DETAILS, CLIENT_DETAILS_RECEIVED) shows the unavailable card. CLIENT_DETAILS_ERRORS is the manager's and is never read.",
     "The document ships in live data mode with no fixtures. A data mode other than live finds no fixtures and reports that it is not set up; it never shows demonstration data.",
