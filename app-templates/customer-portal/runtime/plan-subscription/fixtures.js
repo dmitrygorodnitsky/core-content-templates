@@ -14,7 +14,7 @@
     grandTotal: 1334,
   };
   var ORDER_STATES = {
-    SUBMITTED: { id: 2, code: "SUBMITTED", nls: { en: { NAME: "Submitted" } } },
+    ACCEPTED: { id: 2, code: "ACCEPTED", nls: { en: { NAME: "Accepted" } } },
     ACTIVE: { id: 3, code: "ACTIVE", nls: { en: { NAME: "Active" } } },
   };
   var ITEMS = {
@@ -70,7 +70,7 @@
       if (scenario === "order-loading") return null;
       if (scenario === "taxes") return respond(200, Object.assign({}, ORDER, { totalTaxes: 66.7, grandTotal: 1400.7 }));
       if (scenario === "active") return respond(200, Object.assign({}, ORDER, { states: [ORDER_STATES.ACTIVE], totalTaxes: 66.7, grandTotal: 1400.7 }));
-      if (scenario.indexOf("pay-") === 0) return respond(200, Object.assign({}, ORDER, { states: [ORDER_STATES.SUBMITTED], totalTaxes: 66.7, grandTotal: 1400.7 }));
+      if (scenario.indexOf("pay-") === 0) return respond(200, Object.assign({}, ORDER, { states: [ORDER_STATES.ACCEPTED], totalTaxes: 66.7, grandTotal: 1400.7 }));
       return respond(200, ORDER);
     }
     if (path.indexOf("/product-price/get.json") !== -1) {

@@ -11,8 +11,8 @@
           "NAME": "ServiceWand Invoice Lifecycle"
         }
       },
-      "onUpdate": "workflowUtils.guardPreparedInvoice(entity, java.util.Map.of());\n// entitlement checkout source: e188ba81560d",
-      "onDelete": "workflowUtils.guardPreparedInvoiceDelete(entity, java.util.Map.of());\n// entitlement checkout source: e188ba81560d",
+      "onUpdate": "workflowUtils.guardPreparedInvoice(entity, java.util.Map.of());\n// entitlement checkout source: 04cdb94e8f56",
+      "onDelete": "workflowUtils.guardPreparedInvoiceDelete(entity, java.util.Map.of());\n// entitlement checkout source: 04cdb94e8f56",
       "states": [
         {
           "code": "CANCELLED",
@@ -33,7 +33,7 @@
           },
           "attributes": [],
           "attributeOrder": [],
-          "onExit": "workflowUtils.guardPreparedInvoiceExit(entity, java.util.Map.of());\n// entitlement checkout source: e188ba81560d"
+          "onExit": "workflowUtils.guardPreparedInvoiceExit(entity, java.util.Map.of());\n// entitlement checkout source: 04cdb94e8f56"
         },
         {
           "code": "PAID",
@@ -44,7 +44,7 @@
           },
           "attributes": [],
           "attributeOrder": [],
-          "onEnter": "workflowUtils.guardPreparedInvoicePaid(entity, java.util.Map.of());\n// entitlement checkout source: e188ba81560d"
+          "onEnter": "workflowUtils.guardPreparedInvoicePaid(entity, java.util.Map.of());\n// entitlement checkout source: 04cdb94e8f56"
         },
         {
           "code": "SUBMITTED",

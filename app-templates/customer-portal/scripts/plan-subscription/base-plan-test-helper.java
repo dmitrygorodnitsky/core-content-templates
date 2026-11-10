@@ -106,7 +106,7 @@ public class MAIN_CLASS {
         Order order = orderManager.get(orderId.longValue(), LockModeType.PESSIMISTIC_WRITE);
         if (order != null) entityManager.refresh(order, LockModeType.PESSIMISTIC_WRITE);
         if (order == null || order.getType() == null || !"SERVICEWAND_SUBSCRIPTION".equals(order.getType().getCode())
-                || !(order.hasState("DRAFT") || order.hasState("SUBMITTED")) || order.getOrganization() == null || !"SERVICEWAND".equals(order.getOrganization().getCode())
+                || !(order.hasState("DRAFT") || order.hasState("ACCEPTED")) || order.getOrganization() == null || !"SERVICEWAND".equals(order.getOrganization().getCode())
                 || order.getAccount() == null || !"PLAN_SUBSCRIPTION integration ".concat(run).equals(order.getAccount().getNls().getOrDefault("en", Map.of()).get("NAME"))) {
             throw new ApplicationException("Only the exact synthetic subscription draft may be changed");
         }

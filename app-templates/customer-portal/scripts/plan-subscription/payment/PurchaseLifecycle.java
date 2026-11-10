@@ -6,12 +6,12 @@ public final class PurchaseLifecycle {
     public static final String ACTIVATE_ORDER = "ACTIVATE_ORDER";
     public static final String COMPLETE = "COMPLETE";
     public static final String WAIT = "WAIT";
-    private static final Set<String> ORDER_STATES = Set.of("DRAFT", "SUBMITTED", "ACTIVE");
+    private static final Set<String> ORDER_STATES = Set.of("DRAFT", "ACCEPTED", "ACTIVE");
 
     private PurchaseLifecycle() {}
 
     public static void requireOrder(String orderState) {
-        if (!ORDER_STATES.contains(orderState)) throw new IllegalStateException("Subscription order must be DRAFT, SUBMITTED or ACTIVE");
+        if (!ORDER_STATES.contains(orderState)) throw new IllegalStateException("Subscription order must be DRAFT, ACCEPTED or ACTIVE");
     }
 
     public static void requireInvoice(String invoiceState, String orderState, BigDecimal amountDue, BigDecimal paid, int payments) {
@@ -22,7 +22,7 @@ public final class PurchaseLifecycle {
                 if (!unpaid(paid, payments) || "ACTIVE".equals(orderState)) throw new IllegalStateException("A draft subscription invoice must stay unpaid");
             }
             case "SUBMITTED" -> {
-                if (!"SUBMITTED".equals(orderState)) throw new IllegalStateException("A submitted subscription invoice requires its submitted order");
+                if (!"ACCEPTED".equals(orderState)) throw new IllegalStateException("A submitted subscription invoice requires its accepted order");
                 if (!unpaid(paid, payments) && !fullyPaid(amountDue, paid, payments)) throw new IllegalStateException("A subscription invoice accepts one payment of the full amount");
             }
             case "PAID" -> {
@@ -33,7 +33,7 @@ public final class PurchaseLifecycle {
     }
 
     public static void requireInvoiceLeavesDraft(String orderState) {
-        if (!"SUBMITTED".equals(orderState)) throw new IllegalStateException("A subscription invoice is submitted together with its order");
+        if (!"ACCEPTED".equals(orderState)) throw new IllegalStateException("A subscription invoice is submitted together with its order");
     }
 
     public static void requireInvoicePaid(BigDecimal amountDue, BigDecimal paid, int payments) {
@@ -46,8 +46,8 @@ public final class PurchaseLifecycle {
     }
 
     public static String nextStep(String invoiceState, String orderState, BigDecimal amountDue, BigDecimal paid, int payments) {
-        if ("SUBMITTED".equals(invoiceState) && "SUBMITTED".equals(orderState) && fullyPaid(amountDue, paid, payments)) return MARK_INVOICE_PAID;
-        if ("PAID".equals(invoiceState) && "SUBMITTED".equals(orderState)) return ACTIVATE_ORDER;
+        if ("SUBMITTED".equals(invoiceState) && "ACCEPTED".equals(orderState) && fullyPaid(amountDue, paid, payments)) return MARK_INVOICE_PAID;
+        if ("PAID".equals(invoiceState) && "ACCEPTED".equals(orderState)) return ACTIVATE_ORDER;
         if ("PAID".equals(invoiceState) && "ACTIVE".equals(orderState)) return COMPLETE;
         return WAIT;
     }

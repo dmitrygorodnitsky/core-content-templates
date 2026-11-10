@@ -49,7 +49,7 @@ public class MAIN_CLASS {
             if (!(receipt instanceof Map<?, ?> prepared) || !Boolean.TRUE.equals(prepared.get("preparationOnly"))) {
                 throw new ApplicationException("Only a prepared subscription invoice can be paid here");
             }
-            if (!invoice.hasState("SUBMITTED") || !invoice.getOrder().hasState("SUBMITTED")
+            if (!invoice.hasState("SUBMITTED") || !invoice.getOrder().hasState("ACCEPTED")
                     || !invoice.getPayments().isEmpty() || invoice.getTotalPaidAmount().signum() != 0) {
                 throw new ApplicationException("Subscription invoice is not awaiting its payment");
             }

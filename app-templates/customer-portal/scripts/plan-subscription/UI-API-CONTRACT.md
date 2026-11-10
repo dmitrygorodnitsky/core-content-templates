@@ -145,8 +145,12 @@ grant также содержит по entry на каждую различну�
 ошибка настройки закрывает выдачу, а не расширяет список полей.
 
 Публичный статус здесь — **native Order state и суммы**. DRAFT означает неоплаченный
-черновик; ACTIVE сам по себе не является публичным подтверждением всех шагов
-онбординга. Внутренний `readPurchaseStatus` с private onboarding/error receipts
+черновик, ACCEPTED — отправленный заказ, ожидающий оплаты счёта; ACTIVE сам по себе
+не является публичным подтверждением всех шагов онбординга. SUSPENDED, COMPLETED и
+CANCELED показываются по названию состояния.
+С 9 ноября 2026 года Order подписки живёт в общем ORDER_LIFECYCLE вместо workflow 66
+(SUBMITTED заказа стал ACCEPTED, строки и счёт по-прежнему SUBMITTED); см. core-ui
+`docs/snow-unified-order-lifecycle-2026-11-09.md`. Внутренний `readPurchaseStatus` с private onboarding/error receipts
 через этот Grant не публикуется.
 
 ## Выдача, доставка и восстановление

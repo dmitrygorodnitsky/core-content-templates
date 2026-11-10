@@ -143,7 +143,7 @@
       paidBody: "Thank you — payment for this order was received and your subscription is active.",
       expires: "This private link works until {date}. Don't forward it.",
       partial: "Some lines couldn't be loaded. Refresh to try again.",
-      states: { DRAFT: "Draft", SUBMITTED: "Awaiting payment", ACTIVE: "Active" },
+      states: { DRAFT: "Draft", ACCEPTED: "Awaiting payment", ACTIVE: "Active", SUSPENDED: "Suspended", COMPLETED: "Completed", CANCELED: "Canceled" },
       loading: "Loading your order…",
       missingTitle: "Open the link from your email",
       missingBody: "This page needs the private link we emailed you. For your security, the link is removed from the address bar once the page opens — open it from the email again.",

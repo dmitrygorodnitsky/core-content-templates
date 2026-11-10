@@ -6,6 +6,11 @@ client Organization, User, Account, Property, Document, Ledger Account, Grant or
 Quota Pool, change entity types, submit an Invoice, issue mail/tokens or accept
 payment. It is not a provisioning executor.
 
+Since 2026-11-09 the subscription Order uses ORDER_LIFECYCLE: a submitted order
+is ACCEPTED (lines and invoice stay SUBMITTED) and the run records below keep
+the state names of their date; see core-ui
+`docs/snow-unified-order-lifecycle-2026-11-09.md`.
+
 ## Command and trust boundary
 
 The operator/system command is

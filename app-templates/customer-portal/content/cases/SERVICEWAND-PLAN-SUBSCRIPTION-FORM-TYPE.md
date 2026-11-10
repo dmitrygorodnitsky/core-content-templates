@@ -1000,6 +1000,10 @@ stage. The local portable FormType and server type are unchanged.
   and preserves the tax onUpdate handler, labels, states and all ten events.
   A minimal nested partial-state save was rejected and rolled back by Core's
   not-null constraints; readback confirmed no change before using the importer.
+- 2026-11-09: the subscription Order moved to the unified ORDER_LIFECYCLE
+  (submitted order ACCEPTED, events DRAFT-ACCEPTED and ACCEPTED-ACTIVE); its
+  hook script carries the draft-exit guard. See core-ui
+  `docs/snow-unified-order-lifecycle-2026-11-09.md`.
 - These are protected backend/operator commands. The future anonymous buyer's
   scoped Checkout access and Stripe authorization contract remain separate;
   knowledge of Form ID or a consumed email token does not grant access.

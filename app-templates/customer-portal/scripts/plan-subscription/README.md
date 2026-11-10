@@ -8,6 +8,9 @@ channel while UI is absent. Since 2026-10-24 approval submits the order, its lin
 invoice, the order email carries a Stripe test-mode payment, and full payment makes the
 invoice PAID and the order ACTIVE (see "Card payment" below). No ProductType/ProductPriceType
 changes are included.
+Since 2026-11-09 the subscription Order runs on the unified ORDER_LIFECYCLE
+(DRAFT → ACCEPTED → ACTIVE, then SUSPENDED, COMPLETED or CANCELED) instead of
+workflow 66; see core-ui `docs/snow-unified-order-lifecycle-2026-11-09.md`.
 The disabled onboarding executor and operator Checkout commands are described in
 `onboarding/README.md`. `purchase-access/` owns read-only native Magic Link access
 to the confirmed Order and its exact items; `UI-API-CONTRACT.md` describes that
@@ -91,8 +94,8 @@ Removal landing's Add-ons configurator builds these links.
   config.json into billing Script metadata (`--write`, or `--check` for drift).
   No entitlement entities, client/session data or credentials enter this seed.
 - `invoice-workflow-guard.json` / `item-workflow-guard.json`: scoped preparation snapshot/deletion/lifecycle guards.
-- `order-workflow-guard.json` and `subscription-draft-exit-guard.java`: scoped
-  DRAFT exit guard; existing subscription lifecycle events/tax hook are preserved.
+- `order-workflow-guard.json`: retired 2026-11-09; points at the core-ui
+  ORDER_LIFECYCLE seed, whose hook script carries the order tax hook and guards.
 - `check-dev1.mjs`: integration check restricted to dev-1; creates synthetic Forms
   and run-scoped Addresses, Accounts, Orders, OrderItems and Invoices plus temporary test Scripts,
   then deletes them.
@@ -309,15 +312,16 @@ The Order records PLAN_SUBSCRIPTION.draftOnly=true, basePlanMaterialized=true,
 basePlanPricingStatus=CATALOG_PLAN_ONLY and itemsMaterialized=true for new drafts.
 Native totalCharges contains the complete confirmed selection charge; grandTotal and any existing automatic tax
 assignment are provisional and must not be presented as a payable total.
-The existing subscription workflow's DRAFT exit guard refuses these drafts;
-its existing tax onUpdate is retained as an exact prefix, with a scoped invoice
-snapshot guard appended. Existing states, events and labels are preserved.
+The ORDER_LIFECYCLE DRAFT exit guard refuses these drafts for
+SERVICEWAND_SUBSCRIPTION orders; its onUpdate assigns the taxes and then runs
+the scoped invoice snapshot guard.
 No Payment is created and no Order is activated.
 
 ## Tax inspection and Order → DRAFT Invoice
 
-The tax source is the existing SERVICEWAND_SUDSCRIPTION_LIFECYCLE Order.onUpdate
-(workflow 66), not an invented rate table or a new calculator. It assigns TAX
+The tax source is the ORDER_LIFECYCLE Order.onUpdate (`assignSubscriptionTaxes`
+for SERVICEWAND_SUBSCRIPTION orders, formerly workflow 66), not an invented rate
+table or a new calculator. It assigns TAX
 dictionary rates matching the Account BILLING Address COUNTRY/STATE to the
 OrderItems. Native OrderItem.getTotalTaxes/getGrandTotal perform the monetary
 calculation including quantity; Invoice.getAmountDue sums those same items.
@@ -357,12 +361,14 @@ Invoice.items is a native cascade-ALL/orphan-removal association to OrderItems.
 For these preparation invoices, scoped Order/OrderItem/Invoice guards reject
 line or amount drift, unsafe deletion and leaving Invoice DRAFT. Ordinary
 invoices/orders without this preparation receipt retain their existing behavior.
-The Script helper is bound to workflows 66/67/68; their state graphs are preserved.
+The Script helper is bound to workflows 67/68; their state graphs are preserved.
+The order guards run in the ORDER_LIFECYCLE hook script for SERVICEWAND_SUBSCRIPTION
+orders; this script keeps its copies for the item and invoice bindings.
 `payment/PurchaseLifecycle.java` holds the lifecycle rules the guards apply:
-DRAFT unpaid; SUBMITTED together with its order and accepting exactly one payment
-of the full amount; PAID only fully paid; the order leaves DRAFT only after all
-its lines and becomes ACTIVE only after the invoice is PAID and its lines are
-ACTIVE. No Stripe configuration, webhook, User or permission assignment is added;
+the invoice DRAFT unpaid; SUBMITTED together with its ACCEPTED order and accepting
+exactly one payment of the full amount; PAID only fully paid; the order leaves
+DRAFT only after all its lines are SUBMITTED and becomes ACTIVE only after the
+invoice is PAID and its lines are ACTIVE. No Stripe configuration, webhook, User or permission assignment is added;
 core-pay's own webhook records the payment.
 
 For focused synthetic CA/US, explicit-zero/missing-rate, native totals and
@@ -455,12 +461,12 @@ Forms must be deleted. The test runner never prints token values.
 
 Use the existing core-ui seed importers with this directory's absolute seed
 paths, `--base-url=https://dev-1.servicewand.com/core` and `--org=SYSTEM`.
-Apply the Script seed first, then `order-workflow-guard.json`,
-`item-workflow-guard.json` and `invoice-workflow-guard.json`, and finally the
-Form `workflow.json`, with `--owner-org=SERVICEWAND --no-grant`.
-Review `plan` before `apply --apply`. Preserve every state/event and the exact
-existing Order tax hook; only owned helper bindings and scoped snapshot,
-deletion and DRAFT exit guards change. This sequence installs the invoice
+Apply the Script seed first, then `item-workflow-guard.json` and
+`invoice-workflow-guard.json`, and finally the Form `workflow.json`, with
+`--owner-org=SERVICEWAND --no-grant`. The Order workflow is ORDER_LIFECYCLE,
+applied from core-ui `scripts/dev/seeds/orderLifecycleWorkflow.json`.
+Review `plan` before `apply --apply`. Preserve every state/event; only owned
+helper bindings and scoped snapshot and deletion guards change. This sequence installs the invoice
 protections before enabling the Form continuation that creates invoices.
 Use the existing importer: nested partial state writes can replace omitted
 state fields and are not a safe deployment shortcut. Read back the
@@ -516,16 +522,16 @@ Product-model decisions and deployment evidence belong in
 ## Card payment (Stripe test mode)
 
 `DRAFT_ORDER_READY` runs prepareOnboarding, then `submitPurchase`, then the
-order email. `submitPurchase` moves each line, then the order, then the invoice
-DRAFT → SUBMITTED. Core applies `sendEventUnsecured` asynchronously in its own
-transaction, so each transition is sent without locks and read back before the
-next one; otherwise the next guard sees the old state and the transition is
-silently dropped.
+order email. `submitPurchase` moves each line DRAFT → SUBMITTED, then the order
+DRAFT → ACCEPTED (`DRAFT-ACCEPTED`), then the invoice DRAFT → SUBMITTED. Core
+applies `sendEventUnsecured` asynchronously in its own transaction, so each
+transition is sent without locks and read back before the next one; otherwise
+the next guard sees the old state and the transition is silently dropped.
 
 Before the order email, `createPurchasePayment` submits
 `PLAN_SUBSCRIPTION_PAYMENT_V1.createInvoicePayment` to a CORE-PAY node. The
 helper accepts only the system executor, checks the prepared SUBMITTED unpaid
-invoice and charges its outstanding amount through
+invoice of an ACCEPTED order and charges its outstanding amount through
 `PaymentRequestBuilderFactory` (the Stripe controller requires an HTTP request).
 The email link gains `&pay=<client_secret>`; the receipt keeps `paymentStatus`,
 `paymentIntentId` and any `paymentError`, never the secret. A failed creation
@@ -534,12 +540,79 @@ still sends the email without payment. `paymentHelperCode` in
 
 core-pay's webhook records the payment. The invoice update guard then schedules
 `completePaidPurchase`, which marks the invoice PAID if core-pay did not, then
-activates the lines and the order, all through awaited transitions. It is
-idempotent and may also be run by an administrator. Once the invoice is PAID
-and the order ACTIVE it starts activation: it submits
+activates the lines (`SUBMITTED-ACTIVE`) and the order (`ACCEPTED-ACTIVE`), all
+through awaited transitions. It is idempotent and may also be run by an
+administrator. Once the invoice is PAID and the order ACTIVE it starts
+activation: it submits
 `PLAN_SUBSCRIPTION_WORKFLOW_V11.provisionOnboarding(formId, checkoutDigest)` to a
 CORE-CMS node as the system executor (the frozen plan supplies both values) and
 waits up to five minutes. It skips activation when the executor is disabled or
 onboarding is already COMPLETE; a blocked purchase (for example Weather) comes
 back BLOCKED without mutations.
 
+## Proof (b) 2026-11-10
+
+dev-1 run `3d7e4146`, 00:58–01:36 UTC, against the deployed ORDER_LIFECYCLE
+(workflow 86), order type 7 bound to it, `PLAN_SUBSCRIPTION_DRAFT_V5` (738),
+`PLAN_SUBSCRIPTION_WORKFLOW_V11` (800), `PLAN_SUBSCRIPTION_PAYMENT_V1` (811) and
+`ORDER_LIFECYCLE_WORKFLOW` (1103); each deployed source equalled the checked-in
+file. Transition rows are `POST /core-bill/api/order-state-transition/list.json`
+filtered by `entity.id`; user 2 is the purchase system executor, user 1 the
+API-key administrator that sent the manual events. Times are UTC.
+
+`check-dev1.mjs --apply` stops at ACCEPTED/SUBMITTED and deletes its purchases.
+Both attempts that night failed before any business check (a connect timeout
+during authentication, then HTTP 401 on its billing fixture call); the second
+left its two helper Scripts 1106 and 1107, which were deleted. The order was
+driven through the same public path instead: anonymous Form
+submit, the captured email token, the captured purchase confirmation, then the
+automatic DRAFT_ORDER_READY continuation. Buyer email
+`plan-subscription-proof-b@example.invalid`, so the order email's payment was
+`SUPPRESSED_FOR_DEV_TEST`; the PaymentIntent was then created by
+`PLAN_SUBSCRIPTION_PAYMENT_V1.createInvoicePayment`, submitted to the CORE-PAY
+node as the system user by a temporary administrator Script, and confirmed
+against Stripe test mode (`pk_test_`, `pm_card_visa`, `livemode: false`).
+Weather and two site packs were selected; the order carried no frozen
+onboarding plan, so activation provisioned nothing.
+
+Checkout (Form 671, Account 1031, Order 350, Invoice 51, items 517–519,
+Vancouver BC, Growth monthly + 2 site packs + Weather ×10, amount due 860.72):
+
+| Step | Order 350 | Transition row | Items 517/518/519 (workflow 67) | Invoice 51 (workflow 68) |
+|---|---|---|---|---|
+| DRAFT_ORDER_READY 01:20:05 | DRAFT → ACCEPTED | 1325 ACCEPTED (456) 01:20:06.787, user 2 | SUBMITTED 01:20:04.446 / 05.127 / 05.787 | SUBMITTED 01:20:07.195 |
+| Stripe confirm 01:22:52, `succeeded`, 86072 usd | ACCEPTED → ACTIVE | 1326 ACTIVE (457) 01:22:57.142, user 2 | ACTIVE 01:22:56.510 / .680 / .847 | PAID 01:22:56.169; payment 12 (860.72, observed 01:22:52.915) |
+| `ACTIVE-SUSPENDED` sent 01:23:48.285 | SUSPENDED | 1327 SUSPENDED (458) 01:23:48.350, user 1 | ACTIVE | PAID |
+| `SUSPENDED-ACTIVE` sent 01:25:05.788 | ACTIVE | 1328 ACTIVE (457) 01:25:09.140, user 1 | ACTIVE | PAID |
+| `ACTIVE-CANCELED` sent 01:25:35.918 | CANCELED | 1329 CANCELED (460) 01:25:35.999, user 1 | ACTIVE | PAID |
+
+No transition row exists for the initial DRAFT (the order is created in it).
+The DRAFT → ACCEPTED, line activation, invoice PAID and ACCEPTED → ACTIVE
+steps were all automatic: core-pay's webhook recorded the payment and the
+invoice guard scheduled `completePaidPurchase`; no operator call was needed.
+Every send-event answered HTTP 200 with an empty body.
+
+The suspension body that works is the UI envelope
+`{"SUSPENSION_REASON":{"value":"NO_PAY"},"MESSAGE":{"value":"proof"}}` (the
+endpoint takes a map of attribute objects). Read back after suspension:
+`SUSPENSION_REASON` NO_PAY, `SUSPENSION_MESSAGE` proof, `SUSPENDED_AT`
+2026-11-10T01:23:48.350686997Z. Resume and cancel leave these three keys in the
+metadata. Canceling the order leaves its lines ACTIVE and its invoice PAID.
+
+Quote entry refused (Form 670, Account 1030, Order 349, item 516; NY address,
+no tax rate, so no invoice and the order stays DRAFT; the continuation recorded
+"Onboarding readiness currently supports CA only" for onboarding, submission and
+read access): `POST /core-bill/api/order/349/send-event.json?event=DRAFT-QUOTE_PREPARED`
+with `{}` at 01:17:28.902 answered HTTP 200 with an empty body; the order read
+back DRAFT in every poll until 01:19:18 and again at 01:19:24, with no
+transition row. The refusal is
+silent over REST; which hook threw (DRAFT `onExit` draft-exit guard or
+`onQuotePrepared`) is not visible.
+
+Deleted and read back as gone: Forms 670, 671; read-access Grant 227; the
+payment BalanceTransaction 12 and core-pay `payment_request`
+1d441923-f898-46b4-8b30-5605fe7d70ee (removed by temporary administrator
+Scripts scoped to Invoice 51, because `fk_payment_request_invoice` refused the
+Invoice delete); Invoice 51; Orders 349, 350; OrderItems 516–519; Accounts
+1030, 1031; Addresses 1129, 1130; temporary Scripts 1104, 1105. The Stripe
+test-mode PaymentIntent `pi_3Ua3lsQWOX4qwHeX54199554` remains in Stripe.

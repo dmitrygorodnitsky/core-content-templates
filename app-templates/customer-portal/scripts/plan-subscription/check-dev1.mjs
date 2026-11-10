@@ -134,7 +134,7 @@ async function fixturePurchases() {
 }
 async function purchaseLifecycle(orderId, submitted) {
   const stateMap = { name: 'states', type: 'collection', mappings: names(['code']) };
-  const expected = submitted ? 'SUBMITTED' : 'DRAFT';
+  const [orderExpected, lineExpected] = submitted ? ['ACCEPTED', 'SUBMITTED'] : ['DRAFT', 'DRAFT'];
   let states;
   for (let attempt = 0; attempt < 80; attempt++) {
     const order = (await ok('/core-bill/api/order/list.json', { json: { filters: [{ property: 'id', operator: '=', value: orderId }],
@@ -142,11 +142,11 @@ async function purchaseLifecycle(orderId, submitted) {
     const invoices = (await ok('/core-bill/api/invoice/list.json', { json: { filters: [{ property: 'order.id', operator: '=', value: orderId }],
       mappings: [...names(['id']), stateMap], offset: 0, pageSize: 3 } })).result;
     states = [order.states[0].code, ...order.items.map(item => item.states[0].code), ...invoices.map(invoice => invoice.states[0].code)];
-    if (states.every(state => state === expected)) return expected;
+    if (states[0] === orderExpected && states.slice(1).every(state => state === lineExpected)) return orderExpected;
     if (!submitted) break;
     await sleep(500);
   }
-  throw new Error('Purchase did not settle as ' + expected + ': ' + states.join(','));
+  throw new Error('Purchase did not settle as ' + orderExpected + '/' + lineExpected + ': ' + states.join(','));
 }
 async function purchaseAction(name, formId, checkoutDigest, expectFailure = false) {
   const args = [{ formId }, ...(checkoutDigest === undefined ? [] : [{ checkoutDigest }])];
@@ -838,7 +838,7 @@ try {
   assert.equal(order.type.code, 'SERVICEWAND_SUBSCRIPTION');
   assert.equal(order.account.id, account.id);
   assert.equal(order.currency.code, preview.checkout.preview.currencyCode);
-  assert.equal(order.states[0].code, confirmations[0].invoiceId ? 'SUBMITTED' : 'DRAFT');
+  assert.equal(order.states[0].code, confirmations[0].invoiceId ? 'ACCEPTED' : 'DRAFT');
   const assertBasePlan = (order, purchase, preview, formId, productId) => {
     assert.equal(order.items.length, preview.lines.length, 'Selection must materialize exactly the confirmed catalog lines');
     for (const line of preview.lines) {
@@ -920,9 +920,9 @@ try {
 
   }
 
-  const submitDraft = await call(`/core-bill/api/order/${order.id}/send-event.json?event=DRAFT-SUBMITTED`, { json: {} });
+  const submitDraft = await call(`/core-bill/api/order/${order.id}/send-event.json?event=DRAFT-ACCEPTED`, { json: {} });
   await sleep(1500);
-  assert.equal((await readOrder(order.id)).states[0].code, confirmations[0].invoiceId ? 'SUBMITTED' : 'DRAFT', 'A draft without a prepared invoice was submitted');
+  assert.equal((await readOrder(order.id)).states[0].code, confirmations[0].invoiceId ? 'ACCEPTED' : 'DRAFT', 'A draft without a prepared invoice was submitted');
   const invoices = await ok('/core-bill/api/invoice/list.json', { json: {
     filters: [{ property: 'order.id', operator: '=', value: order.id }], mappings: names(['id']), offset: 0, pageSize: 10,
   } });
