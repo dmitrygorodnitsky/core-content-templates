@@ -54,7 +54,7 @@ const INVOICE_BODY = {
     { name: "amountDue" }, { name: "totalPaidAmount" }, { name: "attributes" },
     { name: "type", type: "identifier", mappings: REF },
     { name: "states", type: "collection", mappings: REF },
-    { name: "order", type: "reference", mappings: [{ name: "id" }, { name: "currency", type: "identifier", mappings: [{ name: "id" }, { name: "code" }] }] },
+    { name: "order", type: "reference", mappings: [{ name: "id" }, { name: "currency", type: "identifier", mappings: [{ name: "id" }, { name: "code" }] }, { name: "states", type: "collection", mappings: REF }] },
     { name: "items", type: "collection", mappings: [
       { name: "id" }, { name: "amount" }, { name: "itemCount" }, { name: "notes" },
       { name: "itemPrice", type: "reference", mappings: [{ name: "id" },
@@ -204,6 +204,15 @@ const context = { config: { vertical: "snow", origin: "https://portal.example.te
   const overdue = normalizeInvoices({ items: [invoice(60, "OVERDUE", [2026, 9, 1], "September 2026", "2026-09-01", 10), invoice(61, "SENT", [2026, 8, 1], "August 2026", "2026-08-01", 10)] });
   assert.equal(invoiceStatusLine(overdue.items[0]), "Overdue");
   assert.deepEqual(openInvoices(overdue).map((item) => item.backendId), [60, 61], "an overdue invoice leads the open ones");
+  const orphaned = invoice(62, "SENT", [2026, 11, 12], "November 2026", "2026-10-28", 15);
+  orphaned.order = { ...orphaned.order, states: [{ id: 460, code: "CANCELED" }] };
+  const running = invoice(63, "SENT", [2026, 11, 12], "November 2026", "2026-10-28", 15);
+  running.order = { ...running.order, states: [{ id: 457, code: "ACTIVE" }] };
+  const canceled = normalizeInvoices({ items: [orphaned, running] });
+  assert.deepEqual(canceled.items.map((item) => item.orderCanceled), [true, false], "an invoice knows whether its order was cancelled");
+  assert.equal(invoiceStatusLine(canceled.items[0]), "Order cancelled · contact us about this invoice", "an open invoice of a cancelled order says so instead of asking for payment");
+  assert.equal(invoiceStatusLine(canceled.items[1]), "Due on Nov 12, 2026");
+  assert.deepEqual(openInvoices(canceled).map((item) => item.backendId), [62, 63], "it stays among the open invoices: voiding it is the company's decision");
   assert.deepEqual(invoices.items[0].lines.map((item) => [item.name, item.amount]), [["Snow Removal", "CA$747.99"], ["Rock Salt De-Icing", "CA$3,469.95"]]);
 }
 

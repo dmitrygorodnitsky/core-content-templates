@@ -49,6 +49,7 @@ export function invoicePaymentOpen(config) {
 export function invoicePayable(invoice) {
   return !!invoice
     && PAYABLE_STATES.indexOf(invoice.stateCode) !== -1
+    && !invoice.orderCanceled
     && typeof invoice.total === "number" && invoice.total > 0
     && !(invoice.paid > 0)
     && /^[A-Z]{3}$/.test(String(invoice.currency || ""));

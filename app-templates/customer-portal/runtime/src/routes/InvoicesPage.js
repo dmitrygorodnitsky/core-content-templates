@@ -7,7 +7,7 @@ import { UnauthorizedState, skel } from "../components/primitives/RouteStates.js
 import { PageHeader } from "../components/shell/PageHeader.js";
 import { InvoiceRow, RecordSection } from "../components/storm/RecordRows.js";
 import { InvoiceSheet } from "../components/storm/InvoiceSheet.js";
-import { findInvoice, invoiceAmount, invoiceTerms, invoiceTitle } from "../normalizers/invoices.js";
+import { ORDER_CANCELED_STATUS, findInvoice, invoiceAmount, invoiceTerms, invoiceTitle } from "../normalizers/invoices.js";
 import { formatIsoDate, formatMoney } from "../normalizers/contracts.js";
 import { invoicePayable, invoicePaymentBusy, invoicePaymentFor, invoicePaymentOpen } from "../invoice-payment.js";
 
@@ -75,6 +75,12 @@ export function InvoiceDetail() {
 }
 
 function PaySection(invoice) {
+  if (invoice.orderCanceled && invoice.open) {
+    return h("section", { "class": "card card--pad invoice-pay", "data-module": "invoice-pay", "data-visual-id": "invoice-pay", "data-state": "order-canceled", role: "status" }, [
+      h("div", { "class": "invoice-pay__title" }, "This invoice can't be paid online"),
+      h("div", { "class": "invoice-pay__note" }, ORDER_CANCELED_STATUS + "."),
+    ]);
+  }
   if (!invoicePaymentOpen(state.config) || !invoicePayable(invoice)) return null;
   var payment = invoicePaymentFor(invoice.id);
   if (payment && (payment.phase === "recording" || payment.phase === "slow")) {

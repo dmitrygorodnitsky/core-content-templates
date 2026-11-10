@@ -3623,7 +3623,15 @@
     { name: "attributes" },
     { name: "type", type: "identifier", mappings: TAGGED_REF_MAPPINGS },
     { name: "states", type: "collection", mappings: TAGGED_REF_MAPPINGS },
-    { name: "order", type: "reference", mappings: [{ name: "id" }, { name: "currency", type: "identifier", mappings: [{ name: "id" }, { name: "code" }] }] },
+    {
+      name: "order",
+      type: "reference",
+      mappings: [
+        { name: "id" },
+        { name: "currency", type: "identifier", mappings: [{ name: "id" }, { name: "code" }] },
+        { name: "states", type: "collection", mappings: TAGGED_REF_MAPPINGS }
+      ]
+    },
     {
       name: "items",
       type: "collection",
@@ -4740,7 +4748,9 @@
   function invoiceTitle(invoice) {
     return invoice.period || formatIsoDate(invoice.issued) || "Invoice";
   }
+  var ORDER_CANCELED_STATUS = "Order cancelled \xB7 contact us about this invoice";
   function invoiceStatusLine(invoice) {
+    if (invoice.orderCanceled && invoice.open) return ORDER_CANCELED_STATUS;
     if (invoice.stateCode === "SENT" && invoice.due) return "Due on " + formatIsoDate(invoice.due);
     return invoice.status.label;
   }
@@ -4760,6 +4770,7 @@
       id: "invoice-core-" + backendId,
       backendId,
       orderBackendId: positiveInteger(row.order && row.order.id),
+      orderCanceled: latestStateCode(row.order) === "CANCELED",
       stateCode,
       status: { label: status.label, tone: status.tone },
       open: status.open,
@@ -4900,7 +4911,7 @@
     return !!config && config.vertical === "snow" && config.dataMode === "live";
   }
   function invoicePayable(invoice) {
-    return !!invoice && PAYABLE_STATES.indexOf(invoice.stateCode) !== -1 && typeof invoice.total === "number" && invoice.total > 0 && !(invoice.paid > 0) && /^[A-Z]{3}$/.test(String(invoice.currency || ""));
+    return !!invoice && PAYABLE_STATES.indexOf(invoice.stateCode) !== -1 && !invoice.orderCanceled && typeof invoice.total === "number" && invoice.total > 0 && !(invoice.paid > 0) && /^[A-Z]{3}$/.test(String(invoice.currency || ""));
   }
   function invoicePaymentFor(invoiceId) {
     var payment = state.invoicePayment;
@@ -10342,6 +10353,12 @@
     return page;
   }
   function PaySection(invoice) {
+    if (invoice.orderCanceled && invoice.open) {
+      return h("section", { "class": "card card--pad invoice-pay", "data-module": "invoice-pay", "data-visual-id": "invoice-pay", "data-state": "order-canceled", role: "status" }, [
+        h("div", { "class": "invoice-pay__title" }, "This invoice can't be paid online"),
+        h("div", { "class": "invoice-pay__note" }, ORDER_CANCELED_STATUS + ".")
+      ]);
+    }
     if (!invoicePaymentOpen(state.config) || !invoicePayable(invoice)) return null;
     var payment = invoicePaymentFor(invoice.id);
     if (payment && (payment.phase === "recording" || payment.phase === "slow")) {

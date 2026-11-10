@@ -135,6 +135,15 @@ function harness(script, results = [], replies = {}) {
   }
   assert.equal(invoicePayable(normalizeInvoices({ items: [invoice(8, "DRAFT", 100)] }).items[0]), false, "a DRAFT invoice is never payable");
   assert.equal(invoicePayable(null), false);
+  const ofCanceledOrder = invoice(54, "SENT", 4217.94);
+  ofCanceledOrder.order = { ...ofCanceledOrder.order, states: [{ id: 460, code: "CANCELED" }] };
+  invoices([ofCanceledOrder, invoice(47, "SENT", 4217.94)]);
+  assert.equal(invoicePayable(normalizeInvoices({ items: [ofCanceledOrder] }).items[0]), false, "an invoice of a cancelled order is not payable online");
+  const blocked = page("invoice-core-54");
+  assert.equal(all(blocked, "[data-action=\"invoice.pay\"]").length, 0, "it offers no pay button");
+  assert.equal(one(blocked, "[data-module=\"invoice-pay\"]").getAttribute("data-state"), "order-canceled");
+  assert.match(one(blocked, "[data-module=\"invoice-pay\"]").textContent, /can't be paid online.*Order cancelled · contact us about this invoice/);
+  assert.equal(payButton(page("invoice-core-47")).textContent, "Pay CA$4,217.94", "an invoice of a running order next to it stays payable");
   configure("fixture");
   invoices([invoice(47, "SENT", 4217.94)]);
   assert.equal(all(page("invoice-core-47"), "[data-module=\"invoice-pay\"]").length, 0, "fixture mode never offers a card payment");

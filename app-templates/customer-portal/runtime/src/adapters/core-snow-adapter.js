@@ -136,7 +136,15 @@ const INVOICE_MAPPINGS = [
   { name: "attributes" },
   { name: "type", type: "identifier", mappings: TAGGED_REF_MAPPINGS },
   { name: "states", type: "collection", mappings: TAGGED_REF_MAPPINGS },
-  { name: "order", type: "reference", mappings: [{ name: "id" }, { name: "currency", type: "identifier", mappings: [{ name: "id" }, { name: "code" }] }] },
+  {
+    name: "order",
+    type: "reference",
+    mappings: [
+      { name: "id" },
+      { name: "currency", type: "identifier", mappings: [{ name: "id" }, { name: "code" }] },
+      { name: "states", type: "collection", mappings: TAGGED_REF_MAPPINGS },
+    ],
+  },
   {
     name: "items",
     type: "collection",

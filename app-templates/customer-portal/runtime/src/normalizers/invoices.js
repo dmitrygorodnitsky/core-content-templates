@@ -32,7 +32,10 @@ export function invoiceTitle(invoice) {
   return invoice.period || formatIsoDate(invoice.issued) || "Invoice";
 }
 
+export var ORDER_CANCELED_STATUS = "Order cancelled · contact us about this invoice";
+
 export function invoiceStatusLine(invoice) {
+  if (invoice.orderCanceled && invoice.open) return ORDER_CANCELED_STATUS;
   if (invoice.stateCode === "SENT" && invoice.due) return "Due on " + formatIsoDate(invoice.due);
   return invoice.status.label;
 }
@@ -55,6 +58,7 @@ function invoiceRecord(row) {
     id: "invoice-core-" + backendId,
     backendId: backendId,
     orderBackendId: positiveInteger(row.order && row.order.id),
+    orderCanceled: latestStateCode(row.order) === "CANCELED",
     stateCode: stateCode,
     status: { label: status.label, tone: status.tone },
     open: status.open,
