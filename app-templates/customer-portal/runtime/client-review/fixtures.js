@@ -272,6 +272,7 @@
     { id: "link-closed-portal", label: "Link expired or revoked — portal address configured" },
     { id: "reference-expired", label: "Expired agreement — signed, its orders COMPLETED, read only" },
     { id: "closed-canceled", label: "Canceled — closed" },
+    { id: "closed-orders-canceled", label: "Canceled — signed, every order CANCELED, closed" },
     { id: "unavailable", label: "Send failed — unavailable" },
     { id: "retired-quotation", label: "A Document left in a retired quotation state — unavailable" },
   ];
@@ -1326,6 +1327,9 @@
         break;
       case "reference-expired":
         data = agreementData("CLIENT_APPROVED", false, "COMPLETED");
+        break;
+      case "closed-orders-canceled":
+        data = agreementData("CLIENT_APPROVED", false, "CANCELED");
         break;
       case "closed-canceled":
         data = quotationData("CANCELED");

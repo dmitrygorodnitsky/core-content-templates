@@ -42,11 +42,13 @@
     ["PROPERTY_AWAITING", "propertyAwaiting", "Awaiting decision"],
     ["PROPERTY_APPROVED", "propertyApproved", "Option approved"],
     ["PROPERTY_DECLINED", "propertyDeclined", "Declined"],
+    ["PROPERTY_CANCELLED", "propertyCancelled", "Cancelled"],
     ["PROPERTY_CHANGES", "propertyChanges", "Changes requested"],
     ["PROPERTY_UNKNOWN", "propertyUnknown", "Status unavailable"],
     ["OPTION_NEW", "optionNew", "New"],
     ["OPTION_APPROVED", "optionApproved", "Approved"],
     ["OPTION_DECLINED", "optionDeclined", "Declined"],
+    ["OPTION_CANCELLED", "optionCancelled", "Cancelled"],
     ["OPTION_CHANGES", "optionChanges", "Changes requested"],
     ["OPTION_REVISING", "optionRevising", "Being revised"],
     ["OPTION_UNKNOWN", "optionUnknown", "Status unavailable"],
@@ -692,7 +694,7 @@
     ACTIVE: "approved",
     SUSPENDED: "approved",
     COMPLETED: "approved",
-    CANCELED: "approved",
+    CANCELED: "cancelled",
     DECLINED: "declined",
     CUSTOMER_CHANGES_REQUESTED: "changes",
     DRAFT: "revising",
@@ -701,9 +703,13 @@
     QUOTE_APPROVED: "revising",
   };
 
-  var PRICED_STATUSES = ["new", "approved", "declined", "changes"];
+  var PRICED_STATUSES = ["new", "approved", "declined", "cancelled", "changes"];
 
   var SIGNED_AGREEMENT_STATE = "CLIENT_APPROVED";
+
+  var CANCELED_ORDER_STATE = "CANCELED";
+
+  var CANCELED_SERVICE = { kind: "closed", reason: "canceled" };
 
   var SERVICE_DISPOSITION = {
     ACTIVE: { kind: "completion", completion: "active" },
@@ -1335,6 +1341,7 @@
     var statuses = options.map(function (option) { return option.status; });
     if (statuses.indexOf("approved") !== -1) return "approved";
     if (statuses.length && statuses.every(function (status) { return status === "declined"; })) return "declined";
+    if (statuses.length && statuses.every(function (status) { return status === "declined" || status === "cancelled"; })) return "cancelled";
     if (statuses.indexOf("changes") !== -1 || statuses.indexOf("revising") !== -1) return "changes";
     if (statuses.indexOf("new") !== -1) return "awaiting";
     return "unknown";
@@ -1464,7 +1471,7 @@
     return {
       summary: summaryOf(properties),
       allDecided: properties.length > 0 && properties.every(function (property) {
-        return property.status === "approved" || property.status === "declined";
+        return property.status === "approved" || property.status === "declined" || property.status === "cancelled";
       }),
     };
   }
@@ -1510,7 +1517,8 @@
   function serviceDisposition(orders, contract) {
     var states = orders.map(function (row) { return stateCode(row, contract.orderStates); });
     var found = Object.keys(SERVICE_DISPOSITION).filter(function (code) { return states.indexOf(code) !== -1; })[0];
-    return found ? SERVICE_DISPOSITION[found] : null;
+    if (found) return SERVICE_DISPOSITION[found];
+    return states.length && states.every(function (code) { return code === CANCELED_ORDER_STATE; }) ? CANCELED_SERVICE : null;
   }
 
   function reviewModel(input, options) {
@@ -1835,7 +1843,7 @@
 
   var ns = global.ClientReview || (global.ClientReview = {});
   var KINDS = ["agreement-review", "reference", "completion"];
-  var STATUSES = { new: "optionNew", approved: "optionApproved", declined: "optionDeclined", changes: "optionChanges", revising: "optionRevising", unknown: "optionUnknown" };
+  var STATUSES = { new: "optionNew", approved: "optionApproved", declined: "optionDeclined", cancelled: "optionCancelled", changes: "optionChanges", revising: "optionRevising", unknown: "optionUnknown" };
 
   function offered(snapshot) {
     return snapshot.phase === "ready" && snapshot.view && KINDS.indexOf(snapshot.view.kind) !== -1;
@@ -2592,6 +2600,7 @@
     new: ["status-badge--info", "optionNew"],
     approved: ["status-badge--ok", "optionApproved"],
     declined: ["status-badge--danger", "optionDeclined"],
+    cancelled: ["status-badge--scheduled", "optionCancelled"],
     changes: ["status-badge--warn", "optionChanges"],
     revising: ["status-badge--warn", "optionRevising"],
     unknown: ["status-badge--scheduled", "optionUnknown"],
@@ -2601,6 +2610,7 @@
     awaiting: ["status-badge--info", "propertyAwaiting"],
     approved: ["status-badge--ok", "propertyApproved"],
     declined: ["status-badge--danger", "propertyDeclined"],
+    cancelled: ["status-badge--scheduled", "propertyCancelled"],
     changes: ["status-badge--warn", "propertyChanges"],
     unknown: ["status-badge--scheduled", "propertyUnknown"],
   };

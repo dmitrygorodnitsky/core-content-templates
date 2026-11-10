@@ -7,6 +7,7 @@
     new: ["status-badge--info", "optionNew"],
     approved: ["status-badge--ok", "optionApproved"],
     declined: ["status-badge--danger", "optionDeclined"],
+    cancelled: ["status-badge--scheduled", "optionCancelled"],
     changes: ["status-badge--warn", "optionChanges"],
     revising: ["status-badge--warn", "optionRevising"],
     unknown: ["status-badge--scheduled", "optionUnknown"],
@@ -16,6 +17,7 @@
     awaiting: ["status-badge--info", "propertyAwaiting"],
     approved: ["status-badge--ok", "propertyApproved"],
     declined: ["status-badge--danger", "propertyDeclined"],
+    cancelled: ["status-badge--scheduled", "propertyCancelled"],
     changes: ["status-badge--warn", "propertyChanges"],
     unknown: ["status-badge--scheduled", "propertyUnknown"],
   };

@@ -10,7 +10,7 @@ export var CUSTOMER_ORDER_STATUS = Object.freeze({
   ACTIVE: "approved",
   SUSPENDED: "approved",
   COMPLETED: "approved",
-  CANCELED: "approved",
+  CANCELED: "cancelled",
   CUSTOMER_CHANGES_REQUESTED: "revision",
   DECLINED: "declined",
   QUOTE_SENT: "unseen",
@@ -66,6 +66,7 @@ var STAGE_ORDER = ["approval", "drafting", "approved", "active", "suspended", "e
 var APPROVED_SERVICE_STAGES = ["drafting", "approval", "approved", "active", "suspended", "expired", "archived"];
 var CURRENT_SERVICE_STAGES = ["active", "approved", "approval", "drafting", "suspended"];
 var PENDING_STATUSES = ["unseen", "revision"];
+var CLOSED_DECISIONS = ["approved", "declined", "cancelled"];
 var TERMS_DEPTH_LIMIT = 4;
 var HEADING_LINE = /^#{1,6}\s+(.+)$/;
 var ITEM_LINE = /^[-*•]\s+(.+)$/;
@@ -74,6 +75,7 @@ var NUMBERED_LINE = /^(\d+(?:\.\d+)+[.)]?|\d+[.)])\s+(.+)$/;
 var MANAGEMENT = agreementStage("drafting", "Pending management approval", "scheduled");
 var APPROVED = agreementStage("approved", "Approved", "ok");
 var SIGNED_AGREEMENT_STATE = "CLIENT_APPROVED";
+var CANCELED_ORDER_STATE = "CANCELED";
 
 export var AGREEMENT_STAGES = Object.freeze({
   DRAFT: agreementStage("drafting", "Being prepared", "scheduled"),
@@ -241,11 +243,11 @@ export function contractsPackage(source, properties) {
     var waiting = group.orders.filter(function (order) { return PENDING_STATUSES.indexOf(order.status) !== -1; });
     return waiting.length ? Object.assign({}, group, { orders: waiting }) : null;
   }).filter(Boolean);
-  var counts = { orders: quoted.length, properties: 0, decided: 0, approved: 0, revision: 0, declined: 0, open: 0 };
+  var counts = { orders: quoted.length, properties: 0, decided: 0, approved: 0, revision: 0, declined: 0, cancelled: 0, open: 0 };
   groups.forEach(function (group) {
     if (!group.propertyBackendId) return;
     counts.properties += 1;
-    if (group.decision === "approved" || group.decision === "declined") counts.decided += 1;
+    if (CLOSED_DECISIONS.indexOf(group.decision) !== -1) counts.decided += 1;
   });
   quoted.forEach(function (order) {
     if (isOpen(order)) counts.open += 1;
@@ -276,8 +278,9 @@ function withServiceStage(agreement, orders) {
     return agreement.orderBackendIds.indexOf(order.backendId) !== -1;
   }).map(function (order) { return order.stateCode; });
   var service = Object.keys(ORDER_SERVICE_STAGES).find(function (code) { return states.indexOf(code) !== -1; });
-  if (!service) return agreement;
-  var stage = ORDER_SERVICE_STAGES[service];
+  var canceled = states.length > 0 && states.every(function (code) { return code === CANCELED_ORDER_STATE; });
+  if (!service && !canceled) return agreement;
+  var stage = service ? ORDER_SERVICE_STAGES[service] : AGREEMENT_STAGES.CANCELED;
   return Object.assign({}, agreement, { stage: stage.stage, label: stage.label, tone: stage.tone });
 }
 
@@ -325,6 +328,7 @@ export function groupDecision(orders) {
   var list = orders || [];
   if (list.some(hasStatus("approved"))) return "approved";
   if (list.length && list.every(hasStatus("declined"))) return "declined";
+  if (list.length && list.every(function (order) { return order.status === "declined" || order.status === "cancelled"; })) return "cancelled";
   if (list.some(hasStatus("revision"))) return "revision";
   return "open";
 }

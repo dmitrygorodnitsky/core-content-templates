@@ -270,11 +270,11 @@ const N = loadRuntime().CR.normalizer;
   assert.equal(contract.orderWorkflow, "ORDER_LIFECYCLE");
   const EXPECTED_STATUS = {
     QUOTE_SENT: "new", DECLINED: "declined", CUSTOMER_CHANGES_REQUESTED: "changes",
-    ACCEPTED: "approved", ACTIVE: "approved", SUSPENDED: "approved", COMPLETED: "approved", CANCELED: "approved",
+    ACCEPTED: "approved", ACTIVE: "approved", SUSPENDED: "approved", COMPLETED: "approved", CANCELED: "cancelled",
     DRAFT: "revising", QUOTE_PREPARED: "revising", CHANGES_REQUESTED: "revising", QUOTE_APPROVED: "revising",
   };
   assert.deepEqual(Object.keys(EXPECTED_STATUS).sort(), plain(contract.orderStates).sort(), "every order state has an expected customer status");
-  const EXPECTED_PROPERTY = { new: "awaiting", approved: "approved", declined: "declined", changes: "changes", revising: "changes" };
+  const EXPECTED_PROPERTY = { new: "awaiting", approved: "approved", declined: "declined", cancelled: "cancelled", changes: "changes", revising: "changes" };
   const EXPECTED_ACTIONS = {
     QUOTE_SENT: { approve: true, decline: true, changes: true },
   };
@@ -314,6 +314,9 @@ const N = loadRuntime().CR.normalizer;
 
   assert.equal(normalizer.propertyStatus([{ status: "approved" }, { status: "declined" }]), "approved");
   assert.equal(normalizer.propertyStatus([{ status: "declined" }, { status: "declined" }]), "declined");
+  assert.equal(normalizer.propertyStatus([{ status: "cancelled" }, { status: "declined" }]), "cancelled", "a property whose services were cancelled after acceptance is closed as cancelled, not approved");
+  assert.equal(normalizer.propertyStatus([{ status: "cancelled" }, { status: "approved" }]), "approved");
+  assert.equal(normalizer.propertyStatus([{ status: "cancelled" }, { status: "new" }]), "awaiting");
   assert.equal(normalizer.propertyStatus([{ status: "declined" }, { status: "new" }]), "awaiting");
   assert.equal(normalizer.propertyStatus([{ status: "changes" }, { status: "new" }]), "changes");
   assert.equal(normalizer.propertyStatus([{ status: "revising" }, { status: "declined" }]), "changes");
@@ -365,7 +368,8 @@ const N = loadRuntime().CR.normalizer;
     ["CLIENT_APPROVED", ["ACTIVE"], ["completion", "active", ""]],
     ["CLIENT_APPROVED", ["SUSPENDED"], ["reference", "", "suspended"]],
     ["CLIENT_APPROVED", ["COMPLETED"], ["reference", "", "expired"]],
-    ["CLIENT_APPROVED", ["CANCELED"], ["completion", "approved", ""]],
+    ["CLIENT_APPROVED", ["CANCELED"], ["closed", "", ""]],
+    ["CLIENT_APPROVED", ["ACCEPTED", "CANCELED"], ["completion", "approved", ""]],
     ["CLIENT_APPROVED", ["SUSPENDED", "ACTIVE", "COMPLETED"], ["completion", "active", ""]],
     ["CLIENT_APPROVED", ["COMPLETED", "SUSPENDED"], ["reference", "", "suspended"]],
     ["ARCHIVED", ["ACTIVE"], ["closed", "", ""]],
@@ -374,7 +378,7 @@ const N = loadRuntime().CR.normalizer;
     const data = CR.fixtures.agreementData(state, false);
     data.orders.forEach((row, index) => { row.states = [{ code: orderStates[index % orderStates.length] }]; });
     const presented = model(data);
-    assert.deepEqual([presented.kind, presented.completion, presented.banner], expected, state + " with orders " + orderStates.join("/") + ": only CLIENT_APPROVED, the signed agreement, reads ACTIVE, else SUSPENDED, else COMPLETED from its orders");
+    assert.deepEqual([presented.kind, presented.completion, presented.banner], expected, state + " with orders " + orderStates.join("/") + ": only CLIENT_APPROVED, the signed agreement, reads ACTIVE, else SUSPENDED, else COMPLETED from its orders, and is closed as cancelled once every order is CANCELED");
     assert.equal(presented.agreement.state, state, "the agreement's own state is never replaced by an order's");
   }
 
@@ -843,7 +847,7 @@ const EXPECTED_SCENARIOS = {
   "agreement-approval-only": ["ready", "agreement-review"],
   completion: ["ready", "completion"], "completion-portal": ["ready", "completion"], "completion-finishing": ["ready", "completion"], "completion-attributes": ["ready", "completion"],
   "link-closed-portal": ["link-closed", null], "reference-expired": ["ready", "reference"],
-  "closed-canceled": ["ready", "closed"], unavailable: ["ready", "unavailable"], "retired-quotation": ["ready", "unavailable"],
+  "closed-canceled": ["ready", "closed"], "closed-orders-canceled": ["ready", "closed"], unavailable: ["ready", "unavailable"], "retired-quotation": ["ready", "unavailable"],
 };
 const POLLED_SCENARIOS = new Set(["round-decided-slow", "round-declined-closed", "details-closed", "command-unconfirmed", "agreement-unconfirmed"]);
 const LINK_STEPS = new Set(["quote-review", "agreement-review"]);
@@ -886,7 +890,7 @@ const portalLinks = (node) => byAttribute(node, "data-action", "portal.open");
 const stateCardOf = (node) => { const card = byClass(node, "cr-state")[0]; return [card.getAttribute("data-state"), byClass(card, "cr-state__glyph")[0].textContent]; };
 const contactLines = (node) => byClass(node, "cr-contact__item").map((item) => [item.getAttribute("data-contact"), item.children[0].textContent, item.children[1].tagName, item.children[1].textContent, item.children[1].getAttribute("href")]);
 const providerLogos = (node) => byClass(node, "cr-party__logo");
-const AGREEMENT_SCENARIOS = new Set(["partial", "agreement-review", "agreement-numbered-terms", "agreement-no-terms", "agreement-confirm", "agreement-unconfirmed", "agreement-changes", "agreement-changes-invalid", "agreement-changes-pending", "agreement-changes-refused", "agreement-changes-sent", "agreement-changes-requested", "agreement-approval-only", "approval-closed", "completion", "completion-portal", "completion-finishing", "completion-attributes", "reference-expired", "closed-canceled", "unavailable", "preparing", "retired-quotation"]);
+const AGREEMENT_SCENARIOS = new Set(["partial", "agreement-review", "agreement-numbered-terms", "agreement-no-terms", "agreement-confirm", "agreement-unconfirmed", "agreement-changes", "agreement-changes-invalid", "agreement-changes-pending", "agreement-changes-refused", "agreement-changes-sent", "agreement-changes-requested", "agreement-approval-only", "approval-closed", "completion", "completion-portal", "completion-finishing", "completion-attributes", "reference-expired", "closed-canceled", "closed-orders-canceled", "unavailable", "preparing", "retired-quotation"]);
 const CONTACTLESS_SCENARIOS = new Set(Object.keys(EXPECTED_SCENARIOS).filter((id) => !AGREEMENT_SCENARIOS.has(id)));
 const FORM_FROM_ATTRIBUTES = {
   LEGAL_NAME: "Harbourview Strata Corporation", CLIENT_TYPE: "",

@@ -147,7 +147,7 @@ assert.deepEqual(plainValue(pack.groups[3].orders.map((order) => [order.stateCod
 for (const group of pack.groups) {
   assert.deepEqual(plainValue(group.orders.map((order) => order.pricingModel.code)), ["PER_SERVICE", "MONTHLY", "SEASONAL"], group.id + " is quoted once per pricing model");
 }
-assert.deepEqual(plainValue(pack.counts), { orders: 12, properties: 4, decided: 2, approved: 1, revision: 3, declined: 5, open: 3 });
+assert.deepEqual(plainValue(pack.counts), { orders: 12, properties: 4, decided: 2, approved: 1, revision: 3, declined: 5, cancelled: 0, open: 3 });
 assert.equal(pack.counts.approved + pack.counts.revision + pack.counts.declined + pack.counts.open, pack.counts.orders, "the rollup counts every row exactly once");
 assert.equal("servicePeriod" in pack, false, "the fixture's Order service periods are not read: the live Orders never carry one");
 assert.deepEqual(

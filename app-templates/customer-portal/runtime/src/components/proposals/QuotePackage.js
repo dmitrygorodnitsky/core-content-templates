@@ -8,12 +8,14 @@ export var QUOTE_STATUS = Object.freeze({
   revision: Object.freeze({ label: "⟳ Changes requested", badge: "status-badge--warn", dot: "#ff9f0a" }),
   declined: Object.freeze({ label: "✕ Declined", badge: "status-badge--danger", dot: "#ff3b30" }),
   unseen: Object.freeze({ label: "◔ Sent", badge: "status-badge--scheduled", dot: "#8a94a6" }),
+  cancelled: Object.freeze({ label: "⊘ Cancelled", badge: "status-badge--scheduled", dot: "#8a94a6" }),
 });
 
-var DECISION_META = { approved: "approved", declined: "declined", revision: "revision", open: "unseen" };
+var DECISION_META = { approved: "approved", declined: "declined", cancelled: "cancelled", revision: "revision", open: "unseen" };
 var DECISION_LABEL = {
   approved: "Option approved",
   declined: "Declined",
+  cancelled: "Cancelled",
   revision: "Changes requested",
   open: "Awaiting your decision",
 };

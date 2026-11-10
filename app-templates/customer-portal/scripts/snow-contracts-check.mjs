@@ -90,7 +90,7 @@ const orderList = {
 
 {
   assert.deepEqual(plain(coreSnowContract.customerQuoteStatus), {
-    ACCEPTED: "approved", ACTIVE: "approved", SUSPENDED: "approved", COMPLETED: "approved", CANCELED: "approved",
+    ACCEPTED: "approved", ACTIVE: "approved", SUSPENDED: "approved", COMPLETED: "approved", CANCELED: "cancelled",
     CUSTOMER_CHANGES_REQUESTED: "revision", DECLINED: "declined", QUOTE_SENT: "unseen",
   }, "the tenant adapter and the customer-scope normalizer read one set of ORDER_LIFECYCLE states since 2026-11-09: a sent quote, the client's decision, and the service life of an accepted order");
   assert.deepEqual(plain(coreSnowContract.operatorQuoteStates), ["CHANGES_REQUESTED", "DRAFT", "QUOTE_APPROVED", "QUOTE_PREPARED"], "the quote branch before QUOTE_SENT belongs to the operator");
@@ -122,8 +122,8 @@ const orderList = {
   }
   const service = normalizeQuoteOrders({ result: ["ACCEPTED", "ACTIVE", "SUSPENDED", "COMPLETED", "CANCELED"].map((code, index) => orderRow(index + 1, SENT.concat("ACCEPTED", code))) }).orders;
   assert.deepEqual(plain(service.map((order) => [order.stateCode, order.status, order.allowedActions])), [
-    ["ACCEPTED", "approved", []], ["ACTIVE", "approved", []], ["SUSPENDED", "approved", []], ["COMPLETED", "approved", []], ["CANCELED", "approved", []],
-  ], "every order after the client's acceptance stays the approved option and offers the client nothing");
+    ["ACCEPTED", "approved", []], ["ACTIVE", "approved", []], ["SUSPENDED", "approved", []], ["COMPLETED", "approved", []], ["CANCELED", "cancelled", []],
+  ], "every order after the client's acceptance stays the approved option, except a cancelled one, and none offers the client anything");
   for (const payload of [null, undefined, {}, "<!doctype html>", { result: "nope" }]) {
     assert.deepEqual(plain(normalizeQuoteOrders(payload)), { orders: [], preparing: false, withheldBackendIds: [] });
   }
@@ -375,7 +375,7 @@ const orderList = {
   assert.deepEqual(quotes.groups.map((group) => group.title), ["123 Main Street", "460 Nanaimo St", "Property details unavailable", "No property on this quote"]);
   assert.deepEqual(quotes.groups.map((group) => group.orders.map((order) => order.backendId)), [[501, 502], [504, 503], [505], [510, 511]], "within a property the options run per service, monthly, seasonal");
   assert.deepEqual(quotes.groups.map((group) => group.decision), ["open", "approved", "revision", "open"]);
-  assert.deepEqual(plain(quotes.counts), { orders: 7, properties: 3, decided: 1, approved: 1, revision: 1, declined: 1, open: 4 });
+  assert.deepEqual(plain(quotes.counts), { orders: 7, properties: 3, decided: 1, approved: 1, revision: 1, declined: 1, cancelled: 0, open: 4 });
   assert.equal(quotes.counts.approved + quotes.counts.revision + quotes.counts.declined + quotes.counts.open, quotes.counts.orders, "the rollup counts each independent Order once");
   assert.equal("servicePeriod" in quotes, false, "the quote package states no service period");
   assert.equal(quotes.agreements.length, 1);
@@ -405,6 +405,8 @@ const orderList = {
   const declinedEverywhere = contractsPackage(normalizeQuoteOrders({ result: [orderRow(1, SENT.concat("DECLINED"), { SERVICE_PROPERTY: { value: 278 } }), orderRow(2, SENT.concat("DECLINED"), { SERVICE_PROPERTY: { value: 278 } })] }), properties);
   assert.equal(declinedEverywhere.groups[0].decision, "declined", "a property whose every option is declined is decided");
   assert.equal(declinedEverywhere.counts.decided, 1);
+  const cancelledEverywhere = contractsPackage(normalizeQuoteOrders({ result: [orderRow(1, SENT.concat("ACCEPTED", "ACTIVE", "CANCELED"), { SERVICE_PROPERTY: { value: 278 } }), orderRow(2, SENT.concat("DECLINED"), { SERVICE_PROPERTY: { value: 278 } })] }), properties);
+  assert.deepEqual(plain([cancelledEverywhere.groups[0].decision, cancelledEverywhere.groups[0].status, cancelledEverywhere.counts.decided, cancelledEverywhere.counts.cancelled, cancelledEverywhere.counts.approved, cancelledEverywhere.pending.length]), ["cancelled", "cancelled", 1, 1, 0, 0], "a property whose accepted service was cancelled is closed as cancelled, never shown as approved, and waits for nothing");
 
   const onlyOperator = contractsPackage(normalizeQuoteOrders({ result: [orderRow(1, ["DRAFT"])] }), properties);
   assert.deepEqual(plain({ agreements: onlyOperator.agreements, preparing: onlyOperator.preparing, groups: onlyOperator.groups }), { agreements: [], preparing: true, groups: [] }, "a round still being prepared shows no agreement and no quote, only that the request is being prepared");
@@ -419,7 +421,7 @@ const orderList = {
   const lifeOf = (codes) => contractsPackage(Object.assign({
     agreements: [normalizeServiceAgreement(agreementDocument(["SENT_TO_CLIENT", "CLIENT_APPROVED"], { ORDERS: { value: codes.map((code, index) => 600 + index) } }))],
   }, normalizeQuoteOrders({ result: codes.map((code, index) => orderRow(600 + index, code === "DECLINED" ? SENT.concat(code) : SENT.concat("ACCEPTED", code === "ACCEPTED" ? [] : code), { SERVICE_PROPERTY: { value: 278 } })) })), properties).agreements[0].agreement;
-  assert.deepEqual(plain([["ACCEPTED", "DECLINED"], ["ACTIVE", "DECLINED"], ["SUSPENDED"], ["COMPLETED"], ["ACTIVE", "SUSPENDED"], ["SUSPENDED", "COMPLETED"], ["CANCELED"]].map((codes) => {
+  assert.deepEqual(plain([["ACCEPTED", "DECLINED"], ["ACTIVE", "DECLINED"], ["SUSPENDED"], ["COMPLETED"], ["ACTIVE", "SUSPENDED"], ["SUSPENDED", "COMPLETED"], ["CANCELED"], ["ACCEPTED", "CANCELED"]].map((codes) => {
     const agreement = lifeOf(codes);
     return [agreement.stateCode, agreement.stage, agreement.label, agreement.tone];
   })), [
@@ -429,8 +431,9 @@ const orderList = {
     ["CLIENT_APPROVED", "expired", "Expired", "scheduled"],
     ["CLIENT_APPROVED", "active", "Active", "ok"],
     ["CLIENT_APPROVED", "suspended", "Suspended", "warn"],
+    ["CLIENT_APPROVED", "canceled", "Cancelled", "scheduled"],
     ["CLIENT_APPROVED", "approved", "Approved", "ok"],
-  ], "a signed agreement is active while any of its orders is ACTIVE, else suspended while any is SUSPENDED, else expired once one is COMPLETED, and otherwise signed; its own state stays CLIENT_APPROVED");
+  ], "a signed agreement is active while any of its orders is ACTIVE, else suspended while any is SUSPENDED, else expired once one is COMPLETED, cancelled once every order is CANCELED, and otherwise signed; its own state stays CLIENT_APPROVED");
   const archived = contractsPackage(Object.assign({
     agreements: [normalizeServiceAgreement(agreementDocument(["CLIENT_APPROVED", "ARCHIVED"], { ORDERS: { value: [600] } }))],
   }, normalizeQuoteOrders({ result: [orderRow(600, SENT.concat("ACCEPTED", "ACTIVE", "COMPLETED"), { SERVICE_PROPERTY: { value: 278 } })] })), properties).agreements[0].agreement;

@@ -9,7 +9,7 @@
     ACTIVE: "approved",
     SUSPENDED: "approved",
     COMPLETED: "approved",
-    CANCELED: "approved",
+    CANCELED: "cancelled",
     DECLINED: "declined",
     CUSTOMER_CHANGES_REQUESTED: "changes",
     DRAFT: "revising",
@@ -18,9 +18,13 @@
     QUOTE_APPROVED: "revising",
   };
 
-  var PRICED_STATUSES = ["new", "approved", "declined", "changes"];
+  var PRICED_STATUSES = ["new", "approved", "declined", "cancelled", "changes"];
 
   var SIGNED_AGREEMENT_STATE = "CLIENT_APPROVED";
+
+  var CANCELED_ORDER_STATE = "CANCELED";
+
+  var CANCELED_SERVICE = { kind: "closed", reason: "canceled" };
 
   var SERVICE_DISPOSITION = {
     ACTIVE: { kind: "completion", completion: "active" },
@@ -652,6 +656,7 @@
     var statuses = options.map(function (option) { return option.status; });
     if (statuses.indexOf("approved") !== -1) return "approved";
     if (statuses.length && statuses.every(function (status) { return status === "declined"; })) return "declined";
+    if (statuses.length && statuses.every(function (status) { return status === "declined" || status === "cancelled"; })) return "cancelled";
     if (statuses.indexOf("changes") !== -1 || statuses.indexOf("revising") !== -1) return "changes";
     if (statuses.indexOf("new") !== -1) return "awaiting";
     return "unknown";
@@ -781,7 +786,7 @@
     return {
       summary: summaryOf(properties),
       allDecided: properties.length > 0 && properties.every(function (property) {
-        return property.status === "approved" || property.status === "declined";
+        return property.status === "approved" || property.status === "declined" || property.status === "cancelled";
       }),
     };
   }
@@ -827,7 +832,8 @@
   function serviceDisposition(orders, contract) {
     var states = orders.map(function (row) { return stateCode(row, contract.orderStates); });
     var found = Object.keys(SERVICE_DISPOSITION).filter(function (code) { return states.indexOf(code) !== -1; })[0];
-    return found ? SERVICE_DISPOSITION[found] : null;
+    if (found) return SERVICE_DISPOSITION[found];
+    return states.length && states.every(function (code) { return code === CANCELED_ORDER_STATE; }) ? CANCELED_SERVICE : null;
   }
 
   function reviewModel(input, options) {

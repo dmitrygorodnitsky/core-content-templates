@@ -514,6 +514,19 @@
     }
   },
   {
+    "code": "PROPERTY_CANCELLED",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "PROPERTY CANCELLED",
+        "DESCRIPTION": "Client review document copy."
+      }
+    },
+    "value": {
+      "en": "Cancelled"
+    }
+  },
+  {
     "code": "PROPERTY_CHANGES",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
@@ -576,6 +589,19 @@
     },
     "value": {
       "en": "Declined"
+    }
+  },
+  {
+    "code": "OPTION_CANCELLED",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "OPTION CANCELLED",
+        "DESCRIPTION": "Client review document copy."
+      }
+    },
+    "value": {
+      "en": "Cancelled"
     }
   },
   {

@@ -221,6 +221,7 @@ function decisionNote(group) {
   }
   if (group.decision === "revision") return "You asked for changes to these quotes. Our team is reviewing your request.";
   if (group.decision === "declined") return "You declined the quotes for this property.";
+  if (group.decision === "cancelled") return "The services for this property were cancelled.";
   return "";
 }
 

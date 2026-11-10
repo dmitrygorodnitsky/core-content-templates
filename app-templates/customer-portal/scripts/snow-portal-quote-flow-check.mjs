@@ -652,7 +652,7 @@ const DETAIL_VALUE_CODES = ["LEGAL_NAME", "BILLING_ADDRESS", "REPRESENTATIVE_FIR
   const quoteSteps = {
     QUOTE_SENT: "◔ Sent",
     CUSTOMER_CHANGES_REQUESTED: "⟳ Changes requested",
-    ACCEPTED: "✓ Approved", ACTIVE: "✓ Approved", SUSPENDED: "✓ Approved", COMPLETED: "✓ Approved", CANCELED: "✓ Approved",
+    ACCEPTED: "✓ Approved", ACTIVE: "✓ Approved", SUSPENDED: "✓ Approved", COMPLETED: "✓ Approved", CANCELED: "⊘ Cancelled",
     DECLINED: "✕ Declined",
   };
   const quotes = normalizeQuoteOrders({ result: Object.keys(quoteSteps).map((code, index) => order(6000 + index, code, 983, "MONTHLY", 1)) }).orders;
