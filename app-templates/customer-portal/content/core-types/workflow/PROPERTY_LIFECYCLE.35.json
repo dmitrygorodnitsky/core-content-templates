@@ -11,7 +11,7 @@
  },
  "entityType": "com.pixelnation.rm.domain.Resource",
  "organization": {
-  "optimistic": 4,
+  "optimistic": 7,
   "id": 8,
   "code": "SERVICE_WAND_WINTER_SERVICES"
  },
@@ -19,8 +19,8 @@
  "states": [
   {
    "style": {
-    "xPos": 1216.2538342067369,
-    "yPos": 388.4832169139971
+    "xPos": 1212,
+    "yPos": 136.33333333333334
    },
    "id": 160,
    "code": "ACTIVE",
@@ -58,13 +58,129 @@
        "code": "INACTIVE"
       }
      ]
+    },
+    {
+     "id": 522,
+     "code": "ACTIVE-BLACKLISTED",
+     "nls": {
+      "ar": {
+       "NAME": "القائمة السوداء"
+      },
+      "en": {
+       "NAME": "Blacklist"
+      },
+      "es": {
+       "NAME": "Lista negra"
+      },
+      "fr": {
+       "NAME": "Liste noire"
+      },
+      "he": {
+       "NAME": "רשימה שחורה"
+      },
+      "kk": {
+       "NAME": "Қара тізім"
+      },
+      "ru": {
+       "NAME": "Чёрный список"
+      },
+      "zh": {
+       "NAME": "黑名单"
+      }
+     },
+     "targets": [
+      {
+       "id": 257,
+       "code": "BLACKLISTED"
+      }
+     ]
     }
    ]
   },
   {
    "style": {
-    "xPos": 1728.7446549161093,
-    "yPos": 389.10129594062676
+    "xPos": 1612,
+    "yPos": 249.66666666666666
+   },
+   "id": 257,
+   "code": "BLACKLISTED",
+   "nls": {
+    "ar": {
+     "NAME": "محظور",
+     "DESCRIPTION": "<p></p>"
+    },
+    "en": {
+     "NAME": "Blacklisted",
+     "DESCRIPTION": "<p>The property has been excluded from service and is not eligible for regular operational use.</p>"
+    },
+    "es": {
+     "NAME": "Lista negra",
+     "DESCRIPTION": "<p>La propiedad ha sido excluida del servicio y no es elegible para uso operativo regular.</p>"
+    },
+    "fr": {
+     "NAME": "Liste noire",
+     "DESCRIPTION": "<p>La propriété a été exclue du service et n’est pas éligible à une utilisation opérationnelle régulière.</p>"
+    },
+    "he": {
+     "NAME": "ברשימה שחורה",
+     "DESCRIPTION": "<p></p>"
+    },
+    "kk": {
+     "NAME": "Қара тізімге енгізілген",
+     "DESCRIPTION": "<p>Бұл mүлік қызмет көрсетуден шығарылған және тұрақты операциялық пайдалану үшін жарамсыз.</p>"
+    },
+    "ru": {
+     "NAME": "В чёрном списке",
+     "DESCRIPTION": "<p>Эта недвижимость исключена из обслуживания и не пригодна для регулярной эксплуатации.</p>"
+    },
+    "zh": {
+     "NAME": "被列入黑名单",
+     "DESCRIPTION": "<p>该物业已被排除在服务之外，且不具备常规运营用途的资格。</p>"
+    }
+   },
+   "events": [
+    {
+     "id": 523,
+     "code": "BLACKLISTED-INACTIVE",
+     "nls": {
+      "ar": {
+       "NAME": "إزالة من القائمة السوداء"
+      },
+      "en": {
+       "NAME": "Remove from Blacklist"
+      },
+      "es": {
+       "NAME": "Quitar de la lista negra"
+      },
+      "fr": {
+       "NAME": "Retirer de la liste noire"
+      },
+      "he": {
+       "NAME": "הסר מהרשימה השחורה"
+      },
+      "kk": {
+       "NAME": "Қара тізімнен алып тастау"
+      },
+      "ru": {
+       "NAME": "Удалить из черного списка"
+      },
+      "zh": {
+       "NAME": "从黑名单中移除"
+      }
+     },
+     "targets": [
+      {
+       "id": 161,
+       "code": "INACTIVE"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "style": {
+    "xPos": 412,
+    "yPos": 50
    },
    "id": 161,
    "code": "INACTIVE",
@@ -81,42 +197,6 @@
     }
    },
    "events": [
-    {
-     "id": 498,
-     "code": "INACTIVE-INSPECTION-REQUIRED",
-     "nls": {
-      "ar": {
-       "NAME": "إعادة فحص"
-      },
-      "en": {
-       "NAME": "Re-Inspect"
-      },
-      "es": {
-       "NAME": "Reinspeccionar"
-      },
-      "fr": {
-       "NAME": "Ré-inspecter"
-      },
-      "he": {
-       "NAME": "בדוק מחדש"
-      },
-      "kk": {
-       "NAME": "Қайта тексеру"
-      },
-      "ru": {
-       "NAME": "Перепроверить"
-      },
-      "zh": {
-       "NAME": "重新检查"
-      }
-     },
-     "targets": [
-      {
-       "id": 239,
-       "code": "INSPECTION-REQUIRED"
-      }
-     ]
-    },
     {
      "id": 327,
      "code": "INACTIVE-ACTIVE",
@@ -138,13 +218,49 @@
        "code": "ACTIVE"
       }
      ]
+    },
+    {
+     "id": 527,
+     "code": "INACTIVE-BLACKLISTED",
+     "nls": {
+      "ar": {
+       "NAME": "القائمة السوداء"
+      },
+      "en": {
+       "NAME": "Blacklist"
+      },
+      "es": {
+       "NAME": "Lista Negra"
+      },
+      "fr": {
+       "NAME": "Liste Noire"
+      },
+      "he": {
+       "NAME": "רשימה שחורה"
+      },
+      "kk": {
+       "NAME": "Қара Тізім"
+      },
+      "ru": {
+       "NAME": "Черный Список"
+      },
+      "zh": {
+       "NAME": "黑名单"
+      }
+     },
+     "targets": [
+      {
+       "id": 257,
+       "code": "BLACKLISTED"
+      }
+     ]
     }
    ]
   },
   {
    "style": {
-    "xPos": 148.66751316694098,
-    "yPos": 388.6675257893016
+    "xPos": 12,
+    "yPos": 273
    },
    "id": 159,
    "code": "INITIAL",
@@ -179,83 +295,12 @@
    },
    "events": [
     {
-     "id": 496,
-     "code": "INITIAL-INSPECTION-REQUIRED",
+     "orderIndex": 0,
+     "id": 850,
+     "code": "INITIAL-ACTIVE",
      "nls": {
-      "en": {
-       "NAME": "Initial Inspection Required"
-      }
-     },
-     "targets": [
-      {
-       "id": 239,
-       "code": "INSPECTION-REQUIRED"
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "style": {
-    "xPos": 758.251937685665,
-    "yPos": 418.34212111908204
-   },
-   "id": 239,
-   "code": "INSPECTION-REQUIRED",
-   "nls": {
-    "ar": {
-     "NAME": "فحص مطلوب"
-    },
-    "en": {
-     "NAME": "Inspection Required"
-    },
-    "es": {
-     "NAME": "Inspección Requerida"
-    },
-    "fr": {
-     "NAME": "Inspection requise"
-    },
-    "he": {
-     "NAME": "נדרשת בדיקה"
-    },
-    "kk": {
-     "NAME": "Тексеру Қажет"
-    },
-    "ru": {
-     "NAME": "Требуется осмотр"
-    },
-    "zh": {
-     "NAME": "需要检查"
-    }
-   },
-   "events": [
-    {
-     "id": 497,
-     "code": "INSPECTION-REQUIRED-ACTIVE",
-     "nls": {
-      "ar": {
-       "NAME": "تفعيل"
-      },
       "en": {
        "NAME": "Activate"
-      },
-      "es": {
-       "NAME": "Activar"
-      },
-      "fr": {
-       "NAME": "Activer"
-      },
-      "he": {
-       "NAME": "הפעל"
-      },
-      "kk": {
-       "NAME": "Іске қосу"
-      },
-      "ru": {
-       "NAME": "Активировать"
-      },
-      "zh": {
-       "NAME": "激活"
       }
      },
      "targets": [
@@ -266,6 +311,36 @@
      ]
     }
    ]
+  },
+  {
+   "style": {
+    "xPos": 812,
+    "yPos": 143
+   },
+   "id": 239,
+   "code": "INSPECTION-REQUIRED",
+   "nls": {
+    "en": {
+     "NAME": "Inspection Required (retired)",
+     "DESCRIPTION": "<p>Retired on 2026-11-11: no event leads here, and it is kept only because the state history of older properties references it.</p>"
+    }
+   },
+   "events": []
+  },
+  {
+   "style": {
+    "xPos": 412,
+    "yPos": 279.6666666666667
+   },
+   "id": 318,
+   "code": "PLAN_ADJUSTED",
+   "nls": {
+    "en": {
+     "NAME": "Plan Adjusted (retired)",
+     "DESCRIPTION": "<p>Retired on 2026-11-11: no event leads here, and it is kept only because the state history of older properties references it.</p>"
+    }
+   },
+   "events": []
   }
  ]
 }

@@ -153,7 +153,7 @@ Other lifecycles:
 
 | workflow | id | entity | initial | states |
 | --- | --- | --- | --- | --- |
-| `PROPERTY_LIFECYCLE` | 35 | Resource | `INITIAL` | `INITIAL`→`INSPECTION-REQUIRED`→`ACTIVE`↔`INACTIVE` |
+| `PROPERTY_LIFECYCLE` | 35 | Resource | `INITIAL` | `INITIAL`→`ACTIVE`↔`INACTIVE`, `BLACKLISTED`; `PLAN_ADJUSTED` and `INSPECTION-REQUIRED` are retired states without events (2026-11-11) |
 | `CLIENT_ACCOUNT_LIFECYCLE` | 36 | Account | `INITIAL` | Short Request Quote path: `INITIAL`→`ACTIVE_LEAD`→`ACTIVE`; explicit suspension reasons, `INACTIVE`, `NOT_INTERESTED`, `ARCHIVED` and native registration states |
 | `SNOW_CONTRACT_DOCUMENT` | 13 | Document | `DRAFT` | `DRAFT`→`PENDING_APPROVAL`→`ACTIVE`→`SUSPENDED`/`EXPIRED`→`ARCHIVED` |
 | `APPOINTMENT` | 20 | Appointment | `SCHEDULED` | `DRAFT`→`SCHEDULED`→`IN_PROGRESS`→`COMPLETED`, `CANCELED` terminal |

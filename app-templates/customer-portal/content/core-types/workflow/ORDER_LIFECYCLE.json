@@ -290,19 +290,6 @@
        "code": "CHANGES_REQUESTED"
       }
      ]
-    },
-    {
-     "code": "QUOTE_PREPARED-DRAFT",
-     "nls": {
-      "en": {
-       "NAME": "Pricing not completed"
-      }
-     },
-     "targets": [
-      {
-       "code": "DRAFT"
-      }
-     ]
     }
    ]
   },
