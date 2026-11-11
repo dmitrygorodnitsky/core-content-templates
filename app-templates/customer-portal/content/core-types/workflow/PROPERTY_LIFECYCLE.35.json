@@ -94,6 +94,22 @@
        "code": "BLACKLISTED"
       }
      ]
+    },
+    {
+     "orderIndex": 1,
+     "id": 856,
+     "code": "ACTIVE-INCOMPLETE",
+     "nls": {
+      "en": {
+       "NAME": "Send Back"
+      }
+     },
+     "targets": [
+      {
+       "id": 472,
+       "code": "INCOMPLETE"
+      }
+     ]
     }
    ]
   },
@@ -198,6 +214,22 @@
    },
    "events": [
     {
+     "orderIndex": 1,
+     "id": 855,
+     "code": "INACTIVE-INCOMPLETE",
+     "nls": {
+      "en": {
+       "NAME": "Send Back"
+      }
+     },
+     "targets": [
+      {
+       "id": 472,
+       "code": "INCOMPLETE"
+      }
+     ]
+    },
+    {
      "id": 327,
      "code": "INACTIVE-ACTIVE",
      "nls": {
@@ -258,6 +290,34 @@
    ]
   },
   {
+   "style": {},
+   "id": 472,
+   "code": "INCOMPLETE",
+   "nls": {
+    "en": {
+     "NAME": "Incomplete"
+    }
+   },
+   "events": [
+    {
+     "orderIndex": 0,
+     "id": 854,
+     "code": "INCOMPLETE-INACTIVE",
+     "nls": {
+      "en": {
+       "NAME": "Mark Fixed"
+      }
+     },
+     "targets": [
+      {
+       "id": 161,
+       "code": "INACTIVE"
+      }
+     ]
+    }
+   ]
+  },
+  {
    "style": {
     "xPos": 12,
     "yPos": 273
@@ -307,6 +367,38 @@
       {
        "id": 160,
        "code": "ACTIVE"
+      }
+     ]
+    },
+    {
+     "orderIndex": 0,
+     "id": 853,
+     "code": "INITIAL-INCOMPLETE",
+     "nls": {
+      "en": {
+       "NAME": "No Service Area (automatic)"
+      }
+     },
+     "targets": [
+      {
+       "id": 472,
+       "code": "INCOMPLETE"
+      }
+     ]
+    },
+    {
+     "orderIndex": 1,
+     "id": 857,
+     "code": "INITIAL-INACTIVE",
+     "nls": {
+      "en": {
+       "NAME": "Service Area set (automatic)"
+      }
+     },
+     "targets": [
+      {
+       "id": 161,
+       "code": "INACTIVE"
       }
      ]
     }
