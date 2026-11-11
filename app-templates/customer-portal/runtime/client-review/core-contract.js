@@ -57,7 +57,7 @@
     ],
     agreementStates: [
       "QUOTATION", "QUOTATION_SENT", "QUOTATION_UPDATE", "QUOTATION_SEND_FAILED", "AWAITING_CLIENT_DETAILS",
-      "CLIENT_DETAILS_RECEIVED", "DRAFT",
+      "CLIENT_DETAILS_RECEIVED", "CREATED", "DRAFT",
       "PENDING_MANAGEMENT_APPROVAL", "INTERNALLY_APPROVED", "SENT_TO_CLIENT", "CLIENT_CHANGES_REQUESTED", "AGREEMENT_SEND_FAILED",
       "CLIENT_APPROVED", "ACTIVATION_FAILED", "ACTIVE", "SUSPENDED", "EXPIRED", "ARCHIVED", "CANCELED",
       "ACCESS_CLEANUP_RETRY",
@@ -75,7 +75,17 @@
       },
     },
     agreementEvents: {
-      approve: { code: "SENT_TO_CLIENT-CLIENT_APPROVED", source: "SENT_TO_CLIENT" },
+      approve: {
+        code: "SENT_TO_CLIENT-CLIENT_APPROVED",
+        source: "SENT_TO_CLIENT",
+        attributes: [
+          attribute("BILLING_ADDRESS", "java.lang.String", false, "Billing Address", { inputFormat: "address" }),
+          attribute("BILLING_SAME_AS_LEGAL", "java.lang.Boolean", false, "Billing Address Is the Legal Address"),
+        ],
+        billingAddressAttribute: "BILLING_ADDRESS",
+        billingSameAsLegalAttribute: "BILLING_SAME_AS_LEGAL",
+        billingAddressLimit: 255,
+      },
       changes: { code: "SENT_TO_CLIENT-CLIENT_CHANGES_REQUESTED", source: "SENT_TO_CLIENT", messageAttribute: "MESSAGE" },
     },
     orderMetadata: {

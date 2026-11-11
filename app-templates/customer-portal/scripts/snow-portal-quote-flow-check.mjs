@@ -38,7 +38,7 @@ const { QUOTE_STATUS } = await load("src/components/proposals/QuotePackage.js");
 const { AGREEMENT_STAGES, CLIENT_TYPES, CONTRACT_CLIENT_TYPES, normalizeContracts, normalizeQuoteOrders, normalizeServiceAgreement } = await load("src/normalizers/contracts.js");
 const { CONTRACT_EVENTS } = await load("src/contract-commands.js");
 const { QUOTE_REQUEST_COPY, QUOTE_REQUEST_OUTCOME_TIMEOUT_MS, acceptQuoteAddress, addTypedQuoteAddress, changeQuoteRequestDraft, quoteRequestSchema, quoteRequestState, quoteRequestValues, resetQuoteRequest, submitQuoteRequest, toggleQuoteProperty, validateQuoteRequest } = await load("src/quote-request.js");
-const { CONTRACT_DETAILS_FIELDS, contractDetailsEventInput, contractDetailsRequest } = await load("src/contract-details.js");
+const { AGREEMENT_BILLING_COPY, CONTRACT_DETAILS_FIELDS, contractDetailsEventInput, contractDetailsRequest } = await load("src/contract-details.js");
 const { contractDetailsPrefill } = await load("src/normalizers/account-profile.js");
 const { coreAccountProfileContract } = await load("src/adapters/core-account-profile-adapter.js");
 
@@ -245,7 +245,7 @@ await load("src/app.js");
 dom.fire("DOMContentLoaded");
 await settle();
 const portal = globalThis.AircovePortal;
-const { ACTIONS } = await load("src/actions.js");
+const { ACTIONS, typeAgreementBilling } = await load("src/actions.js");
 
 const LIVE = {
   portalVertical: "snow", portalProfile: "stormRetail", portalTheme: "snow", portalDataMode: "live", portalAuthMode: "required",
@@ -633,9 +633,59 @@ const DETAIL_VALUE_CODES = ["LEGAL_NAME", "BILLING_ADDRESS", "REPRESENTATIVE_FIR
   portal.go("agreement.detail");
   assert.equal(one(page(), "[data-module=\"agreement-detail-head\"] [data-module=\"status-badge\"]").textContent, "Sent for your approval");
   ACTIONS["agreement.approve"]("5602");
+  assert.equal(one(page(), "[data-module=\"agreement-billing\"]").getAttribute("data-state"), "loading", "the approval first reads whether the Account has a billing address");
+  assert.equal(await ACTIONS["agreement.confirm"]("5602"), false, "and sends nothing until it knows");
+  await until(() => state.contractConfirm.billing.state !== "loading");
+  assert.equal(state.contractConfirm.billing.state, "on-file");
+  assert.equal(all(page(), "[data-module=\"agreement-billing\"]").length, 0, "an Account with a billing address is asked nothing");
   assert.equal(await ACTIONS["agreement.confirm"]("5602"), true);
-  assert.deepEqual(table.events.slice(1).map((event) => [event.entity, event.id, event.code, event.body]), [["document", 5602, "SENT_TO_CLIENT-CLIENT_APPROVED", {}]], "agreement approval is unchanged");
+  assert.deepEqual(table.events.slice(1).map((event) => [event.entity, event.id, event.code, event.body]), [["document", 5602, "SENT_TO_CLIENT-CLIENT_APPROVED", {}]], "and its approval carries no address");
   assert.equal(one(page(), "[data-module=\"agreement-detail-head\"] [data-module=\"status-badge\"]").textContent, "Approved");
+}
+
+{
+  const openApproval = async (addresses) => {
+    await goLive();
+    table.account.addresses = addresses;
+    state.agreementId = "agreement-core-5602";
+    portal.go("agreement.detail");
+    ACTIONS["agreement.approve"]("5602");
+    await until(() => state.contractConfirm.billing.state !== "loading");
+    return one(page(), "[data-module=\"agreement-billing\"]");
+  };
+  const legalLink = { id: 901, types: [{ id: 2, code: "LEGAL" }], address: { id: 701, address1: "100 Harbour Way, Vancouver, BC V6B 1A1, Canada" } };
+  const sentBodies = () => table.events.filter((event) => event.entity === "document").map((event) => event.body);
+
+  let billing = await openApproval([legalLink]);
+  assert.equal(billing.getAttribute("data-state"), "needed", "an Account without a billing address is asked for one before the approval");
+  assert.equal(one(billing, "label.field-label").textContent, AGREEMENT_BILLING_COPY.label);
+  assert.ok(billing.textContent.includes(AGREEMENT_BILLING_COPY.needed));
+  assert.equal(one(billing, "#agreement-billing-address").getAttribute("value"), "100 Harbour Way, Vancouver, BC V6B 1A1, Canada", "pre-filled from the legal address");
+  assert.notEqual(one(billing, "#agreement-billing-address").getAttribute("disabled"), null, "and closed while Same as legal address is chosen");
+  assert.notEqual(one(billing, "[data-action=\"agreement.billingSame\"]").getAttribute("checked"), null);
+  assert.equal(await ACTIONS["agreement.confirm"]("5602"), true);
+  assert.deepEqual(sentBodies(), [{ BILLING_SAME_AS_LEGAL: { value: true } }], "the server copies the legal address it holds");
+
+  billing = await openApproval([legalLink]);
+  assert.equal(ACTIONS["agreement.billingSame"](), true);
+  billing = one(page(), "[data-module=\"agreement-billing\"]");
+  assert.equal(one(billing, "#agreement-billing-address").getAttribute("disabled"), null, "clearing the option opens the field");
+  typeAgreementBilling("   ");
+  assert.equal(await ACTIONS["agreement.confirm"]("5602"), false, "an empty billing address is refused on the page");
+  billing = one(page(), "[data-module=\"agreement-billing\"]");
+  assert.equal(billing.getAttribute("data-state"), "invalid");
+  assert.ok(one(billing, "#agreement-billing-address-error").textContent.length > 0, "with the reason beside the field");
+  assert.deepEqual(sentBodies(), []);
+  typeAgreementBilling(" PO Box 100,  Vancouver, BC V6C 0A1, Canada ");
+  assert.equal(await ACTIONS["agreement.confirm"]("5602"), true);
+  assert.deepEqual(sentBodies(), [{ BILLING_ADDRESS: { value: "PO Box 100, Vancouver, BC V6C 0A1, Canada" } }]);
+
+  billing = await openApproval([]);
+  assert.equal(billing.getAttribute("data-state"), "needed");
+  assert.equal(all(billing, "[data-action=\"agreement.billingSame\"]").length, 0, "without a legal address there is nothing to copy");
+  assert.equal(one(billing, "#agreement-billing-address").getAttribute("value") || "", "");
+  assert.equal(await ACTIONS["agreement.confirm"]("5602"), false);
+  assert.deepEqual(sentBodies(), []);
 }
 
 {

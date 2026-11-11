@@ -2,7 +2,7 @@
 import { F } from "../data/fixtures.js";
 import { clear, h } from "./dom.js";
 import { landingEntryOpen, readPortalConfig } from "./config.js";
-import { activeProfile, applyPortalConfig, cmdPhase, currentFixture, currentTheme, customerPortalAccessRequired, customerPortalGateActive, isPublic, isSpa, state } from "./state.js";
+import { accountGateShown, activeProfile, applyPortalConfig, cmdPhase, currentFixture, currentTheme, customerPortalAccessRequired, isPublic, isSpa, state } from "./state.js";
 import { loadLiveWeather } from "./live-weather.js";
 import { ACTIONS, bindActions, go, setState, toast } from "./actions.js";
 import { initRouter, publicEntryDestination, renderRoute } from "./router.js";
@@ -121,7 +121,7 @@ export function render() {
   if (runtime) runtime.syncPreflight("care");
   if (runtime) loadGrantedCareTransition();
 
-  var content = customerPortalGateActive() || (!isPublic() && state.account !== "ready") ? AccountBootstrap() : renderRoute();
+  var content = accountGateShown() ? AccountBootstrap() : renderRoute();
   if (content && state.route !== lastRoute) content.classList.add("route-enter");
   lastRoute = state.route;
   shell = AppShell(content);

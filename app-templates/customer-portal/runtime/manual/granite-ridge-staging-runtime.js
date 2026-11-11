@@ -273,6 +273,8 @@
     "auth.oidc": { id: "auth.oidc", path: "/login", module: "auth", public: true },
     "auth.phone": { id: "auth.phone", path: "/login/phone-reference", module: "auth", public: true },
     "auth.code": { id: "auth.code", path: "/login/verify", module: "auth", public: true },
+    "request.confirm": { id: "request.confirm", path: "/request/confirm", module: "auth", public: true, sessionFree: true, requestEvent: "confirm" },
+    "request.cancel": { id: "request.cancel", path: "/request/cancel", module: "auth", public: true, sessionFree: true, requestEvent: "cancel" },
     overview: { id: "overview", path: "/overview", module: "overview" },
     appointments: { id: "appointments", path: "/appointments", module: "appointmentsTimeline" },
     "visit.detail": { id: "visit.detail", path: "/visits/:id", module: "appointmentsTimeline", param: "id" },
@@ -379,6 +381,7 @@
       },
       primaryCtaLabel: dataset.portalPrimaryCtaLabel || "",
       taxesNote: copyText(dataset.portalTaxesNote, "Plus applicable taxes."),
+      requestLinkCopy: requestLinkCopy(dataset),
       vertical: vertical2,
       theme,
       profile,
@@ -549,6 +552,26 @@
     if (typeof value === "number") return value;
     if (typeof value === "string" && value.trim() !== "") return Number(value);
     return Number.NaN;
+  }
+  var REQUEST_LINK_COPY = /* @__PURE__ */ Object.freeze({
+    confirming: ["portalRequestConfirming", "Confirming your request\u2026"],
+    confirmedTitle: ["portalRequestConfirmedTitle", "Your email is confirmed"],
+    confirmedBody: ["portalRequestConfirmedBody", "Thank you. Your request is being processed, and we will be in touch."],
+    cancelling: ["portalRequestCancelling", "Cancelling your request\u2026"],
+    cancelledTitle: ["portalRequestCancelledTitle", "Your request was cancelled"],
+    cancelledBody: ["portalRequestCancelledBody", "We will not prepare a quote, and no more emails will be sent about this request."],
+    invalidTitle: ["portalRequestLinkInvalidTitle", "This link is no longer valid"],
+    invalidBody: ["portalRequestLinkInvalidBody", "It may already have been used, or the request was already confirmed or cancelled."],
+    failedTitle: ["portalRequestLinkFailedTitle", "We could not reach our system"],
+    failedBody: ["portalRequestLinkFailedBody", "Nothing was changed. Check your connection and try again."],
+    retry: ["portalRequestLinkRetry", "Try again"]
+  });
+  function requestLinkCopy(dataset) {
+    var copy = {};
+    (/* @__PURE__ */ Object.keys(REQUEST_LINK_COPY)).forEach(function(key) {
+      copy[key] = copyText(dataset[REQUEST_LINK_COPY[key][0]], REQUEST_LINK_COPY[key][1]);
+    });
+    return copy;
   }
   function copyText(value, fallback) {
     var text10 = String(value || "").trim();
@@ -2109,6 +2132,7 @@
     contractDetails: null,
     quoteRequest: null,
     quoteRequestSchema: null,
+    requestLink: null,
     ovProperty: null,
     ovWeatherIndex: null,
     currentSiteId: "s2",
@@ -2457,6 +2481,14 @@
     var route = routeRegistry[routeId || state.route];
     return !!(route && route.public);
   }
+  function isSessionFree(routeId) {
+    var route = routeRegistry[routeId || state.route];
+    return !!(route && route.sessionFree);
+  }
+  function accountGateShown() {
+    if (isSessionFree()) return false;
+    return customerPortalGateActive() || !isPublic() && state.account !== "ready";
+  }
   function customerPortalAccessRequired() {
     return customerAccountRequired(state.config);
   }
@@ -2696,7 +2728,7 @@
         });
       }) || Promise.resolve(false);
     }
-    function approveAgreement(backendId) {
+    function approveAgreement(backendId, input) {
       var definition = CONTRACT_EVENTS.agreement;
       var row = findAgreement(deps.current(), backendId);
       if (!row || row.agreement.stateCode !== definition.source || row.agreement.allowedActions.indexOf("approve") === -1) return Promise.resolve(false);
@@ -2704,7 +2736,7 @@
         var gateway = deps.gateway();
         var document2 = await gateway.readAgreement(backendId, deps.context());
         if (latestStateCode(document2) !== definition.source) throw coded("conflict");
-        await gateway.sendAgreementEvent(backendId, definition.code, deps.context());
+        await gateway.sendAgreementEvent(backendId, definition.code, deps.context(), input);
         return confirm("agreement", backendId, definition.source, function(pkg) {
           var read = findAgreement(pkg, backendId);
           return read ? read.agreement.stateCode : null;
@@ -4565,12 +4597,12 @@
     var organizationId = positiveInteger(session2.organizationId);
     if (!organization || !organizationId) throw coded4("organization-required", "The portal organization and its id are required");
     var origin = config.origin || globalThis.location && globalThis.location.origin || "";
-    var cmsBase = sameOriginBase4(config.cmsApiBase || "/core-cms", origin, "Core CMS API base");
+    var cmsBase2 = sameOriginBase4(config.cmsApiBase || "/core-cms", origin, "Core CMS API base");
     var authorization = text(session2.tokenType || session2.token_type || "Bearer") + " " + accessToken;
     return {
       origin: new URL(origin).origin,
-      cmsBase,
-      cmsPath: new URL(cmsBase).pathname.replace(/\/+$/, ""),
+      cmsBase: cmsBase2,
+      cmsPath: new URL(cmsBase2).pathname.replace(/\/+$/, ""),
       coreBase: sameOriginBase4(config.coreApiBase || "/core", origin, "Core API base"),
       organizationId,
       headers: function(extra) {
@@ -5478,7 +5510,7 @@
 
   // app-templates/customer-portal/runtime/src/components/shell/AppShell.js
   function AppShell(content) {
-    var gated = customerPortalGateActive() || !isPublic() && state.account !== "ready";
+    var gated = accountGateShown();
     var capability = isSpa() ? spaCapability() : void 0;
     return h("div", {
       "class": "app-shell",
@@ -7090,27 +7122,27 @@
     });
   }
   function createFocusKeeper(doc) {
-    var remembered = null;
+    var remembered2 = null;
     doc.addEventListener("focusin", function(event) {
-      remembered = focusIdentity(event.target);
+      remembered2 = focusIdentity(event.target);
     }, true);
     doc.addEventListener("pointerdown", function(event) {
-      remembered = focusIdentity(event.target);
+      remembered2 = focusIdentity(event.target);
     }, true);
     return {
       settle: function(selectedId, previousId) {
         var target = null;
         if (selectedId !== previousId) {
           target = selectedId ? doc.querySelector(".ov-tip__close") : actionElement(doc, "overview.selectProperty", previousId);
-        } else if (remembered && (!doc.activeElement || doc.activeElement === doc.body)) {
-          target = actionElement(doc, remembered.action, remembered.id);
+        } else if (remembered2 && (!doc.activeElement || doc.activeElement === doc.body)) {
+          target = actionElement(doc, remembered2.action, remembered2.id);
         }
         if (!target) return;
         var tip = selectedId ? target.closest(".ov-tip") : null;
         var place = tip ? tip.getAttribute("data-place") : null;
         if (place === "inline" || place === "dock") tip.scrollIntoView({ block: "nearest" });
         target.focus({ preventScroll: true });
-        remembered = focusIdentity(target);
+        remembered2 = focusIdentity(target);
       }
     };
   }
@@ -9291,6 +9323,57 @@
   var CLIENT_TYPE_CODES = CONTRACT_CLIENT_TYPES.map(function(type) {
     return type.code;
   });
+  var AGREEMENT_BILLING_COPY = /* @__PURE__ */ Object.freeze({
+    label: "Billing address",
+    checking: "Checking your billing address\u2026",
+    needed: "We need a billing address before the agreement can be approved. Your invoices carry it.",
+    unknown: "Your invoices carry this address. If we already have a billing address for you, it stays unless you enter another one.",
+    same: "Same as legal address"
+  });
+  function openAgreementBilling(confirm, options2) {
+    var settings = options2 || {};
+    var billing = { state: "loading", legal: "", value: "", same: false, error: "" };
+    confirm.billing = billing;
+    var load = settings.load || loadContractDetailsAccount;
+    return Promise.resolve().then(function() {
+      return load({ config: state.config, state });
+    }).then(function(result) {
+      var values = contractDetailsPrefill(result && result.account, CLIENT_TYPE_CODES);
+      if (values.BILLING_ADDRESS) {
+        billing.state = "on-file";
+        return;
+      }
+      billing.state = "needed";
+      billing.legal = values.LEGAL_ADDRESS;
+      billing.value = values.LEGAL_ADDRESS;
+      billing.same = !!values.LEGAL_ADDRESS;
+    }, function(error2) {
+      if (error2 && error2.code === "session-expired") state.account = "session-expired";
+      billing.state = "unknown";
+    }).then(function() {
+      if (settings.onChange) settings.onChange();
+      return billing;
+    });
+  }
+  function changeAgreementBilling(billing, patch) {
+    if (!billing || billing.state === "loading" || billing.state === "on-file") return false;
+    if (typeof patch.same === "boolean") {
+      billing.same = patch.same && !!billing.legal;
+      if (billing.same) billing.value = billing.legal;
+    }
+    if (typeof patch.value === "string" && !billing.same) billing.value = patch.value;
+    billing.error = "";
+    return true;
+  }
+  function agreementBillingRequest(billing) {
+    if (!billing || billing.state === "on-file") return { input: void 0 };
+    if (billing.state === "loading") return { wait: true };
+    if (billing.same && billing.legal) return { input: { BILLING_SAME_AS_LEGAL: { value: true } } };
+    var typed = String(billing.value == null ? "" : billing.value).replace(/\s+/g, " ").trim();
+    if (!typed && billing.state === "unknown") return { input: void 0 };
+    var checked = validateProfileValue(PROFILE_RULES.BILLING_ADDRESS, typed, "");
+    return checked.error ? { error: checked.error } : { input: { BILLING_ADDRESS: { value: checked.value } } };
+  }
   function openContractDetails(options2) {
     if (state.contractDetails) return Promise.resolve(state.contractDetails);
     var settings = options2 || {};
@@ -10258,11 +10341,13 @@
     var card = h("section", { "class": "card card--pad agreement-approve", "data-module": "agreement-approve", "data-visual-id": "agreement-approve", "data-tone": "warn", "data-state": pending ? "pending" : confirming ? "confirming" : "idle", "aria-labelledby": "agreement-approve-title" });
     if (confirming) {
       var client = agreement.parties.client.legalName;
-      var confirmButton = ActionButton({ variant: "btn--primary", label: pending ? "Sending\u2026" : "Confirm approval", action: "agreement.confirm", id: String(agreement.backendId), lg: true, disabled: pending || busy, visualId: "agreement-confirm" });
+      var checking = !!confirm.billing && confirm.billing.state === "loading";
+      var confirmButton = ActionButton({ variant: "btn--primary", label: pending ? "Sending\u2026" : "Confirm approval", action: "agreement.confirm", id: String(agreement.backendId), lg: true, disabled: pending || busy || checking, visualId: "agreement-confirm" });
       if (pending) confirmButton.setAttribute("data-state", "pending");
       card.appendChild(h("div", { "class": "decision-confirm", "data-module": "decision-confirm", "data-visual-id": "decision-confirm", "data-state": pending ? "pending" : "open", "data-kind": "agreement", role: "group", "aria-labelledby": "agreement-approve-title" }, [
         h("p", { "class": "decision-confirm__title", id: "agreement-approve-title" }, "Approve this service agreement?"),
         client ? h("p", { "class": "decision-confirm__body" }, "You approve it on behalf of " + client + ".") : null,
+        AgreementBilling(confirm.billing, pending),
         h("div", { "class": "proposal-actions" }, [
           confirmButton,
           ActionButton({ variant: "btn--ghost", label: "Cancel", action: "agreement.cancel", lg: true, disabled: pending, visualId: "agreement-cancel" })
@@ -10280,6 +10365,42 @@
       if (outcome) card.appendChild(outcome);
     }
     return card;
+  }
+  function AgreementBilling(billing, pending) {
+    if (!billing || billing.state === "on-file") return null;
+    var copy = AGREEMENT_BILLING_COPY;
+    if (billing.state === "loading") {
+      return h("p", { "class": "decision-confirm__body", "data-module": "agreement-billing", "data-visual-id": "agreement-billing", "data-state": "loading", "aria-busy": "true" }, copy.checking);
+    }
+    var id = "agreement-billing-address";
+    var input = h("input", {
+      "class": "field",
+      id,
+      name: "BILLING_ADDRESS",
+      type: "text",
+      autocomplete: "street-address",
+      value: billing.value || "",
+      "data-state": billing.error ? "invalid" : void 0,
+      "aria-invalid": billing.error ? "true" : void 0,
+      "aria-describedby": billing.error ? id + "-hint " + id + "-error" : id + "-hint",
+      "aria-required": billing.state === "needed" ? "true" : void 0,
+      disabled: pending || billing.same ? true : void 0
+    });
+    input.addEventListener("input", function() {
+      typeAgreementBilling(input.value);
+    });
+    return h("div", { "class": "agreement-billing", "data-module": "agreement-billing", "data-visual-id": "agreement-billing", "data-state": billing.error ? "invalid" : billing.state }, [
+      h("label", { "class": "field-label", "for": id }, copy.label),
+      h("p", { "class": "contract-form__note", id: id + "-hint" }, billing.state === "needed" ? copy.needed : copy.unknown),
+      billing.legal ? h("div", { "class": "check-line" }, [
+        h("label", { "class": "check-line__label", "for": id + "-same" }, [
+          h("input", { "class": "check-line__input", type: "checkbox", id: id + "-same", checked: billing.same ? true : void 0, disabled: pending ? true : void 0, "data-action": "agreement.billingSame" }),
+          h("span", null, copy.same)
+        ])
+      ]) : null,
+      input,
+      billing.error ? h("div", { "class": "field-error", id: id + "-error", role: "alert" }, billing.error) : null
+    ]);
   }
   function FactsCard(title, className, rows2) {
     var stated = rows2.filter(function(row) {
@@ -12212,6 +12333,123 @@
     ]);
   }
 
+  // app-templates/customer-portal/runtime/src/routes/RequestLinkPage.js
+  function RequestLink() {
+    var link = ensureRequestLink() || { event: "confirm", phase: "invalid" };
+    var copy = state.config.requestLinkCopy;
+    var cancel = link.event === "cancel";
+    var phase = link.phase === "ready" ? "pending" : link.phase;
+    var page = h("section", { "class": "page account-gate", "data-route": state.route, "data-visual-id": "request-link", "data-state": phase });
+    var card = h("div", { "class": "auth-card account-gate__card", "data-module": "request-link", "data-visual-id": "request-link-card", "data-event": link.event, "data-state": phase });
+    if (phase === "pending") {
+      card.setAttribute("aria-busy", "true");
+      card.appendChild(h("div", { "class": "oidc-status" }, [h("span", { "class": "oidc-spinner" })]));
+      card.appendChild(h("div", { "class": "oidc-title" }, cancel ? copy.cancelling : copy.confirming));
+    } else if (phase === "done") {
+      card.setAttribute("role", "status");
+      card.appendChild(h("div", { "class": "oidc-status" }, [h("div", { "class": "oidc-glyph oidc-glyph--ok" }, "\u2713")]));
+      card.appendChild(h("div", { "class": "oidc-title" }, cancel ? copy.cancelledTitle : copy.confirmedTitle));
+      card.appendChild(h("div", { "class": "oidc-sub oidc-sub--tail" }, cancel ? copy.cancelledBody : copy.confirmedBody));
+    } else if (phase === "failed") {
+      card.setAttribute("role", "alert");
+      card.appendChild(h("div", { "class": "oidc-status" }, [h("div", { "class": "oidc-glyph oidc-glyph--warn" }, "!")]));
+      card.appendChild(h("div", { "class": "oidc-title" }, copy.failedTitle));
+      card.appendChild(h("div", { "class": "oidc-sub" }, copy.failedBody));
+      card.appendChild(h("div", { "class": "account-gate__actions" }, [
+        ActionButton({ variant: "btn--primary", label: copy.retry, action: "requestLink.retry", block: true, lg: true, visualId: "request-link-retry" })
+      ]));
+    } else {
+      card.setAttribute("role", "alert");
+      card.appendChild(h("div", { "class": "oidc-status" }, [h("div", { "class": "oidc-glyph oidc-glyph--warn" }, "!")]));
+      card.appendChild(h("div", { "class": "oidc-title" }, copy.invalidTitle));
+      card.appendChild(h("div", { "class": "oidc-sub oidc-sub--tail" }, copy.invalidBody));
+    }
+    page.appendChild(card);
+    return page;
+  }
+
+  // app-templates/customer-portal/runtime/src/request-link.js
+  var OUTCOME_STORAGE_KEY = "portal-request-link-done";
+  var UNREACHABLE_STATUSES = [502, 503, 504];
+  function captureRequestLink(routeId, raw) {
+    var route = routeRegistry[routeId];
+    if (!route || !route.requestEvent) return null;
+    var token = tokenFrom(raw);
+    var current = state.requestLink;
+    if (token) {
+      if (!current || current.token !== token) state.requestLink = { route: routeId, event: route.requestEvent, token, phase: "ready" };
+    } else if (!current || current.route !== routeId) {
+      state.requestLink = { route: routeId, event: route.requestEvent, token: "", phase: remembered(routeId) ? "done" : "invalid" };
+    }
+    return state.requestLink;
+  }
+  function runRequestLink(options2) {
+    var link = state.requestLink;
+    if (!link || link.phase !== "ready") return link;
+    var settings = options2 || {};
+    var send = settings.fetch || globalThis.fetch;
+    link.phase = "pending";
+    var settle3 = function(phase) {
+      if (state.requestLink !== link) return;
+      link.phase = phase;
+      if (phase !== "failed") link.token = "";
+      if (phase === "done") remember(link.route, settings.storage);
+      if (settings.onChange) settings.onChange();
+    };
+    Promise.resolve().then(function() {
+      return send(cmsBase() + "/api/form/send-event/" + encodeURIComponent(link.token) + ".json", {
+        method: "POST",
+        credentials: "omit",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: "{}"
+      });
+    }).then(function(response) {
+      settle3(response && response.ok ? "done" : response && UNREACHABLE_STATUSES.indexOf(response.status) !== -1 ? "failed" : "invalid");
+    }, function() {
+      settle3("failed");
+    });
+    return link;
+  }
+  function retryRequestLink() {
+    var link = state.requestLink;
+    if (!link || link.phase !== "failed" || !link.token) return false;
+    link.phase = "ready";
+    return true;
+  }
+  function cmsBase() {
+    return String(state.config.cmsApiBase || "/core-cms").replace(/\/+$/, "");
+  }
+  function tokenFrom(raw) {
+    var text10 = String(raw || "");
+    var index = text10.indexOf("?");
+    if (index === -1) return "";
+    var token = new URLSearchParams(text10.slice(index + 1)).get("token");
+    return token ? token.trim() : "";
+  }
+  function sessionStore(storage) {
+    try {
+      return storage || globalThis.sessionStorage || null;
+    } catch (_) {
+      return null;
+    }
+  }
+  function remembered(routeId) {
+    var store = sessionStore();
+    try {
+      return !!store && store.getItem(OUTCOME_STORAGE_KEY) === routeId;
+    } catch (_) {
+      return false;
+    }
+  }
+  function remember(routeId, storage) {
+    var store = sessionStore(storage);
+    try {
+      if (store) store.setItem(OUTCOME_STORAGE_KEY, routeId);
+    } catch (_) {
+      return;
+    }
+  }
+
   // app-templates/customer-portal/runtime/src/router.js
   function ComingSoon(routeId, wave) {
     return h("section", { "class": "page", "data-route": routeId, "data-visual-id": routeId }, [
@@ -12303,6 +12541,7 @@
     }
     setRouteQuery(match.id, raw);
     applyRouteParams(match);
+    captureRequestLink(match.id, raw);
     return match.id;
   }
   function writeRouteToLocation(routeId, replace) {
@@ -12338,6 +12577,7 @@
   function renderRoute() {
     var resolved = resolveRoute(state.route);
     if (resolved.id !== state.route) state.route = resolved.id;
+    if (resolved.id === "request.confirm" || resolved.id === "request.cancel") return RequestLink();
     if (state.view === "fallback") return RouteFallback("fallback");
     switch (resolved.id) {
       case "overview":
@@ -12777,8 +13017,16 @@
       render();
       return true;
     },
+    "requestLink.retry": function() {
+      if (!retryRequestLink()) return false;
+      render();
+      return true;
+    },
     "agreement.approve": function(id) {
       return openContractConfirm("agreement", id);
+    },
+    "agreement.billingSame": function() {
+      return toggleAgreementBillingSame();
     },
     "agreement.confirm": function(id) {
       return confirmContractCommand("agreement", id);
@@ -13550,6 +13798,9 @@
     careRetreatFlights.set(key, flight);
     return flight;
   }
+  function ensureRequestLink() {
+    return runRequestLink({ onChange: render });
+  }
   function setState(patch) {
     Object.assign(state, patch);
     render();
@@ -13819,14 +14070,45 @@
     state.contractConfirm = kind === "changes" ? { kind, backendId, message: "", error: "" } : { kind, backendId };
     if (state.contractCommand && state.contractCommand.phase !== "pending") state.contractCommand = null;
     if (kind === "approve") ensureContractDetails();
+    if (kind === "agreement") openAgreementBilling(state.contractConfirm, { load: contractAccountLoader(), onChange: function() {
+      render();
+    } });
     render();
     return true;
+  }
+  function approveAgreementWithBilling(backendId, confirm) {
+    var request = agreementBillingRequest(confirm.billing);
+    if (request.wait || contractCommands.busy()) return false;
+    if (request.error) {
+      confirm.billing.error = request.error;
+      render();
+      focusElement("#agreement-billing-address");
+      return false;
+    }
+    return contractCommands.approveAgreement(backendId, request.input);
+  }
+  function toggleAgreementBillingSame() {
+    var confirm = state.contractConfirm;
+    if (!confirm || confirm.kind !== "agreement" || contractCommands.busy()) return false;
+    if (!changeAgreementBilling(confirm.billing, { same: !confirm.billing.same })) return false;
+    render();
+    focusElement(confirm.billing.same ? '[data-action="agreement.billingSame"]' : "#agreement-billing-address");
+    return true;
+  }
+  function typeAgreementBilling(value) {
+    var confirm = state.contractConfirm;
+    return !!confirm && confirm.kind === "agreement" && changeAgreementBilling(confirm.billing, { value: String(value == null ? "" : value) });
+  }
+  function contractAccountLoader() {
+    return state.config.dataMode === "live" ? void 0 : function(context) {
+      return fixtureAccountProfileAdapter.load("profile", context);
+    };
   }
   function confirmContractCommand(kind, id) {
     var backendId = contractTarget(id);
     var confirm = state.contractConfirm;
     if (!backendId || !confirm || confirm.backendId !== backendId) return false;
-    if (kind === "agreement") return confirm.kind === "agreement" ? contractCommands.approveAgreement(backendId) : false;
+    if (kind === "agreement") return confirm.kind === "agreement" ? approveAgreementWithBilling(backendId, confirm) : false;
     if (confirm.kind === "approve") return approveWithDetails(backendId);
     if (confirm.kind !== "decline") return false;
     return contractCommands.decide(confirm.kind, backendId);
@@ -13865,10 +14147,7 @@
   }
   function ensureContractDetails() {
     if (state.contractDetails) return;
-    var load = state.config.dataMode === "live" ? void 0 : function(context) {
-      return fixtureAccountProfileAdapter.load("profile", context);
-    };
-    openContractDetails({ load, onChange: function() {
+    openContractDetails({ load: contractAccountLoader(), onChange: function() {
       render();
     } });
   }
@@ -15369,7 +15648,7 @@
     if (runtime && state.config.dataMode !== "live") runtime.loadAll();
     if (runtime) runtime.syncPreflight("care");
     if (runtime) loadGrantedCareTransition();
-    var content = customerPortalGateActive() || !isPublic() && state.account !== "ready" ? AccountBootstrap() : renderRoute();
+    var content = accountGateShown() ? AccountBootstrap() : renderRoute();
     if (content && state.route !== lastRoute) content.classList.add("route-enter");
     lastRoute = state.route;
     shell = AppShell(content);

@@ -784,6 +784,8 @@ h1.proposal-detail-head__title { margin: 0; }
 
 .decision-confirm .proposal-actions { margin-top: 12px; flex-wrap: wrap; }
 
+.agreement-billing { display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }
+
 .decision-note { display: flex; align-items: center; gap: 10px; font-size: 13px; line-height: 1.45; color: var(--ink-2); }
 
 .decision-note__spinner { flex: none; width: 16px; height: 16px; border-radius: 50%; border: 2px solid rgba(var(--accent-rgb), .25); border-top-color: var(--accent); animation: contracts-spin .9s linear infinite; }

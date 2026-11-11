@@ -37,9 +37,36 @@ export const liveDeploymentParameters = Object.freeze([
   "PORTAL_MAPS_MAP_ID",
   "PORTAL_TIME_ZONE",
   "PORTAL_TAXES_NOTE",
+  "PORTAL_REQUEST_CONFIRMING",
+  "PORTAL_REQUEST_CONFIRMED_TITLE",
+  "PORTAL_REQUEST_CONFIRMED_BODY",
+  "PORTAL_REQUEST_CANCELLING",
+  "PORTAL_REQUEST_CANCELLED_TITLE",
+  "PORTAL_REQUEST_CANCELLED_BODY",
+  "PORTAL_REQUEST_LINK_INVALID_TITLE",
+  "PORTAL_REQUEST_LINK_INVALID_BODY",
+  "PORTAL_REQUEST_LINK_FAILED_TITLE",
+  "PORTAL_REQUEST_LINK_FAILED_BODY",
+  "PORTAL_REQUEST_LINK_RETRY",
 ]);
 export const operatorParameterPlaceholder = "#";
-export const copyParameters = Object.freeze({ PORTAL_TAXES_NOTE: "Plus applicable taxes." });
+export const requestLinkCopyParameters = Object.freeze({
+  PORTAL_REQUEST_CONFIRMING: ["Confirming your request…", "Shown while the page that the Confirm my request button of the first quote request email opens is sending the confirmation."],
+  PORTAL_REQUEST_CONFIRMED_TITLE: ["Your email is confirmed", "Title of the page shown once a quote request is confirmed from its email."],
+  PORTAL_REQUEST_CONFIRMED_BODY: ["Thank you. Your request is being processed, and we will be in touch.", "Line under the confirmed title."],
+  PORTAL_REQUEST_CANCELLING: ["Cancelling your request…", "Shown while the page that the Unsubscribe link of the first quote request email opens is cancelling the request."],
+  PORTAL_REQUEST_CANCELLED_TITLE: ["Your request was cancelled", "Title of the page shown once a quote request is cancelled from the Unsubscribe link."],
+  PORTAL_REQUEST_CANCELLED_BODY: ["We will not prepare a quote, and no more emails will be sent about this request.", "Line under the cancelled title."],
+  PORTAL_REQUEST_LINK_INVALID_TITLE: ["This link is no longer valid", "Title shown when a confirmation or Unsubscribe link was already used or its request already left the waiting state."],
+  PORTAL_REQUEST_LINK_INVALID_BODY: ["It may already have been used, or the request was already confirmed or cancelled.", "Line under the invalid link title."],
+  PORTAL_REQUEST_LINK_FAILED_TITLE: ["We could not reach our system", "Title shown when the confirmation or cancellation could not be sent; the link stays usable."],
+  PORTAL_REQUEST_LINK_FAILED_BODY: ["Nothing was changed. Check your connection and try again.", "Line under the unreachable title."],
+  PORTAL_REQUEST_LINK_RETRY: ["Try again", "Label of the button that sends the confirmation or cancellation again."],
+});
+export const copyParameters = Object.freeze(Object.assign(
+  { PORTAL_TAXES_NOTE: "Plus applicable taxes." },
+  Object.fromEntries(Object.entries(requestLinkCopyParameters).map(([code, [text]]) => [code, text])),
+));
 
 const packageInventory = [
   "README.md", "cms-family.payload.json", "manual-export-manifest.json", "preview.html",
@@ -278,6 +305,7 @@ function templateFor(source, geography, css, javascript) {
     "data-portal-maps-map-id": parameterMarker("PORTAL_MAPS_MAP_ID"),
     "data-portal-time-zone": parameterMarker("PORTAL_TIME_ZONE"),
     "data-portal-taxes-note": copyMarker("PORTAL_TAXES_NOTE"),
+    ...Object.fromEntries(Object.keys(requestLinkCopyParameters).map((code) => ["data-" + code.toLowerCase().replace(/_/g, "-"), copyMarker(code)])),
     "data-portal-service-geography": geography ? JSON.stringify(geography) : undefined,
     "data-portal-organization": account.organization,
     "data-portal-account-type-code": account.accountTypeCode,
@@ -341,6 +369,7 @@ function templateFor(source, geography, css, javascript) {
         "PORTAL_TAXES_NOTE",
         "Customer portal copy shown under every quote price and total, which are the charges before taxes: the taxes are added when the customer accepts a quote and are shown on invoices. Translate it per language; an empty value shows the English default.",
       ),
+      ...Object.entries(requestLinkCopyParameters).map(([code, [, description]]) => copyParameter(code, description + " Translate it per language; an empty value shows the English default.")),
     ],
   };
 }

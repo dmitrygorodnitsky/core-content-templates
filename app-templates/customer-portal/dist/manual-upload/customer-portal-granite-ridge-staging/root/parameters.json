@@ -77,5 +77,148 @@
     "value": {
       "en": "Plus applicable taxes."
     }
+  },
+  {
+    "code": "PORTAL_REQUEST_CONFIRMING",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "PORTAL REQUEST CONFIRMING",
+        "DESCRIPTION": "Shown while the page that the Confirm my request button of the first quote request email opens is sending the confirmation. Translate it per language; an empty value shows the English default."
+      }
+    },
+    "value": {
+      "en": "Confirming your request…"
+    }
+  },
+  {
+    "code": "PORTAL_REQUEST_CONFIRMED_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "PORTAL REQUEST CONFIRMED TITLE",
+        "DESCRIPTION": "Title of the page shown once a quote request is confirmed from its email. Translate it per language; an empty value shows the English default."
+      }
+    },
+    "value": {
+      "en": "Your email is confirmed"
+    }
+  },
+  {
+    "code": "PORTAL_REQUEST_CONFIRMED_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "PORTAL REQUEST CONFIRMED BODY",
+        "DESCRIPTION": "Line under the confirmed title. Translate it per language; an empty value shows the English default."
+      }
+    },
+    "value": {
+      "en": "Thank you. Your request is being processed, and we will be in touch."
+    }
+  },
+  {
+    "code": "PORTAL_REQUEST_CANCELLING",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "PORTAL REQUEST CANCELLING",
+        "DESCRIPTION": "Shown while the page that the Unsubscribe link of the first quote request email opens is cancelling the request. Translate it per language; an empty value shows the English default."
+      }
+    },
+    "value": {
+      "en": "Cancelling your request…"
+    }
+  },
+  {
+    "code": "PORTAL_REQUEST_CANCELLED_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "PORTAL REQUEST CANCELLED TITLE",
+        "DESCRIPTION": "Title of the page shown once a quote request is cancelled from the Unsubscribe link. Translate it per language; an empty value shows the English default."
+      }
+    },
+    "value": {
+      "en": "Your request was cancelled"
+    }
+  },
+  {
+    "code": "PORTAL_REQUEST_CANCELLED_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "PORTAL REQUEST CANCELLED BODY",
+        "DESCRIPTION": "Line under the cancelled title. Translate it per language; an empty value shows the English default."
+      }
+    },
+    "value": {
+      "en": "We will not prepare a quote, and no more emails will be sent about this request."
+    }
+  },
+  {
+    "code": "PORTAL_REQUEST_LINK_INVALID_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "PORTAL REQUEST LINK INVALID TITLE",
+        "DESCRIPTION": "Title shown when a confirmation or Unsubscribe link was already used or its request already left the waiting state. Translate it per language; an empty value shows the English default."
+      }
+    },
+    "value": {
+      "en": "This link is no longer valid"
+    }
+  },
+  {
+    "code": "PORTAL_REQUEST_LINK_INVALID_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "PORTAL REQUEST LINK INVALID BODY",
+        "DESCRIPTION": "Line under the invalid link title. Translate it per language; an empty value shows the English default."
+      }
+    },
+    "value": {
+      "en": "It may already have been used, or the request was already confirmed or cancelled."
+    }
+  },
+  {
+    "code": "PORTAL_REQUEST_LINK_FAILED_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "PORTAL REQUEST LINK FAILED TITLE",
+        "DESCRIPTION": "Title shown when the confirmation or cancellation could not be sent; the link stays usable. Translate it per language; an empty value shows the English default."
+      }
+    },
+    "value": {
+      "en": "We could not reach our system"
+    }
+  },
+  {
+    "code": "PORTAL_REQUEST_LINK_FAILED_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "PORTAL REQUEST LINK FAILED BODY",
+        "DESCRIPTION": "Line under the unreachable title. Translate it per language; an empty value shows the English default."
+      }
+    },
+    "value": {
+      "en": "Nothing was changed. Check your connection and try again."
+    }
+  },
+  {
+    "code": "PORTAL_REQUEST_LINK_RETRY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "PORTAL REQUEST LINK RETRY",
+        "DESCRIPTION": "Label of the button that sends the confirmation or cancellation again. Translate it per language; an empty value shows the English default."
+      }
+    },
+    "value": {
+      "en": "Try again"
+    }
   }
 ]

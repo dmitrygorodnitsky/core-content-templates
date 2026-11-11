@@ -39,6 +39,7 @@
     QUOTATION_SEND_FAILED: { kind: "unavailable", reason: "retired" },
     AWAITING_CLIENT_DETAILS: { kind: "unavailable", reason: "retired" },
     CLIENT_DETAILS_RECEIVED: { kind: "unavailable", reason: "retired" },
+    CREATED: { kind: "preparing" },
     DRAFT: { kind: "preparing" },
     PENDING_MANAGEMENT_APPROVAL: { kind: "preparing" },
     INTERNALLY_APPROVED: { kind: "preparing" },

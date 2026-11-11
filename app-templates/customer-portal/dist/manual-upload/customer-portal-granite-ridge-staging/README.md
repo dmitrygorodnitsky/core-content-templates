@@ -34,6 +34,17 @@ The page must be served from the same origin as Core: every service base, the Co
 | `PORTAL_MAPS_MAP_ID` | `#` |
 | `PORTAL_TIME_ZONE` | `America/Vancouver` |
 | `PORTAL_TAXES_NOTE` | `Plus applicable taxes.` |
+| `PORTAL_REQUEST_CONFIRMING` | `Confirming your request…` |
+| `PORTAL_REQUEST_CONFIRMED_TITLE` | `Your email is confirmed` |
+| `PORTAL_REQUEST_CONFIRMED_BODY` | `Thank you. Your request is being processed, and we will be in touch.` |
+| `PORTAL_REQUEST_CANCELLING` | `Cancelling your request…` |
+| `PORTAL_REQUEST_CANCELLED_TITLE` | `Your request was cancelled` |
+| `PORTAL_REQUEST_CANCELLED_BODY` | `We will not prepare a quote, and no more emails will be sent about this request.` |
+| `PORTAL_REQUEST_LINK_INVALID_TITLE` | `This link is no longer valid` |
+| `PORTAL_REQUEST_LINK_INVALID_BODY` | `It may already have been used, or the request was already confirmed or cancelled.` |
+| `PORTAL_REQUEST_LINK_FAILED_TITLE` | `We could not reach our system` |
+| `PORTAL_REQUEST_LINK_FAILED_BODY` | `Nothing was changed. Check your connection and try again.` |
+| `PORTAL_REQUEST_LINK_RETRY` | `Try again` |
 
 ## Constraints
 

@@ -150,6 +150,11 @@
     ["AGREEMENT_CONFIRM_TITLE", "agreementConfirmTitle", "Approve this agreement?"],
     ["AGREEMENT_CONFIRM_BODY", "agreementConfirmBody", "You approve it on behalf of {client}."],
     ["AGREEMENT_CONFIRM_BUTTON", "agreementConfirmButton", "Confirm approval"],
+    ["BILLING_ADDRESS_LABEL", "billingAddressLabel", "Billing address"],
+    ["BILLING_ADDRESS_HINT", "billingAddressHint", "Your invoices carry this address. If we already have a billing address for you, it stays unless you enter another one."],
+    ["BILLING_SAME_AS_LEGAL", "billingSameAsLegal", "Same as legal address"],
+    ["BILLING_ADDRESS_REQUIRED", "billingAddressRequired", "Enter the billing address, or choose Same as legal address."],
+    ["BILLING_ADDRESS_REFUSED", "billingAddressRefused", "Your approval was not recorded. We need a billing address before the agreement can be approved: enter it and approve again."],
     ["AGREEMENT_NO_ACTION", "agreementNoAction", "This agreement cannot be approved through this link."],
     ["AGREEMENT_CHANGES_HINT", "agreementChangesHint", "The provider reads your request, revises the agreement and emails you a new link to review it."],
     ["AGREEMENT_CHANGES_PLACEHOLDER", "agreementChangesPlaceholder", "For example: start the service on November 15, or add the side parking lot."],
@@ -295,7 +300,7 @@
     ],
     agreementStates: [
       "QUOTATION", "QUOTATION_SENT", "QUOTATION_UPDATE", "QUOTATION_SEND_FAILED", "AWAITING_CLIENT_DETAILS",
-      "CLIENT_DETAILS_RECEIVED", "DRAFT",
+      "CLIENT_DETAILS_RECEIVED", "CREATED", "DRAFT",
       "PENDING_MANAGEMENT_APPROVAL", "INTERNALLY_APPROVED", "SENT_TO_CLIENT", "CLIENT_CHANGES_REQUESTED", "AGREEMENT_SEND_FAILED",
       "CLIENT_APPROVED", "ACTIVATION_FAILED", "ACTIVE", "SUSPENDED", "EXPIRED", "ARCHIVED", "CANCELED",
       "ACCESS_CLEANUP_RETRY",
@@ -313,7 +318,17 @@
       },
     },
     agreementEvents: {
-      approve: { code: "SENT_TO_CLIENT-CLIENT_APPROVED", source: "SENT_TO_CLIENT" },
+      approve: {
+        code: "SENT_TO_CLIENT-CLIENT_APPROVED",
+        source: "SENT_TO_CLIENT",
+        attributes: [
+          attribute("BILLING_ADDRESS", "java.lang.String", false, "Billing Address", { inputFormat: "address" }),
+          attribute("BILLING_SAME_AS_LEGAL", "java.lang.Boolean", false, "Billing Address Is the Legal Address"),
+        ],
+        billingAddressAttribute: "BILLING_ADDRESS",
+        billingSameAsLegalAttribute: "BILLING_SAME_AS_LEGAL",
+        billingAddressLimit: 255,
+      },
       changes: { code: "SENT_TO_CLIENT-CLIENT_CHANGES_REQUESTED", source: "SENT_TO_CLIENT", messageAttribute: "MESSAGE" },
     },
     orderMetadata: {
@@ -738,6 +753,7 @@
     QUOTATION_SEND_FAILED: { kind: "unavailable", reason: "retired" },
     AWAITING_CLIENT_DETAILS: { kind: "unavailable", reason: "retired" },
     CLIENT_DETAILS_RECEIVED: { kind: "unavailable", reason: "retired" },
+    CREATED: { kind: "preparing" },
     DRAFT: { kind: "preparing" },
     PENDING_MANAGEMENT_APPROVAL: { kind: "preparing" },
     INTERNALLY_APPROVED: { kind: "preparing" },
@@ -3624,6 +3640,7 @@
       card.appendChild(text("p", "cr-confirm__title", copy.agreementConfirmTitle, { id: "cr-agreement-confirm" }));
       var client = view.parties.client.legalName || view.names.client;
       if (client) card.appendChild(text("p", "cr-confirm__body", ns.fill(copy.agreementConfirmBody, { client: client })));
+      card.appendChild(billingField(ctx, pending));
       var confirmButton = button(pending ? copy.sendingLabel : copy.agreementConfirmButton, "btn--primary btn--lg", function () {
         ctx.dispatch("agreement.confirm");
       }, { disabled: pending || ctx.busy, "data-state": pending ? "pending" : null, "data-action": "agreement.confirm", "aria-busy": pending ? "true" : null });
@@ -3643,8 +3660,49 @@
       }
     }
     card.appendChild(actions);
-    if (command && !pending) card.appendChild(outcomeBox(ctx, command, { action: refreshButton(ctx, recordKey, copy.refreshLabel) }));
+    var billingRefused = Boolean(command && command.status === "refused" && command.event === ns.contract.agreementEvents.approve.code && ctx.snapshot.billing.refused);
+    if (command && !pending) {
+      card.appendChild(outcomeBox(ctx, billingRefused ? Object.assign({}, command, { message: copy.billingAddressRefused }) : command, { action: refreshButton(ctx, recordKey, copy.refreshLabel) }));
+    }
     return card;
+  }
+
+  function billingField(ctx, pending) {
+    var copy = ctx.copy;
+    var billing = ctx.snapshot.billing;
+    var message = billing.invalid ? copy.billingAddressRequired : billing.refused ? copy.billingAddressRefused : "";
+    var field = el("div", "cr-field cr-billing", { "data-module": "billing-address", "data-state": message ? "invalid" : "idle", role: "group", "aria-labelledby": "cr-billing-label" });
+    field.appendChild(text("p", "cr-field__label", copy.billingAddressLabel, { id: "cr-billing-label" }));
+    field.appendChild(text("p", "cr-field__hint", copy.billingAddressHint, { id: "cr-billing-hint" }));
+    var toggle = el("label", "cr-choice", { for: "cr-billing-same" });
+    var same = el("input", "cr-choice__input", { type: "checkbox", id: "cr-billing-same", name: "BILLING_SAME_AS_LEGAL", disabled: pending });
+    same.checked = billing.same;
+    same.addEventListener("change", function () { ctx.dispatch("agreement.billing.same", { value: same.checked }); });
+    mark(ctx, same, "billing-same");
+    toggle.appendChild(same);
+    toggle.appendChild(el("span", "cr-check", { "aria-hidden": "true" }));
+    toggle.appendChild(text("span", "cr-choice__label", copy.billingSameAsLegal));
+    field.appendChild(toggle);
+    if (!billing.same) {
+      var input = el("input", "cr-input", {
+        type: "text",
+        id: "cr-billing-address",
+        name: "BILLING_ADDRESS",
+        autocomplete: "street-address",
+        maxlength: String(ns.contract.agreementEvents.approve.billingAddressLimit),
+        "aria-labelledby": "cr-billing-label",
+        "aria-describedby": "cr-billing-hint cr-billing-error",
+        "aria-required": "true",
+        "aria-invalid": message ? "true" : null,
+        disabled: pending,
+      });
+      input.value = billing.value;
+      input.addEventListener("input", function () { ctx.dispatch("agreement.billing.value", { value: input.value }); });
+      mark(ctx, input, "billing-address");
+      field.appendChild(input);
+    }
+    field.appendChild(text("p", "cr-field__error", message, { id: "cr-billing-error", role: message ? "alert" : null }));
+    return field;
   }
 
   function clauseItem(block) {
@@ -3910,6 +3968,7 @@
       choices: {},
       drafts: {},
       draftInvalid: {},
+      billing: { same: true, value: "", invalid: false, refused: false },
       commands: {},
       details: emptyDetails(null),
       plans: {},
@@ -3986,6 +4045,14 @@
 
     function markAccepted() {
       Object.keys(state.accepted).forEach(function (recordKey) {
+        var expectation = state.accepted[recordKey];
+        if (poll.exhausted && expectation.event === contract.agreementEvents.approve.code) {
+          delete state.accepted[recordKey];
+          state.commands[recordKey] = { status: "refused", event: expectation.event, message: "" };
+          state.billing.refused = true;
+          state.billing.same = false;
+          return;
+        }
         state.commands[recordKey] = { status: poll.exhausted ? "unconfirmed" : "pending", event: state.accepted[recordKey].event, message: "" };
       });
     }
@@ -4362,6 +4429,24 @@
       return Boolean(loading) || state.refreshing || state.phase !== "ready";
     }
 
+    function billingAddress() {
+      var typed = state.billing.value.replace(/\s+/g, " ").trim();
+      return typed.length > contract.agreementEvents.approve.billingAddressLimit ? "" : typed;
+    }
+
+    function billingInput() {
+      var approve = contract.agreementEvents.approve;
+      var input = {};
+      if (state.billing.same) {
+        input[approve.billingSameAsLegalAttribute] = { value: true };
+        return input;
+      }
+      var typed = billingAddress();
+      if (!typed) return null;
+      input[approve.billingAddressAttribute] = { value: typed };
+      return input;
+    }
+
     function validateDetail(field, value) {
       var filled = field.kind === "boolean" ? value === true : typeof value === "string" && value.trim() !== "";
       if (!filled) return field.required || field.askedFirst ? copy.requiredError : "";
@@ -4729,9 +4814,26 @@
         case "agreement.changes.send":
           requestAgreementChanges();
           return;
+        case "agreement.billing.same":
+          state.billing.same = data.value === true;
+          state.billing.invalid = false;
+          state.focusKey = state.billing.same ? "billing-same" : "billing-address";
+          render();
+          return;
+        case "agreement.billing.value":
+          state.billing.value = String(data.value == null ? "" : data.value);
+          if (state.billing.invalid && billingAddress()) state.billing.invalid = false;
+          return;
         case "agreement.confirm":
           if (!view || !view.canApproveAgreement || !state.confirm || state.confirm.kind !== "agreement" || busy() || state.accepted[view.agreement.recordKey]) return;
-          send(view.agreement.recordKey, "document", view.agreement.id, contract.agreementEvents.approve.code, {}, { closedAfter: "approval" });
+          var billing = billingInput();
+          if (!billing) {
+            state.billing.invalid = true;
+            state.focusKey = "billing-address";
+            render();
+            return;
+          }
+          send(view.agreement.recordKey, "document", view.agreement.id, contract.agreementEvents.approve.code, billing, { closedAfter: "approval" });
           return;
         default:
           return;
@@ -4751,6 +4853,7 @@
         choices: state.choices,
         drafts: state.drafts,
         draftInvalid: state.draftInvalid,
+        billing: state.billing,
         commands: state.commands,
         details: state.details,
         plans: state.plans,

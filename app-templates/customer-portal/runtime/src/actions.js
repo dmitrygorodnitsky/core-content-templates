@@ -15,7 +15,8 @@ import { payInvoice } from "./invoice-payment.js";
 import { configuredExternalUrl, normalizeVertical, verticalProfiles } from "./config.js";
 import { isRouteReachable, resolveRoute, writeRouteToLocation } from "./router.js";
 import { addTypedQuoteAddress, checkQuoteRequestAgain, loadQuoteRequestSchema, quoteRequestOpen, removeQuoteAddress, resetQuoteRequest, submitQuoteRequest, toggleQuoteProperty } from "./quote-request.js";
-import { contractDetailsEventInput, contractDetailsRequest, openContractDetails } from "./contract-details.js";
+import { agreementBillingRequest, changeAgreementBilling, contractDetailsEventInput, contractDetailsRequest, openAgreementBilling, openContractDetails } from "./contract-details.js";
+import { retryRequestLink, runRequestLink } from "./request-link.js";
 import { selectSeoService, toggleSeoFaq } from "./seo-actions.js";
 import { VISIT_PHOTO_ACTION, openVisitPhotos } from "./visit-photo-viewer.js";
 
@@ -101,7 +102,9 @@ export var ACTIONS = {
   "quoteRequest.submit": function () { return sendQuoteRequest(); },
   "quoteRequest.checkAgain": function () { return checkQuoteRequestAgain({ onChange: function () { render(); }, reload: reloadRuntimeModule }); },
   "quoteRequest.retry": function () { state.quoteRequestSchema = null; render(); return true; },
+  "requestLink.retry": function () { if (!retryRequestLink()) return false; render(); return true; },
   "agreement.approve": function (id) { return openContractConfirm("agreement", id); },
+  "agreement.billingSame": function () { return toggleAgreementBillingSame(); },
   "agreement.confirm": function (id) { return confirmContractCommand("agreement", id); },
   "agreement.cancel":  function ()   { return cancelContractConfirm(); },
   "agreement.toggleTerms": function () { state.agreementTermsOpen = !state.agreementTermsOpen; render(); },
@@ -1281,6 +1284,10 @@ export function requestCareRetreat(id, element) {
   return flight;
 }
 
+export function ensureRequestLink() {
+  return runRequestLink({ onChange: render });
+}
+
 export function setState(patch) { Object.assign(state, patch); render(); }
 
 export function go(route, replace) {
@@ -1507,15 +1514,46 @@ function openContractConfirm(kind, id) {
   state.contractConfirm = kind === "changes" ? { kind: kind, backendId: backendId, message: "", error: "" } : { kind: kind, backendId: backendId };
   if (state.contractCommand && state.contractCommand.phase !== "pending") state.contractCommand = null;
   if (kind === "approve") ensureContractDetails();
+  if (kind === "agreement") openAgreementBilling(state.contractConfirm, { load: contractAccountLoader(), onChange: function () { render(); } });
   render();
   return true;
+}
+
+function approveAgreementWithBilling(backendId, confirm) {
+  var request = agreementBillingRequest(confirm.billing);
+  if (request.wait || contractCommands.busy()) return false;
+  if (request.error) {
+    confirm.billing.error = request.error;
+    render();
+    focusElement("#agreement-billing-address");
+    return false;
+  }
+  return contractCommands.approveAgreement(backendId, request.input);
+}
+
+function toggleAgreementBillingSame() {
+  var confirm = state.contractConfirm;
+  if (!confirm || confirm.kind !== "agreement" || contractCommands.busy()) return false;
+  if (!changeAgreementBilling(confirm.billing, { same: !confirm.billing.same })) return false;
+  render();
+  focusElement(confirm.billing.same ? "[data-action=\"agreement.billingSame\"]" : "#agreement-billing-address");
+  return true;
+}
+
+export function typeAgreementBilling(value) {
+  var confirm = state.contractConfirm;
+  return !!confirm && confirm.kind === "agreement" && changeAgreementBilling(confirm.billing, { value: String(value == null ? "" : value) });
+}
+
+function contractAccountLoader() {
+  return state.config.dataMode === "live" ? undefined : function (context) { return fixtureAccountProfileAdapter.load("profile", context); };
 }
 
 function confirmContractCommand(kind, id) {
   var backendId = contractTarget(id);
   var confirm = state.contractConfirm;
   if (!backendId || !confirm || confirm.backendId !== backendId) return false;
-  if (kind === "agreement") return confirm.kind === "agreement" ? contractCommands.approveAgreement(backendId) : false;
+  if (kind === "agreement") return confirm.kind === "agreement" ? approveAgreementWithBilling(backendId, confirm) : false;
   if (confirm.kind === "approve") return approveWithDetails(backendId);
   if (confirm.kind !== "decline") return false;
   return contractCommands.decide(confirm.kind, backendId);
@@ -1558,8 +1596,7 @@ function sendChangeRequest(id) {
 
 function ensureContractDetails() {
   if (state.contractDetails) return;
-  var load = state.config.dataMode === "live" ? undefined : function (context) { return fixtureAccountProfileAdapter.load("profile", context); };
-  openContractDetails({ load: load, onChange: function () { render(); } });
+  openContractDetails({ load: contractAccountLoader(), onChange: function () { render(); } });
 }
 
 function refreshContracts() {

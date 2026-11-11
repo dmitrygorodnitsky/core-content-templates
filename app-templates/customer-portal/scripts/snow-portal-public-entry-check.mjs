@@ -150,6 +150,17 @@ async function main() {
     { id: "an expiring access token whose refresh is rejected leaves for the landing", hash: "#/overview", session: "signed-in", account: "ready", refreshable: true, refresh: "rejected", steps: [{ tokenEvent: "expiring" }], replaced: [LANDING], last: "route:overview", signinSilent: 1, removedUser: 1 },
     { id: "a 401 on a refreshable session whose refresh is rejected leaves for the landing", hash: "#/overview", session: "signed-in", account: "ready", refreshable: true, refresh: "rejected", staleToken: "everywhere", replaced: [LANDING], last: "gate:resolving-customer", signinSilent: 1, removedUser: 1 },
     { id: "sign-out from the no-access gate", hash: "#/login", session: "signed-in", account: "customer-not-linked", click: "account-signout", replaced: [], signedOutTo: SIGNED_OUT_RETURN },
+    { id: "a confirmation link, signed out", hash: "#/request/confirm?token=tok%2FA1", session: "signed-out", requestLink: "ok", replaced: [], last: "request:confirm:done", route: "request.confirm", address: "#/request/confirm", writes: [["replace", "#/request/confirm"]], requestLinks: ["POST /core-cms/api/form/send-event/tok%2FA1.json omit Accept,Content-Type {}"], cardsSeen: ["request:confirm:pending", "request:confirm:done"], signinRedirect: 0 },
+    { id: "an Unsubscribe link, signed out", hash: "#/request/cancel?token=tokB2", session: "signed-out", requestLink: "ok", replaced: [], last: "request:cancel:done", route: "request.cancel", address: "#/request/cancel", requestLinks: ["POST /core-cms/api/form/send-event/tokB2.json omit Accept,Content-Type {}"], cardsSeen: ["request:cancel:pending", "request:cancel:done"], signinRedirect: 0 },
+    { id: "a confirmation link used before", hash: "#/request/confirm?token=tokA1", session: "signed-out", requestLink: "used", replaced: [], last: "request:confirm:invalid", route: "request.confirm", signinRedirect: 0 },
+    { id: "an Unsubscribe link used before", hash: "#/request/cancel?token=tokB2", session: "signed-out", requestLink: "used", replaced: [], last: "request:cancel:invalid", route: "request.cancel" },
+    { id: "a confirmation link without a token", hash: "#/request/confirm", session: "signed-out", replaced: [], last: "request:confirm:invalid", route: "request.confirm", requestLinks: [] },
+    { id: "a confirmation link while Core is unreachable", hash: "#/request/confirm?token=tokA1", session: "signed-out", requestLink: "down", replaced: [], last: "request:confirm:failed", route: "request.confirm", requestLinks: ["POST /core-cms/api/form/send-event/tokA1.json omit Accept,Content-Type {}"] },
+    { id: "an Unsubscribe link sent again after a lost connection", hash: "#/request/cancel?token=tokB2", session: "signed-out", requestLink: ["offline", "ok"], click: "request-link-retry", replaced: [], last: "request:cancel:done", route: "request.cancel", cardsSeen: ["request:cancel:failed", "request:cancel:done"], requestLinks: ["POST /core-cms/api/form/send-event/tokB2.json omit Accept,Content-Type {}", "POST /core-cms/api/form/send-event/tokB2.json omit Accept,Content-Type {}"] },
+    { id: "a confirmed page whose address changes again", hash: "#/request/confirm?token=tokA1", session: "signed-out", requestLink: "ok", steps: [{ hash: "#/request/confirm" }], replaced: [], last: "request:confirm:done", requestLinks: ["POST /core-cms/api/form/send-event/tokA1.json omit Accept,Content-Type {}"] },
+    { id: "a confirmation link, signed in with access", hash: "#/request/confirm?token=tokA1", session: "signed-in", account: "ready", requestLink: "ok", replaced: [], last: "request:confirm:done", route: "request.confirm", requestLinks: ["POST /core-cms/api/form/send-event/tokA1.json omit Accept,Content-Type {}"] },
+    ...NO_ACCESS_STATES.map((gate) => ({ id: "an Unsubscribe link, signed in as " + gate, hash: "#/request/cancel?token=tokB2", session: "signed-in", account: gate, requestLink: "ok", replaced: [], last: "request:cancel:done", route: "request.cancel", never: ["gate:" + gate] })),
+    { id: "a confirmation link while the Account resolves", hash: "#/request/confirm?token=tokA1", session: "signed-in", account: "pending", requestLink: "ok", replaced: [], last: "request:confirm:done", never: ["gate:resolving-customer"] },
     { id: "setting off, signed out on a private route", hash: "#/overview", session: "signed-out", off: true, replaced: [], last: "oidc:ready-signed-out" },
     ...NO_ACCESS_STATES.map((gate) => ({ id: "setting off, " + gate + " on a private route", hash: "#/overview", session: "signed-in", account: gate, off: true, replaced: [], last: "gate:" + gate })),
   ];
@@ -168,6 +179,9 @@ async function main() {
     for (const card of scenario.never || []) assert.equal(result.cards.includes(card), false, label + ": " + card + " never renders before leaving");
     if (scenario.actions) assert.deepEqual(result.actions, scenario.actions, label + ": the actions on the card");
     if (scenario.route) assert.equal(result.route, scenario.route, label + ": the route it continues to");
+    if (scenario.requestLinks) assert.deepEqual(result.calls.requestLinks, scenario.requestLinks, label + ": the one-time event is sent anonymously, once per attempt");
+    for (const card of scenario.cardsSeen || []) assert.ok(result.cards.includes(card), label + ": " + card + " is shown");
+    if (scenario.hash.startsWith("#/request/")) assert.equal(/token/.test(result.address), false, label + ": the token leaves the address");
     if (scenario.writes) assert.deepEqual(result.history, scenario.writes, label + ": history writes");
     assert.equal(result.history.some(([kind]) => kind === "push"), false, label + ": the portal pushes no history entry of its own");
     if (scenario.address) assert.equal(result.address, scenario.address, label + ": the address it ends on");
@@ -278,7 +292,7 @@ function installBrowser({ hash, dataset = {}, scenario = {} }) {
   const cards = [];
   const errors = [];
   const reloads = [];
-  const calls = { signoutRedirect: 0, removeUser: 0, signinRedirect: 0, signinSilent: 0, unauthorized: 0, renewedRequests: 0 };
+  const calls = { signoutRedirect: 0, removeUser: 0, signinRedirect: 0, signinSilent: 0, unauthorized: 0, renewedRequests: 0, requestLinks: [] };
   const session = { user: scenario.session === "signed-in" ? signedInUser(scenario) : scenario.session === "expired" ? Object.assign(signedInUser(scenario), { expired: true, expires_in: -30 }) : null };
   const pending = {};
   let renders = 0;
@@ -295,7 +309,8 @@ function installBrowser({ hash, dataset = {}, scenario = {} }) {
       renders += 1;
       const card = child.querySelector('[data-module="core-oidc-auth"]') || child.querySelector('[data-module="account-bootstrap"]');
       const page = child.querySelector("section[data-route]");
-      cards.push(card ? (card.getAttribute("data-module") === "core-oidc-auth" ? "oidc:" : "gate:") + card.getAttribute("data-state") : "route:" + (page && page.getAttribute("data-route")));
+      const requestLink = child.querySelector('[data-module="request-link"]');
+      cards.push(requestLink ? "request:" + requestLink.getAttribute("data-event") + ":" + requestLink.getAttribute("data-state") : card ? (card.getAttribute("data-module") === "core-oidc-auth" ? "oidc:" : "gate:") + card.getAttribute("data-state") : "route:" + (page && page.getAttribute("data-route")));
     }
     return child;
   };
@@ -410,6 +425,12 @@ function coreFetch(scenario, pending, calls) {
   return (input, init = {}) => {
     const url = new URL(String(input), PORTAL_ORIGIN);
     const headers = init.headers || {};
+    if (url.pathname.startsWith("/core-cms/api/form/send-event/")) {
+      calls.requestLinks.push([init.method, url.pathname, init.credentials, Object.keys(headers).sort().join(","), init.body].join(" "));
+      const answer = Array.isArray(scenario.requestLink) ? scenario.requestLink[calls.requestLinks.length - 1] : scenario.requestLink;
+      if (answer === "offline") return Promise.reject(new TypeError("Failed to fetch"));
+      return reply(answer === "used" ? 500 : answer === "down" ? 503 : 200, answer === "used" ? { status: 500 } : 687);
+    }
     const token = String(headers.Authorization || headers.authorization || "").split(" ")[1] || "";
     if (token === "renewed-access-token") calls.renewedRequests += 1;
     const stale = token === "stub-access-token"

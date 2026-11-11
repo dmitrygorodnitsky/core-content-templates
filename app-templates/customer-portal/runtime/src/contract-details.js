@@ -43,6 +43,62 @@ const PROFILE_RULES = Object.freeze({
 
 const CLIENT_TYPE_CODES = CONTRACT_CLIENT_TYPES.map(function (type) { return type.code; });
 
+export const AGREEMENT_BILLING_COPY = Object.freeze({
+  label: "Billing address",
+  checking: "Checking your billing address…",
+  needed: "We need a billing address before the agreement can be approved. Your invoices carry it.",
+  unknown: "Your invoices carry this address. If we already have a billing address for you, it stays unless you enter another one.",
+  same: "Same as legal address",
+});
+
+export function openAgreementBilling(confirm, options) {
+  var settings = options || {};
+  var billing = { state: "loading", legal: "", value: "", same: false, error: "" };
+  confirm.billing = billing;
+  var load = settings.load || loadContractDetailsAccount;
+  return Promise.resolve()
+    .then(function () { return load({ config: state.config, state: state }); })
+    .then(function (result) {
+      var values = contractDetailsPrefill(result && result.account, CLIENT_TYPE_CODES);
+      if (values.BILLING_ADDRESS) {
+        billing.state = "on-file";
+        return;
+      }
+      billing.state = "needed";
+      billing.legal = values.LEGAL_ADDRESS;
+      billing.value = values.LEGAL_ADDRESS;
+      billing.same = !!values.LEGAL_ADDRESS;
+    }, function (error) {
+      if (error && error.code === "session-expired") state.account = "session-expired";
+      billing.state = "unknown";
+    })
+    .then(function () {
+      if (settings.onChange) settings.onChange();
+      return billing;
+    });
+}
+
+export function changeAgreementBilling(billing, patch) {
+  if (!billing || billing.state === "loading" || billing.state === "on-file") return false;
+  if (typeof patch.same === "boolean") {
+    billing.same = patch.same && !!billing.legal;
+    if (billing.same) billing.value = billing.legal;
+  }
+  if (typeof patch.value === "string" && !billing.same) billing.value = patch.value;
+  billing.error = "";
+  return true;
+}
+
+export function agreementBillingRequest(billing) {
+  if (!billing || billing.state === "on-file") return { input: undefined };
+  if (billing.state === "loading") return { wait: true };
+  if (billing.same && billing.legal) return { input: { BILLING_SAME_AS_LEGAL: { value: true } } };
+  var typed = String(billing.value == null ? "" : billing.value).replace(/\s+/g, " ").trim();
+  if (!typed && billing.state === "unknown") return { input: undefined };
+  var checked = validateProfileValue(PROFILE_RULES.BILLING_ADDRESS, typed, "");
+  return checked.error ? { error: checked.error } : { input: { BILLING_ADDRESS: { value: checked.value } } };
+}
+
 export function openContractDetails(options) {
   if (state.contractDetails) return Promise.resolve(state.contractDetails);
   var settings = options || {};

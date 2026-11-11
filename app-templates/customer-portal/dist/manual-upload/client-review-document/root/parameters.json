@@ -1892,6 +1892,71 @@
     }
   },
   {
+    "code": "BILLING_ADDRESS_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "BILLING ADDRESS LABEL",
+        "DESCRIPTION": "Client review document copy."
+      }
+    },
+    "value": {
+      "en": "Billing address"
+    }
+  },
+  {
+    "code": "BILLING_ADDRESS_HINT",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "BILLING ADDRESS HINT",
+        "DESCRIPTION": "Client review document copy."
+      }
+    },
+    "value": {
+      "en": "Your invoices carry this address. If we already have a billing address for you, it stays unless you enter another one."
+    }
+  },
+  {
+    "code": "BILLING_SAME_AS_LEGAL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "BILLING SAME AS LEGAL",
+        "DESCRIPTION": "Client review document copy."
+      }
+    },
+    "value": {
+      "en": "Same as legal address"
+    }
+  },
+  {
+    "code": "BILLING_ADDRESS_REQUIRED",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "BILLING ADDRESS REQUIRED",
+        "DESCRIPTION": "Client review document copy."
+      }
+    },
+    "value": {
+      "en": "Enter the billing address, or choose Same as legal address."
+    }
+  },
+  {
+    "code": "BILLING_ADDRESS_REFUSED",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "BILLING ADDRESS REFUSED",
+        "DESCRIPTION": "Client review document copy."
+      }
+    },
+    "value": {
+      "en": "Your approval was not recorded. We need a billing address before the agreement can be approved: enter it and approve again."
+    }
+  },
+  {
     "code": "AGREEMENT_NO_ACTION",
     "type": "LOCALIZED_STRING_SS",
     "nls": {

@@ -36,6 +36,7 @@ export var state = {
   contractDetails: null,
   quoteRequest: null,
   quoteRequestSchema: null,
+  requestLink: null,
   ovProperty: null,
   ovWeatherIndex: null,
   currentSiteId: "s2", // open proposal site
@@ -928,6 +929,16 @@ export function currentContact() {
 export function isPublic(routeId) {
   var route = routeRegistry[routeId || state.route];
   return !!(route && route.public);
+}
+
+export function isSessionFree(routeId) {
+  var route = routeRegistry[routeId || state.route];
+  return !!(route && route.sessionFree);
+}
+
+export function accountGateShown() {
+  if (isSessionFree()) return false;
+  return customerPortalGateActive() || (!isPublic() && state.account !== "ready");
 }
 
 export function customerPortalAccessRequired() {

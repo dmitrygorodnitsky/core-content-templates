@@ -56,7 +56,7 @@ export function createContractCommands(deps) {
     }) || Promise.resolve(false);
   }
 
-  function approveAgreement(backendId) {
+  function approveAgreement(backendId, input) {
     var definition = CONTRACT_EVENTS.agreement;
     var row = findAgreement(deps.current(), backendId);
     if (!row || row.agreement.stateCode !== definition.source || row.agreement.allowedActions.indexOf("approve") === -1) return Promise.resolve(false);
@@ -64,7 +64,7 @@ export function createContractCommands(deps) {
       var gateway = deps.gateway();
       var document = await gateway.readAgreement(backendId, deps.context());
       if (latestStateCode(document) !== definition.source) throw coded("conflict");
-      await gateway.sendAgreementEvent(backendId, definition.code, deps.context());
+      await gateway.sendAgreementEvent(backendId, definition.code, deps.context(), input);
       return confirm("agreement", backendId, definition.source, function (pkg) {
         var read = findAgreement(pkg, backendId);
         return read ? read.agreement.stateCode : null;

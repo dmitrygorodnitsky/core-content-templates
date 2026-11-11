@@ -57,6 +57,7 @@
       choices: {},
       drafts: {},
       draftInvalid: {},
+      billing: { same: true, value: "", invalid: false, refused: false },
       commands: {},
       details: emptyDetails(null),
       plans: {},
@@ -133,6 +134,14 @@
 
     function markAccepted() {
       Object.keys(state.accepted).forEach(function (recordKey) {
+        var expectation = state.accepted[recordKey];
+        if (poll.exhausted && expectation.event === contract.agreementEvents.approve.code) {
+          delete state.accepted[recordKey];
+          state.commands[recordKey] = { status: "refused", event: expectation.event, message: "" };
+          state.billing.refused = true;
+          state.billing.same = false;
+          return;
+        }
         state.commands[recordKey] = { status: poll.exhausted ? "unconfirmed" : "pending", event: state.accepted[recordKey].event, message: "" };
       });
     }
@@ -509,6 +518,24 @@
       return Boolean(loading) || state.refreshing || state.phase !== "ready";
     }
 
+    function billingAddress() {
+      var typed = state.billing.value.replace(/\s+/g, " ").trim();
+      return typed.length > contract.agreementEvents.approve.billingAddressLimit ? "" : typed;
+    }
+
+    function billingInput() {
+      var approve = contract.agreementEvents.approve;
+      var input = {};
+      if (state.billing.same) {
+        input[approve.billingSameAsLegalAttribute] = { value: true };
+        return input;
+      }
+      var typed = billingAddress();
+      if (!typed) return null;
+      input[approve.billingAddressAttribute] = { value: typed };
+      return input;
+    }
+
     function validateDetail(field, value) {
       var filled = field.kind === "boolean" ? value === true : typeof value === "string" && value.trim() !== "";
       if (!filled) return field.required || field.askedFirst ? copy.requiredError : "";
@@ -876,9 +903,26 @@
         case "agreement.changes.send":
           requestAgreementChanges();
           return;
+        case "agreement.billing.same":
+          state.billing.same = data.value === true;
+          state.billing.invalid = false;
+          state.focusKey = state.billing.same ? "billing-same" : "billing-address";
+          render();
+          return;
+        case "agreement.billing.value":
+          state.billing.value = String(data.value == null ? "" : data.value);
+          if (state.billing.invalid && billingAddress()) state.billing.invalid = false;
+          return;
         case "agreement.confirm":
           if (!view || !view.canApproveAgreement || !state.confirm || state.confirm.kind !== "agreement" || busy() || state.accepted[view.agreement.recordKey]) return;
-          send(view.agreement.recordKey, "document", view.agreement.id, contract.agreementEvents.approve.code, {}, { closedAfter: "approval" });
+          var billing = billingInput();
+          if (!billing) {
+            state.billing.invalid = true;
+            state.focusKey = "billing-address";
+            render();
+            return;
+          }
+          send(view.agreement.recordKey, "document", view.agreement.id, contract.agreementEvents.approve.code, billing, { closedAfter: "approval" });
           return;
         default:
           return;
@@ -898,6 +942,7 @@
         choices: state.choices,
         drafts: state.drafts,
         draftInvalid: state.draftInvalid,
+        billing: state.billing,
         commands: state.commands,
         details: state.details,
         plans: state.plans,

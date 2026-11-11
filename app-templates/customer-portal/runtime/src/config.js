@@ -121,6 +121,8 @@ export const routeRegistry = {
   "auth.oidc": { id: "auth.oidc", path: "/login", module: "auth", public: true },
   "auth.phone": { id: "auth.phone", path: "/login/phone-reference", module: "auth", public: true },
   "auth.code": { id: "auth.code", path: "/login/verify", module: "auth", public: true },
+  "request.confirm": { id: "request.confirm", path: "/request/confirm", module: "auth", public: true, sessionFree: true, requestEvent: "confirm" },
+  "request.cancel": { id: "request.cancel", path: "/request/cancel", module: "auth", public: true, sessionFree: true, requestEvent: "cancel" },
   overview: { id: "overview", path: "/overview", module: "overview" },
   appointments: { id: "appointments", path: "/appointments", module: "appointmentsTimeline" },
   "visit.detail": { id: "visit.detail", path: "/visits/:id", module: "appointmentsTimeline", param: "id" },
@@ -237,6 +239,7 @@ export function readPortalConfig(root) {
     },
     primaryCtaLabel: dataset.portalPrimaryCtaLabel || "",
     taxesNote: copyText(dataset.portalTaxesNote, "Plus applicable taxes."),
+    requestLinkCopy: requestLinkCopy(dataset),
     vertical: vertical,
     theme: theme,
     profile: profile,
@@ -416,6 +419,28 @@ function finiteNumber(value) {
   if (typeof value === "number") return value;
   if (typeof value === "string" && value.trim() !== "") return Number(value);
   return Number.NaN;
+}
+
+export const REQUEST_LINK_COPY = Object.freeze({
+  confirming: ["portalRequestConfirming", "Confirming your request…"],
+  confirmedTitle: ["portalRequestConfirmedTitle", "Your email is confirmed"],
+  confirmedBody: ["portalRequestConfirmedBody", "Thank you. Your request is being processed, and we will be in touch."],
+  cancelling: ["portalRequestCancelling", "Cancelling your request…"],
+  cancelledTitle: ["portalRequestCancelledTitle", "Your request was cancelled"],
+  cancelledBody: ["portalRequestCancelledBody", "We will not prepare a quote, and no more emails will be sent about this request."],
+  invalidTitle: ["portalRequestLinkInvalidTitle", "This link is no longer valid"],
+  invalidBody: ["portalRequestLinkInvalidBody", "It may already have been used, or the request was already confirmed or cancelled."],
+  failedTitle: ["portalRequestLinkFailedTitle", "We could not reach our system"],
+  failedBody: ["portalRequestLinkFailedBody", "Nothing was changed. Check your connection and try again."],
+  retry: ["portalRequestLinkRetry", "Try again"],
+});
+
+function requestLinkCopy(dataset) {
+  var copy = {};
+  Object.keys(REQUEST_LINK_COPY).forEach(function (key) {
+    copy[key] = copyText(dataset[REQUEST_LINK_COPY[key][0]], REQUEST_LINK_COPY[key][1]);
+  });
+  return copy;
 }
 
 function copyText(value, fallback) {

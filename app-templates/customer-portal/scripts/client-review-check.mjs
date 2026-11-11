@@ -327,7 +327,7 @@ const N = loadRuntime().CR.normalizer;
   const RETIRED = ["QUOTATION", "QUOTATION_SENT", "QUOTATION_UPDATE", "QUOTATION_SEND_FAILED", "AWAITING_CLIENT_DETAILS", "CLIENT_DETAILS_RECEIVED", "ACTIVE", "SUSPENDED", "EXPIRED"];
   const EXPECTED_KIND = {
     QUOTATION: "unavailable", QUOTATION_SENT: "unavailable", QUOTATION_UPDATE: "unavailable", QUOTATION_SEND_FAILED: "unavailable",
-    AWAITING_CLIENT_DETAILS: "unavailable", CLIENT_DETAILS_RECEIVED: "unavailable", DRAFT: "preparing",
+    AWAITING_CLIENT_DETAILS: "unavailable", CLIENT_DETAILS_RECEIVED: "unavailable", CREATED: "preparing", DRAFT: "preparing",
     PENDING_MANAGEMENT_APPROVAL: "preparing",
     INTERNALLY_APPROVED: "preparing", SENT_TO_CLIENT: "agreement-review", CLIENT_CHANGES_REQUESTED: "reference", AGREEMENT_SEND_FAILED: "unavailable",
     CLIENT_APPROVED: "completion", ACTIVATION_FAILED: "completion", ACTIVE: "unavailable", SUSPENDED: "unavailable", EXPIRED: "unavailable",
@@ -673,7 +673,11 @@ const N = loadRuntime().CR.normalizer;
     const seed = JSON.parse(await fs.readFile(seedPath, "utf8"));
     const seedWorkflow = seed.workflows.find((workflow) => workflow.code === contract.agreementWorkflow);
     assert.deepEqual(plain(contract.agreementStates), seedWorkflow.states.map((state) => state.code), "the page knows every state of the seeded agreement workflow, the retired quotation states and ACTIVATION_FAILED included");
-    console.log("client-review-check: agreement states compared with " + path.relative(process.cwd(), seedPath));
+    const billingShape = (attributes) => attributes.map((attribute) => [attribute.code, attribute.className, attribute.required]).sort((left, right) => (left[0] < right[0] ? -1 : 1));
+    const approval = contract.agreementEvents.approve;
+    assert.deepEqual(billingShape(plain(approval.attributes)), billingShape(seedWorkflow.events.find((event) => event.code === approval.code).attributes || []), "the billing address the page sends with an approval is what the seeded approval event declares");
+    assert.deepEqual([approval.billingAddressAttribute, approval.billingSameAsLegalAttribute], ["BILLING_ADDRESS", "BILLING_SAME_AS_LEGAL"]);
+    console.log("client-review-check: agreement states and the approval's billing attributes compared with " + path.relative(process.cwd(), seedPath));
   } else {
     console.log("client-review-check: seed " + seedPath + " not present, agreement states not compared");
   }
@@ -1182,16 +1186,27 @@ function assertForm(run, expected, message) {
         break;
       }
       case "agreement-unconfirmed": {
+        const approveCode = "SENT_TO_CLIENT-CLIENT_APPROVED";
         const card = byClass(run.mount, "cr-approve")[0];
-        const note = byAttribute(card, "data-command", "unconfirmed")[0];
-        assert.ok(note && surface(note).includes(copy.commandUnconfirmed), "an accepted approval not seen within the budget says so");
-        assert.equal(byAttribute(card, "data-action", "agreement.approve").length + byAttribute(card, "data-action", "agreement.confirm").length, 0, "and does not offer approval again");
+        const refusal = byAttribute(card, "data-state", "refused")[0];
+        assert.ok(refusal && surface(refusal).includes(copy.billingAddressRefused), "an approval the server never recorded within the budget is answered as not recorded, and names the billing address");
+        assert.equal(byAttribute(card, "data-command", "unconfirmed").length, 0, "the page does not leave the client waiting on a silent refusal");
+        assert.equal(byAttribute(card, "data-action", "agreement.confirm").length, 1, "and keeps the approval open to be sent again");
         assert.equal(run.timers.pending, 0);
-        assert.ok(run.live.textContent.includes(copy.commandUnconfirmed));
-        run.controller.dispatch("agreement.intent");
+        assert.deepEqual(run.sent.map((call) => [call[2], call[3]]), [[approveCode, { BILLING_SAME_AS_LEGAL: { value: true } }]], "the first approval asked for the legal address as the billing address");
+        const field = byAttribute(run.mount, "data-module", "billing-address")[0];
+        assert.equal(field.getAttribute("data-state"), "invalid", "the refusal lands on the billing address field");
+        assert.ok(surface(field).includes(copy.billingAddressRefused));
+        assert.equal(byAttribute(field, "name", "BILLING_SAME_AS_LEGAL")[0].checked, false, "Same as legal address is cleared, because it was what the server did not take");
+        assert.equal(byAttribute(field, "name", "BILLING_ADDRESS").length, 1, "and the address field is open");
         run.controller.dispatch("agreement.confirm");
         await tick();
-        assert.deepEqual(run.sent.map((call) => call[2]), ["SENT_TO_CLIENT-CLIENT_APPROVED"], "one approval left the page");
+        assert.equal(run.sent.length, 1, "an empty billing address sends nothing");
+        assert.ok(surface(byAttribute(run.mount, "data-module", "billing-address")[0]).includes(copy.billingAddressRequired), "and says what is missing beside the field");
+        run.controller.dispatch("agreement.billing.value", { value: "  10 Main St,   Vancouver, BC V6B 1A1, Canada " });
+        run.controller.dispatch("agreement.confirm");
+        await tick();
+        assert.deepEqual(run.sent.map((call) => [call[2], call[3]])[1], [approveCode, { BILLING_ADDRESS: { value: "10 Main St, Vancouver, BC V6B 1A1, Canada" } }], "the typed billing address goes with the second approval");
         break;
       }
       case "round-decided": {
@@ -1501,7 +1516,7 @@ function assertForm(run, expected, message) {
         assert.ok(invitation && surface(invitation).includes(copy.portalTitle), "and carries the portal invitation");
         assert.ok(visibleText(invitation).includes("dana.reyes@harbourview.example"), "with the primary email the link returned before it closed");
         assert.equal(portalLinks(invitation)[0].getAttribute("href"), run.runtime.CR.fixtures.portalUrl);
-        assert.deepEqual(run.sent.map((call) => call[2]), ["SENT_TO_CLIENT-CLIENT_APPROVED"]);
+        assert.deepEqual(run.sent.map((call) => [call[2], call[3]]), [["SENT_TO_CLIENT-CLIENT_APPROVED", { BILLING_SAME_AS_LEGAL: { value: true } }]], "the approval carries the billing choice");
         break;
       }
       case "agreement-numbered-terms": {
@@ -1520,10 +1535,29 @@ function assertForm(run, expected, message) {
         assert.equal(byClass(panel, "cr-terms__paragraph").length, 0, "no numbered line falls back to prose");
         break;
       }
-      case "agreement-confirm":
+      case "agreement-confirm": {
         assert.ok(text.includes(copy.agreementConfirmTitle));
         assert.equal(run.sent.length, 0);
+        const billing = byAttribute(run.mount, "data-module", "billing-address")[0];
+        assert.ok(billing && surface(billing).includes(copy.billingAddressLabel) && surface(billing).includes(copy.billingAddressHint), "the approval asks for the billing address, because a link cannot see whether one is on file");
+        assert.equal(billing.getAttribute("data-state"), "idle");
+        assert.equal(byAttribute(billing, "name", "BILLING_SAME_AS_LEGAL")[0].checked, true, "Same as legal address is the choice it opens with");
+        assert.equal(byAttribute(billing, "name", "BILLING_ADDRESS").length, 0, "and the address field stays closed with it");
+        run.controller.dispatch("agreement.billing.same", { value: false });
+        const opened = byAttribute(run.mount, "data-module", "billing-address")[0];
+        assert.equal(byAttribute(opened, "name", "BILLING_ADDRESS").length, 1, "clearing it opens the address field");
+        run.controller.dispatch("agreement.confirm");
+        await tick();
+        assert.equal(run.sent.length, 0, "an empty billing address is refused on the page");
+        const refused = byAttribute(run.mount, "data-module", "billing-address")[0];
+        assert.equal(refused.getAttribute("data-state"), "invalid");
+        assert.ok(surface(refused).includes(copy.billingAddressRequired), "with the reason beside the field");
+        run.controller.dispatch("agreement.billing.value", { value: "x".repeat(256) });
+        run.controller.dispatch("agreement.confirm");
+        await tick();
+        assert.equal(run.sent.length, 0, "an address longer than the server takes is not sent");
         break;
+      }
       case "agreement-approval-only":
         assert.deepEqual(byAttribute(run.mount, "data-action", "agreement.changes").length + byAttribute(run.mount, "data-action", "agreement.approve").length, 1, "a link that does not delegate the change request offers approval alone");
         assert.equal(byAttribute(run.mount, "data-action", "agreement.approve").length, 1);

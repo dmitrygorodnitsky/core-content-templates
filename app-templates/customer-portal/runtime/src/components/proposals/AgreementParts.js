@@ -5,6 +5,8 @@ import { formatIsoDate } from "../../normalizers/contracts.js";
 import { visitImageUrl } from "../../normalizers/visits.js";
 import { icon } from "../storm/overview-icons.js";
 import { CommandOutcome } from "./ContractStates.js";
+import { AGREEMENT_BILLING_COPY } from "../../contract-details.js";
+import { typeAgreementBilling } from "../../actions.js";
 import { QuoteOptionCard } from "./QuoteOptionCard.js";
 
 var STAGE_NOTICE = {
@@ -185,11 +187,13 @@ export function AgreementApproval(row, busy) {
   var card = h("section", { "class": "card card--pad agreement-approve", "data-module": "agreement-approve", "data-visual-id": "agreement-approve", "data-tone": "warn", "data-state": pending ? "pending" : confirming ? "confirming" : "idle", "aria-labelledby": "agreement-approve-title" });
   if (confirming) {
     var client = agreement.parties.client.legalName;
-    var confirmButton = ActionButton({ variant: "btn--primary", label: pending ? "Sending…" : "Confirm approval", action: "agreement.confirm", id: String(agreement.backendId), lg: true, disabled: pending || busy, visualId: "agreement-confirm" });
+    var checking = !!confirm.billing && confirm.billing.state === "loading";
+    var confirmButton = ActionButton({ variant: "btn--primary", label: pending ? "Sending…" : "Confirm approval", action: "agreement.confirm", id: String(agreement.backendId), lg: true, disabled: pending || busy || checking, visualId: "agreement-confirm" });
     if (pending) confirmButton.setAttribute("data-state", "pending");
     card.appendChild(h("div", { "class": "decision-confirm", "data-module": "decision-confirm", "data-visual-id": "decision-confirm", "data-state": pending ? "pending" : "open", "data-kind": "agreement", role: "group", "aria-labelledby": "agreement-approve-title" }, [
       h("p", { "class": "decision-confirm__title", id: "agreement-approve-title" }, "Approve this service agreement?"),
       client ? h("p", { "class": "decision-confirm__body" }, "You approve it on behalf of " + client + ".") : null,
+      AgreementBilling(confirm.billing, pending),
       h("div", { "class": "proposal-actions" }, [
         confirmButton,
         ActionButton({ variant: "btn--ghost", label: "Cancel", action: "agreement.cancel", lg: true, disabled: pending, visualId: "agreement-cancel" }),
@@ -207,6 +211,41 @@ export function AgreementApproval(row, busy) {
     if (outcome) card.appendChild(outcome);
   }
   return card;
+}
+
+function AgreementBilling(billing, pending) {
+  if (!billing || billing.state === "on-file") return null;
+  var copy = AGREEMENT_BILLING_COPY;
+  if (billing.state === "loading") {
+    return h("p", { "class": "decision-confirm__body", "data-module": "agreement-billing", "data-visual-id": "agreement-billing", "data-state": "loading", "aria-busy": "true" }, copy.checking);
+  }
+  var id = "agreement-billing-address";
+  var input = h("input", {
+    "class": "field",
+    id: id,
+    name: "BILLING_ADDRESS",
+    type: "text",
+    autocomplete: "street-address",
+    value: billing.value || "",
+    "data-state": billing.error ? "invalid" : undefined,
+    "aria-invalid": billing.error ? "true" : undefined,
+    "aria-describedby": billing.error ? id + "-hint " + id + "-error" : id + "-hint",
+    "aria-required": billing.state === "needed" ? "true" : undefined,
+    disabled: pending || billing.same ? true : undefined,
+  });
+  input.addEventListener("input", function () { typeAgreementBilling(input.value); });
+  return h("div", { "class": "agreement-billing", "data-module": "agreement-billing", "data-visual-id": "agreement-billing", "data-state": billing.error ? "invalid" : billing.state }, [
+    h("label", { "class": "field-label", "for": id }, copy.label),
+    h("p", { "class": "contract-form__note", id: id + "-hint" }, billing.state === "needed" ? copy.needed : copy.unknown),
+    billing.legal ? h("div", { "class": "check-line" }, [
+      h("label", { "class": "check-line__label", "for": id + "-same" }, [
+        h("input", { "class": "check-line__input", type: "checkbox", id: id + "-same", checked: billing.same ? true : undefined, disabled: pending ? true : undefined, "data-action": "agreement.billingSame" }),
+        h("span", null, copy.same),
+      ]),
+    ]) : null,
+    input,
+    billing.error ? h("div", { "class": "field-error", id: id + "-error", role: "alert" }, billing.error) : null,
+  ]);
 }
 
 function FactsCard(title, className, rows) {

@@ -1,11 +1,11 @@
 // customer-portal/runtime/src/components/shell/AppShell.js — production transfer module.
 import { h } from "../../dom.js";
-import { activeProfile, customerPortalGateActive, isPublic, isSpa, spaCapability, state } from "../../state.js";
+import { accountGateShown, activeProfile, isPublic, isSpa, spaCapability, state } from "../../state.js";
 import { TopNav } from "./TopNav.js";
 import { PublicNav } from "./PublicNav.js";
 
 export function AppShell(content) {
-  var gated = customerPortalGateActive() || (!isPublic() && state.account !== "ready");
+  var gated = accountGateShown();
   var capability = isSpa() ? spaCapability() : undefined;
   return h("div", {
     "class": "app-shell", "data-module": "app-shell", "data-visual-id": "app-shell",

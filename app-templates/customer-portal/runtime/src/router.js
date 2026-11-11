@@ -28,6 +28,8 @@ import { Auth } from "./routes/AuthPage.js";
 import { Care } from "./routes/CarePage.js";
 import { SeoLanding } from "./routes/SeoLandingPage.js";
 import { AuthOidc } from "./routes/AuthOidcPage.js";
+import { RequestLink } from "./routes/RequestLinkPage.js";
+import { captureRequestLink } from "./request-link.js";
 import { SpaAccount } from "./routes/SpaAccountPage.js";
 import { SpaAppointments } from "./routes/SpaAppointmentsPage.js";
 import { SpaAppointmentDetail } from "./routes/SpaAppointmentDetailPage.js";
@@ -151,6 +153,7 @@ export function routeFromLocation() {
   }
   setRouteQuery(match.id, raw);
   applyRouteParams(match);
+  captureRequestLink(match.id, raw);
   return match.id;
 }
 
@@ -189,6 +192,7 @@ export function initRouter(onRouteChange) {
 export function renderRoute() {
   var resolved = resolveRoute(state.route);
   if (resolved.id !== state.route) state.route = resolved.id;
+  if (resolved.id === "request.confirm" || resolved.id === "request.cancel") return RequestLink();
   if (state.view === "fallback") return RouteFallback("fallback");
 
   switch (resolved.id) {

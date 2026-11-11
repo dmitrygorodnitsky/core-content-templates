@@ -960,6 +960,7 @@
       card.appendChild(text("p", "cr-confirm__title", copy.agreementConfirmTitle, { id: "cr-agreement-confirm" }));
       var client = view.parties.client.legalName || view.names.client;
       if (client) card.appendChild(text("p", "cr-confirm__body", ns.fill(copy.agreementConfirmBody, { client: client })));
+      card.appendChild(billingField(ctx, pending));
       var confirmButton = button(pending ? copy.sendingLabel : copy.agreementConfirmButton, "btn--primary btn--lg", function () {
         ctx.dispatch("agreement.confirm");
       }, { disabled: pending || ctx.busy, "data-state": pending ? "pending" : null, "data-action": "agreement.confirm", "aria-busy": pending ? "true" : null });
@@ -979,8 +980,49 @@
       }
     }
     card.appendChild(actions);
-    if (command && !pending) card.appendChild(outcomeBox(ctx, command, { action: refreshButton(ctx, recordKey, copy.refreshLabel) }));
+    var billingRefused = Boolean(command && command.status === "refused" && command.event === ns.contract.agreementEvents.approve.code && ctx.snapshot.billing.refused);
+    if (command && !pending) {
+      card.appendChild(outcomeBox(ctx, billingRefused ? Object.assign({}, command, { message: copy.billingAddressRefused }) : command, { action: refreshButton(ctx, recordKey, copy.refreshLabel) }));
+    }
     return card;
+  }
+
+  function billingField(ctx, pending) {
+    var copy = ctx.copy;
+    var billing = ctx.snapshot.billing;
+    var message = billing.invalid ? copy.billingAddressRequired : billing.refused ? copy.billingAddressRefused : "";
+    var field = el("div", "cr-field cr-billing", { "data-module": "billing-address", "data-state": message ? "invalid" : "idle", role: "group", "aria-labelledby": "cr-billing-label" });
+    field.appendChild(text("p", "cr-field__label", copy.billingAddressLabel, { id: "cr-billing-label" }));
+    field.appendChild(text("p", "cr-field__hint", copy.billingAddressHint, { id: "cr-billing-hint" }));
+    var toggle = el("label", "cr-choice", { for: "cr-billing-same" });
+    var same = el("input", "cr-choice__input", { type: "checkbox", id: "cr-billing-same", name: "BILLING_SAME_AS_LEGAL", disabled: pending });
+    same.checked = billing.same;
+    same.addEventListener("change", function () { ctx.dispatch("agreement.billing.same", { value: same.checked }); });
+    mark(ctx, same, "billing-same");
+    toggle.appendChild(same);
+    toggle.appendChild(el("span", "cr-check", { "aria-hidden": "true" }));
+    toggle.appendChild(text("span", "cr-choice__label", copy.billingSameAsLegal));
+    field.appendChild(toggle);
+    if (!billing.same) {
+      var input = el("input", "cr-input", {
+        type: "text",
+        id: "cr-billing-address",
+        name: "BILLING_ADDRESS",
+        autocomplete: "street-address",
+        maxlength: String(ns.contract.agreementEvents.approve.billingAddressLimit),
+        "aria-labelledby": "cr-billing-label",
+        "aria-describedby": "cr-billing-hint cr-billing-error",
+        "aria-required": "true",
+        "aria-invalid": message ? "true" : null,
+        disabled: pending,
+      });
+      input.value = billing.value;
+      input.addEventListener("input", function () { ctx.dispatch("agreement.billing.value", { value: input.value }); });
+      mark(ctx, input, "billing-address");
+      field.appendChild(input);
+    }
+    field.appendChild(text("p", "cr-field__error", message, { id: "cr-billing-error", role: message ? "alert" : null }));
+    return field;
   }
 
   function clauseItem(block) {

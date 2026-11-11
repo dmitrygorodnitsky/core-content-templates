@@ -3,7 +3,7 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
 import { assertLiveBundle, bundledInputs, bundleLivePortalRuntime, liveFixtureMarkers, liveRuntimeVertical, minifiedRuntimePath, minifyStylesheet } from "./build-live-portal-runtime.mjs";
-import { assertLiveTemplate, copyParameters, coreOidcCallback, exportLivePortalManual, liveDeploymentParameters, operatorParameterPlaceholder } from "./export-live-portal-manual.mjs";
+import { assertLiveTemplate, copyParameters, coreOidcCallback, exportLivePortalManual, liveDeploymentParameters, operatorParameterPlaceholder, requestLinkCopyParameters } from "./export-live-portal-manual.mjs";
 import { assertJteSafeTemplate } from "./export-portal-form-manual.mjs";
 import { readStyles } from "./portal-manual-package.mjs";
 
@@ -13,7 +13,7 @@ const runtimePath = path.join(root, "runtime/manual/granite-ridge-staging-runtim
 const fixtureRuntimePath = path.join(root, "runtime/manual/granite-ridge-fixture-runtime.js");
 const fixtureSourcePath = path.join(root, "content/cases/granite-ridge-snow.customer-portal-fixture.json");
 const outputDir = path.join(root, "dist/manual-upload/.granite-ridge-staging-portal-manual-check");
-const { portalProfiles, readServiceGeography } = await import(pathToFileURL(path.join(root, "runtime/src/config.js")).href);
+const { REQUEST_LINK_COPY, portalProfiles, readPortalConfig, readServiceGeography, routeRegistry } = await import(pathToFileURL(path.join(root, "runtime/src/config.js")).href);
 
 try {
   await fs.rm(outputDir, { recursive: true, force: true });
@@ -94,6 +94,18 @@ try {
   assert.throws(() => assertLiveTemplate(withValue("PORTAL_TIME_ZONE", "#")), /IANA time zone/, "the time zone is shipped, not left to the placeholder");
   assert.throws(() => assertLiveTemplate(withValue("PORTAL_TIME_ZONE", "Pacific Time")), /IANA time zone/);
   assert.throws(() => assertLiveTemplate(withValue("PORTAL_TAXES_NOTE", { en: " " })), /must ship its English copy/, "the taxes note never ships empty");
+  const datasetKey = (code) => attributeFor(code).slice("data-".length).replace(/-([a-z])/g, (_, letter) => letter.toUpperCase());
+  assert.deepEqual(
+    Object.values(REQUEST_LINK_COPY),
+    Object.entries(requestLinkCopyParameters).map(([code, [text]]) => [datasetKey(code), text]),
+    "every line of the request confirmation and cancellation pages is a CMS copy parameter whose English default the runtime repeats",
+  );
+  const translated = Object.fromEntries(Object.keys(requestLinkCopyParameters).map((code) => [datasetKey(code), "fr " + code]));
+  assert.deepEqual(Object.values(readPortalConfig({ dataset: translated }).requestLinkCopy), Object.keys(requestLinkCopyParameters).map((code) => "fr " + code), "a translated value reaches the page");
+  assert.deepEqual(readPortalConfig({ dataset }).requestLinkCopy, Object.fromEntries(Object.entries(REQUEST_LINK_COPY).map(([key, [, text]]) => [key, text])), "an unrendered marker shows the English default");
+  for (const id of ["request.confirm", "request.cancel"]) {
+    assert.deepEqual([routeRegistry[id].public, routeRegistry[id].sessionFree], [true, true], id + " opens without a sign-in");
+  }
   const byCode = Object.fromEntries(template.parameters.map((item) => [item.code, item.nls.en.DESCRIPTION]));
   for (const code of ["PORTAL_WEATHER_CLIENT_ID", "PORTAL_WEATHER_CLIENT_SECRET", "PORTAL_MAPS_API_KEY"]) {
     assert.match(byCode[code], /visible in page source/, code + " must tell the operator the value is public");
@@ -275,5 +287,5 @@ function attributeFor(code) {
     PORTAL_MAPS_MAP_ID: "data-portal-maps-map-id",
     PORTAL_TIME_ZONE: "data-portal-time-zone",
     PORTAL_TAXES_NOTE: "data-portal-taxes-note",
-  }[code];
+  }[code] || (requestLinkCopyParameters[code] ? "data-" + code.toLowerCase().replace(/_/g, "-") : undefined);
 }

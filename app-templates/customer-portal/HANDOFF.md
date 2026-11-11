@@ -964,6 +964,58 @@ No attribute, workflow state or permission was added.
   driven in a headless Chrome with its own profile, so the Browser pane holds
   no cookie of the deleted User.
 
+### Request confirmation pages and the billing address at approval (2026-11-11, evening)
+
+Backend, proofs and rollback: core-ui `docs/snow-feedback-2026-11-11.md`,
+"Follow-up C" and "Follow-up D".
+
+- **Two session-free portal routes.** `request.confirm` (`#/request/confirm`)
+  and `request.cancel` (`#/request/cancel`) are what the first email of a
+  public quote request opens: its "Confirm my request" button and its
+  Unsubscribe link, each with a one-time `?token=`. The router takes the token
+  out of the address at once and `request-link.js` posts it, without
+  credentials, to `/core-cms/api/form/send-event/<token>.json`. The card
+  (`RequestLinkPage.js`, the account-gate card) has five states: pending,
+  confirmed, cancelled, link no longer valid (any refusal by Core) and
+  unreachable with Try again (no answer, or 502–504). A reload shows the last
+  outcome of the tab (`sessionStorage`, the route id only) and sends nothing.
+  The routes carry `sessionFree`: no sign-in redirect, no landing redirect and
+  no account gate, whatever the session is (`accountGateShown`).
+- **Copy** is eleven `PORTAL_REQUEST_*` `LOCALIZED_STRING_SS` parameters of the
+  live root (`requestLinkCopyParameters` in the exporter, `REQUEST_LINK_COPY`
+  in `config.js`; the staging check holds them equal). An unrendered marker,
+  `#` or an empty value shows the English default.
+- **Core answers 200 to a token whose event is no longer available**, so the
+  page alone cannot tell a confirmation from a no-op; the form's hook now
+  closes the other token when the request leaves its waiting state, and that
+  link answers 500.
+- **Billing address at agreement approval.** The event
+  `SENT_TO_CLIENT-CLIENT_APPROVED` takes `BILLING_ADDRESS` (one line) or
+  `BILLING_SAME_AS_LEGAL` (`true`); the hook refuses an approval that leaves
+  the Account without a `BILLING` address, with 200 and an unchanged state.
+  - Review page: the confirm step always asks (a link reads Account addresses
+    as ids only): Same as legal address is chosen, clearing it opens the
+    address field. Same as legal address is only a fallback on the server: a
+    billing address on file stays. An approval the readbacks never see
+    (75 s) is no longer left as "unconfirmed" forever: the page says it was
+    not recorded, clears the option, opens the field with the reason beside
+    it and lets the approval be sent again. Copy: five `BILLING_*` parameters.
+  - Portal: opening the approval reads the signed-in Account; with a
+    `BILLING` address nothing is asked, without one the field is required,
+    prefilled from the `LEGAL` address with Same as legal address chosen; an
+    Account that cannot be read gets the field as optional.
+  - The review contract (`core-contract.js`) also knows the agreement's new
+    technical `CREATED` state.
+- **Live on dev-1**: portal `3e57675e` and review `7f4ded3f` uploaded, render
+  cache cleared on `app-1-core-cms` and `app-3-core-cms`. Both request pages
+  and the review page's ask, refusal and approval were driven in a headless
+  Chrome against throwaway records. The signed-in portal's ask was not driven
+  with a customer session: `snow-portal-quote-flow-check.mjs` runs it against
+  a Core table, and its presentation was looked at on the fixture runtime.
+- **Open:** a request confirmed earlier cannot be cancelled with its
+  Unsubscribe link (the page says the link is no longer valid); a mail
+  scanner that runs page scripts would use a link up.
+
 ## Universal form document
 
 `runtime/forms/portal-form.js` renders any published Core form type in the
