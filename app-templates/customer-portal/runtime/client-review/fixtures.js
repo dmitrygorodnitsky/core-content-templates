@@ -265,6 +265,7 @@
     { id: "agreement-terms-not-granted", label: "Agreement review — a link issued without the agreement text" },
     { id: "agreement-content-terms", label: "Agreement review — terms read from the agreement's document content" },
     { id: "agreement-confirm", label: "Agreement approval — confirmation" },
+    { id: "agreement-confirm-billing", label: "Agreement approval — confirmation asking for the billing address the account lacks" },
     { id: "agreement-unconfirmed", label: "Agreement approval accepted, change not seen within the budget — Refresh status" },
     { id: "agreement-changes", label: "Agreement — request changes, the form" },
     { id: "agreement-changes-invalid", label: "Agreement — request changes, message required" },
@@ -1076,6 +1077,7 @@
     var phase = "";
     var portalUrl = "";
     var pollDelays = null;
+    var billingAddressMissing = false;
     var clipboard = null;
     var maps = "";
     var choose = [["option.toggle", { id: 3102 }], ["option.choose", { id: 3102 }]];
@@ -1319,6 +1321,11 @@
         data = agreementData("SENT_TO_CLIENT", false);
         steps = [["agreement.intent", {}]];
         break;
+      case "agreement-confirm-billing":
+        data = agreementData("SENT_TO_CLIENT", false);
+        billingAddressMissing = true;
+        steps = [["agreement.intent", {}]];
+        break;
       case "agreement-unconfirmed":
         data = agreementData("SENT_TO_CLIENT", false);
         behavior.staleReads = 99;
@@ -1401,7 +1408,7 @@
       default:
         break;
     }
-    return { data: data, behavior: behavior, steps: steps, phase: phase, portalUrl: portalUrl, pollDelays: pollDelays, clipboard: clipboard, maps: maps };
+    return { data: data, behavior: behavior, steps: steps, phase: phase, portalUrl: portalUrl, pollDelays: pollDelays, billingAddressMissing: billingAddressMissing, clipboard: clipboard, maps: maps };
   }
 
   function mapsLoader(kind) {
@@ -1421,6 +1428,7 @@
       data: built.data,
       portalUrl: built.portalUrl,
       pollDelays: built.pollDelays,
+      billingAddressMissing: built.billingAddressMissing,
       clipboard: built.clipboard,
       loadMaps: built.phase ? null : mapsLoader(built.maps),
     };

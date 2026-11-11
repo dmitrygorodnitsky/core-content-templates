@@ -960,7 +960,7 @@
       card.appendChild(text("p", "cr-confirm__title", copy.agreementConfirmTitle, { id: "cr-agreement-confirm" }));
       var client = view.parties.client.legalName || view.names.client;
       if (client) card.appendChild(text("p", "cr-confirm__body", ns.fill(copy.agreementConfirmBody, { client: client })));
-      card.appendChild(billingField(ctx, pending));
+      if (ctx.snapshot.billing.asked) card.appendChild(billingField(ctx, pending));
       var confirmButton = button(pending ? copy.sendingLabel : copy.agreementConfirmButton, "btn--primary btn--lg", function () {
         ctx.dispatch("agreement.confirm");
       }, { disabled: pending || ctx.busy, "data-state": pending ? "pending" : null, "data-action": "agreement.confirm", "aria-busy": pending ? "true" : null });

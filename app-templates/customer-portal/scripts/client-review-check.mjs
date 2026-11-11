@@ -856,7 +856,7 @@ const EXPECTED_SCENARIOS = {
   "property-list-failed": ["ready", "quote-review"], "address-list-failed": ["ready", "quote-review"],
   "details-invalid": ["ready", "quote-review"], "details-refused": ["ready", "quote-review"], "details-legal-address-refused": ["ready", "quote-review"], "details-legal-address-unparsed": ["ready", "quote-review"], "details-closed": ["link-closed", null],
   preparing: ["ready", "preparing"], "agreement-review": ["ready", "agreement-review"], "agreement-numbered-terms": ["ready", "agreement-review"], "agreement-content-terms": ["ready", "agreement-review"],
-  "agreement-no-terms": ["ready", "agreement-review"], "agreement-terms-not-granted": ["ready", "agreement-review"], "agreement-confirm": ["ready", "agreement-review"], "agreement-unconfirmed": ["ready", "agreement-review"], "approval-closed": ["link-closed", null],
+  "agreement-no-terms": ["ready", "agreement-review"], "agreement-terms-not-granted": ["ready", "agreement-review"], "agreement-confirm": ["ready", "agreement-review"], "agreement-confirm-billing": ["ready", "agreement-review"], "agreement-unconfirmed": ["ready", "agreement-review"], "approval-closed": ["link-closed", null],
   "agreement-changes": ["ready", "agreement-review"], "agreement-changes-invalid": ["ready", "agreement-review"], "agreement-changes-pending": ["ready", "agreement-review"],
   "agreement-changes-refused": ["ready", "agreement-review"], "agreement-changes-sent": ["ready", "reference"], "agreement-changes-requested": ["ready", "reference"],
   "agreement-approval-only": ["ready", "agreement-review"],
@@ -905,7 +905,7 @@ const portalLinks = (node) => byAttribute(node, "data-action", "portal.open");
 const stateCardOf = (node) => { const card = byClass(node, "cr-state")[0]; return [card.getAttribute("data-state"), byClass(card, "cr-state__glyph")[0].textContent]; };
 const contactLines = (node) => byClass(node, "cr-contact__item").map((item) => [item.getAttribute("data-contact"), item.children[0].textContent, item.children[1].tagName, item.children[1].textContent, item.children[1].getAttribute("href")]);
 const providerLogos = (node) => byClass(node, "cr-party__logo");
-const AGREEMENT_SCENARIOS = new Set(["partial", "agreement-review", "agreement-numbered-terms", "agreement-content-terms", "agreement-no-terms", "agreement-terms-not-granted", "agreement-confirm", "agreement-unconfirmed", "agreement-changes", "agreement-changes-invalid", "agreement-changes-pending", "agreement-changes-refused", "agreement-changes-sent", "agreement-changes-requested", "agreement-approval-only", "approval-closed", "completion", "completion-portal", "completion-finishing", "completion-attributes", "reference-expired", "closed-canceled", "closed-orders-canceled", "unavailable", "preparing", "retired-quotation"]);
+const AGREEMENT_SCENARIOS = new Set(["partial", "agreement-review", "agreement-numbered-terms", "agreement-content-terms", "agreement-no-terms", "agreement-terms-not-granted", "agreement-confirm", "agreement-confirm-billing", "agreement-unconfirmed", "agreement-changes", "agreement-changes-invalid", "agreement-changes-pending", "agreement-changes-refused", "agreement-changes-sent", "agreement-changes-requested", "agreement-approval-only", "approval-closed", "completion", "completion-portal", "completion-finishing", "completion-attributes", "reference-expired", "closed-canceled", "closed-orders-canceled", "unavailable", "preparing", "retired-quotation"]);
 const CONTACTLESS_SCENARIOS = new Set(Object.keys(EXPECTED_SCENARIOS).filter((id) => !AGREEMENT_SCENARIOS.has(id)));
 const FORM_FROM_ATTRIBUTES = {
   LEGAL_NAME: "Harbourview Strata Corporation", CLIENT_TYPE: "",
@@ -1191,13 +1191,13 @@ function assertForm(run, expected, message) {
         assert.ok(note && surface(note).includes(copy.commandUnconfirmed), "an accepted approval not seen within the budget says it is not confirmed yet");
         assert.equal(byAttribute(card, "data-action", "agreement.approve").length + byAttribute(card, "data-action", "agreement.confirm").length, 0, "and does not offer approval again");
         assert.equal(byAttribute(run.mount, "data-module", "billing-address").length, 0, "nor blames the billing address, which the page cannot know to be the reason");
-        assert.deepEqual(plain(run.controller.snapshot().billing), { same: true, value: "", invalid: false }, "the billing choice is left as the client made it");
+        assert.deepEqual(plain(run.controller.snapshot().billing), { asked: false, same: true, value: "", invalid: false }, "the billing choice is left as it was");
         assert.equal(run.timers.pending, 0);
         assert.ok(run.live.textContent.includes(copy.commandUnconfirmed));
         run.controller.dispatch("agreement.intent");
         run.controller.dispatch("agreement.confirm");
         await tick();
-        assert.deepEqual(run.sent.map((call) => [call[2], call[3]]), [["SENT_TO_CLIENT-CLIENT_APPROVED", { BILLING_SAME_AS_LEGAL: { value: true } }]], "one approval left the page");
+        assert.deepEqual(run.sent.map((call) => [call[2], call[3]]), [["SENT_TO_CLIENT-CLIENT_APPROVED", {}]], "one approval left the page");
         break;
       }
       case "round-decided": {
@@ -1507,7 +1507,7 @@ function assertForm(run, expected, message) {
         assert.ok(invitation && surface(invitation).includes(copy.portalTitle), "and carries the portal invitation");
         assert.ok(visibleText(invitation).includes("dana.reyes@harbourview.example"), "with the primary email the link returned before it closed");
         assert.equal(portalLinks(invitation)[0].getAttribute("href"), run.runtime.CR.fixtures.portalUrl);
-        assert.deepEqual(run.sent.map((call) => [call[2], call[3]]), [["SENT_TO_CLIENT-CLIENT_APPROVED", { BILLING_SAME_AS_LEGAL: { value: true } }]], "the approval carries the billing choice");
+        assert.deepEqual(run.sent.map((call) => [call[2], call[3]]), [["SENT_TO_CLIENT-CLIENT_APPROVED", {}]]);
         break;
       }
       case "agreement-numbered-terms": {
@@ -1529,8 +1529,18 @@ function assertForm(run, expected, message) {
       case "agreement-confirm": {
         assert.ok(text.includes(copy.agreementConfirmTitle));
         assert.equal(run.sent.length, 0);
+        assert.equal(byAttribute(run.mount, "data-module", "billing-address").length, 0, "a link that does not say the billing address is missing asks for none: it was given at the quote's Accept");
+        assert.equal(run.controller.snapshot().billing.asked, false);
+        run.controller.dispatch("agreement.confirm");
+        await tick();
+        assert.deepEqual(run.sent.map((call) => [call[2], call[3]]), [["SENT_TO_CLIENT-CLIENT_APPROVED", {}]], "and its approval carries no billing attribute");
+        break;
+      }
+      case "agreement-confirm-billing": {
+        assert.ok(text.includes(copy.agreementConfirmTitle));
+        assert.equal(run.sent.length, 0);
         const billing = byAttribute(run.mount, "data-module", "billing-address")[0];
-        assert.ok(billing && surface(billing).includes(copy.billingAddressLabel) && surface(billing).includes(copy.billingAddressHint), "the approval asks for the billing address, because a link cannot see whether one is on file");
+        assert.ok(billing && surface(billing).includes(copy.billingAddressLabel) && surface(billing).includes(copy.billingAddressHint), "a link that says the Account has no billing address asks for it at the approval");
         assert.equal(billing.getAttribute("data-state"), "idle");
         assert.equal(byAttribute(billing, "name", "BILLING_SAME_AS_LEGAL")[0].checked, true, "Same as legal address is the choice it opens with");
         assert.equal(byAttribute(billing, "name", "BILLING_ADDRESS").length, 0, "and the address field stays closed with it");
@@ -1547,6 +1557,10 @@ function assertForm(run, expected, message) {
         run.controller.dispatch("agreement.confirm");
         await tick();
         assert.equal(run.sent.length, 0, "an address longer than the server takes is not sent");
+        run.controller.dispatch("agreement.billing.same", { value: true });
+        run.controller.dispatch("agreement.confirm");
+        await tick();
+        assert.deepEqual(run.sent.map((call) => [call[2], call[3]]), [["SENT_TO_CLIENT-CLIENT_APPROVED", { BILLING_SAME_AS_LEGAL: { value: true } }]], "Same as legal address goes with the approval");
         break;
       }
       case "agreement-approval-only":
@@ -3041,6 +3055,10 @@ const later = () => new Promise((resolve) => setTimeout(resolve, 5));
   const { CR } = loadRuntime();
   const { tokenFromFragment, propertyTokenFromFragment, createGrantAdapter } = CR.adapter;
   assert.equal(tokenFromFragment("#token=main&property-token=rm"), "main", "the main token is read from token=");
+  const { billingAddressMissingFromFragment } = CR.adapter;
+  assert.equal(billingAddressMissingFromFragment("#token=main&property-token=rm&billing-address=missing"), true, "the delivery says in the link when the client Account has no billing address");
+  assert.deepEqual(["#token=main&property-token=rm", "#token=main&billing-address=on-file", "#token=main&billing-address=", "", "#billing-address=missing-not"].map(billingAddressMissingFromFragment), [false, false, false, false, false], "any other link asks for none");
+  assert.equal(tokenFromFragment("#token=main&property-token=rm&billing-address=missing"), "main");
   assert.equal(propertyTokenFromFragment("#token=main&property-token=rm"), "rm", "the property token is read from property-token=");
   assert.equal(tokenFromFragment("#property-token=rm&token=main"), "main", "whatever their order");
   assert.equal(propertyTokenFromFragment("#property-token=rm&token=main"), "rm");

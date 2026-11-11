@@ -151,7 +151,7 @@
     ["AGREEMENT_CONFIRM_BODY", "agreementConfirmBody", "You approve it on behalf of {client}."],
     ["AGREEMENT_CONFIRM_BUTTON", "agreementConfirmButton", "Confirm approval"],
     ["BILLING_ADDRESS_LABEL", "billingAddressLabel", "Billing address"],
-    ["BILLING_ADDRESS_HINT", "billingAddressHint", "Your invoices carry this address. If we already have a billing address for you, it stays unless you enter another one."],
+    ["BILLING_ADDRESS_HINT", "billingAddressHint", "We need a billing address before the agreement can be approved. Your invoices carry it."],
     ["BILLING_SAME_AS_LEGAL", "billingSameAsLegal", "Same as legal address"],
     ["BILLING_ADDRESS_REQUIRED", "billingAddressRequired", "Enter the billing address, or choose Same as legal address."],
     ["AGREEMENT_NO_ACTION", "agreementNoAction", "This agreement cannot be approved through this link."],
@@ -414,7 +414,7 @@
       localizedtextcontent: { service: "core", segment: "localized-text-content" },
       resource: { service: "core-rm", segment: "resource", grant: "property" },
     },
-    fragment: { token: "token", propertyToken: "property-token" },
+    fragment: { token: "token", propertyToken: "property-token", billingAddress: "billing-address", billingAddressMissing: "missing" },
     image: { service: "core", head: "image", tail: "get", width: 440 },
     plan: { service: "core", head: "media", tail: "stream.json" },
     pageSize: 200,
@@ -464,6 +464,10 @@
 
   function propertyTokenFromFragment(hash) {
     return fragmentValue(hash, GRANT.fragment.propertyToken);
+  }
+
+  function billingAddressMissingFromFragment(hash) {
+    return fragmentValue(hash, GRANT.fragment.billingAddress) === GRANT.fragment.billingAddressMissing;
   }
 
   function acceptableToken(value) {
@@ -703,6 +707,7 @@
     createGrantAdapter: createGrantAdapter,
     tokenFromFragment: tokenFromFragment,
     propertyTokenFromFragment: propertyTokenFromFragment,
+    billingAddressMissingFromFragment: billingAddressMissingFromFragment,
     safeApiBase: safeApiBase,
     safePortalUrl: safePortalUrl,
     imageId: imageId,
@@ -3639,7 +3644,7 @@
       card.appendChild(text("p", "cr-confirm__title", copy.agreementConfirmTitle, { id: "cr-agreement-confirm" }));
       var client = view.parties.client.legalName || view.names.client;
       if (client) card.appendChild(text("p", "cr-confirm__body", ns.fill(copy.agreementConfirmBody, { client: client })));
-      card.appendChild(billingField(ctx, pending));
+      if (ctx.snapshot.billing.asked) card.appendChild(billingField(ctx, pending));
       var confirmButton = button(pending ? copy.sendingLabel : copy.agreementConfirmButton, "btn--primary btn--lg", function () {
         ctx.dispatch("agreement.confirm");
       }, { disabled: pending || ctx.busy, "data-state": pending ? "pending" : null, "data-action": "agreement.confirm", "aria-busy": pending ? "true" : null });
@@ -3964,7 +3969,7 @@
       choices: {},
       drafts: {},
       draftInvalid: {},
-      billing: { same: true, value: "", invalid: false },
+      billing: { asked: settings.billingAddressMissing === true, same: true, value: "", invalid: false },
       commands: {},
       details: emptyDetails(null),
       plans: {},
@@ -4814,7 +4819,7 @@
           return;
         case "agreement.confirm":
           if (!view || !view.canApproveAgreement || !state.confirm || state.confirm.kind !== "agreement" || busy() || state.accepted[view.agreement.recordKey]) return;
-          var billing = billingInput();
+          var billing = state.billing.asked ? billingInput() : {};
           if (!billing) {
             state.billing.invalid = true;
             state.focusKey = "billing-address";
@@ -4965,6 +4970,7 @@
         if (setup.phase) options.phase = setup.phase;
         if (setup.portalUrl) options.portalUrl = setup.portalUrl;
         if (setup.pollDelays) options.pollDelays = setup.pollDelays;
+        if (setup.billingAddressMissing) options.billingAddressMissing = true;
         if (setup.clipboard) options.clipboard = setup.clipboard;
         steps = setup.steps || [];
       }
@@ -4974,6 +4980,7 @@
       if (!apiBase) options.phase = "unconfigured";
       else if (!token) options.phase = "link-missing";
       else options.adapter = ns.adapter.createGrantAdapter({ apiBase: apiBase, token: token, propertyToken: ns.adapter.propertyTokenFromFragment(locationRef.hash), fetch: env.fetch });
+      options.billingAddressMissing = ns.adapter.billingAddressMissingFromFragment(locationRef.hash);
       var mapsKey = ns.maps ? ns.maps.keyOf(section.getAttribute("data-review-maps-api-key")) : "";
       if (options.adapter && mapsKey) {
         options.maps = ns.maps.service({

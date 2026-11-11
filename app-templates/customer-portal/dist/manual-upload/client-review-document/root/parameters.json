@@ -1914,7 +1914,7 @@
       }
     },
     "value": {
-      "en": "Your invoices carry this address. If we already have a billing address for you, it stays unless you enter another one."
+      "en": "We need a billing address before the agreement can be approved. Your invoices carry it."
     }
   },
   {

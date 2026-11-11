@@ -999,13 +999,18 @@ Backend, proofs and rollback: core-ui `docs/snow-feedback-2026-11-11.md`,
   `SENT_TO_CLIENT-CLIENT_APPROVED` takes `BILLING_ADDRESS` (one line) or
   `BILLING_SAME_AS_LEGAL` (`true`); the hook refuses an approval that leaves
   the Account without a `BILLING` address, with 200 and an unchanged state.
-  - Review page: the confirm step always asks (a link reads Account addresses
-    as ids only): Same as legal address is chosen, clearing it opens the
-    address field. Same as legal address is only a fallback on the server: a
-    billing address on file stays. An approval the readbacks never see (75 s)
-    is "not confirmed yet" like any other command: the page names no reason,
-    because a refusal answers 200 and a link cannot learn why. Copy: four
-    `BILLING_*` parameters.
+  - Review page: the billing address is asked once, at the quote's Accept
+    (user decision 2026-11-11), so the confirm step asks again only when the
+    link says the Account has none: the delivery appends
+    `&billing-address=missing` to the fragment
+    (`billingAddressMissingFromFragment`; core-ui delivery V17). Then Same as
+    legal address is chosen and clearing it opens the address field; any
+    other link sends the approval without billing attributes. Same as legal
+    address is only a fallback on the server: a billing address on file
+    stays. An approval the readbacks never see (75 s) is "not confirmed yet"
+    like any other command: the page names no reason, because a refusal
+    answers 200 and a link cannot learn why. Copy: four `BILLING_*`
+    parameters; preview state `agreement-confirm-billing`.
   - Portal: opening the approval reads the signed-in Account; with a
     `BILLING` address nothing is asked, without one the field is required,
     prefilled from the `LEGAL` address with Same as legal address chosen; an

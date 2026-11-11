@@ -17,7 +17,7 @@
       localizedtextcontent: { service: "core", segment: "localized-text-content" },
       resource: { service: "core-rm", segment: "resource", grant: "property" },
     },
-    fragment: { token: "token", propertyToken: "property-token" },
+    fragment: { token: "token", propertyToken: "property-token", billingAddress: "billing-address", billingAddressMissing: "missing" },
     image: { service: "core", head: "image", tail: "get", width: 440 },
     plan: { service: "core", head: "media", tail: "stream.json" },
     pageSize: 200,
@@ -67,6 +67,10 @@
 
   function propertyTokenFromFragment(hash) {
     return fragmentValue(hash, GRANT.fragment.propertyToken);
+  }
+
+  function billingAddressMissingFromFragment(hash) {
+    return fragmentValue(hash, GRANT.fragment.billingAddress) === GRANT.fragment.billingAddressMissing;
   }
 
   function acceptableToken(value) {
@@ -306,6 +310,7 @@
     createGrantAdapter: createGrantAdapter,
     tokenFromFragment: tokenFromFragment,
     propertyTokenFromFragment: propertyTokenFromFragment,
+    billingAddressMissingFromFragment: billingAddressMissingFromFragment,
     safeApiBase: safeApiBase,
     safePortalUrl: safePortalUrl,
     imageId: imageId,

@@ -57,7 +57,7 @@
       choices: {},
       drafts: {},
       draftInvalid: {},
-      billing: { same: true, value: "", invalid: false },
+      billing: { asked: settings.billingAddressMissing === true, same: true, value: "", invalid: false },
       commands: {},
       details: emptyDetails(null),
       plans: {},
@@ -907,7 +907,7 @@
           return;
         case "agreement.confirm":
           if (!view || !view.canApproveAgreement || !state.confirm || state.confirm.kind !== "agreement" || busy() || state.accepted[view.agreement.recordKey]) return;
-          var billing = billingInput();
+          var billing = state.billing.asked ? billingInput() : {};
           if (!billing) {
             state.billing.invalid = true;
             state.focusKey = "billing-address";
@@ -1058,6 +1058,7 @@
         if (setup.phase) options.phase = setup.phase;
         if (setup.portalUrl) options.portalUrl = setup.portalUrl;
         if (setup.pollDelays) options.pollDelays = setup.pollDelays;
+        if (setup.billingAddressMissing) options.billingAddressMissing = true;
         if (setup.clipboard) options.clipboard = setup.clipboard;
         steps = setup.steps || [];
       }
@@ -1067,6 +1068,7 @@
       if (!apiBase) options.phase = "unconfigured";
       else if (!token) options.phase = "link-missing";
       else options.adapter = ns.adapter.createGrantAdapter({ apiBase: apiBase, token: token, propertyToken: ns.adapter.propertyTokenFromFragment(locationRef.hash), fetch: env.fetch });
+      options.billingAddressMissing = ns.adapter.billingAddressMissingFromFragment(locationRef.hash);
       var mapsKey = ns.maps ? ns.maps.keyOf(section.getAttribute("data-review-maps-api-key")) : "";
       if (options.adapter && mapsKey) {
         options.maps = ns.maps.service({

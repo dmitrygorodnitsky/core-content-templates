@@ -1473,7 +1473,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
   data-copy-agreement-confirm-body="You approve it on behalf of {client}."
   data-copy-agreement-confirm-button="Confirm approval"
   data-copy-billing-address-label="Billing address"
-  data-copy-billing-address-hint="Your invoices carry this address. If we already have a billing address for you, it stays unless you enter another one."
+  data-copy-billing-address-hint="We need a billing address before the agreement can be approved. Your invoices carry it."
   data-copy-billing-same-as-legal="Same as legal address"
   data-copy-billing-address-required="Enter the billing address, or choose Same as legal address."
   data-copy-agreement-no-action="This agreement cannot be approved through this link."
@@ -1681,7 +1681,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     ["AGREEMENT_CONFIRM_BODY", "agreementConfirmBody", "You approve it on behalf of {client}."],
     ["AGREEMENT_CONFIRM_BUTTON", "agreementConfirmButton", "Confirm approval"],
     ["BILLING_ADDRESS_LABEL", "billingAddressLabel", "Billing address"],
-    ["BILLING_ADDRESS_HINT", "billingAddressHint", "Your invoices carry this address. If we already have a billing address for you, it stays unless you enter another one."],
+    ["BILLING_ADDRESS_HINT", "billingAddressHint", "We need a billing address before the agreement can be approved. Your invoices carry it."],
     ["BILLING_SAME_AS_LEGAL", "billingSameAsLegal", "Same as legal address"],
     ["BILLING_ADDRESS_REQUIRED", "billingAddressRequired", "Enter the billing address, or choose Same as legal address."],
     ["AGREEMENT_NO_ACTION", "agreementNoAction", "This agreement cannot be approved through this link."],
@@ -1944,7 +1944,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
       localizedtextcontent: { service: "core", segment: "localized-text-content" },
       resource: { service: "core-rm", segment: "resource", grant: "property" },
     },
-    fragment: { token: "token", propertyToken: "property-token" },
+    fragment: { token: "token", propertyToken: "property-token", billingAddress: "billing-address", billingAddressMissing: "missing" },
     image: { service: "core", head: "image", tail: "get", width: 440 },
     plan: { service: "core", head: "media", tail: "stream.json" },
     pageSize: 200,
@@ -1994,6 +1994,10 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
 
   function propertyTokenFromFragment(hash) {
     return fragmentValue(hash, GRANT.fragment.propertyToken);
+  }
+
+  function billingAddressMissingFromFragment(hash) {
+    return fragmentValue(hash, GRANT.fragment.billingAddress) === GRANT.fragment.billingAddressMissing;
   }
 
   function acceptableToken(value) {
@@ -2233,6 +2237,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     createGrantAdapter: createGrantAdapter,
     tokenFromFragment: tokenFromFragment,
     propertyTokenFromFragment: propertyTokenFromFragment,
+    billingAddressMissingFromFragment: billingAddressMissingFromFragment,
     safeApiBase: safeApiBase,
     safePortalUrl: safePortalUrl,
     imageId: imageId,
@@ -5169,7 +5174,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
       card.appendChild(text("p", "cr-confirm__title", copy.agreementConfirmTitle, { id: "cr-agreement-confirm" }));
       var client = view.parties.client.legalName || view.names.client;
       if (client) card.appendChild(text("p", "cr-confirm__body", ns.fill(copy.agreementConfirmBody, { client: client })));
-      card.appendChild(billingField(ctx, pending));
+      if (ctx.snapshot.billing.asked) card.appendChild(billingField(ctx, pending));
       var confirmButton = button(pending ? copy.sendingLabel : copy.agreementConfirmButton, "btn--primary btn--lg", function () {
         ctx.dispatch("agreement.confirm");
       }, { disabled: pending || ctx.busy, "data-state": pending ? "pending" : null, "data-action": "agreement.confirm", "aria-busy": pending ? "true" : null });
@@ -5494,7 +5499,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
       choices: {},
       drafts: {},
       draftInvalid: {},
-      billing: { same: true, value: "", invalid: false },
+      billing: { asked: settings.billingAddressMissing === true, same: true, value: "", invalid: false },
       commands: {},
       details: emptyDetails(null),
       plans: {},
@@ -6344,7 +6349,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
           return;
         case "agreement.confirm":
           if (!view || !view.canApproveAgreement || !state.confirm || state.confirm.kind !== "agreement" || busy() || state.accepted[view.agreement.recordKey]) return;
-          var billing = billingInput();
+          var billing = state.billing.asked ? billingInput() : {};
           if (!billing) {
             state.billing.invalid = true;
             state.focusKey = "billing-address";
@@ -6495,6 +6500,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
         if (setup.phase) options.phase = setup.phase;
         if (setup.portalUrl) options.portalUrl = setup.portalUrl;
         if (setup.pollDelays) options.pollDelays = setup.pollDelays;
+        if (setup.billingAddressMissing) options.billingAddressMissing = true;
         if (setup.clipboard) options.clipboard = setup.clipboard;
         steps = setup.steps || [];
       }
@@ -6504,6 +6510,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
       if (!apiBase) options.phase = "unconfigured";
       else if (!token) options.phase = "link-missing";
       else options.adapter = ns.adapter.createGrantAdapter({ apiBase: apiBase, token: token, propertyToken: ns.adapter.propertyTokenFromFragment(locationRef.hash), fetch: env.fetch });
+      options.billingAddressMissing = ns.adapter.billingAddressMissingFromFragment(locationRef.hash);
       var mapsKey = ns.maps ? ns.maps.keyOf(section.getAttribute("data-review-maps-api-key")) : "";
       if (options.adapter && mapsKey) {
         options.maps = ns.maps.service({
@@ -6792,6 +6799,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     { id: "agreement-terms-not-granted", label: "Agreement review — a link issued without the agreement text" },
     { id: "agreement-content-terms", label: "Agreement review — terms read from the agreement's document content" },
     { id: "agreement-confirm", label: "Agreement approval — confirmation" },
+    { id: "agreement-confirm-billing", label: "Agreement approval — confirmation asking for the billing address the account lacks" },
     { id: "agreement-unconfirmed", label: "Agreement approval accepted, change not seen within the budget — Refresh status" },
     { id: "agreement-changes", label: "Agreement — request changes, the form" },
     { id: "agreement-changes-invalid", label: "Agreement — request changes, message required" },
@@ -7603,6 +7611,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     var phase = "";
     var portalUrl = "";
     var pollDelays = null;
+    var billingAddressMissing = false;
     var clipboard = null;
     var maps = "";
     var choose = [["option.toggle", { id: 3102 }], ["option.choose", { id: 3102 }]];
@@ -7846,6 +7855,11 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
         data = agreementData("SENT_TO_CLIENT", false);
         steps = [["agreement.intent", {}]];
         break;
+      case "agreement-confirm-billing":
+        data = agreementData("SENT_TO_CLIENT", false);
+        billingAddressMissing = true;
+        steps = [["agreement.intent", {}]];
+        break;
       case "agreement-unconfirmed":
         data = agreementData("SENT_TO_CLIENT", false);
         behavior.staleReads = 99;
@@ -7928,7 +7942,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
       default:
         break;
     }
-    return { data: data, behavior: behavior, steps: steps, phase: phase, portalUrl: portalUrl, pollDelays: pollDelays, clipboard: clipboard, maps: maps };
+    return { data: data, behavior: behavior, steps: steps, phase: phase, portalUrl: portalUrl, pollDelays: pollDelays, billingAddressMissing: billingAddressMissing, clipboard: clipboard, maps: maps };
   }
 
   function mapsLoader(kind) {
@@ -7948,6 +7962,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
       data: built.data,
       portalUrl: built.portalUrl,
       pollDelays: built.pollDelays,
+      billingAddressMissing: built.billingAddressMissing,
       clipboard: built.clipboard,
       loadMaps: built.phase ? null : mapsLoader(built.maps),
     };

@@ -151,7 +151,7 @@
     ["AGREEMENT_CONFIRM_BODY", "agreementConfirmBody", "You approve it on behalf of {client}."],
     ["AGREEMENT_CONFIRM_BUTTON", "agreementConfirmButton", "Confirm approval"],
     ["BILLING_ADDRESS_LABEL", "billingAddressLabel", "Billing address"],
-    ["BILLING_ADDRESS_HINT", "billingAddressHint", "Your invoices carry this address. If we already have a billing address for you, it stays unless you enter another one."],
+    ["BILLING_ADDRESS_HINT", "billingAddressHint", "We need a billing address before the agreement can be approved. Your invoices carry it."],
     ["BILLING_SAME_AS_LEGAL", "billingSameAsLegal", "Same as legal address"],
     ["BILLING_ADDRESS_REQUIRED", "billingAddressRequired", "Enter the billing address, or choose Same as legal address."],
     ["AGREEMENT_NO_ACTION", "agreementNoAction", "This agreement cannot be approved through this link."],
