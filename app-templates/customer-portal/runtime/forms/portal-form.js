@@ -460,10 +460,31 @@
     if (!this.root) throw new Error("PortalForm mount target was not found");
     this.root.classList.add("pf");
     this.trackPress();
+    if (said(this.cfg.confirmationToken)) {
+      this.state = "confirming";
+      this.render();
+      this.confirm();
+      return this;
+    }
     this.render();
     var self = this;
     this.load().then(function () { self.render(); }, function () { self.render(); });
     return this;
+  };
+
+  PortalForm.prototype.confirm = function () {
+    var self = this;
+    var base = String(this.cfg.apiBaseUrl || "").replace(/\/+$/, "");
+    function settle(state) { self.state = state; self.render(); return state === "confirmed"; }
+    if (!base) return Promise.resolve(settle("unconfirmed"));
+    return Promise.resolve().then(function () {
+      return fetch(base + "/core-cms/api/form/send-event/" + encodeURIComponent(said(self.cfg.confirmationToken)) + ".json", {
+        method: "POST",
+        credentials: "omit",
+        headers: { "Content-Type": "application/json", accept: "application/json" },
+        body: "{}",
+      });
+    }).then(function (response) { return settle(response.ok ? "confirmed" : "unconfirmed"); }, function () { return settle("unconfirmed"); });
   };
 
   PortalForm.prototype.trackPress = function () {
@@ -1049,7 +1070,9 @@
     var card = el("div", "pf__card");
     root.appendChild(card);
 
-    if (this.state === "loading") { card.appendChild(this.renderSkeleton()); return; }
+    if (this.state === "loading" || this.state === "confirming") { card.appendChild(this.renderSkeleton()); return; }
+    if (this.state === "confirmed") { card.appendChild(this.renderNotice("success", this.cfg.copy.confirmedTitle, this.cfg.copy.confirmedBody, false)); return; }
+    if (this.state === "unconfirmed") { card.appendChild(this.renderNotice("error", this.cfg.copy.unconfirmedTitle, this.cfg.copy.unconfirmedBody, false)); return; }
     if (this.state === "error") { card.appendChild(this.renderNotice("error", this.cfg.copy.schemaErrorTitle, this.cfg.copy.schemaErrorBody, true)); return; }
     if (this.state === "empty") { card.appendChild(this.renderNotice("empty", this.cfg.copy.emptyTitle, this.cfg.copy.emptyBody, false)); return; }
     if (this.state === "success") { card.appendChild(this.renderSuccess()); return; }

@@ -460,10 +460,31 @@
     if (!this.root) throw new Error("PortalForm mount target was not found");
     this.root.classList.add("pf");
     this.trackPress();
+    if (said(this.cfg.confirmationToken)) {
+      this.state = "confirming";
+      this.render();
+      this.confirm();
+      return this;
+    }
     this.render();
     var self = this;
     this.load().then(function () { self.render(); }, function () { self.render(); });
     return this;
+  };
+
+  PortalForm.prototype.confirm = function () {
+    var self = this;
+    var base = String(this.cfg.apiBaseUrl || "").replace(/\/+$/, "");
+    function settle(state) { self.state = state; self.render(); return state === "confirmed"; }
+    if (!base) return Promise.resolve(settle("unconfirmed"));
+    return Promise.resolve().then(function () {
+      return fetch(base + "/core-cms/api/form/send-event/" + encodeURIComponent(said(self.cfg.confirmationToken)) + ".json", {
+        method: "POST",
+        credentials: "omit",
+        headers: { "Content-Type": "application/json", accept: "application/json" },
+        body: "{}",
+      });
+    }).then(function (response) { return settle(response.ok ? "confirmed" : "unconfirmed"); }, function () { return settle("unconfirmed"); });
   };
 
   PortalForm.prototype.trackPress = function () {
@@ -1049,7 +1070,9 @@
     var card = el("div", "pf__card");
     root.appendChild(card);
 
-    if (this.state === "loading") { card.appendChild(this.renderSkeleton()); return; }
+    if (this.state === "loading" || this.state === "confirming") { card.appendChild(this.renderSkeleton()); return; }
+    if (this.state === "confirmed") { card.appendChild(this.renderNotice("success", this.cfg.copy.confirmedTitle, this.cfg.copy.confirmedBody, false)); return; }
+    if (this.state === "unconfirmed") { card.appendChild(this.renderNotice("error", this.cfg.copy.unconfirmedTitle, this.cfg.copy.unconfirmedBody, false)); return; }
     if (this.state === "error") { card.appendChild(this.renderNotice("error", this.cfg.copy.schemaErrorTitle, this.cfg.copy.schemaErrorBody, true)); return; }
     if (this.state === "empty") { card.appendChild(this.renderNotice("empty", this.cfg.copy.emptyTitle, this.cfg.copy.emptyBody, false)); return; }
     if (this.state === "success") { card.appendChild(this.renderSuccess()); return; }
@@ -1850,7 +1873,7 @@
 
 (function () {
   "use strict";
-  var COPY_KEYS = {"TITLE":"title","SUBTITLE":"subtitle","NOTE":"note","SUBMIT_LABEL":"submitLabel","SUBMITTING_LABEL":"submittingLabel","NEXT_LABEL":"nextLabel","BACK_LABEL":"backLabel","RETRY_LABEL":"retryLabel","STEP_FALLBACK":"stepFallback","SELECT_PLACEHOLDER":"selectPlaceholder","REQUIRED_ERROR":"requiredError","FORMAT_ERROR":"formatError","INCOMPLETE_ERROR":"incompleteError","EMAIL_ERROR":"emailError","URL_ERROR":"urlError","NUMBER_ERROR":"numberError","MIN_ERROR":"minError","MAX_ERROR":"maxError","MIN_LENGTH_ERROR":"minLengthError","MAX_LENGTH_ERROR":"maxLengthError","ADDRESS_OUTSIDE_ERROR":"addressOutsideError","ADDRESS_UNKNOWN_ERROR":"addressUnknownError","SCHEMA_ERROR_TITLE":"schemaErrorTitle","SCHEMA_ERROR_BODY":"schemaErrorBody","EMPTY_TITLE":"emptyTitle","EMPTY_BODY":"emptyBody","SUCCESS_TITLE":"successTitle","SUCCESS_BODY":"successBody","SUCCESS_SENT_TITLE":"successSentTitle","SUCCESS_SENT_BODY":"successSentBody","SUCCESS_SUMMARY_TITLE":"successSummaryTitle","SUCCESS_PROPERTIES_LABEL":"successPropertiesLabel","SUCCESS_PROPERTIES_ONE":"successPropertiesOne","SUCCESS_PROPERTIES_MANY":"successPropertiesMany","SUCCESS_MORE_LABEL":"successMoreLabel","SUCCESS_LESS_LABEL":"successLessLabel","SUCCESS_CONTACT_LABEL":"successContactLabel","SUCCESS_EMAIL_LABEL":"successEmailLabel","SUCCESS_SUBMITTED_LABEL":"successSubmittedLabel","SUCCESS_SUBMITTED_AT":"successSubmittedAt","SUCCESS_NEXT_TITLE":"successNextTitle","SUCCESS_STEP_1_TITLE":"successStep1Title","SUCCESS_STEP_1_TEXT":"successStep1Text","SUCCESS_STEP_2_TITLE":"successStep2Title","SUCCESS_STEP_2_TEXT":"successStep2Text","SUCCESS_STEP_3_TITLE":"successStep3Title","SUCCESS_STEP_3_TEXT":"successStep3Text","SUCCESS_BACK_LABEL":"successBackLabel","SUCCESS_AGAIN_LABEL":"successAgainLabel","SUBMIT_ERROR_TITLE":"submitErrorTitle","SUBMIT_ERROR_BODY":"submitErrorBody","BLOCKED_TITLE":"blockedTitle","BLOCKED_BODY":"blockedBody"};
+  var COPY_KEYS = {"TITLE":"title","SUBTITLE":"subtitle","NOTE":"note","SUBMIT_LABEL":"submitLabel","SUBMITTING_LABEL":"submittingLabel","NEXT_LABEL":"nextLabel","BACK_LABEL":"backLabel","RETRY_LABEL":"retryLabel","STEP_FALLBACK":"stepFallback","SELECT_PLACEHOLDER":"selectPlaceholder","REQUIRED_ERROR":"requiredError","FORMAT_ERROR":"formatError","INCOMPLETE_ERROR":"incompleteError","EMAIL_ERROR":"emailError","URL_ERROR":"urlError","NUMBER_ERROR":"numberError","MIN_ERROR":"minError","MAX_ERROR":"maxError","MIN_LENGTH_ERROR":"minLengthError","MAX_LENGTH_ERROR":"maxLengthError","ADDRESS_OUTSIDE_ERROR":"addressOutsideError","ADDRESS_UNKNOWN_ERROR":"addressUnknownError","SCHEMA_ERROR_TITLE":"schemaErrorTitle","SCHEMA_ERROR_BODY":"schemaErrorBody","EMPTY_TITLE":"emptyTitle","EMPTY_BODY":"emptyBody","SUCCESS_TITLE":"successTitle","SUCCESS_BODY":"successBody","SUCCESS_SENT_TITLE":"successSentTitle","SUCCESS_SENT_BODY":"successSentBody","SUCCESS_SUMMARY_TITLE":"successSummaryTitle","SUCCESS_PROPERTIES_LABEL":"successPropertiesLabel","SUCCESS_PROPERTIES_ONE":"successPropertiesOne","SUCCESS_PROPERTIES_MANY":"successPropertiesMany","SUCCESS_MORE_LABEL":"successMoreLabel","SUCCESS_LESS_LABEL":"successLessLabel","SUCCESS_CONTACT_LABEL":"successContactLabel","SUCCESS_EMAIL_LABEL":"successEmailLabel","SUCCESS_SUBMITTED_LABEL":"successSubmittedLabel","SUCCESS_SUBMITTED_AT":"successSubmittedAt","SUCCESS_NEXT_TITLE":"successNextTitle","SUCCESS_STEP_1_TITLE":"successStep1Title","SUCCESS_STEP_1_TEXT":"successStep1Text","SUCCESS_STEP_2_TITLE":"successStep2Title","SUCCESS_STEP_2_TEXT":"successStep2Text","SUCCESS_STEP_3_TITLE":"successStep3Title","SUCCESS_STEP_3_TEXT":"successStep3Text","SUCCESS_BACK_LABEL":"successBackLabel","SUCCESS_AGAIN_LABEL":"successAgainLabel","SUBMIT_ERROR_TITLE":"submitErrorTitle","SUBMIT_ERROR_BODY":"submitErrorBody","CONFIRMED_TITLE":"confirmedTitle","CONFIRMED_BODY":"confirmedBody","UNCONFIRMED_TITLE":"unconfirmedTitle","UNCONFIRMED_BODY":"unconfirmedBody","BLOCKED_TITLE":"blockedTitle","BLOCKED_BODY":"blockedBody"};
   var THEMES = ["hvac","snow","lawn","pool","roofing","pest","health","beauty"];
   var MODES = ["light","dark"];
   function oneOf(value, allowed, fallback) { return allowed.indexOf(value) === -1 ? fallback : value; }
@@ -1881,7 +1904,14 @@
     document.documentElement.dataset.theme = theme;
     document.documentElement.dataset.mode = mode;
     var organizationId = Number(attribute(root, "data-form-organization-id"));
+    var confirmation = /(?:^|[#&])verify=([^&]+)/.exec(window.location.hash || "");
+    var confirmationToken = "";
+    if (confirmation) {
+      try { confirmationToken = decodeURIComponent(confirmation[1]); } catch (_) { confirmationToken = ""; }
+      try { window.history.replaceState(null, "", window.location.pathname + window.location.search); } catch (_) {}
+    }
     new window.PortalForm({
+      confirmationToken: confirmationToken,
       apiBaseUrl: safeBase(attribute(root, "data-form-api-base")),
       formTypeCode: attribute(root, "data-form-type-code"),
       organizationId: Number.isFinite(organizationId) && organizationId > 0 ? organizationId : null,

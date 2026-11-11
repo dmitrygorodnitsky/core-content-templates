@@ -474,7 +474,7 @@
       }
     },
     "value": {
-      "en": "No action is needed from you right now. We’ll contact you if we need any additional information."
+      "en": "Open it and confirm your email address so we can start preparing your quote."
     }
   },
   {
@@ -748,6 +748,58 @@
     },
     "value": {
       "en": "Something went wrong on the way. Your answers are still here — try again."
+    }
+  },
+  {
+    "code": "CONFIRMED_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "CONFIRMED TITLE",
+        "DESCRIPTION": "Heading shown when the page is opened through the confirmation link of the email (#verify=<token>) and Core accepts the one-time token."
+      }
+    },
+    "value": {
+      "en": "Email confirmed"
+    }
+  },
+  {
+    "code": "CONFIRMED_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "CONFIRMED BODY",
+        "DESCRIPTION": "Sentence under the confirmed heading."
+      }
+    },
+    "value": {
+      "en": "Thank you. Our team is now preparing your quote and will email you when it is ready to review."
+    }
+  },
+  {
+    "code": "UNCONFIRMED_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "UNCONFIRMED TITLE",
+        "DESCRIPTION": "Heading shown when Core refuses the confirmation token: the link was used before, or it does not exist."
+      }
+    },
+    "value": {
+      "en": "This link is no longer valid"
+    }
+  },
+  {
+    "code": "UNCONFIRMED_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "UNCONFIRMED BODY",
+        "DESCRIPTION": "Sentence under the refused-link heading."
+      }
+    },
+    "value": {
+      "en": "If you already confirmed your email, no action is needed. Otherwise send the request again or contact us."
     }
   },
   {

@@ -41,7 +41,7 @@ const COPY = [
   ["SUCCESS_TITLE", "Quote request received", "Heading of the success screen. Focus moves to it when the submission is accepted."],
   ["SUCCESS_BODY", "We’ve received your request and our team will review the property details and prepare your quote.", "Sentence under the success heading."],
   ["SUCCESS_SENT_TITLE", "A confirmation has been sent to {email}.", "First line of the green banner on the success screen. {email} is the email address the visitor submitted; the line is shown only when the form held one. Promise a confirmation only while the form type's workflow really emails the requester."],
-  ["SUCCESS_SENT_BODY", "No action is needed from you right now. We’ll contact you if we need any additional information.", "Second line of the green banner on the success screen, shown with or without an email address. Leave empty, together with an absent email, to show no banner."],
+  ["SUCCESS_SENT_BODY", "Open it and confirm your email address so we can start preparing your quote.", "Second line of the green banner on the success screen, shown with or without an email address. Leave empty, together with an absent email, to show no banner."],
   ["SUCCESS_SUMMARY_TITLE", "Request summary", "Heading of the summary card on the success screen. The form id Core returns for the submission is shown beside it as #<id>."],
   ["SUCCESS_PROPERTIES_LABEL", "Properties", "Summary row label for the submitted addresses. The row is shown only when the form held at least one address."],
   ["SUCCESS_PROPERTIES_ONE", "{n} property submitted", "Summary line for exactly one submitted address. {n} is the count."],
@@ -63,6 +63,10 @@ const COPY = [
   ["SUCCESS_AGAIN_LABEL", "", "Label of a button on the success screen that clears the form for another submission. Leave empty to show no button, which is right whenever a second submission from the same visitor would create duplicate records."],
   ["SUBMIT_ERROR_TITLE", "The request was not sent"],
   ["SUBMIT_ERROR_BODY", "Something went wrong on the way. Your answers are still here — try again."],
+  ["CONFIRMED_TITLE", "Email confirmed", "Heading shown when the page is opened through the confirmation link of the email (#verify=<token>) and Core accepts the one-time token."],
+  ["CONFIRMED_BODY", "Thank you. Our team is now preparing your quote and will email you when it is ready to review.", "Sentence under the confirmed heading."],
+  ["UNCONFIRMED_TITLE", "This link is no longer valid", "Heading shown when Core refuses the confirmation token: the link was used before, or it does not exist."],
+  ["UNCONFIRMED_BODY", "If you already confirmed your email, no action is needed. Otherwise send the request again or contact us.", "Sentence under the refused-link heading."],
   ["BLOCKED_TITLE", "Sending is not configured"],
   ["BLOCKED_BODY", "This form has no organization id yet, so it cannot submit."],
 ];
@@ -91,6 +95,8 @@ const COPY_KEYS = {
   SUCCESS_STEP_3_TITLE: "successStep3Title", SUCCESS_STEP_3_TEXT: "successStep3Text",
   SUCCESS_BACK_LABEL: "successBackLabel", SUCCESS_AGAIN_LABEL: "successAgainLabel",
   SUBMIT_ERROR_TITLE: "submitErrorTitle", SUBMIT_ERROR_BODY: "submitErrorBody",
+  CONFIRMED_TITLE: "confirmedTitle", CONFIRMED_BODY: "confirmedBody",
+  UNCONFIRMED_TITLE: "unconfirmedTitle", UNCONFIRMED_BODY: "unconfirmedBody",
   BLOCKED_TITLE: "blockedTitle", BLOCKED_BODY: "blockedBody",
 };
 
@@ -211,7 +217,14 @@ function bootScript() {
     document.documentElement.dataset.theme = theme;
     document.documentElement.dataset.mode = mode;
     var organizationId = Number(attribute(root, "data-form-organization-id"));
+    var confirmation = /(?:^|[#&])verify=([^&]+)/.exec(window.location.hash || "");
+    var confirmationToken = "";
+    if (confirmation) {
+      try { confirmationToken = decodeURIComponent(confirmation[1]); } catch (_) { confirmationToken = ""; }
+      try { window.history.replaceState(null, "", window.location.pathname + window.location.search); } catch (_) {}
+    }
     new window.PortalForm({
+      confirmationToken: confirmationToken,
       apiBaseUrl: safeBase(attribute(root, "data-form-api-base")),
       formTypeCode: attribute(root, "data-form-type-code"),
       organizationId: Number.isFinite(organizationId) && organizationId > 0 ? organizationId : null,

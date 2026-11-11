@@ -118,6 +118,15 @@ and submit-error states. A submission in flight blocks a second request, Back,
 Next and start-over until it settles, and a failing `onSubmit` callback of the
 host page leaves an accepted submission a success.
 
+Opened with `#verify=<token>` the document renders no form: it posts the token
+to Core's one-time endpoint `POST /core-cms/api/form/send-event/<token>.json`
+(anonymous, as the other two requests), removes it from the address and shows
+`CONFIRMED_TITLE` / `CONFIRMED_BODY`, or `UNCONFIRMED_TITLE` /
+`UNCONFIRMED_BODY` when Core refuses it. This is the page the email
+verification link of a public Snow quote request opens (core-ui
+`docs/snow-feedback-2026-11-11.md`); since then `SUCCESS_SENT_BODY` asks the
+visitor to confirm the email instead of saying that no action is needed.
+
 An attribute whose Input format declares `address`, or an attribute of Core's
 `com.pixelnation.common.domain.Address` class that carries no options, becomes an
 address field with Google suggestions and a map, and a list of addresses

@@ -1906,7 +1906,19 @@ assert.deepEqual(plain(classForm.values.SITES), ["88 Robson Street, Vancouver, B
 assert.doesNotMatch(source, /innerHTML/, "the renderer must not assign innerHTML");
 assert.doesNotMatch(source, /dev-1\.servicewand\.com|lsrc\.pixelnation\.com/, "the renderer must not hardcode a deployment host");
 assert.match(source, /credentials: "omit"/, "form requests stay anonymous");
-assert.equal((source.match(/credentials: "omit"/g) || []).length, 2, "both the schema read and the submit stay anonymous");
+assert.equal((source.match(/credentials: "omit"/g) || []).length, 3, "the schema read, the submit and the email confirmation stay anonymous");
+
+const confirmMount = dom.document.createElement("div");
+const confirming = new PortalForm({ schema: kitchen, locale: "en", copy: copyEcho, organizationId: 43, apiBaseUrl: "https://forms.example", confirmationToken: "one time/token" });
+confirming.mount(confirmMount);
+assert.equal(confirmMount.dataset.state, "confirming", "a confirmation link shows the skeleton, never the form");
+await settle();
+const confirmationRequest = posted[posted.length - 1];
+assert.equal(confirmationRequest.url, "https://forms.example/core-cms/api/form/send-event/one%20time%2Ftoken.json", "the token is posted to the native one-time endpoint");
+assert.equal(confirmationRequest.init.method, "POST", "the link itself is a page; only the page's script consumes the token");
+assert.equal(confirmMount.dataset.state, "confirmed");
+assert.deepEqual(collect(confirmMount, "pf-notice__title").map((node) => node.textContent), ["confirmedTitle"]);
+assert.equal(collect(confirmMount, "pf-field").length, 0, "a confirmation link renders no form field");
 
 for (const token of ["--accent", "--ink", "--surface", "--hair", "--radius-md", "--danger"]) {
   assert.ok(css.includes("var(" + token), "the stylesheet must build on the portal token " + token);
@@ -1984,7 +1996,7 @@ try {
     SUCCESS_TITLE: "Quote request received",
     SUCCESS_BODY: "We’ve received your request and our team will review the property details and prepare your quote.",
     SUCCESS_SENT_TITLE: "A confirmation has been sent to {email}.",
-    SUCCESS_SENT_BODY: "No action is needed from you right now. We’ll contact you if we need any additional information.",
+    SUCCESS_SENT_BODY: "Open it and confirm your email address so we can start preparing your quote.",
     SUCCESS_SUMMARY_TITLE: "Request summary",
     SUCCESS_PROPERTIES_LABEL: "Properties",
     SUCCESS_PROPERTIES_ONE: "{n} property submitted",
