@@ -27,7 +27,7 @@
     "nls": {
       "en": {
         "NAME": "REVIEW MAPS API KEY",
-        "DESCRIPTION": "Google Maps browser key: address suggestions and a map for the billing address on the Confirm your choices step, and each property's plan drawn over a satellite map on its card. Use the same browser key as the quote form's FORM_MAPS_API_KEY, restricted by HTTP referrer to this host and to the Maps JavaScript, Places and Geocoding APIs; it is visible in page source, as every browser key is. Set the value in the page's PageContext, not in the template: the package ships it empty so an upload never overwrites it. While it is empty or not a key, no Google script is loaded, the billing address stays a plain text field and each plan is drawn as an outline of its shapes. With a key the page sends its origin, never its path or link, as the referrer, because Google checks a browser key against it."
+        "DESCRIPTION": "Google Maps browser key: address suggestions and a map for the billing address on the Confirm your choices step, and each property's plan drawn over a satellite map on its card. Use the same browser key as the quote form's FORM_MAPS_API_KEY, restricted by HTTP referrer to this host and to the Maps JavaScript, Places and Geocoding APIs; it is visible in page source, as every browser key is. Set the value in CMS, never in the package: the package ships it empty so an upload never overwrites it. While it is empty or not a key, no Google script is loaded, the billing address stays a plain text field and each plan is drawn as an outline of its shapes. With a key the page sends its origin, never its path or link, as the referrer, because Google checks a browser key against it."
       }
     },
     "value": ""
@@ -917,6 +917,19 @@
     }
   },
   {
+    "code": "CHANGES_ALL_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "CHANGES ALL BODY",
+        "DESCRIPTION": "Client review document copy."
+      }
+    },
+    "value": {
+      "en": "Your request goes to the provider for every open option of this property."
+    }
+  },
+  {
     "code": "CHANGES_PLACEHOLDER",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
@@ -978,7 +991,7 @@
       }
     },
     "value": {
-      "en": "Choose an option to see its services and approve it or ask for changes."
+      "en": "Choose an option to see its services and approve it."
     }
   },
   {

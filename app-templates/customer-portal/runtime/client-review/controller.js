@@ -61,6 +61,7 @@
       step: "review",
       lastChoiceKey: "",
       declining: "",
+      changing: "",
       drafts: {},
       draftInvalid: {},
       billing: { asked: settings.billingAddressMissing === true, same: true, value: "", invalid: false },
@@ -401,7 +402,13 @@
         if (!state.view || !state.view.canRequestAgreementChanges) state.confirm = null;
         return;
       }
-      if (!present[confirm.id] || !present[confirm.id].actions[confirm.kind]) state.confirm = null;
+      state.confirm = null;
+    }
+
+    function pruneChanging() {
+      if (!state.changing || state.bulk) return;
+      var property = findProperty(state.changing);
+      if (!property || !changeableOptions(property).length) state.changing = "";
     }
 
     function pruneChoices() {
@@ -489,6 +496,7 @@
         seedDetails();
         prune();
         pruneChoices();
+        pruneChanging();
         readPlans();
       }, function (error) {
         var closed = Boolean(error && error.code === "link-closed");
@@ -614,11 +622,6 @@
         (property ? property.options : []).forEach(function (sibling) {
           if (sibling.id !== option.id) delete state.expanded[sibling.id];
         });
-        var confirm = state.confirm;
-        if (confirm && confirm.kind !== "agreement" && confirm.kind !== "agreement-changes" && confirm.id !== option.id && property
-          && property.options.some(function (sibling) { return sibling.id === confirm.id; }) && !inflight[confirm.recordKey]) {
-          state.confirm = null;
-        }
         state.expanded[option.id] = true;
       } else {
         delete state.expanded[option.id];
@@ -626,24 +629,75 @@
       render();
     }
 
-    function confirmOption(id) {
-      var option = findOption(id);
-      var confirm = state.confirm;
-      if (!option || !confirm || confirm.id !== option.id || confirm.kind !== "changes" || !option.actions.changes || busy() || state.accepted[option.recordKey]) return;
+    function changeableOptions(property) {
+      return property.options.filter(function (option) {
+        return option.actions.changes && !state.accepted[option.recordKey] && !inflight[option.recordKey];
+      });
+    }
+
+    function changesDraftKey(key) {
+      return "property:" + key;
+    }
+
+    function openChanges(key) {
+      var property = findProperty(key);
+      if (!property || !changeableOptions(property).length || busy() || state.bulk) return;
+      property.options.forEach(function (option) { clearOutcome(option.recordKey); });
+      state.changing = key;
+      state.declining = "";
+      state.focusKey = "changes-draft-" + key;
+      render();
+    }
+
+    function cancelChanges() {
+      if (!state.changing || state.bulk) return;
+      var key = state.changing;
+      state.changing = "";
+      delete state.draftInvalid[changesDraftKey(key)];
+      state.focusKey = "changes-" + key;
+      render();
+    }
+
+    function sendChanges(key) {
+      var property = findProperty(key);
+      if (state.changing !== key || !property || busy() || state.bulk) return Promise.resolve(false);
+      var ids = changeableOptions(property).map(function (option) { return option.id; });
+      if (!ids.length) return Promise.resolve(false);
+      var draftKey = changesDraftKey(key);
       var event = contract.orderEvents.changes;
-      var message = String(state.drafts[option.id] || "").trim();
+      var message = String(state.drafts[draftKey] || "").trim();
       if (!message) {
-        state.draftInvalid[option.id] = true;
-        state.focusKey = "draft-" + option.id;
+        state.draftInvalid[draftKey] = true;
+        state.focusKey = "changes-draft-" + key;
         render();
-        return;
+        return Promise.resolve(false);
       }
+      delete state.draftInvalid[draftKey];
       var metadata = {};
       metadata[event.messageAttribute] = message;
-      delete state.draftInvalid[option.id];
-      send(option.recordKey, "order", option.id, event.code, metadata, {
-        onSuccess: function () { delete state.drafts[option.id]; },
+      state.bulk = "changes";
+      render();
+      function stepFrom(index) {
+        if (index >= ids.length) return Promise.resolve(true);
+        var option = findOption(ids[index]);
+        if (!option || !option.actions.changes) return stepFrom(index + 1);
+        return send(option.recordKey, "order", option.id, event.code, metadata, {}).then(function (ok) {
+          return ok ? stepFrom(index + 1) : false;
+        });
+      }
+      submitting = stepFrom(0).then(function (ok) {
+        submitting = null;
+        state.bulk = "";
+        if (ok) {
+          delete state.drafts[draftKey];
+          state.changing = "";
+        }
+        if (state.phase === "ready") state.focusKey = ok ? "page-title" : "changes-draft-" + key;
+        track();
+        render();
+        return ok;
       });
+      return submitting;
     }
 
     function chooseOption(id) {
@@ -651,7 +705,6 @@
       var property = option ? propertyOfOption(option.id) : null;
       if (!option || !property || !option.actions.approve || busy() || state.bulk || inflight[option.recordKey] || state.accepted[option.recordKey]) return;
       clearOutcome(option.recordKey);
-      if (state.confirm && state.confirm.id === option.id) state.confirm = null;
       state.choices[property.key] = { kind: "approve", id: option.id };
       state.lastChoiceKey = property.key;
       readPlans();
@@ -669,6 +722,7 @@
         return;
       }
       state.declining = key;
+      state.changing = "";
       state.focusKey = "decline-confirm-" + key;
       render();
     }
@@ -881,31 +935,21 @@
         case "option.toggle":
           toggleOption(data.id);
           return;
-        case "option.intent":
-          option = findOption(data.id);
-          if (data.kind !== "changes" || !option || !option.actions.changes || busy() || inflight[option.recordKey] || state.accepted[option.recordKey]) return;
-          clearOutcome(option.recordKey);
-          state.confirm = { recordKey: option.recordKey, id: option.id, kind: data.kind };
-          state.focusKey = "draft-" + option.id;
-          render();
-          return;
         case "option.choose":
           chooseOption(data.id);
           return;
-        case "option.cancel":
-          option = findOption(data.id);
-          if (!option || inflight[option.recordKey]) return;
-          state.confirm = null;
-          delete state.draftInvalid[option.id];
-          state.focusKey = "toggle-" + option.id;
-          render();
+        case "property.changes":
+          openChanges(data.key);
           return;
-        case "option.draft":
-          state.drafts[data.id] = String(data.value == null ? "" : data.value);
-          if (state.draftInvalid[data.id] && state.drafts[data.id].trim()) delete state.draftInvalid[data.id];
+        case "property.changes.draft":
+          state.drafts[changesDraftKey(data.key)] = String(data.value == null ? "" : data.value);
+          if (state.draftInvalid[changesDraftKey(data.key)] && state.drafts[changesDraftKey(data.key)].trim()) delete state.draftInvalid[changesDraftKey(data.key)];
           return;
-        case "option.confirm":
-          confirmOption(data.id);
+        case "property.changes.cancel":
+          cancelChanges();
+          return;
+        case "property.changes.send":
+          sendChanges(data.key);
           return;
         case "property.decline":
           declineProperty(data.key);
@@ -1028,6 +1072,7 @@
         choices: state.choices,
         step: shownStep(),
         declining: state.declining,
+        changing: state.changing,
         drafts: state.drafts,
         draftInvalid: state.draftInvalid,
         billing: state.billing,

@@ -1095,7 +1095,8 @@ function assertForm(run, expected, message) {
         assert.equal(byAttribute(card, "value", "3102")[0].checked, true, "and still open");
         assert.equal(run.runtime.document.activeElement, byAttribute(chosen, "data-action", "choice.clear")[0], "the focus returns to Undo beside the choice");
         assert.equal(byAttribute(card, "data-action", "option.approve").length, 0, "a chosen option offers no second Approve");
-        assert.equal(byAttribute(card, "data-action", "option.changes").length, 1, "and still offers Request changes");
+        assert.equal(byAttribute(card, "data-action", "option.changes").length, 0);
+        assert.equal(byAttribute(card, "data-action", "property.changes").length, 1, "and the property still offers Request changes");
         const bar = byClass(run.mount, "cr-continue")[0];
         assert.deepEqual([byClass(bar, "cr-continue__text")[0].textContent, byAttribute(bar, "data-action", "choices.open")[0].textContent], [copy.choicesReadyOne, copy.choicesContinueDetails], "the quotes keep one way back into the step");
         byAttribute(bar, "data-action", "choices.open")[0].fire("click");
@@ -1159,10 +1160,28 @@ function assertForm(run, expected, message) {
         assert.equal(run.timers.pending, 0);
         break;
       }
-      case "changes-invalid":
+      case "changes-invalid": {
         assert.ok(text.includes(copy.changesRequired));
         assert.equal(run.sent.length, 0, "a change request without a message is not sent");
+        const card = byAttribute(run.mount, "aria-labelledby", "cr-property-278")[0];
+        const panel = byAttribute(card, "data-changes", "property-278")[0];
+        assert.equal(panel.parentNode, byClass(card, "cr-property__foot")[0], "Request changes belongs to the property: its box opens in the property's footer, beside Decline all options");
+        assert.ok(surface(panel).includes(copy.changesTitle) && surface(panel).includes(copy.changesAllBody), "and says it goes for every open option");
+        assert.equal(byAttribute(card, "data-action", "option.changes").length + byAttribute(card, "data-action", "property.decline").length, 0, "no option carries a request of its own, and Decline all waits while the box is open");
+        run.controller.dispatch("property.changes.cancel");
+        assert.deepEqual(byClass(byAttribute(run.mount, "aria-labelledby", "cr-property-278")[0], "cr-property__actions")[0].children.map((node) => [node.getAttribute("data-action"), node.textContent]), [["property.changes", copy.changesLabel], ["property.decline", copy.declineAllLabel]], "the footer offers Request changes next to Decline all options");
+        run.controller.dispatch("property.changes", { key: "property-278" });
+        const area = byAttribute(run.mount, "data-focus-key", "changes-draft-property-278")[0];
+        area.value = "  Please quote weekly visits.  ";
+        area.fire("input");
+        byAttribute(run.mount, "data-action", "property.changes.send")[0].fire("click");
+        await run.controller.idle();
+        assert.deepEqual(run.sent.map((call) => [call[1], call[2], call[3]]), [3101, 3102, 3103].map((id) => [id, "QUOTE_SENT-CUSTOMER_CHANGES_REQUESTED", { MESSAGE: "Please quote weekly visits." }]), "one message typed once goes to every open option of the property, in order, with the existing event");
+        const property = run.controller.snapshot().view.properties.find((candidate) => candidate.key === "property-278");
+        assert.deepEqual([property.status, plain(property.options.map((option) => option.status))], ["changes", ["changes", "changes", "changes"]], "and the property reads Changes requested");
+        assert.deepEqual([run.controller.snapshot().changing, plain(run.controller.snapshot().drafts), run.controller.snapshot().bulk], ["", {}, ""], "the box closes and keeps nothing");
         break;
+      }
       case "command-pending": {
         assert.equal(run.outcome, "held");
         const submit = byAttribute(run.mount, "data-action", "choices.submit")[0];
@@ -1192,7 +1211,7 @@ function assertForm(run, expected, message) {
       case "command-stale-pending": {
         const card = byAttribute(run.mount, "aria-labelledby", "cr-property-278")[0];
         assert.equal(run.controller.snapshot().commands["order:3102"].status, "pending", "an accepted decision whose readback still shows the option undecided stays pending");
-        const actions = all(byAttribute(card, "id", "cr-option-3102")[0], (node) => ["option.approve", "option.changes"].includes(node.getAttribute("data-action")));
+        const actions = all(byAttribute(card, "id", "cr-option-3102")[0], (node) => node.getAttribute("data-action") === "option.approve");
         assert.ok(actions.length > 0 && actions.every((node) => node.getAttribute("disabled") !== null), "and nothing in the option can be sent again");
         run.controller.dispatch("option.choose", { id: 3102 });
         run.controller.dispatch("choices.submit");
@@ -1210,7 +1229,7 @@ function assertForm(run, expected, message) {
         const note = byAttribute(body, "data-command", "unconfirmed")[0];
         assert.ok(note && surface(note).includes(copy.commandUnconfirmed), id + ": an accepted command not seen within the budget says so");
         assert.equal(byAttribute(note, "data-action", "refresh").length, 1, "and offers Refresh status");
-        assert.equal(["option.approve", "option.changes", "option.confirm"].reduce((count, action) => count + byAttribute(body, "data-action", action).length, 0), 0, "without offering the command again");
+        assert.equal(byAttribute(body, "data-action", "option.approve").length, 0, "without offering the command again");
         assert.equal(byClass(body, "cr-note--pending").length, 0);
         assert.equal(run.controller.snapshot().commands["order:" + orderId].status, "unconfirmed");
         assert.equal(run.timers.pending, 0, "the page stops reading on its own");
@@ -1752,9 +1771,9 @@ async function decideLast(controller, kind) {
     controller.dispatch("property.decline", { key: "property-661" });
     controller.dispatch("property.decline.confirm", { key: "property-661" });
   } else {
-    controller.dispatch("option.intent", { id: 3108, kind });
-    controller.dispatch("option.draft", { id: 3108, value: "Please quote weekly visits." });
-    controller.dispatch("option.confirm", { id: 3108 });
+    controller.dispatch("property.changes", { key: "property-661" });
+    controller.dispatch("property.changes.draft", { key: "property-661", value: "Please quote weekly visits." });
+    controller.dispatch("property.changes.send", { key: "property-661" });
   }
   await controller.idle();
 }
@@ -1951,7 +1970,7 @@ const roundOf = (F) => F.roundOf(F.quotationData());
 for (const [kind, orderId, event, status] of [
   ["approve", 3102, "QUOTE_SENT-ACCEPTED", "approved"],
   ["decline", 3107, "QUOTE_SENT-DECLINED", "declined"],
-  ["changes", 3102, "QUOTE_SENT-CUSTOMER_CHANGES_REQUESTED", "changes"],
+  ["changes", 3107, "QUOTE_SENT-CUSTOMER_CHANGES_REQUESTED", "changes"],
 ]) {
   const run = await stagedController(roundOf, { staleReads: 1 });
   const { controller } = run;
@@ -1966,23 +1985,25 @@ for (const [kind, orderId, event, status] of [
     controller.dispatch("property.decline", { key: "property-512" });
     controller.dispatch("property.decline.confirm", { key: "property-512" });
   } else if (kind === "changes") {
-    controller.dispatch("option.intent", { id: orderId, kind });
-    controller.dispatch("option.draft", { id: orderId, value: "Please quote weekly visits." });
-    controller.dispatch("option.confirm", { id: orderId });
+    controller.dispatch("property.changes", { key: "property-512" });
+    controller.dispatch("property.changes.draft", { key: "property-512", value: "Please quote weekly visits." });
+    controller.dispatch("property.changes.send", { key: "property-512" });
   }
   await controller.idle();
   assert.deepEqual(run.sent.map((call) => call[2]), [event], kind + " left the page once");
   assert.equal(optionOf().state, event.split("-")[0], kind + ": the first readback still shows the source state");
   assert.equal((controller.snapshot().commands["order:" + orderId] || {}).status, "pending", kind + " stays pending instead of being offered again");
   const body = byAttribute(run.mount, "id", "cr-option-" + orderId)[0];
-  const offered = all(body, (node) => ["option.approve", "option.changes", "option.confirm"].includes(node.getAttribute("data-action")) && node.getAttribute("disabled") === null);
-  assert.equal(offered.length, 0, kind + ": nothing in the option can be sent again");
+  const owner = byAttribute(run.mount, "aria-labelledby", orderId === 3107 ? "cr-property-512" : "cr-property-278")[0];
+  assert.equal(all(owner, (node) => node === body).length, 1);
+  const offered = all(owner, (node) => ["option.approve", "property.changes", "property.changes.send", "property.decline"].includes(node.getAttribute("data-action")) && node.getAttribute("disabled") === null);
+  assert.equal(offered.length, 0, kind + ": nothing in the option or its property can be sent again");
   controller.dispatch("option.toggle", { id: orderId });
   controller.dispatch("option.toggle", { id: orderId });
   controller.dispatch("option.choose", { id: orderId });
   controller.dispatch("property.decline", { key: kind === "decline" ? "property-512" : "property-278" });
   controller.dispatch("choices.submit");
-  controller.dispatch("option.confirm", { id: orderId });
+  controller.dispatch("property.changes.send", { key: "property-512" });
   await tick();
   assert.equal(run.sent.length, 1, kind + ": no path sends it again while it is pending");
   assert.equal(run.timers.pending, 1, kind + " is followed with the backoff");
@@ -2042,7 +2063,7 @@ for (const [kind, orderId, event, status] of [
   await controller.idle();
   const body = byAttribute(run.mount, "id", "cr-option-3102")[0];
   assert.equal(run.sent.length, 1, "reopening the option sends nothing");
-  assert.equal(all(body, (node) => ["option.approve", "option.changes", "option.confirm"].includes(node.getAttribute("data-action")) && node.getAttribute("disabled") === null).length, 0, "so a later read that shows it undecided offers nothing again");
+  assert.equal(all(body, (node) => node.getAttribute("data-action") === "option.approve" && node.getAttribute("disabled") === null).length, 0, "so a later read that shows it undecided offers nothing again");
   order().states = [{ code: "ACCEPTED" }];
   run.timers.fire();
   await controller.idle();
@@ -2452,8 +2473,9 @@ async function returningController(run) {
   run.controller.dispatch("choices.submit");
   await run.controller.idle();
   run.controller.dispatch("option.toggle", { id: 3107 });
-  run.controller.dispatch("option.intent", { id: 3107, kind: "changes" });
-  run.controller.dispatch("option.draft", { id: 3107, value: "Please quote weekly visits." });
+  run.controller.dispatch("property.changes", { key: "property-512" });
+  run.controller.dispatch("property.changes.draft", { key: "property-512", value: "Please quote weekly visits." });
+  assert.deepEqual(plain(run.controller.snapshot().drafts), { "property:property-512": "Please quote weekly visits." });
   const back = await returningController(run);
   const optionsOf = (key) => back.controller.snapshot().view.properties.find((property) => property.key === key).options;
   assert.deepEqual(plain(optionsOf("property-278").map((option) => option.status)), ["declined", "approved", "declined"], "a client who comes back through the link finds the decision already sent");
@@ -2685,12 +2707,12 @@ for (const [agreementState, orderState, links] of [["SENT_TO_CLIENT", "ACCEPTED"
   hold = null;
   eventReply = reply(409, { message: "No longer awaiting your decision" });
   byAttribute(mount, "data-focus-key", "toggle-3107")[0].fire("click");
-  byAttribute(mount, "data-action", "option.changes")[0].fire("click");
-  const area = byAttribute(mount, "data-focus-key", "draft-3107")[0];
+  byAttribute(byAttribute(mount, "aria-labelledby", "cr-property-512")[0], "data-action", "property.changes")[0].fire("click");
+  const area = byAttribute(mount, "data-focus-key", "changes-draft-property-512")[0];
   area.value = "  Please quote weekly visits.  ";
   area.fire("input");
   const beforeRefusal = introspections();
-  byAttribute(mount, "data-action", "option.confirm")[0].fire("click");
+  byAttribute(mount, "data-action", "property.changes.send")[0].fire("click");
   await controller.idle();
   const changeCall = calls.filter((call) => call.url.endsWith("/order/event.json")).pop();
   assert.deepEqual(JSON.parse(changeCall.init.body).metadata, { MESSAGE: "Please quote weekly visits." }, "a change request carries its trimmed message as MESSAGE metadata");
@@ -3304,7 +3326,7 @@ async function grantController(build, behavior = {}) {
   assert.equal(byAttribute(run.mount, "data-action", "pdf.download").length, 0, "a round without an agreement offers no agreement PDF");
   assert.equal(byAttribute(run.mount, "data-action", "link.copy").length, 0, "the review page offers Copy link only when the page has its own address");
   run.controller.dispatch("option.toggle", { id: 3102 });
-  assert.deepEqual(["option.approve", "option.changes"].map((action) => byAttribute(run.mount, "data-action", action).length), [1, 1], "a sent option of a round offers approve and request changes");
+  assert.deepEqual([byAttribute(run.mount, "data-action", "option.approve").length, byAttribute(run.mount, "data-action", "option.changes").length, byAttribute(byAttribute(run.mount, "aria-labelledby", "cr-property-278")[0], "data-action", "property.changes").length], [1, 0, 1], "a sent option of a round offers approve, and its property offers request changes once for all its options");
   run.controller.dispatch("option.toggle", { id: 3101 });
   await run.controller.idle();
   assert.deepEqual(run.sent, [], "opening a sent option of a round sends nothing: ORDER_LIFECYCLE has no view event");
@@ -3433,7 +3455,7 @@ try {
   const browserKey = template.parameters.find((parameter) => parameter.code === BROWSER_KEY);
   assert.deepEqual([browserKey.type, browserKey.value], ["STRING", ""], "the one credential-like parameter is the public Maps browser key, a plain STRING that ships empty");
   assert.match(browserKey.nls.en.DESCRIPTION, /HTTP referrer/, "its description asks for a referrer-restricted browser key");
-  assert.match(browserKey.nls.en.DESCRIPTION, /PageContext/, "and says the value lives in the page's PageContext");
+  assert.match(browserKey.nls.en.DESCRIPTION, /Set the value in CMS, never in the package/, "and says the value lives in CMS, not in the package");
   assert.equal(template.parameters.filter((parameter) => /KEY|SECRET|TOKEN|PASSWORD|CREDENTIAL/.test(parameter.code)).length, 1, "no other key, secret, token or credential is a parameter");
   assert.equal(new Set(template.parameters.map((parameter) => parameter.code)).size, template.parameters.length, "parameter codes are unique");
   for (const marker of ["Harbourview", "Coastline", "dana.reyes", "createFixtureAdapter", "quotationData", "5205", "3102"]) {

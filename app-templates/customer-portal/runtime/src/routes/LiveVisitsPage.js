@@ -11,6 +11,7 @@ import { RecordSection, VisitRow } from "../components/storm/RecordRows.js";
 import { activeServiceNames } from "../normalizers/contracts.js";
 import { formatArea } from "../normalizers/overview.js";
 import { findVisit, localDateKey, onSiteTimes, progressWhen, visitDay, visitImageUrl, visitPhotoCount, visitPlace, visitWindow } from "../normalizers/visits.js";
+import { sharedPlanMap } from "../property-map-session.js";
 import { propertyPlan } from "../property-plan.js";
 import { visitProgress } from "../visit-progress.js";
 import { VISIT_PHOTO_ACTION } from "../visit-photo-viewer.js";
@@ -63,7 +64,7 @@ export function LiveVisitDetail() {
 
   if (property) {
     page.appendChild(PropertyFacts(property));
-    var plan = PropertyPlan(propertyPlan(property.planId, render), property);
+    var plan = PropertyPlan(propertyPlan(property.planId, render), property, sharedPlanMap());
     if (plan) page.appendChild(plan);
     var services = ServicesCard(property);
     if (services) page.appendChild(services);

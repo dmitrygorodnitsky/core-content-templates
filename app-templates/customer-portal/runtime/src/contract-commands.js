@@ -72,10 +72,30 @@ export function createContractCommands(deps) {
     }) || Promise.resolve(false);
   }
 
-  function requestChanges(backendId, message) {
+  function requestChanges(backendIds, message) {
     var text = typeof message === "string" ? message.trim() : "";
-    if (!text) return Promise.resolve(false);
-    return decide("changes", backendId, { MESSAGE: { value: text } });
+    var definition = CONTRACT_EVENTS.changes;
+    var open = (Array.isArray(backendIds) ? backendIds : []).filter(function (backendId) {
+      var quote = findQuote(deps.current(), backendId);
+      return !!quote && quote.stateCode === definition.source && quote.allowedActions.indexOf("changes") !== -1;
+    });
+    if (!text || !open.length) return Promise.resolve(false);
+    return run({ kind: "changes", targets: open }, async function () {
+      var gateway = deps.gateway();
+      for (var index = 0; index < open.length; index += 1) {
+        var row = await gateway.readOrder(open[index], deps.context());
+        if (latestStateCode(row) !== definition.source) throw coded("conflict");
+        await gateway.sendOrderEvent(open[index], definition.code, deps.context(), { MESSAGE: { value: text } });
+      }
+      return confirm("changes", open, definition.source, function (pkg) {
+        var codes = open.map(function (backendId) {
+          var read = findQuote(pkg, backendId);
+          return read ? read.stateCode : null;
+        });
+        if (codes.some(function (code) { return !code; })) return null;
+        return codes.some(function (code) { return code === definition.source; }) ? definition.source : codes[0];
+      });
+    }) || Promise.resolve(false);
   }
 
   async function confirm(kind, backendId, source, stateOf) {
@@ -88,7 +108,7 @@ export function createContractCommands(deps) {
     var stateCode = stateOf(read);
     if (!stateCode) throw readbackFailure(null);
     if (stateCode === source) {
-      deps.state.contractCommand = { kind: kind, targets: [backendId], phase: "unconfirmed" };
+      deps.state.contractCommand = { kind: kind, targets: [].concat(backendId), phase: "unconfirmed" };
       return false;
     }
     deps.state.contractCommand = null;

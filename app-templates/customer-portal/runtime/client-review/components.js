@@ -331,13 +331,8 @@
     var disabled = ctx.busy || isPending(ctx.snapshot.commands[option.recordKey]);
     var chosen = chosenOption(ctx, property, option);
     var row = el("div", "cr-actions");
-    if (option.actions.approve && !chosen) {
-      row.appendChild(button(copy.approveLabel, "btn--primary btn--lg", function () { ctx.dispatch("option.choose", { id: option.id }); }, { disabled: disabled, "data-action": "option.approve" }));
-    }
-    if (option.actions.changes) {
-      row.appendChild(button(copy.changesLabel, "btn--ghost btn--lg", function () { ctx.dispatch("option.intent", { id: option.id, kind: "changes" }); }, { disabled: disabled, "data-action": "option.changes" }));
-    }
-    return row;
+    row.appendChild(button(copy.approveLabel, "btn--primary btn--lg", function () { ctx.dispatch("option.choose", { id: option.id }); }, { disabled: disabled, "data-action": "option.approve" }));
+    return chosen ? null : row;
   }
 
   function chosenNote(ctx, property, kind) {
@@ -351,40 +346,39 @@
     return box;
   }
 
-  function confirmPanel(ctx, property, option, confirm, pending) {
+  function changesPanel(ctx, property, pending) {
     var copy = ctx.copy;
-    var kind = confirm.kind;
-    var titleId = "cr-confirm-title-" + option.id;
-    var panel = el("div", "cr-confirm cr-confirm--" + kind, { role: "group", "aria-labelledby": titleId, "data-state": pending ? "pending" : "open" });
-    if (kind === "changes") {
-      var invalid = Boolean(ctx.snapshot.draftInvalid[option.id]);
-      var field = el("div", "cr-field", { "data-state": invalid ? "invalid" : "idle" });
-      field.appendChild(text("label", "cr-field__label", copy.changesTitle, { for: "cr-draft-" + option.id, id: titleId }));
-      var area = el("textarea", "cr-input cr-input--area", {
-        id: "cr-draft-" + option.id,
-        name: "MESSAGE",
-        rows: 4,
-        placeholder: copy.changesPlaceholder,
-        "aria-required": "true",
-        "aria-invalid": invalid ? "true" : null,
-        "aria-describedby": "cr-draft-error-" + option.id,
-        disabled: pending,
-      });
-      area.value = ctx.snapshot.drafts[option.id] || "";
-      area.addEventListener("input", function () { ctx.dispatch("option.draft", { id: option.id, value: area.value }); });
-      mark(ctx, area, "draft-" + option.id);
-      field.appendChild(area);
-      field.appendChild(text("p", "cr-field__error", invalid ? copy.changesRequired : "", { id: "cr-draft-error-" + option.id }));
-      panel.appendChild(field);
-    }
+    var key = property.key;
+    var draftKey = "property:" + key;
+    var titleId = "cr-changes-title-" + key;
+    var invalid = Boolean(ctx.snapshot.draftInvalid[draftKey]);
+    var panel = el("div", "cr-confirm cr-confirm--changes", { role: "group", "aria-labelledby": titleId, "data-state": pending ? "pending" : "open", "data-changes": key });
+    var field = el("div", "cr-field", { "data-state": invalid ? "invalid" : "idle" });
+    field.appendChild(text("label", "cr-field__label", copy.changesTitle, { for: "cr-changes-" + key, id: titleId }));
+    field.appendChild(text("p", "cr-field__hint", copy.changesAllBody, { id: "cr-changes-hint-" + key }));
+    var area = el("textarea", "cr-input cr-input--area", {
+      id: "cr-changes-" + key,
+      name: "MESSAGE",
+      rows: 4,
+      placeholder: copy.changesPlaceholder,
+      "aria-required": "true",
+      "aria-invalid": invalid ? "true" : null,
+      "aria-describedby": "cr-changes-hint-" + key + " cr-changes-error-" + key,
+      disabled: pending,
+    });
+    area.value = ctx.snapshot.drafts[draftKey] || "";
+    area.addEventListener("input", function () { ctx.dispatch("property.changes.draft", { key: key, value: area.value }); });
+    mark(ctx, area, "changes-draft-" + key);
+    field.appendChild(area);
+    field.appendChild(text("p", "cr-field__error", invalid ? copy.changesRequired : "", { id: "cr-changes-error-" + key }));
+    panel.appendChild(field);
     var actions = el("div", "cr-actions");
-    var confirmButton = button(pending ? copy.sendingLabel : copy.changesSend, "btn--primary btn--lg", function () {
-      ctx.dispatch("option.confirm", { id: option.id });
-    }, { disabled: pending || ctx.busy, "data-state": pending ? "pending" : null, "data-action": "option.confirm", "aria-busy": pending ? "true" : null });
-    actions.appendChild(confirmButton);
+    actions.appendChild(button(pending ? copy.sendingLabel : copy.changesSend, "btn--primary btn--lg", function () {
+      ctx.dispatch("property.changes.send", { key: key });
+    }, { disabled: pending || ctx.busy, "data-state": pending ? "pending" : null, "data-action": "property.changes.send", "aria-busy": pending ? "true" : null }));
     actions.appendChild(button(copy.cancelLabel, "btn--ghost btn--lg", function () {
-      ctx.dispatch("option.cancel", { id: option.id });
-    }, { disabled: pending, "data-action": "option.cancel" }));
+      ctx.dispatch("property.changes.cancel");
+    }, { disabled: pending, "data-action": "property.changes.cancel" }));
     panel.appendChild(actions);
     return panel;
   }
@@ -417,9 +411,9 @@
       if (option.awaitingClient) body.appendChild(text("p", "cr-note", copy.noteNoActions));
       return;
     }
-    var confirm = ctx.snapshot.confirm && ctx.snapshot.confirm.kind === "changes" && ctx.snapshot.confirm.id === option.id ? ctx.snapshot.confirm : null;
     if (chosenOption(ctx, property, option)) body.appendChild(chosenNote(ctx, property, "approve"));
-    body.appendChild(confirm ? confirmPanel(ctx, property, option, confirm, pending) : actionRow(ctx, property, option));
+    var approval = option.actions.approve ? actionRow(ctx, property, option) : null;
+    if (approval) body.appendChild(approval);
     if (command && !pending) {
       body.appendChild(outcomeBox(ctx, command, { action: refreshButton(ctx, option.recordKey, copy.refreshLabel) }));
     }
@@ -488,13 +482,13 @@
   function propertyFooter(ctx, property) {
     var copy = ctx.copy;
     var snapshot = ctx.snapshot;
-    var declineCode = ns.contract.orderEvents.decline.code;
+    var footerEvents = [ns.contract.orderEvents.decline.code, ns.contract.orderEvents.changes.code];
     var chosen = property.options.some(function (option) { return snapshot.expanded[option.id]; });
     var declinable = property.options.some(function (option) { return option.actions.decline; });
     var choice = snapshot.choices[property.key] || null;
     var failed = property.options.filter(function (option) {
       var command = snapshot.commands[option.recordKey];
-      return command && command.event === declineCode && (command.status === "failed" || command.status === "refused") && !snapshot.expanded[option.id];
+      return command && footerEvents.indexOf(command.event) !== -1 && (command.status === "failed" || command.status === "refused") && !snapshot.expanded[option.id];
     })[0];
     var footer = el("div", "cr-property__foot");
     if (!chosen && !choice && property.options.some(function (option) { return option.awaitingClient && !option.siblingApproved; })) {
@@ -503,18 +497,26 @@
     if (failed) {
       footer.appendChild(outcomeBox(ctx, snapshot.commands[failed.recordKey], { action: refreshButton(ctx, failed.recordKey, copy.refreshLabel) }));
     }
-    if (snapshot.declining === property.key) {
+    var changeable = property.options.some(function (option) { return option.actions.changes; });
+    if (snapshot.changing === property.key) {
+      footer.appendChild(changesPanel(ctx, property, snapshot.bulk === "changes"));
+    } else if (snapshot.declining === property.key) {
       footer.appendChild(declineConfirm(ctx, property, snapshot.bulk === "choices"));
     } else if (choice && choice.kind === "decline") {
       footer.appendChild(chosenNote(ctx, property, "decline"));
-    } else if (declinable) {
+    } else if (declinable || changeable) {
       var pending = property.options.some(function (option) { return isPending(snapshot.commands[option.recordKey]); });
-      var intent = button(copy.declineAllLabel, "btn--danger", function () {
-        ctx.dispatch("property.decline", { key: property.key });
-      }, { disabled: ctx.busy || pending, "data-action": "property.decline" });
-      mark(ctx, intent, "decline-" + property.key);
       var row = el("div", "cr-actions cr-property__actions");
-      row.appendChild(intent);
+      if (changeable) {
+        row.appendChild(mark(ctx, button(copy.changesLabel, "btn--ghost", function () {
+          ctx.dispatch("property.changes", { key: property.key });
+        }, { disabled: ctx.busy || pending, "data-action": "property.changes" }), "changes-" + property.key));
+      }
+      if (declinable) {
+        row.appendChild(mark(ctx, button(copy.declineAllLabel, "btn--danger", function () {
+          ctx.dispatch("property.decline", { key: property.key });
+        }, { disabled: ctx.busy || pending, "data-action": "property.decline" }), "decline-" + property.key));
+      }
       footer.appendChild(row);
     }
     return footer.children.length ? footer : null;

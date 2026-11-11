@@ -237,7 +237,7 @@
     { id: "quote-plans", label: "Quote review — Maps key set: each property's plan and total area before anything is chosen" },
     { id: "quote-plans-outline", label: "Quote review — no Maps key: each plan drawn as an outline, one service area per property" },
     { id: "choices-approve", label: "Confirm your choices — an option approved, contract details pre-filled" },
-    { id: "changes-invalid", label: "Request changes — message required" },
+    { id: "changes-invalid", label: "Request changes for a property — one message for every open option, message required" },
     { id: "choices-decline", label: "Decline all options — its own short confirmation, no step and no details" },
     { id: "choices-declined", label: "Confirm your choices — a decline sent, the other properties still open" },
     { id: "command-pending", label: "Decisions being sent" },
@@ -1190,7 +1190,7 @@
         steps = [["property.decline", { key: "property-278" }], ["property.decline.confirm", { key: "property-278" }]];
         break;
       case "changes-invalid":
-        steps = [["option.toggle", { id: 3103 }], ["option.intent", { id: 3103, kind: "changes" }], ["option.confirm", { id: 3103 }]];
+        steps = [["property.changes", { key: "property-278" }], ["property.changes.send", { key: "property-278" }]];
         break;
       case "command-pending":
         behavior.events["QUOTE_SENT-ACCEPTED"] = { outcome: "hold" };

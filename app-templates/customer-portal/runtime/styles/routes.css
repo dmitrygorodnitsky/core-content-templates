@@ -774,6 +774,14 @@ h1.proposal-detail-head__title { margin: 0; }
 
 .quote-approval__summary { margin-bottom: 12px; }
 
+.quote-changes { margin-bottom: 14px; }
+
+.quote-changes__row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 16px; }
+
+.quote-changes__copy { flex: 1; min-width: 180px; font-size: 13.5px; line-height: 1.45; color: var(--ink-2); }
+
+.quote-changes .decision-outcome { margin-top: 12px; }
+
 .quote-approval__price { margin-top: 8px; font-weight: 750; font-size: 17px; letter-spacing: -.01em; font-variant-numeric: tabular-nums; }
 
 .quote-approval__price[data-pricing="per-service"] { font-weight: 500; font-size: 13.5px; line-height: 1.5; color: var(--ink-2); }
@@ -2888,6 +2896,14 @@ a.prop-fact__value { display: block; }
 .prop-plan, .prop-service { margin-bottom: 16px; }
 
 .prop-plan__figure { position: relative; }
+
+.prop-plan__map { display: none; }
+
+.prop-plan__map[data-state="ready"] { display: block; }
+
+.prop-plan__map[data-state="ready"] + .prop-plan__figure { display: none; }
+
+.prop-plan__canvas { height: 380px; border-radius: 14px; overflow: hidden; border: 1px solid var(--glass-border); }
 
 .prop-plan__drawing { display: block; width: 100%; height: auto; border-radius: 14px; background: rgba(var(--hair), .05); border: 1px solid var(--glass-border); }
 

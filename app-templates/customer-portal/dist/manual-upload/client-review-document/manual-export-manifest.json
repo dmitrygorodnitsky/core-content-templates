@@ -5,12 +5,12 @@
   "template": {
     "code": "CLIENT_REVIEW_DOCUMENT",
     "templateLanguage": "JTE",
-    "parameterCount": 207,
+    "parameterCount": 208,
     "sha256": {
       "head": "b5e252b604ad732492b218098f257bf497097a28f69355e257736c578a5a213e",
-      "html": "37442be8bc9684fca512ddd7837b9008b3c42b73b880ce3702a39985d0ef2fa2",
+      "html": "a4637ce533b78f214a16f835fdd3837491cd49ba186dfde5b8da8b058bbd0c94",
       "css": "f9e41386c313c0d64fb2fb02e36ce96ff04377e0f977bd71154eae45ba9a41ea",
-      "javascript": "efacb6be1aef4a6c1c1c0ab641f2f66b3fdcbb858129298f051efa67a4bd779f"
+      "javascript": "23d6941016452d5fac8027180de3ba46d568787e081a1536050a2db91f50cbcb"
     }
   },
   "runtime": {
@@ -145,7 +145,7 @@
     "Event metadata reaches the workflow hook, and required event attributes are enforced on this path (QUOTATION-PACKAGE-FLOW.md §9).",
     "The generated CLIENT_REVIEW_DOCUMENT package still needs a production CMS upload and browser acceptance with a fresh real link.",
     "Confirm your choices with the details on QUOTE_SENT-ACCEPTED, the round revoked after its last decision and the portal invitation have not been exercised against dev-1.",
-    "Address suggestions, the billing address map and the plan map have not run against Google with this page's own key: REVIEW_MAPS_API_KEY is set by the operator in the page's PageContext, and the preview draws on a stub map."
+    "Address suggestions, the billing address map and the plan map have not run against Google with this page's own key: REVIEW_MAPS_API_KEY is set by the operator in CMS, and the preview draws on a stub map."
   ],
   "constraints": [
     "Download PDF creates a local, selectable-text A4 copy of the normalized authorized view, including every quotation option or the agreement's parties, services and terms. It never exports a token, URL, unsent form or comment draft, recalculates money, or sends document data to another service. Partial reads disable export, duplicate clicks are single-flight, and a changed or revoked document is not downloaded after generation. The pinned jsPDF engine and Roboto font are embedded as data-URI scripts to avoid JTE interpreting the vendor's template literals; no library/font request leaves the page.",
@@ -155,7 +155,7 @@
     "A link that closes after the details or the approval were sent ends on a thank-you card; a link that is closed when it is opened keeps the expired-or-withdrawn card.",
     "An agreement awaiting approval offers Request changes beside Approve when the link delegates SENT_TO_CLIENT-CLIENT_CHANGES_REQUESTED. The client's text is sent as MESSAGE; an empty text is not sent. The link stays open, and while the agreement is CLIENT_CHANGES_REQUESTED it thanks the client, says the provider emails a new link, and shows the agreement as it was sent. A link issued before the change request existed offers approval alone.",
     "The parties are read from the agreement text (the agreement's LocalizedTextContent; a link without that entry shows no terms) and from the granted Account (its name and LEGAL_ENTITY_TYPE); the agreement stores no provider card or client snapshot, and the page reads no logo.",
-    "REVIEW_MAPS_API_KEY ships empty; its value is the operator's, set in the page's PageContext. While it is empty or not a key the page loads no Google script, the billing address is a plain text field and each plan is an outline drawn from its shapes. With a key, the page loads the Maps JavaScript API once, for the first plan it shows or on the Confirm your choices step, draws each plan over a satellite map, offers Google address suggestions under the billing address, pins the chosen or typed address on a map (or says it was not found, and the client can still send it as written), and switches the document's referrer policy from no-referrer to strict-origin so Google can check the key against the page's origin; the #token= fragment is never part of a referrer.",
+    "REVIEW_MAPS_API_KEY ships empty; its value is the operator's, set in CMS. While it is empty or not a key the page loads no Google script, the billing address is a plain text field and each plan is an outline drawn from its shapes. With a key, the page loads the Maps JavaScript API once, for the first plan it shows or on the Confirm your choices step, draws each plan over a satellite map, offers Google address suggestions under the billing address, pins the chosen or typed address on a map (or says it was not found, and the client can still send it as written), and switches the document's referrer policy from no-referrer to strict-origin so Google can check the key against the page's origin; the #token= fragment is never part of a referrer.",
     "The billing address is the client's own value. The Confirm your choices step offers the service address of each property chosen for approval as a button that copies it into the billing field, where the client sees and can change it, and sends it as BILLING_ADDRESS like a typed address; nothing fills the billing field from a service address on its own.",
     "A link may carry #property-token= beside #token=: a second grant, issued on core-rm, of one Resource per property of the package. The page introspects it and lists Resource with it, and lists Address with the main token. A link without it, or a property grant or Address read that fails for any reason (401 and 404 included), shows the page the main grant decides, with each property's address unavailable and no plan: it never closes the page, shows an error or retries for it.",
     "A property's address is its granted Resource's ADDRESS id looked up among the granted Address rows, written as the backend writes addresses: address1, address2, city, jurisdiction, state.code, postalCode, country.id, each trimmed, empty parts and parts equal to an earlier one (ignoring case) skipped, joined with \", \", else the Address alias. An id that is missing or not among the granted rows gives no address.",

@@ -277,6 +277,8 @@
 
 .vw-mobile .prop-facts { grid-template-columns: 1fr; }
 
+.vw-mobile .prop-plan__canvas { height: 260px; }
+
 .vw-mobile .prop-plan__figure:not([data-labels="1"]):not([data-labels="2"]) .prop-plan__label { display: none; }
 
 .vw-mobile .prop-edit--pair { grid-template-columns: 1fr; }

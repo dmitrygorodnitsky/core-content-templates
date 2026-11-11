@@ -46,6 +46,7 @@ const { Overview } = await load("src/routes/OverviewPage.js");
 const { PropertyDetail } = await load("src/routes/PropertyDetailPage.js");
 const { propertyPlan } = await load("src/property-plan.js");
 const { PropertyPlan } = await load("src/components/storm/PropertyPlan.js");
+const { createPlanMap } = await load("src/components/storm/PlanMap.js");
 
 const plain = (value) => JSON.parse(JSON.stringify(value));
 const PERIOD = { SERVICE_PERIOD_START: { value: "2026-11-01" }, SERVICE_PERIOD_END: { value: "2027-03-31" } };
@@ -717,10 +718,10 @@ const RETIRED = ["Proposal #", "valid until", "sent Dec", "sq ft", "Beam AI", "l
     const id = String(8110 + index);
     assert.deepEqual(all(card, "[data-action]").map((button) => [button.getAttribute("data-action"), button.getAttribute("data-id"), button.textContent]), [
       ["quote.approve", id, "Approve"],
-      ["quote.requestChanges", id, "Request changes"],
       ["quote.decline", id, "Decline"],
-    ], "a sent quote offers approve, request changes and decline as soon as it is shown");
+    ], "a sent quote offers approve and decline as soon as it is shown");
   }
+  assert.deepEqual(all(one(open, "[data-module=\"quote-property-actions\"]"), "[data-action]").map((button) => [button.getAttribute("data-action"), button.getAttribute("data-id"), button.textContent]), [["quote.requestChanges", "quote-0-7104", "Request changes"]], "and the property offers one Request changes for all its quotes");
   assert.equal(all(open, "[data-module=\"command-pending\"]").length + all(open, "[data-module=\"command-failure\"]").length, 0, "opening a quote sends nothing: ORDER_LIFECYCLE has no view event");
   assert.equal(one(open, "[data-module=\"quote-detail-footer\"]").textContent, "✦Approving one option for this property declines its other options.");
 
@@ -773,8 +774,8 @@ const RETIRED = ["Proposal #", "valid until", "sent Dec", "sq ft", "Beam AI", "l
   state.contractCommand = { kind: "approve", targets: [8111], phase: "pending" };
   const sentOption = findQuote(quotePackage(), 8110);
   assert.equal(sentOption.status, "unseen");
-  assert.deepEqual(all(QuoteOptionCard(sentOption, { interactive: true, busy: true }), "[data-action]").map((button) => [button.textContent, button.hasAttribute("disabled")]), [["Approve", true], ["Request changes", true], ["Decline", true]], "while another option's command is in flight this option cannot be decided");
-  assert.deepEqual(all(QuoteOptionCard(sentOption, { interactive: true, busy: false }), "[data-action]").map((button) => [button.textContent, button.hasAttribute("disabled")]), [["Approve", false], ["Request changes", false], ["Decline", false]]);
+  assert.deepEqual(all(QuoteOptionCard(sentOption, { interactive: true, busy: true }), "[data-action]").map((button) => [button.textContent, button.hasAttribute("disabled")]), [["Approve", true], ["Decline", true]], "while another option's command is in flight this option cannot be decided");
+  assert.deepEqual(all(QuoteOptionCard(sentOption, { interactive: true, busy: false }), "[data-action]").map((button) => [button.textContent, button.hasAttribute("disabled")]), [["Approve", false], ["Decline", false]]);
 
   state.contractConfirm = { kind: "decline", backendId: 8110 };
   state.contractCommand = null;
@@ -1286,6 +1287,36 @@ const RETIRED = ["Proposal #", "valid until", "sent Dec", "sq ft", "Beam AI", "l
   const measured = Math.round(planEntry.plan.squareFeet);
   assert.deepEqual(all(PropertyPlan(planEntry, { areaSqft: measured }), ".prop-plan__size").map((size) => size.textContent), [new Intl.NumberFormat("en").format(measured) + " ft²"], "a service area measured from the plan is broken down by its shapes");
   assert.equal(all(PropertyPlan(planEntry, { areaSqft: measured + 3000 }), ".prop-plan__size").length, 0, "a typed service area is the only area shown: the plan's own measurements do not compete with it");
+  const made = { maps: [], polygons: [], circles: [], fits: [] };
+  const googleMaps = {
+    Map: function (node, options) { made.maps.push({ node, options }); this.fitBounds = (bounds, padding) => { made.fits.push([bounds, padding]); }; },
+    Polygon: function (options) { made.polygons.push(options); },
+    Polyline: function () {},
+    Circle: function (options) { made.circles.push(options); },
+  };
+  let mapChanges = 0;
+  let mapFailure = null;
+  const warn = console.warn;
+  console.warn = () => {};
+  const planMap = createPlanMap({ adapter: { onFailure: (listener) => { mapFailure = listener; }, load: () => Promise.resolve(googleMaps) }, onChange: () => { mapChanges += 1; }, scope: {} });
+  const outlineCard = PropertyPlan(planEntry, null, planMap);
+  assert.deepEqual([one(outlineCard, "[data-module=\"plan-map\"]").getAttribute("data-state"), all(outlineCard, ".prop-plan__figure").length, made.maps.length], ["loading", 1, 0], "while Google Maps loads the card keeps the outline");
+  await new Promise((resolve) => setImmediate(resolve));
+  assert.equal(mapChanges, 1, "the loaded map re-renders the page once");
+  const satelliteCard = PropertyPlan(planEntry, null, planMap);
+  await new Promise((resolve) => setImmediate(resolve));
+  const satellite = one(satelliteCard, "[data-module=\"plan-map\"]");
+  assert.deepEqual([satellite.getAttribute("data-state"), made.maps.length, made.maps[0].options.mapTypeId, made.maps[0].node === one(satellite, ".prop-plan__canvas")], ["ready", 1, "hybrid", true], "the plan is drawn over satellite imagery with the portal's own Maps loader");
+  assert.deepEqual([made.polygons.length, made.polygons[0].clickable, made.polygons[0].paths === planEntry.plan.elements[0].shapes[0].polygons[0], made.circles.length], [1, false, true, 1], "each area is overlaid where the plan puts it, read only, and a point is a dot");
+  assert.deepEqual(made.fits, [[planEntry.plan.bounds, 28]], "fitted to the plan's bounds");
+  assert.equal(all(satelliteCard, ".prop-plan__figure").length, 1, "the outline stays in the card as the fallback the stylesheet hides behind a ready map");
+  assert.equal(one(PropertyPlan(planEntry, null, planMap), "[data-module=\"plan-map\"]"), satellite, "a later render moves the same map into the new card");
+  await new Promise((resolve) => setImmediate(resolve));
+  assert.equal(made.maps.length, 1, "and builds no second one");
+  mapFailure(new Error("key refused"));
+  const fallbackCard = PropertyPlan(planEntry, null, planMap);
+  assert.deepEqual([planMap.status(), all(fallbackCard, "[data-module=\"plan-map\"]").length, all(fallbackCard, ".prop-plan__figure").length, mapChanges], ["failed", 0, 1, 2], "a map that cannot load leaves the outline");
+  console.warn = warn;
   const missing = propertyPlan("6d6d69a3-32f5-47f5-afbf-08cdc61b35d8", () => {}, async () => ({ ok: false, status: 404 }));
   await new Promise((resolve) => setImmediate(resolve));
   assert.equal(PropertyPlan(missing), null, "a plan that cannot be read shows nothing");

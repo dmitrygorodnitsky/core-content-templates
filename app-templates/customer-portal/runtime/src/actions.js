@@ -95,7 +95,7 @@ export var ACTIONS = {
   "quote.decline":     function (id) { return openContractConfirm("decline", id); },
   "quote.confirm":     function (id) { return confirmContractCommand("quote", id); },
   "quote.cancel":      function ()   { return cancelContractConfirm(); },
-  "quote.requestChanges": function (id) { if (!openContractConfirm("changes", id)) return false; focusElement("[data-quote-changes=\"" + id + "\"]"); return true; },
+  "quote.requestChanges": function (id) { if (!openChangeRequest(id)) return false; focusElement("[data-quote-changes]"); return true; },
   "quote.sendChanges": function (id) { return sendChangeRequest(id); },
   "quoteRequest.toggleProperty": function (id) { if (!toggleQuoteProperty(id)) return false; render(); focusElement("[data-action=\"quoteRequest.toggleProperty\"][data-id=\"" + id + "\"]"); return true; },
   "quoteRequest.addAddress": function () { return addTypedQuoteAddress({ onChange: render }).then(function (added) { render(); focusElement("#quote-request-address"); return added; }); },
@@ -1604,19 +1604,32 @@ function cancelContractConfirm() {
   return true;
 }
 
-function sendChangeRequest(id) {
-  var backendId = contractTarget(id);
+function changeableQuoteIds(group) {
+  return group.orders.filter(function (order) { return order.status === "unseen" && order.allowedActions.indexOf("changes") !== -1; }).map(function (order) { return order.backendId; });
+}
+
+function openChangeRequest(groupId) {
+  var group = quoteGroupFor(groupId);
+  if (!group || !changeableQuoteIds(group).length || contractCommands.busy()) return false;
+  state.contractConfirm = { kind: "changes", groupId: group.id, message: "", error: "" };
+  if (state.contractCommand && state.contractCommand.phase !== "pending") state.contractCommand = null;
+  render();
+  return true;
+}
+
+function sendChangeRequest(groupId) {
+  var group = quoteGroupFor(groupId);
   var confirm = state.contractConfirm;
-  if (!backendId || !confirm || confirm.kind !== "changes" || confirm.backendId !== backendId || contractCommands.busy()) return false;
+  if (!group || !confirm || confirm.kind !== "changes" || confirm.groupId !== group.id || contractCommands.busy()) return false;
   var message = String(confirm.message || "").trim();
   if (!message) {
     confirm.error = CHANGES_REQUIRED;
     render();
-    focusElement("[data-quote-changes=\"" + backendId + "\"]");
+    focusElement("[data-quote-changes]");
     return false;
   }
   confirm.error = "";
-  return contractCommands.requestChanges(backendId, message);
+  return contractCommands.requestChanges(changeableQuoteIds(group), message);
 }
 
 export function ensureContractDetails() {

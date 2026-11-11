@@ -8,12 +8,12 @@ import { ActionButton } from "../components/primitives/ActionButton.js";
 import { NotFoundState } from "../components/primitives/RouteStates.js";
 import { ProposalComparison } from "../components/proposals/ProposalComparison.js";
 import { QUOTE_STATUS } from "../components/proposals/QuotePackage.js";
-import { QuoteOptionCard } from "../components/proposals/QuoteOptionCard.js";
+import { PropertyChangeRequest, QuoteOptionCard } from "../components/proposals/QuoteOptionCard.js";
 import { ContractDetailSkeleton, PartialNotice, contractsGate } from "../components/proposals/ContractStates.js";
 import { PropertyLocation } from "../components/storm/PropertyMap.js";
 import { PropertyPlan } from "../components/storm/PropertyPlan.js";
 import { formatArea } from "../normalizers/overview.js";
-import { mapViewport, sharedPropertyMap } from "../property-map-session.js";
+import { mapViewport, sharedPlanMap, sharedPropertyMap } from "../property-map-session.js";
 import { propertyPlan } from "../property-plan.js";
 import { Profile } from "./ProfilePage.js";
 import { Activity } from "./ActivityPage.js";
@@ -190,7 +190,7 @@ function QuoteDetail() {
     ]));
   }
 
-  var plan = group.property ? PropertyPlan(propertyPlan(group.property.planId, render), group.property) : null;
+  var plan = group.property ? PropertyPlan(propertyPlan(group.property.planId, render), group.property, sharedPlanMap()) : null;
   if (plan) page.appendChild(plan);
 
   var open = group.orders.filter(function (order) { return order.status === "unseen"; });
@@ -199,6 +199,9 @@ function QuoteDetail() {
     list.appendChild(QuoteOptionCard(order, { interactive: true, busy: busy }));
   });
   page.appendChild(list);
+
+  var changes = PropertyChangeRequest(group, busy);
+  if (changes) page.appendChild(changes);
 
   if (open.length) {
     page.appendChild(h("div", { "class": "proposal-footer", "data-module": "quote-detail-footer", "data-visual-id": "quote-detail-footer" }, [

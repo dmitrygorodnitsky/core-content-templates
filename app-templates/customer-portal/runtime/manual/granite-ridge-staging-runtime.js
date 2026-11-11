@@ -2755,10 +2755,34 @@
         });
       }) || Promise.resolve(false);
     }
-    function requestChanges(backendId, message) {
+    function requestChanges(backendIds, message) {
       var text10 = typeof message === "string" ? message.trim() : "";
-      if (!text10) return Promise.resolve(false);
-      return decide("changes", backendId, { MESSAGE: { value: text10 } });
+      var definition = CONTRACT_EVENTS.changes;
+      var open = (Array.isArray(backendIds) ? backendIds : []).filter(function(backendId) {
+        var quote = findQuote(deps.current(), backendId);
+        return !!quote && quote.stateCode === definition.source && quote.allowedActions.indexOf("changes") !== -1;
+      });
+      if (!text10 || !open.length) return Promise.resolve(false);
+      return run({ kind: "changes", targets: open }, async function() {
+        var gateway = deps.gateway();
+        for (var index = 0; index < open.length; index += 1) {
+          var row = await gateway.readOrder(open[index], deps.context());
+          if (latestStateCode(row) !== definition.source) throw coded("conflict");
+          await gateway.sendOrderEvent(open[index], definition.code, deps.context(), { MESSAGE: { value: text10 } });
+        }
+        return confirm("changes", open, definition.source, function(pkg) {
+          var codes = open.map(function(backendId) {
+            var read = findQuote(pkg, backendId);
+            return read ? read.stateCode : null;
+          });
+          if (codes.some(function(code) {
+            return !code;
+          })) return null;
+          return codes.some(function(code) {
+            return code === definition.source;
+          }) ? definition.source : codes[0];
+        });
+      }) || Promise.resolve(false);
     }
     async function confirm(kind, backendId, source, stateOf) {
       var read;
@@ -2770,7 +2794,7 @@
       var stateCode = stateOf(read);
       if (!stateCode) throw readbackFailure(null);
       if (stateCode === source) {
-        deps.state.contractCommand = { kind, targets: [backendId], phase: "unconfirmed" };
+        deps.state.contractCommand = { kind, targets: [].concat(backendId), phase: "unconfirmed" };
         return false;
       }
       deps.state.contractCommand = null;
@@ -4536,7 +4560,7 @@
       types[form.typeCode] = type;
       return type;
     }
-    var adapter = {
+    var adapter2 = {
       async type(form, context) {
         return formType(form, requestContext3(context));
       },
@@ -4563,7 +4587,7 @@
         return id;
       },
       async outcome(form, formId, context) {
-        var reported = await adapter.report(form, formId, context, OUTCOMES);
+        var reported = await adapter2.report(form, formId, context, OUTCOMES);
         return {
           outcome: reported.outcome,
           field: text(reported.field) || null,
@@ -4589,7 +4613,7 @@
         }
       }
     };
-    return adapter;
+    return adapter2;
   }
   function parsed(value) {
     if (typeof value !== "string" || !value) return null;
@@ -6613,14 +6637,14 @@
     if (config && config.dataMode === "live") return null;
     return fixtureWeather || null;
   }
-  function loadLiveWeather(fixtureWeather, config, adapter) {
+  function loadLiveWeather(fixtureWeather, config, adapter2) {
     if (!liveWeatherOpened(config)) return Promise.resolve(null);
     var source = weatherSource(config, fixtureWeather);
     var centroids = source && source.zoneCentroids || null;
     if (!centroids) return Promise.resolve(null);
     var zoneOrder = /* @__PURE__ */ Object.keys(centroids);
     if (!zoneOrder.length) return Promise.resolve(null);
-    var client = adapter || createXweatherAdapter({
+    var client = adapter2 || createXweatherAdapter({
       clientId: config.weatherClientId,
       clientSecret: config.weatherClientSecret
     });
@@ -6651,15 +6675,15 @@
     });
   }
   function createPropertyForecasts(options2) {
-    var adapter = options2.adapter;
+    var adapter2 = options2.adapter;
     var onChange = options2.onChange;
     var entries = /* @__PURE__ */ new Map();
     return {
       request: function(id, point) {
         if (entries.has(id)) return entries.get(id);
-        if (!point || !adapter.opened()) return null;
+        if (!point || !adapter2.opened()) return null;
         entries.set(id, { state: "loading", days: [] });
-        adapter.dailyForecast(point.lat, point.lon, FRAME_COUNT).then(function(periods) {
+        adapter2.dailyForecast(point.lat, point.lon, FRAME_COUNT).then(function(periods) {
           return { state: "ready", days: periods.map(forecastDay) };
         }).catch(function(error2) {
           console.warn("[portal] property forecast unavailable, showing the area forecast", error2 && error2.message);
@@ -6735,7 +6759,7 @@
   };
   var listScroll = {};
   function createPropertyMap(options2) {
-    var adapter = options2.adapter;
+    var adapter2 = options2.adapter;
     var cache = options2.cache;
     var dispatch = options2.dispatch;
     var onChange = options2.onChange;
@@ -6871,8 +6895,8 @@
     }
     function start(viewport) {
       status = "loading";
-      adapter.onFailure(fail2);
-      adapter.load().then(function(loaded) {
+      adapter2.onFailure(fail2);
+      adapter2.load().then(function(loaded) {
         if (status === "failed") return;
         maps = loaded;
         map = new maps.Map(mount2, mapOptions(viewport, mapId));
@@ -6979,7 +7003,7 @@
       if (geocoding || status !== "ready" || !queue.length) return;
       geocoding = true;
       var next = queue.shift();
-      adapter.geocode(next.address).then(function(found) {
+      adapter2.geocode(next.address).then(function(found) {
         var point = geoPoint(found.lat, found.lon);
         if (!point) throw new Error("Geocoder answered without a usable point");
         located.set(next.key, point);
@@ -7682,13 +7706,133 @@
     });
   }
 
+  // app-templates/customer-portal/runtime/src/components/storm/PlanMap.js
+  var PLAN_PADDING = 28;
+  var POINT_RADIUS_METERS = 1.5;
+  var TONE_TOKENS = ["--accent", "--warn", "--ok", "--danger", "--accent-3"];
+  function createPlanMap(options2) {
+    var adapter2 = options2.adapter;
+    var onChange = options2.onChange;
+    var scope = options2.scope || globalThis;
+    var status = "idle";
+    var maps = null;
+    var views = /* @__PURE__ */ new Map();
+    return {
+      status: function() {
+        return status;
+      },
+      view
+    };
+    function view(plan, label) {
+      if (status === "failed") return null;
+      if (status === "idle") start();
+      var entry = views.get(plan);
+      if (!entry) {
+        var canvas = h("div", { "class": "prop-plan__canvas", role: "img", "aria-label": label });
+        entry = { node: h("div", { "class": "prop-plan__map", "data-module": "plan-map", "data-visual-id": "plan-map", "data-surface": "google" }, [canvas]), canvas, map: null, drawn: false };
+        views.set(plan, entry);
+      }
+      entry.node.setAttribute("data-state", status === "ready" ? "ready" : "loading");
+      if (status === "ready" && !entry.drawn) {
+        entry.drawn = true;
+        Promise.resolve().then(function() {
+          draw(entry, plan);
+        }).catch(fail2);
+      }
+      return entry.node;
+    }
+    function start() {
+      status = "loading";
+      adapter2.onFailure(fail2);
+      adapter2.load().then(function(loaded) {
+        if (status === "failed") return;
+        maps = loaded;
+        status = "ready";
+        onChange();
+      }).catch(fail2);
+    }
+    function fail2(error2) {
+      if (status === "failed") return;
+      status = "failed";
+      views.forEach(function(entry) {
+        entry.node.setAttribute("data-state", "failed");
+      });
+      console.warn("[portal] Google map unavailable, drawing the plan as an outline instead", error2 && error2.message);
+      onChange();
+    }
+    function draw(entry, plan) {
+      var canvas = entry.canvas;
+      var bounds = plan.bounds;
+      var map = new maps.Map(canvas, {
+        center: { lat: (bounds.north + bounds.south) / 2, lng: (bounds.east + bounds.west) / 2 },
+        zoom: 18,
+        mapTypeId: "hybrid",
+        tilt: 0,
+        disableDefaultUI: true,
+        zoomControl: true,
+        clickableIcons: false,
+        gestureHandling: "cooperative"
+      });
+      entry.map = map;
+      plan.elements.forEach(function(element) {
+        var color = toneColor(element.tone);
+        element.shapes.forEach(function(shape) {
+          overlay(map, shape, color);
+        });
+      });
+      var fit = function() {
+        map.fitBounds(bounds, PLAN_PADDING);
+      };
+      fit();
+      if (typeof scope.ResizeObserver !== "function") return;
+      var size = "";
+      new scope.ResizeObserver(function() {
+        var measured2 = canvas.offsetWidth + "x" + canvas.offsetHeight;
+        if (!canvas.offsetWidth || !canvas.offsetHeight || measured2 === size) return;
+        size = measured2;
+        fit();
+      }).observe(canvas);
+    }
+    function overlay(map, shape, color) {
+      var paint2 = color ? { strokeColor: color, fillColor: color } : {};
+      if (shape.kind === "area") {
+        shape.polygons.forEach(function(rings) {
+          new maps.Polygon(Object.assign({ map, paths: rings, strokeOpacity: 1, strokeWeight: 2, fillOpacity: 0.35, clickable: false }, paint2));
+        });
+        return;
+      }
+      if (shape.kind === "line") {
+        new maps.Polyline(Object.assign({ map, path: shape.path, strokeOpacity: 1, strokeWeight: 4, clickable: false }, color ? { strokeColor: color } : {}));
+        return;
+      }
+      var circle = shape.kind === "circle";
+      new maps.Circle(Object.assign({ map, center: circle ? shape.center : shape.position, radius: circle ? shape.radius : POINT_RADIUS_METERS, strokeOpacity: 1, strokeWeight: 2, fillOpacity: circle ? 0.35 : 1, clickable: false }, paint2));
+    }
+    function toneColor(tone) {
+      var root = scope.document && scope.document.documentElement;
+      if (!root || typeof scope.getComputedStyle !== "function") return "";
+      return String(scope.getComputedStyle(root).getPropertyValue(TONE_TOKENS[(tone - 1) % TONE_TOKENS.length]) || "").trim();
+    }
+  }
+
   // app-templates/customer-portal/runtime/src/property-map-session.js
   var controller = null;
+  var planController = null;
+  var adapter = null;
+  function sharedAdapter() {
+    if (!adapter) adapter = createGoogleMapsAdapter({ apiKey: state.config.mapsApiKey });
+    return adapter;
+  }
+  function sharedPlanMap() {
+    if (!state.config.mapsApiKey) return null;
+    if (!planController) planController = createPlanMap({ adapter: sharedAdapter(), onChange: render });
+    return planController;
+  }
   function sharedPropertyMap() {
     if (!state.config.mapsApiKey) return null;
     if (!controller) {
       controller = createPropertyMap({
-        adapter: createGoogleMapsAdapter({ apiKey: state.config.mapsApiKey }),
+        adapter: sharedAdapter(),
         cache: createGeocodeCache(browserStorage()),
         mapId: state.config.mapsMapId,
         dispatch: dispatchMapAction,
@@ -8882,7 +9026,7 @@
   })(typeof window !== "undefined" ? window : globalThis);
 
   // app-templates/customer-portal/runtime/src/components/storm/PropertyPlan.js
-  function PropertyPlan(entry, property) {
+  function PropertyPlan(entry, property, planMap) {
     if (!entry || entry.status === "unavailable") return null;
     var card = h("section", { "class": "card card--pad prop-plan", "data-module": "property-plan", "data-visual-id": "property-plan", "data-state": entry.status, "aria-labelledby": "property-plan-title" }, [
       h("div", { "class": "prop-section__title", id: "property-plan-title" }, "Service plan")
@@ -8893,6 +9037,8 @@
       return card;
     }
     var sized = globalThis.ClientReview.plan.sumsTo(entry.plan, property ? property.areaSqft : null);
+    var satellite = planMap ? planMap.view(entry.plan, "Service plan on a satellite map") : null;
+    if (satellite) card.appendChild(satellite);
     card.appendChild(planDrawing(entry.plan));
     card.appendChild(h("ul", { "class": "prop-plan__legend", "aria-label": "Plan elements" }, entry.plan.elements.map(function(element) {
       return h("li", { "class": "prop-plan__item" }, [
@@ -9162,7 +9308,7 @@
     ]));
     if (property) {
       page.appendChild(PropertyFacts(property));
-      var plan = PropertyPlan(propertyPlan(property.planId, render), property);
+      var plan = PropertyPlan(propertyPlan(property.planId, render), property, sharedPlanMap());
       if (plan) page.appendChild(plan);
       var services = ServicesCard(property);
       if (services) page.appendChild(services);
@@ -9616,57 +9762,22 @@
   }
   function QuoteDecisions(order, settings) {
     var command = state.contractCommand;
-    var targeted = !!command && command.targets.indexOf(order.backendId) !== -1;
+    var targeted = !!command && command.kind !== "changes" && command.targets.indexOf(order.backendId) !== -1;
     var outcome = targeted && command.phase !== "pending" ? CommandOutcome(command.phase, command.message) : null;
     var busy = !!settings.busy;
     if (order.status !== "unseen") return outcome ? h("div", { "class": "quote-option__decide" }, outcome) : null;
     var confirm = state.contractConfirm;
     var confirming = !!confirm && confirm.backendId === order.backendId && confirm.kind === "decline";
-    var changing = !!confirm && confirm.backendId === order.backendId && confirm.kind === "changes";
     var section = h("div", { "class": "quote-option__decide" });
     if (confirming) section.appendChild(DeclineConfirm(order, settings, targeted && command.phase === "pending"));
-    else if (changing) section.appendChild(ChangeRequest(confirm, order, settings, targeted && command.phase === "pending"));
     else {
       section.appendChild(h("div", { "class": "proposal-actions" }, [
         ActionButton({ variant: "btn--primary", label: "Approve", action: "quote.approve", id: String(order.backendId), lg: true, disabled: busy, visualId: "quote-approve" }),
-        ActionButton({ variant: "btn--ghost", label: "Request changes", action: "quote.requestChanges", id: String(order.backendId), lg: true, disabled: busy, visualId: "quote-request-changes" }),
         ActionButton({ variant: "btn--danger", label: "Decline", action: "quote.decline", id: String(order.backendId), lg: true, disabled: busy, visualId: "quote-decline" })
       ]));
     }
     if (outcome) section.appendChild(outcome);
     return section;
-  }
-  function ChangeRequest(confirm, order, settings, pending) {
-    var id = "quote-changes-" + order.backendId;
-    var titleId = id + "-title";
-    var errorId = id + "-error";
-    var input = h("textarea", {
-      "class": "field decision-confirm__message",
-      id,
-      rows: "4",
-      placeholder: "For example: add sidewalk de-icing, or quote weekly visits instead.",
-      "data-quote-changes": String(order.backendId),
-      "data-state": confirm.error ? "invalid" : void 0,
-      "aria-labelledby": titleId,
-      "aria-invalid": confirm.error ? "true" : void 0,
-      "aria-describedby": confirm.error ? errorId : void 0,
-      disabled: pending ? true : void 0
-    }, confirm.message || "");
-    input.addEventListener("input", function() {
-      if (state.contractConfirm === confirm) confirm.message = input.value;
-    });
-    var sendButton = ActionButton({ variant: "btn--primary", label: pending ? "Sending\u2026" : "Send request", action: "quote.sendChanges", id: String(order.backendId), lg: true, disabled: pending || settings.busy, visualId: "quote-send-changes" });
-    if (pending) sendButton.setAttribute("data-state", "pending");
-    return h("div", { "class": "decision-confirm", "data-module": "change-request", "data-visual-id": "change-request", "data-state": pending ? "pending" : confirm.error ? "invalid" : "open", "data-kind": "changes", role: "group", "aria-labelledby": titleId }, [
-      h("label", { "class": "decision-confirm__title", id: titleId, "for": id }, "What should change?"),
-      h("p", { "class": "decision-confirm__body" }, "Our team reviews your request and sends you revised quotes."),
-      input,
-      confirm.error ? h("div", { "class": "field-error", id: errorId, role: "alert" }, confirm.error) : null,
-      h("div", { "class": "proposal-actions" }, [
-        sendButton,
-        ActionButton({ variant: "btn--ghost", label: "Cancel", action: "quote.cancel", lg: true, disabled: pending, visualId: "quote-cancel" })
-      ])
-    ]);
   }
   function DeclineConfirm(order, settings, pending) {
     var label = order.pricingModel ? order.pricingModel.label : "this option";
@@ -9686,6 +9797,64 @@
       h("p", { "class": "decision-confirm__body" }, "A declined option can\u2019t be approved later."),
       h("div", { "class": "proposal-actions" }, [
         confirmButton,
+        ActionButton({ variant: "btn--ghost", label: "Cancel", action: "quote.cancel", lg: true, disabled: pending, visualId: "quote-cancel" })
+      ])
+    ]);
+  }
+  function PropertyChangeRequest(group, busy) {
+    var open = group.orders.filter(function(order) {
+      return order.status === "unseen" && order.allowedActions.indexOf("changes") !== -1;
+    });
+    var command = state.contractCommand;
+    var targeted = !!command && command.kind === "changes" && command.targets.some(function(backendId) {
+      return group.orders.some(function(order) {
+        return order.backendId === backendId;
+      });
+    });
+    var pending = targeted && command.phase === "pending";
+    var outcome = targeted && !pending ? CommandOutcome(command.phase, command.message) : null;
+    var confirm = state.contractConfirm;
+    var asking = !!confirm && confirm.kind === "changes" && confirm.groupId === group.id;
+    if (!open.length && !outcome && !pending) return null;
+    var section = h("section", { "class": "card card--pad quote-changes", "data-module": "quote-property-actions", "data-visual-id": "quote-property-actions", "data-state": pending ? "pending" : asking ? "asking" : "idle", "aria-label": "Request changes to these quotes" });
+    if (asking || pending) section.appendChild(ChangeRequest(confirm || { message: "", error: "" }, group, pending, busy));
+    else if (open.length) {
+      section.appendChild(h("div", { "class": "quote-changes__row" }, [
+        h("div", { "class": "quote-changes__copy" }, open.length === 1 ? "Not quite right? Ask us to revise this quote." : "Not quite right? Ask us to revise the quotes for this property."),
+        ActionButton({ variant: "btn--ghost", label: "Request changes", action: "quote.requestChanges", id: group.id, lg: true, disabled: busy, visualId: "quote-request-changes" })
+      ]));
+    }
+    if (outcome) section.appendChild(outcome);
+    return section;
+  }
+  function ChangeRequest(confirm, group, pending, busy) {
+    var id = "quote-changes-" + group.id;
+    var titleId = id + "-title";
+    var errorId = id + "-error";
+    var input = h("textarea", {
+      "class": "field decision-confirm__message",
+      id,
+      rows: "4",
+      placeholder: "For example: add sidewalk de-icing, or quote weekly visits instead.",
+      "data-quote-changes": group.id,
+      "data-state": confirm.error ? "invalid" : void 0,
+      "aria-labelledby": titleId,
+      "aria-invalid": confirm.error ? "true" : void 0,
+      "aria-describedby": confirm.error ? errorId : void 0,
+      disabled: pending ? true : void 0
+    }, confirm.message || "");
+    input.addEventListener("input", function() {
+      if (state.contractConfirm === confirm) confirm.message = input.value;
+    });
+    var sendButton = ActionButton({ variant: "btn--primary", label: pending ? "Sending\u2026" : "Send request", action: "quote.sendChanges", id: group.id, lg: true, disabled: pending || busy, visualId: "quote-send-changes" });
+    if (pending) sendButton.setAttribute("data-state", "pending");
+    return h("div", { "class": "decision-confirm", "data-module": "change-request", "data-visual-id": "change-request", "data-state": pending ? "pending" : confirm.error ? "invalid" : "open", "data-kind": "changes", role: "group", "aria-labelledby": titleId }, [
+      h("label", { "class": "decision-confirm__title", id: titleId, "for": id }, "What should change?"),
+      h("p", { "class": "decision-confirm__body" }, "Your request goes to our team for every open quote of this property, and we send you revised quotes."),
+      input,
+      confirm.error ? h("div", { "class": "field-error", id: errorId, role: "alert" }, confirm.error) : null,
+      h("div", { "class": "proposal-actions" }, [
+        sendButton,
         ActionButton({ variant: "btn--ghost", label: "Cancel", action: "quote.cancel", lg: true, disabled: pending, visualId: "quote-cancel" })
       ])
     ]);
@@ -10214,7 +10383,7 @@
     if (service) page.appendChild(ServiceCard2(service));
     var visits = LiveVisitsCard(property);
     if (visits) page.appendChild(visits);
-    var plan = PropertyPlan(propertyPlan(property.planId, render), property);
+    var plan = PropertyPlan(propertyPlan(property.planId, render), property, sharedPlanMap());
     if (plan) page.appendChild(plan);
     var location = PropertyLocation({
       property,
@@ -10826,7 +10995,7 @@
         h("div", { style: "font-size:13px;line-height:1.45;color:var(--ink-2)" }, note)
       ]));
     }
-    var plan = group.property ? PropertyPlan(propertyPlan(group.property.planId, render), group.property) : null;
+    var plan = group.property ? PropertyPlan(propertyPlan(group.property.planId, render), group.property, sharedPlanMap()) : null;
     if (plan) page.appendChild(plan);
     var open = group.orders.filter(function(order) {
       return order.status === "unseen";
@@ -10836,6 +11005,8 @@
       list.appendChild(QuoteOptionCard(order, { interactive: true, busy }));
     });
     page.appendChild(list);
+    var changes = PropertyChangeRequest(group, busy);
+    if (changes) page.appendChild(changes);
     if (open.length) {
       page.appendChild(h("div", { "class": "proposal-footer", "data-module": "quote-detail-footer", "data-visual-id": "quote-detail-footer" }, [
         h("div", { "class": "proposal-footer__icon" }, "\u2726"),
@@ -13203,8 +13374,8 @@
       return cancelContractConfirm();
     },
     "quote.requestChanges": function(id) {
-      if (!openContractConfirm("changes", id)) return false;
-      focusElement('[data-quote-changes="' + id + '"]');
+      if (!openChangeRequest(id)) return false;
+      focusElement("[data-quote-changes]");
       return true;
     },
     "quote.sendChanges": function(id) {
@@ -14391,19 +14562,34 @@
     render();
     return true;
   }
-  function sendChangeRequest(id) {
-    var backendId = contractTarget(id);
+  function changeableQuoteIds(group) {
+    return group.orders.filter(function(order) {
+      return order.status === "unseen" && order.allowedActions.indexOf("changes") !== -1;
+    }).map(function(order) {
+      return order.backendId;
+    });
+  }
+  function openChangeRequest(groupId) {
+    var group = quoteGroupFor(groupId);
+    if (!group || !changeableQuoteIds(group).length || contractCommands.busy()) return false;
+    state.contractConfirm = { kind: "changes", groupId: group.id, message: "", error: "" };
+    if (state.contractCommand && state.contractCommand.phase !== "pending") state.contractCommand = null;
+    render();
+    return true;
+  }
+  function sendChangeRequest(groupId) {
+    var group = quoteGroupFor(groupId);
     var confirm = state.contractConfirm;
-    if (!backendId || !confirm || confirm.kind !== "changes" || confirm.backendId !== backendId || contractCommands.busy()) return false;
+    if (!group || !confirm || confirm.kind !== "changes" || confirm.groupId !== group.id || contractCommands.busy()) return false;
     var message = String(confirm.message || "").trim();
     if (!message) {
       confirm.error = CHANGES_REQUIRED;
       render();
-      focusElement('[data-quote-changes="' + backendId + '"]');
+      focusElement("[data-quote-changes]");
       return false;
     }
     confirm.error = "";
-    return contractCommands.requestChanges(backendId, message);
+    return contractCommands.requestChanges(changeableQuoteIds(group), message);
   }
   function ensureContractDetails() {
     if (state.contractDetails) return;
@@ -15615,8 +15801,8 @@
       }
       this.state.moduleStatus[moduleId] = "loading";
       try {
-        var adapter = descriptor.adapter(context);
-        var raw = adapter.load(moduleId, context);
+        var adapter2 = descriptor.adapter(context);
+        var raw = adapter2.load(moduleId, context);
         if (raw && typeof raw.then === "function") throw new Error("Module " + moduleId + " requires async load");
         var normalized = descriptor.normalize(raw, context);
         if (descriptor.onResult) descriptor.onResult(normalized, context);

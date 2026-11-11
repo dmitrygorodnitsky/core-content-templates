@@ -2,7 +2,7 @@ import "../../../client-review/plan.js";
 import { h } from "../../dom.js";
 import { skel } from "../primitives/RouteStates.js";
 
-export function PropertyPlan(entry, property) {
+export function PropertyPlan(entry, property, planMap) {
   if (!entry || entry.status === "unavailable") return null;
   var card = h("section", { "class": "card card--pad prop-plan", "data-module": "property-plan", "data-visual-id": "property-plan", "data-state": entry.status, "aria-labelledby": "property-plan-title" }, [
     h("div", { "class": "prop-section__title", id: "property-plan-title" }, "Service plan"),
@@ -13,6 +13,8 @@ export function PropertyPlan(entry, property) {
     return card;
   }
   var sized = globalThis.ClientReview.plan.sumsTo(entry.plan, property ? property.areaSqft : null);
+  var satellite = planMap ? planMap.view(entry.plan, "Service plan on a satellite map") : null;
+  if (satellite) card.appendChild(satellite);
   card.appendChild(planDrawing(entry.plan));
   card.appendChild(h("ul", { "class": "prop-plan__legend", "aria-label": "Plan elements" }, entry.plan.elements.map(function (element) {
     return h("li", { "class": "prop-plan__item" }, [

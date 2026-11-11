@@ -995,11 +995,10 @@ areas side by side ("Total service area" 38,000 sq ft, typed by a manager, and
   - Portal: the quote detail (`ProposalDetailPage.js`) now shows the "Service
     plan" card above the options and "Service area …" under the title; the
     property and visit pages keep their card.
-- **Open:** whether `REVIEW_MAPS_API_KEY` is set on dev-1 (the satellite
-  drawing) is still the operator's decision. A quote already sent to the
-  client is not repriced when the area is typed afterwards, so its card can
-  state a newer area than the one its prices were set for. The portal names a
-  plan element by its `label`, the review page by its localized `NAME`.
+- **Decided:** a quote already sent to the client is not repriced when the
+  area is typed afterwards: a sent quote is an offer.
+- **Open:** the portal names a plan element by its `label`, the review page
+  by its localized `NAME`.
 
 ### Option rows on one grid and Contract details as its own step (2026-11-11, night)
 
@@ -1037,6 +1036,33 @@ Two more items of the same feedback round.
     Back. A confirmed approval replaces the page with the quote that now
     lists the approved option; a refusal stays on the page. The option card
     no longer carries the form (only the decline confirmation).
+- **Request changes belongs to the property (2026-11-12).** One message typed
+  once goes, with the existing `QUOTE_SENT-CUSTOMER_CHANGES_REQUESTED` event
+  and its `MESSAGE`, to every still-open option of the property, one order
+  after another. Review page: the button sits in the property footer beside
+  Decline all options and opens its box there (`property.changes*`
+  actions); an expanded option keeps only Approve. Portal: the option cards
+  keep Approve and Decline, and a "Request changes" card under them sends to
+  the property's open quotes in one command
+  (`contractCommands.requestChanges(ids, message)`). The order hook
+  (`onCustomerChangesRequested` in core-ui `ORDER_LIFECYCLE_WORKFLOW`) works
+  per order: each sibling stores the message, gets its own transition
+  comment and sends its own provider email, so a property with three open
+  options produces three notices with the same text. The round logic already
+  treats a property with any option in Customer Changes as undecided.
+- **The plan is drawn over satellite imagery (2026-11-12).** Portal:
+  `PlanMap.js` draws the plan's shapes on a hybrid Google map fitted to the
+  plan's bounds, through the same adapter and `PORTAL_MAPS_API_KEY` as the
+  Location card (`sharedPlanMap`); the SVG outline stays in the card and is
+  shown until the map is ready and whenever it cannot load. Review page: the
+  page already had this view behind `REVIEW_MAPS_API_KEY`. On dev-1 the
+  parameter now holds the same browser key as the portal's and the quote
+  form's PageContexts (22 and 17), so the plan is on satellite imagery there
+  too and the billing and legal address fields of the Contract details step
+  offer Google suggestions. The value is the template parameter's CMS value,
+  not a PageContext value: CMS refuses any save of PageContext 21 while the
+  template parameter is empty ("Following keys must be defined"), and an
+  upload keeps the CMS value of a parameter the package ships empty.
 - **Live on dev-1**: review `7f4ded3f` and portal `3e57675e` uploaded,
   render cache cleared on `app-1-core-cms` and `app-3-core-cms`. Driven in a
   headless Chrome against a throwaway request (plan approved at 27,254 sq ft,

@@ -8,7 +8,7 @@ import { StatusBadge } from "../components/primitives/StatusBadge.js";
 import { UnauthorizedState, skel } from "../components/primitives/RouteStates.js";
 import { PropertyLocation } from "../components/storm/PropertyMap.js";
 import { PropertyPlan } from "../components/storm/PropertyPlan.js";
-import { mapViewport, sharedPropertyMap } from "../property-map-session.js";
+import { mapViewport, sharedPlanMap, sharedPropertyMap } from "../property-map-session.js";
 import { propertyPlan } from "../property-plan.js";
 import { OVERVIEW_STATUS as STATUS, formatArea, knownPropertyStatus, sectionAvailable } from "../normalizers/overview.js";
 import { currentServiceAgreement, formatDatePeriod, formatOrderPrice } from "../normalizers/contracts.js";
@@ -76,7 +76,7 @@ export function PropertyDetail() {
   if (service) page.appendChild(ServiceCard(service));
   var visits = LiveVisitsCard(property);
   if (visits) page.appendChild(visits);
-  var plan = PropertyPlan(propertyPlan(property.planId, render), property);
+  var plan = PropertyPlan(propertyPlan(property.planId, render), property, sharedPlanMap());
   if (plan) page.appendChild(plan);
 
   var location = PropertyLocation({

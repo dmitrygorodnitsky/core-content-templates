@@ -495,15 +495,18 @@ const DETAIL_VALUE_CODES = ["LEGAL_NAME", "BILLING_ADDRESS", "REPRESENTATIVE_FIR
   portal.go("proposal.detail");
   await settle();
   const cards = all(page(), "[data-module=\"quote-option\"]");
-  assert.deepEqual(cards.map((card) => all(card, "[data-action]").map((button) => button.textContent)), [["Approve", "Request changes", "Decline"], ["Approve", "Request changes", "Decline"], ["Approve", "Request changes", "Decline"]], "Request changes sits next to Approve and Decline on every sent quote");
+  assert.deepEqual(cards.map((card) => all(card, "[data-action]").map((button) => button.textContent)), [["Approve", "Decline"], ["Approve", "Decline"], ["Approve", "Decline"]], "an option offers Approve and Decline; Request changes is not an option's own action");
+  const propertyActions = one(page(), "[data-module=\"quote-property-actions\"]");
+  assert.deepEqual(all(propertyActions, "[data-action]").map((button) => [button.getAttribute("data-action"), button.getAttribute("data-id"), button.textContent]), [["quote.requestChanges", "quote-0-984", "Request changes"]], "Request changes belongs to the property, under its options");
 
-  assert.equal(ACTIONS["quote.requestChanges"]("4102"), true);
+  assert.equal(ACTIONS["quote.requestChanges"]("quote-0-984"), true);
   assert.equal(state.contractDetails, null, "a change request asks no contract details");
-  const box = one(page(), "[data-module=\"change-request\"]");
+  const box = one(page(), "[data-module=\"quote-property-actions\"] [data-module=\"change-request\"]");
   assert.equal(one(box, "label").textContent, "What should change?");
-  assert.equal(one(box, "textarea").getAttribute("data-quote-changes"), "4102");
+  assert.equal(one(box, ".decision-confirm__body").textContent, "Your request goes to our team for every open quote of this property, and we send you revised quotes.");
+  assert.equal(one(box, "textarea").getAttribute("data-quote-changes"), "quote-0-984");
   assert.equal(all(box, "[data-module=\"agreement-details\"]").length, 0);
-  assert.equal(await ACTIONS["quote.sendChanges"]("4102"), false);
+  assert.equal(await ACTIONS["quote.sendChanges"]("quote-0-984"), false);
   assert.equal(table.events.length, 0, "an empty comment sends nothing");
   const invalid = one(page(), "[data-module=\"change-request\"]");
   assert.equal(one(invalid, ".field-error").textContent, "Write what you would like changed before sending.");
@@ -511,18 +514,25 @@ const DETAIL_VALUE_CODES = ["LEGAL_NAME", "BILLING_ADDRESS", "REPRESENTATIVE_FIR
   const input = one(invalid, "textarea");
   input.value = "   ";
   fire(input, "input");
-  assert.equal(await ACTIONS["quote.sendChanges"]("4102"), false, "whitespace is not a comment");
+  assert.equal(await ACTIONS["quote.sendChanges"]("quote-0-984"), false, "whitespace is not a comment");
   assert.equal(table.events.length, 0);
   const typed = one(page(), "[data-module=\"change-request\"] textarea");
   typed.value = "  Quote weekly visits instead, and add sidewalk de-icing.  ";
   fire(typed, "input");
-  assert.equal(await ACTIONS["quote.sendChanges"]("4102"), true);
-  assert.deepEqual(table.events, [{ entity: "order", id: 4102, code: "QUOTE_SENT-CUSTOMER_CHANGES_REQUESTED", body: { MESSAGE: { value: "Quote weekly visits instead, and add sidewalk de-icing." } } }], "the documented tagged event carries the comment as MESSAGE");
+  assert.equal(await ACTIONS["quote.sendChanges"]("quote-0-984"), true);
+  assert.deepEqual(table.events, [4101, 4102, 4103].map((id) => ({ entity: "order", id, code: "QUOTE_SENT-CUSTOMER_CHANGES_REQUESTED", body: { MESSAGE: { value: "Quote weekly visits instead, and add sidewalk de-icing." } } })), "one comment typed once goes to every open quote of the property as MESSAGE of the documented tagged event");
   const after = page();
-  const changed = all(after, "[data-module=\"quote-option\"]").find((card) => card.getAttribute("data-state") === "revision");
-  assert.equal(one(changed, "[data-module=\"status-badge\"]").textContent, "⟳ Changes requested", "after the re-read the quote shows Changes requested");
-  assert.equal(all(after, "[data-module=\"change-request\"]").length, 0);
+  assert.deepEqual(all(after, "[data-module=\"quote-option\"]").map((card) => [card.getAttribute("data-state"), one(card, "[data-module=\"status-badge\"]").textContent]), Array(3).fill(["revision", "⟳ Changes requested"]), "after the re-read every quote of the property shows Changes requested");
+  assert.equal(all(after, "[data-module=\"change-request\"]").length + all(after, "[data-action=\"quote.requestChanges\"]").length + all(after, "[data-action=\"quote.approve\"]").length, 0, "and nothing more is asked of the client");
   assert.equal(state.toast, "Change request sent");
+}
+
+{
+  await goLive();
+  state.contractDetails = null;
+  state.currentSiteId = "quote-0-984";
+  portal.go("proposal.detail");
+  await settle();
 
   assert.equal(ACTIONS["quote.approve"]("4101"), true);
   assert.deepEqual([state.route, state.approveQuoteId], ["proposal.approve", 4101], "Approve opens the Contract details page of that option");
@@ -553,7 +563,7 @@ const DETAIL_VALUE_CODES = ["LEGAL_NAME", "BILLING_ADDRESS", "REPRESENTATIVE_FIR
   assert.equal(one(form, "label[for=\"contract-detail-representative-job-title\"]").textContent, "Job title (optional)");
 
   assert.equal(await ACTIONS["quote.sendApproval"]("4101"), false);
-  assert.equal(table.events.length, 1, "nothing is approved while a required detail is missing: the server cannot refuse the event, so the page checks first");
+  assert.equal(table.events.length, 0, "nothing is approved while a required detail is missing: the server cannot refuse the event, so the page checks first");
   const refused = one(page(), "[data-module=\"agreement-details\"]");
   assert.deepEqual(all(refused, ".field-error").map((error) => error.textContent), ["Choose the client type.", "Confirm this to send your details.", "Confirm this to send your details."]);
 
@@ -587,8 +597,8 @@ const DETAIL_VALUE_CODES = ["LEGAL_NAME", "BILLING_ADDRESS", "REPRESENTATIVE_FIR
     check.checked = true;
     fire(check, "change");
   }
-  assert.equal(await ACTIONS["quote.sendApproval"]("4101"), true, "approve still works beside a change request");
-  assert.deepEqual(table.events.slice(1), [{
+  assert.equal(await ACTIONS["quote.sendApproval"]("4101"), true);
+  assert.deepEqual(table.events, [{
     entity: "order", id: 4101, code: "QUOTE_SENT-ACCEPTED",
     body: {
       LEGAL_NAME: { value: "Harbour View Strata Corp." },
@@ -604,7 +614,7 @@ const DETAIL_VALUE_CODES = ["LEGAL_NAME", "BILLING_ADDRESS", "REPRESENTATIVE_FIR
       AUTHORITY_CONFIRMED: { value: true },
     },
   }], "the approval carries every contract detail as { value }, the confirmations included, through the tagged event");
-  assert.deepEqual(table.orders.filter((row) => row.attributes[5].SERVICE_PROPERTY.value === 984).map((row) => row.states[0].code), ["ACCEPTED", "CUSTOMER_CHANGES_REQUESTED", "DECLINED"]);
+  assert.deepEqual(table.orders.filter((row) => row.attributes[5].SERVICE_PROPERTY.value === 984).map((row) => row.states[0].code), ["ACCEPTED", "DECLINED", "DECLINED"]);
   assert.equal(state.toast, "Option approved");
   assert.deepEqual([state.route, state.currentSiteId], ["proposal.detail", "quote-5604-984"], "a confirmed approval returns to the quote, where the readback now lists the approved option");
   assert.equal(one(page(), "[data-module=\"quote-decided\"]").textContent, "iYou approved Per service.");
