@@ -120,7 +120,6 @@
       effectiveDate: "EFFECTIVE_DATE",
       termStart: "TERM_START_DATE",
       termEnd: "TERM_END_DATE",
-      terms: "CONTRACT_TERMS",
     },
     agreementContent: {
       entity: "localizedtextcontent",

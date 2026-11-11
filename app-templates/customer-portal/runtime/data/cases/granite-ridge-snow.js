@@ -153,7 +153,7 @@ const PARTIES_TEXT = [
   "",
 ];
 
-const CONTRACT_TERMS = PARTIES_TEXT.concat([
+const AGREEMENT_TEXT = PARTIES_TEXT.concat([
   "# Winter service terms",
   "",
   "1. Services",
@@ -179,15 +179,15 @@ const CONTRACT_TERMS = PARTIES_TEXT.concat([
 ]).join("\n");
 
 const AGREEMENTS = [
-  { id: 9102, state: "SENT_TO_CLIENT", orders: [8201, 8202, 8203, 8204], attributes: Object.assign({ EFFECTIVE_DATE: "2026-10-20", TERM_START_DATE: SEASONS["2026-27"][0], TERM_END_DATE: SEASONS["2026-27"][1], CONTRACT_TERMS: CONTRACT_TERMS }) },
+  { id: 9102, state: "SENT_TO_CLIENT", orders: [8201, 8202, 8203, 8204], attributes: Object.assign({ EFFECTIVE_DATE: "2026-10-20", TERM_START_DATE: SEASONS["2026-27"][0], TERM_END_DATE: SEASONS["2026-27"][1] }), terms: AGREEMENT_TEXT },
   { id: 9103, state: "DRAFT", orders: [8301, 8302], attributes: Object.assign({ TERM_START_DATE: SEASONS["2026-27"][0], TERM_END_DATE: SEASONS["2026-27"][1] }) },
   { id: 9104, state: "PENDING_MANAGEMENT_APPROVAL", orders: [8401, 8402], attributes: Object.assign({ TERM_START_DATE: SEASONS["2026-27"][0], TERM_END_DATE: SEASONS["2026-27"][1] }) },
-  { id: 9100, state: "CLIENT_APPROVED", orders: [8001, 8002, 8003], attributes: Object.assign({ EFFECTIVE_DATE: "2025-10-15", TERM_START_DATE: SEASONS["2025-26"][0], TERM_END_DATE: SEASONS["2025-26"][1], CONTRACT_TERMS: CONTRACT_TERMS }) },
-  { id: 9099, state: "CLIENT_APPROVED", orders: [8501], attributes: Object.assign({ EFFECTIVE_DATE: "2024-10-10", TERM_START_DATE: SEASONS["2024-25"][0], TERM_END_DATE: SEASONS["2024-25"][1], CONTRACT_TERMS: CONTRACT_TERMS }) },
-  { id: 9098, state: "CLIENT_APPROVED", orders: [8601, 8602], attributes: Object.assign({ EFFECTIVE_DATE: "2025-10-12", TERM_START_DATE: SEASONS["2025-26"][0], TERM_END_DATE: SEASONS["2025-26"][1], CONTRACT_TERMS: CONTRACT_TERMS }) },
-  { id: 9097, state: "ARCHIVED", orders: [8701], attributes: Object.assign({ EFFECTIVE_DATE: "2024-10-08", TERM_START_DATE: SEASONS["2024-25"][0], TERM_END_DATE: SEASONS["2024-25"][1], CONTRACT_TERMS: CONTRACT_TERMS }) },
+  { id: 9100, state: "CLIENT_APPROVED", orders: [8001, 8002, 8003], attributes: Object.assign({ EFFECTIVE_DATE: "2025-10-15", TERM_START_DATE: SEASONS["2025-26"][0], TERM_END_DATE: SEASONS["2025-26"][1] }), terms: AGREEMENT_TEXT },
+  { id: 9099, state: "CLIENT_APPROVED", orders: [8501], attributes: Object.assign({ EFFECTIVE_DATE: "2024-10-10", TERM_START_DATE: SEASONS["2024-25"][0], TERM_END_DATE: SEASONS["2024-25"][1] }), terms: AGREEMENT_TEXT },
+  { id: 9098, state: "CLIENT_APPROVED", orders: [8601, 8602], attributes: Object.assign({ EFFECTIVE_DATE: "2025-10-12", TERM_START_DATE: SEASONS["2025-26"][0], TERM_END_DATE: SEASONS["2025-26"][1] }), terms: AGREEMENT_TEXT },
+  { id: 9097, state: "ARCHIVED", orders: [8701], attributes: Object.assign({ EFFECTIVE_DATE: "2024-10-08", TERM_START_DATE: SEASONS["2024-25"][0], TERM_END_DATE: SEASONS["2024-25"][1] }), terms: AGREEMENT_TEXT },
   { id: 9096, state: "CANCELED", orders: [8801, 8802], attributes: {} },
-  { id: 9095, state: "CLIENT_APPROVED", orders: [8901, 8902], attributes: Object.assign({ EFFECTIVE_DATE: "2026-10-18", TERM_START_DATE: SEASONS["2026-27"][0], TERM_END_DATE: SEASONS["2026-27"][1], CONTRACT_TERMS: CONTRACT_TERMS }) },
+  { id: 9095, state: "CLIENT_APPROVED", orders: [8901, 8902], attributes: Object.assign({ EFFECTIVE_DATE: "2026-10-18", TERM_START_DATE: SEASONS["2026-27"][0], TERM_END_DATE: SEASONS["2026-27"][1] }), terms: AGREEMENT_TEXT },
 ];
 const AGREEMENT_ENDINGS = {
   CANCELED: ["DRAFT", "CANCELED"],
@@ -694,6 +694,9 @@ export const graniteRidgeSnowFixture = Object.freeze({
   proposals: {
     client: { displayName: "Whitlock Property Group LLC", account: Object.assign({}, CLIENT_ACCOUNT_ROW, { id: CLIENT_ACCOUNT }) },
     agreements: AGREEMENTS.map(serviceAgreement),
+    agreementContents: AGREEMENTS.filter(function (spec) { return spec.terms; }).map(function (spec) {
+      return { id: spec.id - 8700, document: { id: spec.id }, language: { id: "eng" }, contentType: "TEXT", content: spec.terms };
+    }),
     orders: QUOTE_ORDERS.map(quoteOrder),
     orderItems: QUOTE_ORDERS.reduce(function (lines, entry) { return lines.concat(quoteLines(entry)); }, []),
     productPrices: Object.keys(PRICE_ROWS).reduce(function (rows, model) {

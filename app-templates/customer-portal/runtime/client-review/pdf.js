@@ -177,12 +177,9 @@
         paragraph(label + " - " + (copy[STATUSES[option.status]] || copy.optionUnknown), 11, accent, 10);
         if (!option.priced) { paragraph(option.status === "revising" ? copy.noteRevising : copy.noteNoActions, 10, muted); return; }
         lines(option);
-        if (option.pricing.breakdown) {
-          if (option.subtotal) fact(copy.orderSubtotal, option.subtotal);
-          if (option.taxes) fact(copy.orderTaxes, option.taxes);
-        }
-        if (option.pricing.total) paragraph(copy.orderTotal + ": " + (option.total || copy.valueNotStated), 12, ink, 16);
-        else paragraph(copy.perServiceNote, 10, muted, 16);
+        if (option.pricing.total) paragraph(copy.orderTotal + ": " + (option.total || copy.valueNotStated), 12, ink, 4);
+        else paragraph(copy.perServiceNote, 10, muted, 4);
+        paragraph(copy.taxesNote, 10, muted, 16);
       });
     });
     if (!view.properties.length) paragraph(copy.linesEmpty, 10, muted);

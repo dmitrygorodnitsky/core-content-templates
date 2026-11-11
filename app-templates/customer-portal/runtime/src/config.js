@@ -236,6 +236,7 @@ export function readPortalConfig(root) {
       support: dataset.portalNavSupportLabel || "",
     },
     primaryCtaLabel: dataset.portalPrimaryCtaLabel || "",
+    taxesNote: copyText(dataset.portalTaxesNote, "Plus applicable taxes."),
     vertical: vertical,
     theme: theme,
     profile: profile,
@@ -415,6 +416,11 @@ function finiteNumber(value) {
   if (typeof value === "number") return value;
   if (typeof value === "string" && value.trim() !== "") return Number(value);
   return Number.NaN;
+}
+
+function copyText(value, fallback) {
+  var text = String(value || "").trim();
+  return !text || text === "#" || /\$\{[A-Z0-9_]+@/.test(text) ? fallback : text;
 }
 
 function browserCredential(value) {

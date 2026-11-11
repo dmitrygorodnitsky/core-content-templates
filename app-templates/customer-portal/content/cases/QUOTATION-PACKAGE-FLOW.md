@@ -532,6 +532,9 @@ widths in light and dark mode, the manager email included.
 - **What a link may reveal is decided by what we put in attributes.** Whenever
   the ceiling admits them, it admits the whole bag, service attributes included,
   so a record reachable by a client holds nothing we would not show one.
+- **Since 2026-11-11 the terms are the agreement's `LocalizedTextContent`**
+  and `CONTRACT_TERMS` is no longer on document type 17 (HANDOFF.md, "Taxes
+  note and terms from content"). Before that:
 - **The terms live in `CONTRACT_TERMS`** on document type 17 since 2026-09-17,
   one optional string that the attribute editor shows as a multi-line field,
   and the review page reads it. The text becomes blocks through a

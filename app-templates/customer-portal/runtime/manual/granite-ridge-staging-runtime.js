@@ -378,6 +378,7 @@
         support: dataset.portalNavSupportLabel || ""
       },
       primaryCtaLabel: dataset.portalPrimaryCtaLabel || "",
+      taxesNote: copyText(dataset.portalTaxesNote, "Plus applicable taxes."),
       vertical: vertical2,
       theme,
       profile,
@@ -548,6 +549,10 @@
     if (typeof value === "number") return value;
     if (typeof value === "string" && value.trim() !== "") return Number(value);
     return Number.NaN;
+  }
+  function copyText(value, fallback) {
+    var text10 = String(value || "").trim();
+    return !text10 || text10 === "#" || /\$\{[A-Z0-9_]+@/.test(text10) ? fallback : text10;
   }
   function browserCredential(value) {
     var token = String(value || "").trim();
@@ -1294,8 +1299,9 @@
     };
     var quotes = normalizeQuoteOrders(source.quoteOrders, catalog);
     var agreementRows = readRows(source.agreements);
+    var contents = readRows(source.agreementContents) || [];
     var agreements = (agreementRows || []).map(function(row) {
-      return normalizeServiceAgreement(row, source.client);
+      return normalizeServiceAgreement(row, source.client, contents);
     }).filter(Boolean);
     var orderRows = readRows(source.quoteOrders);
     var request = quoteRequestOf(source.quoteRequest);
@@ -1339,7 +1345,8 @@
         return;
       }
       var currency = currencyCode(row.currency);
-      var total = orderTotal(row.grandTotal, row.currency);
+      var charges = totalBeforeTaxes(row);
+      var total = orderTotal(charges, row.currency);
       var quoteLines = linesOf(row, backendId, currency, lines);
       var pricingModel = recordedModel(row) || priceVariant(backendId, lines);
       orders.push({
@@ -1351,12 +1358,7 @@
         pricingModel,
         pricing: pricingDisplay(pricingModel),
         total,
-        money: total ? {
-          subtotal: formatMoney(row.totalCharges, currency),
-          taxes: formatMoney(row.totalTaxes, currency),
-          total: formatMoney(row.grandTotal, currency),
-          taxFree: finiteNumber2(row.totalTaxes) === 0
-        } : null,
+        money: total ? { total: formatMoney(charges, currency) } : null,
         lines: quoteLines.lines,
         linesState: quoteLines.state,
         allowedActions: (ORDER_ACTIONS[status] || []).slice()
@@ -1371,7 +1373,7 @@
     var presented = own(FAILED_OPERATION_STATES, state2);
     return presented && status && own(presented, status) || state2;
   }
-  function normalizeServiceAgreement(document2, client) {
+  function normalizeServiceAgreement(document2, client, contents) {
     if (!document2 || typeof document2 !== "object") return null;
     if (text(document2.type && document2.type.code) !== "SERVICE_AGREEMENT") return null;
     var backendId = positiveInteger(document2.id);
@@ -1389,7 +1391,7 @@
       effectiveDate: isoDate(attributeText(document2, "EFFECTIVE_DATE")),
       term: datePeriod(attributeText(document2, "TERM_START_DATE"), attributeText(document2, "TERM_END_DATE")),
       parties: agreementParties(document2, client),
-      terms: termsBlocks(attributeString(document2, "CONTRACT_TERMS")),
+      terms: termsBlocks(agreementText(backendId, contents)),
       allowedActions: (own(AGREEMENT_ACTIONS, stateCode) || []).slice()
     };
   }
@@ -1564,6 +1566,18 @@
     return rows2.find(function(row) {
       return row.agreement.backendId === backendId;
     }) || null;
+  }
+  function agreementText(agreementId, contents) {
+    var written = (Array.isArray(contents) ? contents : []).filter(function(row) {
+      return row && positiveInteger(row.document && row.document.id) === agreementId && typeof row.content === "string" && row.content.trim();
+    }).sort(function(left, right) {
+      return (positiveInteger(left.id) || 0) - (positiveInteger(right.id) || 0);
+    });
+    var english = written.filter(function(row) {
+      return ["eng", "en"].indexOf(text(row.language && row.language.id).toLowerCase()) !== -1;
+    })[0];
+    var chosen = english || written[0];
+    return chosen ? chosen.content : "";
   }
   function termsBlocks(value) {
     var source = typeof value === "string" ? value.replace(/\r\n?/g, "\n") : "";
@@ -1807,7 +1821,7 @@
         product: localizedName2(product && product.nls),
         quantity: formatQuantity(line.itemCount),
         unitPrice: formatMoney(line.amount, currency),
-        total: formatMoney(line.grandTotal, currency)
+        total: finiteNumber2(line.totalTaxes) ? "" : formatMoney(line.grandTotal, currency)
       };
     });
     return { state: missing || incomplete ? "partial" : "ready", lines };
@@ -1823,9 +1837,9 @@
   }
   function pricingDisplay(model) {
     var code = model ? model.code : "";
-    if (code === "PER_SERVICE") return { linePrices: true, breakdown: false, total: false };
-    if (code === "MONTHLY" || code === "SEASONAL" || code === RECURRING_MODEL.code) return { linePrices: false, breakdown: false, total: true };
-    return { linePrices: true, breakdown: true, total: true };
+    if (code === "PER_SERVICE") return { linePrices: true, total: false };
+    if (code === "MONTHLY" || code === "SEASONAL" || code === RECURRING_MODEL.code) return { linePrices: false, total: true };
+    return { linePrices: true, total: true };
   }
   function priceVariant(backendId, catalog) {
     var entries = catalog.byOrder.get(backendId) || [];
@@ -1976,10 +1990,6 @@
     if (Array.isArray(payload)) return payload;
     return payload && Array.isArray(payload.result) ? payload.result : [];
   }
-  function attributeString(row, code) {
-    var entry = attributeEntry(row, code);
-    return entry && typeof entry.value === "string" ? entry.value.trim() : "";
-  }
   function attributeIds(row, code) {
     var entry = attributeEntry(row, code);
     return idList(entry ? entry.value : null);
@@ -2002,6 +2012,10 @@
   function currencyCode(currency) {
     var code = text(currency && currency.code);
     return /^[A-Z]{3}$/.test(code) ? code : "";
+  }
+  function totalBeforeTaxes(row) {
+    if (finiteNumber2(row.totalCharges) !== null) return row.totalCharges;
+    return finiteNumber2(row.totalTaxes) ? null : row.grandTotal;
   }
   function orderTotal(amount, currency) {
     var value = finiteNumber2(amount);
@@ -2853,6 +2867,7 @@
       statusMeta: proposals && proposals.statusMeta ? proposals.statusMeta : F.pstatus,
       quoteOrders: quotation ? context.state.porders : null,
       agreements: quotation ? context.state.pagreements : null,
+      agreementContents: quotation ? proposals.agreementContents || [] : null,
       orderItems: quotation ? proposals.orderItems || [] : null,
       productPrices: quotation ? proposals.productPrices || [] : null,
       products: quotation ? proposals.products || [] : null,
@@ -3609,6 +3624,13 @@
     { mappings: REF_MAPPINGS, name: "states", type: "collection" },
     { key: "id", mappings: REF_MAPPINGS, name: "type", type: "identifier" }
   ];
+  var AGREEMENT_CONTENT_MAPPINGS = [
+    { name: "content" },
+    { name: "contentType" },
+    { name: "id" },
+    { key: "id", mappings: ID_MAPPINGS, name: "document", type: "identifier" },
+    { key: "id", mappings: ID_MAPPINGS, name: "language", type: "identifier" }
+  ];
   var ORDER_ITEM_MAPPINGS = [
     { name: "amount" },
     { name: "grandTotal" },
@@ -3824,9 +3846,13 @@
     var account = primary[3];
     rethrowSessionLoss(primary.slice(0, 2));
     if (agreements.state !== "ready" && orders.state !== "ready") throw orders.error;
+    var agreementIds = agreements.state === "ready" ? agreements.rows.map(function(row) {
+      return positiveInteger(row.id);
+    }).filter(Boolean) : [];
+    var agreementContents = agreementIds.length ? await settled(customerAgreementContents(api, fetchImpl, agreementIds)) : skippedRead("server-scoped", agreements.state === "ready");
     var visibleOrderIds = orders.state === "ready" ? customerVisibleOrderIds(orders.rows) : [];
     var orderItems2 = visibleOrderIds.length ? await settled(customerOrderItems(api, fetchImpl, visibleOrderIds)) : skippedRead("server-scoped", orders.state === "ready");
-    rethrowSessionLoss([orderItems2]);
+    rethrowSessionLoss([agreementContents, orderItems2]);
     var priceIds = referencedIds(orderItems2.rows, "itemPrice");
     var productPrices = priceIds.length ? await settled(catalogRows(fetchImpl, api, api.pimBase + "/api/product-price/list.json", priceIds, PRODUCT_PRICE_MAPPINGS)) : skippedRead("unscoped", orderItems2.state === "ready");
     var productIds = referencedIds(productPrices.rows, "product");
@@ -3837,6 +3863,7 @@
       scopeMode: weakestScope([agreements, orders, orderItems2]),
       reads: {
         agreements: readSummary(agreements),
+        agreementContents: readSummary(agreementContents),
         orders: readSummary(orders),
         orderItems: readSummary(orderItems2),
         productPrices: readSummary(productPrices),
@@ -3845,6 +3872,7 @@
       client: { displayName: api.accountName, account: account.state === "ready" ? account.rows : null },
       quoteRequest,
       agreements: agreements.rows,
+      agreementContents: agreementContents.rows,
       quoteOrders: orders.rows,
       orderItems: orderItems2.rows,
       productPrices: productPrices.rows,
@@ -3903,6 +3931,17 @@
     }));
     return scopedRows(reply, function(row) {
       return text(row && row.type && row.type.code) === AGREEMENT_TYPE && attributeNumber(row, "CLIENT") === api.accountId;
+    });
+  }
+  async function customerAgreementContents(api, fetchImpl, agreementIds) {
+    var reply = await requestJson2(fetchImpl, api.coreBase + "/api/tagged/localized-text-content/list.json", readOptions(api, {
+      filters: [{ type: "INTEGER", operator: "IN", property: "document.id", value: agreementIds.join(",") }],
+      mappings: AGREEMENT_CONTENT_MAPPINGS,
+      offset: 0,
+      pageSize: AGREEMENT_PAGE_SIZE
+    }));
+    return scopedRows(reply, function(row) {
+      return agreementIds.indexOf(positiveInteger(row && row.document && row.document.id)) !== -1;
     });
   }
   async function customerOrders(api, fetchImpl) {
@@ -4212,6 +4251,7 @@
     accountAddressMappings: ACCOUNT_ADDRESS_MAPPINGS,
     addressMappings: ADDRESS_MAPPINGS,
     agreementMappings: AGREEMENT_MAPPINGS,
+    agreementContentMappings: AGREEMENT_CONTENT_MAPPINGS,
     agreementType: AGREEMENT_TYPE,
     invoiceListBody: INVOICE_LIST_BODY,
     customerQuoteStatus: /* @__PURE__ */ Object.freeze(Object.assign({}, CUSTOMER_ORDER_STATUS)),
@@ -4231,11 +4271,13 @@
     visitTransitionsBody: VISIT_TRANSITIONS_BODY,
     quoteFilters: ["account.id"],
     agreementFilters: ["type.code", "attributes.{SERVICE_AGREEMENT type id}.CLIENT.value"],
+    agreementContentFilters: ["document.id"],
     orderItemFilters: ["order.account.id", "order.id"],
     catalogFilters: ["id"],
     propertyFilters: ["type.code"],
     scopeModes: /* @__PURE__ */ Object.freeze({
       agreements: "server-scoped",
+      agreementContents: "server-scoped",
       orders: "server-scoped",
       orderItems: "server-scoped",
       productPrices: "unscoped",
@@ -7386,7 +7428,10 @@
   function QuotesFooter() {
     return h("div", { "class": "proposal-footer", "data-module": "quote-package-footer", "data-visual-id": "quote-package-footer" }, [
       h("div", { "class": "proposal-footer__icon" }, "\u2726"),
-      h("div", { "class": "proposal-footer__copy" }, "Decide each property on its own. Approving one option for a property declines its other options, and your contract details go with the approval. Once every property has a decision, we prepare your service agreement.")
+      h("div", { "class": "proposal-footer__copy" }, [
+        "Decide each property on its own. Approving one option for a property declines its other options, and your contract details go with the approval. Once every property has a decision, we prepare your service agreement.",
+        h("div", { "class": "proposal-footer__taxes", "data-kind": "taxes" }, state.config.taxesNote)
+      ])
     ]);
   }
   function QuoteOption(order) {
@@ -9944,24 +9989,24 @@
     return line.total;
   }
   function QuoteMoney(order) {
-    var pricing = order.pricing || { breakdown: true, total: true };
+    var pricing = order.pricing || { total: true };
     if (!pricing.total) {
-      return h("div", { "class": "quote-option__note", "data-module": "quote-totals", "data-state": "per-service" }, "You pay the price of each service every time it is performed.");
+      return h("div", { "class": "quote-option__note", "data-module": "quote-totals", "data-state": "per-service" }, [
+        h("div", null, "You pay the price of each service every time it is performed."),
+        TaxesNote()
+      ]);
     }
     if (!order.money) {
       return h("div", { "class": "quote-option__note", "data-module": "quote-totals", "data-state": "unpriced" }, "No price is stated on this quote yet.");
     }
-    var rows2 = order.money.taxFree || !pricing.breakdown ? [] : [["Subtotal", order.money.subtotal, "subtotal"], ["Taxes", order.money.taxes, "taxes"]].filter(function(row) {
-      return !!row[1];
-    });
-    var wrap = h("div", { "class": "money-rows quote-totals", "data-module": "quote-totals", "data-visual-id": "quote-totals" }, rows2.map(function(row) {
-      return h("div", { "class": "money-rows__row", "data-kind": row[2] }, [h("span", null, row[0]), h("span", null, row[1])]);
-    }));
-    if (order.money.total) {
-      var period = pricePeriod(order);
-      wrap.appendChild(h("div", { "class": "money-rows__row money-rows__row--total", "data-kind": "total" }, [h("span", null, "Total"), h("span", null, period ? order.money.total + " " + period : order.money.total)]));
-    }
-    return wrap;
+    var period = pricePeriod(order);
+    return h("div", { "class": "money-rows quote-totals", "data-module": "quote-totals", "data-visual-id": "quote-totals" }, [
+      h("div", { "class": "money-rows__row money-rows__row--total", "data-kind": "total" }, [h("span", null, "Total"), h("span", null, period ? order.money.total + " " + period : order.money.total)]),
+      TaxesNote()
+    ]);
+  }
+  function TaxesNote() {
+    return h("div", { "class": "quote-option__taxes", "data-kind": "taxes" }, state.config.taxesNote);
   }
   function QuoteDecisions(order, settings) {
     var command = state.contractCommand;

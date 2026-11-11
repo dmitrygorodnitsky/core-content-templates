@@ -106,7 +106,8 @@ export function normalizeContracts(raw) {
   };
   var quotes = normalizeQuoteOrders(source.quoteOrders, catalog);
   var agreementRows = readRows(source.agreements);
-  var agreements = (agreementRows || []).map(function (row) { return normalizeServiceAgreement(row, source.client); }).filter(Boolean);
+  var contents = readRows(source.agreementContents) || [];
+  var agreements = (agreementRows || []).map(function (row) { return normalizeServiceAgreement(row, source.client, contents); }).filter(Boolean);
   var orderRows = readRows(source.quoteOrders);
   var request = quoteRequestOf(source.quoteRequest);
   return {
@@ -148,7 +149,8 @@ export function normalizeQuoteOrders(payload, catalog) {
       return;
     }
     var currency = currencyCode(row.currency);
-    var total = orderTotal(row.grandTotal, row.currency);
+    var charges = totalBeforeTaxes(row);
+    var total = orderTotal(charges, row.currency);
     var quoteLines = linesOf(row, backendId, currency, lines);
     var pricingModel = recordedModel(row) || priceVariant(backendId, lines);
     orders.push({
@@ -160,12 +162,7 @@ export function normalizeQuoteOrders(payload, catalog) {
       pricingModel: pricingModel,
       pricing: pricingDisplay(pricingModel),
       total: total,
-      money: total ? {
-        subtotal: formatMoney(row.totalCharges, currency),
-        taxes: formatMoney(row.totalTaxes, currency),
-        total: formatMoney(row.grandTotal, currency),
-        taxFree: finiteNumber(row.totalTaxes) === 0,
-      } : null,
+      money: total ? { total: formatMoney(charges, currency) } : null,
       lines: quoteLines.lines,
       linesState: quoteLines.state,
       allowedActions: (ORDER_ACTIONS[status] || []).slice(),
@@ -182,7 +179,7 @@ export function presentedAgreementState(document) {
   return (presented && status && own(presented, status)) || state;
 }
 
-export function normalizeServiceAgreement(document, client) {
+export function normalizeServiceAgreement(document, client, contents) {
   if (!document || typeof document !== "object") return null;
   if (text(document.type && document.type.code) !== "SERVICE_AGREEMENT") return null;
   var backendId = positiveInteger(document.id);
@@ -200,7 +197,7 @@ export function normalizeServiceAgreement(document, client) {
     effectiveDate: isoDate(attributeText(document, "EFFECTIVE_DATE")),
     term: datePeriod(attributeText(document, "TERM_START_DATE"), attributeText(document, "TERM_END_DATE")),
     parties: agreementParties(document, client),
-    terms: termsBlocks(attributeString(document, "CONTRACT_TERMS")),
+    terms: termsBlocks(agreementText(backendId, contents)),
     allowedActions: (own(AGREEMENT_ACTIONS, stateCode) || []).slice(),
   };
 }
@@ -360,6 +357,15 @@ export function findQuote(pkg, backendId) {
 export function findAgreement(pkg, backendId) {
   var rows = pkg && Array.isArray(pkg.agreements) ? pkg.agreements : [];
   return rows.find(function (row) { return row.agreement.backendId === backendId; }) || null;
+}
+
+export function agreementText(agreementId, contents) {
+  var written = (Array.isArray(contents) ? contents : []).filter(function (row) {
+    return row && positiveInteger(row.document && row.document.id) === agreementId && typeof row.content === "string" && row.content.trim();
+  }).sort(function (left, right) { return (positiveInteger(left.id) || 0) - (positiveInteger(right.id) || 0); });
+  var english = written.filter(function (row) { return ["eng", "en"].indexOf(text(row.language && row.language.id).toLowerCase()) !== -1; })[0];
+  var chosen = english || written[0];
+  return chosen ? chosen.content : "";
 }
 
 export function termsBlocks(value) {
@@ -600,7 +606,7 @@ function linesOf(row, backendId, currency, catalog) {
         product: localizedName(product && product.nls),
         quantity: formatQuantity(line.itemCount),
         unitPrice: formatMoney(line.amount, currency),
-        total: formatMoney(line.grandTotal, currency),
+        total: finiteNumber(line.totalTaxes) ? "" : formatMoney(line.grandTotal, currency),
       };
     });
   return { state: missing || incomplete ? "partial" : "ready", lines: lines };
@@ -616,9 +622,9 @@ function recordedModel(row) {
 
 export function pricingDisplay(model) {
   var code = model ? model.code : "";
-  if (code === "PER_SERVICE") return { linePrices: true, breakdown: false, total: false };
-  if (code === "MONTHLY" || code === "SEASONAL" || code === RECURRING_MODEL.code) return { linePrices: false, breakdown: false, total: true };
-  return { linePrices: true, breakdown: true, total: true };
+  if (code === "PER_SERVICE") return { linePrices: true, total: false };
+  if (code === "MONTHLY" || code === "SEASONAL" || code === RECURRING_MODEL.code) return { linePrices: false, total: true };
+  return { linePrices: true, total: true };
 }
 
 function priceVariant(backendId, catalog) {
@@ -780,11 +786,6 @@ function listRows(payload) {
   return payload && Array.isArray(payload.result) ? payload.result : [];
 }
 
-function attributeString(row, code) {
-  var entry = attributeEntry(row, code);
-  return entry && typeof entry.value === "string" ? entry.value.trim() : "";
-}
-
 function attributeIds(row, code) {
   var entry = attributeEntry(row, code);
   return idList(entry ? entry.value : null);
@@ -810,6 +811,11 @@ function localizedName(value) {
 function currencyCode(currency) {
   var code = text(currency && currency.code);
   return /^[A-Z]{3}$/.test(code) ? code : "";
+}
+
+function totalBeforeTaxes(row) {
+  if (finiteNumber(row.totalCharges) !== null) return row.totalCharges;
+  return finiteNumber(row.totalTaxes) ? null : row.grandTotal;
 }
 
 function orderTotal(amount, currency) {

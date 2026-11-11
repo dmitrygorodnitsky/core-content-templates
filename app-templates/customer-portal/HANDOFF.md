@@ -889,8 +889,8 @@ No attribute, workflow state or permission was added.
   review page lists it when the grant carries a `LocalizedTextContent`
   entry, takes the agreement's non-empty content in the page language (or its
   only one) and falls back to `CONTRACT_TERMS`; the PDF prints the same
-  blocks. The portal agreement page still reads `CONTRACT_TERMS`: content
-  records carry no portal tag and role 75 has no `P_TAG_DOCUMENT_CONTENT_R`.
+  blocks. Superseded the same day: see "Taxes note and terms from content
+  (2026-11-11, follow-up)" below.
 - **Portal history.** Contracts lists "All orders" in every state the
   customer can see, grouped by agreement and property, below the quotes that
   wait. Visit rows show the arrival and departure Core recorded and the photo
@@ -926,6 +926,43 @@ No attribute, workflow state or permission was added.
   credential cookie pointing at it, and every dev-1 page answers that browser
   401 until the cookie is replaced by a token exchange or the site data is
   cleared.
+
+### Taxes note and terms from content (2026-11-11, follow-up)
+
+- **Quotes show prices before taxes.** Accept puts taxes on the lines, so an
+  accepted Order's `grandTotal` includes them. The review page, its PDF and
+  the portal now show no subtotal, tax row, tax amount or tax-inclusive total
+  on a quote or an agreement's services: a total is the server's
+  `totalCharges` (its `grandTotal` only while it returns no taxes), a taxed
+  line shows its unit price and no line total, and nothing is computed in the
+  browser. Every price carries "Plus applicable taxes.": the review page's
+  copy parameter `TAXES_NOTE` (option card, Confirm your choices, PDF) and
+  the portal's new template parameter `PORTAL_TAXES_NOTE`
+  (`LOCALIZED_STRING_SS`, the only copy parameter of the live root, rendered
+  as `data-portal-taxes-note`; `#`, empty or an unrendered marker shows the
+  English default) on option cards and in the Contracts footer.
+  `ORDER_SUBTOTAL` and `ORDER_TAXES` are gone from the review copy. Invoices
+  keep their taxes.
+- **Terms only from the document content.** The review page and its PDF read
+  only `LocalizedTextContent`; a grant without that entry (agreement 474)
+  shows "The agreement text is not included on this page." and can still be
+  approved (fixture `agreement-terms-not-granted`). The portal reads
+  `POST /core/api/tagged/localized-text-content/list.json` filtered by
+  `document.id IN` the customer's agreements (read `agreementContents`,
+  server-scoped) and picks the English row, else the only non-empty one.
+  core-ui tags the rows (`SNOW_PORTAL_TAG_SYNC_V2/_V4`), role 75 has
+  `P_TAG_DOCUMENT_CONTENT_R`, and `CONTRACT_TERMS` is gone from type 17 (the
+  snapshot `content/core-types/document-type/SERVICE_AGREEMENT.17.json` was
+  refreshed).
+- **Live on dev-1**: review template `7f4ded3f` and portal `3e57675e` uploaded,
+  render cache cleared on `app-1-core-cms` and `app-3-core-cms`, both serving
+  the new markers. Proven with a throwaway Account, portal User, per-service
+  and monthly quotes before and after an Accept with a legal address, and an
+  agreement whose terms exist only as untagged content until the tag sync ran;
+  every record was deleted afterwards. The details and figures are in core-ui
+  `docs/snow-feedback-2026-11-11.md`, "Proof of the follow-ups". The portal was
+  driven in a headless Chrome with its own profile, so the Browser pane holds
+  no cookie of the deleted User.
 
 ## Universal form document
 

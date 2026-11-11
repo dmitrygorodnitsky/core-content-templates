@@ -1,5 +1,5 @@
 {
- "optimistic": 15,
+ "optimistic": 16,
  "code": "SERVICE_AGREEMENT",
  "nls": {
   "en": {
@@ -35,10 +35,6 @@
     {
      "attributeCode": "TERM_END_DATE",
      "visible": true
-    },
-    {
-     "attributeCode": "CONTRACT_TERMS",
-     "visible": true
     }
    ]
   }
@@ -49,21 +45,6 @@
   "code": "SERVICE_WAND_WINTER_SERVICES"
  },
  "attributes": [
-  {
-   "code": "CONTRACT_TERMS",
-   "required": false,
-   "multiselect": false,
-   "freeValue": false,
-   "unique": false,
-   "className": "java.lang.String",
-   "nls": {
-    "en": {
-     "NAME": "Contract Terms"
-    }
-   },
-   "options": [],
-   "inputFormat": "textarea"
-  },
   {
    "code": "ORDERS",
    "required": true,

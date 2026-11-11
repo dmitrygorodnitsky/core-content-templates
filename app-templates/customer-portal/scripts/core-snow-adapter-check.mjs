@@ -212,6 +212,7 @@ function agreement(id, stateCode, orderIds, client = 62) {
 function quoteTable(overrides = {}) {
   return Object.assign({
     agreements: [agreement(136, "DRAFT", [41, 42]), agreement(133, "CLIENT_APPROVED", [38])],
+    contents: [{ id: 333, document: { id: 133 }, language: { id: "eng" }, contentType: "TEXT", content: "# Parties" }, { id: 9, document: { id: 77 }, language: { id: "eng" }, contentType: "TEXT", content: "Another customer's agreement" }],
     orders: [quote(38, "ACTIVE", 959), quote(41, "QUOTE_SENT", 959), quote(42, "QUOTE_SENT", 958), quote(43, "DRAFT", 958)],
     orderItems: [line(38, 1, 227, 4891.92), line(38, 2, 233, 21859.68), line(41, 1, 227, 4891.92), line(41, 2, 233, 21859.68), line(42, 1, 28, 1528.48), line(42, 2, 36, 916.24), line(43, 1, 53, 1222.98)],
     productPrices: [{ id: 227, product: { id: 25 } }, { id: 233, product: { id: 28 } }, { id: 28, product: { id: 25 } }, { id: 36, product: { id: 28 } }, { id: 53, product: { id: 25 } }],
@@ -237,6 +238,10 @@ function quoteFetch(table, calls = []) {
     if (route === "/core/api/tagged/document/list.json") {
       const client = filterValue("attributes.17.CLIENT.value");
       const rows = table.serverFiltersClient ? table.agreements.filter((row) => String(row.attributes[17].CLIENT.value) === client.value) : table.agreements;
+      return json({ resultSize: rows.length, result: rows });
+    }
+    if (route === "/core/api/tagged/localized-text-content/list.json") {
+      const rows = table.serverFiltersClient ? table.contents.filter((row) => inIds("document.id").includes(row.document.id)) : table.contents;
       return json({ resultSize: rows.length, result: rows });
     }
     if (route === "/core-bill/api/tagged/order/list.json") return json({ resultSize: table.orders.length, result: table.orders });
@@ -270,11 +275,13 @@ function quoteFetch(table, calls = []) {
   assert.equal(result.scopeMode, "server-scoped", "every customer record was narrowed to the Account in the request");
   assert.deepEqual(plain(result.reads), {
     agreements: { state: "ready", scopeMode: "server-scoped", truncated: false },
+    agreementContents: { state: "ready", scopeMode: "server-scoped", truncated: false },
     orders: { state: "ready", scopeMode: "server-scoped", truncated: false },
     orderItems: { state: "ready", scopeMode: "server-scoped", truncated: false },
     productPrices: { state: "ready", scopeMode: "unscoped", truncated: false },
     products: { state: "ready", scopeMode: "unscoped", truncated: false },
   }, "each read states how it was narrowed; catalog rows are tenant records nothing filters to the customer");
+  assert.deepEqual(result.agreementContents.map((row) => row.id), [333], "the agreement text is read as the tagged content rows of the customer's agreements");
   assert.deepEqual(plain(result.client), { displayName: "Harbour View Strata", account: null }, "the client card source is the Account read; when that read fails the display name alone is kept");
   assert.deepEqual(result.agreements.map((row) => row.id), [136, 133]);
   assert.deepEqual(result.quoteOrders.map((row) => row.id), [38, 41, 42, 43], "the adapter passes rows through; the normalizer withholds operator-side Orders");
@@ -289,6 +296,7 @@ function quoteFetch(table, calls = []) {
     { type: "INTEGER", operator: "=", property: "attributes.17.CLIENT.value", value: "62" },
   ], "agreements are filtered to the customer's Account in the request, through the type id Core returned");
   assert.deepEqual(byRoute("/core-bill/api/tagged/order/list.json")[0].body.filters, [{ type: "INTEGER", operator: "=", property: "account.id", value: "62" }]);
+  assert.deepEqual(byRoute("/core/api/tagged/localized-text-content/list.json")[0].body.filters, [{ type: "INTEGER", operator: "IN", property: "document.id", value: "136,133" }], "the agreement text is filtered to the customer's agreements in the request");
   assert.deepEqual(byRoute("/core-bill/api/tagged/order-item/list.json")[0].body.filters, [
     { type: "INTEGER", operator: "=", property: "order.account.id", value: "62" },
     { type: "INTEGER", operator: "IN", property: "order.id", value: "38,41,42" },
@@ -356,6 +364,10 @@ function quoteFetch(table, calls = []) {
   assert.equal(partialAgreements.agreements, null, "a failed read is absent, never an empty list");
   assert.deepEqual(plain(partialAgreements.reads.agreements), { state: "error", scopeMode: null, truncated: false, reasonCode: "core-request-failed" });
   assert.deepEqual(partialAgreements.quoteOrders.map((row) => row.id), [38, 41, 42, 43], "the quotes still load when the agreements do not");
+  assert.equal(partialAgreements.reads.agreementContents.state, "error", "without agreements their text is unknown");
+
+  const textUnreadable = await createCoreSnowQuotesAdapter({ origin, fetch: quoteFetch(quoteTable({ fail: { "/core/api/tagged/localized-text-content/list.json": 403 } })) }).load("proposals", context);
+  assert.deepEqual([textUnreadable.agreementContents, textUnreadable.reads.agreementContents.state, textUnreadable.agreements.map((row) => row.id)], [null, "unauthorized", [136, 133]], "a role without the tagged content read still lists its agreements, without their text");
 
   const forbiddenAgreements = await createCoreSnowQuotesAdapter({ origin, fetch: quoteFetch(quoteTable({ fail: { "/core/api/document-type/list.json": 403 } })) }).load("proposals", context);
   assert.equal(forbiddenAgreements.reads.agreements.state, "unauthorized", "a role without document permissions reads as unauthorized for agreements only");
@@ -435,8 +447,10 @@ function quoteFetch(table, calls = []) {
 
 assert.deepEqual(coreSnowContract.quoteFilters, ["account.id"]);
 assert.deepEqual(coreSnowContract.orderItemFilters, ["order.account.id", "order.id"]);
+assert.deepEqual(coreSnowContract.agreementContentFilters, ["document.id"]);
 assert.deepEqual(plain(coreSnowContract.scopeModes), {
   agreements: "server-scoped",
+  agreementContents: "server-scoped",
   orders: "server-scoped",
   orderItems: "server-scoped",
   productPrices: "unscoped",
@@ -451,7 +465,7 @@ assert.deepEqual(Object.keys(coreSnowContract.customerQuoteStatus).sort(), [
 assert.deepEqual(coreSnowContract.operatorQuoteStates, ["CHANGES_REQUESTED", "DRAFT", "QUOTE_APPROVED", "QUOTE_PREPARED"]);
 assert.equal(coreSnowContract.quoteRequestPreference, "SNOW_PORTAL_QUOTE_REQUEST");
 
-console.log("core-snow-adapter-check ok: properties filtered in the browser against an inherited ACCOUNT attribute, coordinates read from COORD_LAT and COORD_LNG with a missing value left missing, agreements, quotes and their lines filtered to the Account in the request with any foreign row dropped and reported as browser-filtered, catalog rows reported as unscoped, a failed read left absent as a partial result, a catalog 401 kept from signing the customer out, and the pre-read, ownership check and tagged event request of every contract command")
+console.log("core-snow-adapter-check ok: properties filtered in the browser against an inherited ACCOUNT attribute, coordinates read from COORD_LAT and COORD_LNG with a missing value left missing, agreements, their text, quotes and their lines filtered to the Account in the request with any foreign row dropped and reported as browser-filtered, catalog rows reported as unscoped, a failed read left absent as a partial result, a catalog 401 kept from signing the customer out, and the pre-read, ownership check and tagged event request of every contract command")
 
 function json(value) { return { ok: true, status: 200, async json() { return structuredClone(value); } }; }
 function plain(value) { return JSON.parse(JSON.stringify(value)); }

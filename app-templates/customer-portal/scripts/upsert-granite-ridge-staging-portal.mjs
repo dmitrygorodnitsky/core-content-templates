@@ -3,7 +3,7 @@ import path from "node:path";
 import process from "node:process";
 import { pathToFileURL } from "node:url";
 import { buildLivePortalRuntime, liveRuntimeVertical, minifiedRuntimePath } from "./build-live-portal-runtime.mjs";
-import { exportLivePortalManual, liveDeploymentParameters, operatorParameterPlaceholder } from "./export-live-portal-manual.mjs";
+import { copyParameters, exportLivePortalManual, liveDeploymentParameters, operatorParameterPlaceholder } from "./export-live-portal-manual.mjs";
 import { sha256 } from "./portal-manual-package.mjs";
 import { parseArgs, upsertPortalPackage } from "./upsert-granite-ridge-portal.mjs";
 
@@ -57,7 +57,7 @@ const staging = {
       throw new Error("cms-family.payload.json declares parameters its manifest does not: " + codes.join(", "));
     }
     for (const item of payload.root.parameters) {
-      if (item.code !== "PORTAL_REQUEST_FORM_URL" && item.code !== "PORTAL_TIME_ZONE" && item.value !== operatorParameterPlaceholder) {
+      if (item.code !== "PORTAL_REQUEST_FORM_URL" && item.code !== "PORTAL_TIME_ZONE" && !copyParameters[item.code] && item.value !== operatorParameterPlaceholder) {
         throw new Error("Refusing to upsert " + item.code + " with anything but the " + operatorParameterPlaceholder + " placeholder: it is operator-owned and is set in CMS, never shipped");
       }
     }

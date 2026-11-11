@@ -859,13 +859,9 @@ button { font-family: inherit; }
 
 .cr-total__value.cr-muted { font-size: 13.5px; font-weight: 500; letter-spacing: normal; }
 
-.cr-breakdown { margin: 0; padding: 8px 0 6px; }
+.cr-total + .cr-taxes-note { margin-top: 4px; text-align: right; font-size: 12.5px; }
 
-.cr-breakdown__row { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; padding: 3px 0; font-size: 13px; }
-
-.cr-breakdown__label { color: var(--ink-2); }
-
-.cr-breakdown__value { margin: 0; font-weight: 600; color: var(--ink); font-variant-numeric: tabular-nums; }
+.cr-per-service + .cr-taxes-note { margin-top: 4px; }
 
 .cr-note { margin: 12px 0 0; font-size: 13px; line-height: 1.55; color: var(--ink-2); }
 
@@ -1386,10 +1382,9 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
   data-copy-line-quantity="Quantity"
   data-copy-line-unit-price="Unit price"
   data-copy-line-included="Included"
-  data-copy-order-subtotal="Subtotal"
-  data-copy-order-taxes="Taxes"
   data-copy-order-total="Option total"
   data-copy-per-service-note="You pay the price of each service every time it is performed."
+  data-copy-taxes-note="Plus applicable taxes."
   data-copy-lines-empty="No services are listed on this option."
   data-copy-value-not-stated="Not stated"
   data-copy-service-unnamed="Unnamed service"
@@ -1589,10 +1584,9 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     ["LINE_QUANTITY", "lineQuantity", "Quantity"],
     ["LINE_UNIT_PRICE", "lineUnitPrice", "Unit price"],
     ["LINE_INCLUDED", "lineIncluded", "Included"],
-    ["ORDER_SUBTOTAL", "orderSubtotal", "Subtotal"],
-    ["ORDER_TAXES", "orderTaxes", "Taxes"],
     ["ORDER_TOTAL", "orderTotal", "Option total"],
     ["PER_SERVICE_NOTE", "perServiceNote", "You pay the price of each service every time it is performed."],
+    ["TAXES_NOTE", "taxesNote", "Plus applicable taxes."],
     ["LINES_EMPTY", "linesEmpty", "No services are listed on this option."],
     ["VALUE_NOT_STATED", "valueNotStated", "Not stated"],
     ["SERVICE_UNNAMED", "serviceUnnamed", "Unnamed service"],
@@ -1890,7 +1884,6 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
       effectiveDate: "EFFECTIVE_DATE",
       termStart: "TERM_START_DATE",
       termEnd: "TERM_END_DATE",
-      terms: "CONTRACT_TERMS",
     },
     agreementContent: {
       entity: "localizedtextcontent",
@@ -2618,7 +2611,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     }).sort(function (left, right) { return ascending(positiveInteger(left.id) || 0, positiveInteger(right.id) || 0); });
     var wanted = text(locale).toLowerCase().split("-")[0];
     var chosen = written.filter(function (row) { return languageTag(row[spec.language]) === wanted; })[0] || written[0];
-    return chosen ? text(chosen[spec.text]) : text(attributeValue(agreement, contract.agreementAttributes.terms));
+    return chosen ? text(chosen[spec.text]) : "";
   }
 
   function clauseOf(line) {
@@ -2899,10 +2892,15 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
 
   function pricingDisplay(model, lines, contract) {
     var variants = contract.priceVariants;
-    if (model === variants.perService) return { linePrices: true, breakdown: false, total: false };
+    if (model === variants.perService) return { linePrices: true, total: false };
     var recurring = [variants.monthly, variants.seasonal, variants.recurring].indexOf(model) !== -1;
-    if (recurring || (lines.length > 0 && lines.every(function (line) { return line.recurrent; }))) return { linePrices: false, breakdown: false, total: true };
-    return { linePrices: true, breakdown: true, total: true };
+    if (recurring || (lines.length > 0 && lines.every(function (line) { return line.recurrent; }))) return { linePrices: false, total: true };
+    return { linePrices: true, total: true };
+  }
+
+  function totalBeforeTaxes(row) {
+    if (finiteOrNull(row.totalCharges) !== null) return row.totalCharges;
+    return finiteOrNull(row.totalTaxes) ? null : row.grandTotal;
   }
 
   function optionOf(row, position, context) {
@@ -2927,9 +2925,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
       lines: lines,
       recurrent: lines.length > 0 && lines.every(function (line) { return line.recurrent; }),
       pricing: pricingDisplay(variant.model, lines, contract),
-      subtotal: priced ? formatMoney(row.totalCharges, currency, context.locale) : "",
-      taxes: priced ? formatMoney(row.totalTaxes, currency, context.locale) : "",
-      total: priced ? formatMoney(row.grandTotal, currency, context.locale) : "",
+      total: priced ? formatMoney(totalBeforeTaxes(row), currency, context.locale) : "",
       awaitingClient: state === contract.orderEvents.approve.source,
       siblingApproved: false,
       actions: { approve: false, decline: false, changes: false },
@@ -3618,12 +3614,9 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
         paragraph(label + " - " + (copy[STATUSES[option.status]] || copy.optionUnknown), 11, accent, 10);
         if (!option.priced) { paragraph(option.status === "revising" ? copy.noteRevising : copy.noteNoActions, 10, muted); return; }
         lines(option);
-        if (option.pricing.breakdown) {
-          if (option.subtotal) fact(copy.orderSubtotal, option.subtotal);
-          if (option.taxes) fact(copy.orderTaxes, option.taxes);
-        }
-        if (option.pricing.total) paragraph(copy.orderTotal + ": " + (option.total || copy.valueNotStated), 12, ink, 16);
-        else paragraph(copy.perServiceNote, 10, muted, 16);
+        if (option.pricing.total) paragraph(copy.orderTotal + ": " + (option.total || copy.valueNotStated), 12, ink, 4);
+        else paragraph(copy.perServiceNote, 10, muted, 4);
+        paragraph(copy.taxesNote, 10, muted, 16);
       });
     });
     if (!view.properties.length) paragraph(copy.linesEmpty, 10, muted);
@@ -4490,26 +4483,16 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
       return;
     }
     body.appendChild(linesTable(ctx, option));
-    var breakdown = option.pricing.breakdown ? [["subtotal", copy.orderSubtotal, option.subtotal], ["taxes", copy.orderTaxes, option.taxes]]
-      .filter(function (row) { return row[2]; }) : [];
-    if (breakdown.length) {
-      var list = el("dl", "cr-breakdown");
-      breakdown.forEach(function (row) {
-        var item = el("div", "cr-breakdown__row", { "data-kind": row[0] });
-        item.appendChild(text("dt", "cr-breakdown__label", row[1]));
-        item.appendChild(text("dd", "cr-breakdown__value", row[2]));
-        list.appendChild(item);
-      });
-      body.appendChild(list);
-    }
     if (!option.pricing.total) {
       body.appendChild(text("p", "cr-note cr-per-service", copy.perServiceNote, { "data-pricing": "per-service" }));
+      body.appendChild(text("p", "cr-note cr-taxes-note", copy.taxesNote, { "data-pricing": "taxes" }));
       return;
     }
     var total = el("div", "cr-total");
     total.appendChild(text("span", "cr-total__label", copy.orderTotal));
     total.appendChild(text("span", "cr-total__value" + (option.total ? "" : " cr-muted"), option.total || copy.valueNotStated));
     body.appendChild(total);
+    body.appendChild(text("p", "cr-note cr-taxes-note", copy.taxesNote, { "data-pricing": "taxes" }));
   }
 
   function outcomeBox(ctx, command, options) {
@@ -4794,6 +4777,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     var list = el("ul", "cr-approved__list cr-choices__list");
     entries.forEach(function (entry) { list.appendChild(choiceRow(ctx, entry)); });
     card.appendChild(list);
+    if (approvals) card.appendChild(text("p", "cr-note cr-taxes-note", copy.taxesNote, { "data-pricing": "taxes" }));
     var undecided = view.properties.filter(function (property) {
       return property.status === "awaiting" && !ctx.snapshot.choices[property.key];
     }).length;
@@ -6710,6 +6694,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     { id: "agreement-review", label: "Agreement review — SENT_TO_CLIENT" },
     { id: "agreement-numbered-terms", label: "Agreement review — numbered contract terms" },
     { id: "agreement-no-terms", label: "Agreement review — no contract terms written" },
+    { id: "agreement-terms-not-granted", label: "Agreement review — a link issued without the agreement text" },
     { id: "agreement-content-terms", label: "Agreement review — terms read from the agreement's document content" },
     { id: "agreement-confirm", label: "Agreement approval — confirmation" },
     { id: "agreement-unconfirmed", label: "Agreement approval accepted, change not seen within the budget — Refresh status" },
@@ -6868,10 +6853,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
       TERM_START_DATE: { value: "2026-11-01" },
       TERM_END_DATE: { value: "2027-03-31" },
     };
-    if (withSnapshot) {
-      attributes.EFFECTIVE_DATE = { value: "2026-10-20" };
-      attributes.CONTRACT_TERMS = { value: TERMS };
-    }
+    if (withSnapshot) attributes.EFFECTIVE_DATE = { value: "2026-10-20" };
     return {
       id: AGREEMENT_ID,
       code: "SA-5205",
@@ -6906,6 +6888,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
         { entityType: "Account", canRead: true, canWrite: false, events: [] },
         { entityType: "Order", canRead: true, canWrite: false, events: [] },
         { entityType: "Document", canRead: true, canWrite: false, events: [grantEvent("SENT_TO_CLIENT-CLIENT_APPROVED", 12), grantEvent("SENT_TO_CLIENT-CLIENT_CHANGES_REQUESTED", 13)] },
+        { entityType: "LocalizedTextContent", canRead: true, canWrite: false, events: [] },
         { entityType: "Address", canRead: true, canWrite: false, events: [] },
       ],
     };
@@ -7011,6 +6994,10 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
   var LAST_OPEN = { 3101: "DECLINED", 3102: "ACCEPTED", 3103: "DECLINED", 3107: "ACCEPTED" };
   var DECLINED_BUT_ONE = { 3101: "DECLINED", 3102: "DECLINED", 3103: "DECLINED", 3104: "DECLINED", 3106: "DECLINED", 3107: "DECLINED" };
 
+  function termsContent(content, contentType) {
+    return { id: 41, document: { id: AGREEMENT_ID }, language: { id: "eng" }, contentType: contentType, content: content };
+  }
+
   function agreementData(state, withUser, orderState) {
     var approved = [3102, 3104, 3107, 3108];
     var orders = ORDERS.filter(function (spec) { return approved.indexOf(spec.id) !== -1; }).map(orderRow);
@@ -7019,6 +7006,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
       grant: agreementGrant(),
       accounts: [accountRow(withUser)],
       documents: [agreementRow(state, approved, true)],
+      contents: [termsContent(TERMS, "TEXT")],
       orders: orders,
       unreadable: [],
       accountFails: false,
@@ -7745,16 +7733,19 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
         break;
       case "agreement-numbered-terms":
         data = agreementData("SENT_TO_CLIENT", false);
-        data.documents[0].attributes[17].CONTRACT_TERMS = { value: NUMBERED_TERMS };
+        data.contents = [termsContent(NUMBERED_TERMS, "TEXT")];
         break;
       case "agreement-content-terms":
         data = agreementData("SENT_TO_CLIENT", false);
-        data.grant.types.push({ entityType: "LocalizedTextContent", canRead: true, canWrite: false, events: [] });
-        data.contents = [{ id: 41, document: { id: data.documents[0].id }, language: { id: "eng" }, contentType: "HTML", content: CONTENT_TERMS }];
+        data.contents = [termsContent(CONTENT_TERMS, "HTML")];
         break;
       case "agreement-no-terms":
         data = agreementData("SENT_TO_CLIENT", false);
-        delete data.documents[0].attributes[17].CONTRACT_TERMS;
+        data.contents = [];
+        break;
+      case "agreement-terms-not-granted":
+        data = agreementData("SENT_TO_CLIENT", false);
+        data.grant.types = data.grant.types.filter(function (type) { return type.entityType !== "LocalizedTextContent"; });
         break;
       case "agreement-confirm":
         data = agreementData("SENT_TO_CLIENT", false);

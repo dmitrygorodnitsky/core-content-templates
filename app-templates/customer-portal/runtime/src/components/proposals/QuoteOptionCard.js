@@ -65,22 +65,25 @@ function lineSide(line, pricing) {
 }
 
 function QuoteMoney(order) {
-  var pricing = order.pricing || { breakdown: true, total: true };
+  var pricing = order.pricing || { total: true };
   if (!pricing.total) {
-    return h("div", { "class": "quote-option__note", "data-module": "quote-totals", "data-state": "per-service" }, "You pay the price of each service every time it is performed.");
+    return h("div", { "class": "quote-option__note", "data-module": "quote-totals", "data-state": "per-service" }, [
+      h("div", null, "You pay the price of each service every time it is performed."),
+      TaxesNote(),
+    ]);
   }
   if (!order.money) {
     return h("div", { "class": "quote-option__note", "data-module": "quote-totals", "data-state": "unpriced" }, "No price is stated on this quote yet.");
   }
-  var rows = order.money.taxFree || !pricing.breakdown ? [] : [["Subtotal", order.money.subtotal, "subtotal"], ["Taxes", order.money.taxes, "taxes"]].filter(function (row) { return !!row[1]; });
-  var wrap = h("div", { "class": "money-rows quote-totals", "data-module": "quote-totals", "data-visual-id": "quote-totals" }, rows.map(function (row) {
-    return h("div", { "class": "money-rows__row", "data-kind": row[2] }, [h("span", null, row[0]), h("span", null, row[1])]);
-  }));
-  if (order.money.total) {
-    var period = pricePeriod(order);
-    wrap.appendChild(h("div", { "class": "money-rows__row money-rows__row--total", "data-kind": "total" }, [h("span", null, "Total"), h("span", null, period ? order.money.total + " " + period : order.money.total)]));
-  }
-  return wrap;
+  var period = pricePeriod(order);
+  return h("div", { "class": "money-rows quote-totals", "data-module": "quote-totals", "data-visual-id": "quote-totals" }, [
+    h("div", { "class": "money-rows__row money-rows__row--total", "data-kind": "total" }, [h("span", null, "Total"), h("span", null, period ? order.money.total + " " + period : order.money.total)]),
+    TaxesNote(),
+  ]);
+}
+
+function TaxesNote() {
+  return h("div", { "class": "quote-option__taxes", "data-kind": "taxes" }, state.config.taxesNote);
 }
 
 function QuoteDecisions(order, settings) {

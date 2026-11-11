@@ -13,13 +13,14 @@
       "PORTAL_WEATHER_CLIENT_SECRET",
       "PORTAL_MAPS_API_KEY",
       "PORTAL_MAPS_MAP_ID",
-      "PORTAL_TIME_ZONE"
+      "PORTAL_TIME_ZONE",
+      "PORTAL_TAXES_NOTE"
     ],
     "sha256": {
       "head": "2d73a4975671d61afa33139b86357240a81ca29c3d64c8094335705c978ae9ab",
-      "html": "7c93648aa0ef4c7a7e6016d1c8501a644e0a18821ca41c0a402634162c84f7c9",
-      "css": "4a636da7f4dcdcb586c051be40b70cfa0c7f71fd176f80a6840cb90b4a2dcb7d",
-      "javascript": "92cfcca8271dab7f5aba8fc4ff9068a628379f1bf248120f48ef77d6a5b083b1"
+      "html": "3596d76b2808b289c52753e0f80bf16a817c1b9b8200eca88fbaa1e5ed5ce447",
+      "css": "d27cfb969b89a44836cf55f005d9d715797836637f90640562239e7f93f36833",
+      "javascript": "0a4c67ccd050da08ec4c05b4b1d67c2df87e44ad9af093411542978f79beda40"
     }
   },
   "runtime": {

@@ -386,7 +386,7 @@
     }).sort(function (left, right) { return ascending(positiveInteger(left.id) || 0, positiveInteger(right.id) || 0); });
     var wanted = text(locale).toLowerCase().split("-")[0];
     var chosen = written.filter(function (row) { return languageTag(row[spec.language]) === wanted; })[0] || written[0];
-    return chosen ? text(chosen[spec.text]) : text(attributeValue(agreement, contract.agreementAttributes.terms));
+    return chosen ? text(chosen[spec.text]) : "";
   }
 
   function clauseOf(line) {
@@ -667,10 +667,15 @@
 
   function pricingDisplay(model, lines, contract) {
     var variants = contract.priceVariants;
-    if (model === variants.perService) return { linePrices: true, breakdown: false, total: false };
+    if (model === variants.perService) return { linePrices: true, total: false };
     var recurring = [variants.monthly, variants.seasonal, variants.recurring].indexOf(model) !== -1;
-    if (recurring || (lines.length > 0 && lines.every(function (line) { return line.recurrent; }))) return { linePrices: false, breakdown: false, total: true };
-    return { linePrices: true, breakdown: true, total: true };
+    if (recurring || (lines.length > 0 && lines.every(function (line) { return line.recurrent; }))) return { linePrices: false, total: true };
+    return { linePrices: true, total: true };
+  }
+
+  function totalBeforeTaxes(row) {
+    if (finiteOrNull(row.totalCharges) !== null) return row.totalCharges;
+    return finiteOrNull(row.totalTaxes) ? null : row.grandTotal;
   }
 
   function optionOf(row, position, context) {
@@ -695,9 +700,7 @@
       lines: lines,
       recurrent: lines.length > 0 && lines.every(function (line) { return line.recurrent; }),
       pricing: pricingDisplay(variant.model, lines, contract),
-      subtotal: priced ? formatMoney(row.totalCharges, currency, context.locale) : "",
-      taxes: priced ? formatMoney(row.totalTaxes, currency, context.locale) : "",
-      total: priced ? formatMoney(row.grandTotal, currency, context.locale) : "",
+      total: priced ? formatMoney(totalBeforeTaxes(row), currency, context.locale) : "",
       awaitingClient: state === contract.orderEvents.approve.source,
       siblingApproved: false,
       actions: { approve: false, decline: false, changes: false },

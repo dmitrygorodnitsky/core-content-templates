@@ -112,7 +112,7 @@ const orderList = {
   const decide = ["approve", "changes", "decline"];
   assert.deepEqual(orders.map((order) => order.allowedActions), [decide, decide, [], [], [], decide, decide], "QUOTE_SENT is decided or sent back with a change request as it is shown; ORDER_LIFECYCLE has no view event");
   assert.equal(orders[2].money.total, "CA$8,625.50", "the server's total is formatted, never recomputed");
-  assert.equal(orders[2].money.subtotal, "", "a subtotal Core did not return is absent");
+  assert.deepEqual(Object.keys(orders[2].money), ["total"], "a quote states only its total: no subtotal and no taxes");
   assert.equal(orders[0].money, null, "an unpriced Order states no money at all");
   assert.ok(orders.every((order) => order.linesState === "unavailable" && order.lines.length === 0), "without a line read every Order says its lines are unavailable rather than empty");
 
@@ -155,8 +155,12 @@ const orderList = {
     { key: "line-72", product: "Rock Salt De-Icing", quantity: "1", unitPrice: "CA$916.24", total: "CA$916.24" },
   ], "Order, OrderItem, ProductPrice and Product are joined by id, lines run in sortOrder, and every figure is the server's");
   assert.equal(orders[0].linesState, "ready");
-  assert.deepEqual(plain(orders[0].money), { subtotal: "CA$2,444.72", taxes: "CA$0.00", total: "CA$2,444.72", taxFree: true }, "taxes Core returned as zero are kept and flagged, so the card can show the total alone");
-  assert.equal(normalizeQuoteOrders([Object.assign({}, rows[0], { totalTaxes: 12.5 })], catalog).orders[0].money.taxFree, false);
+  assert.deepEqual(plain(orders[0].money), { total: "CA$2,444.72" }, "a quote states its total and nothing about taxes");
+  const accepted = normalizeQuoteOrders([Object.assign({}, rows[0], { totalTaxes: 293.37, grandTotal: 2738.09 })], { ...catalog, orderItems: catalog.orderItems.map((line) => line.order.id === 7 ? { ...line, totalTaxes: 1, grandTotal: Number(line.grandTotal) + 1 } : line) }).orders[0];
+  assert.deepEqual([plain(accepted.money), plain(accepted.total)], [{ total: "CA$2,444.72" }, { amount: 2444.72, currency: "CAD" }], "once Accept put taxes on the order, the total is still the server's charges before taxes, never the grandTotal with taxes");
+  assert.deepEqual(accepted.lines.map((line) => [line.unitPrice, line.total]), [["CA$1,528.48", ""], ["CA$916.24", ""]], "and a taxed line keeps its price but shows no line total with taxes");
+  const chargesUnknown = (taxes) => normalizeQuoteOrders([Object.assign({}, rows[0], { totalCharges: undefined, totalTaxes: taxes, grandTotal: 2738.09 })], catalog).orders[0].money;
+  assert.deepEqual([chargesUnknown(293.37), plain(chargesUnknown(0))], [null, { total: "CA$2,738.09" }], "without totalCharges a taxed grandTotal is never shown, an untaxed one is");
   assert.deepEqual(orders.map((order) => Object.prototype.hasOwnProperty.call(order, "serviceAddress")), [false, false], "an Order's SERVICE_ADDRESS is never read: a property's address is its Resource's");
   assert.deepEqual(plain(orders[1].lines), [
     { key: "line-81", product: "", quantity: "12", unitPrice: "CA$12.50", total: "" },
@@ -224,13 +228,15 @@ const orderList = {
     "CA$4,217.94 / month", "CA$16,871.75 per season", "CA$1,512.50 per visit", "CA$4,217.94", "CA$4,217.94",
   ], "every price carries the period of its pricing model, and a model without a known period shows the price alone");
   assert.equal(formatOrderPrice({ total: null, pricingModel: { code: "MONTHLY" } }), "", "no period without a price");
+  const taxesNote = (value) => readPortalConfig({ dataset: { portalTaxesNote: value } }).taxesNote;
+  assert.deepEqual(["${PORTAL_TAXES_NOTE@LOCALIZED_STRING_SS}", "#", "", undefined, " Plus taxes applicables. "].map(taxesNote), ["Plus applicable taxes.", "Plus applicable taxes.", "Plus applicable taxes.", "Plus applicable taxes.", "Plus taxes applicables."], "the taxes note is the translated PORTAL_TAXES_NOTE, and an unset parameter shows the English default");
   assert.deepEqual(["PER_SERVICE", "MONTHLY", "SEASONAL", "RECURRING", null].map((code) => plain(pricingDisplay(code ? { code } : null))), [
-    { linePrices: true, breakdown: false, total: false },
-    { linePrices: false, breakdown: false, total: true },
-    { linePrices: false, breakdown: false, total: true },
-    { linePrices: false, breakdown: false, total: true },
-    { linePrices: true, breakdown: true, total: true },
-  ], "per service shows each service's price and no total, subtotal or taxes; monthly, seasonal and recurring show only the total; an unknown billing type keeps everything");
+    { linePrices: true, total: false },
+    { linePrices: false, total: true },
+    { linePrices: false, total: true },
+    { linePrices: false, total: true },
+    { linePrices: true, total: true },
+  ], "per service shows each service's price and no total; monthly, seasonal and recurring show only the total; an unknown billing type shows line prices and the total; none shows a subtotal or taxes");
   assert.equal(formatOrderPrice({ ...priced("PER_SERVICE", 1512.5), pricing: pricingDisplay({ code: "PER_SERVICE" }) }), "", "a per-service order states no total anywhere");
   assert.deepEqual(plain(normalizeQuoteOrders([{ ...quoted(602), metadata: { PRICING_MODEL: "SEASONAL" } }], catalog).orders[0].pricingModel), { code: "SEASONAL", label: "Seasonal" }, "the order's metadata.PRICING_MODEL is its billing type");
 
@@ -249,7 +255,12 @@ const orderList = {
   }, "an agreement starts at DRAFT, being prepared by the provider; it reads its latest state and its listed Orders; no date is invented");
   assert.deepEqual(review.allowedActions, [], "only an agreement sent to the client can be approved");
   assert.equal("detailsErrors" in review, false, "CLIENT_DETAILS_ERRORS is the manager's, never read for the client");
-  assert.deepEqual(review.terms, [], "an agreement without CONTRACT_TERMS has no terms, not an empty paragraph");
+  assert.deepEqual(review.terms, [], "an agreement without document content has no terms, not an empty paragraph");
+  const termsFrom = (contents, attributes = {}) => plain(normalizeServiceAgreement(agreementDocument(["SENT_TO_CLIENT"], attributes), null, contents).terms).map((block) => block.text);
+  const content = (id, document, language, text) => ({ id, document: { id: document }, language: { id: language }, contentType: "TEXT", content: text });
+  assert.deepEqual(termsFrom([], { CONTRACT_TERMS: { value: "# Attribute terms" } }), [], "a CONTRACT_TERMS attribute is never read");
+  assert.deepEqual(termsFrom([content(2, 9001, "fre", "Conditions"), content(3, 9001, "eng", "English terms"), content(1, 9002, "eng", "Another agreement")]), ["English terms"], "the agreement's own English content is its text");
+  assert.deepEqual(termsFrom([content(5, 9001, "spa", "Términos"), content(4, 9001, "eng", "  ")]), ["Términos"], "an empty content is skipped and the only written one is used whatever its language");
   assert.deepEqual(plain(review.parties.client), { legalName: "", clientType: "", billingAddress: "", representativeName: "", representativeJobTitle: "", email: "", phone: "" });
   assert.deepEqual(normalizeServiceAgreement(agreementDocument(["DRAFT"], { ORDERS: { value: "501, 502" } })).orderBackendIds, [501, 502]);
   assert.deepEqual(normalizeServiceAgreement(agreementDocument(["DRAFT"], { ORDERS: { value: 501 } })).orderBackendIds, [501]);
@@ -294,9 +305,9 @@ const orderList = {
       { id: 6, types: [{ code: "BILLING" }], address: { address1: "100 Harbour Way", city: "Vancouver", postalCode: "V6C 3T8", state: { code: "BC" }, country: { code: "CA", nls: { en: { NAME: "Canada" } } } } },
     ],
   };
-  const sent = normalizeServiceAgreement(agreementDocument(["SENT_TO_CLIENT"], {
-    CONTRACT_TERMS: { value: "# Parties\n\nService provider: Granite Ridge Snow Removal Ltd.\n- Phone: +1 604 670 0591\n\nClient: Harbour View Strata\n\n# Terms\n\n1. Services." },
-  }, { organization: { id: 43, code: "GRANITE", nls: { en: { NAME: "Granite Ridge Snow Removal" } } } }), { displayName: "Account display name", account: account });
+  const sent = normalizeServiceAgreement(agreementDocument(["SENT_TO_CLIENT"], {}, { organization: { id: 43, code: "GRANITE", nls: { en: { NAME: "Granite Ridge Snow Removal" } } } }), { displayName: "Account display name", account: account }, [
+    { id: 330, document: { id: 9001 }, language: { id: "eng" }, contentType: "TEXT", content: "# Parties\n\nService provider: Granite Ridge Snow Removal Ltd.\n- Phone: +1 604 670 0591\n\nClient: Harbour View Strata\n\n# Terms\n\n1. Services." },
+  ]);
   assert.deepEqual(sent.allowedActions, ["approve"]);
   assert.deepEqual(plain(sent.parties), {
     provider: { legalName: "Granite Ridge Snow Removal", representativeName: "", representativeJobTitle: "", phone: "", email: "", logoImageId: "" },
@@ -367,7 +378,7 @@ const orderList = {
     { kind: "paragraph", text: "The Provider clears snow & ice.", depth: 0 },
     { kind: "item", text: "Seasonal", depth: 0 },
     { kind: "paragraph", text: "alert(1)", depth: 0 },
-  ], "markup is reduced to text; nothing from CONTRACT_TERMS is ever parsed as HTML");
+  ], "markup is reduced to text; nothing from the agreement text is ever parsed as HTML");
   assert.deepEqual(termsBlocks(""), []);
   assert.deepEqual(termsBlocks(null), []);
   assert.deepEqual(termsBlocks({ value: "x" }), []);
@@ -518,13 +529,13 @@ const RETIRED = ["Proposal #", "valid until", "sent Dec", "sq ft", "Beam AI", "l
   assert.deepEqual(rows.map((row) => one(row, ".proposal-card__name").textContent), ["Alkire Street and Braun Court", "Dover Way", "Coal Creek Lane", "Lamar Terrace", "Eldridge Circle and Flatiron Parkway", "Independence Way", "Holland Street", "Jellison Place", "Kipling Crossing"]);
   assert.deepEqual(rows.map((row) => (one(row, ".proposal-card__meta") || { textContent: null }).textContent), [
     "2 options approved · Season Nov 1, 2026 – Mar 31, 2027",
-    "Monthly · $9,080.93 / month · Season Nov 1, 2026 – Mar 31, 2027",
-    "Seasonal · $8,334.90 per season · Season Nov 1, 2026 – Mar 31, 2027",
-    "Seasonal · $7,954.17 per season · Season Nov 1, 2026 – Mar 31, 2027",
+    "Monthly · $8,825.00 / month · Season Nov 1, 2026 – Mar 31, 2027",
+    "Seasonal · $8,100.00 per season · Season Nov 1, 2026 – Mar 31, 2027",
+    "Seasonal · $7,730.00 per season · Season Nov 1, 2026 – Mar 31, 2027",
     "2 options approved · Season Nov 1, 2025 – Mar 31, 2026",
-    "Monthly · $9,569.70 / month · Season Nov 1, 2025 – Mar 31, 2026",
-    "Seasonal · $7,398.51 per season · Season Nov 1, 2024 – Mar 31, 2025",
-    "Seasonal · $7,666.05 per season · Season Nov 1, 2024 – Mar 31, 2025",
+    "Monthly · $9,300.00 / month · Season Nov 1, 2025 – Mar 31, 2026",
+    "Seasonal · $7,190.00 per season · Season Nov 1, 2024 – Mar 31, 2025",
+    "Seasonal · $7,450.00 per season · Season Nov 1, 2024 – Mar 31, 2025",
     null,
   ], "an agreement row names its chosen option with its price and period, and its season from the agreement's own term, never from its Orders; a row with nothing to say has no second line");
   assert.ok(rows.every((row) => !one(row, ".proposal-card__meta") || !/Service agreement|Active|Approved/.test(one(row, ".proposal-card__meta").textContent)), "the status is shown once, as the badge");
@@ -562,12 +573,12 @@ const RETIRED = ["Proposal #", "valid until", "sent Dec", "sq ft", "Beam AI", "l
   assert.equal(one(tabor, ".proposal-group__decision").textContent, "Changes requested");
   assert.deepEqual(all(groups[1], "[data-module=\"quote-row\"]").map((row) => [one(row, ".proposal-option__model").textContent, (one(row, ".proposal-option__total") || { textContent: null }).textContent, one(row, "[data-module=\"status-badge\"]").textContent]), [
     ["Per service", null, "◔ Sent"],
-    ["Monthly", "$33,766.64 / month", "◔ Sent"],
-    ["Seasonal", "$32,156.25 per season", "◔ Sent"],
+    ["Monthly", "$32,815.00 / month", "◔ Sent"],
+    ["Seasonal", "$31,250.00 per season", "◔ Sent"],
   ], "a monthly or seasonal option shows Core's grand total with its period, a per-service option shows no total, and nothing is computed from an area");
   assert.deepEqual(groups.map((group) => all(group, "[data-module=\"quote-row\"]").length), [3, 3]);
   assert.equal(all(page, ".proposal-card__tag").length, 0, "every quoted property is on the map, so none is marked off it");
-  assert.equal(one(page, "[data-module=\"quote-package-footer\"]").textContent, "✦Decide each property on its own. Approving one option for a property declines its other options, and your contract details go with the approval. Once every property has a decision, we prepare your service agreement.");
+  assert.equal(one(page, "[data-module=\"quote-package-footer\"]").textContent, "✦Decide each property on its own. Approving one option for a property declines its other options, and your contract details go with the approval. Once every property has a decision, we prepare your service agreement.Plus applicable taxes.", "the footer says the prices shown are before taxes");
   for (const id of all(page, "[data-id]").map((element) => element.getAttribute("data-id"))) {
     assert.match(id, /^[a-z0-9-]+$/, "a page link carries an id, never a name or an address");
   }
@@ -675,11 +686,13 @@ const RETIRED = ["Proposal #", "valid until", "sent Dec", "sq ft", "Beam AI", "l
     ["Snow clearing", "Quantity 5", null],
     ["De-icing", "Quantity 5", null],
   ], "a monthly option lists its services without a price per service");
-  assert.deepEqual(all(monthly, ".money-rows__row").map((row) => row.textContent), ["Total$9,322.74 / month"], "and only its total, with its period: no subtotal or taxes");
+  assert.deepEqual(all(monthly, ".money-rows__row").map((row) => row.textContent), ["Total$9,060.00 / month"], "and only its total, with its period: no subtotal or taxes");
+  assert.equal(one(monthly, "[data-module=\"quote-totals\"] [data-kind=\"taxes\"]").textContent, "Plus applicable taxes.", "with the note that applicable taxes come on top");
   const perService = cards[0];
   assert.ok(lineText(perService).every((line) => line[2] && line[2].endsWith(" per service")), "a per-service option shows the price of each service");
   assert.equal(all(perService, ".money-rows__row").length, 0, "and no total, subtotal or taxes");
   assert.equal(one(perService, "[data-module=\"quote-totals\"]").getAttribute("data-state"), "per-service");
+  assert.equal(one(perService, "[data-module=\"quote-totals\"] [data-kind=\"taxes\"]").textContent, "Plus applicable taxes.", "and says applicable taxes come on top of each price");
   assert.equal(all(decided, "[data-action=\"quote.approve\"]").length + all(decided, "[data-action=\"quote.decline\"]").length, 0, "a decided property offers no decision a terminal Order could not take");
   for (const retired of RETIRED) assert.ok(!decided.textContent.includes(retired), "the quote detail must not show " + JSON.stringify(retired));
   assert.equal(all(decided, "[data-module=\"beam-report\"]").length + all(decided, "[data-module=\"plan-option\"]").length, 0, "the Beam AI block and the hard-coded plans are gone from the package");
@@ -841,7 +854,7 @@ const RETIRED = ["Proposal #", "valid until", "sent Dec", "sq ft", "Beam AI", "l
   ]);
   assert.equal(all(terms, ".terms-list li").length, 11, "the eight party lines of the text and the three term items are list items");
   assert.equal(all(terms, "*").filter((node) => node.tagName === "SCRIPT" || node.tagName === "A").length, 0);
-  assert.deepEqual(all(services, ".money-rows__row").map((row) => row.textContent).filter((row) => row.startsWith("Total")), ["Total$9,127.23 per season", "Total$9,929.85 / month"], "each option price in the agreement carries its period");
+  assert.deepEqual(all(services, ".money-rows__row").map((row) => row.textContent).filter((row) => row.startsWith("Total")), ["Total$8,870.00 per season", "Total$9,650.00 / month"], "each option price in the agreement carries its period");
   assert.equal(all(page, "[data-module=\"agreement-approve\"]").length, 1);
   assert.deepEqual(all(one(page, "[data-module=\"agreement-approve\"]"), "[data-action]").map((button) => [button.getAttribute("data-action"), button.getAttribute("data-id"), button.textContent]), [["agreement.approve", "9102", "Approve agreement"]]);
   for (const retired of ["PDF", "Download", "Request changes"]) assert.ok(!page.textContent.includes(retired), "the agreement page offers no " + retired);
@@ -1106,8 +1119,8 @@ const RETIRED = ["Proposal #", "valid until", "sent Dec", "sq ft", "Beam AI", "l
     } },
     agreements: [agreementDocument(["QUOTATION", "QUOTATION_SENT", "AWAITING_CLIENT_DETAILS", "DRAFT", "SENT_TO_CLIENT", "CLIENT_APPROVED"], Object.assign({
       CLIENT: { value: 732 }, ORDERS: { value: [114] },
-      CONTRACT_TERMS: { value: "# Parties\n\nService provider: Limitless Snow Removal Corp.\n- Phone: +1 604 670 0591\n\nClient: Bilbo Baggins\n- Billing address: 1239 W Georgia St, Vancouver, BC, V6E 4R8, CA\n\n# Test terms\n\n1. Services\n1.1 Snow is cleared." },
     }, agreement), { id: 169, organization: { id: 43, code: "SNOWLIMITLESS", nls: { en: { NAME: "Limitless Snow Removal Corp." } } } })],
+    agreementContents: [{ id: 338, document: { id: 169 }, language: { id: "eng" }, contentType: "TEXT", content: "# Parties\n\nService provider: Limitless Snow Removal Corp.\n- Phone: +1 604 670 0591\n\nClient: Bilbo Baggins\n- Billing address: 1239 W Georgia St, Vancouver, BC, V6E 4R8, CA\n\n# Test terms\n\n1. Services\n1.1 Snow is cleared." }],
     quoteOrders: [
       quote(113, decided("DECLINED"), 1512.5, [142, 143]),
       quote(114, decided("ACCEPTED", "ACTIVE"), 4217.94, [140, 141]),
@@ -1263,7 +1276,7 @@ for (const property of overviewProperties) {
   assert.ok(!warnings.some((line) => line.includes(property.address)), "a console warning must never carry a customer address");
 }
 
-console.log("snow-contracts-check ok: Orders, their lines and the agreement document normalize with absent data left absent and every figure taken from Core, the terms keep their headings, items and numbered outline as text, the Contracts page lists agreements by what they need from the customer with their chosen option, price per period and season, and only the quotes that still wait, with no subtitle or counters, the quote detail shows each option's lines and server totals with approve, request changes and decline for a sent quote as soon as it is shown and no retired Beam or plan claims, the agreement detail shows the season under the title, a banner only when the client must act, parties without placeholders, the provider contact the agreement carries, approved services with the total alone when untaxed and collapsed terms, the live home, Contracts, agreement and property pages for a real client show each address once, the active option, waiting quotes and the plan drawing and nothing without data, and live mode opens Contracts through the snow adapter while other verticals stay closed");
+console.log("snow-contracts-check ok: Orders, their lines and the agreement document normalize with absent data left absent and every figure taken from Core, the terms keep their headings, items and numbered outline as text, the Contracts page lists agreements by what they need from the customer with their chosen option, price per period and season, and only the quotes that still wait, with no subtitle or counters, the quote detail shows each option's lines and server totals with approve, request changes and decline for a sent quote as soon as it is shown and no retired Beam or plan claims, the agreement detail shows the season under the title, a banner only when the client must act, parties without placeholders, the provider contact the agreement carries, approved services with their totals before taxes and the plus applicable taxes note and collapsed terms, the live home, Contracts, agreement and property pages for a real client show each address once, the active option, waiting quotes and the plan drawing and nothing without data, and live mode opens Contracts through the snow adapter while other verticals stay closed");
 
 function createDom() {
   class Text {

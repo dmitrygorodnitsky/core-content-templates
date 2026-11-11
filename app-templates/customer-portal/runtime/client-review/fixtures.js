@@ -262,6 +262,7 @@
     { id: "agreement-review", label: "Agreement review — SENT_TO_CLIENT" },
     { id: "agreement-numbered-terms", label: "Agreement review — numbered contract terms" },
     { id: "agreement-no-terms", label: "Agreement review — no contract terms written" },
+    { id: "agreement-terms-not-granted", label: "Agreement review — a link issued without the agreement text" },
     { id: "agreement-content-terms", label: "Agreement review — terms read from the agreement's document content" },
     { id: "agreement-confirm", label: "Agreement approval — confirmation" },
     { id: "agreement-unconfirmed", label: "Agreement approval accepted, change not seen within the budget — Refresh status" },
@@ -420,10 +421,7 @@
       TERM_START_DATE: { value: "2026-11-01" },
       TERM_END_DATE: { value: "2027-03-31" },
     };
-    if (withSnapshot) {
-      attributes.EFFECTIVE_DATE = { value: "2026-10-20" };
-      attributes.CONTRACT_TERMS = { value: TERMS };
-    }
+    if (withSnapshot) attributes.EFFECTIVE_DATE = { value: "2026-10-20" };
     return {
       id: AGREEMENT_ID,
       code: "SA-5205",
@@ -458,6 +456,7 @@
         { entityType: "Account", canRead: true, canWrite: false, events: [] },
         { entityType: "Order", canRead: true, canWrite: false, events: [] },
         { entityType: "Document", canRead: true, canWrite: false, events: [grantEvent("SENT_TO_CLIENT-CLIENT_APPROVED", 12), grantEvent("SENT_TO_CLIENT-CLIENT_CHANGES_REQUESTED", 13)] },
+        { entityType: "LocalizedTextContent", canRead: true, canWrite: false, events: [] },
         { entityType: "Address", canRead: true, canWrite: false, events: [] },
       ],
     };
@@ -563,6 +562,10 @@
   var LAST_OPEN = { 3101: "DECLINED", 3102: "ACCEPTED", 3103: "DECLINED", 3107: "ACCEPTED" };
   var DECLINED_BUT_ONE = { 3101: "DECLINED", 3102: "DECLINED", 3103: "DECLINED", 3104: "DECLINED", 3106: "DECLINED", 3107: "DECLINED" };
 
+  function termsContent(content, contentType) {
+    return { id: 41, document: { id: AGREEMENT_ID }, language: { id: "eng" }, contentType: contentType, content: content };
+  }
+
   function agreementData(state, withUser, orderState) {
     var approved = [3102, 3104, 3107, 3108];
     var orders = ORDERS.filter(function (spec) { return approved.indexOf(spec.id) !== -1; }).map(orderRow);
@@ -571,6 +574,7 @@
       grant: agreementGrant(),
       accounts: [accountRow(withUser)],
       documents: [agreementRow(state, approved, true)],
+      contents: [termsContent(TERMS, "TEXT")],
       orders: orders,
       unreadable: [],
       accountFails: false,
@@ -1297,16 +1301,19 @@
         break;
       case "agreement-numbered-terms":
         data = agreementData("SENT_TO_CLIENT", false);
-        data.documents[0].attributes[17].CONTRACT_TERMS = { value: NUMBERED_TERMS };
+        data.contents = [termsContent(NUMBERED_TERMS, "TEXT")];
         break;
       case "agreement-content-terms":
         data = agreementData("SENT_TO_CLIENT", false);
-        data.grant.types.push({ entityType: "LocalizedTextContent", canRead: true, canWrite: false, events: [] });
-        data.contents = [{ id: 41, document: { id: data.documents[0].id }, language: { id: "eng" }, contentType: "HTML", content: CONTENT_TERMS }];
+        data.contents = [termsContent(CONTENT_TERMS, "HTML")];
         break;
       case "agreement-no-terms":
         data = agreementData("SENT_TO_CLIENT", false);
-        delete data.documents[0].attributes[17].CONTRACT_TERMS;
+        data.contents = [];
+        break;
+      case "agreement-terms-not-granted":
+        data = agreementData("SENT_TO_CLIENT", false);
+        data.grant.types = data.grant.types.filter(function (type) { return type.entityType !== "LocalizedTextContent"; });
         break;
       case "agreement-confirm":
         data = agreementData("SENT_TO_CLIENT", false);

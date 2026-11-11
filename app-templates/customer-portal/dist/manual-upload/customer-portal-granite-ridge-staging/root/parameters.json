@@ -64,5 +64,18 @@
       }
     },
     "value": "America/Vancouver"
+  },
+  {
+    "code": "PORTAL_TAXES_NOTE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "PORTAL TAXES NOTE",
+        "DESCRIPTION": "Customer portal copy shown under every quote price and total, which are the charges before taxes: the taxes are added when the customer accepts a quote and are shown on invoices. Translate it per language; an empty value shows the English default."
+      }
+    },
+    "value": {
+      "en": "Plus applicable taxes."
+    }
   }
 ]

@@ -152,8 +152,8 @@ assert.equal(pack.counts.approved + pack.counts.revision + pack.counts.declined 
 assert.equal("servicePeriod" in pack, false, "the fixture's Order service periods are not read: the live Orders never carry one");
 assert.deepEqual(
   plainValue(pack.groups.map((group) => group.orders.map((order) => order.total && order.total.amount))),
-  [[266.51, 9322.74, 8875.13], [328.25, 11483.64, 10933.13], [236.67, 8268.02, 7871.85], [992.99, 33766.64, 32156.25]],
-  "each option carries Core's grand total; nothing is derived from an area",
+  [[259, 9060, 8625], [319, 11160, 10625], [230, 8035, 7650], [965, 32815, 31250]],
+  "each option carries Core's charges before taxes; nothing is derived from an area",
 );
 const approval = pack.agreements[0];
 assert.deepEqual(plainValue(approval.properties.map((entry) => [entry.title, entry.orders.map((order) => order.status)])), [["Alkire Street", ["approved"]], ["Braun Court", ["approved"]]], "past review an agreement's services are its approved options");

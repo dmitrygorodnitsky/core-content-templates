@@ -79,6 +79,14 @@ const AGREEMENT_MAPPINGS = [
   { key: "id", mappings: REF_MAPPINGS, name: "type", type: "identifier" },
 ];
 
+const AGREEMENT_CONTENT_MAPPINGS = [
+  { name: "content" },
+  { name: "contentType" },
+  { name: "id" },
+  { key: "id", mappings: ID_MAPPINGS, name: "document", type: "identifier" },
+  { key: "id", mappings: ID_MAPPINGS, name: "language", type: "identifier" },
+];
+
 const ORDER_ITEM_MAPPINGS = [
   { name: "amount" },
   { name: "grandTotal" },
@@ -308,11 +316,15 @@ export async function loadSnowQuotes(context, fetchImpl = coreSessionFetch, expl
   rethrowSessionLoss(primary.slice(0, 2));
   if (agreements.state !== "ready" && orders.state !== "ready") throw orders.error;
 
+  var agreementIds = agreements.state === "ready" ? agreements.rows.map(function (row) { return positiveInteger(row.id); }).filter(Boolean) : [];
+  var agreementContents = agreementIds.length
+    ? await settled(customerAgreementContents(api, fetchImpl, agreementIds))
+    : skippedRead("server-scoped", agreements.state === "ready");
   var visibleOrderIds = orders.state === "ready" ? customerVisibleOrderIds(orders.rows) : [];
   var orderItems = visibleOrderIds.length
     ? await settled(customerOrderItems(api, fetchImpl, visibleOrderIds))
     : skippedRead("server-scoped", orders.state === "ready");
-  rethrowSessionLoss([orderItems]);
+  rethrowSessionLoss([agreementContents, orderItems]);
   var priceIds = referencedIds(orderItems.rows, "itemPrice");
   var productPrices = priceIds.length
     ? await settled(catalogRows(fetchImpl, api, api.pimBase + "/api/product-price/list.json", priceIds, PRODUCT_PRICE_MAPPINGS))
@@ -328,6 +340,7 @@ export async function loadSnowQuotes(context, fetchImpl = coreSessionFetch, expl
     scopeMode: weakestScope([agreements, orders, orderItems]),
     reads: {
       agreements: readSummary(agreements),
+      agreementContents: readSummary(agreementContents),
       orders: readSummary(orders),
       orderItems: readSummary(orderItems),
       productPrices: readSummary(productPrices),
@@ -336,6 +349,7 @@ export async function loadSnowQuotes(context, fetchImpl = coreSessionFetch, expl
     client: { displayName: api.accountName, account: account.state === "ready" ? account.rows : null },
     quoteRequest: quoteRequest,
     agreements: agreements.rows,
+    agreementContents: agreementContents.rows,
     quoteOrders: orders.rows,
     orderItems: orderItems.rows,
     productPrices: productPrices.rows,
@@ -397,6 +411,16 @@ async function customerAgreements(api, fetchImpl) {
   return scopedRows(reply, function (row) {
     return text(row && row.type && row.type.code) === AGREEMENT_TYPE && attributeNumber(row, "CLIENT") === api.accountId;
   });
+}
+
+async function customerAgreementContents(api, fetchImpl, agreementIds) {
+  var reply = await requestJson(fetchImpl, api.coreBase + "/api/tagged/localized-text-content/list.json", readOptions(api, {
+    filters: [{ type: "INTEGER", operator: "IN", property: "document.id", value: agreementIds.join(",") }],
+    mappings: AGREEMENT_CONTENT_MAPPINGS,
+    offset: 0,
+    pageSize: AGREEMENT_PAGE_SIZE,
+  }));
+  return scopedRows(reply, function (row) { return agreementIds.indexOf(positiveInteger(row && row.document && row.document.id)) !== -1; });
 }
 
 async function customerOrders(api, fetchImpl) {
@@ -736,6 +760,7 @@ export const coreSnowContract = Object.freeze({
   accountAddressMappings: ACCOUNT_ADDRESS_MAPPINGS,
   addressMappings: ADDRESS_MAPPINGS,
   agreementMappings: AGREEMENT_MAPPINGS,
+  agreementContentMappings: AGREEMENT_CONTENT_MAPPINGS,
   agreementType: AGREEMENT_TYPE,
   invoiceListBody: INVOICE_LIST_BODY,
   customerQuoteStatus: Object.freeze(Object.assign({}, CUSTOMER_ORDER_STATUS)),
@@ -755,11 +780,13 @@ export const coreSnowContract = Object.freeze({
   visitTransitionsBody: VISIT_TRANSITIONS_BODY,
   quoteFilters: ["account.id"],
   agreementFilters: ["type.code", "attributes.{SERVICE_AGREEMENT type id}.CLIENT.value"],
+  agreementContentFilters: ["document.id"],
   orderItemFilters: ["order.account.id", "order.id"],
   catalogFilters: ["id"],
   propertyFilters: ["type.code"],
   scopeModes: Object.freeze({
     agreements: "server-scoped",
+    agreementContents: "server-scoped",
     orders: "server-scoped",
     orderItems: "server-scoped",
     productPrices: "unscoped",

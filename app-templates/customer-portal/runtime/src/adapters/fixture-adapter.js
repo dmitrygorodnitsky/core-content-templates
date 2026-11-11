@@ -99,6 +99,7 @@ function proposalsFixture(fixture, context) {
     statusMeta: proposals && proposals.statusMeta ? proposals.statusMeta : F.pstatus,
     quoteOrders: quotation ? context.state.porders : null,
     agreements: quotation ? context.state.pagreements : null,
+    agreementContents: quotation ? proposals.agreementContents || [] : null,
     orderItems: quotation ? proposals.orderItems || [] : null,
     productPrices: quotation ? proposals.productPrices || [] : null,
     products: quotation ? proposals.products || [] : null,

@@ -1,4 +1,5 @@
 import { h } from "../../dom.js";
+import { state } from "../../state.js";
 import { StatusBadge } from "../primitives/StatusBadge.js";
 import { chosenOrders, formatDatePeriod, formatIsoDate, formatOrderPrice, optionSummary, schematicPositions } from "../../normalizers/contracts.js";
 import { LocationMap, placeLine, placementNote } from "../storm/PropertyMap.js";
@@ -155,7 +156,10 @@ export function QuoteGroups(groups, placements, mapShown) {
 export function QuotesFooter() {
   return h("div", { "class": "proposal-footer", "data-module": "quote-package-footer", "data-visual-id": "quote-package-footer" }, [
     h("div", { "class": "proposal-footer__icon" }, "✦"),
-    h("div", { "class": "proposal-footer__copy" }, "Decide each property on its own. Approving one option for a property declines its other options, and your contract details go with the approval. Once every property has a decision, we prepare your service agreement."),
+    h("div", { "class": "proposal-footer__copy" }, [
+      "Decide each property on its own. Approving one option for a property declines its other options, and your contract details go with the approval. Once every property has a decision, we prepare your service agreement.",
+      h("div", { "class": "proposal-footer__taxes", "data-kind": "taxes" }, state.config.taxesNote),
+    ]),
   ]);
 }
 

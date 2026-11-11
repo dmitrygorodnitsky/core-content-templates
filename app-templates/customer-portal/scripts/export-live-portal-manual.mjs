@@ -36,8 +36,10 @@ export const liveDeploymentParameters = Object.freeze([
   "PORTAL_MAPS_API_KEY",
   "PORTAL_MAPS_MAP_ID",
   "PORTAL_TIME_ZONE",
+  "PORTAL_TAXES_NOTE",
 ]);
 export const operatorParameterPlaceholder = "#";
+export const copyParameters = Object.freeze({ PORTAL_TAXES_NOTE: "Plus applicable taxes." });
 
 const packageInventory = [
   "README.md", "cms-family.payload.json", "manual-export-manifest.json", "preview.html",
@@ -275,6 +277,7 @@ function templateFor(source, geography, css, javascript) {
     "data-portal-maps-api-key": parameterMarker("PORTAL_MAPS_API_KEY"),
     "data-portal-maps-map-id": parameterMarker("PORTAL_MAPS_MAP_ID"),
     "data-portal-time-zone": parameterMarker("PORTAL_TIME_ZONE"),
+    "data-portal-taxes-note": copyMarker("PORTAL_TAXES_NOTE"),
     "data-portal-service-geography": geography ? JSON.stringify(geography) : undefined,
     "data-portal-organization": account.organization,
     "data-portal-account-type-code": account.accountTypeCode,
@@ -334,6 +337,10 @@ function templateFor(source, geography, css, javascript) {
         account.timeZone,
         "IANA time zone of the service organization, the same as its Organization.timeZone in Core, for example America/Vancouver. Recorded moments such as when a visit started or was completed, and which day is today, are shown in this zone whatever the viewer's device says. Planned visit windows are stored as local times and are shown as stored. A value that is not a time zone falls back to the viewer's device zone.",
       ),
+      copyParameter(
+        "PORTAL_TAXES_NOTE",
+        "Customer portal copy shown under every quote price and total, which are the charges before taxes: the taxes are added when the customer accepts a quote and are shown on invoices. Translate it per language; an empty value shows the English default.",
+      ),
     ],
   };
 }
@@ -352,8 +359,20 @@ function parameter(code, value, description) {
   return { code, type: "STRING", nls: { en: { NAME: code.replace(/_/g, " "), DESCRIPTION: description } }, value };
 }
 
+function copyParameter(code, description) {
+  return { code, type: "LOCALIZED_STRING_SS", nls: { en: { NAME: code.replace(/_/g, " "), DESCRIPTION: description } }, value: { en: copyParameters[code] } };
+}
+
 function parameterMarker(code) {
   return "$" + "{" + code + "@STRING}";
+}
+
+function shippedValue(item) {
+  return item.value && typeof item.value === "object" ? item.value.en : item.value;
+}
+
+function copyMarker(code) {
+  return "$" + "{" + code + "@LOCALIZED_STRING_SS}";
 }
 
 export function assertLiveTemplate(template) {
@@ -361,6 +380,11 @@ export function assertLiveTemplate(template) {
   const allowed = new Set(liveDeploymentParameters);
   for (const item of template.parameters) {
     if (!allowed.has(item.code)) throw new Error("A live portal root may only declare the deployment parameters " + liveDeploymentParameters.join(", ") + "; " + item.code + " is not one of them");
+    if (copyParameters[item.code]) {
+      if (item.type !== "LOCALIZED_STRING_SS") throw new Error("Parameter " + item.code + " must be a LOCALIZED_STRING_SS");
+      if (!item.value || typeof item.value.en !== "string" || !item.value.en.trim()) throw new Error("Parameter " + item.code + " must ship its English copy");
+      continue;
+    }
     if (item.type !== "STRING") throw new Error("Parameter " + item.code + " must be a STRING");
     if (item.code === "PORTAL_REQUEST_FORM_URL") {
       if (item.value !== "" && !isHttpsUrl(item.value)) throw new Error("Parameter PORTAL_REQUEST_FORM_URL must be an absolute https address");
@@ -428,7 +452,7 @@ function entryFor(shell) {
 }
 
 function previewFor(source, template) {
-  const values = new Map(template.parameters.map((item) => [item.code, item.value]));
+  const values = new Map(template.parameters.map((item) => [item.code, shippedValue(item)]));
   const html = template.html.replace(/\$\{([A-Z0-9_]+)@[A-Z_]+\}/g, (marker, code) => (values.has(code) ? escapeHtml(values.get(code)) : marker));
   const mode = (source.shell && source.shell.defaultMode) || "light";
   return '<!doctype html>\n<html lang="en" data-theme="' + escapeHtml(source.runtime.theme) + '" data-mode="' + escapeHtml(mode) + '">\n<head>\n'
@@ -447,7 +471,7 @@ async function writePackage(root, packageData) {
 
 function readme(source, template, manifest) {
   const account = source.account;
-  const parameters = template.parameters.map((item) => "| `" + item.code + "` | " + (item.value ? "`" + item.value + "`" : "empty") + " |");
+  const parameters = template.parameters.map((item) => "| `" + item.code + "` | " + (shippedValue(item) ? "`" + shippedValue(item) + "`" : "empty") + " |");
   return [
     "# " + template.nls.en.NAME,
     "",

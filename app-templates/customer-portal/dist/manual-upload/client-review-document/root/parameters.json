@@ -722,32 +722,6 @@
     }
   },
   {
-    "code": "ORDER_SUBTOTAL",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "ORDER SUBTOTAL",
-        "DESCRIPTION": "Client review document copy."
-      }
-    },
-    "value": {
-      "en": "Subtotal"
-    }
-  },
-  {
-    "code": "ORDER_TAXES",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "ORDER TAXES",
-        "DESCRIPTION": "Client review document copy."
-      }
-    },
-    "value": {
-      "en": "Taxes"
-    }
-  },
-  {
     "code": "ORDER_TOTAL",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
@@ -771,6 +745,19 @@
     },
     "value": {
       "en": "You pay the price of each service every time it is performed."
+    }
+  },
+  {
+    "code": "TAXES_NOTE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "TAXES NOTE",
+        "DESCRIPTION": "Client review document copy."
+      }
+    },
+    "value": {
+      "en": "Plus applicable taxes."
     }
   },
   {

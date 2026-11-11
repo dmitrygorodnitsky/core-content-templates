@@ -64,9 +64,11 @@ assert.throws(() => CR.pdf.build(quote, copy, options), "and none can be built f
   const monthly = options3.find((option) => option.id === 3102);
   const text = written.join("\n");
   assert.ok(text.includes("$275.00"), "a per-service option prints the price of each service");
-  assert.ok(!text.includes(copy.orderTotal + ": " + perService.total) && !text.includes(copy.orderSubtotal + ": ") && !text.includes(copy.orderTaxes + ": "), "and no total, subtotal or taxes");
+  assert.ok(!text.includes(copy.orderTotal + ": " + perService.total) && !/subtotal|taxes:/i.test(text), "and no total, subtotal or taxes");
   assert.ok(text.includes(copy.perServiceNote));
-  assert.ok(text.includes(copy.orderTotal + ": " + monthly.total), "a monthly option prints its total");
+  assert.ok(text.includes(copy.orderTotal + ": " + monthly.total) && monthly.total === "$8,750.00", "a monthly option prints its total before taxes");
+  assert.ok(!["$437.50", "$9,187.50", "$510.00", "$10,710.00"].some((amount) => text.includes(amount)), "no tax amount and no total with taxes reaches the PDF");
+  assert.equal(written.filter((line) => line === copy.taxesNote).length, options3.filter((option) => option.priced).length, "every priced option says applicable taxes come on top");
   assert.ok(!monthly.lines.some((line) => text.includes(line.unitPrice)), "and no price per service");
   assert.ok(written.some((line) => line.startsWith(copy.propertyArea + ": ")), "each property prints its total service area");
 }

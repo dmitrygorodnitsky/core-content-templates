@@ -33,6 +33,7 @@ The page must be served from the same origin as Core: every service base, the Co
 | `PORTAL_MAPS_API_KEY` | `#` |
 | `PORTAL_MAPS_MAP_ID` | `#` |
 | `PORTAL_TIME_ZONE` | `America/Vancouver` |
+| `PORTAL_TAXES_NOTE` | `Plus applicable taxes.` |
 
 ## Constraints
 

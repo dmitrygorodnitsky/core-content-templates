@@ -58,10 +58,9 @@
     ["LINE_QUANTITY", "lineQuantity", "Quantity"],
     ["LINE_UNIT_PRICE", "lineUnitPrice", "Unit price"],
     ["LINE_INCLUDED", "lineIncluded", "Included"],
-    ["ORDER_SUBTOTAL", "orderSubtotal", "Subtotal"],
-    ["ORDER_TAXES", "orderTaxes", "Taxes"],
     ["ORDER_TOTAL", "orderTotal", "Option total"],
     ["PER_SERVICE_NOTE", "perServiceNote", "You pay the price of each service every time it is performed."],
+    ["TAXES_NOTE", "taxesNote", "Plus applicable taxes."],
     ["LINES_EMPTY", "linesEmpty", "No services are listed on this option."],
     ["VALUE_NOT_STATED", "valueNotStated", "Not stated"],
     ["SERVICE_UNNAMED", "serviceUnnamed", "Unnamed service"],
@@ -359,7 +358,6 @@
       effectiveDate: "EFFECTIVE_DATE",
       termStart: "TERM_START_DATE",
       termEnd: "TERM_END_DATE",
-      terms: "CONTRACT_TERMS",
     },
     agreementContent: {
       entity: "localizedtextcontent",
@@ -1087,7 +1085,7 @@
     }).sort(function (left, right) { return ascending(positiveInteger(left.id) || 0, positiveInteger(right.id) || 0); });
     var wanted = text(locale).toLowerCase().split("-")[0];
     var chosen = written.filter(function (row) { return languageTag(row[spec.language]) === wanted; })[0] || written[0];
-    return chosen ? text(chosen[spec.text]) : text(attributeValue(agreement, contract.agreementAttributes.terms));
+    return chosen ? text(chosen[spec.text]) : "";
   }
 
   function clauseOf(line) {
@@ -1368,10 +1366,15 @@
 
   function pricingDisplay(model, lines, contract) {
     var variants = contract.priceVariants;
-    if (model === variants.perService) return { linePrices: true, breakdown: false, total: false };
+    if (model === variants.perService) return { linePrices: true, total: false };
     var recurring = [variants.monthly, variants.seasonal, variants.recurring].indexOf(model) !== -1;
-    if (recurring || (lines.length > 0 && lines.every(function (line) { return line.recurrent; }))) return { linePrices: false, breakdown: false, total: true };
-    return { linePrices: true, breakdown: true, total: true };
+    if (recurring || (lines.length > 0 && lines.every(function (line) { return line.recurrent; }))) return { linePrices: false, total: true };
+    return { linePrices: true, total: true };
+  }
+
+  function totalBeforeTaxes(row) {
+    if (finiteOrNull(row.totalCharges) !== null) return row.totalCharges;
+    return finiteOrNull(row.totalTaxes) ? null : row.grandTotal;
   }
 
   function optionOf(row, position, context) {
@@ -1396,9 +1399,7 @@
       lines: lines,
       recurrent: lines.length > 0 && lines.every(function (line) { return line.recurrent; }),
       pricing: pricingDisplay(variant.model, lines, contract),
-      subtotal: priced ? formatMoney(row.totalCharges, currency, context.locale) : "",
-      taxes: priced ? formatMoney(row.totalTaxes, currency, context.locale) : "",
-      total: priced ? formatMoney(row.grandTotal, currency, context.locale) : "",
+      total: priced ? formatMoney(totalBeforeTaxes(row), currency, context.locale) : "",
       awaitingClient: state === contract.orderEvents.approve.source,
       siblingApproved: false,
       actions: { approve: false, decline: false, changes: false },
@@ -2087,12 +2088,9 @@
         paragraph(label + " - " + (copy[STATUSES[option.status]] || copy.optionUnknown), 11, accent, 10);
         if (!option.priced) { paragraph(option.status === "revising" ? copy.noteRevising : copy.noteNoActions, 10, muted); return; }
         lines(option);
-        if (option.pricing.breakdown) {
-          if (option.subtotal) fact(copy.orderSubtotal, option.subtotal);
-          if (option.taxes) fact(copy.orderTaxes, option.taxes);
-        }
-        if (option.pricing.total) paragraph(copy.orderTotal + ": " + (option.total || copy.valueNotStated), 12, ink, 16);
-        else paragraph(copy.perServiceNote, 10, muted, 16);
+        if (option.pricing.total) paragraph(copy.orderTotal + ": " + (option.total || copy.valueNotStated), 12, ink, 4);
+        else paragraph(copy.perServiceNote, 10, muted, 4);
+        paragraph(copy.taxesNote, 10, muted, 16);
       });
     });
     if (!view.properties.length) paragraph(copy.linesEmpty, 10, muted);
@@ -2959,26 +2957,16 @@
       return;
     }
     body.appendChild(linesTable(ctx, option));
-    var breakdown = option.pricing.breakdown ? [["subtotal", copy.orderSubtotal, option.subtotal], ["taxes", copy.orderTaxes, option.taxes]]
-      .filter(function (row) { return row[2]; }) : [];
-    if (breakdown.length) {
-      var list = el("dl", "cr-breakdown");
-      breakdown.forEach(function (row) {
-        var item = el("div", "cr-breakdown__row", { "data-kind": row[0] });
-        item.appendChild(text("dt", "cr-breakdown__label", row[1]));
-        item.appendChild(text("dd", "cr-breakdown__value", row[2]));
-        list.appendChild(item);
-      });
-      body.appendChild(list);
-    }
     if (!option.pricing.total) {
       body.appendChild(text("p", "cr-note cr-per-service", copy.perServiceNote, { "data-pricing": "per-service" }));
+      body.appendChild(text("p", "cr-note cr-taxes-note", copy.taxesNote, { "data-pricing": "taxes" }));
       return;
     }
     var total = el("div", "cr-total");
     total.appendChild(text("span", "cr-total__label", copy.orderTotal));
     total.appendChild(text("span", "cr-total__value" + (option.total ? "" : " cr-muted"), option.total || copy.valueNotStated));
     body.appendChild(total);
+    body.appendChild(text("p", "cr-note cr-taxes-note", copy.taxesNote, { "data-pricing": "taxes" }));
   }
 
   function outcomeBox(ctx, command, options) {
@@ -3263,6 +3251,7 @@
     var list = el("ul", "cr-approved__list cr-choices__list");
     entries.forEach(function (entry) { list.appendChild(choiceRow(ctx, entry)); });
     card.appendChild(list);
+    if (approvals) card.appendChild(text("p", "cr-note cr-taxes-note", copy.taxesNote, { "data-pricing": "taxes" }));
     var undecided = view.properties.filter(function (property) {
       return property.status === "awaiting" && !ctx.snapshot.choices[property.key];
     }).length;

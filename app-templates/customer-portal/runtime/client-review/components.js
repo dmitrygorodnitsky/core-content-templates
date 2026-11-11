@@ -293,26 +293,16 @@
       return;
     }
     body.appendChild(linesTable(ctx, option));
-    var breakdown = option.pricing.breakdown ? [["subtotal", copy.orderSubtotal, option.subtotal], ["taxes", copy.orderTaxes, option.taxes]]
-      .filter(function (row) { return row[2]; }) : [];
-    if (breakdown.length) {
-      var list = el("dl", "cr-breakdown");
-      breakdown.forEach(function (row) {
-        var item = el("div", "cr-breakdown__row", { "data-kind": row[0] });
-        item.appendChild(text("dt", "cr-breakdown__label", row[1]));
-        item.appendChild(text("dd", "cr-breakdown__value", row[2]));
-        list.appendChild(item);
-      });
-      body.appendChild(list);
-    }
     if (!option.pricing.total) {
       body.appendChild(text("p", "cr-note cr-per-service", copy.perServiceNote, { "data-pricing": "per-service" }));
+      body.appendChild(text("p", "cr-note cr-taxes-note", copy.taxesNote, { "data-pricing": "taxes" }));
       return;
     }
     var total = el("div", "cr-total");
     total.appendChild(text("span", "cr-total__label", copy.orderTotal));
     total.appendChild(text("span", "cr-total__value" + (option.total ? "" : " cr-muted"), option.total || copy.valueNotStated));
     body.appendChild(total);
+    body.appendChild(text("p", "cr-note cr-taxes-note", copy.taxesNote, { "data-pricing": "taxes" }));
   }
 
   function outcomeBox(ctx, command, options) {
@@ -597,6 +587,7 @@
     var list = el("ul", "cr-approved__list cr-choices__list");
     entries.forEach(function (entry) { list.appendChild(choiceRow(ctx, entry)); });
     card.appendChild(list);
+    if (approvals) card.appendChild(text("p", "cr-note cr-taxes-note", copy.taxesNote, { "data-pricing": "taxes" }));
     var undecided = view.properties.filter(function (property) {
       return property.status === "awaiting" && !ctx.snapshot.choices[property.key];
     }).length;

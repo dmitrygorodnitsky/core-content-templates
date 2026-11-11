@@ -3,7 +3,7 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
 import { assertLiveBundle, bundledInputs, bundleLivePortalRuntime, liveFixtureMarkers, liveRuntimeVertical, minifiedRuntimePath, minifyStylesheet } from "./build-live-portal-runtime.mjs";
-import { assertLiveTemplate, coreOidcCallback, exportLivePortalManual, liveDeploymentParameters, operatorParameterPlaceholder } from "./export-live-portal-manual.mjs";
+import { assertLiveTemplate, copyParameters, coreOidcCallback, exportLivePortalManual, liveDeploymentParameters, operatorParameterPlaceholder } from "./export-live-portal-manual.mjs";
 import { assertJteSafeTemplate } from "./export-portal-form-manual.mjs";
 import { readStyles } from "./portal-manual-package.mjs";
 
@@ -73,6 +73,12 @@ try {
 
   assert.deepEqual(template.parameters.map((item) => item.code), [...liveDeploymentParameters]);
   for (const item of template.parameters) {
+    if (copyParameters[item.code]) {
+      assert.equal(item.type, "LOCALIZED_STRING_SS", item.code + " is copy the backend translates");
+      assert.equal(dataset[attributeFor(item.code)], "${" + item.code + "@LOCALIZED_STRING_SS}", item.code + " reaches the root element as a CMS marker");
+      assert.deepEqual(item.value, { en: copyParameters[item.code] }, item.code + " ships its English copy");
+      continue;
+    }
     assert.equal(item.type, "STRING");
     assert.equal(dataset[attributeFor(item.code)], "${" + item.code + "@STRING}", item.code + " reaches the root element as a CMS marker");
     if (item.code === "PORTAL_REQUEST_FORM_URL") assert.match(item.value, /^https:\/\//);
@@ -87,6 +93,7 @@ try {
   assert.throws(() => assertLiveTemplate(withValue("PORTAL_REQUEST_FORM_URL", "http://example.test/form")), /absolute https/);
   assert.throws(() => assertLiveTemplate(withValue("PORTAL_TIME_ZONE", "#")), /IANA time zone/, "the time zone is shipped, not left to the placeholder");
   assert.throws(() => assertLiveTemplate(withValue("PORTAL_TIME_ZONE", "Pacific Time")), /IANA time zone/);
+  assert.throws(() => assertLiveTemplate(withValue("PORTAL_TAXES_NOTE", { en: " " })), /must ship its English copy/, "the taxes note never ships empty");
   const byCode = Object.fromEntries(template.parameters.map((item) => [item.code, item.nls.en.DESCRIPTION]));
   for (const code of ["PORTAL_WEATHER_CLIENT_ID", "PORTAL_WEATHER_CLIENT_SECRET", "PORTAL_MAPS_API_KEY"]) {
     assert.match(byCode[code], /visible in page source/, code + " must tell the operator the value is public");
@@ -151,7 +158,7 @@ try {
   }
   for (const [field, value] of Object.entries({ head, html, css, javascript })) {
     assert.doesNotMatch(value, /@\{|!\{|<%|%>|@(param|import|template|if|for|while|switch|else)\b/, field + " must stay JTE-safe");
-    assert.equal(value.replace(/\$\{[A-Z0-9_]+@STRING\}/g, "").includes("${"), false, field + " carries a ${ opener that is not a declared parameter marker");
+    assert.equal(value.replace(/\$\{[A-Z0-9_]+@(?:STRING|LOCALIZED_STRING_SS)\}/g, "").includes("${"), false, field + " carries a ${ opener that is not a declared parameter marker");
   }
   assert.equal((head + css + javascript).includes("${"), false, "only the root element carries parameter markers");
   assert.doesNotMatch(javascript, /<\/script/i);
@@ -267,5 +274,6 @@ function attributeFor(code) {
     PORTAL_MAPS_API_KEY: "data-portal-maps-api-key",
     PORTAL_MAPS_MAP_ID: "data-portal-maps-map-id",
     PORTAL_TIME_ZONE: "data-portal-time-zone",
+    PORTAL_TAXES_NOTE: "data-portal-taxes-note",
   }[code];
 }
