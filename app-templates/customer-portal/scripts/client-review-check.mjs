@@ -288,6 +288,7 @@ const N = loadRuntime().CR.normalizer;
     productPrices: data.productPrices,
     products: data.products,
     resources: data.resources,
+    contents: data.contents,
     addresses: data.addresses,
     units: data.units,
     accountFailed: data.accountFails,
@@ -520,7 +521,7 @@ const N = loadRuntime().CR.normalizer;
     assert.equal(view.agreement, null, "a round carries no agreement");
     assert.deepEqual([view.details.available, view.canApproveAgreement, view.canRequestAgreementChanges, view.unreadableOrders], [true, false, false, 0], "and takes the contract details with its approvals, with no agreement step");
     assert.deepEqual(plain(view.details.fields.map((field) => field.code)), plain(contract.contractDetails.attributes.map((attribute) => attribute.code)), "the round asks the ten details the approval event carries");
-    assert.deepEqual(plain(view.details.prefill), { LEGAL_NAME: "Harbourview Strata Corporation", BILLING_ADDRESS: "1500 Harbour Green Drive, Suite 210, Vancouver, BC V6C 3T8, Canada", REPRESENTATIVE_FIRST_NAME: "Dana", REPRESENTATIVE_LAST_NAME: "Reyes", REPRESENTATIVE_EMAIL: "dana.reyes@harbourview.example", REPRESENTATIVE_PHONE: "+1 604 555 0164" }, "pre-filled from the granted Account as the details step was");
+    assert.deepEqual(plain(view.details.prefill), { LEGAL_NAME: "Harbourview Strata Corporation", BILLING_ADDRESS: "1500 Harbour Green Drive, Suite 210, Vancouver, BC V6C 3T8, Canada", LEGAL_ADDRESS: "200 Burrard Street, Suite 1400, Vancouver, BC V6C 3L6, Canada", REPRESENTATIVE_FIRST_NAME: "Dana", REPRESENTATIVE_LAST_NAME: "Reyes", REPRESENTATIVE_EMAIL: "dana.reyes@harbourview.example", REPRESENTATIVE_PHONE: "+1 604 555 0164" }, "pre-filled from the granted Account as the details step was");
     const noApproval = CR.fixtures.roundData();
     noApproval.grant.types[1].events = noApproval.grant.types[1].events.filter((event) => event.code !== "QUOTE_SENT-ACCEPTED");
     assert.equal(model(noApproval).details.available, false, "a round whose grant delegates no approval asks no details");
@@ -588,7 +589,7 @@ const N = loadRuntime().CR.normalizer;
     assert.equal(normalizer.requestLocale({ ...frenchAgreementless, grant: normalizer.grantOf(frenchAgreementless.grant) }, "en", contract), "en", "a Document grant without its agreement keeps the fallback language as before");
     assert.equal(model(rounds).names.client, "Harbourview Strata Corporation", "the round names the client from the granted Account");
   }
-  assert.deepEqual(plain(contract.propertyAttributes), { address: "ADDRESS", plan: "PROPERTY_PLAN" }, "a property's address and plan are the Resource attributes ADDRESS and PROPERTY_PLAN");
+  assert.deepEqual(plain(contract.propertyAttributes), { address: "ADDRESS", plan: "PROPERTY_PLAN", area: "SERVICE_AREA_SQFT" }, "a property's address, plan and total area are the Resource attributes ADDRESS, PROPERTY_PLAN and SERVICE_AREA_SQFT");
   assert.ok(!runtimeSources.includes("\"SERVICE_ADDRESS\""), "the review page never reads the Order's SERVICE_ADDRESS");
 
   const money = round();
@@ -648,11 +649,11 @@ const N = loadRuntime().CR.normalizer;
 
   const fields = normalizer.detailFields(contract.contractDetails, "en");
   assert.deepEqual(plain(fields.map((field) => [field.code, field.kind, field.required])), [
-    ["LEGAL_NAME", "text", true], ["CLIENT_TYPE", "select", true], ["BILLING_ADDRESS", "address", true],
+    ["LEGAL_NAME", "text", true], ["CLIENT_TYPE", "select", true], ["BILLING_ADDRESS", "address", true], ["LEGAL_ADDRESS", "address", false],
     ["REPRESENTATIVE_FIRST_NAME", "text", true], ["REPRESENTATIVE_LAST_NAME", "text", true],
     ["REPRESENTATIVE_JOB_TITLE", "text", false], ["REPRESENTATIVE_EMAIL", "email", true],
     ["REPRESENTATIVE_PHONE", "tel", true], ["INFORMATION_CONFIRMED", "boolean", true], ["AUTHORITY_CONFIRMED", "boolean", true],
-  ], "the ten contract details attributes render in seed order with their kinds");
+  ], "the eleven contract details attributes render in seed order with their kinds");
 
   const formSandbox = { window: {} };
   formSandbox.globalThis = formSandbox;
@@ -693,6 +694,7 @@ const N = loadRuntime().CR.normalizer;
 
   const requiredText = plain(contract.contractDetails.attributes.filter((attribute) => attribute.required && attribute.className !== "java.lang.Boolean").map((attribute) => attribute.code));
   assert.deepEqual(requiredText, ["LEGAL_NAME", "CLIENT_TYPE", "BILLING_ADDRESS", "REPRESENTATIVE_FIRST_NAME", "REPRESENTATIVE_LAST_NAME", "REPRESENTATIVE_EMAIL", "REPRESENTATIVE_PHONE"], "the page requires what the server requires; the job title is optional");
+  assert.deepEqual(plain(fields.filter((field) => field.askedFirst).map((field) => field.code)), ["LEGAL_ADDRESS"], "and asks for the legal address before Accept, because the server refuses an approval without one on file and a link cannot see the client's addresses");
   const modelled = plain(CR.fixtures.detailsErrors({ CLIENT_TYPE: "partnership", REPRESENTATIVE_EMAIL: "dana@", INFORMATION_CONFIRMED: "true" }));
   assert.deepEqual(modelled, ["LEGAL_NAME", "BILLING_ADDRESS", "REPRESENTATIVE_FIRST_NAME", "REPRESENTATIVE_LAST_NAME", "REPRESENTATIVE_PHONE", "CLIENT_TYPE_INVALID", "REPRESENTATIVE_EMAIL_INVALID", "INFORMATION_CONFIRMED", "AUTHORITY_CONFIRMED"], "the fixture models the server's rules for the details and their code order");
   assert.equal("detailsReturn" in contract || "detailsErrors" in contract.agreementAttributes || "details" in contract.agreementEvents, false, "the page reads no returned details and sends no details event of its own");
@@ -739,6 +741,7 @@ const N = loadRuntime().CR.normalizer;
   assert.deepEqual(prefillOf(account), {
     LEGAL_NAME: "Harbourview Strata Corporation",
     BILLING_ADDRESS: "1500 Harbour Green Drive, Suite 210, Vancouver, BC V6C 3T8, Canada",
+    LEGAL_ADDRESS: "200 Burrard Street, Suite 1400, Vancouver, BC V6C 3L6, Canada",
     REPRESENTATIVE_FIRST_NAME: "Dana",
     REPRESENTATIVE_LAST_NAME: "Reyes",
     REPRESENTATIVE_EMAIL: "dana.reyes@harbourview.example",
@@ -820,12 +823,26 @@ const N = loadRuntime().CR.normalizer;
     row.content = "<h2>Ignored</h2><p>Terms on a field Document does not declare.</p>";
   }), [], "an agreement without CONTRACT_TERMS has no terms, and a content field on the row is never read");
   assert.equal(Object.values(contract.rawShape).includes("content"), false, "no part of the contract names a content field");
+  const contentTerms = (contents) => {
+    const data = CR.fixtures.agreementData("SENT_TO_CLIENT", false);
+    data.contents = contents(data.documents[0].id);
+    return plain(model(data).agreement.terms);
+  };
+  const written = (id, document, language, content) => ({ id, document: { id: document }, language: { id: language }, contentType: "HTML", content });
+  assert.deepEqual(contentTerms((id) => [written(9, id, "eng", "<h2>Content terms</h2><p>Read from the document content.</p>")]), [
+    { kind: "heading", text: "Content terms" },
+    { kind: "paragraph", text: "Read from the document content." },
+  ], "the agreement's document content wins over CONTRACT_TERMS");
+  assert.deepEqual(contentTerms((id) => [written(9, id, "fre", "<p>Conditions</p>"), written(10, id, "eng", "<p>English terms</p>")]).map((block) => block.text), ["English terms"], "the content in the page's language is chosen");
+  assert.deepEqual(contentTerms((id) => [written(9, id, "fre", "<p>Conditions</p>")]).map((block) => block.text), ["Conditions"], "the only written content is used whatever its language");
+  assert.ok(contentTerms((id) => [written(9, id + 1, "eng", "<p>Another agreement</p>"), written(10, id, "eng", "  ")]).some((block) => block.kind === "heading"), "content of another document or an empty content falls back to CONTRACT_TERMS");
 }
 
 const EXPECTED_SCENARIOS = {
   "quote-review": ["ready", "quote-review"], loading: ["loading", null], "link-missing": ["link-missing", null],
   "link-closed": ["link-closed", null], unconfigured: ["unconfigured", null], empty: ["ready", "empty"],
   error: ["error", null], partial: ["ready", "agreement-review"], "quote-price-labels": ["ready", "quote-review"], "quote-price-intervals": ["ready", "quote-review"], "option-open": ["ready", "quote-review"],
+  "option-per-service": ["ready", "quote-review"], "option-seasonal": ["ready", "quote-review"], "quote-plans": ["ready", "quote-review"],
   "round-review": ["ready", "quote-review"], "round-ambiguous": ["ready", "unavailable"], "round-partial": ["ready", "quote-review"],
   "round-decided": ["ready", "quote-review"], "round-decided-slow": ["ready", "quote-review"], "round-recorded": ["ready", "quote-review"], "round-declined-closed": ["link-closed", null],
   "link-copied": ["ready", "quote-review"], "link-copy-failed": ["ready", "quote-review"],
@@ -839,8 +856,8 @@ const EXPECTED_SCENARIOS = {
   "contract-details-maps-failed": ["ready", "quote-review"],
   "old-link": ["ready", "quote-review"], "property-link-closed": ["ready", "quote-review"],
   "property-list-failed": ["ready", "quote-review"], "address-list-failed": ["ready", "quote-review"],
-  "details-invalid": ["ready", "quote-review"], "details-refused": ["ready", "quote-review"], "details-closed": ["link-closed", null],
-  preparing: ["ready", "preparing"], "agreement-review": ["ready", "agreement-review"], "agreement-numbered-terms": ["ready", "agreement-review"],
+  "details-invalid": ["ready", "quote-review"], "details-refused": ["ready", "quote-review"], "details-legal-address-refused": ["ready", "quote-review"], "details-legal-address-unparsed": ["ready", "quote-review"], "details-closed": ["link-closed", null],
+  preparing: ["ready", "preparing"], "agreement-review": ["ready", "agreement-review"], "agreement-numbered-terms": ["ready", "agreement-review"], "agreement-content-terms": ["ready", "agreement-review"],
   "agreement-no-terms": ["ready", "agreement-review"], "agreement-confirm": ["ready", "agreement-review"], "agreement-unconfirmed": ["ready", "agreement-review"], "approval-closed": ["link-closed", null],
   "agreement-changes": ["ready", "agreement-review"], "agreement-changes-invalid": ["ready", "agreement-review"], "agreement-changes-pending": ["ready", "agreement-review"],
   "agreement-changes-refused": ["ready", "agreement-review"], "agreement-changes-sent": ["ready", "reference"], "agreement-changes-requested": ["ready", "reference"],
@@ -890,11 +907,12 @@ const portalLinks = (node) => byAttribute(node, "data-action", "portal.open");
 const stateCardOf = (node) => { const card = byClass(node, "cr-state")[0]; return [card.getAttribute("data-state"), byClass(card, "cr-state__glyph")[0].textContent]; };
 const contactLines = (node) => byClass(node, "cr-contact__item").map((item) => [item.getAttribute("data-contact"), item.children[0].textContent, item.children[1].tagName, item.children[1].textContent, item.children[1].getAttribute("href")]);
 const providerLogos = (node) => byClass(node, "cr-party__logo");
-const AGREEMENT_SCENARIOS = new Set(["partial", "agreement-review", "agreement-numbered-terms", "agreement-no-terms", "agreement-confirm", "agreement-unconfirmed", "agreement-changes", "agreement-changes-invalid", "agreement-changes-pending", "agreement-changes-refused", "agreement-changes-sent", "agreement-changes-requested", "agreement-approval-only", "approval-closed", "completion", "completion-portal", "completion-finishing", "completion-attributes", "reference-expired", "closed-canceled", "closed-orders-canceled", "unavailable", "preparing", "retired-quotation"]);
+const AGREEMENT_SCENARIOS = new Set(["partial", "agreement-review", "agreement-numbered-terms", "agreement-content-terms", "agreement-no-terms", "agreement-confirm", "agreement-unconfirmed", "agreement-changes", "agreement-changes-invalid", "agreement-changes-pending", "agreement-changes-refused", "agreement-changes-sent", "agreement-changes-requested", "agreement-approval-only", "approval-closed", "completion", "completion-portal", "completion-finishing", "completion-attributes", "reference-expired", "closed-canceled", "closed-orders-canceled", "unavailable", "preparing", "retired-quotation"]);
 const CONTACTLESS_SCENARIOS = new Set(Object.keys(EXPECTED_SCENARIOS).filter((id) => !AGREEMENT_SCENARIOS.has(id)));
 const FORM_FROM_ATTRIBUTES = {
   LEGAL_NAME: "Harbourview Strata Corporation", CLIENT_TYPE: "",
   BILLING_ADDRESS: "1500 Harbour Green Drive, Suite 210, Vancouver, BC V6C 3T8, Canada",
+  LEGAL_ADDRESS: "200 Burrard Street, Suite 1400, Vancouver, BC V6C 3L6, Canada",
   REPRESENTATIVE_FIRST_NAME: "Dana", REPRESENTATIVE_LAST_NAME: "Reyes", REPRESENTATIVE_JOB_TITLE: "Property Manager",
   REPRESENTATIVE_EMAIL: "dana.reyes@harbourview.example", REPRESENTATIVE_PHONE: "+1 604 555 0164",
   INFORMATION_CONFIRMED: false, AUTHORITY_CONFIRMED: false,
@@ -1003,6 +1021,7 @@ function assertForm(run, expected, message) {
         assert.deepEqual(run.sent[0][3], {
           LEGAL_NAME: "Harbourview Strata Corporation", CLIENT_TYPE: "CORPORATE",
           BILLING_ADDRESS: "1500 Harbour Green Drive, Suite 210, Vancouver, BC V6C 3T8, Canada",
+          LEGAL_ADDRESS: "200 Burrard Street, Suite 1400, Vancouver, BC V6C 3L6, Canada",
           REPRESENTATIVE_FIRST_NAME: "Dana", REPRESENTATIVE_LAST_NAME: "Reyes",
           REPRESENTATIVE_EMAIL: "dana.reyes@harbourview.example", REPRESENTATIVE_PHONE: "+1 604 555 0164",
           INFORMATION_CONFIRMED: true, AUTHORITY_CONFIRMED: true,
@@ -1051,7 +1070,7 @@ function assertForm(run, expected, message) {
         assert.equal(byAttribute(panel, "id", "cr-choices-title")[0].textContent, copy.choicesTitle);
         assert.deepEqual(byClass(panel, "cr-choices__item").map((item) => [item.getAttribute("data-property"), item.getAttribute("data-choice"), byClass(item, "cr-approved__address")[0].textContent, byClass(item, "cr-approved__option")[0].textContent, byClass(item, "cr-approved__total")[0].textContent]), [["property-278", "approve", "1180 Pacific Crescent, Vancouver, BC, V6Z 2R5, CA", run.runtime.CR.fill(copy.choiceApproveRow, { option: copy.modelMonthly }), formatCad(9187.5)]], "each choice is listed with its address, option and server total");
         assert.equal(byAttribute(panel, "data-undecided", "1")[0].textContent, copy.choicesUndecidedOne, "a property still awaiting a decision is named as left for later");
-        assert.equal(byClass(panel, "cr-field").length, 10, "an approval asks the ten contract details in the same step");
+        assert.equal(byClass(panel, "cr-field").length, 11, "an approval asks the eleven contract details, the legal address included, in the same step");
         assert.ok(surface(panel).includes(copy.detailsSubtitle));
         const submit = byAttribute(panel, "data-action", "choices.submit")[0];
         assert.deepEqual([submit.textContent, submit.getAttribute("disabled")], [copy.choicesSubmit, null]);
@@ -1093,6 +1112,7 @@ function assertForm(run, expected, message) {
         assert.deepEqual(run.sent[0][3], {
           LEGAL_NAME: "Harbourview Strata Corporation", CLIENT_TYPE: "CORPORATE",
           BILLING_ADDRESS: "1500 Harbour Green Drive, Suite 210, Vancouver, BC V6C 3T8, Canada",
+          LEGAL_ADDRESS: "200 Burrard Street, Suite 1400, Vancouver, BC V6C 3L6, Canada",
           REPRESENTATIVE_FIRST_NAME: "Dana", REPRESENTATIVE_LAST_NAME: "Reyes",
           REPRESENTATIVE_EMAIL: "dana.reyes@harbourview.example", REPRESENTATIVE_PHONE: "+1 604 555 0164",
           INFORMATION_CONFIRMED: true, AUTHORITY_CONFIRMED: true,
@@ -1243,8 +1263,12 @@ function assertForm(run, expected, message) {
         run.controller.dispatch("option.toggle", { id: 3103 });
         const perService = byAttribute(run.mount, "id", "cr-option-3103")[0];
         const rows = byClass(perService, "cr-breakdown__row").map((row) => [row.getAttribute("data-kind"), row.children[1].textContent]);
-        assert.deepEqual(rows, [["subtotal", formatCad(595)], ["taxes", formatCad(29.75)]], "a one-off option shows the server subtotal and taxes above its total");
-        assert.ok(surface(perService).includes(formatCad(350)), "and each line's own price");
+        assert.deepEqual(rows, [], "a per-service option shows neither subtotal nor taxes");
+        assert.equal(byClass(perService, "cr-total").length, 0, "nor a total");
+        assert.ok(!surface(perService).includes(formatCad(624.75)), "so its server total never reaches the page");
+        assert.equal(byAttribute(perService, "data-pricing", "per-service").length, 1, "it says each service is paid when performed");
+        assert.ok(surface(perService).includes(formatCad(350)), "and shows each line's own price");
+        assert.equal(byClass(byAttribute(run.mount, "value", "3103")[0].parentNode, "cr-pick__total").length, 0, "and its chooser shows no total");
         assert.equal(byAttribute(run.mount, "id", "cr-option-3102").length, 0, "choosing another option of the property closes the first");
         assert.deepEqual(Object.keys(run.controller.snapshot().expanded).filter((key) => run.controller.snapshot().expanded[key]), ["3103"], "one option per property is chosen at a time");
         break;
@@ -1270,6 +1294,44 @@ function assertForm(run, expected, message) {
         assert.deepEqual(actions, [["agreement.approve", copy.agreementApprove, true], ["agreement.changes", copy.changesLabel, false]], "an agreement awaiting approval offers Approve first and Request changes beside it");
         break;
       }
+      case "details-legal-address-refused": {
+        const legal = fieldNamed(run.mount, "LEGAL_ADDRESS");
+        assert.equal(legal.getAttribute("data-state"), "invalid", "a refusal for the legal address lands on the legal address field the client can correct");
+        assert.ok(surface(legal).includes("Enter the client's legal address."), "with the server's reason next to it");
+        assert.ok(surface(run.mount).includes("A legal address is required before this quote can be accepted."), "and the refusal itself is shown, never silent");
+        assert.equal(run.controller.snapshot().choices["property-278"].id, 3102, "the choice stays to be sent again");
+        break;
+      }
+      case "details-legal-address-unparsed": {
+        const legal = fieldNamed(run.mount, "LEGAL_ADDRESS");
+        assert.equal(legal.getAttribute("data-state"), "invalid", "a legal address Core cannot read is marked at its field");
+        assert.ok(surface(legal).includes(copy.legalAddressRefused), "with what to enter instead");
+        break;
+      }
+      case "option-per-service": {
+        const body = byAttribute(run.mount, "id", "cr-option-3103")[0];
+        assert.equal(byAttribute(body, "data-priced", "true").length, 1, "a per-service option lists the price of each service");
+        assert.equal(byClass(body, "cr-breakdown").length + byClass(body, "cr-total").length, 0, "and no subtotal, taxes or total");
+        assert.equal(byAttribute(body, "data-pricing", "per-service")[0].textContent, copy.perServiceNote);
+        break;
+      }
+      case "option-seasonal": {
+        const body = byAttribute(run.mount, "id", "cr-option-3101")[0];
+        assert.equal(byAttribute(body, "data-priced", "false").length, 1, "a seasonal option lists its services without prices");
+        assert.equal(byClass(body, "cr-breakdown").length, 0, "shows no subtotal or taxes");
+        assert.equal(byClass(body, "cr-total").length, 1, "and shows its total");
+        break;
+      }
+      case "quote-plans": {
+        assert.deepEqual(byClass(run.mount, "cr-plan").map((plan) => plan.getAttribute("data-state")), ["ready", "ready", "ready", "area", "area"], "every property shows its plan, or its area without one, before anything is chosen");
+        assert.equal(Object.keys(run.controller.snapshot().choices).length, 0);
+        break;
+      }
+      case "agreement-content-terms": {
+        const panel = byAttribute(run.mount, "aria-labelledby", "cr-terms-title")[0];
+        assert.deepEqual(byClass(panel, "cr-terms__heading").map((node) => node.textContent), ["1. Services", "2. Payment"], "the terms come from the agreement's document content");
+        break;
+      }
       case "agreement-no-terms": {
         const panel = byAttribute(run.mount, "aria-labelledby", "cr-terms-title")[0];
         assert.ok(surface(panel).includes(copy.termsEmpty), "an agreement whose terms were never written keeps the designed empty note");
@@ -1283,7 +1345,8 @@ function assertForm(run, expected, message) {
           assert.ok(!surface(field).includes(name), code + " no longer shows its attribute name");
         }
         assert.equal(run.controller.snapshot().maps, false, "a page without a Maps key has no map service");
-        assert.equal(byClass(run.mount, "cr-map").length + byClass(run.mount, "cr-plan").length + byClass(run.mount, "cr-suggest").length, 0, "and draws no map, no plan and no address suggestions");
+        assert.equal(byClass(run.mount, "cr-map").length + byAttribute(run.mount, "data-map", "plan").length + byClass(run.mount, "cr-plan__legend").length + byClass(run.mount, "cr-suggest").length, 0, "and draws no map, no plan and no address suggestions");
+        assert.deepEqual(byClass(run.mount, "cr-property").map((card) => [byClass(card, "cr-plan")[0].getAttribute("data-state"), byClass(card, "cr-plan__area-value")[0].textContent]), Array(5).fill(["area", "27,654 sq ft"]), "each property still states its total service area");
         const billing = fieldNamed(run.mount, "BILLING_ADDRESS");
         assert.equal(controlOf(billing).getAttribute("role"), null, "the billing address stays a plain text field");
         assert.deepEqual(byAttribute(billing, "data-action", "details.useAddress").map((chip) => [chip.textContent, chip.getAttribute("aria-pressed")]), [
@@ -1305,7 +1368,8 @@ function assertForm(run, expected, message) {
         await run.controller.idle();
         const details = run.sent[0][3];
         assert.equal(details.BILLING_ADDRESS, "1180 Pacific Crescent, Unit 3, Vancouver, BC V6Z 2R5", "the billing address travels as the client's own value, edited after it was copied");
-        assert.deepEqual(Object.keys(details).filter((code) => /ADDRESS|PROPERTY/.test(code)), ["BILLING_ADDRESS"], "and is the only address in the details: no service address is sent or copied beside it");
+        assert.deepEqual(Object.keys(details).filter((code) => /ADDRESS|PROPERTY/.test(code)), ["BILLING_ADDRESS", "LEGAL_ADDRESS"], "beside it only the legal address travels: no service address is sent or copied");
+        assert.equal(details.LEGAL_ADDRESS, "200 Burrard Street, Suite 1400, Vancouver, BC V6C 3L6, Canada", "the legal address on file is sent as the client confirmed it");
         break;
       }
       case "contract-details-maps": {
@@ -1317,14 +1381,17 @@ function assertForm(run, expected, message) {
         const map = byAttribute(billing, "data-map", "address")[0];
         assert.equal(map.getAttribute("data-state"), "ready", "the pre-filled billing address is found and pinned on a map");
         assert.equal(byClass(map, "cr-map__canvas")[0].getAttribute("aria-label"), copy.addressMapLabel);
-        const plans = byClass(run.mount, "cr-plan");
-        assert.deepEqual(plans.map((plan) => [plan.getAttribute("data-plan"), plan.getAttribute("data-state")]), [["property-278", "ready"], ["property-512", "ready"]], "each property chosen for approval shows its plan under its choice");
+        const sites = byClass(run.mount, "cr-plan");
+        assert.deepEqual(sites.map((plan) => [plan.getAttribute("data-plan"), plan.getAttribute("data-state")]), [["property-278", "ready"], ["property-430", "ready"], ["property-512", "ready"], ["property-661", "area"], ["property-702", "area"]], "every property with a plan shows it on its card, chosen or not, and a property without one shows its area");
+        assert.ok(sites.every((site) => byAttribute(site, "data-fact", "total-area")[0].textContent.endsWith("27,654 sq ft")), "each card states the property's total service area");
+        assert.equal(byClass(byClass(run.mount, "cr-choices")[0], "cr-plan").length, 0, "the plans are not drawn a second time in the list of choices");
+        const plans = [sites[0], sites[2]];
         assert.deepEqual(byClass(plans[0], "cr-plan__name").map((node) => node.textContent), ["Main driveway", "Front sidewalk", "Visitor parking", "Loading bay apron", "Fire lane edge", "Salt bin"]);
         assert.deepEqual(byClass(plans[0], "cr-plan__size").map((node) => node.textContent), ["5,167 sq ft", "2,583 sq ft", "8,740 sq ft", "5,425 sq ft"], "areas are listed for shapes with an area, not for a line or a point");
-        assert.equal(byClass(plans[0], "cr-plan__area-value")[0].textContent, "21,915 sq ft", "the plan's area is the sum of its shapes");
+        assert.equal(byClass(byAttribute(plans[0], "data-fact", "plan-area")[0], "cr-plan__area-value")[0].textContent, "21,915 sq ft", "the plan's area is the sum of its shapes");
         assert.deepEqual(byClass(plans[0], "cr-plan__swatch").map((node) => node.getAttribute("data-tone")), ["1", "2", "3", "1", "4", "5"], "elements of one type share a colour");
         assert.deepEqual(byClass(plans[1], "cr-plan__name").map((node) => node.textContent), ["Customer parking", "Entrance walkway", "Delivery turnaround"], "an element drawn only over an image is not on the map");
-        assert.equal(byClass(plans[1], "cr-plan__area-value")[0].textContent, "36,279 sq ft", "a MultiPolygon's hole is subtracted and a circle counts as πr²");
+        assert.equal(byClass(byAttribute(plans[1], "data-fact", "plan-area")[0], "cr-plan__area-value")[0].textContent, "36,279 sq ft", "a MultiPolygon's hole is subtracted and a circle counts as πr²");
         for (const plan of plans) assert.equal(byAttribute(plan, "data-map", "plan")[0].getAttribute("data-state"), "ready", "each plan is drawn over its own map");
         break;
       }
@@ -1337,8 +1404,9 @@ function assertForm(run, expected, message) {
       }
       case "contract-details-plan-unavailable": {
         const plans = byClass(run.mount, "cr-plan");
-        assert.deepEqual(plans.map((plan) => plan.getAttribute("data-state")), ["unavailable", "ready"], "a plan file without a map shape cannot be shown, and the other chosen property's plan still is");
+        assert.deepEqual(plans.map((plan) => plan.getAttribute("data-state")), ["unavailable", "ready", "ready", "area", "area"], "a plan file without a map shape cannot be shown, and the other properties' plans still are");
         assert.ok(surface(plans[0]).includes(copy.planUnavailable));
+        assert.equal(byAttribute(plans[0], "data-fact", "total-area").length, 1, "and the property's total area still shows");
         assert.equal(byAttribute(plans[0], "data-map", "plan").length, 0, "and draws no empty map");
         break;
       }
@@ -1348,8 +1416,8 @@ function assertForm(run, expected, message) {
         assert.equal(byClass(billing, "cr-suggest").length, 0);
         assert.equal(byAttribute(billing, "data-map", "address")[0].getAttribute("data-state"), "failed", "and its map stays hidden");
         const plans = byClass(run.mount, "cr-plan");
-        assert.deepEqual(plans.map((plan) => [plan.getAttribute("data-state"), byAttribute(plan, "data-map", "plan")[0].getAttribute("data-state")]), [["ready", "failed"], ["ready", "failed"]], "the plans keep their area and elements without a map");
-        assert.equal(byClass(plans[0], "cr-plan__area-value")[0].textContent, "21,915 sq ft");
+        assert.deepEqual(plans.filter((plan) => plan.getAttribute("data-state") !== "area").map((plan) => [plan.getAttribute("data-state"), byAttribute(plan, "data-map", "plan")[0].getAttribute("data-state")]), [["ready", "failed"], ["ready", "failed"], ["ready", "failed"]], "the plans keep their area and elements without a map");
+        assert.equal(byClass(byAttribute(plans[0], "data-fact", "plan-area")[0], "cr-plan__area-value")[0].textContent, "21,915 sq ft");
         break;
       }
       case "old-link":
@@ -1370,7 +1438,7 @@ function assertForm(run, expected, message) {
         assert.deepEqual(byClass(run.mount, "cr-approved__address").map((node) => node.textContent), Array(2).fill(copy.addressUnavailable), id + ": every chosen property reads Address unavailable");
         const plans = byClass(run.mount, "cr-plan").map((plan) => [plan.getAttribute("data-plan"), plan.getAttribute("data-state")]);
         if (id === "property-link-closed") assert.deepEqual(plans, [], "an expired or revoked property grant shows no plan and no closed link: the main grant alone decides the page");
-        else assert.deepEqual(plans, [["property-278", "ready"], ["property-512", "ready"]], "an Address list that fails takes the addresses away and leaves the plans");
+        else assert.deepEqual(plans, [["property-278", "ready"], ["property-430", "ready"], ["property-512", "ready"], ["property-661", "area"], ["property-702", "area"]], "an Address list that fails takes the addresses away and leaves the plans");
         break;
       }
       case "completion": {
@@ -2032,7 +2100,10 @@ for (const [kind, orderId, event, status] of [
 {
   const runtime = loadRuntime({ fixtures: true });
   const data = roundOf(runtime.CR.fixtures);
-  delete data.orders.find((row) => row.id === 3103).totalTaxes;
+  const untyped = data.orders.find((row) => row.id === 3103);
+  delete untyped.totalTaxes;
+  delete untyped.attributes[5].PRICING_MODEL;
+  untyped.items.forEach((line) => { delete line.itemPrice.type; });
   const mount = runtime.document.createElement("div");
   const controller = runtime.CR.createController({ adapter: runtime.CR.fixtures.createFixtureAdapter(data, {}), mount, locale: "en-CA" });
   controller.start();
@@ -2040,7 +2111,7 @@ for (const [kind, orderId, event, status] of [
   controller.dispatch("option.toggle", { id: 3103 });
   await controller.idle();
   const card = byAttribute(mount, "aria-labelledby", "cr-property-278")[0];
-  assert.deepEqual(byClass(card, "cr-breakdown__row").map((row) => row.getAttribute("data-kind")), ["subtotal"], "a totalTaxes the server does not return hides the taxes row, and nothing is computed in its place");
+  assert.deepEqual(byClass(card, "cr-breakdown__row").map((row) => row.getAttribute("data-kind")), ["subtotal"], "an option whose billing type is unknown keeps the breakdown, and a totalTaxes the server does not return hides the taxes row, and nothing is computed in its place");
   assert.ok(surface(card).includes(formatCad(9187.5)), "the option total stays the server grandTotal");
 }
 
@@ -2052,7 +2123,9 @@ for (const [kind, orderId, event, status] of [
   assert.equal(normalizer.recurrentPrice({ type: { code: "TIERED" } }), false);
   assert.equal(normalizer.recurrentPrice({ id: 5 }), false, "a price whose type the link cannot read keeps its price on the page");
   const data = roundOf(runtime.CR.fixtures);
-  data.orders.find((row) => row.id === 3103).items[1].itemPrice.type = { code: "TIERED_RECURRENT" };
+  const mixedOrder = data.orders.find((row) => row.id === 3103);
+  mixedOrder.items[1].itemPrice.type = { code: "TIERED_RECURRENT" };
+  delete mixedOrder.attributes[5].PRICING_MODEL;
   const mount = runtime.document.createElement("div");
   const controller = runtime.CR.createController({ adapter: runtime.CR.fixtures.createFixtureAdapter(data, {}), mount, locale: "en-CA" });
   controller.start();
@@ -2063,7 +2136,7 @@ for (const [kind, orderId, event, status] of [
   const mixed = byAttribute(mount, "id", "cr-option-3103")[0];
   assert.equal(byAttribute(mixed, "data-priced", "true").length, 1, "an option with a one-off line keeps its price column");
   assert.ok(surface(mixed).includes(formatCad(350)) && surface(mixed).includes(controller.copy.lineIncluded), "its recurrent line reads Included instead of a price");
-  assert.equal(byClass(mixed, "cr-breakdown__row").length, 2, "and its subtotal and taxes stay");
+  assert.equal(byClass(mixed, "cr-breakdown__row").length, 2, "and with no billing type recorded its subtotal and taxes stay");
   byAttribute(mount, "data-focus-key", "toggle-3103")[0].fire("click");
   await controller.idle();
   assert.equal(controller.snapshot().expanded[3103], true, "choosing the chosen option again keeps it open");
@@ -2457,6 +2530,7 @@ for (const [agreementState, orderState, links] of [["SENT_TO_CLIENT", "ACCEPTED"
   assert.deepEqual(JSON.parse(eventCall.init.body), { id: 3102, event: "QUOTE_SENT-ACCEPTED", metadata: {
     LEGAL_NAME: "Harbourview Strata Corporation", CLIENT_TYPE: "CORPORATE",
     BILLING_ADDRESS: "1500 Harbour Green Drive, Suite 210, Vancouver, BC V6C 3T8, Canada",
+    LEGAL_ADDRESS: "200 Burrard Street, Suite 1400, Vancouver, BC V6C 3L6, Canada",
     REPRESENTATIVE_FIRST_NAME: "Dana", REPRESENTATIVE_LAST_NAME: "Reyes",
     REPRESENTATIVE_EMAIL: "dana.reyes@harbourview.example", REPRESENTATIVE_PHONE: "+1 604 555 0164",
     INFORMATION_CONFIRMED: true, AUTHORITY_CONFIRMED: true,
@@ -2805,9 +2879,10 @@ const later = () => new Promise((resolve) => setTimeout(resolve, 5));
     assert.equal(page.controller.snapshot().view.kind, "quote-review");
     assert.equal(page.controller.snapshot().maps, false, JSON.stringify(key) + " sets up no map service");
     assert.equal(loads, 0, "and loads no Google script");
-    assert.equal(byClass(page.mount, "cr-map").length + byClass(page.mount, "cr-plan").length + byClass(page.mount, "cr-suggest").length, 0, "the page is what it was before the key existed: no map, no plan, no suggestions");
-    assert.ok(calls.every((call) => !call.url.includes("/media/")), "and no plan file is read");
-    assert.ok(byAttribute(page.mount, "data-action", "details.useAddress").length === 2, "the chosen properties' addresses are offered without a key all the same");
+    assert.equal(byClass(page.mount, "cr-map").length + byAttribute(page.mount, "data-map", "plan").length + byClass(page.mount, "cr-suggest").length, 0, "without a key the page draws no map and offers no suggestions");
+    assert.deepEqual(byClass(page.mount, "cr-plan").map((block) => block.getAttribute("data-state")), ["ready", "ready", "ready", "area", "area"], "but each plan is still listed with its elements and areas, and a property without one states its area");
+    assert.ok(byClass(page.mount, "cr-plan__legend").length === 3 && calls.some((call) => call.url.includes("/media/")), "the plan files are public media and are read without the key");
+    assert.ok(byAttribute(fieldNamed(page.mount, "BILLING_ADDRESS"), "data-action", "details.useAddress").length === 2 && byAttribute(fieldNamed(page.mount, "LEGAL_ADDRESS"), "data-action", "details.useAddress").length === 2, "the chosen properties' addresses are offered for the billing and the legal address without a key all the same");
   }
 
   calls.length = 0;
@@ -2815,12 +2890,13 @@ const later = () => new Promise((resolve) => setTimeout(resolve, 5));
   let loads = 0;
   const page = boot(MAPS_KEY, () => { loads += 1; return Promise.resolve(api); });
   await page.controller.idle();
-  assert.equal(calls.filter((call) => call.url.includes("/media/")).length, 0, "no plan is read before a property is chosen");
+  const planned = [...new Set(page.controller.snapshot().view.properties.map((property) => property.plan).filter(Boolean))];
+  assert.equal(calls.filter((call) => call.url.includes("/media/")).length, planned.length, "every property's plan is read when the page opens, before anything is chosen");
   await chooseTwo(page.controller);
   assert.equal(page.controller.snapshot().maps, true);
   assert.equal(loads, 1, "the Maps library is loaded once for the whole page");
   const planCalls = calls.filter((call) => call.url.includes("/media/"));
-  assert.deepEqual(planCalls.map((call) => call.url).sort(), [CR.fixtures.planIds[278], CR.fixtures.planIds[430]].map((id) => "https://core.example/core/media/" + id + "/stream.json").sort(), "each chosen property's plan file is read once from the media stream");
+  assert.deepEqual(planCalls.map((call) => call.url).sort(), planned.map((id) => "https://core.example/core/media/" + id + "/stream.json").sort(), "each property's plan file is read once from the media stream");
   assert.ok(planCalls.every((call) => call.init.method === "GET" && call.init.credentials === "omit"));
   const propertyCalls = calls.filter((call) => call.url.includes("/i/" + propertyEncoded + "/")).map((call) => call.url);
   assert.deepEqual(propertyCalls, ["https://core.example/core/i/" + propertyEncoded + "/introspect.json", "https://core.example/core-rm/i/" + propertyEncoded + "/resource/list.json"], "the property token is introspected on core and lists Resource on core-rm, and is used for nothing else");
@@ -2834,20 +2910,20 @@ const later = () => new Promise((resolve) => setTimeout(resolve, 5));
   for (const secret of [TOKEN, encoded, PROPERTY_TOKEN, propertyEncoded, MAPS_KEY]) assert.ok(!surface(page.mount).includes(secret), "neither token nor the key reaches the page markup");
 
   const planMaps = made.maps.filter((map) => map.options.mapTypeId === "hybrid");
-  assert.equal(planMaps.length, 2, "each plan is drawn over its own satellite map");
+  assert.equal(planMaps.length, page.controller.snapshot().view.properties.filter((property) => property.plan).length, "each property's plan is drawn over its own satellite map");
   const strata = CR.plan.parse(CR.fixtures.planFiles[CR.fixtures.planIds[278]], "en-CA");
   assert.deepEqual(plain(planMaps[0].calls.filter((call) => call[0] === "fitBounds").pop()), ["fitBounds", plain(strata.bounds), 28], "the map is fitted to the plan");
   assert.deepEqual(plain(made.polygons.filter((polygon) => polygon.map === planMaps[0]).map((polygon) => polygon.options.paths)), plain(strata.elements.filter((entry) => entry.kind === "area").map((entry) => entry.shapes[0].polygons[0])), "every area of the plan is drawn where the plan puts it");
   assert.ok(made.polygons.every((polygon) => polygon.options.clickable === false), "read only: nothing on the plan can be clicked or edited");
   assert.equal(made.polylines.length, 1, "the plan's line is drawn as a line");
-  assert.equal(made.circles.length, 1, "and the other plan's turnaround as a circle");
+  assert.equal(made.circles.length, page.controller.snapshot().view.properties.filter((property) => property.plan === CR.fixtures.planIds[430]).length, "and the other plan's turnaround as a circle on each property that has it");
   const planMarkers = made.markers.filter((marker) => marker.map === planMaps[0]);
   assert.deepEqual(planMarkers.map((marker) => marker.options.title), ["Salt bin"], "a point is a marker named after its element");
 
   const billingMap = made.maps.find((map) => map.options.mapTypeId === undefined);
   const billingPin = made.markers.find((marker) => marker.map === billingMap);
   assert.deepEqual(plain([billingPin.options.title, billingPin.options.position]), ["1500 Harbour Green Drive, Suite 210, Vancouver, BC V6C 3T8, Canada", { lat: 49.2888, lng: -123.1193 }], "the pre-filled billing address is geocoded and pinned");
-  assert.deepEqual(made.geocodes, ["1500 Harbour Green Drive, Suite 210, Vancouver, BC V6C 3T8, Canada"], "and geocoded once, not on every render");
+  assert.deepEqual(made.geocodes, ["1500 Harbour Green Drive, Suite 210, Vancouver, BC V6C 3T8, Canada", "200 Burrard Street, Suite 1400, Vancouver, BC V6C 3L6, Canada"], "each pre-filled address, the billing and the legal one, is geocoded once, not on every render");
 
   const input = () => controlOf(fieldNamed(page.mount, "BILLING_ADDRESS"));
   input().focus();
@@ -2869,7 +2945,7 @@ const later = () => new Promise((resolve) => setTimeout(resolve, 5));
   assert.equal(page.controller.snapshot().details.values.BILLING_ADDRESS, "1500 West Georgia Street, Vancouver, BC V6G 2Z6, Canada", "and the form holds it as the billing address");
   assert.deepEqual(plain(made.fields[0].fields), ["formattedAddress", "location"]);
   assert.deepEqual(plain(made.markers.filter((marker) => marker.map === billingMap && marker.map).pop().options.position), { lat: 49.2918, lng: -123.1335 }, "the chosen place is pinned from its own location");
-  assert.equal(made.geocodes.length, 1, "without another geocoding request");
+  assert.equal(made.geocodes.length, 2, "without another geocoding request beyond the two pre-filled addresses");
 
   input().value = "Nowhere Lane 1";
   input().fire("input");
@@ -2902,7 +2978,7 @@ const later = () => new Promise((resolve) => setTimeout(resolve, 5));
   const run = await stagedController((F) => F.withPlans(F.agreementData("SENT_TO_CLIENT", false)), {}, undefined, {});
   run.controller.dispatch("details.useAddress", { code: "BILLING_ADDRESS", value: "1180 Pacific Crescent, Vancouver, BC, V6Z 2R5, CA" });
   assert.equal(run.controller.snapshot().details.values.BILLING_ADDRESS, undefined, "no address is copied outside the choices step");
-  assert.equal(byClass(run.mount, "cr-plan").length, 0, "and the agreement pages show no plan");
+  assert.ok(byClass(run.mount, "cr-plan").length > 0 && byClass(run.mount, "cr-plan").every((block) => ["area", "loading", "ready", "unavailable"].includes(block.getAttribute("data-state"))), "and the agreement pages show each property's plan or area like the quotes");
 }
 
 {
@@ -2925,11 +3001,11 @@ const later = () => new Promise((resolve) => setTimeout(resolve, 5));
   }
   assert.equal(await settle(controller.idle(), 50), "held");
   const loading = byClass(mount, "cr-plan");
-  assert.deepEqual(loading.map((plan) => plan.getAttribute("data-state")), ["loading", "loading"], "plans show a placeholder while their file is read");
+  assert.deepEqual(loading.map((plan) => plan.getAttribute("data-state")), ["loading", "loading", "loading", "area", "area"], "plans show a placeholder while their file is read, and a property without a plan states its area");
   assert.ok(surface(loading[0]).includes(controller.copy.planLoading));
   release();
   await controller.idle();
-  assert.deepEqual(byClass(mount, "cr-plan").map((plan) => plan.getAttribute("data-state")), ["unavailable", "ready"], "a plan file that cannot be read says so, and the other plan is drawn");
+  assert.deepEqual(byClass(mount, "cr-plan").map((plan) => plan.getAttribute("data-state")), ["unavailable", "ready", "ready", "area", "area"], "a plan file that cannot be read says so, and the other plans are drawn");
   assert.ok(surface(byClass(mount, "cr-plan")[0]).includes(controller.copy.planUnavailable));
 }
 
@@ -3287,4 +3363,4 @@ try {
   await fs.rm(tempDir, { recursive: true, force: true });
 }
 
-console.log("client-review-check ok: " + Object.keys(EXPECTED_SCENARIOS).length + " preview states, every order and agreement state, grouping and counts-only summary, server subtotal and taxes shown only when returned, confirmation statements with description and CMS precedence, contract details and the portal sign-in read from native Account contacts the contract names, never a confirmation and never over what the client typed, a round decided on one Confirm your choices step that checks the details with the server's rules and sends them with every approval of the submission, declines without a view event, never declines an approved property's other options and asks no details without an approval, grant-gated single-flight commands with read-back, refusals and failures, a bounded one-read-at-a-time follow of the page's own last decision until the server closes the round, retired quotation Document states shown as unavailable, the portal invitation with and without PORTAL_URL and the portal button above and below an approved agreement, a thank-you card after the details and after the approval and a closed card after declining everything, none of which an expired link shows, Copy link with its confirmation, its refusal and no address in the page, Contact us with links only for a dialable number and a mail address, the provider's logo on the agreement pages, Request changes on the agreement with its text required and a thank-you page that keeps the agreement readable, the Maps browser key as the one key parameter with no Google script, map or plan without it, address suggestions and a pinned billing address with it, a service address copied into billing only by the client, property addresses and the chosen properties' plans read from the separate property grant, never closing or failing the page when that grant is missing or refused, the approved property plan drawn read-only with its area, never the draft, and its loading, unreadable and invalid states, ACTIVATION_FAILED as completion, numbered terms, token only in the grant path, no money arithmetic, innerHTML, eval, console or storage, portal tokens only, and a live-only deterministic CMS package");
+console.log("client-review-check ok: " + Object.keys(EXPECTED_SCENARIOS).length + " preview states, every order and agreement state, grouping and counts-only summary, per-service options with each service's price and no total, monthly and seasonal options with only their total, server subtotal and taxes shown only for an unknown billing type and only when returned, terms read from the agreement's document content before CONTRACT_TERMS, an approval refused for a legal address shown at the address field, confirmation statements with description and CMS precedence, contract details and the portal sign-in read from native Account contacts the contract names, never a confirmation and never over what the client typed, a round decided on one Confirm your choices step that checks the details with the server's rules and sends them with every approval of the submission, declines without a view event, never declines an approved property's other options and asks no details without an approval, grant-gated single-flight commands with read-back, refusals and failures, a bounded one-read-at-a-time follow of the page's own last decision until the server closes the round, retired quotation Document states shown as unavailable, the portal invitation with and without PORTAL_URL and the portal button above and below an approved agreement, a thank-you card after the details and after the approval and a closed card after declining everything, none of which an expired link shows, Copy link with its confirmation, its refusal and no address in the page, Contact us with links only for a dialable number and a mail address, the provider's logo on the agreement pages, Request changes on the agreement with its text required and a thank-you page that keeps the agreement readable, the Maps browser key as the one key parameter with no Google script or map without it, address suggestions and a pinned billing address with it, a service address copied into billing only by the client, property addresses read from the separate property grant and every property's plan and total area on its card, never closing or failing the page when that grant is missing or refused, each property plan listed with its elements and areas and drawn read-only over a map with a key, never the draft, and its loading, unreadable and invalid states, ACTIVATION_FAILED as completion, numbered terms, token only in the grant path, no money arithmetic, innerHTML, eval, console or storage, portal tokens only, and a live-only deterministic CMS package");

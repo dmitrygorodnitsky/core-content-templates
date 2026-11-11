@@ -761,6 +761,19 @@
     }
   },
   {
+    "code": "PER_SERVICE_NOTE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "PER SERVICE NOTE",
+        "DESCRIPTION": "Client review document copy."
+      }
+    },
+    "value": {
+      "en": "You pay the price of each service every time it is performed."
+    }
+  },
+  {
     "code": "LINES_EMPTY",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
@@ -1473,6 +1486,32 @@
     },
     "value": {
       "en": "Map of the property plan"
+    }
+  },
+  {
+    "code": "PROPERTY_AREA",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "PROPERTY AREA",
+        "DESCRIPTION": "Client review document copy."
+      }
+    },
+    "value": {
+      "en": "Total service area"
+    }
+  },
+  {
+    "code": "LEGAL_ADDRESS_REFUSED",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "LEGAL ADDRESS REFUSED",
+        "DESCRIPTION": "Client review document copy."
+      }
+    },
+    "value": {
+      "en": "Enter the client's legal address on one line that ends with the province or state and the country."
     }
   },
   {

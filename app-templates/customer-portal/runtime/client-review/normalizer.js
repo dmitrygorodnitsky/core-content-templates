@@ -279,6 +279,12 @@
     return new Intl.NumberFormat(locale, { maximumFractionDigits: 6 }).format(number);
   }
 
+  function formatArea(value, locale) {
+    var number = finiteOrNull(value);
+    if (number === null || number <= 0) return "";
+    return new Intl.NumberFormat(locale, { maximumFractionDigits: 0 }).format(number);
+  }
+
   function formatDate(value, locale) {
     var date = null;
     var utc = false;
@@ -364,6 +370,25 @@
     return blocks;
   }
 
+  var LANGUAGE_ALIASES = { eng: "en", fre: "fr", fra: "fr", rus: "ru", spa: "es", heb: "he", kaz: "kk", chi: "zh", zho: "zh", ara: "ar" };
+
+  function languageTag(language) {
+    var code = text(language && typeof language === "object" ? language.code2 || language.id : language).toLowerCase();
+    return LANGUAGE_ALIASES[code] || code;
+  }
+
+  function agreementTermsText(agreement, contents, locale, contract) {
+    var spec = contract.agreementContent;
+    var agreementId = positiveInteger(agreement && agreement.id);
+    var written = (Array.isArray(contents) ? contents : []).filter(function (row) {
+      var owner = row && row[spec.document];
+      return agreementId && positiveInteger(owner && typeof owner === "object" ? owner.id : owner) === agreementId && text(row[spec.text]);
+    }).sort(function (left, right) { return ascending(positiveInteger(left.id) || 0, positiveInteger(right.id) || 0); });
+    var wanted = text(locale).toLowerCase().split("-")[0];
+    var chosen = written.filter(function (row) { return languageTag(row[spec.language]) === wanted; })[0] || written[0];
+    return chosen ? text(chosen[spec.text]) : text(attributeValue(agreement, contract.agreementAttributes.terms));
+  }
+
   function clauseOf(line) {
     var match = /^(\d{1,3}(?:\.\d{1,3})*)([.)]?)\s+(.+)$/.exec(line);
     if (!match || (!match[2] && match[1].indexOf(".") === -1)) return null;
@@ -416,7 +441,12 @@
     attributes.forEach(function (attribute) {
       if (attribute && ordered.indexOf(attribute.code) === -1 && hidden.indexOf(attribute.code) === -1) ordered.push(attribute.code);
     });
-    return ordered.map(function (code) { return fieldOf(byCode[code], locale); });
+    var askedFirst = definition && Array.isArray(definition.requiredBeforeAccept) ? definition.requiredBeforeAccept : [];
+    return ordered.map(function (code) {
+      var field = fieldOf(byCode[code], locale);
+      if (askedFirst.indexOf(code) !== -1) field.askedFirst = true;
+      return field;
+    });
   }
 
   function legalContact(account) {
@@ -444,14 +474,18 @@
     return [text(address.address1), text(address.address2), cityLine, country].filter(Boolean).join(", ");
   }
 
-  function billingAddress(account, locale) {
+  function typedAddress(account, typeCode, locale) {
     var entries = account && Array.isArray(account.addresses) ? account.addresses : [];
-    var billing = entries.filter(function (entry) {
+    var found = entries.filter(function (entry) {
       return entry && Array.isArray(entry.types) && entry.types.some(function (type) {
-        return text(type && type.code).toUpperCase() === "BILLING";
+        return text(type && type.code).toUpperCase() === typeCode;
       });
     })[0];
-    return billing ? formatAddress(billing.address, locale) : "";
+    return found ? formatAddress(found.address, locale) : "";
+  }
+
+  function billingAddress(account, locale) {
+    return typedAddress(account, "BILLING", locale);
   }
 
   function detailsPrefill(account, fields, locale, contract) {
@@ -462,6 +496,7 @@
       CLIENT_TYPE: attributeText(account, "LEGAL_ENTITY_TYPE"),
       LEGAL_NAME: localizedName(account.nls, locale),
       BILLING_ADDRESS: billingAddress(account, locale),
+      LEGAL_ADDRESS: typedAddress(account, "LEGAL", locale),
       REPRESENTATIVE_FIRST_NAME: contact ? text(contact.firstName) : "",
       REPRESENTATIVE_JOB_TITLE: contact ? text(contact.title) : "",
       REPRESENTATIVE_LAST_NAME: contact ? text(contact.lastName) : "",
@@ -622,14 +657,30 @@
       });
   }
 
+  function recordedModel(row, contract) {
+    var metadata = row && row.metadata && typeof row.metadata === "object" ? row.metadata : {};
+    var candidates = [text(metadata[contract.orderMetadata.pricingModel]), attributeText(row, contract.orderAttributes.pricingModel)];
+    return candidates.map(function (value) { return value.toUpperCase(); }).filter(function (value) {
+      return contract.pricingModels.indexOf(value) !== -1;
+    })[0] || "";
+  }
+
+  function pricingDisplay(model, lines, contract) {
+    var variants = contract.priceVariants;
+    if (model === variants.perService) return { linePrices: true, breakdown: false, total: false };
+    var recurring = [variants.monthly, variants.seasonal, variants.recurring].indexOf(model) !== -1;
+    if (recurring || (lines.length > 0 && lines.every(function (line) { return line.recurrent; }))) return { linePrices: false, breakdown: false, total: true };
+    return { linePrices: true, breakdown: true, total: true };
+  }
+
   function optionOf(row, position, context) {
     var contract = context.contract;
     var id = positiveInteger(row.id);
     var state = stateCode(row, contract.orderStates);
     var status = ORDER_STATUS[state] || "unknown";
     var currency = text(row.currency && row.currency.code);
-    var attributeModel = attributeText(row, contract.orderAttributes.pricingModel).toUpperCase();
-    var variant = contract.pricingModels.indexOf(attributeModel) !== -1 ? { model: attributeModel, name: "" } : priceVariant(row, context);
+    var statedModel = recordedModel(row, contract);
+    var variant = statedModel ? { model: statedModel, name: "" } : priceVariant(row, context);
     var priced = PRICED_STATUSES.indexOf(status) !== -1;
     var lines = priced ? linesOf(row, currency, context.locale, contract, context.catalog) : [];
     return {
@@ -643,6 +694,7 @@
       priced: priced,
       lines: lines,
       recurrent: lines.length > 0 && lines.every(function (line) { return line.recurrent; }),
+      pricing: pricingDisplay(variant.model, lines, contract),
       subtotal: priced ? formatMoney(row.totalCharges, currency, context.locale) : "",
       taxes: priced ? formatMoney(row.totalTaxes, currency, context.locale) : "",
       total: priced ? formatMoney(row.grandTotal, currency, context.locale) : "",
@@ -685,6 +737,7 @@
         key: group.key,
         address: group.resource ? propertyAddress(group.resource, context.catalog.addresses, contract) : "",
         plan: group.resource ? planReference([attributeValue(group.resource, contract.propertyAttributes.plan)]) : "",
+        area: group.resource ? formatArea(attributeValue(group.resource, contract.propertyAttributes.area), context.locale) : "",
         options: options,
         status: propertyStatus(options),
       };
@@ -766,8 +819,7 @@
     var contact = legalContact(account);
     var language = contact && contact.language;
     var code = language && (language.code2 || language.id);
-    var aliases = { eng: "en", fre: "fr", fra: "fr", rus: "ru", spa: "es", heb: "he", kaz: "kk", chi: "zh", zho: "zh", ara: "ar" };
-    code = aliases[code] || code;
+    code = LANGUAGE_ALIASES[code] || code;
     return typeof code === "string" && /^[a-z]{2,3}(?:-[A-Za-z0-9]+)*$/.test(code) ? code : fallback;
   }
 
@@ -892,7 +944,7 @@
         effectiveDate: formatDate(attributeValue(agreement, contract.agreementAttributes.effectiveDate), locale),
         termStart: formatDate(attributeValue(agreement, contract.agreementAttributes.termStart), locale),
         termEnd: formatDate(attributeValue(agreement, contract.agreementAttributes.termEnd), locale),
-        terms: termsBlocks(attributeValue(agreement, contract.agreementAttributes.terms)),
+        terms: termsBlocks(agreementTermsText(agreement, input.contents, locale, contract)),
       },
       names: {
         provider: parties.provider.legalName,
@@ -933,6 +985,8 @@
     priceVariant: priceVariant,
     formatDate: formatDate,
     termsBlocks: termsBlocks,
+    agreementTermsText: agreementTermsText,
+    pricingDisplay: pricingDisplay,
     primaryEmail: primaryEmail,
     telHref: telHref,
     mailHref: mailHref,

@@ -61,6 +61,7 @@
     ["ORDER_SUBTOTAL", "orderSubtotal", "Subtotal"],
     ["ORDER_TAXES", "orderTaxes", "Taxes"],
     ["ORDER_TOTAL", "orderTotal", "Option total"],
+    ["PER_SERVICE_NOTE", "perServiceNote", "You pay the price of each service every time it is performed."],
     ["LINES_EMPTY", "linesEmpty", "No services are listed on this option."],
     ["VALUE_NOT_STATED", "valueNotStated", "Not stated"],
     ["SERVICE_UNNAMED", "serviceUnnamed", "Unnamed service"],
@@ -117,6 +118,8 @@
     ["PLAN_LOADING", "planLoading", "Loading the property plan…"],
     ["PLAN_UNAVAILABLE", "planUnavailable", "The plan for this property cannot be shown right now."],
     ["PLAN_MAP_LABEL", "planMapLabel", "Map of the property plan"],
+    ["PROPERTY_AREA", "propertyArea", "Total service area"],
+    ["LEGAL_ADDRESS_REFUSED", "legalAddressRefused", "Enter the client's legal address on one line that ends with the province or state and the country."],
     ["PLAN_AREA", "planArea", "Area on the plan"],
     ["PLAN_AREA_VALUE", "planAreaValue", "{area} sq ft"],
     ["PLAN_ELEMENT_FALLBACK", "planElementFallback", "Plan element {n}"],
@@ -272,6 +275,7 @@
       options: [choice("INDIVIDUAL", "Individual"), choice("UNINCORPORATED_BUSINESS", "Unincorporated business"), choice("CORPORATE", "Corporation"), choice("ASSOCIATION", "Association"), choice("GOVERNMENT", "Government")],
     }),
     attribute("BILLING_ADDRESS", "java.lang.String", true, "Billing Address", { inputFormat: "address" }),
+    attribute("LEGAL_ADDRESS", "java.lang.String", false, "Legal Address", { inputFormat: "address" }),
     attribute("REPRESENTATIVE_FIRST_NAME", "java.lang.String", true, "First Name"),
     attribute("REPRESENTATIVE_LAST_NAME", "java.lang.String", true, "Last Name"),
     attribute("REPRESENTATIVE_JOB_TITLE", "java.lang.String", false, "Job Title"),
@@ -313,6 +317,9 @@
       approve: { code: "SENT_TO_CLIENT-CLIENT_APPROVED", source: "SENT_TO_CLIENT" },
       changes: { code: "SENT_TO_CLIENT-CLIENT_CHANGES_REQUESTED", source: "SENT_TO_CLIENT", messageAttribute: "MESSAGE" },
     },
+    orderMetadata: {
+      pricingModel: "PRICING_MODEL",
+    },
     orderAttributes: {
       property: "SERVICE_PROPERTY",
       pricingModel: "PRICING_MODEL",
@@ -321,6 +328,7 @@
     propertyAttributes: {
       address: "ADDRESS",
       plan: "PROPERTY_PLAN",
+      area: "SERVICE_AREA_SQFT",
     },
     addressFormat: {
       parts: ["address1", "address2", "city", "jurisdiction", "state.code", "postalCode", "country.id"],
@@ -353,8 +361,15 @@
       termEnd: "TERM_END_DATE",
       terms: "CONTRACT_TERMS",
     },
+    agreementContent: {
+      entity: "localizedtextcontent",
+      document: "document",
+      text: "content",
+      language: "language",
+    },
     contractDetails: {
       event: "QUOTE_SENT-ACCEPTED",
+      requiredBeforeAccept: ["LEGAL_ADDRESS"],
       attributes: CONTRACT_DETAILS_ATTRIBUTES,
       attributeOrder: [
         {
@@ -384,6 +399,7 @@
       product: { service: "core-pim", segment: "product" },
       address: { service: "core", segment: "address" },
       unit: { service: "core", segment: "unit" },
+      localizedtextcontent: { service: "core", segment: "localized-text-content" },
       resource: { service: "core-rm", segment: "resource", grant: "property" },
     },
     fragment: { token: "token", propertyToken: "property-token" },
@@ -964,6 +980,12 @@
     return new Intl.NumberFormat(locale, { maximumFractionDigits: 6 }).format(number);
   }
 
+  function formatArea(value, locale) {
+    var number = finiteOrNull(value);
+    if (number === null || number <= 0) return "";
+    return new Intl.NumberFormat(locale, { maximumFractionDigits: 0 }).format(number);
+  }
+
   function formatDate(value, locale) {
     var date = null;
     var utc = false;
@@ -1049,6 +1071,25 @@
     return blocks;
   }
 
+  var LANGUAGE_ALIASES = { eng: "en", fre: "fr", fra: "fr", rus: "ru", spa: "es", heb: "he", kaz: "kk", chi: "zh", zho: "zh", ara: "ar" };
+
+  function languageTag(language) {
+    var code = text(language && typeof language === "object" ? language.code2 || language.id : language).toLowerCase();
+    return LANGUAGE_ALIASES[code] || code;
+  }
+
+  function agreementTermsText(agreement, contents, locale, contract) {
+    var spec = contract.agreementContent;
+    var agreementId = positiveInteger(agreement && agreement.id);
+    var written = (Array.isArray(contents) ? contents : []).filter(function (row) {
+      var owner = row && row[spec.document];
+      return agreementId && positiveInteger(owner && typeof owner === "object" ? owner.id : owner) === agreementId && text(row[spec.text]);
+    }).sort(function (left, right) { return ascending(positiveInteger(left.id) || 0, positiveInteger(right.id) || 0); });
+    var wanted = text(locale).toLowerCase().split("-")[0];
+    var chosen = written.filter(function (row) { return languageTag(row[spec.language]) === wanted; })[0] || written[0];
+    return chosen ? text(chosen[spec.text]) : text(attributeValue(agreement, contract.agreementAttributes.terms));
+  }
+
   function clauseOf(line) {
     var match = /^(\d{1,3}(?:\.\d{1,3})*)([.)]?)\s+(.+)$/.exec(line);
     if (!match || (!match[2] && match[1].indexOf(".") === -1)) return null;
@@ -1101,7 +1142,12 @@
     attributes.forEach(function (attribute) {
       if (attribute && ordered.indexOf(attribute.code) === -1 && hidden.indexOf(attribute.code) === -1) ordered.push(attribute.code);
     });
-    return ordered.map(function (code) { return fieldOf(byCode[code], locale); });
+    var askedFirst = definition && Array.isArray(definition.requiredBeforeAccept) ? definition.requiredBeforeAccept : [];
+    return ordered.map(function (code) {
+      var field = fieldOf(byCode[code], locale);
+      if (askedFirst.indexOf(code) !== -1) field.askedFirst = true;
+      return field;
+    });
   }
 
   function legalContact(account) {
@@ -1129,14 +1175,18 @@
     return [text(address.address1), text(address.address2), cityLine, country].filter(Boolean).join(", ");
   }
 
-  function billingAddress(account, locale) {
+  function typedAddress(account, typeCode, locale) {
     var entries = account && Array.isArray(account.addresses) ? account.addresses : [];
-    var billing = entries.filter(function (entry) {
+    var found = entries.filter(function (entry) {
       return entry && Array.isArray(entry.types) && entry.types.some(function (type) {
-        return text(type && type.code).toUpperCase() === "BILLING";
+        return text(type && type.code).toUpperCase() === typeCode;
       });
     })[0];
-    return billing ? formatAddress(billing.address, locale) : "";
+    return found ? formatAddress(found.address, locale) : "";
+  }
+
+  function billingAddress(account, locale) {
+    return typedAddress(account, "BILLING", locale);
   }
 
   function detailsPrefill(account, fields, locale, contract) {
@@ -1147,6 +1197,7 @@
       CLIENT_TYPE: attributeText(account, "LEGAL_ENTITY_TYPE"),
       LEGAL_NAME: localizedName(account.nls, locale),
       BILLING_ADDRESS: billingAddress(account, locale),
+      LEGAL_ADDRESS: typedAddress(account, "LEGAL", locale),
       REPRESENTATIVE_FIRST_NAME: contact ? text(contact.firstName) : "",
       REPRESENTATIVE_JOB_TITLE: contact ? text(contact.title) : "",
       REPRESENTATIVE_LAST_NAME: contact ? text(contact.lastName) : "",
@@ -1307,14 +1358,30 @@
       });
   }
 
+  function recordedModel(row, contract) {
+    var metadata = row && row.metadata && typeof row.metadata === "object" ? row.metadata : {};
+    var candidates = [text(metadata[contract.orderMetadata.pricingModel]), attributeText(row, contract.orderAttributes.pricingModel)];
+    return candidates.map(function (value) { return value.toUpperCase(); }).filter(function (value) {
+      return contract.pricingModels.indexOf(value) !== -1;
+    })[0] || "";
+  }
+
+  function pricingDisplay(model, lines, contract) {
+    var variants = contract.priceVariants;
+    if (model === variants.perService) return { linePrices: true, breakdown: false, total: false };
+    var recurring = [variants.monthly, variants.seasonal, variants.recurring].indexOf(model) !== -1;
+    if (recurring || (lines.length > 0 && lines.every(function (line) { return line.recurrent; }))) return { linePrices: false, breakdown: false, total: true };
+    return { linePrices: true, breakdown: true, total: true };
+  }
+
   function optionOf(row, position, context) {
     var contract = context.contract;
     var id = positiveInteger(row.id);
     var state = stateCode(row, contract.orderStates);
     var status = ORDER_STATUS[state] || "unknown";
     var currency = text(row.currency && row.currency.code);
-    var attributeModel = attributeText(row, contract.orderAttributes.pricingModel).toUpperCase();
-    var variant = contract.pricingModels.indexOf(attributeModel) !== -1 ? { model: attributeModel, name: "" } : priceVariant(row, context);
+    var statedModel = recordedModel(row, contract);
+    var variant = statedModel ? { model: statedModel, name: "" } : priceVariant(row, context);
     var priced = PRICED_STATUSES.indexOf(status) !== -1;
     var lines = priced ? linesOf(row, currency, context.locale, contract, context.catalog) : [];
     return {
@@ -1328,6 +1395,7 @@
       priced: priced,
       lines: lines,
       recurrent: lines.length > 0 && lines.every(function (line) { return line.recurrent; }),
+      pricing: pricingDisplay(variant.model, lines, contract),
       subtotal: priced ? formatMoney(row.totalCharges, currency, context.locale) : "",
       taxes: priced ? formatMoney(row.totalTaxes, currency, context.locale) : "",
       total: priced ? formatMoney(row.grandTotal, currency, context.locale) : "",
@@ -1370,6 +1438,7 @@
         key: group.key,
         address: group.resource ? propertyAddress(group.resource, context.catalog.addresses, contract) : "",
         plan: group.resource ? planReference([attributeValue(group.resource, contract.propertyAttributes.plan)]) : "",
+        area: group.resource ? formatArea(attributeValue(group.resource, contract.propertyAttributes.area), context.locale) : "",
         options: options,
         status: propertyStatus(options),
       };
@@ -1451,8 +1520,7 @@
     var contact = legalContact(account);
     var language = contact && contact.language;
     var code = language && (language.code2 || language.id);
-    var aliases = { eng: "en", fre: "fr", fra: "fr", rus: "ru", spa: "es", heb: "he", kaz: "kk", chi: "zh", zho: "zh", ara: "ar" };
-    code = aliases[code] || code;
+    code = LANGUAGE_ALIASES[code] || code;
     return typeof code === "string" && /^[a-z]{2,3}(?:-[A-Za-z0-9]+)*$/.test(code) ? code : fallback;
   }
 
@@ -1577,7 +1645,7 @@
         effectiveDate: formatDate(attributeValue(agreement, contract.agreementAttributes.effectiveDate), locale),
         termStart: formatDate(attributeValue(agreement, contract.agreementAttributes.termStart), locale),
         termEnd: formatDate(attributeValue(agreement, contract.agreementAttributes.termEnd), locale),
-        terms: termsBlocks(attributeValue(agreement, contract.agreementAttributes.terms)),
+        terms: termsBlocks(agreementTermsText(agreement, input.contents, locale, contract)),
       },
       names: {
         provider: parties.provider.legalName,
@@ -1618,6 +1686,8 @@
     priceVariant: priceVariant,
     formatDate: formatDate,
     termsBlocks: termsBlocks,
+    agreementTermsText: agreementTermsText,
+    pricingDisplay: pricingDisplay,
     primaryEmail: primaryEmail,
     telHref: telHref,
     mailHref: mailHref,
@@ -1939,7 +2009,7 @@
 
     function fact(label, value) { paragraph(label + ": " + (value || copy.valueNotStated), 10); }
 
-    function tableHeader(recurrent) {
+    function tableHeader(unpriced) {
       ensure(35);
       doc.setFillColor(240, 245, 249);
       doc.rect(margin, y - 11, contentWidth, 24, "F");
@@ -1947,23 +2017,24 @@
       doc.setTextColor.apply(doc, muted);
       doc.text(safeText(copy.lineService), margin + 8, y + 3);
       doc.text(safeText(copy.lineQuantity), margin + contentWidth * 0.61, y + 3);
-      if (!recurrent) doc.text(safeText(copy.lineUnitPrice), margin + contentWidth * 0.81, y + 3);
+      if (!unpriced) doc.text(safeText(copy.lineUnitPrice), margin + contentWidth * 0.81, y + 3);
       y += 31;
     }
 
     function lines(option) {
       if (!option.lines.length) { paragraph(copy.linesEmpty, 10, muted); return; }
-      var columns = option.recurrent ? [contentWidth * 0.61 - 18, contentWidth * 0.39 - 16] : [contentWidth * 0.61 - 18, contentWidth * 0.2 - 16, contentWidth * 0.19 - 16];
+      var unpriced = !option.pricing.linePrices;
+      var columns = unpriced ? [contentWidth * 0.61 - 18, contentWidth * 0.39 - 16] : [contentWidth * 0.61 - 18, contentWidth * 0.2 - 16, contentWidth * 0.19 - 16];
       var offsets = [8, contentWidth * 0.61, contentWidth * 0.81];
-      tableHeader(option.recurrent);
+      tableHeader(unpriced);
       option.lines.forEach(function (line) {
         var cells = [line.product || copy.serviceUnnamed, line.quantity || copy.valueNotStated];
-        if (!option.recurrent) cells.push(line.recurrent ? copy.lineIncluded : line.unitPrice || copy.valueNotStated);
+        if (!unpriced) cells.push(line.recurrent ? copy.lineIncluded : line.unitPrice || copy.valueNotStated);
         doc.setFontSize(10);
         var wrapped = cells.map(function (value, i) { return doc.splitTextToSize(safeText(value), columns[i]); });
         var count = Math.max.apply(Math, wrapped.map(function (cell) { return cell.length; }));
         for (var i = 0; i < count; i += 1) {
-          if (y + 15 > bottom) { newPage(); tableHeader(option.recurrent); }
+          if (y + 15 > bottom) { newPage(); tableHeader(unpriced); }
           doc.setFontSize(10);
           doc.setTextColor.apply(doc, ink);
           wrapped.forEach(function (cell, column) { if (cell[i]) doc.text(cell[i], margin + offsets[column], y); });
@@ -2009,17 +2080,19 @@
       if (!options.length) return;
       ensure(70);
       paragraph(property.address || copy.addressUnavailable, 12, ink, 10);
+      if (property.area) fact(copy.propertyArea, ns.fill(copy.planAreaValue, { area: property.area }));
       options.forEach(function (option) {
         ensure(65);
         var label = ns.optionLabel(option, copy);
         paragraph(label + " - " + (copy[STATUSES[option.status]] || copy.optionUnknown), 11, accent, 10);
         if (!option.priced) { paragraph(option.status === "revising" ? copy.noteRevising : copy.noteNoActions, 10, muted); return; }
         lines(option);
-        if (!option.recurrent) {
+        if (option.pricing.breakdown) {
           if (option.subtotal) fact(copy.orderSubtotal, option.subtotal);
           if (option.taxes) fact(copy.orderTaxes, option.taxes);
         }
-        paragraph(copy.orderTotal + ": " + (option.total || copy.valueNotStated), 12, ink, 16);
+        if (option.pricing.total) paragraph(copy.orderTotal + ": " + (option.total || copy.valueNotStated), 12, ink, 16);
+        else paragraph(copy.perServiceNote, 10, muted, 16);
       });
     });
     if (!view.properties.length) paragraph(copy.linesEmpty, 10, muted);
@@ -2618,6 +2691,7 @@
   var AUTOCOMPLETE = {
     LEGAL_NAME: "organization",
     BILLING_ADDRESS: "street-address",
+    LEGAL_ADDRESS: "street-address",
     REPRESENTATIVE_FIRST_NAME: "given-name",
     REPRESENTATIVE_LAST_NAME: "family-name",
     REPRESENTATIVE_JOB_TITLE: "organization-title",
@@ -2852,7 +2926,7 @@
   function linesTable(ctx, option) {
     var copy = ctx.copy;
     if (!option.lines.length) return text("p", "cr-note cr-lines-empty", copy.linesEmpty);
-    var priced = !option.recurrent;
+    var priced = option.pricing.linePrices;
     var wrap = el("div", "cr-lines-wrap");
     var table = el("table", "cr-lines" + (priced ? "" : " cr-lines--unpriced"), { role: "table", "data-priced": priced ? "true" : "false" });
     var head = el("thead", "", { role: "rowgroup" });
@@ -2885,8 +2959,8 @@
       return;
     }
     body.appendChild(linesTable(ctx, option));
-    var breakdown = option.recurrent ? [] : [["subtotal", copy.orderSubtotal, option.subtotal], ["taxes", copy.orderTaxes, option.taxes]]
-      .filter(function (row) { return row[2]; });
+    var breakdown = option.pricing.breakdown ? [["subtotal", copy.orderSubtotal, option.subtotal], ["taxes", copy.orderTaxes, option.taxes]]
+      .filter(function (row) { return row[2]; }) : [];
     if (breakdown.length) {
       var list = el("dl", "cr-breakdown");
       breakdown.forEach(function (row) {
@@ -2896,6 +2970,10 @@
         list.appendChild(item);
       });
       body.appendChild(list);
+    }
+    if (!option.pricing.total) {
+      body.appendChild(text("p", "cr-note cr-per-service", copy.perServiceNote, { "data-pricing": "per-service" }));
+      return;
     }
     var total = el("div", "cr-total");
     total.appendChild(text("span", "cr-total__label", copy.orderTotal));
@@ -3045,7 +3123,7 @@
     choice.appendChild(radio);
     choice.appendChild(el("span", "cr-pick__mark", { "aria-hidden": "true" }));
     choice.appendChild(text("span", "cr-option__label", optionLabel(option, copy)));
-    if (option.priced && option.total) choice.appendChild(text("span", "cr-pick__total", option.total));
+    if (option.priced && option.pricing.total && option.total) choice.appendChild(text("span", "cr-pick__total", option.total));
     choice.appendChild(badge(OPTION_BADGE, option.status, copy));
     item.appendChild(choice);
     if (!expanded) return item;
@@ -3112,6 +3190,8 @@
     head.appendChild(identity);
     if (interactive) head.appendChild(badge(PROPERTY_BADGE, property.status, copy));
     card.appendChild(head);
+    var site = propertySite(ctx, property);
+    if (site) card.appendChild(site);
     var list = el("ol", "cr-options");
     property.options.forEach(function (option) {
       list.appendChild(interactive ? optionItem(ctx, property, option) : optionStatic(ctx, option));
@@ -3157,9 +3237,8 @@
     identity.appendChild(text("span", "cr-approved__address" + (entry.property.address ? "" : " cr-muted"), entry.property.address || copy.addressUnavailable));
     identity.appendChild(text("span", "cr-approved__option", entry.kind === "approve" ? ns.fill(copy.choiceApproveRow, { option: optionLabel(entry.option, copy) }) : copy.choiceDeclineRow));
     row.appendChild(identity);
-    if (entry.kind === "approve") row.appendChild(text("span", "cr-approved__total" + (entry.option.total ? "" : " cr-muted"), entry.option.total || copy.valueNotStated));
+    if (entry.kind === "approve" && entry.option.pricing.total) row.appendChild(text("span", "cr-approved__total" + (entry.option.total ? "" : " cr-muted"), entry.option.total || copy.valueNotStated));
     item.appendChild(row);
-    if (entry.kind === "approve" && ctx.maps && entry.property.plan) item.appendChild(planBlock(ctx, entry.property));
     var failed = (entry.kind === "approve" ? [entry.option] : entry.property.options).map(function (option) { return ctx.snapshot.commands[option.recordKey]; }).filter(function (command) {
       return command && (command.status === "failed" || command.status === "refused");
     })[0];
@@ -3257,7 +3336,7 @@
         name: field.code,
         "aria-describedby": describedBy,
         "aria-invalid": message ? "true" : null,
-        "aria-required": field.required ? "true" : null,
+        "aria-required": field.required || field.askedFirst ? "true" : null,
         disabled: pending,
       }, extra || {});
     }
@@ -3273,7 +3352,7 @@
     if (field.kind !== "boolean") {
       var label = el("label", "cr-field__label", { for: id });
       label.appendChild(text("span", "", field.label));
-      if (field.required) label.appendChild(text("span", "cr-req", "*", { "aria-hidden": "true" }));
+      if (field.required || field.askedFirst) label.appendChild(text("span", "cr-req", "*", { "aria-hidden": "true" }));
       wrap.appendChild(label);
     }
 
@@ -3285,7 +3364,7 @@
       toggle.appendChild(control);
       toggle.appendChild(el("span", "cr-check", { "aria-hidden": "true" }));
       var caption = text("span", "cr-choice__label", confirmationStatement(copy, field));
-      if (field.required) caption.appendChild(text("span", "cr-req", "*", { "aria-hidden": "true" }));
+      if (field.required || field.askedFirst) caption.appendChild(text("span", "cr-req", "*", { "aria-hidden": "true" }));
       toggle.appendChild(caption);
       wrap.appendChild(toggle);
     } else if (field.kind === "select") {
@@ -3303,7 +3382,7 @@
       control.addEventListener("change", function () { patch(ctx.dispatch("details.choose", { code: field.code, value: control.value })); });
       wrap.appendChild(control);
     } else if (field.kind === "radio") {
-      control = el("div", "cr-choices", { role: "radiogroup", id: id, "aria-describedby": errorId, "aria-required": field.required ? "true" : null });
+      control = el("div", "cr-choices", { role: "radiogroup", id: id, "aria-describedby": errorId, "aria-required": field.required || field.askedFirst ? "true" : null });
       field.choices.forEach(function (choice, index) {
         var row = el("label", "cr-choice");
         var input = el("input", "cr-choice__input", { type: "radio", name: field.code, value: choice.value, id: index === 0 ? id + "-first" : null, disabled: pending });
@@ -3378,6 +3457,21 @@
     return row;
   }
 
+  function areaFact(ctx, value) {
+    var facts = el("p", "cr-plan__area", { "data-fact": "total-area" });
+    facts.appendChild(text("span", "cr-plan__area-label", ctx.copy.propertyArea));
+    facts.appendChild(text("span", "cr-plan__area-value", ns.fill(ctx.copy.planAreaValue, { area: value })));
+    return facts;
+  }
+
+  function propertySite(ctx, property) {
+    if (property.plan) return planBlock(ctx, property);
+    if (!property.area) return null;
+    var block = el("div", "cr-plan cr-plan--facts", { "data-state": "area", "data-plan": property.key });
+    block.appendChild(areaFact(ctx, property.area));
+    return block;
+  }
+
   function planBlock(ctx, property) {
     var copy = ctx.copy;
     var loaded = ctx.snapshot.plans && ctx.snapshot.plans[property.plan];
@@ -3386,6 +3480,7 @@
     block.appendChild(text("p", "cr-plan__title", copy.planTitle));
     if (status === "unavailable") {
       block.appendChild(text("p", "cr-note cr-plan__note", copy.planUnavailable));
+      if (property.area) block.appendChild(areaFact(ctx, property.area));
       return block;
     }
     if (status !== "ready") {
@@ -3394,9 +3489,10 @@
       return block;
     }
     var plan = loaded.plan;
-    block.appendChild(ctx.maps.planView(property.key, plan));
+    if (ctx.maps) block.appendChild(ctx.maps.planView(property.key, plan));
+    if (property.area) block.appendChild(areaFact(ctx, property.area));
     if (plan.areaText) {
-      var facts = el("p", "cr-plan__area");
+      var facts = el("p", "cr-plan__area", { "data-fact": "plan-area" });
       facts.appendChild(text("span", "cr-plan__area-label", copy.planArea));
       facts.appendChild(text("span", "cr-plan__area-value", ns.fill(copy.planAreaValue, { area: plan.areaText })));
       block.appendChild(facts);
@@ -3962,6 +4058,11 @@
       return found;
     }
 
+    function addressDetailField() {
+      var fields = state.view && state.view.details ? state.view.details.fields : [];
+      return fields.filter(function (field) { return field.kind === "address"; })[0] || null;
+    }
+
     function detailField(code) {
       var fields = state.view && state.view.details ? state.view.details.fields : [];
       return fields.filter(function (field) { return field.code === code; })[0] || null;
@@ -3997,13 +4098,23 @@
       });
     }
 
+    function readContents(grant) {
+      var entity = contract.agreementContent.entity;
+      if (!normalizer.canRead(grant, entity)) return Promise.resolve([]);
+      return Promise.resolve().then(function () { return adapter.list(entity); }).then(function (rows) {
+        return Array.isArray(rows) ? rows : [];
+      }, function () {
+        return [];
+      });
+    }
+
     function readAll() {
       return adapter.introspect().then(function (rawGrant) {
         var grant = normalizer.grantOf(rawGrant);
         var ordersReadable = normalizer.canRead(grant, "order");
         var documentsReadable = normalizer.canRead(grant, "document");
         if (!ordersReadable && !documentsReadable) {
-          return { grant: grant, documents: [], orders: [], accounts: [], orderItems: [], productPrices: [], products: [], resources: [], addresses: [], units: [], accountFailed: false };
+          return { grant: grant, documents: [], orders: [], accounts: [], orderItems: [], productPrices: [], products: [], resources: [], addresses: [], units: [], contents: [], accountFailed: false };
         }
         var accountRead = normalizer.canRead(grant, "account")
           ? adapter.list("account").then(function (rows) { return { rows: rows, failed: false }; }, function (error) {
@@ -4016,7 +4127,7 @@
         var productPricesRead = normalizer.canRead(grant, "product-price") ? adapter.list("product-price") : Promise.resolve([]);
         var productsRead = normalizer.canRead(grant, "product") ? adapter.list("product") : Promise.resolve([]);
         var documentsRead = documentsReadable ? adapter.list("document") : Promise.resolve([]);
-        return Promise.all([documentsRead, accountRead, ordersRead, orderItemsRead, productPricesRead, productsRead, readProperties(), readAddresses(grant), readUnits(grant)]).then(function (parts) {
+        return Promise.all([documentsRead, accountRead, ordersRead, orderItemsRead, productPricesRead, productsRead, readProperties(), readAddresses(grant), readUnits(grant), readContents(grant)]).then(function (parts) {
           var documents = parts[0];
           var orders = parts[2].slice();
           var present = {};
@@ -4047,6 +4158,7 @@
               resources: parts[6],
               addresses: parts[7],
               units: parts[8],
+              contents: parts[9],
               accountFailed: parts[1].failed,
             };
           });
@@ -4066,10 +4178,10 @@
 
     function readPlans() {
       var view = state.view;
-      if (!maps || !adapter || typeof adapter.readPlan !== "function" || !view || view.kind !== "quote-review") return;
-      choiceEntries().forEach(function (entry) {
-        var id = entry.property.plan;
-        if (!id || entry.kind !== "approve" || state.plans[id] || planReads[id]) return;
+      if (!adapter || typeof adapter.readPlan !== "function" || !view || !Array.isArray(view.properties)) return;
+      view.properties.forEach(function (property) {
+        var id = property.plan;
+        if (!id || state.plans[id] || planReads[id]) return;
         state.plans[id] = { status: "loading", plan: null };
         planReads[id] = Promise.resolve().then(function () { return adapter.readPlan(id); }).then(function (raw) {
           var plan = ns.plan ? ns.plan.parse(raw, locale) : null;
@@ -4263,7 +4375,7 @@
 
     function validateDetail(field, value) {
       var filled = field.kind === "boolean" ? value === true : typeof value === "string" && value.trim() !== "";
-      if (!filled) return field.required ? copy.requiredError : "";
+      if (!filled) return field.required || field.askedFirst ? copy.requiredError : "";
       if (field.kind === "email" && !EMAIL.test(value.trim())) return copy.emailError;
       if (field.choices.length && !field.choices.some(function (option) { return option.value === value; })) return copy.requiredError;
       return "";
@@ -4364,9 +4476,13 @@
       return send(option.recordKey, "order", option.id, contract.orderEvents[kind].code, metadata, Object.assign({
         onRefusal: function (error) {
           if (kind !== "approve") return;
+          var addressField = addressDetailField();
           Object.keys(error.fieldErrors || {}).forEach(function (code) {
-            if (detailField(code)) state.details.serverErrors[code] = error.fieldErrors[code];
+            var target = detailField(code) ? code : /ADDRESS$/.test(code) && addressField ? addressField.code : "";
+            if (target && !state.details.serverErrors[target]) state.details.serverErrors[target] = error.fieldErrors[code];
           });
+          var legalField = detailField("LEGAL_ADDRESS");
+          if (legalField && !state.details.serverErrors[legalField.code] && /legal address/i.test(error.serverMessage || "")) state.details.serverErrors[legalField.code] = copy.legalAddressRefused;
         },
       }, context));
     }

@@ -36,6 +36,7 @@
       options: [choice("INDIVIDUAL", "Individual"), choice("UNINCORPORATED_BUSINESS", "Unincorporated business"), choice("CORPORATE", "Corporation"), choice("ASSOCIATION", "Association"), choice("GOVERNMENT", "Government")],
     }),
     attribute("BILLING_ADDRESS", "java.lang.String", true, "Billing Address", { inputFormat: "address" }),
+    attribute("LEGAL_ADDRESS", "java.lang.String", false, "Legal Address", { inputFormat: "address" }),
     attribute("REPRESENTATIVE_FIRST_NAME", "java.lang.String", true, "First Name"),
     attribute("REPRESENTATIVE_LAST_NAME", "java.lang.String", true, "Last Name"),
     attribute("REPRESENTATIVE_JOB_TITLE", "java.lang.String", false, "Job Title"),
@@ -77,6 +78,9 @@
       approve: { code: "SENT_TO_CLIENT-CLIENT_APPROVED", source: "SENT_TO_CLIENT" },
       changes: { code: "SENT_TO_CLIENT-CLIENT_CHANGES_REQUESTED", source: "SENT_TO_CLIENT", messageAttribute: "MESSAGE" },
     },
+    orderMetadata: {
+      pricingModel: "PRICING_MODEL",
+    },
     orderAttributes: {
       property: "SERVICE_PROPERTY",
       pricingModel: "PRICING_MODEL",
@@ -85,6 +89,7 @@
     propertyAttributes: {
       address: "ADDRESS",
       plan: "PROPERTY_PLAN",
+      area: "SERVICE_AREA_SQFT",
     },
     addressFormat: {
       parts: ["address1", "address2", "city", "jurisdiction", "state.code", "postalCode", "country.id"],
@@ -117,8 +122,15 @@
       termEnd: "TERM_END_DATE",
       terms: "CONTRACT_TERMS",
     },
+    agreementContent: {
+      entity: "localizedtextcontent",
+      document: "document",
+      text: "content",
+      language: "language",
+    },
     contractDetails: {
       event: "QUOTE_SENT-ACCEPTED",
+      requiredBeforeAccept: ["LEGAL_ADDRESS"],
       attributes: CONTRACT_DETAILS_ATTRIBUTES,
       attributeOrder: [
         {

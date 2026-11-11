@@ -99,7 +99,7 @@
 
     function fact(label, value) { paragraph(label + ": " + (value || copy.valueNotStated), 10); }
 
-    function tableHeader(recurrent) {
+    function tableHeader(unpriced) {
       ensure(35);
       doc.setFillColor(240, 245, 249);
       doc.rect(margin, y - 11, contentWidth, 24, "F");
@@ -107,23 +107,24 @@
       doc.setTextColor.apply(doc, muted);
       doc.text(safeText(copy.lineService), margin + 8, y + 3);
       doc.text(safeText(copy.lineQuantity), margin + contentWidth * 0.61, y + 3);
-      if (!recurrent) doc.text(safeText(copy.lineUnitPrice), margin + contentWidth * 0.81, y + 3);
+      if (!unpriced) doc.text(safeText(copy.lineUnitPrice), margin + contentWidth * 0.81, y + 3);
       y += 31;
     }
 
     function lines(option) {
       if (!option.lines.length) { paragraph(copy.linesEmpty, 10, muted); return; }
-      var columns = option.recurrent ? [contentWidth * 0.61 - 18, contentWidth * 0.39 - 16] : [contentWidth * 0.61 - 18, contentWidth * 0.2 - 16, contentWidth * 0.19 - 16];
+      var unpriced = !option.pricing.linePrices;
+      var columns = unpriced ? [contentWidth * 0.61 - 18, contentWidth * 0.39 - 16] : [contentWidth * 0.61 - 18, contentWidth * 0.2 - 16, contentWidth * 0.19 - 16];
       var offsets = [8, contentWidth * 0.61, contentWidth * 0.81];
-      tableHeader(option.recurrent);
+      tableHeader(unpriced);
       option.lines.forEach(function (line) {
         var cells = [line.product || copy.serviceUnnamed, line.quantity || copy.valueNotStated];
-        if (!option.recurrent) cells.push(line.recurrent ? copy.lineIncluded : line.unitPrice || copy.valueNotStated);
+        if (!unpriced) cells.push(line.recurrent ? copy.lineIncluded : line.unitPrice || copy.valueNotStated);
         doc.setFontSize(10);
         var wrapped = cells.map(function (value, i) { return doc.splitTextToSize(safeText(value), columns[i]); });
         var count = Math.max.apply(Math, wrapped.map(function (cell) { return cell.length; }));
         for (var i = 0; i < count; i += 1) {
-          if (y + 15 > bottom) { newPage(); tableHeader(option.recurrent); }
+          if (y + 15 > bottom) { newPage(); tableHeader(unpriced); }
           doc.setFontSize(10);
           doc.setTextColor.apply(doc, ink);
           wrapped.forEach(function (cell, column) { if (cell[i]) doc.text(cell[i], margin + offsets[column], y); });
@@ -169,17 +170,19 @@
       if (!options.length) return;
       ensure(70);
       paragraph(property.address || copy.addressUnavailable, 12, ink, 10);
+      if (property.area) fact(copy.propertyArea, ns.fill(copy.planAreaValue, { area: property.area }));
       options.forEach(function (option) {
         ensure(65);
         var label = ns.optionLabel(option, copy);
         paragraph(label + " - " + (copy[STATUSES[option.status]] || copy.optionUnknown), 11, accent, 10);
         if (!option.priced) { paragraph(option.status === "revising" ? copy.noteRevising : copy.noteNoActions, 10, muted); return; }
         lines(option);
-        if (!option.recurrent) {
+        if (option.pricing.breakdown) {
           if (option.subtotal) fact(copy.orderSubtotal, option.subtotal);
           if (option.taxes) fact(copy.orderTaxes, option.taxes);
         }
-        paragraph(copy.orderTotal + ": " + (option.total || copy.valueNotStated), 12, ink, 16);
+        if (option.pricing.total) paragraph(copy.orderTotal + ": " + (option.total || copy.valueNotStated), 12, ink, 16);
+        else paragraph(copy.perServiceNote, 10, muted, 16);
       });
     });
     if (!view.properties.length) paragraph(copy.linesEmpty, 10, muted);

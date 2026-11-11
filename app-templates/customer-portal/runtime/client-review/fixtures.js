@@ -73,6 +73,8 @@
     "<p>The Client keeps each property accessible and tells the Provider about obstacles such as parked vehicles or construction work.</p>",
   ].join("");
 
+  var CONTENT_TERMS = "<h2>1. Services</h2><p>The Provider clears snow and applies de-icing material at each property listed in this agreement.</p><h2>2. Payment</h2><ul><li>Per service options are invoiced after each service.</li><li>Monthly and seasonal options are invoiced as one total.</li></ul>";
+
   var NUMBERED_TERMS = [
     "1. Services",
     "The Provider clears snow and applies de-icing material at each property listed in this agreement, under the option approved for that property.",
@@ -227,6 +229,9 @@
     { id: "link-copied", label: "Copy link — copied with an approval chosen" },
     { id: "link-copy-failed", label: "Copy link — the browser refused to copy" },
     { id: "option-open", label: "Option open — lines, total, decisions" },
+    { id: "option-per-service", label: "Per service option open — the price of each service, no total, subtotal or taxes" },
+    { id: "option-seasonal", label: "Seasonal option open — services without prices, the total only" },
+    { id: "quote-plans", label: "Quote review — Maps key set: each property's plan and total area before anything is chosen" },
     { id: "choices-approve", label: "Confirm your choices — an option approved, contract details pre-filled" },
     { id: "changes-invalid", label: "Request changes — message required" },
     { id: "choices-decline", label: "Confirm your choices — every option of a property declined, no details asked" },
@@ -250,11 +255,14 @@
     { id: "address-list-failed", label: "Contract details — Maps key set, the Address list fails: plans, no address" },
     { id: "details-invalid", label: "Contract details — validation errors, nothing sent" },
     { id: "details-refused", label: "Contract details — the approval refused per field" },
+    { id: "details-legal-address-refused", label: "Contract details — the approval refused until a legal address is on file" },
+    { id: "details-legal-address-unparsed", label: "Contract details — the approval refused: the legal address names no country Core knows" },
     { id: "details-closed", label: "Last decision sent with the details — round decided, link closed" },
     { id: "preparing", label: "Agreement being prepared — DRAFT" },
     { id: "agreement-review", label: "Agreement review — SENT_TO_CLIENT" },
     { id: "agreement-numbered-terms", label: "Agreement review — numbered contract terms" },
     { id: "agreement-no-terms", label: "Agreement review — no contract terms written" },
+    { id: "agreement-content-terms", label: "Agreement review — terms read from the agreement's document content" },
     { id: "agreement-confirm", label: "Agreement approval — confirmation" },
     { id: "agreement-unconfirmed", label: "Agreement approval accepted, change not seen within the budget — Refresh status" },
     { id: "agreement-changes", label: "Agreement — request changes, the form" },
@@ -387,6 +395,17 @@
             country: { nls: { en: { NAME: "Canada" } } },
           },
           types: [{ code: "SERVICE", nls: { en: { NAME: "Service" } } }],
+        },
+        {
+          address: {
+            address1: "200 Burrard Street",
+            address2: "Suite 1400",
+            city: "Vancouver",
+            postalCode: "V6C 3L6",
+            state: { code: "BC", nls: { en: { NAME: "British Columbia" } } },
+            country: { nls: { en: { NAME: "Canada" } } },
+          },
+          types: [{ code: "LEGAL", nls: { en: { NAME: "Legal" } } }],
         },
       ],
     };
@@ -731,6 +750,7 @@
             return clone(served.addresses || []);
           }
           if (entity === "unit") return clone(served.units || []);
+          if (entity === "localizedtextcontent") return clone(served.contents || []);
           if (entity === "order-item") return clone(served.orderItems || []);
           if (entity === "product-price") return clone(served.productPrices || []);
           if (entity === "product") return clone(served.products || []);
@@ -1137,6 +1157,16 @@
       case "option-open":
         steps = [["option.toggle", { id: 3102 }]];
         break;
+      case "option-per-service":
+        steps = [["option.toggle", { id: 3103 }]];
+        break;
+      case "option-seasonal":
+        steps = [["option.toggle", { id: 3101 }]];
+        break;
+      case "quote-plans":
+        data = withPlans(data, secondPlan);
+        maps = "stub";
+        break;
       case "choices-approve":
         steps = choose;
         break;
@@ -1239,6 +1269,22 @@
         };
         steps = approveAndSend;
         break;
+      case "details-legal-address-refused":
+        behavior.events["QUOTE_SENT-ACCEPTED"] = {
+          outcome: "refuse",
+          message: "A legal address is required before this quote can be accepted.",
+          fieldErrors: { LEGAL_ADDRESS: "Enter the client's legal address." },
+        };
+        steps = approveAndSend;
+        break;
+      case "details-legal-address-unparsed":
+        behavior.events["QUOTE_SENT-ACCEPTED"] = {
+          outcome: "refuse",
+          message: "Order 3102 cannot be accepted: the legal address \"200 Burrard Street\" names no country Core knows; send it as one line ending with the province or state and the country",
+          fieldErrors: {},
+        };
+        steps = approveAndSend;
+        break;
       case "details-closed":
         data = roundData(LAST_OPEN);
         steps = lastDecision;
@@ -1252,6 +1298,11 @@
       case "agreement-numbered-terms":
         data = agreementData("SENT_TO_CLIENT", false);
         data.documents[0].attributes[17].CONTRACT_TERMS = { value: NUMBERED_TERMS };
+        break;
+      case "agreement-content-terms":
+        data = agreementData("SENT_TO_CLIENT", false);
+        data.grant.types.push({ entityType: "LocalizedTextContent", canRead: true, canWrite: false, events: [] });
+        data.contents = [{ id: 41, document: { id: data.documents[0].id }, language: { id: "eng" }, contentType: "HTML", content: CONTENT_TERMS }];
         break;
       case "agreement-no-terms":
         data = agreementData("SENT_TO_CLIENT", false);

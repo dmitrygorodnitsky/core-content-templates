@@ -47,6 +47,29 @@ assert.throws(() => CR.pdf.build(quote, copy, options), "and none can be built f
   const headings = written.filter((line) => / - /.test(line) && Object.values(copy).some((value) => line.endsWith(" - " + value)));
   assert.deepEqual(headings.map((line) => line.split(" - ")[0]), ["Monthly plan", copy.modelRecurring, copy.modelRecurring, "Option 1"], "the PDF labels options from their prices like the page when the Order has no PRICING_MODEL");
 }
+{
+  const written = [];
+  const recording = { jsPDF: function (settings) {
+    const doc = new engine.jsPDF(settings);
+    const write = doc.text.bind(doc);
+    doc.text = (value, ...rest) => { written.push(...[].concat(value)); return write(value, ...rest); };
+    return doc;
+  } };
+  const data = CR.fixtures.agreementData("SENT_TO_CLIENT", false);
+  data.orders.find((row) => row.id === 3108).attributes[5].PRICING_MODEL = { value: "PER_SERVICE" };
+  const model = modelOf(data);
+  CR.pdf.build(model, copy, { ...options, engine: recording });
+  const options3 = model.view.properties.flatMap((property) => property.options);
+  const perService = options3.find((option) => option.id === 3108);
+  const monthly = options3.find((option) => option.id === 3102);
+  const text = written.join("\n");
+  assert.ok(text.includes("$275.00"), "a per-service option prints the price of each service");
+  assert.ok(!text.includes(copy.orderTotal + ": " + perService.total) && !text.includes(copy.orderSubtotal + ": ") && !text.includes(copy.orderTaxes + ": "), "and no total, subtotal or taxes");
+  assert.ok(text.includes(copy.perServiceNote));
+  assert.ok(text.includes(copy.orderTotal + ": " + monthly.total), "a monthly option prints its total");
+  assert.ok(!monthly.lines.some((line) => text.includes(line.unitPrice)), "and no price per service");
+  assert.ok(written.some((line) => line.startsWith(copy.propertyArea + ": ")), "each property prints its total service area");
+}
 for (const phase of ["loading", "error", "link-closed", "link-missing", "unconfigured"]) {
   assert.equal(CR.pdf.offered({ ...agreement, phase }), false);
   assert.throws(() => CR.pdf.build({ ...agreement, phase }, copy, options));

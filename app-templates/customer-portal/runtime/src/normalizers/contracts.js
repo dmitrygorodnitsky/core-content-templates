@@ -150,13 +150,15 @@ export function normalizeQuoteOrders(payload, catalog) {
     var currency = currencyCode(row.currency);
     var total = orderTotal(row.grandTotal, row.currency);
     var quoteLines = linesOf(row, backendId, currency, lines);
+    var pricingModel = recordedModel(row) || priceVariant(backendId, lines);
     orders.push({
       id: "quote-core-" + backendId,
       backendId: backendId,
       propertyBackendId: attributeNumber(row, "SERVICE_PROPERTY"),
       stateCode: stateCode,
       status: status,
-      pricingModel: attributeModel(row) || priceVariant(backendId, lines),
+      pricingModel: pricingModel,
+      pricing: pricingDisplay(pricingModel),
       total: total,
       money: total ? {
         subtotal: formatMoney(row.totalCharges, currency),
@@ -239,6 +241,7 @@ export function contractsPackage(source, properties) {
     return isOpen(order) || !packageOf.get(order.backendId);
   });
   var groups = quoteGroups(quoted, packageOf, byProperty);
+  var history = quoteGroups(orders.slice(), packageOf, byProperty);
   var pending = groups.map(function (group) {
     var waiting = group.orders.filter(function (order) { return PENDING_STATUSES.indexOf(order.status) !== -1; });
     return waiting.length ? Object.assign({}, group, { orders: waiting }) : null;
@@ -261,6 +264,7 @@ export function contractsPackage(source, properties) {
   return {
     agreements: rows,
     groups: groups,
+    history: history,
     pending: pending,
     counts: counts,
     deciding: counts.open > 0,
@@ -289,6 +293,7 @@ export function pricePeriod(order) {
 }
 
 export function formatOrderPrice(order) {
+  if (order && order.pricing && !order.pricing.total) return "";
   var total = formatOrderTotal(order && order.total);
   var period = pricePeriod(order);
   return total && period ? total + " " + period : total;
@@ -601,10 +606,19 @@ function linesOf(row, backendId, currency, catalog) {
   return { state: missing || incomplete ? "partial" : "ready", lines: lines };
 }
 
-function attributeModel(row) {
-  var code = attributeText(row, "PRICING_MODEL");
-  var label = own(PRICING_MODELS, code);
-  return label ? { code: code, label: label } : null;
+function recordedModel(row) {
+  var metadata = row && row.metadata && typeof row.metadata === "object" ? row.metadata : {};
+  var code = [text(metadata.PRICING_MODEL), attributeText(row, "PRICING_MODEL")].map(function (value) { return value.toUpperCase(); }).find(function (value) {
+    return !!own(PRICING_MODELS, value);
+  });
+  return code ? { code: code, label: own(PRICING_MODELS, code) } : null;
+}
+
+export function pricingDisplay(model) {
+  var code = model ? model.code : "";
+  if (code === "PER_SERVICE") return { linePrices: true, breakdown: false, total: false };
+  if (code === "MONTHLY" || code === "SEASONAL" || code === RECURRING_MODEL.code) return { linePrices: false, breakdown: false, total: true };
+  return { linePrices: true, breakdown: true, total: true };
 }
 
 function priceVariant(backendId, catalog) {

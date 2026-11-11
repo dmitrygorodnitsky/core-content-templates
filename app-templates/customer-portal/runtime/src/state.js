@@ -732,7 +732,7 @@ function contractProperties() {
 export function quoteGroupFor(id) {
   var quotes = quotePackage();
   if (!quotes || !id) return null;
-  var exact = quotes.groups.find(function (group) { return group.id === id; });
+  var exact = quotes.groups.find(function (group) { return group.id === id; }) || (quotes.history || []).find(function (group) { return group.id === id; });
   if (exact) return exact;
   return quotes.groups.filter(function (group) {
     return !!group.property && (group.property.quoteSiteId === id || group.property.id === id);

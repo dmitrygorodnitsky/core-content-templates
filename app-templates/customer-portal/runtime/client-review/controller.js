@@ -194,6 +194,11 @@
       return found;
     }
 
+    function addressDetailField() {
+      var fields = state.view && state.view.details ? state.view.details.fields : [];
+      return fields.filter(function (field) { return field.kind === "address"; })[0] || null;
+    }
+
     function detailField(code) {
       var fields = state.view && state.view.details ? state.view.details.fields : [];
       return fields.filter(function (field) { return field.code === code; })[0] || null;
@@ -229,13 +234,23 @@
       });
     }
 
+    function readContents(grant) {
+      var entity = contract.agreementContent.entity;
+      if (!normalizer.canRead(grant, entity)) return Promise.resolve([]);
+      return Promise.resolve().then(function () { return adapter.list(entity); }).then(function (rows) {
+        return Array.isArray(rows) ? rows : [];
+      }, function () {
+        return [];
+      });
+    }
+
     function readAll() {
       return adapter.introspect().then(function (rawGrant) {
         var grant = normalizer.grantOf(rawGrant);
         var ordersReadable = normalizer.canRead(grant, "order");
         var documentsReadable = normalizer.canRead(grant, "document");
         if (!ordersReadable && !documentsReadable) {
-          return { grant: grant, documents: [], orders: [], accounts: [], orderItems: [], productPrices: [], products: [], resources: [], addresses: [], units: [], accountFailed: false };
+          return { grant: grant, documents: [], orders: [], accounts: [], orderItems: [], productPrices: [], products: [], resources: [], addresses: [], units: [], contents: [], accountFailed: false };
         }
         var accountRead = normalizer.canRead(grant, "account")
           ? adapter.list("account").then(function (rows) { return { rows: rows, failed: false }; }, function (error) {
@@ -248,7 +263,7 @@
         var productPricesRead = normalizer.canRead(grant, "product-price") ? adapter.list("product-price") : Promise.resolve([]);
         var productsRead = normalizer.canRead(grant, "product") ? adapter.list("product") : Promise.resolve([]);
         var documentsRead = documentsReadable ? adapter.list("document") : Promise.resolve([]);
-        return Promise.all([documentsRead, accountRead, ordersRead, orderItemsRead, productPricesRead, productsRead, readProperties(), readAddresses(grant), readUnits(grant)]).then(function (parts) {
+        return Promise.all([documentsRead, accountRead, ordersRead, orderItemsRead, productPricesRead, productsRead, readProperties(), readAddresses(grant), readUnits(grant), readContents(grant)]).then(function (parts) {
           var documents = parts[0];
           var orders = parts[2].slice();
           var present = {};
@@ -279,6 +294,7 @@
               resources: parts[6],
               addresses: parts[7],
               units: parts[8],
+              contents: parts[9],
               accountFailed: parts[1].failed,
             };
           });
@@ -298,10 +314,10 @@
 
     function readPlans() {
       var view = state.view;
-      if (!maps || !adapter || typeof adapter.readPlan !== "function" || !view || view.kind !== "quote-review") return;
-      choiceEntries().forEach(function (entry) {
-        var id = entry.property.plan;
-        if (!id || entry.kind !== "approve" || state.plans[id] || planReads[id]) return;
+      if (!adapter || typeof adapter.readPlan !== "function" || !view || !Array.isArray(view.properties)) return;
+      view.properties.forEach(function (property) {
+        var id = property.plan;
+        if (!id || state.plans[id] || planReads[id]) return;
         state.plans[id] = { status: "loading", plan: null };
         planReads[id] = Promise.resolve().then(function () { return adapter.readPlan(id); }).then(function (raw) {
           var plan = ns.plan ? ns.plan.parse(raw, locale) : null;
@@ -495,7 +511,7 @@
 
     function validateDetail(field, value) {
       var filled = field.kind === "boolean" ? value === true : typeof value === "string" && value.trim() !== "";
-      if (!filled) return field.required ? copy.requiredError : "";
+      if (!filled) return field.required || field.askedFirst ? copy.requiredError : "";
       if (field.kind === "email" && !EMAIL.test(value.trim())) return copy.emailError;
       if (field.choices.length && !field.choices.some(function (option) { return option.value === value; })) return copy.requiredError;
       return "";
@@ -596,9 +612,13 @@
       return send(option.recordKey, "order", option.id, contract.orderEvents[kind].code, metadata, Object.assign({
         onRefusal: function (error) {
           if (kind !== "approve") return;
+          var addressField = addressDetailField();
           Object.keys(error.fieldErrors || {}).forEach(function (code) {
-            if (detailField(code)) state.details.serverErrors[code] = error.fieldErrors[code];
+            var target = detailField(code) ? code : /ADDRESS$/.test(code) && addressField ? addressField.code : "";
+            if (target && !state.details.serverErrors[target]) state.details.serverErrors[target] = error.fieldErrors[code];
           });
+          var legalField = detailField("LEGAL_ADDRESS");
+          if (legalField && !state.details.serverErrors[legalField.code] && /legal address/i.test(error.serverMessage || "")) state.details.serverErrors[legalField.code] = copy.legalAddressRefused;
         },
       }, context));
     }

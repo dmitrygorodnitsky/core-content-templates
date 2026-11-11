@@ -10,9 +10,11 @@ export var VISIT_STATUS = Object.freeze({
 
 var PROGRESS_STEPS = Object.freeze({
   SCHEDULED: "Scheduled",
-  IN_PROGRESS: "Started",
-  COMPLETED: "Completed",
+  IN_PROGRESS: "Arrived",
+  COMPLETED: "Departed",
 });
+
+var ON_SITE_STEPS = ["IN_PROGRESS", "COMPLETED"];
 
 var MEDIA_ID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
 var WEEKDAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
@@ -91,6 +93,17 @@ export function progressWhen(step, visit, timeZone) {
   if (step.code === "SCHEDULED") return day;
   var time = clock(at.minutes, true);
   return start && at.date === start.date ? time : day + ", " + time;
+}
+
+export function onSiteTimes(steps, visit, timeZone) {
+  return ON_SITE_STEPS.map(function (code) {
+    var step = (steps || []).filter(function (entry) { return entry.code === code; }).pop();
+    return step ? step.label + " " + progressWhen(step, visit, timeZone) : "";
+  }).filter(Boolean).join(" · ");
+}
+
+export function visitPhotoCount(visit) {
+  return visit ? (visit.before || []).length + (visit.after || []).length : 0;
 }
 
 export function localDateKey(date, timeZone) {

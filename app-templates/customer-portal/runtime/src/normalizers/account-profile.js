@@ -5,6 +5,7 @@ export var ACCOUNT_PROFILE_SCOPE_MODES = Object.freeze(["server-scoped", "browse
 
 var LEGAL_CONTACT = "LEGAL";
 var BILLING_ADDRESS = "BILLING";
+var LEGAL_ADDRESS = "LEGAL";
 var EMAIL_ENTRY = "EMAIL";
 var PHONE_ENTRY = "PHONE";
 
@@ -46,10 +47,14 @@ export function contractDetailsPrefill(account, clientTypes) {
   var billing = rows(row.addresses)
     .filter(function (link) { return rows(link.types).some(function (type) { return text(type.code) === BILLING_ADDRESS; }); })
     .sort(byIdAscending)[0];
+  var legalAddress = rows(row.addresses)
+    .filter(function (link) { return rows(link.types).some(function (type) { return text(type.code) === LEGAL_ADDRESS; }); })
+    .sort(byIdAscending)[0];
   return {
     LEGAL_NAME: localizedName(row.nls),
     CLIENT_TYPE: clientTypes.indexOf(legalType) === -1 ? "" : legalType,
     BILLING_ADDRESS: billing && billing.address ? plain(billing.address.address1) : "",
+    LEGAL_ADDRESS: legalAddress && legalAddress.address ? formatPostalAddress(legalAddress.address) : "",
     REPRESENTATIVE_FIRST_NAME: legal ? plain(legal.firstName) : "",
     REPRESENTATIVE_LAST_NAME: legal ? plain(legal.lastName) : "",
     REPRESENTATIVE_JOB_TITLE: legal ? plain(legal.title) : "",

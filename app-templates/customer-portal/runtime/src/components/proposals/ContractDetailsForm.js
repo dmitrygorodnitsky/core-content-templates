@@ -7,7 +7,7 @@ import { attachAddressSuggestions } from "../../address-suggestions.js";
 import { PartialNotice } from "./ContractStates.js";
 
 var GROUPS = [
-  { title: "Client", codes: ["LEGAL_NAME", "CLIENT_TYPE", "BILLING_ADDRESS"] },
+  { title: "Client", codes: ["LEGAL_NAME", "CLIENT_TYPE", "BILLING_ADDRESS", "LEGAL_ADDRESS"] },
   { title: "Representative", codes: ["REPRESENTATIVE_FIRST_NAME", "REPRESENTATIVE_LAST_NAME", "REPRESENTATIVE_JOB_TITLE", "REPRESENTATIVE_EMAIL", "REPRESENTATIVE_PHONE"] },
 ];
 var PAIRS = { REPRESENTATIVE_FIRST_NAME: "REPRESENTATIVE_LAST_NAME", REPRESENTATIVE_EMAIL: "REPRESENTATIVE_PHONE" };

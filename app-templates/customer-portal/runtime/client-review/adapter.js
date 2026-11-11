@@ -14,6 +14,7 @@
       product: { service: "core-pim", segment: "product" },
       address: { service: "core", segment: "address" },
       unit: { service: "core", segment: "unit" },
+      localizedtextcontent: { service: "core", segment: "localized-text-content" },
       resource: { service: "core-rm", segment: "resource", grant: "property" },
     },
     fragment: { token: "token", propertyToken: "property-token" },

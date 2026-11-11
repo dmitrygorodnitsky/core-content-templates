@@ -709,6 +709,7 @@
   var ACCOUNT_PROFILE_SCOPE_MODES = /* @__PURE__ */ Object.freeze(["server-scoped", "browser-filtered"]);
   var LEGAL_CONTACT = "LEGAL";
   var BILLING_ADDRESS = "BILLING";
+  var LEGAL_ADDRESS = "LEGAL";
   var EMAIL_ENTRY = "EMAIL";
   var PHONE_ENTRY = "PHONE";
   function normalizeAccountProfile(raw) {
@@ -750,10 +751,16 @@
         return text(type.code) === BILLING_ADDRESS;
       });
     }).sort(byIdAscending)[0];
+    var legalAddress = rows(row.addresses).filter(function(link) {
+      return rows(link.types).some(function(type) {
+        return text(type.code) === LEGAL_ADDRESS;
+      });
+    }).sort(byIdAscending)[0];
     return {
       LEGAL_NAME: localizedName(row.nls),
       CLIENT_TYPE: clientTypes.indexOf(legalType) === -1 ? "" : legalType,
       BILLING_ADDRESS: billing && billing.address ? plain2(billing.address.address1) : "",
+      LEGAL_ADDRESS: legalAddress && legalAddress.address ? formatPostalAddress(legalAddress.address) : "",
       REPRESENTATIVE_FIRST_NAME: legal ? plain2(legal.firstName) : "",
       REPRESENTATIVE_LAST_NAME: legal ? plain2(legal.lastName) : "",
       REPRESENTATIVE_JOB_TITLE: legal ? plain2(legal.title) : "",
@@ -1334,13 +1341,15 @@
       var currency = currencyCode(row.currency);
       var total = orderTotal(row.grandTotal, row.currency);
       var quoteLines = linesOf(row, backendId, currency, lines);
+      var pricingModel = recordedModel(row) || priceVariant(backendId, lines);
       orders.push({
         id: "quote-core-" + backendId,
         backendId,
         propertyBackendId: attributeNumber(row, "SERVICE_PROPERTY"),
         stateCode,
         status,
-        pricingModel: attributeModel(row) || priceVariant(backendId, lines),
+        pricingModel,
+        pricing: pricingDisplay(pricingModel),
         total,
         money: total ? {
           subtotal: formatMoney(row.totalCharges, currency),
@@ -1425,6 +1434,7 @@
       return isOpen(order) || !packageOf.get(order.backendId);
     });
     var groups = quoteGroups(quoted, packageOf, byProperty);
+    var history = quoteGroups(orders.slice(), packageOf, byProperty);
     var pending = groups.map(function(group) {
       var waiting = group.orders.filter(function(order) {
         return PENDING_STATUSES.indexOf(order.status) !== -1;
@@ -1447,6 +1457,7 @@
     return {
       agreements: rows2,
       groups,
+      history,
       pending,
       counts,
       deciding: counts.open > 0,
@@ -1478,6 +1489,7 @@
     return order && order.pricingModel ? own(PRICE_PERIODS, order.pricingModel.code) || "" : "";
   }
   function formatOrderPrice(order) {
+    if (order && order.pricing && !order.pricing.total) return "";
     var total = formatOrderTotal(order && order.total);
     var period = pricePeriod(order);
     return total && period ? total + " " + period : total;
@@ -1800,10 +1812,20 @@
     });
     return { state: missing || incomplete ? "partial" : "ready", lines };
   }
-  function attributeModel(row) {
-    var code = attributeText(row, "PRICING_MODEL");
-    var label = own(PRICING_MODELS, code);
-    return label ? { code, label } : null;
+  function recordedModel(row) {
+    var metadata = row && row.metadata && typeof row.metadata === "object" ? row.metadata : {};
+    var code = [text(metadata.PRICING_MODEL), attributeText(row, "PRICING_MODEL")].map(function(value) {
+      return value.toUpperCase();
+    }).find(function(value) {
+      return !!own(PRICING_MODELS, value);
+    });
+    return code ? { code, label: own(PRICING_MODELS, code) } : null;
+  }
+  function pricingDisplay(model) {
+    var code = model ? model.code : "";
+    if (code === "PER_SERVICE") return { linePrices: true, breakdown: false, total: false };
+    if (code === "MONTHLY" || code === "SEASONAL" || code === RECURRING_MODEL.code) return { linePrices: false, breakdown: false, total: true };
+    return { linePrices: true, breakdown: true, total: true };
   }
   function priceVariant(backendId, catalog) {
     var entries = catalog.byOrder.get(backendId) || [];
@@ -2351,6 +2373,8 @@
     if (!quotes || !id) return null;
     var exact = quotes.groups.find(function(group) {
       return group.id === id;
+    }) || (quotes.history || []).find(function(group) {
+      return group.id === id;
     });
     if (exact) return exact;
     return quotes.groups.filter(function(group) {
@@ -2715,7 +2739,7 @@
           return false;
         }
       }
-      deps.state.contractCommand = Object.assign({}, command, { phase });
+      deps.state.contractCommand = Object.assign({}, command, { phase }, phase === "refused" && error2 && error2.serverMessage ? { message: error2.serverMessage } : {});
       return false;
     }
     return {
@@ -2945,9 +2969,10 @@
   });
   var PROGRESS_STEPS = /* @__PURE__ */ Object.freeze({
     SCHEDULED: "Scheduled",
-    IN_PROGRESS: "Started",
-    COMPLETED: "Completed"
+    IN_PROGRESS: "Arrived",
+    COMPLETED: "Departed"
   });
+  var ON_SITE_STEPS = ["IN_PROGRESS", "COMPLETED"];
   var MEDIA_ID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
   var WEEKDAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
   var MONTHS2 = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
@@ -3024,6 +3049,17 @@
     if (step.code === "SCHEDULED") return day;
     var time = clock(at.minutes, true);
     return start && at.date === start.date ? time : day + ", " + time;
+  }
+  function onSiteTimes(steps, visit, timeZone) {
+    return ON_SITE_STEPS.map(function(code) {
+      var step = (steps || []).filter(function(entry) {
+        return entry.code === code;
+      }).pop();
+      return step ? step.label + " " + progressWhen(step, visit, timeZone) : "";
+    }).filter(Boolean).join(" \xB7 ");
+  }
+  function visitPhotoCount(visit) {
+    return visit ? (visit.before || []).length + (visit.after || []).length : 0;
   }
   function localDateKey(date, timeZone) {
     return zonedParts((date instanceof Date ? date : /* @__PURE__ */ new Date()).getTime(), timeZone).date;
@@ -3555,6 +3591,7 @@
     { name: "attributes" },
     { name: "grandTotal" },
     { name: "id" },
+    { name: "metadata" },
     { name: "totalCharges" },
     { name: "totalTaxes" },
     { key: "id", mappings: ID_MAPPINGS, name: "account", type: "identifier" },
@@ -3973,8 +4010,22 @@
   async function sendEvent(fetchImpl, api, url, input) {
     var response = await fetchImpl(url, readOptions(api, input && typeof input === "object" ? input : {}));
     if (!response || typeof response.ok !== "boolean") throw contractError2("invalid-response", "Core request returned an invalid response");
-    if (!response.ok) throw failure(response.status, true);
+    if (!response.ok) throw withServerMessage(failure(response.status, true), await refusalText(response));
     return true;
+  }
+  async function refusalText(response) {
+    if (typeof response.json !== "function") return "";
+    try {
+      var body = await response.json();
+      var message = body && typeof body === "object" ? body.message || body.detail || body.error_description || "" : "";
+      return typeof message === "string" ? message.replace(/\s+/g, " ").trim().slice(0, 400) : "";
+    } catch (_) {
+      return "";
+    }
+  }
+  function withServerMessage(error2, message) {
+    if (error2.code === "command-refused" && message) error2.serverMessage = message;
+    return error2;
   }
   function commandId(backendId) {
     var id = positiveInteger(backendId);
@@ -7588,7 +7639,9 @@
       h("span", { "class": "record-row__main" }, [
         settings.label ? text4("record-row__eyebrow", settings.label) : null,
         text4("prop-visit__title", when),
-        settings.place ? text4("prop-visit__meta", settings.place) : null
+        settings.place ? text4("prop-visit__meta", settings.place) : null,
+        settings.onSite ? h("span", { "class": "prop-visit__meta", "data-module": "visit-on-site" }, settings.onSite) : null,
+        settings.photos ? h("span", { "class": "prop-visit__meta", "data-module": "visit-photo-count" }, settings.photos === 1 ? "1 photo" : settings.photos + " photos") : null
       ]),
       text4("status-badge status-badge--" + visit.status.tone, visit.status.label),
       text4("prop-visit__caret", "\u203A")
@@ -8912,7 +8965,7 @@
     var today = localDateKey(/* @__PURE__ */ new Date(), state.config.timeZone);
     var properties = liveProperties();
     var row = function(visit) {
-      return VisitRow(visit, { today, place: visitPlace(visit, properties) });
+      return VisitRow(visit, { today, place: visitPlace(visit, properties), onSite: visitOnSite(visit), photos: visitPhotoCount(visit) });
     };
     if (visits.upcoming.length) page.appendChild(RecordSection("visits-upcoming", "Upcoming", visits.upcoming.map(row)));
     if (visits.past.length) page.appendChild(RecordSection("visits-past", "Past", visits.past.map(row)));
@@ -8964,6 +9017,11 @@
       ].concat(photos)));
     }
     return page;
+  }
+  function visitOnSite(visit) {
+    if (visit.stateCode !== "IN_PROGRESS" && visit.stateCode !== "COMPLETED") return "";
+    var entry = visitProgress(visit, render);
+    return entry && entry.status === "ready" ? onSiteTimes(entry.steps, visit, state.config.timeZone) : "";
   }
   function PropertyFacts(property) {
     var area = formatArea(property.areaSqft);
@@ -9107,7 +9165,7 @@
       h("div", { "class": "alert-banner__body" }, [h("div", { "class": "alert-banner__desc" }, text10)])
     ]);
   }
-  function CommandOutcome(phase) {
+  function CommandOutcome(phase, message) {
     if (phase === "conflict") {
       return h("div", { "class": "conflict-banner decision-outcome", "data-module": "command-conflict", "data-visual-id": "command-conflict", "data-state": "conflict", role: "alert" }, [
         h("div", { "class": "conflict-banner__icon" }, "\u21BA"),
@@ -9118,7 +9176,8 @@
       ]);
     }
     if (!OUTCOME_COPY[phase]) return null;
-    return DecisionFailure(OUTCOME_COPY[phase], { action: "contracts.refresh", label: "Refresh status" });
+    var reason = phase === "refused" && message ? OUTCOME_COPY.refused + " " + message : OUTCOME_COPY[phase];
+    return DecisionFailure(reason, { action: "contracts.refresh", label: "Refresh status" });
   }
   function DecisionFailure(message, retry) {
     return h("div", { "class": "inline-fail decision-outcome", "data-module": "command-failure", "data-visual-id": "command-failure", "data-state": "failed", role: "alert" }, [
@@ -9159,6 +9218,7 @@
     field2("LEGAL_NAME", "Legal name", "text", "organization", true),
     field2("CLIENT_TYPE", "Client type", "choice", null, true),
     field2("BILLING_ADDRESS", "Billing address", "address", "street-address", true),
+    field2("LEGAL_ADDRESS", "Legal address", "address", "street-address", true),
     field2("REPRESENTATIVE_FIRST_NAME", "First name", "text", "given-name", true),
     field2("REPRESENTATIVE_LAST_NAME", "Last name", "text", "family-name", true),
     field2("REPRESENTATIVE_JOB_TITLE", "Job title", "text", "organization-title", false),
@@ -9169,6 +9229,7 @@
   ]);
   var CONTRACT_DETAILS_COPY = /* @__PURE__ */ Object.freeze({
     legalName: "Enter the client\u2019s legal name.",
+    legalAddress: "Enter your legal address on one line that ends with the province or state and the country.",
     clientType: "Choose the client type.",
     clientTypeInvalid: "Choose one of the client types.",
     confirm: "Confirm this to send your details.",
@@ -9244,7 +9305,7 @@
       return CLIENT_TYPE_CODES.indexOf(collapsed) === -1 ? refusal2(CONTRACT_DETAILS_COPY.clientTypeInvalid) : accepted2(collapsed);
     }
     if (PROFILE_RULES[item.code]) return validateProfileValue(PROFILE_RULES[item.code], collapsed, "");
-    if (!collapsed && item.required) return refusal2(CONTRACT_DETAILS_COPY.legalName);
+    if (!collapsed && item.required) return refusal2(item.code === "LEGAL_ADDRESS" ? CONTRACT_DETAILS_COPY.legalAddress : CONTRACT_DETAILS_COPY.legalName);
     if (CONTROL_CHARACTERS2.test(collapsed)) return refusal2(CONTRACT_DETAILS_COPY.plainText);
     if (collapsed.length > TEXT_LIMIT) return refusal2(CONTRACT_DETAILS_COPY.tooLong);
     return accepted2(collapsed);
@@ -9674,7 +9735,7 @@
 
   // app-templates/customer-portal/runtime/src/components/proposals/ContractDetailsForm.js
   var GROUPS = [
-    { title: "Client", codes: ["LEGAL_NAME", "CLIENT_TYPE", "BILLING_ADDRESS"] },
+    { title: "Client", codes: ["LEGAL_NAME", "CLIENT_TYPE", "BILLING_ADDRESS", "LEGAL_ADDRESS"] },
     { title: "Representative", codes: ["REPRESENTATIVE_FIRST_NAME", "REPRESENTATIVE_LAST_NAME", "REPRESENTATIVE_JOB_TITLE", "REPRESENTATIVE_EMAIL", "REPRESENTATIVE_PHONE"] }
   ];
   var PAIRS = { REPRESENTATIVE_FIRST_NAME: "REPRESENTATIVE_LAST_NAME", REPRESENTATIVE_EMAIL: "REPRESENTATIVE_PHONE" };
@@ -9860,24 +9921,37 @@
     if (!order.lines.length) {
       return h("div", { "class": "quote-option__note", "data-module": "quote-lines", "data-state": "empty" }, "No services are listed on this quote.");
     }
-    var list = h("div", { "class": "purch-lines quote-lines", "data-module": "quote-lines", "data-visual-id": "quote-lines", "data-state": order.linesState, role: "list", "aria-label": "Services" }, order.lines.map(function(line) {
-      var detail = line.quantity && line.unitPrice ? line.quantity + " \xD7 " + line.unitPrice : line.unitPrice || (line.quantity ? "Quantity " + line.quantity : "");
+    var pricing = order.pricing || { linePrices: true, total: true };
+    var list = h("div", { "class": "purch-lines quote-lines", "data-module": "quote-lines", "data-visual-id": "quote-lines", "data-state": order.linesState, "data-priced": pricing.linePrices ? "true" : "false", role: "list", "aria-label": "Services" }, order.lines.map(function(line) {
       return h("div", { "class": "purch-line quote-line", "data-line": line.key, role: "listitem" }, [
         h("div", { "class": "quote-line__body" }, [
           h("div", { "class": "purch-line__title" + (line.product ? "" : " quote-line__title--unnamed") }, line.product || "Unnamed service"),
-          detail ? h("div", { "class": "purch-line__meta" }, detail) : null
+          lineDetail(line, pricing) ? h("div", { "class": "purch-line__meta" }, lineDetail(line, pricing)) : null
         ]),
-        line.total ? h("div", { "class": "purch-line__side" }, h("b", null, line.total)) : null
+        lineSide(line, pricing) ? h("div", { "class": "purch-line__side" }, h("b", null, lineSide(line, pricing))) : null
       ]);
     }));
     if (order.linesState !== "partial") return list;
     return h("div", null, [list, h("div", { "class": "quote-option__note", "data-state": "partial" }, "Some details of these services couldn\u2019t be loaded.")]);
   }
+  function lineDetail(line, pricing) {
+    if (!pricing.linePrices || !pricing.total) return line.quantity && line.quantity !== "1" ? "Quantity " + line.quantity : "";
+    return line.quantity && line.unitPrice ? line.quantity + " \xD7 " + line.unitPrice : line.unitPrice || (line.quantity ? "Quantity " + line.quantity : "");
+  }
+  function lineSide(line, pricing) {
+    if (!pricing.linePrices) return "";
+    if (!pricing.total) return line.unitPrice ? line.unitPrice + " per service" : "";
+    return line.total;
+  }
   function QuoteMoney(order) {
+    var pricing = order.pricing || { breakdown: true, total: true };
+    if (!pricing.total) {
+      return h("div", { "class": "quote-option__note", "data-module": "quote-totals", "data-state": "per-service" }, "You pay the price of each service every time it is performed.");
+    }
     if (!order.money) {
       return h("div", { "class": "quote-option__note", "data-module": "quote-totals", "data-state": "unpriced" }, "No price is stated on this quote yet.");
     }
-    var rows2 = order.money.taxFree ? [] : [["Subtotal", order.money.subtotal, "subtotal"], ["Taxes", order.money.taxes, "taxes"]].filter(function(row) {
+    var rows2 = order.money.taxFree || !pricing.breakdown ? [] : [["Subtotal", order.money.subtotal, "subtotal"], ["Taxes", order.money.taxes, "taxes"]].filter(function(row) {
       return !!row[1];
     });
     var wrap = h("div", { "class": "money-rows quote-totals", "data-module": "quote-totals", "data-visual-id": "quote-totals" }, rows2.map(function(row) {
@@ -9892,7 +9966,7 @@
   function QuoteDecisions(order, settings) {
     var command = state.contractCommand;
     var targeted = !!command && command.targets.indexOf(order.backendId) !== -1;
-    var outcome = targeted && command.phase !== "pending" ? CommandOutcome(command.phase) : null;
+    var outcome = targeted && command.phase !== "pending" ? CommandOutcome(command.phase, command.message) : null;
     var busy = !!settings.busy;
     if (order.status !== "unseen") return outcome ? h("div", { "class": "quote-option__decide" }, outcome) : null;
     var confirm = state.contractConfirm;
@@ -10122,7 +10196,7 @@
   function AgreementOutcome(agreement) {
     var command = state.contractCommand;
     if (!command || command.kind !== "agreement" || command.phase === "pending" || command.targets.indexOf(agreement.backendId) === -1) return null;
-    var outcome = CommandOutcome(command.phase);
+    var outcome = CommandOutcome(command.phase, command.message);
     if (!outcome) return null;
     return h("section", { "class": "card card--pad agreement-approve", "data-module": "agreement-approve", "data-visual-id": "agreement-approve", "data-state": command.phase, "aria-labelledby": "agreement-approve-title" }, [
       h("h2", { "class": "agreement-card__title", id: "agreement-approve-title" }, "Your approval"),
@@ -10157,7 +10231,7 @@
       ]));
     }
     if (targeted && !pending) {
-      var outcome = CommandOutcome(command.phase);
+      var outcome = CommandOutcome(command.phase, command.message);
       if (outcome) card.appendChild(outcome);
     }
     return card;
@@ -11231,10 +11305,17 @@
     }
     var hasAgreements = quotes.agreements.length > 0;
     var hasQuotes = quotes.pending.length > 0;
+    var pendingCount = quotes.pending.reduce(function(sum, group) {
+      return sum + group.orders.length;
+    }, 0);
+    var historyCount = (quotes.history || []).reduce(function(sum, group) {
+      return sum + group.orders.length;
+    }, 0);
+    var hasHistory = historyCount > pendingCount;
     var partial = ContractsNotices(quotes);
-    page.setAttribute("data-state", hasAgreements || hasQuotes ? partial.length ? "partial" : "ready" : quotes.preparing ? "preparing" : "empty");
+    page.setAttribute("data-state", hasAgreements || hasQuotes || hasHistory ? partial.length ? "partial" : "ready" : quotes.preparing ? "preparing" : "empty");
     page.appendChild(ContractsHead(quotes));
-    if (!hasAgreements && !hasQuotes) {
+    if (!hasAgreements && !hasQuotes && !hasHistory) {
       partial.forEach(function(notice) {
         page.appendChild(notice);
       });
@@ -11269,6 +11350,14 @@
       section.appendChild(QuoteGroups(quotes.pending, placements, !!portfolio));
       if (quotes.deciding) section.appendChild(QuotesFooter());
       page.appendChild(section);
+    }
+    if (hasHistory) {
+      page.appendChild(h("section", { "class": "contracts-section", "data-module": "contracts-orders", "aria-label": "All orders" }, [
+        ContractsSectionTitle("All orders", historyCount),
+        QuoteGroups(quotes.history, quotes.history.map(function() {
+          return { point: null, reason: "unknown" };
+        }), false)
+      ]));
     }
     return page;
   }

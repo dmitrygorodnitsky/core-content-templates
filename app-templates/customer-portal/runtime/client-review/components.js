@@ -25,6 +25,7 @@
   var AUTOCOMPLETE = {
     LEGAL_NAME: "organization",
     BILLING_ADDRESS: "street-address",
+    LEGAL_ADDRESS: "street-address",
     REPRESENTATIVE_FIRST_NAME: "given-name",
     REPRESENTATIVE_LAST_NAME: "family-name",
     REPRESENTATIVE_JOB_TITLE: "organization-title",
@@ -259,7 +260,7 @@
   function linesTable(ctx, option) {
     var copy = ctx.copy;
     if (!option.lines.length) return text("p", "cr-note cr-lines-empty", copy.linesEmpty);
-    var priced = !option.recurrent;
+    var priced = option.pricing.linePrices;
     var wrap = el("div", "cr-lines-wrap");
     var table = el("table", "cr-lines" + (priced ? "" : " cr-lines--unpriced"), { role: "table", "data-priced": priced ? "true" : "false" });
     var head = el("thead", "", { role: "rowgroup" });
@@ -292,8 +293,8 @@
       return;
     }
     body.appendChild(linesTable(ctx, option));
-    var breakdown = option.recurrent ? [] : [["subtotal", copy.orderSubtotal, option.subtotal], ["taxes", copy.orderTaxes, option.taxes]]
-      .filter(function (row) { return row[2]; });
+    var breakdown = option.pricing.breakdown ? [["subtotal", copy.orderSubtotal, option.subtotal], ["taxes", copy.orderTaxes, option.taxes]]
+      .filter(function (row) { return row[2]; }) : [];
     if (breakdown.length) {
       var list = el("dl", "cr-breakdown");
       breakdown.forEach(function (row) {
@@ -303,6 +304,10 @@
         list.appendChild(item);
       });
       body.appendChild(list);
+    }
+    if (!option.pricing.total) {
+      body.appendChild(text("p", "cr-note cr-per-service", copy.perServiceNote, { "data-pricing": "per-service" }));
+      return;
     }
     var total = el("div", "cr-total");
     total.appendChild(text("span", "cr-total__label", copy.orderTotal));
@@ -452,7 +457,7 @@
     choice.appendChild(radio);
     choice.appendChild(el("span", "cr-pick__mark", { "aria-hidden": "true" }));
     choice.appendChild(text("span", "cr-option__label", optionLabel(option, copy)));
-    if (option.priced && option.total) choice.appendChild(text("span", "cr-pick__total", option.total));
+    if (option.priced && option.pricing.total && option.total) choice.appendChild(text("span", "cr-pick__total", option.total));
     choice.appendChild(badge(OPTION_BADGE, option.status, copy));
     item.appendChild(choice);
     if (!expanded) return item;
@@ -519,6 +524,8 @@
     head.appendChild(identity);
     if (interactive) head.appendChild(badge(PROPERTY_BADGE, property.status, copy));
     card.appendChild(head);
+    var site = propertySite(ctx, property);
+    if (site) card.appendChild(site);
     var list = el("ol", "cr-options");
     property.options.forEach(function (option) {
       list.appendChild(interactive ? optionItem(ctx, property, option) : optionStatic(ctx, option));
@@ -564,9 +571,8 @@
     identity.appendChild(text("span", "cr-approved__address" + (entry.property.address ? "" : " cr-muted"), entry.property.address || copy.addressUnavailable));
     identity.appendChild(text("span", "cr-approved__option", entry.kind === "approve" ? ns.fill(copy.choiceApproveRow, { option: optionLabel(entry.option, copy) }) : copy.choiceDeclineRow));
     row.appendChild(identity);
-    if (entry.kind === "approve") row.appendChild(text("span", "cr-approved__total" + (entry.option.total ? "" : " cr-muted"), entry.option.total || copy.valueNotStated));
+    if (entry.kind === "approve" && entry.option.pricing.total) row.appendChild(text("span", "cr-approved__total" + (entry.option.total ? "" : " cr-muted"), entry.option.total || copy.valueNotStated));
     item.appendChild(row);
-    if (entry.kind === "approve" && ctx.maps && entry.property.plan) item.appendChild(planBlock(ctx, entry.property));
     var failed = (entry.kind === "approve" ? [entry.option] : entry.property.options).map(function (option) { return ctx.snapshot.commands[option.recordKey]; }).filter(function (command) {
       return command && (command.status === "failed" || command.status === "refused");
     })[0];
@@ -664,7 +670,7 @@
         name: field.code,
         "aria-describedby": describedBy,
         "aria-invalid": message ? "true" : null,
-        "aria-required": field.required ? "true" : null,
+        "aria-required": field.required || field.askedFirst ? "true" : null,
         disabled: pending,
       }, extra || {});
     }
@@ -680,7 +686,7 @@
     if (field.kind !== "boolean") {
       var label = el("label", "cr-field__label", { for: id });
       label.appendChild(text("span", "", field.label));
-      if (field.required) label.appendChild(text("span", "cr-req", "*", { "aria-hidden": "true" }));
+      if (field.required || field.askedFirst) label.appendChild(text("span", "cr-req", "*", { "aria-hidden": "true" }));
       wrap.appendChild(label);
     }
 
@@ -692,7 +698,7 @@
       toggle.appendChild(control);
       toggle.appendChild(el("span", "cr-check", { "aria-hidden": "true" }));
       var caption = text("span", "cr-choice__label", confirmationStatement(copy, field));
-      if (field.required) caption.appendChild(text("span", "cr-req", "*", { "aria-hidden": "true" }));
+      if (field.required || field.askedFirst) caption.appendChild(text("span", "cr-req", "*", { "aria-hidden": "true" }));
       toggle.appendChild(caption);
       wrap.appendChild(toggle);
     } else if (field.kind === "select") {
@@ -710,7 +716,7 @@
       control.addEventListener("change", function () { patch(ctx.dispatch("details.choose", { code: field.code, value: control.value })); });
       wrap.appendChild(control);
     } else if (field.kind === "radio") {
-      control = el("div", "cr-choices", { role: "radiogroup", id: id, "aria-describedby": errorId, "aria-required": field.required ? "true" : null });
+      control = el("div", "cr-choices", { role: "radiogroup", id: id, "aria-describedby": errorId, "aria-required": field.required || field.askedFirst ? "true" : null });
       field.choices.forEach(function (choice, index) {
         var row = el("label", "cr-choice");
         var input = el("input", "cr-choice__input", { type: "radio", name: field.code, value: choice.value, id: index === 0 ? id + "-first" : null, disabled: pending });
@@ -785,6 +791,21 @@
     return row;
   }
 
+  function areaFact(ctx, value) {
+    var facts = el("p", "cr-plan__area", { "data-fact": "total-area" });
+    facts.appendChild(text("span", "cr-plan__area-label", ctx.copy.propertyArea));
+    facts.appendChild(text("span", "cr-plan__area-value", ns.fill(ctx.copy.planAreaValue, { area: value })));
+    return facts;
+  }
+
+  function propertySite(ctx, property) {
+    if (property.plan) return planBlock(ctx, property);
+    if (!property.area) return null;
+    var block = el("div", "cr-plan cr-plan--facts", { "data-state": "area", "data-plan": property.key });
+    block.appendChild(areaFact(ctx, property.area));
+    return block;
+  }
+
   function planBlock(ctx, property) {
     var copy = ctx.copy;
     var loaded = ctx.snapshot.plans && ctx.snapshot.plans[property.plan];
@@ -793,6 +814,7 @@
     block.appendChild(text("p", "cr-plan__title", copy.planTitle));
     if (status === "unavailable") {
       block.appendChild(text("p", "cr-note cr-plan__note", copy.planUnavailable));
+      if (property.area) block.appendChild(areaFact(ctx, property.area));
       return block;
     }
     if (status !== "ready") {
@@ -801,9 +823,10 @@
       return block;
     }
     var plan = loaded.plan;
-    block.appendChild(ctx.maps.planView(property.key, plan));
+    if (ctx.maps) block.appendChild(ctx.maps.planView(property.key, plan));
+    if (property.area) block.appendChild(areaFact(ctx, property.area));
     if (plan.areaText) {
-      var facts = el("p", "cr-plan__area");
+      var facts = el("p", "cr-plan__area", { "data-fact": "plan-area" });
       facts.appendChild(text("span", "cr-plan__area-label", copy.planArea));
       facts.appendChild(text("span", "cr-plan__area-value", ns.fill(copy.planAreaValue, { area: plan.areaText })));
       block.appendChild(facts);

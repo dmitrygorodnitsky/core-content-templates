@@ -13,6 +13,7 @@ export const CONTRACT_DETAILS_FIELDS = Object.freeze([
   field("LEGAL_NAME", "Legal name", "text", "organization", true),
   field("CLIENT_TYPE", "Client type", "choice", null, true),
   field("BILLING_ADDRESS", "Billing address", "address", "street-address", true),
+  field("LEGAL_ADDRESS", "Legal address", "address", "street-address", true),
   field("REPRESENTATIVE_FIRST_NAME", "First name", "text", "given-name", true),
   field("REPRESENTATIVE_LAST_NAME", "Last name", "text", "family-name", true),
   field("REPRESENTATIVE_JOB_TITLE", "Job title", "text", "organization-title", false),
@@ -24,6 +25,7 @@ export const CONTRACT_DETAILS_FIELDS = Object.freeze([
 
 export const CONTRACT_DETAILS_COPY = Object.freeze({
   legalName: "Enter the client’s legal name.",
+  legalAddress: "Enter your legal address on one line that ends with the province or state and the country.",
   clientType: "Choose the client type.",
   clientTypeInvalid: "Choose one of the client types.",
   confirm: "Confirm this to send your details.",
@@ -97,7 +99,7 @@ function validateDetail(item, raw) {
     return CLIENT_TYPE_CODES.indexOf(collapsed) === -1 ? refusal(CONTRACT_DETAILS_COPY.clientTypeInvalid) : accepted(collapsed);
   }
   if (PROFILE_RULES[item.code]) return validateProfileValue(PROFILE_RULES[item.code], collapsed, "");
-  if (!collapsed && item.required) return refusal(CONTRACT_DETAILS_COPY.legalName);
+  if (!collapsed && item.required) return refusal(item.code === "LEGAL_ADDRESS" ? CONTRACT_DETAILS_COPY.legalAddress : CONTRACT_DETAILS_COPY.legalName);
   if (CONTROL_CHARACTERS.test(collapsed)) return refusal(CONTRACT_DETAILS_COPY.plainText);
   if (collapsed.length > TEXT_LIMIT) return refusal(CONTRACT_DETAILS_COPY.tooLong);
   return accepted(collapsed);

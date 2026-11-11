@@ -863,6 +863,70 @@ representative, email and phone.
   signed-in portal was not seen with a customer session: no portal login for
   a test Account with an agreement is available to the agent.
 
+### Team feedback on the customer pages (2026-11-11)
+
+No attribute, workflow state or permission was added.
+
+- **Billing type decides the money shown.** The billing type is the Order's
+  `metadata.PRICING_MODEL`; the portal reads it through the tagged order list,
+  then the legacy `PRICING_MODEL` attribute, then the prices. A magic link
+  cannot read Order metadata (grant ceiling), so the review page and PDF take
+  the attribute, then the price type and interval. PER_SERVICE shows each
+  service's price and no total, subtotal or taxes, anywhere: option card,
+  chooser, Confirm your choices, PDF, Contracts list, property page.
+  MONTHLY, SEASONAL and RECURRING list the services without prices and show
+  only the total. An unknown type keeps services, subtotal, taxes and total.
+- **Plan and area on every property card** of the review page, chosen or not:
+  `SERVICE_AREA_SQFT` as "Total service area", and the approved plan's
+  elements, their areas and the plan's own area. The plan file is public
+  media, so it is read without the Maps key; the satellite drawing needs
+  `REVIEW_MAPS_API_KEY`, which is empty on dev-1 (template and PageContext),
+  so dev-1 shows the legend and areas without the map. The plan is no longer
+  repeated under Confirm your choices.
+- **Terms from the document content.** The backend made
+  `LocalizedTextContent` grantable (READ `P_DOCUMENT_CONTENT_R`, mapping
+  definition 19) and tagged (`/core/api/tagged/localized-text-content/`). The
+  review page lists it when the grant carries a `LocalizedTextContent`
+  entry, takes the agreement's non-empty content in the page language (or its
+  only one) and falls back to `CONTRACT_TERMS`; the PDF prints the same
+  blocks. The portal agreement page still reads `CONTRACT_TERMS`: content
+  records carry no portal tag and role 75 has no `P_TAG_DOCUMENT_CONTENT_R`.
+- **Portal history.** Contracts lists "All orders" in every state the
+  customer can see, grouped by agreement and property, below the quotes that
+  wait. Visit rows show the arrival and departure Core recorded and the photo
+  count; the visit page labels them Arrived and Departed. They are the times
+  of the `SCHEDULED-IN_PROGRESS` and `IN_PROGRESS-COMPLETED` transitions of
+  workflow 20: no check-in, check-out or GPS time exists on the Appointment,
+  workflow 20, its script `APPOINTMENT_MEDIA_LIBRARY` or route workflow 75.
+  Canceled visits and draft invoices stay hidden. Role 75 already reads all
+  of it; its permissions were not changed.
+- **Legal address before Accept.** During this round the parallel backend
+  change went live on dev-1: `QUOTE_SENT-ACCEPTED` of `ORDER_LIFECYCLE`
+  carries an optional `LEGAL_ADDRESS` event attribute, and its hook refuses an
+  approval when neither that line (one line ending with the province or state
+  and the country) nor a LEGAL Account address with a country exists; the
+  agreement processor writes the sent line as the Account's LEGAL address. It
+  is uncommitted in core-ui and has no note in `docs/` yet. Both pages now ask
+  for the legal address in the contract details and refuse to send Accept
+  without it: Core's flag stays optional, so the review page marks it
+  `requiredBeforeAccept` (a link sees Account addresses as ids only and cannot
+  tell whether one is on file), and the portal requires it, pre-filled from a
+  LEGAL Account address when there is one. A refusal that names the legal
+  address lands on that field; the portal shows Core's refusal message beside
+  the option instead of a bare "wasn't accepted".
+- **Live on dev-1 on 2026-11-11**, both templates uploaded (last after the
+  legal address field) and the render cache cleared on `app-1-core-cms` and
+  `app-3-core-cms`. Proven with two throwaway sets of Account, portal User,
+  property and three Orders (per service and seasonal in `QUOTE_SENT`, monthly
+  `ACTIVE`), the first also with three visits and two invoices, REST-issued
+  review grants and a browser sign-in as that User; all of it was deleted
+  afterwards. A User saved through `user/save.json` gets no password; the
+  reset-key path (`resetKey` saved, then `POST /core/api/user/reset-password.json`)
+  sets one. Deleting a User that is still signed in leaves the browser's dev-1
+  credential cookie pointing at it, and every dev-1 page answers that browser
+  401 until the cookie is replaced by a token exchange or the site data is
+  cleared.
+
 ## Universal form document
 
 `runtime/forms/portal-form.js` renders any published Core form type in the

@@ -10,7 +10,7 @@ import { PropertyPlan } from "../components/storm/PropertyPlan.js";
 import { RecordSection, VisitRow } from "../components/storm/RecordRows.js";
 import { activeServiceNames } from "../normalizers/contracts.js";
 import { formatArea } from "../normalizers/overview.js";
-import { findVisit, localDateKey, progressWhen, visitDay, visitImageUrl, visitPlace, visitWindow } from "../normalizers/visits.js";
+import { findVisit, localDateKey, onSiteTimes, progressWhen, visitDay, visitImageUrl, visitPhotoCount, visitPlace, visitWindow } from "../normalizers/visits.js";
 import { propertyPlan } from "../property-plan.js";
 import { visitProgress } from "../visit-progress.js";
 import { VISIT_PHOTO_ACTION } from "../visit-photo-viewer.js";
@@ -27,7 +27,9 @@ export function LiveVisits() {
   var visits = liveVisits();
   var today = localDateKey(new Date(), state.config.timeZone);
   var properties = liveProperties();
-  var row = function (visit) { return VisitRow(visit, { today: today, place: visitPlace(visit, properties) }); };
+  var row = function (visit) {
+    return VisitRow(visit, { today: today, place: visitPlace(visit, properties), onSite: visitOnSite(visit), photos: visitPhotoCount(visit) });
+  };
   if (visits.upcoming.length) page.appendChild(RecordSection("visits-upcoming", "Upcoming", visits.upcoming.map(row)));
   if (visits.past.length) page.appendChild(RecordSection("visits-past", "Past", visits.past.map(row)));
   return page;
@@ -83,6 +85,12 @@ export function LiveVisitDetail() {
     ].concat(photos)));
   }
   return page;
+}
+
+function visitOnSite(visit) {
+  if (visit.stateCode !== "IN_PROGRESS" && visit.stateCode !== "COMPLETED") return "";
+  var entry = visitProgress(visit, render);
+  return entry && entry.status === "ready" ? onSiteTimes(entry.steps, visit, state.config.timeZone) : "";
 }
 
 function PropertyFacts(property) {

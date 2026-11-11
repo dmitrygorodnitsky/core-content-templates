@@ -5,12 +5,12 @@
   "template": {
     "code": "CLIENT_REVIEW_DOCUMENT",
     "templateLanguage": "JTE",
-    "parameterCount": 192,
+    "parameterCount": 195,
     "sha256": {
       "head": "b5e252b604ad732492b218098f257bf497097a28f69355e257736c578a5a213e",
-      "html": "270622a990e1f4456202a93107c95bc7666da9ded686f534c898e9bc45a8b1bd",
+      "html": "729cab0208532bcf5561836eb7fb4f73a554773e876b966b92c168275985ce4d",
       "css": "979d23ce3f11d3e69f90c82be06607ac07e308a7fa9003bc0b13ea15c17e913d",
-      "javascript": "9e5a074a77b210ed8dcedb16d6754780cf249e9ffefb86b2df8828d0a76c7ab9"
+      "javascript": "86a3204e1d02342bae807b4da4c7d9fd6ba9d9ad32f7446bda933427a6cc5253"
     }
   },
   "runtime": {
@@ -92,6 +92,7 @@
       "LEGAL_NAME",
       "CLIENT_TYPE",
       "BILLING_ADDRESS",
+      "LEGAL_ADDRESS",
       "REPRESENTATIVE_FIRST_NAME",
       "REPRESENTATIVE_LAST_NAME",
       "REPRESENTATIVE_JOB_TITLE",

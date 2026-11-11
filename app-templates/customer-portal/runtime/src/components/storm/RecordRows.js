@@ -19,6 +19,8 @@ export function VisitRow(visit, options) {
       settings.label ? text("record-row__eyebrow", settings.label) : null,
       text("prop-visit__title", when),
       settings.place ? text("prop-visit__meta", settings.place) : null,
+      settings.onSite ? h("span", { "class": "prop-visit__meta", "data-module": "visit-on-site" }, settings.onSite) : null,
+      settings.photos ? h("span", { "class": "prop-visit__meta", "data-module": "visit-photo-count" }, settings.photos === 1 ? "1 photo" : settings.photos + " photos") : null,
     ]),
     text("status-badge status-badge--" + visit.status.tone, visit.status.label),
     text("prop-visit__caret", "›"),

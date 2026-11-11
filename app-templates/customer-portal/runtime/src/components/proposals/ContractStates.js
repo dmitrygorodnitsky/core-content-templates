@@ -84,7 +84,7 @@ export function PartialNotice(text) {
   ]);
 }
 
-export function CommandOutcome(phase) {
+export function CommandOutcome(phase, message) {
   if (phase === "conflict") {
     return h("div", { "class": "conflict-banner decision-outcome", "data-module": "command-conflict", "data-visual-id": "command-conflict", "data-state": "conflict", role: "alert" }, [
       h("div", { "class": "conflict-banner__icon" }, "↺"),
@@ -95,7 +95,8 @@ export function CommandOutcome(phase) {
     ]);
   }
   if (!OUTCOME_COPY[phase]) return null;
-  return DecisionFailure(OUTCOME_COPY[phase], { action: "contracts.refresh", label: "Refresh status" });
+  var reason = phase === "refused" && message ? OUTCOME_COPY.refused + " " + message : OUTCOME_COPY[phase];
+  return DecisionFailure(reason, { action: "contracts.refresh", label: "Refresh status" });
 }
 
 export function DecisionFailure(message, retry) {

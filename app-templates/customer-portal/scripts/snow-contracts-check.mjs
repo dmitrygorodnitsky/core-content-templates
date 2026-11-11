@@ -23,6 +23,7 @@ const {
   formatOrderPrice,
   formatOrderTotal,
   groupStatus,
+  pricingDisplay,
   normalizeContracts,
   normalizeQuoteOrders,
   normalizeServiceAgreement,
@@ -223,6 +224,15 @@ const orderList = {
     "CA$4,217.94 / month", "CA$16,871.75 per season", "CA$1,512.50 per visit", "CA$4,217.94", "CA$4,217.94",
   ], "every price carries the period of its pricing model, and a model without a known period shows the price alone");
   assert.equal(formatOrderPrice({ total: null, pricingModel: { code: "MONTHLY" } }), "", "no period without a price");
+  assert.deepEqual(["PER_SERVICE", "MONTHLY", "SEASONAL", "RECURRING", null].map((code) => plain(pricingDisplay(code ? { code } : null))), [
+    { linePrices: true, breakdown: false, total: false },
+    { linePrices: false, breakdown: false, total: true },
+    { linePrices: false, breakdown: false, total: true },
+    { linePrices: false, breakdown: false, total: true },
+    { linePrices: true, breakdown: true, total: true },
+  ], "per service shows each service's price and no total, subtotal or taxes; monthly, seasonal and recurring show only the total; an unknown billing type keeps everything");
+  assert.equal(formatOrderPrice({ ...priced("PER_SERVICE", 1512.5), pricing: pricingDisplay({ code: "PER_SERVICE" }) }), "", "a per-service order states no total anywhere");
+  assert.deepEqual(plain(normalizeQuoteOrders([{ ...quoted(602), metadata: { PRICING_MODEL: "SEASONAL" } }], catalog).orders[0].pricingModel), { code: "SEASONAL", label: "Seasonal" }, "the order's metadata.PRICING_MODEL is its billing type");
 
   assert.equal(formatMoney("8625.5", "USD"), "$8,625.50");
   assert.equal(formatMoney(0.02374, "CAD"), "CA$0.02374", "a unit price keeps the precision Core stored");
@@ -537,8 +547,12 @@ const RETIRED = ["Proposal #", "valid until", "sent Dec", "sq ft", "Beam AI", "l
   assert.deepEqual(all(map, ".map-pin-label").map((label) => label.textContent), ["Tabor Street", "Cinnamon Bear Way"], "only the properties whose quotes still wait are mapped");
 
   assert.equal(all(page, "[data-module=\"proposal-rollup\"]").length + all(page, ".rollup-card").length, 0, "no Approved, Revision, Declined or Open counters");
-  assert.deepEqual(all(page, ".contracts-section__count").map((count) => count.textContent), ["9", "6"], "the Quotes section counts only the quotes it lists");
-  const groups = all(page, "[data-module=\"quote-property\"]");
+  assert.deepEqual(all(page, ".contracts-section__count").map((count) => count.textContent), ["9", "6", "31"], "the Quotes section counts only the quotes it lists, and All orders counts every order");
+  const history = one(page, "[data-module=\"contracts-orders\"]");
+  assert.equal(all(history, "[data-module=\"quote-row\"]").length, 31, "All orders lists every order the customer can see, decided ones included");
+  assert.ok(["approved", "declined", "unseen"].every((status) => all(history, "[data-module=\"quote-row\"][data-state=\"" + status + "\"]").length > 0), "approved, declined and waiting orders alike");
+  for (const id of all(history, "[data-action=\"proposal.open\"]").map((button) => button.getAttribute("data-id"))) assert.ok(quoteGroupFor(id), "every order group opens its detail");
+  const groups = all(page, "[data-module=\"contracts-quotes\"] [data-module=\"quote-property\"]");
   assert.deepEqual(groups.map((group) => group.getAttribute("data-state")), ["revision", "open"], "only quotes awaiting a decision or in revision are listed; the approved and declined properties are not");
   const tabor = groups[0];
   const button = one(tabor, "button");
@@ -547,10 +561,10 @@ const RETIRED = ["Proposal #", "valid until", "sent Dec", "sq ft", "Beam AI", "l
   assert.equal(one(tabor, ".proposal-card__meta").textContent, "1190 Tabor Street, Golden, CO 80401 · 3 quotes");
   assert.equal(one(tabor, ".proposal-group__decision").textContent, "Changes requested");
   assert.deepEqual(all(groups[1], "[data-module=\"quote-row\"]").map((row) => [one(row, ".proposal-option__model").textContent, (one(row, ".proposal-option__total") || { textContent: null }).textContent, one(row, "[data-module=\"status-badge\"]").textContent]), [
-    ["Per service", "$992.99 per visit", "◔ Sent"],
+    ["Per service", null, "◔ Sent"],
     ["Monthly", "$33,766.64 / month", "◔ Sent"],
     ["Seasonal", "$32,156.25 per season", "◔ Sent"],
-  ], "each option shows Core's grand total with the period of its pricing model, never one computed from an area");
+  ], "a monthly or seasonal option shows Core's grand total with its period, a per-service option shows no total, and nothing is computed from an area");
   assert.deepEqual(groups.map((group) => all(group, "[data-module=\"quote-row\"]").length), [3, 3]);
   assert.equal(all(page, ".proposal-card__tag").length, 0, "every quoted property is on the map, so none is marked off it");
   assert.equal(one(page, "[data-module=\"quote-package-footer\"]").textContent, "✦Decide each property on its own. Approving one option for a property declines its other options, and your contract details go with the approval. Once every property has a decision, we prepare your service agreement.");
@@ -567,14 +581,14 @@ const RETIRED = ["Proposal #", "valid until", "sent Dec", "sq ft", "Beam AI", "l
     const map = one(page, "[data-module=\"portfolio-map\"]");
     assert.equal(one(map, ".portfolio-map__label").textContent, "portfolio map · 1 of 2 properties on the map");
     assert.equal(all(map, ".map-pin-wrap").length, 1, "a property without a coordinate is listed but not pinned");
-    const tags = all(page, "[data-module=\"quote-property\"]").map((group) => (one(group, ".proposal-card__tag") || { textContent: "" }).textContent);
+    const tags = all(page, "[data-module=\"contracts-quotes\"] [data-module=\"quote-property\"]").map((group) => (one(group, ".proposal-card__tag") || { textContent: "" }).textContent);
     assert.deepEqual(tags, ["", "Not on the map"]);
   });
   withProperties(() => { quotedProperties.forEach((property) => { property.lat = null; property.lon = null; }); }, () => {
     const page = ProposalsList();
     assert.equal(all(page, "[data-module=\"portfolio-map\"]").length, 0, "with nothing to place there is no map, and nothing lands at its centre");
     assert.equal(all(page, ".proposal-card__tag").length, 0, "without a map no property is marked off it");
-    assert.equal(all(page, "[data-module=\"quote-property\"]").length, 2, "every property still waiting is listed");
+    assert.equal(all(page, "[data-module=\"contracts-quotes\"] [data-module=\"quote-property\"]").length, 2, "every property still waiting is listed");
   });
 }
 
@@ -656,11 +670,16 @@ const RETIRED = ["Proposal #", "valid until", "sent Dec", "sq ft", "Beam AI", "l
   const cards = all(decided, "[data-module=\"quote-option\"]");
   assert.deepEqual(cards.map((card) => [one(card, ".quote-option__model").textContent, card.getAttribute("data-state")]), [["Per service", "declined"], ["Monthly", "approved"], ["Seasonal", "declined"]]);
   const monthly = cards[1];
-  assert.deepEqual(all(monthly, ".quote-line").map((row) => [one(row, ".purch-line__title").textContent, one(row, ".purch-line__meta").textContent, one(row, ".purch-line__side").textContent]), [
-    ["Snow clearing", "5 × $1,256.00", "$6,280.00"],
-    ["De-icing", "5 × $556.00", "$2,780.00"],
-  ], "each line is its product, quantity, unit price and Core's line total");
-  assert.deepEqual(all(monthly, ".money-rows__row").map((row) => row.textContent), ["Subtotal$9,060.00", "Taxes$262.74", "Total$9,322.74 / month"], "taxes that are charged keep their rows, and the total carries its period");
+  const lineText = (card) => all(card, ".quote-line").map((row) => [one(row, ".purch-line__title").textContent, (one(row, ".purch-line__meta") || { textContent: null }).textContent, (one(row, ".purch-line__side") || { textContent: null }).textContent]);
+  assert.deepEqual(lineText(monthly), [
+    ["Snow clearing", "Quantity 5", null],
+    ["De-icing", "Quantity 5", null],
+  ], "a monthly option lists its services without a price per service");
+  assert.deepEqual(all(monthly, ".money-rows__row").map((row) => row.textContent), ["Total$9,322.74 / month"], "and only its total, with its period: no subtotal or taxes");
+  const perService = cards[0];
+  assert.ok(lineText(perService).every((line) => line[2] && line[2].endsWith(" per service")), "a per-service option shows the price of each service");
+  assert.equal(all(perService, ".money-rows__row").length, 0, "and no total, subtotal or taxes");
+  assert.equal(one(perService, "[data-module=\"quote-totals\"]").getAttribute("data-state"), "per-service");
   assert.equal(all(decided, "[data-action=\"quote.approve\"]").length + all(decided, "[data-action=\"quote.decline\"]").length, 0, "a decided property offers no decision a terminal Order could not take");
   for (const retired of RETIRED) assert.ok(!decided.textContent.includes(retired), "the quote detail must not show " + JSON.stringify(retired));
   assert.equal(all(decided, "[data-module=\"beam-report\"]").length + all(decided, "[data-module=\"plan-option\"]").length, 0, "the Beam AI block and the hard-coded plans are gone from the package");
@@ -1147,7 +1166,13 @@ const RETIRED = ["Proposal #", "valid until", "sent Dec", "sq ft", "Beam AI", "l
   assert.equal(one(agreementRow, ".proposal-card__meta").textContent, "Monthly · CA$4,217.94 / month");
   assert.equal(once(agreementRow, "Active"), 1, "the status shows once, as the badge");
   assert.equal(all(agreementRow, ".proposal-card__diamond").length, 0);
-  assert.doesNotMatch(contracts.textContent, /declined|Declined|quote/, "nothing about the decided quotes reaches the list");
+  const orderHistory = one(contracts, "[data-module=\"contracts-orders\"]");
+  assert.doesNotMatch(contracts.textContent.replace(orderHistory.textContent, ""), /declined|Declined|quote/, "nothing about the decided quotes reaches the agreements list");
+  assert.deepEqual(all(orderHistory, "[data-module=\"quote-row\"]").map((row) => [one(row, ".proposal-option__model").textContent, (one(row, ".proposal-option__total") || { textContent: null }).textContent, row.getAttribute("data-state")]).sort(), [
+    ["Monthly", "CA$4,217.94 / month", "approved"],
+    ["Per service", null, "declined"],
+    ["Seasonal", "CA$16,871.75 per season", "declined"],
+  ], "All orders lists the approved and the declined orders, each priced by its billing type");
 
   state.agreementId = "agreement-core-169";
   const plainAgreement = AgreementDetail();
@@ -1225,8 +1250,8 @@ const RETIRED = ["Proposal #", "valid until", "sent Dec", "sq ft", "Beam AI", "l
   const link = one(waitingCard, "[data-module=\"quote-decision\"]");
   assert.deepEqual([link.textContent, link.getAttribute("data-action")], ["1 quote waiting for your decision›", "overview.openContracts"], "a quote awaiting the client is a prominent link to Contracts");
   const listed = ProposalsList();
-  assert.deepEqual(all(listed, "[data-module=\"quote-property\"]").map((group) => [group.getAttribute("data-state"), one(group, ".proposal-card__meta").textContent]), [["open", "1 quote"]], "only the quote that waits is listed, and its header names the address once");
-  assert.equal(once(one(listed, "[data-module=\"quote-property\"]"), "1239 W Georgia St"), 1);
+  assert.deepEqual(all(listed, "[data-module=\"contracts-quotes\"] [data-module=\"quote-property\"]").map((group) => [group.getAttribute("data-state"), one(group, ".proposal-card__meta").textContent]), [["open", "1 quote"]], "only the quote that waits is listed, and its header names the address once");
+  assert.equal(once(one(listed, "[data-module=\"contracts-quotes\"] [data-module=\"quote-property\"]"), "1239 W Georgia St"), 1);
   assert.equal(one(PropertyDetail(), "[data-fact=\"quotes\"] .prop-fact__value").textContent, "1 quote · awaiting your decision ›");
   live(bilbo({}, [sentQuote(116), sentQuote(117)]));
   assert.equal(one(Overview(), "[data-module=\"quote-decision\"]").textContent, "2 quotes waiting for your decision›");

@@ -167,7 +167,7 @@ export function AgreementTerms(blocks, open) {
 export function AgreementOutcome(agreement) {
   var command = state.contractCommand;
   if (!command || command.kind !== "agreement" || command.phase === "pending" || command.targets.indexOf(agreement.backendId) === -1) return null;
-  var outcome = CommandOutcome(command.phase);
+  var outcome = CommandOutcome(command.phase, command.message);
   if (!outcome) return null;
   return h("section", { "class": "card card--pad agreement-approve", "data-module": "agreement-approve", "data-visual-id": "agreement-approve", "data-state": command.phase, "aria-labelledby": "agreement-approve-title" }, [
     h("h2", { "class": "agreement-card__title", id: "agreement-approve-title" }, "Your approval"),
@@ -203,7 +203,7 @@ export function AgreementApproval(row, busy) {
     ]));
   }
   if (targeted && !pending) {
-    var outcome = CommandOutcome(command.phase);
+    var outcome = CommandOutcome(command.phase, command.message);
     if (outcome) card.appendChild(outcome);
   }
   return card;

@@ -125,7 +125,7 @@ function coreFetch(table) {
     const event = /^\/(core-bill|core)\/api\/tagged\/(order|document)\/(\d+)\/send-event\.json$/.exec(route);
     if (event) {
       table.events.push({ entity: event[2], id: Number(event[3]), code: target.searchParams.get("event") });
-      if (table.eventStatus) return { ok: false, status: table.eventStatus, async json() { return {}; } };
+      if (table.eventStatus) return { ok: false, status: table.eventStatus, async json() { return table.eventBody || {}; } };
       if (!table.dropEvents) applyServerEvent(table, event[2], Number(event[3]), target.searchParams.get("event"));
       return { ok: true, status: 200, async json() { throw new Error("empty body"); } };
     }
@@ -209,20 +209,21 @@ function quietConsole() {
   const list = ProposalsList();
   assert.equal(list.getAttribute("data-state"), "ready");
   assert.equal(one(list, "h1").textContent, "Your contracts");
-  assert.deepEqual(all(list, "[data-module=\"agreement-row\"]").map((row) => one(row, "[data-module=\"status-badge\"]").textContent), ["Ready for your approval"]);
-  assert.equal(all(list, "[data-module=\"quote-property\"]").length, 1);
-  assert.equal(one(list, "[data-module=\"quote-property\"] .proposal-card__meta").textContent, "1177 West Hastings Street, Vancouver, BC, V6E 2K3 · 2 quotes");
+  assert.deepEqual(all(list, "[data-module=\"agreement-row\"]").map((row) => one(row, "[data-module=\"status-badge\"]").textContent), ["Sent for your approval"]);
+  assert.equal(all(list, "[data-module=\"contracts-quotes\"] [data-module=\"quote-property\"]").length, 1);
+  assert.equal(one(list, "[data-module=\"contracts-quotes\"] [data-module=\"quote-property\"] .proposal-card__meta").textContent, "1177 West Hastings Street, Vancouver, BC, V6E 2K3 · 2 quotes");
   assert.ok(!list.textContent.includes("Line note for the operator"), "operator notes on a line are never shown");
 
   state.currentSiteId = "quote-0-959";
   const detail = ProposalDetail();
   assert.deepEqual(all(detail, "[data-module=\"quote-option\"]").map((card) => card.getAttribute("data-state")), ["unseen", "unseen"]);
-  assert.deepEqual(all(detail, "[data-module=\"quote-option\"] .money-rows__row").map((row) => row.textContent).slice(0, 3), ["SubtotalCA$2,444.72", "TaxesCA$0.00", "TotalCA$2,444.72"], "Core's zero taxes are stated rather than left out");
+  assert.deepEqual(all(detail, "[data-module=\"quote-option\"] .money-rows__row").map((row) => row.textContent), ["TotalCA$26,751.60 per season"], "the seasonal option states only its total, the per-service option no total, and neither a subtotal or taxes");
+  assert.deepEqual(all(detail, "[data-module=\"quote-totals\"]").map((node) => node.getAttribute("data-state")), ["per-service", null], "the per-service option says each service is paid when performed");
 
   state.agreementId = "agreement-core-5602";
   const agreement = AgreementDetail();
   assert.equal(agreement.getAttribute("data-state"), "approval");
-  assert.deepEqual(all(agreement, "[data-module=\"agreement-party\"] .agreement-facts__row").slice(0, 2).map((row) => row.textContent), ["Legal nameGranite Ridge Snow Removal LLC", "RepresentativeNot stated"]);
+  assert.deepEqual(all(agreement, "[data-module=\"agreement-party\"]").map((party) => [party.getAttribute("data-party"), one(party, ".agreement-party__name").textContent, all(party, ".agreement-facts__row").length]), [["provider", "Granite Ridge Snow Removal", 0], ["client", "Harbour View Strata", 0]], "each party shows its name and no row for a fact the agreement does not state");
   assert.equal(all(agreement, "[data-module=\"agreement-property\"]").length, 1);
   assert.equal(one(agreement, "[data-module=\"agreement-property\"] .agreement-property__title").textContent, "Property details unavailable");
   assert.equal(all(agreement, "[data-action=\"agreement.approve\"]").length, 1);
@@ -285,8 +286,8 @@ function quietConsole() {
     const agreementsOnly = ProposalsList();
     assert.equal(agreementsOnly.getAttribute("data-state"), "partial");
     assert.match(agreementsOnly.textContent, /Your quotes couldn’t be loaded, so only your service agreements are shown\./);
-    assert.equal(all(agreementsOnly, "[data-module=\"quote-property\"]").length, 0);
-    assert.equal(all(agreementsOnly, "[data-module=\"agreement-row\"]").length, 2);
+    assert.equal(all(agreementsOnly, "[data-module=\"contracts-quotes\"] [data-module=\"quote-property\"]").length, 0);
+    assert.equal(all(agreementsOnly, "[data-module=\"agreement-row\"]").length, 1, "the one agreement the customer can act on is still listed");
     state.agreementId = "agreement-core-5602";
     assert.equal(all(AgreementDetail(), "[data-module=\"agreement-property\"]").length, 0, "an agreement whose Orders could not be read lists no invented service");
 
@@ -441,6 +442,19 @@ for (const [status, phase] of [[403, "refused"], [409, "refused"], [500, "failed
   const table = coreTable();
   const harness = commandHarness(table);
   await ready(harness);
+  table.eventStatus = 409;
+  table.eventBody = { status: 409, message: "A legal address is required before this quote can be accepted." };
+  assert.equal(await harness.commands.decide("decline", 4102), false);
+  assert.equal(state.contractCommand.message, "A legal address is required before this quote can be accepted.", "a refusal keeps Core's reason");
+  state.currentSiteId = "quote-0-959";
+  const refusedCard = all(ProposalDetail(), "[data-module=\"quote-option\"]").find((card) => all(card, "[data-module=\"command-failure\"]").length);
+  assert.match(one(refusedCard, "[data-module=\"command-failure\"]").textContent, /wasn’t accepted.*A legal address is required before this quote can be accepted\./, "and the customer reads it beside the option, never a silent refusal");
+}
+
+{
+  const table = coreTable();
+  const harness = commandHarness(table);
+  await ready(harness);
   table.dropEvents = true;
   assert.equal(await harness.commands.decide("decline", 4102), false);
   assert.equal(table.events.length, 1);
@@ -457,7 +471,7 @@ for (const [status, phase] of [[403, "refused"], [409, "refused"], [500, "failed
   assert.equal(state.contractCommand.phase, "readback-failed", "an event that went out but could not be read back is its own state");
   const page = ProposalsList();
   assert.equal(page.getAttribute("data-state"), "readback-failed");
-  assert.equal(all(page, "[data-module=\"quote-property\"]").length, 0, "no stale quote is shown after the command");
+  assert.equal(all(page, "[data-module=\"contracts-quotes\"] [data-module=\"quote-property\"]").length, 0, "no stale quote is shown after the command");
 }
 
 {
@@ -498,7 +512,7 @@ for (const [status, phase] of [[403, "refused"], [409, "refused"], [500, "failed
   assert.deepEqual(harness.toasts, ["Agreement approved"]);
   state.agreementId = "agreement-core-5602";
   const approved = AgreementDetail();
-  assert.equal(one(approved, "[data-module=\"agreement-notice\"]").textContent, "You approved this agreement.");
+  assert.equal(all(approved, "[data-module=\"agreement-notice\"]").length, 0, "an approved agreement needs nothing from the customer, so it shows no banner");
   assert.equal(all(approved, "[data-module=\"agreement-approve\"]").length, 0);
 
   table.agreements.push(coreAgreement(5699, "SENT_TO_CLIENT", [], { CLIENT: { value: 701 } }));
@@ -571,22 +585,20 @@ for (const [status, phase] of [[403, "refused"], [409, "refused"], [500, "failed
     const ready = await widget(coreTable());
     assert.equal(ready.getAttribute("data-state"), "ready", "the home widget reads the same live module as the Contracts page");
     assert.equal(one(ready, ".ov-card__title").textContent, "Contracts");
-    assert.equal(one(ready, ".ov-lead").textContent, "1service agreement");
+    assert.equal(all(ready, ".ov-lead").length, 0, "the home widget shows no counters");
     const rows = all(ready, "[data-module=\"contract-row\"]");
     assert.deepEqual(rows.map((row) => row.getAttribute("data-state")), ["approval"], "the quotation round carries no agreement, so only the agreement waiting for approval is listed");
     assert.deepEqual(rows.map((row) => one(row, ".ov-row__title").textContent), ["Juniper Terrace"]);
-    assert.deepEqual(rows.map((row) => one(row, ".status-badge").textContent), ["Ready for your approval"]);
+    assert.deepEqual(rows.map((row) => one(row, ".status-badge").textContent), ["Sent for your approval"]);
     assert.deepEqual(rows.map((row) => [one(row, ".ov-chev").getAttribute("data-action"), one(row, ".ov-chev").getAttribute("data-id")]), [["agreement.open", "agreement-core-5602"]]);
-    assert.deepEqual(rows.map((row) => (one(row, ".ov-row__meta") || { textContent: "" }).textContent), ["Nov 1, 2026 – Mar 31, 2027"]);
+    assert.deepEqual(rows.map((row) => (one(row, ".ov-row__meta") || { textContent: "" }).textContent), ["Seasonal · CA$26,751.60 per season · Season Nov 1, 2026 – Mar 31, 2027"], "the row names the chosen option, its total with its period and the season");
     assert.equal(one(ready, ".ov-more").getAttribute("data-action"), "overview.openContracts");
     assert.doesNotMatch(ready.textContent, /aren’t in the portal yet|No active contracts/);
 
     state.propertyId = "prop-core-958";
-    const approval = one(PropertyDetail(), "[data-fact=\"contract\"]");
-    assert.equal(one(approval, ".prop-fact__label").textContent, "Service agreement");
-    assert.equal(one(approval, ".prop-fact__value").textContent, "Ready for your approval ›");
-    assert.equal(one(approval, ".prop-fact__value").getAttribute("data-action"), "agreement.open");
-    assert.equal(one(approval, ".prop-fact__value").getAttribute("data-id"), "agreement-core-5602");
+    const approval = one(PropertyDetail(), "[data-module=\"property-service\"]");
+    assert.equal(one(approval, ".status-badge").textContent, "Sent for your approval");
+    assert.equal(one(approval, "[data-action=\"agreement.open\"]").getAttribute("data-id"), "agreement-core-5602", "the property's service links to its agreement");
 
     const emptyTable = coreTable();
     emptyTable.agreements = [];
@@ -595,7 +607,7 @@ for (const [status, phase] of [[403, "refused"], [409, "refused"], [500, "failed
     assert.equal(empty.getAttribute("data-state"), "empty");
     assert.equal(one(empty, ".ov-empty").textContent, "No contracts yetWhen we send you a quote or a service agreement, it appears here.");
     state.propertyId = "prop-core-958";
-    assert.equal(one(one(PropertyDetail(), "[data-fact=\"contract\"]"), ".prop-fact__value").textContent, "None yet", "a read that found no agreement says so only once the read is in");
+    assert.equal(all(PropertyDetail(), "[data-module=\"property-service\"]").length, 0, "a read that found no agreement shows no service card");
 
     const preparingTable = coreTable();
     preparingTable.agreements = [];
@@ -609,8 +621,8 @@ for (const [status, phase] of [[403, "refused"], [409, "refused"], [500, "failed
     partialTable.fail["/core/api/tagged/document/list.json"] = 500;
     const partial = await widget(partialTable);
     assert.equal(partial.getAttribute("data-state"), "partial");
-    assert.equal(one(partial, ".ov-lead").textContent, "3quotes1 of 2 properties decided");
-    assert.equal(one(partial, "[data-module=\"quote-decision\"] .ov-row__title").textContent, "Quotes awaiting your decision");
+    assert.equal(all(partial, ".ov-lead").length, 0, "the home widget shows no counters");
+    assert.equal(one(partial, "[data-module=\"quote-decision\"] .ov-waiting__label").textContent, "2 quotes waiting for your decision");
     assert.equal(one(partial, "[data-module=\"contracts-partial\"]").textContent, "Part of your contracts couldn’t be loaded. Contracts shows what did.");
 
     const brokenTable = coreTable();
@@ -621,9 +633,7 @@ for (const [status, phase] of [[403, "refused"], [409, "refused"], [500, "failed
     assert.equal(one(broken, "[data-module=\"contracts-error\"] .ov-empty__title").textContent, "Couldn’t load your contracts");
     assert.equal(one(broken, "[data-action=\"contracts.refresh\"]").textContent, "Try again ›");
     state.propertyId = "prop-core-958";
-    const unreadable = one(PropertyDetail(), "[data-fact=\"contract\"]");
-    assert.equal(unreadable.getAttribute("data-state"), "unavailable");
-    assert.equal(one(unreadable, ".prop-fact__note").textContent, "Your contracts couldn’t be loaded.");
+    assert.equal(all(PropertyDetail(), "[data-module=\"property-service\"]").length, 0, "a property whose contracts could not be read shows no invented service");
 
     const forbiddenTable = coreTable();
     forbiddenTable.fail["/core/api/tagged/document"] = 403;
@@ -637,8 +647,7 @@ for (const [status, phase] of [[403, "refused"], [409, "refused"], [500, "failed
     state.contractCommand = null;
 
     const closed = await widget(null, { portalEnabledModules: "overview,properties" });
-    assert.equal(closed.getAttribute("data-state"), "unavailable", "without the Contracts module the home says Contracts are not in the portal");
-    assert.equal(one(closed, "[data-module=\"section-unavailable\"]").textContent, "Not available yetContracts aren’t in the portal yet.");
+    assert.equal(closed, null, "without the Contracts module the home shows no Contracts card");
   } finally {
     state.moduleData.properties = null;
     console.restore();
@@ -648,7 +657,7 @@ for (const [status, phase] of [[403, "refused"], [409, "refused"], [500, "failed
 const source = fs.readFileSync(path.resolve("app-templates/customer-portal/runtime/src/contract-commands.js"), "utf8")
   + fs.readFileSync(path.resolve("app-templates/customer-portal/runtime/src/components/proposals/AgreementParts.js"), "utf8")
   + fs.readFileSync(path.resolve("app-templates/customer-portal/runtime/src/components/proposals/QuoteOptionCard.js"), "utf8");
-assert.doesNotMatch(source, /CUSTOMER_CHANGES_REQUESTED|QUOTE_CHANGE_REQUEST|innerHTML|html:/, "no change-request control and no markup injection in the contracts presentation");
+assert.doesNotMatch(source, /QUOTE_CHANGE_REQUEST|innerHTML|html:/, "no markup injection in the contracts presentation, and change requests use only the ORDER_LIFECYCLE event");
 
 console.log("snow-contracts-live-check ok: the live Contracts module reads agreements, quotes and their lines from Core with each read's scope stated, renders partial, error, unauthorized, unavailable and loading states without fixture data on the Contracts page, the home widget and the property page alike, and sends one command at a time: a pre-read that refuses stale or foreign records, one generic workflow event, a readback that decides success, and distinct refused, failed, unconfirmed, readback-failed and signed-out outcomes, with view events sent in order and approving an option shown as declining its siblings only after Core did");
 

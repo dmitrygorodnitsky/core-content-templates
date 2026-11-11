@@ -39,25 +39,40 @@ function QuoteLines(order) {
   if (!order.lines.length) {
     return h("div", { "class": "quote-option__note", "data-module": "quote-lines", "data-state": "empty" }, "No services are listed on this quote.");
   }
-  var list = h("div", { "class": "purch-lines quote-lines", "data-module": "quote-lines", "data-visual-id": "quote-lines", "data-state": order.linesState, role: "list", "aria-label": "Services" }, order.lines.map(function (line) {
-    var detail = line.quantity && line.unitPrice ? line.quantity + " × " + line.unitPrice : line.unitPrice || (line.quantity ? "Quantity " + line.quantity : "");
+  var pricing = order.pricing || { linePrices: true, total: true };
+  var list = h("div", { "class": "purch-lines quote-lines", "data-module": "quote-lines", "data-visual-id": "quote-lines", "data-state": order.linesState, "data-priced": pricing.linePrices ? "true" : "false", role: "list", "aria-label": "Services" }, order.lines.map(function (line) {
     return h("div", { "class": "purch-line quote-line", "data-line": line.key, role: "listitem" }, [
       h("div", { "class": "quote-line__body" }, [
         h("div", { "class": "purch-line__title" + (line.product ? "" : " quote-line__title--unnamed") }, line.product || "Unnamed service"),
-        detail ? h("div", { "class": "purch-line__meta" }, detail) : null,
+        lineDetail(line, pricing) ? h("div", { "class": "purch-line__meta" }, lineDetail(line, pricing)) : null,
       ]),
-      line.total ? h("div", { "class": "purch-line__side" }, h("b", null, line.total)) : null,
+      lineSide(line, pricing) ? h("div", { "class": "purch-line__side" }, h("b", null, lineSide(line, pricing))) : null,
     ]);
   }));
   if (order.linesState !== "partial") return list;
   return h("div", null, [list, h("div", { "class": "quote-option__note", "data-state": "partial" }, "Some details of these services couldn’t be loaded.")]);
 }
 
+function lineDetail(line, pricing) {
+  if (!pricing.linePrices || !pricing.total) return line.quantity && line.quantity !== "1" ? "Quantity " + line.quantity : "";
+  return line.quantity && line.unitPrice ? line.quantity + " × " + line.unitPrice : line.unitPrice || (line.quantity ? "Quantity " + line.quantity : "");
+}
+
+function lineSide(line, pricing) {
+  if (!pricing.linePrices) return "";
+  if (!pricing.total) return line.unitPrice ? line.unitPrice + " per service" : "";
+  return line.total;
+}
+
 function QuoteMoney(order) {
+  var pricing = order.pricing || { breakdown: true, total: true };
+  if (!pricing.total) {
+    return h("div", { "class": "quote-option__note", "data-module": "quote-totals", "data-state": "per-service" }, "You pay the price of each service every time it is performed.");
+  }
   if (!order.money) {
     return h("div", { "class": "quote-option__note", "data-module": "quote-totals", "data-state": "unpriced" }, "No price is stated on this quote yet.");
   }
-  var rows = order.money.taxFree ? [] : [["Subtotal", order.money.subtotal, "subtotal"], ["Taxes", order.money.taxes, "taxes"]].filter(function (row) { return !!row[1]; });
+  var rows = order.money.taxFree || !pricing.breakdown ? [] : [["Subtotal", order.money.subtotal, "subtotal"], ["Taxes", order.money.taxes, "taxes"]].filter(function (row) { return !!row[1]; });
   var wrap = h("div", { "class": "money-rows quote-totals", "data-module": "quote-totals", "data-visual-id": "quote-totals" }, rows.map(function (row) {
     return h("div", { "class": "money-rows__row", "data-kind": row[2] }, [h("span", null, row[0]), h("span", null, row[1])]);
   }));
@@ -71,7 +86,7 @@ function QuoteMoney(order) {
 function QuoteDecisions(order, settings) {
   var command = state.contractCommand;
   var targeted = !!command && command.targets.indexOf(order.backendId) !== -1;
-  var outcome = targeted && command.phase !== "pending" ? CommandOutcome(command.phase) : null;
+  var outcome = targeted && command.phase !== "pending" ? CommandOutcome(command.phase, command.message) : null;
   var busy = !!settings.busy;
   if (order.status !== "unseen") return outcome ? h("div", { "class": "quote-option__decide" }, outcome) : null;
   var confirm = state.contractConfirm;

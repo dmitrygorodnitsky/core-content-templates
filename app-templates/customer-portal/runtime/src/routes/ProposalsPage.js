@@ -92,11 +92,14 @@ function ContractsPage() {
   }
   var hasAgreements = quotes.agreements.length > 0;
   var hasQuotes = quotes.pending.length > 0;
+  var pendingCount = quotes.pending.reduce(function (sum, group) { return sum + group.orders.length; }, 0);
+  var historyCount = (quotes.history || []).reduce(function (sum, group) { return sum + group.orders.length; }, 0);
+  var hasHistory = historyCount > pendingCount;
   var partial = ContractsNotices(quotes);
-  page.setAttribute("data-state", hasAgreements || hasQuotes ? (partial.length ? "partial" : "ready") : quotes.preparing ? "preparing" : "empty");
+  page.setAttribute("data-state", hasAgreements || hasQuotes || hasHistory ? (partial.length ? "partial" : "ready") : quotes.preparing ? "preparing" : "empty");
   page.appendChild(ContractsHead(quotes));
 
-  if (!hasAgreements && !hasQuotes) {
+  if (!hasAgreements && !hasQuotes && !hasHistory) {
     partial.forEach(function (notice) { page.appendChild(notice); });
     page.appendChild(quotes.preparing
       ? QuotesPreparing()
@@ -130,6 +133,13 @@ function ContractsPage() {
     section.appendChild(QuoteGroups(quotes.pending, placements, !!portfolio));
     if (quotes.deciding) section.appendChild(QuotesFooter());
     page.appendChild(section);
+  }
+
+  if (hasHistory) {
+    page.appendChild(h("section", { "class": "contracts-section", "data-module": "contracts-orders", "aria-label": "All orders" }, [
+      ContractsSectionTitle("All orders", historyCount),
+      QuoteGroups(quotes.history, quotes.history.map(function () { return { point: null, reason: "unknown" }; }), false),
+    ]));
   }
   return page;
 }

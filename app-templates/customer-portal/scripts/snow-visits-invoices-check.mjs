@@ -282,7 +282,12 @@ const page = (route, params = {}) => { Object.assign(state, params); state.route
   assert.deepEqual(ids(one(visits, "[data-module=\"visits-upcoming\"]"), "[data-module=\"visit-row\"]"), ["visit-core-78", "visit-core-79"]);
   assert.deepEqual(ids(one(visits, "[data-module=\"visits-past\"]"), "[data-module=\"visit-row\"]"), ["visit-core-77", "visit-core-76"]);
   const visit76 = all(visits, "[data-module=\"visit-row\"]").find((row) => row.getAttribute("data-id") === "visit-core-76");
-  assert.match(visit76.textContent, /^Wed, Oct 21, 7:30 – 8:20 AMCompleted›$/, "a row shows date, window and status, and no address for a single property");
+  assert.match(visit76.textContent, /^Wed, Oct 21, 7:30 – 8:20 AMArrived Oct 28, 5:20 AM · Departed Oct 28, 5:20 AMCompleted›$/, "a row shows date, window, the arrival and departure Core recorded, and status, and no address for a single property");
+  const visit77 = all(visits, "[data-module=\"visit-row\"]").find((row) => row.getAttribute("data-id") === "visit-core-77");
+  assert.equal(one(visit77, "[data-module=\"visit-on-site\"]").textContent, "Arrived 6:47 AM · Departed 7:33 AM", "times on the visit's own day name no date");
+  assert.equal(one(visit77, "[data-module=\"visit-photo-count\"]").textContent, "2 photos", "a row says how many before and after photos the visit has");
+  const visit79 = all(visits, "[data-module=\"visit-row\"]").find((row) => row.getAttribute("data-id") === "visit-core-79");
+  assert.equal(all(visit79, "[data-module=\"visit-on-site\"]").length + all(visit79, "[data-module=\"visit-photo-count\"]").length, 0, "a scheduled visit has no arrival, departure or photos yet");
   assert.doesNotMatch(visits.textContent, /Frost Lane|Canceled|CANCELED|Draft/);
 
   const detail = page("visit.detail", { visitId: "visit-core-77" });
@@ -349,6 +354,7 @@ const page = (route, params = {}) => { Object.assign(state, params); state.route
     visit(80, 1792828800000, 1792833300000, "COMPLETED", 1033),
   ];
   await liveLoad({ properties: [property(983, 610), property(1033, 611)], visits, invoices: [] });
+  await preloadProgress();
   const list = page("appointments");
   const rows = Object.fromEntries(all(list, "[data-module=\"visit-row\"]").map((row) => [row.getAttribute("data-id"), row.textContent]));
   assert.match(rows["visit-core-79"], /12 Frost Lane, Surrey, BC V3W 1J8, Canada/, "with two properties each visit names its address");
@@ -450,18 +456,18 @@ const page = (route, params = {}) => { Object.assign(state, params); state.route
   assert.equal(all(one(done, "[data-module=\"property-plan\"]"), ".prop-plan__shape").length, 1, "the approved plan is drawn");
   assert.deepEqual(all(one(done, "[data-module=\"visit-services\"]"), ".prop-service__line").map((node) => node.textContent), ["Snow Removal", "Rock Salt De-Icing"], "the services are the chosen option of the active agreement, not the declined one");
   assert.doesNotMatch(one(done, "[data-module=\"visit-services\"]").textContent, /\$|747|Monthly/, "the visit page shows no prices");
-  assert.deepEqual(steps(done), ["Scheduled · Oct 22", "Started · 6:47 AM", "Completed · 7:33 AM"], "transition instants read in the organization's zone, beside the wall-clock window 6:45 – 7:35 AM");
+  assert.deepEqual(steps(done), ["Scheduled · Oct 22", "Arrived · 6:47 AM", "Departed · 7:33 AM"], "transition instants read in the organization's zone, beside the wall-clock window 6:45 – 7:35 AM");
   assert.doesNotMatch(one(done, "[data-module=\"visit-progress\"]").textContent, /1:47 PM|2:33 PM/, "observed is a real instant, not a wall-clock value read as UTC");
 
   const live = page("visit.detail", { visitId: "visit-core-78" });
   assert.equal(one(live, "[data-module=\"visit-when\"]").textContent, "6:30 – 7:30 AM", "the planned window renders without a zone shift");
-  assert.deepEqual(steps(live), ["Started · 5:21 AM"], "the dev-1 transition of visit 78, observed 12:21 UTC, is 5:21 AM in Vancouver");
+  assert.deepEqual(steps(live), ["Arrived · 5:21 AM"], "the dev-1 transition of visit 78, observed 12:21 UTC, is 5:21 AM in Vancouver");
   assert.deepEqual(sections(live), ["visit-detail-bar", "visit-property", "property-plan", "visit-services", "visit-progress", "visit-photos"]);
   assert.deepEqual(all(live, ".record-photos__label").map((node) => node.textContent), ["Before"], "before photos show while the visit is in progress");
   assert.deepEqual(all(live, "img").map((img) => img.getAttribute("src")), ["/core/image/" + PRE_78 + "/get"]);
 
   const old = page("visit.detail", { visitId: "visit-core-76" });
-  assert.deepEqual(steps(old), ["Started · Oct 28, 5:20 AM", "Completed · Oct 28, 5:20 AM"], "a transition on another day than the visit names its date");
+  assert.deepEqual(steps(old), ["Arrived · Oct 28, 5:20 AM", "Departed · Oct 28, 5:20 AM"], "a transition on another day than the visit names its date");
 
   const upcoming = page("visit.detail", { visitId: "visit-core-79" });
   assert.deepEqual(sections(upcoming), ["visit-detail-bar", "visit-property", "property-plan", "visit-services"], "an upcoming visit shows the property and the services and no empty section");

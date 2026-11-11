@@ -58,6 +58,7 @@ const ORDER_MAPPINGS = [
   { name: "attributes" },
   { name: "grandTotal" },
   { name: "id" },
+  { name: "metadata" },
   { name: "totalCharges" },
   { name: "totalTaxes" },
   { key: "id", mappings: ID_MAPPINGS, name: "account", type: "identifier" },
@@ -506,8 +507,24 @@ function resultSizeOf(reply, fallback) {
 async function sendEvent(fetchImpl, api, url, input) {
   var response = await fetchImpl(url, readOptions(api, input && typeof input === "object" ? input : {}));
   if (!response || typeof response.ok !== "boolean") throw contractError("invalid-response", "Core request returned an invalid response");
-  if (!response.ok) throw failure(response.status, true);
+  if (!response.ok) throw withServerMessage(failure(response.status, true), await refusalText(response));
   return true;
+}
+
+async function refusalText(response) {
+  if (typeof response.json !== "function") return "";
+  try {
+    var body = await response.json();
+    var message = body && typeof body === "object" ? body.message || body.detail || body.error_description || "" : "";
+    return typeof message === "string" ? message.replace(/\s+/g, " ").trim().slice(0, 400) : "";
+  } catch (_) {
+    return "";
+  }
+}
+
+function withServerMessage(error, message) {
+  if (error.code === "command-refused" && message) error.serverMessage = message;
+  return error;
 }
 
 function commandId(backendId) {

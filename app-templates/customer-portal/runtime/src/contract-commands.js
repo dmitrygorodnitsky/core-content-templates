@@ -118,7 +118,7 @@ export function createContractCommands(deps) {
         return false;
       }
     }
-    deps.state.contractCommand = Object.assign({}, command, { phase: phase });
+    deps.state.contractCommand = Object.assign({}, command, { phase: phase }, phase === "refused" && error && error.serverMessage ? { message: error.serverMessage } : {});
     return false;
   }
 
