@@ -995,6 +995,45 @@
     }
   },
   {
+    "code": "DECLINE_CONFIRM_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "DECLINE CONFIRM TITLE",
+        "DESCRIPTION": "Client review document copy."
+      }
+    },
+    "value": {
+      "en": "Decline every option for this property?"
+    }
+  },
+  {
+    "code": "DECLINE_CONFIRM_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "DECLINE CONFIRM BODY",
+        "DESCRIPTION": "Client review document copy."
+      }
+    },
+    "value": {
+      "en": "Declined options cannot be approved later through this link."
+    }
+  },
+  {
+    "code": "DECLINE_CONFIRM_SEND",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "DECLINE CONFIRM SEND",
+        "DESCRIPTION": "Client review document copy."
+      }
+    },
+    "value": {
+      "en": "Confirm decline"
+    }
+  },
+  {
     "code": "CHOICE_APPROVED_NOTE",
     "type": "LOCALIZED_STRING_SS",
     "nls": {

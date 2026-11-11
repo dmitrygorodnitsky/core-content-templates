@@ -1108,22 +1108,27 @@ function assertForm(run, expected, message) {
         break;
       }
       case "choices-decline": {
-        assert.equal(snapshot.step, "confirm", "Decline all options opens the same step; nothing is sent yet");
-        assert.equal(byAttribute(run.mount, "id", "cr-choices-title")[0].textContent, copy.choicesTitle, "named for a decision without contract details");
-        const panel = byClass(run.mount, "cr-choices")[0];
-        assert.deepEqual(byClass(panel, "cr-choices__item").map((item) => item.getAttribute("data-choice")), ["decline"]);
-        assert.ok(surface(panel).includes(copy.choiceDeclineRow) && surface(run.mount).includes(copy.choicesBody));
-        assert.equal(byClass(panel, "cr-field").length + byClass(panel, "cr-form-card").length, 0, "a submission without an approval asks no details");
-        assert.equal(run.sent.length, 0);
-        run.controller.dispatch("choices.back");
+        assert.equal(snapshot.step, "review", "Decline all options opens no step: a client who declines is not led to the contract details");
+        assert.equal(byClass(run.mount, "cr-choices").length + byClass(run.mount, "cr-field").length + byClass(run.mount, "cr-form-card").length + byClass(run.mount, "cr-continue").length, 0);
         const card = byAttribute(run.mount, "aria-labelledby", "cr-property-278")[0];
-        const chosen = byClass(card, "cr-chosen")[0];
-        assert.ok(chosen && chosen.getAttribute("data-chosen") === "decline" && surface(chosen).includes(copy.choiceDeclinedNote), "back on the quotes the property is marked as declined");
-        assert.equal(byAttribute(card, "data-action", "property.decline").length, 0, "and no second decline is offered");
-        assert.equal(byAttribute(byClass(run.mount, "cr-continue")[0], "data-action", "choices.open")[0].textContent, copy.choicesContinue);
-        run.controller.dispatch("choice.clear", { key: "property-278" });
-        assert.equal(byAttribute(byAttribute(run.mount, "aria-labelledby", "cr-property-278")[0], "data-action", "property.decline").length, 1, "Undo offers the decline again");
-        assert.equal(run.runtime.document.activeElement, byAttribute(byAttribute(run.mount, "aria-labelledby", "cr-property-278")[0], "data-action", "property.decline")[0], "with the focus on it");
+        const confirm = byAttribute(card, "data-decline", "property-278")[0];
+        assert.deepEqual([byClass(confirm, "cr-confirm__title")[0].textContent, byClass(confirm, "cr-confirm__body")[0].textContent], [copy.declineConfirmTitle, copy.declineConfirmBody], "it asks once, on the property, with what a decline means");
+        assert.deepEqual(all(confirm, (node) => node.tagName === "BUTTON").map((node) => [node.getAttribute("data-action"), node.textContent]), [["property.decline.confirm", copy.declineConfirmSend], ["property.decline.cancel", copy.cancelLabel]]);
+        assert.equal(all(confirm, (node) => node.tagName === "TEXTAREA" || node.tagName === "INPUT").length, 0, "and for no reason: the decline event carries none");
+        assert.equal(run.runtime.document.activeElement, byAttribute(confirm, "data-action", "property.decline.confirm")[0]);
+        assert.equal(byAttribute(card, "data-action", "property.decline").length, 0, "no second decline is offered meanwhile");
+        assert.equal(run.sent.length, 0, "nothing is sent before the confirmation");
+        byAttribute(confirm, "data-action", "property.decline.cancel")[0].fire("click");
+        assert.equal(byAttribute(run.mount, "data-decline", "property-278").length, 0, "Cancel takes the question away");
+        assert.equal(run.runtime.document.activeElement, byAttribute(byAttribute(run.mount, "aria-labelledby", "cr-property-278")[0], "data-action", "property.decline")[0], "with the focus back on Decline all options");
+        run.controller.dispatch("option.toggle", { id: 3107 });
+        run.controller.dispatch("option.choose", { id: 3107 });
+        run.controller.dispatch("choices.back");
+        run.controller.dispatch("property.decline", { key: "property-278" });
+        assert.equal(run.controller.snapshot().step, "confirm", "beside an approval a decline is one more choice of the step");
+        assert.deepEqual(byClass(run.mount, "cr-choices__item").map((item) => item.getAttribute("data-choice")).sort(), ["approve", "decline"]);
+        assert.equal(byClass(run.mount, "cr-field").length, 11, "where the approval asks the contract details once");
+        assert.equal(run.sent.length, 0);
         break;
       }
       case "choices-declined": {
@@ -1745,7 +1750,7 @@ async function decideLast(controller, kind) {
     controller.dispatch("choices.submit");
   } else if (kind === "decline") {
     controller.dispatch("property.decline", { key: "property-661" });
-    controller.dispatch("choices.submit");
+    controller.dispatch("property.decline.confirm", { key: "property-661" });
   } else {
     controller.dispatch("option.intent", { id: 3108, kind });
     controller.dispatch("option.draft", { id: 3108, value: "Please quote weekly visits." });
@@ -1959,7 +1964,7 @@ for (const [kind, orderId, event, status] of [
     controller.dispatch("choices.submit");
   } else if (kind === "decline") {
     controller.dispatch("property.decline", { key: "property-512" });
-    controller.dispatch("choices.submit");
+    controller.dispatch("property.decline.confirm", { key: "property-512" });
   } else if (kind === "changes") {
     controller.dispatch("option.intent", { id: orderId, kind });
     controller.dispatch("option.draft", { id: orderId, value: "Please quote weekly visits." });
@@ -2249,18 +2254,20 @@ for (const [kind, orderId, event, status] of [
   await controller.idle();
   controller.dispatch("property.decline", { key: "property-278" });
   controller.dispatch("choices.submit");
+  await tick();
+  assert.deepEqual(sent, [], "a decline is not sent before it is confirmed");
+  controller.dispatch("property.decline.confirm", { key: "property-278" });
+  assert.deepEqual([byAttribute(mount, "data-decline", "property-278")[0].getAttribute("data-state"), byAttribute(mount, "data-action", "property.decline.confirm")[0].textContent], ["pending", controller.copy.sendingLabel], "the confirmation shows the decline being sent");
   await controller.idle();
   await tick();
   assert.deepEqual(sent, [[3101, "QUOTE_SENT-DECLINED"]], "a failed decline stops the rest of the submission");
   const snapshot = controller.snapshot();
   assert.equal(snapshot.bulk, "", "the page leaves the submission after a failure");
   assert.equal(snapshot.commands["order:3101"].status, "failed");
-  assert.deepEqual(plain(snapshot.choices), { "property-278": { kind: "decline" } }, "the choice stays so sending again is one step");
-  assert.equal(snapshot.step, "confirm", "and the step stays open");
-  assert.ok(surface(byClass(mount, "cr-choices")[0]).includes(controller.copy.failedBody), "the failure shows on the choice");
-  controller.dispatch("choices.back");
+  assert.deepEqual([plain(snapshot.choices), snapshot.declining, snapshot.step], [{}, "", "review"], "no choice is left waiting and no step opens");
   const card = byAttribute(mount, "aria-labelledby", "cr-property-278")[0];
-  assert.ok(surface(card).includes(controller.copy.failedBody), "and on the property although its option is closed");
+  assert.ok(surface(card).includes(controller.copy.failedBody), "the failure shows on the property although its option is closed");
+  assert.equal(byAttribute(card, "data-action", "property.decline").length, 1, "which offers Decline all options again");
   controller.dispatch("property.decline", { key: "property-999" });
   assert.equal(controller.snapshot().choices["property-999"], undefined, "an unknown property is never chosen");
 }
@@ -3303,7 +3310,7 @@ async function grantController(build, behavior = {}) {
   assert.deepEqual(run.sent, [], "opening a sent option of a round sends nothing: ORDER_LIFECYCLE has no view event");
   assert.deepEqual([run.controller.snapshot().view.kind, run.option(3101).state, run.option(3101).actions.decline], ["quote-review", "QUOTE_SENT", true], "and the option offers its decisions as it is");
   run.controller.dispatch("property.decline", { key: "property-512" });
-  run.controller.dispatch("choices.submit");
+  run.controller.dispatch("property.decline.confirm", { key: "property-512" });
   await run.controller.idle();
   assert.deepEqual(run.sent[0], ["order", 3107, "QUOTE_SENT-DECLINED", {}], "a decline goes to the Order");
   const afterDecline = run.controller.snapshot();

@@ -1015,10 +1015,14 @@ Two more items of the same feedback round.
   the badge takes a second line under the name. The plan block is a band
   with the rows' own side padding.
 - **Contract details are filled in one place, on a page of their own.**
-  - Review page: Approve (and Decline all options) records the choice and
-    opens the step, which replaces the quotes: Back, the title ("Contract
-    details" with an approval, "Confirm your choices" without), the chosen
+  - Review page: Approve records the choice and opens the step, which
+    replaces the quotes: Back, the title "Contract details", the chosen
     options with their price and the taxes note, the form, Send decisions.
+    Decline all options never leads there on its own: it asks once on the
+    property ("Decline every option for this property?", Confirm decline,
+    Cancel; no reason, the event carries none) and sends the declines at
+    once. Only while an approval is already chosen does a decline become one
+    more choice of the step.
     The step is a history entry of the same address
     (`history.pushState({ clientReviewStep: "confirm" })`), so the browser's
     Back and Forward move between the quotes and the step, and the step's own

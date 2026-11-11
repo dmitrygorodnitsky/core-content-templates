@@ -60,6 +60,7 @@
       choices: {},
       step: "review",
       lastChoiceKey: "",
+      declining: "",
       drafts: {},
       draftInvalid: {},
       billing: { asked: settings.billingAddressMissing === true, same: true, value: "", invalid: false },
@@ -188,7 +189,7 @@
     }
 
     function shownStep() {
-      return state.step === "confirm" && state.phase === "ready" && choiceEntries().length > 0 && !state.view.allDecided ? "confirm" : "review";
+      return state.step === "confirm" && !state.declining && state.phase === "ready" && choiceEntries().length > 0 && !state.view.allDecided ? "confirm" : "review";
     }
 
     function historyStep() {
@@ -661,9 +662,36 @@
       var property = findProperty(key);
       if (!property || !declinableOptions(property).length || busy() || state.bulk) return;
       if (property.options.some(function (option) { return state.accepted[option.recordKey] || inflight[option.recordKey]; })) return;
+      if (approving()) {
+        state.choices[key] = { kind: "decline" };
+        state.lastChoiceKey = key;
+        openConfirm();
+        return;
+      }
+      state.declining = key;
+      state.focusKey = "decline-confirm-" + key;
+      render();
+    }
+
+    function cancelDecline() {
+      if (!state.declining || state.bulk) return;
+      var key = state.declining;
+      state.declining = "";
+      state.focusKey = "decline-" + key;
+      render();
+    }
+
+    function confirmDecline(key) {
+      var property = findProperty(key);
+      if (state.declining !== key || !property || !declinableOptions(property).length || approving() || busy() || state.bulk) return Promise.resolve(false);
       state.choices[key] = { kind: "decline" };
-      state.lastChoiceKey = key;
-      openConfirm();
+      return submitChoices().then(function (ok) {
+        delete state.choices[key];
+        state.declining = "";
+        if (state.phase === "ready") state.focusKey = ok ? "page-title" : "decline-" + key;
+        render();
+        return ok;
+      });
     }
 
     function clearChoice(key) {
@@ -882,6 +910,12 @@
         case "property.decline":
           declineProperty(data.key);
           return;
+        case "property.decline.confirm":
+          confirmDecline(data.key);
+          return;
+        case "property.decline.cancel":
+          cancelDecline();
+          return;
         case "choice.clear":
           clearChoice(data.key);
           return;
@@ -993,6 +1027,7 @@
         confirm: state.confirm,
         choices: state.choices,
         step: shownStep(),
+        declining: state.declining,
         drafts: state.drafts,
         draftInvalid: state.draftInvalid,
         billing: state.billing,

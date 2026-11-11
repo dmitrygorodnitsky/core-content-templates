@@ -468,6 +468,23 @@
     return item;
   }
 
+  function declineConfirm(ctx, property, pending) {
+    var copy = ctx.copy;
+    var titleId = "cr-decline-title-" + property.key;
+    var panel = el("div", "cr-confirm cr-confirm--decline", { role: "group", "aria-labelledby": titleId, "data-state": pending ? "pending" : "open", "data-decline": property.key });
+    panel.appendChild(text("p", "cr-confirm__title", copy.declineConfirmTitle, { id: titleId }));
+    panel.appendChild(text("p", "cr-confirm__body", copy.declineConfirmBody));
+    var actions = el("div", "cr-actions");
+    actions.appendChild(mark(ctx, button(pending ? copy.sendingLabel : copy.declineConfirmSend, "btn--danger btn--lg", function () {
+      ctx.dispatch("property.decline.confirm", { key: property.key });
+    }, { disabled: pending || ctx.busy, "data-state": pending ? "pending" : null, "data-action": "property.decline.confirm", "aria-busy": pending ? "true" : null }), "decline-confirm-" + property.key));
+    actions.appendChild(button(copy.cancelLabel, "btn--ghost btn--lg", function () {
+      ctx.dispatch("property.decline.cancel");
+    }, { disabled: pending, "data-action": "property.decline.cancel" }));
+    panel.appendChild(actions);
+    return panel;
+  }
+
   function propertyFooter(ctx, property) {
     var copy = ctx.copy;
     var snapshot = ctx.snapshot;
@@ -486,7 +503,9 @@
     if (failed) {
       footer.appendChild(outcomeBox(ctx, snapshot.commands[failed.recordKey], { action: refreshButton(ctx, failed.recordKey, copy.refreshLabel) }));
     }
-    if (choice && choice.kind === "decline") {
+    if (snapshot.declining === property.key) {
+      footer.appendChild(declineConfirm(ctx, property, snapshot.bulk === "choices"));
+    } else if (choice && choice.kind === "decline") {
       footer.appendChild(chosenNote(ctx, property, "decline"));
     } else if (declinable) {
       var pending = property.options.some(function (option) { return isPending(snapshot.commands[option.recordKey]); });
@@ -582,7 +601,7 @@
   function choicesBar(ctx) {
     var copy = ctx.copy;
     var entries = choiceEntries(ctx);
-    if (!entries.length) return null;
+    if (!entries.length || ctx.snapshot.declining) return null;
     var approvals = entries.some(function (entry) { return entry.kind === "approve"; });
     var bar = el("section", "cr-continue", { "aria-label": copy.choicesTitle, "data-choices": String(entries.length) });
     bar.appendChild(text("p", "cr-continue__text", entries.length === 1 ? copy.choicesReadyOne : ns.fill(copy.choicesReadyMany, { n: entries.length })));

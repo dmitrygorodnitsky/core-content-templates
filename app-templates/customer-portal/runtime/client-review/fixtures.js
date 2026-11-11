@@ -238,7 +238,7 @@
     { id: "quote-plans-outline", label: "Quote review — no Maps key: each plan drawn as an outline, one service area per property" },
     { id: "choices-approve", label: "Confirm your choices — an option approved, contract details pre-filled" },
     { id: "changes-invalid", label: "Request changes — message required" },
-    { id: "choices-decline", label: "Confirm your choices — every option of a property declined, no details asked" },
+    { id: "choices-decline", label: "Decline all options — its own short confirmation, no step and no details" },
     { id: "choices-declined", label: "Confirm your choices — a decline sent, the other properties still open" },
     { id: "command-pending", label: "Decisions being sent" },
     { id: "command-refused", label: "Approval refused by the server" },
@@ -1154,7 +1154,7 @@
         break;
       case "round-declined-closed":
         data = roundData(DECLINED_BUT_ONE);
-        steps = [["property.decline", { key: "property-661" }]].concat(submit);
+        steps = [["property.decline", { key: "property-661" }], ["property.decline.confirm", { key: "property-661" }]];
         break;
       case "link-copied":
         clipboard = fixtureClipboard(true);
@@ -1187,7 +1187,7 @@
         steps = [["property.decline", { key: "property-278" }]];
         break;
       case "choices-declined":
-        steps = [["property.decline", { key: "property-278" }]].concat(submit);
+        steps = [["property.decline", { key: "property-278" }], ["property.decline.confirm", { key: "property-278" }]];
         break;
       case "changes-invalid":
         steps = [["option.toggle", { id: 3103 }], ["option.intent", { id: 3103, kind: "changes" }], ["option.confirm", { id: 3103 }]];

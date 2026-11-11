@@ -79,6 +79,9 @@
     ["CHOICE_LEGEND", "choiceLegend", "Options for {address}"],
     ["CHOOSE_OPTION", "chooseOption", "Choose an option to see its services and approve it or ask for changes."],
     ["DECLINE_ALL_LABEL", "declineAllLabel", "Decline all options"],
+    ["DECLINE_CONFIRM_TITLE", "declineConfirmTitle", "Decline every option for this property?"],
+    ["DECLINE_CONFIRM_BODY", "declineConfirmBody", "Declined options cannot be approved later through this link."],
+    ["DECLINE_CONFIRM_SEND", "declineConfirmSend", "Confirm decline"],
     ["CHOICE_APPROVED_NOTE", "choiceApprovedNote", "You chose this option. It is approved when you send your decisions."],
     ["CHOICE_DECLINED_NOTE", "choiceDeclinedNote", "You chose to decline every option for this property. They are declined when you send your decisions."],
     ["CHOICE_UNDO", "choiceUndo", "Undo"],
@@ -3297,6 +3300,23 @@
     return item;
   }
 
+  function declineConfirm(ctx, property, pending) {
+    var copy = ctx.copy;
+    var titleId = "cr-decline-title-" + property.key;
+    var panel = el("div", "cr-confirm cr-confirm--decline", { role: "group", "aria-labelledby": titleId, "data-state": pending ? "pending" : "open", "data-decline": property.key });
+    panel.appendChild(text("p", "cr-confirm__title", copy.declineConfirmTitle, { id: titleId }));
+    panel.appendChild(text("p", "cr-confirm__body", copy.declineConfirmBody));
+    var actions = el("div", "cr-actions");
+    actions.appendChild(mark(ctx, button(pending ? copy.sendingLabel : copy.declineConfirmSend, "btn--danger btn--lg", function () {
+      ctx.dispatch("property.decline.confirm", { key: property.key });
+    }, { disabled: pending || ctx.busy, "data-state": pending ? "pending" : null, "data-action": "property.decline.confirm", "aria-busy": pending ? "true" : null }), "decline-confirm-" + property.key));
+    actions.appendChild(button(copy.cancelLabel, "btn--ghost btn--lg", function () {
+      ctx.dispatch("property.decline.cancel");
+    }, { disabled: pending, "data-action": "property.decline.cancel" }));
+    panel.appendChild(actions);
+    return panel;
+  }
+
   function propertyFooter(ctx, property) {
     var copy = ctx.copy;
     var snapshot = ctx.snapshot;
@@ -3315,7 +3335,9 @@
     if (failed) {
       footer.appendChild(outcomeBox(ctx, snapshot.commands[failed.recordKey], { action: refreshButton(ctx, failed.recordKey, copy.refreshLabel) }));
     }
-    if (choice && choice.kind === "decline") {
+    if (snapshot.declining === property.key) {
+      footer.appendChild(declineConfirm(ctx, property, snapshot.bulk === "choices"));
+    } else if (choice && choice.kind === "decline") {
       footer.appendChild(chosenNote(ctx, property, "decline"));
     } else if (declinable) {
       var pending = property.options.some(function (option) { return isPending(snapshot.commands[option.recordKey]); });
@@ -3411,7 +3433,7 @@
   function choicesBar(ctx) {
     var copy = ctx.copy;
     var entries = choiceEntries(ctx);
-    if (!entries.length) return null;
+    if (!entries.length || ctx.snapshot.declining) return null;
     var approvals = entries.some(function (entry) { return entry.kind === "approve"; });
     var bar = el("section", "cr-continue", { "aria-label": copy.choicesTitle, "data-choices": String(entries.length) });
     bar.appendChild(text("p", "cr-continue__text", entries.length === 1 ? copy.choicesReadyOne : ns.fill(copy.choicesReadyMany, { n: entries.length })));
@@ -4156,6 +4178,7 @@
       choices: {},
       step: "review",
       lastChoiceKey: "",
+      declining: "",
       drafts: {},
       draftInvalid: {},
       billing: { asked: settings.billingAddressMissing === true, same: true, value: "", invalid: false },
@@ -4284,7 +4307,7 @@
     }
 
     function shownStep() {
-      return state.step === "confirm" && state.phase === "ready" && choiceEntries().length > 0 && !state.view.allDecided ? "confirm" : "review";
+      return state.step === "confirm" && !state.declining && state.phase === "ready" && choiceEntries().length > 0 && !state.view.allDecided ? "confirm" : "review";
     }
 
     function historyStep() {
@@ -4757,9 +4780,36 @@
       var property = findProperty(key);
       if (!property || !declinableOptions(property).length || busy() || state.bulk) return;
       if (property.options.some(function (option) { return state.accepted[option.recordKey] || inflight[option.recordKey]; })) return;
+      if (approving()) {
+        state.choices[key] = { kind: "decline" };
+        state.lastChoiceKey = key;
+        openConfirm();
+        return;
+      }
+      state.declining = key;
+      state.focusKey = "decline-confirm-" + key;
+      render();
+    }
+
+    function cancelDecline() {
+      if (!state.declining || state.bulk) return;
+      var key = state.declining;
+      state.declining = "";
+      state.focusKey = "decline-" + key;
+      render();
+    }
+
+    function confirmDecline(key) {
+      var property = findProperty(key);
+      if (state.declining !== key || !property || !declinableOptions(property).length || approving() || busy() || state.bulk) return Promise.resolve(false);
       state.choices[key] = { kind: "decline" };
-      state.lastChoiceKey = key;
-      openConfirm();
+      return submitChoices().then(function (ok) {
+        delete state.choices[key];
+        state.declining = "";
+        if (state.phase === "ready") state.focusKey = ok ? "page-title" : "decline-" + key;
+        render();
+        return ok;
+      });
     }
 
     function clearChoice(key) {
@@ -4978,6 +5028,12 @@
         case "property.decline":
           declineProperty(data.key);
           return;
+        case "property.decline.confirm":
+          confirmDecline(data.key);
+          return;
+        case "property.decline.cancel":
+          cancelDecline();
+          return;
         case "choice.clear":
           clearChoice(data.key);
           return;
@@ -5089,6 +5145,7 @@
         confirm: state.confirm,
         choices: state.choices,
         step: shownStep(),
+        declining: state.declining,
         drafts: state.drafts,
         draftInvalid: state.draftInvalid,
         billing: state.billing,
