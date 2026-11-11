@@ -123,6 +123,9 @@
     broken: "0b7d6c5e-4f3a-4b2c-9d1e-8f7a6b5c4d3e",
   };
 
+  var TYPED_SERVICE_AREA = 27654;
+  var PLAN_MEASURED_SERVICE_AREAS = { 278: 21915 };
+
   var BILLING_PLACE = { lat: 49.2888, lng: -123.1193 };
 
   function placed(center) {
@@ -232,6 +235,7 @@
     { id: "option-per-service", label: "Per service option open — the price of each service, no total, subtotal or taxes" },
     { id: "option-seasonal", label: "Seasonal option open — services without prices, the total only" },
     { id: "quote-plans", label: "Quote review — Maps key set: each property's plan and total area before anything is chosen" },
+    { id: "quote-plans-outline", label: "Quote review — no Maps key: each plan drawn as an outline, one service area per property" },
     { id: "choices-approve", label: "Confirm your choices — an option approved, contract details pre-filled" },
     { id: "changes-invalid", label: "Request changes — message required" },
     { id: "choices-decline", label: "Confirm your choices — every option of a property declined, no details asked" },
@@ -342,7 +346,7 @@
       type: clone(PROPERTY_TYPE),
       states: [{ code: "ACTIVE" }],
       organization: { id: 43, code: "COASTLINE_WINTER" },
-      attributes: { 153: located, 154: { SERVICE_AREA_SQFT: { value: 27654 } } },
+      attributes: { 153: located, 154: { SERVICE_AREA_SQFT: { value: PLAN_MEASURED_SERVICE_AREAS[property] || TYPED_SERVICE_AREA } } },
     };
   }
 
@@ -1172,6 +1176,9 @@
       case "quote-plans":
         data = withPlans(data, secondPlan);
         maps = "stub";
+        break;
+      case "quote-plans-outline":
+        data = withPlans(data, secondPlan);
         break;
       case "choices-approve":
         steps = choose;

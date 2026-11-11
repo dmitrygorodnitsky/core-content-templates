@@ -165,10 +165,11 @@ export function QuotesFooter() {
 
 function QuoteOption(order) {
   var meta = QUOTE_STATUS[order.status];
-  var total = formatOrderPrice(order);
+  var perService = !!order.pricing && !order.pricing.total;
+  var total = perService ? "Per visit" : formatOrderPrice(order);
   return h("li", { "class": "proposal-option", "data-module": "quote-row", "data-visual-id": "quote-row", "data-state": order.status }, [
     h("span", { "class": "proposal-option__model" }, order.pricingModel ? order.pricingModel.label : "Quote"),
-    total ? h("span", { "class": "proposal-option__total" }, total) : null,
+    total ? h("span", { "class": "proposal-option__total", "data-pricing": perService ? "per-service" : undefined }, total) : null,
     StatusBadge({ variant: meta.badge, label: meta.label, bind: "quote.statusLabel", state: order.status }),
   ]);
 }

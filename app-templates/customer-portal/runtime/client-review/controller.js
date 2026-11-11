@@ -6,6 +6,7 @@
   var EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   var CHECKING_DELAYS = [2000, 3000, 5000, 8000, 12000, 15000, 15000, 15000];
   var LINK_STEPS = { "quote-review": true, "agreement-review": true };
+  var STEP_STATE_KEY = "clientReviewStep";
 
   function systemTimers() {
     return {
@@ -27,6 +28,8 @@
     var pageLink = settings.pageLink || "";
     var clipboard = settings.clipboard || null;
     var maps = settings.maps || null;
+    var historyRef = settings.history && typeof settings.history.pushState === "function" ? settings.history : null;
+    var navigationTarget = settings.navigationTarget && typeof settings.navigationTarget.addEventListener === "function" ? settings.navigationTarget : null;
     var contract = ns.contract;
     var normalizer = ns.normalizer;
     var inflight = {};
@@ -55,6 +58,8 @@
       bulk: "",
       confirm: null,
       choices: {},
+      step: "review",
+      lastChoiceKey: "",
       drafts: {},
       draftInvalid: {},
       billing: { asked: settings.billingAddressMissing === true, same: true, value: "", invalid: false },
@@ -180,6 +185,55 @@
         var option = choice.kind === "approve" ? property.options.filter(function (candidate) { return candidate.id === choice.id; })[0] || null : null;
         return { property: property, kind: choice.kind, option: option };
       });
+    }
+
+    function shownStep() {
+      return state.step === "confirm" && state.phase === "ready" && choiceEntries().length > 0 && !state.view.allDecided ? "confirm" : "review";
+    }
+
+    function historyStep() {
+      return historyRef && historyRef.state && historyRef.state[STEP_STATE_KEY] === "confirm" ? "confirm" : "review";
+    }
+
+    function openConfirm() {
+      if (!choiceEntries().length) return;
+      if (state.step !== "confirm") {
+        state.step = "confirm";
+        if (historyRef && historyStep() !== "confirm") {
+          var entry = {};
+          entry[STEP_STATE_KEY] = "confirm";
+          historyRef.pushState(entry, "");
+        }
+      }
+      state.focusKey = "choices-title";
+      render();
+    }
+
+    function showReview() {
+      state.step = "review";
+      state.focusKey = state.choices[state.lastChoiceKey] ? "choice-" + state.lastChoiceKey : "page-title";
+      render();
+    }
+
+    function closeConfirm() {
+      if (shownStep() !== "confirm" || state.bulk) return;
+      if (historyRef && navigationTarget && historyStep() === "confirm" && typeof historyRef.back === "function") {
+        historyRef.back();
+        return;
+      }
+      showReview();
+    }
+
+    function followHistory(event) {
+      var wanted = event && event.state && event.state[STEP_STATE_KEY] === "confirm" && choiceEntries().length ? "confirm" : "review";
+      if (stopped || wanted === shownStep()) return;
+      if (wanted === "confirm") {
+        state.step = "confirm";
+        state.focusKey = "choices-title";
+        render();
+      } else {
+        showReview();
+      }
     }
 
     function approving() {
@@ -598,9 +652,9 @@
       clearOutcome(option.recordKey);
       if (state.confirm && state.confirm.id === option.id) state.confirm = null;
       state.choices[property.key] = { kind: "approve", id: option.id };
-      state.focusKey = "choice-" + property.key;
+      state.lastChoiceKey = property.key;
       readPlans();
-      render();
+      openConfirm();
     }
 
     function declineProperty(key) {
@@ -608,8 +662,8 @@
       if (!property || !declinableOptions(property).length || busy() || state.bulk) return;
       if (property.options.some(function (option) { return state.accepted[option.recordKey] || inflight[option.recordKey]; })) return;
       state.choices[key] = { kind: "decline" };
-      state.focusKey = "choice-" + key;
-      render();
+      state.lastChoiceKey = key;
+      openConfirm();
     }
 
     function clearChoice(key) {
@@ -834,6 +888,12 @@
         case "choices.submit":
           submitChoices();
           return;
+        case "choices.open":
+          if (!busy() && !state.bulk) openConfirm();
+          return;
+        case "choices.back":
+          closeConfirm();
+          return;
         case "details.input":
           field = detailField(data.code);
           if (!field) return "";
@@ -932,6 +992,7 @@
         bulk: state.bulk,
         confirm: state.confirm,
         choices: state.choices,
+        step: shownStep(),
         drafts: state.drafts,
         draftInvalid: state.draftInvalid,
         billing: state.billing,
@@ -968,6 +1029,7 @@
     function stop() {
       stopped = true;
       stopPolling();
+      if (navigationTarget && typeof navigationTarget.removeEventListener === "function") navigationTarget.removeEventListener("popstate", followHistory);
     }
 
     function idle() {
@@ -986,6 +1048,7 @@
     }
 
     function start() {
+      if (navigationTarget) navigationTarget.addEventListener("popstate", followHistory);
       if (adapter) load({});
       else render();
       return controller;
@@ -1042,6 +1105,8 @@
       timers: env.timers,
       portalUrl: section.getAttribute("data-review-portal-url"),
       pageLink: locationRef.href,
+      history: env.history || global.history || null,
+      navigationTarget: env.navigationTarget || (typeof global.addEventListener === "function" ? global : null),
       clipboard: navigatorRef.clipboard,
       copy: copyFromAttributes(section),
       locale: env.locale || displayLocale(env),

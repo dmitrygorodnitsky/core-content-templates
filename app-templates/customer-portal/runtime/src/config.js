@@ -146,6 +146,7 @@ export const routeRegistry = {
   cart: { id: "cart", path: "/cart", module: "cart" },
   "proposals.list": { id: "proposals.list", path: "/proposals", module: "proposals" },
   "proposal.detail": { id: "proposal.detail", path: "/proposals/:id", module: "proposals", param: "id" },
+  "proposal.approve": { id: "proposal.approve", path: "/proposals/:id/approve/:quote", module: "proposals", param: "id" },
   "agreement.detail": { id: "agreement.detail", path: "/agreements/:id", module: "proposals", param: "id" },
   "quote.new": { id: "quote.new", path: "/quote/new", module: "proposals", liveOnly: true },
   profile: { id: "profile", path: "/profile", module: "profile" },

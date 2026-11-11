@@ -38,6 +38,7 @@ const { applyPortalConfig, contractAgreementFor, quoteGroupFor, quotePackage, st
 const { graniteRidgeSnowFixture } = await load("data/cases/granite-ridge-snow.js");
 const { ProposalsList } = await load("src/routes/ProposalsPage.js");
 const { ProposalDetail } = await load("src/routes/ProposalDetailPage.js");
+const { QuoteApproval } = await load("src/routes/QuoteApprovalPage.js");
 const { QuoteOptionCard } = await load("src/components/proposals/QuoteOptionCard.js");
 const { AgreementDetail } = await load("src/routes/AgreementDetailPage.js");
 const { AgreementParties } = await load("src/components/proposals/AgreementParts.js");
@@ -572,10 +573,11 @@ const RETIRED = ["Proposal #", "valid until", "sent Dec", "sq ft", "Beam AI", "l
   assert.equal(one(tabor, ".proposal-card__meta").textContent, "1190 Tabor Street, Golden, CO 80401 · 3 quotes");
   assert.equal(one(tabor, ".proposal-group__decision").textContent, "Changes requested");
   assert.deepEqual(all(groups[1], "[data-module=\"quote-row\"]").map((row) => [one(row, ".proposal-option__model").textContent, (one(row, ".proposal-option__total") || { textContent: null }).textContent, one(row, "[data-module=\"status-badge\"]").textContent]), [
-    ["Per service", null, "◔ Sent"],
+    ["Per service", "Per visit", "◔ Sent"],
     ["Monthly", "$32,815.00 / month", "◔ Sent"],
     ["Seasonal", "$31,250.00 per season", "◔ Sent"],
-  ], "a monthly or seasonal option shows Core's grand total with its period, a per-service option shows no total, and nothing is computed from an area");
+  ], "a monthly or seasonal option shows Core's grand total with its period, a per-service option shows no total but how it is priced, so every row fills the same price column, and nothing is computed from an area");
+  assert.deepEqual(all(groups[1], ".proposal-option__total").map((cell) => cell.getAttribute("data-pricing")), ["per-service", null, null]);
   assert.deepEqual(groups.map((group) => all(group, "[data-module=\"quote-row\"]").length), [3, 3]);
   assert.equal(all(page, ".proposal-card__tag").length, 0, "every quoted property is on the map, so none is marked off it");
   assert.equal(one(page, "[data-module=\"quote-package-footer\"]").textContent, "✦Decide each property on its own. Approving one option for a property declines its other options, and your contract details go with the approval. Once every property has a decision, we prepare your service agreement.Plus applicable taxes.", "the footer says the prices shown are before taxes");
@@ -722,27 +724,49 @@ const RETIRED = ["Proposal #", "valid until", "sent Dec", "sq ft", "Beam AI", "l
   assert.equal(all(open, "[data-module=\"command-pending\"]").length + all(open, "[data-module=\"command-failure\"]").length, 0, "opening a quote sends nothing: ORDER_LIFECYCLE has no view event");
   assert.equal(one(open, "[data-module=\"quote-detail-footer\"]").textContent, "✦Approving one option for this property declines its other options.");
 
-  state.contractConfirm = { kind: "approve", backendId: 8110 };
+  state.approveQuoteId = 8110;
   state.contractDetails = { prefill: "loading", filled: false, draft: {}, errors: {} };
-  const loadingDetails = one(ProposalDetail(), "[data-module=\"decision-confirm\"]");
-  assert.equal(one(loadingDetails, "[data-module=\"agreement-details\"]").getAttribute("data-state"), "loading", "the approval asks for the contract details, loaded from the account first");
-  assert.equal(one(loadingDetails, "[data-action=\"quote.confirm\"]").hasAttribute("disabled"), true, "nothing is approved before the details can be filled in");
+  const loadingStep = QuoteApproval();
+  assert.deepEqual([loadingStep.getAttribute("data-route"), loadingStep.getAttribute("data-state")], ["proposal.approve", "open"], "Approve opens a page of its own for the option");
+  assert.equal(one(loadingStep, "h1").textContent, "Contract details");
+  assert.equal(one(loadingStep, ".proposal-detail-head__meta").textContent, "Cinnamon Bear Way · 870 Cinnamon Bear Way, Lakewood, CO 80227");
+  assert.deepEqual(all(loadingStep, ".detail-back").map((back) => [back.getAttribute("data-action"), back.textContent]), [["quote.backToQuote", "‹ Back to the quote"]]);
+  const perServiceSummary = one(loadingStep, "[data-module=\"quote-approval-summary\"]");
+  assert.deepEqual([one(perServiceSummary, ".quote-option__model").textContent, one(perServiceSummary, ".quote-approval__price").textContent, one(perServiceSummary, "[data-kind=\"taxes\"]").textContent, one(perServiceSummary, ".quote-option__note").textContent], ["Per service", "You pay the price of each service every time it is performed.", "Plus applicable taxes.", "Approving it declines the other options for this property."], "the page opens with the option being approved: its name, how it is priced, the taxes note and the rule about its siblings");
+  assert.equal(one(loadingStep, "[data-module=\"agreement-details\"]").getAttribute("data-state"), "loading", "the approval asks for the contract details, loaded from the account first");
+  assert.equal(one(loadingStep, "[data-action=\"quote.sendApproval\"]").hasAttribute("disabled"), true, "nothing is approved before the details can be filled in");
   state.contractDetails = { prefill: "ready", filled: false, draft: {}, errors: {} };
-  const confirming = one(ProposalDetail(), "[data-module=\"decision-confirm\"]");
-  assert.equal(confirming.getAttribute("data-kind"), "approve");
-  assert.equal(one(confirming, ".decision-confirm__title").textContent, "Approve Per service for this property?");
-  assert.equal(one(confirming, ".decision-confirm__body").textContent, "Approving it declines the other options for this property.", "the rule is stated before the customer agrees, and the page still waits for Core to apply it");
-  assert.equal(one(confirming, "[data-module=\"agreement-details\"]").getAttribute("data-state"), "editing", "the contract details travel with the approval");
-  assert.deepEqual(all(confirming, "[data-action]").map((button) => [button.getAttribute("data-action"), button.textContent, button.hasAttribute("disabled")]), [
-    ["quote.confirm", "Confirm approval", false],
-    ["quote.cancel", "Cancel", false],
+  const editingStep = QuoteApproval();
+  assert.equal(one(editingStep, "[data-module=\"agreement-details\"]").getAttribute("data-state"), "editing", "the contract details travel with the approval");
+  assert.deepEqual(all(one(editingStep, "[data-module=\"quote-approval-form\"]"), "button[data-action]").map((button) => [button.getAttribute("data-action"), button.getAttribute("data-id"), button.textContent, button.hasAttribute("disabled")]), [
+    ["quote.sendApproval", "8110", "Approve Per service", false],
+    ["quote.backToQuote", null, "Back", false],
   ]);
+  state.approveQuoteId = 8111;
+  assert.deepEqual([one(QuoteApproval(), ".quote-option__model").textContent, one(QuoteApproval(), ".quote-approval__price").textContent], ["Monthly", "$32,815.00 / month"], "an option with a total states the server's price line");
+  state.approveQuoteId = 8110;
+  assert.equal(all(ProposalDetail(), "[data-module=\"agreement-details\"]").length + all(ProposalDetail(), "[data-contract-detail]").length, 0, "the quote itself asks no contract details: they are filled in one place only");
 
   state.contractCommand = { kind: "approve", targets: [8110], phase: "pending" };
-  const pending = one(ProposalDetail(), "[data-module=\"decision-confirm\"]");
+  const pending = QuoteApproval();
   assert.equal(pending.getAttribute("data-state"), "pending");
-  assert.deepEqual(all(pending, "[data-action]").map((button) => [button.textContent, button.hasAttribute("disabled")]), [["Sending…", true], ["Cancel", true]], "one command at a time: nothing can be sent or cancelled while it is in flight");
+  assert.deepEqual(all(one(pending, "[data-module=\"quote-approval-form\"]"), "button[data-action]").map((button) => [button.textContent, button.hasAttribute("disabled")]), [["Sending…", true], ["Back", true]], "one command at a time: nothing can be sent or left while it is in flight");
   assert.ok(all(pending, "[data-contract-detail]").filter((node) => node.tagName === "INPUT").concat(all(pending, "[data-client-type]")).every((input) => input.hasAttribute("disabled")), "and the details being sent cannot change");
+  state.contractCommand = { kind: "approve", targets: [8110], phase: "refused", message: "The legal address needs a country." };
+  const refused = QuoteApproval();
+  assert.match(one(one(refused, "[data-module=\"quote-approval-form\"]"), "[data-module=\"command-failure\"]").textContent, /The legal address needs a country\./, "a refusal is shown on the page that sent it, with the form still open");
+  assert.equal(one(refused, "[data-action=\"quote.sendApproval\"]").hasAttribute("disabled"), false);
+  state.contractCommand = null;
+  state.approveQuoteId = 999999;
+  assert.equal(QuoteApproval().getAttribute("data-state"), "not-found", "an option that is not on this quote opens nothing to fill in");
+  state.currentSiteId = "quote-0-7101";
+  state.approveQuoteId = quoteGroupFor("quote-0-7101").orders.find((order) => order.status === "approved").backendId;
+  const closedStep = QuoteApproval();
+  assert.equal(closedStep.getAttribute("data-state"), "approved");
+  assert.equal(all(closedStep, "[data-module=\"agreement-details\"]").length + all(closedStep, "[data-action=\"quote.sendApproval\"]").length, 0, "a decided option offers no form and no second approval");
+  assert.equal(one(closedStep, "[data-module=\"quote-approval-closed\"]").textContent, "iThis option is no longer waiting for your decision.");
+  state.currentSiteId = "quote-0-7104";
+  state.approveQuoteId = null;
   state.contractDetails = null;
 
   state.contractConfirm = null;
@@ -1183,7 +1207,7 @@ const RETIRED = ["Proposal #", "valid until", "sent Dec", "sq ft", "Beam AI", "l
   assert.doesNotMatch(contracts.textContent.replace(orderHistory.textContent, ""), /declined|Declined|quote/, "nothing about the decided quotes reaches the agreements list");
   assert.deepEqual(all(orderHistory, "[data-module=\"quote-row\"]").map((row) => [one(row, ".proposal-option__model").textContent, (one(row, ".proposal-option__total") || { textContent: null }).textContent, row.getAttribute("data-state")]).sort(), [
     ["Monthly", "CA$4,217.94 / month", "approved"],
-    ["Per service", null, "declined"],
+    ["Per service", "Per visit", "declined"],
     ["Seasonal", "CA$16,871.75 per season", "declined"],
   ], "All orders lists the approved and the declined orders, each priced by its billing type");
 
@@ -1238,6 +1262,11 @@ const RETIRED = ["Proposal #", "valid until", "sent Dec", "sq ft", "Beam AI", "l
   assert.deepEqual(all(plannedDetail, "[data-fact]").map((fact) => [fact.getAttribute("data-fact"), one(fact, ".prop-fact__value").textContent]), [["area", "50,000 ft²"], ["plan", "Approved"], ["season", "Nov 1, 2026 – Mar 31, 2027"]]);
   assert.equal(one(plannedDetail, "[data-module=\"property-plan\"]").getAttribute("data-state"), "loading", "an approved plan is read and drawn on the property page");
   assert.deepEqual(fetched, [["/core/media/" + PLAN + "/stream.json", "omit"]], "the plan drawing is the public MediaAsset stream the review page reads, without credentials");
+  state.currentSiteId = quotePackage().groups.find((group) => group.property && group.property.planId === PLAN).id;
+  const quotedPlan = ProposalDetail();
+  assert.equal(one(quotedPlan, ".proposal-detail-head__meta").textContent, "Service area 50,000 ft²", "a quote states its property's service area, the one area the price is set for");
+  assert.equal(one(quotedPlan, "[data-module=\"property-plan\"]").getAttribute("data-state"), "loading", "and shows the property's plan above its options");
+  assert.equal(fetched.length, 1, "the plan file is read once for both pages");
 
   const drawn = [];
   const planEntry = propertyPlan("8b6962ae-d617-438b-8aa3-4db8d089fc47", () => drawn.push("changed"), async () => ({ ok: true, json: async () => ({
@@ -1252,6 +1281,11 @@ const RETIRED = ["Proposal #", "valid until", "sent Dec", "sq ft", "Beam AI", "l
   const drawing = PropertyPlan(planEntry);
   assert.equal(all(drawing, "path.prop-plan__shape").length + all(drawing, "circle.prop-plan__shape").length, 2, "each plan element is drawn from its geometry");
   assert.deepEqual(all(drawing, ".prop-plan__name").map((name) => name.textContent), ["Entrance walkway", "Salt bin"]);
+  assert.deepEqual(all(drawing, ".prop-plan__figure .prop-plan__label").map((label) => label.textContent), ["Entrance walkway"], "a shape with an area carries its name on the drawing");
+  assert.equal(all(drawing, ".prop-plan__size").length, 0, "a plan shown without the property's service area states no measurement");
+  const measured = Math.round(planEntry.plan.squareFeet);
+  assert.deepEqual(all(PropertyPlan(planEntry, { areaSqft: measured }), ".prop-plan__size").map((size) => size.textContent), [new Intl.NumberFormat("en").format(measured) + " ft²"], "a service area measured from the plan is broken down by its shapes");
+  assert.equal(all(PropertyPlan(planEntry, { areaSqft: measured + 3000 }), ".prop-plan__size").length, 0, "a typed service area is the only area shown: the plan's own measurements do not compete with it");
   const missing = propertyPlan("6d6d69a3-32f5-47f5-afbf-08cdc61b35d8", () => {}, async () => ({ ok: false, status: 404 }));
   await new Promise((resolve) => setImmediate(resolve));
   assert.equal(PropertyPlan(missing), null, "a plan that cannot be read shows nothing");

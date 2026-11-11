@@ -878,11 +878,11 @@ No attribute, workflow state or permission was added.
   only the total. An unknown type keeps services, subtotal, taxes and total.
 - **Plan and area on every property card** of the review page, chosen or not:
   `SERVICE_AREA_SQFT` as "Total service area", and the approved plan's
-  elements, their areas and the plan's own area. The plan file is public
-  media, so it is read without the Maps key; the satellite drawing needs
-  `REVIEW_MAPS_API_KEY`, which is empty on dev-1 (template and PageContext),
-  so dev-1 shows the legend and areas without the map. The plan is no longer
-  repeated under Confirm your choices.
+  elements. The plan file is public media, so it is read without the Maps
+  key; the satellite drawing needs `REVIEW_MAPS_API_KEY`, which is empty on
+  dev-1 (template and PageContext). The plan is no longer repeated under
+  Confirm your choices. Superseded the next evening for the plan's own area
+  and the picture: see "One service area and the plan picture" below.
 - **Terms from the document content.** The backend made
   `LocalizedTextContent` grantable (READ `P_DOCUMENT_CONTENT_R`, mapping
   definition 19) and tagged (`/core/api/tagged/localized-text-content/`). The
@@ -963,6 +963,83 @@ No attribute, workflow state or permission was added.
   `docs/snow-feedback-2026-11-11.md`, "Proof of the follow-ups". The portal was
   driven in a headless Chrome with its own profile, so the Browser pane holds
   no cookie of the deleted User.
+
+### One service area and the plan picture (2026-11-11, night)
+
+Team feedback on the quote's property card: no picture of the plan, and two
+areas side by side ("Total service area" 38,000 sq ft, typed by a manager, and
+"Area on the plan" 37,997 sq ft).
+
+- **One area.** A property has one stored area, `SERVICE_AREA_SQFT`; the type
+  has no override attribute. A manager's typed value stays until the next
+  Approve Plan, Approve Plan writes the plan's total into the same attribute,
+  and pricing and repricing read only it (core-ui
+  `SNOW_PROPERTY_PLAN_APPROVAL_V10`, `SNOW_SERVICE_PROPERTY_AREA_V1`; nothing
+  changed there). The second number was the review page's own measurement of
+  the plan file. It is gone: `PLAN_AREA` left the copy, and the plan's
+  elements carry their square feet only while they add up to the service area
+  within one square foot (`ClientReview.plan.sumsTo`), so a typed area is the
+  only number on the card. The portal's "Service plan" card follows the same
+  rule against the property's `areaSqft`.
+- **The picture is drawn from the plan's geometry.** The plan is a
+  `PropertyPlan` JSON MediaAsset; the CRM editor stores no image.
+  `ClientReview.plan.figure` (shared by the review page and the portal, which
+  already imports `plan.js`) draws the GOOGLE_MAPS shapes as an SVG outline in
+  a frame between 16:9 and 5:2, north up, with the name of each shape that
+  has an area laid over it at its centroid. On a narrow screen a drawing with
+  more than two names leaves them to the legend.
+  - Review page: the outline is on every property card with a plan. With
+    `REVIEW_MAPS_API_KEY` the satellite map replaces it while it loads and
+    once it is ready; a map that fails falls back to the outline. Preview
+    state `quote-plans-outline`.
+  - Portal: the quote detail (`ProposalDetailPage.js`) now shows the "Service
+    plan" card above the options and "Service area …" under the title; the
+    property and visit pages keep their card.
+- **Open:** whether `REVIEW_MAPS_API_KEY` is set on dev-1 (the satellite
+  drawing) is still the operator's decision. A quote already sent to the
+  client is not repriced when the area is typed afterwards, so its card can
+  state a newer area than the one its prices were set for. The portal names a
+  plan element by its `label`, the review page by its localized `NAME`.
+
+### Option rows on one grid and Contract details as its own step (2026-11-11, night)
+
+Two more items of the same feedback round.
+
+- **Option rows.** A per-service option had no price cell, so its status
+  badge slid into the price column. Every row is now radio and name, a
+  right-aligned price column and a status column of fixed width
+  (`.cr-pick`; the portal's `.proposal-option` list likewise). A per-service
+  option fills the price cell with "Per visit" (`PER_SERVICE_PRICE` on the
+  review page): no sum of its unit prices is shown, because the pages compute
+  no money and a visit need not include every service. At 560 px and below
+  the badge takes a second line under the name. The plan block is a band
+  with the rows' own side padding.
+- **Contract details are filled in one place, on a page of their own.**
+  - Review page: Approve (and Decline all options) records the choice and
+    opens the step, which replaces the quotes: Back, the title ("Contract
+    details" with an approval, "Confirm your choices" without), the chosen
+    options with their price and the taxes note, the form, Send decisions.
+    The step is a history entry of the same address
+    (`history.pushState({ clientReviewStep: "confirm" })`), so the browser's
+    Back and Forward move between the quotes and the step, and the step's own
+    Back is `history.back()`. Choices and typed details live in memory and
+    survive the round trip; a step without a choice is never shown. On the
+    quotes a sticky bar ("1 decision is ready to send." / Continue to
+    contract details) is the one way back in. The events and their attributes
+    are unchanged. Preview states `choices-approve`, `choices-decline`.
+  - Portal: Approve opens `#/proposals/<quote>/approve/<order>`
+    (`proposal.approve`, `QuoteApprovalPage.js`): the option's name, price
+    line and taxes note, the contract details form, "Approve <option>" and
+    Back. A confirmed approval replaces the page with the quote that now
+    lists the approved option; a refusal stays on the page. The option card
+    no longer carries the form (only the decline confirmation).
+- **Live on dev-1**: review `7f4ded3f` and portal `3e57675e` uploaded,
+  render cache cleared on `app-1-core-cms` and `app-3-core-cms`. Driven in a
+  headless Chrome against a throwaway request (plan approved at 27,254 sq ft,
+  then 60,000 typed: the card stated 60,000 only and the three quotes were
+  repriced), with the Accept sent once from the review page's step; every
+  record was deleted afterwards. The portal's approval page was driven up to
+  its validation, not sent.
 
 ### Request confirmation pages and the billing address at approval (2026-11-11, evening)
 

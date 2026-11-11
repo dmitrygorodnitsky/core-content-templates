@@ -280,10 +280,14 @@
     return new Intl.NumberFormat(locale, { maximumFractionDigits: 6 }).format(number);
   }
 
-  function formatArea(value, locale) {
+  function squareFeet(value) {
     var number = finiteOrNull(value);
-    if (number === null || number <= 0) return "";
-    return new Intl.NumberFormat(locale, { maximumFractionDigits: 0 }).format(number);
+    return number === null || number <= 0 ? null : number;
+  }
+
+  function formatArea(value, locale) {
+    var number = squareFeet(value);
+    return number === null ? "" : new Intl.NumberFormat(locale, { maximumFractionDigits: 0 }).format(number);
   }
 
   function formatDate(value, locale) {
@@ -742,6 +746,7 @@
         address: group.resource ? propertyAddress(group.resource, context.catalog.addresses, contract) : "",
         plan: group.resource ? planReference([attributeValue(group.resource, contract.propertyAttributes.plan)]) : "",
         area: group.resource ? formatArea(attributeValue(group.resource, contract.propertyAttributes.area), context.locale) : "",
+        areaSquareFeet: group.resource ? squareFeet(attributeValue(group.resource, contract.propertyAttributes.area)) : null,
         options: options,
         status: propertyStatus(options),
       };

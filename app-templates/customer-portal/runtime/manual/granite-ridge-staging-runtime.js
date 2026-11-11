@@ -298,6 +298,7 @@
     cart: { id: "cart", path: "/cart", module: "cart" },
     "proposals.list": { id: "proposals.list", path: "/proposals", module: "proposals" },
     "proposal.detail": { id: "proposal.detail", path: "/proposals/:id", module: "proposals", param: "id" },
+    "proposal.approve": { id: "proposal.approve", path: "/proposals/:id/approve/:quote", module: "proposals", param: "id" },
     "agreement.detail": { id: "agreement.detail", path: "/agreements/:id", module: "proposals", param: "id" },
     "quote.new": { id: "quote.new", path: "/quote/new", module: "proposals", liveOnly: true },
     profile: { id: "profile", path: "/profile", module: "profile" },
@@ -2138,6 +2139,7 @@
     agreementTermsOpen: true,
     contractCommand: null,
     contractConfirm: null,
+    approveQuoteId: null,
     contractDetails: null,
     quoteRequest: null,
     quoteRequestSchema: null,
@@ -2541,6 +2543,7 @@
     state.agreementId = null;
     state.contractCommand = null;
     state.contractConfirm = null;
+    state.approveQuoteId = null;
     state.contractDetails = null;
     state.quoteRequest = null;
     state.quoteRequestSchema = null;
@@ -2944,11 +2947,11 @@
   }
   function settleRound(agreements, orders, decidedId) {
     var listed = agreedOrderIds(agreements);
-    var round2 = orders.filter(function(row) {
+    var round = orders.filter(function(row) {
       return listed.indexOf(row.id) === -1 && ROUND_STATES.indexOf(latestStateCode(row)) !== -1;
     });
     var byProperty = {};
-    round2.forEach(function(row) {
+    round.forEach(function(row) {
       var key = String(attributeNumber(row, "SERVICE_PROPERTY") || 0);
       (byProperty[key] = byProperty[key] || []).push(latestStateCode(row));
     });
@@ -2958,7 +2961,7 @@
         return code === "DECLINED";
       });
     });
-    var approved = round2.filter(function(row) {
+    var approved = round.filter(function(row) {
       return latestStateCode(row) === "ACCEPTED";
     });
     if (!settled2 || !approved.length) return agreements;
@@ -7477,10 +7480,11 @@
   }
   function QuoteOption(order) {
     var meta = QUOTE_STATUS[order.status];
-    var total = formatOrderPrice(order);
+    var perService = !!order.pricing && !order.pricing.total;
+    var total = perService ? "Per visit" : formatOrderPrice(order);
     return h("li", { "class": "proposal-option", "data-module": "quote-row", "data-visual-id": "quote-row", "data-state": order.status }, [
       h("span", { "class": "proposal-option__model" }, order.pricingModel ? order.pricingModel.label : "Quote"),
-      total ? h("span", { "class": "proposal-option__total" }, total) : null,
+      total ? h("span", { "class": "proposal-option__total", "data-pricing": perService ? "per-service" : void 0 }, total) : null,
       StatusBadge({ variant: meta.badge, label: meta.label, bind: "quote.statusLabel", state: order.status })
     ]);
   }
@@ -8541,102 +8545,6 @@
     return h(tag, className ? { "class": className } : null, value == null ? "" : String(value));
   }
 
-  // app-templates/customer-portal/runtime/src/components/storm/PropertyPlan.js
-  var SVG = "http://www.w3.org/2000/svg";
-  var SCALE = 1e5;
-  var METERS_PER_DEGREE = 111320;
-  var MIN_SPAN = 2e-4;
-  var PADDING = 0.08;
-  function PropertyPlan(entry) {
-    if (!entry || entry.status === "unavailable") return null;
-    var card = h("section", { "class": "card card--pad prop-plan", "data-module": "property-plan", "data-visual-id": "property-plan", "data-state": entry.status, "aria-labelledby": "property-plan-title" }, [
-      h("div", { "class": "prop-section__title", id: "property-plan-title" }, "Service plan")
-    ]);
-    if (entry.status !== "ready") {
-      card.setAttribute("aria-busy", "true");
-      card.appendChild(skel("height:220px;border-radius:14px"));
-      return card;
-    }
-    card.appendChild(planDrawing(entry.plan));
-    card.appendChild(h("ul", { "class": "prop-plan__legend", "aria-label": "Plan elements" }, entry.plan.elements.map(function(element) {
-      return h("li", { "class": "prop-plan__item" }, [
-        h("span", { "class": "prop-plan__swatch", "data-tone": String(element.tone), "data-kind": element.kind, "aria-hidden": "true" }),
-        h("span", { "class": "prop-plan__name" }, element.name || "Element " + element.position),
-        element.areaText ? h("span", { "class": "prop-plan__size" }, element.areaText + " ft\xB2") : null
-      ]);
-    })));
-    return card;
-  }
-  function planDrawing(plan) {
-    var frame = planFrame(plan.bounds);
-    var svg = svgNode("svg", {
-      "class": "prop-plan__drawing",
-      viewBox: [frame.x, frame.y, frame.width, frame.height].map(round).join(" "),
-      role: "img",
-      "aria-label": "Plan drawing with " + plan.elements.length + (plan.elements.length === 1 ? " element" : " elements")
-    });
-    plan.elements.forEach(function(element) {
-      element.shapes.forEach(function(shape) {
-        svg.appendChild(shapeNode(shape, element, frame));
-      });
-    });
-    return svg;
-  }
-  function planFrame(bounds) {
-    var cos = Math.cos((bounds.north + bounds.south) / 2 * Math.PI / 180);
-    var width = Math.max((bounds.east - bounds.west) * cos, MIN_SPAN) * SCALE;
-    var height = Math.max(bounds.north - bounds.south, MIN_SPAN) * SCALE;
-    var centerX = (bounds.east - bounds.west) * cos * SCALE / 2;
-    var centerY = (bounds.north - bounds.south) * SCALE / 2;
-    var pad2 = Math.max(width, height) * PADDING;
-    return {
-      x: centerX - width / 2 - pad2,
-      y: centerY - height / 2 - pad2,
-      width: width + pad2 * 2,
-      height: height + pad2 * 2,
-      dot: Math.max(width, height) / 70,
-      project: function(point) {
-        return [(point.lng - bounds.west) * cos * SCALE, (bounds.north - point.lat) * SCALE];
-      }
-    };
-  }
-  function shapeNode(shape, element, frame) {
-    var project = frame.project;
-    var attributes = { "class": "prop-plan__shape", "data-tone": String(element.tone), "data-kind": shape.kind };
-    if (shape.kind === "area") {
-      attributes.d = shape.polygons.map(function(rings) {
-        return rings.map(function(ring) {
-          return "M" + ring.map(function(point) {
-            return project(point).map(round).join(" ");
-          }).join("L") + "Z";
-        }).join("");
-      }).join("");
-      attributes["fill-rule"] = "evenodd";
-      return svgNode("path", attributes);
-    }
-    if (shape.kind === "line") {
-      attributes.points = shape.path.map(function(point) {
-        return project(point).map(round).join(",");
-      }).join(" ");
-      return svgNode("polyline", attributes);
-    }
-    var center = project(shape.kind === "circle" ? shape.center : shape.position);
-    attributes.cx = round(center[0]);
-    attributes.cy = round(center[1]);
-    attributes.r = round(shape.kind === "circle" ? shape.radius / METERS_PER_DEGREE * SCALE : frame.dot);
-    return svgNode("circle", attributes);
-  }
-  function svgNode(tag, attributes) {
-    var node = document.createElementNS(SVG, tag);
-    (/* @__PURE__ */ Object.keys(attributes)).forEach(function(name) {
-      node.setAttribute(name, String(attributes[name]));
-    });
-    return node;
-  }
-  function round(value) {
-    return Math.round(value * 10) / 10;
-  }
-
   // app-templates/customer-portal/runtime/client-review/plan.js
   (function(global) {
     "use strict";
@@ -8645,6 +8553,15 @@
     var SQUARE_FOOT_IN_SQUARE_METERS = 0.09290304;
     var MAP_SURFACE = "GOOGLE_MAPS";
     var TONES = 5;
+    var SVG_NAMESPACE = "http://www.w3.org/2000/svg";
+    var DRAWING_SCALE = 1e5;
+    var DRAWING_MIN_SPAN = 2e-4;
+    var DRAWING_PADDING = 0.08;
+    var DRAWING_MIN_ASPECT = 16 / 9;
+    var DRAWING_MAX_ASPECT = 5 / 2;
+    var DRAWING_DOT = 1 / 70;
+    var METERS_PER_DEGREE = 111320;
+    var AREA_TOLERANCE_SQUARE_FEET = 1;
     function finite(value) {
       return typeof value === "number" && isFinite(value);
     }
@@ -8828,12 +8745,174 @@
         return new Intl.NumberFormat("en", { maximumFractionDigits: 0 }).format(squareFeet);
       }
     }
+    function sumsTo(plan, squareFeet) {
+      return Boolean(plan) && finite(squareFeet) && squareFeet > 0 && Math.abs(plan.squareFeet - squareFeet) <= AREA_TOLERANCE_SQUARE_FEET;
+    }
+    function frameOf(bounds) {
+      var cos = Math.cos(radians((bounds.north + bounds.south) / 2));
+      var spanX = (bounds.east - bounds.west) * cos * DRAWING_SCALE;
+      var spanY = (bounds.north - bounds.south) * DRAWING_SCALE;
+      var minimum = DRAWING_MIN_SPAN * DRAWING_SCALE;
+      var reach = Math.max(spanX, spanY, minimum);
+      var width = Math.max(spanX, minimum) + reach * DRAWING_PADDING * 2;
+      var height = Math.max(spanY, minimum) + reach * DRAWING_PADDING * 2;
+      if (width / height < DRAWING_MIN_ASPECT) width = height * DRAWING_MIN_ASPECT;
+      if (width / height > DRAWING_MAX_ASPECT) height = width / DRAWING_MAX_ASPECT;
+      return {
+        x: spanX / 2 - width / 2,
+        y: spanY / 2 - height / 2,
+        width,
+        height,
+        dot: reach * DRAWING_DOT,
+        project: function(point) {
+          return [(point.lng - bounds.west) * cos * DRAWING_SCALE, (bounds.north - point.lat) * DRAWING_SCALE];
+        }
+      };
+    }
+    function svgNode(doc, tag, attributes) {
+      var node = doc.createElementNS(SVG_NAMESPACE, tag);
+      (/* @__PURE__ */ Object.keys(attributes)).forEach(function(name) {
+        node.setAttribute(name, String(attributes[name]));
+      });
+      return node;
+    }
+    function shapeNode(doc, shape, element, frame, prefix) {
+      var attributes = { "class": prefix + "__shape", "data-tone": String(element.tone), "data-kind": shape.kind };
+      if (shape.kind === "area") {
+        attributes.d = shape.polygons.map(function(rings) {
+          return rings.map(function(ring) {
+            return "M" + ring.map(function(point) {
+              return frame.project(point).join(" ");
+            }).join("L") + "Z";
+          }).join("");
+        }).join("");
+        attributes["fill-rule"] = "evenodd";
+        return svgNode(doc, "path", attributes);
+      }
+      if (shape.kind === "line") {
+        attributes.points = shape.path.map(function(point) {
+          return frame.project(point).join(",");
+        }).join(" ");
+        return svgNode(doc, "polyline", attributes);
+      }
+      var center = frame.project(shape.kind === "circle" ? shape.center : shape.position);
+      attributes.cx = center[0];
+      attributes.cy = center[1];
+      attributes.r = shape.kind === "circle" ? shape.radius / METERS_PER_DEGREE * DRAWING_SCALE : frame.dot;
+      return svgNode(doc, "circle", attributes);
+    }
+    function ringCentre(ring, frame) {
+      var points = ring.map(frame.project);
+      var twice = 0;
+      var x = 0;
+      var y = 0;
+      points.forEach(function(here, index) {
+        var next = points[(index + 1) % points.length];
+        var cross = here[0] * next[1] - next[0] * here[1];
+        twice += cross;
+        x += (here[0] + next[0]) * cross;
+        y += (here[1] + next[1]) * cross;
+      });
+      return { weight: Math.abs(twice) / 2, point: twice ? [x / (3 * twice), y / (3 * twice)] : points[0] };
+    }
+    function labelPoint(element, frame) {
+      var best = null;
+      element.shapes.forEach(function(shape) {
+        var candidates = [];
+        if (shape.kind === "circle") {
+          var reach = shape.radius / METERS_PER_DEGREE * DRAWING_SCALE;
+          candidates.push({ weight: Math.PI * reach * reach, point: frame.project(shape.center) });
+        } else if (shape.kind === "area") {
+          shape.polygons.forEach(function(rings) {
+            candidates.push(ringCentre(rings[0], frame));
+          });
+        }
+        candidates.forEach(function(candidate) {
+          if (!best || candidate.weight > best.weight) best = candidate;
+        });
+      });
+      return best ? best.point : null;
+    }
+    function percent(value) {
+      return Math.min(Math.max(value, 0), 1) * 100 + "%";
+    }
+    function figure(doc, plan, options2) {
+      var settings = options2 || {};
+      var prefix = settings.classPrefix;
+      var frame = frameOf(plan.bounds);
+      var node = doc.createElement("div");
+      node.className = prefix + "__figure";
+      var svg = svgNode(doc, "svg", {
+        "class": prefix + "__drawing",
+        viewBox: [frame.x, frame.y, frame.width, frame.height].join(" "),
+        role: "img",
+        "aria-label": settings.label || ""
+      });
+      plan.elements.forEach(function(element) {
+        element.shapes.forEach(function(shape) {
+          svg.appendChild(shapeNode(doc, shape, element, frame, prefix));
+        });
+      });
+      node.appendChild(svg);
+      var labels = 0;
+      plan.elements.forEach(function(element) {
+        var point = labelPoint(element, frame);
+        var name = typeof settings.nameOf === "function" ? settings.nameOf(element) : element.name;
+        if (!point || !name) return;
+        var label = doc.createElement("span");
+        label.className = prefix + "__label";
+        label.setAttribute("data-tone", String(element.tone));
+        label.setAttribute("aria-hidden", "true");
+        label.style.left = percent((point[0] - frame.x) / frame.width);
+        label.style.top = percent((point[1] - frame.y) / frame.height);
+        label.textContent = name;
+        node.appendChild(label);
+        labels += 1;
+      });
+      node.setAttribute("data-labels", String(labels));
+      return node;
+    }
     ns.plan = /* @__PURE__ */ Object.freeze({
       tones: TONES,
       parse,
-      formatArea: formatArea2
+      formatArea: formatArea2,
+      sumsTo,
+      figure
     });
   })(typeof window !== "undefined" ? window : globalThis);
+
+  // app-templates/customer-portal/runtime/src/components/storm/PropertyPlan.js
+  function PropertyPlan(entry, property) {
+    if (!entry || entry.status === "unavailable") return null;
+    var card = h("section", { "class": "card card--pad prop-plan", "data-module": "property-plan", "data-visual-id": "property-plan", "data-state": entry.status, "aria-labelledby": "property-plan-title" }, [
+      h("div", { "class": "prop-section__title", id: "property-plan-title" }, "Service plan")
+    ]);
+    if (entry.status !== "ready") {
+      card.setAttribute("aria-busy", "true");
+      card.appendChild(skel("height:220px;border-radius:14px"));
+      return card;
+    }
+    var sized = globalThis.ClientReview.plan.sumsTo(entry.plan, property ? property.areaSqft : null);
+    card.appendChild(planDrawing(entry.plan));
+    card.appendChild(h("ul", { "class": "prop-plan__legend", "aria-label": "Plan elements" }, entry.plan.elements.map(function(element) {
+      return h("li", { "class": "prop-plan__item" }, [
+        h("span", { "class": "prop-plan__swatch", "data-tone": String(element.tone), "data-kind": element.kind, "aria-hidden": "true" }),
+        h("span", { "class": "prop-plan__name" }, elementName(element)),
+        sized && element.areaText ? h("span", { "class": "prop-plan__size" }, element.areaText + " ft\xB2") : null
+      ]);
+    })));
+    return card;
+  }
+  function planDrawing(plan) {
+    return globalThis.ClientReview.plan.figure(document, plan, {
+      classPrefix: "prop-plan",
+      label: "Plan drawing with " + plan.elements.length + (plan.elements.length === 1 ? " element" : " elements"),
+      nameOf: elementName
+    });
+  }
+  function elementName(element) {
+    return element.name || "Element " + element.position;
+  }
 
   // app-templates/customer-portal/runtime/src/property-plan.js
   var MEDIA_ID3 = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
@@ -9083,7 +9162,7 @@
     ]));
     if (property) {
       page.appendChild(PropertyFacts(property));
-      var plan = PropertyPlan(propertyPlan(property.planId, render));
+      var plan = PropertyPlan(propertyPlan(property.planId, render), property);
       if (plan) page.appendChild(plan);
       var services = ServicesCard(property);
       if (services) page.appendChild(services);
@@ -9461,571 +9540,6 @@
     return { error: null, value };
   }
 
-  // app-templates/customer-portal/runtime/src/quote-request.js
-  var QUOTE_REQUEST_OUTCOME_TIMEOUT_MS = 3e5;
-  var QUOTE_REQUEST_POLL_MS = 3e3;
-  var QUOTE_REQUEST_LIMIT = 20;
-  var QUOTE_REQUEST_FINAL_OUTCOMES = /* @__PURE__ */ Object.freeze(["ACCEPTED", "REFUSED", "FAILED"]);
-  var QUOTE_REQUEST_FIELDS = /* @__PURE__ */ Object.freeze(["PROPERTY_IDS", "PROPERTY_ADDRESSES"]);
-  var QUOTE_REQUEST_COPY = /* @__PURE__ */ Object.freeze({
-    nothingChosen: "Choose a property or add an address to quote.",
-    tooManyProperties: "Choose at most " + QUOTE_REQUEST_LIMIT + " properties in one request.",
-    tooManyAddresses: "Add at most " + QUOTE_REQUEST_LIMIT + " new addresses in one request.",
-    addressOutside: "This address is outside the area we serve.",
-    addressUnknown: "We could not find this address. Check it or pick one from the suggestions.",
-    notSent: "Your request wasn\u2019t sent. Check your connection and try again.",
-    failed: "We couldn\u2019t take your quote request right now. Please try again in a few minutes."
-  });
-  var BUSY_PHASES2 = /* @__PURE__ */ Object.freeze(["sending", "waiting", "processing", "checking"]);
-  var finder = null;
-  function quoteRequestOpen(config) {
-    return !!config && config.vertical === "snow" && config.dataMode === "live";
-  }
-  function quoteRequestState() {
-    if (!state.quoteRequest) state.quoteRequest = freshRequest();
-    return state.quoteRequest;
-  }
-  function resetQuoteRequest() {
-    var current = state.quoteRequest;
-    if (current && BUSY_PHASES2.indexOf(current.phase) !== -1) return false;
-    state.quoteRequest = freshRequest();
-    return true;
-  }
-  function quoteRequestBusy() {
-    return !!state.quoteRequest && BUSY_PHASES2.indexOf(state.quoteRequest.phase) !== -1;
-  }
-  function freshRequest() {
-    return {
-      phase: "editing",
-      draft: { propertyIds: [], addresses: [], risks: [], notes: "", pendingAddress: "" },
-      errors: {},
-      message: "",
-      addressCheck: "",
-      formId: null
-    };
-  }
-  function quoteRequestSchema(type) {
-    var attributes = typeAttributes(type);
-    var addresses = attributes.PROPERTY_ADDRESSES || {};
-    var risks = attributes.RISK_FACTORS || {};
-    var notes = attributes.ADDITIONAL_NOTES || {};
-    var rows2 = /(?:^|\s)rows:(\d+)/.exec(text(notes.inputFormat));
-    return {
-      within: withinBox(addresses.inputFormat),
-      riskLabel: localizedName5(risks.nls),
-      risks: (Array.isArray(risks.options) ? risks.options : []).map(function(option) {
-        var value = text(option && option.value);
-        return value ? { value, label: localizedName5(option.nls) || value } : null;
-      }).filter(Boolean),
-      notesLabel: localizedName5(notes.nls),
-      notesRows: rows2 ? Math.min(Number(rows2[1]), 12) : 5
-    };
-  }
-  function withinBox(inputFormat) {
-    var match = /(?:^|\s)within:(-?\d+(?:\.\d+)?),(-?\d+(?:\.\d+)?),(-?\d+(?:\.\d+)?),(-?\d+(?:\.\d+)?)(?:\s|;|$)/.exec(text(inputFormat));
-    if (!match) return null;
-    var box = { south: Number(match[1]), west: Number(match[2]), north: Number(match[3]), east: Number(match[4]) };
-    return box.south < box.north && box.west < box.east && Math.abs(box.south) <= 90 && Math.abs(box.north) <= 90 ? box : null;
-  }
-  function insideBox(box, point) {
-    return !box || !point || point.lat >= box.south && point.lat <= box.north && point.lon >= box.west && point.lon <= box.east;
-  }
-  function loadQuoteRequestSchema(options2) {
-    var settings = options2 || {};
-    var current = state.quoteRequestSchema;
-    if (current && current.state !== "error") return Promise.resolve(current);
-    var forms = settings.forms || createCoreProfileFormAdapter();
-    var loading = { state: "loading", schema: null };
-    state.quoteRequestSchema = loading;
-    return Promise.resolve().then(function() {
-      return forms.type(QUOTE_REQUEST_FORM, { config: state.config, state });
-    }).then(function(type) {
-      if (state.quoteRequestSchema !== loading) return state.quoteRequestSchema;
-      state.quoteRequestSchema = { state: "ready", schema: quoteRequestSchema(type) };
-      return state.quoteRequestSchema;
-    }, function(error2) {
-      if (state.quoteRequestSchema !== loading) return state.quoteRequestSchema;
-      if (error2 && error2.code === "session-expired") state.account = "session-expired";
-      state.quoteRequestSchema = { state: "error", schema: null };
-      return state.quoteRequestSchema;
-    }).then(function(result) {
-      if (settings.onChange) settings.onChange();
-      return result;
-    });
-  }
-  function toggleQuoteProperty(backendId) {
-    var request = quoteRequestState();
-    var id = positiveInteger(backendId);
-    if (!id || quoteRequestBusy() || !liveProperties().some(function(property) {
-      return property.backendId === id;
-    })) return false;
-    var chosen = request.draft.propertyIds;
-    request.draft.propertyIds = chosen.indexOf(id) === -1 ? chosen.concat([id]) : chosen.filter(function(other) {
-      return other !== id;
-    });
-    delete request.errors.PROPERTY_IDS;
-    return true;
-  }
-  function changeQuoteRequestDraft(key, value) {
-    var request = quoteRequestState();
-    if (quoteRequestBusy()) return false;
-    if (key === "notes" || key === "pendingAddress") request.draft[key] = String(value == null ? "" : value);
-    else if (key === "risk") {
-      var risks = request.draft.risks;
-      request.draft.risks = risks.indexOf(value) === -1 ? risks.concat([value]) : risks.filter(function(risk) {
-        return risk !== value;
-      });
-    } else return false;
-    return true;
-  }
-  function removeQuoteAddress(index) {
-    var request = quoteRequestState();
-    var position = Number(index);
-    if (quoteRequestBusy() || !Number.isInteger(position) || position < 0 || position >= request.draft.addresses.length) return false;
-    request.draft.addresses = request.draft.addresses.filter(function(_, at) {
-      return at !== position;
-    });
-    delete request.errors.PROPERTY_ADDRESSES;
-    return true;
-  }
-  function acceptQuoteAddress(address, point) {
-    var request = quoteRequestState();
-    var value = text(address).replace(/\s+/g, " ");
-    if (!value) return false;
-    var schema = state.quoteRequestSchema && state.quoteRequestSchema.schema;
-    if (!insideBox(schema && schema.within, point)) {
-      request.errors.PROPERTY_ADDRESSES = QUOTE_REQUEST_COPY.addressOutside;
-      return false;
-    }
-    var known = request.draft.addresses.some(function(entry) {
-      return entry.address.toLowerCase() === value.toLowerCase();
-    });
-    if (!known && request.draft.addresses.length >= QUOTE_REQUEST_LIMIT) {
-      request.errors.PROPERTY_ADDRESSES = QUOTE_REQUEST_COPY.tooManyAddresses;
-      return false;
-    }
-    if (!known) request.draft.addresses = request.draft.addresses.concat([{ address: value, point: point || null }]);
-    request.draft.pendingAddress = "";
-    delete request.errors.PROPERTY_ADDRESSES;
-    delete request.errors.PROPERTY_IDS;
-    return true;
-  }
-  function addTypedQuoteAddress(options2) {
-    var settings = options2 || {};
-    var request = quoteRequestState();
-    var typed = text(request.draft.pendingAddress);
-    if (!typed) return Promise.resolve(true);
-    if (quoteRequestBusy() || request.addressCheck) return Promise.resolve(false);
-    var maps = settings.finder || addressFinder();
-    if (!maps) return Promise.resolve(acceptQuoteAddress(typed, null));
-    request.addressCheck = "checking";
-    if (settings.onChange) settings.onChange();
-    return Promise.resolve().then(function() {
-      return maps.load();
-    }).then(function() {
-      return maps.geocode(typed);
-    }).then(function(point) {
-      return { point, missed: false };
-    }, function(error2) {
-      return { point: null, missed: !!error2 && error2.status === "ZERO_RESULTS" };
-    }).then(function(found) {
-      request.addressCheck = "";
-      if (text(request.draft.pendingAddress) !== typed) return false;
-      if (found.missed) {
-        request.errors.PROPERTY_ADDRESSES = QUOTE_REQUEST_COPY.addressUnknown;
-        return false;
-      }
-      return acceptQuoteAddress(typed, found.point);
-    }).then(function(added) {
-      if (settings.onChange) settings.onChange();
-      return added;
-    });
-  }
-  function addressFinder() {
-    if (!state.config.mapsApiKey) return null;
-    if (!finder) finder = createGoogleMapsAdapter({ apiKey: state.config.mapsApiKey });
-    return finder;
-  }
-  function validateQuoteRequest(draft) {
-    var errors = {};
-    if (!draft.propertyIds.length && !draft.addresses.length) errors.PROPERTY_IDS = QUOTE_REQUEST_COPY.nothingChosen;
-    if (draft.propertyIds.length > QUOTE_REQUEST_LIMIT) errors.PROPERTY_IDS = QUOTE_REQUEST_COPY.tooManyProperties;
-    if (draft.addresses.length > QUOTE_REQUEST_LIMIT) errors.PROPERTY_ADDRESSES = QUOTE_REQUEST_COPY.tooManyAddresses;
-    return errors;
-  }
-  function quoteRequestValues(draft) {
-    var values = {};
-    var located = draft.addresses.filter(function(entry) {
-      return !!entry.point;
-    });
-    var notes = text(draft.notes);
-    if (draft.propertyIds.length) values.PROPERTY_IDS = draft.propertyIds.map(String);
-    if (draft.addresses.length) values.PROPERTY_ADDRESSES = draft.addresses.map(function(entry) {
-      return entry.address;
-    });
-    if (located.length) {
-      values.PROPERTY_COORDINATES = JSON.stringify(located.map(function(entry) {
-        return { address: entry.address, lat: entry.point.lat, lng: entry.point.lon };
-      }));
-    }
-    if (draft.risks.length) values.RISK_FACTORS = draft.risks.slice();
-    if (notes) values.ADDITIONAL_NOTES = notes;
-    return values;
-  }
-  function submitQuoteRequest(options2) {
-    var request = quoteRequestState();
-    var changed = options2.onChange || function() {
-    };
-    if (quoteRequestBusy()) return Promise.resolve(false);
-    var errors = validateQuoteRequest(request.draft);
-    if ((/* @__PURE__ */ Object.keys(errors)).length) {
-      request.errors = errors;
-      request.message = "";
-      changed("invalid");
-      return Promise.resolve(false);
-    }
-    var forms = options2.forms || outcomeForms(options2);
-    var context = { config: state.config, state };
-    request.phase = "sending";
-    request.errors = {};
-    request.message = "";
-    changed("sending");
-    return Promise.resolve().then(function() {
-      return forms.submit(QUOTE_REQUEST_FORM, quoteRequestValues(request.draft), context);
-    }).then(function(formId) {
-      if (state.quoteRequest !== request) return false;
-      request.formId = formId;
-      request.phase = "waiting";
-      changed("waiting");
-      return awaitOutcome(request, forms, context, options2);
-    }, function(error2) {
-      if (state.quoteRequest !== request) return false;
-      if (error2 && error2.code === "session-expired") return sessionEnded(request, changed);
-      request.phase = "editing";
-      request.message = QUOTE_REQUEST_COPY.notSent;
-      changed("not-sent");
-      return false;
-    });
-  }
-  function checkQuoteRequestAgain(options2) {
-    var request = state.quoteRequest;
-    if (!request || request.phase !== "slow" || !request.formId) return Promise.resolve(false);
-    var forms = options2.forms || outcomeForms(options2);
-    request.phase = "checking";
-    (options2.onChange || function() {
-    })("checking");
-    return awaitOutcome(request, forms, { config: state.config, state }, options2);
-  }
-  function outcomeForms(options2) {
-    return createCoreProfileFormAdapter({ timeoutMs: QUOTE_REQUEST_OUTCOME_TIMEOUT_MS, pollIntervalMs: QUOTE_REQUEST_POLL_MS, wait: options2.wait, now: options2.now });
-  }
-  function awaitOutcome(request, forms, context, options2) {
-    var changed = options2.onChange || function() {
-    };
-    return Promise.resolve().then(function() {
-      return forms.report(QUOTE_REQUEST_FORM, request.formId, context, QUOTE_REQUEST_FINAL_OUTCOMES, function(reported) {
-        if (reported.outcome !== "PROCESSING" || request.phase !== "waiting" || state.quoteRequest !== request) return;
-        request.phase = "processing";
-        changed("processing");
-      });
-    }).then(function(report) {
-      if (state.quoteRequest !== request) return false;
-      return settle2(request, report, options2);
-    }, function(error2) {
-      if (state.quoteRequest !== request) return false;
-      if (error2 && error2.code === "session-expired") return sessionEnded(request, changed);
-      request.phase = "slow";
-      changed("slow");
-      return false;
-    });
-  }
-  function settle2(request, report, options2) {
-    var changed = options2.onChange || function() {
-    };
-    if (report.outcome === "ACCEPTED") {
-      request.phase = "accepted";
-      changed("accepted");
-      if (options2.reload) {
-        ["proposals", "properties"].forEach(function(moduleId) {
-          Promise.resolve().then(function() {
-            return options2.reload(moduleId);
-          }).catch(function() {
-            return null;
-          });
-        });
-      }
-      return true;
-    }
-    request.phase = "editing";
-    var field3 = text(report.field);
-    var message = text(report.message);
-    if (report.outcome === "REFUSED" && message && QUOTE_REQUEST_FIELDS.indexOf(field3) !== -1) request.errors = { [field3]: message };
-    else request.message = message || QUOTE_REQUEST_COPY.failed;
-    changed(report.outcome === "REFUSED" ? "refused" : "failed");
-    return false;
-  }
-  function sessionEnded(request, changed) {
-    request.phase = request.formId ? "slow" : "editing";
-    state.account = "session-expired";
-    changed("session-expired");
-    return false;
-  }
-  function typeAttributes(type) {
-    var found = {};
-    [type].concat(type && Array.isArray(type.parents) ? type.parents : []).forEach(function(owner) {
-      (owner && Array.isArray(owner.attributes) ? owner.attributes : []).forEach(function(attribute) {
-        var code = text(attribute && attribute.code);
-        if (code && !found[code]) found[code] = attribute;
-      });
-    });
-    return found;
-  }
-  function localizedName5(nls) {
-    if (!nls || typeof nls !== "object") return "";
-    var bag = nls.en || nls[(/* @__PURE__ */ Object.keys(nls))[0]] || {};
-    return text(bag && bag.NAME).replace(/\s+/g, " ");
-  }
-
-  // app-templates/customer-portal/runtime/src/address-suggestions.js
-  var SUGGESTION_DELAY = 250;
-  var SUGGESTION_MINIMUM = 3;
-  function attachAddressSuggestions(input, cell, options2) {
-    var finder2 = options2.finder;
-    var listId = input.getAttribute("id") + "-suggestions";
-    var list = h("ul", { "class": "prop-suggest", id: listId, role: "listbox", "aria-label": "Suggested addresses", hidden: true });
-    var offered = [];
-    var active = -1;
-    var timer = null;
-    cell.appendChild(list);
-    input.setAttribute("role", "combobox");
-    input.setAttribute("aria-autocomplete", "list");
-    input.setAttribute("aria-controls", listId);
-    input.setAttribute("aria-expanded", "false");
-    function highlight(index) {
-      active = index;
-      offered.forEach(function(option, position) {
-        option.node.setAttribute("aria-selected", position === index ? "true" : "false");
-      });
-      if (index === -1) input.removeAttribute("aria-activedescendant");
-      else input.setAttribute("aria-activedescendant", offered[index].node.getAttribute("id"));
-    }
-    function close() {
-      list.replaceChildren();
-      list.setAttribute("hidden", "");
-      offered = [];
-      highlight(-1);
-      input.setAttribute("aria-expanded", "false");
-    }
-    function take(option) {
-      close();
-      options2.pick(option.item);
-    }
-    input.addEventListener("keydown", function(event) {
-      if (list.hasAttribute("hidden")) return;
-      if (event.key === "ArrowDown" || event.key === "ArrowUp") {
-        event.preventDefault();
-        var count = offered.length;
-        highlight(event.key === "ArrowDown" ? (active + 1) % count : (active <= 0 ? count : active) - 1);
-      } else if (event.key === "Enter" && active !== -1) {
-        event.preventDefault();
-        take(offered[active]);
-      } else if (event.key === "Escape") {
-        event.preventDefault();
-        close();
-      }
-    });
-    input.addEventListener("blur", function() {
-      setTimeout(close, 150);
-    });
-    input.addEventListener("input", function() {
-      if (timer !== null) clearTimeout(timer);
-      var value = input.value.trim();
-      if (value.length < SUGGESTION_MINIMUM) {
-        timer = null;
-        close();
-        return;
-      }
-      timer = setTimeout(function() {
-        timer = null;
-        finder2.suggestAddresses(value, { within: options2.within || null }).then(function(items) {
-          if (input.value.trim() !== value || !input.isConnected) return;
-          close();
-          offered = items.map(function(item, index) {
-            var node = h("li", { "class": "prop-suggest__option", id: listId + "-" + index, role: "option", "aria-selected": "false" }, item.label);
-            var option = { node, item };
-            node.addEventListener("mousedown", function(event) {
-              event.preventDefault();
-            });
-            node.addEventListener("click", function() {
-              take(option);
-            });
-            list.appendChild(node);
-            return option;
-          });
-          if (!offered.length) return;
-          list.removeAttribute("hidden");
-          input.setAttribute("aria-expanded", "true");
-        }, close);
-      }, SUGGESTION_DELAY);
-    });
-  }
-
-  // app-templates/customer-portal/runtime/src/components/proposals/ContractDetailsForm.js
-  var GROUPS = [
-    { title: "Client", codes: ["LEGAL_NAME", "CLIENT_TYPE", "BILLING_ADDRESS", "LEGAL_ADDRESS"] },
-    { title: "Representative", codes: ["REPRESENTATIVE_FIRST_NAME", "REPRESENTATIVE_LAST_NAME", "REPRESENTATIVE_JOB_TITLE", "REPRESENTATIVE_EMAIL", "REPRESENTATIVE_PHONE"] }
-  ];
-  var PAIRS = { REPRESENTATIVE_FIRST_NAME: "REPRESENTATIVE_LAST_NAME", REPRESENTATIVE_EMAIL: "REPRESENTATIVE_PHONE" };
-  var CONFIRMATIONS = ["INFORMATION_CONFIRMED", "AUTHORITY_CONFIRMED"];
-  var INPUT_TYPES = { text: "text", address: "text", email: "email", tel: "tel" };
-  function contractDetailsLoading(details) {
-    return !details || details.prefill === "loading";
-  }
-  function ContractDetailsForm(details, pending) {
-    var loading = contractDetailsLoading(details);
-    var panel = h("div", {
-      "class": "agreement-details",
-      "data-module": "agreement-details",
-      "data-visual-id": "agreement-details",
-      "data-state": loading ? "loading" : pending ? "pending" : "editing",
-      role: "group",
-      "aria-labelledby": "agreement-details-title"
-    }, [
-      h("p", { "class": "decision-confirm__title", id: "agreement-details-title" }, "Your contract details"),
-      h("p", { "class": "decision-confirm__body" }, "These details go into your service agreement.")
-    ]);
-    if (loading) {
-      panel.setAttribute("aria-busy", "true");
-      panel.appendChild(h("div", { "class": "contract-form", "data-module": "agreement-details-loading" }, [0, 1, 2].map(function() {
-        return h("div", { "class": "field-row" }, [skel("width:28%;height:11px;margin-bottom:4px"), skel("height:40px;border-radius:12px")]);
-      })));
-      return panel;
-    }
-    var notice = prefillNotice(details);
-    if (notice) panel.appendChild(notice);
-    var errors = details.errors;
-    var form = h("div", { "class": "contract-form", "aria-busy": pending ? "true" : void 0 });
-    GROUPS.forEach(function(group) {
-      var section = h("div", { "class": "contract-form__group" }, [h("div", { "class": "contract-form__legend" }, group.title)]);
-      var skip = {};
-      group.codes.forEach(function(code) {
-        if (skip[code]) return;
-        var pair = PAIRS[code];
-        if (pair) {
-          skip[pair] = true;
-          section.appendChild(h("div", { "class": "contract-form__pair" }, [Field(code, details, errors, pending), Field(pair, details, errors, pending)]));
-        } else section.appendChild(Field(code, details, errors, pending));
-      });
-      form.appendChild(section);
-    });
-    form.appendChild(h("div", { "class": "contract-form__group contract-form__confirmations" }, CONFIRMATIONS.map(function(code) {
-      return Confirmation(code, details, errors, pending);
-    })));
-    panel.appendChild(form);
-    return panel;
-  }
-  function prefillNotice(details) {
-    if (details.prefill === "failed") return PartialNotice("Your account details could not be loaded, so nothing is filled in for you.");
-    if (details.filled) {
-      return h("p", { "class": "contract-form__note", "data-module": "agreement-details-prefill" }, "Filled in from your account. Check every field before sending.");
-    }
-    return null;
-  }
-  function Field(code, details, errors, pending) {
-    var definition = definitionOf(code);
-    if (definition.kind === "choice") return ClientType(definition, details, errors, pending);
-    var id = "contract-detail-" + code.toLowerCase().replace(/_/g, "-");
-    var error2 = errors[code];
-    var suggesting = definition.kind === "address" && !!addressFinder() && !pending;
-    var input = h("input", {
-      "class": "field",
-      id,
-      name: code,
-      type: INPUT_TYPES[definition.kind] || "text",
-      autocomplete: suggesting ? "off" : definition.autocomplete,
-      value: details.draft[code] || "",
-      "data-contract-detail": code,
-      "data-state": error2 ? "invalid" : void 0,
-      "aria-invalid": error2 ? "true" : void 0,
-      "aria-describedby": error2 ? id + "-error" : void 0,
-      "aria-required": definition.required ? "true" : void 0,
-      disabled: pending ? true : void 0,
-      spellcheck: definition.kind === "text" ? void 0 : "false"
-    });
-    input.addEventListener("input", function() {
-      changeContractDetail(code, input.value);
-    });
-    var cell = h("div", { "class": "field-row prop-edit__field" }, [
-      h("label", { "class": "field-label", "for": id }, definition.required ? definition.label : definition.label + " (optional)"),
-      input,
-      error2 ? h("div", { "class": "field-error", id: id + "-error", role: "alert" }, error2) : null
-    ]);
-    if (suggesting) {
-      attachAddressSuggestions(input, cell, {
-        finder: addressFinder(),
-        pick: function(item) {
-          Promise.resolve(item.address()).then(function(address) {
-            input.value = address;
-            changeContractDetail(code, address);
-            input.focus();
-          });
-        }
-      });
-    }
-    return cell;
-  }
-  function ClientType(definition, details, errors, pending) {
-    var error2 = errors[definition.code];
-    var legendId = "contract-detail-client-type";
-    var chosen = details.draft[definition.code];
-    return h("div", {
-      "class": "field-row",
-      role: "radiogroup",
-      "aria-labelledby": legendId,
-      "aria-required": "true",
-      "aria-invalid": error2 ? "true" : void 0,
-      "aria-describedby": error2 ? legendId + "-error" : void 0,
-      "data-contract-detail": definition.code
-    }, [
-      h("div", { "class": "field-label", id: legendId }, definition.label),
-      h("div", { "class": "choice-chips" }, CONTRACT_CLIENT_TYPES.map(function(type) {
-        var input = h("input", { "class": "choice-chip__input", type: "radio", name: "contract-detail-client-type", value: type.code, checked: chosen === type.code ? true : void 0, disabled: pending ? true : void 0, "data-client-type": type.code });
-        input.addEventListener("change", function() {
-          if (input.checked) changeContractDetail(definition.code, type.code);
-        });
-        return h("label", { "class": "choice-chip" }, [input, h("span", { "class": "choice-chip__label" }, type.label)]);
-      })),
-      error2 ? h("div", { "class": "field-error", id: legendId + "-error", role: "alert" }, error2) : null
-    ]);
-  }
-  function Confirmation(code, details, errors, pending) {
-    var definition = definitionOf(code);
-    var error2 = errors[code];
-    var id = "contract-detail-" + code.toLowerCase().replace(/_/g, "-");
-    var input = h("input", {
-      "class": "check-line__input",
-      type: "checkbox",
-      id,
-      checked: details.draft[code] === true ? true : void 0,
-      disabled: pending ? true : void 0,
-      "aria-invalid": error2 ? "true" : void 0,
-      "aria-describedby": error2 ? id + "-error" : void 0,
-      "data-contract-detail": code
-    });
-    input.addEventListener("change", function() {
-      changeContractDetail(code, input.checked === true);
-    });
-    return h("div", { "class": "check-line", "data-state": error2 ? "invalid" : void 0 }, [
-      h("label", { "class": "check-line__label", "for": id }, [input, h("span", null, definition.label)]),
-      error2 ? h("div", { "class": "field-error", id: id + "-error", role: "alert" }, error2) : null
-    ]);
-  }
-  function definitionOf(code) {
-    return CONTRACT_DETAILS_FIELDS.find(function(item) {
-      return item.code === code;
-    });
-  }
-
   // app-templates/customer-portal/runtime/src/components/proposals/QuoteOptionCard.js
   function QuoteOptionCard(order, options2) {
     var settings = options2 || {};
@@ -10107,10 +9621,10 @@
     var busy = !!settings.busy;
     if (order.status !== "unseen") return outcome ? h("div", { "class": "quote-option__decide" }, outcome) : null;
     var confirm = state.contractConfirm;
-    var confirming = !!confirm && confirm.backendId === order.backendId && (confirm.kind === "approve" || confirm.kind === "decline");
+    var confirming = !!confirm && confirm.backendId === order.backendId && confirm.kind === "decline";
     var changing = !!confirm && confirm.backendId === order.backendId && confirm.kind === "changes";
     var section = h("div", { "class": "quote-option__decide" });
-    if (confirming) section.appendChild(DecisionConfirm(confirm.kind, order, settings, targeted && command.phase === "pending"));
+    if (confirming) section.appendChild(DeclineConfirm(order, settings, targeted && command.phase === "pending"));
     else if (changing) section.appendChild(ChangeRequest(confirm, order, settings, targeted && command.phase === "pending"));
     else {
       section.appendChild(h("div", { "class": "proposal-actions" }, [
@@ -10154,25 +9668,22 @@
       ])
     ]);
   }
-  function DecisionConfirm(kind, order, settings, pending) {
+  function DeclineConfirm(order, settings, pending) {
     var label = order.pricingModel ? order.pricingModel.label : "this option";
     var titleId = "decision-title-" + order.backendId;
-    var body = kind === "approve" ? settings.siblingsOpen ? "Approving it declines the other options for this property." : "" : "A declined option can\u2019t be approved later.";
-    var details = kind === "approve" ? state.contractDetails : null;
     var confirmButton = ActionButton({
-      variant: kind === "approve" ? "btn--primary" : "btn--danger",
-      label: pending ? "Sending\u2026" : kind === "approve" ? "Confirm approval" : "Confirm decline",
+      variant: "btn--danger",
+      label: pending ? "Sending\u2026" : "Confirm decline",
       action: "quote.confirm",
       id: String(order.backendId),
       lg: true,
-      disabled: pending || settings.busy || kind === "approve" && contractDetailsLoading(details),
+      disabled: pending || settings.busy,
       visualId: "quote-confirm"
     });
     if (pending) confirmButton.setAttribute("data-state", "pending");
-    return h("div", { "class": "decision-confirm", "data-module": "decision-confirm", "data-visual-id": "decision-confirm", "data-state": pending ? "pending" : "open", "data-kind": kind, role: "group", "aria-labelledby": titleId }, [
-      h("p", { "class": "decision-confirm__title", id: titleId }, kind === "approve" ? "Approve " + label + " for this property?" : "Decline " + label + "?"),
-      body ? h("p", { "class": "decision-confirm__body" }, body) : null,
-      kind === "approve" ? ContractDetailsForm(details, pending) : null,
+    return h("div", { "class": "decision-confirm", "data-module": "decision-confirm", "data-visual-id": "decision-confirm", "data-state": pending ? "pending" : "open", "data-kind": "decline", role: "group", "aria-labelledby": titleId }, [
+      h("p", { "class": "decision-confirm__title", id: titleId }, "Decline " + label + "?"),
+      h("p", { "class": "decision-confirm__body" }, "A declined option can\u2019t be approved later."),
       h("div", { "class": "proposal-actions" }, [
         confirmButton,
         ActionButton({ variant: "btn--ghost", label: "Cancel", action: "quote.cancel", lg: true, disabled: pending, visualId: "quote-cancel" })
@@ -10703,7 +10214,7 @@
     if (service) page.appendChild(ServiceCard2(service));
     var visits = LiveVisitsCard(property);
     if (visits) page.appendChild(visits);
-    var plan = PropertyPlan(propertyPlan(property.planId, render));
+    var plan = PropertyPlan(propertyPlan(property.planId, render), property);
     if (plan) page.appendChild(plan);
     var location = PropertyLocation({
       property,
@@ -11286,7 +10797,8 @@
     var status = QUOTE_STATUS[group.status];
     var busy = contractCommandsBusy();
     page.setAttribute("data-state", group.status);
-    var facts2 = [group.address].filter(Boolean);
+    var area = formatArea(group.property ? group.property.areaSqft : null);
+    var facts2 = [group.address, area ? "Service area " + area : ""].filter(Boolean);
     page.appendChild(h("div", { "class": "proposal-detail-head", "data-module": "quote-detail-head", "data-visual-id": "quote-detail-head" }, [
       h("div", { style: "flex:1;min-width:0" }, [
         h("h1", { "class": "proposal-detail-head__title", "data-bind": "quote.property" }, group.title),
@@ -11314,18 +10826,14 @@
         h("div", { style: "font-size:13px;line-height:1.45;color:var(--ink-2)" }, note)
       ]));
     }
+    var plan = group.property ? PropertyPlan(propertyPlan(group.property.planId, render), group.property) : null;
+    if (plan) page.appendChild(plan);
     var open = group.orders.filter(function(order) {
       return order.status === "unseen";
     });
     var list = h("div", { "class": "quote-options", "data-module": "quote-options", "data-visual-id": "quote-options" });
     group.orders.forEach(function(order) {
-      list.appendChild(QuoteOptionCard(order, {
-        interactive: true,
-        busy,
-        siblingsOpen: open.some(function(other) {
-          return other.backendId !== order.backendId;
-        })
-      }));
+      list.appendChild(QuoteOptionCard(order, { interactive: true, busy }));
     });
     page.appendChild(list);
     if (open.length) {
@@ -11541,6 +11049,657 @@
       h("div", { "class": "rollup-card__label" }, label),
       h("div", { "class": "rollup-card__num", style: "color:" + color }, String(num2))
     ]);
+  }
+
+  // app-templates/customer-portal/runtime/src/quote-request.js
+  var QUOTE_REQUEST_OUTCOME_TIMEOUT_MS = 3e5;
+  var QUOTE_REQUEST_POLL_MS = 3e3;
+  var QUOTE_REQUEST_LIMIT = 20;
+  var QUOTE_REQUEST_FINAL_OUTCOMES = /* @__PURE__ */ Object.freeze(["ACCEPTED", "REFUSED", "FAILED"]);
+  var QUOTE_REQUEST_FIELDS = /* @__PURE__ */ Object.freeze(["PROPERTY_IDS", "PROPERTY_ADDRESSES"]);
+  var QUOTE_REQUEST_COPY = /* @__PURE__ */ Object.freeze({
+    nothingChosen: "Choose a property or add an address to quote.",
+    tooManyProperties: "Choose at most " + QUOTE_REQUEST_LIMIT + " properties in one request.",
+    tooManyAddresses: "Add at most " + QUOTE_REQUEST_LIMIT + " new addresses in one request.",
+    addressOutside: "This address is outside the area we serve.",
+    addressUnknown: "We could not find this address. Check it or pick one from the suggestions.",
+    notSent: "Your request wasn\u2019t sent. Check your connection and try again.",
+    failed: "We couldn\u2019t take your quote request right now. Please try again in a few minutes."
+  });
+  var BUSY_PHASES2 = /* @__PURE__ */ Object.freeze(["sending", "waiting", "processing", "checking"]);
+  var finder = null;
+  function quoteRequestOpen(config) {
+    return !!config && config.vertical === "snow" && config.dataMode === "live";
+  }
+  function quoteRequestState() {
+    if (!state.quoteRequest) state.quoteRequest = freshRequest();
+    return state.quoteRequest;
+  }
+  function resetQuoteRequest() {
+    var current = state.quoteRequest;
+    if (current && BUSY_PHASES2.indexOf(current.phase) !== -1) return false;
+    state.quoteRequest = freshRequest();
+    return true;
+  }
+  function quoteRequestBusy() {
+    return !!state.quoteRequest && BUSY_PHASES2.indexOf(state.quoteRequest.phase) !== -1;
+  }
+  function freshRequest() {
+    return {
+      phase: "editing",
+      draft: { propertyIds: [], addresses: [], risks: [], notes: "", pendingAddress: "" },
+      errors: {},
+      message: "",
+      addressCheck: "",
+      formId: null
+    };
+  }
+  function quoteRequestSchema(type) {
+    var attributes = typeAttributes(type);
+    var addresses = attributes.PROPERTY_ADDRESSES || {};
+    var risks = attributes.RISK_FACTORS || {};
+    var notes = attributes.ADDITIONAL_NOTES || {};
+    var rows2 = /(?:^|\s)rows:(\d+)/.exec(text(notes.inputFormat));
+    return {
+      within: withinBox(addresses.inputFormat),
+      riskLabel: localizedName5(risks.nls),
+      risks: (Array.isArray(risks.options) ? risks.options : []).map(function(option) {
+        var value = text(option && option.value);
+        return value ? { value, label: localizedName5(option.nls) || value } : null;
+      }).filter(Boolean),
+      notesLabel: localizedName5(notes.nls),
+      notesRows: rows2 ? Math.min(Number(rows2[1]), 12) : 5
+    };
+  }
+  function withinBox(inputFormat) {
+    var match = /(?:^|\s)within:(-?\d+(?:\.\d+)?),(-?\d+(?:\.\d+)?),(-?\d+(?:\.\d+)?),(-?\d+(?:\.\d+)?)(?:\s|;|$)/.exec(text(inputFormat));
+    if (!match) return null;
+    var box = { south: Number(match[1]), west: Number(match[2]), north: Number(match[3]), east: Number(match[4]) };
+    return box.south < box.north && box.west < box.east && Math.abs(box.south) <= 90 && Math.abs(box.north) <= 90 ? box : null;
+  }
+  function insideBox(box, point) {
+    return !box || !point || point.lat >= box.south && point.lat <= box.north && point.lon >= box.west && point.lon <= box.east;
+  }
+  function loadQuoteRequestSchema(options2) {
+    var settings = options2 || {};
+    var current = state.quoteRequestSchema;
+    if (current && current.state !== "error") return Promise.resolve(current);
+    var forms = settings.forms || createCoreProfileFormAdapter();
+    var loading = { state: "loading", schema: null };
+    state.quoteRequestSchema = loading;
+    return Promise.resolve().then(function() {
+      return forms.type(QUOTE_REQUEST_FORM, { config: state.config, state });
+    }).then(function(type) {
+      if (state.quoteRequestSchema !== loading) return state.quoteRequestSchema;
+      state.quoteRequestSchema = { state: "ready", schema: quoteRequestSchema(type) };
+      return state.quoteRequestSchema;
+    }, function(error2) {
+      if (state.quoteRequestSchema !== loading) return state.quoteRequestSchema;
+      if (error2 && error2.code === "session-expired") state.account = "session-expired";
+      state.quoteRequestSchema = { state: "error", schema: null };
+      return state.quoteRequestSchema;
+    }).then(function(result) {
+      if (settings.onChange) settings.onChange();
+      return result;
+    });
+  }
+  function toggleQuoteProperty(backendId) {
+    var request = quoteRequestState();
+    var id = positiveInteger(backendId);
+    if (!id || quoteRequestBusy() || !liveProperties().some(function(property) {
+      return property.backendId === id;
+    })) return false;
+    var chosen = request.draft.propertyIds;
+    request.draft.propertyIds = chosen.indexOf(id) === -1 ? chosen.concat([id]) : chosen.filter(function(other) {
+      return other !== id;
+    });
+    delete request.errors.PROPERTY_IDS;
+    return true;
+  }
+  function changeQuoteRequestDraft(key, value) {
+    var request = quoteRequestState();
+    if (quoteRequestBusy()) return false;
+    if (key === "notes" || key === "pendingAddress") request.draft[key] = String(value == null ? "" : value);
+    else if (key === "risk") {
+      var risks = request.draft.risks;
+      request.draft.risks = risks.indexOf(value) === -1 ? risks.concat([value]) : risks.filter(function(risk) {
+        return risk !== value;
+      });
+    } else return false;
+    return true;
+  }
+  function removeQuoteAddress(index) {
+    var request = quoteRequestState();
+    var position = Number(index);
+    if (quoteRequestBusy() || !Number.isInteger(position) || position < 0 || position >= request.draft.addresses.length) return false;
+    request.draft.addresses = request.draft.addresses.filter(function(_, at) {
+      return at !== position;
+    });
+    delete request.errors.PROPERTY_ADDRESSES;
+    return true;
+  }
+  function acceptQuoteAddress(address, point) {
+    var request = quoteRequestState();
+    var value = text(address).replace(/\s+/g, " ");
+    if (!value) return false;
+    var schema = state.quoteRequestSchema && state.quoteRequestSchema.schema;
+    if (!insideBox(schema && schema.within, point)) {
+      request.errors.PROPERTY_ADDRESSES = QUOTE_REQUEST_COPY.addressOutside;
+      return false;
+    }
+    var known = request.draft.addresses.some(function(entry) {
+      return entry.address.toLowerCase() === value.toLowerCase();
+    });
+    if (!known && request.draft.addresses.length >= QUOTE_REQUEST_LIMIT) {
+      request.errors.PROPERTY_ADDRESSES = QUOTE_REQUEST_COPY.tooManyAddresses;
+      return false;
+    }
+    if (!known) request.draft.addresses = request.draft.addresses.concat([{ address: value, point: point || null }]);
+    request.draft.pendingAddress = "";
+    delete request.errors.PROPERTY_ADDRESSES;
+    delete request.errors.PROPERTY_IDS;
+    return true;
+  }
+  function addTypedQuoteAddress(options2) {
+    var settings = options2 || {};
+    var request = quoteRequestState();
+    var typed = text(request.draft.pendingAddress);
+    if (!typed) return Promise.resolve(true);
+    if (quoteRequestBusy() || request.addressCheck) return Promise.resolve(false);
+    var maps = settings.finder || addressFinder();
+    if (!maps) return Promise.resolve(acceptQuoteAddress(typed, null));
+    request.addressCheck = "checking";
+    if (settings.onChange) settings.onChange();
+    return Promise.resolve().then(function() {
+      return maps.load();
+    }).then(function() {
+      return maps.geocode(typed);
+    }).then(function(point) {
+      return { point, missed: false };
+    }, function(error2) {
+      return { point: null, missed: !!error2 && error2.status === "ZERO_RESULTS" };
+    }).then(function(found) {
+      request.addressCheck = "";
+      if (text(request.draft.pendingAddress) !== typed) return false;
+      if (found.missed) {
+        request.errors.PROPERTY_ADDRESSES = QUOTE_REQUEST_COPY.addressUnknown;
+        return false;
+      }
+      return acceptQuoteAddress(typed, found.point);
+    }).then(function(added) {
+      if (settings.onChange) settings.onChange();
+      return added;
+    });
+  }
+  function addressFinder() {
+    if (!state.config.mapsApiKey) return null;
+    if (!finder) finder = createGoogleMapsAdapter({ apiKey: state.config.mapsApiKey });
+    return finder;
+  }
+  function validateQuoteRequest(draft) {
+    var errors = {};
+    if (!draft.propertyIds.length && !draft.addresses.length) errors.PROPERTY_IDS = QUOTE_REQUEST_COPY.nothingChosen;
+    if (draft.propertyIds.length > QUOTE_REQUEST_LIMIT) errors.PROPERTY_IDS = QUOTE_REQUEST_COPY.tooManyProperties;
+    if (draft.addresses.length > QUOTE_REQUEST_LIMIT) errors.PROPERTY_ADDRESSES = QUOTE_REQUEST_COPY.tooManyAddresses;
+    return errors;
+  }
+  function quoteRequestValues(draft) {
+    var values = {};
+    var located = draft.addresses.filter(function(entry) {
+      return !!entry.point;
+    });
+    var notes = text(draft.notes);
+    if (draft.propertyIds.length) values.PROPERTY_IDS = draft.propertyIds.map(String);
+    if (draft.addresses.length) values.PROPERTY_ADDRESSES = draft.addresses.map(function(entry) {
+      return entry.address;
+    });
+    if (located.length) {
+      values.PROPERTY_COORDINATES = JSON.stringify(located.map(function(entry) {
+        return { address: entry.address, lat: entry.point.lat, lng: entry.point.lon };
+      }));
+    }
+    if (draft.risks.length) values.RISK_FACTORS = draft.risks.slice();
+    if (notes) values.ADDITIONAL_NOTES = notes;
+    return values;
+  }
+  function submitQuoteRequest(options2) {
+    var request = quoteRequestState();
+    var changed = options2.onChange || function() {
+    };
+    if (quoteRequestBusy()) return Promise.resolve(false);
+    var errors = validateQuoteRequest(request.draft);
+    if ((/* @__PURE__ */ Object.keys(errors)).length) {
+      request.errors = errors;
+      request.message = "";
+      changed("invalid");
+      return Promise.resolve(false);
+    }
+    var forms = options2.forms || outcomeForms(options2);
+    var context = { config: state.config, state };
+    request.phase = "sending";
+    request.errors = {};
+    request.message = "";
+    changed("sending");
+    return Promise.resolve().then(function() {
+      return forms.submit(QUOTE_REQUEST_FORM, quoteRequestValues(request.draft), context);
+    }).then(function(formId) {
+      if (state.quoteRequest !== request) return false;
+      request.formId = formId;
+      request.phase = "waiting";
+      changed("waiting");
+      return awaitOutcome(request, forms, context, options2);
+    }, function(error2) {
+      if (state.quoteRequest !== request) return false;
+      if (error2 && error2.code === "session-expired") return sessionEnded(request, changed);
+      request.phase = "editing";
+      request.message = QUOTE_REQUEST_COPY.notSent;
+      changed("not-sent");
+      return false;
+    });
+  }
+  function checkQuoteRequestAgain(options2) {
+    var request = state.quoteRequest;
+    if (!request || request.phase !== "slow" || !request.formId) return Promise.resolve(false);
+    var forms = options2.forms || outcomeForms(options2);
+    request.phase = "checking";
+    (options2.onChange || function() {
+    })("checking");
+    return awaitOutcome(request, forms, { config: state.config, state }, options2);
+  }
+  function outcomeForms(options2) {
+    return createCoreProfileFormAdapter({ timeoutMs: QUOTE_REQUEST_OUTCOME_TIMEOUT_MS, pollIntervalMs: QUOTE_REQUEST_POLL_MS, wait: options2.wait, now: options2.now });
+  }
+  function awaitOutcome(request, forms, context, options2) {
+    var changed = options2.onChange || function() {
+    };
+    return Promise.resolve().then(function() {
+      return forms.report(QUOTE_REQUEST_FORM, request.formId, context, QUOTE_REQUEST_FINAL_OUTCOMES, function(reported) {
+        if (reported.outcome !== "PROCESSING" || request.phase !== "waiting" || state.quoteRequest !== request) return;
+        request.phase = "processing";
+        changed("processing");
+      });
+    }).then(function(report) {
+      if (state.quoteRequest !== request) return false;
+      return settle2(request, report, options2);
+    }, function(error2) {
+      if (state.quoteRequest !== request) return false;
+      if (error2 && error2.code === "session-expired") return sessionEnded(request, changed);
+      request.phase = "slow";
+      changed("slow");
+      return false;
+    });
+  }
+  function settle2(request, report, options2) {
+    var changed = options2.onChange || function() {
+    };
+    if (report.outcome === "ACCEPTED") {
+      request.phase = "accepted";
+      changed("accepted");
+      if (options2.reload) {
+        ["proposals", "properties"].forEach(function(moduleId) {
+          Promise.resolve().then(function() {
+            return options2.reload(moduleId);
+          }).catch(function() {
+            return null;
+          });
+        });
+      }
+      return true;
+    }
+    request.phase = "editing";
+    var field3 = text(report.field);
+    var message = text(report.message);
+    if (report.outcome === "REFUSED" && message && QUOTE_REQUEST_FIELDS.indexOf(field3) !== -1) request.errors = { [field3]: message };
+    else request.message = message || QUOTE_REQUEST_COPY.failed;
+    changed(report.outcome === "REFUSED" ? "refused" : "failed");
+    return false;
+  }
+  function sessionEnded(request, changed) {
+    request.phase = request.formId ? "slow" : "editing";
+    state.account = "session-expired";
+    changed("session-expired");
+    return false;
+  }
+  function typeAttributes(type) {
+    var found = {};
+    [type].concat(type && Array.isArray(type.parents) ? type.parents : []).forEach(function(owner) {
+      (owner && Array.isArray(owner.attributes) ? owner.attributes : []).forEach(function(attribute) {
+        var code = text(attribute && attribute.code);
+        if (code && !found[code]) found[code] = attribute;
+      });
+    });
+    return found;
+  }
+  function localizedName5(nls) {
+    if (!nls || typeof nls !== "object") return "";
+    var bag = nls.en || nls[(/* @__PURE__ */ Object.keys(nls))[0]] || {};
+    return text(bag && bag.NAME).replace(/\s+/g, " ");
+  }
+
+  // app-templates/customer-portal/runtime/src/address-suggestions.js
+  var SUGGESTION_DELAY = 250;
+  var SUGGESTION_MINIMUM = 3;
+  function attachAddressSuggestions(input, cell, options2) {
+    var finder2 = options2.finder;
+    var listId = input.getAttribute("id") + "-suggestions";
+    var list = h("ul", { "class": "prop-suggest", id: listId, role: "listbox", "aria-label": "Suggested addresses", hidden: true });
+    var offered = [];
+    var active = -1;
+    var timer = null;
+    cell.appendChild(list);
+    input.setAttribute("role", "combobox");
+    input.setAttribute("aria-autocomplete", "list");
+    input.setAttribute("aria-controls", listId);
+    input.setAttribute("aria-expanded", "false");
+    function highlight(index) {
+      active = index;
+      offered.forEach(function(option, position) {
+        option.node.setAttribute("aria-selected", position === index ? "true" : "false");
+      });
+      if (index === -1) input.removeAttribute("aria-activedescendant");
+      else input.setAttribute("aria-activedescendant", offered[index].node.getAttribute("id"));
+    }
+    function close() {
+      list.replaceChildren();
+      list.setAttribute("hidden", "");
+      offered = [];
+      highlight(-1);
+      input.setAttribute("aria-expanded", "false");
+    }
+    function take(option) {
+      close();
+      options2.pick(option.item);
+    }
+    input.addEventListener("keydown", function(event) {
+      if (list.hasAttribute("hidden")) return;
+      if (event.key === "ArrowDown" || event.key === "ArrowUp") {
+        event.preventDefault();
+        var count = offered.length;
+        highlight(event.key === "ArrowDown" ? (active + 1) % count : (active <= 0 ? count : active) - 1);
+      } else if (event.key === "Enter" && active !== -1) {
+        event.preventDefault();
+        take(offered[active]);
+      } else if (event.key === "Escape") {
+        event.preventDefault();
+        close();
+      }
+    });
+    input.addEventListener("blur", function() {
+      setTimeout(close, 150);
+    });
+    input.addEventListener("input", function() {
+      if (timer !== null) clearTimeout(timer);
+      var value = input.value.trim();
+      if (value.length < SUGGESTION_MINIMUM) {
+        timer = null;
+        close();
+        return;
+      }
+      timer = setTimeout(function() {
+        timer = null;
+        finder2.suggestAddresses(value, { within: options2.within || null }).then(function(items) {
+          if (input.value.trim() !== value || !input.isConnected) return;
+          close();
+          offered = items.map(function(item, index) {
+            var node = h("li", { "class": "prop-suggest__option", id: listId + "-" + index, role: "option", "aria-selected": "false" }, item.label);
+            var option = { node, item };
+            node.addEventListener("mousedown", function(event) {
+              event.preventDefault();
+            });
+            node.addEventListener("click", function() {
+              take(option);
+            });
+            list.appendChild(node);
+            return option;
+          });
+          if (!offered.length) return;
+          list.removeAttribute("hidden");
+          input.setAttribute("aria-expanded", "true");
+        }, close);
+      }, SUGGESTION_DELAY);
+    });
+  }
+
+  // app-templates/customer-portal/runtime/src/components/proposals/ContractDetailsForm.js
+  var GROUPS = [
+    { title: "Client", codes: ["LEGAL_NAME", "CLIENT_TYPE", "BILLING_ADDRESS", "LEGAL_ADDRESS"] },
+    { title: "Representative", codes: ["REPRESENTATIVE_FIRST_NAME", "REPRESENTATIVE_LAST_NAME", "REPRESENTATIVE_JOB_TITLE", "REPRESENTATIVE_EMAIL", "REPRESENTATIVE_PHONE"] }
+  ];
+  var PAIRS = { REPRESENTATIVE_FIRST_NAME: "REPRESENTATIVE_LAST_NAME", REPRESENTATIVE_EMAIL: "REPRESENTATIVE_PHONE" };
+  var CONFIRMATIONS = ["INFORMATION_CONFIRMED", "AUTHORITY_CONFIRMED"];
+  var INPUT_TYPES = { text: "text", address: "text", email: "email", tel: "tel" };
+  function contractDetailsLoading(details) {
+    return !details || details.prefill === "loading";
+  }
+  function ContractDetailsForm(details, pending) {
+    var loading = contractDetailsLoading(details);
+    var panel = h("div", {
+      "class": "agreement-details",
+      "data-module": "agreement-details",
+      "data-visual-id": "agreement-details",
+      "data-state": loading ? "loading" : pending ? "pending" : "editing",
+      role: "group",
+      "aria-labelledby": "agreement-details-title"
+    }, [
+      h("p", { "class": "decision-confirm__title", id: "agreement-details-title" }, "Your contract details"),
+      h("p", { "class": "decision-confirm__body" }, "These details go into your service agreement.")
+    ]);
+    if (loading) {
+      panel.setAttribute("aria-busy", "true");
+      panel.appendChild(h("div", { "class": "contract-form", "data-module": "agreement-details-loading" }, [0, 1, 2].map(function() {
+        return h("div", { "class": "field-row" }, [skel("width:28%;height:11px;margin-bottom:4px"), skel("height:40px;border-radius:12px")]);
+      })));
+      return panel;
+    }
+    var notice = prefillNotice(details);
+    if (notice) panel.appendChild(notice);
+    var errors = details.errors;
+    var form = h("div", { "class": "contract-form", "aria-busy": pending ? "true" : void 0 });
+    GROUPS.forEach(function(group) {
+      var section = h("div", { "class": "contract-form__group" }, [h("div", { "class": "contract-form__legend" }, group.title)]);
+      var skip = {};
+      group.codes.forEach(function(code) {
+        if (skip[code]) return;
+        var pair = PAIRS[code];
+        if (pair) {
+          skip[pair] = true;
+          section.appendChild(h("div", { "class": "contract-form__pair" }, [Field(code, details, errors, pending), Field(pair, details, errors, pending)]));
+        } else section.appendChild(Field(code, details, errors, pending));
+      });
+      form.appendChild(section);
+    });
+    form.appendChild(h("div", { "class": "contract-form__group contract-form__confirmations" }, CONFIRMATIONS.map(function(code) {
+      return Confirmation(code, details, errors, pending);
+    })));
+    panel.appendChild(form);
+    return panel;
+  }
+  function prefillNotice(details) {
+    if (details.prefill === "failed") return PartialNotice("Your account details could not be loaded, so nothing is filled in for you.");
+    if (details.filled) {
+      return h("p", { "class": "contract-form__note", "data-module": "agreement-details-prefill" }, "Filled in from your account. Check every field before sending.");
+    }
+    return null;
+  }
+  function Field(code, details, errors, pending) {
+    var definition = definitionOf(code);
+    if (definition.kind === "choice") return ClientType(definition, details, errors, pending);
+    var id = "contract-detail-" + code.toLowerCase().replace(/_/g, "-");
+    var error2 = errors[code];
+    var suggesting = definition.kind === "address" && !!addressFinder() && !pending;
+    var input = h("input", {
+      "class": "field",
+      id,
+      name: code,
+      type: INPUT_TYPES[definition.kind] || "text",
+      autocomplete: suggesting ? "off" : definition.autocomplete,
+      value: details.draft[code] || "",
+      "data-contract-detail": code,
+      "data-state": error2 ? "invalid" : void 0,
+      "aria-invalid": error2 ? "true" : void 0,
+      "aria-describedby": error2 ? id + "-error" : void 0,
+      "aria-required": definition.required ? "true" : void 0,
+      disabled: pending ? true : void 0,
+      spellcheck: definition.kind === "text" ? void 0 : "false"
+    });
+    input.addEventListener("input", function() {
+      changeContractDetail(code, input.value);
+    });
+    var cell = h("div", { "class": "field-row prop-edit__field" }, [
+      h("label", { "class": "field-label", "for": id }, definition.required ? definition.label : definition.label + " (optional)"),
+      input,
+      error2 ? h("div", { "class": "field-error", id: id + "-error", role: "alert" }, error2) : null
+    ]);
+    if (suggesting) {
+      attachAddressSuggestions(input, cell, {
+        finder: addressFinder(),
+        pick: function(item) {
+          Promise.resolve(item.address()).then(function(address) {
+            input.value = address;
+            changeContractDetail(code, address);
+            input.focus();
+          });
+        }
+      });
+    }
+    return cell;
+  }
+  function ClientType(definition, details, errors, pending) {
+    var error2 = errors[definition.code];
+    var legendId = "contract-detail-client-type";
+    var chosen = details.draft[definition.code];
+    return h("div", {
+      "class": "field-row",
+      role: "radiogroup",
+      "aria-labelledby": legendId,
+      "aria-required": "true",
+      "aria-invalid": error2 ? "true" : void 0,
+      "aria-describedby": error2 ? legendId + "-error" : void 0,
+      "data-contract-detail": definition.code
+    }, [
+      h("div", { "class": "field-label", id: legendId }, definition.label),
+      h("div", { "class": "choice-chips" }, CONTRACT_CLIENT_TYPES.map(function(type) {
+        var input = h("input", { "class": "choice-chip__input", type: "radio", name: "contract-detail-client-type", value: type.code, checked: chosen === type.code ? true : void 0, disabled: pending ? true : void 0, "data-client-type": type.code });
+        input.addEventListener("change", function() {
+          if (input.checked) changeContractDetail(definition.code, type.code);
+        });
+        return h("label", { "class": "choice-chip" }, [input, h("span", { "class": "choice-chip__label" }, type.label)]);
+      })),
+      error2 ? h("div", { "class": "field-error", id: legendId + "-error", role: "alert" }, error2) : null
+    ]);
+  }
+  function Confirmation(code, details, errors, pending) {
+    var definition = definitionOf(code);
+    var error2 = errors[code];
+    var id = "contract-detail-" + code.toLowerCase().replace(/_/g, "-");
+    var input = h("input", {
+      "class": "check-line__input",
+      type: "checkbox",
+      id,
+      checked: details.draft[code] === true ? true : void 0,
+      disabled: pending ? true : void 0,
+      "aria-invalid": error2 ? "true" : void 0,
+      "aria-describedby": error2 ? id + "-error" : void 0,
+      "data-contract-detail": code
+    });
+    input.addEventListener("change", function() {
+      changeContractDetail(code, input.checked === true);
+    });
+    return h("div", { "class": "check-line", "data-state": error2 ? "invalid" : void 0 }, [
+      h("label", { "class": "check-line__label", "for": id }, [input, h("span", null, definition.label)]),
+      error2 ? h("div", { "class": "field-error", id: id + "-error", role: "alert" }, error2) : null
+    ]);
+  }
+  function definitionOf(code) {
+    return CONTRACT_DETAILS_FIELDS.find(function(item) {
+      return item.code === code;
+    });
+  }
+
+  // app-templates/customer-portal/runtime/src/routes/QuoteApprovalPage.js
+  function QuoteApproval() {
+    var page = h("section", { "class": "page page--narrow", "data-route": "proposal.approve", "data-visual-id": "quote-approval" });
+    page.appendChild(h("div", { "class": "detail-back", "data-action": "quote.backToQuote", "data-visual-id": "quote-approval-back" }, "\u2039 Back to the quote"));
+    var gate = contractsGate(ContractDetailSkeleton);
+    if (gate) {
+      page.setAttribute("data-state", gate.getAttribute("data-state") || "loading");
+      page.appendChild(gate);
+      return page;
+    }
+    var group = quoteGroupFor(state.currentSiteId);
+    var order = group ? group.orders.find(function(candidate) {
+      return candidate.backendId === state.approveQuoteId;
+    }) : null;
+    if (!order) {
+      page.setAttribute("data-state", "not-found");
+      page.appendChild(NotFoundState({ noun: "quote", backLabel: "contracts", backRoute: "proposals.list" }));
+      return page;
+    }
+    var command = state.contractCommand;
+    var targeted = !!command && command.targets.indexOf(order.backendId) !== -1;
+    var pending = targeted && command.phase === "pending";
+    var outcome = targeted && !pending ? CommandOutcome(command.phase, command.message) : null;
+    var waiting = order.status === "unseen";
+    page.setAttribute("data-state", pending ? "pending" : waiting ? "open" : order.status);
+    page.appendChild(h("div", { "class": "proposal-detail-head", "data-module": "quote-approval-head", "data-visual-id": "quote-approval-head" }, [
+      h("div", { style: "flex:1;min-width:0" }, [
+        h("h1", { "class": "proposal-detail-head__title", tabindex: "-1" }, "Contract details"),
+        h("div", { "class": "proposal-detail-head__meta" }, [group.title, group.address].filter(Boolean).join(" \xB7 "))
+      ])
+    ]));
+    page.appendChild(OptionSummary(order, group, waiting));
+    if (!waiting) {
+      page.appendChild(h("div", { "class": "proposal-decided", "data-module": "quote-approval-closed", "data-state": order.status }, [
+        h("div", { "class": "proposal-decided__icon" }, "i"),
+        h("div", { style: "font-size:13px;line-height:1.45;color:var(--ink-2)" }, "This option is no longer waiting for your decision.")
+      ]));
+      if (outcome) page.appendChild(outcome);
+      page.appendChild(h("div", { "class": "proposal-actions" }, [
+        ActionButton({ variant: "btn--primary", label: "Back to the quote", action: "quote.backToQuote", lg: true, visualId: "quote-approval-return" })
+      ]));
+      return page;
+    }
+    ensureContractDetails();
+    var details = state.contractDetails;
+    var send = ActionButton({
+      variant: "btn--primary",
+      label: pending ? "Sending\u2026" : "Approve " + optionName(order),
+      action: "quote.sendApproval",
+      id: String(order.backendId),
+      lg: true,
+      disabled: pending || contractCommandsBusy() || contractDetailsLoading(details),
+      visualId: "quote-approval-send"
+    });
+    if (pending) send.setAttribute("data-state", "pending");
+    page.appendChild(h("div", { "class": "card card--pad quote-approval__form", "data-module": "quote-approval-form", "data-visual-id": "quote-approval-form" }, [
+      ContractDetailsForm(details, pending),
+      outcome,
+      h("div", { "class": "proposal-actions" }, [
+        send,
+        ActionButton({ variant: "btn--ghost", label: "Back", action: "quote.backToQuote", lg: true, disabled: pending, visualId: "quote-approval-cancel" })
+      ])
+    ]));
+    return page;
+  }
+  function OptionSummary(order, group, waiting) {
+    var status = QUOTE_STATUS[order.status];
+    var perService = !!order.pricing && !order.pricing.total;
+    var price = perService ? "You pay the price of each service every time it is performed." : formatOrderPrice(order);
+    var siblingsOpen = waiting && group.orders.some(function(other) {
+      return other.backendId !== order.backendId && other.status === "unseen";
+    });
+    return h("section", { "class": "card card--pad quote-approval__summary", "data-module": "quote-approval-summary", "data-visual-id": "quote-approval-summary", "data-state": order.status, "aria-label": "The option you are approving" }, [
+      h("div", { "class": "quote-option__head" }, [
+        h("h2", { "class": "quote-option__model" }, optionName(order)),
+        waiting ? null : StatusBadge({ variant: status.badge, label: status.label, bind: "quote.statusLabel", state: order.status })
+      ]),
+      price ? h("div", { "class": "quote-approval__price", "data-pricing": perService ? "per-service" : "total" }, price) : null,
+      h("div", { "class": "quote-option__taxes", "data-kind": "taxes" }, state.config.taxesNote),
+      siblingsOpen ? h("div", { "class": "quote-option__note" }, "Approving it declines the other options for this property.") : null
+    ]);
+  }
+  function optionName(order) {
+    return order.pricingModel ? order.pricingModel.label : "this option";
   }
 
   // app-templates/customer-portal/runtime/src/routes/AgreementDetailPage.js
@@ -12678,6 +12837,8 @@
         return ProposalsList();
       case "proposal.detail":
         return ProposalDetail();
+      case "proposal.approve":
+        return QuoteApproval();
       case "agreement.detail":
         return AgreementDetail();
       case "quote.new":
@@ -12725,6 +12886,10 @@
   function applyRouteParams(match) {
     if (match.id === "order.detail" && match.params.id) state.currentOrderId = match.params.id;
     if (match.id === "proposal.detail" && match.params.id) state.currentSiteId = match.params.id;
+    if (match.id === "proposal.approve" && match.params.id) {
+      state.currentSiteId = match.params.id;
+      state.approveQuoteId = Number(match.params.quote) || null;
+    }
     if (match.id === "agreement.detail" && match.params.id) state.agreementId = match.params.id;
     if (match.id === "visit.detail" && match.params.id) state.visitId = match.params.id;
     if (match.id === "invoice.detail" && match.params.id) state.invoiceId = match.params.id;
@@ -12739,6 +12904,7 @@
       return { id: state.currentOrderId };
     }
     if (routeId === "proposal.detail") return { id: state.currentSiteId };
+    if (routeId === "proposal.approve") return { id: state.currentSiteId, quote: state.approveQuoteId };
     if (routeId === "agreement.detail") return { id: state.agreementId };
     if (routeId === "visit.detail") return { id: state.visitId };
     if (routeId === "invoice.detail") return { id: state.invoiceId };
@@ -12755,7 +12921,7 @@
   function routeFamily(routeId) {
     if (routeId === "orders.list" || routeId === "order.detail" || routeId === "appointment.detail") return "appointments";
     if (routeId === "appointments" || routeId === "visit.detail" || routeId === "property.detail") return "appointments-timeline";
-    if (routeId === "proposals.list" || routeId === "proposal.detail" || routeId === "agreement.detail" || routeId === "quote.new") return "proposals";
+    if (routeId === "proposals.list" || routeId === "proposal.detail" || routeId === "proposal.approve" || routeId === "agreement.detail" || routeId === "quote.new") return "proposals";
     if (routeId === "purchases.list" || routeId === "purchase.detail") return "purchases";
     if (routeId === "products" || routeId === "product.detail") return "products";
     return null;
@@ -13017,7 +13183,15 @@
       openAgreement(id);
     },
     "quote.approve": function(id) {
-      return openContractConfirm("approve", id);
+      return openQuoteApproval(id);
+    },
+    "quote.sendApproval": function(id) {
+      return sendQuoteApproval(id);
+    },
+    "quote.backToQuote": function() {
+      if (contractCommands.busy()) return false;
+      go("proposal.detail");
+      return true;
     },
     "quote.decline": function(id) {
       return openContractConfirm("decline", id);
@@ -14127,7 +14301,6 @@
     if (!backendId || contractCommands.busy()) return false;
     state.contractConfirm = kind === "changes" ? { kind, backendId, message: "", error: "" } : { kind, backendId };
     if (state.contractCommand && state.contractCommand.phase !== "pending") state.contractCommand = null;
-    if (kind === "approve") ensureContractDetails();
     if (kind === "agreement") openAgreementBilling(state.contractConfirm, { load: contractAccountLoader(), onChange: function() {
       render();
     } });
@@ -14167,9 +14340,38 @@
     var confirm = state.contractConfirm;
     if (!backendId || !confirm || confirm.backendId !== backendId) return false;
     if (kind === "agreement") return confirm.kind === "agreement" ? approveAgreementWithBilling(backendId, confirm) : false;
-    if (confirm.kind === "approve") return approveWithDetails(backendId);
     if (confirm.kind !== "decline") return false;
     return contractCommands.decide(confirm.kind, backendId);
+  }
+  function openQuoteApproval(id) {
+    var backendId = contractTarget(id);
+    if (!backendId || contractCommands.busy()) return false;
+    state.approveQuoteId = backendId;
+    state.contractConfirm = null;
+    if (state.contractCommand && state.contractCommand.phase !== "pending") state.contractCommand = null;
+    ensureContractDetails();
+    go("proposal.approve");
+    focusElement('[data-visual-id="quote-approval-head"] h1');
+    return true;
+  }
+  function sendQuoteApproval(id) {
+    var backendId = contractTarget(id);
+    if (!backendId || backendId !== state.approveQuoteId) return false;
+    var sent = approveWithDetails(backendId);
+    if (!sent) return false;
+    return sent.then(function(confirmed) {
+      if (confirmed && state.route === "proposal.approve" && state.approveQuoteId === backendId) {
+        var pkg = quotePackage();
+        var home = pkg ? pkg.groups.concat(pkg.history || []).find(function(group) {
+          return group.orders.some(function(order) {
+            return order.backendId === backendId;
+          });
+        }) : null;
+        if (home) state.currentSiteId = home.id;
+        go("proposal.detail", true);
+      }
+      return confirmed;
+    });
   }
   function approveWithDetails(backendId) {
     var details = state.contractDetails;

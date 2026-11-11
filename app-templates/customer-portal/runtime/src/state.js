@@ -33,6 +33,7 @@ export var state = {
   agreementTermsOpen: true,
   contractCommand: null,
   contractConfirm: null,
+  approveQuoteId: null,
   contractDetails: null,
   quoteRequest: null,
   quoteRequestSchema: null,
@@ -989,6 +990,7 @@ export function applyPortalConfig(config) {
   state.agreementId = null;
   state.contractCommand = null;
   state.contractConfirm = null;
+  state.approveQuoteId = null;
   state.contractDetails = null;
   state.quoteRequest = null;
   state.quoteRequestSchema = null;

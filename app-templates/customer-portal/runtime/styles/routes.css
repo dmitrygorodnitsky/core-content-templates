@@ -642,13 +642,15 @@ div.proposal-group__head:hover { background: transparent; }
 
 .proposal-options { list-style: none; margin: 0; padding: 0 18px 10px 62px; }
 
-.proposal-option { display: flex; align-items: center; gap: 12px; padding: 8px 0; border-top: 1px solid rgba(var(--hair), .06); }
+.proposal-option { display: grid; grid-template-columns: minmax(0, 1fr) minmax(128px, auto) 148px; align-items: center; column-gap: 12px; padding: 8px 0; border-top: 1px solid rgba(var(--hair), .06); }
 
-.proposal-option__model { flex: 1; min-width: 0; font-weight: 650; font-size: 13.5px; }
+.proposal-option__model { min-width: 0; font-weight: 650; font-size: 13.5px; }
 
-.proposal-option__total { font-weight: 750; font-size: 13.5px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.proposal-option__total { grid-column: 2; justify-self: end; text-align: right; font-weight: 750; font-size: 13.5px; font-variant-numeric: tabular-nums; white-space: nowrap; }
 
-.proposal-option .status-badge { font-size: 11px; }
+.proposal-option__total[data-pricing="per-service"] { font-weight: 600; color: var(--ink-2); }
+
+.proposal-option .status-badge { grid-column: 3; justify-self: end; font-size: 11px; }
 
 .quote-preparing__glyph { background: rgba(var(--accent-rgb), .12); color: var(--accent); }
 
@@ -769,6 +771,16 @@ h1.proposal-detail-head__title { margin: 0; }
 .quote-option__note { margin-top: 8px; font-size: 12.5px; line-height: 1.5; color: var(--ink-3); }
 .quote-option__taxes { margin-top: 4px; font-size: 12.5px; line-height: 1.5; color: var(--ink-3); }
 .quote-totals .quote-option__taxes { text-align: right; }
+
+.quote-approval__summary { margin-bottom: 12px; }
+
+.quote-approval__price { margin-top: 8px; font-weight: 750; font-size: 17px; letter-spacing: -.01em; font-variant-numeric: tabular-nums; }
+
+.quote-approval__price[data-pricing="per-service"] { font-weight: 500; font-size: 13.5px; line-height: 1.5; color: var(--ink-2); }
+
+.quote-approval__form .proposal-actions { margin-top: 16px; flex-wrap: wrap; }
+
+.quote-approval__form .decision-outcome { margin-top: 14px; }
 
 .quote-option__decide { display: flex; flex-direction: column; gap: 10px; margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--glass-border); }
 
@@ -2875,7 +2887,11 @@ a.prop-fact__value { display: block; }
 
 .prop-plan, .prop-service { margin-bottom: 16px; }
 
-.prop-plan__drawing { display: block; width: 100%; height: auto; max-height: 360px; border-radius: 14px; background: rgba(var(--hair), .05); border: 1px solid var(--glass-border); }
+.prop-plan__figure { position: relative; }
+
+.prop-plan__drawing { display: block; width: 100%; height: auto; border-radius: 14px; background: rgba(var(--hair), .05); border: 1px solid var(--glass-border); }
+
+.prop-plan__label { position: absolute; transform: translate(-50%, -50%); max-width: 44%; padding: 2px 8px; border-radius: var(--radius-pill); background: var(--surface); color: var(--ink); font-size: 11.5px; font-weight: 700; line-height: 1.4; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; box-shadow: 0 1px 4px rgba(var(--hair), .2); pointer-events: none; }
 
 .prop-plan__shape { fill: var(--accent); fill-opacity: .32; stroke: var(--accent); stroke-width: 2px; vector-effect: non-scaling-stroke; stroke-linejoin: round; }
 

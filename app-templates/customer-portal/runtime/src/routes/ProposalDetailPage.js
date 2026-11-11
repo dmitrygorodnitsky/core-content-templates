@@ -1,5 +1,6 @@
 // customer-portal/runtime/src/routes/ProposalDetailPage.js — production transfer module.
 import { h } from "../dom.js";
+import { render } from "../app.js";
 import { computeSite, currentSite, currentTheme, proposalPlanName, proposalStatusMeta, quoteGroupFor, quotePackage, state } from "../state.js";
 import { contractCommandsBusy, go, selectPlan } from "../actions.js";
 import { StatusBadge } from "../components/primitives/StatusBadge.js";
@@ -10,7 +11,10 @@ import { QUOTE_STATUS } from "../components/proposals/QuotePackage.js";
 import { QuoteOptionCard } from "../components/proposals/QuoteOptionCard.js";
 import { ContractDetailSkeleton, PartialNotice, contractsGate } from "../components/proposals/ContractStates.js";
 import { PropertyLocation } from "../components/storm/PropertyMap.js";
+import { PropertyPlan } from "../components/storm/PropertyPlan.js";
+import { formatArea } from "../normalizers/overview.js";
 import { mapViewport, sharedPropertyMap } from "../property-map-session.js";
+import { propertyPlan } from "../property-plan.js";
 import { Profile } from "./ProfilePage.js";
 import { Activity } from "./ActivityPage.js";
 import { Calendar } from "./CalendarPage.js";
@@ -155,7 +159,8 @@ function QuoteDetail() {
   var busy = contractCommandsBusy();
   page.setAttribute("data-state", group.status);
 
-  var facts = [group.address].filter(Boolean);
+  var area = formatArea(group.property ? group.property.areaSqft : null);
+  var facts = [group.address, area ? "Service area " + area : ""].filter(Boolean);
   page.appendChild(h("div", { "class": "proposal-detail-head", "data-module": "quote-detail-head", "data-visual-id": "quote-detail-head" }, [
     h("div", { style: "flex:1;min-width:0" }, [
       h("h1", { "class": "proposal-detail-head__title", "data-bind": "quote.property" }, group.title),
@@ -185,14 +190,13 @@ function QuoteDetail() {
     ]));
   }
 
+  var plan = group.property ? PropertyPlan(propertyPlan(group.property.planId, render), group.property) : null;
+  if (plan) page.appendChild(plan);
+
   var open = group.orders.filter(function (order) { return order.status === "unseen"; });
   var list = h("div", { "class": "quote-options", "data-module": "quote-options", "data-visual-id": "quote-options" });
   group.orders.forEach(function (order) {
-    list.appendChild(QuoteOptionCard(order, {
-      interactive: true,
-      busy: busy,
-      siblingsOpen: open.some(function (other) { return other.backendId !== order.backendId; }),
-    }));
+    list.appendChild(QuoteOptionCard(order, { interactive: true, busy: busy }));
   });
   page.appendChild(list);
 

@@ -277,6 +277,8 @@
 
 .vw-mobile .prop-facts { grid-template-columns: 1fr; }
 
+.vw-mobile .prop-plan__figure:not([data-labels="1"]):not([data-labels="2"]) .prop-plan__label { display: none; }
+
 .vw-mobile .prop-edit--pair { grid-template-columns: 1fr; }
 
 .vw-mobile .prop-head__title { font-size: 24px; }
@@ -300,6 +302,10 @@
 .vw-mobile .proposal-group__decision { order: 3; flex-basis: 100%; padding-left: 44px; }
 
 .vw-mobile .proposal-options { padding-left: 18px; }
+
+.vw-mobile .proposal-option { grid-template-columns: minmax(0, 1fr) auto; row-gap: 4px; }
+
+.vw-mobile .proposal-option .status-badge { grid-column: 1 / -1; grid-row: 2; justify-self: start; }
 
 .vw-mobile .agreement-row { flex-wrap: wrap; row-gap: 6px; }
 

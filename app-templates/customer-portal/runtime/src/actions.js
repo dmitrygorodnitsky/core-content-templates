@@ -89,7 +89,9 @@ export var ACTIONS = {
   "proposal.requestRevision": function () { runCommand("proposal.requestRevision", state.currentSiteId, function () { decideSite("revision"); }); },
   "proposal.decline":  function ()   { runCommand("proposal.decline", state.currentSiteId, function () { decideSite("declined"); }); },
   "agreement.open":    function (id) { openAgreement(id); },
-  "quote.approve":     function (id) { return openContractConfirm("approve", id); },
+  "quote.approve":     function (id) { return openQuoteApproval(id); },
+  "quote.sendApproval": function (id) { return sendQuoteApproval(id); },
+  "quote.backToQuote": function ()   { if (contractCommands.busy()) return false; go("proposal.detail"); return true; },
   "quote.decline":     function (id) { return openContractConfirm("decline", id); },
   "quote.confirm":     function (id) { return confirmContractCommand("quote", id); },
   "quote.cancel":      function ()   { return cancelContractConfirm(); },
@@ -1510,7 +1512,6 @@ function openContractConfirm(kind, id) {
   if (!backendId || contractCommands.busy()) return false;
   state.contractConfirm = kind === "changes" ? { kind: kind, backendId: backendId, message: "", error: "" } : { kind: kind, backendId: backendId };
   if (state.contractCommand && state.contractCommand.phase !== "pending") state.contractCommand = null;
-  if (kind === "approve") ensureContractDetails();
   if (kind === "agreement") openAgreementBilling(state.contractConfirm, { load: contractAccountLoader(), onChange: function () { render(); } });
   render();
   return true;
@@ -1551,9 +1552,36 @@ function confirmContractCommand(kind, id) {
   var confirm = state.contractConfirm;
   if (!backendId || !confirm || confirm.backendId !== backendId) return false;
   if (kind === "agreement") return confirm.kind === "agreement" ? approveAgreementWithBilling(backendId, confirm) : false;
-  if (confirm.kind === "approve") return approveWithDetails(backendId);
   if (confirm.kind !== "decline") return false;
   return contractCommands.decide(confirm.kind, backendId);
+}
+
+function openQuoteApproval(id) {
+  var backendId = contractTarget(id);
+  if (!backendId || contractCommands.busy()) return false;
+  state.approveQuoteId = backendId;
+  state.contractConfirm = null;
+  if (state.contractCommand && state.contractCommand.phase !== "pending") state.contractCommand = null;
+  ensureContractDetails();
+  go("proposal.approve");
+  focusElement("[data-visual-id=\"quote-approval-head\"] h1");
+  return true;
+}
+
+function sendQuoteApproval(id) {
+  var backendId = contractTarget(id);
+  if (!backendId || backendId !== state.approveQuoteId) return false;
+  var sent = approveWithDetails(backendId);
+  if (!sent) return false;
+  return sent.then(function (confirmed) {
+    if (confirmed && state.route === "proposal.approve" && state.approveQuoteId === backendId) {
+      var pkg = quotePackage();
+      var home = pkg ? pkg.groups.concat(pkg.history || []).find(function (group) { return group.orders.some(function (order) { return order.backendId === backendId; }); }) : null;
+      if (home) state.currentSiteId = home.id;
+      go("proposal.detail", true);
+    }
+    return confirmed;
+  });
 }
 
 function approveWithDetails(backendId) {
@@ -1591,7 +1619,7 @@ function sendChangeRequest(id) {
   return contractCommands.requestChanges(backendId, message);
 }
 
-function ensureContractDetails() {
+export function ensureContractDetails() {
   if (state.contractDetails) return;
   openContractDetails({ load: contractAccountLoader(), onChange: function () { render(); } });
 }

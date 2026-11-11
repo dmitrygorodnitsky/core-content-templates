@@ -17,6 +17,7 @@ import { InvoiceDetail, Invoices } from "./routes/InvoicesPage.js";
 import { PropertyDetail } from "./routes/PropertyDetailPage.js";
 import { ProposalsList } from "./routes/ProposalsPage.js";
 import { ProposalDetail } from "./routes/ProposalDetailPage.js";
+import { QuoteApproval } from "./routes/QuoteApprovalPage.js";
 import { AgreementDetail } from "./routes/AgreementDetailPage.js";
 import { QuoteRequest } from "./routes/QuoteRequestPage.js";
 import { Profile } from "./routes/ProfilePage.js";
@@ -217,6 +218,7 @@ export function renderRoute() {
     case "cart":        return globalThis.__PORTAL_VERTICAL__ !== "snow" && isSpa() ? SpaCart() : Checkout();
     case "proposals.list": return ProposalsList();
     case "proposal.detail": return ProposalDetail();
+    case "proposal.approve": return QuoteApproval();
     case "agreement.detail": return AgreementDetail();
     case "quote.new":   return QuoteRequest();
     case "profile":     return globalThis.__PORTAL_VERTICAL__ !== "snow" && isSpa() ? SpaProfile() : customerAccountProfile(state.config) ? AccountProfile() : Profile();
@@ -255,6 +257,10 @@ function careAccessReason() {
 function applyRouteParams(match) {
   if (match.id === "order.detail" && match.params.id) state.currentOrderId = match.params.id;
   if (match.id === "proposal.detail" && match.params.id) state.currentSiteId = match.params.id;
+  if (match.id === "proposal.approve" && match.params.id) {
+    state.currentSiteId = match.params.id;
+    state.approveQuoteId = Number(match.params.quote) || null;
+  }
   if (match.id === "agreement.detail" && match.params.id) state.agreementId = match.params.id;
   if (match.id === "visit.detail" && match.params.id) state.visitId = match.params.id;
   if (match.id === "invoice.detail" && match.params.id) state.invoiceId = match.params.id;
@@ -270,6 +276,7 @@ function paramsForRoute(routeId) {
     return { id: state.currentOrderId };
   }
   if (routeId === "proposal.detail") return { id: state.currentSiteId };
+  if (routeId === "proposal.approve") return { id: state.currentSiteId, quote: state.approveQuoteId };
   if (routeId === "agreement.detail") return { id: state.agreementId };
   if (routeId === "visit.detail") return { id: state.visitId };
   if (routeId === "invoice.detail") return { id: state.invoiceId };
@@ -288,7 +295,7 @@ function queryFrom(value) {
 function routeFamily(routeId) {
   if (routeId === "orders.list" || routeId === "order.detail" || routeId === "appointment.detail") return "appointments";
   if (routeId === "appointments" || routeId === "visit.detail" || routeId === "property.detail") return "appointments-timeline";
-  if (routeId === "proposals.list" || routeId === "proposal.detail" || routeId === "agreement.detail" || routeId === "quote.new") return "proposals";
+  if (routeId === "proposals.list" || routeId === "proposal.detail" || routeId === "proposal.approve" || routeId === "agreement.detail" || routeId === "quote.new") return "proposals";
   if (routeId === "purchases.list" || routeId === "purchase.detail") return "purchases";
   if (routeId === "products" || routeId === "product.detail") return "products";
   return null;

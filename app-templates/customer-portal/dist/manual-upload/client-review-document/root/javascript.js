@@ -60,6 +60,7 @@
     ["LINE_INCLUDED", "lineIncluded", "Included"],
     ["ORDER_TOTAL", "orderTotal", "Option total"],
     ["PER_SERVICE_NOTE", "perServiceNote", "You pay the price of each service every time it is performed."],
+    ["PER_SERVICE_PRICE", "perServicePrice", "Per visit"],
     ["TAXES_NOTE", "taxesNote", "Plus applicable taxes."],
     ["LINES_EMPTY", "linesEmpty", "No services are listed on this option."],
     ["VALUE_NOT_STATED", "valueNotStated", "Not stated"],
@@ -78,8 +79,8 @@
     ["CHOICE_LEGEND", "choiceLegend", "Options for {address}"],
     ["CHOOSE_OPTION", "chooseOption", "Choose an option to see its services and approve it or ask for changes."],
     ["DECLINE_ALL_LABEL", "declineAllLabel", "Decline all options"],
-    ["CHOICE_APPROVED_NOTE", "choiceApprovedNote", "You chose this option. Send your decisions below to approve it."],
-    ["CHOICE_DECLINED_NOTE", "choiceDeclinedNote", "You chose to decline every option for this property. Send your decisions below."],
+    ["CHOICE_APPROVED_NOTE", "choiceApprovedNote", "You chose this option. It is approved when you send your decisions."],
+    ["CHOICE_DECLINED_NOTE", "choiceDeclinedNote", "You chose to decline every option for this property. They are declined when you send your decisions."],
     ["CHOICE_UNDO", "choiceUndo", "Undo"],
     ["CHOICES_TITLE", "choicesTitle", "Confirm your choices"],
     ["CHOICES_BODY", "choicesBody", "Approving an option declines the other options for its property. Declined options cannot be approved later through this link."],
@@ -88,6 +89,12 @@
     ["CHOICES_UNDECIDED_ONE", "choicesUndecidedOne", "1 property has no decision in this step. You can decide it later through this link."],
     ["CHOICES_UNDECIDED_MANY", "choicesUndecidedMany", "{n} properties have no decision in this step. You can decide them later through this link."],
     ["CHOICES_SUBMIT", "choicesSubmit", "Send decisions"],
+    ["DETAILS_STEP_TITLE", "detailsStepTitle", "Contract details"],
+    ["CHOICES_BACK", "choicesBack", "‹ Back to your quotes"],
+    ["CHOICES_READY_ONE", "choicesReadyOne", "1 decision is ready to send."],
+    ["CHOICES_READY_MANY", "choicesReadyMany", "{n} decisions are ready to send."],
+    ["CHOICES_CONTINUE", "choicesContinue", "Review and send"],
+    ["CHOICES_CONTINUE_DETAILS", "choicesContinueDetails", "Continue to contract details"],
     ["PARTIAL_DECIDED_TITLE", "partialDecidedTitle", "Your decisions so far are recorded"],
     ["PARTIAL_DECIDED_BODY", "partialDecidedBody", "Decide the properties still awaiting a decision, now or later through this link."],
     ["REFUSED_TITLE", "refusedTitle", "Not accepted"],
@@ -119,7 +126,6 @@
     ["PLAN_MAP_LABEL", "planMapLabel", "Map of the property plan"],
     ["PROPERTY_AREA", "propertyArea", "Total service area"],
     ["LEGAL_ADDRESS_REFUSED", "legalAddressRefused", "Enter the client's legal address on one line that ends with the province or state and the country."],
-    ["PLAN_AREA", "planArea", "Area on the plan"],
     ["PLAN_AREA_VALUE", "planAreaValue", "{area} sq ft"],
     ["PLAN_ELEMENT_FALLBACK", "planElementFallback", "Plan element {n}"],
     ["PLAN_NOTE", "planNote", "The provider prepared this plan for your service. If something on it looks wrong, contact them."],
@@ -998,10 +1004,14 @@
     return new Intl.NumberFormat(locale, { maximumFractionDigits: 6 }).format(number);
   }
 
-  function formatArea(value, locale) {
+  function squareFeet(value) {
     var number = finiteOrNull(value);
-    if (number === null || number <= 0) return "";
-    return new Intl.NumberFormat(locale, { maximumFractionDigits: 0 }).format(number);
+    return number === null || number <= 0 ? null : number;
+  }
+
+  function formatArea(value, locale) {
+    var number = squareFeet(value);
+    return number === null ? "" : new Intl.NumberFormat(locale, { maximumFractionDigits: 0 }).format(number);
   }
 
   function formatDate(value, locale) {
@@ -1460,6 +1470,7 @@
         address: group.resource ? propertyAddress(group.resource, context.catalog.addresses, contract) : "",
         plan: group.resource ? planReference([attributeValue(group.resource, contract.propertyAttributes.plan)]) : "",
         area: group.resource ? formatArea(attributeValue(group.resource, contract.propertyAttributes.area), context.locale) : "",
+        areaSquareFeet: group.resource ? squareFeet(attributeValue(group.resource, contract.propertyAttributes.area)) : null,
         options: options,
         status: propertyStatus(options),
       };
@@ -1732,6 +1743,15 @@
   var SQUARE_FOOT_IN_SQUARE_METERS = 0.09290304;
   var MAP_SURFACE = "GOOGLE_MAPS";
   var TONES = 5;
+  var SVG_NAMESPACE = "http://www.w3.org/2000/svg";
+  var DRAWING_SCALE = 100000;
+  var DRAWING_MIN_SPAN = 0.0002;
+  var DRAWING_PADDING = 0.08;
+  var DRAWING_MIN_ASPECT = 16 / 9;
+  var DRAWING_MAX_ASPECT = 5 / 2;
+  var DRAWING_DOT = 1 / 70;
+  var METERS_PER_DEGREE = 111320;
+  var AREA_TOLERANCE_SQUARE_FEET = 1;
 
   function finite(value) {
     return typeof value === "number" && isFinite(value);
@@ -1923,10 +1943,135 @@
     }
   }
 
+  function sumsTo(plan, squareFeet) {
+    return Boolean(plan) && finite(squareFeet) && squareFeet > 0 && Math.abs(plan.squareFeet - squareFeet) <= AREA_TOLERANCE_SQUARE_FEET;
+  }
+
+  function frameOf(bounds) {
+    var cos = Math.cos(radians((bounds.north + bounds.south) / 2));
+    var spanX = (bounds.east - bounds.west) * cos * DRAWING_SCALE;
+    var spanY = (bounds.north - bounds.south) * DRAWING_SCALE;
+    var minimum = DRAWING_MIN_SPAN * DRAWING_SCALE;
+    var reach = Math.max(spanX, spanY, minimum);
+    var width = Math.max(spanX, minimum) + reach * DRAWING_PADDING * 2;
+    var height = Math.max(spanY, minimum) + reach * DRAWING_PADDING * 2;
+    if (width / height < DRAWING_MIN_ASPECT) width = height * DRAWING_MIN_ASPECT;
+    if (width / height > DRAWING_MAX_ASPECT) height = width / DRAWING_MAX_ASPECT;
+    return {
+      x: spanX / 2 - width / 2,
+      y: spanY / 2 - height / 2,
+      width: width,
+      height: height,
+      dot: reach * DRAWING_DOT,
+      project: function (point) {
+        return [(point.lng - bounds.west) * cos * DRAWING_SCALE, (bounds.north - point.lat) * DRAWING_SCALE];
+      },
+    };
+  }
+
+  function svgNode(doc, tag, attributes) {
+    var node = doc.createElementNS(SVG_NAMESPACE, tag);
+    Object.keys(attributes).forEach(function (name) { node.setAttribute(name, String(attributes[name])); });
+    return node;
+  }
+
+  function shapeNode(doc, shape, element, frame, prefix) {
+    var attributes = { "class": prefix + "__shape", "data-tone": String(element.tone), "data-kind": shape.kind };
+    if (shape.kind === "area") {
+      attributes.d = shape.polygons.map(function (rings) {
+        return rings.map(function (ring) { return "M" + ring.map(function (point) { return frame.project(point).join(" "); }).join("L") + "Z"; }).join("");
+      }).join("");
+      attributes["fill-rule"] = "evenodd";
+      return svgNode(doc, "path", attributes);
+    }
+    if (shape.kind === "line") {
+      attributes.points = shape.path.map(function (point) { return frame.project(point).join(","); }).join(" ");
+      return svgNode(doc, "polyline", attributes);
+    }
+    var center = frame.project(shape.kind === "circle" ? shape.center : shape.position);
+    attributes.cx = center[0];
+    attributes.cy = center[1];
+    attributes.r = shape.kind === "circle" ? shape.radius / METERS_PER_DEGREE * DRAWING_SCALE : frame.dot;
+    return svgNode(doc, "circle", attributes);
+  }
+
+  function ringCentre(ring, frame) {
+    var points = ring.map(frame.project);
+    var twice = 0;
+    var x = 0;
+    var y = 0;
+    points.forEach(function (here, index) {
+      var next = points[(index + 1) % points.length];
+      var cross = here[0] * next[1] - next[0] * here[1];
+      twice += cross;
+      x += (here[0] + next[0]) * cross;
+      y += (here[1] + next[1]) * cross;
+    });
+    return { weight: Math.abs(twice) / 2, point: twice ? [x / (3 * twice), y / (3 * twice)] : points[0] };
+  }
+
+  function labelPoint(element, frame) {
+    var best = null;
+    element.shapes.forEach(function (shape) {
+      var candidates = [];
+      if (shape.kind === "circle") {
+        var reach = shape.radius / METERS_PER_DEGREE * DRAWING_SCALE;
+        candidates.push({ weight: Math.PI * reach * reach, point: frame.project(shape.center) });
+      } else if (shape.kind === "area") {
+        shape.polygons.forEach(function (rings) { candidates.push(ringCentre(rings[0], frame)); });
+      }
+      candidates.forEach(function (candidate) {
+        if (!best || candidate.weight > best.weight) best = candidate;
+      });
+    });
+    return best ? best.point : null;
+  }
+
+  function percent(value) {
+    return Math.min(Math.max(value, 0), 1) * 100 + "%";
+  }
+
+  function figure(doc, plan, options) {
+    var settings = options || {};
+    var prefix = settings.classPrefix;
+    var frame = frameOf(plan.bounds);
+    var node = doc.createElement("div");
+    node.className = prefix + "__figure";
+    var svg = svgNode(doc, "svg", {
+      "class": prefix + "__drawing",
+      viewBox: [frame.x, frame.y, frame.width, frame.height].join(" "),
+      role: "img",
+      "aria-label": settings.label || "",
+    });
+    plan.elements.forEach(function (element) {
+      element.shapes.forEach(function (shape) { svg.appendChild(shapeNode(doc, shape, element, frame, prefix)); });
+    });
+    node.appendChild(svg);
+    var labels = 0;
+    plan.elements.forEach(function (element) {
+      var point = labelPoint(element, frame);
+      var name = typeof settings.nameOf === "function" ? settings.nameOf(element) : element.name;
+      if (!point || !name) return;
+      var label = doc.createElement("span");
+      label.className = prefix + "__label";
+      label.setAttribute("data-tone", String(element.tone));
+      label.setAttribute("aria-hidden", "true");
+      label.style.left = percent((point[0] - frame.x) / frame.width);
+      label.style.top = percent((point[1] - frame.y) / frame.height);
+      label.textContent = name;
+      node.appendChild(label);
+      labels += 1;
+    });
+    node.setAttribute("data-labels", String(labels));
+    return node;
+  }
+
   ns.plan = Object.freeze({
     tones: TONES,
     parse: parse,
     formatArea: formatArea,
+    sumsTo: sumsTo,
+    figure: figure,
   });
 })(typeof window !== "undefined" ? window : globalThis);
 (function (global) {
@@ -3131,7 +3276,8 @@
     choice.appendChild(radio);
     choice.appendChild(el("span", "cr-pick__mark", { "aria-hidden": "true" }));
     choice.appendChild(text("span", "cr-option__label", optionLabel(option, copy)));
-    if (option.priced && option.pricing.total && option.total) choice.appendChild(text("span", "cr-pick__total", option.total));
+    if (option.priced && !option.pricing.total) choice.appendChild(text("span", "cr-pick__total", copy.perServicePrice, { "data-pricing": "per-service" }));
+    else if (option.priced && option.total) choice.appendChild(text("span", "cr-pick__total", option.total));
     choice.appendChild(badge(OPTION_BADGE, option.status, copy));
     item.appendChild(choice);
     if (!expanded) return item;
@@ -3254,20 +3400,57 @@
     return item;
   }
 
-  function choicesPanel(ctx) {
-    var view = ctx.snapshot.view;
-    var copy = ctx.copy;
-    var entries = view.properties.filter(function (property) { return Boolean(ctx.snapshot.choices[property.key]); }).map(function (property) {
+  function choiceEntries(ctx) {
+    return ctx.snapshot.view.properties.filter(function (property) { return Boolean(ctx.snapshot.choices[property.key]); }).map(function (property) {
       var choice = ctx.snapshot.choices[property.key];
       var option = choice.kind === "approve" ? property.options.filter(function (candidate) { return candidate.id === choice.id; })[0] : null;
       return { property: property, kind: choice.kind, option: option };
     }).filter(function (entry) { return entry.kind === "decline" || entry.option; });
+  }
+
+  function choicesBar(ctx) {
+    var copy = ctx.copy;
+    var entries = choiceEntries(ctx);
+    if (!entries.length) return null;
+    var approvals = entries.some(function (entry) { return entry.kind === "approve"; });
+    var bar = el("section", "cr-continue", { "aria-label": copy.choicesTitle, "data-choices": String(entries.length) });
+    bar.appendChild(text("p", "cr-continue__text", entries.length === 1 ? copy.choicesReadyOne : ns.fill(copy.choicesReadyMany, { n: entries.length })));
+    bar.appendChild(mark(ctx, button(approvals ? copy.choicesContinueDetails : copy.choicesContinue, "btn--primary btn--lg", function () {
+      ctx.dispatch("choices.open");
+    }, { disabled: ctx.busy, "data-action": "choices.open" }), "choices-open"));
+    return bar;
+  }
+
+  function confirmStep(shell, ctx) {
+    var copy = ctx.copy;
+    var entries = choiceEntries(ctx);
+    var sending = ctx.snapshot.bulk === "choices";
+    var title = entries.some(function (entry) { return entry.kind === "approve"; }) ? copy.detailsStepTitle : copy.choicesTitle;
+    var back = el("div", "cr-step-back");
+    back.appendChild(mark(ctx, button(copy.choicesBack, "btn--ghost", function () {
+      ctx.dispatch("choices.back");
+    }, { disabled: sending, "data-action": "choices.back" }), "choices-back"));
+    shell.appendChild(back);
+    var head = el("header", "cr-head");
+    head.appendChild(text("p", "cr-eyebrow", copy.quoteEyebrow));
+    head.appendChild(mark(ctx, text("h1", "cr-title", title, { id: "cr-choices-title", tabindex: "-1" }), "choices-title"));
+    head.appendChild(text("p", "cr-sub", copy.choicesBody));
+    var link = linkRow(ctx);
+    if (link) head.appendChild(link);
+    shell.appendChild(head);
+    announce(ctx, [title, copy.choicesBody]);
+    var panel = choicesPanel(ctx, entries);
+    if (panel) shell.appendChild(panel);
+    announceUnconfirmed(ctx);
+  }
+
+  function choicesPanel(ctx, entries) {
+    var view = ctx.snapshot.view;
+    var copy = ctx.copy;
     if (!entries.length) return null;
     var sending = ctx.snapshot.bulk === "choices";
     var approvals = entries.some(function (entry) { return entry.kind === "approve"; });
     var card = el("section", "cr-panel cr-choices", { "aria-labelledby": "cr-choices-title", "data-state": sending ? "pending" : "open" });
-    card.appendChild(mark(ctx, text("h2", "cr-section-title", copy.choicesTitle, { id: "cr-choices-title", tabindex: "-1" }), "choices-title"));
-    card.appendChild(text("p", "cr-note", copy.choicesBody));
     var list = el("ul", "cr-approved__list cr-choices__list");
     entries.forEach(function (entry) { list.appendChild(choiceRow(ctx, entry)); });
     card.appendChild(list);
@@ -3309,6 +3492,10 @@
   function quoteReview(shell, ctx) {
     var view = ctx.snapshot.view;
     var copy = ctx.copy;
+    if (ctx.snapshot.step === "confirm") {
+      confirmStep(shell, ctx);
+      return;
+    }
     shell.appendChild(pageHead(ctx, copy.quoteEyebrow, copy.quoteTitle, copy.quoteSubtitle, null));
     shell.appendChild(summary(ctx));
     readNotices(ctx).forEach(function (node) { shell.appendChild(node); });
@@ -3322,7 +3509,7 @@
     var list = el("div", "cr-properties");
     view.properties.forEach(function (property) { list.appendChild(propertyCard(ctx, property, true)); });
     shell.appendChild(list);
-    var choices = choicesPanel(ctx);
+    var choices = choicesBar(ctx);
     if (choices) shell.appendChild(choices);
     announceUnconfirmed(ctx);
   }
@@ -3498,20 +3685,17 @@
       return block;
     }
     var plan = loaded.plan;
+    var nameOf = function (element) { return element.name || ns.fill(copy.planElementFallback, { n: element.position }); };
     if (ctx.maps) block.appendChild(ctx.maps.planView(property.key, plan));
+    block.appendChild(ns.plan.figure(global.document, plan, { classPrefix: "cr-plan", label: copy.planMapLabel, nameOf: nameOf }));
     if (property.area) block.appendChild(areaFact(ctx, property.area));
-    if (plan.areaText) {
-      var facts = el("p", "cr-plan__area", { "data-fact": "plan-area" });
-      facts.appendChild(text("span", "cr-plan__area-label", copy.planArea));
-      facts.appendChild(text("span", "cr-plan__area-value", ns.fill(copy.planAreaValue, { area: plan.areaText })));
-      block.appendChild(facts);
-    }
+    var sized = ns.plan.sumsTo(plan, property.areaSquareFeet);
     var legend = el("ul", "cr-plan__legend", { "aria-label": copy.planTitle });
     plan.elements.forEach(function (element) {
       var item = el("li", "cr-plan__element", { "data-kind": element.kind });
       item.appendChild(el("span", "cr-plan__swatch", { "data-tone": String(element.tone), "data-kind": element.kind, "aria-hidden": "true" }));
-      item.appendChild(text("span", "cr-plan__name", element.name || ns.fill(copy.planElementFallback, { n: element.position })));
-      if (element.areaText) item.appendChild(text("span", "cr-plan__size", ns.fill(copy.planAreaValue, { area: element.areaText })));
+      item.appendChild(text("span", "cr-plan__name", nameOf(element)));
+      if (sized && element.areaText) item.appendChild(text("span", "cr-plan__size", ns.fill(copy.planAreaValue, { area: element.areaText })));
       legend.appendChild(item);
     });
     block.appendChild(legend);
@@ -3918,6 +4102,7 @@
   var EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   var CHECKING_DELAYS = [2000, 3000, 5000, 8000, 12000, 15000, 15000, 15000];
   var LINK_STEPS = { "quote-review": true, "agreement-review": true };
+  var STEP_STATE_KEY = "clientReviewStep";
 
   function systemTimers() {
     return {
@@ -3939,6 +4124,8 @@
     var pageLink = settings.pageLink || "";
     var clipboard = settings.clipboard || null;
     var maps = settings.maps || null;
+    var historyRef = settings.history && typeof settings.history.pushState === "function" ? settings.history : null;
+    var navigationTarget = settings.navigationTarget && typeof settings.navigationTarget.addEventListener === "function" ? settings.navigationTarget : null;
     var contract = ns.contract;
     var normalizer = ns.normalizer;
     var inflight = {};
@@ -3967,6 +4154,8 @@
       bulk: "",
       confirm: null,
       choices: {},
+      step: "review",
+      lastChoiceKey: "",
       drafts: {},
       draftInvalid: {},
       billing: { asked: settings.billingAddressMissing === true, same: true, value: "", invalid: false },
@@ -4092,6 +4281,55 @@
         var option = choice.kind === "approve" ? property.options.filter(function (candidate) { return candidate.id === choice.id; })[0] || null : null;
         return { property: property, kind: choice.kind, option: option };
       });
+    }
+
+    function shownStep() {
+      return state.step === "confirm" && state.phase === "ready" && choiceEntries().length > 0 && !state.view.allDecided ? "confirm" : "review";
+    }
+
+    function historyStep() {
+      return historyRef && historyRef.state && historyRef.state[STEP_STATE_KEY] === "confirm" ? "confirm" : "review";
+    }
+
+    function openConfirm() {
+      if (!choiceEntries().length) return;
+      if (state.step !== "confirm") {
+        state.step = "confirm";
+        if (historyRef && historyStep() !== "confirm") {
+          var entry = {};
+          entry[STEP_STATE_KEY] = "confirm";
+          historyRef.pushState(entry, "");
+        }
+      }
+      state.focusKey = "choices-title";
+      render();
+    }
+
+    function showReview() {
+      state.step = "review";
+      state.focusKey = state.choices[state.lastChoiceKey] ? "choice-" + state.lastChoiceKey : "page-title";
+      render();
+    }
+
+    function closeConfirm() {
+      if (shownStep() !== "confirm" || state.bulk) return;
+      if (historyRef && navigationTarget && historyStep() === "confirm" && typeof historyRef.back === "function") {
+        historyRef.back();
+        return;
+      }
+      showReview();
+    }
+
+    function followHistory(event) {
+      var wanted = event && event.state && event.state[STEP_STATE_KEY] === "confirm" && choiceEntries().length ? "confirm" : "review";
+      if (stopped || wanted === shownStep()) return;
+      if (wanted === "confirm") {
+        state.step = "confirm";
+        state.focusKey = "choices-title";
+        render();
+      } else {
+        showReview();
+      }
     }
 
     function approving() {
@@ -4510,9 +4748,9 @@
       clearOutcome(option.recordKey);
       if (state.confirm && state.confirm.id === option.id) state.confirm = null;
       state.choices[property.key] = { kind: "approve", id: option.id };
-      state.focusKey = "choice-" + property.key;
+      state.lastChoiceKey = property.key;
       readPlans();
-      render();
+      openConfirm();
     }
 
     function declineProperty(key) {
@@ -4520,8 +4758,8 @@
       if (!property || !declinableOptions(property).length || busy() || state.bulk) return;
       if (property.options.some(function (option) { return state.accepted[option.recordKey] || inflight[option.recordKey]; })) return;
       state.choices[key] = { kind: "decline" };
-      state.focusKey = "choice-" + key;
-      render();
+      state.lastChoiceKey = key;
+      openConfirm();
     }
 
     function clearChoice(key) {
@@ -4746,6 +4984,12 @@
         case "choices.submit":
           submitChoices();
           return;
+        case "choices.open":
+          if (!busy() && !state.bulk) openConfirm();
+          return;
+        case "choices.back":
+          closeConfirm();
+          return;
         case "details.input":
           field = detailField(data.code);
           if (!field) return "";
@@ -4844,6 +5088,7 @@
         bulk: state.bulk,
         confirm: state.confirm,
         choices: state.choices,
+        step: shownStep(),
         drafts: state.drafts,
         draftInvalid: state.draftInvalid,
         billing: state.billing,
@@ -4880,6 +5125,7 @@
     function stop() {
       stopped = true;
       stopPolling();
+      if (navigationTarget && typeof navigationTarget.removeEventListener === "function") navigationTarget.removeEventListener("popstate", followHistory);
     }
 
     function idle() {
@@ -4898,6 +5144,7 @@
     }
 
     function start() {
+      if (navigationTarget) navigationTarget.addEventListener("popstate", followHistory);
       if (adapter) load({});
       else render();
       return controller;
@@ -4954,6 +5201,8 @@
       timers: env.timers,
       portalUrl: section.getAttribute("data-review-portal-url"),
       pageLink: locationRef.href,
+      history: env.history || global.history || null,
+      navigationTarget: env.navigationTarget || (typeof global.addEventListener === "function" ? global : null),
       clipboard: navigatorRef.clipboard,
       copy: copyFromAttributes(section),
       locale: env.locale || displayLocale(env),

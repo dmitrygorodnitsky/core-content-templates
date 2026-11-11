@@ -27,7 +27,7 @@
     "nls": {
       "en": {
         "NAME": "REVIEW MAPS API KEY",
-        "DESCRIPTION": "Google Maps browser key of the Confirm your choices step: address suggestions and a map for the billing address, and the plan of each property chosen for approval drawn over a map. Use the same browser key as the quote form's FORM_MAPS_API_KEY, restricted by HTTP referrer to this host and to the Maps JavaScript, Places and Geocoding APIs; it is visible in page source, as every browser key is. Set the value in the page's PageContext, not in the template: the package ships it empty so an upload never overwrites it. While it is empty or not a key, no Google script is loaded, the billing address stays a plain text field and no plan is shown. With a key the page sends its origin, never its path or link, as the referrer, because Google checks a browser key against it."
+        "DESCRIPTION": "Google Maps browser key: address suggestions and a map for the billing address on the Confirm your choices step, and each property's plan drawn over a satellite map on its card. Use the same browser key as the quote form's FORM_MAPS_API_KEY, restricted by HTTP referrer to this host and to the Maps JavaScript, Places and Geocoding APIs; it is visible in page source, as every browser key is. Set the value in the page's PageContext, not in the template: the package ships it empty so an upload never overwrites it. While it is empty or not a key, no Google script is loaded, the billing address stays a plain text field and each plan is drawn as an outline of its shapes. With a key the page sends its origin, never its path or link, as the referrer, because Google checks a browser key against it."
       }
     },
     "value": ""
@@ -748,6 +748,19 @@
     }
   },
   {
+    "code": "PER_SERVICE_PRICE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "PER SERVICE PRICE",
+        "DESCRIPTION": "Client review document copy."
+      }
+    },
+    "value": {
+      "en": "Per visit"
+    }
+  },
+  {
     "code": "TAXES_NOTE",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
@@ -991,7 +1004,7 @@
       }
     },
     "value": {
-      "en": "You chose this option. Send your decisions below to approve it."
+      "en": "You chose this option. It is approved when you send your decisions."
     }
   },
   {
@@ -1004,7 +1017,7 @@
       }
     },
     "value": {
-      "en": "You chose to decline every option for this property. Send your decisions below."
+      "en": "You chose to decline every option for this property. They are declined when you send your decisions."
     }
   },
   {
@@ -1109,6 +1122,84 @@
     },
     "value": {
       "en": "Send decisions"
+    }
+  },
+  {
+    "code": "DETAILS_STEP_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "DETAILS STEP TITLE",
+        "DESCRIPTION": "Client review document copy."
+      }
+    },
+    "value": {
+      "en": "Contract details"
+    }
+  },
+  {
+    "code": "CHOICES_BACK",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "CHOICES BACK",
+        "DESCRIPTION": "Client review document copy."
+      }
+    },
+    "value": {
+      "en": "‹ Back to your quotes"
+    }
+  },
+  {
+    "code": "CHOICES_READY_ONE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "CHOICES READY ONE",
+        "DESCRIPTION": "Client review document copy."
+      }
+    },
+    "value": {
+      "en": "1 decision is ready to send."
+    }
+  },
+  {
+    "code": "CHOICES_READY_MANY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "CHOICES READY MANY",
+        "DESCRIPTION": "Client review document copy. Keep {n}: the page fills them in."
+      }
+    },
+    "value": {
+      "en": "{n} decisions are ready to send."
+    }
+  },
+  {
+    "code": "CHOICES_CONTINUE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "CHOICES CONTINUE",
+        "DESCRIPTION": "Client review document copy."
+      }
+    },
+    "value": {
+      "en": "Review and send"
+    }
+  },
+  {
+    "code": "CHOICES_CONTINUE_DETAILS",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "CHOICES CONTINUE DETAILS",
+        "DESCRIPTION": "Client review document copy."
+      }
+    },
+    "value": {
+      "en": "Continue to contract details"
     }
   },
   {
@@ -1499,19 +1590,6 @@
     },
     "value": {
       "en": "Enter the client's legal address on one line that ends with the province or state and the country."
-    }
-  },
-  {
-    "code": "PLAN_AREA",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "PLAN AREA",
-        "DESCRIPTION": "Client review document copy."
-      }
-    },
-    "value": {
-      "en": "Area on the plan"
     }
   },
   {

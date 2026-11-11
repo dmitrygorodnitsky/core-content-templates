@@ -5,7 +5,6 @@ import { ActionButton } from "../primitives/ActionButton.js";
 import { QUOTE_STATUS } from "./QuotePackage.js";
 import { pricePeriod } from "../../normalizers/contracts.js";
 import { CommandOutcome } from "./ContractStates.js";
-import { ContractDetailsForm, contractDetailsLoading } from "./ContractDetailsForm.js";
 
 export function QuoteOptionCard(order, options) {
   var settings = options || {};
@@ -93,10 +92,10 @@ function QuoteDecisions(order, settings) {
   var busy = !!settings.busy;
   if (order.status !== "unseen") return outcome ? h("div", { "class": "quote-option__decide" }, outcome) : null;
   var confirm = state.contractConfirm;
-  var confirming = !!confirm && confirm.backendId === order.backendId && (confirm.kind === "approve" || confirm.kind === "decline");
+  var confirming = !!confirm && confirm.backendId === order.backendId && confirm.kind === "decline";
   var changing = !!confirm && confirm.backendId === order.backendId && confirm.kind === "changes";
   var section = h("div", { "class": "quote-option__decide" });
-  if (confirming) section.appendChild(DecisionConfirm(confirm.kind, order, settings, targeted && command.phase === "pending"));
+  if (confirming) section.appendChild(DeclineConfirm(order, settings, targeted && command.phase === "pending"));
   else if (changing) section.appendChild(ChangeRequest(confirm, order, settings, targeted && command.phase === "pending"));
   else {
     section.appendChild(h("div", { "class": "proposal-actions" }, [
@@ -142,23 +141,18 @@ function ChangeRequest(confirm, order, settings, pending) {
   ]);
 }
 
-function DecisionConfirm(kind, order, settings, pending) {
+function DeclineConfirm(order, settings, pending) {
   var label = order.pricingModel ? order.pricingModel.label : "this option";
   var titleId = "decision-title-" + order.backendId;
-  var body = kind === "approve"
-    ? (settings.siblingsOpen ? "Approving it declines the other options for this property." : "")
-    : "A declined option can’t be approved later.";
-  var details = kind === "approve" ? state.contractDetails : null;
   var confirmButton = ActionButton({
-    variant: kind === "approve" ? "btn--primary" : "btn--danger",
-    label: pending ? "Sending…" : kind === "approve" ? "Confirm approval" : "Confirm decline",
-    action: "quote.confirm", id: String(order.backendId), lg: true, disabled: pending || settings.busy || (kind === "approve" && contractDetailsLoading(details)), visualId: "quote-confirm",
+    variant: "btn--danger",
+    label: pending ? "Sending…" : "Confirm decline",
+    action: "quote.confirm", id: String(order.backendId), lg: true, disabled: pending || settings.busy, visualId: "quote-confirm",
   });
   if (pending) confirmButton.setAttribute("data-state", "pending");
-  return h("div", { "class": "decision-confirm", "data-module": "decision-confirm", "data-visual-id": "decision-confirm", "data-state": pending ? "pending" : "open", "data-kind": kind, role: "group", "aria-labelledby": titleId }, [
-    h("p", { "class": "decision-confirm__title", id: titleId }, kind === "approve" ? "Approve " + label + " for this property?" : "Decline " + label + "?"),
-    body ? h("p", { "class": "decision-confirm__body" }, body) : null,
-    kind === "approve" ? ContractDetailsForm(details, pending) : null,
+  return h("div", { "class": "decision-confirm", "data-module": "decision-confirm", "data-visual-id": "decision-confirm", "data-state": pending ? "pending" : "open", "data-kind": "decline", role: "group", "aria-labelledby": titleId }, [
+    h("p", { "class": "decision-confirm__title", id: titleId }, "Decline " + label + "?"),
+    h("p", { "class": "decision-confirm__body" }, "A declined option can’t be approved later."),
     h("div", { "class": "proposal-actions" }, [
       confirmButton,
       ActionButton({ variant: "btn--ghost", label: "Cancel", action: "quote.cancel", lg: true, disabled: pending, visualId: "quote-cancel" }),

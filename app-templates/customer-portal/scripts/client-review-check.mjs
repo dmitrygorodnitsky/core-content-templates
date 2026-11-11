@@ -57,6 +57,7 @@ function createDocument() {
       children: [],
       attributes: {},
       listeners: {},
+      style: {},
       parentNode: null,
       value: "",
       checked: false,
@@ -64,7 +65,7 @@ function createDocument() {
       ownText: "",
       get textContent() { return this.ownText + this.children.map((child) => child.textContent).join(""); },
       set textContent(value) { this.ownText = String(value); this.children = []; },
-      setAttribute(name, value) { this.attributes[name] = String(value); },
+      setAttribute(name, value) { this.attributes[name] = String(value); if (name === "class") this.className = String(value); },
       getAttribute(name) { return Object.prototype.hasOwnProperty.call(this.attributes, name) ? this.attributes[name] : null; },
       removeAttribute(name) { delete this.attributes[name]; },
       appendChild(child) { child.parentNode = this; this.children.push(child); return child; },
@@ -76,6 +77,7 @@ function createDocument() {
     };
     return node;
   };
+  document.createElementNS = (_, tag) => document.createElement(tag);
   return document;
 }
 
@@ -840,7 +842,7 @@ const EXPECTED_SCENARIOS = {
   "quote-review": ["ready", "quote-review"], loading: ["loading", null], "link-missing": ["link-missing", null],
   "link-closed": ["link-closed", null], unconfigured: ["unconfigured", null], empty: ["ready", "empty"],
   error: ["error", null], partial: ["ready", "agreement-review"], "quote-price-labels": ["ready", "quote-review"], "quote-price-intervals": ["ready", "quote-review"], "option-open": ["ready", "quote-review"],
-  "option-per-service": ["ready", "quote-review"], "option-seasonal": ["ready", "quote-review"], "quote-plans": ["ready", "quote-review"],
+  "option-per-service": ["ready", "quote-review"], "option-seasonal": ["ready", "quote-review"], "quote-plans": ["ready", "quote-review"], "quote-plans-outline": ["ready", "quote-review"],
   "round-review": ["ready", "quote-review"], "round-ambiguous": ["ready", "unavailable"], "round-partial": ["ready", "quote-review"],
   "round-decided": ["ready", "quote-review"], "round-decided-slow": ["ready", "quote-review"], "round-recorded": ["ready", "quote-review"], "round-declined-closed": ["link-closed", null],
   "link-copied": ["ready", "quote-review"], "link-copy-failed": ["ready", "quote-review"],
@@ -898,6 +900,13 @@ async function runScenario(id) {
   return { runtime, mount, live, timers, controller, sent, clipboard, outcome, copy: controller.copy, data: served.data };
 }
 
+const onQuotes = (run, check) => {
+  run.controller.dispatch("choices.back");
+  assert.equal(run.controller.snapshot().step, "review");
+  check();
+  run.controller.dispatch("choices.open");
+  assert.equal(run.controller.snapshot().step, "confirm");
+};
 const fieldNamed = (node, code) => all(node, (candidate) => candidate.getAttribute("data-code") === code)[0];
 const controlOf = (field) => byAttribute(field, "id", "cr-field-" + field.getAttribute("data-code"))[0];
 const errorOf = (field) => byClass(field, "cr-field__error")[0];
@@ -1056,16 +1065,14 @@ function assertForm(run, expected, message) {
         break;
       }
       case "choices-approve": {
-        const card = byAttribute(run.mount, "aria-labelledby", "cr-property-278")[0];
-        const chosen = byClass(card, "cr-chosen")[0];
-        assert.equal(chosen.getAttribute("data-chosen"), "approve", "Approve chooses the option; nothing is sent yet");
-        assert.ok(surface(chosen).includes(copy.choiceApprovedNote));
-        assert.equal(run.runtime.document.activeElement, byAttribute(chosen, "data-action", "choice.clear")[0], "the focus moves to Undo beside the choice");
-        assert.equal(byAttribute(card, "data-action", "option.approve").length, 0, "a chosen option offers no second Approve");
-        assert.equal(byAttribute(card, "data-action", "option.changes").length, 1, "and still offers Request changes");
+        assert.equal(snapshot.step, "confirm", "Approve chooses the option and opens the Contract details step; nothing is sent yet");
+        assert.equal(byClass(run.mount, "cr-property").length + byClass(run.mount, "cr-summary").length, 0, "the step is a page of its own, without the quotes under or above it");
+        const stepTitle = byAttribute(run.mount, "id", "cr-choices-title")[0];
+        assert.deepEqual([stepTitle.tagName, stepTitle.textContent], ["H1", copy.detailsStepTitle]);
+        assert.equal(run.runtime.document.activeElement, stepTitle, "the focus moves to the step's title");
+        assert.ok(surface(run.mount).includes(copy.choicesBody));
         const panel = byClass(run.mount, "cr-choices")[0];
-        assert.ok(panel, "the choices gather in Confirm your choices");
-        assert.equal(byAttribute(panel, "id", "cr-choices-title")[0].textContent, copy.choicesTitle);
+        assert.ok(panel, "the choices gather in the step");
         assert.deepEqual(byClass(panel, "cr-choices__item").map((item) => [item.getAttribute("data-property"), item.getAttribute("data-choice"), byClass(item, "cr-approved__address")[0].textContent, byClass(item, "cr-approved__option")[0].textContent, byClass(item, "cr-approved__total")[0].textContent]), [["property-278", "approve", "1180 Pacific Crescent, Vancouver, BC, V6Z 2R5, CA", run.runtime.CR.fill(copy.choiceApproveRow, { option: copy.modelMonthly }), formatCad(8750)]], "each choice is listed with its address, option and server total");
         assert.equal(byAttribute(panel, "data-undecided", "1")[0].textContent, copy.choicesUndecidedOne, "a property still awaiting a decision is named as left for later");
         assert.equal(byClass(panel, "cr-field").length, 11, "an approval asks the eleven contract details, the legal address included, in the same step");
@@ -1073,21 +1080,47 @@ function assertForm(run, expected, message) {
         const submit = byAttribute(panel, "data-action", "choices.submit")[0];
         assert.deepEqual([submit.textContent, submit.getAttribute("disabled")], [copy.choicesSubmit, null]);
         assert.equal(run.sent.length, 0, "choosing sends nothing");
+        const typed = controlOf(fieldNamed(panel, "REPRESENTATIVE_JOB_TITLE"));
+        typed.value = "Strata council president";
+        typed.fire("input");
+        const back = byAttribute(run.mount, "data-action", "choices.back")[0];
+        assert.equal(back.textContent, copy.choicesBack);
+        back.fire("click");
+        assert.equal(run.controller.snapshot().step, "review", "Back returns to the quotes");
+        assert.equal(byClass(run.mount, "cr-choices").length + byClass(run.mount, "cr-field").length, 0, "where the contract details are not asked a second time");
+        const card = byAttribute(run.mount, "aria-labelledby", "cr-property-278")[0];
+        const chosen = byClass(card, "cr-chosen")[0];
+        assert.equal(chosen.getAttribute("data-chosen"), "approve", "with the option still chosen");
+        assert.ok(surface(chosen).includes(copy.choiceApprovedNote));
+        assert.equal(byAttribute(card, "value", "3102")[0].checked, true, "and still open");
+        assert.equal(run.runtime.document.activeElement, byAttribute(chosen, "data-action", "choice.clear")[0], "the focus returns to Undo beside the choice");
+        assert.equal(byAttribute(card, "data-action", "option.approve").length, 0, "a chosen option offers no second Approve");
+        assert.equal(byAttribute(card, "data-action", "option.changes").length, 1, "and still offers Request changes");
+        const bar = byClass(run.mount, "cr-continue")[0];
+        assert.deepEqual([byClass(bar, "cr-continue__text")[0].textContent, byAttribute(bar, "data-action", "choices.open")[0].textContent], [copy.choicesReadyOne, copy.choicesContinueDetails], "the quotes keep one way back into the step");
+        byAttribute(bar, "data-action", "choices.open")[0].fire("click");
+        assert.equal(run.controller.snapshot().step, "confirm");
+        assert.equal(controlOf(fieldNamed(run.mount, "REPRESENTATIVE_JOB_TITLE")).value, "Strata council president", "and the step keeps what the client typed");
         run.controller.dispatch("choice.clear", { key: "property-278" });
-        assert.equal(byClass(run.mount, "cr-choices").length + byClass(run.mount, "cr-chosen").length, 0, "Undo takes the choice back");
+        assert.equal(run.controller.snapshot().step, "review", "a step without a choice left shows the quotes");
+        assert.equal(byClass(run.mount, "cr-choices").length + byClass(run.mount, "cr-chosen").length + byClass(run.mount, "cr-continue").length, 0, "Undo takes the choice back");
         assert.equal(byAttribute(run.mount, "data-action", "option.approve").length, 1);
         break;
       }
       case "choices-decline": {
-        const card = byAttribute(run.mount, "aria-labelledby", "cr-property-278")[0];
-        const chosen = byClass(card, "cr-chosen")[0];
-        assert.ok(chosen && chosen.getAttribute("data-chosen") === "decline" && surface(chosen).includes(copy.choiceDeclinedNote), "Decline all options marks the property; nothing is sent yet");
-        assert.equal(byAttribute(card, "data-action", "property.decline").length, 0, "and no second decline is offered");
+        assert.equal(snapshot.step, "confirm", "Decline all options opens the same step; nothing is sent yet");
+        assert.equal(byAttribute(run.mount, "id", "cr-choices-title")[0].textContent, copy.choicesTitle, "named for a decision without contract details");
         const panel = byClass(run.mount, "cr-choices")[0];
         assert.deepEqual(byClass(panel, "cr-choices__item").map((item) => item.getAttribute("data-choice")), ["decline"]);
-        assert.ok(surface(panel).includes(copy.choiceDeclineRow) && surface(panel).includes(copy.choicesBody));
+        assert.ok(surface(panel).includes(copy.choiceDeclineRow) && surface(run.mount).includes(copy.choicesBody));
         assert.equal(byClass(panel, "cr-field").length + byClass(panel, "cr-form-card").length, 0, "a submission without an approval asks no details");
         assert.equal(run.sent.length, 0);
+        run.controller.dispatch("choices.back");
+        const card = byAttribute(run.mount, "aria-labelledby", "cr-property-278")[0];
+        const chosen = byClass(card, "cr-chosen")[0];
+        assert.ok(chosen && chosen.getAttribute("data-chosen") === "decline" && surface(chosen).includes(copy.choiceDeclinedNote), "back on the quotes the property is marked as declined");
+        assert.equal(byAttribute(card, "data-action", "property.decline").length, 0, "and no second decline is offered");
+        assert.equal(byAttribute(byClass(run.mount, "cr-continue")[0], "data-action", "choices.open")[0].textContent, copy.choicesContinue);
         run.controller.dispatch("choice.clear", { key: "property-278" });
         assert.equal(byAttribute(byAttribute(run.mount, "aria-labelledby", "cr-property-278")[0], "data-action", "property.decline").length, 1, "Undo offers the decline again");
         assert.equal(run.runtime.document.activeElement, byAttribute(byAttribute(run.mount, "aria-labelledby", "cr-property-278")[0], "data-action", "property.decline")[0], "with the focus on it");
@@ -1269,7 +1302,8 @@ function assertForm(run, expected, message) {
         assert.ok(!surface(perService).includes(formatCad(624.75)), "so its server total never reaches the page");
         assert.equal(byAttribute(perService, "data-pricing", "per-service").length, 1, "it says each service is paid when performed");
         assert.ok(surface(perService).includes(formatCad(350)), "and shows each line's own price");
-        assert.equal(byClass(byAttribute(run.mount, "value", "3103")[0].parentNode, "cr-pick__total").length, 0, "and its chooser shows no total");
+        assert.deepEqual(byClass(byAttribute(run.mount, "value", "3103")[0].parentNode, "cr-pick__total").map((cell) => [cell.textContent, cell.getAttribute("data-pricing")]), [[copy.perServicePrice, "per-service"]], "and its chooser shows no total: the price cell says how it is priced, so the status sits in the same column as in every other row");
+        assert.deepEqual(byClass(byAttribute(run.mount, "value", "3101")[0].parentNode, "cr-pick__total").map((cell) => [cell.textContent, cell.getAttribute("data-pricing")]), [["$8,750.00", null]], "beside an option whose price cell is the server's total");
         assert.equal(byAttribute(run.mount, "id", "cr-option-3102").length, 0, "choosing another option of the property closes the first");
         assert.deepEqual(Object.keys(run.controller.snapshot().expanded).filter((key) => run.controller.snapshot().expanded[key]), ["3103"], "one option per property is chosen at a time");
         break;
@@ -1329,6 +1363,14 @@ function assertForm(run, expected, message) {
         assert.equal(Object.keys(run.controller.snapshot().choices).length, 0);
         break;
       }
+      case "quote-plans-outline": {
+        const blocks = byClass(run.mount, "cr-plan");
+        assert.equal(run.controller.snapshot().maps, false);
+        assert.equal(byAttribute(run.mount, "data-map", "plan").length, 0, "without a key no map is set up");
+        assert.deepEqual(blocks.map((block) => [block.getAttribute("data-state"), byClass(block, "cr-plan__figure").length]), [["ready", 1], ["ready", 1], ["ready", 1], ["area", 0], ["area", 0]], "and every plan is drawn as an outline on its property's card");
+        assert.deepEqual(blocks.map((block) => byClass(block, "cr-plan__area-value").map((value) => value.textContent)), [["21,915 sq ft"], ["27,654 sq ft"], ["27,654 sq ft"], ["27,654 sq ft"], ["27,654 sq ft"]], "under one area per property, its service area");
+        break;
+      }
       case "agreement-content-terms": {
         const panel = byAttribute(run.mount, "aria-labelledby", "cr-terms-title")[0];
         assert.deepEqual(byClass(panel, "cr-terms__heading").map((node) => node.textContent), ["1. Services", "2. Payment"], "the terms come from the agreement's document content");
@@ -1355,7 +1397,7 @@ function assertForm(run, expected, message) {
         }
         assert.equal(run.controller.snapshot().maps, false, "a page without a Maps key has no map service");
         assert.equal(byClass(run.mount, "cr-map").length + byAttribute(run.mount, "data-map", "plan").length + byClass(run.mount, "cr-plan__legend").length + byClass(run.mount, "cr-suggest").length, 0, "and draws no map, no plan and no address suggestions");
-        assert.deepEqual(byClass(run.mount, "cr-property").map((card) => [byClass(card, "cr-plan")[0].getAttribute("data-state"), byClass(card, "cr-plan__area-value")[0].textContent]), Array(5).fill(["area", "27,654 sq ft"]), "each property still states its total service area");
+        onQuotes(run, () => assert.deepEqual(byClass(run.mount, "cr-property").map((card) => [byClass(card, "cr-plan")[0].getAttribute("data-state"), byClass(card, "cr-plan__area-value")[0].textContent]), [["area", "21,915 sq ft"]].concat(Array(4).fill(["area", "27,654 sq ft"])), "each property still states its total service area"));
         const billing = fieldNamed(run.mount, "BILLING_ADDRESS");
         assert.equal(controlOf(billing).getAttribute("role"), null, "the billing address stays a plain text field");
         assert.deepEqual(byAttribute(billing, "data-action", "details.useAddress").map((chip) => [chip.textContent, chip.getAttribute("aria-pressed")]), [
@@ -1390,18 +1432,21 @@ function assertForm(run, expected, message) {
         const map = byAttribute(billing, "data-map", "address")[0];
         assert.equal(map.getAttribute("data-state"), "ready", "the pre-filled billing address is found and pinned on a map");
         assert.equal(byClass(map, "cr-map__canvas")[0].getAttribute("aria-label"), copy.addressMapLabel);
+        assert.equal(byClass(run.mount, "cr-plan").length, 0, "the step draws no plan: the plans stay on the quotes");
+        run.controller.dispatch("choices.back");
+        await run.controller.idle();
         const sites = byClass(run.mount, "cr-plan");
         assert.deepEqual(sites.map((plan) => [plan.getAttribute("data-plan"), plan.getAttribute("data-state")]), [["property-278", "ready"], ["property-430", "ready"], ["property-512", "ready"], ["property-661", "area"], ["property-702", "area"]], "every property with a plan shows it on its card, chosen or not, and a property without one shows its area");
-        assert.ok(sites.every((site) => byAttribute(site, "data-fact", "total-area")[0].textContent.endsWith("27,654 sq ft")), "each card states the property's total service area");
-        assert.equal(byClass(byClass(run.mount, "cr-choices")[0], "cr-plan").length, 0, "the plans are not drawn a second time in the list of choices");
+        assert.deepEqual(sites.map((site) => byClass(site, "cr-plan__area-value").map((value) => value.textContent)), [["21,915 sq ft"], ["27,654 sq ft"], ["27,654 sq ft"], ["27,654 sq ft"], ["27,654 sq ft"]], "each card states one area, the property's service area, and never a second total measured from the plan");
+        assert.equal(byAttribute(run.mount, "data-fact", "plan-area").length, 0);
         const plans = [sites[0], sites[2]];
         assert.deepEqual(byClass(plans[0], "cr-plan__name").map((node) => node.textContent), ["Main driveway", "Front sidewalk", "Visitor parking", "Loading bay apron", "Fire lane edge", "Salt bin"]);
-        assert.deepEqual(byClass(plans[0], "cr-plan__size").map((node) => node.textContent), ["5,167 sq ft", "2,583 sq ft", "8,740 sq ft", "5,425 sq ft"], "areas are listed for shapes with an area, not for a line or a point");
-        assert.equal(byClass(byAttribute(plans[0], "data-fact", "plan-area")[0], "cr-plan__area-value")[0].textContent, "21,915 sq ft", "the plan's area is the sum of its shapes");
+        assert.deepEqual(byClass(plans[0], "cr-plan__size").map((node) => node.textContent), ["5,167 sq ft", "2,583 sq ft", "8,740 sq ft", "5,425 sq ft"], "a service area measured from the plan is broken down by its shapes with an area, not by a line or a point");
         assert.deepEqual(byClass(plans[0], "cr-plan__swatch").map((node) => node.getAttribute("data-tone")), ["1", "2", "3", "1", "4", "5"], "elements of one type share a colour");
         assert.deepEqual(byClass(plans[1], "cr-plan__name").map((node) => node.textContent), ["Customer parking", "Entrance walkway", "Delivery turnaround"], "an element drawn only over an image is not on the map");
-        assert.equal(byClass(byAttribute(plans[1], "data-fact", "plan-area")[0], "cr-plan__area-value")[0].textContent, "36,279 sq ft", "a MultiPolygon's hole is subtracted and a circle counts as πr²");
+        assert.equal(byClass(plans[1], "cr-plan__size").length, 0, "a typed service area that the plan's shapes do not add up to shows no plan measurement beside it");
         for (const plan of plans) assert.equal(byAttribute(plan, "data-map", "plan")[0].getAttribute("data-state"), "ready", "each plan is drawn over its own map");
+        for (const plan of plans) assert.equal(byClass(plan, "cr-plan__figure").length, 1, "and carries its outline for a map that does not load");
         break;
       }
       case "contract-details-address-missing": {
@@ -1412,6 +1457,8 @@ function assertForm(run, expected, message) {
         break;
       }
       case "contract-details-plan-unavailable": {
+        run.controller.dispatch("choices.back");
+        await run.controller.idle();
         const plans = byClass(run.mount, "cr-plan");
         assert.deepEqual(plans.map((plan) => plan.getAttribute("data-state")), ["unavailable", "ready", "ready", "area", "area"], "a plan file without a map shape cannot be shown, and the other properties' plans still are");
         assert.ok(surface(plans[0]).includes(copy.planUnavailable));
@@ -1424,9 +1471,12 @@ function assertForm(run, expected, message) {
         assert.equal(controlOf(billing).getAttribute("role"), null, "when the map service does not load, the billing address stays a plain text field");
         assert.equal(byClass(billing, "cr-suggest").length, 0);
         assert.equal(byAttribute(billing, "data-map", "address")[0].getAttribute("data-state"), "failed", "and its map stays hidden");
+        run.controller.dispatch("choices.back");
+        await run.controller.idle();
         const plans = byClass(run.mount, "cr-plan");
         assert.deepEqual(plans.filter((plan) => plan.getAttribute("data-state") !== "area").map((plan) => [plan.getAttribute("data-state"), byAttribute(plan, "data-map", "plan")[0].getAttribute("data-state")]), [["ready", "failed"], ["ready", "failed"], ["ready", "failed"]], "the plans keep their area and elements without a map");
-        assert.equal(byClass(byAttribute(plans[0], "data-fact", "plan-area")[0], "cr-plan__area-value")[0].textContent, "21,915 sq ft");
+        assert.equal(byClass(plans[0], "cr-plan__area-value")[0].textContent, "21,915 sq ft");
+        assert.equal(byClass(plans[0], "cr-plan__shape").length, 6, "and the plan is still drawn, as an outline of its shapes");
         break;
       }
       case "old-link":
@@ -1445,6 +1495,8 @@ function assertForm(run, expected, message) {
         assert.equal(run.controller.snapshot().maps, true, id + ": the Maps key still works for the billing address");
         assert.equal(byAttribute(billing, "data-map", "address")[0].getAttribute("data-state"), "ready");
         assert.deepEqual(byClass(run.mount, "cr-approved__address").map((node) => node.textContent), Array(2).fill(copy.addressUnavailable), id + ": every chosen property reads Address unavailable");
+        run.controller.dispatch("choices.back");
+        await run.controller.idle();
         const plans = byClass(run.mount, "cr-plan").map((plan) => [plan.getAttribute("data-plan"), plan.getAttribute("data-state")]);
         if (id === "property-link-closed") assert.deepEqual(plans, [], "an expired or revoked property grant shows no plan and no closed link: the main grant alone decides the page");
         else assert.deepEqual(plans, [["property-278", "ready"], ["property-430", "ready"], ["property-512", "ready"], ["property-661", "area"], ["property-702", "area"]], "an Address list that fails takes the addresses away and leaves the plans");
@@ -2204,11 +2256,56 @@ for (const [kind, orderId, event, status] of [
   assert.equal(snapshot.bulk, "", "the page leaves the submission after a failure");
   assert.equal(snapshot.commands["order:3101"].status, "failed");
   assert.deepEqual(plain(snapshot.choices), { "property-278": { kind: "decline" } }, "the choice stays so sending again is one step");
+  assert.equal(snapshot.step, "confirm", "and the step stays open");
+  assert.ok(surface(byClass(mount, "cr-choices")[0]).includes(controller.copy.failedBody), "the failure shows on the choice");
+  controller.dispatch("choices.back");
   const card = byAttribute(mount, "aria-labelledby", "cr-property-278")[0];
-  assert.ok(surface(card).includes(controller.copy.failedBody), "the failure shows on the property although its option is closed");
-  assert.ok(surface(byClass(mount, "cr-choices")[0]).includes(controller.copy.failedBody), "and on the choice");
+  assert.ok(surface(card).includes(controller.copy.failedBody), "and on the property although its option is closed");
   controller.dispatch("property.decline", { key: "property-999" });
   assert.equal(controller.snapshot().choices["property-999"], undefined, "an unknown property is never chosen");
+}
+
+{
+  const runtime = loadRuntime({ fixtures: true });
+  const entries = [null];
+  let index = 0;
+  const listeners = [];
+  const travel = (to) => { index = to; listeners.slice().forEach((listener) => listener({ state: entries[index] })); };
+  const history = {
+    get state() { return entries[index]; },
+    pushState(state) { entries.length = index + 1; entries.push(state); index += 1; },
+    back() { if (index > 0) travel(index - 1); },
+    forward() { if (index < entries.length - 1) travel(index + 1); },
+  };
+  const navigationTarget = {
+    addEventListener(type, listener) { if (type === "popstate") listeners.push(listener); },
+    removeEventListener(type, listener) { if (type === "popstate" && listeners.includes(listener)) listeners.splice(listeners.indexOf(listener), 1); },
+  };
+  const mount = runtime.document.createElement("div");
+  const controller = runtime.CR.createController({ adapter: runtime.CR.fixtures.createFixtureAdapter(roundOf(runtime.CR.fixtures), {}), mount, locale: "en-CA", history, navigationTarget });
+  controller.start();
+  await controller.idle();
+  assert.deepEqual([controller.snapshot().step, entries.length], ["review", 1], "the page opens on the quotes and adds nothing to the browser history");
+  controller.dispatch("option.toggle", { id: 3102 });
+  controller.dispatch("option.choose", { id: 3102 });
+  assert.deepEqual([controller.snapshot().step, entries.length, plain(history.state)], ["confirm", 2, { clientReviewStep: "confirm" }], "Approve opens the step as a history entry of the same address");
+  byAttribute(mount, "data-action", "choices.back")[0].fire("click");
+  assert.deepEqual([controller.snapshot().step, index, entries.length], ["review", 0, 2], "the step's Back is the browser's Back");
+  assert.deepEqual(plain(controller.snapshot().choices), { "property-278": { kind: "approve", id: 3102 } }, "and keeps the choice");
+  history.forward();
+  assert.equal(controller.snapshot().step, "confirm", "the browser's Forward opens the step again");
+  assert.equal(byClass(mount, "cr-field").length, 11);
+  history.back();
+  byAttribute(mount, "data-action", "choices.open")[0].fire("click");
+  assert.deepEqual([controller.snapshot().step, index, entries.length], ["confirm", 1, 2], "Continue from the quotes is a new visit of the step");
+  history.back();
+  controller.dispatch("choice.clear", { key: "property-278" });
+  history.forward();
+  assert.equal(controller.snapshot().step, "review", "a step without a choice is never shown, whatever the history says");
+  controller.dispatch("option.choose", { id: 3102 });
+  assert.deepEqual([controller.snapshot().step, index, entries.length], ["confirm", 1, 2], "and a new choice made on that entry opens the step without a second entry");
+  controller.stop();
+  assert.equal(listeners.length, 0, "a stopped page listens to no navigation");
 }
 
 const copyButton = (mount) => byAttribute(mount, "data-action", "link.copy")[0];
@@ -2922,8 +3019,18 @@ const later = () => new Promise((resolve) => setTimeout(resolve, 5));
     assert.equal(page.controller.snapshot().maps, false, JSON.stringify(key) + " sets up no map service");
     assert.equal(loads, 0, "and loads no Google script");
     assert.equal(byClass(page.mount, "cr-map").length + byAttribute(page.mount, "data-map", "plan").length + byClass(page.mount, "cr-suggest").length, 0, "without a key the page draws no map and offers no suggestions");
-    assert.deepEqual(byClass(page.mount, "cr-plan").map((block) => block.getAttribute("data-state")), ["ready", "ready", "ready", "area", "area"], "but each plan is still listed with its elements and areas, and a property without one states its area");
+    onQuotes(page, () => {
+    assert.equal(byClass(page.mount, "cr-map").length + byAttribute(page.mount, "data-map", "plan").length, 0);
+    assert.deepEqual(byClass(page.mount, "cr-plan").map((block) => block.getAttribute("data-state")), ["ready", "ready", "ready", "area", "area"], "but each plan is still listed with its elements, and a property without one states its area");
+    const outline = byClass(page.mount, "cr-plan")[0];
+    assert.deepEqual(byClass(outline, "cr-plan__shape").map((shape) => [shape.tagName, shape.getAttribute("data-kind"), shape.getAttribute("data-tone")]), [["PATH", "area", "1"], ["PATH", "area", "2"], ["PATH", "area", "3"], ["PATH", "area", "1"], ["POLYLINE", "line", "4"], ["CIRCLE", "point", "5"]], "without a key each plan is drawn as an outline of its shapes");
+    assert.equal(byClass(outline, "cr-plan__drawing")[0].getAttribute("aria-label"), page.controller.copy.planMapLabel);
+    assert.deepEqual(byClass(outline, "cr-plan__label").map((label) => label.textContent), ["Main driveway", "Front sidewalk", "Visitor parking", "Loading bay apron"], "every shape with an area carries its name on the drawing");
+    assert.equal(byClass(outline, "cr-plan__figure")[0].getAttribute("data-labels"), "4", "and the drawing says how many names it carries, so a narrow screen can leave a crowded drawing to its legend");
+    assert.ok(byClass(outline, "cr-plan__label").every((label) => /^\d+(\.\d+)?%$/.test(label.style.left) && /^\d+(\.\d+)?%$/.test(label.style.top)), "placed inside the drawing");
+    assert.deepEqual(byClass(page.mount, "cr-plan").slice(0, 3).map((block) => [byClass(block, "cr-plan__area-value").map((value) => value.textContent), byClass(block, "cr-plan__size").length]), [[["21,915 sq ft"], 4], [["27,654 sq ft"], 0], [["27,654 sq ft"], 0]], "and one area per property: the service area, with the plan's shapes sized only when they add up to it");
     assert.ok(byClass(page.mount, "cr-plan__legend").length === 3 && calls.some((call) => call.url.includes("/media/")), "the plan files are public media and are read without the key");
+    });
     assert.ok(byAttribute(fieldNamed(page.mount, "BILLING_ADDRESS"), "data-action", "details.useAddress").length === 2 && byAttribute(fieldNamed(page.mount, "LEGAL_ADDRESS"), "data-action", "details.useAddress").length === 2, "the chosen properties' addresses are offered for the billing and the legal address without a key all the same");
   }
 
@@ -3041,6 +3148,7 @@ const later = () => new Promise((resolve) => setTimeout(resolve, 5));
     controller.dispatch("option.toggle", { id });
     controller.dispatch("option.choose", { id });
   }
+  controller.dispatch("choices.back");
   assert.equal(await settle(controller.idle(), 50), "held");
   const loading = byClass(mount, "cr-plan");
   assert.deepEqual(loading.map((plan) => plan.getAttribute("data-state")), ["loading", "loading", "loading", "area", "area"], "plans show a placeholder while their file is read, and a property without a plan states its area");

@@ -76,7 +76,7 @@ export function PropertyDetail() {
   if (service) page.appendChild(ServiceCard(service));
   var visits = LiveVisitsCard(property);
   if (visits) page.appendChild(visits);
-  var plan = PropertyPlan(propertyPlan(property.planId, render));
+  var plan = PropertyPlan(propertyPlan(property.planId, render), property);
   if (plan) page.appendChild(plan);
 
   var location = PropertyLocation({

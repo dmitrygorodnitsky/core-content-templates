@@ -7,6 +7,15 @@
   var SQUARE_FOOT_IN_SQUARE_METERS = 0.09290304;
   var MAP_SURFACE = "GOOGLE_MAPS";
   var TONES = 5;
+  var SVG_NAMESPACE = "http://www.w3.org/2000/svg";
+  var DRAWING_SCALE = 100000;
+  var DRAWING_MIN_SPAN = 0.0002;
+  var DRAWING_PADDING = 0.08;
+  var DRAWING_MIN_ASPECT = 16 / 9;
+  var DRAWING_MAX_ASPECT = 5 / 2;
+  var DRAWING_DOT = 1 / 70;
+  var METERS_PER_DEGREE = 111320;
+  var AREA_TOLERANCE_SQUARE_FEET = 1;
 
   function finite(value) {
     return typeof value === "number" && isFinite(value);
@@ -198,9 +207,134 @@
     }
   }
 
+  function sumsTo(plan, squareFeet) {
+    return Boolean(plan) && finite(squareFeet) && squareFeet > 0 && Math.abs(plan.squareFeet - squareFeet) <= AREA_TOLERANCE_SQUARE_FEET;
+  }
+
+  function frameOf(bounds) {
+    var cos = Math.cos(radians((bounds.north + bounds.south) / 2));
+    var spanX = (bounds.east - bounds.west) * cos * DRAWING_SCALE;
+    var spanY = (bounds.north - bounds.south) * DRAWING_SCALE;
+    var minimum = DRAWING_MIN_SPAN * DRAWING_SCALE;
+    var reach = Math.max(spanX, spanY, minimum);
+    var width = Math.max(spanX, minimum) + reach * DRAWING_PADDING * 2;
+    var height = Math.max(spanY, minimum) + reach * DRAWING_PADDING * 2;
+    if (width / height < DRAWING_MIN_ASPECT) width = height * DRAWING_MIN_ASPECT;
+    if (width / height > DRAWING_MAX_ASPECT) height = width / DRAWING_MAX_ASPECT;
+    return {
+      x: spanX / 2 - width / 2,
+      y: spanY / 2 - height / 2,
+      width: width,
+      height: height,
+      dot: reach * DRAWING_DOT,
+      project: function (point) {
+        return [(point.lng - bounds.west) * cos * DRAWING_SCALE, (bounds.north - point.lat) * DRAWING_SCALE];
+      },
+    };
+  }
+
+  function svgNode(doc, tag, attributes) {
+    var node = doc.createElementNS(SVG_NAMESPACE, tag);
+    Object.keys(attributes).forEach(function (name) { node.setAttribute(name, String(attributes[name])); });
+    return node;
+  }
+
+  function shapeNode(doc, shape, element, frame, prefix) {
+    var attributes = { "class": prefix + "__shape", "data-tone": String(element.tone), "data-kind": shape.kind };
+    if (shape.kind === "area") {
+      attributes.d = shape.polygons.map(function (rings) {
+        return rings.map(function (ring) { return "M" + ring.map(function (point) { return frame.project(point).join(" "); }).join("L") + "Z"; }).join("");
+      }).join("");
+      attributes["fill-rule"] = "evenodd";
+      return svgNode(doc, "path", attributes);
+    }
+    if (shape.kind === "line") {
+      attributes.points = shape.path.map(function (point) { return frame.project(point).join(","); }).join(" ");
+      return svgNode(doc, "polyline", attributes);
+    }
+    var center = frame.project(shape.kind === "circle" ? shape.center : shape.position);
+    attributes.cx = center[0];
+    attributes.cy = center[1];
+    attributes.r = shape.kind === "circle" ? shape.radius / METERS_PER_DEGREE * DRAWING_SCALE : frame.dot;
+    return svgNode(doc, "circle", attributes);
+  }
+
+  function ringCentre(ring, frame) {
+    var points = ring.map(frame.project);
+    var twice = 0;
+    var x = 0;
+    var y = 0;
+    points.forEach(function (here, index) {
+      var next = points[(index + 1) % points.length];
+      var cross = here[0] * next[1] - next[0] * here[1];
+      twice += cross;
+      x += (here[0] + next[0]) * cross;
+      y += (here[1] + next[1]) * cross;
+    });
+    return { weight: Math.abs(twice) / 2, point: twice ? [x / (3 * twice), y / (3 * twice)] : points[0] };
+  }
+
+  function labelPoint(element, frame) {
+    var best = null;
+    element.shapes.forEach(function (shape) {
+      var candidates = [];
+      if (shape.kind === "circle") {
+        var reach = shape.radius / METERS_PER_DEGREE * DRAWING_SCALE;
+        candidates.push({ weight: Math.PI * reach * reach, point: frame.project(shape.center) });
+      } else if (shape.kind === "area") {
+        shape.polygons.forEach(function (rings) { candidates.push(ringCentre(rings[0], frame)); });
+      }
+      candidates.forEach(function (candidate) {
+        if (!best || candidate.weight > best.weight) best = candidate;
+      });
+    });
+    return best ? best.point : null;
+  }
+
+  function percent(value) {
+    return Math.min(Math.max(value, 0), 1) * 100 + "%";
+  }
+
+  function figure(doc, plan, options) {
+    var settings = options || {};
+    var prefix = settings.classPrefix;
+    var frame = frameOf(plan.bounds);
+    var node = doc.createElement("div");
+    node.className = prefix + "__figure";
+    var svg = svgNode(doc, "svg", {
+      "class": prefix + "__drawing",
+      viewBox: [frame.x, frame.y, frame.width, frame.height].join(" "),
+      role: "img",
+      "aria-label": settings.label || "",
+    });
+    plan.elements.forEach(function (element) {
+      element.shapes.forEach(function (shape) { svg.appendChild(shapeNode(doc, shape, element, frame, prefix)); });
+    });
+    node.appendChild(svg);
+    var labels = 0;
+    plan.elements.forEach(function (element) {
+      var point = labelPoint(element, frame);
+      var name = typeof settings.nameOf === "function" ? settings.nameOf(element) : element.name;
+      if (!point || !name) return;
+      var label = doc.createElement("span");
+      label.className = prefix + "__label";
+      label.setAttribute("data-tone", String(element.tone));
+      label.setAttribute("aria-hidden", "true");
+      label.style.left = percent((point[0] - frame.x) / frame.width);
+      label.style.top = percent((point[1] - frame.y) / frame.height);
+      label.textContent = name;
+      node.appendChild(label);
+      labels += 1;
+    });
+    node.setAttribute("data-labels", String(labels));
+    return node;
+  }
+
   ns.plan = Object.freeze({
     tones: TONES,
     parse: parse,
     formatArea: formatArea,
+    sumsTo: sumsTo,
+    figure: figure,
   });
 })(typeof window !== "undefined" ? window : globalThis);

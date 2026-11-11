@@ -524,16 +524,21 @@ const DETAIL_VALUE_CODES = ["LEGAL_NAME", "BILLING_ADDRESS", "REPRESENTATIVE_FIR
   assert.equal(all(after, "[data-module=\"change-request\"]").length, 0);
   assert.equal(state.toast, "Change request sent");
 
-  ACTIONS["quote.approve"]("4101");
-  const loading = one(page(), "[data-module=\"decision-confirm\"]");
-  assert.equal(one(loading, "[data-module=\"agreement-details\"]").getAttribute("data-state"), "loading", "Approve opens the contract details, loaded from the account");
-  assert.equal(one(loading, "[data-action=\"quote.confirm\"]").hasAttribute("disabled"), true);
-  assert.equal(await ACTIONS["quote.confirm"]("4101"), false, "nothing is approved while the details load");
+  assert.equal(ACTIONS["quote.approve"]("4101"), true);
+  assert.deepEqual([state.route, state.approveQuoteId], ["proposal.approve", 4101], "Approve opens the Contract details page of that option");
+  const loading = page();
+  assert.equal(loading.getAttribute("data-route"), "proposal.approve");
+  assert.equal(all(loading, "[data-module=\"quote-option\"]").length, 0, "a page of its own, without the quote's options around the form");
+  assert.deepEqual([one(loading, "[data-module=\"quote-approval-summary\"] .quote-option__model").textContent, one(loading, "[data-module=\"quote-approval-summary\"] [data-kind=\"taxes\"]").textContent], ["Per service", "Plus applicable taxes."]);
+  assert.equal(one(loading, "[data-module=\"agreement-details\"]").getAttribute("data-state"), "loading", "with the contract details, loaded from the account");
+  assert.equal(one(loading, "[data-action=\"quote.sendApproval\"]").hasAttribute("disabled"), true);
+  assert.equal(await ACTIONS["quote.sendApproval"]("4101"), false, "nothing is approved while the details load");
+  assert.equal(await ACTIONS["quote.sendApproval"]("4103"), false, "nor for an option the page was not opened for");
   await until(() => state.contractDetails && state.contractDetails.prefill === "ready");
   const names = (mappings) => mappings.map((mapping) => mapping.name);
   assert.deepEqual(names(table.accountMappings), ["id", "nls", "user", "contacts", "addresses", "attributes"], "the pre-fill reads the profile mappings plus attributes");
   assert.deepEqual(plain(coreAccountProfileContract.contractDetailsMappings), plain(coreAccountProfileContract.mappings.concat([{ name: "attributes" }])));
-  const form = one(page(), "[data-module=\"decision-confirm\"] [data-module=\"agreement-details\"]");
+  const form = one(page(), "[data-module=\"quote-approval-form\"] [data-module=\"agreement-details\"]");
   assert.equal(form.getAttribute("data-state"), "editing");
   const value = (code) => one(form, "[data-contract-detail=\"" + code + "\"]").getAttribute("value");
   assert.deepEqual(DETAIL_VALUE_CODES.map(value), [
@@ -547,7 +552,7 @@ const DETAIL_VALUE_CODES = ["LEGAL_NAME", "BILLING_ADDRESS", "REPRESENTATIVE_FIR
   assert.deepEqual(all(form, "input[type=\"checkbox\"]").map((box) => [box.getAttribute("data-contract-detail"), box.hasAttribute("checked")]), [["INFORMATION_CONFIRMED", false], ["AUTHORITY_CONFIRMED", false]], "the confirmations are never pre-filled");
   assert.equal(one(form, "label[for=\"contract-detail-representative-job-title\"]").textContent, "Job title (optional)");
 
-  assert.equal(await ACTIONS["quote.confirm"]("4101"), false);
+  assert.equal(await ACTIONS["quote.sendApproval"]("4101"), false);
   assert.equal(table.events.length, 1, "nothing is approved while a required detail is missing: the server cannot refuse the event, so the page checks first");
   const refused = one(page(), "[data-module=\"agreement-details\"]");
   assert.deepEqual(all(refused, ".field-error").map((error) => error.textContent), ["Choose the client type.", "Confirm this to send your details.", "Confirm this to send your details."]);
@@ -558,9 +563,15 @@ const DETAIL_VALUE_CODES = ["LEGAL_NAME", "BILLING_ADDRESS", "REPRESENTATIVE_FIR
   const email = one(refused, "[data-contract-detail=\"REPRESENTATIVE_EMAIL\"]");
   email.value = "avery@";
   fire(email, "input");
-  assert.equal(await ACTIONS["quote.confirm"]("4101"), false);
+  assert.equal(await ACTIONS["quote.sendApproval"]("4101"), false);
+  assert.equal(state.route, "proposal.approve", "a refused form stays on its page, each error beside its field");
   assert.deepEqual(all(page(), "[data-module=\"agreement-details\"] .field-error").map((error) => error.textContent).slice(0, 3), ["Enter the client’s legal name.", "Choose the client type.", "Enter a valid email address, like name@example.com."]);
 
+  assert.equal(ACTIONS["quote.backToQuote"](), true);
+  assert.equal(state.route, "proposal.detail", "Back returns to the quote");
+  assert.equal(all(page(), "[data-module=\"agreement-details\"]").length, 0, "which asks no contract details itself");
+  assert.equal(ACTIONS["quote.approve"]("4101"), true);
+  assert.equal(one(page(), "[data-contract-detail=\"REPRESENTATIVE_EMAIL\"]").getAttribute("value"), "avery@", "and coming back keeps what was typed");
   const again = one(page(), "[data-module=\"agreement-details\"]");
   const legalAgain = one(again, "[data-contract-detail=\"LEGAL_NAME\"]");
   legalAgain.value = "Harbour View Strata Corp.";
@@ -576,7 +587,7 @@ const DETAIL_VALUE_CODES = ["LEGAL_NAME", "BILLING_ADDRESS", "REPRESENTATIVE_FIR
     check.checked = true;
     fire(check, "change");
   }
-  assert.equal(await ACTIONS["quote.confirm"]("4101"), true, "approve still works beside a change request");
+  assert.equal(await ACTIONS["quote.sendApproval"]("4101"), true, "approve still works beside a change request");
   assert.deepEqual(table.events.slice(1), [{
     entity: "order", id: 4101, code: "QUOTE_SENT-ACCEPTED",
     body: {
@@ -595,6 +606,9 @@ const DETAIL_VALUE_CODES = ["LEGAL_NAME", "BILLING_ADDRESS", "REPRESENTATIVE_FIR
   }], "the approval carries every contract detail as { value }, the confirmations included, through the tagged event");
   assert.deepEqual(table.orders.filter((row) => row.attributes[5].SERVICE_PROPERTY.value === 984).map((row) => row.states[0].code), ["ACCEPTED", "CUSTOMER_CHANGES_REQUESTED", "DECLINED"]);
   assert.equal(state.toast, "Option approved");
+  assert.deepEqual([state.route, state.currentSiteId], ["proposal.detail", "quote-5604-984"], "a confirmed approval returns to the quote, where the readback now lists the approved option");
+  assert.equal(one(page(), "[data-module=\"quote-decided\"]").textContent, "iYou approved Per service.");
+  assert.equal(one(page(), "[data-module=\"quote-option\"][data-state=\"approved\"] [data-module=\"status-badge\"]").textContent, "✓ Approved", "which shows the option as approved");
   assert.equal(all(page(), "[data-module=\"agreement-details\"]").length, 0, "the details close with the approval");
   assert.deepEqual(table.agreements.map((row) => [row.id, row.states[0].code, row.attributes[17].ORDERS.value]), [[5602, "SENT_TO_CLIENT", [4001]], [5603, "DRAFT", [4201]], [5604, "DRAFT", [4101]]], "an approved option settles its property even beside a change request, and the settled round becomes a DRAFT agreement of the approved quote");
 }
@@ -607,7 +621,7 @@ const DETAIL_VALUE_CODES = ["LEGAL_NAME", "BILLING_ADDRESS", "REPRESENTATIVE_FIR
   ACTIONS["quote.approve"]("4103");
   await until(() => state.contractDetails && state.contractDetails.prefill === "ready");
   Object.assign(state.contractDetails.draft, { CLIENT_TYPE: "INDIVIDUAL", REPRESENTATIVE_JOB_TITLE: "", INFORMATION_CONFIRMED: true, AUTHORITY_CONFIRMED: true });
-  assert.equal(await ACTIONS["quote.confirm"]("4103"), true);
+  assert.equal(await ACTIONS["quote.sendApproval"]("4103"), true);
   assert.deepEqual(table.events.map((event) => [event.id, event.code, event.body.CLIENT_TYPE, event.body.REPRESENTATIVE_JOB_TITLE]), [[4103, "QUOTE_SENT-ACCEPTED", { value: "INDIVIDUAL" }, { value: "" }]], "an optional job title left empty is sent empty");
   assert.deepEqual(table.orders.filter((row) => row.attributes[5].SERVICE_PROPERTY.value === 984).map((row) => row.states[0].code), ["DECLINED", "DECLINED", "ACCEPTED"], "the server declines the other options of the approved property itself; the page sends nothing for them");
   portal.go("proposals.list");
