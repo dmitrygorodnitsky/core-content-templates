@@ -422,6 +422,12 @@ function finiteNumber(value) {
 }
 
 export const REQUEST_LINK_COPY = Object.freeze({
+  confirmTitle: ["portalRequestConfirmTitle", "Confirm your quote request"],
+  confirmBody: ["portalRequestConfirmBody", "Confirm that you asked us for a quote, and we will start preparing it."],
+  confirmButton: ["portalRequestConfirmButton", "Confirm my request"],
+  cancelTitle: ["portalRequestCancelTitle", "Cancel your quote request?"],
+  cancelBody: ["portalRequestCancelBody", "We will not prepare a quote, and you will receive no more emails about this request. This cannot be undone."],
+  cancelButton: ["portalRequestCancelButton", "Cancel my request"],
   confirming: ["portalRequestConfirming", "Confirming your request…"],
   confirmedTitle: ["portalRequestConfirmedTitle", "Your email is confirmed"],
   confirmedBody: ["portalRequestConfirmedBody", "Thank you. Your request is being processed, and we will be in touch."],
@@ -433,6 +439,9 @@ export const REQUEST_LINK_COPY = Object.freeze({
   failedTitle: ["portalRequestLinkFailedTitle", "We could not reach our system"],
   failedBody: ["portalRequestLinkFailedBody", "Nothing was changed. Check your connection and try again."],
   retry: ["portalRequestLinkRetry", "Try again"],
+  unconfirmedTitle: ["portalRequestLinkUnconfirmedTitle", "We could not confirm that yet"],
+  unconfirmedBody: ["portalRequestLinkUnconfirmedBody", "Our system has not recorded it. Check again in a moment. If this does not change, the request was already confirmed or cancelled."],
+  checkAgain: ["portalRequestLinkCheckAgain", "Check again"],
 });
 
 function requestLinkCopy(dataset) {

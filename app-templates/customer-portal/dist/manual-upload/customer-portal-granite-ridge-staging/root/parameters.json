@@ -79,12 +79,90 @@
     }
   },
   {
+    "code": "PORTAL_REQUEST_CONFIRM_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "PORTAL REQUEST CONFIRM TITLE",
+        "DESCRIPTION": "Title of the page the Confirm my request button of the first quote request email opens. Nothing is sent until the visitor presses the button on it. Translate it per language; an empty value shows the English default."
+      }
+    },
+    "value": {
+      "en": "Confirm your quote request"
+    }
+  },
+  {
+    "code": "PORTAL_REQUEST_CONFIRM_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "PORTAL REQUEST CONFIRM BODY",
+        "DESCRIPTION": "Line under the confirm title. Translate it per language; an empty value shows the English default."
+      }
+    },
+    "value": {
+      "en": "Confirm that you asked us for a quote, and we will start preparing it."
+    }
+  },
+  {
+    "code": "PORTAL_REQUEST_CONFIRM_BUTTON",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "PORTAL REQUEST CONFIRM BUTTON",
+        "DESCRIPTION": "Label of the button that confirms the quote request. Translate it per language; an empty value shows the English default."
+      }
+    },
+    "value": {
+      "en": "Confirm my request"
+    }
+  },
+  {
+    "code": "PORTAL_REQUEST_CANCEL_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "PORTAL REQUEST CANCEL TITLE",
+        "DESCRIPTION": "Title of the page the Unsubscribe link of the first quote request email opens. Nothing is sent until the visitor presses the button on it. Translate it per language; an empty value shows the English default."
+      }
+    },
+    "value": {
+      "en": "Cancel your quote request?"
+    }
+  },
+  {
+    "code": "PORTAL_REQUEST_CANCEL_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "PORTAL REQUEST CANCEL BODY",
+        "DESCRIPTION": "Line under the cancel title. Translate it per language; an empty value shows the English default."
+      }
+    },
+    "value": {
+      "en": "We will not prepare a quote, and you will receive no more emails about this request. This cannot be undone."
+    }
+  },
+  {
+    "code": "PORTAL_REQUEST_CANCEL_BUTTON",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "PORTAL REQUEST CANCEL BUTTON",
+        "DESCRIPTION": "Label of the button that cancels the quote request. Translate it per language; an empty value shows the English default."
+      }
+    },
+    "value": {
+      "en": "Cancel my request"
+    }
+  },
+  {
     "code": "PORTAL_REQUEST_CONFIRMING",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
         "NAME": "PORTAL REQUEST CONFIRMING",
-        "DESCRIPTION": "Shown while the page that the Confirm my request button of the first quote request email opens is sending the confirmation. Translate it per language; an empty value shows the English default."
+        "DESCRIPTION": "Shown while the confirmation is being sent and read back. Translate it per language; an empty value shows the English default."
       }
     },
     "value": {
@@ -123,7 +201,7 @@
     "nls": {
       "en": {
         "NAME": "PORTAL REQUEST CANCELLING",
-        "DESCRIPTION": "Shown while the page that the Unsubscribe link of the first quote request email opens is cancelling the request. Translate it per language; an empty value shows the English default."
+        "DESCRIPTION": "Shown while the cancellation is being sent and read back. Translate it per language; an empty value shows the English default."
       }
     },
     "value": {
@@ -219,6 +297,45 @@
     },
     "value": {
       "en": "Try again"
+    }
+  },
+  {
+    "code": "PORTAL_REQUEST_LINK_UNCONFIRMED_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "PORTAL REQUEST LINK UNCONFIRMED TITLE",
+        "DESCRIPTION": "Title shown when the confirmation or cancellation was sent but the system has not recorded it. Translate it per language; an empty value shows the English default."
+      }
+    },
+    "value": {
+      "en": "We could not confirm that yet"
+    }
+  },
+  {
+    "code": "PORTAL_REQUEST_LINK_UNCONFIRMED_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "PORTAL REQUEST LINK UNCONFIRMED BODY",
+        "DESCRIPTION": "Line under the not confirmed yet title. Translate it per language; an empty value shows the English default."
+      }
+    },
+    "value": {
+      "en": "Our system has not recorded it. Check again in a moment. If this does not change, the request was already confirmed or cancelled."
+    }
+  },
+  {
+    "code": "PORTAL_REQUEST_LINK_CHECK_AGAIN",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "PORTAL REQUEST LINK CHECK AGAIN",
+        "DESCRIPTION": "Label of the button that reads the outcome again. Translate it per language; an empty value shows the English default."
+      }
+    },
+    "value": {
+      "en": "Check again"
     }
   }
 ]

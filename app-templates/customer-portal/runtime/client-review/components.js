@@ -980,17 +980,14 @@
       }
     }
     card.appendChild(actions);
-    var billingRefused = Boolean(command && command.status === "refused" && command.event === ns.contract.agreementEvents.approve.code && ctx.snapshot.billing.refused);
-    if (command && !pending) {
-      card.appendChild(outcomeBox(ctx, billingRefused ? Object.assign({}, command, { message: copy.billingAddressRefused }) : command, { action: refreshButton(ctx, recordKey, copy.refreshLabel) }));
-    }
+    if (command && !pending) card.appendChild(outcomeBox(ctx, command, { action: refreshButton(ctx, recordKey, copy.refreshLabel) }));
     return card;
   }
 
   function billingField(ctx, pending) {
     var copy = ctx.copy;
     var billing = ctx.snapshot.billing;
-    var message = billing.invalid ? copy.billingAddressRequired : billing.refused ? copy.billingAddressRefused : "";
+    var message = billing.invalid ? copy.billingAddressRequired : "";
     var field = el("div", "cr-field cr-billing", { "data-module": "billing-address", "data-state": message ? "invalid" : "idle", role: "group", "aria-labelledby": "cr-billing-label" });
     field.appendChild(text("p", "cr-field__label", copy.billingAddressLabel, { id: "cr-billing-label" }));
     field.appendChild(text("p", "cr-field__hint", copy.billingAddressHint, { id: "cr-billing-hint" }));

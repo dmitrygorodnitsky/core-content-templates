@@ -973,22 +973,28 @@ Backend, proofs and rollback: core-ui `docs/snow-feedback-2026-11-11.md`,
   and `request.cancel` (`#/request/cancel`) are what the first email of a
   public quote request opens: its "Confirm my request" button and its
   Unsubscribe link, each with a one-time `?token=`. The router takes the token
-  out of the address at once and `request-link.js` posts it, without
-  credentials, to `/core-cms/api/form/send-event/<token>.json`. The card
-  (`RequestLinkPage.js`, the account-gate card) has five states: pending,
-  confirmed, cancelled, link no longer valid (any refusal by Core) and
-  unreachable with Try again (no answer, or 502–504). A reload shows the last
+  out of the address at once. Opening the page sends nothing: the card
+  (`RequestLinkPage.js`, the account-gate card) asks with its own button,
+  "Confirm my request" or "Cancel my request", so a mail scanner that runs the
+  page changes nothing. On the button `request-link.js` posts the token,
+  without credentials, to `/core-cms/api/form/send-event/<token>.json`, and
+  then posts it again to read the outcome back: Core answers 200 even to a
+  token whose event did not happen, but the form's hook deletes the tokens of
+  the event that did, so a 404 is the proof and the only answer the page
+  reports as success. States: prompt, pending, confirmed, cancelled, not
+  confirmed yet with Check again (accepted but no 404 within about 9 s), link
+  no longer valid (refused and no 404, or a first 404) and unreachable with
+  Try again (no answer, or 502–504 on the first post). A reload shows the last
   outcome of the tab (`sessionStorage`, the route id only) and sends nothing.
   The routes carry `sessionFree`: no sign-in redirect, no landing redirect and
   no account gate, whatever the session is (`accountGateShown`).
-- **Copy** is eleven `PORTAL_REQUEST_*` `LOCALIZED_STRING_SS` parameters of the
+- **Copy** is twenty `PORTAL_REQUEST_*` `LOCALIZED_STRING_SS` parameters of the
   live root (`requestLinkCopyParameters` in the exporter, `REQUEST_LINK_COPY`
   in `config.js`; the staging check holds them equal). An unrendered marker,
   `#` or an empty value shows the English default.
-- **Core answers 200 to a token whose event is no longer available**, so the
-  page alone cannot tell a confirmation from a no-op; the form's hook now
-  closes the other token when the request leaves its waiting state, and that
-  link answers 500.
+- **Readback contract with the hook** (core-ui `closeTokens`): entering the
+  event's state deletes that event's tokens (404) and marks the form's other
+  tokens used (500). Nothing else about a form is readable anonymously.
 - **Billing address at agreement approval.** The event
   `SENT_TO_CLIENT-CLIENT_APPROVED` takes `BILLING_ADDRESS` (one line) or
   `BILLING_SAME_AS_LEGAL` (`true`); the hook refuses an approval that leaves
@@ -996,10 +1002,10 @@ Backend, proofs and rollback: core-ui `docs/snow-feedback-2026-11-11.md`,
   - Review page: the confirm step always asks (a link reads Account addresses
     as ids only): Same as legal address is chosen, clearing it opens the
     address field. Same as legal address is only a fallback on the server: a
-    billing address on file stays. An approval the readbacks never see
-    (75 s) is no longer left as "unconfirmed" forever: the page says it was
-    not recorded, clears the option, opens the field with the reason beside
-    it and lets the approval be sent again. Copy: five `BILLING_*` parameters.
+    billing address on file stays. An approval the readbacks never see (75 s)
+    is "not confirmed yet" like any other command: the page names no reason,
+    because a refusal answers 200 and a link cannot learn why. Copy: four
+    `BILLING_*` parameters.
   - Portal: opening the approval reads the signed-in Account; with a
     `BILLING` address nothing is asked, without one the field is required,
     prefilled from the `LEGAL` address with Same as legal address chosen; an
@@ -1013,8 +1019,9 @@ Backend, proofs and rollback: core-ui `docs/snow-feedback-2026-11-11.md`,
   with a customer session: `snow-portal-quote-flow-check.mjs` runs it against
   a Core table, and its presentation was looked at on the fixture runtime.
 - **Open:** a request confirmed earlier cannot be cancelled with its
-  Unsubscribe link (the page says the link is no longer valid); a mail
-  scanner that runs page scripts would use a link up.
+  Unsubscribe link (the page says the link is no longer valid); a silent
+  refusal of an agreement approval leaves the review page at "not confirmed
+  yet" until it is reloaded.
 
 ## Universal form document
 

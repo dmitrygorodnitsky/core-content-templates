@@ -16,7 +16,7 @@ import { configuredExternalUrl, normalizeVertical, verticalProfiles } from "./co
 import { isRouteReachable, resolveRoute, writeRouteToLocation } from "./router.js";
 import { addTypedQuoteAddress, checkQuoteRequestAgain, loadQuoteRequestSchema, quoteRequestOpen, removeQuoteAddress, resetQuoteRequest, submitQuoteRequest, toggleQuoteProperty } from "./quote-request.js";
 import { agreementBillingRequest, changeAgreementBilling, contractDetailsEventInput, contractDetailsRequest, openAgreementBilling, openContractDetails } from "./contract-details.js";
-import { retryRequestLink, runRequestLink } from "./request-link.js";
+import { checkRequestLink, sendRequestLink } from "./request-link.js";
 import { selectSeoService, toggleSeoFaq } from "./seo-actions.js";
 import { VISIT_PHOTO_ACTION, openVisitPhotos } from "./visit-photo-viewer.js";
 
@@ -102,7 +102,8 @@ export var ACTIONS = {
   "quoteRequest.submit": function () { return sendQuoteRequest(); },
   "quoteRequest.checkAgain": function () { return checkQuoteRequestAgain({ onChange: function () { render(); }, reload: reloadRuntimeModule }); },
   "quoteRequest.retry": function () { state.quoteRequestSchema = null; render(); return true; },
-  "requestLink.retry": function () { if (!retryRequestLink()) return false; render(); return true; },
+  "requestLink.send": function () { if (!sendRequestLink({ onChange: render })) return false; render(); return true; },
+  "requestLink.check": function () { if (!checkRequestLink({ onChange: render })) return false; render(); return true; },
   "agreement.approve": function (id) { return openContractConfirm("agreement", id); },
   "agreement.billingSame": function () { return toggleAgreementBillingSame(); },
   "agreement.confirm": function (id) { return confirmContractCommand("agreement", id); },
@@ -1282,10 +1283,6 @@ export function requestCareRetreat(id, element) {
   });
   careRetreatFlights.set(key, flight);
   return flight;
-}
-
-export function ensureRequestLink() {
-  return runRequestLink({ onChange: render });
 }
 
 export function setState(patch) { Object.assign(state, patch); render(); }

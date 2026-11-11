@@ -10,6 +10,8 @@ const LANDING = "https://dev-1.servicewand.com/pages/SNOWLIMITLESS/home";
 const SIGNED_OUT_RETURN = LANDING + "?portal=signed-out";
 const NO_ACCESS = LANDING + "?portal=no-access";
 const NO_ACCESS_STATES = ["customer-not-linked", "organization-forbidden", "customer-forbidden"];
+const POST_A = "POST /core-cms/api/form/send-event/tok%2FA1.json omit Accept,Content-Type {}";
+const POST_B = "POST /core-cms/api/form/send-event/tokB2.json omit Accept,Content-Type {}";
 
 if (isMainThread) await main();
 else await boot(workerData);
@@ -150,21 +152,26 @@ async function main() {
     { id: "an expiring access token whose refresh is rejected leaves for the landing", hash: "#/overview", session: "signed-in", account: "ready", refreshable: true, refresh: "rejected", steps: [{ tokenEvent: "expiring" }], replaced: [LANDING], last: "route:overview", signinSilent: 1, removedUser: 1 },
     { id: "a 401 on a refreshable session whose refresh is rejected leaves for the landing", hash: "#/overview", session: "signed-in", account: "ready", refreshable: true, refresh: "rejected", staleToken: "everywhere", replaced: [LANDING], last: "gate:resolving-customer", signinSilent: 1, removedUser: 1 },
     { id: "sign-out from the no-access gate", hash: "#/login", session: "signed-in", account: "customer-not-linked", click: "account-signout", replaced: [], signedOutTo: SIGNED_OUT_RETURN },
-    { id: "a confirmation link, signed out", hash: "#/request/confirm?token=tok%2FA1", session: "signed-out", requestLink: "ok", replaced: [], last: "request:confirm:done", route: "request.confirm", address: "#/request/confirm", writes: [["replace", "#/request/confirm"]], requestLinks: ["POST /core-cms/api/form/send-event/tok%2FA1.json omit Accept,Content-Type {}"], cardsSeen: ["request:confirm:pending", "request:confirm:done"], signinRedirect: 0 },
-    { id: "an Unsubscribe link, signed out", hash: "#/request/cancel?token=tokB2", session: "signed-out", requestLink: "ok", replaced: [], last: "request:cancel:done", route: "request.cancel", address: "#/request/cancel", requestLinks: ["POST /core-cms/api/form/send-event/tokB2.json omit Accept,Content-Type {}"], cardsSeen: ["request:cancel:pending", "request:cancel:done"], signinRedirect: 0 },
-    { id: "a confirmation link used before", hash: "#/request/confirm?token=tokA1", session: "signed-out", requestLink: "used", replaced: [], last: "request:confirm:invalid", route: "request.confirm", signinRedirect: 0 },
-    { id: "an Unsubscribe link used before", hash: "#/request/cancel?token=tokB2", session: "signed-out", requestLink: "used", replaced: [], last: "request:cancel:invalid", route: "request.cancel" },
+    { id: "a confirmation link opened and nothing pressed", hash: "#/request/confirm?token=tok%2FA1", session: "signed-out", requestLink: [200, 404], replaced: [], last: "request:confirm:prompt", route: "request.confirm", address: "#/request/confirm", writes: [["replace", "#/request/confirm"]], requestLinks: [], signinRedirect: 0 },
+    { id: "an Unsubscribe link opened and nothing pressed", hash: "#/request/cancel?token=tokB2", session: "signed-out", requestLink: [200, 404], replaced: [], last: "request:cancel:prompt", route: "request.cancel", address: "#/request/cancel", requestLinks: [], signinRedirect: 0 },
+    { id: "Confirm my request pressed", hash: "#/request/confirm?token=tok%2FA1", session: "signed-out", requestLink: [200, 404], steps: [{ click: "request-link-send" }, { wait: 700 }], replaced: [], last: "request:confirm:done", route: "request.confirm", requestLinks: [POST_A, POST_A], cardsSeen: ["request:confirm:prompt", "request:confirm:pending", "request:confirm:done"], signinRedirect: 0 },
+    { id: "Cancel my request pressed", hash: "#/request/cancel?token=tokB2", session: "signed-out", requestLink: [200, 500, 404], steps: [{ click: "request-link-send" }, { wait: 1500 }], replaced: [], last: "request:cancel:done", route: "request.cancel", requestLinks: [POST_B, POST_B, POST_B], cardsSeen: ["request:cancel:prompt", "request:cancel:pending", "request:cancel:done"] },
+    { id: "a cancellation accepted by Core that the request never shows", hash: "#/request/cancel?token=tokB2", session: "signed-out", requestLink: [200, 500], steps: [{ click: "request-link-send" }, { wait: 9900 }], replaced: [], last: "request:cancel:unconfirmed", never: ["request:cancel:done"], requestLinks: [POST_B, POST_B, POST_B, POST_B, POST_B, POST_B] },
+    { id: "a confirmation recorded late, found by Check again", hash: "#/request/confirm?token=tok%2FA1", session: "signed-out", requestLink: [200, 500, 500, 500, 500, 500, 404], steps: [{ click: "request-link-send" }, { wait: 9900 }, { click: "request-link-check" }, { wait: 700 }], replaced: [], last: "request:confirm:done", cardsSeen: ["request:confirm:unconfirmed", "request:confirm:done"] },
+    { id: "a confirmation link used before", hash: "#/request/confirm?token=tok%2FA1", session: "signed-out", requestLink: [500], steps: [{ click: "request-link-send" }, { wait: 2100 }], replaced: [], last: "request:confirm:invalid", never: ["request:confirm:done", "request:confirm:unconfirmed"], requestLinks: [POST_A, POST_A, POST_A] },
+    { id: "a link of a request already in that state", hash: "#/request/cancel?token=tokB2", session: "signed-out", requestLink: [404], steps: [{ click: "request-link-send" }, { wait: 300 }], replaced: [], last: "request:cancel:invalid", requestLinks: [POST_B] },
     { id: "a confirmation link without a token", hash: "#/request/confirm", session: "signed-out", replaced: [], last: "request:confirm:invalid", route: "request.confirm", requestLinks: [] },
-    { id: "a confirmation link while Core is unreachable", hash: "#/request/confirm?token=tokA1", session: "signed-out", requestLink: "down", replaced: [], last: "request:confirm:failed", route: "request.confirm", requestLinks: ["POST /core-cms/api/form/send-event/tokA1.json omit Accept,Content-Type {}"] },
-    { id: "an Unsubscribe link sent again after a lost connection", hash: "#/request/cancel?token=tokB2", session: "signed-out", requestLink: ["offline", "ok"], click: "request-link-retry", replaced: [], last: "request:cancel:done", route: "request.cancel", cardsSeen: ["request:cancel:failed", "request:cancel:done"], requestLinks: ["POST /core-cms/api/form/send-event/tokB2.json omit Accept,Content-Type {}", "POST /core-cms/api/form/send-event/tokB2.json omit Accept,Content-Type {}"] },
-    { id: "a confirmed page whose address changes again", hash: "#/request/confirm?token=tokA1", session: "signed-out", requestLink: "ok", steps: [{ hash: "#/request/confirm" }], replaced: [], last: "request:confirm:done", requestLinks: ["POST /core-cms/api/form/send-event/tokA1.json omit Accept,Content-Type {}"] },
-    { id: "a confirmation link, signed in with access", hash: "#/request/confirm?token=tokA1", session: "signed-in", account: "ready", requestLink: "ok", replaced: [], last: "request:confirm:done", route: "request.confirm", requestLinks: ["POST /core-cms/api/form/send-event/tokA1.json omit Accept,Content-Type {}"] },
-    ...NO_ACCESS_STATES.map((gate) => ({ id: "an Unsubscribe link, signed in as " + gate, hash: "#/request/cancel?token=tokB2", session: "signed-in", account: gate, requestLink: "ok", replaced: [], last: "request:cancel:done", route: "request.cancel", never: ["gate:" + gate] })),
-    { id: "a confirmation link while the Account resolves", hash: "#/request/confirm?token=tokA1", session: "signed-in", account: "pending", requestLink: "ok", replaced: [], last: "request:confirm:done", never: ["gate:resolving-customer"] },
+    { id: "a confirmation link while Core is unreachable", hash: "#/request/confirm?token=tok%2FA1", session: "signed-out", requestLink: [503], steps: [{ click: "request-link-send" }, { wait: 300 }], replaced: [], last: "request:confirm:failed", requestLinks: [POST_A] },
+    { id: "an Unsubscribe link sent again after a lost connection", hash: "#/request/cancel?token=tokB2", session: "signed-out", requestLink: ["offline", 200, 404], steps: [{ click: "request-link-send" }, { wait: 300 }, { click: "request-link-retry" }, { wait: 700 }], replaced: [], last: "request:cancel:done", cardsSeen: ["request:cancel:failed", "request:cancel:done"], requestLinks: [POST_B, POST_B, POST_B] },
+    { id: "a confirmed page whose address changes again", hash: "#/request/confirm?token=tok%2FA1", session: "signed-out", requestLink: [200, 404], steps: [{ click: "request-link-send" }, { wait: 700 }, { hash: "#/request/confirm" }], replaced: [], last: "request:confirm:done", requestLinks: [POST_A, POST_A] },
+    { id: "a confirmation link, signed in with access", hash: "#/request/confirm?token=tok%2FA1", session: "signed-in", account: "ready", requestLink: [200, 404], steps: [{ click: "request-link-send" }, { wait: 700 }], replaced: [], last: "request:confirm:done", route: "request.confirm", requestLinks: [POST_A, POST_A] },
+    ...NO_ACCESS_STATES.map((gate) => ({ id: "an Unsubscribe link, signed in as " + gate, hash: "#/request/cancel?token=tokB2", session: "signed-in", account: gate, requestLink: [200, 404], replaced: [], last: "request:cancel:prompt", route: "request.cancel", never: ["gate:" + gate], requestLinks: [] })),
+    { id: "a confirmation link while the Account resolves", hash: "#/request/confirm?token=tok%2FA1", session: "signed-in", account: "pending", requestLink: [200, 404], replaced: [], last: "request:confirm:prompt", never: ["gate:resolving-customer"], requestLinks: [] },
     { id: "setting off, signed out on a private route", hash: "#/overview", session: "signed-out", off: true, replaced: [], last: "oidc:ready-signed-out" },
     ...NO_ACCESS_STATES.map((gate) => ({ id: "setting off, " + gate + " on a private route", hash: "#/overview", session: "signed-in", account: gate, off: true, replaced: [], last: "gate:" + gate })),
   ];
   const workerFile = fileURLToPath(import.meta.url);
+  assert.ok(scenarios.filter((scenario) => scenario.hash.startsWith("#/request/") && !scenario.steps).every((scenario) => scenario.requestLinks.length === 0), "a request link that is only opened sends nothing: a mail scanner that runs the page cannot confirm or cancel");
   const results = await Promise.all(scenarios.map((scenario) => runWorker(workerFile, {
     scenario, runtimeRoot: runtimeRoot.href,
     dataset: scenario.off ? Object.fromEntries(Object.entries(shipped).filter(([key]) => key !== "portalSignedOutDestination")) : shipped,
@@ -179,7 +186,7 @@ async function main() {
     for (const card of scenario.never || []) assert.equal(result.cards.includes(card), false, label + ": " + card + " never renders before leaving");
     if (scenario.actions) assert.deepEqual(result.actions, scenario.actions, label + ": the actions on the card");
     if (scenario.route) assert.equal(result.route, scenario.route, label + ": the route it continues to");
-    if (scenario.requestLinks) assert.deepEqual(result.calls.requestLinks, scenario.requestLinks, label + ": the one-time event is sent anonymously, once per attempt");
+    if (scenario.requestLinks) assert.deepEqual(result.calls.requestLinks, scenario.requestLinks, label + ": the token is posted anonymously, only after the button, and again only to read the outcome back");
     for (const card of scenario.cardsSeen || []) assert.ok(result.cards.includes(card), label + ": " + card + " is shown");
     if (scenario.hash.startsWith("#/request/")) assert.equal(/token/.test(result.address), false, label + ": the token leaves the address");
     if (scenario.writes) assert.deepEqual(result.history, scenario.writes, label + ": history writes");
@@ -214,7 +221,7 @@ async function main() {
 function runWorker(file, data) {
   return new Promise((resolve, reject) => {
     const worker = new Worker(file, { workerData: data });
-    const timer = setTimeout(() => { worker.terminate(); reject(new Error("Boot timed out: " + data.scenario.id)); }, 20000);
+    const timer = setTimeout(() => { worker.terminate(); reject(new Error("Boot timed out: " + data.scenario.id)); }, 40000);
     worker.once("message", (message) => { clearTimeout(timer); worker.terminate(); resolve(message); });
     worker.once("error", (error) => { clearTimeout(timer); reject(new Error(data.scenario.id + ": " + error.message)); });
   });
@@ -238,6 +245,7 @@ async function boot({ scenario, runtimeRoot, dataset }) {
   const cardsBeforeSteps = browser.cards.length;
   for (const step of scenario.steps || []) {
     if (step.click) browser.click(step.click);
+    if (step.wait) await new Promise((resolve) => setTimeout(resolve, step.wait));
     if (step.hash) browser.jump(step.hash);
     if (step.signOutElsewhere) browser.session.user = null;
     if (step.signInElsewhere) browser.session.user = signedInUser();
@@ -427,9 +435,10 @@ function coreFetch(scenario, pending, calls) {
     const headers = init.headers || {};
     if (url.pathname.startsWith("/core-cms/api/form/send-event/")) {
       calls.requestLinks.push([init.method, url.pathname, init.credentials, Object.keys(headers).sort().join(","), init.body].join(" "));
-      const answer = Array.isArray(scenario.requestLink) ? scenario.requestLink[calls.requestLinks.length - 1] : scenario.requestLink;
+      const answers = scenario.requestLink || [404];
+      const answer = answers[Math.min(calls.requestLinks.length, answers.length) - 1];
       if (answer === "offline") return Promise.reject(new TypeError("Failed to fetch"));
-      return reply(answer === "used" ? 500 : answer === "down" ? 503 : 200, answer === "used" ? { status: 500 } : 687);
+      return reply(answer, answer === 200 ? 687 : { status: answer });
     }
     const token = String(headers.Authorization || headers.authorization || "").split(" ")[1] || "";
     if (token === "renewed-access-token") calls.renewedRequests += 1;

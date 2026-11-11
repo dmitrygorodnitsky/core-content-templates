@@ -154,7 +154,6 @@
     ["BILLING_ADDRESS_HINT", "billingAddressHint", "Your invoices carry this address. If we already have a billing address for you, it stays unless you enter another one."],
     ["BILLING_SAME_AS_LEGAL", "billingSameAsLegal", "Same as legal address"],
     ["BILLING_ADDRESS_REQUIRED", "billingAddressRequired", "Enter the billing address, or choose Same as legal address."],
-    ["BILLING_ADDRESS_REFUSED", "billingAddressRefused", "Your approval was not recorded. We need a billing address before the agreement can be approved: enter it and approve again."],
     ["AGREEMENT_NO_ACTION", "agreementNoAction", "This agreement cannot be approved through this link."],
     ["AGREEMENT_CHANGES_HINT", "agreementChangesHint", "The provider reads your request, revises the agreement and emails you a new link to review it."],
     ["AGREEMENT_CHANGES_PLACEHOLDER", "agreementChangesPlaceholder", "For example: start the service on November 15, or add the side parking lot."],
@@ -3660,17 +3659,14 @@
       }
     }
     card.appendChild(actions);
-    var billingRefused = Boolean(command && command.status === "refused" && command.event === ns.contract.agreementEvents.approve.code && ctx.snapshot.billing.refused);
-    if (command && !pending) {
-      card.appendChild(outcomeBox(ctx, billingRefused ? Object.assign({}, command, { message: copy.billingAddressRefused }) : command, { action: refreshButton(ctx, recordKey, copy.refreshLabel) }));
-    }
+    if (command && !pending) card.appendChild(outcomeBox(ctx, command, { action: refreshButton(ctx, recordKey, copy.refreshLabel) }));
     return card;
   }
 
   function billingField(ctx, pending) {
     var copy = ctx.copy;
     var billing = ctx.snapshot.billing;
-    var message = billing.invalid ? copy.billingAddressRequired : billing.refused ? copy.billingAddressRefused : "";
+    var message = billing.invalid ? copy.billingAddressRequired : "";
     var field = el("div", "cr-field cr-billing", { "data-module": "billing-address", "data-state": message ? "invalid" : "idle", role: "group", "aria-labelledby": "cr-billing-label" });
     field.appendChild(text("p", "cr-field__label", copy.billingAddressLabel, { id: "cr-billing-label" }));
     field.appendChild(text("p", "cr-field__hint", copy.billingAddressHint, { id: "cr-billing-hint" }));
@@ -3968,7 +3964,7 @@
       choices: {},
       drafts: {},
       draftInvalid: {},
-      billing: { same: true, value: "", invalid: false, refused: false },
+      billing: { same: true, value: "", invalid: false },
       commands: {},
       details: emptyDetails(null),
       plans: {},
@@ -4045,14 +4041,6 @@
 
     function markAccepted() {
       Object.keys(state.accepted).forEach(function (recordKey) {
-        var expectation = state.accepted[recordKey];
-        if (poll.exhausted && expectation.event === contract.agreementEvents.approve.code) {
-          delete state.accepted[recordKey];
-          state.commands[recordKey] = { status: "refused", event: expectation.event, message: "" };
-          state.billing.refused = true;
-          state.billing.same = false;
-          return;
-        }
         state.commands[recordKey] = { status: poll.exhausted ? "unconfirmed" : "pending", event: state.accepted[recordKey].event, message: "" };
       });
     }

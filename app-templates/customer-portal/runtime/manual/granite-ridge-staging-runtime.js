@@ -554,6 +554,12 @@
     return Number.NaN;
   }
   var REQUEST_LINK_COPY = /* @__PURE__ */ Object.freeze({
+    confirmTitle: ["portalRequestConfirmTitle", "Confirm your quote request"],
+    confirmBody: ["portalRequestConfirmBody", "Confirm that you asked us for a quote, and we will start preparing it."],
+    confirmButton: ["portalRequestConfirmButton", "Confirm my request"],
+    cancelTitle: ["portalRequestCancelTitle", "Cancel your quote request?"],
+    cancelBody: ["portalRequestCancelBody", "We will not prepare a quote, and you will receive no more emails about this request. This cannot be undone."],
+    cancelButton: ["portalRequestCancelButton", "Cancel my request"],
     confirming: ["portalRequestConfirming", "Confirming your request\u2026"],
     confirmedTitle: ["portalRequestConfirmedTitle", "Your email is confirmed"],
     confirmedBody: ["portalRequestConfirmedBody", "Thank you. Your request is being processed, and we will be in touch."],
@@ -564,7 +570,10 @@
     invalidBody: ["portalRequestLinkInvalidBody", "It may already have been used, or the request was already confirmed or cancelled."],
     failedTitle: ["portalRequestLinkFailedTitle", "We could not reach our system"],
     failedBody: ["portalRequestLinkFailedBody", "Nothing was changed. Check your connection and try again."],
-    retry: ["portalRequestLinkRetry", "Try again"]
+    retry: ["portalRequestLinkRetry", "Try again"],
+    unconfirmedTitle: ["portalRequestLinkUnconfirmedTitle", "We could not confirm that yet"],
+    unconfirmedBody: ["portalRequestLinkUnconfirmedBody", "Our system has not recorded it. Check again in a moment. If this does not change, the request was already confirmed or cancelled."],
+    checkAgain: ["portalRequestLinkCheckAgain", "Check again"]
   });
   function requestLinkCopy(dataset) {
     var copy = {};
@@ -5232,7 +5241,7 @@
     var result = h("div", { "class": "pay-sheet__result", "data-module": "pay-result", hidden: true });
     var primary = h("button", { "class": "btn btn--primary btn--block btn--lg", type: "button", "data-visual-id": "pay-sheet-confirm" });
     var secondary = h("button", { "class": "btn btn--ghost btn--block", type: "button", "data-visual-id": "pay-sheet-secondary" });
-    var actions = h("div", { "class": "pay-sheet__actions" }, [primary, secondary]);
+    var actions2 = h("div", { "class": "pay-sheet__actions" }, [primary, secondary]);
     var panel = h("aside", { "class": "drawer pay-sheet", role: "dialog", "aria-modal": "true", "aria-labelledby": "pay-sheet-title", "data-module": "invoice-pay-sheet", "data-visual-id": "invoice-pay-sheet" }, [
       h("div", { "class": "drawer__head" }, [title, closeButton]),
       summary,
@@ -5241,7 +5250,7 @@
       cardField,
       note,
       result,
-      actions
+      actions2
     ]);
     var scrim = h("div", { "class": "scrim pay-sheet__scrim", "data-visual-id": "invoice-pay-scrim" });
     closeButton.addEventListener("click", closeInvoicePayment);
@@ -5381,15 +5390,15 @@
         "data-state": active ? "active" : void 0
       }, navLabel(n));
     });
-    var actions = [
+    var actions2 = [
       h("div", { "class": "icon-btn icon-btn--optional", "data-action": "ui.toggleMode", title: "Toggle light/dark" }, state.mode === "Dark" ? "\u2600" : "\u263E")
     ];
-    if (primaryConnected(profile.primary)) actions.push(ActionButton({ variant: "btn--primary", label: state.config.primaryCtaLabel || profile.primary.label, action: profile.primary.action, visualId: "primary-cta" }));
-    if (!profile.weatherCalendar && isModuleEnabled("calendar")) actions.push(h("div", { "class": "icon-btn icon-btn--optional", "data-action": "calendar.open", title: "Calendar" }, "\u{1F4C5}"));
-    if (profile.showCart && isModuleEnabled("checkout")) actions.push(h("div", { "class": "icon-btn", "data-action": "cart.open", title: "Cart", "data-state": cartCount() ? "filled" : "empty" }, ["\u{1F6D2}", cartCount() ? h("span", { "class": "cart-badge", "data-bind": "cart.count" }, String(cartCount())) : null]));
+    if (primaryConnected(profile.primary)) actions2.push(ActionButton({ variant: "btn--primary", label: state.config.primaryCtaLabel || profile.primary.label, action: profile.primary.action, visualId: "primary-cta" }));
+    if (!profile.weatherCalendar && isModuleEnabled("calendar")) actions2.push(h("div", { "class": "icon-btn icon-btn--optional", "data-action": "calendar.open", title: "Calendar" }, "\u{1F4C5}"));
+    if (profile.showCart && isModuleEnabled("checkout")) actions2.push(h("div", { "class": "icon-btn", "data-action": "cart.open", title: "Cart", "data-state": cartCount() ? "filled" : "empty" }, ["\u{1F6D2}", cartCount() ? h("span", { "class": "cart-badge", "data-bind": "cart.count" }, String(cartCount())) : null]));
     if (isModuleEnabled("activity")) {
       var unread = activityUnread();
-      actions.push(h("div", {
+      actions2.push(h("div", {
         "class": "icon-btn icon-btn--optional",
         "data-module": "activity-control",
         "data-action": "activity.open",
@@ -5399,9 +5408,9 @@
     }
     var profileEnabled = isModuleEnabled("profile");
     var signInRequired = state.config.authMode === "required";
-    if (profileEnabled) actions.push(h("div", { "class": "avatar", "data-module": "profile-avatar", "data-action": "profile.open", title: "Profile", "aria-label": "Profile" }, initials(avatarName())));
-    else if (signInRequired) actions.push(h("button", { "class": "icon-btn icon-btn--optional", "data-module": "sign-out-control", "data-visual-id": "sign-out-control", "data-action": "auth.signOut", title: "Sign out", "aria-label": "Sign out", type: "button" }, [icon("signOut", "ov-icon")]));
-    actions.push(h("div", { "class": "icon-btn hamburger", "data-action": "ui.toggleMobileNav", title: "Menu" }, "\u2630"));
+    if (profileEnabled) actions2.push(h("div", { "class": "avatar", "data-module": "profile-avatar", "data-action": "profile.open", title: "Profile", "aria-label": "Profile" }, initials(avatarName())));
+    else if (signInRequired) actions2.push(h("button", { "class": "icon-btn icon-btn--optional", "data-module": "sign-out-control", "data-visual-id": "sign-out-control", "data-action": "auth.signOut", title: "Sign out", "aria-label": "Sign out", type: "button" }, [icon("signOut", "ov-icon")]));
+    actions2.push(h("div", { "class": "icon-btn hamburger", "data-action": "ui.toggleMobileNav", title: "Menu" }, "\u2630"));
     var brandLeaves = !signedInWithAccess() && !!configuredExternalUrl(state.config, "landingUrl");
     var nav = h("nav", { "class": "top-nav", "data-module": "top-nav", "data-visual-id": "top-nav" }, [
       h("div", { "class": "top-nav__brand", "data-action": brandLeaves ? "nav.landing" : "nav.go", "data-id": brandLeaves ? void 0 : state.config.defaultRoute }, [
@@ -5409,7 +5418,7 @@
         h("span", { "class": "brand-name", "data-bind": "brand.name" }, state.config.brandName || "Aircove")
       ]),
       h("div", { "class": "nav-links" }, [h("div", { "class": "nav-pill", "data-nav-pill": "true" })].concat(links)),
-      h("div", { "class": "top-nav__actions" }, actions)
+      h("div", { "class": "top-nav__actions" }, actions2)
     ]);
     if (state.mobileNav) {
       nav.appendChild(h(
@@ -6672,9 +6681,9 @@
     if (!configuredExternalUrl(state.config, "landingUrl")) return null;
     return ActionButton(Object.assign({ label: "Back to our website", action: "nav.landing" }, props));
   }
-  function GateGlyph(glyph) {
-    if (isSpa()) return h("div", { "class": "oidc-glyph" }, glyph);
-    return h("div", { "class": "oidc-glyph", "data-tone": "neutral", style: "background:rgba(var(--accent-rgb),.12);color:var(--accent)" }, glyph);
+  function GateGlyph(glyph2) {
+    if (isSpa()) return h("div", { "class": "oidc-glyph" }, glyph2);
+    return h("div", { "class": "oidc-glyph", "data-tone": "neutral", style: "background:rgba(var(--accent-rgb),.12);color:var(--accent)" }, glyph2);
   }
 
   // app-templates/customer-portal/runtime/src/components/primitives/RouteStates.js
@@ -7983,14 +7992,14 @@
       stepButton("\u203A", "Next day", index + 1, index === last)
     ]);
   }
-  function stepButton(glyph, label, target, disabled) {
+  function stepButton(glyph2, label, target, disabled) {
     return h("button", {
       "class": "ov-step",
       "data-action": disabled ? void 0 : "overview.scrubWeather",
       "data-id": String(target),
       "aria-label": label,
       disabled: disabled ? "disabled" : void 0
-    }, glyph);
+    }, glyph2);
   }
   function UpcomingWidget(model, timeline) {
     var scheduled = model.properties.filter(function(property) {
@@ -12335,86 +12344,133 @@
 
   // app-templates/customer-portal/runtime/src/routes/RequestLinkPage.js
   function RequestLink() {
-    var link = ensureRequestLink() || { event: "confirm", phase: "invalid" };
+    var link = state.requestLink || { event: "confirm", phase: "invalid" };
     var copy = state.config.requestLinkCopy;
     var cancel = link.event === "cancel";
-    var phase = link.phase === "ready" ? "pending" : link.phase;
+    var phase = link.phase;
     var page = h("section", { "class": "page account-gate", "data-route": state.route, "data-visual-id": "request-link", "data-state": phase });
     var card = h("div", { "class": "auth-card account-gate__card", "data-module": "request-link", "data-visual-id": "request-link-card", "data-event": link.event, "data-state": phase });
-    if (phase === "pending") {
+    if (phase === "prompt") {
+      card.appendChild(h("div", { "class": "oidc-title" }, cancel ? copy.cancelTitle : copy.confirmTitle));
+      card.appendChild(h("div", { "class": "oidc-sub" }, cancel ? copy.cancelBody : copy.confirmBody));
+      card.appendChild(actions(cancel ? copy.cancelButton : copy.confirmButton, "requestLink.send", "request-link-send"));
+    } else if (phase === "pending") {
       card.setAttribute("aria-busy", "true");
       card.appendChild(h("div", { "class": "oidc-status" }, [h("span", { "class": "oidc-spinner" })]));
       card.appendChild(h("div", { "class": "oidc-title" }, cancel ? copy.cancelling : copy.confirming));
     } else if (phase === "done") {
       card.setAttribute("role", "status");
-      card.appendChild(h("div", { "class": "oidc-status" }, [h("div", { "class": "oidc-glyph oidc-glyph--ok" }, "\u2713")]));
+      card.appendChild(glyph("ok", "\u2713"));
       card.appendChild(h("div", { "class": "oidc-title" }, cancel ? copy.cancelledTitle : copy.confirmedTitle));
       card.appendChild(h("div", { "class": "oidc-sub oidc-sub--tail" }, cancel ? copy.cancelledBody : copy.confirmedBody));
     } else if (phase === "failed") {
       card.setAttribute("role", "alert");
-      card.appendChild(h("div", { "class": "oidc-status" }, [h("div", { "class": "oidc-glyph oidc-glyph--warn" }, "!")]));
+      card.appendChild(glyph("warn", "!"));
       card.appendChild(h("div", { "class": "oidc-title" }, copy.failedTitle));
       card.appendChild(h("div", { "class": "oidc-sub" }, copy.failedBody));
-      card.appendChild(h("div", { "class": "account-gate__actions" }, [
-        ActionButton({ variant: "btn--primary", label: copy.retry, action: "requestLink.retry", block: true, lg: true, visualId: "request-link-retry" })
-      ]));
+      card.appendChild(actions(copy.retry, "requestLink.send", "request-link-retry"));
+    } else if (phase === "unconfirmed") {
+      card.setAttribute("role", "alert");
+      card.appendChild(glyph("warn", "!"));
+      card.appendChild(h("div", { "class": "oidc-title" }, copy.unconfirmedTitle));
+      card.appendChild(h("div", { "class": "oidc-sub" }, copy.unconfirmedBody));
+      card.appendChild(actions(copy.checkAgain, "requestLink.check", "request-link-check"));
     } else {
       card.setAttribute("role", "alert");
-      card.appendChild(h("div", { "class": "oidc-status" }, [h("div", { "class": "oidc-glyph oidc-glyph--warn" }, "!")]));
+      card.appendChild(glyph("warn", "!"));
       card.appendChild(h("div", { "class": "oidc-title" }, copy.invalidTitle));
       card.appendChild(h("div", { "class": "oidc-sub oidc-sub--tail" }, copy.invalidBody));
     }
     page.appendChild(card);
     return page;
   }
+  function glyph(tone, mark) {
+    return h("div", { "class": "oidc-status" }, [h("div", { "class": "oidc-glyph oidc-glyph--" + tone }, mark)]);
+  }
+  function actions(label, action, visualId) {
+    return h("div", { "class": "account-gate__actions" }, [
+      ActionButton({ variant: "btn--primary", label, action, block: true, lg: true, visualId })
+    ]);
+  }
 
   // app-templates/customer-portal/runtime/src/request-link.js
   var OUTCOME_STORAGE_KEY = "portal-request-link-done";
   var UNREACHABLE_STATUSES = [502, 503, 504];
+  var RECORDED_STATUS = 404;
+  var READBACK_DELAYS = [400, 800, 1500, 2500, 4e3];
+  var REFUSED_READBACK_DELAYS = [400, 1200];
   function captureRequestLink(routeId, raw) {
     var route = routeRegistry[routeId];
     if (!route || !route.requestEvent) return null;
     var token = tokenFrom(raw);
     var current = state.requestLink;
     if (token) {
-      if (!current || current.token !== token) state.requestLink = { route: routeId, event: route.requestEvent, token, phase: "ready" };
+      if (!current || current.token !== token) state.requestLink = { route: routeId, event: route.requestEvent, token, phase: "prompt", sent: false };
     } else if (!current || current.route !== routeId) {
-      state.requestLink = { route: routeId, event: route.requestEvent, token: "", phase: remembered(routeId) ? "done" : "invalid" };
+      state.requestLink = { route: routeId, event: route.requestEvent, token: "", phase: remembered(routeId) ? "done" : "invalid", sent: false };
     }
     return state.requestLink;
   }
-  function runRequestLink(options2) {
+  function sendRequestLink(options2) {
     var link = state.requestLink;
-    if (!link || link.phase !== "ready") return link;
+    if (!link || !link.token || link.phase !== "prompt" && link.phase !== "failed") return false;
+    var run = runner(link, options2);
+    link.phase = "pending";
+    run.post().then(function(status) {
+      if (status === null || UNREACHABLE_STATUSES.indexOf(status) !== -1) return run.settle("failed");
+      if (status === RECORDED_STATUS) return run.settle("invalid");
+      link.sent = true;
+      var accepted3 = status >= 200 && status < 300;
+      return run.readBack(accepted3 ? READBACK_DELAYS : REFUSED_READBACK_DELAYS, accepted3 ? "unconfirmed" : "invalid");
+    });
+    return true;
+  }
+  function checkRequestLink(options2) {
+    var link = state.requestLink;
+    if (!link || !link.token || !link.sent || link.phase !== "unconfirmed") return false;
+    link.phase = "pending";
+    runner(link, options2).readBack(READBACK_DELAYS, "unconfirmed");
+    return true;
+  }
+  function runner(link, options2) {
     var settings = options2 || {};
     var send = settings.fetch || globalThis.fetch;
-    link.phase = "pending";
-    var settle3 = function(phase) {
-      if (state.requestLink !== link) return;
+    var wait = settings.wait || function(milliseconds) {
+      return new Promise(function(resolve) {
+        setTimeout(resolve, milliseconds);
+      });
+    };
+    var url = cmsBase() + "/api/form/send-event/" + encodeURIComponent(link.token) + ".json";
+    function post() {
+      return Promise.resolve().then(function() {
+        return send(url, { method: "POST", credentials: "omit", headers: { "Content-Type": "application/json", Accept: "application/json" }, body: "{}" });
+      }).then(function(response) {
+        return response && typeof response.status === "number" ? response.status : null;
+      }, function() {
+        return null;
+      });
+    }
+    function settle3(phase) {
+      if (state.requestLink !== link) return phase;
       link.phase = phase;
-      if (phase !== "failed") link.token = "";
+      if (phase === "done" || phase === "invalid") link.token = "";
       if (phase === "done") remember(link.route, settings.storage);
       if (settings.onChange) settings.onChange();
-    };
-    Promise.resolve().then(function() {
-      return send(cmsBase() + "/api/form/send-event/" + encodeURIComponent(link.token) + ".json", {
-        method: "POST",
-        credentials: "omit",
-        headers: { "Content-Type": "application/json", Accept: "application/json" },
-        body: "{}"
+      return phase;
+    }
+    function readBack(delays, otherwise) {
+      return delays.reduce(function(earlier, delay) {
+        return earlier.then(function(recorded) {
+          if (recorded) return true;
+          return wait(delay).then(post).then(function(status) {
+            return status === RECORDED_STATUS;
+          });
+        });
+      }, Promise.resolve(false)).then(function(recorded) {
+        return settle3(recorded ? "done" : otherwise);
       });
-    }).then(function(response) {
-      settle3(response && response.ok ? "done" : response && UNREACHABLE_STATUSES.indexOf(response.status) !== -1 ? "failed" : "invalid");
-    }, function() {
-      settle3("failed");
-    });
-    return link;
-  }
-  function retryRequestLink() {
-    var link = state.requestLink;
-    if (!link || link.phase !== "failed" || !link.token) return false;
-    link.phase = "ready";
-    return true;
+    }
+    return { post, settle: settle3, readBack };
   }
   function cmsBase() {
     return String(state.config.cmsApiBase || "/core-cms").replace(/\/+$/, "");
@@ -13017,8 +13073,13 @@
       render();
       return true;
     },
-    "requestLink.retry": function() {
-      if (!retryRequestLink()) return false;
+    "requestLink.send": function() {
+      if (!sendRequestLink({ onChange: render })) return false;
+      render();
+      return true;
+    },
+    "requestLink.check": function() {
+      if (!checkRequestLink({ onChange: render })) return false;
       render();
       return true;
     },
@@ -13797,9 +13858,6 @@
     });
     careRetreatFlights.set(key, flight);
     return flight;
-  }
-  function ensureRequestLink() {
-    return runRequestLink({ onChange: render });
   }
   function setState(patch) {
     Object.assign(state, patch);

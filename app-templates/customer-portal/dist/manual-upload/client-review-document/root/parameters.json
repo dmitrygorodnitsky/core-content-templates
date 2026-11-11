@@ -1944,19 +1944,6 @@
     }
   },
   {
-    "code": "BILLING_ADDRESS_REFUSED",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "BILLING ADDRESS REFUSED",
-        "DESCRIPTION": "Client review document copy."
-      }
-    },
-    "value": {
-      "en": "Your approval was not recorded. We need a billing address before the agreement can be approved: enter it and approve again."
-    }
-  },
-  {
     "code": "AGREEMENT_NO_ACTION",
     "type": "LOCALIZED_STRING_SS",
     "nls": {

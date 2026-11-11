@@ -34,6 +34,12 @@ The page must be served from the same origin as Core: every service base, the Co
 | `PORTAL_MAPS_MAP_ID` | `#` |
 | `PORTAL_TIME_ZONE` | `America/Vancouver` |
 | `PORTAL_TAXES_NOTE` | `Plus applicable taxes.` |
+| `PORTAL_REQUEST_CONFIRM_TITLE` | `Confirm your quote request` |
+| `PORTAL_REQUEST_CONFIRM_BODY` | `Confirm that you asked us for a quote, and we will start preparing it.` |
+| `PORTAL_REQUEST_CONFIRM_BUTTON` | `Confirm my request` |
+| `PORTAL_REQUEST_CANCEL_TITLE` | `Cancel your quote request?` |
+| `PORTAL_REQUEST_CANCEL_BODY` | `We will not prepare a quote, and you will receive no more emails about this request. This cannot be undone.` |
+| `PORTAL_REQUEST_CANCEL_BUTTON` | `Cancel my request` |
 | `PORTAL_REQUEST_CONFIRMING` | `Confirming your request…` |
 | `PORTAL_REQUEST_CONFIRMED_TITLE` | `Your email is confirmed` |
 | `PORTAL_REQUEST_CONFIRMED_BODY` | `Thank you. Your request is being processed, and we will be in touch.` |
@@ -45,6 +51,9 @@ The page must be served from the same origin as Core: every service base, the Co
 | `PORTAL_REQUEST_LINK_FAILED_TITLE` | `We could not reach our system` |
 | `PORTAL_REQUEST_LINK_FAILED_BODY` | `Nothing was changed. Check your connection and try again.` |
 | `PORTAL_REQUEST_LINK_RETRY` | `Try again` |
+| `PORTAL_REQUEST_LINK_UNCONFIRMED_TITLE` | `We could not confirm that yet` |
+| `PORTAL_REQUEST_LINK_UNCONFIRMED_BODY` | `Our system has not recorded it. Check again in a moment. If this does not change, the request was already confirmed or cancelled.` |
+| `PORTAL_REQUEST_LINK_CHECK_AGAIN` | `Check again` |
 
 ## Constraints
 

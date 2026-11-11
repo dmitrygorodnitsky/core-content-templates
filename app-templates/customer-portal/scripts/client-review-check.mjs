@@ -1186,27 +1186,18 @@ function assertForm(run, expected, message) {
         break;
       }
       case "agreement-unconfirmed": {
-        const approveCode = "SENT_TO_CLIENT-CLIENT_APPROVED";
         const card = byClass(run.mount, "cr-approve")[0];
-        const refusal = byAttribute(card, "data-state", "refused")[0];
-        assert.ok(refusal && surface(refusal).includes(copy.billingAddressRefused), "an approval the server never recorded within the budget is answered as not recorded, and names the billing address");
-        assert.equal(byAttribute(card, "data-command", "unconfirmed").length, 0, "the page does not leave the client waiting on a silent refusal");
-        assert.equal(byAttribute(card, "data-action", "agreement.confirm").length, 1, "and keeps the approval open to be sent again");
+        const note = byAttribute(card, "data-command", "unconfirmed")[0];
+        assert.ok(note && surface(note).includes(copy.commandUnconfirmed), "an accepted approval not seen within the budget says it is not confirmed yet");
+        assert.equal(byAttribute(card, "data-action", "agreement.approve").length + byAttribute(card, "data-action", "agreement.confirm").length, 0, "and does not offer approval again");
+        assert.equal(byAttribute(run.mount, "data-module", "billing-address").length, 0, "nor blames the billing address, which the page cannot know to be the reason");
+        assert.deepEqual(plain(run.controller.snapshot().billing), { same: true, value: "", invalid: false }, "the billing choice is left as the client made it");
         assert.equal(run.timers.pending, 0);
-        assert.deepEqual(run.sent.map((call) => [call[2], call[3]]), [[approveCode, { BILLING_SAME_AS_LEGAL: { value: true } }]], "the first approval asked for the legal address as the billing address");
-        const field = byAttribute(run.mount, "data-module", "billing-address")[0];
-        assert.equal(field.getAttribute("data-state"), "invalid", "the refusal lands on the billing address field");
-        assert.ok(surface(field).includes(copy.billingAddressRefused));
-        assert.equal(byAttribute(field, "name", "BILLING_SAME_AS_LEGAL")[0].checked, false, "Same as legal address is cleared, because it was what the server did not take");
-        assert.equal(byAttribute(field, "name", "BILLING_ADDRESS").length, 1, "and the address field is open");
+        assert.ok(run.live.textContent.includes(copy.commandUnconfirmed));
+        run.controller.dispatch("agreement.intent");
         run.controller.dispatch("agreement.confirm");
         await tick();
-        assert.equal(run.sent.length, 1, "an empty billing address sends nothing");
-        assert.ok(surface(byAttribute(run.mount, "data-module", "billing-address")[0]).includes(copy.billingAddressRequired), "and says what is missing beside the field");
-        run.controller.dispatch("agreement.billing.value", { value: "  10 Main St,   Vancouver, BC V6B 1A1, Canada " });
-        run.controller.dispatch("agreement.confirm");
-        await tick();
-        assert.deepEqual(run.sent.map((call) => [call[2], call[3]])[1], [approveCode, { BILLING_ADDRESS: { value: "10 Main St, Vancouver, BC V6B 1A1, Canada" } }], "the typed billing address goes with the second approval");
+        assert.deepEqual(run.sent.map((call) => [call[2], call[3]]), [["SENT_TO_CLIENT-CLIENT_APPROVED", { BILLING_SAME_AS_LEGAL: { value: true } }]], "one approval left the page");
         break;
       }
       case "round-decided": {

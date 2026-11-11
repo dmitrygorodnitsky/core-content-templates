@@ -57,7 +57,7 @@
       choices: {},
       drafts: {},
       draftInvalid: {},
-      billing: { same: true, value: "", invalid: false, refused: false },
+      billing: { same: true, value: "", invalid: false },
       commands: {},
       details: emptyDetails(null),
       plans: {},
@@ -134,14 +134,6 @@
 
     function markAccepted() {
       Object.keys(state.accepted).forEach(function (recordKey) {
-        var expectation = state.accepted[recordKey];
-        if (poll.exhausted && expectation.event === contract.agreementEvents.approve.code) {
-          delete state.accepted[recordKey];
-          state.commands[recordKey] = { status: "refused", event: expectation.event, message: "" };
-          state.billing.refused = true;
-          state.billing.same = false;
-          return;
-        }
         state.commands[recordKey] = { status: poll.exhausted ? "unconfirmed" : "pending", event: state.accepted[recordKey].event, message: "" };
       });
     }

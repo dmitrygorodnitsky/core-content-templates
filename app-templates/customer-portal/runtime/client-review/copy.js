@@ -154,7 +154,6 @@
     ["BILLING_ADDRESS_HINT", "billingAddressHint", "Your invoices carry this address. If we already have a billing address for you, it stays unless you enter another one."],
     ["BILLING_SAME_AS_LEGAL", "billingSameAsLegal", "Same as legal address"],
     ["BILLING_ADDRESS_REQUIRED", "billingAddressRequired", "Enter the billing address, or choose Same as legal address."],
-    ["BILLING_ADDRESS_REFUSED", "billingAddressRefused", "Your approval was not recorded. We need a billing address before the agreement can be approved: enter it and approve again."],
     ["AGREEMENT_NO_ACTION", "agreementNoAction", "This agreement cannot be approved through this link."],
     ["AGREEMENT_CHANGES_HINT", "agreementChangesHint", "The provider reads your request, revises the agreement and emails you a new link to review it."],
     ["AGREEMENT_CHANGES_PLACEHOLDER", "agreementChangesPlaceholder", "For example: start the service on November 15, or add the side parking lot."],
