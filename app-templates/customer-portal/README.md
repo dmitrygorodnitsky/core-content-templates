@@ -122,10 +122,12 @@ Opened with `#verify=<token>` the document renders no form: it posts the token
 to Core's one-time endpoint `POST /core-cms/api/form/send-event/<token>.json`
 (anonymous, as the other two requests), removes it from the address and shows
 `CONFIRMED_TITLE` / `CONFIRMED_BODY`, or `UNCONFIRMED_TITLE` /
-`UNCONFIRMED_BODY` when Core refuses it. This is the page the email
-verification link of a public Snow quote request opens (core-ui
-`docs/snow-feedback-2026-11-11.md`); since then `SUCCESS_SENT_BODY` asks the
-visitor to confirm the email instead of saying that no action is needed.
+`UNCONFIRMED_BODY` when Core refuses it. It answers the confirmation links
+sent on 2026-11-11 before the first email of a public Snow quote request
+moved to the customer portal: that email now opens the portal's
+`#/request/confirm` and, for Unsubscribe, `#/request/cancel` (core-ui
+`docs/snow-feedback-2026-11-11.md`, "Follow-up C"). `SUCCESS_SENT_BODY` asks
+the visitor to confirm the request, in the words of that email.
 
 An attribute whose Input format declares `address`, or an attribute of Core's
 `com.pixelnation.common.domain.Address` class that carries no options, becomes an

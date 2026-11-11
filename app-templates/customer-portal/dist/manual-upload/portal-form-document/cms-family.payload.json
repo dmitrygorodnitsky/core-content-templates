@@ -490,7 +490,7 @@
           }
         },
         "value": {
-          "en": "Open it and confirm your email address so we can start preparing your quote."
+          "en": "Open it and confirm your request so we can start preparing your quote."
         }
       },
       {
@@ -772,7 +772,7 @@
         "nls": {
           "en": {
             "NAME": "CONFIRMED TITLE",
-            "DESCRIPTION": "Heading shown when the page is opened through the confirmation link of the email (#verify=<token>) and Core accepts the one-time token."
+            "DESCRIPTION": "Heading shown when the page is opened through a confirmation link of the older form (#verify=<token>) and Core accepts the one-time token. The email of a new request opens the customer portal instead."
           }
         },
         "value": {

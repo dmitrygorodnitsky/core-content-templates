@@ -1996,7 +1996,7 @@ try {
     SUCCESS_TITLE: "Quote request received",
     SUCCESS_BODY: "We’ve received your request and our team will review the property details and prepare your quote.",
     SUCCESS_SENT_TITLE: "A confirmation has been sent to {email}.",
-    SUCCESS_SENT_BODY: "Open it and confirm your email address so we can start preparing your quote.",
+    SUCCESS_SENT_BODY: "Open it and confirm your request so we can start preparing your quote.",
     SUCCESS_SUMMARY_TITLE: "Request summary",
     SUCCESS_PROPERTIES_LABEL: "Properties",
     SUCCESS_PROPERTIES_ONE: "{n} property submitted",
