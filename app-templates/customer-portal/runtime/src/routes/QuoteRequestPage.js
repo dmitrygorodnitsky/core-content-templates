@@ -1,5 +1,5 @@
 import { h } from "../dom.js";
-import { liveProperties, state } from "../state.js";
+import { liveProperties, liveProvider, state } from "../state.js";
 import { ACTIONS, ensureQuoteRequestSchema } from "../actions.js";
 import { ActionButton } from "../components/primitives/ActionButton.js";
 import { ErrorState } from "../components/primitives/ErrorState.js";
@@ -38,6 +38,8 @@ export function QuoteRequest() {
       h("div", { "class": "prop-head__addr" }, "Choose your properties or add a new address. We prepare per-visit, monthly and seasonal options for each."),
     ]),
   ]));
+  var area = ServiceArea(liveProvider());
+  if (area) page.appendChild(area);
 
   var loaded = ensureQuoteRequestSchema();
   if (!loaded || loaded.state === "loading") {
@@ -232,6 +234,17 @@ function RequestOutcome(kind, title, body, checking) {
       ActionButton({ variant: "btn--primary", label: "Go to Contracts", action: "nav.go", id: "proposals.list", visualId: "quote-request-contracts" }),
       kind === "slow" ? ActionButton({ variant: "btn--ghost", label: checking ? "Checking…" : "Check again", action: "quoteRequest.checkAgain", disabled: checking, visualId: "quote-request-check-again" }) : null,
     ]),
+  ]);
+}
+
+function ServiceArea(provider) {
+  var regions = provider ? provider.regions : [];
+  if (!regions.length) return null;
+  return h("section", { "class": "card card--pad quote-request__area", "data-module": "provider-service-area", "data-visual-id": "provider-service-area", "aria-labelledby": "provider-service-area-title" }, [
+    h("h2", { "class": "prop-section__title", id: "provider-service-area-title" }, "Where we work"),
+    h("ul", { "class": "quote-request__regions" }, regions.map(function (region) {
+      return h("li", { "class": "quote-request__region" }, region);
+    })),
   ]);
 }
 

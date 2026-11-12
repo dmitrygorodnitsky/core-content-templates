@@ -262,6 +262,8 @@
 
 .vw-mobile .brand-logo { display: none; }
 
+.vw-mobile .top-nav__brand[data-brand="wordmark"] .brand-logo--image { display: block; max-width: 132px; }
+
 .vw-mobile .top-nav__brand { gap: 7px; }
 
 .vw-mobile .brand-name { font-size: 15.5px; }

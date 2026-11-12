@@ -320,6 +320,14 @@ function fire(node, type, extra = {}) {
   await settle();
   await settle();
   const view = page();
+  assert.equal(all(view, "[data-module=\"provider-service-area\"]").length, 0, "without the provider's regions the page lists none");
+  const profileBefore = state.moduleData.profile;
+  state.moduleData.profile = Object.assign({}, profileBefore, { provider: { name: "Limitless Snow Removal Corp.", logoImageId: "", regions: ["Burnaby", "Vancouver", "Surrey"] } });
+  portal.go("quote.new");
+  const served = one(page(), "[data-module=\"provider-service-area\"]");
+  assert.deepEqual([one(served, "h2").textContent, texts(served, ".quote-request__region")], ["Where we work", ["Burnaby", "Vancouver", "Surrey"]], "the regions the provider's Organization serves are listed where a new address is asked");
+  state.moduleData.profile = profileBefore;
+  portal.go("quote.new");
   assert.equal(view.getAttribute("data-state"), "editing");
   assert.equal(one(view, "h1").textContent, "Request a quote");
   const cards = all(view, "[data-module=\"quote-request-property\"]");
@@ -546,7 +554,7 @@ const DETAIL_VALUE_CODES = ["LEGAL_NAME", "BILLING_ADDRESS", "REPRESENTATIVE_FIR
   assert.equal(await ACTIONS["quote.sendApproval"]("4103"), false, "nor for an option the page was not opened for");
   await until(() => state.contractDetails && state.contractDetails.prefill === "ready");
   const names = (mappings) => mappings.map((mapping) => mapping.name);
-  assert.deepEqual(names(table.accountMappings), ["id", "nls", "user", "contacts", "addresses", "attributes"], "the pre-fill reads the profile mappings plus attributes");
+  assert.deepEqual(names(table.accountMappings), ["id", "nls", "user", "organization", "contacts", "addresses", "attributes"], "the pre-fill reads the profile mappings plus attributes");
   assert.deepEqual(plain(coreAccountProfileContract.contractDetailsMappings), plain(coreAccountProfileContract.mappings.concat([{ name: "attributes" }])));
   const form = one(page(), "[data-module=\"quote-approval-form\"] [data-module=\"agreement-details\"]");
   assert.equal(form.getAttribute("data-state"), "editing");

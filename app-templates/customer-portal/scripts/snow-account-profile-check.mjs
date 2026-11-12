@@ -16,7 +16,7 @@ const { PortalRuntime } = await load("src/portal-runtime.js");
 const { modules } = await load("src/modules/index.js");
 const { coreAccountProfileContract, createCoreAccountProfileAdapter, loadCustomerAccountProfile } = await load("src/adapters/core-account-profile-adapter.js");
 const { fixtureAccountProfileAdapter, fixtureAdapter } = await load("src/adapters/fixture-adapter.js");
-const { accountProfileFailure, formatAccountAddress, normalizeAccountProfile } = await load("src/normalizers/account-profile.js");
+const { accountProfileFailure, formatAccountAddress, normalizeAccountProfile, providerOf } = await load("src/normalizers/account-profile.js");
 const { graniteRidgeSnowFixture } = await load("data/cases/granite-ridge-snow.js");
 const { TopNav } = await load("src/components/shell/TopNav.js");
 const { AccountProfile } = await load("src/routes/AccountProfilePage.js");
@@ -92,7 +92,8 @@ function reply(status, body) {
   assert.equal(body.pageSize, 2);
   const names = (mappings) => mappings.map((mapping) => mapping.name);
   const byName = (mappings, name) => mappings.find((mapping) => mapping.name === name);
-  assert.deepEqual(names(body.mappings), ["id", "nls", "user", "contacts", "addresses"], "no code, attribute, state or workflow is read for a profile");
+  assert.deepEqual(names(body.mappings), ["id", "nls", "user", "organization", "contacts", "addresses"], "no code, attribute, state or workflow of the Account is read for a profile");
+  assert.deepEqual([byName(body.mappings, "organization").type, names(byName(body.mappings, "organization").mappings), names(byName(byName(body.mappings, "organization").mappings, "image").mappings)], ["identifier", ["id", "nls", "attributes", "image"], ["id"]], "the provider's name, regions and logo come with the Account from its Organization: the role reads no Organization on its own");
   const contacts = byName(body.mappings, "contacts");
   assert.equal(contacts.type, "collection");
   assert.deepEqual(names(contacts.mappings), ["id", "firstName", "lastName", "title", "type", "contactEntries"]);
@@ -131,6 +132,10 @@ function reply(status, body) {
 }
 
 {
+  const organization = { id: 43, code: "SNOWLIMITLESS", nls: { en: { NAME: " Limitless Snow Removal Corp. " } }, image: { id: "3fecdfcd-2c9e-49c2-8873-92e4378930fc" }, attributes: { 1: { DEFAULT_LANGUAGE: { value: "en" } }, 4: { REGIONS: { value: ["Burnaby", " Vancouver ", "Burnaby", "", 7] }, WEBSITE: { value: "https://provider.example" } } } };
+  assert.deepEqual(plain(normalizeAccountProfile({ account: accountRow({ organization }), scopeMode: "server-scoped" }).provider), { name: "Limitless Snow Removal Corp.", logoImageId: "3fecdfcd-2c9e-49c2-8873-92e4378930fc", regions: ["Burnaby", "Vancouver", "7"] }, "the provider is the Account's Organization: its name, its logo image and the regions it serves, each once");
+  assert.deepEqual(plain(providerOf({ id: 43, nls: {}, image: { id: "javascript:alert(1)" }, attributes: { 4: { REGIONS: { value: "Burnaby" } } } })), { name: "", logoImageId: "", regions: [] }, "a logo that is not a media id and regions that are not a list are left out");
+  assert.equal(normalizeAccountProfile({ account: accountRow(), scopeMode: "server-scoped" }).provider, null, "an Account read without its Organization names no provider, so the page keeps its configured brand");
   const ready = normalizeAccountProfile({ account: accountRow(), scopeMode: "server-scoped" });
   assert.equal(ready.state, "ready");
   assert.equal(ready.scopeMode, "server-scoped");

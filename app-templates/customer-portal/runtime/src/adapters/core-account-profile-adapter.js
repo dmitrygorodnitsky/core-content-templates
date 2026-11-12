@@ -3,10 +3,18 @@ import { coreSessionFetch } from "./core-oidc-adapter.js";
 
 const CODE_MAPPINGS = [{ name: "id" }, { name: "code" }];
 
+const PROVIDER_MAPPINGS = [
+  { name: "id" },
+  { name: "nls" },
+  { name: "attributes" },
+  { key: "id", mappings: [{ name: "id" }], name: "image", type: "identifier" },
+];
+
 const PROFILE_MAPPINGS = [
   { name: "id" },
   { name: "nls" },
   { key: "id", mappings: [{ name: "id" }], name: "user", type: "identifier" },
+  { key: "id", mappings: PROVIDER_MAPPINGS, name: "organization", type: "identifier" },
   {
     mappings: [
       { name: "id" },

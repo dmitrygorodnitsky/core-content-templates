@@ -371,6 +371,19 @@ const page = (route, params = {}) => { Object.assign(state, params); state.route
   assert.deepEqual(ids(section, "[data-module=\"visit-row\"]"), ["visit-core-81", "visit-core-80"], "a property lists only its own visits");
   assert.doesNotMatch(section.textContent, /Harbour Road/, "the property page does not repeat its own address on each visit");
   assert.deepEqual(navLabels(), ["Home", "Visits", "Invoices", "Contracts"], "with no invoices the Invoices item stays in the nav");
+  const profileBefore = state.moduleData.profile;
+  assert.deepEqual([one(TopNav(false), ".brand-name").textContent, all(TopNav(false), "img").length], [state.config.brandName, 0], "without the provider's Organization the header keeps the configured brand and mark");
+  state.moduleData.profile = Object.assign({}, profileBefore, { provider: { name: "Limitless Snow Removal Corp.", logoImageId: "3fecdfcd-2c9e-49c2-8873-92e4378930fc", regions: [] } });
+  const branded = TopNav(false);
+  assert.deepEqual([one(branded, ".brand-name").textContent, one(branded, "img").getAttribute("src"), one(branded, "img").getAttribute("alt")], ["Limitless Snow Removal Corp.", "/core/image/3fecdfcd-2c9e-49c2-8873-92e4378930fc/get", ""], "the header names the provider and shows its logo from the Organization record");
+  const logoNode = one(branded, "img");
+  assert.equal(one(TopNav(false), "img"), logoNode, "one image element serves every render, so the logo is fetched once");
+  Object.assign(logoNode, { naturalWidth: 2170, naturalHeight: 589 });
+  (logoNode.listeners.load || []).forEach((listener) => listener({ type: "load" }));
+  assert.equal(one(TopNav(false), ".top-nav__brand").getAttribute("data-brand"), "wordmark", "a wide logo is the provider's wordmark, so the stylesheet leaves the name to it");
+  (logoNode.listeners.error || []).forEach((listener) => listener({ type: "error" }));
+  assert.deepEqual([all(TopNav(false), "img").length, one(TopNav(false), ".top-nav__brand").getAttribute("data-brand"), one(TopNav(false), ".brand-name").textContent], [0, null, "Limitless Snow Removal Corp."], "a logo that fails to load gives way to the drawn mark and the name");
+  state.moduleData.profile = profileBefore;
   const noInvoices = page("invoices");
   assert.deepEqual([noInvoices.getAttribute("data-state"), one(noInvoices, ".state-block__title").textContent], ["empty", "No invoices yet"], "and its page says there are none yet");
 }
@@ -710,6 +723,13 @@ function createDom() {
       return child;
     }
     remove() { if (this.parentNode) this.parentNode.removeChild(this); }
+    replaceChild(next, previous) {
+      if (next.parentNode) next.parentNode.removeChild(next);
+      this.childNodes = this.childNodes.map((node) => (node === previous ? next : node));
+      next.parentNode = this;
+      previous.parentNode = null;
+      return previous;
+    }
     replaceChildren(...nodes) {
       this.childNodes.forEach((node) => { node.parentNode = null; });
       this.childNodes = [];

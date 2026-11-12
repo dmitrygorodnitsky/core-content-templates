@@ -1037,6 +1037,36 @@ the visit states "disappeared" from the live portal. What each part was:
   before). "En route", "Issue opened" and "Active monitoring" have no state
   or record behind them in Core and are not shown in live mode.
 
+### Provider name, logo and regions from the Organization (2026-11-12)
+
+- **Where Core keeps them.** Organization `SNOWLIMITLESS` (43): `nls` NAME,
+  `image` (the logo, public at `/core/image/{id}/get`), and attribute
+  `REGIONS`, the list of region names the request flow validates addresses
+  against (`WINTER_SERVICE_REGION_WORKFLOW_UTILS`). The regions are names
+  without geometry; the only geometry is the `within:` box on
+  `PROPERTY_ADDRESSES` of the public form type `GET_QUOTE_`.
+- **Who can read them.** Role 75 may not read an Organization directly
+  (403), but its own Account through the tagged read carries the
+  Organization reference with `nls`, `image` and `attributes`. An anonymous
+  visitor gets 401 from every Organization read; the logo image and the form
+  type are public.
+- **Signed-in portal.** The profile read asks for the Account's Organization
+  (`PROVIDER_MAPPINGS`, `providerOf`). The header shows the Organization's
+  name and logo (`providerLogo`; the configured `brandName` and the drawn
+  mark are the fallback, also before sign-in and when the image fails), and
+  Request a quote lists the regions under "Where we work". No permission was
+  added. One image element serves every render and loads lazily, because the
+  stored logo is a 1.3 MB SVG around a PNG and the image endpoint does not
+  resize it. A logo wider than 2.5 times its height is a wordmark: it stands
+  in for the visible name (the name stays for screen readers) and is the one
+  logo kept in the narrow header.
+- **Landing.** `BRAND_NAME`, `AREA_REGION` and `AREA_CITY_1…5` stay CMS copy
+  of `cms/granite-ridge-snow.landing-staging.json`: the landing is anonymous
+  and cannot read the Organization. Nothing was granted. Smallest ways to
+  close it: a public read of an Organization's name, image id and `REGIONS`
+  by code, or filling those CMS parameters from the Organization when the
+  landing is uploaded.
+
 ### Option rows on one grid and Contract details as its own step (2026-11-11, night)
 
 Two more items of the same feedback round.

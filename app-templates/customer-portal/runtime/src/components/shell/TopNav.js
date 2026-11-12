@@ -1,11 +1,15 @@
 // customer-portal/runtime/src/components/shell/TopNav.js — production transfer module.
 import { h } from "../../dom.js";
-import { activeProfile, activeVerticalConfig, activityUnread, cartCount, currentFixture, isModuleEnabled, isSpa, navListShown, state } from "../../state.js";
+import { activeProfile, activeVerticalConfig, activityUnread, cartCount, currentFixture, isModuleEnabled, isSpa, liveProvider, navListShown, state } from "../../state.js";
+import { visitImageUrl } from "../../normalizers/visits.js";
 import { configuredExternalUrl, routeRegistry } from "../../config.js";
 import { ActionButton } from "../primitives/ActionButton.js";
 import { isRouteReachable, signedInWithAccess } from "../../router.js";
 import { icon } from "../storm/overview-icons.js";
 import { SpaTopNav } from "./SpaTopNav.js";
+
+var WORDMARK_ASPECT = 2.5;
+var providerLogos = new Map();
 
 export function TopNav(gated) {
   if (globalThis.__PORTAL_VERTICAL__ !== "snow" && isSpa()) return SpaTopNav(gated);
@@ -49,10 +53,12 @@ export function TopNav(gated) {
   actions.push(h("div", { "class": "icon-btn hamburger", "data-action": "ui.toggleMobileNav", title: "Menu" }, "\u2630"));
 
   var brandLeaves = !signedInWithAccess() && !!configuredExternalUrl(state.config, "landingUrl");
+  var provider = liveProvider();
+  var logo = providerLogo(provider);
   var nav = h("nav", { "class": "top-nav", "data-module": "top-nav", "data-visual-id": "top-nav" }, [
-    h("div", { "class": "top-nav__brand", "data-action": brandLeaves ? "nav.landing" : "nav.go", "data-id": brandLeaves ? undefined : state.config.defaultRoute }, [
-      h("div", { "class": "brand-logo" }),
-      h("span", { "class": "brand-name", "data-bind": "brand.name" }, state.config.brandName || "Aircove")
+    h("div", { "class": "top-nav__brand", "data-action": brandLeaves ? "nav.landing" : "nav.go", "data-id": brandLeaves ? undefined : state.config.defaultRoute, "data-brand": logo && logo.wordmark ? "wordmark" : undefined }, [
+      logo ? logo.node : h("div", { "class": "brand-logo" }),
+      h("span", { "class": "brand-name", "data-bind": "brand.name" }, (provider && provider.name) || state.config.brandName || "Aircove")
     ]),
     h("div", { "class": "nav-links" }, [h("div", { "class": "nav-pill", "data-nav-pill": "true" })].concat(links)),
     h("div", { "class": "top-nav__actions" }, actions)
@@ -71,6 +77,28 @@ export function TopNav(gated) {
     ));
   }
   return h("div", { "class": "top-nav-wrap" }, nav);
+}
+
+function providerLogo(provider) {
+  var source = provider && provider.logoImageId ? visitImageUrl(state.config.coreApiBase, provider.logoImageId) : "";
+  if (!source) return null;
+  var logo = providerLogos.get(source);
+  if (!logo) {
+    logo = { node: h("img", { "class": "brand-logo brand-logo--image", src: source, alt: "", loading: "lazy", decoding: "async", "data-module": "brand-logo", "data-source": "organization" }), wordmark: false, failed: false };
+    providerLogos.set(source, logo);
+    logo.node.addEventListener("load", function () {
+      logo.wordmark = logo.node.naturalWidth > logo.node.naturalHeight * WORDMARK_ASPECT;
+      if (logo.wordmark && logo.node.parentNode) logo.node.parentNode.setAttribute("data-brand", "wordmark");
+    });
+    logo.node.addEventListener("error", function () {
+      logo.failed = true;
+      var brand = logo.node.parentNode;
+      if (!brand) return;
+      brand.removeAttribute("data-brand");
+      brand.replaceChild(h("div", { "class": "brand-logo" }), logo.node);
+    });
+  }
+  return logo.failed ? null : logo;
 }
 
 function avatarName() {

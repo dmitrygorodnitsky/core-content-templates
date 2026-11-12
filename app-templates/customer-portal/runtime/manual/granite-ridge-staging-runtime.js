@@ -750,6 +750,20 @@
   var LEGAL_ADDRESS = "LEGAL";
   var EMAIL_ENTRY = "EMAIL";
   var PHONE_ENTRY = "PHONE";
+  var MEDIA_ID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
+  function providerOf(organization) {
+    if (!organization || typeof organization !== "object") return null;
+    var regions = attributeEntry(organization, "REGIONS");
+    var listed = regions && Array.isArray(regions.value) ? regions.value : [];
+    var logo = text(organization.image && organization.image.id);
+    return {
+      name: localizedName(organization.nls),
+      logoImageId: MEDIA_ID.test(logo) ? logo : "",
+      regions: listed.map(plain2).filter(function(region, index, all) {
+        return !!region && all.indexOf(region) === index;
+      })
+    };
+  }
   function normalizeAccountProfile(raw) {
     var source = raw && typeof raw === "object" ? raw : {};
     var account = source.account && typeof source.account === "object" && !Array.isArray(source.account) ? source.account : null;
@@ -772,6 +786,7 @@
       reasonCode: null,
       scopeMode: ACCOUNT_PROFILE_SCOPE_MODES.indexOf(source.scopeMode) === -1 ? null : source.scopeMode,
       accountName: localizedName(account.nls),
+      provider: providerOf(account.organization),
       contact,
       emails,
       phones,
@@ -2127,7 +2142,7 @@
     COMPLETED: "Departed"
   });
   var ON_SITE_STEPS = ["IN_PROGRESS", "COMPLETED"];
-  var MEDIA_ID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
+  var MEDIA_ID2 = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
   var WEEKDAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
   var MONTHS2 = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
   function normalizeVisits(raw) {
@@ -2257,7 +2272,7 @@
     return zonedParts((date instanceof Date ? date : /* @__PURE__ */ new Date()).getTime(), timeZone).date;
   }
   function visitImageUrl(coreBase, id) {
-    return MEDIA_ID.test(id) ? String(coreBase || "/core").replace(/\/+$/, "") + "/image/" + id + "/get" : "";
+    return MEDIA_ID2.test(id) ? String(coreBase || "/core").replace(/\/+$/, "") + "/image/" + id + "/get" : "";
   }
   function visitRecord(row) {
     var backendId = positiveInteger(row && row.id);
@@ -2331,7 +2346,7 @@
       if (!item || typeof item !== "object") return "";
       if (item.type != null && text(item.type) !== "image") return "";
       var id = text(item.id).toLowerCase();
-      return MEDIA_ID.test(id) ? id : "";
+      return MEDIA_ID2.test(id) ? id : "";
     }).filter(function(id, index, ids) {
       return !!id && ids.indexOf(id) === index;
     });
@@ -2588,6 +2603,10 @@
     if (envelope2 && envelope2.state === "error") return "error";
     if (!envelope2 || envelope2.state !== "ready") return "loading";
     return "ready";
+  }
+  function liveProvider() {
+    var profile = state.config.dataMode === "live" ? state.moduleData.profile : null;
+    return profile && profile.provider || null;
   }
   function liveVisits() {
     var envelope2 = state.config.dataMode === "live" && isModuleEnabled("appointmentsTimeline") ? state.moduleData.appointmentsTimeline : null;
@@ -3529,10 +3548,17 @@
 
   // app-templates/customer-portal/runtime/src/adapters/core-account-profile-adapter.js
   var CODE_MAPPINGS = [{ name: "id" }, { name: "code" }];
+  var PROVIDER_MAPPINGS = [
+    { name: "id" },
+    { name: "nls" },
+    { name: "attributes" },
+    { key: "id", mappings: [{ name: "id" }], name: "image", type: "identifier" }
+  ];
   var PROFILE_MAPPINGS = [
     { name: "id" },
     { name: "nls" },
     { key: "id", mappings: [{ name: "id" }], name: "user", type: "identifier" },
+    { key: "id", mappings: PROVIDER_MAPPINGS, name: "organization", type: "identifier" },
     {
       mappings: [
         { name: "id" },
@@ -3695,7 +3721,7 @@
   var VISIT_PAGE_SIZE = 50;
   var VISIT_TRANSITION_PAGE_SIZE = 20;
   var INVOICE_PAGE_SIZE = 50;
-  var MEDIA_ID2 = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
+  var MEDIA_ID3 = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
   var REF_MAPPINGS = [{ name: "id" }, { name: "code" }, { name: "nls" }];
   var ID_MAPPINGS = [{ name: "id" }];
   var RESOURCE_MAPPINGS = [
@@ -4281,7 +4307,7 @@
     }
     var ids = (Array.isArray(value) ? value : value == null ? [] : [value]).map(function(item) {
       var id = text(item && typeof item === "object" ? item.id : item).toLowerCase();
-      return MEDIA_ID2.test(id) ? id : "";
+      return MEDIA_ID3.test(id) ? id : "";
     });
     return ids.length === 1 ? ids[0] : "";
   }
@@ -5450,6 +5476,8 @@
   }
 
   // app-templates/customer-portal/runtime/src/components/shell/TopNav.js
+  var WORDMARK_ASPECT = 2.5;
+  var providerLogos = /* @__PURE__ */ new Map();
   function TopNav(gated) {
     if (false) return SpaTopNav(gated);
     var profile = activeProfile();
@@ -5492,10 +5520,12 @@
     else if (signInRequired) actions2.push(h("button", { "class": "icon-btn icon-btn--optional", "data-module": "sign-out-control", "data-visual-id": "sign-out-control", "data-action": "auth.signOut", title: "Sign out", "aria-label": "Sign out", type: "button" }, [icon("signOut", "ov-icon")]));
     actions2.push(h("div", { "class": "icon-btn hamburger", "data-action": "ui.toggleMobileNav", title: "Menu" }, "\u2630"));
     var brandLeaves = !signedInWithAccess() && !!configuredExternalUrl(state.config, "landingUrl");
+    var provider = liveProvider();
+    var logo = providerLogo(provider);
     var nav = h("nav", { "class": "top-nav", "data-module": "top-nav", "data-visual-id": "top-nav" }, [
-      h("div", { "class": "top-nav__brand", "data-action": brandLeaves ? "nav.landing" : "nav.go", "data-id": brandLeaves ? void 0 : state.config.defaultRoute }, [
-        h("div", { "class": "brand-logo" }),
-        h("span", { "class": "brand-name", "data-bind": "brand.name" }, state.config.brandName || "Aircove")
+      h("div", { "class": "top-nav__brand", "data-action": brandLeaves ? "nav.landing" : "nav.go", "data-id": brandLeaves ? void 0 : state.config.defaultRoute, "data-brand": logo && logo.wordmark ? "wordmark" : void 0 }, [
+        logo ? logo.node : h("div", { "class": "brand-logo" }),
+        h("span", { "class": "brand-name", "data-bind": "brand.name" }, provider && provider.name || state.config.brandName || "Aircove")
       ]),
       h("div", { "class": "nav-links" }, [h("div", { "class": "nav-pill", "data-nav-pill": "true" })].concat(links)),
       h("div", { "class": "top-nav__actions" }, actions2)
@@ -5515,6 +5545,27 @@
       ));
     }
     return h("div", { "class": "top-nav-wrap" }, nav);
+  }
+  function providerLogo(provider) {
+    var source = provider && provider.logoImageId ? visitImageUrl(state.config.coreApiBase, provider.logoImageId) : "";
+    if (!source) return null;
+    var logo = providerLogos.get(source);
+    if (!logo) {
+      logo = { node: h("img", { "class": "brand-logo brand-logo--image", src: source, alt: "", loading: "lazy", decoding: "async", "data-module": "brand-logo", "data-source": "organization" }), wordmark: false, failed: false };
+      providerLogos.set(source, logo);
+      logo.node.addEventListener("load", function() {
+        logo.wordmark = logo.node.naturalWidth > logo.node.naturalHeight * WORDMARK_ASPECT;
+        if (logo.wordmark && logo.node.parentNode) logo.node.parentNode.setAttribute("data-brand", "wordmark");
+      });
+      logo.node.addEventListener("error", function() {
+        logo.failed = true;
+        var brand = logo.node.parentNode;
+        if (!brand) return;
+        brand.removeAttribute("data-brand");
+        brand.replaceChild(h("div", { "class": "brand-logo" }), logo.node);
+      });
+    }
+    return logo.failed ? null : logo;
   }
   function avatarName() {
     if (state.config.dataMode !== "live") {
@@ -9137,10 +9188,10 @@
   }
 
   // app-templates/customer-portal/runtime/src/property-plan.js
-  var MEDIA_ID3 = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
+  var MEDIA_ID4 = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
   var plans = /* @__PURE__ */ new Map();
   function propertyPlan(planId, onChange, fetchImpl) {
-    if (!MEDIA_ID3.test(String(planId || ""))) return null;
+    if (!MEDIA_ID4.test(String(planId || ""))) return null;
     var entry = plans.get(planId);
     if (entry) return entry;
     entry = { status: "loading", plan: null };
@@ -12039,6 +12090,8 @@
         h("div", { "class": "prop-head__addr" }, "Choose your properties or add a new address. We prepare per-visit, monthly and seasonal options for each.")
       ])
     ]));
+    var area = ServiceArea(liveProvider());
+    if (area) page.appendChild(area);
     var loaded = ensureQuoteRequestSchema();
     if (!loaded || loaded.state === "loading") {
       page.appendChild(RequestSkeleton());
@@ -12235,6 +12288,16 @@
         ActionButton({ variant: "btn--primary", label: "Go to Contracts", action: "nav.go", id: "proposals.list", visualId: "quote-request-contracts" }),
         kind === "slow" ? ActionButton({ variant: "btn--ghost", label: checking ? "Checking\u2026" : "Check again", action: "quoteRequest.checkAgain", disabled: checking, visualId: "quote-request-check-again" }) : null
       ])
+    ]);
+  }
+  function ServiceArea(provider) {
+    var regions = provider ? provider.regions : [];
+    if (!regions.length) return null;
+    return h("section", { "class": "card card--pad quote-request__area", "data-module": "provider-service-area", "data-visual-id": "provider-service-area", "aria-labelledby": "provider-service-area-title" }, [
+      h("h2", { "class": "prop-section__title", id: "provider-service-area-title" }, "Where we work"),
+      h("ul", { "class": "quote-request__regions" }, regions.map(function(region) {
+        return h("li", { "class": "quote-request__region" }, region);
+      }))
     ]);
   }
   function RequestSkeleton() {

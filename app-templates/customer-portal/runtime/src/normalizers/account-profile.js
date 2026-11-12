@@ -1,4 +1,4 @@
-import { attributeText, positiveInteger, text } from "./core-record.js";
+import { attributeEntry, attributeText, positiveInteger, text } from "./core-record.js";
 import { formatPhone, formatPostalAddress } from "./postal-address.js";
 
 export var ACCOUNT_PROFILE_SCOPE_MODES = Object.freeze(["server-scoped", "browser-filtered"]);
@@ -8,6 +8,19 @@ var BILLING_ADDRESS = "BILLING";
 var LEGAL_ADDRESS = "LEGAL";
 var EMAIL_ENTRY = "EMAIL";
 var PHONE_ENTRY = "PHONE";
+var MEDIA_ID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
+
+export function providerOf(organization) {
+  if (!organization || typeof organization !== "object") return null;
+  var regions = attributeEntry(organization, "REGIONS");
+  var listed = regions && Array.isArray(regions.value) ? regions.value : [];
+  var logo = text(organization.image && organization.image.id);
+  return {
+    name: localizedName(organization.nls),
+    logoImageId: MEDIA_ID.test(logo) ? logo : "",
+    regions: listed.map(plain).filter(function (region, index, all) { return !!region && all.indexOf(region) === index; }),
+  };
+}
 
 export function normalizeAccountProfile(raw) {
   var source = raw && typeof raw === "object" ? raw : {};
@@ -31,6 +44,7 @@ export function normalizeAccountProfile(raw) {
     reasonCode: null,
     scopeMode: ACCOUNT_PROFILE_SCOPE_MODES.indexOf(source.scopeMode) === -1 ? null : source.scopeMode,
     accountName: localizedName(account.nls),
+    provider: providerOf(account.organization),
     contact: contact,
     emails: emails,
     phones: phones,

@@ -3107,6 +3107,12 @@ a.prop-fact__value { display: block; }
 
 .quote-request__outcome:focus { outline: none; }
 
+.quote-request__area { margin-bottom: 16px; }
+
+.quote-request__regions { display: flex; flex-wrap: wrap; gap: 6px 8px; margin: 0; padding: 0; list-style: none; }
+
+.quote-request__region { padding: 4px 10px; border-radius: var(--radius-pill); background: rgba(var(--accent-rgb), .1); color: var(--ink); font-size: 12.5px; font-weight: 600; }
+
 .quote-request__outcome-actions { justify-content: center; flex-wrap: wrap; margin-top: 8px; }
 
 .quote-request__glyph--ok { background: rgba(52,199,89,.16); color: var(--ok); }

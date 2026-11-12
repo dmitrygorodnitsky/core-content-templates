@@ -638,6 +638,11 @@ export function liveOverviewStatus() {
   return "ready";
 }
 
+export function liveProvider() {
+  var profile = state.config.dataMode === "live" ? state.moduleData.profile : null;
+  return (profile && profile.provider) || null;
+}
+
 export function liveVisits() {
   var envelope = state.config.dataMode === "live" && isModuleEnabled("appointmentsTimeline") ? state.moduleData.appointmentsTimeline : null;
   return envelope && envelope.state === "ready" && Array.isArray(envelope.upcoming) && Array.isArray(envelope.past) ? envelope : null;
