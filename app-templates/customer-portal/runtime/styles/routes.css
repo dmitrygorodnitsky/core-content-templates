@@ -3025,6 +3025,14 @@ a.prop-fact__value { display: block; }
 
 .set-password__hint { font-size: 12px; color: var(--ink-3); }
 
+.visit-crew { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
+
+.visit-crew__list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+
+.visit-crew__item { display: flex; flex-direction: column; gap: 1px; }
+
+.visit-crew__kind { font-size: 12.5px; color: var(--ink-3); }
+
 .record-duration { margin-top: 18px; padding-top: 14px; border-top: 1px solid rgba(var(--hair), .08); }
 
 .record-notes { margin: 0; font-size: 14.5px; line-height: 1.55; color: var(--ink); white-space: pre-line; }

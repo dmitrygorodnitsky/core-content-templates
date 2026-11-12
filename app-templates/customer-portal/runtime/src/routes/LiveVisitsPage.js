@@ -77,6 +77,8 @@ export function LiveVisitDetail() {
     var services = ServicesCard(property);
     if (services) page.appendChild(services);
   }
+  var crew = CrewCard(visit.crew);
+  if (crew) page.appendChild(crew);
   var progress = ProgressCard(visit);
   if (progress) page.appendChild(progress);
 
@@ -125,6 +127,27 @@ function ServicesCard(property) {
     h("ul", { "class": "prop-service__lines", "aria-label": "Services" }, names.map(function (name) {
       return h("li", { "class": "prop-service__line" }, name);
     })),
+  ]);
+}
+
+function CrewCard(crew) {
+  if (!crew) return null;
+  var fact = function (key, label, items) {
+    if (!items.length) return null;
+    return h("div", { "class": "prop-fact", "data-fact": key }, [
+      h("div", { "class": "prop-fact__label" }, label),
+      h("ul", { "class": "visit-crew__list", "aria-label": label }, items.map(function (item) {
+        return h("li", { "class": "visit-crew__item" }, [
+          h("span", { "class": "prop-fact__value" }, item.name),
+          item.kind ? h("span", { "class": "visit-crew__kind" }, item.kind) : null,
+        ]);
+      })),
+    ]);
+  };
+  return h("section", { "class": "card card--pad prop-facts visit-crew", "data-module": "visit-crew", "data-visual-id": "visit-crew" }, [
+    fact("crew", "Who came", crew.people),
+    fact("vehicle", "Vehicle", crew.vehicle ? [crew.vehicle] : []),
+    fact("equipment", "Equipment", crew.equipment),
   ]);
 }
 

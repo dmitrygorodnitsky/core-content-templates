@@ -1803,11 +1803,11 @@
       entry2.title = propertyTitle(entry2.propertyBackendId, entry2.property);
       entry2.address = propertyAddress(entry2.property, entry2.title);
     });
-    var named = [];
+    var named2 = [];
     listed.forEach(function(order) {
       var property = order.propertyBackendId ? byProperty.get(order.propertyBackendId) : null;
       var name = property && property.name ? property.name : "";
-      if (name && named.indexOf(name) === -1) named.push(name);
+      if (name && named2.indexOf(name) === -1) named2.push(name);
     });
     var propertyIds = [];
     listed.forEach(function(order) {
@@ -1819,7 +1819,7 @@
       orders: listed,
       properties,
       servicesScope: APPROVED_SERVICE_STAGES.indexOf(agreement.stage) !== -1 ? "approved" : "listed",
-      propertyNames: named,
+      propertyNames: named2,
       propertyCount: propertyIds.length,
       quoteCount: listed.length,
       unreadableOrders: agreement.orderBackendIds.filter(function(id) {
@@ -2149,6 +2149,8 @@
     COMPLETED: "Departed"
   });
   var ON_SITE_STEPS = ["IN_PROGRESS", "COMPLETED"];
+  var CREW_SNAPSHOT = "CLIENT_VISIT_CREW";
+  var ACRONYM_LENGTH = 3;
   var MEDIA_ID2 = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
   var WEEKDAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
   var MONTHS2 = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
@@ -2309,8 +2311,57 @@
       propertyBackendId: attributeNumber(row, "RESOURCE"),
       completionNotes: attributeText(row, "COMPLETION_NOTES"),
       before: mediaIds(row, "PRE_SERVICE_MEDIA"),
-      after: mediaIds(row, "POST_SERVICE_MEDIA")
+      after: mediaIds(row, "POST_SERVICE_MEDIA"),
+      crew: visitCrew(row.metadata && row.metadata[CREW_SNAPSHOT])
     };
+  }
+  function visitCrew(snapshot) {
+    var source = snapshot;
+    if (typeof source === "string") {
+      try {
+        source = JSON.parse(source);
+      } catch (_) {
+        return null;
+      }
+    }
+    if (!source || typeof source !== "object") return null;
+    var crew = {
+      people: named(source.crew, "role"),
+      vehicle: named([source.vehicle], "type")[0] || null,
+      equipment: named(source.equipment, "type")
+    };
+    return crew.people.length || crew.vehicle || crew.equipment.length ? crew : null;
+  }
+  function crewLine(crew) {
+    if (!crew) return "";
+    var names = function(list) {
+      return list.map(function(item) {
+        return item.name;
+      }).join(", ");
+    };
+    return [names(crew.people), crew.vehicle ? crew.vehicle.name : "", names(crew.equipment)].filter(Boolean).join(" \xB7 ");
+  }
+  function titleCaseName(value) {
+    return text(value).split(/\s+/).filter(Boolean).map(function(word) {
+      return word.split("-").map(titleCasePart).join("-");
+    }).join(" ");
+  }
+  function titleCasePart(part) {
+    if (/\d/.test(part)) return part;
+    var letters = part.replace(/[^\p{L}]/gu, "");
+    if (!letters) return part;
+    var shouting = letters === letters.toUpperCase() && letters !== letters.toLowerCase();
+    if (shouting && letters.length <= ACRONYM_LENGTH) return part;
+    var rest = shouting ? part.toLowerCase() : part;
+    return rest.replace(/\p{L}/u, function(first) {
+      return first.toUpperCase();
+    });
+  }
+  function named(list, kindKey) {
+    return (Array.isArray(list) ? list : []).map(function(item) {
+      var name = titleCaseName(item && item.name);
+      return name ? { name, kind: text(item[kindKey]) } : null;
+    }).filter(Boolean);
   }
   function zonedParts(ms, timeZone) {
     var at = new Date(ms);
@@ -3929,6 +3980,7 @@
     { name: "start" },
     { name: "end" },
     { name: "attributes" },
+    { name: "metadata" },
     { name: "type", type: "identifier", mappings: TAGGED_REF_MAPPINGS },
     { name: "states", type: "collection", mappings: TAGGED_REF_MAPPINGS }
   ];
@@ -8156,6 +8208,7 @@
         text4("prop-visit__title", when),
         settings.place ? text4("prop-visit__meta", settings.place) : null,
         settings.onSite ? h("span", { "class": "prop-visit__meta", "data-module": "visit-on-site" }, settings.onSite) : null,
+        visit.crew ? h("span", { "class": "prop-visit__meta", "data-module": "visit-crew-line" }, crewLine(visit.crew)) : null,
         settings.photos ? h("span", { "class": "prop-visit__meta", "data-module": "visit-photo-count" }, settings.photos === 1 ? "1 photo" : settings.photos + " photos") : null
       ]),
       settings.issue ? h("span", { "class": "status-badge status-badge--danger", "data-module": "visit-issue" }, OVERVIEW_STATUS.issue.label) : null,
@@ -9883,6 +9936,8 @@
       var services = ServicesCard(property);
       if (services) page.appendChild(services);
     }
+    var crew = CrewCard(visit.crew);
+    if (crew) page.appendChild(crew);
     var progress2 = ProgressCard(visit);
     if (progress2) page.appendChild(progress2);
     if (visit.completionNotes) {
@@ -9926,6 +9981,26 @@
       h("ul", { "class": "prop-service__lines", "aria-label": "Services" }, names.map(function(name) {
         return h("li", { "class": "prop-service__line" }, name);
       }))
+    ]);
+  }
+  function CrewCard(crew) {
+    if (!crew) return null;
+    var fact3 = function(key, label, items) {
+      if (!items.length) return null;
+      return h("div", { "class": "prop-fact", "data-fact": key }, [
+        h("div", { "class": "prop-fact__label" }, label),
+        h("ul", { "class": "visit-crew__list", "aria-label": label }, items.map(function(item) {
+          return h("li", { "class": "visit-crew__item" }, [
+            h("span", { "class": "prop-fact__value" }, item.name),
+            item.kind ? h("span", { "class": "visit-crew__kind" }, item.kind) : null
+          ]);
+        }))
+      ]);
+    };
+    return h("section", { "class": "card card--pad prop-facts visit-crew", "data-module": "visit-crew", "data-visual-id": "visit-crew" }, [
+      fact3("crew", "Who came", crew.people),
+      fact3("vehicle", "Vehicle", crew.vehicle ? [crew.vehicle] : []),
+      fact3("equipment", "Equipment", crew.equipment)
     ]);
   }
   function ProgressCard(visit) {
@@ -10699,11 +10774,11 @@
       return agreement.stage === "active";
     });
     var sole = active.length === 1 ? active[0] : null;
-    var named = agreements.find(function(agreement) {
+    var named2 = agreements.find(function(agreement) {
       return !!agreement.parties.provider.legalName;
     });
     var profile = state.moduleData.profile;
-    var provider = own2 || sole || named;
+    var provider = own2 || sole || named2;
     var client = own2 || sole;
     return {
       provider: provider ? provider.parties.provider : null,
@@ -12794,9 +12869,9 @@
   function ProfileFacts(envelope2) {
     var contact = envelope2.contact;
     var billing = envelope2.billingAddresses || [];
-    var named = !!(contact && contact.name) && contact.name !== envelope2.accountName;
+    var named2 = !!(contact && contact.name) && contact.name !== envelope2.accountName;
     var facts2 = [
-      named ? Fact("contact", "Contact", [contact.name], contact.title) : null,
+      named2 ? Fact("contact", "Contact", [contact.name], contact.title) : null,
       Fact("email", "Email", envelope2.emails || []),
       Fact("phone", "Phone", envelope2.phones || []),
       Fact("billing", billing.length > 1 ? "Billing addresses" : "Billing address", billing)

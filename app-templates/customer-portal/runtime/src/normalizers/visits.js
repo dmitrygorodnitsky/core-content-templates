@@ -16,6 +16,8 @@ var PROGRESS_STEPS = Object.freeze({
 });
 
 var ON_SITE_STEPS = ["IN_PROGRESS", "COMPLETED"];
+var CREW_SNAPSHOT = "CLIENT_VISIT_CREW";
+var ACRONYM_LENGTH = 3;
 
 var MEDIA_ID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
 var WEEKDAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
@@ -179,7 +181,55 @@ function visitRecord(row) {
     completionNotes: attributeText(row, "COMPLETION_NOTES"),
     before: mediaIds(row, "PRE_SERVICE_MEDIA"),
     after: mediaIds(row, "POST_SERVICE_MEDIA"),
+    crew: visitCrew(row.metadata && row.metadata[CREW_SNAPSHOT]),
   };
+}
+
+export function visitCrew(snapshot) {
+  var source = snapshot;
+  if (typeof source === "string") {
+    try {
+      source = JSON.parse(source);
+    } catch (_) {
+      return null;
+    }
+  }
+  if (!source || typeof source !== "object") return null;
+  var crew = {
+    people: named(source.crew, "role"),
+    vehicle: named([source.vehicle], "type")[0] || null,
+    equipment: named(source.equipment, "type"),
+  };
+  return crew.people.length || crew.vehicle || crew.equipment.length ? crew : null;
+}
+
+export function crewLine(crew) {
+  if (!crew) return "";
+  var names = function (list) { return list.map(function (item) { return item.name; }).join(", "); };
+  return [names(crew.people), crew.vehicle ? crew.vehicle.name : "", names(crew.equipment)].filter(Boolean).join(" · ");
+}
+
+export function titleCaseName(value) {
+  return text(value).split(/\s+/).filter(Boolean).map(function (word) {
+    return word.split("-").map(titleCasePart).join("-");
+  }).join(" ");
+}
+
+function titleCasePart(part) {
+  if (/\d/.test(part)) return part;
+  var letters = part.replace(/[^\p{L}]/gu, "");
+  if (!letters) return part;
+  var shouting = letters === letters.toUpperCase() && letters !== letters.toLowerCase();
+  if (shouting && letters.length <= ACRONYM_LENGTH) return part;
+  var rest = shouting ? part.toLowerCase() : part;
+  return rest.replace(/\p{L}/u, function (first) { return first.toUpperCase(); });
+}
+
+function named(list, kindKey) {
+  return (Array.isArray(list) ? list : []).map(function (item) {
+    var name = titleCaseName(item && item.name);
+    return name ? { name: name, kind: text(item[kindKey]) } : null;
+  }).filter(Boolean);
 }
 
 function zonedParts(ms, timeZone) {

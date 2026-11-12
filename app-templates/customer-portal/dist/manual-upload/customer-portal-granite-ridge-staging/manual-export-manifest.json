@@ -39,8 +39,8 @@
     "sha256": {
       "head": "2d73a4975671d61afa33139b86357240a81ca29c3d64c8094335705c978ae9ab",
       "html": "5a46e4aef433b530326888f436aeb9f3e47a4f9c7f040760ec8c74f1bc8d69df",
-      "css": "01c4080717f020be62e5a589043b969fc0d4a6637a510eefee87558fa01cbd31",
-      "javascript": "b2b7b6a5e1d9784f358abf564a6ee89ccc881ad63b4b26273bf84738da5c6d2a"
+      "css": "b31a2ef32e5f8afdc495dd5bcdecf70aa5a465128919af3bf7caf86d9f793524",
+      "javascript": "e1a21e8d57d2161bd722be5b3713facfc4c747735476ae43a5cdb21f128ff7f3"
     }
   },
   "runtime": {

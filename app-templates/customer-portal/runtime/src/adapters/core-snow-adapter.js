@@ -133,6 +133,7 @@ const VISIT_MAPPINGS = [
   { name: "start" },
   { name: "end" },
   { name: "attributes" },
+  { name: "metadata" },
   { name: "type", type: "identifier", mappings: TAGGED_REF_MAPPINGS },
   { name: "states", type: "collection", mappings: TAGGED_REF_MAPPINGS },
 ];

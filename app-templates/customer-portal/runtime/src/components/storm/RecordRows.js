@@ -1,5 +1,5 @@
 import { h } from "../../dom.js";
-import { visitDay, visitWhen } from "../../normalizers/visits.js";
+import { crewLine, visitDay, visitWhen } from "../../normalizers/visits.js";
 import { OVERVIEW_STATUS } from "../../normalizers/overview.js";
 import { invoiceAmount, invoiceStatusLine, invoiceTitle } from "../../normalizers/invoices.js";
 
@@ -21,6 +21,7 @@ export function VisitRow(visit, options) {
       text("prop-visit__title", when),
       settings.place ? text("prop-visit__meta", settings.place) : null,
       settings.onSite ? h("span", { "class": "prop-visit__meta", "data-module": "visit-on-site" }, settings.onSite) : null,
+      visit.crew ? h("span", { "class": "prop-visit__meta", "data-module": "visit-crew-line" }, crewLine(visit.crew)) : null,
       settings.photos ? h("span", { "class": "prop-visit__meta", "data-module": "visit-photo-count" }, settings.photos === 1 ? "1 photo" : settings.photos + " photos") : null,
     ]),
     settings.issue ? h("span", { "class": "status-badge status-badge--danger", "data-module": "visit-issue" }, OVERVIEW_STATUS.issue.label) : null,

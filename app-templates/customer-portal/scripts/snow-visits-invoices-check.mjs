@@ -18,6 +18,7 @@ const { readPortalConfig, readTimeZone, portalProfiles } = await load("src/confi
 const { applyPortalConfig, state } = await load("src/state.js");
 const { PortalRuntime } = await load("src/portal-runtime.js");
 const { coreSnowContract, createCoreSnowInvoicesAdapter, createCoreSnowVisitsAdapter, readVisitTransitions } = await load("src/adapters/core-snow-adapter.js");
+const { crewLine, titleCaseName, visitCrew } = await load("src/normalizers/visits.js");
 const { localDateKey, normalizeVisitProgress, onSiteDuration, normalizeVisits, progressWhen, visitDay, visitWhen, visitWindow } = await load("src/normalizers/visits.js");
 const { normalizeProposals } = await load("src/normalizers/index.js");
 const { visitProgress } = await load("src/visit-progress.js");
@@ -41,7 +42,7 @@ const VISIT_BODY = {
   filters: [{ operator: "=", property: "type.code", value: "SNOW_SERVICE_VISIT" }],
   mappings: [
     { name: "id" }, { name: "code" }, { name: "nls" },
-    { name: "start" }, { name: "end" }, { name: "attributes" },
+    { name: "start" }, { name: "end" }, { name: "attributes" }, { name: "metadata" },
     { name: "type", type: "identifier", mappings: REF },
     { name: "states", type: "collection", mappings: REF },
   ],
@@ -194,6 +195,23 @@ const context = { config: { vertical: "snow", origin: "https://portal.example.te
   assert.deepEqual(byId[77].after, [POST]);
   assert.equal(byId[77].completionNotes, "dev-1 test: 8 cm cleared, parkade ramp and loading bay de-iced.");
   assert.equal(JSON.stringify(visits).includes(CREW), false, "crew notes are internal and never reach the portal model");
+
+  const SNAPSHOT = { version: 1, visitState: "COMPLETED", capturedAt: "2026-11-12T20:45:14Z", crew: [{ name: "Jordan W.", role: "Driver" }], vehicle: { name: "FORD F-350", type: "Pickup Truck" }, equipment: [{ name: "WESTERN 8.5 MVP PLUS SNOWPLOW", type: "Plow" }, { name: "Tailgate salter", type: "Salt Spreader (Salter)" }] };
+  const withCrew = (snapshot) => normalizeVisits({ items: [Object.assign(visit(91, Date.UTC(2026, 10, 3, 7), Date.UTC(2026, 10, 3, 8), "COMPLETED", 983), { metadata: { DEV1_TEST_DATA: "x", CLIENT_VISIT_CREW: snapshot } })] }).past[0].crew;
+  assert.deepEqual(withCrew(SNAPSHOT), {
+    people: [{ name: "Jordan W.", kind: "Driver" }],
+    vehicle: { name: "Ford F-350", kind: "Pickup Truck" },
+    equipment: [{ name: "Western 8.5 MVP Plus Snowplow", kind: "Plow" }, { name: "Tailgate Salter", kind: "Salt Spreader (Salter)" }],
+  }, "the crew snapshot reads in title case, with each one's role or type");
+  assert.deepEqual(withCrew(JSON.stringify(SNAPSHOT)), withCrew(SNAPSHOT), "a snapshot stored as text reads the same");
+  assert.deepEqual(withCrew({ version: 1, visitState: "COMPLETED", crew: [], vehicle: { name: "Chevrolet Silverado", type: "Pickup Truck" }, equipment: [] }), { people: [], vehicle: { name: "Chevrolet Silverado", kind: "Pickup Truck" }, equipment: [] }, "a route that names only a vehicle");
+  assert.equal(withCrew({ version: 1, crew: [], equipment: [] }), null, "an empty snapshot shows nothing");
+  assert.equal(withCrew(undefined), null, "a visit that has not started has none");
+  assert.equal(withCrew("not json"), null);
+  assert.equal(byId[77].crew, null);
+  assert.deepEqual(["FORD F-350", "BOBCAT S185", "WESTERN 7'6\" ENFORCER V-PLOW", "GMC SIERRA", "jordan w.", "Ford F350", ""].map(titleCaseName), ["Ford F-350", "Bobcat S185", "Western 7'6\" Enforcer V-Plow", "GMC Sierra", "Jordan W.", "Ford F350", ""], "shouted words are lowered, model numbers and short acronyms kept");
+  assert.equal(crewLine(visitCrew(SNAPSHOT)), "Jordan W. · Ford F-350 · Western 8.5 MVP Plus Snowplow, Tailgate Salter");
+  assert.equal(crewLine(null), "");
   assert.equal(JSON.stringify(visits).includes("dev-1 test visit, property"), false, "the visit's internal name is not shown");
 
   const invoices = normalizeInvoices({ items: INVOICES_732 });
@@ -692,6 +710,29 @@ const page = (route, params = {}) => { Object.assign(state, params); state.route
   assert.equal(source.account.serviceApiBase, "/core-svc");
   const order = portalProfiles.stormRetail.nav.map((item) => item.key).filter((key) => ["overview", "appointments", "invoices", "proposals.list"].includes(key));
   assert.deepEqual(order, ["overview", "appointments", "invoices", "proposals.list"]);
+}
+
+{
+  const snapshot = { version: 1, visitState: "COMPLETED", capturedAt: "2026-11-12T20:45:14Z", crew: [{ name: "Jordan W.", role: "Driver" }], vehicle: { name: "FORD F-350", type: "Pickup Truck" }, equipment: [{ name: "WESTERN 8.5 MVP PLUS SNOWPLOW", type: "Plow" }, { name: "Tailgate salter", type: "Salt Spreader (Salter)" }] };
+  const full = Object.assign(visit(92, Date.UTC(2026, 9, 26, 7), Date.UTC(2026, 9, 26, 8), "COMPLETED", 983), { metadata: { CLIENT_VISIT_CREW: snapshot } });
+  const truckOnly = Object.assign(visit(93, Date.UTC(2026, 9, 24, 7), Date.UTC(2026, 9, 24, 8), "COMPLETED", 983), { metadata: { CLIENT_VISIT_CREW: { version: 1, visitState: "COMPLETED", crew: [], vehicle: { name: "Chevrolet Silverado", type: "Pickup Truck" }, equipment: [] } } });
+  const upcoming = visit(94, Date.UTC(2026, 10, 20, 7), Date.UTC(2026, 10, 20, 8), "SCHEDULED", 983);
+  Object.assign(TRANSITIONS, { 92: [], 93: [], 94: [] });
+  await liveLoad({ properties: [property(983, 610)], visits: [full, truckOnly, upcoming], invoices: [] });
+  await preloadProgress();
+  const crewFacts = (root) => all(one(root, "[data-module=\"visit-crew\"]"), "[data-fact]").map((fact) => [fact.getAttribute("data-fact"), one(fact, ".prop-fact__label").textContent, all(fact, ".visit-crew__item").map((item) => item.textContent)]);
+  const detail = page("visit.detail", { visitId: "visit-core-92" });
+  assert.deepEqual(crewFacts(detail), [
+    ["crew", "Who came", ["Jordan W.Driver"]],
+    ["vehicle", "Vehicle", ["Ford F-350Pickup Truck"]],
+    ["equipment", "Equipment", ["Western 8.5 MVP Plus SnowplowPlow", "Tailgate SalterSalt Spreader (Salter)"]],
+  ], "the visit page names who came, the vehicle and the equipment");
+  const order = all(detail, "[data-module]").map((node) => node.getAttribute("data-module")).filter((module) => ["visit-property", "visit-crew", "visit-progress", "visit-photos"].includes(module));
+  assert.deepEqual(order.slice(0, 2), ["visit-property", "visit-crew"], "the crew follows the property");
+  assert.deepEqual(crewFacts(page("visit.detail", { visitId: "visit-core-93" })), [["vehicle", "Vehicle", ["Chevrolet SilveradoPickup Truck"]]], "an empty section is left out");
+  assert.equal(all(page("visit.detail", { visitId: "visit-core-94" }), "[data-module=\"visit-crew\"]").length, 0, "a visit that has not started shows no crew card");
+  const lines = Object.fromEntries(all(page("appointments"), "[data-module=\"visit-row\"]").map((row) => [row.getAttribute("data-id"), all(row, "[data-module=\"visit-crew-line\"]").map((node) => node.textContent)]));
+  assert.deepEqual(lines, { "visit-core-94": [], "visit-core-92": ["Jordan W. · Ford F-350 · Western 8.5 MVP Plus Snowplow, Tailgate Salter"], "visit-core-93": ["Chevrolet Silverado"] }, "a visit row carries the same names on one line");
 }
 
 console.log("snow visits and invoices check ok: tagged visit and invoice reads with the dev-1 bodies, wall-clock visit times, the visit page's property, plan, active-agreement services and progress from tagged transitions read as real instants, DRAFT invoices and DRAFT visits hidden, cancelled visits listed as cancelled, single-property address omission, home next-visit and invoice-due cards, property visits, visit photos opened in-page in one before-then-after PhotoSwipe gallery loaded lazily from its pinned SRI address, and Visits and Invoices always in the live nav with their empty states, the home day strip and property status from visits alone");

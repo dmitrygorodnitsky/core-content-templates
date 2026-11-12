@@ -1089,8 +1089,15 @@ Backend contracts: core-ui `docs/snow-support-tickets.md` and
 - **Added.** `onSiteDuration` gives the span from the last arrival to the
   last departure: "Time on site" under Progress, and "… on site" on a visit
   row. The crew's `COMPLETION_NOTES` are titled "Work done".
-- **Crew and equipment were never in the live portal and are not readable by
-  a customer.** They live on the visit's route, a `SNOW_ROUTE` Task:
+- **Who came, vehicle and equipment (2026-11-13).** The visit read maps
+  `metadata`, and `visitCrew` reads its `CLIENT_VISIT_CREW` snapshot
+  (core-ui `docs/snow-visit-crew-snapshot.md`): a card on the visit page
+  with one section per kind and one line on a visit row. Names are shown in
+  title case (`titleCaseName`: a shouted word is lowered, a model number and
+  an acronym of up to three letters are kept); an empty section, and a visit
+  without a snapshot, show nothing.
+- **Before the snapshot: crew and equipment were never in the live portal and
+  were not readable by a customer.** They live on the visit's route, a `SNOW_ROUTE` Task:
   `ASSIGNED_CREW`, `ASSIGNED_VEHICLE`, `ASSIGNED_EQUIPMENT`, `SUPERVISOR`,
   each a Resource id. For role 75 a tagged Appointment read omits `task`,
   the Task read answers 403 and the Resources carry no customer tag. The
