@@ -1084,12 +1084,26 @@ the visit states "disappeared" from the live portal. What each part was:
   resize it. A logo wider than 2.5 times its height is a wordmark: it stands
   in for the visible name (the name stays for screen readers) and is the one
   logo kept in the narrow header.
-- **Landing.** `BRAND_NAME`, `AREA_REGION` and `AREA_CITY_1…5` stay CMS copy
-  of `cms/granite-ridge-snow.landing-staging.json`: the landing is anonymous
-  and cannot read the Organization. Nothing was granted. Smallest ways to
-  close it: a public read of an Organization's name, image id and `REGIONS`
-  by code, or filling those CMS parameters from the Organization when the
-  landing is uploaded.
+- **Landing, read on the server.** The landing template opens with a JTE
+  lookup of the Organization (`providerFragments` in
+  `scripts/export-live-landing-manual.mjs`, the syntax of the CMS sample
+  `SAMPLE_ORGANIZATION_IDENTITY_JTE`) and shows its name in the top bar and
+  the footer, its logo, and its `REGIONS` as the "Where we work" chips
+  (`findFirstAttributeValue("REGIONS")`, a list of names). `BRAND_NAME`, the
+  drawn mark and `AREA_CITY_*` show for a field the Organization leaves
+  empty, and for an unknown code. No REST call and no grant.
+- **The lookup is by `brand.organization` of the landing source, not by the
+  page context.** `/pages/SNOWLIMITLESS/home` belongs to the site's
+  organization, so `model.ctx().organizationCode()` answers `SERVICEWAND`
+  there (the sample page belongs to SNOWLIMITLESS and is served under
+  `/core-cms/pages/SNOWLIMITLESS/…`). A CMS parameter cannot name the code
+  inside the `!{ }` block; its value lives in `model.values()` under a key
+  made of the template id.
+- **Checks.** `granite-ridge-staging-landing-manual-check.mjs` allows exactly
+  the fragments the exporter writes and holds the rest of the template to
+  the JTE-safe rules; the preview is the page without Organization data.
+- **Portal template.** Still the Account read: its anonymous pages (the
+  request confirmation links) show the configured name and the drawn mark.
 
 ### Option rows on one grid and Contract details as its own step (2026-11-11, night)
 

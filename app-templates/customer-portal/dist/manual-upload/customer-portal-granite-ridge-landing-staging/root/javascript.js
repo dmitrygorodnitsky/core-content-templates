@@ -40,6 +40,15 @@
     });
     if (shown) forgetReason();
   }
+  function watchBrandLogo(shell) {
+    var logo = shell.querySelector("img[data-brand-logo]");
+    if (!logo) return;
+    function sized() { if (logo.naturalWidth > logo.naturalHeight * 2.5) logo.parentNode.setAttribute("data-brand", "wordmark"); }
+    function failed() { logo.hidden = true; }
+    if (logo.complete) { if (logo.naturalWidth > 0) sized(); else failed(); return; }
+    logo.addEventListener("load", sized, { once: true });
+    logo.addEventListener("error", failed, { once: true });
+  }
   function trackWidth(shell) {
     function apply() {
       var width = shell.getBoundingClientRect().width;
@@ -54,6 +63,7 @@
     var shell = document.getElementById("snow-landing");
     if (!shell) return;
     trackWidth(shell);
+    watchBrandLogo(shell);
     disableUnsetDestinations(shell);
     showNotice(shell, noticeReason(window.location.search));
   }

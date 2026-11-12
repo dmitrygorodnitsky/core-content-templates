@@ -6,7 +6,8 @@
     "title": "Limitless Snow Removal | Landing (staging)"
   },
   "brand": {
-    "name": "Limitless Snow Removal"
+    "name": "Limitless Snow Removal",
+    "organization": "SNOWLIMITLESS"
   },
   "destinations": {
     "landing": "https://dev-1.servicewand.com/pages/SNOWLIMITLESS/home",
@@ -111,7 +112,8 @@
     }
   },
   "constraints": [
-    "The page is public and anonymous: no block calls a backend, reads a session or shows customer, account, order or payment data.",
+    "The page is public and anonymous: no block calls a backend from the browser, reads a session or shows customer, account, order or payment data.",
+    "The brand name, the logo and the service-area chips are read on the server from the Organization named in brand.organization when the page renders; the CMS copy shows for a field the Organization leaves empty.",
     "Every destination is an absolute https address on dev-1.servicewand.com: this landing, the quote form, and the sign-in address portal#/login.",
     "Only the two reason values the portal sends show a notice: ?portal=signed-out and ?portal=no-access. The notice text is CMS copy; any other value or any extra parameter shows nothing, and without JavaScript no notice shows.",
     "The copy states only what the tenant's quotation flow does. It carries no reviews, ratings, customer counts, years in business, certifications, guarantees, response times, phone numbers, email addresses, street addresses or prices.",

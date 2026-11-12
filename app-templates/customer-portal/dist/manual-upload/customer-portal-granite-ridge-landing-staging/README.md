@@ -27,6 +27,10 @@ A slot shows its placeholder until its file exists under `assets/snow-landing/`;
 | `service-area` | `assets/snow-landing/service-area.webp` | 1600 x 500 | art |
 | `final-cta` | `assets/snow-landing/final-cta.webp` | 1600 x 400 | art |
 
+## Provider data
+
+The template looks up the Organization `SNOWLIMITLESS` on the server when the page renders and shows its name, its logo and its `REGIONS`. `BRAND_NAME`, the drawn mark and `AREA_CITY_*` show when the Organization has none of that field. The page's own organization is the site's, not the provider's, so the code is the one in `brand.organization`.
+
 ## Destinations
 
 | parameter | value |
@@ -63,7 +67,8 @@ For a manual paste, copy `root/head.html`, `root/html.html`, `root/css.css` and 
 
 ## Constraints
 
-- The page is public and anonymous: no block calls a backend, reads a session or shows customer, account, order or payment data.
+- The page is public and anonymous: no block calls a backend from the browser, reads a session or shows customer, account, order or payment data.
+- The brand name, the logo and the service-area chips are read on the server from the Organization named in brand.organization when the page renders; the CMS copy shows for a field the Organization leaves empty.
 - Every destination is an absolute https address on dev-1.servicewand.com: this landing, the quote form, and the sign-in address portal#/login.
 - Only the two reason values the portal sends show a notice: ?portal=signed-out and ?portal=no-access. The notice text is CMS copy; any other value or any extra parameter shows nothing, and without JavaScript no notice shows.
 - The copy states only what the tenant's quotation flow does. It carries no reviews, ratings, customer counts, years in business, certifications, guarantees, response times, phone numbers, email addresses, street addresses or prices.

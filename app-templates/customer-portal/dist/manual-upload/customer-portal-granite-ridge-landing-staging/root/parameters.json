@@ -31,7 +31,7 @@
     "nls": {
       "en": {
         "NAME": "BRAND NAME",
-        "DESCRIPTION": "Brand name in the top bar and the footer."
+        "DESCRIPTION": "Brand name in the top bar and the footer, shown when the Organization SNOWLIMITLESS has no name."
       }
     },
     "value": {
@@ -454,7 +454,7 @@
     "nls": {
       "en": {
         "NAME": "AREA CITY 1",
-        "DESCRIPTION": "City 1 of the service area."
+        "DESCRIPTION": "City 1 of the service area, shown when the Organization SNOWLIMITLESS lists no regions."
       }
     },
     "value": {
@@ -467,7 +467,7 @@
     "nls": {
       "en": {
         "NAME": "AREA CITY 2",
-        "DESCRIPTION": "City 2 of the service area."
+        "DESCRIPTION": "City 2 of the service area, shown when the Organization SNOWLIMITLESS lists no regions."
       }
     },
     "value": {
@@ -480,7 +480,7 @@
     "nls": {
       "en": {
         "NAME": "AREA CITY 3",
-        "DESCRIPTION": "City 3 of the service area."
+        "DESCRIPTION": "City 3 of the service area, shown when the Organization SNOWLIMITLESS lists no regions."
       }
     },
     "value": {
@@ -493,7 +493,7 @@
     "nls": {
       "en": {
         "NAME": "AREA CITY 4",
-        "DESCRIPTION": "City 4 of the service area."
+        "DESCRIPTION": "City 4 of the service area, shown when the Organization SNOWLIMITLESS lists no regions."
       }
     },
     "value": {
@@ -506,7 +506,7 @@
     "nls": {
       "en": {
         "NAME": "AREA CITY 5",
-        "DESCRIPTION": "City 5 of the service area."
+        "DESCRIPTION": "City 5 of the service area, shown when the Organization SNOWLIMITLESS lists no regions."
       }
     },
     "value": {

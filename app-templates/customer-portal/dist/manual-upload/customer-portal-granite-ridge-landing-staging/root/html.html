@@ -1,7 +1,14 @@
+!{
+  var provider = com.pixelnation.common.aspects.ApplicationContextProvider.getApplicationContext().getBean(com.pixelnation.common.persistence.OrganizationManager.class).getByCode("SNOWLIMITLESS", false, jakarta.persistence.LockModeType.NONE);
+  var providerNls = provider == null ? null : provider.getByLangOrDefault(model.ctx().locale(), model.ctx().defaultLocale());
+  var providerName = providerNls == null || providerNls.getName() == null ? "" : providerNls.getName().trim();
+  Object providerRegionsValue = provider == null ? null : provider.findFirstAttributeValue("REGIONS");
+  java.util.Collection<?> providerRegions = providerRegionsValue instanceof java.util.Collection<?> ? (java.util.Collection<?>) providerRegionsValue : java.util.List.of();
+}
 <div class="app-shell snow-landing" id="snow-landing" data-module="app-shell" data-visual-id="app-shell">
   <header class="top-nav-wrap">
     <nav class="top-nav" data-module="public-nav" data-visual-id="public-nav">
-      <a class="top-nav__brand" href="${LANDING_URL@STRING}" data-destination="landing"><span class="brand-logo" aria-hidden="true"></span><span class="brand-name">${BRAND_NAME@LOCALIZED_STRING_SS}</span></a>
+      <a class="top-nav__brand" href="${LANDING_URL@STRING}" data-destination="landing">@if (provider != null && provider.getImage() != null)<img class="brand-logo brand-logo--image" src="/core/image/${provider.getImage().getId()}/get" alt="" data-brand-logo="organization" decoding="async">@else<span class="brand-logo" aria-hidden="true"></span>@endif<span class="brand-name">@if (!providerName.isEmpty())${providerName}@else${BRAND_NAME@LOCALIZED_STRING_SS}@endif</span></a>
       <div class="top-nav__actions"><a class="btn btn--ghost" href="${SIGN_IN_URL@STRING}" data-destination="sign-in" data-visual-id="public-signin">${SIGN_IN_LABEL@LOCALIZED_STRING_SS}</a></div>
     </nav>
   </header>
@@ -51,7 +58,7 @@
       <section class="seo-sec seo-sec--tint" data-module="seo-service-area" data-visual-id="seo-service-area">
         <div class="seo-area">
           <div class="snow-area__intro"><div class="seo-sec__head"><span class="eyebrow">${AREA_EYEBROW@LOCALIZED_STRING_SS}</span><h2 class="seo-sec__title">${AREA_TITLE@LOCALIZED_STRING_SS}</h2></div><p class="seo-area__note">${AREA_NOTE@LOCALIZED_STRING_SS}</p></div>
-          <div><div class="seo-area__region">${AREA_REGION@LOCALIZED_STRING_SS}</div><div class="seo-area__cities"><span class="seo-area__chip">${AREA_CITY_1@LOCALIZED_STRING_SS}</span><span class="seo-area__chip">${AREA_CITY_2@LOCALIZED_STRING_SS}</span><span class="seo-area__chip">${AREA_CITY_3@LOCALIZED_STRING_SS}</span><span class="seo-area__chip">${AREA_CITY_4@LOCALIZED_STRING_SS}</span><span class="seo-area__chip">${AREA_CITY_5@LOCALIZED_STRING_SS}</span></div></div>
+          <div><div class="seo-area__region">${AREA_REGION@LOCALIZED_STRING_SS}</div><div class="seo-area__cities">@if (!providerRegions.isEmpty())@for (Object region : providerRegions)<span class="seo-area__chip">${String.valueOf(region)}</span>@endfor@else<span class="seo-area__chip">${AREA_CITY_1@LOCALIZED_STRING_SS}</span><span class="seo-area__chip">${AREA_CITY_2@LOCALIZED_STRING_SS}</span><span class="seo-area__chip">${AREA_CITY_3@LOCALIZED_STRING_SS}</span><span class="seo-area__chip">${AREA_CITY_4@LOCALIZED_STRING_SS}</span><span class="seo-area__chip">${AREA_CITY_5@LOCALIZED_STRING_SS}</span>@endif</div></div>
           <div class="snow-art snow-art--area" data-illustration="service-area" data-illustration-state="art" style="aspect-ratio:1600 / 500" aria-hidden="true"><img src="/core/image/${SERVICE_AREA_ART@IMAGE}/get/${SERVICE_AREA_ART_NAME@STRING}" width="1600" height="500" alt="" loading="lazy" decoding="async"></div>
         </div>
       </section>
@@ -73,7 +80,7 @@
       </section>
     </main>
     <footer class="seo-footer snow-footer" data-module="seo-footer" data-visual-id="seo-footer">
-      <div class="seo-footer__base snow-footer__base"><a class="snow-footer__brand" href="${LANDING_URL@STRING}" data-destination="landing">${BRAND_NAME@LOCALIZED_STRING_SS}</a><div class="snow-footer__links"><a class="seo-footer__link" href="${REQUEST_QUOTE_URL@STRING}" data-destination="request-quote">${REQUEST_QUOTE_LABEL@LOCALIZED_STRING_SS}</a><a class="seo-footer__link" href="${SIGN_IN_URL@STRING}" data-destination="sign-in">${SIGN_IN_LABEL@LOCALIZED_STRING_SS}</a></div></div>
+      <div class="seo-footer__base snow-footer__base"><a class="snow-footer__brand" href="${LANDING_URL@STRING}" data-destination="landing">@if (!providerName.isEmpty())${providerName}@else${BRAND_NAME@LOCALIZED_STRING_SS}@endif</a><div class="snow-footer__links"><a class="seo-footer__link" href="${REQUEST_QUOTE_URL@STRING}" data-destination="request-quote">${REQUEST_QUOTE_LABEL@LOCALIZED_STRING_SS}</a><a class="seo-footer__link" href="${SIGN_IN_URL@STRING}" data-destination="sign-in">${SIGN_IN_LABEL@LOCALIZED_STRING_SS}</a></div></div>
     </footer>
   </div>
 </div>

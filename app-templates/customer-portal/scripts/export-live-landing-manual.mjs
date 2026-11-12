@@ -18,6 +18,8 @@ const landingShellId = "snow-landing";
 const noticeParameter = "portal";
 const noticeReasons = Object.freeze(["signed-out", "no-access"]);
 const operatorParameterPlaceholder = "#";
+const organizationManager = "com.pixelnation.common.aspects.ApplicationContextProvider.getApplicationContext().getBean(com.pixelnation.common.persistence.OrganizationManager.class)";
+const wordmarkAspect = 2.5;
 const landingSections = Object.freeze(["public-nav", "reason-notice", "hero", "services", "how-it-works", "service-area", "faq", "final-cta", "footer"]);
 export const packageInventory = Object.freeze([
   "README.md", "cms-family.payload.json", "manual-export-manifest.json", "preview.html",
@@ -38,13 +40,38 @@ const copyShape = {
   faq: { eyebrow: TEXT, title: TEXT, items: [{ question: TEXT, answer: TEXT }] },
   finalCta: { title: TEXT, sub: TEXT },
 };
+export function providerFragments(organizationCode) {
+  if (typeof organizationCode !== "string" || !/^[A-Z][A-Z0-9_]*$/.test(organizationCode)) throw new Error("brand.organization must be an upper-snake Organization code");
+  return Object.freeze({
+    lookup: [
+      "!{",
+      "  var provider = " + organizationManager + ".getByCode(" + JSON.stringify(organizationCode) + ", false, jakarta.persistence.LockModeType.NONE);",
+      "  var providerNls = provider == null ? null : provider.getByLangOrDefault(model.ctx().locale(), model.ctx().defaultLocale());",
+      '  var providerName = providerNls == null || providerNls.getName() == null ? "" : providerNls.getName().trim();',
+      '  Object providerRegionsValue = provider == null ? null : provider.findFirstAttributeValue("REGIONS");',
+      "  java.util.Collection<?> providerRegions = providerRegionsValue instanceof java.util.Collection<?> ? (java.util.Collection<?>) providerRegionsValue : java.util.List.of();",
+      "}",
+      "",
+    ].join("\n"),
+    logo: '@if (provider != null && provider.getImage() != null)<img class="brand-logo brand-logo--image" src="/core/image/$' + '{provider.getImage().getId()}/get" alt="" data-brand-logo="organization" decoding="async">@else',
+    name: "@if (!providerName.isEmpty())$" + "{providerName}@else",
+    regions: '@if (!providerRegions.isEmpty())@for (Object region : providerRegions)<span class="seo-area__chip">$' + "{String.valueOf(region)}</span>@endfor@else",
+    end: "@endif",
+  });
+}
+
+export function withoutProviderCode(html, organizationCode) {
+  const fragments = providerFragments(organizationCode);
+  return [fragments.lookup, fragments.logo, fragments.name, fragments.regions, fragments.end].reduce((text, fragment) => text.split(fragment).join(""), html);
+}
+
 export async function buildLiveLandingManual(source, input, options = {}) {
   validateSource(source);
   const illustrations = await readIllustrations(options.illustrationsDir);
   const template = templateFor(source, await stylesheet(), illustrations);
-  assertLandingTemplate(template);
+  assertLandingTemplate(template, source.brand.organization);
   const manifest = manifestFor(source, template, input, illustrations);
-  const preview = previewFor(template);
+  const preview = previewFor(template, source.brand.organization);
   const readme = readmeFor(source, template, manifest);
   const files = [
     ["README.md", textFile(readme)],
@@ -99,8 +126,9 @@ function validateSource(source) {
   assertKnownKeys(source.template, ["code", "title"], "template");
   if (typeof source.template.code !== "string" || !/^[A-Z][A-Z0-9_]*$/.test(source.template.code)) throw new Error("template.code must be an upper-snake code");
   assertCopyText(source.template.title, "template.title");
-  assertKnownKeys(source.brand, ["name"], "brand");
+  assertKnownKeys(source.brand, ["name", "organization"], "brand");
   assertCopyText(source.brand.name, "brand.name");
+  providerFragments(source.brand.organization);
   assertDestinations(source.destinations);
   assertKnownKeys(source.serviceArea, ["region", "cities"], "serviceArea");
   assertCopyText(source.serviceArea.region, "serviceArea.region");
@@ -190,6 +218,10 @@ function landingCss() {
 :root[data-mode="dark"] .snow-landing .btn--onaccent { background: #fff; }
 .snow-landing a.btn--ghost, .snow-landing a.btn--ghost:hover, .snow-landing a.top-nav__brand, .snow-landing a.top-nav__brand:hover, .snow-landing a.snow-footer__brand, .snow-landing a.snow-footer__brand:hover { color: var(--ink); }
 .snow-landing a[aria-disabled="true"] { opacity: .45; cursor: not-allowed; pointer-events: none; }
+.snow-landing .brand-logo--image { width: auto; max-width: 120px; object-fit: contain; background: none; box-shadow: none; border-radius: 6px; }
+.snow-landing .brand-logo--image[hidden] { display: none; }
+.snow-landing .top-nav__brand[data-brand="wordmark"] .brand-logo--image { max-width: 180px; }
+.snow-landing .top-nav__brand[data-brand="wordmark"] .brand-name { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 .snow-hero__inner { display: flex; align-items: center; justify-content: space-between; }
 .snow-hero__inner .seo-hero__copy { flex: 1 1 auto; min-width: 0; }
 .snow-hero__inner .seo-hero__title { text-wrap: pretty; }
@@ -218,6 +250,7 @@ summary.seo-faq__q::-webkit-details-marker { display: none; }
   .top-nav { gap: 10px; }
   .top-nav__brand { flex-shrink: 1; min-width: 0; }
   .brand-name { font-size: 15px; line-height: 1.2; white-space: normal; }
+  .snow-landing .top-nav__brand[data-brand="wordmark"] .brand-logo--image { max-width: 132px; }
   .snow-hero__inner { padding: 30px 22px; }
   .snow-hero__inner .seo-hero__title { font-size: 32px; text-wrap: balance; }
   .seo-area { grid-template-columns: 1fr; }
@@ -258,7 +291,7 @@ function parametersFor(source) {
   return [
     copyParameter("META_TITLE", copy.meta.title, "Browser tab title."),
     copyParameter("META_DESCRIPTION", copy.meta.description, "Meta description. The page stays " + landingRobots + " while the tenant is on staging."),
-    copyParameter("BRAND_NAME", source.brand.name, "Brand name in the top bar and the footer."),
+    copyParameter("BRAND_NAME", source.brand.name, "Brand name in the top bar and the footer, shown when the Organization " + source.brand.organization + " has no name."),
     addressParameter("LANDING_URL", source.destinations.landing, "Absolute https address of this landing. The brand in the top bar and in the footer links to it." + destinationNote),
     addressParameter("REQUEST_QUOTE_URL", source.destinations.requestQuote, "Absolute https address of the published quote request form. Every Get a free quote link opens it." + destinationNote),
     addressParameter("SIGN_IN_URL", source.destinations.signIn, "Absolute https address of the customer portal sign-in. Every Sign in link opens it, and so does the no-access notice." + destinationNote),
@@ -287,7 +320,7 @@ function parametersFor(source) {
     copyParameter("AREA_EYEBROW", copy.area.eyebrow, "Service area section eyebrow."),
     copyParameter("AREA_TITLE", copy.area.title, "Service area section title."),
     copyParameter("AREA_REGION", source.serviceArea.region, "Region named above the cities."),
-    ...source.serviceArea.cities.map((city, index) => copyParameter("AREA_CITY_" + (index + 1), city, "City " + (index + 1) + " of the service area.")),
+    ...source.serviceArea.cities.map((city, index) => copyParameter("AREA_CITY_" + (index + 1), city, "City " + (index + 1) + " of the service area, shown when the Organization " + source.brand.organization + " lists no regions.")),
     copyParameter("AREA_NOTE", copy.area.note, "Line under the cities."),
     copyParameter("FAQ_EYEBROW", copy.faq.eyebrow, "FAQ section eyebrow."),
     copyParameter("FAQ_TITLE", copy.faq.title, "FAQ section title."),
@@ -310,30 +343,35 @@ function addressParameter(code, value, description) {
 
 function htmlFor(source, illustrations) {
   const copy = source.copy;
-  return [
+  const provider = providerFragments(source.brand.organization);
+  return provider.lookup + [
     '<div class="app-shell snow-landing" id="' + landingShellId + '" data-module="app-shell" data-visual-id="app-shell">',
-    navHtml(),
+    navHtml(provider),
     '  <div class="page seo-page" data-visual-id="seo-landing">',
     '    <main class="snow-main">',
     noticesHtml(),
     heroHtml(illustrations),
     servicesHtml(copy.services.items.length, illustrations),
     howHtml(copy.how.steps.length, illustrations),
-    areaHtml(source.serviceArea.cities.length, illustrations),
+    areaHtml(source.serviceArea.cities.length, illustrations, provider),
     faqHtml(copy.faq.items.length),
     finalHtml(illustrations),
     "    </main>",
-    footerHtml(),
+    footerHtml(provider),
     "  </div>",
     "</div>",
   ].join("\n");
 }
 
-function navHtml() {
+function brandName(provider) {
+  return provider.name + ref("BRAND_NAME") + provider.end;
+}
+
+function navHtml(provider) {
   return [
     '  <header class="top-nav-wrap">',
     '    <nav class="top-nav" data-module="public-nav" data-visual-id="public-nav">',
-    "      " + link("top-nav__brand", "landing", '<span class="brand-logo" aria-hidden="true"></span><span class="brand-name">' + ref("BRAND_NAME") + "</span>"),
+    "      " + link("top-nav__brand", "landing", provider.logo + '<span class="brand-logo" aria-hidden="true"></span>' + provider.end + '<span class="brand-name">' + brandName(provider) + "</span>"),
     '      <div class="top-nav__actions">' + link("btn btn--ghost", "sign-in", ref("SIGN_IN_LABEL"), ' data-visual-id="public-signin"') + "</div>",
     "    </nav>",
     "  </header>",
@@ -411,14 +449,14 @@ function howHtml(count, illustrations) {
   ].join("\n");
 }
 
-function areaHtml(count, illustrations) {
+function areaHtml(count, illustrations, provider) {
   let cities = "";
   for (let index = 1; index <= count; index += 1) cities += '<span class="seo-area__chip">' + ref("AREA_CITY_" + index) + "</span>";
   return [
     '      <section class="seo-sec seo-sec--tint" data-module="seo-service-area" data-visual-id="seo-service-area">',
     '        <div class="seo-area">',
     '          <div class="snow-area__intro"><div class="seo-sec__head"><span class="eyebrow">' + ref("AREA_EYEBROW") + '</span><h2 class="seo-sec__title">' + ref("AREA_TITLE") + '</h2></div><p class="seo-area__note">' + ref("AREA_NOTE") + "</p></div>",
-    '          <div><div class="seo-area__region">' + ref("AREA_REGION") + '</div><div class="seo-area__cities">' + cities + "</div></div>",
+    '          <div><div class="seo-area__region">' + ref("AREA_REGION") + '</div><div class="seo-area__cities">' + provider.regions + cities + provider.end + "</div></div>",
     '          ' + illustrationHtml("service-area", illustrations),
     "        </div>",
     "      </section>",
@@ -452,10 +490,10 @@ function finalHtml(illustrations) {
   ].join("\n");
 }
 
-function footerHtml() {
+function footerHtml(provider) {
   return [
     '    <footer class="seo-footer snow-footer" data-module="seo-footer" data-visual-id="seo-footer">',
-    '      <div class="seo-footer__base snow-footer__base">' + link("snow-footer__brand", "landing", ref("BRAND_NAME"))
+    '      <div class="seo-footer__base snow-footer__base">' + link("snow-footer__brand", "landing", brandName(provider))
       + '<div class="snow-footer__links">' + link("seo-footer__link", "request-quote", ref("REQUEST_QUOTE_LABEL")) + link("seo-footer__link", "sign-in", ref("SIGN_IN_LABEL")) + "</div></div>",
     "    </footer>",
   ].join("\n");
@@ -513,6 +551,15 @@ function runtimeScript() {
     });
     if (shown) forgetReason();
   }
+  function watchBrandLogo(shell) {
+    var logo = shell.querySelector("img[data-brand-logo]");
+    if (!logo) return;
+    function sized() { if (logo.naturalWidth > logo.naturalHeight * ${JSON.stringify(wordmarkAspect)}) logo.parentNode.setAttribute("data-brand", "wordmark"); }
+    function failed() { logo.hidden = true; }
+    if (logo.complete) { if (logo.naturalWidth > 0) sized(); else failed(); return; }
+    logo.addEventListener("load", sized, { once: true });
+    logo.addEventListener("error", failed, { once: true });
+  }
   function trackWidth(shell) {
     function apply() {
       var width = shell.getBoundingClientRect().width;
@@ -527,6 +574,7 @@ function runtimeScript() {
     var shell = document.getElementById(${JSON.stringify(landingShellId)});
     if (!shell) return;
     trackWidth(shell);
+    watchBrandLogo(shell);
     disableUnsetDestinations(shell);
     showNotice(shell, noticeReason(window.location.search));
   }
@@ -536,9 +584,16 @@ function runtimeScript() {
 `;
 }
 
-function assertLandingTemplate(template) {
-  assertJteSafeFamily([template]);
-  const fields = { head: template.head, html: template.html, css: template.css, javascript: template.javascript };
+function assertLandingTemplate(template, organizationCode) {
+  const provider = providerFragments(organizationCode);
+  const authored = withoutProviderCode(template.html, organizationCode);
+  const occurrences = (fragment) => template.html.split(fragment).length - 1;
+  if (!template.html.startsWith(provider.lookup) || occurrences(provider.lookup) !== 1) throw new Error("The Organization lookup must open the markup exactly once");
+  if (occurrences(provider.logo) !== 1 || occurrences(provider.name) !== 2 || occurrences(provider.regions) !== 1 || occurrences(provider.end) !== 4) {
+    throw new Error("The markup must carry exactly one logo, two names and one region list from the Organization, each closed once");
+  }
+  assertJteSafeFamily([Object.assign({}, template, { html: authored })]);
+  const fields = { head: template.head, html: authored, css: template.css, javascript: template.javascript };
   const referenced = new Set();
   for (const [field, value] of Object.entries(fields)) {
     const directive = /@(param|import|template|if|elseif|else|endif|for|endfor|while|endwhile|raw|endraw)\b/.exec(value);
@@ -578,6 +633,7 @@ function manifestFor(source, template, input, illustrations) {
       sha256: { head: sha256(template.head), html: sha256(template.html), css: sha256(template.css), javascript: sha256(template.javascript) },
     },
     destinations: source.destinations,
+    provider: { organization: source.brand.organization, readAtRender: ["name", "image", "attribute REGIONS"], fallback: ["BRAND_NAME", "the drawn mark", "AREA_CITY_*"] },
     serviceArea: source.serviceArea,
     notices: { parameter: noticeParameter, reasons: noticeReasons.slice() },
     sections: landingSections.slice(),
@@ -587,13 +643,13 @@ function manifestFor(source, template, input, illustrations) {
   };
 }
 
-function previewFor(template) {
+function previewFor(template, organizationCode) {
   const values = new Map(template.parameters.map((item) => [item.code, item.type === "STRING" ? item.value : item.value.en]));
   const resolve = (text) => text.replace(/\$\{([A-Z0-9_]+)@[A-Z_]+\}/g, (marker, code) => values.get(code));
   return "<!doctype html>\n<html>\n<head>\n" + resolve(template.head) + "\n</head>\n<body>\n"
     + '<style type="text/css">' + template.css + "</style>\n"
     + '<script type="text/javascript" charset="utf-8">' + template.javascript + "</script>\n"
-    + resolve(template.html) + "\n</body>\n</html>\n";
+    + resolve(withoutProviderCode(template.html, organizationCode)) + "\n</body>\n</html>\n";
 }
 
 function readmeFor(source, template, manifest) {
@@ -620,6 +676,10 @@ function readmeFor(source, template, manifest) {
     "| slot | file | size | state |",
     "| --- | --- | --- | --- |",
     ...manifest.illustrations.map((item) => "| `" + item.slot + "` | `" + item.file + "` | " + item.width + " x " + item.height + " | " + item.state + " |"),
+    "",
+    "## Provider data",
+    "",
+    "The template looks up the Organization `" + source.brand.organization + "` on the server when the page renders and shows its name, its logo and its `REGIONS`. `BRAND_NAME`, the drawn mark and `AREA_CITY_*` show when the Organization has none of that field. The page's own organization is the site's, not the provider's, so the code is the one in `brand.organization`.",
     "",
     "## Destinations",
     "",

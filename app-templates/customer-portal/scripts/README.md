@@ -13,7 +13,7 @@ and operator commands.
 | `portal-manual-package.mjs` | Library, not an entrypoint: the file, style and head mechanics shared by the live and Calm Harbor portal exporters |
 | `upsert-*.mjs` | One operator entrypoint per deliverable: build, export, check, then create-or-update the BlockTemplate by code |
 | `export-*-landing-blocks-manual.mjs` | Compile a tenant public landing into a CMS family: one root plus independently editable section blocks |
-| `export-live-landing-manual.mjs`, `landing-illustrations.mjs`, `granite-ridge-staging-landing-manual-check.mjs` | Compile and guard a live public landing from a source under `../cms/`: one root template, no children; illustration slots embed `../assets/snow-landing/*.webp` when present and keep an inline placeholder otherwise (prompts in `../cms/granite-ridge-snow.landing-illustrations.md`) |
+| `export-live-landing-manual.mjs`, `landing-illustrations.mjs`, `granite-ridge-staging-landing-manual-check.mjs` | Compile and guard a live public landing from a source under `../cms/`: one root template, no children; the name, logo and regions of the Organization in `brand.organization` are read on the server at render, with the CMS copy as fallback; illustration slots embed `../assets/snow-landing/*.webp` when present and keep an inline placeholder otherwise (prompts in `../cms/granite-ridge-snow.landing-illustrations.md`) |
 | `export-portal-form-manual.mjs`, `portal-form-check.mjs` | Compile and guard the universal Core form document rendered in the portal design language |
 | `core-*-adapter-check.mjs`, `pim-adapter-check.mjs` | Deterministic adapter contracts |
 | `core-*-live-check.mjs` | Explicit live staging probes; may create real records |

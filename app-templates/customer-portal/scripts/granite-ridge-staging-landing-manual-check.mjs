@@ -7,7 +7,7 @@ import vm from "node:vm";
 import { SEO, SEO_FOOTER } from "../design-inbox/data/seo-fixtures.js";
 import { graniteRidgeSnowFixture } from "../runtime/data/cases/granite-ridge-snow.js";
 import { assertJteSafeFamily } from "./export-granite-ridge-landing-blocks-manual.mjs";
-import { buildLiveLandingManual, exportLiveLandingManual, packageInventory, sourceLabel } from "./export-live-landing-manual.mjs";
+import { buildLiveLandingManual, exportLiveLandingManual, packageInventory, providerFragments, sourceLabel, withoutProviderCode } from "./export-live-landing-manual.mjs";
 import { illustrationSlots, webpSize } from "./landing-illustrations.mjs";
 import { sha256 } from "./portal-manual-package.mjs";
 
@@ -39,7 +39,10 @@ try {
   const source = JSON.parse(await fs.readFile(inputPath, "utf8"));
   const built = await buildLiveLandingManual(structuredClone(source), sourceLabel(inputPath));
   const { template, manifest } = built;
-  const { head, html, css, javascript } = template;
+  const { head, css, javascript } = template;
+  const provider = providerFragments(source.brand.organization);
+  const html = withoutProviderCode(template.html, source.brand.organization);
+  const fallbackTemplate = Object.assign({}, template, { html });
 
   assert.deepEqual(await filesUnder(packageDir), [...packageInventory].sort(), "the package holds exactly its inventory");
   for (const [name, content] of built.files) {
@@ -59,7 +62,21 @@ try {
   assert.equal(template.parent, null);
   assert.deepEqual(template.children, [], "one root renders every section, so CMS needs no include or enabled template");
   assert.deepEqual(payload, { schemaVersion: 1, root: template, children: [] }, "the uploader sends exactly the reference record");
-  assert.doesNotThrow(() => assertJteSafeFamily([template]));
+  assert.doesNotThrow(() => assertJteSafeFamily([fallbackTemplate]));
+  assert.throws(() => assertJteSafeFamily([template]), /JTE-unsafe/, "the only JTE code in the template is the Organization lookup the exporter writes");
+
+  assert.equal(source.brand.organization, "SNOWLIMITLESS");
+  assert.ok(template.html.startsWith(provider.lookup), "the Organization is looked up once, before any markup");
+  assert.match(provider.lookup, /^!\{\n  var provider = com\.pixelnation\.common\.aspects\.ApplicationContextProvider\.getApplicationContext\(\)\.getBean\(com\.pixelnation\.common\.persistence\.OrganizationManager\.class\)\.getByCode\("SNOWLIMITLESS", false, jakarta\.persistence\.LockModeType\.NONE\);\n/, "the lookup is the one the CMS sample proved, by the provider's own code: the page's organization is the site's");
+  assert.doesNotMatch(provider.lookup, /organizationCode\(\)/, "the page context names the site's organization, so the lookup does not use it");
+  assert.equal(provider.lookup.slice(2, -2).includes("}"), false, "the lookup holds no closing brace before its own");
+  const fragmentCount = (fragment) => template.html.split(fragment).length - 1;
+  assert.deepEqual([fragmentCount(provider.lookup), fragmentCount(provider.logo), fragmentCount(provider.name), fragmentCount(provider.regions), fragmentCount(provider.end)], [1, 1, 2, 1, 4], "one logo, the name in the top bar and the footer, one list of regions, each with its CMS fallback");
+  assert.ok(template.html.includes(provider.logo + '<span class="brand-logo" aria-hidden="true"></span>' + provider.end + '<span class="brand-name">' + provider.name + "${BRAND_NAME@LOCALIZED_STRING_SS}" + provider.end + "</span>"), "without a logo the drawn mark shows, without a name the CMS brand name");
+  assert.ok(template.html.includes('<div class="seo-area__cities">' + provider.regions + '<span class="seo-area__chip">${AREA_CITY_1@LOCALIZED_STRING_SS}</span>'), "without regions the CMS cities show");
+  assert.match(provider.logo, /src="\/core\/image\/\$\{provider\.getImage\(\)\.getId\(\)\}\/get" alt=""/, "the logo is the Organization's public image, decorative beside the name");
+  assert.match(provider.regions, /provider/, "the regions are the Organization's REGIONS attribute");
+  assert.deepEqual(manifest.provider, { organization: "SNOWLIMITLESS", readAtRender: ["name", "image", "attribute REGIONS"], fallback: ["BRAND_NAME", "the drawn mark", "AREA_CITY_*"] });
 
   const declared = template.parameters.map((item) => item.code);
   assert.equal(new Set(declared).size, declared.length, "every parameter code is unique");
@@ -230,21 +247,32 @@ try {
   assert.doesNotMatch(javascript, /innerHTML|outerHTML|insertAdjacentHTML|document\.write|\.textContent\s*=|innerText\s*=|\beval\(|new Function|setTimeout\(\s*["']/, "the runtime builds no markup and runs no string as code");
   assert.doesNotMatch(javascript, /\bfetch\b|XMLHttpRequest|WebSocket|EventSource|sendBeacon|\bimport\(|localStorage|sessionStorage|document\.cookie/, "the runtime has no network or storage path");
 
-  const plain = runLanding(template, { search: "" });
+  const plain = runLanding(fallbackTemplate, { search: "" });
   assert.deepEqual(plain.visibleNotices(), [], "a plain visit shows no notice");
   assert.deepEqual(plain.replaced, [], "a plain visit leaves the address alone");
   assert.deepEqual(plain.writes, [], "valid destinations are left exactly as CMS rendered them");
   assert.equal(plain.page.theme, "snow");
   assert.equal(plain.page.mode, "light");
-  assert.equal(runLanding(template, { search: "", dark: true }).page.mode, "dark", "the page follows a dark system preference");
+  assert.equal(runLanding(fallbackTemplate, { search: "", dark: true }).page.mode, "dark", "the page follows a dark system preference");
   for (const reason of ["signed-out", "no-access"]) {
-    const run = runLanding(template, { search: "?portal=" + reason });
+    const run = runLanding(fallbackTemplate, { search: "?portal=" + reason });
     assert.deepEqual(run.visibleNotices(), [reason], "?portal=" + reason + " shows its own notice and nothing else");
     assert.deepEqual(run.replaced, ["/pages/SNOWLIMITLESS/home"], "a shown notice drops the reason from the address, so a reload or Back does not repeat it");
     assert.deepEqual(run.writes, [], "showing a notice writes no text or attribute");
     run.notice(reason).click();
     assert.deepEqual(run.visibleNotices(), [], "the dismiss button closes the " + reason + " notice");
   }
+  const wide = runLanding(fallbackTemplate, { search: "", logo: { complete: true, naturalWidth: 2170, naturalHeight: 589 } });
+  assert.deepEqual(wide.writes, [["data-brand", "wordmark"]], "a wide logo is the provider's wordmark, so the stylesheet leaves the visible name to it");
+  assert.match(css, /\.top-nav__brand\[data-brand="wordmark"\] \.brand-name \{ position: absolute; width: 1px; height: 1px;/, "the name stays in the page for assistive technology");
+  const square = runLanding(fallbackTemplate, { search: "", logo: { complete: true, naturalWidth: 64, naturalHeight: 64 } });
+  assert.deepEqual([square.writes, square.logo.hidden], [[], false], "a square logo sits beside the name");
+  const broken = runLanding(fallbackTemplate, { search: "", logo: { complete: true, naturalWidth: 0, naturalHeight: 0 } });
+  assert.deepEqual([broken.writes, broken.logo.hidden], [[], true], "a logo that did not load is hidden and the name stays");
+  const late = runLanding(fallbackTemplate, { search: "", logo: { complete: false, naturalWidth: 0, naturalHeight: 0 } });
+  Object.assign(late.logo, { naturalWidth: 2170, naturalHeight: 589 });
+  late.logo.fire("load");
+  assert.deepEqual(late.writes, [["data-brand", "wordmark"]], "a logo still loading is measured when it arrives");
   const refused = [
     "?portal=unknown", "?portal=", "?portal", "?Portal=signed-out", "?portal=SIGNED-OUT", "?portal=signed-out%20", "?portal=%20no-access",
     "?portal=signed-out&x=1", "?x=1&portal=no-access", "?portal=signed-out&portal=no-access", "?portal=no-access&portal=no-access",
@@ -253,18 +281,18 @@ try {
   ];
   for (const search of refused) {
     const decoys = new URLSearchParams(search).getAll("portal");
-    const run = runLanding(template, { search, decoys });
+    const run = runLanding(fallbackTemplate, { search, decoys });
     assert.deepEqual(run.visibleNotices(), [], JSON.stringify(search) + " must render nothing, even where a notice with that value exists");
     assert.deepEqual(run.replaced, [], JSON.stringify(search) + " must leave the address alone");
     assert.deepEqual(run.writes, [], JSON.stringify(search) + " must not reach the page");
   }
-  const early = runLanding(template, { search: "?portal=no-access", loading: true });
+  const early = runLanding(fallbackTemplate, { search: "?portal=no-access", loading: true });
   assert.equal(early.page.theme, "snow", "the theme is set before the markup that follows the script is parsed");
   assert.deepEqual(early.visibleNotices(), [], "the notice waits for the markup CMS renders after the script");
   early.domReady();
   assert.deepEqual(early.visibleNotices(), ["no-access"], "the notice appears once the markup is parsed");
   for (const [code, value] of [["REQUEST_QUOTE_URL", "#"], ["SIGN_IN_URL", "javascript:alert(1)"], ["LANDING_URL", "http://dev-1.servicewand.com/pages/SNOWLIMITLESS/home"], ["SIGN_IN_URL", ""], ["REQUEST_QUOTE_URL", "/pages/SNOWLIMITLESS/request-quote"]]) {
-    const run = runLanding(template, { search: "", values: { [code]: value } });
+    const run = runLanding(fallbackTemplate, { search: "", values: { [code]: value } });
     const destination = Object.keys(markers).find((key) => markers[key].includes(code));
     for (const anchor of run.anchors) {
       const affected = anchor.getAttribute("data-destination") === destination;
@@ -300,6 +328,9 @@ try {
     ["an empty FAQ", (s) => { s.copy.faq.items = []; }, /copy\.faq\.items must be a nonempty list/],
     ["a city listed twice", (s) => { s.serviceArea.cities.push("vancouver"); }, /lists a city twice/],
     ["a lowercase template code", (s) => { s.template.code = "landing"; }, /upper-snake/],
+    ["no provider organization", (s) => { delete s.brand.organization; }, /brand\.organization must be an upper-snake Organization code/],
+    ["a provider code that could leave its Java string", (s) => { s.brand.organization = 'SNOW", false); //'; }, /brand\.organization must be an upper-snake Organization code/],
+    ["another brand key", (s) => { s.brand.logoUrl = "https://dev-1.servicewand.com/logo.png"; }, /brand carries keys this package does not ship: logoUrl/],
     ["no constraints", (s) => { s.constraints = []; }, /must state its constraints/],
     ["another schema version", (s) => { s.schemaVersion = 2; }, /schemaVersion must be 1/],
   ];
@@ -321,6 +352,8 @@ try {
   for (const field of ["head", "html", "css", "javascript"]) assert.equal(manifest.template.sha256[field], sha256(template[field]), "the manifest digests the " + field + " it ships");
   assert.match(built.readme, /upsert-granite-ridge-staging-landing\.mjs/);
   assert.match(built.readme, /never creates or changes a PageContext/);
+  assert.match(built.readme, /## Provider data\n\nThe template looks up the Organization `SNOWLIMITLESS` on the server/);
+  assert.doesNotMatch(built.preview, /@if|@else|@endif|@for|!\{|provider\./, "the preview is the page as it renders when the Organization gives nothing");
   assert.match(built.preview, /^<!doctype html>\n<html>\n<head>\n/, "the preview renders the document the way CMS does, with no theme on the html element");
   assert.ok(built.preview.indexOf("<script") < built.preview.indexOf('id="snow-landing"'), "the preview runs the script ahead of the markup, as CMS does");
   assert.equal(/\$\{[A-Z0-9_]+@[A-Z_]+\}/.test(built.preview), false, "the preview resolves every parameter marker");
@@ -342,8 +375,14 @@ function runLanding(template, options) {
     .concat((options.decoys || []).map((reason) => noticeElement({ "data-notice": reason, hidden: "" }, writes)));
   const classes = new Set();
   let ready = !options.loading;
+  const logoHandlers = [];
+  const logo = options.logo ? Object.assign({ hidden: false, parentNode: anchors[0], addEventListener: (type, handler) => logoHandlers.push([type, handler]), fire: (type) => { for (const [name, handler] of logoHandlers) if (name === type) handler(); } }, options.logo) : null;
   const shell = {
     getBoundingClientRect: () => ({ width: 1280 }),
+    querySelector(selector) {
+      if (selector === "img[data-brand-logo]") return logo;
+      throw new Error("unexpected selector " + selector);
+    },
     classList: { toggle(name, on) { if (on) classes.add(name); else classes.delete(name); } },
     querySelectorAll(selector) {
       if (selector === "a[data-destination]") return anchors.filter((anchor) => anchor.getAttribute("data-destination") !== null);
@@ -375,6 +414,7 @@ function runLanding(template, options) {
   }));
   return {
     anchors,
+    logo,
     writes,
     replaced,
     page: documentStub.documentElement.dataset,
