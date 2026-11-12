@@ -101,7 +101,7 @@
      "code": "ACTIVE-INCOMPLETE",
      "nls": {
       "en": {
-       "NAME": "Send Back"
+       "NAME": "Mark as Invalid"
       }
      },
      "targets": [
@@ -219,7 +219,7 @@
      "code": "INACTIVE-INCOMPLETE",
      "nls": {
       "en": {
-       "NAME": "Send Back"
+       "NAME": "Mark as Invalid"
       }
      },
      "targets": [
@@ -295,7 +295,7 @@
    "code": "INCOMPLETE",
    "nls": {
     "en": {
-     "NAME": "Incomplete"
+     "NAME": "Invalid"
     }
    },
    "events": [
