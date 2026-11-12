@@ -15,10 +15,11 @@ import { agreementSeason, agreementSummary, agreementTitle, plural } from "../co
 import { currentServiceAgreement } from "../normalizers/contracts.js";
 import { dispatchMapAction, sharedPropertyMap } from "../property-map-session.js";
 import { appointmentDay, clampFrameIndex, invoiceBuckets, money, propertyStatusKnown, sectionAvailable, serviceDayCount } from "../normalizers/overview.js";
-import { localDateKey, visitPlace } from "../normalizers/visits.js";
+import { localDateKey, upcomingDays, visitDayCounts, visitPlace } from "../normalizers/visits.js";
 import { openInvoices } from "../normalizers/invoices.js";
 import { InvoiceRow, VisitRow } from "../components/storm/RecordRows.js";
 
+var VISIT_DAYS = 7;
 var propertyForecastStore = null;
 var focusKeeper = null;
 var lastSelection = null;
@@ -189,8 +190,30 @@ function MapPanel(model, places) {
       })) : null,
     ]),
     stage,
-    weather ? DayTimeline(weather, index, model.properties, sectionAvailable(model, "appointments")) : null,
+    weather ? DayTimeline(weather, index, model.properties, sectionAvailable(model, "appointments")) : VisitDays(),
     weather ? WeatherAttribution(weather.source, "ov-map__attr") : null,
+  ]);
+}
+
+function VisitDays() {
+  var visits = liveVisits();
+  if (!visits) return null;
+  var days = upcomingDays(localDateKey(new Date(), state.config.timeZone), VISIT_DAYS);
+  var counts = visitDayCounts(visits, days);
+  return h("div", { "class": "ov-timeline ov-timeline--visits", "data-module": "visit-days", "data-visual-id": "visit-days", role: "group", "aria-label": "Visits in the next " + VISIT_DAYS + " days" }, [
+    h("div", { "class": "ov-timeline__track" }, days.map(function (day, position) {
+      var count = counts[position];
+      var label = day.name + " " + day.date + " — " + (count ? count + (count === 1 ? " visit" : " visits") : "no visit");
+      var cell = [
+        text("span", "ov-day__name", day.name),
+        text("span", "ov-day__date", day.date),
+        h("span", { "class": "ov-day__svc" }, count ? [text("b", "", String(count)), text("span", "ov-day__svc-word", count === 1 ? " visit" : " visits")] : []),
+      ];
+      var className = "ov-day" + (position === 0 ? " ov-day--now" : "") + (count ? " ov-day--service" : " ov-day--idle");
+      return count
+        ? h("button", { "class": className, type: "button", "data-action": "nav.go", "data-id": "appointments", "data-day": day.key, "data-service": String(count), "aria-label": label }, cell)
+        : h("div", { "class": className, "data-day": day.key, "aria-label": label }, cell);
+    })),
   ]);
 }
 

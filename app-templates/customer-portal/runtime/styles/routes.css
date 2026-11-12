@@ -2342,6 +2342,8 @@ h1.proposal-detail-head__title { margin: 0; }
 
 .ov-pincard__line { margin-top: 2px; font-size: 12.5px; color: var(--ink-2); overflow-wrap: anywhere; }
 
+.ov-pincard__status { margin-top: 6px; }
+
 .ov-places { margin-top: 16px; }
 
 .ov-map__attr { margin-top: 10px; text-align: right; }
@@ -2391,6 +2393,8 @@ h1.proposal-detail-head__title { margin: 0; }
 .ov-prow__name { font-size: 14px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
 .ov-prow__addr { font-size: 12.5px; color: var(--ink-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+.ov-prow__visit { font-size: 12.5px; font-weight: 600; color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
 .ov-prow__meta { flex: none; display: flex; align-items: center; gap: 10px; }
 
@@ -2472,6 +2476,10 @@ h1.proposal-detail-head__title { margin: 0; }
 .ov-day[data-weather="freezing"] i { background: var(--wx-freezing); }
 .ov-day[data-weather="storm"] i { background: var(--wx-storm); }
 
+.ov-day--idle { cursor: default; }
+
+.ov-day--idle:hover { background: transparent; }
+
 .ov-day--on {
   background: rgba(var(--accent-rgb), .10);
   border-color: rgba(var(--accent-rgb), .28);
@@ -2515,7 +2523,7 @@ h1.proposal-detail-head__title { margin: 0; }
 }
 
 .ov-tip__tag--issue { background: var(--danger-bg); color: var(--danger); }
-.ov-tip__tag--enroute { background: var(--warn-bg); color: var(--warn); }
+.ov-tip__tag--enroute, .ov-tip__tag--onsite { background: var(--warn-bg); color: var(--warn); }
 .ov-tip__tag--scheduled { background: rgba(var(--accent-rgb), .14); color: var(--accent); }
 .ov-tip__tag--monitoring { background: var(--surface-2); color: var(--ink-2); }
 

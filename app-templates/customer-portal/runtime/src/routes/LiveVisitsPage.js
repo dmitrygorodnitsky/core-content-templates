@@ -33,6 +33,7 @@ export function LiveVisits() {
   };
   if (visits.upcoming.length) page.appendChild(RecordSection("visits-upcoming", "Upcoming", visits.upcoming.map(row)));
   if (visits.past.length) page.appendChild(RecordSection("visits-past", "Past", visits.past.map(row)));
+  if (visits.cancelled.length) page.appendChild(RecordSection("visits-cancelled", "Cancelled", visits.cancelled.map(row)));
   return page;
 }
 

@@ -6,6 +6,7 @@ import { deriveCoreBookingModel } from "./normalizers/spa-availability.js";
 import { emptyLiveBookingOptions, liveBookingQuote, normalizeLiveBookingOptions } from "./normalizers/spa-booking-options.js";
 import { customerAccountRequired, portalProfiles, resolveProfile, routeRegistry, verticalProfiles } from "./config.js";
 import { contractsPackage } from "./normalizers/contracts.js";
+import { localDateKey, propertyWithVisits, visitCount } from "./normalizers/visits.js";
 
 export var state = {
   route: "orders.list",
@@ -613,12 +614,14 @@ function liveOverview() {
   if (!envelope || envelope.state !== "ready") return null;
   var geography = state.config.serviceGeography;
   var forecast = liveForecastState();
+  var visits = liveVisits();
+  var today = localDateKey(new Date(), state.config.timeZone);
   return {
     map: geography ? geography.map : null,
     weather: forecast === "ready" ? state.liveWeather : null,
     forecast: forecast,
-    properties: envelope.items || [],
-    sources: { invoices: "unavailable", appointments: "unavailable", contracts: "unavailable", support: "unavailable" },
+    properties: (envelope.items || []).map(function (property) { return visits ? propertyWithVisits(property, visits, today) : property; }),
+    sources: { invoices: "unavailable", appointments: "unavailable", contracts: "unavailable", support: "unavailable", visits: visits ? "ready" : "unavailable" },
     invoices: null,
     contracts: null,
     support: null,
@@ -649,16 +652,12 @@ export function liveListStatus(moduleId) {
   var envelope = state.moduleData[moduleId];
   if (!envelope || !envelope.state || envelope.state === "loading") return "loading";
   if (envelope.state !== "ready") return envelope.state === "unauthorized" ? "unauthorized" : "error";
-  var rows = moduleId === "invoices" ? (envelope.items || []).length : (envelope.upcoming || []).length + (envelope.past || []).length;
+  var rows = moduleId === "invoices" ? (envelope.items || []).length : visitCount(envelope);
   return rows ? "ready" : "empty";
 }
 
 export function navListShown(moduleId) {
-  if (moduleId === "invoices" || (moduleId === "appointmentsTimeline" && state.config.dataMode === "live")) {
-    var status = liveListStatus(moduleId);
-    return status === "ready" || status === "error";
-  }
-  return true;
+  return moduleId !== "invoices" || state.config.dataMode === "live" || liveListStatus(moduleId) === "ready";
 }
 
 export function liveProperties() {

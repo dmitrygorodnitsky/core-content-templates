@@ -1000,6 +1000,43 @@ areas side by side ("Total service area" 38,000 sq ft, typed by a manager, and
 - **Open:** the portal names a plan element by its `label`, the review page
   by its localized `NAME`.
 
+### Visits, invoices and visit states on the live Home (2026-11-12)
+
+Report: Invoices and Support, the day strip, the property cards' status and
+the visit states "disappeared" from the live portal. What each part was:
+
+- **Invoices and Visits nav items** were hidden whenever their list was empty
+  or still loading (`navListShown`, since `806f8bf`). In live mode they are
+  now always in the nav; the pages already had their loading, empty, error
+  and unauthorized states. Invoice states were not the cause: workflow 88
+  `INVOICE_LIFECYCLE` has the codes workflow 22 had (DRAFT hidden, SENT
+  "Due", OVERDUE, PAID, VOID).
+- **Support** was never part of the live package (`enabledModules` has had no
+  `support` since `4d4c9fe`), and `a421cb1` removed the "Not available yet"
+  placeholders of unopened sections. Core has task type `SUPPORT_TICKET` (29)
+  on workflow `SUPPORT_TICKET_LIFECYCLE` (48: NEW, IN_PROGRESS, WAITING,
+  RESOLVED, CLOSED) and no ticket, no form type a client could submit and no
+  task permission on role 75, so Support stays out. The smallest backend
+  piece: a `SUPPORT_REQUEST` form type whose workflow script creates the task
+  for the signed-in Account and tags it, plus the tagged task read for role
+  75.
+- **Day strip.** It was the forecast timeline, which needs the Xweather keys
+  dev-1 does not have. Without a forecast the Home now shows the next seven
+  days under the map with the visits Core holds for each day
+  (`VisitDays`, `upcomingDays`, `visitDayCounts`); a day with visits opens
+  Visits.
+- **Property status and next visit.** The live Home never joined visits to
+  properties (`liveOverview` declared every source unavailable). It now does
+  (`propertyWithVisits`, `sources.visits`): a property row and its map hover
+  card carry the chip and "Next visit · …", "Visit in progress · …" or "Last
+  visit · …".
+- **Visit states** are workflow 20 `APPOINTMENT`, unchanged: DRAFT (not
+  shown: the provider has not scheduled it), SCHEDULED "Scheduled" (blue),
+  IN_PROGRESS "In progress" (orange), COMPLETED "Completed" (green) and
+  CANCELED "Cancelled" (grey, its own section of Visits; it was dropped
+  before). "En route", "Issue opened" and "Active monitoring" have no state
+  or record behind them in Core and are not shown in live mode.
+
 ### Option rows on one grid and Contract details as its own step (2026-11-11, night)
 
 Two more items of the same feedback round.

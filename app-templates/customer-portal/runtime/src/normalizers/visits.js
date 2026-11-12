@@ -6,6 +6,7 @@ export var VISIT_STATUS = Object.freeze({
   SCHEDULED: Object.freeze({ label: "Scheduled", tone: "info", phase: "upcoming" }),
   IN_PROGRESS: Object.freeze({ label: "In progress", tone: "progress", phase: "upcoming" }),
   COMPLETED: Object.freeze({ label: "Completed", tone: "ok", phase: "past" }),
+  CANCELED: Object.freeze({ label: "Cancelled", tone: "scheduled", phase: "cancelled" }),
 });
 
 var PROGRESS_STEPS = Object.freeze({
@@ -28,16 +29,48 @@ export function normalizeVisits(raw) {
     truncated: !!(raw && raw.truncated),
     upcoming: visits.filter(inPhase("upcoming")).sort(function (left, right) { return left.start.ms - right.start.ms; }),
     past: visits.filter(inPhase("past")).sort(function (left, right) { return right.start.ms - left.start.ms; }),
+    cancelled: visits.filter(inPhase("cancelled")).sort(function (left, right) { return right.start.ms - left.start.ms; }),
   };
 }
 
 export function visitCount(envelope) {
-  return envelope ? (envelope.upcoming || []).length + (envelope.past || []).length : 0;
+  return envelope ? (envelope.upcoming || []).length + (envelope.past || []).length + (envelope.cancelled || []).length : 0;
 }
 
 export function findVisit(envelope, id) {
   if (!envelope || !id) return null;
-  return (envelope.upcoming || []).concat(envelope.past || []).find(function (visit) { return visit.id === id; }) || null;
+  return (envelope.upcoming || []).concat(envelope.past || [], envelope.cancelled || []).find(function (visit) { return visit.id === id; }) || null;
+}
+
+export function propertyWithVisits(property, envelope, today) {
+  var found = visitsForProperty(envelope, property.backendId);
+  var next = ((envelope && envelope.upcoming) || []).find(function (visit) { return visit.propertyBackendId === property.backendId && visit.stateCode === "IN_PROGRESS"; }) || found.next;
+  var last = found.last;
+  return Object.assign({}, property, {
+    appointment: next ? { id: next.id, state: next.stateCode, onSite: next.stateCode === "IN_PROGRESS", service: next.stateCode === "IN_PROGRESS" ? "Visit in progress" : "Next visit", when: visitWhen(next, today) } : null,
+    lastService: last ? { id: last.id, label: "Last visit", service: "Visit", when: visitDay(last, today) } : null,
+  });
+}
+
+export function upcomingDays(today, count) {
+  var parts = String(today || "").split("-").map(Number);
+  var days = [];
+  for (var offset = 0; offset < count; offset += 1) {
+    var at = new Date(Date.UTC(parts[0], parts[1] - 1, parts[2] + offset));
+    days.push({
+      key: at.getUTCFullYear() + "-" + pad(at.getUTCMonth() + 1) + "-" + pad(at.getUTCDate()),
+      name: offset === 0 ? "Today" : WEEKDAYS[at.getUTCDay()],
+      date: MONTHS[at.getUTCMonth()] + " " + at.getUTCDate(),
+    });
+  }
+  return days;
+}
+
+export function visitDayCounts(envelope, days) {
+  var visits = ((envelope && envelope.upcoming) || []).concat((envelope && envelope.past) || []);
+  return days.map(function (day) {
+    return visits.filter(function (visit) { return visit.start.date === day.key; }).length;
+  });
 }
 
 export function visitsForProperty(envelope, propertyBackendId) {

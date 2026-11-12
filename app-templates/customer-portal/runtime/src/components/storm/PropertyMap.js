@@ -1,5 +1,5 @@
 import { h } from "../../dom.js";
-import { OVERVIEW_STATUS as STATUS, knownPropertyStatus, propertyHighlights, propertyWeather, sourceOpened, zoneWeather } from "../../normalizers/overview.js";
+import { OVERVIEW_STATUS as STATUS, knownPropertyStatus, propertyHighlights, propertyWeather, sourceOpened, visitsKnown, zoneWeather } from "../../normalizers/overview.js";
 import { addressRepeats } from "../../normalizers/postal-address.js";
 import { addressKey, forecastPoint, geoPoint, popupDocks, popupPlacement, popupWeather, propertyPoint, weatherLabel, weatherReading } from "../../normalizers/property-map.js";
 import { icon } from "./overview-icons.js";
@@ -296,7 +296,7 @@ export function PropertyStage(props) {
         return {
           id: entry.property.id, point: entry.point,
           element: PropertyPin(entry.property, props.frame, entry === chosen, props.sources, props.direct),
-          card: PinCard(entry.property.name, propertyLine(entry.property)),
+          card: PinCard(entry.property.name, propertyLine(entry.property), knownPropertyStatus(entry.property, props.sources)),
         };
       }),
       popup: popup ? { point: chosen.point, element: popup } : null,
@@ -478,7 +478,7 @@ function weatherKey(property, frame, status) {
 function PropertyPin(property, frame, selected, sources, direct) {
   var status = knownPropertyStatus(property, sources);
   return h("button", {
-    "class": "ov-pin" + (status === "enroute" ? " ov-pin--active" : "") + (selected ? " ov-pin--on" : ""),
+    "class": "ov-pin" + (status === "enroute" || status === "onsite" ? " ov-pin--active" : "") + (selected ? " ov-pin--on" : ""),
     "data-action": direct ? "overview.openProperty" : "overview.selectProperty", "data-id": property.id,
     "data-module": "property-pin", "data-visual-id": "property-pin",
     "data-state": status || undefined, "data-weather": weatherKey(property, frame, status),
@@ -511,8 +511,9 @@ function PropertyRow(property, props, selected, reason) {
   var status = knownPropertyStatus(property, props.sources);
   var note = reason ? placementNote(reason) : "";
   var line = propertyLine(property);
+  var visit = props.direct && visitsKnown(props.sources) ? visitLine(property) : "";
   return h("button", {
-    "class": "ov-prow" + (status === "enroute" ? " ov-prow--active" : "") + (selected ? " ov-prow--on" : ""),
+    "class": "ov-prow" + (status === "enroute" || status === "onsite" ? " ov-prow--active" : "") + (selected ? " ov-prow--on" : ""),
     "data-action": props.direct ? "overview.openProperty" : "overview.selectProperty", "data-id": property.id,
     "data-module": "property-row", "data-visual-id": "property-row",
     "data-state": status || undefined, "data-weather": weatherKey(property, props.frame, status),
@@ -523,6 +524,7 @@ function PropertyRow(property, props, selected, reason) {
     h("span", { "class": "ov-prow__read" }, [
       text("span", "ov-prow__name", property.name),
       line ? text("span", "ov-prow__addr", line) : null,
+      visit ? h("span", { "class": "ov-prow__visit", "data-module": "property-visit-line" }, visit) : null,
       note ? text("span", "ov-prow__why", note) : null,
     ]),
     h("span", { "class": "ov-prow__meta" }, [
@@ -532,10 +534,11 @@ function PropertyRow(property, props, selected, reason) {
   ]);
 }
 
-function PinCard(name, line) {
+function PinCard(name, line, status) {
   return h("div", { "class": "ov-pincard", id: PIN_CARD_ID, role: "tooltip", "data-module": "property-pin-card", "data-visual-id": "property-pin-card" }, [
     text("div", "ov-pincard__name", name),
     line ? text("div", "ov-pincard__line", line) : null,
+    status ? h("div", { "class": "ov-pincard__status" }, [text("span", "ov-tip__tag ov-tip__tag--" + status, STATUS[status].label)]) : null,
   ]);
 }
 
@@ -586,6 +589,7 @@ function visitLine(property) {
   var next = appointment && appointment.state === "SCHEDULED" ? appointment : null;
   return active ? active.service + " · " + active.when
     : next ? next.service + " · " + next.when
+    : property.lastService && property.lastService.label ? property.lastService.label + " · " + property.lastService.when
     : property.lastService ? "Last service · " + property.lastService.service + " · " + property.lastService.when
     : "";
 }

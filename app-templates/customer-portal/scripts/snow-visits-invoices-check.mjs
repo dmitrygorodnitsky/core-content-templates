@@ -123,7 +123,7 @@ const transitionsFetch = async (url) => {
 const settle = () => new Promise((resolve) => setImmediate(resolve));
 async function preloadProgress() {
   const envelope = state.moduleData.appointmentsTimeline;
-  for (const item of [...envelope.upcoming, ...envelope.past]) visitProgress(item, () => {}, transitionsFetch);
+  for (const item of [...envelope.upcoming, ...envelope.past, ...envelope.cancelled]) visitProgress(item, () => {}, transitionsFetch);
   await settle();
 }
 const SENT = ["DRAFT", "QUOTE_PREPARED", "QUOTE_APPROVED", "QUOTE_SENT"];
@@ -370,12 +370,56 @@ const page = (route, params = {}) => { Object.assign(state, params); state.route
   const section = one(PropertyDetail(), "[data-module=\"property-live-visits\"]");
   assert.deepEqual(ids(section, "[data-module=\"visit-row\"]"), ["visit-core-81", "visit-core-80"], "a property lists only its own visits");
   assert.doesNotMatch(section.textContent, /Harbour Road/, "the property page does not repeat its own address on each visit");
-  assert.deepEqual(navLabels(), ["Home", "Visits", "Contracts"], "with no invoices the Invoices item is hidden");
+  assert.deepEqual(navLabels(), ["Home", "Visits", "Invoices", "Contracts"], "with no invoices the Invoices item stays in the nav");
+  const noInvoices = page("invoices");
+  assert.deepEqual([noInvoices.getAttribute("data-state"), one(noInvoices, ".state-block__title").textContent], ["empty", "No invoices yet"], "and its page says there are none yet");
+}
+
+{
+  const todayKey = localDateKey(new Date(), "America/Vancouver");
+  const [year, month, day] = todayKey.split("-").map(Number);
+  const at = (offset, hour) => Date.UTC(year, month - 1, day + offset, hour, 0);
+  const visits = [
+    visit(91, at(0, 9), at(0, 11), "IN_PROGRESS", 983),
+    visit(92, at(0, 14), at(0, 15), "SCHEDULED", 1033),
+    visit(93, at(2, 8), at(2, 9), "SCHEDULED", 983),
+    visit(94, at(-3, 8), at(-3, 9), "COMPLETED", 1034),
+    visit(95, at(1, 8), at(1, 9), "CANCELED", 1034),
+    visit(96, at(1, 10), at(1, 11), "DRAFT", 1034),
+  ];
+  await liveLoad({ properties: [property(983, 610), property(1033, 611), property(1034, 612), property(1035, 613)], visits, invoices: [] });
+  const home = Overview();
+  const strip = one(home, "[data-module=\"visit-days\"]");
+  const cells = all(strip, ".ov-day");
+  assert.equal(cells.length, 7, "without a forecast the home still shows the next seven days under the map");
+  assert.deepEqual(cells.map((cell) => [one(cell, ".ov-day__name").textContent, cell.getAttribute("data-service") || "0", cell.tagName]).slice(0, 3), [["Today", "2", "BUTTON"], [cells[1].children[0].textContent, "0", "DIV"], [cells[2].children[0].textContent, "1", "BUTTON"]], "each day counts the visits Core holds for it: a cancelled or draft visit is not a visit of the day");
+  assert.deepEqual([cells[0].getAttribute("data-action"), cells[0].getAttribute("data-id"), cells[0].getAttribute("aria-label").endsWith("2 visits")], ["nav.go", "appointments", true], "a day with visits opens Visits");
+  assert.equal(all(home, "[data-module=\"weather-timeline\"]").length, 0);
+  const rowsOf = (root) => Object.fromEntries(all(root, "[data-module=\"property-row\"]").map((row) => [row.getAttribute("data-id"), [row.getAttribute("data-state"), (one(row, ".ov-tip__tag") || { textContent: null }).textContent, (one(row, "[data-module=\"property-visit-line\"]") || { textContent: null }).textContent]]));
+  const rows = rowsOf(home);
+  assert.deepEqual(rows["prop-core-983"], ["onsite", "In progress", "Visit in progress · Today, 9:00 – 11:00 AM"], "a property whose visit is IN_PROGRESS reads In progress: Core has no en-route state");
+  assert.deepEqual(rows["prop-core-1033"], ["scheduled", "Scheduled", "Next visit · Today, 2:00 – 3:00 PM"], "a property with a SCHEDULED visit reads Scheduled with its next visit");
+  assert.deepEqual([rows["prop-core-1034"][0], rows["prop-core-1034"][1], /^Last visit · /.test(rows["prop-core-1034"][2])], [null, null, true], "a property with only a completed visit carries no chip, only its last visit: a cancelled or draft visit sets no status");
+  assert.deepEqual(rows["prop-core-1035"], [null, null, null], "a property without visits claims nothing: no Active Monitoring and no Issue Opened without a source behind them");
+  assert.doesNotMatch(home.textContent, /En Route|Issue Opened|Active Monitoring|Support/, "no status the live data cannot back");
+  await preloadProgress();
+  const list = page("appointments");
+  assert.deepEqual(all(list, ".record-section").map((section) => [section.getAttribute("data-module"), all(section, "[data-module=\"visit-row\"]").map((row) => [row.getAttribute("data-id"), one(row, ".status-badge").textContent, one(row, ".status-badge").className])]), [
+    ["visits-upcoming", [["visit-core-91", "In progress", "status-badge status-badge--progress"], ["visit-core-92", "Scheduled", "status-badge status-badge--info"], ["visit-core-93", "Scheduled", "status-badge status-badge--info"]]],
+    ["visits-past", [["visit-core-94", "Completed", "status-badge status-badge--ok"]]],
+    ["visits-cancelled", [["visit-core-95", "Cancelled", "status-badge status-badge--scheduled"]]],
+  ], "every APPOINTMENT state the client may see has its label and colour: SCHEDULED, IN_PROGRESS, COMPLETED and CANCELED; a DRAFT visit is the provider's and stays out");
+  await preloadProgress();
+  const cancelled = page("visit.detail", { visitId: "visit-core-95" });
+  assert.deepEqual([cancelled.getAttribute("data-state"), all(cancelled, ".status-badge")[0].textContent], ["canceled", "Cancelled"], "a cancelled visit opens with its state");
+  assert.equal(all(one(Overview(), "[data-module=\"next-visit\"]"), "[data-id=\"visit-core-91\"]").length, 1, "the next visit is never a cancelled one");
 }
 
 {
   await liveLoad({ properties: [property(983, 610)], visits: [visit(75, 1792400000000, 1792403600000, "CANCELED", 983)], invoices: [invoice(8, "DRAFT", [2026, 9, 25], "", "", 100)] });
-  assert.deepEqual(navLabels(), ["Home", "Contracts"], "lists with nothing to show hide their nav items");
+  assert.deepEqual(navLabels(), ["Home", "Visits", "Invoices", "Contracts"], "the nav keeps Visits and Invoices whatever the lists hold");
+  await preloadProgress();
+  assert.deepEqual([page("invoices").getAttribute("data-state"), all(one(page("appointments"), "[data-module=\"visits-cancelled\"]"), "[data-module=\"visit-row\"]").length], ["empty", 1], "a draft invoice is not the client's yet, and a cancelled visit is listed as cancelled");
   const home = Overview();
   assert.equal(all(home, "[data-module=\"next-visit\"]").length + all(home, "[data-module=\"invoice-due\"]").length, 0, "no home card without a visit or an invoice due");
   assert.deepEqual(one(home, ".ov-grid").children.map((card) => card.getAttribute("data-module")), ["active-contracts"], "the home grid keeps only the cards that have something to show");
@@ -397,7 +441,8 @@ const page = (route, params = {}) => { Object.assign(state, params); state.route
   assert.equal(all(Overview(), "[data-module=\"next-visit\"]").length, 0);
 
   configure("overview,properties,appointmentsTimeline,invoices");
-  assert.deepEqual(navLabels(), ["Home"], "nothing is offered while the lists are still loading");
+  assert.deepEqual(navLabels(), ["Home", "Visits", "Invoices"], "the nav is the enabled modules from the first render, before any list has loaded");
+  assert.equal(page("invoices").getAttribute("data-state"), "loading");
 }
 
 {
@@ -625,7 +670,7 @@ const page = (route, params = {}) => { Object.assign(state, params); state.route
   assert.deepEqual(order, ["overview", "appointments", "invoices", "proposals.list"]);
 }
 
-console.log("snow visits and invoices check ok: tagged visit and invoice reads with the dev-1 bodies, wall-clock visit times, the visit page's property, plan, active-agreement services and progress from tagged transitions read as real instants, DRAFT invoices and canceled visits hidden, single-property address omission, home next-visit and invoice-due cards, property visits, visit photos opened in-page in one before-then-after PhotoSwipe gallery loaded lazily from its pinned SRI address, and empty lists hidden from the nav and the screens");
+console.log("snow visits and invoices check ok: tagged visit and invoice reads with the dev-1 bodies, wall-clock visit times, the visit page's property, plan, active-agreement services and progress from tagged transitions read as real instants, DRAFT invoices and DRAFT visits hidden, cancelled visits listed as cancelled, single-property address omission, home next-visit and invoice-due cards, property visits, visit photos opened in-page in one before-then-after PhotoSwipe gallery loaded lazily from its pinned SRI address, and Visits and Invoices always in the live nav with their empty states, the home day strip and property status from visits alone");
 
 function createDom() {
   class Text {

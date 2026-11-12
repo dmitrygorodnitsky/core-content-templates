@@ -290,7 +290,7 @@ const PERIODS = Array.from({ length: 7 }, (_, index) => ({
   assert.equal(hoverCard && hoverCard.getAttribute("data-module"), "property-pin-card", "hovering a pin shows its card");
   assert.equal(hoverCard.getAttribute("role"), "tooltip");
   assert.equal(hovered.getAttribute("aria-describedby"), hoverCard.getAttribute("id"), "the pin is described by the card it shows");
-  assert.equal(hoverCard.textContent, "Foothill Court4820 Foothill Court, Lakewood, CO 80215");
+  assert.equal(hoverCard.textContent, "Foothill Court4820 Foothill Court, Lakewood, CO 80215En Route", "the hover card names the property's status");
   assert.equal(hoverCard.querySelectorAll(".ov-tip__close").length + hoverCard.querySelectorAll("[data-action]").length, 0, "the hover card is read-only; the popup keeps the actions");
   const foothillAnchor = new google.maps.LatLng(39.73336, -105.12205);
   const foothillAt = google.projection.fromLatLngToDivPixel(foothillAnchor);

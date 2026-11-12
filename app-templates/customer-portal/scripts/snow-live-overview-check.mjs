@@ -148,7 +148,7 @@ const liveProperties = {
   assert.equal(model.forecast, "ready");
   assert.equal(model.weather.source, "xweather");
   assert.deepEqual(model.properties, liveProperties.items);
-  assert.deepEqual(model.sources, { invoices: "unavailable", appointments: "unavailable", contracts: "unavailable", support: "unavailable" }, "every home section without a live source is declared unavailable, so none of them can read as empty");
+  assert.deepEqual(model.sources, { invoices: "unavailable", appointments: "unavailable", contracts: "unavailable", support: "unavailable", visits: "unavailable" }, "every home section without a live source is declared unavailable, so none of them can read as empty");
   assert.equal(model.invoices, null, "no Invoice record exists in Core for this tenant");
   assert.equal(model.contracts, null, "a contract is a customer fact and never comes from the fixture in live mode");
   assert.equal(model.support, null, "no Support Ticket record exists in Core for this tenant");

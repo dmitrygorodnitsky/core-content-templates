@@ -918,6 +918,10 @@
       label: "En Route",
       copy: "Our team is on the way to this property."
     },
+    onsite: {
+      label: "In progress",
+      copy: "Our crew is at this property."
+    },
     scheduled: {
       label: "Scheduled",
       copy: "Service is scheduled for this property."
@@ -976,7 +980,17 @@
     });
   }
   function knownPropertyStatus(property, sources) {
-    return propertyStatusKnown(sources) ? propertyStatus(property) : null;
+    if (propertyStatusKnown(sources)) return propertyStatus(property);
+    return visitsKnown(sources) ? visitStatus(property) : null;
+  }
+  function visitsKnown(sources) {
+    return !!sources && sources.visits === "ready";
+  }
+  function visitStatus(property) {
+    var appointment = property && property.appointment;
+    if (appointment && appointment.state === "IN_PROGRESS") return "onsite";
+    if (appointment && appointment.state === "SCHEDULED") return "scheduled";
+    return null;
   }
   function invoiceBuckets(invoices) {
     var outstanding = invoices && invoices.outstanding || [];
@@ -2099,6 +2113,246 @@
     return Math.round(value * 10) / 10;
   }
 
+  // app-templates/customer-portal/runtime/src/normalizers/visits.js
+  var VISIT_TYPE = "SNOW_SERVICE_VISIT";
+  var VISIT_STATUS = /* @__PURE__ */ Object.freeze({
+    SCHEDULED: /* @__PURE__ */ Object.freeze({ label: "Scheduled", tone: "info", phase: "upcoming" }),
+    IN_PROGRESS: /* @__PURE__ */ Object.freeze({ label: "In progress", tone: "progress", phase: "upcoming" }),
+    COMPLETED: /* @__PURE__ */ Object.freeze({ label: "Completed", tone: "ok", phase: "past" }),
+    CANCELED: /* @__PURE__ */ Object.freeze({ label: "Cancelled", tone: "scheduled", phase: "cancelled" })
+  });
+  var PROGRESS_STEPS = /* @__PURE__ */ Object.freeze({
+    SCHEDULED: "Scheduled",
+    IN_PROGRESS: "Arrived",
+    COMPLETED: "Departed"
+  });
+  var ON_SITE_STEPS = ["IN_PROGRESS", "COMPLETED"];
+  var MEDIA_ID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
+  var WEEKDAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  var MONTHS2 = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  function normalizeVisits(raw) {
+    var rows2 = Array.isArray(raw && raw.items) ? raw.items : [];
+    var visits = rows2.map(visitRecord).filter(Boolean);
+    return {
+      state: "ready",
+      truncated: !!(raw && raw.truncated),
+      upcoming: visits.filter(inPhase("upcoming")).sort(function(left, right) {
+        return left.start.ms - right.start.ms;
+      }),
+      past: visits.filter(inPhase("past")).sort(function(left, right) {
+        return right.start.ms - left.start.ms;
+      }),
+      cancelled: visits.filter(inPhase("cancelled")).sort(function(left, right) {
+        return right.start.ms - left.start.ms;
+      })
+    };
+  }
+  function visitCount(envelope2) {
+    return envelope2 ? (envelope2.upcoming || []).length + (envelope2.past || []).length + (envelope2.cancelled || []).length : 0;
+  }
+  function findVisit(envelope2, id) {
+    if (!envelope2 || !id) return null;
+    return (envelope2.upcoming || []).concat(envelope2.past || [], envelope2.cancelled || []).find(function(visit) {
+      return visit.id === id;
+    }) || null;
+  }
+  function propertyWithVisits(property, envelope2, today) {
+    var found = visitsForProperty(envelope2, property.backendId);
+    var next = (envelope2 && envelope2.upcoming || []).find(function(visit) {
+      return visit.propertyBackendId === property.backendId && visit.stateCode === "IN_PROGRESS";
+    }) || found.next;
+    var last = found.last;
+    return Object.assign({}, property, {
+      appointment: next ? { id: next.id, state: next.stateCode, onSite: next.stateCode === "IN_PROGRESS", service: next.stateCode === "IN_PROGRESS" ? "Visit in progress" : "Next visit", when: visitWhen(next, today) } : null,
+      lastService: last ? { id: last.id, label: "Last visit", service: "Visit", when: visitDay(last, today) } : null
+    });
+  }
+  function upcomingDays(today, count) {
+    var parts = String(today || "").split("-").map(Number);
+    var days = [];
+    for (var offset = 0; offset < count; offset += 1) {
+      var at = new Date(Date.UTC(parts[0], parts[1] - 1, parts[2] + offset));
+      days.push({
+        key: at.getUTCFullYear() + "-" + pad(at.getUTCMonth() + 1) + "-" + pad(at.getUTCDate()),
+        name: offset === 0 ? "Today" : WEEKDAYS[at.getUTCDay()],
+        date: MONTHS2[at.getUTCMonth()] + " " + at.getUTCDate()
+      });
+    }
+    return days;
+  }
+  function visitDayCounts(envelope2, days) {
+    var visits = (envelope2 && envelope2.upcoming || []).concat(envelope2 && envelope2.past || []);
+    return days.map(function(day) {
+      return visits.filter(function(visit) {
+        return visit.start.date === day.key;
+      }).length;
+    });
+  }
+  function visitsForProperty(envelope2, propertyBackendId) {
+    var owned = function(visit) {
+      return visit.propertyBackendId === propertyBackendId;
+    };
+    return {
+      next: (envelope2 && envelope2.upcoming || []).find(owned) || null,
+      last: (envelope2 && envelope2.past || []).find(owned) || null
+    };
+  }
+  function visitPlace(visit, properties) {
+    var list = Array.isArray(properties) ? properties : [];
+    if (list.length < 2 || !visit) return "";
+    var property = list.find(function(item) {
+      return item.backendId === visit.propertyBackendId;
+    });
+    return property ? property.address || property.name || "" : "";
+  }
+  function visitDay(visit, today) {
+    var start = visit && visit.start;
+    if (!start) return "";
+    if (today && start.date === today) return "Today";
+    var label = WEEKDAYS[start.weekday] + ", " + MONTHS2[start.month - 1] + " " + start.day;
+    return today && today.slice(0, 4) !== String(start.year) ? label + ", " + start.year : label;
+  }
+  function visitWindow(visit) {
+    var start = visit && visit.start;
+    if (!start) return "";
+    var end = visit.end && visit.end.ms > start.ms ? visit.end : null;
+    if (!end) return clock(start.minutes, true);
+    var samePeriod = meridiem(start.minutes) === meridiem(end.minutes) && start.date === end.date;
+    return clock(start.minutes, !samePeriod) + " \u2013 " + clock(end.minutes, true);
+  }
+  function visitWhen(visit, today) {
+    return [visitDay(visit, today), visitWindow(visit)].filter(Boolean).join(", ");
+  }
+  function normalizeVisitProgress(rows2) {
+    return (Array.isArray(rows2) ? rows2 : []).map(function(row) {
+      var code = text(row && row.state && row.state.code);
+      var ms = epochMs(row && row.observed);
+      if (!Object.prototype.hasOwnProperty.call(PROGRESS_STEPS, code) || ms === null) return null;
+      return { code, label: PROGRESS_STEPS[code], ms };
+    }).filter(Boolean).sort(function(left, right) {
+      return left.ms - right.ms;
+    });
+  }
+  function progressWhen(step, visit, timeZone) {
+    var at = zonedParts(step.ms, timeZone);
+    var day = MONTHS2[at.month - 1] + " " + at.day;
+    var start = visit && visit.start;
+    if (start && at.year !== start.year) day += ", " + at.year;
+    if (step.code === "SCHEDULED") return day;
+    var time = clock(at.minutes, true);
+    return start && at.date === start.date ? time : day + ", " + time;
+  }
+  function onSiteTimes(steps, visit, timeZone) {
+    return ON_SITE_STEPS.map(function(code) {
+      var step = (steps || []).filter(function(entry) {
+        return entry.code === code;
+      }).pop();
+      return step ? step.label + " " + progressWhen(step, visit, timeZone) : "";
+    }).filter(Boolean).join(" \xB7 ");
+  }
+  function visitPhotoCount(visit) {
+    return visit ? (visit.before || []).length + (visit.after || []).length : 0;
+  }
+  function localDateKey(date, timeZone) {
+    return zonedParts((date instanceof Date ? date : /* @__PURE__ */ new Date()).getTime(), timeZone).date;
+  }
+  function visitImageUrl(coreBase, id) {
+    return MEDIA_ID.test(id) ? String(coreBase || "/core").replace(/\/+$/, "") + "/image/" + id + "/get" : "";
+  }
+  function visitRecord(row) {
+    var backendId = positiveInteger(row && row.id);
+    var stateCode = latestStateCode(row);
+    var status = Object.prototype.hasOwnProperty.call(VISIT_STATUS, stateCode) ? VISIT_STATUS[stateCode] : null;
+    if (!backendId || !status || text(row.type && row.type.code) !== VISIT_TYPE) return null;
+    var start = wallClock(row.start);
+    if (!start) return null;
+    return {
+      id: "visit-core-" + backendId,
+      backendId,
+      stateCode,
+      status: { label: status.label, tone: status.tone },
+      phase: status.phase,
+      start,
+      end: wallClock(row.end),
+      propertyBackendId: attributeNumber(row, "RESOURCE"),
+      completionNotes: attributeText(row, "COMPLETION_NOTES"),
+      before: mediaIds(row, "PRE_SERVICE_MEDIA"),
+      after: mediaIds(row, "POST_SERVICE_MEDIA")
+    };
+  }
+  function zonedParts(ms, timeZone) {
+    var at = new Date(ms);
+    var parts = { year: at.getFullYear(), month: at.getMonth() + 1, day: at.getDate(), hour: at.getHours(), minute: at.getMinutes() };
+    if (timeZone) {
+      new Intl.DateTimeFormat("en-US", { timeZone, hourCycle: "h23", year: "numeric", month: "numeric", day: "numeric", hour: "numeric", minute: "numeric" }).formatToParts(at).forEach(function(part) {
+        if (Object.prototype.hasOwnProperty.call(parts, part.type)) parts[part.type] = Number(part.value);
+      });
+    }
+    return {
+      date: parts.year + "-" + pad(parts.month) + "-" + pad(parts.day),
+      year: parts.year,
+      month: parts.month,
+      day: parts.day,
+      minutes: parts.hour % 24 * 60 + parts.minute
+    };
+  }
+  function epochMs(value) {
+    var ms = typeof value === "number" ? value : typeof value === "string" && value.trim() !== "" ? Number(value) : Number.NaN;
+    return Number.isFinite(ms) ? ms : null;
+  }
+  function wallClock(value) {
+    var ms = epochMs(value);
+    if (ms === null) return null;
+    var instant = new Date(ms);
+    var year = instant.getUTCFullYear();
+    var month = instant.getUTCMonth() + 1;
+    var day = instant.getUTCDate();
+    return {
+      ms,
+      date: year + "-" + pad(month) + "-" + pad(day),
+      year,
+      month,
+      day,
+      weekday: instant.getUTCDay(),
+      minutes: instant.getUTCHours() * 60 + instant.getUTCMinutes()
+    };
+  }
+  function mediaIds(row, code) {
+    var entry = attributeEntry(row, code);
+    var value = entry ? entry.value : null;
+    if (typeof value === "string" && /^\s*\[/.test(value)) {
+      try {
+        value = JSON.parse(value);
+      } catch (_) {
+        return [];
+      }
+    }
+    return (Array.isArray(value) ? value : []).map(function(item) {
+      if (!item || typeof item !== "object") return "";
+      if (item.type != null && text(item.type) !== "image") return "";
+      var id = text(item.id).toLowerCase();
+      return MEDIA_ID.test(id) ? id : "";
+    }).filter(function(id, index, ids) {
+      return !!id && ids.indexOf(id) === index;
+    });
+  }
+  function inPhase(phase) {
+    return function(visit) {
+      return visit.phase === phase;
+    };
+  }
+  function clock(minutes, withMeridiem) {
+    var hour = Math.floor(minutes / 60);
+    var label = (hour % 12 || 12) + ":" + pad(minutes % 60);
+    return withMeridiem ? label + " " + meridiem(minutes) : label;
+  }
+  function meridiem(minutes) {
+    return minutes < 720 ? "AM" : "PM";
+  }
+  function pad(value) {
+    return value < 10 ? "0" + value : String(value);
+  }
+
   // app-templates/customer-portal/runtime/src/state.js
   var state = {
     route: "orders.list",
@@ -2311,12 +2565,16 @@
     if (!envelope2 || envelope2.state !== "ready") return null;
     var geography = state.config.serviceGeography;
     var forecast = liveForecastState();
+    var visits = liveVisits();
+    var today = localDateKey(/* @__PURE__ */ new Date(), state.config.timeZone);
     return {
       map: geography ? geography.map : null,
       weather: forecast === "ready" ? state.liveWeather : null,
       forecast,
-      properties: envelope2.items || [],
-      sources: { invoices: "unavailable", appointments: "unavailable", contracts: "unavailable", support: "unavailable" },
+      properties: (envelope2.items || []).map(function(property) {
+        return visits ? propertyWithVisits(property, visits, today) : property;
+      }),
+      sources: { invoices: "unavailable", appointments: "unavailable", contracts: "unavailable", support: "unavailable", visits: visits ? "ready" : "unavailable" },
       invoices: null,
       contracts: null,
       support: null,
@@ -2343,15 +2601,11 @@
     var envelope2 = state.moduleData[moduleId];
     if (!envelope2 || !envelope2.state || envelope2.state === "loading") return "loading";
     if (envelope2.state !== "ready") return envelope2.state === "unauthorized" ? "unauthorized" : "error";
-    var rows2 = moduleId === "invoices" ? (envelope2.items || []).length : (envelope2.upcoming || []).length + (envelope2.past || []).length;
+    var rows2 = moduleId === "invoices" ? (envelope2.items || []).length : visitCount(envelope2);
     return rows2 ? "ready" : "empty";
   }
   function navListShown(moduleId) {
-    if (moduleId === "invoices" || moduleId === "appointmentsTimeline" && state.config.dataMode === "live") {
-      var status = liveListStatus(moduleId);
-      return status === "ready" || status === "error";
-    }
-    return true;
+    return moduleId !== "invoices" || state.config.dataMode === "live" || liveListStatus(moduleId) === "ready";
   }
   function liveProperties() {
     var envelope2 = state.moduleData.properties;
@@ -3041,207 +3295,6 @@
     var error2 = new Error(code);
     error2.code = code;
     return error2;
-  }
-
-  // app-templates/customer-portal/runtime/src/normalizers/visits.js
-  var VISIT_TYPE = "SNOW_SERVICE_VISIT";
-  var VISIT_STATUS = /* @__PURE__ */ Object.freeze({
-    SCHEDULED: /* @__PURE__ */ Object.freeze({ label: "Scheduled", tone: "info", phase: "upcoming" }),
-    IN_PROGRESS: /* @__PURE__ */ Object.freeze({ label: "In progress", tone: "progress", phase: "upcoming" }),
-    COMPLETED: /* @__PURE__ */ Object.freeze({ label: "Completed", tone: "ok", phase: "past" })
-  });
-  var PROGRESS_STEPS = /* @__PURE__ */ Object.freeze({
-    SCHEDULED: "Scheduled",
-    IN_PROGRESS: "Arrived",
-    COMPLETED: "Departed"
-  });
-  var ON_SITE_STEPS = ["IN_PROGRESS", "COMPLETED"];
-  var MEDIA_ID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
-  var WEEKDAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-  var MONTHS2 = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-  function normalizeVisits(raw) {
-    var rows2 = Array.isArray(raw && raw.items) ? raw.items : [];
-    var visits = rows2.map(visitRecord).filter(Boolean);
-    return {
-      state: "ready",
-      truncated: !!(raw && raw.truncated),
-      upcoming: visits.filter(inPhase("upcoming")).sort(function(left, right) {
-        return left.start.ms - right.start.ms;
-      }),
-      past: visits.filter(inPhase("past")).sort(function(left, right) {
-        return right.start.ms - left.start.ms;
-      })
-    };
-  }
-  function findVisit(envelope2, id) {
-    if (!envelope2 || !id) return null;
-    return (envelope2.upcoming || []).concat(envelope2.past || []).find(function(visit) {
-      return visit.id === id;
-    }) || null;
-  }
-  function visitsForProperty(envelope2, propertyBackendId) {
-    var owned = function(visit) {
-      return visit.propertyBackendId === propertyBackendId;
-    };
-    return {
-      next: (envelope2 && envelope2.upcoming || []).find(owned) || null,
-      last: (envelope2 && envelope2.past || []).find(owned) || null
-    };
-  }
-  function visitPlace(visit, properties) {
-    var list = Array.isArray(properties) ? properties : [];
-    if (list.length < 2 || !visit) return "";
-    var property = list.find(function(item) {
-      return item.backendId === visit.propertyBackendId;
-    });
-    return property ? property.address || property.name || "" : "";
-  }
-  function visitDay(visit, today) {
-    var start = visit && visit.start;
-    if (!start) return "";
-    if (today && start.date === today) return "Today";
-    var label = WEEKDAYS[start.weekday] + ", " + MONTHS2[start.month - 1] + " " + start.day;
-    return today && today.slice(0, 4) !== String(start.year) ? label + ", " + start.year : label;
-  }
-  function visitWindow(visit) {
-    var start = visit && visit.start;
-    if (!start) return "";
-    var end = visit.end && visit.end.ms > start.ms ? visit.end : null;
-    if (!end) return clock(start.minutes, true);
-    var samePeriod = meridiem(start.minutes) === meridiem(end.minutes) && start.date === end.date;
-    return clock(start.minutes, !samePeriod) + " \u2013 " + clock(end.minutes, true);
-  }
-  function visitWhen(visit, today) {
-    return [visitDay(visit, today), visitWindow(visit)].filter(Boolean).join(", ");
-  }
-  function normalizeVisitProgress(rows2) {
-    return (Array.isArray(rows2) ? rows2 : []).map(function(row) {
-      var code = text(row && row.state && row.state.code);
-      var ms = epochMs(row && row.observed);
-      if (!Object.prototype.hasOwnProperty.call(PROGRESS_STEPS, code) || ms === null) return null;
-      return { code, label: PROGRESS_STEPS[code], ms };
-    }).filter(Boolean).sort(function(left, right) {
-      return left.ms - right.ms;
-    });
-  }
-  function progressWhen(step, visit, timeZone) {
-    var at = zonedParts(step.ms, timeZone);
-    var day = MONTHS2[at.month - 1] + " " + at.day;
-    var start = visit && visit.start;
-    if (start && at.year !== start.year) day += ", " + at.year;
-    if (step.code === "SCHEDULED") return day;
-    var time = clock(at.minutes, true);
-    return start && at.date === start.date ? time : day + ", " + time;
-  }
-  function onSiteTimes(steps, visit, timeZone) {
-    return ON_SITE_STEPS.map(function(code) {
-      var step = (steps || []).filter(function(entry) {
-        return entry.code === code;
-      }).pop();
-      return step ? step.label + " " + progressWhen(step, visit, timeZone) : "";
-    }).filter(Boolean).join(" \xB7 ");
-  }
-  function visitPhotoCount(visit) {
-    return visit ? (visit.before || []).length + (visit.after || []).length : 0;
-  }
-  function localDateKey(date, timeZone) {
-    return zonedParts((date instanceof Date ? date : /* @__PURE__ */ new Date()).getTime(), timeZone).date;
-  }
-  function visitImageUrl(coreBase, id) {
-    return MEDIA_ID.test(id) ? String(coreBase || "/core").replace(/\/+$/, "") + "/image/" + id + "/get" : "";
-  }
-  function visitRecord(row) {
-    var backendId = positiveInteger(row && row.id);
-    var stateCode = latestStateCode(row);
-    var status = Object.prototype.hasOwnProperty.call(VISIT_STATUS, stateCode) ? VISIT_STATUS[stateCode] : null;
-    if (!backendId || !status || text(row.type && row.type.code) !== VISIT_TYPE) return null;
-    var start = wallClock(row.start);
-    if (!start) return null;
-    return {
-      id: "visit-core-" + backendId,
-      backendId,
-      stateCode,
-      status: { label: status.label, tone: status.tone },
-      phase: status.phase,
-      start,
-      end: wallClock(row.end),
-      propertyBackendId: attributeNumber(row, "RESOURCE"),
-      completionNotes: attributeText(row, "COMPLETION_NOTES"),
-      before: mediaIds(row, "PRE_SERVICE_MEDIA"),
-      after: mediaIds(row, "POST_SERVICE_MEDIA")
-    };
-  }
-  function zonedParts(ms, timeZone) {
-    var at = new Date(ms);
-    var parts = { year: at.getFullYear(), month: at.getMonth() + 1, day: at.getDate(), hour: at.getHours(), minute: at.getMinutes() };
-    if (timeZone) {
-      new Intl.DateTimeFormat("en-US", { timeZone, hourCycle: "h23", year: "numeric", month: "numeric", day: "numeric", hour: "numeric", minute: "numeric" }).formatToParts(at).forEach(function(part) {
-        if (Object.prototype.hasOwnProperty.call(parts, part.type)) parts[part.type] = Number(part.value);
-      });
-    }
-    return {
-      date: parts.year + "-" + pad(parts.month) + "-" + pad(parts.day),
-      year: parts.year,
-      month: parts.month,
-      day: parts.day,
-      minutes: parts.hour % 24 * 60 + parts.minute
-    };
-  }
-  function epochMs(value) {
-    var ms = typeof value === "number" ? value : typeof value === "string" && value.trim() !== "" ? Number(value) : Number.NaN;
-    return Number.isFinite(ms) ? ms : null;
-  }
-  function wallClock(value) {
-    var ms = epochMs(value);
-    if (ms === null) return null;
-    var instant = new Date(ms);
-    var year = instant.getUTCFullYear();
-    var month = instant.getUTCMonth() + 1;
-    var day = instant.getUTCDate();
-    return {
-      ms,
-      date: year + "-" + pad(month) + "-" + pad(day),
-      year,
-      month,
-      day,
-      weekday: instant.getUTCDay(),
-      minutes: instant.getUTCHours() * 60 + instant.getUTCMinutes()
-    };
-  }
-  function mediaIds(row, code) {
-    var entry = attributeEntry(row, code);
-    var value = entry ? entry.value : null;
-    if (typeof value === "string" && /^\s*\[/.test(value)) {
-      try {
-        value = JSON.parse(value);
-      } catch (_) {
-        return [];
-      }
-    }
-    return (Array.isArray(value) ? value : []).map(function(item) {
-      if (!item || typeof item !== "object") return "";
-      if (item.type != null && text(item.type) !== "image") return "";
-      var id = text(item.id).toLowerCase();
-      return MEDIA_ID.test(id) ? id : "";
-    }).filter(function(id, index, ids) {
-      return !!id && ids.indexOf(id) === index;
-    });
-  }
-  function inPhase(phase) {
-    return function(visit) {
-      return visit.phase === phase;
-    };
-  }
-  function clock(minutes, withMeridiem) {
-    var hour = Math.floor(minutes / 60);
-    var label = (hour % 12 || 12) + ":" + pad(minutes % 60);
-    return withMeridiem ? label + " " + meridiem(minutes) : label;
-  }
-  function meridiem(minutes) {
-    return minutes < 720 ? "AM" : "PM";
-  }
-  function pad(value) {
-    return value < 10 ? "0" + value : String(value);
   }
 
   // app-templates/customer-portal/runtime/src/adapters/core-oidc-adapter.js
@@ -7045,7 +7098,7 @@
             id: entry.property.id,
             point: entry.point,
             element: PropertyPin(entry.property, props.frame, entry === chosen, props.sources, props.direct),
-            card: PinCard(entry.property.name, propertyLine(entry.property))
+            card: PinCard(entry.property.name, propertyLine(entry.property), knownPropertyStatus(entry.property, props.sources))
           };
         }),
         popup: popup ? { point: chosen.point, element: popup } : null,
@@ -7219,7 +7272,7 @@
   function PropertyPin(property, frame, selected, sources, direct) {
     var status = knownPropertyStatus(property, sources);
     return h("button", {
-      "class": "ov-pin" + (status === "enroute" ? " ov-pin--active" : "") + (selected ? " ov-pin--on" : ""),
+      "class": "ov-pin" + (status === "enroute" || status === "onsite" ? " ov-pin--active" : "") + (selected ? " ov-pin--on" : ""),
       "data-action": direct ? "overview.openProperty" : "overview.selectProperty",
       "data-id": property.id,
       "data-module": "property-pin",
@@ -7260,8 +7313,9 @@
     var status = knownPropertyStatus(property, props.sources);
     var note = reason ? placementNote(reason) : "";
     var line = propertyLine(property);
+    var visit = props.direct && visitsKnown(props.sources) ? visitLine(property) : "";
     return h("button", {
-      "class": "ov-prow" + (status === "enroute" ? " ov-prow--active" : "") + (selected ? " ov-prow--on" : ""),
+      "class": "ov-prow" + (status === "enroute" || status === "onsite" ? " ov-prow--active" : "") + (selected ? " ov-prow--on" : ""),
       "data-action": props.direct ? "overview.openProperty" : "overview.selectProperty",
       "data-id": property.id,
       "data-module": "property-row",
@@ -7275,6 +7329,7 @@
       h("span", { "class": "ov-prow__read" }, [
         text3("span", "ov-prow__name", property.name),
         line ? text3("span", "ov-prow__addr", line) : null,
+        visit ? h("span", { "class": "ov-prow__visit", "data-module": "property-visit-line" }, visit) : null,
         note ? text3("span", "ov-prow__why", note) : null
       ]),
       h("span", { "class": "ov-prow__meta" }, [
@@ -7283,10 +7338,11 @@
       ])
     ]);
   }
-  function PinCard(name, line) {
+  function PinCard(name, line, status) {
     return h("div", { "class": "ov-pincard", id: PIN_CARD_ID, role: "tooltip", "data-module": "property-pin-card", "data-visual-id": "property-pin-card" }, [
       text3("div", "ov-pincard__name", name),
-      line ? text3("div", "ov-pincard__line", line) : null
+      line ? text3("div", "ov-pincard__line", line) : null,
+      status ? h("div", { "class": "ov-pincard__status" }, [text3("span", "ov-tip__tag ov-tip__tag--" + status, OVERVIEW_STATUS[status].label)]) : null
     ]);
   }
   function propertyLine(property) {
@@ -7336,7 +7392,7 @@
     var appointment = property.appointment;
     var active = appointment && appointment.state === "IN_PROGRESS" ? appointment : null;
     var next = appointment && appointment.state === "SCHEDULED" ? appointment : null;
-    return active ? active.service + " \xB7 " + active.when : next ? next.service + " \xB7 " + next.when : property.lastService ? "Last service \xB7 " + property.lastService.service + " \xB7 " + property.lastService.when : "";
+    return active ? active.service + " \xB7 " + active.when : next ? next.service + " \xB7 " + next.when : property.lastService && property.lastService.label ? property.lastService.label + " \xB7 " + property.lastService.when : property.lastService ? "Last service \xB7 " + property.lastService.service + " \xB7 " + property.lastService.when : "";
   }
   function inline(popup) {
     popup.setAttribute("data-place", "inline");
@@ -7914,6 +7970,7 @@
   }
 
   // app-templates/customer-portal/runtime/src/routes/OverviewPage.js
+  var VISIT_DAYS = 7;
   var propertyForecastStore = null;
   var focusKeeper = null;
   var lastSelection = null;
@@ -8074,8 +8131,27 @@
         })) : null
       ]),
       stage,
-      weather ? DayTimeline(weather, index, model.properties, sectionAvailable(model, "appointments")) : null,
+      weather ? DayTimeline(weather, index, model.properties, sectionAvailable(model, "appointments")) : VisitDays(),
       weather ? WeatherAttribution(weather.source, "ov-map__attr") : null
+    ]);
+  }
+  function VisitDays() {
+    var visits = liveVisits();
+    if (!visits) return null;
+    var days = upcomingDays(localDateKey(/* @__PURE__ */ new Date(), state.config.timeZone), VISIT_DAYS);
+    var counts = visitDayCounts(visits, days);
+    return h("div", { "class": "ov-timeline ov-timeline--visits", "data-module": "visit-days", "data-visual-id": "visit-days", role: "group", "aria-label": "Visits in the next " + VISIT_DAYS + " days" }, [
+      h("div", { "class": "ov-timeline__track" }, days.map(function(day, position) {
+        var count = counts[position];
+        var label = day.name + " " + day.date + " \u2014 " + (count ? count + (count === 1 ? " visit" : " visits") : "no visit");
+        var cell = [
+          text5("span", "ov-day__name", day.name),
+          text5("span", "ov-day__date", day.date),
+          h("span", { "class": "ov-day__svc" }, count ? [text5("b", "", String(count)), text5("span", "ov-day__svc-word", count === 1 ? " visit" : " visits")] : [])
+        ];
+        var className = "ov-day" + (position === 0 ? " ov-day--now" : "") + (count ? " ov-day--service" : " ov-day--idle");
+        return count ? h("button", { "class": className, type: "button", "data-action": "nav.go", "data-id": "appointments", "data-day": day.key, "data-service": String(count), "aria-label": label }, cell) : h("div", { "class": className, "data-day": day.key, "aria-label": label }, cell);
+      }))
     ]);
   }
   function PropertyIndexCard(list) {
@@ -8112,7 +8188,7 @@
       focusKeeper.settle(current, previous);
     });
   }
-  function DayTimeline(weather, index, properties, visitsKnown) {
+  function DayTimeline(weather, index, properties, visitsKnown2) {
     var last = weather.timeline.length - 1;
     var track = h("div", { "class": "ov-timeline__track" }, weather.timeline.map(function(item, position) {
       var visits = serviceDayCount(properties, position);
@@ -8122,7 +8198,7 @@
         "data-id": String(position),
         "data-weather": item.kind,
         "data-service": visits ? String(visits) : void 0,
-        "aria-label": item.day + " " + item.date + " \u2014 " + item.label + (visits ? " \u2014 " + visits + (visits === 1 ? " visit" : " visits") : visitsKnown ? " \u2014 no visit" : ""),
+        "aria-label": item.day + " " + item.date + " \u2014 " + item.label + (visits ? " \u2014 " + visits + (visits === 1 ? " visit" : " visits") : visitsKnown2 ? " \u2014 no visit" : ""),
         "aria-pressed": position === index ? "true" : "false"
       }, [
         text5("span", "ov-day__name", item.day),
@@ -9280,6 +9356,7 @@
     };
     if (visits.upcoming.length) page.appendChild(RecordSection("visits-upcoming", "Upcoming", visits.upcoming.map(row)));
     if (visits.past.length) page.appendChild(RecordSection("visits-past", "Past", visits.past.map(row)));
+    if (visits.cancelled.length) page.appendChild(RecordSection("visits-cancelled", "Cancelled", visits.cancelled.map(row)));
     return page;
   }
   function LiveVisitDetail() {

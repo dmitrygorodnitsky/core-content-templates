@@ -7,6 +7,10 @@ export var OVERVIEW_STATUS = {
     label: "En Route",
     copy: "Our team is on the way to this property.",
   },
+  onsite: {
+    label: "In progress",
+    copy: "Our crew is at this property.",
+  },
   scheduled: {
     label: "Scheduled",
     copy: "Service is scheduled for this property.",
@@ -75,7 +79,19 @@ export function propertyStatusKnown(sources) {
 }
 
 export function knownPropertyStatus(property, sources) {
-  return propertyStatusKnown(sources) ? propertyStatus(property) : null;
+  if (propertyStatusKnown(sources)) return propertyStatus(property);
+  return visitsKnown(sources) ? visitStatus(property) : null;
+}
+
+export function visitsKnown(sources) {
+  return !!sources && sources.visits === "ready";
+}
+
+function visitStatus(property) {
+  var appointment = property && property.appointment;
+  if (appointment && appointment.state === "IN_PROGRESS") return "onsite";
+  if (appointment && appointment.state === "SCHEDULED") return "scheduled";
+  return null;
 }
 
 export function invoiceBuckets(invoices) {
