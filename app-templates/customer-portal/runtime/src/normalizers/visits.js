@@ -129,10 +129,23 @@ export function progressWhen(step, visit, timeZone) {
 }
 
 export function onSiteTimes(steps, visit, timeZone) {
+  var duration = onSiteDuration(steps);
   return ON_SITE_STEPS.map(function (code) {
-    var step = (steps || []).filter(function (entry) { return entry.code === code; }).pop();
+    var step = lastStep(steps, code);
     return step ? step.label + " " + progressWhen(step, visit, timeZone) : "";
-  }).filter(Boolean).join(" · ");
+  }).concat(duration ? duration + " on site" : "").filter(Boolean).join(" · ");
+}
+
+export function onSiteDuration(steps) {
+  var arrived = lastStep(steps, "IN_PROGRESS");
+  var departed = lastStep(steps, "COMPLETED");
+  if (!arrived || !departed || departed.ms < arrived.ms) return "";
+  var minutes = Math.round((departed.ms - arrived.ms) / 60000);
+  if (minutes < 1) return "Under 1 min";
+  var hours = Math.floor(minutes / 60);
+  var rest = minutes % 60;
+  if (!hours) return minutes + " min";
+  return rest ? hours + " h " + rest + " min" : hours + " h";
 }
 
 export function visitPhotoCount(visit) {
@@ -225,6 +238,10 @@ function mediaIds(row, code) {
     var id = text(item.id).toLowerCase();
     return MEDIA_ID.test(id) ? id : "";
   }).filter(function (id, index, ids) { return !!id && ids.indexOf(id) === index; });
+}
+
+function lastStep(steps, code) {
+  return (steps || []).filter(function (entry) { return entry.code === code; }).pop() || null;
 }
 
 function inPhase(phase) {

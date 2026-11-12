@@ -10,7 +10,7 @@ import { PropertyPlan } from "../components/storm/PropertyPlan.js";
 import { RecordSection, VisitRow } from "../components/storm/RecordRows.js";
 import { activeServiceNames } from "../normalizers/contracts.js";
 import { formatArea } from "../normalizers/overview.js";
-import { findVisit, localDateKey, onSiteTimes, progressWhen, visitDay, visitImageUrl, visitPhotoCount, visitPlace, visitWindow } from "../normalizers/visits.js";
+import { findVisit, localDateKey, onSiteDuration, onSiteTimes, progressWhen, visitDay, visitImageUrl, visitPhotoCount, visitPlace, visitWindow } from "../normalizers/visits.js";
 import { sharedPlanMap } from "../property-map-session.js";
 import { propertyPlan } from "../property-plan.js";
 import { visitProgress } from "../visit-progress.js";
@@ -75,7 +75,7 @@ export function LiveVisitDetail() {
 
   if (visit.completionNotes) {
     page.appendChild(h("section", { "class": "card card--pad record-section", "data-module": "visit-notes", "data-visual-id": "visit-notes" }, [
-      h("h2", { "class": "prop-section__title" }, "Completion notes"),
+      h("h2", { "class": "prop-section__title" }, "Work done"),
       h("p", { "class": "record-notes" }, visit.completionNotes),
     ]));
   }
@@ -124,6 +124,7 @@ function ServicesCard(property) {
 function ProgressCard(visit) {
   var entry = visitProgress(visit, render);
   if (!entry || entry.status !== "ready" || !entry.steps.length) return null;
+  var duration = onSiteDuration(entry.steps);
   return h("section", { "class": "card card--pad record-section", "data-module": "visit-progress", "data-visual-id": "visit-progress" }, [
     h("h2", { "class": "prop-section__title" }, "Progress"),
     h("div", { "class": "timeline" }, [h("div", { "class": "timeline__line" })].concat(entry.steps.map(function (step) {
@@ -132,6 +133,10 @@ function ProgressCard(visit) {
         h("div", { "class": "timeline-step__title" }, step.label + " · " + progressWhen(step, visit, state.config.timeZone)),
       ]);
     }))),
+    duration ? h("div", { "class": "prop-fact record-duration", "data-module": "visit-duration" }, [
+      h("div", { "class": "prop-fact__label" }, "Time on site"),
+      h("div", { "class": "prop-fact__value" }, duration),
+    ]) : null,
   ]);
 }
 

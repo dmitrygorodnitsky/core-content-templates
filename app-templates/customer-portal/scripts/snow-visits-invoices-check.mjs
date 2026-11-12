@@ -18,7 +18,7 @@ const { readPortalConfig, readTimeZone, portalProfiles } = await load("src/confi
 const { applyPortalConfig, state } = await load("src/state.js");
 const { PortalRuntime } = await load("src/portal-runtime.js");
 const { coreSnowContract, createCoreSnowInvoicesAdapter, createCoreSnowVisitsAdapter, readVisitTransitions } = await load("src/adapters/core-snow-adapter.js");
-const { localDateKey, normalizeVisitProgress, normalizeVisits, progressWhen, visitDay, visitWhen, visitWindow } = await load("src/normalizers/visits.js");
+const { localDateKey, normalizeVisitProgress, onSiteDuration, normalizeVisits, progressWhen, visitDay, visitWhen, visitWindow } = await load("src/normalizers/visits.js");
 const { normalizeProposals } = await load("src/normalizers/index.js");
 const { visitProgress } = await load("src/visit-progress.js");
 const { propertyPlan } = await load("src/property-plan.js");
@@ -282,9 +282,9 @@ const page = (route, params = {}) => { Object.assign(state, params); state.route
   assert.deepEqual(ids(one(visits, "[data-module=\"visits-upcoming\"]"), "[data-module=\"visit-row\"]"), ["visit-core-78", "visit-core-79"]);
   assert.deepEqual(ids(one(visits, "[data-module=\"visits-past\"]"), "[data-module=\"visit-row\"]"), ["visit-core-77", "visit-core-76"]);
   const visit76 = all(visits, "[data-module=\"visit-row\"]").find((row) => row.getAttribute("data-id") === "visit-core-76");
-  assert.match(visit76.textContent, /^Wed, Oct 21, 7:30 – 8:20 AMArrived Oct 28, 5:20 AM · Departed Oct 28, 5:20 AMCompleted›$/, "a row shows date, window, the arrival and departure Core recorded, and status, and no address for a single property");
+  assert.match(visit76.textContent, /^Wed, Oct 21, 7:30 – 8:20 AMArrived Oct 28, 5:20 AM · Departed Oct 28, 5:20 AM · Under 1 min on siteCompleted›$/, "a row shows date, window, the arrival and departure Core recorded with the time between them, and status, and no address for a single property");
   const visit77 = all(visits, "[data-module=\"visit-row\"]").find((row) => row.getAttribute("data-id") === "visit-core-77");
-  assert.equal(one(visit77, "[data-module=\"visit-on-site\"]").textContent, "Arrived 6:47 AM · Departed 7:33 AM", "times on the visit's own day name no date");
+  assert.equal(one(visit77, "[data-module=\"visit-on-site\"]").textContent, "Arrived 6:47 AM · Departed 7:33 AM · 46 min on site", "times on the visit's own day name no date, and the time on site is the span from arrival to departure");
   assert.equal(one(visit77, "[data-module=\"visit-photo-count\"]").textContent, "2 photos", "a row says how many before and after photos the visit has");
   const visit79 = all(visits, "[data-module=\"visit-row\"]").find((row) => row.getAttribute("data-id") === "visit-core-79");
   assert.equal(all(visit79, "[data-module=\"visit-on-site\"]").length + all(visit79, "[data-module=\"visit-photo-count\"]").length, 0, "a scheduled visit has no arrival, departure or photos yet");
@@ -381,8 +381,15 @@ const page = (route, params = {}) => { Object.assign(state, params); state.route
   Object.assign(logoNode, { naturalWidth: 2170, naturalHeight: 589 });
   (logoNode.listeners.load || []).forEach((listener) => listener({ type: "load" }));
   assert.equal(one(TopNav(false), ".top-nav__brand").getAttribute("data-brand"), "wordmark", "a wide logo is the provider's wordmark, so the stylesheet leaves the name to it");
-  (logoNode.listeners.error || []).forEach((listener) => listener({ type: "error" }));
-  assert.deepEqual([all(TopNav(false), "img").length, one(TopNav(false), ".top-nav__brand").getAttribute("data-brand"), one(TopNav(false), ".brand-name").textContent], [0, null, "Limitless Snow Removal Corp."], "a logo that fails to load gives way to the drawn mark and the name");
+  const mounted = TopNav(false);
+  const fail = (node) => (node.listeners.error || []).forEach((listener) => listener({ type: "error" }));
+  fail(logoNode);
+  assert.deepEqual([all(mounted, "img").length, one(mounted, ".top-nav__brand").getAttribute("data-brand"), one(mounted, ".brand-name").textContent], [0, null, "Limitless Snow Removal Corp."], "a logo that fails to load gives way to the drawn mark and the name");
+  const second = one(TopNav(false), "img");
+  assert.notEqual(second, logoNode, "the next render asks for the logo again, so one dropped request does not cost the session its logo");
+  fail(second);
+  fail(one(TopNav(false), "img"));
+  assert.equal(all(TopNav(false), "img").length, 0, "after three failures the header stops asking");
   state.moduleData.profile = profileBefore;
   const noInvoices = page("invoices");
   assert.deepEqual([noInvoices.getAttribute("data-state"), one(noInvoices, ".state-block__title").textContent], ["empty", "No invoices yet"], "and its page says there are none yet");
@@ -516,10 +523,14 @@ const page = (route, params = {}) => { Object.assign(state, params); state.route
   assert.doesNotMatch(one(done, "[data-module=\"visit-services\"]").textContent, /\$|747|Monthly/, "the visit page shows no prices");
   assert.deepEqual(steps(done), ["Scheduled · Oct 22", "Arrived · 6:47 AM", "Departed · 7:33 AM"], "transition instants read in the organization's zone, beside the wall-clock window 6:45 – 7:35 AM");
   assert.doesNotMatch(one(done, "[data-module=\"visit-progress\"]").textContent, /1:47 PM|2:33 PM/, "observed is a real instant, not a wall-clock value read as UTC");
+  assert.deepEqual([one(one(done, "[data-module=\"visit-duration\"]"), ".prop-fact__label").textContent, one(one(done, "[data-module=\"visit-duration\"]"), ".prop-fact__value").textContent], ["Time on site", "46 min"], "a completed visit says how long the crew was on site");
+  assert.equal(one(one(done, "[data-module=\"visit-notes\"]"), "h2").textContent, "Work done", "the crew's completion note is the work done");
+  assert.deepEqual([onSiteDuration([{ code: "IN_PROGRESS", ms: 0 }, { code: "COMPLETED", ms: 85 * 60000 }]), onSiteDuration([{ code: "IN_PROGRESS", ms: 0 }, { code: "COMPLETED", ms: 120 * 60000 }]), onSiteDuration([{ code: "COMPLETED", ms: 5 }]), onSiteDuration([{ code: "IN_PROGRESS", ms: 9 }, { code: "COMPLETED", ms: 5 }])], ["1 h 25 min", "2 h", "", ""], "hours and minutes; nothing without both instants or when they are out of order");
 
   const live = page("visit.detail", { visitId: "visit-core-78" });
   assert.equal(one(live, "[data-module=\"visit-when\"]").textContent, "6:30 – 7:30 AM", "the planned window renders without a zone shift");
   assert.deepEqual(steps(live), ["Arrived · 5:21 AM"], "the dev-1 transition of visit 78, observed 12:21 UTC, is 5:21 AM in Vancouver");
+  assert.equal(all(live, "[data-module=\"visit-duration\"]").length, 0, "a visit still in progress has no time on site yet");
   assert.deepEqual(sections(live), ["visit-detail-bar", "visit-property", "property-plan", "visit-services", "visit-progress", "visit-photos"]);
   assert.deepEqual(all(live, ".record-photos__label").map((node) => node.textContent), ["Before"], "before photos show while the visit is in progress");
   assert.deepEqual(all(live, "img").map((img) => img.getAttribute("src")), ["/core/image/" + PRE_78 + "/get"]);
@@ -529,7 +540,7 @@ const page = (route, params = {}) => { Object.assign(state, params); state.route
 
   const upcoming = page("visit.detail", { visitId: "visit-core-79" });
   assert.deepEqual(sections(upcoming), ["visit-detail-bar", "visit-property", "property-plan", "visit-services"], "an upcoming visit shows the property and the services and no empty section");
-  assert.doesNotMatch(upcoming.textContent, /Progress|Photos|Completion notes|No |not available/);
+  assert.doesNotMatch(upcoming.textContent, /Progress|Photos|Work done|Time on site|No |not available/);
 
   state.moduleData.proposals = agreement169(SIGNED_169.slice(0, 5));
   assert.equal(all(page("visit.detail", { visitId: "visit-core-79" }), "[data-module=\"visit-services\"]").length, 0, "an agreement awaiting approval lists no services on a visit");

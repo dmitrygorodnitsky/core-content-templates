@@ -1037,6 +1037,30 @@ the visit states "disappeared" from the live portal. What each part was:
   before). "En route", "Issue opened" and "Active monitoring" have no state
   or record behind them in Core and are not shown in live mode.
 
+### Visit page: time on site and work done; crew and equipment (2026-11-12)
+
+- **Nothing was removed.** Since `29f2340` (2026-10-28) the live visit page
+  has shown the property, the plan, the services of the active agreement, the
+  arrival and departure Core recorded, the completion note and the before and
+  after photos; later commits only added to it. A replay of the portal's
+  reads on dev-1 still resolves the services after the order unification.
+- **Added.** `onSiteDuration` gives the span from the last arrival to the
+  last departure: "Time on site" under Progress, and "… on site" on a visit
+  row. The crew's `COMPLETION_NOTES` are titled "Work done".
+- **Crew and equipment were never in the live portal and are not readable by
+  a customer.** They live on the visit's route, a `SNOW_ROUTE` Task:
+  `ASSIGNED_CREW`, `ASSIGNED_VEHICLE`, `ASSIGNED_EQUIPMENT`, `SUPERVISOR`,
+  each a Resource id. For role 75 a tagged Appointment read omits `task`,
+  the Task read answers 403 and the Resources carry no customer tag. The
+  user of a visit transition is readable, but it is whoever sent the event,
+  not the crew.
+- **Smallest backend piece.** The visit carries a client-facing snapshot of
+  the names (crew, vehicle, equipment), written when the crew arrives. Tagging
+  the route and its Resources instead would open dispatch notes, VINs and
+  staff records to every customer on the route.
+- **Header logo.** A failed logo request no longer costs the session its
+  logo: the next render asks again, three times at most.
+
 ### Provider name, logo and regions from the Organization (2026-11-12)
 
 - **Where Core keeps them.** Organization `SNOWLIMITLESS` (43): `nls` NAME,

@@ -9,6 +9,7 @@ import { icon } from "../storm/overview-icons.js";
 import { SpaTopNav } from "./SpaTopNav.js";
 
 var WORDMARK_ASPECT = 2.5;
+var LOGO_ATTEMPTS = 3;
 var providerLogos = new Map();
 
 export function TopNav(gated) {
@@ -84,21 +85,31 @@ function providerLogo(provider) {
   if (!source) return null;
   var logo = providerLogos.get(source);
   if (!logo) {
-    logo = { node: h("img", { "class": "brand-logo brand-logo--image", src: source, alt: "", loading: "lazy", decoding: "async", "data-module": "brand-logo", "data-source": "organization" }), wordmark: false, failed: false };
+    logo = { node: null, wordmark: false, attempts: 0 };
     providerLogos.set(source, logo);
-    logo.node.addEventListener("load", function () {
-      logo.wordmark = logo.node.naturalWidth > logo.node.naturalHeight * WORDMARK_ASPECT;
-      if (logo.wordmark && logo.node.parentNode) logo.node.parentNode.setAttribute("data-brand", "wordmark");
-    });
-    logo.node.addEventListener("error", function () {
-      logo.failed = true;
-      var brand = logo.node.parentNode;
-      if (!brand) return;
-      brand.removeAttribute("data-brand");
-      brand.replaceChild(h("div", { "class": "brand-logo" }), logo.node);
-    });
   }
-  return logo.failed ? null : logo;
+  if (!logo.node && logo.attempts < LOGO_ATTEMPTS) {
+    logo.attempts += 1;
+    logo.node = logoImage(source, logo);
+  }
+  return logo.node ? logo : null;
+}
+
+function logoImage(source, logo) {
+  var image = h("img", { "class": "brand-logo brand-logo--image", src: source, alt: "", loading: "lazy", decoding: "async", "data-module": "brand-logo", "data-source": "organization" });
+  image.addEventListener("load", function () {
+    logo.wordmark = image.naturalWidth > image.naturalHeight * WORDMARK_ASPECT;
+    if (logo.wordmark && image.parentNode) image.parentNode.setAttribute("data-brand", "wordmark");
+  });
+  image.addEventListener("error", function () {
+    logo.node = null;
+    logo.wordmark = false;
+    var brand = image.parentNode;
+    if (!brand) return;
+    brand.removeAttribute("data-brand");
+    brand.replaceChild(h("div", { "class": "brand-logo" }), image);
+  });
+  return image;
 }
 
 function avatarName() {

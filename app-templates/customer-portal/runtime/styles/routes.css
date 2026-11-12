@@ -3005,6 +3005,8 @@ a.prop-fact__value { display: block; }
 
 .ov-card .record-row { margin-top: 4px; }
 
+.record-duration { margin-top: 18px; padding-top: 14px; border-top: 1px solid rgba(var(--hair), .08); }
+
 .record-notes { margin: 0; font-size: 14.5px; line-height: 1.55; color: var(--ink); white-space: pre-line; }
 
 .record-photos + .record-photos { margin-top: 16px; }

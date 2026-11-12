@@ -2258,12 +2258,22 @@
     return start && at.date === start.date ? time : day + ", " + time;
   }
   function onSiteTimes(steps, visit, timeZone) {
+    var duration = onSiteDuration(steps);
     return ON_SITE_STEPS.map(function(code) {
-      var step = (steps || []).filter(function(entry) {
-        return entry.code === code;
-      }).pop();
+      var step = lastStep(steps, code);
       return step ? step.label + " " + progressWhen(step, visit, timeZone) : "";
-    }).filter(Boolean).join(" \xB7 ");
+    }).concat(duration ? duration + " on site" : "").filter(Boolean).join(" \xB7 ");
+  }
+  function onSiteDuration(steps) {
+    var arrived = lastStep(steps, "IN_PROGRESS");
+    var departed = lastStep(steps, "COMPLETED");
+    if (!arrived || !departed || departed.ms < arrived.ms) return "";
+    var minutes = Math.round((departed.ms - arrived.ms) / 6e4);
+    if (minutes < 1) return "Under 1 min";
+    var hours = Math.floor(minutes / 60);
+    var rest = minutes % 60;
+    if (!hours) return minutes + " min";
+    return rest ? hours + " h " + rest + " min" : hours + " h";
   }
   function visitPhotoCount(visit) {
     return visit ? (visit.before || []).length + (visit.after || []).length : 0;
@@ -2350,6 +2360,11 @@
     }).filter(function(id, index, ids) {
       return !!id && ids.indexOf(id) === index;
     });
+  }
+  function lastStep(steps, code) {
+    return (steps || []).filter(function(entry) {
+      return entry.code === code;
+    }).pop() || null;
   }
   function inPhase(phase) {
     return function(visit) {
@@ -5477,6 +5492,7 @@
 
   // app-templates/customer-portal/runtime/src/components/shell/TopNav.js
   var WORDMARK_ASPECT = 2.5;
+  var LOGO_ATTEMPTS = 3;
   var providerLogos = /* @__PURE__ */ new Map();
   function TopNav(gated) {
     if (false) return SpaTopNav(gated);
@@ -5551,21 +5567,30 @@
     if (!source) return null;
     var logo = providerLogos.get(source);
     if (!logo) {
-      logo = { node: h("img", { "class": "brand-logo brand-logo--image", src: source, alt: "", loading: "lazy", decoding: "async", "data-module": "brand-logo", "data-source": "organization" }), wordmark: false, failed: false };
+      logo = { node: null, wordmark: false, attempts: 0 };
       providerLogos.set(source, logo);
-      logo.node.addEventListener("load", function() {
-        logo.wordmark = logo.node.naturalWidth > logo.node.naturalHeight * WORDMARK_ASPECT;
-        if (logo.wordmark && logo.node.parentNode) logo.node.parentNode.setAttribute("data-brand", "wordmark");
-      });
-      logo.node.addEventListener("error", function() {
-        logo.failed = true;
-        var brand = logo.node.parentNode;
-        if (!brand) return;
-        brand.removeAttribute("data-brand");
-        brand.replaceChild(h("div", { "class": "brand-logo" }), logo.node);
-      });
     }
-    return logo.failed ? null : logo;
+    if (!logo.node && logo.attempts < LOGO_ATTEMPTS) {
+      logo.attempts += 1;
+      logo.node = logoImage(source, logo);
+    }
+    return logo.node ? logo : null;
+  }
+  function logoImage(source, logo) {
+    var image = h("img", { "class": "brand-logo brand-logo--image", src: source, alt: "", loading: "lazy", decoding: "async", "data-module": "brand-logo", "data-source": "organization" });
+    image.addEventListener("load", function() {
+      logo.wordmark = image.naturalWidth > image.naturalHeight * WORDMARK_ASPECT;
+      if (logo.wordmark && image.parentNode) image.parentNode.setAttribute("data-brand", "wordmark");
+    });
+    image.addEventListener("error", function() {
+      logo.node = null;
+      logo.wordmark = false;
+      var brand = image.parentNode;
+      if (!brand) return;
+      brand.removeAttribute("data-brand");
+      brand.replaceChild(h("div", { "class": "brand-logo" }), image);
+    });
+    return image;
   }
   function avatarName() {
     if (state.config.dataMode !== "live") {
@@ -9445,7 +9470,7 @@
     if (progress2) page.appendChild(progress2);
     if (visit.completionNotes) {
       page.appendChild(h("section", { "class": "card card--pad record-section", "data-module": "visit-notes", "data-visual-id": "visit-notes" }, [
-        h("h2", { "class": "prop-section__title" }, "Completion notes"),
+        h("h2", { "class": "prop-section__title" }, "Work done"),
         h("p", { "class": "record-notes" }, visit.completionNotes)
       ]));
     }
@@ -9489,6 +9514,7 @@
   function ProgressCard(visit) {
     var entry = visitProgress(visit, render);
     if (!entry || entry.status !== "ready" || !entry.steps.length) return null;
+    var duration = onSiteDuration(entry.steps);
     return h("section", { "class": "card card--pad record-section", "data-module": "visit-progress", "data-visual-id": "visit-progress" }, [
       h("h2", { "class": "prop-section__title" }, "Progress"),
       h("div", { "class": "timeline" }, [h("div", { "class": "timeline__line" })].concat(entry.steps.map(function(step) {
@@ -9496,7 +9522,11 @@
           h("div", { "class": "timeline-step__dot", style: "background:" + (step.code === "COMPLETED" ? "var(--ok)" : "var(--accent)") }),
           h("div", { "class": "timeline-step__title" }, step.label + " \xB7 " + progressWhen(step, visit, state.config.timeZone))
         ]);
-      })))
+      }))),
+      duration ? h("div", { "class": "prop-fact record-duration", "data-module": "visit-duration" }, [
+        h("div", { "class": "prop-fact__label" }, "Time on site"),
+        h("div", { "class": "prop-fact__value" }, duration)
+      ]) : null
     ]);
   }
   function photoGroups(groups) {
