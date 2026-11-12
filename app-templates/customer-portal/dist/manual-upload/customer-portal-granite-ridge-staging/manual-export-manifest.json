@@ -38,9 +38,9 @@
     ],
     "sha256": {
       "head": "2d73a4975671d61afa33139b86357240a81ca29c3d64c8094335705c978ae9ab",
-      "html": "0ab444e5ccf87199fc5080788195779789a77284b7ad2f9030421732f79ee7b3",
-      "css": "c3c15a74d09b86d6073ec9125a5e825f7bac1ee53efff2923b56a96c15cede83",
-      "javascript": "80642c55016587cf4c1bb1f403a129a361976c932da8d1422f902232b051fe27"
+      "html": "5a46e4aef433b530326888f436aeb9f3e47a4f9c7f040760ec8c74f1bc8d69df",
+      "css": "01c4080717f020be62e5a589043b969fc0d4a6637a510eefee87558fa01cbd31",
+      "javascript": "b2b7b6a5e1d9784f358abf564a6ee89ccc881ad63b4b26273bf84738da5c6d2a"
     }
   },
   "runtime": {
@@ -56,7 +56,8 @@
       "appointmentsTimeline",
       "invoices",
       "proposals",
-      "profile"
+      "profile",
+      "support"
     ],
     "auth": {
       "flow": "oidc-authorization-code-pkce",

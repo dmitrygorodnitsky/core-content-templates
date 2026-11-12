@@ -5,6 +5,7 @@ export const PROFILE_FORM = Object.freeze({ typeCode: "CUSTOMER_PROFILE_UPDATE",
 export const LOGIN_FORM = Object.freeze({ typeCode: "CUSTOMER_LOGIN_CHANGE", preference: "SNOW_CUSTOMER_LOGIN_CHANGE" });
 export const INVOICE_PAYMENT_FORM = Object.freeze({ typeCode: "CUSTOMER_INVOICE_PAYMENT", preference: "SNOW_CUSTOMER_INVOICE_PAYMENT" });
 export const QUOTE_REQUEST_FORM = Object.freeze({ typeCode: "PORTAL_QUOTE_REQUEST", preference: "SNOW_PORTAL_QUOTE_REQUEST" });
+export const SUPPORT_TICKET_FORM = Object.freeze({ typeCode: "CUSTOMER_SUPPORT_TICKET", preference: "SNOW_CUSTOMER_SUPPORT_TICKET" });
 
 const OUTCOMES = Object.freeze(["APPLIED", "REFUSED", "FAILED"]);
 const FORM_LOCALE = "en";

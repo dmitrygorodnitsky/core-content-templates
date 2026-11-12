@@ -14,6 +14,8 @@ import { cancelProfileEdit, focusProfileInput, saveProfileEdit, startProfileEdit
 import { payInvoice } from "./invoice-payment.js";
 import { configuredExternalUrl, normalizeVertical, verticalProfiles } from "./config.js";
 import { isRouteReachable, resolveRoute, writeRouteToLocation } from "./router.js";
+import { submitSetPassword } from "./set-password.js";
+import { changeSupportTicketDraft, checkSupportTicketAgain, loadSupportTicketSchema, startSupportTicket, submitSupportTicket, supportTicketsOpen } from "./support-tickets.js";
 import { addTypedQuoteAddress, checkQuoteRequestAgain, loadQuoteRequestSchema, quoteRequestOpen, removeQuoteAddress, resetQuoteRequest, submitQuoteRequest, toggleQuoteProperty } from "./quote-request.js";
 import { agreementBillingRequest, changeAgreementBilling, contractDetailsEventInput, contractDetailsRequest, openAgreementBilling, openContractDetails } from "./contract-details.js";
 import { checkRequestLink, sendRequestLink } from "./request-link.js";
@@ -104,6 +106,15 @@ export var ACTIONS = {
   "quoteRequest.submit": function () { return sendQuoteRequest(); },
   "quoteRequest.checkAgain": function () { return checkQuoteRequestAgain({ onChange: function () { render(); }, reload: reloadRuntimeModule }); },
   "quoteRequest.retry": function () { state.quoteRequestSchema = null; render(); return true; },
+  "setPassword.submit": function () {
+    return submitSetPassword({
+      onChange: function (outcome) {
+        render();
+        if (outcome === "invalid") focusElement("#set-password-new[aria-invalid], #set-password-confirm[aria-invalid]");
+        if (outcome === "done" || outcome === "expired") focusElement("[data-visual-id=\"set-password-sign-in\"]");
+      },
+    });
+  },
   "requestLink.send": function () { if (!sendRequestLink({ onChange: render })) return false; render(); return true; },
   "requestLink.check": function () { if (!checkRequestLink({ onChange: render })) return false; render(); return true; },
   "agreement.approve": function (id) { return openContractConfirm("agreement", id); },
@@ -115,6 +126,12 @@ export var ACTIONS = {
   "weather.confirm":   function (id) { runCommand("weather.confirm", id, function () { confirmWeather(id, "confirmed"); }); },
   "weather.decline":   function (id) { runCommand("weather.decline", id, function () { confirmWeather(id, "declined"); }); },
   "membership.activate": function () { failCommand("membership.activate"); },
+  "support.newTicket": function (id) { return openSupportTicket(id); },
+  "support.chooseProperty": function (id) { if (!changeSupportTicketDraft("propertyId", id)) return false; render(); focusElement("#support-ticket-property-id"); return true; },
+  "support.chooseVisit": function (id) { if (!changeSupportTicketDraft("visitId", id)) return false; render(); focusElement("#support-ticket-visit-id"); return true; },
+  "support.chooseReason": function (id) { if (!changeSupportTicketDraft("reason", id)) return false; render(); focusElement("#support-ticket-contact-reason"); return true; },
+  "support.submitTicket": function () { return sendSupportTicket(); },
+  "support.checkTicket": function () { return checkSupportTicketAgain({ onChange: function () { render(); }, reload: reloadRuntimeModule }); },
   "support.open":      function ()   { var url = configuredExternalUrl(state.config, "supportUrl"); if (url) { globalThis.location.assign(url); return; } if (isSpa()) return setState({ spaSupport: true, accountMenu: false, mobileNav: false }); go("support"); },
   "support.sendMessage": function () { runCommand("support.sendMessage", null, sendChat); },
   "support.quickReply": function (id) { runCommand("support.quickReply", id, function () { pushChat(id); }); },
@@ -227,7 +244,7 @@ export var ACTIONS = {
   "overview.openInvoice": function ()    { go("activity"); },
   "overview.openContracts": function ()  { go("proposals.list"); },
   "overview.openSupport": function ()    { go("support"); },
-  "overview.newRequest": function ()     { go("support"); },
+  "overview.newRequest": function ()     { if (!openSupportTicket("")) go("support"); },
   "auth.signOut":      function ()   {
     if (state.config.dataMode === "live") {
       state.oidc = "signing-out";
@@ -260,6 +277,37 @@ function openQuoteRequest() {
   if (state.quoteRequest && state.quoteRequest.phase === "accepted") resetQuoteRequest();
   go("quote.new");
   return true;
+}
+
+function openSupportTicket(target) {
+  if (!supportTicketsOpen(state.config) || !isRouteReachable("support.new")) return false;
+  var ids = String(target || "").split(":");
+  if (!startSupportTicket(ids[0], ids[1])) return false;
+  go("support.new");
+  return true;
+}
+
+export function ensureSupportTicketSchema() {
+  if (!state.supportTicketSchema) loadSupportTicketSchema({ onChange: function () { render(); } });
+  return state.supportTicketSchema;
+}
+
+function sendSupportTicket() {
+  return submitSupportTicket({
+    reload: reloadRuntimeModule,
+    onChange: function (phase) {
+      render();
+      if (phase === "invalid" || phase === "refused") focusSupportTicketError();
+      if (phase === "created" || phase === "slow") focusElement("[data-module=\"support-ticket-outcome\"]");
+      if (phase === "not-sent" || phase === "failed") focusElement("[data-module=\"support-ticket-message\"]");
+    },
+  });
+}
+
+function focusSupportTicketError() {
+  var errors = state.supportTicket ? state.supportTicket.errors : {};
+  var first = ["PROPERTY_ID", "VISIT_ID", "CONTACT_REASON", "SUBJECT", "MESSAGE"].find(function (code) { return !!errors[code]; });
+  return first ? focusElement("[name=\"" + first + "\"]") : focusElement("[data-module=\"support-ticket-message\"]");
 }
 
 export function ensureQuoteRequestSchema() {

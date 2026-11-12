@@ -3,7 +3,7 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
 import { assertLiveBundle, bundledInputs, bundleLivePortalRuntime, liveFixtureMarkers, liveRuntimeVertical, minifiedRuntimePath, minifyStylesheet } from "./build-live-portal-runtime.mjs";
-import { assertLiveTemplate, copyParameters, coreOidcCallback, exportLivePortalManual, liveDeploymentParameters, operatorParameterPlaceholder, requestLinkCopyParameters } from "./export-live-portal-manual.mjs";
+import { assertLiveTemplate, providerIdentityFragments, withoutProviderIdentity, copyParameters, coreOidcCallback, exportLivePortalManual, liveDeploymentParameters, operatorParameterPlaceholder, requestLinkCopyParameters } from "./export-live-portal-manual.mjs";
 import { assertJteSafeTemplate } from "./export-portal-form-manual.mjs";
 import { readStyles } from "./portal-manual-package.mjs";
 
@@ -26,7 +26,9 @@ try {
   const parameters = JSON.parse(await fs.readFile(path.join(outputDir, "root/parameters.json"), "utf8"));
   const readme = await fs.readFile(path.join(outputDir, "README.md"), "utf8");
   const preview = await fs.readFile(path.join(outputDir, "preview.html"), "utf8");
-  const { head, html, css, javascript } = template;
+  const { head, css, javascript } = template;
+  const html = withoutProviderIdentity(template.html);
+  const identity = providerIdentityFragments(source.account.organization);
   const readableJavascript = await fs.readFile(runtimePath, "utf8");
   const dataset = rootDataset(html);
 
@@ -51,7 +53,13 @@ try {
   const enabled = dataset["data-portal-enabled-modules"].split(",");
   for (const id of enabled) assert.ok(portalProfiles.stormRetail.modules.includes(id), id + " must be owned by the stormRetail profile");
   assert.equal(enabled.includes("account"), false, "the runtime resolves the customer Account for every signed-in entry, so the list does not carry it");
-  assert.equal(dataset["data-portal-brand-name"], source.shell.brandName);
+  assert.equal(dataset["data-portal-brand-name"], source.shell.brandName, "the configured name stays as the fallback");
+  assert.equal(source.shell.providerIdentity, "organization");
+  assert.ok(template.html.startsWith(identity.lookup), "the Organization is looked up on the server before the root element");
+  assert.match(identity.lookup, /\.getByCode\("SNOWLIMITLESS", false, jakarta\.persistence\.LockModeType\.NONE\);\n/, "by the tenant's own code: the page's organization is the site's");
+  assert.ok(template.html.endsWith(' data-portal-provider-name="${providerName}" data-portal-brand-logo-id="${providerLogoId}"></section>'), "the root element carries the Organization's name and logo id for the pages that have no session");
+  assert.equal(template.html, identity.lookup + html.replace(/><\/section>$/, identity.attributes + "></section>"), "nothing but the lookup and its two attributes is added to the authored markup");
+  assert.doesNotMatch(html, /!\{|providerName|providerLogoId/);
   assert.equal("data-portal-case" in dataset, false, "portal_case is a fixture selector and must not ship in a live root");
   assert.doesNotMatch(html, /account-id|user-id|access-token|bearer/i);
   for (const key of ["data-portal-core-api-base", "data-portal-account-api-base", "data-portal-bill-api-base", "data-portal-resource-api-base", "data-portal-auth-core-base", "data-portal-auth-callback-path"]) {
@@ -154,7 +162,8 @@ try {
   assert.equal(await fs.readFile(minifiedRuntimePath(runtimePath), "utf8"), javascript);
   assert.deepEqual(bundledInputs(snowBuild.minified.metafile), bundledInputs(snowBuild.readable.metafile), "both builds bundle the same modules from the same bytes");
   assert.ok(javascript.length < readableJavascript.length * 0.7, "the shipped runtime is minified");
-  assert.doesNotThrow(() => assertJteSafeTemplate(template), "the minified runtime stays JTE-safe");
+  assert.doesNotThrow(() => assertJteSafeTemplate(Object.assign({}, template, { html })), "the minified runtime stays JTE-safe");
+  assert.throws(() => assertLiveTemplate(Object.assign({}, template, { html: template.html.replace("</section>", "</section>!{ var x = 1; }") })), /JTE-unsafe/, "no other code block passes");
   assert.equal(css, await minifyStylesheet(await readStyles()), "the template ships the minified portal stylesheet");
   assert.ok(css.length < (await readStyles()).length, "the shipped stylesheet is minified");
 

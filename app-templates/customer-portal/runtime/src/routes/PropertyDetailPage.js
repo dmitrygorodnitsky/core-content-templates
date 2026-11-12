@@ -2,6 +2,7 @@ import { h } from "../dom.js";
 import { render } from "../app.js";
 import { currentFixture, currentOverview, isModuleEnabled, liveOverviewStatus, liveVisits, quoteGroupFor, quotePackage, state } from "../state.js";
 import { ActionButton } from "../components/primitives/ActionButton.js";
+import { supportTicketsOpen } from "../support-tickets.js";
 import { EmptyState } from "../components/primitives/EmptyState.js";
 import { ErrorState } from "../components/primitives/ErrorState.js";
 import { StatusBadge } from "../components/primitives/StatusBadge.js";
@@ -51,7 +52,12 @@ export function PropertyDetail() {
   var contract = contractFor(property);
   var service = serviceFor(property);
 
-  page.appendChild(BackLink(model));
+  page.appendChild(supportTicketsOpen(state.config)
+    ? h("div", { "class": "detail-bar", "data-module": "property-detail-bar" }, [
+      BackLink(model),
+      ActionButton({ variant: "btn--ghost", label: "Open support ticket", action: "support.newTicket", id: property.backendId + ":", visualId: "property-open-ticket" }),
+    ])
+    : BackLink(model));
   page.appendChild(h("div", { "class": "prop-head" }, [
     h("div", { style: "flex:1;min-width:0" }, [
       text("h1", "prop-head__title", property.name),

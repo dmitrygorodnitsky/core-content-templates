@@ -25,12 +25,16 @@ import { AccountProfile } from "./routes/AccountProfilePage.js";
 import { Activity } from "./routes/ActivityPage.js";
 import { Calendar } from "./routes/CalendarPage.js";
 import { Support } from "./routes/SupportPage.js";
+import { LiveSupport, SupportTicketNew } from "./routes/LiveSupportPage.js";
+import { supportTicketsOpen } from "./support-tickets.js";
 import { Auth } from "./routes/AuthPage.js";
 import { Care } from "./routes/CarePage.js";
 import { SeoLanding } from "./routes/SeoLandingPage.js";
 import { AuthOidc } from "./routes/AuthOidcPage.js";
 import { RequestLink } from "./routes/RequestLinkPage.js";
 import { captureRequestLink } from "./request-link.js";
+import { SetPassword } from "./routes/SetPasswordPage.js";
+import { captureSetPassword } from "./set-password.js";
 import { SpaAccount } from "./routes/SpaAccountPage.js";
 import { SpaAppointments } from "./routes/SpaAppointmentsPage.js";
 import { SpaAppointmentDetail } from "./routes/SpaAppointmentDetailPage.js";
@@ -155,6 +159,7 @@ export function routeFromLocation() {
   setRouteQuery(match.id, raw);
   applyRouteParams(match);
   captureRequestLink(match.id, raw);
+  captureSetPassword(match.id, raw);
   return match.id;
 }
 
@@ -194,6 +199,7 @@ export function renderRoute() {
   var resolved = resolveRoute(state.route);
   if (resolved.id !== state.route) state.route = resolved.id;
   if (resolved.id === "request.confirm" || resolved.id === "request.cancel") return RequestLink();
+  if (resolved.id === "auth.setPassword") return SetPassword();
   if (state.view === "fallback") return RouteFallback("fallback");
 
   switch (resolved.id) {
@@ -224,7 +230,8 @@ export function renderRoute() {
     case "profile":     return globalThis.__PORTAL_VERTICAL__ !== "snow" && isSpa() ? SpaProfile() : customerAccountProfile(state.config) ? AccountProfile() : Profile();
     case "activity":    return Activity();
     case "calendar":    return Calendar();
-    case "support":     return Support();
+    case "support":     return supportTicketsOpen(state.config) ? LiveSupport() : Support();
+    case "support.new": return supportTicketsOpen(state.config) ? SupportTicketNew() : RouteFallback("disabled");
     case "auth.phone":  return Auth();
     case "auth.code":   return Auth();
     case "auth.oidc":   return AuthOidc();

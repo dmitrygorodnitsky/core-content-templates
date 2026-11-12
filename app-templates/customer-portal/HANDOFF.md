@@ -1037,6 +1037,48 @@ the visit states "disappeared" from the live portal. What each part was:
   before). "En route", "Issue opened" and "Active monitoring" have no state
   or record behind them in Core and are not shown in live mode.
 
+### Support tickets, the set-password page and the provider on pages without a session (2026-11-12, evening)
+
+Backend contracts: core-ui `docs/snow-support-tickets.md` and
+`docs/snow-portal-access-email.md`.
+
+- **Support is a live module.** `support` is in the staging source's
+  `enabledModules`; the nav item, the page (`routes/LiveSupportPage.js`), the
+  home "Support requests" card and the chips all come from one tagged Task
+  read (`loadSnowTickets`, `normalizers/support.js`). NEW is Open,
+  IN_PROGRESS and WAITING are In review, RESOLVED is Resolved, CLOSED is
+  Closed; any other state is not shown.
+- **Issue Opened** is derived, never stored: a property or a visit carries it
+  while an open ticket names it (`propertyWithTicket`, `openTicketForVisit`).
+  The label is the design's.
+- **A ticket is a form.** `support-tickets.js` sends
+  `CUSTOMER_SUPPORT_TICKET` through the shared form adapter and waits for the
+  `SNOW_CUSTOMER_SUPPORT_TICKET` preference. A refusal that names a field
+  shows beside that field in Core's words; one without a field, a FAILED
+  outcome and an HTTP error show above the button. A 5xx from the form
+  endpoint is named as a system error. "Open support ticket" on a visit and
+  on a property opens the form with them chosen (`support.newTicket`,
+  `data-id` = `property:visit`).
+- **Not shown.** Staff replies, the resolution summary and Cancelled: Core
+  keeps no event attribute and the tagged API has no comment read.
+- **`#/set-password?login=&key=`** (`set-password.js`,
+  `routes/SetPasswordPage.js`) is public and session-free. The password
+  stays out of `state`; the key leaves the address once read, as the request
+  link token does. The one rule Core enforced on dev-1 is six characters,
+  and its own message shows beside the field if it refuses another. A used
+  or wrong key, and an unknown login, show "This link has expired".
+- **Sign-in is not prefilled by Core.** `/oauth2/login` ignores
+  `login_hint`, `username` and `login`. The form carries the login in an
+  `autocomplete="username"` field beside the new password, so a browser can
+  keep the pair for that page, and the success state names the login.
+- **Provider name and logo without a session.** With
+  `shell.providerIdentity: "organization"` the portal template opens with the
+  same JTE lookup as the landing (`providerIdentityFragments` in
+  `scripts/export-live-portal-manual.mjs`) and writes
+  `data-portal-provider-name` and `data-portal-brand-logo-id` on the root
+  element. `BrandLogo.js` draws them in the public, gated and signed-in
+  headers; the Account read still supplies the regions.
+
 ### Visit page: time on site and work done; crew and equipment (2026-11-12)
 
 - **Nothing was removed.** Since `29f2340` (2026-10-28) the live visit page
@@ -1102,8 +1144,6 @@ the visit states "disappeared" from the live portal. What each part was:
 - **Checks.** `granite-ridge-staging-landing-manual-check.mjs` allows exactly
   the fragments the exporter writes and holds the rest of the template to
   the JTE-safe rules; the preview is the page without Organization data.
-- **Portal template.** Still the Account read: its anonymous pages (the
-  request confirmation links) show the configured name and the drawn mark.
 
 ### Option rows on one grid and Contract details as its own step (2026-11-11, night)
 

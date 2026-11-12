@@ -123,6 +123,7 @@ export const routeRegistry = {
   "auth.code": { id: "auth.code", path: "/login/verify", module: "auth", public: true },
   "request.confirm": { id: "request.confirm", path: "/request/confirm", module: "auth", public: true, sessionFree: true, requestEvent: "confirm" },
   "request.cancel": { id: "request.cancel", path: "/request/cancel", module: "auth", public: true, sessionFree: true, requestEvent: "cancel" },
+  "auth.setPassword": { id: "auth.setPassword", path: "/set-password", module: "auth", public: true, sessionFree: true },
   overview: { id: "overview", path: "/overview", module: "overview" },
   appointments: { id: "appointments", path: "/appointments", module: "appointmentsTimeline" },
   "visit.detail": { id: "visit.detail", path: "/visits/:id", module: "appointmentsTimeline", param: "id" },
@@ -151,6 +152,7 @@ export const routeRegistry = {
   "quote.new": { id: "quote.new", path: "/quote/new", module: "proposals", liveOnly: true },
   profile: { id: "profile", path: "/profile", module: "profile" },
   support: { id: "support", path: "/support", module: "support" },
+  "support.new": { id: "support.new", path: "/support/new", module: "support", liveOnly: true },
   care: { id: "care", path: "/care", module: "care", access: "care" },
 };
 
@@ -216,7 +218,8 @@ export function readPortalConfig(root) {
   var caseId = dataMode === "fixture" && caseVerticalFor(dataset.portalCase) === vertical ? dataset.portalCase : "";
   return {
     experienceId: dataset.portalExperienceId || "local-preview",
-    brandName: dataset.portalBrandName || verticalConfig.displayName,
+    brandName: dataset.portalProviderName || dataset.portalBrandName || verticalConfig.displayName,
+    brandLogoImageId: /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/.test(dataset.portalBrandLogoId || "") ? dataset.portalBrandLogoId : "",
     landingUrl: safeConfiguredUrl(dataset.portalLandingUrl),
     portalUrl: safeConfiguredUrl(dataset.portalUrl),
     supportUrl: safeConfiguredUrl(dataset.portalSupportUrl),

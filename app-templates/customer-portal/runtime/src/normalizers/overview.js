@@ -21,7 +21,7 @@ export var OVERVIEW_STATUS = {
   },
 };
 
-export var OPEN_TICKET_STATES = ["SUBMITTED", "IN_PROGRESS", "ESCALATED"];
+export var OPEN_TICKET_STATES = ["SUBMITTED", "IN_PROGRESS", "ESCALATED", "NEW", "WAITING"];
 
 export function propertyStatus(property) {
   var ticket = property && property.ticket;
@@ -80,7 +80,12 @@ export function propertyStatusKnown(sources) {
 
 export function knownPropertyStatus(property, sources) {
   if (propertyStatusKnown(sources)) return propertyStatus(property);
+  if (ticketsKnown(sources) && propertyStatus(property) === "issue") return "issue";
   return visitsKnown(sources) ? visitStatus(property) : null;
+}
+
+export function ticketsKnown(sources) {
+  return !!sources && sources.support === "ready";
 }
 
 export function visitsKnown(sources) {

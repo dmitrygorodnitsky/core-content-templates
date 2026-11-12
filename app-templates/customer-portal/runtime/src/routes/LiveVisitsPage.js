@@ -1,6 +1,6 @@
 import { h } from "../dom.js";
 import { render } from "../app.js";
-import { isModuleEnabled, liveListStatus, liveProperties, liveVisits, quotePackage, state } from "../state.js";
+import { isModuleEnabled, liveListStatus, liveProperties, liveTickets, liveVisits, quotePackage, state } from "../state.js";
 import { ActionButton } from "../components/primitives/ActionButton.js";
 import { EmptyState } from "../components/primitives/EmptyState.js";
 import { ErrorState } from "../components/primitives/ErrorState.js";
@@ -9,7 +9,9 @@ import { PageHeader } from "../components/shell/PageHeader.js";
 import { PropertyPlan } from "../components/storm/PropertyPlan.js";
 import { RecordSection, VisitRow } from "../components/storm/RecordRows.js";
 import { activeServiceNames } from "../normalizers/contracts.js";
-import { formatArea } from "../normalizers/overview.js";
+import { OVERVIEW_STATUS, formatArea } from "../normalizers/overview.js";
+import { openTicketForVisit } from "../normalizers/support.js";
+import { supportTicketsOpen } from "../support-tickets.js";
 import { findVisit, localDateKey, onSiteDuration, onSiteTimes, progressWhen, visitDay, visitImageUrl, visitPhotoCount, visitPlace, visitWindow } from "../normalizers/visits.js";
 import { sharedPlanMap } from "../property-map-session.js";
 import { propertyPlan } from "../property-plan.js";
@@ -29,7 +31,7 @@ export function LiveVisits() {
   var today = localDateKey(new Date(), state.config.timeZone);
   var properties = liveProperties();
   var row = function (visit) {
-    return VisitRow(visit, { today: today, place: visitPlace(visit, properties), onSite: visitOnSite(visit), photos: visitPhotoCount(visit) });
+    return VisitRow(visit, { today: today, place: visitPlace(visit, properties), onSite: visitOnSite(visit), photos: visitPhotoCount(visit), issue: !!openTicketForVisit(liveTickets(), visit.backendId) });
   };
   if (visits.upcoming.length) page.appendChild(RecordSection("visits-upcoming", "Upcoming", visits.upcoming.map(row)));
   if (visits.past.length) page.appendChild(RecordSection("visits-past", "Past", visits.past.map(row)));
@@ -39,9 +41,10 @@ export function LiveVisits() {
 
 export function LiveVisitDetail() {
   var page = h("section", { "class": "page page--narrow", "data-route": "visit.detail", "data-visual-id": "visit-detail" });
-  page.appendChild(h("div", { "class": "detail-bar", "data-module": "visit-detail-bar" }, [
+  var bar = h("div", { "class": "detail-bar", "data-module": "visit-detail-bar" }, [
     ActionButton({ variant: "btn--ghost", label: "Show all visits", action: "nav.go", id: "appointments", visualId: "visit-show-all" }),
-  ]));
+  ]);
+  page.appendChild(bar);
   var status = liveListStatus("appointmentsTimeline");
   var visit = status === "ready" ? findVisit(liveVisits(), state.visitId) : null;
   if (!visit) {
@@ -60,8 +63,12 @@ export function LiveVisitDetail() {
       h("h1", { "class": "prop-head__title" }, visitDay(visit, today)),
       h("div", { "class": "prop-head__addr", "data-module": "visit-when" }, visitWindow(visit)),
     ]),
+    openTicketForVisit(liveTickets(), visit.backendId) ? h("span", { "class": "status-badge status-badge--danger", "data-module": "visit-issue" }, OVERVIEW_STATUS.issue.label) : null,
     h("span", { "class": "status-badge status-badge--" + visit.status.tone }, visit.status.label),
   ]));
+  if (property && supportTicketsOpen(state.config)) {
+    bar.appendChild(ActionButton({ variant: "btn--ghost", label: "Open support ticket", action: "support.newTicket", id: property.backendId + ":" + visit.backendId, visualId: "visit-open-ticket" }));
+  }
 
   if (property) {
     page.appendChild(PropertyFacts(property));

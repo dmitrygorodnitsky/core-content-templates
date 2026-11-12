@@ -1,23 +1,20 @@
 // customer-portal/runtime/src/components/shell/TopNav.js — production transfer module.
 import { h } from "../../dom.js";
-import { activeProfile, activeVerticalConfig, activityUnread, cartCount, currentFixture, isModuleEnabled, isSpa, liveProvider, navListShown, state } from "../../state.js";
-import { visitImageUrl } from "../../normalizers/visits.js";
+import { activeProfile, activeVerticalConfig, activityUnread, cartCount, currentFixture, isModuleEnabled, isSpa, navListShown, state } from "../../state.js";
+import { BrandParts, brandIdentity } from "./BrandLogo.js";
 import { configuredExternalUrl, routeRegistry } from "../../config.js";
 import { ActionButton } from "../primitives/ActionButton.js";
 import { isRouteReachable, signedInWithAccess } from "../../router.js";
 import { icon } from "../storm/overview-icons.js";
 import { SpaTopNav } from "./SpaTopNav.js";
 
-var WORDMARK_ASPECT = 2.5;
-var LOGO_ATTEMPTS = 3;
-var providerLogos = new Map();
-
 export function TopNav(gated) {
   if (globalThis.__PORTAL_VERTICAL__ !== "snow" && isSpa()) return SpaTopNav(gated);
   var profile = activeProfile();
   if (gated) {
+    var gatedBrand = brandIdentity();
     return h("div", { "class": "top-nav-wrap" }, h("nav", { "class": "top-nav", "data-module": "top-nav", "data-visual-id": "top-nav", "data-state": "gated" }, [
-      h("div", { "class": "top-nav__brand" }, [h("div", { "class": "brand-logo" }), h("span", { "class": "brand-name" }, state.config.brandName || "Aircove")]),
+      h("div", { "class": "top-nav__brand", "data-brand": gatedBrand.logo && gatedBrand.logo.wordmark ? "wordmark" : undefined }, BrandParts(gatedBrand)),
       h("div", { "class": "nav-links" }),
       h("div", { "class": "top-nav__actions" }, [h("div", { "class": "icon-btn", "data-action": "ui.toggleMode", title: "Toggle light/dark" }, state.mode === "Dark" ? "☀" : "☾")])
     ]));
@@ -54,13 +51,9 @@ export function TopNav(gated) {
   actions.push(h("div", { "class": "icon-btn hamburger", "data-action": "ui.toggleMobileNav", title: "Menu" }, "\u2630"));
 
   var brandLeaves = !signedInWithAccess() && !!configuredExternalUrl(state.config, "landingUrl");
-  var provider = liveProvider();
-  var logo = providerLogo(provider);
+  var brand = brandIdentity();
   var nav = h("nav", { "class": "top-nav", "data-module": "top-nav", "data-visual-id": "top-nav" }, [
-    h("div", { "class": "top-nav__brand", "data-action": brandLeaves ? "nav.landing" : "nav.go", "data-id": brandLeaves ? undefined : state.config.defaultRoute, "data-brand": logo && logo.wordmark ? "wordmark" : undefined }, [
-      logo ? logo.node : h("div", { "class": "brand-logo" }),
-      h("span", { "class": "brand-name", "data-bind": "brand.name" }, (provider && provider.name) || state.config.brandName || "Aircove")
-    ]),
+    h("div", { "class": "top-nav__brand", "data-action": brandLeaves ? "nav.landing" : "nav.go", "data-id": brandLeaves ? undefined : state.config.defaultRoute, "data-brand": brand.logo && brand.logo.wordmark ? "wordmark" : undefined }, BrandParts(brand)),
     h("div", { "class": "nav-links" }, [h("div", { "class": "nav-pill", "data-nav-pill": "true" })].concat(links)),
     h("div", { "class": "top-nav__actions" }, actions)
   ]);
@@ -80,37 +73,6 @@ export function TopNav(gated) {
   return h("div", { "class": "top-nav-wrap" }, nav);
 }
 
-function providerLogo(provider) {
-  var source = provider && provider.logoImageId ? visitImageUrl(state.config.coreApiBase, provider.logoImageId) : "";
-  if (!source) return null;
-  var logo = providerLogos.get(source);
-  if (!logo) {
-    logo = { node: null, wordmark: false, attempts: 0 };
-    providerLogos.set(source, logo);
-  }
-  if (!logo.node && logo.attempts < LOGO_ATTEMPTS) {
-    logo.attempts += 1;
-    logo.node = logoImage(source, logo);
-  }
-  return logo.node ? logo : null;
-}
-
-function logoImage(source, logo) {
-  var image = h("img", { "class": "brand-logo brand-logo--image", src: source, alt: "", loading: "lazy", decoding: "async", "data-module": "brand-logo", "data-source": "organization" });
-  image.addEventListener("load", function () {
-    logo.wordmark = image.naturalWidth > image.naturalHeight * WORDMARK_ASPECT;
-    if (logo.wordmark && image.parentNode) image.parentNode.setAttribute("data-brand", "wordmark");
-  });
-  image.addEventListener("error", function () {
-    logo.node = null;
-    logo.wordmark = false;
-    var brand = image.parentNode;
-    if (!brand) return;
-    brand.removeAttribute("data-brand");
-    brand.replaceChild(h("div", { "class": "brand-logo" }), image);
-  });
-  return image;
-}
 
 function avatarName() {
   if (state.config.dataMode !== "live") {
@@ -138,6 +100,7 @@ var NAV_DETAIL_ROUTES = {
   "proposals.list": ["proposal.detail", "agreement.detail", "quote.new"],
   appointments: ["visit.detail"],
   invoices: ["invoice.detail"],
+  support: ["support.new"],
 };
 
 function navActive(item) {

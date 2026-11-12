@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { withoutProviderIdentity } from "./export-live-portal-manual.mjs";
 import fs from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
@@ -279,7 +280,7 @@ async function boot({ scenario, runtimeRoot, dataset }) {
 
 function shippedDataset(template) {
   const values = new Map(template.parameters.map((item) => [item.code, item.value]));
-  const html = template.html.replace(/\$\{([A-Z0-9_]+)@STRING\}/g, (_, code) => values.get(code));
+  const html = withoutProviderIdentity(template.html).replace(/\$\{([A-Z0-9_]+)@STRING\}/g, (_, code) => values.get(code));
   const match = /^<section id="app" ([^>]*)><\/section>$/.exec(html);
   assert.ok(match, "the root element is the whole html field");
   const dataset = {};

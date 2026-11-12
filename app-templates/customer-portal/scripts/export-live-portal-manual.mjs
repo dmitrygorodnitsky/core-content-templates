@@ -97,7 +97,8 @@ const runtimeKeys = ["vertical", "theme", "profile", "routerMode", "defaultRoute
 const accountKeys = ["organization", "accountTypeCode", "timeZone", "coreApiBase", "accountApiBase", "billApiBase", "resourceApiBase", "serviceApiBase"];
 const requiredAccountBases = ["coreApiBase", "accountApiBase"];
 const authKeys = ["coreBase", "callbackPath", "returnStorageKey", "logoutReturnStorageKey"];
-const shellKeys = ["experienceId", "brandName", "defaultMode", "primaryCtaLabel", "navigation", "requestFormUrl", "signedOutDestination", "landingUrl", "logoutReturnUrl", "allowedNavOrigins"];
+const organizationManager = "com.pixelnation.common.aspects.ApplicationContextProvider.getApplicationContext().getBean(com.pixelnation.common.persistence.OrganizationManager.class)";
+const shellKeys = ["experienceId", "brandName", "providerIdentity", "defaultMode", "primaryCtaLabel", "navigation", "requestFormUrl", "signedOutDestination", "landingUrl", "logoutReturnUrl", "allowedNavOrigins"];
 const navigationKeys = ["primary", "appointments", "invoices", "calendar", "activity", "care", "proposals", "services", "pricing", "products", "account", "support"];
 
 const credentialShapes = [
@@ -185,6 +186,10 @@ async function validateSource(source) {
   for (const key of ["experienceId", "brandName", "primaryCtaLabel"]) assertOptionalText(shell[key], "shell." + key);
   for (const key of navigationKeys) assertOptionalText((shell.navigation || {})[key], "shell.navigation." + key);
   if (shell.defaultMode !== undefined && !["light", "dark"].includes(shell.defaultMode)) throw new Error("shell.defaultMode must be light or dark");
+  if (shell.providerIdentity !== undefined) {
+    if (shell.providerIdentity !== "organization") throw new Error("shell.providerIdentity must be organization");
+    providerIdentityFragments(source.account && source.account.organization);
+  }
   if (shell.requestFormUrl !== undefined && !isHttpsUrl(shell.requestFormUrl)) throw new Error("shell.requestFormUrl must be an absolute https address");
   assertEntryContract(shell, { LANDING_ENTRY_REASONS, SIGNED_OUT_DESTINATIONS, landingEntryUrl });
   return geography;
@@ -295,9 +300,33 @@ function isHttpsUrl(value) {
   }
 }
 
+export function providerIdentityFragments(organizationCode) {
+  if (typeof organizationCode !== "string" || !/^[A-Z][A-Z0-9_]*$/.test(organizationCode)) throw new Error("account.organization must be an upper-snake Organization code before its identity is read on the server");
+  return Object.freeze({
+    lookup: [
+      "!{",
+      "  var provider = " + organizationManager + ".getByCode(" + JSON.stringify(organizationCode) + ", false, jakarta.persistence.LockModeType.NONE);",
+      "  var providerNls = provider == null ? null : provider.getByLangOrDefault(model.ctx().locale(), model.ctx().defaultLocale());",
+      '  var providerName = providerNls == null || providerNls.getName() == null ? "" : providerNls.getName().trim();',
+      '  var providerLogoId = provider == null || provider.getImage() == null ? "" : String.valueOf(provider.getImage().getId());',
+      "}",
+      "",
+    ].join("\n"),
+    attributes: ' data-portal-provider-name="$' + '{providerName}" data-portal-brand-logo-id="$' + '{providerLogoId}"',
+  });
+}
+
+export function withoutProviderIdentity(html) {
+  const organization = /data-portal-organization="([A-Z][A-Z0-9_]*)"/.exec(html);
+  if (!organization) return html;
+  const fragments = providerIdentityFragments(organization[1]);
+  return html.split(fragments.lookup).join("").split(fragments.attributes).join("");
+}
+
 function templateFor(source, geography, css, javascript) {
   const { runtime, account, auth } = source;
   const shell = source.shell || {};
+  const identity = shell.providerIdentity === "organization" ? providerIdentityFragments(account.organization) : null;
   const navigation = shell.navigation || {};
   const attributes = {
     "data-portal-experience-id": shell.experienceId,
@@ -349,7 +378,7 @@ function templateFor(source, geography, css, javascript) {
     parent: null,
     children: [],
     head: portalHead(source.template.title, "noindex,nofollow"),
-    html: '<section id="app" ' + attrs(emitted) + "></section>",
+    html: (identity ? identity.lookup : "") + '<section id="app" ' + attrs(emitted) + (identity ? identity.attributes : "") + "></section>",
     css,
     javascript,
     parameters: [
@@ -422,7 +451,9 @@ function copyMarker(code) {
   return "$" + "{" + code + "@LOCALIZED_STRING_SS}";
 }
 
-export function assertLiveTemplate(template) {
+export function assertLiveTemplate(candidate) {
+  const template = Object.assign({}, candidate, { html: withoutProviderIdentity(candidate.html) });
+  if (template.html !== candidate.html && !candidate.html.startsWith("!{")) throw new Error("The Organization lookup must open the markup");
   assertJteSafeTemplate(template);
   const allowed = new Set(liveDeploymentParameters);
   for (const item of template.parameters) {
@@ -500,7 +531,7 @@ function entryFor(shell) {
 
 function previewFor(source, template) {
   const values = new Map(template.parameters.map((item) => [item.code, shippedValue(item)]));
-  const html = template.html.replace(/\$\{([A-Z0-9_]+)@[A-Z_]+\}/g, (marker, code) => (values.has(code) ? escapeHtml(values.get(code)) : marker));
+  const html = withoutProviderIdentity(template.html).replace(/\$\{([A-Z0-9_]+)@[A-Z_]+\}/g, (marker, code) => (values.has(code) ? escapeHtml(values.get(code)) : marker));
   const mode = (source.shell && source.shell.defaultMode) || "light";
   return '<!doctype html>\n<html lang="en" data-theme="' + escapeHtml(source.runtime.theme) + '" data-mode="' + escapeHtml(mode) + '">\n<head>\n'
     + template.head + "\n<style>\n" + template.css + "</style>\n</head>\n<body>\n" + html + "\n<script>\n" + template.javascript + "\n</script>\n</body>\n</html>\n";

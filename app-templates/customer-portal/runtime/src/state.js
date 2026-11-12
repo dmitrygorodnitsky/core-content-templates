@@ -7,6 +7,7 @@ import { emptyLiveBookingOptions, liveBookingQuote, normalizeLiveBookingOptions 
 import { customerAccountRequired, portalProfiles, resolveProfile, routeRegistry, verticalProfiles } from "./config.js";
 import { contractsPackage } from "./normalizers/contracts.js";
 import { localDateKey, propertyWithVisits, visitCount } from "./normalizers/visits.js";
+import { propertyWithTicket, supportRequests, ticketCount } from "./normalizers/support.js";
 
 export var state = {
   route: "orders.list",
@@ -37,8 +38,11 @@ export var state = {
   approveQuoteId: null,
   contractDetails: null,
   quoteRequest: null,
+  supportTicket: null,
+  supportTicketSchema: null,
   quoteRequestSchema: null,
   requestLink: null,
+  setPassword: null,
   ovProperty: null,
   ovWeatherIndex: null,
   currentSiteId: "s2", // open proposal site
@@ -615,16 +619,20 @@ function liveOverview() {
   var geography = state.config.serviceGeography;
   var forecast = liveForecastState();
   var visits = liveVisits();
+  var tickets = liveTickets();
   var today = localDateKey(new Date(), state.config.timeZone);
   return {
     map: geography ? geography.map : null,
     weather: forecast === "ready" ? state.liveWeather : null,
     forecast: forecast,
-    properties: (envelope.items || []).map(function (property) { return visits ? propertyWithVisits(property, visits, today) : property; }),
-    sources: { invoices: "unavailable", appointments: "unavailable", contracts: "unavailable", support: "unavailable", visits: visits ? "ready" : "unavailable" },
+    properties: (envelope.items || []).map(function (property) {
+      var joined = visits ? propertyWithVisits(property, visits, today) : property;
+      return tickets ? propertyWithTicket(joined, tickets) : joined;
+    }),
+    sources: { invoices: "unavailable", appointments: "unavailable", contracts: "unavailable", support: tickets ? "ready" : "unavailable", visits: visits ? "ready" : "unavailable" },
     invoices: null,
     contracts: null,
-    support: null,
+    support: tickets ? supportRequests(tickets, state.config.timeZone) : null,
     banner: null,
   };
 }
@@ -648,6 +656,11 @@ export function liveVisits() {
   return envelope && envelope.state === "ready" && Array.isArray(envelope.upcoming) && Array.isArray(envelope.past) ? envelope : null;
 }
 
+export function liveTickets() {
+  var envelope = state.config.dataMode === "live" && isModuleEnabled("support") ? state.moduleData.support : null;
+  return envelope && envelope.state === "ready" && Array.isArray(envelope.open) && Array.isArray(envelope.closed) ? envelope : null;
+}
+
 export function liveInvoices() {
   var envelope = isModuleEnabled("invoices") ? state.moduleData.invoices : null;
   return envelope && envelope.state === "ready" && Array.isArray(envelope.items) ? envelope : null;
@@ -657,7 +670,7 @@ export function liveListStatus(moduleId) {
   var envelope = state.moduleData[moduleId];
   if (!envelope || !envelope.state || envelope.state === "loading") return "loading";
   if (envelope.state !== "ready") return envelope.state === "unauthorized" ? "unauthorized" : "error";
-  var rows = moduleId === "invoices" ? (envelope.items || []).length : visitCount(envelope);
+  var rows = moduleId === "invoices" ? (envelope.items || []).length : moduleId === "support" ? ticketCount(envelope) : visitCount(envelope);
   return rows ? "ready" : "empty";
 }
 

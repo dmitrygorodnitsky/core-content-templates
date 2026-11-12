@@ -275,6 +275,7 @@
     "auth.code": { id: "auth.code", path: "/login/verify", module: "auth", public: true },
     "request.confirm": { id: "request.confirm", path: "/request/confirm", module: "auth", public: true, sessionFree: true, requestEvent: "confirm" },
     "request.cancel": { id: "request.cancel", path: "/request/cancel", module: "auth", public: true, sessionFree: true, requestEvent: "cancel" },
+    "auth.setPassword": { id: "auth.setPassword", path: "/set-password", module: "auth", public: true, sessionFree: true },
     overview: { id: "overview", path: "/overview", module: "overview" },
     appointments: { id: "appointments", path: "/appointments", module: "appointmentsTimeline" },
     "visit.detail": { id: "visit.detail", path: "/visits/:id", module: "appointmentsTimeline", param: "id" },
@@ -303,6 +304,7 @@
     "quote.new": { id: "quote.new", path: "/quote/new", module: "proposals", liveOnly: true },
     profile: { id: "profile", path: "/profile", module: "profile" },
     support: { id: "support", path: "/support", module: "support" },
+    "support.new": { id: "support.new", path: "/support/new", module: "support", liveOnly: true },
     care: { id: "care", path: "/care", module: "care", access: "care" }
   };
   var routeMatchers = Object.values(routeRegistry).map(function(route) {
@@ -358,7 +360,8 @@
     var caseId = dataMode === "fixture" && caseVerticalFor(dataset.portalCase) === vertical2 ? dataset.portalCase : "";
     return {
       experienceId: dataset.portalExperienceId || "local-preview",
-      brandName: dataset.portalBrandName || verticalConfig.displayName,
+      brandName: dataset.portalProviderName || dataset.portalBrandName || verticalConfig.displayName,
+      brandLogoImageId: /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/.test(dataset.portalBrandLogoId || "") ? dataset.portalBrandLogoId : "",
       landingUrl: safeConfiguredUrl(dataset.portalLandingUrl),
       portalUrl: safeConfiguredUrl(dataset.portalUrl),
       supportUrl: safeConfiguredUrl(dataset.portalSupportUrl),
@@ -646,12 +649,12 @@
     return null;
   }
   function attributeNumber(row, code) {
-    var entry = attributeEntry(row, code);
-    return entry ? positiveInteger(entry.value) : null;
+    var entry2 = attributeEntry(row, code);
+    return entry2 ? positiveInteger(entry2.value) : null;
   }
   function attributeText(row, code) {
-    var entry = attributeEntry(row, code);
-    return entry && entry.value != null ? text(entry.value) : "";
+    var entry2 = attributeEntry(row, code);
+    return entry2 && entry2.value != null ? text(entry2.value) : "";
   }
 
   // app-templates/customer-portal/runtime/src/normalizers/postal-address.js
@@ -861,18 +864,18 @@
   }
   function entryValues(entries, typeCode) {
     var values = [];
-    rows(entries).forEach(function(entry) {
-      if (text(entry.type && entry.type.code) !== typeCode) return;
-      var value = plain2(entry.value);
+    rows(entries).forEach(function(entry2) {
+      if (text(entry2.type && entry2.type.code) !== typeCode) return;
+      var value = plain2(entry2.value);
       if (value && values.indexOf(value) === -1) values.push(value);
     });
     return values;
   }
   function firstEntryValue(entries, typeCode) {
-    var entry = rows(entries).filter(function(row) {
+    var entry2 = rows(entries).filter(function(row) {
       return text(row.type && row.type.code) === typeCode && plain2(row.value);
     }).sort(byIdAscending)[0];
-    return entry ? plain2(entry.value) : "";
+    return entry2 ? plain2(entry2.value) : "";
   }
   function oldestTypedAddress(addresses, typeCode) {
     var link = rows(addresses).filter(function(row) {
@@ -946,7 +949,7 @@
       copy: "We\u2019re monitoring conditions and will dispatch service when needed."
     }
   };
-  var OPEN_TICKET_STATES = ["SUBMITTED", "IN_PROGRESS", "ESCALATED"];
+  var OPEN_TICKET_STATES = ["SUBMITTED", "IN_PROGRESS", "ESCALATED", "NEW", "WAITING"];
   function propertyStatus(property) {
     var ticket = property && property.ticket;
     if (ticket && OPEN_TICKET_STATES.indexOf(ticket.state) !== -1) return "issue";
@@ -996,7 +999,11 @@
   }
   function knownPropertyStatus(property, sources) {
     if (propertyStatusKnown(sources)) return propertyStatus(property);
+    if (ticketsKnown(sources) && propertyStatus(property) === "issue") return "issue";
     return visitsKnown(sources) ? visitStatus(property) : null;
+  }
+  function ticketsKnown(sources) {
+    return !!sources && sources.support === "ready";
   }
   function visitsKnown(sources) {
     return !!sources && sources.visits === "ready";
@@ -1221,16 +1228,16 @@
     if (frame && kind === frame.kind && frame.label) return frame.label;
     return weatherLabel(kind, legend);
   }
-  function popupWeather(frame, zoneKind, source, entry, index, sources) {
+  function popupWeather(frame, zoneKind, source, entry2, index, sources) {
     var day = frame.day + " " + frame.date;
-    if (entry && entry.state === "loading") return { state: "loading", day, source: "xweather" };
-    var own2 = entry && entry.state === "ready" && Array.isArray(entry.days) ? entry.days[index] : null;
+    if (entry2 && entry2.state === "loading") return { state: "loading", day, source: "xweather" };
+    var own2 = entry2 && entry2.state === "ready" && Array.isArray(entry2.days) ? entry2.days[index] : null;
     if (own2) {
       var note = sourceOpened(sources, "contracts") ? own2.note : own2.forecastNote || "";
       return { state: "property", day, kind: own2.kind, temp: own2.temp, phrase: own2.phrase, note, source: "xweather" };
     }
     return {
-      state: entry && entry.state === "failed" ? "failed" : "area",
+      state: entry2 && entry2.state === "failed" ? "failed" : "area",
       day,
       kind: zoneKind,
       temp: frame.temp,
@@ -1563,15 +1570,15 @@
   }
   function chosenOrders(row) {
     if (!row || row.servicesScope !== "approved") return [];
-    return row.properties.reduce(function(found, entry) {
-      return found.concat(entry.orders);
+    return row.properties.reduce(function(found, entry2) {
+      return found.concat(entry2.orders);
     }, []);
   }
   function currentServiceAgreement(pkg, propertyBackendId) {
     var rows2 = (pkg && Array.isArray(pkg.agreements) ? pkg.agreements : []).filter(function(row) {
       if (CURRENT_SERVICE_STAGES.indexOf(row.agreement.stage) === -1 || row.servicesScope !== "approved") return false;
-      return propertyBackendId == null || row.properties.some(function(entry) {
-        return entry.propertyBackendId === propertyBackendId;
+      return propertyBackendId == null || row.properties.some(function(entry2) {
+        return entry2.propertyBackendId === propertyBackendId;
       });
     });
     return rows2.find(function(row) {
@@ -1581,11 +1588,11 @@
   function activeServiceNames(pkg, propertyBackendId) {
     var row = currentServiceAgreement(pkg, propertyBackendId);
     if (!row || row.agreement.stage !== "active") return [];
-    var entry = row.properties.find(function(item) {
+    var entry2 = row.properties.find(function(item) {
       return item.propertyBackendId === propertyBackendId;
     });
     var names = [];
-    (entry ? entry.orders : []).forEach(function(order) {
+    (entry2 ? entry2.orders : []).forEach(function(order) {
       order.lines.forEach(function(line) {
         if (line.product && names.indexOf(line.product) === -1) names.push(line.product);
       });
@@ -1782,19 +1789,19 @@
     var keyed = /* @__PURE__ */ new Map();
     services.forEach(function(order) {
       var key = order.propertyBackendId || 0;
-      var entry = keyed.get(key);
-      if (!entry) {
+      var entry2 = keyed.get(key);
+      if (!entry2) {
         var property = key ? byProperty.get(key) || null : null;
-        entry = { key: "property-" + key, propertyBackendId: key || null, property, orders: [], title: "", address: "" };
-        keyed.set(key, entry);
-        properties.push(entry);
+        entry2 = { key: "property-" + key, propertyBackendId: key || null, property, orders: [], title: "", address: "" };
+        keyed.set(key, entry2);
+        properties.push(entry2);
       }
-      entry.orders.push(order);
+      entry2.orders.push(order);
     });
-    properties.forEach(function(entry) {
-      entry.orders.sort(byPricingModel);
-      entry.title = propertyTitle(entry.propertyBackendId, entry.property);
-      entry.address = propertyAddress(entry.property, entry.title);
+    properties.forEach(function(entry2) {
+      entry2.orders.sort(byPricingModel);
+      entry2.title = propertyTitle(entry2.propertyBackendId, entry2.property);
+      entry2.address = propertyAddress(entry2.property, entry2.title);
     });
     var named = [];
     listed.forEach(function(order) {
@@ -1871,15 +1878,15 @@
     var incomplete = false;
     var lines = found.sort(function(left, right) {
       return rankOf(left) - rankOf(right) || left.position - right.position;
-    }).map(function(entry) {
-      var line = entry.row;
+    }).map(function(entry2) {
+      var line = entry2.row;
       var priceId = positiveInteger(line.itemPrice && line.itemPrice.id);
       var price = priceId && catalog.prices ? catalog.prices.get(priceId) || null : null;
       var productId = positiveInteger(price && price.product && price.product.id);
       var product = productId && catalog.products ? catalog.products.get(productId) || null : null;
       if (priceId && !price || productId && !product) incomplete = true;
       return {
-        key: "line-" + entry.backendId,
+        key: "line-" + entry2.backendId,
         product: localizedName2(product && product.nls),
         quantity: formatQuantity(line.itemCount),
         unitPrice: formatMoney(line.amount, currency),
@@ -1906,14 +1913,14 @@
   function priceVariant(backendId, catalog) {
     var entries = catalog.byOrder.get(backendId) || [];
     if (!entries.length || !catalog.prices) return null;
-    var prices = entries.map(function(entry) {
-      return catalog.prices.get(positiveInteger(entry.row.itemPrice && entry.row.itemPrice.id)) || null;
+    var prices = entries.map(function(entry2) {
+      return catalog.prices.get(positiveInteger(entry2.row.itemPrice && entry2.row.itemPrice.id)) || null;
     });
     var names = prices.map(function(price) {
       return localizedName2(price && price.nls);
     });
-    var name = names[0] && names.every(function(entry) {
-      return entry === names[0];
+    var name = names[0] && names.every(function(entry2) {
+      return entry2 === names[0];
     }) ? names[0] : "";
     var types = prices.map(function(price) {
       return text(price && price.type && price.type.code).toUpperCase();
@@ -1923,8 +1930,8 @@
     }).length;
     var code = "";
     if (types.every(Boolean) && recurrent === 0) code = "PER_SERVICE";
-    if (types.every(Boolean) && recurrent === types.length) code = recurringCode(entries.map(function(entry) {
-      return intervalMonths(entry.row.metadata);
+    if (types.every(Boolean) && recurrent === types.length) code = recurringCode(entries.map(function(entry2) {
+      return intervalMonths(entry2.row.metadata);
     }));
     if (!code && !name) return null;
     return { code, label: name || own(PRICING_MODELS, code) || RECURRING_MODEL.label };
@@ -1949,13 +1956,13 @@
       var backendId = positiveInteger(row && row.id);
       var orderId = positiveInteger(row && row.order && row.order.id);
       if (!backendId || !orderId) return;
-      var entry = { backendId, position, row };
-      items.push(entry);
+      var entry2 = { backendId, position, row };
+      items.push(entry2);
       var list = byOrder.get(orderId);
       if (!list) byOrder.set(orderId, list = []);
       if (!list.some(function(known) {
         return known.backendId === backendId;
-      })) list.push(entry);
+      })) list.push(entry2);
     });
     return {
       items,
@@ -1964,8 +1971,8 @@
       products: source.products ? rowsById(source.products) : null
     };
   }
-  function rankOf(entry) {
-    var rank = finiteNumber2(entry.row.sortOrder);
+  function rankOf(entry2) {
+    var rank = finiteNumber2(entry2.row.sortOrder);
     return rank === null ? Number.MAX_SAFE_INTEGER : rank;
   }
   function readRows(value) {
@@ -2053,8 +2060,8 @@
     return payload && Array.isArray(payload.result) ? payload.result : [];
   }
   function attributeIds(row, code) {
-    var entry = attributeEntry(row, code);
-    return idList(entry ? entry.value : null);
+    var entry2 = attributeEntry(row, code);
+    return idList(entry2 ? entry2.value : null);
   }
   function idList(value) {
     var parts = Array.isArray(value) ? value : typeof value === "string" ? value.split(",") : value == null ? [] : [value];
@@ -2281,8 +2288,8 @@
   function localDateKey(date, timeZone) {
     return zonedParts((date instanceof Date ? date : /* @__PURE__ */ new Date()).getTime(), timeZone).date;
   }
-  function visitImageUrl(coreBase, id) {
-    return MEDIA_ID2.test(id) ? String(coreBase || "/core").replace(/\/+$/, "") + "/image/" + id + "/get" : "";
+  function visitImageUrl(coreBase2, id) {
+    return MEDIA_ID2.test(id) ? String(coreBase2 || "/core").replace(/\/+$/, "") + "/image/" + id + "/get" : "";
   }
   function visitRecord(row) {
     var backendId = positiveInteger(row && row.id);
@@ -2343,8 +2350,8 @@
     };
   }
   function mediaIds(row, code) {
-    var entry = attributeEntry(row, code);
-    var value = entry ? entry.value : null;
+    var entry2 = attributeEntry(row, code);
+    var value = entry2 ? entry2.value : null;
     if (typeof value === "string" && /^\s*\[/.test(value)) {
       try {
         value = JSON.parse(value);
@@ -2362,8 +2369,8 @@
     });
   }
   function lastStep(steps, code) {
-    return (steps || []).filter(function(entry) {
-      return entry.code === code;
+    return (steps || []).filter(function(entry2) {
+      return entry2.code === code;
     }).pop() || null;
   }
   function inPhase(phase) {
@@ -2381,6 +2388,87 @@
   }
   function pad(value) {
     return value < 10 ? "0" + value : String(value);
+  }
+
+  // app-templates/customer-portal/runtime/src/normalizers/support.js
+  var TICKET_TYPE = "SUPPORT_TICKET";
+  var TICKET_STATUS = /* @__PURE__ */ Object.freeze({
+    NEW: /* @__PURE__ */ Object.freeze({ label: "Open", tone: "info", open: true }),
+    IN_PROGRESS: /* @__PURE__ */ Object.freeze({ label: "In review", tone: "progress", open: true }),
+    WAITING: /* @__PURE__ */ Object.freeze({ label: "In review", tone: "progress", open: true }),
+    RESOLVED: /* @__PURE__ */ Object.freeze({ label: "Resolved", tone: "ok", open: false }),
+    CLOSED: /* @__PURE__ */ Object.freeze({ label: "Closed", tone: "scheduled", open: false })
+  });
+  var MONTHS3 = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  function normalizeTickets(raw) {
+    var rows2 = Array.isArray(raw && raw.items) ? raw.items : [];
+    var tickets = rows2.map(ticketRecord).filter(Boolean).sort(function(left, right) {
+      return right.openedMs - left.openedMs;
+    });
+    return {
+      state: "ready",
+      truncated: !!(raw && raw.truncated),
+      open: tickets.filter(function(ticket) {
+        return ticket.open;
+      }),
+      closed: tickets.filter(function(ticket) {
+        return !ticket.open;
+      })
+    };
+  }
+  function ticketCount(envelope2) {
+    return envelope2 ? (envelope2.open || []).length + (envelope2.closed || []).length : 0;
+  }
+  function openTicketForProperty(envelope2, propertyBackendId) {
+    if (!propertyBackendId) return null;
+    return (envelope2 && envelope2.open || []).find(function(ticket) {
+      return ticket.propertyBackendId === propertyBackendId;
+    }) || null;
+  }
+  function openTicketForVisit(envelope2, visitBackendId) {
+    if (!visitBackendId) return null;
+    return (envelope2 && envelope2.open || []).find(function(ticket) {
+      return ticket.visitBackendId === visitBackendId;
+    }) || null;
+  }
+  function propertyWithTicket(property, envelope2) {
+    var ticket = openTicketForProperty(envelope2, property.backendId);
+    return Object.assign({}, property, { ticket: ticket ? { id: ticket.id, state: ticket.stateCode } : null });
+  }
+  function supportRequests(envelope2, timeZone) {
+    return (envelope2 && envelope2.open || []).map(function(ticket) {
+      return { id: ticket.id, title: ticket.subject, status: ticket.status.label, tone: ticket.status.tone, when: ticketOpened(ticket, timeZone) };
+    });
+  }
+  function ticketOpened(ticket, timeZone) {
+    if (!ticket || !Number.isFinite(ticket.openedMs)) return "";
+    var parts = { year: 0, month: 1, day: 1 };
+    new Intl.DateTimeFormat("en-US", { timeZone: timeZone || void 0, year: "numeric", month: "numeric", day: "numeric" }).formatToParts(new Date(ticket.openedMs)).forEach(function(part) {
+      if (Object.prototype.hasOwnProperty.call(parts, part.type)) parts[part.type] = Number(part.value);
+    });
+    return MONTHS3[parts.month - 1] + " " + parts.day + ", " + parts.year;
+  }
+  function ticketRecord(row) {
+    var backendId = positiveInteger(row && row.id);
+    var stateCode = latestStateCode(row);
+    var status = Object.prototype.hasOwnProperty.call(TICKET_STATUS, stateCode) ? TICKET_STATUS[stateCode] : null;
+    if (!backendId || !status || text(row.type && row.type.code) !== TICKET_TYPE) return null;
+    var names = row.nls && row.nls.en ? row.nls.en : {};
+    var opened = typeof row.created === "number" ? row.created : Number(row.created);
+    return {
+      id: "ticket-core-" + backendId,
+      backendId,
+      code: text(row.code),
+      subject: text(names.NAME) || text(row.code),
+      message: text(names.DESCRIPTION),
+      openedMs: Number.isFinite(opened) ? opened : 0,
+      stateCode,
+      status: { label: status.label, tone: status.tone },
+      open: status.open,
+      propertyBackendId: attributeNumber(row, "PROPERTY"),
+      visitBackendId: attributeNumber(row, "RELATED_SERVICE_VISIT"),
+      reason: attributeText(row, "CONTACT_REASON")
+    };
   }
 
   // app-templates/customer-portal/runtime/src/state.js
@@ -2426,8 +2514,11 @@
     approveQuoteId: null,
     contractDetails: null,
     quoteRequest: null,
+    supportTicket: null,
+    supportTicketSchema: null,
     quoteRequestSchema: null,
     requestLink: null,
+    setPassword: null,
     ovProperty: null,
     ovWeatherIndex: null,
     currentSiteId: "s2",
@@ -2596,18 +2687,20 @@
     var geography = state.config.serviceGeography;
     var forecast = liveForecastState();
     var visits = liveVisits();
+    var tickets = liveTickets();
     var today = localDateKey(/* @__PURE__ */ new Date(), state.config.timeZone);
     return {
       map: geography ? geography.map : null,
       weather: forecast === "ready" ? state.liveWeather : null,
       forecast,
       properties: (envelope2.items || []).map(function(property) {
-        return visits ? propertyWithVisits(property, visits, today) : property;
+        var joined = visits ? propertyWithVisits(property, visits, today) : property;
+        return tickets ? propertyWithTicket(joined, tickets) : joined;
       }),
-      sources: { invoices: "unavailable", appointments: "unavailable", contracts: "unavailable", support: "unavailable", visits: visits ? "ready" : "unavailable" },
+      sources: { invoices: "unavailable", appointments: "unavailable", contracts: "unavailable", support: tickets ? "ready" : "unavailable", visits: visits ? "ready" : "unavailable" },
       invoices: null,
       contracts: null,
-      support: null,
+      support: tickets ? supportRequests(tickets, state.config.timeZone) : null,
       banner: null
     };
   }
@@ -2627,6 +2720,10 @@
     var envelope2 = state.config.dataMode === "live" && isModuleEnabled("appointmentsTimeline") ? state.moduleData.appointmentsTimeline : null;
     return envelope2 && envelope2.state === "ready" && Array.isArray(envelope2.upcoming) && Array.isArray(envelope2.past) ? envelope2 : null;
   }
+  function liveTickets() {
+    var envelope2 = state.config.dataMode === "live" && isModuleEnabled("support") ? state.moduleData.support : null;
+    return envelope2 && envelope2.state === "ready" && Array.isArray(envelope2.open) && Array.isArray(envelope2.closed) ? envelope2 : null;
+  }
   function liveInvoices() {
     var envelope2 = isModuleEnabled("invoices") ? state.moduleData.invoices : null;
     return envelope2 && envelope2.state === "ready" && Array.isArray(envelope2.items) ? envelope2 : null;
@@ -2635,7 +2732,7 @@
     var envelope2 = state.moduleData[moduleId];
     if (!envelope2 || !envelope2.state || envelope2.state === "loading") return "loading";
     if (envelope2.state !== "ready") return envelope2.state === "unauthorized" ? "unauthorized" : "error";
-    var rows2 = moduleId === "invoices" ? (envelope2.items || []).length : visitCount(envelope2);
+    var rows2 = moduleId === "invoices" ? (envelope2.items || []).length : moduleId === "support" ? ticketCount(envelope2) : visitCount(envelope2);
     return rows2 ? "ready" : "empty";
   }
   function navListShown(moduleId) {
@@ -3001,7 +3098,7 @@
       if (flight) return null;
       deps.state.contractCommand = Object.assign({ phase: "pending" }, command);
       var started2 = Promise.resolve().then(operation).catch(function(error2) {
-        return settle3(command, error2);
+        return settle5(command, error2);
       }).finally(function() {
         flight = null;
         var kept = command.kind === "changes" && !!deps.state.contractCommand;
@@ -3089,7 +3186,7 @@
       if (deps.notify) deps.notify(CONFIRMED_TOAST[kind]);
       return true;
     }
-    async function settle3(command, error2) {
+    async function settle5(command, error2) {
       var code = error2 && error2.code;
       if (code === "session-expired") {
         deps.state.contractCommand = null;
@@ -3297,8 +3394,8 @@
   function detailValues(input) {
     var values = {};
     (/* @__PURE__ */ Object.keys(input || {})).forEach(function(code) {
-      var entry = input[code];
-      values[code] = entry && typeof entry === "object" ? entry.value : entry;
+      var entry2 = input[code];
+      values[code] = entry2 && typeof entry2 === "object" ? entry2.value : entry2;
     });
     return values;
   }
@@ -3313,8 +3410,8 @@
     var buckets = agreement && agreement.attributes || {};
     var ids = [];
     (/* @__PURE__ */ Object.keys(buckets)).forEach(function(key) {
-      var entry = buckets[key] && buckets[key].ORDERS;
-      var value = entry ? entry.value : null;
+      var entry2 = buckets[key] && buckets[key].ORDERS;
+      var value = entry2 ? entry2.value : null;
       (Array.isArray(value) ? value : []).forEach(function(id) {
         var parsed2 = positiveInteger(id);
         if (parsed2 && ids.indexOf(parsed2) === -1) ids.push(parsed2);
@@ -3355,9 +3452,9 @@
     if (!globalThis.oidc || !globalThis.oidc.UserManager || !globalThis.oidc.WebStorageStateStore) {
       throw contractError("oidc-library-unavailable", "Core sign-in library did not load");
     }
-    var coreBase = sameOriginUrl(config.authCoreBase || "/core", "Core authentication base").replace(/\/+$/, "");
+    var coreBase2 = sameOriginUrl(config.authCoreBase || "/core", "Core authentication base").replace(/\/+$/, "");
     var expectedCallback = sameOriginUrl(config.authCallbackPath || "/core/oauth2-callback.html", "Core callback");
-    var response = await globalThis.fetch(coreBase + "/.well-known/oauth-protected-resource/", {
+    var response = await globalThis.fetch(coreBase2 + "/.well-known/oauth-protected-resource/", {
       credentials: "omit",
       headers: { Accept: "application/json" }
     });
@@ -3736,6 +3833,7 @@
   var VISIT_PAGE_SIZE = 50;
   var VISIT_TRANSITION_PAGE_SIZE = 20;
   var INVOICE_PAGE_SIZE = 50;
+  var TICKET_PAGE_SIZE = 50;
   var MEDIA_ID3 = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
   var REF_MAPPINGS = [{ name: "id" }, { name: "code" }, { name: "nls" }];
   var ID_MAPPINGS = [{ name: "id" }];
@@ -3887,6 +3985,21 @@
     pageSize: VISIT_TRANSITION_PAGE_SIZE,
     sorting: [{ field: "observed", direction: "ASC" }]
   });
+  var TICKET_LIST_BODY = /* @__PURE__ */ Object.freeze({
+    filters: [{ operator: "=", property: "type.code", value: TICKET_TYPE }],
+    mappings: [
+      { name: "id" },
+      { name: "code" },
+      { name: "nls" },
+      { name: "created" },
+      { name: "attributes" },
+      { name: "type", type: "identifier", mappings: TAGGED_REF_MAPPINGS },
+      { name: "states", type: "collection", mappings: TAGGED_REF_MAPPINGS }
+    ],
+    offset: 0,
+    pageSize: TICKET_PAGE_SIZE,
+    sorting: [{ field: "created", direction: "DESC" }]
+  });
   var INVOICE_LIST_BODY = /* @__PURE__ */ Object.freeze({
     mappings: INVOICE_MAPPINGS,
     offset: 0,
@@ -3911,6 +4024,29 @@
         if (moduleId !== "invoices") throw contractError2("unsupported-module", "Core snow invoices adapter cannot load " + moduleId);
         return loadSnowInvoices(context, fetchImpl, options2.origin);
       }
+    };
+  }
+  function createCoreSnowTicketsAdapter(options2 = {}) {
+    var fetchImpl = options2.fetch || coreSessionFetch;
+    if (typeof fetchImpl !== "function") throw contractError2("fetch-unavailable", "Core snow adapter requires fetch");
+    return {
+      async load(moduleId, context) {
+        if (moduleId !== "support") throw contractError2("unsupported-module", "Core snow tickets adapter cannot load " + moduleId);
+        return loadSnowTickets(context, fetchImpl, options2.origin);
+      }
+    };
+  }
+  async function loadSnowTickets(context, fetchImpl = coreSessionFetch, explicitOrigin) {
+    var api = readContext(context, explicitOrigin);
+    var reply = await requestJson2(fetchImpl, api.serviceBase + "/api/tagged/task/list.json", readOptions(api, TICKET_LIST_BODY));
+    var rows2 = listResult(reply);
+    return {
+      state: "ready",
+      accountId: api.accountId,
+      items: rows2.filter(function(row) {
+        return text(row && row.type && row.type.code) === TICKET_TYPE;
+      }),
+      truncated: resultSizeOf(reply, rows2.length) > rows2.length
     };
   }
   async function loadSnowVisits(context, fetchImpl = coreSessionFetch, explicitOrigin) {
@@ -4162,10 +4298,10 @@
     });
     return ids;
   }
-  function referencedIds(rows2, field3) {
+  function referencedIds(rows2, field4) {
     var ids = [];
     (rows2 || []).forEach(function(row) {
-      var id = positiveInteger(row && row[field3] && row[field3].id);
+      var id = positiveInteger(row && row[field4] && row[field4].id);
       if (id && ids.indexOf(id) === -1) ids.push(id);
     });
     return ids;
@@ -4305,14 +4441,14 @@
     };
   }
   function attributeArea(row, code) {
-    var entry = attributeEntry(row, code);
-    var value = entry ? entry.value : null;
+    var entry2 = attributeEntry(row, code);
+    var value = entry2 ? entry2.value : null;
     var number = typeof value === "number" ? value : typeof value === "string" && value.trim() !== "" ? Number(value) : Number.NaN;
     return Number.isFinite(number) && number > 0 ? number : null;
   }
   function attributeMediaId(row, code) {
-    var entry = attributeEntry(row, code);
-    var value = entry ? entry.value : null;
+    var entry2 = attributeEntry(row, code);
+    var value = entry2 ? entry2.value : null;
     if (typeof value === "string" && /^\s*\[/.test(value)) {
       try {
         value = JSON.parse(value);
@@ -4327,8 +4463,8 @@
     return ids.length === 1 ? ids[0] : "";
   }
   function attributeCoordinate(row, code, limit) {
-    var entry = attributeEntry(row, code);
-    var value = entry ? entry.value : null;
+    var entry2 = attributeEntry(row, code);
+    var value = entry2 ? entry2.value : null;
     var number = typeof value === "number" ? value : typeof value === "string" && value.trim() !== "" ? Number(value) : Number.NaN;
     return Number.isFinite(number) && Math.abs(number) <= limit ? number : null;
   }
@@ -4429,6 +4565,7 @@
     quoteRequestPreference: QUOTE_REQUEST_PREFERENCE,
     quoteOrderTypes: /* @__PURE__ */ Object.freeze(QUOTE_ORDER_TYPES.slice()),
     resourceMappings: RESOURCE_MAPPINGS,
+    ticketListBody: TICKET_LIST_BODY,
     visitListBody: VISIT_LIST_BODY,
     visitTransitionsBody: VISIT_TRANSITIONS_BODY,
     quoteFilters: ["account.id"],
@@ -4516,8 +4653,8 @@
     for (var index = 0; index < contacts.length; index += 1) {
       var entries = Array.isArray(contacts[index].contactEntries) ? contacts[index].contactEntries : [];
       for (var entryIndex = 0; entryIndex < entries.length; entryIndex += 1) {
-        var entry = entries[entryIndex];
-        if (text2(entry.type && entry.type.code) === "PHONE" && text2(entry.value)) return text2(entry.value);
+        var entry2 = entries[entryIndex];
+        if (text2(entry2.type && entry2.type.code) === "PHONE" && text2(entry2.value)) return text2(entry2.value);
       }
     }
     return null;
@@ -4624,6 +4761,7 @@
   var LOGIN_FORM = /* @__PURE__ */ Object.freeze({ typeCode: "CUSTOMER_LOGIN_CHANGE", preference: "SNOW_CUSTOMER_LOGIN_CHANGE" });
   var INVOICE_PAYMENT_FORM = /* @__PURE__ */ Object.freeze({ typeCode: "CUSTOMER_INVOICE_PAYMENT", preference: "SNOW_CUSTOMER_INVOICE_PAYMENT" });
   var QUOTE_REQUEST_FORM = /* @__PURE__ */ Object.freeze({ typeCode: "PORTAL_QUOTE_REQUEST", preference: "SNOW_PORTAL_QUOTE_REQUEST" });
+  var SUPPORT_TICKET_FORM = /* @__PURE__ */ Object.freeze({ typeCode: "CUSTOMER_SUPPORT_TICKET", preference: "SNOW_CUSTOMER_SUPPORT_TICKET" });
   var OUTCOMES = /* @__PURE__ */ Object.freeze(["APPLIED", "REFUSED", "FAILED"]);
   var FORM_LOCALE = "en";
   var POLL_INTERVAL_MS = 1e3;
@@ -5362,7 +5500,7 @@
     var result = h("div", { "class": "pay-sheet__result", "data-module": "pay-result", hidden: true });
     var primary = h("button", { "class": "btn btn--primary btn--block btn--lg", type: "button", "data-visual-id": "pay-sheet-confirm" });
     var secondary = h("button", { "class": "btn btn--ghost btn--block", type: "button", "data-visual-id": "pay-sheet-secondary" });
-    var actions2 = h("div", { "class": "pay-sheet__actions" }, [primary, secondary]);
+    var actions3 = h("div", { "class": "pay-sheet__actions" }, [primary, secondary]);
     var panel = h("aside", { "class": "drawer pay-sheet", role: "dialog", "aria-modal": "true", "aria-labelledby": "pay-sheet-title", "data-module": "invoice-pay-sheet", "data-visual-id": "invoice-pay-sheet" }, [
       h("div", { "class": "drawer__head" }, [title, closeButton]),
       summary,
@@ -5371,7 +5509,7 @@
       cardField,
       note,
       result,
-      actions2
+      actions3
     ]);
     var scrim = h("div", { "class": "scrim pay-sheet__scrim", "data-visual-id": "invoice-pay-scrim" });
     closeButton.addEventListener("click", closeInvoicePayment);
@@ -5458,6 +5596,54 @@
     ]);
   }
 
+  // app-templates/customer-portal/runtime/src/components/shell/BrandLogo.js
+  var WORDMARK_ASPECT = 2.5;
+  var LOGO_ATTEMPTS = 3;
+  var providerLogos = /* @__PURE__ */ new Map();
+  function brandIdentity() {
+    var provider = liveProvider();
+    return {
+      name: provider && provider.name || state.config.brandName || "Aircove",
+      logo: brandLogo(provider && provider.logoImageId || state.config.brandLogoImageId || "")
+    };
+  }
+  function BrandParts(identity) {
+    return [
+      identity.logo ? identity.logo.node : h("div", { "class": "brand-logo" }),
+      h("span", { "class": "brand-name", "data-bind": "brand.name" }, identity.name)
+    ];
+  }
+  function brandLogo(imageId) {
+    var source = imageId ? visitImageUrl(state.config.coreApiBase, imageId) : "";
+    if (!source) return null;
+    var logo = providerLogos.get(source);
+    if (!logo) {
+      logo = { node: null, wordmark: false, attempts: 0 };
+      providerLogos.set(source, logo);
+    }
+    if (!logo.node && logo.attempts < LOGO_ATTEMPTS) {
+      logo.attempts += 1;
+      logo.node = logoImage(source, logo);
+    }
+    return logo.node ? logo : null;
+  }
+  function logoImage(source, logo) {
+    var image = h("img", { "class": "brand-logo brand-logo--image", src: source, alt: "", loading: "lazy", decoding: "async", "data-module": "brand-logo", "data-source": "organization" });
+    image.addEventListener("load", function() {
+      logo.wordmark = image.naturalWidth > image.naturalHeight * WORDMARK_ASPECT;
+      if (logo.wordmark && image.parentNode) image.parentNode.setAttribute("data-brand", "wordmark");
+    });
+    image.addEventListener("error", function() {
+      logo.node = null;
+      logo.wordmark = false;
+      var brand = image.parentNode;
+      if (!brand) return;
+      brand.removeAttribute("data-brand");
+      brand.replaceChild(h("div", { "class": "brand-logo" }), image);
+    });
+    return image;
+  }
+
   // app-templates/customer-portal/runtime/src/components/storm/overview-icons.js
   var ICONS = {
     map: "M4 7.5 9.5 5l5 2.5L20 5v11.5L14.5 19l-5-2.5L4 19V7.5Z M9.5 5v11.5 M14.5 7.5V19",
@@ -5491,15 +5677,13 @@
   }
 
   // app-templates/customer-portal/runtime/src/components/shell/TopNav.js
-  var WORDMARK_ASPECT = 2.5;
-  var LOGO_ATTEMPTS = 3;
-  var providerLogos = /* @__PURE__ */ new Map();
   function TopNav(gated) {
     if (false) return SpaTopNav(gated);
     var profile = activeProfile();
     if (gated) {
+      var gatedBrand = brandIdentity();
       return h("div", { "class": "top-nav-wrap" }, h("nav", { "class": "top-nav", "data-module": "top-nav", "data-visual-id": "top-nav", "data-state": "gated" }, [
-        h("div", { "class": "top-nav__brand" }, [h("div", { "class": "brand-logo" }), h("span", { "class": "brand-name" }, state.config.brandName || "Aircove")]),
+        h("div", { "class": "top-nav__brand", "data-brand": gatedBrand.logo && gatedBrand.logo.wordmark ? "wordmark" : void 0 }, BrandParts(gatedBrand)),
         h("div", { "class": "nav-links" }),
         h("div", { "class": "top-nav__actions" }, [h("div", { "class": "icon-btn", "data-action": "ui.toggleMode", title: "Toggle light/dark" }, state.mode === "Dark" ? "\u2600" : "\u263E")])
       ]));
@@ -5514,15 +5698,15 @@
         "data-state": active ? "active" : void 0
       }, navLabel(n));
     });
-    var actions2 = [
+    var actions3 = [
       h("div", { "class": "icon-btn icon-btn--optional", "data-action": "ui.toggleMode", title: "Toggle light/dark" }, state.mode === "Dark" ? "\u2600" : "\u263E")
     ];
-    if (primaryConnected(profile.primary)) actions2.push(ActionButton({ variant: "btn--primary", label: state.config.primaryCtaLabel || profile.primary.label, action: profile.primary.action, visualId: "primary-cta" }));
-    if (!profile.weatherCalendar && isModuleEnabled("calendar")) actions2.push(h("div", { "class": "icon-btn icon-btn--optional", "data-action": "calendar.open", title: "Calendar" }, "\u{1F4C5}"));
-    if (profile.showCart && isModuleEnabled("checkout")) actions2.push(h("div", { "class": "icon-btn", "data-action": "cart.open", title: "Cart", "data-state": cartCount() ? "filled" : "empty" }, ["\u{1F6D2}", cartCount() ? h("span", { "class": "cart-badge", "data-bind": "cart.count" }, String(cartCount())) : null]));
+    if (primaryConnected(profile.primary)) actions3.push(ActionButton({ variant: "btn--primary", label: state.config.primaryCtaLabel || profile.primary.label, action: profile.primary.action, visualId: "primary-cta" }));
+    if (!profile.weatherCalendar && isModuleEnabled("calendar")) actions3.push(h("div", { "class": "icon-btn icon-btn--optional", "data-action": "calendar.open", title: "Calendar" }, "\u{1F4C5}"));
+    if (profile.showCart && isModuleEnabled("checkout")) actions3.push(h("div", { "class": "icon-btn", "data-action": "cart.open", title: "Cart", "data-state": cartCount() ? "filled" : "empty" }, ["\u{1F6D2}", cartCount() ? h("span", { "class": "cart-badge", "data-bind": "cart.count" }, String(cartCount())) : null]));
     if (isModuleEnabled("activity")) {
       var unread = activityUnread();
-      actions2.push(h("div", {
+      actions3.push(h("div", {
         "class": "icon-btn icon-btn--optional",
         "data-module": "activity-control",
         "data-action": "activity.open",
@@ -5532,19 +5716,15 @@
     }
     var profileEnabled = isModuleEnabled("profile");
     var signInRequired = state.config.authMode === "required";
-    if (profileEnabled) actions2.push(h("div", { "class": "avatar", "data-module": "profile-avatar", "data-action": "profile.open", title: "Profile", "aria-label": "Profile" }, initials(avatarName())));
-    else if (signInRequired) actions2.push(h("button", { "class": "icon-btn icon-btn--optional", "data-module": "sign-out-control", "data-visual-id": "sign-out-control", "data-action": "auth.signOut", title: "Sign out", "aria-label": "Sign out", type: "button" }, [icon("signOut", "ov-icon")]));
-    actions2.push(h("div", { "class": "icon-btn hamburger", "data-action": "ui.toggleMobileNav", title: "Menu" }, "\u2630"));
+    if (profileEnabled) actions3.push(h("div", { "class": "avatar", "data-module": "profile-avatar", "data-action": "profile.open", title: "Profile", "aria-label": "Profile" }, initials(avatarName())));
+    else if (signInRequired) actions3.push(h("button", { "class": "icon-btn icon-btn--optional", "data-module": "sign-out-control", "data-visual-id": "sign-out-control", "data-action": "auth.signOut", title: "Sign out", "aria-label": "Sign out", type: "button" }, [icon("signOut", "ov-icon")]));
+    actions3.push(h("div", { "class": "icon-btn hamburger", "data-action": "ui.toggleMobileNav", title: "Menu" }, "\u2630"));
     var brandLeaves = !signedInWithAccess() && !!configuredExternalUrl(state.config, "landingUrl");
-    var provider = liveProvider();
-    var logo = providerLogo(provider);
+    var brand = brandIdentity();
     var nav = h("nav", { "class": "top-nav", "data-module": "top-nav", "data-visual-id": "top-nav" }, [
-      h("div", { "class": "top-nav__brand", "data-action": brandLeaves ? "nav.landing" : "nav.go", "data-id": brandLeaves ? void 0 : state.config.defaultRoute, "data-brand": logo && logo.wordmark ? "wordmark" : void 0 }, [
-        logo ? logo.node : h("div", { "class": "brand-logo" }),
-        h("span", { "class": "brand-name", "data-bind": "brand.name" }, provider && provider.name || state.config.brandName || "Aircove")
-      ]),
+      h("div", { "class": "top-nav__brand", "data-action": brandLeaves ? "nav.landing" : "nav.go", "data-id": brandLeaves ? void 0 : state.config.defaultRoute, "data-brand": brand.logo && brand.logo.wordmark ? "wordmark" : void 0 }, BrandParts(brand)),
       h("div", { "class": "nav-links" }, [h("div", { "class": "nav-pill", "data-nav-pill": "true" })].concat(links)),
-      h("div", { "class": "top-nav__actions" }, actions2)
+      h("div", { "class": "top-nav__actions" }, actions3)
     ]);
     if (state.mobileNav) {
       nav.appendChild(h(
@@ -5561,36 +5741,6 @@
       ));
     }
     return h("div", { "class": "top-nav-wrap" }, nav);
-  }
-  function providerLogo(provider) {
-    var source = provider && provider.logoImageId ? visitImageUrl(state.config.coreApiBase, provider.logoImageId) : "";
-    if (!source) return null;
-    var logo = providerLogos.get(source);
-    if (!logo) {
-      logo = { node: null, wordmark: false, attempts: 0 };
-      providerLogos.set(source, logo);
-    }
-    if (!logo.node && logo.attempts < LOGO_ATTEMPTS) {
-      logo.attempts += 1;
-      logo.node = logoImage(source, logo);
-    }
-    return logo.node ? logo : null;
-  }
-  function logoImage(source, logo) {
-    var image = h("img", { "class": "brand-logo brand-logo--image", src: source, alt: "", loading: "lazy", decoding: "async", "data-module": "brand-logo", "data-source": "organization" });
-    image.addEventListener("load", function() {
-      logo.wordmark = image.naturalWidth > image.naturalHeight * WORDMARK_ASPECT;
-      if (logo.wordmark && image.parentNode) image.parentNode.setAttribute("data-brand", "wordmark");
-    });
-    image.addEventListener("error", function() {
-      logo.node = null;
-      logo.wordmark = false;
-      var brand = image.parentNode;
-      if (!brand) return;
-      brand.removeAttribute("data-brand");
-      brand.replaceChild(h("div", { "class": "brand-logo" }), image);
-    });
-    return image;
   }
   function avatarName() {
     if (state.config.dataMode !== "live") {
@@ -5616,7 +5766,8 @@
     products: ["checkout"],
     "proposals.list": ["proposal.detail", "agreement.detail", "quote.new"],
     appointments: ["visit.detail"],
-    invoices: ["invoice.detail"]
+    invoices: ["invoice.detail"],
+    support: ["support.new"]
   };
   function navActive(item) {
     return item.key === state.route || (NAV_DETAIL_ROUTES[item.key] || []).indexOf(state.route) !== -1;
@@ -5657,14 +5808,12 @@
   function PublicNav() {
     var landingOpen = isSpa() || !!configuredExternalUrl(state.config, "landingUrl");
     var signedIn = signedInWithAccess();
+    var brand = brandIdentity();
     return h(
       "div",
       { "class": "top-nav-wrap" },
       h("nav", { "class": "top-nav", "data-module": "public-nav", "data-visual-id": "public-nav" }, [
-        h("div", { "class": "top-nav__brand", "data-action": signedIn ? "nav.go" : landingOpen ? "nav.landing" : void 0, "data-id": signedIn ? state.config.defaultRoute : void 0 }, [
-          h("div", { "class": "brand-logo" }),
-          h("span", { "class": "brand-name", "data-bind": "brand.name" }, state.config.brandName || "Aircove")
-        ]),
+        h("div", { "class": "top-nav__brand", "data-action": signedIn ? "nav.go" : landingOpen ? "nav.landing" : void 0, "data-id": signedIn ? state.config.defaultRoute : void 0, "data-brand": brand.logo && brand.logo.wordmark ? "wordmark" : void 0 }, BrandParts(brand)),
         h("div", { "class": "top-nav__actions" }, [
           h("div", { "class": "icon-btn icon-btn--optional", "data-action": "ui.toggleMode", title: "Toggle light/dark" }, state.mode === "Dark" ? "\u2600" : "\u263E"),
           state.route === "landing" || state.route === "seo.landing" ? ActionButton({ variant: "btn--primary", label: "Sign in", action: "auth.gotoSignin", visualId: "public-signin" }) : signedIn ? ActionButton({ variant: "btn--ghost", label: "\u2039 Home", action: "nav.go", id: state.config.defaultRoute, visualId: "public-home" }) : landingOpen ? ActionButton({ variant: "btn--ghost", label: "\u2039 Home", action: "nav.landing", visualId: "public-home" }) : null
@@ -6817,8 +6966,8 @@
         }).catch(function(error2) {
           console.warn("[portal] property forecast unavailable, showing the area forecast", error2 && error2.message);
           return { state: "failed", days: [] };
-        }).then(function(entry) {
-          entries.set(id, entry);
+        }).then(function(entry2) {
+          entries.set(id, entry2);
           onChange();
         });
         return entries.get(id);
@@ -6837,9 +6986,9 @@
     if (!configuredExternalUrl(state.config, "landingUrl")) return null;
     return ActionButton(Object.assign({ label: "Back to our website", action: "nav.landing" }, props));
   }
-  function GateGlyph(glyph2) {
-    if (isSpa()) return h("div", { "class": "oidc-glyph" }, glyph2);
-    return h("div", { "class": "oidc-glyph", "data-tone": "neutral", style: "background:rgba(var(--accent-rgb),.12);color:var(--accent)" }, glyph2);
+  function GateGlyph(glyph3) {
+    if (isSpa()) return h("div", { "class": "oidc-glyph" }, glyph3);
+    return h("div", { "class": "oidc-glyph", "data-tone": "neutral", style: "background:rgba(var(--accent-rgb),.12);color:var(--accent)" }, glyph3);
   }
 
   // app-templates/customer-portal/runtime/src/components/primitives/RouteStates.js
@@ -6942,7 +7091,7 @@
         if (pin.card) bindCard(pin);
       });
       draw();
-      Promise.resolve().then(settle3);
+      Promise.resolve().then(settle5);
       return canvas;
     }
     function statusText(next) {
@@ -6951,7 +7100,7 @@
       if (next.locating) return next.locatingText || "Finding your properties on the map\u2026";
       return "None of your properties could be placed on the map";
     }
-    function settle3() {
+    function settle5() {
       fit(view.pins);
       draw();
     }
@@ -7169,17 +7318,17 @@
     return h("div", { "class": "ov-map__stage", "data-surface": "google" }, [
       view.map.stage({
         viewport: props.viewport,
-        pins: view.placed.map(function(entry) {
+        pins: view.placed.map(function(entry2) {
           return {
-            id: entry.property.id,
-            point: entry.point,
-            element: PropertyPin(entry.property, props.frame, entry === chosen, props.sources, props.direct),
-            card: PinCard(entry.property.name, propertyLine(entry.property), knownPropertyStatus(entry.property, props.sources))
+            id: entry2.property.id,
+            point: entry2.point,
+            element: PropertyPin(entry2.property, props.frame, entry2 === chosen, props.sources, props.direct),
+            card: PinCard(entry2.property.name, propertyLine(entry2.property), knownPropertyStatus(entry2.property, props.sources))
           };
         }),
         popup: popup ? { point: chosen.point, element: popup } : null,
-        locating: view.entries.some(function(entry) {
-          return entry.reason === "locating";
+        locating: view.entries.some(function(entry2) {
+          return entry2.reason === "locating";
         })
       }),
       popup && view.map.docked() ? dock(popup) : null
@@ -7198,16 +7347,16 @@
       var spot = controller2 ? controller2.placement(property) : { point: propertyPoint(property), reason: null };
       return { property, point: spot.point, reason: map ? spot.reason : null };
     });
-    var placed = map ? entries.filter(function(entry) {
-      return !!entry.point;
+    var placed = map ? entries.filter(function(entry2) {
+      return !!entry2.point;
     }) : [];
-    var chosen = props.direct ? null : entries.find(function(entry) {
-      return entry.property.id === props.selectedId;
+    var chosen = props.direct ? null : entries.find(function(entry2) {
+      return entry2.property.id === props.selectedId;
     }) || null;
     return { failed, map, entries, placed, chosen, pinned: !!chosen && placed.indexOf(chosen) !== -1 };
   }
-  function popupFor(entry, props) {
-    return PropertyPopup(entry.property, props.frame ? popupView(entry, props) : null, props.weather ? props.weather.legend : null, props.sources);
+  function popupFor(entry2, props) {
+    return PropertyPopup(entry2.property, props.frame ? popupView(entry2, props) : null, props.weather ? props.weather.legend : null, props.sources);
   }
   function keyboardFocus(element) {
     try {
@@ -7335,10 +7484,10 @@
     if (mapId) settings.mapId = mapId;
     return settings;
   }
-  function popupView(entry, props) {
-    var property = entry.property;
-    var live = props.weather.source === "xweather" && entry.point && props.forecasts;
-    var forecast = live ? props.forecasts.request(property.id, forecastPoint(entry.point)) : null;
+  function popupView(entry2, props) {
+    var property = entry2.property;
+    var live = props.weather.source === "xweather" && entry2.point && props.forecasts;
+    var forecast = live ? props.forecasts.request(property.id, forecastPoint(entry2.point)) : null;
     return popupWeather(props.frame, zoneWeather(property, props.frame), props.weather.source, forecast, props.index, props.sources);
   }
   function weatherKey(property, frame, status) {
@@ -7369,10 +7518,10 @@
     var list = h(
       "ul",
       { "class": "ov-plist", "data-module": "property-list", "data-visual-id": "property-list", "aria-label": "Your properties" },
-      entries.map(function(entry) {
-        var selected = !props.direct && entry.property.id === props.selectedId;
+      entries.map(function(entry2) {
+        var selected = !props.direct && entry2.property.id === props.selectedId;
         return h("li", { "class": "ov-plist__item" }, [
-          PropertyRow(entry.property, props, selected, entry.reason),
+          PropertyRow(entry2.property, props, selected, entry2.reason),
           selected && popup ? inline(popup) : null
         ]);
       })
@@ -7858,20 +8007,20 @@
     function view(plan, label) {
       if (status === "failed") return null;
       if (status === "idle") start();
-      var entry = views.get(plan);
-      if (!entry) {
+      var entry2 = views.get(plan);
+      if (!entry2) {
         var canvas = h("div", { "class": "prop-plan__canvas", role: "img", "aria-label": label });
-        entry = { node: h("div", { "class": "prop-plan__map", "data-module": "plan-map", "data-visual-id": "plan-map", "data-surface": "google" }, [canvas]), canvas, map: null, drawn: false };
-        views.set(plan, entry);
+        entry2 = { node: h("div", { "class": "prop-plan__map", "data-module": "plan-map", "data-visual-id": "plan-map", "data-surface": "google" }, [canvas]), canvas, map: null, drawn: false };
+        views.set(plan, entry2);
       }
-      entry.node.setAttribute("data-state", status === "ready" ? "ready" : "loading");
-      if (status === "ready" && !entry.drawn) {
-        entry.drawn = true;
+      entry2.node.setAttribute("data-state", status === "ready" ? "ready" : "loading");
+      if (status === "ready" && !entry2.drawn) {
+        entry2.drawn = true;
         Promise.resolve().then(function() {
-          draw(entry, plan);
+          draw(entry2, plan);
         }).catch(fail2);
       }
-      return entry.node;
+      return entry2.node;
     }
     function start() {
       status = "loading";
@@ -7886,14 +8035,14 @@
     function fail2(error2) {
       if (status === "failed") return;
       status = "failed";
-      views.forEach(function(entry) {
-        entry.node.setAttribute("data-state", "failed");
+      views.forEach(function(entry2) {
+        entry2.node.setAttribute("data-state", "failed");
       });
       console.warn("[portal] Google map unavailable, drawing the plan as an outline instead", error2 && error2.message);
       onChange();
     }
-    function draw(entry, plan) {
-      var canvas = entry.canvas;
+    function draw(entry2, plan) {
+      var canvas = entry2.canvas;
       var bounds = plan.bounds;
       var map = new maps.Map(canvas, {
         center: { lat: (bounds.north + bounds.south) / 2, lng: (bounds.east + bounds.west) / 2 },
@@ -7905,7 +8054,7 @@
         clickableIcons: false,
         gestureHandling: "cooperative"
       });
-      entry.map = map;
+      entry2.map = map;
       plan.elements.forEach(function(element) {
         var color = toneColor(element.tone);
         element.shapes.forEach(function(shape) {
@@ -8009,6 +8158,7 @@
         settings.onSite ? h("span", { "class": "prop-visit__meta", "data-module": "visit-on-site" }, settings.onSite) : null,
         settings.photos ? h("span", { "class": "prop-visit__meta", "data-module": "visit-photo-count" }, settings.photos === 1 ? "1 photo" : settings.photos + " photos") : null
       ]),
+      settings.issue ? h("span", { "class": "status-badge status-badge--danger", "data-module": "visit-issue" }, OVERVIEW_STATUS.issue.label) : null,
       text4("status-badge status-badge--" + visit.status.tone, visit.status.label),
       text4("prop-visit__caret", "\u203A")
     ]);
@@ -8292,14 +8442,14 @@
       stepButton("\u203A", "Next day", index + 1, index === last)
     ]);
   }
-  function stepButton(glyph2, label, target, disabled) {
+  function stepButton(glyph3, label, target, disabled) {
     return h("button", {
       "class": "ov-step",
       "data-action": disabled ? void 0 : "overview.scrubWeather",
       "data-id": String(target),
       "aria-label": label,
       disabled: disabled ? "disabled" : void 0
-    }, glyph2);
+    }, glyph3);
   }
   function UpcomingWidget(model, timeline) {
     var scheduled = model.properties.filter(function(property) {
@@ -9178,21 +9328,21 @@
   })(typeof window !== "undefined" ? window : globalThis);
 
   // app-templates/customer-portal/runtime/src/components/storm/PropertyPlan.js
-  function PropertyPlan(entry, property, planMap) {
-    if (!entry || entry.status === "unavailable") return null;
-    var card = h("section", { "class": "card card--pad prop-plan", "data-module": "property-plan", "data-visual-id": "property-plan", "data-state": entry.status, "aria-labelledby": "property-plan-title" }, [
+  function PropertyPlan(entry2, property, planMap) {
+    if (!entry2 || entry2.status === "unavailable") return null;
+    var card = h("section", { "class": "card card--pad prop-plan", "data-module": "property-plan", "data-visual-id": "property-plan", "data-state": entry2.status, "aria-labelledby": "property-plan-title" }, [
       h("div", { "class": "prop-section__title", id: "property-plan-title" }, "Service plan")
     ]);
-    if (entry.status !== "ready") {
+    if (entry2.status !== "ready") {
       card.setAttribute("aria-busy", "true");
       card.appendChild(skel("height:220px;border-radius:14px"));
       return card;
     }
-    var sized = globalThis.ClientReview.plan.sumsTo(entry.plan, property ? property.areaSqft : null);
-    var satellite = planMap ? planMap.view(entry.plan, "Service plan on a satellite map") : null;
+    var sized = globalThis.ClientReview.plan.sumsTo(entry2.plan, property ? property.areaSqft : null);
+    var satellite = planMap ? planMap.view(entry2.plan, "Service plan on a satellite map") : null;
     if (satellite) card.appendChild(satellite);
-    card.appendChild(planDrawing(entry.plan));
-    card.appendChild(h("ul", { "class": "prop-plan__legend", "aria-label": "Plan elements" }, entry.plan.elements.map(function(element) {
+    card.appendChild(planDrawing(entry2.plan));
+    card.appendChild(h("ul", { "class": "prop-plan__legend", "aria-label": "Plan elements" }, entry2.plan.elements.map(function(element) {
       return h("li", { "class": "prop-plan__item" }, [
         h("span", { "class": "prop-plan__swatch", "data-tone": String(element.tone), "data-kind": element.kind, "aria-hidden": "true" }),
         h("span", { "class": "prop-plan__name" }, elementName(element)),
@@ -9212,25 +9362,287 @@
     return element.name || "Element " + element.position;
   }
 
+  // app-templates/customer-portal/runtime/src/support-tickets.js
+  var SUPPORT_TICKET_OUTCOMES = /* @__PURE__ */ Object.freeze(["CREATED", "REFUSED", "FAILED"]);
+  var SUPPORT_TICKET_FIELDS = /* @__PURE__ */ Object.freeze(["PROPERTY_ID", "VISIT_ID", "CONTACT_REASON", "SUBJECT", "MESSAGE"]);
+  var SUPPORT_SUBJECT_LIMIT = 150;
+  var SUPPORT_MESSAGE_LIMIT = 4e3;
+  var SUPPORT_TICKET_OUTCOME_TIMEOUT_MS = 6e4;
+  var SUPPORT_TICKET_COPY = /* @__PURE__ */ Object.freeze({
+    propertyMissing: "Choose the property this is about.",
+    subjectMissing: "Add a short subject.",
+    subjectLong: "Keep the subject under " + SUPPORT_SUBJECT_LIMIT + " characters.",
+    messageMissing: "Tell us what happened.",
+    messageLong: "Keep the message under " + SUPPORT_MESSAGE_LIMIT + " characters.",
+    notSent: "Your ticket wasn\u2019t sent. Check your connection and try again.",
+    serverError: "Your ticket wasn\u2019t sent: our system answered with an error. Nothing was saved. Please try again in a few minutes or contact us directly.",
+    failed: "We couldn\u2019t open your ticket right now. Please try again in a few minutes.",
+    refused: "We couldn\u2019t open this ticket. Check the form and try again."
+  });
+  var BUSY_PHASES2 = /* @__PURE__ */ Object.freeze(["sending", "waiting", "checking"]);
+  function supportTicketsOpen(config) {
+    return !!config && config.vertical === "snow" && config.dataMode === "live" && (config.enabledModules || []).indexOf("support") !== -1;
+  }
+  function supportTicketState() {
+    if (!state.supportTicket) state.supportTicket = freshTicket(null, null);
+    return state.supportTicket;
+  }
+  function supportTicketBusy() {
+    return !!state.supportTicket && BUSY_PHASES2.indexOf(state.supportTicket.phase) !== -1;
+  }
+  function startSupportTicket(propertyBackendId, visitBackendId) {
+    if (supportTicketBusy()) return false;
+    var visit = knownVisit(positiveInteger(visitBackendId));
+    var property = knownProperty(positiveInteger(propertyBackendId) || visit && visit.propertyBackendId);
+    var only = liveProperties().length === 1 ? liveProperties()[0] : null;
+    state.supportTicket = freshTicket(property || only, visit && property && visit.propertyBackendId === property.backendId ? visit : null);
+    return true;
+  }
+  function freshTicket(property, visit) {
+    return {
+      phase: "editing",
+      draft: { propertyId: property ? property.backendId : null, visitId: visit ? visit.backendId : null, reason: "", subject: "", message: "" },
+      errors: {},
+      message: "",
+      formId: null,
+      ticketCode: ""
+    };
+  }
+  function knownProperty(backendId) {
+    return backendId ? liveProperties().find(function(property) {
+      return property.backendId === backendId;
+    }) || null : null;
+  }
+  function knownVisit(backendId) {
+    var visits = liveVisits();
+    if (!backendId || !visits) return null;
+    return visits.upcoming.concat(visits.past, visits.cancelled || []).find(function(visit) {
+      return visit.backendId === backendId;
+    }) || null;
+  }
+  function visitsOfProperty(propertyBackendId) {
+    var visits = liveVisits();
+    if (!visits || !propertyBackendId) return [];
+    return visits.upcoming.concat(visits.past).filter(function(visit) {
+      return visit.propertyBackendId === propertyBackendId;
+    }).sort(function(left, right) {
+      return right.start.ms - left.start.ms;
+    });
+  }
+  function changeSupportTicketDraft(key, value) {
+    var ticket = supportTicketState();
+    if (supportTicketBusy()) return false;
+    if (key === "propertyId") {
+      var property = knownProperty(positiveInteger(value));
+      ticket.draft.propertyId = property ? property.backendId : null;
+      ticket.draft.visitId = null;
+      delete ticket.errors.PROPERTY_ID;
+      delete ticket.errors.VISIT_ID;
+      return true;
+    }
+    if (key === "visitId") {
+      var visit = knownVisit(positiveInteger(value));
+      ticket.draft.visitId = visit && visit.propertyBackendId === ticket.draft.propertyId ? visit.backendId : null;
+      delete ticket.errors.VISIT_ID;
+      return true;
+    }
+    if (key === "reason") {
+      ticket.draft.reason = text(value);
+      delete ticket.errors.CONTACT_REASON;
+      return true;
+    }
+    if (key === "subject" || key === "message") {
+      ticket.draft[key] = String(value == null ? "" : value);
+      delete ticket.errors[key === "subject" ? "SUBJECT" : "MESSAGE"];
+      return true;
+    }
+    return false;
+  }
+  function supportTicketSchema(type) {
+    var attributes = {};
+    (Array.isArray(type && type.attributes) ? type.attributes : []).forEach(function(attribute) {
+      var code = text(attribute && attribute.code);
+      if (code) attributes[code] = attribute;
+    });
+    var reason = attributes.CONTACT_REASON || {};
+    return {
+      reasons: (Array.isArray(reason.options) ? reason.options : []).map(function(option) {
+        var value = text(option && option.value);
+        return value ? { value, label: localizedName5(option.nls) || reasonLabel(value) } : null;
+      }).filter(Boolean)
+    };
+  }
+  function reasonLabel(value, schema) {
+    var code = text(value);
+    var known = schema && (schema.reasons || []).find(function(reason) {
+      return reason.value === code;
+    });
+    if (known) return known.label;
+    var words = code.toLowerCase().split("_").filter(Boolean).join(" ");
+    return words ? words.charAt(0).toUpperCase() + words.slice(1) : "";
+  }
+  function localizedName5(nls) {
+    return text(nls && nls.en && nls.en.NAME);
+  }
+  function loadSupportTicketSchema(options2) {
+    var settings = options2 || {};
+    var current = state.supportTicketSchema;
+    if (current && current.state !== "error") return Promise.resolve(current);
+    var forms = settings.forms || createCoreProfileFormAdapter();
+    var loading = { state: "loading", schema: null };
+    state.supportTicketSchema = loading;
+    return Promise.resolve().then(function() {
+      return forms.type(SUPPORT_TICKET_FORM, { config: state.config, state });
+    }).then(function(type) {
+      if (state.supportTicketSchema !== loading) return state.supportTicketSchema;
+      state.supportTicketSchema = { state: "ready", schema: supportTicketSchema(type) };
+      return state.supportTicketSchema;
+    }, function(error2) {
+      if (state.supportTicketSchema !== loading) return state.supportTicketSchema;
+      if (error2 && error2.code === "session-expired") state.account = "session-expired";
+      state.supportTicketSchema = { state: "error", schema: null };
+      return state.supportTicketSchema;
+    }).then(function(result) {
+      if (settings.onChange) settings.onChange();
+      return result;
+    });
+  }
+  function validateSupportTicket(draft) {
+    var errors = {};
+    var subject = text(draft.subject);
+    var message = text(draft.message);
+    if (!draft.propertyId) errors.PROPERTY_ID = SUPPORT_TICKET_COPY.propertyMissing;
+    if (!subject) errors.SUBJECT = SUPPORT_TICKET_COPY.subjectMissing;
+    else if (subject.length > SUPPORT_SUBJECT_LIMIT) errors.SUBJECT = SUPPORT_TICKET_COPY.subjectLong;
+    if (!message) errors.MESSAGE = SUPPORT_TICKET_COPY.messageMissing;
+    else if (message.length > SUPPORT_MESSAGE_LIMIT) errors.MESSAGE = SUPPORT_TICKET_COPY.messageLong;
+    return errors;
+  }
+  function supportTicketValues(draft) {
+    var values = { PROPERTY_ID: draft.propertyId, SUBJECT: text(draft.subject), MESSAGE: text(draft.message) };
+    if (draft.visitId) values.VISIT_ID = draft.visitId;
+    if (draft.reason) values.CONTACT_REASON = draft.reason;
+    return values;
+  }
+  function submitSupportTicket(options2) {
+    var settings = options2 || {};
+    var ticket = supportTicketState();
+    var changed = settings.onChange || function() {
+    };
+    if (supportTicketBusy() || ticket.phase === "created") return Promise.resolve(false);
+    var errors = validateSupportTicket(ticket.draft);
+    if ((/* @__PURE__ */ Object.keys(errors)).length) {
+      ticket.errors = errors;
+      ticket.message = "";
+      changed("invalid");
+      return Promise.resolve(false);
+    }
+    var forms = settings.forms || outcomeForms(settings);
+    var context = { config: state.config, state };
+    ticket.phase = "sending";
+    ticket.errors = {};
+    ticket.message = "";
+    changed("sending");
+    return Promise.resolve().then(function() {
+      return forms.submit(SUPPORT_TICKET_FORM, supportTicketValues(ticket.draft), context);
+    }).then(function(formId) {
+      if (state.supportTicket !== ticket) return false;
+      ticket.formId = formId;
+      ticket.phase = "waiting";
+      changed("waiting");
+      return awaitOutcome(ticket, forms, context, settings);
+    }, function(error2) {
+      if (state.supportTicket !== ticket) return false;
+      if (error2 && error2.code === "session-expired") return sessionEnded(ticket, changed);
+      ticket.phase = "editing";
+      ticket.message = error2 && error2.status >= 500 ? SUPPORT_TICKET_COPY.serverError : SUPPORT_TICKET_COPY.notSent;
+      changed("not-sent");
+      return false;
+    });
+  }
+  function checkSupportTicketAgain(options2) {
+    var settings = options2 || {};
+    var ticket = state.supportTicket;
+    if (!ticket || ticket.phase !== "slow" || !ticket.formId) return Promise.resolve(false);
+    ticket.phase = "checking";
+    (settings.onChange || function() {
+    })("checking");
+    return awaitOutcome(ticket, settings.forms || outcomeForms(settings), { config: state.config, state }, settings);
+  }
+  function outcomeForms(settings) {
+    return createCoreProfileFormAdapter({ timeoutMs: SUPPORT_TICKET_OUTCOME_TIMEOUT_MS, wait: settings.wait, now: settings.now });
+  }
+  function awaitOutcome(ticket, forms, context, settings) {
+    var changed = settings.onChange || function() {
+    };
+    return Promise.resolve().then(function() {
+      return forms.report(SUPPORT_TICKET_FORM, ticket.formId, context, SUPPORT_TICKET_OUTCOMES);
+    }).then(function(report) {
+      if (state.supportTicket !== ticket) return false;
+      return settle2(ticket, report, settings);
+    }, function(error2) {
+      if (state.supportTicket !== ticket) return false;
+      if (error2 && error2.code === "session-expired") return sessionEnded(ticket, changed);
+      ticket.phase = "slow";
+      changed("slow");
+      return false;
+    });
+  }
+  function settle2(ticket, report, settings) {
+    var changed = settings.onChange || function() {
+    };
+    if (report.outcome === "CREATED") {
+      ticket.phase = "created";
+      ticket.ticketCode = text(report.ticketCode);
+      ticket.message = text(report.message);
+      changed("created");
+      if (settings.reload) Promise.resolve().then(function() {
+        return settings.reload("support");
+      }).catch(function() {
+        return null;
+      });
+      return true;
+    }
+    ticket.phase = "editing";
+    ticket.formId = null;
+    var field4 = text(report.field);
+    var said = text(report.message);
+    if (report.outcome === "REFUSED" && SUPPORT_TICKET_FIELDS.indexOf(field4) !== -1) {
+      ticket.errors = {};
+      ticket.errors[field4] = said || SUPPORT_TICKET_COPY.refused;
+      changed("refused");
+      return false;
+    }
+    ticket.message = report.outcome === "REFUSED" ? said || SUPPORT_TICKET_COPY.refused : SUPPORT_TICKET_COPY.failed;
+    changed(report.outcome === "REFUSED" ? "refused" : "failed");
+    return false;
+  }
+  function sessionEnded(ticket, changed) {
+    ticket.phase = "editing";
+    state.account = "session-expired";
+    changed("session-expired");
+    return false;
+  }
+
   // app-templates/customer-portal/runtime/src/property-plan.js
   var MEDIA_ID4 = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
   var plans = /* @__PURE__ */ new Map();
   function propertyPlan(planId, onChange, fetchImpl) {
     if (!MEDIA_ID4.test(String(planId || ""))) return null;
-    var entry = plans.get(planId);
-    if (entry) return entry;
-    entry = { status: "loading", plan: null };
-    plans.set(planId, entry);
+    var entry2 = plans.get(planId);
+    if (entry2) return entry2;
+    entry2 = { status: "loading", plan: null };
+    plans.set(planId, entry2);
     readPlan(planId, fetchImpl || globalThis.fetch).then(function(raw) {
       var plan = globalThis.ClientReview.plan.parse(raw, "en");
-      entry.status = plan ? "ready" : "unavailable";
-      entry.plan = plan;
+      entry2.status = plan ? "ready" : "unavailable";
+      entry2.plan = plan;
     }, function() {
-      entry.status = "unavailable";
+      entry2.status = "unavailable";
     }).then(function() {
       if (typeof onChange === "function") onChange();
     });
-    return entry;
+    return entry2;
   }
   function readPlan(planId, fetchImpl) {
     var base = String(state.config.coreApiBase || "/core").replace(/\/+$/, "");
@@ -9251,19 +9663,19 @@
     if (!visit || !visit.backendId) return null;
     var account = state.customerAccount && state.customerAccount.id;
     var key = [account, visit.backendId, visit.stateCode].join(":");
-    var entry = progress.get(key);
-    if (entry) return entry;
-    entry = { status: "loading", steps: [] };
-    progress.set(key, entry);
+    var entry2 = progress.get(key);
+    if (entry2) return entry2;
+    entry2 = { status: "loading", steps: [] };
+    progress.set(key, entry2);
     readVisitTransitions({ config: state.config, state }, visit.backendId, fetchImpl || coreSessionFetch).then(function(rows2) {
-      entry.steps = normalizeVisitProgress(rows2);
-      entry.status = "ready";
+      entry2.steps = normalizeVisitProgress(rows2);
+      entry2.status = "ready";
     }, function() {
-      entry.status = "unavailable";
+      entry2.status = "unavailable";
     }).then(function() {
       if (typeof onChange === "function") onChange();
     });
-    return entry;
+    return entry2;
   }
 
   // app-templates/customer-portal/runtime/src/visit-photo-viewer.js
@@ -9428,7 +9840,7 @@
     var today = localDateKey(/* @__PURE__ */ new Date(), state.config.timeZone);
     var properties = liveProperties();
     var row = function(visit) {
-      return VisitRow(visit, { today, place: visitPlace(visit, properties), onSite: visitOnSite(visit), photos: visitPhotoCount(visit) });
+      return VisitRow(visit, { today, place: visitPlace(visit, properties), onSite: visitOnSite(visit), photos: visitPhotoCount(visit), issue: !!openTicketForVisit(liveTickets(), visit.backendId) });
     };
     if (visits.upcoming.length) page.appendChild(RecordSection("visits-upcoming", "Upcoming", visits.upcoming.map(row)));
     if (visits.past.length) page.appendChild(RecordSection("visits-past", "Past", visits.past.map(row)));
@@ -9437,9 +9849,10 @@
   }
   function LiveVisitDetail() {
     var page = h("section", { "class": "page page--narrow", "data-route": "visit.detail", "data-visual-id": "visit-detail" });
-    page.appendChild(h("div", { "class": "detail-bar", "data-module": "visit-detail-bar" }, [
+    var bar = h("div", { "class": "detail-bar", "data-module": "visit-detail-bar" }, [
       ActionButton({ variant: "btn--ghost", label: "Show all visits", action: "nav.go", id: "appointments", visualId: "visit-show-all" })
-    ]));
+    ]);
+    page.appendChild(bar);
     var status = liveListStatus("appointmentsTimeline");
     var visit = status === "ready" ? findVisit(liveVisits(), state.visitId) : null;
     if (!visit) {
@@ -9457,8 +9870,12 @@
         h("h1", { "class": "prop-head__title" }, visitDay(visit, today)),
         h("div", { "class": "prop-head__addr", "data-module": "visit-when" }, visitWindow(visit))
       ]),
+      openTicketForVisit(liveTickets(), visit.backendId) ? h("span", { "class": "status-badge status-badge--danger", "data-module": "visit-issue" }, OVERVIEW_STATUS.issue.label) : null,
       h("span", { "class": "status-badge status-badge--" + visit.status.tone }, visit.status.label)
     ]));
+    if (property && supportTicketsOpen(state.config)) {
+      bar.appendChild(ActionButton({ variant: "btn--ghost", label: "Open support ticket", action: "support.newTicket", id: property.backendId + ":" + visit.backendId, visualId: "visit-open-ticket" }));
+    }
     if (property) {
       page.appendChild(PropertyFacts(property));
       var plan = PropertyPlan(propertyPlan(property.planId, render), property, sharedPlanMap());
@@ -9484,8 +9901,8 @@
   }
   function visitOnSite(visit) {
     if (visit.stateCode !== "IN_PROGRESS" && visit.stateCode !== "COMPLETED") return "";
-    var entry = visitProgress(visit, render);
-    return entry && entry.status === "ready" ? onSiteTimes(entry.steps, visit, state.config.timeZone) : "";
+    var entry2 = visitProgress(visit, render);
+    return entry2 && entry2.status === "ready" ? onSiteTimes(entry2.steps, visit, state.config.timeZone) : "";
   }
   function PropertyFacts(property) {
     var area = formatArea(property.areaSqft);
@@ -9512,12 +9929,12 @@
     ]);
   }
   function ProgressCard(visit) {
-    var entry = visitProgress(visit, render);
-    if (!entry || entry.status !== "ready" || !entry.steps.length) return null;
-    var duration = onSiteDuration(entry.steps);
+    var entry2 = visitProgress(visit, render);
+    if (!entry2 || entry2.status !== "ready" || !entry2.steps.length) return null;
+    var duration = onSiteDuration(entry2.steps);
     return h("section", { "class": "card card--pad record-section", "data-module": "visit-progress", "data-visual-id": "visit-progress" }, [
       h("h2", { "class": "prop-section__title" }, "Progress"),
-      h("div", { "class": "timeline" }, [h("div", { "class": "timeline__line" })].concat(entry.steps.map(function(step) {
+      h("div", { "class": "timeline" }, [h("div", { "class": "timeline__line" })].concat(entry2.steps.map(function(step) {
         return h("div", { "class": "timeline-step", "data-module": "visit-progress-step", "data-state": step.code.toLowerCase() }, [
           h("div", { "class": "timeline-step__dot", style: "background:" + (step.code === "COMPLETED" ? "var(--ok)" : "var(--accent)") }),
           h("div", { "class": "timeline-step__title" }, step.label + " \xB7 " + progressWhen(step, visit, state.config.timeZone))
@@ -10123,13 +10540,13 @@
       section.appendChild(h("div", { "class": "card card--pad quote-option__note", "data-state": "empty" }, row.servicesScope === "approved" ? "No approved services are listed on this agreement yet." : "No services are listed on this agreement yet."));
       return section;
     }
-    row.properties.forEach(function(entry) {
+    row.properties.forEach(function(entry2) {
       section.appendChild(h("div", { "class": "agreement-property", "data-module": "agreement-property", "data-visual-id": "agreement-property" }, [
         h("div", { "class": "agreement-property__head" }, [
-          h("h3", { "class": "agreement-property__title" }, entry.title),
-          entry.address ? h("div", { "class": "agreement-property__address" }, entry.address) : null
+          h("h3", { "class": "agreement-property__title" }, entry2.title),
+          entry2.address ? h("div", { "class": "agreement-property__address" }, entry2.address) : null
         ]),
-        h("div", { "class": "agreement-property__options" }, entry.orders.map(function(order) {
+        h("div", { "class": "agreement-property__options" }, entry2.orders.map(function(order) {
           return QuoteOptionCard(order);
         }))
       ]));
@@ -10517,7 +10934,10 @@
     var status = knownPropertyStatus(property, model.sources);
     var contract = contractFor(property);
     var service = serviceFor(property);
-    page.appendChild(BackLink(model));
+    page.appendChild(supportTicketsOpen(state.config) ? h("div", { "class": "detail-bar", "data-module": "property-detail-bar" }, [
+      BackLink(model),
+      ActionButton({ variant: "btn--ghost", label: "Open support ticket", action: "support.newTicket", id: property.backendId + ":", visualId: "property-open-ticket" })
+    ]) : BackLink(model));
     page.appendChild(h("div", { "class": "prop-head" }, [
       h("div", { style: "flex:1;min-width:0" }, [
         text8("h1", "prop-head__title", property.name),
@@ -10593,10 +11013,10 @@
     var envelope2 = state.moduleData.proposals;
     if (!envelope2 || envelope2.state === "unauthorized" || envelope2.state === "unavailable" || envelope2.state === "error") return null;
     var row = currentServiceAgreement(quotePackage(), property.backendId);
-    var entry = row ? row.properties.find(function(item) {
+    var entry2 = row ? row.properties.find(function(item) {
       return item.propertyBackendId === property.backendId;
     }) : null;
-    return entry && entry.orders.length ? { row, orders: entry.orders } : null;
+    return entry2 && entry2.orders.length ? { row, orders: entry2.orders } : null;
   }
   function LiveVisitsCard(property) {
     var found = visitsForProperty(liveVisits(), property.backendId);
@@ -11395,7 +11815,7 @@
     notSent: "Your request wasn\u2019t sent. Check your connection and try again.",
     failed: "We couldn\u2019t take your quote request right now. Please try again in a few minutes."
   });
-  var BUSY_PHASES2 = /* @__PURE__ */ Object.freeze(["sending", "waiting", "processing", "checking"]);
+  var BUSY_PHASES3 = /* @__PURE__ */ Object.freeze(["sending", "waiting", "processing", "checking"]);
   var finder = null;
   function quoteRequestOpen(config) {
     return !!config && config.vertical === "snow" && config.dataMode === "live";
@@ -11406,12 +11826,12 @@
   }
   function resetQuoteRequest() {
     var current = state.quoteRequest;
-    if (current && BUSY_PHASES2.indexOf(current.phase) !== -1) return false;
+    if (current && BUSY_PHASES3.indexOf(current.phase) !== -1) return false;
     state.quoteRequest = freshRequest();
     return true;
   }
   function quoteRequestBusy() {
-    return !!state.quoteRequest && BUSY_PHASES2.indexOf(state.quoteRequest.phase) !== -1;
+    return !!state.quoteRequest && BUSY_PHASES3.indexOf(state.quoteRequest.phase) !== -1;
   }
   function freshRequest() {
     return {
@@ -11431,12 +11851,12 @@
     var rows2 = /(?:^|\s)rows:(\d+)/.exec(text(notes.inputFormat));
     return {
       within: withinBox(addresses.inputFormat),
-      riskLabel: localizedName5(risks.nls),
+      riskLabel: localizedName6(risks.nls),
       risks: (Array.isArray(risks.options) ? risks.options : []).map(function(option) {
         var value = text(option && option.value);
-        return value ? { value, label: localizedName5(option.nls) || value } : null;
+        return value ? { value, label: localizedName6(option.nls) || value } : null;
       }).filter(Boolean),
-      notesLabel: localizedName5(notes.nls),
+      notesLabel: localizedName6(notes.nls),
       notesRows: rows2 ? Math.min(Number(rows2[1]), 12) : 5
     };
   }
@@ -11516,8 +11936,8 @@
       request.errors.PROPERTY_ADDRESSES = QUOTE_REQUEST_COPY.addressOutside;
       return false;
     }
-    var known = request.draft.addresses.some(function(entry) {
-      return entry.address.toLowerCase() === value.toLowerCase();
+    var known = request.draft.addresses.some(function(entry2) {
+      return entry2.address.toLowerCase() === value.toLowerCase();
     });
     if (!known && request.draft.addresses.length >= QUOTE_REQUEST_LIMIT) {
       request.errors.PROPERTY_ADDRESSES = QUOTE_REQUEST_COPY.tooManyAddresses;
@@ -11574,17 +11994,17 @@
   }
   function quoteRequestValues(draft) {
     var values = {};
-    var located = draft.addresses.filter(function(entry) {
-      return !!entry.point;
+    var located = draft.addresses.filter(function(entry2) {
+      return !!entry2.point;
     });
     var notes = text(draft.notes);
     if (draft.propertyIds.length) values.PROPERTY_IDS = draft.propertyIds.map(String);
-    if (draft.addresses.length) values.PROPERTY_ADDRESSES = draft.addresses.map(function(entry) {
-      return entry.address;
+    if (draft.addresses.length) values.PROPERTY_ADDRESSES = draft.addresses.map(function(entry2) {
+      return entry2.address;
     });
     if (located.length) {
-      values.PROPERTY_COORDINATES = JSON.stringify(located.map(function(entry) {
-        return { address: entry.address, lat: entry.point.lat, lng: entry.point.lon };
+      values.PROPERTY_COORDINATES = JSON.stringify(located.map(function(entry2) {
+        return { address: entry2.address, lat: entry2.point.lat, lng: entry2.point.lon };
       }));
     }
     if (draft.risks.length) values.RISK_FACTORS = draft.risks.slice();
@@ -11603,7 +12023,7 @@
       changed("invalid");
       return Promise.resolve(false);
     }
-    var forms = options2.forms || outcomeForms(options2);
+    var forms = options2.forms || outcomeForms2(options2);
     var context = { config: state.config, state };
     request.phase = "sending";
     request.errors = {};
@@ -11616,10 +12036,10 @@
       request.formId = formId;
       request.phase = "waiting";
       changed("waiting");
-      return awaitOutcome(request, forms, context, options2);
+      return awaitOutcome2(request, forms, context, options2);
     }, function(error2) {
       if (state.quoteRequest !== request) return false;
-      if (error2 && error2.code === "session-expired") return sessionEnded(request, changed);
+      if (error2 && error2.code === "session-expired") return sessionEnded2(request, changed);
       request.phase = "editing";
       request.message = QUOTE_REQUEST_COPY.notSent;
       changed("not-sent");
@@ -11629,16 +12049,16 @@
   function checkQuoteRequestAgain(options2) {
     var request = state.quoteRequest;
     if (!request || request.phase !== "slow" || !request.formId) return Promise.resolve(false);
-    var forms = options2.forms || outcomeForms(options2);
+    var forms = options2.forms || outcomeForms2(options2);
     request.phase = "checking";
     (options2.onChange || function() {
     })("checking");
-    return awaitOutcome(request, forms, { config: state.config, state }, options2);
+    return awaitOutcome2(request, forms, { config: state.config, state }, options2);
   }
-  function outcomeForms(options2) {
+  function outcomeForms2(options2) {
     return createCoreProfileFormAdapter({ timeoutMs: QUOTE_REQUEST_OUTCOME_TIMEOUT_MS, pollIntervalMs: QUOTE_REQUEST_POLL_MS, wait: options2.wait, now: options2.now });
   }
-  function awaitOutcome(request, forms, context, options2) {
+  function awaitOutcome2(request, forms, context, options2) {
     var changed = options2.onChange || function() {
     };
     return Promise.resolve().then(function() {
@@ -11649,16 +12069,16 @@
       });
     }).then(function(report) {
       if (state.quoteRequest !== request) return false;
-      return settle2(request, report, options2);
+      return settle3(request, report, options2);
     }, function(error2) {
       if (state.quoteRequest !== request) return false;
-      if (error2 && error2.code === "session-expired") return sessionEnded(request, changed);
+      if (error2 && error2.code === "session-expired") return sessionEnded2(request, changed);
       request.phase = "slow";
       changed("slow");
       return false;
     });
   }
-  function settle2(request, report, options2) {
+  function settle3(request, report, options2) {
     var changed = options2.onChange || function() {
     };
     if (report.outcome === "ACCEPTED") {
@@ -11676,14 +12096,14 @@
       return true;
     }
     request.phase = "editing";
-    var field3 = text(report.field);
+    var field4 = text(report.field);
     var message = text(report.message);
-    if (report.outcome === "REFUSED" && message && QUOTE_REQUEST_FIELDS.indexOf(field3) !== -1) request.errors = { [field3]: message };
+    if (report.outcome === "REFUSED" && message && QUOTE_REQUEST_FIELDS.indexOf(field4) !== -1) request.errors = { [field4]: message };
     else request.message = message || QUOTE_REQUEST_COPY.failed;
     changed(report.outcome === "REFUSED" ? "refused" : "failed");
     return false;
   }
-  function sessionEnded(request, changed) {
+  function sessionEnded2(request, changed) {
     request.phase = request.formId ? "slow" : "editing";
     state.account = "session-expired";
     changed("session-expired");
@@ -11699,7 +12119,7 @@
     });
     return found;
   }
-  function localizedName5(nls) {
+  function localizedName6(nls) {
     if (!nls || typeof nls !== "object") return "";
     var bag = nls.en || nls[(/* @__PURE__ */ Object.keys(nls))[0]] || {};
     return text(bag && bag.NAME).replace(/\s+/g, " ");
@@ -12082,16 +12502,16 @@
   }
   function AgreementMap(entries) {
     var map = usablePropertyMap();
-    var located = entries.filter(function(entry) {
-      return !!entry.property;
+    var located = entries.filter(function(entry2) {
+      return !!entry2.property;
     });
     if (!map || !located.length) return null;
-    var places = located.map(function(entry) {
-      return { id: entry.key, name: entry.title, line: placeLine(entry.title, entry.address) };
+    var places = located.map(function(entry2) {
+      return { id: entry2.key, name: entry2.title, line: placeLine(entry2.title, entry2.address) };
     });
     return h("div", { "class": "ov-map__stage", "data-module": "agreement-map", "data-visual-id": "agreement-map", "data-surface": "google", style: "margin-bottom:16px" }, [
-      LocationMap(map, mapViewport(), places, placeEach(map, located.map(function(entry) {
-        return entry.property;
+      LocationMap(map, mapViewport(), places, placeEach(map, located.map(function(entry2) {
+        return entry2.property;
       })), "Finding these properties on the map\u2026")
     ]);
   }
@@ -12165,11 +12585,11 @@
     }
     if (request.errors.PROPERTY_IDS) section.appendChild(h("div", { "class": "field-error", id: "quote-request-properties-error", role: "alert" }, request.errors.PROPERTY_IDS));
     if (request.draft.addresses.length) {
-      section.appendChild(h("ul", { "class": "quote-request__addresses", "aria-label": "New addresses" }, request.draft.addresses.map(function(entry, index) {
+      section.appendChild(h("ul", { "class": "quote-request__addresses", "aria-label": "New addresses" }, request.draft.addresses.map(function(entry2, index) {
         return h("li", { "class": "quote-request__address", "data-module": "quote-request-address" }, [
           h("span", { "class": "quote-request__address-icon", "aria-hidden": "true" }, [icon("pin", "ov-icon")]),
-          h("span", { "class": "quote-request__address-text" }, entry.address),
-          h("button", { "class": "link-action", type: "button", "data-action": "quoteRequest.removeAddress", "data-id": String(index), "aria-label": "Remove " + entry.address, disabled: busy ? true : void 0 }, "Remove")
+          h("span", { "class": "quote-request__address-text" }, entry2.address),
+          h("button", { "class": "link-action", type: "button", "data-action": "quoteRequest.removeAddress", "data-id": String(index), "aria-label": "Remove " + entry2.address, disabled: busy ? true : void 0 }, "Remove")
         ]);
       })));
     }
@@ -12257,15 +12677,15 @@
     var chosen = properties.filter(function(property) {
       return request.draft.propertyIds.indexOf(property.backendId) !== -1;
     });
-    var located = request.draft.addresses.filter(function(entry) {
-      return !!entry.point;
+    var located = request.draft.addresses.filter(function(entry2) {
+      return !!entry2.point;
     });
     if (!chosen.length && !located.length) return null;
-    var places = chosen.map(propertyPlace).concat(located.map(function(entry, index) {
-      return { id: "quote-request-address-" + index, name: entry.address };
+    var places = chosen.map(propertyPlace).concat(located.map(function(entry2, index) {
+      return { id: "quote-request-address-" + index, name: entry2.address };
     }));
-    var placements = placeEach(map, chosen).concat(located.map(function(entry) {
-      return { point: entry.point, reason: "stored" };
+    var placements = placeEach(map, chosen).concat(located.map(function(entry2) {
+      return { point: entry2.point, reason: "stored" };
     }));
     return h("div", { "class": "ov-map__stage quote-request__map", "data-module": "quote-request-map", "data-visual-id": "quote-request-map", "data-surface": "google" }, [
       LocationMap(map, viewport, places, placements, "Finding these properties on the map\u2026")
@@ -12521,6 +12941,185 @@
   function stateBlock(block, stateName) {
     block.setAttribute("data-state", stateName);
     return block;
+  }
+
+  // app-templates/customer-portal/runtime/src/routes/LiveSupportPage.js
+  var PROGRESS2 = {
+    sending: "Sending your ticket\u2026",
+    waiting: "Ticket sent. Waiting for our system to open it\u2026",
+    checking: "Checking your ticket\u2026"
+  };
+  function LiveSupport() {
+    var page = h("section", { "class": "page page--narrow", "data-route": "support", "data-visual-id": "support" });
+    page.appendChild(h("div", { "class": "detail-bar support-head", "data-module": "support-head" }, [
+      h("h1", { "class": "page-header__title" }, "Support"),
+      ActionButton({ variant: "btn--primary", label: "Open support ticket", action: "support.newTicket", visualId: "support-new-ticket" })
+    ]));
+    var status = liveListStatus("support");
+    page.setAttribute("data-state", status);
+    if (status !== "ready") {
+      page.appendChild(listState3(status));
+      return page;
+    }
+    var tickets = liveTickets();
+    var loaded = ensureSupportTicketSchema();
+    var schema = loaded && loaded.state === "ready" ? loaded.schema : null;
+    var row = function(ticket) {
+      return TicketRow(ticket, schema);
+    };
+    if (tickets.open.length) page.appendChild(RecordSection("tickets-open", "Open", tickets.open.map(row)));
+    if (tickets.closed.length) page.appendChild(RecordSection("tickets-closed", "Resolved and closed", tickets.closed.map(row)));
+    return page;
+  }
+  function TicketRow(ticket, schema) {
+    var reason = reasonLabel(ticket.reason, schema);
+    var about = ticketPlace(ticket);
+    return h("article", { "class": "prop-visit record-row support-ticket", "data-module": "ticket-row", "data-visual-id": "ticket-row", "data-id": ticket.id, "data-state": ticket.stateCode.toLowerCase() }, [
+      h("div", { "class": "record-row__main" }, [
+        h("div", { "class": "prop-visit__title" }, ticket.subject),
+        h("div", { "class": "prop-visit__meta", "data-module": "ticket-meta" }, [ticket.code, reason, "Opened " + ticketOpened(ticket, state.config.timeZone)].filter(Boolean).join(" \xB7 ")),
+        about ? h("div", { "class": "prop-visit__meta", "data-module": "ticket-about" }, about) : null,
+        ticket.message ? h("p", { "class": "record-notes support-ticket__message" }, ticket.message) : null
+      ]),
+      h("span", { "class": "status-badge status-badge--" + ticket.status.tone }, ticket.status.label)
+    ]);
+  }
+  function ticketPlace(ticket) {
+    var property = liveProperties().find(function(item) {
+      return item.backendId === ticket.propertyBackendId;
+    });
+    var visit = ticket.visitBackendId ? findVisit(liveVisits(), "visit-core-" + ticket.visitBackendId) : null;
+    var today = localDateKey(/* @__PURE__ */ new Date(), state.config.timeZone);
+    return [property ? property.address || property.name : "", visit ? "Visit " + visitWhen(visit, today) : ""].filter(Boolean).join(" \xB7 ");
+  }
+  function listState3(status) {
+    if (status === "loading") {
+      return h("div", { "data-module": "tickets-loading", "data-visual-id": "tickets-loading", "aria-busy": "true" }, [
+        skel("height:88px;border-radius:16px;margin-bottom:12px"),
+        skel("height:88px;border-radius:16px")
+      ]);
+    }
+    if (status === "unauthorized") return UnauthorizedState({ scope: "these tickets", backRoute: state.config.defaultRoute });
+    if (status === "error") return ErrorState({ title: "Couldn\u2019t load your tickets", desc: "Nothing was changed. Check your connection and try again." });
+    return EmptyState({ glyph: "\u25CC", title: "No support tickets yet", desc: "Tell us about a missed visit, a service problem or a billing question, and follow our answer here." });
+  }
+  function SupportTicketNew() {
+    var ticket = supportTicketState();
+    var page = h("section", { "class": "page page--narrow support-new", "data-route": "support.new", "data-visual-id": "support-new", "data-state": ticket.phase });
+    page.appendChild(h("div", { "class": "detail-back", "data-action": "nav.go", "data-id": "support", "data-visual-id": "support-new-back" }, "\u2039 Back to Support"));
+    if (ticket.phase === "created") {
+      page.appendChild(Outcome("created", "Ticket " + ticket.ticketCode + " is open", ticket.message || "We received your ticket and will get back to you."));
+      return page;
+    }
+    if (ticket.phase === "slow" || ticket.phase === "checking" && ticket.formId) {
+      page.appendChild(Outcome("slow", "We\u2019re still opening your ticket", "It\u2019s taking longer than usual. You don\u2019t need to send it again.", ticket.phase === "checking"));
+      return page;
+    }
+    page.appendChild(h("div", { "class": "prop-head" }, [
+      h("div", { style: "flex:1;min-width:0" }, [
+        h("h1", { "class": "prop-head__title" }, "Open a support ticket"),
+        h("div", { "class": "prop-head__addr" }, "Tell us which property this is about and what happened. We answer in Support.")
+      ])
+    ]));
+    var envelope2 = state.moduleData.properties;
+    if (!envelope2 || envelope2.state === "loading") {
+      page.appendChild(h("div", { "data-module": "support-new-loading", "aria-busy": "true" }, [skel("height:320px;border-radius:22px")]));
+      return page;
+    }
+    var properties = liveProperties();
+    if (!properties.length) {
+      page.appendChild(EmptyState({ glyph: "\u25CC", title: "No property to ask about yet", desc: "A ticket is about one of your properties. Request a quote to add your first one." }));
+      return page;
+    }
+    var loaded = ensureSupportTicketSchema();
+    var schema = loaded && loaded.state === "ready" ? loaded.schema : null;
+    var busy = supportTicketBusy();
+    var today = localDateKey(/* @__PURE__ */ new Date(), state.config.timeZone);
+    var visits = visitsOfProperty(ticket.draft.propertyId);
+    var form = h("form", { "class": "card card--pad support-form", "data-module": "support-ticket-form", novalidate: true });
+    form.addEventListener("submit", function(event) {
+      event.preventDefault();
+    });
+    form.appendChild(SelectField("PROPERTY_ID", "Property", String(ticket.draft.propertyId || ""), [{ value: "", label: "Choose a property" }].concat(properties.map(function(property) {
+      return { value: String(property.backendId), label: property.address || property.name };
+    })), ticket.errors.PROPERTY_ID, busy, "support.chooseProperty"));
+    if (visits.length || ticket.errors.VISIT_ID) {
+      form.appendChild(SelectField("VISIT_ID", "Visit (optional)", String(ticket.draft.visitId || ""), [{ value: "", label: "Not about one visit" }].concat(visits.map(function(visit) {
+        return { value: String(visit.backendId), label: visitWhen(visit, today) + " \xB7 " + visit.status.label };
+      })), ticket.errors.VISIT_ID, busy, "support.chooseVisit"));
+    }
+    if (schema && schema.reasons.length || ticket.errors.CONTACT_REASON) {
+      form.appendChild(SelectField("CONTACT_REASON", "What is it about?", ticket.draft.reason, [{ value: "", label: "General question" }].concat(schema ? schema.reasons.filter(function(reason) {
+        return reason.value !== "GENERAL_INQUIRY";
+      }) : []), ticket.errors.CONTACT_REASON, busy, "support.chooseReason"));
+    }
+    form.appendChild(TextField("SUBJECT", "Subject", ticket.draft.subject, ticket.errors.SUBJECT, busy, SUPPORT_SUBJECT_LIMIT, false));
+    form.appendChild(TextField("MESSAGE", "Message", ticket.draft.message, ticket.errors.MESSAGE, busy, SUPPORT_MESSAGE_LIMIT, true));
+    page.appendChild(form);
+    if (ticket.message) {
+      page.appendChild(h("div", { "class": "inline-fail quote-request__message", "data-module": "support-ticket-message", role: "alert" }, [
+        h("span", { "class": "inline-fail__icon", "aria-hidden": "true" }, "!"),
+        h("div", { "class": "decision-outcome__body" }, ticket.message)
+      ]));
+    }
+    page.appendChild(busy ? h("div", { "class": "card card--pad quote-request__progress", "data-module": "support-ticket-progress", "data-state": ticket.phase, "aria-live": "polite" }, [PendingNote(PROGRESS2[ticket.phase] || PROGRESS2.sending)]) : h("div", { "class": "quote-request__submit", "data-module": "support-ticket-submit" }, [
+      ActionButton({ variant: "btn--primary", label: "Send ticket", action: "support.submitTicket", lg: true, visualId: "support-ticket-send" })
+    ]));
+    return page;
+  }
+  function SelectField(code, label, value, options2, error2, busy, action) {
+    var id = "support-ticket-" + code.toLowerCase().replace(/_/g, "-");
+    var select = h("select", {
+      "class": "field",
+      id,
+      name: code,
+      "data-state": error2 ? "invalid" : void 0,
+      "aria-invalid": error2 ? "true" : void 0,
+      "aria-describedby": error2 ? id + "-error" : void 0,
+      disabled: busy ? true : void 0
+    }, options2.map(function(option) {
+      return h("option", { value: option.value, selected: option.value === value ? true : void 0 }, option.label);
+    }));
+    select.addEventListener("change", function() {
+      ACTIONS[action](select.value);
+    });
+    return Field2(id, label, select, error2);
+  }
+  function TextField(code, label, value, error2, busy, limit, multiline) {
+    var id = "support-ticket-" + code.toLowerCase();
+    var attributes = {
+      "class": "field",
+      id,
+      name: code,
+      maxlength: String(limit),
+      "data-state": error2 ? "invalid" : void 0,
+      "aria-invalid": error2 ? "true" : void 0,
+      "aria-describedby": error2 ? id + "-error" : void 0,
+      disabled: busy ? true : void 0
+    };
+    var input = multiline ? h("textarea", Object.assign({ rows: "6" }, attributes), value || "") : h("input", Object.assign({ type: "text", value: value || "", autocomplete: "off" }, attributes));
+    input.addEventListener("input", function() {
+      changeSupportTicketDraft(code === "SUBJECT" ? "subject" : "message", input.value);
+    });
+    return Field2(id, label, input, error2);
+  }
+  function Field2(id, label, control, error2) {
+    return h("div", { "class": "field-row support-form__field" }, [
+      h("label", { "class": "field-label", "for": id }, label),
+      control,
+      error2 ? h("div", { "class": "field-error", id: id + "-error", role: "alert" }, error2) : null
+    ]);
+  }
+  function Outcome(kind, title, body, checking) {
+    return h("div", { "class": "state-block quote-request__outcome", "data-module": "support-ticket-outcome", "data-state": kind, role: "status", tabindex: "-1" }, [
+      h("div", { "class": "state-block__glyph" + (kind === "created" ? " quote-request__glyph--ok" : "") }, kind === "created" ? "\u2713" : "\u25D4"),
+      h("h1", { "class": "state-block__title" }, title),
+      h("div", { "class": "state-block__desc" }, body),
+      h("div", { "class": "proposal-actions quote-request__outcome-actions" }, [
+        ActionButton({ variant: "btn--primary", label: "View your tickets", action: "nav.go", id: "support", visualId: "support-ticket-list" }),
+        kind === "slow" ? ActionButton({ variant: "btn--ghost", label: checking ? "Checking\u2026" : "Check again", action: "support.checkTicket", disabled: checking, visualId: "support-ticket-check-again" }) : null
+      ])
+    ]);
   }
 
   // app-templates/customer-portal/runtime/src/routes/AuthPage.js
@@ -12950,7 +13549,7 @@
         return null;
       });
     }
-    function settle3(phase) {
+    function settle5(phase) {
       if (state.requestLink !== link) return phase;
       link.phase = phase;
       if (phase === "done" || phase === "invalid") link.token = "";
@@ -12967,10 +13566,10 @@
           });
         });
       }, Promise.resolve(false)).then(function(recorded) {
-        return settle3(recorded ? "done" : otherwise);
+        return settle5(recorded ? "done" : otherwise);
       });
     }
-    return { post, settle: settle3, readBack };
+    return { post, settle: settle5, readBack };
   }
   function cmsBase() {
     return String(state.config.cmsApiBase || "/core-cms").replace(/\/+$/, "");
@@ -13004,6 +13603,203 @@
     } catch (_) {
       return;
     }
+  }
+
+  // app-templates/customer-portal/runtime/src/set-password.js
+  var PASSWORD_MIN_LENGTH = 6;
+  var SET_PASSWORD_COPY = /* @__PURE__ */ Object.freeze({
+    short: "Use at least " + PASSWORD_MIN_LENGTH + " characters.",
+    missing: "Choose a password.",
+    mismatch: "The two passwords don\u2019t match.",
+    unreachable: "We couldn\u2019t reach the server. Check your connection and try again.",
+    refused: "We couldn\u2019t set this password. Try again in a few minutes."
+  });
+  var USED_KEY_MESSAGE = "Invalid credentials specified";
+  var UNKNOWN_USER_MESSAGE = "Invalid user specified";
+  var PASSWORD_RULE = /^password\b/i;
+  var entry = { password: "", confirm: "" };
+  function captureSetPassword(routeId, raw) {
+    if (routeId !== "auth.setPassword") return null;
+    var link = linkFrom(raw);
+    var current = state.setPassword;
+    if (link.login && link.key) {
+      if (!current || current.login !== link.login || current.key !== link.key) {
+        entry = { password: "", confirm: "" };
+        state.setPassword = { login: link.login, key: link.key, phase: "prompt", errors: {}, message: "" };
+      }
+    } else if (!current) {
+      state.setPassword = { login: link.login, key: "", phase: "invalid", errors: {}, message: "" };
+    }
+    return state.setPassword;
+  }
+  function setPasswordEntry() {
+    return entry;
+  }
+  function changeSetPasswordEntry(field4, value) {
+    var link = state.setPassword;
+    if (!link || link.phase !== "prompt" || field4 !== "password" && field4 !== "confirm") return false;
+    entry[field4] = String(value == null ? "" : value);
+    delete link.errors[field4];
+    return true;
+  }
+  function validateSetPassword(values) {
+    var errors = {};
+    if (!values.password) errors.password = SET_PASSWORD_COPY.missing;
+    else if (values.password.length < PASSWORD_MIN_LENGTH) errors.password = SET_PASSWORD_COPY.short;
+    if (!errors.password && values.confirm !== values.password) errors.confirm = SET_PASSWORD_COPY.mismatch;
+    return errors;
+  }
+  function submitSetPassword(options2) {
+    var settings = options2 || {};
+    var link = state.setPassword;
+    var changed = settings.onChange || function() {
+    };
+    if (!link || link.phase !== "prompt" || !link.key) return Promise.resolve(false);
+    var errors = validateSetPassword(entry);
+    link.message = "";
+    if ((/* @__PURE__ */ Object.keys(errors)).length) {
+      link.errors = errors;
+      changed("invalid");
+      return Promise.resolve(false);
+    }
+    var send = settings.fetch || globalThis.fetch;
+    link.errors = {};
+    link.phase = "pending";
+    changed("pending");
+    return Promise.resolve().then(function() {
+      return send(coreBase() + "/api/user/reset-password.json", {
+        method: "POST",
+        credentials: "omit",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify({ user: link.login, key: link.key, password: entry.password })
+      });
+    }).then(function(response) {
+      if (response && response.ok) return { ok: true, message: "" };
+      return Promise.resolve(response && typeof response.json === "function" ? response.json() : null).then(function(body) {
+        return { ok: false, message: body && typeof body.message === "string" ? body.message : "" };
+      }, function() {
+        return { ok: false, message: "" };
+      });
+    }, function() {
+      return null;
+    }).then(function(result) {
+      if (state.setPassword !== link) return false;
+      if (!result) return settle4(link, "prompt", { message: SET_PASSWORD_COPY.unreachable }, changed, "failed");
+      if (result.ok) {
+        entry = { password: "", confirm: "" };
+        link.key = "";
+        return settle4(link, "done", {}, changed, "done");
+      }
+      if (result.message === USED_KEY_MESSAGE || result.message === UNKNOWN_USER_MESSAGE) {
+        entry = { password: "", confirm: "" };
+        link.key = "";
+        return settle4(link, "expired", {}, changed, "expired");
+      }
+      if (PASSWORD_RULE.test(result.message)) return settle4(link, "prompt", { errors: { password: result.message } }, changed, "invalid");
+      return settle4(link, "prompt", { message: SET_PASSWORD_COPY.refused }, changed, "failed");
+    });
+  }
+  function settle4(link, phase, patch, changed, outcome) {
+    link.phase = phase;
+    link.errors = patch.errors || {};
+    link.message = patch.message || "";
+    changed(outcome);
+    return outcome === "done";
+  }
+  function coreBase() {
+    return String(state.config.coreApiBase || "/core").replace(/\/+$/, "");
+  }
+  function linkFrom(raw) {
+    var text10 = String(raw || "");
+    var index = text10.indexOf("?");
+    var query = new URLSearchParams(index === -1 ? "" : text10.slice(index + 1));
+    return { login: String(query.get("login") || "").trim(), key: String(query.get("key") || "").trim() };
+  }
+
+  // app-templates/customer-portal/runtime/src/routes/SetPasswordPage.js
+  function SetPassword() {
+    var link = state.setPassword || { login: "", phase: "invalid", errors: {}, message: "" };
+    var phase = link.phase;
+    var provider = state.config.brandName || "your service provider";
+    var page = h("section", { "class": "page account-gate", "data-route": "auth.setPassword", "data-visual-id": "set-password", "data-state": phase });
+    var card = h("div", { "class": "auth-card account-gate__card", "data-module": "set-password", "data-visual-id": "set-password-card", "data-state": phase });
+    if (phase === "prompt") {
+      card.appendChild(h("div", { "class": "oidc-title" }, "Set your password"));
+      card.appendChild(h("div", { "class": "oidc-sub" }, "Choose the password you will sign in to " + provider + " with."));
+      card.appendChild(PasswordForm(link));
+    } else if (phase === "pending") {
+      card.setAttribute("aria-busy", "true");
+      card.appendChild(h("div", { "class": "oidc-status" }, [h("span", { "class": "oidc-spinner" })]));
+      card.appendChild(h("div", { "class": "oidc-title" }, "Setting your password\u2026"));
+    } else if (phase === "done") {
+      card.setAttribute("role", "status");
+      card.appendChild(glyph2("ok", "\u2713"));
+      card.appendChild(h("div", { "class": "oidc-title" }, "Your password is set"));
+      card.appendChild(h("div", { "class": "oidc-sub" }, ["Sign in with ", h("strong", { "data-module": "set-password-login" }, link.login), " and your new password."]));
+      card.appendChild(actions2("Sign in", "auth.gotoSignin", "set-password-sign-in"));
+    } else {
+      card.setAttribute("role", "alert");
+      card.appendChild(glyph2("warn", "!"));
+      card.appendChild(h("div", { "class": "oidc-title" }, phase === "expired" ? "This link has expired" : "This link is incomplete"));
+      card.appendChild(h("div", { "class": "oidc-sub" }, phase === "expired" ? "A set-password link works once. If you have already set your password, sign in. Otherwise contact " + provider + " and ask for a new link." : "Open the link from your email again. If it still doesn\u2019t work, contact " + provider + " and ask for a new link."));
+      card.appendChild(actions2("Sign in", "auth.gotoSignin", "set-password-sign-in"));
+    }
+    page.appendChild(card);
+    return page;
+  }
+  function PasswordForm(link) {
+    var entry2 = setPasswordEntry();
+    var form = h("form", { "class": "set-password__form", "data-module": "set-password-form", novalidate: true, autocomplete: "on" });
+    form.addEventListener("submit", function(event) {
+      event.preventDefault();
+      ACTIONS["setPassword.submit"]();
+    });
+    form.appendChild(field3("set-password-login", "Sign-in email", h("input", { "class": "field", id: "set-password-login", name: "username", type: "email", value: link.login, autocomplete: "username", readonly: true }), ""));
+    form.appendChild(field3("set-password-new", "New password", passwordInput("set-password-new", "password", entry2.password, link.errors.password), link.errors.password, "At least " + PASSWORD_MIN_LENGTH + " characters."));
+    form.appendChild(field3("set-password-confirm", "Repeat the password", passwordInput("set-password-confirm", "confirm", entry2.confirm, link.errors.confirm), link.errors.confirm));
+    if (link.message) {
+      form.appendChild(h("div", { "class": "inline-fail", "data-module": "set-password-message", role: "alert" }, [
+        h("span", { "class": "inline-fail__icon", "aria-hidden": "true" }, "!"),
+        h("div", { "class": "decision-outcome__body" }, link.message)
+      ]));
+    }
+    form.appendChild(h("div", { "class": "account-gate__actions" }, [
+      h("button", { "class": "btn btn--primary btn--block btn--lg", type: "submit", "data-module": "action-button", "data-visual-id": "set-password-submit" }, "Set password")
+    ]));
+    return form;
+  }
+  function passwordInput(id, name, value, error2) {
+    var input = h("input", {
+      "class": "field",
+      id,
+      name: name === "password" ? "new-password" : "confirm-password",
+      type: "password",
+      value: value || "",
+      autocomplete: "new-password",
+      minlength: String(PASSWORD_MIN_LENGTH),
+      "data-state": error2 ? "invalid" : void 0,
+      "aria-invalid": error2 ? "true" : void 0,
+      "aria-describedby": error2 ? id + "-error" : name === "password" ? id + "-hint" : void 0
+    });
+    input.addEventListener("input", function() {
+      changeSetPasswordEntry(name, input.value);
+    });
+    return input;
+  }
+  function field3(id, label, control, error2, hint) {
+    return h("div", { "class": "field-row set-password__field" }, [
+      h("label", { "class": "field-label", "for": id }, label),
+      control,
+      error2 ? h("div", { "class": "field-error", id: id + "-error", role: "alert" }, error2) : hint ? h("div", { "class": "set-password__hint", id: id + "-hint" }, hint) : null
+    ]);
+  }
+  function glyph2(tone, mark) {
+    return h("div", { "class": "oidc-status" }, [h("div", { "class": "oidc-glyph oidc-glyph--" + tone }, mark)]);
+  }
+  function actions2(label, action, visualId) {
+    return h("div", { "class": "account-gate__actions" }, [
+      ActionButton({ variant: "btn--primary", label, action, block: true, lg: true, visualId })
+    ]);
   }
 
   // app-templates/customer-portal/runtime/src/router.js
@@ -13098,6 +13894,7 @@
     setRouteQuery(match.id, raw);
     applyRouteParams(match);
     captureRequestLink(match.id, raw);
+    captureSetPassword(match.id, raw);
     return match.id;
   }
   function writeRouteToLocation(routeId, replace) {
@@ -13134,6 +13931,7 @@
     var resolved = resolveRoute(state.route);
     if (resolved.id !== state.route) state.route = resolved.id;
     if (resolved.id === "request.confirm" || resolved.id === "request.cancel") return RequestLink();
+    if (resolved.id === "auth.setPassword") return SetPassword();
     if (state.view === "fallback") return RouteFallback("fallback");
     switch (resolved.id) {
       case "overview":
@@ -13191,7 +13989,9 @@
       case "calendar":
         return Calendar();
       case "support":
-        return Support();
+        return supportTicketsOpen(state.config) ? LiveSupport() : Support();
+      case "support.new":
+        return supportTicketsOpen(state.config) ? SupportTicketNew() : RouteFallback("disabled");
       case "auth.phone":
         return Auth();
       case "auth.code":
@@ -13588,6 +14388,15 @@
       render();
       return true;
     },
+    "setPassword.submit": function() {
+      return submitSetPassword({
+        onChange: function(outcome) {
+          render();
+          if (outcome === "invalid") focusElement("#set-password-new[aria-invalid], #set-password-confirm[aria-invalid]");
+          if (outcome === "done" || outcome === "expired") focusElement('[data-visual-id="set-password-sign-in"]');
+        }
+      });
+    },
     "requestLink.send": function() {
       if (!sendRequestLink({ onChange: render })) return false;
       render();
@@ -13629,6 +14438,35 @@
     },
     "membership.activate": function() {
       failCommand("membership.activate");
+    },
+    "support.newTicket": function(id) {
+      return openSupportTicket(id);
+    },
+    "support.chooseProperty": function(id) {
+      if (!changeSupportTicketDraft("propertyId", id)) return false;
+      render();
+      focusElement("#support-ticket-property-id");
+      return true;
+    },
+    "support.chooseVisit": function(id) {
+      if (!changeSupportTicketDraft("visitId", id)) return false;
+      render();
+      focusElement("#support-ticket-visit-id");
+      return true;
+    },
+    "support.chooseReason": function(id) {
+      if (!changeSupportTicketDraft("reason", id)) return false;
+      render();
+      focusElement("#support-ticket-contact-reason");
+      return true;
+    },
+    "support.submitTicket": function() {
+      return sendSupportTicket();
+    },
+    "support.checkTicket": function() {
+      return checkSupportTicketAgain({ onChange: function() {
+        render();
+      }, reload: reloadRuntimeModule });
     },
     "support.open": function() {
       var url = configuredExternalUrl(state.config, "supportUrl");
@@ -14029,7 +14867,7 @@
       go("support");
     },
     "overview.newRequest": function() {
-      go("support");
+      if (!openSupportTicket("")) go("support");
     },
     "auth.signOut": function() {
       if (state.config.dataMode === "live") {
@@ -14085,6 +14923,37 @@
     if (state.quoteRequest && state.quoteRequest.phase === "accepted") resetQuoteRequest();
     go("quote.new");
     return true;
+  }
+  function openSupportTicket(target) {
+    if (!supportTicketsOpen(state.config) || !isRouteReachable("support.new")) return false;
+    var ids = String(target || "").split(":");
+    if (!startSupportTicket(ids[0], ids[1])) return false;
+    go("support.new");
+    return true;
+  }
+  function ensureSupportTicketSchema() {
+    if (!state.supportTicketSchema) loadSupportTicketSchema({ onChange: function() {
+      render();
+    } });
+    return state.supportTicketSchema;
+  }
+  function sendSupportTicket() {
+    return submitSupportTicket({
+      reload: reloadRuntimeModule,
+      onChange: function(phase) {
+        render();
+        if (phase === "invalid" || phase === "refused") focusSupportTicketError();
+        if (phase === "created" || phase === "slow") focusElement('[data-module="support-ticket-outcome"]');
+        if (phase === "not-sent" || phase === "failed") focusElement('[data-module="support-ticket-message"]');
+      }
+    });
+  }
+  function focusSupportTicketError() {
+    var errors = state.supportTicket ? state.supportTicket.errors : {};
+    var first = ["PROPERTY_ID", "VISIT_ID", "CONTACT_REASON", "SUBJECT", "MESSAGE"].find(function(code) {
+      return !!errors[code];
+    });
+    return first ? focusElement('[name="' + first + '"]') : focusElement('[data-module="support-ticket-message"]');
   }
   function ensureQuoteRequestSchema() {
     if (!state.quoteRequestSchema) loadQuoteRequestSchema({ onChange: function() {
@@ -15097,11 +15966,11 @@
     var accessToken = text9(session2.accessToken || session2.access_token);
     if (!accessToken) throw contractError3("session-required", "A Core access token is required");
     var origin = explicitOrigin || config.origin || browserOrigin2();
-    var coreBase = sameOriginBase5(config.coreApiBase || "/core", origin, "Core API base");
+    var coreBase2 = sameOriginBase5(config.coreApiBase || "/core", origin, "Core API base");
     var accountBase = sameOriginBase5(config.accountApiBase || "/core-acct", origin, "Core Account API base");
     var tokenType = text9(session2.tokenType || session2.token_type || "Bearer");
     var authorization = tokenType + " " + accessToken;
-    var basicInfo = await requestJson5(fetchImpl, coreBase + "/api/user/basic-info.json", {
+    var basicInfo = await requestJson5(fetchImpl, coreBase2 + "/api/user/basic-info.json", {
       method: "POST",
       credentials: "same-origin",
       headers: { Authorization: authorization, "Content-Type": "application/json", Accept: "application/json" },
@@ -15157,7 +16026,7 @@
       account: {
         id: Number(account.id),
         code: text9(account.code),
-        displayName: localizedName6(account.nls) || "Customer account",
+        displayName: localizedName7(account.nls) || "Customer account",
         optimistic: Number.isFinite(Number(account.optimistic)) ? Number(account.optimistic) : null,
         typeCode: typeList ? text9(account.type && account.type.code) : typeCodes[0]
       }
@@ -15211,7 +16080,7 @@
     var number = Number(value);
     return Number.isInteger(number) && number > 0 ? number : null;
   }
-  function localizedName6(value) {
+  function localizedName7(value) {
     if (!value || typeof value !== "object") return "";
     var localized = value.en || value["en-US"] || Object.values(value)[0] || {};
     return text9(localized && (localized.NAME || localized.name));
@@ -15811,6 +16680,25 @@
       return { state: liveListFailure(error2), reasonCode: error2 && error2.code || "invoices-load-failed", truncated: false, items: [] };
     }
   };
+  var fixtureSupportModule = module("support", normalizeSupport);
+  var supportModule = {
+    id: "support",
+    gatesFirstRender: false,
+    adapter(context) {
+      if (context.config.dataMode !== "live") return fixtureSupportModule.adapter(context);
+      if (context.config.vertical === "snow") return createCoreSnowTicketsAdapter();
+      throw liveAdapterClosed("support");
+    },
+    normalize(raw, context) {
+      return context.config.dataMode === "live" ? normalizeTickets(raw) : normalizeSupport(raw);
+    },
+    onError(error2, context) {
+      if (error2 && error2.code === "session-expired") context.state.account = "session-expired";
+    },
+    failureEnvelope(context, error2) {
+      return { state: liveListFailure(error2), reasonCode: error2 && error2.code || "tickets-load-failed", truncated: false, open: [], closed: [] };
+    }
+  };
   var proposalsModule = {
     id: "proposals",
     adapter(context) {
@@ -15890,7 +16778,7 @@
     calendar: module("calendar", normalizeCalendar),
     activity: module("activity", normalizeActivity),
     profile: profileModule,
-    support: module("support", normalizeSupport),
+    support: supportModule,
     care: careModule,
     invoices: invoicesModule
   };

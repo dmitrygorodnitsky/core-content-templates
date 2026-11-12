@@ -2,6 +2,7 @@ import { attributeEntry, attributeNumber, attributeText, latestStateCode, positi
 import { CUSTOMER_ORDER_STATUS, OPERATOR_ORDER_STATES, QUOTE_ORDER_TYPES } from "../normalizers/contracts.js";
 import { formatPostalAddress } from "../normalizers/postal-address.js";
 import { VISIT_TYPE } from "../normalizers/visits.js";
+import { TICKET_TYPE } from "../normalizers/support.js";
 import { coreSessionFetch } from "./core-oidc-adapter.js";
 import { loadContractDetailsAccount } from "./core-account-profile-adapter.js";
 
@@ -20,6 +21,7 @@ const CATALOG_PAGE_SIZE = 200;
 const VISIT_PAGE_SIZE = 50;
 const VISIT_TRANSITION_PAGE_SIZE = 20;
 const INVOICE_PAGE_SIZE = 50;
+const TICKET_PAGE_SIZE = 50;
 
 const MEDIA_ID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
 
@@ -191,6 +193,22 @@ const VISIT_TRANSITIONS_BODY = Object.freeze({
   sorting: [{ field: "observed", direction: "ASC" }],
 });
 
+const TICKET_LIST_BODY = Object.freeze({
+  filters: [{ operator: "=", property: "type.code", value: TICKET_TYPE }],
+  mappings: [
+    { name: "id" },
+    { name: "code" },
+    { name: "nls" },
+    { name: "created" },
+    { name: "attributes" },
+    { name: "type", type: "identifier", mappings: TAGGED_REF_MAPPINGS },
+    { name: "states", type: "collection", mappings: TAGGED_REF_MAPPINGS },
+  ],
+  offset: 0,
+  pageSize: TICKET_PAGE_SIZE,
+  sorting: [{ field: "created", direction: "DESC" }],
+});
+
 const INVOICE_LIST_BODY = Object.freeze({
   mappings: INVOICE_MAPPINGS,
   offset: 0,
@@ -217,6 +235,29 @@ export function createCoreSnowInvoicesAdapter(options = {}) {
       if (moduleId !== "invoices") throw contractError("unsupported-module", "Core snow invoices adapter cannot load " + moduleId);
       return loadSnowInvoices(context, fetchImpl, options.origin);
     },
+  };
+}
+
+export function createCoreSnowTicketsAdapter(options = {}) {
+  var fetchImpl = options.fetch || coreSessionFetch;
+  if (typeof fetchImpl !== "function") throw contractError("fetch-unavailable", "Core snow adapter requires fetch");
+  return {
+    async load(moduleId, context) {
+      if (moduleId !== "support") throw contractError("unsupported-module", "Core snow tickets adapter cannot load " + moduleId);
+      return loadSnowTickets(context, fetchImpl, options.origin);
+    },
+  };
+}
+
+export async function loadSnowTickets(context, fetchImpl = coreSessionFetch, explicitOrigin) {
+  var api = readContext(context, explicitOrigin);
+  var reply = await requestJson(fetchImpl, api.serviceBase + "/api/tagged/task/list.json", readOptions(api, TICKET_LIST_BODY));
+  var rows = listResult(reply);
+  return {
+    state: "ready",
+    accountId: api.accountId,
+    items: rows.filter(function (row) { return text(row && row.type && row.type.code) === TICKET_TYPE; }),
+    truncated: resultSizeOf(reply, rows.length) > rows.length,
   };
 }
 
@@ -776,6 +817,7 @@ export const coreSnowContract = Object.freeze({
   quoteRequestPreference: QUOTE_REQUEST_PREFERENCE,
   quoteOrderTypes: Object.freeze(QUOTE_ORDER_TYPES.slice()),
   resourceMappings: RESOURCE_MAPPINGS,
+  ticketListBody: TICKET_LIST_BODY,
   visitListBody: VISIT_LIST_BODY,
   visitTransitionsBody: VISIT_TRANSITIONS_BODY,
   quoteFilters: ["account.id"],

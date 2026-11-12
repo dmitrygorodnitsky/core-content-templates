@@ -3005,6 +3005,26 @@ a.prop-fact__value { display: block; }
 
 .ov-card .record-row { margin-top: 4px; }
 
+.support-head .page-header__title { margin: 0; }
+
+.support-ticket { align-items: flex-start; cursor: default; }
+
+.support-ticket:hover { background: rgba(var(--glass), .5); }
+
+.support-ticket__message { margin-top: 8px; color: var(--ink-2); overflow-wrap: anywhere; }
+
+.support-form { display: flex; flex-direction: column; gap: 16px; }
+
+.support-form select.field { appearance: auto; cursor: pointer; }
+
+.support-form textarea.field { resize: vertical; min-height: 120px; }
+
+.set-password__form { display: flex; flex-direction: column; gap: 14px; }
+
+.set-password__form .field[readonly] { color: var(--ink-2); }
+
+.set-password__hint { font-size: 12px; color: var(--ink-3); }
+
 .record-duration { margin-top: 18px; padding-top: 14px; border-top: 1px solid rgba(var(--hair), .08); }
 
 .record-notes { margin: 0; font-size: 14.5px; line-height: 1.55; color: var(--ink); white-space: pre-line; }

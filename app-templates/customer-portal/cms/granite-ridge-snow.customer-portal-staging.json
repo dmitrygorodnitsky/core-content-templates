@@ -17,7 +17,8 @@
       "appointmentsTimeline",
       "invoices",
       "proposals",
-      "profile"
+      "profile",
+      "support"
     ],
     "authMode": "required",
     "dataMode": "live",
@@ -55,6 +56,7 @@
   "shell": {
     "experienceId": "granite-ridge-snow-staging",
     "brandName": "Limitless Snow Removal",
+    "providerIdentity": "organization",
     "defaultMode": "light",
     "primaryCtaLabel": "Request a quote",
     "navigation": {

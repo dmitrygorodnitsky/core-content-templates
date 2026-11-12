@@ -4,17 +4,16 @@ import { configuredExternalUrl } from "../../config.js";
 import { isSpa, state } from "../../state.js";
 import { signedInWithAccess } from "../../router.js";
 import { ActionButton } from "../primitives/ActionButton.js";
+import { BrandParts, brandIdentity } from "./BrandLogo.js";
 import { Toggle } from "../primitives/Toggle.js";
 
 export function PublicNav() {
   var landingOpen = isSpa() || !!configuredExternalUrl(state.config, "landingUrl");
   var signedIn = signedInWithAccess();
+  var brand = brandIdentity();
   return h("div", { "class": "top-nav-wrap" },
     h("nav", { "class": "top-nav", "data-module": "public-nav", "data-visual-id": "public-nav" }, [
-      h("div", { "class": "top-nav__brand", "data-action": signedIn ? "nav.go" : landingOpen ? "nav.landing" : undefined, "data-id": signedIn ? state.config.defaultRoute : undefined }, [
-        h("div", { "class": "brand-logo" }),
-        h("span", { "class": "brand-name", "data-bind": "brand.name" }, state.config.brandName || "Aircove")
-      ]),
+      h("div", { "class": "top-nav__brand", "data-action": signedIn ? "nav.go" : landingOpen ? "nav.landing" : undefined, "data-id": signedIn ? state.config.defaultRoute : undefined, "data-brand": brand.logo && brand.logo.wordmark ? "wordmark" : undefined }, BrandParts(brand)),
       h("div", { "class": "top-nav__actions" }, [
         h("div", { "class": "icon-btn icon-btn--optional", "data-action": "ui.toggleMode", title: "Toggle light/dark" }, state.mode === "Dark" ? "\u2600" : "\u263e"),
         state.route === "landing" || state.route === "seo.landing"

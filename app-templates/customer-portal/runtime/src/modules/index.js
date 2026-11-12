@@ -9,7 +9,8 @@ import { createCoreCartAdapter } from "../adapters/core-cart-adapter.js";
 import { createCoreOrdersAdapter } from "../adapters/core-orders-adapter.js";
 import { createCorePlansAdapter } from "../adapters/core-plans-adapter.js";
 import { createCoreSpaDemoAdapter } from "../adapters/core-spa-demo-adapter.js";
-import { createCoreSnowInvoicesAdapter, createCoreSnowPropertiesAdapter, createCoreSnowQuotesAdapter, createCoreSnowVisitsAdapter } from "../adapters/core-snow-adapter.js";
+import { createCoreSnowInvoicesAdapter, createCoreSnowPropertiesAdapter, createCoreSnowQuotesAdapter, createCoreSnowTicketsAdapter, createCoreSnowVisitsAdapter } from "../adapters/core-snow-adapter.js";
+import { normalizeTickets } from "../normalizers/support.js";
 import { normalizeInvoices } from "../normalizers/invoices.js";
 import { normalizeVisits } from "../normalizers/visits.js";
 import { liveWeatherOpened, loadLiveWeather, weatherSource } from "../live-weather.js";
@@ -397,6 +398,27 @@ const invoicesModule = {
   },
 };
 
+const fixtureSupportModule = module("support", normalizeSupport);
+
+const supportModule = {
+  id: "support",
+  gatesFirstRender: false,
+  adapter(context) {
+    if (context.config.dataMode !== "live") return fixtureSupportModule.adapter(context);
+    if (context.config.vertical === "snow") return createCoreSnowTicketsAdapter();
+    throw liveAdapterClosed("support");
+  },
+  normalize(raw, context) {
+    return context.config.dataMode === "live" ? normalizeTickets(raw) : normalizeSupport(raw);
+  },
+  onError(error, context) {
+    if (error && error.code === "session-expired") context.state.account = "session-expired";
+  },
+  failureEnvelope(context, error) {
+    return { state: liveListFailure(error), reasonCode: error && error.code || "tickets-load-failed", truncated: false, open: [], closed: [] };
+  },
+};
+
 const proposalsModule = {
   id: "proposals",
   adapter(context) {
@@ -474,7 +496,7 @@ export const modules = {
   calendar: module("calendar", normalizeCalendar),
   activity: module("activity", normalizeActivity),
   profile: profileModule,
-  support: module("support", normalizeSupport),
+  support: supportModule,
   care: careModule,
   invoices: invoicesModule,
 };
