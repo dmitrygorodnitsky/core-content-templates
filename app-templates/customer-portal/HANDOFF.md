@@ -1110,6 +1110,39 @@ Backend contracts: core-ui `docs/snow-support-tickets.md` and
 - **Header logo.** A failed logo request no longer costs the session its
   logo: the next render asks again, three times at most.
 
+### Orders and Contracts as two pages; only our markers on maps (2026-11-13)
+
+- **Nav** of the live portal: Home · Visits · Orders · Contracts · Invoices ·
+  Support. `proposals.list` (`#/proposals`) is now **Orders**: open quotes
+  with their map and footer, then All orders with each order's state
+  (`orderStatusMeta`: ACTIVE "Active", SUSPENDED "Suspended", COMPLETED
+  "Completed", otherwise the quote status), property, pricing model and
+  total. The new `contracts.list` (`#/contracts`, live only) is
+  **Contracts**: service agreements only. `#/proposals` stayed on the quotes
+  because the quote, decision and agreement emails (core-ui scripts'
+  `PORTAL_PROPOSALS_URL`) link there; an agreement waiting for approval shows
+  on Orders as a link to it, so the agreement email still lands one step
+  away. Detail addresses are unchanged.
+- **Split only where the profile has `contracts.list` in its nav and the
+  data is live** (`contractsListShown`). Fixture packages keep the combined
+  page. The nav highlights one owner per detail route (`activeNavKey`).
+- **Cross-links.** Quote detail goes back to Orders; agreement detail back to
+  Contracts, and each agreement property links "View orders ›" to its
+  quote group. The Home Contracts card sends waiting, revising and preparing
+  quotes to Orders. The request page names Orders. No agreement PDF exists
+  in Core for the portal (the PDF is built only on the review page), so
+  Contracts links none.
+- **Maps** hide Google's POI and transit labels and icons
+  (`QUIET_MAP_STYLES`: `poi` and `transit`, `elementType: "labels"`) on the
+  home map, Location cards, quote and agreement maps, the satellite plan
+  map and every review-page map; streets, area names and park fill stay.
+  With a cloud `mapId` Google ignores inline styles: the map id's own style
+  must hide POIs then (dev-1 ships none). The public quote form
+  (`runtime/forms/portal-form.js`) was not changed.
+- **Live on dev-1**: portal `3e57675e` and review `7f4ded3f` uploaded, render
+  cache cleared on both CMS nodes, proven with a throwaway Account, User,
+  properties, orders and agreements that were deleted afterwards.
+
 ### Provider name, logo and regions from the Organization (2026-11-12)
 
 - **Where Core keeps them.** Organization `SNOWLIMITLESS` (43): `nls` NAME,

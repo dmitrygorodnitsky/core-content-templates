@@ -3098,6 +3098,7 @@ const later = () => new Promise((resolve) => setTimeout(resolve, 5));
   const planMarkers = made.markers.filter((marker) => marker.map === planMaps[0]);
   assert.deepEqual(planMarkers.map((marker) => marker.options.title), ["Salt bin"], "a point is a marker named after its element");
 
+  for (const map of made.maps) assert.deepEqual(plain(map.options.styles).map((rule) => [rule.featureType, rule.elementType, rule.stylers[0].visibility]), [["poi", "labels", "off"], ["transit", "labels", "off"]], "every review map hides Google's points of interest and transit markers, on the satellite plan as on the address map");
   const billingMap = made.maps.find((map) => map.options.mapTypeId === undefined);
   const billingPin = made.markers.find((marker) => marker.map === billingMap);
   assert.deepEqual(plain([billingPin.options.title, billingPin.options.position]), ["1500 Harbour Green Drive, Suite 210, Vancouver, BC V6C 3T8, Canada", { lat: 49.2888, lng: -123.1193 }], "the pre-filled billing address is geocoded and pinned");

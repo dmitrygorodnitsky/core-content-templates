@@ -15,7 +15,7 @@ import { VisitDetail } from "./routes/VisitDetailPage.js";
 import { LiveVisitDetail, LiveVisits } from "./routes/LiveVisitsPage.js";
 import { InvoiceDetail, Invoices } from "./routes/InvoicesPage.js";
 import { PropertyDetail } from "./routes/PropertyDetailPage.js";
-import { ProposalsList } from "./routes/ProposalsPage.js";
+import { AgreementsList, ProposalsList } from "./routes/ProposalsPage.js";
 import { ProposalDetail } from "./routes/ProposalDetailPage.js";
 import { QuoteApproval } from "./routes/QuoteApprovalPage.js";
 import { AgreementDetail } from "./routes/AgreementDetailPage.js";
@@ -223,6 +223,7 @@ export function renderRoute() {
     case "plan":        return globalThis.__PORTAL_VERTICAL__ !== "snow" && isSpa() ? SpaPlan() : ComingSoon("plan", "a later wave");
     case "cart":        return globalThis.__PORTAL_VERTICAL__ !== "snow" && isSpa() ? SpaCart() : Checkout();
     case "proposals.list": return ProposalsList();
+    case "contracts.list": return AgreementsList();
     case "proposal.detail": return ProposalDetail();
     case "proposal.approve": return QuoteApproval();
     case "agreement.detail": return AgreementDetail();
@@ -302,7 +303,7 @@ function queryFrom(value) {
 function routeFamily(routeId) {
   if (routeId === "orders.list" || routeId === "order.detail" || routeId === "appointment.detail") return "appointments";
   if (routeId === "appointments" || routeId === "visit.detail" || routeId === "property.detail") return "appointments-timeline";
-  if (routeId === "proposals.list" || routeId === "proposal.detail" || routeId === "proposal.approve" || routeId === "agreement.detail" || routeId === "quote.new") return "proposals";
+  if (routeId === "proposals.list" || routeId === "contracts.list" || routeId === "proposal.detail" || routeId === "proposal.approve" || routeId === "agreement.detail" || routeId === "quote.new") return "proposals";
   if (routeId === "purchases.list" || routeId === "purchase.detail") return "purchases";
   if (routeId === "products" || routeId === "product.detail") return "products";
   return null;

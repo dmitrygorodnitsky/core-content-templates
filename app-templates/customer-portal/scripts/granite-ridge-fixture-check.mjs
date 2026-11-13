@@ -4,7 +4,7 @@ globalThis.window = globalThis;
 
 const runtimeRoot = new URL("../runtime/", import.meta.url);
 const { graniteRidgeSnowFixture } = await import(new URL("data/cases/granite-ridge-snow.js", runtimeRoot));
-const { portalProfiles, readPortalConfig } = await import(new URL("src/config.js", runtimeRoot));
+const { portalProfiles, readPortalConfig, routeRegistry } = await import(new URL("src/config.js", runtimeRoot));
 const { fixtureAdapter } = await import(new URL("src/adapters/fixture-adapter.js", runtimeRoot));
 const { createCareFixtureAdapter } = await import(new URL("src/adapters/care-fixture-adapter.js", runtimeRoot));
 const { normalizeCare } = await import(new URL("src/normalizers/care.js", runtimeRoot));
@@ -43,7 +43,7 @@ applyPortalConfig(config);
 
 const profileDefinition = portalProfiles.stormRetail;
 assert.equal(profileDefinition.weatherCalendar, true, "snow retail keeps the weather-operational calendar");
-assert.ok(profileDefinition.nav.length <= portalProfiles.stormOps.nav.length, "nav must not grow past the accepted stormOps item count");
+assert.ok(profileDefinition.nav.filter((item) => !routeRegistry[item.key].liveOnly).length <= portalProfiles.stormOps.nav.length, "the fixture nav must not grow past the accepted stormOps item count");
 assert.ok(profileDefinition.modules.includes("pricing"));
 assert.ok(!profileDefinition.nav.some((item) => item.key === "pricing"), "pricing stays reachable through the accepted Manage plan action, not an eighth nav item");
 

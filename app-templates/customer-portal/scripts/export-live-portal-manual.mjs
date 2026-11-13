@@ -99,7 +99,7 @@ const requiredAccountBases = ["coreApiBase", "accountApiBase"];
 const authKeys = ["coreBase", "callbackPath", "returnStorageKey", "logoutReturnStorageKey"];
 const organizationManager = "com.pixelnation.common.aspects.ApplicationContextProvider.getApplicationContext().getBean(com.pixelnation.common.persistence.OrganizationManager.class)";
 const shellKeys = ["experienceId", "brandName", "providerIdentity", "defaultMode", "primaryCtaLabel", "navigation", "requestFormUrl", "signedOutDestination", "landingUrl", "logoutReturnUrl", "allowedNavOrigins"];
-const navigationKeys = ["primary", "appointments", "invoices", "calendar", "activity", "care", "proposals", "services", "pricing", "products", "account", "support"];
+const navigationKeys = ["primary", "appointments", "invoices", "calendar", "activity", "care", "proposals", "contracts", "services", "pricing", "products", "account", "support"];
 
 const credentialShapes = [
   { label: "JSON Web Token", pattern: /eyJ[A-Za-z0-9_-]{8,}\.[A-Za-z0-9_-]{8,}\./ },

@@ -1,12 +1,13 @@
 // customer-portal/runtime/src/routes/ProposalsPage.js — production transfer module.
 import { h } from "../dom.js";
-import { currentProposal, proposalStatusMeta, quotePackage, state } from "../state.js";
+import { contractsListShown, currentProposal, proposalStatusMeta, quotePackage, state } from "../state.js";
 import { browserStorage, createGeocodeCache } from "../adapters/google-maps-adapter.js";
 import { EmptyState } from "../components/primitives/EmptyState.js";
 import { ProposalCard } from "../components/proposals/ProposalCard.js";
 import { ProposalComparison } from "../components/proposals/ProposalComparison.js";
-import { AgreementList, ContractsHead, ContractsSectionTitle, PortfolioMap, PortfolioSchematic, QuoteGroups, QuotesFooter, QuotesPreparing, QuotesPreparingNotice } from "../components/proposals/QuotePackage.js";
-import { ContractsListSkeleton, ContractsNotices, contractsGate } from "../components/proposals/ContractStates.js";
+import { AgreementList, ContractsHead, ContractsSectionTitle, PortfolioMap, PortfolioSchematic, QuoteGroups, QuotesFooter, QuotesPreparing, QuotesPreparingNotice, agreementTitle } from "../components/proposals/QuotePackage.js";
+import { AgreementsNotices, ContractsListSkeleton, ContractsNotices, OrdersNotices, contractsGate } from "../components/proposals/ContractStates.js";
+import { StatusBadge } from "../components/primitives/StatusBadge.js";
 import { knownPlacement, placeEach } from "../components/storm/PropertyMap.js";
 import { mapViewport, usablePropertyMap } from "../property-map-session.js";
 
@@ -19,7 +20,7 @@ export function proposalRollup() {
 /* ProposalCard (portfolio site row) */
 
 export function ProposalsList() {
-  if (state.config.dataMode === "live") return ContractsPage();
+  if (state.config.dataMode === "live") return contractsListShown() ? OrdersPage() : ContractsPage();
   var quotes = quotePackage();
   if (quotes) return ContractsPage();
 
@@ -142,6 +143,116 @@ function ContractsPage() {
     ]));
   }
   return page;
+}
+
+function OrdersPage() {
+  var page = h("section", { "class": "page page--narrow", "data-route": "proposals.list", "data-visual-id": "orders-list" });
+  var gate = contractsGate(ContractsListSkeleton);
+  if (gate) {
+    page.setAttribute("data-state", gate.getAttribute("data-state") || "loading");
+    page.appendChild(gate);
+    return page;
+  }
+  var quotes = quotePackage();
+  if (!quotes) {
+    page.setAttribute("data-state", "unavailable");
+    page.appendChild(EmptyState({ glyph: "○", title: "Orders aren’t in the portal yet", desc: "Your quotes and orders can’t be shown here yet." }));
+    return page;
+  }
+  var pendingCount = orderCount(quotes.pending);
+  var historyCount = orderCount(quotes.history);
+  var hasQuotes = pendingCount > 0;
+  var hasHistory = historyCount > pendingCount;
+  var notices = OrdersNotices(quotes);
+  var awaiting = AgreementsAwaiting(quotes.agreements);
+  page.setAttribute("data-state", hasQuotes || hasHistory ? (notices.length ? "partial" : "ready") : quotes.preparing ? "preparing" : "empty");
+  page.appendChild(ContractsHead(quotes, "Your orders"));
+  if (quotes.preparing && (hasQuotes || hasHistory)) page.appendChild(QuotesPreparingNotice());
+  notices.forEach(function (notice) { page.appendChild(notice); });
+  if (awaiting) page.appendChild(awaiting);
+
+  if (!hasQuotes && !hasHistory) {
+    page.appendChild(quotes.preparing
+      ? QuotesPreparing()
+      : EmptyState({ glyph: "📄", title: "No orders yet", desc: "When we send you a quote, it shows up here." }));
+    return page;
+  }
+
+  if (hasQuotes) {
+    var section = h("section", { "class": "contracts-section", "data-module": "contracts-quotes", "aria-label": "Open quotes" }, [
+      hasHistory ? ContractsSectionTitle("Open quotes", pendingCount) : null,
+    ]);
+    var map = usablePropertyMap();
+    var cache = createGeocodeCache(browserStorage());
+    var placements = map
+      ? placeEach(map, quotes.pending.map(function (group) { return group.property; }))
+      : quotes.pending.map(function (group) {
+        return group.property ? knownPlacement(group.property, cache) : { point: null, reason: "unknown" };
+      });
+    var portfolio = map ? PortfolioMap(quotes.pending, placements, map, mapViewport()) : PortfolioSchematic(quotes.pending, placements);
+    if (portfolio) section.appendChild(portfolio);
+    section.appendChild(QuoteGroups(quotes.pending, placements, !!portfolio));
+    if (quotes.deciding) section.appendChild(QuotesFooter());
+    page.appendChild(section);
+  }
+
+  if (hasHistory) {
+    page.appendChild(h("section", { "class": "contracts-section", "data-module": "contracts-orders", "aria-label": "All orders" }, [
+      ContractsSectionTitle("All orders", historyCount),
+      QuoteGroups(quotes.history, quotes.history.map(function () { return { point: null, reason: "unknown" }; }), false),
+    ]));
+  }
+  return page;
+}
+
+function AgreementsAwaiting(rows) {
+  var waiting = rows.filter(function (row) { return row.agreement.allowedActions.indexOf("approve") !== -1; });
+  if (!waiting.length) return null;
+  return h("div", { "class": "contracts-section", "data-module": "agreements-awaiting", "data-visual-id": "agreements-awaiting" }, waiting.map(function (row) {
+    return h("button", { "class": "quote-package-link", "data-module": "quote-package-link", "data-visual-id": "quote-package-link", "data-action": "agreement.open", "data-id": row.id, "aria-label": "Open the service agreement " + agreementTitle(row) + " — " + row.agreement.label }, [
+      h("span", { "class": "quote-package-link__label" }, "Your service agreement for " + agreementTitle(row) + " is ready for your approval"),
+      StatusBadge({ variant: "status-badge--" + row.agreement.tone, label: row.agreement.label, bind: "agreement.stateLabel", state: row.agreement.stage }),
+      h("span", { "class": "proposal-card__chev", "aria-hidden": "true" }, "›"),
+    ]);
+  }));
+}
+
+export function AgreementsList() {
+  var page = h("section", { "class": "page page--narrow", "data-route": "contracts.list", "data-visual-id": "contracts-list" });
+  var gate = contractsGate(ContractsListSkeleton);
+  if (gate) {
+    page.setAttribute("data-state", gate.getAttribute("data-state") || "loading");
+    page.appendChild(gate);
+    return page;
+  }
+  var quotes = quotePackage();
+  if (!quotes) {
+    page.setAttribute("data-state", "unavailable");
+    page.appendChild(EmptyState({ glyph: "○", title: "Contracts aren’t in the portal yet", desc: "Your service agreements can’t be shown here yet." }));
+    return page;
+  }
+  var rows = quotes.agreements;
+  var notices = AgreementsNotices(quotes);
+  page.setAttribute("data-state", rows.length ? (notices.length ? "partial" : "ready") : "empty");
+  page.appendChild(h("div", { "class": "proposals-head", "data-module": "contracts-head", "data-visual-id": "contracts-head" }, [
+    h("div", { "class": "proposals-head__read" }, [
+      h("div", { "class": "proposals-head__title-row" }, [h("h1", { "class": "proposals-head__title" }, "Your contracts")]),
+    ]),
+  ]));
+  notices.forEach(function (notice) { page.appendChild(notice); });
+  if (!rows.length) {
+    page.appendChild(EmptyState({ glyph: "📄", title: "No contracts yet", desc: "Once you approve a quote, we prepare your service agreement and it shows up here.", action: { variant: "btn--ghost", label: "Go to Orders", action: "nav.go", id: "proposals.list" } }));
+    return page;
+  }
+  page.appendChild(h("section", { "class": "contracts-section", "data-module": "contracts-agreements", "aria-label": "Service agreements" }, [
+    ContractsSectionTitle("Service agreements", rows.length),
+    AgreementList(rows),
+  ]));
+  return page;
+}
+
+function orderCount(groups) {
+  return (groups || []).reduce(function (sum, group) { return sum + group.orders.length; }, 0);
 }
 
 export function rollupCard(label, num, color) {

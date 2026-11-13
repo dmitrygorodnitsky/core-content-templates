@@ -2337,6 +2337,10 @@
   var SUGGESTION_MINIMUM = 3;
   var SUGGESTION_TYPES = ["street_address", "premise", "subpremise", "route"];
   var TONE_TOKENS = ["--accent", "--warn", "--ok", "--danger", "--accent-3"];
+  var QUIET_MAP_STYLES = [
+    { featureType: "poi", elementType: "labels", stylers: [{ visibility: "off" }] },
+    { featureType: "transit", elementType: "labels", stylers: [{ visibility: "off" }] },
+  ];
 
   function keyOf(value) {
     var text = String(value == null ? "" : value).trim();
@@ -2503,6 +2507,7 @@
         clickableIcons: false,
         gestureHandling: "cooperative",
         colorScheme: darkMode() ? "DARK" : "LIGHT",
+        styles: QUIET_MAP_STYLES,
       }, extra || {}));
       watchSize(target);
       return target.map;

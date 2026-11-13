@@ -1,5 +1,5 @@
 import { h } from "../../dom.js";
-import { state } from "../../state.js";
+import { quoteGroupFor, state } from "../../state.js";
 import { ActionButton } from "../primitives/ActionButton.js";
 import { formatIsoDate } from "../../normalizers/contracts.js";
 import { visitImageUrl } from "../../normalizers/visits.js";
@@ -122,10 +122,12 @@ export function AgreementServices(row, map) {
     return section;
   }
   row.properties.forEach(function (entry) {
+    var ordersId = "quote-" + row.agreement.backendId + "-" + (entry.propertyBackendId || 0);
     section.appendChild(h("div", { "class": "agreement-property", "data-module": "agreement-property", "data-visual-id": "agreement-property" }, [
       h("div", { "class": "agreement-property__head" }, [
         h("h3", { "class": "agreement-property__title" }, entry.title),
         entry.address ? h("div", { "class": "agreement-property__address" }, entry.address) : null,
+        quoteGroupFor(ordersId) ? h("button", { "class": "link-action agreement-property__orders", type: "button", "data-action": "proposal.open", "data-id": ordersId, "data-visual-id": "agreement-property-orders", "aria-label": "View the orders for " + entry.title }, "View orders ›") : null,
       ]),
       h("div", { "class": "agreement-property__options" }, entry.orders.map(function (order) { return QuoteOptionCard(order); })),
     ]));

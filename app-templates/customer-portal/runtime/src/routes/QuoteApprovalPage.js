@@ -1,5 +1,5 @@
 import { h } from "../dom.js";
-import { quoteGroupFor, state } from "../state.js";
+import { contractsListShown, quoteGroupFor, state } from "../state.js";
 import { contractCommandsBusy, ensureContractDetails } from "../actions.js";
 import { StatusBadge } from "../components/primitives/StatusBadge.js";
 import { ActionButton } from "../components/primitives/ActionButton.js";
@@ -22,7 +22,7 @@ export function QuoteApproval() {
   var order = group ? group.orders.find(function (candidate) { return candidate.backendId === state.approveQuoteId; }) : null;
   if (!order) {
     page.setAttribute("data-state", "not-found");
-    page.appendChild(NotFoundState({ noun: "quote", backLabel: "contracts", backRoute: "proposals.list" }));
+    page.appendChild(NotFoundState({ noun: "quote", backLabel: contractsListShown() ? "orders" : "contracts", backRoute: "proposals.list" }));
     return page;
   }
   var command = state.contractCommand;

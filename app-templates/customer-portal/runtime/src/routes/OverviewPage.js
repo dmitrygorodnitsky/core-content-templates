@@ -1,5 +1,5 @@
 import { h } from "../dom.js";
-import { currentFixture, currentOverview, isModuleEnabled, liveInvoices, liveOverviewStatus, liveProperties, liveVisits, quotePackage, state } from "../state.js";
+import { contractsListShown, currentFixture, currentOverview, isModuleEnabled, liveInvoices, liveOverviewStatus, liveProperties, liveVisits, quotePackage, state } from "../state.js";
 import { configuredExternalUrl } from "../config.js";
 import { render } from "../app.js";
 import { createPropertyForecasts } from "../live-weather.js";
@@ -440,7 +440,7 @@ function LiveContractsWidget() {
   if (!agreements.length && !quotes.pending.length) {
     card.appendChild(quotes.preparing
       ? QuotePreparingLine()
-      : emptyLine("No contracts yet", "When we send you a quote or a service agreement, it appears here."));
+      : emptyLine("No contracts yet", contractsListShown() ? "When we prepare your service agreement, it appears here." : "When we send you a quote or a service agreement, it appears here."));
     if (partial) card.appendChild(ContractsPartialLine());
     return card;
   }
@@ -449,7 +449,8 @@ function LiveContractsWidget() {
   if (revising) card.appendChild(QuotesRevisionLine());
   if (quotes.preparing) card.appendChild(QuotePreparingRow());
   if (partial) card.appendChild(ContractsPartialLine());
-  card.appendChild(moreLine(agreements.length > 3 ? agreements.length - 3 : null, agreements.length > 3 ? "more in Contracts" : "View all contracts", "overview.openContracts"));
+  if (agreements.length || !contractsListShown()) card.appendChild(moreLine(agreements.length > 3 ? agreements.length - 3 : null, agreements.length > 3 ? "more in Contracts" : "View all contracts", "overview.openContracts"));
+  else card.appendChild(moreLine(null, "View all orders", "overview.openOrders"));
   return card;
 }
 
@@ -469,7 +470,7 @@ function AgreementLine(row) {
 }
 
 function QuotesWaitingLink(count) {
-  return h("button", { "class": "ov-waiting", type: "button", "data-module": "quote-decision", "data-visual-id": "quote-decision", "data-action": "overview.openContracts" }, [
+  return h("button", { "class": "ov-waiting", type: "button", "data-module": "quote-decision", "data-visual-id": "quote-decision", "data-action": quotesHome().action }, [
     text("span", "ov-waiting__label", plural(count, "quote", "quotes") + " waiting for your decision"),
     h("span", { "class": "ov-waiting__chev", "aria-hidden": "true" }, "›"),
   ]);
@@ -482,7 +483,7 @@ function QuotesRevisionLine() {
       text("div", "ov-row__title", "Changes requested"),
       text("div", "ov-row__meta", "We’re reviewing the changes you asked for."),
     ]),
-    chevron("overview.openContracts", "", "Go to Contracts"),
+    chevron(quotesHome().action, "", "Go to " + quotesHome().label),
   ]);
 }
 
@@ -512,8 +513,8 @@ function contractsProblem(card, stateName, title, desc, retry) {
 function QuotePreparingLine() {
   return h("div", { "class": "ov-empty", "data-module": "quote-preparing", "data-visual-id": "quote-preparing", "data-state": "preparing", role: "status" }, [
     text("div", "ov-empty__title", "We have your request"),
-    text("div", "ov-empty__desc", "We’re preparing your quote. It appears under Contracts once we send it."),
-    h("div", { "class": "link-action", "data-action": "overview.openContracts" }, "Go to Contracts ›"),
+    text("div", "ov-empty__desc", "We’re preparing your quote. It appears under " + quotesHome().label + " once we send it."),
+    h("div", { "class": "link-action", "data-action": quotesHome().action }, "Go to " + quotesHome().label + " ›"),
   ]);
 }
 
@@ -524,8 +525,12 @@ function QuotePreparingRow() {
       text("div", "ov-row__title", "Request in preparation"),
       text("div", "ov-row__meta", "We have your request and are preparing your quote."),
     ]),
-    chevron("overview.openContracts", "", "Go to Contracts"),
+    chevron(quotesHome().action, "", "Go to " + quotesHome().label),
   ]);
+}
+
+function quotesHome() {
+  return contractsListShown() ? { action: "overview.openOrders", label: "Orders" } : { action: "overview.openContracts", label: "Contracts" };
 }
 
 function SupportWidget(model) {

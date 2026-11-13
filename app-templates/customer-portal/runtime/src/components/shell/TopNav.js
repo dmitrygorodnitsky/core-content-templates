@@ -20,6 +20,8 @@ export function TopNav(gated) {
     ]));
   }
   var navItems = profile.nav.filter(isNavItemEnabled);
+  var activeKey = activeNavKey(navItems);
+  var navActive = function (item) { return item.key === activeKey; };
   var links = navItems.map(function (n) {
     var active = navActive(n);
     return h("span", {
@@ -97,19 +99,25 @@ function primaryConnected(primary) {
 var NAV_DETAIL_ROUTES = {
   "orders.list": ["order.detail"],
   products: ["checkout"],
-  "proposals.list": ["proposal.detail", "agreement.detail", "quote.new"],
+  "contracts.list": ["agreement.detail"],
+  "proposals.list": ["proposal.detail", "proposal.approve", "agreement.detail", "quote.new"],
   appointments: ["visit.detail"],
   invoices: ["invoice.detail"],
   support: ["support.new"],
 };
 
-function navActive(item) {
-  return item.key === state.route || (NAV_DETAIL_ROUTES[item.key] || []).indexOf(state.route) !== -1;
+function activeNavKey(navItems) {
+  var keys = navItems.map(function (item) { return item.key; });
+  if (keys.indexOf(state.route) !== -1) return state.route;
+  return Object.keys(NAV_DETAIL_ROUTES).find(function (key) {
+    return keys.indexOf(key) !== -1 && NAV_DETAIL_ROUTES[key].indexOf(state.route) !== -1;
+  }) || null;
 }
 
 function isNavItemEnabled(item) {
   var route = routeRegistry[item.key];
-  return !!(route && (route.public || (isModuleEnabled(route.module) && navListShown(route.module))));
+  if (!route || (route.liveOnly && state.config.dataMode !== "live")) return false;
+  return !!(route.public || (isModuleEnabled(route.module) && navListShown(route.module)));
 }
 
 function navLabel(item) {
@@ -122,6 +130,7 @@ function navLabel(item) {
     activity: "activity",
     care: "care",
     "proposals.list": "proposals",
+    "contracts.list": "contracts",
     services: "services",
     pricing: "pricing",
     products: "products",

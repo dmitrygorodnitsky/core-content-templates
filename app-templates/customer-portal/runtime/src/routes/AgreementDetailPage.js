@@ -1,5 +1,5 @@
 import { h } from "../dom.js";
-import { contractAgreementFor, state } from "../state.js";
+import { contractAgreementFor, contractsHomeRoute, state } from "../state.js";
 import { contractCommandsBusy } from "../actions.js";
 import { StatusBadge } from "../components/primitives/StatusBadge.js";
 import { NotFoundState } from "../components/primitives/RouteStates.js";
@@ -11,7 +11,7 @@ import { AgreementApproval, AgreementOutcome, AgreementParties, AgreementService
 
 export function AgreementDetail() {
   var page = h("section", { "class": "page page--narrow", "data-route": "agreement.detail", "data-visual-id": "agreement-detail" });
-  page.appendChild(h("div", { "class": "detail-back", "data-action": "proposal.review", "data-visual-id": "agreement-back" }, "‹ Back to your contracts"));
+  page.appendChild(h("div", { "class": "detail-back", "data-action": "agreement.review", "data-visual-id": "agreement-back" }, "‹ Back to your contracts"));
   var gate = contractsGate(AgreementDetailSkeleton);
   if (gate) {
     page.setAttribute("data-state", gate.getAttribute("data-state") || "loading");
@@ -21,7 +21,7 @@ export function AgreementDetail() {
   var row = contractAgreementFor(state.agreementId);
   if (!row) {
     page.setAttribute("data-state", "not-found");
-    page.appendChild(NotFoundState({ noun: "agreement", backLabel: "contracts", backRoute: "proposals.list" }));
+    page.appendChild(NotFoundState({ noun: "agreement", backLabel: "contracts", backRoute: contractsHomeRoute() }));
     return page;
   }
   var agreement = row.agreement;

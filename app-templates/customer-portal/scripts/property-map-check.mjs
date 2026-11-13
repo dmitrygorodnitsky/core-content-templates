@@ -26,7 +26,7 @@ const runtimeRoot = pathToFileURL(path.resolve("app-templates/customer-portal/ru
 const { readPortalConfig } = await import(new URL("src/config.js", runtimeRoot));
 const { createPropertyForecasts } = await import(new URL("src/live-weather.js", runtimeRoot));
 const { createXweatherAdapter } = await import(new URL("src/adapters/xweather-adapter.js", runtimeRoot));
-const { browserStorage, createGeocodeCache, createGoogleMapsAdapter } = await import(new URL("src/adapters/google-maps-adapter.js", runtimeRoot));
+const { QUIET_MAP_STYLES, browserStorage, createGeocodeCache, createGoogleMapsAdapter } = await import(new URL("src/adapters/google-maps-adapter.js", runtimeRoot));
 const { LocationMap, PropertyIndex, PropertyLocation, PropertyStage, closeOnEscape, createFocusKeeper, createPropertyMap } = await import(new URL("src/components/storm/PropertyMap.js", runtimeRoot));
 const { PortfolioMap, QuoteGroups } = await import(new URL("src/components/proposals/QuotePackage.js", runtimeRoot));
 const { addressKey, forecastPoint, geoPoint, popupDocks, popupPlacement, popupWeather, propertyPoint, weatherReading } = await import(new URL("src/normalizers/property-map.js", runtimeRoot));
@@ -236,7 +236,9 @@ const PERIODS = Array.from({ length: 7 }, (_, index) => ({
   assert.deepEqual(options.center, { lat: overview.map.center.lat, lng: overview.map.center.lon }, "service geography is the initial viewport");
   assert.equal(options.zoom, overview.map.zoom);
   assert.equal(options.mapId, "styled-map");
+  assert.equal(options.styles, undefined, "a cloud map id carries its own style, which must hide Google's points of interest; Google ignores inline styles beside it");
   assert.equal(options.clickableIcons, false, "Google's own points of interest must not open a second kind of popup");
+  assert.deepEqual(QUIET_MAP_STYLES.map((rule) => [rule.featureType, rule.elementType, rule.stylers[0].visibility]), [["poi", "labels", "off"], ["transit", "labels", "off"]], "without a map id the map hides every Google point of interest, business and transit marker, and keeps streets and area names");
 
   const ready = stage();
   const canvas = ready.children[0];
@@ -801,6 +803,7 @@ const PERIODS = Array.from({ length: 7 }, (_, index) => ({
   await flush();
   assert.equal(controller.status(), "ready");
   const placed = card(frost, controller);
+  assert.equal(google.log.maps[0].options.styles, QUIET_MAP_STYLES, "the Location card's map, which has no map id, carries the style that hides Google's points of interest");
   const pin = google.log.maps[0].panes.overlayMouseTarget.querySelector("[data-module=\"location-pin\"]");
   assert.equal(pin.tagName, "SPAN", "a pin on the property's own page leads nowhere, so it is an image rather than a button");
   assert.equal(pin.getAttribute("role"), "img");

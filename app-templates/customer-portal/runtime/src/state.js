@@ -733,6 +733,14 @@ export function currentProposal() {
   return F.proposal;
 }
 
+export function contractsListShown() {
+  return state.config.dataMode === "live" && isModuleEnabled("proposals") && activeProfile().nav.some(function (item) { return item.key === "contracts.list"; });
+}
+
+export function contractsHomeRoute() {
+  return contractsListShown() ? "contracts.list" : "proposals.list";
+}
+
 export function quotePackage() {
   var data = state.moduleData.proposals;
   if (!data || !data.quotes) return null;

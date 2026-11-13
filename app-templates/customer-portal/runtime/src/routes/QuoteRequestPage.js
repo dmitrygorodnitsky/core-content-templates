@@ -1,5 +1,5 @@
 import { h } from "../dom.js";
-import { liveProperties, liveProvider, state } from "../state.js";
+import { contractsListShown, liveProperties, liveProvider, state } from "../state.js";
 import { ACTIONS, ensureQuoteRequestSchema } from "../actions.js";
 import { ActionButton } from "../components/primitives/ActionButton.js";
 import { ErrorState } from "../components/primitives/ErrorState.js";
@@ -24,11 +24,11 @@ export function QuoteRequest() {
   var page = h("section", { "class": "page page--narrow quote-request", "data-route": "quote.new", "data-visual-id": "quote-request", "data-state": request.phase });
   page.appendChild(h("div", { "class": "detail-back", "data-action": "proposal.review", "data-visual-id": "quote-request-back" }, "‹ Back to your contracts"));
   if (request.phase === "accepted") {
-    page.appendChild(RequestOutcome("accepted", "Request received", "A manager prepares your quotes. When they’re ready, they arrive by email and appear in Contracts, where you can approve them, decline them or ask for changes."));
+    page.appendChild(RequestOutcome("accepted", "Request received", "A manager prepares your quotes. When they’re ready, they arrive by email and appear in " + quotesHome() + ", where you can approve them, decline them or ask for changes."));
     return page;
   }
   if (request.phase === "slow" || (request.phase === "checking" && request.formId)) {
-    page.appendChild(RequestOutcome("slow", "We’re still working on your request", "It’s taking longer than usual. You don’t need to send it again: a manager prepares your quotes, and they arrive by email and appear in Contracts.", request.phase === "checking"));
+    page.appendChild(RequestOutcome("slow", "We’re still working on your request", "It’s taking longer than usual. You don’t need to send it again: a manager prepares your quotes, and they arrive by email and appear in " + quotesHome() + ".", request.phase === "checking"));
     return page;
   }
 
@@ -221,7 +221,7 @@ function Submit(request) {
 function Progress(request) {
   return h("div", { "class": "card card--pad quote-request__progress", "data-module": "quote-request-progress", "data-state": request.phase, "aria-live": "polite" }, [
     PendingNote(PROGRESS[request.phase] || PROGRESS.sending),
-    request.phase === "sending" ? null : h("p", { "class": "contract-form__note" }, "This can take a few minutes, especially for new addresses. You can leave this page: your quotes will appear in Contracts and we’ll email you when they’re ready."),
+    request.phase === "sending" ? null : h("p", { "class": "contract-form__note" }, "This can take a few minutes, especially for new addresses. You can leave this page: your quotes will appear in " + quotesHome() + " and we’ll email you when they’re ready."),
   ]);
 }
 
@@ -231,10 +231,14 @@ function RequestOutcome(kind, title, body, checking) {
     h("h1", { "class": "state-block__title" }, title),
     h("div", { "class": "state-block__desc" }, body),
     h("div", { "class": "proposal-actions quote-request__outcome-actions" }, [
-      ActionButton({ variant: "btn--primary", label: "Go to Contracts", action: "nav.go", id: "proposals.list", visualId: "quote-request-contracts" }),
+      ActionButton({ variant: "btn--primary", label: "Go to " + quotesHome(), action: "nav.go", id: "proposals.list", visualId: "quote-request-contracts" }),
       kind === "slow" ? ActionButton({ variant: "btn--ghost", label: checking ? "Checking…" : "Check again", action: "quoteRequest.checkAgain", disabled: checking, visualId: "quote-request-check-again" }) : null,
     ]),
   ]);
+}
+
+function quotesHome() {
+  return contractsListShown() ? "Orders" : "Contracts";
 }
 
 function ServiceArea(provider) {

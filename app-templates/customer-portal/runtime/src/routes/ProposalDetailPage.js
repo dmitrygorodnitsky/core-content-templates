@@ -1,7 +1,7 @@
 // customer-portal/runtime/src/routes/ProposalDetailPage.js — production transfer module.
 import { h } from "../dom.js";
 import { render } from "../app.js";
-import { computeSite, currentSite, currentTheme, proposalPlanName, proposalStatusMeta, quoteGroupFor, quotePackage, state } from "../state.js";
+import { computeSite, contractsListShown, currentSite, currentTheme, proposalPlanName, proposalStatusMeta, quoteGroupFor, quotePackage, state } from "../state.js";
 import { contractCommandsBusy, go, selectPlan } from "../actions.js";
 import { StatusBadge } from "../components/primitives/StatusBadge.js";
 import { ActionButton } from "../components/primitives/ActionButton.js";
@@ -142,7 +142,8 @@ export function ProposalDetail() {
 
 function QuoteDetail() {
   var page = h("section", { "class": "page page--narrow", "data-route": "proposal.detail", "data-visual-id": "proposal-detail" });
-  page.appendChild(h("div", { "class": "detail-back", "data-action": "proposal.review", "data-visual-id": "proposal-back" }, "‹ Back to your contracts"));
+  var listNoun = contractsListShown() ? "orders" : "contracts";
+  page.appendChild(h("div", { "class": "detail-back", "data-action": "proposal.review", "data-visual-id": "proposal-back" }, "‹ Back to your " + listNoun));
   var gate = contractsGate(ContractDetailSkeleton);
   if (gate) {
     page.setAttribute("data-state", gate.getAttribute("data-state") || "loading");
@@ -152,7 +153,7 @@ function QuoteDetail() {
   var group = quoteGroupFor(state.currentSiteId);
   if (!group) {
     page.setAttribute("data-state", "not-found");
-    page.appendChild(NotFoundState({ noun: "quote", backLabel: "contracts", backRoute: "proposals.list" }));
+    page.appendChild(NotFoundState({ noun: "quote", backLabel: listNoun, backRoute: "proposals.list" }));
     return page;
   }
   var status = QUOTE_STATUS[group.status];

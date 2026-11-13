@@ -1,4 +1,5 @@
 import { h } from "../../dom.js";
+import { QUIET_MAP_STYLES } from "../../adapters/google-maps-adapter.js";
 import { OVERVIEW_STATUS as STATUS, knownPropertyStatus, propertyHighlights, propertyWeather, sourceOpened, visitsKnown, zoneWeather } from "../../normalizers/overview.js";
 import { addressRepeats } from "../../normalizers/postal-address.js";
 import { addressKey, forecastPoint, geoPoint, popupDocks, popupPlacement, popupWeather, propertyPoint, weatherLabel, weatherReading } from "../../normalizers/property-map.js";
@@ -460,6 +461,7 @@ function mapOptions(viewport, mapId) {
     gestureHandling: "cooperative",
   };
   if (mapId) settings.mapId = mapId;
+  else settings.styles = QUIET_MAP_STYLES;
   return settings;
 }
 

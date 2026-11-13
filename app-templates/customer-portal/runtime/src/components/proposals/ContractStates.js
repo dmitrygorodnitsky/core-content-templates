@@ -77,6 +77,25 @@ export function ContractsNotices(quotes) {
   return notes.map(PartialNotice);
 }
 
+export function OrdersNotices(quotes) {
+  var partial = quotes.partial || {};
+  var notes = [];
+  if (partial.orders) notes.push("Your orders couldn’t be loaded. Try again in a moment.");
+  if (partial.lines) notes.push("Some services on your orders couldn’t be loaded. Prices and totals shown come from our system as returned.");
+  if (partial.truncated) notes.push("Only part of your order history could be shown.");
+  return notes.map(PartialNotice);
+}
+
+export function AgreementsNotices(quotes) {
+  var partial = quotes.partial || {};
+  var notes = [];
+  if (partial.agreements) notes.push("Your service agreements couldn’t be loaded. Try again in a moment.");
+  if (partial.orders) notes.push("Your orders couldn’t be loaded, so your agreements are shown without their services.");
+  if (!partial.orders && partial.unreadableOrders) notes.push(partial.unreadableOrders === 1 ? "1 order listed in your agreements couldn’t be loaded." : partial.unreadableOrders + " orders listed in your agreements couldn’t be loaded.");
+  if (partial.truncated) notes.push("Only part of your contract history could be shown.");
+  return notes.map(PartialNotice);
+}
+
 export function PartialNotice(text) {
   return h("div", { "class": "alert-banner alert-banner--partial", "data-module": "contracts-partial", "data-visual-id": "contracts-partial", "data-state": "partial", role: "status" }, [
     h("div", { "class": "alert-banner__icon alert-banner__icon--partial", "aria-hidden": "true" }, "!"),

@@ -5,6 +5,11 @@ var GEOCODE_PREFIX = "portal.geocode:";
 var SUGGESTION_LIMIT = 5;
 var SUGGESTION_TYPES = ["street_address", "premise", "subpremise", "route"];
 
+export var QUIET_MAP_STYLES = Object.freeze([
+  Object.freeze({ featureType: "poi", elementType: "labels", stylers: Object.freeze([Object.freeze({ visibility: "off" })]) }),
+  Object.freeze({ featureType: "transit", elementType: "labels", stylers: Object.freeze([Object.freeze({ visibility: "off" })]) }),
+]);
+
 export function createGoogleMapsAdapter(options) {
   var apiKey = (options && options.apiKey) || "";
   var scope = (options && options.scope) || globalThis;

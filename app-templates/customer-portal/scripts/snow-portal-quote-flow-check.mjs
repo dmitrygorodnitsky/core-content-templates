@@ -391,9 +391,9 @@ function fire(node, type, extra = {}) {
   const done = page();
   assert.equal(done.getAttribute("data-state"), "accepted");
   assert.equal(one(done, "h1").textContent, "Request received");
-  assert.equal(one(done, ".state-block__desc").textContent, "A manager prepares your quotes. When they’re ready, they arrive by email and appear in Contracts, where you can approve them, decline them or ask for changes.");
+  assert.equal(one(done, ".state-block__desc").textContent, "A manager prepares your quotes. When they’re ready, they arrive by email and appear in Orders, where you can approve them, decline them or ask for changes.");
   const link = one(done, "[data-visual-id=\"quote-request-contracts\"]");
-  assert.deepEqual([link.textContent, link.getAttribute("data-action"), link.getAttribute("data-id")], ["Go to Contracts", "nav.go", "proposals.list"]);
+  assert.deepEqual([link.textContent, link.getAttribute("data-action"), link.getAttribute("data-id")], ["Go to Orders", "nav.go", "proposals.list"]);
   assert.equal(await until(() => !!(state.moduleData.proposals && state.moduleData.proposals.quotes && state.moduleData.proposals.quotes.preparing)), true, "Contracts shows the accepted request as being prepared until its quotes are sent");
   ACTIONS["service.requestForm"]();
   assert.equal(page().getAttribute("data-state"), "editing", "Request a quote after a received request starts a new one");
@@ -456,8 +456,8 @@ for (const [report, field, rendered] of [
   const slow = page();
   assert.equal(slow.getAttribute("data-state"), "slow");
   assert.equal(one(slow, "h1").textContent, "We’re still working on your request");
-  assert.equal(one(slow, ".state-block__desc").textContent, "It’s taking longer than usual. You don’t need to send it again: a manager prepares your quotes, and they arrive by email and appear in Contracts.");
-  assert.deepEqual(all(slow, ".quote-request__outcome-actions [data-action]").map((button) => [button.textContent, button.getAttribute("data-action")]), [["Go to Contracts", "nav.go"], ["Check again", "quoteRequest.checkAgain"]]);
+  assert.equal(one(slow, ".state-block__desc").textContent, "It’s taking longer than usual. You don’t need to send it again: a manager prepares your quotes, and they arrive by email and appear in Orders.");
+  assert.deepEqual(all(slow, ".quote-request__outcome-actions [data-action]").map((button) => [button.textContent, button.getAttribute("data-action")]), [["Go to Orders", "nav.go"], ["Check again", "quoteRequest.checkAgain"]]);
   assert.equal(all(slow, "[data-module=\"command-failure\"]").length + all(slow, "[data-module=\"error-state\"]").length, 0, "a slow request is not shown as an error");
 
   await portal.runtime().reloadAsync("proposals");
@@ -478,7 +478,7 @@ for (const [report, field, rendered] of [
   const waiting = one(page(), "[data-module=\"quote-request-progress\"]");
   assert.deepEqual([one(waiting, "[data-module=\"command-pending\"]").textContent, one(waiting, ".contract-form__note").textContent], [
     "We’re checking your properties and preparing quote drafts…",
-    "This can take a few minutes, especially for new addresses. You can leave this page: your quotes will appear in Contracts and we’ll email you when they’re ready.",
+    "This can take a few minutes, especially for new addresses. You can leave this page: your quotes will appear in Orders and we’ll email you when they’re ready.",
   ], "the wait says what is happening, how long it can take and where the quotes arrive");
   assert.equal(all(page(), "[data-visual-id=\"quote-request-submit\"]").length, 0, "a request in flight cannot be sent twice");
   assert.ok(all(page(), "[data-module=\"quote-request-property\"]").every((card) => card.hasAttribute("disabled")));
@@ -642,7 +642,7 @@ const DETAIL_VALUE_CODES = ["LEGAL_NAME", "BILLING_ADDRESS", "REPRESENTATIVE_FIR
   assert.equal(await ACTIONS["quote.sendApproval"]("4103"), true);
   assert.deepEqual(table.events.map((event) => [event.id, event.code, event.body.CLIENT_TYPE, event.body.REPRESENTATIVE_JOB_TITLE]), [[4103, "QUOTE_SENT-ACCEPTED", { value: "INDIVIDUAL" }, { value: "" }]], "an optional job title left empty is sent empty");
   assert.deepEqual(table.orders.filter((row) => row.attributes[5].SERVICE_PROPERTY.value === 984).map((row) => row.states[0].code), ["DECLINED", "DECLINED", "ACCEPTED"], "the server declines the other options of the approved property itself; the page sends nothing for them");
-  portal.go("proposals.list");
+  portal.go("contracts.list");
   const prepared = all(page(), "[data-module=\"agreement-row\"]").find((row) => row.getAttribute("data-id") === "agreement-core-5604");
   assert.ok(prepared, "once the round is settled the agreement made from the approved quotes appears in Contracts");
   assert.equal(one(prepared, "[data-module=\"status-badge\"]").textContent, "Being prepared");

@@ -128,7 +128,7 @@ function configure(enabled, extra = {}) {
     dataset: Object.assign({
       portalVertical: "snow", portalProfile: "stormRetail", portalTheme: "snow", portalDataMode: "live", portalAuthMode: "required",
       portalOrganization: "SNOWLIMITLESS", portalAccountTypeCode: "CUSTOMER", portalDefaultRoute: "overview", portalTimeZone: "America/Vancouver",
-      portalNavAppointmentsLabel: "Visits", portalNavInvoicesLabel: "Invoices", portalNavProposalsLabel: "Contracts", portalNavSupportLabel: "Support",
+      portalNavAppointmentsLabel: "Visits", portalNavInvoicesLabel: "Invoices", portalNavProposalsLabel: "Orders", portalNavContractsLabel: "Contracts", portalNavSupportLabel: "Support",
       portalBrandName: "Limitless Snow Removal", portalEnabledModules: enabled,
     }, extra),
   }));
@@ -177,7 +177,7 @@ const fieldError = (root, code) => { const control = one(root, "[name=\"" + code
   const { calls, failure } = await liveLoad(TICKETS);
   assert.equal(failure, null);
   assert.ok(calls.includes("/core-svc/api/tagged/task/list.json") && calls.includes("form-type CUSTOMER_SUPPORT_TICKET"));
-  assert.deepEqual(navLabels(), ["Home", "Visits", "Invoices", "Contracts", "Support"], "Support is in the nav once its module is open");
+  assert.deepEqual(navLabels(), ["Home", "Visits", "Orders", "Contracts", "Invoices", "Support"], "Support is in the nav once its module is open");
 
   const home = Overview();
   const card = one(home, "[data-module=\"support-requests\"]");
@@ -231,7 +231,7 @@ const fieldError = (root, code) => { const control = one(root, "[name=\"" + code
   assert.equal(all(Overview(), "[data-module=\"support-requests\"]").length, 0, "the home shows no support card it cannot back");
 
   await liveLoad(TICKETS, "overview,properties,appointmentsTimeline,invoices,proposals");
-  assert.deepEqual(navLabels(), ["Home", "Visits", "Invoices", "Contracts"], "without the module there is no Support item");
+  assert.deepEqual(navLabels(), ["Home", "Visits", "Orders", "Contracts", "Invoices"], "without the module there is no Support item");
   assert.equal(all(Overview(), "[data-module=\"support-requests\"]").length, 0);
   assert.equal(all(page("visit.detail", { visitId: "visit-core-79" }), "[data-visual-id=\"visit-open-ticket\"]").length, 0);
 }

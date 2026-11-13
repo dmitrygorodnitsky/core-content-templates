@@ -2,13 +2,13 @@ import { h } from "../../dom.js";
 import { state } from "../../state.js";
 import { StatusBadge } from "../primitives/StatusBadge.js";
 import { ActionButton } from "../primitives/ActionButton.js";
-import { QUOTE_STATUS } from "./QuotePackage.js";
+import { orderStatusMeta } from "./QuotePackage.js";
 import { pricePeriod } from "../../normalizers/contracts.js";
 import { CommandOutcome } from "./ContractStates.js";
 
 export function QuoteOptionCard(order, options) {
   var settings = options || {};
-  var meta = QUOTE_STATUS[order.status];
+  var meta = orderStatusMeta(order);
   var label = order.pricingModel ? order.pricingModel.label : "Quote";
   var card = h("article", {
     "class": "card card--pad quote-option",

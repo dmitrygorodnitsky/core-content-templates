@@ -1,4 +1,5 @@
 import { h } from "../../dom.js";
+import { QUIET_MAP_STYLES } from "../../adapters/google-maps-adapter.js";
 
 var PLAN_PADDING = 28;
 var POINT_RADIUS_METERS = 1.5;
@@ -65,6 +66,7 @@ export function createPlanMap(options) {
       zoomControl: true,
       clickableIcons: false,
       gestureHandling: "cooperative",
+      styles: QUIET_MAP_STYLES,
     });
     entry.map = map;
     plan.elements.forEach(function (element) {

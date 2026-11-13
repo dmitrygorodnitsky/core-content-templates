@@ -12,6 +12,16 @@ export var QUOTE_STATUS = Object.freeze({
   cancelled: Object.freeze({ label: "⊘ Cancelled", badge: "status-badge--scheduled", dot: "#8a94a6" }),
 });
 
+var ORDER_STATE_STATUS = Object.freeze({
+  ACTIVE: Object.freeze({ label: "● Active", badge: "status-badge--ok", dot: "#34c759" }),
+  SUSPENDED: Object.freeze({ label: "‖ Suspended", badge: "status-badge--warn", dot: "#ff9f0a" }),
+  COMPLETED: Object.freeze({ label: "✓ Completed", badge: "status-badge--scheduled", dot: "#8a94a6" }),
+});
+
+export function orderStatusMeta(order) {
+  return (Object.prototype.hasOwnProperty.call(ORDER_STATE_STATUS, order.stateCode) && ORDER_STATE_STATUS[order.stateCode]) || QUOTE_STATUS[order.status];
+}
+
 var DECISION_META = { approved: "approved", declined: "declined", cancelled: "cancelled", revision: "revision", open: "unseen" };
 var DECISION_LABEL = {
   approved: "Option approved",
@@ -21,13 +31,13 @@ var DECISION_LABEL = {
   open: "Awaiting your decision",
 };
 
-export function ContractsHead(quotes) {
+export function ContractsHead(quotes, title) {
   var counts = quotes.counts;
   var deciding = quotes.deciding && counts.properties > 0;
   return h("div", { "class": "proposals-head", "data-module": "quote-package-head", "data-visual-id": "quote-package-head", "data-state": deciding ? "deciding" : "settled" }, [
     h("div", { "class": "proposals-head__read" }, [
       h("div", { "class": "proposals-head__title-row" }, [
-        h("h1", { "class": "proposals-head__title" }, quotes.pending.length && !quotes.agreements.length ? "Your quotes" : "Your contracts"),
+        h("h1", { "class": "proposals-head__title" }, title || (quotes.pending.length && !quotes.agreements.length ? "Your quotes" : "Your contracts")),
       ]),
     ]),
     deciding ? h("span", { "class": "proposals-head__pill" }, counts.decided + " of " + plural(counts.properties, "property", "properties") + " decided") : null,
@@ -164,7 +174,7 @@ export function QuotesFooter() {
 }
 
 function QuoteOption(order) {
-  var meta = QUOTE_STATUS[order.status];
+  var meta = orderStatusMeta(order);
   var perService = !!order.pricing && !order.pricing.total;
   var total = perService ? "Per visit" : formatOrderPrice(order);
   return h("li", { "class": "proposal-option", "data-module": "quote-row", "data-visual-id": "quote-row", "data-state": order.status }, [

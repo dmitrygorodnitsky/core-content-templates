@@ -3,7 +3,7 @@ import { F } from "../data/fixtures.js";
 import { createContractCommands } from "./contract-commands.js";
 import { createFixtureContractsGateway, fixtureAccountProfileAdapter } from "./adapters/fixture-adapter.js";
 import { createCoreSnowQuotesAdapter } from "./adapters/core-snow-adapter.js";
-import { cmdPhase, contractAgreementFor, currentAppointment, currentFixture, currentPurchase, findProduct, isSpa, orderItems, productItems, proposalSites, quoteGroupFor, quotePackage, spaBookingModel, spaBookingOpen, spaBookingOpts, spaBookingQuote, spaBookingSlotState, spaCartEnvelope, spaCatalogServices, spaCurrentApiDemoOpen, spaFlowSteps, spaNoteState, spaOptionsComplete, spaOptionsStepOn, spaPlanOffers, spaPlanSellOpen, spaProfileValues, spaRetailOpen, spaSelectedAddOns, spaSelectedLocation, spaSelectedSlot, spaSellInfo, spaVisitMode, state } from "./state.js";
+import { cmdPhase, contractAgreementFor, contractsHomeRoute, currentAppointment, currentFixture, currentPurchase, findProduct, isSpa, orderItems, productItems, proposalSites, quoteGroupFor, quotePackage, spaBookingModel, spaBookingOpen, spaBookingOpts, spaBookingQuote, spaBookingSlotState, spaCartEnvelope, spaCatalogServices, spaCurrentApiDemoOpen, spaFlowSteps, spaNoteState, spaOptionsComplete, spaOptionsStepOn, spaPlanOffers, spaPlanSellOpen, spaProfileValues, spaRetailOpen, spaSelectedAddOns, spaSelectedLocation, spaSelectedSlot, spaSellInfo, spaVisitMode, state } from "./state.js";
 import { invalidateCareRuntime, reloadCareRuntime, reloadRuntimeModule, render, retryRuntimeLoad } from "./app.js";
 import { createCoreCartAdapter } from "./adapters/core-cart-adapter.js";
 import { createPickupFulfillment } from "./adapters/core-orders-adapter.js";
@@ -91,6 +91,7 @@ export var ACTIONS = {
   "proposal.requestRevision": function () { runCommand("proposal.requestRevision", state.currentSiteId, function () { decideSite("revision"); }); },
   "proposal.decline":  function ()   { runCommand("proposal.decline", state.currentSiteId, function () { decideSite("declined"); }); },
   "agreement.open":    function (id) { openAgreement(id); },
+  "agreement.review":  function ()   { go(contractsHomeRoute()); },
   "quote.approve":     function (id) { return openQuoteApproval(id); },
   "quote.sendApproval": function (id) { return sendQuoteApproval(id); },
   "quote.backToQuote": function ()   { if (contractCommands.busy()) return false; go("proposal.detail"); return true; },
@@ -242,7 +243,8 @@ export var ACTIONS = {
   "overview.openCalendar": function ()   { go("calendar"); },
   "overview.openInvoices": function ()   { go("activity"); },
   "overview.openInvoice": function ()    { go("activity"); },
-  "overview.openContracts": function ()  { go("proposals.list"); },
+  "overview.openContracts": function ()  { go(contractsHomeRoute()); },
+  "overview.openOrders": function ()    { go("proposals.list"); },
   "overview.openSupport": function ()    { go("support"); },
   "overview.newRequest": function ()     { if (!openSupportTicket("")) go("support"); },
   "auth.signOut":      function ()   {

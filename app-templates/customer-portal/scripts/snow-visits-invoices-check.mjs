@@ -14,7 +14,7 @@ globalThis.location = { href: "https://portal.example.test/pages/SNOWLIMITLESS/p
 const portalRoot = path.resolve("app-templates/customer-portal");
 const runtimeRoot = pathToFileURL(path.join(portalRoot, "runtime") + "/");
 const load = (file) => import(new URL(file, runtimeRoot));
-const { readPortalConfig, readTimeZone, portalProfiles } = await load("src/config.js");
+const { matchRoutePath, readPortalConfig, readTimeZone, portalProfiles } = await load("src/config.js");
 const { applyPortalConfig, state } = await load("src/state.js");
 const { PortalRuntime } = await load("src/portal-runtime.js");
 const { coreSnowContract, createCoreSnowInvoicesAdapter, createCoreSnowVisitsAdapter, readVisitTransitions } = await load("src/adapters/core-snow-adapter.js");
@@ -239,7 +239,7 @@ function configure(enabled, extra = {}) {
     dataset: Object.assign({
       portalVertical: "snow", portalProfile: "stormRetail", portalTheme: "snow", portalDataMode: "live", portalAuthMode: "required",
       portalOrganization: "SNOWLIMITLESS", portalAccountTypeCode: "CUSTOMER", portalDefaultRoute: "overview", portalTimeZone: "America/Vancouver",
-      portalNavAppointmentsLabel: "Visits", portalNavInvoicesLabel: "Invoices", portalNavProposalsLabel: "Contracts",
+      portalNavAppointmentsLabel: "Visits", portalNavInvoicesLabel: "Invoices", portalNavProposalsLabel: "Orders", portalNavContractsLabel: "Contracts",
       portalEnabledModules: enabled,
     }, extra),
   }));
@@ -278,7 +278,10 @@ const page = (route, params = {}) => { Object.assign(state, params); state.route
   assert.equal(failure, null);
   await preloadProgress();
   assert.ok(calls.includes("/core-svc/api/tagged/appointment/list.json") && calls.includes("/core-bill/api/tagged/invoice/list.json"));
-  assert.deepEqual(navLabels(), ["Home", "Visits", "Invoices", "Contracts"], "the snow nav reads Home, Visits, Invoices, Contracts");
+  assert.deepEqual(navLabels(), ["Home", "Visits", "Orders", "Contracts", "Invoices"], "the snow nav reads Home, Visits, Orders, Contracts, Invoices");
+  const activeNav = (route) => { const previous = state.route; state.route = route; const labels = all(one(TopNav(false), ".nav-links"), ".nav-link--active").map((node) => node.textContent); state.route = previous; return labels; };
+  assert.deepEqual(["proposals.list", "proposal.detail", "proposal.approve", "quote.new", "contracts.list", "agreement.detail"].map(activeNav), [["Orders"], ["Orders"], ["Orders"], ["Orders"], ["Contracts"], ["Contracts"]], "a quote or order lights Orders and an agreement lights Contracts, never both");
+  assert.deepEqual(["/proposals", "/contracts", "/proposals/quote-169-983", "/agreements/agreement-core-169"].map((address) => matchRoutePath(address).id), ["proposals.list", "contracts.list", "proposal.detail", "agreement.detail"], "the old Contracts address, which the quote and agreement emails link to, now opens Orders; Contracts has its own address and the detail links are unchanged");
 
   const home = Overview();
   const next = one(home, "[data-module=\"next-visit\"]");
@@ -388,7 +391,7 @@ const page = (route, params = {}) => { Object.assign(state, params); state.route
   const section = one(PropertyDetail(), "[data-module=\"property-live-visits\"]");
   assert.deepEqual(ids(section, "[data-module=\"visit-row\"]"), ["visit-core-81", "visit-core-80"], "a property lists only its own visits");
   assert.doesNotMatch(section.textContent, /Harbour Road/, "the property page does not repeat its own address on each visit");
-  assert.deepEqual(navLabels(), ["Home", "Visits", "Invoices", "Contracts"], "with no invoices the Invoices item stays in the nav");
+  assert.deepEqual(navLabels(), ["Home", "Visits", "Orders", "Contracts", "Invoices"], "with no invoices the Invoices item stays in the nav");
   const profileBefore = state.moduleData.profile;
   assert.deepEqual([one(TopNav(false), ".brand-name").textContent, all(TopNav(false), "img").length], [state.config.brandName, 0], "without the provider's Organization the header keeps the configured brand and mark");
   state.moduleData.profile = Object.assign({}, profileBefore, { provider: { name: "Limitless Snow Removal Corp.", logoImageId: "3fecdfcd-2c9e-49c2-8873-92e4378930fc", regions: [] } });
@@ -455,7 +458,7 @@ const page = (route, params = {}) => { Object.assign(state, params); state.route
 
 {
   await liveLoad({ properties: [property(983, 610)], visits: [visit(75, 1792400000000, 1792403600000, "CANCELED", 983)], invoices: [invoice(8, "DRAFT", [2026, 9, 25], "", "", 100)] });
-  assert.deepEqual(navLabels(), ["Home", "Visits", "Invoices", "Contracts"], "the nav keeps Visits and Invoices whatever the lists hold");
+  assert.deepEqual(navLabels(), ["Home", "Visits", "Orders", "Contracts", "Invoices"], "the nav keeps Visits and Invoices whatever the lists hold");
   await preloadProgress();
   assert.deepEqual([page("invoices").getAttribute("data-state"), all(one(page("appointments"), "[data-module=\"visits-cancelled\"]"), "[data-module=\"visit-row\"]").length], ["empty", 1], "a draft invoice is not the client's yet, and a cancelled visit is listed as cancelled");
   const home = Overview();
@@ -469,12 +472,12 @@ const page = (route, params = {}) => { Object.assign(state, params); state.route
   const paidOnly = Overview();
   assert.equal(all(paidOnly, "[data-module=\"invoice-due\"]").length, 0, "a paid invoice is not due");
   assert.equal(all(paidOnly, "[data-module=\"next-visit\"]").length, 0, "a completed visit is not next");
-  assert.deepEqual(navLabels(), ["Home", "Visits", "Invoices", "Contracts"]);
+  assert.deepEqual(navLabels(), ["Home", "Visits", "Orders", "Contracts", "Invoices"]);
 
   const { failure } = await liveLoad({ properties: [property(983, 610)], visits: "fail", invoices: "fail" });
   assert.equal(failure, null, "a failed visit or invoice read does not fail the portal");
   assert.equal(state.moduleData.properties.state, "ready");
-  assert.deepEqual(navLabels(), ["Home", "Visits", "Invoices", "Contracts"], "a failed read keeps its nav item so the page can say what went wrong");
+  assert.deepEqual(navLabels(), ["Home", "Visits", "Orders", "Contracts", "Invoices"], "a failed read keeps its nav item so the page can say what went wrong");
   assert.match(page("appointments").textContent, /Couldn’t load your visits/);
   assert.equal(all(Overview(), "[data-module=\"next-visit\"]").length, 0);
 
@@ -708,8 +711,9 @@ const page = (route, params = {}) => { Object.assign(state, params); state.route
   assert.equal(source.shell.navigation.appointments, "Visits");
   assert.equal(source.shell.navigation.invoices, "Invoices");
   assert.equal(source.account.serviceApiBase, "/core-svc");
-  const order = portalProfiles.stormRetail.nav.map((item) => item.key).filter((key) => ["overview", "appointments", "invoices", "proposals.list"].includes(key));
-  assert.deepEqual(order, ["overview", "appointments", "invoices", "proposals.list"]);
+  assert.deepEqual([source.shell.navigation.proposals, source.shell.navigation.contracts], ["Orders", "Contracts"], "quotes and orders are Orders, service agreements are Contracts");
+  const order = portalProfiles.stormRetail.nav.map((item) => item.key).filter((key) => ["overview", "appointments", "invoices", "proposals.list", "contracts.list"].includes(key));
+  assert.deepEqual(order, ["overview", "appointments", "proposals.list", "contracts.list", "invoices"]);
 }
 
 {

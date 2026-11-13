@@ -138,7 +138,7 @@ function configure(dataset, extra = {}) {
   assert.equal(all(nav, "[data-module=\"sign-out-control\"]").length, 0);
   state.mobileNav = true;
   const menu = one(TopNav(false), "[data-state=\"mobile-navigation-open\"]");
-  assert.deepEqual(all(menu, "[data-action]").map((node) => node.textContent), ["Home", "Contracts", "Profile", "Sign out"], "the mobile menu reaches Profile and Sign out directly");
+  assert.deepEqual(all(menu, "[data-action]").map((node) => node.textContent), ["Home", "Orders", "Contracts", "Profile", "Sign out"], "the mobile menu reaches Profile and Sign out directly");
   assert.equal(one(menu, "[data-module=\"mobile-sign-out\"]").getAttribute("data-action"), "auth.signOut");
 
   configure(SNOW_LIVE, { portalEnabledModules: "account,overview,properties" });

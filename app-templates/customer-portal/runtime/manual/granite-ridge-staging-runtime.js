@@ -216,10 +216,11 @@
       nav: [
         { key: "overview", label: "Home" },
         { key: "appointments", label: "Appointments" },
+        { key: "proposals.list", label: "Orders" },
+        { key: "contracts.list", label: "Contracts" },
         { key: "invoices", label: "Invoices" },
         { key: "calendar", label: "Calendar" },
         { key: "care" },
-        { key: "proposals.list", label: "Contracts" },
         { key: "support", label: "Support" }
       ],
       primary: { label: "Request a quote", action: "service.requestForm" },
@@ -300,6 +301,7 @@
     "proposals.list": { id: "proposals.list", path: "/proposals", module: "proposals" },
     "proposal.detail": { id: "proposal.detail", path: "/proposals/:id", module: "proposals", param: "id" },
     "proposal.approve": { id: "proposal.approve", path: "/proposals/:id/approve/:quote", module: "proposals", param: "id" },
+    "contracts.list": { id: "contracts.list", path: "/contracts", module: "proposals", liveOnly: true },
     "agreement.detail": { id: "agreement.detail", path: "/agreements/:id", module: "proposals", param: "id" },
     "quote.new": { id: "quote.new", path: "/quote/new", module: "proposals", liveOnly: true },
     profile: { id: "profile", path: "/profile", module: "profile" },
@@ -377,6 +379,7 @@
         activity: dataset.portalNavActivityLabel || "",
         care: dataset.portalNavCareLabel || "",
         proposals: dataset.portalNavProposalsLabel || "",
+        contracts: dataset.portalNavContractsLabel || "",
         services: dataset.portalNavServicesLabel || "",
         pricing: dataset.portalNavPricingLabel || "",
         products: dataset.portalNavProductsLabel || "",
@@ -2839,6 +2842,14 @@
     var proposals = caseProposals();
     if (proposals) return proposals.proposal || null;
     return F.proposal;
+  }
+  function contractsListShown() {
+    return state.config.dataMode === "live" && isModuleEnabled("proposals") && activeProfile().nav.some(function(item) {
+      return item.key === "contracts.list";
+    });
+  }
+  function contractsHomeRoute() {
+    return contractsListShown() ? "contracts.list" : "proposals.list";
   }
   function quotePackage() {
     var data = state.moduleData.proposals;
@@ -5741,6 +5752,10 @@
       ]));
     }
     var navItems = profile.nav.filter(isNavItemEnabled);
+    var activeKey = activeNavKey(navItems);
+    var navActive = function(item) {
+      return item.key === activeKey;
+    };
     var links = navItems.map(function(n) {
       var active = navActive(n);
       return h("span", {
@@ -5816,17 +5831,25 @@
   var NAV_DETAIL_ROUTES = {
     "orders.list": ["order.detail"],
     products: ["checkout"],
-    "proposals.list": ["proposal.detail", "agreement.detail", "quote.new"],
+    "contracts.list": ["agreement.detail"],
+    "proposals.list": ["proposal.detail", "proposal.approve", "agreement.detail", "quote.new"],
     appointments: ["visit.detail"],
     invoices: ["invoice.detail"],
     support: ["support.new"]
   };
-  function navActive(item) {
-    return item.key === state.route || (NAV_DETAIL_ROUTES[item.key] || []).indexOf(state.route) !== -1;
+  function activeNavKey(navItems) {
+    var keys = navItems.map(function(item) {
+      return item.key;
+    });
+    if (keys.indexOf(state.route) !== -1) return state.route;
+    return (/* @__PURE__ */ Object.keys(NAV_DETAIL_ROUTES)).find(function(key) {
+      return keys.indexOf(key) !== -1 && NAV_DETAIL_ROUTES[key].indexOf(state.route) !== -1;
+    }) || null;
   }
   function isNavItemEnabled(item) {
     var route = routeRegistry[item.key];
-    return !!(route && (route.public || isModuleEnabled(route.module) && navListShown(route.module)));
+    if (!route || route.liveOnly && state.config.dataMode !== "live") return false;
+    return !!(route.public || isModuleEnabled(route.module) && navListShown(route.module));
   }
   function navLabel(item) {
     var configured = state.config.navigation || {};
@@ -5838,6 +5861,7 @@
       activity: "activity",
       care: "care",
       "proposals.list": "proposals",
+      "contracts.list": "contracts",
       services: "services",
       pricing: "pricing",
       products: "products",
@@ -7077,6 +7101,200 @@
     return h("div", { "class": "skeleton", style });
   }
 
+  // app-templates/customer-portal/runtime/src/adapters/google-maps-adapter.js
+  var SCRIPT_URL = "https://maps.googleapis.com/maps/api/js";
+  var LIBRARIES = ["core", "maps", "geocoding"];
+  var READY_CALLBACK = "__portalGoogleMapsReady";
+  var GEOCODE_PREFIX = "portal.geocode:";
+  var SUGGESTION_LIMIT = 5;
+  var SUGGESTION_TYPES = ["street_address", "premise", "subpremise", "route"];
+  var QUIET_MAP_STYLES = /* @__PURE__ */ Object.freeze([
+    /* @__PURE__ */ Object.freeze({ featureType: "poi", elementType: "labels", stylers: /* @__PURE__ */ Object.freeze([/* @__PURE__ */ Object.freeze({ visibility: "off" })]) }),
+    /* @__PURE__ */ Object.freeze({ featureType: "transit", elementType: "labels", stylers: /* @__PURE__ */ Object.freeze([/* @__PURE__ */ Object.freeze({ visibility: "off" })]) })
+  ]);
+  function createGoogleMapsAdapter(options2) {
+    var apiKey = options2 && options2.apiKey || "";
+    var scope = options2 && options2.scope || globalThis;
+    var failureListeners = [];
+    var loading = null;
+    var maps = null;
+    function fail2(error2) {
+      failureListeners.slice().forEach(function(listener) {
+        listener(error2);
+      });
+    }
+    return {
+      opened: function() {
+        return !!apiKey;
+      },
+      onFailure: function(listener) {
+        failureListeners.push(listener);
+      },
+      load: function() {
+        if (loading) return loading;
+        if (!apiKey) {
+          loading = Promise.reject(new Error("Google Maps adapter is not opened"));
+          return loading;
+        }
+        loading = scriptNamespace(scope, apiKey, fail2).then(function(namespace) {
+          return importLibraries(namespace, scope);
+        }).then(function(loaded) {
+          maps = loaded;
+          return loaded;
+        });
+        return loading;
+      },
+      suggestAddresses: function(query, options3) {
+        var within = options3 && options3.within;
+        return this.load().then(function(loaded) {
+          return typeof loaded.importLibrary === "function" ? loaded.importLibrary("places") : loaded.places;
+        }).then(function(places) {
+          var finder2 = places && places.AutocompleteSuggestion;
+          if (!finder2 || typeof finder2.fetchAutocompleteSuggestions !== "function") return [];
+          var request = { input: query, includedPrimaryTypes: SUGGESTION_TYPES };
+          if (within) request.locationRestriction = within;
+          return Promise.resolve(finder2.fetchAutocompleteSuggestions(request)).then(function(response) {
+            return (response && response.suggestions || []).map(function(suggestion) {
+              var prediction = suggestion && suggestion.placePrediction;
+              var label = prediction && prediction.text ? String(prediction.text) : "";
+              return {
+                label,
+                address: function() {
+                  return formattedAddress(prediction, label);
+                },
+                place: function() {
+                  return locatedPlace(prediction, label);
+                }
+              };
+            }).filter(function(item) {
+              return item.label;
+            }).slice(0, SUGGESTION_LIMIT);
+          });
+        });
+      },
+      geocode: function(address) {
+        if (!maps || typeof maps.Geocoder !== "function") return Promise.reject(new Error("Google Maps is not loaded"));
+        return new Promise(function(resolve, reject) {
+          new maps.Geocoder().geocode({ address }, function(results, status) {
+            var location = status === "OK" && results && results[0] && results[0].geometry && results[0].geometry.location;
+            if (!location || typeof location.lat !== "function" || typeof location.lng !== "function") {
+              var failure2 = new Error("Geocoder answered " + status);
+              failure2.status = status;
+              reject(failure2);
+              return;
+            }
+            resolve({ lat: location.lat(), lon: location.lng() });
+          });
+        });
+      }
+    };
+  }
+  function createGeocodeCache(storage) {
+    return {
+      read: function(key) {
+        if (!key || !storage) return null;
+        try {
+          var raw = storage.getItem(GEOCODE_PREFIX + key);
+          return raw ? JSON.parse(raw) : null;
+        } catch (_) {
+          return null;
+        }
+      },
+      write: function(key, point) {
+        if (!key || !point || !storage) return false;
+        try {
+          storage.setItem(GEOCODE_PREFIX + key, JSON.stringify({ lat: point.lat, lon: point.lon }));
+          return true;
+        } catch (_) {
+          return false;
+        }
+      }
+    };
+  }
+  function browserStorage() {
+    try {
+      return globalThis.localStorage || null;
+    } catch (_) {
+      return null;
+    }
+  }
+  function formattedAddress(prediction, label) {
+    var place = prediction && typeof prediction.toPlace === "function" ? prediction.toPlace() : null;
+    if (!place || typeof place.fetchFields !== "function") return Promise.resolve(label);
+    return Promise.resolve(place.fetchFields({ fields: ["formattedAddress"] })).then(function() {
+      return String(place.formattedAddress || label);
+    }, function() {
+      return label;
+    });
+  }
+  function locatedPlace(prediction, label) {
+    var place = prediction && typeof prediction.toPlace === "function" ? prediction.toPlace() : null;
+    if (!place || typeof place.fetchFields !== "function") return Promise.resolve({ address: label, point: null });
+    return Promise.resolve(place.fetchFields({ fields: ["formattedAddress", "location"] })).then(function() {
+      return { address: String(place.formattedAddress || label), point: placePoint(place.location) };
+    }, function() {
+      return { address: label, point: null };
+    });
+  }
+  function placePoint(location) {
+    if (!location) return null;
+    var lat = typeof location.lat === "function" ? location.lat() : location.lat;
+    var lon = typeof location.lng === "function" ? location.lng() : location.lng;
+    return typeof lat === "number" && typeof lon === "number" && isFinite(lat) && isFinite(lon) && Math.abs(lat) <= 90 && Math.abs(lon) <= 180 ? { lat, lon } : null;
+  }
+  function scriptNamespace(scope, apiKey, fail2) {
+    var present = scope.google && scope.google.maps;
+    if (present && (typeof present.importLibrary === "function" || typeof present.Map === "function")) {
+      return Promise.resolve(present);
+    }
+    return new Promise(function(resolve, reject) {
+      var settled2 = false;
+      function ready() {
+        var loaded = scope.google && scope.google.maps;
+        if (settled2 || !loaded || typeof loaded.importLibrary !== "function" && typeof loaded.Map !== "function") return false;
+        settled2 = true;
+        resolve(loaded);
+        return true;
+      }
+      var previous = scope.gm_authFailure;
+      scope.gm_authFailure = function() {
+        var error2 = new Error("Google Maps rejected the browser key");
+        settled2 = true;
+        reject(error2);
+        fail2(error2);
+        if (typeof previous === "function") previous();
+      };
+      scope[READY_CALLBACK] = ready;
+      var script = scope.document.createElement("script");
+      script.async = true;
+      script.src = SCRIPT_URL + "?key=" + encodeURIComponent(apiKey) + "&loading=async&v=weekly&callback=" + READY_CALLBACK;
+      script.addEventListener("error", function() {
+        settled2 = true;
+        reject(new Error("The Google Maps script did not load"));
+      });
+      script.addEventListener("load", function() {
+        if (ready()) return;
+        if (!(scope.google && scope.google.maps)) {
+          settled2 = true;
+          reject(new Error("The Google Maps script loaded without google.maps"));
+        }
+      });
+      scope.document.head.appendChild(script);
+    });
+  }
+  function importLibraries(maps, scope) {
+    if (typeof maps.importLibrary !== "function") return maps;
+    return Promise.all(LIBRARIES.map(function(name) {
+      return maps.importLibrary(name);
+    })).then(function(libraries) {
+      var current = scope && scope.google && scope.google.maps || maps;
+      if (typeof current.Map === "function") return current;
+      return libraries.reduce(function(merged, library) {
+        return Object.assign(merged, library);
+      }, Object.assign({}, current));
+    });
+  }
+
   // app-templates/customer-portal/runtime/src/components/storm/PropertyMap.js
   var SINGLE_PIN_ZOOM = 14;
   var FIT_PADDING = 56;
@@ -7534,6 +7752,7 @@
       gestureHandling: "cooperative"
     };
     if (mapId) settings.mapId = mapId;
+    else settings.styles = QUIET_MAP_STYLES;
     return settings;
   }
   function popupView(entry2, props) {
@@ -7691,6 +7910,14 @@
     unseen: /* @__PURE__ */ Object.freeze({ label: "\u25D4 Sent", badge: "status-badge--scheduled", dot: "#8a94a6" }),
     cancelled: /* @__PURE__ */ Object.freeze({ label: "\u2298 Cancelled", badge: "status-badge--scheduled", dot: "#8a94a6" })
   });
+  var ORDER_STATE_STATUS = /* @__PURE__ */ Object.freeze({
+    ACTIVE: /* @__PURE__ */ Object.freeze({ label: "\u25CF Active", badge: "status-badge--ok", dot: "#34c759" }),
+    SUSPENDED: /* @__PURE__ */ Object.freeze({ label: "\u2016 Suspended", badge: "status-badge--warn", dot: "#ff9f0a" }),
+    COMPLETED: /* @__PURE__ */ Object.freeze({ label: "\u2713 Completed", badge: "status-badge--scheduled", dot: "#8a94a6" })
+  });
+  function orderStatusMeta(order) {
+    return Object.prototype.hasOwnProperty.call(ORDER_STATE_STATUS, order.stateCode) && ORDER_STATE_STATUS[order.stateCode] || QUOTE_STATUS[order.status];
+  }
   var DECISION_META = { approved: "approved", declined: "declined", cancelled: "cancelled", revision: "revision", open: "unseen" };
   var DECISION_LABEL = {
     approved: "Option approved",
@@ -7699,13 +7926,13 @@
     revision: "Changes requested",
     open: "Awaiting your decision"
   };
-  function ContractsHead(quotes) {
+  function ContractsHead(quotes, title) {
     var counts = quotes.counts;
     var deciding = quotes.deciding && counts.properties > 0;
     return h("div", { "class": "proposals-head", "data-module": "quote-package-head", "data-visual-id": "quote-package-head", "data-state": deciding ? "deciding" : "settled" }, [
       h("div", { "class": "proposals-head__read" }, [
         h("div", { "class": "proposals-head__title-row" }, [
-          h("h1", { "class": "proposals-head__title" }, quotes.pending.length && !quotes.agreements.length ? "Your quotes" : "Your contracts")
+          h("h1", { "class": "proposals-head__title" }, title || (quotes.pending.length && !quotes.agreements.length ? "Your quotes" : "Your contracts"))
         ])
       ]),
       deciding ? h("span", { "class": "proposals-head__pill" }, counts.decided + " of " + plural(counts.properties, "property", "properties") + " decided") : null
@@ -7836,7 +8063,7 @@
     ]);
   }
   function QuoteOption(order) {
-    var meta = QUOTE_STATUS[order.status];
+    var meta = orderStatusMeta(order);
     var perService = !!order.pricing && !order.pricing.total;
     var total = perService ? "Per visit" : formatOrderPrice(order);
     return h("li", { "class": "proposal-option", "data-module": "quote-row", "data-visual-id": "quote-row", "data-state": order.status }, [
@@ -7847,196 +8074,6 @@
   }
   function plural(count, one, many) {
     return count + " " + (count === 1 ? one : many);
-  }
-
-  // app-templates/customer-portal/runtime/src/adapters/google-maps-adapter.js
-  var SCRIPT_URL = "https://maps.googleapis.com/maps/api/js";
-  var LIBRARIES = ["core", "maps", "geocoding"];
-  var READY_CALLBACK = "__portalGoogleMapsReady";
-  var GEOCODE_PREFIX = "portal.geocode:";
-  var SUGGESTION_LIMIT = 5;
-  var SUGGESTION_TYPES = ["street_address", "premise", "subpremise", "route"];
-  function createGoogleMapsAdapter(options2) {
-    var apiKey = options2 && options2.apiKey || "";
-    var scope = options2 && options2.scope || globalThis;
-    var failureListeners = [];
-    var loading = null;
-    var maps = null;
-    function fail2(error2) {
-      failureListeners.slice().forEach(function(listener) {
-        listener(error2);
-      });
-    }
-    return {
-      opened: function() {
-        return !!apiKey;
-      },
-      onFailure: function(listener) {
-        failureListeners.push(listener);
-      },
-      load: function() {
-        if (loading) return loading;
-        if (!apiKey) {
-          loading = Promise.reject(new Error("Google Maps adapter is not opened"));
-          return loading;
-        }
-        loading = scriptNamespace(scope, apiKey, fail2).then(function(namespace) {
-          return importLibraries(namespace, scope);
-        }).then(function(loaded) {
-          maps = loaded;
-          return loaded;
-        });
-        return loading;
-      },
-      suggestAddresses: function(query, options3) {
-        var within = options3 && options3.within;
-        return this.load().then(function(loaded) {
-          return typeof loaded.importLibrary === "function" ? loaded.importLibrary("places") : loaded.places;
-        }).then(function(places) {
-          var finder2 = places && places.AutocompleteSuggestion;
-          if (!finder2 || typeof finder2.fetchAutocompleteSuggestions !== "function") return [];
-          var request = { input: query, includedPrimaryTypes: SUGGESTION_TYPES };
-          if (within) request.locationRestriction = within;
-          return Promise.resolve(finder2.fetchAutocompleteSuggestions(request)).then(function(response) {
-            return (response && response.suggestions || []).map(function(suggestion) {
-              var prediction = suggestion && suggestion.placePrediction;
-              var label = prediction && prediction.text ? String(prediction.text) : "";
-              return {
-                label,
-                address: function() {
-                  return formattedAddress(prediction, label);
-                },
-                place: function() {
-                  return locatedPlace(prediction, label);
-                }
-              };
-            }).filter(function(item) {
-              return item.label;
-            }).slice(0, SUGGESTION_LIMIT);
-          });
-        });
-      },
-      geocode: function(address) {
-        if (!maps || typeof maps.Geocoder !== "function") return Promise.reject(new Error("Google Maps is not loaded"));
-        return new Promise(function(resolve, reject) {
-          new maps.Geocoder().geocode({ address }, function(results, status) {
-            var location = status === "OK" && results && results[0] && results[0].geometry && results[0].geometry.location;
-            if (!location || typeof location.lat !== "function" || typeof location.lng !== "function") {
-              var failure2 = new Error("Geocoder answered " + status);
-              failure2.status = status;
-              reject(failure2);
-              return;
-            }
-            resolve({ lat: location.lat(), lon: location.lng() });
-          });
-        });
-      }
-    };
-  }
-  function createGeocodeCache(storage) {
-    return {
-      read: function(key) {
-        if (!key || !storage) return null;
-        try {
-          var raw = storage.getItem(GEOCODE_PREFIX + key);
-          return raw ? JSON.parse(raw) : null;
-        } catch (_) {
-          return null;
-        }
-      },
-      write: function(key, point) {
-        if (!key || !point || !storage) return false;
-        try {
-          storage.setItem(GEOCODE_PREFIX + key, JSON.stringify({ lat: point.lat, lon: point.lon }));
-          return true;
-        } catch (_) {
-          return false;
-        }
-      }
-    };
-  }
-  function browserStorage() {
-    try {
-      return globalThis.localStorage || null;
-    } catch (_) {
-      return null;
-    }
-  }
-  function formattedAddress(prediction, label) {
-    var place = prediction && typeof prediction.toPlace === "function" ? prediction.toPlace() : null;
-    if (!place || typeof place.fetchFields !== "function") return Promise.resolve(label);
-    return Promise.resolve(place.fetchFields({ fields: ["formattedAddress"] })).then(function() {
-      return String(place.formattedAddress || label);
-    }, function() {
-      return label;
-    });
-  }
-  function locatedPlace(prediction, label) {
-    var place = prediction && typeof prediction.toPlace === "function" ? prediction.toPlace() : null;
-    if (!place || typeof place.fetchFields !== "function") return Promise.resolve({ address: label, point: null });
-    return Promise.resolve(place.fetchFields({ fields: ["formattedAddress", "location"] })).then(function() {
-      return { address: String(place.formattedAddress || label), point: placePoint(place.location) };
-    }, function() {
-      return { address: label, point: null };
-    });
-  }
-  function placePoint(location) {
-    if (!location) return null;
-    var lat = typeof location.lat === "function" ? location.lat() : location.lat;
-    var lon = typeof location.lng === "function" ? location.lng() : location.lng;
-    return typeof lat === "number" && typeof lon === "number" && isFinite(lat) && isFinite(lon) && Math.abs(lat) <= 90 && Math.abs(lon) <= 180 ? { lat, lon } : null;
-  }
-  function scriptNamespace(scope, apiKey, fail2) {
-    var present = scope.google && scope.google.maps;
-    if (present && (typeof present.importLibrary === "function" || typeof present.Map === "function")) {
-      return Promise.resolve(present);
-    }
-    return new Promise(function(resolve, reject) {
-      var settled2 = false;
-      function ready() {
-        var loaded = scope.google && scope.google.maps;
-        if (settled2 || !loaded || typeof loaded.importLibrary !== "function" && typeof loaded.Map !== "function") return false;
-        settled2 = true;
-        resolve(loaded);
-        return true;
-      }
-      var previous = scope.gm_authFailure;
-      scope.gm_authFailure = function() {
-        var error2 = new Error("Google Maps rejected the browser key");
-        settled2 = true;
-        reject(error2);
-        fail2(error2);
-        if (typeof previous === "function") previous();
-      };
-      scope[READY_CALLBACK] = ready;
-      var script = scope.document.createElement("script");
-      script.async = true;
-      script.src = SCRIPT_URL + "?key=" + encodeURIComponent(apiKey) + "&loading=async&v=weekly&callback=" + READY_CALLBACK;
-      script.addEventListener("error", function() {
-        settled2 = true;
-        reject(new Error("The Google Maps script did not load"));
-      });
-      script.addEventListener("load", function() {
-        if (ready()) return;
-        if (!(scope.google && scope.google.maps)) {
-          settled2 = true;
-          reject(new Error("The Google Maps script loaded without google.maps"));
-        }
-      });
-      scope.document.head.appendChild(script);
-    });
-  }
-  function importLibraries(maps, scope) {
-    if (typeof maps.importLibrary !== "function") return maps;
-    return Promise.all(LIBRARIES.map(function(name) {
-      return maps.importLibrary(name);
-    })).then(function(libraries) {
-      var current = scope && scope.google && scope.google.maps || maps;
-      if (typeof current.Map === "function") return current;
-      return libraries.reduce(function(merged, library) {
-        return Object.assign(merged, library);
-      }, Object.assign({}, current));
-    });
   }
 
   // app-templates/customer-portal/runtime/src/components/storm/PlanMap.js
@@ -8104,7 +8141,8 @@
         disableDefaultUI: true,
         zoomControl: true,
         clickableIcons: false,
-        gestureHandling: "cooperative"
+        gestureHandling: "cooperative",
+        styles: QUIET_MAP_STYLES
       });
       entry2.map = map;
       plan.elements.forEach(function(element) {
@@ -8643,7 +8681,7 @@
     var partial = !!(quotes.partial && (quotes.partial.agreements || quotes.partial.orders));
     card.setAttribute("data-state", partial ? "partial" : agreements.length || quotes.pending.length ? "ready" : quotes.preparing ? "preparing" : "empty");
     if (!agreements.length && !quotes.pending.length) {
-      card.appendChild(quotes.preparing ? QuotePreparingLine() : emptyLine("No contracts yet", "When we send you a quote or a service agreement, it appears here."));
+      card.appendChild(quotes.preparing ? QuotePreparingLine() : emptyLine("No contracts yet", contractsListShown() ? "When we prepare your service agreement, it appears here." : "When we send you a quote or a service agreement, it appears here."));
       if (partial) card.appendChild(ContractsPartialLine());
       return card;
     }
@@ -8654,7 +8692,8 @@
     if (revising) card.appendChild(QuotesRevisionLine());
     if (quotes.preparing) card.appendChild(QuotePreparingRow());
     if (partial) card.appendChild(ContractsPartialLine());
-    card.appendChild(moreLine(agreements.length > 3 ? agreements.length - 3 : null, agreements.length > 3 ? "more in Contracts" : "View all contracts", "overview.openContracts"));
+    if (agreements.length || !contractsListShown()) card.appendChild(moreLine(agreements.length > 3 ? agreements.length - 3 : null, agreements.length > 3 ? "more in Contracts" : "View all contracts", "overview.openContracts"));
+    else card.appendChild(moreLine(null, "View all orders", "overview.openOrders"));
     return card;
   }
   function AgreementLine(row) {
@@ -8672,7 +8711,7 @@
     ]);
   }
   function QuotesWaitingLink(count) {
-    return h("button", { "class": "ov-waiting", type: "button", "data-module": "quote-decision", "data-visual-id": "quote-decision", "data-action": "overview.openContracts" }, [
+    return h("button", { "class": "ov-waiting", type: "button", "data-module": "quote-decision", "data-visual-id": "quote-decision", "data-action": quotesHome().action }, [
       text5("span", "ov-waiting__label", plural(count, "quote", "quotes") + " waiting for your decision"),
       h("span", { "class": "ov-waiting__chev", "aria-hidden": "true" }, "\u203A")
     ]);
@@ -8684,7 +8723,7 @@
         text5("div", "ov-row__title", "Changes requested"),
         text5("div", "ov-row__meta", "We\u2019re reviewing the changes you asked for.")
       ]),
-      chevron("overview.openContracts", "", "Go to Contracts")
+      chevron(quotesHome().action, "", "Go to " + quotesHome().label)
     ]);
   }
   function ContractsPartialLine() {
@@ -8710,8 +8749,8 @@
   function QuotePreparingLine() {
     return h("div", { "class": "ov-empty", "data-module": "quote-preparing", "data-visual-id": "quote-preparing", "data-state": "preparing", role: "status" }, [
       text5("div", "ov-empty__title", "We have your request"),
-      text5("div", "ov-empty__desc", "We\u2019re preparing your quote. It appears under Contracts once we send it."),
-      h("div", { "class": "link-action", "data-action": "overview.openContracts" }, "Go to Contracts \u203A")
+      text5("div", "ov-empty__desc", "We\u2019re preparing your quote. It appears under " + quotesHome().label + " once we send it."),
+      h("div", { "class": "link-action", "data-action": quotesHome().action }, "Go to " + quotesHome().label + " \u203A")
     ]);
   }
   function QuotePreparingRow() {
@@ -8721,8 +8760,11 @@
         text5("div", "ov-row__title", "Request in preparation"),
         text5("div", "ov-row__meta", "We have your request and are preparing your quote.")
       ]),
-      chevron("overview.openContracts", "", "Go to Contracts")
+      chevron(quotesHome().action, "", "Go to " + quotesHome().label)
     ]);
+  }
+  function quotesHome() {
+    return contractsListShown() ? { action: "overview.openOrders", label: "Orders" } : { action: "overview.openContracts", label: "Contracts" };
   }
   function SupportWidget(model) {
     if (!sectionAvailable(model, "support")) return null;
@@ -10120,6 +10162,23 @@
     if (partial.truncated) notes.push("Only part of your contract history could be shown.");
     return notes.map(PartialNotice);
   }
+  function OrdersNotices(quotes) {
+    var partial = quotes.partial || {};
+    var notes = [];
+    if (partial.orders) notes.push("Your orders couldn\u2019t be loaded. Try again in a moment.");
+    if (partial.lines) notes.push("Some services on your orders couldn\u2019t be loaded. Prices and totals shown come from our system as returned.");
+    if (partial.truncated) notes.push("Only part of your order history could be shown.");
+    return notes.map(PartialNotice);
+  }
+  function AgreementsNotices(quotes) {
+    var partial = quotes.partial || {};
+    var notes = [];
+    if (partial.agreements) notes.push("Your service agreements couldn\u2019t be loaded. Try again in a moment.");
+    if (partial.orders) notes.push("Your orders couldn\u2019t be loaded, so your agreements are shown without their services.");
+    if (!partial.orders && partial.unreadableOrders) notes.push(partial.unreadableOrders === 1 ? "1 order listed in your agreements couldn\u2019t be loaded." : partial.unreadableOrders + " orders listed in your agreements couldn\u2019t be loaded.");
+    if (partial.truncated) notes.push("Only part of your contract history could be shown.");
+    return notes.map(PartialNotice);
+  }
   function PartialNotice(text10) {
     return h("div", { "class": "alert-banner alert-banner--partial", "data-module": "contracts-partial", "data-visual-id": "contracts-partial", "data-state": "partial", role: "status" }, [
       h("div", { "class": "alert-banner__icon alert-banner__icon--partial", "aria-hidden": "true" }, "!"),
@@ -10339,7 +10398,7 @@
   // app-templates/customer-portal/runtime/src/components/proposals/QuoteOptionCard.js
   function QuoteOptionCard(order, options2) {
     var settings = options2 || {};
-    var meta = QUOTE_STATUS[order.status];
+    var meta = orderStatusMeta(order);
     var label = order.pricingModel ? order.pricingModel.label : "Quote";
     var card = h("article", {
       "class": "card card--pad quote-option",
@@ -10616,10 +10675,12 @@
       return section;
     }
     row.properties.forEach(function(entry2) {
+      var ordersId = "quote-" + row.agreement.backendId + "-" + (entry2.propertyBackendId || 0);
       section.appendChild(h("div", { "class": "agreement-property", "data-module": "agreement-property", "data-visual-id": "agreement-property" }, [
         h("div", { "class": "agreement-property__head" }, [
           h("h3", { "class": "agreement-property__title" }, entry2.title),
-          entry2.address ? h("div", { "class": "agreement-property__address" }, entry2.address) : null
+          entry2.address ? h("div", { "class": "agreement-property__address" }, entry2.address) : null,
+          quoteGroupFor(ordersId) ? h("button", { "class": "link-action agreement-property__orders", type: "button", "data-action": "proposal.open", "data-id": ordersId, "data-visual-id": "agreement-property-orders", "aria-label": "View the orders for " + entry2.title }, "View orders \u203A") : null
         ]),
         h("div", { "class": "agreement-property__options" }, entry2.orders.map(function(order) {
           return QuoteOptionCard(order);
@@ -11603,7 +11664,8 @@
   }
   function QuoteDetail() {
     var page = h("section", { "class": "page page--narrow", "data-route": "proposal.detail", "data-visual-id": "proposal-detail" });
-    page.appendChild(h("div", { "class": "detail-back", "data-action": "proposal.review", "data-visual-id": "proposal-back" }, "\u2039 Back to your contracts"));
+    var listNoun = contractsListShown() ? "orders" : "contracts";
+    page.appendChild(h("div", { "class": "detail-back", "data-action": "proposal.review", "data-visual-id": "proposal-back" }, "\u2039 Back to your " + listNoun));
     var gate = contractsGate(ContractDetailSkeleton);
     if (gate) {
       page.setAttribute("data-state", gate.getAttribute("data-state") || "loading");
@@ -11613,7 +11675,7 @@
     var group = quoteGroupFor(state.currentSiteId);
     if (!group) {
       page.setAttribute("data-state", "not-found");
-      page.appendChild(NotFoundState({ noun: "quote", backLabel: "contracts", backRoute: "proposals.list" }));
+      page.appendChild(NotFoundState({ noun: "quote", backLabel: listNoun, backRoute: "proposals.list" }));
       return page;
     }
     var status = QUOTE_STATUS[group.status];
@@ -11751,7 +11813,7 @@
     return r;
   }
   function ProposalsList() {
-    if (state.config.dataMode === "live") return ContractsPage();
+    if (state.config.dataMode === "live") return contractsListShown() ? OrdersPage() : ContractsPage();
     var quotes = quotePackage();
     if (quotes) return ContractsPage();
     var proposal = currentProposal();
@@ -11867,6 +11929,117 @@
       ]));
     }
     return page;
+  }
+  function OrdersPage() {
+    var page = h("section", { "class": "page page--narrow", "data-route": "proposals.list", "data-visual-id": "orders-list" });
+    var gate = contractsGate(ContractsListSkeleton);
+    if (gate) {
+      page.setAttribute("data-state", gate.getAttribute("data-state") || "loading");
+      page.appendChild(gate);
+      return page;
+    }
+    var quotes = quotePackage();
+    if (!quotes) {
+      page.setAttribute("data-state", "unavailable");
+      page.appendChild(EmptyState({ glyph: "\u25CB", title: "Orders aren\u2019t in the portal yet", desc: "Your quotes and orders can\u2019t be shown here yet." }));
+      return page;
+    }
+    var pendingCount = orderCount(quotes.pending);
+    var historyCount = orderCount(quotes.history);
+    var hasQuotes = pendingCount > 0;
+    var hasHistory = historyCount > pendingCount;
+    var notices = OrdersNotices(quotes);
+    var awaiting = AgreementsAwaiting(quotes.agreements);
+    page.setAttribute("data-state", hasQuotes || hasHistory ? notices.length ? "partial" : "ready" : quotes.preparing ? "preparing" : "empty");
+    page.appendChild(ContractsHead(quotes, "Your orders"));
+    if (quotes.preparing && (hasQuotes || hasHistory)) page.appendChild(QuotesPreparingNotice());
+    notices.forEach(function(notice) {
+      page.appendChild(notice);
+    });
+    if (awaiting) page.appendChild(awaiting);
+    if (!hasQuotes && !hasHistory) {
+      page.appendChild(quotes.preparing ? QuotesPreparing() : EmptyState({ glyph: "\u{1F4C4}", title: "No orders yet", desc: "When we send you a quote, it shows up here." }));
+      return page;
+    }
+    if (hasQuotes) {
+      var section = h("section", { "class": "contracts-section", "data-module": "contracts-quotes", "aria-label": "Open quotes" }, [
+        hasHistory ? ContractsSectionTitle("Open quotes", pendingCount) : null
+      ]);
+      var map = usablePropertyMap();
+      var cache = createGeocodeCache(browserStorage());
+      var placements = map ? placeEach(map, quotes.pending.map(function(group) {
+        return group.property;
+      })) : quotes.pending.map(function(group) {
+        return group.property ? knownPlacement(group.property, cache) : { point: null, reason: "unknown" };
+      });
+      var portfolio = map ? PortfolioMap(quotes.pending, placements, map, mapViewport()) : PortfolioSchematic(quotes.pending, placements);
+      if (portfolio) section.appendChild(portfolio);
+      section.appendChild(QuoteGroups(quotes.pending, placements, !!portfolio));
+      if (quotes.deciding) section.appendChild(QuotesFooter());
+      page.appendChild(section);
+    }
+    if (hasHistory) {
+      page.appendChild(h("section", { "class": "contracts-section", "data-module": "contracts-orders", "aria-label": "All orders" }, [
+        ContractsSectionTitle("All orders", historyCount),
+        QuoteGroups(quotes.history, quotes.history.map(function() {
+          return { point: null, reason: "unknown" };
+        }), false)
+      ]));
+    }
+    return page;
+  }
+  function AgreementsAwaiting(rows2) {
+    var waiting = rows2.filter(function(row) {
+      return row.agreement.allowedActions.indexOf("approve") !== -1;
+    });
+    if (!waiting.length) return null;
+    return h("div", { "class": "contracts-section", "data-module": "agreements-awaiting", "data-visual-id": "agreements-awaiting" }, waiting.map(function(row) {
+      return h("button", { "class": "quote-package-link", "data-module": "quote-package-link", "data-visual-id": "quote-package-link", "data-action": "agreement.open", "data-id": row.id, "aria-label": "Open the service agreement " + agreementTitle(row) + " \u2014 " + row.agreement.label }, [
+        h("span", { "class": "quote-package-link__label" }, "Your service agreement for " + agreementTitle(row) + " is ready for your approval"),
+        StatusBadge({ variant: "status-badge--" + row.agreement.tone, label: row.agreement.label, bind: "agreement.stateLabel", state: row.agreement.stage }),
+        h("span", { "class": "proposal-card__chev", "aria-hidden": "true" }, "\u203A")
+      ]);
+    }));
+  }
+  function AgreementsList() {
+    var page = h("section", { "class": "page page--narrow", "data-route": "contracts.list", "data-visual-id": "contracts-list" });
+    var gate = contractsGate(ContractsListSkeleton);
+    if (gate) {
+      page.setAttribute("data-state", gate.getAttribute("data-state") || "loading");
+      page.appendChild(gate);
+      return page;
+    }
+    var quotes = quotePackage();
+    if (!quotes) {
+      page.setAttribute("data-state", "unavailable");
+      page.appendChild(EmptyState({ glyph: "\u25CB", title: "Contracts aren\u2019t in the portal yet", desc: "Your service agreements can\u2019t be shown here yet." }));
+      return page;
+    }
+    var rows2 = quotes.agreements;
+    var notices = AgreementsNotices(quotes);
+    page.setAttribute("data-state", rows2.length ? notices.length ? "partial" : "ready" : "empty");
+    page.appendChild(h("div", { "class": "proposals-head", "data-module": "contracts-head", "data-visual-id": "contracts-head" }, [
+      h("div", { "class": "proposals-head__read" }, [
+        h("div", { "class": "proposals-head__title-row" }, [h("h1", { "class": "proposals-head__title" }, "Your contracts")])
+      ])
+    ]));
+    notices.forEach(function(notice) {
+      page.appendChild(notice);
+    });
+    if (!rows2.length) {
+      page.appendChild(EmptyState({ glyph: "\u{1F4C4}", title: "No contracts yet", desc: "Once you approve a quote, we prepare your service agreement and it shows up here.", action: { variant: "btn--ghost", label: "Go to Orders", action: "nav.go", id: "proposals.list" } }));
+      return page;
+    }
+    page.appendChild(h("section", { "class": "contracts-section", "data-module": "contracts-agreements", "aria-label": "Service agreements" }, [
+      ContractsSectionTitle("Service agreements", rows2.length),
+      AgreementList(rows2)
+    ]));
+    return page;
+  }
+  function orderCount(groups) {
+    return (groups || []).reduce(function(sum, group) {
+      return sum + group.orders.length;
+    }, 0);
   }
   function rollupCard(label, num2, color) {
     return h("div", { "class": "rollup-card" }, [
@@ -12456,7 +12629,7 @@
     }) : null;
     if (!order) {
       page.setAttribute("data-state", "not-found");
-      page.appendChild(NotFoundState({ noun: "quote", backLabel: "contracts", backRoute: "proposals.list" }));
+      page.appendChild(NotFoundState({ noun: "quote", backLabel: contractsListShown() ? "orders" : "contracts", backRoute: "proposals.list" }));
       return page;
     }
     var command = state.contractCommand;
@@ -12529,7 +12702,7 @@
   // app-templates/customer-portal/runtime/src/routes/AgreementDetailPage.js
   function AgreementDetail() {
     var page = h("section", { "class": "page page--narrow", "data-route": "agreement.detail", "data-visual-id": "agreement-detail" });
-    page.appendChild(h("div", { "class": "detail-back", "data-action": "proposal.review", "data-visual-id": "agreement-back" }, "\u2039 Back to your contracts"));
+    page.appendChild(h("div", { "class": "detail-back", "data-action": "agreement.review", "data-visual-id": "agreement-back" }, "\u2039 Back to your contracts"));
     var gate = contractsGate(AgreementDetailSkeleton);
     if (gate) {
       page.setAttribute("data-state", gate.getAttribute("data-state") || "loading");
@@ -12539,7 +12712,7 @@
     var row = contractAgreementFor(state.agreementId);
     if (!row) {
       page.setAttribute("data-state", "not-found");
-      page.appendChild(NotFoundState({ noun: "agreement", backLabel: "contracts", backRoute: "proposals.list" }));
+      page.appendChild(NotFoundState({ noun: "agreement", backLabel: "contracts", backRoute: contractsHomeRoute() }));
       return page;
     }
     var agreement = row.agreement;
@@ -12602,11 +12775,11 @@
     var page = h("section", { "class": "page page--narrow quote-request", "data-route": "quote.new", "data-visual-id": "quote-request", "data-state": request.phase });
     page.appendChild(h("div", { "class": "detail-back", "data-action": "proposal.review", "data-visual-id": "quote-request-back" }, "\u2039 Back to your contracts"));
     if (request.phase === "accepted") {
-      page.appendChild(RequestOutcome("accepted", "Request received", "A manager prepares your quotes. When they\u2019re ready, they arrive by email and appear in Contracts, where you can approve them, decline them or ask for changes."));
+      page.appendChild(RequestOutcome("accepted", "Request received", "A manager prepares your quotes. When they\u2019re ready, they arrive by email and appear in " + quotesHome2() + ", where you can approve them, decline them or ask for changes."));
       return page;
     }
     if (request.phase === "slow" || request.phase === "checking" && request.formId) {
-      page.appendChild(RequestOutcome("slow", "We\u2019re still working on your request", "It\u2019s taking longer than usual. You don\u2019t need to send it again: a manager prepares your quotes, and they arrive by email and appear in Contracts.", request.phase === "checking"));
+      page.appendChild(RequestOutcome("slow", "We\u2019re still working on your request", "It\u2019s taking longer than usual. You don\u2019t need to send it again: a manager prepares your quotes, and they arrive by email and appear in " + quotesHome2() + ".", request.phase === "checking"));
       return page;
     }
     page.appendChild(h("div", { "class": "prop-head", "data-module": "quote-request-head" }, [
@@ -12801,7 +12974,7 @@
   function Progress(request) {
     return h("div", { "class": "card card--pad quote-request__progress", "data-module": "quote-request-progress", "data-state": request.phase, "aria-live": "polite" }, [
       PendingNote(PROGRESS[request.phase] || PROGRESS.sending),
-      request.phase === "sending" ? null : h("p", { "class": "contract-form__note" }, "This can take a few minutes, especially for new addresses. You can leave this page: your quotes will appear in Contracts and we\u2019ll email you when they\u2019re ready.")
+      request.phase === "sending" ? null : h("p", { "class": "contract-form__note" }, "This can take a few minutes, especially for new addresses. You can leave this page: your quotes will appear in " + quotesHome2() + " and we\u2019ll email you when they\u2019re ready.")
     ]);
   }
   function RequestOutcome(kind, title, body, checking) {
@@ -12810,10 +12983,13 @@
       h("h1", { "class": "state-block__title" }, title),
       h("div", { "class": "state-block__desc" }, body),
       h("div", { "class": "proposal-actions quote-request__outcome-actions" }, [
-        ActionButton({ variant: "btn--primary", label: "Go to Contracts", action: "nav.go", id: "proposals.list", visualId: "quote-request-contracts" }),
+        ActionButton({ variant: "btn--primary", label: "Go to " + quotesHome2(), action: "nav.go", id: "proposals.list", visualId: "quote-request-contracts" }),
         kind === "slow" ? ActionButton({ variant: "btn--ghost", label: checking ? "Checking\u2026" : "Check again", action: "quoteRequest.checkAgain", disabled: checking, visualId: "quote-request-check-again" }) : null
       ])
     ]);
+  }
+  function quotesHome2() {
+    return contractsListShown() ? "Orders" : "Contracts";
   }
   function ServiceArea(provider) {
     var regions = provider ? provider.regions : [];
@@ -14049,6 +14225,8 @@
         return false ? SpaCart() : Checkout();
       case "proposals.list":
         return ProposalsList();
+      case "contracts.list":
+        return AgreementsList();
       case "proposal.detail":
         return ProposalDetail();
       case "proposal.approve":
@@ -14137,7 +14315,7 @@
   function routeFamily(routeId) {
     if (routeId === "orders.list" || routeId === "order.detail" || routeId === "appointment.detail") return "appointments";
     if (routeId === "appointments" || routeId === "visit.detail" || routeId === "property.detail") return "appointments-timeline";
-    if (routeId === "proposals.list" || routeId === "proposal.detail" || routeId === "proposal.approve" || routeId === "agreement.detail" || routeId === "quote.new") return "proposals";
+    if (routeId === "proposals.list" || routeId === "contracts.list" || routeId === "proposal.detail" || routeId === "proposal.approve" || routeId === "agreement.detail" || routeId === "quote.new") return "proposals";
     if (routeId === "purchases.list" || routeId === "purchase.detail") return "purchases";
     if (routeId === "products" || routeId === "product.detail") return "products";
     return null;
@@ -14397,6 +14575,9 @@
     },
     "agreement.open": function(id) {
       openAgreement(id);
+    },
+    "agreement.review": function() {
+      go(contractsHomeRoute());
     },
     "quote.approve": function(id) {
       return openQuoteApproval(id);
@@ -14936,6 +15117,9 @@
       go("activity");
     },
     "overview.openContracts": function() {
+      go(contractsHomeRoute());
+    },
+    "overview.openOrders": function() {
       go("proposals.list");
     },
     "overview.openSupport": function() {

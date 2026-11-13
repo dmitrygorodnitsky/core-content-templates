@@ -36,7 +36,7 @@ const { fixtureAdapter } = await load("src/adapters/fixture-adapter.js");
 const { modules } = await load("src/modules/index.js");
 const { applyPortalConfig, contractAgreementFor, quoteGroupFor, quotePackage, state } = await load("src/state.js");
 const { graniteRidgeSnowFixture } = await load("data/cases/granite-ridge-snow.js");
-const { ProposalsList } = await load("src/routes/ProposalsPage.js");
+const { AgreementsList, ProposalsList } = await load("src/routes/ProposalsPage.js");
 const { ProposalDetail } = await load("src/routes/ProposalDetailPage.js");
 const { QuoteApproval } = await load("src/routes/QuoteApprovalPage.js");
 const { QuoteOptionCard } = await load("src/components/proposals/QuoteOptionCard.js");
@@ -861,7 +861,11 @@ const RETIRED = ["Proposal #", "valid until", "sent Dec", "sq ft", "Beam AI", "l
     ["Alkire Street", "210 Alkire Street, Arvada, CO 80004", "Seasonal"],
     ["Braun Court", "247 Braun Court, Golden, CO 80401", "Monthly"],
   ], "an agreement lists each property with its approved option and the property's own address");
-  assert.equal(all(services, "[data-action]").length, 0, "services inside an agreement are read-only");
+  assert.deepEqual(all(services, "[data-action]").map((node) => [node.getAttribute("data-action"), node.textContent]), [
+    ["proposal.open", "View orders ›"],
+    ["proposal.open", "View orders ›"],
+  ], "services inside an agreement are read-only; each property only links to its orders");
+  for (const link of all(services, "[data-action=\"proposal.open\"]")) assert.ok(quoteGroupFor(link.getAttribute("data-id")), "an agreement's orders link opens a quote group that exists");
   const terms = one(page, "[data-module=\"agreement-terms\"]");
   assert.equal(terms.getAttribute("data-state"), "open", "the document is expanded by default");
   assert.deepEqual([one(terms, "[data-action=\"agreement.toggleTerms\"]").textContent, one(terms, "[data-action=\"agreement.toggleTerms\"]").getAttribute("aria-expanded")], ["Hide terms", "true"]);
@@ -1196,21 +1200,31 @@ const RETIRED = ["Proposal #", "valid until", "sent Dec", "sq ft", "Beam AI", "l
   assert.equal(one(one(home, "[data-module=\"property-row\"]"), ".ov-prow__addr").textContent, "50,000 ft²");
   assert.doesNotMatch(home.textContent, /1 property|Not available yet|Forecast unavailable|1,512\.50|16,871\.75/);
 
-  const contracts = ProposalsList();
+  const contracts = AgreementsList();
+  assert.equal(contracts.getAttribute("data-route"), "contracts.list");
+  assert.equal(one(contracts, "h1").textContent, "Your contracts");
   assert.equal(all(contracts, ".proposals-head__sub").length + all(contracts, "[data-module=\"proposal-rollup\"]").length, 0, "no subtitle and no counters");
-  assert.equal(all(contracts, "[data-module=\"contracts-quotes\"]").length, 0, "113 and 115 were declined and 114 was approved: no quote waits, so there is no Quotes section");
+  assert.equal(all(contracts, "[data-module=\"contracts-quotes\"]").length + all(contracts, "[data-module=\"contracts-orders\"]").length, 0, "Contracts lists only service agreements");
   const agreementRow = one(contracts, "[data-module=\"agreement-row\"]");
   assert.equal(one(agreementRow, ".proposal-card__name").textContent, ADDRESS);
   assert.equal(one(agreementRow, ".proposal-card__meta").textContent, "Monthly · CA$4,217.94 / month");
   assert.equal(once(agreementRow, "Active"), 1, "the status shows once, as the badge");
   assert.equal(all(agreementRow, ".proposal-card__diamond").length, 0);
-  const orderHistory = one(contracts, "[data-module=\"contracts-orders\"]");
-  assert.doesNotMatch(contracts.textContent.replace(orderHistory.textContent, ""), /declined|Declined|quote/, "nothing about the decided quotes reaches the agreements list");
-  assert.deepEqual(all(orderHistory, "[data-module=\"quote-row\"]").map((row) => [one(row, ".proposal-option__model").textContent, (one(row, ".proposal-option__total") || { textContent: null }).textContent, row.getAttribute("data-state")]).sort(), [
-    ["Monthly", "CA$4,217.94 / month", "approved"],
-    ["Per service", "Per visit", "declined"],
-    ["Seasonal", "CA$16,871.75 per season", "declined"],
-  ], "All orders lists the approved and the declined orders, each priced by its billing type");
+  assert.doesNotMatch(contracts.textContent, /declined|Declined|quote/, "nothing about the decided quotes reaches the agreements list");
+
+  const orders = ProposalsList();
+  assert.equal(orders.getAttribute("data-route"), "proposals.list");
+  assert.equal(orders.getAttribute("data-visual-id"), "orders-list");
+  assert.equal(one(orders, "h1").textContent, "Your orders");
+  assert.equal(all(orders, "[data-module=\"agreement-row\"]").length + all(orders, "[data-module=\"agreements-awaiting\"]").length, 0, "Orders lists no service agreement, and an active one waits for nothing");
+  assert.equal(all(orders, "[data-module=\"contracts-quotes\"]").length, 0, "113 and 115 were declined and 114 was approved: no quote waits, so there is no Open quotes section");
+  const orderHistory = one(orders, "[data-module=\"contracts-orders\"]");
+  assert.deepEqual(all(orderHistory, "[data-module=\"quote-row\"]").map((row) => [one(row, ".proposal-option__model").textContent, (one(row, ".proposal-option__total") || { textContent: null }).textContent, row.getAttribute("data-state"), one(row, ".status-badge").textContent]).sort(), [
+    ["Monthly", "CA$4,217.94 / month", "approved", "● Active"],
+    ["Per service", "Per visit", "declined", "✕ Declined"],
+    ["Seasonal", "CA$16,871.75 per season", "declined", "✕ Declined"],
+  ], "All orders lists the approved and the declined orders, each priced by its billing type and labelled with its order state");
+  assert.equal(one(orderHistory, "[data-action=\"proposal.open\"]").getAttribute("data-id"), "quote-169-983", "the property's orders open its quote detail");
 
   state.agreementId = "agreement-core-169";
   const plainAgreement = AgreementDetail();
@@ -1249,7 +1263,7 @@ const RETIRED = ["Proposal #", "valid until", "sent Dec", "sq ft", "Beam AI", "l
   assert.equal(one(Overview(), ".page-header__sub").textContent, "Season Nov 1, 2026 – Mar 31, 2027", "the subtitle is the active agreement's season");
   assert.equal(one(Overview(), "[data-module=\"contract-row\"] .ov-row__meta").textContent, "Monthly · CA$4,217.94 / month · Season Nov 1, 2026 – Mar 31, 2027");
   assert.equal(one(Overview(), "[data-module=\"property-row\"] .ov-prow__addr").textContent, "50,000 ft² · Plan approved");
-  assert.equal(one(ProposalsList(), "[data-module=\"agreement-row\"] .proposal-card__meta").textContent, "Monthly · CA$4,217.94 / month · Season Nov 1, 2026 – Mar 31, 2027", "the agreement row adds the season when the agreement has dates");
+  assert.equal(one(AgreementsList(), "[data-module=\"agreement-row\"] .proposal-card__meta").textContent, "Monthly · CA$4,217.94 / month · Season Nov 1, 2026 – Mar 31, 2027", "the agreement row adds the season when the agreement has dates");
   state.agreementId = "agreement-core-169";
   const seasoned = AgreementDetail();
   assert.equal(one(seasoned, ".proposal-detail-head__meta").textContent, "Season Nov 1, 2026 – Mar 31, 2027");
@@ -1307,6 +1321,7 @@ const RETIRED = ["Proposal #", "valid until", "sent Dec", "sq ft", "Beam AI", "l
   await new Promise((resolve) => setImmediate(resolve));
   const satellite = one(satelliteCard, "[data-module=\"plan-map\"]");
   assert.deepEqual([satellite.getAttribute("data-state"), made.maps.length, made.maps[0].options.mapTypeId, made.maps[0].node === one(satellite, ".prop-plan__canvas")], ["ready", 1, "hybrid", true], "the plan is drawn over satellite imagery with the portal's own Maps loader");
+  assert.deepEqual(made.maps[0].options.styles.map((rule) => [rule.featureType, rule.elementType, rule.stylers[0].visibility]), [["poi", "labels", "off"], ["transit", "labels", "off"]], "the satellite plan hides Google's points of interest and transit markers on its hybrid labels");
   assert.deepEqual([made.polygons.length, made.polygons[0].clickable, made.polygons[0].paths === planEntry.plan.elements[0].shapes[0].polygons[0], made.circles.length], [1, false, true, 1], "each area is overlaid where the plan puts it, read only, and a point is a dot");
   assert.deepEqual(made.fits, [[planEntry.plan.bounds, 28]], "fitted to the plan's bounds");
   assert.equal(all(satelliteCard, ".prop-plan__figure").length, 1, "the outline stays in the card as the fallback the stylesheet hides behind a ready map");
@@ -1326,13 +1341,28 @@ const RETIRED = ["Proposal #", "valid until", "sent Dec", "sq ft", "Beam AI", "l
   live(bilbo({}, [sentQuote(116)]));
   const waitingCard = one(Overview(), "[data-module=\"active-contracts\"]");
   const link = one(waitingCard, "[data-module=\"quote-decision\"]");
-  assert.deepEqual([link.textContent, link.getAttribute("data-action")], ["1 quote waiting for your decision›", "overview.openContracts"], "a quote awaiting the client is a prominent link to Contracts");
+  assert.deepEqual([link.textContent, link.getAttribute("data-action")], ["1 quote waiting for your decision›", "overview.openOrders"], "a quote awaiting the client is a prominent link to Orders");
+  assert.deepEqual(all(waitingCard, ".ov-more").map((more) => [more.textContent, more.getAttribute("data-action")]), [["View all contracts ›", "overview.openContracts"]], "the card lists the agreement, so its way on is Contracts");
   const listed = ProposalsList();
   assert.deepEqual(all(listed, "[data-module=\"contracts-quotes\"] [data-module=\"quote-property\"]").map((group) => [group.getAttribute("data-state"), one(group, ".proposal-card__meta").textContent]), [["open", "1 quote"]], "only the quote that waits is listed, and its header names the address once");
   assert.equal(once(one(listed, "[data-module=\"contracts-quotes\"] [data-module=\"quote-property\"]"), "1239 W Georgia St"), 1);
   assert.equal(one(PropertyDetail(), "[data-fact=\"quotes\"] .prop-fact__value").textContent, "1 quote · awaiting your decision ›");
   live(bilbo({}, [sentQuote(116), sentQuote(117)]));
   assert.equal(one(Overview(), "[data-module=\"quote-decision\"]").textContent, "2 quotes waiting for your decision›");
+
+  const awaitingApproval = bilbo();
+  awaitingApproval.quotes.agreements = awaitingApproval.quotes.agreements.map((agreement) => Object.assign({}, agreement, { stateCode: "SENT_TO_CLIENT", stage: "approval", label: "Sent for your approval", tone: "warn", allowedActions: ["approve"] }));
+  live(awaitingApproval);
+  const awaiting = one(ProposalsList(), "[data-module=\"agreements-awaiting\"]");
+  assert.deepEqual(all(awaiting, "[data-action]").map((button) => [button.getAttribute("data-action"), button.getAttribute("data-id"), one(button, ".quote-package-link__label").textContent]), [["agreement.open", "agreement-core-169", "Your service agreement for " + ADDRESS + " is ready for your approval"]], "an agreement email that lands on Orders finds the agreement waiting for approval one step away");
+
+  const noAgreements = bilbo();
+  noAgreements.quotes.agreements = [];
+  live(noAgreements);
+  const emptyContracts = AgreementsList();
+  assert.equal(emptyContracts.getAttribute("data-state"), "empty");
+  assert.deepEqual([one(emptyContracts, ".state-block__title").textContent, one(emptyContracts, "[data-action=\"nav.go\"]").getAttribute("data-id")], ["No contracts yet", "proposals.list"], "an empty Contracts page points to Orders");
+  assert.equal(all(emptyContracts, "[data-module=\"quote-row\"]").length, 0);
   state.moduleData.properties = null;
   delete state.moduleData.profile;
 }
