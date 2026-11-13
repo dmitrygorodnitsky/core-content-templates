@@ -16,6 +16,7 @@ import { configuredExternalUrl, normalizeVertical, verticalProfiles } from "./co
 import { isRouteReachable, resolveRoute, writeRouteToLocation } from "./router.js";
 import { submitSetPassword } from "./set-password.js";
 import { changeSupportTicketDraft, checkSupportTicketAgain, loadSupportTicketSchema, startSupportTicket, submitSupportTicket, supportTicketsOpen } from "./support-tickets.js";
+import { cancelTicketAction, checkTicketCommentAgain, confirmTicketAction, openTicketFile, refreshTicketDetail, removeAttachment, requestTicketAction, submitTicketComment, ticketBackendId, ticketComment } from "./support-thread.js";
 import { addTypedQuoteAddress, checkQuoteRequestAgain, loadQuoteRequestSchema, quoteRequestOpen, removeQuoteAddress, resetQuoteRequest, submitQuoteRequest, toggleQuoteProperty } from "./quote-request.js";
 import { agreementBillingRequest, changeAgreementBilling, contractDetailsEventInput, contractDetailsRequest, openAgreementBilling, openContractDetails } from "./contract-details.js";
 import { checkRequestLink, sendRequestLink } from "./request-link.js";
@@ -133,6 +134,15 @@ export var ACTIONS = {
   "support.chooseReason": function (id) { if (!changeSupportTicketDraft("reason", id)) return false; render(); focusElement("#support-ticket-contact-reason"); return true; },
   "support.submitTicket": function () { return sendSupportTicket(); },
   "support.checkTicket": function () { return checkSupportTicketAgain({ onChange: function () { render(); }, reload: reloadRuntimeModule }); },
+  "support.openTicket": function (id) { if (!ticketBackendId(id)) return false; state.ticketId = id; go("support.ticket"); return true; },
+  "support.refreshTicket": function () { return refreshTicketDetail(ticketBackendId(state.ticketId), function () { render(); }); },
+  "support.ticketAction": function (code) { return requestTicketAction(ticketBackendId(state.ticketId), code, ticketActionChanged); },
+  "support.confirmTicketAction": function () { return confirmTicketAction(ticketBackendId(state.ticketId), ticketActionChanged); },
+  "support.cancelTicketAction": function () { if (!cancelTicketAction(ticketBackendId(state.ticketId))) return false; render(); return true; },
+  "support.sendComment": function () { return sendTicketComment(); },
+  "support.checkComment": function () { return checkTicketCommentAgain(ticketBackendId(state.ticketId), { onChange: function () { render(); } }); },
+  "support.removeAttachment": function (id) { return dropAttachment(id); },
+  "support.openFile": function (id) { return openTicketFile(id).then(function (opened) { if (!opened) toast("The file couldn’t be opened. Try again."); return opened; }); },
   "support.open":      function ()   { var url = configuredExternalUrl(state.config, "supportUrl"); if (url) { globalThis.location.assign(url); return; } if (isSpa()) return setState({ spaSupport: true, accountMenu: false, mobileNav: false }); go("support"); },
   "support.sendMessage": function () { runCommand("support.sendMessage", null, sendChat); },
   "support.quickReply": function (id) { runCommand("support.quickReply", id, function () { pushChat(id); }); },
@@ -306,9 +316,37 @@ function sendSupportTicket() {
   });
 }
 
+function ticketActionChanged(phase) {
+  render();
+  if (phase === "action-done") reloadRuntimeModule("support").catch(function () { return null; });
+  if (phase === "action-done" || phase === "action-unconfirmed" || phase === "action-failed") focusElement("[data-module=\"ticket-action-outcome\"]");
+}
+
+function sendTicketComment() {
+  return submitTicketComment(ticketBackendId(state.ticketId), {
+    onChange: function (phase) {
+      render();
+      if (phase === "invalid" || phase === "refused") focusElement("[data-module=\"ticket-comment\"] [aria-invalid=\"true\"]") || focusElement("[data-module=\"ticket-comment-message\"]");
+      if (phase === "not-sent" || phase === "failed" || phase === "closed" || phase === "slow") focusElement("[data-module=\"ticket-comment-message\"]");
+    },
+  });
+}
+
+function dropAttachment(target) {
+  var parts = String(target || "").split(":");
+  var scope = parts.shift();
+  var key = parts.join(":");
+  var owner = scope === "ticket" ? state.supportTicket : /^comment-\d+$/.test(scope) ? ticketComment(scope.slice(8)) : null;
+  if (!removeAttachment(owner, key)) return false;
+  render();
+  return true;
+}
+
 function focusSupportTicketError() {
   var errors = state.supportTicket ? state.supportTicket.errors : {};
-  var first = ["PROPERTY_ID", "VISIT_ID", "CONTACT_REASON", "SUBJECT", "MESSAGE"].find(function (code) { return !!errors[code]; });
+  var first = ["PROPERTY_ID", "VISIT_ID", "CONTACT_REASON", "SUBJECT", "MESSAGE", "ATTACHMENTS"].find(function (code) { return !!errors[code]; });
+  if (first === "MESSAGE") return focusElement("#support-ticket-message");
+  if (first === "ATTACHMENTS") return focusElement("#support-ticket-attachments");
   return first ? focusElement("[name=\"" + first + "\"]") : focusElement("[data-module=\"support-ticket-message\"]");
 }
 

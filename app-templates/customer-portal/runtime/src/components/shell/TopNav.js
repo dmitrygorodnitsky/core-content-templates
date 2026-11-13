@@ -103,7 +103,7 @@ var NAV_DETAIL_ROUTES = {
   "proposals.list": ["proposal.detail", "proposal.approve", "agreement.detail", "quote.new"],
   appointments: ["visit.detail"],
   invoices: ["invoice.detail"],
-  support: ["support.new"],
+  support: ["support.new", "support.ticket"],
 };
 
 function activeNavKey(navItems) {

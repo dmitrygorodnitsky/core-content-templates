@@ -1,11 +1,14 @@
 import { liveProperties, liveVisits, state } from "./state.js";
 import { positiveInteger, text } from "./normalizers/core-record.js";
 import { SUPPORT_TICKET_FORM, createCoreProfileFormAdapter } from "./adapters/core-profile-form-adapter.js";
+import { attachmentProblem, attachmentsValue } from "./support-attachments.js";
+import { richMessageProblem } from "./support-thread.js";
+import { RICH_TEXT_LIMIT } from "./rich-text.js";
 
 export const SUPPORT_TICKET_OUTCOMES = Object.freeze(["CREATED", "REFUSED", "FAILED"]);
-export const SUPPORT_TICKET_FIELDS = Object.freeze(["PROPERTY_ID", "VISIT_ID", "CONTACT_REASON", "SUBJECT", "MESSAGE"]);
+export const SUPPORT_TICKET_FIELDS = Object.freeze(["PROPERTY_ID", "VISIT_ID", "CONTACT_REASON", "SUBJECT", "MESSAGE", "ATTACHMENTS"]);
 export const SUPPORT_SUBJECT_LIMIT = 150;
-export const SUPPORT_MESSAGE_LIMIT = 4000;
+export const SUPPORT_MESSAGE_LIMIT = RICH_TEXT_LIMIT;
 export const SUPPORT_TICKET_OUTCOME_TIMEOUT_MS = 60000;
 
 export const SUPPORT_TICKET_COPY = Object.freeze({
@@ -13,7 +16,8 @@ export const SUPPORT_TICKET_COPY = Object.freeze({
   subjectMissing: "Add a short subject.",
   subjectLong: "Keep the subject under " + SUPPORT_SUBJECT_LIMIT + " characters.",
   messageMissing: "Tell us what happened.",
-  messageLong: "Keep the message under " + SUPPORT_MESSAGE_LIMIT + " characters.",
+  messageLong: "Keep the message under " + SUPPORT_MESSAGE_LIMIT.toLocaleString("en-US") + " characters.",
+  messageHeavy: "This message has too much formatting. Shorten it and try again.",
   notSent: "Your ticket wasn’t sent. Check your connection and try again.",
   serverError: "Your ticket wasn’t sent: our system answered with an error. Nothing was saved. Please try again in a few minutes or contact us directly.",
   failed: "We couldn’t open your ticket right now. Please try again in a few minutes.",
@@ -48,6 +52,8 @@ function freshTicket(property, visit) {
   return {
     phase: "editing",
     draft: { propertyId: property ? property.backendId : null, visitId: visit ? visit.backendId : null, reason: "", subject: "", message: "" },
+    files: [],
+    reading: false,
     errors: {},
     message: "",
     formId: null,
@@ -157,12 +163,13 @@ export function loadSupportTicketSchema(options) {
 export function validateSupportTicket(draft) {
   var errors = {};
   var subject = text(draft.subject);
-  var message = text(draft.message);
   if (!draft.propertyId) errors.PROPERTY_ID = SUPPORT_TICKET_COPY.propertyMissing;
   if (!subject) errors.SUBJECT = SUPPORT_TICKET_COPY.subjectMissing;
   else if (subject.length > SUPPORT_SUBJECT_LIMIT) errors.SUBJECT = SUPPORT_TICKET_COPY.subjectLong;
-  if (!message) errors.MESSAGE = SUPPORT_TICKET_COPY.messageMissing;
-  else if (message.length > SUPPORT_MESSAGE_LIMIT) errors.MESSAGE = SUPPORT_TICKET_COPY.messageLong;
+  var problem = richMessageProblem(draft.message, true, { empty: SUPPORT_TICKET_COPY.messageMissing, long: SUPPORT_TICKET_COPY.messageLong, heavy: SUPPORT_TICKET_COPY.messageHeavy });
+  if (problem) errors.MESSAGE = problem;
+  var files = attachmentProblem([], draft.files || []);
+  if (files) errors.ATTACHMENTS = files;
   return errors;
 }
 
@@ -170,6 +177,8 @@ export function supportTicketValues(draft) {
   var values = { PROPERTY_ID: draft.propertyId, SUBJECT: text(draft.subject), MESSAGE: text(draft.message) };
   if (draft.visitId) values.VISIT_ID = draft.visitId;
   if (draft.reason) values.CONTACT_REASON = draft.reason;
+  var attachments = attachmentsValue(draft.files);
+  if (attachments) values.ATTACHMENTS = attachments;
   return values;
 }
 
@@ -178,7 +187,9 @@ export function submitSupportTicket(options) {
   var ticket = supportTicketState();
   var changed = settings.onChange || function () {};
   if (supportTicketBusy() || ticket.phase === "created") return Promise.resolve(false);
-  var errors = validateSupportTicket(ticket.draft);
+  if (ticket.reading) return Promise.resolve(false);
+  var draft = Object.assign({}, ticket.draft, { files: ticket.files });
+  var errors = validateSupportTicket(draft);
   if (Object.keys(errors).length) {
     ticket.errors = errors;
     ticket.message = "";
@@ -192,7 +203,7 @@ export function submitSupportTicket(options) {
   ticket.message = "";
   changed("sending");
   return Promise.resolve()
-    .then(function () { return forms.submit(SUPPORT_TICKET_FORM, supportTicketValues(ticket.draft), context); })
+    .then(function () { return forms.submit(SUPPORT_TICKET_FORM, supportTicketValues(draft), context); })
     .then(function (formId) {
       if (state.supportTicket !== ticket) return false;
       ticket.formId = formId;
@@ -243,6 +254,7 @@ function settle(ticket, report, settings) {
   if (report.outcome === "CREATED") {
     ticket.phase = "created";
     ticket.ticketCode = text(report.ticketCode);
+    ticket.ticketId = positiveInteger(report.ticketId);
     ticket.message = text(report.message);
     changed("created");
     if (settings.reload) Promise.resolve().then(function () { return settings.reload("support"); }).catch(function () { return null; });

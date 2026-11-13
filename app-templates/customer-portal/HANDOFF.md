@@ -1143,6 +1143,42 @@ Backend contracts: core-ui `docs/snow-support-tickets.md` and
   cache cleared on both CMS nodes, proven with a throwaway Account, User,
   properties, orders and agreements that were deleted afterwards.
 
+### Support ticket thread, rich text, files and actions (2026-11-13)
+
+Backend contract: core-ui `docs/snow-support-tickets.md` (00f158ce4).
+
+- **Ticket page** `#/support/tickets/:id` (`routes/SupportTicketPage.js`,
+  store `support-thread.js`): the thread from `metadata.TICKET_THREAD`
+  (opening message, then comments oldest first), "Replies may take a minute
+  to appear" with a manual Refresh and no polling, the buttons
+  `list-events.json` returns under the client labels, the state read back
+  after every event (an unchanged state is said so), and a comment box sent
+  as form 16. Mark resolved and Close are confirmed first. A CLOSED ticket
+  has no comment box; ESCALATED and CLOSED show no buttons.
+- **Rich text.** `rich-text.js` parses HTML in an inert `DOMParser`
+  document and rebuilds it from the server's allow-list only (links get
+  `rel`/`target`; loose text becomes paragraphs). The thread is rendered from
+  that rebuild, so no script, handler or `javascript:` URL reaches the page.
+  The editor (`components/support/RichTextEditor.js`) is a small toolbar over
+  `contenteditable` that emits the same cleaned HTML: no editor library; the
+  minified snow bundle grew by about 34 KB (about 9.5 KB gzipped), for the
+  whole thread, editor and file feature.
+- **Files.** `support-attachments.js` checks count, size and type (from the
+  content) before upload; thumbnails and files are fetched from
+  `/core/secured/...` with the Bearer token and shown or opened from blob
+  URLs. The public `/core/image` path is never used for ticket files.
+- **Labels.** NEW Open, IN_PROGRESS In progress, WAITING On hold, ESCALATED
+  Escalated, RESOLVED Resolved, CLOSED Closed, each its own chip colour
+  (`status-badge--hold` is new).
+- **Proven on dev-1** with a throwaway client: ticket with bold text, a list
+  and a PNG; a comment with a PDF; a staff reply through
+  `dialog-unit/save.json` as user 1 shown after `PUT
+  /core/api/schedule/app-2-core-svc/8/launch.json`; Put on hold, Resume,
+  Mark resolved, Reopen, Mark resolved, Close. All records were deleted.
+- **Trap:** a portal User whose login is 32 characters or longer gets HTTP
+  500 from `form/submit.json` for form 15 (no form is saved). A 26-character
+  login works. A backend issue, open.
+
 ### Provider name, logo and regions from the Organization (2026-11-12)
 
 - **Where Core keeps them.** Organization `SNOWLIMITLESS` (43): `nls` NAME,

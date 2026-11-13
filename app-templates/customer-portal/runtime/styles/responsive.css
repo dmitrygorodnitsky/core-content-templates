@@ -348,3 +348,9 @@
 .vw-mobile .quote-request__properties, .vw-mobile .contract-form__pair { grid-template-columns: 1fr; }
 
 .vw-mobile .quote-request__submit .btn { flex: 1 1 auto; }
+
+.vw-mobile .ticket-message { margin-right: 12px; }
+
+.vw-mobile .ticket-message--staff { margin: 0 0 0 12px; }
+
+.vw-mobile .ticket-message__time { margin-left: 0; width: 100%; }

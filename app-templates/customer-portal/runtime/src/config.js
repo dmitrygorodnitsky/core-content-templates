@@ -155,6 +155,7 @@ export const routeRegistry = {
   profile: { id: "profile", path: "/profile", module: "profile" },
   support: { id: "support", path: "/support", module: "support" },
   "support.new": { id: "support.new", path: "/support/new", module: "support", liveOnly: true },
+  "support.ticket": { id: "support.ticket", path: "/support/tickets/:id", module: "support", param: "id", liveOnly: true },
   care: { id: "care", path: "/care", module: "care", access: "care" },
 };
 

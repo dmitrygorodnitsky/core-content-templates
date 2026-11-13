@@ -307,6 +307,7 @@
     profile: { id: "profile", path: "/profile", module: "profile" },
     support: { id: "support", path: "/support", module: "support" },
     "support.new": { id: "support.new", path: "/support/new", module: "support", liveOnly: true },
+    "support.ticket": { id: "support.ticket", path: "/support/tickets/:id", module: "support", param: "id", liveOnly: true },
     care: { id: "care", path: "/care", module: "care", access: "care" }
   };
   var routeMatchers = Object.values(routeRegistry).map(function(route) {
@@ -2448,12 +2449,70 @@
   var TICKET_TYPE = "SUPPORT_TICKET";
   var TICKET_STATUS = /* @__PURE__ */ Object.freeze({
     NEW: /* @__PURE__ */ Object.freeze({ label: "Open", tone: "info", open: true }),
-    IN_PROGRESS: /* @__PURE__ */ Object.freeze({ label: "In review", tone: "progress", open: true }),
-    WAITING: /* @__PURE__ */ Object.freeze({ label: "In review", tone: "progress", open: true }),
+    IN_PROGRESS: /* @__PURE__ */ Object.freeze({ label: "In progress", tone: "progress", open: true }),
+    WAITING: /* @__PURE__ */ Object.freeze({ label: "On hold", tone: "hold", open: true }),
+    ESCALATED: /* @__PURE__ */ Object.freeze({ label: "Escalated", tone: "danger", open: true }),
     RESOLVED: /* @__PURE__ */ Object.freeze({ label: "Resolved", tone: "ok", open: false }),
     CLOSED: /* @__PURE__ */ Object.freeze({ label: "Closed", tone: "scheduled", open: false })
   });
+  var TICKET_AUTHORS = /* @__PURE__ */ Object.freeze(["CUSTOMER", "STAFF"]);
+  var MEDIA_ID3 = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
   var MONTHS3 = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  function normalizeTicket(row) {
+    return ticketRecord(row);
+  }
+  function normalizeTicketThread(metadata) {
+    var source = metadata;
+    if (typeof source === "string") source = parseJson(source);
+    var thread = source && typeof source === "object" ? source.TICKET_THREAD : null;
+    if (typeof thread === "string") thread = parseJson(thread);
+    if (!thread || typeof thread !== "object") return null;
+    var description = thread.description && typeof thread.description === "object" ? thread.description : null;
+    var comments = Array.isArray(thread.comments) ? thread.comments.map(threadComment).filter(Boolean) : [];
+    comments.sort(function(left, right) {
+      return left.createdMs - right.createdMs;
+    });
+    return {
+      description: description ? { html: typeof description.html === "string" ? description.html : "", attachments: attachmentsOf(description.attachments) } : null,
+      comments,
+      truncated: thread.truncated === true
+    };
+  }
+  function threadComment(entry2) {
+    if (!entry2 || typeof entry2 !== "object") return null;
+    var created = typeof entry2.created === "number" ? entry2.created : Number(entry2.created);
+    var author = text(entry2.author);
+    return {
+      id: positiveInteger(entry2.id) || 0,
+      createdMs: Number.isFinite(created) ? created : 0,
+      author: TICKET_AUTHORS.indexOf(author) !== -1 ? author : "STAFF",
+      authorName: text(entry2.authorName),
+      html: typeof entry2.html === "string" ? entry2.html : "",
+      attachments: attachmentsOf(entry2.attachments)
+    };
+  }
+  function attachmentsOf(list) {
+    return (Array.isArray(list) ? list : []).map(function(item) {
+      var id = text(item && item.id).toLowerCase();
+      if (!MEDIA_ID3.test(id)) return null;
+      var size = Number(item.size);
+      var contentType = text(item.contentType).toLowerCase();
+      return {
+        id,
+        name: text(item.name) || "Attachment",
+        contentType,
+        size: Number.isFinite(size) && size >= 0 ? size : null,
+        image: item.image === true || contentType.indexOf("image/") === 0
+      };
+    }).filter(Boolean);
+  }
+  function parseJson(value) {
+    try {
+      return JSON.parse(value);
+    } catch (_) {
+      return null;
+    }
+  }
   function normalizeTickets(raw) {
     var rows2 = Array.isArray(raw && raw.items) ? raw.items : [];
     var tickets = rows2.map(ticketRecord).filter(Boolean).sort(function(left, right) {
@@ -2521,7 +2580,8 @@
       open: status.open,
       propertyBackendId: attributeNumber(row, "PROPERTY"),
       visitBackendId: attributeNumber(row, "RELATED_SERVICE_VISIT"),
-      reason: attributeText(row, "CONTACT_REASON")
+      reason: attributeText(row, "CONTACT_REASON"),
+      thread: normalizeTicketThread(row.metadata)
     };
   }
 
@@ -3156,7 +3216,7 @@
     function busy() {
       return !!flight;
     }
-    function run(command, operation) {
+    function run2(command, operation) {
       if (flight) return null;
       deps.state.contractCommand = Object.assign({ phase: "pending" }, command);
       var started2 = Promise.resolve().then(operation).catch(function(error2) {
@@ -3176,7 +3236,7 @@
       if (!definition || definition.entity !== "order") return Promise.resolve(false);
       var quote = findQuote(deps.current(), backendId);
       if (!quote || quote.stateCode !== definition.source || quote.allowedActions.indexOf(kind) === -1) return Promise.resolve(false);
-      return run({ kind, targets: [backendId] }, async function() {
+      return run2({ kind, targets: [backendId] }, async function() {
         var gateway = deps.gateway();
         var row = await gateway.readOrder(backendId, deps.context());
         if (latestStateCode(row) !== definition.source) throw coded("conflict");
@@ -3191,7 +3251,7 @@
       var definition = CONTRACT_EVENTS.agreement;
       var row = findAgreement(deps.current(), backendId);
       if (!row || row.agreement.stateCode !== definition.source || row.agreement.allowedActions.indexOf("approve") === -1) return Promise.resolve(false);
-      return run({ kind: "agreement", targets: [backendId] }, async function() {
+      return run2({ kind: "agreement", targets: [backendId] }, async function() {
         var gateway = deps.gateway();
         var document2 = await gateway.readAgreement(backendId, deps.context());
         if (latestStateCode(document2) !== definition.source) throw coded("conflict");
@@ -3210,7 +3270,7 @@
         return !!quote && quote.stateCode === definition.source && quote.allowedActions.indexOf("changes") !== -1;
       });
       if (!text10 || !open.length) return Promise.resolve(false);
-      return run({ kind: "changes", targets: open }, async function() {
+      return run2({ kind: "changes", targets: open }, async function() {
         var gateway = deps.gateway();
         for (var index = 0; index < open.length; index += 1) {
           var row = await gateway.readOrder(open[index], deps.context());
@@ -3441,12 +3501,12 @@
     })[0] || approved.filter(function(row) {
       return row.metadata && row.metadata.QUOTATION_CLIENT_DETAILS;
     }).pop();
-    var details = carrier && carrier.metadata ? carrier.metadata.QUOTATION_CLIENT_DETAILS : null;
+    var details2 = carrier && carrier.metadata ? carrier.metadata.QUOTATION_CLIENT_DETAILS : null;
     var attributes = { ORDERS: { value: approved.map(function(row) {
       return row.id;
     }) } };
-    (/* @__PURE__ */ Object.keys(details || {})).forEach(function(code) {
-      attributes[code] = { value: details[code] };
+    (/* @__PURE__ */ Object.keys(details2 || {})).forEach(function(code) {
+      attributes[code] = { value: details2[code] };
     });
     var id = agreements.reduce(function(highest, agreement) {
       return Math.max(highest, agreement.id);
@@ -3896,7 +3956,7 @@
   var VISIT_TRANSITION_PAGE_SIZE = 20;
   var INVOICE_PAGE_SIZE = 50;
   var TICKET_PAGE_SIZE = 50;
-  var MEDIA_ID3 = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
+  var MEDIA_ID4 = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
   var REF_MAPPINGS = [{ name: "id" }, { name: "code" }, { name: "nls" }];
   var ID_MAPPINGS = [{ name: "id" }];
   var RESOURCE_MAPPINGS = [
@@ -4056,6 +4116,7 @@
       { name: "nls" },
       { name: "created" },
       { name: "attributes" },
+      { name: "metadata" },
       { name: "type", type: "identifier", mappings: TAGGED_REF_MAPPINGS },
       { name: "states", type: "collection", mappings: TAGGED_REF_MAPPINGS }
     ],
@@ -4063,6 +4124,9 @@
     pageSize: TICKET_PAGE_SIZE,
     sorting: [{ field: "created", direction: "DESC" }]
   });
+  var TICKET_GET_MAPPINGS = /* @__PURE__ */ Object.freeze(TICKET_LIST_BODY.mappings.slice());
+  var TICKET_FILE_ID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
+  var TICKET_THUMBNAIL_WIDTH = 320;
   var INVOICE_LIST_BODY = /* @__PURE__ */ Object.freeze({
     mappings: INVOICE_MAPPINGS,
     offset: 0,
@@ -4111,6 +4175,37 @@
       }),
       truncated: resultSizeOf(reply, rows2.length) > rows2.length
     };
+  }
+  async function readTicket(context, backendId, fetchImpl = coreSessionFetch, explicitOrigin) {
+    var api = readContext(context, explicitOrigin);
+    var id = positiveInteger(backendId);
+    if (!id) throw contractError2("invalid-target", "A ticket id is required before reading it");
+    var row = await requestJson2(fetchImpl, api.serviceBase + "/api/tagged/task/get.json?id=" + id, readOptions(api, TICKET_GET_MAPPINGS));
+    if (!row || typeof row !== "object" || positiveInteger(row.id) !== id) throw contractError2("not-found", "Core did not return ticket " + id);
+    return row;
+  }
+  async function readTicketEvents(context, backendId, fetchImpl = coreSessionFetch, explicitOrigin) {
+    var api = readContext(context, explicitOrigin);
+    var id = positiveInteger(backendId);
+    if (!id) throw contractError2("invalid-target", "A ticket id is required before reading its actions");
+    var reply = await requestJson2(fetchImpl, api.serviceBase + "/api/tagged/task/" + id + "/list-events.json", readOptions(api, TAGGED_REF_MAPPINGS));
+    return Array.isArray(reply) ? reply : listResult(reply);
+  }
+  async function sendTicketEvent(context, backendId, eventCode2, attributes, fetchImpl = coreSessionFetch, explicitOrigin) {
+    var api = readContext(context, explicitOrigin);
+    var code = text(eventCode2);
+    if (!/^[A-Z_]+-[A-Z_]+$/.test(code)) throw contractError2("invalid-target", "A ticket event code is required");
+    return sendEvent(fetchImpl, api, api.serviceBase + "/api/tagged/task/" + commandId(backendId) + "/send-event.json?event=" + encodeURIComponent(code), attributes);
+  }
+  async function readTicketFile(context, mediaId, variant, fetchImpl = coreSessionFetch, explicitOrigin) {
+    var api = readContext(context, explicitOrigin);
+    var id = text(mediaId).toLowerCase();
+    if (!TICKET_FILE_ID.test(id)) throw contractError2("invalid-target", "A ticket file id is required");
+    var url = variant === "thumbnail" ? api.coreBase + "/secured/image/" + id + "/get?fit=true&width=" + TICKET_THUMBNAIL_WIDTH : api.coreBase + "/secured/media/" + id + "/stream";
+    var response = await fetchImpl(url, { method: "GET", credentials: "same-origin", headers: { Authorization: api.authorization, "X-Organization-Code": api.organization } });
+    if (!response || typeof response.ok !== "boolean") throw contractError2("invalid-response", "Core request returned an invalid response");
+    if (!response.ok) throw failure(response.status);
+    return response.blob();
   }
   async function loadSnowVisits(context, fetchImpl = coreSessionFetch, explicitOrigin) {
     var api = readContext(context, explicitOrigin);
@@ -4521,7 +4616,7 @@
     }
     var ids = (Array.isArray(value) ? value : value == null ? [] : [value]).map(function(item) {
       var id = text(item && typeof item === "object" ? item.id : item).toLowerCase();
-      return MEDIA_ID3.test(id) ? id : "";
+      return MEDIA_ID4.test(id) ? id : "";
     });
     return ids.length === 1 ? ids[0] : "";
   }
@@ -4629,6 +4724,7 @@
     quoteOrderTypes: /* @__PURE__ */ Object.freeze(QUOTE_ORDER_TYPES.slice()),
     resourceMappings: RESOURCE_MAPPINGS,
     ticketListBody: TICKET_LIST_BODY,
+    ticketGetMappings: TICKET_GET_MAPPINGS,
     visitListBody: VISIT_LIST_BODY,
     visitTransitionsBody: VISIT_TRANSITIONS_BODY,
     quoteFilters: ["account.id"],
@@ -4825,6 +4921,7 @@
   var INVOICE_PAYMENT_FORM = /* @__PURE__ */ Object.freeze({ typeCode: "CUSTOMER_INVOICE_PAYMENT", preference: "SNOW_CUSTOMER_INVOICE_PAYMENT" });
   var QUOTE_REQUEST_FORM = /* @__PURE__ */ Object.freeze({ typeCode: "PORTAL_QUOTE_REQUEST", preference: "SNOW_PORTAL_QUOTE_REQUEST" });
   var SUPPORT_TICKET_FORM = /* @__PURE__ */ Object.freeze({ typeCode: "CUSTOMER_SUPPORT_TICKET", preference: "SNOW_CUSTOMER_SUPPORT_TICKET" });
+  var SUPPORT_TICKET_COMMENT_FORM = /* @__PURE__ */ Object.freeze({ typeCode: "CUSTOMER_SUPPORT_TICKET_COMMENT", preference: "SNOW_CUSTOMER_SUPPORT_TICKET_COMMENT" });
   var OUTCOMES = /* @__PURE__ */ Object.freeze(["APPLIED", "REFUSED", "FAILED"]);
   var FORM_LOCALE = "en";
   var POLL_INTERVAL_MS = 1e3;
@@ -5835,7 +5932,7 @@
     "proposals.list": ["proposal.detail", "proposal.approve", "agreement.detail", "quote.new"],
     appointments: ["visit.detail"],
     invoices: ["invoice.detail"],
-    support: ["support.new"]
+    support: ["support.new", "support.ticket"]
   };
   function activeNavKey(navItems) {
     var keys = navItems.map(function(item) {
@@ -7118,7 +7215,7 @@
     var failureListeners = [];
     var loading = null;
     var maps = null;
-    function fail2(error2) {
+    function fail3(error2) {
       failureListeners.slice().forEach(function(listener) {
         listener(error2);
       });
@@ -7136,7 +7233,7 @@
           loading = Promise.reject(new Error("Google Maps adapter is not opened"));
           return loading;
         }
-        loading = scriptNamespace(scope, apiKey, fail2).then(function(namespace) {
+        loading = scriptNamespace(scope, apiKey, fail3).then(function(namespace) {
           return importLibraries(namespace, scope);
         }).then(function(loaded) {
           maps = loaded;
@@ -7242,7 +7339,7 @@
     var lon = typeof location.lng === "function" ? location.lng() : location.lng;
     return typeof lat === "number" && typeof lon === "number" && isFinite(lat) && isFinite(lon) && Math.abs(lat) <= 90 && Math.abs(lon) <= 180 ? { lat, lon } : null;
   }
-  function scriptNamespace(scope, apiKey, fail2) {
+  function scriptNamespace(scope, apiKey, fail3) {
     var present = scope.google && scope.google.maps;
     if (present && (typeof present.importLibrary === "function" || typeof present.Map === "function")) {
       return Promise.resolve(present);
@@ -7261,7 +7358,7 @@
         var error2 = new Error("Google Maps rejected the browser key");
         settled2 = true;
         reject(error2);
-        fail2(error2);
+        fail3(error2);
         if (typeof previous === "function") previous();
       };
       scope[READY_CALLBACK] = ready;
@@ -7443,7 +7540,7 @@
     }
     function start(viewport) {
       status = "loading";
-      adapter2.onFailure(fail2);
+      adapter2.onFailure(fail3);
       adapter2.load().then(function(loaded) {
         if (status === "failed") return;
         maps = loaded;
@@ -7453,9 +7550,9 @@
         status = "ready";
         drain();
         onChange();
-      }).catch(fail2);
+      }).catch(fail3);
     }
-    function fail2(error2) {
+    function fail3(error2) {
       if (status === "failed") return;
       status = "failed";
       console.warn("[portal] Google map unavailable, listing the properties instead", error2 && error2.message);
@@ -8107,21 +8204,21 @@
         entry2.drawn = true;
         Promise.resolve().then(function() {
           draw(entry2, plan);
-        }).catch(fail2);
+        }).catch(fail3);
       }
       return entry2.node;
     }
     function start() {
       status = "loading";
-      adapter2.onFailure(fail2);
+      adapter2.onFailure(fail3);
       adapter2.load().then(function(loaded) {
         if (status === "failed") return;
         maps = loaded;
         status = "ready";
         onChange();
-      }).catch(fail2);
+      }).catch(fail3);
     }
-    function fail2(error2) {
+    function fail3(error2) {
       if (status === "failed") return;
       status = "failed";
       views.forEach(function(entry2) {
@@ -9457,18 +9554,616 @@
     return element.name || "Element " + element.position;
   }
 
+  // app-templates/customer-portal/runtime/src/support-attachments.js
+  var ATTACHMENT_LIMITS = /* @__PURE__ */ Object.freeze({ count: 5, fileBytes: 5 * 1024 * 1024, totalBytes: 10 * 1024 * 1024 });
+  var ATTACHMENT_TYPES = /* @__PURE__ */ Object.freeze(["image/jpeg", "image/png", "image/gif", "image/webp", "application/pdf"]);
+  var ATTACHMENT_ACCEPT = ATTACHMENT_TYPES.join(",");
+  var ATTACHMENT_COPY = /* @__PURE__ */ Object.freeze({
+    count: "Attach at most " + ATTACHMENT_LIMITS.count + " files.",
+    fileSize: "Each file must be 5 MB or smaller.",
+    totalSize: "Files together must be 10 MB or smaller.",
+    type: "Attach JPEG, PNG, GIF or WebP images, or PDF files.",
+    unreadable: "This file couldn\u2019t be read. Try another one."
+  });
+  var SIGNATURES = /* @__PURE__ */ Object.freeze([
+    { type: "image/jpeg", bytes: [255, 216, 255] },
+    { type: "image/png", bytes: [137, 80, 78, 71, 13, 10, 26, 10] },
+    { type: "image/gif", bytes: [71, 73, 70, 56] },
+    { type: "application/pdf", bytes: [37, 80, 68, 70, 45] }
+  ]);
+  function sniffType(bytes) {
+    var head = bytes || [];
+    var known = SIGNATURES.find(function(signature) {
+      return signature.bytes.every(function(value, index) {
+        return head[index] === value;
+      });
+    });
+    if (known) return known.type;
+    var riff = [82, 73, 70, 70].every(function(value, index) {
+      return head[index] === value;
+    });
+    var webp = [87, 69, 66, 80].every(function(value, index) {
+      return head[index + 8] === value;
+    });
+    return riff && webp ? "image/webp" : "";
+  }
+  function attachmentProblem(existing, added) {
+    var files2 = (existing || []).concat(added || []);
+    if (files2.length > ATTACHMENT_LIMITS.count) return ATTACHMENT_COPY.count;
+    if ((added || []).some(function(file) {
+      return !file.type;
+    })) return ATTACHMENT_COPY.type;
+    if (files2.some(function(file) {
+      return file.size > ATTACHMENT_LIMITS.fileBytes;
+    })) return ATTACHMENT_COPY.fileSize;
+    var total = files2.reduce(function(sum, file) {
+      return sum + file.size;
+    }, 0);
+    if (total > ATTACHMENT_LIMITS.totalBytes) return ATTACHMENT_COPY.totalSize;
+    return "";
+  }
+  function attachmentsValue(files2) {
+    var list = (files2 || []).map(function(file) {
+      return { name: file.name, data: file.data };
+    });
+    return list.length ? JSON.stringify(list) : "";
+  }
+  function readAttachment(file) {
+    return new Promise(function(resolve) {
+      var Reader = globalThis.FileReader;
+      if (typeof Reader !== "function" || !file) {
+        resolve(null);
+        return;
+      }
+      var reader = new Reader();
+      reader.onload = function() {
+        var data = typeof reader.result === "string" ? reader.result : "";
+        var bytes = headBytes(data);
+        var type = sniffType(bytes);
+        resolve({ key: attachmentKey(file), name: String(file.name || "file"), size: Number(file.size) || 0, type: ATTACHMENT_TYPES.indexOf(type) !== -1 ? type : "", data });
+      };
+      reader.onerror = function() {
+        resolve(null);
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+  function formatBytes(size) {
+    if (!Number.isFinite(size) || size < 0) return "";
+    if (size < 1024) return size + " B";
+    if (size < 1024 * 1024) return Math.round(size / 1024) + " KB";
+    return Math.round(size / 104857.6) / 10 + " MB";
+  }
+  function attachmentKey(file) {
+    return [file.name, file.size, file.lastModified].join(":") + ":" + Math.random().toString(36).slice(2, 8);
+  }
+  function headBytes(dataUrl) {
+    var comma = dataUrl.indexOf(",");
+    if (comma === -1) return [];
+    try {
+      var decoded = globalThis.atob(dataUrl.slice(comma + 1, comma + 1 + 24));
+      return Array.prototype.map.call(decoded, function(character) {
+        return character.charCodeAt(0);
+      });
+    } catch (_) {
+      return [];
+    }
+  }
+
+  // app-templates/customer-portal/runtime/src/rich-text.js
+  var RICH_TEXT_TAGS = /* @__PURE__ */ Object.freeze(["p", "br", "strong", "b", "em", "i", "u", "s", "strike", "ul", "ol", "li", "blockquote", "code", "pre", "h1", "h2", "h3", "a"]);
+  var RICH_TEXT_LINK_SCHEMES = /* @__PURE__ */ Object.freeze(["http:", "https:", "mailto:"]);
+  var RICH_TEXT_LIMIT = 4e3;
+  var RICH_HTML_LIMIT = 2e4;
+  var DROPPED = /* @__PURE__ */ Object.freeze(["script", "style", "template", "iframe", "object", "embed", "svg", "math", "noscript", "title", "head", "img", "video", "audio", "canvas", "input", "button", "select", "textarea", "form"]);
+  var AS_PARAGRAPH = /* @__PURE__ */ Object.freeze(["div", "section", "article", "header", "footer", "h4", "h5", "h6"]);
+  var BLOCKS = /* @__PURE__ */ Object.freeze(["p", "ul", "ol", "li", "blockquote", "pre", "h1", "h2", "h3"]);
+  var VOID = /* @__PURE__ */ Object.freeze(["br"]);
+  function safeLink(value) {
+    var href = String(value == null ? "" : value).trim();
+    if (!href) return "";
+    try {
+      var url = new URL(href);
+      return RICH_TEXT_LINK_SCHEMES.indexOf(url.protocol) !== -1 ? url.href : "";
+    } catch (_) {
+      return "";
+    }
+  }
+  function richTree(source) {
+    return asBlocks(cleanChildren(source && source.childNodes ? source.childNodes : []));
+  }
+  function asBlocks(nodes) {
+    var blocks = [];
+    var run2 = [];
+    var flush = function() {
+      if (run2.some(hasContent)) blocks.push({ tag: "p", children: trimRun(run2) });
+      run2 = [];
+    };
+    nodes.forEach(function(node) {
+      if (typeof node !== "string" && BLOCKS.indexOf(node.tag) !== -1) {
+        flush();
+        if (node.tag !== "p" || hasContent(node)) blocks.push(node);
+      } else {
+        run2.push(node);
+      }
+    });
+    flush();
+    return blocks;
+  }
+  function hasContent(node) {
+    if (typeof node === "string") return !!node.replace(/\u00a0/g, " ").trim();
+    return node.tag === "br" ? false : node.children.some(hasContent);
+  }
+  function trimRun(run2) {
+    var start = 0;
+    var end = run2.length;
+    while (start < end && isBreak(run2[start])) start += 1;
+    while (end > start && isBreak(run2[end - 1])) end -= 1;
+    return run2.slice(start, end);
+  }
+  function isBreak(node) {
+    return typeof node === "string" ? !node.trim() : node.tag === "br";
+  }
+  function parseRichHtml(html, parse) {
+    var value = String(html == null ? "" : html);
+    if (!value.trim()) return [];
+    var reader = parse || browserParse;
+    return richTree(reader(value));
+  }
+  function cleanRichHtml(html, parse) {
+    return richHtml(parseRichHtml(html, parse));
+  }
+  function richHtml(tree) {
+    var html = tree.map(serialize).join("");
+    return richText(tree).trim() ? html : "";
+  }
+  function richText(tree) {
+    return tree.map(function(node) {
+      if (typeof node === "string") return node;
+      if (node.tag === "br") return "\n";
+      var inner = richText(node.children);
+      return BLOCKS.indexOf(node.tag) !== -1 ? inner + "\n" : inner;
+    }).join("");
+  }
+  function richNodes(tree) {
+    return tree.map(function(node) {
+      if (typeof node === "string") return globalThis.document.createTextNode(node);
+      if (node.tag === "a") return h("a", { href: node.href, rel: "noopener noreferrer nofollow", target: "_blank" }, richNodes(node.children));
+      return h(node.tag, null, richNodes(node.children));
+    });
+  }
+  function RichText(html, attributes, parse) {
+    return h("div", Object.assign({ "class": "rich-text" }, attributes || {}), richNodes(parseRichHtml(html, parse)));
+  }
+  function browserParse(html) {
+    var Parser = globalThis.DOMParser;
+    if (typeof Parser !== "function") return { childNodes: [globalThis.document.createTextNode(html.replace(/<[^>]*>/g, " "))] };
+    return new Parser().parseFromString("<!doctype html><body>" + html, "text/html").body;
+  }
+  function cleanChildren(nodes) {
+    var out = [];
+    Array.prototype.forEach.call(nodes, function(node) {
+      cleanNode(node).forEach(function(cleaned) {
+        var last = out[out.length - 1];
+        if (typeof cleaned === "string" && typeof last === "string") out[out.length - 1] = last + cleaned;
+        else out.push(cleaned);
+      });
+    });
+    return out;
+  }
+  function cleanNode(node) {
+    if (!node || node.nodeType === 8) return [];
+    if (typeof node.tagName !== "string") {
+      var value = node.nodeType === 3 || node.nodeType === void 0 ? String(node.textContent == null ? node.nodeValue || "" : node.textContent) : "";
+      return value ? [value] : [];
+    }
+    var tag = node.tagName.toLowerCase();
+    if (DROPPED.indexOf(tag) !== -1) return [];
+    var children = cleanChildren(node.childNodes || []);
+    if (tag === "a") {
+      var href = safeLink(node.getAttribute && node.getAttribute("href"));
+      return href ? [{ tag: "a", href, children }] : children;
+    }
+    if (AS_PARAGRAPH.indexOf(tag) !== -1) return [{ tag: "p", children }];
+    if (tag === "ol" && children.some(function(child) {
+      return child.tag === "li" && child.bullet;
+    })) return [{ tag: "ul", children }];
+    if (tag === "li") return [{ tag: "li", bullet: !!(node.getAttribute && node.getAttribute("data-list") === "bullet"), children }];
+    if (RICH_TEXT_TAGS.indexOf(tag) === -1) return children;
+    if (VOID.indexOf(tag) !== -1) return [{ tag, children: [] }];
+    return [{ tag, children }];
+  }
+  function serialize(node) {
+    if (typeof node === "string") return escapeText(node);
+    if (node.tag === "br") return "<br>";
+    var inner = node.children.map(serialize).join("");
+    if (node.tag === "a") return '<a href="' + escapeAttribute(node.href) + '">' + inner + "</a>";
+    return "<" + node.tag + ">" + inner + "</" + node.tag + ">";
+  }
+  function escapeText(value) {
+    return value.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  }
+  function escapeAttribute(value) {
+    return escapeText(value).replace(/"/g, "&quot;");
+  }
+
+  // app-templates/customer-portal/runtime/src/support-thread.js
+  var TICKET_ACTION_NOTE = "Marked by the client in the portal.";
+  var TICKET_ACTIONS = /* @__PURE__ */ Object.freeze({
+    "NEW-WAITING": /* @__PURE__ */ Object.freeze({ label: "Put on hold", attributes: /* @__PURE__ */ Object.freeze({ WAITING_REASON: "AWAITING_CUSTOMER" }) }),
+    "IN_PROGRESS-WAITING": /* @__PURE__ */ Object.freeze({ label: "Put on hold", attributes: /* @__PURE__ */ Object.freeze({ WAITING_REASON: "AWAITING_CUSTOMER" }) }),
+    "WAITING-IN_PROGRESS": /* @__PURE__ */ Object.freeze({ label: "Resume", attributes: /* @__PURE__ */ Object.freeze({}) }),
+    "NEW-CLOSED": /* @__PURE__ */ Object.freeze({ label: "Mark resolved", attributes: /* @__PURE__ */ Object.freeze({ CLOSURE_OUTCOME: "RESOLVED", CLOSURE_COMMENT: TICKET_ACTION_NOTE }) }),
+    "IN_PROGRESS-RESOLVED": /* @__PURE__ */ Object.freeze({ label: "Mark resolved", attributes: /* @__PURE__ */ Object.freeze({ RESOLUTION_SUMMARY: TICKET_ACTION_NOTE }) }),
+    "WAITING-RESOLVED": /* @__PURE__ */ Object.freeze({ label: "Mark resolved", attributes: /* @__PURE__ */ Object.freeze({ RESOLUTION_SUMMARY: TICKET_ACTION_NOTE }) }),
+    "RESOLVED-IN_PROGRESS": /* @__PURE__ */ Object.freeze({ label: "Reopen", attributes: /* @__PURE__ */ Object.freeze({ RETURN_REASON: TICKET_ACTION_NOTE }) }),
+    "RESOLVED-CLOSED": /* @__PURE__ */ Object.freeze({ label: "Close", attributes: /* @__PURE__ */ Object.freeze({ CLOSURE_OUTCOME: "RESOLVED" }) })
+  });
+  var TICKET_CONFIRM = /* @__PURE__ */ Object.freeze({
+    CLOSED: "This closes the ticket. You won\u2019t be able to add comments afterwards, and only our team can reopen it.",
+    RESOLVED: "Mark this ticket resolved? You can still reopen it or close it afterwards."
+  });
+  var COMMENT_COPY = /* @__PURE__ */ Object.freeze({
+    empty: "Write a message or attach a file.",
+    long: "Keep the message under " + RICH_TEXT_LIMIT.toLocaleString("en-US") + " characters.",
+    heavy: "This message has too much formatting. Shorten it and try again.",
+    notSent: "Your comment wasn\u2019t sent. Check your connection and try again.",
+    serverError: "Your comment wasn\u2019t sent: our system answered with an error. Please try again in a few minutes.",
+    failed: "We couldn\u2019t add your comment right now. Please try again in a few minutes.",
+    refused: "We couldn\u2019t add this comment.",
+    slow: "We\u2019re still adding your comment. You don\u2019t need to send it again.",
+    closed: "This ticket is closed. Open a new ticket if you need more help."
+  });
+  var ACTION_COPY = /* @__PURE__ */ Object.freeze({
+    refused: "This action wasn\u2019t accepted. Nothing was changed.",
+    failed: "We couldn\u2019t reach our system. Nothing was changed; try again in a moment.",
+    unconfirmed: "We sent your request, but the ticket hasn\u2019t changed yet. Refresh in a moment."
+  });
+  var COMMENT_OUTCOMES = /* @__PURE__ */ Object.freeze(["ADDED", "REFUSED", "FAILED"]);
+  var COMMENT_FIELDS = /* @__PURE__ */ Object.freeze(["MESSAGE", "ATTACHMENTS"]);
+  var COMMENT_TIMEOUT_MS = 6e4;
+  var BUSY = /* @__PURE__ */ Object.freeze(["sending", "waiting", "checking"]);
+  var details = /* @__PURE__ */ new Map();
+  var files = /* @__PURE__ */ new Map();
+  function ticketBackendId(routeId) {
+    var match = /^ticket-core-(\d+)$/.exec(text(routeId));
+    return match ? positiveInteger(match[1]) : null;
+  }
+  function ticketAction(event) {
+    var code = text(event && event.code);
+    var known = Object.prototype.hasOwnProperty.call(TICKET_ACTIONS, code) ? TICKET_ACTIONS[code] : null;
+    var target = code.split("-")[1] || "";
+    var named2 = text(event && event.nls && event.nls.en && event.nls.en.NAME);
+    return {
+      code,
+      label: known ? known.label : named2 || humanize(target),
+      attributes: known ? known.attributes : {},
+      confirm: TICKET_CONFIRM[target] || "",
+      target
+    };
+  }
+  function ticketDetail(backendId, onChange, fetchImpl) {
+    var id = positiveInteger(backendId);
+    if (!id) return null;
+    var key = detailKey(id);
+    var entry2 = details.get(key);
+    if (entry2) return entry2;
+    entry2 = { backendId: id, status: "loading", ticket: null, events: { status: "loading", list: [] }, action: null, refreshing: false };
+    details.set(key, entry2);
+    load(entry2, onChange, fetchImpl);
+    return entry2;
+  }
+  function refreshTicketDetail(backendId, onChange, fetchImpl) {
+    var entry2 = details.get(detailKey(positiveInteger(backendId)));
+    if (!entry2) return ticketDetail(backendId, onChange, fetchImpl) ? Promise.resolve(true) : Promise.resolve(false);
+    if (entry2.refreshing) return Promise.resolve(false);
+    entry2.refreshing = true;
+    if (entry2.action && entry2.action.phase !== "sending") entry2.action = null;
+    if (onChange) onChange();
+    return load(entry2, onChange, fetchImpl).then(function() {
+      return true;
+    });
+  }
+  function load(entry2, onChange, fetchImpl) {
+    var context = { config: state.config, state };
+    var fetcher = fetchImpl || coreSessionFetch;
+    var ticket = readTicket(context, entry2.backendId, fetcher).then(function(row) {
+      var normalized = normalizeTicket(row);
+      entry2.ticket = normalized;
+      entry2.status = normalized ? "ready" : "not-found";
+    }, function(error2) {
+      if (error2 && error2.code === "session-expired") state.account = "session-expired";
+      entry2.status = error2 && (error2.code === "not-found" || error2.code === "customer-forbidden") ? "not-found" : entry2.ticket ? "ready" : "error";
+    });
+    var events = readTicketEvents(context, entry2.backendId, fetcher).then(function(rows2) {
+      entry2.events = { status: "ready", list: rows2.map(ticketAction).filter(function(action) {
+        return !!action.code;
+      }) };
+    }, function() {
+      entry2.events = { status: "error", list: [] };
+    });
+    return Promise.all([ticket, events]).then(function() {
+      entry2.refreshing = false;
+      if (onChange) onChange();
+    });
+  }
+  function requestTicketAction(backendId, code, onChange, fetchImpl) {
+    var entry2 = details.get(detailKey(positiveInteger(backendId)));
+    if (!entry2 || entry2.refreshing || entry2.action && entry2.action.phase === "sending") return Promise.resolve(false);
+    var action = entry2.events.list.find(function(item) {
+      return item.code === code;
+    });
+    if (!action) return Promise.resolve(false);
+    if (action.confirm) {
+      entry2.action = { phase: "confirm", code, message: "" };
+      if (onChange) onChange();
+      return Promise.resolve(true);
+    }
+    return sendAction(entry2, action, onChange, fetchImpl);
+  }
+  function confirmTicketAction(backendId, onChange, fetchImpl) {
+    var entry2 = details.get(detailKey(positiveInteger(backendId)));
+    if (!entry2 || !entry2.action || entry2.action.phase !== "confirm") return Promise.resolve(false);
+    var action = entry2.events.list.find(function(item) {
+      return item.code === entry2.action.code;
+    });
+    if (!action) return Promise.resolve(false);
+    return sendAction(entry2, action, onChange, fetchImpl);
+  }
+  function cancelTicketAction(backendId) {
+    var entry2 = details.get(detailKey(positiveInteger(backendId)));
+    if (!entry2 || !entry2.action || entry2.action.phase === "sending") return false;
+    entry2.action = null;
+    return true;
+  }
+  function sendAction(entry2, action, onChange, fetchImpl) {
+    var context = { config: state.config, state };
+    var fetcher = fetchImpl || coreSessionFetch;
+    var before = entry2.ticket ? entry2.ticket.stateCode : "";
+    var attributes = {};
+    (/* @__PURE__ */ Object.keys(action.attributes)).forEach(function(code) {
+      attributes[code] = { value: action.attributes[code] };
+    });
+    entry2.action = { phase: "sending", code: action.code, message: "" };
+    if (onChange) onChange();
+    return sendTicketEvent(context, entry2.backendId, action.code, attributes, fetcher).then(function() {
+      return load(entry2, null, fetchImpl).then(function() {
+        var after = entry2.ticket ? entry2.ticket.stateCode : "";
+        entry2.action = after && after !== before ? { phase: "done", code: action.code, message: "" } : { phase: "unconfirmed", code: action.code, message: ACTION_COPY.unconfirmed };
+        if (onChange) onChange("action-" + entry2.action.phase);
+        return entry2.action.phase === "done";
+      });
+    }, function(error2) {
+      if (error2 && error2.code === "session-expired") state.account = "session-expired";
+      entry2.action = { phase: "failed", code: action.code, message: error2 && (error2.code === "command-refused" || error2.code === "customer-forbidden" || error2.status >= 500) ? ACTION_COPY.refused : ACTION_COPY.failed };
+      return load(entry2, null, fetchImpl).then(function() {
+        if (onChange) onChange("action-failed");
+        return false;
+      });
+    });
+  }
+  function ticketComment(backendId) {
+    var id = positiveInteger(backendId);
+    if (!state.ticketComments) state.ticketComments = {};
+    if (!state.ticketComments[id]) state.ticketComments[id] = freshComment();
+    return state.ticketComments[id];
+  }
+  function freshComment() {
+    return { html: "", files: [], errors: {}, phase: "editing", message: "", formId: null, reading: false, sentAt: 0 };
+  }
+  function ticketCommentBusy(comment) {
+    return !!comment && BUSY.indexOf(comment.phase) !== -1;
+  }
+  function changeTicketComment(backendId, html) {
+    var comment = ticketComment(backendId);
+    if (ticketCommentBusy(comment)) return false;
+    comment.html = String(html == null ? "" : html);
+    delete comment.errors.MESSAGE;
+    return true;
+  }
+  function addAttachments(target, picked, onChange) {
+    if (!target || target.reading) return Promise.resolve(false);
+    target.reading = true;
+    delete target.errors.ATTACHMENTS;
+    if (onChange) onChange();
+    return Promise.all(picked.map(readAttachment)).then(function(read) {
+      target.reading = false;
+      if (read.some(function(file) {
+        return !file;
+      })) {
+        target.errors.ATTACHMENTS = ATTACHMENT_COPY.unreadable;
+      } else {
+        var problem = attachmentProblem(target.files, read);
+        if (problem) target.errors.ATTACHMENTS = problem;
+        else target.files = target.files.concat(read);
+      }
+      if (onChange) onChange();
+      return !target.errors.ATTACHMENTS;
+    });
+  }
+  function removeAttachment(target, key) {
+    if (!target || target.reading) return false;
+    var before = target.files.length;
+    target.files = target.files.filter(function(file) {
+      return file.key !== key;
+    });
+    delete target.errors.ATTACHMENTS;
+    return target.files.length !== before;
+  }
+  function richMessageProblem(html, required, copy) {
+    var tree = parseRichHtml(html);
+    var visible = richText(tree).trim();
+    if (!visible) return required ? copy.empty : "";
+    if (visible.length > RICH_TEXT_LIMIT) return copy.long;
+    if (String(html).length > RICH_HTML_LIMIT) return copy.heavy;
+    return "";
+  }
+  function validateTicketComment(comment) {
+    var errors = {};
+    var problem = richMessageProblem(comment.html, !comment.files.length, COMMENT_COPY);
+    if (problem) errors.MESSAGE = problem;
+    var files2 = attachmentProblem([], comment.files);
+    if (files2) errors.ATTACHMENTS = files2;
+    return errors;
+  }
+  function ticketCommentValues(backendId, comment) {
+    var values = { TICKET_ID: positiveInteger(backendId) };
+    if (richText(parseRichHtml(comment.html)).trim()) values.MESSAGE = comment.html;
+    var attachments = attachmentsValue(comment.files);
+    if (attachments) values.ATTACHMENTS = attachments;
+    return values;
+  }
+  function submitTicketComment(backendId, options2) {
+    var settings = options2 || {};
+    var changed = settings.onChange || function() {
+    };
+    var comment = ticketComment(backendId);
+    if (ticketCommentBusy(comment) || comment.reading) return Promise.resolve(false);
+    var detail = details.get(detailKey(positiveInteger(backendId)));
+    if (detail && detail.ticket && detail.ticket.stateCode === "CLOSED") {
+      comment.message = COMMENT_COPY.closed;
+      changed("closed");
+      return Promise.resolve(false);
+    }
+    var errors = validateTicketComment(comment);
+    if ((/* @__PURE__ */ Object.keys(errors)).length) {
+      comment.errors = errors;
+      comment.message = "";
+      changed("invalid");
+      return Promise.resolve(false);
+    }
+    var forms = settings.forms || createCoreProfileFormAdapter({ timeoutMs: COMMENT_TIMEOUT_MS, wait: settings.wait, now: settings.now });
+    var context = { config: state.config, state };
+    comment.phase = "sending";
+    comment.errors = {};
+    comment.message = "";
+    changed("sending");
+    return Promise.resolve().then(function() {
+      return forms.submit(SUPPORT_TICKET_COMMENT_FORM, ticketCommentValues(backendId, comment), context);
+    }).then(function(formId) {
+      if (ticketComment(backendId) !== comment) return false;
+      comment.formId = formId;
+      comment.phase = "waiting";
+      changed("waiting");
+      return awaitComment(backendId, comment, forms, context, settings);
+    }, function(error2) {
+      if (error2 && error2.code === "session-expired") state.account = "session-expired";
+      comment.phase = "editing";
+      comment.message = error2 && error2.status >= 500 ? COMMENT_COPY.serverError : COMMENT_COPY.notSent;
+      changed("not-sent");
+      return false;
+    });
+  }
+  function checkTicketCommentAgain(backendId, options2) {
+    var settings = options2 || {};
+    var comment = ticketComment(backendId);
+    if (comment.phase !== "slow" || !comment.formId) return Promise.resolve(false);
+    comment.phase = "checking";
+    (settings.onChange || function() {
+    })("checking");
+    var forms = settings.forms || createCoreProfileFormAdapter({ timeoutMs: COMMENT_TIMEOUT_MS, wait: settings.wait, now: settings.now });
+    return awaitComment(backendId, comment, forms, { config: state.config, state }, settings);
+  }
+  function awaitComment(backendId, comment, forms, context, settings) {
+    var changed = settings.onChange || function() {
+    };
+    return Promise.resolve().then(function() {
+      return forms.report(SUPPORT_TICKET_COMMENT_FORM, comment.formId, context, COMMENT_OUTCOMES);
+    }).then(function(report) {
+      if (report.outcome === "ADDED") {
+        state.ticketComments[positiveInteger(backendId)] = Object.assign(freshComment(), { sentAt: Date.now() });
+        changed("added");
+        return refreshTicketDetail(backendId, settings.onChange, settings.fetch).then(function() {
+          return true;
+        });
+      }
+      comment.phase = "editing";
+      comment.formId = null;
+      var field4 = text(report.field);
+      var said = text(report.message);
+      if (report.outcome === "REFUSED" && COMMENT_FIELDS.indexOf(field4) !== -1) {
+        comment.errors = {};
+        comment.errors[field4] = said || COMMENT_COPY.refused;
+      } else {
+        comment.message = report.outcome === "REFUSED" ? said || COMMENT_COPY.refused : COMMENT_COPY.failed;
+      }
+      changed(report.outcome === "REFUSED" ? "refused" : "failed");
+      return false;
+    }, function(error2) {
+      if (error2 && error2.code === "session-expired") state.account = "session-expired";
+      comment.phase = "slow";
+      comment.message = COMMENT_COPY.slow;
+      changed("slow");
+      return false;
+    });
+  }
+  function ticketFile(attachment, variant, onChange, fetchImpl) {
+    var key = variant + ":" + attachment.id;
+    var entry2 = files.get(key);
+    if (entry2) return entry2;
+    entry2 = { status: "loading", url: "" };
+    files.set(key, entry2);
+    readTicketFile({ config: state.config, state }, attachment.id, variant, fetchImpl || coreSessionFetch).then(function(blob) {
+      entry2.url = globalThis.URL.createObjectURL(blob);
+      entry2.status = "ready";
+    }, function() {
+      entry2.status = "error";
+    }).then(function() {
+      if (onChange) onChange();
+    });
+    return entry2;
+  }
+  function openTicketFile(mediaId, fetchImpl) {
+    var opened = globalThis.open ? globalThis.open("", "_blank") : null;
+    var cached = files.get("file:" + mediaId);
+    if (cached && cached.status === "ready") return Promise.resolve(navigate(opened, cached.url));
+    if (cached && cached.status === "error") files.delete("file:" + mediaId);
+    var entry2 = ticketFile({ id: mediaId }, "file", null, fetchImpl);
+    return new Promise(function(resolve) {
+      var wait = function() {
+        if (entry2.status === "loading") {
+          setTimeout(wait, 100);
+          return;
+        }
+        resolve(entry2.status === "ready" ? navigate(opened, entry2.url) : fail2(opened));
+      };
+      wait();
+    });
+  }
+  function navigate(tab, url) {
+    if (tab && tab.location) {
+      tab.location.replace(url);
+      return true;
+    }
+    if (globalThis.location) globalThis.location.assign(url);
+    return true;
+  }
+  function fail2(tab) {
+    if (tab && typeof tab.close === "function") tab.close();
+    return false;
+  }
+  function detailKey(backendId) {
+    var account = state.customerAccount && state.customerAccount.id;
+    return account + ":" + backendId;
+  }
+  function humanize(code) {
+    var words = String(code || "").toLowerCase().split("_").filter(Boolean).join(" ");
+    return words ? words.charAt(0).toUpperCase() + words.slice(1) : "Update";
+  }
+
   // app-templates/customer-portal/runtime/src/support-tickets.js
   var SUPPORT_TICKET_OUTCOMES = /* @__PURE__ */ Object.freeze(["CREATED", "REFUSED", "FAILED"]);
-  var SUPPORT_TICKET_FIELDS = /* @__PURE__ */ Object.freeze(["PROPERTY_ID", "VISIT_ID", "CONTACT_REASON", "SUBJECT", "MESSAGE"]);
+  var SUPPORT_TICKET_FIELDS = /* @__PURE__ */ Object.freeze(["PROPERTY_ID", "VISIT_ID", "CONTACT_REASON", "SUBJECT", "MESSAGE", "ATTACHMENTS"]);
   var SUPPORT_SUBJECT_LIMIT = 150;
-  var SUPPORT_MESSAGE_LIMIT = 4e3;
+  var SUPPORT_MESSAGE_LIMIT = RICH_TEXT_LIMIT;
   var SUPPORT_TICKET_OUTCOME_TIMEOUT_MS = 6e4;
   var SUPPORT_TICKET_COPY = /* @__PURE__ */ Object.freeze({
     propertyMissing: "Choose the property this is about.",
     subjectMissing: "Add a short subject.",
     subjectLong: "Keep the subject under " + SUPPORT_SUBJECT_LIMIT + " characters.",
     messageMissing: "Tell us what happened.",
-    messageLong: "Keep the message under " + SUPPORT_MESSAGE_LIMIT + " characters.",
+    messageLong: "Keep the message under " + SUPPORT_MESSAGE_LIMIT.toLocaleString("en-US") + " characters.",
+    messageHeavy: "This message has too much formatting. Shorten it and try again.",
     notSent: "Your ticket wasn\u2019t sent. Check your connection and try again.",
     serverError: "Your ticket wasn\u2019t sent: our system answered with an error. Nothing was saved. Please try again in a few minutes or contact us directly.",
     failed: "We couldn\u2019t open your ticket right now. Please try again in a few minutes.",
@@ -9497,6 +10192,8 @@
     return {
       phase: "editing",
       draft: { propertyId: property ? property.backendId : null, visitId: visit ? visit.backendId : null, reason: "", subject: "", message: "" },
+      files: [],
+      reading: false,
       errors: {},
       message: "",
       formId: null,
@@ -9605,18 +10302,21 @@
   function validateSupportTicket(draft) {
     var errors = {};
     var subject = text(draft.subject);
-    var message = text(draft.message);
     if (!draft.propertyId) errors.PROPERTY_ID = SUPPORT_TICKET_COPY.propertyMissing;
     if (!subject) errors.SUBJECT = SUPPORT_TICKET_COPY.subjectMissing;
     else if (subject.length > SUPPORT_SUBJECT_LIMIT) errors.SUBJECT = SUPPORT_TICKET_COPY.subjectLong;
-    if (!message) errors.MESSAGE = SUPPORT_TICKET_COPY.messageMissing;
-    else if (message.length > SUPPORT_MESSAGE_LIMIT) errors.MESSAGE = SUPPORT_TICKET_COPY.messageLong;
+    var problem = richMessageProblem(draft.message, true, { empty: SUPPORT_TICKET_COPY.messageMissing, long: SUPPORT_TICKET_COPY.messageLong, heavy: SUPPORT_TICKET_COPY.messageHeavy });
+    if (problem) errors.MESSAGE = problem;
+    var files2 = attachmentProblem([], draft.files || []);
+    if (files2) errors.ATTACHMENTS = files2;
     return errors;
   }
   function supportTicketValues(draft) {
     var values = { PROPERTY_ID: draft.propertyId, SUBJECT: text(draft.subject), MESSAGE: text(draft.message) };
     if (draft.visitId) values.VISIT_ID = draft.visitId;
     if (draft.reason) values.CONTACT_REASON = draft.reason;
+    var attachments = attachmentsValue(draft.files);
+    if (attachments) values.ATTACHMENTS = attachments;
     return values;
   }
   function submitSupportTicket(options2) {
@@ -9625,7 +10325,9 @@
     var changed = settings.onChange || function() {
     };
     if (supportTicketBusy() || ticket.phase === "created") return Promise.resolve(false);
-    var errors = validateSupportTicket(ticket.draft);
+    if (ticket.reading) return Promise.resolve(false);
+    var draft = Object.assign({}, ticket.draft, { files: ticket.files });
+    var errors = validateSupportTicket(draft);
     if ((/* @__PURE__ */ Object.keys(errors)).length) {
       ticket.errors = errors;
       ticket.message = "";
@@ -9639,7 +10341,7 @@
     ticket.message = "";
     changed("sending");
     return Promise.resolve().then(function() {
-      return forms.submit(SUPPORT_TICKET_FORM, supportTicketValues(ticket.draft), context);
+      return forms.submit(SUPPORT_TICKET_FORM, supportTicketValues(draft), context);
     }).then(function(formId) {
       if (state.supportTicket !== ticket) return false;
       ticket.formId = formId;
@@ -9689,6 +10391,7 @@
     if (report.outcome === "CREATED") {
       ticket.phase = "created";
       ticket.ticketCode = text(report.ticketCode);
+      ticket.ticketId = positiveInteger(report.ticketId);
       ticket.message = text(report.message);
       changed("created");
       if (settings.reload) Promise.resolve().then(function() {
@@ -9720,10 +10423,10 @@
   }
 
   // app-templates/customer-portal/runtime/src/property-plan.js
-  var MEDIA_ID4 = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
+  var MEDIA_ID5 = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
   var plans = /* @__PURE__ */ new Map();
   function propertyPlan(planId, onChange, fetchImpl) {
-    if (!MEDIA_ID4.test(String(planId || ""))) return null;
+    if (!MEDIA_ID5.test(String(planId || ""))) return null;
     var entry2 = plans.get(planId);
     if (entry2) return entry2;
     entry2 = { status: "loading", plan: null };
@@ -9825,10 +10528,10 @@
   function openVisitPhotos(trigger, options2) {
     options2 = options2 || {};
     var scope = options2.scope || globalThis;
-    var load = options2.load || loadPhotoSwipe;
+    var load2 = options2.load || loadPhotoSwipe;
     var gallery = visitPhotoGallery(trigger);
     var openedFrom = trigger.getAttribute("data-id");
-    return Promise.all([load(scope), Promise.all(gallery.items.map(function(item) {
+    return Promise.all([load2(scope), Promise.all(gallery.items.map(function(item) {
       return measured(item, scope);
     }))]).then(function(ready) {
       var PhotoSwipe = ready[0];
@@ -9903,9 +10606,9 @@
         node.setAttribute(name, attributes[name]);
       });
       var timer = setTimeout(function() {
-        fail2("did not load in time");
+        fail3("did not load in time");
       }, LOAD_TIMEOUT_MS2);
-      function fail2(reason) {
+      function fail3(reason) {
         clearTimeout(timer);
         if (node.parentNode) node.parentNode.removeChild(node);
         reject(new Error("PhotoSwipe " + tag + " " + reason));
@@ -9915,7 +10618,7 @@
         resolve();
       });
       node.addEventListener("error", function() {
-        fail2("could not be loaded");
+        fail3("could not be loaded");
       });
       (root.head || root.body).appendChild(node);
     });
@@ -10277,9 +10980,9 @@
     var settings = options2 || {};
     var billing = { state: "loading", legal: "", value: "", same: false, error: "" };
     confirm.billing = billing;
-    var load = settings.load || loadContractDetailsAccount;
+    var load2 = settings.load || loadContractDetailsAccount;
     return Promise.resolve().then(function() {
-      return load({ config: state.config, state });
+      return load2({ config: state.config, state });
     }).then(function(result) {
       var values = contractDetailsPrefill(result && result.account, CLIENT_TYPE_CODES);
       if (values.BILLING_ADDRESS) {
@@ -10320,35 +11023,35 @@
   function openContractDetails(options2) {
     if (state.contractDetails) return Promise.resolve(state.contractDetails);
     var settings = options2 || {};
-    var details = { prefill: "loading", filled: false, draft: emptyDraft(), errors: {} };
-    state.contractDetails = details;
-    var load = settings.load || loadContractDetailsAccount;
+    var details2 = { prefill: "loading", filled: false, draft: emptyDraft(), errors: {} };
+    state.contractDetails = details2;
+    var load2 = settings.load || loadContractDetailsAccount;
     return Promise.resolve().then(function() {
-      return load({ config: state.config, state });
+      return load2({ config: state.config, state });
     }).then(function(result) {
       var values = contractDetailsPrefill(result && result.account, CLIENT_TYPE_CODES);
       (/* @__PURE__ */ Object.keys(values)).forEach(function(code) {
-        details.draft[code] = values[code];
+        details2.draft[code] = values[code];
       });
-      details.filled = (/* @__PURE__ */ Object.keys(values)).some(function(code) {
+      details2.filled = (/* @__PURE__ */ Object.keys(values)).some(function(code) {
         return !!values[code];
       });
-      details.prefill = "ready";
+      details2.prefill = "ready";
     }, function(error2) {
       if (error2 && error2.code === "session-expired") state.account = "session-expired";
-      details.prefill = "failed";
+      details2.prefill = "failed";
     }).then(function() {
       if (settings.onChange) settings.onChange();
-      return details;
+      return details2;
     });
   }
   function changeContractDetail(code, value) {
-    var details = state.contractDetails;
+    var details2 = state.contractDetails;
     var definition = CONTRACT_DETAILS_FIELDS.find(function(item) {
       return item.code === code;
     });
-    if (!details || !definition) return false;
-    details.draft[code] = definition.kind === "confirm" ? value === true : String(value == null ? "" : value);
+    if (!details2 || !definition) return false;
+    details2.draft[code] = definition.kind === "confirm" ? value === true : String(value == null ? "" : value);
     return true;
   }
   function contractDetailsRequest(draft) {
@@ -11201,7 +11904,7 @@
   function facts(property, contract, model, service) {
     var rows2 = [];
     if (sectionAvailable(model, "contracts")) {
-      rows2.push({ key: "contract", label: "Contract", value: contract ? "#" + contract.number + " \xB7 " + contract.plan : "Not under contract", action: contract ? "nav.go" : void 0, id: contract ? "proposals.list" : void 0 });
+      rows2.push({ key: "contract", label: "Contract", value: contract ? "#" + contract.number + " \xB7 " + contract.plan : "Not under contract", action: contract ? "nav.go" : void 0, id: contract ? contractsHomeRoute() : void 0 });
     }
     var area = formatArea(property.areaSqft);
     if (area) rows2.push({ key: "area", label: "Area", value: area });
@@ -12465,11 +13168,11 @@
   var PAIRS = { REPRESENTATIVE_FIRST_NAME: "REPRESENTATIVE_LAST_NAME", REPRESENTATIVE_EMAIL: "REPRESENTATIVE_PHONE" };
   var CONFIRMATIONS = ["INFORMATION_CONFIRMED", "AUTHORITY_CONFIRMED"];
   var INPUT_TYPES = { text: "text", address: "text", email: "email", tel: "tel" };
-  function contractDetailsLoading(details) {
-    return !details || details.prefill === "loading";
+  function contractDetailsLoading(details2) {
+    return !details2 || details2.prefill === "loading";
   }
-  function ContractDetailsForm(details, pending) {
-    var loading = contractDetailsLoading(details);
+  function ContractDetailsForm(details2, pending) {
+    var loading = contractDetailsLoading(details2);
     var panel = h("div", {
       "class": "agreement-details",
       "data-module": "agreement-details",
@@ -12488,9 +13191,9 @@
       })));
       return panel;
     }
-    var notice = prefillNotice(details);
+    var notice = prefillNotice(details2);
     if (notice) panel.appendChild(notice);
-    var errors = details.errors;
+    var errors = details2.errors;
     var form = h("div", { "class": "contract-form", "aria-busy": pending ? "true" : void 0 });
     GROUPS.forEach(function(group) {
       var section = h("div", { "class": "contract-form__group" }, [h("div", { "class": "contract-form__legend" }, group.title)]);
@@ -12500,27 +13203,27 @@
         var pair = PAIRS[code];
         if (pair) {
           skip[pair] = true;
-          section.appendChild(h("div", { "class": "contract-form__pair" }, [Field(code, details, errors, pending), Field(pair, details, errors, pending)]));
-        } else section.appendChild(Field(code, details, errors, pending));
+          section.appendChild(h("div", { "class": "contract-form__pair" }, [Field(code, details2, errors, pending), Field(pair, details2, errors, pending)]));
+        } else section.appendChild(Field(code, details2, errors, pending));
       });
       form.appendChild(section);
     });
     form.appendChild(h("div", { "class": "contract-form__group contract-form__confirmations" }, CONFIRMATIONS.map(function(code) {
-      return Confirmation(code, details, errors, pending);
+      return Confirmation(code, details2, errors, pending);
     })));
     panel.appendChild(form);
     return panel;
   }
-  function prefillNotice(details) {
-    if (details.prefill === "failed") return PartialNotice("Your account details could not be loaded, so nothing is filled in for you.");
-    if (details.filled) {
+  function prefillNotice(details2) {
+    if (details2.prefill === "failed") return PartialNotice("Your account details could not be loaded, so nothing is filled in for you.");
+    if (details2.filled) {
       return h("p", { "class": "contract-form__note", "data-module": "agreement-details-prefill" }, "Filled in from your account. Check every field before sending.");
     }
     return null;
   }
-  function Field(code, details, errors, pending) {
+  function Field(code, details2, errors, pending) {
     var definition = definitionOf(code);
-    if (definition.kind === "choice") return ClientType(definition, details, errors, pending);
+    if (definition.kind === "choice") return ClientType(definition, details2, errors, pending);
     var id = "contract-detail-" + code.toLowerCase().replace(/_/g, "-");
     var error2 = errors[code];
     var suggesting = definition.kind === "address" && !!addressFinder() && !pending;
@@ -12530,7 +13233,7 @@
       name: code,
       type: INPUT_TYPES[definition.kind] || "text",
       autocomplete: suggesting ? "off" : definition.autocomplete,
-      value: details.draft[code] || "",
+      value: details2.draft[code] || "",
       "data-contract-detail": code,
       "data-state": error2 ? "invalid" : void 0,
       "aria-invalid": error2 ? "true" : void 0,
@@ -12561,10 +13264,10 @@
     }
     return cell;
   }
-  function ClientType(definition, details, errors, pending) {
+  function ClientType(definition, details2, errors, pending) {
     var error2 = errors[definition.code];
     var legendId = "contract-detail-client-type";
-    var chosen = details.draft[definition.code];
+    var chosen = details2.draft[definition.code];
     return h("div", {
       "class": "field-row",
       role: "radiogroup",
@@ -12585,7 +13288,7 @@
       error2 ? h("div", { "class": "field-error", id: legendId + "-error", role: "alert" }, error2) : null
     ]);
   }
-  function Confirmation(code, details, errors, pending) {
+  function Confirmation(code, details2, errors, pending) {
     var definition = definitionOf(code);
     var error2 = errors[code];
     var id = "contract-detail-" + code.toLowerCase().replace(/_/g, "-");
@@ -12593,7 +13296,7 @@
       "class": "check-line__input",
       type: "checkbox",
       id,
-      checked: details.draft[code] === true ? true : void 0,
+      checked: details2.draft[code] === true ? true : void 0,
       disabled: pending ? true : void 0,
       "aria-invalid": error2 ? "true" : void 0,
       "aria-describedby": error2 ? id + "-error" : void 0,
@@ -12657,19 +13360,19 @@
       return page;
     }
     ensureContractDetails();
-    var details = state.contractDetails;
+    var details2 = state.contractDetails;
     var send = ActionButton({
       variant: "btn--primary",
       label: pending ? "Sending\u2026" : "Approve " + optionName(order),
       action: "quote.sendApproval",
       id: String(order.backendId),
       lg: true,
-      disabled: pending || contractCommandsBusy() || contractDetailsLoading(details),
+      disabled: pending || contractCommandsBusy() || contractDetailsLoading(details2),
       visualId: "quote-approval-send"
     });
     if (pending) send.setAttribute("data-state", "pending");
     page.appendChild(h("div", { "class": "card card--pad quote-approval__form", "data-module": "quote-approval-form", "data-visual-id": "quote-approval-form" }, [
-      ContractDetailsForm(details, pending),
+      ContractDetailsForm(details2, pending),
       outcome,
       h("div", { "class": "proposal-actions" }, [
         send,
@@ -12773,7 +13476,7 @@
   function QuoteRequest() {
     var request = quoteRequestState();
     var page = h("section", { "class": "page page--narrow quote-request", "data-route": "quote.new", "data-visual-id": "quote-request", "data-state": request.phase });
-    page.appendChild(h("div", { "class": "detail-back", "data-action": "proposal.review", "data-visual-id": "quote-request-back" }, "\u2039 Back to your contracts"));
+    page.appendChild(h("div", { "class": "detail-back", "data-action": "proposal.review", "data-visual-id": "quote-request-back" }, "\u2039 Back to your " + quotesHome2().toLowerCase()));
     if (request.phase === "accepted") {
       page.appendChild(RequestOutcome("accepted", "Request received", "A manager prepares your quotes. When they\u2019re ready, they arrive by email and appear in " + quotesHome2() + ", where you can approve them, decline them or ask for changes."));
       return page;
@@ -12805,8 +13508,8 @@
     var schema = loaded.schema;
     var busy = quoteRequestBusy();
     page.appendChild(PropertiesSection(request, schema, busy));
-    var details = DetailsSection(request, schema, busy);
-    if (details) page.appendChild(details);
+    var details2 = DetailsSection(request, schema, busy);
+    if (details2) page.appendChild(details2);
     if (request.message) {
       page.appendChild(h("div", { "class": "inline-fail quote-request__message", "data-module": "quote-request-message", role: "alert" }, [
         h("span", { "class": "inline-fail__icon", "aria-hidden": "true" }, "!"),
@@ -13194,6 +13897,111 @@
     return block;
   }
 
+  // app-templates/customer-portal/runtime/src/components/support/RichTextEditor.js
+  var EDITOR_TOOLS = /* @__PURE__ */ Object.freeze([
+    /* @__PURE__ */ Object.freeze({ key: "bold", label: "B", title: "Bold", command: "bold" }),
+    /* @__PURE__ */ Object.freeze({ key: "italic", label: "I", title: "Italic", command: "italic" }),
+    /* @__PURE__ */ Object.freeze({ key: "underline", label: "U", title: "Underline", command: "underline" }),
+    /* @__PURE__ */ Object.freeze({ key: "bullets", label: "\u2022", title: "Bulleted list", command: "insertUnorderedList" }),
+    /* @__PURE__ */ Object.freeze({ key: "numbers", label: "1.", title: "Numbered list", command: "insertOrderedList" }),
+    /* @__PURE__ */ Object.freeze({ key: "quote", label: "\u275D", title: "Quote", command: "formatBlock", value: "blockquote" }),
+    /* @__PURE__ */ Object.freeze({ key: "link", label: "\u{1F517}", title: "Link", command: "createLink" })
+  ]);
+  function RichTextEditor(props) {
+    var id = props.id;
+    var disabled = !!props.disabled;
+    var surface = h("div", {
+      "class": "rich-editor__surface rich-text",
+      id,
+      "data-field": props.field || void 0,
+      role: "textbox",
+      "aria-multiline": "true",
+      "aria-labelledby": id + "-label",
+      "aria-invalid": props.error ? "true" : void 0,
+      "aria-describedby": props.error ? id + "-error" : void 0,
+      "aria-disabled": disabled ? "true" : void 0,
+      "data-placeholder": props.placeholder || "",
+      "data-empty": richText(parseRichHtml(props.html)).trim() ? void 0 : "true",
+      contenteditable: disabled ? "false" : "true",
+      spellcheck: "true"
+    }, richNodes(parseRichHtml(props.html)));
+    var emit = function() {
+      var html = cleanRichHtml(surface.innerHTML);
+      if (html) surface.removeAttribute("data-empty");
+      else surface.setAttribute("data-empty", "true");
+      if (props.onChange) props.onChange(html);
+    };
+    surface.addEventListener("focus", function() {
+      run("defaultParagraphSeparator", "p");
+    });
+    surface.addEventListener("input", emit);
+    surface.addEventListener("paste", function(event) {
+      var data = event.clipboardData;
+      if (!data) return;
+      event.preventDefault();
+      var html = data.getData("text/html");
+      var cleaned = html ? cleanRichHtml(html) : "";
+      if (cleaned) run("insertHTML", cleaned);
+      else run("insertText", data.getData("text/plain"));
+      emit();
+    });
+    var toolbar = h("div", { "class": "rich-editor__toolbar", role: "toolbar", "aria-label": "Formatting", "aria-controls": id }, EDITOR_TOOLS.map(function(tool) {
+      var button = h("button", { "class": "rich-editor__tool", type: "button", title: tool.title, "aria-label": tool.title, "data-tool": tool.key, disabled: disabled ? true : void 0 }, tool.label);
+      button.addEventListener("mousedown", function(event) {
+        event.preventDefault();
+      });
+      button.addEventListener("click", function() {
+        surface.focus();
+        if (tool.command === "createLink") {
+          var href = safeLink(globalThis.prompt ? globalThis.prompt("Link address (https://, http:// or mailto:)", "https://") : "");
+          if (!href) return;
+          run("createLink", href);
+        } else {
+          run(tool.command, tool.value || null);
+        }
+        emit();
+      });
+      return button;
+    }));
+    return h("div", { "class": "field-row support-form__field rich-editor", "data-module": props.module || "rich-editor", "data-state": props.error ? "invalid" : disabled ? "disabled" : void 0 }, [
+      h("span", { "class": "field-label", id: id + "-label" }, props.label),
+      h("div", { "class": "rich-editor__frame field" + (props.error ? " field--invalid" : "") }, [toolbar, surface]),
+      props.hint ? h("div", { "class": "field-hint" }, props.hint) : null,
+      props.error ? h("div", { "class": "field-error", id: id + "-error", role: "alert" }, props.error) : null
+    ]);
+  }
+  function run(command, value) {
+    var doc = globalThis.document;
+    if (doc && typeof doc.execCommand === "function") doc.execCommand(command, false, value);
+  }
+
+  // app-templates/customer-portal/runtime/src/components/support/AttachmentPicker.js
+  function AttachmentPicker(props) {
+    var id = props.id;
+    var files2 = props.files || [];
+    var disabled = !!props.disabled;
+    var input = h("input", { "class": "attachment-picker__input", type: "file", id, name: props.field || void 0, multiple: true, accept: ATTACHMENT_ACCEPT, disabled: disabled || files2.length >= ATTACHMENT_LIMITS.count ? true : void 0, "aria-describedby": id + "-hint" + (props.error ? " " + id + "-error" : "") });
+    input.addEventListener("change", function() {
+      var picked = Array.prototype.slice.call(input.files || []);
+      input.value = "";
+      if (picked.length && props.onAdd) props.onAdd(picked);
+    });
+    return h("div", { "class": "field-row support-form__field attachment-picker", "data-module": props.module || "attachment-picker", "data-state": props.error ? "invalid" : props.reading ? "reading" : void 0 }, [
+      h("span", { "class": "field-label" }, props.label || "Attachments (optional)"),
+      files2.length ? h("ul", { "class": "attachment-picker__list", "aria-label": "Attached files" }, files2.map(function(file) {
+        return h("li", { "class": "attachment-chip", "data-module": "attachment-chip" }, [
+          h("span", { "class": "attachment-chip__icon", "aria-hidden": "true" }, file.type === "application/pdf" ? "PDF" : "IMG"),
+          h("span", { "class": "attachment-chip__name" }, file.name),
+          h("span", { "class": "attachment-chip__size" }, formatBytes(file.size)),
+          h("button", { "class": "attachment-chip__remove", type: "button", "data-action": props.removeAction, "data-id": props.scope + ":" + file.key, "aria-label": "Remove " + file.name, disabled: disabled ? true : void 0 }, "\u2715")
+        ]);
+      })) : null,
+      h("label", { "class": "btn btn--ghost attachment-picker__add", "for": id, "aria-disabled": disabled || files2.length >= ATTACHMENT_LIMITS.count ? "true" : void 0 }, [props.reading ? "Reading files\u2026" : "Attach files", input]),
+      h("div", { "class": "field-hint", id: id + "-hint" }, "Up to 5 images (JPEG, PNG, GIF, WebP) or PDFs, 5 MB each and 10 MB in total."),
+      props.error ? h("div", { "class": "field-error", id: id + "-error", role: "alert" }, props.error) : null
+    ]);
+  }
+
   // app-templates/customer-portal/runtime/src/routes/LiveSupportPage.js
   var PROGRESS2 = {
     sending: "Sending your ticket\u2026",
@@ -13225,15 +14033,26 @@
   function TicketRow(ticket, schema) {
     var reason = reasonLabel(ticket.reason, schema);
     var about = ticketPlace(ticket);
-    return h("article", { "class": "prop-visit record-row support-ticket", "data-module": "ticket-row", "data-visual-id": "ticket-row", "data-id": ticket.id, "data-state": ticket.stateCode.toLowerCase() }, [
-      h("div", { "class": "record-row__main" }, [
-        h("div", { "class": "prop-visit__title" }, ticket.subject),
-        h("div", { "class": "prop-visit__meta", "data-module": "ticket-meta" }, [ticket.code, reason, "Opened " + ticketOpened(ticket, state.config.timeZone)].filter(Boolean).join(" \xB7 ")),
-        about ? h("div", { "class": "prop-visit__meta", "data-module": "ticket-about" }, about) : null,
-        ticket.message ? h("p", { "class": "record-notes support-ticket__message" }, ticket.message) : null
+    var latest = latestReply(ticket);
+    return h("button", { "class": "prop-visit record-row support-ticket", type: "button", "data-module": "ticket-row", "data-visual-id": "ticket-row", "data-action": "support.openTicket", "data-id": ticket.id, "data-state": ticket.stateCode.toLowerCase(), "aria-label": "Open ticket " + ticket.subject + " \u2014 " + ticket.status.label }, [
+      h("span", { "class": "record-row__main" }, [
+        h("span", { "class": "prop-visit__title" }, ticket.subject),
+        h("span", { "class": "prop-visit__meta", "data-module": "ticket-meta" }, [ticket.code, reason, "Opened " + ticketOpened(ticket, state.config.timeZone)].filter(Boolean).join(" \xB7 ")),
+        about ? h("span", { "class": "prop-visit__meta", "data-module": "ticket-about" }, about) : null,
+        latest ? h("span", { "class": "prop-visit__meta support-ticket__latest", "data-module": "ticket-latest", "data-author": latest.author.toLowerCase() }, latest.author === "STAFF" ? "Support team replied \xB7 " + ticketMoment(latest.createdMs) : "You replied \xB7 " + ticketMoment(latest.createdMs)) : null,
+        !ticket.thread && ticket.message ? h("span", { "class": "record-notes support-ticket__message" }, ticket.message) : null
       ]),
-      h("span", { "class": "status-badge status-badge--" + ticket.status.tone }, ticket.status.label)
+      h("span", { "class": "status-badge status-badge--" + ticket.status.tone, "data-module": "ticket-status" }, ticket.status.label),
+      h("span", { "class": "proposal-card__chev", "aria-hidden": "true" }, "\u203A")
     ]);
+  }
+  function latestReply(ticket) {
+    var comments = ticket.thread ? ticket.thread.comments : [];
+    return comments.length ? comments[comments.length - 1] : null;
+  }
+  function ticketMoment(ms) {
+    if (!Number.isFinite(ms) || ms <= 0) return "";
+    return new Intl.DateTimeFormat("en-US", { timeZone: state.config.timeZone || void 0, month: "short", day: "numeric", year: "numeric", hour: "numeric", minute: "2-digit" }).format(new Date(ms));
   }
   function ticketPlace(ticket) {
     var property = liveProperties().find(function(item) {
@@ -13259,7 +14078,7 @@
     var page = h("section", { "class": "page page--narrow support-new", "data-route": "support.new", "data-visual-id": "support-new", "data-state": ticket.phase });
     page.appendChild(h("div", { "class": "detail-back", "data-action": "nav.go", "data-id": "support", "data-visual-id": "support-new-back" }, "\u2039 Back to Support"));
     if (ticket.phase === "created") {
-      page.appendChild(Outcome("created", "Ticket " + ticket.ticketCode + " is open", ticket.message || "We received your ticket and will get back to you."));
+      page.appendChild(Outcome("created", "Ticket " + ticket.ticketCode + " is open", ticket.message || "We received your ticket and will get back to you.", false, ticket.ticketId));
       return page;
     }
     if (ticket.phase === "slow" || ticket.phase === "checking" && ticket.formId) {
@@ -13304,8 +14123,35 @@
         return reason.value !== "GENERAL_INQUIRY";
       }) : []), ticket.errors.CONTACT_REASON, busy, "support.chooseReason"));
     }
-    form.appendChild(TextField("SUBJECT", "Subject", ticket.draft.subject, ticket.errors.SUBJECT, busy, SUPPORT_SUBJECT_LIMIT, false));
-    form.appendChild(TextField("MESSAGE", "Message", ticket.draft.message, ticket.errors.MESSAGE, busy, SUPPORT_MESSAGE_LIMIT, true));
+    form.appendChild(TextField("SUBJECT", "Subject", ticket.draft.subject, ticket.errors.SUBJECT, busy, SUPPORT_SUBJECT_LIMIT));
+    form.appendChild(RichTextEditor({
+      id: "support-ticket-message",
+      module: "support-ticket-editor",
+      field: "MESSAGE",
+      label: "Message",
+      html: ticket.draft.message,
+      error: ticket.errors.MESSAGE,
+      disabled: busy,
+      placeholder: "What happened, where and when?",
+      hint: "Up to " + SUPPORT_MESSAGE_LIMIT.toLocaleString("en-US") + " characters.",
+      onChange: function(html) {
+        changeSupportTicketDraft("message", html);
+      }
+    }));
+    form.appendChild(AttachmentPicker({
+      id: "support-ticket-attachments",
+      module: "support-ticket-attachments",
+      field: "ATTACHMENTS",
+      files: ticket.files,
+      reading: ticket.reading,
+      error: ticket.errors.ATTACHMENTS,
+      disabled: busy,
+      scope: "ticket",
+      removeAction: "support.removeAttachment",
+      onAdd: function(files2) {
+        addAttachments(ticket, files2, render);
+      }
+    }));
     page.appendChild(form);
     if (ticket.message) {
       page.appendChild(h("div", { "class": "inline-fail quote-request__message", "data-module": "support-ticket-message", role: "alert" }, [
@@ -13336,7 +14182,7 @@
     });
     return Field2(id, label, select, error2);
   }
-  function TextField(code, label, value, error2, busy, limit, multiline) {
+  function TextField(code, label, value, error2, busy, limit) {
     var id = "support-ticket-" + code.toLowerCase();
     var attributes = {
       "class": "field",
@@ -13348,9 +14194,9 @@
       "aria-describedby": error2 ? id + "-error" : void 0,
       disabled: busy ? true : void 0
     };
-    var input = multiline ? h("textarea", Object.assign({ rows: "6" }, attributes), value || "") : h("input", Object.assign({ type: "text", value: value || "", autocomplete: "off" }, attributes));
+    var input = h("input", Object.assign({ type: "text", value: value || "", autocomplete: "off" }, attributes));
     input.addEventListener("input", function() {
-      changeSupportTicketDraft(code === "SUBJECT" ? "subject" : "message", input.value);
+      changeSupportTicketDraft("subject", input.value);
     });
     return Field2(id, label, input, error2);
   }
@@ -13361,16 +14207,222 @@
       error2 ? h("div", { "class": "field-error", id: id + "-error", role: "alert" }, error2) : null
     ]);
   }
-  function Outcome(kind, title, body, checking) {
+  function Outcome(kind, title, body, checking, ticketId) {
     return h("div", { "class": "state-block quote-request__outcome", "data-module": "support-ticket-outcome", "data-state": kind, role: "status", tabindex: "-1" }, [
       h("div", { "class": "state-block__glyph" + (kind === "created" ? " quote-request__glyph--ok" : "") }, kind === "created" ? "\u2713" : "\u25D4"),
       h("h1", { "class": "state-block__title" }, title),
       h("div", { "class": "state-block__desc" }, body),
       h("div", { "class": "proposal-actions quote-request__outcome-actions" }, [
-        ActionButton({ variant: "btn--primary", label: "View your tickets", action: "nav.go", id: "support", visualId: "support-ticket-list" }),
+        ticketId ? ActionButton({ variant: "btn--primary", label: "View ticket", action: "support.openTicket", id: "ticket-core-" + ticketId, visualId: "support-ticket-view" }) : null,
+        ActionButton({ variant: ticketId ? "btn--ghost" : "btn--primary", label: "View your tickets", action: "nav.go", id: "support", visualId: "support-ticket-list" }),
         kind === "slow" ? ActionButton({ variant: "btn--ghost", label: checking ? "Checking\u2026" : "Check again", action: "support.checkTicket", disabled: checking, visualId: "support-ticket-check-again" }) : null
       ])
     ]);
+  }
+
+  // app-templates/customer-portal/runtime/src/routes/SupportTicketPage.js
+  var COMMENT_PROGRESS = {
+    sending: "Sending your comment\u2026",
+    waiting: "Comment sent. Waiting for our system to add it\u2026",
+    checking: "Checking your comment\u2026"
+  };
+  function SupportTicket() {
+    var page = h("section", { "class": "page page--narrow support-ticket-page", "data-route": "support.ticket", "data-visual-id": "support-ticket" });
+    page.appendChild(h("div", { "class": "detail-back", "data-action": "nav.go", "data-id": "support", "data-visual-id": "support-ticket-back" }, "\u2039 Back to Support"));
+    var backendId = ticketBackendId(state.ticketId);
+    var entry2 = backendId ? ticketDetail(backendId, render) : null;
+    var listed = liveTickets() ? liveTickets().open.concat(liveTickets().closed).find(function(item) {
+      return item.backendId === backendId;
+    }) : null;
+    var ticket = entry2 && entry2.ticket || listed || null;
+    if (!ticket) {
+      var missing = !entry2 || entry2.status === "not-found";
+      page.setAttribute("data-state", missing ? "not-found" : entry2.status);
+      if (missing) page.appendChild(NotFoundState({ noun: "ticket", backLabel: "Support", backRoute: "support" }));
+      else if (entry2.status === "error") page.appendChild(LoadFailed());
+      else page.appendChild(h("div", { "data-module": "ticket-loading", "aria-busy": "true" }, [skel("height:72px;border-radius:16px;margin-bottom:12px"), skel("height:220px;border-radius:22px")]));
+      return page;
+    }
+    page.setAttribute("data-state", ticket.stateCode.toLowerCase());
+    var loaded = ensureSupportTicketSchema();
+    var schema = loaded && loaded.state === "ready" ? loaded.schema : null;
+    var about = ticketPlace(ticket);
+    page.appendChild(h("div", { "class": "proposal-detail-head support-ticket-head", "data-module": "ticket-head" }, [
+      h("div", { style: "flex:1;min-width:0" }, [
+        h("div", { "class": "agreement-detail-head__eyebrow" }, "Support ticket" + (ticket.code ? " \xB7 " + ticket.code : "")),
+        h("h1", { "class": "proposal-detail-head__title" }, ticket.subject),
+        h("div", { "class": "proposal-detail-head__meta" }, [reasonLabel(ticket.reason, schema), "Opened " + ticketOpened(ticket, state.config.timeZone)].filter(Boolean).join(" \xB7 ")),
+        about ? h("div", { "class": "proposal-detail-head__meta" }, about) : null
+      ]),
+      h("span", { "class": "status-badge status-badge--" + ticket.status.tone, "data-module": "ticket-status" }, ticket.status.label)
+    ]));
+    page.appendChild(RefreshBar(entry2));
+    var actions3 = Actions(entry2);
+    if (actions3) page.appendChild(actions3);
+    page.appendChild(Thread(ticket));
+    page.appendChild(ticket.stateCode === "CLOSED" ? ClosedNote(ticket) : CommentBox(backendId, entry2));
+    return page;
+  }
+  function LoadFailed() {
+    return h("div", { "class": "state-block", "data-module": "ticket-error", "data-state": "error", role: "alert" }, [
+      h("div", { "class": "state-block__glyph state-block__glyph--error" }, "\u26A0"),
+      h("div", { "class": "state-block__title" }, "Couldn\u2019t load this ticket"),
+      h("div", { "class": "state-block__desc" }, "Nothing was changed. Check your connection and try again."),
+      ActionButton({ variant: "btn--primary", label: "Try again", action: "support.refreshTicket", visualId: "ticket-retry" })
+    ]);
+  }
+  function RefreshBar(entry2) {
+    var refreshing = !!(entry2 && (entry2.refreshing || entry2.status === "loading"));
+    return h("div", { "class": "support-ticket-refresh", "data-module": "ticket-refresh", "data-state": refreshing ? "refreshing" : "idle" }, [
+      h("span", { "class": "support-ticket-refresh__note" }, "Replies may take a minute to appear."),
+      h("button", { "class": "link-action", type: "button", "data-action": "support.refreshTicket", "data-visual-id": "ticket-refresh", disabled: refreshing ? true : void 0 }, refreshing ? "Refreshing\u2026" : "Refresh \u21BB")
+    ]);
+  }
+  function Actions(entry2) {
+    if (!entry2) return null;
+    var action = entry2.action;
+    var sending = !!(action && action.phase === "sending");
+    var wrap = h("div", { "class": "support-ticket-actions", "data-module": "ticket-actions", "data-state": entry2.events.status });
+    if (entry2.events.status === "error") {
+      wrap.appendChild(h("div", { "class": "support-ticket-actions__note", role: "status" }, ["Actions couldn\u2019t be loaded. ", h("button", { "class": "link-action", type: "button", "data-action": "support.refreshTicket" }, "Try again \u203A")]));
+      return wrap;
+    }
+    if (entry2.events.status !== "ready" || !entry2.events.list.length) {
+      if (!action || !action.message) return null;
+    }
+    if (action && action.phase === "confirm") {
+      var pending = entry2.events.list.find(function(item) {
+        return item.code === action.code;
+      });
+      if (pending) {
+        wrap.appendChild(h("div", { "class": "card card--pad support-ticket-confirm", "data-module": "ticket-action-confirm", role: "alertdialog", "aria-labelledby": "ticket-confirm-title", "aria-describedby": "ticket-confirm-desc" }, [
+          h("div", { "class": "support-ticket-confirm__title", id: "ticket-confirm-title" }, pending.label + "?"),
+          h("p", { "class": "support-ticket-confirm__desc", id: "ticket-confirm-desc" }, pending.confirm),
+          h("div", { "class": "proposal-actions" }, [
+            ActionButton({ variant: "btn--primary", label: pending.label, action: "support.confirmTicketAction", visualId: "ticket-confirm" }),
+            ActionButton({ variant: "btn--ghost", label: "Cancel", action: "support.cancelTicketAction", visualId: "ticket-confirm-cancel" })
+          ])
+        ]));
+        return wrap;
+      }
+    }
+    if (entry2.events.list.length) {
+      wrap.appendChild(h("div", { "class": "support-ticket-actions__buttons" }, entry2.events.list.map(function(item) {
+        var busy = sending && action.code === item.code;
+        return h("button", { "class": "btn btn--ghost support-ticket-action", type: "button", "data-action": "support.ticketAction", "data-id": item.code, "data-visual-id": "ticket-action", "data-target": item.target.toLowerCase(), disabled: sending || entry2.refreshing ? true : void 0 }, busy ? item.label + "\u2026" : item.label);
+      })));
+    }
+    if (action && action.message) {
+      wrap.appendChild(h("div", { "class": "inline-fail support-ticket-actions__outcome", "data-module": "ticket-action-outcome", "data-state": action.phase, role: "alert", tabindex: "-1" }, [
+        h("span", { "class": "inline-fail__icon", "aria-hidden": "true" }, "!"),
+        h("div", { "class": "decision-outcome__body" }, action.message)
+      ]));
+    }
+    return wrap;
+  }
+  function Thread(ticket) {
+    var thread = ticket.thread;
+    var list = h("ol", { "class": "ticket-thread", "data-module": "ticket-thread", "aria-label": "Conversation" });
+    if (thread && thread.truncated) list.appendChild(h("li", { "class": "ticket-thread__note", "data-module": "ticket-thread-truncated" }, "Earlier messages aren\u2019t shown here."));
+    var opening = thread && thread.description ? Message({ author: "CUSTOMER", authorName: "", createdMs: ticket.openedMs, html: thread.description.html, attachments: thread.description.attachments }, "description") : PlainOpening(ticket);
+    if (opening) list.appendChild(opening);
+    (thread ? thread.comments : []).forEach(function(comment) {
+      list.appendChild(Message(comment, "comment"));
+    });
+    return h("section", { "class": "ticket-thread-wrap", "aria-labelledby": "ticket-thread-title" }, [
+      h("h2", { "class": "contracts-section__title", id: "ticket-thread-title" }, "Conversation"),
+      list
+    ]);
+  }
+  function PlainOpening(ticket) {
+    if (!ticket.message) return null;
+    return h("li", { "class": "ticket-message", "data-module": "ticket-message", "data-author": "customer", "data-kind": "description" }, [
+      MessageHead("CUSTOMER", "", ticket.openedMs),
+      h("div", { "class": "ticket-message__body ticket-message__body--plain" }, ticket.message)
+    ]);
+  }
+  function Message(comment, kind) {
+    var staff = comment.author === "STAFF";
+    return h("li", { "class": "ticket-message" + (staff ? " ticket-message--staff" : ""), "data-module": "ticket-message", "data-author": staff ? "staff" : "customer", "data-kind": kind }, [
+      MessageHead(comment.author, comment.authorName, comment.createdMs),
+      comment.html ? RichText(comment.html, { "class": "rich-text ticket-message__body", "data-module": "ticket-message-body" }) : null,
+      comment.attachments.length ? Attachments(comment.attachments) : null
+    ]);
+  }
+  function MessageHead(author, name, createdMs) {
+    var staff = author === "STAFF";
+    return h("div", { "class": "ticket-message__head" }, [
+      h("span", { "class": "ticket-message__author" }, staff ? name || "Support team" : "You"),
+      staff ? h("span", { "class": "ticket-message__role" }, "Support team") : null,
+      createdMs ? h("time", { "class": "ticket-message__time", datetime: new Date(createdMs).toISOString() }, ticketMoment(createdMs)) : null
+    ]);
+  }
+  function Attachments(attachments) {
+    return h("ul", { "class": "ticket-files", "data-module": "ticket-files", "aria-label": "Attachments" }, attachments.map(function(file) {
+      var thumbnail = file.image ? ticketFile(file, "thumbnail", render) : null;
+      var size = formatBytes(file.size);
+      var preview = thumbnail && thumbnail.status === "ready" ? h("img", { "class": "ticket-file__thumb", src: thumbnail.url, alt: file.name }) : h("span", { "class": "ticket-file__icon", "aria-hidden": "true", "data-state": thumbnail ? thumbnail.status : void 0 }, file.image ? thumbnail && thumbnail.status === "error" ? "!" : "IMG" : "PDF");
+      return h("li", { "class": "ticket-file", "data-module": "ticket-file", "data-kind": file.image ? "image" : "file" }, [
+        h("button", { "class": "ticket-file__open", type: "button", "data-action": "support.openFile", "data-id": file.id, "aria-label": "Open " + file.name + " in a new tab" }, [
+          preview,
+          h("span", { "class": "ticket-file__name" }, file.name),
+          size ? h("span", { "class": "ticket-file__size" }, size) : null
+        ])
+      ]);
+    }));
+  }
+  function ClosedNote(ticket) {
+    return h("div", { "class": "card card--pad support-ticket-closed", "data-module": "ticket-closed", role: "status" }, [
+      h("div", { "class": "support-ticket-closed__title" }, "This ticket is closed"),
+      h("div", { "class": "support-ticket-closed__desc" }, "Comments are turned off. Open a new ticket if you need more help."),
+      ActionButton({ variant: "btn--ghost", label: "Open support ticket", action: "support.newTicket", id: ticket.propertyBackendId ? String(ticket.propertyBackendId) : void 0, visualId: "ticket-closed-new" })
+    ]);
+  }
+  function CommentBox(backendId, entry2) {
+    var comment = ticketComment(backendId);
+    var busy = ticketCommentBusy(comment);
+    var box = h("section", { "class": "card card--pad support-form ticket-comment", "data-module": "ticket-comment", "data-state": comment.phase, "aria-labelledby": "ticket-comment-title" }, [
+      h("h2", { "class": "contracts-section__title", id: "ticket-comment-title" }, "Add a comment")
+    ]);
+    if (comment.sentAt && comment.phase === "editing" && !comment.html && !comment.files.length) {
+      box.appendChild(h("div", { "class": "support-ticket-sent", "data-module": "ticket-comment-added", role: "status" }, "Your comment was added."));
+    }
+    box.appendChild(RichTextEditor({
+      id: "ticket-comment-message-" + backendId,
+      module: "ticket-comment-editor",
+      field: "MESSAGE",
+      label: "Message",
+      html: comment.html,
+      error: comment.errors.MESSAGE,
+      disabled: busy,
+      placeholder: "Write a reply\u2026",
+      onChange: function(html) {
+        changeTicketComment(backendId, html);
+      }
+    }));
+    box.appendChild(AttachmentPicker({
+      id: "ticket-comment-attachments-" + backendId,
+      module: "ticket-comment-attachments",
+      field: "ATTACHMENTS",
+      files: comment.files,
+      reading: comment.reading,
+      error: comment.errors.ATTACHMENTS,
+      disabled: busy,
+      scope: "comment-" + backendId,
+      removeAction: "support.removeAttachment",
+      onAdd: function(files2) {
+        addAttachments(comment, files2, render);
+      }
+    }));
+    if (comment.message) {
+      box.appendChild(h("div", { "class": "inline-fail", "data-module": "ticket-comment-message", role: "alert", tabindex: "-1" }, [
+        h("span", { "class": "inline-fail__icon", "aria-hidden": "true" }, "!"),
+        h("div", { "class": "decision-outcome__body" }, comment.message)
+      ]));
+    }
+    if (busy) box.appendChild(h("div", { "data-module": "ticket-comment-progress", "aria-live": "polite" }, [PendingNote(COMMENT_PROGRESS[comment.phase] || COMMENT_PROGRESS.sending)]));
+    else box.appendChild(h("div", { "class": "proposal-actions" }, [comment.phase === "slow" ? ActionButton({ variant: "btn--primary", label: "Check again", action: "support.checkComment", visualId: "ticket-comment-check" }) : ActionButton({ variant: "btn--primary", label: "Send comment", action: "support.sendComment", disabled: comment.reading || !!(entry2 && entry2.refreshing), visualId: "ticket-comment-send" })]));
+    return box;
   }
 
   // app-templates/customer-portal/runtime/src/routes/AuthPage.js
@@ -13764,14 +14816,14 @@
   function sendRequestLink(options2) {
     var link = state.requestLink;
     if (!link || !link.token || link.phase !== "prompt" && link.phase !== "failed") return false;
-    var run = runner(link, options2);
+    var run2 = runner(link, options2);
     link.phase = "pending";
-    run.post().then(function(status) {
-      if (status === null || UNREACHABLE_STATUSES.indexOf(status) !== -1) return run.settle("failed");
-      if (status === RECORDED_STATUS) return run.settle("invalid");
+    run2.post().then(function(status) {
+      if (status === null || UNREACHABLE_STATUSES.indexOf(status) !== -1) return run2.settle("failed");
+      if (status === RECORDED_STATUS) return run2.settle("invalid");
       link.sent = true;
       var accepted3 = status >= 200 && status < 300;
-      return run.readBack(accepted3 ? READBACK_DELAYS : REFUSED_READBACK_DELAYS, accepted3 ? "unconfirmed" : "invalid");
+      return run2.readBack(accepted3 ? READBACK_DELAYS : REFUSED_READBACK_DELAYS, accepted3 ? "unconfirmed" : "invalid");
     });
     return true;
   }
@@ -14245,6 +15297,8 @@
         return supportTicketsOpen(state.config) ? LiveSupport() : Support();
       case "support.new":
         return supportTicketsOpen(state.config) ? SupportTicketNew() : RouteFallback("disabled");
+      case "support.ticket":
+        return supportTicketsOpen(state.config) ? SupportTicket() : RouteFallback("disabled");
       case "auth.phone":
         return Auth();
       case "auth.code":
@@ -14286,6 +15340,7 @@
     }
     if (match.id === "agreement.detail" && match.params.id) state.agreementId = match.params.id;
     if (match.id === "visit.detail" && match.params.id) state.visitId = match.params.id;
+    if (match.id === "support.ticket" && match.params.id) state.ticketId = match.params.id;
     if (match.id === "invoice.detail" && match.params.id) state.invoiceId = match.params.id;
     if (match.id === "property.detail" && match.params.id) state.propertyId = match.params.id;
     if (match.id === "purchase.detail" && match.params.id) state.spaCurrentPurchase = match.params.id;
@@ -14301,6 +15356,7 @@
     if (routeId === "proposal.approve") return { id: state.currentSiteId, quote: state.approveQuoteId };
     if (routeId === "agreement.detail") return { id: state.agreementId };
     if (routeId === "visit.detail") return { id: state.visitId };
+    if (routeId === "support.ticket") return { id: state.ticketId };
     if (routeId === "invoice.detail") return { id: state.invoiceId };
     if (routeId === "property.detail") return { id: state.propertyId };
     if (routeId === "purchase.detail") return { id: state.spaCurrentPurchase };
@@ -14723,6 +15779,45 @@
       return checkSupportTicketAgain({ onChange: function() {
         render();
       }, reload: reloadRuntimeModule });
+    },
+    "support.openTicket": function(id) {
+      if (!ticketBackendId(id)) return false;
+      state.ticketId = id;
+      go("support.ticket");
+      return true;
+    },
+    "support.refreshTicket": function() {
+      return refreshTicketDetail(ticketBackendId(state.ticketId), function() {
+        render();
+      });
+    },
+    "support.ticketAction": function(code) {
+      return requestTicketAction(ticketBackendId(state.ticketId), code, ticketActionChanged);
+    },
+    "support.confirmTicketAction": function() {
+      return confirmTicketAction(ticketBackendId(state.ticketId), ticketActionChanged);
+    },
+    "support.cancelTicketAction": function() {
+      if (!cancelTicketAction(ticketBackendId(state.ticketId))) return false;
+      render();
+      return true;
+    },
+    "support.sendComment": function() {
+      return sendTicketComment();
+    },
+    "support.checkComment": function() {
+      return checkTicketCommentAgain(ticketBackendId(state.ticketId), { onChange: function() {
+        render();
+      } });
+    },
+    "support.removeAttachment": function(id) {
+      return dropAttachment(id);
+    },
+    "support.openFile": function(id) {
+      return openTicketFile(id).then(function(opened) {
+        if (!opened) toast("The file couldn\u2019t be opened. Try again.");
+        return opened;
+      });
     },
     "support.open": function() {
       var url = configuredExternalUrl(state.config, "supportUrl");
@@ -15207,11 +16302,38 @@
       }
     });
   }
+  function ticketActionChanged(phase) {
+    render();
+    if (phase === "action-done") reloadRuntimeModule("support").catch(function() {
+      return null;
+    });
+    if (phase === "action-done" || phase === "action-unconfirmed" || phase === "action-failed") focusElement('[data-module="ticket-action-outcome"]');
+  }
+  function sendTicketComment() {
+    return submitTicketComment(ticketBackendId(state.ticketId), {
+      onChange: function(phase) {
+        render();
+        if (phase === "invalid" || phase === "refused") focusElement('[data-module="ticket-comment"] [aria-invalid="true"]') || focusElement('[data-module="ticket-comment-message"]');
+        if (phase === "not-sent" || phase === "failed" || phase === "closed" || phase === "slow") focusElement('[data-module="ticket-comment-message"]');
+      }
+    });
+  }
+  function dropAttachment(target) {
+    var parts = String(target || "").split(":");
+    var scope = parts.shift();
+    var key = parts.join(":");
+    var owner = scope === "ticket" ? state.supportTicket : /^comment-\d+$/.test(scope) ? ticketComment(scope.slice(8)) : null;
+    if (!removeAttachment(owner, key)) return false;
+    render();
+    return true;
+  }
   function focusSupportTicketError() {
     var errors = state.supportTicket ? state.supportTicket.errors : {};
-    var first = ["PROPERTY_ID", "VISIT_ID", "CONTACT_REASON", "SUBJECT", "MESSAGE"].find(function(code) {
+    var first = ["PROPERTY_ID", "VISIT_ID", "CONTACT_REASON", "SUBJECT", "MESSAGE", "ATTACHMENTS"].find(function(code) {
       return !!errors[code];
     });
+    if (first === "MESSAGE") return focusElement("#support-ticket-message");
+    if (first === "ATTACHMENTS") return focusElement("#support-ticket-attachments");
     return first ? focusElement('[name="' + first + '"]') : focusElement('[data-module="support-ticket-message"]');
   }
   function ensureQuoteRequestSchema() {
@@ -15843,10 +16965,10 @@
     });
   }
   function approveWithDetails(backendId) {
-    var details = state.contractDetails;
-    if (!details || details.prefill === "loading" || contractCommands.busy()) return false;
-    var request = contractDetailsRequest(details.draft);
-    details.errors = request.errors;
+    var details2 = state.contractDetails;
+    if (!details2 || details2.prefill === "loading" || contractCommands.busy()) return false;
+    var request = contractDetailsRequest(details2.draft);
+    details2.errors = request.errors;
     if (!request.values) {
       render();
       focusElement('[data-contract-detail][aria-invalid="true"]') || focusElement('[aria-invalid="true"] input');

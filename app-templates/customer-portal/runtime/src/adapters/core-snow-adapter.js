@@ -202,6 +202,7 @@ const TICKET_LIST_BODY = Object.freeze({
     { name: "nls" },
     { name: "created" },
     { name: "attributes" },
+    { name: "metadata" },
     { name: "type", type: "identifier", mappings: TAGGED_REF_MAPPINGS },
     { name: "states", type: "collection", mappings: TAGGED_REF_MAPPINGS },
   ],
@@ -209,6 +210,10 @@ const TICKET_LIST_BODY = Object.freeze({
   pageSize: TICKET_PAGE_SIZE,
   sorting: [{ field: "created", direction: "DESC" }],
 });
+
+const TICKET_GET_MAPPINGS = Object.freeze(TICKET_LIST_BODY.mappings.slice());
+const TICKET_FILE_ID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
+const TICKET_THUMBNAIL_WIDTH = 320;
 
 const INVOICE_LIST_BODY = Object.freeze({
   mappings: INVOICE_MAPPINGS,
@@ -260,6 +265,43 @@ export async function loadSnowTickets(context, fetchImpl = coreSessionFetch, exp
     items: rows.filter(function (row) { return text(row && row.type && row.type.code) === TICKET_TYPE; }),
     truncated: resultSizeOf(reply, rows.length) > rows.length,
   };
+}
+
+export async function readTicket(context, backendId, fetchImpl = coreSessionFetch, explicitOrigin) {
+  var api = readContext(context, explicitOrigin);
+  var id = positiveInteger(backendId);
+  if (!id) throw contractError("invalid-target", "A ticket id is required before reading it");
+  var row = await requestJson(fetchImpl, api.serviceBase + "/api/tagged/task/get.json?id=" + id, readOptions(api, TICKET_GET_MAPPINGS));
+  if (!row || typeof row !== "object" || positiveInteger(row.id) !== id) throw contractError("not-found", "Core did not return ticket " + id);
+  return row;
+}
+
+export async function readTicketEvents(context, backendId, fetchImpl = coreSessionFetch, explicitOrigin) {
+  var api = readContext(context, explicitOrigin);
+  var id = positiveInteger(backendId);
+  if (!id) throw contractError("invalid-target", "A ticket id is required before reading its actions");
+  var reply = await requestJson(fetchImpl, api.serviceBase + "/api/tagged/task/" + id + "/list-events.json", readOptions(api, TAGGED_REF_MAPPINGS));
+  return Array.isArray(reply) ? reply : listResult(reply);
+}
+
+export async function sendTicketEvent(context, backendId, eventCode, attributes, fetchImpl = coreSessionFetch, explicitOrigin) {
+  var api = readContext(context, explicitOrigin);
+  var code = text(eventCode);
+  if (!/^[A-Z_]+-[A-Z_]+$/.test(code)) throw contractError("invalid-target", "A ticket event code is required");
+  return sendEvent(fetchImpl, api, api.serviceBase + "/api/tagged/task/" + commandId(backendId) + "/send-event.json?event=" + encodeURIComponent(code), attributes);
+}
+
+export async function readTicketFile(context, mediaId, variant, fetchImpl = coreSessionFetch, explicitOrigin) {
+  var api = readContext(context, explicitOrigin);
+  var id = text(mediaId).toLowerCase();
+  if (!TICKET_FILE_ID.test(id)) throw contractError("invalid-target", "A ticket file id is required");
+  var url = variant === "thumbnail"
+    ? api.coreBase + "/secured/image/" + id + "/get?fit=true&width=" + TICKET_THUMBNAIL_WIDTH
+    : api.coreBase + "/secured/media/" + id + "/stream";
+  var response = await fetchImpl(url, { method: "GET", credentials: "same-origin", headers: { Authorization: api.authorization, "X-Organization-Code": api.organization } });
+  if (!response || typeof response.ok !== "boolean") throw contractError("invalid-response", "Core request returned an invalid response");
+  if (!response.ok) throw failure(response.status);
+  return response.blob();
 }
 
 export async function loadSnowVisits(context, fetchImpl = coreSessionFetch, explicitOrigin) {
@@ -819,6 +861,7 @@ export const coreSnowContract = Object.freeze({
   quoteOrderTypes: Object.freeze(QUOTE_ORDER_TYPES.slice()),
   resourceMappings: RESOURCE_MAPPINGS,
   ticketListBody: TICKET_LIST_BODY,
+  ticketGetMappings: TICKET_GET_MAPPINGS,
   visitListBody: VISIT_LIST_BODY,
   visitTransitionsBody: VISIT_TRANSITIONS_BODY,
   quoteFilters: ["account.id"],

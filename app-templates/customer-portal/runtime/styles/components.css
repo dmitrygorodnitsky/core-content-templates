@@ -73,6 +73,8 @@
 
 .status-badge--info     { background: var(--info-bg);   color: var(--info); }
 
+.status-badge--hold     { background: rgba(175, 82, 222, .16); color: #a855d8; }
+
 /* ============================================================
    Tabs / SegmentedControl  — data-module="tabs"
    ============================================================ */

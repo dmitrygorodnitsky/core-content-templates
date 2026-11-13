@@ -26,6 +26,7 @@ import { Activity } from "./routes/ActivityPage.js";
 import { Calendar } from "./routes/CalendarPage.js";
 import { Support } from "./routes/SupportPage.js";
 import { LiveSupport, SupportTicketNew } from "./routes/LiveSupportPage.js";
+import { SupportTicket } from "./routes/SupportTicketPage.js";
 import { supportTicketsOpen } from "./support-tickets.js";
 import { Auth } from "./routes/AuthPage.js";
 import { Care } from "./routes/CarePage.js";
@@ -233,6 +234,7 @@ export function renderRoute() {
     case "calendar":    return Calendar();
     case "support":     return supportTicketsOpen(state.config) ? LiveSupport() : Support();
     case "support.new": return supportTicketsOpen(state.config) ? SupportTicketNew() : RouteFallback("disabled");
+    case "support.ticket": return supportTicketsOpen(state.config) ? SupportTicket() : RouteFallback("disabled");
     case "auth.phone":  return Auth();
     case "auth.code":   return Auth();
     case "auth.oidc":   return AuthOidc();
@@ -271,6 +273,7 @@ function applyRouteParams(match) {
   }
   if (match.id === "agreement.detail" && match.params.id) state.agreementId = match.params.id;
   if (match.id === "visit.detail" && match.params.id) state.visitId = match.params.id;
+  if (match.id === "support.ticket" && match.params.id) state.ticketId = match.params.id;
   if (match.id === "invoice.detail" && match.params.id) state.invoiceId = match.params.id;
   if (match.id === "property.detail" && match.params.id) state.propertyId = match.params.id;
   if (match.id === "purchase.detail" && match.params.id) state.spaCurrentPurchase = match.params.id;
@@ -287,6 +290,7 @@ function paramsForRoute(routeId) {
   if (routeId === "proposal.approve") return { id: state.currentSiteId, quote: state.approveQuoteId };
   if (routeId === "agreement.detail") return { id: state.agreementId };
   if (routeId === "visit.detail") return { id: state.visitId };
+  if (routeId === "support.ticket") return { id: state.ticketId };
   if (routeId === "invoice.detail") return { id: state.invoiceId };
   if (routeId === "property.detail") return { id: state.propertyId };
   if (routeId === "purchase.detail") return { id: state.spaCurrentPurchase };

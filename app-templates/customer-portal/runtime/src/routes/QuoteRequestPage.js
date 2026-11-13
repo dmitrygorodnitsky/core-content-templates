@@ -22,7 +22,7 @@ var PROGRESS = {
 export function QuoteRequest() {
   var request = quoteRequestState();
   var page = h("section", { "class": "page page--narrow quote-request", "data-route": "quote.new", "data-visual-id": "quote-request", "data-state": request.phase });
-  page.appendChild(h("div", { "class": "detail-back", "data-action": "proposal.review", "data-visual-id": "quote-request-back" }, "‹ Back to your contracts"));
+  page.appendChild(h("div", { "class": "detail-back", "data-action": "proposal.review", "data-visual-id": "quote-request-back" }, "‹ Back to your " + quotesHome().toLowerCase()));
   if (request.phase === "accepted") {
     page.appendChild(RequestOutcome("accepted", "Request received", "A manager prepares your quotes. When they’re ready, they arrive by email and appear in " + quotesHome() + ", where you can approve them, decline them or ask for changes."));
     return page;

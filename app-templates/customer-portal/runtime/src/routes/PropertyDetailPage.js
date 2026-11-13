@@ -1,6 +1,6 @@
 import { h } from "../dom.js";
 import { render } from "../app.js";
-import { currentFixture, currentOverview, isModuleEnabled, liveOverviewStatus, liveVisits, quoteGroupFor, quotePackage, state } from "../state.js";
+import { contractsHomeRoute, currentFixture, currentOverview, isModuleEnabled, liveOverviewStatus, liveVisits, quoteGroupFor, quotePackage, state } from "../state.js";
 import { ActionButton } from "../components/primitives/ActionButton.js";
 import { supportTicketsOpen } from "../support-tickets.js";
 import { EmptyState } from "../components/primitives/EmptyState.js";
@@ -190,7 +190,7 @@ function BackLink(model) {
 function facts(property, contract, model, service) {
   var rows = [];
   if (sectionAvailable(model, "contracts")) {
-    rows.push({ key: "contract", label: "Contract", value: contract ? "#" + contract.number + " · " + contract.plan : "Not under contract", action: contract ? "nav.go" : undefined, id: contract ? "proposals.list" : undefined });
+    rows.push({ key: "contract", label: "Contract", value: contract ? "#" + contract.number + " · " + contract.plan : "Not under contract", action: contract ? "nav.go" : undefined, id: contract ? contractsHomeRoute() : undefined });
   }
   var area = formatArea(property.areaSqft);
   if (area) rows.push({ key: "area", label: "Area", value: area });

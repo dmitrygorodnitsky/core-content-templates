@@ -8,6 +8,10 @@ import { UnauthorizedState, skel } from "../components/primitives/RouteStates.js
 import { PendingNote } from "../components/proposals/ContractStates.js";
 import { RecordSection } from "../components/storm/RecordRows.js";
 import { ticketOpened } from "../normalizers/support.js";
+import { RichTextEditor } from "../components/support/RichTextEditor.js";
+import { AttachmentPicker } from "../components/support/AttachmentPicker.js";
+import { addAttachments } from "../support-thread.js";
+import { render } from "../app.js";
 import { findVisit, localDateKey, visitWhen } from "../normalizers/visits.js";
 import { SUPPORT_MESSAGE_LIMIT, SUPPORT_SUBJECT_LIMIT, changeSupportTicketDraft, reasonLabel, supportTicketBusy, supportTicketState, visitsOfProperty } from "../support-tickets.js";
 
@@ -41,18 +45,31 @@ export function LiveSupport() {
 function TicketRow(ticket, schema) {
   var reason = reasonLabel(ticket.reason, schema);
   var about = ticketPlace(ticket);
-  return h("article", { "class": "prop-visit record-row support-ticket", "data-module": "ticket-row", "data-visual-id": "ticket-row", "data-id": ticket.id, "data-state": ticket.stateCode.toLowerCase() }, [
-    h("div", { "class": "record-row__main" }, [
-      h("div", { "class": "prop-visit__title" }, ticket.subject),
-      h("div", { "class": "prop-visit__meta", "data-module": "ticket-meta" }, [ticket.code, reason, "Opened " + ticketOpened(ticket, state.config.timeZone)].filter(Boolean).join(" · ")),
-      about ? h("div", { "class": "prop-visit__meta", "data-module": "ticket-about" }, about) : null,
-      ticket.message ? h("p", { "class": "record-notes support-ticket__message" }, ticket.message) : null,
+  var latest = latestReply(ticket);
+  return h("button", { "class": "prop-visit record-row support-ticket", type: "button", "data-module": "ticket-row", "data-visual-id": "ticket-row", "data-action": "support.openTicket", "data-id": ticket.id, "data-state": ticket.stateCode.toLowerCase(), "aria-label": "Open ticket " + ticket.subject + " — " + ticket.status.label }, [
+    h("span", { "class": "record-row__main" }, [
+      h("span", { "class": "prop-visit__title" }, ticket.subject),
+      h("span", { "class": "prop-visit__meta", "data-module": "ticket-meta" }, [ticket.code, reason, "Opened " + ticketOpened(ticket, state.config.timeZone)].filter(Boolean).join(" · ")),
+      about ? h("span", { "class": "prop-visit__meta", "data-module": "ticket-about" }, about) : null,
+      latest ? h("span", { "class": "prop-visit__meta support-ticket__latest", "data-module": "ticket-latest", "data-author": latest.author.toLowerCase() }, latest.author === "STAFF" ? "Support team replied · " + ticketMoment(latest.createdMs) : "You replied · " + ticketMoment(latest.createdMs)) : null,
+      !ticket.thread && ticket.message ? h("span", { "class": "record-notes support-ticket__message" }, ticket.message) : null,
     ]),
-    h("span", { "class": "status-badge status-badge--" + ticket.status.tone }, ticket.status.label),
+    h("span", { "class": "status-badge status-badge--" + ticket.status.tone, "data-module": "ticket-status" }, ticket.status.label),
+    h("span", { "class": "proposal-card__chev", "aria-hidden": "true" }, "›"),
   ]);
 }
 
-function ticketPlace(ticket) {
+function latestReply(ticket) {
+  var comments = ticket.thread ? ticket.thread.comments : [];
+  return comments.length ? comments[comments.length - 1] : null;
+}
+
+export function ticketMoment(ms) {
+  if (!Number.isFinite(ms) || ms <= 0) return "";
+  return new Intl.DateTimeFormat("en-US", { timeZone: state.config.timeZone || undefined, month: "short", day: "numeric", year: "numeric", hour: "numeric", minute: "2-digit" }).format(new Date(ms));
+}
+
+export function ticketPlace(ticket) {
   var property = liveProperties().find(function (item) { return item.backendId === ticket.propertyBackendId; });
   var visit = ticket.visitBackendId ? findVisit(liveVisits(), "visit-core-" + ticket.visitBackendId) : null;
   var today = localDateKey(new Date(), state.config.timeZone);
@@ -76,7 +93,7 @@ export function SupportTicketNew() {
   var page = h("section", { "class": "page page--narrow support-new", "data-route": "support.new", "data-visual-id": "support-new", "data-state": ticket.phase });
   page.appendChild(h("div", { "class": "detail-back", "data-action": "nav.go", "data-id": "support", "data-visual-id": "support-new-back" }, "‹ Back to Support"));
   if (ticket.phase === "created") {
-    page.appendChild(Outcome("created", "Ticket " + ticket.ticketCode + " is open", ticket.message || "We received your ticket and will get back to you."));
+    page.appendChild(Outcome("created", "Ticket " + ticket.ticketCode + " is open", ticket.message || "We received your ticket and will get back to you.", false, ticket.ticketId));
     return page;
   }
   if (ticket.phase === "slow" || (ticket.phase === "checking" && ticket.formId)) {
@@ -120,8 +137,31 @@ export function SupportTicketNew() {
       return reason.value !== "GENERAL_INQUIRY";
     }) : []), ticket.errors.CONTACT_REASON, busy, "support.chooseReason"));
   }
-  form.appendChild(TextField("SUBJECT", "Subject", ticket.draft.subject, ticket.errors.SUBJECT, busy, SUPPORT_SUBJECT_LIMIT, false));
-  form.appendChild(TextField("MESSAGE", "Message", ticket.draft.message, ticket.errors.MESSAGE, busy, SUPPORT_MESSAGE_LIMIT, true));
+  form.appendChild(TextField("SUBJECT", "Subject", ticket.draft.subject, ticket.errors.SUBJECT, busy, SUPPORT_SUBJECT_LIMIT));
+  form.appendChild(RichTextEditor({
+    id: "support-ticket-message",
+    module: "support-ticket-editor",
+    field: "MESSAGE",
+    label: "Message",
+    html: ticket.draft.message,
+    error: ticket.errors.MESSAGE,
+    disabled: busy,
+    placeholder: "What happened, where and when?",
+    hint: "Up to " + SUPPORT_MESSAGE_LIMIT.toLocaleString("en-US") + " characters.",
+    onChange: function (html) { changeSupportTicketDraft("message", html); },
+  }));
+  form.appendChild(AttachmentPicker({
+    id: "support-ticket-attachments",
+    module: "support-ticket-attachments",
+    field: "ATTACHMENTS",
+    files: ticket.files,
+    reading: ticket.reading,
+    error: ticket.errors.ATTACHMENTS,
+    disabled: busy,
+    scope: "ticket",
+    removeAction: "support.removeAttachment",
+    onAdd: function (files) { addAttachments(ticket, files, render); },
+  }));
   page.appendChild(form);
   if (ticket.message) {
     page.appendChild(h("div", { "class": "inline-fail quote-request__message", "data-module": "support-ticket-message", role: "alert" }, [
@@ -154,7 +194,7 @@ function SelectField(code, label, value, options, error, busy, action) {
   return Field(id, label, select, error);
 }
 
-function TextField(code, label, value, error, busy, limit, multiline) {
+function TextField(code, label, value, error, busy, limit) {
   var id = "support-ticket-" + code.toLowerCase();
   var attributes = {
     "class": "field",
@@ -166,8 +206,8 @@ function TextField(code, label, value, error, busy, limit, multiline) {
     "aria-describedby": error ? id + "-error" : undefined,
     disabled: busy ? true : undefined,
   };
-  var input = multiline ? h("textarea", Object.assign({ rows: "6" }, attributes), value || "") : h("input", Object.assign({ type: "text", value: value || "", autocomplete: "off" }, attributes));
-  input.addEventListener("input", function () { changeSupportTicketDraft(code === "SUBJECT" ? "subject" : "message", input.value); });
+  var input = h("input", Object.assign({ type: "text", value: value || "", autocomplete: "off" }, attributes));
+  input.addEventListener("input", function () { changeSupportTicketDraft("subject", input.value); });
   return Field(id, label, input, error);
 }
 
@@ -179,13 +219,14 @@ function Field(id, label, control, error) {
   ]);
 }
 
-function Outcome(kind, title, body, checking) {
+function Outcome(kind, title, body, checking, ticketId) {
   return h("div", { "class": "state-block quote-request__outcome", "data-module": "support-ticket-outcome", "data-state": kind, role: "status", tabindex: "-1" }, [
     h("div", { "class": "state-block__glyph" + (kind === "created" ? " quote-request__glyph--ok" : "") }, kind === "created" ? "✓" : "◔"),
     h("h1", { "class": "state-block__title" }, title),
     h("div", { "class": "state-block__desc" }, body),
     h("div", { "class": "proposal-actions quote-request__outcome-actions" }, [
-      ActionButton({ variant: "btn--primary", label: "View your tickets", action: "nav.go", id: "support", visualId: "support-ticket-list" }),
+      ticketId ? ActionButton({ variant: "btn--primary", label: "View ticket", action: "support.openTicket", id: "ticket-core-" + ticketId, visualId: "support-ticket-view" }) : null,
+      ActionButton({ variant: ticketId ? "btn--ghost" : "btn--primary", label: "View your tickets", action: "nav.go", id: "support", visualId: "support-ticket-list" }),
       kind === "slow" ? ActionButton({ variant: "btn--ghost", label: checking ? "Checking…" : "Check again", action: "support.checkTicket", disabled: checking, visualId: "support-ticket-check-again" }) : null,
     ]),
   ]);

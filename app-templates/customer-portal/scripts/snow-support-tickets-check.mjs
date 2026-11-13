@@ -20,7 +20,7 @@ const { readPortalConfig, routeRegistry } = await load("src/config.js");
 const { applyPortalConfig, isPublic, isSessionFree, state } = await load("src/state.js");
 const { PortalRuntime } = await load("src/portal-runtime.js");
 const { coreSnowContract, createCoreSnowTicketsAdapter } = await load("src/adapters/core-snow-adapter.js");
-const { SUPPORT_TICKET_FORM, createCoreProfileFormAdapter } = await load("src/adapters/core-profile-form-adapter.js");
+const { SUPPORT_TICKET_COMMENT_FORM, SUPPORT_TICKET_FORM, createCoreProfileFormAdapter } = await load("src/adapters/core-profile-form-adapter.js");
 const { TICKET_STATUS, normalizeTickets, openTicketForProperty, openTicketForVisit, supportRequests } = await load("src/normalizers/support.js");
 const { SUPPORT_TICKET_COPY, changeSupportTicketDraft, loadSupportTicketSchema, startSupportTicket, submitSupportTicket, supportTicketSchema, supportTicketState, supportTicketValues, validateSupportTicket } = await load("src/support-tickets.js");
 const { PASSWORD_MIN_LENGTH, SET_PASSWORD_COPY, captureSetPassword, changeSetPasswordEntry, submitSetPassword, validateSetPassword } = await load("src/set-password.js");
@@ -31,6 +31,10 @@ const { Overview } = await load("src/routes/OverviewPage.js");
 const { PropertyDetail } = await load("src/routes/PropertyDetailPage.js");
 const { ACTIONS } = await load("src/actions.js");
 const { visitProgress } = await load("src/visit-progress.js");
+const { RICH_TEXT_TAGS, richHtml, richNodes, richTree, safeLink } = await load("src/rich-text.js");
+const { ATTACHMENT_COPY, attachmentProblem, attachmentsValue, sniffType } = await load("src/support-attachments.js");
+const { ACTION_COPY, COMMENT_COPY, TICKET_ACTION_NOTE, TICKET_CONFIRM, cancelTicketAction, changeTicketComment, confirmTicketAction, openTicketFile, refreshTicketDetail, requestTicketAction, submitTicketComment, ticketComment, ticketDetail, ticketFile, validateTicketComment } = await load("src/support-thread.js");
+const { matchRoutePath } = await load("src/config.js");
 
 const all = (root, selector) => root.querySelectorAll(selector);
 const one = (root, selector) => root.querySelector(selector);
@@ -41,7 +45,7 @@ const REF = [{ name: "id" }, { name: "code" }, { name: "nls" }];
 const TICKET_BODY = {
   filters: [{ operator: "=", property: "type.code", value: "SUPPORT_TICKET" }],
   mappings: [
-    { name: "id" }, { name: "code" }, { name: "nls" }, { name: "created" }, { name: "attributes" },
+    { name: "id" }, { name: "code" }, { name: "nls" }, { name: "created" }, { name: "attributes" }, { name: "metadata" },
     { name: "type", type: "identifier", mappings: REF },
     { name: "states", type: "collection", mappings: REF },
   ],
@@ -108,9 +112,10 @@ const context = { config: { vertical: "snow", origin: "https://portal.example.te
   }
 
   const tickets = normalizeTickets(raw);
-  assert.deepEqual(tickets.open.map((item) => [item.backendId, item.status.label, item.status.tone]), [[75, "Open", "info"], [76, "In review", "progress"]], "NEW is Open, WAITING is In review, newest first");
+  assert.deepEqual(tickets.open.map((item) => [item.backendId, item.status.label, item.status.tone]), [[75, "Open", "info"], [76, "On hold", "hold"]], "NEW is Open, WAITING is On hold, newest first");
   assert.deepEqual(tickets.closed.map((item) => [item.backendId, item.status.label]), [[74, "Resolved"], [73, "Closed"]], "a state the contract does not name is not shown");
-  assert.deepEqual(Object.entries(TICKET_STATUS).map(([code, status]) => [code, status.label, status.open]), [["NEW", "Open", true], ["IN_PROGRESS", "In review", true], ["WAITING", "In review", true], ["RESOLVED", "Resolved", false], ["CLOSED", "Closed", false]]);
+  assert.deepEqual(Object.entries(TICKET_STATUS).map(([code, status]) => [code, status.label, status.open]), [["NEW", "Open", true], ["IN_PROGRESS", "In progress", true], ["WAITING", "On hold", true], ["ESCALATED", "Escalated", true], ["RESOLVED", "Resolved", false], ["CLOSED", "Closed", false]]);
+  assert.equal(new Set(Object.values(TICKET_STATUS).map((status) => status.tone)).size, 6, "every state has its own chip colour");
   assert.deepEqual([tickets.open[0].code, tickets.open[0].subject, tickets.open[0].message, tickets.open[0].propertyBackendId, tickets.open[0].visitBackendId, tickets.open[0].reason], ["TICKET-775", "Driveway was not cleared", "The crew skipped the driveway on the last visit.", 983, 79, "MISSED_SERVICE"]);
   assert.equal(JSON.stringify(tickets).includes("NORMAL"), false, "the priority staff set is not carried to the page");
   assert.equal(openTicketForProperty(tickets, 983).backendId, 75);
@@ -119,7 +124,7 @@ const context = { config: { vertical: "snow", origin: "https://portal.example.te
   assert.equal(openTicketForProperty(tickets, 1035), null);
   assert.deepEqual(supportRequests(tickets, "America/Vancouver"), [
     { id: "ticket-core-75", title: "Driveway was not cleared", status: "Open", tone: "info", when: "Nov 12, 2026" },
-    { id: "ticket-core-76", title: "Question about my invoice", status: "In review", tone: "progress", when: "Nov 11, 2026" },
+    { id: "ticket-core-76", title: "Question about my invoice", status: "On hold", tone: "hold", when: "Nov 11, 2026" },
   ]);
 }
 
@@ -171,7 +176,7 @@ async function liveLoad(tickets, enabled = "overview,properties,appointmentsTime
 
 const navLabels = () => all(one(TopNav(false), ".nav-links"), ".nav-link").map((node) => node.textContent);
 const page = (route, params = {}) => { Object.assign(state, params); state.route = route; return renderRoute(); };
-const fieldError = (root, code) => { const control = one(root, "[name=\"" + code + "\"]"); const id = control && control.getAttribute("aria-describedby"); return id ? all(root, ".field-error").find((node) => node.getAttribute("id") === id).textContent : null; };
+const fieldError = (root, code) => { const control = one(root, "[name=\"" + code + "\"]") || one(root, "[data-field=\"" + code + "\"]"); const ids = control && control.getAttribute("aria-describedby"); const error = ids ? all(root, ".field-error").find((node) => ids.split(" ").includes(node.getAttribute("id"))) : null; return error ? error.textContent : null; };
 
 {
   const { calls, failure } = await liveLoad(TICKETS);
@@ -183,7 +188,7 @@ const fieldError = (root, code) => { const control = one(root, "[name=\"" + code
   const card = one(home, "[data-module=\"support-requests\"]");
   assert.ok(card, "the home shows the Support requests card");
   assert.match(card.textContent, /2open requests/);
-  assert.deepEqual(all(card, "[data-module=\"support-row\"]").map((row) => row.textContent), ["Driveway was not clearedOpen · Nov 12, 2026›", "Question about my invoiceIn review · Nov 11, 2026›"]);
+  assert.deepEqual(all(card, "[data-module=\"support-row\"]").map((row) => row.textContent), ["Driveway was not clearedOpen · Nov 12, 2026›", "Question about my invoiceOn hold · Nov 11, 2026›"]);
   const rows = Object.fromEntries(all(home, "[data-module=\"property-row\"]").map((row) => [row.getAttribute("data-id"), row.getAttribute("data-state")]));
   assert.deepEqual(rows, { "prop-core-983": "issue", "prop-core-1033": "issue" }, "a property an open ticket names is marked");
   assert.match(one(home, "[data-module=\"property-row\"]").textContent, /Issue Opened/);
@@ -316,6 +321,220 @@ const fieldError = (root, code) => { const control = one(root, "[name=\"" + code
 }
 
 {
+  const node = (tag, attributes = {}, children = []) => {
+    const element = dom.document.createElement(tag);
+    for (const [name, value] of Object.entries(attributes)) element.setAttribute(name, value);
+    children.forEach((child) => element.appendChild(typeof child === "string" ? dom.document.createTextNode(child) : child));
+    return element;
+  };
+  const source = node("body", {}, [
+    node("h2", {}, ["Driveway"]),
+    node("p", { onclick: "alert(1)", style: "color:red", class: "x" }, ["The crew ", node("strong", {}, ["skipped"]), " it ", node("a", { href: "https://example.test/a?b=1" }, ["photo"]), " ", node("a", { href: "javascript:alert(1)" }, ["bad"])]),
+    node("script", {}, ["alert(1)"]),
+    node("img", { src: "x", onerror: "alert(1)" }),
+    node("iframe", { src: "https://evil.test" }),
+    node("div", {}, ["line ", node("span", { style: "x" }, ["two"])]),
+    node("ol", {}, [node("li", { "data-list": "bullet" }, ["north"])]),
+    node("blockquote", {}, [node("em", {}, ["quoted"]), node("br"), "<b>&"]),
+  ]);
+  const cleaned = richTree(source);
+  assert.equal(richHtml(cleaned), "<h2>Driveway</h2><p>The crew <strong>skipped</strong> it <a href=\"https://example.test/a?b=1\">photo</a> bad</p><p>line two</p><ul><li>north</li></ul><blockquote><em>quoted</em><br>&lt;b&gt;&amp;</blockquote>", "only the server's allow-list survives: no script, image, frame, handler, style, class or javascript: link, a div is a paragraph and a Quill bullet list is a list");
+  const rendered = node("div", {}, richNodes(cleaned));
+  const everything = all(rendered, "*");
+  assert.ok(everything.every((element) => RICH_TEXT_TAGS.includes(element.tagName.toLowerCase())), "the rendered thread holds only allowed elements");
+  assert.ok(everything.every((element) => [...element.attributes.keys()].every((name) => ["href", "rel", "target"].includes(name))), "and no attribute that could run anything");
+  assert.deepEqual([...one(rendered, "a").attributes.entries()], [["href", "https://example.test/a?b=1"], ["rel", "noopener noreferrer nofollow"], ["target", "_blank"]]);
+  assert.deepEqual(["https://a.test/x", "http://a.test/", "mailto:office@example.test", "javascript:alert(1)", "data:text/html,x", "/relative", "ftp://a.test"].map(safeLink), ["https://a.test/x", "http://a.test/", "mailto:office@example.test", "", "", "", ""]);
+  assert.equal(richHtml(richTree(node("body", {}, [node("p", {}, [" "]), node("script", {}, ["x"])]))), "", "a message empty after cleaning is empty");
+  const typed = node("body", {}, ["The crew ", node("b", {}, ["skipped"]), "\u00a0the driveway.", node("p"), node("ul", {}, [node("li", {}, ["north side"])]), node("p")]);
+  assert.equal(richHtml(richTree(typed)), "<p>The crew <b>skipped</b>\u00a0the driveway.</p><ul><li>north side</li></ul>", "what the editor types is sent as paragraphs, with no empty paragraph");
+
+  assert.deepEqual([[0xff, 0xd8, 0xff, 0xe0], [0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a], [0x47, 0x49, 0x46, 0x38, 0x39], [0x25, 0x50, 0x44, 0x46, 0x2d], [0x52, 0x49, 0x46, 0x46, 1, 2, 3, 4, 0x57, 0x45, 0x42, 0x50], [0x68, 0x69]].map(sniffType), ["image/jpeg", "image/png", "image/gif", "application/pdf", "image/webp", ""], "a file's type is read from its content");
+  const file = (size, type = "image/png") => ({ key: "k" + size + type, name: "f", size, type, data: "" });
+  const MB = 1024 * 1024;
+  assert.equal(attachmentProblem([], [1, 2, 3, 4, 5, 6].map((n) => file(n))), ATTACHMENT_COPY.count);
+  assert.equal(attachmentProblem([file(1), file(2), file(3)], [file(4), file(5), file(6)]), ATTACHMENT_COPY.count, "the limit counts files already attached");
+  assert.equal(attachmentProblem([], [file(5 * MB + 1)]), ATTACHMENT_COPY.fileSize);
+  assert.equal(attachmentProblem([], [file(4 * MB), file(4 * MB), file(3 * MB)]), ATTACHMENT_COPY.totalSize);
+  assert.equal(attachmentProblem([], [file(10, "")]), ATTACHMENT_COPY.type, "a file that is not JPEG, PNG, GIF, WebP or PDF is refused before upload");
+  assert.equal(attachmentProblem([], [file(5 * MB), file(5 * MB, "application/pdf")]), "", "exactly 5 MB each and 10 MB together is allowed");
+  assert.equal(attachmentsValue([{ key: "a", name: "a.png", size: 3, type: "image/png", data: "data:image/png;base64,iVBO" }]), "[{\"name\":\"a.png\",\"data\":\"data:image/png;base64,iVBO\"}]", "ATTACHMENTS is the documented JSON string of name and data");
+  assert.equal(attachmentsValue([]), "");
+  const withFiles = supportTicketValues({ propertyId: 983, visitId: null, reason: "", subject: "Ramp", message: "<p><strong>Ice</strong> on the ramp</p>", files: [{ key: "a", name: "ramp.jpg", size: 4, type: "image/jpeg", data: "data:image/jpeg;base64,/9j/" }] });
+  assert.deepEqual(withFiles, { PROPERTY_ID: 983, SUBJECT: "Ramp", MESSAGE: "<p><strong>Ice</strong> on the ramp</p>", ATTACHMENTS: "[{\"name\":\"ramp.jpg\",\"data\":\"data:image/jpeg;base64,/9j/\"}]" }, "a new ticket sends its formatted message and its files on form 15");
+  assert.equal(validateSupportTicket({ propertyId: 983, subject: "Ramp", message: "<p></p>", files: [] }).MESSAGE, SUPPORT_TICKET_COPY.messageMissing, "formatting with no words is no message");
+}
+
+{
+  globalThis.DOMParser = class {
+    parseFromString(html) {
+      const body = dom.document.createElement("body");
+      const stack = [body];
+      const decode = (value) => value.replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&quot;/g, "\"").replace(/&amp;/g, "&");
+      for (const match of html.replace(/^<!doctype html><body>/, "").matchAll(/<(\/?)([a-zA-Z0-9]+)([^>]*)>|([^<]+)/g)) {
+        if (match[4] !== undefined) { stack[stack.length - 1].appendChild(dom.document.createTextNode(decode(match[4]))); continue; }
+        if (match[1]) { if (stack.length > 1) stack.pop(); continue; }
+        const element = dom.document.createElement(match[2]);
+        for (const attribute of match[3].matchAll(/([\w:-]+)="([^"]*)"/g)) element.setAttribute(attribute[1], decode(attribute[2]));
+        stack[stack.length - 1].appendChild(element);
+        if (!["br", "img"].includes(match[2].toLowerCase())) stack.push(element);
+      }
+      return { body };
+    }
+  };
+  const IMAGE = "f304c63b-1111-4222-8333-944455556666";
+  const PDF = "a104c63b-1111-4222-8333-944455556666";
+  const THREAD = {
+    version: 1,
+    description: { id: 3, html: "<p>The crew <strong>skipped</strong> the driveway.</p><ul><li>north side</li></ul>", attachments: [{ id: IMAGE, name: "driveway.jpg", contentType: "image/jpeg", size: 2048, image: true }] },
+    comments: [
+      { id: 7, created: Date.UTC(2026, 10, 13, 19, 5), author: "STAFF", authorName: "Dana Staff", html: "<p onclick=\"alert(1)\">We are on it. <a href=\"javascript:alert(1)\">x</a></p>", attachments: [] },
+      { id: 4, created: Date.UTC(2026, 10, 13, 18, 40), author: "CUSTOMER", authorName: "Jane Client", html: "<p>Here is the plan.</p>", attachments: [{ id: PDF, name: "plan.pdf", contentType: "application/pdf", size: 3 * 1024 * 1024, image: false }] },
+    ],
+    truncated: false,
+  };
+  const server = { state: "IN_PROGRESS", events: [], files: [], gets: [], move: true };
+  const TRANSITIONS = { NEW: ["NEW-WAITING", "NEW-CLOSED"], IN_PROGRESS: ["IN_PROGRESS-WAITING", "IN_PROGRESS-RESOLVED"], WAITING: ["WAITING-IN_PROGRESS", "WAITING-RESOLVED"], RESOLVED: ["RESOLVED-CLOSED", "RESOLVED-IN_PROGRESS"], CLOSED: [], ESCALATED: [] };
+  const threadTicket = () => Object.assign(ticket(88, server.state, Date.UTC(2026, 10, 13, 18, 0), 983, {}, { NAME: "Driveway was not cleared", DESCRIPTION: "The crew skipped the driveway. north side" }), { metadata: { TICKET_SOURCE: "PORTAL", TICKET_THREAD: THREAD } });
+  await liveLoad([threadTicket()].concat(TICKETS));
+  const blob = (type) => ({ ok: true, status: 200, blob: async () => new Blob(["x"], { type }) });
+  globalThis.fetch = async (url, options = {}) => {
+    const target = new URL(String(url));
+    const call = target.pathname + target.search;
+    if (target.pathname === "/core-svc/api/tagged/task/get.json") { server.gets.push({ call, body: JSON.parse(options.body) }); return json(threadTicket()); }
+    if (target.pathname === "/core-svc/api/tagged/task/88/list-events.json") { server.listBody = JSON.parse(options.body); return json(TRANSITIONS[server.state].map((code) => ({ id: code.length, code, nls: { en: { NAME: code } } }))); }
+    if (target.pathname === "/core-svc/api/tagged/task/88/send-event.json") {
+      const code = target.searchParams.get("event");
+      server.events.push({ code, body: JSON.parse(options.body), headers: options.headers });
+      if (server.move) server.state = code.split("-")[1];
+      return json({});
+    }
+    if (target.pathname.startsWith("/core/secured/")) { server.files.push({ call, authorization: options.headers.Authorization }); return blob(target.pathname.includes("/image/") ? "image/jpeg" : "application/pdf"); }
+    if (target.pathname === "/core-svc/api/tagged/task/list.json") return json({ resultSize: 1, result: [threadTicket()] });
+    throw new Error("unexpected request " + call);
+  };
+
+  assert.equal(matchRoutePath("/support/tickets/ticket-core-88").id, "support.ticket");
+  const list = page("support");
+  const row = one(list, "[data-id=\"ticket-core-88\"]");
+  assert.deepEqual([row.tagName, row.getAttribute("data-action")], ["BUTTON", "support.openTicket"], "a ticket row opens the ticket");
+  assert.equal(one(row, "[data-module=\"ticket-latest\"]").textContent, "Support team replied · Nov 13, 2026, 11:05 AM", "the row names the newest message of the thread, sorted by time");
+  for (const action of ["support.openTicket", "support.refreshTicket", "support.ticketAction", "support.confirmTicketAction", "support.cancelTicketAction", "support.sendComment", "support.checkComment", "support.removeAttachment", "support.openFile"]) assert.equal(typeof ACTIONS[action], "function", action + " is connected");
+  Object.assign(state, { route: "support.ticket", ticketId: "ticket-core-88" });
+  ticketDetail(88, () => {});
+  ticketFile({ id: IMAGE }, "thumbnail", () => {});
+  assert.deepEqual(all(one(TopNav(false), ".nav-links"), ".nav-link--active").map((link) => link.textContent), ["Support"]);
+  let detail = page("support.ticket");
+  assert.equal(detail.getAttribute("data-state"), "in_progress", "the list's copy shows at once while the ticket is read again");
+  await settle(); await settle();
+  assert.deepEqual(server.gets.map((get) => [get.call, get.body]), [["/core-svc/api/tagged/task/get.json?id=88", coreSnowContract.ticketGetMappings]], "the ticket is read again through the tagged get with its metadata");
+  assert.ok(coreSnowContract.ticketGetMappings.some((mapping) => mapping.name === "metadata"));
+  assert.deepEqual(server.listBody, REF, "list-events maps id, code and nls");
+  detail = page("support.ticket");
+  assert.equal(one(detail, "[data-module=\"ticket-status\"]").textContent, "In progress");
+  assert.deepEqual(all(detail, "[data-module=\"ticket-message\"]").map((message) => [message.getAttribute("data-author"), one(message, ".ticket-message__author").textContent]), [["customer", "You"], ["customer", "You"], ["staff", "Dana Staff"]], "the opening message, then the comments oldest first, newest last");
+  const bodies = all(detail, "[data-module=\"ticket-message-body\"]");
+  assert.equal(bodies[0].textContent, "The crew skipped the driveway.north side");
+  assert.deepEqual(all(bodies[0], "strong").map((strong) => strong.textContent), ["skipped"], "the thread renders its formatting");
+  assert.ok(all(detail, "[data-module=\"ticket-thread\"] *").every((element) => ![...element.attributes.keys()].some((name) => /^on/i.test(name))), "no handler reaches the page even if one were in the copy");
+  assert.equal(all(bodies[2], "a").length, 0, "a javascript: link is text");
+  assert.equal(one(detail, "[data-module=\"ticket-refresh\"]").textContent, "Replies may take a minute to appear.Refresh ↻");
+  assert.deepEqual(all(detail, "[data-visual-id=\"ticket-action\"]").map((button) => [button.textContent, button.getAttribute("data-id")]), [["Put on hold", "IN_PROGRESS-WAITING"], ["Mark resolved", "IN_PROGRESS-RESOLVED"]], "the buttons are exactly the events Core lists, under the client's labels");
+  await settle();
+  assert.deepEqual(server.files.map((file) => [file.call, file.authorization]), [["/core/secured/image/" + IMAGE + "/get?fit=true&width=320", "Bearer test-token"]], "an image thumbnail is fetched from the secured path with the Bearer token; nothing else is fetched until it is opened");
+  detail = page("support.ticket");
+  assert.equal(one(detail, ".ticket-file__thumb").getAttribute("src").startsWith("blob:"), true, "the thumbnail is shown from a blob URL");
+  assert.deepEqual(all(detail, "[data-module=\"ticket-file\"]").map((file) => [file.getAttribute("data-kind"), one(file, ".ticket-file__name").textContent, (one(file, ".ticket-file__size") || { textContent: "" }).textContent]), [["image", "driveway.jpg", "2 KB"], ["file", "plan.pdf", "3 MB"]]);
+  const tabs = [];
+  globalThis.open = () => ({ location: { replace: (url) => tabs.push(url) } });
+  assert.equal(await openTicketFile(PDF), true);
+  assert.equal(server.files[1].call, "/core/secured/media/" + PDF + "/stream");
+  assert.equal(tabs.length === 1 && tabs[0].startsWith("blob:"), true, "a PDF opens in a new tab from a blob URL");
+  assert.equal(server.files.some((file) => file.call.startsWith("/core/image/")), false, "the public image path is never used for ticket files");
+
+  await requestTicketAction(88, "IN_PROGRESS-WAITING", () => {});
+  assert.deepEqual(server.events.map((event) => [event.code, event.body]), [["IN_PROGRESS-WAITING", { WAITING_REASON: { value: "AWAITING_CUSTOMER" } }]], "Put on hold sends its event with the waiting reason");
+  assert.equal(server.events[0].headers["X-Organization-Code"], "SNOWLIMITLESS");
+  detail = page("support.ticket");
+  assert.equal(one(detail, "[data-module=\"ticket-status\"]").textContent, "On hold", "the state is read back after the event");
+  assert.deepEqual(all(detail, "[data-visual-id=\"ticket-action\"]").map((button) => button.textContent), ["Resume", "Mark resolved"]);
+
+  await requestTicketAction(88, "WAITING-RESOLVED", () => {});
+  assert.equal(server.events.length, 1, "Mark resolved is not sent before the client confirms");
+  detail = page("support.ticket");
+  assert.equal(one(detail, "[id=\"ticket-confirm-desc\"]").textContent, "Mark this ticket resolved? You can still reopen it or close it afterwards.");
+  assert.equal(cancelTicketAction(88), true);
+  assert.equal(all(page("support.ticket"), "[data-module=\"ticket-action-confirm\"]").length, 0);
+  await requestTicketAction(88, "WAITING-RESOLVED", () => {});
+  await confirmTicketAction(88, () => {});
+  assert.deepEqual(server.events[1], Object.assign({}, server.events[1], { code: "WAITING-RESOLVED", body: { RESOLUTION_SUMMARY: { value: TICKET_ACTION_NOTE } } }));
+  assert.equal(server.state, "RESOLVED");
+  await requestTicketAction(88, "RESOLVED-IN_PROGRESS", () => {});
+  assert.deepEqual([server.events[2].code, server.state], ["RESOLVED-IN_PROGRESS", "IN_PROGRESS"], "Reopen needs no confirmation");
+
+  server.move = false;
+  await requestTicketAction(88, "IN_PROGRESS-WAITING", () => {});
+  detail = page("support.ticket");
+  assert.equal(one(detail, "[data-module=\"ticket-action-outcome\"]").textContent, "!" + ACTION_COPY.unconfirmed, "an event Core accepted without moving the ticket is said so");
+  server.move = true;
+
+  server.state = "NEW";
+  await refreshTicketDetail(88, () => {});
+  await requestTicketAction(88, "NEW-CLOSED", () => {});
+  detail = page("support.ticket");
+  assert.equal(one(detail, "[id=\"ticket-confirm-desc\"]").textContent, TICKET_CONFIRM.CLOSED, "Mark resolved on a new ticket closes it, and says so before it is sent");
+  await confirmTicketAction(88, () => {});
+  assert.deepEqual(server.events.at(-1).body, { CLOSURE_OUTCOME: { value: "RESOLVED" }, CLOSURE_COMMENT: { value: TICKET_ACTION_NOTE } });
+  detail = page("support.ticket");
+  assert.equal(one(detail, "[data-module=\"ticket-status\"]").textContent, "Closed");
+  assert.equal(all(detail, "[data-module=\"ticket-comment\"]").length, 0, "a closed ticket has no comment box");
+  assert.equal(all(detail, "[data-module=\"ticket-actions\"]").length, 0, "and no action Core does not offer");
+  assert.match(one(detail, "[data-module=\"ticket-closed\"]").textContent, /This ticket is closed/);
+  assert.equal(await submitTicketComment(88, { forms: { submit() { throw new Error("a closed ticket must not be commented"); } } }), false);
+
+  server.state = "IN_PROGRESS";
+  await refreshTicketDetail(88, () => {});
+  ticketComment(88).message = "";
+  assert.deepEqual(validateTicketComment(ticketComment(88)), { MESSAGE: COMMENT_COPY.empty }, "a comment needs text or a file");
+  assert.equal(changeTicketComment(88, "<p>Here is <em>more</em>.</p>"), true);
+  ticketComment(88).files = [{ key: "f1", name: "notes.pdf", size: 9, type: "application/pdf", data: "data:application/pdf;base64,JVBERi0xLjQ=" }];
+  const sent = [];
+  const forms = createCoreProfileFormAdapter({
+    wait: async () => {},
+    fetch: async (url, options) => {
+      const target = new URL(String(url)).pathname;
+      sent.push({ target, options });
+      if (target === "/en/core-cms/api/form-type/CUSTOMER_SUPPORT_TICKET_COMMENT/get.json") return json({ id: 16, code: "CUSTOMER_SUPPORT_TICKET_COMMENT" });
+      if (target === "/core-cms/api/form/submit.json") return json(741);
+      if (target === "/core/api/user/preferences.json") return json({ SNOW_CUSTOMER_SUPPORT_TICKET_COMMENT: JSON.stringify({ form: 741, outcome: "ADDED", field: null, message: "", ticketId: 88, commentId: 9 }) });
+      throw new Error("unexpected request " + target);
+    },
+  });
+  const gets = server.gets.length;
+  assert.equal(await submitTicketComment(88, { forms }), true);
+  const commentBody = JSON.parse(sent.find((call) => call.target === "/core-cms/api/form/submit.json").options.body);
+  assert.deepEqual([commentBody.type, commentBody.organization, commentBody.attributes], [{ id: 16 }, { id: 43 }, { 16: { TICKET_ID: { value: 88 }, MESSAGE: { value: "<p>Here is <em>more</em>.</p>" }, ATTACHMENTS: { value: "[{\"name\":\"notes.pdf\",\"data\":\"data:application/pdf;base64,JVBERi0xLjQ=\"}]" } } }], "a comment is form 16 with the ticket, the HTML and the files");
+  assert.deepEqual(SUPPORT_TICKET_COMMENT_FORM, { typeCode: "CUSTOMER_SUPPORT_TICKET_COMMENT", preference: "SNOW_CUSTOMER_SUPPORT_TICKET_COMMENT" });
+  assert.ok(server.gets.length > gets, "an added comment reads the ticket again");
+  assert.deepEqual([ticketComment(88).html, ticketComment(88).files.length], ["", 0], "the box is emptied once Core added the comment");
+  assert.equal(one(page("support.ticket"), "[data-module=\"ticket-comment-added\"]").textContent, "Your comment was added.");
+
+  changeTicketComment(88, "<p>Another</p>");
+  const refusing = { submit: async () => 742, report: async () => ({ form: 742, outcome: "REFUSED", field: "ATTACHMENTS", message: "Attach JPEG, PNG, GIF or WebP images, or PDF files." }) };
+  assert.equal(await submitTicketComment(88, { forms: refusing }), false);
+  assert.equal(fieldError(page("support.ticket"), "ATTACHMENTS"), "Attach JPEG, PNG, GIF or WebP images, or PDF files.", "a refusal shows beside the field Core names");
+  const failing = { submit: async () => 743, report: async () => ({ form: 743, outcome: "REFUSED", field: "TICKET_ID", message: "This ticket is closed." }) };
+  await submitTicketComment(88, { forms: failing });
+  assert.equal(one(page("support.ticket"), "[data-module=\"ticket-comment-message\"]").textContent, "!This ticket is closed.");
+  const slow = { submit: async () => 744, report: async () => { const error = new Error("late"); error.code = "outcome-unknown"; throw error; } };
+  await submitTicketComment(88, { forms: slow });
+  detail = page("support.ticket");
+  assert.deepEqual(all(one(detail, "[data-module=\"ticket-comment\"]"), "[data-module=\"action-button\"]").map((button) => button.textContent), ["Check again"], "a comment still being added offers Check again, never a second send");
+  state.ticketComments[88] = undefined;
+  delete globalThis.DOMParser;
+}
+
+{
   configure("overview,properties,appointmentsTimeline,invoices,proposals,support", { portalProviderName: "Limitless Snow Removal Corp.", portalBrandLogoId: "3fecdfcd-2c9e-49c2-8873-92e4378930fc" });
   Object.assign(state.session, { authenticated: false, accessToken: "", userId: null });
   state.account = "session-required";
@@ -384,7 +603,7 @@ const fieldError = (root, code) => { const control = one(root, "[name=\"" + code
   assert.equal(one(page("auth.setPassword"), ".oidc-title").textContent, "This link is incomplete");
 }
 
-console.log("snow-support-tickets-check ok: tagged ticket read with the documented body, the five states as Open, In review, Resolved and Closed, the Support page and nav item, the home Support requests card, Issue Opened on the property and visit an open ticket names, a ticket form prefilled from a visit or property that sends the documented form, refusals beside their fields, a 500 named as a system error, and a session-free set-password page with Core's length rule, the used-key state and the server-rendered provider name and logo");
+console.log("snow-support-tickets-check ok: tagged ticket read with the documented body, the six states as Open, In progress, On hold, Escalated, Resolved and Closed, the Support page and nav item, the home Support requests card, Issue Opened on the property and visit an open ticket names, a ticket form prefilled from a visit or property that sends the documented form, refusals beside their fields, a 500 named as a system error, a ticket page with the thread newest last, secured thumbnails and PDFs from blob URLs, exactly the events Core lists with Mark resolved and Close confirmed first and the state read back, a comment form 16 with rich text and files that is closed with the ticket, an allow-list rich-text cleaner and client-side file limits, and a session-free set-password page with Core's length rule, the used-key state and the server-rendered provider name and logo");
 
 function createDom() {
   class Text {
