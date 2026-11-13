@@ -1,0 +1,54 @@
+{
+  "390": {
+    "page": {
+      "x": 0,
+      "y": 80,
+      "width": 390,
+      "height": 1953.125,
+      "fontSize": "16px",
+      "lineHeight": "normal"
+    },
+    "grid": {
+      "x": 22,
+      "y": 217.125,
+      "width": 346,
+      "height": 1756,
+      "fontSize": "16px",
+      "lineHeight": "normal"
+    },
+    "appointment": {
+      "x": 22,
+      "y": 217.125,
+      "width": 346,
+      "height": 298,
+      "fontSize": "16px",
+      "lineHeight": "normal"
+    }
+  },
+  "768": {
+    "page": {
+      "x": 0,
+      "y": 80,
+      "width": 768,
+      "height": 1735.03125,
+      "fontSize": "16px",
+      "lineHeight": "normal"
+    },
+    "grid": {
+      "x": 22,
+      "y": 204.03125,
+      "width": 724,
+      "height": 1551,
+      "fontSize": "16px",
+      "lineHeight": "normal"
+    },
+    "appointment": {
+      "x": 22,
+      "y": 204.03125,
+      "width": 724,
+      "height": 246,
+      "fontSize": "16px",
+      "lineHeight": "normal"
+    }
+  }
+}

@@ -1,0 +1,382 @@
+{
+ "code": "ORDER_LIFECYCLE",
+ "initialState": {
+  "code": "DRAFT"
+ },
+ "nls": {
+  "en": {
+   "NAME": "Order Lifecycle"
+  }
+ },
+ "entityType": "com.pixelnation.bill.domain.Order",
+ "organization": {
+  "id": 1,
+  "code": "SYSTEM"
+ },
+ "states": [
+  {
+   "code": "ACCEPTED",
+   "nls": {
+    "en": {
+     "NAME": "Accepted"
+    }
+   },
+   "events": [
+    {
+     "code": "ACCEPTED-DECLINED",
+     "nls": {
+      "en": {
+       "NAME": "Decline Option"
+      }
+     },
+     "targets": [
+      {
+       "code": "DECLINED"
+      }
+     ]
+    },
+    {
+     "code": "ACCEPTED-ACTIVE",
+     "nls": {
+      "en": {
+       "NAME": "Activate"
+      }
+     },
+     "targets": [
+      {
+       "code": "ACTIVE"
+      }
+     ]
+    },
+    {
+     "code": "ACCEPTED-CANCELED",
+     "nls": {
+      "en": {
+       "NAME": "Cancel"
+      }
+     },
+     "targets": [
+      {
+       "code": "CANCELED"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "code": "ACTIVE",
+   "nls": {
+    "en": {
+     "NAME": "Active"
+    }
+   },
+   "events": [
+    {
+     "code": "ACTIVE-SUSPENDED",
+     "nls": {
+      "en": {
+       "NAME": "Suspend"
+      }
+     },
+     "targets": [
+      {
+       "code": "SUSPENDED"
+      }
+     ]
+    },
+    {
+     "code": "ACTIVE-COMPLETED",
+     "nls": {
+      "en": {
+       "NAME": "Complete"
+      }
+     },
+     "targets": [
+      {
+       "code": "COMPLETED"
+      }
+     ]
+    },
+    {
+     "code": "ACTIVE-CANCELED",
+     "nls": {
+      "en": {
+       "NAME": "Cancel"
+      }
+     },
+     "targets": [
+      {
+       "code": "CANCELED"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "code": "CANCELED",
+   "nls": {
+    "en": {
+     "NAME": "Canceled"
+    }
+   },
+   "events": []
+  },
+  {
+   "code": "CHANGES_REQUESTED",
+   "nls": {
+    "en": {
+     "NAME": "Sent Back"
+    }
+   },
+   "events": [
+    {
+     "code": "CHANGES_REQUESTED-QUOTE_PREPARED",
+     "nls": {
+      "en": {
+       "NAME": "Resubmit"
+      }
+     },
+     "targets": [
+      {
+       "code": "QUOTE_PREPARED"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "code": "COMPLETED",
+   "nls": {
+    "en": {
+     "NAME": "Completed"
+    }
+   },
+   "events": []
+  },
+  {
+   "code": "CUSTOMER_CHANGES_REQUESTED",
+   "nls": {
+    "en": {
+     "NAME": "Customer Changes"
+    }
+   },
+   "events": [
+    {
+     "code": "CUSTOMER_CHANGES_REQUESTED-QUOTE_PREPARED",
+     "nls": {
+      "en": {
+       "NAME": "Revise Quote"
+      }
+     },
+     "targets": [
+      {
+       "code": "QUOTE_PREPARED"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "code": "DECLINED",
+   "nls": {
+    "en": {
+     "NAME": "Declined"
+    }
+   },
+   "events": []
+  },
+  {
+   "code": "DRAFT",
+   "nls": {
+    "en": {
+     "NAME": "Draft"
+    }
+   },
+   "events": [
+    {
+     "code": "DRAFT-QUOTE_PREPARED",
+     "nls": {
+      "en": {
+       "NAME": "Prepare Quote"
+      }
+     },
+     "targets": [
+      {
+       "code": "QUOTE_PREPARED"
+      }
+     ]
+    },
+    {
+     "code": "DRAFT-ACCEPTED",
+     "nls": {
+      "en": {
+       "NAME": "Submit checkout"
+      }
+     },
+     "targets": [
+      {
+       "code": "ACCEPTED"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "code": "QUOTE_APPROVED",
+   "nls": {
+    "en": {
+     "NAME": "Quote Approved"
+    }
+   },
+   "events": [
+    {
+     "code": "QUOTE_APPROVED-QUOTE_SENT",
+     "nls": {
+      "en": {
+       "NAME": "Quote Sent (automatic)"
+      }
+     },
+     "targets": [
+      {
+       "code": "QUOTE_SENT"
+      }
+     ]
+    },
+    {
+     "code": "QUOTE_APPROVED-QUOTE_PREPARED",
+     "nls": {
+      "en": {
+       "NAME": "Package attachment failed"
+      }
+     },
+     "targets": [
+      {
+       "code": "QUOTE_PREPARED"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "code": "QUOTE_PREPARED",
+   "nls": {
+    "en": {
+     "NAME": "Quote Prepared"
+    }
+   },
+   "events": [
+    {
+     "code": "QUOTE_PREPARED-QUOTE_APPROVED",
+     "nls": {
+      "en": {
+       "NAME": "Approve Quote"
+      }
+     },
+     "targets": [
+      {
+       "code": "QUOTE_APPROVED"
+      }
+     ]
+    },
+    {
+     "code": "QUOTE_PREPARED-CHANGES_REQUESTED",
+     "nls": {
+      "en": {
+       "NAME": "Send Back"
+      }
+     },
+     "targets": [
+      {
+       "code": "CHANGES_REQUESTED"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "code": "QUOTE_SENT",
+   "nls": {
+    "en": {
+     "NAME": "Quote Sent"
+    }
+   },
+   "events": [
+    {
+     "code": "QUOTE_SENT-ACCEPTED",
+     "nls": {
+      "en": {
+       "NAME": "Accept"
+      }
+     },
+     "targets": [
+      {
+       "code": "ACCEPTED"
+      }
+     ]
+    },
+    {
+     "code": "QUOTE_SENT-DECLINED",
+     "nls": {
+      "en": {
+       "NAME": "Decline"
+      }
+     },
+     "targets": [
+      {
+       "code": "DECLINED"
+      }
+     ]
+    },
+    {
+     "code": "QUOTE_SENT-CUSTOMER_CHANGES_REQUESTED",
+     "nls": {
+      "en": {
+       "NAME": "Request Changes"
+      }
+     },
+     "targets": [
+      {
+       "code": "CUSTOMER_CHANGES_REQUESTED"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "code": "SUSPENDED",
+   "nls": {
+    "en": {
+     "NAME": "Suspended"
+    }
+   },
+   "events": [
+    {
+     "code": "SUSPENDED-ACTIVE",
+     "nls": {
+      "en": {
+       "NAME": "Resume"
+      }
+     },
+     "targets": [
+      {
+       "code": "ACTIVE"
+      }
+     ]
+    },
+    {
+     "code": "SUSPENDED-CANCELED",
+     "nls": {
+      "en": {
+       "NAME": "Cancel"
+      }
+     },
+     "targets": [
+      {
+       "code": "CANCELED"
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

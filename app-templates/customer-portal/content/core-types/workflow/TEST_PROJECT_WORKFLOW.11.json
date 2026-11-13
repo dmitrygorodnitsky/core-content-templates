@@ -1,0 +1,95 @@
+{
+ "code": "TEST_PROJECT_WORKFLOW",
+ "initialState": {
+  "id": 60,
+  "code": "DRAFT"
+ },
+ "nls": {
+  "en": {
+   "NAME": "Test Project Workflow"
+  }
+ },
+ "entityType": "com.pixelnation.svc.domain.Project",
+ "organization": {
+  "optimistic": 1,
+  "id": 1,
+  "code": "SYSTEM"
+ },
+ "id": 11,
+ "states": [
+  {
+   "style": {
+    "xPos": 883.0644427207882,
+    "yPos": 303.52824162774436
+   },
+   "id": 61,
+   "code": "ACTIVE",
+   "nls": {
+    "en": {
+     "NAME": "Active"
+    }
+   },
+   "events": [
+    {
+     "id": 75,
+     "code": "ACTIVE-COMPLETED",
+     "nls": {
+      "en": {
+       "NAME": "Active Completed"
+      }
+     },
+     "targets": [
+      {
+       "id": 62,
+       "code": "COMPLETED"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "style": {
+    "xPos": 1256.9282725920943,
+    "yPos": 319.5749575806432
+   },
+   "id": 62,
+   "code": "COMPLETED",
+   "nls": {
+    "en": {
+     "NAME": "Completed"
+    }
+   },
+   "events": []
+  },
+  {
+   "style": {
+    "xPos": 470.47265625,
+    "yPos": 304
+   },
+   "id": 60,
+   "code": "DRAFT",
+   "nls": {
+    "en": {
+     "NAME": "Draft"
+    }
+   },
+   "events": [
+    {
+     "id": 74,
+     "code": "DRAFT-ACTIVE",
+     "nls": {
+      "en": {
+       "NAME": "Draft Active"
+      }
+     },
+     "targets": [
+      {
+       "id": 61,
+       "code": "ACTIVE"
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,47 @@
+<!-- lab-ui block · features.card-grid-4
+     H2 + 3 ledes + 4 horizontal cards. Each card: mono number badge,
+     title, two body paragraphs. Light theme. Used for "Unified Platform"
+     framing sections — more granular than 3-card.
+-->
+<section class="cards4" id="cards4" data-block="features.card-grid-4">
+  <div class="container">
+    <header class="cards4-top">
+      <div>
+        <p class="eyebrow">{{eyebrow}}</p>
+        <h2 class="cards4-title">{{title}}</h2>
+      </div>
+      <div class="cards4-lede">
+        <p>{{lede_1}}</p>
+        <p>{{lede_2}}</p>
+        <p>{{lede_3}}</p>
+      </div>
+    </header>
+
+    <div class="cards4-grid">
+      <article class="cards4-card" data-slot="01">
+        <span class="cards4-num">{{card_1_num}}</span>
+        <h3 class="cards4-card-title">{{card_1_title}}</h3>
+        <p class="cards4-card-p">{{card_1_p1}}</p>
+        <p class="cards4-card-p">{{card_1_p2}}</p>
+      </article>
+      <article class="cards4-card" data-slot="02">
+        <span class="cards4-num">{{card_2_num}}</span>
+        <h3 class="cards4-card-title">{{card_2_title}}</h3>
+        <p class="cards4-card-p">{{card_2_p1}}</p>
+        <p class="cards4-card-p">{{card_2_p2}}</p>
+      </article>
+      <article class="cards4-card" data-slot="03">
+        <span class="cards4-num">{{card_3_num}}</span>
+        <h3 class="cards4-card-title">{{card_3_title}}</h3>
+        <p class="cards4-card-p">{{card_3_p1}}</p>
+        <p class="cards4-card-p">{{card_3_p2}}</p>
+      </article>
+      <article class="cards4-card" data-slot="04">
+        <span class="cards4-num">{{card_4_num}}</span>
+        <h3 class="cards4-card-title">{{card_4_title}}</h3>
+        <p class="cards4-card-p">{{card_4_p1}}</p>
+        <p class="cards4-card-p">{{card_4_p2}}</p>
+      </article>
+    </div>
+  </div>
+</section>

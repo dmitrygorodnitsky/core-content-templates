@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="snow" data-mode="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Portal form renderer — every field variant</title>
+  <link rel="icon" href="data:,">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;530;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles/tokens.css">
+  <link rel="stylesheet" href="styles/base.css">
+  <link rel="stylesheet" href="styles/components.css">
+  <link rel="stylesheet" href="forms/portal-form.css">
+  <style>
+    body { background: var(--app-bg); min-height: 100vh; margin: 0; }
+    .harness { max-width: 780px; margin: 0 auto; padding: 28px 20px 80px; }
+    .harness__bar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 20px; }
+    .harness__bar select { font: inherit; font-size: 13px; padding: 7px 10px; border-radius: 10px; border: 1px solid var(--glass-border); background: rgba(var(--glass), .6); color: var(--ink); }
+    .harness__bar label { font-size: 11.5px; font-weight: 700; letter-spacing: .02em; color: var(--ink-3); }
+  </style>
+</head>
+<body>
+  <main class="harness">
+    <div class="harness__bar">
+      <label for="h-schema">Schema</label>
+      <select id="h-schema">
+        <option value="content/form-types/PORTAL_FORM_KITCHEN_SINK.en.json">Kitchen sink — every variant</option>
+        <option value="content/form-types/GET_QUOTE_.en.json">GET_QUOTE_ — live snapshot</option>
+      </select>
+      <label for="h-theme">Theme</label>
+      <select id="h-theme">
+        <option>snow</option><option>hvac</option><option>lawn</option><option>pool</option>
+        <option>roofing</option><option>pest</option><option>health</option><option>beauty</option>
+      </select>
+      <label for="h-mode">Mode</label>
+      <select id="h-mode"><option>light</option><option>dark</option></select>
+      <label for="h-state">Force state</label>
+      <select id="h-state">
+        <option value="">ready</option><option value="loading">loading</option>
+        <option value="error">schema error</option><option value="blocked">no organization</option>
+        <option value="empty">empty</option><option value="submitting">submitting</option>
+        <option value="submit-error">submit error</option><option value="success">success</option>
+      </select>
+    </div>
+    <div id="form"></div>
+  </main>
+
+  <script src="forms/portal-form.js"></script>
+  <script>
+    var current = null;
+
+    function copy(code) {
+      var base = {
+        title: "Get your free quote",
+        subtitle: "Tell us about the property and we will come back with a seasonal number.",
+        note: "Preview harness. Nothing is submitted: no organization id is configured.",
+        submitLabel: "Send request",
+        submittingLabel: "Sending…",
+        nextLabel: "Continue",
+        backLabel: "Back",
+        retryLabel: "Try again",
+        stepFallback: "Step {n}",
+        selectPlaceholder: "Choose one",
+        requiredError: "This field is required.",
+        formatError: "That format is not accepted.",
+        incompleteError: "Finish filling this field.",
+        emailError: "Enter a valid email address.",
+        urlError: "Enter a full https address.",
+        numberError: "Enter a number.",
+        minError: "Minimum is {n}.",
+        maxError: "Maximum is {n}.",
+        minLengthError: "At least {n} characters.",
+        maxLengthError: "At most {n} characters.",
+        schemaErrorTitle: "The form could not be loaded",
+        schemaErrorBody: "We could not reach the form service. Nothing was sent.",
+        emptyTitle: "This form has no fields",
+        emptyBody: "The published form type contains no visible attributes.",
+        successTitle: "Thank you",
+        successBody: "We have received your submission.",
+        successNextTitle: "What happens next",
+        successStep1: "",
+        successStep2: "",
+        successStep3: "",
+        successAgainLabel: "Submit another response",
+        submitErrorTitle: "The request was not sent",
+        submitErrorBody: "Something went wrong on the way. Your answers are still here — try again.",
+        blockedTitle: "Sending is not configured",
+        blockedBody: "This form has no organization id yet, so it cannot submit. Set it before publishing.",
+      };
+      if (code !== "GET_QUOTE_") return base;
+      return Object.assign(base, {
+        successTitle: "Request received",
+        successBody: "Thank you. Your request has reached our team.",
+        successStep1: "We prepare quotes for each property you listed.",
+        successStep2: "You get one email with a link to review them.",
+        successAgainLabel: "",
+      });
+    }
+
+    function mount(schema) {
+      document.getElementById("form").replaceChildren();
+      current = new PortalForm({
+        schema: schema,
+        locale: "en",
+        apiBaseUrl: "https://dev-1.servicewand.com",
+        organizationId: null,
+        copy: copy(schema.code),
+        onSubmit: function (payload) { console.log("[PortalForm] submitted", payload); },
+      }).mount("#form");
+      applyForcedState();
+    }
+
+    function applyForcedState() {
+      var forced = document.getElementById("h-state").value;
+      if (!current) return;
+      if (!forced) { if (current.model) current.state = "ready"; }
+      else current.state = forced;
+      current.render();
+    }
+
+    function load() {
+      var url = document.getElementById("h-schema").value;
+      fetch("../" + url, { cache: "no-store" }).then(function (r) { return r.json(); }).then(mount);
+    }
+
+    document.getElementById("h-schema").addEventListener("change", load);
+    document.getElementById("h-state").addEventListener("change", applyForcedState);
+    document.getElementById("h-theme").addEventListener("change", function (e) {
+      document.documentElement.dataset.theme = e.target.value;
+    });
+    document.getElementById("h-mode").addEventListener("change", function (e) {
+      document.documentElement.dataset.mode = e.target.value;
+    });
+
+    load();
+  </script>
+</body>
+</html>

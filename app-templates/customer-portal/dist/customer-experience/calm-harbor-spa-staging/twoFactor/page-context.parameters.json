@@ -1,0 +1,194 @@
+{
+  "schemaVersion": 1,
+  "kind": "customer-experience-page-context-parameter-map",
+  "experienceId": "calm-harbor-spa-staging",
+  "surface": "twoFactor",
+  "templateCode": "CUSTOMER_EXPERIENCE_AUTH_2FA",
+  "publishable": false,
+  "selector": {
+    "status": "unproven",
+    "selector": null,
+    "reason": "Core Auth tenant-specific PageContext selection by a trusted organization, host, client registration, or route is not yet proven."
+  },
+  "parameters": [
+    {
+      "code": "CX_CONTRACT_VERSION",
+      "type": "STRING",
+      "value": "1",
+      "source": "contract.version"
+    },
+    {
+      "code": "CX_EXPERIENCE_ID",
+      "type": "STRING",
+      "value": "calm-harbor-spa-staging",
+      "source": "experience.id"
+    },
+    {
+      "code": "CX_VERTICAL",
+      "type": "STRING",
+      "value": "beauty",
+      "source": "experience.vertical"
+    },
+    {
+      "code": "CX_THEME",
+      "type": "STRING",
+      "value": "beauty",
+      "source": "experience.theme"
+    },
+    {
+      "code": "CX_DEFAULT_MODE",
+      "type": "STRING",
+      "value": "light",
+      "source": "experience.defaultMode"
+    },
+    {
+      "code": "CX_LANGUAGE",
+      "type": "STRING",
+      "value": "en",
+      "source": "experience.language"
+    },
+    {
+      "code": "CX_DIRECTION",
+      "type": "STRING",
+      "value": "ltr",
+      "source": "experience.direction"
+    },
+    {
+      "code": "CX_BRAND_NAME",
+      "type": "LOCALIZED_STRING_SS",
+      "value": {
+        "en": "Calm Harbor Spa"
+      },
+      "source": "experience.brandName"
+    },
+    {
+      "code": "LOGIN_PITCH_EYEBROW",
+      "type": "LOCALIZED_STRING_SS",
+      "value": {
+        "en": "Customer account"
+      },
+      "source": "login.pitchEyebrow"
+    },
+    {
+      "code": "TWO_FACTOR_DOCUMENT_TITLE",
+      "type": "LOCALIZED_STRING_SS",
+      "value": {
+        "en": "Two-step verification — Calm Harbor Spa"
+      },
+      "source": "twoFactor.documentTitle"
+    },
+    {
+      "code": "TWO_FACTOR_TITLE",
+      "type": "LOCALIZED_STRING_SS",
+      "value": {
+        "en": "Two-step verification"
+      },
+      "source": "twoFactor.title"
+    },
+    {
+      "code": "TWO_FACTOR_SUBTITLE",
+      "type": "LOCALIZED_STRING_SS",
+      "value": {
+        "en": "Enter the code from your authenticator app to finish signing in."
+      },
+      "source": "twoFactor.subtitle"
+    },
+    {
+      "code": "TWO_FACTOR_SETUP",
+      "type": "LOCALIZED_STRING_SS",
+      "value": {
+        "en": "Set up your authenticator app. Scan this code with the app you use for verification codes, then enter the code it shows."
+      },
+      "source": "twoFactor.setup"
+    },
+    {
+      "code": "TWO_FACTOR_QR_ALT",
+      "type": "LOCALIZED_STRING_SS",
+      "value": {
+        "en": "Setup code for your authenticator app. If you cannot scan it, use the setup key below."
+      },
+      "source": "twoFactor.qrAlt"
+    },
+    {
+      "code": "TWO_FACTOR_SECRET_LABEL",
+      "type": "LOCALIZED_STRING_SS",
+      "value": {
+        "en": "Setup key"
+      },
+      "source": "twoFactor.secretLabel"
+    },
+    {
+      "code": "TWO_FACTOR_SECRET_HINT",
+      "type": "LOCALIZED_STRING_SS",
+      "value": {
+        "en": "Cannot scan? Enter this key in your authenticator app instead. Spaces and letter case do not matter."
+      },
+      "source": "twoFactor.secretHint"
+    },
+    {
+      "code": "TWO_FACTOR_NOTICE",
+      "type": "LOCALIZED_STRING_SS",
+      "value": {
+        "en": "Your authenticator app is already set up. Open it to get your current code."
+      },
+      "source": "twoFactor.notice"
+    },
+    {
+      "code": "TWO_FACTOR_CODE_LABEL",
+      "type": "LOCALIZED_STRING_SS",
+      "value": {
+        "en": "Verification code"
+      },
+      "source": "twoFactor.codeLabel"
+    },
+    {
+      "code": "TWO_FACTOR_CODE_HINT",
+      "type": "LOCALIZED_STRING_SS",
+      "value": {
+        "en": "Six digits, from your authenticator app."
+      },
+      "source": "twoFactor.codeHint"
+    },
+    {
+      "code": "TWO_FACTOR_ERROR",
+      "type": "LOCALIZED_STRING_SS",
+      "value": {
+        "en": "That code did not work. Open your authenticator app for a new code and try again."
+      },
+      "source": "twoFactor.error"
+    },
+    {
+      "code": "TWO_FACTOR_BUTTON",
+      "type": "LOCALIZED_STRING_SS",
+      "value": {
+        "en": "Verify"
+      },
+      "source": "twoFactor.button"
+    },
+    {
+      "code": "TWO_FACTOR_NOTE",
+      "type": "LOCALIZED_STRING_SS",
+      "value": {
+        "en": "Codes are generated on your device. We will never ask you for one by email, message or phone."
+      },
+      "source": "twoFactor.note"
+    },
+    {
+      "code": "TWO_FACTOR_PITCH_TITLE",
+      "type": "LOCALIZED_STRING_SS",
+      "value": {
+        "en": "One more step before you’re in."
+      },
+      "source": "twoFactor.pitchTitle"
+    },
+    {
+      "code": "TWO_FACTOR_PITCH_BODY",
+      "type": "LOCALIZED_STRING_SS",
+      "value": {
+        "en": "This second step runs on the account service, not in the portal. Once your code is confirmed, you’ll be taken straight back to where you started."
+      },
+      "source": "twoFactor.pitchBody"
+    }
+  ],
+  "deferredParameters": []
+}

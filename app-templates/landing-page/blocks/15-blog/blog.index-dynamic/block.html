@@ -1,0 +1,37 @@
+<section class="blog-index" data-block="blog.index-dynamic" data-blog-index
+  data-blog-api-base="{{blog_api_base}}"
+  data-blog-organization="{{blog_organization}}"
+  data-blog-page-size="{{blog_page_size}}"
+  data-blog-max-results="{{blog_max_results}}"
+  data-blog-base-path="{{blog_base_path}}"
+  data-blog-post-path="{{blog_post_path}}"
+  data-blog-fixture-url="{{blog_fixture_url}}"
+  data-blog-read-label="{{read_article_label}}"
+  data-blog-empty-label="{{empty_label}}"
+  data-blog-error-label="{{error_label}}"
+  data-blog-filter-all-label="{{filter_all_label}}">
+  <div class="container blog-index__container">
+    <header class="blog-index__hero">
+      <p class="blog-index__eyebrow">{{eyebrow}}</p>
+      <h1 class="blog-index__title">{{title}}</h1>
+      <div class="blog-index__intro">
+        <div>
+          <h2>{{intro_heading}}</h2>
+          <p>{{intro_body}}</p>
+        </div>
+        <div>
+          <h3>{{secondary_heading}}</h3>
+          <p>{{secondary_body}}</p>
+        </div>
+      </div>
+    </header>
+
+    <div class="blog-index__status" data-blog-status role="status" aria-live="polite">{{loading_label}}</div>
+    <div class="blog-index__filters" data-blog-filters role="group" aria-label="{{filters_aria_label}}" hidden></div>
+    <article class="blog-index__featured" data-blog-featured hidden></article>
+    <div class="blog-index__grid" data-blog-grid aria-label="{{grid_aria_label}}"></div>
+    <div class="blog-index__actions">
+      <button class="blog-index__more" type="button" data-blog-more hidden>{{load_more_label}}</button>
+    </div>
+  </div>
+</section>

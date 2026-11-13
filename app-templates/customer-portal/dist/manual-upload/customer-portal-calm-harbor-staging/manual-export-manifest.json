@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "uploadPerformed": false,
+  "mode": "staging",
+  "launchState": "staging-only",
+  "input": "app-templates/customer-portal/content/cases/calm-harbor-spa.customer-portal-staging.json",
+  "template": {
+    "code": "CUSTOMER_PORTAL_CALM_HARBOR_STAGING",
+    "templateLanguage": "JTE",
+    "parameters": [],
+    "sha256": {
+      "head": "4c4081e5bbc919b52bc35e86c1b9e17ee59ce5fd127ef83e836a6ad498fe3d1a",
+      "html": "a0f2fed64fa1d0e423bf121c1dd06163b3ed765ca37b08fa3ed94bcc18d7b912",
+      "css": "7d4c43f93e4b962fb64b73c21827f38770253f56b1f564a753d0c2888b3e4199",
+      "javascript": "48079d6d2d10918b60ed068002e6d01ca4374672f1082e61277caab182a5dad5"
+    }
+  },
+  "runtime": {
+    "delivery": "inline-template-javascript",
+    "sameOriginRequired": true,
+    "openedModules": [
+      "appointments",
+      "orders",
+      "services",
+      "pricing",
+      "products",
+      "account",
+      "cart",
+      "checkout",
+      "purchases",
+      "plan",
+      "profile"
+    ],
+    "auth": {
+      "callbackPath": "/core/oauth2-callback.html",
+      "coreBase": "/core",
+      "flow": "oidc-authorization-code-pkce"
+    },
+    "pim": {
+      "apiBase": "/core-pim/api",
+      "organization": "CALM_HARBOR_SPA_STAGING",
+      "enrichmentMode": "current-api",
+      "pricingProductTypeCodes": [
+        "SPA_SERVICE",
+        "SPA_MEMBERSHIP",
+        "SPA_PACKAGE"
+      ],
+      "productsProductTypeCodes": [
+        "SPA_RETAIL"
+      ],
+      "priceTypeCode": "PRICE_CURRENCY",
+      "currency": "USD",
+      "currencyAttributeCode": "CURRENCY",
+      "currencyAttributeValues": [
+        "USD"
+      ],
+      "amountAttributeCode": "UNIT_PRICE",
+      "cta": "Browse services"
+    },
+    "account": {
+      "organization": "CALM_HARBOR_SPA_STAGING",
+      "coreApiBase": "/core",
+      "serviceApiBase": "/core-svc",
+      "resourceApiBase": "/core-rm",
+      "accountApiBase": "/core-acct",
+      "billApiBase": "/core-bill",
+      "accountTypeCode": "SPA_CUSTOMER"
+    }
+  }
+}

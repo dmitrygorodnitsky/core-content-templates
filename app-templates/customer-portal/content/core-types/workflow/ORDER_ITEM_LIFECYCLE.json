@@ -1,0 +1,170 @@
+{
+ "code": "ORDER_ITEM_LIFECYCLE",
+ "initialState": {
+  "code": "DRAFT"
+ },
+ "nls": {
+  "en": {
+   "NAME": "Order Item Lifecycle"
+  }
+ },
+ "entityType": "com.pixelnation.bill.domain.OrderItem",
+ "organization": {
+  "id": 1,
+  "code": "SYSTEM"
+ },
+ "states": [
+  {
+   "code": "ACTIVE",
+   "nls": {
+    "en": {
+     "NAME": "Active"
+    }
+   },
+   "events": [
+    {
+     "code": "ACTIVE-SUSPENDED",
+     "nls": {
+      "en": {
+       "NAME": "Suspend"
+      }
+     },
+     "targets": [
+      {
+       "code": "SUSPENDED"
+      }
+     ]
+    },
+    {
+     "code": "ACTIVE-COMPLETED",
+     "nls": {
+      "en": {
+       "NAME": "Complete"
+      }
+     },
+     "targets": [
+      {
+       "code": "COMPLETED"
+      }
+     ]
+    },
+    {
+     "code": "ACTIVE-CANCELED",
+     "nls": {
+      "en": {
+       "NAME": "Cancel"
+      }
+     },
+     "targets": [
+      {
+       "code": "CANCELED"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "code": "CANCELED",
+   "nls": {
+    "en": {
+     "NAME": "Canceled"
+    }
+   },
+   "events": []
+  },
+  {
+   "code": "COMPLETED",
+   "nls": {
+    "en": {
+     "NAME": "Completed"
+    }
+   },
+   "events": []
+  },
+  {
+   "code": "DRAFT",
+   "nls": {
+    "en": {
+     "NAME": "Draft"
+    }
+   },
+   "events": [
+    {
+     "code": "DRAFT-ACTIVE",
+     "nls": {
+      "en": {
+       "NAME": "Activate"
+      }
+     },
+     "targets": [
+      {
+       "code": "ACTIVE"
+      }
+     ]
+    },
+    {
+     "code": "DRAFT-CANCELED",
+     "nls": {
+      "en": {
+       "NAME": "Cancel"
+      }
+     },
+     "targets": [
+      {
+       "code": "CANCELED"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "code": "SUSPENDED",
+   "nls": {
+    "en": {
+     "NAME": "Suspended"
+    }
+   },
+   "events": [
+    {
+     "code": "SUSPENDED-ACTIVE",
+     "nls": {
+      "en": {
+       "NAME": "Resume"
+      }
+     },
+     "targets": [
+      {
+       "code": "ACTIVE"
+      }
+     ]
+    },
+    {
+     "code": "SUSPENDED-COMPLETED",
+     "nls": {
+      "en": {
+       "NAME": "Complete"
+      }
+     },
+     "targets": [
+      {
+       "code": "COMPLETED"
+      }
+     ]
+    },
+    {
+     "code": "SUSPENDED-CANCELED",
+     "nls": {
+      "en": {
+       "NAME": "Cancel"
+      }
+     },
+     "targets": [
+      {
+       "code": "CANCELED"
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

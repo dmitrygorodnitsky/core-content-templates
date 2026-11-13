@@ -1,0 +1,141 @@
+[
+  {
+    "code": "CHS_LANDING_06_PROOF_EYEBROW",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "EYEBROW",
+        "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+      }
+    },
+    "value": {
+      "en": "Why Calm Harbor Spa"
+    }
+  },
+  {
+    "code": "CHS_LANDING_06_PROOF_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "TITLE",
+        "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+      }
+    },
+    "value": {
+      "en": "A harbor, not an appointment mill"
+    }
+  },
+  {
+    "code": "CHS_LANDING_06_PROOF_IMAGE_URL",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "IMAGE URL",
+        "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+      }
+    },
+    "value": "/assets/customer-portal/calm-harbor-landing-staging/spa-room-1600.webp"
+  },
+  {
+    "code": "CHS_LANDING_06_PROOF_IMAGE_ALT",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "IMAGE ALT",
+        "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+      }
+    },
+    "value": {
+      "en": "Empty Calm Harbor treatment room with a linen-covered table, stone basin and folded towels by a window"
+    }
+  },
+  {
+    "code": "CHS_LANDING_06_PROOF_IMAGE_FOCAL",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "IMAGE FOCAL",
+        "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+      }
+    },
+    "value": "50% 58%"
+  },
+  {
+    "code": "CHS_LANDING_06_PROOF_ITEM_1_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "ITEM 1 TITLE",
+        "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+      }
+    },
+    "value": {
+      "en": "Quiet by design"
+    }
+  },
+  {
+    "code": "CHS_LANDING_06_PROOF_ITEM_1_DESC",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "ITEM 1 DESC",
+        "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+      }
+    },
+    "value": {
+      "en": "Single-guest rooms, warm tables, no double-booking — the hour is yours."
+    }
+  },
+  {
+    "code": "CHS_LANDING_06_PROOF_ITEM_2_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "ITEM 2 TITLE",
+        "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+      }
+    },
+    "value": {
+      "en": "Your specialist, every time"
+    }
+  },
+  {
+    "code": "CHS_LANDING_06_PROOF_ITEM_2_DESC",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "ITEM 2 DESC",
+        "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+      }
+    },
+    "value": {
+      "en": "Set a preferred specialist — priority rebooking keeps them on your routine."
+    }
+  },
+  {
+    "code": "CHS_LANDING_06_PROOF_ITEM_3_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "ITEM 3 TITLE",
+        "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+      }
+    },
+    "value": {
+      "en": "Routine remembered"
+    }
+  },
+  {
+    "code": "CHS_LANDING_06_PROOF_ITEM_3_DESC",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "ITEM 3 DESC",
+        "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+      }
+    },
+    "value": {
+      "en": "Pressure notes, skin sensitivities and product picks carry over visit to visit."
+    }
+  }
+]

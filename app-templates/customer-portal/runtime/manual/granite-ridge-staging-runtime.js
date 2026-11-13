@@ -1,0 +1,18750 @@
+(() => {
+  var __defProp = Object.defineProperty;
+  var __getOwnPropNames = Object.getOwnPropertyNames;
+  var __esm = (fn, res) => function __init() {
+    return fn && (res = (0, fn[__getOwnPropNames(fn)[0]])(fn = 0)), res;
+  };
+  var __export = (target, all) => {
+    for (var name in all)
+      __defProp(target, name, { get: all[name], enumerable: true });
+  };
+
+  // app-templates/customer-portal/runtime/data/live-care-fixtures.js
+  var live_care_fixtures_exports = {};
+  __export(live_care_fixtures_exports, {
+    careFixtures: () => careFixtures
+  });
+  var careFixtures;
+  var init_live_care_fixtures = __esm({
+    "app-templates/customer-portal/runtime/data/live-care-fixtures.js"() {
+      careFixtures = /* @__PURE__ */ Object.freeze({});
+    }
+  });
+
+  // app-templates/customer-portal/runtime/data/live-fixtures.js
+  var EMPTY_THEME = /* @__PURE__ */ Object.freeze({
+    slug: "beauty",
+    accent: "#df2f73",
+    hero: /* @__PURE__ */ Object.freeze({ badge: "", title: "", sub: "" }),
+    svc: /* @__PURE__ */ Object.freeze([]),
+    orderNames: /* @__PURE__ */ Object.freeze([]),
+    wt: /* @__PURE__ */ Object.freeze({ icon: "", trigger: "", past: "", sla: "" }),
+    plan: /* @__PURE__ */ Object.freeze({ name: "", plusName: "", tag: "", desc: "", headline: "", features: /* @__PURE__ */ Object.freeze([]), plusFeatures: /* @__PURE__ */ Object.freeze([]) }),
+    feat: /* @__PURE__ */ Object.freeze({ badge: "", title: "", desc: "", cta: "", fin: "" }),
+    cats: /* @__PURE__ */ Object.freeze([]),
+    products: /* @__PURE__ */ Object.freeze([]),
+    reminder: /* @__PURE__ */ Object.freeze({ title: "", desc: "" }),
+    prop: /* @__PURE__ */ Object.freeze({ svc: "", surfaces: /* @__PURE__ */ Object.freeze([]), months: "", unlimDesc: "", colA: "", colB: "", unitA: "", unitB: "" })
+  });
+  var EMPTY_THEMES = /* @__PURE__ */ Object.freeze({
+    HVAC: EMPTY_THEME,
+    "Snow Removal": EMPTY_THEME,
+    "Lawn & Garden": EMPTY_THEME,
+    "Pool & Spa": EMPTY_THEME,
+    Roofing: EMPTY_THEME,
+    "Pest Control": EMPTY_THEME,
+    Health: EMPTY_THEME,
+    Beauty: EMPTY_THEME
+  });
+  var EMPTY_SPA = /* @__PURE__ */ Object.freeze({
+    stagingOrders: /* @__PURE__ */ Object.freeze([]),
+    appointments: /* @__PURE__ */ Object.freeze({ upcoming: /* @__PURE__ */ Object.freeze([]), past: /* @__PURE__ */ Object.freeze([]), nextVariants: /* @__PURE__ */ Object.freeze({ salon: /* @__PURE__ */ Object.freeze([]), mobile: /* @__PURE__ */ Object.freeze([]) }), tzNote: "" }),
+    longCustomer: "",
+    modeLabels: /* @__PURE__ */ Object.freeze({ salon: "", mobile: "" }),
+    pim: /* @__PURE__ */ Object.freeze({ services: /* @__PURE__ */ Object.freeze([]), products: /* @__PURE__ */ Object.freeze([]) }),
+    statusBadges: /* @__PURE__ */ Object.freeze({})
+  });
+  var EMPTY_COMMERCE = /* @__PURE__ */ Object.freeze({
+    accountEntries: /* @__PURE__ */ Object.freeze([]),
+    appointmentDetails: /* @__PURE__ */ Object.freeze({}),
+    checkout: /* @__PURE__ */ Object.freeze({ ref: "", planQuote: null, planQuotes: /* @__PURE__ */ Object.freeze({}) }),
+    confirmations: /* @__PURE__ */ Object.freeze({ membership: null, plan: null, retail: null }),
+    offerNotes: /* @__PURE__ */ Object.freeze({ changed: "", unavailable: "" }),
+    planOffers: /* @__PURE__ */ Object.freeze([]),
+    plans: /* @__PURE__ */ Object.freeze({ byRef: /* @__PURE__ */ Object.freeze({}), scenarios: /* @__PURE__ */ Object.freeze({}), statusBadges: /* @__PURE__ */ Object.freeze({}) }),
+    purchaseByAppointment: /* @__PURE__ */ Object.freeze({}),
+    purchaseDetails: /* @__PURE__ */ Object.freeze({}),
+    purchases: /* @__PURE__ */ Object.freeze({ filters: /* @__PURE__ */ Object.freeze([]), kindFilter: /* @__PURE__ */ Object.freeze({}), kindLabels: /* @__PURE__ */ Object.freeze({}), list: /* @__PURE__ */ Object.freeze([]), nextPage: /* @__PURE__ */ Object.freeze([]), statusBadges: /* @__PURE__ */ Object.freeze({}) }),
+    retail: /* @__PURE__ */ Object.freeze({ products: /* @__PURE__ */ Object.freeze([]) })
+  });
+  var EMPTY_BOOKING = /* @__PURE__ */ Object.freeze({
+    ref: "",
+    days: /* @__PURE__ */ Object.freeze([]),
+    eligibleServices: /* @__PURE__ */ Object.freeze([]),
+    eligibleSpecialists: /* @__PURE__ */ Object.freeze([]),
+    specialists: /* @__PURE__ */ Object.freeze([]),
+    serviceForTitle: /* @__PURE__ */ Object.freeze({}),
+    displayTotals: null,
+    hold: /* @__PURE__ */ Object.freeze({ ref: "", untilLabel: "", note: "" }),
+    reviewLocation: "",
+    policy: "",
+    policyNote: "",
+    creditNotes: /* @__PURE__ */ Object.freeze({ ok: "", unavailable: "", exhausted: "", changed: "" })
+  });
+  var F = /* @__PURE__ */ Object.freeze({
+    // PAL and TINTS are design tokens, not fixture data. The accepted design
+    // declares four pairs and every call site indexes `[i % 4]`, so trimming them
+    // to one entry both destroyed the accepted four-colour rhythm and made
+    // `pal[1]` throw on the second row of any list — which is what crashed the
+    // Prices & memberships tab. Copied verbatim from
+    // design-inbox/data/fixtures.js; keep them in step with it.
+    //
+    // The fixture boundary exists to keep invented *customer data* out of
+    // production. Colours are not customer data, and stripping them is not what
+    // it is for.
+    PAL: /* @__PURE__ */ Object.freeze([
+      /* @__PURE__ */ Object.freeze(["var(--accent)", "rgba(var(--accent-rgb),.12)"]),
+      /* @__PURE__ */ Object.freeze(["#1f8a44", "rgba(52,199,89,.16)"]),
+      /* @__PURE__ */ Object.freeze(["#ff8a3d", "rgba(255,159,10,.16)"]),
+      /* @__PURE__ */ Object.freeze(["#7a52e0", "rgba(122,82,224,.16)"])
+    ]),
+    TINTS: /* @__PURE__ */ Object.freeze([
+      /* @__PURE__ */ Object.freeze(["var(--accent)", "linear-gradient(160deg,rgba(var(--accent-rgb),.18),rgba(var(--accent-rgb),.32))"]),
+      /* @__PURE__ */ Object.freeze(["#1f8a44", "linear-gradient(160deg,#dcf5e2,#bff0cf)"]),
+      /* @__PURE__ */ Object.freeze(["#ff8a3d", "linear-gradient(160deg,#ffe9d6,#ffd3ad)"]),
+      /* @__PURE__ */ Object.freeze(["#7a52e0", "linear-gradient(160deg,#eee6ff,#d8c6ff)"])
+    ]),
+    themeSlugs: /* @__PURE__ */ Object.freeze({}),
+    themes: EMPTY_THEMES,
+    statusMeta: /* @__PURE__ */ Object.freeze({}),
+    technician: /* @__PURE__ */ Object.freeze({}),
+    pstatus: /* @__PURE__ */ Object.freeze({}),
+    customer: /* @__PURE__ */ Object.freeze({ firstName: "", fullName: "", name: "", greeting: "", subline: "" }),
+    MONTHS: /* @__PURE__ */ Object.freeze([]),
+    buildFeed: function() {
+      return [];
+    },
+    feedTabs: /* @__PURE__ */ Object.freeze([]),
+    initialMessages: /* @__PURE__ */ Object.freeze([]),
+    quickReplies: /* @__PURE__ */ Object.freeze([]),
+    helpTopics: /* @__PURE__ */ Object.freeze([]),
+    chatReply: function() {
+      return "";
+    },
+    stormCalendar: /* @__PURE__ */ Object.freeze({}),
+    spa: EMPTY_SPA,
+    spaCommerce: EMPTY_COMMERCE,
+    spaServerCart: function() {
+      return { version: "", lines: [], displayTotals: null, fulfillment: null };
+    },
+    spaBooking: EMPTY_BOOKING,
+    spaProfileSrv: /* @__PURE__ */ Object.freeze({ version: "", phone: "", email: "", preferences: /* @__PURE__ */ Object.freeze([]), allowedActions: /* @__PURE__ */ Object.freeze([]) }),
+    addresses: /* @__PURE__ */ Object.freeze([]),
+    cards: /* @__PURE__ */ Object.freeze([]),
+    proposal: /* @__PURE__ */ Object.freeze({}),
+    proposalSites: /* @__PURE__ */ Object.freeze([]),
+    surfaceDefs: /* @__PURE__ */ Object.freeze({}),
+    MOB_CLEAR: 0,
+    MOB_DEICE: 0,
+    planName: "",
+    ordersFor: function() {
+      return [];
+    }
+  });
+
+  // app-templates/customer-portal/runtime/data/live-case-fixtures.js
+  function caseFixtureFor() {
+    return null;
+  }
+  function caseVerticalFor() {
+    return null;
+  }
+  function cloneCaseValue(value) {
+    if (value === void 0 || value === null) return value;
+    return JSON.parse(JSON.stringify(value));
+  }
+
+  // app-templates/customer-portal/runtime/src/config.js
+  var SIGNED_OUT_DESTINATIONS = /* @__PURE__ */ Object.freeze(["sign-in", "landing"]);
+  var LANDING_REASON_PARAMETER = "portal";
+  var LANDING_ENTRY_REASONS = /* @__PURE__ */ Object.freeze({ signedOut: "signed-out", noAccess: "no-access" });
+  var ACCOUNT_NO_ACCESS_STATES = /* @__PURE__ */ Object.freeze(["customer-not-linked", "organization-forbidden", "customer-forbidden"]);
+  var portalProfiles = {
+    onDemand: {
+      id: "onDemand",
+      nav: [
+        { key: "orders.list", label: "Orders" },
+        { key: "care" },
+        { key: "proposals.list", label: "Proposals" },
+        { key: "services", label: "Services" },
+        { key: "pricing", label: "Pricing" },
+        { key: "products", label: "Products" },
+        { key: "support", label: "Support" }
+      ],
+      primary: { label: "+ Book", action: "booking.open" },
+      modules: ["orders", "calendar", "activity", "proposals", "care", "services", "pricing", "products", "checkout", "profile", "support"],
+      weatherCalendar: false,
+      showCart: true,
+      drawerTitle: "Book a service"
+    },
+    stormOps: {
+      id: "stormOps",
+      nav: [
+        { key: "orders.list", label: "Home" },
+        { key: "calendar", label: "Calendar" },
+        { key: "care" },
+        { key: "proposals.list", label: "Contracts" },
+        { key: "services", label: "Services" },
+        { key: "activity", label: "Activity" },
+        { key: "support", label: "Support" }
+      ],
+      primary: { label: "Request service", action: "service.request" },
+      modules: ["orders", "calendar", "activity", "proposals", "care", "services", "profile", "support"],
+      weatherCalendar: true,
+      showCart: false,
+      drawerTitle: "Request service"
+    },
+    appointments: {
+      id: "appointments",
+      nav: [
+        { key: "orders.list", label: "Appointments" },
+        { key: "calendar", label: "Calendar" },
+        { key: "care" },
+        { key: "services", label: "Services" },
+        { key: "pricing", label: "Pricing" },
+        { key: "products", label: "Products" },
+        { key: "support", label: "Support" }
+      ],
+      primary: { label: "+ Book", action: "booking.open" },
+      modules: ["orders", "calendar", "care", "services", "pricing", "products", "checkout", "profile", "support"],
+      weatherCalendar: false,
+      showCart: true,
+      drawerTitle: "Book an appointment"
+    },
+    stormRetail: {
+      id: "stormRetail",
+      nav: [
+        { key: "overview", label: "Home" },
+        { key: "appointments", label: "Appointments" },
+        { key: "proposals.list", label: "Orders" },
+        { key: "contracts.list", label: "Contracts" },
+        { key: "invoices", label: "Invoices" },
+        { key: "calendar", label: "Calendar" },
+        { key: "care" },
+        { key: "support", label: "Support" }
+      ],
+      primary: { label: "Request a quote", action: "service.requestForm" },
+      modules: ["overview", "appointmentsTimeline", "properties", "invoices", "orders", "calendar", "activity", "proposals", "care", "pricing", "profile", "support"],
+      weatherCalendar: true,
+      showCart: false,
+      drawerTitle: "Request service",
+      customerAccountProfile: true
+    },
+    spaStaging: {
+      id: "spaStaging",
+      nav: [
+        { key: "orders.list", label: "Orders" },
+        { key: "services", label: "Services & prices" },
+        { key: "products", label: "Shop", secondary: true },
+        { key: "account", label: "Account" }
+      ],
+      primary: { label: "Browse services", action: "nav.go" },
+      modules: ["orders", "services", "pricing", "products", "account"],
+      weatherCalendar: false,
+      showCart: false,
+      drawerTitle: "Book an appointment"
+    },
+    spaTarget: {
+      id: "spaTarget",
+      nav: [
+        { key: "orders.list", label: "Appointments" },
+        { key: "services", label: "Services & prices" },
+        { key: "products", label: "Shop", secondary: true },
+        { key: "account", label: "Account" }
+      ],
+      primary: { label: "+ Book", action: "booking.open" },
+      modules: ["appointments", "orders", "services", "pricing", "products", "account", "purchases", "plan", "cart", "checkout", "profile"],
+      weatherCalendar: false,
+      showCart: false,
+      drawerTitle: "Book an appointment"
+    }
+  };
+  var verticalProfiles = {
+    hvac: vertical("hvac", "HVAC", "onDemand", "Equipment"),
+    snow: vertical("snow", "Snow Removal", "stormOps", "Season log"),
+    lawn: vertical("lawn", "Lawn & Garden", "stormOps", "Program"),
+    pool: vertical("pool", "Pool & Spa", "stormOps", "Water"),
+    roofing: vertical("roofing", "Roofing", "stormOps", "Roof report"),
+    pest: vertical("pest", "Pest Control", "stormOps", "Monitoring"),
+    health: vertical("health", "Health", "appointments", "Care plan", false),
+    beauty: vertical("beauty", "Beauty", "spaStaging", "My routine", false)
+  };
+  var routeRegistry = {
+    "seo.landing": { id: "seo.landing", path: "/seo-preview", module: "seo-parity", public: true, parityOnly: true },
+    "auth.oidc": { id: "auth.oidc", path: "/login", module: "auth", public: true },
+    "auth.phone": { id: "auth.phone", path: "/login/phone-reference", module: "auth", public: true },
+    "auth.code": { id: "auth.code", path: "/login/verify", module: "auth", public: true },
+    "request.confirm": { id: "request.confirm", path: "/request/confirm", module: "auth", public: true, sessionFree: true, requestEvent: "confirm" },
+    "request.cancel": { id: "request.cancel", path: "/request/cancel", module: "auth", public: true, sessionFree: true, requestEvent: "cancel" },
+    "auth.setPassword": { id: "auth.setPassword", path: "/set-password", module: "auth", public: true, sessionFree: true },
+    overview: { id: "overview", path: "/overview", module: "overview" },
+    appointments: { id: "appointments", path: "/appointments", module: "appointmentsTimeline" },
+    "visit.detail": { id: "visit.detail", path: "/visits/:id", module: "appointmentsTimeline", param: "id" },
+    "property.detail": { id: "property.detail", path: "/properties/:id", module: "properties", param: "id" },
+    invoices: { id: "invoices", path: "/invoices", module: "invoices" },
+    "invoice.detail": { id: "invoice.detail", path: "/invoices/:id", module: "invoices", param: "id" },
+    "orders.list": { id: "orders.list", path: "/orders", module: "orders" },
+    "order.detail": { id: "order.detail", path: "/orders/:id", module: "orders", param: "id" },
+    "appointment.detail": { id: "appointment.detail", path: "/appointments/:id", module: "appointments", param: "id" },
+    calendar: { id: "calendar", path: "/calendar", module: "calendar" },
+    activity: { id: "activity", path: "/activity", module: "activity" },
+    services: { id: "services", path: "/services", module: "services" },
+    pricing: { id: "pricing", path: "/pricing", module: "pricing" },
+    products: { id: "products", path: "/products", module: "products" },
+    "product.detail": { id: "product.detail", path: "/products/:id", module: "products", param: "id" },
+    checkout: { id: "checkout", path: "/checkout", module: "checkout" },
+    account: { id: "account", path: "/account", module: "account", ownedByProfile: true },
+    "purchases.list": { id: "purchases.list", path: "/purchases", module: "purchases" },
+    "purchase.detail": { id: "purchase.detail", path: "/purchases/:id", module: "purchases", param: "id" },
+    plan: { id: "plan", path: "/account/plan", module: "plan" },
+    cart: { id: "cart", path: "/cart", module: "cart" },
+    "proposals.list": { id: "proposals.list", path: "/proposals", module: "proposals" },
+    "proposal.detail": { id: "proposal.detail", path: "/proposals/:id", module: "proposals", param: "id" },
+    "proposal.approve": { id: "proposal.approve", path: "/proposals/:id/approve/:quote", module: "proposals", param: "id" },
+    "contracts.list": { id: "contracts.list", path: "/contracts", module: "proposals", liveOnly: true },
+    "agreement.detail": { id: "agreement.detail", path: "/agreements/:id", module: "proposals", param: "id" },
+    "quote.new": { id: "quote.new", path: "/quote/new", module: "proposals", liveOnly: true },
+    profile: { id: "profile", path: "/profile", module: "profile" },
+    support: { id: "support", path: "/support", module: "support" },
+    "support.new": { id: "support.new", path: "/support/new", module: "support", liveOnly: true },
+    "support.ticket": { id: "support.ticket", path: "/support/tickets/:id", module: "support", param: "id", liveOnly: true },
+    care: { id: "care", path: "/care", module: "care", access: "care" }
+  };
+  var routeMatchers = Object.values(routeRegistry).map(function(route) {
+    var names = [];
+    var pattern = route.path.split("/").map(function(segment) {
+      if (segment.charAt(0) !== ":") return escapeRegExp(segment);
+      names.push(segment.slice(1));
+      return "([^/]+)";
+    }).join("/");
+    return { route, names, expression: new RegExp("^" + pattern + "/?$") };
+  });
+  function matchRoutePath(pathname) {
+    var cleanPath = String(pathname || "/").split(/[?#]/, 1)[0] || "/";
+    for (var i = 0; i < routeMatchers.length; i += 1) {
+      var matcher = routeMatchers[i];
+      var match = cleanPath.match(matcher.expression);
+      if (!match) continue;
+      var params = {};
+      try {
+        matcher.names.forEach(function(name, index) {
+          params[name] = decodeURIComponent(match[index + 1]);
+        });
+      } catch (_) {
+        return null;
+      }
+      return { id: matcher.route.id, params };
+    }
+    return null;
+  }
+  function normalizeVertical(value) {
+    if (!value) return "hvac";
+    var normalized = String(value).trim().toLowerCase();
+    if (verticalProfiles[normalized]) return normalized;
+    var match = Object.values(verticalProfiles).find(function(profile) {
+      return profile.displayName.toLowerCase() === normalized;
+    });
+    return match ? match.slug : "hvac";
+  }
+  function resolveProfile(vertical2, requestedProfile) {
+    var verticalConfig = verticalProfiles[vertical2] || verticalProfiles.hvac;
+    var candidate = portalProfiles[requestedProfile] ? requestedProfile : verticalConfig.profile;
+    if (portalProfiles[candidate].weatherCalendar && !verticalConfig.weather) return verticalConfig.profile;
+    return candidate;
+  }
+  function readPortalConfig(root) {
+    var dataset = root ? root.dataset : {};
+    var vertical2 = normalizeVertical(dataset.portalVertical);
+    var theme = normalizeVertical(dataset.portalTheme || vertical2);
+    var verticalConfig = verticalProfiles[vertical2];
+    var enabledModules = splitList(dataset.portalEnabledModules);
+    var profile = resolveProfile(vertical2, dataset.portalProfile);
+    var dataMode = allowed(dataset.portalDataMode, ["fixture", "live"], "fixture");
+    var caseId = dataMode === "fixture" && caseVerticalFor(dataset.portalCase) === vertical2 ? dataset.portalCase : "";
+    return {
+      experienceId: dataset.portalExperienceId || "local-preview",
+      brandName: dataset.portalProviderName || dataset.portalBrandName || verticalConfig.displayName,
+      brandLogoImageId: /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/.test(dataset.portalBrandLogoId || "") ? dataset.portalBrandLogoId : "",
+      landingUrl: safeConfiguredUrl(dataset.portalLandingUrl),
+      portalUrl: safeConfiguredUrl(dataset.portalUrl),
+      supportUrl: safeConfiguredUrl(dataset.portalSupportUrl),
+      logoutReturnUrl: safeConfiguredUrl(dataset.portalLogoutReturnUrl),
+      registrationUrl: safeConfiguredUrl(dataset.portalRegistrationUrl),
+      allowedNavOrigins: splitList(dataset.portalAllowedNavOrigins),
+      signedOutDestination: allowed(dataset.portalSignedOutDestination, SIGNED_OUT_DESTINATIONS, "sign-in"),
+      navigation: {
+        primary: dataset.portalNavPrimaryLabel || "",
+        appointments: dataset.portalNavAppointmentsLabel || "",
+        invoices: dataset.portalNavInvoicesLabel || "",
+        calendar: dataset.portalNavCalendarLabel || "",
+        activity: dataset.portalNavActivityLabel || "",
+        care: dataset.portalNavCareLabel || "",
+        proposals: dataset.portalNavProposalsLabel || "",
+        contracts: dataset.portalNavContractsLabel || "",
+        services: dataset.portalNavServicesLabel || "",
+        pricing: dataset.portalNavPricingLabel || "",
+        products: dataset.portalNavProductsLabel || "",
+        account: dataset.portalNavAccountLabel || "",
+        support: dataset.portalNavSupportLabel || ""
+      },
+      primaryCtaLabel: dataset.portalPrimaryCtaLabel || "",
+      taxesNote: copyText(dataset.portalTaxesNote, "Plus applicable taxes."),
+      requestLinkCopy: requestLinkCopy(dataset),
+      vertical: vertical2,
+      theme,
+      profile,
+      capability: allowed(dataset.portalCapability, ["current-staging", "target-appointments"], "current-staging"),
+      booking: allowed(dataset.portalBooking, ["closed", "open"], "closed"),
+      retail: allowed(dataset.portalRetail, ["browse-only", "retail-commerce-open"], "browse-only"),
+      planCommerce: allowed(dataset.portalPlanCommerce, ["closed", "open"], "closed"),
+      demoCommands: allowed(dataset.portalDemoCommands, ["closed", "current-api"], "closed"),
+      anonymousIntentMode: allowed(dataset.portalAnonymousIntentMode, ["closed", "selection-only"], "closed"),
+      anonymousIntentTtlSeconds: boundedInteger(dataset.portalAnonymousIntentTtlSeconds, 1800, 60, 86400),
+      anonymousIntentMaxItems: boundedInteger(dataset.portalAnonymousIntentMaxItems, 10, 1, 50),
+      anonymousIntentReconciliationMode: allowed(dataset.portalAnonymousIntentReconciliation, ["authenticated-server"], "authenticated-server"),
+      registrationMode: allowed(dataset.portalRegistrationMode, ["closed", "core-auth"], "closed"),
+      organization: dataset.portalOrganization || dataset.portalPimOrganization || "SERVICEWAND",
+      coreApiBase: dataset.portalCoreApiBase || "/core",
+      accountApiBase: dataset.portalAccountApiBase || "/core-acct",
+      billApiBase: dataset.portalBillApiBase || "/core-bill",
+      serviceApiBase: dataset.portalServiceApiBase || "/core-svc",
+      resourceApiBase: dataset.portalResourceApiBase || "/core-rm",
+      accountTypeCode: dataset.portalAccountTypeCode || "SPA_CUSTOMER",
+      authCoreBase: dataset.portalAuthCoreBase || "/core",
+      authCallbackPath: dataset.portalAuthCallbackPath || "/core/oauth2-callback.html",
+      authReturnStorageKey: dataset.portalAuthReturnStorageKey || "oidc-return-url",
+      authLogoutReturnStorageKey: dataset.portalAuthLogoutReturnStorageKey || "oidc-logout-return-url",
+      requestFormUrl: safeConfiguredUrl(dataset.portalRequestFormUrl),
+      timeZone: readTimeZone(dataset.portalTimeZone),
+      weatherClientId: browserCredential(dataset.portalWeatherClientId),
+      weatherClientSecret: browserCredential(dataset.portalWeatherClientSecret),
+      mapsApiKey: browserCredential(dataset.portalMapsApiKey),
+      mapsMapId: browserCredential(dataset.portalMapsMapId),
+      serviceGeography: readServiceGeography(dataset.portalServiceGeography),
+      routerMode: allowed(dataset.portalRouterMode, ["hash", "history", "memory"], "hash"),
+      authMode: allowed(dataset.portalAuthMode, ["fixture", "required"], "fixture"),
+      defaultRoute: routeRegistry[dataset.portalDefaultRoute] ? dataset.portalDefaultRoute : verticalConfig.defaultRoute,
+      enabledModules: enabledModules.length ? enabledModules : portalProfiles[profile].modules.slice(),
+      errorMode: allowed(dataset.portalErrorMode, ["error", "fallback"], "error"),
+      dataMode,
+      caseId,
+      pimFixtureUrl: dataset.portalPimFixtureUrl || "",
+      pimApiBase: dataset.portalPimApiBase || "/core-pim/api",
+      pimOrganization: dataset.portalPimOrganization || "SERVICEWAND",
+      pimEnrichmentMode: allowed(dataset.portalPimEnrichment, ["closed", "current-api"], "closed"),
+      pimProductTypeCode: dataset.portalPimProductTypeCode || "SERVICEWAND_SAAS",
+      pimPricingProductTypeCodes: splitList(dataset.portalPimPricingProductTypeCodes),
+      pimProductsProductTypeCodes: splitList(dataset.portalPimProductsProductTypeCodes),
+      pimCurrency: dataset.portalPimCurrency || "CAD",
+      // Defaults follow the SYSTEM price types. `PRICE_CURRENCY` is the abstract
+      // root, so with `includeChildPriceTypes` it covers `PER_UNIT` (retail,
+      // services, packages) and `PER_UNIT_RECURRENT` (memberships) alike; naming
+      // either child directly loses the other.
+      pimPriceTypeCode: dataset.portalPimPriceTypeCode || "PRICE_CURRENCY",
+      // The price-attribute filter defaults to OFF, and an empty deployment
+      // attribute must keep it off. Under the SYSTEM types a one-time price
+      // carries no INTERVAL at all, so any non-empty filter drops every
+      // non-recurring row and the catalog comes back empty. Defaulting these to
+      // `INTERVAL`/`1` meant clearing them in the CMS silently restored them.
+      pimPriceAttributeCode: dataset.portalPimPriceAttributeCode || "",
+      pimPriceAttributeValues: splitList(dataset.portalPimPriceAttributeValues || ""),
+      pimCurrencyAttributeCode: dataset.portalPimCurrencyAttributeCode || "CURRENCY",
+      pimCurrencyAttributeValues: splitList(dataset.portalPimCurrencyAttributeValues || dataset.portalPimCurrency || "CAD"),
+      pimAmountAttributeCode: dataset.portalPimAmountAttributeCode || "UNIT_PRICE",
+      pimAmountMinorDivisor: positiveNumber(dataset.portalPimAmountMinorDivisor, 100),
+      pimCta: dataset.portalPimCta || "",
+      defaultMode: allowed(dataset.portalDefaultMode, ["light", "dark"], "light")
+    };
+  }
+  function customerAccountRequired(config) {
+    return !!config && config.dataMode === "live" && config.authMode === "required";
+  }
+  function customerAccountProfile(config) {
+    var profile = config && portalProfiles[config.profile];
+    return !!(profile && profile.customerAccountProfile);
+  }
+  function configuredExternalUrl(config, key) {
+    var value = config && config[key];
+    if (!value) return "";
+    var parsed2;
+    try {
+      parsed2 = new URL(value, globalThis.location && globalThis.location.href);
+    } catch (_) {
+      return "";
+    }
+    if (parsed2.protocol !== "https:") return "";
+    var allowedOrigins = config.allowedNavOrigins || [];
+    return allowedOrigins.includes(parsed2.origin) ? parsed2.href : "";
+  }
+  function landingEntryUrl(config, reason) {
+    var landing = configuredExternalUrl(config, "landingUrl");
+    if (!landing || !reason) return landing;
+    var url = new URL(landing);
+    url.searchParams.set(LANDING_REASON_PARAMETER, reason);
+    return url.href;
+  }
+  function landingEntryOpen(config) {
+    return !!config && config.signedOutDestination === "landing" && customerAccountRequired(config) && !!landingEntryUrl(config);
+  }
+  function readTimeZone(value) {
+    var zone = typeof value === "string" ? value.trim() : "";
+    if (!zone) return null;
+    try {
+      return new Intl.DateTimeFormat("en-US", { timeZone: zone }).resolvedOptions().timeZone;
+    } catch (_) {
+      return null;
+    }
+  }
+  function safeConfiguredUrl(value) {
+    if (!value) return "";
+    try {
+      var parsed2 = new URL(value);
+      return parsed2.protocol === "https:" ? parsed2.href : "";
+    } catch (_) {
+      return "";
+    }
+  }
+  function routePath(routeId, params) {
+    var route = routeRegistry[routeId];
+    if (!route) return "/";
+    var values = params || {};
+    return route.path.replace(/:([a-zA-Z0-9_]+)/g, function(_, name) {
+      if (values[name] === void 0 || values[name] === null || values[name] === "") {
+        throw new Error("Missing route parameter " + name + " for " + routeId);
+      }
+      return encodeURIComponent(String(values[name]));
+    });
+  }
+  function readServiceGeography(raw) {
+    if (typeof raw !== "string" || !raw.trim()) return null;
+    var parsed2;
+    try {
+      parsed2 = JSON.parse(raw);
+    } catch (_) {
+      return null;
+    }
+    if (!parsed2 || typeof parsed2 !== "object") return null;
+    var map = readGeoMap(parsed2.map);
+    var zones = readGeoZones(parsed2.zones);
+    if (!map || !zones) return null;
+    return { map, zones };
+  }
+  function readGeoMap(value) {
+    if (!value || typeof value !== "object") return null;
+    var center = readGeoPoint(value.center);
+    var zoom = finiteNumber(value.zoom);
+    if (!center) return null;
+    if (!Number.isFinite(zoom) || zoom < 0 || zoom > 22) return null;
+    return { center, zoom };
+  }
+  function readGeoZones(value) {
+    if (!value || typeof value !== "object") return null;
+    var zones = {};
+    var names = /* @__PURE__ */ Object.keys(value);
+    for (var index = 0; index < names.length; index += 1) {
+      var point = readGeoPoint(value[names[index]]);
+      if (!point) return null;
+      zones[names[index]] = point;
+    }
+    return names.length ? zones : null;
+  }
+  function readGeoPoint(value) {
+    if (!value || typeof value !== "object") return null;
+    var lat = finiteNumber(value.lat);
+    var lon = finiteNumber(value.lon);
+    if (!Number.isFinite(lat) || lat < -90 || lat > 90) return null;
+    if (!Number.isFinite(lon) || lon < -180 || lon > 180) return null;
+    return { lat, lon };
+  }
+  function finiteNumber(value) {
+    if (typeof value === "number") return value;
+    if (typeof value === "string" && value.trim() !== "") return Number(value);
+    return Number.NaN;
+  }
+  var REQUEST_LINK_COPY = /* @__PURE__ */ Object.freeze({
+    confirmTitle: ["portalRequestConfirmTitle", "Confirm your quote request"],
+    confirmBody: ["portalRequestConfirmBody", "Confirm that you asked us for a quote, and we will start preparing it."],
+    confirmButton: ["portalRequestConfirmButton", "Confirm my request"],
+    cancelTitle: ["portalRequestCancelTitle", "Cancel your quote request?"],
+    cancelBody: ["portalRequestCancelBody", "We will not prepare a quote, and you will receive no more emails about this request. This cannot be undone."],
+    cancelButton: ["portalRequestCancelButton", "Cancel my request"],
+    confirming: ["portalRequestConfirming", "Confirming your request\u2026"],
+    confirmedTitle: ["portalRequestConfirmedTitle", "Your email is confirmed"],
+    confirmedBody: ["portalRequestConfirmedBody", "Thank you. Your request is being processed, and we will be in touch."],
+    cancelling: ["portalRequestCancelling", "Cancelling your request\u2026"],
+    cancelledTitle: ["portalRequestCancelledTitle", "Your request was cancelled"],
+    cancelledBody: ["portalRequestCancelledBody", "We will not prepare a quote, and no more emails will be sent about this request."],
+    invalidTitle: ["portalRequestLinkInvalidTitle", "This link is no longer valid"],
+    invalidBody: ["portalRequestLinkInvalidBody", "It may already have been used, or the request was already confirmed or cancelled."],
+    failedTitle: ["portalRequestLinkFailedTitle", "We could not reach our system"],
+    failedBody: ["portalRequestLinkFailedBody", "Nothing was changed. Check your connection and try again."],
+    retry: ["portalRequestLinkRetry", "Try again"],
+    unconfirmedTitle: ["portalRequestLinkUnconfirmedTitle", "We could not confirm that yet"],
+    unconfirmedBody: ["portalRequestLinkUnconfirmedBody", "Our system has not recorded it. Check again in a moment. If this does not change, the request was already confirmed or cancelled."],
+    checkAgain: ["portalRequestLinkCheckAgain", "Check again"]
+  });
+  function requestLinkCopy(dataset) {
+    var copy = {};
+    (/* @__PURE__ */ Object.keys(REQUEST_LINK_COPY)).forEach(function(key) {
+      copy[key] = copyText(dataset[REQUEST_LINK_COPY[key][0]], REQUEST_LINK_COPY[key][1]);
+    });
+    return copy;
+  }
+  function copyText(value, fallback) {
+    var text10 = String(value || "").trim();
+    return !text10 || text10 === "#" || /\$\{[A-Z0-9_]+@/.test(text10) ? fallback : text10;
+  }
+  function browserCredential(value) {
+    var token = String(value || "").trim();
+    return /^[A-Za-z0-9_-]+$/.test(token) ? token : "";
+  }
+  function vertical(slug, displayName, profile, careNavLabel, weather) {
+    return {
+      slug,
+      displayName,
+      profile,
+      careNavLabel,
+      modules: portalProfiles[profile].modules.slice(),
+      defaultRoute: "orders.list",
+      weather: weather !== false
+    };
+  }
+  function allowed(value, values, fallback) {
+    return values.includes(value) ? value : fallback;
+  }
+  function splitList(value) {
+    return String(value || "").split(",").map(function(item) {
+      return item.trim();
+    }).filter(Boolean);
+  }
+  function positiveNumber(value, fallback) {
+    var parsed2 = Number(value);
+    return Number.isFinite(parsed2) && parsed2 > 0 ? parsed2 : fallback;
+  }
+  function boundedInteger(value, fallback, minimum, maximum) {
+    var parsed2 = Number(value);
+    return Number.isInteger(parsed2) && parsed2 >= minimum && parsed2 <= maximum ? parsed2 : fallback;
+  }
+  function escapeRegExp(value) {
+    return value.replace(/[|\\{}()[\]^$+*?.]/g, "\\$&");
+  }
+
+  // app-templates/customer-portal/runtime/src/normalizers/core-record.js
+  function text(value) {
+    return typeof value === "string" ? value.trim() : value == null ? "" : String(value).trim();
+  }
+  function positiveInteger(value) {
+    var number = typeof value === "number" ? value : typeof value === "string" && value.trim() !== "" ? Number(value) : Number.NaN;
+    return Number.isInteger(number) && number > 0 ? number : null;
+  }
+  function latestStateCode(row) {
+    var states = Array.isArray(row && row.states) ? row.states : [];
+    var last = states[states.length - 1];
+    return text(last && last.code);
+  }
+  function attributeEntry(row, code) {
+    var buckets = row && row.attributes;
+    if (!buckets || typeof buckets !== "object") return null;
+    var keys = /* @__PURE__ */ Object.keys(buckets);
+    for (var index = 0; index < keys.length; index += 1) {
+      var bucket2 = buckets[keys[index]];
+      if (bucket2 && Object.prototype.hasOwnProperty.call(bucket2, code)) return bucket2[code];
+    }
+    return null;
+  }
+  function attributeNumber(row, code) {
+    var entry2 = attributeEntry(row, code);
+    return entry2 ? positiveInteger(entry2.value) : null;
+  }
+  function attributeText(row, code) {
+    var entry2 = attributeEntry(row, code);
+    return entry2 && entry2.value != null ? text(entry2.value) : "";
+  }
+
+  // app-templates/customer-portal/runtime/src/normalizers/postal-address.js
+  var POSTAL_CODE = /^(?:[A-Z]\d[A-Z] ?\d[A-Z]\d|\d{5}(?:-\d{4})?)$/i;
+  var COUNTRY_CODE = /^[A-Z]{2}$/;
+  var REGION_CODE = /^[A-Z]{2,3}$/;
+  var NORTH_AMERICAN_PHONE = /^\+?1(\d{3})(\d{3})(\d{4})$/;
+  var PHONE_PUNCTUATION = /[\s().-]/g;
+  function formatPostalAddress(address) {
+    if (!address || typeof address !== "object") return "";
+    return formatAddressParts({
+      lines: [address.address1, address.address2],
+      city: address.city,
+      region: address.state && typeof address.state === "object" ? address.state.code : "",
+      postalCode: address.postalCode,
+      country: address.country && typeof address.country === "object" ? address.country.code || address.country.id : ""
+    });
+  }
+  function formatAddressParts(parts) {
+    var segments = [];
+    var country = plain(parts.country);
+    appendSegments(segments, parts.lines || []);
+    var last = segments[segments.length - 1];
+    if (last && COUNTRY_CODE.test(last) && segments.slice(0, -1).some(isPostalCode)) {
+      country = country || last;
+      segments.pop();
+    }
+    appendSegments(segments, [parts.city, parts.region]);
+    var postal = plain(parts.postalCode) || segments.filter(isPostalCode).pop() || "";
+    if (postal) {
+      segments = segments.filter(function(segment) {
+        return comparable(segment) !== comparable(postal);
+      });
+      if (segments.some(function(segment) {
+        return comparable(segment).indexOf(comparable(postal)) !== -1;
+      })) postal = "";
+    }
+    if (country) {
+      segments = segments.filter(function(segment) {
+        return comparable(segment) !== comparable(country);
+      });
+    }
+    last = segments[segments.length - 1];
+    if (postal && last && REGION_CODE.test(last)) {
+      segments[segments.length - 1] = last + " " + postal;
+      postal = "";
+    }
+    if (postal) segments.push(postal);
+    if (country) segments.push(countryName(country));
+    return segments.join(", ");
+  }
+  function addressRepeats(title, address) {
+    var street = comparable(plain(address).split(",")[0]);
+    return !!street && comparable(title).indexOf(street) !== -1;
+  }
+  function formatPhone(value) {
+    var stored = plain(value);
+    var match = NORTH_AMERICAN_PHONE.exec(stored.replace(PHONE_PUNCTUATION, ""));
+    return match ? "+1 " + match[1] + "-" + match[2] + "-" + match[3] : stored;
+  }
+  function countryName(code) {
+    var value = plain(code);
+    if (!COUNTRY_CODE.test(value)) return value;
+    try {
+      var name = new Intl.DisplayNames(["en"], { type: "region" }).of(value);
+      return name || value;
+    } catch (_) {
+      return value;
+    }
+  }
+  function appendSegments(segments, values) {
+    values.forEach(function(value) {
+      plain(value).split(",").forEach(function(piece) {
+        var segment = piece.replace(/\s+/g, " ").trim();
+        if (segment && !segments.some(function(known) {
+          return comparable(known) === comparable(segment);
+        })) segments.push(segment);
+      });
+    });
+  }
+  function isPostalCode(segment) {
+    return POSTAL_CODE.test(segment);
+  }
+  function comparable(value) {
+    return plain(value).toLowerCase().replace(/[^a-z0-9]/g, "");
+  }
+  function plain(value) {
+    if (typeof value === "string") return value.trim();
+    return typeof value === "number" && Number.isFinite(value) ? String(value) : "";
+  }
+
+  // app-templates/customer-portal/runtime/src/normalizers/account-profile.js
+  var ACCOUNT_PROFILE_SCOPE_MODES = /* @__PURE__ */ Object.freeze(["server-scoped", "browser-filtered"]);
+  var LEGAL_CONTACT = "LEGAL";
+  var BILLING_ADDRESS = "BILLING";
+  var LEGAL_ADDRESS = "LEGAL";
+  var EMAIL_ENTRY = "EMAIL";
+  var PHONE_ENTRY = "PHONE";
+  var MEDIA_ID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
+  function providerOf(organization) {
+    if (!organization || typeof organization !== "object") return null;
+    var regions = attributeEntry(organization, "REGIONS");
+    var listed = regions && Array.isArray(regions.value) ? regions.value : [];
+    var logo = text(organization.image && organization.image.id);
+    return {
+      name: localizedName(organization.nls),
+      logoImageId: MEDIA_ID.test(logo) ? logo : "",
+      regions: listed.map(plain2).filter(function(region, index, all) {
+        return !!region && all.indexOf(region) === index;
+      })
+    };
+  }
+  function normalizeAccountProfile(raw) {
+    var source = raw && typeof raw === "object" ? raw : {};
+    var account = source.account && typeof source.account === "object" && !Array.isArray(source.account) ? source.account : null;
+    if (!account) return accountProfileFailure("profile-unavailable");
+    var primary = primaryContact(account.contacts);
+    var contact = primary ? { name: [plain2(primary.firstName), plain2(primary.lastName)].filter(Boolean).join(" "), firstName: plain2(primary.firstName), title: plain2(primary.title) } : null;
+    var emails = primary ? entryValues(primary.contactEntries, EMAIL_ENTRY) : [];
+    var phones = primary ? entryValues(primary.contactEntries, PHONE_ENTRY).map(formatPhone) : [];
+    var billingAddresses = typedAddresses(account.addresses, BILLING_ADDRESS);
+    var editable = {
+      firstName: primary ? plain2(primary.firstName) : "",
+      lastName: primary ? plain2(primary.lastName) : "",
+      email: primary ? firstEntryValue(primary.contactEntries, EMAIL_ENTRY) : "",
+      phone: primary ? formatPhone(firstEntryValue(primary.contactEntries, PHONE_ENTRY)) : "",
+      billingAddress: oldestTypedAddress(account.addresses, BILLING_ADDRESS)
+    };
+    var filled = [!!(contact && contact.name), emails.length > 0, phones.length > 0, billingAddresses.length > 0];
+    return {
+      state: filled.every(Boolean) ? "ready" : filled.some(Boolean) ? "partial" : "empty",
+      reasonCode: null,
+      scopeMode: ACCOUNT_PROFILE_SCOPE_MODES.indexOf(source.scopeMode) === -1 ? null : source.scopeMode,
+      accountName: localizedName(account.nls),
+      provider: providerOf(account.organization),
+      contact,
+      emails,
+      phones,
+      billingAddresses,
+      editable,
+      allowedActions: []
+    };
+  }
+  function contractDetailsPrefill(account, clientTypes) {
+    var row = account && typeof account === "object" && !Array.isArray(account) ? account : {};
+    var legal = primaryContact(row.contacts);
+    var legalType = attributeText(row, "LEGAL_ENTITY_TYPE").toUpperCase();
+    var billing = rows(row.addresses).filter(function(link) {
+      return rows(link.types).some(function(type) {
+        return text(type.code) === BILLING_ADDRESS;
+      });
+    }).sort(byIdAscending)[0];
+    var legalAddress = rows(row.addresses).filter(function(link) {
+      return rows(link.types).some(function(type) {
+        return text(type.code) === LEGAL_ADDRESS;
+      });
+    }).sort(byIdAscending)[0];
+    return {
+      LEGAL_NAME: localizedName(row.nls),
+      CLIENT_TYPE: clientTypes.indexOf(legalType) === -1 ? "" : legalType,
+      BILLING_ADDRESS: billing && billing.address ? plain2(billing.address.address1) : "",
+      LEGAL_ADDRESS: legalAddress && legalAddress.address ? formatPostalAddress(legalAddress.address) : "",
+      REPRESENTATIVE_FIRST_NAME: legal ? plain2(legal.firstName) : "",
+      REPRESENTATIVE_LAST_NAME: legal ? plain2(legal.lastName) : "",
+      REPRESENTATIVE_JOB_TITLE: legal ? plain2(legal.title) : "",
+      REPRESENTATIVE_EMAIL: legal ? firstEntryValue(legal.contactEntries, EMAIL_ENTRY) : "",
+      REPRESENTATIVE_PHONE: legal ? firstEntryValue(legal.contactEntries, PHONE_ENTRY) : ""
+    };
+  }
+  function accountParty(account, clientTypeLabels) {
+    var row = account && typeof account === "object" && !Array.isArray(account) ? account : null;
+    if (!row) return null;
+    var legal = primaryContact(row.contacts);
+    var legalType = attributeText(row, "LEGAL_ENTITY_TYPE").toUpperCase();
+    return {
+      legalName: localizedName(row.nls),
+      clientType: (clientTypeLabels && Object.prototype.hasOwnProperty.call(clientTypeLabels, legalType) ? clientTypeLabels[legalType] : "") || "",
+      billingAddress: oldestTypedAddress(row.addresses, BILLING_ADDRESS),
+      representativeName: legal ? [plain2(legal.firstName), plain2(legal.lastName)].filter(Boolean).join(" ") : "",
+      representativeJobTitle: legal ? plain2(legal.title) : "",
+      email: legal ? firstEntryValue(legal.contactEntries, EMAIL_ENTRY) : "",
+      phone: legal ? formatPhone(firstEntryValue(legal.contactEntries, PHONE_ENTRY)) : ""
+    };
+  }
+  function accountProfileFailure(code) {
+    return {
+      state: code === "customer-forbidden" ? "unauthorized" : code === "profile-unavailable" ? "unavailable" : "error",
+      reasonCode: code || "profile-load-failed",
+      scopeMode: null,
+      accountName: "",
+      contact: null,
+      emails: [],
+      phones: [],
+      billingAddresses: [],
+      editable: null,
+      allowedActions: []
+    };
+  }
+  function formatAccountAddress(address) {
+    return formatPostalAddress(address);
+  }
+  function primaryContact(contacts) {
+    var primaries = rows(contacts).filter(function(contact) {
+      return text(contact.type && contact.type.code) === LEGAL_CONTACT;
+    });
+    return primaries.sort(byIdAscending)[0] || null;
+  }
+  function entryValues(entries, typeCode) {
+    var values = [];
+    rows(entries).forEach(function(entry2) {
+      if (text(entry2.type && entry2.type.code) !== typeCode) return;
+      var value = plain2(entry2.value);
+      if (value && values.indexOf(value) === -1) values.push(value);
+    });
+    return values;
+  }
+  function firstEntryValue(entries, typeCode) {
+    var entry2 = rows(entries).filter(function(row) {
+      return text(row.type && row.type.code) === typeCode && plain2(row.value);
+    }).sort(byIdAscending)[0];
+    return entry2 ? plain2(entry2.value) : "";
+  }
+  function oldestTypedAddress(addresses, typeCode) {
+    var link = rows(addresses).filter(function(row) {
+      return rows(row.types).some(function(type) {
+        return text(type.code) === typeCode;
+      });
+    }).sort(byIdAscending)[0];
+    return link ? formatAccountAddress(link.address) : "";
+  }
+  function typedAddresses(addresses, typeCode) {
+    var formatted = [];
+    rows(addresses).filter(function(row) {
+      return rows(row.types).some(function(type) {
+        return text(type.code) === typeCode;
+      });
+    }).sort(byIdDescending).forEach(function(row) {
+      var line = formatAccountAddress(row.address);
+      if (line && formatted.indexOf(line) === -1) formatted.push(line);
+    });
+    return formatted;
+  }
+  function byIdAscending(left, right) {
+    return compareIds(left, right, 1);
+  }
+  function byIdDescending(left, right) {
+    return compareIds(left, right, -1);
+  }
+  function compareIds(left, right, direction) {
+    var a = positiveInteger(left && left.id);
+    var b = positiveInteger(right && right.id);
+    if (a === b) return 0;
+    if (a === null) return 1;
+    if (b === null) return -1;
+    return (a - b) * direction;
+  }
+  function rows(value) {
+    return Array.isArray(value) ? value.filter(function(row) {
+      return row && typeof row === "object";
+    }) : [];
+  }
+  function localizedName(value) {
+    if (!value || typeof value !== "object") return "";
+    var localized = value.en || value["en-US"] || Object.values(value)[0] || {};
+    return plain2(localized && (localized.NAME || localized.name));
+  }
+  function plain2(value) {
+    if (typeof value === "string") return value.trim();
+    return typeof value === "number" && Number.isFinite(value) ? String(value) : "";
+  }
+
+  // app-templates/customer-portal/runtime/src/normalizers/overview.js
+  var OVERVIEW_STATUS = {
+    issue: {
+      label: "Issue Opened",
+      copy: "Your request is being reviewed. We\u2019ll get back to you shortly."
+    },
+    enroute: {
+      label: "En Route",
+      copy: "Our team is on the way to this property."
+    },
+    onsite: {
+      label: "In progress",
+      copy: "Our crew is at this property."
+    },
+    scheduled: {
+      label: "Scheduled",
+      copy: "Service is scheduled for this property."
+    },
+    monitoring: {
+      label: "Active Monitoring",
+      copy: "We\u2019re monitoring conditions and will dispatch service when needed."
+    }
+  };
+  var OPEN_TICKET_STATES = ["SUBMITTED", "IN_PROGRESS", "ESCALATED", "NEW", "WAITING"];
+  function propertyStatus(property) {
+    var ticket = property && property.ticket;
+    if (ticket && OPEN_TICKET_STATES.indexOf(ticket.state) !== -1) return "issue";
+    var appointment = property && property.appointment;
+    if (appointment && appointment.state === "IN_PROGRESS") return "enroute";
+    if (appointment && appointment.state === "SCHEDULED") return "scheduled";
+    return "monitoring";
+  }
+  function propertyWeather(property, frame) {
+    if (propertyStatus(property) === "issue") return "issue";
+    return zoneWeather(property, frame);
+  }
+  function zoneWeather(property, frame) {
+    var zones = frame && frame.zones || null;
+    var zone = property && property.zone;
+    if (zones && zone && zones[zone]) return zones[zone];
+    return frame && frame.kind || "clear";
+  }
+  function clampFrameIndex(timeline, index) {
+    var total = timeline && timeline.length || 0;
+    if (!total) return 0;
+    if (index < 0) return 0;
+    if (index > total - 1) return total - 1;
+    return index;
+  }
+  function serviceDayCount(properties, dayIndex) {
+    if (!properties || !Number.isFinite(dayIndex)) return 0;
+    return properties.filter(function(property) {
+      return property.appointment && property.appointment.dayIndex === dayIndex;
+    }).length;
+  }
+  function appointmentDay(appointment, timeline) {
+    var frame = appointment && Number.isFinite(appointment.dayIndex) && timeline && timeline[appointment.dayIndex];
+    return frame ? frame.day + " " + frame.date : "";
+  }
+  function sectionAvailable(model, section) {
+    return !!model && sourceOpened(model.sources, section);
+  }
+  function sourceOpened(sources, section) {
+    return !sources || sources[section] === "ready";
+  }
+  var PROPERTY_STATUS_SOURCES = ["appointments", "support", "contracts"];
+  function propertyStatusKnown(sources) {
+    return PROPERTY_STATUS_SOURCES.every(function(section) {
+      return sourceOpened(sources, section);
+    });
+  }
+  function knownPropertyStatus(property, sources) {
+    if (propertyStatusKnown(sources)) return propertyStatus(property);
+    if (ticketsKnown(sources) && propertyStatus(property) === "issue") return "issue";
+    return visitsKnown(sources) ? visitStatus(property) : null;
+  }
+  function ticketsKnown(sources) {
+    return !!sources && sources.support === "ready";
+  }
+  function visitsKnown(sources) {
+    return !!sources && sources.visits === "ready";
+  }
+  function visitStatus(property) {
+    var appointment = property && property.appointment;
+    if (appointment && appointment.state === "IN_PROGRESS") return "onsite";
+    if (appointment && appointment.state === "SCHEDULED") return "scheduled";
+    return null;
+  }
+  function invoiceBuckets(invoices) {
+    var outstanding = invoices && invoices.outstanding || [];
+    var paid = invoices && invoices.paidThisMonth || [];
+    var overdue = outstanding.filter(function(invoice) {
+      return invoice.state === "OVERDUE";
+    });
+    var thisMonth = outstanding.filter(function(invoice) {
+      return invoice.state === "DUE_THIS_MONTH";
+    });
+    return {
+      overdue: bucket(overdue),
+      outstanding: bucket(outstanding),
+      dueThisMonth: bucket(thisMonth),
+      paidThisMonth: bucket(paid)
+    };
+  }
+  function bucket(rows2) {
+    return {
+      count: rows2.length,
+      amount: rows2.reduce(function(running, invoice) {
+        return running + (Number(invoice.amount) || 0);
+      }, 0)
+    };
+  }
+  function money(amount) {
+    return "$" + Number(amount || 0).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  }
+  function formatArea(squareFeet) {
+    return Number.isFinite(squareFeet) && squareFeet > 0 ? new Intl.NumberFormat("en-US", { maximumFractionDigits: 0 }).format(squareFeet) + " ft\xB2" : "";
+  }
+  function propertyHighlights(property) {
+    return [formatArea(property && property.areaSqft), property && property.planId ? "Plan approved" : ""].filter(Boolean);
+  }
+
+  // app-templates/customer-portal/runtime/src/normalizers/weather.js
+  var DAY_NAMES = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  var MONTH_NAMES = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  var SNOW_CODES = ["S", "SI", "BS", "BY", "WM", "SW"];
+  var FREEZING_CODES = ["ZR", "ZL", "ZY", "IP", "IC"];
+  var THUNDER_CODES = ["T"];
+  var STORM_TEMP_C = -5;
+  var STORM_SNOW_CM = 2;
+  var STORM_POP = 40;
+  var WEATHER_LEGEND = /* @__PURE__ */ Object.freeze([
+    /* @__PURE__ */ Object.freeze({ key: "clear", label: "Clear" }),
+    /* @__PURE__ */ Object.freeze({ key: "snow", label: "Snow" }),
+    /* @__PURE__ */ Object.freeze({ key: "freezing", label: "Freezing rain" }),
+    /* @__PURE__ */ Object.freeze({ key: "storm", label: "Storm warning" }),
+    /* @__PURE__ */ Object.freeze({ key: "issue", label: "Issue opened" })
+  ]);
+  function frameDay(date, index) {
+    return index === 0 ? "Today" : DAY_NAMES[date.getDay()];
+  }
+  function frameDate(date) {
+    return MONTH_NAMES[date.getMonth()] + " " + date.getDate();
+  }
+  function periodKind(period) {
+    var coded6 = String(period && period.weatherPrimaryCoded || "");
+    var precipitation = coded6.split(":")[2] || "";
+    if (FREEZING_CODES.indexOf(precipitation) !== -1) return "freezing";
+    if (SNOW_CODES.indexOf(precipitation) !== -1) {
+      var snow = num(period.snowCM);
+      var feels = num(period.minFeelslikeC);
+      var stormy = Number.isFinite(snow) && snow >= STORM_SNOW_CM || Number.isFinite(feels) && feels <= STORM_TEMP_C;
+      return stormy ? "storm" : "snow";
+    }
+    if (THUNDER_CODES.indexOf(precipitation) !== -1 && num(period.pop) >= STORM_POP) return "storm";
+    return "clear";
+  }
+  function periodTemp(period) {
+    var value = num(period && period.maxTempC);
+    if (!Number.isFinite(value)) return "\u2014";
+    return (value < 0 ? "\u2212" : "") + Math.abs(Math.round(value)) + "\xB0C";
+  }
+  function periodStats(period) {
+    return [
+      { label: "Precipitation", value: statValue(period.pop, "%") },
+      { label: "Wind", value: windValue(period) },
+      { label: "Feels like", value: tempValue(period.minFeelslikeC) },
+      { label: "Humidity", value: statValue(period.humidity, "%") }
+    ];
+  }
+  function periodNote(period) {
+    var reading = periodReading(period);
+    return [reading.forecast, reading.service].filter(Boolean).join(" \xB7 ");
+  }
+  function periodForecastNote(period) {
+    return periodReading(period).forecast;
+  }
+  function periodReading(period) {
+    var kind = periodKind(period);
+    if (kind === "freezing") return { forecast: "Freezing precipitation", service: "de-icing expected" };
+    var snow = num(period && period.snowCM);
+    if (Number.isFinite(snow) && snow >= STORM_SNOW_CM) return { forecast: "Snowfall " + round1(snow) + " cm forecast", service: "trigger met" };
+    if (kind === "storm") {
+      var feels = num(period && period.minFeelslikeC);
+      if (Number.isFinite(feels) && feels <= STORM_TEMP_C) return { forecast: "Feels like " + tempValue(feels) + " \xB7 refreeze risk overnight", service: "" };
+      return { forecast: "Storm risk " + statValue(period && period.pop, "%"), service: "crews on standby" };
+    }
+    if (Number.isFinite(snow) && snow > 0) return { forecast: "Snowfall " + round1(snow) + " cm forecast", service: "below the 2 cm trigger" };
+    return { forecast: "", service: "Below the service trigger" };
+  }
+  function forecastDay(period) {
+    return {
+      kind: periodKind(period),
+      temp: periodTemp(period),
+      phrase: String(period && period.weather || "").split(",")[0],
+      note: periodNote(period),
+      forecastNote: periodForecastNote(period)
+    };
+  }
+  function buildTimeline(zonePeriods, zoneOrder) {
+    var lead2 = zonePeriods[zoneOrder[0]];
+    if (!Array.isArray(lead2) || !lead2.length) throw new Error("The lead zone returned no periods");
+    return lead2.map(function(period, index) {
+      var date = periodDate(period);
+      var zones = {};
+      var candidates = [];
+      zoneOrder.forEach(function(zone) {
+        var periods = zonePeriods[zone];
+        var match = Array.isArray(periods) && periods[index] || period;
+        zones[zone] = periodKind(match);
+        candidates.push(match);
+      });
+      var headline = worstPeriod(candidates);
+      return {
+        day: frameDay(date, index),
+        date: frameDate(date),
+        kind: periodKind(headline),
+        temp: periodTemp(headline),
+        label: String(headline.weather || "").split(",")[0] || "Forecast",
+        note: periodNote(headline),
+        forecastNote: periodForecastNote(headline),
+        stats: periodStats(headline),
+        zones
+      };
+    });
+  }
+  var SEVERITY = { clear: 0, snow: 1, freezing: 2, storm: 3 };
+  function worstPeriod(periods) {
+    return periods.reduce(function(running, period) {
+      var severity = SEVERITY[periodKind(period)];
+      var runningSeverity = SEVERITY[periodKind(running)];
+      if (severity !== runningSeverity) return severity > runningSeverity ? period : running;
+      return (num(period.snowCM) || 0) > (num(running.snowCM) || 0) ? period : running;
+    });
+  }
+  function periodDate(period) {
+    var seconds = num(period && period.timestamp);
+    if (Number.isFinite(seconds)) return new Date(seconds * 1e3);
+    return new Date(String(period && period.dateTimeISO));
+  }
+  function num(value) {
+    if (value === null || value === void 0 || value === "") return Number.NaN;
+    return Number(value);
+  }
+  function round1(value) {
+    return Math.round(value * 10) / 10;
+  }
+  function statValue(value, unit) {
+    var number = num(value);
+    return Number.isFinite(number) ? Math.round(number) + unit : "\u2014";
+  }
+  function tempValue(value) {
+    var number = num(value);
+    if (!Number.isFinite(number)) return "\u2014";
+    return (number < 0 ? "\u2212" : "") + Math.abs(Math.round(number)) + "\xB0C";
+  }
+  function windValue(period) {
+    var speed = num(period && period.windSpeedMaxKPH);
+    if (!Number.isFinite(speed)) speed = num(period && period.windSpeedKPH);
+    if (!Number.isFinite(speed)) return "\u2014";
+    var direction = period && (period.windDirMax || period.windDir);
+    return Math.round(speed) + " km/h" + (direction ? " " + direction : "");
+  }
+
+  // app-templates/customer-portal/runtime/src/normalizers/property-map.js
+  var POPUP_WIDTH = 288;
+  var POPUP_HEIGHT = 250;
+  var PIN_HEIGHT = 36;
+  var PIN_HALF_WIDTH = 18;
+  var GAP = 10;
+  var EDGE = 8;
+  var LOWER_PART = 0.55;
+  var FORECAST_DECIMALS = 2;
+  function geoPoint(lat, lon) {
+    var latitude = coordinate(lat, 90);
+    var longitude = coordinate(lon, 180);
+    if (latitude === null || longitude === null) return null;
+    if (latitude === 0 && longitude === 0) return null;
+    return { lat: latitude, lon: longitude };
+  }
+  function propertyPoint(property) {
+    return property ? geoPoint(property.lat, property.lon) : null;
+  }
+  function addressKey(address) {
+    if (typeof address !== "string") return "";
+    return address.normalize("NFKC").toLowerCase().replace(/\s+/g, " ").replace(/\s*,\s*/g, ", ").replace(/^[\s,]+|[\s,]+$/g, "");
+  }
+  function forecastPoint(point) {
+    var factor = Math.pow(10, FORECAST_DECIMALS);
+    return { lat: Math.round(point.lat * factor) / factor, lon: Math.round(point.lon * factor) / factor };
+  }
+  function weatherLabel(kind, legend) {
+    var items = legend && legend.length ? legend : WEATHER_LEGEND;
+    var match = items.find(function(item) {
+      return item.key === kind;
+    });
+    return match ? match.label : "";
+  }
+  function weatherReading(kind, frame, legend) {
+    if (frame && kind === frame.kind && frame.label) return frame.label;
+    return weatherLabel(kind, legend);
+  }
+  function popupWeather(frame, zoneKind, source, entry2, index, sources) {
+    var day = frame.day + " " + frame.date;
+    if (entry2 && entry2.state === "loading") return { state: "loading", day, source: "xweather" };
+    var own2 = entry2 && entry2.state === "ready" && Array.isArray(entry2.days) ? entry2.days[index] : null;
+    if (own2) {
+      var note = sourceOpened(sources, "contracts") ? own2.note : own2.forecastNote || "";
+      return { state: "property", day, kind: own2.kind, temp: own2.temp, phrase: own2.phrase, note, source: "xweather" };
+    }
+    return {
+      state: entry2 && entry2.state === "failed" ? "failed" : "area",
+      day,
+      kind: zoneKind,
+      temp: frame.temp,
+      phrase: zoneKind === frame.kind ? frame.label || "" : "",
+      note: "",
+      source: source === "xweather" ? "xweather" : "sample"
+    };
+  }
+  function popupDocks(frameWidth) {
+    return frameWidth > 0 && frameWidth < 2 * (POPUP_WIDTH + PIN_HALF_WIDTH + GAP + EDGE);
+  }
+  function popupPlacement(anchor, frame, size) {
+    var width = size && size.width > 0 ? size.width : POPUP_WIDTH;
+    var height = size && size.height > 0 ? size.height : POPUP_HEIGHT;
+    var room = {
+      below: frame.height - EDGE - anchor.y - GAP,
+      above: anchor.y - PIN_HEIGHT - GAP - EDGE,
+      right: frame.width - EDGE - anchor.x - PIN_HALF_WIDTH - GAP,
+      left: anchor.x - PIN_HALF_WIDTH - GAP - EDGE
+    };
+    var preferred = anchor.y > frame.height * LOWER_PART ? "above" : "below";
+    var other = preferred === "above" ? "below" : "above";
+    var side = height <= room[preferred] ? preferred : height <= room[other] ? other : width <= Math.max(room.right, room.left) ? room.right >= room.left ? "right" : "left" : preferred;
+    var top = side === "above" ? anchor.y - PIN_HEIGHT - GAP - height : side === "below" ? anchor.y + GAP : anchor.y - PIN_HEIGHT / 2 - height / 2;
+    var left = side === "right" ? anchor.x + PIN_HALF_WIDTH + GAP : side === "left" ? anchor.x - PIN_HALF_WIDTH - GAP - width : anchor.x - width / 2;
+    return {
+      side,
+      left: clamp(left, EDGE, frame.width - width - EDGE),
+      top: clamp(top, EDGE, frame.height - height - EDGE)
+    };
+  }
+  function coordinate(value, limit) {
+    var number = typeof value === "number" ? value : typeof value === "string" && value.trim() !== "" ? Number(value) : Number.NaN;
+    return Number.isFinite(number) && Math.abs(number) <= limit ? number : null;
+  }
+  function clamp(value, low, high) {
+    if (high < low) return low;
+    return Math.min(Math.max(value, low), high);
+  }
+
+  // app-templates/customer-portal/runtime/src/normalizers/contracts.js
+  var QUOTE_ORDER_TYPES = /* @__PURE__ */ Object.freeze(["FIELD_SERVICE_ORDER", "WINTER_SERVICES_ORDER"]);
+  var CUSTOMER_ORDER_STATUS = /* @__PURE__ */ Object.freeze({
+    ACCEPTED: "approved",
+    ACTIVE: "approved",
+    SUSPENDED: "approved",
+    COMPLETED: "approved",
+    CANCELED: "cancelled",
+    CUSTOMER_CHANGES_REQUESTED: "revision",
+    DECLINED: "declined",
+    QUOTE_SENT: "unseen"
+  });
+  var OPERATOR_ORDER_STATES = /* @__PURE__ */ Object.freeze(["CHANGES_REQUESTED", "DRAFT", "QUOTE_APPROVED", "QUOTE_PREPARED"]);
+  var PRICING_MODELS = /* @__PURE__ */ Object.freeze({
+    PER_SERVICE: "Per service",
+    MONTHLY: "Monthly",
+    SEASONAL: "Seasonal"
+  });
+  var RECURRING_MODEL = /* @__PURE__ */ Object.freeze({ code: "RECURRING", label: "Recurring" });
+  var PRICE_PERIODS = /* @__PURE__ */ Object.freeze({
+    PER_SERVICE: "per visit",
+    MONTHLY: "/ month",
+    SEASONAL: "per season"
+  });
+  var CONTRACT_CLIENT_TYPES = /* @__PURE__ */ Object.freeze([
+    /* @__PURE__ */ Object.freeze({ code: "INDIVIDUAL", label: "Individual" }),
+    /* @__PURE__ */ Object.freeze({ code: "UNINCORPORATED_BUSINESS", label: "Unincorporated business" }),
+    /* @__PURE__ */ Object.freeze({ code: "CORPORATE", label: "Corporation" }),
+    /* @__PURE__ */ Object.freeze({ code: "ASSOCIATION", label: "Association" }),
+    /* @__PURE__ */ Object.freeze({ code: "GOVERNMENT", label: "Government" })
+  ]);
+  var CLIENT_TYPES = /* @__PURE__ */ Object.freeze(CONTRACT_CLIENT_TYPES.reduce(function(labels, type) {
+    labels[type.code] = type.label;
+    return labels;
+  }, { ORGANIZATION: "Organization" }));
+  var QUOTE_REQUEST_OUTCOMES = /* @__PURE__ */ Object.freeze(["PROCESSING", "ACCEPTED", "REFUSED", "FAILED"]);
+  var SCOPE_MODES = /* @__PURE__ */ Object.freeze(["server-scoped", "browser-filtered", "unscoped"]);
+  var ORDER_ACTIONS = { unseen: ["approve", "changes", "decline"] };
+  var AGREEMENT_ACTIONS = { SENT_TO_CLIENT: ["approve"] };
+  var AGREEMENT_OPERATION_STATUS_KEY = "AGREEMENT_OPERATION_STATUS";
+  var FAILED_OPERATION_STATES = /* @__PURE__ */ Object.freeze({
+    SENT_TO_CLIENT: /* @__PURE__ */ Object.freeze({ AGREEMENT_DELIVERY_FAILED: "AGREEMENT_SEND_FAILED" }),
+    CLIENT_APPROVED: /* @__PURE__ */ Object.freeze({ ACTIVATION_FAILED: "ACTIVATION_FAILED" })
+  });
+  var PRICING_MODEL_RANK = ["PER_SERVICE", "MONTHLY", "SEASONAL", RECURRING_MODEL.code];
+  var MONTH_UNIT = "MONTH";
+  var MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  var SCHEMATIC_X = [18, 82];
+  var SCHEMATIC_Y = [24, 76];
+  var SCHEMATIC_MIN_SPAN = 0.01;
+  var STAGE_ORDER = ["approval", "drafting", "approved", "active", "suspended", "expired", "archived", "canceled"];
+  var APPROVED_SERVICE_STAGES = ["drafting", "approval", "approved", "active", "suspended", "expired", "archived"];
+  var CURRENT_SERVICE_STAGES = ["active", "approved", "approval", "drafting", "suspended"];
+  var PENDING_STATUSES = ["unseen", "revision"];
+  var CLOSED_DECISIONS = ["approved", "declined", "cancelled"];
+  var TERMS_DEPTH_LIMIT = 4;
+  var HEADING_LINE = /^#{1,6}\s+(.+)$/;
+  var ITEM_LINE = /^[-*•]\s+(.+)$/;
+  var NUMBERED_LINE = /^(\d+(?:\.\d+)+[.)]?|\d+[.)])\s+(.+)$/;
+  var MANAGEMENT = agreementStage("drafting", "Pending management approval", "scheduled");
+  var APPROVED = agreementStage("approved", "Approved", "ok");
+  var SIGNED_AGREEMENT_STATE = "CLIENT_APPROVED";
+  var CANCELED_ORDER_STATE = "CANCELED";
+  var AGREEMENT_STAGES = /* @__PURE__ */ Object.freeze({
+    DRAFT: agreementStage("drafting", "Being prepared", "scheduled"),
+    PENDING_MANAGEMENT_APPROVAL: MANAGEMENT,
+    INTERNALLY_APPROVED: MANAGEMENT,
+    CLIENT_CHANGES_REQUESTED: MANAGEMENT,
+    SENT_TO_CLIENT: agreementStage("approval", "Sent for your approval", "warn"),
+    AGREEMENT_SEND_FAILED: agreementStage("approval", "Being sent to you", "warn"),
+    CLIENT_APPROVED: APPROVED,
+    ACTIVATION_FAILED: APPROVED,
+    ARCHIVED: agreementStage("archived", "Archived", "scheduled"),
+    CANCELED: agreementStage("canceled", "Cancelled", "scheduled")
+  });
+  var ORDER_SERVICE_STAGES = /* @__PURE__ */ Object.freeze({
+    ACTIVE: agreementStage("active", "Active", "ok"),
+    SUSPENDED: agreementStage("suspended", "Suspended", "warn"),
+    COMPLETED: agreementStage("expired", "Expired", "scheduled")
+  });
+  function normalizeContracts(raw) {
+    var source = raw && typeof raw === "object" ? raw : {};
+    var reads = source.reads && typeof source.reads === "object" ? source.reads : {};
+    var catalog = {
+      orderItems: readRows(source.orderItems),
+      productPrices: readRows(source.productPrices),
+      products: readRows(source.products)
+    };
+    var quotes = normalizeQuoteOrders(source.quoteOrders, catalog);
+    var agreementRows = readRows(source.agreements);
+    var contents = readRows(source.agreementContents) || [];
+    var agreements = (agreementRows || []).map(function(row) {
+      return normalizeServiceAgreement(row, source.client, contents);
+    }).filter(Boolean);
+    var orderRows = readRows(source.quoteOrders);
+    var request = quoteRequestOf(source.quoteRequest);
+    return {
+      accountId: positiveInteger(source.accountId),
+      scopeMode: scopeModeOf(source.scopeMode),
+      reads: readSummaries(reads),
+      agreements,
+      orders: quotes.orders,
+      withheldBackendIds: quotes.withheldBackendIds,
+      preparing: quotes.preparing || requestPreparing(request, quotes.orders),
+      sources: {
+        agreements: agreementRows ? "ready" : failedRead(reads.agreements),
+        orders: orderRows ? "ready" : failedRead(reads.orders),
+        lines: catalog.orderItems ? "ready" : failedRead(reads.orderItems),
+        prices: catalog.productPrices ? "ready" : failedRead(reads.productPrices),
+        products: catalog.products ? "ready" : failedRead(reads.products)
+      },
+      truncated: (/* @__PURE__ */ Object.keys(reads)).some(function(key) {
+        return !!(reads[key] && reads[key].truncated);
+      })
+    };
+  }
+  function normalizeQuoteOrders(payload, catalog) {
+    var lines = lineCatalog(catalog);
+    var orders = [];
+    var withheld = [];
+    var preparing = false;
+    listRows(payload).forEach(function(row) {
+      if (!row || typeof row !== "object") return;
+      if (QUOTE_ORDER_TYPES.indexOf(text(row.type && row.type.code)) === -1) return;
+      var backendId = positiveInteger(row.id);
+      if (!backendId) return;
+      var stateCode = latestStateCode(row);
+      var status = own(CUSTOMER_ORDER_STATUS, stateCode);
+      if (!status) {
+        if (OPERATOR_ORDER_STATES.indexOf(stateCode) !== -1) {
+          preparing = true;
+          withheld.push(backendId);
+        }
+        return;
+      }
+      var currency = currencyCode(row.currency);
+      var charges = totalBeforeTaxes(row);
+      var total = orderTotal(charges, row.currency);
+      var quoteLines = linesOf(row, backendId, currency, lines);
+      var pricingModel = recordedModel(row) || priceVariant(backendId, lines);
+      orders.push({
+        id: "quote-core-" + backendId,
+        backendId,
+        propertyBackendId: attributeNumber(row, "SERVICE_PROPERTY"),
+        stateCode,
+        status,
+        pricingModel,
+        pricing: pricingDisplay(pricingModel),
+        total,
+        money: total ? { total: formatMoney(charges, currency) } : null,
+        lines: quoteLines.lines,
+        linesState: quoteLines.state,
+        allowedActions: (ORDER_ACTIONS[status] || []).slice()
+      });
+    });
+    return { orders, preparing, withheldBackendIds: withheld };
+  }
+  function presentedAgreementState(document2) {
+    var state2 = latestStateCode(document2);
+    var metadata = document2 && document2.metadata;
+    var status = text(metadata && typeof metadata === "object" ? metadata[AGREEMENT_OPERATION_STATUS_KEY] : "");
+    var presented = own(FAILED_OPERATION_STATES, state2);
+    return presented && status && own(presented, status) || state2;
+  }
+  function normalizeServiceAgreement(document2, client, contents) {
+    if (!document2 || typeof document2 !== "object") return null;
+    if (text(document2.type && document2.type.code) !== "SERVICE_AGREEMENT") return null;
+    var backendId = positiveInteger(document2.id);
+    var stateCode = presentedAgreementState(document2);
+    var stage = own(AGREEMENT_STAGES, stateCode);
+    if (!backendId || !stage) return null;
+    return {
+      id: "agreement-core-" + backendId,
+      backendId,
+      stateCode,
+      stage: stage.stage,
+      label: stage.label,
+      tone: stage.tone,
+      orderBackendIds: attributeIds(document2, "ORDERS"),
+      effectiveDate: isoDate(attributeText(document2, "EFFECTIVE_DATE")),
+      term: datePeriod(attributeText(document2, "TERM_START_DATE"), attributeText(document2, "TERM_END_DATE")),
+      parties: agreementParties(document2, client),
+      terms: termsBlocks(agreementText(backendId, contents)),
+      allowedActions: (own(AGREEMENT_ACTIONS, stateCode) || []).slice()
+    };
+  }
+  function quoteRequestOf(value) {
+    var report = value;
+    if (typeof report === "string") {
+      try {
+        report = JSON.parse(report);
+      } catch (_) {
+        return null;
+      }
+    }
+    if (!report || typeof report !== "object") return null;
+    var form = positiveInteger(report.form);
+    var outcome = text(report.outcome);
+    if (!form || QUOTE_REQUEST_OUTCOMES.indexOf(outcome) === -1) return null;
+    return { form, outcome, orderIds: idList(report.orderIds), propertyIds: idList(report.propertyIds) };
+  }
+  function requestPreparing(request, orders) {
+    if (!request) return false;
+    if (request.outcome === "PROCESSING") return true;
+    if (request.outcome !== "ACCEPTED") return false;
+    var shown = new Set(orders.map(function(order) {
+      return order.backendId;
+    }));
+    return request.orderIds.some(function(id) {
+      return !shown.has(id);
+    });
+  }
+  function contractsPackage(source, properties) {
+    var data = source && typeof source === "object" ? source : {};
+    var orders = Array.isArray(data.orders) ? data.orders : [];
+    var agreements = Array.isArray(data.agreements) ? data.agreements.filter(Boolean).map(function(agreement) {
+      return withServiceStage(agreement, orders);
+    }) : [];
+    var byProperty = propertyIndex(properties);
+    var packageOf = packageIndex(agreements);
+    var readable = new Set(orders.map(function(order) {
+      return order.backendId;
+    }).concat(data.withheldBackendIds || []));
+    var quoted = orders.filter(function(order) {
+      return isOpen(order) || !packageOf.get(order.backendId);
+    });
+    var groups = quoteGroups(quoted, packageOf, byProperty);
+    var history = quoteGroups(orders.slice(), packageOf, byProperty);
+    var pending = groups.map(function(group) {
+      var waiting = group.orders.filter(function(order) {
+        return PENDING_STATUSES.indexOf(order.status) !== -1;
+      });
+      return waiting.length ? Object.assign({}, group, { orders: waiting }) : null;
+    }).filter(Boolean);
+    var counts = { orders: quoted.length, properties: 0, decided: 0, approved: 0, revision: 0, declined: 0, cancelled: 0, open: 0 };
+    groups.forEach(function(group) {
+      if (!group.propertyBackendId) return;
+      counts.properties += 1;
+      if (CLOSED_DECISIONS.indexOf(group.decision) !== -1) counts.decided += 1;
+    });
+    quoted.forEach(function(order) {
+      if (isOpen(order)) counts.open += 1;
+      else counts[order.status] += 1;
+    });
+    var rows2 = agreements.map(function(agreement) {
+      return agreementRow(agreement, orders, readable, byProperty);
+    }).sort(byStage);
+    return {
+      agreements: rows2,
+      groups,
+      history,
+      pending,
+      counts,
+      deciding: counts.open > 0,
+      preparing: !!data.preparing,
+      sources: data.sources || {},
+      truncated: !!data.truncated,
+      scopeMode: data.scopeMode || null,
+      partial: partialOf(data, orders, rows2)
+    };
+  }
+  function withServiceStage(agreement, orders) {
+    if (!agreement || agreement.stateCode !== SIGNED_AGREEMENT_STATE) return agreement;
+    var states = (orders || []).filter(function(order) {
+      return agreement.orderBackendIds.indexOf(order.backendId) !== -1;
+    }).map(function(order) {
+      return order.stateCode;
+    });
+    var service = (/* @__PURE__ */ Object.keys(ORDER_SERVICE_STAGES)).find(function(code) {
+      return states.indexOf(code) !== -1;
+    });
+    var canceled = states.length > 0 && states.every(function(code) {
+      return code === CANCELED_ORDER_STATE;
+    });
+    if (!service && !canceled) return agreement;
+    var stage = service ? ORDER_SERVICE_STAGES[service] : AGREEMENT_STAGES.CANCELED;
+    return Object.assign({}, agreement, { stage: stage.stage, label: stage.label, tone: stage.tone });
+  }
+  function pricePeriod(order) {
+    return order && order.pricingModel ? own(PRICE_PERIODS, order.pricingModel.code) || "" : "";
+  }
+  function formatOrderPrice(order) {
+    if (order && order.pricing && !order.pricing.total) return "";
+    var total = formatOrderTotal(order && order.total);
+    var period = pricePeriod(order);
+    return total && period ? total + " " + period : total;
+  }
+  function optionSummary(order) {
+    return [order.pricingModel ? order.pricingModel.label : "", formatOrderPrice(order)].filter(Boolean).join(" \xB7 ");
+  }
+  function chosenOrders(row) {
+    if (!row || row.servicesScope !== "approved") return [];
+    return row.properties.reduce(function(found, entry2) {
+      return found.concat(entry2.orders);
+    }, []);
+  }
+  function currentServiceAgreement(pkg, propertyBackendId) {
+    var rows2 = (pkg && Array.isArray(pkg.agreements) ? pkg.agreements : []).filter(function(row) {
+      if (CURRENT_SERVICE_STAGES.indexOf(row.agreement.stage) === -1 || row.servicesScope !== "approved") return false;
+      return propertyBackendId == null || row.properties.some(function(entry2) {
+        return entry2.propertyBackendId === propertyBackendId;
+      });
+    });
+    return rows2.find(function(row) {
+      return row.agreement.stage === "active";
+    }) || rows2[0] || null;
+  }
+  function activeServiceNames(pkg, propertyBackendId) {
+    var row = currentServiceAgreement(pkg, propertyBackendId);
+    if (!row || row.agreement.stage !== "active") return [];
+    var entry2 = row.properties.find(function(item) {
+      return item.propertyBackendId === propertyBackendId;
+    });
+    var names = [];
+    (entry2 ? entry2.orders : []).forEach(function(order) {
+      order.lines.forEach(function(line) {
+        if (line.product && names.indexOf(line.product) === -1) names.push(line.product);
+      });
+    });
+    return names;
+  }
+  function groupDecision(orders) {
+    var list = orders || [];
+    if (list.some(hasStatus("approved"))) return "approved";
+    if (list.length && list.every(hasStatus("declined"))) return "declined";
+    if (list.length && list.every(function(order) {
+      return order.status === "declined" || order.status === "cancelled";
+    })) return "cancelled";
+    if (list.some(hasStatus("revision"))) return "revision";
+    return "open";
+  }
+  function groupStatus(orders) {
+    var decision = groupDecision(orders);
+    return decision === "open" ? "unseen" : decision;
+  }
+  function findQuote(pkg, backendId) {
+    var groups = pkg && Array.isArray(pkg.groups) ? pkg.groups : [];
+    for (var index = 0; index < groups.length; index += 1) {
+      var found = groups[index].orders.find(function(order) {
+        return order.backendId === backendId;
+      });
+      if (found) return found;
+    }
+    var rows2 = pkg && Array.isArray(pkg.agreements) ? pkg.agreements : [];
+    for (var position = 0; position < rows2.length; position += 1) {
+      var listed = rows2[position].orders.find(function(order) {
+        return order.backendId === backendId;
+      });
+      if (listed) return listed;
+    }
+    return null;
+  }
+  function findAgreement(pkg, backendId) {
+    var rows2 = pkg && Array.isArray(pkg.agreements) ? pkg.agreements : [];
+    return rows2.find(function(row) {
+      return row.agreement.backendId === backendId;
+    }) || null;
+  }
+  function agreementText(agreementId, contents) {
+    var written = (Array.isArray(contents) ? contents : []).filter(function(row) {
+      return row && positiveInteger(row.document && row.document.id) === agreementId && typeof row.content === "string" && row.content.trim();
+    }).sort(function(left, right) {
+      return (positiveInteger(left.id) || 0) - (positiveInteger(right.id) || 0);
+    });
+    var english = written.filter(function(row) {
+      return ["eng", "en"].indexOf(text(row.language && row.language.id).toLowerCase()) !== -1;
+    })[0];
+    var chosen = english || written[0];
+    return chosen ? chosen.content : "";
+  }
+  function termsBlocks(value) {
+    var source = typeof value === "string" ? value.replace(/\r\n?/g, "\n") : "";
+    if (!source.trim()) return [];
+    if (/<\/?[a-z][^>]*>/i.test(source)) source = htmlToText(source);
+    var blocks = [];
+    var section = 0;
+    var outline = 0;
+    source.split(/\n[ \t]*\n+/).forEach(function(chunk) {
+      var paragraph = [];
+      function flush() {
+        if (paragraph.length) blocks.push({ kind: "paragraph", text: paragraph.join("\n"), depth: section });
+        paragraph = [];
+      }
+      chunk.split("\n").forEach(function(line) {
+        var trimmed = line.replace(/\s+/g, " ").trim();
+        if (!trimmed) return;
+        var heading = HEADING_LINE.exec(trimmed);
+        var numbered = NUMBERED_LINE.exec(trimmed);
+        var item = ITEM_LINE.exec(trimmed);
+        if (heading) {
+          flush();
+          section = 0;
+          outline = 0;
+          blocks.push({ kind: "heading", text: heading[1] });
+        } else if (numbered) {
+          flush();
+          var segments = numbered[1].split(/[.)]/).filter(Boolean).length;
+          var nested = /\)$/.test(numbered[1]) && segments === 1;
+          section = Math.min(nested ? outline + 1 : segments, TERMS_DEPTH_LIMIT);
+          if (!nested) outline = section;
+          blocks.push({ kind: "numbered", marker: numbered[1], text: numbered[2], depth: section });
+        } else if (item) {
+          flush();
+          blocks.push({ kind: "item", text: item[1], depth: section });
+        } else {
+          paragraph.push(trimmed);
+        }
+      });
+      flush();
+    });
+    return blocks;
+  }
+  function schematicPositions(points) {
+    var valid = (points || []).map(function(point) {
+      return point ? geoPoint(point.lat, point.lon) : null;
+    });
+    var placed = valid.filter(Boolean);
+    if (!placed.length) return valid;
+    var box = placed.reduce(function(bounds, point) {
+      return {
+        north: Math.max(bounds.north, point.lat),
+        south: Math.min(bounds.south, point.lat),
+        east: Math.max(bounds.east, point.lon),
+        west: Math.min(bounds.west, point.lon)
+      };
+    }, { north: -Infinity, south: Infinity, east: -Infinity, west: Infinity });
+    var latSpan = Math.max(box.north - box.south, SCHEMATIC_MIN_SPAN);
+    var lonSpan = Math.max(box.east - box.west, SCHEMATIC_MIN_SPAN);
+    var midLat = (box.north + box.south) / 2;
+    var midLon = (box.east + box.west) / 2;
+    return valid.map(function(point) {
+      if (!point) return null;
+      return {
+        x: tenths(50 + (point.lon - midLon) / lonSpan * (SCHEMATIC_X[1] - SCHEMATIC_X[0])),
+        y: tenths(50 - (point.lat - midLat) / latSpan * (SCHEMATIC_Y[1] - SCHEMATIC_Y[0]))
+      };
+    });
+  }
+  function formatOrderTotal(total) {
+    if (!total) return "";
+    try {
+      return new Intl.NumberFormat("en-US", { style: "currency", currency: total.currency }).format(total.amount);
+    } catch (_) {
+      return "";
+    }
+  }
+  function formatMoney(value, currency) {
+    var number = finiteNumber2(value);
+    if (number === null) return "";
+    var code = /^[A-Z]{3}$/.test(text(currency)) ? text(currency) : "";
+    try {
+      if (code) return new Intl.NumberFormat("en-US", { style: "currency", currency: code, minimumFractionDigits: 2, maximumFractionDigits: 6 }).format(number);
+    } catch (_) {
+      code = "";
+    }
+    return new Intl.NumberFormat("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 6 }).format(number);
+  }
+  function formatIsoDate(value) {
+    var match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(text(value));
+    return match ? MONTHS[Number(match[2]) - 1] + " " + Number(match[3]) + ", " + match[1] : "";
+  }
+  function formatDatePeriod(period) {
+    return period ? formatIsoDate(period.start) + " \u2013 " + formatIsoDate(period.end) : "";
+  }
+  function quoteGroups(orders, packageOf, byProperty) {
+    var groups = [];
+    var keyed = /* @__PURE__ */ new Map();
+    orders.forEach(function(order) {
+      var owner = packageOf.get(order.backendId) || null;
+      var agreementId = owner ? owner.backendId : 0;
+      var propertyId = order.propertyBackendId || 0;
+      var key = agreementId + "-" + propertyId;
+      var group = keyed.get(key);
+      if (!group) {
+        var property = propertyId ? byProperty.get(propertyId) || null : null;
+        group = {
+          id: "quote-" + key,
+          property,
+          propertyBackendId: propertyId || null,
+          agreement: owner,
+          agreementBackendId: agreementId || null,
+          orders: [],
+          decision: "open",
+          title: "",
+          address: ""
+        };
+        keyed.set(key, group);
+        groups.push(group);
+      }
+      group.orders.push(order);
+    });
+    groups.forEach(function(group) {
+      group.orders.sort(byPricingModel);
+      group.decision = groupDecision(group.orders);
+      group.status = groupStatus(group.orders);
+      group.title = propertyTitle(group.propertyBackendId, group.property);
+      group.address = propertyAddress(group.property, group.title);
+    });
+    return groups.sort(function(left, right) {
+      return stageRank(left.agreement) - stageRank(right.agreement) || (right.agreementBackendId || 0) - (left.agreementBackendId || 0);
+    });
+  }
+  function agreementRow(agreement, orders, readable, byProperty) {
+    var listed = orders.filter(function(order) {
+      return agreement.orderBackendIds.indexOf(order.backendId) !== -1;
+    });
+    var services = APPROVED_SERVICE_STAGES.indexOf(agreement.stage) !== -1 ? listed.filter(hasStatus("approved")) : listed;
+    var properties = [];
+    var keyed = /* @__PURE__ */ new Map();
+    services.forEach(function(order) {
+      var key = order.propertyBackendId || 0;
+      var entry2 = keyed.get(key);
+      if (!entry2) {
+        var property = key ? byProperty.get(key) || null : null;
+        entry2 = { key: "property-" + key, propertyBackendId: key || null, property, orders: [], title: "", address: "" };
+        keyed.set(key, entry2);
+        properties.push(entry2);
+      }
+      entry2.orders.push(order);
+    });
+    properties.forEach(function(entry2) {
+      entry2.orders.sort(byPricingModel);
+      entry2.title = propertyTitle(entry2.propertyBackendId, entry2.property);
+      entry2.address = propertyAddress(entry2.property, entry2.title);
+    });
+    var named2 = [];
+    listed.forEach(function(order) {
+      var property = order.propertyBackendId ? byProperty.get(order.propertyBackendId) : null;
+      var name = property && property.name ? property.name : "";
+      if (name && named2.indexOf(name) === -1) named2.push(name);
+    });
+    var propertyIds = [];
+    listed.forEach(function(order) {
+      if (order.propertyBackendId && propertyIds.indexOf(order.propertyBackendId) === -1) propertyIds.push(order.propertyBackendId);
+    });
+    return {
+      id: agreement.id,
+      agreement,
+      orders: listed,
+      properties,
+      servicesScope: APPROVED_SERVICE_STAGES.indexOf(agreement.stage) !== -1 ? "approved" : "listed",
+      propertyNames: named2,
+      propertyCount: propertyIds.length,
+      quoteCount: listed.length,
+      unreadableOrders: agreement.orderBackendIds.filter(function(id) {
+        return !readable.has(id);
+      }).length
+    };
+  }
+  function partialOf(data, orders, rows2) {
+    var sources = data.sources || {};
+    var lines = orders.some(function(order) {
+      return order.linesState !== "ready";
+    });
+    var unreadableOrders = rows2.reduce(function(sum, row) {
+      return sum + row.unreadableOrders;
+    }, 0);
+    return {
+      agreements: !!sources.agreements && sources.agreements !== "ready",
+      orders: !!sources.orders && sources.orders !== "ready",
+      lines,
+      unreadableOrders,
+      truncated: !!data.truncated
+    };
+  }
+  function agreementParties(document2, client) {
+    var owner = document2.organization;
+    var account = accountParty(client && client.account, CLIENT_TYPES);
+    return {
+      provider: {
+        legalName: localizedName2(owner && owner.nls),
+        logoImageId: "",
+        representativeName: "",
+        representativeJobTitle: "",
+        phone: "",
+        email: ""
+      },
+      client: account || {
+        legalName: text(client && typeof client.displayName === "string" ? client.displayName : ""),
+        clientType: "",
+        billingAddress: "",
+        representativeName: "",
+        representativeJobTitle: "",
+        email: "",
+        phone: ""
+      }
+    };
+  }
+  function linesOf(row, backendId, currency, catalog) {
+    if (!catalog.items) return { state: "unavailable", lines: [] };
+    var found = (catalog.byOrder.get(backendId) || []).slice();
+    var listed = idList(row.items);
+    var missing = listed.filter(function(id) {
+      return !found.some(function(line) {
+        return line.backendId === id;
+      });
+    }).length;
+    var incomplete = false;
+    var lines = found.sort(function(left, right) {
+      return rankOf(left) - rankOf(right) || left.position - right.position;
+    }).map(function(entry2) {
+      var line = entry2.row;
+      var priceId = positiveInteger(line.itemPrice && line.itemPrice.id);
+      var price = priceId && catalog.prices ? catalog.prices.get(priceId) || null : null;
+      var productId = positiveInteger(price && price.product && price.product.id);
+      var product = productId && catalog.products ? catalog.products.get(productId) || null : null;
+      if (priceId && !price || productId && !product) incomplete = true;
+      return {
+        key: "line-" + entry2.backendId,
+        product: localizedName2(product && product.nls),
+        quantity: formatQuantity(line.itemCount),
+        unitPrice: formatMoney(line.amount, currency),
+        total: finiteNumber2(line.totalTaxes) ? "" : formatMoney(line.grandTotal, currency)
+      };
+    });
+    return { state: missing || incomplete ? "partial" : "ready", lines };
+  }
+  function recordedModel(row) {
+    var metadata = row && row.metadata && typeof row.metadata === "object" ? row.metadata : {};
+    var code = [text(metadata.PRICING_MODEL), attributeText(row, "PRICING_MODEL")].map(function(value) {
+      return value.toUpperCase();
+    }).find(function(value) {
+      return !!own(PRICING_MODELS, value);
+    });
+    return code ? { code, label: own(PRICING_MODELS, code) } : null;
+  }
+  function pricingDisplay(model) {
+    var code = model ? model.code : "";
+    if (code === "PER_SERVICE") return { linePrices: true, total: false };
+    if (code === "MONTHLY" || code === "SEASONAL" || code === RECURRING_MODEL.code) return { linePrices: false, total: true };
+    return { linePrices: true, total: true };
+  }
+  function priceVariant(backendId, catalog) {
+    var entries = catalog.byOrder.get(backendId) || [];
+    if (!entries.length || !catalog.prices) return null;
+    var prices = entries.map(function(entry2) {
+      return catalog.prices.get(positiveInteger(entry2.row.itemPrice && entry2.row.itemPrice.id)) || null;
+    });
+    var names = prices.map(function(price) {
+      return localizedName2(price && price.nls);
+    });
+    var name = names[0] && names.every(function(entry2) {
+      return entry2 === names[0];
+    }) ? names[0] : "";
+    var types = prices.map(function(price) {
+      return text(price && price.type && price.type.code).toUpperCase();
+    });
+    var recurrent = types.filter(function(type) {
+      return /(^|_)RECURRENT$/.test(type);
+    }).length;
+    var code = "";
+    if (types.every(Boolean) && recurrent === 0) code = "PER_SERVICE";
+    if (types.every(Boolean) && recurrent === types.length) code = recurringCode(entries.map(function(entry2) {
+      return intervalMonths(entry2.row.metadata);
+    }));
+    if (!code && !name) return null;
+    return { code, label: name || own(PRICING_MODELS, code) || RECURRING_MODEL.label };
+  }
+  function recurringCode(months) {
+    var first = months[0];
+    if (first === null || !months.every(function(count) {
+      return count === first;
+    })) return RECURRING_MODEL.code;
+    return first === 1 ? "MONTHLY" : "SEASONAL";
+  }
+  function intervalMonths(metadata) {
+    if (!metadata || typeof metadata !== "object") return null;
+    if (text(metadata.INTERVAL_UNIT).toUpperCase() !== MONTH_UNIT) return null;
+    return positiveInteger(metadata.INTERVAL_COUNT);
+  }
+  function lineCatalog(catalog) {
+    var source = catalog || {};
+    var items = source.orderItems ? [] : null;
+    var byOrder = /* @__PURE__ */ new Map();
+    (source.orderItems || []).forEach(function(row, position) {
+      var backendId = positiveInteger(row && row.id);
+      var orderId = positiveInteger(row && row.order && row.order.id);
+      if (!backendId || !orderId) return;
+      var entry2 = { backendId, position, row };
+      items.push(entry2);
+      var list = byOrder.get(orderId);
+      if (!list) byOrder.set(orderId, list = []);
+      if (!list.some(function(known) {
+        return known.backendId === backendId;
+      })) list.push(entry2);
+    });
+    return {
+      items,
+      byOrder,
+      prices: source.productPrices ? rowsById(source.productPrices) : null,
+      products: source.products ? rowsById(source.products) : null
+    };
+  }
+  function rankOf(entry2) {
+    var rank = finiteNumber2(entry2.row.sortOrder);
+    return rank === null ? Number.MAX_SAFE_INTEGER : rank;
+  }
+  function readRows(value) {
+    if (Array.isArray(value)) return value;
+    return value && Array.isArray(value.result) ? value.result : null;
+  }
+  function readSummaries(reads) {
+    var summary = {};
+    (/* @__PURE__ */ Object.keys(reads)).forEach(function(key) {
+      var read = reads[key] || {};
+      summary[key] = { state: text(read.state) || "ready", scopeMode: scopeModeOf(read.scopeMode), truncated: !!read.truncated };
+    });
+    return summary;
+  }
+  function failedRead(read) {
+    var state2 = read && text(read.state);
+    return state2 === "unauthorized" ? "unauthorized" : "error";
+  }
+  function scopeModeOf(value) {
+    return SCOPE_MODES.indexOf(value) === -1 ? null : value;
+  }
+  function rowsById(rows2) {
+    var found = /* @__PURE__ */ new Map();
+    (Array.isArray(rows2) ? rows2 : []).forEach(function(row) {
+      var id = positiveInteger(row && row.id);
+      if (id && !found.has(id)) found.set(id, row);
+    });
+    return found;
+  }
+  function propertyIndex(properties) {
+    var index = /* @__PURE__ */ new Map();
+    (properties || []).forEach(function(property) {
+      var backendId = positiveInteger(property && property.backendId);
+      if (backendId && !index.has(backendId)) index.set(backendId, property);
+    });
+    return index;
+  }
+  function packageIndex(agreements) {
+    var index = /* @__PURE__ */ new Map();
+    agreements.forEach(function(agreement) {
+      agreement.orderBackendIds.forEach(function(id) {
+        var current = index.get(id);
+        if (!current || current.backendId < agreement.backendId) index.set(id, agreement);
+      });
+    });
+    return index;
+  }
+  function propertyTitle(propertyBackendId, property) {
+    if (property && property.name) return property.name;
+    return propertyBackendId ? "Property details unavailable" : "No property on this quote";
+  }
+  function propertyAddress(property, title) {
+    var address = property && property.address || "";
+    return address && address !== title && !addressRepeats(title, address) ? address : "";
+  }
+  function byStage(left, right) {
+    return stageRank(left.agreement) - stageRank(right.agreement) || right.agreement.backendId - left.agreement.backendId;
+  }
+  function stageRank(agreement) {
+    if (!agreement) return STAGE_ORDER.length + 1;
+    var index = STAGE_ORDER.indexOf(agreement.stage);
+    return index === -1 ? STAGE_ORDER.length : index;
+  }
+  function htmlToText(source) {
+    return decodeEntities(source.replace(/<\s*br\s*\/?\s*>/gi, "\n").replace(/<\s*h[1-6](\s[^>]*)?>/gi, "\n\n# ").replace(/<\s*li(\s[^>]*)?>/gi, "\n- ").replace(/<\s*\/\s*(p|div|h[1-6]|ul|ol|li|section|article|blockquote|table|tr)\s*>/gi, "\n\n").replace(/<\s*(p|div|ul|ol|section|article|blockquote|table|tr)(\s[^>]*)?>/gi, "\n\n").replace(/<[^>]*>/g, ""));
+  }
+  function decodeEntities(value) {
+    return value.replace(/&(#x[0-9a-f]+|#\d+|amp|lt|gt|quot|apos|nbsp);/gi, function(match, name) {
+      var lower = name.toLowerCase();
+      if (lower === "amp") return "&";
+      if (lower === "lt") return "<";
+      if (lower === "gt") return ">";
+      if (lower === "quot") return '"';
+      if (lower === "apos") return "'";
+      if (lower === "nbsp") return " ";
+      var point = lower.charAt(1) === "x" ? parseInt(lower.slice(2), 16) : parseInt(lower.slice(1), 10);
+      return Number.isFinite(point) && point > 0 && point <= 1114111 ? String.fromCodePoint(point) : match;
+    });
+  }
+  function agreementStage(stage, label, tone) {
+    return /* @__PURE__ */ Object.freeze({ stage, label, tone });
+  }
+  function listRows(payload) {
+    if (Array.isArray(payload)) return payload;
+    return payload && Array.isArray(payload.result) ? payload.result : [];
+  }
+  function attributeIds(row, code) {
+    var entry2 = attributeEntry(row, code);
+    return idList(entry2 ? entry2.value : null);
+  }
+  function idList(value) {
+    var parts = Array.isArray(value) ? value : typeof value === "string" ? value.split(",") : value == null ? [] : [value];
+    var ids = [];
+    parts.forEach(function(part) {
+      var id = positiveInteger(part && typeof part === "object" ? part.id : part);
+      if (id && ids.indexOf(id) === -1) ids.push(id);
+    });
+    return ids;
+  }
+  function localizedName2(value) {
+    if (!value || typeof value !== "object") return "";
+    var localized = value.en || value["en-US"] || Object.values(value)[0] || {};
+    var name = localized && (localized.NAME || localized.name);
+    return typeof name === "string" ? name.trim() : "";
+  }
+  function currencyCode(currency) {
+    var code = text(currency && currency.code);
+    return /^[A-Z]{3}$/.test(code) ? code : "";
+  }
+  function totalBeforeTaxes(row) {
+    if (finiteNumber2(row.totalCharges) !== null) return row.totalCharges;
+    return finiteNumber2(row.totalTaxes) ? null : row.grandTotal;
+  }
+  function orderTotal(amount, currency) {
+    var value = finiteNumber2(amount);
+    var code = currencyCode(currency);
+    return value !== null && value > 0 && code ? { amount: value, currency: code } : null;
+  }
+  function formatQuantity(value) {
+    var number = finiteNumber2(value);
+    return number === null ? "" : new Intl.NumberFormat("en-US", { maximumFractionDigits: 6 }).format(number);
+  }
+  function finiteNumber2(value) {
+    var number = typeof value === "number" ? value : typeof value === "string" && value.trim() !== "" ? Number(value) : Number.NaN;
+    return Number.isFinite(number) ? number : null;
+  }
+  function isoDate(value) {
+    var match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(text(value));
+    if (!match) return null;
+    var year = Number(match[1]);
+    var month = Number(match[2]);
+    var day = Number(match[3]);
+    var date = new Date(Date.UTC(year, month - 1, day));
+    return date.getUTCFullYear() === year && date.getUTCMonth() === month - 1 && date.getUTCDate() === day ? match[0] : null;
+  }
+  function datePeriod(start, end) {
+    var from = isoDate(start);
+    var to = isoDate(end);
+    return from && to && from <= to ? { start: from, end: to } : null;
+  }
+  function byPricingModel(left, right) {
+    return pricingRank(left) - pricingRank(right) || left.backendId - right.backendId;
+  }
+  function pricingRank(order) {
+    var index = order.pricingModel ? PRICING_MODEL_RANK.indexOf(order.pricingModel.code) : -1;
+    return index === -1 ? PRICING_MODEL_RANK.length : index;
+  }
+  function isOpen(order) {
+    return order.status === "unseen";
+  }
+  function hasStatus(status) {
+    return function(order) {
+      return order.status === status;
+    };
+  }
+  function own(map, key) {
+    return typeof key === "string" && Object.prototype.hasOwnProperty.call(map, key) ? map[key] : null;
+  }
+  function tenths(value) {
+    return Math.round(value * 10) / 10;
+  }
+
+  // app-templates/customer-portal/runtime/src/normalizers/visits.js
+  var VISIT_TYPE = "SNOW_SERVICE_VISIT";
+  var VISIT_STATUS = /* @__PURE__ */ Object.freeze({
+    SCHEDULED: /* @__PURE__ */ Object.freeze({ label: "Scheduled", tone: "info", phase: "upcoming" }),
+    IN_PROGRESS: /* @__PURE__ */ Object.freeze({ label: "In progress", tone: "progress", phase: "upcoming" }),
+    COMPLETED: /* @__PURE__ */ Object.freeze({ label: "Completed", tone: "ok", phase: "past" }),
+    CANCELED: /* @__PURE__ */ Object.freeze({ label: "Cancelled", tone: "scheduled", phase: "cancelled" })
+  });
+  var PROGRESS_STEPS = /* @__PURE__ */ Object.freeze({
+    SCHEDULED: "Scheduled",
+    IN_PROGRESS: "Arrived",
+    COMPLETED: "Departed"
+  });
+  var ON_SITE_STEPS = ["IN_PROGRESS", "COMPLETED"];
+  var CREW_SNAPSHOT = "CLIENT_VISIT_CREW";
+  var ACRONYM_LENGTH = 3;
+  var MEDIA_ID2 = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
+  var WEEKDAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  var MONTHS2 = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  function normalizeVisits(raw) {
+    var rows2 = Array.isArray(raw && raw.items) ? raw.items : [];
+    var visits = rows2.map(visitRecord).filter(Boolean);
+    return {
+      state: "ready",
+      truncated: !!(raw && raw.truncated),
+      upcoming: visits.filter(inPhase("upcoming")).sort(function(left, right) {
+        return left.start.ms - right.start.ms;
+      }),
+      past: visits.filter(inPhase("past")).sort(function(left, right) {
+        return right.start.ms - left.start.ms;
+      }),
+      cancelled: visits.filter(inPhase("cancelled")).sort(function(left, right) {
+        return right.start.ms - left.start.ms;
+      })
+    };
+  }
+  function visitCount(envelope2) {
+    return envelope2 ? (envelope2.upcoming || []).length + (envelope2.past || []).length + (envelope2.cancelled || []).length : 0;
+  }
+  function findVisit(envelope2, id) {
+    if (!envelope2 || !id) return null;
+    return (envelope2.upcoming || []).concat(envelope2.past || [], envelope2.cancelled || []).find(function(visit) {
+      return visit.id === id;
+    }) || null;
+  }
+  function propertyWithVisits(property, envelope2, today) {
+    var found = visitsForProperty(envelope2, property.backendId);
+    var next = (envelope2 && envelope2.upcoming || []).find(function(visit) {
+      return visit.propertyBackendId === property.backendId && visit.stateCode === "IN_PROGRESS";
+    }) || found.next;
+    var last = found.last;
+    return Object.assign({}, property, {
+      appointment: next ? { id: next.id, state: next.stateCode, onSite: next.stateCode === "IN_PROGRESS", service: next.stateCode === "IN_PROGRESS" ? "Visit in progress" : "Next visit", when: visitWhen(next, today) } : null,
+      lastService: last ? { id: last.id, label: "Last visit", service: "Visit", when: visitDay(last, today) } : null
+    });
+  }
+  function upcomingDays(today, count) {
+    var parts = String(today || "").split("-").map(Number);
+    var days = [];
+    for (var offset = 0; offset < count; offset += 1) {
+      var at = new Date(Date.UTC(parts[0], parts[1] - 1, parts[2] + offset));
+      days.push({
+        key: at.getUTCFullYear() + "-" + pad(at.getUTCMonth() + 1) + "-" + pad(at.getUTCDate()),
+        name: offset === 0 ? "Today" : WEEKDAYS[at.getUTCDay()],
+        date: MONTHS2[at.getUTCMonth()] + " " + at.getUTCDate()
+      });
+    }
+    return days;
+  }
+  function visitDayCounts(envelope2, days) {
+    var visits = (envelope2 && envelope2.upcoming || []).concat(envelope2 && envelope2.past || []);
+    return days.map(function(day) {
+      return visits.filter(function(visit) {
+        return visit.start.date === day.key;
+      }).length;
+    });
+  }
+  function visitsForProperty(envelope2, propertyBackendId) {
+    var owned = function(visit) {
+      return visit.propertyBackendId === propertyBackendId;
+    };
+    return {
+      next: (envelope2 && envelope2.upcoming || []).find(owned) || null,
+      last: (envelope2 && envelope2.past || []).find(owned) || null
+    };
+  }
+  function visitPlace(visit, properties) {
+    var list = Array.isArray(properties) ? properties : [];
+    if (list.length < 2 || !visit) return "";
+    var property = list.find(function(item) {
+      return item.backendId === visit.propertyBackendId;
+    });
+    return property ? property.address || property.name || "" : "";
+  }
+  function visitDay(visit, today) {
+    var start = visit && visit.start;
+    if (!start) return "";
+    if (today && start.date === today) return "Today";
+    var label = WEEKDAYS[start.weekday] + ", " + MONTHS2[start.month - 1] + " " + start.day;
+    return today && today.slice(0, 4) !== String(start.year) ? label + ", " + start.year : label;
+  }
+  function visitWindow(visit) {
+    var start = visit && visit.start;
+    if (!start) return "";
+    var end = visit.end && visit.end.ms > start.ms ? visit.end : null;
+    if (!end) return clock(start.minutes, true);
+    var samePeriod = meridiem(start.minutes) === meridiem(end.minutes) && start.date === end.date;
+    return clock(start.minutes, !samePeriod) + " \u2013 " + clock(end.minutes, true);
+  }
+  function visitWhen(visit, today) {
+    return [visitDay(visit, today), visitWindow(visit)].filter(Boolean).join(", ");
+  }
+  function normalizeVisitProgress(rows2) {
+    return (Array.isArray(rows2) ? rows2 : []).map(function(row) {
+      var code = text(row && row.state && row.state.code);
+      var ms = epochMs(row && row.observed);
+      if (!Object.prototype.hasOwnProperty.call(PROGRESS_STEPS, code) || ms === null) return null;
+      return { code, label: PROGRESS_STEPS[code], ms };
+    }).filter(Boolean).sort(function(left, right) {
+      return left.ms - right.ms;
+    });
+  }
+  function progressWhen(step, visit, timeZone) {
+    var at = zonedParts(step.ms, timeZone);
+    var day = MONTHS2[at.month - 1] + " " + at.day;
+    var start = visit && visit.start;
+    if (start && at.year !== start.year) day += ", " + at.year;
+    if (step.code === "SCHEDULED") return day;
+    var time = clock(at.minutes, true);
+    return start && at.date === start.date ? time : day + ", " + time;
+  }
+  function onSiteTimes(steps, visit, timeZone) {
+    var duration = onSiteDuration(steps);
+    return ON_SITE_STEPS.map(function(code) {
+      var step = lastStep(steps, code);
+      return step ? step.label + " " + progressWhen(step, visit, timeZone) : "";
+    }).concat(duration ? duration + " on site" : "").filter(Boolean).join(" \xB7 ");
+  }
+  function onSiteDuration(steps) {
+    var arrived = lastStep(steps, "IN_PROGRESS");
+    var departed = lastStep(steps, "COMPLETED");
+    if (!arrived || !departed || departed.ms < arrived.ms) return "";
+    var minutes = Math.round((departed.ms - arrived.ms) / 6e4);
+    if (minutes < 1) return "Under 1 min";
+    var hours = Math.floor(minutes / 60);
+    var rest = minutes % 60;
+    if (!hours) return minutes + " min";
+    return rest ? hours + " h " + rest + " min" : hours + " h";
+  }
+  function visitPhotoCount(visit) {
+    return visit ? (visit.before || []).length + (visit.after || []).length : 0;
+  }
+  function localDateKey(date, timeZone) {
+    return zonedParts((date instanceof Date ? date : /* @__PURE__ */ new Date()).getTime(), timeZone).date;
+  }
+  function visitImageUrl(coreBase2, id) {
+    return MEDIA_ID2.test(id) ? String(coreBase2 || "/core").replace(/\/+$/, "") + "/image/" + id + "/get" : "";
+  }
+  function visitRecord(row) {
+    var backendId = positiveInteger(row && row.id);
+    var stateCode = latestStateCode(row);
+    var status = Object.prototype.hasOwnProperty.call(VISIT_STATUS, stateCode) ? VISIT_STATUS[stateCode] : null;
+    if (!backendId || !status || text(row.type && row.type.code) !== VISIT_TYPE) return null;
+    var start = wallClock(row.start);
+    if (!start) return null;
+    return {
+      id: "visit-core-" + backendId,
+      backendId,
+      stateCode,
+      status: { label: status.label, tone: status.tone },
+      phase: status.phase,
+      start,
+      end: wallClock(row.end),
+      propertyBackendId: attributeNumber(row, "RESOURCE"),
+      completionNotes: attributeText(row, "COMPLETION_NOTES"),
+      before: mediaIds(row, "PRE_SERVICE_MEDIA"),
+      after: mediaIds(row, "POST_SERVICE_MEDIA"),
+      crew: visitCrew(row.metadata && row.metadata[CREW_SNAPSHOT])
+    };
+  }
+  function visitCrew(snapshot) {
+    var source = snapshot;
+    if (typeof source === "string") {
+      try {
+        source = JSON.parse(source);
+      } catch (_) {
+        return null;
+      }
+    }
+    if (!source || typeof source !== "object") return null;
+    var crew = {
+      people: named(source.crew, "role"),
+      vehicle: named([source.vehicle], "type")[0] || null,
+      equipment: named(source.equipment, "type")
+    };
+    return crew.people.length || crew.vehicle || crew.equipment.length ? crew : null;
+  }
+  function crewLine(crew) {
+    if (!crew) return "";
+    var names = function(list) {
+      return list.map(function(item) {
+        return item.name;
+      }).join(", ");
+    };
+    return [names(crew.people), crew.vehicle ? crew.vehicle.name : "", names(crew.equipment)].filter(Boolean).join(" \xB7 ");
+  }
+  function titleCaseName(value) {
+    return text(value).split(/\s+/).filter(Boolean).map(function(word) {
+      return word.split("-").map(titleCasePart).join("-");
+    }).join(" ");
+  }
+  function titleCasePart(part) {
+    if (/\d/.test(part)) return part;
+    var letters = part.replace(/[^\p{L}]/gu, "");
+    if (!letters) return part;
+    var shouting = letters === letters.toUpperCase() && letters !== letters.toLowerCase();
+    if (shouting && letters.length <= ACRONYM_LENGTH) return part;
+    var rest = shouting ? part.toLowerCase() : part;
+    return rest.replace(/\p{L}/u, function(first) {
+      return first.toUpperCase();
+    });
+  }
+  function named(list, kindKey) {
+    return (Array.isArray(list) ? list : []).map(function(item) {
+      var name = titleCaseName(item && item.name);
+      return name ? { name, kind: text(item[kindKey]) } : null;
+    }).filter(Boolean);
+  }
+  function zonedParts(ms, timeZone) {
+    var at = new Date(ms);
+    var parts = { year: at.getFullYear(), month: at.getMonth() + 1, day: at.getDate(), hour: at.getHours(), minute: at.getMinutes() };
+    if (timeZone) {
+      new Intl.DateTimeFormat("en-US", { timeZone, hourCycle: "h23", year: "numeric", month: "numeric", day: "numeric", hour: "numeric", minute: "numeric" }).formatToParts(at).forEach(function(part) {
+        if (Object.prototype.hasOwnProperty.call(parts, part.type)) parts[part.type] = Number(part.value);
+      });
+    }
+    return {
+      date: parts.year + "-" + pad(parts.month) + "-" + pad(parts.day),
+      year: parts.year,
+      month: parts.month,
+      day: parts.day,
+      minutes: parts.hour % 24 * 60 + parts.minute
+    };
+  }
+  function epochMs(value) {
+    var ms = typeof value === "number" ? value : typeof value === "string" && value.trim() !== "" ? Number(value) : Number.NaN;
+    return Number.isFinite(ms) ? ms : null;
+  }
+  function wallClock(value) {
+    var ms = epochMs(value);
+    if (ms === null) return null;
+    var instant = new Date(ms);
+    var year = instant.getUTCFullYear();
+    var month = instant.getUTCMonth() + 1;
+    var day = instant.getUTCDate();
+    return {
+      ms,
+      date: year + "-" + pad(month) + "-" + pad(day),
+      year,
+      month,
+      day,
+      weekday: instant.getUTCDay(),
+      minutes: instant.getUTCHours() * 60 + instant.getUTCMinutes()
+    };
+  }
+  function mediaIds(row, code) {
+    var entry2 = attributeEntry(row, code);
+    var value = entry2 ? entry2.value : null;
+    if (typeof value === "string" && /^\s*\[/.test(value)) {
+      try {
+        value = JSON.parse(value);
+      } catch (_) {
+        return [];
+      }
+    }
+    return (Array.isArray(value) ? value : []).map(function(item) {
+      if (!item || typeof item !== "object") return "";
+      if (item.type != null && text(item.type) !== "image") return "";
+      var id = text(item.id).toLowerCase();
+      return MEDIA_ID2.test(id) ? id : "";
+    }).filter(function(id, index, ids) {
+      return !!id && ids.indexOf(id) === index;
+    });
+  }
+  function lastStep(steps, code) {
+    return (steps || []).filter(function(entry2) {
+      return entry2.code === code;
+    }).pop() || null;
+  }
+  function inPhase(phase) {
+    return function(visit) {
+      return visit.phase === phase;
+    };
+  }
+  function clock(minutes, withMeridiem) {
+    var hour = Math.floor(minutes / 60);
+    var label = (hour % 12 || 12) + ":" + pad(minutes % 60);
+    return withMeridiem ? label + " " + meridiem(minutes) : label;
+  }
+  function meridiem(minutes) {
+    return minutes < 720 ? "AM" : "PM";
+  }
+  function pad(value) {
+    return value < 10 ? "0" + value : String(value);
+  }
+
+  // app-templates/customer-portal/runtime/src/normalizers/support.js
+  var TICKET_TYPE = "SUPPORT_TICKET";
+  var TICKET_STATUS = /* @__PURE__ */ Object.freeze({
+    NEW: /* @__PURE__ */ Object.freeze({ label: "Open", tone: "info", open: true }),
+    IN_PROGRESS: /* @__PURE__ */ Object.freeze({ label: "In progress", tone: "progress", open: true }),
+    WAITING: /* @__PURE__ */ Object.freeze({ label: "On hold", tone: "hold", open: true }),
+    ESCALATED: /* @__PURE__ */ Object.freeze({ label: "Escalated", tone: "danger", open: true }),
+    RESOLVED: /* @__PURE__ */ Object.freeze({ label: "Resolved", tone: "ok", open: false }),
+    CLOSED: /* @__PURE__ */ Object.freeze({ label: "Closed", tone: "scheduled", open: false })
+  });
+  var TICKET_AUTHORS = /* @__PURE__ */ Object.freeze(["CUSTOMER", "STAFF"]);
+  var MEDIA_ID3 = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
+  var MONTHS3 = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  function normalizeTicket(row) {
+    return ticketRecord(row);
+  }
+  function normalizeTicketThread(metadata) {
+    var source = metadata;
+    if (typeof source === "string") source = parseJson(source);
+    var thread = source && typeof source === "object" ? source.TICKET_THREAD : null;
+    if (typeof thread === "string") thread = parseJson(thread);
+    if (!thread || typeof thread !== "object") return null;
+    var description = thread.description && typeof thread.description === "object" ? thread.description : null;
+    var comments = Array.isArray(thread.comments) ? thread.comments.map(threadComment).filter(Boolean) : [];
+    comments.sort(function(left, right) {
+      return left.createdMs - right.createdMs;
+    });
+    return {
+      description: description ? { html: typeof description.html === "string" ? description.html : "", attachments: attachmentsOf(description.attachments) } : null,
+      comments,
+      truncated: thread.truncated === true
+    };
+  }
+  function threadComment(entry2) {
+    if (!entry2 || typeof entry2 !== "object") return null;
+    var created = typeof entry2.created === "number" ? entry2.created : Number(entry2.created);
+    var author = text(entry2.author);
+    return {
+      id: positiveInteger(entry2.id) || 0,
+      createdMs: Number.isFinite(created) ? created : 0,
+      author: TICKET_AUTHORS.indexOf(author) !== -1 ? author : "STAFF",
+      authorName: text(entry2.authorName),
+      html: typeof entry2.html === "string" ? entry2.html : "",
+      attachments: attachmentsOf(entry2.attachments)
+    };
+  }
+  function attachmentsOf(list) {
+    return (Array.isArray(list) ? list : []).map(function(item) {
+      var id = text(item && item.id).toLowerCase();
+      if (!MEDIA_ID3.test(id)) return null;
+      var size = Number(item.size);
+      var contentType = text(item.contentType).toLowerCase();
+      return {
+        id,
+        name: text(item.name) || "Attachment",
+        contentType,
+        size: Number.isFinite(size) && size >= 0 ? size : null,
+        image: item.image === true || contentType.indexOf("image/") === 0
+      };
+    }).filter(Boolean);
+  }
+  function parseJson(value) {
+    try {
+      return JSON.parse(value);
+    } catch (_) {
+      return null;
+    }
+  }
+  function normalizeTickets(raw) {
+    var rows2 = Array.isArray(raw && raw.items) ? raw.items : [];
+    var tickets = rows2.map(ticketRecord).filter(Boolean).sort(function(left, right) {
+      return right.openedMs - left.openedMs;
+    });
+    return {
+      state: "ready",
+      truncated: !!(raw && raw.truncated),
+      open: tickets.filter(function(ticket) {
+        return ticket.open;
+      }),
+      closed: tickets.filter(function(ticket) {
+        return !ticket.open;
+      })
+    };
+  }
+  function ticketCount(envelope2) {
+    return envelope2 ? (envelope2.open || []).length + (envelope2.closed || []).length : 0;
+  }
+  function openTicketForProperty(envelope2, propertyBackendId) {
+    if (!propertyBackendId) return null;
+    return (envelope2 && envelope2.open || []).find(function(ticket) {
+      return ticket.propertyBackendId === propertyBackendId;
+    }) || null;
+  }
+  function openTicketForVisit(envelope2, visitBackendId) {
+    if (!visitBackendId) return null;
+    return (envelope2 && envelope2.open || []).find(function(ticket) {
+      return ticket.visitBackendId === visitBackendId;
+    }) || null;
+  }
+  function propertyWithTicket(property, envelope2) {
+    var ticket = openTicketForProperty(envelope2, property.backendId);
+    return Object.assign({}, property, { ticket: ticket ? { id: ticket.id, state: ticket.stateCode } : null });
+  }
+  function supportRequests(envelope2, timeZone) {
+    return (envelope2 && envelope2.open || []).map(function(ticket) {
+      return { id: ticket.id, title: ticket.subject, status: ticket.status.label, tone: ticket.status.tone, when: ticketOpened(ticket, timeZone) };
+    });
+  }
+  function ticketOpened(ticket, timeZone) {
+    if (!ticket || !Number.isFinite(ticket.openedMs)) return "";
+    var parts = { year: 0, month: 1, day: 1 };
+    new Intl.DateTimeFormat("en-US", { timeZone: timeZone || void 0, year: "numeric", month: "numeric", day: "numeric" }).formatToParts(new Date(ticket.openedMs)).forEach(function(part) {
+      if (Object.prototype.hasOwnProperty.call(parts, part.type)) parts[part.type] = Number(part.value);
+    });
+    return MONTHS3[parts.month - 1] + " " + parts.day + ", " + parts.year;
+  }
+  function ticketRecord(row) {
+    var backendId = positiveInteger(row && row.id);
+    var stateCode = latestStateCode(row);
+    var status = Object.prototype.hasOwnProperty.call(TICKET_STATUS, stateCode) ? TICKET_STATUS[stateCode] : null;
+    if (!backendId || !status || text(row.type && row.type.code) !== TICKET_TYPE) return null;
+    var names = row.nls && row.nls.en ? row.nls.en : {};
+    var opened = typeof row.created === "number" ? row.created : Number(row.created);
+    return {
+      id: "ticket-core-" + backendId,
+      backendId,
+      code: text(row.code),
+      subject: text(names.NAME) || text(row.code),
+      message: text(names.DESCRIPTION),
+      openedMs: Number.isFinite(opened) ? opened : 0,
+      stateCode,
+      status: { label: status.label, tone: status.tone },
+      open: status.open,
+      propertyBackendId: attributeNumber(row, "PROPERTY"),
+      visitBackendId: attributeNumber(row, "RELATED_SERVICE_VISIT"),
+      reason: attributeText(row, "CONTACT_REASON"),
+      thread: normalizeTicketThread(row.metadata)
+    };
+  }
+
+  // app-templates/customer-portal/runtime/src/state.js
+  var state = {
+    route: "orders.list",
+    routeQuery: "",
+    routeQueryOwner: null,
+    theme: "HVAC",
+    // vertical display name
+    mode: "Light",
+    // Light | Dark
+    view: "ready",
+    // ready | loading | empty | error
+    account: "ready",
+    // ready | resolving-customer | customer-* | session-expired
+    commands: {},
+    cmdForce: null,
+    contact: null,
+    contactDraft: null,
+    contactErrors: null,
+    filter: "all",
+    // order tab
+    currentOrderId: null,
+    // open order for order.detail
+    cartItems: [],
+    // checkout cart
+    addrId: "home",
+    // selected delivery address
+    payId: "visa",
+    // selected payment method
+    prodCat: "all",
+    // product category filter
+    psites: F.proposalSites.map(function(p) {
+      return Object.assign({}, p);
+    }),
+    // proposal sites (mutable)
+    porders: [],
+    pagreements: [],
+    agreementId: null,
+    agreementTermsOpen: true,
+    contractCommand: null,
+    contractConfirm: null,
+    approveQuoteId: null,
+    contractDetails: null,
+    quoteRequest: null,
+    supportTicket: null,
+    supportTicketSchema: null,
+    quoteRequestSchema: null,
+    requestLink: null,
+    setPassword: null,
+    ovProperty: null,
+    ovWeatherIndex: null,
+    currentSiteId: "s2",
+    // open proposal site
+    profileFilter: "all",
+    // profile order-history tab
+    feedFilter: "all",
+    // activity feed tab
+    prefs: { receipts: true, sms: true, marketing: false },
+    messages: F.initialMessages.slice(),
+    typing: false,
+    chatInput: "",
+    activityReadAll: false,
+    accessConfirmations: {},
+    serviceRequests: [],
+    nextFixtureOrder: 1,
+    calYear: 2026,
+    calMonth: 0,
+    phone: "",
+    code: "",
+    authError: null,
+    oidc: "ready-signed-out",
+    sessionName: null,
+    profileEdit: null,
+    profileSaved: null,
+    profileLoginChanged: null,
+    session: { authenticated: true, intendedRoute: null, hasCustomerScope: true, hasTenantScope: true },
+    access: { care: { status: "granted", reasonCode: null } },
+    carePayloadState: "ready",
+    careStateVertical: null,
+    careSelectedUnitId: null,
+    careSelectedSpecialistId: null,
+    careTasksDone: {},
+    careAuthorizationEpoch: 0,
+    careRetreatRequests: {},
+    seoSelectedServiceId: null,
+    seoFaqOpenId: null,
+    seoCtaStates: {},
+    moduleStatus: {},
+    moduleData: {},
+    apptDay: null,
+    visitId: null,
+    invoiceId: null,
+    invoicePayment: null,
+    propertyId: null,
+    apptSort: "asc",
+    liveWeather: null,
+    liveWeatherState: "off",
+    pending: {},
+    commandErrors: {},
+    config: {
+      vertical: "hvac",
+      theme: "hvac",
+      profile: "onDemand",
+      routerMode: "hash",
+      authMode: "fixture",
+      defaultRoute: "orders.list",
+      enabledModules: verticalProfiles.hvac.modules.slice(),
+      errorMode: "error",
+      dataMode: "fixture",
+      caseId: "",
+      defaultMode: "light",
+      capability: "current-staging",
+      booking: "closed",
+      retail: "browse-only",
+      planCommerce: "closed",
+      demoCommands: "closed"
+    },
+    userModeOverridden: false,
+    mobileNav: false,
+    capability: "current-staging",
+    spaBooking: "closed",
+    spaAppt: "salon",
+    spaRows: "many",
+    spaLongName: false,
+    spaCancelled: {},
+    accountMenu: false,
+    spaSupport: false,
+    spaRetail: "browse-only",
+    spaAccountPartial: false,
+    spaPurchFilter: "all",
+    spaPurchMore: "idle",
+    spaCurrentPurchase: null,
+    spaPlanScenario: "active",
+    spaPlanCancelled: {},
+    spaCart: null,
+    spaCartDemo: "as-added",
+    spaVariantPick: {},
+    spaCurrentProduct: null,
+    spaGallery: 0,
+    spaModels: "ready",
+    spaReviews: "ready",
+    spaOrderMedia: "mixed",
+    spaCheckoutSource: "cart",
+    spaCheckoutDemo: "ready",
+    spaPolicyAck: false,
+    spaResult: null,
+    spaHold: "held",
+    spaBookResult: "appointment-and-order",
+    spaReturns: {},
+    spaCancelReqs: {},
+    spaCurrentAppointment: null,
+    spaFlow: null,
+    spaBookAck: false,
+    spaOptScenario: "fixed-studio",
+    spaLocSrc: "ready",
+    spaAddonSrc: "ready",
+    spaNoteCap: "enabled",
+    spaNote: "",
+    spaSlots: "ready",
+    spaCredit: "ok",
+    spaPlanCommerce: "closed",
+    spaOfferDemo: "sellable",
+    spaPlanOffer: null,
+    spaRescheduled: {},
+    spaProfile: null,
+    spaProfileDraft: null,
+    spaProfileErrors: null,
+    drawer: null,
+    // null | "booking"
+    orders: F.ordersFor("HVAC")
+  };
+  function currentOrder() {
+    var orders = orderItems();
+    return orders.find(function(o) {
+      return o.id === state.currentOrderId;
+    }) || orders.find(function(o) {
+      return o.status === "inprogress";
+    }) || orders[0];
+  }
+  function money2(n) {
+    return "$" + n.toLocaleString();
+  }
+  function cartCount() {
+    return state.cartItems.reduce(function(a, x) {
+      return a + x.qty;
+    }, 0);
+  }
+  function findProduct(name) {
+    return productItems().find(function(p) {
+      return p.name === name;
+    });
+  }
+  function orderItems() {
+    return state.moduleData.orders && state.moduleData.orders.items || state.orders;
+  }
+  function productItems() {
+    var v = currentFixture().theme;
+    var items = state.moduleData.products && state.moduleData.products.items || v.products;
+    return items.map(function(product) {
+      if (product.code) return product;
+      return Object.assign({}, product, { code: product.sku || product.id });
+    });
+  }
+  function currentOverview() {
+    var fixture = currentFixture();
+    var overview = fixture && fixture.overview || null;
+    if (state.config.dataMode === "live") return liveOverview();
+    if (!overview) return null;
+    if (!state.liveWeather) return overview;
+    return Object.assign({}, overview, { weather: state.liveWeather });
+  }
+  function liveOverview() {
+    var envelope2 = state.moduleData.properties;
+    if (!envelope2 || envelope2.state !== "ready") return null;
+    var geography = state.config.serviceGeography;
+    var forecast = liveForecastState();
+    var visits = liveVisits();
+    var tickets = liveTickets();
+    var today = localDateKey(/* @__PURE__ */ new Date(), state.config.timeZone);
+    return {
+      map: geography ? geography.map : null,
+      weather: forecast === "ready" ? state.liveWeather : null,
+      forecast,
+      properties: (envelope2.items || []).map(function(property) {
+        var joined = visits ? propertyWithVisits(property, visits, today) : property;
+        return tickets ? propertyWithTicket(joined, tickets) : joined;
+      }),
+      sources: { invoices: "unavailable", appointments: "unavailable", contracts: "unavailable", support: tickets ? "ready" : "unavailable", visits: visits ? "ready" : "unavailable" },
+      invoices: null,
+      contracts: null,
+      support: tickets ? supportRequests(tickets, state.config.timeZone) : null,
+      banner: null
+    };
+  }
+  function liveOverviewStatus() {
+    if (!isModuleEnabled("properties")) return "unconfigured";
+    var envelope2 = state.moduleData.properties;
+    if (envelope2 && envelope2.state === "unauthorized") return "unauthorized";
+    if (envelope2 && envelope2.state === "error") return "error";
+    if (!envelope2 || envelope2.state !== "ready") return "loading";
+    return "ready";
+  }
+  function liveProvider() {
+    var profile = state.config.dataMode === "live" ? state.moduleData.profile : null;
+    return profile && profile.provider || null;
+  }
+  function liveVisits() {
+    var envelope2 = state.config.dataMode === "live" && isModuleEnabled("appointmentsTimeline") ? state.moduleData.appointmentsTimeline : null;
+    return envelope2 && envelope2.state === "ready" && Array.isArray(envelope2.upcoming) && Array.isArray(envelope2.past) ? envelope2 : null;
+  }
+  function liveTickets() {
+    var envelope2 = state.config.dataMode === "live" && isModuleEnabled("support") ? state.moduleData.support : null;
+    return envelope2 && envelope2.state === "ready" && Array.isArray(envelope2.open) && Array.isArray(envelope2.closed) ? envelope2 : null;
+  }
+  function liveInvoices() {
+    var envelope2 = isModuleEnabled("invoices") ? state.moduleData.invoices : null;
+    return envelope2 && envelope2.state === "ready" && Array.isArray(envelope2.items) ? envelope2 : null;
+  }
+  function liveListStatus(moduleId) {
+    var envelope2 = state.moduleData[moduleId];
+    if (!envelope2 || !envelope2.state || envelope2.state === "loading") return "loading";
+    if (envelope2.state !== "ready") return envelope2.state === "unauthorized" ? "unauthorized" : "error";
+    var rows2 = moduleId === "invoices" ? (envelope2.items || []).length : moduleId === "support" ? ticketCount(envelope2) : visitCount(envelope2);
+    return rows2 ? "ready" : "empty";
+  }
+  function navListShown(moduleId) {
+    return moduleId !== "invoices" || state.config.dataMode === "live" || liveListStatus(moduleId) === "ready";
+  }
+  function liveProperties() {
+    var envelope2 = state.moduleData.properties;
+    return envelope2 && envelope2.state === "ready" && Array.isArray(envelope2.items) ? envelope2.items : [];
+  }
+  function liveForecastState() {
+    if (!state.config.serviceGeography || !state.config.weatherClientId || !state.config.weatherClientSecret) return "unconfigured";
+    if (state.liveWeatherState === "ready" && state.liveWeather) return "ready";
+    if (state.liveWeatherState === "failed") return "failed";
+    return "loading";
+  }
+  function activityUnread() {
+    if (!isModuleEnabled("activity") || state.config.dataMode === "live" || state.activityReadAll) return false;
+    return (currentFixture().activity || []).some(function(group) {
+      return (group.items || []).some(function(item) {
+        return !!item.unread;
+      });
+    });
+  }
+  function currentFixture() {
+    var fixture = caseFixtureFor(state.config.caseId);
+    if (fixture) return fixture;
+    return {
+      theme: F.themes[state.theme],
+      customer: F.customer,
+      addresses: F.addresses,
+      cards: F.cards,
+      technician: F.technician,
+      statusMeta: F.statusMeta,
+      feedTabs: F.feedTabs,
+      support: { agentName: "Avery", label: "Aircove Support", ticket: "SP-104", availability: "Online now" },
+      helpTopics: F.helpTopics,
+      quickReplies: F.quickReplies,
+      activity: F.buildFeed(F.themes[state.theme])
+    };
+  }
+  function currentTheme() {
+    return currentFixture().theme;
+  }
+  function currentStormCalendar() {
+    var fixture = caseFixtureFor(state.config.caseId);
+    return fixture && fixture.stormCalendar || F.stormCalendar(state.theme);
+  }
+  function caseProposals() {
+    var fixture = caseFixtureFor(state.config.caseId);
+    return fixture && fixture.proposals || null;
+  }
+  function currentProposal() {
+    var proposals = caseProposals();
+    if (proposals) return proposals.proposal || null;
+    return F.proposal;
+  }
+  function contractsListShown() {
+    return state.config.dataMode === "live" && isModuleEnabled("proposals") && activeProfile().nav.some(function(item) {
+      return item.key === "contracts.list";
+    });
+  }
+  function contractsHomeRoute() {
+    return contractsListShown() ? "contracts.list" : "proposals.list";
+  }
+  function quotePackage() {
+    var data = state.moduleData.proposals;
+    if (!data || !data.quotes) return null;
+    return contractsPackage(data.quotes, contractProperties());
+  }
+  function contractProperties() {
+    if (state.config.dataMode === "live") {
+      var envelope2 = state.moduleData.properties;
+      return envelope2 && envelope2.state === "ready" && Array.isArray(envelope2.items) ? envelope2.items : [];
+    }
+    var overview = currentOverview();
+    return overview && overview.properties || [];
+  }
+  function quoteGroupFor(id) {
+    var quotes = quotePackage();
+    if (!quotes || !id) return null;
+    var exact = quotes.groups.find(function(group) {
+      return group.id === id;
+    }) || (quotes.history || []).find(function(group) {
+      return group.id === id;
+    });
+    if (exact) return exact;
+    return quotes.groups.filter(function(group) {
+      return !!group.property && (group.property.quoteSiteId === id || group.property.id === id);
+    }).sort(function(left, right) {
+      return (right.agreementBackendId || 0) - (left.agreementBackendId || 0);
+    })[0] || null;
+  }
+  function contractAgreementFor(id) {
+    var quotes = quotePackage();
+    return quotes && id && quotes.agreements.find(function(row) {
+      return row.id === id;
+    }) || null;
+  }
+  function proposalStatusMeta() {
+    var proposals = caseProposals();
+    return proposals && proposals.statusMeta || F.pstatus;
+  }
+  function proposalPlanName(id) {
+    var proposals = caseProposals();
+    var names = proposals && proposals.planNames;
+    return names && names[id] || F.planName(id);
+  }
+  function proposalSites() {
+    return state.moduleData.proposals && state.moduleData.proposals.sites || state.psites;
+  }
+  function activeVerticalConfig() {
+    return verticalProfiles[state.config.vertical] || verticalProfiles.hvac;
+  }
+  function activeProfile() {
+    var vertical2 = activeVerticalConfig();
+    if (isSpa()) return portalProfiles[spaCapability() === "target-appointments" ? "spaTarget" : "spaStaging"];
+    return portalProfiles[state.config.profile] || portalProfiles[vertical2.profile];
+  }
+  function isSpa() {
+    return state.config.vertical === "beauty" || state.theme === "Beauty";
+  }
+  function spaCapability() {
+    return state.capability === "target-appointments" ? "target-appointments" : "current-staging";
+  }
+  function routeLabel(routeId) {
+    var nav = activeProfile().nav.find(function(item) {
+      return item.key === routeId;
+    });
+    if (nav) return nav.label || "your page";
+    var labels = {
+      "order.detail": "Order details",
+      checkout: "Checkout",
+      profile: "Profile",
+      calendar: "Calendar",
+      activity: "Activity",
+      "orders.list": "Home",
+      account: "Account",
+      "purchases.list": "Purchases",
+      "purchase.detail": "Purchase details",
+      plan: "My plan",
+      cart: "Your bag",
+      "appointment.detail": "Your visit"
+    };
+    return labels[routeId] || "your page";
+  }
+  function cmdPhase(key) {
+    return state.commands[key] || "idle";
+  }
+  function isPublic(routeId) {
+    var route = routeRegistry[routeId || state.route];
+    return !!(route && route.public);
+  }
+  function isSessionFree(routeId) {
+    var route = routeRegistry[routeId || state.route];
+    return !!(route && route.sessionFree);
+  }
+  function accountGateShown() {
+    if (isSessionFree()) return false;
+    return customerPortalGateActive() || !isPublic() && state.account !== "ready";
+  }
+  function customerPortalAccessRequired() {
+    return customerAccountRequired(state.config);
+  }
+  function customerPortalGateActive() {
+    return customerPortalAccessRequired() && state.session.authenticated === true && state.account !== "ready";
+  }
+  function isModuleEnabled(moduleId) {
+    if (!moduleId || moduleId === "auth" || moduleId === "seo-parity") return true;
+    return state.config.enabledModules.includes(moduleId);
+  }
+  function applyPortalConfig(config) {
+    var vertical2 = verticalProfiles[config.vertical] ? config.vertical : "hvac";
+    var verticalConfig = verticalProfiles[vertical2];
+    var theme = verticalProfiles[config.theme] ? config.theme : vertical2;
+    var profile = resolveProfile(vertical2, config.profile);
+    state.config = Object.assign({}, state.config, config, {
+      vertical: vertical2,
+      theme,
+      profile,
+      defaultRoute: config.defaultRoute || verticalConfig.defaultRoute,
+      enabledModules: config.enabledModules && config.enabledModules.length ? config.enabledModules : portalProfiles[profile].modules.slice()
+    });
+    state.capability = state.config.capability === "target-appointments" ? "target-appointments" : "current-staging";
+    state.spaBooking = state.config.booking === "open" ? "open" : "closed";
+    state.spaRetail = state.config.retail === "retail-commerce-open" ? "retail-commerce-open" : "browse-only";
+    state.spaPlanCommerce = state.config.planCommerce === "open" ? "open" : "closed";
+    state.session.authenticated = state.config.authMode !== "required";
+    state.session.intendedRoute = null;
+    var fixture = caseFixtureFor(state.config.caseId);
+    state.theme = verticalConfig.displayName;
+    state.orders = fixture ? cloneCaseValue(fixture.orders) : F.ordersFor(verticalConfig.displayName);
+    state.addrId = fixture ? fixture.addresses[0].id : "home";
+    state.payId = fixture ? fixture.cards[0].id : "visa";
+    state.ovProperty = null;
+    state.ovWeatherIndex = null;
+    state.psites = fixture && fixture.proposals ? cloneCaseValue(fixture.proposals.sites) : F.proposalSites.map(function(site) {
+      return Object.assign({}, site);
+    });
+    state.porders = fixture && fixture.proposals && fixture.proposals.orders ? cloneCaseValue(fixture.proposals.orders) : [];
+    state.pagreements = fixture && fixture.proposals && fixture.proposals.agreements ? cloneCaseValue(fixture.proposals.agreements) : [];
+    state.agreementId = null;
+    state.contractCommand = null;
+    state.contractConfirm = null;
+    state.approveQuoteId = null;
+    state.contractDetails = null;
+    state.quoteRequest = null;
+    state.quoteRequestSchema = null;
+    state.prefs = fixture ? cloneCaseValue(fixture.prefs) : { receipts: true, sms: true, marketing: false };
+    state.messages = fixture ? cloneCaseValue(fixture.initialMessages) : F.initialMessages.slice();
+    state.filter = "all";
+    state.cartItems = [];
+    state.account = state.config.dataMode === "live" && state.config.authMode === "required" ? "resolving-customer" : "ready";
+    state.commands = {};
+    state.accountMenu = false;
+    state.spaSupport = false;
+    state.spaCart = null;
+    state.spaCartDemo = "as-added";
+    state.spaVariantPick = {};
+    state.spaCurrentProduct = null;
+    state.spaGallery = 0;
+    state.spaModels = "ready";
+    state.spaReviews = "ready";
+    state.spaOrderMedia = "mixed";
+    state.spaResult = null;
+    state.spaPolicyAck = false;
+    state.spaCheckoutDemo = "ready";
+    state.spaCheckoutSource = "cart";
+    state.spaReturns = {};
+    state.spaCancelReqs = {};
+    state.spaPlanCancelled = {};
+    state.spaPurchMore = "idle";
+    state.spaPurchFilter = "all";
+    state.spaCurrentPurchase = null;
+    state.spaHold = "held";
+    state.spaCurrentAppointment = null;
+    state.spaFlow = null;
+    state.spaBookAck = false;
+    state.spaOptScenario = "fixed-studio";
+    state.spaLocSrc = "ready";
+    state.spaAddonSrc = "ready";
+    state.spaNoteCap = "enabled";
+    state.spaNote = "";
+    state.spaSlots = "ready";
+    state.spaCredit = "ok";
+    state.spaOfferDemo = "sellable";
+    state.spaPlanOffer = null;
+    state.spaRescheduled = {};
+    state.spaProfile = null;
+    state.spaProfileDraft = null;
+    state.spaProfileErrors = null;
+    state.carePayloadState = "ready";
+    state.careStateVertical = null;
+    state.careSelectedUnitId = null;
+    state.careSelectedSpecialistId = null;
+    state.careTasksDone = {};
+    state.careAuthorizationEpoch += 1;
+    state.careRetreatRequests = {};
+    delete state.moduleData.care;
+    delete state.moduleStatus.care;
+    if (!state.userModeOverridden) {
+      state.mode = state.config.defaultMode === "dark" ? "Dark" : "Light";
+    }
+  }
+  function buildCalendarGrid(year, month) {
+    var first = new Date(year, month, 1);
+    var startWeekday = first.getDay();
+    var daysInMonth = new Date(year, month + 1, 0).getDate();
+    var cells = [];
+    for (var i = 0; i < startWeekday; i++) cells.push({ empty: true });
+    for (var d = 1; d <= daysInMonth; d++) {
+      cells.push({ empty: false, day: d, events: orderItems().filter(function(o) {
+        return o.y === year && o.m === month && o.d === d;
+      }) });
+    }
+    return cells;
+  }
+  function currentSite() {
+    var sites = proposalSites();
+    return sites.find(function(p) {
+      return p.id === state.currentSiteId;
+    }) || sites[0];
+  }
+  function computeSite(site) {
+    var cs = 0, ds = 0, total = 0;
+    var names = currentTheme().prop.surfaces;
+    var rows2 = F.surfaceDefs.map(function(d, i) {
+      var a = site.areas[i];
+      var c = Math.round(a * d.clear), de = Math.round(a * d.deice);
+      cs += c;
+      ds += de;
+      total += a;
+      return {
+        name: names[i] || "Surface " + (i + 1),
+        color: d.color,
+        area: a.toLocaleString(),
+        clear: "$" + c,
+        deice: "$" + de,
+        clearRate: "$" + ("" + d.clear).replace(/^0/, ""),
+        deiceRate: "$" + ("" + d.deice).replace(/^0/, "")
+      };
+    });
+    var clearing = cs + F.MOB_CLEAR, deice = ds + F.MOB_DEICE;
+    var seasonRef = clearing * 18 + deice * 22;
+    var unlim = seasonRef * 0.853;
+    var monthly = Math.round(unlim / 5 / 5) * 5;
+    var seasonLock = Math.round(unlim * 0.9 / 25) * 25;
+    return {
+      rows: rows2,
+      total,
+      clearing,
+      deice,
+      monthly,
+      seasonLock,
+      unlim,
+      clearStr: "$" + clearing,
+      deiceStr: "$" + deice
+    };
+  }
+  function filteredOrders() {
+    var list = orderItems();
+    if (state.filter !== "all") list = list.filter(function(o) {
+      return o.status === state.filter;
+    });
+    return list;
+  }
+  function tabItems() {
+    var o = orderItems();
+    var count = function(k) {
+      return k === "all" ? o.length : o.filter(function(x) {
+        return x.status === k;
+      }).length;
+    };
+    return [
+      { key: "all", label: "All", count: count("all") },
+      { key: "inprogress", label: "Active", count: count("inprogress") },
+      { key: "scheduled", label: "Scheduled", count: count("scheduled") },
+      { key: "completed", label: "Done", count: count("completed") }
+    ];
+  }
+
+  // app-templates/customer-portal/runtime/src/components/primitives/StatusBadge.js
+  function StatusBadge(props) {
+    return h("span", {
+      "class": "status-badge " + props.variant,
+      "data-module": "status-badge",
+      "data-visual-id": "status-badge",
+      "data-bind": props.bind || "status.label",
+      "data-state": props.state || void 0
+    }, props.label);
+  }
+
+  // app-templates/customer-portal/runtime/src/contract-commands.js
+  var CONTRACT_EVENTS = /* @__PURE__ */ Object.freeze({
+    approve: /* @__PURE__ */ Object.freeze({ entity: "order", source: "QUOTE_SENT", code: "QUOTE_SENT-ACCEPTED" }),
+    decline: /* @__PURE__ */ Object.freeze({ entity: "order", source: "QUOTE_SENT", code: "QUOTE_SENT-DECLINED" }),
+    changes: /* @__PURE__ */ Object.freeze({ entity: "order", source: "QUOTE_SENT", code: "QUOTE_SENT-CUSTOMER_CHANGES_REQUESTED" }),
+    agreement: /* @__PURE__ */ Object.freeze({ entity: "document", source: "SENT_TO_CLIENT", code: "SENT_TO_CLIENT-CLIENT_APPROVED" })
+  });
+  var CONFIRMED_TOAST = {
+    approve: "Option approved",
+    decline: "Option declined",
+    changes: "Change request sent",
+    agreement: "Agreement approved"
+  };
+  function createContractCommands(deps) {
+    var flight = null;
+    function busy() {
+      return !!flight;
+    }
+    function run2(command, operation) {
+      if (flight) return null;
+      deps.state.contractCommand = Object.assign({ phase: "pending" }, command);
+      var started2 = Promise.resolve().then(operation).catch(function(error2) {
+        return settle5(command, error2);
+      }).finally(function() {
+        flight = null;
+        var kept = command.kind === "changes" && !!deps.state.contractCommand;
+        if (!kept) deps.state.contractConfirm = null;
+        deps.render();
+      });
+      flight = started2;
+      deps.render();
+      return started2;
+    }
+    function decide(kind, backendId, input) {
+      var definition = CONTRACT_EVENTS[kind];
+      if (!definition || definition.entity !== "order") return Promise.resolve(false);
+      var quote = findQuote(deps.current(), backendId);
+      if (!quote || quote.stateCode !== definition.source || quote.allowedActions.indexOf(kind) === -1) return Promise.resolve(false);
+      return run2({ kind, targets: [backendId] }, async function() {
+        var gateway = deps.gateway();
+        var row = await gateway.readOrder(backendId, deps.context());
+        if (latestStateCode(row) !== definition.source) throw coded("conflict");
+        await gateway.sendOrderEvent(backendId, definition.code, deps.context(), input);
+        return confirm(kind, backendId, definition.source, function(pkg) {
+          var read = findQuote(pkg, backendId);
+          return read ? read.stateCode : null;
+        });
+      }) || Promise.resolve(false);
+    }
+    function approveAgreement(backendId, input) {
+      var definition = CONTRACT_EVENTS.agreement;
+      var row = findAgreement(deps.current(), backendId);
+      if (!row || row.agreement.stateCode !== definition.source || row.agreement.allowedActions.indexOf("approve") === -1) return Promise.resolve(false);
+      return run2({ kind: "agreement", targets: [backendId] }, async function() {
+        var gateway = deps.gateway();
+        var document2 = await gateway.readAgreement(backendId, deps.context());
+        if (latestStateCode(document2) !== definition.source) throw coded("conflict");
+        await gateway.sendAgreementEvent(backendId, definition.code, deps.context(), input);
+        return confirm("agreement", backendId, definition.source, function(pkg) {
+          var read = findAgreement(pkg, backendId);
+          return read ? read.agreement.stateCode : null;
+        });
+      }) || Promise.resolve(false);
+    }
+    function requestChanges(backendIds, message) {
+      var text10 = typeof message === "string" ? message.trim() : "";
+      var definition = CONTRACT_EVENTS.changes;
+      var open = (Array.isArray(backendIds) ? backendIds : []).filter(function(backendId) {
+        var quote = findQuote(deps.current(), backendId);
+        return !!quote && quote.stateCode === definition.source && quote.allowedActions.indexOf("changes") !== -1;
+      });
+      if (!text10 || !open.length) return Promise.resolve(false);
+      return run2({ kind: "changes", targets: open }, async function() {
+        var gateway = deps.gateway();
+        for (var index = 0; index < open.length; index += 1) {
+          var row = await gateway.readOrder(open[index], deps.context());
+          if (latestStateCode(row) !== definition.source) throw coded("conflict");
+          await gateway.sendOrderEvent(open[index], definition.code, deps.context(), { MESSAGE: { value: text10 } });
+        }
+        return confirm("changes", open, definition.source, function(pkg) {
+          var codes = open.map(function(backendId) {
+            var read = findQuote(pkg, backendId);
+            return read ? read.stateCode : null;
+          });
+          if (codes.some(function(code) {
+            return !code;
+          })) return null;
+          return codes.some(function(code) {
+            return code === definition.source;
+          }) ? definition.source : codes[0];
+        });
+      }) || Promise.resolve(false);
+    }
+    async function confirm(kind, backendId, source, stateOf) {
+      var read;
+      try {
+        read = await deps.reload();
+      } catch (error2) {
+        throw readbackFailure(error2);
+      }
+      var stateCode = stateOf(read);
+      if (!stateCode) throw readbackFailure(null);
+      if (stateCode === source) {
+        deps.state.contractCommand = { kind, targets: [].concat(backendId), phase: "unconfirmed" };
+        return false;
+      }
+      deps.state.contractCommand = null;
+      if (deps.notify) deps.notify(CONFIRMED_TOAST[kind]);
+      return true;
+    }
+    async function settle5(command, error2) {
+      var code = error2 && error2.code;
+      if (code === "session-expired") {
+        deps.state.contractCommand = null;
+        deps.state.account = "session-expired";
+        return false;
+      }
+      if (code === "readback-failed") {
+        deps.state.contractCommand = Object.assign({}, command, { phase: "readback-failed" });
+        return false;
+      }
+      var phase = code === "conflict" ? "conflict" : code === "customer-forbidden" || code === "not-found" || code === "command-refused" ? "refused" : "failed";
+      if (phase === "conflict" || code === "not-found") {
+        try {
+          await deps.reload();
+        } catch (_) {
+          deps.state.contractCommand = Object.assign({}, command, { phase: "readback-failed" });
+          return false;
+        }
+      }
+      deps.state.contractCommand = Object.assign({}, command, { phase }, phase === "refused" && error2 && error2.serverMessage ? { message: error2.serverMessage } : {});
+      return false;
+    }
+    return {
+      busy,
+      decide,
+      requestChanges,
+      approveAgreement
+    };
+  }
+  function readbackFailure(cause) {
+    var error2 = coded("readback-failed");
+    error2.cause = cause;
+    return error2;
+  }
+  function coded(code) {
+    var error2 = new Error(code);
+    error2.code = code;
+    return error2;
+  }
+
+  // app-templates/customer-portal/runtime/src/adapters/fixture-adapter.js
+  var fixtureAdapter = {
+    load(moduleId, context) {
+      var themeName = context.state.theme;
+      var fixture = caseFixtureFor(context.config.caseId);
+      var theme = fixture ? fixture.theme : F.themes[themeName];
+      switch (moduleId) {
+        case "auth":
+          return { session: context.state.session, phone: context.state.phone, code: context.state.code };
+        case "orders":
+          return { orders: context.state.orders, statusMeta: fixture ? fixture.statusMeta || F.statusMeta : F.statusMeta, technician: fixture ? fixture.technician : F.technician, addresses: fixture ? fixture.addresses : F.addresses };
+        case "proposals":
+          return proposalsFixture(fixture, context);
+        case "services":
+          return { services: theme.svc };
+        case "pricing":
+          return { plan: theme.plan, services: theme.svc };
+        case "products":
+          return { feature: theme.feat, categories: theme.cats, products: theme.products };
+        case "checkout":
+          return { cartItems: context.state.cartItems, addresses: fixture ? fixture.addresses : F.addresses, cards: fixture ? fixture.cards : F.cards };
+        case "overview":
+        case "appointmentsTimeline":
+        case "properties":
+          return { overview: fixture ? fixture.overview || null : null };
+        case "calendar":
+          return { orders: context.state.orders, stormCalendar: fixture && fixture.stormCalendar ? fixture.stormCalendar : F.stormCalendar(themeName) };
+        case "activity":
+          return { groups: fixture ? fixture.activity : F.buildFeed(theme), tabs: fixture ? fixture.feedTabs : F.feedTabs };
+        case "profile":
+          return {
+            customer: fixture ? fixture.customer : F.customer,
+            addresses: fixture ? fixture.addresses : F.addresses,
+            cards: fixture ? fixture.cards : F.cards,
+            preferences: context.state.prefs,
+            orders: context.state.orders
+          };
+        case "support":
+          return {
+            customer: fixture ? fixture.customer : F.customer,
+            topics: fixture ? fixture.helpTopics : F.helpTopics,
+            quickReplies: fixture ? fixture.quickReplies : F.quickReplies,
+            messages: context.state.messages
+          };
+        default:
+          throw new Error("Unknown fixture module: " + moduleId);
+      }
+    }
+  };
+  var fixtureAccountProfileAdapter = {
+    load(moduleId, context) {
+      var fixture = caseFixtureFor(context.config.caseId);
+      return { account: fixture && fixture.customerAccount ? clone(fixture.customerAccount) : null, scopeMode: null };
+    }
+  };
+  var ROUND_STATES = ["QUOTE_SENT", "ACCEPTED", "DECLINED", "CUSTOMER_CHANGES_REQUESTED"];
+  function createFixtureContractsGateway(state2) {
+    return {
+      async readOrder(backendId) {
+        return clone(fixtureRow(state2.porders, backendId));
+      },
+      async readAgreement(backendId) {
+        return clone(fixtureRow(state2.pagreements, backendId));
+      },
+      async sendOrderEvent(backendId, event, context, input) {
+        var target = transition(fixtureRow(state2.porders, backendId), event);
+        var orders = withState(state2.porders, [backendId], target);
+        if (target === "ACCEPTED") {
+          orders = withState(orders, siblingsOf(orders, state2.pagreements, backendId), "DECLINED");
+          orders = orders.map(function(row) {
+            return row.id === positiveInteger(backendId) ? Object.assign({}, row, { metadata: Object.assign({}, row.metadata, { QUOTATION_CLIENT_DETAILS: detailValues(input) }) }) : row;
+          });
+        }
+        state2.porders = orders;
+        if (target === "ACCEPTED" || target === "DECLINED") state2.pagreements = settleRound(state2.pagreements, orders, positiveInteger(backendId));
+        return true;
+      },
+      async sendAgreementEvent(backendId, event) {
+        var target = transition(fixtureRow(state2.pagreements, backendId), event);
+        state2.pagreements = withState(state2.pagreements, [backendId], target);
+        return true;
+      }
+    };
+  }
+  function proposalsFixture(fixture, context) {
+    var proposals = fixture && fixture.proposals;
+    var quotation = !!(proposals && proposals.orders);
+    return {
+      proposal: proposals ? proposals.proposal || null : F.proposal,
+      sites: context.state.psites,
+      statusMeta: proposals && proposals.statusMeta ? proposals.statusMeta : F.pstatus,
+      quoteOrders: quotation ? context.state.porders : null,
+      agreements: quotation ? context.state.pagreements : null,
+      agreementContents: quotation ? proposals.agreementContents || [] : null,
+      orderItems: quotation ? proposals.orderItems || [] : null,
+      productPrices: quotation ? proposals.productPrices || [] : null,
+      products: quotation ? proposals.products || [] : null,
+      client: quotation ? Object.assign({ displayName: fixture.customer.fullName }, proposals.client || {}) : null
+    };
+  }
+  function fixtureRow(rows2, backendId) {
+    var id = positiveInteger(backendId);
+    var row = (rows2 || []).find(function(candidate) {
+      return candidate.id === id;
+    });
+    if (!row) throw coded2("not-found");
+    return row;
+  }
+  function transition(row, event) {
+    var parts = String(event || "").split("-");
+    if (parts.length !== 2 || latestStateCode(row) !== parts[0]) throw coded2("command-refused");
+    return parts[1];
+  }
+  function withState(rows2, ids, code) {
+    return rows2.map(function(row) {
+      return ids.indexOf(row.id) === -1 ? row : Object.assign({}, row, { states: row.states.concat({ code }) });
+    });
+  }
+  function siblingsOf(orders, agreements, backendId) {
+    var property = attributeNumber(fixtureRow(orders, backendId), "SERVICE_PROPERTY");
+    var listed = agreedOrderIds(agreements);
+    return orders.filter(function(row) {
+      return row.id !== positiveInteger(backendId) && listed.indexOf(row.id) === -1 && attributeNumber(row, "SERVICE_PROPERTY") === property && latestStateCode(row) === "QUOTE_SENT";
+    }).map(function(row) {
+      return row.id;
+    });
+  }
+  function settleRound(agreements, orders, decidedId) {
+    var listed = agreedOrderIds(agreements);
+    var round = orders.filter(function(row) {
+      return listed.indexOf(row.id) === -1 && ROUND_STATES.indexOf(latestStateCode(row)) !== -1;
+    });
+    var byProperty = {};
+    round.forEach(function(row) {
+      var key = String(attributeNumber(row, "SERVICE_PROPERTY") || 0);
+      (byProperty[key] = byProperty[key] || []).push(latestStateCode(row));
+    });
+    var keys = /* @__PURE__ */ Object.keys(byProperty);
+    var settled2 = keys.length > 0 && keys.every(function(key) {
+      return byProperty[key].indexOf("ACCEPTED") !== -1 || byProperty[key].every(function(code) {
+        return code === "DECLINED";
+      });
+    });
+    var approved = round.filter(function(row) {
+      return latestStateCode(row) === "ACCEPTED";
+    });
+    if (!settled2 || !approved.length) return agreements;
+    var carrier = approved.filter(function(row) {
+      return row.id === decidedId;
+    })[0] || approved.filter(function(row) {
+      return row.metadata && row.metadata.QUOTATION_CLIENT_DETAILS;
+    }).pop();
+    var details2 = carrier && carrier.metadata ? carrier.metadata.QUOTATION_CLIENT_DETAILS : null;
+    var attributes = { ORDERS: { value: approved.map(function(row) {
+      return row.id;
+    }) } };
+    (/* @__PURE__ */ Object.keys(details2 || {})).forEach(function(code) {
+      attributes[code] = { value: details2[code] };
+    });
+    var id = agreements.reduce(function(highest, agreement) {
+      return Math.max(highest, agreement.id);
+    }, 0) + 1;
+    return agreements.concat({ id, type: { id: 17, code: "SERVICE_AGREEMENT" }, states: [{ code: "DRAFT" }], attributes: { 17: attributes } });
+  }
+  function detailValues(input) {
+    var values = {};
+    (/* @__PURE__ */ Object.keys(input || {})).forEach(function(code) {
+      var entry2 = input[code];
+      values[code] = entry2 && typeof entry2 === "object" ? entry2.value : entry2;
+    });
+    return values;
+  }
+  function agreedOrderIds(agreements) {
+    var ids = [];
+    (agreements || []).forEach(function(agreement) {
+      ids = ids.concat(listedOrderIds(agreement));
+    });
+    return ids;
+  }
+  function listedOrderIds(agreement) {
+    var buckets = agreement && agreement.attributes || {};
+    var ids = [];
+    (/* @__PURE__ */ Object.keys(buckets)).forEach(function(key) {
+      var entry2 = buckets[key] && buckets[key].ORDERS;
+      var value = entry2 ? entry2.value : null;
+      (Array.isArray(value) ? value : []).forEach(function(id) {
+        var parsed2 = positiveInteger(id);
+        if (parsed2 && ids.indexOf(parsed2) === -1) ids.push(parsed2);
+      });
+    });
+    return ids;
+  }
+  function clone(value) {
+    return JSON.parse(JSON.stringify(value));
+  }
+  function coded2(code) {
+    var error2 = new Error(code);
+    error2.code = code;
+    return error2;
+  }
+
+  // app-templates/customer-portal/runtime/src/adapters/core-oidc-adapter.js
+  var CORE_OIDC_REFRESH_LOCK = "oidc-token-refresh";
+  var EXPIRING_THRESHOLD_SECONDS = 60;
+  var SIGN_IN_STARTED_KEY = "oidc-sign-in-started-at";
+  var SIGN_IN_RETURN_HOLD_MS = 3e4;
+  var manager = null;
+  var renewal = null;
+  var detachRenewal = null;
+  var sessionListeners = { renewed: null, ended: null };
+  function createCoreOidcAdapter() {
+    return {
+      async load(moduleId, context) {
+        if (moduleId !== "auth") throw new Error("Core OIDC adapter cannot load " + moduleId);
+        if (context.config.dataMode !== "live" || context.config.authMode !== "required") {
+          return { state: "ready-signed-in", user: null };
+        }
+        return loadCoreOidcSession(context.config);
+      }
+    };
+  }
+  async function loadCoreOidcSession(config) {
+    if (!globalThis.oidc || !globalThis.oidc.UserManager || !globalThis.oidc.WebStorageStateStore) {
+      throw contractError("oidc-library-unavailable", "Core sign-in library did not load");
+    }
+    var coreBase2 = sameOriginUrl(config.authCoreBase || "/core", "Core authentication base").replace(/\/+$/, "");
+    var expectedCallback = sameOriginUrl(config.authCallbackPath || "/core/oauth2-callback.html", "Core callback");
+    var response = await globalThis.fetch(coreBase2 + "/.well-known/oauth-protected-resource/", {
+      credentials: "omit",
+      headers: { Accept: "application/json" }
+    });
+    if (!response.ok) throw contractError("oidc-discovery-failed", "Core authentication discovery failed with HTTP " + response.status);
+    var metadata = await response.json();
+    var authority = Array.isArray(metadata.authorization_servers) ? metadata.authorization_servers[0] : "";
+    if (!authority || !metadata.resource || !metadata.x_client_id || !metadata.x_redirect_uri || !metadata.x_post_logout_redirect_uri) {
+      throw contractError("oidc-discovery-incomplete", "Core authentication discovery is incomplete");
+    }
+    if (new URL(metadata.resource, globalThis.location.origin).origin !== globalThis.location.origin) {
+      throw contractError("oidc-cross-origin-resource", "Core authentication resource must be same-origin");
+    }
+    if (new URL(authority, globalThis.location.origin).origin !== globalThis.location.origin) {
+      throw contractError("oidc-cross-origin-authority", "Core authorization server must be same-origin");
+    }
+    if (new URL(metadata.x_redirect_uri, globalThis.location.origin).href !== expectedCallback || new URL(metadata.x_post_logout_redirect_uri, globalThis.location.origin).href !== expectedCallback) {
+      throw contractError("oidc-callback-mismatch", "Core authentication callback does not match the portal contract");
+    }
+    manager = new globalThis.oidc.UserManager({
+      authority,
+      client_id: metadata.x_client_id,
+      post_logout_redirect_uri: expectedCallback,
+      redirect_uri: expectedCallback,
+      response_type: "code",
+      scope: "openid profile email roles",
+      automaticSilentRenew: false,
+      monitorSession: false,
+      userStore: new globalThis.oidc.WebStorageStateStore({ store: globalThis.localStorage })
+    });
+    attachRenewal(manager);
+    var user = await settleStoredUser(await manager.getUser());
+    return { state: user ? "ready-signed-in" : "ready-signed-out", user: user || null };
+  }
+  function onCoreOidcSessionChange(renewed, ended) {
+    sessionListeners = { renewed: renewed || null, ended: ended || null };
+  }
+  async function coreSessionFetch(input, init) {
+    var sent = authorizationHeader(init);
+    if (!manager || !sent) return globalThis.fetch(input, init);
+    var user = await manager.getUser();
+    if (user && user.expired && user.refresh_token) {
+      user = await renewCoreOidcUser(user.access_token).catch(function() {
+        return user;
+      }) || user;
+    }
+    var request = user ? withAuthorization(init, sent.name, user) : init;
+    var response = await globalThis.fetch(input, request);
+    if (response.status !== 401) return response;
+    var renewed = await renewAfterUnauthorized(user ? user.access_token : bearerToken(sent.value));
+    return renewed ? globalThis.fetch(input, withAuthorization(init, sent.name, renewed)) : response;
+  }
+  function renewCoreOidcUser(staleAccessToken) {
+    if (!manager) return Promise.resolve(null);
+    var owner = manager;
+    if (!renewal) {
+      renewal = withRefreshLock(async function() {
+        var user = await owner.getUser();
+        if (!user) return null;
+        if (user.access_token !== staleAccessToken && !expiring(user)) {
+          await owner.events.load(user);
+          return user;
+        }
+        if (!user.refresh_token) return null;
+        return owner.signinSilent();
+      }).finally(function() {
+        renewal = null;
+      });
+    }
+    return renewal;
+  }
+  async function settleStoredUser(user) {
+    if (!user || !user.expired) return user;
+    try {
+      var renewed = await renewCoreOidcUser(user.access_token);
+      if (renewed) return renewed;
+    } catch (error2) {
+      if (!rejectedRenewal(error2)) throw contractError("oidc-renewal-failed", "Core session could not be renewed");
+    }
+    await manager.removeUser();
+    return null;
+  }
+  async function renewAfterUnauthorized(staleAccessToken) {
+    try {
+      var renewed = await renewCoreOidcUser(staleAccessToken);
+      if (renewed) return renewed;
+    } catch (error2) {
+      if (rejectedRenewal(error2)) await endSession();
+      return null;
+    }
+    var stored = await manager.getUser();
+    if (!stored || stored.expired) await endSession();
+    return null;
+  }
+  function renewInBackground() {
+    return manager.getUser().then(function(user) {
+      if (!user || !user.refresh_token) return null;
+      if (!expiring(user)) return manager.events.load(user);
+      return renewCoreOidcUser(user.access_token).catch(function(error2) {
+        return rejectedRenewal(error2) ? endSession() : null;
+      });
+    });
+  }
+  async function endSession() {
+    if (await manager.getUser()) await manager.removeUser();
+    if (sessionListeners.ended) sessionListeners.ended();
+  }
+  function attachRenewal(next) {
+    if (detachRenewal) detachRenewal();
+    renewal = null;
+    var removers = [
+      next.events.addAccessTokenExpiring(renewInBackground),
+      next.events.addAccessTokenExpired(renewInBackground),
+      next.events.addUserLoaded(function(user) {
+        if (sessionListeners.renewed) sessionListeners.renewed(user);
+      })
+    ];
+    detachRenewal = function() {
+      removers.forEach(function(remove) {
+        remove();
+      });
+    };
+  }
+  function withRefreshLock(callback) {
+    var locks = globalThis.navigator && globalThis.navigator.locks;
+    if (!locks) return Promise.resolve().then(callback);
+    return locks.request(CORE_OIDC_REFRESH_LOCK, callback);
+  }
+  function expiring(user) {
+    return user.expires_in !== void 0 && user.expires_in <= EXPIRING_THRESHOLD_SECONDS;
+  }
+  function rejectedRenewal(error2) {
+    return !!(globalThis.oidc && globalThis.oidc.ErrorResponse && error2 instanceof globalThis.oidc.ErrorResponse);
+  }
+  function authorizationHeader(init) {
+    var headers = init && init.headers;
+    if (!headers || typeof headers !== "object") return null;
+    var name = (/* @__PURE__ */ Object.keys(headers)).find(function(key) {
+      return key.toLowerCase() === "authorization";
+    });
+    return name && headers[name] ? { name, value: String(headers[name]) } : null;
+  }
+  function bearerToken(value) {
+    return value.split(" ").slice(1).join(" ");
+  }
+  function withAuthorization(init, name, user) {
+    var headers = Object.assign({}, init.headers);
+    headers[name] = (user.token_type || "Bearer") + " " + user.access_token;
+    return Object.assign({}, init, { headers });
+  }
+  function storedCoreOidcUser() {
+    if (!manager) return Promise.resolve(null);
+    return manager.getUser().then(function(user) {
+      return user && !user.expired ? user : null;
+    });
+  }
+  function startCoreOidcSignIn(config) {
+    if (!manager) return Promise.reject(contractError("oidc-manager-unavailable", "Core sign-in is not ready"));
+    var returnUrl = portalRouteUrl(config, config.defaultRoute || "orders.list");
+    globalThis.sessionStorage.setItem(config.authReturnStorageKey || "oidc-return-url", returnUrl.href);
+    globalThis.sessionStorage.setItem(SIGN_IN_STARTED_KEY, String(Date.now()));
+    return manager.signinRedirect({ redirectMethod: "replace" });
+  }
+  function coreOidcSignInJustStarted() {
+    var startedAt = Number(globalThis.sessionStorage.getItem(SIGN_IN_STARTED_KEY));
+    return startedAt > 0 && Date.now() - startedAt < SIGN_IN_RETURN_HOLD_MS;
+  }
+  function startCoreOidcSignOut(config) {
+    if (!manager) return Promise.reject(contractError("oidc-manager-unavailable", "Core sign-out is not ready"));
+    var configured = config && config.logoutReturnUrl;
+    var returnUrl = configured ? new URL(configured) : new URL(globalThis.location.href);
+    if (!configured) returnUrl.hash = "#/login";
+    if (configured && (returnUrl.protocol !== "https:" || !(config.allowedNavOrigins || []).includes(returnUrl.origin))) {
+      return Promise.reject(contractError("oidc-logout-return-invalid", "Configured sign-out return URL is not allowlisted"));
+    }
+    globalThis.sessionStorage.setItem(config.authLogoutReturnStorageKey || "oidc-logout-return-url", returnUrl.href);
+    return manager.signoutRedirect();
+  }
+  function sameOriginUrl(value, label) {
+    var url = new URL(value, globalThis.location.origin);
+    if (url.origin !== globalThis.location.origin) throw contractError("cross-origin-service", label + " must be same-origin");
+    return url.href;
+  }
+  function portalRouteUrl(config, routeId) {
+    var configured = config && config.portalUrl;
+    var returnUrl = configured ? new URL(configured) : new URL(globalThis.location.href);
+    if (configured && (returnUrl.protocol !== "https:" || !(config.allowedNavOrigins || []).includes(returnUrl.origin))) {
+      throw contractError("oidc-return-invalid", "Configured portal return URL is not allowlisted");
+    }
+    var route = routePath(routeId);
+    if (config.routerMode === "history") {
+      if (!returnUrl.pathname.endsWith("/")) throw contractError("oidc-return-invalid", "History-mode portal URL must end with a slash");
+      returnUrl.pathname += route.replace(/^\//, "");
+      return returnUrl;
+    }
+    returnUrl.hash = "#" + route;
+    return returnUrl;
+  }
+  function contractError(code, message) {
+    var error2 = new Error(message);
+    error2.code = code;
+    return error2;
+  }
+
+  // app-templates/customer-portal/runtime/src/adapters/core-account-profile-adapter.js
+  var CODE_MAPPINGS = [{ name: "id" }, { name: "code" }];
+  var PROVIDER_MAPPINGS = [
+    { name: "id" },
+    { name: "nls" },
+    { name: "attributes" },
+    { key: "id", mappings: [{ name: "id" }], name: "image", type: "identifier" }
+  ];
+  var PROFILE_MAPPINGS = [
+    { name: "id" },
+    { name: "nls" },
+    { key: "id", mappings: [{ name: "id" }], name: "user", type: "identifier" },
+    { key: "id", mappings: PROVIDER_MAPPINGS, name: "organization", type: "identifier" },
+    {
+      mappings: [
+        { name: "id" },
+        { name: "firstName" },
+        { name: "lastName" },
+        { name: "title" },
+        { key: "id", mappings: CODE_MAPPINGS, name: "type", type: "identifier" },
+        {
+          mappings: [
+            { name: "id" },
+            { name: "value" },
+            { key: "id", mappings: CODE_MAPPINGS, name: "type", type: "identifier" }
+          ],
+          name: "contactEntries",
+          type: "collection"
+        }
+      ],
+      name: "contacts",
+      type: "collection"
+    },
+    {
+      mappings: [
+        { name: "id" },
+        { mappings: CODE_MAPPINGS, name: "types", type: "collection" },
+        {
+          key: "id",
+          mappings: [
+            { name: "id" },
+            { name: "address1" },
+            { name: "address2" },
+            { name: "city" },
+            { name: "postalCode" },
+            { key: "id", mappings: CODE_MAPPINGS, name: "state", type: "identifier" },
+            { key: "id", mappings: CODE_MAPPINGS, name: "country", type: "identifier" }
+          ],
+          name: "address",
+          type: "identifier"
+        }
+      ],
+      name: "addresses",
+      type: "collection"
+    }
+  ];
+  var CONTRACT_DETAILS_MAPPINGS = PROFILE_MAPPINGS.concat([{ name: "attributes" }]);
+  function createCoreAccountProfileAdapter(options2 = {}) {
+    var fetchImpl = options2.fetch || coreSessionFetch;
+    if (typeof fetchImpl !== "function") throw coded3("fetch-unavailable", "Core account profile adapter requires fetch");
+    return {
+      async load(moduleId, context) {
+        if (moduleId !== "profile") throw coded3("unsupported-module", "Core account profile adapter cannot load " + moduleId);
+        return loadCustomerAccountProfile(context, fetchImpl, options2.origin);
+      }
+    };
+  }
+  async function loadCustomerAccountProfile(context, fetchImpl = coreSessionFetch, explicitOrigin) {
+    return readCustomerAccount(context, fetchImpl, explicitOrigin, PROFILE_MAPPINGS);
+  }
+  async function loadContractDetailsAccount(context, fetchImpl = coreSessionFetch, explicitOrigin) {
+    return readCustomerAccount(context, fetchImpl, explicitOrigin, CONTRACT_DETAILS_MAPPINGS);
+  }
+  async function readCustomerAccount(context, fetchImpl, explicitOrigin, mappings) {
+    var api = requestContext(context, explicitOrigin);
+    var reply = await requestJson(fetchImpl, api.accountBase + api.accountListPath, {
+      method: "POST",
+      credentials: "same-origin",
+      headers: {
+        Authorization: api.authorization,
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        "X-Organization-Code": api.organization
+      },
+      body: JSON.stringify({
+        filters: [
+          { type: "INTEGER", operator: "=", property: "id", value: String(api.accountId) },
+          { type: "INTEGER", operator: "=", property: "user.id", value: String(api.userId) }
+        ],
+        mappings,
+        offset: 0,
+        pageSize: 2
+      })
+    });
+    var rows2 = Array.isArray(reply && reply.result) ? reply.result : [];
+    var owned = rows2.filter(function(row) {
+      return ownedBySession(row, api);
+    });
+    if (!owned.length) throw coded3("profile-unavailable", "Core did not return the signed-in customer's Account");
+    return { account: owned[0], scopeMode: owned.length === rows2.length ? "server-scoped" : "browser-filtered" };
+  }
+  function ownedBySession(row, api) {
+    if (!row || typeof row !== "object" || positiveInteger(row.id) !== api.accountId) return false;
+    var linked = row.user && typeof row.user === "object" ? positiveInteger(row.user.id) : null;
+    return linked === null && !api.tagged || linked === api.userId;
+  }
+  function requestContext(context, explicitOrigin) {
+    var config = context && context.config || {};
+    var runtimeState = context && context.state || {};
+    var session2 = runtimeState.session || {};
+    var accessToken = text(session2.accessToken || session2.access_token);
+    if (!accessToken) throw coded3("session-required", "A Core access token is required");
+    var userId = positiveInteger(session2.userId);
+    if (!userId) throw coded3("session-user-required", "The signed-in Core User is required");
+    var account = runtimeState.customerAccount || session2.account || null;
+    var accountId = positiveInteger(account && account.id);
+    if (!accountId) throw coded3("customer-unresolved", "A resolved customer Account is required before reading its profile");
+    var organization = text(config.organization);
+    if (!organization) throw coded3("organization-required", "A portal organization code is required");
+    var origin = explicitOrigin || config.origin || globalThis.location && globalThis.location.origin || "";
+    return {
+      accountBase: sameOriginBase(config.accountApiBase || "/core-acct", origin, "Core Account API base"),
+      accountId,
+      accountListPath: config.vertical === "snow" ? "/api/tagged/account/list.json" : "/api/account/list.json",
+      tagged: config.vertical === "snow",
+      authorization: text(session2.tokenType || session2.token_type || "Bearer") + " " + accessToken,
+      organization,
+      userId
+    };
+  }
+  async function requestJson(fetchImpl, url, options2) {
+    var response = await fetchImpl(url, options2);
+    if (!response || typeof response.ok !== "boolean") throw coded3("invalid-response", "Core request returned an invalid response");
+    if (!response.ok) {
+      var code = response.status === 401 ? "session-expired" : response.status === 403 ? "customer-forbidden" : "profile-request-failed";
+      var failure2 = coded3(code, "Core Account request failed with HTTP " + response.status);
+      failure2.status = response.status;
+      throw failure2;
+    }
+    var payload;
+    try {
+      payload = await response.json();
+    } catch (_) {
+      throw coded3("invalid-response", "Core response was not valid JSON");
+    }
+    if (!payload || typeof payload !== "object") throw coded3("invalid-response", "Core answered with an unprojected body");
+    return payload;
+  }
+  function sameOriginBase(value, origin, label) {
+    if (!origin) throw coded3("origin-required", label + " requires a browser origin");
+    var target = new URL(String(value || ""), origin);
+    if (target.origin !== new URL(origin).origin) throw coded3("cross-origin-service", label + " must be same-origin");
+    return target.href.replace(/\/+$/, "");
+  }
+  function coded3(code, message) {
+    var error2 = new Error(message);
+    error2.code = code;
+    return error2;
+  }
+
+  // app-templates/customer-portal/runtime/src/adapters/core-snow-adapter.js
+  var PROPERTY_TYPE = "SNOW_REMOVAL_PROPERTY";
+  var PROPERTY_BASE_TYPE = "PROPERTY";
+  var AGREEMENT_TYPE = "SERVICE_AGREEMENT";
+  var QUOTE_REQUEST_PREFERENCE = "SNOW_PORTAL_QUOTE_REQUEST";
+  var PIM_SERVICE_BASE = "/core-pim";
+  var PROPERTY_PAGE_SIZE = 200;
+  var PROPERTY_PAGE_LIMIT = 6;
+  var AGREEMENT_PAGE_SIZE = 100;
+  var ORDER_PAGE_SIZE = 100;
+  var LINE_PAGE_SIZE = 200;
+  var CATALOG_PAGE_SIZE = 200;
+  var VISIT_PAGE_SIZE = 50;
+  var VISIT_TRANSITION_PAGE_SIZE = 20;
+  var INVOICE_PAGE_SIZE = 50;
+  var TICKET_PAGE_SIZE = 50;
+  var MEDIA_ID4 = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
+  var REF_MAPPINGS = [{ name: "id" }, { name: "code" }, { name: "nls" }];
+  var ID_MAPPINGS = [{ name: "id" }];
+  var RESOURCE_MAPPINGS = [
+    { name: "attributes" },
+    { name: "code" },
+    { name: "id" },
+    { name: "nls" },
+    { key: "id", mappings: REF_MAPPINGS, name: "type", type: "identifier" },
+    { mappings: REF_MAPPINGS, name: "states", type: "collection" }
+  ];
+  var ADDRESS_MAPPINGS = [
+    { name: "address1" },
+    { name: "city" },
+    { name: "id" },
+    { name: "postalCode" },
+    { key: "id", mappings: [{ name: "id" }, { name: "code" }], name: "country", type: "identifier" },
+    { key: "id", mappings: [{ name: "id" }, { name: "code" }], name: "state", type: "identifier" }
+  ];
+  var ACCOUNT_ADDRESS_MAPPINGS = [
+    { name: "id" },
+    { key: "id", mappings: ID_MAPPINGS, name: "user", type: "identifier" },
+    {
+      name: "addresses",
+      type: "collection",
+      mappings: [{ key: "id", mappings: ADDRESS_MAPPINGS, name: "address", type: "identifier" }]
+    }
+  ];
+  var ORDER_MAPPINGS = [
+    { name: "attributes" },
+    { name: "grandTotal" },
+    { name: "id" },
+    { name: "metadata" },
+    { name: "totalCharges" },
+    { name: "totalTaxes" },
+    { key: "id", mappings: ID_MAPPINGS, name: "account", type: "identifier" },
+    { key: "id", mappings: REF_MAPPINGS, name: "currency", type: "identifier" },
+    { mappings: ID_MAPPINGS, name: "items", type: "collection" },
+    { mappings: REF_MAPPINGS, name: "states", type: "collection" },
+    { key: "id", mappings: REF_MAPPINGS, name: "type", type: "identifier" }
+  ];
+  var DOCUMENT_TYPE_MAPPINGS = [{ name: "code" }, { name: "id" }];
+  var AGREEMENT_MAPPINGS = [
+    { name: "attributes" },
+    { name: "id" },
+    { name: "metadata" },
+    { key: "id", mappings: REF_MAPPINGS, name: "organization", type: "identifier" },
+    { mappings: REF_MAPPINGS, name: "states", type: "collection" },
+    { key: "id", mappings: REF_MAPPINGS, name: "type", type: "identifier" }
+  ];
+  var AGREEMENT_CONTENT_MAPPINGS = [
+    { name: "content" },
+    { name: "contentType" },
+    { name: "id" },
+    { key: "id", mappings: ID_MAPPINGS, name: "document", type: "identifier" },
+    { key: "id", mappings: ID_MAPPINGS, name: "language", type: "identifier" }
+  ];
+  var ORDER_ITEM_MAPPINGS = [
+    { name: "amount" },
+    { name: "grandTotal" },
+    { name: "id" },
+    { name: "itemCount" },
+    { name: "metadata" },
+    { name: "sortOrder" },
+    { name: "totalTaxes" },
+    { key: "id", mappings: ID_MAPPINGS, name: "itemPrice", type: "identifier" },
+    { key: "id", mappings: ID_MAPPINGS, name: "order", type: "identifier" }
+  ];
+  var PRODUCT_PRICE_MAPPINGS = [
+    { name: "id" },
+    { name: "nls" },
+    { key: "id", mappings: ID_MAPPINGS, name: "product", type: "identifier" },
+    { key: "id", mappings: REF_MAPPINGS, name: "type", type: "identifier" }
+  ];
+  var PRODUCT_MAPPINGS = [{ name: "code" }, { name: "id" }, { name: "nls" }];
+  var ORDER_TARGET_MAPPINGS = [
+    { name: "id" },
+    { key: "id", mappings: ID_MAPPINGS, name: "account", type: "identifier" },
+    { mappings: REF_MAPPINGS, name: "states", type: "collection" },
+    { key: "id", mappings: REF_MAPPINGS, name: "type", type: "identifier" }
+  ];
+  var AGREEMENT_TARGET_MAPPINGS = [
+    { name: "attributes" },
+    { name: "id" },
+    { mappings: REF_MAPPINGS, name: "states", type: "collection" },
+    { key: "id", mappings: REF_MAPPINGS, name: "type", type: "identifier" }
+  ];
+  var TAGGED_REF_MAPPINGS = [{ name: "id" }, { name: "code" }, { name: "nls" }];
+  var VISIT_MAPPINGS = [
+    { name: "id" },
+    { name: "code" },
+    { name: "nls" },
+    { name: "start" },
+    { name: "end" },
+    { name: "attributes" },
+    { name: "metadata" },
+    { name: "type", type: "identifier", mappings: TAGGED_REF_MAPPINGS },
+    { name: "states", type: "collection", mappings: TAGGED_REF_MAPPINGS }
+  ];
+  var INVOICE_MAPPINGS = [
+    { name: "id" },
+    { name: "created" },
+    { name: "dueDate" },
+    { name: "notes" },
+    { name: "amountDue" },
+    { name: "totalPaidAmount" },
+    { name: "attributes" },
+    { name: "type", type: "identifier", mappings: TAGGED_REF_MAPPINGS },
+    { name: "states", type: "collection", mappings: TAGGED_REF_MAPPINGS },
+    {
+      name: "order",
+      type: "reference",
+      mappings: [
+        { name: "id" },
+        { name: "currency", type: "identifier", mappings: [{ name: "id" }, { name: "code" }] },
+        { name: "states", type: "collection", mappings: TAGGED_REF_MAPPINGS }
+      ]
+    },
+    {
+      name: "items",
+      type: "collection",
+      mappings: [
+        { name: "id" },
+        { name: "amount" },
+        { name: "itemCount" },
+        { name: "notes" },
+        {
+          name: "itemPrice",
+          type: "reference",
+          mappings: [{ name: "id" }, { name: "product", type: "reference", mappings: TAGGED_REF_MAPPINGS }]
+        }
+      ]
+    }
+  ];
+  var VISIT_LIST_BODY = /* @__PURE__ */ Object.freeze({
+    filters: [{ operator: "=", property: "type.code", value: VISIT_TYPE }],
+    mappings: VISIT_MAPPINGS,
+    offset: 0,
+    pageSize: VISIT_PAGE_SIZE,
+    sorting: [{ field: "start", direction: "DESC" }]
+  });
+  var VISIT_TRANSITIONS_BODY = /* @__PURE__ */ Object.freeze({
+    filters: [],
+    mappings: [
+      { name: "id" },
+      { name: "observed" },
+      { name: "state", type: "identifier", mappings: TAGGED_REF_MAPPINGS }
+    ],
+    offset: 0,
+    pageSize: VISIT_TRANSITION_PAGE_SIZE,
+    sorting: [{ field: "observed", direction: "ASC" }]
+  });
+  var TICKET_LIST_BODY = /* @__PURE__ */ Object.freeze({
+    filters: [{ operator: "=", property: "type.code", value: TICKET_TYPE }],
+    mappings: [
+      { name: "id" },
+      { name: "code" },
+      { name: "nls" },
+      { name: "created" },
+      { name: "attributes" },
+      { name: "metadata" },
+      { name: "type", type: "identifier", mappings: TAGGED_REF_MAPPINGS },
+      { name: "states", type: "collection", mappings: TAGGED_REF_MAPPINGS }
+    ],
+    offset: 0,
+    pageSize: TICKET_PAGE_SIZE,
+    sorting: [{ field: "created", direction: "DESC" }]
+  });
+  var TICKET_GET_MAPPINGS = /* @__PURE__ */ Object.freeze(TICKET_LIST_BODY.mappings.slice());
+  var TICKET_FILE_ID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
+  var TICKET_THUMBNAIL_WIDTH = 320;
+  var INVOICE_LIST_BODY = /* @__PURE__ */ Object.freeze({
+    mappings: INVOICE_MAPPINGS,
+    offset: 0,
+    pageSize: INVOICE_PAGE_SIZE,
+    sorting: [{ field: "dueDate", direction: "DESC" }]
+  });
+  function createCoreSnowVisitsAdapter(options2 = {}) {
+    var fetchImpl = options2.fetch || coreSessionFetch;
+    if (typeof fetchImpl !== "function") throw contractError2("fetch-unavailable", "Core snow adapter requires fetch");
+    return {
+      async load(moduleId, context) {
+        if (moduleId !== "appointmentsTimeline") throw contractError2("unsupported-module", "Core snow visits adapter cannot load " + moduleId);
+        return loadSnowVisits(context, fetchImpl, options2.origin);
+      }
+    };
+  }
+  function createCoreSnowInvoicesAdapter(options2 = {}) {
+    var fetchImpl = options2.fetch || coreSessionFetch;
+    if (typeof fetchImpl !== "function") throw contractError2("fetch-unavailable", "Core snow adapter requires fetch");
+    return {
+      async load(moduleId, context) {
+        if (moduleId !== "invoices") throw contractError2("unsupported-module", "Core snow invoices adapter cannot load " + moduleId);
+        return loadSnowInvoices(context, fetchImpl, options2.origin);
+      }
+    };
+  }
+  function createCoreSnowTicketsAdapter(options2 = {}) {
+    var fetchImpl = options2.fetch || coreSessionFetch;
+    if (typeof fetchImpl !== "function") throw contractError2("fetch-unavailable", "Core snow adapter requires fetch");
+    return {
+      async load(moduleId, context) {
+        if (moduleId !== "support") throw contractError2("unsupported-module", "Core snow tickets adapter cannot load " + moduleId);
+        return loadSnowTickets(context, fetchImpl, options2.origin);
+      }
+    };
+  }
+  async function loadSnowTickets(context, fetchImpl = coreSessionFetch, explicitOrigin) {
+    var api = readContext(context, explicitOrigin);
+    var reply = await requestJson2(fetchImpl, api.serviceBase + "/api/tagged/task/list.json", readOptions(api, TICKET_LIST_BODY));
+    var rows2 = listResult(reply);
+    return {
+      state: "ready",
+      accountId: api.accountId,
+      items: rows2.filter(function(row) {
+        return text(row && row.type && row.type.code) === TICKET_TYPE;
+      }),
+      truncated: resultSizeOf(reply, rows2.length) > rows2.length
+    };
+  }
+  async function readTicket(context, backendId, fetchImpl = coreSessionFetch, explicitOrigin) {
+    var api = readContext(context, explicitOrigin);
+    var id = positiveInteger(backendId);
+    if (!id) throw contractError2("invalid-target", "A ticket id is required before reading it");
+    var row = await requestJson2(fetchImpl, api.serviceBase + "/api/tagged/task/get.json?id=" + id, readOptions(api, TICKET_GET_MAPPINGS));
+    if (!row || typeof row !== "object" || positiveInteger(row.id) !== id) throw contractError2("not-found", "Core did not return ticket " + id);
+    return row;
+  }
+  async function readTicketEvents(context, backendId, fetchImpl = coreSessionFetch, explicitOrigin) {
+    var api = readContext(context, explicitOrigin);
+    var id = positiveInteger(backendId);
+    if (!id) throw contractError2("invalid-target", "A ticket id is required before reading its actions");
+    var reply = await requestJson2(fetchImpl, api.serviceBase + "/api/tagged/task/" + id + "/list-events.json", readOptions(api, TAGGED_REF_MAPPINGS));
+    return Array.isArray(reply) ? reply : listResult(reply);
+  }
+  async function sendTicketEvent(context, backendId, eventCode2, attributes, fetchImpl = coreSessionFetch, explicitOrigin) {
+    var api = readContext(context, explicitOrigin);
+    var code = text(eventCode2);
+    if (!/^[A-Z_]+-[A-Z_]+$/.test(code)) throw contractError2("invalid-target", "A ticket event code is required");
+    return sendEvent(fetchImpl, api, api.serviceBase + "/api/tagged/task/" + commandId(backendId) + "/send-event.json?event=" + encodeURIComponent(code), attributes);
+  }
+  async function readTicketFile(context, mediaId, variant, fetchImpl = coreSessionFetch, explicitOrigin) {
+    var api = readContext(context, explicitOrigin);
+    var id = text(mediaId).toLowerCase();
+    if (!TICKET_FILE_ID.test(id)) throw contractError2("invalid-target", "A ticket file id is required");
+    var url = variant === "thumbnail" ? api.coreBase + "/secured/image/" + id + "/get?fit=true&width=" + TICKET_THUMBNAIL_WIDTH : api.coreBase + "/secured/media/" + id + "/stream";
+    var response = await fetchImpl(url, { method: "GET", credentials: "same-origin", headers: { Authorization: api.authorization, "X-Organization-Code": api.organization } });
+    if (!response || typeof response.ok !== "boolean") throw contractError2("invalid-response", "Core request returned an invalid response");
+    if (!response.ok) throw failure(response.status);
+    return response.blob();
+  }
+  async function loadSnowVisits(context, fetchImpl = coreSessionFetch, explicitOrigin) {
+    var api = readContext(context, explicitOrigin);
+    var reply = await requestJson2(fetchImpl, api.serviceBase + "/api/tagged/appointment/list.json", readOptions(api, VISIT_LIST_BODY));
+    var rows2 = listResult(reply);
+    return {
+      state: "ready",
+      accountId: api.accountId,
+      items: rows2.filter(function(row) {
+        return text(row && row.type && row.type.code) === VISIT_TYPE;
+      }),
+      truncated: resultSizeOf(reply, rows2.length) > rows2.length
+    };
+  }
+  async function readVisitTransitions(context, backendId, fetchImpl = coreSessionFetch, explicitOrigin) {
+    var api = readContext(context, explicitOrigin);
+    var id = positiveInteger(backendId);
+    if (!id) throw contractError2("invalid-target", "A visit id is required before reading its progress");
+    var reply = await requestJson2(fetchImpl, api.serviceBase + "/api/tagged/appointment/" + id + "/list-transitions.json", readOptions(api, VISIT_TRANSITIONS_BODY));
+    return listResult(reply);
+  }
+  async function loadSnowInvoices(context, fetchImpl = coreSessionFetch, explicitOrigin) {
+    var api = readContext(context, explicitOrigin);
+    var reply = await requestJson2(fetchImpl, api.billBase + "/api/tagged/invoice/list.json", readOptions(api, INVOICE_LIST_BODY));
+    var rows2 = listResult(reply);
+    return {
+      state: "ready",
+      accountId: api.accountId,
+      items: rows2,
+      truncated: resultSizeOf(reply, rows2.length) > rows2.length
+    };
+  }
+  function createCoreSnowPropertiesAdapter(options2 = {}) {
+    var fetchImpl = options2.fetch || coreSessionFetch;
+    if (typeof fetchImpl !== "function") throw contractError2("fetch-unavailable", "Core snow adapter requires fetch");
+    return {
+      async load(moduleId, context) {
+        if (moduleId !== "properties") throw contractError2("unsupported-module", "Core snow properties adapter cannot load " + moduleId);
+        return loadSnowProperties(context, fetchImpl, options2.origin);
+      }
+    };
+  }
+  function createCoreSnowQuotesAdapter(options2 = {}) {
+    var fetchImpl = options2.fetch || coreSessionFetch;
+    if (typeof fetchImpl !== "function") throw contractError2("fetch-unavailable", "Core snow adapter requires fetch");
+    return {
+      async load(moduleId, context) {
+        if (moduleId !== "proposals") throw contractError2("unsupported-module", "Core snow quotes adapter cannot load " + moduleId);
+        return loadSnowQuotes(context, fetchImpl, options2.origin);
+      },
+      async readOrder(backendId, context) {
+        return readCustomerOrder(context, backendId, fetchImpl, options2.origin);
+      },
+      async readAgreement(backendId, context) {
+        return readCustomerAgreement(context, backendId, fetchImpl, options2.origin);
+      },
+      async sendOrderEvent(backendId, event, context, input) {
+        var api = readContext(context, options2.origin);
+        return sendEvent(fetchImpl, api, api.billBase + "/api/tagged/order/" + commandId(backendId) + "/send-event.json?event=" + eventCode(event), input);
+      },
+      async sendAgreementEvent(backendId, event, context, input) {
+        var api = readContext(context, options2.origin);
+        return sendEvent(fetchImpl, api, api.coreBase + "/api/tagged/document/" + commandId(backendId) + "/send-event.json?event=" + eventCode(event), input);
+      }
+    };
+  }
+  async function loadSnowProperties(context, fetchImpl = coreSessionFetch, explicitOrigin) {
+    var api = readContext(context, explicitOrigin);
+    var rows2 = await customerProperties(api, fetchImpl);
+    var addresses = await resolveAddresses(api, fetchImpl, rows2.items);
+    return {
+      state: "ready",
+      accountId: api.accountId,
+      items: rows2.items.map(function(row) {
+        return propertyRecord(row, addresses);
+      }),
+      scopeMode: rows2.scopeMode,
+      truncated: rows2.truncated
+    };
+  }
+  async function loadSnowQuotes(context, fetchImpl = coreSessionFetch, explicitOrigin) {
+    var api = readContext(context, explicitOrigin);
+    var primary = await Promise.all([
+      settled(customerAgreements(api, fetchImpl)),
+      settled(customerOrders(api, fetchImpl)),
+      quoteRequestReport(api, fetchImpl),
+      settled(loadContractDetailsAccount(context, fetchImpl, explicitOrigin).then(function(read) {
+        return { rows: read.account, scopeMode: read.scopeMode };
+      }))
+    ]);
+    var agreements = primary[0];
+    var orders = primary[1];
+    var quoteRequest = primary[2];
+    var account = primary[3];
+    rethrowSessionLoss(primary.slice(0, 2));
+    if (agreements.state !== "ready" && orders.state !== "ready") throw orders.error;
+    var agreementIds = agreements.state === "ready" ? agreements.rows.map(function(row) {
+      return positiveInteger(row.id);
+    }).filter(Boolean) : [];
+    var agreementContents = agreementIds.length ? await settled(customerAgreementContents(api, fetchImpl, agreementIds)) : skippedRead("server-scoped", agreements.state === "ready");
+    var visibleOrderIds = orders.state === "ready" ? customerVisibleOrderIds(orders.rows) : [];
+    var orderItems2 = visibleOrderIds.length ? await settled(customerOrderItems(api, fetchImpl, visibleOrderIds)) : skippedRead("server-scoped", orders.state === "ready");
+    rethrowSessionLoss([agreementContents, orderItems2]);
+    var priceIds = referencedIds(orderItems2.rows, "itemPrice");
+    var productPrices = priceIds.length ? await settled(catalogRows(fetchImpl, api, api.pimBase + "/api/product-price/list.json", priceIds, PRODUCT_PRICE_MAPPINGS)) : skippedRead("unscoped", orderItems2.state === "ready");
+    var productIds = referencedIds(productPrices.rows, "product");
+    var products = productIds.length ? await settled(catalogRows(fetchImpl, api, api.pimBase + "/api/product/list.json", productIds, PRODUCT_MAPPINGS)) : skippedRead("unscoped", productPrices.state === "ready");
+    return {
+      state: "ready",
+      accountId: api.accountId,
+      scopeMode: weakestScope([agreements, orders, orderItems2]),
+      reads: {
+        agreements: readSummary(agreements),
+        agreementContents: readSummary(agreementContents),
+        orders: readSummary(orders),
+        orderItems: readSummary(orderItems2),
+        productPrices: readSummary(productPrices),
+        products: readSummary(products)
+      },
+      client: { displayName: api.accountName, account: account.state === "ready" ? account.rows : null },
+      quoteRequest,
+      agreements: agreements.rows,
+      agreementContents: agreementContents.rows,
+      quoteOrders: orders.rows,
+      orderItems: orderItems2.rows,
+      productPrices: productPrices.rows,
+      products: products.rows
+    };
+  }
+  async function readCustomerOrder(context, backendId, fetchImpl = coreSessionFetch, explicitOrigin) {
+    var api = readContext(context, explicitOrigin);
+    var id = commandId(backendId);
+    var row = await requestJson2(fetchImpl, api.billBase + "/api/tagged/order/get.json?id=" + id, readOptions(api, ORDER_TARGET_MAPPINGS));
+    if (!row || positiveInteger(row.id) !== id) throw contractError2("not-found", "Core did not return the Order");
+    if (positiveInteger(row.account && row.account.id) !== api.accountId) throw contractError2("customer-forbidden", "The Order does not belong to the signed-in customer");
+    return row;
+  }
+  async function readCustomerAgreement(context, backendId, fetchImpl = coreSessionFetch, explicitOrigin) {
+    var api = readContext(context, explicitOrigin);
+    var id = commandId(backendId);
+    var row = await requestJson2(fetchImpl, api.coreBase + "/api/tagged/document/get.json?id=" + id, readOptions(api, AGREEMENT_TARGET_MAPPINGS));
+    if (!row || positiveInteger(row.id) !== id || text(row.type && row.type.code) !== AGREEMENT_TYPE) throw contractError2("not-found", "Core did not return the service agreement");
+    if (attributeNumber(row, "CLIENT") !== api.accountId) throw contractError2("customer-forbidden", "The service agreement does not belong to the signed-in customer");
+    return row;
+  }
+  async function quoteRequestReport(api, fetchImpl) {
+    try {
+      var preferences = await requestJson2(fetchImpl, api.coreBase + "/api/user/preferences.json", {
+        method: "GET",
+        credentials: "same-origin",
+        headers: { Authorization: api.authorization, Accept: "application/json", "X-Organization-Code": api.organization }
+      });
+      var value = preferences && preferences[QUOTE_REQUEST_PREFERENCE];
+      return value == null ? null : value;
+    } catch (_) {
+      return null;
+    }
+  }
+  async function customerAgreements(api, fetchImpl) {
+    var types = await requestJson2(fetchImpl, api.coreBase + "/api/document-type/list.json", readOptions(api, {
+      filters: [{ type: "STRING", operator: "=", property: "code", value: AGREEMENT_TYPE }],
+      mappings: DOCUMENT_TYPE_MAPPINGS,
+      offset: 0,
+      pageSize: 2
+    }));
+    var type = listResult(types).find(function(row) {
+      return text(row && row.code) === AGREEMENT_TYPE;
+    });
+    var typeId = positiveInteger(type && type.id);
+    if (!typeId) throw contractError2("agreement-type-unavailable", "Core did not return the service agreement type");
+    var reply = await requestJson2(fetchImpl, api.coreBase + "/api/tagged/document/list.json", readOptions(api, {
+      filters: [
+        { type: "STRING", operator: "=", property: "type.code", value: AGREEMENT_TYPE },
+        { type: "INTEGER", operator: "=", property: "attributes." + typeId + ".CLIENT.value", value: String(api.accountId) }
+      ],
+      mappings: AGREEMENT_MAPPINGS,
+      offset: 0,
+      pageSize: AGREEMENT_PAGE_SIZE
+    }));
+    return scopedRows(reply, function(row) {
+      return text(row && row.type && row.type.code) === AGREEMENT_TYPE && attributeNumber(row, "CLIENT") === api.accountId;
+    });
+  }
+  async function customerAgreementContents(api, fetchImpl, agreementIds) {
+    var reply = await requestJson2(fetchImpl, api.coreBase + "/api/tagged/localized-text-content/list.json", readOptions(api, {
+      filters: [{ type: "INTEGER", operator: "IN", property: "document.id", value: agreementIds.join(",") }],
+      mappings: AGREEMENT_CONTENT_MAPPINGS,
+      offset: 0,
+      pageSize: AGREEMENT_PAGE_SIZE
+    }));
+    return scopedRows(reply, function(row) {
+      return agreementIds.indexOf(positiveInteger(row && row.document && row.document.id)) !== -1;
+    });
+  }
+  async function customerOrders(api, fetchImpl) {
+    var reply = await requestJson2(fetchImpl, api.billBase + "/api/tagged/order/list.json", readOptions(api, {
+      filters: [{ type: "INTEGER", operator: "=", property: "account.id", value: String(api.accountId) }],
+      mappings: ORDER_MAPPINGS,
+      offset: 0,
+      pageSize: ORDER_PAGE_SIZE
+    }));
+    return scopedRows(reply, function(row) {
+      return positiveInteger(row && row.account && row.account.id) === api.accountId;
+    });
+  }
+  async function customerOrderItems(api, fetchImpl, orderIds) {
+    var reply = await requestJson2(fetchImpl, api.billBase + "/api/tagged/order-item/list.json", readOptions(api, {
+      filters: [
+        { type: "INTEGER", operator: "=", property: "order.account.id", value: String(api.accountId) },
+        { type: "INTEGER", operator: "IN", property: "order.id", value: orderIds.join(",") }
+      ],
+      mappings: ORDER_ITEM_MAPPINGS,
+      offset: 0,
+      pageSize: LINE_PAGE_SIZE
+    }));
+    return scopedRows(reply, function(row) {
+      return orderIds.indexOf(positiveInteger(row && row.order && row.order.id)) !== -1;
+    });
+  }
+  async function catalogRows(fetchImpl, api, url, ids, mappings) {
+    var reply = await requestJson2(fetchImpl, url, readOptions(api, {
+      filters: [{ type: "INTEGER", operator: "IN", property: "id", value: ids.join(",") }],
+      mappings,
+      offset: 0,
+      pageSize: CATALOG_PAGE_SIZE
+    }));
+    var rows2 = listResult(reply).filter(function(row) {
+      return ids.indexOf(positiveInteger(row && row.id)) !== -1;
+    });
+    return { rows: rows2, scopeMode: "unscoped", truncated: resultSizeOf(reply, rows2.length) > rows2.length };
+  }
+  function scopedRows(reply, owned) {
+    var rows2 = listResult(reply);
+    var kept = rows2.filter(owned);
+    return {
+      rows: kept,
+      scopeMode: kept.length === rows2.length ? "server-scoped" : "browser-filtered",
+      truncated: resultSizeOf(reply, rows2.length) > rows2.length
+    };
+  }
+  function customerVisibleOrderIds(rows2) {
+    var ids = [];
+    (rows2 || []).forEach(function(row) {
+      var id = positiveInteger(row && row.id);
+      if (!id || QUOTE_ORDER_TYPES.indexOf(text(row.type && row.type.code)) === -1) return;
+      if (!Object.prototype.hasOwnProperty.call(CUSTOMER_ORDER_STATUS, latestStateCode(row))) return;
+      if (ids.indexOf(id) === -1) ids.push(id);
+    });
+    return ids;
+  }
+  function referencedIds(rows2, field4) {
+    var ids = [];
+    (rows2 || []).forEach(function(row) {
+      var id = positiveInteger(row && row[field4] && row[field4].id);
+      if (id && ids.indexOf(id) === -1) ids.push(id);
+    });
+    return ids;
+  }
+  async function settled(operation) {
+    try {
+      var result = await operation;
+      return { state: "ready", rows: result.rows, scopeMode: result.scopeMode, truncated: !!result.truncated, error: null };
+    } catch (error2) {
+      return { state: error2 && error2.code === "customer-forbidden" ? "unauthorized" : "error", rows: null, scopeMode: null, truncated: false, error: error2 };
+    }
+  }
+  function skippedRead(scopeMode, readable) {
+    return readable ? { state: "ready", rows: [], scopeMode, truncated: false, error: null } : { state: "error", rows: null, scopeMode: null, truncated: false, error: null };
+  }
+  function rethrowSessionLoss(reads) {
+    var lost = reads.find(function(read) {
+      return read.error && read.error.code === "session-expired";
+    });
+    if (lost) throw lost.error;
+  }
+  function readSummary(read) {
+    var summary = { state: read.state, scopeMode: read.scopeMode, truncated: read.truncated };
+    if (read.error && read.error.code) summary.reasonCode = read.error.code;
+    return summary;
+  }
+  function weakestScope(reads) {
+    var modes = reads.filter(function(read) {
+      return read.state === "ready";
+    }).map(function(read) {
+      return read.scopeMode;
+    });
+    if (modes.indexOf("unscoped") !== -1) return "unscoped";
+    if (modes.indexOf("browser-filtered") !== -1) return "browser-filtered";
+    return modes.length ? "server-scoped" : null;
+  }
+  function listResult(reply) {
+    return Array.isArray(reply && reply.result) ? reply.result : [];
+  }
+  function resultSizeOf(reply, fallback) {
+    return reply && typeof reply.resultSize === "number" && Number.isFinite(reply.resultSize) ? reply.resultSize : fallback;
+  }
+  async function sendEvent(fetchImpl, api, url, input) {
+    var response = await fetchImpl(url, readOptions(api, input && typeof input === "object" ? input : {}));
+    if (!response || typeof response.ok !== "boolean") throw contractError2("invalid-response", "Core request returned an invalid response");
+    if (!response.ok) throw withServerMessage(failure(response.status, true), await refusalText(response));
+    return true;
+  }
+  async function refusalText(response) {
+    if (typeof response.json !== "function") return "";
+    try {
+      var body = await response.json();
+      var message = body && typeof body === "object" ? body.message || body.detail || body.error_description || "" : "";
+      return typeof message === "string" ? message.replace(/\s+/g, " ").trim().slice(0, 400) : "";
+    } catch (_) {
+      return "";
+    }
+  }
+  function withServerMessage(error2, message) {
+    if (error2.code === "command-refused" && message) error2.serverMessage = message;
+    return error2;
+  }
+  function commandId(backendId) {
+    var id = positiveInteger(backendId);
+    if (!id) throw contractError2("invalid-target", "A Core id is required before sending an event");
+    return id;
+  }
+  function eventCode(event) {
+    var code = text(event);
+    if (!/^[A-Z][A-Z_]*-[A-Z][A-Z_]*$/.test(code)) throw contractError2("invalid-event", "A workflow event code is required");
+    return encodeURIComponent(code);
+  }
+  async function customerProperties(api, fetchImpl) {
+    var items = [];
+    var truncated = false;
+    var scopeMode = "server-scoped";
+    for (var page = 0; page < PROPERTY_PAGE_LIMIT; page += 1) {
+      var response = await requestJson2(fetchImpl, api.resourceBase + "/api/tagged/resource/list.json", readOptions(api, {
+        filters: [{ type: "STRING", operator: "=", property: "type.code", value: PROPERTY_TYPE }],
+        mappings: RESOURCE_MAPPINGS,
+        offset: page * PROPERTY_PAGE_SIZE,
+        pageSize: PROPERTY_PAGE_SIZE
+      }));
+      var rows2 = Array.isArray(response && response.result) ? response.result : [];
+      rows2.forEach(function(row) {
+        if (attributeNumber(row, "ACCOUNT") === api.accountId) items.push(row);
+        else scopeMode = "browser-filtered";
+      });
+      if (rows2.length < PROPERTY_PAGE_SIZE) return { items, truncated: false, scopeMode };
+      truncated = page === PROPERTY_PAGE_LIMIT - 1;
+    }
+    return { items, truncated, scopeMode };
+  }
+  async function resolveAddresses(api, fetchImpl, rows2) {
+    var resolved = {};
+    var ids = [];
+    rows2.forEach(function(row) {
+      var id = attributeNumber(row, "ADDRESS");
+      if (id && ids.indexOf(id) < 0) ids.push(id);
+    });
+    if (!ids.length) return resolved;
+    if (!api.userId) throw contractError2("session-user-required", "The signed-in Core User is required before reading property addresses");
+    var account = await requestJson2(fetchImpl, api.accountBase + "/api/tagged/account/get.json?id=" + api.accountId, readOptions(api, ACCOUNT_ADDRESS_MAPPINGS));
+    if (positiveInteger(account && account.id) !== api.accountId || positiveInteger(account && account.user && account.user.id) !== api.userId) {
+      throw contractError2("customer-forbidden", "Property addresses must belong to the signed-in customer's Account");
+    }
+    (Array.isArray(account.addresses) ? account.addresses : []).forEach(function(link) {
+      var address = link && link.address;
+      var id = positiveInteger(address && address.id);
+      if (id && ids.indexOf(id) !== -1) resolved[String(id)] = address;
+    });
+    return resolved;
+  }
+  function propertyRecord(row, addresses) {
+    var address = addresses[String(attributeNumber(row, "ADDRESS"))] || null;
+    return {
+      id: "prop-core-" + row.id,
+      backendId: positiveInteger(row.id),
+      name: localizedName3(row.nls) || text(row.code) || "Property",
+      address: formatPostalAddress(address),
+      city: address ? text(address.city) : "",
+      postal: address ? text(address.postalCode) : "",
+      region: address && address.state ? text(address.state.code) : "",
+      country: address && address.country ? text(address.country.id || address.country.code) : "",
+      category: attributeText(row, "PROPERTY_CATEGORY") || null,
+      stateCode: latestStateCode(row) || null,
+      lat: attributeCoordinate(row, "COORD_LAT", 90),
+      lon: attributeCoordinate(row, "COORD_LNG", 180),
+      areaSqft: attributeArea(row, "SERVICE_AREA_SQFT"),
+      planId: attributeMediaId(row, "PROPERTY_PLAN"),
+      zone: null,
+      contract: null,
+      quoteSiteId: null,
+      appointment: null,
+      ticket: null,
+      lastService: null
+    };
+  }
+  function attributeArea(row, code) {
+    var entry2 = attributeEntry(row, code);
+    var value = entry2 ? entry2.value : null;
+    var number = typeof value === "number" ? value : typeof value === "string" && value.trim() !== "" ? Number(value) : Number.NaN;
+    return Number.isFinite(number) && number > 0 ? number : null;
+  }
+  function attributeMediaId(row, code) {
+    var entry2 = attributeEntry(row, code);
+    var value = entry2 ? entry2.value : null;
+    if (typeof value === "string" && /^\s*\[/.test(value)) {
+      try {
+        value = JSON.parse(value);
+      } catch (_) {
+        return "";
+      }
+    }
+    var ids = (Array.isArray(value) ? value : value == null ? [] : [value]).map(function(item) {
+      var id = text(item && typeof item === "object" ? item.id : item).toLowerCase();
+      return MEDIA_ID4.test(id) ? id : "";
+    });
+    return ids.length === 1 ? ids[0] : "";
+  }
+  function attributeCoordinate(row, code, limit) {
+    var entry2 = attributeEntry(row, code);
+    var value = entry2 ? entry2.value : null;
+    var number = typeof value === "number" ? value : typeof value === "string" && value.trim() !== "" ? Number(value) : Number.NaN;
+    return Number.isFinite(number) && Math.abs(number) <= limit ? number : null;
+  }
+  function readContext(context, explicitOrigin) {
+    var config = context && context.config || {};
+    var runtimeState = context && context.state || {};
+    var session2 = runtimeState.session || {};
+    var accessToken = text(session2.accessToken || session2.access_token);
+    if (!accessToken) throw contractError2("session-required", "A Core access token is required");
+    var account = runtimeState.customerAccount || session2.account || null;
+    var accountId = positiveInteger(account && account.id);
+    if (!accountId) throw contractError2("customer-unresolved", "A resolved customer Account is required before reading snow records");
+    var organization = text(config.organization);
+    if (!organization) throw contractError2("organization-required", "A portal organization code is required");
+    var origin = explicitOrigin || config.origin || browserOrigin();
+    return {
+      accountBase: sameOriginBase2(config.accountApiBase || "/core-acct", origin, "Core Account API base"),
+      accountId,
+      accountName: text(account && typeof account.displayName === "string" ? account.displayName : ""),
+      authorization: text(session2.tokenType || session2.token_type || "Bearer") + " " + accessToken,
+      billBase: sameOriginBase2(config.billApiBase || "/core-bill", origin, "Core Bill API base"),
+      coreBase: sameOriginBase2(config.coreApiBase || "/core", origin, "Core API base"),
+      organization,
+      pimBase: sameOriginBase2(PIM_SERVICE_BASE, origin, "Core PIM API base"),
+      resourceBase: sameOriginBase2(config.resourceApiBase || "/core-rm", origin, "Core Resource API base"),
+      serviceBase: sameOriginBase2(config.serviceApiBase || "/core-svc", origin, "Core Service API base"),
+      userId: positiveInteger(session2.userId)
+    };
+  }
+  function readOptions(api, body) {
+    return {
+      method: "POST",
+      credentials: "same-origin",
+      headers: {
+        Authorization: api.authorization,
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        "X-Organization-Code": api.organization
+      },
+      body: JSON.stringify(body)
+    };
+  }
+  async function requestJson2(fetchImpl, url, options2) {
+    var response = await fetchImpl(url, options2);
+    if (!response || typeof response.ok !== "boolean") throw contractError2("invalid-response", "Core request returned an invalid response");
+    if (!response.ok) throw failure(response.status);
+    var payload;
+    try {
+      payload = await response.json();
+    } catch (_) {
+      throw contractError2("invalid-response", "Core response was not valid JSON");
+    }
+    if (typeof payload === "string") throw contractError2("unprojectable-response", "Core answered with an unprojected body");
+    return payload;
+  }
+  function sameOriginBase2(value, origin, label) {
+    if (!origin) throw contractError2("origin-required", label + " requires a browser origin");
+    var target = new URL(String(value || ""), origin);
+    if (target.origin !== new URL(origin).origin) throw contractError2("cross-origin-service", label + " must be same-origin");
+    return target.href.replace(/\/+$/, "");
+  }
+  function browserOrigin() {
+    return globalThis.location && globalThis.location.origin || "";
+  }
+  function localizedName3(value) {
+    if (!value || typeof value !== "object") return "";
+    var localized = value.en || value["en-US"] || Object.values(value)[0] || {};
+    return text(localized && (localized.NAME || localized.name));
+  }
+  function failure(status, command) {
+    var code = status === 401 ? "session-expired" : status === 403 ? "customer-forbidden" : status === 404 ? "not-found" : command && status >= 400 && status < 500 ? "command-refused" : "core-request-failed";
+    var error2 = contractError2(code, "Core request failed with HTTP " + status);
+    error2.status = status;
+    return error2;
+  }
+  function contractError2(code, message) {
+    var error2 = new Error(message);
+    error2.code = code;
+    return error2;
+  }
+  var coreSnowContract = /* @__PURE__ */ Object.freeze({
+    accountAddressMappings: ACCOUNT_ADDRESS_MAPPINGS,
+    addressMappings: ADDRESS_MAPPINGS,
+    agreementMappings: AGREEMENT_MAPPINGS,
+    agreementContentMappings: AGREEMENT_CONTENT_MAPPINGS,
+    agreementType: AGREEMENT_TYPE,
+    invoiceListBody: INVOICE_LIST_BODY,
+    customerQuoteStatus: /* @__PURE__ */ Object.freeze(Object.assign({}, CUSTOMER_ORDER_STATUS)),
+    operatorQuoteStates: /* @__PURE__ */ Object.freeze(OPERATOR_ORDER_STATES.slice()),
+    orderItemMappings: ORDER_ITEM_MAPPINGS,
+    orderMappings: ORDER_MAPPINGS,
+    productMappings: PRODUCT_MAPPINGS,
+    productPriceMappings: PRODUCT_PRICE_MAPPINGS,
+    propertyBaseType: PROPERTY_BASE_TYPE,
+    propertyPageLimit: PROPERTY_PAGE_LIMIT,
+    propertyPageSize: PROPERTY_PAGE_SIZE,
+    propertyType: PROPERTY_TYPE,
+    quoteRequestPreference: QUOTE_REQUEST_PREFERENCE,
+    quoteOrderTypes: /* @__PURE__ */ Object.freeze(QUOTE_ORDER_TYPES.slice()),
+    resourceMappings: RESOURCE_MAPPINGS,
+    ticketListBody: TICKET_LIST_BODY,
+    ticketGetMappings: TICKET_GET_MAPPINGS,
+    visitListBody: VISIT_LIST_BODY,
+    visitTransitionsBody: VISIT_TRANSITIONS_BODY,
+    quoteFilters: ["account.id"],
+    agreementFilters: ["type.code", "attributes.{SERVICE_AGREEMENT type id}.CLIENT.value"],
+    agreementContentFilters: ["document.id"],
+    orderItemFilters: ["order.account.id", "order.id"],
+    catalogFilters: ["id"],
+    propertyFilters: ["type.code"],
+    scopeModes: /* @__PURE__ */ Object.freeze({
+      agreements: "server-scoped",
+      agreementContents: "server-scoped",
+      orders: "server-scoped",
+      orderItems: "server-scoped",
+      productPrices: "unscoped",
+      products: "unscoped",
+      properties: "server-scoped"
+    })
+  });
+
+  // app-templates/customer-portal/runtime/src/adapters/core-user-profile-adapter.js
+  var CONTACT_ENTRY_MAPPINGS = [
+    { name: "id" },
+    { name: "value" },
+    { key: "id", mappings: [{ name: "id" }, { name: "code" }], name: "kind", type: "identifier" },
+    { key: "id", mappings: [{ name: "id" }, { name: "code" }], name: "type", type: "identifier" }
+  ];
+  var ACCOUNT_CONTACT_MAPPINGS = [
+    { name: "id" },
+    { name: "code" },
+    {
+      mappings: [
+        { name: "id" },
+        { name: "firstName" },
+        { name: "lastName" },
+        { mappings: CONTACT_ENTRY_MAPPINGS, name: "contactEntries", type: "collection" }
+      ],
+      name: "contacts",
+      type: "collection"
+    }
+  ];
+  var USER_MAPPINGS = [
+    { name: "email" },
+    { name: "enabled" },
+    { name: "fullname" },
+    { name: "id" },
+    { name: "name" },
+    { name: "optimistic" },
+    { key: "id", name: "language", type: "identifier" },
+    { key: "id", name: "workflow", type: "identifier" }
+  ];
+  var saveFlight = null;
+  function createCoreUserProfileAdapter(options2 = {}) {
+    var fetchImpl = options2.fetch || coreSessionFetch;
+    return {
+      async load(moduleId, context) {
+        if (moduleId !== "profile") throw error("unsupported-module", "Core User profile adapter cannot load " + moduleId);
+        return loadCoreUserProfile(context, fetchImpl, options2.origin);
+      },
+      save(input, context) {
+        if (saveFlight) return saveFlight;
+        saveFlight = saveCoreUserProfile(input, context, fetchImpl, options2.origin).finally(function() {
+          saveFlight = null;
+        });
+        return saveFlight;
+      }
+    };
+  }
+  async function loadCoreUserProfile(context, fetchImpl = coreSessionFetch, explicitOrigin) {
+    var api = requestContext2(context, explicitOrigin);
+    var row = await requestJson3(fetchImpl, api.base + "/api/user/get.json?id=" + api.userId, options(api, USER_MAPPINGS));
+    var phone = api.accountId ? await loadAccountPhone(api, fetchImpl) : null;
+    return normalize(row, api.userId, phone);
+  }
+  async function loadAccountPhone(api, fetchImpl) {
+    if (!api.accountBase) return null;
+    var response = await requestJson3(fetchImpl, api.accountBase + "/api/account/list.json", options(api, {
+      filters: [{ type: "INTEGER", operator: "=", property: "id", value: String(api.accountId) }],
+      mappings: ACCOUNT_CONTACT_MAPPINGS,
+      offset: 0,
+      pageSize: 1
+    }));
+    var account = (Array.isArray(response && response.result) ? response.result : [])[0];
+    if (!account || positiveInteger2(account.id) !== api.accountId) return null;
+    var contacts = Array.isArray(account.contacts) ? account.contacts : [];
+    for (var index = 0; index < contacts.length; index += 1) {
+      var entries = Array.isArray(contacts[index].contactEntries) ? contacts[index].contactEntries : [];
+      for (var entryIndex = 0; entryIndex < entries.length; entryIndex += 1) {
+        var entry2 = entries[entryIndex];
+        if (text2(entry2.type && entry2.type.code) === "PHONE" && text2(entry2.value)) return text2(entry2.value);
+      }
+    }
+    return null;
+  }
+  async function saveCoreUserProfile(input, context, fetchImpl = coreSessionFetch, explicitOrigin) {
+    var api = requestContext2(context, explicitOrigin);
+    var current = await requestJson3(fetchImpl, api.base + "/api/user/get.json?id=" + api.userId, options(api, USER_MAPPINGS));
+    var entity = {
+      email: text2(input && input.email),
+      enabled: current.enabled !== false,
+      fullname: text2(current.fullname),
+      id: api.userId,
+      language: requiredRef(current.language, "User language"),
+      name: text2(current.name),
+      optimistic: finiteNumber3(current.optimistic, 0),
+      workflow: requiredRef(current.workflow, "User workflow")
+    };
+    if (!entity.email) throw error("profile-email-required", "Email is required");
+    await requestJson3(fetchImpl, api.base + "/api/user/save.json", options(api, { entities: [entity], mappings: USER_MAPPINGS }));
+    var readback = await requestJson3(fetchImpl, api.base + "/api/user/get.json?id=" + api.userId, options(api, USER_MAPPINGS));
+    return normalize(readback, api.userId);
+  }
+  function normalize(row, userId, phone) {
+    if (!row || positiveInteger2(row.id) !== userId) throw error("profile-scope-mismatch", "Core User readback did not match the signed-in User");
+    return {
+      state: "ready",
+      email: text2(row.email),
+      phone: phone || null,
+      prefs: {},
+      optimistic: Number.isFinite(Number(row.optimistic)) ? Number(row.optimistic) : null,
+      // Phone is read-only until a scoped contact write contract exists; only the
+      // email edit is opened. Preferences have nowhere to persist in Core.
+      allowedActions: ["edit-email"],
+      unavailableFields: phone ? ["preferences"] : ["phone", "preferences"]
+    };
+  }
+  function requestContext2(context, explicitOrigin) {
+    var config = context && context.config || {};
+    var state2 = context && context.state || {};
+    var session2 = context && context.session || state2.session || {};
+    var token = text2(session2.accessToken || session2.access_token);
+    var userId = positiveInteger2(session2.userId);
+    if (!token) throw error("session-required", "A Core access token is required");
+    if (!userId) throw error("session-user-required", "The signed-in Core User is required");
+    var origin = explicitOrigin || config.origin || globalThis.location && globalThis.location.origin;
+    var base = sameOriginBase3(config.coreApiBase || "/core", origin, "Core API base");
+    var customer = context && context.account || state2.customerAccount || session2.account || {};
+    return {
+      accountBase: sameOriginBase3(config.accountApiBase || "/core-acct", origin, "Core Account API base"),
+      accountId: positiveInteger2(customer.id) || null,
+      base,
+      token: text2(session2.tokenType || session2.token_type || "Bearer") + " " + token,
+      userId
+    };
+  }
+  function options(api, body) {
+    return { method: "POST", credentials: "same-origin", headers: { Authorization: api.token, "Content-Type": "application/json", Accept: "application/json" }, body: JSON.stringify(body) };
+  }
+  async function requestJson3(fetchImpl, url, requestOptions) {
+    var response = await fetchImpl(url, requestOptions);
+    if (!response || typeof response.ok !== "boolean") throw error("invalid-response", "Core User returned an invalid response");
+    if (!response.ok) {
+      var code = response.status === 401 ? "session-expired" : response.status === 403 ? "customer-forbidden" : response.status === 409 || response.status === 412 ? "conflict" : "profile-request-failed";
+      var failure2 = error(code, "Core User request failed with HTTP " + response.status);
+      failure2.status = response.status;
+      throw failure2;
+    }
+    try {
+      return await response.json();
+    } catch (_) {
+      throw error("invalid-response", "Core User response was not valid JSON");
+    }
+  }
+  function sameOriginBase3(value, origin, label) {
+    if (!origin) throw error("origin-required", label + " requires a browser origin");
+    var url = new URL(value, origin);
+    if (url.origin !== new URL(origin).origin) throw error("cross-origin-service", label + " must be same-origin");
+    return url.href.replace(/\/+$/, "");
+  }
+  function requiredRef(value, label) {
+    var id = value && positiveInteger2(value.id);
+    if (!id) throw error("profile-reference-missing", label + " is missing");
+    return { id };
+  }
+  function positiveInteger2(value) {
+    var number = Number(value);
+    return Number.isInteger(number) && number > 0 ? number : null;
+  }
+  function finiteNumber3(value, fallback) {
+    var number = Number(value);
+    return Number.isFinite(number) ? number : fallback;
+  }
+  function text2(value) {
+    return typeof value === "string" ? value.trim() : value == null ? "" : String(value).trim();
+  }
+  function error(code, message) {
+    var failure2 = new Error(message);
+    failure2.code = code;
+    return failure2;
+  }
+
+  // app-templates/customer-portal/runtime/src/adapters/core-profile-form-adapter.js
+  var PROFILE_FORM = /* @__PURE__ */ Object.freeze({ typeCode: "CUSTOMER_PROFILE_UPDATE", preference: "SNOW_CUSTOMER_PROFILE_UPDATE" });
+  var LOGIN_FORM = /* @__PURE__ */ Object.freeze({ typeCode: "CUSTOMER_LOGIN_CHANGE", preference: "SNOW_CUSTOMER_LOGIN_CHANGE" });
+  var INVOICE_PAYMENT_FORM = /* @__PURE__ */ Object.freeze({ typeCode: "CUSTOMER_INVOICE_PAYMENT", preference: "SNOW_CUSTOMER_INVOICE_PAYMENT" });
+  var QUOTE_REQUEST_FORM = /* @__PURE__ */ Object.freeze({ typeCode: "PORTAL_QUOTE_REQUEST", preference: "SNOW_PORTAL_QUOTE_REQUEST" });
+  var SUPPORT_TICKET_FORM = /* @__PURE__ */ Object.freeze({ typeCode: "CUSTOMER_SUPPORT_TICKET", preference: "SNOW_CUSTOMER_SUPPORT_TICKET" });
+  var SUPPORT_TICKET_COMMENT_FORM = /* @__PURE__ */ Object.freeze({ typeCode: "CUSTOMER_SUPPORT_TICKET_COMMENT", preference: "SNOW_CUSTOMER_SUPPORT_TICKET_COMMENT" });
+  var OUTCOMES = /* @__PURE__ */ Object.freeze(["APPLIED", "REFUSED", "FAILED"]);
+  var FORM_LOCALE = "en";
+  var POLL_INTERVAL_MS = 1e3;
+  var OUTCOME_TIMEOUT_MS = 45e3;
+  function createCoreProfileFormAdapter(options2 = {}) {
+    var fetchImpl = options2.fetch || coreSessionFetch;
+    if (typeof fetchImpl !== "function") throw coded4("fetch-unavailable", "Core profile form adapter requires fetch");
+    var wait = options2.wait || function(ms) {
+      return new Promise(function(resolve) {
+        setTimeout(resolve, ms);
+      });
+    };
+    var now = options2.now || function() {
+      return Date.now();
+    };
+    var pollInterval = options2.pollIntervalMs || POLL_INTERVAL_MS;
+    var timeout = options2.timeoutMs || OUTCOME_TIMEOUT_MS;
+    var types = {};
+    async function formType(form, api) {
+      if (types[form.typeCode]) return types[form.typeCode];
+      var type = await requestJson4(fetchImpl, api.origin + "/" + FORM_LOCALE + api.cmsPath + "/api/form-type/" + encodeURIComponent(form.typeCode) + "/get.json", {
+        method: "GET",
+        credentials: "same-origin",
+        headers: { Accept: "application/json" }
+      }, "form-type-unavailable");
+      var id = positiveInteger(type && type.id);
+      if (!id || text(type.code) !== form.typeCode) throw coded4("form-type-unavailable", "Core did not answer the " + form.typeCode + " form type");
+      types[form.typeCode] = type;
+      return type;
+    }
+    var adapter2 = {
+      async type(form, context) {
+        return formType(form, requestContext3(context));
+      },
+      async submit(form, values, context) {
+        var api = requestContext3(context);
+        var typeId = positiveInteger((await formType(form, api)).id);
+        var attributes = {};
+        (/* @__PURE__ */ Object.keys(values)).forEach(function(code) {
+          attributes[code] = { value: values[code] };
+        });
+        var formId = await requestJson4(fetchImpl, api.cmsBase + "/api/form/submit.json", {
+          method: "POST",
+          credentials: "same-origin",
+          headers: api.headers({ "Content-Type": "application/json" }),
+          body: JSON.stringify({
+            type: { id: typeId },
+            organization: { id: api.organizationId },
+            attributes: { [String(typeId)]: attributes },
+            metadata: { language: FORM_LOCALE }
+          })
+        }, "profile-submit-failed");
+        var id = positiveInteger(formId);
+        if (!id) throw coded4("profile-submit-failed", "Core accepted the form without a form id");
+        return id;
+      },
+      async outcome(form, formId, context) {
+        var reported = await adapter2.report(form, formId, context, OUTCOMES);
+        return {
+          outcome: reported.outcome,
+          field: text(reported.field) || null,
+          message: text(reported.message),
+          changed: Array.isArray(reported.changed) ? reported.changed.map(text).filter(Boolean) : []
+        };
+      },
+      async report(form, formId, context, outcomes, observe) {
+        var api = requestContext3(context);
+        var deadline = now() + timeout;
+        while (true) {
+          var preferences = await requestJson4(fetchImpl, api.coreBase + "/api/user/preferences.json", {
+            method: "GET",
+            credentials: "same-origin",
+            headers: api.headers({})
+          }, "outcome-unreadable");
+          var reported = parsed(preferences && preferences[form.preference]);
+          var own2 = !!reported && positiveInteger(reported.form) === formId;
+          if (own2 && observe) observe(reported);
+          if (own2 && outcomes.indexOf(reported.outcome) !== -1) return reported;
+          if (now() >= deadline) throw coded4("outcome-unknown", "Core did not report the outcome of form " + formId + " in time");
+          await wait(pollInterval);
+        }
+      }
+    };
+    return adapter2;
+  }
+  function parsed(value) {
+    if (typeof value !== "string" || !value) return null;
+    try {
+      var result = JSON.parse(value);
+      return result && typeof result === "object" ? result : null;
+    } catch (_) {
+      return null;
+    }
+  }
+  function requestContext3(context) {
+    var config = context && context.config || {};
+    var session2 = context && context.state && context.state.session || {};
+    var accessToken = text(session2.accessToken || session2.access_token);
+    if (!accessToken) throw coded4("session-expired", "A Core access token is required");
+    var organization = text(config.organization);
+    var organizationId = positiveInteger(session2.organizationId);
+    if (!organization || !organizationId) throw coded4("organization-required", "The portal organization and its id are required");
+    var origin = config.origin || globalThis.location && globalThis.location.origin || "";
+    var cmsBase2 = sameOriginBase4(config.cmsApiBase || "/core-cms", origin, "Core CMS API base");
+    var authorization = text(session2.tokenType || session2.token_type || "Bearer") + " " + accessToken;
+    return {
+      origin: new URL(origin).origin,
+      cmsBase: cmsBase2,
+      cmsPath: new URL(cmsBase2).pathname.replace(/\/+$/, ""),
+      coreBase: sameOriginBase4(config.coreApiBase || "/core", origin, "Core API base"),
+      organizationId,
+      headers: function(extra) {
+        return Object.assign({ Authorization: authorization, Accept: "application/json", "X-Organization-Code": organization }, extra);
+      }
+    };
+  }
+  async function requestJson4(fetchImpl, url, options2, failureCode) {
+    var response = await fetchImpl(url, options2);
+    if (!response || typeof response.ok !== "boolean") throw coded4(failureCode, "Core request returned an invalid response");
+    if (!response.ok) {
+      var failure2 = coded4(response.status === 401 ? "session-expired" : failureCode, "Core request failed with HTTP " + response.status);
+      failure2.status = response.status;
+      throw failure2;
+    }
+    try {
+      return await response.json();
+    } catch (_) {
+      throw coded4(failureCode, "Core response was not valid JSON");
+    }
+  }
+  function sameOriginBase4(value, origin, label) {
+    if (!origin) throw coded4("origin-required", label + " requires a browser origin");
+    var target = new URL(String(value || ""), origin);
+    if (target.origin !== new URL(origin).origin) throw coded4("cross-origin-service", label + " must be same-origin");
+    return target.href.replace(/\/+$/, "");
+  }
+  function coded4(code, message) {
+    var error2 = new Error(message);
+    error2.code = code;
+    return error2;
+  }
+
+  // app-templates/customer-portal/runtime/src/profile-edit.js
+  var NAME_LIMIT = 32;
+  var EMAIL_LIMIT = 254;
+  var ADDRESS_LIMIT = 255;
+  var EMAIL_SHAPE = /^[A-Za-z0-9.!#$%&'*+/=?^_`{|}~-]+@[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?(?:\.[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?)+$/;
+  var PHONE_CHARACTERS = /^\+?[0-9 ().-]+$/;
+  var CONTROL_CHARACTERS = /[\u0000-\u001f\u007f]/;
+  var field = (code, key, label, type, autocomplete, placeholder) => /* @__PURE__ */ Object.freeze({ code, key, label, type, autocomplete, placeholder });
+  var PROFILE_EDIT_ROWS = /* @__PURE__ */ Object.freeze({
+    contact: /* @__PURE__ */ Object.freeze({ label: "Name", form: PROFILE_FORM, fields: /* @__PURE__ */ Object.freeze([field("FIRST_NAME", "firstName", "First name", "text", "given-name"), field("LAST_NAME", "lastName", "Last name", "text", "family-name")]) }),
+    email: /* @__PURE__ */ Object.freeze({ label: "Email", form: PROFILE_FORM, fields: /* @__PURE__ */ Object.freeze([field("EMAIL", "email", "Email", "email", "email")]) }),
+    phone: /* @__PURE__ */ Object.freeze({ label: "Phone", form: PROFILE_FORM, fields: /* @__PURE__ */ Object.freeze([field("PHONE", "phone", "Phone", "tel", "tel")]) }),
+    billing: /* @__PURE__ */ Object.freeze({ label: "Billing address", form: PROFILE_FORM, fields: /* @__PURE__ */ Object.freeze([field("BILLING_ADDRESS", "billingAddress", "Billing address", "text", "street-address")]) }),
+    login: /* @__PURE__ */ Object.freeze({ label: "Account name", form: LOGIN_FORM, fields: /* @__PURE__ */ Object.freeze([field("LOGIN", "login", "Account name", "email", "username", "name@example.com")]) })
+  });
+  var SESSION_ENDED = "Your session ended while the sign-in was changing. Sign in again: with {next} if the change went through, otherwise with {current}.";
+  var UNCONFIRMED = "We couldn't confirm the change yet. Reload the page in a minute to see the details on file.";
+  var NOT_SENT = "Your change wasn't sent. Check your connection and try again.";
+  var FAILED = "We couldn't save your change right now. Please try again in a few minutes.";
+  function profileEditing(config) {
+    return !!config && config.vertical === "snow" && config.dataMode === "live" && customerAccountProfile(config);
+  }
+  function profileEditBusy() {
+    return !!(state.profileEdit && state.profileEdit.phase === "saving");
+  }
+  function currentSignIn() {
+    return state.profileLoginChanged || state.session && state.session.login || "";
+  }
+  function startProfileEdit(row) {
+    var definition = PROFILE_EDIT_ROWS[row];
+    if (!definition || profileEditBusy()) return false;
+    var initial = initialValues(row);
+    state.profileSaved = null;
+    state.profileEdit = { row, initial, draft: Object.assign({}, initial), errors: {}, phase: "editing", message: null };
+    return true;
+  }
+  function changeProfileDraft(key, value) {
+    var edit = state.profileEdit;
+    if (!edit || edit.phase === "saving") return false;
+    edit.draft[key] = String(value == null ? "" : value);
+    return true;
+  }
+  function cancelProfileEdit() {
+    if (!state.profileEdit || profileEditBusy()) return false;
+    state.profileEdit = null;
+    return true;
+  }
+  function profileEditRequest(row, initial, draft) {
+    var definition = PROFILE_EDIT_ROWS[row];
+    var errors = {};
+    var values = {};
+    var fields = [];
+    definition.fields.forEach(function(item) {
+      var raw = String(draft[item.key] == null ? "" : draft[item.key]);
+      var before = String(initial[item.key] == null ? "" : initial[item.key]);
+      var unchanged = item.code === "LOGIN" ? comparable2(raw).toLowerCase() === comparable2(before).toLowerCase() : comparable2(raw) === comparable2(before);
+      if (unchanged && item.code !== "LOGIN") return;
+      var checked = validateProfileValue(item.code, raw, before);
+      if (checked.error) errors[item.code] = checked.error;
+      else {
+        values[item.code] = checked.value;
+        fields.push(item.code);
+      }
+    });
+    if ((/* @__PURE__ */ Object.keys(errors)).length) return { errors, values: null };
+    if (!fields.length) return { errors: {}, values: null };
+    if (definition.form === LOGIN_FORM) return { errors: {}, values: { LOGIN: values.LOGIN } };
+    return { errors: {}, values: Object.assign({ FIELDS: fields }, values) };
+  }
+  function validateProfileValue(code, raw, current) {
+    var collapsed = comparable2(raw);
+    if (code === "FIRST_NAME" || code === "LAST_NAME") {
+      if (!collapsed) return refusal(code === "FIRST_NAME" ? "Enter your first name." : "Enter your last name.");
+      if (CONTROL_CHARACTERS.test(collapsed)) return refusal("Use letters, spaces and punctuation only.");
+      if (collapsed.length > NAME_LIMIT) return refusal("Use " + NAME_LIMIT + " characters or fewer.");
+      return accepted(collapsed);
+    }
+    if (code === "EMAIL" || code === "LOGIN") {
+      var email = String(raw == null ? "" : raw).trim().toLowerCase();
+      if (!email) return refusal(code === "EMAIL" ? "Enter your email address." : "Enter the email you want to sign in with.");
+      if (email.length > EMAIL_LIMIT || !EMAIL_SHAPE.test(email)) return refusal("Enter a valid email address, like name@example.com.");
+      if (code === "LOGIN" && email === comparable2(current).toLowerCase()) return refusal("This is already the email you sign in with.");
+      return accepted(email);
+    }
+    if (code === "PHONE") {
+      if (!collapsed) return refusal("Enter your phone number.");
+      var digits = collapsed.replace(/\D/g, "");
+      if (!PHONE_CHARACTERS.test(collapsed) || digits.length < 7 || digits.length > 15) return refusal("Enter a valid phone number with its area code.");
+      return accepted(collapsed);
+    }
+    if (code === "BILLING_ADDRESS") {
+      if (!collapsed) return refusal("Enter your billing address.");
+      if (collapsed.length > ADDRESS_LIMIT) return refusal("Use " + ADDRESS_LIMIT + " characters or fewer.");
+      if (CONTROL_CHARACTERS.test(collapsed) || !/[0-9]/.test(collapsed) || !/\p{L}/u.test(collapsed)) return refusal("Enter the full street address, including the building number.");
+      return accepted(collapsed);
+    }
+    return refusal("This detail can't be changed here.");
+  }
+  function saveProfileEdit(options2) {
+    var edit = state.profileEdit;
+    if (!edit || edit.phase === "saving") return Promise.resolve(false);
+    var changed = options2.onChange;
+    var definition = PROFILE_EDIT_ROWS[edit.row];
+    var request = profileEditRequest(edit.row, edit.initial, edit.draft);
+    if ((/* @__PURE__ */ Object.keys(request.errors)).length) {
+      edit.errors = request.errors;
+      edit.message = null;
+      edit.phase = "editing";
+      changed("invalid");
+      return Promise.resolve(false);
+    }
+    if (!request.values) {
+      state.profileEdit = null;
+      changed("closed");
+      return Promise.resolve(true);
+    }
+    var forms = options2.forms || createCoreProfileFormAdapter();
+    var context = { config: state.config, state };
+    edit.phase = "saving";
+    edit.errors = {};
+    edit.message = null;
+    changed("saving");
+    return Promise.resolve().then(function() {
+      return forms.submit(definition.form, request.values, context);
+    }).then(function(formId) {
+      return forms.outcome(definition.form, formId, context);
+    }).then(function(result) {
+      return settle(edit, definition, request.values, result, options2.reload, changed);
+    }, function(error2) {
+      return fail(edit, request.values, error2, changed);
+    });
+  }
+  function settle(edit, definition, values, result, reloadProfile, changed) {
+    if (state.profileEdit !== edit) return false;
+    if (result.outcome === "APPLIED") {
+      if (definition.form === LOGIN_FORM) {
+        state.profileLoginChanged = values.LOGIN;
+        state.session.login = values.LOGIN;
+        state.profileEdit = null;
+        changed("applied");
+        return true;
+      }
+      return Promise.resolve().then(function() {
+        return reloadProfile("profile");
+      }).then(function() {
+        return true;
+      }, function() {
+        return true;
+      }).then(function(done) {
+        if (state.profileEdit === edit) state.profileEdit = null;
+        state.profileSaved = edit.row;
+        changed("applied");
+        return done;
+      });
+    }
+    edit.phase = result.outcome === "REFUSED" ? "refused" : "failed";
+    var codes = definition.fields.map(function(item) {
+      return item.code;
+    });
+    if (result.outcome === "REFUSED" && result.field && codes.indexOf(result.field) !== -1) edit.errors = { [result.field]: result.message };
+    else edit.message = result.message || FAILED;
+    changed(edit.phase);
+    return false;
+  }
+  function fail(edit, values, error2, changed) {
+    if (state.profileEdit !== edit) return false;
+    var code = error2 && error2.code;
+    if (code === "session-expired" && edit.row === "login") {
+      edit.phase = "session-ended";
+      edit.message = SESSION_ENDED.replace("{next}", values.LOGIN).replace("{current}", edit.initial.login || "your current email");
+    } else if (code === "session-expired") {
+      state.profileEdit = null;
+      state.account = "session-expired";
+    } else {
+      edit.phase = "failed";
+      edit.message = code === "outcome-unknown" ? UNCONFIRMED : NOT_SENT;
+    }
+    changed(edit.phase || "closed");
+    return false;
+  }
+  function initialValues(row) {
+    if (row === "login") return { login: currentSignIn() };
+    var envelope2 = state.moduleData.profile || {};
+    var editable = envelope2.editable || {};
+    var values = {};
+    PROFILE_EDIT_ROWS[row].fields.forEach(function(item) {
+      values[item.key] = editable[item.key] || "";
+    });
+    return values;
+  }
+  function focusProfileInput(invalidFirst) {
+    var root = globalThis.document;
+    if (!root || typeof root.querySelector !== "function") return;
+    var input = invalidFirst && root.querySelector('[data-profile-input][aria-invalid="true"]') || root.querySelector("[data-profile-input]");
+    if (input && typeof input.focus === "function") input.focus();
+  }
+  function comparable2(value) {
+    return String(value == null ? "" : value).replace(/\s+/g, " ").trim();
+  }
+  function refusal(message) {
+    return { error: message, value: null };
+  }
+  function accepted(value) {
+    return { error: null, value };
+  }
+
+  // app-templates/customer-portal/runtime/src/normalizers/invoices.js
+  var INVOICE_STATUS = /* @__PURE__ */ Object.freeze({
+    OVERDUE: /* @__PURE__ */ Object.freeze({ label: "Overdue", tone: "danger", open: true }),
+    SENT: /* @__PURE__ */ Object.freeze({ label: "Due", tone: "info", open: true }),
+    PAID: /* @__PURE__ */ Object.freeze({ label: "Paid", tone: "ok", open: false }),
+    VOID: /* @__PURE__ */ Object.freeze({ label: "Void", tone: "scheduled", open: false })
+  });
+  function normalizeInvoices(raw) {
+    var rows2 = Array.isArray(raw && raw.items) ? raw.items : [];
+    return {
+      state: "ready",
+      truncated: !!(raw && raw.truncated),
+      items: rows2.map(invoiceRecord).filter(Boolean)
+    };
+  }
+  function openInvoices(envelope2) {
+    return (envelope2 && envelope2.items || []).filter(function(invoice) {
+      return invoice.open;
+    }).sort(function(left, right) {
+      var overdue = Number(right.stateCode === "OVERDUE") - Number(left.stateCode === "OVERDUE");
+      return overdue || (left.due || "9999-99-99").localeCompare(right.due || "9999-99-99") || left.backendId - right.backendId;
+    });
+  }
+  function findInvoice(envelope2, id) {
+    return (envelope2 && envelope2.items || []).find(function(invoice) {
+      return invoice.id === id;
+    }) || null;
+  }
+  function invoiceTitle(invoice) {
+    return invoice.period || formatIsoDate(invoice.issued) || "Invoice";
+  }
+  var ORDER_CANCELED_STATUS = "Order cancelled \xB7 contact us about this invoice";
+  function invoiceStatusLine(invoice) {
+    if (invoice.orderCanceled && invoice.open) return ORDER_CANCELED_STATUS;
+    if (invoice.stateCode === "SENT" && invoice.due) return "Due on " + formatIsoDate(invoice.due);
+    return invoice.status.label;
+  }
+  function invoiceAmount(invoice) {
+    return formatMoney(invoice.total, invoice.currency);
+  }
+  function invoiceTerms(invoice) {
+    return invoice.netDays ? "Net " + invoice.netDays : "";
+  }
+  function invoiceRecord(row) {
+    var backendId = positiveInteger(row && row.id);
+    var stateCode = latestStateCode(row);
+    var status = Object.prototype.hasOwnProperty.call(INVOICE_STATUS, stateCode) ? INVOICE_STATUS[stateCode] : null;
+    if (!backendId || !status) return null;
+    var currency = text(row.order && row.order.currency && row.order.currency.code);
+    return {
+      id: "invoice-core-" + backendId,
+      backendId,
+      orderBackendId: positiveInteger(row.order && row.order.id),
+      orderCanceled: latestStateCode(row.order) === "CANCELED",
+      stateCode,
+      status: { label: status.label, tone: status.tone },
+      open: status.open,
+      period: attributeText(row, "SERVICE_PERIOD"),
+      issued: isoDate2(attributeText(row, "DATE")),
+      due: isoDate2(row.dueDate),
+      netDays: attributeNumber(row, "PAYMENT_NET_TERMS"),
+      currency,
+      total: finiteNumber4(row.amountDue),
+      paid: finiteNumber4(row.totalPaidAmount),
+      lines: (Array.isArray(row.items) ? row.items : []).map(function(item) {
+        return lineRecord(item, currency);
+      }).filter(Boolean)
+    };
+  }
+  function lineRecord(item, currency) {
+    var amount = finiteNumber4(item && item.amount);
+    if (amount === null) return null;
+    var count = finiteNumber4(item.itemCount);
+    var quantity = count !== null && count > 0 ? count : 1;
+    var product = item.itemPrice && item.itemPrice.product;
+    return {
+      id: positiveInteger(item.id),
+      name: localizedName4(product && product.nls) || "Service",
+      quantity,
+      amount: formatMoney(amount * quantity, currency)
+    };
+  }
+  function isoDate2(value) {
+    var parts = Array.isArray(value) ? value : /^(\d{4})-(\d{2})-(\d{2})$/.exec(text(value));
+    if (!parts) return "";
+    var numbers = Array.isArray(value) ? parts.slice(0, 3).map(Number) : parts.slice(1, 4).map(Number);
+    var date = new Date(Date.UTC(numbers[0], numbers[1] - 1, numbers[2]));
+    if (date.getUTCFullYear() !== numbers[0] || date.getUTCMonth() !== numbers[1] - 1 || date.getUTCDate() !== numbers[2]) return "";
+    return numbers[0] + "-" + String(numbers[1]).padStart(2, "0") + "-" + String(numbers[2]).padStart(2, "0");
+  }
+  function finiteNumber4(value) {
+    var number = typeof value === "number" ? value : typeof value === "string" && value.trim() !== "" ? Number(value) : Number.NaN;
+    return Number.isFinite(number) ? number : null;
+  }
+  function localizedName4(value) {
+    if (!value || typeof value !== "object") return "";
+    var localized = value.en || value["en-US"] || Object.values(value)[0] || {};
+    return text(localized && (localized.NAME || localized.name));
+  }
+
+  // app-templates/customer-portal/runtime/src/adapters/core-user-preference-adapter.js
+  function createCoreUserPreferenceAdapter(options2 = {}) {
+    var fetchImpl = options2.fetch || coreSessionFetch;
+    return {
+      async overwrite(key, value, context) {
+        var api = requestContext3(context);
+        var response = await fetchImpl(api.coreBase + "/api/user/preference.json", {
+          method: "PUT",
+          credentials: "same-origin",
+          headers: api.headers({ "Content-Type": "application/json" }),
+          body: JSON.stringify({ key, value: JSON.stringify(value) })
+        });
+        return !!(response && response.ok);
+      }
+    };
+  }
+
+  // app-templates/customer-portal/runtime/src/adapters/stripe-js-adapter.js
+  var STRIPE_JS_URL = "https://js.stripe.com/v3/";
+  var LOAD_TIMEOUT_MS = 2e4;
+  var loads = /* @__PURE__ */ new WeakMap();
+  function loadStripeJs(options2 = {}) {
+    var scope = options2.scope || globalThis;
+    if (typeof scope.Stripe === "function") return Promise.resolve(scope.Stripe);
+    if (loads.has(scope)) return loads.get(scope);
+    var root = scope.document;
+    if (!root || typeof root.createElement !== "function") return Promise.reject(coded5("stripe-unavailable", "Stripe.js needs a document"));
+    var loading = new Promise(function(resolve, reject) {
+      var script = root.createElement("script");
+      var timer = setTimeout(function() {
+        reject(coded5("stripe-unavailable", "Stripe.js did not load in time"));
+      }, options2.timeoutMs || LOAD_TIMEOUT_MS);
+      script.setAttribute("src", STRIPE_JS_URL);
+      script.setAttribute("async", "");
+      script.addEventListener("load", function() {
+        clearTimeout(timer);
+        if (typeof scope.Stripe === "function") resolve(scope.Stripe);
+        else reject(coded5("stripe-unavailable", "Stripe.js loaded without Stripe"));
+      });
+      script.addEventListener("error", function() {
+        clearTimeout(timer);
+        reject(coded5("stripe-unavailable", "Stripe.js could not be loaded"));
+      });
+      (root.head || root.body).appendChild(script);
+    });
+    loads.set(scope, loading);
+    loading.catch(function() {
+      loads.delete(scope);
+    });
+    return loading;
+  }
+  function coded5(code, message) {
+    var error2 = new Error(message);
+    error2.code = code;
+    return error2;
+  }
+
+  // app-templates/customer-portal/runtime/src/invoice-payment.js
+  var PAYABLE_STATES = /* @__PURE__ */ Object.freeze(["SENT", "OVERDUE"]);
+  var PAYMENT_OUTCOMES = /* @__PURE__ */ Object.freeze(["READY", "PROCESSING", "REFUSED", "FAILED"]);
+  var TEST_CARD = "4242 4242 4242 4242";
+  var OUTCOME_TIMEOUT_MS2 = 6e4;
+  var RECORDING_TIMEOUT_MS = 6e4;
+  var RECORDING_POLL_MS = 2e3;
+  var BUSY_PHASES = /* @__PURE__ */ Object.freeze(["starting", "confirming"]);
+  var CLOSABLE_PHASES = /* @__PURE__ */ Object.freeze(["card", "recording", "paid", "slow", "refused", "failed"]);
+  var PAYMENT_COPY = /* @__PURE__ */ Object.freeze({
+    title: "Pay invoice",
+    starting: "Preparing a secure card payment\u2026",
+    cardLabel: "Card details",
+    note: "Payments are processed by Stripe. We never see or store your card number.",
+    testMode: "Test mode",
+    testHint: "No real charge. Use the test card " + TEST_CARD + " with any future date and any CVC.",
+    confirming: "Confirming your payment\u2026",
+    recording: "Payment received. Updating your invoice\u2026",
+    paidTitle: "Paid",
+    paidBody: "Thank you. This invoice is now paid.",
+    slowTitle: "Payment received",
+    slowBody: "Your payment went through, but the invoice hasn't updated yet. It will show as paid within a few minutes; you don't need to pay again.",
+    notSent: "We couldn't start the payment. Nothing was charged. Check your connection and try again.",
+    unconfirmed: "We couldn't confirm that the payment was set up. Nothing was charged. Reload the page in a minute and try again.",
+    stripeUnavailable: "The secure card form couldn't load. Nothing was charged. Check your connection and try again.",
+    cardFailed: "Your card wasn't charged. Check the details and try again.",
+    close: "Close",
+    cancel: "Cancel",
+    done: "Done",
+    retry: "Try again",
+    processing: "Processing\u2026"
+  });
+  var session = null;
+  function invoicePaymentOpen(config) {
+    return !!config && config.vertical === "snow" && config.dataMode === "live";
+  }
+  function invoicePayable(invoice) {
+    return !!invoice && PAYABLE_STATES.indexOf(invoice.stateCode) !== -1 && !invoice.orderCanceled && typeof invoice.total === "number" && invoice.total > 0 && !(invoice.paid > 0) && /^[A-Z]{3}$/.test(String(invoice.currency || ""));
+  }
+  function invoicePaymentFor(invoiceId) {
+    var payment = state.invoicePayment;
+    return payment && payment.invoiceId === invoiceId ? payment : null;
+  }
+  function invoicePaymentBusy() {
+    return !!(state.invoicePayment && (BUSY_PHASES.indexOf(state.invoicePayment.phase) !== -1 || state.invoicePayment.phase === "card" || state.invoicePayment.phase === "recording"));
+  }
+  function payInvoice(invoiceId, options2) {
+    var settings = options2 || {};
+    var invoice = findInvoice(liveInvoices(), invoiceId);
+    if (!invoicePaymentOpen(state.config) || !invoicePayable(invoice) || invoicePaymentBusy()) return Promise.resolve(false);
+    closeSheet();
+    var amountLabel = formatMoney(invoice.total, invoice.currency);
+    var payment = { invoiceId: invoice.id, backendId: invoice.backendId, title: invoiceTitle(invoice), amountLabel, phase: "starting", message: "", testMode: false };
+    state.invoicePayment = payment;
+    session = {
+      payment,
+      forms: settings.forms || createCoreProfileFormAdapter({ timeoutMs: OUTCOME_TIMEOUT_MS2 }),
+      preferences: settings.preferences || createCoreUserPreferenceAdapter(),
+      loadStripe: settings.loadStripe || loadStripeJs,
+      reload: settings.reload,
+      render: settings.render || function() {
+      },
+      wait: settings.wait || function(ms) {
+        return new Promise(function(resolve) {
+          setTimeout(resolve, ms);
+        });
+      },
+      now: settings.now || function() {
+        return Date.now();
+      },
+      document: settings.document || globalThis.document,
+      stripe: null,
+      card: null,
+      secret: "",
+      sheet: null
+    };
+    var current = session;
+    openSheet(current);
+    update(current, "starting", "");
+    var context = { config: state.config, state };
+    return Promise.resolve().then(function() {
+      return current.forms.submit(INVOICE_PAYMENT_FORM, { INVOICE_ID: payment.backendId }, context);
+    }).then(function(formId) {
+      return current.forms.report(INVOICE_PAYMENT_FORM, formId, context, PAYMENT_OUTCOMES);
+    }).then(function(report) {
+      return started(current, report, context);
+    }, function(error2) {
+      if (session !== current) return false;
+      if (error2 && error2.code === "session-expired") {
+        closeSheet();
+        state.invoicePayment = null;
+        state.account = "session-expired";
+        current.render();
+        return false;
+      }
+      update(current, "failed", error2 && error2.code === "outcome-unknown" ? PAYMENT_COPY.unconfirmed : PAYMENT_COPY.notSent);
+      return false;
+    });
+  }
+  function started(current, report, context) {
+    if (session !== current) return false;
+    if (report.outcome === "PROCESSING") return recording(current);
+    if (report.outcome !== "READY") {
+      update(current, report.outcome === "REFUSED" ? "refused" : "failed", String(report.message || PAYMENT_COPY.notSent));
+      return false;
+    }
+    var secret = String(report.clientSecret || "");
+    var key = String(report.publishableKey || "");
+    if (!/^pi_[A-Za-z0-9]+_secret_[A-Za-z0-9]+$/.test(secret) || !/^pk_(test|live)_[A-Za-z0-9]+$/.test(key) || Number(report.invoiceId) !== current.payment.backendId) {
+      update(current, "failed", PAYMENT_COPY.unconfirmed);
+      return false;
+    }
+    current.secret = secret;
+    current.payment.testMode = key.indexOf("pk_test_") === 0;
+    Promise.resolve().then(function() {
+      return current.preferences.overwrite(INVOICE_PAYMENT_FORM.preference, Object.assign({}, report, { clientSecret: null, publishableKey: null }), context);
+    }).catch(function() {
+      return false;
+    });
+    return Promise.resolve(current.loadStripe()).then(function(Stripe) {
+      if (session !== current) return false;
+      current.stripe = Stripe(key);
+      current.card = current.stripe.elements().create("card", { style: cardStyle(current.document) });
+      current.card.mount(current.sheet.cardHost);
+      current.card.on("change", function(event) {
+        if (session !== current || current.payment.phase !== "card") return;
+        current.sheet.error.textContent = event && event.error && event.error.message ? String(event.error.message) : "";
+      });
+      update(current, "card", "");
+      return true;
+    }, function() {
+      if (session === current) update(current, "failed", PAYMENT_COPY.stripeUnavailable);
+      return false;
+    });
+  }
+  function confirmInvoicePayment() {
+    var current = session;
+    if (!current || current.payment.phase !== "card" || !current.stripe || !current.card) return Promise.resolve(false);
+    update(current, "confirming", "");
+    return Promise.resolve().then(function() {
+      return current.stripe.confirmCardPayment(current.secret, { payment_method: { card: current.card } });
+    }).then(function(result) {
+      if (session !== current) return false;
+      var outcome = result || {};
+      var intent = outcome.paymentIntent || outcome.error && outcome.error.payment_intent;
+      if (intent && (intent.status === "succeeded" || intent.status === "processing")) return recording(current);
+      update(current, "card", String(outcome.error && outcome.error.message || PAYMENT_COPY.cardFailed));
+      return false;
+    }, function() {
+      if (session === current) update(current, "card", PAYMENT_COPY.cardFailed);
+      return false;
+    });
+  }
+  function recording(current) {
+    releaseCard(current);
+    update(current, "recording", "");
+    var deadline = current.now() + RECORDING_TIMEOUT_MS;
+    function poll() {
+      if (session !== current && state.invoicePayment !== current.payment) return Promise.resolve(false);
+      return Promise.resolve(current.reload ? current.reload("invoices") : null).catch(function() {
+        return null;
+      }).then(function() {
+        var invoice = findInvoice(liveInvoices(), current.payment.invoiceId);
+        if (invoice && invoice.stateCode === "PAID") {
+          update(current, "paid", "");
+          return true;
+        }
+        if (current.now() >= deadline) {
+          update(current, "slow", "");
+          return false;
+        }
+        return current.wait(RECORDING_POLL_MS).then(poll);
+      });
+    }
+    return poll();
+  }
+  function closeInvoicePayment() {
+    var current = session;
+    var payment = state.invoicePayment;
+    if (!payment || CLOSABLE_PHASES.indexOf(payment.phase) === -1) return false;
+    if (current) releaseCard(current);
+    closeSheet();
+    if (payment.phase !== "recording") state.invoicePayment = null;
+    if (current) current.render();
+    return true;
+  }
+  function retryInvoicePayment() {
+    var payment = state.invoicePayment;
+    if (!payment || payment.phase !== "failed" || !session) return Promise.resolve(false);
+    var options2 = { forms: session.forms, preferences: session.preferences, loadStripe: session.loadStripe, reload: session.reload, render: session.render, wait: session.wait, now: session.now, document: session.document };
+    var invoiceId = payment.invoiceId;
+    closeSheet();
+    state.invoicePayment = null;
+    return payInvoice(invoiceId, options2);
+  }
+  function update(current, phase, message) {
+    current.payment.phase = phase;
+    current.payment.message = message;
+    if (current.sheet) paint(current);
+    current.render();
+  }
+  function releaseCard(current) {
+    if (current.card && typeof current.card.destroy === "function") current.card.destroy();
+    current.card = null;
+  }
+  function closeSheet() {
+    if (session && session.sheet) {
+      session.sheet.scrim.remove();
+      session.sheet.panel.remove();
+      session.sheet = null;
+    }
+  }
+  function openSheet(current) {
+    var root = current.document;
+    var title = h("h2", { "class": "drawer__title pay-sheet__title", id: "pay-sheet-title", tabindex: "-1" }, PAYMENT_COPY.title);
+    var closeButton = h("button", { "class": "drawer__close", type: "button", "aria-label": PAYMENT_COPY.close, "data-visual-id": "pay-sheet-close" }, "\u2715");
+    var summary = h("div", { "class": "pay-sheet__summary", "data-module": "pay-summary" }, [
+      h("span", { "class": "pay-sheet__invoice" }, current.payment.title),
+      h("b", { "class": "pay-sheet__amount" }, current.payment.amountLabel)
+    ]);
+    var status = h("div", { "class": "pay-sheet__status", role: "status", "aria-live": "polite", "data-module": "pay-status" });
+    var testNote = h("div", { "class": "pay-sheet__test", "data-module": "pay-test-mode", hidden: true }, [
+      h("span", { "class": "status-badge status-badge--warn" }, PAYMENT_COPY.testMode),
+      h("span", null, PAYMENT_COPY.testHint)
+    ]);
+    var cardLabel = h("div", { "class": "field-label", id: "pay-sheet-card-label" }, PAYMENT_COPY.cardLabel);
+    var cardHost = h("div", { "class": "field pay-sheet__card", role: "group", "aria-labelledby": "pay-sheet-card-label", "data-module": "pay-card" });
+    var error2 = h("div", { "class": "field-error pay-sheet__error", role: "alert", "data-module": "pay-error" });
+    var cardField = h("div", { "class": "field-row pay-sheet__field", "data-module": "pay-card-field", hidden: true }, [cardLabel, cardHost, error2]);
+    var note = h("p", { "class": "pay-sheet__note", hidden: true }, PAYMENT_COPY.note);
+    var result = h("div", { "class": "pay-sheet__result", "data-module": "pay-result", hidden: true });
+    var primary = h("button", { "class": "btn btn--primary btn--block btn--lg", type: "button", "data-visual-id": "pay-sheet-confirm" });
+    var secondary = h("button", { "class": "btn btn--ghost btn--block", type: "button", "data-visual-id": "pay-sheet-secondary" });
+    var actions3 = h("div", { "class": "pay-sheet__actions" }, [primary, secondary]);
+    var panel = h("aside", { "class": "drawer pay-sheet", role: "dialog", "aria-modal": "true", "aria-labelledby": "pay-sheet-title", "data-module": "invoice-pay-sheet", "data-visual-id": "invoice-pay-sheet" }, [
+      h("div", { "class": "drawer__head" }, [title, closeButton]),
+      summary,
+      testNote,
+      status,
+      cardField,
+      note,
+      result,
+      actions3
+    ]);
+    var scrim = h("div", { "class": "scrim pay-sheet__scrim", "data-visual-id": "invoice-pay-scrim" });
+    closeButton.addEventListener("click", closeInvoicePayment);
+    scrim.addEventListener("click", closeInvoicePayment);
+    panel.addEventListener("keydown", function(event) {
+      if (event.key === "Escape") closeInvoicePayment();
+    });
+    primary.addEventListener("click", function() {
+      var phase = current.payment.phase;
+      if (phase === "card") confirmInvoicePayment();
+      else if (phase === "failed") retryInvoicePayment();
+      else closeInvoicePayment();
+    });
+    secondary.addEventListener("click", closeInvoicePayment);
+    var host = root.body || root;
+    host.appendChild(scrim);
+    host.appendChild(panel);
+    current.sheet = { scrim, panel, title, closeButton, status, testNote, cardField, cardHost, error: error2, note, result, primary, secondary };
+    paint(current);
+    if (typeof title.focus === "function") title.focus();
+  }
+  function paint(current) {
+    var sheet = current.sheet;
+    var payment = current.payment;
+    var phase = payment.phase;
+    var cardShown = phase === "card" || phase === "confirming";
+    sheet.panel.setAttribute("data-state", phase);
+    sheet.panel.setAttribute("aria-busy", BUSY_PHASES.indexOf(phase) !== -1 ? "true" : "false");
+    toggle(sheet.testNote, payment.testMode && cardShown);
+    toggle(sheet.cardField, cardShown);
+    toggle(sheet.note, cardShown);
+    sheet.error.textContent = phase === "card" ? payment.message : "";
+    var progress2 = phase === "starting" ? PAYMENT_COPY.starting : phase === "confirming" ? PAYMENT_COPY.confirming : phase === "recording" ? PAYMENT_COPY.recording : "";
+    sheet.status.replaceChildren.apply(sheet.status, progress2 ? [h("span", { "class": "pay-sheet__spinner", "aria-hidden": "true" }), h("span", null, progress2)] : []);
+    var outcome = phase === "paid" ? [PAYMENT_COPY.paidTitle, PAYMENT_COPY.paidBody, "ok"] : phase === "slow" ? [PAYMENT_COPY.slowTitle, PAYMENT_COPY.slowBody, "info"] : phase === "refused" || phase === "failed" ? ["", payment.message, "danger"] : null;
+    toggle(sheet.result, !!outcome);
+    sheet.result.setAttribute("data-state", outcome ? outcome[2] : "");
+    sheet.result.replaceChildren.apply(sheet.result, outcome ? [
+      outcome[0] ? h("div", { "class": "pay-sheet__result-title" }, outcome[0]) : null,
+      h("div", { "class": "pay-sheet__result-body" }, outcome[1])
+    ].filter(Boolean) : []);
+    var primaryLabel = phase === "card" ? "Pay " + payment.amountLabel : phase === "confirming" ? PAYMENT_COPY.processing : phase === "failed" ? PAYMENT_COPY.retry : phase === "paid" ? PAYMENT_COPY.done : phase === "slow" || phase === "refused" ? PAYMENT_COPY.close : "";
+    sheet.primary.textContent = primaryLabel;
+    toggle(sheet.primary, !!primaryLabel);
+    setDisabled(sheet.primary, phase === "confirming");
+    var secondaryLabel = phase === "card" ? PAYMENT_COPY.cancel : phase === "failed" ? PAYMENT_COPY.close : "";
+    sheet.secondary.textContent = secondaryLabel;
+    toggle(sheet.secondary, !!secondaryLabel);
+    setDisabled(sheet.closeButton, CLOSABLE_PHASES.indexOf(phase) === -1);
+  }
+  function toggle(node, shown) {
+    if (shown) node.removeAttribute("hidden");
+    else node.setAttribute("hidden", "");
+  }
+  function setDisabled(node, disabled) {
+    if (disabled) node.setAttribute("disabled", "");
+    else node.removeAttribute("disabled");
+  }
+  function cardStyle(root) {
+    var view = root && root.defaultView || globalThis;
+    var styles = view && typeof view.getComputedStyle === "function" && root.documentElement ? view.getComputedStyle(root.documentElement) : null;
+    var token = function(name, fallback) {
+      return styles && styles.getPropertyValue(name).trim() || fallback;
+    };
+    return {
+      base: {
+        color: token("--ink", "#1d1d1f"),
+        iconColor: token("--accent", "#0a84ff"),
+        fontFamily: "Manrope, system-ui, -apple-system, sans-serif",
+        fontSize: "16px",
+        "::placeholder": { color: token("--ink-3", "#9aa0ad") }
+      },
+      invalid: { color: token("--danger", "#c0392b"), iconColor: token("--danger", "#c0392b") }
+    };
+  }
+
+  // app-templates/customer-portal/runtime/src/components/primitives/ErrorState.js
+  function ErrorState(props) {
+    return h("div", { "class": "state-block", "data-module": "error-state", "data-visual-id": "error-state", "data-state": "error" }, [
+      h("div", { "class": "state-block__glyph state-block__glyph--error" }, "\u26A0"),
+      h("div", { "class": "state-block__title" }, props.title || "Something went wrong"),
+      h("div", { "class": "state-block__desc" }, props.desc || "We couldn\u2019t load your orders. Check your connection and try again."),
+      ActionButton({ variant: "btn--primary", label: "Try again", action: "ui.retry", visualId: "retry" })
+    ]);
+  }
+
+  // app-templates/customer-portal/runtime/src/components/shell/BrandLogo.js
+  var WORDMARK_ASPECT = 2.5;
+  var LOGO_ATTEMPTS = 3;
+  var providerLogos = /* @__PURE__ */ new Map();
+  function brandIdentity() {
+    var provider = liveProvider();
+    return {
+      name: provider && provider.name || state.config.brandName || "Aircove",
+      logo: brandLogo(provider && provider.logoImageId || state.config.brandLogoImageId || "")
+    };
+  }
+  function BrandParts(identity) {
+    return [
+      identity.logo ? identity.logo.node : h("div", { "class": "brand-logo" }),
+      h("span", { "class": "brand-name", "data-bind": "brand.name" }, identity.name)
+    ];
+  }
+  function brandLogo(imageId) {
+    var source = imageId ? visitImageUrl(state.config.coreApiBase, imageId) : "";
+    if (!source) return null;
+    var logo = providerLogos.get(source);
+    if (!logo) {
+      logo = { node: null, wordmark: false, attempts: 0 };
+      providerLogos.set(source, logo);
+    }
+    if (!logo.node && logo.attempts < LOGO_ATTEMPTS) {
+      logo.attempts += 1;
+      logo.node = logoImage(source, logo);
+    }
+    return logo.node ? logo : null;
+  }
+  function logoImage(source, logo) {
+    var image = h("img", { "class": "brand-logo brand-logo--image", src: source, alt: "", loading: "lazy", decoding: "async", "data-module": "brand-logo", "data-source": "organization" });
+    image.addEventListener("load", function() {
+      logo.wordmark = image.naturalWidth > image.naturalHeight * WORDMARK_ASPECT;
+      if (logo.wordmark && image.parentNode) image.parentNode.setAttribute("data-brand", "wordmark");
+    });
+    image.addEventListener("error", function() {
+      logo.node = null;
+      logo.wordmark = false;
+      var brand = image.parentNode;
+      if (!brand) return;
+      brand.removeAttribute("data-brand");
+      brand.replaceChild(h("div", { "class": "brand-logo" }), image);
+    });
+    return image;
+  }
+
+  // app-templates/customer-portal/runtime/src/components/storm/overview-icons.js
+  var ICONS = {
+    map: "M4 7.5 9.5 5l5 2.5L20 5v11.5L14.5 19l-5-2.5L4 19V7.5Z M9.5 5v11.5 M14.5 7.5V19",
+    calendar: "M4.5 7.5h15v12a1.5 1.5 0 0 1-1.5 1.5H6a1.5 1.5 0 0 1-1.5-1.5v-12Z M4.5 7.5V6A1.5 1.5 0 0 1 6 4.5h12A1.5 1.5 0 0 1 19.5 6v1.5 M8.5 3v3 M15.5 3v3 M8 12h3 M8 16h8",
+    invoice: "M6 3.5h12v17l-3-2-3 2-3-2-3 2v-17Z M9.5 8.5h5 M9.5 12.5h5 M9.5 16h3",
+    contract: "M12 3.2 19.5 6v6c0 4.2-3 7.6-7.5 8.8C7.5 19.6 4.5 16.2 4.5 12V6L12 3.2Z M9 12.2l2.2 2.2 4-4.2",
+    support: "M4.5 6.5A2 2 0 0 1 6.5 4.5h11a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H10l-4 3.5v-3.5H6.5a2 2 0 0 1-2-2v-7Z M9 9.5h6 M9 12.5h4",
+    alert: "M12 4.2 21 19.5H3L12 4.2Z M12 10v4.4 M12 16.6v.6",
+    pin: "M12 21s-6.5-5.8-6.5-10.5a6.5 6.5 0 1 1 13 0C18.5 15.2 12 21 12 21Z M12 12.8a2.3 2.3 0 1 0 0-4.6 2.3 2.3 0 0 0 0 4.6Z",
+    snowflake: "M12 3v18 M4.2 7.5l15.6 9 M19.8 7.5l-15.6 9 M12 7l-2.6-2.2 M12 7l2.6-2.2 M12 17l-2.6 2.2 M12 17l2.6 2.2",
+    person: "M12 12.2a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z M4.5 20.2c.6-3.8 3.7-6 7.5-6s6.900 2.200 7.500 6",
+    phone: "M6.800 3.800 9.500 3.500l1.700 4.300-2.200 1.700a12.500 12.500 0 0 0 5.500 5.500l1.700-2.200 4.300 1.700-.3 2.700a2 2 0 0 1-2.200 1.800C10.800 18.300 5.700 13.200 5 6a2 2 0 0 1 1.800-2.200Z",
+    mail: "M4.500 6h15a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1h-15a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1Z M4 7l8 6 8-6",
+    signOut: "M10 4.5H6.5a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2H10 M14.5 8l4 4-4 4 M18.5 12H9.5"
+  };
+  function icon(name, className) {
+    var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    svg.setAttribute("viewBox", "0 0 24 24");
+    svg.setAttribute("aria-hidden", "true");
+    svg.setAttribute("focusable", "false");
+    if (className) svg.setAttribute("class", className);
+    var path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+    path.setAttribute("d", ICONS[name] || "");
+    path.setAttribute("fill", "none");
+    path.setAttribute("stroke", "currentColor");
+    path.setAttribute("stroke-width", "1.6");
+    path.setAttribute("stroke-linecap", "round");
+    path.setAttribute("stroke-linejoin", "round");
+    svg.appendChild(path);
+    return svg;
+  }
+
+  // app-templates/customer-portal/runtime/src/components/shell/TopNav.js
+  function TopNav(gated) {
+    if (false) return SpaTopNav(gated);
+    var profile = activeProfile();
+    if (gated) {
+      var gatedBrand = brandIdentity();
+      return h("div", { "class": "top-nav-wrap" }, h("nav", { "class": "top-nav", "data-module": "top-nav", "data-visual-id": "top-nav", "data-state": "gated" }, [
+        h("div", { "class": "top-nav__brand", "data-brand": gatedBrand.logo && gatedBrand.logo.wordmark ? "wordmark" : void 0 }, BrandParts(gatedBrand)),
+        h("div", { "class": "nav-links" }),
+        h("div", { "class": "top-nav__actions" }, [h("div", { "class": "icon-btn", "data-action": "ui.toggleMode", title: "Toggle light/dark" }, state.mode === "Dark" ? "\u2600" : "\u263E")])
+      ]));
+    }
+    var navItems = profile.nav.filter(isNavItemEnabled);
+    var activeKey = activeNavKey(navItems);
+    var navActive = function(item) {
+      return item.key === activeKey;
+    };
+    var links = navItems.map(function(n) {
+      var active = navActive(n);
+      return h("span", {
+        "class": "nav-link" + (active ? " nav-link--active" : ""),
+        "data-action": "nav.go",
+        "data-id": n.key,
+        "data-state": active ? "active" : void 0
+      }, navLabel(n));
+    });
+    var actions3 = [
+      h("div", { "class": "icon-btn icon-btn--optional", "data-action": "ui.toggleMode", title: "Toggle light/dark" }, state.mode === "Dark" ? "\u2600" : "\u263E")
+    ];
+    if (primaryConnected(profile.primary)) actions3.push(ActionButton({ variant: "btn--primary", label: state.config.primaryCtaLabel || profile.primary.label, action: profile.primary.action, visualId: "primary-cta" }));
+    if (!profile.weatherCalendar && isModuleEnabled("calendar")) actions3.push(h("div", { "class": "icon-btn icon-btn--optional", "data-action": "calendar.open", title: "Calendar" }, "\u{1F4C5}"));
+    if (profile.showCart && isModuleEnabled("checkout")) actions3.push(h("div", { "class": "icon-btn", "data-action": "cart.open", title: "Cart", "data-state": cartCount() ? "filled" : "empty" }, ["\u{1F6D2}", cartCount() ? h("span", { "class": "cart-badge", "data-bind": "cart.count" }, String(cartCount())) : null]));
+    if (isModuleEnabled("activity")) {
+      var unread = activityUnread();
+      actions3.push(h("div", {
+        "class": "icon-btn icon-btn--optional",
+        "data-module": "activity-control",
+        "data-action": "activity.open",
+        "data-state": unread ? "unread" : void 0,
+        title: "Activity"
+      }, ["\u{1F514}", unread ? h("span", { "class": "dot-badge" }) : null]));
+    }
+    var profileEnabled = isModuleEnabled("profile");
+    var signInRequired = state.config.authMode === "required";
+    if (profileEnabled) actions3.push(h("div", { "class": "avatar", "data-module": "profile-avatar", "data-action": "profile.open", title: "Profile", "aria-label": "Profile" }, initials(avatarName())));
+    else if (signInRequired) actions3.push(h("button", { "class": "icon-btn icon-btn--optional", "data-module": "sign-out-control", "data-visual-id": "sign-out-control", "data-action": "auth.signOut", title: "Sign out", "aria-label": "Sign out", type: "button" }, [icon("signOut", "ov-icon")]));
+    actions3.push(h("div", { "class": "icon-btn hamburger", "data-action": "ui.toggleMobileNav", title: "Menu" }, "\u2630"));
+    var brandLeaves = !signedInWithAccess() && !!configuredExternalUrl(state.config, "landingUrl");
+    var brand = brandIdentity();
+    var nav = h("nav", { "class": "top-nav", "data-module": "top-nav", "data-visual-id": "top-nav" }, [
+      h("div", { "class": "top-nav__brand", "data-action": brandLeaves ? "nav.landing" : "nav.go", "data-id": brandLeaves ? void 0 : state.config.defaultRoute, "data-brand": brand.logo && brand.logo.wordmark ? "wordmark" : void 0 }, BrandParts(brand)),
+      h("div", { "class": "nav-links" }, [h("div", { "class": "nav-pill", "data-nav-pill": "true" })].concat(links)),
+      h("div", { "class": "top-nav__actions" }, actions3)
+    ]);
+    if (state.mobileNav) {
+      nav.appendChild(h(
+        "div",
+        { "class": "mobile-nav", "data-state": "mobile-navigation-open" },
+        navItems.map(function(n) {
+          var active = navActive(n);
+          return h("span", { "class": "nav-link" + (active ? " nav-link--active" : ""), "data-action": "nav.go", "data-id": n.key }, navLabel(n));
+        }).concat(profileEnabled || signInRequired ? [h("div", { "class": "mobile-nav__divider" })] : [], profileEnabled ? [
+          h("span", { "class": "nav-link" + (state.route === "profile" ? " nav-link--active" : ""), "data-action": "profile.open" }, navLabel({ key: "profile", label: "Profile" }))
+        ] : [], signInRequired ? [
+          h("span", { "class": "nav-link", "data-module": "mobile-sign-out", "data-action": "auth.signOut" }, "Sign out")
+        ] : [])
+      ));
+    }
+    return h("div", { "class": "top-nav-wrap" }, nav);
+  }
+  function avatarName() {
+    if (state.config.dataMode !== "live") {
+      var customer = currentFixture().customer;
+      return customer && customer.fullName || "";
+    }
+    var profile = state.moduleData.profile;
+    return profile && (profile.contact && profile.contact.name || profile.accountName) || "";
+  }
+  function initials(name) {
+    return String(name || "").split(/\s+/).filter(function(part) {
+      return /^\p{L}/u.test(part);
+    }).slice(0, 2).map(function(part) {
+      return part.charAt(0).toUpperCase();
+    }).join("");
+  }
+  function primaryConnected(primary) {
+    if (!primary) return false;
+    return primary.action !== "service.requestForm" || isRouteReachable("quote.new") || !!state.config.requestFormUrl;
+  }
+  var NAV_DETAIL_ROUTES = {
+    "orders.list": ["order.detail"],
+    products: ["checkout"],
+    "contracts.list": ["agreement.detail"],
+    "proposals.list": ["proposal.detail", "proposal.approve", "agreement.detail", "quote.new"],
+    appointments: ["visit.detail"],
+    invoices: ["invoice.detail"],
+    support: ["support.new", "support.ticket"]
+  };
+  function activeNavKey(navItems) {
+    var keys = navItems.map(function(item) {
+      return item.key;
+    });
+    if (keys.indexOf(state.route) !== -1) return state.route;
+    return (/* @__PURE__ */ Object.keys(NAV_DETAIL_ROUTES)).find(function(key) {
+      return keys.indexOf(key) !== -1 && NAV_DETAIL_ROUTES[key].indexOf(state.route) !== -1;
+    }) || null;
+  }
+  function isNavItemEnabled(item) {
+    var route = routeRegistry[item.key];
+    if (!route || route.liveOnly && state.config.dataMode !== "live") return false;
+    return !!(route.public || isModuleEnabled(route.module) && navListShown(route.module));
+  }
+  function navLabel(item) {
+    var configured = state.config.navigation || {};
+    var key = {
+      "orders.list": "primary",
+      appointments: "appointments",
+      invoices: "invoices",
+      calendar: "calendar",
+      activity: "activity",
+      care: "care",
+      "proposals.list": "proposals",
+      "contracts.list": "contracts",
+      services: "services",
+      pricing: "pricing",
+      products: "products",
+      account: "account",
+      support: "support"
+    }[item.key];
+    return configured[key] || (item.key === "care" ? activeVerticalConfig().careNavLabel : item.label);
+  }
+
+  // app-templates/customer-portal/runtime/src/components/primitives/Toggle.js
+  function Toggle(on, id) {
+    return h(
+      "div",
+      { "class": "toggle" + (on ? " toggle--on" : ""), "data-module": "toggle", "data-action": "profile.togglePref", "data-id": id, "data-state": on ? "on" : "off", role: "switch", "aria-checked": on ? "true" : "false" },
+      h("div", { "class": "toggle__knob" })
+    );
+  }
+
+  // app-templates/customer-portal/runtime/src/components/shell/PublicNav.js
+  function PublicNav() {
+    var landingOpen = isSpa() || !!configuredExternalUrl(state.config, "landingUrl");
+    var signedIn = signedInWithAccess();
+    var brand = brandIdentity();
+    return h(
+      "div",
+      { "class": "top-nav-wrap" },
+      h("nav", { "class": "top-nav", "data-module": "public-nav", "data-visual-id": "public-nav" }, [
+        h("div", { "class": "top-nav__brand", "data-action": signedIn ? "nav.go" : landingOpen ? "nav.landing" : void 0, "data-id": signedIn ? state.config.defaultRoute : void 0, "data-brand": brand.logo && brand.logo.wordmark ? "wordmark" : void 0 }, BrandParts(brand)),
+        h("div", { "class": "top-nav__actions" }, [
+          h("div", { "class": "icon-btn icon-btn--optional", "data-action": "ui.toggleMode", title: "Toggle light/dark" }, state.mode === "Dark" ? "\u2600" : "\u263E"),
+          state.route === "landing" || state.route === "seo.landing" ? ActionButton({ variant: "btn--primary", label: "Sign in", action: "auth.gotoSignin", visualId: "public-signin" }) : signedIn ? ActionButton({ variant: "btn--ghost", label: "\u2039 Home", action: "nav.go", id: state.config.defaultRoute, visualId: "public-home" }) : landingOpen ? ActionButton({ variant: "btn--ghost", label: "\u2039 Home", action: "nav.landing", visualId: "public-home" }) : null
+        ])
+      ])
+    );
+  }
+
+  // app-templates/customer-portal/runtime/src/components/shell/AppShell.js
+  function AppShell(content) {
+    var gated = accountGateShown();
+    var capability = isSpa() ? spaCapability() : void 0;
+    return h("div", {
+      "class": "app-shell",
+      "data-module": "app-shell",
+      "data-visual-id": "app-shell",
+      "data-account-state": gated || !isPublic() ? state.account : void 0,
+      "data-capability": capability,
+      "data-booking": capability === "target-appointments" ? state.spaBooking : void 0,
+      "data-portal-profile": isSpa() ? activeProfile().id : void 0
+    }, [
+      gated ? TopNav(true) : isPublic() ? PublicNav() : TopNav(false),
+      content,
+      isSpa() && state.spaSupport ? h(
+        "div",
+        { "class": "spa-support-scrim" },
+        h("div", { "class": "spa-support-card", "data-module": "support-unavailable", "data-visual-id": "support-unavailable", "data-state": "unavailable", role: "dialog", "aria-modal": "true", "aria-label": "Support unavailable" }, [
+          h("div", { "class": "state-block__glyph" }, "\u2709"),
+          h("div", { "class": "state-block__title" }, "Support isn\u2019t set up yet"),
+          h("div", { "class": "state-block__desc" }, "A support contact hasn\u2019t been set up for this portal, so nothing was opened, sent or recorded. For now, please reach the studio the way you usually do."),
+          h("button", { "class": "btn btn--primary", "data-action": "support.dismiss", "data-visual-id": "support-dismiss", style: "margin-top:14px" }, "Close")
+        ])
+      ) : null
+    ]);
+  }
+
+  // app-templates/customer-portal/runtime/src/components/primitives/LoadingState.js
+  function skeletonRow() {
+    return h("div", { style: "display:flex;align-items:center;gap:13px;padding:14px 13px;border-top:1px solid var(--glass-border)" }, [
+      h("div", { "class": "skeleton", style: "width:38px;height:38px;border-radius:11px" }),
+      h("div", { style: "flex:1" }, [
+        h("div", { "class": "skeleton", style: "width:46%;height:12px;margin-bottom:7px" }),
+        h("div", { "class": "skeleton", style: "width:28%;height:10px" })
+      ]),
+      h("div", { "class": "skeleton", style: "width:74px;height:22px;border-radius:999px" })
+    ]);
+  }
+  function detailSkeleton() {
+    var col = h("div", { "class": "detail-col" });
+    for (var i = 0; i < 3; i++) col.appendChild(h("div", { "class": "skeleton", style: "height:" + (i === 0 ? 180 : 120) + "px;border-radius:20px" }));
+    return h("div", { "class": "detail-grid" }, [col, h("div", { "class": "detail-col" }, [h("div", { "class": "skeleton", style: "height:160px;border-radius:20px" })])]);
+  }
+
+  // app-templates/customer-portal/runtime/src/components/orders/TrackingCard.js
+  function TrackingCard(technician, order) {
+    var techData = technician || { name: "Your specialist", eta: "Arrival details are being prepared", role: "Service team" };
+    var serviceName = order && order.name ? order.name : "your appointment";
+    var map = h("div", { "class": "tracking-map" }, [
+      h("span", { "class": "tracking-map__label" }, "live appointment status"),
+      svgPath(),
+      h("div", { "class": "tracking-pin-start" }),
+      h("div", { "class": "tracking-pin-end" }, [
+        h("div", { "class": "tracking-pin-end__ping" }),
+        h("div", { "class": "tracking-pin-end__dot" })
+      ])
+    ]);
+    var tech = h("div", { "class": "tracking-card__tech" }, [
+      h("div", { "class": "tech-avatar" }),
+      h("div", { style: "flex:1" }, [
+        h("div", { style: "font-weight:600;font-size:14.5px", "data-bind": "visit.techName" }, techData.name + " is with you"),
+        h("div", { style: "font-size:12.5px;color:var(--ink-2)", "data-bind": "visit.eta" }, techData.eta + " \xB7 " + serviceName)
+      ]),
+      ActionButton({ variant: "btn--ghost", label: "Message", action: "support.open", visualId: "tech-message" }),
+      ActionButton({ variant: "btn--primary", label: "Call", action: "support.open", visualId: "tech-call" })
+    ]);
+    return h("div", { "class": "tracking-card", "data-module": "tracking-card", "data-visual-id": "tracking-card" }, [map, tech]);
+  }
+
+  // app-templates/customer-portal/runtime/src/components/orders/MembershipCard.js
+  function MembershipCard(plan) {
+    return h("div", { "class": "membership-card", "data-module": "membership-card", "data-visual-id": "membership-card" }, [
+      h("div", { "class": "membership-card__sheen" }),
+      h("div", { style: "position:relative" }, [
+        h("div", { style: "font-weight:700;font-size:15px", "data-bind": "plan.name" }, plan.name),
+        h("div", { style: "font-size:12.5px;line-height:1.5;opacity:.85;margin-top:5px", "data-bind": "plan.desc" }, plan.desc),
+        h("div", { "class": "membership-card__cta", "data-action": "membership.activate", "data-visual-id": "membership-cta" }, "Activate \xB7 " + (plan.monthlyPrice || "$9") + "/mo")
+      ])
+    ]);
+  }
+
+  // app-templates/customer-portal/runtime/src/components/orders/Timeline.js
+  function Timeline(steps) {
+    return h("div", { "class": "panel", "data-module": "timeline", "data-visual-id": "timeline" }, [
+      h("div", { "class": "panel__title", style: "margin-bottom:16px" }, "Progress"),
+      h("div", { "class": "timeline" }, [h("div", { "class": "timeline__line" })].concat(
+        steps.map(function(st) {
+          return h("div", { "class": "timeline-step", "data-module": "timeline-step" }, [
+            h("div", { "class": "timeline-step__dot", style: "background:" + st.dot }),
+            h("div", null, [
+              h("div", { "class": "timeline-step__title", style: st.muted ? "color:var(--ink-3)" : "" }, st.label),
+              h("div", { "class": "timeline-step__sub" }, st.sub)
+            ])
+          ]);
+        })
+      ))
+    ]);
+  }
+
+  // app-templates/customer-portal/runtime/src/routes/OrderDetailPage.js
+  function buildOrderView(o) {
+    var fixture = currentFixture();
+    var num2 = parseInt(String(o.price).replace(/[^0-9]/g, ""), 10);
+    var hasPrice = num2 > 0 && o.status !== "cancelled";
+    var labor = hasPrice ? Math.round(num2 * 0.65) : 0;
+    var parts = hasPrice ? num2 - labor : 0;
+    var activeIdx = o.status === "scheduled" ? 0 : o.status === "inprogress" ? 2 : 3;
+    var stepDefs = [
+      { label: "Order booked", sub: "Confirmation sent" },
+      { label: "Specialist assigned", sub: fixture.technician.name + " \xB7 \u2605 " + fixture.technician.rating },
+      { label: "Appointment in progress", sub: "Status shared in your portal" },
+      { label: "Service complete", sub: o.status === "completed" ? "Rated \u2605\u2605\u2605\u2605\u2605" : "Pending" }
+    ];
+    var steps = stepDefs.map(function(st, i) {
+      var dot, done;
+      if (o.status === "cancelled") {
+        dot = i === 0 ? "#1f8a44" : "#cfd4dd";
+        done = i === 0;
+      } else if (o.status === "completed") {
+        dot = "#1f8a44";
+        done = true;
+      } else if (i < activeIdx) {
+        dot = "#1f8a44";
+        done = true;
+      } else if (i === activeIdx) {
+        dot = "var(--accent)";
+        done = true;
+      } else {
+        dot = "#cfd4dd";
+        done = false;
+      }
+      return { label: st.label, sub: st.sub, dot, muted: !done };
+    });
+    var loc = fixture.addresses.find(function(a) {
+      return a.id === o.locationId;
+    });
+    return {
+      order: o,
+      hasPrice,
+      laborStr: "$" + labor,
+      partsStr: "$" + parts,
+      steps,
+      location: loc,
+      isScheduled: o.status === "scheduled",
+      isInProgress: o.status === "inprogress",
+      isCompleted: o.status === "completed",
+      isCancelled: o.status === "cancelled"
+    };
+  }
+  function DetailLiveMap(technician) {
+    var tech = technician || { name: "Your specialist", eta: "Status updating" };
+    var canvas = h("div", { "class": "detail-map__canvas" }, [
+      detailSvg(),
+      h("div", { style: "position:absolute;left:40px;top:142px;width:14px;height:14px;border-radius:999px;background:var(--surface);border:3px solid var(--accent)" }),
+      h("div", { style: "position:absolute;left:548px;top:18px" }, [
+        h("div", { "class": "tracking-pin-end__ping" }),
+        h("div", { "class": "tracking-pin-end__dot" })
+      ])
+    ]);
+    var bar = h("div", { "class": "detail-map__bar" }, [
+      h("div", { style: "font-weight:600;font-size:14px;flex:1", "data-bind": "visit.techName,visit.eta" }, tech.name + " is with you \xB7 " + tech.eta),
+      ActionButton({ variant: "btn--primary", label: "Call", action: "support.open", visualId: "detail-call" })
+    ]);
+    return h("div", { "class": "detail-map", "data-module": "tracking-card", "data-visual-id": "detail-live-map" }, [canvas, bar]);
+  }
+  function detailSvg() {
+    var ns = "http://www.w3.org/2000/svg";
+    var svg = document.createElementNS(ns, "svg");
+    svg.setAttribute("viewBox", "0 0 600 180");
+    svg.setAttribute("preserveAspectRatio", "none");
+    svg.setAttribute("style", "position:absolute;inset:0;width:100%;height:100%");
+    var p = document.createElementNS(ns, "path");
+    p.setAttribute("d", "M40 150 C 160 130, 200 50, 330 70 S 520 60, 560 30");
+    p.setAttribute("fill", "none");
+    p.setAttribute("stroke", "var(--accent)");
+    p.setAttribute("stroke-width", "3");
+    p.setAttribute("stroke-dasharray", "8 8");
+    p.setAttribute("opacity", ".55");
+    svg.appendChild(p);
+    return svg;
+  }
+  function kv(k, v) {
+    return h("div", { "class": "kv-row" }, [h("span", null, k), h("b", null, v)]);
+  }
+  function PhotoReport() {
+    function col(label, after) {
+      return h("div", null, [
+        h("div", { "class": "photo-col__label" }, label),
+        h("div", { "class": "photo-pair" }, [
+          h("div", { "class": "photo-tile" + (after ? " photo-tile--after" : "") }, h("span", null, (after ? "after" : "before") + " photo")),
+          h("div", { "class": "photo-tile" + (after ? " photo-tile--after" : "") }, h("span", null, (after ? "after" : "before") + " photo"))
+        ])
+      ]);
+    }
+    return h("div", { "class": "panel", "data-module": "photo-report", "data-visual-id": "photo-report" }, [
+      h("div", { "class": "panel__title", style: "margin-bottom:3px" }, "Photo report"),
+      h("div", { style: "font-size:13px;color:var(--ink-2);margin-bottom:14px" }, "Before & after this visit"),
+      h("div", { "class": "photo-grid" }, [col("Before", false), col("After", true)])
+    ]);
+  }
+  function OrderDetail() {
+    var o = currentOrder();
+    var fixture = currentFixture();
+    var page = h("section", { "class": "page page--narrow", "data-route": "order.detail", "data-visual-id": "order-detail", "data-state": o.status });
+    page.appendChild(h("div", { "class": "detail-back", "data-action": "order.back", "data-visual-id": "detail-back" }, "\u2039 Back to orders"));
+    if (state.view === "loading") {
+      page.appendChild(detailSkeleton());
+      return page;
+    }
+    if (state.view === "error") {
+      page.appendChild(ErrorState({ title: "Couldn\u2019t load this visit", desc: "Something went wrong fetching the order. Try again." }));
+      return page;
+    }
+    var vm = buildOrderView(o);
+    var meta = fixture.statusMeta[o.status];
+    page.appendChild(h("div", { "class": "detail-head" }, [
+      h("div", { "class": "detail-head__icon", style: "background:" + o.iconBg }, h("i", { style: "background:" + o.dot })),
+      h("div", { "class": "detail-head__body" }, [
+        h("div", { "class": "detail-head__title", "data-bind": "order.name" }, o.name),
+        h("div", { "class": "detail-head__meta", "data-bind": "order.id,order.date" }, o.id + " \xB7 " + o.date)
+      ]),
+      h("div", { "class": "detail-head__right" }, [
+        StatusBadge({ variant: meta.badge, label: meta.label, bind: "order.statusLabel" }),
+        h("div", { "class": "detail-price", "data-bind": "order.price" }, vm.isCancelled ? "\u2014" : o.price)
+      ])
+    ]));
+    var grid = h("div", { "class": "detail-grid" });
+    var left = h("div", { "class": "detail-col" });
+    var right = h("div", { "class": "detail-col" });
+    if (vm.isInProgress) left.appendChild(DetailLiveMap(fixture.technician));
+    if (vm.isScheduled) left.appendChild(h("div", { "class": "status-banner status-banner--accent", "data-module": "status-banner", "data-visual-id": "scheduled-banner" }, [
+      h("div", { "class": "status-banner__icon" }, h("i")),
+      h("div", { style: "flex:1" }, [
+        h("div", { "class": "status-banner__title" }, "Scheduled for " + o.date),
+        h("div", { "class": "status-banner__sub" }, "Your specialist and preparation details are in the appointment record.")
+      ])
+    ]));
+    if (vm.isCompleted) left.appendChild(h("div", { "class": "status-banner status-banner--ok", "data-module": "status-banner", "data-visual-id": "completed-banner" }, [
+      h("div", { "class": "status-banner__icon", style: "color:var(--ok)" }, "\u2713"),
+      h("div", { style: "flex:1" }, [
+        h("div", { "class": "status-banner__title" }, "Completed on " + o.date),
+        h("div", { "class": "status-banner__sub status-banner__sub--ok" }, "You rated this visit \u2605\u2605\u2605\u2605\u2605")
+      ])
+    ]));
+    if (vm.isCancelled) left.appendChild(h("div", { "class": "status-banner status-banner--danger", "data-module": "status-banner", "data-visual-id": "cancelled-banner" }, [
+      h("div", { "class": "status-banner__icon", style: "color:var(--danger)" }, "\u2715"),
+      h("div", { style: "flex:1" }, [
+        h("div", { "class": "status-banner__title" }, "Visit cancelled"),
+        h("div", { "class": "status-banner__sub status-banner__sub--danger" }, "This visit was cancelled. You weren\u2019t charged.")
+      ])
+    ]));
+    if (vm.location) {
+      var others = state.orders.filter(function(x) {
+        return x.id !== o.id && (x.status === "scheduled" || x.status === "inprogress");
+      });
+      var locCard = h("div", { "class": "card", "data-module": "location-card", "data-visual-id": "location-card", style: "overflow:hidden" }, [
+        h("div", { style: "display:flex;align-items:center;gap:10px;padding:14px 16px 0;flex-wrap:wrap" }, [
+          h("div", { "class": "panel__title", style: "font-size:14.5px" }, "Service location"),
+          h("div", { style: "font-size:12.5px;color:var(--ink-2)" }, "\u{1F4CD} " + vm.location.label)
+        ])
+      ]);
+      if (others.length) locCard.appendChild(h(
+        "div",
+        { style: "display:flex;gap:8px;flex-wrap:wrap;padding:10px 16px 0" },
+        others.map(function(x) {
+          var l2 = fixture.addresses.find(function(a) {
+            return a.id === x.locationId;
+          });
+          return h("span", { "class": "chip", "data-action": "order.open", "data-id": x.id }, "\u2194 " + (l2 ? l2.label : "") + " \xB7 " + x.date);
+        })
+      ));
+      locCard.appendChild(h("div", { "class": "property-map" }, [
+        h("span", { "class": "map-label" }, "property map"),
+        h("div", { style: "position:absolute;left:30%;top:52%" }, h("div", { "class": "map-pin__marker" }))
+      ]));
+      left.appendChild(locCard);
+    }
+    if (!vm.isCancelled) left.appendChild(h("div", { "class": "tech-card", "data-module": "technician-card", "data-visual-id": "technician-card" }, [
+      h("div", { "class": "tech-card__avatar" }),
+      h("div", { style: "flex:1" }, [
+        h("div", { style: "font-weight:700;font-size:15px", "data-bind": "technician.name" }, fixture.technician.name),
+        h("div", { style: "font-size:12.5px;color:var(--ink-2)" }, fixture.technician.role + " \xB7 \u2605 " + fixture.technician.rating + " (" + fixture.technician.visits + " visits)")
+      ]),
+      ActionButton({ variant: "btn--ghost", label: "Message", action: "support.open", visualId: "tech-message" })
+    ]));
+    left.appendChild(Timeline(vm.steps));
+    if (o.wt) left.appendChild(WeatherDetail(o));
+    if (o.photos && vm.isCompleted) left.appendChild(PhotoReport());
+    var inv = h("div", { "class": "panel", "data-module": "invoice", "data-visual-id": "invoice" }, [h("div", { "class": "panel__title", style: "margin-bottom:14px" }, "Invoice")]);
+    if (vm.hasPrice) {
+      inv.appendChild(h("div", { "class": "invoice__row" }, [h("span", null, "Treatment"), h("b", null, vm.laborStr)]));
+      inv.appendChild(h("div", { "class": "invoice__row" }, [h("span", null, "Products & care"), h("b", null, vm.partsStr)]));
+      inv.appendChild(h("div", { "class": "invoice__total" }, [h("span", null, "Total"), h("span", { "data-bind": "order.price" }, o.price)]));
+    } else if (vm.isScheduled) {
+      inv.appendChild(h("div", { style: "font-size:13px;line-height:1.5;color:var(--ink-2)" }, [
+        "Your appointment total is confirmed before your visit. Estimate: ",
+        h("b", { style: "color:var(--ink)" }, o.price),
+        "."
+      ]));
+    } else {
+      inv.appendChild(h("div", { style: "font-size:13px;color:var(--ink-2)" }, "No charge for this visit."));
+    }
+    right.appendChild(inv);
+    var acts = h("div", { "class": "action-stack" });
+    if (vm.isCompleted) {
+      acts.appendChild(ActionButton({ variant: "btn--primary", label: "Download invoice", action: "order.downloadInvoice", id: o.id, block: true, lg: true, visualId: "download-invoice" }));
+      acts.appendChild(ActionButton({ variant: "btn--ghost", label: "Book again", action: "order.bookAgain", block: true, lg: true, visualId: "book-again" }));
+    } else if (vm.isInProgress) {
+      acts.appendChild(ActionButton({ variant: "btn--primary", label: "Contact technician", action: "support.open", block: true, lg: true, visualId: "contact-tech" }));
+    } else if (vm.isScheduled) {
+      acts.appendChild(ActionButton({ variant: "btn--primary", label: "Reschedule", action: "order.reschedule", id: o.id, block: true, lg: true, visualId: "reschedule" }));
+      acts.appendChild(ActionButton({ variant: "btn--danger", label: "Cancel visit", action: "order.cancel", id: o.id, confirm: true, block: true, lg: true, visualId: "cancel-visit" }));
+    } else if (vm.isCancelled) {
+      acts.appendChild(ActionButton({ variant: "btn--primary", label: "Rebook this service", action: "order.bookAgain", block: true, lg: true, visualId: "rebook" }));
+    }
+    acts.appendChild(ActionButton({ variant: "btn--ghost", label: "Get help", action: "support.open", block: true, lg: true, visualId: "get-help" }));
+    right.appendChild(acts);
+    grid.appendChild(left);
+    grid.appendChild(right);
+    page.appendChild(grid);
+    return page;
+  }
+
+  // app-templates/customer-portal/runtime/src/components/orders/WeatherCard.js
+  function WeatherBanner(order) {
+    var v = currentTheme();
+    var loc = (currentFixture().addresses.find(function(a) {
+      return a.id === order.locationId;
+    }) || {}).label || "";
+    return h("div", { "class": "alert-banner alert-banner--info", "data-module": "alert-banner", "data-visual-id": "weather-banner", "data-state": "pending-action" }, [
+      h("div", { "class": "alert-banner__icon wt-pulse", style: "background:rgba(14,143,196,.16)" }, v.wt.icon),
+      h("div", { "class": "alert-banner__body", "data-action": "order.open", "data-id": order.id, style: "cursor:pointer" }, [
+        h("div", { "class": "alert-banner__title" }, [
+          h("span", null, "Weather Trigger \u2014 confirm your visit"),
+          StatusBadge({ variant: "status-badge--warn", label: "Respond by " + order.wt.deadline })
+        ]),
+        h("div", { "class": "alert-banner__desc" }, order.name + " at " + loc + " \xB7 if we don\u2019t hear back, the visit proceeds automatically per your contract")
+      ]),
+      ActionButton({ variant: "btn--info", label: "Confirm", action: "weather.confirm", id: order.id, visualId: "weather-confirm" }),
+      ActionButton({ variant: "btn--danger", label: "Decline", action: "weather.decline", id: order.id, visualId: "weather-decline" })
+    ]);
+  }
+  function WeatherDetail(o) {
+    var wt = o.wt, els = [];
+    els.push(h("div", { "class": "weather-card__head" }, [
+      h("div", { "class": "weather-card__icon" + (wt.status === "pending" ? " wt-pulse" : "") }, currentTheme().wt.icon),
+      h("div", { "class": "panel__title", style: "flex:1" }, "Weather Trigger"),
+      StatusBadge({
+        variant: wt.status === "pending" ? "status-badge--warn" : wt.status === "declined" ? "status-badge--danger" : "status-badge--ok",
+        label: wt.status === "pending" ? "Awaiting you" : wt.status === "declined" ? "Declined" : wt.status === "confirmed" ? "Confirmed" : "Auto-confirmed"
+      })
+    ]));
+    els.push(h("div", { style: "font-size:13px;line-height:1.5;color:var(--ink-2);margin-bottom:14px" }, wt.trigger + " \xB7 detected " + wt.detected));
+    if (wt.status === "pending") {
+      els.push(h("div", { "class": "weather-pending", "data-state": "pending-action" }, [
+        h("div", { style: "font-weight:600;font-size:13.5px;color:var(--warn)" }, "Please confirm by " + wt.deadline),
+        h("div", { style: "font-size:12.5px;line-height:1.5;color:var(--ink-2);margin-top:3px" }, wt.auto)
+      ]));
+      els.push(h("div", { style: "display:flex;gap:10px" }, [
+        ActionButton({ variant: "btn--info", label: "Confirm visit", action: "weather.confirm", id: o.id, block: true, visualId: "wt-confirm" }),
+        ActionButton({ variant: "btn--danger", label: "Decline", action: "weather.decline", id: o.id, visualId: "wt-decline" })
+      ]));
+    } else if (wt.status === "auto") {
+      els.push(h("div", { style: "display:flex;flex-direction:column;gap:7px;margin-bottom:6px" }, [
+        kv("Dispatched", "Jan 5 \xB7 7:02 AM"),
+        kv("Arrived", "Jan 5 \xB7 7:38 AM"),
+        kv("Cleared", "Jan 5 \xB7 8:51 AM")
+      ]));
+      els.push(h("div", { style: "font-size:12.5px;color:var(--ok);font-weight:600" }, "\u2713 " + wt.sla));
+    } else if (wt.status === "confirmed") {
+      els.push(h("div", { style: "font-size:13px;color:var(--ok);font-weight:600" }, "\u2713 You confirmed this visit \u2014 the crew will proceed as scheduled."));
+    } else if (wt.status === "declined") {
+      els.push(h("div", { style: "font-size:13px;color:var(--danger);font-weight:600" }, "\u2715 You declined \u2014 no service will occur for this trigger."));
+    }
+    els.push(h("div", { "class": "locked-report", "data-module": "locked-report", "data-visual-id": "compliance-report" }, [
+      h("div", { "class": "locked-report__blur" }, [
+        kv("GPS arrival ping", "43.21, -79.88"),
+        kv("Surface temp at arrival", "\u22122.4\xB0C"),
+        kv("Snowfall depth logged", "3.2 cm")
+      ]),
+      h("div", { "class": "locked-report__lock" }, [
+        h("div", { style: "font-size:20px" }, "\u{1F512}"),
+        h("div", { style: "font-weight:700;font-size:13.5px" }, "Detailed Compliance Report"),
+        h("div", { style: "font-size:12px;line-height:1.5;color:var(--ink-2);max-width:240px" }, "GPS arrival logs, time-stamped readings & full audit trail for this trigger."),
+        h("div", { "class": "tab tab--active", style: "margin-top:4px", "data-action": "compliance.unlock", "data-visual-id": "unlock-compliance" }, "Unlock \xB7 $12/mo")
+      ])
+    ]));
+    return h("div", { "class": "panel", "data-module": "weather-card", "data-visual-id": "weather-card" }, els);
+  }
+
+  // app-templates/customer-portal/runtime/src/components/proposals/ProposalBanner.js
+  function ProposalBanner(pendingCount) {
+    var v = currentTheme();
+    var proposal = currentProposal();
+    var siteCount = proposalSites().length;
+    return h("div", {
+      "class": "alert-banner alert-banner--glass",
+      "data-module": "alert-banner",
+      "data-visual-id": "proposal-banner",
+      "data-action": "proposal.review"
+    }, [
+      h("div", { "class": "brand-logo brand-logo--lg" }),
+      h("div", { "class": "alert-banner__body" }, [
+        h("div", { "class": "alert-banner__title" }, [
+          h("span", { "data-bind": "proposal.id" }, "Proposal #" + proposal.id + " is ready"),
+          StatusBadge({ variant: "status-badge--warn", label: pendingCount + " awaiting you", bind: "proposal.pendingCount" })
+        ]),
+        h("div", { "class": "alert-banner__desc" }, v.prop.svc + " across " + siteCount + " properties \xB7 choose a plan per site \xB7 valid until " + proposal.validUntil)
+      ]),
+      h("div", { "class": "btn btn--primary btn--lg" }, "Review proposal \u203A")
+    ]);
+  }
+
+  // app-templates/customer-portal/runtime/src/routes/CalendarPage.js
+  function Calendar() {
+    if (state.view === "empty") {
+      return h("section", { "class": "page", "data-route": "calendar", "data-visual-id": "calendar", "data-state": "empty" }, [
+        EmptyState({ glyph: "i", title: "No visits scheduled", desc: "Upcoming and completed visits appear here once they are available." })
+      ]);
+    }
+    if (activeProfile().weatherCalendar) return StormCalendar();
+    return MonthCalendar();
+  }
+  function MonthCalendar() {
+    var page = h("section", { "class": "page", style: "max-width:920px", "data-route": "calendar", "data-visual-id": "calendar" });
+    page.appendChild(h("div", { "class": "section-head" }, [
+      h("div", { "class": "section-head__title" }, "Calendar"),
+      h("div", { "class": "section-head__sub" }, "Every upcoming and past service, at a glance.")
+    ]));
+    var cal = h("div", { "class": "cal-card", "data-module": "calendar-grid", "data-visual-id": "calendar-grid" });
+    cal.appendChild(h("div", { "class": "cal-nav" }, [
+      h("div", { "class": "cal-nav__btn", "data-action": "calendar.prev", "aria-label": "Previous month" }, "\u2039"),
+      h("div", { "class": "cal-month" }, F.MONTHS[state.calMonth] + " " + state.calYear),
+      h("div", { "class": "cal-nav__btn", "data-action": "calendar.next", "aria-label": "Next month" }, "\u203A")
+    ]));
+    cal.appendChild(h("div", { "class": "cal-weekdays" }, ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map(function(d) {
+      return h("div", { "class": "cal-weekday" }, d);
+    })));
+    var grid = h("div", { "class": "cal-grid" });
+    buildCalendarGrid(state.calYear, state.calMonth).forEach(function(c) {
+      if (c.empty) {
+        grid.appendChild(h("div"));
+        return;
+      }
+      var isToday = state.calYear === 2026 && state.calMonth === 0 && c.day === 15;
+      var cell = h(
+        "div",
+        { "class": "cal-cell" + (c.events.length ? " cal-cell--has" : "") + (isToday ? " cal-cell--today" : ""), "data-module": "calendar-cell" },
+        [h("div", { "class": "cal-day" }, String(c.day))]
+      );
+      var dots = h("div", { "class": "cal-dots" });
+      c.events.forEach(function(e) {
+        var color = e.status === "completed" ? "#1f8a44" : e.status === "inprogress" ? "#ff9f0a" : "var(--accent)";
+        dots.appendChild(h("span", { "class": "cal-dot", style: "background:" + color }));
+      });
+      cell.appendChild(dots);
+      if (c.events.length) {
+        cell.setAttribute("data-action", "order.open");
+        cell.setAttribute("data-id", c.events[0].id);
+      }
+      grid.appendChild(cell);
+    });
+    cal.appendChild(grid);
+    page.appendChild(cal);
+    var upcoming = state.orders.filter(function(o) {
+      return o.status !== "completed";
+    }).sort(sortByDateAsc);
+    var past = state.orders.filter(function(o) {
+      return o.status === "completed";
+    }).sort(sortByDateDesc);
+    page.appendChild(h("div", { "class": "cal-lists" }, [
+      calList("Upcoming", upcoming),
+      calList("Past", past)
+    ]));
+    return page;
+  }
+  function sortByDateAsc(a, b) {
+    return a.y - b.y || a.m - b.m || a.d - b.d;
+  }
+  function sortByDateDesc(a, b) {
+    return b.y - a.y || b.m - a.m || b.d - a.d;
+  }
+  function calList(title, orders) {
+    var list = h("div", { "class": "cal-list", "data-module": "order-list" }, [h("div", { "class": "cal-list__title" }, title)]);
+    if (orders.length === 0) list.appendChild(h("div", { style: "padding:14px 12px;font-size:13px;color:var(--ink-2)" }, "Nothing here."));
+    else orders.forEach(function(o) {
+      list.appendChild(OrderCard(o));
+    });
+    return list;
+  }
+
+  // app-templates/customer-portal/runtime/src/components/storm/StormCalendar.js
+  function stormChip(status) {
+    var map = {
+      completed: ["status-badge--ok", "Completed"],
+      onroute: ["status-badge--info", "On route"],
+      scheduled: ["status-badge--scheduled", "Scheduled"],
+      skipped: ["status-badge--scheduled", "Skipped"],
+      delayed: ["status-badge--warn", "Delayed"]
+    };
+    var m = map[status] || map.scheduled;
+    return h("span", { "class": "status-badge " + m[0], "data-module": "status-badge", "data-bind": "event.status", "data-state": status }, m[1]);
+  }
+  function StormCalendar() {
+    var cal = currentStormCalendar();
+    var page = h("section", { "class": "page page--narrow", "data-route": "calendar", "data-visual-id": "storm-calendar" });
+    page.appendChild(h("div", { "class": "section-head" }, [
+      h("div", { "class": "section-head__title" }, "Calendar"),
+      h("div", { "class": "section-head__sub" }, "Your service plan, by date and weather \u2014 what\u2019s scheduled, what triggers service, and what needs you.")
+    ]));
+    page.appendChild(h("div", { "class": "contract-banner", "data-module": "contract-banner", "data-visual-id": "contract-banner" }, [
+      h("div", { "class": "contract-banner__icon" }, "\u21BB"),
+      h("div", { style: "flex:1" }, [
+        h("div", { style: "font-weight:700;font-size:14px" }, "Recurring: " + cal.contract.rule),
+        h("div", { style: "font-size:12.5px;color:var(--ink-2);margin-top:2px" }, cal.contract.note)
+      ]),
+      h("span", { "class": "status-badge status-badge--ok" }, "Active")
+    ]));
+    var agenda = h("div", { "class": "storm-agenda", "data-module": "storm-agenda" });
+    cal.days.forEach(function(d) {
+      var col = h("div", { "class": "storm-day__date" + (d.today ? " storm-day__date--today" : "") }, [
+        h("div", { style: "font-weight:800;font-size:15px" }, d.date),
+        h("div", { style: "font-size:12px;color:var(--ink-3);margin-top:1px" }, d.dateSub)
+      ]);
+      var main = h("div", { "class": "storm-day__main" });
+      main.appendChild(h("div", { "class": "storm-weather storm-weather--" + d.weather.state, "data-module": "weather-row", "data-visual-id": "weather-row" }, [
+        h("span", { "class": "storm-weather__dot" }),
+        h("span", { style: "flex:1;font-weight:600;font-size:13px" }, d.weather.label),
+        h("span", { style: "font-size:12.5px;color:var(--ink-2)" }, d.weather.temp)
+      ]));
+      d.events.forEach(function(ev) {
+        var meta = ev.time ? ev.tech ? ev.time + " \xB7 " + ev.tech : ev.time : ev.note || (ev.trigger ? "Auto-dispatch on trigger" : "");
+        var acts = [];
+        if (ev.status === "onroute") {
+          acts.push(stormAct("Track", "order.open", state.orders[0] && state.orders[0].id));
+          acts.push(stormAct("Message", "support.open"));
+        }
+        if (ev.status === "scheduled" && d.needsAccess) acts.push(stormAct("Confirm access", "access.confirm", d.dateSub, true));
+        if (ev.status === "completed") {
+          if (ev.photos) acts.push(stormAct("View report", "order.open", "#SV-3290"));
+          acts.push(stormAct("Report issue", "service.reportIssue", ev.type));
+        }
+        if (ev.status === "delayed" || ev.status === "skipped") acts.push(stormAct("Request extra", "service.requestExtra"));
+        var event = h("div", { "class": "storm-event", "data-module": "service-window", "data-visual-id": "service-window", "data-state": ev.status }, [
+          stormChip(ev.status),
+          h("div", { "class": "storm-event__body" }, [
+            h("div", { style: "display:flex;align-items:center;gap:8px;flex-wrap:wrap" }, [
+              h("span", { style: "font-weight:600;font-size:14px", "data-bind": "event.type" }, ev.type),
+              ev.trigger ? h("span", { "class": "trigger-tag" }, "\u26A1 auto by trigger") : null
+            ]),
+            meta ? h("div", { style: "font-size:12.5px;color:var(--ink-2);margin-top:2px" }, meta) : null
+          ]),
+          acts.length ? h("div", { "class": "storm-actions" }, acts) : null
+        ]);
+        main.appendChild(event);
+      });
+      agenda.appendChild(h("div", { "class": "storm-day" + (d.today ? " storm-day--today" : ""), "data-module": "storm-day", "data-visual-id": "storm-day" }, [col, main]));
+    });
+    page.appendChild(agenda);
+    var access = h("div", { "class": "list-panel", "data-module": "access-notes", "data-visual-id": "access-notes" }, [
+      h("div", { "class": "list-panel__head" }, [
+        h("div", { "class": "list-panel__title", style: "flex:1" }, "Access & blackout notes"),
+        h("div", { "class": "link-action", "data-action": "access.update" }, "Update")
+      ])
+    ]);
+    cal.accessNotes.forEach(function(n) {
+      access.appendChild(h("div", { "class": "access-row" }, [
+        h("span", { style: "font-weight:600;font-size:13px;min-width:96px" }, n.label),
+        h("span", { style: "font-size:13px;color:var(--ink-2)" }, n.value)
+      ]));
+    });
+    page.appendChild(access);
+    return page;
+  }
+  function stormAct(label, action, id, primary) {
+    return h("button", { "class": "storm-act" + (primary ? " storm-act--primary" : ""), "data-action": action, "data-id": id || void 0, "data-visual-id": "storm-action" }, label);
+  }
+
+  // app-templates/customer-portal/runtime/src/components/storm/StormHome.js
+  function StormHome() {
+    var cal = currentStormCalendar();
+    var today = cal.days.find(function(d) {
+      return d.today;
+    }) || cal.days[0];
+    var todayIdx = cal.days.indexOf(today);
+    var upcoming = cal.days.slice(todayIdx + 1);
+    var accessDay = upcoming.find(function(d) {
+      return d.needsAccess;
+    });
+    var page = h("section", { "class": "page", "data-route": "orders.list", "data-visual-id": "storm-home" });
+    page.appendChild(PageHeader({
+      title: currentFixture().customer.greeting,
+      sub: today.weather.state === "watch" ? "Weather watch tonight \xB7 " + (accessDay ? "1 visit needs your OK" : "crew on the way") : "Your service plan is on track"
+    }));
+    if (state.view === "error") {
+      page.appendChild(ErrorState({}));
+      return page;
+    }
+    var grid = h("div", { "class": "cabinet-grid" });
+    var left = h("div", { "class": "cabinet-col" });
+    var right = h("div", { "class": "cabinet-col" });
+    var todayEvent = today.events[0];
+    var statusActions = [];
+    if (todayEvent && todayEvent.status === "onroute") {
+      statusActions.push(stormAct("Track visit", "order.open", state.orders[0] && state.orders[0].id, true));
+      statusActions.push(stormAct("Message crew", "support.open"));
+    }
+    if (accessDay) statusActions.push(stormAct("Confirm access \xB7 " + accessDay.date, "access.confirm", accessDay.dateSub, !todayEvent || todayEvent.status !== "onroute"));
+    var status = h("div", { "class": "storm-status storm-status--" + today.weather.state, "data-module": "storm-status", "data-visual-id": "storm-status", "data-state": today.weather.state }, [
+      h("div", { "class": "storm-status__head" }, [
+        h("span", { "class": "storm-status__dot" }),
+        h("span", { style: "flex:1;font-weight:700;font-size:15.5px" }, today.weather.label),
+        h("span", { "class": "storm-status__temp" }, today.weather.temp)
+      ]),
+      todayEvent ? h("div", { "class": "storm-status__event" }, [
+        stormChip(todayEvent.status),
+        h("div", { style: "flex:1;min-width:0" }, [
+          h("div", { style: "font-weight:600;font-size:14.5px" }, todayEvent.type),
+          h("div", { style: "font-size:12.5px;color:var(--ink-2)" }, todayEvent.time ? todayEvent.tech ? todayEvent.time + " \xB7 " + todayEvent.tech : todayEvent.time : "Scheduled")
+        ])
+      ]) : h("div", { style: "font-size:13.5px;color:var(--ink-2)" }, "No visit needed today \u2014 below the service trigger."),
+      statusActions.length ? h("div", { "class": "storm-actions", style: "margin-top:2px" }, statusActions) : null
+    ]);
+    left.appendChild(status);
+    var windows = h("div", { "class": "card card--pad", "data-module": "next-windows", "data-visual-id": "next-windows" }, [
+      h("div", { style: "display:flex;align-items:center;margin-bottom:12px" }, [
+        h("div", { "class": "card__title", style: "flex:1" }, "Next service windows"),
+        h("div", { "class": "link-action", "data-action": "nav.go", "data-id": "calendar" }, "Open calendar \u203A")
+      ])
+    ]);
+    if (upcoming.length === 0) windows.appendChild(h("div", { style: "font-size:13px;color:var(--ink-2)" }, "Nothing scheduled \u2014 we dispatch automatically when the weather triggers."));
+    upcoming.slice(0, 3).forEach(function(d) {
+      var ev = d.events[0];
+      windows.appendChild(h("div", { "class": "home-window", "data-module": "service-window" }, [
+        h("div", { "class": "home-window__date" }, [h("div", { style: "font-weight:700;font-size:13.5px" }, d.date), h("div", { style: "font-size:11.5px;color:var(--ink-3)" }, d.dateSub)]),
+        h("div", { "class": "storm-weather storm-weather--" + d.weather.state, style: "flex:1" }, [
+          h("span", { "class": "storm-weather__dot" }),
+          h("span", { style: "flex:1;font-weight:600;font-size:12.5px" }, d.weather.label)
+        ]),
+        ev ? stormChip(ev.status) : null,
+        d.needsAccess ? stormAct("Confirm", "access.confirm", d.dateSub, true) : null
+      ]));
+    });
+    left.appendChild(windows);
+    var history = h("div", { "class": "card", "data-module": "order-list", "data-visual-id": "service-history" }, [
+      h("div", { "class": "card__head" }, [h("span", { "class": "card__title" }, "Service history")])
+    ]);
+    var hlist = h("div", { "class": "order-list" });
+    if (state.view === "loading") {
+      for (var i = 0; i < 3; i++) hlist.appendChild(skeletonRow());
+    } else state.orders.filter(function(o) {
+      return o.status === "completed";
+    }).slice(0, 4).forEach(function(o) {
+      hlist.appendChild(OrderCard(o));
+    });
+    history.appendChild(hlist);
+    left.appendChild(history);
+    right.appendChild(h("div", { "class": "card card--pad season-card", "data-module": "season-status", "data-visual-id": "season-status" }, [
+      h("div", { style: "display:flex;align-items:center;gap:9px;margin-bottom:14px" }, [
+        h("div", { "class": "card__title", style: "flex:1" }, currentTheme().plan.name),
+        h("span", { "class": "status-badge status-badge--ok" }, "Active")
+      ]),
+      seasonRow("Visits this season", "8"),
+      seasonRow("Auto-dispatch", "weather trigger"),
+      seasonRow("Saved this season", currentFixture().customer.stats.savings, "var(--ok)"),
+      h("div", { style: "margin-top:14px" }, ActionButton({ variant: "btn--ghost", label: "Manage plan", action: "profile.managePlan", block: true, visualId: "home-manage-plan" }))
+    ]));
+    var access = h("div", { "class": "card card--pad", "data-module": "access-notes", "data-visual-id": "home-access-notes" }, [
+      h("div", { style: "display:flex;align-items:center;margin-bottom:12px" }, [
+        h("div", { "class": "card__title", style: "flex:1;font-size:15px" }, "Access notes"),
+        h("div", { "class": "link-action", "data-action": "access.update" }, "Edit")
+      ])
+    ]);
+    cal.accessNotes.forEach(function(n) {
+      access.appendChild(h("div", { "class": "access-row" }, [h("span", { style: "font-weight:600;font-size:12.5px;min-width:84px" }, n.label), h("span", { style: "font-size:12.5px;color:var(--ink-2)" }, n.value)]));
+    });
+    right.appendChild(access);
+    grid.appendChild(left);
+    grid.appendChild(right);
+    page.appendChild(grid);
+    return page;
+  }
+  function seasonRow(label, value, color) {
+    return h("div", { "class": "season-row" }, [
+      h("span", { style: "font-size:13.5px;color:var(--ink-2)" }, label),
+      h("span", { style: "font-weight:700;font-size:13.5px" + (color ? ";color:" + color : "") }, value)
+    ]);
+  }
+
+  // app-templates/customer-portal/runtime/src/routes/OrdersPage.js
+  function Cabinet() {
+    if (activeProfile().weatherCalendar) return StormHome();
+    var fixture = currentFixture();
+    var v = currentTheme();
+    var page = h("section", { "class": "page", "data-route": "orders.list", "data-visual-id": "cabinet" });
+    page.appendChild(PageHeader({ title: fixture.customer.greeting, sub: fixture.customer.subline }));
+    if (state.view === "error") {
+      page.appendChild(ErrorState({}));
+      return page;
+    }
+    var pending = proposalSites().filter(function(p) {
+      return p.status === "unseen" || p.status === "viewed";
+    }).length;
+    if (state.view === "ready") {
+      if (!state.config.caseId) page.appendChild(ProposalBanner(pending));
+      var wt = state.orders.find(function(o) {
+        return o.wt && o.wt.status === "pending";
+      });
+      if (wt) page.appendChild(WeatherBanner(wt));
+    }
+    var grid = h("div", { "class": "cabinet-grid" });
+    var left = h("div", { "class": "cabinet-col" });
+    var right = h("div", { "class": "cabinet-col" });
+    if (state.view === "ready" && state.orders.some(function(o) {
+      return o.status === "inprogress";
+    })) {
+      left.appendChild(TrackingCard(fixture.technician, state.orders.find(function(o) {
+        return o.status === "inprogress";
+      })));
+    }
+    var ordersCard = h("div", { "class": "card", "data-module": "glass-card" });
+    ordersCard.appendChild(h("div", { "class": "card__head" }, [
+      h("span", { "class": "card__title" }, "Your orders"),
+      h("div", { style: "margin-left:auto;display:flex;gap:6px;flex-wrap:wrap;align-items:center" }, [
+        Tabs({ items: tabItems(), active: state.filter, action: "order.filter" }),
+        h("select", { "class": "select-pill", "data-module": "filter-bar", "data-visual-id": "date-filter", "aria-label": "Date range" }, [
+          h("option", null, "All time"),
+          h("option", null, "Last 30 days"),
+          h("option", null, "Last 90 days")
+        ]),
+        h(
+          "select",
+          { "class": "select-pill", "data-module": "filter-bar", "data-visual-id": "location-filter", "aria-label": "Location" },
+          [h("option", null, "All locations")].concat(fixture.addresses.map(function(a) {
+            return h("option", null, a.label);
+          }))
+        )
+      ])
+    ]));
+    var listWrap = h("div", { "class": "order-list", "data-module": "order-list", "data-visual-id": "order-list" });
+    if (state.view === "loading") {
+      for (var i = 0; i < 4; i++) listWrap.appendChild(skeletonRow());
+    } else if (state.view === "empty" || filteredOrders().length === 0) {
+      listWrap.appendChild(EmptyState({
+        glyph: "\u{1F5D3}",
+        title: "No orders yet",
+        desc: "When you book a visit it shows up here with live status and invoices.",
+        action: { variant: "btn--primary", label: "Book a service", action: "booking.open", visualId: "empty-book" }
+      }));
+    } else {
+      filteredOrders().forEach(function(o) {
+        listWrap.appendChild(OrderCard(o));
+      });
+    }
+    ordersCard.appendChild(listWrap);
+    left.appendChild(ordersCard);
+    var quick = h("div", { "class": "card card--pad", "data-module": "glass-card" }, [
+      h("div", { "class": "card__title", style: "margin-bottom:13px" }, "Quick book"),
+      h(
+        "div",
+        { style: "display:flex;flex-direction:column;gap:9px" },
+        v.svc.map(function(s, i2) {
+          return ServiceCard(s, i2);
+        })
+      )
+    ]);
+    right.appendChild(quick);
+    right.appendChild(MembershipCard(v.plan));
+    grid.appendChild(left);
+    grid.appendChild(right);
+    page.appendChild(grid);
+    return page;
+  }
+
+  // app-templates/customer-portal/runtime/src/components/commerce/PricingCard.js
+  function PricingCard(props) {
+    var featIcon = props.featured ? h("span", { "class": "plan-badge" }, "POPULAR") : null;
+    var card = h("div", { "class": "plan-card" + (props.featured ? " plan-card--featured" : ""), "data-module": "pricing-card", "data-visual-id": "pricing-card", "data-state": props.current ? "current" : void 0 });
+    if (props.featured) card.appendChild(h("div", { "class": "plan-sheen" }));
+    var body = h("div", props.featured ? { style: "position:relative;display:flex;flex-direction:column;flex:1" } : null, [
+      h("div", { "class": "plan-card__name" }, [h("span", null, props.name), featIcon]),
+      h("div", { "class": "plan-card__price" }, [h("b", null, props.price), h("span", null, props.suffix || "/mo")]),
+      h("div", { "class": "plan-card__tag" }, props.tag),
+      h("div", { "class": "plan-features" }, props.features.map(function(f) {
+        return h("div", null, "\u2713 " + f);
+      })),
+      props.current ? h("div", { "class": "plan-cta" }, "Current plan") : h("div", { style: "margin-top:18px" }, ActionButton({ variant: props.featured ? "btn--onaccent" : "btn--ghost", label: props.ctaLabel || "Activate plan", action: props.action || "booking.open", id: props.actionId, block: true, lg: true, visualId: "activate-plan" }))
+    ]);
+    card.appendChild(body);
+    return card;
+  }
+
+  // app-templates/customer-portal/runtime/src/routes/ServicesPage.js
+  function Services() {
+    var v = currentTheme();
+    var copy = v.copy || {};
+    var page = h("section", { "class": "page", "data-route": "services", "data-visual-id": "services" });
+    page.appendChild(h("div", { "class": "section-head" }, [
+      h("div", { "class": "section-head__title" }, "Our services"),
+      h("div", { "class": "section-head__sub" }, copy.servicesSub || "Choose a ritual, review the details, and manage every visit in one place.")
+    ]));
+    if (state.view === "loading") {
+      var g = h("div", { "class": "services-grid" });
+      for (var i = 0; i < 4; i++) g.appendChild(h("div", { "class": "skeleton", style: "height:280px;border-radius:24px" }));
+      page.appendChild(g);
+      return page;
+    }
+    page.appendChild(h("div", { "class": "services-grid", "data-module": "service-list" }, v.svc.map(function(s, i2) {
+      return ServiceCatalogCard(s, i2);
+    })));
+    var steps = copy.servicesSteps || [
+      { n: "1", t: "Choose your ritual", d: "Review the service that fits your day" },
+      { n: "2", t: "Confirm your visit", d: "Your appointment appears in the portal" },
+      { n: "3", t: "Keep your routine", d: "Return to notes and aftercare after the visit" }
+    ];
+    page.appendChild(h("div", { "class": "howto", "data-module": "how-it-works" }, [
+      h("div", { "class": "panel__title", style: "margin-bottom:16px" }, "How it works"),
+      h("div", { "class": "howto-grid" }, steps.map(function(s) {
+        return h("div", { "class": "howto-step" }, [
+          h("div", { "class": "howto-step__num" }, s.n),
+          h("div", null, [h("div", { style: "font-weight:600;font-size:14px" }, s.t), h("div", { style: "font-size:12.5px;color:var(--ink-2)" }, s.d)])
+        ]);
+      }))
+    ]));
+    return page;
+  }
+
+  // app-templates/customer-portal/runtime/src/routes/PricingPage.js
+  function Pricing() {
+    var v = currentTheme();
+    var payg = v.copy && v.copy.payAsYouGo || {};
+    var pricing = state.moduleData.pricing || {};
+    var livePlans = pricing.source === "core-pim" ? pricing.plans : null;
+    var page = h("section", { "class": "page", "data-route": "pricing", "data-visual-id": "pricing" });
+    page.appendChild(h("div", { "class": "pricing-head" }, [
+      h("span", { "class": "eyebrow" }, "Transparent, no surprises"),
+      h("h1", { "data-bind": livePlans ? "pim.plan.name" : "plan.headline" }, livePlans ? "Plans from Core PIM" : v.plan.headline),
+      h("p", null, livePlans ? "Live catalog data is loaded from Core PIM." : "Pay per visit, or save with a membership. Cancel anytime.")
+    ]));
+    var cards = livePlans ? livePlans.map(function(plan, index) {
+      return PricingCard({
+        name: plan.name,
+        price: plan.price,
+        suffix: plan.interval ? "/" + plan.interval.replace(/^1\s+/i, "").toLowerCase() : "",
+        tag: plan.description || plan.cta,
+        featured: index === 1,
+        features: plan.description ? [plan.description] : ["Published catalog offer"],
+        action: plan.allowedActions && plan.allowedActions.includes("support.open") ? "support.open" : "cart.addItem",
+        actionId: plan.name,
+        ctaLabel: plan.cta || "Choose plan"
+      });
+    }) : [
+      PricingCard({
+        name: payg.name || "Pay as you go",
+        price: payg.price || "Per ritual",
+        tag: payg.tag || "Current total is shown before confirmation",
+        current: true,
+        features: payg.features || ["Choose an individual ritual", "Keep appointments in one portal", "Review aftercare after your visit"]
+      }),
+      PricingCard({ name: v.plan.name, price: v.plan.monthlyPrice || "$9", tag: v.plan.tag, featured: true, features: v.plan.features }),
+      PricingCard({ name: v.plan.plusName, price: v.plan.plusMonthlyPrice || "$19", tag: v.plan.plusTag || "For a deeper ritual rhythm", features: v.plan.plusFeatures })
+    ];
+    page.appendChild(h("div", { "class": "pricing-grid", "data-bind": livePlans ? "pim.plans" : "plan.cards" }, cards));
+    var rates = h("div", { "class": "rates-card", "data-module": "rates-list", "data-visual-id": "per-visit-rates" }, [
+      h("div", { "class": "panel__title", style: "font-size:16px;padding:14px 0 6px" }, livePlans ? "Core PIM catalog" : "Per-visit rates")
+    ]);
+    (livePlans || v.svc).forEach(function(s, i) {
+      var pal = F.PAL[i % 4];
+      rates.appendChild(h("div", { "class": "rate-row", "data-module": "rate-row" }, [
+        h("div", { "class": "rate-row__icon", style: "background:" + pal[1] }, h("i", { style: "background:" + pal[0] })),
+        h("div", { style: "flex:1" }, [
+          h("div", { style: "font-weight:600;font-size:14px", "data-bind": "service.name" }, s.name),
+          h("div", { style: "font-size:12px;color:var(--ink-2)" }, s.tagline || s.description || "Published catalog item")
+        ]),
+        h("div", { style: "font-weight:700;font-size:15px", "data-bind": "service.price" }, s.price === "Quote" ? "Quote" : s.price)
+      ]));
+    });
+    page.appendChild(rates);
+    return page;
+  }
+
+  // app-templates/customer-portal/runtime/src/components/commerce/ProductCard.js
+  function ProductCard(p, catIndex) {
+    var tint = F.TINTS[catIndex % 4];
+    var displayTag = p.displayTag || p.tag || "";
+    return h("div", { "class": "product-card", "data-module": "product-card", "data-visual-id": "product-card" }, [
+      h(
+        "div",
+        { "class": "product-card__art", style: "background:" + tint[1] },
+        h("div", { "class": "product-card__thumb" }, h("i", { style: "background:" + tint[0] }))
+      ),
+      displayTag ? h("span", { "class": "product-tag", "data-bind": "product.displayTag" }, displayTag) : null,
+      h("div", { "class": "product-card__name", "data-bind": "product.name" }, p.name),
+      h("div", { "class": "product-card__blurb", "data-bind": "product.blurb" }, p.blurb || p.description || p.cta),
+      h("div", { "class": "product-card__foot" }, [
+        h("div", { "class": "price-lg", "data-bind": "product.price" }, p.price),
+        ActionButton({ variant: "btn--primary", label: p.allowedActions && p.allowedActions.includes("support.open") ? "Contact" : "Add", action: p.allowedActions && p.allowedActions.includes("support.open") ? "support.open" : "cart.addItem", id: p.name, visualId: "product-add" })
+      ])
+    ]);
+  }
+
+  // app-templates/customer-portal/runtime/src/routes/ProductsPage.js
+  function Products() {
+    var v = currentTheme();
+    var products = state.moduleData.products || {};
+    var liveProducts = products.source === "core-pim";
+    var page = h("section", { "class": "page", "data-route": "products", "data-visual-id": "products" });
+    page.appendChild(h("div", { "class": "featured-banner", "data-module": "featured-banner", "data-visual-id": "featured-banner" }, [
+      h("div", { style: "flex:1" }, [
+        h("span", { "class": "eyebrow", "data-bind": liveProducts ? "pim.catalog" : "feat.badge" }, liveProducts ? "Core PIM catalog" : v.feat.badge),
+        h("h1", { "data-bind": liveProducts ? "pim.product.name" : "feat.title" }, liveProducts ? "Live catalog products" : v.feat.title),
+        h("p", { "data-bind": liveProducts ? "pim.product.description" : "feat.desc" }, liveProducts ? "Products and purchasable plans are loaded from Core PIM." : v.feat.desc),
+        h("div", { style: "display:flex;gap:11px;align-items:center" }, [
+          ActionButton({ variant: "btn--ghost", label: liveProducts ? "Contact support" : v.feat.cta, action: liveProducts ? "support.open" : "booking.open", lg: true, visualId: "featured-cta" }),
+          h("div", { style: "font-size:13px;color:rgba(255,255,255,.8)", "data-bind": "feat.fin" }, liveProducts ? "Live mode" : v.feat.fin)
+        ])
+      ]),
+      h("div", { "class": "featured-banner__art" }, h("div", { style: "width:120px;height:56px;border-radius:12px;background:var(--surface);box-shadow:0 4px 14px rgba(var(--hair),.12)" }))
+    ]));
+    var cats = liveProducts ? [{ key: "all", label: "All" }] : [{ key: "all", label: "All" }].concat(v.cats);
+    page.appendChild(h("div", { "class": "shop-head" }, [
+      h("div", { "class": "shop-head__title" }, "Shop"),
+      h("div", { "class": "tabs", "data-module": "filter-bar" }, cats.map(function(c) {
+        return h("span", { "class": "tab" + (c.key === state.prodCat ? " tab--active" : ""), "data-action": "products.filter", "data-id": c.key }, c.label);
+      }))
+    ]));
+    if (state.view === "loading") {
+      var loading = h("div", { "class": "product-grid", "data-module": "product-list", "data-state": "loading" });
+      for (var index = 0; index < 4; index++) loading.appendChild(skeletonRow());
+      page.appendChild(loading);
+      return page;
+    }
+    var list = productItems();
+    if (!liveProducts && state.prodCat !== "all") list = list.filter(function(p) {
+      return p.cat === state.prodCat;
+    });
+    if (state.view === "empty" || list.length === 0) {
+      page.appendChild(EmptyState({ glyph: "\u{1F4E6}", title: "Nothing here yet", desc: "No products in this category. Try another filter." }));
+      return page;
+    }
+    page.appendChild(h("div", { "class": "product-grid", "data-module": "product-list" }, list.map(function(p) {
+      var ci = liveProducts ? 0 : Math.max(0, v.cats.findIndex(function(c) {
+        return c.key === p.cat;
+      }));
+      return ProductCard(p, ci);
+    })));
+    return page;
+  }
+
+  // app-templates/customer-portal/runtime/src/components/commerce/CartRow.js
+  function CartRow(item) {
+    return h("div", { "class": "cart-row", "data-module": "cart-row", "data-visual-id": "cart-row" }, [
+      h(
+        "div",
+        { "class": "cart-row__thumb", style: "background:" + item.tint },
+        h("div", { "class": "cart-row__thumb-inner" }, h("i", { style: "background:" + item.dot }))
+      ),
+      h("div", { "class": "cart-row__body" }, [
+        h("div", { style: "font-weight:700;font-size:14.5px", "data-bind": "product.name" }, item.name),
+        h("div", { style: "font-size:13px;color:var(--ink-2)" }, item.price + " each")
+      ]),
+      h("div", { "class": "qty" }, [
+        h("button", { "class": "qty__btn qty__btn--minus", "data-action": "cart.dec", "data-id": item.name, "aria-label": "Decrease" }, "\u2212"),
+        h("div", { "class": "qty__val", "data-bind": "cart.qty" }, String(item.qty)),
+        h("button", { "class": "qty__btn qty__btn--plus", "data-action": "cart.inc", "data-id": item.name, "aria-label": "Increase" }, "+")
+      ]),
+      h("div", { "class": "cart-row__total" }, money2(item.priceNum * item.qty)),
+      h("button", { "class": "cart-remove", "data-action": "cart.removeItem", "data-id": item.name }, "Remove")
+    ]);
+  }
+
+  // app-templates/customer-portal/runtime/src/components/commerce/AddressCard.js
+  function AddressCard(a) {
+    var sel = state.addrId === a.id;
+    return h("div", { "class": "select-card" + (sel ? " select-card--active" : ""), "data-module": "address-card", "data-visual-id": "address-card", "data-action": "checkout.pickAddress", "data-id": a.id, "data-state": sel ? "selected" : void 0 }, [
+      h("div", { "class": "select-card__icon", style: "background:" + a.iconBg }, h("i", { style: "background:" + a.dot })),
+      h("div", { style: "flex:1" }, [
+        h("div", { style: "font-weight:600;font-size:14px", "data-bind": "address.label" }, a.label),
+        h("div", { style: "font-size:12.5px;color:var(--ink-2)" }, a.line + " \xB7 " + a.city)
+      ]),
+      sel ? h("span", { "class": "select-card__check" }, "\u2713") : null
+    ]);
+  }
+
+  // app-templates/customer-portal/runtime/src/components/commerce/PaymentMethodCard.js
+  function PaymentCard(c) {
+    var sel = state.payId === c.id;
+    return h("div", { "class": "select-card" + (sel ? " select-card--active" : ""), "data-module": "payment-method-card", "data-visual-id": "payment-method-card", "data-action": "checkout.pickPayment", "data-id": c.id, "data-state": sel ? "selected" : void 0 }, [
+      h("div", { "class": "card-chip" }),
+      h("div", { style: "flex:1" }, [
+        h("div", { style: "font-weight:600;font-size:14px", "data-bind": "card.brand,card.last4" }, c.brand + " \xB7\xB7\xB7\xB7 " + c.last4),
+        h("div", { style: "font-size:12.5px;color:var(--ink-2)" }, "Expires " + c.exp)
+      ]),
+      sel ? h("span", { "class": "select-card__check" }, "\u2713") : null
+    ]);
+  }
+
+  // app-templates/customer-portal/runtime/src/routes/CheckoutPage.js
+  function Checkout() {
+    var fixture = currentFixture();
+    var theme = currentTheme();
+    var page = h("section", { "class": "page", "data-route": "checkout", "data-visual-id": "checkout" });
+    page.appendChild(h("div", { "class": "section-head" }, [
+      h("div", { "class": "section-head__title" }, "Checkout"),
+      h("div", { "class": "section-head__sub" }, "Review your items, delivery and payment.")
+    ]));
+    var emptyCopy = theme.checkout || {};
+    if (state.cartItems.length === 0 || state.view === "empty") {
+      page.appendChild(h("div", { "class": "empty-cart", "data-module": "empty-state", "data-state": "empty", "data-visual-id": "empty-cart" }, [
+        h("div", { "class": "empty-cart__glyph" }, "\u{1F6D2}"),
+        h("div", { style: "font-weight:700;font-size:18px" }, emptyCopy.emptyCart || "Your cart is empty"),
+        h("div", { style: "font-size:14px;color:var(--ink-2);margin:6px 0 20px" }, emptyCopy.emptyCartDescription || "Browse Calm Harbor ritual products and add them to your order."),
+        ActionButton({ variant: "btn--primary", label: "Browse products", action: "nav.go", id: "products", lg: true, visualId: "browse-products" })
+      ]));
+      return page;
+    }
+    var subtotal = state.cartItems.reduce(function(a, x) {
+      return a + x.priceNum * x.qty;
+    }, 0);
+    var tax = Math.round(subtotal * 0.0825);
+    var grid = h("div", { "class": "checkout-grid" });
+    var left = h("div", { style: "display:flex;flex-direction:column;gap:16px" });
+    var cartCard = h("div", { "class": "cart-card", "data-module": "cart-list", "data-visual-id": "cart-list" }, [h("div", { "class": "panel__title", style: "font-size:16px;padding:14px 0 4px" }, "Your cart")]);
+    state.cartItems.forEach(function(it) {
+      cartCard.appendChild(CartRow(it));
+    });
+    left.appendChild(cartCard);
+    var addrPanel = h("div", { "class": "checkout-panel" }, [
+      h("div", { "class": "panel__title", style: "font-size:16px;margin-bottom:13px" }, "Delivery address"),
+      h("div", { style: "display:flex;flex-direction:column;gap:10px" }, fixture.addresses.map(AddressCard))
+    ]);
+    left.appendChild(addrPanel);
+    var payPanel = h("div", { "class": "checkout-panel" }, [
+      h("div", { "class": "panel__title", style: "font-size:16px;margin-bottom:13px" }, "Payment"),
+      h("div", { style: "display:flex;flex-direction:column;gap:10px" }, fixture.cards.map(PaymentCard))
+    ]);
+    left.appendChild(payPanel);
+    var summary = h("div", { "class": "checkout-panel checkout-summary", "data-module": "checkout-summary", "data-visual-id": "checkout-summary" }, [
+      h("div", { "class": "panel__title", style: "font-size:16px;margin-bottom:16px" }, "Order summary"),
+      h("div", { "class": "summary-row" }, [h("span", null, "Subtotal"), h("b", null, money2(subtotal))]),
+      h("div", { "class": "summary-row" }, [h("span", null, "Delivery"), h("b", { style: "color:var(--ok)" }, "Free")]),
+      h("div", { "class": "summary-row" }, [h("span", null, "Est. tax"), h("b", null, money2(tax))]),
+      h("div", { "class": "summary-total" }, [h("span", null, "Total"), h("span", null, money2(subtotal + tax))]),
+      ActionButton({ variant: "btn--primary", label: "Place order", action: "checkout.placeOrder", block: true, lg: true, visualId: "place-order" }),
+      h("div", { "class": "summary-note" }, theme.checkoutNote || "Orders are prepared by Calm Harbor and sent to your saved delivery address.")
+    ]);
+    grid.appendChild(left);
+    grid.appendChild(summary);
+    page.appendChild(grid);
+    return page;
+  }
+
+  // app-templates/customer-portal/runtime/src/adapters/xweather-adapter.js
+  var HOST = "https://data.api.xweather.com";
+  function createXweatherAdapter(options2) {
+    var clientId = options2 && options2.clientId || "";
+    var clientSecret = options2 && options2.clientSecret || "";
+    var fetchImpl = options2 && options2.fetch || (typeof fetch === "function" ? fetch : null);
+    return {
+      opened: function() {
+        return !!(clientId && clientSecret && fetchImpl);
+      },
+      dailyForecast: function(lat, lon, days) {
+        if (!this.opened()) return Promise.reject(new Error("Xweather adapter is not opened"));
+        if (!Number.isFinite(lat) || !Number.isFinite(lon)) return Promise.reject(new Error("A forecast needs a finite coordinate"));
+        var url = HOST + "/forecasts/" + encodeURIComponent(lat + "," + lon) + "?filter=day&limit=" + encodeURIComponent(String(days)) + "&client_id=" + encodeURIComponent(clientId) + "&client_secret=" + encodeURIComponent(clientSecret);
+        return fetchImpl(url, { credentials: "omit", mode: "cors" }).then(function(response) {
+          if (!response.ok) throw new Error("Xweather HTTP " + response.status);
+          return response.json();
+        }).then(function(payload) {
+          if (!payload || payload.success !== true) {
+            throw new Error("Xweather error: " + (payload && payload.error && payload.error.description || "unknown"));
+          }
+          var periods = payload.response && payload.response[0] && payload.response[0].periods;
+          if (!Array.isArray(periods) || !periods.length) throw new Error("Xweather returned no forecast periods");
+          return periods;
+        });
+      }
+    };
+  }
+
+  // app-templates/customer-portal/runtime/src/live-weather.js
+  var FRAME_COUNT = 7;
+  function liveWeatherOpened(config) {
+    return !!(config && config.weatherClientId && config.weatherClientSecret);
+  }
+  function weatherSource(config, fixtureWeather) {
+    var geography = config && config.serviceGeography;
+    if (geography) return { zoneCentroids: geography.zones, legend: WEATHER_LEGEND };
+    if (config && config.dataMode === "live") return null;
+    return fixtureWeather || null;
+  }
+  function loadLiveWeather(fixtureWeather, config, adapter2) {
+    if (!liveWeatherOpened(config)) return Promise.resolve(null);
+    var source = weatherSource(config, fixtureWeather);
+    var centroids = source && source.zoneCentroids || null;
+    if (!centroids) return Promise.resolve(null);
+    var zoneOrder = /* @__PURE__ */ Object.keys(centroids);
+    if (!zoneOrder.length) return Promise.resolve(null);
+    var client = adapter2 || createXweatherAdapter({
+      clientId: config.weatherClientId,
+      clientSecret: config.weatherClientSecret
+    });
+    if (!client.opened()) return Promise.resolve(null);
+    state.liveWeatherState = "loading";
+    return Promise.all(zoneOrder.map(function(zone) {
+      return client.dailyForecast(centroids[zone].lat, centroids[zone].lon, FRAME_COUNT);
+    })).then(function(results) {
+      var zonePeriods = {};
+      zoneOrder.forEach(function(zone, index) {
+        zonePeriods[zone] = results[index];
+      });
+      var timeline = buildTimeline(zonePeriods, zoneOrder);
+      state.liveWeather = {
+        nowIndex: 0,
+        legend: source.legend || WEATHER_LEGEND,
+        zoneCentroids: centroids,
+        timeline,
+        source: "xweather"
+      };
+      state.liveWeatherState = "ready";
+      return state.liveWeather;
+    }).catch(function(error2) {
+      state.liveWeather = null;
+      state.liveWeatherState = "failed";
+      console.warn("[portal] live weather unavailable, staying on fixture data", error2);
+      return null;
+    });
+  }
+  function createPropertyForecasts(options2) {
+    var adapter2 = options2.adapter;
+    var onChange = options2.onChange;
+    var entries = /* @__PURE__ */ new Map();
+    return {
+      request: function(id, point) {
+        if (entries.has(id)) return entries.get(id);
+        if (!point || !adapter2.opened()) return null;
+        entries.set(id, { state: "loading", days: [] });
+        adapter2.dailyForecast(point.lat, point.lon, FRAME_COUNT).then(function(periods) {
+          return { state: "ready", days: periods.map(forecastDay) };
+        }).catch(function(error2) {
+          console.warn("[portal] property forecast unavailable, showing the area forecast", error2 && error2.message);
+          return { state: "failed", days: [] };
+        }).then(function(entry2) {
+          entries.set(id, entry2);
+          onChange();
+        });
+        return entries.get(id);
+      }
+    };
+  }
+
+  // app-templates/customer-portal/runtime/src/components/shell/Destinations.js
+  function SupportContactButton(props) {
+    if (isSpa()) return ActionButton(Object.assign({ label: "Contact support", action: "support.email" }, props));
+    if (!configuredExternalUrl(state.config, "supportUrl")) return null;
+    return ActionButton(Object.assign({ label: "Contact support", action: "support.open" }, props));
+  }
+  function LandingReturnButton(props) {
+    if (isSpa()) return ActionButton(Object.assign({ label: "Back to the catalog", action: "nav.landing" }, props));
+    if (!configuredExternalUrl(state.config, "landingUrl")) return null;
+    return ActionButton(Object.assign({ label: "Back to our website", action: "nav.landing" }, props));
+  }
+  function GateGlyph(glyph3) {
+    if (isSpa()) return h("div", { "class": "oidc-glyph" }, glyph3);
+    return h("div", { "class": "oidc-glyph", "data-tone": "neutral", style: "background:rgba(var(--accent-rgb),.12);color:var(--accent)" }, glyph3);
+  }
+
+  // app-templates/customer-portal/runtime/src/components/primitives/RouteStates.js
+  function UnauthorizedState(props) {
+    props = props || {};
+    return h("div", { "class": "state-block", "data-module": "unauthorized-state", "data-visual-id": "unauthorized-state", "data-state": "unauthorized" }, [
+      h("div", { "class": "state-block__glyph" }, "\u26BF"),
+      h("div", { "class": "state-block__title" }, "You don\u2019t have access to this page"),
+      h("div", { "class": "state-block__desc" }, "Your account doesn\u2019t include access to " + (props.scope || "this area") + ". If that seems wrong, we can sort it out."),
+      h("div", { style: "display:flex;gap:10px;justify-content:center;flex-wrap:wrap" }, [
+        SupportContactButton({ variant: "btn--primary", visualId: "unauthorized-support" }),
+        ActionButton({ variant: "btn--ghost", label: "Go back", action: "nav.go", id: props.backRoute || "orders.list", visualId: "unauthorized-back" })
+      ])
+    ]);
+  }
+  function NotFoundState(props) {
+    props = props || {};
+    return h("div", { "class": "state-block", "data-module": "not-found-state", "data-visual-id": "not-found-state", "data-state": "not-found" }, [
+      h("div", { "class": "state-block__glyph" }, "\u2205"),
+      h("div", { "class": "state-block__title" }, "We can\u2019t find that " + (props.noun || "page")),
+      h("div", { "class": "state-block__desc" }, "It may have been removed or the link may be out of date. Everything you can open is on your " + (props.backLabel || "overview") + " page."),
+      ActionButton({ variant: "btn--primary", label: "Back to " + (props.backLabel || "overview"), action: "nav.go", id: props.backRoute || "orders.list", visualId: "not-found-back" })
+    ]);
+  }
+  function InlineFailure(props) {
+    props = props || {};
+    return h("div", { "class": "inline-fail", "data-module": "command-failure", "data-visual-id": "command-failure", "data-state": "failed", role: "alert" }, [
+      h("span", { "class": "inline-fail__icon" }, "!"),
+      h("div", { style: "flex:1;font-size:13px;line-height:1.45;min-width:0" }, props.msg || "That didn\u2019t go through \u2014 nothing was changed."),
+      props.retryAction ? ActionButton({ variant: "btn--ghost", label: props.retryLabel || "Try again", action: props.retryAction, id: props.retryId, visualId: "command-retry" }) : null
+    ]);
+  }
+  function skel(style) {
+    return h("div", { "class": "skeleton", style });
+  }
+
+  // app-templates/customer-portal/runtime/src/adapters/google-maps-adapter.js
+  var SCRIPT_URL = "https://maps.googleapis.com/maps/api/js";
+  var LIBRARIES = ["core", "maps", "geocoding"];
+  var READY_CALLBACK = "__portalGoogleMapsReady";
+  var GEOCODE_PREFIX = "portal.geocode:";
+  var SUGGESTION_LIMIT = 5;
+  var SUGGESTION_TYPES = ["street_address", "premise", "subpremise", "route"];
+  var QUIET_MAP_STYLES = /* @__PURE__ */ Object.freeze([
+    /* @__PURE__ */ Object.freeze({ featureType: "poi", elementType: "labels", stylers: /* @__PURE__ */ Object.freeze([/* @__PURE__ */ Object.freeze({ visibility: "off" })]) }),
+    /* @__PURE__ */ Object.freeze({ featureType: "transit", elementType: "labels", stylers: /* @__PURE__ */ Object.freeze([/* @__PURE__ */ Object.freeze({ visibility: "off" })]) })
+  ]);
+  function createGoogleMapsAdapter(options2) {
+    var apiKey = options2 && options2.apiKey || "";
+    var scope = options2 && options2.scope || globalThis;
+    var failureListeners = [];
+    var loading = null;
+    var maps = null;
+    function fail3(error2) {
+      failureListeners.slice().forEach(function(listener) {
+        listener(error2);
+      });
+    }
+    return {
+      opened: function() {
+        return !!apiKey;
+      },
+      onFailure: function(listener) {
+        failureListeners.push(listener);
+      },
+      load: function() {
+        if (loading) return loading;
+        if (!apiKey) {
+          loading = Promise.reject(new Error("Google Maps adapter is not opened"));
+          return loading;
+        }
+        loading = scriptNamespace(scope, apiKey, fail3).then(function(namespace) {
+          return importLibraries(namespace, scope);
+        }).then(function(loaded) {
+          maps = loaded;
+          return loaded;
+        });
+        return loading;
+      },
+      suggestAddresses: function(query, options3) {
+        var within = options3 && options3.within;
+        return this.load().then(function(loaded) {
+          return typeof loaded.importLibrary === "function" ? loaded.importLibrary("places") : loaded.places;
+        }).then(function(places) {
+          var finder2 = places && places.AutocompleteSuggestion;
+          if (!finder2 || typeof finder2.fetchAutocompleteSuggestions !== "function") return [];
+          var request = { input: query, includedPrimaryTypes: SUGGESTION_TYPES };
+          if (within) request.locationRestriction = within;
+          return Promise.resolve(finder2.fetchAutocompleteSuggestions(request)).then(function(response) {
+            return (response && response.suggestions || []).map(function(suggestion) {
+              var prediction = suggestion && suggestion.placePrediction;
+              var label = prediction && prediction.text ? String(prediction.text) : "";
+              return {
+                label,
+                address: function() {
+                  return formattedAddress(prediction, label);
+                },
+                place: function() {
+                  return locatedPlace(prediction, label);
+                }
+              };
+            }).filter(function(item) {
+              return item.label;
+            }).slice(0, SUGGESTION_LIMIT);
+          });
+        });
+      },
+      geocode: function(address) {
+        if (!maps || typeof maps.Geocoder !== "function") return Promise.reject(new Error("Google Maps is not loaded"));
+        return new Promise(function(resolve, reject) {
+          new maps.Geocoder().geocode({ address }, function(results, status) {
+            var location = status === "OK" && results && results[0] && results[0].geometry && results[0].geometry.location;
+            if (!location || typeof location.lat !== "function" || typeof location.lng !== "function") {
+              var failure2 = new Error("Geocoder answered " + status);
+              failure2.status = status;
+              reject(failure2);
+              return;
+            }
+            resolve({ lat: location.lat(), lon: location.lng() });
+          });
+        });
+      }
+    };
+  }
+  function createGeocodeCache(storage) {
+    return {
+      read: function(key) {
+        if (!key || !storage) return null;
+        try {
+          var raw = storage.getItem(GEOCODE_PREFIX + key);
+          return raw ? JSON.parse(raw) : null;
+        } catch (_) {
+          return null;
+        }
+      },
+      write: function(key, point) {
+        if (!key || !point || !storage) return false;
+        try {
+          storage.setItem(GEOCODE_PREFIX + key, JSON.stringify({ lat: point.lat, lon: point.lon }));
+          return true;
+        } catch (_) {
+          return false;
+        }
+      }
+    };
+  }
+  function browserStorage() {
+    try {
+      return globalThis.localStorage || null;
+    } catch (_) {
+      return null;
+    }
+  }
+  function formattedAddress(prediction, label) {
+    var place = prediction && typeof prediction.toPlace === "function" ? prediction.toPlace() : null;
+    if (!place || typeof place.fetchFields !== "function") return Promise.resolve(label);
+    return Promise.resolve(place.fetchFields({ fields: ["formattedAddress"] })).then(function() {
+      return String(place.formattedAddress || label);
+    }, function() {
+      return label;
+    });
+  }
+  function locatedPlace(prediction, label) {
+    var place = prediction && typeof prediction.toPlace === "function" ? prediction.toPlace() : null;
+    if (!place || typeof place.fetchFields !== "function") return Promise.resolve({ address: label, point: null });
+    return Promise.resolve(place.fetchFields({ fields: ["formattedAddress", "location"] })).then(function() {
+      return { address: String(place.formattedAddress || label), point: placePoint(place.location) };
+    }, function() {
+      return { address: label, point: null };
+    });
+  }
+  function placePoint(location) {
+    if (!location) return null;
+    var lat = typeof location.lat === "function" ? location.lat() : location.lat;
+    var lon = typeof location.lng === "function" ? location.lng() : location.lng;
+    return typeof lat === "number" && typeof lon === "number" && isFinite(lat) && isFinite(lon) && Math.abs(lat) <= 90 && Math.abs(lon) <= 180 ? { lat, lon } : null;
+  }
+  function scriptNamespace(scope, apiKey, fail3) {
+    var present = scope.google && scope.google.maps;
+    if (present && (typeof present.importLibrary === "function" || typeof present.Map === "function")) {
+      return Promise.resolve(present);
+    }
+    return new Promise(function(resolve, reject) {
+      var settled2 = false;
+      function ready() {
+        var loaded = scope.google && scope.google.maps;
+        if (settled2 || !loaded || typeof loaded.importLibrary !== "function" && typeof loaded.Map !== "function") return false;
+        settled2 = true;
+        resolve(loaded);
+        return true;
+      }
+      var previous = scope.gm_authFailure;
+      scope.gm_authFailure = function() {
+        var error2 = new Error("Google Maps rejected the browser key");
+        settled2 = true;
+        reject(error2);
+        fail3(error2);
+        if (typeof previous === "function") previous();
+      };
+      scope[READY_CALLBACK] = ready;
+      var script = scope.document.createElement("script");
+      script.async = true;
+      script.src = SCRIPT_URL + "?key=" + encodeURIComponent(apiKey) + "&loading=async&v=weekly&callback=" + READY_CALLBACK;
+      script.addEventListener("error", function() {
+        settled2 = true;
+        reject(new Error("The Google Maps script did not load"));
+      });
+      script.addEventListener("load", function() {
+        if (ready()) return;
+        if (!(scope.google && scope.google.maps)) {
+          settled2 = true;
+          reject(new Error("The Google Maps script loaded without google.maps"));
+        }
+      });
+      scope.document.head.appendChild(script);
+    });
+  }
+  function importLibraries(maps, scope) {
+    if (typeof maps.importLibrary !== "function") return maps;
+    return Promise.all(LIBRARIES.map(function(name) {
+      return maps.importLibrary(name);
+    })).then(function(libraries) {
+      var current = scope && scope.google && scope.google.maps || maps;
+      if (typeof current.Map === "function") return current;
+      return libraries.reduce(function(merged, library) {
+        return Object.assign(merged, library);
+      }, Object.assign({}, current));
+    });
+  }
+
+  // app-templates/customer-portal/runtime/src/components/storm/PropertyMap.js
+  var SINGLE_PIN_ZOOM = 14;
+  var FIT_PADDING = 56;
+  var PIN_CARD_ID = "property-pin-card";
+  var FOCUS_ACTIONS = ["overview.selectProperty", "overview.closeProperty", "overview.openProperty"];
+  var PLACEMENT_NOTES = {
+    locating: "Finding it on the map\u2026",
+    "not-found": "Address not found on the map",
+    "no-address": "No address on file"
+  };
+  var listScroll = {};
+  function createPropertyMap(options2) {
+    var adapter2 = options2.adapter;
+    var cache = options2.cache;
+    var dispatch = options2.dispatch;
+    var onChange = options2.onChange;
+    var mapId = options2.mapId || "";
+    var status = "idle";
+    var maps = null;
+    var map = null;
+    var layer = null;
+    var canvas = null;
+    var mount2 = null;
+    var statusLabel = null;
+    var pinsHost = null;
+    var popupHost = null;
+    var cardHost = null;
+    var carded = null;
+    var view = null;
+    var fitted = null;
+    var narrow = false;
+    var located = /* @__PURE__ */ new Map();
+    var failed = /* @__PURE__ */ new Set();
+    var requested = /* @__PURE__ */ new Set();
+    var queue = [];
+    var geocoding = false;
+    return {
+      status: function() {
+        return status;
+      },
+      docked: function() {
+        return narrow;
+      },
+      placement,
+      pointOf: function(property) {
+        return placement(property).point;
+      },
+      stage
+    };
+    function stage(next) {
+      if (!canvas) build();
+      if (status === "idle") start(next.viewport);
+      hideCard();
+      view = next;
+      canvas.setAttribute("data-state", status);
+      canvas.setAttribute("data-pins", String(next.pins.length));
+      canvas.setAttribute("data-locating", next.locating ? "true" : "false");
+      statusLabel.textContent = statusText(next);
+      pinsHost.replaceChildren.apply(pinsHost, next.pins.map(function(pin) {
+        return pin.element;
+      }));
+      popupHost.replaceChildren.apply(popupHost, next.popup && !narrow ? [next.popup.element] : []);
+      next.pins.forEach(function(pin) {
+        if (pin.card) bindCard(pin);
+      });
+      draw();
+      Promise.resolve().then(settle5);
+      return canvas;
+    }
+    function statusText(next) {
+      if (status !== "ready") return "Loading map\u2026";
+      if (next.pins.length) return "";
+      if (next.locating) return next.locatingText || "Finding your properties on the map\u2026";
+      return "None of your properties could be placed on the map";
+    }
+    function settle5() {
+      fit(view.pins);
+      draw();
+    }
+    function build() {
+      mount2 = h("div", { "class": "ov-map__google" });
+      statusLabel = h("span", { "class": "ov-map__status-label" }, "Loading map\u2026");
+      canvas = h("div", { "class": "ov-map__canvas", "data-surface": "google" }, [
+        mount2,
+        h("div", { "class": "ov-map__status", role: "status" }, [statusLabel])
+      ]);
+      pinsHost = h("div", { "class": "ov-map__pins" });
+      popupHost = h("div", { "class": "ov-map__popup" });
+      cardHost = h("div", { "class": "ov-map__hover" });
+      pinsHost.addEventListener("click", relay);
+      popupHost.addEventListener("click", relay);
+      new ResizeObserver(resized).observe(canvas);
+    }
+    function resized(entries) {
+      var width = entries[entries.length - 1].contentRect.width;
+      if (!width || popupDocks(width) === narrow) return;
+      narrow = !narrow;
+      if (view && view.popup) onChange();
+    }
+    function bindCard(pin) {
+      var element = pin.element;
+      if (pin.tapCard) {
+        element.addEventListener("click", function(event) {
+          if (event.pointerType !== "touch") return;
+          if (carded === pin) hideCard();
+          else showCard(pin);
+        });
+      }
+      element.addEventListener("pointerenter", function(event) {
+        if (event.pointerType !== "touch") showCard(pin);
+      });
+      element.addEventListener("pointerleave", function() {
+        if (carded === pin) hideCard();
+      });
+      element.addEventListener("focus", function() {
+        if (keyboardFocus(element)) showCard(pin);
+      });
+      element.addEventListener("blur", function() {
+        if (carded === pin) hideCard();
+      });
+      element.addEventListener("keydown", function(event) {
+        if (event.key === "Escape" && carded === pin) hideCard();
+      });
+    }
+    function showCard(pin) {
+      if (!view || view.popup || carded === pin) return;
+      hideCard();
+      carded = pin;
+      pin.element.setAttribute("aria-describedby", PIN_CARD_ID);
+      cardHost.replaceChildren(pin.card);
+      var projection = layer ? layer.getProjection() : null;
+      if (projection) place(projection, pin.point, pin.card);
+    }
+    function hideCard() {
+      if (!carded) return;
+      carded.element.removeAttribute("aria-describedby");
+      carded = null;
+      cardHost.replaceChildren();
+    }
+    function relay(event) {
+      var host = event.currentTarget;
+      var target = event.target && typeof event.target.closest === "function" ? event.target.closest("[data-action]") : null;
+      if (!target || !host.contains(target)) return;
+      event.stopPropagation();
+      dispatch(target.getAttribute("data-action"), target.getAttribute("data-id"));
+    }
+    function start(viewport) {
+      status = "loading";
+      adapter2.onFailure(fail3);
+      adapter2.load().then(function(loaded) {
+        if (status === "failed") return;
+        maps = loaded;
+        map = new maps.Map(mount2, mapOptions(viewport, mapId));
+        layer = pinLayer();
+        layer.setMap(map);
+        status = "ready";
+        drain();
+        onChange();
+      }).catch(fail3);
+    }
+    function fail3(error2) {
+      if (status === "failed") return;
+      status = "failed";
+      console.warn("[portal] Google map unavailable, listing the properties instead", error2 && error2.message);
+      onChange();
+    }
+    function pinLayer() {
+      var overlay = new maps.OverlayView();
+      overlay.onAdd = function() {
+        var panes = overlay.getPanes();
+        panes.overlayMouseTarget.appendChild(pinsHost);
+        panes.floatPane.appendChild(popupHost);
+        panes.floatPane.appendChild(cardHost);
+        if (typeof maps.OverlayView.preventMapHitsAndGesturesFrom === "function") {
+          maps.OverlayView.preventMapHitsAndGesturesFrom(pinsHost);
+          maps.OverlayView.preventMapHitsAndGesturesFrom(popupHost);
+        }
+      };
+      overlay.draw = draw;
+      overlay.onRemove = function() {
+        pinsHost.remove();
+        popupHost.remove();
+        cardHost.remove();
+      };
+      return overlay;
+    }
+    function draw() {
+      var projection = layer ? layer.getProjection() : null;
+      if (!projection || !view) return;
+      view.pins.forEach(function(pin) {
+        var at = projection.fromLatLngToDivPixel(latLng(pin.point));
+        if (!at) return;
+        pin.element.style.left = at.x + "px";
+        pin.element.style.top = at.y + "px";
+      });
+      if (view.popup && !narrow) place(projection, view.popup.point, view.popup.element);
+      if (carded) place(projection, carded.point, carded.card);
+    }
+    function place(projection, point, element) {
+      var anchor = latLng(point);
+      var at = projection.fromLatLngToDivPixel(anchor);
+      var box = projection.fromLatLngToContainerPixel(anchor);
+      if (!at || !box) return;
+      var spot = popupPlacement(
+        box,
+        { width: canvas.offsetWidth, height: canvas.offsetHeight },
+        { width: element.offsetWidth, height: element.offsetHeight }
+      );
+      element.style.left = at.x + spot.left - box.x + "px";
+      element.style.top = at.y + spot.top - box.y + "px";
+      element.setAttribute("data-place", spot.side);
+    }
+    function fit(pins) {
+      if (!map) return;
+      var signature = pins.map(function(pin) {
+        return pin.id + "@" + pin.point.lat + "," + pin.point.lon;
+      }).join("|");
+      if (signature === fitted) return;
+      fitted = signature;
+      if (!pins.length) return;
+      if (pins.length === 1) {
+        map.setCenter(latLng(pins[0].point));
+        map.setZoom(SINGLE_PIN_ZOOM);
+        return;
+      }
+      var bounds = new maps.LatLngBounds();
+      pins.forEach(function(pin) {
+        bounds.extend(latLng(pin.point));
+      });
+      map.fitBounds(bounds, FIT_PADDING);
+    }
+    function latLng(point) {
+      return new maps.LatLng(point.lat, point.lon);
+    }
+    function placement(property) {
+      var known = knownPlacement(property, null);
+      if (known.reason !== "unplaced") return known;
+      var key = addressKey(property.address);
+      if (located.has(key)) return { point: located.get(key), reason: "located" };
+      if (failed.has(key)) return { point: null, reason: "not-found" };
+      if (requested.has(key)) return { point: null, reason: "locating" };
+      var cached = cache.read(key);
+      var point = cached ? geoPoint(cached.lat, cached.lon) : null;
+      if (point) {
+        located.set(key, point);
+        return { point, reason: "located" };
+      }
+      requested.add(key);
+      queue.push({ key, address: property.address });
+      drain();
+      return { point: null, reason: "locating" };
+    }
+    function drain() {
+      if (geocoding || status !== "ready" || !queue.length) return;
+      geocoding = true;
+      var next = queue.shift();
+      adapter2.geocode(next.address).then(function(found) {
+        var point = geoPoint(found.lat, found.lon);
+        if (!point) throw new Error("Geocoder answered without a usable point");
+        located.set(next.key, point);
+        cache.write(next.key, point);
+      }).catch(function(error2) {
+        failed.add(next.key);
+        console.warn("[portal] a property could not be placed on the map", error2 && error2.message);
+      }).then(function() {
+        geocoding = false;
+        onChange();
+        drain();
+      });
+    }
+  }
+  function knownPlacement(property, cache) {
+    var direct = propertyPoint(property);
+    if (direct) return { point: direct, reason: "stored" };
+    var key = addressKey(property && property.address);
+    if (!key) return { point: null, reason: "no-address" };
+    var cached = cache ? cache.read(key) : null;
+    var point = cached ? geoPoint(cached.lat, cached.lon) : null;
+    return point ? { point, reason: "located" } : { point: null, reason: "unplaced" };
+  }
+  function PropertyStage(props) {
+    var view = arrange(props);
+    var chosen = view.chosen;
+    if (!view.map) {
+      return h("div", { "class": "ov-map__stage", "data-surface": "list", "data-state": view.failed ? "failed" : void 0 }, [
+        view.failed ? h("div", { "class": "ov-map__note", "data-module": "map-unavailable", "data-visual-id": "map-unavailable", role: "status" }, "The map couldn\u2019t load, so your properties are listed instead.") : null,
+        PropertyList("all", view.entries, props, chosen ? popupFor(chosen, props) : null)
+      ]);
+    }
+    var popup = view.pinned ? popupFor(chosen, props) : null;
+    return h("div", { "class": "ov-map__stage", "data-surface": "google" }, [
+      view.map.stage({
+        viewport: props.viewport,
+        pins: view.placed.map(function(entry2) {
+          return {
+            id: entry2.property.id,
+            point: entry2.point,
+            element: PropertyPin(entry2.property, props.frame, entry2 === chosen, props.sources, props.direct),
+            card: PinCard(entry2.property.name, propertyLine(entry2.property), knownPropertyStatus(entry2.property, props.sources))
+          };
+        }),
+        popup: popup ? { point: chosen.point, element: popup } : null,
+        locating: view.entries.some(function(entry2) {
+          return entry2.reason === "locating";
+        })
+      }),
+      popup && view.map.docked() ? dock(popup) : null
+    ]);
+  }
+  function PropertyIndex(props) {
+    var view = arrange(props);
+    if (!view.map || !view.entries.length) return null;
+    return PropertyList("index", view.entries, props, view.chosen && !view.pinned ? popupFor(view.chosen, props) : null);
+  }
+  function arrange(props) {
+    var controller2 = props.map || null;
+    var failed = !!controller2 && controller2.status() === "failed";
+    var map = controller2 && props.viewport && !failed ? controller2 : null;
+    var entries = props.properties.map(function(property) {
+      var spot = controller2 ? controller2.placement(property) : { point: propertyPoint(property), reason: null };
+      return { property, point: spot.point, reason: map ? spot.reason : null };
+    });
+    var placed = map ? entries.filter(function(entry2) {
+      return !!entry2.point;
+    }) : [];
+    var chosen = props.direct ? null : entries.find(function(entry2) {
+      return entry2.property.id === props.selectedId;
+    }) || null;
+    return { failed, map, entries, placed, chosen, pinned: !!chosen && placed.indexOf(chosen) !== -1 };
+  }
+  function popupFor(entry2, props) {
+    return PropertyPopup(entry2.property, props.frame ? popupView(entry2, props) : null, props.weather ? props.weather.legend : null, props.sources);
+  }
+  function keyboardFocus(element) {
+    try {
+      return element.matches(":focus-visible");
+    } catch (error2) {
+      return true;
+    }
+  }
+  function placeEach(map, properties) {
+    return properties.map(function(property) {
+      return property ? map.placement(property) : { point: null, reason: "unknown" };
+    });
+  }
+  function placementNote(reason) {
+    return Object.prototype.hasOwnProperty.call(PLACEMENT_NOTES, reason) ? PLACEMENT_NOTES[reason] : "";
+  }
+  function LocationMap(map, viewport, places, placements, locatingText) {
+    var pins = [];
+    places.forEach(function(place, index) {
+      var point = placements[index].point;
+      if (point) pins.push({ id: place.id, point, element: LocationPin(place), card: PinCard(place.name, place.line), tapCard: !place.action });
+    });
+    return map.stage({
+      viewport,
+      pins,
+      popup: null,
+      locating: placements.some(function(placement) {
+        return placement.reason === "locating";
+      }),
+      locatingText
+    });
+  }
+  function PropertyLocation(props) {
+    var property = props.property;
+    var controller2 = props.map || null;
+    var map = controller2 && props.viewport && controller2.status() !== "failed" ? controller2 : null;
+    var placement = map ? placeEach(map, [property])[0] : null;
+    if (!placement || !placement.point && placement.reason !== "locating") return null;
+    return h("section", {
+      "class": "card ov-map",
+      "data-module": "property-location",
+      "data-visual-id": "property-location",
+      "data-state": placement.point ? "placed" : "locating",
+      "aria-labelledby": "property-location-title"
+    }, [
+      h("div", { "class": "ov-map__head" }, [
+        h("span", { "class": "ov-card__icon" }, [icon("map", "ov-icon")]),
+        h("h2", { "class": "ov-card__title", id: "property-location-title" }, "Location")
+      ]),
+      h("div", { "class": "ov-map__stage", "data-surface": "google" }, [
+        LocationMap(map, props.viewport, [propertyPlace(property)], [placement], "Finding it on the map\u2026")
+      ]),
+      placement.point && props.link ? h("button", { "class": "link-action", type: "button", "data-action": props.link.action, "data-id": props.link.id, "data-visual-id": "property-location-link", style: "margin-top:12px" }, props.link.label + " \u203A") : null
+    ]);
+  }
+  function propertyPlace(property) {
+    return { id: property.id, name: property.name, line: propertyLine(property) };
+  }
+  function placeLine(name, address, note) {
+    return [address && !addressRepeats(name, address) ? address : "", note].filter(Boolean).join(" \xB7 ");
+  }
+  function LocationPin(place) {
+    var label = place.name + " on the map";
+    var attributes = { "class": "ov-pin", "data-module": "location-pin", "data-visual-id": "location-pin", "data-id": place.id, "data-state": place.state || void 0 };
+    if (!place.action) {
+      return h("span", Object.assign(attributes, { role: "img", tabindex: "0", "aria-label": label, style: "cursor:default" }), [icon("pin", "ov-pin__glyph")]);
+    }
+    return h("button", Object.assign(attributes, { type: "button", "data-action": place.action, "aria-label": place.actionLabel || label }), [icon("pin", "ov-pin__glyph")]);
+  }
+  function WeatherAttribution(source, className) {
+    return text3("div", "ov-attr" + (className ? " " + className : ""), source === "xweather" ? "Weather \xB7 Xweather" : "Sample conditions");
+  }
+  function closeOnEscape(target, isOpen2, close) {
+    target.addEventListener("keydown", function(event) {
+      if (event.key !== "Escape" || event.defaultPrevented || !isOpen2()) return;
+      close();
+    });
+  }
+  function createFocusKeeper(doc) {
+    var remembered2 = null;
+    doc.addEventListener("focusin", function(event) {
+      remembered2 = focusIdentity(event.target);
+    }, true);
+    doc.addEventListener("pointerdown", function(event) {
+      remembered2 = focusIdentity(event.target);
+    }, true);
+    return {
+      settle: function(selectedId, previousId) {
+        var target = null;
+        if (selectedId !== previousId) {
+          target = selectedId ? doc.querySelector(".ov-tip__close") : actionElement(doc, "overview.selectProperty", previousId);
+        } else if (remembered2 && (!doc.activeElement || doc.activeElement === doc.body)) {
+          target = actionElement(doc, remembered2.action, remembered2.id);
+        }
+        if (!target) return;
+        var tip = selectedId ? target.closest(".ov-tip") : null;
+        var place = tip ? tip.getAttribute("data-place") : null;
+        if (place === "inline" || place === "dock") tip.scrollIntoView({ block: "nearest" });
+        target.focus({ preventScroll: true });
+        remembered2 = focusIdentity(target);
+      }
+    };
+  }
+  function focusIdentity(element) {
+    var target = element && typeof element.closest === "function" ? element.closest("[data-action]") : null;
+    var action = target ? target.getAttribute("data-action") : null;
+    return FOCUS_ACTIONS.indexOf(action) === -1 ? null : { action, id: target.getAttribute("data-id") };
+  }
+  function actionElement(root, action, id) {
+    var candidates = root.querySelectorAll('[data-action="' + action + '"]');
+    for (var index = 0; index < candidates.length; index += 1) {
+      if (candidates[index].getAttribute("data-id") === id) return candidates[index];
+    }
+    return null;
+  }
+  function mapOptions(viewport, mapId) {
+    var settings = {
+      center: { lat: viewport.center.lat, lng: viewport.center.lon },
+      zoom: viewport.zoom,
+      disableDefaultUI: true,
+      zoomControl: true,
+      clickableIcons: false,
+      gestureHandling: "cooperative"
+    };
+    if (mapId) settings.mapId = mapId;
+    else settings.styles = QUIET_MAP_STYLES;
+    return settings;
+  }
+  function popupView(entry2, props) {
+    var property = entry2.property;
+    var live = props.weather.source === "xweather" && entry2.point && props.forecasts;
+    var forecast = live ? props.forecasts.request(property.id, forecastPoint(entry2.point)) : null;
+    return popupWeather(props.frame, zoneWeather(property, props.frame), props.weather.source, forecast, props.index, props.sources);
+  }
+  function weatherKey(property, frame, status) {
+    if (status) return propertyWeather(property, frame);
+    return frame ? zoneWeather(property, frame) : void 0;
+  }
+  function PropertyPin(property, frame, selected, sources, direct) {
+    var status = knownPropertyStatus(property, sources);
+    return h("button", {
+      "class": "ov-pin" + (status === "enroute" || status === "onsite" ? " ov-pin--active" : "") + (selected ? " ov-pin--on" : ""),
+      "data-action": direct ? "overview.openProperty" : "overview.selectProperty",
+      "data-id": property.id,
+      "data-module": "property-pin",
+      "data-visual-id": "property-pin",
+      "data-state": status || void 0,
+      "data-weather": weatherKey(property, frame, status),
+      "aria-label": status ? property.name + " \u2014 " + OVERVIEW_STATUS[status].label : property.name,
+      "aria-pressed": direct ? void 0 : selected ? "true" : "false"
+    }, [icon("pin", "ov-pin__glyph")]);
+  }
+  function PropertyList(key, entries, props, popup) {
+    if (!entries.length) {
+      return h("div", { "class": "ov-empty", "data-state": "empty" }, [
+        text3("div", "ov-empty__title", "No properties yet"),
+        sourceOpened(props.sources, "contracts") ? text3("div", "ov-empty__desc", "A property appears here once it is under contract.") : null
+      ]);
+    }
+    var list = h(
+      "ul",
+      { "class": "ov-plist", "data-module": "property-list", "data-visual-id": "property-list", "aria-label": "Your properties" },
+      entries.map(function(entry2) {
+        var selected = !props.direct && entry2.property.id === props.selectedId;
+        return h("li", { "class": "ov-plist__item" }, [
+          PropertyRow(entry2.property, props, selected, entry2.reason),
+          selected && popup ? inline(popup) : null
+        ]);
+      })
+    );
+    list.addEventListener("scroll", function() {
+      listScroll[key] = list.scrollTop;
+    });
+    Promise.resolve().then(function() {
+      list.scrollTop = listScroll[key] || 0;
+    });
+    return list;
+  }
+  function PropertyRow(property, props, selected, reason) {
+    var status = knownPropertyStatus(property, props.sources);
+    var note = reason ? placementNote(reason) : "";
+    var line = propertyLine(property);
+    var visit = props.direct && visitsKnown(props.sources) ? visitLine(property) : "";
+    return h("button", {
+      "class": "ov-prow" + (status === "enroute" || status === "onsite" ? " ov-prow--active" : "") + (selected ? " ov-prow--on" : ""),
+      "data-action": props.direct ? "overview.openProperty" : "overview.selectProperty",
+      "data-id": property.id,
+      "data-module": "property-row",
+      "data-visual-id": "property-row",
+      "data-state": status || void 0,
+      "data-weather": weatherKey(property, props.frame, status),
+      "data-placement": note ? reason : void 0,
+      "aria-expanded": props.direct ? void 0 : selected ? "true" : "false"
+    }, [
+      h("span", { "class": "ov-prow__pin" }, [icon("pin", "ov-prow__glyph")]),
+      h("span", { "class": "ov-prow__read" }, [
+        text3("span", "ov-prow__name", property.name),
+        line ? text3("span", "ov-prow__addr", line) : null,
+        visit ? h("span", { "class": "ov-prow__visit", "data-module": "property-visit-line" }, visit) : null,
+        note ? text3("span", "ov-prow__why", note) : null
+      ]),
+      h("span", { "class": "ov-prow__meta" }, [
+        props.frame ? text3("span", "ov-prow__wx", weatherReading(zoneWeather(property, props.frame), props.frame, props.weather.legend)) : null,
+        status ? text3("span", "ov-tip__tag ov-tip__tag--" + status, OVERVIEW_STATUS[status].label) : null
+      ])
+    ]);
+  }
+  function PinCard(name, line, status) {
+    return h("div", { "class": "ov-pincard", id: PIN_CARD_ID, role: "tooltip", "data-module": "property-pin-card", "data-visual-id": "property-pin-card" }, [
+      text3("div", "ov-pincard__name", name),
+      line ? text3("div", "ov-pincard__line", line) : null,
+      status ? h("div", { "class": "ov-pincard__status" }, [text3("span", "ov-tip__tag ov-tip__tag--" + status, OVERVIEW_STATUS[status].label)]) : null
+    ]);
+  }
+  function propertyLine(property) {
+    var address = property.address && !addressRepeats(property.name, property.address) ? property.address : "";
+    return [address].concat(propertyHighlights(property)).filter(Boolean).join(" \xB7 ");
+  }
+  function PropertyPopup(property, weather, legend, sources) {
+    var status = knownPropertyStatus(property, sources);
+    var line = sourceOpened(sources, "appointments") ? visitLine(property) : "";
+    return h("div", { "class": "ov-tip", "data-module": "property-tooltip", "data-visual-id": "property-tooltip", "data-state": status || void 0, role: "dialog", "aria-label": property.name }, [
+      h("div", { "class": "ov-tip__head" }, [
+        h("div", { style: "flex:1;min-width:0" }, [
+          text3("div", "ov-tip__name", property.name),
+          property.address && !addressRepeats(property.name, property.address) ? text3("div", "ov-tip__addr", property.address) : null
+        ]),
+        h("button", { "class": "ov-tip__close", "data-action": "overview.closeProperty", "aria-label": "Close" }, "\u2715")
+      ]),
+      status ? h("div", { "class": "ov-tip__tags" }, [
+        text3("span", "ov-tip__tag ov-tip__tag--" + status, OVERVIEW_STATUS[status].label)
+      ]) : null,
+      line ? text3("div", "ov-tip__line", line) : null,
+      weather ? PopupWeather(weather, legend) : null,
+      h("button", { "class": "link-action ov-tip__link", "data-action": "overview.openProperty", "data-id": property.id, "data-visual-id": "property-details" }, "Go to Property \u203A")
+    ]);
+  }
+  function PopupWeather(view, legend) {
+    var own2 = view.state === "property" || view.state === "loading";
+    var reading = view.state === "loading" ? "Loading forecast\u2026" : (view.phrase || weatherLabel(view.kind, legend)) + " \xB7 " + view.temp;
+    var note = view.state === "failed" ? "This property\u2019s own forecast is unavailable right now." : view.note;
+    return h("div", {
+      "class": "ov-tip__wx",
+      "data-module": "property-weather",
+      "data-visual-id": "property-weather",
+      "data-state": view.state,
+      "data-weather": view.kind,
+      "data-source": view.source,
+      "aria-live": "polite",
+      "aria-busy": view.state === "loading" ? "true" : void 0
+    }, [
+      text3("div", "ov-tip__wx-scope", (own2 ? "This property" : "Area forecast") + " \xB7 " + view.day),
+      h("div", { "class": "ov-tip__wx-read" }, [h("i"), text3("span", "", reading)]),
+      note ? text3("div", "ov-tip__wx-note", note) : null,
+      view.state === "loading" ? h("div", { "class": "ov-tip__wx-note", "aria-hidden": "true" }, "\xA0") : null
+    ]);
+  }
+  function visitLine(property) {
+    var appointment = property.appointment;
+    var active = appointment && appointment.state === "IN_PROGRESS" ? appointment : null;
+    var next = appointment && appointment.state === "SCHEDULED" ? appointment : null;
+    return active ? active.service + " \xB7 " + active.when : next ? next.service + " \xB7 " + next.when : property.lastService && property.lastService.label ? property.lastService.label + " \xB7 " + property.lastService.when : property.lastService ? "Last service \xB7 " + property.lastService.service + " \xB7 " + property.lastService.when : "";
+  }
+  function inline(popup) {
+    popup.setAttribute("data-place", "inline");
+    return popup;
+  }
+  function dock(popup) {
+    popup.setAttribute("data-place", "dock");
+    return popup;
+  }
+  function text3(tag, className, value) {
+    return h(tag, className ? { "class": className } : null, value == null ? "" : String(value));
+  }
+
+  // app-templates/customer-portal/runtime/src/components/proposals/QuotePackage.js
+  var QUOTE_STATUS = /* @__PURE__ */ Object.freeze({
+    approved: /* @__PURE__ */ Object.freeze({ label: "\u2713 Approved", badge: "status-badge--ok", dot: "#34c759" }),
+    revision: /* @__PURE__ */ Object.freeze({ label: "\u27F3 Changes requested", badge: "status-badge--warn", dot: "#ff9f0a" }),
+    declined: /* @__PURE__ */ Object.freeze({ label: "\u2715 Declined", badge: "status-badge--danger", dot: "#ff3b30" }),
+    unseen: /* @__PURE__ */ Object.freeze({ label: "\u25D4 Sent", badge: "status-badge--scheduled", dot: "#8a94a6" }),
+    cancelled: /* @__PURE__ */ Object.freeze({ label: "\u2298 Cancelled", badge: "status-badge--scheduled", dot: "#8a94a6" })
+  });
+  var ORDER_STATE_STATUS = /* @__PURE__ */ Object.freeze({
+    ACTIVE: /* @__PURE__ */ Object.freeze({ label: "\u25CF Active", badge: "status-badge--ok", dot: "#34c759" }),
+    SUSPENDED: /* @__PURE__ */ Object.freeze({ label: "\u2016 Suspended", badge: "status-badge--warn", dot: "#ff9f0a" }),
+    COMPLETED: /* @__PURE__ */ Object.freeze({ label: "\u2713 Completed", badge: "status-badge--scheduled", dot: "#8a94a6" })
+  });
+  function orderStatusMeta(order) {
+    return Object.prototype.hasOwnProperty.call(ORDER_STATE_STATUS, order.stateCode) && ORDER_STATE_STATUS[order.stateCode] || QUOTE_STATUS[order.status];
+  }
+  var DECISION_META = { approved: "approved", declined: "declined", cancelled: "cancelled", revision: "revision", open: "unseen" };
+  var DECISION_LABEL = {
+    approved: "Option approved",
+    declined: "Declined",
+    cancelled: "Cancelled",
+    revision: "Changes requested",
+    open: "Awaiting your decision"
+  };
+  function ContractsHead(quotes, title) {
+    var counts = quotes.counts;
+    var deciding = quotes.deciding && counts.properties > 0;
+    return h("div", { "class": "proposals-head", "data-module": "quote-package-head", "data-visual-id": "quote-package-head", "data-state": deciding ? "deciding" : "settled" }, [
+      h("div", { "class": "proposals-head__read" }, [
+        h("div", { "class": "proposals-head__title-row" }, [
+          h("h1", { "class": "proposals-head__title" }, title || (quotes.pending.length && !quotes.agreements.length ? "Your quotes" : "Your contracts"))
+        ])
+      ]),
+      deciding ? h("span", { "class": "proposals-head__pill" }, counts.decided + " of " + plural(counts.properties, "property", "properties") + " decided") : null
+    ]);
+  }
+  function ContractsSectionTitle(label, count) {
+    return h("h2", { "class": "contracts-section__title" }, [label, count ? h("span", { "class": "contracts-section__count" }, String(count)) : null]);
+  }
+  function AgreementList(rows2) {
+    return h("div", { "class": "site-list agreement-list", "data-module": "agreement-list", "data-visual-id": "agreement-list" }, rows2.map(function(row) {
+      var agreement = row.agreement;
+      var summary = agreementSummary(row);
+      return h("button", {
+        "class": "proposal-card agreement-row",
+        "data-module": "agreement-row",
+        "data-visual-id": "agreement-row",
+        "data-action": "agreement.open",
+        "data-id": row.id,
+        "data-state": agreement.stage,
+        "aria-label": "Open the service agreement " + agreementTitle(row) + " \u2014 " + agreement.label
+      }, [
+        h("span", { "class": "proposal-card__body" }, [
+          h("span", { "class": "proposal-card__name" }, agreementTitle(row)),
+          summary ? h("span", { "class": "proposal-card__meta" }, summary) : null
+        ]),
+        StatusBadge({ variant: "status-badge--" + agreement.tone, label: agreement.label, bind: "agreement.stateLabel", state: agreement.stage }),
+        h("span", { "class": "proposal-card__chev", "aria-hidden": "true" }, "\u203A")
+      ]);
+    }));
+  }
+  function agreementTitle(row) {
+    var names = row.propertyNames;
+    if (!names.length) return "Service agreement";
+    if (names.length === 1) return names[0];
+    if (names.length === 2) return names[0] + " and " + names[1];
+    return names[0] + " and " + (names.length - 1) + " more";
+  }
+  function agreementSummary(row) {
+    var agreement = row.agreement;
+    var chosen = chosenOrders(row);
+    var facts2 = [];
+    if (chosen.length === 1) facts2.push(optionSummary(chosen[0]));
+    else if (chosen.length > 1) facts2.push(plural(chosen.length, "option", "options") + " approved");
+    var season = agreementSeason(agreement);
+    if (season) facts2.push(season);
+    else if (agreement.effectiveDate) facts2.push("Effective " + formatIsoDate(agreement.effectiveDate));
+    return facts2.filter(Boolean).join(" \xB7 ");
+  }
+  function agreementSeason(agreement) {
+    return agreement && agreement.term ? "Season " + formatDatePeriod(agreement.term) : "";
+  }
+  function QuotesPreparing() {
+    return h("div", { "class": "state-block", "data-module": "quote-preparing", "data-visual-id": "quote-preparing", "data-state": "preparing", role: "status" }, [
+      h("div", { "class": "state-block__glyph quote-preparing__glyph" }, "\u25D4"),
+      h("div", { "class": "state-block__title" }, "We\u2019re preparing your quotes"),
+      h("div", { "class": "state-block__desc" }, "A manager prepares and approves them. They appear here and arrive by email once they\u2019re sent to you.")
+    ]);
+  }
+  function QuotesPreparingNotice() {
+    return h("div", { "class": "alert-banner alert-banner--info quote-preparing", "data-module": "quote-preparing", "data-visual-id": "quote-preparing", "data-state": "preparing", role: "status" }, [
+      h("div", { "class": "alert-banner__icon quote-preparing__glyph" }, "\u25D4"),
+      h("div", { "class": "alert-banner__body" }, [
+        h("div", { "class": "alert-banner__title" }, "We\u2019re still preparing part of your request"),
+        h("div", { "class": "alert-banner__desc" }, "Anything we send you appears in this list.")
+      ])
+    ]);
+  }
+  function PortfolioSchematic(groups, placements) {
+    var positions = schematicPositions(placements.map(function(placement) {
+      return placement.point;
+    }));
+    var placed = positions.filter(Boolean).length;
+    if (!placed) return null;
+    var mappable = groups.filter(function(group) {
+      return !!group.propertyBackendId;
+    }).length;
+    var canvas = h("div", { "class": "portfolio-map__canvas" }, [
+      h("span", { "class": "portfolio-map__label" }, "portfolio map" + (placed < mappable ? " \xB7 " + placed + " of " + plural(mappable, "property", "properties") + " on the map" : ""))
+    ]);
+    groups.forEach(function(group, index) {
+      var position = positions[index];
+      if (!position) return;
+      canvas.appendChild(h("div", { "class": "map-pin-wrap", style: "left:" + position.x + "%;top:" + position.y + "%", "data-state": group.decision }, [
+        h("div", { "class": "map-pin-diamond", style: "background:" + QUOTE_STATUS[DECISION_META[group.decision]].dot }),
+        h("div", { "class": "map-pin-label" }, group.title)
+      ]));
+    });
+    return h("div", { "class": "portfolio-map", "data-module": "portfolio-map", "data-visual-id": "portfolio-map", "data-surface": "schematic" }, canvas);
+  }
+  function PortfolioMap(groups, placements, map, viewport) {
+    if (!groups.some(function(group) {
+      return !!group.property;
+    })) return null;
+    var places = groups.map(function(group) {
+      return { id: group.id, name: group.title, line: placeLine(group.title, group.address, DECISION_LABEL[group.decision]), state: group.decision, action: "proposal.open", actionLabel: group.title + " \u2014 " + DECISION_LABEL[group.decision] };
+    });
+    return h("div", { "class": "ov-map__stage", "data-module": "portfolio-map", "data-visual-id": "portfolio-map", "data-surface": "google", style: "margin-bottom:16px" }, [
+      LocationMap(map, viewport, places, placements, "Finding these properties on the map\u2026")
+    ]);
+  }
+  function QuoteGroups(groups, placements, mapShown) {
+    return h("div", { "class": "site-list", "data-module": "proposal-list", "data-visual-id": "proposal-list" }, groups.map(function(group, index) {
+      var offMap = mapShown && !!group.propertyBackendId && !placements[index].point;
+      var summary = [group.address, plural(group.orders.length, "quote", "quotes")].filter(Boolean).join(" \xB7 ");
+      var head = [
+        h("span", { "class": "proposal-card__diamond", style: "background:" + QUOTE_STATUS[DECISION_META[group.decision]].dot }),
+        h("span", { "class": "proposal-card__body" }, [
+          h("span", { "class": "proposal-card__name" }, group.title),
+          h("span", { "class": "proposal-card__meta" }, summary),
+          offMap ? h("span", { "class": "proposal-card__tag", "data-placement": placements[index].reason }, placementNote(placements[index].reason) || "Not on the map") : null
+        ]),
+        h("span", { "class": "proposal-group__decision", "data-state": group.decision }, DECISION_LABEL[group.decision]),
+        h("span", { "class": "proposal-card__chev", "aria-hidden": "true" }, "\u203A")
+      ];
+      return h("section", { "class": "proposal-group", "data-module": "quote-property", "data-visual-id": "quote-property", "data-state": group.decision }, [
+        h("button", { "class": "proposal-card proposal-group__head", "data-action": "proposal.open", "data-id": group.id, "aria-label": "Open the quotes for " + group.title }, head),
+        h("ul", { "class": "proposal-options", "aria-label": "Quotes for " + group.title }, group.orders.map(QuoteOption))
+      ]);
+    }));
+  }
+  function QuotesFooter() {
+    return h("div", { "class": "proposal-footer", "data-module": "quote-package-footer", "data-visual-id": "quote-package-footer" }, [
+      h("div", { "class": "proposal-footer__icon" }, "\u2726"),
+      h("div", { "class": "proposal-footer__copy" }, [
+        "Decide each property on its own. Approving one option for a property declines its other options, and your contract details go with the approval. Once every property has a decision, we prepare your service agreement.",
+        h("div", { "class": "proposal-footer__taxes", "data-kind": "taxes" }, state.config.taxesNote)
+      ])
+    ]);
+  }
+  function QuoteOption(order) {
+    var meta = orderStatusMeta(order);
+    var perService = !!order.pricing && !order.pricing.total;
+    var total = perService ? "Per visit" : formatOrderPrice(order);
+    return h("li", { "class": "proposal-option", "data-module": "quote-row", "data-visual-id": "quote-row", "data-state": order.status }, [
+      h("span", { "class": "proposal-option__model" }, order.pricingModel ? order.pricingModel.label : "Quote"),
+      total ? h("span", { "class": "proposal-option__total", "data-pricing": perService ? "per-service" : void 0 }, total) : null,
+      StatusBadge({ variant: meta.badge, label: meta.label, bind: "quote.statusLabel", state: order.status })
+    ]);
+  }
+  function plural(count, one, many) {
+    return count + " " + (count === 1 ? one : many);
+  }
+
+  // app-templates/customer-portal/runtime/src/components/storm/PlanMap.js
+  var PLAN_PADDING = 28;
+  var POINT_RADIUS_METERS = 1.5;
+  var TONE_TOKENS = ["--accent", "--warn", "--ok", "--danger", "--accent-3"];
+  function createPlanMap(options2) {
+    var adapter2 = options2.adapter;
+    var onChange = options2.onChange;
+    var scope = options2.scope || globalThis;
+    var status = "idle";
+    var maps = null;
+    var views = /* @__PURE__ */ new Map();
+    return {
+      status: function() {
+        return status;
+      },
+      view
+    };
+    function view(plan, label) {
+      if (status === "failed") return null;
+      if (status === "idle") start();
+      var entry2 = views.get(plan);
+      if (!entry2) {
+        var canvas = h("div", { "class": "prop-plan__canvas", role: "img", "aria-label": label });
+        entry2 = { node: h("div", { "class": "prop-plan__map", "data-module": "plan-map", "data-visual-id": "plan-map", "data-surface": "google" }, [canvas]), canvas, map: null, drawn: false };
+        views.set(plan, entry2);
+      }
+      entry2.node.setAttribute("data-state", status === "ready" ? "ready" : "loading");
+      if (status === "ready" && !entry2.drawn) {
+        entry2.drawn = true;
+        Promise.resolve().then(function() {
+          draw(entry2, plan);
+        }).catch(fail3);
+      }
+      return entry2.node;
+    }
+    function start() {
+      status = "loading";
+      adapter2.onFailure(fail3);
+      adapter2.load().then(function(loaded) {
+        if (status === "failed") return;
+        maps = loaded;
+        status = "ready";
+        onChange();
+      }).catch(fail3);
+    }
+    function fail3(error2) {
+      if (status === "failed") return;
+      status = "failed";
+      views.forEach(function(entry2) {
+        entry2.node.setAttribute("data-state", "failed");
+      });
+      console.warn("[portal] Google map unavailable, drawing the plan as an outline instead", error2 && error2.message);
+      onChange();
+    }
+    function draw(entry2, plan) {
+      var canvas = entry2.canvas;
+      var bounds = plan.bounds;
+      var map = new maps.Map(canvas, {
+        center: { lat: (bounds.north + bounds.south) / 2, lng: (bounds.east + bounds.west) / 2 },
+        zoom: 18,
+        mapTypeId: "hybrid",
+        tilt: 0,
+        disableDefaultUI: true,
+        zoomControl: true,
+        clickableIcons: false,
+        gestureHandling: "cooperative",
+        styles: QUIET_MAP_STYLES
+      });
+      entry2.map = map;
+      plan.elements.forEach(function(element) {
+        var color = toneColor(element.tone);
+        element.shapes.forEach(function(shape) {
+          overlay(map, shape, color);
+        });
+      });
+      var fit = function() {
+        map.fitBounds(bounds, PLAN_PADDING);
+      };
+      fit();
+      if (typeof scope.ResizeObserver !== "function") return;
+      var size = "";
+      new scope.ResizeObserver(function() {
+        var measured2 = canvas.offsetWidth + "x" + canvas.offsetHeight;
+        if (!canvas.offsetWidth || !canvas.offsetHeight || measured2 === size) return;
+        size = measured2;
+        fit();
+      }).observe(canvas);
+    }
+    function overlay(map, shape, color) {
+      var paint2 = color ? { strokeColor: color, fillColor: color } : {};
+      if (shape.kind === "area") {
+        shape.polygons.forEach(function(rings) {
+          new maps.Polygon(Object.assign({ map, paths: rings, strokeOpacity: 1, strokeWeight: 2, fillOpacity: 0.35, clickable: false }, paint2));
+        });
+        return;
+      }
+      if (shape.kind === "line") {
+        new maps.Polyline(Object.assign({ map, path: shape.path, strokeOpacity: 1, strokeWeight: 4, clickable: false }, color ? { strokeColor: color } : {}));
+        return;
+      }
+      var circle = shape.kind === "circle";
+      new maps.Circle(Object.assign({ map, center: circle ? shape.center : shape.position, radius: circle ? shape.radius : POINT_RADIUS_METERS, strokeOpacity: 1, strokeWeight: 2, fillOpacity: circle ? 0.35 : 1, clickable: false }, paint2));
+    }
+    function toneColor(tone) {
+      var root = scope.document && scope.document.documentElement;
+      if (!root || typeof scope.getComputedStyle !== "function") return "";
+      return String(scope.getComputedStyle(root).getPropertyValue(TONE_TOKENS[(tone - 1) % TONE_TOKENS.length]) || "").trim();
+    }
+  }
+
+  // app-templates/customer-portal/runtime/src/property-map-session.js
+  var controller = null;
+  var planController = null;
+  var adapter = null;
+  function sharedAdapter() {
+    if (!adapter) adapter = createGoogleMapsAdapter({ apiKey: state.config.mapsApiKey });
+    return adapter;
+  }
+  function sharedPlanMap() {
+    if (!state.config.mapsApiKey) return null;
+    if (!planController) planController = createPlanMap({ adapter: sharedAdapter(), onChange: render });
+    return planController;
+  }
+  function sharedPropertyMap() {
+    if (!state.config.mapsApiKey) return null;
+    if (!controller) {
+      controller = createPropertyMap({
+        adapter: sharedAdapter(),
+        cache: createGeocodeCache(browserStorage()),
+        mapId: state.config.mapsMapId,
+        dispatch: dispatchMapAction,
+        onChange: render
+      });
+    }
+    return controller;
+  }
+  function mapViewport() {
+    var model = currentOverview();
+    if (model && model.map) return model.map;
+    var geography = state.config.serviceGeography;
+    return geography && geography.map || null;
+  }
+  function usablePropertyMap() {
+    var map = sharedPropertyMap();
+    return map && mapViewport() && map.status() !== "failed" ? map : null;
+  }
+  function dispatchMapAction(name, id) {
+    var action = ACTIONS[name];
+    if (action) action(id);
+  }
+
+  // app-templates/customer-portal/runtime/src/components/storm/RecordRows.js
+  function VisitRow(visit, options2) {
+    var settings = options2 || {};
+    var when = visitWhen(visit, settings.today);
+    return h("button", {
+      "class": "prop-visit record-row",
+      type: "button",
+      "data-module": "visit-row",
+      "data-visual-id": "visit-row",
+      "data-action": "appointments.openVisit",
+      "data-id": visit.id,
+      "data-state": visit.stateCode.toLowerCase(),
+      "aria-label": [settings.label, visitDay(visit, settings.today), visit.status.label].filter(Boolean).join(" \xB7 ")
+    }, [
+      h("span", { "class": "record-row__main" }, [
+        settings.label ? text4("record-row__eyebrow", settings.label) : null,
+        text4("prop-visit__title", when),
+        settings.place ? text4("prop-visit__meta", settings.place) : null,
+        settings.onSite ? h("span", { "class": "prop-visit__meta", "data-module": "visit-on-site" }, settings.onSite) : null,
+        visit.crew ? h("span", { "class": "prop-visit__meta", "data-module": "visit-crew-line" }, crewLine(visit.crew)) : null,
+        settings.photos ? h("span", { "class": "prop-visit__meta", "data-module": "visit-photo-count" }, settings.photos === 1 ? "1 photo" : settings.photos + " photos") : null
+      ]),
+      settings.issue ? h("span", { "class": "status-badge status-badge--danger", "data-module": "visit-issue" }, OVERVIEW_STATUS.issue.label) : null,
+      text4("status-badge status-badge--" + visit.status.tone, visit.status.label),
+      text4("prop-visit__caret", "\u203A")
+    ]);
+  }
+  function InvoiceRow(invoice) {
+    var title = invoiceTitle(invoice);
+    var amount = invoiceAmount(invoice);
+    var status = invoiceStatusLine(invoice);
+    return h("button", {
+      "class": "prop-visit record-row",
+      type: "button",
+      "data-module": "invoice-row",
+      "data-visual-id": "invoice-row",
+      "data-action": "invoice.open",
+      "data-id": invoice.id,
+      "data-state": invoice.stateCode.toLowerCase(),
+      "aria-label": [title, amount, status].filter(Boolean).join(" \xB7 ")
+    }, [
+      h("span", { "class": "record-row__main" }, [
+        text4("prop-visit__title", title),
+        amount ? text4("prop-visit__meta record-row__amount", amount) : null
+      ]),
+      text4("status-badge status-badge--" + invoice.status.tone, status),
+      text4("prop-visit__caret", "\u203A")
+    ]);
+  }
+  function RecordSection(id, title, rows2) {
+    return h("section", { "class": "card card--pad record-section", "data-module": id, "data-visual-id": id }, [
+      title ? h("h2", { "class": "prop-section__title" }, title) : null,
+      h("div", { "class": "record-list" }, rows2)
+    ]);
+  }
+  function text4(className, value) {
+    return h("span", { "class": className }, value == null ? "" : String(value));
+  }
+
+  // app-templates/customer-portal/runtime/src/routes/OverviewPage.js
+  var VISIT_DAYS = 7;
+  var propertyForecastStore = null;
+  var focusKeeper = null;
+  var lastSelection = null;
+  function overviewModel() {
+    return currentOverview();
+  }
+  function Overview() {
+    var model = overviewModel();
+    var page = h("section", { "class": "page", "data-route": "overview", "data-visual-id": "overview" });
+    var customer = overviewCustomer();
+    var header = PageHeader({ title: customer.greeting, sub: subline(model, customer) });
+    if (!model) {
+      page.appendChild(header);
+      page.appendChild(OverviewUnavailable());
+      return page;
+    }
+    var weather = model.weather;
+    var index = weather ? clampFrameIndex(weather.timeline, state.ovWeatherIndex == null ? weather.nowIndex : state.ovWeatherIndex) : 0;
+    var frame = weather ? weather.timeline[index] : null;
+    var forecastShown = !!frame || !!model.forecast && model.forecast !== "unconfigured";
+    page.appendChild(h("div", { "class": "ov-head" }, [header, frame ? WeatherPanel(frame, index === weather.nowIndex, weather.source, sectionAvailable(model, "contracts")) : forecastShown ? ForecastUnavailable(model.forecast) : null]));
+    var places = stageProps(model, frame, index);
+    page.appendChild(MapPanel(model, places));
+    var invoices = InvoicesWidget(model);
+    if (invoices) page.appendChild(invoices);
+    var cards = [NextVisitWidget(), InvoiceDueWidget(), UpcomingWidget(model, weather ? weather.timeline : []), ContractsWidget(model), SupportWidget(model)].filter(Boolean);
+    if (cards.length) page.appendChild(h("div", { "class": "ov-grid", "data-count": String(cards.length) }, cards));
+    if (model.banner) page.appendChild(Banner(model.banner));
+    var listing = PropertyIndex(places);
+    if (listing) page.appendChild(PropertyIndexCard(listing));
+    return page;
+  }
+  function overviewCustomer() {
+    if (state.config.dataMode !== "live") return currentFixture().customer;
+    var profile = state.moduleData.profile;
+    var contact = profile && profile.contact;
+    var name = contact && contact.firstName || profile && profile.accountName || "";
+    return { greeting: name ? "Welcome back, " + name : "Welcome back", subline: "" };
+  }
+  function OverviewUnavailable() {
+    if (state.config.dataMode !== "live") {
+      return EmptyState({ glyph: "\u25CC", title: "Nothing to show yet", desc: "This portal has no overview data configured." });
+    }
+    var status = liveOverviewStatus();
+    if (status === "loading") {
+      return h("div", { "data-module": "overview-loading", "data-visual-id": "overview-loading", "data-state": "loading", "aria-busy": "true", style: "margin-top:20px" }, [
+        skel("height:420px;border-radius:22px;margin-bottom:16px"),
+        h("div", { "class": "ov-grid" }, [skel("height:170px;border-radius:22px"), skel("height:170px;border-radius:22px"), skel("height:170px;border-radius:22px")])
+      ]);
+    }
+    if (status === "error") {
+      return ErrorState({ title: "Couldn\u2019t load your home screen", desc: "Your properties didn\u2019t load. Nothing was changed \u2014 try again." });
+    }
+    if (status === "unauthorized") {
+      return EmptyState({
+        glyph: "\u26BF",
+        title: "You don\u2019t have access to these properties",
+        desc: "Your account doesn\u2019t include the properties on this portal. If that seems wrong, contact us.",
+        action: supportAction()
+      });
+    }
+    return EmptyState({ glyph: "\u25CC", title: "Your home screen isn\u2019t set up yet", desc: "This portal doesn\u2019t list your properties yet, so there is nothing to show here." });
+  }
+  function supportAction() {
+    if (isModuleEnabled("support")) return { variant: "btn--ghost", label: "Go to support", action: "nav.go", id: "support", visualId: "overview-support" };
+    if (configuredExternalUrl(state.config, "supportUrl")) return { variant: "btn--ghost", label: "Contact support", action: "support.open", visualId: "overview-support" };
+    return null;
+  }
+  function subline(model, customer) {
+    var frame = model && model.weather && state.liveWeather ? model.weather.timeline[model.weather.nowIndex] || model.weather.timeline[0] : null;
+    if (state.config.dataMode === "live") return [frame ? frame.label : "", activeSeason()].filter(Boolean).join(" \xB7 ");
+    if (!frame) return customer.subline || propertyCount(model);
+    return frame.label + " \xB7 " + propertyCount(model);
+  }
+  function activeSeason() {
+    if (!isModuleEnabled("proposals")) return "";
+    var row = currentServiceAgreement(quotePackage());
+    return row ? agreementSeason(row.agreement) : "";
+  }
+  function propertyCount(model) {
+    if (!model) return "";
+    var count = model.properties.length;
+    var contracted = sectionAvailable(model, "contracts") && count > 0 && model.properties.every(function(property) {
+      return !!property.contract;
+    });
+    return count + (count === 1 ? " property" : " properties") + (contracted ? " under contract" : "");
+  }
+  function ForecastUnavailable(forecast) {
+    var loading = forecast === "loading";
+    var failed = forecast === "failed";
+    return h("div", {
+      "class": "ov-wx",
+      "data-module": "weather-summary",
+      "data-visual-id": "weather-summary",
+      "data-state": loading ? "loading" : failed ? "error" : "unavailable",
+      "aria-busy": loading ? "true" : void 0,
+      "aria-live": "polite"
+    }, [
+      h("span", { "class": "ov-wx__mark", style: "background:rgba(var(--hair),.08);color:var(--ink-3)" }, [icon("snowflake", "ov-wx__glyph")]),
+      h("div", { "class": "ov-wx__read" }, loading ? [
+        skel("width:132px;height:15px;margin:3px 0 7px"),
+        skel("width:188px;height:11px")
+      ] : [
+        text5("div", "ov-wx__label", "Forecast unavailable"),
+        text5("div", "ov-wx__note", failed ? "The forecast didn\u2019t load. Your properties are shown without it." : "The forecast isn\u2019t set up for this portal yet."),
+        failed ? h("button", { "class": "link-action", "data-action": "overview.retryWeather", type: "button", style: "margin-top:6px" }, "Try again \u203A") : null
+      ])
+    ]);
+  }
+  function WeatherPanel(frame, isNow, source, serviceNotes) {
+    var stats = frame.stats || [];
+    var note = serviceNotes ? frame.note : frame.forecastNote;
+    var line = isNow ? note : [frame.day + " " + frame.date, note].filter(Boolean).join(" \xB7 ");
+    return h("div", { "class": "ov-wx", "data-module": "weather-summary", "data-visual-id": "weather-summary", "data-weather": frame.kind }, [
+      h("span", { "class": "ov-wx__mark" }, [icon("snowflake", "ov-wx__glyph")]),
+      h("div", { "class": "ov-wx__read" }, [
+        text5("div", "ov-wx__temp", frame.temp),
+        text5("div", "ov-wx__label", frame.label),
+        line ? text5("div", "ov-wx__note", line) : null,
+        WeatherAttribution(source)
+      ]),
+      stats.length ? h("div", { "class": "ov-wx__stats" }, stats.map(function(stat) {
+        return h("div", { "class": "ov-wx__stat" }, [
+          text5("span", "ov-wx__stat-label", stat.label),
+          text5("span", "ov-wx__stat-value", stat.value)
+        ]);
+      })) : null
+    ]);
+  }
+  function stageProps(model, frame, index) {
+    return {
+      direct: state.config.dataMode === "live",
+      properties: model.properties,
+      frame,
+      index,
+      weather: frame ? model.weather : null,
+      viewport: model.map,
+      selectedId: state.ovProperty,
+      map: sharedPropertyMap(),
+      forecasts: propertyForecasts(),
+      sources: model.sources
+    };
+  }
+  function MapPanel(model, places) {
+    var weather = places.weather;
+    var index = places.index;
+    var statusKnown = propertyStatusKnown(model.sources);
+    var stage = PropertyStage(places);
+    followSelection();
+    return h("div", { "class": "ov-map card", "data-module": "property-map", "data-visual-id": "property-map" }, [
+      h("div", { "class": "ov-map__head" }, [
+        h("span", { "class": "ov-card__icon" }, [icon("map", "ov-icon")]),
+        text5("h2", "ov-card__title", "Your properties"),
+        weather ? h("div", { "class": "ov-legend" }, weather.legend.filter(function(item) {
+          return statusKnown || item.key !== "issue";
+        }).map(function(item) {
+          return h("span", { "class": "ov-legend__item", "data-weather": item.key }, [h("i"), text5("span", "", item.label)]);
+        })) : null
+      ]),
+      stage,
+      weather ? DayTimeline(weather, index, model.properties, sectionAvailable(model, "appointments")) : VisitDays(),
+      weather ? WeatherAttribution(weather.source, "ov-map__attr") : null
+    ]);
+  }
+  function VisitDays() {
+    var visits = liveVisits();
+    if (!visits) return null;
+    var days = upcomingDays(localDateKey(/* @__PURE__ */ new Date(), state.config.timeZone), VISIT_DAYS);
+    var counts = visitDayCounts(visits, days);
+    return h("div", { "class": "ov-timeline ov-timeline--visits", "data-module": "visit-days", "data-visual-id": "visit-days", role: "group", "aria-label": "Visits in the next " + VISIT_DAYS + " days" }, [
+      h("div", { "class": "ov-timeline__track" }, days.map(function(day, position) {
+        var count = counts[position];
+        var label = day.name + " " + day.date + " \u2014 " + (count ? count + (count === 1 ? " visit" : " visits") : "no visit");
+        var cell = [
+          text5("span", "ov-day__name", day.name),
+          text5("span", "ov-day__date", day.date),
+          h("span", { "class": "ov-day__svc" }, count ? [text5("b", "", String(count)), text5("span", "ov-day__svc-word", count === 1 ? " visit" : " visits")] : [])
+        ];
+        var className = "ov-day" + (position === 0 ? " ov-day--now" : "") + (count ? " ov-day--service" : " ov-day--idle");
+        return count ? h("button", { "class": className, type: "button", "data-action": "nav.go", "data-id": "appointments", "data-day": day.key, "data-service": String(count), "aria-label": label }, cell) : h("div", { "class": className, "data-day": day.key, "aria-label": label }, cell);
+      }))
+    ]);
+  }
+  function PropertyIndexCard(list) {
+    return h("section", { "class": "card card--pad ov-card ov-places", "data-module": "property-index", "data-visual-id": "property-index", "aria-labelledby": "property-index-title" }, [
+      h("div", { "class": "ov-card__head" }, [
+        h("span", { "class": "ov-card__icon" }, [icon("pin", "ov-icon")]),
+        h("h2", { "class": "ov-card__title", id: "property-index-title" }, "Properties")
+      ]),
+      list
+    ]);
+  }
+  function propertyForecasts() {
+    if (!propertyForecastStore) {
+      propertyForecastStore = createPropertyForecasts({
+        adapter: createXweatherAdapter({ clientId: state.config.weatherClientId, clientSecret: state.config.weatherClientSecret }),
+        onChange: render
+      });
+    }
+    return propertyForecastStore;
+  }
+  function followSelection() {
+    if (!focusKeeper) {
+      focusKeeper = createFocusKeeper(document);
+      closeOnEscape(document, function() {
+        return state.route === "overview" && !!state.ovProperty;
+      }, function() {
+        dispatchMapAction("overview.closeProperty");
+      });
+    }
+    var previous = lastSelection;
+    var current = state.ovProperty;
+    lastSelection = current;
+    Promise.resolve().then(function() {
+      focusKeeper.settle(current, previous);
+    });
+  }
+  function DayTimeline(weather, index, properties, visitsKnown2) {
+    var last = weather.timeline.length - 1;
+    var track = h("div", { "class": "ov-timeline__track" }, weather.timeline.map(function(item, position) {
+      var visits = serviceDayCount(properties, position);
+      return h("button", {
+        "class": "ov-day" + (position === index ? " ov-day--on" : "") + (position === weather.nowIndex ? " ov-day--now" : "") + (visits ? " ov-day--service" : ""),
+        "data-action": "overview.scrubWeather",
+        "data-id": String(position),
+        "data-weather": item.kind,
+        "data-service": visits ? String(visits) : void 0,
+        "aria-label": item.day + " " + item.date + " \u2014 " + item.label + (visits ? " \u2014 " + visits + (visits === 1 ? " visit" : " visits") : visitsKnown2 ? " \u2014 no visit" : ""),
+        "aria-pressed": position === index ? "true" : "false"
+      }, [
+        text5("span", "ov-day__name", item.day),
+        text5("span", "ov-day__date", item.date),
+        h("i"),
+        h("span", { "class": "ov-day__svc" }, visits ? [
+          text5("b", "", String(visits)),
+          text5("span", "ov-day__svc-word", visits === 1 ? " visit" : " visits")
+        ] : [])
+      ]);
+    }));
+    return h("div", { "class": "ov-timeline", "data-module": "weather-timeline", "data-visual-id": "weather-timeline" }, [
+      stepButton("\u2039", "Previous day", index - 1, index === 0),
+      track,
+      stepButton("\u203A", "Next day", index + 1, index === last)
+    ]);
+  }
+  function stepButton(glyph3, label, target, disabled) {
+    return h("button", {
+      "class": "ov-step",
+      "data-action": disabled ? void 0 : "overview.scrubWeather",
+      "data-id": String(target),
+      "aria-label": label,
+      disabled: disabled ? "disabled" : void 0
+    }, glyph3);
+  }
+  function UpcomingWidget(model, timeline) {
+    var scheduled = model.properties.filter(function(property) {
+      return property.appointment && property.appointment.state === "SCHEDULED";
+    });
+    if (!sectionAvailable(model, "appointments")) return null;
+    var card = widget("upcoming-services", "Upcoming services", "calendar");
+    if (!scheduled.length) {
+      card.appendChild(emptyLine("No scheduled visits", "Dispatch happens automatically when your trigger is met."));
+      return card;
+    }
+    card.appendChild(lead(String(scheduled.length), scheduled.length === 1 ? "scheduled appointment" : "scheduled appointments", scheduled[0].appointment.when));
+    scheduled.slice(0, 3).forEach(function(property) {
+      var appointment = property.appointment;
+      card.appendChild(h("div", { "class": "ov-slot", "data-module": "upcoming-row", "data-visual-id": "upcoming-row" }, [
+        appointment.time ? text5("span", "ov-slot__time", appointment.time) : null,
+        h("span", { "class": "ov-slot__pin" }, [icon("pin", "ov-slot__glyph")]),
+        h("button", {
+          "class": "ov-slot__link",
+          "data-action": "appointments.openVisit",
+          "data-id": property.id,
+          "aria-label": "Open the " + appointment.service + " visit at " + property.name
+        }, [
+          text5("span", "ov-row__title", property.name),
+          text5("span", "ov-row__meta", metaOf(appointmentDay(appointment, timeline), appointment.service))
+        ])
+      ]));
+    });
+    card.appendChild(h("div", { "class": "ov-foot" }, [
+      ActionButton({ variant: "btn--ghost", label: "View full calendar", action: "overview.openCalendar", visualId: "view-full-calendar" })
+    ]));
+    return card;
+  }
+  function NextVisitWidget() {
+    var visits = liveVisits();
+    var next = visits && visits.upcoming[0];
+    if (!next) return null;
+    var card = widget("next-visit", "Next visit", "calendar");
+    card.appendChild(VisitRow(next, { today: localDateKey(/* @__PURE__ */ new Date(), state.config.timeZone), place: visitPlace(next, liveProperties()) }));
+    card.appendChild(navLine("All visits", "appointments"));
+    return card;
+  }
+  function InvoiceDueWidget() {
+    var due = openInvoices(liveInvoices());
+    if (!due.length) return null;
+    var card = widget("invoice-due", due.length === 1 ? "Invoice due" : "Invoices due", "invoice");
+    due.slice(0, 3).forEach(function(invoice) {
+      card.appendChild(InvoiceRow(invoice));
+    });
+    card.appendChild(navLine(due.length > 3 ? due.length - 3 + " more in Invoices" : "All invoices", "invoices"));
+    return card;
+  }
+  function navLine(label, route) {
+    return h("div", { "class": "link-action ov-more", "data-action": "nav.go", "data-id": route }, label + " \u203A");
+  }
+  function InvoicesWidget(model) {
+    if (!sectionAvailable(model, "invoices")) return null;
+    var buckets = invoiceBuckets(model.invoices);
+    var overdue = buckets.overdue;
+    var card = h("div", { "class": "card card--pad ov-card ov-bill" + (overdue.count ? " ov-bill--alarm" : ""), "data-module": "invoices", "data-visual-id": "invoices", "data-state": overdue.count ? "overdue" : "current" }, [
+      h("div", { "class": "ov-card__head" }, [
+        h("span", { "class": "ov-card__icon" }, [icon("invoice", "ov-icon")]),
+        text5("h2", "ov-card__title", "Invoices"),
+        h("div", { "class": "link-action ov-bill__all", "data-action": "overview.openInvoices" }, "View all \u203A")
+      ])
+    ]);
+    if (!buckets.outstanding.count && !buckets.paidThisMonth.count) {
+      card.appendChild(emptyLine("No invoices yet", "Invoices appear here once the season is billed."));
+      return card;
+    }
+    if (overdue.count) card.appendChild(OverdueAlert(overdue));
+    card.appendChild(h("div", { "class": "ov-bill__stats" }, [
+      billStat("Total outstanding", money(buckets.outstanding.amount), buckets.outstanding.count, ""),
+      billStat("Due this month", money(buckets.dueThisMonth.amount), buckets.dueThisMonth.count, ""),
+      billStat("Paid this month", money(buckets.paidThisMonth.amount), buckets.paidThisMonth.count, "ov-bill__stat-value--ok")
+    ]));
+    card.appendChild(moreLine(null, "View all invoices", "overview.openInvoices"));
+    return card;
+  }
+  function OverdueAlert(overdue) {
+    return h("div", { "class": "ov-alarm", "data-module": "overdue-alert", "data-visual-id": "overdue-alert", role: "alert" }, [
+      h("span", { "class": "ov-alarm__mark" }, [icon("alert", "ov-alarm__glyph")]),
+      h("div", { "class": "ov-alarm__read" }, [
+        text5("div", "ov-alarm__eyebrow", "Overdue amount"),
+        text5("div", "ov-alarm__amount", money(overdue.amount)),
+        text5("div", "ov-alarm__count", "Across " + overdue.count + (overdue.count === 1 ? " overdue invoice" : " overdue invoices")),
+        text5("div", "ov-alarm__warn", "Please make a payment to avoid service interruption.")
+      ]),
+      h("div", { "class": "ov-alarm__act" }, [
+        ActionButton({ variant: "btn--danger", label: "View overdue invoices \u2192", action: "overview.openInvoices", visualId: "view-overdue-invoices" })
+      ])
+    ]);
+  }
+  function billStat(label, value, count, valueClass) {
+    return h("div", { "class": "ov-bill__stat" }, [
+      text5("div", "ov-bill__stat-label", label),
+      text5("div", "ov-bill__stat-value " + valueClass, value),
+      text5("div", "ov-bill__stat-count", String(count) + (count === 1 ? " invoice" : " invoices"))
+    ]);
+  }
+  function ContractsWidget(model) {
+    if (state.config.dataMode === "live" && isModuleEnabled("proposals")) return LiveContractsWidget();
+    var contracts = model.contracts || [];
+    var quotes = quotePackage();
+    var preparing = !!(quotes && quotes.preparing);
+    if (!sectionAvailable(model, "contracts")) return null;
+    var card = widget("active-contracts", "Active contracts", "contract");
+    if (!contracts.length) {
+      card.appendChild(preparing ? QuotePreparingLine() : emptyLine("No active contracts", "A contract appears here once your service agreement is approved."));
+      return card;
+    }
+    card.appendChild(lead(String(contracts.length), contracts.length === 1 ? "active contract" : "active contracts"));
+    contracts.slice(0, 3).forEach(function(contract) {
+      card.appendChild(h("div", { "class": "ov-row", "data-module": "contract-row", "data-visual-id": "contract-row" }, [
+        h("div", { style: "flex:1;min-width:0" }, [
+          text5("div", "ov-row__title", "Contract #" + contract.number),
+          text5("div", "ov-row__meta", contract.plan)
+        ]),
+        text5("span", "status-badge status-badge--ok", "Active")
+      ]));
+    });
+    if (preparing) card.appendChild(QuotePreparingRow());
+    card.appendChild(moreLine(null, "View all contracts", "overview.openContracts"));
+    return card;
+  }
+  function LiveContractsWidget() {
+    var card = widget("active-contracts", "Contracts", "contract");
+    var envelope2 = state.moduleData.proposals;
+    var readbackFailed = !!(state.contractCommand && state.contractCommand.phase === "readback-failed");
+    if (readbackFailed || !envelope2 && state.moduleStatus.proposals === "error" || envelope2 && envelope2.state === "error") return contractsProblem(card, "error", "Couldn\u2019t load your contracts", "Nothing was changed. Try again in a moment.", true);
+    if (!envelope2) return contractsLoading(card);
+    if (envelope2.state === "unauthorized") return contractsProblem(card, "unauthorized", "No access to contracts", "Your account doesn\u2019t include access to your contracts.", false);
+    var quotes = quotePackage();
+    if (envelope2.state === "unavailable" || !quotes) return null;
+    var agreements = quotes.agreements;
+    var waiting = quotes.counts.open;
+    var revising = !waiting && quotes.pending.length > 0;
+    var partial = !!(quotes.partial && (quotes.partial.agreements || quotes.partial.orders));
+    card.setAttribute("data-state", partial ? "partial" : agreements.length || quotes.pending.length ? "ready" : quotes.preparing ? "preparing" : "empty");
+    if (!agreements.length && !quotes.pending.length) {
+      card.appendChild(quotes.preparing ? QuotePreparingLine() : emptyLine("No contracts yet", contractsListShown() ? "When we prepare your service agreement, it appears here." : "When we send you a quote or a service agreement, it appears here."));
+      if (partial) card.appendChild(ContractsPartialLine());
+      return card;
+    }
+    if (waiting) card.appendChild(QuotesWaitingLink(waiting));
+    agreements.slice(0, 3).forEach(function(row) {
+      card.appendChild(AgreementLine(row));
+    });
+    if (revising) card.appendChild(QuotesRevisionLine());
+    if (quotes.preparing) card.appendChild(QuotePreparingRow());
+    if (partial) card.appendChild(ContractsPartialLine());
+    if (agreements.length || !contractsListShown()) card.appendChild(moreLine(agreements.length > 3 ? agreements.length - 3 : null, agreements.length > 3 ? "more in Contracts" : "View all contracts", "overview.openContracts"));
+    else card.appendChild(moreLine(null, "View all orders", "overview.openOrders"));
+    return card;
+  }
+  function AgreementLine(row) {
+    var agreement = row.agreement;
+    var meta = agreementSummary(row);
+    return h("div", { "class": "ov-row", "data-module": "contract-row", "data-visual-id": "contract-row", "data-state": agreement.stage }, [
+      h("div", { style: "flex:1;min-width:0" }, [
+        text5("div", "ov-row__title", agreementTitle(row)),
+        h("div", { "class": "ov-row__line", style: "margin-top:4px;flex-wrap:wrap;row-gap:4px" }, [
+          text5("span", "status-badge status-badge--" + agreement.tone, agreement.label),
+          meta ? text5("span", "ov-row__meta", meta) : null
+        ])
+      ]),
+      chevron("agreement.open", row.id, "Open the service agreement " + agreementTitle(row) + " \u2014 " + agreement.label)
+    ]);
+  }
+  function QuotesWaitingLink(count) {
+    return h("button", { "class": "ov-waiting", type: "button", "data-module": "quote-decision", "data-visual-id": "quote-decision", "data-action": quotesHome().action }, [
+      text5("span", "ov-waiting__label", plural(count, "quote", "quotes") + " waiting for your decision"),
+      h("span", { "class": "ov-waiting__chev", "aria-hidden": "true" }, "\u203A")
+    ]);
+  }
+  function QuotesRevisionLine() {
+    return h("div", { "class": "ov-row", "data-module": "quote-revision", "data-visual-id": "quote-revision", "data-tone": "info" }, [
+      h("i", { "class": "ov-dot" }),
+      h("div", { style: "flex:1;min-width:0" }, [
+        text5("div", "ov-row__title", "Changes requested"),
+        text5("div", "ov-row__meta", "We\u2019re reviewing the changes you asked for.")
+      ]),
+      chevron(quotesHome().action, "", "Go to " + quotesHome().label)
+    ]);
+  }
+  function ContractsPartialLine() {
+    return h("div", { "class": "ov-row__meta", "data-module": "contracts-partial", "data-visual-id": "contracts-partial", "data-state": "partial", role: "status" }, "Part of your contracts couldn\u2019t be loaded. Contracts shows what did.");
+  }
+  function contractsLoading(card) {
+    card.setAttribute("data-state", "loading");
+    card.setAttribute("aria-busy", "true");
+    card.appendChild(h("div", { "class": "ov-lead", "data-module": "contracts-loading", "data-visual-id": "contracts-loading" }, [skel("width:46%;height:24px")]));
+    card.appendChild(skel("height:13px;width:82%"));
+    card.appendChild(skel("height:13px;width:64%"));
+    return card;
+  }
+  function contractsProblem(card, stateName, title, desc, retry) {
+    card.setAttribute("data-state", stateName);
+    card.appendChild(h("div", { "class": "ov-empty", "data-module": "contracts-" + stateName, "data-visual-id": "contracts-" + stateName, "data-state": stateName, role: stateName === "error" ? "alert" : "status" }, [
+      text5("div", "ov-empty__title", title),
+      text5("div", "ov-empty__desc", desc),
+      retry ? h("button", { "class": "link-action", "data-action": "contracts.refresh", type: "button" }, "Try again \u203A") : null
+    ]));
+    return card;
+  }
+  function QuotePreparingLine() {
+    return h("div", { "class": "ov-empty", "data-module": "quote-preparing", "data-visual-id": "quote-preparing", "data-state": "preparing", role: "status" }, [
+      text5("div", "ov-empty__title", "We have your request"),
+      text5("div", "ov-empty__desc", "We\u2019re preparing your quote. It appears under " + quotesHome().label + " once we send it."),
+      h("div", { "class": "link-action", "data-action": quotesHome().action }, "Go to " + quotesHome().label + " \u203A")
+    ]);
+  }
+  function QuotePreparingRow() {
+    return h("div", { "class": "ov-row", "data-module": "quote-preparing", "data-visual-id": "quote-preparing", "data-state": "preparing", "data-tone": "info", role: "status" }, [
+      h("i", { "class": "ov-dot" }),
+      h("div", { style: "flex:1;min-width:0" }, [
+        text5("div", "ov-row__title", "Request in preparation"),
+        text5("div", "ov-row__meta", "We have your request and are preparing your quote.")
+      ]),
+      chevron(quotesHome().action, "", "Go to " + quotesHome().label)
+    ]);
+  }
+  function quotesHome() {
+    return contractsListShown() ? { action: "overview.openOrders", label: "Orders" } : { action: "overview.openContracts", label: "Contracts" };
+  }
+  function SupportWidget(model) {
+    if (!sectionAvailable(model, "support")) return null;
+    var requests = model.support || [];
+    var card = widget("support-requests", "Support requests", "support");
+    if (!requests.length) {
+      card.appendChild(h("div", { "class": "ov-empty", "data-state": "empty" }, [
+        text5("div", "ov-empty__title", "No open requests"),
+        text5("div", "ov-empty__desc", "Everything looks good. Need help?"),
+        h("div", { "class": "link-action", "data-action": "overview.newRequest" }, "Submit a request \u203A")
+      ]));
+      return card;
+    }
+    card.appendChild(lead(String(requests.length), requests.length === 1 ? "open request" : "open requests"));
+    requests.slice(0, 2).forEach(function(request, position) {
+      card.appendChild(h("div", { "class": "ov-row", "data-module": "support-row", "data-visual-id": "support-row", "data-tone": request.tone || "info" }, [
+        h("i", { "class": "ov-dot" }),
+        h("div", { style: "flex:1;min-width:0" }, [
+          text5("div", "ov-row__title", request.title),
+          h("div", { "class": "ov-row__meta" }, [
+            text5("span", "ov-row__status", request.status),
+            text5("span", "", " \xB7 " + request.when)
+          ])
+        ]),
+        chevron("overview.openSupport", String(position), "Open " + request.title)
+      ]));
+    });
+    card.appendChild(requests.length > 2 ? moreLine(requests.length - 2, "more open requests", "overview.openSupport") : moreLine(null, "View all requests", "overview.openSupport"));
+    return card;
+  }
+  function Banner(banner) {
+    return h("div", { "class": "card card--pad ov-banner", "data-module": "storm-banner", "data-visual-id": "storm-banner" }, [
+      h("span", { "class": "ov-banner__mark" }, [icon("snowflake", "ov-icon")]),
+      h("div", { style: "flex:1;min-width:0" }, [
+        text5("div", "ov-banner__title", banner.title),
+        text5("div", "ov-banner__copy", banner.copy)
+      ]),
+      ActionButton({ variant: "btn--ghost", label: banner.action, action: "overview.newRequest", visualId: "storm-banner-cta" })
+    ]);
+  }
+  function widget(id, title, iconName) {
+    return h("div", { "class": "card card--pad ov-card", "data-module": id, "data-visual-id": id }, [
+      h("div", { "class": "ov-card__head" }, [
+        h("span", { "class": "ov-card__icon" }, [icon(iconName, "ov-icon")]),
+        text5("h2", "ov-card__title", title)
+      ])
+    ]);
+  }
+  function lead(value, label, meta) {
+    return h("div", { "class": "ov-lead" }, [
+      h("div", { "class": "ov-lead__main" }, [
+        text5("span", "ov-lead__value", value),
+        text5("span", "ov-lead__label", label)
+      ]),
+      meta ? text5("div", "ov-lead__meta", meta) : null
+    ]);
+  }
+  function metaOf(day, service) {
+    return day ? day + " \xB7 " + service : service;
+  }
+  function chevron(action, id, label) {
+    return h("button", { "class": "ov-chev", "data-action": action, "data-id": id, "aria-label": label }, "\u203A");
+  }
+  function moreLine(count, label, action) {
+    return h("div", { "class": "link-action ov-more", "data-action": action }, (count == null ? label : String(count) + " " + label) + " \u203A");
+  }
+  function emptyLine(title, desc) {
+    return h("div", { "class": "ov-empty", "data-state": "empty" }, [
+      text5("div", "ov-empty__title", title),
+      text5("div", "ov-empty__desc", desc)
+    ]);
+  }
+  function text5(tag, className, value) {
+    return h(tag, className ? { "class": className } : null, value == null ? "" : String(value));
+  }
+
+  // app-templates/customer-portal/runtime/src/normalizers/appointments.js
+  var APPOINTMENT_STATE = {
+    COMPLETED: { label: "Completed", tone: "ok" },
+    IN_PROGRESS: { label: "In progress", tone: "progress" },
+    EN_ROUTE: { label: "En route", tone: "warn" },
+    SCHEDULED: { label: "Scheduled", tone: "info" },
+    CANCELLED: { label: "Cancelled", tone: "scheduled" }
+  };
+  function appointmentRows(properties, timeline) {
+    var rows2 = [];
+    (properties || []).forEach(function(property) {
+      var appointment = property.appointment;
+      if (!appointment) return;
+      var frame = timeline && timeline[appointment.dayIndex];
+      rows2.push({
+        id: property.id,
+        resource: appointment.resource || "Unassigned",
+        name: property.name,
+        address: property.address,
+        service: appointment.service,
+        state: appointment.state,
+        dayIndex: appointment.dayIndex,
+        day: frame ? frame.day + " " + frame.date : "",
+        est: window_(appointment.est),
+        actual: window_(appointment.actual),
+        minutes: minutesOf(appointment.est)
+      });
+    });
+    return rows2;
+  }
+  function stateMeta(state2) {
+    return APPOINTMENT_STATE[state2] || { label: state2 || "Unknown", tone: "scheduled" };
+  }
+  function resourceNames(rows2) {
+    var seen = {};
+    var names = [];
+    rows2.forEach(function(row) {
+      if (seen[row.resource]) return;
+      seen[row.resource] = true;
+      names.push(row.resource);
+    });
+    return names.sort(function(a, b) {
+      return a.localeCompare(b);
+    });
+  }
+  function filterRows(rows2, dayIndex) {
+    if (dayIndex === null || dayIndex === void 0 || dayIndex === "") return rows2.slice();
+    var wanted = Number(dayIndex);
+    return rows2.filter(function(row) {
+      return row.dayIndex === wanted;
+    });
+  }
+  function sortRows(rows2, direction) {
+    var factor = direction === "desc" ? -1 : 1;
+    return rows2.slice().sort(function(a, b) {
+      var byResource = a.resource.localeCompare(b.resource) * factor;
+      if (byResource) return byResource;
+      if (a.dayIndex !== b.dayIndex) return a.dayIndex - b.dayIndex;
+      if (a.minutes !== b.minutes) return a.minutes - b.minutes;
+      return a.name.localeCompare(b.name);
+    });
+  }
+  function window_(range) {
+    if (!range || !range.start) return "";
+    return range.end ? range.start + " \u2013 " + range.end : range.start + " \u2013 \u2026";
+  }
+  function minutesOf(range) {
+    if (!range || !range.start) return Number.MAX_SAFE_INTEGER;
+    return clockMinutes(range.start);
+  }
+  function clockMinutes(clock2) {
+    var match = /^(\d{1,2}):(\d{2})\s*(AM|PM)$/i.exec(String(clock2).trim());
+    if (!match) return Number.MAX_SAFE_INTEGER;
+    var hour = Number(match[1]) % 12;
+    if (/PM/i.test(match[3])) hour += 12;
+    return hour * 60 + Number(match[2]);
+  }
+
+  // app-templates/customer-portal/runtime/src/routes/AppointmentsPage.js
+  var COLUMNS = [
+    { key: "resource", label: "Resource", sortable: true },
+    { key: "address", label: "Address" },
+    { key: "state", label: "Appointment state" },
+    { key: "est", label: "Est time" },
+    { key: "actual", label: "Actual time" }
+  ];
+  function Appointments() {
+    var page = h("section", { "class": "page", "data-route": "appointments", "data-visual-id": "appointments" });
+    var model = currentOverview();
+    var timeline = model && model.weather && model.weather.timeline || [];
+    var all = appointmentRows(model && model.properties, timeline);
+    page.appendChild(PageHeader({
+      title: "Appointments timeline",
+      sub: subline2(all, timeline)
+    }));
+    if (!all.length) {
+      page.appendChild(EmptyState({
+        glyph: "\u25CC",
+        title: "No appointments yet",
+        desc: "Visits appear here once a storm trigger dispatches a crew."
+      }));
+      return page;
+    }
+    var day = state.apptDay;
+    var direction = state.apptSort === "desc" ? "desc" : "asc";
+    var rows2 = sortRows(filterRows(all, day), direction);
+    page.appendChild(Filters(all, timeline, day));
+    var card = h("div", { "class": "card card--pad appt", "data-module": "appointments-table", "data-visual-id": "appointments-table" });
+    if (!rows2.length) {
+      card.appendChild(h("div", { "class": "appt__empty" }, [
+        text6("div", "ov-empty__title", "No visits on this day"),
+        text6("div", "ov-empty__desc", "Pick another date, or clear the filter to see the whole week."),
+        h("div", { "class": "link-action", "data-action": "appointments.filterDay", "data-id": "" }, "Show all dates \u203A")
+      ]));
+      page.appendChild(card);
+      return page;
+    }
+    card.appendChild(Table(rows2, direction));
+    page.appendChild(card);
+    page.appendChild(text6("div", "appt__count", rows2.length === all.length ? String(all.length) + (all.length === 1 ? " appointment" : " appointments") : String(rows2.length) + " of " + all.length + " appointments"));
+    return page;
+  }
+  function subline2(rows2, timeline) {
+    var span = timeline.length ? timeline[0].date + " \u2013 " + timeline[timeline.length - 1].date : "";
+    var resources = resourceNames(rows2).length;
+    return span ? span + " \xB7 " + resources + (resources === 1 ? " resource" : " resources") : resources + (resources === 1 ? " resource" : " resources");
+  }
+  function Filters(rows2, timeline, day) {
+    var chips = [dayChip("All dates", "", day === null || day === void 0 || day === "")];
+    timeline.forEach(function(frame, index) {
+      var count = rows2.filter(function(row) {
+        return row.dayIndex === index;
+      }).length;
+      if (!count) return;
+      chips.push(dayChip(frame.day + " " + frame.date, String(index), String(day) === String(index), count));
+    });
+    return h("div", { "class": "appt-filters", "data-module": "appointment-filters", "data-visual-id": "appointment-filters" }, [
+      text6("span", "appt-filters__label", "Date"),
+      h("div", { "class": "appt-filters__chips", role: "group", "aria-label": "Filter appointments by date" }, chips)
+    ]);
+  }
+  function dayChip(label, id, active, count) {
+    return h("button", {
+      "class": "appt-chip" + (active ? " appt-chip--on" : ""),
+      "data-action": "appointments.filterDay",
+      "data-id": id,
+      "aria-pressed": active ? "true" : "false"
+    }, count ? [text6("span", "", label), text6("span", "appt-chip__count", String(count))] : [text6("span", "", label)]);
+  }
+  function Table(rows2, direction) {
+    var head = h("tr", null, COLUMNS.map(function(column) {
+      if (!column.sortable) return h("th", { scope: "col" }, column.label);
+      return h("th", { scope: "col", "aria-sort": direction === "desc" ? "descending" : "ascending" }, [
+        h("button", {
+          "class": "appt__sort",
+          "data-action": "appointments.sortResource",
+          "aria-label": "Sort by resource, currently " + (direction === "desc" ? "descending" : "ascending")
+        }, [text6("span", "", column.label), text6("span", "appt__caret", direction === "desc" ? "\u2193" : "\u2191")])
+      ]);
+    }));
+    var body = h("tbody", null, rows2.map(function(row) {
+      var meta = stateMeta(row.state);
+      return h("tr", { "data-module": "appointment-row", "data-visual-id": "appointment-row", "data-state": row.state.toLowerCase() }, [
+        h("td", null, [
+          text6("div", "appt__resource", row.resource),
+          row.day ? text6("div", "appt__sub", row.day) : null
+        ]),
+        h("td", null, [
+          h("button", {
+            "class": "appt__link",
+            "data-action": "appointments.openProperty",
+            "data-id": row.id,
+            "aria-label": "Open " + row.name
+          }, [
+            text6("span", "appt__name", row.name),
+            text6("span", "appt__sub", row.address)
+          ])
+        ]),
+        h("td", null, [
+          h("button", {
+            "class": "appt__link",
+            "data-action": "appointments.openVisit",
+            "data-id": row.id,
+            "aria-label": "Open the " + row.service + " visit at " + row.name
+          }, [
+            text6("span", "status-badge status-badge--" + meta.tone, meta.label),
+            text6("span", "appt__sub", row.service)
+          ])
+        ]),
+        h("td", { "class": "appt__time" }, row.est || "\u2014"),
+        h("td", { "class": "appt__time" }, row.actual || "\u2014")
+      ]);
+    }));
+    return h("div", { "class": "appt__scroll" }, [
+      h("table", { "class": "appt__table" }, [h("thead", null, [head]), body])
+    ]);
+  }
+  function text6(tag, className, value) {
+    return h(tag, className ? { "class": className } : null, value == null ? "" : String(value));
+  }
+
+  // app-templates/customer-portal/runtime/src/routes/VisitDetailPage.js
+  function currentVisit() {
+    var model = currentOverview();
+    var timeline = model && model.weather && model.weather.timeline || [];
+    var rows2 = appointmentRows(model && model.properties, timeline);
+    return rows2.find(function(row) {
+      return row.id === state.visitId;
+    }) || null;
+  }
+  function VisitDetail() {
+    var page = h("section", { "class": "page page--narrow", "data-route": "visit.detail", "data-visual-id": "visit-detail" });
+    var visit = currentVisit();
+    page.appendChild(h("div", { "class": "detail-back", "data-action": "nav.go", "data-id": "appointments" }, "\u2039 Back to appointments"));
+    if (!visit) {
+      page.appendChild(EmptyState({ glyph: "\u25CC", title: "Visit not found", desc: "This visit is no longer on the schedule." }));
+      return page;
+    }
+    var meta = stateMeta(visit.state);
+    page.appendChild(h("div", { "class": "prop-head", "data-state": visit.state.toLowerCase() }, [
+      h("div", { style: "flex:1;min-width:0" }, [
+        text7("h1", "prop-head__title", visit.service),
+        text7("div", "prop-head__addr", visit.day)
+      ]),
+      text7("span", "status-badge status-badge--" + meta.tone, meta.label)
+    ]));
+    page.appendChild(h("div", { "class": "card card--pad prop-facts", "data-module": "visit-facts", "data-visual-id": "visit-facts" }, [
+      fact("Resource", visit.resource),
+      fact("Property", visit.name, "appointments.openProperty", visit.id),
+      fact("Address", visit.address),
+      fact("Estimated", visit.est || "\u2014"),
+      fact("Actual", visit.actual || "Not started")
+    ]));
+    return page;
+  }
+  function fact(label, value, action, id) {
+    return h("div", { "class": "prop-fact" }, [
+      text7("div", "prop-fact__label", label),
+      action ? h("div", { "class": "link-action prop-fact__value", "data-action": action, "data-id": id }, value + " \u203A") : text7("div", "prop-fact__value", value)
+    ]);
+  }
+  function text7(tag, className, value) {
+    return h(tag, className ? { "class": className } : null, value == null ? "" : String(value));
+  }
+
+  // app-templates/customer-portal/runtime/client-review/plan.js
+  (function(global) {
+    "use strict";
+    var ns = global.ClientReview || (global.ClientReview = {});
+    var EARTH_RADIUS_METERS = 6378137;
+    var SQUARE_FOOT_IN_SQUARE_METERS = 0.09290304;
+    var MAP_SURFACE = "GOOGLE_MAPS";
+    var TONES = 5;
+    var SVG_NAMESPACE = "http://www.w3.org/2000/svg";
+    var DRAWING_SCALE = 1e5;
+    var DRAWING_MIN_SPAN = 2e-4;
+    var DRAWING_PADDING = 0.08;
+    var DRAWING_MIN_ASPECT = 16 / 9;
+    var DRAWING_MAX_ASPECT = 5 / 2;
+    var DRAWING_DOT = 1 / 70;
+    var METERS_PER_DEGREE = 111320;
+    var AREA_TOLERANCE_SQUARE_FEET = 1;
+    function finite(value) {
+      return typeof value === "number" && isFinite(value);
+    }
+    function radians(degrees) {
+      return degrees * Math.PI / 180;
+    }
+    function position(value) {
+      if (!Array.isArray(value) || value.length < 2 || value.length > 3) return null;
+      var lng = value[0];
+      var lat = value[1];
+      if (!finite(lng) || !finite(lat) || Math.abs(lng) > 180 || Math.abs(lat) > 90) return null;
+      if (value.length === 3 && !finite(value[2])) return null;
+      return { lat, lng };
+    }
+    function path(value, minimum) {
+      if (!Array.isArray(value) || value.length < minimum) return null;
+      var points = [];
+      for (var index = 0; index < value.length; index += 1) {
+        var point = position(value[index]);
+        if (!point) return null;
+        points.push(point);
+      }
+      return points;
+    }
+    function polygon(value) {
+      if (!Array.isArray(value) || !value.length) return null;
+      var rings = [];
+      for (var index = 0; index < value.length; index += 1) {
+        var ring = path(value[index], 4);
+        if (!ring) return null;
+        rings.push(ring);
+      }
+      return rings;
+    }
+    function shapeOf(geometry) {
+      if (!geometry || typeof geometry !== "object") return null;
+      var coordinates = geometry.coordinates;
+      if (geometry.type === "Point") {
+        var point = position(coordinates);
+        return point ? { kind: "point", position: point } : null;
+      }
+      if (geometry.type === "LineString") {
+        var line = path(coordinates, 2);
+        return line ? { kind: "line", path: line } : null;
+      }
+      if (geometry.type === "Polygon") {
+        var single = polygon(coordinates);
+        return single ? { kind: "area", polygons: [single] } : null;
+      }
+      if (geometry.type === "MultiPolygon") {
+        if (!Array.isArray(coordinates) || !coordinates.length) return null;
+        var polygons = [];
+        for (var index = 0; index < coordinates.length; index += 1) {
+          var part = polygon(coordinates[index]);
+          if (!part) return null;
+          polygons.push(part);
+        }
+        return { kind: "area", polygons };
+      }
+      if (geometry.type === "Circle") {
+        var center = position(coordinates);
+        return center && finite(geometry.radius) && geometry.radius > 0 ? { kind: "circle", center, radius: geometry.radius } : null;
+      }
+      return null;
+    }
+    function projector(origin) {
+      var scale = Math.cos(radians(origin.lat));
+      return function(point) {
+        return [EARTH_RADIUS_METERS * radians(point.lng - origin.lng) * scale, EARTH_RADIUS_METERS * radians(point.lat - origin.lat)];
+      };
+    }
+    function ringArea(ring, project) {
+      var twice = 0;
+      ring.forEach(function(point, index) {
+        var here = project(point);
+        var next = project(ring[(index + 1) % ring.length]);
+        twice += here[0] * next[1] - next[0] * here[1];
+      });
+      return Math.abs(twice) / 2;
+    }
+    function polygonArea(rings, project) {
+      var holes = 0;
+      rings.slice(1).forEach(function(ring) {
+        holes += ringArea(ring, project);
+      });
+      return Math.max(0, ringArea(rings[0], project) - holes);
+    }
+    function shapeArea(shape) {
+      if (shape.kind === "circle") return Math.PI * shape.radius * shape.radius;
+      if (shape.kind !== "area") return 0;
+      var project = projector(shape.polygons[0][0][0]);
+      var area = 0;
+      shape.polygons.forEach(function(rings) {
+        area += polygonArea(rings, project);
+      });
+      return area;
+    }
+    function shapePoints(shape) {
+      if (shape.kind === "point") return [shape.position];
+      if (shape.kind === "line") return shape.path;
+      if (shape.kind === "circle") {
+        var latSpan = shape.radius / EARTH_RADIUS_METERS * 180 / Math.PI;
+        var lngSpan = latSpan / Math.max(Math.cos(radians(shape.center.lat)), 0.01);
+        return [
+          { lat: shape.center.lat + latSpan, lng: shape.center.lng + lngSpan },
+          { lat: shape.center.lat - latSpan, lng: shape.center.lng - lngSpan }
+        ];
+      }
+      var points = [];
+      shape.polygons.forEach(function(rings) {
+        points = points.concat(rings[0]);
+      });
+      return points;
+    }
+    function boundsOf(elements) {
+      var bounds = { north: -90, south: 90, east: -180, west: 180 };
+      elements.forEach(function(element) {
+        element.shapes.forEach(function(shape) {
+          shapePoints(shape).forEach(function(point) {
+            bounds.north = Math.max(bounds.north, point.lat);
+            bounds.south = Math.min(bounds.south, point.lat);
+            bounds.east = Math.max(bounds.east, point.lng);
+            bounds.west = Math.min(bounds.west, point.lng);
+          });
+        });
+      });
+      return bounds;
+    }
+    function nameOf(element, locale) {
+      var localized = ns.normalizer && typeof ns.normalizer.localizedName === "function" ? ns.normalizer.localizedName(element.nls, locale) : "";
+      var label = typeof element.label === "string" ? element.label.replace(/\s+/g, " ").trim() : "";
+      return localized || label;
+    }
+    function parse(raw, locale) {
+      if (!raw || typeof raw !== "object" || raw.type !== "PropertyPlan" || raw.schemaVersion !== 1 || !Array.isArray(raw.elements)) return null;
+      var tones = {};
+      var toneCount = 0;
+      var elements = [];
+      var area = 0;
+      raw.elements.forEach(function(element) {
+        if (!element || typeof element !== "object" || !Array.isArray(element.overlays)) return;
+        var shapes = [];
+        element.overlays.forEach(function(overlay) {
+          if (!overlay || typeof overlay !== "object" || overlay.map !== MAP_SURFACE) return;
+          var shape = shapeOf(overlay.geometry);
+          if (shape) shapes.push(shape);
+        });
+        if (!shapes.length) return;
+        var type = "type-" + String(element.elementTypeDictionaryId);
+        if (!Object.prototype.hasOwnProperty.call(tones, type)) {
+          tones[type] = toneCount % TONES + 1;
+          toneCount += 1;
+        }
+        var elementArea = 0;
+        shapes.forEach(function(shape) {
+          elementArea += shapeArea(shape);
+        });
+        area += elementArea;
+        var kind = shapes[0].kind === "circle" ? "area" : shapes[0].kind;
+        var squareFeet = elementArea / SQUARE_FOOT_IN_SQUARE_METERS;
+        elements.push({
+          key: "element-" + (elements.length + 1),
+          position: elements.length + 1,
+          name: nameOf(element, locale),
+          tone: tones[type],
+          kind,
+          shapes,
+          squareFeet,
+          areaText: kind === "area" ? formatArea2(squareFeet, locale) : ""
+        });
+      });
+      if (!elements.length) return null;
+      var planSquareFeet = area / SQUARE_FOOT_IN_SQUARE_METERS;
+      return { elements, squareFeet: planSquareFeet, areaText: formatArea2(planSquareFeet, locale), bounds: boundsOf(elements) };
+    }
+    function formatArea2(squareFeet, locale) {
+      if (!finite(squareFeet) || squareFeet <= 0) return "";
+      try {
+        return new Intl.NumberFormat(locale, { maximumFractionDigits: 0 }).format(squareFeet);
+      } catch (_) {
+        return new Intl.NumberFormat("en", { maximumFractionDigits: 0 }).format(squareFeet);
+      }
+    }
+    function sumsTo(plan, squareFeet) {
+      return Boolean(plan) && finite(squareFeet) && squareFeet > 0 && Math.abs(plan.squareFeet - squareFeet) <= AREA_TOLERANCE_SQUARE_FEET;
+    }
+    function frameOf(bounds) {
+      var cos = Math.cos(radians((bounds.north + bounds.south) / 2));
+      var spanX = (bounds.east - bounds.west) * cos * DRAWING_SCALE;
+      var spanY = (bounds.north - bounds.south) * DRAWING_SCALE;
+      var minimum = DRAWING_MIN_SPAN * DRAWING_SCALE;
+      var reach = Math.max(spanX, spanY, minimum);
+      var width = Math.max(spanX, minimum) + reach * DRAWING_PADDING * 2;
+      var height = Math.max(spanY, minimum) + reach * DRAWING_PADDING * 2;
+      if (width / height < DRAWING_MIN_ASPECT) width = height * DRAWING_MIN_ASPECT;
+      if (width / height > DRAWING_MAX_ASPECT) height = width / DRAWING_MAX_ASPECT;
+      return {
+        x: spanX / 2 - width / 2,
+        y: spanY / 2 - height / 2,
+        width,
+        height,
+        dot: reach * DRAWING_DOT,
+        project: function(point) {
+          return [(point.lng - bounds.west) * cos * DRAWING_SCALE, (bounds.north - point.lat) * DRAWING_SCALE];
+        }
+      };
+    }
+    function svgNode(doc, tag, attributes) {
+      var node = doc.createElementNS(SVG_NAMESPACE, tag);
+      (/* @__PURE__ */ Object.keys(attributes)).forEach(function(name) {
+        node.setAttribute(name, String(attributes[name]));
+      });
+      return node;
+    }
+    function shapeNode(doc, shape, element, frame, prefix) {
+      var attributes = { "class": prefix + "__shape", "data-tone": String(element.tone), "data-kind": shape.kind };
+      if (shape.kind === "area") {
+        attributes.d = shape.polygons.map(function(rings) {
+          return rings.map(function(ring) {
+            return "M" + ring.map(function(point) {
+              return frame.project(point).join(" ");
+            }).join("L") + "Z";
+          }).join("");
+        }).join("");
+        attributes["fill-rule"] = "evenodd";
+        return svgNode(doc, "path", attributes);
+      }
+      if (shape.kind === "line") {
+        attributes.points = shape.path.map(function(point) {
+          return frame.project(point).join(",");
+        }).join(" ");
+        return svgNode(doc, "polyline", attributes);
+      }
+      var center = frame.project(shape.kind === "circle" ? shape.center : shape.position);
+      attributes.cx = center[0];
+      attributes.cy = center[1];
+      attributes.r = shape.kind === "circle" ? shape.radius / METERS_PER_DEGREE * DRAWING_SCALE : frame.dot;
+      return svgNode(doc, "circle", attributes);
+    }
+    function ringCentre(ring, frame) {
+      var points = ring.map(frame.project);
+      var twice = 0;
+      var x = 0;
+      var y = 0;
+      points.forEach(function(here, index) {
+        var next = points[(index + 1) % points.length];
+        var cross = here[0] * next[1] - next[0] * here[1];
+        twice += cross;
+        x += (here[0] + next[0]) * cross;
+        y += (here[1] + next[1]) * cross;
+      });
+      return { weight: Math.abs(twice) / 2, point: twice ? [x / (3 * twice), y / (3 * twice)] : points[0] };
+    }
+    function labelPoint(element, frame) {
+      var best = null;
+      element.shapes.forEach(function(shape) {
+        var candidates = [];
+        if (shape.kind === "circle") {
+          var reach = shape.radius / METERS_PER_DEGREE * DRAWING_SCALE;
+          candidates.push({ weight: Math.PI * reach * reach, point: frame.project(shape.center) });
+        } else if (shape.kind === "area") {
+          shape.polygons.forEach(function(rings) {
+            candidates.push(ringCentre(rings[0], frame));
+          });
+        }
+        candidates.forEach(function(candidate) {
+          if (!best || candidate.weight > best.weight) best = candidate;
+        });
+      });
+      return best ? best.point : null;
+    }
+    function percent(value) {
+      return Math.min(Math.max(value, 0), 1) * 100 + "%";
+    }
+    function figure(doc, plan, options2) {
+      var settings = options2 || {};
+      var prefix = settings.classPrefix;
+      var frame = frameOf(plan.bounds);
+      var node = doc.createElement("div");
+      node.className = prefix + "__figure";
+      var svg = svgNode(doc, "svg", {
+        "class": prefix + "__drawing",
+        viewBox: [frame.x, frame.y, frame.width, frame.height].join(" "),
+        role: "img",
+        "aria-label": settings.label || ""
+      });
+      plan.elements.forEach(function(element) {
+        element.shapes.forEach(function(shape) {
+          svg.appendChild(shapeNode(doc, shape, element, frame, prefix));
+        });
+      });
+      node.appendChild(svg);
+      var labels = 0;
+      plan.elements.forEach(function(element) {
+        var point = labelPoint(element, frame);
+        var name = typeof settings.nameOf === "function" ? settings.nameOf(element) : element.name;
+        if (!point || !name) return;
+        var label = doc.createElement("span");
+        label.className = prefix + "__label";
+        label.setAttribute("data-tone", String(element.tone));
+        label.setAttribute("aria-hidden", "true");
+        label.style.left = percent((point[0] - frame.x) / frame.width);
+        label.style.top = percent((point[1] - frame.y) / frame.height);
+        label.textContent = name;
+        node.appendChild(label);
+        labels += 1;
+      });
+      node.setAttribute("data-labels", String(labels));
+      return node;
+    }
+    ns.plan = /* @__PURE__ */ Object.freeze({
+      tones: TONES,
+      parse,
+      formatArea: formatArea2,
+      sumsTo,
+      figure
+    });
+  })(typeof window !== "undefined" ? window : globalThis);
+
+  // app-templates/customer-portal/runtime/src/components/storm/PropertyPlan.js
+  function PropertyPlan(entry2, property, planMap) {
+    if (!entry2 || entry2.status === "unavailable") return null;
+    var card = h("section", { "class": "card card--pad prop-plan", "data-module": "property-plan", "data-visual-id": "property-plan", "data-state": entry2.status, "aria-labelledby": "property-plan-title" }, [
+      h("div", { "class": "prop-section__title", id: "property-plan-title" }, "Service plan")
+    ]);
+    if (entry2.status !== "ready") {
+      card.setAttribute("aria-busy", "true");
+      card.appendChild(skel("height:220px;border-radius:14px"));
+      return card;
+    }
+    var sized = globalThis.ClientReview.plan.sumsTo(entry2.plan, property ? property.areaSqft : null);
+    var satellite = planMap ? planMap.view(entry2.plan, "Service plan on a satellite map") : null;
+    if (satellite) card.appendChild(satellite);
+    card.appendChild(planDrawing(entry2.plan));
+    card.appendChild(h("ul", { "class": "prop-plan__legend", "aria-label": "Plan elements" }, entry2.plan.elements.map(function(element) {
+      return h("li", { "class": "prop-plan__item" }, [
+        h("span", { "class": "prop-plan__swatch", "data-tone": String(element.tone), "data-kind": element.kind, "aria-hidden": "true" }),
+        h("span", { "class": "prop-plan__name" }, elementName(element)),
+        sized && element.areaText ? h("span", { "class": "prop-plan__size" }, element.areaText + " ft\xB2") : null
+      ]);
+    })));
+    return card;
+  }
+  function planDrawing(plan) {
+    return globalThis.ClientReview.plan.figure(document, plan, {
+      classPrefix: "prop-plan",
+      label: "Plan drawing with " + plan.elements.length + (plan.elements.length === 1 ? " element" : " elements"),
+      nameOf: elementName
+    });
+  }
+  function elementName(element) {
+    return element.name || "Element " + element.position;
+  }
+
+  // app-templates/customer-portal/runtime/src/support-attachments.js
+  var ATTACHMENT_LIMITS = /* @__PURE__ */ Object.freeze({ count: 5, fileBytes: 5 * 1024 * 1024, totalBytes: 10 * 1024 * 1024 });
+  var ATTACHMENT_TYPES = /* @__PURE__ */ Object.freeze(["image/jpeg", "image/png", "image/gif", "image/webp", "application/pdf"]);
+  var ATTACHMENT_ACCEPT = ATTACHMENT_TYPES.join(",");
+  var ATTACHMENT_COPY = /* @__PURE__ */ Object.freeze({
+    count: "Attach at most " + ATTACHMENT_LIMITS.count + " files.",
+    fileSize: "Each file must be 5 MB or smaller.",
+    totalSize: "Files together must be 10 MB or smaller.",
+    type: "Attach JPEG, PNG, GIF or WebP images, or PDF files.",
+    unreadable: "This file couldn\u2019t be read. Try another one."
+  });
+  var SIGNATURES = /* @__PURE__ */ Object.freeze([
+    { type: "image/jpeg", bytes: [255, 216, 255] },
+    { type: "image/png", bytes: [137, 80, 78, 71, 13, 10, 26, 10] },
+    { type: "image/gif", bytes: [71, 73, 70, 56] },
+    { type: "application/pdf", bytes: [37, 80, 68, 70, 45] }
+  ]);
+  function sniffType(bytes) {
+    var head = bytes || [];
+    var known = SIGNATURES.find(function(signature) {
+      return signature.bytes.every(function(value, index) {
+        return head[index] === value;
+      });
+    });
+    if (known) return known.type;
+    var riff = [82, 73, 70, 70].every(function(value, index) {
+      return head[index] === value;
+    });
+    var webp = [87, 69, 66, 80].every(function(value, index) {
+      return head[index + 8] === value;
+    });
+    return riff && webp ? "image/webp" : "";
+  }
+  function attachmentProblem(existing, added) {
+    var files2 = (existing || []).concat(added || []);
+    if (files2.length > ATTACHMENT_LIMITS.count) return ATTACHMENT_COPY.count;
+    if ((added || []).some(function(file) {
+      return !file.type;
+    })) return ATTACHMENT_COPY.type;
+    if (files2.some(function(file) {
+      return file.size > ATTACHMENT_LIMITS.fileBytes;
+    })) return ATTACHMENT_COPY.fileSize;
+    var total = files2.reduce(function(sum, file) {
+      return sum + file.size;
+    }, 0);
+    if (total > ATTACHMENT_LIMITS.totalBytes) return ATTACHMENT_COPY.totalSize;
+    return "";
+  }
+  function attachmentsValue(files2) {
+    var list = (files2 || []).map(function(file) {
+      return { name: file.name, data: file.data };
+    });
+    return list.length ? JSON.stringify(list) : "";
+  }
+  function readAttachment(file) {
+    return new Promise(function(resolve) {
+      var Reader = globalThis.FileReader;
+      if (typeof Reader !== "function" || !file) {
+        resolve(null);
+        return;
+      }
+      var reader = new Reader();
+      reader.onload = function() {
+        var data = typeof reader.result === "string" ? reader.result : "";
+        var bytes = headBytes(data);
+        var type = sniffType(bytes);
+        resolve({ key: attachmentKey(file), name: String(file.name || "file"), size: Number(file.size) || 0, type: ATTACHMENT_TYPES.indexOf(type) !== -1 ? type : "", data });
+      };
+      reader.onerror = function() {
+        resolve(null);
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+  function formatBytes(size) {
+    if (!Number.isFinite(size) || size < 0) return "";
+    if (size < 1024) return size + " B";
+    if (size < 1024 * 1024) return Math.round(size / 1024) + " KB";
+    return Math.round(size / 104857.6) / 10 + " MB";
+  }
+  function attachmentKey(file) {
+    return [file.name, file.size, file.lastModified].join(":") + ":" + Math.random().toString(36).slice(2, 8);
+  }
+  function headBytes(dataUrl) {
+    var comma = dataUrl.indexOf(",");
+    if (comma === -1) return [];
+    try {
+      var decoded = globalThis.atob(dataUrl.slice(comma + 1, comma + 1 + 24));
+      return Array.prototype.map.call(decoded, function(character) {
+        return character.charCodeAt(0);
+      });
+    } catch (_) {
+      return [];
+    }
+  }
+
+  // app-templates/customer-portal/runtime/src/rich-text.js
+  var RICH_TEXT_TAGS = /* @__PURE__ */ Object.freeze(["p", "br", "strong", "b", "em", "i", "u", "s", "strike", "ul", "ol", "li", "blockquote", "code", "pre", "h1", "h2", "h3", "a"]);
+  var RICH_TEXT_LINK_SCHEMES = /* @__PURE__ */ Object.freeze(["http:", "https:", "mailto:"]);
+  var RICH_TEXT_LIMIT = 4e3;
+  var RICH_HTML_LIMIT = 2e4;
+  var DROPPED = /* @__PURE__ */ Object.freeze(["script", "style", "template", "iframe", "object", "embed", "svg", "math", "noscript", "title", "head", "img", "video", "audio", "canvas", "input", "button", "select", "textarea", "form"]);
+  var AS_PARAGRAPH = /* @__PURE__ */ Object.freeze(["div", "section", "article", "header", "footer", "h4", "h5", "h6"]);
+  var BLOCKS = /* @__PURE__ */ Object.freeze(["p", "ul", "ol", "li", "blockquote", "pre", "h1", "h2", "h3"]);
+  var VOID = /* @__PURE__ */ Object.freeze(["br"]);
+  function safeLink(value) {
+    var href = String(value == null ? "" : value).trim();
+    if (!href) return "";
+    try {
+      var url = new URL(href);
+      return RICH_TEXT_LINK_SCHEMES.indexOf(url.protocol) !== -1 ? url.href : "";
+    } catch (_) {
+      return "";
+    }
+  }
+  function richTree(source) {
+    return asBlocks(cleanChildren(source && source.childNodes ? source.childNodes : []));
+  }
+  function asBlocks(nodes) {
+    var blocks = [];
+    var run2 = [];
+    var flush = function() {
+      if (run2.some(hasContent)) blocks.push({ tag: "p", children: trimRun(run2) });
+      run2 = [];
+    };
+    nodes.forEach(function(node) {
+      if (typeof node !== "string" && BLOCKS.indexOf(node.tag) !== -1) {
+        flush();
+        if (node.tag !== "p" || hasContent(node)) blocks.push(node);
+      } else {
+        run2.push(node);
+      }
+    });
+    flush();
+    return blocks;
+  }
+  function hasContent(node) {
+    if (typeof node === "string") return !!node.replace(/\u00a0/g, " ").trim();
+    return node.tag === "br" ? false : node.children.some(hasContent);
+  }
+  function trimRun(run2) {
+    var start = 0;
+    var end = run2.length;
+    while (start < end && isBreak(run2[start])) start += 1;
+    while (end > start && isBreak(run2[end - 1])) end -= 1;
+    return run2.slice(start, end);
+  }
+  function isBreak(node) {
+    return typeof node === "string" ? !node.trim() : node.tag === "br";
+  }
+  function parseRichHtml(html, parse) {
+    var value = String(html == null ? "" : html);
+    if (!value.trim()) return [];
+    var reader = parse || browserParse;
+    return richTree(reader(value));
+  }
+  function cleanRichHtml(html, parse) {
+    return richHtml(parseRichHtml(html, parse));
+  }
+  function richHtml(tree) {
+    var html = tree.map(serialize).join("");
+    return richText(tree).trim() ? html : "";
+  }
+  function richText(tree) {
+    return tree.map(function(node) {
+      if (typeof node === "string") return node;
+      if (node.tag === "br") return "\n";
+      var inner = richText(node.children);
+      return BLOCKS.indexOf(node.tag) !== -1 ? inner + "\n" : inner;
+    }).join("");
+  }
+  function richNodes(tree) {
+    return tree.map(function(node) {
+      if (typeof node === "string") return globalThis.document.createTextNode(node);
+      if (node.tag === "a") return h("a", { href: node.href, rel: "noopener noreferrer nofollow", target: "_blank" }, richNodes(node.children));
+      return h(node.tag, null, richNodes(node.children));
+    });
+  }
+  function RichText(html, attributes, parse) {
+    return h("div", Object.assign({ "class": "rich-text" }, attributes || {}), richNodes(parseRichHtml(html, parse)));
+  }
+  function browserParse(html) {
+    var Parser = globalThis.DOMParser;
+    if (typeof Parser !== "function") return { childNodes: [globalThis.document.createTextNode(html.replace(/<[^>]*>/g, " "))] };
+    return new Parser().parseFromString("<!doctype html><body>" + html, "text/html").body;
+  }
+  function cleanChildren(nodes) {
+    var out = [];
+    Array.prototype.forEach.call(nodes, function(node) {
+      cleanNode(node).forEach(function(cleaned) {
+        var last = out[out.length - 1];
+        if (typeof cleaned === "string" && typeof last === "string") out[out.length - 1] = last + cleaned;
+        else out.push(cleaned);
+      });
+    });
+    return out;
+  }
+  function cleanNode(node) {
+    if (!node || node.nodeType === 8) return [];
+    if (typeof node.tagName !== "string") {
+      var value = node.nodeType === 3 || node.nodeType === void 0 ? String(node.textContent == null ? node.nodeValue || "" : node.textContent) : "";
+      return value ? [value] : [];
+    }
+    var tag = node.tagName.toLowerCase();
+    if (DROPPED.indexOf(tag) !== -1) return [];
+    var children = cleanChildren(node.childNodes || []);
+    if (tag === "a") {
+      var href = safeLink(node.getAttribute && node.getAttribute("href"));
+      return href ? [{ tag: "a", href, children }] : children;
+    }
+    if (AS_PARAGRAPH.indexOf(tag) !== -1) return [{ tag: "p", children }];
+    if (tag === "ol" && children.some(function(child) {
+      return child.tag === "li" && child.bullet;
+    })) return [{ tag: "ul", children }];
+    if (tag === "li") return [{ tag: "li", bullet: !!(node.getAttribute && node.getAttribute("data-list") === "bullet"), children }];
+    if (RICH_TEXT_TAGS.indexOf(tag) === -1) return children;
+    if (VOID.indexOf(tag) !== -1) return [{ tag, children: [] }];
+    return [{ tag, children }];
+  }
+  function serialize(node) {
+    if (typeof node === "string") return escapeText(node);
+    if (node.tag === "br") return "<br>";
+    var inner = node.children.map(serialize).join("");
+    if (node.tag === "a") return '<a href="' + escapeAttribute(node.href) + '">' + inner + "</a>";
+    return "<" + node.tag + ">" + inner + "</" + node.tag + ">";
+  }
+  function escapeText(value) {
+    return value.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  }
+  function escapeAttribute(value) {
+    return escapeText(value).replace(/"/g, "&quot;");
+  }
+
+  // app-templates/customer-portal/runtime/src/support-thread.js
+  var TICKET_ACTION_NOTE = "Marked by the client in the portal.";
+  var TICKET_ACTIONS = /* @__PURE__ */ Object.freeze({
+    "NEW-WAITING": /* @__PURE__ */ Object.freeze({ label: "Put on hold", attributes: /* @__PURE__ */ Object.freeze({ WAITING_REASON: "AWAITING_CUSTOMER" }) }),
+    "IN_PROGRESS-WAITING": /* @__PURE__ */ Object.freeze({ label: "Put on hold", attributes: /* @__PURE__ */ Object.freeze({ WAITING_REASON: "AWAITING_CUSTOMER" }) }),
+    "WAITING-IN_PROGRESS": /* @__PURE__ */ Object.freeze({ label: "Resume", attributes: /* @__PURE__ */ Object.freeze({}) }),
+    "NEW-CLOSED": /* @__PURE__ */ Object.freeze({ label: "Mark resolved", attributes: /* @__PURE__ */ Object.freeze({ CLOSURE_OUTCOME: "RESOLVED", CLOSURE_COMMENT: TICKET_ACTION_NOTE }) }),
+    "IN_PROGRESS-RESOLVED": /* @__PURE__ */ Object.freeze({ label: "Mark resolved", attributes: /* @__PURE__ */ Object.freeze({ RESOLUTION_SUMMARY: TICKET_ACTION_NOTE }) }),
+    "WAITING-RESOLVED": /* @__PURE__ */ Object.freeze({ label: "Mark resolved", attributes: /* @__PURE__ */ Object.freeze({ RESOLUTION_SUMMARY: TICKET_ACTION_NOTE }) }),
+    "RESOLVED-IN_PROGRESS": /* @__PURE__ */ Object.freeze({ label: "Reopen", attributes: /* @__PURE__ */ Object.freeze({ RETURN_REASON: TICKET_ACTION_NOTE }) }),
+    "RESOLVED-CLOSED": /* @__PURE__ */ Object.freeze({ label: "Close", attributes: /* @__PURE__ */ Object.freeze({ CLOSURE_OUTCOME: "RESOLVED" }) })
+  });
+  var TICKET_CONFIRM = /* @__PURE__ */ Object.freeze({
+    CLOSED: "This closes the ticket. You won\u2019t be able to add comments afterwards, and only our team can reopen it.",
+    RESOLVED: "Mark this ticket resolved? You can still reopen it or close it afterwards."
+  });
+  var COMMENT_COPY = /* @__PURE__ */ Object.freeze({
+    empty: "Write a message or attach a file.",
+    long: "Keep the message under " + RICH_TEXT_LIMIT.toLocaleString("en-US") + " characters.",
+    heavy: "This message has too much formatting. Shorten it and try again.",
+    notSent: "Your comment wasn\u2019t sent. Check your connection and try again.",
+    serverError: "Your comment wasn\u2019t sent: our system answered with an error. Please try again in a few minutes.",
+    failed: "We couldn\u2019t add your comment right now. Please try again in a few minutes.",
+    refused: "We couldn\u2019t add this comment.",
+    slow: "We\u2019re still adding your comment. You don\u2019t need to send it again.",
+    closed: "This ticket is closed. Open a new ticket if you need more help."
+  });
+  var ACTION_COPY = /* @__PURE__ */ Object.freeze({
+    refused: "This action wasn\u2019t accepted. Nothing was changed.",
+    failed: "We couldn\u2019t reach our system. Nothing was changed; try again in a moment.",
+    unconfirmed: "We sent your request, but the ticket hasn\u2019t changed yet. Refresh in a moment."
+  });
+  var COMMENT_OUTCOMES = /* @__PURE__ */ Object.freeze(["ADDED", "REFUSED", "FAILED"]);
+  var COMMENT_FIELDS = /* @__PURE__ */ Object.freeze(["MESSAGE", "ATTACHMENTS"]);
+  var COMMENT_TIMEOUT_MS = 6e4;
+  var BUSY = /* @__PURE__ */ Object.freeze(["sending", "waiting", "checking"]);
+  var details = /* @__PURE__ */ new Map();
+  var files = /* @__PURE__ */ new Map();
+  function ticketBackendId(routeId) {
+    var match = /^ticket-core-(\d+)$/.exec(text(routeId));
+    return match ? positiveInteger(match[1]) : null;
+  }
+  function ticketAction(event) {
+    var code = text(event && event.code);
+    var known = Object.prototype.hasOwnProperty.call(TICKET_ACTIONS, code) ? TICKET_ACTIONS[code] : null;
+    var target = code.split("-")[1] || "";
+    var named2 = text(event && event.nls && event.nls.en && event.nls.en.NAME);
+    return {
+      code,
+      label: known ? known.label : named2 || humanize(target),
+      attributes: known ? known.attributes : {},
+      confirm: TICKET_CONFIRM[target] || "",
+      target
+    };
+  }
+  function ticketDetail(backendId, onChange, fetchImpl) {
+    var id = positiveInteger(backendId);
+    if (!id) return null;
+    var key = detailKey(id);
+    var entry2 = details.get(key);
+    if (entry2) return entry2;
+    entry2 = { backendId: id, status: "loading", ticket: null, events: { status: "loading", list: [] }, action: null, refreshing: false };
+    details.set(key, entry2);
+    load(entry2, onChange, fetchImpl);
+    return entry2;
+  }
+  function refreshTicketDetail(backendId, onChange, fetchImpl) {
+    var entry2 = details.get(detailKey(positiveInteger(backendId)));
+    if (!entry2) return ticketDetail(backendId, onChange, fetchImpl) ? Promise.resolve(true) : Promise.resolve(false);
+    if (entry2.refreshing) return Promise.resolve(false);
+    entry2.refreshing = true;
+    if (entry2.action && entry2.action.phase !== "sending") entry2.action = null;
+    if (onChange) onChange();
+    return load(entry2, onChange, fetchImpl).then(function() {
+      return true;
+    });
+  }
+  function load(entry2, onChange, fetchImpl) {
+    var context = { config: state.config, state };
+    var fetcher = fetchImpl || coreSessionFetch;
+    var ticket = readTicket(context, entry2.backendId, fetcher).then(function(row) {
+      var normalized = normalizeTicket(row);
+      entry2.ticket = normalized;
+      entry2.status = normalized ? "ready" : "not-found";
+    }, function(error2) {
+      if (error2 && error2.code === "session-expired") state.account = "session-expired";
+      entry2.status = error2 && (error2.code === "not-found" || error2.code === "customer-forbidden") ? "not-found" : entry2.ticket ? "ready" : "error";
+    });
+    var events = readTicketEvents(context, entry2.backendId, fetcher).then(function(rows2) {
+      entry2.events = { status: "ready", list: rows2.map(ticketAction).filter(function(action) {
+        return !!action.code;
+      }) };
+    }, function() {
+      entry2.events = { status: "error", list: [] };
+    });
+    return Promise.all([ticket, events]).then(function() {
+      entry2.refreshing = false;
+      if (onChange) onChange();
+    });
+  }
+  function requestTicketAction(backendId, code, onChange, fetchImpl) {
+    var entry2 = details.get(detailKey(positiveInteger(backendId)));
+    if (!entry2 || entry2.refreshing || entry2.action && entry2.action.phase === "sending") return Promise.resolve(false);
+    var action = entry2.events.list.find(function(item) {
+      return item.code === code;
+    });
+    if (!action) return Promise.resolve(false);
+    if (action.confirm) {
+      entry2.action = { phase: "confirm", code, message: "" };
+      if (onChange) onChange();
+      return Promise.resolve(true);
+    }
+    return sendAction(entry2, action, onChange, fetchImpl);
+  }
+  function confirmTicketAction(backendId, onChange, fetchImpl) {
+    var entry2 = details.get(detailKey(positiveInteger(backendId)));
+    if (!entry2 || !entry2.action || entry2.action.phase !== "confirm") return Promise.resolve(false);
+    var action = entry2.events.list.find(function(item) {
+      return item.code === entry2.action.code;
+    });
+    if (!action) return Promise.resolve(false);
+    return sendAction(entry2, action, onChange, fetchImpl);
+  }
+  function cancelTicketAction(backendId) {
+    var entry2 = details.get(detailKey(positiveInteger(backendId)));
+    if (!entry2 || !entry2.action || entry2.action.phase === "sending") return false;
+    entry2.action = null;
+    return true;
+  }
+  function sendAction(entry2, action, onChange, fetchImpl) {
+    var context = { config: state.config, state };
+    var fetcher = fetchImpl || coreSessionFetch;
+    var before = entry2.ticket ? entry2.ticket.stateCode : "";
+    var attributes = {};
+    (/* @__PURE__ */ Object.keys(action.attributes)).forEach(function(code) {
+      attributes[code] = { value: action.attributes[code] };
+    });
+    entry2.action = { phase: "sending", code: action.code, message: "" };
+    if (onChange) onChange();
+    return sendTicketEvent(context, entry2.backendId, action.code, attributes, fetcher).then(function() {
+      return load(entry2, null, fetchImpl).then(function() {
+        var after = entry2.ticket ? entry2.ticket.stateCode : "";
+        entry2.action = after && after !== before ? { phase: "done", code: action.code, message: "" } : { phase: "unconfirmed", code: action.code, message: ACTION_COPY.unconfirmed };
+        if (onChange) onChange("action-" + entry2.action.phase);
+        return entry2.action.phase === "done";
+      });
+    }, function(error2) {
+      if (error2 && error2.code === "session-expired") state.account = "session-expired";
+      entry2.action = { phase: "failed", code: action.code, message: error2 && (error2.code === "command-refused" || error2.code === "customer-forbidden" || error2.status >= 500) ? ACTION_COPY.refused : ACTION_COPY.failed };
+      return load(entry2, null, fetchImpl).then(function() {
+        if (onChange) onChange("action-failed");
+        return false;
+      });
+    });
+  }
+  function ticketComment(backendId) {
+    var id = positiveInteger(backendId);
+    if (!state.ticketComments) state.ticketComments = {};
+    if (!state.ticketComments[id]) state.ticketComments[id] = freshComment();
+    return state.ticketComments[id];
+  }
+  function freshComment() {
+    return { html: "", files: [], errors: {}, phase: "editing", message: "", formId: null, reading: false, sentAt: 0 };
+  }
+  function ticketCommentBusy(comment) {
+    return !!comment && BUSY.indexOf(comment.phase) !== -1;
+  }
+  function changeTicketComment(backendId, html) {
+    var comment = ticketComment(backendId);
+    if (ticketCommentBusy(comment)) return false;
+    comment.html = String(html == null ? "" : html);
+    delete comment.errors.MESSAGE;
+    return true;
+  }
+  function addAttachments(target, picked, onChange) {
+    if (!target || target.reading) return Promise.resolve(false);
+    target.reading = true;
+    delete target.errors.ATTACHMENTS;
+    if (onChange) onChange();
+    return Promise.all(picked.map(readAttachment)).then(function(read) {
+      target.reading = false;
+      if (read.some(function(file) {
+        return !file;
+      })) {
+        target.errors.ATTACHMENTS = ATTACHMENT_COPY.unreadable;
+      } else {
+        var problem = attachmentProblem(target.files, read);
+        if (problem) target.errors.ATTACHMENTS = problem;
+        else target.files = target.files.concat(read);
+      }
+      if (onChange) onChange();
+      return !target.errors.ATTACHMENTS;
+    });
+  }
+  function removeAttachment(target, key) {
+    if (!target || target.reading) return false;
+    var before = target.files.length;
+    target.files = target.files.filter(function(file) {
+      return file.key !== key;
+    });
+    delete target.errors.ATTACHMENTS;
+    return target.files.length !== before;
+  }
+  function richMessageProblem(html, required, copy) {
+    var tree = parseRichHtml(html);
+    var visible = richText(tree).trim();
+    if (!visible) return required ? copy.empty : "";
+    if (visible.length > RICH_TEXT_LIMIT) return copy.long;
+    if (String(html).length > RICH_HTML_LIMIT) return copy.heavy;
+    return "";
+  }
+  function validateTicketComment(comment) {
+    var errors = {};
+    var problem = richMessageProblem(comment.html, !comment.files.length, COMMENT_COPY);
+    if (problem) errors.MESSAGE = problem;
+    var files2 = attachmentProblem([], comment.files);
+    if (files2) errors.ATTACHMENTS = files2;
+    return errors;
+  }
+  function ticketCommentValues(backendId, comment) {
+    var values = { TICKET_ID: positiveInteger(backendId) };
+    if (richText(parseRichHtml(comment.html)).trim()) values.MESSAGE = comment.html;
+    var attachments = attachmentsValue(comment.files);
+    if (attachments) values.ATTACHMENTS = attachments;
+    return values;
+  }
+  function submitTicketComment(backendId, options2) {
+    var settings = options2 || {};
+    var changed = settings.onChange || function() {
+    };
+    var comment = ticketComment(backendId);
+    if (ticketCommentBusy(comment) || comment.reading) return Promise.resolve(false);
+    var detail = details.get(detailKey(positiveInteger(backendId)));
+    if (detail && detail.ticket && detail.ticket.stateCode === "CLOSED") {
+      comment.message = COMMENT_COPY.closed;
+      changed("closed");
+      return Promise.resolve(false);
+    }
+    var errors = validateTicketComment(comment);
+    if ((/* @__PURE__ */ Object.keys(errors)).length) {
+      comment.errors = errors;
+      comment.message = "";
+      changed("invalid");
+      return Promise.resolve(false);
+    }
+    var forms = settings.forms || createCoreProfileFormAdapter({ timeoutMs: COMMENT_TIMEOUT_MS, wait: settings.wait, now: settings.now });
+    var context = { config: state.config, state };
+    comment.phase = "sending";
+    comment.errors = {};
+    comment.message = "";
+    changed("sending");
+    return Promise.resolve().then(function() {
+      return forms.submit(SUPPORT_TICKET_COMMENT_FORM, ticketCommentValues(backendId, comment), context);
+    }).then(function(formId) {
+      if (ticketComment(backendId) !== comment) return false;
+      comment.formId = formId;
+      comment.phase = "waiting";
+      changed("waiting");
+      return awaitComment(backendId, comment, forms, context, settings);
+    }, function(error2) {
+      if (error2 && error2.code === "session-expired") state.account = "session-expired";
+      comment.phase = "editing";
+      comment.message = error2 && error2.status >= 500 ? COMMENT_COPY.serverError : COMMENT_COPY.notSent;
+      changed("not-sent");
+      return false;
+    });
+  }
+  function checkTicketCommentAgain(backendId, options2) {
+    var settings = options2 || {};
+    var comment = ticketComment(backendId);
+    if (comment.phase !== "slow" || !comment.formId) return Promise.resolve(false);
+    comment.phase = "checking";
+    (settings.onChange || function() {
+    })("checking");
+    var forms = settings.forms || createCoreProfileFormAdapter({ timeoutMs: COMMENT_TIMEOUT_MS, wait: settings.wait, now: settings.now });
+    return awaitComment(backendId, comment, forms, { config: state.config, state }, settings);
+  }
+  function awaitComment(backendId, comment, forms, context, settings) {
+    var changed = settings.onChange || function() {
+    };
+    return Promise.resolve().then(function() {
+      return forms.report(SUPPORT_TICKET_COMMENT_FORM, comment.formId, context, COMMENT_OUTCOMES);
+    }).then(function(report) {
+      if (report.outcome === "ADDED") {
+        state.ticketComments[positiveInteger(backendId)] = Object.assign(freshComment(), { sentAt: Date.now() });
+        changed("added");
+        return refreshTicketDetail(backendId, settings.onChange, settings.fetch).then(function() {
+          return true;
+        });
+      }
+      comment.phase = "editing";
+      comment.formId = null;
+      var field4 = text(report.field);
+      var said = text(report.message);
+      if (report.outcome === "REFUSED" && COMMENT_FIELDS.indexOf(field4) !== -1) {
+        comment.errors = {};
+        comment.errors[field4] = said || COMMENT_COPY.refused;
+      } else {
+        comment.message = report.outcome === "REFUSED" ? said || COMMENT_COPY.refused : COMMENT_COPY.failed;
+      }
+      changed(report.outcome === "REFUSED" ? "refused" : "failed");
+      return false;
+    }, function(error2) {
+      if (error2 && error2.code === "session-expired") state.account = "session-expired";
+      comment.phase = "slow";
+      comment.message = COMMENT_COPY.slow;
+      changed("slow");
+      return false;
+    });
+  }
+  function ticketFile(attachment, variant, onChange, fetchImpl) {
+    var key = variant + ":" + attachment.id;
+    var entry2 = files.get(key);
+    if (entry2) return entry2;
+    entry2 = { status: "loading", url: "" };
+    files.set(key, entry2);
+    readTicketFile({ config: state.config, state }, attachment.id, variant, fetchImpl || coreSessionFetch).then(function(blob) {
+      entry2.url = globalThis.URL.createObjectURL(blob);
+      entry2.status = "ready";
+    }, function() {
+      entry2.status = "error";
+    }).then(function() {
+      if (onChange) onChange();
+    });
+    return entry2;
+  }
+  function openTicketFile(mediaId, fetchImpl) {
+    var opened = globalThis.open ? globalThis.open("", "_blank") : null;
+    var cached = files.get("file:" + mediaId);
+    if (cached && cached.status === "ready") return Promise.resolve(navigate(opened, cached.url));
+    if (cached && cached.status === "error") files.delete("file:" + mediaId);
+    var entry2 = ticketFile({ id: mediaId }, "file", null, fetchImpl);
+    return new Promise(function(resolve) {
+      var wait = function() {
+        if (entry2.status === "loading") {
+          setTimeout(wait, 100);
+          return;
+        }
+        resolve(entry2.status === "ready" ? navigate(opened, entry2.url) : fail2(opened));
+      };
+      wait();
+    });
+  }
+  function navigate(tab, url) {
+    if (tab && tab.location) {
+      tab.location.replace(url);
+      return true;
+    }
+    if (globalThis.location) globalThis.location.assign(url);
+    return true;
+  }
+  function fail2(tab) {
+    if (tab && typeof tab.close === "function") tab.close();
+    return false;
+  }
+  function detailKey(backendId) {
+    var account = state.customerAccount && state.customerAccount.id;
+    return account + ":" + backendId;
+  }
+  function humanize(code) {
+    var words = String(code || "").toLowerCase().split("_").filter(Boolean).join(" ");
+    return words ? words.charAt(0).toUpperCase() + words.slice(1) : "Update";
+  }
+
+  // app-templates/customer-portal/runtime/src/support-tickets.js
+  var SUPPORT_TICKET_OUTCOMES = /* @__PURE__ */ Object.freeze(["CREATED", "REFUSED", "FAILED"]);
+  var SUPPORT_TICKET_FIELDS = /* @__PURE__ */ Object.freeze(["PROPERTY_ID", "VISIT_ID", "CONTACT_REASON", "SUBJECT", "MESSAGE", "ATTACHMENTS"]);
+  var SUPPORT_SUBJECT_LIMIT = 150;
+  var SUPPORT_MESSAGE_LIMIT = RICH_TEXT_LIMIT;
+  var SUPPORT_TICKET_OUTCOME_TIMEOUT_MS = 6e4;
+  var SUPPORT_TICKET_COPY = /* @__PURE__ */ Object.freeze({
+    propertyMissing: "Choose the property this is about.",
+    subjectMissing: "Add a short subject.",
+    subjectLong: "Keep the subject under " + SUPPORT_SUBJECT_LIMIT + " characters.",
+    messageMissing: "Tell us what happened.",
+    messageLong: "Keep the message under " + SUPPORT_MESSAGE_LIMIT.toLocaleString("en-US") + " characters.",
+    messageHeavy: "This message has too much formatting. Shorten it and try again.",
+    notSent: "Your ticket wasn\u2019t sent. Check your connection and try again.",
+    serverError: "Your ticket wasn\u2019t sent: our system answered with an error. Nothing was saved. Please try again in a few minutes or contact us directly.",
+    failed: "We couldn\u2019t open your ticket right now. Please try again in a few minutes.",
+    refused: "We couldn\u2019t open this ticket. Check the form and try again."
+  });
+  var BUSY_PHASES2 = /* @__PURE__ */ Object.freeze(["sending", "waiting", "checking"]);
+  function supportTicketsOpen(config) {
+    return !!config && config.vertical === "snow" && config.dataMode === "live" && (config.enabledModules || []).indexOf("support") !== -1;
+  }
+  function supportTicketState() {
+    if (!state.supportTicket) state.supportTicket = freshTicket(null, null);
+    return state.supportTicket;
+  }
+  function supportTicketBusy() {
+    return !!state.supportTicket && BUSY_PHASES2.indexOf(state.supportTicket.phase) !== -1;
+  }
+  function startSupportTicket(propertyBackendId, visitBackendId) {
+    if (supportTicketBusy()) return false;
+    var visit = knownVisit(positiveInteger(visitBackendId));
+    var property = knownProperty(positiveInteger(propertyBackendId) || visit && visit.propertyBackendId);
+    var only = liveProperties().length === 1 ? liveProperties()[0] : null;
+    state.supportTicket = freshTicket(property || only, visit && property && visit.propertyBackendId === property.backendId ? visit : null);
+    return true;
+  }
+  function freshTicket(property, visit) {
+    return {
+      phase: "editing",
+      draft: { propertyId: property ? property.backendId : null, visitId: visit ? visit.backendId : null, reason: "", subject: "", message: "" },
+      files: [],
+      reading: false,
+      errors: {},
+      message: "",
+      formId: null,
+      ticketCode: ""
+    };
+  }
+  function knownProperty(backendId) {
+    return backendId ? liveProperties().find(function(property) {
+      return property.backendId === backendId;
+    }) || null : null;
+  }
+  function knownVisit(backendId) {
+    var visits = liveVisits();
+    if (!backendId || !visits) return null;
+    return visits.upcoming.concat(visits.past, visits.cancelled || []).find(function(visit) {
+      return visit.backendId === backendId;
+    }) || null;
+  }
+  function visitsOfProperty(propertyBackendId) {
+    var visits = liveVisits();
+    if (!visits || !propertyBackendId) return [];
+    return visits.upcoming.concat(visits.past).filter(function(visit) {
+      return visit.propertyBackendId === propertyBackendId;
+    }).sort(function(left, right) {
+      return right.start.ms - left.start.ms;
+    });
+  }
+  function changeSupportTicketDraft(key, value) {
+    var ticket = supportTicketState();
+    if (supportTicketBusy()) return false;
+    if (key === "propertyId") {
+      var property = knownProperty(positiveInteger(value));
+      ticket.draft.propertyId = property ? property.backendId : null;
+      ticket.draft.visitId = null;
+      delete ticket.errors.PROPERTY_ID;
+      delete ticket.errors.VISIT_ID;
+      return true;
+    }
+    if (key === "visitId") {
+      var visit = knownVisit(positiveInteger(value));
+      ticket.draft.visitId = visit && visit.propertyBackendId === ticket.draft.propertyId ? visit.backendId : null;
+      delete ticket.errors.VISIT_ID;
+      return true;
+    }
+    if (key === "reason") {
+      ticket.draft.reason = text(value);
+      delete ticket.errors.CONTACT_REASON;
+      return true;
+    }
+    if (key === "subject" || key === "message") {
+      ticket.draft[key] = String(value == null ? "" : value);
+      delete ticket.errors[key === "subject" ? "SUBJECT" : "MESSAGE"];
+      return true;
+    }
+    return false;
+  }
+  function supportTicketSchema(type) {
+    var attributes = {};
+    (Array.isArray(type && type.attributes) ? type.attributes : []).forEach(function(attribute) {
+      var code = text(attribute && attribute.code);
+      if (code) attributes[code] = attribute;
+    });
+    var reason = attributes.CONTACT_REASON || {};
+    return {
+      reasons: (Array.isArray(reason.options) ? reason.options : []).map(function(option) {
+        var value = text(option && option.value);
+        return value ? { value, label: localizedName5(option.nls) || reasonLabel(value) } : null;
+      }).filter(Boolean)
+    };
+  }
+  function reasonLabel(value, schema) {
+    var code = text(value);
+    var known = schema && (schema.reasons || []).find(function(reason) {
+      return reason.value === code;
+    });
+    if (known) return known.label;
+    var words = code.toLowerCase().split("_").filter(Boolean).join(" ");
+    return words ? words.charAt(0).toUpperCase() + words.slice(1) : "";
+  }
+  function localizedName5(nls) {
+    return text(nls && nls.en && nls.en.NAME);
+  }
+  function loadSupportTicketSchema(options2) {
+    var settings = options2 || {};
+    var current = state.supportTicketSchema;
+    if (current && current.state !== "error") return Promise.resolve(current);
+    var forms = settings.forms || createCoreProfileFormAdapter();
+    var loading = { state: "loading", schema: null };
+    state.supportTicketSchema = loading;
+    return Promise.resolve().then(function() {
+      return forms.type(SUPPORT_TICKET_FORM, { config: state.config, state });
+    }).then(function(type) {
+      if (state.supportTicketSchema !== loading) return state.supportTicketSchema;
+      state.supportTicketSchema = { state: "ready", schema: supportTicketSchema(type) };
+      return state.supportTicketSchema;
+    }, function(error2) {
+      if (state.supportTicketSchema !== loading) return state.supportTicketSchema;
+      if (error2 && error2.code === "session-expired") state.account = "session-expired";
+      state.supportTicketSchema = { state: "error", schema: null };
+      return state.supportTicketSchema;
+    }).then(function(result) {
+      if (settings.onChange) settings.onChange();
+      return result;
+    });
+  }
+  function validateSupportTicket(draft) {
+    var errors = {};
+    var subject = text(draft.subject);
+    if (!draft.propertyId) errors.PROPERTY_ID = SUPPORT_TICKET_COPY.propertyMissing;
+    if (!subject) errors.SUBJECT = SUPPORT_TICKET_COPY.subjectMissing;
+    else if (subject.length > SUPPORT_SUBJECT_LIMIT) errors.SUBJECT = SUPPORT_TICKET_COPY.subjectLong;
+    var problem = richMessageProblem(draft.message, true, { empty: SUPPORT_TICKET_COPY.messageMissing, long: SUPPORT_TICKET_COPY.messageLong, heavy: SUPPORT_TICKET_COPY.messageHeavy });
+    if (problem) errors.MESSAGE = problem;
+    var files2 = attachmentProblem([], draft.files || []);
+    if (files2) errors.ATTACHMENTS = files2;
+    return errors;
+  }
+  function supportTicketValues(draft) {
+    var values = { PROPERTY_ID: draft.propertyId, SUBJECT: text(draft.subject), MESSAGE: text(draft.message) };
+    if (draft.visitId) values.VISIT_ID = draft.visitId;
+    if (draft.reason) values.CONTACT_REASON = draft.reason;
+    var attachments = attachmentsValue(draft.files);
+    if (attachments) values.ATTACHMENTS = attachments;
+    return values;
+  }
+  function submitSupportTicket(options2) {
+    var settings = options2 || {};
+    var ticket = supportTicketState();
+    var changed = settings.onChange || function() {
+    };
+    if (supportTicketBusy() || ticket.phase === "created") return Promise.resolve(false);
+    if (ticket.reading) return Promise.resolve(false);
+    var draft = Object.assign({}, ticket.draft, { files: ticket.files });
+    var errors = validateSupportTicket(draft);
+    if ((/* @__PURE__ */ Object.keys(errors)).length) {
+      ticket.errors = errors;
+      ticket.message = "";
+      changed("invalid");
+      return Promise.resolve(false);
+    }
+    var forms = settings.forms || outcomeForms(settings);
+    var context = { config: state.config, state };
+    ticket.phase = "sending";
+    ticket.errors = {};
+    ticket.message = "";
+    changed("sending");
+    return Promise.resolve().then(function() {
+      return forms.submit(SUPPORT_TICKET_FORM, supportTicketValues(draft), context);
+    }).then(function(formId) {
+      if (state.supportTicket !== ticket) return false;
+      ticket.formId = formId;
+      ticket.phase = "waiting";
+      changed("waiting");
+      return awaitOutcome(ticket, forms, context, settings);
+    }, function(error2) {
+      if (state.supportTicket !== ticket) return false;
+      if (error2 && error2.code === "session-expired") return sessionEnded(ticket, changed);
+      ticket.phase = "editing";
+      ticket.message = error2 && error2.status >= 500 ? SUPPORT_TICKET_COPY.serverError : SUPPORT_TICKET_COPY.notSent;
+      changed("not-sent");
+      return false;
+    });
+  }
+  function checkSupportTicketAgain(options2) {
+    var settings = options2 || {};
+    var ticket = state.supportTicket;
+    if (!ticket || ticket.phase !== "slow" || !ticket.formId) return Promise.resolve(false);
+    ticket.phase = "checking";
+    (settings.onChange || function() {
+    })("checking");
+    return awaitOutcome(ticket, settings.forms || outcomeForms(settings), { config: state.config, state }, settings);
+  }
+  function outcomeForms(settings) {
+    return createCoreProfileFormAdapter({ timeoutMs: SUPPORT_TICKET_OUTCOME_TIMEOUT_MS, wait: settings.wait, now: settings.now });
+  }
+  function awaitOutcome(ticket, forms, context, settings) {
+    var changed = settings.onChange || function() {
+    };
+    return Promise.resolve().then(function() {
+      return forms.report(SUPPORT_TICKET_FORM, ticket.formId, context, SUPPORT_TICKET_OUTCOMES);
+    }).then(function(report) {
+      if (state.supportTicket !== ticket) return false;
+      return settle2(ticket, report, settings);
+    }, function(error2) {
+      if (state.supportTicket !== ticket) return false;
+      if (error2 && error2.code === "session-expired") return sessionEnded(ticket, changed);
+      ticket.phase = "slow";
+      changed("slow");
+      return false;
+    });
+  }
+  function settle2(ticket, report, settings) {
+    var changed = settings.onChange || function() {
+    };
+    if (report.outcome === "CREATED") {
+      ticket.phase = "created";
+      ticket.ticketCode = text(report.ticketCode);
+      ticket.ticketId = positiveInteger(report.ticketId);
+      ticket.message = text(report.message);
+      changed("created");
+      if (settings.reload) Promise.resolve().then(function() {
+        return settings.reload("support");
+      }).catch(function() {
+        return null;
+      });
+      return true;
+    }
+    ticket.phase = "editing";
+    ticket.formId = null;
+    var field4 = text(report.field);
+    var said = text(report.message);
+    if (report.outcome === "REFUSED" && SUPPORT_TICKET_FIELDS.indexOf(field4) !== -1) {
+      ticket.errors = {};
+      ticket.errors[field4] = said || SUPPORT_TICKET_COPY.refused;
+      changed("refused");
+      return false;
+    }
+    ticket.message = report.outcome === "REFUSED" ? said || SUPPORT_TICKET_COPY.refused : SUPPORT_TICKET_COPY.failed;
+    changed(report.outcome === "REFUSED" ? "refused" : "failed");
+    return false;
+  }
+  function sessionEnded(ticket, changed) {
+    ticket.phase = "editing";
+    state.account = "session-expired";
+    changed("session-expired");
+    return false;
+  }
+
+  // app-templates/customer-portal/runtime/src/property-plan.js
+  var MEDIA_ID5 = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
+  var plans = /* @__PURE__ */ new Map();
+  function propertyPlan(planId, onChange, fetchImpl) {
+    if (!MEDIA_ID5.test(String(planId || ""))) return null;
+    var entry2 = plans.get(planId);
+    if (entry2) return entry2;
+    entry2 = { status: "loading", plan: null };
+    plans.set(planId, entry2);
+    readPlan(planId, fetchImpl || globalThis.fetch).then(function(raw) {
+      var plan = globalThis.ClientReview.plan.parse(raw, "en");
+      entry2.status = plan ? "ready" : "unavailable";
+      entry2.plan = plan;
+    }, function() {
+      entry2.status = "unavailable";
+    }).then(function() {
+      if (typeof onChange === "function") onChange();
+    });
+    return entry2;
+  }
+  function readPlan(planId, fetchImpl) {
+    var base = String(state.config.coreApiBase || "/core").replace(/\/+$/, "");
+    return Promise.resolve(fetchImpl(base + "/media/" + planId + "/stream.json", {
+      method: "GET",
+      credentials: "omit",
+      referrerPolicy: "no-referrer",
+      headers: { Accept: "application/json" }
+    })).then(function(response) {
+      if (!response || !response.ok) throw new Error("The property plan could not be read");
+      return response.json();
+    });
+  }
+
+  // app-templates/customer-portal/runtime/src/visit-progress.js
+  var progress = /* @__PURE__ */ new Map();
+  function visitProgress(visit, onChange, fetchImpl) {
+    if (!visit || !visit.backendId) return null;
+    var account = state.customerAccount && state.customerAccount.id;
+    var key = [account, visit.backendId, visit.stateCode].join(":");
+    var entry2 = progress.get(key);
+    if (entry2) return entry2;
+    entry2 = { status: "loading", steps: [] };
+    progress.set(key, entry2);
+    readVisitTransitions({ config: state.config, state }, visit.backendId, fetchImpl || coreSessionFetch).then(function(rows2) {
+      entry2.steps = normalizeVisitProgress(rows2);
+      entry2.status = "ready";
+    }, function() {
+      entry2.status = "unavailable";
+    }).then(function() {
+      if (typeof onChange === "function") onChange();
+    });
+    return entry2;
+  }
+
+  // app-templates/customer-portal/runtime/src/visit-photo-viewer.js
+  var PHOTOSWIPE = /* @__PURE__ */ Object.freeze({
+    version: "5.4.4",
+    script: /* @__PURE__ */ Object.freeze({
+      src: "https://cdnjs.cloudflare.com/ajax/libs/photoswipe/5.4.4/umd/photoswipe.umd.min.js",
+      integrity: "sha384-k8EKyYcONphQ7zH4cQ0888JapXwrLTXQl/Ue1/jYgjVYahln1NWpnt2S4IC56LNh"
+    }),
+    style: /* @__PURE__ */ Object.freeze({
+      href: "https://cdnjs.cloudflare.com/ajax/libs/photoswipe/5.4.4/photoswipe.css",
+      integrity: "sha384-s2AldnnzPSlbjXKTGuicXrolvAtPwQBv9ndvaRLccssYIi3A2bjWOv3p+poD8LUk"
+    })
+  });
+  var VISIT_PHOTO_ACTION = "visit.photo.open";
+  var THUMBNAIL = '[data-action="' + VISIT_PHOTO_ACTION + '"]';
+  var LOAD_TIMEOUT_MS2 = 2e4;
+  var UNMEASURED = /* @__PURE__ */ Object.freeze({ width: 1600, height: 1200 });
+  var loads2 = /* @__PURE__ */ new WeakMap();
+  function loadPhotoSwipe(scope) {
+    scope = scope || globalThis;
+    if (loads2.has(scope)) return loads2.get(scope);
+    var loading = Promise.all([
+      attach(scope, "link", { rel: "stylesheet", href: PHOTOSWIPE.style.href, integrity: PHOTOSWIPE.style.integrity, crossorigin: "anonymous", referrerpolicy: "no-referrer" }),
+      attach(scope, "script", { src: PHOTOSWIPE.script.src, integrity: PHOTOSWIPE.script.integrity, crossorigin: "anonymous", referrerpolicy: "no-referrer", async: "" })
+    ]).then(function() {
+      if (typeof scope.PhotoSwipe !== "function") throw new Error("PhotoSwipe loaded without its constructor");
+      return scope.PhotoSwipe;
+    });
+    loads2.set(scope, loading);
+    loading.catch(function() {
+      loads2.delete(scope);
+    });
+    return loading;
+  }
+  function visitPhotoGallery(trigger) {
+    var section = trigger.closest('[data-module="visit-photos"]');
+    var thumbnails = section ? Array.prototype.slice.call(section.querySelectorAll(THUMBNAIL)) : [trigger];
+    return {
+      index: Math.max(0, thumbnails.indexOf(trigger)),
+      items: thumbnails.map(function(thumbnail) {
+        var image = thumbnail.querySelector("img");
+        return {
+          src: thumbnail.getAttribute("href"),
+          caption: thumbnail.getAttribute("data-caption") || "",
+          alt: image ? image.getAttribute("alt") || "" : "",
+          thumbnail: image
+        };
+      })
+    };
+  }
+  function openVisitPhotos(trigger, options2) {
+    options2 = options2 || {};
+    var scope = options2.scope || globalThis;
+    var load2 = options2.load || loadPhotoSwipe;
+    var gallery = visitPhotoGallery(trigger);
+    var openedFrom = trigger.getAttribute("data-id");
+    return Promise.all([load2(scope), Promise.all(gallery.items.map(function(item) {
+      return measured(item, scope);
+    }))]).then(function(ready) {
+      var PhotoSwipe = ready[0];
+      var viewer = new PhotoSwipe({
+        dataSource: ready[1],
+        index: gallery.index,
+        returnFocus: false,
+        bgOpacity: 0.92,
+        showHideAnimationType: "zoom",
+        indexIndicatorSep: " of ",
+        closeTitle: "Close photo",
+        zoomTitle: "Zoom photo",
+        arrowPrevTitle: "Previous photo",
+        arrowNextTitle: "Next photo",
+        errorMsg: "This photo could not be loaded."
+      });
+      viewer.addFilter("thumbEl", function(thumbnail, data, index) {
+        var current = thumbnailFor(scope, String(index));
+        return current && current.querySelector("img") || thumbnail;
+      });
+      viewer.on("uiRegister", function() {
+        viewer.ui.registerElement({
+          name: "caption",
+          order: 9,
+          isButton: false,
+          appendTo: "root",
+          onInit: function(element) {
+            element.setAttribute("aria-live", "polite");
+            viewer.on("change", function() {
+              element.textContent = viewer.currSlide ? viewer.currSlide.data.caption : "";
+            });
+          }
+        });
+      });
+      viewer.on("destroy", function() {
+        var thumbnail = thumbnailFor(scope, openedFrom) || trigger;
+        if (thumbnail && typeof thumbnail.focus === "function") thumbnail.focus({ preventScroll: true });
+      });
+      viewer.init();
+      return viewer;
+    });
+  }
+  function thumbnailFor(scope, id) {
+    var root = scope.document;
+    if (!root || id == null) return null;
+    return root.querySelector(THUMBNAIL + '[data-id="' + id + '"]');
+  }
+  function measured(item, scope) {
+    var image = item.thumbnail;
+    if (image && image.complete && image.naturalWidth > 0) return Promise.resolve(slide(item, image.naturalWidth, image.naturalHeight));
+    if (typeof scope.Image !== "function") return Promise.resolve(slide(item, UNMEASURED.width, UNMEASURED.height));
+    return new Promise(function(resolve) {
+      var probe = new scope.Image();
+      probe.onload = function() {
+        resolve(slide(item, probe.naturalWidth || UNMEASURED.width, probe.naturalHeight || UNMEASURED.height));
+      };
+      probe.onerror = function() {
+        resolve(slide(item, UNMEASURED.width, UNMEASURED.height));
+      };
+      probe.src = item.src;
+    });
+  }
+  function slide(item, width, height) {
+    return { src: item.src, msrc: item.src, width, height, alt: item.alt, caption: item.caption, thumbCropped: true };
+  }
+  function attach(scope, tag, attributes) {
+    var root = scope.document;
+    if (!root) return Promise.reject(new Error("PhotoSwipe needs a document"));
+    return new Promise(function(resolve, reject) {
+      var node = root.createElement(tag);
+      (/* @__PURE__ */ Object.keys(attributes)).forEach(function(name) {
+        node.setAttribute(name, attributes[name]);
+      });
+      var timer = setTimeout(function() {
+        fail3("did not load in time");
+      }, LOAD_TIMEOUT_MS2);
+      function fail3(reason) {
+        clearTimeout(timer);
+        if (node.parentNode) node.parentNode.removeChild(node);
+        reject(new Error("PhotoSwipe " + tag + " " + reason));
+      }
+      node.addEventListener("load", function() {
+        clearTimeout(timer);
+        resolve();
+      });
+      node.addEventListener("error", function() {
+        fail3("could not be loaded");
+      });
+      (root.head || root.body).appendChild(node);
+    });
+  }
+
+  // app-templates/customer-portal/runtime/src/routes/LiveVisitsPage.js
+  function LiveVisits() {
+    var page = h("section", { "class": "page page--narrow", "data-route": "appointments", "data-visual-id": "visits" });
+    page.appendChild(PageHeader({ title: "Visits" }));
+    var status = liveListStatus("appointmentsTimeline");
+    page.setAttribute("data-state", status);
+    if (status !== "ready") {
+      page.appendChild(listState(status));
+      return page;
+    }
+    var visits = liveVisits();
+    var today = localDateKey(/* @__PURE__ */ new Date(), state.config.timeZone);
+    var properties = liveProperties();
+    var row = function(visit) {
+      return VisitRow(visit, { today, place: visitPlace(visit, properties), onSite: visitOnSite(visit), photos: visitPhotoCount(visit), issue: !!openTicketForVisit(liveTickets(), visit.backendId) });
+    };
+    if (visits.upcoming.length) page.appendChild(RecordSection("visits-upcoming", "Upcoming", visits.upcoming.map(row)));
+    if (visits.past.length) page.appendChild(RecordSection("visits-past", "Past", visits.past.map(row)));
+    if (visits.cancelled.length) page.appendChild(RecordSection("visits-cancelled", "Cancelled", visits.cancelled.map(row)));
+    return page;
+  }
+  function LiveVisitDetail() {
+    var page = h("section", { "class": "page page--narrow", "data-route": "visit.detail", "data-visual-id": "visit-detail" });
+    var bar = h("div", { "class": "detail-bar", "data-module": "visit-detail-bar" }, [
+      ActionButton({ variant: "btn--ghost", label: "Show all visits", action: "nav.go", id: "appointments", visualId: "visit-show-all" })
+    ]);
+    page.appendChild(bar);
+    var status = liveListStatus("appointmentsTimeline");
+    var visit = status === "ready" ? findVisit(liveVisits(), state.visitId) : null;
+    if (!visit) {
+      page.setAttribute("data-state", status === "ready" || status === "empty" ? "not-found" : status);
+      page.appendChild(status === "ready" || status === "empty" ? EmptyState({ glyph: "\u25CC", title: "Visit not found", desc: "This visit is not on your schedule." }) : listState(status));
+      return page;
+    }
+    var today = localDateKey(/* @__PURE__ */ new Date(), state.config.timeZone);
+    var property = liveProperties().find(function(item) {
+      return item.backendId === visit.propertyBackendId;
+    }) || null;
+    page.setAttribute("data-state", visit.stateCode.toLowerCase());
+    page.appendChild(h("div", { "class": "prop-head" }, [
+      h("div", { style: "flex:1;min-width:0" }, [
+        h("h1", { "class": "prop-head__title" }, visitDay(visit, today)),
+        h("div", { "class": "prop-head__addr", "data-module": "visit-when" }, visitWindow(visit))
+      ]),
+      openTicketForVisit(liveTickets(), visit.backendId) ? h("span", { "class": "status-badge status-badge--danger", "data-module": "visit-issue" }, OVERVIEW_STATUS.issue.label) : null,
+      h("span", { "class": "status-badge status-badge--" + visit.status.tone }, visit.status.label)
+    ]));
+    if (property && supportTicketsOpen(state.config)) {
+      bar.appendChild(ActionButton({ variant: "btn--ghost", label: "Open support ticket", action: "support.newTicket", id: property.backendId + ":" + visit.backendId, visualId: "visit-open-ticket" }));
+    }
+    if (property) {
+      page.appendChild(PropertyFacts(property));
+      var plan = PropertyPlan(propertyPlan(property.planId, render), property, sharedPlanMap());
+      if (plan) page.appendChild(plan);
+      var services = ServicesCard(property);
+      if (services) page.appendChild(services);
+    }
+    var crew = CrewCard(visit.crew);
+    if (crew) page.appendChild(crew);
+    var progress2 = ProgressCard(visit);
+    if (progress2) page.appendChild(progress2);
+    if (visit.completionNotes) {
+      page.appendChild(h("section", { "class": "card card--pad record-section", "data-module": "visit-notes", "data-visual-id": "visit-notes" }, [
+        h("h2", { "class": "prop-section__title" }, "Work done"),
+        h("p", { "class": "record-notes" }, visit.completionNotes)
+      ]));
+    }
+    var photos = photoGroups([["Before", visit.before], ["After", visit.after]]);
+    if (photos.length) {
+      page.appendChild(h("section", { "class": "card card--pad record-section", "data-module": "visit-photos", "data-visual-id": "visit-photos" }, [
+        h("h2", { "class": "prop-section__title" }, "Photos")
+      ].concat(photos)));
+    }
+    return page;
+  }
+  function visitOnSite(visit) {
+    if (visit.stateCode !== "IN_PROGRESS" && visit.stateCode !== "COMPLETED") return "";
+    var entry2 = visitProgress(visit, render);
+    return entry2 && entry2.status === "ready" ? onSiteTimes(entry2.steps, visit, state.config.timeZone) : "";
+  }
+  function PropertyFacts(property) {
+    var area = formatArea(property.areaSqft);
+    return h("section", { "class": "card card--pad prop-facts", "data-module": "visit-property", "data-visual-id": "visit-property" }, [
+      h("div", { "class": "prop-fact", "data-fact": "property" }, [
+        h("div", { "class": "prop-fact__label" }, "Property"),
+        h("a", { "class": "link-action prop-fact__value", href: "#/properties/" + encodeURIComponent(property.id), "data-visual-id": "visit-property-link" }, (property.address || property.name) + " \u203A")
+      ]),
+      area ? h("div", { "class": "prop-fact", "data-fact": "area" }, [
+        h("div", { "class": "prop-fact__label" }, "Area"),
+        h("div", { "class": "prop-fact__value" }, area)
+      ]) : null
+    ]);
+  }
+  function ServicesCard(property) {
+    if (!isModuleEnabled("proposals")) return null;
+    var names = activeServiceNames(quotePackage(), property.backendId);
+    if (!names.length) return null;
+    return h("section", { "class": "card card--pad record-section", "data-module": "visit-services", "data-visual-id": "visit-services" }, [
+      h("h2", { "class": "prop-section__title" }, "Services"),
+      h("ul", { "class": "prop-service__lines", "aria-label": "Services" }, names.map(function(name) {
+        return h("li", { "class": "prop-service__line" }, name);
+      }))
+    ]);
+  }
+  function CrewCard(crew) {
+    if (!crew) return null;
+    var fact3 = function(key, label, items) {
+      if (!items.length) return null;
+      return h("div", { "class": "prop-fact", "data-fact": key }, [
+        h("div", { "class": "prop-fact__label" }, label),
+        h("ul", { "class": "visit-crew__list", "aria-label": label }, items.map(function(item) {
+          return h("li", { "class": "visit-crew__item" }, [
+            h("span", { "class": "prop-fact__value" }, item.name),
+            item.kind ? h("span", { "class": "visit-crew__kind" }, item.kind) : null
+          ]);
+        }))
+      ]);
+    };
+    return h("section", { "class": "card card--pad prop-facts visit-crew", "data-module": "visit-crew", "data-visual-id": "visit-crew" }, [
+      fact3("crew", "Who came", crew.people),
+      fact3("vehicle", "Vehicle", crew.vehicle ? [crew.vehicle] : []),
+      fact3("equipment", "Equipment", crew.equipment)
+    ]);
+  }
+  function ProgressCard(visit) {
+    var entry2 = visitProgress(visit, render);
+    if (!entry2 || entry2.status !== "ready" || !entry2.steps.length) return null;
+    var duration = onSiteDuration(entry2.steps);
+    return h("section", { "class": "card card--pad record-section", "data-module": "visit-progress", "data-visual-id": "visit-progress" }, [
+      h("h2", { "class": "prop-section__title" }, "Progress"),
+      h("div", { "class": "timeline" }, [h("div", { "class": "timeline__line" })].concat(entry2.steps.map(function(step) {
+        return h("div", { "class": "timeline-step", "data-module": "visit-progress-step", "data-state": step.code.toLowerCase() }, [
+          h("div", { "class": "timeline-step__dot", style: "background:" + (step.code === "COMPLETED" ? "var(--ok)" : "var(--accent)") }),
+          h("div", { "class": "timeline-step__title" }, step.label + " \xB7 " + progressWhen(step, visit, state.config.timeZone))
+        ]);
+      }))),
+      duration ? h("div", { "class": "prop-fact record-duration", "data-module": "visit-duration" }, [
+        h("div", { "class": "prop-fact__label" }, "Time on site"),
+        h("div", { "class": "prop-fact__value" }, duration)
+      ]) : null
+    ]);
+  }
+  function photoGroups(groups) {
+    var offset = 0;
+    return groups.map(function(group) {
+      var urls = group[1].map(function(id) {
+        return visitImageUrl(state.config.coreApiBase, id);
+      }).filter(Boolean);
+      var element = urls.length ? photoGroup(group[0], urls, offset) : null;
+      offset += urls.length;
+      return element;
+    }).filter(Boolean);
+  }
+  function photoGroup(label, urls, offset) {
+    return h("div", { "class": "record-photos", "data-module": "visit-photos-" + label.toLowerCase() }, [
+      h("div", { "class": "record-photos__label" }, label),
+      h("div", { "class": "record-photos__grid" }, urls.map(function(url, index) {
+        return h("a", { "class": "record-photos__item", href: url, "data-action": VISIT_PHOTO_ACTION, "data-id": String(offset + index), "data-caption": label, "aria-haspopup": "dialog" }, [
+          h("img", { src: url, alt: label + " service photo " + (index + 1), loading: "lazy", decoding: "async" })
+        ]);
+      }))
+    ]);
+  }
+  function listState(status) {
+    if (status === "loading") {
+      return h("div", { "data-module": "visits-loading", "data-visual-id": "visits-loading", "aria-busy": "true" }, [
+        skel("height:72px;border-radius:16px;margin-bottom:12px"),
+        skel("height:72px;border-radius:16px;margin-bottom:12px"),
+        skel("height:72px;border-radius:16px")
+      ]);
+    }
+    if (status === "unauthorized") return UnauthorizedState({ scope: "these visits", backRoute: state.config.defaultRoute });
+    if (status === "error") return ErrorState({ title: "Couldn\u2019t load your visits", desc: "Nothing was changed. Check your connection and try again." });
+    return EmptyState({ glyph: "\u25CC", title: "No visits yet", desc: "Your scheduled and completed visits appear here." });
+  }
+
+  // app-templates/customer-portal/runtime/src/components/proposals/ContractStates.js
+  var READBACK_COPY = {
+    view: "We let the provider know you opened this quote, but its current status couldn\u2019t be loaded",
+    approve: "Your approval was sent, but the quote\u2019s current status couldn\u2019t be loaded",
+    decline: "Your decline was sent, but the quote\u2019s current status couldn\u2019t be loaded",
+    changes: "Your change request was sent, but the quote\u2019s current status couldn\u2019t be loaded",
+    agreement: "Your approval was sent, but the agreement\u2019s current status couldn\u2019t be loaded"
+  };
+  var OUTCOME_COPY = {
+    failed: "We couldn\u2019t confirm whether this went through. Refresh the status before trying again.",
+    refused: "This decision wasn\u2019t accepted, so nothing was changed.",
+    unconfirmed: "Your decision didn\u2019t register \u2014 this is still waiting for it. Nothing else was changed."
+  };
+  function contractsGate(skeleton) {
+    var command = state.contractCommand;
+    if (command && command.phase === "readback-failed") return ReadbackFailed(command.kind);
+    var envelope2 = state.moduleData.proposals;
+    if (!envelope2) return state.moduleStatus.proposals === "error" ? ContractsError() : skeleton();
+    if (envelope2.state === "unauthorized") return UnauthorizedState({ scope: "your contracts", backRoute: state.config.defaultRoute });
+    if (envelope2.state === "unavailable") return ContractsUnavailable();
+    if (envelope2.state === "error") return ContractsError();
+    return null;
+  }
+  function ContractsListSkeleton() {
+    var wrap = h("div", { "data-module": "contracts-loading", "data-visual-id": "contracts-loading", "data-state": "loading", "aria-busy": "true" });
+    wrap.appendChild(h("div", { "class": "proposals-head" }, [h("div", { "class": "proposals-head__read" }, [skel("width:42%;height:28px;margin-bottom:9px"), skel("width:58%;height:13px")])]));
+    wrap.appendChild(skel("height:118px;border-radius:22px;margin-bottom:16px"));
+    wrap.appendChild(skel("height:260px;border-radius:24px;margin-bottom:16px"));
+    wrap.appendChild(skel("height:190px;border-radius:22px"));
+    return wrap;
+  }
+  function ContractDetailSkeleton() {
+    var wrap = h("div", { "data-module": "contracts-loading", "data-visual-id": "contracts-loading", "data-state": "loading", "aria-busy": "true" });
+    wrap.appendChild(h("div", { "class": "proposal-detail-head" }, [h("div", { style: "flex:1" }, [skel("width:52%;height:26px;margin-bottom:9px"), skel("width:38%;height:13px")])]));
+    wrap.appendChild(skel("height:220px;border-radius:20px;margin-bottom:14px"));
+    wrap.appendChild(skel("height:220px;border-radius:20px"));
+    return wrap;
+  }
+  function AgreementDetailSkeleton() {
+    var wrap = h("div", { "data-module": "contracts-loading", "data-visual-id": "contracts-loading", "data-state": "loading", "aria-busy": "true" });
+    wrap.appendChild(h("div", { "class": "proposal-detail-head" }, [h("div", { style: "flex:1" }, [skel("width:52%;height:26px;margin-bottom:9px"), skel("width:38%;height:13px")])]));
+    wrap.appendChild(h("div", { "class": "agreement-parties" }, [PartySkeleton(), PartySkeleton()]));
+    wrap.appendChild(skel("height:220px;border-radius:20px"));
+    return wrap;
+  }
+  function PartySkeleton() {
+    return h("div", { "class": "card card--pad agreement-party", "data-module": "agreement-party-loading" }, [
+      h("div", { "class": "agreement-party__head" }, [
+        skel("width:52px;height:52px;border-radius:16px"),
+        h("div", { "class": "agreement-party__identity" }, [skel("width:30%;height:11px;margin-bottom:8px"), skel("width:70%;height:18px")])
+      ]),
+      skel("width:86%;height:13px;margin-bottom:10px"),
+      skel("width:62%;height:13px")
+    ]);
+  }
+  function ContractsNotices(quotes) {
+    var partial = quotes.partial || {};
+    var notes = [];
+    if (partial.agreements) notes.push("Your service agreements couldn\u2019t be loaded, so only your quotes are shown.");
+    if (partial.orders) notes.push("Your quotes couldn\u2019t be loaded, so only your service agreements are shown.");
+    if (!partial.orders && partial.unreadableOrders) notes.push(partial.unreadableOrders === 1 ? "1 quote listed in your agreements couldn\u2019t be loaded." : partial.unreadableOrders + " quotes listed in your agreements couldn\u2019t be loaded.");
+    if (partial.lines) notes.push("Some services on your quotes couldn\u2019t be loaded. Prices and totals shown come from our system as returned.");
+    if (partial.truncated) notes.push("Only part of your contract history could be shown.");
+    return notes.map(PartialNotice);
+  }
+  function OrdersNotices(quotes) {
+    var partial = quotes.partial || {};
+    var notes = [];
+    if (partial.orders) notes.push("Your orders couldn\u2019t be loaded. Try again in a moment.");
+    if (partial.lines) notes.push("Some services on your orders couldn\u2019t be loaded. Prices and totals shown come from our system as returned.");
+    if (partial.truncated) notes.push("Only part of your order history could be shown.");
+    return notes.map(PartialNotice);
+  }
+  function AgreementsNotices(quotes) {
+    var partial = quotes.partial || {};
+    var notes = [];
+    if (partial.agreements) notes.push("Your service agreements couldn\u2019t be loaded. Try again in a moment.");
+    if (partial.orders) notes.push("Your orders couldn\u2019t be loaded, so your agreements are shown without their services.");
+    if (!partial.orders && partial.unreadableOrders) notes.push(partial.unreadableOrders === 1 ? "1 order listed in your agreements couldn\u2019t be loaded." : partial.unreadableOrders + " orders listed in your agreements couldn\u2019t be loaded.");
+    if (partial.truncated) notes.push("Only part of your contract history could be shown.");
+    return notes.map(PartialNotice);
+  }
+  function PartialNotice(text10) {
+    return h("div", { "class": "alert-banner alert-banner--partial", "data-module": "contracts-partial", "data-visual-id": "contracts-partial", "data-state": "partial", role: "status" }, [
+      h("div", { "class": "alert-banner__icon alert-banner__icon--partial", "aria-hidden": "true" }, "!"),
+      h("div", { "class": "alert-banner__body" }, [h("div", { "class": "alert-banner__desc" }, text10)])
+    ]);
+  }
+  function CommandOutcome(phase, message) {
+    if (phase === "conflict") {
+      return h("div", { "class": "conflict-banner decision-outcome", "data-module": "command-conflict", "data-visual-id": "command-conflict", "data-state": "conflict", role: "alert" }, [
+        h("div", { "class": "conflict-banner__icon" }, "\u21BA"),
+        h("div", { "class": "conflict-banner__body" }, [
+          h("div", { "class": "decision-outcome__title" }, "This changed since you opened it"),
+          h("div", { "class": "decision-outcome__desc" }, "Its current state is shown here. Nothing was sent.")
+        ])
+      ]);
+    }
+    if (!OUTCOME_COPY[phase]) return null;
+    var reason = phase === "refused" && message ? OUTCOME_COPY.refused + " " + message : OUTCOME_COPY[phase];
+    return DecisionFailure(reason, { action: "contracts.refresh", label: "Refresh status" });
+  }
+  function DecisionFailure(message, retry) {
+    return h("div", { "class": "inline-fail decision-outcome", "data-module": "command-failure", "data-visual-id": "command-failure", "data-state": "failed", role: "alert" }, [
+      h("span", { "class": "inline-fail__icon", "aria-hidden": "true" }, "!"),
+      h("div", { "class": "decision-outcome__body" }, message),
+      ActionButton({ variant: "btn--ghost", label: retry.label, action: retry.action, id: retry.id, visualId: "command-retry" })
+    ]);
+  }
+  function PendingNote(text10) {
+    return h("div", { "class": "decision-note", "data-module": "command-pending", "data-visual-id": "command-pending", "data-state": "pending", role: "status" }, [
+      h("span", { "class": "decision-note__spinner", "aria-hidden": "true" }),
+      h("span", null, text10)
+    ]);
+  }
+  function ReadbackFailed(kind) {
+    return h("div", { "class": "state-block", "data-module": "contracts-readback-failed", "data-visual-id": "contracts-readback-failed", "data-state": "readback-failed", role: "alert" }, [
+      h("div", { "class": "state-block__glyph state-block__glyph--error" }, "\u26A0"),
+      h("div", { "class": "state-block__title" }, READBACK_COPY[kind] || READBACK_COPY.approve),
+      h("div", { "class": "state-block__desc" }, "Nothing is shown until it loads, so you never see an out-of-date status."),
+      ActionButton({ variant: "btn--primary", label: "Try again", action: "contracts.refresh", visualId: "contracts-readback-retry" })
+    ]);
+  }
+  function ContractsError() {
+    return ErrorState({ title: "Couldn\u2019t load your contracts", desc: "Nothing was changed. Check your connection and try again." });
+  }
+  function ContractsUnavailable() {
+    var block = EmptyState({ glyph: "\u25CB", title: "Contracts aren\u2019t in the portal yet", desc: "Your quotes and service agreements can\u2019t be shown here yet." });
+    block.setAttribute("data-state", "unavailable");
+    block.setAttribute("data-module", "contracts-unavailable");
+    return block;
+  }
+
+  // app-templates/customer-portal/runtime/src/contract-details.js
+  var TEXT_LIMIT = 255;
+  var CONTROL_CHARACTERS2 = /[\u0000-\u001f\u007f]/;
+  var field2 = (code, label, kind, autocomplete, required) => /* @__PURE__ */ Object.freeze({ code, label, kind, autocomplete, required });
+  var CONTRACT_DETAILS_FIELDS = /* @__PURE__ */ Object.freeze([
+    field2("LEGAL_NAME", "Legal name", "text", "organization", true),
+    field2("CLIENT_TYPE", "Client type", "choice", null, true),
+    field2("BILLING_ADDRESS", "Billing address", "address", "street-address", true),
+    field2("LEGAL_ADDRESS", "Legal address", "address", "street-address", true),
+    field2("REPRESENTATIVE_FIRST_NAME", "First name", "text", "given-name", true),
+    field2("REPRESENTATIVE_LAST_NAME", "Last name", "text", "family-name", true),
+    field2("REPRESENTATIVE_JOB_TITLE", "Job title", "text", "organization-title", false),
+    field2("REPRESENTATIVE_EMAIL", "Email", "email", "email", true),
+    field2("REPRESENTATIVE_PHONE", "Phone", "tel", "tel", true),
+    field2("INFORMATION_CONFIRMED", "I confirm that the information above is accurate.", "confirm", null, true),
+    field2("AUTHORITY_CONFIRMED", "I confirm that I am authorized to enter into this agreement on behalf of the client.", "confirm", null, true)
+  ]);
+  var CONTRACT_DETAILS_COPY = /* @__PURE__ */ Object.freeze({
+    legalName: "Enter the client\u2019s legal name.",
+    legalAddress: "Enter your legal address on one line that ends with the province or state and the country.",
+    clientType: "Choose the client type.",
+    clientTypeInvalid: "Choose one of the client types.",
+    confirm: "Confirm this to send your details.",
+    plainText: "Use letters, spaces and punctuation only.",
+    tooLong: "Use " + TEXT_LIMIT + " characters or fewer."
+  });
+  var PROFILE_RULES = /* @__PURE__ */ Object.freeze({
+    BILLING_ADDRESS: "BILLING_ADDRESS",
+    REPRESENTATIVE_FIRST_NAME: "FIRST_NAME",
+    REPRESENTATIVE_LAST_NAME: "LAST_NAME",
+    REPRESENTATIVE_EMAIL: "EMAIL",
+    REPRESENTATIVE_PHONE: "PHONE"
+  });
+  var CLIENT_TYPE_CODES = CONTRACT_CLIENT_TYPES.map(function(type) {
+    return type.code;
+  });
+  var AGREEMENT_BILLING_COPY = /* @__PURE__ */ Object.freeze({
+    label: "Billing address",
+    checking: "Checking your billing address\u2026",
+    needed: "We need a billing address before the agreement can be approved. Your invoices carry it.",
+    unknown: "Your invoices carry this address. If we already have a billing address for you, it stays unless you enter another one.",
+    same: "Same as legal address"
+  });
+  function openAgreementBilling(confirm, options2) {
+    var settings = options2 || {};
+    var billing = { state: "loading", legal: "", value: "", same: false, error: "" };
+    confirm.billing = billing;
+    var load2 = settings.load || loadContractDetailsAccount;
+    return Promise.resolve().then(function() {
+      return load2({ config: state.config, state });
+    }).then(function(result) {
+      var values = contractDetailsPrefill(result && result.account, CLIENT_TYPE_CODES);
+      if (values.BILLING_ADDRESS) {
+        billing.state = "on-file";
+        return;
+      }
+      billing.state = "needed";
+      billing.legal = values.LEGAL_ADDRESS;
+      billing.value = values.LEGAL_ADDRESS;
+      billing.same = !!values.LEGAL_ADDRESS;
+    }, function(error2) {
+      if (error2 && error2.code === "session-expired") state.account = "session-expired";
+      billing.state = "unknown";
+    }).then(function() {
+      if (settings.onChange) settings.onChange();
+      return billing;
+    });
+  }
+  function changeAgreementBilling(billing, patch) {
+    if (!billing || billing.state === "loading" || billing.state === "on-file") return false;
+    if (typeof patch.same === "boolean") {
+      billing.same = patch.same && !!billing.legal;
+      if (billing.same) billing.value = billing.legal;
+    }
+    if (typeof patch.value === "string" && !billing.same) billing.value = patch.value;
+    billing.error = "";
+    return true;
+  }
+  function agreementBillingRequest(billing) {
+    if (!billing || billing.state === "on-file") return { input: void 0 };
+    if (billing.state === "loading") return { wait: true };
+    if (billing.same && billing.legal) return { input: { BILLING_SAME_AS_LEGAL: { value: true } } };
+    var typed = String(billing.value == null ? "" : billing.value).replace(/\s+/g, " ").trim();
+    if (!typed && billing.state === "unknown") return { input: void 0 };
+    var checked = validateProfileValue(PROFILE_RULES.BILLING_ADDRESS, typed, "");
+    return checked.error ? { error: checked.error } : { input: { BILLING_ADDRESS: { value: checked.value } } };
+  }
+  function openContractDetails(options2) {
+    if (state.contractDetails) return Promise.resolve(state.contractDetails);
+    var settings = options2 || {};
+    var details2 = { prefill: "loading", filled: false, draft: emptyDraft(), errors: {} };
+    state.contractDetails = details2;
+    var load2 = settings.load || loadContractDetailsAccount;
+    return Promise.resolve().then(function() {
+      return load2({ config: state.config, state });
+    }).then(function(result) {
+      var values = contractDetailsPrefill(result && result.account, CLIENT_TYPE_CODES);
+      (/* @__PURE__ */ Object.keys(values)).forEach(function(code) {
+        details2.draft[code] = values[code];
+      });
+      details2.filled = (/* @__PURE__ */ Object.keys(values)).some(function(code) {
+        return !!values[code];
+      });
+      details2.prefill = "ready";
+    }, function(error2) {
+      if (error2 && error2.code === "session-expired") state.account = "session-expired";
+      details2.prefill = "failed";
+    }).then(function() {
+      if (settings.onChange) settings.onChange();
+      return details2;
+    });
+  }
+  function changeContractDetail(code, value) {
+    var details2 = state.contractDetails;
+    var definition = CONTRACT_DETAILS_FIELDS.find(function(item) {
+      return item.code === code;
+    });
+    if (!details2 || !definition) return false;
+    details2.draft[code] = definition.kind === "confirm" ? value === true : String(value == null ? "" : value);
+    return true;
+  }
+  function contractDetailsRequest(draft) {
+    var errors = {};
+    var values = {};
+    CONTRACT_DETAILS_FIELDS.forEach(function(item) {
+      var checked = validateDetail(item, draft[item.code]);
+      if (checked.error) errors[item.code] = checked.error;
+      else values[item.code] = checked.value;
+    });
+    return (/* @__PURE__ */ Object.keys(errors)).length ? { errors, values: null } : { errors: {}, values };
+  }
+  function contractDetailsEventInput(values) {
+    var input = {};
+    CONTRACT_DETAILS_FIELDS.forEach(function(item) {
+      input[item.code] = { value: values[item.code] };
+    });
+    return input;
+  }
+  function validateDetail(item, raw) {
+    if (item.kind === "confirm") return raw === true ? accepted2(true) : refusal2(CONTRACT_DETAILS_COPY.confirm);
+    var collapsed = String(raw == null ? "" : raw).replace(/\s+/g, " ").trim();
+    if (item.kind === "choice") {
+      if (!collapsed) return refusal2(CONTRACT_DETAILS_COPY.clientType);
+      return CLIENT_TYPE_CODES.indexOf(collapsed) === -1 ? refusal2(CONTRACT_DETAILS_COPY.clientTypeInvalid) : accepted2(collapsed);
+    }
+    if (PROFILE_RULES[item.code]) return validateProfileValue(PROFILE_RULES[item.code], collapsed, "");
+    if (!collapsed && item.required) return refusal2(item.code === "LEGAL_ADDRESS" ? CONTRACT_DETAILS_COPY.legalAddress : CONTRACT_DETAILS_COPY.legalName);
+    if (CONTROL_CHARACTERS2.test(collapsed)) return refusal2(CONTRACT_DETAILS_COPY.plainText);
+    if (collapsed.length > TEXT_LIMIT) return refusal2(CONTRACT_DETAILS_COPY.tooLong);
+    return accepted2(collapsed);
+  }
+  function emptyDraft() {
+    var draft = {};
+    CONTRACT_DETAILS_FIELDS.forEach(function(item) {
+      draft[item.code] = item.kind === "confirm" ? false : "";
+    });
+    return draft;
+  }
+  function refusal2(message) {
+    return { error: message, value: null };
+  }
+  function accepted2(value) {
+    return { error: null, value };
+  }
+
+  // app-templates/customer-portal/runtime/src/components/proposals/QuoteOptionCard.js
+  function QuoteOptionCard(order, options2) {
+    var settings = options2 || {};
+    var meta = orderStatusMeta(order);
+    var label = order.pricingModel ? order.pricingModel.label : "Quote";
+    var card = h("article", {
+      "class": "card card--pad quote-option",
+      "data-module": "quote-option",
+      "data-visual-id": "quote-option",
+      "data-state": order.status,
+      "aria-label": label + " \u2014 " + meta.label
+    }, [
+      h("div", { "class": "quote-option__head" }, [
+        h("h3", { "class": "quote-option__model" }, label),
+        StatusBadge({ variant: meta.badge, label: meta.label, bind: "quote.statusLabel", state: order.status })
+      ]),
+      QuoteLines(order),
+      QuoteMoney(order)
+    ]);
+    if (settings.interactive) {
+      var decisions = QuoteDecisions(order, settings);
+      if (decisions) card.appendChild(decisions);
+    }
+    return card;
+  }
+  function QuoteLines(order) {
+    if (order.linesState === "unavailable") {
+      return h("div", { "class": "quote-option__note", "data-module": "quote-lines", "data-state": "unavailable" }, "The services on this quote couldn\u2019t be loaded.");
+    }
+    if (!order.lines.length) {
+      return h("div", { "class": "quote-option__note", "data-module": "quote-lines", "data-state": "empty" }, "No services are listed on this quote.");
+    }
+    var pricing = order.pricing || { linePrices: true, total: true };
+    var list = h("div", { "class": "purch-lines quote-lines", "data-module": "quote-lines", "data-visual-id": "quote-lines", "data-state": order.linesState, "data-priced": pricing.linePrices ? "true" : "false", role: "list", "aria-label": "Services" }, order.lines.map(function(line) {
+      return h("div", { "class": "purch-line quote-line", "data-line": line.key, role: "listitem" }, [
+        h("div", { "class": "quote-line__body" }, [
+          h("div", { "class": "purch-line__title" + (line.product ? "" : " quote-line__title--unnamed") }, line.product || "Unnamed service"),
+          lineDetail(line, pricing) ? h("div", { "class": "purch-line__meta" }, lineDetail(line, pricing)) : null
+        ]),
+        lineSide(line, pricing) ? h("div", { "class": "purch-line__side" }, h("b", null, lineSide(line, pricing))) : null
+      ]);
+    }));
+    if (order.linesState !== "partial") return list;
+    return h("div", null, [list, h("div", { "class": "quote-option__note", "data-state": "partial" }, "Some details of these services couldn\u2019t be loaded.")]);
+  }
+  function lineDetail(line, pricing) {
+    if (!pricing.linePrices || !pricing.total) return line.quantity && line.quantity !== "1" ? "Quantity " + line.quantity : "";
+    return line.quantity && line.unitPrice ? line.quantity + " \xD7 " + line.unitPrice : line.unitPrice || (line.quantity ? "Quantity " + line.quantity : "");
+  }
+  function lineSide(line, pricing) {
+    if (!pricing.linePrices) return "";
+    if (!pricing.total) return line.unitPrice ? line.unitPrice + " per service" : "";
+    return line.total;
+  }
+  function QuoteMoney(order) {
+    var pricing = order.pricing || { total: true };
+    if (!pricing.total) {
+      return h("div", { "class": "quote-option__note", "data-module": "quote-totals", "data-state": "per-service" }, [
+        h("div", null, "You pay the price of each service every time it is performed."),
+        TaxesNote()
+      ]);
+    }
+    if (!order.money) {
+      return h("div", { "class": "quote-option__note", "data-module": "quote-totals", "data-state": "unpriced" }, "No price is stated on this quote yet.");
+    }
+    var period = pricePeriod(order);
+    return h("div", { "class": "money-rows quote-totals", "data-module": "quote-totals", "data-visual-id": "quote-totals" }, [
+      h("div", { "class": "money-rows__row money-rows__row--total", "data-kind": "total" }, [h("span", null, "Total"), h("span", null, period ? order.money.total + " " + period : order.money.total)]),
+      TaxesNote()
+    ]);
+  }
+  function TaxesNote() {
+    return h("div", { "class": "quote-option__taxes", "data-kind": "taxes" }, state.config.taxesNote);
+  }
+  function QuoteDecisions(order, settings) {
+    var command = state.contractCommand;
+    var targeted = !!command && command.kind !== "changes" && command.targets.indexOf(order.backendId) !== -1;
+    var outcome = targeted && command.phase !== "pending" ? CommandOutcome(command.phase, command.message) : null;
+    var busy = !!settings.busy;
+    if (order.status !== "unseen") return outcome ? h("div", { "class": "quote-option__decide" }, outcome) : null;
+    var confirm = state.contractConfirm;
+    var confirming = !!confirm && confirm.backendId === order.backendId && confirm.kind === "decline";
+    var section = h("div", { "class": "quote-option__decide" });
+    if (confirming) section.appendChild(DeclineConfirm(order, settings, targeted && command.phase === "pending"));
+    else {
+      section.appendChild(h("div", { "class": "proposal-actions" }, [
+        ActionButton({ variant: "btn--primary", label: "Approve", action: "quote.approve", id: String(order.backendId), lg: true, disabled: busy, visualId: "quote-approve" }),
+        ActionButton({ variant: "btn--danger", label: "Decline", action: "quote.decline", id: String(order.backendId), lg: true, disabled: busy, visualId: "quote-decline" })
+      ]));
+    }
+    if (outcome) section.appendChild(outcome);
+    return section;
+  }
+  function DeclineConfirm(order, settings, pending) {
+    var label = order.pricingModel ? order.pricingModel.label : "this option";
+    var titleId = "decision-title-" + order.backendId;
+    var confirmButton = ActionButton({
+      variant: "btn--danger",
+      label: pending ? "Sending\u2026" : "Confirm decline",
+      action: "quote.confirm",
+      id: String(order.backendId),
+      lg: true,
+      disabled: pending || settings.busy,
+      visualId: "quote-confirm"
+    });
+    if (pending) confirmButton.setAttribute("data-state", "pending");
+    return h("div", { "class": "decision-confirm", "data-module": "decision-confirm", "data-visual-id": "decision-confirm", "data-state": pending ? "pending" : "open", "data-kind": "decline", role: "group", "aria-labelledby": titleId }, [
+      h("p", { "class": "decision-confirm__title", id: titleId }, "Decline " + label + "?"),
+      h("p", { "class": "decision-confirm__body" }, "A declined option can\u2019t be approved later."),
+      h("div", { "class": "proposal-actions" }, [
+        confirmButton,
+        ActionButton({ variant: "btn--ghost", label: "Cancel", action: "quote.cancel", lg: true, disabled: pending, visualId: "quote-cancel" })
+      ])
+    ]);
+  }
+  function PropertyChangeRequest(group, busy) {
+    var open = group.orders.filter(function(order) {
+      return order.status === "unseen" && order.allowedActions.indexOf("changes") !== -1;
+    });
+    var command = state.contractCommand;
+    var targeted = !!command && command.kind === "changes" && command.targets.some(function(backendId) {
+      return group.orders.some(function(order) {
+        return order.backendId === backendId;
+      });
+    });
+    var pending = targeted && command.phase === "pending";
+    var outcome = targeted && !pending ? CommandOutcome(command.phase, command.message) : null;
+    var confirm = state.contractConfirm;
+    var asking = !!confirm && confirm.kind === "changes" && confirm.groupId === group.id;
+    if (!open.length && !outcome && !pending) return null;
+    var section = h("section", { "class": "card card--pad quote-changes", "data-module": "quote-property-actions", "data-visual-id": "quote-property-actions", "data-state": pending ? "pending" : asking ? "asking" : "idle", "aria-label": "Request changes to these quotes" });
+    if (asking || pending) section.appendChild(ChangeRequest(confirm || { message: "", error: "" }, group, pending, busy));
+    else if (open.length) {
+      section.appendChild(h("div", { "class": "quote-changes__row" }, [
+        h("div", { "class": "quote-changes__copy" }, open.length === 1 ? "Not quite right? Ask us to revise this quote." : "Not quite right? Ask us to revise the quotes for this property."),
+        ActionButton({ variant: "btn--ghost", label: "Request changes", action: "quote.requestChanges", id: group.id, lg: true, disabled: busy, visualId: "quote-request-changes" })
+      ]));
+    }
+    if (outcome) section.appendChild(outcome);
+    return section;
+  }
+  function ChangeRequest(confirm, group, pending, busy) {
+    var id = "quote-changes-" + group.id;
+    var titleId = id + "-title";
+    var errorId = id + "-error";
+    var input = h("textarea", {
+      "class": "field decision-confirm__message",
+      id,
+      rows: "4",
+      placeholder: "For example: add sidewalk de-icing, or quote weekly visits instead.",
+      "data-quote-changes": group.id,
+      "data-state": confirm.error ? "invalid" : void 0,
+      "aria-labelledby": titleId,
+      "aria-invalid": confirm.error ? "true" : void 0,
+      "aria-describedby": confirm.error ? errorId : void 0,
+      disabled: pending ? true : void 0
+    }, confirm.message || "");
+    input.addEventListener("input", function() {
+      if (state.contractConfirm === confirm) confirm.message = input.value;
+    });
+    var sendButton = ActionButton({ variant: "btn--primary", label: pending ? "Sending\u2026" : "Send request", action: "quote.sendChanges", id: group.id, lg: true, disabled: pending || busy, visualId: "quote-send-changes" });
+    if (pending) sendButton.setAttribute("data-state", "pending");
+    return h("div", { "class": "decision-confirm", "data-module": "change-request", "data-visual-id": "change-request", "data-state": pending ? "pending" : confirm.error ? "invalid" : "open", "data-kind": "changes", role: "group", "aria-labelledby": titleId }, [
+      h("label", { "class": "decision-confirm__title", id: titleId, "for": id }, "What should change?"),
+      h("p", { "class": "decision-confirm__body" }, "Your request goes to our team for every open quote of this property, and we send you revised quotes."),
+      input,
+      confirm.error ? h("div", { "class": "field-error", id: errorId, role: "alert" }, confirm.error) : null,
+      h("div", { "class": "proposal-actions" }, [
+        sendButton,
+        ActionButton({ variant: "btn--ghost", label: "Cancel", action: "quote.cancel", lg: true, disabled: pending, visualId: "quote-cancel" })
+      ])
+    ]);
+  }
+
+  // app-templates/customer-portal/runtime/src/components/proposals/AgreementParts.js
+  var STAGE_NOTICE = {
+    drafting: { tone: "info", text: "We\u2019re preparing your service agreement from the options you approved. A manager approves it next; it appears here for your approval and we email you when it\u2019s ready. Nothing is needed from you." }
+  };
+  var STATE_NOTICE = {
+    CLIENT_CHANGES_REQUESTED: { tone: "info", text: "We\u2019re revising this agreement as you asked. It appears here for your approval and we email you when it\u2019s ready." },
+    AGREEMENT_SEND_FAILED: { tone: "info", text: "We\u2019re sending this agreement to you. You can approve it here as soon as it arrives." }
+  };
+  var LOGO_WIDTH = 440;
+  var failedLogos = {};
+  function AgreementStageNotice(agreement) {
+    var notice = STATE_NOTICE[agreement.stateCode] || STAGE_NOTICE[agreement.stage];
+    if (!notice) return null;
+    return h("div", { "class": "agreement-notice", "data-module": "agreement-notice", "data-visual-id": "agreement-notice", "data-state": agreement.stage, "data-tone": notice.tone, role: "status" }, [
+      h("span", { "class": "agreement-notice__dot", "aria-hidden": "true" }),
+      h("span", { "class": "agreement-notice__text" }, notice.text)
+    ]);
+  }
+  function AgreementParties(parties) {
+    return h("div", { "class": "agreement-parties", "data-module": "agreement-parties", "data-visual-id": "agreement-parties" }, [
+      ProviderCard(parties.provider),
+      ClientCard(parties.client)
+    ]);
+  }
+  function providerLogoUrl(provider) {
+    var url = provider.logoImageId && !failedLogos[provider.logoImageId] ? visitImageUrl(state.config.coreApiBase, provider.logoImageId) : "";
+    return url ? url + "?width=" + LOGO_WIDTH : "";
+  }
+  function ProviderLogo(provider, fallback) {
+    var url = providerLogoUrl(provider);
+    if (!url) return fallback;
+    var image = h("img", { "class": "party-logo__image", src: url, alt: provider.legalName ? provider.legalName + " logo" : "Provider logo", referrerpolicy: "no-referrer", decoding: "async" });
+    var plate = h("span", { "class": "party-logo", "data-module": "provider-logo", "data-visual-id": "provider-logo" }, [image]);
+    image.addEventListener("error", function() {
+      failedLogos[provider.logoImageId] = true;
+      if (typeof plate.replaceWith === "function") {
+        if (fallback) plate.replaceWith(fallback);
+        else plate.remove();
+      }
+    });
+    return plate;
+  }
+  function ProviderCard(provider) {
+    return PartyCard("provider", "Provider", provider.legalName, "", ProviderLogo(provider, Monogram(provider.legalName)), [
+      ["Representative", joinName(provider.representativeName, provider.representativeJobTitle), null, "person"],
+      ["Phone", provider.phone, "tel:" + provider.phone.replace(/[^+\d]/g, ""), "phone"],
+      ["Email", provider.email, "mailto:" + provider.email, "mail"]
+    ]);
+  }
+  function ClientCard(client) {
+    return PartyCard("client", "Client", client.legalName, client.clientType, Monogram(client.legalName), [
+      ["Billing address", client.billingAddress, null, "pin"],
+      ["Representative", joinName(client.representativeName, client.representativeJobTitle), null, "person"],
+      ["Email", client.email, null, "mail"],
+      ["Phone", client.phone, null, "phone"]
+    ]);
+  }
+  function PartyCard(role, label, name, tag, mark, rows2) {
+    var stated = rows2.filter(function(row) {
+      return !!row[1];
+    });
+    if (!name && !stated.length) return null;
+    return h("section", { "class": "card card--pad agreement-party", "data-module": "agreement-party", "data-visual-id": "agreement-party", "data-party": role, "aria-label": label }, [
+      h("div", { "class": "agreement-party__head" }, [
+        mark,
+        h("div", { "class": "agreement-party__identity" }, [
+          h("div", { "class": "agreement-party__role" }, [
+            h("span", null, label),
+            tag ? h("span", { "class": "agreement-party__tag", "data-module": "party-tag" }, tag) : null
+          ]),
+          name ? h("h2", { "class": "agreement-party__name" }, name) : null
+        ])
+      ]),
+      stated.length ? h("dl", { "class": "agreement-facts agreement-party__facts" }, stated.map(function(row) {
+        return h("div", { "class": "agreement-facts__row", "data-fact": row[3] }, [
+          h("dt", { "class": "agreement-facts__label" }, [icon(row[3], "agreement-party__icon"), row[0]]),
+          h("dd", { "class": "agreement-facts__value" }, row[2] ? h("a", { "class": "link-action", href: row[2] }, row[1]) : row[1])
+        ]);
+      })) : null
+    ]);
+  }
+  function Monogram(name) {
+    var letters = String(name || "").split(/\s+/).filter(function(part) {
+      return /^\p{L}/u.test(part);
+    }).slice(0, 2).map(function(part) {
+      return part.charAt(0).toUpperCase();
+    }).join("");
+    return letters ? h("span", { "class": "party-mark", "aria-hidden": "true" }, letters) : null;
+  }
+  function AgreementTerm(agreement) {
+    if (!agreement.effectiveDate) return null;
+    return FactsCard("Term", "agreement-term", [["Effective date", formatIsoDate(agreement.effectiveDate)]]);
+  }
+  function AgreementServices(row, map) {
+    var section = h("section", { "class": "agreement-services", "data-module": "agreement-services", "data-visual-id": "agreement-services", "aria-labelledby": "agreement-services-title" }, [
+      h("div", { "class": "agreement-section-head" }, [
+        h("h2", { "class": "contracts-section__title", id: "agreement-services-title" }, "Properties and services"),
+        row.servicesScope === "approved" ? h("div", { "class": "agreement-section-head__sub" }, "The options you approved") : null
+      ]),
+      map || null
+    ]);
+    if (!row.properties.length) {
+      section.appendChild(h("div", { "class": "card card--pad quote-option__note", "data-state": "empty" }, row.servicesScope === "approved" ? "No approved services are listed on this agreement yet." : "No services are listed on this agreement yet."));
+      return section;
+    }
+    row.properties.forEach(function(entry2) {
+      var ordersId = "quote-" + row.agreement.backendId + "-" + (entry2.propertyBackendId || 0);
+      section.appendChild(h("div", { "class": "agreement-property", "data-module": "agreement-property", "data-visual-id": "agreement-property" }, [
+        h("div", { "class": "agreement-property__head" }, [
+          h("h3", { "class": "agreement-property__title" }, entry2.title),
+          entry2.address ? h("div", { "class": "agreement-property__address" }, entry2.address) : null,
+          quoteGroupFor(ordersId) ? h("button", { "class": "link-action agreement-property__orders", type: "button", "data-action": "proposal.open", "data-id": ordersId, "data-visual-id": "agreement-property-orders", "aria-label": "View the orders for " + entry2.title }, "View orders \u203A") : null
+        ]),
+        h("div", { "class": "agreement-property__options" }, entry2.orders.map(function(order) {
+          return QuoteOptionCard(order);
+        }))
+      ]));
+    });
+    return section;
+  }
+  function AgreementTerms(blocks, open) {
+    if (!blocks.length) return null;
+    var card = h("section", { "class": "card card--pad agreement-terms", "data-module": "agreement-terms", "data-visual-id": "agreement-terms", "data-state": open ? "open" : "closed", "aria-labelledby": "agreement-terms-title" }, [
+      h("div", { "class": "agreement-terms__head" }, [
+        h("h2", { "class": "agreement-card__title", id: "agreement-terms-title" }, "Terms"),
+        h("button", { "class": "link-action agreement-terms__toggle", type: "button", "data-action": "agreement.toggleTerms", "aria-expanded": open ? "true" : "false", "aria-controls": "agreement-terms-body", "data-visual-id": "agreement-terms-toggle" }, open ? "Hide terms" : "Show terms")
+      ])
+    ]);
+    if (!open) return card;
+    var body = h("div", { "class": "agreement-terms__body", id: "agreement-terms-body" });
+    card.appendChild(body);
+    var list = null;
+    blocks.forEach(function(block) {
+      if (block.kind === "item") {
+        if (!list || list.getAttribute("data-depth") !== String(block.depth)) {
+          list = h("ul", { "class": "terms-list", "data-depth": String(block.depth) });
+          body.appendChild(list);
+        }
+        list.appendChild(h("li", null, block.text));
+        return;
+      }
+      list = null;
+      if (block.kind === "heading") body.appendChild(h("h3", { "class": "terms-heading" }, block.text));
+      else if (block.kind === "numbered") {
+        body.appendChild(h("div", { "class": "terms-num", "data-depth": String(block.depth) }, [
+          h("span", { "class": "terms-num__marker" }, block.marker),
+          h("span", { "class": "terms-num__text" }, block.text)
+        ]));
+      } else body.appendChild(h("p", { "class": "terms-paragraph", "data-depth": String(block.depth) }, block.text));
+    });
+    return card;
+  }
+  function AgreementOutcome(agreement) {
+    var command = state.contractCommand;
+    if (!command || command.kind !== "agreement" || command.phase === "pending" || command.targets.indexOf(agreement.backendId) === -1) return null;
+    var outcome = CommandOutcome(command.phase, command.message);
+    if (!outcome) return null;
+    return h("section", { "class": "card card--pad agreement-approve", "data-module": "agreement-approve", "data-visual-id": "agreement-approve", "data-state": command.phase, "aria-labelledby": "agreement-approve-title" }, [
+      h("h2", { "class": "agreement-card__title", id: "agreement-approve-title" }, "Your approval"),
+      outcome
+    ]);
+  }
+  function AgreementApproval(row, busy) {
+    var agreement = row.agreement;
+    var command = state.contractCommand;
+    var targeted = !!command && command.kind === "agreement" && command.targets.indexOf(agreement.backendId) !== -1;
+    var pending = targeted && command.phase === "pending";
+    var confirm = state.contractConfirm;
+    var confirming = !!confirm && confirm.kind === "agreement" && confirm.backendId === agreement.backendId;
+    var card = h("section", { "class": "card card--pad agreement-approve", "data-module": "agreement-approve", "data-visual-id": "agreement-approve", "data-tone": "warn", "data-state": pending ? "pending" : confirming ? "confirming" : "idle", "aria-labelledby": "agreement-approve-title" });
+    if (confirming) {
+      var client = agreement.parties.client.legalName;
+      var checking = !!confirm.billing && confirm.billing.state === "loading";
+      var confirmButton = ActionButton({ variant: "btn--primary", label: pending ? "Sending\u2026" : "Confirm approval", action: "agreement.confirm", id: String(agreement.backendId), lg: true, disabled: pending || busy || checking, visualId: "agreement-confirm" });
+      if (pending) confirmButton.setAttribute("data-state", "pending");
+      card.appendChild(h("div", { "class": "decision-confirm", "data-module": "decision-confirm", "data-visual-id": "decision-confirm", "data-state": pending ? "pending" : "open", "data-kind": "agreement", role: "group", "aria-labelledby": "agreement-approve-title" }, [
+        h("p", { "class": "decision-confirm__title", id: "agreement-approve-title" }, "Approve this service agreement?"),
+        client ? h("p", { "class": "decision-confirm__body" }, "You approve it on behalf of " + client + ".") : null,
+        AgreementBilling(confirm.billing, pending),
+        h("div", { "class": "proposal-actions" }, [
+          confirmButton,
+          ActionButton({ variant: "btn--ghost", label: "Cancel", action: "agreement.cancel", lg: true, disabled: pending, visualId: "agreement-cancel" })
+        ])
+      ]));
+    } else {
+      card.appendChild(h("h2", { "class": "agreement-card__title", id: "agreement-approve-title" }, "Waiting for your approval"));
+      card.appendChild(h("p", { "class": "agreement-approve__copy" }, "Approving accepts the parties, services and terms shown on this page."));
+      card.appendChild(h("div", { "class": "proposal-actions" }, [
+        ActionButton({ variant: "btn--primary", label: "Approve agreement", action: "agreement.approve", id: String(agreement.backendId), lg: true, disabled: busy, visualId: "agreement-approve" })
+      ]));
+    }
+    if (targeted && !pending) {
+      var outcome = CommandOutcome(command.phase, command.message);
+      if (outcome) card.appendChild(outcome);
+    }
+    return card;
+  }
+  function AgreementBilling(billing, pending) {
+    if (!billing || billing.state === "on-file") return null;
+    var copy = AGREEMENT_BILLING_COPY;
+    if (billing.state === "loading") {
+      return h("p", { "class": "decision-confirm__body", "data-module": "agreement-billing", "data-visual-id": "agreement-billing", "data-state": "loading", "aria-busy": "true" }, copy.checking);
+    }
+    var id = "agreement-billing-address";
+    var input = h("input", {
+      "class": "field",
+      id,
+      name: "BILLING_ADDRESS",
+      type: "text",
+      autocomplete: "street-address",
+      value: billing.value || "",
+      "data-state": billing.error ? "invalid" : void 0,
+      "aria-invalid": billing.error ? "true" : void 0,
+      "aria-describedby": billing.error ? id + "-hint " + id + "-error" : id + "-hint",
+      "aria-required": billing.state === "needed" ? "true" : void 0,
+      disabled: pending || billing.same ? true : void 0
+    });
+    input.addEventListener("input", function() {
+      typeAgreementBilling(input.value);
+    });
+    return h("div", { "class": "agreement-billing", "data-module": "agreement-billing", "data-visual-id": "agreement-billing", "data-state": billing.error ? "invalid" : billing.state }, [
+      h("label", { "class": "field-label", "for": id }, copy.label),
+      h("p", { "class": "contract-form__note", id: id + "-hint" }, billing.state === "needed" ? copy.needed : copy.unknown),
+      billing.legal ? h("div", { "class": "check-line" }, [
+        h("label", { "class": "check-line__label", "for": id + "-same" }, [
+          h("input", { "class": "check-line__input", type: "checkbox", id: id + "-same", checked: billing.same ? true : void 0, disabled: pending ? true : void 0, "data-action": "agreement.billingSame" }),
+          h("span", null, copy.same)
+        ])
+      ]) : null,
+      input,
+      billing.error ? h("div", { "class": "field-error", id: id + "-error", role: "alert" }, billing.error) : null
+    ]);
+  }
+  function FactsCard(title, className, rows2) {
+    var stated = rows2.filter(function(row) {
+      return !!row[1];
+    });
+    if (!stated.length) return null;
+    return h("section", { "class": "card card--pad " + className, "data-module": className, "data-visual-id": className }, [
+      h("h2", { "class": "agreement-card__title" }, title),
+      h("dl", { "class": "agreement-facts" }, stated.map(function(row) {
+        return h("div", { "class": "agreement-facts__row" }, [
+          h("dt", { "class": "agreement-facts__label" }, row[0]),
+          h("dd", { "class": "agreement-facts__value" }, row[2] ? h("a", { "class": "link-action", href: row[2] }, row[1]) : row[1])
+        ]);
+      }))
+    ]);
+  }
+  function joinName(name, title) {
+    if (!name) return "";
+    return title ? name + ", " + title : name;
+  }
+
+  // app-templates/customer-portal/runtime/src/components/storm/InvoiceSheet.js
+  function invoiceParties(invoice) {
+    var quotes = isModuleEnabled("proposals") ? quotePackage() : null;
+    var agreements = quotes ? quotes.agreements.map(function(row) {
+      return row.agreement;
+    }) : [];
+    var own2 = agreements.find(function(agreement) {
+      return !!invoice.orderBackendId && agreement.orderBackendIds.indexOf(invoice.orderBackendId) !== -1;
+    });
+    var active = agreements.filter(function(agreement) {
+      return agreement.stage === "active";
+    });
+    var sole = active.length === 1 ? active[0] : null;
+    var named2 = agreements.find(function(agreement) {
+      return !!agreement.parties.provider.legalName;
+    });
+    var profile = state.moduleData.profile;
+    var provider = own2 || sole || named2;
+    var client = own2 || sole;
+    return {
+      provider: provider ? provider.parties.provider : null,
+      client: client ? client.parties.client : null,
+      brandName: state.config.brandName || "",
+      accountName: profile && profile.accountName || ""
+    };
+  }
+  function InvoiceSheet(invoice) {
+    var parties = invoiceParties(invoice);
+    var provider = parties.provider;
+    var client = parties.client;
+    var providerName = provider && provider.legalName || parties.brandName;
+    var clientName = client && client.legalName || parties.accountName;
+    return h("article", { "class": "invoice-sheet", "data-module": "invoice-sheet", "data-visual-id": "invoice-sheet" }, [
+      h("header", { "class": "invoice-sheet__head" }, [
+        h("div", { "class": "invoice-sheet__brand" }, [
+          provider ? ProviderLogo(provider, null) : null
+        ]),
+        h("div", { "class": "invoice-sheet__title" }, [
+          h("h1", { "class": "invoice-sheet__heading" }, "Invoice"),
+          h("div", { "class": "invoice-sheet__number" }, "#" + invoice.backendId),
+          h("div", { "class": "invoice-sheet__status", "data-state": invoice.stateCode.toLowerCase() }, invoice.status.label)
+        ])
+      ]),
+      h("div", { "class": "invoice-sheet__parties" }, [
+        Party("From", "invoice-sheet-from", providerName, provider ? [provider.phone, provider.email] : []),
+        Party("Bill to", "invoice-sheet-to", clientName, client ? [client.billingAddress, joinName2(client.representativeName, client.representativeJobTitle), client.email, client.phone] : [])
+      ]),
+      Facts(invoice),
+      Charges(invoice)
+    ]);
+  }
+  function Party(label, module2, name, lines) {
+    var stated = lines.filter(Boolean);
+    if (!name && !stated.length) return null;
+    return h("section", { "class": "invoice-sheet__party", "data-module": module2 }, [
+      h("h2", { "class": "invoice-sheet__label" }, label),
+      name ? h("div", { "class": "invoice-sheet__name" }, name) : null
+    ].concat(stated.map(function(line) {
+      return h("div", { "class": "invoice-sheet__line" }, line);
+    })));
+  }
+  function Facts(invoice) {
+    var rows2 = [
+      ["Service period", invoice.period],
+      ["Invoice date", formatIsoDate(invoice.issued)],
+      ["Due date", formatIsoDate(invoice.due)],
+      ["Payment terms", invoiceTerms(invoice)]
+    ].filter(function(row) {
+      return !!row[1];
+    });
+    if (!rows2.length) return null;
+    return h("dl", { "class": "invoice-sheet__facts", "data-module": "invoice-sheet-facts" }, rows2.map(function(row) {
+      return h("div", { "class": "invoice-sheet__fact" }, [
+        h("dt", { "class": "invoice-sheet__label" }, row[0]),
+        h("dd", { "class": "invoice-sheet__value" }, row[1])
+      ]);
+    }));
+  }
+  function Charges(invoice) {
+    var total = invoiceAmount(invoice);
+    if (!invoice.lines.length && !total) return null;
+    var balance = invoice.stateCode !== "PAID" && invoice.paid > 0 && invoice.total !== null;
+    return h("table", { "class": "invoice-sheet__charges", "data-module": "invoice-sheet-charges" }, [
+      h("thead", null, h("tr", null, [
+        h("th", { scope: "col" }, "Description"),
+        h("th", { scope: "col", "class": "invoice-sheet__number-cell" }, "Qty"),
+        h("th", { scope: "col", "class": "invoice-sheet__number-cell" }, "Amount")
+      ])),
+      h("tbody", null, invoice.lines.map(function(line) {
+        return h("tr", { "data-module": "invoice-sheet-line" }, [
+          h("td", null, line.name),
+          h("td", { "class": "invoice-sheet__number-cell" }, String(line.quantity)),
+          h("td", { "class": "invoice-sheet__number-cell" }, line.amount)
+        ]);
+      })),
+      h("tfoot", null, [
+        total ? SummaryRow("Total", total, "invoice-sheet-total") : null,
+        balance ? SummaryRow("Paid", formatMoney(invoice.paid, invoice.currency), "invoice-sheet-paid") : null,
+        balance ? SummaryRow("Balance", formatMoney(invoice.total - invoice.paid, invoice.currency), "invoice-sheet-balance") : null
+      ])
+    ]);
+  }
+  function SummaryRow(label, value, module2) {
+    return h("tr", { "data-module": module2 }, [
+      h("th", { scope: "row", colspan: "2" }, label),
+      h("td", { "class": "invoice-sheet__number-cell" }, value)
+    ]);
+  }
+  function joinName2(name, title) {
+    if (!name) return "";
+    return title ? name + ", " + title : name;
+  }
+
+  // app-templates/customer-portal/runtime/src/routes/InvoicesPage.js
+  function Invoices() {
+    var page = h("section", { "class": "page page--narrow", "data-route": "invoices", "data-visual-id": "invoices-page" });
+    page.appendChild(PageHeader({ title: "Invoices" }));
+    var status = liveListStatus("invoices");
+    page.setAttribute("data-state", status);
+    if (status !== "ready") {
+      page.appendChild(listState2(status));
+      return page;
+    }
+    page.appendChild(RecordSection("invoice-list", "", liveInvoices().items.map(InvoiceRow)));
+    return page;
+  }
+  function InvoiceDetail() {
+    var page = h("section", { "class": "page page--narrow", "data-route": "invoice.detail", "data-visual-id": "invoice-detail" });
+    var bar = h("div", { "class": "detail-bar", "data-module": "invoice-detail-bar" }, [h("div", { "class": "detail-back", "data-action": "nav.go", "data-id": "invoices" }, "\u2039 Back to invoices")]);
+    page.appendChild(bar);
+    var status = liveListStatus("invoices");
+    var invoice = status === "ready" ? findInvoice(liveInvoices(), state.invoiceId) : null;
+    if (!invoice) {
+      page.setAttribute("data-state", status === "ready" || status === "empty" ? "not-found" : status);
+      page.appendChild(status === "ready" || status === "empty" ? EmptyState({ glyph: "\u25CC", title: "Invoice not found", desc: "This invoice is not on your account." }) : listState2(status));
+      return page;
+    }
+    page.setAttribute("data-state", invoice.stateCode.toLowerCase());
+    bar.appendChild(ActionButton({ variant: "btn--ghost", label: "Print invoice", action: "invoice.print", visualId: "invoice-print" }));
+    page.appendChild(h("div", { "class": "prop-head" }, [
+      h("div", { style: "flex:1;min-width:0" }, [h("h1", { "class": "prop-head__title" }, invoiceTitle(invoice))]),
+      h("span", { "class": "status-badge status-badge--" + invoice.status.tone }, invoice.status.label)
+    ]));
+    var facts2 = [
+      invoice.due ? fact2("due", "Due date", formatIsoDate(invoice.due)) : null,
+      invoiceTerms(invoice) ? fact2("terms", "Payment terms", invoiceTerms(invoice)) : null,
+      invoice.issued && invoice.period ? fact2("issued", "Invoice date", formatIsoDate(invoice.issued)) : null
+    ].filter(Boolean);
+    if (facts2.length) page.appendChild(h("div", { "class": "card card--pad prop-facts", "data-module": "invoice-facts", "data-visual-id": "invoice-facts" }, facts2));
+    var total = invoiceAmount(invoice);
+    var rows2 = invoice.lines.map(function(line) {
+      return h("div", { "class": "invoice__row", "data-module": "invoice-line" }, [
+        h("span", null, line.quantity > 1 ? line.name + " \xD7 " + line.quantity : line.name),
+        h("b", null, line.amount)
+      ]);
+    });
+    var balance = invoice.stateCode !== "PAID" && invoice.paid > 0 && invoice.total !== null ? [
+      h("div", { "class": "invoice__row", "data-module": "invoice-paid" }, [h("span", null, "Paid"), h("b", null, formatMoney(invoice.paid, invoice.currency))]),
+      h("div", { "class": "invoice__row", "data-module": "invoice-balance" }, [h("span", null, "Balance"), h("b", null, formatMoney(invoice.total - invoice.paid, invoice.currency))])
+    ] : [];
+    if (rows2.length || total) {
+      page.appendChild(h("section", { "class": "card card--pad record-section", "data-module": "invoice-lines", "data-visual-id": "invoice-lines" }, [
+        h("h2", { "class": "prop-section__title" }, "Charges")
+      ].concat(rows2, total ? [h("div", { "class": "invoice__total", "data-module": "invoice-total" }, [h("span", null, "Total"), h("span", null, total)])] : [], balance)));
+    }
+    var pay = PaySection(invoice);
+    if (pay) page.appendChild(pay);
+    page.appendChild(InvoiceSheet(invoice));
+    return page;
+  }
+  function PaySection(invoice) {
+    if (invoice.orderCanceled && invoice.open) {
+      return h("section", { "class": "card card--pad invoice-pay", "data-module": "invoice-pay", "data-visual-id": "invoice-pay", "data-state": "order-canceled", role: "status" }, [
+        h("div", { "class": "invoice-pay__title" }, "This invoice can't be paid online"),
+        h("div", { "class": "invoice-pay__note" }, ORDER_CANCELED_STATUS + ".")
+      ]);
+    }
+    if (!invoicePaymentOpen(state.config) || !invoicePayable(invoice)) return null;
+    var payment = invoicePaymentFor(invoice.id);
+    if (payment && (payment.phase === "recording" || payment.phase === "slow")) {
+      return h("section", { "class": "card card--pad invoice-pay", "data-module": "invoice-pay", "data-visual-id": "invoice-pay", "data-state": "recording", role: "status" }, [
+        h("div", { "class": "invoice-pay__title" }, "Payment received"),
+        h("div", { "class": "invoice-pay__note" }, "Your invoice will show as paid shortly. You don't need to pay again.")
+      ]);
+    }
+    var busy = invoicePaymentBusy();
+    return h("section", { "class": "card card--pad invoice-pay", "data-module": "invoice-pay", "data-visual-id": "invoice-pay", "data-state": busy ? "busy" : "ready" }, [
+      h("button", {
+        "class": "btn btn--primary btn--block btn--lg",
+        type: "button",
+        "data-action": "invoice.pay",
+        "data-id": invoice.id,
+        "data-visual-id": "invoice-pay-button",
+        disabled: busy ? true : void 0
+      }, "Pay " + invoiceAmount(invoice)),
+      h("div", { "class": "invoice-pay__note" }, "Pay by card. Payments are processed securely by Stripe.")
+    ]);
+  }
+  function fact2(key, label, value) {
+    return h("div", { "class": "prop-fact", "data-fact": key }, [
+      h("div", { "class": "prop-fact__label" }, label),
+      h("div", { "class": "prop-fact__value" }, value)
+    ]);
+  }
+  function listState2(status) {
+    if (status === "loading") {
+      return h("div", { "data-module": "invoices-loading", "data-visual-id": "invoices-loading", "aria-busy": "true" }, [
+        skel("height:72px;border-radius:16px;margin-bottom:12px"),
+        skel("height:72px;border-radius:16px")
+      ]);
+    }
+    if (status === "unauthorized") return UnauthorizedState({ scope: "these invoices", backRoute: state.config.defaultRoute });
+    if (status === "error") return ErrorState({ title: "Couldn\u2019t load your invoices", desc: "Nothing was changed. Check your connection and try again." });
+    return EmptyState({ glyph: "\u25CC", title: "No invoices yet", desc: "Your invoices appear here once we send one." });
+  }
+
+  // app-templates/customer-portal/runtime/src/routes/PropertyDetailPage.js
+  function currentProperty() {
+    var model = currentOverview();
+    var properties = model && model.properties || [];
+    return properties.find(function(property) {
+      return property.id === state.propertyId;
+    }) || null;
+  }
+  function PropertyDetail() {
+    var page = h("section", { "class": "page page--narrow", "data-route": "property.detail", "data-visual-id": "property-detail" });
+    var source = state.config.dataMode === "live" ? liveOverviewStatus() : "ready";
+    if (source !== "ready") {
+      page.setAttribute("data-state", source === "loading" ? "loading" : source === "unauthorized" ? "unauthorized" : "error");
+      if (source === "loading") page.appendChild(PropertySkeleton());
+      else if (source === "unauthorized") page.appendChild(UnauthorizedState({ scope: "this property", backRoute: state.config.defaultRoute }));
+      else {
+        page.appendChild(BackLink(null));
+        page.appendChild(ErrorState({ title: "Couldn\u2019t load this property", desc: "Nothing was changed. Check your connection and try again." }));
+      }
+      return page;
+    }
+    var model = currentOverview();
+    var property = currentProperty();
+    if (!property) {
+      page.setAttribute("data-state", "not-found");
+      page.appendChild(BackLink(model));
+      page.appendChild(EmptyState({ glyph: "\u25CC", title: "Property not found", desc: sectionAvailable(model, "contracts") ? "This address is not on your contract." : "We couldn\u2019t find this property." }));
+      return page;
+    }
+    var status = knownPropertyStatus(property, model.sources);
+    var contract = contractFor(property);
+    var service = serviceFor(property);
+    page.appendChild(supportTicketsOpen(state.config) ? h("div", { "class": "detail-bar", "data-module": "property-detail-bar" }, [
+      BackLink(model),
+      ActionButton({ variant: "btn--ghost", label: "Open support ticket", action: "support.newTicket", id: property.backendId + ":", visualId: "property-open-ticket" })
+    ]) : BackLink(model));
+    page.appendChild(h("div", { "class": "prop-head" }, [
+      h("div", { style: "flex:1;min-width:0" }, [
+        text8("h1", "prop-head__title", property.name),
+        property.address && !addressRepeats(property.name, property.address) ? text8("div", "prop-head__addr", property.address) : null
+      ]),
+      status ? text8("span", "status-badge status-badge--" + statusTone(status), OVERVIEW_STATUS[status].label) : null
+    ]));
+    var rows2 = facts(property, contract, model, service);
+    if (rows2.length) {
+      page.appendChild(h(
+        "div",
+        { "class": "card card--pad prop-facts", "data-module": "property-facts", "data-visual-id": "property-facts" },
+        rows2.map(function(item) {
+          return h("div", { "class": "prop-fact", "data-fact": item.key }, [
+            text8("div", "prop-fact__label", item.label),
+            item.action ? h("div", { "class": "link-action prop-fact__value", "data-action": item.action, "data-id": item.id }, item.value + " \u203A") : text8("div", "prop-fact__value", item.value)
+          ]);
+        })
+      ));
+    }
+    if (service) page.appendChild(ServiceCard2(service));
+    var visits = LiveVisitsCard(property);
+    if (visits) page.appendChild(visits);
+    var plan = PropertyPlan(propertyPlan(property.planId, render), property, sharedPlanMap());
+    if (plan) page.appendChild(plan);
+    var location = PropertyLocation({
+      property,
+      map: sharedPropertyMap(),
+      viewport: mapViewport(),
+      link: { label: "See it with your other properties", action: "property.showOnMap", id: property.id }
+    });
+    if (location) page.appendChild(location);
+    if (property.ticket && sectionAvailable(model, "support")) {
+      page.appendChild(h("div", { "class": "card card--pad prop-ticket", "data-module": "property-ticket", "data-visual-id": "property-ticket" }, [
+        text8("div", "prop-section__title", "Open request"),
+        text8("div", "prop-ticket__title", property.ticket.title),
+        h("div", { "class": "link-action", "data-action": "nav.go", "data-id": "support" }, "Open support \u203A")
+      ]));
+    }
+    if (sectionAvailable(model, "appointments")) page.appendChild(VisitCard(property));
+    return page;
+  }
+  function ServiceCard2(service) {
+    var row = service.row;
+    var agreement = row.agreement;
+    return h("section", { "class": "card card--pad prop-service", "data-module": "property-service", "data-visual-id": "property-service", "data-state": agreement.stage, "aria-labelledby": "property-service-title" }, [
+      h("div", { "class": "prop-section__title", id: "property-service-title" }, "Your service")
+    ].concat(service.orders.map(function(order) {
+      var price = formatOrderPrice(order);
+      var products = order.lines.map(function(line) {
+        return line.product;
+      }).filter(function(name, index, names) {
+        return !!name && names.indexOf(name) === index;
+      });
+      return h("div", { "class": "prop-service__entry", "data-module": "property-service-option" }, [
+        h("div", { "class": "prop-service__head" }, [
+          h("div", { style: "flex:1;min-width:0" }, [
+            text8("div", "prop-service__option", order.pricingModel ? order.pricingModel.label : "Service"),
+            price ? text8("div", "prop-service__price", price) : null
+          ]),
+          StatusBadge({ variant: "status-badge--" + agreement.tone, label: agreement.label, bind: "agreement.stateLabel", state: agreement.stage })
+        ]),
+        products.length ? h("ul", { "class": "prop-service__lines", "aria-label": "Services" }, products.map(function(name) {
+          return text8("li", "prop-service__line", name);
+        })) : null
+      ]);
+    }), [
+      h("button", { "class": "link-action prop-service__link", type: "button", "data-action": "agreement.open", "data-id": row.id, "data-visual-id": "property-service-agreement" }, "View agreement \u203A")
+    ]));
+  }
+  function serviceFor(property) {
+    if (state.config.dataMode !== "live" || !isModuleEnabled("proposals")) return null;
+    var envelope2 = state.moduleData.proposals;
+    if (!envelope2 || envelope2.state === "unauthorized" || envelope2.state === "unavailable" || envelope2.state === "error") return null;
+    var row = currentServiceAgreement(quotePackage(), property.backendId);
+    var entry2 = row ? row.properties.find(function(item) {
+      return item.propertyBackendId === property.backendId;
+    }) : null;
+    return entry2 && entry2.orders.length ? { row, orders: entry2.orders } : null;
+  }
+  function LiveVisitsCard(property) {
+    var found = visitsForProperty(liveVisits(), property.backendId);
+    if (!found.next && !found.last) return null;
+    var today = localDateKey(/* @__PURE__ */ new Date(), state.config.timeZone);
+    return h("section", { "class": "card card--pad prop-visits record-section", "data-module": "property-live-visits", "data-visual-id": "property-live-visits" }, [
+      h("h2", { "class": "prop-section__title" }, "Visits"),
+      h("div", { "class": "record-list" }, [
+        found.next ? VisitRow(found.next, { today, label: "Next visit" }) : null,
+        found.last ? VisitRow(found.last, { today, label: "Last visit" }) : null
+      ]),
+      h("div", { "class": "link-action prop-visits__foot", "data-action": "nav.go", "data-id": "appointments", "data-visual-id": "property-all-visits" }, "All visits \u203A")
+    ]);
+  }
+  function VisitCard(property) {
+    var card = h("div", { "class": "card card--pad prop-visits", "data-module": "property-visits", "data-visual-id": "property-visits" }, [
+      text8("div", "prop-section__title", "Service")
+    ]);
+    if (property.appointment) {
+      var meta = stateMeta(property.appointment.state);
+      card.appendChild(h("div", { "class": "prop-visit", "data-action": "appointments.openVisit", "data-id": property.id, "data-state": property.appointment.state.toLowerCase() }, [
+        h("div", { style: "flex:1;min-width:0" }, [
+          text8("div", "prop-visit__title", property.appointment.service),
+          text8("div", "prop-visit__meta", property.appointment.when)
+        ]),
+        text8("span", "status-badge status-badge--" + meta.tone, meta.label),
+        text8("span", "prop-visit__caret", "\u203A")
+      ]));
+    } else {
+      card.appendChild(text8("div", "prop-visit__meta", "No visit booked. Dispatch happens automatically when your trigger is met."));
+    }
+    if (property.lastService) {
+      card.appendChild(h("div", { "class": "prop-last" }, [
+        text8("div", "prop-fact__label", "Last service"),
+        text8("div", "prop-visit__meta", property.lastService.service + " \xB7 " + property.lastService.when)
+      ]));
+    }
+    card.appendChild(h("div", { "class": "prop-visits__foot" }, [
+      ActionButton({ variant: "btn--ghost", label: "See the whole week", action: "nav.go", id: "appointments", visualId: "property-week" })
+    ]));
+    return card;
+  }
+  function BackLink(model) {
+    return sectionAvailable(model, "appointments") ? h("div", { "class": "detail-back", "data-action": "nav.go", "data-id": "appointments" }, "\u2039 Back to appointments") : h("div", { "class": "detail-back", "data-action": "nav.go", "data-id": "overview" }, "\u2039 Back to home");
+  }
+  function facts(property, contract, model, service) {
+    var rows2 = [];
+    if (sectionAvailable(model, "contracts")) {
+      rows2.push({ key: "contract", label: "Contract", value: contract ? "#" + contract.number + " \xB7 " + contract.plan : "Not under contract", action: contract ? "nav.go" : void 0, id: contract ? contractsHomeRoute() : void 0 });
+    }
+    var area = formatArea(property.areaSqft);
+    if (area) rows2.push({ key: "area", label: "Area", value: area });
+    if (property.planId) rows2.push({ key: "plan", label: "Plan", value: "Approved" });
+    if (service && service.row.agreement.term) rows2.push({ key: "season", label: "Season", value: formatDatePeriod(service.row.agreement.term) });
+    if (property.zone) rows2.push({ key: "zone", label: "Service zone", value: zoneLabel(property.zone) });
+    var site = quoteSiteFor(property);
+    if (site && site.lot) rows2.push({ key: "lot", label: "Lot", value: site.lot + " sq ft" });
+    var group = quoteGroupFor(property.quoteSiteId || property.id);
+    var listed = group ? (quotePackage() || { pending: [] }).pending.find(function(item) {
+      return item.id === group.id;
+    }) : null;
+    var waiting = listed ? listed.orders.filter(function(order) {
+      return order.status === "unseen";
+    }).length : 0;
+    if (waiting) {
+      rows2.push({
+        key: "quotes",
+        label: "Quotes",
+        value: waiting + (waiting === 1 ? " quote" : " quotes") + " \xB7 awaiting your decision",
+        action: "proposal.open",
+        id: group.id
+      });
+    }
+    return rows2;
+  }
+  function PropertySkeleton() {
+    return h("div", { "data-module": "property-loading", "data-visual-id": "property-loading", "data-state": "loading", "aria-busy": "true" }, [
+      skel("width:124px;height:13px;margin-bottom:16px"),
+      h("div", { "class": "prop-head" }, [h("div", { style: "flex:1;min-width:0" }, [skel("width:48%;height:30px;margin-bottom:9px"), skel("width:66%;height:13px")])]),
+      h("div", { "class": "card card--pad prop-facts" }, [0, 1].map(function() {
+        return h("div", { "class": "prop-fact" }, [skel("width:38%;height:11px;margin-bottom:8px"), skel("width:70%;height:15px")]);
+      })),
+      skel("height:140px;border-radius:22px")
+    ]);
+  }
+  function contractFor(property) {
+    var model = currentOverview();
+    var contracts = model && model.contracts || [];
+    return contracts.find(function(contract) {
+      return contract.number === property.contract;
+    }) || null;
+  }
+  function quoteSiteFor(property) {
+    if (!property.quoteSiteId) return null;
+    var fixture = currentFixture();
+    var sites = fixture && fixture.proposals && fixture.proposals.sites || [];
+    return sites.find(function(site) {
+      return site.id === property.quoteSiteId;
+    }) || null;
+  }
+  function zoneLabel(zone) {
+    return String(zone || "").replace(/^./, function(letter) {
+      return letter.toUpperCase();
+    });
+  }
+  function statusTone(status) {
+    return { issue: "danger", enroute: "progress", scheduled: "info", monitoring: "scheduled" }[status] || "scheduled";
+  }
+  function text8(tag, className, value) {
+    return h(tag, className ? { "class": className } : null, value == null ? "" : String(value));
+  }
+
+  // app-templates/customer-portal/runtime/src/components/proposals/ProposalCard.js
+  function ProposalCard(site) {
+    var c = computeSite(site);
+    var st = proposalStatusMeta()[site.status];
+    var sub = site.city.split(",")[0] + " \xB7 " + c.total.toLocaleString() + " sq ft \xB7 " + (site.status === "approved" ? "chose " + proposalPlanName(site.selected) : "3 plans offered");
+    var fromPrice = site.status === "declined" ? null : "$" + c.monthly.toLocaleString();
+    return h("div", { "class": "proposal-card", "data-module": "proposal-card", "data-visual-id": "proposal-card", "data-action": "proposal.open", "data-id": site.id, "data-state": site.status }, [
+      h("div", { "class": "proposal-card__diamond", style: "background:" + st.dot }),
+      h("div", { "class": "proposal-card__body" }, [
+        h("div", { style: "font-weight:700;font-size:14.5px", "data-bind": "site.addr" }, site.addr),
+        h("div", { style: "font-size:12.5px;color:var(--ink-2)" }, sub)
+      ]),
+      fromPrice ? h("div", { "class": "proposal-card__price" }, [fromPrice, h("span", null, "/mo")]) : null,
+      StatusBadge({ variant: st.badge, label: st.label, bind: "site.statusLabel" }),
+      h("span", { style: "font-weight:600;font-size:18px;color:#c2c7d0" }, "\u203A")
+    ]);
+  }
+
+  // app-templates/customer-portal/runtime/src/components/profile/StatCard.js
+  function statCard(label, num2, color) {
+    return h("div", { "class": "stat-card", "data-module": "stat-card" }, [
+      h("div", { "class": "stat-card__label" }, label),
+      h("div", { "class": "stat-card__num", style: color ? "color:" + color : "" }, num2)
+    ]);
+  }
+
+  // app-templates/customer-portal/runtime/src/routes/ProfilePage.js
+  function Profile() {
+    var fixture = currentFixture();
+    var v = currentTheme();
+    var c = fixture.customer;
+    var page = h("section", { "class": "page page--narrow", "data-route": "profile", "data-visual-id": "profile" });
+    page.appendChild(h("div", { "class": "profile-hero", "data-module": "profile-hero", "data-visual-id": "profile-hero" }, [
+      h("div", { "class": "profile-hero__avatar" }),
+      h("div", { style: "flex:1" }, [
+        h("div", { "class": "profile-hero__name", "data-bind": "customer.fullName" }, c.fullName),
+        h("div", { "class": "profile-hero__meta" }, c.phone + " \xB7 " + c.email),
+        h("span", { "class": "profile-hero__badge" }, v.plan.name + " member \xB7 since " + c.memberSince)
+      ]),
+      ActionButton({ variant: "btn--onaccent", label: "Manage plan", action: "profile.managePlan", visualId: "manage-plan" })
+    ]));
+    page.appendChild(h("div", { "class": "stats-grid", "data-module": "profile-stats" }, [
+      statCard("Orders", c.stats.orders, null),
+      statCard("Spent this year", c.stats.spent, null),
+      statCard("Plan savings", c.stats.savings, "var(--ok)")
+    ]));
+    var history = state.profileFilter === "all" ? state.orders : state.orders.filter(function(o) {
+      return o.status === state.profileFilter;
+    });
+    var hist = h("div", { "class": "list-panel", "data-module": "order-list", "data-visual-id": "profile-history" }, [
+      h("div", { "class": "list-panel__head" }, [
+        h("div", { "class": "list-panel__title", style: "margin-right:4px" }, "Order history"),
+        Tabs({ items: [
+          { key: "all", label: "All" },
+          { key: "inprogress", label: "Active" },
+          { key: "scheduled", label: "Scheduled" },
+          { key: "completed", label: "Done" }
+        ], active: state.profileFilter, action: "profile.filter" })
+      ])
+    ]);
+    var histList = h("div", { style: "display:flex;flex-direction:column" });
+    if (history.length === 0) histList.appendChild(EmptyState({ glyph: "\u{1F5D3}", title: "Nothing here", desc: "No orders in this filter." }));
+    else history.forEach(function(o) {
+      histList.appendChild(OrderCard(o));
+    });
+    hist.appendChild(histList);
+    page.appendChild(hist);
+    var addrPanel = h("div", { "class": "list-panel" }, [
+      h("div", { "class": "list-panel__head" }, [
+        h("div", { "class": "list-panel__title", style: "flex:1" }, "Saved addresses"),
+        h("div", { "class": "link-action", "data-action": "profile.addAddress" }, "+ Add address")
+      ])
+    ]);
+    var addrList = h("div", { style: "display:flex;flex-direction:column;gap:10px" });
+    fixture.addresses.forEach(function(a) {
+      var isDefault = a.id === state.addrId;
+      addrList.appendChild(h("div", { "class": "saved-row", "data-module": "address-card", "data-visual-id": "profile-address" }, [
+        h("div", { "class": "saved-row__icon", style: "background:" + a.iconBg }, h("i", { style: "background:" + a.dot })),
+        h("div", { "class": "saved-row__body" }, [
+          h("div", { style: "display:flex;align-items:center;gap:8px" }, [
+            h("div", { style: "font-weight:600;font-size:14px" }, a.label),
+            isDefault ? h("span", { "class": "default-tag" }, "Default") : null
+          ]),
+          h("div", { style: "font-size:12.5px;color:var(--ink-2)" }, a.line + " \xB7 " + a.city)
+        ]),
+        isDefault ? h("div", { "class": "link-action", style: "color:var(--ink-3)", "data-action": "profile.updateAddress", "data-id": a.id }, "Edit") : h("div", { "class": "link-action", "data-action": "profile.setDefaultAddress", "data-id": a.id }, "Make default")
+      ]));
+    });
+    addrPanel.appendChild(addrList);
+    page.appendChild(addrPanel);
+    var payPanel = h("div", { "class": "list-panel" }, [
+      h("div", { "class": "list-panel__head" }, [
+        h("div", { "class": "list-panel__title", style: "flex:1" }, "Payment methods"),
+        h("div", { "class": "link-action", "data-action": "profile.addCard" }, "+ Add card")
+      ])
+    ]);
+    var payList = h("div", { style: "display:flex;flex-direction:column;gap:10px" });
+    fixture.cards.forEach(function(cd) {
+      var isDefault = cd.id === state.payId;
+      payList.appendChild(h("div", { "class": "saved-row", "data-module": "payment-method-card", "data-visual-id": "profile-card" }, [
+        h("div", { "class": "card-chip card-chip--lg" }),
+        h("div", { "class": "saved-row__body" }, [
+          h("div", { style: "display:flex;align-items:center;gap:8px" }, [
+            h("div", { style: "font-weight:600;font-size:14px" }, cd.brand + " \xB7\xB7\xB7\xB7 " + cd.last4),
+            isDefault ? h("span", { "class": "default-tag" }, "Default") : null
+          ]),
+          h("div", { style: "font-size:12.5px;color:var(--ink-2)" }, "Expires " + cd.exp)
+        ]),
+        isDefault ? null : h("div", { "class": "link-action", "data-action": "profile.setDefaultPayment", "data-id": cd.id }, "Make default")
+      ]));
+    });
+    payPanel.appendChild(payList);
+    page.appendChild(payPanel);
+    var prefs = [
+      { key: "receipts", title: "Email receipts", desc: "Invoice & payment confirmations" },
+      { key: "sms", title: "SMS appointment updates", desc: "Appointment reminders and arrival alerts" },
+      { key: "marketing", title: "Offers & tips", desc: (currentTheme().copy || {}).marketingPref || "Wellness rituals, products and seasonal offers" }
+    ];
+    var prefPanel = h("div", { "class": "list-panel", "data-module": "preferences" }, [h("div", { "class": "list-panel__title", style: "margin-bottom:16px" }, "Notifications")]);
+    prefs.forEach(function(p) {
+      prefPanel.appendChild(h("div", { "class": "pref-row" }, [
+        h("div", { style: "flex:1" }, [
+          h("div", { style: "font-weight:600;font-size:14px" }, p.title),
+          h("div", { style: "font-size:12.5px;color:var(--ink-2)" }, p.desc)
+        ]),
+        Toggle(state.prefs[p.key], p.key)
+      ]));
+    });
+    page.appendChild(prefPanel);
+    page.appendChild(h("div", { "class": "signout-btn", "data-action": "auth.signOut", "data-visual-id": "sign-out" }, "Sign out"));
+    return page;
+  }
+
+  // app-templates/customer-portal/runtime/src/routes/ActivityPage.js
+  function Activity() {
+    var fixture = currentFixture();
+    var page = h("section", { "class": "page", style: "max-width:760px", "data-route": "activity", "data-visual-id": "activity" });
+    page.appendChild(h("div", { "class": "activity-head" }, [
+      h("div", { style: "flex:1" }, [
+        h("div", { style: "font-weight:800;font-size:28px;line-height:1.15;letter-spacing:-.025em" }, "Activity"),
+        h("div", { style: "font-size:14.5px;color:var(--ink-2);margin-top:3px" }, "Your appointments, orders and account updates, newest first.")
+      ]),
+      h("div", { "class": "tab", "data-action": "activity.markRead", "data-visual-id": "mark-read" }, "Mark all read")
+    ]));
+    page.appendChild(h(
+      "div",
+      { "class": "tabs", style: "margin:0 4px 18px", "data-module": "activity-filter" },
+      fixture.feedTabs.map(function(t) {
+        return h("span", { "class": "tab" + (t.key === state.feedFilter ? " tab--active" : ""), "data-action": "activity.filter", "data-id": t.key }, t.label);
+      })
+    ));
+    var groups = fixture.activity.map(function(g) {
+      return { day: g.day, items: g.items.filter(function(ev) {
+        return state.feedFilter === "all" || ev.type === state.feedFilter;
+      }) };
+    }).filter(function(g) {
+      return g.items.length;
+    });
+    if (groups.length === 0) {
+      page.appendChild(EmptyState({ glyph: "\u{1F514}", title: "Nothing here", desc: "No activity in this filter yet." }));
+      return page;
+    }
+    groups.forEach(function(g) {
+      page.appendChild(h("div", { "class": "feed-day" }, g.day));
+      var group = h("div", { "class": "feed-group", "data-module": "activity-feed" }, [h("div", { "class": "feed-line" })]);
+      g.items.forEach(function(ev) {
+        var card = h("div", { "class": "feed-card" }, [
+          h("div", { style: "flex:1;min-width:0" }, [
+            h("div", { style: "display:flex;align-items:center;gap:8px" }, [
+              h("div", { style: "font-weight:700;font-size:14.5px" }, ev.title),
+              ev.unread ? h("span", { "class": "unread-dot" }) : null
+            ]),
+            h("div", { style: "font-size:13px;line-height:1.45;color:var(--ink-2);margin-top:2px" }, ev.desc)
+          ]),
+          h("div", { "class": "feed-time" }, ev.time),
+          ev.action ? h("div", { "class": "feed-action", "data-action": "activity.act", "data-id": ev.act }, ev.action) : null
+        ]);
+        group.appendChild(h("div", { "class": "feed-item", "data-module": "activity-item", "data-visual-id": "activity-item" }, [
+          h("div", { "class": "feed-item__icon", style: "background:" + ev.iconBg }, h("i", { style: "background:" + ev.dot })),
+          card
+        ]));
+      });
+      page.appendChild(group);
+    });
+    return page;
+  }
+
+  // app-templates/customer-portal/runtime/src/routes/SupportPage.js
+  function Support() {
+    var fixture = currentFixture();
+    var support = fixture.support;
+    var page = h("section", { "class": "page", "data-route": "support", "data-visual-id": "support" });
+    page.appendChild(h("div", { "class": "section-head" }, [
+      h("div", { "class": "section-head__title" }, "How can we help, " + fixture.customer.firstName + "?"),
+      h("div", { "class": "section-head__sub" }, support.intro || "Chat with the " + support.label + " team about your appointment, products or account.")
+    ]));
+    var grid = h("div", { "class": "support-grid" });
+    var rail = h("div", { "class": "help-rail" });
+    var helpPanel = h("div", { "class": "help-panel", "data-module": "help-rail", "data-visual-id": "help-rail" }, [
+      h("div", { "class": "help-search" }, "Search help articles\u2026"),
+      h("div", { style: "font-weight:700;font-size:14px;margin-bottom:12px" }, "Common topics")
+    ]);
+    var topics = h("div", { style: "display:flex;flex-direction:column;gap:9px" });
+    fixture.helpTopics.forEach(function(t) {
+      topics.appendChild(h("div", { "class": "help-topic", "data-module": "help-topic", "data-action": "support.helpTopic", "data-id": t.q }, [
+        h("div", { "class": "help-topic__icon", style: "background:" + t.iconBg }, h("i", { style: "background:" + t.dot })),
+        h("div", { style: "flex:1;font-weight:600;font-size:13px" }, t.label),
+        h("div", { style: "color:#b7bcc7;font-size:16px" }, "\u203A")
+      ]));
+    });
+    helpPanel.appendChild(topics);
+    rail.appendChild(helpPanel);
+    rail.appendChild(h("div", { "class": "call-card", "data-module": "call-card" }, [
+      h("div", { style: "font-weight:700;font-size:15px" }, "Prefer to talk?"),
+      h("div", { style: "font-size:13px;line-height:1.5;opacity:.7;margin-top:5px" }, "Call the studio team during opening hours, or send us a message here."),
+      h("div", { "class": "call-card__btns" }, [
+        h("div", { "class": "call-card__btn call-card__btn--solid", "data-action": "support.call" }, "Call now"),
+        h("div", { "class": "call-card__btn call-card__btn--ghost", "data-action": "support.email" }, "Email")
+      ])
+    ]));
+    grid.appendChild(rail);
+    var thread = h("div", { "class": "chat-thread", "data-module": "chat-thread", "data-visual-id": "chat-thread" }, [h("div", { "class": "chat-day" }, "Today")]);
+    state.messages.forEach(function(m) {
+      var user = m.from === "user";
+      thread.appendChild(h(
+        "div",
+        { "class": "msg-row " + (user ? "msg-row--user" : "msg-row--agent") },
+        h("div", { "class": "msg-bubble " + (user ? "msg-bubble--user" : "msg-bubble--agent") }, m.text)
+      ));
+    });
+    if (state.typing) thread.appendChild(h("div", { "class": "msg-row msg-row--agent" }, h("div", { "class": "typing" }, [
+      h("span", { "class": "typing-dot" }),
+      h("span", { "class": "typing-dot", style: "animation-delay:.2s" }),
+      h("span", { "class": "typing-dot", style: "animation-delay:.4s" })
+    ])));
+    var quick = h("div", { "class": "quick-replies" }, fixture.quickReplies.map(function(q) {
+      return h("span", { "class": "quick-reply", "data-action": "support.quickReply", "data-id": q }, q);
+    }));
+    var input = h("input", { "class": "composer__input", placeholder: "Type a message\u2026", value: state.chatInput, "aria-label": "Message" });
+    input.addEventListener("input", function() {
+      state.chatInput = input.value;
+    });
+    input.addEventListener("keydown", function(e) {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        composer.querySelector('[data-action="support.sendMessage"]').click();
+      }
+    });
+    var commandError = state.commandErrors["support.sendMessage:_"];
+    var composer = h("div", {
+      "class": "composer",
+      "data-module": "chat-composer",
+      "data-visual-id": "chat-composer",
+      style: commandError ? "position:relative;padding-bottom:38px" : void 0
+    }, [
+      h("div", { "class": "composer__add" }, "+"),
+      input,
+      h("button", { "class": "composer__send", "data-action": "support.sendMessage", "aria-label": "Send" }, "\u2191")
+    ]);
+    if (commandError) {
+      composer.appendChild(h("div", {
+        "class": "composer__error",
+        "data-state": "validation-error",
+        "data-command-error": "support.sendMessage:_",
+        "role": "alert",
+        style: "position:absolute;left:64px;right:64px;bottom:8px;color:var(--danger);font-size:12px"
+      }, commandError));
+    }
+    var panel = h("div", { "class": "chat-panel", "data-module": "chat-panel", "data-visual-id": "chat-panel" }, [
+      h("div", { "class": "chat-header" }, [
+        h("div", { "class": "chat-avatar" }, [h("div", { "class": "chat-avatar__img" }), h("span", { "class": "online-dot" })]),
+        h("div", { style: "flex:1" }, [
+          h("div", { style: "font-weight:700;font-size:15px" }, currentFixture().support.agentName + " \xB7 " + currentFixture().support.label),
+          h("div", { style: "font-size:12.5px;color:var(--ok)" }, "Online now")
+        ]),
+        h("div", { "class": "chat-ticket" }, "Ticket #" + currentFixture().support.ticket)
+      ]),
+      thread,
+      quick,
+      composer
+    ]);
+    grid.appendChild(panel);
+    page.appendChild(grid);
+    return page;
+  }
+
+  // app-templates/customer-portal/runtime/src/routes/ProposalDetailPage.js
+  function noteBox(title, body) {
+    return h("div", { "class": "note-box" }, [
+      h("div", { style: "font-weight:700;font-size:12.5px" }, title),
+      h("div", { style: "font-size:12px;line-height:1.45;color:var(--ink-2);margin-top:3px" }, body)
+    ]);
+  }
+  function beamMap() {
+    var rects = [
+      "left:30%;top:34%;width:42%;height:34%;background:rgba(60,70,90,.45);border-radius:4px",
+      "left:6%;top:20%;width:18%;height:62%;background:rgba(52,199,89,.45);border:1.5px solid #34c759;border-radius:3px",
+      "left:30%;top:74%;width:42%;height:13%;background:rgba(255,214,10,.5);border:1.5px solid #ffd60a;border-radius:3px",
+      "left:74%;top:22%;width:18%;height:40%;background:rgba(255,107,74,.42);border:1.5px solid #ff6b4a;border-radius:3px",
+      "left:30%;top:24%;width:42%;height:7%;background:rgba(58,144,255,.45);border:1.5px solid #2f7be0;border-radius:3px",
+      "left:6%;top:86%;width:86%;height:7%;background:rgba(199,125,255,.4);border:1.5px solid #c77dff;border-radius:3px"
+    ];
+    var map = h("div", { "class": "beam-map" }, [
+      h("span", { "class": "beam-map__label", style: "top:13px;left:15px" }, "Beam AI \xB7 aerial property report")
+    ]);
+    rects.forEach(function(s) {
+      map.appendChild(h("div", { style: "position:absolute;" + s }));
+    });
+    map.appendChild(h("span", { "class": "beam-map__label", style: "bottom:11px;left:15px" }, "licensed via ibeam.ai \u2014 drops in here"));
+    return map;
+  }
+  function ProposalDetail() {
+    if (state.config.dataMode === "live" || quotePackage()) return QuoteDetail();
+    var v = currentTheme();
+    var p = currentSite();
+    var c = computeSite(p);
+    var st = proposalStatusMeta()[p.status];
+    var page = h("section", { "class": "page page--narrow", "data-route": "proposal.detail", "data-visual-id": "proposal-detail", "data-state": p.status });
+    page.appendChild(h("div", { "class": "detail-back", "data-action": "proposal.review", "data-visual-id": "proposal-back" }, "\u2039 Back to proposal"));
+    page.appendChild(h("div", { "class": "proposal-detail-head" }, [
+      h("div", { style: "flex:1" }, [
+        h("div", { "class": "proposal-detail-head__title", "data-bind": "site.addr" }, p.addr),
+        h("div", { "class": "proposal-detail-head__meta" }, p.city + " " + p.postal + " \xB7 lot " + p.lot + " sq ft")
+      ]),
+      StatusBadge({ variant: st.badge, label: st.label, bind: "site.statusLabel" })
+    ]));
+    var side = h("div", { "class": "beam-side" }, [
+      h("div", { style: "display:flex;justify-content:space-between;align-items:baseline;margin-bottom:11px" }, [
+        h("span", { style: "font-weight:700;font-size:14px" }, "Measured surfaces"),
+        h("span", { style: "font-size:11.5px;color:var(--ink-3)" }, "serviceable")
+      ])
+    ]);
+    c.rows.forEach(function(su) {
+      side.appendChild(h("div", { "class": "surface-row" }, [
+        h("span", { "class": "surface-swatch", style: "background:" + su.color }),
+        h("span", { style: "flex:1;font-weight:590;font-size:13px" }, su.name),
+        h("span", { style: "font-weight:700;font-size:13px;white-space:nowrap" }, [su.area, " ", h("span", { style: "color:var(--ink-3);font-weight:500" }, "sq ft")])
+      ]));
+    });
+    side.appendChild(h("div", { "class": "beam-total" }, [
+      h("span", { style: "font-weight:700;font-size:13.5px" }, "Total serviceable"),
+      h("span", { style: "font-weight:800;font-size:16px;color:var(--accent)" }, c.total.toLocaleString() + " sq ft")
+    ]));
+    page.appendChild(h(
+      "div",
+      { "class": "beam-report", "data-module": "beam-report", "data-visual-id": "beam-report" },
+      h("div", { "class": "beam-report__grid" }, [beamMap(), side])
+    ));
+    var comp = ProposalComparison(p, c);
+    page.appendChild(comp.el);
+    page.appendChild(h("div", { style: "margin:0 4px 12px" }, [
+      h("div", { style: "font-weight:800;font-size:19px;letter-spacing:-.01em" }, v.prop.svc + " \u2014 choose your plan"),
+      h("div", { style: "font-size:13px;color:var(--ink-2);margin-top:3px" }, "Approving one option declines the other two. Request a revision and we\u2019ll re-quote all three.")
+    ]));
+    var plans2 = [
+      { id: "897", name: "Flex Service Plan", tag: "Pay-as-you-go \xB7 Order #34897", isFlex: true, desc: "Best for smaller or low-exposure sites. Billed per service at the rates above." },
+      { id: "898", name: "Seasonal Unlimited Coverage", tag: "Order #34898", badge: "MOST SELECTED", priceMain: comp.monthlyStr, priceSub: "/ mo \xD7 5 \xB7 " + v.prop.months, desc: "Predictable budget, full-season protection. " + v.prop.unlimDesc + " GPS logs + photos after every visit." },
+      { id: "899", name: "Season-Lock Prepaid", tag: "Order #34899", badge: "BEST VALUE", badgeGreen: true, priceMain: comp.lockStr, priceSub: "one-time \xB7 season", desc: "Maximum cost certainty for the whole season. 10% saving vs. monthly. " + v.prop.unlimDesc }
+    ];
+    plans2.forEach(function(pl) {
+      var sel = pl.id === p.selected;
+      var opt = h("div", { "class": "plan-option" + (sel ? " plan-option--sel" : ""), "data-module": "plan-option", "data-visual-id": "plan-option", "data-action": "proposal.selectPlan", "data-id": pl.id, "data-state": sel ? "selected" : void 0 });
+      if (pl.badge) opt.appendChild(h("span", { "class": "plan-badge2" + (pl.badgeGreen ? " plan-badge2--green" : "") }, pl.badge));
+      opt.appendChild(h("div", { "class": "plan-radio" + (sel ? " plan-radio--sel" : "") }, sel ? h("i") : null));
+      opt.appendChild(h("div", { "class": "plan-option__body" }, [
+        h("div", { "class": "plan-option__head" }, [
+          h("span", { style: "font-weight:700;font-size:15.5px" }, pl.name),
+          h("span", { style: "font-size:12px;color:var(--ink-3)" }, pl.tag)
+        ]),
+        h("div", { style: "font-size:13px;line-height:1.5;color:var(--ink-2);margin-top:4px" }, pl.desc)
+      ]));
+      var price = h("div", { "class": "plan-option__price" });
+      if (pl.isFlex) {
+        price.appendChild(h("div", { style: "font-weight:800;font-size:17px" }, [c.clearStr, h("span", { style: "font-weight:500;font-size:12.5px;color:var(--ink-3)" }, " " + v.prop.unitA)]));
+        price.appendChild(h("div", { style: "font-weight:800;font-size:17px" }, [c.deiceStr, h("span", { style: "font-weight:500;font-size:12.5px;color:var(--ink-3)" }, " " + v.prop.unitB)]));
+      } else {
+        price.appendChild(h("div", { style: "font-weight:800;font-size:19px" }, pl.priceMain));
+        price.appendChild(h("div", { style: "font-size:12px;color:var(--ink-2)" }, pl.priceSub));
+      }
+      opt.appendChild(price);
+      page.appendChild(opt);
+    });
+    var decided = p.status === "approved" || p.status === "revision" || p.status === "declined";
+    if (decided) {
+      page.appendChild(h("div", { "class": "proposal-decided" }, [
+        h("div", { "class": "proposal-decided__icon" }, "i"),
+        h("div", { style: "font-size:13px;line-height:1.45;color:var(--ink-2)" }, proposalDecisionNote(p))
+      ]));
+    }
+    var selId = p.selected || "898";
+    page.appendChild(h("div", { "class": "proposal-actions" }, [
+      ActionButton({ variant: "btn--primary", label: "Approve " + proposalPlanName(selId), action: "proposal.approve", block: true, lg: true, visualId: "proposal-approve" }),
+      ActionButton({ variant: "btn--ghost", label: "Request revision", action: "proposal.requestRevision", lg: true, visualId: "proposal-revise" }),
+      ActionButton({ variant: "btn--danger", label: "Decline", action: "proposal.decline", lg: true, visualId: "proposal-decline" })
+    ]));
+    return page;
+  }
+  function QuoteDetail() {
+    var page = h("section", { "class": "page page--narrow", "data-route": "proposal.detail", "data-visual-id": "proposal-detail" });
+    var listNoun = contractsListShown() ? "orders" : "contracts";
+    page.appendChild(h("div", { "class": "detail-back", "data-action": "proposal.review", "data-visual-id": "proposal-back" }, "\u2039 Back to your " + listNoun));
+    var gate = contractsGate(ContractDetailSkeleton);
+    if (gate) {
+      page.setAttribute("data-state", gate.getAttribute("data-state") || "loading");
+      page.appendChild(gate);
+      return page;
+    }
+    var group = quoteGroupFor(state.currentSiteId);
+    if (!group) {
+      page.setAttribute("data-state", "not-found");
+      page.appendChild(NotFoundState({ noun: "quote", backLabel: listNoun, backRoute: "proposals.list" }));
+      return page;
+    }
+    var status = QUOTE_STATUS[group.status];
+    var busy = contractCommandsBusy();
+    page.setAttribute("data-state", group.status);
+    var area = formatArea(group.property ? group.property.areaSqft : null);
+    var facts2 = [group.address, area ? "Service area " + area : ""].filter(Boolean);
+    page.appendChild(h("div", { "class": "proposal-detail-head", "data-module": "quote-detail-head", "data-visual-id": "quote-detail-head" }, [
+      h("div", { style: "flex:1;min-width:0" }, [
+        h("h1", { "class": "proposal-detail-head__title", "data-bind": "quote.property" }, group.title),
+        facts2.length ? h("div", { "class": "proposal-detail-head__meta" }, facts2.join(" \xB7 ")) : null
+      ]),
+      StatusBadge({ variant: status.badge, label: status.label, bind: "quote.groupStatus", state: group.status })
+    ]));
+    var agreement = group.agreement;
+    if (agreement) {
+      page.appendChild(h("button", { "class": "quote-package-link", "data-module": "quote-package-link", "data-visual-id": "quote-package-link", "data-action": "agreement.open", "data-id": agreement.id }, [
+        h("span", { "class": "quote-package-link__label" }, "Part of your service agreement"),
+        StatusBadge({ variant: "status-badge--" + agreement.tone, label: agreement.label, bind: "agreement.stateLabel", state: agreement.stage }),
+        h("span", { "class": "proposal-card__chev", "aria-hidden": "true" }, "\u203A")
+      ]));
+    }
+    if (group.orders.some(function(order) {
+      return order.linesState !== "ready";
+    })) {
+      page.appendChild(PartialNotice("Some services on these quotes couldn\u2019t be loaded. Prices and totals shown come from our system as returned."));
+    }
+    var note = decisionNote(group);
+    if (note) {
+      page.appendChild(h("div", { "class": "proposal-decided", "data-module": "quote-decided", "data-state": group.decision }, [
+        h("div", { "class": "proposal-decided__icon" }, "i"),
+        h("div", { style: "font-size:13px;line-height:1.45;color:var(--ink-2)" }, note)
+      ]));
+    }
+    var plan = group.property ? PropertyPlan(propertyPlan(group.property.planId, render), group.property, sharedPlanMap()) : null;
+    if (plan) page.appendChild(plan);
+    var open = group.orders.filter(function(order) {
+      return order.status === "unseen";
+    });
+    var list = h("div", { "class": "quote-options", "data-module": "quote-options", "data-visual-id": "quote-options" });
+    group.orders.forEach(function(order) {
+      list.appendChild(QuoteOptionCard(order, { interactive: true, busy }));
+    });
+    page.appendChild(list);
+    var changes = PropertyChangeRequest(group, busy);
+    if (changes) page.appendChild(changes);
+    if (open.length) {
+      page.appendChild(h("div", { "class": "proposal-footer", "data-module": "quote-detail-footer", "data-visual-id": "quote-detail-footer" }, [
+        h("div", { "class": "proposal-footer__icon" }, "\u2726"),
+        h("div", { "class": "proposal-footer__copy" }, "Approving one option for this property declines its other options.")
+      ]));
+    }
+    var location = PropertyLocation({ property: quotedProperty(group), map: sharedPropertyMap(), viewport: mapViewport() });
+    if (location) page.appendChild(location);
+    return page;
+  }
+  function quotedProperty(group) {
+    return group.property || { id: group.id, name: group.title, address: group.address, lat: null, lon: null };
+  }
+  function decisionNote(group) {
+    if (group.decision === "approved") {
+      var approved = group.orders.find(function(order) {
+        return order.status === "approved";
+      });
+      var name = approved && approved.pricingModel ? approved.pricingModel.label : "an option";
+      var others = group.orders.filter(function(order) {
+        return order !== approved;
+      });
+      var allDeclined = others.length > 0 && others.every(function(order) {
+        return order.status === "declined";
+      });
+      return "You approved " + name + "." + (allDeclined ? " The other options for this property are declined." : "");
+    }
+    if (group.decision === "revision") return "You asked for changes to these quotes. Our team is reviewing your request.";
+    if (group.decision === "declined") return "You declined the quotes for this property.";
+    if (group.decision === "cancelled") return "The services for this property were cancelled.";
+    return "";
+  }
+  function proposalDecisionNote(p) {
+    var note = p.status === "approved" ? "You approved " + proposalPlanName(p.selected) + "." : p.status === "revision" ? "Revision requested \u2014 our team will re-quote all three options." : "You declined this proposal.";
+    return note + " You can still change your decision below.";
+  }
+
+  // app-templates/customer-portal/runtime/src/components/proposals/ProposalComparison.js
+  function ProposalComparison(site, c) {
+    var v = currentTheme();
+    var seasonStr = "$" + (Math.round(c.unlim / 25) * 25).toLocaleString();
+    var monthlyStr = "$" + c.monthly.toLocaleString();
+    var lockStr = "$" + c.seasonLock.toLocaleString();
+    var table = h("div", { "class": "pricing-table", "data-module": "proposal-comparison", "data-visual-id": "proposal-comparison" });
+    table.appendChild(h("div", { "class": "pt-title" }, [
+      h("span", { style: "font-weight:800;font-size:16px;letter-spacing:-.01em" }, "Pricing from measured area"),
+      h("span", { style: "font-size:12px;color:var(--ink-3)" }, "rate \xD7 Beam AI surface \xB7 per visit")
+    ]));
+    table.appendChild(h("div", { "class": "pt-grid pt-head" }, [
+      h("div", null, "Surface"),
+      h("div", { style: "text-align:right" }, "Area"),
+      h("div", { style: "text-align:right", "data-bind": "prop.colA" }, v.prop.colA),
+      h("div", { style: "text-align:right", "data-bind": "prop.colB" }, v.prop.colB)
+    ]));
+    c.rows.forEach(function(su) {
+      table.appendChild(h("div", { "class": "pt-grid pt-row" }, [
+        h("div", { style: "display:flex;align-items:center;gap:9px" }, [h("span", { "class": "surface-swatch", style: "background:" + su.color }), su.name]),
+        h("div", { style: "text-align:right;color:var(--ink-2)" }, su.area),
+        h("div", { style: "text-align:right;font-weight:600" }, [su.clear, " ", h("span", { style: "color:var(--ink-3);font-weight:500;font-size:11px" }, su.clearRate)]),
+        h("div", { style: "text-align:right;font-weight:600" }, [su.deice, " ", h("span", { style: "color:var(--ink-3);font-weight:500;font-size:11px" }, su.deiceRate)])
+      ]));
+    });
+    table.appendChild(h("div", { "class": "pt-grid pt-row", style: "color:var(--ink-2)" }, [
+      h("div", null, "Site mobilization"),
+      h("div", { style: "text-align:right" }, "\u2014"),
+      h("div", { style: "text-align:right;font-weight:600;color:var(--ink)" }, "$" + F.MOB_CLEAR),
+      h("div", { style: "text-align:right;font-weight:600;color:var(--ink)" }, "$" + F.MOB_DEICE)
+    ]));
+    table.appendChild(h("div", { "class": "pt-grid pt-total" }, [
+      h("div", { style: "font-weight:800;font-size:14px" }, "Per-visit total"),
+      h("div"),
+      h("div", { style: "text-align:right;font-weight:800;font-size:16px" }, c.clearStr),
+      h("div", { style: "text-align:right;font-weight:800;font-size:16px" }, c.deiceStr)
+    ]));
+    table.appendChild(h("div", { "class": "plan-notes" }, [
+      noteBox("Flex", "Billed at the per-visit totals above."),
+      noteBox("Seasonal Unlimited", ["Expected season \u2248 ", h("b", { style: "color:var(--ink)" }, seasonStr), " \xF7 5 mo = ", h("b", { style: "color:var(--accent)" }, monthlyStr + "/mo"), ", uncapped."]),
+      noteBox("Season-Lock", [seasonStr + " prepaid ", h("b", { style: "color:var(--ink)" }, "\u221210%"), " = ", h("b", { style: "color:var(--accent)" }, lockStr), "."])
+    ]));
+    return { el: table, seasonStr, monthlyStr, lockStr };
+  }
+
+  // app-templates/customer-portal/runtime/src/routes/ProposalsPage.js
+  function proposalRollup() {
+    var r = { approved: 0, revision: 0, declined: 0, unseen: 0, viewed: 0 };
+    state.psites.forEach(function(p) {
+      r[p.status]++;
+    });
+    return r;
+  }
+  function ProposalsList() {
+    if (state.config.dataMode === "live") return contractsListShown() ? OrdersPage() : ContractsPage();
+    var quotes = quotePackage();
+    if (quotes) return ContractsPage();
+    var proposal = currentProposal();
+    var statusMeta = proposalStatusMeta();
+    var r = proposalRollup();
+    var decided = r.approved + r.revision + r.declined;
+    var open = r.unseen + r.viewed;
+    var page = h("section", { "class": "page page--narrow", "data-route": "proposals.list", "data-visual-id": "proposals-list" });
+    page.appendChild(h("div", { "class": "proposals-head" }, [
+      h("div", { style: "flex:1" }, [
+        h("div", { style: "font-weight:800;font-size:28px;line-height:1.15;letter-spacing:-.025em", "data-bind": "proposal.id" }, "Proposal #" + proposal.id),
+        h("div", { style: "font-size:14.5px;color:var(--ink-2);margin-top:3px" }, open + " property choices open \xB7 sent " + proposal.sent + " \xB7 valid until " + proposal.validUntil)
+      ]),
+      h("span", { "class": "proposals-head__pill" }, decided + " of " + state.psites.length + " decided")
+    ]));
+    if (state.view === "empty") {
+      page.appendChild(EmptyState({ glyph: "\u{1F4C4}", title: "No proposals yet", desc: "When our team sends you a multi-site proposal, it shows up here." }));
+      return page;
+    }
+    var canvas = h("div", { "class": "portfolio-map__canvas" }, [
+      h("span", { "class": "portfolio-map__label" }, proposal.mapLabel || "portfolio map \xB7 Port Coquitlam \xB7 Coquitlam"),
+      h("div", { "class": "portfolio-map__river" })
+    ]);
+    state.psites.forEach(function(p) {
+      var st = statusMeta[p.status];
+      canvas.appendChild(h("div", { "class": "map-pin-wrap", style: "left:" + p.x + "%;top:" + p.y + "%" }, [
+        h("div", { "class": "map-pin-diamond", style: "background:" + st.dot }),
+        h("div", { "class": "map-pin-label" }, p.addr)
+      ]));
+    });
+    page.appendChild(h("div", { "class": "portfolio-map", "data-module": "portfolio-map", "data-visual-id": "portfolio-map" }, canvas));
+    page.appendChild(h("div", { "class": "rollup-grid", "data-module": "proposal-rollup" }, [
+      rollupCard("Approved", r.approved, "var(--ok)"),
+      rollupCard("Revision", r.revision, "var(--warn)"),
+      rollupCard("Declined", r.declined, "var(--danger)"),
+      rollupCard("Open", open, "var(--ink-3)")
+    ]));
+    page.appendChild(h("div", { "class": "site-list", "data-module": "proposal-list", "data-visual-id": "proposal-list" }, state.psites.map(ProposalCard)));
+    page.appendChild(h("div", { "class": "proposal-footer" }, [
+      h("div", { "class": "proposal-footer__icon" }, "\u2726"),
+      h("div", { style: "flex:1;font-size:13px;line-height:1.5;color:var(--ink-2)" }, "Decide each site independently. Every price is derived from that site\u2019s Beam AI measured area, so larger lots scale up automatically. Approving a plan records your decision on the quote we already prepared for that site.")
+    ]));
+    return page;
+  }
+  function ContractsPage() {
+    var page = h("section", { "class": "page page--narrow", "data-route": "proposals.list", "data-visual-id": "proposals-list" });
+    var gate = contractsGate(ContractsListSkeleton);
+    if (gate) {
+      page.setAttribute("data-state", gate.getAttribute("data-state") || "loading");
+      page.appendChild(gate);
+      return page;
+    }
+    var quotes = quotePackage();
+    if (!quotes) {
+      page.setAttribute("data-state", "unavailable");
+      page.appendChild(EmptyState({ glyph: "\u25CB", title: "Contracts aren\u2019t in the portal yet", desc: "Your quotes and service agreements can\u2019t be shown here yet." }));
+      return page;
+    }
+    var hasAgreements = quotes.agreements.length > 0;
+    var hasQuotes = quotes.pending.length > 0;
+    var pendingCount = quotes.pending.reduce(function(sum, group) {
+      return sum + group.orders.length;
+    }, 0);
+    var historyCount = (quotes.history || []).reduce(function(sum, group) {
+      return sum + group.orders.length;
+    }, 0);
+    var hasHistory = historyCount > pendingCount;
+    var partial = ContractsNotices(quotes);
+    page.setAttribute("data-state", hasAgreements || hasQuotes || hasHistory ? partial.length ? "partial" : "ready" : quotes.preparing ? "preparing" : "empty");
+    page.appendChild(ContractsHead(quotes));
+    if (!hasAgreements && !hasQuotes && !hasHistory) {
+      partial.forEach(function(notice) {
+        page.appendChild(notice);
+      });
+      page.appendChild(quotes.preparing ? QuotesPreparing() : EmptyState({ glyph: "\u{1F4C4}", title: "No contracts yet", desc: "When we send you a quote or a service agreement, it shows up here." }));
+      return page;
+    }
+    if (quotes.preparing) page.appendChild(QuotesPreparingNotice());
+    partial.forEach(function(notice) {
+      page.appendChild(notice);
+    });
+    if (hasAgreements) {
+      page.appendChild(h("section", { "class": "contracts-section", "data-module": "contracts-agreements", "aria-label": "Service agreements" }, [
+        ContractsSectionTitle("Service agreements", quotes.agreements.length),
+        AgreementList(quotes.agreements)
+      ]));
+    }
+    if (hasQuotes) {
+      var section = h("section", { "class": "contracts-section", "data-module": "contracts-quotes", "aria-label": "Quotes" }, [
+        hasAgreements ? ContractsSectionTitle("Quotes", quotes.pending.reduce(function(sum, group) {
+          return sum + group.orders.length;
+        }, 0)) : null
+      ]);
+      var map = usablePropertyMap();
+      var cache = createGeocodeCache(browserStorage());
+      var placements = map ? placeEach(map, quotes.pending.map(function(group) {
+        return group.property;
+      })) : quotes.pending.map(function(group) {
+        return group.property ? knownPlacement(group.property, cache) : { point: null, reason: "unknown" };
+      });
+      var portfolio = map ? PortfolioMap(quotes.pending, placements, map, mapViewport()) : PortfolioSchematic(quotes.pending, placements);
+      if (portfolio) section.appendChild(portfolio);
+      section.appendChild(QuoteGroups(quotes.pending, placements, !!portfolio));
+      if (quotes.deciding) section.appendChild(QuotesFooter());
+      page.appendChild(section);
+    }
+    if (hasHistory) {
+      page.appendChild(h("section", { "class": "contracts-section", "data-module": "contracts-orders", "aria-label": "All orders" }, [
+        ContractsSectionTitle("All orders", historyCount),
+        QuoteGroups(quotes.history, quotes.history.map(function() {
+          return { point: null, reason: "unknown" };
+        }), false)
+      ]));
+    }
+    return page;
+  }
+  function OrdersPage() {
+    var page = h("section", { "class": "page page--narrow", "data-route": "proposals.list", "data-visual-id": "orders-list" });
+    var gate = contractsGate(ContractsListSkeleton);
+    if (gate) {
+      page.setAttribute("data-state", gate.getAttribute("data-state") || "loading");
+      page.appendChild(gate);
+      return page;
+    }
+    var quotes = quotePackage();
+    if (!quotes) {
+      page.setAttribute("data-state", "unavailable");
+      page.appendChild(EmptyState({ glyph: "\u25CB", title: "Orders aren\u2019t in the portal yet", desc: "Your quotes and orders can\u2019t be shown here yet." }));
+      return page;
+    }
+    var pendingCount = orderCount(quotes.pending);
+    var historyCount = orderCount(quotes.history);
+    var hasQuotes = pendingCount > 0;
+    var hasHistory = historyCount > pendingCount;
+    var notices = OrdersNotices(quotes);
+    var awaiting = AgreementsAwaiting(quotes.agreements);
+    page.setAttribute("data-state", hasQuotes || hasHistory ? notices.length ? "partial" : "ready" : quotes.preparing ? "preparing" : "empty");
+    page.appendChild(ContractsHead(quotes, "Your orders"));
+    if (quotes.preparing && (hasQuotes || hasHistory)) page.appendChild(QuotesPreparingNotice());
+    notices.forEach(function(notice) {
+      page.appendChild(notice);
+    });
+    if (awaiting) page.appendChild(awaiting);
+    if (!hasQuotes && !hasHistory) {
+      page.appendChild(quotes.preparing ? QuotesPreparing() : EmptyState({ glyph: "\u{1F4C4}", title: "No orders yet", desc: "When we send you a quote, it shows up here." }));
+      return page;
+    }
+    if (hasQuotes) {
+      var section = h("section", { "class": "contracts-section", "data-module": "contracts-quotes", "aria-label": "Open quotes" }, [
+        hasHistory ? ContractsSectionTitle("Open quotes", pendingCount) : null
+      ]);
+      var map = usablePropertyMap();
+      var cache = createGeocodeCache(browserStorage());
+      var placements = map ? placeEach(map, quotes.pending.map(function(group) {
+        return group.property;
+      })) : quotes.pending.map(function(group) {
+        return group.property ? knownPlacement(group.property, cache) : { point: null, reason: "unknown" };
+      });
+      var portfolio = map ? PortfolioMap(quotes.pending, placements, map, mapViewport()) : PortfolioSchematic(quotes.pending, placements);
+      if (portfolio) section.appendChild(portfolio);
+      section.appendChild(QuoteGroups(quotes.pending, placements, !!portfolio));
+      if (quotes.deciding) section.appendChild(QuotesFooter());
+      page.appendChild(section);
+    }
+    if (hasHistory) {
+      page.appendChild(h("section", { "class": "contracts-section", "data-module": "contracts-orders", "aria-label": "All orders" }, [
+        ContractsSectionTitle("All orders", historyCount),
+        QuoteGroups(quotes.history, quotes.history.map(function() {
+          return { point: null, reason: "unknown" };
+        }), false)
+      ]));
+    }
+    return page;
+  }
+  function AgreementsAwaiting(rows2) {
+    var waiting = rows2.filter(function(row) {
+      return row.agreement.allowedActions.indexOf("approve") !== -1;
+    });
+    if (!waiting.length) return null;
+    return h("div", { "class": "contracts-section", "data-module": "agreements-awaiting", "data-visual-id": "agreements-awaiting" }, waiting.map(function(row) {
+      return h("button", { "class": "quote-package-link", "data-module": "quote-package-link", "data-visual-id": "quote-package-link", "data-action": "agreement.open", "data-id": row.id, "aria-label": "Open the service agreement " + agreementTitle(row) + " \u2014 " + row.agreement.label }, [
+        h("span", { "class": "quote-package-link__label" }, "Your service agreement for " + agreementTitle(row) + " is ready for your approval"),
+        StatusBadge({ variant: "status-badge--" + row.agreement.tone, label: row.agreement.label, bind: "agreement.stateLabel", state: row.agreement.stage }),
+        h("span", { "class": "proposal-card__chev", "aria-hidden": "true" }, "\u203A")
+      ]);
+    }));
+  }
+  function AgreementsList() {
+    var page = h("section", { "class": "page page--narrow", "data-route": "contracts.list", "data-visual-id": "contracts-list" });
+    var gate = contractsGate(ContractsListSkeleton);
+    if (gate) {
+      page.setAttribute("data-state", gate.getAttribute("data-state") || "loading");
+      page.appendChild(gate);
+      return page;
+    }
+    var quotes = quotePackage();
+    if (!quotes) {
+      page.setAttribute("data-state", "unavailable");
+      page.appendChild(EmptyState({ glyph: "\u25CB", title: "Contracts aren\u2019t in the portal yet", desc: "Your service agreements can\u2019t be shown here yet." }));
+      return page;
+    }
+    var rows2 = quotes.agreements;
+    var notices = AgreementsNotices(quotes);
+    page.setAttribute("data-state", rows2.length ? notices.length ? "partial" : "ready" : "empty");
+    page.appendChild(h("div", { "class": "proposals-head", "data-module": "contracts-head", "data-visual-id": "contracts-head" }, [
+      h("div", { "class": "proposals-head__read" }, [
+        h("div", { "class": "proposals-head__title-row" }, [h("h1", { "class": "proposals-head__title" }, "Your contracts")])
+      ])
+    ]));
+    notices.forEach(function(notice) {
+      page.appendChild(notice);
+    });
+    if (!rows2.length) {
+      page.appendChild(EmptyState({ glyph: "\u{1F4C4}", title: "No contracts yet", desc: "Once you approve a quote, we prepare your service agreement and it shows up here.", action: { variant: "btn--ghost", label: "Go to Orders", action: "nav.go", id: "proposals.list" } }));
+      return page;
+    }
+    page.appendChild(h("section", { "class": "contracts-section", "data-module": "contracts-agreements", "aria-label": "Service agreements" }, [
+      ContractsSectionTitle("Service agreements", rows2.length),
+      AgreementList(rows2)
+    ]));
+    return page;
+  }
+  function orderCount(groups) {
+    return (groups || []).reduce(function(sum, group) {
+      return sum + group.orders.length;
+    }, 0);
+  }
+  function rollupCard(label, num2, color) {
+    return h("div", { "class": "rollup-card" }, [
+      h("div", { "class": "rollup-card__label" }, label),
+      h("div", { "class": "rollup-card__num", style: "color:" + color }, String(num2))
+    ]);
+  }
+
+  // app-templates/customer-portal/runtime/src/quote-request.js
+  var QUOTE_REQUEST_OUTCOME_TIMEOUT_MS = 3e5;
+  var QUOTE_REQUEST_POLL_MS = 3e3;
+  var QUOTE_REQUEST_LIMIT = 20;
+  var QUOTE_REQUEST_FINAL_OUTCOMES = /* @__PURE__ */ Object.freeze(["ACCEPTED", "REFUSED", "FAILED"]);
+  var QUOTE_REQUEST_FIELDS = /* @__PURE__ */ Object.freeze(["PROPERTY_IDS", "PROPERTY_ADDRESSES"]);
+  var QUOTE_REQUEST_COPY = /* @__PURE__ */ Object.freeze({
+    nothingChosen: "Choose a property or add an address to quote.",
+    tooManyProperties: "Choose at most " + QUOTE_REQUEST_LIMIT + " properties in one request.",
+    tooManyAddresses: "Add at most " + QUOTE_REQUEST_LIMIT + " new addresses in one request.",
+    addressOutside: "This address is outside the area we serve.",
+    addressUnknown: "We could not find this address. Check it or pick one from the suggestions.",
+    notSent: "Your request wasn\u2019t sent. Check your connection and try again.",
+    failed: "We couldn\u2019t take your quote request right now. Please try again in a few minutes."
+  });
+  var BUSY_PHASES3 = /* @__PURE__ */ Object.freeze(["sending", "waiting", "processing", "checking"]);
+  var finder = null;
+  function quoteRequestOpen(config) {
+    return !!config && config.vertical === "snow" && config.dataMode === "live";
+  }
+  function quoteRequestState() {
+    if (!state.quoteRequest) state.quoteRequest = freshRequest();
+    return state.quoteRequest;
+  }
+  function resetQuoteRequest() {
+    var current = state.quoteRequest;
+    if (current && BUSY_PHASES3.indexOf(current.phase) !== -1) return false;
+    state.quoteRequest = freshRequest();
+    return true;
+  }
+  function quoteRequestBusy() {
+    return !!state.quoteRequest && BUSY_PHASES3.indexOf(state.quoteRequest.phase) !== -1;
+  }
+  function freshRequest() {
+    return {
+      phase: "editing",
+      draft: { propertyIds: [], addresses: [], risks: [], notes: "", pendingAddress: "" },
+      errors: {},
+      message: "",
+      addressCheck: "",
+      formId: null
+    };
+  }
+  function quoteRequestSchema(type) {
+    var attributes = typeAttributes(type);
+    var addresses = attributes.PROPERTY_ADDRESSES || {};
+    var risks = attributes.RISK_FACTORS || {};
+    var notes = attributes.ADDITIONAL_NOTES || {};
+    var rows2 = /(?:^|\s)rows:(\d+)/.exec(text(notes.inputFormat));
+    return {
+      within: withinBox(addresses.inputFormat),
+      riskLabel: localizedName6(risks.nls),
+      risks: (Array.isArray(risks.options) ? risks.options : []).map(function(option) {
+        var value = text(option && option.value);
+        return value ? { value, label: localizedName6(option.nls) || value } : null;
+      }).filter(Boolean),
+      notesLabel: localizedName6(notes.nls),
+      notesRows: rows2 ? Math.min(Number(rows2[1]), 12) : 5
+    };
+  }
+  function withinBox(inputFormat) {
+    var match = /(?:^|\s)within:(-?\d+(?:\.\d+)?),(-?\d+(?:\.\d+)?),(-?\d+(?:\.\d+)?),(-?\d+(?:\.\d+)?)(?:\s|;|$)/.exec(text(inputFormat));
+    if (!match) return null;
+    var box = { south: Number(match[1]), west: Number(match[2]), north: Number(match[3]), east: Number(match[4]) };
+    return box.south < box.north && box.west < box.east && Math.abs(box.south) <= 90 && Math.abs(box.north) <= 90 ? box : null;
+  }
+  function insideBox(box, point) {
+    return !box || !point || point.lat >= box.south && point.lat <= box.north && point.lon >= box.west && point.lon <= box.east;
+  }
+  function loadQuoteRequestSchema(options2) {
+    var settings = options2 || {};
+    var current = state.quoteRequestSchema;
+    if (current && current.state !== "error") return Promise.resolve(current);
+    var forms = settings.forms || createCoreProfileFormAdapter();
+    var loading = { state: "loading", schema: null };
+    state.quoteRequestSchema = loading;
+    return Promise.resolve().then(function() {
+      return forms.type(QUOTE_REQUEST_FORM, { config: state.config, state });
+    }).then(function(type) {
+      if (state.quoteRequestSchema !== loading) return state.quoteRequestSchema;
+      state.quoteRequestSchema = { state: "ready", schema: quoteRequestSchema(type) };
+      return state.quoteRequestSchema;
+    }, function(error2) {
+      if (state.quoteRequestSchema !== loading) return state.quoteRequestSchema;
+      if (error2 && error2.code === "session-expired") state.account = "session-expired";
+      state.quoteRequestSchema = { state: "error", schema: null };
+      return state.quoteRequestSchema;
+    }).then(function(result) {
+      if (settings.onChange) settings.onChange();
+      return result;
+    });
+  }
+  function toggleQuoteProperty(backendId) {
+    var request = quoteRequestState();
+    var id = positiveInteger(backendId);
+    if (!id || quoteRequestBusy() || !liveProperties().some(function(property) {
+      return property.backendId === id;
+    })) return false;
+    var chosen = request.draft.propertyIds;
+    request.draft.propertyIds = chosen.indexOf(id) === -1 ? chosen.concat([id]) : chosen.filter(function(other) {
+      return other !== id;
+    });
+    delete request.errors.PROPERTY_IDS;
+    return true;
+  }
+  function changeQuoteRequestDraft(key, value) {
+    var request = quoteRequestState();
+    if (quoteRequestBusy()) return false;
+    if (key === "notes" || key === "pendingAddress") request.draft[key] = String(value == null ? "" : value);
+    else if (key === "risk") {
+      var risks = request.draft.risks;
+      request.draft.risks = risks.indexOf(value) === -1 ? risks.concat([value]) : risks.filter(function(risk) {
+        return risk !== value;
+      });
+    } else return false;
+    return true;
+  }
+  function removeQuoteAddress(index) {
+    var request = quoteRequestState();
+    var position = Number(index);
+    if (quoteRequestBusy() || !Number.isInteger(position) || position < 0 || position >= request.draft.addresses.length) return false;
+    request.draft.addresses = request.draft.addresses.filter(function(_, at) {
+      return at !== position;
+    });
+    delete request.errors.PROPERTY_ADDRESSES;
+    return true;
+  }
+  function acceptQuoteAddress(address, point) {
+    var request = quoteRequestState();
+    var value = text(address).replace(/\s+/g, " ");
+    if (!value) return false;
+    var schema = state.quoteRequestSchema && state.quoteRequestSchema.schema;
+    if (!insideBox(schema && schema.within, point)) {
+      request.errors.PROPERTY_ADDRESSES = QUOTE_REQUEST_COPY.addressOutside;
+      return false;
+    }
+    var known = request.draft.addresses.some(function(entry2) {
+      return entry2.address.toLowerCase() === value.toLowerCase();
+    });
+    if (!known && request.draft.addresses.length >= QUOTE_REQUEST_LIMIT) {
+      request.errors.PROPERTY_ADDRESSES = QUOTE_REQUEST_COPY.tooManyAddresses;
+      return false;
+    }
+    if (!known) request.draft.addresses = request.draft.addresses.concat([{ address: value, point: point || null }]);
+    request.draft.pendingAddress = "";
+    delete request.errors.PROPERTY_ADDRESSES;
+    delete request.errors.PROPERTY_IDS;
+    return true;
+  }
+  function addTypedQuoteAddress(options2) {
+    var settings = options2 || {};
+    var request = quoteRequestState();
+    var typed = text(request.draft.pendingAddress);
+    if (!typed) return Promise.resolve(true);
+    if (quoteRequestBusy() || request.addressCheck) return Promise.resolve(false);
+    var maps = settings.finder || addressFinder();
+    if (!maps) return Promise.resolve(acceptQuoteAddress(typed, null));
+    request.addressCheck = "checking";
+    if (settings.onChange) settings.onChange();
+    return Promise.resolve().then(function() {
+      return maps.load();
+    }).then(function() {
+      return maps.geocode(typed);
+    }).then(function(point) {
+      return { point, missed: false };
+    }, function(error2) {
+      return { point: null, missed: !!error2 && error2.status === "ZERO_RESULTS" };
+    }).then(function(found) {
+      request.addressCheck = "";
+      if (text(request.draft.pendingAddress) !== typed) return false;
+      if (found.missed) {
+        request.errors.PROPERTY_ADDRESSES = QUOTE_REQUEST_COPY.addressUnknown;
+        return false;
+      }
+      return acceptQuoteAddress(typed, found.point);
+    }).then(function(added) {
+      if (settings.onChange) settings.onChange();
+      return added;
+    });
+  }
+  function addressFinder() {
+    if (!state.config.mapsApiKey) return null;
+    if (!finder) finder = createGoogleMapsAdapter({ apiKey: state.config.mapsApiKey });
+    return finder;
+  }
+  function validateQuoteRequest(draft) {
+    var errors = {};
+    if (!draft.propertyIds.length && !draft.addresses.length) errors.PROPERTY_IDS = QUOTE_REQUEST_COPY.nothingChosen;
+    if (draft.propertyIds.length > QUOTE_REQUEST_LIMIT) errors.PROPERTY_IDS = QUOTE_REQUEST_COPY.tooManyProperties;
+    if (draft.addresses.length > QUOTE_REQUEST_LIMIT) errors.PROPERTY_ADDRESSES = QUOTE_REQUEST_COPY.tooManyAddresses;
+    return errors;
+  }
+  function quoteRequestValues(draft) {
+    var values = {};
+    var located = draft.addresses.filter(function(entry2) {
+      return !!entry2.point;
+    });
+    var notes = text(draft.notes);
+    if (draft.propertyIds.length) values.PROPERTY_IDS = draft.propertyIds.map(String);
+    if (draft.addresses.length) values.PROPERTY_ADDRESSES = draft.addresses.map(function(entry2) {
+      return entry2.address;
+    });
+    if (located.length) {
+      values.PROPERTY_COORDINATES = JSON.stringify(located.map(function(entry2) {
+        return { address: entry2.address, lat: entry2.point.lat, lng: entry2.point.lon };
+      }));
+    }
+    if (draft.risks.length) values.RISK_FACTORS = draft.risks.slice();
+    if (notes) values.ADDITIONAL_NOTES = notes;
+    return values;
+  }
+  function submitQuoteRequest(options2) {
+    var request = quoteRequestState();
+    var changed = options2.onChange || function() {
+    };
+    if (quoteRequestBusy()) return Promise.resolve(false);
+    var errors = validateQuoteRequest(request.draft);
+    if ((/* @__PURE__ */ Object.keys(errors)).length) {
+      request.errors = errors;
+      request.message = "";
+      changed("invalid");
+      return Promise.resolve(false);
+    }
+    var forms = options2.forms || outcomeForms2(options2);
+    var context = { config: state.config, state };
+    request.phase = "sending";
+    request.errors = {};
+    request.message = "";
+    changed("sending");
+    return Promise.resolve().then(function() {
+      return forms.submit(QUOTE_REQUEST_FORM, quoteRequestValues(request.draft), context);
+    }).then(function(formId) {
+      if (state.quoteRequest !== request) return false;
+      request.formId = formId;
+      request.phase = "waiting";
+      changed("waiting");
+      return awaitOutcome2(request, forms, context, options2);
+    }, function(error2) {
+      if (state.quoteRequest !== request) return false;
+      if (error2 && error2.code === "session-expired") return sessionEnded2(request, changed);
+      request.phase = "editing";
+      request.message = QUOTE_REQUEST_COPY.notSent;
+      changed("not-sent");
+      return false;
+    });
+  }
+  function checkQuoteRequestAgain(options2) {
+    var request = state.quoteRequest;
+    if (!request || request.phase !== "slow" || !request.formId) return Promise.resolve(false);
+    var forms = options2.forms || outcomeForms2(options2);
+    request.phase = "checking";
+    (options2.onChange || function() {
+    })("checking");
+    return awaitOutcome2(request, forms, { config: state.config, state }, options2);
+  }
+  function outcomeForms2(options2) {
+    return createCoreProfileFormAdapter({ timeoutMs: QUOTE_REQUEST_OUTCOME_TIMEOUT_MS, pollIntervalMs: QUOTE_REQUEST_POLL_MS, wait: options2.wait, now: options2.now });
+  }
+  function awaitOutcome2(request, forms, context, options2) {
+    var changed = options2.onChange || function() {
+    };
+    return Promise.resolve().then(function() {
+      return forms.report(QUOTE_REQUEST_FORM, request.formId, context, QUOTE_REQUEST_FINAL_OUTCOMES, function(reported) {
+        if (reported.outcome !== "PROCESSING" || request.phase !== "waiting" || state.quoteRequest !== request) return;
+        request.phase = "processing";
+        changed("processing");
+      });
+    }).then(function(report) {
+      if (state.quoteRequest !== request) return false;
+      return settle3(request, report, options2);
+    }, function(error2) {
+      if (state.quoteRequest !== request) return false;
+      if (error2 && error2.code === "session-expired") return sessionEnded2(request, changed);
+      request.phase = "slow";
+      changed("slow");
+      return false;
+    });
+  }
+  function settle3(request, report, options2) {
+    var changed = options2.onChange || function() {
+    };
+    if (report.outcome === "ACCEPTED") {
+      request.phase = "accepted";
+      changed("accepted");
+      if (options2.reload) {
+        ["proposals", "properties"].forEach(function(moduleId) {
+          Promise.resolve().then(function() {
+            return options2.reload(moduleId);
+          }).catch(function() {
+            return null;
+          });
+        });
+      }
+      return true;
+    }
+    request.phase = "editing";
+    var field4 = text(report.field);
+    var message = text(report.message);
+    if (report.outcome === "REFUSED" && message && QUOTE_REQUEST_FIELDS.indexOf(field4) !== -1) request.errors = { [field4]: message };
+    else request.message = message || QUOTE_REQUEST_COPY.failed;
+    changed(report.outcome === "REFUSED" ? "refused" : "failed");
+    return false;
+  }
+  function sessionEnded2(request, changed) {
+    request.phase = request.formId ? "slow" : "editing";
+    state.account = "session-expired";
+    changed("session-expired");
+    return false;
+  }
+  function typeAttributes(type) {
+    var found = {};
+    [type].concat(type && Array.isArray(type.parents) ? type.parents : []).forEach(function(owner) {
+      (owner && Array.isArray(owner.attributes) ? owner.attributes : []).forEach(function(attribute) {
+        var code = text(attribute && attribute.code);
+        if (code && !found[code]) found[code] = attribute;
+      });
+    });
+    return found;
+  }
+  function localizedName6(nls) {
+    if (!nls || typeof nls !== "object") return "";
+    var bag = nls.en || nls[(/* @__PURE__ */ Object.keys(nls))[0]] || {};
+    return text(bag && bag.NAME).replace(/\s+/g, " ");
+  }
+
+  // app-templates/customer-portal/runtime/src/address-suggestions.js
+  var SUGGESTION_DELAY = 250;
+  var SUGGESTION_MINIMUM = 3;
+  function attachAddressSuggestions(input, cell, options2) {
+    var finder2 = options2.finder;
+    var listId = input.getAttribute("id") + "-suggestions";
+    var list = h("ul", { "class": "prop-suggest", id: listId, role: "listbox", "aria-label": "Suggested addresses", hidden: true });
+    var offered = [];
+    var active = -1;
+    var timer = null;
+    cell.appendChild(list);
+    input.setAttribute("role", "combobox");
+    input.setAttribute("aria-autocomplete", "list");
+    input.setAttribute("aria-controls", listId);
+    input.setAttribute("aria-expanded", "false");
+    function highlight(index) {
+      active = index;
+      offered.forEach(function(option, position) {
+        option.node.setAttribute("aria-selected", position === index ? "true" : "false");
+      });
+      if (index === -1) input.removeAttribute("aria-activedescendant");
+      else input.setAttribute("aria-activedescendant", offered[index].node.getAttribute("id"));
+    }
+    function close() {
+      list.replaceChildren();
+      list.setAttribute("hidden", "");
+      offered = [];
+      highlight(-1);
+      input.setAttribute("aria-expanded", "false");
+    }
+    function take(option) {
+      close();
+      options2.pick(option.item);
+    }
+    input.addEventListener("keydown", function(event) {
+      if (list.hasAttribute("hidden")) return;
+      if (event.key === "ArrowDown" || event.key === "ArrowUp") {
+        event.preventDefault();
+        var count = offered.length;
+        highlight(event.key === "ArrowDown" ? (active + 1) % count : (active <= 0 ? count : active) - 1);
+      } else if (event.key === "Enter" && active !== -1) {
+        event.preventDefault();
+        take(offered[active]);
+      } else if (event.key === "Escape") {
+        event.preventDefault();
+        close();
+      }
+    });
+    input.addEventListener("blur", function() {
+      setTimeout(close, 150);
+    });
+    input.addEventListener("input", function() {
+      if (timer !== null) clearTimeout(timer);
+      var value = input.value.trim();
+      if (value.length < SUGGESTION_MINIMUM) {
+        timer = null;
+        close();
+        return;
+      }
+      timer = setTimeout(function() {
+        timer = null;
+        finder2.suggestAddresses(value, { within: options2.within || null }).then(function(items) {
+          if (input.value.trim() !== value || !input.isConnected) return;
+          close();
+          offered = items.map(function(item, index) {
+            var node = h("li", { "class": "prop-suggest__option", id: listId + "-" + index, role: "option", "aria-selected": "false" }, item.label);
+            var option = { node, item };
+            node.addEventListener("mousedown", function(event) {
+              event.preventDefault();
+            });
+            node.addEventListener("click", function() {
+              take(option);
+            });
+            list.appendChild(node);
+            return option;
+          });
+          if (!offered.length) return;
+          list.removeAttribute("hidden");
+          input.setAttribute("aria-expanded", "true");
+        }, close);
+      }, SUGGESTION_DELAY);
+    });
+  }
+
+  // app-templates/customer-portal/runtime/src/components/proposals/ContractDetailsForm.js
+  var GROUPS = [
+    { title: "Client", codes: ["LEGAL_NAME", "CLIENT_TYPE", "BILLING_ADDRESS", "LEGAL_ADDRESS"] },
+    { title: "Representative", codes: ["REPRESENTATIVE_FIRST_NAME", "REPRESENTATIVE_LAST_NAME", "REPRESENTATIVE_JOB_TITLE", "REPRESENTATIVE_EMAIL", "REPRESENTATIVE_PHONE"] }
+  ];
+  var PAIRS = { REPRESENTATIVE_FIRST_NAME: "REPRESENTATIVE_LAST_NAME", REPRESENTATIVE_EMAIL: "REPRESENTATIVE_PHONE" };
+  var CONFIRMATIONS = ["INFORMATION_CONFIRMED", "AUTHORITY_CONFIRMED"];
+  var INPUT_TYPES = { text: "text", address: "text", email: "email", tel: "tel" };
+  function contractDetailsLoading(details2) {
+    return !details2 || details2.prefill === "loading";
+  }
+  function ContractDetailsForm(details2, pending) {
+    var loading = contractDetailsLoading(details2);
+    var panel = h("div", {
+      "class": "agreement-details",
+      "data-module": "agreement-details",
+      "data-visual-id": "agreement-details",
+      "data-state": loading ? "loading" : pending ? "pending" : "editing",
+      role: "group",
+      "aria-labelledby": "agreement-details-title"
+    }, [
+      h("p", { "class": "decision-confirm__title", id: "agreement-details-title" }, "Your contract details"),
+      h("p", { "class": "decision-confirm__body" }, "These details go into your service agreement.")
+    ]);
+    if (loading) {
+      panel.setAttribute("aria-busy", "true");
+      panel.appendChild(h("div", { "class": "contract-form", "data-module": "agreement-details-loading" }, [0, 1, 2].map(function() {
+        return h("div", { "class": "field-row" }, [skel("width:28%;height:11px;margin-bottom:4px"), skel("height:40px;border-radius:12px")]);
+      })));
+      return panel;
+    }
+    var notice = prefillNotice(details2);
+    if (notice) panel.appendChild(notice);
+    var errors = details2.errors;
+    var form = h("div", { "class": "contract-form", "aria-busy": pending ? "true" : void 0 });
+    GROUPS.forEach(function(group) {
+      var section = h("div", { "class": "contract-form__group" }, [h("div", { "class": "contract-form__legend" }, group.title)]);
+      var skip = {};
+      group.codes.forEach(function(code) {
+        if (skip[code]) return;
+        var pair = PAIRS[code];
+        if (pair) {
+          skip[pair] = true;
+          section.appendChild(h("div", { "class": "contract-form__pair" }, [Field(code, details2, errors, pending), Field(pair, details2, errors, pending)]));
+        } else section.appendChild(Field(code, details2, errors, pending));
+      });
+      form.appendChild(section);
+    });
+    form.appendChild(h("div", { "class": "contract-form__group contract-form__confirmations" }, CONFIRMATIONS.map(function(code) {
+      return Confirmation(code, details2, errors, pending);
+    })));
+    panel.appendChild(form);
+    return panel;
+  }
+  function prefillNotice(details2) {
+    if (details2.prefill === "failed") return PartialNotice("Your account details could not be loaded, so nothing is filled in for you.");
+    if (details2.filled) {
+      return h("p", { "class": "contract-form__note", "data-module": "agreement-details-prefill" }, "Filled in from your account. Check every field before sending.");
+    }
+    return null;
+  }
+  function Field(code, details2, errors, pending) {
+    var definition = definitionOf(code);
+    if (definition.kind === "choice") return ClientType(definition, details2, errors, pending);
+    var id = "contract-detail-" + code.toLowerCase().replace(/_/g, "-");
+    var error2 = errors[code];
+    var suggesting = definition.kind === "address" && !!addressFinder() && !pending;
+    var input = h("input", {
+      "class": "field",
+      id,
+      name: code,
+      type: INPUT_TYPES[definition.kind] || "text",
+      autocomplete: suggesting ? "off" : definition.autocomplete,
+      value: details2.draft[code] || "",
+      "data-contract-detail": code,
+      "data-state": error2 ? "invalid" : void 0,
+      "aria-invalid": error2 ? "true" : void 0,
+      "aria-describedby": error2 ? id + "-error" : void 0,
+      "aria-required": definition.required ? "true" : void 0,
+      disabled: pending ? true : void 0,
+      spellcheck: definition.kind === "text" ? void 0 : "false"
+    });
+    input.addEventListener("input", function() {
+      changeContractDetail(code, input.value);
+    });
+    var cell = h("div", { "class": "field-row prop-edit__field" }, [
+      h("label", { "class": "field-label", "for": id }, definition.required ? definition.label : definition.label + " (optional)"),
+      input,
+      error2 ? h("div", { "class": "field-error", id: id + "-error", role: "alert" }, error2) : null
+    ]);
+    if (suggesting) {
+      attachAddressSuggestions(input, cell, {
+        finder: addressFinder(),
+        pick: function(item) {
+          Promise.resolve(item.address()).then(function(address) {
+            input.value = address;
+            changeContractDetail(code, address);
+            input.focus();
+          });
+        }
+      });
+    }
+    return cell;
+  }
+  function ClientType(definition, details2, errors, pending) {
+    var error2 = errors[definition.code];
+    var legendId = "contract-detail-client-type";
+    var chosen = details2.draft[definition.code];
+    return h("div", {
+      "class": "field-row",
+      role: "radiogroup",
+      "aria-labelledby": legendId,
+      "aria-required": "true",
+      "aria-invalid": error2 ? "true" : void 0,
+      "aria-describedby": error2 ? legendId + "-error" : void 0,
+      "data-contract-detail": definition.code
+    }, [
+      h("div", { "class": "field-label", id: legendId }, definition.label),
+      h("div", { "class": "choice-chips" }, CONTRACT_CLIENT_TYPES.map(function(type) {
+        var input = h("input", { "class": "choice-chip__input", type: "radio", name: "contract-detail-client-type", value: type.code, checked: chosen === type.code ? true : void 0, disabled: pending ? true : void 0, "data-client-type": type.code });
+        input.addEventListener("change", function() {
+          if (input.checked) changeContractDetail(definition.code, type.code);
+        });
+        return h("label", { "class": "choice-chip" }, [input, h("span", { "class": "choice-chip__label" }, type.label)]);
+      })),
+      error2 ? h("div", { "class": "field-error", id: legendId + "-error", role: "alert" }, error2) : null
+    ]);
+  }
+  function Confirmation(code, details2, errors, pending) {
+    var definition = definitionOf(code);
+    var error2 = errors[code];
+    var id = "contract-detail-" + code.toLowerCase().replace(/_/g, "-");
+    var input = h("input", {
+      "class": "check-line__input",
+      type: "checkbox",
+      id,
+      checked: details2.draft[code] === true ? true : void 0,
+      disabled: pending ? true : void 0,
+      "aria-invalid": error2 ? "true" : void 0,
+      "aria-describedby": error2 ? id + "-error" : void 0,
+      "data-contract-detail": code
+    });
+    input.addEventListener("change", function() {
+      changeContractDetail(code, input.checked === true);
+    });
+    return h("div", { "class": "check-line", "data-state": error2 ? "invalid" : void 0 }, [
+      h("label", { "class": "check-line__label", "for": id }, [input, h("span", null, definition.label)]),
+      error2 ? h("div", { "class": "field-error", id: id + "-error", role: "alert" }, error2) : null
+    ]);
+  }
+  function definitionOf(code) {
+    return CONTRACT_DETAILS_FIELDS.find(function(item) {
+      return item.code === code;
+    });
+  }
+
+  // app-templates/customer-portal/runtime/src/routes/QuoteApprovalPage.js
+  function QuoteApproval() {
+    var page = h("section", { "class": "page page--narrow", "data-route": "proposal.approve", "data-visual-id": "quote-approval" });
+    page.appendChild(h("div", { "class": "detail-back", "data-action": "quote.backToQuote", "data-visual-id": "quote-approval-back" }, "\u2039 Back to the quote"));
+    var gate = contractsGate(ContractDetailSkeleton);
+    if (gate) {
+      page.setAttribute("data-state", gate.getAttribute("data-state") || "loading");
+      page.appendChild(gate);
+      return page;
+    }
+    var group = quoteGroupFor(state.currentSiteId);
+    var order = group ? group.orders.find(function(candidate) {
+      return candidate.backendId === state.approveQuoteId;
+    }) : null;
+    if (!order) {
+      page.setAttribute("data-state", "not-found");
+      page.appendChild(NotFoundState({ noun: "quote", backLabel: contractsListShown() ? "orders" : "contracts", backRoute: "proposals.list" }));
+      return page;
+    }
+    var command = state.contractCommand;
+    var targeted = !!command && command.targets.indexOf(order.backendId) !== -1;
+    var pending = targeted && command.phase === "pending";
+    var outcome = targeted && !pending ? CommandOutcome(command.phase, command.message) : null;
+    var waiting = order.status === "unseen";
+    page.setAttribute("data-state", pending ? "pending" : waiting ? "open" : order.status);
+    page.appendChild(h("div", { "class": "proposal-detail-head", "data-module": "quote-approval-head", "data-visual-id": "quote-approval-head" }, [
+      h("div", { style: "flex:1;min-width:0" }, [
+        h("h1", { "class": "proposal-detail-head__title", tabindex: "-1" }, "Contract details"),
+        h("div", { "class": "proposal-detail-head__meta" }, [group.title, group.address].filter(Boolean).join(" \xB7 "))
+      ])
+    ]));
+    page.appendChild(OptionSummary(order, group, waiting));
+    if (!waiting) {
+      page.appendChild(h("div", { "class": "proposal-decided", "data-module": "quote-approval-closed", "data-state": order.status }, [
+        h("div", { "class": "proposal-decided__icon" }, "i"),
+        h("div", { style: "font-size:13px;line-height:1.45;color:var(--ink-2)" }, "This option is no longer waiting for your decision.")
+      ]));
+      if (outcome) page.appendChild(outcome);
+      page.appendChild(h("div", { "class": "proposal-actions" }, [
+        ActionButton({ variant: "btn--primary", label: "Back to the quote", action: "quote.backToQuote", lg: true, visualId: "quote-approval-return" })
+      ]));
+      return page;
+    }
+    ensureContractDetails();
+    var details2 = state.contractDetails;
+    var send = ActionButton({
+      variant: "btn--primary",
+      label: pending ? "Sending\u2026" : "Approve " + optionName(order),
+      action: "quote.sendApproval",
+      id: String(order.backendId),
+      lg: true,
+      disabled: pending || contractCommandsBusy() || contractDetailsLoading(details2),
+      visualId: "quote-approval-send"
+    });
+    if (pending) send.setAttribute("data-state", "pending");
+    page.appendChild(h("div", { "class": "card card--pad quote-approval__form", "data-module": "quote-approval-form", "data-visual-id": "quote-approval-form" }, [
+      ContractDetailsForm(details2, pending),
+      outcome,
+      h("div", { "class": "proposal-actions" }, [
+        send,
+        ActionButton({ variant: "btn--ghost", label: "Back", action: "quote.backToQuote", lg: true, disabled: pending, visualId: "quote-approval-cancel" })
+      ])
+    ]));
+    return page;
+  }
+  function OptionSummary(order, group, waiting) {
+    var status = QUOTE_STATUS[order.status];
+    var perService = !!order.pricing && !order.pricing.total;
+    var price = perService ? "You pay the price of each service every time it is performed." : formatOrderPrice(order);
+    var siblingsOpen = waiting && group.orders.some(function(other) {
+      return other.backendId !== order.backendId && other.status === "unseen";
+    });
+    return h("section", { "class": "card card--pad quote-approval__summary", "data-module": "quote-approval-summary", "data-visual-id": "quote-approval-summary", "data-state": order.status, "aria-label": "The option you are approving" }, [
+      h("div", { "class": "quote-option__head" }, [
+        h("h2", { "class": "quote-option__model" }, optionName(order)),
+        waiting ? null : StatusBadge({ variant: status.badge, label: status.label, bind: "quote.statusLabel", state: order.status })
+      ]),
+      price ? h("div", { "class": "quote-approval__price", "data-pricing": perService ? "per-service" : "total" }, price) : null,
+      h("div", { "class": "quote-option__taxes", "data-kind": "taxes" }, state.config.taxesNote),
+      siblingsOpen ? h("div", { "class": "quote-option__note" }, "Approving it declines the other options for this property.") : null
+    ]);
+  }
+  function optionName(order) {
+    return order.pricingModel ? order.pricingModel.label : "this option";
+  }
+
+  // app-templates/customer-portal/runtime/src/routes/AgreementDetailPage.js
+  function AgreementDetail() {
+    var page = h("section", { "class": "page page--narrow", "data-route": "agreement.detail", "data-visual-id": "agreement-detail" });
+    page.appendChild(h("div", { "class": "detail-back", "data-action": "agreement.review", "data-visual-id": "agreement-back" }, "\u2039 Back to your contracts"));
+    var gate = contractsGate(AgreementDetailSkeleton);
+    if (gate) {
+      page.setAttribute("data-state", gate.getAttribute("data-state") || "loading");
+      page.appendChild(gate);
+      return page;
+    }
+    var row = contractAgreementFor(state.agreementId);
+    if (!row) {
+      page.setAttribute("data-state", "not-found");
+      page.appendChild(NotFoundState({ noun: "agreement", backLabel: "contracts", backRoute: contractsHomeRoute() }));
+      return page;
+    }
+    var agreement = row.agreement;
+    page.setAttribute("data-state", agreement.stage);
+    var season = agreementSeason(agreement);
+    var title = agreementTitle(row);
+    page.appendChild(h("div", { "class": "proposal-detail-head", "data-module": "agreement-detail-head", "data-visual-id": "agreement-detail-head" }, [
+      h("div", { style: "flex:1;min-width:0" }, [
+        row.propertyNames.length ? h("div", { "class": "agreement-detail-head__eyebrow" }, "Service agreement") : null,
+        h("h1", { "class": "proposal-detail-head__title", "data-bind": "agreement.title" }, title),
+        season ? h("div", { "class": "proposal-detail-head__meta", "data-bind": "agreement.season" }, season) : null
+      ]),
+      StatusBadge({ variant: "status-badge--" + agreement.tone, label: agreement.label, bind: "agreement.stateLabel", state: agreement.stage })
+    ]));
+    var approvable = agreement.allowedActions.indexOf("approve") !== -1;
+    var notice = approvable ? AgreementApproval(row, contractCommandsBusy()) : AgreementStageNotice(agreement);
+    if (notice) page.appendChild(notice);
+    if (row.unreadableOrders) {
+      page.appendChild(PartialNotice(row.unreadableOrders === 1 ? "1 quote listed in this agreement couldn\u2019t be loaded." : row.unreadableOrders + " quotes listed in this agreement couldn\u2019t be loaded."));
+    }
+    if (row.orders.some(function(order) {
+      return order.linesState !== "ready";
+    })) {
+      page.appendChild(PartialNotice("Some services in this agreement couldn\u2019t be loaded. Prices and totals shown come from our system as returned."));
+    }
+    page.appendChild(AgreementParties(agreement.parties));
+    var term = AgreementTerm(agreement);
+    if (term) page.appendChild(term);
+    page.appendChild(AgreementServices(row, AgreementMap(row.properties)));
+    var terms = AgreementTerms(agreement.terms, state.agreementTermsOpen);
+    if (terms) page.appendChild(terms);
+    var outcome = approvable ? null : AgreementOutcome(agreement);
+    if (outcome) page.appendChild(outcome);
+    return page;
+  }
+  function AgreementMap(entries) {
+    var map = usablePropertyMap();
+    var located = entries.filter(function(entry2) {
+      return !!entry2.property;
+    });
+    if (!map || !located.length) return null;
+    var places = located.map(function(entry2) {
+      return { id: entry2.key, name: entry2.title, line: placeLine(entry2.title, entry2.address) };
+    });
+    return h("div", { "class": "ov-map__stage", "data-module": "agreement-map", "data-visual-id": "agreement-map", "data-surface": "google", style: "margin-bottom:16px" }, [
+      LocationMap(map, mapViewport(), places, placeEach(map, located.map(function(entry2) {
+        return entry2.property;
+      })), "Finding these properties on the map\u2026")
+    ]);
+  }
+
+  // app-templates/customer-portal/runtime/src/routes/QuoteRequestPage.js
+  var PROGRESS = {
+    sending: "Sending your request\u2026",
+    waiting: "Request sent. Waiting for our system to pick it up\u2026",
+    processing: "We\u2019re checking your properties and preparing quote drafts\u2026"
+  };
+  function QuoteRequest() {
+    var request = quoteRequestState();
+    var page = h("section", { "class": "page page--narrow quote-request", "data-route": "quote.new", "data-visual-id": "quote-request", "data-state": request.phase });
+    page.appendChild(h("div", { "class": "detail-back", "data-action": "proposal.review", "data-visual-id": "quote-request-back" }, "\u2039 Back to your " + quotesHome2().toLowerCase()));
+    if (request.phase === "accepted") {
+      page.appendChild(RequestOutcome("accepted", "Request received", "A manager prepares your quotes. When they\u2019re ready, they arrive by email and appear in " + quotesHome2() + ", where you can approve them, decline them or ask for changes."));
+      return page;
+    }
+    if (request.phase === "slow" || request.phase === "checking" && request.formId) {
+      page.appendChild(RequestOutcome("slow", "We\u2019re still working on your request", "It\u2019s taking longer than usual. You don\u2019t need to send it again: a manager prepares your quotes, and they arrive by email and appear in " + quotesHome2() + ".", request.phase === "checking"));
+      return page;
+    }
+    page.appendChild(h("div", { "class": "prop-head", "data-module": "quote-request-head" }, [
+      h("div", { style: "flex:1;min-width:0" }, [
+        h("h1", { "class": "prop-head__title" }, "Request a quote"),
+        h("div", { "class": "prop-head__addr" }, "Choose your properties or add a new address. We prepare per-visit, monthly and seasonal options for each.")
+      ])
+    ]));
+    var area = ServiceArea(liveProvider());
+    if (area) page.appendChild(area);
+    var loaded = ensureQuoteRequestSchema();
+    if (!loaded || loaded.state === "loading") {
+      page.appendChild(RequestSkeleton());
+      return page;
+    }
+    if (loaded.state === "error") {
+      var failed = ErrorState({ title: "The quote request couldn\u2019t be loaded", desc: "Nothing was sent. Check your connection and try again." });
+      var retry = failed.querySelector("[data-action]");
+      if (retry) retry.setAttribute("data-action", "quoteRequest.retry");
+      page.appendChild(failed);
+      return page;
+    }
+    var schema = loaded.schema;
+    var busy = quoteRequestBusy();
+    page.appendChild(PropertiesSection(request, schema, busy));
+    var details2 = DetailsSection(request, schema, busy);
+    if (details2) page.appendChild(details2);
+    if (request.message) {
+      page.appendChild(h("div", { "class": "inline-fail quote-request__message", "data-module": "quote-request-message", role: "alert" }, [
+        h("span", { "class": "inline-fail__icon", "aria-hidden": "true" }, "!"),
+        h("div", { "class": "decision-outcome__body" }, request.message)
+      ]));
+    }
+    page.appendChild(busy ? Progress(request) : Submit(request));
+    return page;
+  }
+  function PropertiesSection(request, schema, busy) {
+    var envelope2 = state.moduleData.properties;
+    var properties = liveProperties();
+    var section = h("section", { "class": "card card--pad quote-request__section", "data-module": "quote-request-properties", "aria-labelledby": "quote-request-properties-title" }, [
+      h("h2", { "class": "agreement-card__title", id: "quote-request-properties-title" }, "Properties")
+    ]);
+    if (!envelope2 || envelope2.state === "loading") {
+      section.appendChild(h("div", { "class": "quote-request__properties", "aria-busy": "true" }, [skel("height:64px;border-radius:14px"), skel("height:64px;border-radius:14px")]));
+    } else if (envelope2.state !== "ready") {
+      section.appendChild(h("p", { "class": "contract-form__note" }, "Your properties couldn\u2019t be loaded. You can still add an address."));
+    } else if (properties.length) {
+      section.appendChild(h("div", { "class": "quote-request__properties", role: "group", "aria-label": "Your properties" }, properties.map(function(property) {
+        return PropertyChoice(property, request.draft.propertyIds.indexOf(property.backendId) !== -1, busy);
+      })));
+    }
+    if (request.errors.PROPERTY_IDS) section.appendChild(h("div", { "class": "field-error", id: "quote-request-properties-error", role: "alert" }, request.errors.PROPERTY_IDS));
+    if (request.draft.addresses.length) {
+      section.appendChild(h("ul", { "class": "quote-request__addresses", "aria-label": "New addresses" }, request.draft.addresses.map(function(entry2, index) {
+        return h("li", { "class": "quote-request__address", "data-module": "quote-request-address" }, [
+          h("span", { "class": "quote-request__address-icon", "aria-hidden": "true" }, [icon("pin", "ov-icon")]),
+          h("span", { "class": "quote-request__address-text" }, entry2.address),
+          h("button", { "class": "link-action", type: "button", "data-action": "quoteRequest.removeAddress", "data-id": String(index), "aria-label": "Remove " + entry2.address, disabled: busy ? true : void 0 }, "Remove")
+        ]);
+      })));
+    }
+    section.appendChild(AddressField(request, schema, busy, properties.length > 0));
+    var map = RequestMap(request, properties);
+    if (map) section.appendChild(map);
+    return section;
+  }
+  function PropertyChoice(property, chosen, busy) {
+    var address = property.address && property.address !== property.name && !addressRepeats(property.name, property.address) ? property.address : "";
+    var meta = [address, formatArea(property.areaSqft)].filter(Boolean).join(" \xB7 ");
+    return h("button", {
+      "class": "quote-request__property",
+      type: "button",
+      role: "checkbox",
+      "aria-checked": chosen ? "true" : "false",
+      "aria-describedby": state.quoteRequest.errors.PROPERTY_IDS ? "quote-request-properties-error" : void 0,
+      "data-action": "quoteRequest.toggleProperty",
+      "data-id": String(property.backendId),
+      "data-module": "quote-request-property",
+      "data-state": chosen ? "selected" : "idle",
+      disabled: busy ? true : void 0
+    }, [
+      h("span", { "class": "quote-request__check", "aria-hidden": "true" }, chosen ? "\u2713" : ""),
+      h("span", { "class": "quote-request__property-body" }, [
+        h("span", { "class": "quote-request__property-name" }, property.name),
+        meta ? h("span", { "class": "quote-request__property-meta" }, meta) : null
+      ])
+    ]);
+  }
+  function AddressField(request, schema, busy, hasProperties) {
+    var error2 = request.errors.PROPERTY_ADDRESSES;
+    var checking = request.addressCheck === "checking";
+    var finder2 = addressFinder();
+    var input = h("input", {
+      "class": "field",
+      id: "quote-request-address",
+      name: "PROPERTY_ADDRESSES",
+      type: "text",
+      autocomplete: finder2 ? "off" : "street-address",
+      value: request.draft.pendingAddress || "",
+      placeholder: "Street address",
+      "data-quote-request-input": "address",
+      "data-state": error2 ? "invalid" : void 0,
+      "aria-invalid": error2 ? "true" : void 0,
+      "aria-describedby": error2 ? "quote-request-address-error" : void 0,
+      disabled: busy || checking ? true : void 0,
+      spellcheck: "false"
+    });
+    input.addEventListener("input", function() {
+      changeQuoteRequestDraft("pendingAddress", input.value);
+    });
+    input.addEventListener("keydown", function(event) {
+      if (event.defaultPrevented || event.key !== "Enter" || input.getAttribute("aria-activedescendant")) return;
+      event.preventDefault();
+      ACTIONS["quoteRequest.addAddress"]();
+    });
+    var anchor = h("div", { "class": "prop-edit__field quote-request__address-input" }, [input]);
+    if (finder2 && !busy && !checking) {
+      attachAddressSuggestions(input, anchor, {
+        finder: finder2,
+        within: schema.within,
+        pick: function(item) {
+          changeQuoteRequestDraft("pendingAddress", item.label);
+          Promise.resolve(item.place()).then(function(place) {
+            if (!acceptQuoteAddress(place.address, place.point)) changeQuoteRequestDraft("pendingAddress", place.address);
+            ACTIONS["quoteRequest.refresh"]();
+          });
+        }
+      });
+    }
+    return h("div", { "class": "field-row quote-request__address-field" }, [
+      h("label", { "class": "field-label", "for": "quote-request-address" }, hasProperties ? "Add another address" : "Property address"),
+      h("div", { "class": "quote-request__address-row" }, [
+        anchor,
+        ActionButton({ variant: "btn--ghost", label: checking ? "Checking\u2026" : "Add", action: "quoteRequest.addAddress", disabled: busy || checking, visualId: "quote-request-add-address" })
+      ]),
+      error2 ? h("div", { "class": "field-error", id: "quote-request-address-error", role: "alert" }, error2) : null
+    ]);
+  }
+  function RequestMap(request, properties) {
+    var map = sharedPropertyMap();
+    var viewport = mapViewport();
+    if (!map || !viewport || map.status() === "failed") return null;
+    var chosen = properties.filter(function(property) {
+      return request.draft.propertyIds.indexOf(property.backendId) !== -1;
+    });
+    var located = request.draft.addresses.filter(function(entry2) {
+      return !!entry2.point;
+    });
+    if (!chosen.length && !located.length) return null;
+    var places = chosen.map(propertyPlace).concat(located.map(function(entry2, index) {
+      return { id: "quote-request-address-" + index, name: entry2.address };
+    }));
+    var placements = placeEach(map, chosen).concat(located.map(function(entry2) {
+      return { point: entry2.point, reason: "stored" };
+    }));
+    return h("div", { "class": "ov-map__stage quote-request__map", "data-module": "quote-request-map", "data-visual-id": "quote-request-map", "data-surface": "google" }, [
+      LocationMap(map, viewport, places, placements, "Finding these properties on the map\u2026")
+    ]);
+  }
+  function DetailsSection(request, schema, busy) {
+    var risks = schema.risks.length ? h("fieldset", { "class": "quote-request__risks", "data-module": "quote-request-risks" }, [
+      h("legend", { "class": "field-label" }, schema.riskLabel || "Winter risk factors"),
+      h("div", { "class": "choice-chips" }, schema.risks.map(function(option) {
+        var input = h("input", { "class": "choice-chip__input", type: "checkbox", name: "RISK_FACTORS", value: option.value, checked: request.draft.risks.indexOf(option.value) !== -1 ? true : void 0, disabled: busy ? true : void 0, "data-quote-request-risk": option.value });
+        input.addEventListener("change", function() {
+          changeQuoteRequestDraft("risk", option.value);
+        });
+        return h("label", { "class": "choice-chip" }, [input, h("span", { "class": "choice-chip__label" }, option.label)]);
+      }))
+    ]) : null;
+    var notes = h("textarea", { "class": "field", id: "quote-request-notes", name: "ADDITIONAL_NOTES", rows: String(schema.notesRows), disabled: busy ? true : void 0, "data-quote-request-input": "notes" }, request.draft.notes || "");
+    notes.addEventListener("input", function() {
+      changeQuoteRequestDraft("notes", notes.value);
+    });
+    return h("section", { "class": "card card--pad quote-request__section", "data-module": "quote-request-details", "aria-label": "Site details" }, [
+      risks,
+      h("div", { "class": "field-row" }, [
+        h("label", { "class": "field-label", "for": "quote-request-notes" }, (schema.notesLabel || "Additional notes") + " (optional)"),
+        notes
+      ])
+    ]);
+  }
+  function Submit(request) {
+    var counts = [];
+    if (request.draft.propertyIds.length) counts.push(request.draft.propertyIds.length + (request.draft.propertyIds.length === 1 ? " property" : " properties"));
+    if (request.draft.addresses.length) counts.push(request.draft.addresses.length + (request.draft.addresses.length === 1 ? " new address" : " new addresses"));
+    return h("div", { "class": "quote-request__submit", "data-module": "quote-request-submit" }, [
+      counts.length ? h("span", { "class": "quote-request__summary" }, counts.join(" and ")) : null,
+      ActionButton({ variant: "btn--primary", label: "Request quotes", action: "quoteRequest.submit", lg: true, disabled: request.addressCheck === "checking", visualId: "quote-request-submit" })
+    ]);
+  }
+  function Progress(request) {
+    return h("div", { "class": "card card--pad quote-request__progress", "data-module": "quote-request-progress", "data-state": request.phase, "aria-live": "polite" }, [
+      PendingNote(PROGRESS[request.phase] || PROGRESS.sending),
+      request.phase === "sending" ? null : h("p", { "class": "contract-form__note" }, "This can take a few minutes, especially for new addresses. You can leave this page: your quotes will appear in " + quotesHome2() + " and we\u2019ll email you when they\u2019re ready.")
+    ]);
+  }
+  function RequestOutcome(kind, title, body, checking) {
+    return h("div", { "class": "state-block quote-request__outcome", "data-module": "quote-request-outcome", "data-state": kind, role: "status", tabindex: "-1" }, [
+      h("div", { "class": "state-block__glyph" + (kind === "accepted" ? " quote-request__glyph--ok" : "") }, kind === "accepted" ? "\u2713" : "\u25D4"),
+      h("h1", { "class": "state-block__title" }, title),
+      h("div", { "class": "state-block__desc" }, body),
+      h("div", { "class": "proposal-actions quote-request__outcome-actions" }, [
+        ActionButton({ variant: "btn--primary", label: "Go to " + quotesHome2(), action: "nav.go", id: "proposals.list", visualId: "quote-request-contracts" }),
+        kind === "slow" ? ActionButton({ variant: "btn--ghost", label: checking ? "Checking\u2026" : "Check again", action: "quoteRequest.checkAgain", disabled: checking, visualId: "quote-request-check-again" }) : null
+      ])
+    ]);
+  }
+  function quotesHome2() {
+    return contractsListShown() ? "Orders" : "Contracts";
+  }
+  function ServiceArea(provider) {
+    var regions = provider ? provider.regions : [];
+    if (!regions.length) return null;
+    return h("section", { "class": "card card--pad quote-request__area", "data-module": "provider-service-area", "data-visual-id": "provider-service-area", "aria-labelledby": "provider-service-area-title" }, [
+      h("h2", { "class": "prop-section__title", id: "provider-service-area-title" }, "Where we work"),
+      h("ul", { "class": "quote-request__regions" }, regions.map(function(region) {
+        return h("li", { "class": "quote-request__region" }, region);
+      }))
+    ]);
+  }
+  function RequestSkeleton() {
+    return h("div", { "data-module": "quote-request-loading", "data-state": "loading", "aria-busy": "true" }, [
+      skel("height:180px;border-radius:22px;margin-bottom:16px"),
+      skel("height:160px;border-radius:22px")
+    ]);
+  }
+
+  // app-templates/customer-portal/runtime/src/routes/AccountProfilePage.js
+  var addressFinder2 = null;
+  function accountProfileView() {
+    var envelope2 = state.moduleData.profile;
+    if (state.moduleStatus.profile === "loading" || !envelope2) return "loading";
+    return envelope2.state;
+  }
+  function AccountProfile() {
+    var view = accountProfileView();
+    var envelope2 = state.moduleData.profile;
+    var editable = profileEditing(state.config);
+    var page = h("section", { "class": "page page--narrow", "data-route": "profile", "data-visual-id": "profile", "data-state": view });
+    if (view === "loading") page.appendChild(ProfileSkeleton());
+    else if (view === "unauthorized") page.appendChild(UnauthorizedState({ scope: "your account details", backRoute: state.config.defaultRoute }));
+    else if (view === "error") page.appendChild(ErrorState({ title: "Couldn\u2019t load your account details", desc: "Nothing was changed. Check your connection and try again." }));
+    else if (view === "unavailable") page.appendChild(stateBlock(EmptyState({ glyph: "\u25CB", title: "Your account details aren\u2019t available", desc: "They didn\u2019t come back for this sign-in. Sign out and sign in again, or try later." }), "unavailable"));
+    else {
+      page.appendChild(ProfileHead(envelope2, editable));
+      var facts2 = editable ? EditableFacts(envelope2) : view === "empty" ? null : ProfileFacts(envelope2);
+      if (facts2) page.appendChild(facts2);
+      else page.appendChild(EmptyState({ glyph: "\u25CC", title: "No contact details on file", desc: "We don\u2019t have a contact, email, phone or billing address for your account yet." }));
+      if (editable) page.appendChild(SignInFacts());
+    }
+    page.appendChild(h("button", { "class": "signout-btn", "data-action": "auth.signOut", "data-visual-id": "sign-out", type: "button", style: "width:100%;margin-top:18px" }, "Sign out"));
+    return page;
+  }
+  function ProfileHead(envelope2, editable) {
+    return h("div", { "class": "prop-head", "data-module": "profile-head", "data-visual-id": "profile-head" }, [
+      h("div", { style: "flex:1;min-width:0" }, [
+        h("h1", { "class": "prop-head__title", style: "overflow-wrap:anywhere" }, envelope2.accountName || "Your account"),
+        h("div", { "class": "prop-head__addr" }, editable ? "The details we have on file for your account. Select Edit to change one." : "The details we have on file for your account.")
+      ])
+    ]);
+  }
+  function ProfileFacts(envelope2) {
+    var contact = envelope2.contact;
+    var billing = envelope2.billingAddresses || [];
+    var named2 = !!(contact && contact.name) && contact.name !== envelope2.accountName;
+    var facts2 = [
+      named2 ? Fact("contact", "Contact", [contact.name], contact.title) : null,
+      Fact("email", "Email", envelope2.emails || []),
+      Fact("phone", "Phone", envelope2.phones || []),
+      Fact("billing", billing.length > 1 ? "Billing addresses" : "Billing address", billing)
+    ].filter(Boolean);
+    if (!facts2.length) return null;
+    return h("div", { "class": "card card--pad prop-facts", "data-module": "profile-facts", "data-visual-id": "profile-facts", "data-state": envelope2.state }, facts2);
+  }
+  function Fact(key, label, values, note) {
+    if (!values.length) return null;
+    var children = [h("div", { "class": "prop-fact__label" }, label)];
+    values.forEach(function(value) {
+      children.push(h("div", { "class": "prop-fact__value", style: "overflow-wrap:anywhere" }, value));
+    });
+    if (note) children.push(h("div", { "class": "prop-fact__note" }, note));
+    return h("div", { "class": "prop-fact", "data-fact": key, "data-state": "ready" }, children);
+  }
+  function EditableFacts(envelope2) {
+    var contact = envelope2.contact;
+    var billing = envelope2.billingAddresses || [];
+    return h("div", { "class": "card card--pad prop-facts", "data-module": "profile-facts", "data-visual-id": "profile-facts", "data-state": envelope2.state }, [
+      EditableFact("contact", contact && contact.name ? [contact.name] : [], contact && contact.title),
+      EditableFact("email", envelope2.emails || []),
+      EditableFact("phone", envelope2.phones || []),
+      EditableFact("billing", billing, null, billing.length > 1 ? "Billing addresses" : null)
+    ]);
+  }
+  function SignInFacts() {
+    var changed = state.profileLoginChanged;
+    var login = currentSignIn();
+    return h("div", { "class": "card card--pad prop-facts prop-facts--single", "data-module": "profile-sign-in", "data-visual-id": "profile-sign-in" }, [
+      EditableFact("login", login ? [login] : [], changed ? "Use this account name the next time you sign in. Your password stays the same." : "The name you sign in to this portal with. Changing it does not change your contact email.")
+    ]);
+  }
+  function EditableFact(key, values, note, label) {
+    var definition = PROFILE_EDIT_ROWS[key];
+    var edit = state.profileEdit;
+    if (edit && edit.row === key) return EditingFact(key, definition, edit);
+    var busy = profileEditBusy();
+    var title = label || definition.label;
+    var children = [h("div", { "class": "prop-fact__head" }, [
+      h("div", { "class": "prop-fact__label" }, title),
+      h("button", {
+        "class": "link-action prop-fact__edit",
+        type: "button",
+        "data-action": "profileEdit.start",
+        "data-id": key,
+        "data-visual-id": "profile-edit-" + key,
+        "aria-label": (values.length ? "Edit " : "Add ") + definition.label.toLowerCase(),
+        disabled: busy ? true : void 0
+      }, values.length ? "Edit" : "Add")
+    ])];
+    values.forEach(function(value) {
+      children.push(h("div", { "class": "prop-fact__value", style: "overflow-wrap:anywhere" }, value));
+    });
+    if (state.profileSaved === key) children.push(h("div", { "class": "prop-fact__saved", role: "status" }, "Saved"));
+    if (note) children.push(h("div", { "class": "prop-fact__note" }, note));
+    return h("div", { "class": "prop-fact", "data-fact": key, "data-state": values.length ? "ready" : "missing" }, children);
+  }
+  function EditingFact(key, definition, edit) {
+    var saving = edit.phase === "saving";
+    var ended = edit.phase === "session-ended";
+    var row = h("div", { "class": "prop-fact prop-fact--editing", "data-fact": key, "data-state": edit.phase, "data-visual-id": "profile-editing-" + key }, [
+      h("div", { "class": "prop-fact__label", id: "profile-edit-" + key + "-label" }, definition.label)
+    ]);
+    var group = h("div", { "class": "prop-edit" + (definition.fields.length > 1 ? " prop-edit--pair" : ""), role: "group", "aria-labelledby": "profile-edit-" + key + "-label", "aria-busy": saving ? "true" : void 0 });
+    definition.fields.forEach(function(item) {
+      var id = "profile-edit-" + item.key;
+      var error2 = edit.errors[item.code];
+      var input = h("input", {
+        "class": "field",
+        id,
+        name: item.key,
+        type: item.type,
+        autocomplete: item.code === "BILLING_ADDRESS" && addressSuggestionsOpen() ? "off" : item.autocomplete,
+        value: edit.draft[item.key] || "",
+        placeholder: item.placeholder,
+        "data-profile-input": item.code,
+        "data-state": error2 ? "invalid" : void 0,
+        "aria-invalid": error2 ? "true" : void 0,
+        "aria-describedby": error2 ? id + "-error" : void 0,
+        "aria-label": definition.fields.length > 1 ? void 0 : item.label,
+        disabled: saving || ended ? true : void 0,
+        spellcheck: item.type === "text" && item.code !== "BILLING_ADDRESS" ? void 0 : "false"
+      });
+      input.addEventListener("input", function() {
+        changeProfileDraft(item.key, input.value);
+      });
+      input.addEventListener("keydown", function(event) {
+        if (event.defaultPrevented) return;
+        if (event.key === "Enter" && !input.getAttribute("aria-activedescendant")) {
+          event.preventDefault();
+          ACTIONS["profileEdit.save"]();
+        }
+        if (event.key === "Escape" && input.getAttribute("aria-expanded") !== "true") {
+          event.preventDefault();
+          ACTIONS["profileEdit.cancel"]();
+        }
+      });
+      var cell = h("div", { "class": "field-row prop-edit__field" }, [
+        definition.fields.length > 1 ? h("label", { "class": "field-label", "for": id }, item.label) : null,
+        input,
+        error2 ? h("div", { "class": "field-error", id: id + "-error", role: "alert" }, error2) : null
+      ]);
+      if (item.code === "BILLING_ADDRESS" && addressSuggestionsOpen() && !saving && !ended) suggestAddresses(input, cell, item.key);
+      group.appendChild(cell);
+    });
+    row.appendChild(group);
+    if (edit.message) row.appendChild(h("div", { "class": "prop-edit__message", role: "alert", "data-state": edit.phase }, edit.message));
+    row.appendChild(h("div", { "class": "prop-edit__actions" }, ended ? [
+      h("button", { "class": "btn btn--primary", type: "button", "data-action": "auth.signOut", "data-visual-id": "profile-edit-sign-in" }, "Sign in again")
+    ] : [
+      h("button", { "class": "btn btn--primary", type: "button", "data-action": "profileEdit.save", "data-visual-id": "profile-edit-save", disabled: saving ? true : void 0 }, saving ? "Saving\u2026" : "Save"),
+      h("button", { "class": "btn btn--ghost", type: "button", "data-action": "profileEdit.cancel", "data-visual-id": "profile-edit-cancel", disabled: saving ? true : void 0 }, "Cancel"),
+      h("span", { "class": "prop-edit__status", role: "status", "aria-live": "polite" }, saving ? key === "login" ? "Changing your sign-in\u2026" : "Saving and waiting for confirmation\u2026" : "")
+    ]));
+    return row;
+  }
+  function addressSuggestionsOpen() {
+    return !!(state.config && state.config.mapsApiKey);
+  }
+  function suggestAddresses(input, cell, key) {
+    if (!addressFinder2) addressFinder2 = createGoogleMapsAdapter({ apiKey: state.config.mapsApiKey });
+    attachAddressSuggestions(input, cell, {
+      finder: addressFinder2,
+      pick: function(item) {
+        Promise.resolve(item.address()).then(function(address) {
+          input.value = address;
+          changeProfileDraft(key, address);
+          input.focus();
+        });
+      }
+    });
+  }
+  function ProfileSkeleton() {
+    return h("div", { "data-module": "profile-loading", "data-visual-id": "profile-loading", "data-state": "loading", "aria-busy": "true" }, [
+      h("div", { "class": "prop-head" }, [h("div", { style: "flex:1;min-width:0" }, [skel("width:52%;height:30px;margin-bottom:9px"), skel("width:38%;height:13px")])]),
+      h("div", { "class": "card card--pad prop-facts" }, [0, 1, 2, 3].map(function() {
+        return h("div", { "class": "prop-fact" }, [skel("width:34%;height:11px;margin-bottom:8px"), skel("width:72%;height:15px")]);
+      }))
+    ]);
+  }
+  function stateBlock(block, stateName) {
+    block.setAttribute("data-state", stateName);
+    return block;
+  }
+
+  // app-templates/customer-portal/runtime/src/components/support/RichTextEditor.js
+  var EDITOR_TOOLS = /* @__PURE__ */ Object.freeze([
+    /* @__PURE__ */ Object.freeze({ key: "bold", label: "B", title: "Bold", command: "bold" }),
+    /* @__PURE__ */ Object.freeze({ key: "italic", label: "I", title: "Italic", command: "italic" }),
+    /* @__PURE__ */ Object.freeze({ key: "underline", label: "U", title: "Underline", command: "underline" }),
+    /* @__PURE__ */ Object.freeze({ key: "bullets", label: "\u2022", title: "Bulleted list", command: "insertUnorderedList" }),
+    /* @__PURE__ */ Object.freeze({ key: "numbers", label: "1.", title: "Numbered list", command: "insertOrderedList" }),
+    /* @__PURE__ */ Object.freeze({ key: "quote", label: "\u275D", title: "Quote", command: "formatBlock", value: "blockquote" }),
+    /* @__PURE__ */ Object.freeze({ key: "link", label: "\u{1F517}", title: "Link", command: "createLink" })
+  ]);
+  function RichTextEditor(props) {
+    var id = props.id;
+    var disabled = !!props.disabled;
+    var surface = h("div", {
+      "class": "rich-editor__surface rich-text",
+      id,
+      "data-field": props.field || void 0,
+      role: "textbox",
+      "aria-multiline": "true",
+      "aria-labelledby": id + "-label",
+      "aria-invalid": props.error ? "true" : void 0,
+      "aria-describedby": props.error ? id + "-error" : void 0,
+      "aria-disabled": disabled ? "true" : void 0,
+      "data-placeholder": props.placeholder || "",
+      "data-empty": richText(parseRichHtml(props.html)).trim() ? void 0 : "true",
+      contenteditable: disabled ? "false" : "true",
+      spellcheck: "true"
+    }, richNodes(parseRichHtml(props.html)));
+    var emit = function() {
+      var html = cleanRichHtml(surface.innerHTML);
+      if (html) surface.removeAttribute("data-empty");
+      else surface.setAttribute("data-empty", "true");
+      if (props.onChange) props.onChange(html);
+    };
+    surface.addEventListener("focus", function() {
+      run("defaultParagraphSeparator", "p");
+    });
+    surface.addEventListener("input", emit);
+    surface.addEventListener("paste", function(event) {
+      var data = event.clipboardData;
+      if (!data) return;
+      event.preventDefault();
+      var html = data.getData("text/html");
+      var cleaned = html ? cleanRichHtml(html) : "";
+      if (cleaned) run("insertHTML", cleaned);
+      else run("insertText", data.getData("text/plain"));
+      emit();
+    });
+    var toolbar = h("div", { "class": "rich-editor__toolbar", role: "toolbar", "aria-label": "Formatting", "aria-controls": id }, EDITOR_TOOLS.map(function(tool) {
+      var button = h("button", { "class": "rich-editor__tool", type: "button", title: tool.title, "aria-label": tool.title, "data-tool": tool.key, disabled: disabled ? true : void 0 }, tool.label);
+      button.addEventListener("mousedown", function(event) {
+        event.preventDefault();
+      });
+      button.addEventListener("click", function() {
+        surface.focus();
+        if (tool.command === "createLink") {
+          var href = safeLink(globalThis.prompt ? globalThis.prompt("Link address (https://, http:// or mailto:)", "https://") : "");
+          if (!href) return;
+          run("createLink", href);
+        } else {
+          run(tool.command, tool.value || null);
+        }
+        emit();
+      });
+      return button;
+    }));
+    return h("div", { "class": "field-row support-form__field rich-editor", "data-module": props.module || "rich-editor", "data-state": props.error ? "invalid" : disabled ? "disabled" : void 0 }, [
+      h("span", { "class": "field-label", id: id + "-label" }, props.label),
+      h("div", { "class": "rich-editor__frame field" + (props.error ? " field--invalid" : "") }, [toolbar, surface]),
+      props.hint ? h("div", { "class": "field-hint" }, props.hint) : null,
+      props.error ? h("div", { "class": "field-error", id: id + "-error", role: "alert" }, props.error) : null
+    ]);
+  }
+  function run(command, value) {
+    var doc = globalThis.document;
+    if (doc && typeof doc.execCommand === "function") doc.execCommand(command, false, value);
+  }
+
+  // app-templates/customer-portal/runtime/src/components/support/AttachmentPicker.js
+  function AttachmentPicker(props) {
+    var id = props.id;
+    var files2 = props.files || [];
+    var disabled = !!props.disabled;
+    var input = h("input", { "class": "attachment-picker__input", type: "file", id, name: props.field || void 0, multiple: true, accept: ATTACHMENT_ACCEPT, disabled: disabled || files2.length >= ATTACHMENT_LIMITS.count ? true : void 0, "aria-describedby": id + "-hint" + (props.error ? " " + id + "-error" : "") });
+    input.addEventListener("change", function() {
+      var picked = Array.prototype.slice.call(input.files || []);
+      input.value = "";
+      if (picked.length && props.onAdd) props.onAdd(picked);
+    });
+    return h("div", { "class": "field-row support-form__field attachment-picker", "data-module": props.module || "attachment-picker", "data-state": props.error ? "invalid" : props.reading ? "reading" : void 0 }, [
+      h("span", { "class": "field-label" }, props.label || "Attachments (optional)"),
+      files2.length ? h("ul", { "class": "attachment-picker__list", "aria-label": "Attached files" }, files2.map(function(file) {
+        return h("li", { "class": "attachment-chip", "data-module": "attachment-chip" }, [
+          h("span", { "class": "attachment-chip__icon", "aria-hidden": "true" }, file.type === "application/pdf" ? "PDF" : "IMG"),
+          h("span", { "class": "attachment-chip__name" }, file.name),
+          h("span", { "class": "attachment-chip__size" }, formatBytes(file.size)),
+          h("button", { "class": "attachment-chip__remove", type: "button", "data-action": props.removeAction, "data-id": props.scope + ":" + file.key, "aria-label": "Remove " + file.name, disabled: disabled ? true : void 0 }, "\u2715")
+        ]);
+      })) : null,
+      h("label", { "class": "btn btn--ghost attachment-picker__add", "for": id, "aria-disabled": disabled || files2.length >= ATTACHMENT_LIMITS.count ? "true" : void 0 }, [props.reading ? "Reading files\u2026" : "Attach files", input]),
+      h("div", { "class": "field-hint", id: id + "-hint" }, "Up to 5 images (JPEG, PNG, GIF, WebP) or PDFs, 5 MB each and 10 MB in total."),
+      props.error ? h("div", { "class": "field-error", id: id + "-error", role: "alert" }, props.error) : null
+    ]);
+  }
+
+  // app-templates/customer-portal/runtime/src/routes/LiveSupportPage.js
+  var PROGRESS2 = {
+    sending: "Sending your ticket\u2026",
+    waiting: "Ticket sent. Waiting for our system to open it\u2026",
+    checking: "Checking your ticket\u2026"
+  };
+  function LiveSupport() {
+    var page = h("section", { "class": "page page--narrow", "data-route": "support", "data-visual-id": "support" });
+    page.appendChild(h("div", { "class": "detail-bar support-head", "data-module": "support-head" }, [
+      h("h1", { "class": "page-header__title" }, "Support"),
+      ActionButton({ variant: "btn--primary", label: "Open support ticket", action: "support.newTicket", visualId: "support-new-ticket" })
+    ]));
+    var status = liveListStatus("support");
+    page.setAttribute("data-state", status);
+    if (status !== "ready") {
+      page.appendChild(listState3(status));
+      return page;
+    }
+    var tickets = liveTickets();
+    var loaded = ensureSupportTicketSchema();
+    var schema = loaded && loaded.state === "ready" ? loaded.schema : null;
+    var row = function(ticket) {
+      return TicketRow(ticket, schema);
+    };
+    if (tickets.open.length) page.appendChild(RecordSection("tickets-open", "Open", tickets.open.map(row)));
+    if (tickets.closed.length) page.appendChild(RecordSection("tickets-closed", "Resolved and closed", tickets.closed.map(row)));
+    return page;
+  }
+  function TicketRow(ticket, schema) {
+    var reason = reasonLabel(ticket.reason, schema);
+    var about = ticketPlace(ticket);
+    var latest = latestReply(ticket);
+    return h("button", { "class": "prop-visit record-row support-ticket", type: "button", "data-module": "ticket-row", "data-visual-id": "ticket-row", "data-action": "support.openTicket", "data-id": ticket.id, "data-state": ticket.stateCode.toLowerCase(), "aria-label": "Open ticket " + ticket.subject + " \u2014 " + ticket.status.label }, [
+      h("span", { "class": "record-row__main" }, [
+        h("span", { "class": "prop-visit__title" }, ticket.subject),
+        h("span", { "class": "prop-visit__meta", "data-module": "ticket-meta" }, [ticket.code, reason, "Opened " + ticketOpened(ticket, state.config.timeZone)].filter(Boolean).join(" \xB7 ")),
+        about ? h("span", { "class": "prop-visit__meta", "data-module": "ticket-about" }, about) : null,
+        latest ? h("span", { "class": "prop-visit__meta support-ticket__latest", "data-module": "ticket-latest", "data-author": latest.author.toLowerCase() }, latest.author === "STAFF" ? "Support team replied \xB7 " + ticketMoment(latest.createdMs) : "You replied \xB7 " + ticketMoment(latest.createdMs)) : null,
+        !ticket.thread && ticket.message ? h("span", { "class": "record-notes support-ticket__message" }, ticket.message) : null
+      ]),
+      h("span", { "class": "status-badge status-badge--" + ticket.status.tone, "data-module": "ticket-status" }, ticket.status.label),
+      h("span", { "class": "proposal-card__chev", "aria-hidden": "true" }, "\u203A")
+    ]);
+  }
+  function latestReply(ticket) {
+    var comments = ticket.thread ? ticket.thread.comments : [];
+    return comments.length ? comments[comments.length - 1] : null;
+  }
+  function ticketMoment(ms) {
+    if (!Number.isFinite(ms) || ms <= 0) return "";
+    return new Intl.DateTimeFormat("en-US", { timeZone: state.config.timeZone || void 0, month: "short", day: "numeric", year: "numeric", hour: "numeric", minute: "2-digit" }).format(new Date(ms));
+  }
+  function ticketPlace(ticket) {
+    var property = liveProperties().find(function(item) {
+      return item.backendId === ticket.propertyBackendId;
+    });
+    var visit = ticket.visitBackendId ? findVisit(liveVisits(), "visit-core-" + ticket.visitBackendId) : null;
+    var today = localDateKey(/* @__PURE__ */ new Date(), state.config.timeZone);
+    return [property ? property.address || property.name : "", visit ? "Visit " + visitWhen(visit, today) : ""].filter(Boolean).join(" \xB7 ");
+  }
+  function listState3(status) {
+    if (status === "loading") {
+      return h("div", { "data-module": "tickets-loading", "data-visual-id": "tickets-loading", "aria-busy": "true" }, [
+        skel("height:88px;border-radius:16px;margin-bottom:12px"),
+        skel("height:88px;border-radius:16px")
+      ]);
+    }
+    if (status === "unauthorized") return UnauthorizedState({ scope: "these tickets", backRoute: state.config.defaultRoute });
+    if (status === "error") return ErrorState({ title: "Couldn\u2019t load your tickets", desc: "Nothing was changed. Check your connection and try again." });
+    return EmptyState({ glyph: "\u25CC", title: "No support tickets yet", desc: "Tell us about a missed visit, a service problem or a billing question, and follow our answer here." });
+  }
+  function SupportTicketNew() {
+    var ticket = supportTicketState();
+    var page = h("section", { "class": "page page--narrow support-new", "data-route": "support.new", "data-visual-id": "support-new", "data-state": ticket.phase });
+    page.appendChild(h("div", { "class": "detail-back", "data-action": "nav.go", "data-id": "support", "data-visual-id": "support-new-back" }, "\u2039 Back to Support"));
+    if (ticket.phase === "created") {
+      page.appendChild(Outcome("created", "Ticket " + ticket.ticketCode + " is open", ticket.message || "We received your ticket and will get back to you.", false, ticket.ticketId));
+      return page;
+    }
+    if (ticket.phase === "slow" || ticket.phase === "checking" && ticket.formId) {
+      page.appendChild(Outcome("slow", "We\u2019re still opening your ticket", "It\u2019s taking longer than usual. You don\u2019t need to send it again.", ticket.phase === "checking"));
+      return page;
+    }
+    page.appendChild(h("div", { "class": "prop-head" }, [
+      h("div", { style: "flex:1;min-width:0" }, [
+        h("h1", { "class": "prop-head__title" }, "Open a support ticket"),
+        h("div", { "class": "prop-head__addr" }, "Tell us which property this is about and what happened. We answer in Support.")
+      ])
+    ]));
+    var envelope2 = state.moduleData.properties;
+    if (!envelope2 || envelope2.state === "loading") {
+      page.appendChild(h("div", { "data-module": "support-new-loading", "aria-busy": "true" }, [skel("height:320px;border-radius:22px")]));
+      return page;
+    }
+    var properties = liveProperties();
+    if (!properties.length) {
+      page.appendChild(EmptyState({ glyph: "\u25CC", title: "No property to ask about yet", desc: "A ticket is about one of your properties. Request a quote to add your first one." }));
+      return page;
+    }
+    var loaded = ensureSupportTicketSchema();
+    var schema = loaded && loaded.state === "ready" ? loaded.schema : null;
+    var busy = supportTicketBusy();
+    var today = localDateKey(/* @__PURE__ */ new Date(), state.config.timeZone);
+    var visits = visitsOfProperty(ticket.draft.propertyId);
+    var form = h("form", { "class": "card card--pad support-form", "data-module": "support-ticket-form", novalidate: true });
+    form.addEventListener("submit", function(event) {
+      event.preventDefault();
+    });
+    form.appendChild(SelectField("PROPERTY_ID", "Property", String(ticket.draft.propertyId || ""), [{ value: "", label: "Choose a property" }].concat(properties.map(function(property) {
+      return { value: String(property.backendId), label: property.address || property.name };
+    })), ticket.errors.PROPERTY_ID, busy, "support.chooseProperty"));
+    if (visits.length || ticket.errors.VISIT_ID) {
+      form.appendChild(SelectField("VISIT_ID", "Visit (optional)", String(ticket.draft.visitId || ""), [{ value: "", label: "Not about one visit" }].concat(visits.map(function(visit) {
+        return { value: String(visit.backendId), label: visitWhen(visit, today) + " \xB7 " + visit.status.label };
+      })), ticket.errors.VISIT_ID, busy, "support.chooseVisit"));
+    }
+    if (schema && schema.reasons.length || ticket.errors.CONTACT_REASON) {
+      form.appendChild(SelectField("CONTACT_REASON", "What is it about?", ticket.draft.reason, [{ value: "", label: "General question" }].concat(schema ? schema.reasons.filter(function(reason) {
+        return reason.value !== "GENERAL_INQUIRY";
+      }) : []), ticket.errors.CONTACT_REASON, busy, "support.chooseReason"));
+    }
+    form.appendChild(TextField("SUBJECT", "Subject", ticket.draft.subject, ticket.errors.SUBJECT, busy, SUPPORT_SUBJECT_LIMIT));
+    form.appendChild(RichTextEditor({
+      id: "support-ticket-message",
+      module: "support-ticket-editor",
+      field: "MESSAGE",
+      label: "Message",
+      html: ticket.draft.message,
+      error: ticket.errors.MESSAGE,
+      disabled: busy,
+      placeholder: "What happened, where and when?",
+      hint: "Up to " + SUPPORT_MESSAGE_LIMIT.toLocaleString("en-US") + " characters.",
+      onChange: function(html) {
+        changeSupportTicketDraft("message", html);
+      }
+    }));
+    form.appendChild(AttachmentPicker({
+      id: "support-ticket-attachments",
+      module: "support-ticket-attachments",
+      field: "ATTACHMENTS",
+      files: ticket.files,
+      reading: ticket.reading,
+      error: ticket.errors.ATTACHMENTS,
+      disabled: busy,
+      scope: "ticket",
+      removeAction: "support.removeAttachment",
+      onAdd: function(files2) {
+        addAttachments(ticket, files2, render);
+      }
+    }));
+    page.appendChild(form);
+    if (ticket.message) {
+      page.appendChild(h("div", { "class": "inline-fail quote-request__message", "data-module": "support-ticket-message", role: "alert" }, [
+        h("span", { "class": "inline-fail__icon", "aria-hidden": "true" }, "!"),
+        h("div", { "class": "decision-outcome__body" }, ticket.message)
+      ]));
+    }
+    page.appendChild(busy ? h("div", { "class": "card card--pad quote-request__progress", "data-module": "support-ticket-progress", "data-state": ticket.phase, "aria-live": "polite" }, [PendingNote(PROGRESS2[ticket.phase] || PROGRESS2.sending)]) : h("div", { "class": "quote-request__submit", "data-module": "support-ticket-submit" }, [
+      ActionButton({ variant: "btn--primary", label: "Send ticket", action: "support.submitTicket", lg: true, visualId: "support-ticket-send" })
+    ]));
+    return page;
+  }
+  function SelectField(code, label, value, options2, error2, busy, action) {
+    var id = "support-ticket-" + code.toLowerCase().replace(/_/g, "-");
+    var select = h("select", {
+      "class": "field",
+      id,
+      name: code,
+      "data-state": error2 ? "invalid" : void 0,
+      "aria-invalid": error2 ? "true" : void 0,
+      "aria-describedby": error2 ? id + "-error" : void 0,
+      disabled: busy ? true : void 0
+    }, options2.map(function(option) {
+      return h("option", { value: option.value, selected: option.value === value ? true : void 0 }, option.label);
+    }));
+    select.addEventListener("change", function() {
+      ACTIONS[action](select.value);
+    });
+    return Field2(id, label, select, error2);
+  }
+  function TextField(code, label, value, error2, busy, limit) {
+    var id = "support-ticket-" + code.toLowerCase();
+    var attributes = {
+      "class": "field",
+      id,
+      name: code,
+      maxlength: String(limit),
+      "data-state": error2 ? "invalid" : void 0,
+      "aria-invalid": error2 ? "true" : void 0,
+      "aria-describedby": error2 ? id + "-error" : void 0,
+      disabled: busy ? true : void 0
+    };
+    var input = h("input", Object.assign({ type: "text", value: value || "", autocomplete: "off" }, attributes));
+    input.addEventListener("input", function() {
+      changeSupportTicketDraft("subject", input.value);
+    });
+    return Field2(id, label, input, error2);
+  }
+  function Field2(id, label, control, error2) {
+    return h("div", { "class": "field-row support-form__field" }, [
+      h("label", { "class": "field-label", "for": id }, label),
+      control,
+      error2 ? h("div", { "class": "field-error", id: id + "-error", role: "alert" }, error2) : null
+    ]);
+  }
+  function Outcome(kind, title, body, checking, ticketId) {
+    return h("div", { "class": "state-block quote-request__outcome", "data-module": "support-ticket-outcome", "data-state": kind, role: "status", tabindex: "-1" }, [
+      h("div", { "class": "state-block__glyph" + (kind === "created" ? " quote-request__glyph--ok" : "") }, kind === "created" ? "\u2713" : "\u25D4"),
+      h("h1", { "class": "state-block__title" }, title),
+      h("div", { "class": "state-block__desc" }, body),
+      h("div", { "class": "proposal-actions quote-request__outcome-actions" }, [
+        ticketId ? ActionButton({ variant: "btn--primary", label: "View ticket", action: "support.openTicket", id: "ticket-core-" + ticketId, visualId: "support-ticket-view" }) : null,
+        ActionButton({ variant: ticketId ? "btn--ghost" : "btn--primary", label: "View your tickets", action: "nav.go", id: "support", visualId: "support-ticket-list" }),
+        kind === "slow" ? ActionButton({ variant: "btn--ghost", label: checking ? "Checking\u2026" : "Check again", action: "support.checkTicket", disabled: checking, visualId: "support-ticket-check-again" }) : null
+      ])
+    ]);
+  }
+
+  // app-templates/customer-portal/runtime/src/routes/SupportTicketPage.js
+  var COMMENT_PROGRESS = {
+    sending: "Sending your comment\u2026",
+    waiting: "Comment sent. Waiting for our system to add it\u2026",
+    checking: "Checking your comment\u2026"
+  };
+  function SupportTicket() {
+    var page = h("section", { "class": "page page--narrow support-ticket-page", "data-route": "support.ticket", "data-visual-id": "support-ticket" });
+    page.appendChild(h("div", { "class": "detail-back", "data-action": "nav.go", "data-id": "support", "data-visual-id": "support-ticket-back" }, "\u2039 Back to Support"));
+    var backendId = ticketBackendId(state.ticketId);
+    var entry2 = backendId ? ticketDetail(backendId, render) : null;
+    var listed = liveTickets() ? liveTickets().open.concat(liveTickets().closed).find(function(item) {
+      return item.backendId === backendId;
+    }) : null;
+    var ticket = entry2 && entry2.ticket || listed || null;
+    if (!ticket) {
+      var missing = !entry2 || entry2.status === "not-found";
+      page.setAttribute("data-state", missing ? "not-found" : entry2.status);
+      if (missing) page.appendChild(NotFoundState({ noun: "ticket", backLabel: "Support", backRoute: "support" }));
+      else if (entry2.status === "error") page.appendChild(LoadFailed());
+      else page.appendChild(h("div", { "data-module": "ticket-loading", "aria-busy": "true" }, [skel("height:72px;border-radius:16px;margin-bottom:12px"), skel("height:220px;border-radius:22px")]));
+      return page;
+    }
+    page.setAttribute("data-state", ticket.stateCode.toLowerCase());
+    var loaded = ensureSupportTicketSchema();
+    var schema = loaded && loaded.state === "ready" ? loaded.schema : null;
+    var about = ticketPlace(ticket);
+    page.appendChild(h("div", { "class": "proposal-detail-head support-ticket-head", "data-module": "ticket-head" }, [
+      h("div", { style: "flex:1;min-width:0" }, [
+        h("div", { "class": "agreement-detail-head__eyebrow" }, "Support ticket" + (ticket.code ? " \xB7 " + ticket.code : "")),
+        h("h1", { "class": "proposal-detail-head__title" }, ticket.subject),
+        h("div", { "class": "proposal-detail-head__meta" }, [reasonLabel(ticket.reason, schema), "Opened " + ticketOpened(ticket, state.config.timeZone)].filter(Boolean).join(" \xB7 ")),
+        about ? h("div", { "class": "proposal-detail-head__meta" }, about) : null
+      ]),
+      h("span", { "class": "status-badge status-badge--" + ticket.status.tone, "data-module": "ticket-status" }, ticket.status.label)
+    ]));
+    page.appendChild(RefreshBar(entry2));
+    var actions3 = Actions(entry2);
+    if (actions3) page.appendChild(actions3);
+    page.appendChild(Thread(ticket));
+    page.appendChild(ticket.stateCode === "CLOSED" ? ClosedNote(ticket) : CommentBox(backendId, entry2));
+    return page;
+  }
+  function LoadFailed() {
+    return h("div", { "class": "state-block", "data-module": "ticket-error", "data-state": "error", role: "alert" }, [
+      h("div", { "class": "state-block__glyph state-block__glyph--error" }, "\u26A0"),
+      h("div", { "class": "state-block__title" }, "Couldn\u2019t load this ticket"),
+      h("div", { "class": "state-block__desc" }, "Nothing was changed. Check your connection and try again."),
+      ActionButton({ variant: "btn--primary", label: "Try again", action: "support.refreshTicket", visualId: "ticket-retry" })
+    ]);
+  }
+  function RefreshBar(entry2) {
+    var refreshing = !!(entry2 && (entry2.refreshing || entry2.status === "loading"));
+    return h("div", { "class": "support-ticket-refresh", "data-module": "ticket-refresh", "data-state": refreshing ? "refreshing" : "idle" }, [
+      h("span", { "class": "support-ticket-refresh__note" }, "Replies may take a minute to appear."),
+      h("button", { "class": "link-action", type: "button", "data-action": "support.refreshTicket", "data-visual-id": "ticket-refresh", disabled: refreshing ? true : void 0 }, refreshing ? "Refreshing\u2026" : "Refresh \u21BB")
+    ]);
+  }
+  function Actions(entry2) {
+    if (!entry2) return null;
+    var action = entry2.action;
+    var sending = !!(action && action.phase === "sending");
+    var wrap = h("div", { "class": "support-ticket-actions", "data-module": "ticket-actions", "data-state": entry2.events.status });
+    if (entry2.events.status === "error") {
+      wrap.appendChild(h("div", { "class": "support-ticket-actions__note", role: "status" }, ["Actions couldn\u2019t be loaded. ", h("button", { "class": "link-action", type: "button", "data-action": "support.refreshTicket" }, "Try again \u203A")]));
+      return wrap;
+    }
+    if (entry2.events.status !== "ready" || !entry2.events.list.length) {
+      if (!action || !action.message) return null;
+    }
+    if (action && action.phase === "confirm") {
+      var pending = entry2.events.list.find(function(item) {
+        return item.code === action.code;
+      });
+      if (pending) {
+        wrap.appendChild(h("div", { "class": "card card--pad support-ticket-confirm", "data-module": "ticket-action-confirm", role: "alertdialog", "aria-labelledby": "ticket-confirm-title", "aria-describedby": "ticket-confirm-desc" }, [
+          h("div", { "class": "support-ticket-confirm__title", id: "ticket-confirm-title" }, pending.label + "?"),
+          h("p", { "class": "support-ticket-confirm__desc", id: "ticket-confirm-desc" }, pending.confirm),
+          h("div", { "class": "proposal-actions" }, [
+            ActionButton({ variant: "btn--primary", label: pending.label, action: "support.confirmTicketAction", visualId: "ticket-confirm" }),
+            ActionButton({ variant: "btn--ghost", label: "Cancel", action: "support.cancelTicketAction", visualId: "ticket-confirm-cancel" })
+          ])
+        ]));
+        return wrap;
+      }
+    }
+    if (entry2.events.list.length) {
+      wrap.appendChild(h("div", { "class": "support-ticket-actions__buttons" }, entry2.events.list.map(function(item) {
+        var busy = sending && action.code === item.code;
+        return h("button", { "class": "btn btn--ghost support-ticket-action", type: "button", "data-action": "support.ticketAction", "data-id": item.code, "data-visual-id": "ticket-action", "data-target": item.target.toLowerCase(), disabled: sending || entry2.refreshing ? true : void 0 }, busy ? item.label + "\u2026" : item.label);
+      })));
+    }
+    if (action && action.message) {
+      wrap.appendChild(h("div", { "class": "inline-fail support-ticket-actions__outcome", "data-module": "ticket-action-outcome", "data-state": action.phase, role: "alert", tabindex: "-1" }, [
+        h("span", { "class": "inline-fail__icon", "aria-hidden": "true" }, "!"),
+        h("div", { "class": "decision-outcome__body" }, action.message)
+      ]));
+    }
+    return wrap;
+  }
+  function Thread(ticket) {
+    var thread = ticket.thread;
+    var list = h("ol", { "class": "ticket-thread", "data-module": "ticket-thread", "aria-label": "Conversation" });
+    if (thread && thread.truncated) list.appendChild(h("li", { "class": "ticket-thread__note", "data-module": "ticket-thread-truncated" }, "Earlier messages aren\u2019t shown here."));
+    var opening = thread && thread.description ? Message({ author: "CUSTOMER", authorName: "", createdMs: ticket.openedMs, html: thread.description.html, attachments: thread.description.attachments }, "description") : PlainOpening(ticket);
+    if (opening) list.appendChild(opening);
+    (thread ? thread.comments : []).forEach(function(comment) {
+      list.appendChild(Message(comment, "comment"));
+    });
+    return h("section", { "class": "ticket-thread-wrap", "aria-labelledby": "ticket-thread-title" }, [
+      h("h2", { "class": "contracts-section__title", id: "ticket-thread-title" }, "Conversation"),
+      list
+    ]);
+  }
+  function PlainOpening(ticket) {
+    if (!ticket.message) return null;
+    return h("li", { "class": "ticket-message", "data-module": "ticket-message", "data-author": "customer", "data-kind": "description" }, [
+      MessageHead("CUSTOMER", "", ticket.openedMs),
+      h("div", { "class": "ticket-message__body ticket-message__body--plain" }, ticket.message)
+    ]);
+  }
+  function Message(comment, kind) {
+    var staff = comment.author === "STAFF";
+    return h("li", { "class": "ticket-message" + (staff ? " ticket-message--staff" : ""), "data-module": "ticket-message", "data-author": staff ? "staff" : "customer", "data-kind": kind }, [
+      MessageHead(comment.author, comment.authorName, comment.createdMs),
+      comment.html ? RichText(comment.html, { "class": "rich-text ticket-message__body", "data-module": "ticket-message-body" }) : null,
+      comment.attachments.length ? Attachments(comment.attachments) : null
+    ]);
+  }
+  function MessageHead(author, name, createdMs) {
+    var staff = author === "STAFF";
+    return h("div", { "class": "ticket-message__head" }, [
+      h("span", { "class": "ticket-message__author" }, staff ? name || "Support team" : "You"),
+      staff ? h("span", { "class": "ticket-message__role" }, "Support team") : null,
+      createdMs ? h("time", { "class": "ticket-message__time", datetime: new Date(createdMs).toISOString() }, ticketMoment(createdMs)) : null
+    ]);
+  }
+  function Attachments(attachments) {
+    return h("ul", { "class": "ticket-files", "data-module": "ticket-files", "aria-label": "Attachments" }, attachments.map(function(file) {
+      var thumbnail = file.image ? ticketFile(file, "thumbnail", render) : null;
+      var size = formatBytes(file.size);
+      var preview = thumbnail && thumbnail.status === "ready" ? h("img", { "class": "ticket-file__thumb", src: thumbnail.url, alt: file.name }) : h("span", { "class": "ticket-file__icon", "aria-hidden": "true", "data-state": thumbnail ? thumbnail.status : void 0 }, file.image ? thumbnail && thumbnail.status === "error" ? "!" : "IMG" : "PDF");
+      return h("li", { "class": "ticket-file", "data-module": "ticket-file", "data-kind": file.image ? "image" : "file" }, [
+        h("button", { "class": "ticket-file__open", type: "button", "data-action": "support.openFile", "data-id": file.id, "aria-label": "Open " + file.name + " in a new tab" }, [
+          preview,
+          h("span", { "class": "ticket-file__name" }, file.name),
+          size ? h("span", { "class": "ticket-file__size" }, size) : null
+        ])
+      ]);
+    }));
+  }
+  function ClosedNote(ticket) {
+    return h("div", { "class": "card card--pad support-ticket-closed", "data-module": "ticket-closed", role: "status" }, [
+      h("div", { "class": "support-ticket-closed__title" }, "This ticket is closed"),
+      h("div", { "class": "support-ticket-closed__desc" }, "Comments are turned off. Open a new ticket if you need more help."),
+      ActionButton({ variant: "btn--ghost", label: "Open support ticket", action: "support.newTicket", id: ticket.propertyBackendId ? String(ticket.propertyBackendId) : void 0, visualId: "ticket-closed-new" })
+    ]);
+  }
+  function CommentBox(backendId, entry2) {
+    var comment = ticketComment(backendId);
+    var busy = ticketCommentBusy(comment);
+    var box = h("section", { "class": "card card--pad support-form ticket-comment", "data-module": "ticket-comment", "data-state": comment.phase, "aria-labelledby": "ticket-comment-title" }, [
+      h("h2", { "class": "contracts-section__title", id: "ticket-comment-title" }, "Add a comment")
+    ]);
+    if (comment.sentAt && comment.phase === "editing" && !comment.html && !comment.files.length) {
+      box.appendChild(h("div", { "class": "support-ticket-sent", "data-module": "ticket-comment-added", role: "status" }, "Your comment was added."));
+    }
+    box.appendChild(RichTextEditor({
+      id: "ticket-comment-message-" + backendId,
+      module: "ticket-comment-editor",
+      field: "MESSAGE",
+      label: "Message",
+      html: comment.html,
+      error: comment.errors.MESSAGE,
+      disabled: busy,
+      placeholder: "Write a reply\u2026",
+      onChange: function(html) {
+        changeTicketComment(backendId, html);
+      }
+    }));
+    box.appendChild(AttachmentPicker({
+      id: "ticket-comment-attachments-" + backendId,
+      module: "ticket-comment-attachments",
+      field: "ATTACHMENTS",
+      files: comment.files,
+      reading: comment.reading,
+      error: comment.errors.ATTACHMENTS,
+      disabled: busy,
+      scope: "comment-" + backendId,
+      removeAction: "support.removeAttachment",
+      onAdd: function(files2) {
+        addAttachments(comment, files2, render);
+      }
+    }));
+    if (comment.message) {
+      box.appendChild(h("div", { "class": "inline-fail", "data-module": "ticket-comment-message", role: "alert", tabindex: "-1" }, [
+        h("span", { "class": "inline-fail__icon", "aria-hidden": "true" }, "!"),
+        h("div", { "class": "decision-outcome__body" }, comment.message)
+      ]));
+    }
+    if (busy) box.appendChild(h("div", { "data-module": "ticket-comment-progress", "aria-live": "polite" }, [PendingNote(COMMENT_PROGRESS[comment.phase] || COMMENT_PROGRESS.sending)]));
+    else box.appendChild(h("div", { "class": "proposal-actions" }, [comment.phase === "slow" ? ActionButton({ variant: "btn--primary", label: "Check again", action: "support.checkComment", visualId: "ticket-comment-check" }) : ActionButton({ variant: "btn--primary", label: "Send comment", action: "support.sendComment", disabled: comment.reading || !!(entry2 && entry2.refreshing), visualId: "ticket-comment-send" })]));
+    return box;
+  }
+
+  // app-templates/customer-portal/runtime/src/routes/AuthPage.js
+  function pitchRow(dot, bg, text10) {
+    return h("div", { style: "display:flex;align-items:center;gap:12px" }, [
+      h("div", { style: "width:34px;height:34px;border-radius:10px;background:" + bg + ";display:grid;place-items:center" }, h("i", { style: "width:12px;height:12px;border-radius:4px;background:" + dot + ";display:block" })),
+      h("div", { style: "font-size:14px;color:var(--ink-2)" }, text10)
+    ]);
+  }
+  function Auth() {
+    var page = h("section", { "class": "page auth-page", "data-route": state.route, "data-visual-id": state.route });
+    var grid = h("div", { "class": "auth-grid" });
+    grid.appendChild(h("div", { "class": "auth-pitch" }, [
+      h("span", { "class": "eyebrow" }, "Your customer account"),
+      h("h1", { "class": "auth-pitch__title" }, "Sign in to track every visit."),
+      h("p", { "class": "auth-pitch__sub" }, "One account for all your properties \u2014 bookings, live tracking, invoices and your membership in one place."),
+      h("div", { style: "display:flex;flex-direction:column;gap:14px;max-width:360px" }, [
+        pitchRow("var(--accent)", "rgba(var(--accent-rgb),.12)", "Book in under a minute"),
+        pitchRow("#1f8a44", "rgba(52,199,89,.16)", "Track your technician live"),
+        pitchRow("#7a52e0", "rgba(122,82,224,.16)", "Save with a membership")
+      ])
+    ]));
+    var step = state.route === "auth.code" ? "code" : "phone";
+    var card = h("div", { "class": "auth-card", "data-module": "auth-card", "data-visual-id": "auth-card", "data-state": "auth-" + step });
+    if (step === "phone") card.appendChild(AuthPhone());
+    else card.appendChild(AuthCode());
+    grid.appendChild(card);
+    page.appendChild(grid);
+    return page;
+  }
+  function AuthPhone() {
+    var err = state.authError;
+    var input = h("input", { "class": "auth-phone__input", placeholder: "(555) 000-0000", value: state.phone, inputmode: "tel", "aria-label": "Phone number" });
+    input.addEventListener("input", function() {
+      state.phone = input.value;
+    });
+    input.addEventListener("keydown", function(e) {
+      if (e.key === "Enter") validatePhone();
+    });
+    return h("div", { "data-state": "auth-phone" }, [
+      h("div", { "class": "brand-logo brand-logo--lg", style: "margin-bottom:18px" }),
+      h("div", { style: "font-weight:800;font-size:22px;letter-spacing:-.02em" }, "Welcome to Aircove"),
+      h("div", { style: "font-size:14px;color:var(--ink-2);margin:4px 0 22px" }, "Enter your phone to get a one-time code."),
+      h("div", { style: "font-weight:600;font-size:12px;color:var(--ink-3);letter-spacing:.04em;text-transform:uppercase;margin-bottom:8px" }, "Phone number"),
+      h("div", { "class": "auth-phone" + (err ? " auth-phone--error" : "") }, [
+        h("div", { "class": "auth-phone__cc" }, "\u{1F1FA}\u{1F1F8} +1"),
+        input
+      ]),
+      err ? h("div", { "class": "auth-error", "data-state": "validation-error" }, err) : null,
+      h("div", { style: "margin-top:18px" }, ActionButton({ variant: "btn--primary", label: "Send code", action: "auth.sendCode", block: true, lg: true, visualId: "send-code" })),
+      h("div", { "class": "auth-divider" }, [h("span", { "class": "auth-divider__line" }), h("span", { style: "font-size:12px;color:var(--ink-3)" }, "or"), h("span", { "class": "auth-divider__line" })]),
+      h("div", { "class": "auth-apple", "data-action": "auth.apple", "data-visual-id": "apple-signin" }, [h("span", { "class": "auth-apple__mark" }), "Continue with Apple"]),
+      h("div", { style: "text-align:center;font-size:12px;line-height:1.5;color:var(--ink-3);margin-top:18px" }, "By continuing you agree to our Terms & Privacy Policy.")
+    ]);
+  }
+  function AuthCode() {
+    var err = state.authError;
+    var code = state.code || "";
+    var boxEls = [];
+    var boxes = h("div", { "class": "otp" }, [0, 1, 2, 3].map(function(i) {
+      var filled = i < code.length;
+      var active = i === code.length;
+      var el = h("div", { "class": "otp__box" + (filled ? " otp__box--filled" : "") + (active && !err ? " otp__box--active" : "") + (err ? " otp__box--error" : "") }, filled ? code[i] : active ? "" : "");
+      boxEls.push(el);
+      return el;
+    }));
+    var input = h("input", { "class": "otp__input", inputmode: "numeric", maxlength: "4", value: code, "aria-label": "Verification code", autocomplete: "one-time-code" });
+    input.addEventListener("input", function() {
+      var v = input.value.replace(/\D/g, "").slice(0, 4);
+      input.value = v;
+      state.code = v;
+      boxEls.forEach(function(el, i) {
+        el.className = "otp__box" + (i < v.length ? " otp__box--filled" : "") + (i === v.length ? " otp__box--active" : "");
+        el.textContent = i < v.length ? v[i] : "";
+      });
+    });
+    input.addEventListener("keydown", function(e) {
+      if (e.key === "Enter") validateCode();
+    });
+    return h("div", { "data-state": "auth-code" }, [
+      h("div", { "class": "auth-back", "data-action": "auth.back" }, "\u2039 Back"),
+      h("div", { style: "font-weight:800;font-size:22px;letter-spacing:-.02em" }, "Enter the code"),
+      h("div", { style: "font-size:14px;color:var(--ink-2);margin:4px 0 22px" }, "We sent a 4-digit code to " + (state.phone ? "+1 " + state.phone : "+1 (555) \u2022\u2022\u2022-\u20220000") + "."),
+      h("div", { "class": "otp-wrap" }, [boxes, input]),
+      err ? h("div", { "class": "auth-error", "data-state": "validation-error", style: "margin-top:14px" }, err) : null,
+      h("div", { style: "margin-top:22px" }, ActionButton({ variant: "btn--primary", label: "Verify & continue", action: "auth.verifyCode", block: true, lg: true, visualId: "verify-code" })),
+      h("div", { style: "text-align:center;font-size:13px;color:var(--ink-2);margin-top:18px" }, ["Didn\u2019t get it? ", h("span", { style: "color:var(--accent);font-weight:600;cursor:pointer", "data-action": "auth.resend" }, "Resend")])
+    ]);
+  }
+
+  // app-templates/customer-portal/runtime/src/activation-policy.js
+  function markCareControlUnavailable(control, reason) {
+    control.setAttribute("disabled", "");
+    control.setAttribute("aria-disabled", "true");
+    control.setAttribute("data-state", "unavailable");
+    control.setAttribute("title", reason);
+    return control;
+  }
+
+  // app-templates/customer-portal/runtime/src/components/care/shared.js
+  function careChip(kind, label) {
+    var map = { ok: "status-badge--ok", warn: "status-badge--warn", issue: "status-badge--danger", info: "status-badge--info", muted: "status-badge--scheduled" };
+    return h("span", { "class": "status-badge " + (map[kind] || map.muted), "data-module": "status-badge", "data-state": kind }, label);
+  }
+  function DocRow(d) {
+    return h("div", { "class": "log-row", "data-module": "document-row", "data-visual-id": "document-row", "data-document-id": d.id }, [
+      h("div", { style: "flex:1;min-width:0" }, [
+        h("div", { style: "font-weight:600;font-size:13.5px", "data-bind": "doc.name" }, d.name),
+        h("div", { style: "font-size:12px;color:var(--ink-3);margin-top:1px", "data-bind": "doc.meta" }, d.meta)
+      ]),
+      markCareControlUnavailable(h("div", {
+        "class": "link-action",
+        "data-action": "care.download",
+        "data-id": d.id,
+        role: "link",
+        tabindex: "-1"
+      }, "Download"), "Download is unavailable: no approved document destination")
+    ]);
+  }
+
+  // app-templates/customer-portal/runtime/src/components/care/SeasonLog.js
+  function SeasonLog(m) {
+    var stats = h(
+      "div",
+      { "class": "care-stats", "data-module": "season-stats", "data-visual-id": "season-stats" },
+      m.stats.map(function(s) {
+        return h("div", { "class": "care-stat" }, [
+          h("div", { style: "font-size:12px;color:var(--ink-3)" }, s.label),
+          h("div", { style: "font-weight:800;font-size:20px;margin-top:2px" }, s.value)
+        ]);
+      })
+    );
+    var log = h("div", { "class": "list-panel", "data-module": "storm-log", "data-visual-id": "storm-log" }, [
+      h("div", { "class": "list-panel__head" }, [
+        h("div", { "class": "list-panel__title", style: "flex:1" }, "Storm responses"),
+        h("span", { style: "font-size:12.5px;color:var(--ink-3)" }, "GPS-logged \xB7 this season")
+      ])
+    ]);
+    m.events.forEach(function(ev) {
+      log.appendChild(h("div", { "class": "log-row", "data-module": "storm-log-row", "data-state": ev.sla ? "ok" : "warn" }, [
+        h("div", { "class": "log-date" }, ev.date),
+        h("div", { style: "flex:1;min-width:0" }, [
+          h("div", { style: "display:flex;align-items:center;gap:8px;flex-wrap:wrap" }, [
+            h("span", { style: "font-weight:600;font-size:13.5px", "data-bind": "event.storm" }, ev.storm),
+            careChip(ev.sla ? "ok" : "warn", ev.sla ? "SLA met" : "SLA missed")
+          ]),
+          h(
+            "div",
+            { style: "font-size:12px;color:var(--ink-3);margin-top:2px" },
+            ev.trigger + " \xB7 response " + ev.response + " \xB7 " + ev.material + (ev.note ? " \xB7 " + ev.note : "")
+          )
+        ]),
+        ev.photos ? h("div", { "class": "link-action", "data-action": "order.open", "data-id": ev.orderId || "#SV-3290" }, "Report \u203A") : null
+      ]));
+    });
+    var sla = h("div", { "class": "card card--pad", "data-module": "sla-meter", "data-visual-id": "sla-meter" }, [
+      h("div", { "class": "card__title", style: "margin-bottom:10px" }, "SLA this season"),
+      h("div", { "class": "score-big" }, m.sla.pct + "%"),
+      h("div", { "class": "meter" }, [h("div", { "class": "meter__fill", style: "width:" + m.sla.pct + "%" })]),
+      h("div", { style: "font-size:12.5px;color:var(--ink-2);margin-top:10px" }, m.sla.label)
+    ]);
+    var docs = h("div", { "class": "list-panel", "data-module": "compliance-reports", "data-visual-id": "compliance-reports" }, [
+      h("div", { "class": "list-panel__head" }, [
+        h("div", { "class": "list-panel__title", style: "flex:1" }, "Compliance reports"),
+        h("span", { style: "font-size:12px;color:var(--ink-3)" }, "slip-and-fall record")
+      ])
+    ].concat(m.docs.map(DocRow)));
+    return h("div", null, [stats, h("div", { "class": "care-grid" }, [
+      h("div", { "class": "care-col" }, [log]),
+      h("div", { "class": "care-col" }, [sla, docs])
+    ])]);
+  }
+
+  // app-templates/customer-portal/runtime/src/routes/CarePage.js
+  var RENDERERS = false ? {
+    equipment: EquipmentHub,
+    seasonLog: SeasonLog,
+    program: LawnProgram,
+    water: WaterQuality,
+    roof: RoofReport,
+    monitoring: PestMonitoring,
+    healthCare: HealthCareHub,
+    beautyCare: BeautyCareHub
+  } : {
+    seasonLog: SeasonLog
+  };
+  function careSkeleton() {
+    return h("div", { "class": "care-grid", "data-state": "loading" }, [
+      h("div", { "class": "care-col" }, [
+        h("div", { "class": "skeleton", style: "height:120px;border-radius:16px" }),
+        h("div", { "class": "skeleton", style: "height:320px;border-radius:20px" })
+      ]),
+      h("div", { "class": "care-col" }, [
+        h("div", { "class": "skeleton", style: "height:240px;border-radius:20px" }),
+        h("div", { "class": "skeleton", style: "height:150px;border-radius:20px" })
+      ])
+    ]);
+  }
+  function entitlementGate(envelope2) {
+    return h("div", { "class": "state-block", "data-module": "entitlement-gate", "data-visual-id": "entitlement-gate", "data-state": "unauthorized" }, [
+      h("div", { "class": "state-block__glyph" }, "\u26BF"),
+      h("div", { "class": "state-block__title" }, envelope2.navLabel + " isn\u2019t part of your plan yet"),
+      h("div", { "class": "state-block__desc" }, "Your current plan doesn\u2019t include " + envelope2.title.toLowerCase() + ". Upgrade to unlock it, or ask us anything."),
+      h("div", { style: "display:flex;gap:10px;justify-content:center" }, [
+        ActionButton({ variant: "btn--primary", label: "View plans", action: "profile.managePlan", visualId: "entitlement-upgrade" }),
+        ActionButton({ variant: "btn--ghost", label: "Contact support", action: "support.open", visualId: "entitlement-support" })
+      ])
+    ]);
+  }
+  function accessState(envelope2) {
+    if (envelope2.state === "unauthorized") return entitlementGate(envelope2);
+    if (envelope2.state === "loading") return careSkeleton();
+    if (envelope2.state === "error") return ErrorState({ title: "Couldn\u2019t load " + envelope2.title.toLowerCase(), desc: "Something went wrong fetching this page. Try again." });
+    if (envelope2.state === "empty") return EmptyState({ glyph: envelope2.emptyState.glyph, title: envelope2.emptyState.title, desc: envelope2.emptyState.description });
+    if (envelope2.state === "disabled") return EmptyState({ glyph: "i", title: "Care is not enabled", desc: "This module is disabled for the current portal configuration." });
+    return null;
+  }
+  function Care() {
+    var envelope2 = state.moduleData.care;
+    if (!envelope2) {
+      envelope2 = { title: "Care", subtitle: "", navLabel: "Care", kind: null, state: "loading", access: { status: "checking", reasonCode: null } };
+    }
+    var page = h("section", {
+      "class": "page",
+      "data-route": "care",
+      "data-visual-id": envelope2.kind ? "care-" + envelope2.kind : "care-access",
+      "data-state": envelope2.state,
+      "data-access": envelope2.access.status,
+      "data-reason-code": envelope2.access.reasonCode || void 0
+    });
+    page.appendChild(PageHeader({ title: envelope2.title, sub: envelope2.subtitle }));
+    var treatment = accessState(envelope2);
+    if (treatment) {
+      page.appendChild(treatment);
+      return page;
+    }
+    var renderer = RENDERERS[envelope2.kind];
+    if (!renderer || !envelope2.content) {
+      page.appendChild(ErrorState({ title: "Couldn\u2019t load care", desc: "The Care payload is unavailable." }));
+      return page;
+    }
+    var retreatScope = envelope2.content.guarantee && envelope2.content.guarantee.scope;
+    var retreatKey = retreatScope && "care.requestRetreat:" + retreatScope.planId;
+    page.appendChild(renderer(envelope2.content, {
+      selectedUnitId: state.careSelectedUnitId,
+      selectedSpecialistId: state.careSelectedSpecialistId,
+      tasksDone: state.careTasksDone,
+      retreatRequest: retreatScope ? state.careRetreatRequests[retreatScope.planId] || null : null,
+      retreatPending: retreatKey ? state.pending[retreatKey] === true : false,
+      retreatError: retreatKey ? state.commandErrors[retreatKey] || null : null
+    }));
+    return page;
+  }
+
+  // app-templates/customer-portal/runtime/src/routes/AuthOidcPage.js
+  function AuthOidc() {
+    var s = state.oidc || "ready-signed-out";
+    var page = h("section", { "class": "page auth-page", "data-route": "auth.oidc", "data-visual-id": "auth.oidc", "data-screen-label": "Login (" + s + ")" });
+    var grid = h("div", { "class": "auth-grid" });
+    grid.appendChild(h("div", { "class": "auth-pitch" }, [
+      h("span", { "class": "eyebrow" }, "Customer account"),
+      h("h1", { "class": "auth-pitch__title" }, "Secure sign-in, handled in one place."),
+      h("p", { "class": "auth-pitch__sub" }, "You sign in with our secure account service and come straight back here. Your password is never entered on this site.")
+    ]));
+    var card = h("div", { "class": "auth-card", "data-module": "core-oidc-auth", "data-visual-id": "core-oidc-auth", "data-state": s });
+    if (s === "checking-session") card.appendChild(OidcProgress("checking-session", "Checking your session\u2026", "Securely restoring your existing sign-in. This only takes a moment \u2014 no need to do anything."));
+    else if (s === "ready-signed-out") card.appendChild(OidcSignedOut());
+    else if (s === "redirecting") card.appendChild(OidcProgress("redirecting", "Taking you to secure sign-in\u2026", "This page is leaving for the secure account service. You\u2019ll come back here automatically \u2014 no need to do anything."));
+    else if (s === "unavailable") card.appendChild(OidcUnavailable());
+    else if (s === "ready-signed-in") card.appendChild(OidcSignedIn());
+    else if (s === "signing-out") card.appendChild(OidcProgress("signing-out", "Signing you out\u2026", "Finishing sign-out with the secure account service. One moment."));
+    grid.appendChild(card);
+    page.appendChild(grid);
+    return page;
+  }
+  function oidcStep(n, text10) {
+    return h("div", { "class": "oidc-step" }, [h("span", { "class": "oidc-step__num" }, String(n)), text10]);
+  }
+  function OidcSignedOut() {
+    return h("div", { "data-state": "ready-signed-out" }, [
+      h("div", { "class": "brand-logo brand-logo--lg", style: "margin-bottom:18px" }),
+      h("div", { "class": "oidc-title" }, "Sign in to your account"),
+      h("div", { "class": "oidc-sub" }, "Sign-in continues in the secure account service. When you\u2019re done, you\u2019ll return right here."),
+      h("div", { "class": "oidc-steps" }, [
+        oidcStep(1, "Continue to the secure account service"),
+        oidcStep(2, "Sign in there \u2014 we never see your password"),
+        oidcStep(3, "Come back here, signed in")
+      ]),
+      ActionButton({ variant: "btn--primary", label: "Continue to secure sign-in", action: "auth.oidcSignIn", block: true, lg: true, visualId: "oidc-signin" }),
+      h("div", { "class": "oidc-note" }, "By continuing you agree to our Terms & Privacy Policy.")
+    ]);
+  }
+  function OidcSignedIn() {
+    return h("div", { "data-state": "ready-signed-in" }, [
+      h("div", { "class": "oidc-status" }, [h("div", { "class": "oidc-glyph oidc-glyph--ok" }, "\u2713")]),
+      h("div", { "class": "oidc-title" }, "You\u2019re signed in"),
+      h("div", { "class": "oidc-sub" }, "You can go straight to your account."),
+      h("div", { "class": "oidc-actions" }, [
+        ActionButton({ variant: "btn--primary", label: "Open the portal", action: "nav.go", id: state.config.defaultRoute, block: true, lg: true, visualId: "oidc-open-portal" })
+      ])
+    ]);
+  }
+  function OidcProgress(stateName, title, sub) {
+    return h("div", { "data-state": stateName, "aria-busy": "true" }, [
+      h("div", { "class": "oidc-status" }, [h("span", { "class": "oidc-spinner" })]),
+      h("div", { "class": "oidc-title" }, title),
+      h("div", { "class": "oidc-sub oidc-sub--tail" }, sub)
+    ]);
+  }
+  function OidcUnavailable() {
+    return h("div", { "data-state": "unavailable" }, [
+      h("div", { "class": "oidc-status" }, [h("div", { "class": "oidc-glyph oidc-glyph--warn" }, "!")]),
+      h("div", { "class": "oidc-title" }, "Secure sign-in isn\u2019t available"),
+      h("div", { "class": "oidc-sub" }, "We couldn\u2019t reach the secure account service, so sign-in can\u2019t start right now. There\u2019s no other way to sign in here \u2014 please try again in a moment."),
+      h("div", { "class": "oidc-actions" }, [
+        ActionButton({ variant: "btn--primary", label: "Try again", action: "auth.retrySession", block: true, lg: true, visualId: "oidc-retry" }),
+        LandingReturnButton({ variant: "btn--ghost", block: true, visualId: "oidc-back-catalog" })
+      ])
+    ]);
+  }
+
+  // app-templates/customer-portal/runtime/src/routes/RequestLinkPage.js
+  function RequestLink() {
+    var link = state.requestLink || { event: "confirm", phase: "invalid" };
+    var copy = state.config.requestLinkCopy;
+    var cancel = link.event === "cancel";
+    var phase = link.phase;
+    var page = h("section", { "class": "page account-gate", "data-route": state.route, "data-visual-id": "request-link", "data-state": phase });
+    var card = h("div", { "class": "auth-card account-gate__card", "data-module": "request-link", "data-visual-id": "request-link-card", "data-event": link.event, "data-state": phase });
+    if (phase === "prompt") {
+      card.appendChild(h("div", { "class": "oidc-title" }, cancel ? copy.cancelTitle : copy.confirmTitle));
+      card.appendChild(h("div", { "class": "oidc-sub" }, cancel ? copy.cancelBody : copy.confirmBody));
+      card.appendChild(actions(cancel ? copy.cancelButton : copy.confirmButton, "requestLink.send", "request-link-send"));
+    } else if (phase === "pending") {
+      card.setAttribute("aria-busy", "true");
+      card.appendChild(h("div", { "class": "oidc-status" }, [h("span", { "class": "oidc-spinner" })]));
+      card.appendChild(h("div", { "class": "oidc-title" }, cancel ? copy.cancelling : copy.confirming));
+    } else if (phase === "done") {
+      card.setAttribute("role", "status");
+      card.appendChild(glyph("ok", "\u2713"));
+      card.appendChild(h("div", { "class": "oidc-title" }, cancel ? copy.cancelledTitle : copy.confirmedTitle));
+      card.appendChild(h("div", { "class": "oidc-sub oidc-sub--tail" }, cancel ? copy.cancelledBody : copy.confirmedBody));
+    } else if (phase === "failed") {
+      card.setAttribute("role", "alert");
+      card.appendChild(glyph("warn", "!"));
+      card.appendChild(h("div", { "class": "oidc-title" }, copy.failedTitle));
+      card.appendChild(h("div", { "class": "oidc-sub" }, copy.failedBody));
+      card.appendChild(actions(copy.retry, "requestLink.send", "request-link-retry"));
+    } else if (phase === "unconfirmed") {
+      card.setAttribute("role", "alert");
+      card.appendChild(glyph("warn", "!"));
+      card.appendChild(h("div", { "class": "oidc-title" }, copy.unconfirmedTitle));
+      card.appendChild(h("div", { "class": "oidc-sub" }, copy.unconfirmedBody));
+      card.appendChild(actions(copy.checkAgain, "requestLink.check", "request-link-check"));
+    } else {
+      card.setAttribute("role", "alert");
+      card.appendChild(glyph("warn", "!"));
+      card.appendChild(h("div", { "class": "oidc-title" }, copy.invalidTitle));
+      card.appendChild(h("div", { "class": "oidc-sub oidc-sub--tail" }, copy.invalidBody));
+    }
+    page.appendChild(card);
+    return page;
+  }
+  function glyph(tone, mark) {
+    return h("div", { "class": "oidc-status" }, [h("div", { "class": "oidc-glyph oidc-glyph--" + tone }, mark)]);
+  }
+  function actions(label, action, visualId) {
+    return h("div", { "class": "account-gate__actions" }, [
+      ActionButton({ variant: "btn--primary", label, action, block: true, lg: true, visualId })
+    ]);
+  }
+
+  // app-templates/customer-portal/runtime/src/request-link.js
+  var OUTCOME_STORAGE_KEY = "portal-request-link-done";
+  var UNREACHABLE_STATUSES = [502, 503, 504];
+  var RECORDED_STATUS = 404;
+  var READBACK_DELAYS = [400, 800, 1500, 2500, 4e3];
+  var REFUSED_READBACK_DELAYS = [400, 1200];
+  function captureRequestLink(routeId, raw) {
+    var route = routeRegistry[routeId];
+    if (!route || !route.requestEvent) return null;
+    var token = tokenFrom(raw);
+    var current = state.requestLink;
+    if (token) {
+      if (!current || current.token !== token) state.requestLink = { route: routeId, event: route.requestEvent, token, phase: "prompt", sent: false };
+    } else if (!current || current.route !== routeId) {
+      state.requestLink = { route: routeId, event: route.requestEvent, token: "", phase: remembered(routeId) ? "done" : "invalid", sent: false };
+    }
+    return state.requestLink;
+  }
+  function sendRequestLink(options2) {
+    var link = state.requestLink;
+    if (!link || !link.token || link.phase !== "prompt" && link.phase !== "failed") return false;
+    var run2 = runner(link, options2);
+    link.phase = "pending";
+    run2.post().then(function(status) {
+      if (status === null || UNREACHABLE_STATUSES.indexOf(status) !== -1) return run2.settle("failed");
+      if (status === RECORDED_STATUS) return run2.settle("invalid");
+      link.sent = true;
+      var accepted3 = status >= 200 && status < 300;
+      return run2.readBack(accepted3 ? READBACK_DELAYS : REFUSED_READBACK_DELAYS, accepted3 ? "unconfirmed" : "invalid");
+    });
+    return true;
+  }
+  function checkRequestLink(options2) {
+    var link = state.requestLink;
+    if (!link || !link.token || !link.sent || link.phase !== "unconfirmed") return false;
+    link.phase = "pending";
+    runner(link, options2).readBack(READBACK_DELAYS, "unconfirmed");
+    return true;
+  }
+  function runner(link, options2) {
+    var settings = options2 || {};
+    var send = settings.fetch || globalThis.fetch;
+    var wait = settings.wait || function(milliseconds) {
+      return new Promise(function(resolve) {
+        setTimeout(resolve, milliseconds);
+      });
+    };
+    var url = cmsBase() + "/api/form/send-event/" + encodeURIComponent(link.token) + ".json";
+    function post() {
+      return Promise.resolve().then(function() {
+        return send(url, { method: "POST", credentials: "omit", headers: { "Content-Type": "application/json", Accept: "application/json" }, body: "{}" });
+      }).then(function(response) {
+        return response && typeof response.status === "number" ? response.status : null;
+      }, function() {
+        return null;
+      });
+    }
+    function settle5(phase) {
+      if (state.requestLink !== link) return phase;
+      link.phase = phase;
+      if (phase === "done" || phase === "invalid") link.token = "";
+      if (phase === "done") remember(link.route, settings.storage);
+      if (settings.onChange) settings.onChange();
+      return phase;
+    }
+    function readBack(delays, otherwise) {
+      return delays.reduce(function(earlier, delay) {
+        return earlier.then(function(recorded) {
+          if (recorded) return true;
+          return wait(delay).then(post).then(function(status) {
+            return status === RECORDED_STATUS;
+          });
+        });
+      }, Promise.resolve(false)).then(function(recorded) {
+        return settle5(recorded ? "done" : otherwise);
+      });
+    }
+    return { post, settle: settle5, readBack };
+  }
+  function cmsBase() {
+    return String(state.config.cmsApiBase || "/core-cms").replace(/\/+$/, "");
+  }
+  function tokenFrom(raw) {
+    var text10 = String(raw || "");
+    var index = text10.indexOf("?");
+    if (index === -1) return "";
+    var token = new URLSearchParams(text10.slice(index + 1)).get("token");
+    return token ? token.trim() : "";
+  }
+  function sessionStore(storage) {
+    try {
+      return storage || globalThis.sessionStorage || null;
+    } catch (_) {
+      return null;
+    }
+  }
+  function remembered(routeId) {
+    var store = sessionStore();
+    try {
+      return !!store && store.getItem(OUTCOME_STORAGE_KEY) === routeId;
+    } catch (_) {
+      return false;
+    }
+  }
+  function remember(routeId, storage) {
+    var store = sessionStore(storage);
+    try {
+      if (store) store.setItem(OUTCOME_STORAGE_KEY, routeId);
+    } catch (_) {
+      return;
+    }
+  }
+
+  // app-templates/customer-portal/runtime/src/set-password.js
+  var PASSWORD_MIN_LENGTH = 6;
+  var SET_PASSWORD_COPY = /* @__PURE__ */ Object.freeze({
+    short: "Use at least " + PASSWORD_MIN_LENGTH + " characters.",
+    missing: "Choose a password.",
+    mismatch: "The two passwords don\u2019t match.",
+    unreachable: "We couldn\u2019t reach the server. Check your connection and try again.",
+    refused: "We couldn\u2019t set this password. Try again in a few minutes."
+  });
+  var USED_KEY_MESSAGE = "Invalid credentials specified";
+  var UNKNOWN_USER_MESSAGE = "Invalid user specified";
+  var PASSWORD_RULE = /^password\b/i;
+  var entry = { password: "", confirm: "" };
+  function captureSetPassword(routeId, raw) {
+    if (routeId !== "auth.setPassword") return null;
+    var link = linkFrom(raw);
+    var current = state.setPassword;
+    if (link.login && link.key) {
+      if (!current || current.login !== link.login || current.key !== link.key) {
+        entry = { password: "", confirm: "" };
+        state.setPassword = { login: link.login, key: link.key, phase: "prompt", errors: {}, message: "" };
+      }
+    } else if (!current) {
+      state.setPassword = { login: link.login, key: "", phase: "invalid", errors: {}, message: "" };
+    }
+    return state.setPassword;
+  }
+  function setPasswordEntry() {
+    return entry;
+  }
+  function changeSetPasswordEntry(field4, value) {
+    var link = state.setPassword;
+    if (!link || link.phase !== "prompt" || field4 !== "password" && field4 !== "confirm") return false;
+    entry[field4] = String(value == null ? "" : value);
+    delete link.errors[field4];
+    return true;
+  }
+  function validateSetPassword(values) {
+    var errors = {};
+    if (!values.password) errors.password = SET_PASSWORD_COPY.missing;
+    else if (values.password.length < PASSWORD_MIN_LENGTH) errors.password = SET_PASSWORD_COPY.short;
+    if (!errors.password && values.confirm !== values.password) errors.confirm = SET_PASSWORD_COPY.mismatch;
+    return errors;
+  }
+  function submitSetPassword(options2) {
+    var settings = options2 || {};
+    var link = state.setPassword;
+    var changed = settings.onChange || function() {
+    };
+    if (!link || link.phase !== "prompt" || !link.key) return Promise.resolve(false);
+    var errors = validateSetPassword(entry);
+    link.message = "";
+    if ((/* @__PURE__ */ Object.keys(errors)).length) {
+      link.errors = errors;
+      changed("invalid");
+      return Promise.resolve(false);
+    }
+    var send = settings.fetch || globalThis.fetch;
+    link.errors = {};
+    link.phase = "pending";
+    changed("pending");
+    return Promise.resolve().then(function() {
+      return send(coreBase() + "/api/user/reset-password.json", {
+        method: "POST",
+        credentials: "omit",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify({ user: link.login, key: link.key, password: entry.password })
+      });
+    }).then(function(response) {
+      if (response && response.ok) return { ok: true, message: "" };
+      return Promise.resolve(response && typeof response.json === "function" ? response.json() : null).then(function(body) {
+        return { ok: false, message: body && typeof body.message === "string" ? body.message : "" };
+      }, function() {
+        return { ok: false, message: "" };
+      });
+    }, function() {
+      return null;
+    }).then(function(result) {
+      if (state.setPassword !== link) return false;
+      if (!result) return settle4(link, "prompt", { message: SET_PASSWORD_COPY.unreachable }, changed, "failed");
+      if (result.ok) {
+        entry = { password: "", confirm: "" };
+        link.key = "";
+        return settle4(link, "done", {}, changed, "done");
+      }
+      if (result.message === USED_KEY_MESSAGE || result.message === UNKNOWN_USER_MESSAGE) {
+        entry = { password: "", confirm: "" };
+        link.key = "";
+        return settle4(link, "expired", {}, changed, "expired");
+      }
+      if (PASSWORD_RULE.test(result.message)) return settle4(link, "prompt", { errors: { password: result.message } }, changed, "invalid");
+      return settle4(link, "prompt", { message: SET_PASSWORD_COPY.refused }, changed, "failed");
+    });
+  }
+  function settle4(link, phase, patch, changed, outcome) {
+    link.phase = phase;
+    link.errors = patch.errors || {};
+    link.message = patch.message || "";
+    changed(outcome);
+    return outcome === "done";
+  }
+  function coreBase() {
+    return String(state.config.coreApiBase || "/core").replace(/\/+$/, "");
+  }
+  function linkFrom(raw) {
+    var text10 = String(raw || "");
+    var index = text10.indexOf("?");
+    var query = new URLSearchParams(index === -1 ? "" : text10.slice(index + 1));
+    return { login: String(query.get("login") || "").trim(), key: String(query.get("key") || "").trim() };
+  }
+
+  // app-templates/customer-portal/runtime/src/routes/SetPasswordPage.js
+  function SetPassword() {
+    var link = state.setPassword || { login: "", phase: "invalid", errors: {}, message: "" };
+    var phase = link.phase;
+    var provider = state.config.brandName || "your service provider";
+    var page = h("section", { "class": "page account-gate", "data-route": "auth.setPassword", "data-visual-id": "set-password", "data-state": phase });
+    var card = h("div", { "class": "auth-card account-gate__card", "data-module": "set-password", "data-visual-id": "set-password-card", "data-state": phase });
+    if (phase === "prompt") {
+      card.appendChild(h("div", { "class": "oidc-title" }, "Set your password"));
+      card.appendChild(h("div", { "class": "oidc-sub" }, "Choose the password you will sign in to " + provider + " with."));
+      card.appendChild(PasswordForm(link));
+    } else if (phase === "pending") {
+      card.setAttribute("aria-busy", "true");
+      card.appendChild(h("div", { "class": "oidc-status" }, [h("span", { "class": "oidc-spinner" })]));
+      card.appendChild(h("div", { "class": "oidc-title" }, "Setting your password\u2026"));
+    } else if (phase === "done") {
+      card.setAttribute("role", "status");
+      card.appendChild(glyph2("ok", "\u2713"));
+      card.appendChild(h("div", { "class": "oidc-title" }, "Your password is set"));
+      card.appendChild(h("div", { "class": "oidc-sub" }, ["Sign in with ", h("strong", { "data-module": "set-password-login" }, link.login), " and your new password."]));
+      card.appendChild(actions2("Sign in", "auth.gotoSignin", "set-password-sign-in"));
+    } else {
+      card.setAttribute("role", "alert");
+      card.appendChild(glyph2("warn", "!"));
+      card.appendChild(h("div", { "class": "oidc-title" }, phase === "expired" ? "This link has expired" : "This link is incomplete"));
+      card.appendChild(h("div", { "class": "oidc-sub" }, phase === "expired" ? "A set-password link works once. If you have already set your password, sign in. Otherwise contact " + provider + " and ask for a new link." : "Open the link from your email again. If it still doesn\u2019t work, contact " + provider + " and ask for a new link."));
+      card.appendChild(actions2("Sign in", "auth.gotoSignin", "set-password-sign-in"));
+    }
+    page.appendChild(card);
+    return page;
+  }
+  function PasswordForm(link) {
+    var entry2 = setPasswordEntry();
+    var form = h("form", { "class": "set-password__form", "data-module": "set-password-form", novalidate: true, autocomplete: "on" });
+    form.addEventListener("submit", function(event) {
+      event.preventDefault();
+      ACTIONS["setPassword.submit"]();
+    });
+    form.appendChild(field3("set-password-login", "Sign-in email", h("input", { "class": "field", id: "set-password-login", name: "username", type: "email", value: link.login, autocomplete: "username", readonly: true }), ""));
+    form.appendChild(field3("set-password-new", "New password", passwordInput("set-password-new", "password", entry2.password, link.errors.password), link.errors.password, "At least " + PASSWORD_MIN_LENGTH + " characters."));
+    form.appendChild(field3("set-password-confirm", "Repeat the password", passwordInput("set-password-confirm", "confirm", entry2.confirm, link.errors.confirm), link.errors.confirm));
+    if (link.message) {
+      form.appendChild(h("div", { "class": "inline-fail", "data-module": "set-password-message", role: "alert" }, [
+        h("span", { "class": "inline-fail__icon", "aria-hidden": "true" }, "!"),
+        h("div", { "class": "decision-outcome__body" }, link.message)
+      ]));
+    }
+    form.appendChild(h("div", { "class": "account-gate__actions" }, [
+      h("button", { "class": "btn btn--primary btn--block btn--lg", type: "submit", "data-module": "action-button", "data-visual-id": "set-password-submit" }, "Set password")
+    ]));
+    return form;
+  }
+  function passwordInput(id, name, value, error2) {
+    var input = h("input", {
+      "class": "field",
+      id,
+      name: name === "password" ? "new-password" : "confirm-password",
+      type: "password",
+      value: value || "",
+      autocomplete: "new-password",
+      minlength: String(PASSWORD_MIN_LENGTH),
+      "data-state": error2 ? "invalid" : void 0,
+      "aria-invalid": error2 ? "true" : void 0,
+      "aria-describedby": error2 ? id + "-error" : name === "password" ? id + "-hint" : void 0
+    });
+    input.addEventListener("input", function() {
+      changeSetPasswordEntry(name, input.value);
+    });
+    return input;
+  }
+  function field3(id, label, control, error2, hint) {
+    return h("div", { "class": "field-row set-password__field" }, [
+      h("label", { "class": "field-label", "for": id }, label),
+      control,
+      error2 ? h("div", { "class": "field-error", id: id + "-error", role: "alert" }, error2) : hint ? h("div", { "class": "set-password__hint", id: id + "-hint" }, hint) : null
+    ]);
+  }
+  function glyph2(tone, mark) {
+    return h("div", { "class": "oidc-status" }, [h("div", { "class": "oidc-glyph oidc-glyph--" + tone }, mark)]);
+  }
+  function actions2(label, action, visualId) {
+    return h("div", { "class": "account-gate__actions" }, [
+      ActionButton({ variant: "btn--primary", label, action, block: true, lg: true, visualId })
+    ]);
+  }
+
+  // app-templates/customer-portal/runtime/src/router.js
+  function ComingSoon(routeId, wave) {
+    return h("section", { "class": "page", "data-route": routeId, "data-visual-id": routeId }, [
+      EmptyState({
+        glyph: "\u{1F9F1}",
+        title: routeId + " \u2014 coming in " + wave,
+        desc: "This route is part of a later wave. The shell, theming and action contract are already wired.",
+        action: { variant: "btn--ghost", label: "Back to orders", action: "nav.go", id: "orders.list" }
+      })
+    ]);
+  }
+  function resolveRoute(routeId) {
+    var defaultRoute = reachableDefaultRoute();
+    var requested = routeRegistry[routeId] ? routeId : defaultRoute;
+    var activeRoute = routeRegistry[requested];
+    var reason = requested === routeId ? null : "unknown";
+    if (activeRoute && activeRoute.parityOnly && state.config.dataMode === "live") {
+      requested = defaultRoute;
+      activeRoute = routeRegistry[requested];
+      reason = "preview-only";
+    }
+    if (activeRoute && activeRoute.liveOnly && state.config.dataMode !== "live") {
+      requested = defaultRoute;
+      activeRoute = routeRegistry[requested];
+      reason = "live-only";
+    }
+    if (!activeRoute) return { id: "auth.oidc", reason: "invalid-config" };
+    if (!isPublic(requested) && !state.session.authenticated) {
+      state.session.intendedRoute = requested;
+      return { id: "auth.oidc", reason: "unauthorized" };
+    }
+    if (requested === "auth.oidc" && signedInWithAccess()) {
+      return { id: defaultRoute, reason: "signed-in" };
+    }
+    if (requested === "care" && !isModuleEnabled("care")) {
+      return { id: "care", reason: "disabled" };
+    }
+    if (!activeRoute.public && !privateRouteOpen(activeRoute)) {
+      return { id: defaultRoute, reason: "disabled" };
+    }
+    if (requested === "care") {
+      return { id: "care", reason: careAccessReason() };
+    }
+    return { id: requested, reason };
+  }
+  function signedInWithAccess() {
+    return customerPortalAccessRequired() && state.session.authenticated === true && state.account === "ready";
+  }
+  function publicEntryDestination() {
+    if (!landingEntryOpen(state.config) || !state.session.intendedRoute) return "";
+    if (!state.session.authenticated) return state.oidc === "ready-signed-out" ? landingEntryUrl(state.config) : "";
+    return ACCOUNT_NO_ACCESS_STATES.includes(state.account) ? landingEntryUrl(state.config, LANDING_ENTRY_REASONS.noAccess) : "";
+  }
+  function reachableDefaultRoute() {
+    if (isRouteReachable(state.config.defaultRoute)) return state.config.defaultRoute;
+    if (isRouteReachable("orders.list")) return "orders.list";
+    var enabledRoute = Object.values(routeRegistry).find(function(route) {
+      return !route.public && privateRouteOpen(route);
+    });
+    return enabledRoute ? enabledRoute.id : "auth.oidc";
+  }
+  function isRouteReachable(routeId) {
+    var route = routeRegistry[routeId];
+    if (!route || route.parityOnly && state.config.dataMode === "live" || route.liveOnly && state.config.dataMode !== "live") return false;
+    return !!(route.public || privateRouteOpen(route));
+  }
+  function privateRouteOpen(route) {
+    if (!isModuleEnabled(route.module)) return false;
+    return !route.ownedByProfile || activeProfile().modules.includes(route.module);
+  }
+  function routeFromLocation() {
+    if (state.config.routerMode === "memory") return state.route;
+    var raw;
+    if (state.config.routerMode === "history") {
+      raw = window.location.pathname + window.location.search;
+    } else {
+      raw = window.location.hash.replace(/^#/, "");
+      if (!raw) return state.config.defaultRoute || state.route;
+      if (raw.charAt(0) !== "/") {
+        var routeId = raw.split("?", 1)[0];
+        setRouteQuery(routeId, raw);
+        return routeId;
+      }
+    }
+    var match = matchRoutePath(raw);
+    if (!match) {
+      clearRouteQuery();
+      return "__unknown__";
+    }
+    setRouteQuery(match.id, raw);
+    applyRouteParams(match);
+    captureRequestLink(match.id, raw);
+    captureSetPassword(match.id, raw);
+    return match.id;
+  }
+  function writeRouteToLocation(routeId, replace) {
+    scopeRouteQuery(routeId);
+    if (state.config.routerMode === "memory") return;
+    var path = routePath(routeId, paramsForRoute(routeId));
+    var query = state.routeQuery || "";
+    var record = replace ? "replaceState" : "pushState";
+    if (state.config.routerMode === "history") {
+      if (window.location.pathname + window.location.search !== path + query) window.history[record]({}, "", path + query);
+      return;
+    }
+    var nextHash = "#" + path + query;
+    if (window.location.hash !== nextHash) window.history[record]({}, "", nextHash);
+  }
+  function initRouter(onRouteChange) {
+    var applyLocation = function() {
+      var requested = routeFromLocation();
+      var resolved = resolveRoute(requested);
+      state.route = resolved.id;
+      if (resolved.id !== requested) writeRouteToLocation(resolved.id, true);
+      onRouteChange();
+    };
+    if (state.config.routerMode === "history") {
+      window.addEventListener("popstate", applyLocation);
+    } else if (state.config.routerMode === "hash") {
+      window.addEventListener("hashchange", applyLocation);
+    }
+    var initial = resolveRoute(routeFromLocation());
+    state.route = initial.id;
+    writeRouteToLocation(initial.id, true);
+  }
+  function renderRoute() {
+    var resolved = resolveRoute(state.route);
+    if (resolved.id !== state.route) state.route = resolved.id;
+    if (resolved.id === "request.confirm" || resolved.id === "request.cancel") return RequestLink();
+    if (resolved.id === "auth.setPassword") return SetPassword();
+    if (state.view === "fallback") return RouteFallback("fallback");
+    switch (resolved.id) {
+      case "overview":
+        return Overview();
+      case "appointments":
+        return state.config.dataMode === "live" ? LiveVisits() : Appointments();
+      case "visit.detail":
+        return state.config.dataMode === "live" ? LiveVisitDetail() : VisitDetail();
+      case "invoices":
+        return Invoices();
+      case "invoice.detail":
+        return InvoiceDetail();
+      case "property.detail":
+        return PropertyDetail();
+      case "orders.list":
+        return false ? spaCapability() === "target-appointments" ? SpaAppointments() : SpaOrders() : Cabinet();
+      case "order.detail":
+        return OrderDetail();
+      case "appointment.detail":
+        return false ? SpaAppointmentDetail() : ComingSoon("appointment.detail", "a later wave");
+      case "services":
+        return false ? SpaCatalog() : Services();
+      case "pricing":
+        return false ? SpaCatalog() : Pricing();
+      case "products":
+        return false ? SpaShop() : Products();
+      case "product.detail":
+        return false ? SpaProductDetail() : ComingSoon("product.detail", "a later wave");
+      case "checkout":
+        return false ? SpaCheckout() : Checkout();
+      case "account":
+        return false ? SpaAccount() : ComingSoon("account", "a later wave");
+      case "purchases.list":
+        return false ? SpaPurchases() : ComingSoon("purchases.list", "a later wave");
+      case "purchase.detail":
+        return false ? SpaPurchaseDetail() : ComingSoon("purchase.detail", "a later wave");
+      case "plan":
+        return false ? SpaPlan() : ComingSoon("plan", "a later wave");
+      case "cart":
+        return false ? SpaCart() : Checkout();
+      case "proposals.list":
+        return ProposalsList();
+      case "contracts.list":
+        return AgreementsList();
+      case "proposal.detail":
+        return ProposalDetail();
+      case "proposal.approve":
+        return QuoteApproval();
+      case "agreement.detail":
+        return AgreementDetail();
+      case "quote.new":
+        return QuoteRequest();
+      case "profile":
+        return false ? SpaProfile() : customerAccountProfile(state.config) ? AccountProfile() : Profile();
+      case "activity":
+        return Activity();
+      case "calendar":
+        return Calendar();
+      case "support":
+        return supportTicketsOpen(state.config) ? LiveSupport() : Support();
+      case "support.new":
+        return supportTicketsOpen(state.config) ? SupportTicketNew() : RouteFallback("disabled");
+      case "support.ticket":
+        return supportTicketsOpen(state.config) ? SupportTicket() : RouteFallback("disabled");
+      case "auth.phone":
+        return Auth();
+      case "auth.code":
+        return Auth();
+      case "auth.oidc":
+        return AuthOidc();
+      case "care":
+        return Care();
+      case "seo.landing":
+        return false ? SeoLanding() : RouteFallback(resolved.reason);
+      default:
+        return RouteFallback(resolved.reason);
+    }
+  }
+  function RouteFallback(reason) {
+    return h("section", { "class": "page", "data-route": state.route, "data-visual-id": "route-fallback", "data-state": reason || "error" }, [
+      EmptyState({
+        glyph: "!",
+        title: "Route unavailable",
+        desc: "This route is not enabled for the current portal profile.",
+        action: { variant: "btn--ghost", label: "Back to home", action: "nav.go", id: "orders.list" }
+      })
+    ]);
+  }
+  function careAccessReason() {
+    var access = state.access && state.access.care;
+    var status = access && access.status;
+    if (status === "granted") return "granted";
+    if (status === "checking") return "loading";
+    if (status === "error") return "error";
+    return "unauthorized";
+  }
+  function applyRouteParams(match) {
+    if (match.id === "order.detail" && match.params.id) state.currentOrderId = match.params.id;
+    if (match.id === "proposal.detail" && match.params.id) state.currentSiteId = match.params.id;
+    if (match.id === "proposal.approve" && match.params.id) {
+      state.currentSiteId = match.params.id;
+      state.approveQuoteId = Number(match.params.quote) || null;
+    }
+    if (match.id === "agreement.detail" && match.params.id) state.agreementId = match.params.id;
+    if (match.id === "visit.detail" && match.params.id) state.visitId = match.params.id;
+    if (match.id === "support.ticket" && match.params.id) state.ticketId = match.params.id;
+    if (match.id === "invoice.detail" && match.params.id) state.invoiceId = match.params.id;
+    if (match.id === "property.detail" && match.params.id) state.propertyId = match.params.id;
+    if (match.id === "purchase.detail" && match.params.id) state.spaCurrentPurchase = match.params.id;
+    if (match.id === "appointment.detail" && match.params.id) state.spaCurrentAppointment = match.params.id;
+    if (match.id === "product.detail" && match.params.id) state.spaCurrentProduct = match.params.id;
+  }
+  function paramsForRoute(routeId) {
+    if (routeId === "order.detail") {
+      if (!state.currentOrderId) state.currentOrderId = state.orders[0] && state.orders[0].id;
+      return { id: state.currentOrderId };
+    }
+    if (routeId === "proposal.detail") return { id: state.currentSiteId };
+    if (routeId === "proposal.approve") return { id: state.currentSiteId, quote: state.approveQuoteId };
+    if (routeId === "agreement.detail") return { id: state.agreementId };
+    if (routeId === "visit.detail") return { id: state.visitId };
+    if (routeId === "support.ticket") return { id: state.ticketId };
+    if (routeId === "invoice.detail") return { id: state.invoiceId };
+    if (routeId === "property.detail") return { id: state.propertyId };
+    if (routeId === "purchase.detail") return { id: state.spaCurrentPurchase };
+    if (routeId === "appointment.detail") return { id: state.spaCurrentAppointment };
+    if (routeId === "product.detail") return { id: state.spaCurrentProduct };
+    return {};
+  }
+  function queryFrom(value) {
+    var index = String(value || "").indexOf("?");
+    return index === -1 ? "" : String(value).slice(index);
+  }
+  function routeFamily(routeId) {
+    if (routeId === "orders.list" || routeId === "order.detail" || routeId === "appointment.detail") return "appointments";
+    if (routeId === "appointments" || routeId === "visit.detail" || routeId === "property.detail") return "appointments-timeline";
+    if (routeId === "proposals.list" || routeId === "contracts.list" || routeId === "proposal.detail" || routeId === "proposal.approve" || routeId === "agreement.detail" || routeId === "quote.new") return "proposals";
+    if (routeId === "purchases.list" || routeId === "purchase.detail") return "purchases";
+    if (routeId === "products" || routeId === "product.detail") return "products";
+    return null;
+  }
+  function setRouteQuery(routeId, value) {
+    var query = queryFrom(value);
+    state.routeQuery = query;
+    state.routeQueryOwner = query ? routeFamily(routeId) : null;
+  }
+  function scopeRouteQuery(routeId) {
+    var family = routeFamily(routeId);
+    if (!family || state.routeQueryOwner !== family) clearRouteQuery();
+  }
+  function clearRouteQuery() {
+    state.routeQuery = "";
+    state.routeQueryOwner = null;
+  }
+
+  // app-templates/customer-portal/runtime/src/actions.js
+  var ACTIONS = {
+    "nav.go": function(id) {
+      go(id);
+    },
+    "nav.landing": function() {
+      return externalOnly("landingUrl");
+    },
+    "nav.services": function() {
+      go("services");
+    },
+    "nav.pricing": function() {
+      go("pricing");
+    },
+    "nav.products": function() {
+      go("products");
+    },
+    "auth.gotoSignin": function() {
+      state.authError = null;
+      state.code = "";
+      go("auth.oidc");
+    },
+    "auth.oidcSignIn": function() {
+      if (state.config.dataMode !== "live") return failCommand("auth.oidcSignIn");
+      state.oidc = "redirecting";
+      render();
+      return startCoreOidcSignIn(state.config).catch(function(error2) {
+        state.oidc = "unavailable";
+        state.commandErrors["auth.oidcSignIn"] = error2 && error2.message || "Sign-in failed";
+        render();
+        return false;
+      });
+    },
+    "auth.retrySession": function() {
+      return retryRuntimeLoad();
+    },
+    "auth.sendCode": function() {
+      validatePhone();
+    },
+    "auth.verifyCode": function() {
+      validateCode();
+    },
+    "auth.back": function() {
+      state.authError = null;
+      go("auth.phone");
+    },
+    "auth.resend": function() {
+      failCommand("auth.resend");
+    },
+    "auth.apple": function() {
+      failCommand("auth.apple");
+    },
+    "order.open": function(id) {
+      openOrder(id);
+    },
+    "order.back": function() {
+      go("orders.list");
+    },
+    "order.cancel": function(id) {
+      if (false) return spaApptCancel(id);
+      return runCommand("order.cancel", id, function() {
+        cancelOrder(id);
+      });
+    },
+    "order.reschedule": function(id) {
+      if (false) return openSpaFlow({ entry: "reschedule", rescheduleOf: id });
+      openDrawer("booking");
+    },
+    "order.downloadInvoice": function() {
+      failCommand("order.downloadInvoice");
+    },
+    "order.bookAgain": function(id) {
+      if (false) return openSpaFlow({ entry: "book-again", fromAppt: id });
+      openDrawer("booking");
+    },
+    "order.filter": function(id) {
+      setState({ filter: id });
+    },
+    "compliance.unlock": function() {
+      toast("Compliance Reports is a Pro add-on \u2014 ask your account manager");
+    },
+    "booking.open": function(id) {
+      if (false) return openSpaFlow(id ? { entry: "service", serviceCode: id } : { entry: "empty" });
+      openDrawer("booking");
+    },
+    "booking.close": function() {
+      state.spaFlow = null;
+      state.spaBookAck = false;
+      state.spaNote = "";
+      closeDrawer();
+    },
+    ...false ? {
+      "booking.selectService": function(id) {
+        var flow = state.spaFlow;
+        if (!flow) return;
+        flow.serviceCode = id;
+        flow.specialistRef = null;
+        flow.slotRef = null;
+        flow.visitMode = null;
+        flow.locationRef = null;
+        flow.addOns = [];
+        flow.held = false;
+        spaFlowAfterService(flow);
+        render();
+      },
+      "booking.selectVisitMode": function(id) {
+        var flow = state.spaFlow;
+        if (!flow) return;
+        flow.visitMode = id;
+        flow.locationRef = null;
+        spaInvalidateAfterOptions(flow, "visit-mode");
+        render();
+      },
+      "booking.selectLocation": function(id) {
+        var flow = state.spaFlow;
+        if (!flow) return;
+        flow.locationRef = id;
+        spaInvalidateAfterOptions(flow, "location");
+        render();
+      },
+      "booking.reloadLocations": function() {
+        return spaReloadLocations();
+      },
+      "booking.toggleAddon": function(id) {
+        return spaToggleAddon(id);
+      },
+      "booking.changeNotes": function(value) {
+        state.spaNote = String(value || "");
+      },
+      "booking.next": function() {
+        return spaFlowNext();
+      },
+      "booking.selectSpecialist": function(id) {
+        var flow = state.spaFlow;
+        if (!flow) return;
+        flow.specialistRef = id === "any" ? null : id;
+        flow.slotRef = null;
+        flow.held = false;
+        var booking = spaBookingModel(flow.serviceCode, flow.specialistRef);
+        flow.dayKey = (booking.days[0] || {}).key || null;
+        flow.step = "slots";
+        render();
+      },
+      "booking.selectSlot": function(id) {
+        var flow = state.spaFlow;
+        if (!flow) return;
+        if (String(id).indexOf("day:") === 0) {
+          flow.dayKey = String(id).slice(4);
+          flow.slotRef = null;
+        } else {
+          flow.slotRef = id;
+          var day = spaBookingModel().days.find(function(item) {
+            return (item.slots || []).some(function(slot) {
+              return slot.ref === id;
+            });
+          });
+          if (day) flow.dayKey = day.key;
+        }
+        render();
+      },
+      "booking.hold": function(id) {
+        return spaHoldSlot(id);
+      },
+      "booking.retry": function(id) {
+        var flow = state.spaFlow;
+        if (!flow) return;
+        if (id === "hold") {
+          clearSpaCommand("booking.hold:" + flow.slotRef);
+          return spaHoldSlot(flow.slotRef);
+        }
+        clearSpaCommand("booking.confirm:" + spaBookingModel().ref);
+        return spaBookingConfirm();
+      },
+      "booking.back": function() {
+        return spaFlowBack();
+      },
+      "booking.ackPolicy": function() {
+        setState({ spaBookAck: !state.spaBookAck });
+      }
+    } : null,
+    "booking.confirm": function() {
+      if (false) return spaBookingConfirm();
+      closeDrawer();
+      failCommand("booking.confirm");
+    },
+    ...false ? {
+      "appointment.open": function(id) {
+        state.spaCurrentAppointment = id;
+        state.view = "ready";
+        go("appointment.detail");
+      },
+      "appointment.openPurchase": function(id) {
+        ACTIONS["purchase.open"](id);
+      },
+      "appointment.reschedule": function(id) {
+        return openSpaFlow({ entry: "reschedule", rescheduleOf: id });
+      },
+      "appointment.cancel": function(id) {
+        return spaApptCancel(id);
+      },
+      "appointment.bookAgain": function(id) {
+        return openSpaFlow({ entry: "book-again", fromAppt: id });
+      },
+      "product.open": function(id) {
+        state.spaCurrentProduct = id;
+        state.spaGallery = 0;
+        state.view = "ready";
+        go("product.detail");
+      },
+      "product.gallerySelect": function(id) {
+        setState({ spaGallery: Math.max(0, Number(id) || 0) });
+      }
+    } : null,
+    "proposal.review": function() {
+      go("proposals.list");
+    },
+    "proposal.open": function(id) {
+      openProposal(id);
+    },
+    "proposal.selectPlan": function(id) {
+      runCommand("proposal.selectPlan", id, function() {
+        selectPlan(id);
+      });
+    },
+    "proposal.approve": function() {
+      runCommand("proposal.approve", state.currentSiteId, function() {
+        decideSite("approved");
+      });
+    },
+    "proposal.requestRevision": function() {
+      runCommand("proposal.requestRevision", state.currentSiteId, function() {
+        decideSite("revision");
+      });
+    },
+    "proposal.decline": function() {
+      runCommand("proposal.decline", state.currentSiteId, function() {
+        decideSite("declined");
+      });
+    },
+    "agreement.open": function(id) {
+      openAgreement(id);
+    },
+    "agreement.review": function() {
+      go(contractsHomeRoute());
+    },
+    "quote.approve": function(id) {
+      return openQuoteApproval(id);
+    },
+    "quote.sendApproval": function(id) {
+      return sendQuoteApproval(id);
+    },
+    "quote.backToQuote": function() {
+      if (contractCommands.busy()) return false;
+      go("proposal.detail");
+      return true;
+    },
+    "quote.decline": function(id) {
+      return openContractConfirm("decline", id);
+    },
+    "quote.confirm": function(id) {
+      return confirmContractCommand("quote", id);
+    },
+    "quote.cancel": function() {
+      return cancelContractConfirm();
+    },
+    "quote.requestChanges": function(id) {
+      if (!openChangeRequest(id)) return false;
+      focusElement("[data-quote-changes]");
+      return true;
+    },
+    "quote.sendChanges": function(id) {
+      return sendChangeRequest(id);
+    },
+    "quoteRequest.toggleProperty": function(id) {
+      if (!toggleQuoteProperty(id)) return false;
+      render();
+      focusElement('[data-action="quoteRequest.toggleProperty"][data-id="' + id + '"]');
+      return true;
+    },
+    "quoteRequest.addAddress": function() {
+      return addTypedQuoteAddress({ onChange: render }).then(function(added) {
+        render();
+        focusElement("#quote-request-address");
+        return added;
+      });
+    },
+    "quoteRequest.removeAddress": function(id) {
+      if (!removeQuoteAddress(id)) return false;
+      render();
+      focusElement("#quote-request-address");
+      return true;
+    },
+    "quoteRequest.refresh": function() {
+      render();
+      focusElement("#quote-request-address");
+      return true;
+    },
+    "quoteRequest.submit": function() {
+      return sendQuoteRequest();
+    },
+    "quoteRequest.checkAgain": function() {
+      return checkQuoteRequestAgain({ onChange: function() {
+        render();
+      }, reload: reloadRuntimeModule });
+    },
+    "quoteRequest.retry": function() {
+      state.quoteRequestSchema = null;
+      render();
+      return true;
+    },
+    "setPassword.submit": function() {
+      return submitSetPassword({
+        onChange: function(outcome) {
+          render();
+          if (outcome === "invalid") focusElement("#set-password-new[aria-invalid], #set-password-confirm[aria-invalid]");
+          if (outcome === "done" || outcome === "expired") focusElement('[data-visual-id="set-password-sign-in"]');
+        }
+      });
+    },
+    "requestLink.send": function() {
+      if (!sendRequestLink({ onChange: render })) return false;
+      render();
+      return true;
+    },
+    "requestLink.check": function() {
+      if (!checkRequestLink({ onChange: render })) return false;
+      render();
+      return true;
+    },
+    "agreement.approve": function(id) {
+      return openContractConfirm("agreement", id);
+    },
+    "agreement.billingSame": function() {
+      return toggleAgreementBillingSame();
+    },
+    "agreement.confirm": function(id) {
+      return confirmContractCommand("agreement", id);
+    },
+    "agreement.cancel": function() {
+      return cancelContractConfirm();
+    },
+    "agreement.toggleTerms": function() {
+      state.agreementTermsOpen = !state.agreementTermsOpen;
+      render();
+    },
+    "contracts.refresh": function() {
+      return refreshContracts();
+    },
+    "weather.confirm": function(id) {
+      runCommand("weather.confirm", id, function() {
+        confirmWeather(id, "confirmed");
+      });
+    },
+    "weather.decline": function(id) {
+      runCommand("weather.decline", id, function() {
+        confirmWeather(id, "declined");
+      });
+    },
+    "membership.activate": function() {
+      failCommand("membership.activate");
+    },
+    "support.newTicket": function(id) {
+      return openSupportTicket(id);
+    },
+    "support.chooseProperty": function(id) {
+      if (!changeSupportTicketDraft("propertyId", id)) return false;
+      render();
+      focusElement("#support-ticket-property-id");
+      return true;
+    },
+    "support.chooseVisit": function(id) {
+      if (!changeSupportTicketDraft("visitId", id)) return false;
+      render();
+      focusElement("#support-ticket-visit-id");
+      return true;
+    },
+    "support.chooseReason": function(id) {
+      if (!changeSupportTicketDraft("reason", id)) return false;
+      render();
+      focusElement("#support-ticket-contact-reason");
+      return true;
+    },
+    "support.submitTicket": function() {
+      return sendSupportTicket();
+    },
+    "support.checkTicket": function() {
+      return checkSupportTicketAgain({ onChange: function() {
+        render();
+      }, reload: reloadRuntimeModule });
+    },
+    "support.openTicket": function(id) {
+      if (!ticketBackendId(id)) return false;
+      state.ticketId = id;
+      go("support.ticket");
+      return true;
+    },
+    "support.refreshTicket": function() {
+      return refreshTicketDetail(ticketBackendId(state.ticketId), function() {
+        render();
+      });
+    },
+    "support.ticketAction": function(code) {
+      return requestTicketAction(ticketBackendId(state.ticketId), code, ticketActionChanged);
+    },
+    "support.confirmTicketAction": function() {
+      return confirmTicketAction(ticketBackendId(state.ticketId), ticketActionChanged);
+    },
+    "support.cancelTicketAction": function() {
+      if (!cancelTicketAction(ticketBackendId(state.ticketId))) return false;
+      render();
+      return true;
+    },
+    "support.sendComment": function() {
+      return sendTicketComment();
+    },
+    "support.checkComment": function() {
+      return checkTicketCommentAgain(ticketBackendId(state.ticketId), { onChange: function() {
+        render();
+      } });
+    },
+    "support.removeAttachment": function(id) {
+      return dropAttachment(id);
+    },
+    "support.openFile": function(id) {
+      return openTicketFile(id).then(function(opened) {
+        if (!opened) toast("The file couldn\u2019t be opened. Try again.");
+        return opened;
+      });
+    },
+    "support.open": function() {
+      var url = configuredExternalUrl(state.config, "supportUrl");
+      if (url) {
+        globalThis.location.assign(url);
+        return;
+      }
+      if (isSpa()) return setState({ spaSupport: true, accountMenu: false, mobileNav: false });
+      go("support");
+    },
+    "support.sendMessage": function() {
+      runCommand("support.sendMessage", null, sendChat);
+    },
+    "support.quickReply": function(id) {
+      runCommand("support.quickReply", id, function() {
+        pushChat(id);
+      });
+    },
+    "support.helpTopic": function(id) {
+      go("support");
+      runCommand("support.helpTopic", id, function() {
+        pushChat(id);
+      });
+    },
+    "support.call": function() {
+      if (isSpa()) return setState({ spaSupport: true });
+      failCommand("support.call");
+    },
+    "support.email": function() {
+      if (isSpa()) return setState({ spaSupport: true });
+      failCommand("support.email");
+    },
+    "support.dismiss": function() {
+      setState({ spaSupport: false });
+    },
+    "care.selectUnit": function(id, el) {
+      return selectCareUnit(id, el);
+    },
+    "care.download": function(id, el) {
+      return downloadCareDocument(id, el);
+    },
+    "care.requestRetreat": function(id, el) {
+      return requestCareRetreat(id, el);
+    },
+    "care.selectSpecialist": function(id, el) {
+      return selectCareSpecialist(id, el);
+    },
+    "care.completeTask": function(id, el) {
+      return toggleCareTask(id, el);
+    },
+    "care.contactProvider": function(id, el) {
+      return runUnavailableCareCommand("care.contactProvider", id, el);
+    },
+    "care.openSecureDoc": function(id, el) {
+      return runUnavailableCareCommand("care.openSecureDoc", id, el);
+    },
+    ...false ? {
+      "seo.cta.book": function(id, el) {
+        validateSeoLink(el);
+      },
+      "seo.cta.quote": function(id, el) {
+        validateSeoLink(el);
+      },
+      "seo.cta.call": function(id, el) {
+        validateSeoLink(el);
+      },
+      "seo.cta.services": function(id, el, event) {
+        navigateSeoServices(el, event);
+      },
+      "seo.service.select": function(id) {
+        selectSeoService(id, render);
+      },
+      "seo.faq.toggle": function(id, el, event) {
+        if (event) event.preventDefault();
+        toggleSeoFaq(id, render);
+      }
+    } : null,
+    "cart.open": function() {
+      go(false ? "cart" : "checkout");
+    },
+    "service.request": function() {
+      openDrawer("booking");
+    },
+    "service.requestForm": function() {
+      return openQuoteRequest();
+    },
+    "service.requestExtra": function(id) {
+      runCommand("service.requestExtra", id, function() {
+        requestExtraService(id);
+      });
+    },
+    "service.reportIssue": function() {
+      failCommand("service.reportIssue");
+    },
+    "access.confirm": function(id) {
+      runCommand("access.confirm", id, function() {
+        confirmAccess(id);
+      });
+    },
+    "access.update": function() {
+      failCommand("access.update");
+    },
+    "cart.addItem": function(id) {
+      if (false) {
+        if (spaCurrentApiDemoOpen()) return spaLiveCartAdd(id);
+        return runSpaCommand("cart.addItem:" + id, function() {
+          spaAddLine(id);
+        });
+      }
+      runCommand("cart.addItem", id, function() {
+        addToCart(id);
+      });
+    },
+    "cart.removeItem": function(id) {
+      if (false) {
+        if (spaCurrentApiDemoOpen()) return spaLiveCartRemove(id);
+        return runSpaCommand("cart.removeItem:" + id, function() {
+          spaSetLines(spaLines().filter(function(line) {
+            return line.ref !== id;
+          }));
+        });
+      }
+      runCommand("cart.removeItem", id, function() {
+        removeCartItem(id);
+      });
+    },
+    ...false ? {
+      "cart.changeQuantity": function(id) {
+        return spaChangeQuantity(id);
+      }
+    } : null,
+    "cart.inc": function(id) {
+      runCommand("cart.inc", id, function() {
+        changeQty(id, 1);
+      });
+    },
+    "cart.dec": function(id) {
+      runCommand("cart.dec", id, function() {
+        changeQty(id, -1);
+      });
+    },
+    "checkout.placeOrder": function() {
+      runCommand("checkout.placeOrder", null, placeFixtureOrder);
+    },
+    "checkout.pickAddress": function(id) {
+      runCommand("checkout.pickAddress", id, function() {
+        selectAddress(id);
+      });
+    },
+    "checkout.pickPayment": function(id) {
+      runCommand("checkout.pickPayment", id, function() {
+        selectPayment(id);
+      });
+    },
+    "account.open": function() {
+      go("account");
+    },
+    "account.openPurchases": function() {
+      state.spaPurchFilter = "all";
+      go("purchases.list");
+    },
+    "account.openPlan": function() {
+      go("plan");
+    },
+    "account.openProfile": function() {
+      go("profile");
+    },
+    "account.menu": function() {
+      setState({ accountMenu: !state.accountMenu, mobileNav: false });
+    },
+    ...false ? {
+      "purchases.filter": function(id) {
+        setState({ spaPurchFilter: id });
+      },
+      "purchases.more": function() {
+        spaLoadMore();
+      },
+      "purchase.open": function(id) {
+        state.spaCurrentPurchase = id;
+        state.view = "ready";
+        go("purchase.detail");
+      },
+      "purchase.openAppointment": function() {
+        go("orders.list");
+      },
+      "purchase.cancelRequest": function(id) {
+        return runSpaCommand("purchase.cancelRequest:" + id, function() {
+          state.spaCancelReqs = Object.assign({}, state.spaCancelReqs, { [id]: "accepted-for-review" });
+        });
+      },
+      "purchase.returnRequest": function(id) {
+        return runSpaCommand("purchase.returnRequest:" + id, function() {
+          state.spaReturns = Object.assign({}, state.spaReturns, { [id]: "accepted-for-review" });
+        });
+      },
+      "purchase.buyAgain": function(id) {
+        return spaBuyAgain(id);
+      },
+      "plan.bookWithCredit": function(id) {
+        if (isSpa() && state.capability === "target-appointments") return openSpaFlow({ entry: "credit", planRef: id });
+        openDrawer("booking");
+      },
+      "plan.purchase": function(id) {
+        if (!spaPlanSellOpen() || state.spaOfferDemo !== "sellable") return false;
+        state.spaPlanOffer = id;
+        return spaCheckoutStart("plan");
+      },
+      "plan.cancelRenewal": function(id) {
+        return runSpaCommand("plan.cancelRenewal:" + id, function() {
+          state.spaPlanCancelled = Object.assign({}, state.spaPlanCancelled, { [id]: true });
+        });
+      },
+      "shop.pickVariant": function(id) {
+        var parts = String(id || "").split("|");
+        state.spaVariantPick = Object.assign({}, state.spaVariantPick, { [parts[0]]: parts[1] });
+        render();
+      },
+      "checkout.start": function(id) {
+        return spaCheckoutStart(id);
+      },
+      "checkout.selectFulfillment": function() {
+        render();
+      },
+      "checkout.ackPolicy": function() {
+        setState({ spaPolicyAck: !state.spaPolicyAck });
+      },
+      "checkout.confirm": function() {
+        return spaConfirmCheckout();
+      },
+      "checkout.retryConfirm": function() {
+        return spaConfirmCheckout();
+      }
+    } : null,
+    "products.filter": function(id) {
+      setState({ prodCat: id });
+    },
+    "activity.open": function() {
+      go("activity");
+    },
+    "activity.markRead": function() {
+      runCommand("activity.markRead", null, function() {
+        state.activityReadAll = true;
+        toast("Activity marked read in fixture state");
+      });
+    },
+    "activity.filter": function(id) {
+      setState({ feedFilter: id });
+    },
+    "activity.act": function(id) {
+      feedAction(id);
+    },
+    "profile.open": function() {
+      go("profile");
+    },
+    "profile.filter": function(id) {
+      setState({ profileFilter: id });
+    },
+    "profile.setDefaultAddress": function(id) {
+      runCommand("profile.setDefaultAddress", id, function() {
+        selectAddress(id);
+      });
+    },
+    "profile.setDefaultPayment": function(id) {
+      runCommand("profile.setDefaultPayment", id, function() {
+        selectPayment(id);
+      });
+    },
+    "profile.addAddress": function() {
+      failCommand("profile.addAddress");
+    },
+    "profile.addCard": function() {
+      failCommand("profile.addCard");
+    },
+    "profile.updateAddress": function() {
+      failCommand("profile.updateAddress");
+    },
+    "profile.togglePref": function(id) {
+      runCommand("profile.togglePref", id, function() {
+        togglePref(id);
+      });
+    },
+    ...false ? {
+      "profile.edit": function() {
+        var value = spaProfileValues();
+        state.spaProfileDraft = { phone: value.phone, email: value.email, prefs: Object.assign({}, value.prefs) };
+        state.spaProfileErrors = null;
+        render();
+      },
+      "profile.changeField": function(id) {
+        return spaProfileChange(id);
+      },
+      "profile.save": function() {
+        return spaProfileSave();
+      },
+      "profile.reload": function() {
+        clearSpaCommand("profile.save:profile");
+        state.spaProfileDraft = null;
+        state.spaProfileErrors = null;
+        if (state.config.dataMode === "live") return reloadRuntimeModule("profile").then(function() {
+          toast("Profile reloaded from Core");
+        });
+        render();
+        toast("Profile reloaded \u2014 showing the details on file");
+      }
+    } : null,
+    "profile.managePlan": function() {
+      go("pricing");
+    },
+    "profileEdit.start": function(id) {
+      if (!startProfileEdit(id)) return false;
+      render();
+      focusProfileInput(false);
+      return true;
+    },
+    "profileEdit.cancel": function() {
+      if (!cancelProfileEdit()) return false;
+      render();
+      return true;
+    },
+    "profileEdit.save": function() {
+      return saveProfileEdit({ reload: reloadRuntimeModule, onChange: function(phase) {
+        render();
+        if (phase === "invalid" || phase === "refused") focusProfileInput(true);
+      } });
+    },
+    "overview.selectProperty": function(id) {
+      state.ovProperty = state.ovProperty === id ? null : id;
+      render();
+    },
+    "overview.closeProperty": function() {
+      state.ovProperty = null;
+      render();
+    },
+    "overview.scrubWeather": function(id) {
+      state.ovWeatherIndex = Number(id);
+      render();
+    },
+    "overview.retryWeather": function() {
+      return retryForecast();
+    },
+    "overview.openProperty": function(id) {
+      if (id) state.propertyId = id;
+      go("property.detail");
+    },
+    "overview.openProperties": function() {
+      go("appointments");
+    },
+    "overview.openAppointments": function() {
+      go("appointments");
+    },
+    "appointments.filterDay": function(id) {
+      var day = Number(id);
+      state.apptDay = id === null || id === "" || id === void 0 || !Number.isInteger(day) ? null : day;
+      render();
+    },
+    "appointments.openVisit": function(id) {
+      state.visitId = id;
+      go("visit.detail");
+    },
+    [VISIT_PHOTO_ACTION]: function(id, el, event) {
+      return openVisitPhoto(el, event);
+    },
+    "invoice.open": function(id) {
+      if (id) state.invoiceId = id;
+      go("invoice.detail");
+    },
+    "invoice.print": function() {
+      if (typeof globalThis.print === "function") globalThis.print();
+    },
+    "invoice.pay": function(id) {
+      return payInvoice(id, { reload: reloadRuntimeModule, render });
+    },
+    "appointments.openProperty": function(id) {
+      state.propertyId = id;
+      go("property.detail");
+    },
+    "property.showOnMap": function(id) {
+      if (id) state.ovProperty = id;
+      go("overview");
+    },
+    "appointments.sortResource": function() {
+      state.apptSort = state.apptSort === "desc" ? "asc" : "desc";
+      render();
+    },
+    "overview.openCalendar": function() {
+      go("calendar");
+    },
+    "overview.openInvoices": function() {
+      go("activity");
+    },
+    "overview.openInvoice": function() {
+      go("activity");
+    },
+    "overview.openContracts": function() {
+      go(contractsHomeRoute());
+    },
+    "overview.openOrders": function() {
+      go("proposals.list");
+    },
+    "overview.openSupport": function() {
+      go("support");
+    },
+    "overview.newRequest": function() {
+      if (!openSupportTicket("")) go("support");
+    },
+    "auth.signOut": function() {
+      if (state.config.dataMode === "live") {
+        state.oidc = "signing-out";
+        render();
+        return startCoreOidcSignOut(state.config).catch(function(error2) {
+          state.oidc = "unavailable";
+          state.commandErrors["auth.signOut"] = error2 && error2.message || "Sign-out failed";
+          render();
+          return false;
+        });
+      }
+      state.session.authenticated = false;
+      state.account = "session-expired";
+      state.oidc = "ready-signed-out";
+      state.phone = "";
+      state.code = "";
+      invalidateCareRuntime();
+      go("auth.oidc");
+      toast("Signed out");
+    },
+    "calendar.open": function() {
+      go("calendar");
+    },
+    "calendar.prev": function() {
+      calShift(-1);
+    },
+    "calendar.next": function() {
+      calShift(1);
+    },
+    "ui.retry": function(id) {
+      return retrySpaOrRuntime(id);
+    },
+    "ui.toggleMode": function() {
+      state.userModeOverridden = true;
+      setState({ mode: state.mode === "Dark" ? "Light" : "Dark" });
+    },
+    "ui.toggleMobileNav": function() {
+      setState({ mobileNav: !state.mobileNav, accountMenu: false });
+    },
+    "theme.pick": function(id) {
+      return pickTheme(id);
+    }
+  };
+  function retryForecast() {
+    if (state.config.dataMode !== "live" || state.liveWeatherState === "loading") return false;
+    return reloadRuntimeModule("overview").catch(function() {
+      return null;
+    });
+  }
+  function openQuoteRequest() {
+    if (!quoteRequestOpen(state.config) || !isRouteReachable("quote.new")) return openRequestForm();
+    if (state.quoteRequest && state.quoteRequest.phase === "accepted") resetQuoteRequest();
+    go("quote.new");
+    return true;
+  }
+  function openSupportTicket(target) {
+    if (!supportTicketsOpen(state.config) || !isRouteReachable("support.new")) return false;
+    var ids = String(target || "").split(":");
+    if (!startSupportTicket(ids[0], ids[1])) return false;
+    go("support.new");
+    return true;
+  }
+  function ensureSupportTicketSchema() {
+    if (!state.supportTicketSchema) loadSupportTicketSchema({ onChange: function() {
+      render();
+    } });
+    return state.supportTicketSchema;
+  }
+  function sendSupportTicket() {
+    return submitSupportTicket({
+      reload: reloadRuntimeModule,
+      onChange: function(phase) {
+        render();
+        if (phase === "invalid" || phase === "refused") focusSupportTicketError();
+        if (phase === "created" || phase === "slow") focusElement('[data-module="support-ticket-outcome"]');
+        if (phase === "not-sent" || phase === "failed") focusElement('[data-module="support-ticket-message"]');
+      }
+    });
+  }
+  function ticketActionChanged(phase) {
+    render();
+    if (phase === "action-done") reloadRuntimeModule("support").catch(function() {
+      return null;
+    });
+    if (phase === "action-done" || phase === "action-unconfirmed" || phase === "action-failed") focusElement('[data-module="ticket-action-outcome"]');
+  }
+  function sendTicketComment() {
+    return submitTicketComment(ticketBackendId(state.ticketId), {
+      onChange: function(phase) {
+        render();
+        if (phase === "invalid" || phase === "refused") focusElement('[data-module="ticket-comment"] [aria-invalid="true"]') || focusElement('[data-module="ticket-comment-message"]');
+        if (phase === "not-sent" || phase === "failed" || phase === "closed" || phase === "slow") focusElement('[data-module="ticket-comment-message"]');
+      }
+    });
+  }
+  function dropAttachment(target) {
+    var parts = String(target || "").split(":");
+    var scope = parts.shift();
+    var key = parts.join(":");
+    var owner = scope === "ticket" ? state.supportTicket : /^comment-\d+$/.test(scope) ? ticketComment(scope.slice(8)) : null;
+    if (!removeAttachment(owner, key)) return false;
+    render();
+    return true;
+  }
+  function focusSupportTicketError() {
+    var errors = state.supportTicket ? state.supportTicket.errors : {};
+    var first = ["PROPERTY_ID", "VISIT_ID", "CONTACT_REASON", "SUBJECT", "MESSAGE", "ATTACHMENTS"].find(function(code) {
+      return !!errors[code];
+    });
+    if (first === "MESSAGE") return focusElement("#support-ticket-message");
+    if (first === "ATTACHMENTS") return focusElement("#support-ticket-attachments");
+    return first ? focusElement('[name="' + first + '"]') : focusElement('[data-module="support-ticket-message"]');
+  }
+  function ensureQuoteRequestSchema() {
+    if (!state.quoteRequestSchema) loadQuoteRequestSchema({ onChange: function() {
+      render();
+    } });
+    return state.quoteRequestSchema;
+  }
+  function sendQuoteRequest() {
+    return addTypedQuoteAddress({ onChange: render }).then(function(added) {
+      if (!added) {
+        render();
+        focusElement("#quote-request-address");
+        return false;
+      }
+      return submitQuoteRequest({
+        reload: reloadRuntimeModule,
+        onChange: function(phase) {
+          render();
+          if (phase === "invalid" || phase === "refused") focusQuoteRequestError();
+          if (phase === "accepted" || phase === "slow") focusElement('[data-module="quote-request-outcome"]');
+        }
+      });
+    });
+  }
+  function focusQuoteRequestError() {
+    var errors = state.quoteRequest ? state.quoteRequest.errors : {};
+    if (errors.PROPERTY_ADDRESSES) return focusElement("#quote-request-address");
+    if (errors.PROPERTY_IDS) return focusElement('[data-action="quoteRequest.toggleProperty"]') || focusElement("#quote-request-address");
+    return false;
+  }
+  function focusElement(selector) {
+    var root = globalThis.document;
+    var node = root && typeof root.querySelector === "function" ? root.querySelector(selector) : null;
+    if (!node || typeof node.focus !== "function") return false;
+    node.focus();
+    return true;
+  }
+  function openRequestForm() {
+    var url = state.config.requestFormUrl;
+    if (!url) {
+      failCommand("nav.external.requestFormUrl");
+      return false;
+    }
+    globalThis.location.assign(url);
+    return true;
+  }
+  function externalOnly(configKey) {
+    var url = configuredExternalUrl(state.config, configKey);
+    if (url) {
+      globalThis.location.assign(url);
+      return true;
+    }
+    failCommand("nav.external." + configKey);
+    return false;
+  }
+  function bindActions(root) {
+    root.addEventListener("click", function(e) {
+      var el = e.target.closest("[data-action]");
+      if (!el || !root.contains(el)) return;
+      if (el.hasAttribute("disabled") || el.getAttribute("aria-disabled") === "true") return;
+      var name = el.getAttribute("data-action");
+      var id = el.getAttribute("data-id") || null;
+      if (el.hasAttribute("data-requires-confirmation")) {
+        if (!window.confirm("Are you sure?\n\n" + name + (id ? " \xB7 " + id : ""))) return;
+      }
+      var fn = ACTIONS[name];
+      if (fn) {
+        var result = fn(id, el, e);
+        if (result && typeof result.then === "function") {
+          Promise.resolve(result).catch(function() {
+            render();
+          });
+        }
+      } else failCommand(name);
+    });
+  }
+  function openVisitPhoto(trigger, event) {
+    if (event && (event.button > 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey)) return false;
+    if (event) event.preventDefault();
+    return openVisitPhotos(trigger).catch(function() {
+      toast("The photo viewer could not open. Try again.");
+      return false;
+    });
+  }
+  function failCommand(name) {
+    console.warn("[aircove] command unavailable:", name);
+    state.commandErrors[name] = "Command is not connected";
+    toast(name + " is not connected yet");
+  }
+  function commandKey(name, id) {
+    return name + ":" + (id || "_");
+  }
+  function runCommand(name, id, handler) {
+    var key = commandKey(name, id);
+    state.pending[key] = true;
+    delete state.commandErrors[key];
+    try {
+      handler();
+    } catch (error2) {
+      state.commandErrors[key] = error2 && error2.message ? error2.message : "Command failed";
+      toast(name + " failed");
+    } finally {
+      state.pending[key] = false;
+      render();
+    }
+  }
+  function retrySpaOrRuntime(id) {
+    if (false) {
+      state.spaCartDemo = "as-added";
+      spaSetLines(spaLines());
+      render();
+      return true;
+    }
+    if (id === "checkout-quote") {
+      setState({ spaCheckoutDemo: "ready" });
+      return true;
+    }
+    if (id === "booking-hold") {
+      setState({ spaHold: "held" });
+      return true;
+    }
+    if (false) return spaReloadAddons();
+    if (id === "slots") {
+      setState({ spaSlots: "ready" });
+      return true;
+    }
+    if (id === "plan-offers") {
+      setState({ spaOfferDemo: "sellable" });
+      return true;
+    }
+    if (id === "plan-credit") {
+      setState({ spaCredit: "ok" });
+      return true;
+    }
+    if (id === "product-reviews") {
+      if (state.config.dataMode === "live") return reloadRuntimeModule("products");
+      setState({ spaReviews: "ready" });
+      return true;
+    }
+    if (id && state.commands[id]) {
+      state.commands = Object.assign({}, state.commands);
+      delete state.commands[id];
+      render();
+      return true;
+    }
+    return retryRuntimeLoad();
+  }
+  function careEntityScope(name, id, element, content) {
+    if (name === "care.selectUnit") return content.units && content.units.find(function(item) {
+      return item.id === id;
+    });
+    if (name === "care.download" || name === "care.openSecureDoc") {
+      return content.docs && content.docs.find(function(item) {
+        return item.id === id;
+      });
+    }
+    if (name === "care.selectSpecialist") {
+      return content.specialists && content.specialists.find(function(item) {
+        return item.id === id;
+      });
+    }
+    if (name === "care.completeTask") return content.tasks && content.tasks.find(function(item) {
+      return item.id === id;
+    });
+    if (name === "care.contactProvider") return content.provider && content.provider.id === id ? content.provider : null;
+    if (name === "care.requestRetreat") {
+      var scope = content.guarantee && content.guarantee.scope;
+      var propertyId = element && element.getAttribute("data-property-id");
+      var serviceId = element && element.getAttribute("data-service-id");
+      return scope && scope.planId === id && scope.propertyId === propertyId && scope.serviceId === serviceId ? scope : null;
+    }
+    return null;
+  }
+  function authorizeCareCommand(name, id, element, expected) {
+    var envelope2 = state.moduleData.care;
+    var enabled = (state.config.enabledModules || []).includes("care");
+    var authenticated = state.session && state.session.authenticated === true;
+    var scoped = state.session && state.session.hasCustomerScope === true && state.session.hasTenantScope === true;
+    var entitled = state.access && state.access.care && state.access.care.status === "granted";
+    var fixtureReady = state.config.dataMode === "fixture" && envelope2 && envelope2.id === "care" && envelope2.phase === "payload" && envelope2.state === "ready" && envelope2.access && envelope2.access.status === "granted" && envelope2.content && Array.isArray(envelope2.allowedActions);
+    var currentVertical = fixtureReady && envelope2.vertical === state.config.vertical && state.careStateVertical === state.config.vertical;
+    var actionAllowed = fixtureReady && envelope2.allowedActions.includes(name);
+    var entity = fixtureReady ? careEntityScope(name, id, element, envelope2.content) : null;
+    var epoch = state.careAuthorizationEpoch || 0;
+    var expectedCurrent = !expected || expected.epoch === epoch && expected.vertical === state.config.vertical && expected.entityId === id;
+    if (!enabled || !authenticated || !scoped || !entitled || !fixtureReady || !currentVertical || !expectedCurrent) {
+      var authorizationError = new Error("Care command is not authorized for the current portal state");
+      authorizationError.careAuthorizationFailure = true;
+      throw authorizationError;
+    }
+    if (!entity) throw new Error("Care command target is invalid or no longer current");
+    if (!actionAllowed) throw new Error("Care command is unavailable");
+    return { envelope: envelope2, content: envelope2.content, entity, epoch, vertical: state.config.vertical, entityId: id };
+  }
+  function clearGeneralCareCommandErrors() {
+    for (const key of /* @__PURE__ */ Object.keys(state.commandErrors || {})) {
+      if (key.startsWith("care.") && key.endsWith(":_")) delete state.commandErrors[key];
+    }
+  }
+  function runCareCommand(name, id, element, mutation) {
+    try {
+      var authorization = authorizeCareCommand(name, id, element);
+      clearGeneralCareCommandErrors();
+      delete state.commandErrors[commandKey(name, id)];
+      mutation(authorization);
+      render();
+      return true;
+    } catch (error2) {
+      return failCareMutation(name, id, error2);
+    }
+  }
+  function runUnavailableCareCommand(name, id, element) {
+    return runCareCommand(name, id, element, function() {
+      throw new Error("Care command is unavailable");
+    });
+  }
+  function selectCareUnit(id, element) {
+    return runCareCommand("care.selectUnit", id, element, function() {
+      state.careSelectedUnitId = id;
+    });
+  }
+  function selectCareSpecialist(id, element) {
+    return runCareCommand("care.selectSpecialist", id, element, function() {
+      state.careSelectedSpecialistId = id;
+    });
+  }
+  function toggleCareTask(id, element) {
+    return runCareCommand("care.completeTask", id, element, function(authorization) {
+      var task = authorization.entity;
+      var current = Object.prototype.hasOwnProperty.call(state.careTasksDone, id) ? state.careTasksDone[id] : !!task.done;
+      state.careTasksDone = Object.assign({}, state.careTasksDone, { [id]: !current });
+    });
+  }
+  function downloadCareDocument(id, element) {
+    return runUnavailableCareCommand("care.download", id, element);
+  }
+  var careRetreatFlights = /* @__PURE__ */ new Map();
+  function failCareMutation(name, id, error2) {
+    var key = commandKey(name, error2 && error2.careAuthorizationFailure ? null : id);
+    state.commandErrors[key] = error2 && error2.message ? error2.message : "Command failed";
+    delete state.pending[key];
+    render();
+    toast(name + " failed");
+    return false;
+  }
+  function requestCareRetreat(id, element) {
+    var name = "care.requestRetreat";
+    var key = commandKey(name, id);
+    var authorization;
+    try {
+      authorization = authorizeCareCommand(name, id, element);
+      clearGeneralCareCommandErrors();
+      if (state.careRetreatRequests[id] && state.careRetreatRequests[id].status === "submitted") {
+        throw new Error("Care re-treatment request is already submitted");
+      }
+    } catch (error2) {
+      return Promise.resolve(failCareMutation(name, id, error2));
+    }
+    if (careRetreatFlights.has(key)) return careRetreatFlights.get(key);
+    delete state.commandErrors[key];
+    state.pending[key] = true;
+    state.careRetreatRequests = Object.assign({}, state.careRetreatRequests, {
+      [id]: { planId: authorization.entity.planId, propertyId: authorization.entity.propertyId, serviceId: authorization.entity.serviceId, status: "submitting" }
+    });
+    render();
+    var flight = Promise.resolve().then(function() {
+      authorizeCareCommand(name, id, element, authorization);
+      state.careRetreatRequests = Object.assign({}, state.careRetreatRequests, {
+        [id]: { planId: authorization.entity.planId, propertyId: authorization.entity.propertyId, serviceId: authorization.entity.serviceId, status: "submitted" }
+      });
+      return state.careRetreatRequests[id];
+    }).catch(function(error2) {
+      if (state.careAuthorizationEpoch === authorization.epoch) {
+        var requests = Object.assign({}, state.careRetreatRequests);
+        delete requests[id];
+        state.careRetreatRequests = requests;
+        delete state.pending[key];
+        if (error2 && error2.careAuthorizationFailure) delete state.commandErrors[key];
+        else state.commandErrors[key] = error2 && error2.message ? error2.message : "Care re-treatment request failed";
+      }
+      return false;
+    }).finally(function() {
+      if (state.careAuthorizationEpoch === authorization.epoch) delete state.pending[key];
+      careRetreatFlights.delete(key);
+      render();
+    });
+    careRetreatFlights.set(key, flight);
+    return flight;
+  }
+  function setState(patch) {
+    Object.assign(state, patch);
+    render();
+  }
+  function go(route, replace) {
+    var resolved = resolveRoute(route);
+    state.route = resolved.id;
+    state.mobileNav = false;
+    state.accountMenu = false;
+    if (state.drawer) {
+      state.drawer = null;
+      state.spaFlow = null;
+      state.spaBookAck = false;
+      state.spaNote = "";
+    }
+    writeRouteToLocation(resolved.id, replace);
+    render();
+  }
+  function openOrder(id) {
+    if (!orderItems().some(function(order) {
+      return order.id === id;
+    })) throw new Error("Order not found");
+    state.currentOrderId = id;
+    state.view = "ready";
+    go("order.detail");
+  }
+  function cancelOrder(id) {
+    var order = state.orders.find(function(o) {
+      return o.id === id;
+    });
+    if (!order) throw new Error("Order not found");
+    if (order.status === "completed" || order.status === "cancelled") throw new Error("Order cannot be cancelled");
+    state.orders = state.orders.map(function(o) {
+      return o.id === id ? Object.assign({}, o, { status: "cancelled" }) : o;
+    });
+    render();
+    toast("Visit " + id + " cancelled");
+  }
+  function setCart(items) {
+    state.cartItems = items;
+    render();
+  }
+  function addToCart(name) {
+    var p = findProduct(name);
+    if (!p) throw new Error("Product not found");
+    var existing = state.cartItems.find(function(x) {
+      return x.name === name;
+    });
+    if (existing) state.cartItems = state.cartItems.map(function(x) {
+      return x.name === name ? Object.assign({}, x, { qty: x.qty + 1 }) : x;
+    });
+    else state.cartItems = state.cartItems.concat([Object.assign({}, p, { qty: 1 })]);
+    render();
+    toast(name + " added to cart");
+  }
+  function changeQty(name, delta) {
+    if (!state.cartItems.some(function(x) {
+      return x.name === name;
+    })) throw new Error("Cart item not found");
+    state.cartItems = state.cartItems.map(function(x) {
+      return x.name === name ? Object.assign({}, x, { qty: x.qty + delta }) : x;
+    }).filter(function(x) {
+      return x.qty > 0;
+    });
+    render();
+  }
+  function removeCartItem(name) {
+    if (!state.cartItems.some(function(x) {
+      return x.name === name;
+    })) throw new Error("Cart item not found");
+    setCart(state.cartItems.filter(function(x) {
+      return x.name !== name;
+    }));
+  }
+  function selectAddress(id) {
+    if (!currentFixture().addresses.some(function(address) {
+      return address.id === id;
+    })) throw new Error("Address not found");
+    setState({ addrId: id });
+  }
+  function selectPayment(id) {
+    if (!currentFixture().cards.some(function(card) {
+      return card.id === id;
+    })) throw new Error("Payment method not found");
+    setState({ payId: id });
+  }
+  function pickThemeResetCart() {
+    state.cartItems = [];
+    state.prodCat = "all";
+  }
+  function signIn() {
+    var nextRoute = state.session.intendedRoute || "orders.list";
+    state.session.authenticated = true;
+    state.session.intendedRoute = null;
+    state.authError = null;
+    state.code = "";
+    go(nextRoute);
+    toast("Signed in");
+  }
+  function validatePhone() {
+    var digits = (state.phone || "").replace(/\D/g, "");
+    if (digits.length < 6) {
+      setState({ authError: "Enter a valid phone number" });
+      return;
+    }
+    state.authError = null;
+    state.code = "";
+    go("auth.code");
+  }
+  function validateCode() {
+    if ((state.code || "").length < 4) {
+      setState({ authError: "Enter all 4 digits" });
+      return;
+    }
+    signIn();
+  }
+  function togglePref(key) {
+    if (["receipts", "sms", "marketing"].indexOf(key) === -1) throw new Error("Preference not found");
+    state.prefs = Object.assign({}, state.prefs, {});
+    state.prefs[key] = !state.prefs[key];
+    render();
+    toast("Preference updated in fixture state");
+  }
+  function calShift(delta) {
+    var m = state.calMonth + delta, y = state.calYear;
+    if (m < 0) {
+      m = 11;
+      y--;
+    } else if (m > 11) {
+      m = 0;
+      y++;
+    }
+    setState({ calMonth: m, calYear: y });
+  }
+  function feedAction(act) {
+    if (act === "orders") {
+      var o = state.orders.find(function(x) {
+        return x.status === "inprogress";
+      }) || state.orders[0];
+      openOrder(o.id);
+    } else if (act === "products") go("products");
+    else if (act === "pricing") go("pricing");
+    else if (act === "care") go("care");
+    else if (act === "book") openDrawer("booking");
+    else if (act === "invoice") toast("Invoice #SV-2381 emailed to you");
+    else if (act === "weather") {
+      var w = state.orders.find(function(x) {
+        return x.wt && x.wt.status === "pending";
+      });
+      if (w) openOrder(w.id);
+    }
+  }
+  function pushChat(text10) {
+    if (!text10 || !text10.trim()) throw new Error("Message is empty");
+    state.messages = state.messages.concat([{ from: "user", text: text10.trim() }]);
+    state.chatInput = "";
+    if (state.route !== "support") state.route = "support";
+    toast("Message queued in fixture state");
+  }
+  function sendChat() {
+    pushChat(state.chatInput);
+  }
+  function confirmAccess(id) {
+    var key = id || "";
+    var cal = F.stormCalendar(state.theme);
+    if (!cal.days.some(function(day) {
+      return day.needsAccess && day.dateSub === key;
+    })) throw new Error("Access confirmation target not found");
+    state.accessConfirmations[key] = true;
+    toast("Access confirmed in fixture state");
+  }
+  function requestExtraService(id) {
+    state.serviceRequests = state.serviceRequests.concat([{ id: id || "extra", status: "draft" }]);
+    openDrawer("booking");
+  }
+  function placeFixtureOrder() {
+    if (!state.cartItems.length) throw new Error("Cart is empty");
+    var first = state.cartItems[0];
+    var total = state.cartItems.reduce(function(sum, item) {
+      return sum + item.priceNum * item.qty;
+    }, 0);
+    var palette = F.PAL[0];
+    var fixture = currentFixture();
+    var order = {
+      id: fixture.id === "calm-harbor-spa" ? "#CHS-R-" + String(200 + state.nextFixtureOrder++) : "FX-" + String(state.nextFixtureOrder++).padStart(3, "0"),
+      status: "scheduled",
+      name: first.name,
+      date: "Jan 22",
+      price: "$" + total.toLocaleString(),
+      dot: palette[0],
+      iconBg: palette[1],
+      serviceName: first.name,
+      y: 2026,
+      m: 0,
+      d: 22,
+      slot: "10:00 AM",
+      locationId: state.addrId,
+      total,
+      timeline: ["Order placed in fixture state", "Awaiting dispatch"]
+    };
+    state.orders = [order].concat(state.orders);
+    setCart([]);
+    go("orders.list");
+    toast("Order placed in fixture state");
+  }
+  function openProposal(id) {
+    if (quotePackage()) {
+      var group = quoteGroupFor(id);
+      if (!group) throw new Error("Quote not found");
+      state.currentSiteId = group.id;
+      state.contractConfirm = null;
+      go("proposal.detail");
+      return;
+    }
+    if (!proposalSites().some(function(p) {
+      return p.id === id;
+    })) throw new Error("Proposal not found");
+    state.currentSiteId = id;
+    state.psites = state.psites.map(function(p) {
+      return p.id === id && p.status === "unseen" ? Object.assign({}, p, { status: "viewed" }) : p;
+    });
+    go("proposal.detail");
+  }
+  function openAgreement(id) {
+    if (!contractAgreementFor(id)) throw new Error("Agreement not found");
+    state.agreementId = id;
+    state.agreementTermsOpen = true;
+    state.contractConfirm = null;
+    go("agreement.detail");
+  }
+  var CHANGES_REQUIRED = "Write what you would like changed before sending.";
+  var contractCommands = createContractCommands({
+    state,
+    render: function() {
+      render();
+    },
+    notify: function(message) {
+      toast(message);
+    },
+    current: function() {
+      return quotePackage();
+    },
+    context: function() {
+      return { config: state.config, state };
+    },
+    gateway: function() {
+      return state.config.dataMode === "live" ? createCoreSnowQuotesAdapter() : createFixtureContractsGateway(state);
+    },
+    reload: function() {
+      return reloadRuntimeModule("proposals").then(function() {
+        var pkg = quotePackage();
+        if (!pkg) throw new Error("The contracts readback did not return a package");
+        return pkg;
+      });
+    }
+  });
+  function contractCommandsBusy() {
+    return contractCommands.busy();
+  }
+  function contractTarget(id) {
+    var backendId = Number(id);
+    return Number.isInteger(backendId) && backendId > 0 ? backendId : null;
+  }
+  function openContractConfirm(kind, id) {
+    var backendId = contractTarget(id);
+    if (!backendId || contractCommands.busy()) return false;
+    state.contractConfirm = kind === "changes" ? { kind, backendId, message: "", error: "" } : { kind, backendId };
+    if (state.contractCommand && state.contractCommand.phase !== "pending") state.contractCommand = null;
+    if (kind === "agreement") openAgreementBilling(state.contractConfirm, { load: contractAccountLoader(), onChange: function() {
+      render();
+    } });
+    render();
+    return true;
+  }
+  function approveAgreementWithBilling(backendId, confirm) {
+    var request = agreementBillingRequest(confirm.billing);
+    if (request.wait || contractCommands.busy()) return false;
+    if (request.error) {
+      confirm.billing.error = request.error;
+      render();
+      focusElement("#agreement-billing-address");
+      return false;
+    }
+    return contractCommands.approveAgreement(backendId, request.input);
+  }
+  function toggleAgreementBillingSame() {
+    var confirm = state.contractConfirm;
+    if (!confirm || confirm.kind !== "agreement" || contractCommands.busy()) return false;
+    if (!changeAgreementBilling(confirm.billing, { same: !confirm.billing.same })) return false;
+    render();
+    focusElement(confirm.billing.same ? '[data-action="agreement.billingSame"]' : "#agreement-billing-address");
+    return true;
+  }
+  function typeAgreementBilling(value) {
+    var confirm = state.contractConfirm;
+    return !!confirm && confirm.kind === "agreement" && changeAgreementBilling(confirm.billing, { value: String(value == null ? "" : value) });
+  }
+  function contractAccountLoader() {
+    return state.config.dataMode === "live" ? void 0 : function(context) {
+      return fixtureAccountProfileAdapter.load("profile", context);
+    };
+  }
+  function confirmContractCommand(kind, id) {
+    var backendId = contractTarget(id);
+    var confirm = state.contractConfirm;
+    if (!backendId || !confirm || confirm.backendId !== backendId) return false;
+    if (kind === "agreement") return confirm.kind === "agreement" ? approveAgreementWithBilling(backendId, confirm) : false;
+    if (confirm.kind !== "decline") return false;
+    return contractCommands.decide(confirm.kind, backendId);
+  }
+  function openQuoteApproval(id) {
+    var backendId = contractTarget(id);
+    if (!backendId || contractCommands.busy()) return false;
+    state.approveQuoteId = backendId;
+    state.contractConfirm = null;
+    if (state.contractCommand && state.contractCommand.phase !== "pending") state.contractCommand = null;
+    ensureContractDetails();
+    go("proposal.approve");
+    focusElement('[data-visual-id="quote-approval-head"] h1');
+    return true;
+  }
+  function sendQuoteApproval(id) {
+    var backendId = contractTarget(id);
+    if (!backendId || backendId !== state.approveQuoteId) return false;
+    var sent = approveWithDetails(backendId);
+    if (!sent) return false;
+    return sent.then(function(confirmed) {
+      if (confirmed && state.route === "proposal.approve" && state.approveQuoteId === backendId) {
+        var pkg = quotePackage();
+        var home = pkg ? pkg.groups.concat(pkg.history || []).find(function(group) {
+          return group.orders.some(function(order) {
+            return order.backendId === backendId;
+          });
+        }) : null;
+        if (home) state.currentSiteId = home.id;
+        go("proposal.detail", true);
+      }
+      return confirmed;
+    });
+  }
+  function approveWithDetails(backendId) {
+    var details2 = state.contractDetails;
+    if (!details2 || details2.prefill === "loading" || contractCommands.busy()) return false;
+    var request = contractDetailsRequest(details2.draft);
+    details2.errors = request.errors;
+    if (!request.values) {
+      render();
+      focusElement('[data-contract-detail][aria-invalid="true"]') || focusElement('[aria-invalid="true"] input');
+      return false;
+    }
+    return contractCommands.decide("approve", backendId, contractDetailsEventInput(request.values));
+  }
+  function cancelContractConfirm() {
+    if (contractCommands.busy()) return false;
+    state.contractConfirm = null;
+    render();
+    return true;
+  }
+  function changeableQuoteIds(group) {
+    return group.orders.filter(function(order) {
+      return order.status === "unseen" && order.allowedActions.indexOf("changes") !== -1;
+    }).map(function(order) {
+      return order.backendId;
+    });
+  }
+  function openChangeRequest(groupId) {
+    var group = quoteGroupFor(groupId);
+    if (!group || !changeableQuoteIds(group).length || contractCommands.busy()) return false;
+    state.contractConfirm = { kind: "changes", groupId: group.id, message: "", error: "" };
+    if (state.contractCommand && state.contractCommand.phase !== "pending") state.contractCommand = null;
+    render();
+    return true;
+  }
+  function sendChangeRequest(groupId) {
+    var group = quoteGroupFor(groupId);
+    var confirm = state.contractConfirm;
+    if (!group || !confirm || confirm.kind !== "changes" || confirm.groupId !== group.id || contractCommands.busy()) return false;
+    var message = String(confirm.message || "").trim();
+    if (!message) {
+      confirm.error = CHANGES_REQUIRED;
+      render();
+      focusElement("[data-quote-changes]");
+      return false;
+    }
+    confirm.error = "";
+    return contractCommands.requestChanges(changeableQuoteIds(group), message);
+  }
+  function ensureContractDetails() {
+    if (state.contractDetails) return;
+    openContractDetails({ load: contractAccountLoader(), onChange: function() {
+      render();
+    } });
+  }
+  function refreshContracts() {
+    if (contractCommands.busy()) return false;
+    state.contractCommand = null;
+    state.contractConfirm = null;
+    return reloadRuntimeModule("proposals").catch(function() {
+      return null;
+    });
+  }
+  function selectPlan(planId) {
+    if (!planId) throw new Error("Plan is required");
+    if (!proposalSites().some(function(p) {
+      return p.id === state.currentSiteId;
+    })) throw new Error("Proposal not found");
+    if (["897", "898", "899"].indexOf(planId) === -1) throw new Error("Proposal plan not found");
+    state.psites = state.psites.map(function(p) {
+      return p.id === state.currentSiteId ? Object.assign({}, p, { selected: planId }) : p;
+    });
+    render();
+  }
+  function decideSite(status) {
+    if (["approved", "revision", "declined"].indexOf(status) === -1) throw new Error("Unsupported proposal status");
+    var id = state.currentSiteId;
+    if (!proposalSites().some(function(p) {
+      return p.id === id;
+    })) throw new Error("Proposal not found");
+    state.psites = state.psites.map(function(p) {
+      return p.id === id ? Object.assign({}, p, { status }) : p;
+    });
+    go("proposals.list");
+    toast(status === "approved" ? "Plan approved in fixture state" : status === "revision" ? "Revision requested in fixture state" : "Proposal declined in fixture state");
+  }
+  function pickTheme(name) {
+    var slug = normalizeVertical(name);
+    var profile = verticalProfiles[slug];
+    state.config.vertical = slug;
+    state.config.theme = slug;
+    state.config.profile = profile.profile;
+    state.config.defaultRoute = profile.defaultRoute;
+    state.config.enabledModules = profile.modules.slice();
+    state.config.caseId = "";
+    state.theme = profile.displayName;
+    state.orders = F.ordersFor(profile.displayName);
+    state.filter = "all";
+    state.drawer = null;
+    state.spaFlow = null;
+    state.spaBookAck = false;
+    state.spaNote = "";
+    state.spaCurrentAppointment = null;
+    state.spaPlanOffer = null;
+    state.spaRescheduled = {};
+    state.spaProfile = null;
+    state.spaProfileDraft = null;
+    state.spaProfileErrors = null;
+    for (const moduleId of /* @__PURE__ */ Object.keys(state.moduleData || {})) {
+      if (moduleId !== "auth") delete state.moduleData[moduleId];
+    }
+    for (const moduleId of /* @__PURE__ */ Object.keys(state.moduleStatus || {})) {
+      if (moduleId !== "auth") delete state.moduleStatus[moduleId];
+    }
+    pickThemeResetCart();
+    var resolved = resolveRoute(state.route);
+    state.route = resolved.id;
+    writeRouteToLocation(resolved.id);
+    return reloadCareRuntime();
+  }
+  function confirmWeather(id, decision) {
+    if (["confirmed", "declined"].indexOf(decision) === -1) throw new Error("Unsupported weather decision");
+    var order = state.orders.find(function(o) {
+      return o.id === id && o.wt;
+    });
+    if (!order) throw new Error("Weather-triggered order not found");
+    state.orders = state.orders.map(function(o) {
+      if (o.id === id && o.wt) return Object.assign({}, o, { wt: Object.assign({}, o.wt, { status: decision }) });
+      return o;
+    });
+    render();
+    toast(decision === "confirmed" ? "Visit confirmed" : "Visit declined");
+  }
+  function openDrawer(name) {
+    state.drawer = name;
+    render();
+  }
+  function closeDrawer() {
+    state.drawer = null;
+    render();
+  }
+  var toastTimer;
+  function toast(msg) {
+    state.toast = msg;
+    render();
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function() {
+      state.toast = null;
+      render();
+    }, 2600);
+  }
+
+  // app-templates/customer-portal/runtime/src/components/commerce/ServiceCard.js
+  function ServiceCard(svc, i) {
+    var pal = F.PAL[i % 4];
+    return h("div", {
+      "class": "svc-row",
+      "data-module": "service-card",
+      "data-visual-id": "service-card",
+      "data-action": "booking.open",
+      "data-id": svc.name
+    }, [
+      h("div", { "class": "svc-row__icon", style: "background:" + pal[1] }, h("i", { style: "background:" + pal[0] })),
+      h("div", { "class": "svc-row__name", "data-bind": "service.name" }, svc.name),
+      h("div", { "class": "svc-row__price", "data-bind": "service.price" }, svc.price)
+    ]);
+  }
+  function ServiceCatalogCard(svc, i) {
+    var pal = F.PAL[i % 4];
+    var price = svc.price === "Quote" ? "Free quote" : "from " + svc.price;
+    return h("div", { "class": "service-catalog-card", "data-module": "service-catalog-card", "data-visual-id": "service-catalog-card" }, [
+      h("div", { "class": "scc__head" }, [
+        h("div", { "class": "scc__icon", style: "background:" + pal[1] }, h("i", { style: "background:" + pal[0] })),
+        h("div", { style: "flex:1" }, [
+          h("div", { "class": "scc__name", "data-bind": "service.name" }, svc.name),
+          h("div", { "class": "scc__tagline", "data-bind": "service.tagline" }, svc.tagline)
+        ]),
+        h("div", { "class": "scc__price" }, [h("b", { "data-bind": "service.price" }, price), h("span", { "data-bind": "service.duration" }, svc.duration)])
+      ]),
+      h("div", { "class": "includes" }, svc.includes.map(function(inc) {
+        return h("div", { "class": "include-item" }, [h("span", { "class": "check" }, "\u2713"), inc]);
+      })),
+      h("div", { "class": "scc__actions" }, [
+        ActionButton({ variant: "btn--primary", label: "Book now", action: "booking.open", id: svc.name, block: true, lg: true, visualId: "scc-book" }),
+        ActionButton({ variant: "btn--ghost", label: "Details", action: "nav.go", id: "pricing", lg: true, visualId: "scc-details" })
+      ])
+    ]);
+  }
+
+  // app-templates/customer-portal/runtime/src/components/orders/OrderCard.js
+  function OrderCard(order) {
+    var statusMeta = currentFixture().statusMeta;
+    var meta = statusMeta[order.status] || statusMeta.scheduled;
+    return h("article", {
+      "class": "order-card",
+      "data-module": "order-card",
+      "data-visual-id": "order-card",
+      "data-action": "order.open",
+      "data-id": order.id
+    }, [
+      h(
+        "div",
+        { "class": "order-card__icon", style: "background:" + order.iconBg },
+        h("i", { style: "background:" + order.dot })
+      ),
+      h("div", { "class": "order-card__body" }, [
+        h("div", { "class": "order-card__name", "data-bind": "order.name" }, order.name),
+        h("div", { "class": "order-card__meta", "data-bind": "order.id,order.date" }, order.id + " \xB7 " + order.date)
+      ]),
+      StatusBadge({ variant: meta.badge, label: meta.label, bind: "order.statusLabel" }),
+      h("div", { "class": "order-card__price", "data-bind": "order.price" }, order.price),
+      h("div", { "class": "chevron" }, "\u203A")
+    ]);
+  }
+
+  // app-templates/customer-portal/runtime/src/components/primitives/Tabs.js
+  function Tabs(props) {
+    return h(
+      "div",
+      { "class": "tabs", "data-module": "tabs", "data-visual-id": "order-tabs", role: "tablist" },
+      props.items.map(function(t) {
+        return h("span", {
+          "class": "tab" + (t.key === props.active ? " tab--active" : ""),
+          "data-action": props.action,
+          "data-id": t.key,
+          "data-state": t.key === props.active ? "active" : void 0,
+          role: "tab"
+        }, t.count != null ? [t.label + " ", h("span", { style: "opacity:.6" }, String(t.count))] : t.label);
+      })
+    );
+  }
+
+  // app-templates/customer-portal/runtime/src/components/shell/PageHeader.js
+  function PageHeader(props) {
+    return h("div", { "class": "page-header", "data-module": "page-header", "data-visual-id": "page-header" }, [
+      h("div", null, [
+        h("h1", { "class": "page-header__title", "data-bind": "page.title" }, props.title),
+        props.sub ? h("div", { "class": "page-header__sub", "data-bind": "page.subtitle" }, props.sub) : null
+      ])
+    ]);
+  }
+
+  // app-templates/customer-portal/runtime/src/components/primitives/ActionButton.js
+  function ActionButton(props) {
+    return h(props.href ? "a" : "button", {
+      "class": "btn " + (props.variant || "btn--primary") + (props.block ? " btn--block" : "") + (props.lg ? " btn--lg" : ""),
+      "data-module": "action-button",
+      "data-visual-id": props.visualId || "action-button",
+      "data-action": props.action,
+      "data-id": props.id || void 0,
+      "data-requires-confirmation": props.confirm ? "true" : void 0,
+      "disabled": props.disabled ? true : void 0,
+      "href": props.href || void 0
+    }, props.label);
+  }
+
+  // app-templates/customer-portal/runtime/src/components/primitives/EmptyState.js
+  function EmptyState(props) {
+    return h("div", { "class": "state-block", "data-module": "empty-state", "data-visual-id": "empty-state", "data-state": "empty" }, [
+      h("div", { "class": "state-block__glyph" }, props.glyph || "\u25CB"),
+      h("div", { "class": "state-block__title" }, props.title),
+      h("div", { "class": "state-block__desc" }, props.desc),
+      props.action ? ActionButton(props.action) : null
+    ]);
+  }
+
+  // app-templates/customer-portal/runtime/src/dom.js
+  function h(tag, attrs, children) {
+    var el = document.createElement(tag);
+    if (attrs) (/* @__PURE__ */ Object.keys(attrs)).forEach(function(k) {
+      var v = attrs[k];
+      if (v == null || v === false) return;
+      if (k === "class") el.className = v;
+      else if (k === "html") el.innerHTML = v;
+      else if (k === "style") el.setAttribute("style", v);
+      else if (k === "text") el.textContent = v;
+      else el.setAttribute(k, v === true ? "" : v);
+    });
+    if (children != null) (Array.isArray(children) ? children : [children]).forEach(function(c) {
+      if (c == null || c === false) return;
+      el.appendChild(typeof c === "string" || typeof c === "number" ? document.createTextNode(String(c)) : c);
+    });
+    return el;
+  }
+  function clear(node) {
+    while (node.firstChild) node.removeChild(node.firstChild);
+  }
+  function svgPath() {
+    var ns = "http://www.w3.org/2000/svg";
+    var svg = document.createElementNS(ns, "svg");
+    svg.setAttribute("viewBox", "0 0 600 210");
+    svg.setAttribute("preserveAspectRatio", "none");
+    svg.setAttribute("class", "tracking-map__path");
+    var p = document.createElementNS(ns, "path");
+    p.setAttribute("d", "M40 180 C 160 150, 200 60, 330 80 S 520 70, 560 36");
+    p.setAttribute("fill", "none");
+    p.setAttribute("stroke", "var(--accent)");
+    p.setAttribute("stroke-width", "3");
+    p.setAttribute("stroke-dasharray", "8 8");
+    p.setAttribute("opacity", ".55");
+    svg.appendChild(p);
+    return svg;
+  }
+
+  // app-templates/customer-portal/runtime/src/adapters/care-fixture-adapter.js
+  function clone2(value) {
+    return JSON.parse(JSON.stringify(value));
+  }
+  function createCareFixtureAdapter() {
+    return {
+      async load(moduleId, context) {
+        if (moduleId !== "care") throw new Error("Care fixture adapter only supports care");
+        var caseFixture = caseFixtureFor(context.config.caseId);
+        var fixture;
+        var products;
+        if (caseFixture) {
+          fixture = caseFixture.care;
+          products = caseFixture.theme.products;
+        } else {
+          const { careFixtures: careFixtures2 } = await Promise.resolve().then(() => (init_live_care_fixtures(), live_care_fixtures_exports));
+          var vertical2 = verticalProfiles[context.config.vertical];
+          var displayName = vertical2 && vertical2.displayName;
+          fixture = careFixtures2[displayName];
+          products = F.themes[displayName] && F.themes[displayName].products || [];
+        }
+        if (!fixture) throw new Error("Care fixture is unavailable for configured vertical");
+        var requestedState = context.state.carePayloadState;
+        var stateName = requestedState === void 0 ? "ready" : requestedState;
+        if (!["ready", "loading", "empty", "error"].includes(stateName)) {
+          throw new Error("Unsupported Care payload state");
+        }
+        return {
+          vertical: context.config.vertical,
+          state: stateName,
+          emptyState: clone2(fixture.empty),
+          fixture: stateName === "ready" ? clone2(fixture) : null,
+          products: stateName === "ready" ? clone2(products) : []
+        };
+      }
+    };
+  }
+
+  // app-templates/customer-portal/runtime/src/adapters/core-account-adapter.js
+  var BASIC_INFO_MAPPINGS = ["code", "id", "name", "nls"].map(function(name) {
+    return { name };
+  });
+  var ACCOUNT_MAPPINGS = [
+    { name: "code" },
+    { name: "id" },
+    { name: "nls" },
+    { name: "optimistic" },
+    { key: "id", name: "organization", type: "identifier" },
+    { key: "id", name: "type", type: "identifier" },
+    { key: "id", name: "user", type: "identifier" }
+  ];
+  var TYPED_ACCOUNT_MAPPINGS = ACCOUNT_MAPPINGS.map(function(mapping) {
+    return mapping.name === "type" ? { key: "id", mappings: [{ name: "id" }, { name: "code" }], name: "type", type: "identifier" } : mapping;
+  });
+  function accountTypeCodes(value) {
+    var codes = [];
+    String(value || "").split(",").forEach(function(item) {
+      var code = item.trim();
+      if (code && codes.indexOf(code) === -1) codes.push(code);
+    });
+    return codes.length ? codes : ["SPA_CUSTOMER"];
+  }
+  function createCoreAccountAdapter(options2 = {}) {
+    var fetchImpl = options2.fetch || coreSessionFetch;
+    if (typeof fetchImpl !== "function") throw contractError3("fetch-unavailable", "Core account adapter requires fetch");
+    return {
+      async load(moduleId, context) {
+        if (moduleId !== "account") throw contractError3("unsupported-module", "Core account adapter cannot load " + moduleId);
+        return resolveCoreAccount(context, fetchImpl, options2.origin);
+      },
+      async resolve(context) {
+        return resolveCoreAccount(context, fetchImpl, options2.origin);
+      }
+    };
+  }
+  async function resolveCoreAccount(context, fetchImpl = coreSessionFetch, explicitOrigin) {
+    var config = context && context.config || {};
+    var session2 = context && context.session || context && context.state && context.state.session || {};
+    var accessToken = text9(session2.accessToken || session2.access_token);
+    if (!accessToken) throw contractError3("session-required", "A Core access token is required");
+    var origin = explicitOrigin || config.origin || browserOrigin2();
+    var coreBase2 = sameOriginBase5(config.coreApiBase || "/core", origin, "Core API base");
+    var accountBase = sameOriginBase5(config.accountApiBase || "/core-acct", origin, "Core Account API base");
+    var tokenType = text9(session2.tokenType || session2.token_type || "Bearer");
+    var authorization = tokenType + " " + accessToken;
+    var basicInfo = await requestJson5(fetchImpl, coreBase2 + "/api/user/basic-info.json", {
+      method: "POST",
+      credentials: "same-origin",
+      headers: { Authorization: authorization, "Content-Type": "application/json", Accept: "application/json" },
+      body: JSON.stringify(BASIC_INFO_MAPPINGS)
+    });
+    var userId = positiveInteger3(basicInfo.authenticatedUserId || basicInfo.id);
+    if (!userId) throw contractError3("invalid-session-user", "Core basic-info did not return authenticatedUserId");
+    var organizationCode = selectOrganization(config.organization || config.pimOrganization, basicInfo);
+    var typeCodes = accountTypeCodes(config.accountTypeCode);
+    var typeList = typeCodes.length > 1;
+    var accountReply = await requestJson5(fetchImpl, accountBase + (config.vertical === "snow" ? "/api/tagged/account/list.json" : "/api/account/list.json"), {
+      method: "POST",
+      credentials: "same-origin",
+      headers: {
+        Authorization: authorization,
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        "X-Organization-Code": organizationCode
+      },
+      body: JSON.stringify({
+        filters: [
+          { type: "INTEGER", operator: "=", property: "user.id", value: String(userId) },
+          typeList ? { type: "STRING", operator: "IN", property: "type.code", value: typeCodes.join(",") } : { type: "STRING", operator: "=", property: "type.code", value: typeCodes[0] }
+        ],
+        mappings: typeList ? TYPED_ACCOUNT_MAPPINGS : ACCOUNT_MAPPINGS,
+        offset: 0,
+        pageSize: 2
+      })
+    });
+    var returned = Array.isArray(accountReply && accountReply.result) ? accountReply.result : [];
+    var accounts = typeList ? returned.filter(function(row) {
+      return typeCodes.indexOf(text9(row && row.type && row.type.code)) !== -1;
+    }) : returned;
+    var total = Number(accountReply.resultSize || returned.length);
+    if (!accounts.length) throw contractError3("customer-not-linked", "No customer Account is linked to the signed-in Core User");
+    if (accounts.length !== 1 || (typeList ? total > returned.length : total > 1)) {
+      throw contractError3("customer-account-ambiguous", "The signed-in Core User must resolve to exactly one customer Account");
+    }
+    var account = accounts[0] || {};
+    if (!positiveInteger3(account.id)) throw contractError3("invalid-customer-account", "Core Account response did not include an id");
+    if (config.vertical === "snow" && positiveInteger3(account.user && account.user.id) !== userId || account.user && positiveInteger3(account.user.id) && Number(account.user.id) !== userId) {
+      throw contractError3("customer-scope-mismatch", "Core Account user does not match the authenticated Core User");
+    }
+    return {
+      state: "ready",
+      scopeMode: accounts.length === returned.length ? "server-scoped" : "browser-filtered",
+      organization: { code: organizationCode, id: authorizedOrganizationId(basicInfo, organizationCode) },
+      user: {
+        id: userId,
+        displayName: text9(basicInfo.authenticatedUserName || basicInfo.authenticatedUser || basicInfo.name),
+        login: text9(basicInfo.authenticatedUserName)
+      },
+      account: {
+        id: Number(account.id),
+        code: text9(account.code),
+        displayName: localizedName7(account.nls) || "Customer account",
+        optimistic: Number.isFinite(Number(account.optimistic)) ? Number(account.optimistic) : null,
+        typeCode: typeList ? text9(account.type && account.type.code) : typeCodes[0]
+      }
+    };
+  }
+  function authorizedOrganizationId(basicInfo, code) {
+    var authorized = Array.isArray(basicInfo && basicInfo.authorizedOrganizations) ? basicInfo.authorizedOrganizations : [];
+    var match = authorized.find(function(item) {
+      return item && text9(item.code) === code;
+    });
+    return match ? positiveInteger3(match.id) : null;
+  }
+  function selectOrganization(configuredCode, basicInfo) {
+    var configured = text9(configuredCode);
+    var authorized = Array.isArray(basicInfo && basicInfo.authorizedOrganizations) ? basicInfo.authorizedOrganizations.map(function(item) {
+      return text9(item && item.code);
+    }).filter(Boolean) : [];
+    var current = text9(basicInfo && (basicInfo.organizationCode || basicInfo.defaultOrganizationCode));
+    var selected = configured || current || authorized[0];
+    if (!selected) throw contractError3("organization-required", "Core basic-info did not provide an organization");
+    if (authorized.length && !authorized.includes(selected)) {
+      throw contractError3("organization-forbidden", "Configured portal organization is not authorized for the signed-in Core User");
+    }
+    return selected;
+  }
+  async function requestJson5(fetchImpl, url, options2) {
+    var response = await fetchImpl(url, options2);
+    if (!response || typeof response.ok !== "boolean") throw contractError3("invalid-response", "Core request returned an invalid response");
+    if (!response.ok) {
+      var code = response.status === 401 ? "session-expired" : response.status === 403 ? "customer-forbidden" : "core-request-failed";
+      var error2 = contractError3(code, "Core request failed with HTTP " + response.status);
+      error2.status = response.status;
+      throw error2;
+    }
+    try {
+      return await response.json();
+    } catch (_) {
+      throw contractError3("invalid-response", "Core response was not valid JSON");
+    }
+  }
+  function sameOriginBase5(value, origin, label) {
+    if (!origin) throw contractError3("origin-required", label + " requires a browser origin");
+    var target = new URL(String(value || ""), origin);
+    if (target.origin !== new URL(origin).origin) throw contractError3("cross-origin-service", label + " must be same-origin");
+    return target.href.replace(/\/+$/, "");
+  }
+  function browserOrigin2() {
+    return globalThis.location && globalThis.location.origin || "";
+  }
+  function positiveInteger3(value) {
+    var number = Number(value);
+    return Number.isInteger(number) && number > 0 ? number : null;
+  }
+  function localizedName7(value) {
+    if (!value || typeof value !== "object") return "";
+    var localized = value.en || value["en-US"] || Object.values(value)[0] || {};
+    return text9(localized && (localized.NAME || localized.name));
+  }
+  function text9(value) {
+    return typeof value === "string" ? value.trim() : value == null ? "" : String(value).trim();
+  }
+  function contractError3(code, message) {
+    var error2 = new Error(message);
+    error2.code = code;
+    return error2;
+  }
+
+  // app-templates/customer-portal/runtime/src/normalizers/care.js
+  var CARE_KINDS = ["equipment", "seasonLog", "program", "water", "roof", "monitoring", "healthCare", "beautyCare"];
+  var CARE_META = {
+    hvac: { navLabel: "Equipment", title: "Your equipment", subtitle: "Every unit we service \u2014 condition, warranty and the latest diagnostic in one place." },
+    snow: { navLabel: "Season log", title: "Season log", subtitle: "Every storm response this winter \u2014 GPS-logged, timed against your SLA, with materials used." },
+    lawn: { navLabel: "Program", title: "Season program", subtitle: "Your 5-step feeding and care program \u2014 what\u2019s done, what\u2019s next, and when the lawn is safe to use." },
+    pool: { navLabel: "Water", title: "Water quality", subtitle: "Readings from every visit, tracked against safe ranges \u2014 plus what your tech dosed and why." },
+    roofing: { navLabel: "Roof report", title: "Roof condition", subtitle: "Findings from your drone inspection on Jan 8 \u2014 and the repair project it kicked off." },
+    pest: { navLabel: "Monitoring", title: "Station monitoring", subtitle: "Bait stations and smart sensors watch your home between visits \u2014 alerts go straight to your technician." },
+    health: { navLabel: "Care plan", title: "Your care plan", subtitle: "Appointments, milestones, documents and your care team \u2014 the logistics in one place. Clinical details stay with your provider." },
+    beauty: { navLabel: "My routine", title: "Your routine", subtitle: "Appointments, packages, your specialist and the formulas they use \u2014 remembered visit to visit." }
+  };
+  var ACTIONS_BY_KIND = {
+    equipment: ["care.selectUnit"],
+    seasonLog: [],
+    program: [],
+    water: [],
+    roof: [],
+    monitoring: ["care.requestRetreat"],
+    healthCare: ["care.completeTask"],
+    beautyCare: ["care.selectSpecialist", "care.completeTask"]
+  };
+  function clone3(value) {
+    return JSON.parse(JSON.stringify(value));
+  }
+  function emptyState(raw) {
+    if (!raw) return null;
+    return { glyph: raw.glyph, title: raw.title, description: raw.desc };
+  }
+  function stripClosedDocumentDestinations(content) {
+    if (!Array.isArray(content.docs)) return;
+    content.docs = content.docs.map(function(documentItem) {
+      var safe = Object.assign({}, documentItem);
+      delete safe.url;
+      delete safe.href;
+      delete safe.downloadUrl;
+      delete safe.filename;
+      return safe;
+    });
+  }
+  function careDisplayMeta(vertical2) {
+    return CARE_META[vertical2] || CARE_META.hvac;
+  }
+  function envelope(vertical2, phase, stateName, access, extra) {
+    var meta = careDisplayMeta(vertical2);
+    return Object.assign({
+      id: "care",
+      vertical: vertical2,
+      phase,
+      kind: null,
+      navLabel: meta.navLabel,
+      title: meta.title,
+      subtitle: meta.subtitle,
+      state: stateName,
+      access: { status: access.status, reasonCode: access.reasonCode || null },
+      emptyState: null,
+      content: null,
+      allowedActions: []
+    }, extra || {});
+  }
+  function normalizeCarePreflight(access, context) {
+    var stateName = access.status === "disabled" ? "disabled" : access.status === "checking" ? "loading" : access.status === "error" ? "error" : "unauthorized";
+    return envelope(context.config.vertical, "preflight", stateName, access);
+  }
+  function normalizeCareLoading(context) {
+    return envelope(context.config.vertical, "payload", "loading", { status: "granted", reasonCode: null });
+  }
+  function normalizeCareFailure(context, reasonCode) {
+    return envelope(context.config.vertical, "payload", "error", { status: "granted", reasonCode: reasonCode || "payload-load-failed" });
+  }
+  function normalizeCare(raw) {
+    var stateName = raw && raw.state;
+    if (!["ready", "loading", "empty", "error"].includes(stateName)) throw new Error("Unsupported Care payload state");
+    if (stateName !== "ready") {
+      return envelope(raw.vertical, "payload", stateName, { status: "granted", reasonCode: null }, {
+        emptyState: stateName === "empty" ? emptyState(raw.emptyState) : null
+      });
+    }
+    var fixture = raw.fixture;
+    if (!fixture || !CARE_KINDS.includes(fixture.kind)) throw new Error("Invalid Care fixture kind");
+    var content = clone3(fixture);
+    delete content.kind;
+    delete content.navLabel;
+    delete content.title;
+    delete content.sub;
+    delete content.empty;
+    stripClosedDocumentDestinations(content);
+    if (fixture.kind === "beautyCare") {
+      var productsByName = new Map((raw.products || []).map(function(product) {
+        return [product.name, product];
+      }));
+      content.productRecs.items = content.productRecs.names.map(function(name) {
+        return productsByName.get(name);
+      }).filter(Boolean);
+    }
+    return envelope(raw.vertical, "payload", "ready", { status: "granted", reasonCode: null }, {
+      kind: fixture.kind,
+      navLabel: fixture.navLabel,
+      title: fixture.title,
+      subtitle: fixture.sub,
+      emptyState: emptyState(fixture.empty),
+      content,
+      allowedActions: ACTIONS_BY_KIND[fixture.kind].slice()
+    });
+  }
+
+  // app-templates/customer-portal/runtime/src/normalizers/index.js
+  function clone4(value) {
+    return JSON.parse(JSON.stringify(value));
+  }
+  function normalizeOrders(raw) {
+    return {
+      items: clone4(raw.orders).map(function(order) {
+        return Object.assign({}, order, {
+          allowedActions: order.status === "completed" ? ["order.bookAgain", "order.downloadInvoice"] : ["order.cancel", "order.reschedule", "support.open"]
+        });
+      }),
+      statusMeta: raw.statusMeta,
+      technician: raw.technician,
+      addresses: raw.addresses
+    };
+  }
+  function normalizeProposals(raw) {
+    var normalized = {
+      proposal: raw.proposal ? clone4(raw.proposal) : null,
+      sites: Array.isArray(raw.sites) ? clone4(raw.sites).map(function(site) {
+        return Object.assign({}, site, {
+          allowedActions: ["proposal.selectPlan", "proposal.approve", "proposal.requestRevision", "proposal.decline"]
+        });
+      }) : [],
+      statusMeta: raw.statusMeta
+    };
+    if (raw.quoteOrders || raw.reads) normalized.quotes = normalizeContracts(raw);
+    return normalized;
+  }
+  function normalizeServices(raw) {
+    if (raw.pimPlans) return { items: clone4(raw.pimPlans), source: "core-pim" };
+    return { items: clone4(raw.services) };
+  }
+  function normalizePricing(raw) {
+    if (raw.pimPlans) {
+      return {
+        plans: clone4(raw.pimPlans),
+        rates: clone4(raw.pimPlans),
+        source: "core-pim"
+      };
+    }
+    return {
+      plans: [
+        { id: "payg", name: "Pay as you go", price: "$0", interval: "visit", cta: "Book any service" },
+        { id: "member", name: raw.plan.name, price: "$9", interval: "month", cta: raw.plan.tag },
+        { id: "plus", name: raw.plan.plusName, price: "$19", interval: "month", cta: "For multiple properties" }
+      ],
+      rates: clone4(raw.services)
+    };
+  }
+  function normalizeProducts(raw) {
+    if (raw.pimProducts) {
+      return {
+        feature: null,
+        categories: [],
+        items: clone4(raw.pimProducts),
+        models: clone4(raw.pimProductModels || []),
+        reviews: clone4(raw.pimProductReviews || []),
+        enrichment: clone4(raw.pimEnrichment || { models: "unavailable", reviews: "unavailable" }),
+        source: "core-pim"
+      };
+    }
+    return {
+      feature: clone4(raw.feature),
+      categories: clone4(raw.categories),
+      items: clone4(raw.products).map(function(product) {
+        return Object.assign({}, product, { allowedActions: ["cart.addItem"] });
+      })
+    };
+  }
+  function normalizeCheckout(raw) {
+    return {
+      cartItems: clone4(raw.cartItems),
+      addresses: clone4(raw.addresses),
+      cards: clone4(raw.cards),
+      allowedActions: raw.cartItems.length ? ["checkout.placeOrder"] : []
+    };
+  }
+  function normalizeCalendar(raw) {
+    return {
+      orders: clone4(raw.orders),
+      stormCalendar: clone4(raw.stormCalendar)
+    };
+  }
+  function normalizeActivity(raw) {
+    return {
+      tabs: clone4(raw.tabs),
+      groups: clone4(raw.groups)
+    };
+  }
+  function normalizeProfile(raw) {
+    return {
+      customer: clone4(raw.customer),
+      addresses: clone4(raw.addresses),
+      cards: clone4(raw.cards),
+      preferences: clone4(raw.preferences),
+      orders: clone4(raw.orders)
+    };
+  }
+  function normalizeSupport(raw) {
+    return {
+      customer: clone4(raw.customer),
+      topics: clone4(raw.topics),
+      quickReplies: clone4(raw.quickReplies),
+      messages: clone4(raw.messages)
+    };
+  }
+
+  // app-templates/customer-portal/runtime/src/modules/index.js
+  function module(id, normalize2) {
+    return {
+      id,
+      adapter(context) {
+        if (context.config.dataMode === "live") {
+          if (false) return corePimAdapter;
+          throw new Error("Live adapter is not opened for module " + id);
+        }
+        return fixtureAdapter;
+      },
+      normalize(raw) {
+        return normalize2(raw);
+      }
+    };
+  }
+  function clearCareProtectedState(runtimeState) {
+    runtimeState.careAuthorizationEpoch = (runtimeState.careAuthorizationEpoch || 0) + 1;
+    runtimeState.careStateVertical = null;
+    runtimeState.careSelectedUnitId = null;
+    runtimeState.careSelectedSpecialistId = null;
+    runtimeState.careTasksDone = {};
+    runtimeState.careRetreatRequests = {};
+    for (const key of /* @__PURE__ */ Object.keys(runtimeState.pending || {})) if (key.startsWith("care.")) delete runtimeState.pending[key];
+    for (const key of /* @__PURE__ */ Object.keys(runtimeState.commandErrors || {})) {
+      if (key.startsWith("care.") && !key.endsWith(":_")) delete runtimeState.commandErrors[key];
+    }
+  }
+  function clearGeneralCareCommandErrors2(runtimeState) {
+    for (const key of /* @__PURE__ */ Object.keys(runtimeState.commandErrors || {})) {
+      if (key.startsWith("care.") && key.endsWith(":_")) delete runtimeState.commandErrors[key];
+    }
+  }
+  function carePreflight(context) {
+    var enabled = context.config.enabledModules.includes("care");
+    if (!enabled) return { status: "disabled", reasonCode: "module-disabled" };
+    if (!context.state.session.authenticated) return { status: "unauthenticated", reasonCode: "session-required" };
+    if (context.state.session.hasCustomerScope !== true || context.state.session.hasTenantScope !== true) {
+      return { status: "forbidden", reasonCode: "scope-missing" };
+    }
+    var access = context.state.access && context.state.access.care;
+    var status = access && access.status;
+    if (status === "granted" && context.config.dataMode !== "fixture") {
+      return { status: "error", reasonCode: "live-adapter-not-opened" };
+    }
+    if (["checking", "not-entitled", "forbidden", "granted", "error"].includes(status)) {
+      return { status, reasonCode: access.reasonCode || null };
+    }
+    return { status: "not-entitled", reasonCode: "entitlement-missing" };
+  }
+  var careModule = {
+    id: "care",
+    asyncOnly: true,
+    dataSources: ["care.fixture", "care.live"],
+    requires: ["session", "customer-scope", "tenant-scope", "care-entitlement"],
+    routes: ["care"],
+    commands: ["care.selectUnit", "care.download", "care.requestRetreat", "care.selectSpecialist", "care.completeTask", "care.contactProvider", "care.openSecureDoc"],
+    preflight: carePreflight,
+    safeEnvelope: normalizeCarePreflight,
+    loadingEnvelope: normalizeCareLoading,
+    clearProtectedState(context) {
+      clearCareProtectedState(context.state);
+    },
+    onResult(envelope2, context) {
+      clearGeneralCareCommandErrors2(context.state);
+      if (!envelope2.content) {
+        clearCareProtectedState(context.state);
+        return;
+      }
+      if (context.state.careStateVertical && context.state.careStateVertical !== envelope2.vertical) clearCareProtectedState(context.state);
+      context.state.careStateVertical = envelope2.vertical;
+    },
+    failureEnvelope(context) {
+      return normalizeCareFailure(context, "payload-load-failed");
+    },
+    cacheKey(context) {
+      var payloadState = context.state.carePayloadState === void 0 ? "ready" : String(context.state.carePayloadState);
+      return [context.config.dataMode, context.config.vertical, payloadState].join(":");
+    },
+    adapter(context) {
+      if (context.config.dataMode !== "fixture") throw new Error("Care live adapter is not opened");
+      return createCareFixtureAdapter();
+    },
+    normalize(raw, context) {
+      return normalizeCare(raw, context);
+    }
+  };
+  var ACCOUNT_GATE_STATES = /* @__PURE__ */ Object.freeze(["customer-not-linked", "customer-account-ambiguous", "organization-forbidden", "customer-forbidden", "session-expired"]);
+  var accountModule = {
+    id: "account",
+    asyncOnly: true,
+    adapter(context) {
+      if (context.config.dataMode === "live") return createCoreAccountAdapter();
+      return {
+        load() {
+          var customer = context.state.currentCustomer || {};
+          return {
+            state: "ready",
+            organization: { code: context.config.organization },
+            user: { id: null, displayName: customer.fullName || "Customer" },
+            account: { id: null, code: "fixture", displayName: customer.fullName || "Customer", typeCode: context.config.accountTypeCode }
+          };
+        }
+      };
+    },
+    normalize(raw) {
+      return raw;
+    },
+    onResult(envelope2, context) {
+      context.state.customerAccount = envelope2.account;
+      context.state.session.account = envelope2.account;
+      context.state.sessionName = envelope2.user && envelope2.user.displayName || envelope2.account && envelope2.account.displayName || null;
+      context.state.session.userId = envelope2.user && envelope2.user.id || null;
+      context.state.session.login = envelope2.user && envelope2.user.login || null;
+      context.state.session.organizationId = envelope2.organization && envelope2.organization.id || null;
+      context.state.account = "ready";
+    },
+    onError(error2, context) {
+      context.state.customerAccount = null;
+      delete context.state.session.account;
+      var code = error2 && error2.code;
+      context.state.account = ACCOUNT_GATE_STATES.includes(code) ? code : "customer-unavailable";
+    },
+    failureEnvelope(context, error2) {
+      return { state: error2 && error2.code || "customer-unavailable", items: [] };
+    }
+  };
+  var profileModule = {
+    id: "profile",
+    asyncOnly: true,
+    adapter(context) {
+      if (customerAccountProfile(context.config)) return context.config.dataMode === "live" ? createCoreAccountProfileAdapter() : fixtureAccountProfileAdapter;
+      return context.config.dataMode === "live" ? createCoreUserProfileAdapter() : fixtureAdapter;
+    },
+    normalize(raw, context) {
+      if (customerAccountProfile(context.config)) return normalizeAccountProfile(raw);
+      return context.config.dataMode === "live" ? raw : normalizeProfile(raw);
+    },
+    onError(error2, context) {
+      if (error2 && error2.code === "session-expired") context.state.account = "session-expired";
+    },
+    failureEnvelope(context, error2) {
+      if (customerAccountProfile(context.config)) return accountProfileFailure(error2 && error2.code);
+      return { state: error2 && error2.code === "customer-forbidden" ? "unauthorized" : "error", email: "", phone: null, prefs: {}, allowedActions: [] };
+    }
+  };
+  var authModule = {
+    id: "auth",
+    asyncOnly: true,
+    adapter(context) {
+      return createCoreOidcAdapter();
+    },
+    normalize(raw) {
+      return raw;
+    },
+    onResult(envelope2, context) {
+      if (context.config.dataMode !== "live") {
+        context.state.oidc = context.config.authMode === "required" ? "ready-signed-out" : "ready-signed-in";
+        context.state.session.authenticated = context.config.authMode !== "required";
+        return;
+      }
+      var user = envelope2 && envelope2.user;
+      context.state.oidc = envelope2 && envelope2.state || "ready-signed-out";
+      context.state.session.authenticated = !!user || context.config.authMode !== "required";
+      if (user) {
+        context.state.session.accessToken = user.access_token;
+        context.state.session.tokenType = user.token_type || "Bearer";
+        var profile = user.profile || {};
+        context.state.sessionName = profile.name || profile.preferred_username || profile.email || null;
+      } else {
+        delete context.state.session.accessToken;
+        delete context.state.session.tokenType;
+        context.state.account = "session-required";
+      }
+    },
+    onError(error2, context) {
+      context.state.oidc = "unavailable";
+      context.state.session.authenticated = false;
+      context.state.account = "session-required";
+    },
+    failureEnvelope() {
+      return { state: "unavailable", user: null };
+    }
+  };
+  var ordersModule = {
+    id: "orders",
+    asyncOnly: true,
+    adapter(context) {
+      if (context.config.dataMode !== "live") return fixtureAdapter;
+      if (false) return createCoreOrdersAdapter();
+      throw liveAdapterClosed("orders");
+    },
+    normalize(raw, context) {
+      return context.config.dataMode === "live" ? raw : normalizeOrders(raw);
+    },
+    onError(error2, context) {
+      if (error2 && error2.code === "session-expired") context.state.account = "session-expired";
+    },
+    failureEnvelope(context, error2) {
+      return { state: error2 && error2.code || "error", items: [] };
+    }
+  };
+  var appointmentsModule = {
+    id: "appointments",
+    asyncOnly: true,
+    adapter(context) {
+      if (context.config.dataMode === "live") {
+        if (false) return createCoreSpaDemoAdapter();
+        throw liveAdapterClosed("appointments");
+      }
+      return {
+        load() {
+          return { state: "ready", items: [], next: null, upcoming: [], past: [], byRef: {} };
+        }
+      };
+    },
+    normalize(raw) {
+      return raw;
+    },
+    onError(error2, context) {
+      if (error2 && error2.code === "session-expired") context.state.account = "session-expired";
+    },
+    failureEnvelope(context, error2) {
+      return {
+        state: error2 && error2.code === "customer-forbidden" ? "unauthorized" : "error",
+        items: [],
+        next: null,
+        upcoming: [],
+        past: [],
+        byRef: {},
+        availability: { state: "error", reasonCode: error2 && error2.code || "appointments-load-failed", providers: [], busy: [] }
+      };
+    }
+  };
+  var planModule = {
+    id: "plan",
+    asyncOnly: true,
+    adapter(context) {
+      if (context.config.dataMode === "live") {
+        if (false) return createCorePlansAdapter();
+        throw liveAdapterClosed("plan");
+      }
+      return { load() {
+        return { state: "ready", items: [], byRef: {} };
+      } };
+    },
+    normalize(raw) {
+      return raw;
+    },
+    onError(error2, context) {
+      if (error2 && error2.code === "session-expired") context.state.account = "session-expired";
+    },
+    failureEnvelope(context, error2) {
+      return {
+        state: error2 && error2.code === "customer-forbidden" ? "unauthorized" : "error",
+        items: [],
+        byRef: {}
+      };
+    }
+  };
+  function localCartEnvelope(cartState) {
+    return {
+      backendId: null,
+      byRef: {},
+      currencyCode: null,
+      displaySubtotal: null,
+      itemCount: null,
+      lines: [],
+      notes: "",
+      organizationCode: "",
+      scopeMode: null,
+      state: cartState,
+      subtotal: null
+    };
+  }
+  var cartModule = {
+    id: "cart",
+    asyncOnly: true,
+    adapter(context) {
+      if (context.config.dataMode === "live") {
+        if (false) return createCoreCartAdapter();
+        throw liveAdapterClosed("cart");
+      }
+      return { load() {
+        return localCartEnvelope("empty");
+      } };
+    },
+    normalize(raw) {
+      return raw;
+    },
+    onError(error2, context) {
+      if (error2 && error2.code === "session-expired") context.state.account = "session-expired";
+    },
+    /* `cart-forbidden` is the one refusal Core actually enforces on this route —
+       an existing Account that is not the caller's. `cart-account-unknown` (404)
+       is a different fault: the account does not exist at all, and telling the
+       customer they lack access to someone else's bag would be a lie. It takes
+       the plain error state. */
+    failureEnvelope(context, error2) {
+      return localCartEnvelope(error2 && error2.code === "cart-forbidden" ? "unauthorized" : "error");
+    }
+  };
+  var propertiesModule = {
+    id: "properties",
+    asyncOnly: true,
+    adapter(context) {
+      if (context.config.dataMode === "live") return createCoreSnowPropertiesAdapter();
+      return fixtureAdapter;
+    },
+    normalize(raw) {
+      return raw;
+    },
+    onError(error2, context) {
+      if (error2 && error2.code === "session-expired") context.state.account = "session-expired";
+    },
+    failureEnvelope(context, error2) {
+      return {
+        state: error2 && error2.code === "customer-forbidden" ? "unauthorized" : "error",
+        accountId: null,
+        items: [],
+        scopeMode: null,
+        truncated: false
+      };
+    }
+  };
+  function liveAdapterClosed(moduleId) {
+    var closed = new Error("Live adapter is not opened for module " + moduleId);
+    closed.code = "live-adapter-not-opened";
+    return closed;
+  }
+  function liveListFailure(error2) {
+    var code = error2 && error2.code;
+    return code === "customer-forbidden" ? "unauthorized" : code === "live-adapter-not-opened" ? "unavailable" : "error";
+  }
+  var appointmentsTimelineModule = {
+    id: "appointmentsTimeline",
+    gatesFirstRender: false,
+    adapter(context) {
+      if (context.config.dataMode !== "live") return fixtureAdapter;
+      if (context.config.vertical === "snow") return createCoreSnowVisitsAdapter();
+      throw liveAdapterClosed("appointmentsTimeline");
+    },
+    normalize(raw, context) {
+      return context.config.dataMode === "live" ? normalizeVisits(raw) : raw;
+    },
+    onError(error2, context) {
+      if (error2 && error2.code === "session-expired") context.state.account = "session-expired";
+    },
+    failureEnvelope(context, error2) {
+      return { state: liveListFailure(error2), reasonCode: error2 && error2.code || "visits-load-failed", truncated: false, upcoming: [], past: [] };
+    }
+  };
+  var invoicesModule = {
+    id: "invoices",
+    gatesFirstRender: false,
+    adapter(context) {
+      if (context.config.dataMode !== "live") return { load() {
+        return { state: "ready", truncated: false, items: [] };
+      } };
+      if (context.config.vertical === "snow") return createCoreSnowInvoicesAdapter();
+      throw liveAdapterClosed("invoices");
+    },
+    normalize(raw, context) {
+      return context.config.dataMode === "live" ? normalizeInvoices(raw) : raw;
+    },
+    onError(error2, context) {
+      if (error2 && error2.code === "session-expired") context.state.account = "session-expired";
+    },
+    failureEnvelope(context, error2) {
+      return { state: liveListFailure(error2), reasonCode: error2 && error2.code || "invoices-load-failed", truncated: false, items: [] };
+    }
+  };
+  var fixtureSupportModule = module("support", normalizeSupport);
+  var supportModule = {
+    id: "support",
+    gatesFirstRender: false,
+    adapter(context) {
+      if (context.config.dataMode !== "live") return fixtureSupportModule.adapter(context);
+      if (context.config.vertical === "snow") return createCoreSnowTicketsAdapter();
+      throw liveAdapterClosed("support");
+    },
+    normalize(raw, context) {
+      return context.config.dataMode === "live" ? normalizeTickets(raw) : normalizeSupport(raw);
+    },
+    onError(error2, context) {
+      if (error2 && error2.code === "session-expired") context.state.account = "session-expired";
+    },
+    failureEnvelope(context, error2) {
+      return { state: liveListFailure(error2), reasonCode: error2 && error2.code || "tickets-load-failed", truncated: false, open: [], closed: [] };
+    }
+  };
+  var proposalsModule = {
+    id: "proposals",
+    adapter(context) {
+      if (context.config.dataMode === "live") {
+        if (context.config.vertical === "snow") return createCoreSnowQuotesAdapter();
+        var closed = new Error("Live adapter is not opened for module proposals");
+        closed.code = "live-adapter-not-opened";
+        throw closed;
+      }
+      return fixtureAdapter;
+    },
+    normalize(raw) {
+      return normalizeProposals(raw);
+    },
+    onError(error2, context) {
+      if (error2 && error2.code === "session-expired") context.state.account = "session-expired";
+    },
+    failureEnvelope(context, error2) {
+      var code = error2 && error2.code;
+      return {
+        state: code === "customer-forbidden" ? "unauthorized" : code === "live-adapter-not-opened" ? "unavailable" : "error",
+        reasonCode: code || "proposals-load-failed",
+        proposal: null,
+        sites: [],
+        statusMeta: null
+      };
+    }
+  };
+  var checkoutModule = {
+    id: "checkout",
+    adapter(context) {
+      if (context.config.dataMode === "live") return { load() {
+        return { state: "ready" };
+      } };
+      return fixtureAdapter;
+    },
+    normalize(raw, context) {
+      return context.config.dataMode === "live" ? raw : normalizeCheckout(raw);
+    }
+  };
+  var liveOverviewAdapter = {
+    async load(moduleId, context) {
+      if (!liveWeatherOpened(context.config) || !weatherSource(context.config, null)) return { state: "unavailable", reasonCode: "forecast-unconfigured", source: null };
+      if (!(context.state.liveWeatherState === "ready" && context.state.liveWeather)) await loadLiveWeather(null, context.config);
+      if (!context.state.liveWeather) return { state: "error", reasonCode: "weather-unavailable", source: null };
+      return { state: "ready", source: context.state.liveWeather.source };
+    }
+  };
+  var overviewModule = {
+    id: "overview",
+    gatesFirstRender: false,
+    adapter(context) {
+      return context.config.dataMode === "live" ? liveOverviewAdapter : fixtureAdapter;
+    },
+    normalize(raw) {
+      return raw;
+    },
+    failureEnvelope(context, error2) {
+      return { state: "error", reasonCode: error2 && error2.code || "overview-unavailable" };
+    }
+  };
+  var modules = {
+    auth: authModule,
+    account: accountModule,
+    appointments: appointmentsModule,
+    orders: ordersModule,
+    proposals: proposalsModule,
+    services: module("services", normalizeServices),
+    pricing: module("pricing", normalizePricing),
+    products: module("products", normalizeProducts),
+    cart: cartModule,
+    checkout: checkoutModule,
+    plan: planModule,
+    overview: overviewModule,
+    appointmentsTimeline: appointmentsTimelineModule,
+    properties: propertiesModule,
+    calendar: module("calendar", normalizeCalendar),
+    activity: module("activity", normalizeActivity),
+    profile: profileModule,
+    support: supportModule,
+    care: careModule,
+    invoices: invoicesModule
+  };
+  var openedModuleIds = /* @__PURE__ */ Object.keys(modules);
+
+  // app-templates/customer-portal/runtime/src/portal-runtime.js
+  var PortalRuntime = class {
+    constructor(options2) {
+      this.state = options2.state;
+      this.modules = options2.modules || modules;
+      this.cache = /* @__PURE__ */ new Map();
+      this.generations = /* @__PURE__ */ new Map();
+      this.inFlight = /* @__PURE__ */ new Map();
+    }
+    parseConfig() {
+      return this.state.config;
+    }
+    context() {
+      var config = this.parseConfig();
+      return {
+        state: this.state,
+        config: Object.assign({}, config, {
+          enabledModules: (config.enabledModules || []).slice()
+        })
+      };
+    }
+    generation(moduleId) {
+      return this.generations.get(moduleId) || 0;
+    }
+    cancel(moduleId, descriptor, context) {
+      this.generations.set(moduleId, this.generation(moduleId) + 1);
+      this.cache.delete(moduleId);
+      this.inFlight.delete(moduleId);
+      if (descriptor.clearProtectedState) descriptor.clearProtectedState(context);
+    }
+    publish(moduleId, data) {
+      this.state.moduleData[moduleId] = data;
+      this.state.moduleStatus[moduleId] = data && data.state ? data.state : "ready";
+      return data;
+    }
+    publishDenied(moduleId, descriptor, preflight, context) {
+      this.cancel(moduleId, descriptor, context);
+      return this.publish(moduleId, descriptor.safeEnvelope(preflight, context));
+    }
+    cached(moduleId, cacheKey) {
+      var cached = cacheKey && this.cache.get(moduleId);
+      return cached && cached.cacheKey === cacheKey ? cached.data : null;
+    }
+    syncPreflight(moduleId) {
+      var descriptor = this.modules[moduleId];
+      if (!descriptor || !descriptor.preflight) return this.state.moduleData[moduleId] || null;
+      var context = this.context();
+      var preflight = descriptor.preflight(context);
+      if (preflight.status !== "granted") return this.publishDenied(moduleId, descriptor, preflight, context);
+      var current = this.state.moduleData[moduleId];
+      if (descriptor.asyncOnly && current && current.vertical !== context.config.vertical) {
+        this.cancel(moduleId, descriptor, context);
+        return this.publish(moduleId, descriptor.loadingEnvelope(context));
+      }
+      return current || null;
+    }
+    load(moduleId) {
+      var descriptor = this.modules[moduleId];
+      if (!descriptor) throw new Error("Unknown module: " + moduleId);
+      var context = this.context();
+      var preflight = descriptor.preflight && descriptor.preflight(context);
+      if (preflight && preflight.status !== "granted") {
+        return this.publishDenied(moduleId, descriptor, preflight, context);
+      }
+      var cacheKey = descriptor.cacheKey && descriptor.cacheKey(context);
+      var cached = this.cached(moduleId, cacheKey);
+      if (cached) return this.publish(moduleId, cached);
+      if (descriptor.asyncOnly) {
+        var flight = this.inFlight.get(moduleId);
+        if (flight && flight.cacheKey === cacheKey) return this.state.moduleData[moduleId];
+        if (descriptor.clearProtectedState) descriptor.clearProtectedState(context);
+        return this.publish(moduleId, descriptor.loadingEnvelope(context));
+      }
+      this.state.moduleStatus[moduleId] = "loading";
+      try {
+        var adapter2 = descriptor.adapter(context);
+        var raw = adapter2.load(moduleId, context);
+        if (raw && typeof raw.then === "function") throw new Error("Module " + moduleId + " requires async load");
+        var normalized = descriptor.normalize(raw, context);
+        if (descriptor.onResult) descriptor.onResult(normalized, context);
+        this.cache.set(moduleId, cacheKey ? { cacheKey, data: normalized } : normalized);
+        return this.publish(moduleId, normalized);
+      } catch (error2) {
+        this.cache.delete(moduleId);
+        if (descriptor.clearProtectedState) descriptor.clearProtectedState(context);
+        if (descriptor.onError) descriptor.onError(error2, context);
+        this.state.moduleStatus[moduleId] = "error";
+        this.state.moduleData[moduleId] = descriptor.failureEnvelope ? descriptor.failureEnvelope(context, error2) : null;
+        throw error2;
+      }
+    }
+    loadAll(moduleIds) {
+      var ids = moduleIds || this.enabledModuleIds().filter((moduleId) => !this.modules[moduleId].asyncOnly);
+      return ids.map((moduleId) => this.load(moduleId));
+    }
+    loadAsync(moduleId) {
+      var descriptor = this.modules[moduleId];
+      if (!descriptor) return Promise.reject(new Error("Unknown module: " + moduleId));
+      var context = this.context();
+      var preflight = descriptor.preflight && descriptor.preflight(context);
+      if (preflight && preflight.status !== "granted") {
+        return Promise.resolve(this.publishDenied(moduleId, descriptor, preflight, context));
+      }
+      var cacheKey = descriptor.cacheKey && descriptor.cacheKey(context);
+      var cached = this.cached(moduleId, cacheKey);
+      if (cached) return Promise.resolve(this.publish(moduleId, cached));
+      var existing = this.inFlight.get(moduleId);
+      if (existing && existing.cacheKey === cacheKey) return existing.promise;
+      var generation = this.generation(moduleId);
+      var vertical2 = context.config.vertical;
+      if (descriptor.clearProtectedState) descriptor.clearProtectedState(context);
+      if (descriptor.loadingEnvelope) this.publish(moduleId, descriptor.loadingEnvelope(context));
+      else this.state.moduleStatus[moduleId] = "loading";
+      var operation;
+      try {
+        operation = Promise.resolve(descriptor.adapter(context).load(moduleId, context));
+      } catch (error2) {
+        operation = Promise.reject(error2);
+      }
+      var promise = operation.then((raw) => {
+        if (!this.isCurrentLoad(moduleId, descriptor, generation, cacheKey, vertical2)) {
+          return this.state.moduleData[moduleId] || null;
+        }
+        var normalized = descriptor.normalize(raw, context);
+        if (!this.isCurrentLoad(moduleId, descriptor, generation, cacheKey, vertical2)) {
+          return this.state.moduleData[moduleId] || null;
+        }
+        if (descriptor.onResult) descriptor.onResult(normalized, context);
+        this.cache.set(moduleId, cacheKey ? { cacheKey, data: normalized } : normalized);
+        return this.publish(moduleId, normalized);
+      }).catch((error2) => {
+        if (!this.isCurrentLoad(moduleId, descriptor, generation, cacheKey, vertical2)) {
+          return this.state.moduleData[moduleId] || null;
+        }
+        this.cache.delete(moduleId);
+        if (descriptor.clearProtectedState) descriptor.clearProtectedState(this.context());
+        if (descriptor.onError) descriptor.onError(error2, this.context());
+        this.state.moduleStatus[moduleId] = "error";
+        this.state.moduleData[moduleId] = descriptor.failureEnvelope ? descriptor.failureEnvelope(this.context(), error2) : null;
+        throw error2;
+      }).finally(() => {
+        var flight = this.inFlight.get(moduleId);
+        if (flight && flight.promise === promise) this.inFlight.delete(moduleId);
+      });
+      this.inFlight.set(moduleId, { cacheKey, promise });
+      return promise;
+    }
+    isCurrentLoad(moduleId, descriptor, generation, cacheKey, vertical2) {
+      if (this.generation(moduleId) !== generation) return false;
+      var context = this.context();
+      if (context.config.vertical !== vertical2) return false;
+      if (descriptor.cacheKey && descriptor.cacheKey(context) !== cacheKey) return false;
+      var preflight = descriptor.preflight && descriptor.preflight(context);
+      return !preflight || preflight.status === "granted";
+    }
+    async loadAllAsync(moduleIds) {
+      var ids = moduleIds || this.enabledModuleIds();
+      if (ids.includes("auth")) {
+        await this.loadAsync("auth");
+        ids = ids.filter((moduleId) => moduleId !== "auth");
+        if (this.state.config.dataMode === "live" && this.state.config.authMode === "required" && !this.state.session.authenticated) return [];
+      }
+      if (ids.includes("account")) {
+        await this.loadAsync("account");
+        ids = ids.filter((moduleId) => moduleId !== "account");
+      }
+      var deferred = this.state.config && this.state.config.dataMode === "live" ? ids.filter((moduleId) => this.modules[moduleId] && this.modules[moduleId].gatesFirstRender === false) : [];
+      deferred.forEach((moduleId) => {
+        this.loadAsync(moduleId).catch(() => null);
+      });
+      return Promise.all(ids.filter((moduleId) => !deferred.includes(moduleId)).map((moduleId) => this.loadAsync(moduleId)));
+    }
+    settled() {
+      return Promise.allSettled(Array.from(this.inFlight.values(), (flight) => flight.promise)).then(() => void 0);
+    }
+    eachSettled(callback) {
+      this.inFlight.forEach((flight) => {
+        flight.promise.then(() => callback(), () => callback());
+      });
+    }
+    enabledModuleIds() {
+      var config = this.state.config || {};
+      var enabled = config.enabledModules || [];
+      var accountGate = customerAccountRequired(config);
+      return openedModuleIds.filter((moduleId) => moduleId === "auth" || moduleId === "account" && accountGate || enabled.includes(moduleId));
+    }
+    invalidate(moduleId) {
+      var descriptor = this.modules[moduleId];
+      if (!descriptor) throw new Error("Unknown module: " + moduleId);
+      var context = this.context();
+      this.cancel(moduleId, descriptor, context);
+      return this.load(moduleId);
+    }
+    reloadAsync(moduleId) {
+      var descriptor = this.modules[moduleId];
+      if (!descriptor) return Promise.reject(new Error("Unknown module: " + moduleId));
+      this.cancel(moduleId, descriptor, this.context());
+      return this.loadAsync(moduleId);
+    }
+    refreshModules(moduleIds) {
+      return Promise.all(moduleIds.map((moduleId) => {
+        return this.modules[moduleId].asyncOnly ? this.reloadAsync(moduleId) : Promise.resolve(this.invalidate(moduleId));
+      }));
+    }
+  };
+
+  // app-templates/customer-portal/runtime/src/components/shell/AccountBootstrap.js
+  function gateActions(list) {
+    return h("div", { "class": "account-gate__actions" }, list);
+  }
+  function supportOrSignOut() {
+    var support = SupportContactButton({ variant: "btn--primary", block: true, lg: true, visualId: "account-support" });
+    return gateActions([
+      support,
+      ActionButton(support ? { variant: "btn--ghost", label: "Sign out", action: "auth.signOut", block: true, visualId: "account-signout" } : { variant: "btn--primary", label: "Sign out", action: "auth.signOut", block: true, lg: true, visualId: "account-signout" })
+    ]);
+  }
+  function AccountBootstrap() {
+    var s = state.account;
+    var intendedRoute = state.session.intendedRoute || state.route;
+    var page = h("section", { "class": "page account-gate", "data-route": intendedRoute, "data-state": s, "data-visual-id": "account-gate", "data-screen-label": "Account (" + s + ")" });
+    var card = h("div", { "class": "auth-card account-gate__card", "data-module": "account-bootstrap", "data-visual-id": "account-bootstrap", "data-state": s, "data-intended-route": intendedRoute });
+    if (s === "resolving-customer") {
+      card.setAttribute("aria-busy", "true");
+      card.appendChild(h("div", { "class": "oidc-status" }, [h("span", { "class": "oidc-spinner" })]));
+      card.appendChild(h("div", { "class": "oidc-title" }, "Getting your account ready\u2026"));
+      card.appendChild(h("div", { "class": "oidc-sub oidc-sub--tail" }, "You\u2019re signed in. We\u2019re securely loading your account and what it can do here \u2014 no need to do anything."));
+    } else if (s === "customer-unavailable") {
+      card.appendChild(h("div", { "class": "oidc-status" }, [h("div", { "class": "oidc-glyph oidc-glyph--warn" }, "!")]));
+      card.appendChild(h("div", { "class": "oidc-title" }, "We can\u2019t open your account right now"));
+      card.appendChild(h("div", { "class": "oidc-sub" }, "The portal couldn\u2019t load your account. Your data is safe and nothing was changed \u2014 try again in a moment."));
+      card.appendChild(gateActions([
+        ActionButton({ variant: "btn--primary", label: "Try again", action: "ui.retry", id: "account-bootstrap", block: true, lg: true, visualId: "account-retry" }),
+        ActionButton({ variant: "btn--ghost", label: "Sign out", action: "auth.signOut", block: true, visualId: "account-signout" })
+      ]));
+    } else if (s === "customer-not-linked") {
+      card.appendChild(h("div", { "class": "oidc-status" }, [GateGlyph("\u26AD")]));
+      card.appendChild(h("div", { "class": "oidc-title" }, "This sign-in isn\u2019t linked to a customer account"));
+      card.appendChild(h("div", { "class": "oidc-sub" }, "You\u2019re signed in, but this identity isn\u2019t connected to an active customer account with us, so the portal can\u2019t be opened. Our support team can link it for you."));
+      card.appendChild(supportOrSignOut());
+    } else if (s === "customer-account-ambiguous") {
+      card.appendChild(h("div", { "class": "oidc-status" }, [GateGlyph("\u29C9")]));
+      card.appendChild(h("div", { "class": "oidc-title" }, "We can\u2019t tell which account is yours"));
+      card.appendChild(h("div", { "class": "oidc-sub" }, "Your sign-in matches more than one customer account, so the portal won\u2019t guess. Our support team can link the right one \u2014 nothing is shown until then."));
+      card.appendChild(supportOrSignOut());
+    } else if (s === "organization-forbidden") {
+      card.appendChild(h("div", { "class": "oidc-status" }, [GateGlyph("\u2302")]));
+      card.appendChild(h("div", { "class": "oidc-title" }, "This sign-in can\u2019t be used here"));
+      card.appendChild(h("div", { "class": "oidc-sub" }, "Your sign-in works, but it doesn\u2019t belong to this portal\u2019s organization, so nothing here can be opened. If that seems wrong, contact support."));
+      card.appendChild(supportOrSignOut());
+    } else if (s === "customer-forbidden") {
+      card.appendChild(h("div", { "class": "oidc-status" }, [GateGlyph("\u26BF")]));
+      card.appendChild(h("div", { "class": "oidc-title" }, "This account can\u2019t open the customer portal"));
+      card.appendChild(h("div", { "class": "oidc-sub" }, "Your sign-in works, but it doesn\u2019t include access to the customer portal. If you believe it should, contact support."));
+      card.appendChild(supportOrSignOut());
+    } else if (s === "session-expired") {
+      card.appendChild(h("div", { "class": "oidc-status" }, [GateGlyph("\u23F1")]));
+      card.appendChild(h("div", { "class": "oidc-title" }, "Your session ended"));
+      card.appendChild(h("div", { "class": "oidc-sub" }, "For your security you were signed out. Nothing you see below is live anymore. Sign in again and you\u2019ll come right back here."));
+      card.appendChild(h("div", { "class": "account-gate__route" }, ["Returning to\u2002", h("b", null, routeLabel(intendedRoute))]));
+      card.appendChild(gateActions([
+        ActionButton({ variant: "btn--primary", label: "Sign in again", action: "auth.oidcSignIn", block: true, lg: true, visualId: "account-reauth" }),
+        LandingReturnButton({ variant: "btn--ghost", block: true, visualId: "account-catalog" })
+      ]));
+    }
+    page.appendChild(card);
+    return page;
+  }
+
+  // app-templates/customer-portal/runtime/src/app.js
+  function BookingDrawer() {
+    if (false) {
+      return h("div", null, [
+        h("div", { "class": "scrim", "data-action": "booking.close", "data-visual-id": "scrim" }),
+        h("aside", { "class": "drawer", "data-module": "drawer", "data-visual-id": "booking-drawer", "data-state": "drawer-open", role: "dialog", "aria-label": flowTitle(state.spaFlow) }, [
+          h("div", { "class": "drawer__head" }, [
+            h("div", { "class": "drawer__title" }, flowTitle(state.spaFlow)),
+            h("button", { "class": "drawer__close", "data-action": "booking.close", "aria-label": "Close" }, "\u2715")
+          ]),
+          SpaBookingFlow()
+        ])
+      ]);
+    }
+    var v = currentTheme();
+    var phase = cmdPhase("booking.confirm:booking");
+    var spaBridge = isSpa() && state.capability === "target-appointments";
+    var holdBlocked = spaBridge && state.spaHold !== "held";
+    var spaReview = false ? h("div", { "class": "booking-review", "data-module": "booking-review", "data-visual-id": "booking-review", "data-payment-mode": "SIMULATED", "data-state": state.spaHold }, [
+      state.spaHold === "held" ? h("div", { "class": "booking-review__hold" }, "Your time is held for 10 minutes while you review \u2014 confirming books it.") : null,
+      state.spaHold === "slot-expired" ? InlineFailure({ msg: "Your held time expired \u2014 nothing was booked. Pick a new time to continue.", retryAction: "ui.retry", retryId: "booking-hold", retryLabel: "Find a new time" }) : null,
+      state.spaHold === "repriced" ? InlineFailure({ msg: "The price for this time changed while you were reviewing \u2014 reload and check it before confirming.", retryAction: "ui.retry", retryId: "booking-hold", retryLabel: "Reload & review" }) : null,
+      SimulationBadge(true),
+      h("div", { style: "font-size:11.5px;color:var(--ink-3);line-height:1.5;margin-top:6px" }, "No charge is made when you confirm \u2014 you pay at the studio as usual.")
+    ]) : null;
+    return h("div", null, [
+      h("div", { "class": "scrim", "data-action": "booking.close", "data-visual-id": "scrim" }),
+      h("aside", { "class": "drawer", "data-module": "drawer", "data-visual-id": "booking-drawer", "data-state": "drawer-open", role: "dialog", "aria-label": "Book a service" }, [
+        h("div", { "class": "drawer__head" }, [
+          h("div", { "class": "drawer__title" }, activeProfile().drawerTitle),
+          h("button", { "class": "drawer__close", "data-action": "booking.close", "aria-label": "Close" }, "\u2715")
+        ]),
+        h(
+          "div",
+          { style: "display:flex;flex-direction:column;gap:9px;margin-bottom:18px" },
+          v.svc.map(function(s, i) {
+            return ServiceCard(s, i);
+          })
+        ),
+        spaReview,
+        phase === "failed" || phase === "conflict" ? InlineFailure({
+          msg: phase === "conflict" ? "That time window just changed \u2014 pick again before confirming." : "Your booking wasn\u2019t confirmed \u2014 nothing is scheduled yet.",
+          retryAction: "booking.confirm",
+          retryLabel: phase === "conflict" ? "Re-check & confirm" : "Try again"
+        }) : null,
+        ActionButton({ variant: "btn--primary", label: spaBridge ? "Send booking request \u2014 no charge" : "Confirm booking", action: "booking.confirm", block: true, lg: true, visualId: "confirm-booking", disabled: holdBlocked, pending: phase === "pending", pendingLabel: "Sending\u2026" })
+      ])
+    ]);
+  }
+  var mount;
+  var shell;
+  var resizeObs;
+  var runtime;
+  var liveRetryPromise;
+  var careTransitionPromise;
+  var drawerScroll = 0;
+  var leavingFor = "";
+  var SETTLED_SIGN_IN_STATES = ["ready-signed-out", "ready-signed-in", "unavailable"];
+  function leaveForPublicEntry() {
+    if (leavingFor) return true;
+    var destination = publicEntryDestination();
+    if (!destination) return false;
+    leavingFor = destination;
+    globalThis.location.replace(destination);
+    return true;
+  }
+  function continueToCoreSignIn() {
+    if (state.route !== "auth.oidc" || state.oidc !== "ready-signed-out" || state.account !== "session-required") return false;
+    if (!landingEntryOpen(state.config) || coreOidcSignInJustStarted()) return false;
+    ACTIONS["auth.oidcSignIn"]();
+    return true;
+  }
+  function loadGrantedCareTransition() {
+    var envelope2 = state.moduleData.care;
+    var granted = state.config.dataMode === "fixture" && state.config.enabledModules.includes("care") && state.session.authenticated === true && state.session.hasCustomerScope === true && state.session.hasTenantScope === true && state.access && state.access.care && state.access.care.status === "granted";
+    if (!granted || !envelope2 || envelope2.phase !== "preflight") return;
+    var pending = runtime.loadAsync("care");
+    if (pending === careTransitionPromise) return;
+    careTransitionPromise = pending;
+    pending.then(function() {
+      if (careTransitionPromise === pending) careTransitionPromise = null;
+      render();
+    }, function() {
+      if (careTransitionPromise === pending) careTransitionPromise = null;
+      render();
+    });
+  }
+  function render() {
+    if (leavingFor || continueToCoreSignIn()) return;
+    var root = document.documentElement;
+    root.setAttribute("data-theme", state.config.theme);
+    root.setAttribute("data-mode", state.mode === "Dark" ? "dark" : "light");
+    var openDrawer2 = mount.querySelector(".drawer");
+    var drawerWasOpen = !!openDrawer2;
+    if (openDrawer2) drawerScroll = openDrawer2.scrollTop;
+    clear(mount);
+    if (runtime && state.config.dataMode !== "live") runtime.loadAll();
+    if (runtime) runtime.syncPreflight("care");
+    if (runtime) loadGrantedCareTransition();
+    var content = accountGateShown() ? AccountBootstrap() : renderRoute();
+    if (content && state.route !== lastRoute) content.classList.add("route-enter");
+    lastRoute = state.route;
+    shell = AppShell(content);
+    mount.appendChild(shell);
+    if (state.drawer === "booking") {
+      mount.appendChild(BookingDrawer());
+      var drawer = mount.querySelector(".drawer");
+      if (drawerWasOpen && drawer) {
+        drawer.classList.add("drawer--open-static");
+        var scrim = mount.querySelector(".scrim");
+        if (scrim) scrim.classList.add("scrim--static");
+        drawer.scrollTop = drawerScroll;
+      } else drawerScroll = 0;
+    } else drawerScroll = 0;
+    if (state.toast) mount.appendChild(h("div", { "class": "toast", "data-module": "toast", "data-visual-id": "toast" }, [h("span", { "class": "toast__dot" }), state.toast]));
+    applyResponsive();
+    positionNavPill();
+    var thread = mount.querySelector(".chat-thread");
+    if (thread) thread.scrollTop = thread.scrollHeight;
+  }
+  var lastPill = null;
+  var lastRoute = null;
+  function positionNavPill() {
+    var links = mount.querySelector(".nav-links");
+    var pill = links && links.querySelector("[data-nav-pill]");
+    if (!pill) {
+      lastPill = null;
+      return;
+    }
+    var active = links.querySelector(".nav-link--active");
+    if (!active || getComputedStyle(links).display === "none") {
+      pill.style.opacity = "0";
+      lastPill = null;
+      return;
+    }
+    var target = { left: active.offsetLeft, width: active.offsetWidth };
+    pill.style.opacity = "1";
+    if (lastPill) {
+      pill.style.transition = "none";
+      pill.style.width = lastPill.width + "px";
+      pill.style.transform = "translateX(" + lastPill.left + "px)";
+      pill.getBoundingClientRect();
+      pill.style.transition = "";
+    }
+    pill.style.width = target.width + "px";
+    pill.style.transform = "translateX(" + target.left + "px)";
+    lastPill = target;
+  }
+  function applyResponsive() {
+    if (resizeObs) resizeObs.disconnect();
+    var target = shell;
+    var apply = function(w) {
+      var nodes = [target];
+      var drawer = mount.querySelector(".drawer");
+      if (drawer) nodes.push(drawer);
+      nodes.forEach(function(node) {
+        node.classList.remove("vw-mobile", "vw-tablet", "vw-compact");
+        if (w <= 560) node.classList.add("vw-mobile");
+        else if (w <= 900) node.classList.add("vw-tablet");
+        if (w <= 1040) node.classList.add("vw-compact");
+      });
+    };
+    apply(shell.getBoundingClientRect().width);
+    resizeObs = new ResizeObserver(function(ents) {
+      apply(ents[0].contentRect.width);
+    });
+    resizeObs.observe(shell);
+  }
+  function retryRuntimeLoad() {
+    if (state.route === "care" && runtime) {
+      state.carePayloadState = "ready";
+      return reloadCareRuntime().catch(function() {
+        return null;
+      });
+    }
+    if (state.config.dataMode !== "live" || !runtime) {
+      setState({ view: "ready" });
+      return Promise.resolve();
+    }
+    if (liveRetryPromise) return liveRetryPromise;
+    state.view = "loading";
+    render();
+    liveRetryPromise = runtime.loadAllAsync().then(function() {
+      state.view = "ready";
+      if (continueToIntendedRoute()) return;
+      render();
+    }).catch(function(error2) {
+      state.view = state.config.errorMode === "fallback" ? "fallback" : "error";
+      console.error("[aircove] runtime retry failed", error2);
+      if (continueToIntendedRoute()) return;
+      render();
+    }).then(function() {
+      return runtime.settled();
+    }).then(function() {
+      render();
+    }).finally(function() {
+      liveRetryPromise = null;
+    });
+    return liveRetryPromise;
+  }
+  function resumeIntendedRoute() {
+    runtime.eachSettled(render);
+    if (!continueToIntendedRoute()) render();
+  }
+  function continueToIntendedRoute() {
+    if (leaveForPublicEntry()) return true;
+    if (!state.session.authenticated || state.account !== "ready") return false;
+    var intended = state.session.intendedRoute;
+    if (!intended && state.route === "auth.oidc") intended = state.config.defaultRoute || "orders.list";
+    if (!intended) return false;
+    state.session.intendedRoute = null;
+    go(intended, true);
+    return true;
+  }
+  function recheckRestoredSession(event) {
+    if (!event || !event.persisted || !customerPortalAccessRequired()) return;
+    if (leavingFor || !SETTLED_SIGN_IN_STATES.includes(state.oidc) || state.account === "resolving-customer") {
+      globalThis.location.reload();
+      return;
+    }
+    storedCoreOidcUser().then(function(user) {
+      if ((user && user.access_token || "") !== (state.session.accessToken || "")) globalThis.location.reload();
+    }, function() {
+      globalThis.location.reload();
+    });
+  }
+  function applyRenewedSession(user) {
+    if (!state.session.authenticated || !user || !user.access_token) return;
+    state.session.accessToken = user.access_token;
+    state.session.tokenType = user.token_type || "Bearer";
+  }
+  function endExpiredSession() {
+    if (!state.session.authenticated || leavingFor) return;
+    state.session.authenticated = false;
+    state.oidc = "ready-signed-out";
+    state.account = "session-required";
+    delete state.session.accessToken;
+    delete state.session.tokenType;
+    if (!isPublic(state.route)) state.session.intendedRoute = state.route;
+    if (leaveForPublicEntry()) return;
+    go(state.route, true);
+  }
+  function invalidateCareRuntime() {
+    if (!runtime) return null;
+    return runtime.invalidate("care");
+  }
+  function reloadCareRuntime() {
+    if (!runtime) return Promise.resolve(null);
+    var pending = runtime.reloadAsync("care");
+    render();
+    return pending.then(function(result) {
+      render();
+      return result;
+    }).catch(function(error2) {
+      render();
+      throw error2;
+    });
+  }
+  function reloadRuntimeModule(moduleId) {
+    if (!runtime) return Promise.reject(new Error("Portal runtime is not ready"));
+    var pending = runtime.reloadAsync(moduleId);
+    render();
+    return pending.then(function(result) {
+      render();
+      return result;
+    }).catch(function(error2) {
+      render();
+      throw error2;
+    });
+  }
+  document.addEventListener("DOMContentLoaded", function() {
+    mount = document.getElementById("app");
+    applyPortalConfig(readPortalConfig(mount));
+    runtime = new PortalRuntime({ state });
+    var signingIn = customerPortalAccessRequired();
+    if (signingIn) state.oidc = "checking-session";
+    onCoreOidcSessionChange(applyRenewedSession, endExpiredSession);
+    var loaded = runtime.loadAllAsync();
+    initRouter(render);
+    bindActions(mount);
+    globalThis.addEventListener("pageshow", recheckRestoredSession);
+    var fixture = currentFixture();
+    if (state.config.dataMode !== "live") {
+      loadLiveWeather(fixture && fixture.overview && fixture.overview.weather, state.config).then(function(live) {
+        if (live) render();
+      });
+    }
+    if (signingIn) {
+      render();
+      runtime.loadAsync("auth").then(function() {
+        if (leaveForPublicEntry()) return null;
+        render();
+        if (state.session.authenticated) return runtime.loadAsync("account").then(resumeIntendedRoute, resumeIntendedRoute);
+        return null;
+      }, render);
+    }
+    loaded.then(function() {
+      if (continueToIntendedRoute()) return;
+      render();
+    }).catch(function(error2) {
+      state.view = state.config.errorMode === "fallback" ? "fallback" : "error";
+      console.error("[aircove] runtime load failed", error2);
+      if (continueToIntendedRoute()) return;
+      render();
+    }).then(function() {
+      return runtime.settled();
+    }).then(function() {
+      render();
+    });
+  });
+  window.AircovePortal = { state, go, setState, ACTIONS, runtime: function() {
+    return runtime;
+  } };
+})();

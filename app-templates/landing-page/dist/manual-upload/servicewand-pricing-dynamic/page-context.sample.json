@@ -1,0 +1,18 @@
+{
+  "url": "/pricing-dynamic",
+  "template": {
+    "code": "SERVICEWAND_PRICING_DYNAMIC"
+  },
+  "enabledTemplates": [
+    "SERVICEWAND_PRICING_DYNAMIC",
+    "SECTION_01_HEADER_CORPORATE_REFERENCE",
+    "SECTION_02_PRICING_DYNAMIC_SERVICEWAND",
+    "SECTION_03_FOOTER_CORPORATE_REFERENCE"
+  ],
+  "values": {},
+  "organization": {
+    "code": "SYSTEM"
+  },
+  "excludeFromSeo": false,
+  "theme": "cyan"
+}

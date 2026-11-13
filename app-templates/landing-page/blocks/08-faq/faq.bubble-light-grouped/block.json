@@ -1,0 +1,355 @@
+{
+  "$schema": "lab-ui/block@1",
+  "id": "faq.bubble-light-grouped",
+  "category": "08-faq",
+  "title": "FAQ · bubble light grouped",
+  "description": "FAQ section organized into 4 categories x 7 questions (28 slots). Each question is an H3 inside a rounded bubble that expands using native <details>. Group labels are non-heading text. First question in each group ships open.",
+  "canonical": true,
+  "theme": "light",
+  "source": {
+    "primary": "tmp/Lorem ipsum/src/sections-3.jsx (FAQGrouped)",
+    "adapted_from": "v5 dark → light tokens. Switched to native <details> so the section works without JS.",
+    "decision": "PM lock 2026-05-21 — FAQ pattern = bubble grouped (light)"
+  },
+  "depends_on": {
+    "tokens": [
+      "--color-bg",
+      "--color-text",
+      "--color-heading",
+      "--color-gray-blue",
+      "--cta-secondary-fill",
+      "--cta-secondary-color",
+      "--color-white",
+      "--font-family",
+      "--font-mono",
+      "--container-width",
+      "--container-padding-x",
+      "--type-h2-size",
+      "--type-h2-weight",
+      "--type-lead-size"
+    ],
+    "other_blocks": []
+  },
+  "params": [
+    {
+      "code": "eyebrow",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum"
+    },
+    {
+      "code": "title",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum"
+    },
+    {
+      "code": "group_01_title",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum"
+    },
+    {
+      "code": "slot_01_01_q",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor"
+    },
+    {
+      "code": "slot_01_01_a",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure."
+    },
+    {
+      "code": "slot_01_02_q",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor"
+    },
+    {
+      "code": "slot_01_02_a",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud."
+    },
+    {
+      "code": "slot_01_03_q",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet, consectetur."
+    },
+    {
+      "code": "slot_01_03_a",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi."
+    },
+    {
+      "code": "slot_01_04_q",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet, consectetur."
+    },
+    {
+      "code": "slot_01_04_a",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam."
+    },
+    {
+      "code": "slot_01_05_q",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet, consectetur."
+    },
+    {
+      "code": "slot_01_05_a",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad."
+    },
+    {
+      "code": "slot_01_06_q",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet."
+    },
+    {
+      "code": "slot_01_06_a",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+    },
+    {
+      "code": "slot_01_07_q",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet."
+    },
+    {
+      "code": "slot_01_07_a",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+    },
+    {
+      "code": "group_02_title",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem"
+    },
+    {
+      "code": "slot_02_01_q",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor"
+    },
+    {
+      "code": "slot_02_01_a",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut."
+    },
+    {
+      "code": "slot_02_02_q",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet."
+    },
+    {
+      "code": "slot_02_02_a",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut."
+    },
+    {
+      "code": "slot_02_03_q",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet, consectetur."
+    },
+    {
+      "code": "slot_02_03_a",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis."
+    },
+    {
+      "code": "slot_02_04_q",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet."
+    },
+    {
+      "code": "slot_02_04_a",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+    },
+    {
+      "code": "slot_02_05_q",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet."
+    },
+    {
+      "code": "slot_02_05_a",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut."
+    },
+    {
+      "code": "slot_02_06_q",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet."
+    },
+    {
+      "code": "slot_02_06_a",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+    },
+    {
+      "code": "slot_02_07_q",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet."
+    },
+    {
+      "code": "slot_02_07_a",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+    },
+    {
+      "code": "group_03_title",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum"
+    },
+    {
+      "code": "slot_03_01_q",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor"
+    },
+    {
+      "code": "slot_03_01_a",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris."
+    },
+    {
+      "code": "slot_03_02_q",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet."
+    },
+    {
+      "code": "slot_03_02_a",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna."
+    },
+    {
+      "code": "slot_03_03_q",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet."
+    },
+    {
+      "code": "slot_03_03_a",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim."
+    },
+    {
+      "code": "slot_03_04_q",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor"
+    },
+    {
+      "code": "slot_03_04_a",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud."
+    },
+    {
+      "code": "slot_03_05_q",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet."
+    },
+    {
+      "code": "slot_03_05_a",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad."
+    },
+    {
+      "code": "slot_03_06_q",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet."
+    },
+    {
+      "code": "slot_03_06_a",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+    },
+    {
+      "code": "slot_03_07_q",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet."
+    },
+    {
+      "code": "slot_03_07_a",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+    },
+    {
+      "code": "group_04_title",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor"
+    },
+    {
+      "code": "slot_04_01_q",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet."
+    },
+    {
+      "code": "slot_04_01_a",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco."
+    },
+    {
+      "code": "slot_04_02_q",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet."
+    },
+    {
+      "code": "slot_04_02_a",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad."
+    },
+    {
+      "code": "slot_04_03_q",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet."
+    },
+    {
+      "code": "slot_04_03_a",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad."
+    },
+    {
+      "code": "slot_04_04_q",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor"
+    },
+    {
+      "code": "slot_04_04_a",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam."
+    },
+    {
+      "code": "slot_04_05_q",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit."
+    },
+    {
+      "code": "slot_04_05_a",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor."
+    },
+    {
+      "code": "slot_04_06_q",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet."
+    },
+    {
+      "code": "slot_04_06_a",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+    },
+    {
+      "code": "slot_04_07_q",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet."
+    },
+    {
+      "code": "slot_04_07_a",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+    }
+  ],
+  "preview": {
+    "390": "preview-390.png",
+    "1440": "preview-1440.png"
+  },
+  "notes": [
+    "Uses native <details> — section works without JS. block.js adds slot-hiding and an `is-open` mirror class.",
+    "First item in each group ships open so the section reads correctly on first paint, including when JS is disabled.",
+    "Empty groups auto-hide — admins can ship 1 group, 2 groups, or all 4 without touching markup.",
+    "Two-column grid on desktop, single column at ≤860px."
+  ]
+}

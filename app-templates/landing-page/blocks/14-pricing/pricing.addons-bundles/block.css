@@ -1,0 +1,289 @@
+/* lab-ui block · pricing.addons-bundles
+   Depends: 00-tokens/tokens.css. Light theme.
+   Visual identity differs from pricing.addons:
+     · horizontal rows grouped by category, not a card grid,
+     · per row: glyph marker, body, quantity meter, price column, CTA,
+     · groups have a kicker tag + heading + lede above each list. */
+
+.ab-addons {
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-family);
+}
+.ab-addons .container {
+  max-width: calc(var(--container-width) + var(--container-padding-x) * 2);
+  margin-inline: auto;
+  padding-inline: var(--container-padding-x);
+}
+
+.ab-top {
+  max-width: 54rem;
+  margin: 0 auto clamp(2.25rem, 4vw, 3rem);
+  text-align: center;
+}
+.ab-eyebrow {
+  margin: 0 0 12px;
+  font-family: var(--font-mono);
+  font-size: var(--type-eyebrow-size);
+  letter-spacing: var(--type-eyebrow-tracking);
+  text-transform: uppercase;
+  color: var(--color-text-accent);
+}
+.ab-title {
+  margin: 0 0 12px;
+  color: var(--color-heading);
+  font-size: var(--type-h2-size);
+  font-weight: var(--type-h2-weight);
+  line-height: var(--type-h2-leading);
+  letter-spacing: var(--type-h2-tracking);
+}
+.ab-lede {
+  margin: 0;
+  font-size: 1.0625rem;
+  line-height: 1.55;
+}
+
+.ab-groups {
+  display: grid;
+  gap: 36px;
+}
+
+.ab-group[data-group-visible="hide"] { display: none; }
+
+.ab-group-head {
+  display: grid;
+  gap: 6px;
+  margin-bottom: 14px;
+  max-width: 48rem;
+}
+.ab-group-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+  background: var(--cta-accent-soft);
+  color: var(--color-heading);
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  width: max-content;
+}
+.ab-group-title {
+  margin: 0;
+  color: var(--color-heading);
+  font-size: 1.375rem;
+  font-weight: 650;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+.ab-group-lede {
+  margin: 0;
+  color: var(--color-gray-blue);
+  font-size: 0.9375rem;
+  line-height: 1.5;
+}
+
+.ab-list {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-radius: var(--radius-card);
+  background: var(--color-gray-bg);
+  padding: 10px;
+}
+
+.ab-row {
+  display: grid;
+  grid-template-columns: 52px minmax(0, 1.5fr) minmax(110px, 0.7fr) minmax(110px, 0.6fr) auto;
+  align-items: center;
+  gap: 18px;
+  padding: 16px 18px;
+  border: 1px solid rgba(146, 170, 205, 0.22);
+  border-radius: var(--radius-card-sm);
+  background: var(--color-white);
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+.ab-row[data-addon-visible="hide"] { display: none; }
+.ab-row--featured {
+  border-color: var(--cta-accent);
+  box-shadow: 0 0 0 1px var(--cta-accent), 0 14px 32px -24px rgba(27, 29, 37, 0.28);
+}
+.ab-row--muted {
+  background: var(--color-gray-bg);
+  border-style: dashed;
+}
+@media (hover: hover) {
+  .ab-row:hover {
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-1);
+  }
+}
+
+.ab-row-marker {
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  background: linear-gradient(180deg, var(--cta-accent-soft), rgba(255,255,255,0.6));
+  color: var(--color-heading);
+  font-family: var(--font-mono);
+  font-size: 1.125rem;
+  font-weight: 700;
+  letter-spacing: 0;
+}
+.ab-row--featured .ab-row-marker {
+  background: var(--cta-accent);
+}
+
+.ab-row-body { min-width: 0; }
+.ab-row-name {
+  margin: 0 0 4px;
+  color: var(--color-heading);
+  font-size: 1rem;
+  font-weight: 650;
+  letter-spacing: -0.005em;
+}
+.ab-row-desc {
+  margin: 0;
+  font-size: 0.875rem;
+  line-height: 1.45;
+}
+
+.ab-row-meter {
+  display: grid;
+  gap: 2px;
+  align-content: center;
+  padding: 8px 12px;
+  border-left: 1px dashed rgba(146, 170, 205, 0.4);
+  border-right: 1px dashed rgba(146, 170, 205, 0.4);
+}
+.ab-meter-qty {
+  color: var(--color-heading);
+  font-family: var(--font-mono);
+  font-size: 1.125rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+.ab-meter-unit {
+  color: var(--color-gray-blue);
+  font-size: 0.75rem;
+  letter-spacing: 0.02em;
+}
+
+.ab-row-pricecol {
+  display: grid;
+  gap: 2px;
+  align-content: center;
+}
+.ab-row-price {
+  color: var(--color-heading);
+  font-family: var(--font-mono);
+  font-size: 1.125rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+.ab-row-priceunit {
+  color: var(--color-gray-blue);
+  font-size: 0.75rem;
+}
+
+.ab-row-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40px;
+  padding: 0 18px;
+  border-radius: var(--radius-pill);
+  background: var(--color-white);
+  border: 1px solid rgba(146, 170, 205, 0.35);
+  color: var(--color-heading);
+  font-size: 0.875rem;
+  font-weight: 650;
+  text-decoration: none;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+  white-space: nowrap;
+}
+.ab-row--featured .ab-row-cta {
+  background: var(--cta-secondary-fill);
+  border-color: transparent;
+  color: var(--cta-secondary-color, var(--color-white));
+}
+.ab-row-cta:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-glow-soft);
+}
+.ab-row-cta[aria-disabled="true"] {
+  cursor: not-allowed;
+  color: var(--color-gray-blue);
+  background: var(--color-gray-bg);
+  border-color: rgba(146, 170, 205, 0.28);
+  box-shadow: none;
+  opacity: 0.72;
+}
+.ab-row-cta[aria-disabled="true"]:hover {
+  transform: none;
+  box-shadow: none;
+}
+
+.ab-disclaimer {
+  margin: 28px 0 0;
+  color: var(--color-gray-blue);
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  text-align: center;
+}
+
+@media (max-width: 860px) {
+  .ab-row {
+    grid-template-columns: 44px minmax(0, 1fr) auto;
+    grid-template-areas:
+      "marker body body"
+      "meter  price cta";
+    column-gap: 12px;
+    row-gap: 12px;
+    padding: 14px;
+  }
+  .ab-row-marker { grid-area: marker; width: 44px; height: 44px; font-size: 1rem; }
+  .ab-row-body { grid-area: body; }
+  .ab-row-meter {
+    grid-area: meter;
+    border: 0;
+    padding: 0;
+    flex-direction: row;
+    display: flex;
+    gap: 6px;
+    align-items: baseline;
+  }
+  .ab-row-pricecol { grid-area: price; text-align: right; justify-self: end; }
+  .ab-row-cta { grid-area: cta; justify-self: end; }
+}
+@media (max-width: 480px) {
+  .ab-row {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "marker"
+      "body"
+      "meter"
+      "price"
+      "cta";
+  }
+  .ab-row-pricecol, .ab-row-cta { justify-self: stretch; text-align: left; }
+  .ab-row-cta { justify-content: center; }
+}
+
+/* ─── Accessibility ─────────────────────────────────────────── */
+.ab-row-cta:focus-visible {
+  outline: 2px solid var(--cta-accent);
+  outline-offset: 2px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .ab-addons *,
+  .ab-addons *::before,
+  .ab-addons *::after {
+    transition-duration: 0.01ms !important;
+  }
+}

@@ -1,0 +1,341 @@
+[
+  {
+    "code": "PORTAL_REQUEST_FORM_URL",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "PORTAL REQUEST FORM URL",
+        "DESCRIPTION": "Absolute https address of the published request-a-quote form. The primary button in the top bar opens it. Any other scheme is discarded and the button stays inert."
+      }
+    },
+    "value": "https://dev-1.servicewand.com/pages/SNOWLIMITLESS/request-quote"
+  },
+  {
+    "code": "PORTAL_WEATHER_CLIENT_ID",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "PORTAL WEATHER CLIENT ID",
+        "DESCRIPTION": "Xweather client ID for the service-area forecast on the home screen. It is visible in page source, as every Xweather browser credential is, so restrict its namespace in the Xweather account to the host that serves this page. The forecast is requested only while both this and PORTAL_WEATHER_CLIENT_SECRET hold a key; the # it ships with means not set, and the home screen then says the forecast is not set up."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "PORTAL_WEATHER_CLIENT_SECRET",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "PORTAL WEATHER CLIENT SECRET",
+        "DESCRIPTION": "Xweather client secret paired with PORTAL_WEATHER_CLIENT_ID. Xweather sends it from the browser, so it is visible in page source too; restrict the namespace to the host that serves this page. The forecast is requested only while both hold a key; the # it ships with means not set."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "PORTAL_MAPS_API_KEY",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "PORTAL MAPS API KEY",
+        "DESCRIPTION": "Google Maps browser key for the property map on the home screen. It is visible in page source, as every browser key is, so restrict it by HTTP referrer to this host and to the Maps JavaScript API and the Geocoding API. Addresses of properties without stored coordinates are sent to the Geocoding API. While it holds the # it ships with, no Google script is loaded and the home screen lists the properties without a map."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "PORTAL_MAPS_MAP_ID",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "PORTAL MAPS MAP ID",
+        "DESCRIPTION": "Optional Google Cloud map ID that styles the property map, created in the same Google Cloud project as PORTAL_MAPS_API_KEY. It is not a secret. While it holds the # it ships with, the map uses Google's default style."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "PORTAL_TIME_ZONE",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "PORTAL TIME ZONE",
+        "DESCRIPTION": "IANA time zone of the service organization, the same as its Organization.timeZone in Core, for example America/Vancouver. Recorded moments such as when a visit started or was completed, and which day is today, are shown in this zone whatever the viewer's device says. Planned visit windows are stored as local times and are shown as stored. A value that is not a time zone falls back to the viewer's device zone."
+      }
+    },
+    "value": "America/Vancouver"
+  },
+  {
+    "code": "PORTAL_TAXES_NOTE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "PORTAL TAXES NOTE",
+        "DESCRIPTION": "Customer portal copy shown under every quote price and total, which are the charges before taxes: the taxes are added when the customer accepts a quote and are shown on invoices. Translate it per language; an empty value shows the English default."
+      }
+    },
+    "value": {
+      "en": "Plus applicable taxes."
+    }
+  },
+  {
+    "code": "PORTAL_REQUEST_CONFIRM_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "PORTAL REQUEST CONFIRM TITLE",
+        "DESCRIPTION": "Title of the page the Confirm my request button of the first quote request email opens. Nothing is sent until the visitor presses the button on it. Translate it per language; an empty value shows the English default."
+      }
+    },
+    "value": {
+      "en": "Confirm your quote request"
+    }
+  },
+  {
+    "code": "PORTAL_REQUEST_CONFIRM_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "PORTAL REQUEST CONFIRM BODY",
+        "DESCRIPTION": "Line under the confirm title. Translate it per language; an empty value shows the English default."
+      }
+    },
+    "value": {
+      "en": "Confirm that you asked us for a quote, and we will start preparing it."
+    }
+  },
+  {
+    "code": "PORTAL_REQUEST_CONFIRM_BUTTON",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "PORTAL REQUEST CONFIRM BUTTON",
+        "DESCRIPTION": "Label of the button that confirms the quote request. Translate it per language; an empty value shows the English default."
+      }
+    },
+    "value": {
+      "en": "Confirm my request"
+    }
+  },
+  {
+    "code": "PORTAL_REQUEST_CANCEL_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "PORTAL REQUEST CANCEL TITLE",
+        "DESCRIPTION": "Title of the page the Unsubscribe link of the first quote request email opens. Nothing is sent until the visitor presses the button on it. Translate it per language; an empty value shows the English default."
+      }
+    },
+    "value": {
+      "en": "Cancel your quote request?"
+    }
+  },
+  {
+    "code": "PORTAL_REQUEST_CANCEL_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "PORTAL REQUEST CANCEL BODY",
+        "DESCRIPTION": "Line under the cancel title. Translate it per language; an empty value shows the English default."
+      }
+    },
+    "value": {
+      "en": "We will not prepare a quote, and you will receive no more emails about this request. This cannot be undone."
+    }
+  },
+  {
+    "code": "PORTAL_REQUEST_CANCEL_BUTTON",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "PORTAL REQUEST CANCEL BUTTON",
+        "DESCRIPTION": "Label of the button that cancels the quote request. Translate it per language; an empty value shows the English default."
+      }
+    },
+    "value": {
+      "en": "Cancel my request"
+    }
+  },
+  {
+    "code": "PORTAL_REQUEST_CONFIRMING",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "PORTAL REQUEST CONFIRMING",
+        "DESCRIPTION": "Shown while the confirmation is being sent and read back. Translate it per language; an empty value shows the English default."
+      }
+    },
+    "value": {
+      "en": "Confirming your request…"
+    }
+  },
+  {
+    "code": "PORTAL_REQUEST_CONFIRMED_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "PORTAL REQUEST CONFIRMED TITLE",
+        "DESCRIPTION": "Title of the page shown once a quote request is confirmed from its email. Translate it per language; an empty value shows the English default."
+      }
+    },
+    "value": {
+      "en": "Your email is confirmed"
+    }
+  },
+  {
+    "code": "PORTAL_REQUEST_CONFIRMED_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "PORTAL REQUEST CONFIRMED BODY",
+        "DESCRIPTION": "Line under the confirmed title. Translate it per language; an empty value shows the English default."
+      }
+    },
+    "value": {
+      "en": "Thank you. Your request is being processed, and we will be in touch."
+    }
+  },
+  {
+    "code": "PORTAL_REQUEST_CANCELLING",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "PORTAL REQUEST CANCELLING",
+        "DESCRIPTION": "Shown while the cancellation is being sent and read back. Translate it per language; an empty value shows the English default."
+      }
+    },
+    "value": {
+      "en": "Cancelling your request…"
+    }
+  },
+  {
+    "code": "PORTAL_REQUEST_CANCELLED_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "PORTAL REQUEST CANCELLED TITLE",
+        "DESCRIPTION": "Title of the page shown once a quote request is cancelled from the Unsubscribe link. Translate it per language; an empty value shows the English default."
+      }
+    },
+    "value": {
+      "en": "Your request was cancelled"
+    }
+  },
+  {
+    "code": "PORTAL_REQUEST_CANCELLED_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "PORTAL REQUEST CANCELLED BODY",
+        "DESCRIPTION": "Line under the cancelled title. Translate it per language; an empty value shows the English default."
+      }
+    },
+    "value": {
+      "en": "We will not prepare a quote, and no more emails will be sent about this request."
+    }
+  },
+  {
+    "code": "PORTAL_REQUEST_LINK_INVALID_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "PORTAL REQUEST LINK INVALID TITLE",
+        "DESCRIPTION": "Title shown when a confirmation or Unsubscribe link was already used or its request already left the waiting state. Translate it per language; an empty value shows the English default."
+      }
+    },
+    "value": {
+      "en": "This link is no longer valid"
+    }
+  },
+  {
+    "code": "PORTAL_REQUEST_LINK_INVALID_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "PORTAL REQUEST LINK INVALID BODY",
+        "DESCRIPTION": "Line under the invalid link title. Translate it per language; an empty value shows the English default."
+      }
+    },
+    "value": {
+      "en": "It may already have been used, or the request was already confirmed or cancelled."
+    }
+  },
+  {
+    "code": "PORTAL_REQUEST_LINK_FAILED_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "PORTAL REQUEST LINK FAILED TITLE",
+        "DESCRIPTION": "Title shown when the confirmation or cancellation could not be sent; the link stays usable. Translate it per language; an empty value shows the English default."
+      }
+    },
+    "value": {
+      "en": "We could not reach our system"
+    }
+  },
+  {
+    "code": "PORTAL_REQUEST_LINK_FAILED_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "PORTAL REQUEST LINK FAILED BODY",
+        "DESCRIPTION": "Line under the unreachable title. Translate it per language; an empty value shows the English default."
+      }
+    },
+    "value": {
+      "en": "Nothing was changed. Check your connection and try again."
+    }
+  },
+  {
+    "code": "PORTAL_REQUEST_LINK_RETRY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "PORTAL REQUEST LINK RETRY",
+        "DESCRIPTION": "Label of the button that sends the confirmation or cancellation again. Translate it per language; an empty value shows the English default."
+      }
+    },
+    "value": {
+      "en": "Try again"
+    }
+  },
+  {
+    "code": "PORTAL_REQUEST_LINK_UNCONFIRMED_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "PORTAL REQUEST LINK UNCONFIRMED TITLE",
+        "DESCRIPTION": "Title shown when the confirmation or cancellation was sent but the system has not recorded it. Translate it per language; an empty value shows the English default."
+      }
+    },
+    "value": {
+      "en": "We could not confirm that yet"
+    }
+  },
+  {
+    "code": "PORTAL_REQUEST_LINK_UNCONFIRMED_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "PORTAL REQUEST LINK UNCONFIRMED BODY",
+        "DESCRIPTION": "Line under the not confirmed yet title. Translate it per language; an empty value shows the English default."
+      }
+    },
+    "value": {
+      "en": "Our system has not recorded it. Check again in a moment. If this does not change, the request was already confirmed or cancelled."
+    }
+  },
+  {
+    "code": "PORTAL_REQUEST_LINK_CHECK_AGAIN",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "PORTAL REQUEST LINK CHECK AGAIN",
+        "DESCRIPTION": "Label of the button that reads the outcome again. Translate it per language; an empty value shows the English default."
+      }
+    },
+    "value": {
+      "en": "Check again"
+    }
+  }
+]

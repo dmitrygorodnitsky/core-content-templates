@@ -1,0 +1,241 @@
+{
+  "schemaVersion": 1,
+  "id": "calm-harbor-spa-staging",
+  "classification": "staging-bootstrap",
+  "execution": "requires-system-adapter",
+  "environment": "staging",
+  "organizationCode": "CALM_HARBOR_SPA_STAGING",
+  "operations": [
+    {
+      "key": "organization",
+      "kind": "organization",
+      "owner": "core",
+      "identity": { "code": "CALM_HARBOR_SPA_STAGING" },
+      "spec": { "name": "Calm Harbor Spa", "vertical": "beauty", "status": "active", "locality": "Austin, Texas", "theme": "beauty" }
+    },
+    {
+      "key": "studio-location",
+      "kind": "location",
+      "owner": "scheduling",
+      "dependsOn": ["organization"],
+      "identity": { "organizationId": "$ref:organization", "code": "CHS-AUSTIN-STUDIO" },
+      "spec": { "organizationId": "$ref:organization", "name": "Calm Harbor Spa", "line1": "214 Westfield Lane", "city": "Austin", "region": "TX", "postalCode": "78703", "country": "US", "timezone": "America/Chicago", "status": "active" }
+    },
+    {
+      "key": "service-type",
+      "kind": "product_type",
+      "owner": "catalog",
+      "dependsOn": ["organization"],
+      "identity": { "organizationId": "$ref:organization", "code": "CHS_SERVICE" },
+      "spec": { "organizationId": "$ref:organization", "code": "CHS_SERVICE", "name": "Spa service", "attributes": ["serviceCode", "category", "durationMinutes", "bookingStatus"] }
+    },
+    {
+      "key": "retail-type",
+      "kind": "product_type",
+      "owner": "catalog",
+      "dependsOn": ["organization"],
+      "identity": { "organizationId": "$ref:organization", "code": "CHS_RETAIL" },
+      "spec": { "organizationId": "$ref:organization", "code": "CHS_RETAIL", "name": "Spa retail product", "attributes": ["sku", "category", "fulfillmentStatus", "retailStatus"] }
+    },
+    {
+      "key": "membership-type",
+      "kind": "product_type",
+      "owner": "catalog",
+      "dependsOn": ["organization"],
+      "identity": { "organizationId": "$ref:organization", "code": "CHS_MEMBERSHIP" },
+      "spec": { "organizationId": "$ref:organization", "code": "CHS_MEMBERSHIP", "name": "Spa membership", "attributes": ["membershipCode", "billingInterval", "benefits", "membershipStatus"] }
+    },
+    {
+      "key": "package-type",
+      "kind": "product_type",
+      "owner": "catalog",
+      "dependsOn": ["organization"],
+      "identity": { "organizationId": "$ref:organization", "code": "CHS_PACKAGE" },
+      "spec": { "organizationId": "$ref:organization", "code": "CHS_PACKAGE", "name": "Spa treatment package", "attributes": ["packageCode", "includedServiceCodes", "sessionCount", "packageStatus"] }
+    },
+    {
+      "key": "service-grounding-massage",
+      "kind": "catalog_product",
+      "owner": "catalog",
+      "dependsOn": ["organization", "service-type"],
+      "identity": { "organizationId": "$ref:organization", "typeId": "$ref:service-type", "code": "CHS-GROUNDING-MASSAGE" },
+      "spec": { "organizationId": "$ref:organization", "typeId": "$ref:service-type", "code": "CHS-GROUNDING-MASSAGE", "name": "Grounding massage", "category": "massage", "durationMinutes": 75, "bookingStatus": "active" }
+    },
+    {
+      "key": "service-custom-facial",
+      "kind": "catalog_product",
+      "owner": "catalog",
+      "dependsOn": ["organization", "service-type"],
+      "identity": { "organizationId": "$ref:organization", "typeId": "$ref:service-type", "code": "CHS-CUSTOM-FACIAL" },
+      "spec": { "organizationId": "$ref:organization", "typeId": "$ref:service-type", "code": "CHS-CUSTOM-FACIAL", "name": "Custom facial", "category": "facial", "durationMinutes": 60, "bookingStatus": "active" }
+    },
+    {
+      "key": "service-harbor-reset",
+      "kind": "catalog_product",
+      "owner": "catalog",
+      "dependsOn": ["organization", "service-type"],
+      "identity": { "organizationId": "$ref:organization", "typeId": "$ref:service-type", "code": "CHS-HARBOR-RESET" },
+      "spec": { "organizationId": "$ref:organization", "typeId": "$ref:service-type", "code": "CHS-HARBOR-RESET", "name": "Harbor reset", "category": "package-service", "durationMinutes": 135, "bookingStatus": "active" }
+    },
+    {
+      "key": "service-seasonal-body-ritual",
+      "kind": "catalog_product",
+      "owner": "catalog",
+      "dependsOn": ["organization", "service-type"],
+      "identity": { "organizationId": "$ref:organization", "typeId": "$ref:service-type", "code": "CHS-SEASONAL-BODY-RITUAL" },
+      "spec": { "organizationId": "$ref:organization", "typeId": "$ref:service-type", "code": "CHS-SEASONAL-BODY-RITUAL", "name": "Seasonal body ritual", "category": "body", "durationMinutes": 90, "bookingStatus": "active" }
+    },
+    {
+      "key": "membership-harbor",
+      "kind": "catalog_product",
+      "owner": "catalog",
+      "dependsOn": ["organization", "membership-type"],
+      "identity": { "organizationId": "$ref:organization", "typeId": "$ref:membership-type", "code": "CHS-HARBOR-MEMBERSHIP" },
+      "spec": { "organizationId": "$ref:organization", "typeId": "$ref:membership-type", "code": "CHS-HARBOR-MEMBERSHIP", "name": "Harbor Membership", "billingInterval": "monthly", "membershipStatus": "active" }
+    },
+    {
+      "key": "package-harbor-reset-series",
+      "kind": "catalog_product",
+      "owner": "catalog",
+      "dependsOn": ["organization", "package-type", "service-harbor-reset"],
+      "identity": { "organizationId": "$ref:organization", "typeId": "$ref:package-type", "code": "CHS-HARBOR-RESET-SERIES" },
+      "spec": { "organizationId": "$ref:organization", "typeId": "$ref:package-type", "code": "CHS-HARBOR-RESET-SERIES", "name": "Harbor reset series", "includedServiceIds": ["$ref:service-harbor-reset"], "sessionCount": 4, "packageStatus": "active" }
+    },
+    {
+      "key": "retail-body-oil",
+      "kind": "catalog_product",
+      "owner": "catalog",
+      "dependsOn": ["organization", "retail-type"],
+      "identity": { "organizationId": "$ref:organization", "typeId": "$ref:retail-type", "sku": "CHS-BODY-001" },
+      "spec": { "organizationId": "$ref:organization", "typeId": "$ref:retail-type", "sku": "CHS-BODY-001", "name": "Harbor body oil", "category": "body-care", "fulfillmentStatus": "active", "retailStatus": "active" }
+    },
+    {
+      "key": "retail-bath-soak",
+      "kind": "catalog_product",
+      "owner": "catalog",
+      "dependsOn": ["organization", "retail-type"],
+      "identity": { "organizationId": "$ref:organization", "typeId": "$ref:retail-type", "sku": "CHS-BATH-001" },
+      "spec": { "organizationId": "$ref:organization", "typeId": "$ref:retail-type", "sku": "CHS-BATH-001", "name": "Mineral bath soak", "category": "bath", "fulfillmentStatus": "active", "retailStatus": "active" }
+    },
+    {
+      "key": "retail-body-cream",
+      "kind": "catalog_product",
+      "owner": "catalog",
+      "dependsOn": ["organization", "retail-type"],
+      "identity": { "organizationId": "$ref:organization", "typeId": "$ref:retail-type", "sku": "CHS-BODY-002" },
+      "spec": { "organizationId": "$ref:organization", "typeId": "$ref:retail-type", "sku": "CHS-BODY-002", "name": "Restorative body cream", "category": "body-care", "fulfillmentStatus": "active", "retailStatus": "active" }
+    },
+    {
+      "key": "retail-cleansing-balm",
+      "kind": "catalog_product",
+      "owner": "catalog",
+      "dependsOn": ["organization", "retail-type"],
+      "identity": { "organizationId": "$ref:organization", "typeId": "$ref:retail-type", "sku": "CHS-SKIN-001" },
+      "spec": { "organizationId": "$ref:organization", "typeId": "$ref:retail-type", "sku": "CHS-SKIN-001", "name": "Gentle cleansing balm", "category": "skin", "fulfillmentStatus": "active", "retailStatus": "active" }
+    },
+    {
+      "key": "retail-hydration-mist",
+      "kind": "catalog_product",
+      "owner": "catalog",
+      "dependsOn": ["organization", "retail-type"],
+      "identity": { "organizationId": "$ref:organization", "typeId": "$ref:retail-type", "sku": "CHS-SKIN-002" },
+      "spec": { "organizationId": "$ref:organization", "typeId": "$ref:retail-type", "sku": "CHS-SKIN-002", "name": "Hydration mist", "category": "skin", "fulfillmentStatus": "active", "retailStatus": "active" }
+    },
+    {
+      "key": "price-grounding-massage",
+      "kind": "price",
+      "owner": "pricing",
+      "dependsOn": ["organization", "service-grounding-massage"],
+      "identity": { "organizationId": "$ref:organization", "catalogProductId": "$ref:service-grounding-massage", "currency": "USD" },
+      "spec": { "organizationId": "$ref:organization", "catalogProductId": "$ref:service-grounding-massage", "currency": "USD", "amountMinor": 14500, "interval": "one_time", "status": "active" }
+    },
+    {
+      "key": "price-custom-facial",
+      "kind": "price",
+      "owner": "pricing",
+      "dependsOn": ["organization", "service-custom-facial"],
+      "identity": { "organizationId": "$ref:organization", "catalogProductId": "$ref:service-custom-facial", "currency": "USD" },
+      "spec": { "organizationId": "$ref:organization", "catalogProductId": "$ref:service-custom-facial", "currency": "USD", "amountMinor": 13000, "interval": "one_time", "status": "active" }
+    },
+    {
+      "key": "price-harbor-reset",
+      "kind": "price",
+      "owner": "pricing",
+      "dependsOn": ["organization", "service-harbor-reset"],
+      "identity": { "organizationId": "$ref:organization", "catalogProductId": "$ref:service-harbor-reset", "currency": "USD" },
+      "spec": { "organizationId": "$ref:organization", "catalogProductId": "$ref:service-harbor-reset", "currency": "USD", "amountMinor": 24500, "interval": "one_time", "status": "active" }
+    },
+    {
+      "key": "price-seasonal-body-ritual",
+      "kind": "price",
+      "owner": "pricing",
+      "dependsOn": ["organization", "service-seasonal-body-ritual"],
+      "identity": { "organizationId": "$ref:organization", "catalogProductId": "$ref:service-seasonal-body-ritual", "currency": "USD" },
+      "spec": { "organizationId": "$ref:organization", "catalogProductId": "$ref:service-seasonal-body-ritual", "currency": "USD", "amountMinor": 16500, "interval": "one_time", "status": "active" }
+    },
+    {
+      "key": "price-harbor-membership",
+      "kind": "price",
+      "owner": "pricing",
+      "dependsOn": ["organization", "membership-harbor"],
+      "identity": { "organizationId": "$ref:organization", "catalogProductId": "$ref:membership-harbor", "currency": "USD" },
+      "spec": { "organizationId": "$ref:organization", "catalogProductId": "$ref:membership-harbor", "currency": "USD", "amountMinor": 1800, "interval": "month", "status": "active" }
+    },
+    {
+      "key": "customer-elena-rios",
+      "kind": "customer_account",
+      "owner": "identity-profile",
+      "dependsOn": ["organization"],
+      "identity": { "organizationId": "$ref:organization", "externalKey": "CHS-STG-ELENA-RIOS" },
+      "spec": { "organizationId": "$ref:organization", "externalKey": "CHS-STG-ELENA-RIOS", "firstName": "Elena", "lastName": "Rios", "email": "elena.rios@example.test", "phone": "+1-512-555-0182", "status": "active" }
+    },
+    {
+      "key": "specialist-maya-chen",
+      "kind": "specialist",
+      "owner": "scheduling",
+      "dependsOn": ["organization", "studio-location"],
+      "identity": { "organizationId": "$ref:organization", "externalKey": "CHS-STG-MAYA-CHEN" },
+      "spec": { "organizationId": "$ref:organization", "locationId": "$ref:studio-location", "externalKey": "CHS-STG-MAYA-CHEN", "name": "Maya Chen", "role": "Senior massage therapist", "status": "active" }
+    },
+    {
+      "key": "appointment-grounding-massage",
+      "kind": "appointment",
+      "owner": "scheduling",
+      "dependsOn": ["organization", "customer-elena-rios", "specialist-maya-chen", "studio-location", "service-grounding-massage"],
+      "identity": { "organizationId": "$ref:organization", "externalKey": "CHS-STG-APPT-1042" },
+      "spec": { "organizationId": "$ref:organization", "externalKey": "CHS-STG-APPT-1042", "customerId": "$ref:customer-elena-rios", "specialistId": "$ref:specialist-maya-chen", "locationId": "$ref:studio-location", "serviceId": "$ref:service-grounding-massage", "startsAt": "2026-01-15T14:30:00-06:00", "endsAt": "2026-01-15T15:45:00-06:00", "status": "in_progress" }
+    },
+    {
+      "key": "appointment-custom-facial",
+      "kind": "appointment",
+      "owner": "scheduling",
+      "dependsOn": ["organization", "customer-elena-rios", "specialist-maya-chen", "studio-location", "service-custom-facial"],
+      "identity": { "organizationId": "$ref:organization", "externalKey": "CHS-STG-APPT-1050" },
+      "spec": { "organizationId": "$ref:organization", "externalKey": "CHS-STG-APPT-1050", "customerId": "$ref:customer-elena-rios", "specialistId": "$ref:specialist-maya-chen", "locationId": "$ref:studio-location", "serviceId": "$ref:service-custom-facial", "startsAt": "2026-01-16T11:00:00-06:00", "endsAt": "2026-01-16T12:00:00-06:00", "status": "scheduled" }
+    },
+    {
+      "key": "order-grounding-massage",
+      "kind": "order",
+      "owner": "commerce",
+      "dependsOn": ["organization", "customer-elena-rios", "appointment-grounding-massage", "service-grounding-massage"],
+      "identity": { "organizationId": "$ref:organization", "externalKey": "CHS-STG-ORDER-1042" },
+      "spec": { "organizationId": "$ref:organization", "externalKey": "CHS-STG-ORDER-1042", "customerId": "$ref:customer-elena-rios", "appointmentId": "$ref:appointment-grounding-massage", "items": [{ "catalogProductId": "$ref:service-grounding-massage", "quantity": 1, "unitAmountMinor": 14500, "currency": "USD" }], "status": "in_progress" }
+    },
+    {
+      "key": "care-plan-elena",
+      "kind": "care_plan",
+      "owner": "beauty-care",
+      "dependsOn": ["organization", "customer-elena-rios", "specialist-maya-chen", "package-harbor-reset-series"],
+      "identity": { "organizationId": "$ref:organization", "customerId": "$ref:customer-elena-rios", "code": "CHS-ELENA-ROUTINE-2026" },
+      "spec": { "organizationId": "$ref:organization", "customerId": "$ref:customer-elena-rios", "preferredSpecialistId": "$ref:specialist-maya-chen", "packageId": "$ref:package-harbor-reset-series", "code": "CHS-ELENA-ROUTINE-2026", "status": "active" }
+    },
+    {
+      "key": "care-task-facial-checkin",
+      "kind": "care_task",
+      "owner": "beauty-care",
+      "dependsOn": ["organization", "customer-elena-rios", "care-plan-elena", "appointment-custom-facial"],
+      "identity": { "organizationId": "$ref:organization", "externalKey": "CHS-STG-TASK-FACIAL-CHECKIN" },
+      "spec": { "organizationId": "$ref:organization", "externalKey": "CHS-STG-TASK-FACIAL-CHECKIN", "customerId": "$ref:customer-elena-rios", "carePlanId": "$ref:care-plan-elena", "appointmentId": "$ref:appointment-custom-facial", "label": "Complete your facial check-in", "status": "open" }
+    }
+  ]
+}

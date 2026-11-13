@@ -1,0 +1,143 @@
+{
+ "optimistic": 0,
+ "code": "SNOW_SERVICE_SEASON",
+ "nls": {
+  "en": {
+   "NAME": "Service Season"
+  }
+ },
+ "workflow": {
+  "id": 18,
+  "code": "SW_FS_WS_PROJECT"
+ },
+ "organization": {
+  "optimistic": 3,
+  "id": 9,
+  "code": "SERVICE_WAND_WINTER_SERVICES_CANADA"
+ },
+ "attributeOrder": [
+  {
+   "SEASON_PROFILE": [
+    {
+     "attributeCode": "SEASON_YEAR",
+     "visible": true
+    },
+    {
+     "attributeCode": "SEASON_START_DATE",
+     "visible": true
+    },
+    {
+     "attributeCode": "SEASON_END_DATE",
+     "visible": true
+    },
+    {
+     "attributeCode": "SEASON_STATUS",
+     "visible": true
+    }
+   ]
+  }
+ ],
+ "attributes": [
+  {
+   "code": "SEASON_STATUS",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "en": {
+     "NAME": "Season Status"
+    }
+   },
+   "options": [
+    {
+     "value": "PLANNING",
+     "nls": {
+      "en": {
+       "NAME": "Planning"
+      }
+     }
+    },
+    {
+     "value": "ACTIVE",
+     "nls": {
+      "en": {
+       "NAME": "Active"
+      }
+     }
+    },
+    {
+     "value": "CLOSED",
+     "nls": {
+      "en": {
+       "NAME": "Closed"
+      }
+     }
+    },
+    {
+     "value": "ARCHIVED",
+     "nls": {
+      "en": {
+       "NAME": "Archived"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "code": "SEASON_YEAR",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "en": {
+     "NAME": "Season Year"
+    }
+   },
+   "options": []
+  },
+  {
+   "code": "SEASON_END_DATE",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.time.LocalDate",
+   "nls": {
+    "en": {
+     "NAME": "Season End Date"
+    }
+   },
+   "options": []
+  },
+  {
+   "code": "SEASON_START_DATE",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.time.LocalDate",
+   "nls": {
+    "en": {
+     "NAME": "Season Start Date"
+    }
+   },
+   "options": []
+  }
+ ],
+ "id": 4,
+ "isAbstract": false,
+ "attributeGroups": [
+  {
+   "code": "SEASON_PROFILE",
+   "nls": {
+    "en": {
+     "NAME": "Season Profile"
+    }
+   }
+  }
+ ]
+}

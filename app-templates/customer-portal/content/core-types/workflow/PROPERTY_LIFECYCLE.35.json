@@ -1,0 +1,438 @@
+{
+ "code": "PROPERTY_LIFECYCLE",
+ "initialState": {
+  "id": 159,
+  "code": "INITIAL"
+ },
+ "nls": {
+  "en": {
+   "NAME": "Property Lifecycle"
+  }
+ },
+ "entityType": "com.pixelnation.rm.domain.Resource",
+ "organization": {
+  "optimistic": 7,
+  "id": 8,
+  "code": "SERVICE_WAND_WINTER_SERVICES"
+ },
+ "id": 35,
+ "states": [
+  {
+   "style": {
+    "xPos": 1212,
+    "yPos": 136.33333333333334
+   },
+   "id": 160,
+   "code": "ACTIVE",
+   "nls": {
+    "ar": {
+     "DESCRIPTION": "<p></p>"
+    },
+    "en": {
+     "NAME": "Active",
+     "DESCRIPTION": "<p>The property is active and can participate in applicable sales, service, routing, scheduling, and operational processes.</p>"
+    },
+    "he": {
+     "DESCRIPTION": "<p></p>"
+    }
+   },
+   "events": [
+    {
+     "id": 326,
+     "code": "ACTIVE-INACTIVE",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Deactivate",
+       "DESCRIPTION": "<p>Deactivates the property while preserving its information and operational history.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     },
+     "targets": [
+      {
+       "id": 161,
+       "code": "INACTIVE"
+      }
+     ]
+    },
+    {
+     "id": 522,
+     "code": "ACTIVE-BLACKLISTED",
+     "nls": {
+      "ar": {
+       "NAME": "القائمة السوداء"
+      },
+      "en": {
+       "NAME": "Blacklist"
+      },
+      "es": {
+       "NAME": "Lista negra"
+      },
+      "fr": {
+       "NAME": "Liste noire"
+      },
+      "he": {
+       "NAME": "רשימה שחורה"
+      },
+      "kk": {
+       "NAME": "Қара тізім"
+      },
+      "ru": {
+       "NAME": "Чёрный список"
+      },
+      "zh": {
+       "NAME": "黑名单"
+      }
+     },
+     "targets": [
+      {
+       "id": 257,
+       "code": "BLACKLISTED"
+      }
+     ]
+    },
+    {
+     "orderIndex": 1,
+     "id": 856,
+     "code": "ACTIVE-INCOMPLETE",
+     "nls": {
+      "en": {
+       "NAME": "Mark as Invalid"
+      }
+     },
+     "targets": [
+      {
+       "id": 472,
+       "code": "INCOMPLETE"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "style": {
+    "xPos": 1612,
+    "yPos": 249.66666666666666
+   },
+   "id": 257,
+   "code": "BLACKLISTED",
+   "nls": {
+    "ar": {
+     "NAME": "محظور",
+     "DESCRIPTION": "<p></p>"
+    },
+    "en": {
+     "NAME": "Blacklisted",
+     "DESCRIPTION": "<p>The property has been excluded from service and is not eligible for regular operational use.</p>"
+    },
+    "es": {
+     "NAME": "Lista negra",
+     "DESCRIPTION": "<p>La propiedad ha sido excluida del servicio y no es elegible para uso operativo regular.</p>"
+    },
+    "fr": {
+     "NAME": "Liste noire",
+     "DESCRIPTION": "<p>La propriété a été exclue du service et n’est pas éligible à une utilisation opérationnelle régulière.</p>"
+    },
+    "he": {
+     "NAME": "ברשימה שחורה",
+     "DESCRIPTION": "<p></p>"
+    },
+    "kk": {
+     "NAME": "Қара тізімге енгізілген",
+     "DESCRIPTION": "<p>Бұл mүлік қызмет көрсетуден шығарылған және тұрақты операциялық пайдалану үшін жарамсыз.</p>"
+    },
+    "ru": {
+     "NAME": "В чёрном списке",
+     "DESCRIPTION": "<p>Эта недвижимость исключена из обслуживания и не пригодна для регулярной эксплуатации.</p>"
+    },
+    "zh": {
+     "NAME": "被列入黑名单",
+     "DESCRIPTION": "<p>该物业已被排除在服务之外，且不具备常规运营用途的资格。</p>"
+    }
+   },
+   "events": [
+    {
+     "id": 523,
+     "code": "BLACKLISTED-INACTIVE",
+     "nls": {
+      "ar": {
+       "NAME": "إزالة من القائمة السوداء"
+      },
+      "en": {
+       "NAME": "Remove from Blacklist"
+      },
+      "es": {
+       "NAME": "Quitar de la lista negra"
+      },
+      "fr": {
+       "NAME": "Retirer de la liste noire"
+      },
+      "he": {
+       "NAME": "הסר מהרשימה השחורה"
+      },
+      "kk": {
+       "NAME": "Қара тізімнен алып тастау"
+      },
+      "ru": {
+       "NAME": "Удалить из черного списка"
+      },
+      "zh": {
+       "NAME": "从黑名单中移除"
+      }
+     },
+     "targets": [
+      {
+       "id": 161,
+       "code": "INACTIVE"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "style": {
+    "xPos": 412,
+    "yPos": 50
+   },
+   "id": 161,
+   "code": "INACTIVE",
+   "nls": {
+    "ar": {
+     "DESCRIPTION": "<p></p>"
+    },
+    "en": {
+     "NAME": "Inactive",
+     "DESCRIPTION": "<p>The property is retained in the system but is not currently available for regular operational use.</p>"
+    },
+    "he": {
+     "DESCRIPTION": "<p></p>"
+    }
+   },
+   "events": [
+    {
+     "orderIndex": 1,
+     "id": 855,
+     "code": "INACTIVE-INCOMPLETE",
+     "nls": {
+      "en": {
+       "NAME": "Mark as Invalid"
+      }
+     },
+     "targets": [
+      {
+       "id": 472,
+       "code": "INCOMPLETE"
+      }
+     ]
+    },
+    {
+     "id": 327,
+     "code": "INACTIVE-ACTIVE",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Activate",
+       "DESCRIPTION": "<p>Reactivates an inactive property and makes it available for operational use again.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     },
+     "targets": [
+      {
+       "id": 160,
+       "code": "ACTIVE"
+      }
+     ]
+    },
+    {
+     "id": 527,
+     "code": "INACTIVE-BLACKLISTED",
+     "nls": {
+      "ar": {
+       "NAME": "القائمة السوداء"
+      },
+      "en": {
+       "NAME": "Blacklist"
+      },
+      "es": {
+       "NAME": "Lista Negra"
+      },
+      "fr": {
+       "NAME": "Liste Noire"
+      },
+      "he": {
+       "NAME": "רשימה שחורה"
+      },
+      "kk": {
+       "NAME": "Қара Тізім"
+      },
+      "ru": {
+       "NAME": "Черный Список"
+      },
+      "zh": {
+       "NAME": "黑名单"
+      }
+     },
+     "targets": [
+      {
+       "id": 257,
+       "code": "BLACKLISTED"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "style": {},
+   "id": 472,
+   "code": "INCOMPLETE",
+   "nls": {
+    "en": {
+     "NAME": "Invalid"
+    }
+   },
+   "events": [
+    {
+     "orderIndex": 0,
+     "id": 854,
+     "code": "INCOMPLETE-INACTIVE",
+     "nls": {
+      "en": {
+       "NAME": "Mark Fixed"
+      }
+     },
+     "targets": [
+      {
+       "id": 161,
+       "code": "INACTIVE"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "style": {
+    "xPos": 12,
+    "yPos": 273
+   },
+   "id": 159,
+   "code": "INITIAL",
+   "nls": {
+    "ar": {
+     "NAME": "مبدئي",
+     "DESCRIPTION": "<p></p>"
+    },
+    "en": {
+     "NAME": "Initial",
+     "DESCRIPTION": "<p>The property has been created but has not yet been made available for operational use.</p>"
+    },
+    "es": {
+     "NAME": "Inicial"
+    },
+    "fr": {
+     "NAME": "Initial"
+    },
+    "he": {
+     "NAME": "התחלה",
+     "DESCRIPTION": "<p></p>"
+    },
+    "kk": {
+     "NAME": "Алғашқы"
+    },
+    "ru": {
+     "NAME": "Начальный"
+    },
+    "zh": {
+     "NAME": "初始"
+    }
+   },
+   "events": [
+    {
+     "orderIndex": 0,
+     "id": 850,
+     "code": "INITIAL-ACTIVE",
+     "nls": {
+      "en": {
+       "NAME": "Activate"
+      }
+     },
+     "targets": [
+      {
+       "id": 160,
+       "code": "ACTIVE"
+      }
+     ]
+    },
+    {
+     "orderIndex": 0,
+     "id": 853,
+     "code": "INITIAL-INCOMPLETE",
+     "nls": {
+      "en": {
+       "NAME": "No Service Area (automatic)"
+      }
+     },
+     "targets": [
+      {
+       "id": 472,
+       "code": "INCOMPLETE"
+      }
+     ]
+    },
+    {
+     "orderIndex": 1,
+     "id": 857,
+     "code": "INITIAL-INACTIVE",
+     "nls": {
+      "en": {
+       "NAME": "Service Area set (automatic)"
+      }
+     },
+     "targets": [
+      {
+       "id": 161,
+       "code": "INACTIVE"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "style": {
+    "xPos": 812,
+    "yPos": 143
+   },
+   "id": 239,
+   "code": "INSPECTION-REQUIRED",
+   "nls": {
+    "en": {
+     "NAME": "Inspection Required (retired)",
+     "DESCRIPTION": "<p>Retired on 2026-11-11: no event leads here, and it is kept only because the state history of older properties references it.</p>"
+    }
+   },
+   "events": []
+  },
+  {
+   "style": {
+    "xPos": 412,
+    "yPos": 279.6666666666667
+   },
+   "id": 318,
+   "code": "PLAN_ADJUSTED",
+   "nls": {
+    "en": {
+     "NAME": "Plan Adjusted (retired)",
+     "DESCRIPTION": "<p>Retired on 2026-11-11: no event leads here, and it is kept only because the state history of older properties references it.</p>"
+    }
+   },
+   "events": []
+  }
+ ]
+}

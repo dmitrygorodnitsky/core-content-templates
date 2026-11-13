@@ -1,0 +1,173 @@
+{
+ "optimistic": 16,
+ "code": "SERVICE_AGREEMENT",
+ "nls": {
+  "en": {
+   "NAME": "Service Agreement"
+  }
+ },
+ "workflow": {
+  "id": 53,
+  "code": "SERVICE_AGREEMENT_LIFECYCLE"
+ },
+ "attributeOrder": [
+  {
+   "default": []
+  },
+  {
+   "CONTRACT_SCOPE": [
+    {
+     "attributeCode": "CLIENT",
+     "visible": true
+    },
+    {
+     "attributeCode": "ORDERS",
+     "visible": true
+    },
+    {
+     "attributeCode": "EFFECTIVE_DATE",
+     "visible": true
+    },
+    {
+     "attributeCode": "TERM_START_DATE",
+     "visible": true
+    },
+    {
+     "attributeCode": "TERM_END_DATE",
+     "visible": true
+    }
+   ]
+  }
+ ],
+ "organization": {
+  "optimistic": 7,
+  "id": 8,
+  "code": "SERVICE_WAND_WINTER_SERVICES"
+ },
+ "attributes": [
+  {
+   "code": "ORDERS",
+   "required": true,
+   "multiselect": true,
+   "freeValue": false,
+   "unique": false,
+   "className": "com.pixelnation.bill.domain.Order",
+   "nls": {
+    "en": {
+     "NAME": "Approved Quotations"
+    }
+   },
+   "options": [],
+   "entityTypes": [
+    {
+     "value": 6
+    },
+    {
+     "value": 5
+    }
+   ]
+  },
+  {
+   "code": "TERM_END_DATE",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.time.LocalDate",
+   "nls": {
+    "en": {
+     "NAME": "Term End Date"
+    }
+   },
+   "options": []
+  },
+  {
+   "code": "TERM_START_DATE",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.time.LocalDate",
+   "nls": {
+    "en": {
+     "NAME": "Term Start Date"
+    }
+   },
+   "options": []
+  },
+  {
+   "code": "EFFECTIVE_DATE",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.time.LocalDate",
+   "nls": {
+    "en": {
+     "NAME": "Effective Date"
+    }
+   },
+   "options": []
+  },
+  {
+   "code": "CLIENT",
+   "required": true,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "com.pixelnation.account.domain.Account",
+   "nls": {
+    "en": {
+     "NAME": "Client"
+    }
+   },
+   "options": [],
+   "entityTypes": [
+    {
+     "value": 2
+    }
+   ]
+  }
+ ],
+ "id": 17,
+ "isAbstract": false,
+ "attributeGroups": [
+  {
+   "code": "CONTRACT_SCOPE",
+   "nls": {
+    "ar": {
+     "NAME": "نطاق العقد ومدته",
+     "DESCRIPTION": "اختر العميل وعروض الأسعار المعتمدة المطلوبة أولاً، ثم حدد تواريخ السريان ومدة الخدمة وشروط العقد."
+    },
+    "en": {
+     "NAME": "Contract Scope & Term",
+     "DESCRIPTION": "Select the required client and approved quotations first, then define effective dates, the service term and contract conditions."
+    },
+    "es": {
+     "NAME": "Alcance y plazo del contrato",
+     "DESCRIPTION": "Seleccione primero el cliente y las cotizaciones aprobadas obligatorias; después defina las fechas, el plazo y las condiciones."
+    },
+    "fr": {
+     "NAME": "Périmètre et durée du contrat",
+     "DESCRIPTION": "Sélectionnez d’abord le client et les devis approuvés obligatoires, puis précisez les dates, la durée et les conditions."
+    },
+    "he": {
+     "NAME": "היקף ותקופת החוזה",
+     "DESCRIPTION": "יש לבחור תחילה את הלקוח והצעות המחיר המאושרות הנדרשים, ולאחר מכן להגדיר תאריכים, תקופה ותנאים."
+    },
+    "kk": {
+     "NAME": "Шарт ауқымы мен мерзімі",
+     "DESCRIPTION": "Алдымен міндетті клиент пен бекітілген ұсыныстарды таңдаңыз, содан кейін күшіне ену күндерін, қызмет мерзімі мен шарт талаптарын көрсетіңіз."
+    },
+    "ru": {
+     "NAME": "Предмет и срок договора",
+     "DESCRIPTION": "Сначала выберите обязательные клиента и утверждённые предложения, затем укажите даты действия, период обслуживания и условия договора."
+    },
+    "zh": {
+     "NAME": "合同范围与期限",
+     "DESCRIPTION": "请先选择必填客户和已批准报价，再确定生效日期、服务期限及合同条款。"
+    }
+   }
+  }
+ ]
+}
