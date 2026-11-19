@@ -1,0 +1,21 @@
+{
+  "checkedAt": "2026-11-17T13:11:17.713349+00:00",
+  "status": "staged-transfer-complete",
+  "verifiedSaveOperations": 733,
+  "supplementalSensorDefinitions": 2,
+  "attemptedSaveOperations": 751,
+  "entryCounts": {
+    "deployed": 328,
+    "deferred": 3,
+    "reused": 23
+  },
+  "totalEntries": 354,
+  "blockers": [],
+  "deferred": [
+    "Backend: production OpenAI secret and dependent AI plan configuration.",
+    "Later, by user decision: WINTER_CONTRACT and WINTER_INVOICE. Source archives retrieved and statically checked; production upload, JDBC setup and PDF rendering deferred (not a transfer blocker)."
+  ],
+  "paymentEnabled": false,
+  "schedulesEnabled": false,
+  "serversChanged": true
+}

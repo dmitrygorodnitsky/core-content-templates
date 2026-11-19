@@ -1,0 +1,260 @@
+{
+  "status": "planning-only-no-Core-writes",
+  "sourceOfTruth": {
+    "configuration": "dev-1",
+    "mergedScripts": "local-consolidated-package"
+  },
+  "organizationMappings": {
+    "SERVICE_WAND_WINTER_SERVICES": "WINTER_SERVICES",
+    "SERVICE_WAND_WINTER_SERVICES_CANADA": "WINTER_SERVICES_CA",
+    "SNOWLIMITLESS": "WINTER_SERVICES",
+    "SERVICEWAND": "SERVICEWAND",
+    "SERVICEWAND_SOFTWARE": "SERVICEWAND_SOFTWARE"
+  },
+  "catalogOwnerOverrides": {
+    "SNOWLIMITLESS": "E255F8B2_C72E_489E_B5A2_0BAFD0493B90",
+    "SERVICEWAND": "SERVICEWAND"
+  },
+  "roleCodeMappings": {
+    "SW_FS_WS_CUSTOMER_PORTAL": "CUSTOMER_PORTAL"
+  },
+  "reports": {
+    "WINTER_CONTRACT": "WINTER_SERVICES",
+    "WINTER_INVOICE": "WINTER_SERVICES"
+  },
+  "schedules": {
+    "includeDisabled": {
+      "INVOICE_PAYMENT_REMINDERS": "INVOICE_LIFECYCLE_WORKFLOW.runReminders",
+      "SNOW_VISIT_ORDERS": "INVOICE_LIFECYCLE_WORKFLOW.runVisits"
+    },
+    "exclude": [
+      "SNOW_PORTAL_TAG_RECONCILE",
+      "SNOW_SUPPORT_TICKET_THREADS"
+    ],
+    "replacementWorkflowCheck": "deferred"
+  },
+  "paymentEnabled": false,
+  "organizationAliases": {
+    "LSRC": "E255F8B2_C72E_489E_B5A2_0BAFD0493B90"
+  },
+  "urlTransformation": {
+    "sourceOrigin": "https://dev-1.servicewand.com",
+    "targetOrigin": "https://prod.servicewand.com",
+    "preservePathQueryAndFragment": true,
+    "pageAvailability": "not-verified"
+  },
+  "numericIdBindings": false,
+  "unresolvedSettings": [],
+  "typedReferenceReplacements": {
+    "core/dictionary-type|AI_AWARE": {
+      "targetEntity": "core/dictionary-type",
+      "resolveBy": "code",
+      "expectedOwner": "SYSTEM",
+      "replacements": {
+        "<AI_TEXT_TYPE_ID>": "AI_TEXT",
+        "<AI_VIDEO_TYPE_ID>": "AI_VIDEO",
+        "<AI_AUDIO_TYPE_ID>": "AI_AUDIO",
+        "<AI_PUBLIC_CHAT_TYPE_ID>": "AI_PUBLIC_CHAT"
+      },
+      "scope": "attributes.entityTypes only; preserve other constraints and service selections"
+    },
+    "core-svc/appointment-type|SNOW_SERVICE_VISIT": {
+      "targetEntity": "core-rm/resource-type",
+      "resolveBy": "code",
+      "expectedOwner": "WINTER_SERVICES",
+      "attributes": [
+        "RESOURCE"
+      ],
+      "replacements": {
+        "SW_FS_WS_PROPERTY_SITE": "SNOW_REMOVAL_PROPERTY"
+      },
+      "scope": "Only listed attributes.entityTypes; preserve required, multiselect and other constraints"
+    },
+    "core/document-type|SNOW_SEASONAL_CONTRACT": {
+      "targetEntity": "core-rm/resource-type",
+      "resolveBy": "code",
+      "expectedOwner": "WINTER_SERVICES",
+      "attributes": [
+        "SITES",
+        "PRIMARY_SITE"
+      ],
+      "replacements": {
+        "SW_FS_WS_PROPERTY_SITE": "SNOW_REMOVAL_PROPERTY"
+      },
+      "scope": "Only listed attributes.entityTypes; preserve required, multiselect and other constraints"
+    }
+  },
+  "scriptOwnership": {
+    "scope": "All core/script entries, including templates",
+    "assignments": {
+      "MAPPINGS_ORDER": "SYSTEM",
+      "RESOURCE_MEDIA_LIBRARY": "SYSTEM",
+      "WINTER_SERVICES_AGREEMENT_WORKFLOW_UTILITIES": "WINTER_SERVICES",
+      "WINTER_SERVICES_BULK_APPROVE_QUOTES_DISPATCH": "WINTER_SERVICES",
+      "WINTER_SERVICES_BULK_REQUESTS": "WINTER_SERVICES",
+      "WINTER_SERVICES_CONTRACT_SOURCES": "WINTER_SERVICES",
+      "WINTER_SERVICES_PORTAL_PROPERTY_TAG_SYNC": "WINTER_SERVICES",
+      "WINTER_SERVICES_PORTAL_QUOTATION_READY": "WINTER_SERVICES",
+      "WINTER_SERVICES_PORTAL_QUOTATION_UPDATED": "WINTER_SERVICES",
+      "WINTER_SERVICES_PORTAL_QUOTE_ACCOUNT": "WINTER_SERVICES",
+      "WINTER_SERVICES_PORTAL_QUOTE_REQUEST": "WINTER_SERVICES",
+      "WINTER_SERVICES_PORTAL_TAG_SYNC": "WINTER_SERVICES",
+      "WINTER_SERVICES_PROPERTY_LINK_GRANT": "WINTER_SERVICES",
+      "WINTER_SERVICES_PROPERTY_OPERATIONS": "WINTER_SERVICES",
+      "WINTER_SERVICES_PROPERTY_PLAN": "WINTER_SERVICES",
+      "WINTER_SERVICES_PROPERTY_PLAN_ML": "WINTER_SERVICES",
+      "WINTER_SERVICE_QUOTATION_CREATOR": "WINTER_SERVICES",
+      "WINTER_SERVICE_QUOTATION_PROCESSING": "WINTER_SERVICES",
+      "WINTER_SERVICE_QUOTATION_READY": "WINTER_SERVICES",
+      "WINTER_SERVICE_QUOTATION_REJECTED": "WINTER_SERVICES",
+      "WINTER_SERVICE_QUOTATION_REVIEW": "WINTER_SERVICES",
+      "WINTER_SERVICE_QUOTATION_UPDATED": "WINTER_SERVICES",
+      "WINTER_SERVICE_QUOTATION_VERIFY_EMAIL": "WINTER_SERVICES",
+      "WINTER_SERVICE_REGION_AI": "WINTER_SERVICES",
+      "WINTER_SERVICE_REGION_WORKFLOW_UTILS": "WINTER_SERVICES",
+      "MAPPINGS_DOCUMENT": "SYSTEM",
+      "WINTER_SERVICES_PORTAL_ACCESS": "WINTER_SERVICES",
+      "WINTER_SERVICES_PORTAL_AGREEMENT_READY": "WINTER_SERVICES",
+      "WINTER_SERVICES_PORTAL_QUOTATION_DECISIONS_CONFIRMED": "WINTER_SERVICES",
+      "WINTER_SERVICES_PORTAL_USER_PROVISION": "WINTER_SERVICES",
+      "WINTER_SERVICE_AGREEMENT_CHANGES_REQUESTED": "WINTER_SERVICES",
+      "WINTER_SERVICE_AGREEMENT_READY": "WINTER_SERVICES",
+      "WINTER_SERVICE_CONTRACT_DETAILS_RECEIVED": "WINTER_SERVICES",
+      "PLAN_SUBSCRIPTION_DRAFT": "SERVICEWAND",
+      "PLAN_SUBSCRIPTION_ONBOARDING_MODEL": "SERVICEWAND",
+      "PLAN_SUBSCRIPTION_PAYMENT": "SERVICEWAND",
+      "PLAN_SUBSCRIPTION_WORKFLOW": "SERVICEWAND",
+      "WINTER_SERVICE_QUOTATION_DECISIONS_CONFIRMED": "WINTER_SERVICES",
+      "INVOICE_LIFECYCLE_WORKFLOW": "SYSTEM",
+      "ORDER_LIFECYCLE_WORKFLOW": "SYSTEM",
+      "WINTER_SERVICES_BULK_VISIT_ORDERS_DISPATCH": "WINTER_SERVICES",
+      "WINTER_SERVICES_VISIT_CREW_SNAPSHOT": "WINTER_SERVICES",
+      "WINTER_SERVICE_QUOTATION_CHANGES_REQUESTED": "WINTER_SERVICES",
+      "WINTER_SERVICES_CUSTOMER_INVOICE_PAYMENT": "WINTER_SERVICES",
+      "WINTER_SERVICES_INVOICE_CARD_PAYMENT": "WINTER_SERVICES",
+      "WINTER_SERVICES_INVOICE_PAYMENT_REMINDER": "WINTER_SERVICES",
+      "WINTER_SERVICES_PROPERTY_WORKFLOW_UTILS": "WINTER_SERVICES",
+      "ACCOUNT_MEDIA_LIBRARY": "SYSTEM",
+      "WINTER_SERVICES_PORTAL_SERVICE_TAG_SYNC": "WINTER_SERVICES",
+      "WINTER_SERVICES_VISIT_CREW_NAMES": "WINTER_SERVICES",
+      "WINTER_SERVICES_CUSTOMER_SUPPORT_TICKET": "WINTER_SERVICES",
+      "WINTER_SERVICES_SUPPORT_TICKET_THREAD": "WINTER_SERVICES",
+      "WINTER_SERVICES_CUSTOMER_LOGIN_CHANGED": "WINTER_SERVICES",
+      "WINTER_SERVICES_CUSTOMER_PROFILE_APPLY": "WINTER_SERVICES",
+      "WINTER_SERVICES_CUSTOMER_PROFILE_UPDATE": "WINTER_SERVICES",
+      "PROJECT_MEDIA_LIBRARY": "SYSTEM",
+      "TASK_MEDIA_LIBRARY": "SYSTEM",
+      "WINTER_SERVICES_ROUTE_CHAT_LIFECYCLE": "WINTER_SERVICES",
+      "APPOINTMENT_MEDIA_LIBRARY": "SYSTEM",
+      "ORGANIZATION_MEDIA_LIBRARY_MANAGEMENT_UTILS": "SYSTEM"
+    },
+    "sharedReasons": {
+      "RESOURCE_MEDIA_LIBRARY": "Shared entity media library; retain platform availability for workflows in multiple domains.",
+      "ACCOUNT_MEDIA_LIBRARY": "Shared entity media library; retain platform availability for workflows in multiple domains.",
+      "PROJECT_MEDIA_LIBRARY": "Shared entity media library; retain platform availability for workflows in multiple domains.",
+      "TASK_MEDIA_LIBRARY": "Shared entity media library; retain platform availability for workflows in multiple domains.",
+      "APPOINTMENT_MEDIA_LIBRARY": "Shared entity media library; retain platform availability for workflows in multiple domains.",
+      "ORGANIZATION_MEDIA_LIBRARY_MANAGEMENT_UTILS": "Shared entity media library; retain platform availability for workflows in multiple domains.",
+      "MAPPINGS_ORDER": "Shared Order mapping definition; retain platform visibility.",
+      "MAPPINGS_DOCUMENT": "Shared Document mapping definition; retain platform visibility.",
+      "ORDER_LIFECYCLE_WORKFLOW": "Contains explicit subscription and winter-service order branches. Subscription checks and tax handling must remain visible to SERVICEWAND.",
+      "INVOICE_LIFECYCLE_WORKFLOW": "Contains subscription payment handling (PLAN_SUBSCRIPTION_DRAFT) and winter-service invoice, item, reminder and visit logic."
+    },
+    "existingCodePolicy": "Change owner/update existing definition by stable code; do not duplicate or hardcode numeric IDs.",
+    "executionPolicy": "Do not change run-as, method permissions, capabilities or business logic. Definition ownership is not execution organization.",
+    "validation": "Static review only. Verify organization-scoped lookup for workflow, bulk-action, scheduled and cross-organization calls before Core import."
+  },
+  "transferExclusions": [
+    {
+      "entity": "core/script",
+      "code": "WINTER_SERVICES_QUOTATION_ORDER_UTILITIES",
+      "sourceCodePattern": "^(WINTER_SERVICES|SNOW)_QUOTATION_ORDER_UTILITIES(_V[0-9]+)?$",
+      "reason": "Only retired GENERAL_FSM_ORDER and historical scripts reference this family. Current order types use ORDER_LIFECYCLE. Preserve rollback files locally; do not merge retired behavior or remap its ADMIN permissions."
+    },
+    {
+      "entity": "core/workflow",
+      "code": "GENERAL_FSM_ORDER",
+      "reason": "Retired 2026-11-09; history/rollback only; already absent from transfer registry."
+    },
+    {
+      "entity": "core/organization-type",
+      "code": "OPERATOR",
+      "reason": "Replaced for new onboarding by existing SERVICE_PROVIDER. Do not migrate existing organizations automatically."
+    }
+  ],
+  "deleteMarkerPolicy": {
+    "fields": [
+      "name",
+      "description",
+      "nls.*.NAME",
+      "nls.*.DESCRIPTION"
+    ],
+    "caseInsensitive": true,
+    "action": "Block import pending explicit replacement decision; do not remove the marker or substitute a type automatically."
+  },
+  "excludedPatches": [
+    "app-templates/customer-portal/scripts/plan-subscription/onboarding/optional-quotation-expiration.json"
+  ],
+  "onboardingOrganizationType": {
+    "code": "SERVICE_PROVIDER",
+    "targetOrganization": "WINTER_SERVICES",
+    "source": "dev-1",
+    "existingProductionType": "reuse-and-update-by-code",
+    "defaultDictionary": "GENERAL_COMMUNICATION",
+    "existingFrozenPlans": "unchanged",
+    "evidence": "service-provider-compatibility-2026-11-17.json"
+  },
+  "excludedBulkActions": [
+    {
+      "targetEntityType": "com.pixelnation.common.domain.Document",
+      "script": "WINTER_SERVICES_AGREEMENT_WORKFLOW_UTILITIES",
+      "function": "sendLegacyQuotations",
+      "reason": "Approved exclusion: target transition retired. Keep retryOperations and Order round send action."
+    }
+  ],
+  "runtimeTenantScope": {
+    "decision": "MULTI_TENANT",
+    "status": "implemented-local-tested-two-organizations",
+    "rule": "Support any authorized customer organization. Never use a hardcoded customer code, name or ID as authorization. Script definition ownership is not runtime tenant scope.",
+    "requirements": [
+      "Derive scope from authenticated organization or a server-validated Magic Link/workflow entity; never trust a submitted organizationId alone.",
+      "Retain account ownership, entity organization, tag and method permission checks.",
+      "Resolve background execution and service identity within the validated entity organization; no fallback to a fixed customer.",
+      "Constrain reconciliation scans to an explicitly authorized execution scope.",
+      "Verify two different customer organizations succeed independently and cross-organization access is rejected."
+    ],
+    "evidence": "tenant-scope-audit-2026-11-17.json"
+  },
+  "deferredNativeRequirements": {
+    "core/dictionary|SNOW_REMOVAL_AI_PLAN": {
+      "owner": "backend",
+      "reason": "Backend configures the production OpenAI secret. Defer the dependent AI configuration until it resolves; not a blocker for the main transfer."
+    },
+    "core-rpt/report|WINTER_CONTRACT": {
+      "owner": "report-follow-up",
+      "reason": "Original dev-1 archive retrieved and statically checked. Production upload deferred by the user; not a transfer blocker. Production JDBC setup and PDF rendering remain for later."
+    },
+    "core-rpt/report|WINTER_INVOICE": {
+      "owner": "report-follow-up",
+      "reason": "Original dev-1 archive retrieved and statically checked. Production upload deferred by the user; not a transfer blocker. Production JDBC setup and PDF rendering remain for later."
+    }
+  },
+  "sensorDefinitionTransfer": {
+    "definitionsFile": "sensor-definitions-2026-11-17.json",
+    "identity": "SensorDefinition.code; resolve ResourceType and SensorType on target by code",
+    "saveEndpoint": "/core-rm/api/sensor-definition/save.json",
+    "resourceCollectionPolicy": "SensorDefinition owns resourceType. Verify inverse ResourceType.sensorDefinitions; omit this orphan-removal collection from ResourceType saves.",
+    "definitions": [
+      "TRUCK_GEOLOCATION",
+      "VEHICLE_GEO_LOCATION"
+    ]
+  },
+  "platformDependencyImports": {
+    "RESOURCE_MEDIA_LIBRARY": {
+      "organization": "SYSTEM",
+      "source": "Exact dev-1 script; same source as package",
+      "reason": "Required by WORKFORCE_LIFECYCLE and absent on prod",
+      "preserveMetadata": true
+    }
+  }
+}

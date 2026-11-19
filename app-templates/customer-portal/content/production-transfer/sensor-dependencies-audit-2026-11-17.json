@@ -1,0 +1,31 @@
+{
+  "checkedAt": "2026-11-17T12:30:57.131785+00:00",
+  "serversChanged": false,
+  "scope": "CREW / VEHICLE sensor dependency inspection",
+  "findings": [
+    {
+      "code": "TRUCK_GEOLOCATION",
+      "resourceType": "CREW",
+      "sensorType": "GEO_LOCATION",
+      "defaultScript": null,
+      "presentOnProd": false,
+      "sensorTypePresentOnProd": true
+    },
+    {
+      "code": "VEHICLE_GEO_LOCATION",
+      "resourceType": "VEHICLE",
+      "sensorType": "GEO_LOCATION",
+      "defaultScript": null,
+      "presentOnProd": false,
+      "sensorTypePresentOnProd": true
+    }
+  ],
+  "existingSharedDefinition": {
+    "code": "MOBILE_RESOURCE_GEO_LOCATION",
+    "resourceType": "MOBILE_RESOURCE",
+    "sensorType": "GEO_LOCATION",
+    "presentOnBoth": true
+  },
+  "nextStep": "Resolve ResourceType and SensorType by code on prod; create the two missing SensorDefinitions through the native sensor-definition API, read back, then resume dependent ResourceType phases. Do not replace the orphan-removal sensorDefinitions collection blindly.",
+  "remainingUncertainty": "The prior CREW collection-save failure is not proven fixed by this read-only inspection."
+}

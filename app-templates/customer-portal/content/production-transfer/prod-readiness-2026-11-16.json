@@ -1,0 +1,258 @@
+{
+  "checkedAt": "2026-11-16T13:47:15.261Z",
+  "devCheckedAt": "2026-11-16T13:47:27.687Z",
+  "ready": false,
+  "summary": {
+    "total": 181,
+    "rows": 240,
+    "byAction": {
+      "reuse-system": 29,
+      "create": 151,
+      "reuse-existing": 1
+    },
+    "byCategory": {
+      "Скрипт": 41,
+      "Тип": 94,
+      "Шаблон": 20,
+      "Workflow": 26
+    },
+    "localScripts": 60,
+    "systemScriptMatches": 12,
+    "systemScriptDifferences": 6
+  },
+  "blockers": [
+    {
+      "title": "Выбрать организации prod",
+      "detail": "В конфиге подписки остаются SERVICEWAND и SERVICE_WAND_WINTER_SERVICES_CANADA, а на prod есть WINTER_SERVICES / WINTER_SERVICES_CA и SERVICE_WAND_OPS. Это не автоматические замены. Нужны продавец подписки, родитель CA и оператор портала."
+    },
+    {
+      "title": "Убрать привязку портала к dev-организации",
+      "detail": "В скриптах остаётся жёстко заданный SNOWLIMITLESS. На prod такой организации нет. Нужно согласованно настроить эти проверки для целевого оператора; одного изменения владельца скрипта недостаточно."
+    },
+    {
+      "title": "Сверить общие скрипты в SYSTEM",
+      "detail": "WINTER_SERVICE_QUOTATION_CREATOR, WINTER_SERVICE_REGION_WORKFLOW_UTILS, WINTER_SERVICE_QUOTATION_PROCESSING, WINTER_SERVICE_QUOTATION_REJECTED, WINTER_SERVICE_QUOTATION_REVIEW, ORGANIZATION_MEDIA_LIBRARY_MANAGEMENT_UTILS. Не перезаписываем их. Сравнить нужные методы и поведение с платформой: часть локальных реализаций отличается."
+    },
+    {
+      "title": "Проверить Client и тип создаваемой организации",
+      "detail": "CUSTOMER в SYSTEM prod не имеет родителей, атрибутов и workflow из dev. OPERATOR тоже отличается. Видимость SYSTEM решает доступность определения, но не добавляет отсутствующие настройки."
+    },
+    {
+      "title": "Подготовить данные и настройки среды",
+      "detail": "На prod нет продуктов, ProductType и форм нашего флоу. Для подписки нужны каталог и цены, Entitlements, настройки налогов/сезона, адреса портала и входа. URL dev-1 нельзя переносить как рабочие prod-настройки."
+    },
+    {
+      "title": "Настроить права, массовые действия и расписания",
+      "detail": "Пакет типов/скриптов/workflow сам по себе не переносит роли, новые P_SCRIPT_X, bulk-привязки и задания. Их проверяем отдельным шагом; расписания и оплату при загрузке не включаем."
+    }
+  ],
+  "loadOrder": [
+    {
+      "title": "1. Повторно используем SYSTEM",
+      "detail": "Сопоставить по типу сущности и коду существующие определения SYSTEM. Зафиксировать их prod ID. Не копировать только ради иерархии организаций; спорные настройки согласовать без перезаписи."
+    },
+    {
+      "title": "2. Выбираем организации и состав релиза",
+      "detail": "Определить продавца, Winter Services CA и оператора; решить, нужны ли Routes, инспекции и техника. Подготовить таблицу dev → prod для кодов организаций и ID."
+    },
+    {
+      "title": "3. Загружаем основу типов",
+      "detail": "Категории скриптов, необходимые справочники, базовые/абстрактные типы и их родители. Циклические связи между типами и workflow разрешать в два прохода: сначала определения, затем ссылки."
+    },
+    {
+      "title": "4. Загружаем зависимости и скрипты",
+      "detail": "Общие media-библиотеки переиспользуем из SYSTEM. Затем недостающие helpers, исполнители и оркестраторы. Для маршрутов TASK_MEDIA_LIBRARY должен быть доступен раньше обработчика маршрута. Скрипты пока не запускать."
+    },
+    {
+      "title": "5. Связываем workflow и типы",
+      "detail": "Загрузить workflow с новыми кодами скриптов, затем привязать типы и обновить ссылки атрибутов/родителей по prod ID. Не переносить числовые ID dev напрямую."
+    },
+    {
+      "title": "6. Настраиваем данные и доступ",
+      "detail": "Каталог/цены, Entitlements без выдачи грантов, роли и bulk-actions с новыми кодами, адреса и необходимые настройки среды. Проверить область организаций и SYSTEM."
+    },
+    {
+      "title": "7. Проверяем флоу до включения",
+      "detail": "Проверить котировку → договор → заказ/счёт, Property, портал и подписку без оплаты; отдельно права и повторы. Только после принятия результата решать о расписаниях и оплате."
+    }
+  ],
+  "notes": [
+    "Проверка только чтением dev-1 и prod. Загрузки в Core не было.",
+    "SYSTEM глобален внутри среды; сущности, существующие только на dev-1, не появляются на prod автоматически.",
+    "Сравнение типов выполнено по доступным полям и контрактам; ID разных сред не считаются совпадением. Совпадение кода не доказывает совместимость.",
+    "Количество сущностей считается без повторов между флоу; таблица показывает общие зависимости в каждом использующем их флоу.",
+    "Владельцы в таблице — текущее состояние dev-1/prod. Новые коды скриптов взяты из локального пакета; на dev-1 нормализация ещё не опубликована."
+  ],
+  "conflicts": [
+    {
+      "code": "WINTER_SERVICE_QUOTATION_CREATOR",
+      "entity": "core/script",
+      "devOwner": "SYSTEM",
+      "prodOwner": "SYSTEM",
+      "action": "reuse-system",
+      "differences": [
+        "тело скрипта",
+        "метаданные / методы / capabilities"
+      ]
+    },
+    {
+      "code": "WINTER_SERVICE_REGION_WORKFLOW_UTILS",
+      "entity": "core/script",
+      "devOwner": "SYSTEM",
+      "prodOwner": "SYSTEM",
+      "action": "reuse-system",
+      "differences": [
+        "тело скрипта",
+        "метаданные / методы / capabilities",
+        "категория"
+      ]
+    },
+    {
+      "code": "WINTER_SERVICE_QUOTATION_PROCESSING",
+      "entity": "core/script",
+      "devOwner": "SYSTEM",
+      "prodOwner": "SYSTEM",
+      "action": "reuse-system",
+      "differences": [
+        "тело скрипта"
+      ]
+    },
+    {
+      "code": "WINTER_SERVICE_QUOTATION_REJECTED",
+      "entity": "core/script",
+      "devOwner": "SYSTEM",
+      "prodOwner": "SYSTEM",
+      "action": "reuse-system",
+      "differences": [
+        "тело скрипта"
+      ]
+    },
+    {
+      "code": "WINTER_SERVICE_QUOTATION_REVIEW",
+      "entity": "core/script",
+      "devOwner": "SYSTEM",
+      "prodOwner": "SYSTEM",
+      "action": "reuse-system",
+      "differences": [
+        "тело скрипта"
+      ]
+    },
+    {
+      "code": "CUSTOMER",
+      "entity": "core-acct/account-type",
+      "devOwner": "SYSTEM",
+      "prodOwner": "SYSTEM",
+      "action": "reuse-system",
+      "differences": [
+        "нет атрибута MANAGEMENT_COMPANY",
+        "родительские типы",
+        "workflow"
+      ]
+    },
+    {
+      "code": "ORGANIZATION",
+      "entity": "core-acct/account-type",
+      "devOwner": "SYSTEM",
+      "prodOwner": "SYSTEM",
+      "action": "reuse-system",
+      "differences": [
+        "workflow"
+      ]
+    },
+    {
+      "code": "ORGANIZATION_MEDIA_LIBRARY_MANAGEMENT_UTILS",
+      "entity": "core/script",
+      "devOwner": "SYSTEM",
+      "prodOwner": "SYSTEM",
+      "action": "reuse-system",
+      "differences": [
+        "тело скрипта"
+      ]
+    },
+    {
+      "code": "AI_AWARE",
+      "entity": "core/dictionary-type",
+      "devOwner": "SYSTEM",
+      "prodOwner": "SYSTEM",
+      "action": "reuse-system",
+      "differences": [
+        "не заполнены ссылки dev: VIDEO_GENERATION_SERVICE",
+        "не заполнены ссылки dev: DEFAULT_TRANSLATION_SERVICE",
+        "не заполнены ссылки dev: ASK_SERVICE",
+        "не заполнены ссылки dev: DEFAULT_ASK_SERVICE",
+        "не заполнены ссылки dev: DEFAULT_VIDEO_GENERATION_SERVICE",
+        "не заполнены ссылки dev: VIDEO_TRANSCRIPTION_SERVICE",
+        "не заполнены ссылки dev: DEFAULT_AUDIO_GENERATION_SERVICE",
+        "настройки атрибута AUDIO_GENERATION_SERVICE",
+        "не заполнены ссылки dev: IMAGE_TRANSCRIPTION_SERVICE",
+        "не заполнены ссылки dev: AUDIO_TRANSCRIPTION_SERVICE",
+        "нет атрибута DEFAULT_VECTORIZATION_SERVICE",
+        "нет атрибута VECTORIZATION_SERVICE",
+        "не заполнены ссылки dev: TRANSLATION_SERVICE"
+      ]
+    },
+    {
+      "code": "AI_BASE",
+      "entity": "core/dictionary-type",
+      "devOwner": "SYSTEM",
+      "prodOwner": "SYSTEM",
+      "action": "reuse-system",
+      "differences": [
+        "настройки атрибута MODEL",
+        "настройки атрибута ENDPOINT",
+        "настройки атрибута SYSTEM_MESSAGE",
+        "настройки атрибута TEMPERATURE",
+        "дополнительный атрибут ROUTER_SCRIPT"
+      ]
+    },
+    {
+      "code": "AI_REALTIME_VOICE",
+      "entity": "core/dictionary-type",
+      "devOwner": "SYSTEM",
+      "prodOwner": "SYSTEM",
+      "action": "reuse-system",
+      "differences": [
+        "нет атрибута REASONING_EFFORT"
+      ]
+    },
+    {
+      "code": "CONTRACT_AWARE",
+      "entity": "core/dictionary-type",
+      "devOwner": "SERVICE_WAND_WINTER_SERVICES",
+      "prodOwner": "SYSTEM",
+      "action": "reuse-system",
+      "differences": [
+        "настройки атрибута CONTRACT_TERMS"
+      ]
+    },
+    {
+      "code": "OPERATOR",
+      "entity": "core/organization-type",
+      "devOwner": "SERVICE_WAND_WINTER_SERVICES",
+      "prodOwner": "SYSTEM",
+      "action": "reuse-system",
+      "differences": [
+        "нет атрибута QUOTATION_EXPIRATION",
+        "нет атрибута REGIONS",
+        "нет атрибута BUSINESS_REGISTRATION_NUMBER",
+        "нет атрибута CONTRACT_SETTINGS",
+        "нет атрибута COMMUNICATION",
+        "нет атрибута CUSTOMER_PORTAL_URL",
+        "нет атрибута WEBSITE",
+        "родительские типы",
+        "workflow"
+      ]
+    },
+    {
+      "code": "ORGANIZATION_WORKFLOW",
+      "entity": "core/workflow",
+      "devOwner": "SYSTEM",
+      "prodOwner": "SYSTEM",
+      "action": "reuse-system",
+      "differences": [
+        "различается script",
+        "различается states"
+      ]
+    }
+  ]
+}

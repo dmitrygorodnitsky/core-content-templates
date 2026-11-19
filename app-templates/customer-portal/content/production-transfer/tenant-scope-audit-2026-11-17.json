@@ -1,0 +1,150 @@
+{
+  "serversChanged": false,
+  "scope": "Customer tenant restrictions, organization-scoped scans/side effects and configurable CA parent. SYSTEM execution semantics and ServiceWand seller policy are retained; seller policy is not customer authorization.",
+  "changedJavaScripts": [
+    {
+      "script": "PLAN_SUBSCRIPTION_DRAFT",
+      "beforeSha256": "9a178a54e1b5c5c92ae91d550239ab26f6a3d6f5e00415d6baab87945d3e93fc",
+      "afterSha256": "4a43e1ff4ea0ef52027f05dbc2ea0180e7c265b4e0641727a757dd562cc6d828"
+    },
+    {
+      "script": "PLAN_SUBSCRIPTION_ONBOARDING_MODEL",
+      "beforeSha256": "21e93f8437083650795cc4e04fb0ae917f421533fd1947574a2cfe032c90743d",
+      "afterSha256": "d996d156a256a698143448f943475f0f0ef9088a6928119925fb8e211a3ec418"
+    },
+    {
+      "script": "WINTER_SERVICES_CUSTOMER_PROFILE_APPLY",
+      "beforeSha256": "9191eca01867a11dde1dab5d3ae2c47eaa9a77a55ee4a8ab7522501450867f1f",
+      "afterSha256": "6cc9412cd04c1dd58f5f62eda2dc991b438600936141cd241de8932fcf2cfd2c"
+    },
+    {
+      "script": "WINTER_SERVICES_CUSTOMER_SUPPORT_TICKET",
+      "beforeSha256": "68c734151e9445d7484aac8a4c1184adfbb199a45ea6e94b474e496150784ed6",
+      "afterSha256": "5ff86243540e0eaa4c69977903643cf0a49f2bb12754dff2ec2a24c414cd5928"
+    },
+    {
+      "script": "WINTER_SERVICES_INVOICE_CARD_PAYMENT",
+      "beforeSha256": "14c516b949817a54cbf8a79408ec4fc820ae6d9664f9f1b0a0372285c1795b70",
+      "afterSha256": "a9413450938d6d8ca1f71c673a2df5131dba5b36549e3c36be4a32a01f027041"
+    },
+    {
+      "script": "WINTER_SERVICES_PORTAL_PROPERTY_TAG_SYNC",
+      "beforeSha256": "d272d13d5b44842c1da3c56977dfac1cabe719e5f040f734c0c9f830e84b7857",
+      "afterSha256": "ef2a33a37acce1ed50009289bb5b9356d9819a796bbb491c46f9758020846b6b"
+    },
+    {
+      "script": "WINTER_SERVICES_PORTAL_QUOTE_ACCOUNT",
+      "beforeSha256": "1027db4f428a8c11d88582908063fd4b73726f55802764117af884377de0c648",
+      "afterSha256": "9178dab39b31d3d28ea169fd0a106389ff133b2387e5de54743b93220fd9964a"
+    },
+    {
+      "script": "WINTER_SERVICES_PORTAL_SERVICE_TAG_SYNC",
+      "beforeSha256": "435f236273c35c349218746273ef905b181bd914170b05dfe3d2d1585267b45d",
+      "afterSha256": "40f7b48df1b09b4ad09c12e319d7b9f5b42d1a74499b7c7fdf74fd25272da214"
+    },
+    {
+      "script": "WINTER_SERVICES_PORTAL_TAG_SYNC",
+      "beforeSha256": "6fdd597fa1d0cb437229fe768473def8eae7733721b3aee89a74fbf45f15738d",
+      "afterSha256": "0ef944491ac3a9e6e4beaea157ecfc18598f970ccfe30cb2654ec0823f9fd34f"
+    },
+    {
+      "script": "WINTER_SERVICES_PORTAL_USER_PROVISION",
+      "beforeSha256": "45ba54cc79a6fc77f929104c3813d812e4a1d01760a5458878b30aaba861f42c",
+      "afterSha256": "b0345d9641d387f87511a7aae74d2eca52de12c0a113d8ebe589c4b2fca7eac5"
+    },
+    {
+      "script": "WINTER_SERVICES_PROPERTY_OPERATIONS",
+      "beforeSha256": "99bf0fc6b24760a790e40d4ed6cb8fac22a5ea5e367838d52d4a7d099bbb5ba9",
+      "afterSha256": "218e682dc97de67a570cf5f54d06b9bee54b1d918288376630c50d67bce76ef1"
+    },
+    {
+      "script": "WINTER_SERVICES_PROPERTY_PLAN",
+      "beforeSha256": "fd1f623dec87bbec9f7a55183e63ace9298f09e57a00889d0328ccea130cfbe3",
+      "afterSha256": "edf7a0a9fa34b5a016609d7aa0d2871a0449c87a35872e33709dce3e83507d4a"
+    },
+    {
+      "script": "WINTER_SERVICES_SUPPORT_TICKET_THREAD",
+      "beforeSha256": "5e239378b99644d3c06ba45cf198b29051a601bd5402aa4e9568ce334d73f3c6",
+      "afterSha256": "25fe38cf22e19b5dbc73b03594bba8f30f7cbdc064d36ea890f364aa23f0fc0c"
+    },
+    {
+      "script": "WINTER_SERVICES_VISIT_CREW_SNAPSHOT",
+      "beforeSha256": "592b6363049eda1252166f36e1c29929207e3015c9b5f8181355eb1e3cf517c2",
+      "afterSha256": "9a755870648fb5d4a8426e1aae966222267aac27306275c209818c8f1096177b"
+    }
+  ],
+  "unchangedScriptContracts": 60,
+  "unchangedRoleDefinitions": 8,
+  "remainingScopeReferences": [
+    {
+      "script": "RESOURCE_MEDIA_LIBRARY",
+      "line": 38,
+      "text": "* \"SNOW_REMOVAL_PROPERTY_SNOWLIMITLESS\".",
+      "classification": "REVIEW_EXECUTION_SCOPE_OR_PARENT"
+    },
+    {
+      "script": "PLAN_SUBSCRIPTION_WORKFLOW",
+      "line": 549,
+      "text": "&& URI.create(base).getHost().equals(\"dev-1.servicewand.com\") && recipient.endsWith(\"@example.invalid\");",
+      "classification": "KEEP_DEV_CAPTURE_GUARD"
+    },
+    {
+      "script": "PLAN_SUBSCRIPTION_WORKFLOW",
+      "line": 967,
+      "text": "&& URI.create(base).getHost().equals(\"dev-1.servicewand.com\")",
+      "classification": "KEEP_DEV_CAPTURE_GUARD"
+    }
+  ],
+  "passed": [
+    "tenantScopeCheck",
+    "customerProfileUpdateCheck (two tenants, spoofed user/organization, no foreign writes)",
+    "customerInvoicePaymentCheck (two tenants, foreign start/settle denied)",
+    "snowPortalTagSyncCheck (two tenants)",
+    "snowPortalQuoteFlowCheck",
+    "portalCredentialsCheck",
+    "snowPropertyPlanBackendCheck",
+    "snowSupportTicketCheck",
+    "consolidationSyntaxCheck (36 sources, syntax only)",
+    "propertyGroupConsolidationCheck",
+    "profileSupportConsolidationCheck",
+    "billingConsolidationCheck",
+    "snowStaffRolesCheck",
+    "workflowGrantContractCheck",
+    "onboarding/sync --check",
+    "onboarding/resource-executor.test",
+    "onboarding/quote-expiry.test",
+    "snowBulkQuotesCheck",
+    "snowVisitCrewSnapshotCheck",
+    "quotationCreationConsolidationCheck"
+  ],
+  "existingValidationGaps": [],
+  "limits": [
+    "Local harnesses and contract checks; no runtime calls or writes to dev/prod.",
+    "Core compilation and deployment-context verification remain required.",
+    "Reconciliation acts only within its authenticated organization; SYSTEM context does not imply scan-all.",
+    "No native upload payload or fresh prod read is produced by this task."
+  ],
+  "handoff": {
+    "parentTask": "Remove hardcoded customer tenants and rebuild production migration candidate",
+    "fromZone": "core-ui/scripts/dev/seeds/scripts (Core workflow implementations)",
+    "toZone": "customer-portal production-transfer (review bundle and registry)",
+    "blockingDependency": "Bundle must contain updated implementations with unchanged function contracts and role permissions",
+    "requiredInputs": "Canonical local scripts, existing migration registry and approved multi-tenant rule",
+    "expectedOutputs": "Rebuilt review archive, dependency checks and tenant-scope audit",
+    "acceptanceCriteria": "Two organizations work independently; cross-tenant access fails; 60 script contracts and 8 role definitions unchanged; no server writes",
+    "owner": "Current task",
+    "backupOwner": "None assigned",
+    "validationCommands": "See passed and existingValidationGaps in this audit",
+    "followUpRisks": "Native payload unresolved; Core compilation and runtime context verification remain deployment checks"
+  },
+  "resolvedValidationGaps": [
+    {
+      "check": "snowBulkQuotesCheck",
+      "resolution": "Inspect the isolated BULK implementation without shared imports. Resolve the current consolidated dispatcher from BULK_DISPATCH_CODE and check its branch method contracts and role grants. Java worker and dispatcher scenarios pass."
+    },
+    {
+      "check": "snowVisitCrewSnapshotCheck",
+      "resolution": "Retain P_TAG_TASK_E for support. Keep denial of ordinary Task access, Task saves and Resource mutation. snowSupportTicketCheck verifies the exact eight support lifecycle permissions."
+    }
+  ]
+}

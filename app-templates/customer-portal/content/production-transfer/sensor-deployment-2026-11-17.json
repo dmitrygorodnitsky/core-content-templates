@@ -1,0 +1,47 @@
+{
+  "checkedAt": "2026-11-17T12:40:23.709291+00:00",
+  "server": "prod.servicewand.com",
+  "sensorDefinitions": [
+    {
+      "code": "VEHICLE_GEO_LOCATION",
+      "resourceType": "VEHICLE",
+      "sensorType": "GEO_LOCATION",
+      "verified": true
+    },
+    {
+      "code": "TRUCK_GEOLOCATION",
+      "resourceType": "CREW",
+      "sensorType": "GEO_LOCATION",
+      "verified": true
+    }
+  ],
+  "completedResourceTypes": [
+    "ATV",
+    "BACKHOE_LOADER",
+    "BRINE_TANK",
+    "COMPACT_TRACK_LOADER",
+    "CREW",
+    "DUMP_TRUCK",
+    "EXCAVATOR",
+    "OFF_ROAD_VEHICLE",
+    "PICKUP_TRUCK",
+    "PLOW",
+    "POWER_BROOM",
+    "PUBLIC_ROAD_VEHICLE",
+    "SIDEWALK_TRACTOR",
+    "SKID_STEER",
+    "SNOW_BLOWER",
+    "SNOW_BUCKET",
+    "SPREADER",
+    "TRACTOR",
+    "UTV",
+    "VEHICLE",
+    "VEHICLE_ATTACHMENT",
+    "WHEEL_LOADER"
+  ],
+  "verifiedResourceSavePhases": 43,
+  "sensorCollectionReplaced": false,
+  "crewVehicleBlockerResolved": true,
+  "paymentEnabled": false,
+  "schedulesEnabled": false
+}

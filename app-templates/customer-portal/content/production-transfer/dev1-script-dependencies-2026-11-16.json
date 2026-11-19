@@ -1,0 +1,70 @@
+{
+  "source": "https://dev-1.servicewand.com/core",
+  "extractedAt": "2026-11-16T13:37:41.964Z",
+  "mode": "read-only",
+  "scripts": [
+    {
+      "sourceCode": "RESOURCE_MEDIA_LIBRARY",
+      "targetCode": "RESOURCE_MEDIA_LIBRARY",
+      "sha256": "07772483264efd87e5d65491b4a2a38c2748f5318b77c151eedd62f455d27c75",
+      "bytes": 16678,
+      "capabilities": [
+        "CORE",
+        "CORE-RM"
+      ],
+      "sourceUpdated": 1794069613862
+    },
+    {
+      "sourceCode": "ACCOUNT_MEDIA_LIBRARY",
+      "targetCode": "ACCOUNT_MEDIA_LIBRARY",
+      "sha256": "56a0b5ee6f63cb7f87569ac59d701d2f20ae44e398fa668f45c6442901b77037",
+      "bytes": 4956,
+      "capabilities": [
+        "CORE",
+        "CORE-ACCT"
+      ],
+      "sourceUpdated": 1793099152842
+    },
+    {
+      "sourceCode": "PROJECT_MEDIA_LIBRARY",
+      "targetCode": "PROJECT_MEDIA_LIBRARY",
+      "sha256": "101b5dc9d46a80db7563dd567d598c91a40d1d955dc327038b531b82397f63a6",
+      "bytes": 4941,
+      "capabilities": [
+        "CORE",
+        "CORE-SVC"
+      ],
+      "sourceUpdated": 1794069853846
+    },
+    {
+      "sourceCode": "TASK_MEDIA_LIBRARY",
+      "targetCode": "TASK_MEDIA_LIBRARY",
+      "sha256": "f25812a6c25301dd39d2b365b8986f48d842195c61a8779b99ce05bfa45e70d6",
+      "bytes": 5739,
+      "capabilities": [
+        "CORE",
+        "CORE-SVC"
+      ],
+      "sourceUpdated": 1794069853880
+    },
+    {
+      "sourceCode": "APPOINTMENT_MEDIA_LIBRARY",
+      "targetCode": "APPOINTMENT_MEDIA_LIBRARY",
+      "sha256": "20ec2609620f4734ea6da6f0bcc827e475ab7e6070417db22fe7626dd8dad135",
+      "bytes": 26785,
+      "capabilities": [
+        "CORE",
+        "CORE-SVC"
+      ],
+      "sourceUpdated": 1794069853893
+    },
+    {
+      "sourceCode": "SNOW_ROUTE_CHAT_LIFECYCLE",
+      "targetCode": "WINTER_SERVICES_ROUTE_CHAT_LIFECYCLE",
+      "sha256": "14b3893040504b9f237ab03a9a1817dd3b49bfaef236319c4d0301e2b321066b",
+      "bytes": 16890,
+      "capabilities": [],
+      "sourceUpdated": 1792939324618
+    }
+  ]
+}

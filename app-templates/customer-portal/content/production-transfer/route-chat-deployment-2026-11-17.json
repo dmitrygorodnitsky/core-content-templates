@@ -1,0 +1,19 @@
+{
+  "checkedAt": "2026-11-17T12:57:57.833588+00:00",
+  "resolved": true,
+  "cause": "Null source category was encoded as {id:null} instead of null in native save payload.",
+  "changedPayloadFields": [
+    "category"
+  ],
+  "scriptSourceAndMetadataUnchanged": true,
+  "routeWorkflowAndTypeVerified": true,
+  "rolesExactPermissionCounts": {
+    "SW_FS_WS_COMPANY_ADMIN": 307,
+    "SW_FS_WS_DISPATCHER": 98,
+    "SW_FS_WS_DRIVER": 50,
+    "SW_FS_WS_OPERATIONS_MANAGER": 147
+  },
+  "paymentEnabled": false,
+  "schedulesEnabled": false,
+  "runtimeBusinessFlowExecuted": false
+}

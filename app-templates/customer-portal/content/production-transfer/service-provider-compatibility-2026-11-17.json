@@ -1,0 +1,301 @@
+{
+  "sourceReadAt": "2026-11-16T22:49:57.069Z",
+  "old": {
+    "code": "OPERATOR",
+    "parents": [
+      "AI_AWARE",
+      "BASE"
+    ],
+    "workflow": "ORGANIZATION_WORKFLOW",
+    "attributes": {
+      "DEFAULT_LANGUAGE": {
+        "className": "java.lang.String",
+        "required": true,
+        "multiselect": false,
+        "freeValue": true,
+        "unique": false,
+        "defaultValue": null,
+        "entityTypes": [],
+        "options": [
+          "en",
+          "ru",
+          "es",
+          "fr",
+          "de",
+          "zh",
+          "ja",
+          "pt"
+        ]
+      },
+      "SUPPORTED_LANGUAGES": {
+        "className": "java.lang.String",
+        "required": false,
+        "multiselect": true,
+        "freeValue": true,
+        "unique": false,
+        "defaultValue": null,
+        "entityTypes": [],
+        "options": [
+          "en",
+          "ru",
+          "es",
+          "fr",
+          "de",
+          "zh",
+          "ja",
+          "pt"
+        ]
+      },
+      "SUPPORTED_CURRENCIES": {
+        "className": "com.pixelnation.common.domain.Dictionary",
+        "required": true,
+        "multiselect": true,
+        "freeValue": false,
+        "unique": false,
+        "defaultValue": null,
+        "entityTypes": [
+          "FIAT"
+        ],
+        "options": []
+      },
+      "AI_CONFIGURATION": {
+        "className": "com.pixelnation.common.domain.Dictionary",
+        "required": false,
+        "multiselect": false,
+        "freeValue": false,
+        "unique": false,
+        "defaultValue": null,
+        "entityTypes": [
+          "AI_AWARE"
+        ],
+        "options": []
+      },
+      "QUOTATION_EXPIRATION": {
+        "className": "java.time.LocalDate",
+        "required": false,
+        "multiselect": false,
+        "freeValue": false,
+        "unique": false,
+        "defaultValue": null,
+        "entityTypes": [],
+        "options": []
+      },
+      "REGIONS": {
+        "className": "java.lang.String",
+        "required": false,
+        "multiselect": true,
+        "freeValue": false,
+        "unique": false,
+        "defaultValue": [
+          "ALL"
+        ],
+        "entityTypes": [],
+        "options": []
+      },
+      "BUSINESS_REGISTRATION_NUMBER": {
+        "className": "java.lang.String",
+        "required": false,
+        "multiselect": false,
+        "freeValue": false,
+        "unique": false,
+        "defaultValue": null,
+        "entityTypes": [],
+        "options": []
+      },
+      "CONTRACT_SETTINGS": {
+        "className": "com.pixelnation.common.domain.Dictionary",
+        "required": false,
+        "multiselect": false,
+        "freeValue": false,
+        "unique": false,
+        "defaultValue": null,
+        "entityTypes": [
+          "CONTRACT_AWARE"
+        ],
+        "options": []
+      },
+      "COMMUNICATION": {
+        "className": "com.pixelnation.common.domain.Dictionary",
+        "required": true,
+        "multiselect": false,
+        "freeValue": false,
+        "unique": false,
+        "defaultValue": "GENERAL_COMMUNICATION",
+        "entityTypes": [
+          "CONTACT_AWARE"
+        ],
+        "options": []
+      },
+      "CUSTOMER_PORTAL_URL": {
+        "className": "java.lang.String",
+        "required": false,
+        "multiselect": false,
+        "freeValue": false,
+        "unique": false,
+        "defaultValue": null,
+        "entityTypes": [],
+        "options": []
+      },
+      "WEBSITE": {
+        "className": "java.lang.String",
+        "required": false,
+        "multiselect": false,
+        "freeValue": false,
+        "unique": false,
+        "defaultValue": null,
+        "entityTypes": [],
+        "options": []
+      }
+    }
+  },
+  "replacement": {
+    "code": "SERVICE_PROVIDER",
+    "owner": "WINTER_SERVICES",
+    "abstract": false,
+    "parents": [
+      "AI_AWARE",
+      "BASE"
+    ],
+    "workflow": "ORGANIZATION_WORKFLOW",
+    "attributes": {
+      "DEFAULT_LANGUAGE": {
+        "className": "java.lang.String",
+        "required": true,
+        "multiselect": false,
+        "freeValue": true,
+        "unique": false,
+        "defaultValue": null,
+        "entityTypes": [],
+        "options": [
+          "en",
+          "ru",
+          "es",
+          "fr",
+          "de",
+          "zh",
+          "ja",
+          "pt"
+        ]
+      },
+      "SUPPORTED_LANGUAGES": {
+        "className": "java.lang.String",
+        "required": false,
+        "multiselect": true,
+        "freeValue": true,
+        "unique": false,
+        "defaultValue": null,
+        "entityTypes": [],
+        "options": [
+          "en",
+          "ru",
+          "es",
+          "fr",
+          "de",
+          "zh",
+          "ja",
+          "pt"
+        ]
+      },
+      "SUPPORTED_CURRENCIES": {
+        "className": "com.pixelnation.common.domain.Dictionary",
+        "required": true,
+        "multiselect": true,
+        "freeValue": false,
+        "unique": false,
+        "defaultValue": null,
+        "entityTypes": [
+          "FIAT"
+        ],
+        "options": []
+      },
+      "AI_CONFIGURATION": {
+        "className": "com.pixelnation.common.domain.Dictionary",
+        "required": false,
+        "multiselect": false,
+        "freeValue": false,
+        "unique": false,
+        "defaultValue": null,
+        "entityTypes": [
+          "AI_AWARE"
+        ],
+        "options": []
+      },
+      "WEBSITE": {
+        "className": "java.lang.String",
+        "required": false,
+        "multiselect": false,
+        "freeValue": false,
+        "unique": false,
+        "defaultValue": null,
+        "entityTypes": [],
+        "options": []
+      },
+      "QUOTATION_EXPIRATION": {
+        "className": "java.time.LocalDate",
+        "required": false,
+        "multiselect": false,
+        "freeValue": false,
+        "unique": false,
+        "defaultValue": null,
+        "entityTypes": [],
+        "options": []
+      },
+      "BUSINESS_REGISTRATION_NUMBER": {
+        "className": "java.lang.String",
+        "required": false,
+        "multiselect": false,
+        "freeValue": false,
+        "unique": false,
+        "defaultValue": null,
+        "entityTypes": [],
+        "options": []
+      },
+      "REGIONS": {
+        "className": "java.lang.String",
+        "required": false,
+        "multiselect": true,
+        "freeValue": false,
+        "unique": false,
+        "defaultValue": [
+          "ALL"
+        ],
+        "entityTypes": [],
+        "options": []
+      },
+      "CUSTOMER_PORTAL_URL": {
+        "className": "java.lang.String",
+        "required": false,
+        "multiselect": false,
+        "freeValue": false,
+        "unique": false,
+        "defaultValue": null,
+        "entityTypes": [],
+        "options": []
+      },
+      "CONTRACT_SETTINGS": {
+        "className": "com.pixelnation.common.domain.Dictionary",
+        "required": false,
+        "multiselect": false,
+        "freeValue": false,
+        "unique": false,
+        "defaultValue": null,
+        "entityTypes": [
+          "CONTRACT_AWARE"
+        ],
+        "options": []
+      },
+      "COMMUNICATION": {
+        "className": "com.pixelnation.common.domain.Dictionary",
+        "required": true,
+        "multiselect": false,
+        "freeValue": false,
+        "unique": false,
+        "defaultValue": "GENERAL_COMMUNICATION",
+        "entityTypes": [
+          "CONTACT_AWARE"
+        ],
+        "options": []
+      }
+    }
+  }
+}

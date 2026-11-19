@@ -1,0 +1,148 @@
+{
+  "readyToApply": false,
+  "registryEntries": 352,
+  "javaScripts": 39,
+  "templates": 20,
+  "platformScriptDependencies": 1,
+  "missingSources": 0,
+  "missingRegistryDependencies": 0,
+  "selectedScriptPermissionReferences": 11,
+  "deferredWorkflowLinks": 73,
+  "deferredOrganizationTypeLinks": 4,
+  "blockers": [],
+  "legacyDecisions": {
+    "sendLegacyQuotations": "Document bulk binding excluded by user decision. Shared retry implementation and Order round-send binding retained.",
+    "WINTER_SERVICES_PROPERTY_PLAN_ML": "No callers in selected current scripts, workflows, app configuration, bulk actions or schedules. Only old SNOW_PROPERTY_PLAN_V1/V5 and ADMIN permissions refer to old names. Current generation uses /api/address/plan.json. Retained conservatively in the 39-script bundle pending backend/external-call confirmation; not a hard blocker if retained."
+  },
+  "checksPassed": [
+    "consolidationSyntaxCheck (36 core-ui Java sources, parse only)",
+    "quotationCreationConsolidationCheck",
+    "billingConsolidationCheck (approved private-method deletion reconciled against saved before-source)",
+    "profileSupportConsolidationCheck",
+    "quotationGroupConsolidationCheck",
+    "propertyGroupConsolidationCheck",
+    "snowStaffRolesCheck",
+    "workflowGrantContractCheck",
+    "workflowSeedCheck",
+    "quotationPackageOrderFlowCheck",
+    "serviceAgreementDeliveryCheck",
+    "snowBulkSendQuotationCheck",
+    "native payload unit tests (14)",
+    "native field/workflow/permission package audit",
+    "tenantScopeCheck",
+    "customerProfileUpdateCheck (two tenants, spoofed user/organization, no foreign writes)",
+    "customerInvoicePaymentCheck (two tenants, foreign start/settle denied)",
+    "snowPortalTagSyncCheck (two tenants)",
+    "snowPortalQuoteFlowCheck",
+    "portalCredentialsCheck",
+    "snowPropertyPlanBackendCheck",
+    "snowSupportTicketCheck",
+    "consolidationSyntaxCheck (36 sources, syntax only)",
+    "billingConsolidationCheck",
+    "onboarding/sync --check",
+    "onboarding/resource-executor.test",
+    "onboarding/quote-expiry.test",
+    "snowBulkQuotesCheck",
+    "snowVisitCrewSnapshotCheck"
+  ],
+  "runtimeChecks": [
+    "Verify destination organization visibility and method access with the intended roles.",
+    "Verify prod pages/URLs and runtime modules, credentials and service identities without enabling payment.",
+    "Keep both schedules disabled until approved."
+  ],
+  "serversChanged": true,
+  "sitesPublished": true,
+  "readyForStagedImport": true,
+  "nativeValidation": {
+    "offlineContractChecksPassed": true,
+    "serversChanged": false,
+    "counts": {
+      "workflowStates": 190,
+      "workflowEvents": 242,
+      "scriptContracts": 55,
+      "roles": 8,
+      "bulkActions": 8
+    },
+    "operations": 686,
+    "fieldCoverageEntries": 329,
+    "blockingIssues": [],
+    "deferredRequirements": [
+      {
+        "entry": "core/dictionary|SNOW_REMOVAL_AI_PLAN",
+        "path": "attributes.SECRET",
+        "reason": "Required target dependency missing: core/organization-secret|OpenAI API Key"
+      },
+      {
+        "entry": "core-rpt/report|WINTER_CONTRACT",
+        "path": "file",
+        "reason": "Report requires multipart source file; source snapshot has metadata only"
+      },
+      {
+        "entry": "core-rpt/report|WINTER_INVOICE",
+        "path": "file",
+        "reason": "Report requires multipart source file; source snapshot has metadata only"
+      }
+    ],
+    "limits": [
+      "No Core save or execution performed.",
+      "Fresh reads between import stages must resolve real IDs, optimistic versions, nested identities and permissions.",
+      "Synthetic workflow IDs verify the resolver only; they are never exported as upload payloads."
+    ],
+    "artifactHashes": {
+      "request-templates.json": "c351ed87f26c6e1e0a3bc7f271ae1e95b0b62fdf0dd54f192adf37c3ef3e128f",
+      "resolved-requests.json": "b50749f00d19a43166fddc521bec750c2fb0772cb89d071802010150e32efb0d",
+      "pending.json": "e8b34e3008ad32fcfcac846c5f90b6644b12877c56541ff299838ffc3cdee52e",
+      "reference-catalog.json": "f16f21409c8d161203a3f705258dc6c5eb58c1c4538d83dea7e2772e8df4f44c",
+      "issues.json": "769e5c50f3755f2b3f571bd508fe62744f4465a06c845cf8948a89389d5c6ecf",
+      "role-contracts.json": "7b5d0becbf5d7ea40c91242ce4bb088f45758fab11deca58202a4d8f5a05c02e",
+      "field-coverage.json": "132fabcc570ecb905f7d4a1f856c696833e2b70307755b8a63ab21799c378a75"
+    }
+  },
+  "deferredRequirements": [
+    {
+      "entry": "core/dictionary|SNOW_REMOVAL_AI_PLAN",
+      "technicalIssue": "Required target dependency missing: core/organization-secret|OpenAI API Key",
+      "owner": "backend",
+      "reason": "Backend configures the production OpenAI secret. Defer the dependent AI configuration until it resolves; not a blocker for the main transfer."
+    },
+    {
+      "entry": "core-rpt/report|WINTER_CONTRACT",
+      "technicalIssue": "Report requires multipart source file; source snapshot has metadata only",
+      "owner": "report-follow-up",
+      "reason": "Find the original report file on dev-1 and load separately. User approved later loading; not a blocker for the main transfer."
+    },
+    {
+      "entry": "core-rpt/report|WINTER_INVOICE",
+      "technicalIssue": "Report requires multipart source file; source snapshot has metadata only",
+      "owner": "report-follow-up",
+      "reason": "Find the original report file on dev-1 and load separately. User approved later loading; not a blocker for the main transfer."
+    }
+  ],
+  "checksFailed": [],
+  "tenantScope": "Implemented locally and verified with two-organization harnesses; no server runtime verification.",
+  "deployment": {
+    "checkedAt": "2026-11-17T13:11:17.713349+00:00",
+    "status": "staged-transfer-complete",
+    "verifiedSaveOperations": 733,
+    "supplementalSensorDefinitions": 2,
+    "attemptedSaveOperations": 751,
+    "entryCounts": {
+      "deployed": 328,
+      "deferred": 3,
+      "reused": 23
+    },
+    "totalEntries": 354,
+    "blockers": [],
+    "deferred": [
+      "Backend: production OpenAI secret and dependent AI plan configuration.",
+      "Later, by user decision: WINTER_CONTRACT and WINTER_INVOICE. Source archives retrieved and statically checked; production upload, JDBC setup and PDF rendering deferred (not a transfer blocker)."
+    ],
+    "paymentEnabled": false,
+    "schedulesEnabled": false,
+    "serversChanged": true
+  },
+  "readinessStatus": "staged-transfer-complete",
+  "ready": false,
+  "sitesUrl": "https://snow-crm-release-review.polkilo739376.chatgpt.site",
+  "sitesVersion": 15
+}

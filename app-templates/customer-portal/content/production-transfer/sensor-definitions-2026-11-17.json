@@ -1,0 +1,25 @@
+[
+  {
+    "code": "VEHICLE_GEO_LOCATION",
+    "nls": {
+      "en": {
+        "NAME": "Vehicle Geolocation",
+        "DESCRIPTION": "Latitude, longitude, elevation and speed reported by the associated mobile application."
+      }
+    },
+    "resourceTypeCode": "VEHICLE",
+    "sensorTypeCode": "GEO_LOCATION",
+    "defaultScriptCode": null
+  },
+  {
+    "code": "TRUCK_GEOLOCATION",
+    "nls": {
+      "en": {
+        "NAME": "Truck Geolocation"
+      }
+    },
+    "resourceTypeCode": "CREW",
+    "sensorTypeCode": "GEO_LOCATION",
+    "defaultScriptCode": null
+  }
+]

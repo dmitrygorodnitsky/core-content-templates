@@ -1,0 +1,1713 @@
+{
+  "sourceReadAt": "2026-11-16T22:49:57.069Z",
+  "source": "dev-1 read-only",
+  "selectedTypeAndWorkflowCount": 148,
+  "checkedDefinitions": [
+    {
+      "entity": "core-cms/form-type",
+      "code": "GET_QUOTE_",
+      "fieldsChecked": [
+        "nls.en.NAME"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core-cms/form-type",
+      "code": "PORTAL_QUOTE_REQUEST",
+      "fieldsChecked": [
+        "nls.en.NAME"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core/workflow",
+      "code": "SNOW_PORTAL_QUOTE_REQUEST",
+      "fieldsChecked": [
+        "nls.en.NAME"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core/workflow",
+      "code": "WINTER_SERVICES_QUOTATION_FORM",
+      "fieldsChecked": [
+        "nls.ar.NAME",
+        "nls.en.NAME",
+        "nls.es.NAME",
+        "nls.fr.NAME",
+        "nls.he.NAME",
+        "nls.kk.NAME",
+        "nls.ru.NAME",
+        "nls.zh.NAME"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core/document-type",
+      "code": "SERVICE_AGREEMENT",
+      "fieldsChecked": [
+        "nls.en.NAME"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core/workflow",
+      "code": "SERVICE_AGREEMENT_LIFECYCLE",
+      "fieldsChecked": [
+        "nls.en.NAME",
+        "nls.en.DESCRIPTION"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core-bill/invoice-type",
+      "code": "STANDARD",
+      "fieldsChecked": [
+        "nls.en.NAME"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core-bill/order-item-type",
+      "code": "SERVICEWAND_SUBSCRIPTION_ITEM",
+      "fieldsChecked": [
+        "nls.en.NAME"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core-bill/order-type",
+      "code": "SERVICEWAND_SUBSCRIPTION",
+      "fieldsChecked": [
+        "nls.en.NAME"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core-cms/form-type",
+      "code": "PLAN_SUBSCRIPTION",
+      "fieldsChecked": [
+        "nls.en.NAME",
+        "nls.ru.NAME"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core-pim/product-type",
+      "code": "FEATURE_ADD_ON",
+      "fieldsChecked": [
+        "nls.en.NAME"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core-pim/product-type",
+      "code": "SERVICEWAND_NUMERIC_EXPANSION",
+      "fieldsChecked": [
+        "nls.en.NAME"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core-pim/product-type",
+      "code": "SERVICEWAND_ORDERED_PRODUCT",
+      "fieldsChecked": [
+        "nls.en.NAME",
+        "nls.en.DESCRIPTION"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core-pim/product-type",
+      "code": "SERVICEWAND_SAAS",
+      "fieldsChecked": [
+        "nls.ar.NAME",
+        "nls.en.NAME",
+        "nls.es.NAME",
+        "nls.fr.NAME",
+        "nls.he.NAME",
+        "nls.kk.NAME",
+        "nls.ru.NAME",
+        "nls.zh.NAME"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core-pim/product-type",
+      "code": "SERVICEWAND_TEMPORAL_EXPANSION",
+      "fieldsChecked": [
+        "nls.en.NAME"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core/workflow",
+      "code": "PLAN_SUBSCRIPTION",
+      "fieldsChecked": [
+        "nls.en.NAME",
+        "nls.ru.NAME"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core-bill/order-item-type",
+      "code": "SNOW_REMOVAL_ORDER_ITEM",
+      "fieldsChecked": [
+        "nls.en.NAME"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core-bill/order-type",
+      "code": "FIELD_SERVICE_ORDER",
+      "fieldsChecked": [
+        "nls.en.NAME"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core-bill/order-type",
+      "code": "SNOW_VISIT_ORDER",
+      "fieldsChecked": [
+        "nls.en.NAME"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core-bill/order-type",
+      "code": "WINTER_SERVICES_ORDER",
+      "fieldsChecked": [
+        "nls.en.NAME"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core-pim/product-type",
+      "code": "AREA_BASED_DE_ICING",
+      "fieldsChecked": [
+        "nls.en.NAME"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core-pim/product-type",
+      "code": "AREA_BASED_SNOW_REMOVAL",
+      "fieldsChecked": [
+        "nls.en.NAME"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core-pim/product-type",
+      "code": "LENGTH_BASED_SNOW_REMOVAL",
+      "fieldsChecked": [
+        "nls.en.NAME"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core-pim/product-type",
+      "code": "TIME-BASED_SNOW_REMOVAL",
+      "fieldsChecked": [
+        "nls.en.NAME"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core-pim/product-type",
+      "code": "VOLUME_BASED_DE_ICING",
+      "fieldsChecked": [
+        "nls.en.NAME"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core-pim/product-type",
+      "code": "WEIGHT_BASED_DE_ICING",
+      "fieldsChecked": [
+        "nls.en.NAME"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core/workflow",
+      "code": "ORDER_ITEM_LIFECYCLE",
+      "fieldsChecked": [
+        "nls.en.NAME",
+        "nls.en.DESCRIPTION"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core/workflow",
+      "code": "ORDER_LIFECYCLE",
+      "fieldsChecked": [
+        "nls.en.NAME",
+        "nls.en.DESCRIPTION"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core-bill/invoice-type",
+      "code": "FIXED_RATE",
+      "fieldsChecked": [
+        "nls.en.NAME"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core-cms/form-type",
+      "code": "CUSTOMER_INVOICE_PAYMENT",
+      "fieldsChecked": [
+        "nls.en.NAME"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core/workflow",
+      "code": "INVOICE_LIFECYCLE",
+      "fieldsChecked": [
+        "nls.en.NAME",
+        "nls.en.DESCRIPTION"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core/workflow",
+      "code": "SNOW_CUSTOMER_INVOICE_PAYMENT",
+      "fieldsChecked": [
+        "nls.en.NAME"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core-rm/resource-type",
+      "code": "PROPERTY",
+      "fieldsChecked": [
+        "nls.en.NAME"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core-rm/resource-type",
+      "code": "SNOW_REMOVAL_PROPERTY",
+      "fieldsChecked": [
+        "nls.en.NAME"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core/dictionary-type",
+      "code": "AI_PLAN",
+      "fieldsChecked": [
+        "nls.ar.DESCRIPTION",
+        "nls.en.NAME",
+        "nls.en.DESCRIPTION",
+        "nls.he.DESCRIPTION"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core/dictionary-type",
+      "code": "PLAN_ELEMENT",
+      "fieldsChecked": [
+        "nls.en.NAME"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core/workflow",
+      "code": "PROPERTY_LIFECYCLE",
+      "fieldsChecked": [
+        "nls.en.NAME"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core-acct/account-type",
+      "code": "CUSTOMER",
+      "fieldsChecked": [
+        "nls.ar.DESCRIPTION",
+        "nls.en.NAME",
+        "nls.en.DESCRIPTION",
+        "nls.he.DESCRIPTION"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core-acct/account-type",
+      "code": "ORGANIZATION",
+      "fieldsChecked": [
+        "nls.en.NAME",
+        "nls.en.DESCRIPTION"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core-acct/account-type",
+      "code": "TYPE_AWARE",
+      "fieldsChecked": [
+        "nls.ar.DESCRIPTION",
+        "nls.en.NAME",
+        "nls.en.DESCRIPTION",
+        "nls.he.DESCRIPTION"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core/contact-type",
+      "code": "LEGAL",
+      "fieldsChecked": [
+        "nls.en.NAME"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core/workflow",
+      "code": "CLIENT_ACCOUNT_LIFECYCLE",
+      "fieldsChecked": [
+        "nls.ar.NAME",
+        "nls.ar.DESCRIPTION",
+        "nls.en.NAME",
+        "nls.en.DESCRIPTION",
+        "nls.es.NAME",
+        "nls.es.DESCRIPTION",
+        "nls.fr.NAME",
+        "nls.fr.DESCRIPTION",
+        "nls.he.NAME",
+        "nls.he.DESCRIPTION",
+        "nls.kk.NAME",
+        "nls.kk.DESCRIPTION",
+        "nls.ru.NAME",
+        "nls.ru.DESCRIPTION",
+        "nls.zh.NAME",
+        "nls.zh.DESCRIPTION"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core-svc/appointment-type",
+      "code": "SNOW_SERVICE_VISIT",
+      "fieldsChecked": [
+        "nls.en.NAME"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core-cms/form-type",
+      "code": "CUSTOMER_SUPPORT_TICKET",
+      "fieldsChecked": [
+        "nls.en.NAME"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core-cms/form-type",
+      "code": "CUSTOMER_SUPPORT_TICKET_COMMENT",
+      "fieldsChecked": [
+        "nls.en.NAME"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core-svc/task-type",
+      "code": "SUPPORT_TICKET",
+      "fieldsChecked": [
+        "nls.ar.NAME",
+        "nls.en.NAME",
+        "nls.es.NAME",
+        "nls.fr.NAME",
+        "nls.he.NAME",
+        "nls.kk.NAME",
+        "nls.ru.NAME",
+        "nls.zh.NAME"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core/workflow",
+      "code": "SNOW_CUSTOMER_SUPPORT_TICKET",
+      "fieldsChecked": [
+        "nls.en.NAME"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core/workflow",
+      "code": "SNOW_CUSTOMER_SUPPORT_TICKET_COMMENT",
+      "fieldsChecked": [
+        "nls.en.NAME"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core/workflow",
+      "code": "SUPPORT_TICKET_LIFECYCLE",
+      "fieldsChecked": [
+        "nls.ar.NAME",
+        "nls.en.NAME",
+        "nls.es.NAME",
+        "nls.fr.NAME",
+        "nls.he.NAME",
+        "nls.kk.NAME",
+        "nls.ru.NAME",
+        "nls.zh.NAME"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core-cms/form-type",
+      "code": "CUSTOMER_LOGIN_CHANGE",
+      "fieldsChecked": [
+        "nls.en.NAME"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core-cms/form-type",
+      "code": "CUSTOMER_PROFILE_UPDATE",
+      "fieldsChecked": [
+        "nls.en.NAME"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core/workflow",
+      "code": "SNOW_CUSTOMER_LOGIN_CHANGE",
+      "fieldsChecked": [
+        "nls.en.NAME"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core/workflow",
+      "code": "SNOW_CUSTOMER_PROFILE_UPDATE",
+      "fieldsChecked": [
+        "nls.en.NAME"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core-svc/project-type",
+      "code": "SNOW_SERVICE_PROGRAM",
+      "fieldsChecked": [
+        "nls.en.NAME"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core-svc/project-type",
+      "code": "SNOW_SERVICE_SEASON",
+      "fieldsChecked": [
+        "nls.en.NAME"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core/workflow",
+      "code": "SW_FS_WS_PROJECT",
+      "fieldsChecked": [
+        "nls.en.NAME",
+        "nls.en.DESCRIPTION"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core-svc/task-type",
+      "code": "SNOW_ROUTE",
+      "fieldsChecked": [
+        "nls.en.NAME"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core/workflow",
+      "code": "SNOW_ROUTE_LIFECYCLE",
+      "fieldsChecked": [
+        "nls.ar.NAME",
+        "nls.ar.DESCRIPTION",
+        "nls.en.NAME",
+        "nls.en.DESCRIPTION",
+        "nls.es.NAME",
+        "nls.es.DESCRIPTION",
+        "nls.fr.NAME",
+        "nls.fr.DESCRIPTION",
+        "nls.he.NAME",
+        "nls.he.DESCRIPTION",
+        "nls.kk.NAME",
+        "nls.kk.DESCRIPTION",
+        "nls.ru.NAME",
+        "nls.ru.DESCRIPTION",
+        "nls.zh.NAME",
+        "nls.zh.DESCRIPTION"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core-cms/form-type",
+      "code": "PRESEASON_SITE_INSPECTION",
+      "fieldsChecked": [
+        "nls.ar.NAME",
+        "nls.ar.DESCRIPTION",
+        "nls.en.NAME",
+        "nls.en.DESCRIPTION",
+        "nls.es.NAME",
+        "nls.es.DESCRIPTION",
+        "nls.fr.NAME",
+        "nls.fr.DESCRIPTION",
+        "nls.he.NAME",
+        "nls.he.DESCRIPTION",
+        "nls.kk.NAME",
+        "nls.kk.DESCRIPTION",
+        "nls.ru.NAME",
+        "nls.ru.DESCRIPTION",
+        "nls.zh.NAME",
+        "nls.zh.DESCRIPTION"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core-cms/form-type",
+      "code": "PRE_SEASON_INSPECTION",
+      "fieldsChecked": [
+        "nls.en.NAME"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core-svc/appointment-type",
+      "code": "SNOW_INSPECTION_VISIT",
+      "fieldsChecked": [
+        "nls.en.NAME"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core/workflow",
+      "code": "PRE_SEASON_INSPECTION_LIFECYCLE",
+      "fieldsChecked": [
+        "nls.en.NAME"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core-acct/account-type",
+      "code": "CONTRACTOR",
+      "fieldsChecked": [
+        "nls.ar.DESCRIPTION",
+        "nls.en.NAME",
+        "nls.en.DESCRIPTION",
+        "nls.he.DESCRIPTION"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core-acct/account-type",
+      "code": "EMPLOYEE",
+      "fieldsChecked": [
+        "nls.ar.DESCRIPTION",
+        "nls.en.NAME",
+        "nls.en.DESCRIPTION",
+        "nls.he.DESCRIPTION"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core-acct/account-type",
+      "code": "SUPPLIER",
+      "fieldsChecked": [
+        "nls.ar.DESCRIPTION",
+        "nls.en.NAME",
+        "nls.en.DESCRIPTION",
+        "nls.he.DESCRIPTION"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core-rm/resource-type",
+      "code": "BILLING",
+      "fieldsChecked": [
+        "nls.en.NAME"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core-rm/resource-type",
+      "code": "COMPANY_ADMIN",
+      "fieldsChecked": [
+        "nls.en.NAME"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core-rm/resource-type",
+      "code": "CONTRACTOR",
+      "fieldsChecked": [
+        "nls.ar.NAME",
+        "nls.ar.DESCRIPTION",
+        "nls.en.NAME",
+        "nls.en.DESCRIPTION",
+        "nls.es.NAME",
+        "nls.es.DESCRIPTION",
+        "nls.fr.NAME",
+        "nls.fr.DESCRIPTION",
+        "nls.he.NAME",
+        "nls.he.DESCRIPTION",
+        "nls.kk.NAME",
+        "nls.kk.DESCRIPTION",
+        "nls.ru.NAME",
+        "nls.ru.DESCRIPTION",
+        "nls.zh.NAME",
+        "nls.zh.DESCRIPTION"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core-rm/resource-type",
+      "code": "CREW",
+      "fieldsChecked": [
+        "nls.en.NAME"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core-rm/resource-type",
+      "code": "CUSTOMER_SUPPORT",
+      "fieldsChecked": [
+        "nls.en.NAME"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core-rm/resource-type",
+      "code": "DISPATCHER",
+      "fieldsChecked": [
+        "nls.en.NAME"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core-rm/resource-type",
+      "code": "DRIVER",
+      "fieldsChecked": [
+        "nls.en.NAME"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core-rm/resource-type",
+      "code": "FOREMAN",
+      "fieldsChecked": [
+        "nls.en.NAME"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core-rm/resource-type",
+      "code": "GENERAL_WORKER",
+      "fieldsChecked": [
+        "nls.en.NAME"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core-rm/resource-type",
+      "code": "POWER_BROOM",
+      "fieldsChecked": [
+        "nls.ar.NAME",
+        "nls.ar.DESCRIPTION",
+        "nls.en.NAME",
+        "nls.en.DESCRIPTION",
+        "nls.es.NAME",
+        "nls.es.DESCRIPTION",
+        "nls.fr.NAME",
+        "nls.fr.DESCRIPTION",
+        "nls.he.NAME",
+        "nls.he.DESCRIPTION",
+        "nls.kk.NAME",
+        "nls.kk.DESCRIPTION",
+        "nls.ru.NAME",
+        "nls.ru.DESCRIPTION",
+        "nls.zh.NAME",
+        "nls.zh.DESCRIPTION"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core-rm/resource-type",
+      "code": "REAL_ESTATE_PROPERTY",
+      "fieldsChecked": [
+        "nls.en.NAME"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core-rm/resource-type",
+      "code": "SALES",
+      "fieldsChecked": [
+        "nls.en.NAME"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core-rm/resource-type",
+      "code": "SNOW_BLOWER",
+      "fieldsChecked": [
+        "nls.ar.NAME",
+        "nls.ar.DESCRIPTION",
+        "nls.en.NAME",
+        "nls.en.DESCRIPTION",
+        "nls.es.NAME",
+        "nls.es.DESCRIPTION",
+        "nls.fr.NAME",
+        "nls.fr.DESCRIPTION",
+        "nls.he.NAME",
+        "nls.he.DESCRIPTION",
+        "nls.kk.NAME",
+        "nls.kk.DESCRIPTION",
+        "nls.ru.NAME",
+        "nls.ru.DESCRIPTION",
+        "nls.zh.NAME",
+        "nls.zh.DESCRIPTION"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core-rm/resource-type",
+      "code": "SNOW_BUCKET",
+      "fieldsChecked": [
+        "nls.ar.NAME",
+        "nls.ar.DESCRIPTION",
+        "nls.en.NAME",
+        "nls.en.DESCRIPTION",
+        "nls.es.NAME",
+        "nls.es.DESCRIPTION",
+        "nls.fr.NAME",
+        "nls.fr.DESCRIPTION",
+        "nls.he.NAME",
+        "nls.he.DESCRIPTION",
+        "nls.kk.NAME",
+        "nls.kk.DESCRIPTION",
+        "nls.ru.NAME",
+        "nls.ru.DESCRIPTION",
+        "nls.zh.NAME",
+        "nls.zh.DESCRIPTION"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core-rm/resource-type",
+      "code": "WORKFORCE",
+      "fieldsChecked": [
+        "nls.en.NAME"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core/workflow",
+      "code": "EMPLOYEE_ACCOUNT_LIFECYCLE",
+      "fieldsChecked": [
+        "nls.ar.NAME",
+        "nls.ar.DESCRIPTION",
+        "nls.en.NAME",
+        "nls.en.DESCRIPTION",
+        "nls.es.NAME",
+        "nls.es.DESCRIPTION",
+        "nls.fr.NAME",
+        "nls.fr.DESCRIPTION",
+        "nls.he.NAME",
+        "nls.he.DESCRIPTION",
+        "nls.kk.NAME",
+        "nls.kk.DESCRIPTION",
+        "nls.ru.NAME",
+        "nls.ru.DESCRIPTION",
+        "nls.zh.NAME",
+        "nls.zh.DESCRIPTION"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core/workflow",
+      "code": "EQUIPMENT_LIFECYCLE",
+      "fieldsChecked": [
+        "nls.ar.NAME",
+        "nls.ar.DESCRIPTION",
+        "nls.en.NAME",
+        "nls.en.DESCRIPTION",
+        "nls.es.NAME",
+        "nls.es.DESCRIPTION",
+        "nls.fr.NAME",
+        "nls.fr.DESCRIPTION",
+        "nls.he.NAME",
+        "nls.he.DESCRIPTION",
+        "nls.kk.NAME",
+        "nls.kk.DESCRIPTION",
+        "nls.ru.NAME",
+        "nls.ru.DESCRIPTION",
+        "nls.zh.NAME",
+        "nls.zh.DESCRIPTION"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core/workflow",
+      "code": "WORKFORCE_LIFECYCLE",
+      "fieldsChecked": [
+        "nls.ar.DESCRIPTION",
+        "nls.en.NAME",
+        "nls.en.DESCRIPTION",
+        "nls.he.DESCRIPTION"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core-acct/account-type",
+      "code": "TAX_AWARE",
+      "fieldsChecked": [
+        "nls.ar.DESCRIPTION",
+        "nls.en.NAME",
+        "nls.en.DESCRIPTION",
+        "nls.he.DESCRIPTION"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core-pim/product-type",
+      "code": "DISCOUNT_PERCENT",
+      "fieldsChecked": [
+        "nls.en.NAME"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core-rm/resource-type",
+      "code": "ATV",
+      "fieldsChecked": [
+        "nls.ar.NAME",
+        "nls.ar.DESCRIPTION",
+        "nls.en.NAME",
+        "nls.en.DESCRIPTION",
+        "nls.es.NAME",
+        "nls.es.DESCRIPTION",
+        "nls.fr.NAME",
+        "nls.fr.DESCRIPTION",
+        "nls.he.NAME",
+        "nls.he.DESCRIPTION",
+        "nls.kk.NAME",
+        "nls.kk.DESCRIPTION",
+        "nls.ru.NAME",
+        "nls.ru.DESCRIPTION",
+        "nls.zh.NAME",
+        "nls.zh.DESCRIPTION"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core-rm/resource-type",
+      "code": "BACKHOE_LOADER",
+      "fieldsChecked": [
+        "nls.ar.NAME",
+        "nls.ar.DESCRIPTION",
+        "nls.en.NAME",
+        "nls.en.DESCRIPTION",
+        "nls.es.NAME",
+        "nls.es.DESCRIPTION",
+        "nls.fr.NAME",
+        "nls.fr.DESCRIPTION",
+        "nls.he.NAME",
+        "nls.he.DESCRIPTION",
+        "nls.kk.NAME",
+        "nls.kk.DESCRIPTION",
+        "nls.ru.NAME",
+        "nls.ru.DESCRIPTION",
+        "nls.zh.NAME",
+        "nls.zh.DESCRIPTION"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core-rm/resource-type",
+      "code": "BRINE_TANK",
+      "fieldsChecked": [
+        "nls.en.NAME"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core-rm/resource-type",
+      "code": "COMPACT_TRACK_LOADER",
+      "fieldsChecked": [
+        "nls.ar.NAME",
+        "nls.ar.DESCRIPTION",
+        "nls.en.NAME",
+        "nls.en.DESCRIPTION",
+        "nls.es.NAME",
+        "nls.es.DESCRIPTION",
+        "nls.fr.NAME",
+        "nls.fr.DESCRIPTION",
+        "nls.he.NAME",
+        "nls.he.DESCRIPTION",
+        "nls.kk.NAME",
+        "nls.kk.DESCRIPTION",
+        "nls.ru.NAME",
+        "nls.ru.DESCRIPTION",
+        "nls.zh.NAME",
+        "nls.zh.DESCRIPTION"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core-rm/resource-type",
+      "code": "DUMP_TRUCK",
+      "fieldsChecked": [
+        "nls.ar.NAME",
+        "nls.ar.DESCRIPTION",
+        "nls.en.NAME",
+        "nls.en.DESCRIPTION",
+        "nls.es.NAME",
+        "nls.es.DESCRIPTION",
+        "nls.fr.NAME",
+        "nls.fr.DESCRIPTION",
+        "nls.he.NAME",
+        "nls.he.DESCRIPTION",
+        "nls.kk.NAME",
+        "nls.kk.DESCRIPTION",
+        "nls.ru.NAME",
+        "nls.ru.DESCRIPTION",
+        "nls.zh.NAME",
+        "nls.zh.DESCRIPTION"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core-rm/resource-type",
+      "code": "EQUIPMENT",
+      "fieldsChecked": [
+        "nls.en.NAME"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core-rm/resource-type",
+      "code": "EXCAVATOR",
+      "fieldsChecked": [
+        "nls.ar.NAME",
+        "nls.ar.DESCRIPTION",
+        "nls.en.NAME",
+        "nls.en.DESCRIPTION",
+        "nls.es.NAME",
+        "nls.es.DESCRIPTION",
+        "nls.fr.NAME",
+        "nls.fr.DESCRIPTION",
+        "nls.he.NAME",
+        "nls.he.DESCRIPTION",
+        "nls.kk.NAME",
+        "nls.kk.DESCRIPTION",
+        "nls.ru.NAME",
+        "nls.ru.DESCRIPTION",
+        "nls.zh.NAME",
+        "nls.zh.DESCRIPTION"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core-rm/resource-type",
+      "code": "OFF_ROAD_VEHICLE",
+      "fieldsChecked": [
+        "nls.en.NAME"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core-rm/resource-type",
+      "code": "PICKUP_TRUCK",
+      "fieldsChecked": [
+        "nls.ar.NAME",
+        "nls.ar.DESCRIPTION",
+        "nls.en.NAME",
+        "nls.en.DESCRIPTION",
+        "nls.es.NAME",
+        "nls.es.DESCRIPTION",
+        "nls.fr.NAME",
+        "nls.fr.DESCRIPTION",
+        "nls.he.NAME",
+        "nls.he.DESCRIPTION",
+        "nls.kk.NAME",
+        "nls.kk.DESCRIPTION",
+        "nls.ru.NAME",
+        "nls.ru.DESCRIPTION",
+        "nls.zh.NAME",
+        "nls.zh.DESCRIPTION"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core-rm/resource-type",
+      "code": "PLOW",
+      "fieldsChecked": [
+        "nls.en.NAME"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core-rm/resource-type",
+      "code": "PUBLIC_ROAD_VEHICLE",
+      "fieldsChecked": [
+        "nls.en.NAME"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core-rm/resource-type",
+      "code": "SIDEWALK_TRACTOR",
+      "fieldsChecked": [
+        "nls.ar.NAME",
+        "nls.ar.DESCRIPTION",
+        "nls.en.NAME",
+        "nls.en.DESCRIPTION",
+        "nls.es.NAME",
+        "nls.es.DESCRIPTION",
+        "nls.fr.NAME",
+        "nls.fr.DESCRIPTION",
+        "nls.he.NAME",
+        "nls.he.DESCRIPTION",
+        "nls.kk.NAME",
+        "nls.kk.DESCRIPTION",
+        "nls.ru.NAME",
+        "nls.ru.DESCRIPTION",
+        "nls.zh.NAME",
+        "nls.zh.DESCRIPTION"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core-rm/resource-type",
+      "code": "SKID_STEER",
+      "fieldsChecked": [
+        "nls.ar.NAME",
+        "nls.ar.DESCRIPTION",
+        "nls.en.NAME",
+        "nls.en.DESCRIPTION",
+        "nls.es.NAME",
+        "nls.es.DESCRIPTION",
+        "nls.fr.NAME",
+        "nls.fr.DESCRIPTION",
+        "nls.he.NAME",
+        "nls.he.DESCRIPTION",
+        "nls.kk.NAME",
+        "nls.kk.DESCRIPTION",
+        "nls.ru.NAME",
+        "nls.ru.DESCRIPTION",
+        "nls.zh.NAME",
+        "nls.zh.DESCRIPTION"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core-rm/resource-type",
+      "code": "SNOW_REMOVAL_VEHICLE",
+      "fieldsChecked": [
+        "nls.en.NAME"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core-rm/resource-type",
+      "code": "SPREADER",
+      "fieldsChecked": [
+        "nls.en.NAME"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core-rm/resource-type",
+      "code": "TRACTOR",
+      "fieldsChecked": [
+        "nls.ar.NAME",
+        "nls.ar.DESCRIPTION",
+        "nls.en.NAME",
+        "nls.en.DESCRIPTION",
+        "nls.es.NAME",
+        "nls.es.DESCRIPTION",
+        "nls.fr.NAME",
+        "nls.fr.DESCRIPTION",
+        "nls.he.NAME",
+        "nls.he.DESCRIPTION",
+        "nls.kk.NAME",
+        "nls.kk.DESCRIPTION",
+        "nls.ru.NAME",
+        "nls.ru.DESCRIPTION",
+        "nls.zh.NAME",
+        "nls.zh.DESCRIPTION"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core-rm/resource-type",
+      "code": "UTV",
+      "fieldsChecked": [
+        "nls.ar.NAME",
+        "nls.ar.DESCRIPTION",
+        "nls.en.NAME",
+        "nls.en.DESCRIPTION",
+        "nls.es.NAME",
+        "nls.es.DESCRIPTION",
+        "nls.fr.NAME",
+        "nls.fr.DESCRIPTION",
+        "nls.he.NAME",
+        "nls.he.DESCRIPTION",
+        "nls.kk.NAME",
+        "nls.kk.DESCRIPTION",
+        "nls.ru.NAME",
+        "nls.ru.DESCRIPTION",
+        "nls.zh.NAME",
+        "nls.zh.DESCRIPTION"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core-rm/resource-type",
+      "code": "VEHICLE",
+      "fieldsChecked": [
+        "nls.en.NAME"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core-rm/resource-type",
+      "code": "VEHICLE_ATTACHMENT",
+      "fieldsChecked": [
+        "nls.en.NAME"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core-rm/resource-type",
+      "code": "WHEEL_LOADER",
+      "fieldsChecked": [
+        "nls.ar.NAME",
+        "nls.ar.DESCRIPTION",
+        "nls.en.NAME",
+        "nls.en.DESCRIPTION",
+        "nls.es.NAME",
+        "nls.es.DESCRIPTION",
+        "nls.fr.NAME",
+        "nls.fr.DESCRIPTION",
+        "nls.he.NAME",
+        "nls.he.DESCRIPTION",
+        "nls.kk.NAME",
+        "nls.kk.DESCRIPTION",
+        "nls.ru.NAME",
+        "nls.ru.DESCRIPTION",
+        "nls.zh.NAME",
+        "nls.zh.DESCRIPTION"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core-rpt/report-type",
+      "code": "BUSINESS_REPORTS",
+      "fieldsChecked": [
+        "nls.en.NAME"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core/chat-type",
+      "code": "PUBLIC",
+      "fieldsChecked": [
+        "nls.en.NAME",
+        "nls.en.DESCRIPTION"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core/dictionary-type",
+      "code": "AI_AUDIO",
+      "fieldsChecked": [
+        "nls.en.NAME",
+        "nls.en.DESCRIPTION"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core/dictionary-type",
+      "code": "AI_AWARE",
+      "fieldsChecked": [
+        "nls.en.NAME",
+        "nls.en.DESCRIPTION"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core/dictionary-type",
+      "code": "AI_BASE",
+      "fieldsChecked": [
+        "nls.en.NAME",
+        "nls.en.DESCRIPTION"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core/dictionary-type",
+      "code": "AI_IMAGE",
+      "fieldsChecked": [
+        "nls.en.NAME",
+        "nls.en.DESCRIPTION"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core/dictionary-type",
+      "code": "AI_REALTIME_VOICE",
+      "fieldsChecked": [
+        "nls.en.NAME",
+        "nls.en.DESCRIPTION"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core/dictionary-type",
+      "code": "AI_TEXT",
+      "fieldsChecked": [
+        "nls.en.NAME",
+        "nls.en.DESCRIPTION"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core/dictionary-type",
+      "code": "CONTACT_AWARE",
+      "fieldsChecked": [
+        "nls.en.NAME",
+        "nls.en.DESCRIPTION"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core/dictionary-type",
+      "code": "CONTRACT_AWARE",
+      "fieldsChecked": [
+        "nls.ar.NAME",
+        "nls.ar.DESCRIPTION",
+        "nls.en.NAME",
+        "nls.en.DESCRIPTION",
+        "nls.es.NAME",
+        "nls.es.DESCRIPTION",
+        "nls.fr.NAME",
+        "nls.fr.DESCRIPTION",
+        "nls.he.NAME",
+        "nls.he.DESCRIPTION",
+        "nls.kk.NAME",
+        "nls.kk.DESCRIPTION",
+        "nls.ru.NAME",
+        "nls.ru.DESCRIPTION",
+        "nls.zh.NAME",
+        "nls.zh.DESCRIPTION"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core/dictionary-type",
+      "code": "CRYPTO",
+      "fieldsChecked": [
+        "nls.en.NAME",
+        "nls.en.DESCRIPTION"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core/dictionary-type",
+      "code": "FIAT",
+      "fieldsChecked": [
+        "nls.en.NAME",
+        "nls.en.DESCRIPTION"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core/document-type",
+      "code": "DRIVER_LICENSE",
+      "fieldsChecked": [
+        "nls.ar.DESCRIPTION",
+        "nls.en.NAME",
+        "nls.en.DESCRIPTION",
+        "nls.he.DESCRIPTION"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core/document-type",
+      "code": "LICENSE",
+      "fieldsChecked": [
+        "nls.ar.DESCRIPTION",
+        "nls.en.NAME",
+        "nls.en.DESCRIPTION",
+        "nls.he.DESCRIPTION"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core/document-type",
+      "code": "SNOW_SEASONAL_CONTRACT",
+      "fieldsChecked": [
+        "nls.en.NAME"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core/organization-type",
+      "code": "AI_AWARE",
+      "fieldsChecked": [
+        "nls.en.NAME",
+        "nls.en.DESCRIPTION"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core/organization-type",
+      "code": "BASE",
+      "fieldsChecked": [
+        "nls.en.NAME",
+        "nls.en.DESCRIPTION"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core/organization-type",
+      "code": "OPERATOR",
+      "fieldsChecked": [
+        "nls.en.NAME",
+        "nls.en.DESCRIPTION"
+      ],
+      "deleteMatches": {
+        "nls.en.NAME": "Service Provider (DELETE)"
+      }
+    },
+    {
+      "entity": "core/organization-type",
+      "code": "PLATFORM_MANAGEMENT",
+      "fieldsChecked": [
+        "nls.en.NAME",
+        "nls.en.DESCRIPTION"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core/workflow",
+      "code": "APPOINTMENT",
+      "fieldsChecked": [
+        "nls.en.NAME",
+        "nls.en.DESCRIPTION"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core/workflow",
+      "code": "CORE_PROJECT_WORKFLOW",
+      "fieldsChecked": [
+        "nls.en.NAME",
+        "nls.en.DESCRIPTION"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core/workflow",
+      "code": "DEFAULT-DEVELOPMENT-LIFECYCLE",
+      "fieldsChecked": [
+        "nls.en.NAME",
+        "nls.en.DESCRIPTION"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core/workflow",
+      "code": "DEFAULT-INCIDENT-LIVECYCLE",
+      "fieldsChecked": [
+        "nls.en.NAME",
+        "nls.en.DESCRIPTION"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core/workflow",
+      "code": "DEFAULT-SUPPORT-LIVECYCLE",
+      "fieldsChecked": [
+        "nls.en.NAME",
+        "nls.en.DESCRIPTION"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core/workflow",
+      "code": "LICENSE_LIFECYCLE",
+      "fieldsChecked": [
+        "nls.ar.DESCRIPTION",
+        "nls.en.NAME",
+        "nls.en.DESCRIPTION",
+        "nls.he.DESCRIPTION"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core/workflow",
+      "code": "ORGANIZATION_WORKFLOW",
+      "fieldsChecked": [
+        "nls.ar.DESCRIPTION",
+        "nls.en.NAME",
+        "nls.en.DESCRIPTION",
+        "nls.es.NAME",
+        "nls.fr.NAME",
+        "nls.he.DESCRIPTION",
+        "nls.ru.NAME",
+        "nls.zh.NAME"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core/workflow",
+      "code": "RESOURCE",
+      "fieldsChecked": [
+        "nls.en.NAME",
+        "nls.en.DESCRIPTION"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core/workflow",
+      "code": "SNOW_CONTRACT_DOCUMENT",
+      "fieldsChecked": [
+        "nls.en.NAME",
+        "nls.en.DESCRIPTION"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core-svc/project-type",
+      "code": "CUSTOMER_SERVICE",
+      "fieldsChecked": [
+        "nls.en.NAME",
+        "nls.en.DESCRIPTION"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core-svc/project-type",
+      "code": "INCIDENT_MANAGEMENT",
+      "fieldsChecked": [
+        "nls.en.NAME",
+        "nls.en.DESCRIPTION"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core-svc/project-type",
+      "code": "SOFTWARE_DEVELOPMENT",
+      "fieldsChecked": [
+        "nls.en.NAME",
+        "nls.en.DESCRIPTION"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core-svc/task-type",
+      "code": "INCIDENT_CASE",
+      "fieldsChecked": [
+        "nls.en.NAME",
+        "nls.en.DESCRIPTION"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core-svc/task-type",
+      "code": "SOFTWARE_TASK",
+      "fieldsChecked": [
+        "nls.en.NAME",
+        "nls.en.DESCRIPTION"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core-svc/task-type",
+      "code": "SUPPORT_CASE",
+      "fieldsChecked": [
+        "nls.en.NAME",
+        "nls.en.DESCRIPTION"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core/contact-type",
+      "code": "ACCOUNT_REPRESENTATIVE",
+      "fieldsChecked": [
+        "nls.ar.NAME",
+        "nls.en.NAME",
+        "nls.es.NAME",
+        "nls.fr.NAME",
+        "nls.he.NAME",
+        "nls.kk.NAME",
+        "nls.ru.NAME",
+        "nls.zh.NAME"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core-pim/product-price-type",
+      "code": "PER_UNIT",
+      "fieldsChecked": [
+        "nls.en.NAME"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core-pim/product-price-type",
+      "code": "PER_UNIT_RECURRENT",
+      "fieldsChecked": [
+        "nls.en.NAME"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core-pim/product-price-type",
+      "code": "PRICE_CURRENCY",
+      "fieldsChecked": [
+        "nls.en.NAME"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core-pim/product-price-type",
+      "code": "RECURRENT",
+      "fieldsChecked": [
+        "nls.en.NAME"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core-pim/product-price-type",
+      "code": "TIERED",
+      "fieldsChecked": [
+        "nls.en.NAME"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core-pim/product-price-type",
+      "code": "TIERED_RECURRENT",
+      "fieldsChecked": [
+        "nls.en.NAME"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core/dictionary-type",
+      "code": "AI_VIDEO",
+      "fieldsChecked": [
+        "nls.en.NAME",
+        "nls.en.DESCRIPTION"
+      ],
+      "deleteMatches": {}
+    },
+    {
+      "entity": "core/dictionary-type",
+      "code": "AI_PUBLIC_CHAT",
+      "fieldsChecked": [
+        "nls.en.NAME",
+        "nls.en.DESCRIPTION"
+      ],
+      "deleteMatches": {}
+    }
+  ],
+  "localSourcesChecked": [
+    "WINTER_SERVICE_CONTRACT_DETAILS_RECEIVED",
+    "WINTER_SERVICE_AGREEMENT_READY",
+    "WINTER_SERVICE_QUOTATION_READY",
+    "WINTER_SERVICE_QUOTATION_UPDATED",
+    "WINTER_SERVICE_AGREEMENT_CHANGES_REQUESTED",
+    "WINTER_SERVICE_QUOTATION_DECISIONS_CONFIRMED",
+    "WINTER_SERVICES_PORTAL_QUOTATION_READY",
+    "WINTER_SERVICES_PORTAL_QUOTATION_UPDATED",
+    "WINTER_SERVICES_PORTAL_QUOTATION_DECISIONS_CONFIRMED",
+    "WINTER_SERVICES_PORTAL_AGREEMENT_READY",
+    "WINTER_SERVICES_PROPERTY_LINK_GRANT",
+    "WINTER_SERVICES_CONTRACT_SOURCES",
+    "WINTER_SERVICES_PORTAL_PROPERTY_TAG_SYNC",
+    "WINTER_SERVICES_PORTAL_SERVICE_TAG_SYNC",
+    "WINTER_SERVICES_PORTAL_TAG_SYNC",
+    "WINTER_SERVICES_PORTAL_USER_PROVISION",
+    "WINTER_SERVICES_AGREEMENT_WORKFLOW_UTILITIES",
+    "WINTER_SERVICES_PROPERTY_OPERATIONS",
+    "WINTER_SERVICES_PROPERTY_WORKFLOW_UTILS",
+    "WINTER_SERVICES_CUSTOMER_LOGIN_CHANGED",
+    "WINTER_SERVICES_CUSTOMER_PROFILE_UPDATE",
+    "WINTER_SERVICES_CUSTOMER_PROFILE_APPLY",
+    "WINTER_SERVICES_VISIT_CREW_NAMES",
+    "WINTER_SERVICES_VISIT_CREW_SNAPSHOT",
+    "WINTER_SERVICE_REGION_AI",
+    "WINTER_SERVICE_QUOTATION_PROCESSING",
+    "WINTER_SERVICE_QUOTATION_VERIFY_EMAIL",
+    "WINTER_SERVICE_QUOTATION_REJECTED",
+    "WINTER_SERVICE_QUOTATION_REVIEW",
+    "WINTER_SERVICES_PROPERTY_PLAN_ML",
+    "WINTER_SERVICE_QUOTATION_CREATOR",
+    "WINTER_SERVICES_PROPERTY_PLAN",
+    "WINTER_SERVICE_REGION_WORKFLOW_UTILS",
+    "WINTER_SERVICES_BULK_REQUESTS",
+    "RESOURCE_MEDIA_LIBRARY",
+    "ACCOUNT_MEDIA_LIBRARY",
+    "PROJECT_MEDIA_LIBRARY",
+    "TASK_MEDIA_LIBRARY",
+    "APPOINTMENT_MEDIA_LIBRARY",
+    "WINTER_SERVICES_INVOICE_CARD_PAYMENT",
+    "WINTER_SERVICES_CUSTOMER_INVOICE_PAYMENT",
+    "INVOICE_LIFECYCLE_WORKFLOW",
+    "WINTER_SERVICES_SUPPORT_TICKET_THREAD",
+    "WINTER_SERVICES_CUSTOMER_SUPPORT_TICKET",
+    "WINTER_SERVICES_ROUTE_CHAT_LIFECYCLE",
+    "WINTER_SERVICES_PORTAL_ACCESS",
+    "WINTER_SERVICES_INVOICE_PAYMENT_REMINDER",
+    "ORDER_LIFECYCLE_WORKFLOW",
+    "WINTER_SERVICE_QUOTATION_CHANGES_REQUESTED",
+    "WINTER_SERVICES_BULK_APPROVE_QUOTES_DISPATCH",
+    "WINTER_SERVICES_BULK_VISIT_ORDERS_DISPATCH",
+    "MAPPINGS_ORDER",
+    "MAPPINGS_DOCUMENT",
+    "WINTER_SERVICES_PORTAL_QUOTE_ACCOUNT",
+    "WINTER_SERVICES_PORTAL_QUOTE_REQUEST",
+    "PLAN_SUBSCRIPTION_WORKFLOW",
+    "PLAN_SUBSCRIPTION_DRAFT",
+    "PLAN_SUBSCRIPTION_ONBOARDING_MODEL",
+    "PLAN_SUBSCRIPTION_PAYMENT"
+  ],
+  "orderTypeWorkflows": {
+    "SPA_SERVICE_ORDER": "SPA_ORDER_LIFECYCLE",
+    "CP_ACCESS_PROBE_ORDER": "SPA_ORDER_LIFECYCLE",
+    "SPA_ORDER": "SPA_ORDER_LIFECYCLE",
+    "FIELD_SERVICE_ORDER": "ORDER_LIFECYCLE",
+    "WINTER_SERVICES_ORDER": "ORDER_LIFECYCLE",
+    "SERVICEWAND_SUBSCRIPTION": "ORDER_LIFECYCLE",
+    "SNOW_VISIT_ORDER": "ORDER_LIFECYCLE"
+  },
+  "deleteMatches": [
+    {
+      "entity": "core/organization-type",
+      "code": "OPERATOR",
+      "fieldsChecked": [
+        "nls.en.NAME",
+        "nls.en.DESCRIPTION"
+      ],
+      "deleteMatches": {
+        "nls.en.NAME": "Service Provider (DELETE)"
+      }
+    }
+  ],
+  "remainingReferences": [
+    "Retired GENERAL_FSM_ORDER -> SNOW_QUOTATION_ORDER_UTILITIES_V33",
+    "Historical SNOW_BULK_QUOTES_V4/V5/V6/V7/V8/V9/V15",
+    "SYSTEM ADMIN retains historical script permissions; this role is not transferred"
+  ],
+  "limitations": [
+    "Static configuration/source audit; no runtime invocation log claim.",
+    "Rollback seeds remain local, excluded by transfer rules."
+  ]
+}

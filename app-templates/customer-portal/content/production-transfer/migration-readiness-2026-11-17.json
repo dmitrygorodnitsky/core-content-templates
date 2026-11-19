@@ -1,0 +1,1023 @@
+{
+  "checkedAt": "2026-11-16T21:42:49.819Z",
+  "devCheckedAt": "2026-11-16T21:42:30.208Z",
+  "ready": false,
+  "summary": {
+    "total": 352,
+    "rows": 352,
+    "byAction": {
+      "create": 307,
+      "reuse-system": 19,
+      "relocate-update": 6,
+      "update": 15,
+      "reuse-existing": 5
+    },
+    "byCategory": {
+      "Type": 118,
+      "Script": 60,
+      "Workflow": 30,
+      "Dictionary": 15,
+      "Organization": 5,
+      "Report": 2,
+      "Role": 8,
+      "Schedule": 2,
+      "Product": 29,
+      "Price": 83
+    },
+    "localScripts": 59,
+    "scriptDefinitionsByTarget": {
+      "SYSTEM": 10,
+      "WINTER_SERVICES": 46,
+      "SERVICEWAND": 4
+    }
+  },
+  "blockers": [],
+  "loadOrder": [
+    {
+      "title": "1. Organizations",
+      "detail": "Reuse WINTER_SERVICES and WINTER_SERVICES_CA. Import SERVICEWAND and SERVICEWAND_SOFTWARE from dev-1. Reuse the existing LSRC by its actual code; retain its type and parent."
+    },
+    {
+      "title": "2. Types",
+      "detail": "Load base definitions and parent types first. Resolve references by entity kind and code; never copy dev IDs. Attach workflows in a second pass."
+    },
+    {
+      "title": "3. Scripts",
+      "detail": "Use the consolidated local package and remap permissions and configured organization references. Keep external dependencies available."
+    },
+    {
+      "title": "4. Workflow links",
+      "detail": "Import workflows and attach them to types; restore transitions, actions and permissions. Scheduled-task replacement verification is deferred."
+    },
+    {
+      "title": "5. Configuration and catalog",
+      "detail": "Load dictionaries, reports and products into their agreed organizations."
+    },
+    {
+      "title": "6. Prices",
+      "detail": "Load price definitions after products; ServiceWand to SERVICEWAND, Limitless to LSRC."
+    },
+    {
+      "title": "7. Roles and environment",
+      "detail": "Import selected roles into WINTER_SERVICES. Rename the portal role to CUSTOMER_PORTAL. Use dev-1 URL paths with the prod.servicewand.com host; verify the pages are deployed before launch."
+    },
+    {
+      "title": "8. Schedules",
+      "detail": "Import INVOICE_PAYMENT_REMINDERS and SNOW_VISIT_ORDERS disabled. Exclude the other two application schedules; do not enable payment."
+    }
+  ],
+  "notes": [
+    "Fresh read-only snapshots of dev-1 and prod. No Core writes.",
+    "SYSTEM is globally visible within an environment. Matching definitions are reused; differences use the approved source, not an automatic reuse decision.",
+    "The register now includes team additions: roles, resources, dictionaries, catalog, reports and schedules. Counts are not just script counts.",
+    "Static reference checks do not prove runtime behavior. Workflow replacement for the two excluded schedules is deferred by the user.",
+    "Comparison ignores localized labels and audit IDs. Full deploy payload and runtime checks are still required.",
+    "LSRC is an existing organization identified by code E255F8B2_C72E_489E_B5A2_0BAFD0493B90, not the literal code LSRC. No numeric ID is a migration binding.",
+    "Production URLs follow dev-1 paths on prod.servicewand.com, as agreed. Actual page availability and Core runtime checks remain launch checks.",
+    "Script destinations corrected by domain: WINTER_SERVICES, SERVICEWAND or explicitly reviewed SYSTEM exceptions. Moving a definition does not change its execution identity or permissions. Runtime lookup remains a pre-import verification.",
+    "CONTRACT_SOURCES call-path review supersedes the earlier SYSTEM exception: winter-only normal callers; target WINTER_SERVICES. The published register uses this corrected assignment.",
+    "All 15 type-reference decisions are resolved by approved code-based replacement rules. They have not been applied on Core.",
+    "2026-11-17: excluded retired quotation-order utility from transfer; 39 Java scripts + 20 templates + one platform dependency. Current dev-1 names/descriptions checked; OPERATOR is blocked.",
+    "SERVICE_PROVIDER is model-compatible; local onboarding switched. OPERATOR and optional-quotation-expiration patch excluded. Reuse/update existing prod SERVICE_PROVIDER, resolving dictionary defaults by code. No server writes."
+  ],
+  "unresolvedReferences": [],
+  "missingSources": [],
+  "conflicts": [
+    {
+      "flow": "01 Quotes",
+      "scope": "main",
+      "kind": "Script",
+      "category": "Script",
+      "code": "WINTER_SERVICE_QUOTATION_CREATOR",
+      "entity": "core/script",
+      "relation": "Direct flow dependency; Referenced by WINTER_SERVICE_REGION_WORKFLOW_UTILS; Referenced by WINTER_SERVICE_REGION_WORKFLOW_UTILS; Referenced by WINTER_SERVICES_PORTAL_QUOTE_REQUEST; Referenced by WINTER_SERVICES_BULK_APPROVE_QUOTES_DISPATCH; Referenced by WINTER_SERVICES_AGREEMENT_WORKFLOW_UTILITIES",
+      "devOwner": "SYSTEM",
+      "prodOwner": "SYSTEM",
+      "prod": "Exists on prod",
+      "action": "relocate-update",
+      "actionLabel": "Change owner and update",
+      "note": "Stage 3. Target: WINTER_SERVICES. Use the consolidated local definition; preserve method permissions. Differences: content, metadata. Dev-1 is authoritative for configuration; local consolidated scripts override old script versions.  Existing prod definition: change ownership using its stable code; do not create a duplicate. Validate caller visibility before applying. Ownership: Winter Services domain flow or its message template.",
+      "differences": [
+        "content",
+        "metadata"
+      ],
+      "sourceCodes": [
+        "WINTER_SERVICE_QUOTATION_CREATOR",
+        "WINTER_SERVICE_QUOTATION_CREATOR_V3",
+        "WINTER_SERVICE_QUOTATION_CREATOR_V4",
+        "WINTER_SERVICE_QUOTATION_CREATOR_V5",
+        "WINTER_SERVICE_QUOTATION_CREATOR_V6",
+        "SNOW_SERVICE_QUOTATION_DELIVERY_V1",
+        "SNOW_SERVICE_QUOTATION_DELIVERY_V2",
+        "WINTER_SERVICE_QUOTATION_DRAFT_PRICER_V1",
+        "WINTER_SERVICE_QUOTATION_DRAFT_PRICER_V2",
+        "SNOW_SERVICE_QUOTATION_DELIVERY_V3",
+        "SNOW_SERVICE_QUOTATION_DELIVERY_V4",
+        "WINTER_SERVICE_QUOTATION_DRAFT_PRICER_V3",
+        "SNOW_SERVICE_QUOTATION_DELIVERY_V5",
+        "SNOW_SERVICE_QUOTATION_DELIVERY_V6",
+        "SNOW_BULK_QUOTES_V1",
+        "SNOW_BULK_QUOTES_V2",
+        "SNOW_QUOTATION_DECISION_CONFIRMATION_V1",
+        "SNOW_QUOTATION_DECISION_CONFIRMATION_V2",
+        "SNOW_PROPERTY_AREA_QUOTES_V1",
+        "SNOW_SERVICE_QUOTATION_DELIVERY_V7",
+        "SNOW_QUOTATION_DECISION_CONFIRMATION_V3",
+        "SNOW_SERVICE_QUOTATION_DELIVERY_V8",
+        "SNOW_QUOTATION_DECISION_CONFIRMATION_V4",
+        "WINTER_SERVICE_QUOTATION_DRAFT_PRICER_V4",
+        "SNOW_SERVICE_QUOTATION_DELIVERY_V9",
+        "SNOW_QUOTATION_DECISION_CONFIRMATION_V5",
+        "WINTER_SERVICE_QUOTATION_CREATOR_V7",
+        "SNOW_QUOTATION_DECISION_CONFIRMATION_V6",
+        "SNOW_BULK_QUOTES_V3",
+        "WINTER_SERVICE_QUOTATION_DRAFT_PRICER_V5",
+        "SNOW_SERVICE_QUOTATION_DELIVERY_V10",
+        "SNOW_QUOTATION_DECISION_CONFIRMATION_V7",
+        "SNOW_SERVICE_QUOTATION_DELIVERY_V11",
+        "SNOW_QUOTATION_DECISION_CONFIRMATION_V8",
+        "SNOW_SERVICE_QUOTATION_DELIVERY_V12",
+        "SNOW_QUOTATION_DECISION_CONFIRMATION_V9",
+        "WINTER_SERVICE_QUOTATION_CREATOR_V9",
+        "SNOW_QUOTATION_DECISION_CONFIRMATION_V10",
+        "SNOW_SERVICE_QUOTATION_DELIVERY_V16",
+        "SNOW_SERVICE_AGREEMENT_ACTIVATION_V8",
+        "SNOW_SERVICE_QUOTATION_DELIVERY_V17",
+        "SNOW_SERVICE_QUOTATION_DELIVERY_V18",
+        "SNOW_QUOTATION_DECISION_CONFIRMATION_V11",
+        "SNOW_SERVICE_QUOTATION_DELIVERY_V19",
+        "SNOW_SERVICE_QUOTATION_DELIVERY_V20",
+        "SNOW_SERVICE_QUOTATION_DELIVERY_V21",
+        "SNOW_QUOTATION_DECISION_CONFIRMATION_V12",
+        "WINTER_SERVICE_QUOTATION_DRAFT_CREATOR_V5",
+        "SNOW_PROPERTY_AREA_QUOTES_V2",
+        "SNOW_BULK_QUOTES_V4",
+        "SNOW_BULK_QUOTES_V5",
+        "SNOW_BULK_QUOTES_V6",
+        "SNOW_BULK_QUOTES_V7",
+        "SNOW_SERVICE_QUOTATION_ROUND_DELIVERY_V3",
+        "SNOW_BULK_SEND_ROUND_V3",
+        "WINTER_SERVICE_QUOTATION_DRAFT_CREATOR_V7",
+        "SNOW_BULK_QUOTES_V8",
+        "SNOW_SERVICE_QUOTATION_ROUND_DELIVERY_V4",
+        "SNOW_BULK_SEND_ROUND_V4",
+        "SNOW_PROPERTY_AREA_QUOTES_V3",
+        "SNOW_PROPERTY_AREA_QUOTES_V4",
+        "SNOW_BULK_QUOTES_V9",
+        "SNOW_BULK_QUOTES_V15",
+        "SNOW_SERVICE_AGREEMENT_PROCESSOR_V20",
+        "SNOW_BULK_QUOTES_V16",
+        "SNOW_SERVICE_AGREEMENT_DELIVERY_V17"
+      ],
+      "comparison": "selected-fields",
+      "dependencies": [
+        "core/script|ORDER_LIFECYCLE_WORKFLOW",
+        "core/script|WINTER_SERVICES_CONTRACT_SOURCES",
+        "core/script|WINTER_SERVICES_PORTAL_AGREEMENT_READY",
+        "core/script|WINTER_SERVICES_PORTAL_QUOTATION_DECISIONS_CONFIRMED",
+        "core/script|WINTER_SERVICES_PORTAL_QUOTATION_READY",
+        "core/script|WINTER_SERVICES_PORTAL_QUOTATION_UPDATED",
+        "core/script|WINTER_SERVICES_PORTAL_TAG_SYNC",
+        "core/script|WINTER_SERVICES_PROPERTY_LINK_GRANT",
+        "core/script|WINTER_SERVICES_PROPERTY_OPERATIONS",
+        "core/script|WINTER_SERVICE_AGREEMENT_READY",
+        "core/script|WINTER_SERVICE_CONTRACT_DETAILS_RECEIVED",
+        "core/script|WINTER_SERVICE_QUOTATION_DECISIONS_CONFIRMED",
+        "core/script|WINTER_SERVICE_QUOTATION_READY",
+        "core/script|WINTER_SERVICE_QUOTATION_UPDATED"
+      ],
+      "targetCode": "WINTER_SERVICE_QUOTATION_CREATOR",
+      "targetOrganizationName": "WINTER_SERVICES",
+      "targetOrganization": "WINTER_SERVICES",
+      "loadStage": 3,
+      "definitionSource": "local-consolidated",
+      "ownershipReason": "Winter Services domain flow or its message template."
+    },
+    {
+      "flow": "01 Quotes",
+      "scope": "main",
+      "kind": "Script",
+      "category": "Script",
+      "code": "WINTER_SERVICE_QUOTATION_PROCESSING",
+      "entity": "core/script",
+      "relation": "Referenced by WINTER_SERVICE_REGION_WORKFLOW_UTILS",
+      "devOwner": "SYSTEM",
+      "prodOwner": "SYSTEM",
+      "prod": "Exists on prod",
+      "action": "relocate-update",
+      "actionLabel": "Change owner and update",
+      "note": "Stage 3. Target: WINTER_SERVICES. Use the consolidated local definition; preserve method permissions. Differences: content. Dev-1 is authoritative for configuration; local consolidated scripts override old script versions.  Existing prod definition: change ownership using its stable code; do not create a duplicate. Validate caller visibility before applying. Ownership: Winter Services domain flow or its message template.",
+      "differences": [
+        "content"
+      ],
+      "sourceCodes": [
+        "WINTER_SERVICE_QUOTATION_PROCESSING",
+        "WINTER_SERVICE_QUOTATION_PROCESSING_V2"
+      ],
+      "comparison": "selected-fields",
+      "dependencies": [],
+      "targetCode": "WINTER_SERVICE_QUOTATION_PROCESSING",
+      "targetOrganizationName": "WINTER_SERVICES",
+      "targetOrganization": "WINTER_SERVICES",
+      "loadStage": 3,
+      "definitionSource": "local-consolidated",
+      "ownershipReason": "Winter Services domain flow or its message template."
+    },
+    {
+      "flow": "01 Quotes",
+      "scope": "main",
+      "kind": "Script",
+      "category": "Script",
+      "code": "WINTER_SERVICE_QUOTATION_REJECTED",
+      "entity": "core/script",
+      "relation": "Referenced by WINTER_SERVICE_REGION_WORKFLOW_UTILS",
+      "devOwner": "SYSTEM",
+      "prodOwner": "SYSTEM",
+      "prod": "Exists on prod",
+      "action": "relocate-update",
+      "actionLabel": "Change owner and update",
+      "note": "Stage 3. Target: WINTER_SERVICES. Use the consolidated local definition; preserve method permissions. Differences: content. Dev-1 is authoritative for configuration; local consolidated scripts override old script versions.  Existing prod definition: change ownership using its stable code; do not create a duplicate. Validate caller visibility before applying. Ownership: Winter Services domain flow or its message template.",
+      "differences": [
+        "content"
+      ],
+      "sourceCodes": [
+        "WINTER_SERVICE_QUOTATION_REJECTED",
+        "WINTER_SERVICE_QUOTATION_REJECTED_V2"
+      ],
+      "comparison": "selected-fields",
+      "dependencies": [],
+      "targetCode": "WINTER_SERVICE_QUOTATION_REJECTED",
+      "targetOrganizationName": "WINTER_SERVICES",
+      "targetOrganization": "WINTER_SERVICES",
+      "loadStage": 3,
+      "definitionSource": "local-consolidated",
+      "ownershipReason": "Winter Services domain flow or its message template."
+    },
+    {
+      "flow": "01 Quotes",
+      "scope": "main",
+      "kind": "Script",
+      "category": "Script",
+      "code": "WINTER_SERVICE_QUOTATION_REVIEW",
+      "entity": "core/script",
+      "relation": "Referenced by WINTER_SERVICE_REGION_WORKFLOW_UTILS",
+      "devOwner": "SYSTEM",
+      "prodOwner": "SYSTEM",
+      "prod": "Exists on prod",
+      "action": "relocate-update",
+      "actionLabel": "Change owner and update",
+      "note": "Stage 3. Target: WINTER_SERVICES. Use the consolidated local definition; preserve method permissions. Differences: content. Dev-1 is authoritative for configuration; local consolidated scripts override old script versions.  Existing prod definition: change ownership using its stable code; do not create a duplicate. Validate caller visibility before applying. Ownership: Winter Services domain flow or its message template.",
+      "differences": [
+        "content"
+      ],
+      "sourceCodes": [
+        "WINTER_SERVICE_QUOTATION_REVIEW",
+        "WINTER_SERVICE_QUOTATION_REVIEW_V2"
+      ],
+      "comparison": "selected-fields",
+      "dependencies": [],
+      "targetCode": "WINTER_SERVICE_QUOTATION_REVIEW",
+      "targetOrganizationName": "WINTER_SERVICES",
+      "targetOrganization": "WINTER_SERVICES",
+      "loadStage": 3,
+      "definitionSource": "local-consolidated",
+      "ownershipReason": "Winter Services domain flow or its message template."
+    },
+    {
+      "flow": "01 Quotes",
+      "scope": "main",
+      "kind": "Script",
+      "category": "Script",
+      "code": "WINTER_SERVICE_REGION_AI",
+      "entity": "core/script",
+      "relation": "Referenced by WINTER_SERVICE_REGION_WORKFLOW_UTILS",
+      "devOwner": "SYSTEM",
+      "prodOwner": "SYSTEM",
+      "prod": "Exists on prod",
+      "action": "relocate-update",
+      "actionLabel": "Change owner and update",
+      "note": "Stage 3. Target: WINTER_SERVICES. Use the consolidated local definition; preserve method permissions. Differences: content. Dev-1 is authoritative for configuration; local consolidated scripts override old script versions.  Existing prod definition: change ownership using its stable code; do not create a duplicate. Validate caller visibility before applying. Ownership: Winter Services domain flow or its message template.",
+      "differences": [
+        "content"
+      ],
+      "sourceCodes": [
+        "WINTER_SERVICE_REGION_AI"
+      ],
+      "comparison": "selected-fields",
+      "dependencies": [],
+      "targetCode": "WINTER_SERVICE_REGION_AI",
+      "targetOrganizationName": "WINTER_SERVICES",
+      "targetOrganization": "WINTER_SERVICES",
+      "loadStage": 3,
+      "definitionSource": "local-consolidated",
+      "ownershipReason": "Winter Services domain flow or its message template."
+    },
+    {
+      "flow": "01 Quotes",
+      "scope": "main",
+      "kind": "Script",
+      "category": "Script",
+      "code": "WINTER_SERVICE_REGION_WORKFLOW_UTILS",
+      "entity": "core/script",
+      "relation": "Workflow binding WINTER_SERVICES_QUOTATION_FORM",
+      "devOwner": "SYSTEM",
+      "prodOwner": "SYSTEM",
+      "prod": "Exists on prod",
+      "action": "relocate-update",
+      "actionLabel": "Change owner and update",
+      "note": "Stage 3. Target: WINTER_SERVICES. Use the consolidated local definition; preserve method permissions. Differences: content, metadata. Dev-1 is authoritative for configuration; local consolidated scripts override old script versions.  Existing prod definition: change ownership using its stable code; do not create a duplicate. Validate caller visibility before applying. Ownership: Winter Services domain flow or its message template.",
+      "differences": [
+        "content",
+        "metadata"
+      ],
+      "sourceCodes": [
+        "WINTER_SERVICE_REGION_WORKFLOW_UTILS",
+        "WINTER_SERVICE_REGION_WORKFLOW_UTILS_V45"
+      ],
+      "comparison": "selected-fields",
+      "dependencies": [
+        "core/script|WINTER_SERVICES_CONTRACT_SOURCES",
+        "core/script|WINTER_SERVICES_PROPERTY_OPERATIONS",
+        "core/script|WINTER_SERVICE_QUOTATION_CREATOR",
+        "core/script|WINTER_SERVICE_QUOTATION_PROCESSING",
+        "core/script|WINTER_SERVICE_QUOTATION_REJECTED",
+        "core/script|WINTER_SERVICE_QUOTATION_REVIEW",
+        "core/script|WINTER_SERVICE_QUOTATION_VERIFY_EMAIL",
+        "core/script|WINTER_SERVICE_REGION_AI"
+      ],
+      "targetCode": "WINTER_SERVICE_REGION_WORKFLOW_UTILS",
+      "targetOrganizationName": "WINTER_SERVICES",
+      "targetOrganization": "WINTER_SERVICES",
+      "loadStage": 3,
+      "definitionSource": "local-consolidated",
+      "ownershipReason": "Winter Services domain flow or its message template."
+    },
+    {
+      "flow": "07 Clients and access",
+      "scope": "main",
+      "kind": "Type",
+      "category": "Type",
+      "code": "CUSTOMER",
+      "entity": "core-acct/account-type",
+      "relation": "CLIENT_ACCOUNT_LIFECYCLE",
+      "devOwner": "SYSTEM",
+      "prodOwner": "SYSTEM",
+      "prod": "Exists on prod",
+      "action": "update",
+      "actionLabel": "Update from approved source",
+      "note": "Stage 2. Target: SYSTEM. Differences: parents, attributes, workflow. Dev-1 is authoritative for configuration; local consolidated scripts override old script versions. ",
+      "differences": [
+        "parents",
+        "attributes",
+        "workflow"
+      ],
+      "sourceCodes": [
+        "CUSTOMER"
+      ],
+      "comparison": "selected-fields",
+      "dependencies": [
+        "core-acct/account-type|TYPE_AWARE",
+        "core/workflow|CLIENT_ACCOUNT_LIFECYCLE"
+      ],
+      "targetCode": "CUSTOMER",
+      "targetOrganizationName": "SYSTEM",
+      "targetOrganization": "SYSTEM",
+      "loadStage": 2,
+      "definitionSource": "dev-1"
+    },
+    {
+      "flow": "07 Clients and access",
+      "scope": "main",
+      "kind": "Type",
+      "category": "Type",
+      "code": "ORGANIZATION",
+      "entity": "core-acct/account-type",
+      "relation": "CLIENT_ACCOUNT_LIFECYCLE",
+      "devOwner": "SYSTEM",
+      "prodOwner": "SYSTEM",
+      "prod": "Exists on prod",
+      "action": "update",
+      "actionLabel": "Update from approved source",
+      "note": "Stage 2. Target: SYSTEM. Differences: workflow. Dev-1 is authoritative for configuration; local consolidated scripts override old script versions. ",
+      "differences": [
+        "workflow"
+      ],
+      "sourceCodes": [
+        "ORGANIZATION"
+      ],
+      "comparison": "selected-fields",
+      "dependencies": [
+        "core/workflow|CLIENT_ACCOUNT_LIFECYCLE"
+      ],
+      "targetCode": "ORGANIZATION",
+      "targetOrganizationName": "SYSTEM",
+      "targetOrganization": "SYSTEM",
+      "loadStage": 2,
+      "definitionSource": "dev-1"
+    },
+    {
+      "flow": "15 Shared dependencies",
+      "scope": "shared",
+      "kind": "Type",
+      "category": "Type",
+      "code": "AI_AWARE",
+      "entity": "core/dictionary-type",
+      "relation": "Type constraint: AI_AWARE.AI_CONFIGURATION",
+      "devOwner": "SYSTEM",
+      "prodOwner": "SYSTEM",
+      "prod": "Exists on prod",
+      "action": "update",
+      "actionLabel": "Update from approved source",
+      "note": "Stage 2. Target: SYSTEM. Differences: attributes. Dev-1 is authoritative for configuration; local consolidated scripts override old script versions.  Apply approved typed-reference replacements by code; preserve all other field settings.",
+      "differences": [
+        "attributes"
+      ],
+      "sourceCodes": [
+        "AI_AWARE"
+      ],
+      "comparison": "selected-fields",
+      "dependencies": [
+        "core/dictionary-type|AI_AUDIO",
+        "core/dictionary-type|AI_IMAGE",
+        "core/dictionary-type|AI_PUBLIC_CHAT",
+        "core/dictionary-type|AI_REALTIME_VOICE",
+        "core/dictionary-type|AI_TEXT",
+        "core/dictionary-type|AI_VIDEO"
+      ],
+      "targetCode": "AI_AWARE",
+      "targetOrganizationName": "SYSTEM",
+      "targetOrganization": "SYSTEM",
+      "loadStage": 2,
+      "definitionSource": "dev-1",
+      "referenceReplacements": {
+        "targetEntity": "core/dictionary-type",
+        "resolveBy": "code",
+        "expectedOwner": "SYSTEM",
+        "replacements": {
+          "<AI_TEXT_TYPE_ID>": "AI_TEXT",
+          "<AI_VIDEO_TYPE_ID>": "AI_VIDEO",
+          "<AI_AUDIO_TYPE_ID>": "AI_AUDIO",
+          "<AI_PUBLIC_CHAT_TYPE_ID>": "AI_PUBLIC_CHAT"
+        },
+        "scope": "attributes.entityTypes only; preserve other constraints and service selections"
+      }
+    },
+    {
+      "flow": "15 Shared dependencies",
+      "scope": "shared",
+      "kind": "Type",
+      "category": "Type",
+      "code": "AI_BASE",
+      "entity": "core/dictionary-type",
+      "relation": "Parent of type AI_PLAN",
+      "devOwner": "SYSTEM",
+      "prodOwner": "SYSTEM",
+      "prod": "Exists on prod",
+      "action": "update",
+      "actionLabel": "Update from approved source",
+      "note": "Stage 2. Target: SYSTEM. Differences: attributes. Dev-1 is authoritative for configuration; local consolidated scripts override old script versions. ",
+      "differences": [
+        "attributes"
+      ],
+      "sourceCodes": [
+        "AI_BASE"
+      ],
+      "comparison": "selected-fields",
+      "dependencies": [],
+      "targetCode": "AI_BASE",
+      "targetOrganizationName": "SYSTEM",
+      "targetOrganization": "SYSTEM",
+      "loadStage": 2,
+      "definitionSource": "dev-1"
+    },
+    {
+      "flow": "15 Shared dependencies",
+      "scope": "shared",
+      "kind": "Type",
+      "category": "Type",
+      "code": "AI_REALTIME_VOICE",
+      "entity": "core/dictionary-type",
+      "relation": "Type constraint: AI_AWARE.AUDIO_GENERATION_SERVICE",
+      "devOwner": "SYSTEM",
+      "prodOwner": "SYSTEM",
+      "prod": "Exists on prod",
+      "action": "update",
+      "actionLabel": "Update from approved source",
+      "note": "Stage 2. Target: SYSTEM. Differences: attributes. Dev-1 is authoritative for configuration; local consolidated scripts override old script versions. ",
+      "differences": [
+        "attributes"
+      ],
+      "sourceCodes": [
+        "AI_REALTIME_VOICE"
+      ],
+      "comparison": "selected-fields",
+      "dependencies": [
+        "core/dictionary-type|AI_AUDIO"
+      ],
+      "targetCode": "AI_REALTIME_VOICE",
+      "targetOrganizationName": "SYSTEM",
+      "targetOrganization": "SYSTEM",
+      "loadStage": 2,
+      "definitionSource": "dev-1"
+    },
+    {
+      "flow": "15 Shared dependencies",
+      "scope": "shared",
+      "kind": "Type",
+      "category": "Type",
+      "code": "CONTRACT_AWARE",
+      "entity": "core/dictionary-type",
+      "relation": "",
+      "devOwner": "SERVICE_WAND_WINTER_SERVICES",
+      "prodOwner": "SYSTEM",
+      "prod": "Exists on prod",
+      "action": "update",
+      "actionLabel": "Update from approved source",
+      "note": "Stage 2. Target: WINTER_SERVICES. Differences: attributes. Dev-1 is authoritative for configuration; local consolidated scripts override old script versions. ",
+      "differences": [
+        "attributes"
+      ],
+      "sourceCodes": [
+        "CONTRACT_AWARE"
+      ],
+      "comparison": "selected-fields",
+      "dependencies": [
+        "core/document-type|SNOW_SEASONAL_CONTRACT"
+      ],
+      "targetCode": "CONTRACT_AWARE",
+      "targetOrganizationName": "WINTER_SERVICES",
+      "targetOrganization": "WINTER_SERVICES",
+      "loadStage": 2,
+      "definitionSource": "dev-1"
+    },
+    {
+      "flow": "15 Shared dependencies",
+      "scope": "shared",
+      "kind": "Type",
+      "category": "Type",
+      "code": "SERVICE_PROVIDER",
+      "entity": "core/organization-type",
+      "relation": "ORGANIZATION_WORKFLOW",
+      "devOwner": "WINTER_SERVICES",
+      "prodOwner": "WINTER_SERVICES",
+      "prod": "Exists on prod",
+      "action": "update",
+      "actionLabel": "Update from approved source",
+      "note": "Reuse SERVICE_PROVIDER by code. Apply dev-1 attributes; saved prod snapshot lacks CUSTOMER_PORTAL_URL. Preserve optional QUOTATION_EXPIRATION. Remap dictionary types/defaults by code (GENERAL_COMMUNICATION), never copy dev IDs. OPERATOR and its old patch are excluded.",
+      "differences": [
+        "attributes"
+      ],
+      "sourceCodes": [
+        "SERVICE_PROVIDER"
+      ],
+      "comparison": "selected-fields",
+      "dependencies": [
+        "core/dictionary-type|CONTACT_AWARE",
+        "core/dictionary-type|CONTRACT_AWARE",
+        "core/organization-type|AI_AWARE",
+        "core/organization-type|BASE",
+        "core/workflow|ORGANIZATION_WORKFLOW"
+      ],
+      "targetCode": "SERVICE_PROVIDER",
+      "targetOrganizationName": "WINTER_SERVICES",
+      "targetOrganization": "WINTER_SERVICES",
+      "loadStage": 2,
+      "definitionSource": "dev-1"
+    },
+    {
+      "flow": "15 Shared dependencies",
+      "scope": "shared",
+      "kind": "Script",
+      "category": "Script",
+      "code": "ORGANIZATION_MEDIA_LIBRARY_MANAGEMENT_UTILS",
+      "entity": "core/script",
+      "relation": "Workflow handler ORGANIZATION_WORKFLOW",
+      "devOwner": "SYSTEM",
+      "prodOwner": "SYSTEM",
+      "prod": "Exists on prod",
+      "action": "update",
+      "actionLabel": "Update from approved source",
+      "note": "Stage 3. Target: SYSTEM. Differences: content. Dev-1 is authoritative for configuration; local consolidated scripts override old script versions.  Ownership: Shared entity media library; retain platform availability for workflows in multiple domains.",
+      "differences": [
+        "content"
+      ],
+      "sourceCodes": [
+        "ORGANIZATION_MEDIA_LIBRARY_MANAGEMENT_UTILS"
+      ],
+      "comparison": "selected-fields",
+      "dependencies": [],
+      "targetCode": "ORGANIZATION_MEDIA_LIBRARY_MANAGEMENT_UTILS",
+      "targetOrganizationName": "SYSTEM",
+      "targetOrganization": "SYSTEM",
+      "loadStage": 3,
+      "definitionSource": "dev-1",
+      "ownershipReason": "Shared entity media library; retain platform availability for workflows in multiple domains."
+    },
+    {
+      "flow": "15 Shared dependencies",
+      "scope": "main",
+      "entity": "core/workflow",
+      "code": "CORE_PROJECT_WORKFLOW",
+      "kind": "Workflow",
+      "category": "Workflow",
+      "relation": "Workflow of SOFTWARE_DEVELOPMENT",
+      "devOwner": "SYSTEM",
+      "sourceCodes": [
+        "CORE_PROJECT_WORKFLOW"
+      ],
+      "dependencies": [],
+      "targetCode": "CORE_PROJECT_WORKFLOW",
+      "targetOrganizationName": "SYSTEM",
+      "targetOrganization": "SYSTEM",
+      "loadStage": 4,
+      "prodOwner": "SYSTEM",
+      "differences": [
+        "states"
+      ],
+      "comparison": "selected-fields",
+      "prod": "Exists on prod",
+      "action": "update",
+      "actionLabel": "Update from approved source",
+      "note": "Stage 4. Target: SYSTEM. Differences: states. Dev-1 is authoritative for configuration; local consolidated scripts override old script versions. ",
+      "definitionSource": "dev-1"
+    },
+    {
+      "flow": "15 Shared dependencies",
+      "scope": "shared",
+      "kind": "Workflow",
+      "category": "Workflow",
+      "code": "ORGANIZATION_WORKFLOW",
+      "entity": "core/workflow",
+      "relation": "Workflow for type OPERATOR",
+      "devOwner": "SYSTEM",
+      "prodOwner": "SYSTEM",
+      "prod": "Exists on prod",
+      "action": "update",
+      "actionLabel": "Update from approved source",
+      "note": "Stage 4. Target: SYSTEM. Differences: script, states. Dev-1 is authoritative for configuration; local consolidated scripts override old script versions. ",
+      "differences": [
+        "script",
+        "states"
+      ],
+      "sourceCodes": [
+        "ORGANIZATION_WORKFLOW"
+      ],
+      "comparison": "selected-fields",
+      "dependencies": [
+        "core/script|ORGANIZATION_MEDIA_LIBRARY_MANAGEMENT_UTILS"
+      ],
+      "targetCode": "ORGANIZATION_WORKFLOW",
+      "targetOrganizationName": "SYSTEM",
+      "targetOrganization": "SYSTEM",
+      "loadStage": 4,
+      "definitionSource": "dev-1"
+    },
+    {
+      "flow": "17 Catalog",
+      "scope": "main",
+      "entity": "core-pim/product-price-type",
+      "code": "PER_UNIT",
+      "kind": "Type",
+      "category": "Type",
+      "relation": "All price types, source dev-1",
+      "devOwner": "SYSTEM",
+      "sourceCodes": [
+        "PER_UNIT"
+      ],
+      "dependencies": [
+        "core-pim/product-price-type|PRICE_CURRENCY"
+      ],
+      "targetCode": "PER_UNIT",
+      "targetOrganizationName": "SYSTEM",
+      "targetOrganization": "SYSTEM",
+      "loadStage": 2,
+      "prodOwner": "SYSTEM",
+      "differences": [
+        "attributes"
+      ],
+      "comparison": "selected-fields",
+      "prod": "Exists on prod",
+      "action": "update",
+      "actionLabel": "Update from approved source",
+      "note": "Stage 2. Target: SYSTEM. Differences: attributes. Dev-1 is authoritative for configuration; local consolidated scripts override old script versions. ",
+      "definitionSource": "dev-1"
+    },
+    {
+      "flow": "17 Catalog",
+      "scope": "main",
+      "entity": "core-pim/product-price-type",
+      "code": "PER_UNIT_RECURRENT",
+      "kind": "Type",
+      "category": "Type",
+      "relation": "All price types, source dev-1",
+      "devOwner": "SYSTEM",
+      "sourceCodes": [
+        "PER_UNIT_RECURRENT"
+      ],
+      "dependencies": [
+        "core-pim/product-price-type|PER_UNIT",
+        "core-pim/product-price-type|PRICE_CURRENCY",
+        "core-pim/product-price-type|RECURRENT"
+      ],
+      "targetCode": "PER_UNIT_RECURRENT",
+      "targetOrganizationName": "SYSTEM",
+      "targetOrganization": "SYSTEM",
+      "loadStage": 2,
+      "prodOwner": "SYSTEM",
+      "differences": [
+        "parents"
+      ],
+      "comparison": "selected-fields",
+      "prod": "Exists on prod",
+      "action": "update",
+      "actionLabel": "Update from approved source",
+      "note": "Stage 2. Target: SYSTEM. Differences: parents. Dev-1 is authoritative for configuration; local consolidated scripts override old script versions. ",
+      "definitionSource": "dev-1"
+    },
+    {
+      "flow": "17 Catalog",
+      "scope": "main",
+      "entity": "core-pim/product-price-type",
+      "code": "PRICE_CURRENCY",
+      "kind": "Type",
+      "category": "Type",
+      "relation": "All price types, source dev-1",
+      "devOwner": "SYSTEM",
+      "sourceCodes": [
+        "PRICE_CURRENCY"
+      ],
+      "dependencies": [
+        "core/dictionary-type|CRYPTO",
+        "core/dictionary-type|FIAT"
+      ],
+      "targetCode": "PRICE_CURRENCY",
+      "targetOrganizationName": "SYSTEM",
+      "targetOrganization": "SYSTEM",
+      "loadStage": 2,
+      "prodOwner": "SYSTEM",
+      "differences": [
+        "attributes"
+      ],
+      "comparison": "selected-fields",
+      "prod": "Exists on prod",
+      "action": "update",
+      "actionLabel": "Update from approved source",
+      "note": "Stage 2. Target: SYSTEM. Differences: attributes. Dev-1 is authoritative for configuration; local consolidated scripts override old script versions. ",
+      "definitionSource": "dev-1"
+    },
+    {
+      "flow": "17 Catalog",
+      "scope": "main",
+      "entity": "core-pim/product-price-type",
+      "code": "RECURRENT",
+      "kind": "Type",
+      "category": "Type",
+      "relation": "All price types, source dev-1",
+      "devOwner": "SYSTEM",
+      "sourceCodes": [
+        "RECURRENT"
+      ],
+      "dependencies": [],
+      "targetCode": "RECURRENT",
+      "targetOrganizationName": "SYSTEM",
+      "targetOrganization": "SYSTEM",
+      "loadStage": 2,
+      "prodOwner": "SYSTEM",
+      "differences": [
+        "attributes"
+      ],
+      "comparison": "selected-fields",
+      "prod": "Exists on prod",
+      "action": "update",
+      "actionLabel": "Update from approved source",
+      "note": "Stage 2. Target: SYSTEM. Differences: attributes. Dev-1 is authoritative for configuration; local consolidated scripts override old script versions. ",
+      "definitionSource": "dev-1"
+    },
+    {
+      "flow": "17 Catalog",
+      "scope": "main",
+      "entity": "core-pim/product-price-type",
+      "code": "TIERED",
+      "kind": "Type",
+      "category": "Type",
+      "relation": "All price types, source dev-1",
+      "devOwner": "SYSTEM",
+      "sourceCodes": [
+        "TIERED"
+      ],
+      "dependencies": [
+        "core-pim/product-price-type|PRICE_CURRENCY"
+      ],
+      "targetCode": "TIERED",
+      "targetOrganizationName": "SYSTEM",
+      "targetOrganization": "SYSTEM",
+      "loadStage": 2,
+      "prodOwner": "SYSTEM",
+      "differences": [
+        "attributes"
+      ],
+      "comparison": "selected-fields",
+      "prod": "Exists on prod",
+      "action": "update",
+      "actionLabel": "Update from approved source",
+      "note": "Stage 2. Target: SYSTEM. Differences: attributes. Dev-1 is authoritative for configuration; local consolidated scripts override old script versions. ",
+      "definitionSource": "dev-1"
+    }
+  ],
+  "resolvedReferences": [
+    {
+      "entity": "core-svc/appointment-type",
+      "code": "SNOW_SERVICE_VISIT",
+      "attribute": "RESOURCE",
+      "reference": "SW_FS_WS_PROPERTY_SITE",
+      "targetEntity": "core-rm/resource-type",
+      "targetCode": "SNOW_REMOVAL_PROPERTY",
+      "status": "resolved-in-transfer-rules-not-applied"
+    },
+    {
+      "entity": "core/document-type",
+      "code": "SNOW_SEASONAL_CONTRACT",
+      "attribute": "SITES",
+      "reference": "SW_FS_WS_PROPERTY_SITE",
+      "targetEntity": "core-rm/resource-type",
+      "targetCode": "SNOW_REMOVAL_PROPERTY",
+      "status": "resolved-in-transfer-rules-not-applied"
+    },
+    {
+      "entity": "core/document-type",
+      "code": "SNOW_SEASONAL_CONTRACT",
+      "attribute": "PRIMARY_SITE",
+      "reference": "SW_FS_WS_PROPERTY_SITE",
+      "targetEntity": "core-rm/resource-type",
+      "targetCode": "SNOW_REMOVAL_PROPERTY",
+      "status": "resolved-in-transfer-rules-not-applied"
+    },
+    {
+      "entity": "core/dictionary-type",
+      "code": "AI_AWARE",
+      "attribute": "VIDEO_GENERATION_SERVICE",
+      "reference": "<AI_VIDEO_TYPE_ID>",
+      "targetEntity": "core/dictionary-type",
+      "targetCode": "AI_VIDEO",
+      "status": "resolved-in-transfer-rules-not-applied"
+    },
+    {
+      "entity": "core/dictionary-type",
+      "code": "AI_AWARE",
+      "attribute": "DEFAULT_TRANSLATION_SERVICE",
+      "reference": "<AI_TEXT_TYPE_ID>",
+      "targetEntity": "core/dictionary-type",
+      "targetCode": "AI_TEXT",
+      "status": "resolved-in-transfer-rules-not-applied"
+    },
+    {
+      "entity": "core/dictionary-type",
+      "code": "AI_AWARE",
+      "attribute": "ASK_SERVICE",
+      "reference": "<AI_PUBLIC_CHAT_TYPE_ID>",
+      "targetEntity": "core/dictionary-type",
+      "targetCode": "AI_PUBLIC_CHAT",
+      "status": "resolved-in-transfer-rules-not-applied"
+    },
+    {
+      "entity": "core/dictionary-type",
+      "code": "AI_AWARE",
+      "attribute": "ASK_SERVICE",
+      "reference": "<AI_TEXT_TYPE_ID>",
+      "targetEntity": "core/dictionary-type",
+      "targetCode": "AI_TEXT",
+      "status": "resolved-in-transfer-rules-not-applied"
+    },
+    {
+      "entity": "core/dictionary-type",
+      "code": "AI_AWARE",
+      "attribute": "DEFAULT_ASK_SERVICE",
+      "reference": "<AI_PUBLIC_CHAT_TYPE_ID>",
+      "targetEntity": "core/dictionary-type",
+      "targetCode": "AI_PUBLIC_CHAT",
+      "status": "resolved-in-transfer-rules-not-applied"
+    },
+    {
+      "entity": "core/dictionary-type",
+      "code": "AI_AWARE",
+      "attribute": "DEFAULT_ASK_SERVICE",
+      "reference": "<AI_TEXT_TYPE_ID>",
+      "targetEntity": "core/dictionary-type",
+      "targetCode": "AI_TEXT",
+      "status": "resolved-in-transfer-rules-not-applied"
+    },
+    {
+      "entity": "core/dictionary-type",
+      "code": "AI_AWARE",
+      "attribute": "DEFAULT_VIDEO_GENERATION_SERVICE",
+      "reference": "<AI_VIDEO_TYPE_ID>",
+      "targetEntity": "core/dictionary-type",
+      "targetCode": "AI_VIDEO",
+      "status": "resolved-in-transfer-rules-not-applied"
+    },
+    {
+      "entity": "core/dictionary-type",
+      "code": "AI_AWARE",
+      "attribute": "VIDEO_TRANSCRIPTION_SERVICE",
+      "reference": "<AI_TEXT_TYPE_ID>",
+      "targetEntity": "core/dictionary-type",
+      "targetCode": "AI_TEXT",
+      "status": "resolved-in-transfer-rules-not-applied"
+    },
+    {
+      "entity": "core/dictionary-type",
+      "code": "AI_AWARE",
+      "attribute": "DEFAULT_AUDIO_GENERATION_SERVICE",
+      "reference": "<AI_AUDIO_TYPE_ID>",
+      "targetEntity": "core/dictionary-type",
+      "targetCode": "AI_AUDIO",
+      "status": "resolved-in-transfer-rules-not-applied"
+    },
+    {
+      "entity": "core/dictionary-type",
+      "code": "AI_AWARE",
+      "attribute": "IMAGE_TRANSCRIPTION_SERVICE",
+      "reference": "<AI_TEXT_TYPE_ID>",
+      "targetEntity": "core/dictionary-type",
+      "targetCode": "AI_TEXT",
+      "status": "resolved-in-transfer-rules-not-applied"
+    },
+    {
+      "entity": "core/dictionary-type",
+      "code": "AI_AWARE",
+      "attribute": "AUDIO_TRANSCRIPTION_SERVICE",
+      "reference": "<AI_TEXT_TYPE_ID>",
+      "targetEntity": "core/dictionary-type",
+      "targetCode": "AI_TEXT",
+      "status": "resolved-in-transfer-rules-not-applied"
+    },
+    {
+      "entity": "core/dictionary-type",
+      "code": "AI_AWARE",
+      "attribute": "TRANSLATION_SERVICE",
+      "reference": "<AI_TEXT_TYPE_ID>",
+      "targetEntity": "core/dictionary-type",
+      "targetCode": "AI_TEXT",
+      "status": "resolved-in-transfer-rules-not-applied"
+    }
+  ],
+  "readinessStatus": "staged-transfer-complete",
+  "launchChecks": [
+    "Build and validate import payload with approved owner and typed-reference remaps.",
+    "Verify script lookup from workflow, bulk actions, schedules and cross-organization onboarding.",
+    "Verify production page availability and runtime flows; keep payment and schedules disabled."
+  ],
+  "sourceLabelAudit": {
+    "readAt": "2026-11-16T22:49:57.069Z",
+    "checked": 148,
+    "deleteMatches": 1,
+    "evidence": "retired-order-transfer-audit-2026-11-17.json",
+    "selectedDeleteMatches": 0,
+    "resolvedBy": "OPERATOR excluded; SERVICE_PROVIDER selected",
+    "compatibilityEvidence": "service-provider-compatibility-2026-11-17.json"
+  },
+  "finalPackageAudit": "final-package-audit-2026-11-17.json",
+  "deferredRequirements": [
+    {
+      "entry": "core/dictionary|SNOW_REMOVAL_AI_PLAN",
+      "technicalIssue": "Required target dependency missing: core/organization-secret|OpenAI API Key",
+      "owner": "backend",
+      "reason": "Backend configures the production OpenAI secret. Defer the dependent AI configuration until it resolves; not a blocker for the main transfer."
+    },
+    {
+      "entry": "core-rpt/report|WINTER_CONTRACT",
+      "technicalIssue": "Report requires multipart source file; source snapshot has metadata only",
+      "owner": "report-follow-up",
+      "reason": "Find the original report file on dev-1 and load separately. User approved later loading; not a blocker for the main transfer."
+    },
+    {
+      "entry": "core-rpt/report|WINTER_INVOICE",
+      "technicalIssue": "Report requires multipart source file; source snapshot has metadata only",
+      "owner": "report-follow-up",
+      "reason": "Find the original report file on dev-1 and load separately. User approved later loading; not a blocker for the main transfer."
+    }
+  ],
+  "readyForStagedImport": true,
+  "serversChanged": true,
+  "deployment": {
+    "checkedAt": "2026-11-17T13:11:17.713349+00:00",
+    "status": "staged-transfer-complete",
+    "verifiedSaveOperations": 733,
+    "supplementalSensorDefinitions": 2,
+    "attemptedSaveOperations": 751,
+    "entryCounts": {
+      "deployed": 328,
+      "deferred": 3,
+      "reused": 23
+    },
+    "totalEntries": 354,
+    "blockers": [],
+    "deferred": [
+      "Backend: production OpenAI secret and dependent AI plan configuration.",
+      "Later, by user decision: WINTER_CONTRACT and WINTER_INVOICE. Source archives retrieved and statically checked; production upload, JDBC setup and PDF rendering deferred (not a transfer blocker)."
+    ],
+    "paymentEnabled": false,
+    "schedulesEnabled": false,
+    "serversChanged": true
+  }
+}

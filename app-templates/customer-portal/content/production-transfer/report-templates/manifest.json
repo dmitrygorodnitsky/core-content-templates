@@ -1,0 +1,40 @@
+[
+  {
+    "code": "WINTER_CONTRACT",
+    "source": "dev-1",
+    "version": "1.0.2",
+    "archive": "WINTER_CONTRACT.zip",
+    "sha256": "68aee0607db12c31766bc93df78e5e14d8f378a9df0afdf986c1ebfdae02df4e",
+    "bytes": 8283,
+    "compileOrder": "WinterContract",
+    "parameter": "DOCUMENT_ID",
+    "locales": [
+      "en",
+      "de",
+      "fr",
+      "ru"
+    ],
+    "status": "retrieved-transfer-deferred",
+    "validation": "ZIP integrity, XML structure, main report name, parameter and four language bundles checked. Not compiled or rendered on production.",
+    "productionChanged": false
+  },
+  {
+    "code": "WINTER_INVOICE",
+    "source": "dev-1",
+    "version": "1.0.2",
+    "archive": "WINTER_INVOICE.zip",
+    "sha256": "00140ec4427eb539419339cf23c0ea2184ece652c457f6d9e442b6375b5a9f44",
+    "bytes": 7238,
+    "compileOrder": "WinterInvoice",
+    "parameter": "INVOICE_ID",
+    "locales": [
+      "en",
+      "de",
+      "fr",
+      "ru"
+    ],
+    "status": "retrieved-transfer-deferred",
+    "validation": "ZIP integrity, XML structure, main report name, parameter and four language bundles checked. Not compiled or rendered on production.",
+    "productionChanged": false
+  }
+]
