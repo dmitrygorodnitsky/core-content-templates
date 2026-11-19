@@ -1,0 +1,2039 @@
+{
+  "publicMedia": [
+    {
+      "key": "media|E5F61FE2_8B18_4523_9991_8DE632D24464|Weather Intelligence for Snow Removal The Storm Is Won Before the First Truck Moves2.png|f98c8b8f300d28f798302960ebca8f4c270a88f8c6ac2aadb513bc3239b59c4f",
+      "status": 206,
+      "bytes": 2336760,
+      "ok": true,
+      "check": "anonymous GET range, total size and file prefix; full SHA-256 verified after upload"
+    },
+    {
+      "key": "media|E5F61FE2_8B18_4523_9991_8DE632D24464|Scaling a Snow Removal Business The Systems That Break Between 5 and 50 Trucks2.png|c195870de9f50e2d38765fd01293b618749ed44b9d1f166061e2de3858f9b6cb",
+      "status": 206,
+      "bytes": 2407138,
+      "ok": true,
+      "check": "anonymous GET range, total size and file prefix; full SHA-256 verified after upload"
+    },
+    {
+      "key": "media|E5F61FE2_8B18_4523_9991_8DE632D24464|Agentic AI and the $234 Billion SaaS Question What Software Companies Need to Change1.png|432751331008e3a91f8940b0a404e00038e463028b6236d54f5f41d98209edaa",
+      "status": 206,
+      "bytes": 2054685,
+      "ok": true,
+      "check": "anonymous GET range, total size and file prefix; full SHA-256 verified after upload"
+    },
+    {
+      "key": "media|E5F61FE2_8B18_4523_9991_8DE632D24464|Field Service Is Becoming a Profit Center—Software Has to Catch Up2.png|9819f07edf4e2362c827381c1f5ab384cc6dfd35a22408ca6737a1eb9285a621",
+      "status": 206,
+      "bytes": 2060460,
+      "ok": true,
+      "check": "anonymous GET range, total size and file prefix; full SHA-256 verified after upload"
+    },
+    {
+      "key": "media|E5F61FE2_8B18_4523_9991_8DE632D24464|Field Service Scheduling Software Why Static Calendars Are Becoming Obsolete1.png|7e3ca7b74c932b6f6bb28ec0a3241993a893bb8f231ac56f011781ee4dae7f1b",
+      "status": 206,
+      "bytes": 2100169,
+      "ok": true,
+      "check": "anonymous GET range, total size and file prefix; full SHA-256 verified after upload"
+    },
+    {
+      "key": "media|CE7A483A_42C8_4869_ADB1_98DF04D1065D|mainsnow#2.png|25308d3feb4f81991c30ad6902a478e295840e3a9c898a2a8452acfca2b939da",
+      "status": 206,
+      "bytes": 2397945,
+      "ok": true,
+      "check": "anonymous GET range, total size and file prefix; full SHA-256 verified after upload"
+    },
+    {
+      "key": "media|E5F61FE2_8B18_4523_9991_8DE632D24464|GPS Snow Plow Tracking Location Is Not the Same as Proof of Work1.png|d90813c490ae641c085ff41ad786a15c1212edf66f68fa2898bc6eeac3bee27b",
+      "status": 206,
+      "bytes": 2020385,
+      "ok": true,
+      "check": "anonymous GET range, total size and file prefix; full SHA-256 verified after upload"
+    },
+    {
+      "key": "media|E5F61FE2_8B18_4523_9991_8DE632D24464|Snow and Ice Management Software Why Plowing Is Only Half the Operation2.png|3fc7ca3a09f031a121063f6c8add33dcca484ce1e025cb327c6e44eabc612702",
+      "status": 206,
+      "bytes": 2207235,
+      "ok": true,
+      "check": "anonymous GET range, total size and file prefix; full SHA-256 verified after upload"
+    },
+    {
+      "key": "media|E5F61FE2_8B18_4523_9991_8DE632D24464|1The System of Record Is Back—and AI Agents Are the Reason.png|f841312afb115a23340994b20aceaaac022cb99fbf25566679850401e5e288b6",
+      "status": 206,
+      "bytes": 1753861,
+      "ok": true,
+      "check": "anonymous GET range, total size and file prefix; full SHA-256 verified after upload"
+    },
+    {
+      "key": "media|E5F61FE2_8B18_4523_9991_8DE632D24464|Field Service CRM vs. FSM Why Customer Data and Job Execution Can’t Live Apart1.png|125aa12bbe540e7a45cce07533aac526f550d2a63f06c5a2d6b7fac903adce2c",
+      "status": 206,
+      "bytes": 2009418,
+      "ok": true,
+      "check": "anonymous GET range, total size and file prefix; full SHA-256 verified after upload"
+    },
+    {
+      "key": "media|E5F61FE2_8B18_4523_9991_8DE632D24464|MCP and the New Integration Layer Will APIs Still Be Enough1.png|1a73168494a17b8a5087ef132a02856048b8a70c37934713fe4e91a1df506d27",
+      "status": 206,
+      "bytes": 1989804,
+      "ok": true,
+      "check": "anonymous GET range, total size and file prefix; full SHA-256 verified after upload"
+    },
+    {
+      "key": "media|E5F61FE2_8B18_4523_9991_8DE632D24464|Field Service Route Optimization Stop Optimizing Miles and Start Optimizing Outcomes2.png|a809bf46179ac784a8eac4e227459ca2548d218650da38fa46d39005c57fb92e",
+      "status": 206,
+      "bytes": 2095731,
+      "ok": true,
+      "check": "anonymous GET range, total size and file prefix; full SHA-256 verified after upload"
+    },
+    {
+      "key": "media|E5F61FE2_8B18_4523_9991_8DE632D24464|Proof of Service for Snow Removal If You Can’t Prove It, Did It Happen2.png|5ecb0c1a7f989f51bf7d1447bab0a5b3527ca016e3c51becbe97b18829e1d80d",
+      "status": 206,
+      "bytes": 2088071,
+      "ok": true,
+      "check": "anonymous GET range, total size and file prefix; full SHA-256 verified after upload"
+    },
+    {
+      "key": "media|E5F61FE2_8B18_4523_9991_8DE632D24464|Snow Removal App vs. Full Management Software When a Simple App Stops Being Enough1.png|1f9a485a1448de6100d5f3d59f0a15fad852ba914a10d16b50962bb69928ad58",
+      "status": 206,
+      "bytes": 1918848,
+      "ok": true,
+      "check": "anonymous GET range, total size and file prefix; full SHA-256 verified after upload"
+    },
+    {
+      "key": "media|E5F61FE2_8B18_4523_9991_8DE632D24464|Field Service Is Becoming a Profit Center—Software Has to Catch Up1.png|2b35774fc8d0781402229dbc41c182b2c045a577749714065eb21c3c36e32e23",
+      "status": 206,
+      "bytes": 2213975,
+      "ok": true,
+      "check": "anonymous GET range, total size and file prefix; full SHA-256 verified after upload"
+    },
+    {
+      "key": "media|E5F61FE2_8B18_4523_9991_8DE632D24464|SaaS Isn’t Dead. The Seat License Might Be.2.png|b830d60efdeb6b2a2e1cc32210e252a266eac210860e2ddb45955dbf3d205fc7",
+      "status": 206,
+      "bytes": 1948503,
+      "ok": true,
+      "check": "anonymous GET range, total size and file prefix; full SHA-256 verified after upload"
+    },
+    {
+      "key": "media|E5F61FE2_8B18_4523_9991_8DE632D24464|Headless Software Is Coming What Happens When AI Stops Clicking Your UI2.png|48ac32c0c01c2c03c70a49a7f555186fb926443d17f5bf826323e311571f85a6",
+      "status": 206,
+      "bytes": 2056516,
+      "ok": true,
+      "check": "anonymous GET range, total size and file prefix; full SHA-256 verified after upload"
+    },
+    {
+      "key": "media|E5F61FE2_8B18_4523_9991_8DE632D24464|Your Company Doesn’t Have an AI Problem. It Has a Data and Workflow Problem.2.png|c60cec5e69d3f8c85c8b10366f22728a8028cce8149b0a7c93ea87ce17106d17",
+      "status": 206,
+      "bytes": 2518308,
+      "ok": true,
+      "check": "anonymous GET range, total size and file prefix; full SHA-256 verified after upload"
+    },
+    {
+      "key": "media|E5F61FE2_8B18_4523_9991_8DE632D24464|Snow Removal Software ROI Measure Fewer Disputes, Faster Billing and Better Route Density2.png|763d0ed2ef0523dae2daf55dfdc85a98d4b5d30b8bdd80df4cf1368ad96844d6",
+      "status": 206,
+      "bytes": 2057373,
+      "ok": true,
+      "check": "anonymous GET range, total size and file prefix; full SHA-256 verified after upload"
+    },
+    {
+      "key": "media|E5F61FE2_8B18_4523_9991_8DE632D24464|The Rise of the Forward-Deployed Builder Why Software Companies Need People Who Understand Operations1.png|fb1d7a9af65450fb099405bf34fbc5d2928243d1cbf8b77ebef94aa2d594f8f7",
+      "status": 206,
+      "bytes": 1936662,
+      "ok": true,
+      "check": "anonymous GET range, total size and file prefix; full SHA-256 verified after upload"
+    },
+    {
+      "key": "media|E5F61FE2_8B18_4523_9991_8DE632D24464|The Future of Business Software Is Invisible, Adaptive and Always Working1.png|a142915427f521844253c282ecd002df2cfec96c4402edfb73b0062c92b4c54c",
+      "status": 206,
+      "bytes": 2983756,
+      "ok": true,
+      "check": "anonymous GET range, total size and file prefix; full SHA-256 verified after upload"
+    },
+    {
+      "key": "media|E5F61FE2_8B18_4523_9991_8DE632D24464|Field Service Route Optimization Stop Optimizing Miles and Start Optimizing Outcomes1.png|e2d5690c54f7f70b4bf0795ec468bea9b3f43cbec595843618823828da6f6610",
+      "status": 206,
+      "bytes": 2112972,
+      "ok": true,
+      "check": "anonymous GET range, total size and file prefix; full SHA-256 verified after upload"
+    },
+    {
+      "key": "media|E5F61FE2_8B18_4523_9991_8DE632D24464|Snow Removal Billing Software Stop Rebuilding the Storm in Your Invoice1.png|341bd13f7f79e9ba875281e70c19812602dbdd8077ffc54e229180ab5a6a9a32",
+      "status": 206,
+      "bytes": 2138379,
+      "ok": true,
+      "check": "anonymous GET range, total size and file prefix; full SHA-256 verified after upload"
+    },
+    {
+      "key": "media|E5F61FE2_8B18_4523_9991_8DE632D24464|Snow Removal App vs. Full Management Software When a Simple App Stops Being Enough2.png|1508437116660f6959df3471ab07ac04cb7f7b9a55acda3d3e5a02d7d25d6666",
+      "status": 206,
+      "bytes": 2125015,
+      "ok": true,
+      "check": "anonymous GET range, total size and file prefix; full SHA-256 verified after upload"
+    },
+    {
+      "key": "media|E5F61FE2_8B18_4523_9991_8DE632D24464|AI Agents Aren’t Replacing Software—They’re Rewriting What Software Has to Be1.png|2381c5ce70caba57980926a1cb45c2645314cfb942feecfd433566f96def0168",
+      "status": 206,
+      "bytes": 1753342,
+      "ok": true,
+      "check": "anonymous GET range, total size and file prefix; full SHA-256 verified after upload"
+    },
+    {
+      "key": "media|E5F61FE2_8B18_4523_9991_8DE632D24464|The Operational Data Moat Why AI Makes Your “Boring” Business Data More Valuable2.png|a8ca61158b23cef9c913da09b4117b6c7c50c1a75a56c327e8814c713dce5da5",
+      "status": 206,
+      "bytes": 2442426,
+      "ok": true,
+      "check": "anonymous GET range, total size and file prefix; full SHA-256 verified after upload"
+    },
+    {
+      "key": "media|E5F61FE2_8B18_4523_9991_8DE632D24464|Proof of Service for Snow Removal If You Can’t Prove It, Did It Happen1.png|d4e130fda8452be80667c63b926cbad700bd2645afeff1fb521dead83ccb532e",
+      "status": 206,
+      "bytes": 1966747,
+      "ok": true,
+      "check": "anonymous GET range, total size and file prefix; full SHA-256 verified after upload"
+    },
+    {
+      "key": "media|SERVICEWAND_DEFAULT|Service Wand and the Argument for One Operational System2.png|40ad5bc2ac55d48d8f1800a9cb150d7e7a03574cbb27a6b8593e493946d285f6",
+      "status": 206,
+      "bytes": 1809112,
+      "ok": true,
+      "check": "anonymous GET range, total size and file prefix; full SHA-256 verified after upload"
+    },
+    {
+      "key": "media|E5F61FE2_8B18_4523_9991_8DE632D24464|Build vs. Buy vs. Configure The Software Decision Founders Keep Framing Wrong1.png|21cfd048439938e450762e50427c3b22647b1dbace7096039b6c1ddc0d338426",
+      "status": 206,
+      "bytes": 1745988,
+      "ok": true,
+      "check": "anonymous GET range, total size and file prefix; full SHA-256 verified after upload"
+    },
+    {
+      "key": "media|E5F61FE2_8B18_4523_9991_8DE632D24464|Commercial Snow Removal Software Why One Parking Lot Can Be More Complex Than 50 Driveways2.png|715be2fb55944a82379223cf1b5f059b121529724f2b297246bf9b5c0a4a351a",
+      "status": 206,
+      "bytes": 2518996,
+      "ok": true,
+      "check": "anonymous GET range, total size and file prefix; full SHA-256 verified after upload"
+    },
+    {
+      "key": "media|E5F61FE2_8B18_4523_9991_8DE632D24464|Snow Removal Route Optimization The Shortest-Route Trap That Costs More1.png|714e33319c084e1789eb3751a081e46b228891a9f1a5ffdeaabaa9434e506501",
+      "status": 206,
+      "bytes": 2101423,
+      "ok": true,
+      "check": "anonymous GET range, total size and file prefix; full SHA-256 verified after upload"
+    },
+    {
+      "key": "media|E5F61FE2_8B18_4523_9991_8DE632D24464|From Industry Expertise to Software How Partners Can Productize What They Know1.png|29661ca9d493cfdd414fab9aeff056a3740344db60606473074c67f6f88ad587",
+      "status": 206,
+      "bytes": 1768068,
+      "ok": true,
+      "check": "anonymous GET range, total size and file prefix; full SHA-256 verified after upload"
+    },
+    {
+      "key": "media|E5F61FE2_8B18_4523_9991_8DE632D24464|Snow Removal Billing Software Stop Rebuilding the Storm in Your Invoice2.png|34d656ab16c4942ceb7c7117a6b21c448088b9f40f335878b7bba79af73be26f",
+      "status": 206,
+      "bytes": 2058129,
+      "ok": true,
+      "check": "anonymous GET range, total size and file prefix; full SHA-256 verified after upload"
+    },
+    {
+      "key": "media|E5F61FE2_8B18_4523_9991_8DE632D24464|Salt Tracking Software The Hidden Margin Problem in Snow and Ice Management2.png|669ccc66a3eb1356d15851e85849a242174bd599d98c3ec3fe924c25fe0f4759",
+      "status": 206,
+      "bytes": 2174864,
+      "ok": true,
+      "check": "anonymous GET range, total size and file prefix; full SHA-256 verified after upload"
+    },
+    {
+      "key": "media|E5F61FE2_8B18_4523_9991_8DE632D24464|The End of One-Size-Fits-All SaaS Software Is Becoming Adaptive2.png|3a8cfc958ea4d5bd34a3492ddd0c7aa7f886d046494b21b2b39e3d79b6645888",
+      "status": 206,
+      "bytes": 1759839,
+      "ok": true,
+      "check": "anonymous GET range, total size and file prefix; full SHA-256 verified after upload"
+    },
+    {
+      "key": "media|E5F61FE2_8B18_4523_9991_8DE632D24464|Snow Removal CRM What Should You Know About a Customer Before the Snow Falls1.png|a09a488878f0ef1584ba07b6e599a1c3875bf5e69ce76e718e055858d7994294",
+      "status": 206,
+      "bytes": 1805509,
+      "ok": true,
+      "check": "anonymous GET range, total size and file prefix; full SHA-256 verified after upload"
+    },
+    {
+      "key": "media|E5F61FE2_8B18_4523_9991_8DE632D24464|The Developer Platform Wars Are Moving Up the Stack2.png|b93e8b32ea5abd459c3c4aa7a4e40235192898befeb4c44ca42a0e7856c71fb6",
+      "status": 206,
+      "bytes": 1862485,
+      "ok": true,
+      "check": "anonymous GET range, total size and file prefix; full SHA-256 verified after upload"
+    },
+    {
+      "key": "media|E5F61FE2_8B18_4523_9991_8DE632D24464|What Is an Operational Platform The Category Between CRM, ERP and Custom Software2.png|41c410970e80567f13795d0a30bdbc2f11f762556f4d4788a32c60ee2882395c",
+      "status": 206,
+      "bytes": 1749155,
+      "ok": true,
+      "check": "anonymous GET range, total size and file prefix; full SHA-256 verified after upload"
+    },
+    {
+      "key": "media|E5F61FE2_8B18_4523_9991_8DE632D24464|Field Service Dispatch Software From Drag-and-Drop Boards to AI Orchestration1.png|d9493f010e85520b1185ccf89d121812af1077202a3a459ae02ac4d84f8db6f7",
+      "status": 206,
+      "bytes": 2070829,
+      "ok": true,
+      "check": "anonymous GET range, total size and file prefix; full SHA-256 verified after upload"
+    },
+    {
+      "key": "media|E5F61FE2_8B18_4523_9991_8DE632D24464|Predictive Field Service The End of Break-Fix Is Closer Than It Looks2.png|f06cff6da4079be39c7886207965af1b889ee706dbf621ee8b10a3e8141a5ff1",
+      "status": 206,
+      "bytes": 2131432,
+      "ok": true,
+      "check": "anonymous GET range, total size and file prefix; full SHA-256 verified after upload"
+    },
+    {
+      "key": "media|E5F61FE2_8B18_4523_9991_8DE632D24464|AI in Snow Removal Can Software Predict What Your Dispatcher Will Need Next1.png|174ca4f347bfdaff0ffb5481ddf6e908619a22ca2c1807f55cc11a2d79b60573",
+      "status": 206,
+      "bytes": 2666613,
+      "ok": true,
+      "check": "anonymous GET range, total size and file prefix; full SHA-256 verified after upload"
+    },
+    {
+      "key": "media|E5F61FE2_8B18_4523_9991_8DE632D24464|Vertical SaaS Was Version One. Vertical Operating Systems Are Next2.png|e60b38f0f0ed53844a6d9db6b3d702e9b0d5e32ee07c45beadcb735a15318214",
+      "status": 206,
+      "bytes": 3246448,
+      "ok": true,
+      "check": "anonymous GET range, total size and file prefix; full SHA-256 verified after upload"
+    },
+    {
+      "key": "media|E5F61FE2_8B18_4523_9991_8DE632D24464|Field Service Automation 7 Decisions Your Team Should Stop Making Manually2.png|aaa3e3b2b593dfa43e9399fc04525b39d8c1ebd4f7311bd8344d71785d6a87eb",
+      "status": 206,
+      "bytes": 2431091,
+      "ok": true,
+      "check": "anonymous GET range, total size and file prefix; full SHA-256 verified after upload"
+    },
+    {
+      "key": "media|E5F61FE2_8B18_4523_9991_8DE632D24464|Snow Removal Contract Management Seasonal, Per-Push, Per-Inch—Without Spreadsheet Chaos1.png|fb80b319bda5d71f003385a19d76c858f7a7be99d6433143edf98744f35b5d27",
+      "status": 206,
+      "bytes": 2096857,
+      "ok": true,
+      "check": "anonymous GET range, total size and file prefix; full SHA-256 verified after upload"
+    },
+    {
+      "key": "media|E5F61FE2_8B18_4523_9991_8DE632D24464|Snow Removal Customer Notifications Why Silence During a Storm Costs Trust2.png|05c700ac33b6d3df011415e8ebb9b0c0dc8950d7f65c9338586edf1b446829e3",
+      "status": 206,
+      "bytes": 2242523,
+      "ok": true,
+      "check": "anonymous GET range, total size and file prefix; full SHA-256 verified after upload"
+    },
+    {
+      "key": "media|E5F61FE2_8B18_4523_9991_8DE632D24464|AI in Snow Removal Can Software Predict What Your Dispatcher Will Need Next2.png|cc82dd9e6b53325c6149dfc18e79bfe0c847be00ce87a7e374232f92ba88326f",
+      "status": 206,
+      "bytes": 2581075,
+      "ok": true,
+      "check": "anonymous GET range, total size and file prefix; full SHA-256 verified after upload"
+    },
+    {
+      "key": "media|E5F61FE2_8B18_4523_9991_8DE632D24464|The SaaS-Pocalypse Was Exaggerated. The Software Reckoning Was Not.2.png|1ba2dc03ca33f1c7f4a30f880bbe242598f8b28a4a41ce63a1674eb0f9d71137",
+      "status": 206,
+      "bytes": 1814173,
+      "ok": true,
+      "check": "anonymous GET range, total size and file prefix; full SHA-256 verified after upload"
+    },
+    {
+      "key": "media|E5F61FE2_8B18_4523_9991_8DE632D24464|Mobile Field Service Software The Real Test Starts When the Signal Disappears2.png|431dc30e9f26aae765fb79af478dc40e21ab9bea9a318bcb16e2c6cea6a63ca4",
+      "status": 206,
+      "bytes": 2178989,
+      "ok": true,
+      "check": "anonymous GET range, total size and file prefix; full SHA-256 verified after upload"
+    },
+    {
+      "key": "media|E5F61FE2_8B18_4523_9991_8DE632D24464|The SaaS Stack Is Collapsing Why Businesses Are Replacing 10 Tools With One Operational Platform1.png|f6e580798409bfef3afaff81e258ac83558e38ce477469a1b1b9483615967c4a",
+      "status": 206,
+      "bytes": 1665268,
+      "ok": true,
+      "check": "anonymous GET range, total size and file prefix; full SHA-256 verified after upload"
+    },
+    {
+      "key": "media|E5F61FE2_8B18_4523_9991_8DE632D24464|Snow Removal Scheduling Software The 2 A.M. Test Most Platforms Fail2.png|b94effb937f42ee7b100fd23a2e0d57e0fb0518c7df89aad2320b2e94ab28e95",
+      "status": 206,
+      "bytes": 2158420,
+      "ok": true,
+      "check": "anonymous GET range, total size and file prefix; full SHA-256 verified after upload"
+    },
+    {
+      "key": "media|E5F61FE2_8B18_4523_9991_8DE632D24464|AI Agents Need a Boss Why Orchestration Becomes the New Control Layer1.png|b644738e376ca24f3f56447458db7674a9bff739ca735976a6847667d7d59f99",
+      "status": 206,
+      "bytes": 1897258,
+      "ok": true,
+      "check": "anonymous GET range, total size and file prefix; full SHA-256 verified after upload"
+    },
+    {
+      "key": "media|E5F61FE2_8B18_4523_9991_8DE632D24464|Agentic AI and the $234 Billion SaaS Question What Software Companies Need to Change2.png|f6c290cb0eac9ae3c03f075945308d4484db86f65296aeb2f5a833e977541525",
+      "status": 206,
+      "bytes": 2371170,
+      "ok": true,
+      "check": "anonymous GET range, total size and file prefix; full SHA-256 verified after upload"
+    },
+    {
+      "key": "media|E5F61FE2_8B18_4523_9991_8DE632D24464|The Post-SaaS Interface What Software Looks Like When Humans Stop Opening Every App1.png|2d82f04c96f899fe342e911e7f68b94832cb1d4bcc961fe7dab4592667d6d437",
+      "status": 206,
+      "bytes": 1687812,
+      "ok": true,
+      "check": "anonymous GET range, total size and file prefix; full SHA-256 verified after upload"
+    },
+    {
+      "key": "media|E5F61FE2_8B18_4523_9991_8DE632D24464|The AI-First Field Service Company What Changes From Dispatch to Closeout1.png|4a55392aa0f7f9c8c3152739bf49eb6d3dd1e612e2cb4a2271fec254061d19e0",
+      "status": 206,
+      "bytes": 2583941,
+      "ok": true,
+      "check": "anonymous GET range, total size and file prefix; full SHA-256 verified after upload"
+    },
+    {
+      "key": "media|E5F61FE2_8B18_4523_9991_8DE632D24464|Technician Knowledge Is Walking Out the Door Can AI Keep It Inside the Business1.png|fce65a0cbfcc538d4334a8a60083459b7b3df5b23ea5775aa332f696535f8beb",
+      "status": 206,
+      "bytes": 2050589,
+      "ok": true,
+      "check": "anonymous GET range, total size and file prefix; full SHA-256 verified after upload"
+    },
+    {
+      "key": "media|E5F61FE2_8B18_4523_9991_8DE632D24464|AI Agents Aren’t Replacing Software—They’re Rewriting What Software Has to Be2.png|d8058caf063313493fd7117e4c9d054dd85fb14c466fd8b8f5c8f0bdccbdea79",
+      "status": 206,
+      "bytes": 1862880,
+      "ok": true,
+      "check": "anonymous GET range, total size and file prefix; full SHA-256 verified after upload"
+    },
+    {
+      "key": "media|E5F61FE2_8B18_4523_9991_8DE632D24464|AI-Native Software What It Means When AI Is Built In, Not Bolted On1.png|5cd54ef107cce64e955e710f4b7cbc1df2a2719af93a88195489fdd5add50f08",
+      "status": 206,
+      "bytes": 1714148,
+      "ok": true,
+      "check": "anonymous GET range, total size and file prefix; full SHA-256 verified after upload"
+    },
+    {
+      "key": "media|F549E84B-FDE8-4B9B-8162-A73F379D45C6|pic (1).png|4675f235527915ebdb4082f1f509fe250eb9fae21a3b7d7b422b58a144422fe4",
+      "status": 206,
+      "bytes": 65519,
+      "ok": true,
+      "check": "anonymous GET range, total size and file prefix; full SHA-256 verified after upload"
+    },
+    {
+      "key": "media|F549E84B-FDE8-4B9B-8162-A73F379D45C6|SW_emblem_g.svg|b81f8f1ded2dd1e8d4fecd235194cd47036594605bf795dae9187b3f93fe07c4",
+      "status": 206,
+      "bytes": 2368,
+      "ok": true,
+      "check": "anonymous GET range, total size and file prefix; full SHA-256 verified after upload"
+    },
+    {
+      "key": "media|E5F61FE2_8B18_4523_9991_8DE632D24464|Commercial Snow Software Gets Serious When SLAs, Sites and Liability Enter the Picture2.png|1a19d58a0ffb293e00c898c83931d43ec08db7147f269da821e22d0d273dbb9d",
+      "status": 206,
+      "bytes": 2200036,
+      "ok": true,
+      "check": "anonymous GET range, total size and file prefix; full SHA-256 verified after upload"
+    },
+    {
+      "key": "media|E5F61FE2_8B18_4523_9991_8DE632D24464|Snow Removal Scheduling Software The 2 A.M. Test Most Platforms Fail1.png|b005773ccf113fda758b9653ac60df776fded95c2852cc3ba511f16ca85a1ad9",
+      "status": 206,
+      "bytes": 1940734,
+      "ok": true,
+      "check": "anonymous GET range, total size and file prefix; full SHA-256 verified after upload"
+    },
+    {
+      "key": "media|E5F61FE2_8B18_4523_9991_8DE632D24464|From Industry Expertise to Software How Partners Can Productize What They Know2.png|7ba7e5b99238b43d62578ea443b9bda9ecda02c7ed7e1e107dff227c779f9b54",
+      "status": 206,
+      "bytes": 1736851,
+      "ok": true,
+      "check": "anonymous GET range, total size and file prefix; full SHA-256 verified after upload"
+    },
+    {
+      "key": "media|E5F61FE2_8B18_4523_9991_8DE632D24464|Scaling a Snow Removal Business The Systems That Break Between 5 and 50 Trucks1.png|686a2ee133b53b0b1fe4cf537bd8b0cb14e99f11553ea41fc2b6656910385b77",
+      "status": 206,
+      "bytes": 1912373,
+      "ok": true,
+      "check": "anonymous GET range, total size and file prefix; full SHA-256 verified after upload"
+    },
+    {
+      "key": "media|E5F61FE2_8B18_4523_9991_8DE632D24464|Build vs. Buy vs. Configure The Software Decision Founders Keep Framing Wrong2.png|269fba414be131f1617c0d1e1dbf3749682165081494d0e35c3ef1052f5aaf02",
+      "status": 206,
+      "bytes": 2043327,
+      "ok": true,
+      "check": "anonymous GET range, total size and file prefix; full SHA-256 verified after upload"
+    },
+    {
+      "key": "media|E5F61FE2_8B18_4523_9991_8DE632D24464|The End of One-Size-Fits-All SaaS Software Is Becoming Adaptive1.png|7eb09716e18da0cd5e40132cdadaeed8ba2faec846fd3851f239abce43cef2d1",
+      "status": 206,
+      "bytes": 1787884,
+      "ok": true,
+      "check": "anonymous GET range, total size and file prefix; full SHA-256 verified after upload"
+    },
+    {
+      "key": "media|E5F61FE2_8B18_4523_9991_8DE632D24464|Digital Snow Logs The Record You Need Months After the Snow Is Gone1.png|8f09019f5942422015572ed71ebaa6ce01927b5a703156183dc9e44af1b0f106",
+      "status": 206,
+      "bytes": 2375123,
+      "ok": true,
+      "check": "anonymous GET range, total size and file prefix; full SHA-256 verified after upload"
+    },
+    {
+      "key": "media|E5F61FE2_8B18_4523_9991_8DE632D24464|Commercial Snow Software Gets Serious When SLAs, Sites and Liability Enter the Picture1.png|4832f6abd74b4c798da42ce540b77bbebab1578c9eb1ed9a873f09e6f1c3f0be",
+      "status": 206,
+      "bytes": 2127508,
+      "ok": true,
+      "check": "anonymous GET range, total size and file prefix; full SHA-256 verified after upload"
+    },
+    {
+      "key": "media|E5F61FE2_8B18_4523_9991_8DE632D24464|SaaS Isn’t Dead. The Seat License Might Be.1.png|03be59d53650df339c44b2f9f160fef1d37352e85ca4070af215162cf2013e54",
+      "status": 206,
+      "bytes": 1975384,
+      "ok": true,
+      "check": "anonymous GET range, total size and file prefix; full SHA-256 verified after upload"
+    },
+    {
+      "key": "media|E5F61FE2_8B18_4523_9991_8DE632D24464|1Low-Code Is Not the End of Developers Why Serious Platforms Need Both.png|e2fb6d115d6909d3151537cfb2ccc9c1c3e37cf731b89d4b5fabafd7ba4879f9",
+      "status": 206,
+      "bytes": 1827630,
+      "ok": true,
+      "check": "anonymous GET range, total size and file prefix; full SHA-256 verified after upload"
+    },
+    {
+      "key": "media|E5F61FE2_8B18_4523_9991_8DE632D24464|Technician Knowledge Is Walking Out the Door Can AI Keep It Inside the Business2.png|7b4f49b157bd3fb814dfc89a758912ace71d7cc5b8c1c58420877f9414a5ddc5",
+      "status": 206,
+      "bytes": 2088013,
+      "ok": true,
+      "check": "anonymous GET range, total size and file prefix; full SHA-256 verified after upload"
+    },
+    {
+      "key": "media|E5F61FE2_8B18_4523_9991_8DE632D24464|Headless Software Is Coming What Happens When AI Stops Clicking Your UI1.png|9e74e5f6bfccf534ae65c63f25a603471739eb5f5bfbc87e0842f021f656257a",
+      "status": 206,
+      "bytes": 1848434,
+      "ok": true,
+      "check": "anonymous GET range, total size and file prefix; full SHA-256 verified after upload"
+    },
+    {
+      "key": "media|E5F61FE2_8B18_4523_9991_8DE632D24464|Snow Removal CRM What Should You Know About a Customer Before the Snow Falls2.png|74b0159fbd4e73508213448c4bf728ec249e7ef1fa0e5a41a7b2507fbdbf7d37",
+      "status": 206,
+      "bytes": 2046860,
+      "ok": true,
+      "check": "anonymous GET range, total size and file prefix; full SHA-256 verified after upload"
+    },
+    {
+      "key": "media|E5F61FE2_8B18_4523_9991_8DE632D24464|Outcome-Based Pricing What Happens When AI Does the Work but Nobody Buys a Seat2.png|ef23a78762b0f2bde069432f9a3171e58fd8f7d4517cb25f2d8e4c6cb99bbc25",
+      "status": 206,
+      "bytes": 1883496,
+      "ok": true,
+      "check": "anonymous GET range, total size and file prefix; full SHA-256 verified after upload"
+    },
+    {
+      "key": "media|E5F61FE2_8B18_4523_9991_8DE632D24464|One Data Model, Many Businesses Why Entity-Based Architecture Matters1.jpg|5eeeb9d71dd467007157a43560a5c5cc494d9ab8a0f46f45b971b98e9cd27455",
+      "status": 206,
+      "bytes": 569128,
+      "ok": true,
+      "check": "anonymous GET range, total size and file prefix; full SHA-256 verified after upload"
+    },
+    {
+      "key": "media|E5F61FE2_8B18_4523_9991_8DE632D24464|Snow Removal Software in 2026 The Storm Test That Exposes Weak Platforms1.png|e0c18c751bd4c601edd936994ce7cf6f32080d395c9eae0fb5b1fc4c07e27b62",
+      "status": 206,
+      "bytes": 2184770,
+      "ok": true,
+      "check": "anonymous GET range, total size and file prefix; full SHA-256 verified after upload"
+    },
+    {
+      "key": "media|E5F61FE2_8B18_4523_9991_8DE632D24464|GPS Snow Plow Tracking Location Is Not the Same as Proof of Work2.png|9cea25ceb855adfa78c4c9ffc2bdd7edc1639b1aef5afe1a552ac6a68d70d8be",
+      "status": 206,
+      "bytes": 2355989,
+      "ok": true,
+      "check": "anonymous GET range, total size and file prefix; full SHA-256 verified after upload"
+    },
+    {
+      "key": "media|E5F61FE2_8B18_4523_9991_8DE632D24464|Snow Removal Customer Notifications Why Silence During a Storm Costs Trust1.png|4b1f552872ccfda8e6e347b0f5be50ab45c56e2d4c1e97c240c8cdc420fe3e4f",
+      "status": 206,
+      "bytes": 2262695,
+      "ok": true,
+      "check": "anonymous GET range, total size and file prefix; full SHA-256 verified after upload"
+    },
+    {
+      "key": "media|E5F61FE2_8B18_4523_9991_8DE632D24464|From Configuration to Compounding How Operational Software Gets Smarter Over Time2.png|5436464cf142a02e4fe834aef0dde52671b24ffaa0d7a1cc1103dc60b35af68c",
+      "status": 206,
+      "bytes": 2063378,
+      "ok": true,
+      "check": "anonymous GET range, total size and file prefix; full SHA-256 verified after upload"
+    },
+    {
+      "key": "media|E5F61FE2_8B18_4523_9991_8DE632D24464|Field Service Dispatch Software From Drag-and-Drop Boards to AI Orchestration2.png|bccd326e538739a7672262fcef70efe992d840b4e29378f3ad669c5e49539185",
+      "status": 206,
+      "bytes": 2523421,
+      "ok": true,
+      "check": "anonymous GET range, total size and file prefix; full SHA-256 verified after upload"
+    },
+    {
+      "key": "media|E5F61FE2_8B18_4523_9991_8DE632D24464|Field Service Scheduling Software Why Static Calendars Are Becoming Obsolete2.png|76c8348685fee6e577435dbf31e4122d1360f7ffe4ead43eccb57e2d2bd63f13",
+      "status": 206,
+      "bytes": 2705446,
+      "ok": true,
+      "check": "anonymous GET range, total size and file prefix; full SHA-256 verified after upload"
+    },
+    {
+      "key": "media|E5F61FE2_8B18_4523_9991_8DE632D24464|Snow Removal Job Costing The Profit Leak Hiding Inside Every Storm1.png|d4a1be18f155d119007b5797c190010f02c30b502e75868c456dfa8308dc5ace",
+      "status": 206,
+      "bytes": 2303630,
+      "ok": true,
+      "check": "anonymous GET range, total size and file prefix; full SHA-256 verified after upload"
+    },
+    {
+      "key": "media|E5F61FE2_8B18_4523_9991_8DE632D24464|Snow and Ice Management Software Why Plowing Is Only Half the Operation1.png|0b887255847a3ce0713a224a950768764d79718e329a0823b13f80cc1140a831",
+      "status": 206,
+      "bytes": 2288917,
+      "ok": true,
+      "check": "anonymous GET range, total size and file prefix; full SHA-256 verified after upload"
+    },
+    {
+      "key": "media|E5F61FE2_8B18_4523_9991_8DE632D24464|Snow Removal Job Costing The Profit Leak Hiding Inside Every Storm2.png|1f1a71a8457afb5425603db1388dc6eae403e6c993c05d05cb74e097a2a2a000",
+      "status": 206,
+      "bytes": 2281596,
+      "ok": true,
+      "check": "anonymous GET range, total size and file prefix; full SHA-256 verified after upload"
+    },
+    {
+      "key": "media|E5F61FE2_8B18_4523_9991_8DE632D24464|Commercial Snow Removal Software Why One Parking Lot Can Be More Complex Than 50 Driveways1.png|0f3a2e0a1525979a16cce383a69f731c00670baa4b87983f574d2a8c34cdc31a",
+      "status": 206,
+      "bytes": 2667844,
+      "ok": true,
+      "check": "anonymous GET range, total size and file prefix; full SHA-256 verified after upload"
+    },
+    {
+      "key": "media|E5F61FE2_8B18_4523_9991_8DE632D24464|The Developer Platform Wars Are Moving Up the Stack1.png|8e856abd69d7b48da717f5bf55d69c183513af068cd7b578d8a01e60e75752bb",
+      "status": 206,
+      "bytes": 1710680,
+      "ok": true,
+      "check": "anonymous GET range, total size and file prefix; full SHA-256 verified after upload"
+    },
+    {
+      "key": "media|E5F61FE2_8B18_4523_9991_8DE632D24464|What Is an Operational Platform The Category Between CRM, ERP and Custom Software1.png|a2a74c532713a254c1263175c9acc7c01f26e4b9ba776bfc217707e7d47841db",
+      "status": 206,
+      "bytes": 1764792,
+      "ok": true,
+      "check": "anonymous GET range, total size and file prefix; full SHA-256 verified after upload"
+    },
+    {
+      "key": "media|E5F61FE2_8B18_4523_9991_8DE632D24464|The SaaS-Pocalypse Was Exaggerated. The Software Reckoning Was Not.1.png|a23bc412de716ad738fbcc8d5c67603918bbf88525f798cf4a6601c06d3a2221",
+      "status": 206,
+      "bytes": 2012719,
+      "ok": true,
+      "check": "anonymous GET range, total size and file prefix; full SHA-256 verified after upload"
+    },
+    {
+      "key": "media|E5F61FE2_8B18_4523_9991_8DE632D24464|Snow Removal Route Optimization The Shortest-Route Trap That Costs More2.png|c9189082dd329b1485a89a189d9768727ec21f14f08b36228023a9330c71e883",
+      "status": 206,
+      "bytes": 2021734,
+      "ok": true,
+      "check": "anonymous GET range, total size and file prefix; full SHA-256 verified after upload"
+    },
+    {
+      "key": "media|E5F61FE2_8B18_4523_9991_8DE632D24464|Field Service Automation 7 Decisions Your Team Should Stop Making Manually1.png|5b38c2ac06a6bca7c0ac0900f7b9ea04b2e968eeadb9b03eda5c000e79ad59ec",
+      "status": 206,
+      "bytes": 2545699,
+      "ok": true,
+      "check": "anonymous GET range, total size and file prefix; full SHA-256 verified after upload"
+    },
+    {
+      "key": "media|E5F61FE2_8B18_4523_9991_8DE632D24464|The AI-First Field Service Company What Changes From Dispatch to Closeout2.png|3ba47b7ab7afbd85bc35a8e5c385ed0d49d35ab1f52ca5b0f1c0346eae580339",
+      "status": 206,
+      "bytes": 2423944,
+      "ok": true,
+      "check": "anonymous GET range, total size and file prefix; full SHA-256 verified after upload"
+    },
+    {
+      "key": "media|E5F61FE2_8B18_4523_9991_8DE632D24464|a44c69_1d08794aa7524aa69473ffa9103afbee_mv2.png|510f6008dc71edbb76a4c3ba5d0d87b1fe988345b454d4184abc82a867667831",
+      "status": 206,
+      "bytes": 1432947,
+      "ok": true,
+      "check": "anonymous GET range, total size and file prefix; full SHA-256 verified after upload"
+    },
+    {
+      "key": "media|E5F61FE2_8B18_4523_9991_8DE632D24464|One Data Model, Many Businesses Why Entity-Based Architecture Matters2.jpg|52a5a8e487f8568df09fa3942a7d6d40f40926f8115c0c1638d357dd4ede382d",
+      "status": 206,
+      "bytes": 502350,
+      "ok": true,
+      "check": "anonymous GET range, total size and file prefix; full SHA-256 verified after upload"
+    },
+    {
+      "key": "media|E5F61FE2_8B18_4523_9991_8DE632D24464|Mobile Field Service Software The Real Test Starts When the Signal Disappears1.png|2f31af716a0fba2bec15c1811804d261faf7a27f00dfc4e5aaed7a8b23c44c9f",
+      "status": 206,
+      "bytes": 1840878,
+      "ok": true,
+      "check": "anonymous GET range, total size and file prefix; full SHA-256 verified after upload"
+    },
+    {
+      "key": "media|E5F61FE2_8B18_4523_9991_8DE632D24464|Field Service Management Software in 2026 What Buyers Should Actually Compare2.png|2be84a88e385132fedc96948c62234e36518477e0aa10f12cefdbc373163ee4f",
+      "status": 206,
+      "bytes": 2331708,
+      "ok": true,
+      "check": "anonymous GET range, total size and file prefix; full SHA-256 verified after upload"
+    },
+    {
+      "key": "media|E5F61FE2_8B18_4523_9991_8DE632D24464|Digital Snow Logs The Record You Need Months After the Snow Is Gone2.png|05ed8d3e0c701a052f1eaa238fa415eb48bbc6bfe2878ee3c6fc3509f2f0d3ca",
+      "status": 206,
+      "bytes": 2183444,
+      "ok": true,
+      "check": "anonymous GET range, total size and file prefix; full SHA-256 verified after upload"
+    },
+    {
+      "key": "media|E5F61FE2_8B18_4523_9991_8DE632D24464|Vertical SaaS Was Version One. Vertical Operating Systems Are Next1.png|ee7b0bc53d8f105fc66d46d02a8f4fa5725041d12b9d9170d1cb6ea8a04eb573",
+      "status": 206,
+      "bytes": 3396174,
+      "ok": true,
+      "check": "anonymous GET range, total size and file prefix; full SHA-256 verified after upload"
+    },
+    {
+      "key": "media|E5F61FE2_8B18_4523_9991_8DE632D24464|The SaaS Stack Is Collapsing Why Businesses Are Replacing 10 Tools With One Operational Platform2.png|37cb049bd84423a7d70cbad490caf6b54bcb27e2283eb801d7e51630ae42e4f7",
+      "status": 206,
+      "bytes": 1635399,
+      "ok": true,
+      "check": "anonymous GET range, total size and file prefix; full SHA-256 verified after upload"
+    },
+    {
+      "key": "media|E5F61FE2_8B18_4523_9991_8DE632D24464|Predictive Field Service The End of Break-Fix Is Closer Than It Looks1.png|04ee715b7777e5a3ace45a1e181c4d4fd98f9967b6f5e9d8940256407d04fdef",
+      "status": 206,
+      "bytes": 2147015,
+      "ok": true,
+      "check": "anonymous GET range, total size and file prefix; full SHA-256 verified after upload"
+    },
+    {
+      "key": "media|E5F61FE2_8B18_4523_9991_8DE632D24464|Snow Removal Crew Management Knowing Where Everyone Is Isn’t the Same as Knowing What’s Done2.png|a1bb1f0c39513c5b60c32a7c5af212dd6741617d4cb9b8e8d826dfd2e5b4b019",
+      "status": 206,
+      "bytes": 1998806,
+      "ok": true,
+      "check": "anonymous GET range, total size and file prefix; full SHA-256 verified after upload"
+    },
+    {
+      "key": "media|E5F61FE2_8B18_4523_9991_8DE632D24464|The Rise of the Forward-Deployed Builder Why Software Companies Need People Who Understand Operations2.png|fd639e941c4d8395c2ddeb0c40663d1cf535cbc776ca6da18c204d4af699873e",
+      "status": 206,
+      "bytes": 2418212,
+      "ok": true,
+      "check": "anonymous GET range, total size and file prefix; full SHA-256 verified after upload"
+    },
+    {
+      "key": "media|E5F61FE2_8B18_4523_9991_8DE632D24464|AI-Native Software What It Means When AI Is Built In, Not Bolted On2.png|45cf26e2f1635ce9d9595154a5d043b20c493da482c067b5b8f0a6a5e0ffb424",
+      "status": 206,
+      "bytes": 2118626,
+      "ok": true,
+      "check": "anonymous GET range, total size and file prefix; full SHA-256 verified after upload"
+    },
+    {
+      "key": "media|E5F61FE2_8B18_4523_9991_8DE632D24464|2The System of Record Is Back—and AI Agents Are the Reason.png|e830e1f502ef4fbe8337ff3d309cc589f2f46745107ff89be749d8e3f8297426",
+      "status": 206,
+      "bytes": 1757226,
+      "ok": true,
+      "check": "anonymous GET range, total size and file prefix; full SHA-256 verified after upload"
+    },
+    {
+      "key": "media|E5F61FE2_8B18_4523_9991_8DE632D24464|AI in Field Service Management Where It Works—and Where It’s Still Hype1.png|da4b3eb396738f454fa25c1229ce3d1076aa0f9eac71ab84dfcbd93bdd669e9d",
+      "status": 206,
+      "bytes": 1816966,
+      "ok": true,
+      "check": "anonymous GET range, total size and file prefix; full SHA-256 verified after upload"
+    },
+    {
+      "key": "media|E5F61FE2_8B18_4523_9991_8DE632D24464|Snow Removal Software ROI Measure Fewer Disputes, Faster Billing and Better Route Density1.png|e1e7b5957b7da222bd8ce36eea5f2c42cca42c86b4ef7cfb8ea31b47674d562b",
+      "status": 206,
+      "bytes": 2836377,
+      "ok": true,
+      "check": "anonymous GET range, total size and file prefix; full SHA-256 verified after upload"
+    },
+    {
+      "key": "media|E5F61FE2_8B18_4523_9991_8DE632D24464|The Post-SaaS Interface What Software Looks Like When Humans Stop Opening Every App2.png|cbcb250b6840c525c5d6e91478ff23883e847a264f8c0dd9bfc43a6515d13e9d",
+      "status": 206,
+      "bytes": 1740533,
+      "ok": true,
+      "check": "anonymous GET range, total size and file prefix; full SHA-256 verified after upload"
+    },
+    {
+      "key": "media|E5F61FE2_8B18_4523_9991_8DE632D24464|From Configuration to Compounding How Operational Software Gets Smarter Over Time1.png|23fa3eb424af0405df1f2ed3221707dea5f3465b1e009c33c14ec3d5c430ea52",
+      "status": 206,
+      "bytes": 2366560,
+      "ok": true,
+      "check": "anonymous GET range, total size and file prefix; full SHA-256 verified after upload"
+    },
+    {
+      "key": "media|E5F61FE2_8B18_4523_9991_8DE632D24464|Field Service CRM vs. FSM Why Customer Data and Job Execution Can’t Live Apart2.png|68d9c6054099f9343ece358c8dc0baa45d97b26aaabe2a132a676bd896c4c196",
+      "status": 206,
+      "bytes": 2122376,
+      "ok": true,
+      "check": "anonymous GET range, total size and file prefix; full SHA-256 verified after upload"
+    },
+    {
+      "key": "media|E5F61FE2_8B18_4523_9991_8DE632D24464|The Operational Data Moat Why AI Makes Your “Boring” Business Data More Valuable1.png|7cd52bf3b0695695c5476aafb4e1644a0b1b9ba6215938ce90f0b2bf694837bd",
+      "status": 206,
+      "bytes": 2155238,
+      "ok": true,
+      "check": "anonymous GET range, total size and file prefix; full SHA-256 verified after upload"
+    },
+    {
+      "key": "media|E5F61FE2_8B18_4523_9991_8DE632D24464|Outcome-Based Pricing What Happens When AI Does the Work but Nobody Buys a Seat1.png|42f5c6601233ae42cf6310fe39c487f2f05f32720eb40b4574ca3b1a80947da9",
+      "status": 206,
+      "bytes": 1802700,
+      "ok": true,
+      "check": "anonymous GET range, total size and file prefix; full SHA-256 verified after upload"
+    },
+    {
+      "key": "media|F549E84B-FDE8-4B9B-8162-A73F379D45C6|Ellipse 31.png|4bc55f3f003ceead2ac3ccba39fe93fd31a143bc7b300dd8a8b7d1ccd46ed2c5",
+      "status": 206,
+      "bytes": 15202,
+      "ok": true,
+      "check": "anonymous GET range, total size and file prefix; full SHA-256 verified after upload"
+    },
+    {
+      "key": "media|E5F61FE2_8B18_4523_9991_8DE632D24464|Snow Removal Software in 2026 The Storm Test That Exposes Weak Platforms2.png|f9856b4ddfcae70b46e6569e3293d49259106a9eb8f6917d9b1080a2c25fd60c",
+      "status": 206,
+      "bytes": 1846749,
+      "ok": true,
+      "check": "anonymous GET range, total size and file prefix; full SHA-256 verified after upload"
+    },
+    {
+      "key": "media|E5F61FE2_8B18_4523_9991_8DE632D24464|Salt Tracking Software The Hidden Margin Problem in Snow and Ice Management1.png|943a2d25e0ea29d89d883c5ca9ef4d05dc0d484f9e1efc074b6c323202bc2cec",
+      "status": 206,
+      "bytes": 2298875,
+      "ok": true,
+      "check": "anonymous GET range, total size and file prefix; full SHA-256 verified after upload"
+    },
+    {
+      "key": "media|E5F61FE2_8B18_4523_9991_8DE632D24464|Snow Removal Contract Management Seasonal, Per-Push, Per-Inch—Without Spreadsheet Chaos2.png|f3a6a6908c8e73942a2cab3aee783de14f87108446a581d9a9118e6b20ce9aee",
+      "status": 206,
+      "bytes": 2276080,
+      "ok": true,
+      "check": "anonymous GET range, total size and file prefix; full SHA-256 verified after upload"
+    },
+    {
+      "key": "media|E5F61FE2_8B18_4523_9991_8DE632D24464|Your Company Doesn’t Have an AI Problem. It Has a Data and Workflow Problem.1.png|cec73ea1617d7e272f5043b087ea727e12ce03ffa0d1cff486ed349518a63540",
+      "status": 206,
+      "bytes": 2310834,
+      "ok": true,
+      "check": "anonymous GET range, total size and file prefix; full SHA-256 verified after upload"
+    },
+    {
+      "key": "media|E5F61FE2_8B18_4523_9991_8DE632D24464|The Next Great Software Companies May Have Fewer Users—and More Work Getting Done2.png|3fcd9fb03601536873821efec57a65bf1c086611555bd7347153802ba09e1f50",
+      "status": 206,
+      "bytes": 2015686,
+      "ok": true,
+      "check": "anonymous GET range, total size and file prefix; full SHA-256 verified after upload"
+    },
+    {
+      "key": "media|E5F61FE2_8B18_4523_9991_8DE632D24464|2Low-Code Is Not the End of Developers Why Serious Platforms Need Both.png|8260230ae0374893ea05563c8eca0b73fe22d900611fc19b2e8bc53e7346f5f5",
+      "status": 206,
+      "bytes": 1930830,
+      "ok": true,
+      "check": "anonymous GET range, total size and file prefix; full SHA-256 verified after upload"
+    },
+    {
+      "key": "media|E5F61FE2_8B18_4523_9991_8DE632D24464|Software Fragmentation Is Becoming a Competitive Liability2.png|cf5ca596bb0ccb429f586473b1cd0a5bbee3e016d824d3e7f08b1933b3bfb9a4",
+      "status": 206,
+      "bytes": 1889456,
+      "ok": true,
+      "check": "anonymous GET range, total size and file prefix; full SHA-256 verified after upload"
+    },
+    {
+      "key": "media|E5F61FE2_8B18_4523_9991_8DE632D24464|AI in Field Service Management Where It Works—and Where It’s Still Hype2.png|d746fc1c29b25bb631f064bf616b34ed2e4de54eb4a7f8d4b613bcd4f7c887c9",
+      "status": 206,
+      "bytes": 1985474,
+      "ok": true,
+      "check": "anonymous GET range, total size and file prefix; full SHA-256 verified after upload"
+    },
+    {
+      "key": "media|E5F61FE2_8B18_4523_9991_8DE632D24464|Snow Removal Crew Management Knowing Where Everyone Is Isn’t the Same as Knowing What’s Done1.png|606044bae8943189103efb46235731fdd2b05fb8fd394620e6320354c2232445",
+      "status": 206,
+      "bytes": 2237886,
+      "ok": true,
+      "check": "anonymous GET range, total size and file prefix; full SHA-256 verified after upload"
+    },
+    {
+      "key": "media|E5F61FE2_8B18_4523_9991_8DE632D24464|MCP and the New Integration Layer Will APIs Still Be Enough2.png|c57f59730b57572cc0529a0d3960b731e1640a0745508d1879062ca20082fb46",
+      "status": 206,
+      "bytes": 1767526,
+      "ok": true,
+      "check": "anonymous GET range, total size and file prefix; full SHA-256 verified after upload"
+    },
+    {
+      "key": "media|E5F61FE2_8B18_4523_9991_8DE632D24464|Weather Intelligence for Snow Removal The Storm Is Won Before the First Truck Moves1.png|1e6b490b654a15dc71b8999a69b7cb38808862c559f65857369561f561093be7",
+      "status": 206,
+      "bytes": 2340219,
+      "ok": true,
+      "check": "anonymous GET range, total size and file prefix; full SHA-256 verified after upload"
+    },
+    {
+      "key": "media|E5F61FE2_8B18_4523_9991_8DE632D24464|The Next Great Software Companies May Have Fewer Users—and More Work Getting Done1.png|3c0c715e9c503a18c6061517f050ee32294303a5d349d74fe2420fb978517e05",
+      "status": 206,
+      "bytes": 2180480,
+      "ok": true,
+      "check": "anonymous GET range, total size and file prefix; full SHA-256 verified after upload"
+    },
+    {
+      "key": "media|E5F61FE2_8B18_4523_9991_8DE632D24464|Field Service Management Software in 2026 What Buyers Should Actually Compare1.png|d7e4a97fffdcf727228470b289cb7a6de3f51b4ae2827507b0b98534358c6d3b",
+      "status": 206,
+      "bytes": 2213399,
+      "ok": true,
+      "check": "anonymous GET range, total size and file prefix; full SHA-256 verified after upload"
+    },
+    {
+      "key": "media|E5F61FE2_8B18_4523_9991_8DE632D24464|The Future of Business Software Is Invisible, Adaptive and Always Working2.png|0d70bca442eadf8319ed2755b1323bc4c7ce85e82d6045e7a954345d9eec8658",
+      "status": 206,
+      "bytes": 3175641,
+      "ok": true,
+      "check": "anonymous GET range, total size and file prefix; full SHA-256 verified after upload"
+    },
+    {
+      "key": "media|E5F61FE2_8B18_4523_9991_8DE632D24464|Software Fragmentation Is Becoming a Competitive Liability1.png|01cba892765239152f2c7434e4093bd0fc8279c2a55558e14cab78b317bba7e4",
+      "status": 206,
+      "bytes": 1967163,
+      "ok": true,
+      "check": "anonymous GET range, total size and file prefix; full SHA-256 verified after upload"
+    },
+    {
+      "key": "media|E5F61FE2_8B18_4523_9991_8DE632D24464|AI Agents Need a Boss Why Orchestration Becomes the New Control Layer2.png|ee3b32a183653338c3a4f4a9a395dce8e5e72e8ecbf7680d8081573b9e86bf53",
+      "status": 206,
+      "bytes": 1952161,
+      "ok": true,
+      "check": "anonymous GET range, total size and file prefix; full SHA-256 verified after upload"
+    }
+  ],
+  "checkedAt": "2026-11-17T17:10:28.847Z",
+  "configuration": [
+    {
+      "key": "library|CE7A483A_42C8_4869_ADB1_98DF04D1065D",
+      "ok": true
+    },
+    {
+      "key": "library|GD102203_46CB_4F80_AE26_4399F51E929E",
+      "ok": true
+    },
+    {
+      "key": "library|SERVICEWAND_DEFAULT",
+      "ok": true
+    },
+    {
+      "key": "library|F549E84B-FDE8-4B9B-8162-A73F379D45C6",
+      "ok": true
+    },
+    {
+      "key": "library|E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "ok": true
+    },
+    {
+      "key": "library|B4A53526_9F07_47A3_877B_45CCE39BC433",
+      "ok": true
+    },
+    {
+      "key": "category|SERVICEWAND|ServiceWand Platform",
+      "ok": true
+    },
+    {
+      "key": "category|SERVICEWAND|Snow Removal Blogs",
+      "ok": true
+    },
+    {
+      "key": "category|SERVICEWAND|HVAC Blogs",
+      "ok": true
+    },
+    {
+      "key": "post|SERVICEWAND|inside-servicewand/core-architecture",
+      "ok": true
+    },
+    {
+      "key": "category|SERVICEWAND|Lawn Care Blogs",
+      "ok": true
+    },
+    {
+      "key": "post|SERVICEWAND|dg/post1",
+      "ok": true
+    },
+    {
+      "key": "post|SERVICEWAND|inside-servicewand/typed-entities",
+      "ok": true
+    },
+    {
+      "key": "post|SERVICEWAND|inside-servicewand/core-rm",
+      "ok": true
+    },
+    {
+      "key": "post|SERVICEWAND|inside-servicewand/core-cms",
+      "ok": true
+    },
+    {
+      "key": "post|SERVICEWAND|inside-servicewand/workflow",
+      "ok": true
+    },
+    {
+      "key": "post|SERVICEWAND|inside-servicewand/core-svc",
+      "ok": true
+    },
+    {
+      "key": "post|SERVICEWAND|inside-servicewand/core-reports",
+      "ok": true
+    },
+    {
+      "key": "post|SERVICEWAND|inside-servicewand/core-ui",
+      "ok": true
+    },
+    {
+      "key": "post|SERVICEWAND|inside-servicewand/core-account",
+      "ok": true
+    },
+    {
+      "key": "post|SERVICEWAND|inside-servicewand/core-media",
+      "ok": true
+    },
+    {
+      "key": "post|SERVICEWAND|inside-servicewand/security",
+      "ok": true
+    },
+    {
+      "key": "post|SERVICEWAND|inside-servicewand/scaling-across-industries",
+      "ok": true
+    },
+    {
+      "key": "post|SERVICEWAND|inside-servicewand/localization",
+      "ok": true
+    },
+    {
+      "key": "post|SERVICEWAND|/snow-removal-software-2026-storm-readiness",
+      "ok": true
+    },
+    {
+      "key": "post|SERVICEWAND|snow-removal/blog-1|69b150f2f33c7026",
+      "ok": true
+    },
+    {
+      "key": "post|SERVICEWAND|snow-removal/blog-1|1e5bfe8c1e28ed47",
+      "ok": true
+    },
+    {
+      "key": "post|SERVICEWAND|snow-removal/blog-1|b67d59b7f4a7e84e",
+      "ok": true
+    },
+    {
+      "key": "post|SERVICEWAND|/snow-removal-billing-software-stop-rebuilding-invoices",
+      "ok": true
+    },
+    {
+      "key": "post|SERVICEWAND|/snow-removal-crm-before-the-snow-falls",
+      "ok": true
+    },
+    {
+      "key": "post|SERVICEWAND|/snow-removal-route-optimization-shortest-route-cost",
+      "ok": true
+    },
+    {
+      "key": "post|SERVICEWAND|/snow-removal-scheduling-software-2am-test",
+      "ok": true
+    },
+    {
+      "key": "post|SERVICEWAND|/snow-removal-proof-of-service-software",
+      "ok": true
+    },
+    {
+      "key": "post|SERVICEWAND|/software-consolidation-platform-replace-saas-stack",
+      "ok": true
+    },
+    {
+      "key": "post|SERVICEWAND|/snow-removal-app-vs-management-software",
+      "ok": true
+    },
+    {
+      "key": "post|SERVICEWAND|/ai-native-software-platform-built-in-ai",
+      "ok": true
+    },
+    {
+      "key": "post|SERVICEWAND|/build-vs-buy-vs-configure-software",
+      "ok": true
+    },
+    {
+      "key": "post|SERVICEWAND|/what-is-an-operational-platform",
+      "ok": true
+    },
+    {
+      "key": "post|SERVICEWAND|/system-of-record-for-ai-agents",
+      "ok": true
+    },
+    {
+      "key": "post|SERVICEWAND|/low-code-developer-platform-serious-software-needs-both",
+      "ok": true
+    },
+    {
+      "key": "post|SERVICEWAND|/software-partner-platform-productize-industry-expertise",
+      "ok": true
+    },
+    {
+      "key": "post|SERVICEWAND|/field-service-management-software-2026-buyers-guide",
+      "ok": true
+    },
+    {
+      "key": "post|SERVICEWAND|/field-service-dispatch-software-ai-orchestration",
+      "ok": true
+    },
+    {
+      "key": "post|SERVICEWAND|/field-service-scheduling-software-static-calendars",
+      "ok": true
+    },
+    {
+      "key": "post|SERVICEWAND|/mobile-field-service-software-offline-test",
+      "ok": true
+    },
+    {
+      "key": "post|SERVICEWAND|/future-of-saas-pricing-seat-license-ai",
+      "ok": true
+    },
+    {
+      "key": "post|SERVICEWAND|/ai-agents-and-saas-future-of-software",
+      "ok": true
+    },
+    {
+      "key": "post|SERVICEWAND|/snow-removal-weather-software-storm-planning",
+      "ok": true
+    },
+    {
+      "key": "post|SERVICEWAND|/snow-plow-gps-tracking-software-proof-of-work",
+      "ok": true
+    },
+    {
+      "key": "post|SERVICEWAND|/commercial-snow-removal-software-complex-sites",
+      "ok": true
+    },
+    {
+      "key": "post|SERVICEWAND|/salt-tracking-software-hidden-margin-problem",
+      "ok": true
+    },
+    {
+      "key": "post|SERVICEWAND|/digital-snow-removal-logs-audit-trail",
+      "ok": true
+    },
+    {
+      "key": "post|SERVICEWAND|/snow-removal-contract-management-software",
+      "ok": true
+    },
+    {
+      "key": "post|SERVICEWAND|/agentic-ai-saas-234-billion-software-risk-map",
+      "ok": true
+    },
+    {
+      "key": "post|SERVICEWAND|/snow-removal-job-costing-software-profitability",
+      "ok": true
+    },
+    {
+      "key": "post|SERVICEWAND|/headless-software-ai-agents-without-ui",
+      "ok": true
+    },
+    {
+      "key": "post|SERVICEWAND|/operational-data-platform-ai-data-moat",
+      "ok": true
+    },
+    {
+      "key": "post|SERVICEWAND|/entity-based-architecture-flexible-business-software",
+      "ok": true
+    },
+    {
+      "key": "post|SERVICEWAND|/mcp-integration-platform-vs-api",
+      "ok": true
+    },
+    {
+      "key": "post|SERVICEWAND|/outcome-based-saas-pricing-ai",
+      "ok": true
+    },
+    {
+      "key": "post|SERVICEWAND|/forward-deployed-engineer-software-operations",
+      "ok": true
+    },
+    {
+      "key": "post|SERVICEWAND|/field-service-automation-software-decisions",
+      "ok": true
+    },
+    {
+      "key": "post|SERVICEWAND|/ai-field-service-management-works-vs-hype",
+      "ok": true
+    },
+    {
+      "key": "post|SERVICEWAND|/field-service-crm-vs-fsm",
+      "ok": true
+    },
+    {
+      "key": "post|SERVICEWAND|/field-service-route-optimization-software-outcomes",
+      "ok": true
+    },
+    {
+      "key": "post|SERVICEWAND|/ai-workflow-automation-data-workflow-problem",
+      "ok": true
+    },
+    {
+      "key": "post|SERVICEWAND|/saas-pocalypse-software-reckoning-ai",
+      "ok": true
+    },
+    {
+      "key": "post|SERVICEWAND|/ai-snow-removal-software-predictive-dispatch",
+      "ok": true
+    },
+    {
+      "key": "post|SERVICEWAND|/snow-removal-business-scaling-software",
+      "ok": true
+    },
+    {
+      "key": "post|SERVICEWAND|/snow-removal-crew-management-software",
+      "ok": true
+    },
+    {
+      "key": "post|SERVICEWAND|/snow-and-ice-management-software",
+      "ok": true
+    },
+    {
+      "key": "post|SERVICEWAND|/snow-removal-customer-notification-software",
+      "ok": true
+    },
+    {
+      "key": "post|SERVICEWAND|/commercial-snow-management-software",
+      "ok": true
+    },
+    {
+      "key": "post|SERVICEWAND|/snow-removal-software-roi",
+      "ok": true
+    },
+    {
+      "key": "post|SERVICEWAND|/post-saas-software-interface",
+      "ok": true
+    },
+    {
+      "key": "post|SERVICEWAND|/ai-agent-orchestration-platform",
+      "ok": true
+    },
+    {
+      "key": "post|SERVICEWAND|/adaptive-business-software",
+      "ok": true
+    },
+    {
+      "key": "post|SERVICEWAND|/developer-platform-trends",
+      "ok": true
+    },
+    {
+      "key": "post|SERVICEWAND|/adaptive-operations-software-compounding-value",
+      "ok": true
+    },
+    {
+      "key": "post|SERVICEWAND|/software-fragmentation-business-liability",
+      "ok": true
+    },
+    {
+      "key": "post|SERVICEWAND|/vertical-saas-operating-system",
+      "ok": true
+    },
+    {
+      "key": "post|SERVICEWAND|/field-service-knowledge-management",
+      "ok": true
+    },
+    {
+      "key": "post|SERVICEWAND|/ai-first-field-service-software",
+      "ok": true
+    },
+    {
+      "key": "post|SERVICEWAND|/field-service-profitability-software",
+      "ok": true
+    },
+    {
+      "key": "content|post|SERVICEWAND|dg/post1|eng",
+      "ok": true
+    },
+    {
+      "key": "post|SERVICEWAND|/future-of-business-software",
+      "ok": true
+    },
+    {
+      "key": "post|SERVICEWAND|/predictive-field-service-software",
+      "ok": true
+    },
+    {
+      "key": "post|SERVICEWAND|/ai-agent-saas-economics",
+      "ok": true
+    },
+    {
+      "key": "content|post|SERVICEWAND|inside-servicewand/typed-entities|eng",
+      "ok": true
+    },
+    {
+      "key": "content|post|SERVICEWAND|inside-servicewand/core-cms|eng",
+      "ok": true
+    },
+    {
+      "key": "content|post|SERVICEWAND|inside-servicewand/core-architecture|eng",
+      "ok": true
+    },
+    {
+      "key": "content|post|SERVICEWAND|inside-servicewand/workflow|eng",
+      "ok": true
+    },
+    {
+      "key": "content|post|SERVICEWAND|inside-servicewand/core-ui|eng",
+      "ok": true
+    },
+    {
+      "key": "content|post|SERVICEWAND|inside-servicewand/core-account|eng",
+      "ok": true
+    },
+    {
+      "key": "content|post|SERVICEWAND|inside-servicewand/core-svc|eng",
+      "ok": true
+    },
+    {
+      "key": "content|post|SERVICEWAND|inside-servicewand/core-rm|eng",
+      "ok": true
+    },
+    {
+      "key": "content|post|SERVICEWAND|inside-servicewand/core-reports|eng",
+      "ok": true
+    },
+    {
+      "key": "content|post|SERVICEWAND|inside-servicewand/localization|eng",
+      "ok": true
+    },
+    {
+      "key": "content|post|SERVICEWAND|inside-servicewand/core-media|eng",
+      "ok": true
+    },
+    {
+      "key": "content|post|SERVICEWAND|inside-servicewand/security|eng",
+      "ok": true
+    },
+    {
+      "key": "content|post|SERVICEWAND|/snow-removal-scheduling-software-2am-test|eng",
+      "ok": true
+    },
+    {
+      "key": "content|post|SERVICEWAND|snow-removal/blog-1|69b150f2f33c7026|eng",
+      "ok": true
+    },
+    {
+      "key": "content|post|SERVICEWAND|/snow-removal-software-2026-storm-readiness|eng",
+      "ok": true
+    },
+    {
+      "key": "content|post|SERVICEWAND|inside-servicewand/scaling-across-industries|eng",
+      "ok": true
+    },
+    {
+      "key": "content|post|SERVICEWAND|/snow-removal-billing-software-stop-rebuilding-invoices|eng",
+      "ok": true
+    },
+    {
+      "key": "content|post|SERVICEWAND|/snow-removal-app-vs-management-software|eng",
+      "ok": true
+    },
+    {
+      "key": "content|post|SERVICEWAND|/snow-removal-crm-before-the-snow-falls|eng",
+      "ok": true
+    },
+    {
+      "key": "content|post|SERVICEWAND|/snow-removal-route-optimization-shortest-route-cost|eng",
+      "ok": true
+    },
+    {
+      "key": "content|post|SERVICEWAND|/ai-native-software-platform-built-in-ai|eng",
+      "ok": true
+    },
+    {
+      "key": "content|post|SERVICEWAND|/build-vs-buy-vs-configure-software|eng",
+      "ok": true
+    },
+    {
+      "key": "content|post|SERVICEWAND|/software-consolidation-platform-replace-saas-stack|eng",
+      "ok": true
+    },
+    {
+      "key": "content|post|SERVICEWAND|/snow-removal-proof-of-service-software|eng",
+      "ok": true
+    },
+    {
+      "key": "content|post|SERVICEWAND|/what-is-an-operational-platform|eng",
+      "ok": true
+    },
+    {
+      "key": "content|post|SERVICEWAND|/software-partner-platform-productize-industry-expertise|eng",
+      "ok": true
+    },
+    {
+      "key": "content|post|SERVICEWAND|/low-code-developer-platform-serious-software-needs-both|eng",
+      "ok": true
+    },
+    {
+      "key": "content|post|SERVICEWAND|/system-of-record-for-ai-agents|eng",
+      "ok": true
+    },
+    {
+      "key": "content|post|SERVICEWAND|/mobile-field-service-software-offline-test|eng",
+      "ok": true
+    },
+    {
+      "key": "content|post|SERVICEWAND|/field-service-management-software-2026-buyers-guide|eng",
+      "ok": true
+    },
+    {
+      "key": "content|post|SERVICEWAND|/field-service-dispatch-software-ai-orchestration|eng",
+      "ok": true
+    },
+    {
+      "key": "content|post|SERVICEWAND|/field-service-scheduling-software-static-calendars|eng",
+      "ok": true
+    },
+    {
+      "key": "content|post|SERVICEWAND|/ai-agents-and-saas-future-of-software|eng",
+      "ok": true
+    },
+    {
+      "key": "content|post|SERVICEWAND|/future-of-saas-pricing-seat-license-ai|eng",
+      "ok": true
+    },
+    {
+      "key": "content|post|SERVICEWAND|/snow-plow-gps-tracking-software-proof-of-work|eng",
+      "ok": true
+    },
+    {
+      "key": "content|post|SERVICEWAND|/snow-removal-weather-software-storm-planning|eng",
+      "ok": true
+    },
+    {
+      "key": "content|post|SERVICEWAND|/commercial-snow-removal-software-complex-sites|eng",
+      "ok": true
+    },
+    {
+      "key": "content|post|SERVICEWAND|/salt-tracking-software-hidden-margin-problem|eng",
+      "ok": true
+    },
+    {
+      "key": "content|post|SERVICEWAND|/digital-snow-removal-logs-audit-trail|eng",
+      "ok": true
+    },
+    {
+      "key": "content|post|SERVICEWAND|/snow-removal-contract-management-software|eng",
+      "ok": true
+    },
+    {
+      "key": "content|post|SERVICEWAND|/agentic-ai-saas-234-billion-software-risk-map|eng",
+      "ok": true
+    },
+    {
+      "key": "content|post|SERVICEWAND|/outcome-based-saas-pricing-ai|eng",
+      "ok": true
+    },
+    {
+      "key": "content|post|SERVICEWAND|/headless-software-ai-agents-without-ui|eng",
+      "ok": true
+    },
+    {
+      "key": "content|post|SERVICEWAND|/snow-removal-job-costing-software-profitability|eng",
+      "ok": true
+    },
+    {
+      "key": "content|post|SERVICEWAND|/operational-data-platform-ai-data-moat|eng",
+      "ok": true
+    },
+    {
+      "key": "content|post|SERVICEWAND|/entity-based-architecture-flexible-business-software|eng",
+      "ok": true
+    },
+    {
+      "key": "content|post|SERVICEWAND|/forward-deployed-engineer-software-operations|eng",
+      "ok": true
+    },
+    {
+      "key": "content|post|SERVICEWAND|/mcp-integration-platform-vs-api|eng",
+      "ok": true
+    },
+    {
+      "key": "content|post|SERVICEWAND|/field-service-route-optimization-software-outcomes|eng",
+      "ok": true
+    },
+    {
+      "key": "content|post|SERVICEWAND|/field-service-crm-vs-fsm|eng",
+      "ok": true
+    },
+    {
+      "key": "content|post|SERVICEWAND|/ai-field-service-management-works-vs-hype|eng",
+      "ok": true
+    },
+    {
+      "key": "content|post|SERVICEWAND|/field-service-automation-software-decisions|eng",
+      "ok": true
+    },
+    {
+      "key": "content|post|SERVICEWAND|/saas-pocalypse-software-reckoning-ai|eng",
+      "ok": true
+    },
+    {
+      "key": "content|post|SERVICEWAND|/snow-removal-customer-notification-software|eng",
+      "ok": true
+    },
+    {
+      "key": "content|post|SERVICEWAND|/ai-workflow-automation-data-workflow-problem|eng",
+      "ok": true
+    },
+    {
+      "key": "content|post|SERVICEWAND|/ai-snow-removal-software-predictive-dispatch|eng",
+      "ok": true
+    },
+    {
+      "key": "content|post|SERVICEWAND|/snow-removal-software-roi|eng",
+      "ok": true
+    },
+    {
+      "key": "content|post|SERVICEWAND|/snow-removal-crew-management-software|eng",
+      "ok": true
+    },
+    {
+      "key": "content|post|SERVICEWAND|/snow-removal-business-scaling-software|eng",
+      "ok": true
+    },
+    {
+      "key": "content|post|SERVICEWAND|/snow-and-ice-management-software|eng",
+      "ok": true
+    },
+    {
+      "key": "content|post|SERVICEWAND|/post-saas-software-interface|eng",
+      "ok": true
+    },
+    {
+      "key": "content|post|SERVICEWAND|/commercial-snow-management-software|eng",
+      "ok": true
+    },
+    {
+      "key": "content|post|SERVICEWAND|/adaptive-business-software|eng",
+      "ok": true
+    },
+    {
+      "key": "content|post|SERVICEWAND|/ai-agent-orchestration-platform|eng",
+      "ok": true
+    },
+    {
+      "key": "content|post|SERVICEWAND|/developer-platform-trends|eng",
+      "ok": true
+    },
+    {
+      "key": "content|post|SERVICEWAND|/software-fragmentation-business-liability|eng",
+      "ok": true
+    },
+    {
+      "key": "content|post|SERVICEWAND|/vertical-saas-operating-system|eng",
+      "ok": true
+    },
+    {
+      "key": "content|post|SERVICEWAND|/adaptive-operations-software-compounding-value|eng",
+      "ok": true
+    },
+    {
+      "key": "content|post|SERVICEWAND|/field-service-profitability-software|eng",
+      "ok": true
+    },
+    {
+      "key": "content|post|SERVICEWAND|/ai-first-field-service-software|eng",
+      "ok": true
+    },
+    {
+      "key": "content|post|SERVICEWAND|/field-service-knowledge-management|eng",
+      "ok": true
+    },
+    {
+      "key": "content|post|SERVICEWAND|/predictive-field-service-software|eng",
+      "ok": true
+    },
+    {
+      "key": "content|post|SERVICEWAND|/future-of-business-software|eng",
+      "ok": true
+    },
+    {
+      "key": "content|post|SERVICEWAND|/ai-agent-saas-economics|eng",
+      "ok": true
+    },
+    {
+      "key": "block|FIELD_SERVICE_BLOG_INDEX_ROOT",
+      "ok": true
+    },
+    {
+      "key": "block|FIELD_SERVICE_BLOG_INDEX_ROOT/FIELD_SERVICE_BLOG_HEADER",
+      "ok": true
+    },
+    {
+      "key": "block|FIELD_SERVICE_BLOG_POST_ROOT",
+      "ok": true
+    },
+    {
+      "key": "block|FIELD_SERVICE_BLOG_INDEX_ROOT/FIELD_SERVICE_BLOG_INDEX",
+      "ok": true
+    },
+    {
+      "key": "block|FIELD_SERVICE_BLOG_INDEX_ROOT/FIELD_SERVICE_BLOG_FOOTER",
+      "ok": true
+    },
+    {
+      "key": "block|FIELD_SERVICE_BLOG_POST_ROOT/FIELD_SERVICE_BLOG_POST_HEADER",
+      "ok": true
+    },
+    {
+      "key": "page|SERVICEWAND|/blog",
+      "ok": true
+    },
+    {
+      "key": "page|SERVICEWAND|/blogs",
+      "ok": true
+    },
+    {
+      "key": "block|FIELD_SERVICE_BLOG_POST_ROOT/FIELD_SERVICE_BLOG_POST",
+      "ok": true
+    },
+    {
+      "key": "block|FIELD_SERVICE_BLOG_POST_ROOT/FIELD_SERVICE_BLOG_POST_FOOTER",
+      "ok": true
+    }
+  ],
+  "previews": [
+    {
+      "page": "/blog",
+      "status": 200,
+      "bytes": 680459,
+      "ok": true
+    },
+    {
+      "page": "/blogs",
+      "status": 200,
+      "bytes": 658090,
+      "ok": true
+    }
+  ],
+  "unrelated": [
+    {
+      "entity": "core-cms/block-template",
+      "key": "FAQ_9",
+      "ok": true,
+      "evidence": "fresh catalog read at deployment completion"
+    },
+    {
+      "entity": "core-cms/block-template",
+      "key": "FAQ",
+      "ok": true,
+      "evidence": "fresh catalog read at deployment completion"
+    },
+    {
+      "entity": "core-cms/block-template",
+      "key": "SNOW_REMOVAL_LANDING_HEADER",
+      "ok": true,
+      "evidence": "fresh catalog read at deployment completion"
+    },
+    {
+      "entity": "core-cms/block-template",
+      "key": "FIELD_SERVICE_LANDING_PLATFORM_COMPARISON",
+      "ok": true,
+      "evidence": "fresh catalog read at deployment completion"
+    },
+    {
+      "entity": "core-cms/block-template",
+      "key": "FAQ_6",
+      "ok": true,
+      "evidence": "fresh catalog read at deployment completion"
+    },
+    {
+      "entity": "core-cms/block-template",
+      "key": "SNOW_REMOVAL_LANDING_NEW_REDIRECT",
+      "ok": true,
+      "evidence": "fresh catalog read at deployment completion"
+    },
+    {
+      "entity": "core-cms/block-template",
+      "key": "ERROR",
+      "ok": true,
+      "evidence": "fresh catalog read at deployment completion"
+    },
+    {
+      "entity": "core-cms/block-template",
+      "key": "FIELD_SERVICE_LANDING_AI_AUTOMATION",
+      "ok": true,
+      "evidence": "fresh catalog read at deployment completion"
+    },
+    {
+      "entity": "core-cms/block-template",
+      "key": "TABLE",
+      "ok": true,
+      "evidence": "fresh catalog read at deployment completion"
+    },
+    {
+      "entity": "core-cms/block-template",
+      "key": "SAS_MULTILINGUAL_LANDING",
+      "ok": true,
+      "evidence": "fresh catalog read at deployment completion"
+    },
+    {
+      "entity": "core-cms/block-template",
+      "key": "HERO",
+      "ok": true,
+      "evidence": "fresh catalog read at deployment completion"
+    },
+    {
+      "entity": "core-cms/block-template",
+      "key": "FOOTER_LOGO",
+      "ok": true,
+      "evidence": "fresh catalog read at deployment completion"
+    },
+    {
+      "entity": "core-cms/block-template",
+      "key": "HEADER",
+      "ok": true,
+      "evidence": "fresh catalog read at deployment completion"
+    },
+    {
+      "entity": "core-cms/block-template",
+      "key": "SUCCESS",
+      "ok": true,
+      "evidence": "fresh catalog read at deployment completion"
+    },
+    {
+      "entity": "core-cms/block-template",
+      "key": "FAQ_4",
+      "ok": true,
+      "evidence": "fresh catalog read at deployment completion"
+    },
+    {
+      "entity": "core-cms/block-template",
+      "key": "PARTNER_FORM",
+      "ok": true,
+      "evidence": "fresh catalog read at deployment completion"
+    },
+    {
+      "entity": "core-cms/block-template",
+      "key": "ECOSYSTEM",
+      "ok": true,
+      "evidence": "fresh catalog read at deployment completion"
+    },
+    {
+      "entity": "core-cms/block-template",
+      "key": "LOCALE_SELECTOR",
+      "ok": true,
+      "evidence": "fresh catalog read at deployment completion"
+    },
+    {
+      "entity": "core-cms/block-template",
+      "key": "FAQ_1",
+      "ok": true,
+      "evidence": "fresh catalog read at deployment completion"
+    },
+    {
+      "entity": "core-cms/block-template",
+      "key": "CORPORATE_LANDING_JTE",
+      "ok": true,
+      "evidence": "fresh catalog read at deployment completion"
+    },
+    {
+      "entity": "core-cms/block-template",
+      "key": "FIELD_SERVICE_LANDING_FOOTER",
+      "ok": true,
+      "evidence": "fresh catalog read at deployment completion"
+    },
+    {
+      "entity": "core-cms/block-template",
+      "key": "FOOTER_CONTACTS",
+      "ok": true,
+      "evidence": "fresh catalog read at deployment completion"
+    },
+    {
+      "entity": "core-cms/block-template",
+      "key": "FAQ_2",
+      "ok": true,
+      "evidence": "fresh catalog read at deployment completion"
+    },
+    {
+      "entity": "core-cms/block-template",
+      "key": "FIELD_SERVICE_LANDING_HEADER",
+      "ok": true,
+      "evidence": "fresh catalog read at deployment completion"
+    },
+    {
+      "entity": "core-cms/block-template",
+      "key": "TERMS_AND_CONDITIONS",
+      "ok": true,
+      "evidence": "fresh catalog read at deployment completion"
+    },
+    {
+      "entity": "core-cms/block-template",
+      "key": "FAQ_7",
+      "ok": true,
+      "evidence": "fresh catalog read at deployment completion"
+    },
+    {
+      "entity": "core-cms/block-template",
+      "key": "FAQ_10",
+      "ok": true,
+      "evidence": "fresh catalog read at deployment completion"
+    },
+    {
+      "entity": "core-cms/block-template",
+      "key": "FIELD_SERVICE_LANDING_VISIBILITY_REPORTING_INTEGRATIONS",
+      "ok": true,
+      "evidence": "fresh catalog read at deployment completion"
+    },
+    {
+      "entity": "core-cms/block-template",
+      "key": "FOOTER_SOCIALS",
+      "ok": true,
+      "evidence": "fresh catalog read at deployment completion"
+    },
+    {
+      "entity": "core-cms/block-template",
+      "key": "SNOW_REMOVAL_LANDING_CONTENT",
+      "ok": true,
+      "evidence": "fresh catalog read at deployment completion"
+    },
+    {
+      "entity": "core-cms/block-template",
+      "key": "PARTNERS",
+      "ok": true,
+      "evidence": "fresh catalog read at deployment completion"
+    },
+    {
+      "entity": "core-cms/block-template",
+      "key": "FOOTER",
+      "ok": true,
+      "evidence": "fresh catalog read at deployment completion"
+    },
+    {
+      "entity": "core-cms/block-template",
+      "key": "AUTH_LOGIN_SAMPLE",
+      "ok": true,
+      "evidence": "fresh catalog read at deployment completion"
+    },
+    {
+      "entity": "core-cms/block-template",
+      "key": "AUTH_2FA_SAMPLE",
+      "ok": true,
+      "evidence": "fresh catalog read at deployment completion"
+    },
+    {
+      "entity": "core-cms/block-template",
+      "key": "FIELD_SERVICE_LANDING_OPERATIONAL_NEEDS",
+      "ok": true,
+      "evidence": "fresh catalog read at deployment completion"
+    },
+    {
+      "entity": "core-cms/block-template",
+      "key": "FIELD_SERVICE_LANDING_MOBILE_WORKFORCE",
+      "ok": true,
+      "evidence": "fresh catalog read at deployment completion"
+    },
+    {
+      "entity": "core-cms/block-template",
+      "key": "FIELD_SERVICE_LANDING_PLATFORM_CAPABILITIES",
+      "ok": true,
+      "evidence": "fresh catalog read at deployment completion"
+    },
+    {
+      "entity": "core-cms/block-template",
+      "key": "FIELD_SERVICE_LANDING_FAQ",
+      "ok": true,
+      "evidence": "fresh catalog read at deployment completion"
+    },
+    {
+      "entity": "core-cms/block-template",
+      "key": "HEADER_MENU",
+      "ok": true,
+      "evidence": "fresh catalog read at deployment completion"
+    },
+    {
+      "entity": "core-cms/block-template",
+      "key": "FAQ_5",
+      "ok": true,
+      "evidence": "fresh catalog read at deployment completion"
+    },
+    {
+      "entity": "core-cms/block-template",
+      "key": "FIELD_SERVICE_LANDING_CONNECTED_OPERATIONS",
+      "ok": true,
+      "evidence": "fresh catalog read at deployment completion"
+    },
+    {
+      "entity": "core-cms/block-template",
+      "key": "FIELD_SERVICE_LANDING_FINAL_CTA",
+      "ok": true,
+      "evidence": "fresh catalog read at deployment completion"
+    },
+    {
+      "entity": "core-cms/block-template",
+      "key": "FIELD_SERVICE_LANDING",
+      "ok": true,
+      "evidence": "fresh catalog read at deployment completion"
+    },
+    {
+      "entity": "core-cms/block-template",
+      "key": "FIELD_SERVICE_LANDING_SUPPORTED_INDUSTRIES",
+      "ok": true,
+      "evidence": "fresh catalog read at deployment completion"
+    },
+    {
+      "entity": "core-cms/block-template",
+      "key": "PRIVACY_POLICY",
+      "ok": true,
+      "evidence": "fresh catalog read at deployment completion"
+    },
+    {
+      "entity": "core-cms/block-template",
+      "key": "FEATURES",
+      "ok": true,
+      "evidence": "fresh catalog read at deployment completion"
+    },
+    {
+      "entity": "core-cms/block-template",
+      "key": "FIELD_SERVICE_LANDING_HERO",
+      "ok": true,
+      "evidence": "fresh catalog read at deployment completion"
+    },
+    {
+      "entity": "core-cms/block-template",
+      "key": "CTA",
+      "ok": true,
+      "evidence": "fresh catalog read at deployment completion"
+    },
+    {
+      "entity": "core-cms/block-template",
+      "key": "FOOTER_MENU",
+      "ok": true,
+      "evidence": "fresh catalog read at deployment completion"
+    },
+    {
+      "entity": "core-cms/block-template",
+      "key": "FIELD_SERVICE_LANDING_GROWTH_STAGES",
+      "ok": true,
+      "evidence": "fresh catalog read at deployment completion"
+    },
+    {
+      "entity": "core-cms/block-template",
+      "key": "SNOW_REMOVAL_LANDING",
+      "ok": true,
+      "evidence": "fresh catalog read at deployment completion"
+    },
+    {
+      "entity": "core-cms/block-template",
+      "key": "SNOW_REMOVAL_LANDING_FOOTER",
+      "ok": true,
+      "evidence": "fresh catalog read at deployment completion"
+    },
+    {
+      "entity": "core-cms/block-template",
+      "key": "FOUNDATION",
+      "ok": true,
+      "evidence": "fresh catalog read at deployment completion"
+    },
+    {
+      "entity": "core-cms/block-template",
+      "key": "FAQ_8",
+      "ok": true,
+      "evidence": "fresh catalog read at deployment completion"
+    },
+    {
+      "entity": "core-cms/block-template",
+      "key": "FAQ_3",
+      "ok": true,
+      "evidence": "fresh catalog read at deployment completion"
+    },
+    {
+      "entity": "core-cms/block-template",
+      "key": "REQUEST_DEMO",
+      "ok": true,
+      "evidence": "fresh catalog read at deployment completion"
+    },
+    {
+      "entity": "core-cms/block-template",
+      "key": "FOOTER_COPYRIGHT",
+      "ok": true,
+      "evidence": "fresh catalog read at deployment completion"
+    },
+    {
+      "entity": "core-cms/block-template",
+      "key": "FOOTER_LEGAL",
+      "ok": true,
+      "evidence": "fresh catalog read at deployment completion"
+    },
+    {
+      "entity": "core-cms/page-context",
+      "key": "/auth/login.html",
+      "ok": true,
+      "evidence": "fresh catalog read at deployment completion"
+    },
+    {
+      "entity": "core-cms/page-context",
+      "key": "/auth/2fa.html",
+      "ok": true,
+      "evidence": "fresh catalog read at deployment completion"
+    },
+    {
+      "entity": "core-cms/page-context",
+      "key": "/sas-multilingual-chat",
+      "ok": true,
+      "evidence": "fresh catalog read at deployment completion"
+    },
+    {
+      "entity": "core-cms/page-context",
+      "key": "/request-demo.html",
+      "ok": true,
+      "evidence": "fresh catalog read at deployment completion"
+    },
+    {
+      "entity": "core-cms/page-context",
+      "key": "/error.html",
+      "ok": true,
+      "evidence": "fresh catalog read at deployment completion"
+    },
+    {
+      "entity": "core-cms/page-context",
+      "key": "/partner.html",
+      "ok": true,
+      "evidence": "fresh catalog read at deployment completion"
+    },
+    {
+      "entity": "core-cms/page-context",
+      "key": "/index.html",
+      "ok": true,
+      "evidence": "fresh catalog read at deployment completion"
+    },
+    {
+      "entity": "core-cms/page-context",
+      "key": "/privacy-policy.html",
+      "ok": true,
+      "evidence": "fresh catalog read at deployment completion"
+    },
+    {
+      "entity": "core-cms/page-context",
+      "key": "/terms-and-conditions.html",
+      "ok": true,
+      "evidence": "fresh catalog read at deployment completion"
+    },
+    {
+      "entity": "core-cms/page-context",
+      "key": "/success.html",
+      "ok": true,
+      "evidence": "fresh catalog read at deployment completion"
+    },
+    {
+      "entity": "core-cms/page-context",
+      "key": "/documentation/introduction.html",
+      "ok": true,
+      "evidence": "fresh catalog read at deployment completion"
+    },
+    {
+      "entity": "core-cms/page-context",
+      "key": "/snow-removal-request-demo.html",
+      "ok": true,
+      "evidence": "fresh catalog read at deployment completion"
+    },
+    {
+      "entity": "core-cms/page-context",
+      "key": "/field-service-early-access.html",
+      "ok": true,
+      "evidence": "fresh catalog read at deployment completion"
+    },
+    {
+      "entity": "core-cms/page-context",
+      "key": "/industries/field-service",
+      "ok": true,
+      "evidence": "fresh catalog read at deployment completion"
+    },
+    {
+      "entity": "core-cms/page-context",
+      "key": "/industries/field-service/snow-removal-software",
+      "ok": true,
+      "evidence": "fresh catalog read at deployment completion"
+    },
+    {
+      "entity": "core-cms/page-context",
+      "key": "/industries/field-service/snow-removal-software-new",
+      "ok": true,
+      "evidence": "fresh catalog read at deployment completion"
+    }
+  ],
+  "issues": [],
+  "completedAt": "2026-11-17T17:18:05.125Z"
+}

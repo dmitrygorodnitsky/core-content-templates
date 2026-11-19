@@ -1,0 +1,741 @@
+{
+  "publicMedia": [
+    {
+      "key": "media|F549E84B-FDE8-4B9B-8162-A73F379D45C6|SW_emblem_d.svg|918c12e403da0acb3506279224eb69a7cb36ad4db8e250a16d294232d0d65364",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "key": "media|F549E84B-FDE8-4B9B-8162-A73F379D45C6|pic (1).webp|f9e344756b943630048dd90c3a2651f5d5e6a116cf89e8a5caafd5a1ea6ebc42",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "key": "media|F549E84B-FDE8-4B9B-8162-A73F379D45C6|pic-5 (1).png|397647d95985b5495467bd995a24de3f40241eec7ab28827e8bdd7309bf3932d",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "key": "media|F549E84B-FDE8-4B9B-8162-A73F379D45C6|hero-bg-2.webp|5822f3c5ef28959fbf3181811d01ca636fd2f4e2285855366ac2d15d76ade09b",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "key": "media|F549E84B-FDE8-4B9B-8162-A73F379D45C6|image 22.png|46f0aa042e681b8efd6b32d4cdf95dc800126a696d756dad0dedb777fc812dd2",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "key": "media|F549E84B-FDE8-4B9B-8162-A73F379D45C6|grok-image-3b9dcd06-8dae-4fc3-809f-b8319e5b0c7a 1.png|a0b501467a4753c634ef4fd0766f27286c6b0823b2ae738f8bb80a6c4c886430",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "key": "media|F549E84B-FDE8-4B9B-8162-A73F379D45C6|Frame 1321315414.svg|d57f3fb1378b58cb5cd53dec69a11c33cc1d7ff20288da781dc4cec93c46bdaf",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "key": "media|F549E84B-FDE8-4B9B-8162-A73F379D45C6|pic.png|401e2778e3542600e28de95c0c6b7f34566c3e7e72b1f7d7109e27615ea3f774",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "key": "media|F549E84B-FDE8-4B9B-8162-A73F379D45C6|grok-image-3b9dcd06-8dae-4fc3-809f-b8319e5b0c7a 1 (1).png|13a2fe6b0af212b2fe84870f25d71058faaa5d49b0d88433582295077918ca3b",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "key": "media|F549E84B-FDE8-4B9B-8162-A73F379D45C6|X.svg|edfa984527335958eeb8e2df4c1d4d0e86890e5109d7bb69ce1f45c81839346a",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "key": "media|F549E84B-FDE8-4B9B-8162-A73F379D45C6|pic (2).webp|9999b987c37a584db1c6156584b053d696bcd362c05f860a107d352e10ce146d",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "key": "media|F549E84B-FDE8-4B9B-8162-A73F379D45C6|grok-image-c927405d-78ea-4640-bcb8-6e807c87563c 1.png|3483c6d8143ac14d94136271fa7391b5f950c128c872b35a2b21f3aa30f29917",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "key": "media|F549E84B-FDE8-4B9B-8162-A73F379D45C6|image 25.png|03e6d53b7563e67538a8383cbd666b288880d3a110bf474bb485069d26d64669",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "key": "media|F549E84B-FDE8-4B9B-8162-A73F379D45C6|grok-image-3b9dcd06-8dae-4fc3-809f-b8319e5b0c7a 1 (2).png|f736593afde546384ff5287d5609576dc6ad25be0ef237371fe4f125a7e32aba",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "key": "media|F549E84B-FDE8-4B9B-8162-A73F379D45C6|hero-bg-3.webp|0e915c6266b31c1d18e680bfbe3d870cbd913e62ca1d862679b5c8a9884982f4",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "key": "media|F549E84B-FDE8-4B9B-8162-A73F379D45C6|pic (2).png|5b9d5463d6ab32393eedaf24a0206ba87290e8798f3ffe0a4ab5f5a35bab455e",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "key": "media|F549E84B-FDE8-4B9B-8162-A73F379D45C6|pic (3).png|16f823f188d91dc8b2d022ef7e7d5f89f1b02640af55da6bb8d0d6d428ebfe7b",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "key": "media|F549E84B-FDE8-4B9B-8162-A73F379D45C6|pic-2.png|9fac0a7ceef501884e1777524551e21f4394037fb7a78155443897435e8b5fcb",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "key": "media|F549E84B-FDE8-4B9B-8162-A73F379D45C6|pic (1).png|4675f235527915ebdb4082f1f509fe250eb9fae21a3b7d7b422b58a144422fe4",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "key": "media|F549E84B-FDE8-4B9B-8162-A73F379D45C6|hero-bg-1.webp|f9d5868fbff5981a42f1da3ad6361c9729a0046f66ce6aafede368a8fa30fe42",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "key": "media|F549E84B-FDE8-4B9B-8162-A73F379D45C6|pic-4 (1).png|322f3b488952608b2e46986d8631177208ae33d86d9b9dfca5ead487d78d31db",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "key": "media|F549E84B-FDE8-4B9B-8162-A73F379D45C6|SW_emblem_w.svg|3a38801a6fe1a649bbb24f9af853a4ced41e371fdb5739af9a6228c57ff1d36d",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "key": "media|F549E84B-FDE8-4B9B-8162-A73F379D45C6|faq-item-shadow.png|922f5f1fc0ddadb702ed1df8c6754a7ac4b5e4c0ff6a02b97f95dfc4c2e7da12",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "key": "media|F549E84B-FDE8-4B9B-8162-A73F379D45C6|pic-12.webp|e9344ec6e26f2a717b687799b3a02bc4af75d0b3cb403559053af02e57dcc09d",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "key": "media|F549E84B-FDE8-4B9B-8162-A73F379D45C6|linkedin.svg|15d90b351043911746ae422f1dc16e541e28883abfbe5f1b2757595a36718afc",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "key": "media|F549E84B-FDE8-4B9B-8162-A73F379D45C6|pic (1).png|4bfd2b18a4ba1f819a012236dd812af5f0dd5fa9a5ebed137f2c56009832e449",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "key": "media|F549E84B-FDE8-4B9B-8162-A73F379D45C6|Ellipse 52.png|d9123777bb6bd6f45ba1cd1439a83762a8c3da69f5026e5bdae37a26695eeedc",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "key": "media|F549E84B-FDE8-4B9B-8162-A73F379D45C6|Github.svg|bdb406354bb9ca264f748d0edbd65158cee4872ba4a035e2c620bc95c1bf5bea",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "key": "media|F549E84B-FDE8-4B9B-8162-A73F379D45C6|pic-13.webp|e9b19f95b13a313a346bc276005f670c24b65ec44533678ccf5e4dfcff5df7b9",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "key": "media|F549E84B-FDE8-4B9B-8162-A73F379D45C6|grok-image-3b9dcd06-8dae-4fc3-809f-b8319e5b0c7a 1 (3).png|7bd9f9ebe901eb7e66bd270e6ed2f9af62bce4da4d11d11d1cac8d889238eb57",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "key": "media|F549E84B-FDE8-4B9B-8162-A73F379D45C6|pic-3.png|834a331e5c79007ff946d6f664a054883209426eaccfe38fac8c59347884c2e7",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "key": "media|F549E84B-FDE8-4B9B-8162-A73F379D45C6|pic.png|074cc64b61f7e2468efc1cae6fbd4236108e1e3336e9de657fc09a43e3f4dcd3",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "key": "media|F549E84B-FDE8-4B9B-8162-A73F379D45C6|pic-7.webp|b827fd1f6ae39dba4ac53a20aaf7fdab9e07786087980c13b6b9f343905c8269",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "key": "media|F549E84B-FDE8-4B9B-8162-A73F379D45C6|Youtube.svg|e607d0ecad2ae260e2fd9ca40d519088612ccf32034e690b94981baa1c7c4447",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "key": "media|F549E84B-FDE8-4B9B-8162-A73F379D45C6|Ellipse 31.png|4bc55f3f003ceead2ac3ccba39fe93fd31a143bc7b300dd8a8b7d1ccd46ed2c5",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "key": "media|F549E84B-FDE8-4B9B-8162-A73F379D45C6|pic (3).webp|bd1e8a44134c5e137dd77297493dc6a81177356e1fe0bfd11d2d30cfe79604e7",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "key": "media|F549E84B-FDE8-4B9B-8162-A73F379D45C6|image 9.png|0a12015b22c5e4a1c85f833566c857c52acd1151c99e17e282511a9ebedf21a0",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "key": "media|F549E84B-FDE8-4B9B-8162-A73F379D45C6|4-t.json|9fae967c9656a3984b751be5ef2fc18325da83728919a223b65dff76da084b40",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "key": "media|F549E84B-FDE8-4B9B-8162-A73F379D45C6|VelaSans-Medium.woff2|17901befbdfde55dfdc8d901fd11c10468d0650d2164ed8d567bb8e80595bd9e",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "key": "media|F549E84B-FDE8-4B9B-8162-A73F379D45C6|3-t.json|02f24f30a916fee62ae33666ab5706c12b730bdaa78385ddf4dee52ddfa83287",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "key": "media|F549E84B-FDE8-4B9B-8162-A73F379D45C6|1.json|44dde4ea01c418a7411b10709e7687e87a6236df9c845d770f2ddc469918e08c",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "key": "media|F549E84B-FDE8-4B9B-8162-A73F379D45C6|3.json|309a0d3c17c80b96866a8601377f22f02ca2fc36155426348f82b5309225e062",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "key": "media|F549E84B-FDE8-4B9B-8162-A73F379D45C6|VelaSans-Bold.woff2|f7886dbdd29ba56b14bbfefd4ec50600a41ad0888b69ee3833495410105a15b0",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "key": "media|F549E84B-FDE8-4B9B-8162-A73F379D45C6|2.json|e9ad974e174166d1c95054a045c63b4e4ce723ee55dee4da8739730c045ccb76",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "key": "media|F549E84B-FDE8-4B9B-8162-A73F379D45C6|5-t.json|688a9c57c215060d1b7d5cf29cfdd67f4117535f74190e88b5ed4fe66310c376",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "key": "media|F549E84B-FDE8-4B9B-8162-A73F379D45C6|dynamic-form.js|35df068b09bcbdeb146e6cb0c490a92d07d8278df497dc1aede869166f4e1e94",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "key": "media|F549E84B-FDE8-4B9B-8162-A73F379D45C6|dynamic-form.css|a47e036e8c982c44695b33157917ec7c371092be7a7cbbadb770efc8a963be2e",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "key": "media|F549E84B-FDE8-4B9B-8162-A73F379D45C6|2-t.json|8a7efc358f0b924cc13650484e6547905f9b7f5880fe1c40e4831d2ccd2441f7",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "key": "media|F549E84B-FDE8-4B9B-8162-A73F379D45C6|VelaSans-SemiBold.woff2|192e29a80f296dc3c1e15f73a4f397900fc1c8af0e349b9c20d1ad646d4b261c",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "key": "media|F549E84B-FDE8-4B9B-8162-A73F379D45C6|1-t.json|943ba69be9e5de0b381789a325e2ef5bdabebcfdae8d63d12a96be5023df9d98",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "key": "media|F549E84B-FDE8-4B9B-8162-A73F379D45C6|5.json|0bb301c2f4b679088d490ee9e649f02a3aa335c1a71a1effb0f1367284fe4860",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "key": "media|F549E84B-FDE8-4B9B-8162-A73F379D45C6|VelaSans-Regular.woff2|14d5f985f9f603ee7c9d0ef37a35ae7b9e48bd7d900c0142b3531e8162f6ec19",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "key": "media|F549E84B-FDE8-4B9B-8162-A73F379D45C6|4.json|91c10d76b8be9f628fb633adc3c093a6a5ff163128674c604b94c37bbd601e14",
+      "status": 200,
+      "ok": true
+    }
+  ],
+  "checkedAt": "2026-11-17T15:29:53.729Z",
+  "configuration": [
+    {
+      "key": "library|F549E84B-FDE8-4B9B-8162-A73F379D45C6",
+      "ok": true
+    },
+    {
+      "key": "workflow|FORM",
+      "ok": true
+    },
+    {
+      "key": "form|REQUEST_DEMO_FORM_TYPE",
+      "ok": true
+    },
+    {
+      "key": "form|SERVICE_WAND_CTA_FORM_TYPE",
+      "ok": true
+    },
+    {
+      "key": "form|SERVICE_WAND_IMPLEMENTATION_PARTNER_FORM",
+      "ok": true
+    },
+    {
+      "key": "form|SERVICE_WAND_TECHNOLOGY_PARTNER_FORM",
+      "ok": true
+    },
+    {
+      "key": "form|A66B4FAF_35AD_4FF9_93DE_7E972C80C2BF",
+      "ok": true
+    },
+    {
+      "key": "form|SNOW_REMOVAL_REQUEST_DEMO",
+      "ok": true
+    },
+    {
+      "key": "form|FIELD_SERVICE_EARLY_ACCESS",
+      "ok": true
+    },
+    {
+      "key": "form|SERVICEWAND_STRATEGIC_PARTNER_FORM",
+      "ok": true
+    },
+    {
+      "key": "form|REFERRAL_CHANNEL_PARTNER",
+      "ok": true
+    },
+    {
+      "key": "form|GENERAL_PARTNERS_FORM",
+      "ok": true
+    },
+    {
+      "key": "block|CORPORATE_LANDING_JTE",
+      "ok": true
+    },
+    {
+      "key": "block|CORPORATE_LANDING_JTE/HEADER",
+      "ok": true
+    },
+    {
+      "key": "block|CORPORATE_LANDING_JTE/HEADER/HEADER_MENU",
+      "ok": true
+    },
+    {
+      "key": "block|CORPORATE_LANDING_JTE/HEADER/LOCALE_SELECTOR",
+      "ok": true
+    },
+    {
+      "key": "block|CORPORATE_LANDING_JTE/FOOTER",
+      "ok": true
+    },
+    {
+      "key": "block|CORPORATE_LANDING_JTE/FOOTER/FOOTER_CONTACTS",
+      "ok": true
+    },
+    {
+      "key": "block|CORPORATE_LANDING_JTE/FOOTER/FOOTER_SOCIALS",
+      "ok": true
+    },
+    {
+      "key": "block|CORPORATE_LANDING_JTE/FOOTER/FOOTER_MENU",
+      "ok": true
+    },
+    {
+      "key": "block|CORPORATE_LANDING_JTE/FOOTER/FOOTER_LOGO",
+      "ok": true
+    },
+    {
+      "key": "block|CORPORATE_LANDING_JTE/FOOTER/FOOTER_COPYRIGHT",
+      "ok": true
+    },
+    {
+      "key": "block|CORPORATE_LANDING_JTE/FOOTER/FOOTER_LEGAL",
+      "ok": true
+    },
+    {
+      "key": "block|CORPORATE_LANDING_JTE/HERO",
+      "ok": true
+    },
+    {
+      "key": "block|CORPORATE_LANDING_JTE/FEATURES",
+      "ok": true
+    },
+    {
+      "key": "block|CORPORATE_LANDING_JTE/TABLE",
+      "ok": true
+    },
+    {
+      "key": "block|CORPORATE_LANDING_JTE/ECOSYSTEM",
+      "ok": true
+    },
+    {
+      "key": "block|CORPORATE_LANDING_JTE/FOUNDATION",
+      "ok": true
+    },
+    {
+      "key": "block|CORPORATE_LANDING_JTE/PARTNERS",
+      "ok": true
+    },
+    {
+      "key": "block|CORPORATE_LANDING_JTE/FAQ",
+      "ok": true
+    },
+    {
+      "key": "block|CORPORATE_LANDING_JTE/FAQ/FAQ_1",
+      "ok": true
+    },
+    {
+      "key": "block|CORPORATE_LANDING_JTE/FAQ/FAQ_2",
+      "ok": true
+    },
+    {
+      "key": "block|CORPORATE_LANDING_JTE/FAQ/FAQ_3",
+      "ok": true
+    },
+    {
+      "key": "block|CORPORATE_LANDING_JTE/FAQ/FAQ_4",
+      "ok": true
+    },
+    {
+      "key": "block|CORPORATE_LANDING_JTE/FAQ/FAQ_5",
+      "ok": true
+    },
+    {
+      "key": "block|CORPORATE_LANDING_JTE/FAQ/FAQ_6",
+      "ok": true
+    },
+    {
+      "key": "block|CORPORATE_LANDING_JTE/FAQ/FAQ_7",
+      "ok": true
+    },
+    {
+      "key": "block|CORPORATE_LANDING_JTE/FAQ/FAQ_8",
+      "ok": true
+    },
+    {
+      "key": "block|CORPORATE_LANDING_JTE/FAQ/FAQ_9",
+      "ok": true
+    },
+    {
+      "key": "block|CORPORATE_LANDING_JTE/FAQ/FAQ_10",
+      "ok": true
+    },
+    {
+      "key": "block|CORPORATE_LANDING_JTE/CTA",
+      "ok": true
+    },
+    {
+      "key": "block|CORPORATE_LANDING_JTE/REQUEST_DEMO",
+      "ok": true
+    },
+    {
+      "key": "block|CORPORATE_LANDING_JTE/PRIVACY_POLICY",
+      "ok": true
+    },
+    {
+      "key": "block|CORPORATE_LANDING_JTE/TERMS_AND_CONDITIONS",
+      "ok": true
+    },
+    {
+      "key": "block|CORPORATE_LANDING_JTE/ERROR",
+      "ok": true
+    },
+    {
+      "key": "block|CORPORATE_LANDING_JTE/PARTNER_FORM",
+      "ok": true
+    },
+    {
+      "key": "block|CORPORATE_LANDING_JTE/SUCCESS",
+      "ok": true
+    },
+    {
+      "key": "page|SERVICEWAND|/request-demo.html",
+      "ok": true
+    },
+    {
+      "key": "page|SERVICEWAND|/error.html",
+      "ok": true
+    },
+    {
+      "key": "page|SERVICEWAND|/partner.html",
+      "ok": true
+    },
+    {
+      "key": "page|SERVICEWAND|/index.html",
+      "ok": true
+    },
+    {
+      "key": "page|SERVICEWAND|/privacy-policy.html",
+      "ok": true
+    },
+    {
+      "key": "page|SERVICEWAND|/terms-and-conditions.html",
+      "ok": true
+    },
+    {
+      "key": "page|SERVICEWAND|/success.html",
+      "ok": true
+    },
+    {
+      "key": "page|SERVICEWAND|/documentation/introduction.html",
+      "ok": true
+    },
+    {
+      "key": "page|SERVICEWAND|/snow-removal-request-demo.html",
+      "ok": true
+    },
+    {
+      "key": "page|SERVICEWAND|/field-service-early-access.html",
+      "ok": true
+    }
+  ],
+  "previews": [
+    {
+      "page": "/request-demo.html",
+      "status": 200,
+      "bytes": 621870,
+      "ok": true
+    },
+    {
+      "page": "/error.html",
+      "status": 200,
+      "bytes": 607642,
+      "ok": true
+    },
+    {
+      "page": "/partner.html",
+      "status": 200,
+      "bytes": 615428,
+      "ok": true
+    },
+    {
+      "page": "/index.html",
+      "status": 200,
+      "bytes": 1641216,
+      "ok": true
+    },
+    {
+      "page": "/privacy-policy.html",
+      "status": 200,
+      "bytes": 615232,
+      "ok": true
+    },
+    {
+      "page": "/terms-and-conditions.html",
+      "status": 200,
+      "bytes": 607110,
+      "ok": true
+    },
+    {
+      "page": "/success.html",
+      "status": 200,
+      "bytes": 608269,
+      "ok": true
+    },
+    {
+      "page": "/documentation/introduction.html",
+      "status": 200,
+      "bytes": 592842,
+      "ok": true
+    },
+    {
+      "page": "/snow-removal-request-demo.html",
+      "status": 200,
+      "bytes": 622040,
+      "ok": true
+    },
+    {
+      "page": "/field-service-early-access.html",
+      "status": 200,
+      "bytes": 622114,
+      "ok": true
+    }
+  ],
+  "unrelated": [
+    {
+      "entity": "core-cms/block-template",
+      "key": "SAS_MULTILINGUAL_LANDING",
+      "ok": true
+    },
+    {
+      "entity": "core-cms/block-template",
+      "key": "AUTH_LOGIN_SAMPLE",
+      "ok": true
+    },
+    {
+      "entity": "core-cms/block-template",
+      "key": "AUTH_2FA_SAMPLE",
+      "ok": true
+    },
+    {
+      "entity": "core-cms/page-context",
+      "key": "/auth/login.html",
+      "ok": true
+    },
+    {
+      "entity": "core-cms/page-context",
+      "key": "/auth/2fa.html",
+      "ok": true
+    },
+    {
+      "entity": "core-cms/page-context",
+      "key": "/sas-multilingual-chat",
+      "ok": true
+    }
+  ],
+  "issues": [],
+  "publicRoutesAndForms": [
+    {
+      "key": "form|REQUEST_DEMO_FORM_TYPE",
+      "path": "/core-cms/api/form-type/REQUEST_DEMO_FORM_TYPE/get.json",
+      "status": 200,
+      "bytes": 12318,
+      "ok": true
+    },
+    {
+      "key": "form|SERVICE_WAND_CTA_FORM_TYPE",
+      "path": "/core-cms/api/form-type/SERVICE_WAND_CTA_FORM_TYPE/get.json",
+      "status": 200,
+      "bytes": 1849,
+      "ok": true
+    },
+    {
+      "key": "form|SERVICE_WAND_IMPLEMENTATION_PARTNER_FORM",
+      "path": "/core-cms/api/form-type/SERVICE_WAND_IMPLEMENTATION_PARTNER_FORM/get.json",
+      "status": 200,
+      "bytes": 15824,
+      "ok": true
+    },
+    {
+      "key": "form|SERVICE_WAND_TECHNOLOGY_PARTNER_FORM",
+      "path": "/core-cms/api/form-type/SERVICE_WAND_TECHNOLOGY_PARTNER_FORM/get.json",
+      "status": 200,
+      "bytes": 13136,
+      "ok": true
+    },
+    {
+      "key": "form|A66B4FAF_35AD_4FF9_93DE_7E972C80C2BF",
+      "path": "/core-cms/api/form-type/A66B4FAF_35AD_4FF9_93DE_7E972C80C2BF/get.json",
+      "status": 200,
+      "bytes": 15259,
+      "ok": true
+    },
+    {
+      "key": "form|SNOW_REMOVAL_REQUEST_DEMO",
+      "path": "/core-cms/api/form-type/SNOW_REMOVAL_REQUEST_DEMO/get.json",
+      "status": 200,
+      "bytes": 20490,
+      "ok": true
+    },
+    {
+      "key": "form|FIELD_SERVICE_EARLY_ACCESS",
+      "path": "/core-cms/api/form-type/FIELD_SERVICE_EARLY_ACCESS/get.json",
+      "status": 200,
+      "bytes": 29217,
+      "ok": true
+    },
+    {
+      "key": "form|SERVICEWAND_STRATEGIC_PARTNER_FORM",
+      "path": "/core-cms/api/form-type/SERVICEWAND_STRATEGIC_PARTNER_FORM/get.json",
+      "status": 200,
+      "bytes": 13992,
+      "ok": true
+    },
+    {
+      "key": "form|REFERRAL_CHANNEL_PARTNER",
+      "path": "/core-cms/api/form-type/REFERRAL_CHANNEL_PARTNER/get.json",
+      "status": 200,
+      "bytes": 12024,
+      "ok": true
+    },
+    {
+      "key": "form|GENERAL_PARTNERS_FORM",
+      "path": "/core-cms/api/form-type/GENERAL_PARTNERS_FORM/get.json",
+      "status": 200,
+      "bytes": 80344,
+      "ok": true
+    },
+    {
+      "key": "page|SERVICEWAND|/request-demo.html",
+      "path": "/request-demo.html",
+      "status": 200,
+      "bytes": 225828,
+      "ok": true
+    },
+    {
+      "key": "page|SERVICEWAND|/error.html",
+      "path": "/error.html",
+      "status": 200,
+      "bytes": 224729,
+      "ok": true
+    },
+    {
+      "key": "page|SERVICEWAND|/partner.html",
+      "path": "/partner.html",
+      "status": 200,
+      "bytes": 225970,
+      "ok": true
+    },
+    {
+      "key": "page|SERVICEWAND|/index.html",
+      "path": "/index.html",
+      "status": 200,
+      "bytes": 549260,
+      "ok": true
+    },
+    {
+      "key": "page|SERVICEWAND|/privacy-policy.html",
+      "path": "/privacy-policy.html",
+      "status": 200,
+      "bytes": 242458,
+      "ok": true
+    },
+    {
+      "key": "page|SERVICEWAND|/terms-and-conditions.html",
+      "path": "/terms-and-conditions.html",
+      "status": 200,
+      "bytes": 234398,
+      "ok": true
+    },
+    {
+      "key": "page|SERVICEWAND|/success.html",
+      "path": "/success.html",
+      "status": 200,
+      "bytes": 225668,
+      "ok": true
+    },
+    {
+      "key": "page|SERVICEWAND|/documentation/introduction.html",
+      "path": "/documentation/introduction.html",
+      "status": 200,
+      "bytes": 222458,
+      "ok": true
+    },
+    {
+      "key": "page|SERVICEWAND|/snow-removal-request-demo.html",
+      "path": "/snow-removal-request-demo.html",
+      "status": 200,
+      "bytes": 225998,
+      "ok": true
+    },
+    {
+      "key": "page|SERVICEWAND|/field-service-early-access.html",
+      "path": "/field-service-early-access.html",
+      "status": 200,
+      "bytes": 226072,
+      "ok": true
+    }
+  ],
+  "scope": "root CMS stage 1",
+  "target": "https://prod.servicewand.com",
+  "businessFormsSubmitted": false,
+  "domainSwitched": false
+}

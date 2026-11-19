@@ -1,0 +1,22 @@
+{
+  "status": "deployed and verified",
+  "serversChanged": true,
+  "domainSwitched": false,
+  "pricesChanged": false,
+  "catalogResponseUnchanged": true,
+  "pages": 3,
+  "blocks": 20,
+  "mediaDependencies": 46,
+  "uploadedMedia": 42,
+  "reusedMedia": 4,
+  "createdLibraries": 3,
+  "operations": 93,
+  "writesVerified": 88,
+  "reusedOperations": 5,
+  "configurationChecks": 27,
+  "unchangedPreviousRecords": 51,
+  "issues": [],
+  "archive": "docs/cms-migration/packages/sections-stage-2a-2026-11-17.zip",
+  "archiveSha256": "e3bb270706ac9f926f4656b2db3a953de946d6537732593b4041db23baddef2c",
+  "verification": "sections-stage-2a-verification.json"
+}

@@ -1,0 +1,9 @@
+wave,url,organization,root,blocks,media,presentOnProd,action,note
+2C,/documentation/overview.html,SERVICEWAND,TEMPLATE-CORPORATE_LANDING,36,45,False,prepare-create,Missing source dependencies require a separate repair/omission decision.
+2C,/use-cases.html,SERVICEWAND,USECASES_JTE,12,19,False,prepare-create,Missing source dependencies require a separate repair/omission decision.
+2A,/industries/field-service,SERVICEWAND,FIELD_SERVICE_LANDING,15,22,True,deployed-verified,"Read-back, public HTML and media verified; prod catalog unchanged."
+2C,/industries/field-service/landscaping-software,SERVICEWAND,VERTICAL_LANDING_JTE,34,6,False,prepare-create,Missing source dependencies require a separate repair/omission decision.
+2B,/blogs,SERVICEWAND,FIELD_SERVICE_BLOG_INDEX_ROOT,4,3,True,deployed,"Verified: 77 posts, 75 texts; one disabled article deferred for missing images."
+2B,/blog,SERVICEWAND,FIELD_SERVICE_BLOG_POST_ROOT,4,3,True,deployed,"Verified: 77 posts, 75 texts; one disabled article deferred for missing images."
+2A,/industries/field-service/snow-removal-software,SERVICEWAND,SNOW_REMOVAL_LANDING,4,29,True,deployed-verified,"Read-back, public HTML and media verified; prod catalog unchanged."
+2A,/industries/field-service/snow-removal-software-new,SERVICEWAND,SNOW_REMOVAL_LANDING_NEW_REDIRECT,1,0,True,deployed-verified,"Read-back, public HTML and media verified; prod catalog unchanged."

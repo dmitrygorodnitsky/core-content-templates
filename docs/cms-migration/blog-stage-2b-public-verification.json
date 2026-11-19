@@ -1,0 +1,377 @@
+{
+  "checkedAt": "2026-11-17T17:10:21.990Z",
+  "issues": [],
+  "pages": [
+    {
+      "path": "/blogs",
+      "status": 200,
+      "bytes": 306486,
+      "ok": true
+    },
+    {
+      "path": "/blog/snow-removal-software-2026-storm-readiness",
+      "status": 200,
+      "bytes": 327560,
+      "ok": true
+    },
+    {
+      "path": "/blog/snow-removal-scheduling-software-2am-test",
+      "status": 200,
+      "bytes": 327645,
+      "ok": true
+    },
+    {
+      "path": "/blog/snow-removal-route-optimization-shortest-route-cost",
+      "status": 200,
+      "bytes": 327911,
+      "ok": true
+    },
+    {
+      "path": "/blog/snow-removal-billing-software-stop-rebuilding-invoices",
+      "status": 200,
+      "bytes": 328032,
+      "ok": true
+    },
+    {
+      "path": "/blog/snow-removal-crm-before-the-snow-falls",
+      "status": 200,
+      "bytes": 327997,
+      "ok": true
+    },
+    {
+      "path": "/blog/snow-removal-app-vs-management-software",
+      "status": 200,
+      "bytes": 328406,
+      "ok": true
+    },
+    {
+      "path": "/blog/snow-removal-proof-of-service-software",
+      "status": 200,
+      "bytes": 327984,
+      "ok": true
+    },
+    {
+      "path": "/blog/ai-native-software-platform-built-in-ai",
+      "status": 200,
+      "bytes": 328154,
+      "ok": true
+    },
+    {
+      "path": "/blog/software-consolidation-platform-replace-saas-stack",
+      "status": 200,
+      "bytes": 328772,
+      "ok": true
+    },
+    {
+      "path": "/blog/build-vs-buy-vs-configure-software",
+      "status": 200,
+      "bytes": 328758,
+      "ok": true
+    },
+    {
+      "path": "/blog/what-is-an-operational-platform",
+      "status": 200,
+      "bytes": 328557,
+      "ok": true
+    },
+    {
+      "path": "/blog/system-of-record-for-ai-agents",
+      "status": 200,
+      "bytes": 329192,
+      "ok": true
+    },
+    {
+      "path": "/blog/low-code-developer-platform-serious-software-needs-both",
+      "status": 200,
+      "bytes": 329041,
+      "ok": true
+    },
+    {
+      "path": "/blog/software-partner-platform-productize-industry-expertise",
+      "status": 200,
+      "bytes": 329245,
+      "ok": true
+    },
+    {
+      "path": "/blog/field-service-management-software-2026-buyers-guide",
+      "status": 200,
+      "bytes": 329230,
+      "ok": true
+    },
+    {
+      "path": "/blog/field-service-scheduling-software-static-calendars",
+      "status": 200,
+      "bytes": 328947,
+      "ok": true
+    },
+    {
+      "path": "/blog/field-service-dispatch-software-ai-orchestration",
+      "status": 200,
+      "bytes": 328886,
+      "ok": true
+    },
+    {
+      "path": "/blog/mobile-field-service-software-offline-test",
+      "status": 200,
+      "bytes": 328925,
+      "ok": true
+    },
+    {
+      "path": "/blog/future-of-saas-pricing-seat-license-ai",
+      "status": 200,
+      "bytes": 329487,
+      "ok": true
+    },
+    {
+      "path": "/blog/ai-agents-and-saas-future-of-software",
+      "status": 200,
+      "bytes": 328866,
+      "ok": true
+    },
+    {
+      "path": "/blog/snow-removal-weather-software-storm-planning",
+      "status": 200,
+      "bytes": 329236,
+      "ok": true
+    },
+    {
+      "path": "/blog/snow-plow-gps-tracking-software-proof-of-work",
+      "status": 200,
+      "bytes": 328823,
+      "ok": true
+    },
+    {
+      "path": "/blog/digital-snow-removal-logs-audit-trail",
+      "status": 200,
+      "bytes": 329170,
+      "ok": true
+    },
+    {
+      "path": "/blog/salt-tracking-software-hidden-margin-problem",
+      "status": 200,
+      "bytes": 328897,
+      "ok": true
+    },
+    {
+      "path": "/blog/commercial-snow-removal-software-complex-sites",
+      "status": 200,
+      "bytes": 329266,
+      "ok": true
+    },
+    {
+      "path": "/blog/snow-removal-contract-management-software",
+      "status": 200,
+      "bytes": 329067,
+      "ok": true
+    },
+    {
+      "path": "/blog/snow-removal-job-costing-software-profitability",
+      "status": 200,
+      "bytes": 329030,
+      "ok": true
+    },
+    {
+      "path": "/blog/headless-software-ai-agents-without-ui",
+      "status": 200,
+      "bytes": 329487,
+      "ok": true
+    },
+    {
+      "path": "/blog/agentic-ai-saas-234-billion-software-risk-map",
+      "status": 200,
+      "bytes": 329706,
+      "ok": true
+    },
+    {
+      "path": "/blog/outcome-based-saas-pricing-ai",
+      "status": 200,
+      "bytes": 328491,
+      "ok": true
+    },
+    {
+      "path": "/blog/mcp-integration-platform-vs-api",
+      "status": 200,
+      "bytes": 329490,
+      "ok": true
+    },
+    {
+      "path": "/blog/operational-data-platform-ai-data-moat",
+      "status": 200,
+      "bytes": 328791,
+      "ok": true
+    },
+    {
+      "path": "/blog/entity-based-architecture-flexible-business-software",
+      "status": 200,
+      "bytes": 328764,
+      "ok": true
+    },
+    {
+      "path": "/blog/forward-deployed-engineer-software-operations",
+      "status": 200,
+      "bytes": 329061,
+      "ok": true
+    },
+    {
+      "path": "/blog/ai-field-service-management-works-vs-hype",
+      "status": 200,
+      "bytes": 329477,
+      "ok": true
+    },
+    {
+      "path": "/blog/field-service-automation-software-decisions",
+      "status": 200,
+      "bytes": 329293,
+      "ok": true
+    },
+    {
+      "path": "/blog/field-service-crm-vs-fsm",
+      "status": 200,
+      "bytes": 329102,
+      "ok": true
+    },
+    {
+      "path": "/blog/field-service-route-optimization-software-outcomes",
+      "status": 200,
+      "bytes": 328730,
+      "ok": true
+    },
+    {
+      "path": "/blog/saas-pocalypse-software-reckoning-ai",
+      "status": 200,
+      "bytes": 328869,
+      "ok": true
+    },
+    {
+      "path": "/blog/ai-workflow-automation-data-workflow-problem",
+      "status": 200,
+      "bytes": 329312,
+      "ok": true
+    },
+    {
+      "path": "/blog/ai-snow-removal-software-predictive-dispatch",
+      "status": 200,
+      "bytes": 329163,
+      "ok": true
+    },
+    {
+      "path": "/blog/snow-removal-customer-notification-software",
+      "status": 200,
+      "bytes": 329254,
+      "ok": true
+    },
+    {
+      "path": "/blog/snow-removal-crew-management-software",
+      "status": 200,
+      "bytes": 328910,
+      "ok": true
+    },
+    {
+      "path": "/blog/snow-and-ice-management-software",
+      "status": 200,
+      "bytes": 328980,
+      "ok": true
+    },
+    {
+      "path": "/blog/snow-removal-business-scaling-software",
+      "status": 200,
+      "bytes": 329415,
+      "ok": true
+    },
+    {
+      "path": "/blog/snow-removal-software-roi",
+      "status": 200,
+      "bytes": 329238,
+      "ok": true
+    },
+    {
+      "path": "/blog/commercial-snow-management-software",
+      "status": 200,
+      "bytes": 328920,
+      "ok": true
+    },
+    {
+      "path": "/blog/post-saas-software-interface",
+      "status": 200,
+      "bytes": 328778,
+      "ok": true
+    },
+    {
+      "path": "/blog/ai-agent-orchestration-platform",
+      "status": 200,
+      "bytes": 329307,
+      "ok": true
+    },
+    {
+      "path": "/blog/adaptive-business-software",
+      "status": 200,
+      "bytes": 328941,
+      "ok": true
+    },
+    {
+      "path": "/blog/software-fragmentation-business-liability",
+      "status": 200,
+      "bytes": 329162,
+      "ok": true
+    },
+    {
+      "path": "/blog/developer-platform-trends",
+      "status": 200,
+      "bytes": 329594,
+      "ok": true
+    },
+    {
+      "path": "/blog/adaptive-operations-software-compounding-value",
+      "status": 200,
+      "bytes": 328860,
+      "ok": true
+    },
+    {
+      "path": "/blog/vertical-saas-operating-system",
+      "status": 200,
+      "bytes": 329053,
+      "ok": true
+    },
+    {
+      "path": "/blog/ai-first-field-service-software",
+      "status": 200,
+      "bytes": 328670,
+      "ok": true
+    },
+    {
+      "path": "/blog/field-service-profitability-software",
+      "status": 200,
+      "bytes": 328709,
+      "ok": true
+    },
+    {
+      "path": "/blog/field-service-knowledge-management",
+      "status": 200,
+      "bytes": 328506,
+      "ok": true
+    },
+    {
+      "path": "/blog/predictive-field-service-software",
+      "status": 200,
+      "bytes": 328736,
+      "ok": true
+    },
+    {
+      "path": "/blog/ai-agent-saas-economics",
+      "status": 200,
+      "bytes": 329163,
+      "ok": true
+    },
+    {
+      "path": "/blog/future-of-business-software",
+      "status": 200,
+      "bytes": 328800,
+      "ok": true
+    }
+  ],
+  "apiStatus": 200,
+  "publicCount": 60,
+  "resultSize": 60,
+  "missing": [],
+  "unexpected": []
+}

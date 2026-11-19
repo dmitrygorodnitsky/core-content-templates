@@ -1,0 +1,410 @@
+{
+  "root": "CORPORATE_LANDING_JTE",
+  "source": "servicewand.com",
+  "destination": "prod.servicewand.com",
+  "finalPublicHost": "servicewand.com",
+  "serversChanged": false,
+  "status": "scope-checked-not-deployed",
+  "pages": [
+    "/request-demo.html",
+    "/error.html",
+    "/partner.html",
+    "/index.html",
+    "/privacy-policy.html",
+    "/terms-and-conditions.html",
+    "/success.html",
+    "/documentation/introduction.html",
+    "/snow-removal-request-demo.html",
+    "/field-service-early-access.html"
+  ],
+  "blockCount": 35,
+  "blocks": [
+    "CORPORATE_LANDING_JTE",
+    "CTA",
+    "ECOSYSTEM",
+    "ERROR",
+    "FAQ",
+    "FAQ_1",
+    "FAQ_10",
+    "FAQ_2",
+    "FAQ_3",
+    "FAQ_4",
+    "FAQ_5",
+    "FAQ_6",
+    "FAQ_7",
+    "FAQ_8",
+    "FAQ_9",
+    "FEATURES",
+    "FOOTER",
+    "FOOTER_CONTACTS",
+    "FOOTER_COPYRIGHT",
+    "FOOTER_LEGAL",
+    "FOOTER_LOGO",
+    "FOOTER_MENU",
+    "FOOTER_SOCIALS",
+    "FOUNDATION",
+    "HEADER",
+    "HEADER_MENU",
+    "HERO",
+    "LOCALE_SELECTOR",
+    "PARTNERS",
+    "PARTNER_FORM",
+    "PRIVACY_POLICY",
+    "REQUEST_DEMO",
+    "SUCCESS",
+    "TABLE",
+    "TERMS_AND_CONDITIONS"
+  ],
+  "formTypes": [
+    "A66B4FAF_35AD_4FF9_93DE_7E972C80C2BF",
+    "FIELD_SERVICE_EARLY_ACCESS",
+    "GENERAL_PARTNERS_FORM",
+    "REFERRAL_CHANNEL_PARTNER",
+    "REQUEST_DEMO_FORM_TYPE",
+    "SERVICEWAND_STRATEGIC_PARTNER_FORM",
+    "SERVICE_WAND_CTA_FORM_TYPE",
+    "SERVICE_WAND_IMPLEMENTATION_PARTNER_FORM",
+    "SERVICE_WAND_TECHNOLOGY_PARTNER_FORM",
+    "SNOW_REMOVAL_REQUEST_DEMO"
+  ],
+  "workflow": "FORM",
+  "mediaCount": 53,
+  "mediaBytes": 8609583,
+  "mediaChecks": [
+    {
+      "name": "SW_emblem_d.svg",
+      "kind": "image",
+      "sourceSha256": "918c12e403da0acb3506279224eb69a7cb36ad4db8e250a16d294232d0d65364",
+      "bytes": 1405
+    },
+    {
+      "name": "pic (1).webp",
+      "kind": "image",
+      "sourceSha256": "f9e344756b943630048dd90c3a2651f5d5e6a116cf89e8a5caafd5a1ea6ebc42",
+      "bytes": 89266
+    },
+    {
+      "name": "pic-5 (1).png",
+      "kind": "image",
+      "sourceSha256": "397647d95985b5495467bd995a24de3f40241eec7ab28827e8bdd7309bf3932d",
+      "bytes": 72288
+    },
+    {
+      "name": "hero-bg-2.webp",
+      "kind": "image",
+      "sourceSha256": "5822f3c5ef28959fbf3181811d01ca636fd2f4e2285855366ac2d15d76ade09b",
+      "bytes": 131468
+    },
+    {
+      "name": "Frame 1321315414.svg",
+      "kind": "image",
+      "sourceSha256": "d57f3fb1378b58cb5cd53dec69a11c33cc1d7ff20288da781dc4cec93c46bdaf",
+      "bytes": 2620
+    },
+    {
+      "name": "grok-image-3b9dcd06-8dae-4fc3-809f-b8319e5b0c7a 1.png",
+      "kind": "image",
+      "sourceSha256": "a0b501467a4753c634ef4fd0766f27286c6b0823b2ae738f8bb80a6c4c886430",
+      "bytes": 239832
+    },
+    {
+      "name": "X.svg",
+      "kind": "image",
+      "sourceSha256": "edfa984527335958eeb8e2df4c1d4d0e86890e5109d7bb69ce1f45c81839346a",
+      "bytes": 1050
+    },
+    {
+      "name": "pic.png",
+      "kind": "image",
+      "sourceSha256": "401e2778e3542600e28de95c0c6b7f34566c3e7e72b1f7d7109e27615ea3f774",
+      "bytes": 1204350
+    },
+    {
+      "name": "image 22.png",
+      "kind": "image",
+      "sourceSha256": "46f0aa042e681b8efd6b32d4cdf95dc800126a696d756dad0dedb777fc812dd2",
+      "bytes": 236894
+    },
+    {
+      "name": "grok-image-3b9dcd06-8dae-4fc3-809f-b8319e5b0c7a 1 (1).png",
+      "kind": "image",
+      "sourceSha256": "13a2fe6b0af212b2fe84870f25d71058faaa5d49b0d88433582295077918ca3b",
+      "bytes": 297272
+    },
+    {
+      "name": "grok-image-c927405d-78ea-4640-bcb8-6e807c87563c 1.png",
+      "kind": "image",
+      "sourceSha256": "3483c6d8143ac14d94136271fa7391b5f950c128c872b35a2b21f3aa30f29917",
+      "bytes": 247284
+    },
+    {
+      "name": "pic (2).webp",
+      "kind": "image",
+      "sourceSha256": "9999b987c37a584db1c6156584b053d696bcd362c05f860a107d352e10ce146d",
+      "bytes": 520518
+    },
+    {
+      "name": "image 25.png",
+      "kind": "image",
+      "sourceSha256": "03e6d53b7563e67538a8383cbd666b288880d3a110bf474bb485069d26d64669",
+      "bytes": 231938
+    },
+    {
+      "name": "grok-image-3b9dcd06-8dae-4fc3-809f-b8319e5b0c7a 1 (2).png",
+      "kind": "image",
+      "sourceSha256": "f736593afde546384ff5287d5609576dc6ad25be0ef237371fe4f125a7e32aba",
+      "bytes": 233731
+    },
+    {
+      "name": "pic (2).png",
+      "kind": "image",
+      "sourceSha256": "5b9d5463d6ab32393eedaf24a0206ba87290e8798f3ffe0a4ab5f5a35bab455e",
+      "bytes": 292573
+    },
+    {
+      "name": "hero-bg-3.webp",
+      "kind": "image",
+      "sourceSha256": "0e915c6266b31c1d18e680bfbe3d870cbd913e62ca1d862679b5c8a9884982f4",
+      "bytes": 42944
+    },
+    {
+      "name": "pic (3).png",
+      "kind": "image",
+      "sourceSha256": "16f823f188d91dc8b2d022ef7e7d5f89f1b02640af55da6bb8d0d6d428ebfe7b",
+      "bytes": 336526
+    },
+    {
+      "name": "pic-2.png",
+      "kind": "image",
+      "sourceSha256": "9fac0a7ceef501884e1777524551e21f4394037fb7a78155443897435e8b5fcb",
+      "bytes": 161445
+    },
+    {
+      "name": "pic (1).png",
+      "kind": "image",
+      "sourceSha256": "4675f235527915ebdb4082f1f509fe250eb9fae21a3b7d7b422b58a144422fe4",
+      "bytes": 65519
+    },
+    {
+      "name": "pic-4 (1).png",
+      "kind": "image",
+      "sourceSha256": "322f3b488952608b2e46986d8631177208ae33d86d9b9dfca5ead487d78d31db",
+      "bytes": 316295
+    },
+    {
+      "name": "hero-bg-1.webp",
+      "kind": "image",
+      "sourceSha256": "f9d5868fbff5981a42f1da3ad6361c9729a0046f66ce6aafede368a8fa30fe42",
+      "bytes": 581682
+    },
+    {
+      "name": "faq-item-shadow.png",
+      "kind": "image",
+      "sourceSha256": "922f5f1fc0ddadb702ed1df8c6754a7ac4b5e4c0ff6a02b97f95dfc4c2e7da12",
+      "bytes": 31745
+    },
+    {
+      "name": "SW_emblem_w.svg",
+      "kind": "image",
+      "sourceSha256": "3a38801a6fe1a649bbb24f9af853a4ced41e371fdb5739af9a6228c57ff1d36d",
+      "bytes": 1397
+    },
+    {
+      "name": "linkedin.svg",
+      "kind": "image",
+      "sourceSha256": "15d90b351043911746ae422f1dc16e541e28883abfbe5f1b2757595a36718afc",
+      "bytes": 746
+    },
+    {
+      "name": "Ellipse 52.png",
+      "kind": "image",
+      "sourceSha256": "d9123777bb6bd6f45ba1cd1439a83762a8c3da69f5026e5bdae37a26695eeedc",
+      "bytes": 766
+    },
+    {
+      "name": "Github.svg",
+      "kind": "image",
+      "sourceSha256": "bdb406354bb9ca264f748d0edbd65158cee4872ba4a035e2c620bc95c1bf5bea",
+      "bytes": 2990
+    },
+    {
+      "name": "pic-12.webp",
+      "kind": "image",
+      "sourceSha256": "e9344ec6e26f2a717b687799b3a02bc4af75d0b3cb403559053af02e57dcc09d",
+      "bytes": 698648
+    },
+    {
+      "name": "pic-13.webp",
+      "kind": "image",
+      "sourceSha256": "e9b19f95b13a313a346bc276005f670c24b65ec44533678ccf5e4dfcff5df7b9",
+      "bytes": 57490
+    },
+    {
+      "name": "pic (1).png",
+      "kind": "image",
+      "sourceSha256": "4bfd2b18a4ba1f819a012236dd812af5f0dd5fa9a5ebed137f2c56009832e449",
+      "bytes": 287757
+    },
+    {
+      "name": "pic-7.webp",
+      "kind": "image",
+      "sourceSha256": "b827fd1f6ae39dba4ac53a20aaf7fdab9e07786087980c13b6b9f343905c8269",
+      "bytes": 4252
+    },
+    {
+      "name": "grok-image-3b9dcd06-8dae-4fc3-809f-b8319e5b0c7a 1 (3).png",
+      "kind": "image",
+      "sourceSha256": "7bd9f9ebe901eb7e66bd270e6ed2f9af62bce4da4d11d11d1cac8d889238eb57",
+      "bytes": 263419
+    },
+    {
+      "name": "pic-3.png",
+      "kind": "image",
+      "sourceSha256": "834a331e5c79007ff946d6f664a054883209426eaccfe38fac8c59347884c2e7",
+      "bytes": 60902
+    },
+    {
+      "name": "Youtube.svg",
+      "kind": "image",
+      "sourceSha256": "e607d0ecad2ae260e2fd9ca40d519088612ccf32034e690b94981baa1c7c4447",
+      "bytes": 788
+    },
+    {
+      "name": "pic.png",
+      "kind": "image",
+      "sourceSha256": "074cc64b61f7e2468efc1cae6fbd4236108e1e3336e9de657fc09a43e3f4dcd3",
+      "bytes": 294357
+    },
+    {
+      "name": "Ellipse 31.png",
+      "kind": "image",
+      "sourceSha256": "4bc55f3f003ceead2ac3ccba39fe93fd31a143bc7b300dd8a8b7d1ccd46ed2c5",
+      "bytes": 15202
+    },
+    {
+      "name": "pic (3).webp",
+      "kind": "image",
+      "sourceSha256": "bd1e8a44134c5e137dd77297493dc6a81177356e1fe0bfd11d2d30cfe79604e7",
+      "bytes": 117248
+    },
+    {
+      "name": "4-t.json",
+      "kind": "media-asset",
+      "sourceSha256": "9fae967c9656a3984b751be5ef2fc18325da83728919a223b65dff76da084b40",
+      "bytes": 72403
+    },
+    {
+      "name": "VelaSans-Medium.woff2",
+      "kind": "media-asset",
+      "sourceSha256": "17901befbdfde55dfdc8d901fd11c10468d0650d2164ed8d567bb8e80595bd9e",
+      "bytes": 54516
+    },
+    {
+      "name": "image 9.png",
+      "kind": "image",
+      "sourceSha256": "0a12015b22c5e4a1c85f833566c857c52acd1151c99e17e282511a9ebedf21a0",
+      "bytes": 240562
+    },
+    {
+      "name": "3-t.json",
+      "kind": "media-asset",
+      "sourceSha256": "02f24f30a916fee62ae33666ab5706c12b730bdaa78385ddf4dee52ddfa83287",
+      "bytes": 93322
+    },
+    {
+      "name": "1.json",
+      "kind": "media-asset",
+      "sourceSha256": "44dde4ea01c418a7411b10709e7687e87a6236df9c845d770f2ddc469918e08c",
+      "bytes": 59884
+    },
+    {
+      "name": "3.json",
+      "kind": "media-asset",
+      "sourceSha256": "309a0d3c17c80b96866a8601377f22f02ca2fc36155426348f82b5309225e062",
+      "bytes": 93045
+    },
+    {
+      "name": "VelaSans-Bold.woff2",
+      "kind": "media-asset",
+      "sourceSha256": "f7886dbdd29ba56b14bbfefd4ec50600a41ad0888b69ee3833495410105a15b0",
+      "bytes": 54940
+    },
+    {
+      "name": "2.json",
+      "kind": "media-asset",
+      "sourceSha256": "e9ad974e174166d1c95054a045c63b4e4ce723ee55dee4da8739730c045ccb76",
+      "bytes": 76894
+    },
+    {
+      "name": "5-t.json",
+      "kind": "media-asset",
+      "sourceSha256": "688a9c57c215060d1b7d5cf29cfdd67f4117535f74190e88b5ed4fe66310c376",
+      "bytes": 96158
+    },
+    {
+      "name": "dynamic-form.js",
+      "kind": "media-asset",
+      "sourceSha256": "35df068b09bcbdeb146e6cb0c490a92d07d8278df497dc1aede869166f4e1e94",
+      "bytes": 152557
+    },
+    {
+      "name": "dynamic-form.css",
+      "kind": "media-asset",
+      "sourceSha256": "a47e036e8c982c44695b33157917ec7c371092be7a7cbbadb770efc8a963be2e",
+      "bytes": 41588
+    },
+    {
+      "name": "2-t.json",
+      "kind": "media-asset",
+      "sourceSha256": "8a7efc358f0b924cc13650484e6547905f9b7f5880fe1c40e4831d2ccd2441f7",
+      "bytes": 89087
+    },
+    {
+      "name": "VelaSans-SemiBold.woff2",
+      "kind": "media-asset",
+      "sourceSha256": "192e29a80f296dc3c1e15f73a4f397900fc1c8af0e349b9c20d1ad646d4b261c",
+      "bytes": 55020
+    },
+    {
+      "name": "1-t.json",
+      "kind": "media-asset",
+      "sourceSha256": "943ba69be9e5de0b381789a325e2ef5bdabebcfdae8d63d12a96be5023df9d98",
+      "bytes": 61696
+    },
+    {
+      "name": "5.json",
+      "kind": "media-asset",
+      "sourceSha256": "0bb301c2f4b679088d490ee9e649f02a3aa335c1a71a1effb0f1367284fe4860",
+      "bytes": 96141
+    },
+    {
+      "name": "VelaSans-Regular.woff2",
+      "kind": "media-asset",
+      "sourceSha256": "14d5f985f9f603ee7c9d0ef37a35ae7b9e48bd7d900c0142b3531e8162f6ec19",
+      "bytes": 55128
+    },
+    {
+      "name": "4.json",
+      "kind": "media-asset",
+      "sourceSha256": "91c10d76b8be9f628fb633adc3c093a6a5ff163128674c604b94c37bbd601e14",
+      "bytes": 72035
+    }
+  ],
+  "decisionsPending": [
+    "Preserve current PNI/SERVICEWAND form destinations or move all marketing submissions to SERVICEWAND; no change is implied."
+  ],
+  "preserve": [
+    "Request Demo currently uses GENERAL_PARTNERS_FORM.",
+    "Existing prod AUTH and unrelated pages.",
+    "Final public host servicewand.com."
+  ],
+  "remainingPackagingChecks": [
+    "Resolve references by root/path and organization code on target.",
+    "Two orphan PageContext override groups require classification; do not invent targets.",
+    "Resolve and stage files plus source permissions, preserve form parent order."
+  ],
+  "launchChecks": [
+    "Render pages and localized variants; test forms only against the intended target backend.",
+    "Complete or account for menu links to deferred vertical/blog/documentation pages before full domain cutover."
+  ]
+}

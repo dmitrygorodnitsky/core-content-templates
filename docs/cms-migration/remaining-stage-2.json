@@ -1,0 +1,4424 @@
+{
+  "checkedAtSource": "2026-11-17T15:43:52.758Z",
+  "checkedAtProd": "2026-11-17T15:42:51.657Z",
+  "serversChanged": true,
+  "domainSwitched": false,
+  "status": "2A and ready 2B deployed; 2C remains; one disabled blog article held",
+  "pages": [
+    {
+      "url": "/documentation/overview.html",
+      "organization": "SERVICEWAND",
+      "root": "TEMPLATE-CORPORATE_LANDING",
+      "blocks": 36,
+      "media": 45,
+      "presentOnProd": false,
+      "externalBlockReferences": [],
+      "orphanOverrideGroups": [
+        "f2ced378-f2c5-4c9c-b980-259915732ada"
+      ],
+      "wave": "2C",
+      "action": "prepare-create",
+      "note": "Missing source dependencies require a separate repair/omission decision."
+    },
+    {
+      "url": "/use-cases.html",
+      "organization": "SERVICEWAND",
+      "root": "USECASES_JTE",
+      "blocks": 12,
+      "media": 19,
+      "presentOnProd": false,
+      "externalBlockReferences": [],
+      "orphanOverrideGroups": [],
+      "wave": "2C",
+      "action": "prepare-create",
+      "note": "Missing source dependencies require a separate repair/omission decision."
+    },
+    {
+      "url": "/industries/field-service",
+      "organization": "SERVICEWAND",
+      "root": "FIELD_SERVICE_LANDING",
+      "blocks": 15,
+      "media": 22,
+      "presentOnProd": true,
+      "externalBlockReferences": [],
+      "orphanOverrideGroups": [],
+      "wave": "2A",
+      "action": "deployed-verified",
+      "note": "Read-back, public HTML and media verified; prod catalog unchanged."
+    },
+    {
+      "url": "/industries/field-service/landscaping-software",
+      "organization": "SERVICEWAND",
+      "root": "VERTICAL_LANDING_JTE",
+      "blocks": 34,
+      "media": 6,
+      "presentOnProd": false,
+      "externalBlockReferences": [],
+      "orphanOverrideGroups": [],
+      "wave": "2C",
+      "action": "prepare-create",
+      "note": "Missing source dependencies require a separate repair/omission decision."
+    },
+    {
+      "url": "/blogs",
+      "organization": "SERVICEWAND",
+      "root": "FIELD_SERVICE_BLOG_INDEX_ROOT",
+      "blocks": 4,
+      "media": 3,
+      "presentOnProd": true,
+      "externalBlockReferences": [],
+      "orphanOverrideGroups": [],
+      "wave": "2B",
+      "action": "deployed",
+      "note": "77 posts and 75 English content records deployed; one disabled article held for broken images."
+    },
+    {
+      "url": "/blog",
+      "organization": "SERVICEWAND",
+      "root": "FIELD_SERVICE_BLOG_POST_ROOT",
+      "blocks": 4,
+      "media": 3,
+      "presentOnProd": true,
+      "externalBlockReferences": [],
+      "orphanOverrideGroups": [],
+      "wave": "2B",
+      "action": "deployed",
+      "note": "77 posts and 75 English content records deployed; one disabled article held for broken images."
+    },
+    {
+      "url": "/industries/field-service/snow-removal-software",
+      "organization": "SERVICEWAND",
+      "root": "SNOW_REMOVAL_LANDING",
+      "blocks": 4,
+      "media": 29,
+      "presentOnProd": true,
+      "externalBlockReferences": [],
+      "orphanOverrideGroups": [],
+      "wave": "2A",
+      "action": "deployed-verified",
+      "note": "Read-back, public HTML and media verified; prod catalog unchanged."
+    },
+    {
+      "url": "/industries/field-service/snow-removal-software-new",
+      "organization": "SERVICEWAND",
+      "root": "SNOW_REMOVAL_LANDING_NEW_REDIRECT",
+      "blocks": 1,
+      "media": 0,
+      "presentOnProd": true,
+      "externalBlockReferences": [],
+      "orphanOverrideGroups": [],
+      "wave": "2A",
+      "action": "deployed-verified",
+      "note": "Read-back, public HTML and media verified; prod catalog unchanged."
+    }
+  ],
+  "counts": {
+    "pages": 8,
+    "blocks": 110,
+    "blogPosts": 78,
+    "enabledBlogPosts": 60,
+    "disabledBlogPosts": 18,
+    "localizedBlogContents": 76,
+    "categories": 4,
+    "media": 225,
+    "mediaReusedStage1": 34,
+    "remainingMediaCandidates": 26,
+    "sourceMediaBytes": 270412613,
+    "libraries": 7,
+    "missingLibraries": 1,
+    "mediaAlreadyDeployed": 199
+  },
+  "libraries": [
+    {
+      "code": "CE7A483A_42C8_4869_ADB1_98DF04D1065D",
+      "organization": "SERVICEWAND",
+      "presentOnProd": true,
+      "referencedMedia": 6
+    },
+    {
+      "code": "DICTIONARIES",
+      "organization": "SYSTEM",
+      "presentOnProd": false,
+      "referencedMedia": 10
+    },
+    {
+      "code": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "organization": "SERVICEWAND",
+      "presentOnProd": true,
+      "referencedMedia": 121
+    },
+    {
+      "code": "F549E84B-FDE8-4B9B-8162-A73F379D45C6",
+      "organization": "SYSTEM",
+      "presentOnProd": true,
+      "referencedMedia": 47
+    },
+    {
+      "code": "FIELD_SERVICES",
+      "organization": "SERVICEWAND",
+      "presentOnProd": true,
+      "referencedMedia": 17
+    },
+    {
+      "code": "SERVICEWAND_DEFAULT",
+      "organization": "SERVICEWAND",
+      "presentOnProd": true,
+      "referencedMedia": 1
+    },
+    {
+      "code": "SERVICEWAND_SNOW_REMOVAL_LANDING",
+      "organization": "SERVICEWAND",
+      "presentOnProd": true,
+      "referencedMedia": 23
+    }
+  ],
+  "media": [
+    {
+      "sourceId": "00b390a8-04e1-4e3e-b2cb-7eae4ff6fd1c",
+      "libraryCode": "DICTIONARIES",
+      "name": "industry-insurance-variety.webp",
+      "kind": "image",
+      "bytes": 179940,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "00b390a8-04e1-4e3e-b2cb-7eae4ff6fd1c",
+        "name": "industry-insurance-variety.webp",
+        "status": 200,
+        "length": "179940",
+        "type": "image/webp"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": false
+    },
+    {
+      "sourceId": "015f41c3-a97a-4061-8d38-b47447880197",
+      "libraryCode": "SERVICEWAND_SNOW_REMOVAL_LANDING",
+      "name": "sub-manage-centrally-640.webp",
+      "kind": "image",
+      "bytes": 35616,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "015f41c3-a97a-4061-8d38-b47447880197",
+        "name": "sub-manage-centrally-640.webp",
+        "status": 200,
+        "length": "35616",
+        "type": "image/webp"
+      },
+      "availableAfterStage2A": true,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "02a7aef5-74bf-4d1f-af4a-e56b466dbb39",
+      "libraryCode": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Weather Intelligence for Snow Removal The Storm Is Won Before the First Truck Moves2.png",
+      "kind": "image",
+      "bytes": 2336760,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "02a7aef5-74bf-4d1f-af4a-e56b466dbb39",
+        "name": "Weather Intelligence for Snow Removal The Storm Is Won Before the First Truck Moves2.png",
+        "status": 200,
+        "length": "2336760",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "03bfc3c7-9246-4944-8dea-516e410b9411",
+      "libraryCode": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Scaling a Snow Removal Business The Systems That Break Between 5 and 50 Trucks2.png",
+      "kind": "image",
+      "bytes": 2407138,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "03bfc3c7-9246-4944-8dea-516e410b9411",
+        "name": "Scaling a Snow Removal Business The Systems That Break Between 5 and 50 Trucks2.png",
+        "status": 200,
+        "length": "2407138",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "052bcad4-6e44-4086-968d-85bea89c7ae7",
+      "libraryCode": "F549E84B-FDE8-4B9B-8162-A73F379D45C6",
+      "name": "SW_emblem_d.svg",
+      "kind": "image",
+      "bytes": 1405,
+      "reuseStage1": true,
+      "sourceHead": {
+        "id": "052bcad4-6e44-4086-968d-85bea89c7ae7",
+        "name": "SW_emblem_d.svg",
+        "status": 200,
+        "length": "1405",
+        "type": "image/svg+xml"
+      },
+      "availableAfterStage2A": true,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "05cfeadf-3b49-43be-a32f-d335c78cdc46",
+      "libraryCode": "F549E84B-FDE8-4B9B-8162-A73F379D45C6",
+      "name": "pic (1).webp",
+      "kind": "image",
+      "bytes": 89266,
+      "reuseStage1": true,
+      "sourceHead": {
+        "id": "05cfeadf-3b49-43be-a32f-d335c78cdc46",
+        "name": "pic (1).webp",
+        "status": 200,
+        "length": "89266",
+        "type": "image/webp"
+      },
+      "availableAfterStage2A": true,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "05cfedba-3b6a-4df9-bdc3-59c0b6dfdb59",
+      "libraryCode": "SERVICEWAND_SNOW_REMOVAL_LANDING",
+      "name": "43d5053f4d.webp",
+      "kind": "image",
+      "bytes": 17154,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "05cfedba-3b6a-4df9-bdc3-59c0b6dfdb59",
+        "name": "43d5053f4d.webp",
+        "status": 200,
+        "length": "17154",
+        "type": "image/webp"
+      },
+      "availableAfterStage2A": true,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "06350ba5-68e2-49a0-83e0-c8f555267fbf",
+      "libraryCode": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Agentic AI and the $234 Billion SaaS Question What Software Companies Need to Change1.png",
+      "kind": "image",
+      "bytes": 2054685,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "06350ba5-68e2-49a0-83e0-c8f555267fbf",
+        "name": "Agentic AI and the $234 Billion SaaS Question What Software Companies Need to Change1.png",
+        "status": 200,
+        "length": "2054685",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "06ea6b9c-387a-48f6-8598-bdcd06ccbecc",
+      "libraryCode": "DICTIONARIES",
+      "name": "industry-retail-variety.webp",
+      "kind": "image",
+      "bytes": 103374,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "06ea6b9c-387a-48f6-8598-bdcd06ccbecc",
+        "name": "industry-retail-variety.webp",
+        "status": 200,
+        "length": "103374",
+        "type": "image/webp"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": false
+    },
+    {
+      "sourceId": "07595ec0-b645-47ac-ac0a-9291e9d94ff8",
+      "libraryCode": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Field Service Is Becoming a Profit Center—Software Has to Catch Up2.png",
+      "kind": "image",
+      "bytes": 2060460,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "07595ec0-b645-47ac-ac0a-9291e9d94ff8",
+        "name": "Field Service Is Becoming a Profit Center—Software Has to Catch Up2.png",
+        "status": 200,
+        "length": "2060460",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "083801a1-72be-4fc5-996f-1211cb94ff3a",
+      "libraryCode": "F549E84B-FDE8-4B9B-8162-A73F379D45C6",
+      "name": "pic-5 (1).png",
+      "kind": "image",
+      "bytes": 72288,
+      "reuseStage1": true,
+      "sourceHead": {
+        "id": "083801a1-72be-4fc5-996f-1211cb94ff3a",
+        "name": "pic-5 (1).png",
+        "status": 200,
+        "length": "72288",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": true,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "08d09849-4bc0-431b-bcf7-429f95b395b3",
+      "libraryCode": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Field Service Scheduling Software Why Static Calendars Are Becoming Obsolete1.png",
+      "kind": "image",
+      "bytes": 2100169,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "08d09849-4bc0-431b-bcf7-429f95b395b3",
+        "name": "Field Service Scheduling Software Why Static Calendars Are Becoming Obsolete1.png",
+        "status": 200,
+        "length": "2100169",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "0afc2e3f-5f0a-4dc5-9b07-68a9fb32598f",
+      "libraryCode": "FIELD_SERVICES",
+      "name": "plumbing-service-software-1280.webp",
+      "kind": "image",
+      "bytes": 177694,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "0afc2e3f-5f0a-4dc5-9b07-68a9fb32598f",
+        "name": "plumbing-service-software-1280.webp",
+        "status": 200,
+        "length": "177694",
+        "type": "image/webp"
+      },
+      "availableAfterStage2A": true,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "0bd94680-1b43-4f68-845a-69b343913b90",
+      "libraryCode": "F549E84B-FDE8-4B9B-8162-A73F379D45C6",
+      "name": "hero-bg-2.webp",
+      "kind": "image",
+      "bytes": 131468,
+      "reuseStage1": true,
+      "sourceHead": {
+        "id": "0bd94680-1b43-4f68-845a-69b343913b90",
+        "name": "hero-bg-2.webp",
+        "status": 200,
+        "length": "131468",
+        "type": "image/webp"
+      },
+      "availableAfterStage2A": true,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "0d3de1ac-e948-406b-a130-84777f2535e4",
+      "libraryCode": "CE7A483A_42C8_4869_ADB1_98DF04D1065D",
+      "name": "mainsnow#2.png",
+      "kind": "image",
+      "bytes": 2397945,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "0d3de1ac-e948-406b-a130-84777f2535e4",
+        "name": "mainsnow#2.png",
+        "status": 200,
+        "length": "2397945",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "117b71be-45c7-4dbd-9927-a4e72641d9fa",
+      "libraryCode": "SERVICEWAND_SNOW_REMOVAL_LANDING",
+      "name": "27416e9786.mp4",
+      "kind": "video",
+      "bytes": 1043948,
+      "reuseStage1": false,
+      "sourceHead": {
+        "status": 200,
+        "path": "/core/api/video/{sourceId}/stream/{name}",
+        "note": "Actual rendered stream route verified; /get requires authentication and is not the page dependency."
+      },
+      "availableAfterStage2A": true,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "125c7d1b-b4c7-4034-adfc-32b66c386209",
+      "libraryCode": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "GPS Snow Plow Tracking Location Is Not the Same as Proof of Work1.png",
+      "kind": "image",
+      "bytes": 2020385,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "125c7d1b-b4c7-4034-adfc-32b66c386209",
+        "name": "GPS Snow Plow Tracking Location Is Not the Same as Proof of Work1.png",
+        "status": 200,
+        "length": "2020385",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "126b3ec4-f732-4bb9-8ce4-1322fbeb419c",
+      "libraryCode": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Snow and Ice Management Software Why Plowing Is Only Half the Operation2.png",
+      "kind": "image",
+      "bytes": 2207235,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "126b3ec4-f732-4bb9-8ce4-1322fbeb419c",
+        "name": "Snow and Ice Management Software Why Plowing Is Only Half the Operation2.png",
+        "status": 200,
+        "length": "2207235",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "13add8ef-fb8c-4ce0-8e68-431928122ea1",
+      "libraryCode": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "1The System of Record Is Back—and AI Agents Are the Reason.png",
+      "kind": "image",
+      "bytes": 1753861,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "13add8ef-fb8c-4ce0-8e68-431928122ea1",
+        "name": "1The System of Record Is Back—and AI Agents Are the Reason.png",
+        "status": 200,
+        "length": "1753861",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "14abddce-9828-4293-ae02-6c1fc2e516c1",
+      "libraryCode": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Field Service CRM vs. FSM Why Customer Data and Job Execution Can’t Live Apart1.png",
+      "kind": "image",
+      "bytes": 2009418,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "14abddce-9828-4293-ae02-6c1fc2e516c1",
+        "name": "Field Service CRM vs. FSM Why Customer Data and Job Execution Can’t Live Apart1.png",
+        "status": 200,
+        "length": "2009418",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "14cae0ff-be29-40e1-9eee-d474ec4d084a",
+      "libraryCode": "SERVICEWAND_SNOW_REMOVAL_LANDING",
+      "name": "46a0d3fd99.webp",
+      "kind": "image",
+      "bytes": 88638,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "14cae0ff-be29-40e1-9eee-d474ec4d084a",
+        "name": "46a0d3fd99.webp",
+        "status": 200,
+        "length": "88638",
+        "type": "image/webp"
+      },
+      "availableAfterStage2A": true,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "15a5718a-8c4b-4fe8-9d81-02206e4259e0",
+      "libraryCode": "SERVICEWAND_SNOW_REMOVAL_LANDING",
+      "name": "sub-manage-centrally.webp",
+      "kind": "image",
+      "bytes": 84582,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "15a5718a-8c4b-4fe8-9d81-02206e4259e0",
+        "name": "sub-manage-centrally.webp",
+        "status": 200,
+        "length": "84582",
+        "type": "image/webp"
+      },
+      "availableAfterStage2A": true,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "1612da2b-e8c1-4f18-814d-02ea673244b4",
+      "libraryCode": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "MCP and the New Integration Layer Will APIs Still Be Enough1.png",
+      "kind": "image",
+      "bytes": 1989804,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "1612da2b-e8c1-4f18-814d-02ea673244b4",
+        "name": "MCP and the New Integration Layer Will APIs Still Be Enough1.png",
+        "status": 200,
+        "length": "1989804",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "163026ac-5ea3-4487-8c0e-234157d22cb3",
+      "libraryCode": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Field Service Route Optimization Stop Optimizing Miles and Start Optimizing Outcomes2.png",
+      "kind": "image",
+      "bytes": 2095731,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "163026ac-5ea3-4487-8c0e-234157d22cb3",
+        "name": "Field Service Route Optimization Stop Optimizing Miles and Start Optimizing Outcomes2.png",
+        "status": 200,
+        "length": "2095731",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "16a2db21-e3e9-42de-815f-abea51402626",
+      "libraryCode": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Proof of Service for Snow Removal If You Can’t Prove It, Did It Happen2.png",
+      "kind": "image",
+      "bytes": 2088071,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "16a2db21-e3e9-42de-815f-abea51402626",
+        "name": "Proof of Service for Snow Removal If You Can’t Prove It, Did It Happen2.png",
+        "status": 200,
+        "length": "2088071",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "16a6fb7d-acb1-4274-b049-3d3c845cc8f4",
+      "libraryCode": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Snow Removal App vs. Full Management Software When a Simple App Stops Being Enough1.png",
+      "kind": "image",
+      "bytes": 1918848,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "16a6fb7d-acb1-4274-b049-3d3c845cc8f4",
+        "name": "Snow Removal App vs. Full Management Software When a Simple App Stops Being Enough1.png",
+        "status": 200,
+        "length": "1918848",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "17bbf1a7-47fd-468e-9684-54c0f24ac889",
+      "libraryCode": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Field Service Is Becoming a Profit Center—Software Has to Catch Up1.png",
+      "kind": "image",
+      "bytes": 2213975,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "17bbf1a7-47fd-468e-9684-54c0f24ac889",
+        "name": "Field Service Is Becoming a Profit Center—Software Has to Catch Up1.png",
+        "status": 200,
+        "length": "2213975",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "19d0155c-df9e-4a13-aaa1-52bec263c752",
+      "libraryCode": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "SaaS Isn’t Dead. The Seat License Might Be.2.png",
+      "kind": "image",
+      "bytes": 1948503,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "19d0155c-df9e-4a13-aaa1-52bec263c752",
+        "name": "SaaS Isn’t Dead. The Seat License Might Be.2.png",
+        "status": 200,
+        "length": "1948503",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "1a12a76d-140e-438b-8a6a-8849afea7e86",
+      "libraryCode": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Headless Software Is Coming What Happens When AI Stops Clicking Your UI2.png",
+      "kind": "image",
+      "bytes": 2056516,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "1a12a76d-140e-438b-8a6a-8849afea7e86",
+        "name": "Headless Software Is Coming What Happens When AI Stops Clicking Your UI2.png",
+        "status": 200,
+        "length": "2056516",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "1a13b41e-b2e0-4da2-81ae-1856cafc499e",
+      "libraryCode": "SERVICEWAND_SNOW_REMOVAL_LANDING",
+      "name": "sub-info-separate-640.webp",
+      "kind": "image",
+      "bytes": 70956,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "1a13b41e-b2e0-4da2-81ae-1856cafc499e",
+        "name": "sub-info-separate-640.webp",
+        "status": 200,
+        "length": "70956",
+        "type": "image/webp"
+      },
+      "availableAfterStage2A": true,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "1a1eb9bb-f826-46a2-9ce0-66db4052c4ec",
+      "libraryCode": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Your Company Doesn’t Have an AI Problem. It Has a Data and Workflow Problem.2.png",
+      "kind": "image",
+      "bytes": 2518308,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "1a1eb9bb-f826-46a2-9ce0-66db4052c4ec",
+        "name": "Your Company Doesn’t Have an AI Problem. It Has a Data and Workflow Problem.2.png",
+        "status": 200,
+        "length": "2518308",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "1aa8c78d-4f4c-47b3-92dd-2670a73d4f3a",
+      "libraryCode": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Snow Removal Software ROI Measure Fewer Disputes, Faster Billing and Better Route Density2.png",
+      "kind": "image",
+      "bytes": 2057373,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "1aa8c78d-4f4c-47b3-92dd-2670a73d4f3a",
+        "name": "Snow Removal Software ROI Measure Fewer Disputes, Faster Billing and Better Route Density2.png",
+        "status": 200,
+        "length": "2057373",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "1adbc054-3df8-4269-8d91-6c964ce0fb2f",
+      "libraryCode": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "The Rise of the Forward-Deployed Builder Why Software Companies Need People Who Understand Operations1.png",
+      "kind": "image",
+      "bytes": 1936662,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "1adbc054-3df8-4269-8d91-6c964ce0fb2f",
+        "name": "The Rise of the Forward-Deployed Builder Why Software Companies Need People Who Understand Operations1.png",
+        "status": 200,
+        "length": "1936662",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "1c92109e-e9d1-4b33-83e2-b056eab2a606",
+      "libraryCode": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "The Future of Business Software Is Invisible, Adaptive and Always Working1.png",
+      "kind": "image",
+      "bytes": 2983756,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "1c92109e-e9d1-4b33-83e2-b056eab2a606",
+        "name": "The Future of Business Software Is Invisible, Adaptive and Always Working1.png",
+        "status": 200,
+        "length": "2983756",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "1d2e0186-c6db-40cd-8ffa-6d6f93e8bed5",
+      "libraryCode": "DICTIONARIES",
+      "name": "industry-telco-variety.webp",
+      "kind": "image",
+      "bytes": 192948,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "1d2e0186-c6db-40cd-8ffa-6d6f93e8bed5",
+        "name": "industry-telco-variety.webp",
+        "status": 200,
+        "length": "192948",
+        "type": "image/webp"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": false
+    },
+    {
+      "sourceId": "1dedac1e-a391-4686-93ab-dcc07dc05114",
+      "libraryCode": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Field Service Route Optimization Stop Optimizing Miles and Start Optimizing Outcomes1.png",
+      "kind": "image",
+      "bytes": 2112972,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "1dedac1e-a391-4686-93ab-dcc07dc05114",
+        "name": "Field Service Route Optimization Stop Optimizing Miles and Start Optimizing Outcomes1.png",
+        "status": 200,
+        "length": "2112972",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "1e86b27e-960b-4fea-9225-8aeedda814f7",
+      "libraryCode": "F549E84B-FDE8-4B9B-8162-A73F379D45C6",
+      "name": "pic.png",
+      "kind": "image",
+      "bytes": 1204350,
+      "reuseStage1": true,
+      "sourceHead": {
+        "id": "1e86b27e-960b-4fea-9225-8aeedda814f7",
+        "name": "pic.png",
+        "status": 200,
+        "length": "1204350",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": true,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "1f318db8-e926-4507-8ae3-6bc101861147",
+      "libraryCode": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Snow Removal Billing Software Stop Rebuilding the Storm in Your Invoice1.png",
+      "kind": "image",
+      "bytes": 2138379,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "1f318db8-e926-4507-8ae3-6bc101861147",
+        "name": "Snow Removal Billing Software Stop Rebuilding the Storm in Your Invoice1.png",
+        "status": 200,
+        "length": "2138379",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "20c5cfdd-4d64-4720-9e5e-534cbb0197d9",
+      "libraryCode": "FIELD_SERVICES",
+      "name": "cleaning-services-1280.webp",
+      "kind": "image",
+      "bytes": 124282,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "20c5cfdd-4d64-4720-9e5e-534cbb0197d9",
+        "name": "cleaning-services-1280.webp",
+        "status": 200,
+        "length": "124282",
+        "type": "image/webp"
+      },
+      "availableAfterStage2A": true,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "216ec498-f3c4-4c6e-9467-022e56892183",
+      "libraryCode": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Snow Removal App vs. Full Management Software When a Simple App Stops Being Enough2.png",
+      "kind": "image",
+      "bytes": 2125015,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "216ec498-f3c4-4c6e-9467-022e56892183",
+        "name": "Snow Removal App vs. Full Management Software When a Simple App Stops Being Enough2.png",
+        "status": 200,
+        "length": "2125015",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "2188bb79-9968-40d7-a1cb-6dd139054070",
+      "libraryCode": "FIELD_SERVICES",
+      "name": "pest-control-operations-1280.webp",
+      "kind": "image",
+      "bytes": 221946,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "2188bb79-9968-40d7-a1cb-6dd139054070",
+        "name": "pest-control-operations-1280.webp",
+        "status": 200,
+        "length": "221946",
+        "type": "image/webp"
+      },
+      "availableAfterStage2A": true,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "2437eda3-dc7c-41b2-83d4-5715d7b6af79",
+      "libraryCode": "F549E84B-FDE8-4B9B-8162-A73F379D45C6",
+      "name": "pic-3.webp",
+      "kind": "image",
+      "bytes": 8478,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "2437eda3-dc7c-41b2-83d4-5715d7b6af79",
+        "name": "pic-3.webp",
+        "status": 200,
+        "length": "8478",
+        "type": "image/webp"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": false
+    },
+    {
+      "sourceId": "2a3942ab-94ed-48bf-bcbc-efb5be2e10d4",
+      "libraryCode": "F549E84B-FDE8-4B9B-8162-A73F379D45C6",
+      "name": "pic (2).webp",
+      "kind": "image",
+      "bytes": 520518,
+      "reuseStage1": true,
+      "sourceHead": {
+        "id": "2a3942ab-94ed-48bf-bcbc-efb5be2e10d4",
+        "name": "pic (2).webp",
+        "status": 200,
+        "length": "520518",
+        "type": "image/webp"
+      },
+      "availableAfterStage2A": true,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "2aad51be-d12d-42e3-a30f-5f939245da4e",
+      "libraryCode": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "AI Agents Aren’t Replacing Software—They’re Rewriting What Software Has to Be1.png",
+      "kind": "image",
+      "bytes": 1753342,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "2aad51be-d12d-42e3-a30f-5f939245da4e",
+        "name": "AI Agents Aren’t Replacing Software—They’re Rewriting What Software Has to Be1.png",
+        "status": 200,
+        "length": "1753342",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "2aceeeb5-a0e3-4f40-83e5-27782e0322cf",
+      "libraryCode": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "The Operational Data Moat Why AI Makes Your “Boring” Business Data More Valuable2.png",
+      "kind": "image",
+      "bytes": 2442426,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "2aceeeb5-a0e3-4f40-83e5-27782e0322cf",
+        "name": "The Operational Data Moat Why AI Makes Your “Boring” Business Data More Valuable2.png",
+        "status": 200,
+        "length": "2442426",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "2c3afe5e-9d25-4077-bd55-803e43bfda3a",
+      "libraryCode": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Proof of Service for Snow Removal If You Can’t Prove It, Did It Happen1.png",
+      "kind": "image",
+      "bytes": 1966747,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "2c3afe5e-9d25-4077-bd55-803e43bfda3a",
+        "name": "Proof of Service for Snow Removal If You Can’t Prove It, Did It Happen1.png",
+        "status": 200,
+        "length": "1966747",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "2dc85c3c-b25f-4f74-804c-b3a1aa414b96",
+      "libraryCode": "SERVICEWAND_SNOW_REMOVAL_LANDING",
+      "name": "sub-field-work-640.webp",
+      "kind": "image",
+      "bytes": 68736,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "2dc85c3c-b25f-4f74-804c-b3a1aa414b96",
+        "name": "sub-field-work-640.webp",
+        "status": 200,
+        "length": "68736",
+        "type": "image/webp"
+      },
+      "availableAfterStage2A": true,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "2dfb9d4a-368d-4ac3-a95a-96578466dd45",
+      "libraryCode": "SERVICEWAND_DEFAULT",
+      "name": "Service Wand and the Argument for One Operational System2.png",
+      "kind": "image",
+      "bytes": 1809112,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "2dfb9d4a-368d-4ac3-a95a-96578466dd45",
+        "name": "Service Wand and the Argument for One Operational System2.png",
+        "status": 200,
+        "length": "1809112",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "30124cee-4961-4d3a-b648-dbb878cad89b",
+      "libraryCode": "FIELD_SERVICES",
+      "name": "landscaping-operations-1280.webp",
+      "kind": "image",
+      "bytes": 244364,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "30124cee-4961-4d3a-b648-dbb878cad89b",
+        "name": "landscaping-operations-1280.webp",
+        "status": 200,
+        "length": "244364",
+        "type": "image/webp"
+      },
+      "availableAfterStage2A": true,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "313d74a3-cef3-4750-b67b-b6eaa31cedc3",
+      "libraryCode": "SERVICEWAND_SNOW_REMOVAL_LANDING",
+      "name": "394df17a2a.webp",
+      "kind": "image",
+      "bytes": 109084,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "313d74a3-cef3-4750-b67b-b6eaa31cedc3",
+        "name": "394df17a2a.webp",
+        "status": 200,
+        "length": "109084",
+        "type": "image/webp"
+      },
+      "availableAfterStage2A": true,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "321c5538-7034-4f02-97d6-5c3e4ddba5f6",
+      "libraryCode": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Build vs. Buy vs. Configure The Software Decision Founders Keep Framing Wrong1.png",
+      "kind": "image",
+      "bytes": 1745988,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "321c5538-7034-4f02-97d6-5c3e4ddba5f6",
+        "name": "Build vs. Buy vs. Configure The Software Decision Founders Keep Framing Wrong1.png",
+        "status": 200,
+        "length": "1745988",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "3674478d-7509-453a-b908-551e23adfbf1",
+      "libraryCode": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Commercial Snow Removal Software Why One Parking Lot Can Be More Complex Than 50 Driveways2.png",
+      "kind": "image",
+      "bytes": 2518996,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "3674478d-7509-453a-b908-551e23adfbf1",
+        "name": "Commercial Snow Removal Software Why One Parking Lot Can Be More Complex Than 50 Driveways2.png",
+        "status": 200,
+        "length": "2518996",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "37a2329e-6c46-438b-bbba-97444ea38d4c",
+      "libraryCode": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Snow Removal Route Optimization The Shortest-Route Trap That Costs More1.png",
+      "kind": "image",
+      "bytes": 2101423,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "37a2329e-6c46-438b-bbba-97444ea38d4c",
+        "name": "Snow Removal Route Optimization The Shortest-Route Trap That Costs More1.png",
+        "status": 200,
+        "length": "2101423",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "382e9258-7e8b-4549-b277-d051c034ebc0",
+      "libraryCode": "F549E84B-FDE8-4B9B-8162-A73F379D45C6",
+      "name": "4-t.json",
+      "kind": "media-asset",
+      "bytes": 72403,
+      "reuseStage1": true,
+      "sourceHead": {
+        "id": "382e9258-7e8b-4549-b277-d051c034ebc0",
+        "name": "4-t.json",
+        "status": 200,
+        "length": "72403",
+        "type": "application/json"
+      },
+      "availableAfterStage2A": true,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "388aa3ca-f83a-4aa8-89cb-d629345e54a4",
+      "libraryCode": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "From Industry Expertise to Software How Partners Can Productize What They Know1.png",
+      "kind": "image",
+      "bytes": 1768068,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "388aa3ca-f83a-4aa8-89cb-d629345e54a4",
+        "name": "From Industry Expertise to Software How Partners Can Productize What They Know1.png",
+        "status": 200,
+        "length": "1768068",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "38b94207-79b7-422c-8d32-96e8e5c2723c",
+      "libraryCode": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Snow Removal Billing Software Stop Rebuilding the Storm in Your Invoice2.png",
+      "kind": "image",
+      "bytes": 2058129,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "38b94207-79b7-422c-8d32-96e8e5c2723c",
+        "name": "Snow Removal Billing Software Stop Rebuilding the Storm in Your Invoice2.png",
+        "status": 200,
+        "length": "2058129",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "3c4ce350-4efa-439d-b3f8-6e20f14ddb0d",
+      "libraryCode": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Salt Tracking Software The Hidden Margin Problem in Snow and Ice Management2.png",
+      "kind": "image",
+      "bytes": 2174864,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "3c4ce350-4efa-439d-b3f8-6e20f14ddb0d",
+        "name": "Salt Tracking Software The Hidden Margin Problem in Snow and Ice Management2.png",
+        "status": 200,
+        "length": "2174864",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "3dbb1ac7-dfc8-4da9-bdf2-5a4f7e6e18aa",
+      "libraryCode": "CE7A483A_42C8_4869_ADB1_98DF04D1065D",
+      "name": "Ellipse 31.png",
+      "kind": "image",
+      "bytes": 14565,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "3dbb1ac7-dfc8-4da9-bdf2-5a4f7e6e18aa",
+        "name": "Ellipse 31.png",
+        "status": 200,
+        "length": "14565",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": false
+    },
+    {
+      "sourceId": "403e6dce-39ce-454a-961e-603b9ad5462a",
+      "libraryCode": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "The End of One-Size-Fits-All SaaS Software Is Becoming Adaptive2.png",
+      "kind": "image",
+      "bytes": 1759839,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "403e6dce-39ce-454a-961e-603b9ad5462a",
+        "name": "The End of One-Size-Fits-All SaaS Software Is Becoming Adaptive2.png",
+        "status": 200,
+        "length": "1759839",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "41285abf-afb9-4e04-9eec-2d36b114a203",
+      "libraryCode": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Snow Removal CRM What Should You Know About a Customer Before the Snow Falls1.png",
+      "kind": "image",
+      "bytes": 1805509,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "41285abf-afb9-4e04-9eec-2d36b114a203",
+        "name": "Snow Removal CRM What Should You Know About a Customer Before the Snow Falls1.png",
+        "status": 200,
+        "length": "1805509",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "422af095-f0b6-486f-9480-eabc25af34f6",
+      "libraryCode": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "The Developer Platform Wars Are Moving Up the Stack2.png",
+      "kind": "image",
+      "bytes": 1862485,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "422af095-f0b6-486f-9480-eabc25af34f6",
+        "name": "The Developer Platform Wars Are Moving Up the Stack2.png",
+        "status": 200,
+        "length": "1862485",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "4265ed7f-c428-450c-998a-889a143a3d03",
+      "libraryCode": "SERVICEWAND_SNOW_REMOVAL_LANDING",
+      "name": "18931164fa.webp",
+      "kind": "image",
+      "bytes": 34788,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "4265ed7f-c428-450c-998a-889a143a3d03",
+        "name": "18931164fa.webp",
+        "status": 200,
+        "length": "34788",
+        "type": "image/webp"
+      },
+      "availableAfterStage2A": true,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "436d031b-0c79-4f37-a3ac-d4e703f9be41",
+      "libraryCode": "F549E84B-FDE8-4B9B-8162-A73F379D45C6",
+      "name": "pic-5.webp",
+      "kind": "image",
+      "bytes": 28776,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "436d031b-0c79-4f37-a3ac-d4e703f9be41",
+        "name": "pic-5.webp",
+        "status": 200,
+        "length": "28776",
+        "type": "image/webp"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": false
+    },
+    {
+      "sourceId": "43e3aea7-510f-4e5a-b57e-886405fefb96",
+      "libraryCode": "FIELD_SERVICES",
+      "name": "field-service-hero-1122.webp",
+      "kind": "image",
+      "bytes": 77344,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "43e3aea7-510f-4e5a-b57e-886405fefb96",
+        "name": "field-service-hero-1122.webp",
+        "status": 200,
+        "length": "77344",
+        "type": "image/webp"
+      },
+      "availableAfterStage2A": true,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "4446aafa-2e8f-4bc2-9036-13626084a931",
+      "libraryCode": "SERVICEWAND_SNOW_REMOVAL_LANDING",
+      "name": "crm-property-plan.webp",
+      "kind": "image",
+      "bytes": 222940,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "4446aafa-2e8f-4bc2-9036-13626084a931",
+        "name": "crm-property-plan.webp",
+        "status": 200,
+        "length": "222940",
+        "type": "image/webp"
+      },
+      "availableAfterStage2A": true,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "44a1aa63-0fa0-4531-870c-2a14678bda0a",
+      "libraryCode": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "What Is an Operational Platform The Category Between CRM, ERP and Custom Software2.png",
+      "kind": "image",
+      "bytes": 1749155,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "44a1aa63-0fa0-4531-870c-2a14678bda0a",
+        "name": "What Is an Operational Platform The Category Between CRM, ERP and Custom Software2.png",
+        "status": 200,
+        "length": "1749155",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "46caa81e-6078-4049-9978-6ebcd820a293",
+      "libraryCode": "F549E84B-FDE8-4B9B-8162-A73F379D45C6",
+      "name": "VelaSans-Medium.woff2",
+      "kind": "media-asset",
+      "bytes": 54516,
+      "reuseStage1": true,
+      "sourceHead": {
+        "id": "46caa81e-6078-4049-9978-6ebcd820a293",
+        "name": "VelaSans-Medium.woff2",
+        "status": 200,
+        "length": "54516",
+        "type": "application/octet-stream"
+      },
+      "availableAfterStage2A": true,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "489ec226-279e-4e7b-a0fb-0feec8152f7f",
+      "libraryCode": "FIELD_SERVICES",
+      "name": "male-technician-320.webp",
+      "kind": "image",
+      "bytes": 13326,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "489ec226-279e-4e7b-a0fb-0feec8152f7f",
+        "name": "male-technician-320.webp",
+        "status": 200,
+        "length": "13326",
+        "type": "image/webp"
+      },
+      "availableAfterStage2A": true,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "4aba36b6-62a1-47d5-b680-ca4a1567b698",
+      "libraryCode": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Field Service Dispatch Software From Drag-and-Drop Boards to AI Orchestration1.png",
+      "kind": "image",
+      "bytes": 2070829,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "4aba36b6-62a1-47d5-b680-ca4a1567b698",
+        "name": "Field Service Dispatch Software From Drag-and-Drop Boards to AI Orchestration1.png",
+        "status": 200,
+        "length": "2070829",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "4b43f1cf-4a96-4f5c-a72f-d79c054d4e6b",
+      "libraryCode": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Predictive Field Service The End of Break-Fix Is Closer Than It Looks2.png",
+      "kind": "image",
+      "bytes": 2131432,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "4b43f1cf-4a96-4f5c-a72f-d79c054d4e6b",
+        "name": "Predictive Field Service The End of Break-Fix Is Closer Than It Looks2.png",
+        "status": 200,
+        "length": "2131432",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "4dca7df5-ade1-4c5e-ac23-e439a37cd797",
+      "libraryCode": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "AI in Snow Removal Can Software Predict What Your Dispatcher Will Need Next1.png",
+      "kind": "image",
+      "bytes": 2666613,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "4dca7df5-ade1-4c5e-ac23-e439a37cd797",
+        "name": "AI in Snow Removal Can Software Predict What Your Dispatcher Will Need Next1.png",
+        "status": 200,
+        "length": "2666613",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "4ead92d7-71fb-410e-932f-2441bb8f0a72",
+      "libraryCode": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Vertical SaaS Was Version One. Vertical Operating Systems Are Next2.png",
+      "kind": "image",
+      "bytes": 3246448,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "4ead92d7-71fb-410e-932f-2441bb8f0a72",
+        "name": "Vertical SaaS Was Version One. Vertical Operating Systems Are Next2.png",
+        "status": 200,
+        "length": "3246448",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "4eda6359-87f7-49b1-995c-1389cb3caf1c",
+      "libraryCode": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Field Service Automation 7 Decisions Your Team Should Stop Making Manually2.png",
+      "kind": "image",
+      "bytes": 2431091,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "4eda6359-87f7-49b1-995c-1389cb3caf1c",
+        "name": "Field Service Automation 7 Decisions Your Team Should Stop Making Manually2.png",
+        "status": 200,
+        "length": "2431091",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "53d88eaa-1dc4-4f5d-b0b7-2a76e80a9dfd",
+      "libraryCode": "F549E84B-FDE8-4B9B-8162-A73F379D45C6",
+      "name": "pic-6.webp",
+      "kind": "image",
+      "bytes": 34622,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "53d88eaa-1dc4-4f5d-b0b7-2a76e80a9dfd",
+        "name": "pic-6.webp",
+        "status": 200,
+        "length": "34622",
+        "type": "image/webp"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": false
+    },
+    {
+      "sourceId": "5746cad4-263e-46e1-b8da-d5843f432925",
+      "libraryCode": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Snow Removal Contract Management Seasonal, Per-Push, Per-Inch—Without Spreadsheet Chaos1.png",
+      "kind": "image",
+      "bytes": 2096857,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "5746cad4-263e-46e1-b8da-d5843f432925",
+        "name": "Snow Removal Contract Management Seasonal, Per-Push, Per-Inch—Without Spreadsheet Chaos1.png",
+        "status": 200,
+        "length": "2096857",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "5a5dca4b-6386-4bb9-b6ac-8e5337eba722",
+      "libraryCode": "F549E84B-FDE8-4B9B-8162-A73F379D45C6",
+      "name": "pic-1.webp",
+      "kind": "image",
+      "bytes": 17868,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "5a5dca4b-6386-4bb9-b6ac-8e5337eba722",
+        "name": "pic-1.webp",
+        "status": 200,
+        "length": "17868",
+        "type": "image/webp"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": false
+    },
+    {
+      "sourceId": "5d87ba24-2240-444b-9992-ac4b54762adc",
+      "libraryCode": "F549E84B-FDE8-4B9B-8162-A73F379D45C6",
+      "name": "hero-bg-3.webp",
+      "kind": "image",
+      "bytes": 42944,
+      "reuseStage1": true,
+      "sourceHead": {
+        "id": "5d87ba24-2240-444b-9992-ac4b54762adc",
+        "name": "hero-bg-3.webp",
+        "status": 200,
+        "length": "42944",
+        "type": "image/webp"
+      },
+      "availableAfterStage2A": true,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "5d8db02e-162b-4e8c-9044-4f27603ac87d",
+      "libraryCode": "DICTIONARIES",
+      "name": "industry-energy-variety.webp",
+      "kind": "image",
+      "bytes": 198842,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "5d8db02e-162b-4e8c-9044-4f27603ac87d",
+        "name": "industry-energy-variety.webp",
+        "status": 200,
+        "length": "198842",
+        "type": "image/webp"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": false
+    },
+    {
+      "sourceId": "614fd612-c901-4f24-8e28-ac6d3cd6ae87",
+      "libraryCode": "SERVICEWAND_SNOW_REMOVAL_LANDING",
+      "name": "98855f8899.webp",
+      "kind": "image",
+      "bytes": 168086,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "614fd612-c901-4f24-8e28-ac6d3cd6ae87",
+        "name": "98855f8899.webp",
+        "status": 200,
+        "length": "168086",
+        "type": "image/webp"
+      },
+      "availableAfterStage2A": true,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "6222838b-0810-474a-9709-9827db5b08ea",
+      "libraryCode": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Snow Removal Customer Notifications Why Silence During a Storm Costs Trust2.png",
+      "kind": "image",
+      "bytes": 2242523,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "6222838b-0810-474a-9709-9827db5b08ea",
+        "name": "Snow Removal Customer Notifications Why Silence During a Storm Costs Trust2.png",
+        "status": 200,
+        "length": "2242523",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "628e5a4f-3884-4cee-b030-8a2a881c9ce8",
+      "libraryCode": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "AI in Snow Removal Can Software Predict What Your Dispatcher Will Need Next2.png",
+      "kind": "image",
+      "bytes": 2581075,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "628e5a4f-3884-4cee-b030-8a2a881c9ce8",
+        "name": "AI in Snow Removal Can Software Predict What Your Dispatcher Will Need Next2.png",
+        "status": 200,
+        "length": "2581075",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "628ee6b8-fe17-498d-9d7d-2732b0b04400",
+      "libraryCode": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "The SaaS-Pocalypse Was Exaggerated. The Software Reckoning Was Not.2.png",
+      "kind": "image",
+      "bytes": 1814173,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "628ee6b8-fe17-498d-9d7d-2732b0b04400",
+        "name": "The SaaS-Pocalypse Was Exaggerated. The Software Reckoning Was Not.2.png",
+        "status": 200,
+        "length": "1814173",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "62b099a6-f4fb-4948-8078-c303a97e8cd2",
+      "libraryCode": "DICTIONARIES",
+      "name": "industry-public-sector-variety.webp",
+      "kind": "image",
+      "bytes": 145138,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "62b099a6-f4fb-4948-8078-c303a97e8cd2",
+        "name": "industry-public-sector-variety.webp",
+        "status": 200,
+        "length": "145138",
+        "type": "image/webp"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": false
+    },
+    {
+      "sourceId": "6374e7d4-3859-4002-a3fb-129eb9d9c444",
+      "libraryCode": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Mobile Field Service Software The Real Test Starts When the Signal Disappears2.png",
+      "kind": "image",
+      "bytes": 2178989,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "6374e7d4-3859-4002-a3fb-129eb9d9c444",
+        "name": "Mobile Field Service Software The Real Test Starts When the Signal Disappears2.png",
+        "status": 200,
+        "length": "2178989",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "66298d7a-88e2-489e-93d7-ee3f81d63db7",
+      "libraryCode": "SERVICEWAND_SNOW_REMOVAL_LANDING",
+      "name": "sub-issues-accountable-640.webp",
+      "kind": "image",
+      "bytes": 36308,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "66298d7a-88e2-489e-93d7-ee3f81d63db7",
+        "name": "sub-issues-accountable-640.webp",
+        "status": 200,
+        "length": "36308",
+        "type": "image/webp"
+      },
+      "availableAfterStage2A": true,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "68dde250-fa02-4ff9-968a-ca15d384e971",
+      "libraryCode": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "The SaaS Stack Is Collapsing Why Businesses Are Replacing 10 Tools With One Operational Platform1.png",
+      "kind": "image",
+      "bytes": 1665268,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "68dde250-fa02-4ff9-968a-ca15d384e971",
+        "name": "The SaaS Stack Is Collapsing Why Businesses Are Replacing 10 Tools With One Operational Platform1.png",
+        "status": 200,
+        "length": "1665268",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "6bccea7b-a19c-45ce-af2f-343a8cc0da8c",
+      "libraryCode": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Snow Removal Scheduling Software The 2 A.M. Test Most Platforms Fail2.png",
+      "kind": "image",
+      "bytes": 2158420,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "6bccea7b-a19c-45ce-af2f-343a8cc0da8c",
+        "name": "Snow Removal Scheduling Software The 2 A.M. Test Most Platforms Fail2.png",
+        "status": 200,
+        "length": "2158420",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "6bea5940-745b-44da-b616-5944c571d1e8",
+      "libraryCode": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "AI Agents Need a Boss Why Orchestration Becomes the New Control Layer1.png",
+      "kind": "image",
+      "bytes": 1897258,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "6bea5940-745b-44da-b616-5944c571d1e8",
+        "name": "AI Agents Need a Boss Why Orchestration Becomes the New Control Layer1.png",
+        "status": 200,
+        "length": "1897258",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "6bfa5a6f-5fc4-4ef9-b7e9-75d4f0c8ccfc",
+      "libraryCode": "SERVICEWAND_SNOW_REMOVAL_LANDING",
+      "name": "vela-sans-400.woff2",
+      "kind": "media-asset",
+      "bytes": 55128,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "6bfa5a6f-5fc4-4ef9-b7e9-75d4f0c8ccfc",
+        "name": "vela-sans-400.woff2",
+        "status": 200,
+        "length": "55128",
+        "type": "application/octet-stream"
+      },
+      "availableAfterStage2A": true,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "6c37ca82-4f4b-4b60-94fc-47f10ced698d",
+      "libraryCode": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Agentic AI and the $234 Billion SaaS Question What Software Companies Need to Change2.png",
+      "kind": "image",
+      "bytes": 2371170,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "6c37ca82-4f4b-4b60-94fc-47f10ced698d",
+        "name": "Agentic AI and the $234 Billion SaaS Question What Software Companies Need to Change2.png",
+        "status": 200,
+        "length": "2371170",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "6c550f7a-4e96-4e67-9324-e364cdc1bd81",
+      "libraryCode": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "The Post-SaaS Interface What Software Looks Like When Humans Stop Opening Every App1.png",
+      "kind": "image",
+      "bytes": 1687812,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "6c550f7a-4e96-4e67-9324-e364cdc1bd81",
+        "name": "The Post-SaaS Interface What Software Looks Like When Humans Stop Opening Every App1.png",
+        "status": 200,
+        "length": "1687812",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "6e7afc6f-2dfc-49f1-ac5d-f60ff2f255db",
+      "libraryCode": "F549E84B-FDE8-4B9B-8162-A73F379D45C6",
+      "name": "3-t.json",
+      "kind": "media-asset",
+      "bytes": 93322,
+      "reuseStage1": true,
+      "sourceHead": {
+        "id": "6e7afc6f-2dfc-49f1-ac5d-f60ff2f255db",
+        "name": "3-t.json",
+        "status": 200,
+        "length": "93322",
+        "type": "application/json"
+      },
+      "availableAfterStage2A": true,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "6f4b7310-0f54-4c43-8558-0d824fb17b9e",
+      "libraryCode": "F549E84B-FDE8-4B9B-8162-A73F379D45C6",
+      "name": "pic-2.png",
+      "kind": "image",
+      "bytes": 161445,
+      "reuseStage1": true,
+      "sourceHead": {
+        "id": "6f4b7310-0f54-4c43-8558-0d824fb17b9e",
+        "name": "pic-2.png",
+        "status": 200,
+        "length": "161445",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": true,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "6f5dd899-0797-4b75-bbc6-ec48429e558b",
+      "libraryCode": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "The AI-First Field Service Company What Changes From Dispatch to Closeout1.png",
+      "kind": "image",
+      "bytes": 2583941,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "6f5dd899-0797-4b75-bbc6-ec48429e558b",
+        "name": "The AI-First Field Service Company What Changes From Dispatch to Closeout1.png",
+        "status": 200,
+        "length": "2583941",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "6ffc8948-a269-4dea-b7cd-89e98a957f84",
+      "libraryCode": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Technician Knowledge Is Walking Out the Door Can AI Keep It Inside the Business1.png",
+      "kind": "image",
+      "bytes": 2050589,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "6ffc8948-a269-4dea-b7cd-89e98a957f84",
+        "name": "Technician Knowledge Is Walking Out the Door Can AI Keep It Inside the Business1.png",
+        "status": 200,
+        "length": "2050589",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "7087dee3-6222-4a08-a552-abd10acb3551",
+      "libraryCode": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "AI Agents Aren’t Replacing Software—They’re Rewriting What Software Has to Be2.png",
+      "kind": "image",
+      "bytes": 1862880,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "7087dee3-6222-4a08-a552-abd10acb3551",
+        "name": "AI Agents Aren’t Replacing Software—They’re Rewriting What Software Has to Be2.png",
+        "status": 200,
+        "length": "1862880",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "719baed3-1449-4a69-8720-43f2ca7ca594",
+      "libraryCode": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "AI-Native Software What It Means When AI Is Built In, Not Bolted On1.png",
+      "kind": "image",
+      "bytes": 1714148,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "719baed3-1449-4a69-8720-43f2ca7ca594",
+        "name": "AI-Native Software What It Means When AI Is Built In, Not Bolted On1.png",
+        "status": 200,
+        "length": "1714148",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "72775766-38e1-4af3-9b0e-5a315f508f99",
+      "libraryCode": "F549E84B-FDE8-4B9B-8162-A73F379D45C6",
+      "name": "1.json",
+      "kind": "media-asset",
+      "bytes": 59884,
+      "reuseStage1": true,
+      "sourceHead": {
+        "id": "72775766-38e1-4af3-9b0e-5a315f508f99",
+        "name": "1.json",
+        "status": 200,
+        "length": "59884",
+        "type": "application/json"
+      },
+      "availableAfterStage2A": true,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "728d0287-96c3-4430-b830-477f87d5ac5e",
+      "libraryCode": "F549E84B-FDE8-4B9B-8162-A73F379D45C6",
+      "name": "pic (1).png",
+      "kind": "image",
+      "bytes": 65519,
+      "reuseStage1": true,
+      "sourceHead": {
+        "id": "728d0287-96c3-4430-b830-477f87d5ac5e",
+        "name": "pic (1).png",
+        "status": 200,
+        "length": "65519",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": true,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "737a5a5e-5b61-4c49-9137-8d3245f2226e",
+      "libraryCode": "SERVICEWAND_SNOW_REMOVAL_LANDING",
+      "name": "sub-field-work.webp",
+      "kind": "image",
+      "bytes": 175906,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "737a5a5e-5b61-4c49-9137-8d3245f2226e",
+        "name": "sub-field-work.webp",
+        "status": 200,
+        "length": "175906",
+        "type": "image/webp"
+      },
+      "availableAfterStage2A": true,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "737b3897-3766-45bf-b4c3-14d6c4160869",
+      "libraryCode": "SERVICEWAND_SNOW_REMOVAL_LANDING",
+      "name": "28b790d668.webp",
+      "kind": "image",
+      "bytes": 44590,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "737b3897-3766-45bf-b4c3-14d6c4160869",
+        "name": "28b790d668.webp",
+        "status": 200,
+        "length": "44590",
+        "type": "image/webp"
+      },
+      "availableAfterStage2A": true,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "77084eeb-daa5-47ee-8dd7-fad0fbbd0806",
+      "libraryCode": "F549E84B-FDE8-4B9B-8162-A73F379D45C6",
+      "name": "SW_emblem_g.svg",
+      "kind": "image",
+      "bytes": 2368,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "77084eeb-daa5-47ee-8dd7-fad0fbbd0806",
+        "name": "SW_emblem_g.svg",
+        "status": 200,
+        "length": "2368",
+        "type": "image/svg+xml"
+      },
+      "availableAfterStage2A": true,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "777ca86a-4096-4927-a589-bdbc59934636",
+      "libraryCode": "FIELD_SERVICES",
+      "name": "facility-services-1280.webp",
+      "kind": "image",
+      "bytes": 88740,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "777ca86a-4096-4927-a589-bdbc59934636",
+        "name": "facility-services-1280.webp",
+        "status": 200,
+        "length": "88740",
+        "type": "image/webp"
+      },
+      "availableAfterStage2A": true,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "77d4c1a0-6ce8-47e9-ad67-3be1d0c88542",
+      "libraryCode": "SERVICEWAND_SNOW_REMOVAL_LANDING",
+      "name": "winter-pickup-v2.webp",
+      "kind": "image",
+      "bytes": 155530,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "77d4c1a0-6ce8-47e9-ad67-3be1d0c88542",
+        "name": "winter-pickup-v2.webp",
+        "status": 200,
+        "length": "155530",
+        "type": "image/webp"
+      },
+      "availableAfterStage2A": true,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "7d3a8d4d-00b2-488b-b8bb-9896f596baff",
+      "libraryCode": "F549E84B-FDE8-4B9B-8162-A73F379D45C6",
+      "name": "3.json",
+      "kind": "media-asset",
+      "bytes": 93045,
+      "reuseStage1": true,
+      "sourceHead": {
+        "id": "7d3a8d4d-00b2-488b-b8bb-9896f596baff",
+        "name": "3.json",
+        "status": 200,
+        "length": "93045",
+        "type": "application/json"
+      },
+      "availableAfterStage2A": true,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "7f0180f5-5e42-4d4c-a7ce-dccd5fbdc01b",
+      "libraryCode": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Commercial Snow Software Gets Serious When SLAs, Sites and Liability Enter the Picture2.png",
+      "kind": "image",
+      "bytes": 2200036,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "7f0180f5-5e42-4d4c-a7ce-dccd5fbdc01b",
+        "name": "Commercial Snow Software Gets Serious When SLAs, Sites and Liability Enter the Picture2.png",
+        "status": 200,
+        "length": "2200036",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "7fee61b4-f6e7-4ce1-ac0c-43ee0acb8da2",
+      "libraryCode": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Snow Removal Scheduling Software The 2 A.M. Test Most Platforms Fail1.png",
+      "kind": "image",
+      "bytes": 1940734,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "7fee61b4-f6e7-4ce1-ac0c-43ee0acb8da2",
+        "name": "Snow Removal Scheduling Software The 2 A.M. Test Most Platforms Fail1.png",
+        "status": 200,
+        "length": "1940734",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "7ff181b8-5649-4003-a9db-8ab82d87a7a9",
+      "libraryCode": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "From Industry Expertise to Software How Partners Can Productize What They Know2.png",
+      "kind": "image",
+      "bytes": 1736851,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "7ff181b8-5649-4003-a9db-8ab82d87a7a9",
+        "name": "From Industry Expertise to Software How Partners Can Productize What They Know2.png",
+        "status": 200,
+        "length": "1736851",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "80ba07f9-d6d4-4f60-8868-bc1abd14f318",
+      "libraryCode": "F549E84B-FDE8-4B9B-8162-A73F379D45C6",
+      "name": "hero-bg-1.webp",
+      "kind": "image",
+      "bytes": 581682,
+      "reuseStage1": true,
+      "sourceHead": {
+        "id": "80ba07f9-d6d4-4f60-8868-bc1abd14f318",
+        "name": "hero-bg-1.webp",
+        "status": 200,
+        "length": "581682",
+        "type": "image/webp"
+      },
+      "availableAfterStage2A": true,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "83d812ae-5294-471f-9ec7-98a08d15d686",
+      "libraryCode": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Scaling a Snow Removal Business The Systems That Break Between 5 and 50 Trucks1.png",
+      "kind": "image",
+      "bytes": 1912373,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "83d812ae-5294-471f-9ec7-98a08d15d686",
+        "name": "Scaling a Snow Removal Business The Systems That Break Between 5 and 50 Trucks1.png",
+        "status": 200,
+        "length": "1912373",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "83f7227e-f174-4ded-8e57-542a8645f0de",
+      "libraryCode": "F549E84B-FDE8-4B9B-8162-A73F379D45C6",
+      "name": "VelaSans-Bold.woff2",
+      "kind": "media-asset",
+      "bytes": 54940,
+      "reuseStage1": true,
+      "sourceHead": {
+        "id": "83f7227e-f174-4ded-8e57-542a8645f0de",
+        "name": "VelaSans-Bold.woff2",
+        "status": 200,
+        "length": "54940",
+        "type": "application/octet-stream"
+      },
+      "availableAfterStage2A": true,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "861442bc-eb4c-48c0-9324-c46ddfe71ba1",
+      "libraryCode": "FIELD_SERVICES",
+      "name": "appliance-repair-software-1280.webp",
+      "kind": "image",
+      "bytes": 94730,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "861442bc-eb4c-48c0-9324-c46ddfe71ba1",
+        "name": "appliance-repair-software-1280.webp",
+        "status": 200,
+        "length": "94730",
+        "type": "image/webp"
+      },
+      "availableAfterStage2A": true,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "865f956b-0845-4a49-b204-c6db0457074e",
+      "libraryCode": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Build vs. Buy vs. Configure The Software Decision Founders Keep Framing Wrong2.png",
+      "kind": "image",
+      "bytes": 2043327,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "865f956b-0845-4a49-b204-c6db0457074e",
+        "name": "Build vs. Buy vs. Configure The Software Decision Founders Keep Framing Wrong2.png",
+        "status": 200,
+        "length": "2043327",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "873f4988-59e0-4fcc-aafb-f0569fba219a",
+      "libraryCode": "F549E84B-FDE8-4B9B-8162-A73F379D45C6",
+      "name": "pic-2.webp",
+      "kind": "image",
+      "bytes": 34266,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "873f4988-59e0-4fcc-aafb-f0569fba219a",
+        "name": "pic-2.webp",
+        "status": 200,
+        "length": "34266",
+        "type": "image/webp"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": false
+    },
+    {
+      "sourceId": "8a1958fe-f3f4-4fd1-91ba-95c8d297c69c",
+      "libraryCode": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "The End of One-Size-Fits-All SaaS Software Is Becoming Adaptive1.png",
+      "kind": "image",
+      "bytes": 1787884,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "8a1958fe-f3f4-4fd1-91ba-95c8d297c69c",
+        "name": "The End of One-Size-Fits-All SaaS Software Is Becoming Adaptive1.png",
+        "status": 200,
+        "length": "1787884",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "8aa51188-906b-47b7-ba42-cbd96e224555",
+      "libraryCode": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Digital Snow Logs The Record You Need Months After the Snow Is Gone1.png",
+      "kind": "image",
+      "bytes": 2375123,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "8aa51188-906b-47b7-ba42-cbd96e224555",
+        "name": "Digital Snow Logs The Record You Need Months After the Snow Is Gone1.png",
+        "status": 200,
+        "length": "2375123",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "8b3003b6-eb4e-497f-b92b-4ae8790d0add",
+      "libraryCode": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Commercial Snow Software Gets Serious When SLAs, Sites and Liability Enter the Picture1.png",
+      "kind": "image",
+      "bytes": 2127508,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "8b3003b6-eb4e-497f-b92b-4ae8790d0add",
+        "name": "Commercial Snow Software Gets Serious When SLAs, Sites and Liability Enter the Picture1.png",
+        "status": 200,
+        "length": "2127508",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "8d7e8f5f-fc8f-4962-95dd-37ddce9492bc",
+      "libraryCode": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "SaaS Isn’t Dead. The Seat License Might Be.1.png",
+      "kind": "image",
+      "bytes": 1975384,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "8d7e8f5f-fc8f-4962-95dd-37ddce9492bc",
+        "name": "SaaS Isn’t Dead. The Seat License Might Be.1.png",
+        "status": 200,
+        "length": "1975384",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "8ec48af2-8358-4741-8a8b-c6757e367349",
+      "libraryCode": "FIELD_SERVICES",
+      "name": "hvac-service-platform-1280.webp",
+      "kind": "image",
+      "bytes": 141410,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "8ec48af2-8358-4741-8a8b-c6757e367349",
+        "name": "hvac-service-platform-1280.webp",
+        "status": 200,
+        "length": "141410",
+        "type": "image/webp"
+      },
+      "availableAfterStage2A": true,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "8ed5d5b1-30db-4f2d-bb96-91a57d3c101f",
+      "libraryCode": "FIELD_SERVICES",
+      "name": "electrical-contractor-platform-1280.webp",
+      "kind": "image",
+      "bytes": 158436,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "8ed5d5b1-30db-4f2d-bb96-91a57d3c101f",
+        "name": "electrical-contractor-platform-1280.webp",
+        "status": 200,
+        "length": "158436",
+        "type": "image/webp"
+      },
+      "availableAfterStage2A": true,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "8eddfd30-bed8-4ac5-b4b7-883db4c534d2",
+      "libraryCode": "SERVICEWAND_SNOW_REMOVAL_LANDING",
+      "name": "sub-info-separate.webp",
+      "kind": "image",
+      "bytes": 194554,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "8eddfd30-bed8-4ac5-b4b7-883db4c534d2",
+        "name": "sub-info-separate.webp",
+        "status": 200,
+        "length": "194554",
+        "type": "image/webp"
+      },
+      "availableAfterStage2A": true,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "9183ad13-4945-48c5-ae61-289c22949421",
+      "libraryCode": "F549E84B-FDE8-4B9B-8162-A73F379D45C6",
+      "name": "2.json",
+      "kind": "media-asset",
+      "bytes": 76894,
+      "reuseStage1": true,
+      "sourceHead": {
+        "id": "9183ad13-4945-48c5-ae61-289c22949421",
+        "name": "2.json",
+        "status": 200,
+        "length": "76894",
+        "type": "application/json"
+      },
+      "availableAfterStage2A": true,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "922fea59-acf2-4042-8c28-158bc2d2d25a",
+      "libraryCode": "SERVICEWAND_SNOW_REMOVAL_LANDING",
+      "name": "4c171e80e9.webp",
+      "kind": "image",
+      "bytes": 25070,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "922fea59-acf2-4042-8c28-158bc2d2d25a",
+        "name": "4c171e80e9.webp",
+        "status": 200,
+        "length": "25070",
+        "type": "image/webp"
+      },
+      "availableAfterStage2A": true,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "95067b6c-8d58-43a3-afb9-ea22f4e35593",
+      "libraryCode": "FIELD_SERVICES",
+      "name": "ai-automation-1280.webp",
+      "kind": "image",
+      "bytes": 83880,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "95067b6c-8d58-43a3-afb9-ea22f4e35593",
+        "name": "ai-automation-1280.webp",
+        "status": 200,
+        "length": "83880",
+        "type": "image/webp"
+      },
+      "availableAfterStage2A": true,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "958cf4e2-6bea-4de6-a97f-ff5f86a67402",
+      "libraryCode": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "1Low-Code Is Not the End of Developers Why Serious Platforms Need Both.png",
+      "kind": "image",
+      "bytes": 1827630,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "958cf4e2-6bea-4de6-a97f-ff5f86a67402",
+        "name": "1Low-Code Is Not the End of Developers Why Serious Platforms Need Both.png",
+        "status": 200,
+        "length": "1827630",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "967a6c41-5b4e-4676-9bbd-b329269dd2b4",
+      "libraryCode": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Technician Knowledge Is Walking Out the Door Can AI Keep It Inside the Business2.png",
+      "kind": "image",
+      "bytes": 2088013,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "967a6c41-5b4e-4676-9bbd-b329269dd2b4",
+        "name": "Technician Knowledge Is Walking Out the Door Can AI Keep It Inside the Business2.png",
+        "status": 200,
+        "length": "2088013",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "979c3406-8978-4209-ade6-910f15e7469d",
+      "libraryCode": "FIELD_SERVICES",
+      "name": "property-maintenance-operations-1280.webp",
+      "kind": "image",
+      "bytes": 154278,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "979c3406-8978-4209-ade6-910f15e7469d",
+        "name": "property-maintenance-operations-1280.webp",
+        "status": 200,
+        "length": "154278",
+        "type": "image/webp"
+      },
+      "availableAfterStage2A": true,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "97d51cac-20ce-4b90-82c6-48ef15363b5e",
+      "libraryCode": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Headless Software Is Coming What Happens When AI Stops Clicking Your UI1.png",
+      "kind": "image",
+      "bytes": 1848434,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "97d51cac-20ce-4b90-82c6-48ef15363b5e",
+        "name": "Headless Software Is Coming What Happens When AI Stops Clicking Your UI1.png",
+        "status": 200,
+        "length": "1848434",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "98876164-8e56-4ab7-b7bd-31ad0f54e1de",
+      "libraryCode": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Snow Removal CRM What Should You Know About a Customer Before the Snow Falls2.png",
+      "kind": "image",
+      "bytes": 2046860,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "98876164-8e56-4ab7-b7bd-31ad0f54e1de",
+        "name": "Snow Removal CRM What Should You Know About a Customer Before the Snow Falls2.png",
+        "status": 200,
+        "length": "2046860",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "9927e431-1812-4786-8bbf-394bd75abb2e",
+      "libraryCode": "CE7A483A_42C8_4869_ADB1_98DF04D1065D",
+      "name": "service-wand-logo.svg",
+      "kind": "image",
+      "bytes": 11804,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "9927e431-1812-4786-8bbf-394bd75abb2e",
+        "name": "service-wand-logo.svg",
+        "status": 200,
+        "length": "11804",
+        "type": "image/svg+xml"
+      },
+      "availableAfterStage2A": true,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "99e99a5f-1b48-4016-a417-2415bcf4f275",
+      "libraryCode": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Outcome-Based Pricing What Happens When AI Does the Work but Nobody Buys a Seat2.png",
+      "kind": "image",
+      "bytes": 1883496,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "99e99a5f-1b48-4016-a417-2415bcf4f275",
+        "name": "Outcome-Based Pricing What Happens When AI Does the Work but Nobody Buys a Seat2.png",
+        "status": 200,
+        "length": "1883496",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "99f94e93-c982-49b2-9e33-cca0730b2621",
+      "libraryCode": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "One Data Model, Many Businesses Why Entity-Based Architecture Matters1.jpg",
+      "kind": "image",
+      "bytes": 569128,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "99f94e93-c982-49b2-9e33-cca0730b2621",
+        "name": "One Data Model, Many Businesses Why Entity-Based Architecture Matters1.jpg",
+        "status": 200,
+        "length": "569128",
+        "type": "image/jpeg"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "9a01b33d-121f-402b-b5b2-5ca3f5c6d748",
+      "libraryCode": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Snow Removal Software in 2026 The Storm Test That Exposes Weak Platforms1.png",
+      "kind": "image",
+      "bytes": 2184770,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "9a01b33d-121f-402b-b5b2-5ca3f5c6d748",
+        "name": "Snow Removal Software in 2026 The Storm Test That Exposes Weak Platforms1.png",
+        "status": 200,
+        "length": "2184770",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "9a217041-9cfe-4860-8166-f91c2ced1b40",
+      "libraryCode": "F549E84B-FDE8-4B9B-8162-A73F379D45C6",
+      "name": "5-t.json",
+      "kind": "media-asset",
+      "bytes": 96158,
+      "reuseStage1": true,
+      "sourceHead": {
+        "id": "9a217041-9cfe-4860-8166-f91c2ced1b40",
+        "name": "5-t.json",
+        "status": 200,
+        "length": "96158",
+        "type": "application/json"
+      },
+      "availableAfterStage2A": true,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "9a93525b-bf30-4688-8d86-d7713c6d0ecc",
+      "libraryCode": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "GPS Snow Plow Tracking Location Is Not the Same as Proof of Work2.png",
+      "kind": "image",
+      "bytes": 2355989,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "9a93525b-bf30-4688-8d86-d7713c6d0ecc",
+        "name": "GPS Snow Plow Tracking Location Is Not the Same as Proof of Work2.png",
+        "status": 200,
+        "length": "2355989",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "9d20ca67-4c12-4a55-a0b2-8e322ba005b5",
+      "libraryCode": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Snow Removal Customer Notifications Why Silence During a Storm Costs Trust1.png",
+      "kind": "image",
+      "bytes": 2262695,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "9d20ca67-4c12-4a55-a0b2-8e322ba005b5",
+        "name": "Snow Removal Customer Notifications Why Silence During a Storm Costs Trust1.png",
+        "status": 200,
+        "length": "2262695",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "9d388f77-4753-4942-866c-7b0675003ff9",
+      "libraryCode": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "From Configuration to Compounding How Operational Software Gets Smarter Over Time2.png",
+      "kind": "image",
+      "bytes": 2063378,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "9d388f77-4753-4942-866c-7b0675003ff9",
+        "name": "From Configuration to Compounding How Operational Software Gets Smarter Over Time2.png",
+        "status": 200,
+        "length": "2063378",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "9f572b9a-0885-4daf-a89b-c6def69dc5bb",
+      "libraryCode": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Field Service Dispatch Software From Drag-and-Drop Boards to AI Orchestration2.png",
+      "kind": "image",
+      "bytes": 2523421,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "9f572b9a-0885-4daf-a89b-c6def69dc5bb",
+        "name": "Field Service Dispatch Software From Drag-and-Drop Boards to AI Orchestration2.png",
+        "status": 200,
+        "length": "2523421",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "9faf8645-216b-414b-ac96-408aa54d72a7",
+      "libraryCode": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Field Service Scheduling Software Why Static Calendars Are Becoming Obsolete2.png",
+      "kind": "image",
+      "bytes": 2705446,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "9faf8645-216b-414b-ac96-408aa54d72a7",
+        "name": "Field Service Scheduling Software Why Static Calendars Are Becoming Obsolete2.png",
+        "status": 200,
+        "length": "2705446",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "a1c76597-98d9-4894-bc5a-01bc9518a36a",
+      "libraryCode": "SERVICEWAND_SNOW_REMOVAL_LANDING",
+      "name": "vela-sans-600.woff2",
+      "kind": "media-asset",
+      "bytes": 55020,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "a1c76597-98d9-4894-bc5a-01bc9518a36a",
+        "name": "vela-sans-600.woff2",
+        "status": 200,
+        "length": "55020",
+        "type": "application/octet-stream"
+      },
+      "availableAfterStage2A": true,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "a1e82147-5a0b-438b-a59a-7203c5d1e461",
+      "libraryCode": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Snow Removal Job Costing The Profit Leak Hiding Inside Every Storm1.png",
+      "kind": "image",
+      "bytes": 2303630,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "a1e82147-5a0b-438b-a59a-7203c5d1e461",
+        "name": "Snow Removal Job Costing The Profit Leak Hiding Inside Every Storm1.png",
+        "status": 200,
+        "length": "2303630",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "a284385c-c150-4f7e-bb7e-7fcdd74755ad",
+      "libraryCode": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Snow and Ice Management Software Why Plowing Is Only Half the Operation1.png",
+      "kind": "image",
+      "bytes": 2288917,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "a284385c-c150-4f7e-bb7e-7fcdd74755ad",
+        "name": "Snow and Ice Management Software Why Plowing Is Only Half the Operation1.png",
+        "status": 200,
+        "length": "2288917",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "a2983794-b929-4956-8be9-0caa824858d3",
+      "libraryCode": "DICTIONARIES",
+      "name": "industry-real-estate-variety.webp",
+      "kind": "image",
+      "bytes": 167052,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "a2983794-b929-4956-8be9-0caa824858d3",
+        "name": "industry-real-estate-variety.webp",
+        "status": 200,
+        "length": "167052",
+        "type": "image/webp"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": false
+    },
+    {
+      "sourceId": "a2aaf9d2-0157-492d-a78f-be38c1dfb363",
+      "libraryCode": "F549E84B-FDE8-4B9B-8162-A73F379D45C6",
+      "name": "pic-4 (1).png",
+      "kind": "image",
+      "bytes": 316295,
+      "reuseStage1": true,
+      "sourceHead": {
+        "id": "a2aaf9d2-0157-492d-a78f-be38c1dfb363",
+        "name": "pic-4 (1).png",
+        "status": 200,
+        "length": "316295",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": true,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "a358a17a-08e3-40f8-b885-de09c2e2b8a3",
+      "libraryCode": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Snow Removal Job Costing The Profit Leak Hiding Inside Every Storm2.png",
+      "kind": "image",
+      "bytes": 2281596,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "a358a17a-08e3-40f8-b885-de09c2e2b8a3",
+        "name": "Snow Removal Job Costing The Profit Leak Hiding Inside Every Storm2.png",
+        "status": 200,
+        "length": "2281596",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "a548f204-8351-40b6-ae6b-1fe1144b894e",
+      "libraryCode": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Commercial Snow Removal Software Why One Parking Lot Can Be More Complex Than 50 Driveways1.png",
+      "kind": "image",
+      "bytes": 2667844,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "a548f204-8351-40b6-ae6b-1fe1144b894e",
+        "name": "Commercial Snow Removal Software Why One Parking Lot Can Be More Complex Than 50 Driveways1.png",
+        "status": 200,
+        "length": "2667844",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "a5b40767-5591-4b56-8ffd-d009234c9523",
+      "libraryCode": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "The Developer Platform Wars Are Moving Up the Stack1.png",
+      "kind": "image",
+      "bytes": 1710680,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "a5b40767-5591-4b56-8ffd-d009234c9523",
+        "name": "The Developer Platform Wars Are Moving Up the Stack1.png",
+        "status": 200,
+        "length": "1710680",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "a6048eb6-a6ce-45f8-b727-68f96e5958ea",
+      "libraryCode": "F549E84B-FDE8-4B9B-8162-A73F379D45C6",
+      "name": "SW_emblem_w.svg",
+      "kind": "image",
+      "bytes": 1397,
+      "reuseStage1": true,
+      "sourceHead": {
+        "id": "a6048eb6-a6ce-45f8-b727-68f96e5958ea",
+        "name": "SW_emblem_w.svg",
+        "status": 200,
+        "length": "1397",
+        "type": "image/svg+xml"
+      },
+      "availableAfterStage2A": true,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "a741ec94-5e8f-49fb-b050-a443af1d5fe0",
+      "libraryCode": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "What Is an Operational Platform The Category Between CRM, ERP and Custom Software1.png",
+      "kind": "image",
+      "bytes": 1764792,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "a741ec94-5e8f-49fb-b050-a443af1d5fe0",
+        "name": "What Is an Operational Platform The Category Between CRM, ERP and Custom Software1.png",
+        "status": 200,
+        "length": "1764792",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "a76247fc-5af0-410a-9958-50f827c218fe",
+      "libraryCode": "F549E84B-FDE8-4B9B-8162-A73F379D45C6",
+      "name": "pic-7.webp",
+      "kind": "image",
+      "bytes": 20874,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "a76247fc-5af0-410a-9958-50f827c218fe",
+        "name": "pic-7.webp",
+        "status": 200,
+        "length": "20874",
+        "type": "image/webp"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": false
+    },
+    {
+      "sourceId": "aa4d9aac-adc1-4bc1-b982-11b3f4879c3b",
+      "libraryCode": "F549E84B-FDE8-4B9B-8162-A73F379D45C6",
+      "name": "faq-item-shadow.png",
+      "kind": "image",
+      "bytes": 31745,
+      "reuseStage1": true,
+      "sourceHead": {
+        "id": "aa4d9aac-adc1-4bc1-b982-11b3f4879c3b",
+        "name": "faq-item-shadow.png",
+        "status": 200,
+        "length": "31745",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": true,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "ac160291-315d-4109-94be-5a45196ec696",
+      "libraryCode": "F549E84B-FDE8-4B9B-8162-A73F379D45C6",
+      "name": "pic-12.webp",
+      "kind": "image",
+      "bytes": 698648,
+      "reuseStage1": true,
+      "sourceHead": {
+        "id": "ac160291-315d-4109-94be-5a45196ec696",
+        "name": "pic-12.webp",
+        "status": 200,
+        "length": "698648",
+        "type": "image/webp"
+      },
+      "availableAfterStage2A": true,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "ac875ed9-24ba-40eb-b7a1-9a96e4075357",
+      "libraryCode": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "The SaaS-Pocalypse Was Exaggerated. The Software Reckoning Was Not.1.png",
+      "kind": "image",
+      "bytes": 2012719,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "ac875ed9-24ba-40eb-b7a1-9a96e4075357",
+        "name": "The SaaS-Pocalypse Was Exaggerated. The Software Reckoning Was Not.1.png",
+        "status": 200,
+        "length": "2012719",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "ad67364d-b7ca-46ce-ae1f-fbfc343bfbf8",
+      "libraryCode": "F549E84B-FDE8-4B9B-8162-A73F379D45C6",
+      "name": "2c71cb30dfd2108c85c3a840a2cd77c53359f240 (1).webp",
+      "kind": "image",
+      "bytes": 33494,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "ad67364d-b7ca-46ce-ae1f-fbfc343bfbf8",
+        "name": "2c71cb30dfd2108c85c3a840a2cd77c53359f240 (1).webp",
+        "status": 200,
+        "length": "33494",
+        "type": "image/webp"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": false
+    },
+    {
+      "sourceId": "ae3ead67-6606-4073-80b8-dbaca2dde209",
+      "libraryCode": "F549E84B-FDE8-4B9B-8162-A73F379D45C6",
+      "name": "pic-1.webp",
+      "kind": "image",
+      "bytes": 38124,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "ae3ead67-6606-4073-80b8-dbaca2dde209",
+        "name": "pic-1.webp",
+        "status": 200,
+        "length": "38124",
+        "type": "image/webp"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": false
+    },
+    {
+      "sourceId": "aea0721a-857d-4cb8-859a-6dced9ab5117",
+      "libraryCode": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Snow Removal Route Optimization The Shortest-Route Trap That Costs More2.png",
+      "kind": "image",
+      "bytes": 2021734,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "aea0721a-857d-4cb8-859a-6dced9ab5117",
+        "name": "Snow Removal Route Optimization The Shortest-Route Trap That Costs More2.png",
+        "status": 200,
+        "length": "2021734",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "b149a3df-fd93-4e40-99d9-71ca954b594f",
+      "libraryCode": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Field Service Automation 7 Decisions Your Team Should Stop Making Manually1.png",
+      "kind": "image",
+      "bytes": 2545699,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "b149a3df-fd93-4e40-99d9-71ca954b594f",
+        "name": "Field Service Automation 7 Decisions Your Team Should Stop Making Manually1.png",
+        "status": 200,
+        "length": "2545699",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "b1b0d7af-454a-4f37-80a4-a470ae4fdb19",
+      "libraryCode": "DICTIONARIES",
+      "name": "industry-logistics-variety.webp",
+      "kind": "image",
+      "bytes": 188942,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "b1b0d7af-454a-4f37-80a4-a470ae4fdb19",
+        "name": "industry-logistics-variety.webp",
+        "status": 200,
+        "length": "188942",
+        "type": "image/webp"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": false
+    },
+    {
+      "sourceId": "b2bea59a-569b-45dd-ac41-f530492769a5",
+      "libraryCode": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "The AI-First Field Service Company What Changes From Dispatch to Closeout2.png",
+      "kind": "image",
+      "bytes": 2423944,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "b2bea59a-569b-45dd-ac41-f530492769a5",
+        "name": "The AI-First Field Service Company What Changes From Dispatch to Closeout2.png",
+        "status": 200,
+        "length": "2423944",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "b2c676f7-20a4-4a48-94aa-12eec541d516",
+      "libraryCode": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "a44c69_1d08794aa7524aa69473ffa9103afbee_mv2.png",
+      "kind": "image",
+      "bytes": 1432947,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "b2c676f7-20a4-4a48-94aa-12eec541d516",
+        "name": "a44c69_1d08794aa7524aa69473ffa9103afbee_mv2.png",
+        "status": 200,
+        "length": "1432947",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "b840c600-8979-4483-8423-7125b103b127",
+      "libraryCode": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "One Data Model, Many Businesses Why Entity-Based Architecture Matters2.jpg",
+      "kind": "image",
+      "bytes": 502350,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "b840c600-8979-4483-8423-7125b103b127",
+        "name": "One Data Model, Many Businesses Why Entity-Based Architecture Matters2.jpg",
+        "status": 200,
+        "length": "502350",
+        "type": "image/jpeg"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "b8a00b9c-123f-437b-b39a-582c3e9cca89",
+      "libraryCode": "DICTIONARIES",
+      "name": "industry-manufacturing-variety.webp",
+      "kind": "image",
+      "bytes": 167018,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "b8a00b9c-123f-437b-b39a-582c3e9cca89",
+        "name": "industry-manufacturing-variety.webp",
+        "status": 200,
+        "length": "167018",
+        "type": "image/webp"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": false
+    },
+    {
+      "sourceId": "b8c288c6-05ff-4194-b2d6-b8af55362f1e",
+      "libraryCode": "SERVICEWAND_SNOW_REMOVAL_LANDING",
+      "name": "sub-issues-accountable.webp",
+      "kind": "image",
+      "bytes": 106496,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "b8c288c6-05ff-4194-b2d6-b8af55362f1e",
+        "name": "sub-issues-accountable.webp",
+        "status": 200,
+        "length": "106496",
+        "type": "image/webp"
+      },
+      "availableAfterStage2A": true,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "b8d92246-4981-4681-a805-ac1704015fb9",
+      "libraryCode": "F549E84B-FDE8-4B9B-8162-A73F379D45C6",
+      "name": "Ellipse 52.png",
+      "kind": "image",
+      "bytes": 766,
+      "reuseStage1": true,
+      "sourceHead": {
+        "id": "b8d92246-4981-4681-a805-ac1704015fb9",
+        "name": "Ellipse 52.png",
+        "status": 200,
+        "length": "766",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": true,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "ba267126-905b-4692-b66f-c9ee95fe673b",
+      "libraryCode": "FIELD_SERVICES",
+      "name": "commercial-services-1280.webp",
+      "kind": "image",
+      "bytes": 263978,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "ba267126-905b-4692-b66f-c9ee95fe673b",
+        "name": "commercial-services-1280.webp",
+        "status": 200,
+        "length": "263978",
+        "type": "image/webp"
+      },
+      "availableAfterStage2A": true,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "bbf7ccaf-14fd-4fe5-9c40-5cda73c6306e",
+      "libraryCode": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Mobile Field Service Software The Real Test Starts When the Signal Disappears1.png",
+      "kind": "image",
+      "bytes": 1840878,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "bbf7ccaf-14fd-4fe5-9c40-5cda73c6306e",
+        "name": "Mobile Field Service Software The Real Test Starts When the Signal Disappears1.png",
+        "status": 200,
+        "length": "1840878",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "bcfca021-3870-4030-a9ef-eddbc8277295",
+      "libraryCode": "DICTIONARIES",
+      "name": "industry-healthcare-variety.webp",
+      "kind": "image",
+      "bytes": 65926,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "bcfca021-3870-4030-a9ef-eddbc8277295",
+        "name": "industry-healthcare-variety.webp",
+        "status": 200,
+        "length": "65926",
+        "type": "image/webp"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": false
+    },
+    {
+      "sourceId": "c0591d88-8007-4f8f-8ffb-70e32d05d642",
+      "libraryCode": "F549E84B-FDE8-4B9B-8162-A73F379D45C6",
+      "name": "2-t.json",
+      "kind": "media-asset",
+      "bytes": 89087,
+      "reuseStage1": true,
+      "sourceHead": {
+        "id": "c0591d88-8007-4f8f-8ffb-70e32d05d642",
+        "name": "2-t.json",
+        "status": 200,
+        "length": "89087",
+        "type": "application/json"
+      },
+      "availableAfterStage2A": true,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "c0e500d1-b9f6-4ead-8723-e01bc52de63e",
+      "libraryCode": "F549E84B-FDE8-4B9B-8162-A73F379D45C6",
+      "name": "pic-13.webp",
+      "kind": "image",
+      "bytes": 57490,
+      "reuseStage1": true,
+      "sourceHead": {
+        "id": "c0e500d1-b9f6-4ead-8723-e01bc52de63e",
+        "name": "pic-13.webp",
+        "status": 200,
+        "length": "57490",
+        "type": "image/webp"
+      },
+      "availableAfterStage2A": true,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "c2725e4e-f61a-4987-bbb1-bad4c4de7aa3",
+      "libraryCode": "FIELD_SERVICES",
+      "name": "snow-removal-software-1280.webp",
+      "kind": "image",
+      "bytes": 108838,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "c2725e4e-f61a-4987-bbb1-bad4c4de7aa3",
+        "name": "snow-removal-software-1280.webp",
+        "status": 200,
+        "length": "108838",
+        "type": "image/webp"
+      },
+      "availableAfterStage2A": true,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "c3b4de80-99c3-470b-a3fe-dd80a0b894d9",
+      "libraryCode": "SERVICEWAND_SNOW_REMOVAL_LANDING",
+      "name": "hero-snow.webp",
+      "kind": "image",
+      "bytes": 81858,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "c3b4de80-99c3-470b-a3fe-dd80a0b894d9",
+        "name": "hero-snow.webp",
+        "status": 200,
+        "length": "81858",
+        "type": "image/webp"
+      },
+      "availableAfterStage2A": true,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "c53bd9d6-8abc-46ee-87e4-0fec630cacce",
+      "libraryCode": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Field Service Management Software in 2026 What Buyers Should Actually Compare2.png",
+      "kind": "image",
+      "bytes": 2331708,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "c53bd9d6-8abc-46ee-87e4-0fec630cacce",
+        "name": "Field Service Management Software in 2026 What Buyers Should Actually Compare2.png",
+        "status": 200,
+        "length": "2331708",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "c5d852c5-dd49-4e09-a6d6-267f8d97da6a",
+      "libraryCode": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Digital Snow Logs The Record You Need Months After the Snow Is Gone2.png",
+      "kind": "image",
+      "bytes": 2183444,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "c5d852c5-dd49-4e09-a6d6-267f8d97da6a",
+        "name": "Digital Snow Logs The Record You Need Months After the Snow Is Gone2.png",
+        "status": 200,
+        "length": "2183444",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "c5f55130-b679-4bd5-ac45-8b7b72ee3aa6",
+      "libraryCode": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Vertical SaaS Was Version One. Vertical Operating Systems Are Next1.png",
+      "kind": "image",
+      "bytes": 3396174,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "c5f55130-b679-4bd5-ac45-8b7b72ee3aa6",
+        "name": "Vertical SaaS Was Version One. Vertical Operating Systems Are Next1.png",
+        "status": 200,
+        "length": "3396174",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "c6ce5f61-1aac-46b5-b5cf-f7f7a8e99085",
+      "libraryCode": "FIELD_SERVICES",
+      "name": "telecom-field-operations-1280.webp",
+      "kind": "image",
+      "bytes": 82884,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "c6ce5f61-1aac-46b5-b5cf-f7f7a8e99085",
+        "name": "telecom-field-operations-1280.webp",
+        "status": 200,
+        "length": "82884",
+        "type": "image/webp"
+      },
+      "availableAfterStage2A": true,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "c6fd8aca-697a-4c57-8e11-6f60e46b6bd1",
+      "libraryCode": "F549E84B-FDE8-4B9B-8162-A73F379D45C6",
+      "name": "VelaSans-SemiBold.woff2",
+      "kind": "media-asset",
+      "bytes": 55020,
+      "reuseStage1": true,
+      "sourceHead": {
+        "id": "c6fd8aca-697a-4c57-8e11-6f60e46b6bd1",
+        "name": "VelaSans-SemiBold.woff2",
+        "status": 200,
+        "length": "55020",
+        "type": "application/octet-stream"
+      },
+      "availableAfterStage2A": true,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "c7fe4f3c-dea0-4974-97a2-de5ba7e3ec52",
+      "libraryCode": "F549E84B-FDE8-4B9B-8162-A73F379D45C6",
+      "name": "1-t.json",
+      "kind": "media-asset",
+      "bytes": 61696,
+      "reuseStage1": true,
+      "sourceHead": {
+        "id": "c7fe4f3c-dea0-4974-97a2-de5ba7e3ec52",
+        "name": "1-t.json",
+        "status": 200,
+        "length": "61696",
+        "type": "application/json"
+      },
+      "availableAfterStage2A": true,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "c92580cc-835c-40fc-91db-a318ebdddbb4",
+      "libraryCode": "CE7A483A_42C8_4869_ADB1_98DF04D1065D",
+      "name": "Rectangle 1072.jpg",
+      "kind": "image",
+      "bytes": 167984,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "c92580cc-835c-40fc-91db-a318ebdddbb4",
+        "name": "Rectangle 1072.jpg",
+        "status": 200,
+        "length": "167984",
+        "type": "image/jpeg"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": false
+    },
+    {
+      "sourceId": "cad1f70a-edb1-41b6-a68c-995520c431f3",
+      "libraryCode": "F549E84B-FDE8-4B9B-8162-A73F379D45C6",
+      "name": "pic-3.png",
+      "kind": "image",
+      "bytes": 60902,
+      "reuseStage1": true,
+      "sourceHead": {
+        "id": "cad1f70a-edb1-41b6-a68c-995520c431f3",
+        "name": "pic-3.png",
+        "status": 200,
+        "length": "60902",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": true,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "cc417c08-b186-4d5f-840e-b5aafe7580ce",
+      "libraryCode": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "The SaaS Stack Is Collapsing Why Businesses Are Replacing 10 Tools With One Operational Platform2.png",
+      "kind": "image",
+      "bytes": 1635399,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "cc417c08-b186-4d5f-840e-b5aafe7580ce",
+        "name": "The SaaS Stack Is Collapsing Why Businesses Are Replacing 10 Tools With One Operational Platform2.png",
+        "status": 200,
+        "length": "1635399",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "cd1292b4-8055-478f-86fb-9df4eba938c2",
+      "libraryCode": "F549E84B-FDE8-4B9B-8162-A73F379D45C6",
+      "name": "pic-3.webp",
+      "kind": "image",
+      "bytes": 34588,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "cd1292b4-8055-478f-86fb-9df4eba938c2",
+        "name": "pic-3.webp",
+        "status": 200,
+        "length": "34588",
+        "type": "image/webp"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": false
+    },
+    {
+      "sourceId": "cd6bf37d-f6b7-4510-80b8-5e0b3bca9865",
+      "libraryCode": "F549E84B-FDE8-4B9B-8162-A73F379D45C6",
+      "name": "5.json",
+      "kind": "media-asset",
+      "bytes": 96141,
+      "reuseStage1": true,
+      "sourceHead": {
+        "id": "cd6bf37d-f6b7-4510-80b8-5e0b3bca9865",
+        "name": "5.json",
+        "status": 200,
+        "length": "96141",
+        "type": "application/json"
+      },
+      "availableAfterStage2A": true,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "cdea5449-5fb9-4096-b8e8-8a6c4a362a92",
+      "libraryCode": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Predictive Field Service The End of Break-Fix Is Closer Than It Looks1.png",
+      "kind": "image",
+      "bytes": 2147015,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "cdea5449-5fb9-4096-b8e8-8a6c4a362a92",
+        "name": "Predictive Field Service The End of Break-Fix Is Closer Than It Looks1.png",
+        "status": 200,
+        "length": "2147015",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "cf2718e1-b9b3-4647-9af3-ddf7b1005b47",
+      "libraryCode": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Snow Removal Crew Management Knowing Where Everyone Is Isn’t the Same as Knowing What’s Done2.png",
+      "kind": "image",
+      "bytes": 1998806,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "cf2718e1-b9b3-4647-9af3-ddf7b1005b47",
+        "name": "Snow Removal Crew Management Knowing Where Everyone Is Isn’t the Same as Knowing What’s Done2.png",
+        "status": 200,
+        "length": "1998806",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "d12809bb-713a-4274-beca-00d215b65333",
+      "libraryCode": "SERVICEWAND_SNOW_REMOVAL_LANDING",
+      "name": "efff141366.svg",
+      "kind": "image",
+      "bytes": 11804,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "d12809bb-713a-4274-beca-00d215b65333",
+        "name": "efff141366.svg",
+        "status": 200,
+        "length": "11804",
+        "type": "image/svg+xml"
+      },
+      "availableAfterStage2A": true,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "d5decd01-0d13-4d00-856c-a212d4272f60",
+      "libraryCode": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "The Rise of the Forward-Deployed Builder Why Software Companies Need People Who Understand Operations2.png",
+      "kind": "image",
+      "bytes": 2418212,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "d5decd01-0d13-4d00-856c-a212d4272f60",
+        "name": "The Rise of the Forward-Deployed Builder Why Software Companies Need People Who Understand Operations2.png",
+        "status": 200,
+        "length": "2418212",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "d72ef441-0a24-4221-b044-8cec6f8d10fe",
+      "libraryCode": "F549E84B-FDE8-4B9B-8162-A73F379D45C6",
+      "name": "pic-7.webp",
+      "kind": "image",
+      "bytes": 4252,
+      "reuseStage1": true,
+      "sourceHead": {
+        "id": "d72ef441-0a24-4221-b044-8cec6f8d10fe",
+        "name": "pic-7.webp",
+        "status": 200,
+        "length": "4252",
+        "type": "image/webp"
+      },
+      "availableAfterStage2A": true,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "d876144b-1c81-43fd-bedb-1deeda1699bc",
+      "libraryCode": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "AI-Native Software What It Means When AI Is Built In, Not Bolted On2.png",
+      "kind": "image",
+      "bytes": 2118626,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "d876144b-1c81-43fd-bedb-1deeda1699bc",
+        "name": "AI-Native Software What It Means When AI Is Built In, Not Bolted On2.png",
+        "status": 200,
+        "length": "2118626",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "db42ba44-4816-463f-91dd-80307696c0b4",
+      "libraryCode": "SERVICEWAND_SNOW_REMOVAL_LANDING",
+      "name": "vela-sans-500.woff2",
+      "kind": "media-asset",
+      "bytes": 54516,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "db42ba44-4816-463f-91dd-80307696c0b4",
+        "name": "vela-sans-500.woff2",
+        "status": 200,
+        "length": "54516",
+        "type": "application/octet-stream"
+      },
+      "availableAfterStage2A": true,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "db8fb51f-55c4-453c-95c9-a0ddccaed897",
+      "libraryCode": "DICTIONARIES",
+      "name": "industry-finance-variety.webp",
+      "kind": "image",
+      "bytes": 75778,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "db8fb51f-55c4-453c-95c9-a0ddccaed897",
+        "name": "industry-finance-variety.webp",
+        "status": 200,
+        "length": "75778",
+        "type": "image/webp"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": false
+    },
+    {
+      "sourceId": "def8fd7c-04de-4069-9635-e7d5287725e6",
+      "libraryCode": "F549E84B-FDE8-4B9B-8162-A73F379D45C6",
+      "name": "pic-2.webp",
+      "kind": "image",
+      "bytes": 8470,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "def8fd7c-04de-4069-9635-e7d5287725e6",
+        "name": "pic-2.webp",
+        "status": 200,
+        "length": "8470",
+        "type": "image/webp"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": false
+    },
+    {
+      "sourceId": "e14920c8-32f5-440c-88c7-526bfc126753",
+      "libraryCode": "FIELD_SERVICES",
+      "name": "female-dispatcher-320.webp",
+      "kind": "image",
+      "bytes": 11768,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "e14920c8-32f5-440c-88c7-526bfc126753",
+        "name": "female-dispatcher-320.webp",
+        "status": 200,
+        "length": "11768",
+        "type": "image/webp"
+      },
+      "availableAfterStage2A": true,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "e25a25f3-dbd3-45fe-8f2c-58e3c64bb665",
+      "libraryCode": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "2The System of Record Is Back—and AI Agents Are the Reason.png",
+      "kind": "image",
+      "bytes": 1757226,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "e25a25f3-dbd3-45fe-8f2c-58e3c64bb665",
+        "name": "2The System of Record Is Back—and AI Agents Are the Reason.png",
+        "status": 200,
+        "length": "1757226",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "e3e7f0f5-581b-4e3e-97fa-5dca48548917",
+      "libraryCode": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "AI in Field Service Management Where It Works—and Where It’s Still Hype1.png",
+      "kind": "image",
+      "bytes": 1816966,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "e3e7f0f5-581b-4e3e-97fa-5dca48548917",
+        "name": "AI in Field Service Management Where It Works—and Where It’s Still Hype1.png",
+        "status": 200,
+        "length": "1816966",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "e4241465-b58e-4703-ba82-e9d307c4eb5e",
+      "libraryCode": "FIELD_SERVICES",
+      "name": "lawn-care-operations-1280.webp",
+      "kind": "image",
+      "bytes": 182186,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "e4241465-b58e-4703-ba82-e9d307c4eb5e",
+        "name": "lawn-care-operations-1280.webp",
+        "status": 200,
+        "length": "182186",
+        "type": "image/webp"
+      },
+      "availableAfterStage2A": true,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "e58a8736-40db-48e5-a2ff-5ffb8044eb4f",
+      "libraryCode": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Snow Removal Software ROI Measure Fewer Disputes, Faster Billing and Better Route Density1.png",
+      "kind": "image",
+      "bytes": 2836377,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "e58a8736-40db-48e5-a2ff-5ffb8044eb4f",
+        "name": "Snow Removal Software ROI Measure Fewer Disputes, Faster Billing and Better Route Density1.png",
+        "status": 200,
+        "length": "2836377",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "e5a109e2-9e4d-4b24-8a2d-910fd9864ba5",
+      "libraryCode": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "The Post-SaaS Interface What Software Looks Like When Humans Stop Opening Every App2.png",
+      "kind": "image",
+      "bytes": 1740533,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "e5a109e2-9e4d-4b24-8a2d-910fd9864ba5",
+        "name": "The Post-SaaS Interface What Software Looks Like When Humans Stop Opening Every App2.png",
+        "status": 200,
+        "length": "1740533",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "e5a81a06-5d45-494f-9ca0-97038c4b1692",
+      "libraryCode": "CE7A483A_42C8_4869_ADB1_98DF04D1065D",
+      "name": "VelaSans-GX.woff2",
+      "kind": "media-asset",
+      "bytes": 58792,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "e5a81a06-5d45-494f-9ca0-97038c4b1692",
+        "name": "VelaSans-GX.woff2",
+        "status": 200,
+        "length": "58792",
+        "type": "application/octet-stream"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": false
+    },
+    {
+      "sourceId": "e6730818-1696-4f8d-bfd1-315b6009126a",
+      "libraryCode": "F549E84B-FDE8-4B9B-8162-A73F379D45C6",
+      "name": "pic-4.webp",
+      "kind": "image",
+      "bytes": 53076,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "e6730818-1696-4f8d-bfd1-315b6009126a",
+        "name": "pic-4.webp",
+        "status": 200,
+        "length": "53076",
+        "type": "image/webp"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": false
+    },
+    {
+      "sourceId": "e78431c2-4dd6-4b8e-b21e-440c58230d9a",
+      "libraryCode": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "From Configuration to Compounding How Operational Software Gets Smarter Over Time1.png",
+      "kind": "image",
+      "bytes": 2366560,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "e78431c2-4dd6-4b8e-b21e-440c58230d9a",
+        "name": "From Configuration to Compounding How Operational Software Gets Smarter Over Time1.png",
+        "status": 200,
+        "length": "2366560",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "e8c269aa-f589-4dd6-bcec-31c0921f3602",
+      "libraryCode": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Field Service CRM vs. FSM Why Customer Data and Job Execution Can’t Live Apart2.png",
+      "kind": "image",
+      "bytes": 2122376,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "e8c269aa-f589-4dd6-bcec-31c0921f3602",
+        "name": "Field Service CRM vs. FSM Why Customer Data and Job Execution Can’t Live Apart2.png",
+        "status": 200,
+        "length": "2122376",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "e9e3a8b8-2bee-4213-b894-6417010063fb",
+      "libraryCode": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "The Operational Data Moat Why AI Makes Your “Boring” Business Data More Valuable1.png",
+      "kind": "image",
+      "bytes": 2155238,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "e9e3a8b8-2bee-4213-b894-6417010063fb",
+        "name": "The Operational Data Moat Why AI Makes Your “Boring” Business Data More Valuable1.png",
+        "status": 200,
+        "length": "2155238",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "e9f92730-b426-4d5f-88ab-81431f037f6a",
+      "libraryCode": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Outcome-Based Pricing What Happens When AI Does the Work but Nobody Buys a Seat1.png",
+      "kind": "image",
+      "bytes": 1802700,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "e9f92730-b426-4d5f-88ab-81431f037f6a",
+        "name": "Outcome-Based Pricing What Happens When AI Does the Work but Nobody Buys a Seat1.png",
+        "status": 200,
+        "length": "1802700",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "eafe1edc-102e-4133-bd96-146d40346efa",
+      "libraryCode": "F549E84B-FDE8-4B9B-8162-A73F379D45C6",
+      "name": "Ellipse 31.png",
+      "kind": "image",
+      "bytes": 15202,
+      "reuseStage1": true,
+      "sourceHead": {
+        "id": "eafe1edc-102e-4133-bd96-146d40346efa",
+        "name": "Ellipse 31.png",
+        "status": 200,
+        "length": "15202",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": true,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "eb7a88f5-a36c-4cef-943b-2e2678e13818",
+      "libraryCode": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Snow Removal Software in 2026 The Storm Test That Exposes Weak Platforms2.png",
+      "kind": "image",
+      "bytes": 1846749,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "eb7a88f5-a36c-4cef-943b-2e2678e13818",
+        "name": "Snow Removal Software in 2026 The Storm Test That Exposes Weak Platforms2.png",
+        "status": 200,
+        "length": "1846749",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "ebd48c41-8fff-41f1-a61a-02d0cab91e74",
+      "libraryCode": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Salt Tracking Software The Hidden Margin Problem in Snow and Ice Management1.png",
+      "kind": "image",
+      "bytes": 2298875,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "ebd48c41-8fff-41f1-a61a-02d0cab91e74",
+        "name": "Salt Tracking Software The Hidden Margin Problem in Snow and Ice Management1.png",
+        "status": 200,
+        "length": "2298875",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "ec2529ab-d96a-4033-b25e-6875ca10580a",
+      "libraryCode": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Snow Removal Contract Management Seasonal, Per-Push, Per-Inch—Without Spreadsheet Chaos2.png",
+      "kind": "image",
+      "bytes": 2276080,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "ec2529ab-d96a-4033-b25e-6875ca10580a",
+        "name": "Snow Removal Contract Management Seasonal, Per-Push, Per-Inch—Without Spreadsheet Chaos2.png",
+        "status": 200,
+        "length": "2276080",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "edbc0257-c430-41a4-95d0-56b118558d7c",
+      "libraryCode": "F549E84B-FDE8-4B9B-8162-A73F379D45C6",
+      "name": "VelaSans-Regular.woff2",
+      "kind": "media-asset",
+      "bytes": 55128,
+      "reuseStage1": true,
+      "sourceHead": {
+        "id": "edbc0257-c430-41a4-95d0-56b118558d7c",
+        "name": "VelaSans-Regular.woff2",
+        "status": 200,
+        "length": "55128",
+        "type": "application/octet-stream"
+      },
+      "availableAfterStage2A": true,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "eec7e34d-0966-46e9-a44a-30a23ab69eb0",
+      "libraryCode": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Your Company Doesn’t Have an AI Problem. It Has a Data and Workflow Problem.1.png",
+      "kind": "image",
+      "bytes": 2310834,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "eec7e34d-0966-46e9-a44a-30a23ab69eb0",
+        "name": "Your Company Doesn’t Have an AI Problem. It Has a Data and Workflow Problem.1.png",
+        "status": 200,
+        "length": "2310834",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "f1e36525-eeba-4ddf-a3a3-f536c7d59739",
+      "libraryCode": "F549E84B-FDE8-4B9B-8162-A73F379D45C6",
+      "name": "pic (3).webp",
+      "kind": "image",
+      "bytes": 117248,
+      "reuseStage1": true,
+      "sourceHead": {
+        "id": "f1e36525-eeba-4ddf-a3a3-f536c7d59739",
+        "name": "pic (3).webp",
+        "status": 200,
+        "length": "117248",
+        "type": "image/webp"
+      },
+      "availableAfterStage2A": true,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "f3c53e7f-887c-452a-b080-ad4c5e5a5350",
+      "libraryCode": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "The Next Great Software Companies May Have Fewer Users—and More Work Getting Done2.png",
+      "kind": "image",
+      "bytes": 2015686,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "f3c53e7f-887c-452a-b080-ad4c5e5a5350",
+        "name": "The Next Great Software Companies May Have Fewer Users—and More Work Getting Done2.png",
+        "status": 200,
+        "length": "2015686",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "f490c3f5-9611-4b18-804b-2cde40c078ee",
+      "libraryCode": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "2Low-Code Is Not the End of Developers Why Serious Platforms Need Both.png",
+      "kind": "image",
+      "bytes": 1930830,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "f490c3f5-9611-4b18-804b-2cde40c078ee",
+        "name": "2Low-Code Is Not the End of Developers Why Serious Platforms Need Both.png",
+        "status": 200,
+        "length": "1930830",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "f5c53307-77c9-4492-b130-5908692df2ef",
+      "libraryCode": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Software Fragmentation Is Becoming a Competitive Liability2.png",
+      "kind": "image",
+      "bytes": 1889456,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "f5c53307-77c9-4492-b130-5908692df2ef",
+        "name": "Software Fragmentation Is Becoming a Competitive Liability2.png",
+        "status": 200,
+        "length": "1889456",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "f61b6570-0a31-4d29-82ff-a084d252de07",
+      "libraryCode": "F549E84B-FDE8-4B9B-8162-A73F379D45C6",
+      "name": "pic-4.webp",
+      "kind": "image",
+      "bytes": 7166,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "f61b6570-0a31-4d29-82ff-a084d252de07",
+        "name": "pic-4.webp",
+        "status": 200,
+        "length": "7166",
+        "type": "image/webp"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": false
+    },
+    {
+      "sourceId": "f7185c8c-3125-4954-bf32-ce49e8e5afa7",
+      "libraryCode": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "AI in Field Service Management Where It Works—and Where It’s Still Hype2.png",
+      "kind": "image",
+      "bytes": 1985474,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "f7185c8c-3125-4954-bf32-ce49e8e5afa7",
+        "name": "AI in Field Service Management Where It Works—and Where It’s Still Hype2.png",
+        "status": 200,
+        "length": "1985474",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "f75e5357-015c-4f69-99c7-db5317ff92f3",
+      "libraryCode": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Snow Removal Crew Management Knowing Where Everyone Is Isn’t the Same as Knowing What’s Done1.png",
+      "kind": "image",
+      "bytes": 2237886,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "f75e5357-015c-4f69-99c7-db5317ff92f3",
+        "name": "Snow Removal Crew Management Knowing Where Everyone Is Isn’t the Same as Knowing What’s Done1.png",
+        "status": 200,
+        "length": "2237886",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "f7ec5cca-666b-41b3-90cd-86131972b9fe",
+      "libraryCode": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "MCP and the New Integration Layer Will APIs Still Be Enough2.png",
+      "kind": "image",
+      "bytes": 1767526,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "f7ec5cca-666b-41b3-90cd-86131972b9fe",
+        "name": "MCP and the New Integration Layer Will APIs Still Be Enough2.png",
+        "status": 200,
+        "length": "1767526",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "f9137772-ef9a-4b76-b911-0d28047c5c2d",
+      "libraryCode": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Weather Intelligence for Snow Removal The Storm Is Won Before the First Truck Moves1.png",
+      "kind": "image",
+      "bytes": 2340219,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "f9137772-ef9a-4b76-b911-0d28047c5c2d",
+        "name": "Weather Intelligence for Snow Removal The Storm Is Won Before the First Truck Moves1.png",
+        "status": 200,
+        "length": "2340219",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "f938d25e-d547-47fb-8775-210afbac7ce1",
+      "libraryCode": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "The Next Great Software Companies May Have Fewer Users—and More Work Getting Done1.png",
+      "kind": "image",
+      "bytes": 2180480,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "f938d25e-d547-47fb-8775-210afbac7ce1",
+        "name": "The Next Great Software Companies May Have Fewer Users—and More Work Getting Done1.png",
+        "status": 200,
+        "length": "2180480",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "fa1cee4a-c801-4c30-9f30-84a791fa52e2",
+      "libraryCode": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Field Service Management Software in 2026 What Buyers Should Actually Compare1.png",
+      "kind": "image",
+      "bytes": 2213399,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "fa1cee4a-c801-4c30-9f30-84a791fa52e2",
+        "name": "Field Service Management Software in 2026 What Buyers Should Actually Compare1.png",
+        "status": 200,
+        "length": "2213399",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "fc6a5947-7484-41e3-bf6d-43c64147acb5",
+      "libraryCode": "F549E84B-FDE8-4B9B-8162-A73F379D45C6",
+      "name": "4.json",
+      "kind": "media-asset",
+      "bytes": 72035,
+      "reuseStage1": true,
+      "sourceHead": {
+        "id": "fc6a5947-7484-41e3-bf6d-43c64147acb5",
+        "name": "4.json",
+        "status": 200,
+        "length": "72035",
+        "type": "application/json"
+      },
+      "availableAfterStage2A": true,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "fd5c6bf1-3e54-48d8-beda-99048bebfdc0",
+      "libraryCode": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "The Future of Business Software Is Invisible, Adaptive and Always Working2.png",
+      "kind": "image",
+      "bytes": 3175641,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "fd5c6bf1-3e54-48d8-beda-99048bebfdc0",
+        "name": "The Future of Business Software Is Invisible, Adaptive and Always Working2.png",
+        "status": 200,
+        "length": "3175641",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "fe39f1bb-c2b7-4aef-9ac0-d1c160ebdde1",
+      "libraryCode": "CE7A483A_42C8_4869_ADB1_98DF04D1065D",
+      "name": "pic-7.webp",
+      "kind": "image",
+      "bytes": 4252,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "fe39f1bb-c2b7-4aef-9ac0-d1c160ebdde1",
+        "name": "pic-7.webp",
+        "status": 200,
+        "length": "4252",
+        "type": "image/webp"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": false
+    },
+    {
+      "sourceId": "fe971cc0-c366-4245-a477-e7c098e32753",
+      "libraryCode": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Software Fragmentation Is Becoming a Competitive Liability1.png",
+      "kind": "image",
+      "bytes": 1967163,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "fe971cc0-c366-4245-a477-e7c098e32753",
+        "name": "Software Fragmentation Is Becoming a Competitive Liability1.png",
+        "status": 200,
+        "length": "1967163",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": true
+    },
+    {
+      "sourceId": "ffa429e5-f4d9-40f7-a3db-a942e841a2d3",
+      "libraryCode": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "AI Agents Need a Boss Why Orchestration Becomes the New Control Layer2.png",
+      "kind": "image",
+      "bytes": 1952161,
+      "reuseStage1": false,
+      "sourceHead": {
+        "id": "ffa429e5-f4d9-40f7-a3db-a942e841a2d3",
+        "name": "AI Agents Need a Boss Why Orchestration Becomes the New Control Layer2.png",
+        "status": 200,
+        "length": "1952161",
+        "type": "image/png"
+      },
+      "availableAfterStage2A": false,
+      "availableAfterStage2B": true
+    }
+  ],
+  "publicProbes": [
+    {
+      "kind": "page",
+      "path": "/documentation/overview.html",
+      "status": 200,
+      "bytes": 119101,
+      "location": null
+    },
+    {
+      "kind": "page",
+      "path": "/use-cases.html",
+      "status": 200,
+      "bytes": 145716,
+      "location": null
+    },
+    {
+      "kind": "page",
+      "path": "/industries/field-service",
+      "status": 200,
+      "bytes": 394818,
+      "location": null
+    },
+    {
+      "kind": "page",
+      "path": "/industries/field-service/landscaping-software",
+      "status": 200,
+      "bytes": 512633,
+      "location": null
+    },
+    {
+      "kind": "page",
+      "path": "/blogs",
+      "status": 200,
+      "bytes": 306486,
+      "location": null
+    },
+    {
+      "kind": "page",
+      "path": "/blog",
+      "status": 200,
+      "bytes": 326591,
+      "location": null
+    },
+    {
+      "kind": "page",
+      "path": "/industries/field-service/snow-removal-software",
+      "status": 200,
+      "bytes": 592938,
+      "location": null
+    },
+    {
+      "kind": "page",
+      "path": "/industries/field-service/snow-removal-software-new",
+      "status": 200,
+      "bytes": 862,
+      "location": null
+    },
+    {
+      "kind": "missing-media",
+      "path": "/core/api/media-asset/644629eb-b114-46a9-96cf-ddcb34ce22f1/get",
+      "status": 404,
+      "bytes": 0,
+      "location": null
+    },
+    {
+      "kind": "missing-media",
+      "path": "/core/api/media-asset/54f89a8f-9476-4c00-b4cd-f8afc1af8df6/get",
+      "status": 404,
+      "bytes": 0,
+      "location": null
+    },
+    {
+      "kind": "missing-media",
+      "path": "/core/image/3363653c-4782-4eb9-92c4-4bd7df85a0f0/get",
+      "status": 200,
+      "bytes": 0,
+      "location": null
+    },
+    {
+      "kind": "missing-media",
+      "path": "/core/image/1ebd019f-4662-49c7-8716-af4220f93a9f/get",
+      "status": 200,
+      "bytes": 0,
+      "location": null
+    },
+    {
+      "kind": "missing-media",
+      "path": "/core/api/media-asset/140b48ad-1bde-4907-b491-1b431ed7f0c4/get",
+      "status": 404,
+      "bytes": 0,
+      "location": null
+    },
+    {
+      "kind": "missing-media",
+      "path": "/core/api/media-asset/5876bd0d-0208-406a-8ba7-0560cec40bc3/get",
+      "status": 404,
+      "bytes": 0,
+      "location": null
+    },
+    {
+      "kind": "missing-media",
+      "path": "/core/api/media-asset/fcd25906-1c37-40b9-85b1-cbd43e5c09cd/get",
+      "status": 404,
+      "bytes": 0,
+      "location": null
+    },
+    {
+      "kind": "missing-media",
+      "path": "/core/api/media-asset/74912247-1d10-4787-a2ef-d9874316f72d/get",
+      "status": 404,
+      "bytes": 0,
+      "location": null
+    },
+    {
+      "kind": "missing-media",
+      "path": "/core/image/bbc735d9-c197-49fa-841a-c3b8b2ed2709/get/Service%20Wand%20and%20the%20Argument%20for%20One%20Operational%20System1.png?width=640&fit=true",
+      "status": 200,
+      "bytes": 0,
+      "location": null
+    }
+  ],
+  "additionalProbes": {
+    "images": [
+      {
+        "id": "15d33cf5-ff59-48da-8aaf-f556aa4f66aa",
+        "status": 200,
+        "bytes": 0,
+        "pages": [
+          "/industries/field-service/landscaping-software"
+        ]
+      },
+      {
+        "id": "27c3952c-993c-454f-81dc-e8211cebf86b",
+        "status": 200,
+        "bytes": 0,
+        "pages": [
+          "/industries/field-service/landscaping-software",
+          "/industries/field-service/landscaping-software"
+        ]
+      },
+      {
+        "id": "4427646a-57eb-40ec-afd1-4ee18bb29bc8",
+        "status": 200,
+        "bytes": 0,
+        "pages": [
+          "/industries/field-service/landscaping-software",
+          "/industries/field-service/landscaping-software"
+        ]
+      },
+      {
+        "id": "6e15ba75-20b0-4c16-8363-6cc4e7f31548",
+        "status": 200,
+        "bytes": 0,
+        "pages": [
+          "/industries/field-service/landscaping-software"
+        ]
+      },
+      {
+        "id": "7bc0a001-909d-44be-ba36-cbc9f59077d2",
+        "status": 200,
+        "bytes": 0,
+        "pages": [
+          "/industries/field-service/landscaping-software"
+        ]
+      },
+      {
+        "id": "82e06243-39e6-468e-9fdc-72522690681d",
+        "status": 200,
+        "bytes": 0,
+        "pages": [
+          "/industries/field-service/landscaping-software",
+          "/industries/field-service/landscaping-software",
+          "/industries/field-service/landscaping-software",
+          "/industries/field-service/landscaping-software",
+          "/industries/field-service/landscaping-software",
+          "/industries/field-service/landscaping-software",
+          "/industries/field-service/landscaping-software",
+          "/industries/field-service/landscaping-software",
+          "/industries/field-service/landscaping-software"
+        ]
+      },
+      {
+        "id": "849bc787-4515-48c5-9c9b-40b5bc99ea4f",
+        "status": 200,
+        "bytes": 0,
+        "pages": [
+          "/industries/field-service/landscaping-software",
+          "/industries/field-service/landscaping-software",
+          "/industries/field-service/landscaping-software"
+        ]
+      },
+      {
+        "id": "8cba4342-9a87-4b0d-8e7b-719c92ca1c16",
+        "status": 200,
+        "bytes": 0,
+        "pages": [
+          "/industries/field-service/landscaping-software"
+        ]
+      },
+      {
+        "id": "8faccfaa-b40c-4ff6-8056-a4cc39174510",
+        "status": 200,
+        "bytes": 0,
+        "pages": [
+          "/industries/field-service/landscaping-software"
+        ]
+      },
+      {
+        "id": "9a5fa521-3fec-4beb-a4e5-94c32bc9b687",
+        "status": 200,
+        "bytes": 0,
+        "pages": [
+          "/industries/field-service/landscaping-software",
+          "/industries/field-service/landscaping-software",
+          "/industries/field-service/landscaping-software",
+          "/industries/field-service/landscaping-software"
+        ]
+      },
+      {
+        "id": "9e77b309-1678-4f9b-b5c0-7c97ba123ea8",
+        "status": 200,
+        "bytes": 0,
+        "pages": [
+          "/industries/field-service/landscaping-software",
+          "/industries/field-service/landscaping-software",
+          "/industries/field-service/landscaping-software",
+          "/industries/field-service/landscaping-software",
+          "/industries/field-service/landscaping-software",
+          "/industries/field-service/landscaping-software",
+          "/industries/field-service/landscaping-software",
+          "/industries/field-service/landscaping-software",
+          "/industries/field-service/landscaping-software",
+          "/industries/field-service/landscaping-software"
+        ]
+      },
+      {
+        "id": "c88c7b62-89f8-5719-928b-ac81625ce55c",
+        "status": 200,
+        "bytes": 0,
+        "pages": [
+          "/industries/field-service/landscaping-software"
+        ]
+      },
+      {
+        "id": "c926a01c-5cd5-4114-81ed-0023a5fd85f4",
+        "status": 200,
+        "bytes": 0,
+        "pages": [
+          "/industries/field-service/landscaping-software"
+        ]
+      },
+      {
+        "id": "db108af1-3d83-4ec9-bd39-f770c6fef209",
+        "status": 200,
+        "bytes": 0,
+        "pages": [
+          "/industries/field-service/landscaping-software"
+        ]
+      },
+      {
+        "id": "eec09e00-8fec-4061-b302-6a2df6f34d9a",
+        "status": 200,
+        "bytes": 0,
+        "pages": [
+          "/industries/field-service/landscaping-software"
+        ]
+      },
+      {
+        "id": "eecefab7-0f5c-4d12-a172-c038754ee475",
+        "status": 200,
+        "bytes": 0,
+        "pages": [
+          "/industries/field-service/landscaping-software"
+        ]
+      },
+      {
+        "id": "f5656511-5daa-4f48-a869-3e2540698e1c",
+        "status": 200,
+        "bytes": 0,
+        "pages": [
+          "/industries/field-service/landscaping-software",
+          "/industries/field-service/landscaping-software",
+          "/industries/field-service/landscaping-software",
+          "/industries/field-service/landscaping-software",
+          "/industries/field-service/landscaping-software",
+          "/industries/field-service/landscaping-software"
+        ]
+      },
+      {
+        "id": "fea318cb-419d-41e6-8213-6b7ad16cda50",
+        "status": 200,
+        "bytes": 0,
+        "pages": [
+          "/industries/field-service/landscaping-software"
+        ]
+      },
+      {
+        "id": "266a20af-6b6f-4314-9313-b8a950d0e007",
+        "status": 200,
+        "bytes": 0,
+        "pages": [
+          "blog author avatar"
+        ]
+      }
+    ],
+    "catalog": [
+      {
+        "host": "servicewand.com",
+        "label": "snow",
+        "status": 200,
+        "bytes": 139608,
+        "prices": 16
+      },
+      {
+        "host": "servicewand.com",
+        "label": "landscaping",
+        "status": 401,
+        "bytes": 0
+      },
+      {
+        "host": "prod.servicewand.com",
+        "label": "snow",
+        "status": 200,
+        "bytes": 93655,
+        "prices": 18
+      },
+      {
+        "host": "prod.servicewand.com",
+        "label": "landscaping",
+        "status": 401,
+        "bytes": 0
+      }
+    ]
+  },
+  "categories": [
+    {
+      "name": "ServiceWand Platform",
+      "slug": "servicewand-platform",
+      "permalink": "servicewand-platform",
+      "enabled": true,
+      "organization": "SERVICEWAND"
+    },
+    {
+      "name": "Snow Removal Blogs",
+      "slug": null,
+      "permalink": null,
+      "enabled": true,
+      "organization": "SERVICEWAND"
+    },
+    {
+      "name": "HVAC Blogs",
+      "slug": null,
+      "permalink": null,
+      "enabled": false,
+      "organization": "SERVICEWAND"
+    },
+    {
+      "name": "Lawn Care Blogs",
+      "slug": null,
+      "permalink": null,
+      "enabled": false,
+      "organization": "SERVICEWAND"
+    }
+  ],
+  "blogIdentity": {
+    "permalinkDuplicates": {
+      "snow-removal/blog-1": 3
+    },
+    "missingContentDisabledRecords": 2,
+    "excludedSystemPost": "/blog/abc",
+    "categoryRule": "organization + slug/permalink if present, otherwise unique localized name and content comparison",
+    "postRule": "organization + permalink, disambiguate duplicates by slug/metadata/content fingerprint; never collapse duplicate rows",
+    "authorRule": "Resolve existing target User identities; do not copy source IDs or create users implicitly",
+    "language": "eng"
+  },
+  "existingFormDependencies": [
+    "REQUEST_DEMO_FORM_TYPE",
+    "SERVICE_WAND_CTA_FORM_TYPE",
+    "SERVICE_WAND_IMPLEMENTATION_PARTNER_FORM",
+    "SERVICE_WAND_TECHNOLOGY_PARTNER_FORM",
+    "REFERRAL_CHANNEL_PARTNER"
+  ],
+  "quarantineProposal": [
+    {
+      "page": "/documentation/overview.html",
+      "value": {
+        "DOCUMENT_CODE": "CORE_PLATFORM_OVERVIEW"
+      },
+      "reason": "override refers to an absent source block"
+    }
+  ],
+  "catalogDifference": {
+    "sourceFoundationUSD": {
+      "monthly": 99,
+      "yearly": 990
+    },
+    "prodFoundationUSD": {
+      "monthly": 199,
+      "yearly": 1990
+    },
+    "prodAdditionalProduct": "SERVICEWAND_ROUTE_OPTIMIZATION_CREDITS",
+    "action": "preserve prod catalog; no product/price writes in CMS transfer"
+  },
+  "limits": [
+    "Media HEAD checks establish endpoint availability, not binary hash equality; full download/hash and prod deduplication remain package-building work.",
+    "No form submission, workflow event, server configuration write or domain change.",
+    "No interactive browser or visual regression test.",
+    "Author User correspondence has not yet been resolved.",
+    "Raw UUIDs in comments are not dependencies; 18 unresolved image references occur in rendered Landscaping HTML."
+  ],
+  "progress": {
+    "deployedPages": 5,
+    "deployedBlocks": 28,
+    "remainingPages": 3,
+    "remainingBlocks": 82,
+    "verification": [
+      "sections-stage-2a-verification.json",
+      "blog-stage-2b-public-verification.json",
+      "blog-stage-2b-verification.json"
+    ],
+    "blogPostsDeployed": 77,
+    "blogContentsDeployed": 75,
+    "blogHeld": 1
+  }
+}

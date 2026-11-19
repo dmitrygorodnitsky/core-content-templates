@@ -1,0 +1,2906 @@
+{
+  "source": "servicewand.com",
+  "target": "prod.servicewand.com",
+  "checkedAt": "2026-11-17T14:07:12.559Z",
+  "serversChanged": false,
+  "scopeStatus": "proposal; no exclusions applied on servers",
+  "proposed": {
+    "pages": 18,
+    "blocks": 145,
+    "formTypes": 10,
+    "workflow": "FORM",
+    "blogPolicy": "all 79 definitions and 77 content records, preserving enabled/disabled; no comments",
+    "categories": 4,
+    "servicewandMediaFiles": 253
+  },
+  "pages": [
+    {
+      "organization": "SERVICEWAND",
+      "site": null,
+      "url": "/request-demo.html",
+      "template": "CORPORATE_LANDING_JTE",
+      "action": "proposed-transfer",
+      "reason": ""
+    },
+    {
+      "organization": "SERVICEWAND",
+      "site": null,
+      "url": "/error.html",
+      "template": "CORPORATE_LANDING_JTE",
+      "action": "proposed-transfer",
+      "reason": ""
+    },
+    {
+      "organization": "SERVICEWAND",
+      "site": null,
+      "url": "/partner.html",
+      "template": "CORPORATE_LANDING_JTE",
+      "action": "proposed-transfer",
+      "reason": ""
+    },
+    {
+      "organization": "SERVICEWAND",
+      "site": null,
+      "url": "/index.html",
+      "template": "CORPORATE_LANDING_JTE",
+      "action": "proposed-transfer",
+      "reason": ""
+    },
+    {
+      "organization": "SERVICEWAND",
+      "site": null,
+      "url": "/privacy-policy.html",
+      "template": "CORPORATE_LANDING_JTE",
+      "action": "proposed-transfer",
+      "reason": ""
+    },
+    {
+      "organization": "SERVICEWAND",
+      "site": null,
+      "url": "/terms-and-conditions.html",
+      "template": "CORPORATE_LANDING_JTE",
+      "action": "proposed-transfer",
+      "reason": ""
+    },
+    {
+      "organization": "SERVICEWAND",
+      "site": null,
+      "url": "/success.html",
+      "template": "CORPORATE_LANDING_JTE",
+      "action": "proposed-transfer",
+      "reason": ""
+    },
+    {
+      "organization": "SERVICEWAND",
+      "site": null,
+      "url": "/documentation/introduction.html",
+      "template": "CORPORATE_LANDING_JTE",
+      "action": "proposed-transfer",
+      "reason": ""
+    },
+    {
+      "organization": "SERVICEWAND",
+      "site": null,
+      "url": "/documentation/overview.html",
+      "template": "TEMPLATE-CORPORATE_LANDING",
+      "action": "proposed-transfer",
+      "reason": ""
+    },
+    {
+      "organization": "SERVICEWAND",
+      "site": null,
+      "url": "/use-cases.html",
+      "template": "USECASES_JTE",
+      "action": "proposed-transfer",
+      "reason": ""
+    },
+    {
+      "organization": "SERVICEWAND",
+      "site": null,
+      "url": "/form-test.html",
+      "template": "CORPORATE_LANDING_JTE",
+      "action": "scope-review",
+      "reason": "test page"
+    },
+    {
+      "organization": "SERVICEWAND",
+      "site": null,
+      "url": "/blog.html",
+      "template": "BLOG_POST_JTE",
+      "action": "scope-review",
+      "reason": "old blog shell; review alongside /blogs and /blog"
+    },
+    {
+      "organization": "SERVICEWAND",
+      "site": null,
+      "url": "/internal/legacy/snow-removal-software-vertical-landing",
+      "template": "VERTICAL_LANDING_JTE",
+      "action": "scope-review",
+      "reason": "explicit legacy page"
+    },
+    {
+      "organization": "PNI",
+      "site": null,
+      "url": "/snow",
+      "template": "VERTICAL_LANDING_JTE",
+      "action": "scope-review",
+      "reason": "separate PNI page"
+    },
+    {
+      "organization": "SERVICEWAND",
+      "site": null,
+      "url": "/industries/field-service",
+      "template": "FIELD_SERVICE_LANDING",
+      "action": "proposed-transfer",
+      "reason": ""
+    },
+    {
+      "organization": "SERVICEWAND",
+      "site": null,
+      "url": "/snow-removal-request-demo.html",
+      "template": "CORPORATE_LANDING_JTE",
+      "action": "proposed-transfer",
+      "reason": ""
+    },
+    {
+      "organization": "SERVICEWAND",
+      "site": null,
+      "url": "/field-service-early-access.html",
+      "template": "CORPORATE_LANDING_JTE",
+      "action": "proposed-transfer",
+      "reason": ""
+    },
+    {
+      "organization": "SERVICEWAND",
+      "site": null,
+      "url": "/industries/field-service/landscaping-software",
+      "template": "VERTICAL_LANDING_JTE",
+      "action": "proposed-transfer",
+      "reason": ""
+    },
+    {
+      "organization": "SYSTEM",
+      "site": "AUTH",
+      "url": "/auth/login.html",
+      "template": "AUTH_LOGIN_SAMPLE",
+      "action": "reuse-existing",
+      "reason": ""
+    },
+    {
+      "organization": "SYSTEM",
+      "site": "AUTH",
+      "url": "/auth/2fa.html",
+      "template": "AUTH_2FA_SAMPLE",
+      "action": "reuse-existing",
+      "reason": ""
+    },
+    {
+      "organization": "SERVICEWAND",
+      "site": null,
+      "url": "/blogs",
+      "template": "FIELD_SERVICE_BLOG_INDEX_ROOT",
+      "action": "proposed-transfer",
+      "reason": ""
+    },
+    {
+      "organization": "SERVICEWAND",
+      "site": null,
+      "url": "/blog",
+      "template": "FIELD_SERVICE_BLOG_POST_ROOT",
+      "action": "proposed-transfer",
+      "reason": ""
+    },
+    {
+      "organization": "SERVICEWAND",
+      "site": null,
+      "url": "/industries/field-service/snow-removal-software",
+      "template": "SNOW_REMOVAL_LANDING",
+      "action": "proposed-transfer",
+      "reason": ""
+    },
+    {
+      "organization": "SERVICEWAND",
+      "site": null,
+      "url": "/industries/field-service/snow-removal-software-new",
+      "template": "SNOW_REMOVAL_LANDING_NEW_REDIRECT",
+      "action": "proposed-transfer",
+      "reason": ""
+    }
+  ],
+  "forms": [
+    {
+      "code": "A66B4FAF_35AD_4FF9_93DE_7E972C80C2BF",
+      "owner": "SERVICEWAND",
+      "workflow": "FORM",
+      "parents": [],
+      "sourcePermissions": [],
+      "presentOnProd": false
+    },
+    {
+      "code": "FIELD_SERVICE_EARLY_ACCESS",
+      "owner": "SERVICEWAND",
+      "workflow": "FORM",
+      "parents": [],
+      "sourcePermissions": [],
+      "presentOnProd": false
+    },
+    {
+      "code": "GENERAL_PARTNERS_FORM",
+      "owner": "SERVICEWAND",
+      "workflow": "FORM",
+      "parents": [
+        "SERVICEWAND_STRATEGIC_PARTNER_FORM",
+        "REFERRAL_CHANNEL_PARTNER",
+        "A66B4FAF_35AD_4FF9_93DE_7E972C80C2BF",
+        "SERVICE_WAND_IMPLEMENTATION_PARTNER_FORM",
+        "SERVICE_WAND_TECHNOLOGY_PARTNER_FORM"
+      ],
+      "sourcePermissions": [],
+      "presentOnProd": false
+    },
+    {
+      "code": "REFERRAL_CHANNEL_PARTNER",
+      "owner": "SERVICEWAND",
+      "workflow": "FORM",
+      "parents": [],
+      "sourcePermissions": [],
+      "presentOnProd": false
+    },
+    {
+      "code": "REQUEST_DEMO_FORM_TYPE",
+      "owner": "SERVICEWAND",
+      "workflow": "FORM",
+      "parents": [],
+      "sourcePermissions": [],
+      "presentOnProd": false
+    },
+    {
+      "code": "SERVICEWAND_STRATEGIC_PARTNER_FORM",
+      "owner": "SERVICEWAND",
+      "workflow": "FORM",
+      "parents": [],
+      "sourcePermissions": [],
+      "presentOnProd": false
+    },
+    {
+      "code": "SERVICE_WAND_CTA_FORM_TYPE",
+      "owner": "SERVICEWAND",
+      "workflow": "FORM",
+      "parents": [],
+      "sourcePermissions": [],
+      "presentOnProd": false
+    },
+    {
+      "code": "SERVICE_WAND_IMPLEMENTATION_PARTNER_FORM",
+      "owner": "SERVICEWAND",
+      "workflow": "FORM",
+      "parents": [],
+      "sourcePermissions": [],
+      "presentOnProd": false
+    },
+    {
+      "code": "SERVICE_WAND_TECHNOLOGY_PARTNER_FORM",
+      "owner": "SERVICEWAND",
+      "workflow": "FORM",
+      "parents": [],
+      "sourcePermissions": [],
+      "presentOnProd": false
+    },
+    {
+      "code": "SNOW_REMOVAL_REQUEST_DEMO",
+      "owner": "SERVICEWAND",
+      "workflow": "FORM",
+      "parents": [],
+      "sourcePermissions": [],
+      "presentOnProd": false
+    }
+  ],
+  "organizationSettings": [
+    {
+      "template": "TEMPLATE-CORPORATE_LANDING/REQUEST_DEMO",
+      "parameter": "REQUEST_DEMO_ORGANIZATION_ID",
+      "sourceOrganizationCode": "PNI",
+      "inSuggestedPageTrees": true
+    },
+    {
+      "template": "USECASES_JTE",
+      "parameter": "ORGANIZATION_ID",
+      "sourceOrganizationCode": "PNI",
+      "inSuggestedPageTrees": true
+    },
+    {
+      "template": "CORPORATE_LANDING_JTE/REQUEST_DEMO",
+      "parameter": "REQUEST_DEMO_ORGANIZATION_ID",
+      "sourceOrganizationCode": "PNI",
+      "inSuggestedPageTrees": true
+    },
+    {
+      "template": "TEMPLATE-CORPORATE_LANDING/PARTNER_FORM",
+      "parameter": "PARTNER_ORGANIZAITON_ID",
+      "sourceOrganizationCode": "PNI",
+      "inSuggestedPageTrees": true
+    },
+    {
+      "template": "CORPORATE_LANDING_JTE/CTA",
+      "parameter": "CTA_ORGANIZATION_ID",
+      "sourceOrganizationCode": "PNI",
+      "inSuggestedPageTrees": true
+    },
+    {
+      "template": "CORPORATE_LANDING_JTE/PARTNER_FORM",
+      "parameter": "PARTNER_ORGANIZAITON_ID",
+      "sourceOrganizationCode": "PNI",
+      "inSuggestedPageTrees": true
+    },
+    {
+      "template": "TEMPLATE-CORPORATE_LANDING",
+      "parameter": "ORGANIZATION_ID",
+      "sourceOrganizationCode": "PNI",
+      "inSuggestedPageTrees": true
+    },
+    {
+      "template": "TEMPLATE-CORPORATE_LANDING/CTA",
+      "parameter": "CTA_ORGANIZATION_ID",
+      "sourceOrganizationCode": "PNI",
+      "inSuggestedPageTrees": true
+    }
+  ],
+  "media": [
+    {
+      "kind": "image",
+      "library": "SERVICEWAND_SNOW_REMOVAL_LANDING",
+      "name": "sub-manage-centrally-640.webp",
+      "bytes": 35616,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": true
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Weather Intelligence for Snow Removal The Storm Is Won Before the First Truck Moves2.png",
+      "bytes": 2336760,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Scaling a Snow Removal Business The Systems That Break Between 5 and 50 Trucks2.png",
+      "bytes": 2407138,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "SERVICEWAND_SNOW_REMOVAL_LANDING",
+      "name": "43d5053f4d.webp",
+      "bytes": 17154,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": true
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Agentic AI and the $234 Billion SaaS Question What Software Companies Need to Change1.png",
+      "bytes": 2054685,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Field Service Is Becoming a Profit Center—Software Has to Catch Up2.png",
+      "bytes": 2060460,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Field Service Scheduling Software Why Static Calendars Are Becoming Obsolete1.png",
+      "bytes": 2100169,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "FIELD_SERVICES",
+      "name": "plumbing-service-software-1280.webp",
+      "bytes": 177694,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": true
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "GPS Snow Plow Tracking Location Is Not the Same as Proof of Work1.png",
+      "bytes": 2020385,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Snow and Ice Management Software Why Plowing Is Only Half the Operation2.png",
+      "bytes": 2207235,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "1The System of Record Is Back—and AI Agents Are the Reason.png",
+      "bytes": 1753861,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "CE7A483A_42C8_4869_ADB1_98DF04D1065D",
+      "name": "image 55.jpg",
+      "bytes": 590183,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Field Service CRM vs. FSM Why Customer Data and Job Execution Can’t Live Apart1.png",
+      "bytes": 2009418,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "SERVICEWAND_SNOW_REMOVAL_LANDING",
+      "name": "46a0d3fd99.webp",
+      "bytes": 88638,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": true
+    },
+    {
+      "kind": "image",
+      "library": "SERVICEWAND_SNOW_REMOVAL_LANDING",
+      "name": "sub-manage-centrally.webp",
+      "bytes": 84582,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": true
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "MCP and the New Integration Layer Will APIs Still Be Enough1.png",
+      "bytes": 1989804,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Field Service Route Optimization Stop Optimizing Miles and Start Optimizing Outcomes2.png",
+      "bytes": 2095731,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Proof of Service for Snow Removal If You Can’t Prove It, Did It Happen2.png",
+      "bytes": 2088071,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Snow Removal App vs. Full Management Software When a Simple App Stops Being Enough1.png",
+      "bytes": 1918848,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Field Service Is Becoming a Profit Center—Software Has to Catch Up1.png",
+      "bytes": 2213975,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "SaaS Isn’t Dead. The Seat License Might Be.2.png",
+      "bytes": 1948503,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Headless Software Is Coming What Happens When AI Stops Clicking Your UI2.png",
+      "bytes": 2056516,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "SERVICEWAND_SNOW_REMOVAL_LANDING",
+      "name": "sub-info-separate-640.webp",
+      "bytes": 70956,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": true
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Your Company Doesn’t Have an AI Problem. It Has a Data and Workflow Problem.2.png",
+      "bytes": 2518308,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Snow Removal Software ROI Measure Fewer Disputes, Faster Billing and Better Route Density2.png",
+      "bytes": 2057373,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "The Rise of the Forward-Deployed Builder Why Software Companies Need People Who Understand Operations1.png",
+      "bytes": 1936662,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "CE7A483A_42C8_4869_ADB1_98DF04D1065D",
+      "name": "man-snow.webp",
+      "bytes": 93410,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "The Future of Business Software Is Invisible, Adaptive and Always Working1.png",
+      "bytes": 2983756,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Field Service Route Optimization Stop Optimizing Miles and Start Optimizing Outcomes1.png",
+      "bytes": 2112972,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Snow Removal Billing Software Stop Rebuilding the Storm in Your Invoice1.png",
+      "bytes": 2138379,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "FIELD_SERVICES",
+      "name": "cleaning-services-1280.webp",
+      "bytes": 124282,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": true
+    },
+    {
+      "kind": "image",
+      "library": "CE7A483A_42C8_4869_ADB1_98DF04D1065D",
+      "name": "Quote to Snow Web Page.webp",
+      "bytes": 119903,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Snow Removal App vs. Full Management Software When a Simple App Stops Being Enough2.png",
+      "bytes": 2125015,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "FIELD_SERVICES",
+      "name": "pest-control-operations-1280.webp",
+      "bytes": 221946,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": true
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "AI Agents Aren’t Replacing Software—They’re Rewriting What Software Has to Be1.png",
+      "bytes": 1753342,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "The Operational Data Moat Why AI Makes Your “Boring” Business Data More Valuable2.png",
+      "bytes": 2442426,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "CE7A483A_42C8_4869_ADB1_98DF04D1065D",
+      "name": "Github.svg",
+      "bytes": 2986,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "CE7A483A_42C8_4869_ADB1_98DF04D1065D",
+      "name": "Invoicing Snow Page.webp",
+      "bytes": 3778,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Proof of Service for Snow Removal If You Can’t Prove It, Did It Happen1.png",
+      "bytes": 1966747,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "SERVICEWAND_SNOW_REMOVAL_LANDING",
+      "name": "sub-field-work-640.webp",
+      "bytes": 68736,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": true
+    },
+    {
+      "kind": "image",
+      "library": "SERVICEWAND_DEFAULT",
+      "name": "Service Wand and the Argument for One Operational System2.png",
+      "bytes": 1809112,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "CE7A483A_42C8_4869_ADB1_98DF04D1065D",
+      "name": "Turn Better Operations Into Better Margins.webp",
+      "bytes": 36302,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "FIELD_SERVICES",
+      "name": "landscaping-operations-1280.webp",
+      "bytes": 244364,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": true
+    },
+    {
+      "kind": "image",
+      "library": "SERVICEWAND_SNOW_REMOVAL_LANDING",
+      "name": "394df17a2a.webp",
+      "bytes": 109084,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": true
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Build vs. Buy vs. Configure The Software Decision Founders Keep Framing Wrong1.png",
+      "bytes": 1745988,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Commercial Snow Removal Software Why One Parking Lot Can Be More Complex Than 50 Driveways2.png",
+      "bytes": 2518996,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Snow Removal Route Optimization The Shortest-Route Trap That Costs More1.png",
+      "bytes": 2101423,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "From Industry Expertise to Software How Partners Can Productize What They Know1.png",
+      "bytes": 1768068,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Snow Removal Billing Software Stop Rebuilding the Storm in Your Invoice2.png",
+      "bytes": 2058129,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Salt Tracking Software The Hidden Margin Problem in Snow and Ice Management2.png",
+      "bytes": 2174864,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "CE7A483A_42C8_4869_ADB1_98DF04D1065D",
+      "name": "Ellipse 31.png",
+      "bytes": 14565,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": true
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "The End of One-Size-Fits-All SaaS Software Is Becoming Adaptive2.png",
+      "bytes": 1759839,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Snow Removal CRM What Should You Know About a Customer Before the Snow Falls1.png",
+      "bytes": 1805509,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "The Developer Platform Wars Are Moving Up the Stack2.png",
+      "bytes": 1862485,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "SERVICEWAND_SNOW_REMOVAL_LANDING",
+      "name": "18931164fa.webp",
+      "bytes": 34788,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": true
+    },
+    {
+      "kind": "image",
+      "library": "FIELD_SERVICES",
+      "name": "field-service-hero-1122.webp",
+      "bytes": 77344,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": true
+    },
+    {
+      "kind": "image",
+      "library": "SERVICEWAND_SNOW_REMOVAL_LANDING",
+      "name": "crm-property-plan.webp",
+      "bytes": 222940,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": true
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "What Is an Operational Platform The Category Between CRM, ERP and Custom Software2.png",
+      "bytes": 1749155,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "FIELD_SERVICES",
+      "name": "male-technician-320.webp",
+      "bytes": 13326,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": true
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Field Service Dispatch Software From Drag-and-Drop Boards to AI Orchestration1.png",
+      "bytes": 2070829,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Predictive Field Service The End of Break-Fix Is Closer Than It Looks2.png",
+      "bytes": 2131432,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "CE7A483A_42C8_4869_ADB1_98DF04D1065D",
+      "name": "what-is-snow-removal-software-service-wand-platform.webp",
+      "bytes": 25824,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "AI in Snow Removal Can Software Predict What Your Dispatcher Will Need Next1.png",
+      "bytes": 2666613,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Vertical SaaS Was Version One. Vertical Operating Systems Are Next2.png",
+      "bytes": 3246448,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Field Service Automation 7 Decisions Your Team Should Stop Making Manually2.png",
+      "bytes": 2431091,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Snow Removal Contract Management Seasonal, Per-Push, Per-Inch—Without Spreadsheet Chaos1.png",
+      "bytes": 2096857,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "CE7A483A_42C8_4869_ADB1_98DF04D1065D",
+      "name": "snow-removal-management-software-commercial-route-map.webp",
+      "bytes": 170736,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "CE7A483A_42C8_4869_ADB1_98DF04D1065D",
+      "name": "Increase Revenue Without Chasing More Paperwork.webp",
+      "bytes": 58866,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "CE7A483A_42C8_4869_ADB1_98DF04D1065D",
+      "name": "service-history snow removal web page.webp",
+      "bytes": 108690,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "SERVICEWAND_SNOW_REMOVAL_LANDING",
+      "name": "98855f8899.webp",
+      "bytes": 168086,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": true
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Snow Removal Customer Notifications Why Silence During a Storm Costs Trust2.png",
+      "bytes": 2242523,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "CE7A483A_42C8_4869_ADB1_98DF04D1065D",
+      "name": "Get More Done With The Crews You Already Have.webp",
+      "bytes": 82412,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "AI in Snow Removal Can Software Predict What Your Dispatcher Will Need Next2.png",
+      "bytes": 2581075,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "The SaaS-Pocalypse Was Exaggerated. The Software Reckoning Was Not.2.png",
+      "bytes": 1814173,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Mobile Field Service Software The Real Test Starts When the Signal Disappears2.png",
+      "bytes": 2178989,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "SERVICEWAND_SNOW_REMOVAL_LANDING",
+      "name": "sub-issues-accountable-640.webp",
+      "bytes": 36308,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": true
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "The SaaS Stack Is Collapsing Why Businesses Are Replacing 10 Tools With One Operational Platform1.png",
+      "bytes": 1665268,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Snow Removal Scheduling Software The 2 A.M. Test Most Platforms Fail2.png",
+      "bytes": 2158420,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "AI Agents Need a Boss Why Orchestration Becomes the New Control Layer1.png",
+      "bytes": 1897258,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Agentic AI and the $234 Billion SaaS Question What Software Companies Need to Change2.png",
+      "bytes": 2371170,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "The Post-SaaS Interface What Software Looks Like When Humans Stop Opening Every App1.png",
+      "bytes": 1687812,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "The AI-First Field Service Company What Changes From Dispatch to Closeout1.png",
+      "bytes": 2583941,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Technician Knowledge Is Walking Out the Door Can AI Keep It Inside the Business1.png",
+      "bytes": 2050589,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "AI Agents Aren’t Replacing Software—They’re Rewriting What Software Has to Be2.png",
+      "bytes": 1862880,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "AI-Native Software What It Means When AI Is Built In, Not Bolted On1.png",
+      "bytes": 1714148,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "CE7A483A_42C8_4869_ADB1_98DF04D1065D",
+      "name": "worker phone snow page.webp",
+      "bytes": 44064,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "SERVICEWAND_SNOW_REMOVAL_LANDING",
+      "name": "sub-field-work.webp",
+      "bytes": 175906,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": true
+    },
+    {
+      "kind": "image",
+      "library": "SERVICEWAND_SNOW_REMOVAL_LANDING",
+      "name": "28b790d668.webp",
+      "bytes": 44590,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": true
+    },
+    {
+      "kind": "image",
+      "library": "FIELD_SERVICES",
+      "name": "facility-services-1280.webp",
+      "bytes": 88740,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": true
+    },
+    {
+      "kind": "image",
+      "library": "SERVICEWAND_SNOW_REMOVAL_LANDING",
+      "name": "winter-pickup-v2.webp",
+      "bytes": 155530,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": true
+    },
+    {
+      "kind": "image",
+      "library": "CE7A483A_42C8_4869_ADB1_98DF04D1065D",
+      "name": "Snow.svg",
+      "bytes": 3599,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Commercial Snow Software Gets Serious When SLAs, Sites and Liability Enter the Picture2.png",
+      "bytes": 2200036,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Snow Removal Scheduling Software The 2 A.M. Test Most Platforms Fail1.png",
+      "bytes": 1940734,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "From Industry Expertise to Software How Partners Can Productize What They Know2.png",
+      "bytes": 1736851,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "CE7A483A_42C8_4869_ADB1_98DF04D1065D",
+      "name": "Commercial Account Communication.webp",
+      "bytes": 12808,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Scaling a Snow Removal Business The Systems That Break Between 5 and 50 Trucks1.png",
+      "bytes": 1912373,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "FIELD_SERVICES",
+      "name": "appliance-repair-software-1280.webp",
+      "bytes": 94730,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": true
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Build vs. Buy vs. Configure The Software Decision Founders Keep Framing Wrong2.png",
+      "bytes": 2043327,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "CE7A483A_42C8_4869_ADB1_98DF04D1065D",
+      "name": "woman-snow.webp",
+      "bytes": 64616,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "The End of One-Size-Fits-All SaaS Software Is Becoming Adaptive1.png",
+      "bytes": 1787884,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Digital Snow Logs The Record You Need Months After the Snow Is Gone1.png",
+      "bytes": 2375123,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Commercial Snow Software Gets Serious When SLAs, Sites and Liability Enter the Picture1.png",
+      "bytes": 2127508,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "CE7A483A_42C8_4869_ADB1_98DF04D1065D",
+      "name": "Improve Customer Satisfaction During Every Snow Event.webp",
+      "bytes": 87584,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "SaaS Isn’t Dead. The Seat License Might Be.1.png",
+      "bytes": 1975384,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "FIELD_SERVICES",
+      "name": "hvac-service-platform-1280.webp",
+      "bytes": 141410,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": true
+    },
+    {
+      "kind": "image",
+      "library": "CE7A483A_42C8_4869_ADB1_98DF04D1065D",
+      "name": "main header.webp",
+      "bytes": 41318,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "FIELD_SERVICES",
+      "name": "electrical-contractor-platform-1280.webp",
+      "bytes": 158436,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": true
+    },
+    {
+      "kind": "image",
+      "library": "SERVICEWAND_SNOW_REMOVAL_LANDING",
+      "name": "sub-info-separate.webp",
+      "bytes": 194554,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": true
+    },
+    {
+      "kind": "image",
+      "library": "SERVICEWAND_SNOW_REMOVAL_LANDING",
+      "name": "4c171e80e9.webp",
+      "bytes": 25070,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": true
+    },
+    {
+      "kind": "image",
+      "library": "FIELD_SERVICES",
+      "name": "ai-automation-1280.webp",
+      "bytes": 83880,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": true
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "1Low-Code Is Not the End of Developers Why Serious Platforms Need Both.png",
+      "bytes": 1827630,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Technician Knowledge Is Walking Out the Door Can AI Keep It Inside the Business2.png",
+      "bytes": 2088013,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "FIELD_SERVICES",
+      "name": "property-maintenance-operations-1280.webp",
+      "bytes": 154278,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": true
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Headless Software Is Coming What Happens When AI Stops Clicking Your UI1.png",
+      "bytes": 1848434,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Snow Removal CRM What Should You Know About a Customer Before the Snow Falls2.png",
+      "bytes": 2046860,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "CE7A483A_42C8_4869_ADB1_98DF04D1065D",
+      "name": "service-wand-logo.svg",
+      "bytes": 11804,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": true
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Outcome-Based Pricing What Happens When AI Does the Work but Nobody Buys a Seat2.png",
+      "bytes": 1883496,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "One Data Model, Many Businesses Why Entity-Based Architecture Matters1.jpg",
+      "bytes": 569128,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Snow Removal Software in 2026 The Storm Test That Exposes Weak Platforms1.png",
+      "bytes": 2184770,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "GPS Snow Plow Tracking Location Is Not the Same as Proof of Work2.png",
+      "bytes": 2355989,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "CE7A483A_42C8_4869_ADB1_98DF04D1065D",
+      "name": "X-social.svg",
+      "bytes": 1135,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Snow Removal Customer Notifications Why Silence During a Storm Costs Trust1.png",
+      "bytes": 2262695,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "From Configuration to Compounding How Operational Software Gets Smarter Over Time2.png",
+      "bytes": 2063378,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "CE7A483A_42C8_4869_ADB1_98DF04D1065D",
+      "name": "cell phone crew arrival.webp",
+      "bytes": 97371,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Field Service Dispatch Software From Drag-and-Drop Boards to AI Orchestration2.png",
+      "bytes": 2523421,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Field Service Scheduling Software Why Static Calendars Are Becoming Obsolete2.png",
+      "bytes": 2705446,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Snow Removal Job Costing The Profit Leak Hiding Inside Every Storm1.png",
+      "bytes": 2303630,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Snow and Ice Management Software Why Plowing Is Only Half the Operation1.png",
+      "bytes": 2288917,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Snow Removal Job Costing The Profit Leak Hiding Inside Every Storm2.png",
+      "bytes": 2281596,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Commercial Snow Removal Software Why One Parking Lot Can Be More Complex Than 50 Driveways1.png",
+      "bytes": 2667844,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "The Developer Platform Wars Are Moving Up the Stack1.png",
+      "bytes": 1710680,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "What Is an Operational Platform The Category Between CRM, ERP and Custom Software1.png",
+      "bytes": 1764792,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "CE7A483A_42C8_4869_ADB1_98DF04D1065D",
+      "name": "snow-removal-scheduling-software-online-request-laptop.webp",
+      "bytes": 55870,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "The SaaS-Pocalypse Was Exaggerated. The Software Reckoning Was Not.1.png",
+      "bytes": 2012719,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Snow Removal Route Optimization The Shortest-Route Trap That Costs More2.png",
+      "bytes": 2021734,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Field Service Automation 7 Decisions Your Team Should Stop Making Manually1.png",
+      "bytes": 2545699,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "The AI-First Field Service Company What Changes From Dispatch to Closeout2.png",
+      "bytes": 2423944,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "One Data Model, Many Businesses Why Entity-Based Architecture Matters2.jpg",
+      "bytes": 502350,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "SERVICEWAND_SNOW_REMOVAL_LANDING",
+      "name": "sub-issues-accountable.webp",
+      "bytes": 106496,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": true
+    },
+    {
+      "kind": "image",
+      "library": "FIELD_SERVICES",
+      "name": "commercial-services-1280.webp",
+      "bytes": 263978,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": true
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Mobile Field Service Software The Real Test Starts When the Signal Disappears1.png",
+      "bytes": 1840878,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "FIELD_SERVICES",
+      "name": "snow-removal-software-1280.webp",
+      "bytes": 108838,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": true
+    },
+    {
+      "kind": "image",
+      "library": "SERVICEWAND_SNOW_REMOVAL_LANDING",
+      "name": "hero-snow.webp",
+      "bytes": 81858,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": true
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Field Service Management Software in 2026 What Buyers Should Actually Compare2.png",
+      "bytes": 2331708,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Digital Snow Logs The Record You Need Months After the Snow Is Gone2.png",
+      "bytes": 2183444,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Vertical SaaS Was Version One. Vertical Operating Systems Are Next1.png",
+      "bytes": 3396174,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "FIELD_SERVICES",
+      "name": "telecom-field-operations-1280.webp",
+      "bytes": 82884,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": true
+    },
+    {
+      "kind": "image",
+      "library": "CE7A483A_42C8_4869_ADB1_98DF04D1065D",
+      "name": "Rectangle 1072.jpg",
+      "bytes": 167984,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": true
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "The SaaS Stack Is Collapsing Why Businesses Are Replacing 10 Tools With One Operational Platform2.png",
+      "bytes": 1635399,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Predictive Field Service The End of Break-Fix Is Closer Than It Looks1.png",
+      "bytes": 2147015,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Snow Removal Crew Management Knowing Where Everyone Is Isn’t the Same as Knowing What’s Done2.png",
+      "bytes": 1998806,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "SERVICEWAND_SNOW_REMOVAL_LANDING",
+      "name": "efff141366.svg",
+      "bytes": 11804,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": true
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "The Rise of the Forward-Deployed Builder Why Software Companies Need People Who Understand Operations2.png",
+      "bytes": 2418212,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "AI-Native Software What It Means When AI Is Built In, Not Bolted On2.png",
+      "bytes": 2118626,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "CE7A483A_42C8_4869_ADB1_98DF04D1065D",
+      "name": "Youtube.svg",
+      "bytes": 983,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "CE7A483A_42C8_4869_ADB1_98DF04D1065D",
+      "name": "image 55.webp",
+      "bytes": 75450,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "FIELD_SERVICES",
+      "name": "female-dispatcher-320.webp",
+      "bytes": 11768,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": true
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "2The System of Record Is Back—and AI Agents Are the Reason.png",
+      "bytes": 1757226,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "AI in Field Service Management Where It Works—and Where It’s Still Hype1.png",
+      "bytes": 1816966,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "FIELD_SERVICES",
+      "name": "lawn-care-operations-1280.webp",
+      "bytes": 182186,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": true
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Snow Removal Software ROI Measure Fewer Disputes, Faster Billing and Better Route Density1.png",
+      "bytes": 2836377,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "The Post-SaaS Interface What Software Looks Like When Humans Stop Opening Every App2.png",
+      "bytes": 1740533,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "From Configuration to Compounding How Operational Software Gets Smarter Over Time1.png",
+      "bytes": 2366560,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Field Service CRM vs. FSM Why Customer Data and Job Execution Can’t Live Apart2.png",
+      "bytes": 2122376,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "The Operational Data Moat Why AI Makes Your “Boring” Business Data More Valuable1.png",
+      "bytes": 2155238,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Outcome-Based Pricing What Happens When AI Does the Work but Nobody Buys a Seat1.png",
+      "bytes": 1802700,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Snow Removal Software in 2026 The Storm Test That Exposes Weak Platforms2.png",
+      "bytes": 1846749,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Salt Tracking Software The Hidden Margin Problem in Snow and Ice Management1.png",
+      "bytes": 2298875,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Snow Removal Contract Management Seasonal, Per-Push, Per-Inch—Without Spreadsheet Chaos2.png",
+      "bytes": 2276080,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Your Company Doesn’t Have an AI Problem. It Has a Data and Workflow Problem.1.png",
+      "bytes": 2310834,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "The Next Great Software Companies May Have Fewer Users—and More Work Getting Done2.png",
+      "bytes": 2015686,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "2Low-Code Is Not the End of Developers Why Serious Platforms Need Both.png",
+      "bytes": 1930830,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Software Fragmentation Is Becoming a Competitive Liability2.png",
+      "bytes": 1889456,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "AI in Field Service Management Where It Works—and Where It’s Still Hype2.png",
+      "bytes": 1985474,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Snow Removal Crew Management Knowing Where Everyone Is Isn’t the Same as Knowing What’s Done1.png",
+      "bytes": 2237886,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "MCP and the New Integration Layer Will APIs Still Be Enough2.png",
+      "bytes": 1767526,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Weather Intelligence for Snow Removal The Storm Is Won Before the First Truck Moves1.png",
+      "bytes": 2340219,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "The Next Great Software Companies May Have Fewer Users—and More Work Getting Done1.png",
+      "bytes": 2180480,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "CE7A483A_42C8_4869_ADB1_98DF04D1065D",
+      "name": "linkedin.svg",
+      "bytes": 797,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Field Service Management Software in 2026 What Buyers Should Actually Compare1.png",
+      "bytes": 2213399,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "CE7A483A_42C8_4869_ADB1_98DF04D1065D",
+      "name": "manager-snow.webp",
+      "bytes": 67710,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "The Future of Business Software Is Invisible, Adaptive and Always Working2.png",
+      "bytes": 3175641,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "CE7A483A_42C8_4869_ADB1_98DF04D1065D",
+      "name": "pic-7.webp",
+      "bytes": 4252,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": true
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Software Fragmentation Is Becoming a Competitive Liability1.png",
+      "bytes": 1967163,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "AI Agents Need a Boss Why Orchestration Becomes the New Control Layer2.png",
+      "bytes": 1952161,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "video",
+      "library": "SERVICEWAND_SNOW_REMOVAL_LANDING",
+      "name": "27416e9786.mp4",
+      "bytes": 1043948,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": true
+    },
+    {
+      "kind": "media-asset",
+      "library": "SERVICEWAND_SNOW_REMOVAL_LANDING",
+      "name": "vela-sans-400.woff2",
+      "bytes": 55128,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": true
+    },
+    {
+      "kind": "media-asset",
+      "library": "SERVICEWAND_SNOW_REMOVAL_LANDING",
+      "name": "vela-sans-600.woff2",
+      "bytes": 55020,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": true
+    },
+    {
+      "kind": "media-asset",
+      "library": "SERVICEWAND_SNOW_REMOVAL_LANDING",
+      "name": "vela-sans-500.woff2",
+      "bytes": 54516,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": true
+    },
+    {
+      "kind": "media-asset",
+      "library": "CE7A483A_42C8_4869_ADB1_98DF04D1065D",
+      "name": "VelaSans-GX.woff2",
+      "bytes": 58792,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": true
+    },
+    {
+      "kind": "image",
+      "library": "DICTIONARIES",
+      "name": "industry-insurance-variety.webp",
+      "bytes": 179940,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": true
+    },
+    {
+      "kind": "image",
+      "library": "F549E84B-FDE8-4B9B-8162-A73F379D45C6",
+      "name": "SW_emblem_d.svg",
+      "bytes": 1405,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": true
+    },
+    {
+      "kind": "image",
+      "library": "F549E84B-FDE8-4B9B-8162-A73F379D45C6",
+      "name": "pic (1).webp",
+      "bytes": 89266,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": true
+    },
+    {
+      "kind": "image",
+      "library": "DICTIONARIES",
+      "name": "industry-retail-variety.webp",
+      "bytes": 103374,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": true
+    },
+    {
+      "kind": "image",
+      "library": "F549E84B-FDE8-4B9B-8162-A73F379D45C6",
+      "name": "pic-5 (1).png",
+      "bytes": 72288,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": true
+    },
+    {
+      "kind": "image",
+      "library": "F549E84B-FDE8-4B9B-8162-A73F379D45C6",
+      "name": "hero-bg-2.webp",
+      "bytes": 131468,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": true
+    },
+    {
+      "kind": "image",
+      "library": "F549E84B-FDE8-4B9B-8162-A73F379D45C6",
+      "name": "image 22.png",
+      "bytes": 236894,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": true
+    },
+    {
+      "kind": "image",
+      "library": "SYSTEM_ICONS_IONICONS",
+      "name": "map-outline",
+      "bytes": 743,
+      "comparison": "same-id-and-metadata; binary hash pending",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "F549E84B-FDE8-4B9B-8162-A73F379D45C6",
+      "name": "grok-image-3b9dcd06-8dae-4fc3-809f-b8319e5b0c7a 1.png",
+      "bytes": 239832,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": true
+    },
+    {
+      "kind": "image",
+      "library": "SYSTEM_ICONS_BOOTSTRAP",
+      "name": "headset",
+      "bytes": 391,
+      "comparison": "same-id-and-metadata; binary hash pending",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "F549E84B-FDE8-4B9B-8162-A73F379D45C6",
+      "name": "Frame 1321315414.svg",
+      "bytes": 2620,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": true
+    },
+    {
+      "kind": "image",
+      "library": "DICTIONARIES",
+      "name": "industry-telco-variety.webp",
+      "bytes": 192948,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": true
+    },
+    {
+      "kind": "image",
+      "library": "F549E84B-FDE8-4B9B-8162-A73F379D45C6",
+      "name": "pic.png",
+      "bytes": 1204350,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": true
+    },
+    {
+      "kind": "image",
+      "library": "F549E84B-FDE8-4B9B-8162-A73F379D45C6",
+      "name": "grok-image-3b9dcd06-8dae-4fc3-809f-b8319e5b0c7a 1 (1).png",
+      "bytes": 297272,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": true
+    },
+    {
+      "kind": "image",
+      "library": "F549E84B-FDE8-4B9B-8162-A73F379D45C6",
+      "name": "pic-3.webp",
+      "bytes": 8478,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": true
+    },
+    {
+      "kind": "image",
+      "library": "F549E84B-FDE8-4B9B-8162-A73F379D45C6",
+      "name": "X.svg",
+      "bytes": 1050,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": true
+    },
+    {
+      "kind": "image",
+      "library": "F549E84B-FDE8-4B9B-8162-A73F379D45C6",
+      "name": "pic (2).webp",
+      "bytes": 520518,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": true
+    },
+    {
+      "kind": "image",
+      "library": "F549E84B-FDE8-4B9B-8162-A73F379D45C6",
+      "name": "grok-image-c927405d-78ea-4640-bcb8-6e807c87563c 1.png",
+      "bytes": 247284,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": true
+    },
+    {
+      "kind": "image",
+      "library": "SYSTEM_ICONS_FONT_AWESOME_SOLID",
+      "name": "money-check-dollar",
+      "bytes": 1360,
+      "comparison": "same-id-and-metadata; binary hash pending",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "F549E84B-FDE8-4B9B-8162-A73F379D45C6",
+      "name": "pic-5.webp",
+      "bytes": 28776,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": true
+    },
+    {
+      "kind": "image",
+      "library": "F549E84B-FDE8-4B9B-8162-A73F379D45C6",
+      "name": "image 25.png",
+      "bytes": 231938,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": true
+    },
+    {
+      "kind": "image",
+      "library": "F549E84B-FDE8-4B9B-8162-A73F379D45C6",
+      "name": "pic-6.webp",
+      "bytes": 34622,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": true
+    },
+    {
+      "kind": "image",
+      "library": "F549E84B-FDE8-4B9B-8162-A73F379D45C6",
+      "name": "grok-image-3b9dcd06-8dae-4fc3-809f-b8319e5b0c7a 1 (2).png",
+      "bytes": 233731,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": true
+    },
+    {
+      "kind": "image",
+      "library": "SYSTEM_ICONS_FONT_AWESOME_SOLID",
+      "name": "mobile-screen-button",
+      "bytes": 483,
+      "comparison": "same-id-and-metadata; binary hash pending",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "F549E84B-FDE8-4B9B-8162-A73F379D45C6",
+      "name": "pic-1.webp",
+      "bytes": 17868,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": true
+    },
+    {
+      "kind": "image",
+      "library": "F549E84B-FDE8-4B9B-8162-A73F379D45C6",
+      "name": "hero-bg-3.webp",
+      "bytes": 42944,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": true
+    },
+    {
+      "kind": "image",
+      "library": "DICTIONARIES",
+      "name": "industry-energy-variety.webp",
+      "bytes": 198842,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": true
+    },
+    {
+      "kind": "image",
+      "library": "F549E84B-FDE8-4B9B-8162-A73F379D45C6",
+      "name": "pic (2).png",
+      "bytes": 292573,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": true
+    },
+    {
+      "kind": "image",
+      "library": "SYSTEM_CLIPART_UNDRAW",
+      "name": "adventure",
+      "bytes": 21621,
+      "comparison": "same-id-and-metadata; binary hash pending",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "DICTIONARIES",
+      "name": "industry-public-sector-variety.webp",
+      "bytes": 145138,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": true
+    },
+    {
+      "kind": "image",
+      "library": "F549E84B-FDE8-4B9B-8162-A73F379D45C6",
+      "name": "pic (3).png",
+      "bytes": 336526,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": true
+    },
+    {
+      "kind": "image",
+      "library": "SYSTEM",
+      "name": "station-jumps-out.png",
+      "bytes": 1660645,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "SYSTEM",
+      "name": "favicon-X.svg",
+      "bytes": 373,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "F549E84B-FDE8-4B9B-8162-A73F379D45C6",
+      "name": "pic-2.png",
+      "bytes": 161445,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": true
+    },
+    {
+      "kind": "image",
+      "library": "SYSTEM_ICONS_BOOTSTRAP",
+      "name": "save",
+      "bytes": 437,
+      "comparison": "same-id-and-metadata; binary hash pending",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "F549E84B-FDE8-4B9B-8162-A73F379D45C6",
+      "name": "pic (1).png",
+      "bytes": 65519,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": true
+    },
+    {
+      "kind": "image",
+      "library": "SYSTEM",
+      "name": "hero_video_poster.png",
+      "bytes": 2809716,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "SYSTEM_ICONS_FLOWBITE_ICONS_OUTLINE_MEDIA",
+      "name": "camera-photo",
+      "bytes": 432,
+      "comparison": "same-id-and-metadata; binary hash pending",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "F549E84B-FDE8-4B9B-8162-A73F379D45C6",
+      "name": "SW_emblem_g.svg",
+      "bytes": 2368,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": true
+    },
+    {
+      "kind": "image",
+      "library": "F549E84B-FDE8-4B9B-8162-A73F379D45C6",
+      "name": "hero-bg-1.webp",
+      "bytes": 581682,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": true
+    },
+    {
+      "kind": "image",
+      "library": "SYSTEM_ICONS_REMIXICON_EDITOR",
+      "name": "timeline-view",
+      "bytes": 285,
+      "comparison": "same-id-and-metadata; binary hash pending",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "F549E84B-FDE8-4B9B-8162-A73F379D45C6",
+      "name": "pic-2.webp",
+      "bytes": 34266,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": true
+    },
+    {
+      "kind": "image",
+      "library": "DICTIONARIES",
+      "name": "industry-real-estate-variety.webp",
+      "bytes": 167052,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": true
+    },
+    {
+      "kind": "image",
+      "library": "F549E84B-FDE8-4B9B-8162-A73F379D45C6",
+      "name": "pic-4 (1).png",
+      "bytes": 316295,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": true
+    },
+    {
+      "kind": "image",
+      "library": "F549E84B-FDE8-4B9B-8162-A73F379D45C6",
+      "name": "SW_emblem_w.svg",
+      "bytes": 1397,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": true
+    },
+    {
+      "kind": "image",
+      "library": "F549E84B-FDE8-4B9B-8162-A73F379D45C6",
+      "name": "pic-7.webp",
+      "bytes": 20874,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": true
+    },
+    {
+      "kind": "image",
+      "library": "F549E84B-FDE8-4B9B-8162-A73F379D45C6",
+      "name": "faq-item-shadow.png",
+      "bytes": 31745,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": true
+    },
+    {
+      "kind": "image",
+      "library": "F549E84B-FDE8-4B9B-8162-A73F379D45C6",
+      "name": "pic-12.webp",
+      "bytes": 698648,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": true
+    },
+    {
+      "kind": "image",
+      "library": "F549E84B-FDE8-4B9B-8162-A73F379D45C6",
+      "name": "linkedin.svg",
+      "bytes": 746,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": true
+    },
+    {
+      "kind": "image",
+      "library": "F549E84B-FDE8-4B9B-8162-A73F379D45C6",
+      "name": "2c71cb30dfd2108c85c3a840a2cd77c53359f240 (1).webp",
+      "bytes": 33494,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": true
+    },
+    {
+      "kind": "image",
+      "library": "F549E84B-FDE8-4B9B-8162-A73F379D45C6",
+      "name": "pic-1.webp",
+      "bytes": 38124,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": true
+    },
+    {
+      "kind": "image",
+      "library": "DICTIONARIES",
+      "name": "industry-logistics-variety.webp",
+      "bytes": 188942,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": true
+    },
+    {
+      "kind": "image",
+      "library": "F549E84B-FDE8-4B9B-8162-A73F379D45C6",
+      "name": "pic (1).png",
+      "bytes": 287757,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": true
+    },
+    {
+      "kind": "image",
+      "library": "DICTIONARIES",
+      "name": "industry-manufacturing-variety.webp",
+      "bytes": 167018,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": true
+    },
+    {
+      "kind": "image",
+      "library": "F549E84B-FDE8-4B9B-8162-A73F379D45C6",
+      "name": "Ellipse 52.png",
+      "bytes": 766,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": true
+    },
+    {
+      "kind": "image",
+      "library": "DICTIONARIES",
+      "name": "industry-healthcare-variety.webp",
+      "bytes": 65926,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": true
+    },
+    {
+      "kind": "image",
+      "library": "F549E84B-FDE8-4B9B-8162-A73F379D45C6",
+      "name": "Github.svg",
+      "bytes": 2990,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": true
+    },
+    {
+      "kind": "image",
+      "library": "F549E84B-FDE8-4B9B-8162-A73F379D45C6",
+      "name": "pic-13.webp",
+      "bytes": 57490,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": true
+    },
+    {
+      "kind": "image",
+      "library": "F549E84B-FDE8-4B9B-8162-A73F379D45C6",
+      "name": "grok-image-3b9dcd06-8dae-4fc3-809f-b8319e5b0c7a 1 (3).png",
+      "bytes": 263419,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": true
+    },
+    {
+      "kind": "image",
+      "library": "F549E84B-FDE8-4B9B-8162-A73F379D45C6",
+      "name": "pic-3.png",
+      "bytes": 60902,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": true
+    },
+    {
+      "kind": "image",
+      "library": "F549E84B-FDE8-4B9B-8162-A73F379D45C6",
+      "name": "pic-3.webp",
+      "bytes": 34588,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": true
+    },
+    {
+      "kind": "image",
+      "library": "SYSTEM_ICONS_REMIXICON_COMMUNICATION",
+      "name": "message-2-line",
+      "bytes": 303,
+      "comparison": "same-id-and-metadata; binary hash pending",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "F549E84B-FDE8-4B9B-8162-A73F379D45C6",
+      "name": "pic.png",
+      "bytes": 294357,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": true
+    },
+    {
+      "kind": "image",
+      "library": "F549E84B-FDE8-4B9B-8162-A73F379D45C6",
+      "name": "pic-7.webp",
+      "bytes": 4252,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": true
+    },
+    {
+      "kind": "image",
+      "library": "DICTIONARIES",
+      "name": "industry-finance-variety.webp",
+      "bytes": 75778,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": true
+    },
+    {
+      "kind": "image",
+      "library": "F549E84B-FDE8-4B9B-8162-A73F379D45C6",
+      "name": "pic-2.webp",
+      "bytes": 8470,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": true
+    },
+    {
+      "kind": "image",
+      "library": "F549E84B-FDE8-4B9B-8162-A73F379D45C6",
+      "name": "Youtube.svg",
+      "bytes": 788,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": true
+    },
+    {
+      "kind": "image",
+      "library": "F549E84B-FDE8-4B9B-8162-A73F379D45C6",
+      "name": "pic-4.webp",
+      "bytes": 53076,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": true
+    },
+    {
+      "kind": "image",
+      "library": "F549E84B-FDE8-4B9B-8162-A73F379D45C6",
+      "name": "Ellipse 31.png",
+      "bytes": 15202,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": true
+    },
+    {
+      "kind": "image",
+      "library": "F549E84B-FDE8-4B9B-8162-A73F379D45C6",
+      "name": "pic (3).webp",
+      "bytes": 117248,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": true
+    },
+    {
+      "kind": "image",
+      "library": "SYSTEM_ICONS",
+      "name": "pni-outline",
+      "bytes": 2354,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "image",
+      "library": "F549E84B-FDE8-4B9B-8162-A73F379D45C6",
+      "name": "pic-4.webp",
+      "bytes": 7166,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": true
+    },
+    {
+      "kind": "image",
+      "library": "F549E84B-FDE8-4B9B-8162-A73F379D45C6",
+      "name": "image 9.png",
+      "bytes": 240562,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": true
+    },
+    {
+      "kind": "image",
+      "library": "SYSTEM_ICONS_FONT_AWESOME_SOLID",
+      "name": "snowplow",
+      "bytes": 1077,
+      "comparison": "same-id-and-metadata; binary hash pending",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "video",
+      "library": "SYSTEM",
+      "name": "pni-space.webm",
+      "bytes": 1275329,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": false
+    },
+    {
+      "kind": "media-asset",
+      "library": "F549E84B-FDE8-4B9B-8162-A73F379D45C6",
+      "name": "4-t.json",
+      "bytes": 72403,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": true
+    },
+    {
+      "kind": "media-asset",
+      "library": "F549E84B-FDE8-4B9B-8162-A73F379D45C6",
+      "name": "VelaSans-Medium.woff2",
+      "bytes": 54516,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": true
+    },
+    {
+      "kind": "media-asset",
+      "library": "F549E84B-FDE8-4B9B-8162-A73F379D45C6",
+      "name": "3-t.json",
+      "bytes": 93322,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": true
+    },
+    {
+      "kind": "media-asset",
+      "library": "F549E84B-FDE8-4B9B-8162-A73F379D45C6",
+      "name": "1.json",
+      "bytes": 59884,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": true
+    },
+    {
+      "kind": "media-asset",
+      "library": "F549E84B-FDE8-4B9B-8162-A73F379D45C6",
+      "name": "3.json",
+      "bytes": 93045,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": true
+    },
+    {
+      "kind": "media-asset",
+      "library": "F549E84B-FDE8-4B9B-8162-A73F379D45C6",
+      "name": "VelaSans-Bold.woff2",
+      "bytes": 54940,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": true
+    },
+    {
+      "kind": "media-asset",
+      "library": "F549E84B-FDE8-4B9B-8162-A73F379D45C6",
+      "name": "2.json",
+      "bytes": 76894,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": true
+    },
+    {
+      "kind": "media-asset",
+      "library": "F549E84B-FDE8-4B9B-8162-A73F379D45C6",
+      "name": "5-t.json",
+      "bytes": 96158,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": true
+    },
+    {
+      "kind": "media-asset",
+      "library": "F549E84B-FDE8-4B9B-8162-A73F379D45C6",
+      "name": "dynamic-form.js",
+      "bytes": 152557,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": true
+    },
+    {
+      "kind": "media-asset",
+      "library": "F549E84B-FDE8-4B9B-8162-A73F379D45C6",
+      "name": "dynamic-form.css",
+      "bytes": 41588,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": true
+    },
+    {
+      "kind": "media-asset",
+      "library": "F549E84B-FDE8-4B9B-8162-A73F379D45C6",
+      "name": "2-t.json",
+      "bytes": 89087,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": true
+    },
+    {
+      "kind": "media-asset",
+      "library": "F549E84B-FDE8-4B9B-8162-A73F379D45C6",
+      "name": "VelaSans-SemiBold.woff2",
+      "bytes": 55020,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": true
+    },
+    {
+      "kind": "media-asset",
+      "library": "F549E84B-FDE8-4B9B-8162-A73F379D45C6",
+      "name": "1-t.json",
+      "bytes": 61696,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": true
+    },
+    {
+      "kind": "media-asset",
+      "library": "F549E84B-FDE8-4B9B-8162-A73F379D45C6",
+      "name": "5.json",
+      "bytes": 96141,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": true
+    },
+    {
+      "kind": "media-asset",
+      "library": "F549E84B-FDE8-4B9B-8162-A73F379D45C6",
+      "name": "VelaSans-Regular.woff2",
+      "bytes": 55128,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": true
+    },
+    {
+      "kind": "media-asset",
+      "library": "F549E84B-FDE8-4B9B-8162-A73F379D45C6",
+      "name": "4.json",
+      "bytes": 72035,
+      "comparison": "no same-source-id on prod; resolve library/name/hash before import",
+      "inSuggestedPageTrees": true
+    }
+  ],
+  "unresolvedMedia": [
+    {
+      "id": "644629eb-b114-46a9-96cf-ddcb34ce22f1",
+      "path": "/core/api/media-asset/644629eb-b114-46a9-96cf-ddcb34ce22f1/get",
+      "status": 404,
+      "templates": [
+        "USECASES_JTE",
+        "BLOG_POST_JTE"
+      ],
+      "selectedTemplates": [
+        "USECASES_JTE"
+      ],
+      "blogContentReferences": 0
+    },
+    {
+      "id": "54f89a8f-9476-4c00-b4cd-f8afc1af8df6",
+      "path": "/core/api/media-asset/54f89a8f-9476-4c00-b4cd-f8afc1af8df6/get",
+      "status": 404,
+      "templates": [
+        "USECASES_JTE",
+        "BLOG_POST_JTE"
+      ],
+      "selectedTemplates": [
+        "USECASES_JTE"
+      ],
+      "blogContentReferences": 0
+    },
+    {
+      "id": "e83bc96d-1845-4970-94f0-4778799235dc",
+      "path": "/core/api/media/e83bc96d-1845-4970-94f0-4778799235dc/stream",
+      "status": 404,
+      "templates": [
+        "CORPORATE_WEBSITE_TEMPLATE"
+      ],
+      "selectedTemplates": [],
+      "blogContentReferences": 0
+    },
+    {
+      "id": "968baf0c-2309-41ad-b67f-ba27c93e1e14",
+      "path": "/core/api/media/968baf0c-2309-41ad-b67f-ba27c93e1e14/stream",
+      "status": 404,
+      "templates": [
+        "CORPORATE_WEBSITE_TEMPLATE"
+      ],
+      "selectedTemplates": [],
+      "blogContentReferences": 0
+    },
+    {
+      "id": "3363653c-4782-4eb9-92c4-4bd7df85a0f0",
+      "path": "/core/image/3363653c-4782-4eb9-92c4-4bd7df85a0f0/get",
+      "status": 200,
+      "templates": [
+        "CORPORATE_WEBSITE_TEMPLATE/CORPORATE_WEBSITE_REQUEST_DEMO_SECTION",
+        "TEMPLATE-CORPORATE_LANDING/TERMS_AND_CONDITIONS",
+        "CORPORATE_WEBSITE_TEMPLATE/E53C9520_DBEF_47A2_A202_0762B2F439F9",
+        "TEMPLATE-CORPORATE_LANDING/PRIVACY_POLICY",
+        "CORPORATE_WEBSITE_TEMPLATE/60C38991_79EB_4CED_90B7_92006A7B1DC7"
+      ],
+      "selectedTemplates": [
+        "TEMPLATE-CORPORATE_LANDING/PRIVACY_POLICY",
+        "TEMPLATE-CORPORATE_LANDING/TERMS_AND_CONDITIONS"
+      ],
+      "blogContentReferences": 0
+    },
+    {
+      "id": "1ebd019f-4662-49c7-8716-af4220f93a9f",
+      "path": "/core/image/1ebd019f-4662-49c7-8716-af4220f93a9f/get",
+      "status": 200,
+      "templates": [
+        "CORPORATE_WEBSITE_TEMPLATE/CORPORATE_WEBSITE_REQUEST_DEMO_SECTION",
+        "TEMPLATE-CORPORATE_LANDING/TERMS_AND_CONDITIONS",
+        "CORPORATE_WEBSITE_TEMPLATE/E53C9520_DBEF_47A2_A202_0762B2F439F9",
+        "TEMPLATE-CORPORATE_LANDING/PRIVACY_POLICY",
+        "CORPORATE_WEBSITE_TEMPLATE/60C38991_79EB_4CED_90B7_92006A7B1DC7"
+      ],
+      "selectedTemplates": [
+        "TEMPLATE-CORPORATE_LANDING/PRIVACY_POLICY",
+        "TEMPLATE-CORPORATE_LANDING/TERMS_AND_CONDITIONS"
+      ],
+      "blogContentReferences": 0
+    },
+    {
+      "id": "140b48ad-1bde-4907-b491-1b431ed7f0c4",
+      "path": "/core/api/media-asset/140b48ad-1bde-4907-b491-1b431ed7f0c4/get",
+      "status": 404,
+      "templates": [
+        "TEMPLATE-CORPORATE_LANDING"
+      ],
+      "selectedTemplates": [
+        "TEMPLATE-CORPORATE_LANDING"
+      ],
+      "blogContentReferences": 0
+    },
+    {
+      "id": "5876bd0d-0208-406a-8ba7-0560cec40bc3",
+      "path": "/core/api/media-asset/5876bd0d-0208-406a-8ba7-0560cec40bc3/get",
+      "status": 404,
+      "templates": [
+        "TEMPLATE-CORPORATE_LANDING"
+      ],
+      "selectedTemplates": [
+        "TEMPLATE-CORPORATE_LANDING"
+      ],
+      "blogContentReferences": 0
+    },
+    {
+      "id": "fcd25906-1c37-40b9-85b1-cbd43e5c09cd",
+      "path": "/core/api/media-asset/fcd25906-1c37-40b9-85b1-cbd43e5c09cd/get",
+      "status": 404,
+      "templates": [
+        "VERTICAL_LANDING_JTE"
+      ],
+      "selectedTemplates": [
+        "VERTICAL_LANDING_JTE"
+      ],
+      "blogContentReferences": 0
+    },
+    {
+      "id": "74912247-1d10-4787-a2ef-d9874316f72d",
+      "path": "/core/api/media-asset/74912247-1d10-4787-a2ef-d9874316f72d/get",
+      "status": 404,
+      "templates": [
+        "VERTICAL_LANDING_JTE"
+      ],
+      "selectedTemplates": [
+        "VERTICAL_LANDING_JTE"
+      ],
+      "blogContentReferences": 0
+    },
+    {
+      "id": "bbc735d9-c197-49fa-841a-c3b8b2ed2709",
+      "path": "/core/image/bbc735d9-c197-49fa-841a-c3b8b2ed2709/get/Service%20Wand%20and%20the%20Argument%20for%20One%20Operational%20System1.png?width=640&amp;fit=true",
+      "status": 200,
+      "templates": [],
+      "selectedTemplates": [],
+      "blogContentReferences": 1
+    }
+  ],
+  "publicProbes": [
+    {
+      "host": "servicewand.com",
+      "path": "/core-cms/api/form-type/REQUEST_DEMO_FORM_TYPE/get.json",
+      "status": 200,
+      "type": "application/json",
+      "bytes": 10351,
+      "redirect": null
+    },
+    {
+      "host": "servicewand.com",
+      "path": "/core-pim/public/SERVICEWAND/catalog/price-comparison.json",
+      "status": 200,
+      "type": "application/json",
+      "bytes": 139608,
+      "redirect": null
+    },
+    {
+      "host": "servicewand.com",
+      "path": "/core-cms/public/SERVICEWAND/blog-post/list.json",
+      "status": 200,
+      "type": "application/json",
+      "bytes": 765,
+      "redirect": null
+    },
+    {
+      "host": "servicewand.com",
+      "path": "/core-cms/pages/SERVICEWAND/index.html",
+      "status": 301,
+      "type": null,
+      "bytes": 0,
+      "redirect": "https://servicewand.com/index.html?locale=en"
+    },
+    {
+      "host": "prod.servicewand.com",
+      "path": "/core-cms/api/form-type/REQUEST_DEMO_FORM_TYPE/get.json",
+      "status": 404,
+      "type": null,
+      "bytes": 0,
+      "redirect": null
+    },
+    {
+      "host": "prod.servicewand.com",
+      "path": "/core-pim/public/SERVICEWAND/catalog/price-comparison.json",
+      "status": 200,
+      "type": "application/json",
+      "bytes": 93655,
+      "redirect": null
+    },
+    {
+      "host": "prod.servicewand.com",
+      "path": "/core-cms/public/SERVICEWAND/blog-post/list.json",
+      "status": 200,
+      "type": "application/json",
+      "bytes": 28,
+      "redirect": null
+    },
+    {
+      "host": "prod.servicewand.com",
+      "path": "/core-cms/pages/SERVICEWAND/index.html",
+      "status": 301,
+      "type": null,
+      "bytes": 0,
+      "redirect": "https://prod.servicewand.com/index.html?locale=en"
+    }
+  ],
+  "prodSummary": {
+    "pages": 3,
+    "templates": 3,
+    "formTypes": 10,
+    "blogPosts": 0,
+    "blogCategories": 0,
+    "FORMpresent": false
+  },
+  "blockers": [
+    "Six 404 CSS/JS references affect proposed page trees; two additional 404 references belong to an unselected legacy tree. Restore correct versions or approve compatible replacements.",
+    "DynamicForm uses hardcoded source origin in some blocks and source organization IDs/defaults. Resolve target by organization code and choose intended destination before form launch.",
+    "Three public image URLs return 200 but metadata lookup did not resolve them; obtain canonical originals/identity before final media package."
+  ],
+  "launchDecisions": [
+    "Confirm public host/routing, canonical URLs and redirects before DNS cutover; inventory only observed application redirects.",
+    "Confirm proposed omission of test/legacy/old-blog/PNI page and preservation of existing AUTH."
+  ],
+  "limits": [
+    "No form submission, workflow event or server write performed.",
+    "No binary hash equality claimed for shared prod media.",
+    "No DNS/proxy configuration access; domain cutover is not verified.",
+    "Literal reference analysis cannot prove absence of dynamic references.",
+    "No rendered-page or production E2E test."
+  ],
+  "followUp": {
+    "document": "BLOCKER-DETAILS.md",
+    "domainDecision": "Backend switches servicewand.com to target after migration; final public hostname unchanged.",
+    "effectiveForms": [
+      {
+        "page": "/request-demo.html",
+        "block": "REQUEST_DEMO",
+        "formType": "GENERAL_PARTNERS_FORM",
+        "organization": "SERVICEWAND",
+        "parameter": "REQUEST_DEMO_ORGANIZATION_ID"
+      },
+      {
+        "page": "/partner.html",
+        "block": "PARTNER_FORM",
+        "formType": "GENERAL_PARTNERS_FORM",
+        "organization": "PNI",
+        "parameter": "PARTNER_ORGANIZAITON_ID"
+      },
+      {
+        "page": "/index.html",
+        "block": "CTA",
+        "formType": "GENERAL_PARTNERS_FORM",
+        "organization": "PNI",
+        "parameter": "CTA_ORGANIZATION_ID"
+      },
+      {
+        "page": "/form-test.html",
+        "block": "REQUEST_DEMO",
+        "formType": "SERVICE_WAND_IMPLEMENTATION_PARTNER_FORM",
+        "organization": "PNI",
+        "parameter": "REQUEST_DEMO_ORGANIZATION_ID"
+      },
+      {
+        "page": "/snow-removal-request-demo.html",
+        "block": "REQUEST_DEMO",
+        "formType": "SNOW_REMOVAL_REQUEST_DEMO",
+        "organization": "SERVICEWAND",
+        "parameter": "REQUEST_DEMO_ORGANIZATION_ID"
+      },
+      {
+        "page": "/field-service-early-access.html",
+        "block": "REQUEST_DEMO",
+        "formType": "FIELD_SERVICE_EARLY_ACCESS",
+        "organization": "PNI",
+        "parameter": "REQUEST_DEMO_ORGANIZATION_ID"
+      }
+    ],
+    "imageResponses": [
+      {
+        "id": "3363653c-4782-4eb9-92c4-4bd7df85a0f0",
+        "status": 200,
+        "type": "image/gif",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "magic": ""
+      },
+      {
+        "id": "1ebd019f-4662-49c7-8716-af4220f93a9f",
+        "status": 200,
+        "type": "image/gif",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "magic": ""
+      },
+      {
+        "id": "bbc735d9-c197-49fa-841a-c3b8b2ed2709",
+        "status": 200,
+        "type": "image/gif",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "magic": ""
+      }
+    ],
+    "assessment": "Previous blockers narrowed: two missing backgrounds are legacy-only or unused defaults; missing CSS/JS have no DynamicForm consumers in enabled blocks on the three affected pages, but rendering and dynamic consumers remain unchecked.",
+    "blogImageCandidate": {
+      "name": "Service Wand and the Argument for One Operational System1.png",
+      "identityVerified": false
+    },
+    "serversChanged": false
+  }
+}

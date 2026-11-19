@@ -1,0 +1,36 @@
+{
+  "status": "deployed-and-verified",
+  "origin": "https://prod.servicewand.com",
+  "completedAt": "2026-11-17T17:18:05.125Z",
+  "serverWrites": true,
+  "domainSwitched": false,
+  "pricesChanged": false,
+  "usersCreated": false,
+  "operationsComplete": 306,
+  "posts": 77,
+  "enabledPosts": 60,
+  "disabledPosts": 17,
+  "contents": 75,
+  "categories": 4,
+  "blocks": 8,
+  "pages": 2,
+  "mediaDependencies": 126,
+  "mediaUploaded": 123,
+  "mediaReused": 3,
+  "librariesCreated": 4,
+  "librariesReused": 2,
+  "temporaryNickSasPosts": 64,
+  "superUserPosts": 13,
+  "configurationChecks": 172,
+  "unchangedPriorPagesAndBlocks": 74,
+  "publicPagesChecked": 61,
+  "publicMediaChecked": 126,
+  "unresolvedDeploymentErrors": [],
+  "deferred": [
+    {
+      "permalink": "/blog/service-wand-one-operational-system",
+      "enabled": false,
+      "reason": "Missing illustration and author avatar; excluded as requested"
+    }
+  ]
+}

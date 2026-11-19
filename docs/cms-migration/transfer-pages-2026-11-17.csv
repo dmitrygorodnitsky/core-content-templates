@@ -1,0 +1,25 @@
+organization,site,url,template,action,reason
+SERVICEWAND,,/request-demo.html,CORPORATE_LANDING_JTE,proposed-transfer,
+SERVICEWAND,,/error.html,CORPORATE_LANDING_JTE,proposed-transfer,
+SERVICEWAND,,/partner.html,CORPORATE_LANDING_JTE,proposed-transfer,
+SERVICEWAND,,/index.html,CORPORATE_LANDING_JTE,proposed-transfer,
+SERVICEWAND,,/privacy-policy.html,CORPORATE_LANDING_JTE,proposed-transfer,
+SERVICEWAND,,/terms-and-conditions.html,CORPORATE_LANDING_JTE,proposed-transfer,
+SERVICEWAND,,/success.html,CORPORATE_LANDING_JTE,proposed-transfer,
+SERVICEWAND,,/documentation/introduction.html,CORPORATE_LANDING_JTE,proposed-transfer,
+SERVICEWAND,,/documentation/overview.html,TEMPLATE-CORPORATE_LANDING,proposed-transfer,
+SERVICEWAND,,/use-cases.html,USECASES_JTE,proposed-transfer,
+SERVICEWAND,,/form-test.html,CORPORATE_LANDING_JTE,scope-review,test page
+SERVICEWAND,,/blog.html,BLOG_POST_JTE,scope-review,old blog shell; review alongside /blogs and /blog
+SERVICEWAND,,/internal/legacy/snow-removal-software-vertical-landing,VERTICAL_LANDING_JTE,scope-review,explicit legacy page
+PNI,,/snow,VERTICAL_LANDING_JTE,scope-review,separate PNI page
+SERVICEWAND,,/industries/field-service,FIELD_SERVICE_LANDING,proposed-transfer,
+SERVICEWAND,,/snow-removal-request-demo.html,CORPORATE_LANDING_JTE,proposed-transfer,
+SERVICEWAND,,/field-service-early-access.html,CORPORATE_LANDING_JTE,proposed-transfer,
+SERVICEWAND,,/industries/field-service/landscaping-software,VERTICAL_LANDING_JTE,proposed-transfer,
+SYSTEM,AUTH,/auth/login.html,AUTH_LOGIN_SAMPLE,reuse-existing,
+SYSTEM,AUTH,/auth/2fa.html,AUTH_2FA_SAMPLE,reuse-existing,
+SERVICEWAND,,/blogs,FIELD_SERVICE_BLOG_INDEX_ROOT,proposed-transfer,
+SERVICEWAND,,/blog,FIELD_SERVICE_BLOG_POST_ROOT,proposed-transfer,
+SERVICEWAND,,/industries/field-service/snow-removal-software,SNOW_REMOVAL_LANDING,proposed-transfer,
+SERVICEWAND,,/industries/field-service/snow-removal-software-new,SNOW_REMOVAL_LANDING_NEW_REDIRECT,proposed-transfer,

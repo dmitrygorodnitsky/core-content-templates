@@ -1,0 +1,3760 @@
+{
+  "source": "https://servicewand.com",
+  "readAt": "2026-11-17T14:01:17.290Z",
+  "serversChanged": false,
+  "counts": {
+    "pages": 24,
+    "templates": 192,
+    "rootTrees": 15,
+    "pageReferencedTrees": 12,
+    "blocksInPageTrees": 159,
+    "blocksOutsidePageTrees": 33,
+    "formTypes": 13,
+    "blogPosts": 79,
+    "enabledBlogPosts": 61,
+    "disabledBlogPosts": 18,
+    "localizedBlogContentRecords": 77,
+    "blogCategories": 4,
+    "blogTags": 0,
+    "mediaLibrariesAll": 84,
+    "servicewandMediaLibraries": 8,
+    "servicewandMediaFiles": 253,
+    "servicewandMediaBytes": 334586575
+  },
+  "roots": [
+    {
+      "code": "USECASES_JTE",
+      "organization": "SYSTEM",
+      "blocks": 12,
+      "pages": [
+        "/use-cases.html"
+      ]
+    },
+    {
+      "code": "CORPORATE_WEBSITE_TEMPLATE",
+      "organization": "SYSTEM",
+      "blocks": 24,
+      "pages": []
+    },
+    {
+      "code": "SNOW_REMOVAL_LANDING",
+      "organization": "SYSTEM",
+      "blocks": 4,
+      "pages": [
+        "/industries/field-service/snow-removal-software"
+      ]
+    },
+    {
+      "code": "BLOG_POST_JTE",
+      "organization": "SYSTEM",
+      "blocks": 12,
+      "pages": [
+        "/blog.html"
+      ]
+    },
+    {
+      "code": "CORPORATE_LANDING_JTE",
+      "organization": "SYSTEM",
+      "blocks": 35,
+      "pages": [
+        "/request-demo.html",
+        "/error.html",
+        "/partner.html",
+        "/index.html",
+        "/privacy-policy.html",
+        "/terms-and-conditions.html",
+        "/success.html",
+        "/documentation/introduction.html",
+        "/form-test.html",
+        "/snow-removal-request-demo.html",
+        "/field-service-early-access.html"
+      ]
+    },
+    {
+      "code": "FIELD_SERVICE_BLOG_POST_ROOT",
+      "organization": "SYSTEM",
+      "blocks": 4,
+      "pages": [
+        "/blog"
+      ]
+    },
+    {
+      "code": "CORE_WEATHER_SAMPLE",
+      "organization": "SYSTEM",
+      "blocks": 2,
+      "pages": []
+    },
+    {
+      "code": "FIELD_SERVICE_LANDING",
+      "organization": "SYSTEM",
+      "blocks": 15,
+      "pages": [
+        "/industries/field-service"
+      ]
+    },
+    {
+      "code": "FIELD_SERVICE_BLOG_INDEX_ROOT",
+      "organization": "SERVICEWAND",
+      "blocks": 4,
+      "pages": [
+        "/blogs"
+      ]
+    },
+    {
+      "code": "AUTH_LOGIN_SAMPLE",
+      "organization": "SYSTEM",
+      "blocks": 1,
+      "pages": [
+        "/auth/login.html"
+      ]
+    },
+    {
+      "code": "AUTH_2FA_SAMPLE",
+      "organization": "SYSTEM",
+      "blocks": 1,
+      "pages": [
+        "/auth/2fa.html"
+      ]
+    },
+    {
+      "code": "TEMPLATE-BASIC_TEMPLATE",
+      "organization": "SYSTEM",
+      "blocks": 7,
+      "pages": []
+    },
+    {
+      "code": "SNOW_REMOVAL_LANDING_NEW_REDIRECT",
+      "organization": "SYSTEM",
+      "blocks": 1,
+      "pages": [
+        "/industries/field-service/snow-removal-software-new"
+      ]
+    },
+    {
+      "code": "TEMPLATE-CORPORATE_LANDING",
+      "organization": "SYSTEM",
+      "blocks": 36,
+      "pages": [
+        "/documentation/overview.html"
+      ]
+    },
+    {
+      "code": "VERTICAL_LANDING_JTE",
+      "organization": "SYSTEM",
+      "blocks": 34,
+      "pages": [
+        "/internal/legacy/snow-removal-software-vertical-landing",
+        "/snow",
+        "/industries/field-service/landscaping-software"
+      ]
+    }
+  ],
+  "pages": [
+    {
+      "organization": "SERVICEWAND",
+      "site": null,
+      "url": "/request-demo.html",
+      "template": "CORPORATE_LANDING_JTE",
+      "enabledTemplateCount": 11
+    },
+    {
+      "organization": "SERVICEWAND",
+      "site": null,
+      "url": "/error.html",
+      "template": "CORPORATE_LANDING_JTE",
+      "enabledTemplateCount": 11
+    },
+    {
+      "organization": "SERVICEWAND",
+      "site": null,
+      "url": "/partner.html",
+      "template": "CORPORATE_LANDING_JTE",
+      "enabledTemplateCount": 11
+    },
+    {
+      "organization": "SERVICEWAND",
+      "site": null,
+      "url": "/index.html",
+      "template": "CORPORATE_LANDING_JTE",
+      "enabledTemplateCount": 28
+    },
+    {
+      "organization": "SERVICEWAND",
+      "site": null,
+      "url": "/privacy-policy.html",
+      "template": "CORPORATE_LANDING_JTE",
+      "enabledTemplateCount": 11
+    },
+    {
+      "organization": "SERVICEWAND",
+      "site": null,
+      "url": "/terms-and-conditions.html",
+      "template": "CORPORATE_LANDING_JTE",
+      "enabledTemplateCount": 11
+    },
+    {
+      "organization": "SERVICEWAND",
+      "site": null,
+      "url": "/success.html",
+      "template": "CORPORATE_LANDING_JTE",
+      "enabledTemplateCount": 11
+    },
+    {
+      "organization": "SERVICEWAND",
+      "site": null,
+      "url": "/documentation/introduction.html",
+      "template": "CORPORATE_LANDING_JTE",
+      "enabledTemplateCount": 10
+    },
+    {
+      "organization": "SERVICEWAND",
+      "site": null,
+      "url": "/documentation/overview.html",
+      "template": "TEMPLATE-CORPORATE_LANDING",
+      "enabledTemplateCount": 10
+    },
+    {
+      "organization": "SERVICEWAND",
+      "site": null,
+      "url": "/use-cases.html",
+      "template": "USECASES_JTE",
+      "enabledTemplateCount": 11
+    },
+    {
+      "organization": "SERVICEWAND",
+      "site": null,
+      "url": "/form-test.html",
+      "template": "CORPORATE_LANDING_JTE",
+      "enabledTemplateCount": 11
+    },
+    {
+      "organization": "SERVICEWAND",
+      "site": null,
+      "url": "/blog.html",
+      "template": "BLOG_POST_JTE",
+      "enabledTemplateCount": 11
+    },
+    {
+      "organization": "SERVICEWAND",
+      "site": null,
+      "url": "/internal/legacy/snow-removal-software-vertical-landing",
+      "template": "VERTICAL_LANDING_JTE",
+      "enabledTemplateCount": 33
+    },
+    {
+      "organization": "PNI",
+      "site": null,
+      "url": "/snow",
+      "template": "VERTICAL_LANDING_JTE",
+      "enabledTemplateCount": 2
+    },
+    {
+      "organization": "SERVICEWAND",
+      "site": null,
+      "url": "/industries/field-service",
+      "template": "FIELD_SERVICE_LANDING",
+      "enabledTemplateCount": 14
+    },
+    {
+      "organization": "SERVICEWAND",
+      "site": null,
+      "url": "/snow-removal-request-demo.html",
+      "template": "CORPORATE_LANDING_JTE",
+      "enabledTemplateCount": 11
+    },
+    {
+      "organization": "SERVICEWAND",
+      "site": null,
+      "url": "/field-service-early-access.html",
+      "template": "CORPORATE_LANDING_JTE",
+      "enabledTemplateCount": 11
+    },
+    {
+      "organization": "SERVICEWAND",
+      "site": null,
+      "url": "/industries/field-service/landscaping-software",
+      "template": "VERTICAL_LANDING_JTE",
+      "enabledTemplateCount": 33
+    },
+    {
+      "organization": "SYSTEM",
+      "site": "AUTH",
+      "url": "/auth/login.html",
+      "template": "AUTH_LOGIN_SAMPLE",
+      "enabledTemplateCount": 0
+    },
+    {
+      "organization": "SYSTEM",
+      "site": "AUTH",
+      "url": "/auth/2fa.html",
+      "template": "AUTH_2FA_SAMPLE",
+      "enabledTemplateCount": 0
+    },
+    {
+      "organization": "SERVICEWAND",
+      "site": null,
+      "url": "/blogs",
+      "template": "FIELD_SERVICE_BLOG_INDEX_ROOT",
+      "enabledTemplateCount": 3
+    },
+    {
+      "organization": "SERVICEWAND",
+      "site": null,
+      "url": "/blog",
+      "template": "FIELD_SERVICE_BLOG_POST_ROOT",
+      "enabledTemplateCount": 3
+    },
+    {
+      "organization": "SERVICEWAND",
+      "site": null,
+      "url": "/industries/field-service/snow-removal-software",
+      "template": "SNOW_REMOVAL_LANDING",
+      "enabledTemplateCount": 3
+    },
+    {
+      "organization": "SERVICEWAND",
+      "site": null,
+      "url": "/industries/field-service/snow-removal-software-new",
+      "template": "SNOW_REMOVAL_LANDING_NEW_REDIRECT",
+      "enabledTemplateCount": 0
+    }
+  ],
+  "templates": [
+    {
+      "path": "CORPORATE_LANDING_JTE/FAQ",
+      "code": "FAQ",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": true,
+      "sha256": "8f298ccc1bb8da9014da8c1ddb14712ed64aac26a7dec858f6a3fa1943c17121"
+    },
+    {
+      "path": "TEMPLATE-CORPORATE_LANDING/REQUEST_DEMO",
+      "code": "REQUEST_DEMO",
+      "organization": "SYSTEM",
+      "language": "JSP",
+      "inPageTree": true,
+      "sha256": "c55c69c416da2cdb3e7f52db9b6d45d010b0bfbd8874a6bb4d0993d6d593e7ff"
+    },
+    {
+      "path": "VERTICAL_LANDING_JTE/REQUEST_QUOTE",
+      "code": "REQUEST_QUOTE",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": true,
+      "sha256": "e24532ce1594bd0f5c0dd43248dcc1622116bca5ae10351eb8a61126330099e0"
+    },
+    {
+      "path": "BLOG_POST_JTE/FOOTER/FOOTER_CONTACTS",
+      "code": "FOOTER_CONTACTS",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": true,
+      "sha256": "05c0e6a61472c8721a76b3ee60bba62d41da811d3eb21bea53bb84ad75e533d7"
+    },
+    {
+      "path": "TEMPLATE-CORPORATE_LANDING/HEADER",
+      "code": "HEADER",
+      "organization": "SYSTEM",
+      "language": "JSP",
+      "inPageTree": true,
+      "sha256": "7dae6430d0e630fdd82ccb98d4d054c629039b53e9dcc0c73d5e2c687265f4ef"
+    },
+    {
+      "path": "CORPORATE_LANDING_JTE/FAQ/FAQ_8",
+      "code": "FAQ_8",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": true,
+      "sha256": "0c4b532f0fe2370da86e78ee90043b2347ce14f2962e49dc0fb7ddb3e06c3f4a"
+    },
+    {
+      "path": "TEMPLATE-BASIC_TEMPLATE/FORM_TEMPLATE",
+      "code": "FORM_TEMPLATE",
+      "organization": "SYSTEM",
+      "language": "JSP",
+      "inPageTree": false,
+      "sha256": "aa9de26e55f32fe22f329e4da22eeeb27c02365adfc527b7c735af89bc52fd35"
+    },
+    {
+      "path": "CORPORATE_LANDING_JTE/FAQ/FAQ_10",
+      "code": "FAQ_10",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": true,
+      "sha256": "3524e7104684007e64c4809deb401b81c865f28ca46539fb979f82ff5baab682"
+    },
+    {
+      "path": "BLOG_POST_JTE/HEADER/HEADER_MENU",
+      "code": "HEADER_MENU",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": true,
+      "sha256": "a51d772312dfc034e4cff8526b7b7e48d63589094d28e827860a6cfdd25675b3"
+    },
+    {
+      "path": "FIELD_SERVICE_LANDING/FIELD_SERVICE_LANDING_OPERATIONAL_NEEDS",
+      "code": "FIELD_SERVICE_LANDING_OPERATIONAL_NEEDS",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": true,
+      "sha256": "39b1d424f75f548323126be5fd27abb20a944e6a4c992806592c0c8f3e3386ee"
+    },
+    {
+      "path": "VERTICAL_LANDING_JTE/FAQ/FAQ_6",
+      "code": "FAQ_6",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": true,
+      "sha256": "34a2644d977319d11afa296dcbbda2a95057b477306b24eae2b34ff475ed89fd"
+    },
+    {
+      "path": "USECASES_JTE",
+      "code": "USECASES_JTE",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": true,
+      "sha256": "fe6692b5116107d4cba72848f326b92552a65058304ab517b45a1bc9a37927c6"
+    },
+    {
+      "path": "CORPORATE_LANDING_JTE/ERROR",
+      "code": "ERROR",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": true,
+      "sha256": "01bfcaf11c4fbe2b232fdf99180b820811bbd81accaef20528c93153aa3dad2a"
+    },
+    {
+      "path": "TEMPLATE-CORPORATE_LANDING/FAQ/FAQ_4",
+      "code": "FAQ_4",
+      "organization": "SYSTEM",
+      "language": "JSP",
+      "inPageTree": true,
+      "sha256": "5c50d2cef1095cfa81c98f2ffcc897763a53095db01d72568c6b51cf16e6a919"
+    },
+    {
+      "path": "CORPORATE_LANDING_JTE/FOOTER/FOOTER_COPYRIGHT",
+      "code": "FOOTER_COPYRIGHT",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": true,
+      "sha256": "af283f0561fe17aa23734e3180654f2b9d8d3eaec90c54fe4cfe799ef8994dd3"
+    },
+    {
+      "path": "TEMPLATE-BASIC_TEMPLATE/BASIC_HEADER",
+      "code": "BASIC_HEADER",
+      "organization": "SYSTEM",
+      "language": "JSP",
+      "inPageTree": false,
+      "sha256": "16bcba11dfc78974b69bc7f3aa2c3894844afb0e92f87515022fce932deef388"
+    },
+    {
+      "path": "TEMPLATE-CORPORATE_LANDING/FAQ/FAQ_8",
+      "code": "FAQ_8",
+      "organization": "SYSTEM",
+      "language": "JSP",
+      "inPageTree": true,
+      "sha256": "0c4b532f0fe2370da86e78ee90043b2347ce14f2962e49dc0fb7ddb3e06c3f4a"
+    },
+    {
+      "path": "CORPORATE_LANDING_JTE/HEADER",
+      "code": "HEADER",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": true,
+      "sha256": "3beef8fbdea8215458350e852e4b36d911fe85a070acb2c227e07da87301e48a"
+    },
+    {
+      "path": "VERTICAL_LANDING_JTE/TRUST",
+      "code": "TRUST",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": true,
+      "sha256": "40469c8f69250ef00bf15e523c0ad47880449c476eec2e4300f110ad0fcdb021"
+    },
+    {
+      "path": "TEMPLATE-CORPORATE_LANDING/FOUNDATION",
+      "code": "FOUNDATION",
+      "organization": "SYSTEM",
+      "language": "JSP",
+      "inPageTree": true,
+      "sha256": "5339ad11d0531fba07188089f7ea426e6e2e4bf01b1b5934f899c62f0e3bdbb5"
+    },
+    {
+      "path": "TEMPLATE-BASIC_TEMPLATE/QUESTTIONAIRE",
+      "code": "QUESTTIONAIRE",
+      "organization": "SYSTEM",
+      "language": "JSP",
+      "inPageTree": false,
+      "sha256": "18f09d454268be34ea2f4362e9db73d0bdf4c28ab95e2c2d59695faa93d29514"
+    },
+    {
+      "path": "VERTICAL_LANDING_JTE/FAQ/FAQ_10",
+      "code": "FAQ_10",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": true,
+      "sha256": "6753818f798c53908fc6ebfd6f7896ade3dfaf4bc85b6906c730fec6d15c54c6"
+    },
+    {
+      "path": "FIELD_SERVICE_LANDING/FIELD_SERVICE_LANDING_HERO",
+      "code": "FIELD_SERVICE_LANDING_HERO",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": true,
+      "sha256": "2caaeb6332b5181006a88312e13abb15817f8873021117a7d584d0b1e709fb10"
+    },
+    {
+      "path": "CORPORATE_WEBSITE_TEMPLATE/CORPORATE_WEBSITE_FOUNDATION_SECTION",
+      "code": "CORPORATE_WEBSITE_FOUNDATION_SECTION",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": false,
+      "sha256": "7df548e42d92b267b91f4ebc07d3329a88249a90707822ecfb2e2f2bd1eb1352"
+    },
+    {
+      "path": "TEMPLATE-CORPORATE_LANDING/FOOTER/FOOTER_MENU",
+      "code": "FOOTER_MENU",
+      "organization": "SYSTEM",
+      "language": "JSP",
+      "inPageTree": true,
+      "sha256": "8af360ff7c9a72debfb573a9cc4c28d2e01ff816317a5db1b8cbb24004a28641"
+    },
+    {
+      "path": "CORPORATE_WEBSITE_TEMPLATE",
+      "code": "CORPORATE_WEBSITE_TEMPLATE",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": false,
+      "sha256": "0b2ca33ca6cea6c1b8eed9dd51f0821a89edb072aacd92a7a09397ab874ac833"
+    },
+    {
+      "path": "TEMPLATE-CORPORATE_LANDING/SUCCESS",
+      "code": "SUCCESS",
+      "organization": "SYSTEM",
+      "language": "JSP",
+      "inPageTree": true,
+      "sha256": "9019319b4cd452e382a006e666efbfd234911b77ffe8dc30c978074f2bb37097"
+    },
+    {
+      "path": "CORPORATE_LANDING_JTE/PARTNERS",
+      "code": "PARTNERS",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": true,
+      "sha256": "f1213aaa5ab7ee2beb02baeade9fa138cf3629b3d9b509de271505ee1223a9a2"
+    },
+    {
+      "path": "USECASES_JTE/FOOTER",
+      "code": "FOOTER",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": true,
+      "sha256": "36af4aa446b2607298e87763f02b95f81a7a4a07a75c831e33d03bcd68f2fd19"
+    },
+    {
+      "path": "TEMPLATE-CORPORATE_LANDING/FAQ",
+      "code": "FAQ",
+      "organization": "SYSTEM",
+      "language": "JSP",
+      "inPageTree": true,
+      "sha256": "05b9012c2c8ed4fd17a25828a6db3fdbba8c580c84483c84afc4cca9311f809f"
+    },
+    {
+      "path": "CORPORATE_WEBSITE_TEMPLATE/CORPORATE_WEBSITE_FEATURES_SECTION",
+      "code": "CORPORATE_WEBSITE_FEATURES_SECTION",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": false,
+      "sha256": "c8fb11b9a885cb53bd37f2125b0536b46e7db703d444fa962d08b893238a15e1"
+    },
+    {
+      "path": "FIELD_SERVICE_BLOG_POST_ROOT/FIELD_SERVICE_BLOG_POST_HEADER",
+      "code": "FIELD_SERVICE_BLOG_POST_HEADER",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": true,
+      "sha256": "5b459474a7f29581f835970c07ac59908a98ce0503c8b11b4f502ba2e5b6445a"
+    },
+    {
+      "path": "CORPORATE_WEBSITE_TEMPLATE/CORPORATE_WEBSITE_HEADER",
+      "code": "CORPORATE_WEBSITE_HEADER",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": false,
+      "sha256": "ffdec4b1f243d96414abb5b6fe86b87e2c22c96e9849f4638add51f5e71113eb"
+    },
+    {
+      "path": "BLOG_POST_JTE/FOOTER",
+      "code": "FOOTER",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": true,
+      "sha256": "04836850a371bc83ae7c1137b9ee4fda42155d72b9b29e5dba63f3eb27faea88"
+    },
+    {
+      "path": "SNOW_REMOVAL_LANDING",
+      "code": "SNOW_REMOVAL_LANDING",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": true,
+      "sha256": "93feaf156ea167b24936e95cab59b71871cec7a31b836599d26abcefc4d48182"
+    },
+    {
+      "path": "TEMPLATE-CORPORATE_LANDING/DOCUMENTATION",
+      "code": "DOCUMENTATION",
+      "organization": "SYSTEM",
+      "language": "JSP",
+      "inPageTree": true,
+      "sha256": "2332f655441536a4b5795337743e93a7612f4194f512e6e68e8ce20d6a77dd1d"
+    },
+    {
+      "path": "CORPORATE_WEBSITE_TEMPLATE/CORPORATE_WEBSITE_FOOTER/CORPORATE_WEBSITE_FOOTER_MENU",
+      "code": "CORPORATE_WEBSITE_FOOTER_MENU",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": false,
+      "sha256": "473c426f5a3caa334be84e23e71164d89c47faf5e374a17d3a69f5a7f0ef6c55"
+    },
+    {
+      "path": "VERTICAL_LANDING_JTE/FOOTER/VL_FOOTER_LEGAL",
+      "code": "VL_FOOTER_LEGAL",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": true,
+      "sha256": "f698d476a89ce0f3a5057ea643e5cf44bac23980a43c48a21e6c9329d4afeebf"
+    },
+    {
+      "path": "CORPORATE_LANDING_JTE/REQUEST_DEMO",
+      "code": "REQUEST_DEMO",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": true,
+      "sha256": "69080bc7eb0a3f53a626c995c11cce72158226e079754aa622d6b23f2f76885e"
+    },
+    {
+      "path": "CORPORATE_WEBSITE_TEMPLATE/CORPORATE_WEBSITE_PARTNER_SECTION",
+      "code": "CORPORATE_WEBSITE_PARTNER_SECTION",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": false,
+      "sha256": "de65ca87acb86264ec5a13c0f3a0a67a12eb8720d9dd4f0fc2b65f953aa49ffd"
+    },
+    {
+      "path": "CORPORATE_LANDING_JTE/FOOTER/FOOTER_CONTACTS",
+      "code": "FOOTER_CONTACTS",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": true,
+      "sha256": "05c0e6a61472c8721a76b3ee60bba62d41da811d3eb21bea53bb84ad75e533d7"
+    },
+    {
+      "path": "CORPORATE_WEBSITE_TEMPLATE/CORPORATE_WEBSITE_REQUEST_DEMO_SECTION",
+      "code": "CORPORATE_WEBSITE_REQUEST_DEMO_SECTION",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": false,
+      "sha256": "214cbf00c340db7a613767b897f41403167a221f9e609413d1a2eeef88cc818a"
+    },
+    {
+      "path": "SNOW_REMOVAL_LANDING/SNOW_REMOVAL_LANDING_FOOTER",
+      "code": "SNOW_REMOVAL_LANDING_FOOTER",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": true,
+      "sha256": "5ac070a7febd910fd32bc516f646734dd5a45aab0a0193a71e3f53cbd7de9c03"
+    },
+    {
+      "path": "CORPORATE_LANDING_JTE/FAQ/FAQ_3",
+      "code": "FAQ_3",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": true,
+      "sha256": "b9d3ff1acf203e2a8b124453d35695318bba6101dfa6c21d3c2b694ac0af7fa6"
+    },
+    {
+      "path": "TEMPLATE-CORPORATE_LANDING/PARTNER_FORM",
+      "code": "PARTNER_FORM",
+      "organization": "SYSTEM",
+      "language": "JSP",
+      "inPageTree": true,
+      "sha256": "970a59b77a3e5945f0064ebf3f1616775f86d0ffaf4a551272e94551ff5f5046"
+    },
+    {
+      "path": "CORPORATE_LANDING_JTE/FOOTER/FOOTER_LOGO",
+      "code": "FOOTER_LOGO",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": true,
+      "sha256": "f1075fcb91f5ce3777ebdee0254610d8c299d6ac2cd81870c346dd137da45d8e"
+    },
+    {
+      "path": "FIELD_SERVICE_BLOG_INDEX_ROOT/FIELD_SERVICE_BLOG_FOOTER",
+      "code": "FIELD_SERVICE_BLOG_FOOTER",
+      "organization": "SERVICEWAND",
+      "language": "JTE",
+      "inPageTree": true,
+      "sha256": "84a74fbc2ea2150ea9529da695e99b1b8119b62b97278592e09991c8b04793c8"
+    },
+    {
+      "path": "CORE_WEATHER_SAMPLE/CHILD_PANE",
+      "code": "CHILD_PANE",
+      "organization": "SYSTEM",
+      "language": "JSP",
+      "inPageTree": false,
+      "sha256": "2c1415220e1ab82090de16e57aae314adbc633f5b832980d3dbd16cc19696b37"
+    },
+    {
+      "path": "BLOG_POST_JTE/HEADER",
+      "code": "HEADER",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": true,
+      "sha256": "3a735b57b6937fb75ced28b0c7c98f1a5737a88589eefb2718294711ae42d1b6"
+    },
+    {
+      "path": "VERTICAL_LANDING_JTE/FAQ/FAQ_3",
+      "code": "FAQ_3",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": true,
+      "sha256": "34a2644d977319d11afa296dcbbda2a95057b477306b24eae2b34ff475ed89fd"
+    },
+    {
+      "path": "BLOG_POST_JTE/BLOG_POST_TEMPLATE_JTE",
+      "code": "BLOG_POST_TEMPLATE_JTE",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": true,
+      "sha256": "14bd85ad98401e6437c1368466d361bfdc75c71285ad99d6cb4507740aa09328"
+    },
+    {
+      "path": "TEMPLATE-CORPORATE_LANDING/TERMS_AND_CONDITIONS",
+      "code": "TERMS_AND_CONDITIONS",
+      "organization": "SYSTEM",
+      "language": "JSP",
+      "inPageTree": true,
+      "sha256": "8f875dfe06790b1810cf21ea777143f770a48f0f64ddcae19d4fb791805b5d36"
+    },
+    {
+      "path": "CORPORATE_LANDING_JTE/FOOTER/FOOTER_SOCIALS",
+      "code": "FOOTER_SOCIALS",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": true,
+      "sha256": "672a2e8691cb4fa5b632b46b7c7561acaf247e50889a1048d4d074e80e583faa"
+    },
+    {
+      "path": "CORPORATE_WEBSITE_TEMPLATE/ERROR",
+      "code": "ERROR",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": false,
+      "sha256": "df8028ab4dd4d6ea4b4457a927c6b23de3bf8b233349f43deda244d5a0a57da2"
+    },
+    {
+      "path": "USECASES_JTE/HEADER/HEADER_MENU",
+      "code": "HEADER_MENU",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": true,
+      "sha256": "a51d772312dfc034e4cff8526b7b7e48d63589094d28e827860a6cfdd25675b3"
+    },
+    {
+      "path": "FIELD_SERVICE_LANDING/FIELD_SERVICE_LANDING_PLATFORM_COMPARISON",
+      "code": "FIELD_SERVICE_LANDING_PLATFORM_COMPARISON",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": true,
+      "sha256": "deaed132e2cb8f6624ee798bfe1994fc3d83d39db20ab2359ab38c4c8ecf3fc9"
+    },
+    {
+      "path": "CORPORATE_LANDING_JTE/FAQ/FAQ_2",
+      "code": "FAQ_2",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": true,
+      "sha256": "57e834abc6034801ea3f0bfd50f39d1f9296cbfb64cbf6828f720fa4a6feaf2b"
+    },
+    {
+      "path": "VERTICAL_LANDING_JTE/FOOTER/VL_FOOTER_SOCIALS",
+      "code": "VL_FOOTER_SOCIALS",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": true,
+      "sha256": "229473551f3ad1813632faff7921696950ed1e9fb8b30e89c04611dad734c4fa"
+    },
+    {
+      "path": "SNOW_REMOVAL_LANDING/SNOW_REMOVAL_LANDING_HEADER",
+      "code": "SNOW_REMOVAL_LANDING_HEADER",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": true,
+      "sha256": "e5eb34e85ca8d2218bc767ca1f649b38ee1198f85b92ceb5fed376d17199aff6"
+    },
+    {
+      "path": "CORPORATE_LANDING_JTE/HEADER/LOCALE_SELECTOR",
+      "code": "LOCALE_SELECTOR",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": true,
+      "sha256": "dc259e707c3ffb29c86f9fd596224389674614051caaa4e181063c94bfaebd93"
+    },
+    {
+      "path": "VERTICAL_LANDING_JTE/FAQ/FAQ_1",
+      "code": "FAQ_1",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": true,
+      "sha256": "17fb4fc8dab5314c498af51c39cd8255f152cfe40806f808f15a18dbbd75d1a6"
+    },
+    {
+      "path": "FIELD_SERVICE_LANDING/FIELD_SERVICE_LANDING_AI_AUTOMATION",
+      "code": "FIELD_SERVICE_LANDING_AI_AUTOMATION",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": true,
+      "sha256": "503ecfb716d626b6da3aacfa821749190b3d8b1e538e503ee54ff1bcd867b16a"
+    },
+    {
+      "path": "TEMPLATE-CORPORATE_LANDING/TABLE",
+      "code": "TABLE",
+      "organization": "SYSTEM",
+      "language": "JSP",
+      "inPageTree": true,
+      "sha256": "d659e21e52e053ee68c62401d9413dd2dc09742b8d7cbdbdc5bd798cf0ac7b76"
+    },
+    {
+      "path": "CORPORATE_LANDING_JTE/SUCCESS",
+      "code": "SUCCESS",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": true,
+      "sha256": "dfe280feae804cfd7825594c3f6320a2d70cff52a6ddbaab9f95f488d0c0003c"
+    },
+    {
+      "path": "CORPORATE_LANDING_JTE/FAQ/FAQ_7",
+      "code": "FAQ_7",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": true,
+      "sha256": "67f7d87e297fdb861fa8e7f9d1b08f3d0d2d656a18d55a55ff82cd8a6a7ea4cf"
+    },
+    {
+      "path": "BLOG_POST_JTE",
+      "code": "BLOG_POST_JTE",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": true,
+      "sha256": "4894ef005f85a9aaf3e8264fd0d461064f2ac987b1083f79d9057a170f6a6b79"
+    },
+    {
+      "path": "VERTICAL_LANDING_JTE/COVERAGE",
+      "code": "COVERAGE",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": true,
+      "sha256": "d1d54db61cbdd6fcddf24e0907e78103c05fdb5c13c03f4e2cd783321d3184e8"
+    },
+    {
+      "path": "BLOG_POST_JTE/FOOTER/FOOTER_SOCIALS",
+      "code": "FOOTER_SOCIALS",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": true,
+      "sha256": "ce45f8a106fbe509d8418f04f486b23869e2d793881a7e570d3652b98a84e46e"
+    },
+    {
+      "path": "FIELD_SERVICE_BLOG_POST_ROOT/FIELD_SERVICE_BLOG_POST_FOOTER",
+      "code": "FIELD_SERVICE_BLOG_POST_FOOTER",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": true,
+      "sha256": "84a74fbc2ea2150ea9529da695e99b1b8119b62b97278592e09991c8b04793c8"
+    },
+    {
+      "path": "VERTICAL_LANDING_JTE/FAQ",
+      "code": "FAQ",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": true,
+      "sha256": "d78751f25088624198aeefe5bd431a57baf2d74474c85438115a406ef3bba33a"
+    },
+    {
+      "path": "USECASES_JTE/FOOTER/FOOTER_CONTACTS",
+      "code": "FOOTER_CONTACTS",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": true,
+      "sha256": "05c0e6a61472c8721a76b3ee60bba62d41da811d3eb21bea53bb84ad75e533d7"
+    },
+    {
+      "path": "VERTICAL_LANDING_JTE/SERVICEWAND_PRICING_DYNAMIC_BLOCK",
+      "code": "SERVICEWAND_PRICING_DYNAMIC_BLOCK",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": true,
+      "sha256": "d9f340e5e82ced0686d9f3e56bc9c6ce17f741d0dd130b83a2a4d83ddbc159d2"
+    },
+    {
+      "path": "VERTICAL_LANDING_JTE/CTA",
+      "code": "CTA",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": true,
+      "sha256": "db26986a9e0633ec30448ec805a3c2a0cb6f289dde080597339c338e13f72a0e"
+    },
+    {
+      "path": "BLOG_POST_JTE/FOOTER/FOOTER_LEGAL",
+      "code": "FOOTER_LEGAL",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": true,
+      "sha256": "d6ca13f0b1754d4fc46c8b80ca17ddb543c9a261858f2b9fd60c1586ab988875"
+    },
+    {
+      "path": "USECASES_JTE/FOOTER/FOOTER_LEGAL",
+      "code": "FOOTER_LEGAL",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": true,
+      "sha256": "d6ca13f0b1754d4fc46c8b80ca17ddb543c9a261858f2b9fd60c1586ab988875"
+    },
+    {
+      "path": "TEMPLATE-CORPORATE_LANDING/FOOTER/FOOTER_CONTACTS",
+      "code": "FOOTER_CONTACTS",
+      "organization": "SYSTEM",
+      "language": "JSP",
+      "inPageTree": true,
+      "sha256": "05c0e6a61472c8721a76b3ee60bba62d41da811d3eb21bea53bb84ad75e533d7"
+    },
+    {
+      "path": "CORPORATE_LANDING_JTE/TABLE",
+      "code": "TABLE",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": true,
+      "sha256": "d6df1021637ee91568a5907859c8b09a39ad0de9da7216a2f79abc0dccec5ad3"
+    },
+    {
+      "path": "CORPORATE_WEBSITE_TEMPLATE/CORPORATE_WEBSITE_FOOTER/CORPORATE_WEBSITE_FOOTER_COPYRIGHT",
+      "code": "CORPORATE_WEBSITE_FOOTER_COPYRIGHT",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": false,
+      "sha256": "bd780ba28fb75aafd15a47076409744c44e8ef6d41ddfda571bd70d8254420d4"
+    },
+    {
+      "path": "FIELD_SERVICE_BLOG_POST_ROOT/FIELD_SERVICE_BLOG_POST",
+      "code": "FIELD_SERVICE_BLOG_POST",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": true,
+      "sha256": "0ef7a9b210ada608d411a7ea05a03d1416436e2897857717d920a91425a80645"
+    },
+    {
+      "path": "CORPORATE_LANDING_JTE/FOUNDATION",
+      "code": "FOUNDATION",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": true,
+      "sha256": "f7e949e756703a203c111512debc35ace194a41b0a13ac2ec34b295e1d2b2961"
+    },
+    {
+      "path": "CORPORATE_LANDING_JTE/FAQ/FAQ_4",
+      "code": "FAQ_4",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": true,
+      "sha256": "5c50d2cef1095cfa81c98f2ffcc897763a53095db01d72568c6b51cf16e6a919"
+    },
+    {
+      "path": "CORPORATE_LANDING_JTE",
+      "code": "CORPORATE_LANDING_JTE",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": true,
+      "sha256": "cede1edabdf8f20a3942c501c1f2507860dece960db4eb9ec8800c649d65cdf8"
+    },
+    {
+      "path": "USECASES_JTE/HEADER",
+      "code": "HEADER",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": true,
+      "sha256": "2db7b27e501149c2b89543706934758b5eb8007c14ac0e5039a8e219c2e061b7"
+    },
+    {
+      "path": "TEMPLATE-CORPORATE_LANDING/FOOTER/FOOTER_LEGAL",
+      "code": "FOOTER_LEGAL",
+      "organization": "SYSTEM",
+      "language": "JSP",
+      "inPageTree": true,
+      "sha256": "d6ca13f0b1754d4fc46c8b80ca17ddb543c9a261858f2b9fd60c1586ab988875"
+    },
+    {
+      "path": "CORPORATE_WEBSITE_TEMPLATE/CORPORATE_WEBSITE_HEADER/7B8069CB_250A_4E9B_8037_8674DBA76363",
+      "code": "7B8069CB_250A_4E9B_8037_8674DBA76363",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": false,
+      "sha256": "26e22ad67e48506e1e1c6b1e548f607c4b108b028676fe97decd09d500589fa2"
+    },
+    {
+      "path": "FIELD_SERVICE_BLOG_POST_ROOT",
+      "code": "FIELD_SERVICE_BLOG_POST_ROOT",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": true,
+      "sha256": "0c2b0debe9789c714d4ea2ba0b1a31765ad462ee559e4405dff7ba59cd0de6b4"
+    },
+    {
+      "path": "TEMPLATE-CORPORATE_LANDING/FAQ/FAQ_3",
+      "code": "FAQ_3",
+      "organization": "SYSTEM",
+      "language": "JSP",
+      "inPageTree": true,
+      "sha256": "b9d3ff1acf203e2a8b124453d35695318bba6101dfa6c21d3c2b694ac0af7fa6"
+    },
+    {
+      "path": "TEMPLATE-CORPORATE_LANDING/FEATURES",
+      "code": "FEATURES",
+      "organization": "SYSTEM",
+      "language": "JSP",
+      "inPageTree": true,
+      "sha256": "a3bc8140a89f707a122a702048c8320da06f5cc59f557b61f1f86326880c2b3a"
+    },
+    {
+      "path": "CORPORATE_WEBSITE_TEMPLATE/CORPORATE_WEBSITE_FOOTER/CORPORATE_WEBSITE_FOOTER_LEGAL",
+      "code": "CORPORATE_WEBSITE_FOOTER_LEGAL",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": false,
+      "sha256": "352d834a8c39169478672c0ca879d9fc3d4af56ff7573579f567a177c3399fed"
+    },
+    {
+      "path": "FIELD_SERVICE_BLOG_INDEX_ROOT/FIELD_SERVICE_BLOG_HEADER",
+      "code": "FIELD_SERVICE_BLOG_HEADER",
+      "organization": "SERVICEWAND",
+      "language": "JTE",
+      "inPageTree": true,
+      "sha256": "b97f0696fa5ec88517ec06af526fe47a65ee41b41dc34d1801bd13cd6aa31f86"
+    },
+    {
+      "path": "CORPORATE_LANDING_JTE/FOOTER/FOOTER_LEGAL",
+      "code": "FOOTER_LEGAL",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": true,
+      "sha256": "d6ca13f0b1754d4fc46c8b80ca17ddb543c9a261858f2b9fd60c1586ab988875"
+    },
+    {
+      "path": "CORPORATE_WEBSITE_TEMPLATE/CORPORATE_WEBSITE_CTA_SECTION",
+      "code": "CORPORATE_WEBSITE_CTA_SECTION",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": false,
+      "sha256": "d725a753eb98fbc684fe2c570111a86716d53dcf99fe833889e1bedc85775067"
+    },
+    {
+      "path": "VERTICAL_LANDING_JTE/FAQ/FAQ_4",
+      "code": "FAQ_4",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": true,
+      "sha256": "34a2644d977319d11afa296dcbbda2a95057b477306b24eae2b34ff475ed89fd"
+    },
+    {
+      "path": "TEMPLATE-CORPORATE_LANDING/HERO",
+      "code": "HERO",
+      "organization": "SYSTEM",
+      "language": "JSP",
+      "inPageTree": true,
+      "sha256": "8e3eb4bd6480848ba8ad58da9b5beeabc4f11234fba4a153bbec36c7eaa4a19c"
+    },
+    {
+      "path": "VERTICAL_LANDING_JTE/FOOTER/VL_FOOTER_CONTACTS",
+      "code": "VL_FOOTER_CONTACTS",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": true,
+      "sha256": "fd6adbe5908581e1acac8eae381f8e7fb7da59e41796eafbd1c1475fa55c0bb6"
+    },
+    {
+      "path": "CORPORATE_LANDING_JTE/CTA",
+      "code": "CTA",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": true,
+      "sha256": "1109b7a690187b8ca9dd5f295a45dc6ef28c5a86c486a51b55aa5916084ade33"
+    },
+    {
+      "path": "CORPORATE_WEBSITE_TEMPLATE/CORPORATE_WEBSITE_FOOTER/CORPORATE_WEBSITE_FOOTER_LOGO",
+      "code": "CORPORATE_WEBSITE_FOOTER_LOGO",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": false,
+      "sha256": "f1075fcb91f5ce3777ebdee0254610d8c299d6ac2cd81870c346dd137da45d8e"
+    },
+    {
+      "path": "VERTICAL_LANDING_JTE/ROUTE_APP",
+      "code": "ROUTE_APP",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": true,
+      "sha256": "6a300fde95c22c6d8d4ce7a155a68f6d42407e1f12faf6f15787dcae0e7e7ce5"
+    },
+    {
+      "path": "CORPORATE_WEBSITE_TEMPLATE/CORPORATE_WEBSITE_FOOTER/CORPORATE_WEBSITE_FOOTER_CONTACTS",
+      "code": "CORPORATE_WEBSITE_FOOTER_CONTACTS",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": false,
+      "sha256": "43cca71bf470ba3baf2df055522c0aa800e5724dafadb79aabab2364e3bb6941"
+    },
+    {
+      "path": "CORPORATE_WEBSITE_TEMPLATE/CORPORATE_WEBSITE_FOOTER",
+      "code": "CORPORATE_WEBSITE_FOOTER",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": false,
+      "sha256": "a657165a4e3126d8f659fd031a866c8593f99c03122f457d2cc337004dd49f4f"
+    },
+    {
+      "path": "CORPORATE_LANDING_JTE/ECOSYSTEM",
+      "code": "ECOSYSTEM",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": true,
+      "sha256": "e8a36b1db3b71fba550d899d5e3aadee3ec939e58b2d6f1c965b00ed66415c4b"
+    },
+    {
+      "path": "TEMPLATE-CORPORATE_LANDING/ERROR",
+      "code": "ERROR",
+      "organization": "SYSTEM",
+      "language": "JSP",
+      "inPageTree": true,
+      "sha256": "ebcae4745cedc3040d40a0dad40d537e7966030245dafb7388ed1b41105bf76a"
+    },
+    {
+      "path": "CORPORATE_LANDING_JTE/PRIVACY_POLICY",
+      "code": "PRIVACY_POLICY",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": true,
+      "sha256": "fb9c3e2ef0fcaa1d169448a66e3f1425a6285647ae88f2cbc255eeee9e671a7d"
+    },
+    {
+      "path": "FIELD_SERVICE_LANDING/FIELD_SERVICE_LANDING_PLATFORM_CAPABILITIES",
+      "code": "FIELD_SERVICE_LANDING_PLATFORM_CAPABILITIES",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": true,
+      "sha256": "56080b53abdcb925d53f1224009427339491418dd9af7bcc3fe85973a4f1ab65"
+    },
+    {
+      "path": "TEMPLATE-CORPORATE_LANDING/HEADER/HEADER_MENU",
+      "code": "HEADER_MENU",
+      "organization": "SYSTEM",
+      "language": "JSP",
+      "inPageTree": true,
+      "sha256": "a51d772312dfc034e4cff8526b7b7e48d63589094d28e827860a6cfdd25675b3"
+    },
+    {
+      "path": "CORE_WEATHER_SAMPLE",
+      "code": "CORE_WEATHER_SAMPLE",
+      "organization": "SYSTEM",
+      "language": "JSP",
+      "inPageTree": false,
+      "sha256": "422f1edfc857ba5b4148b038f711937e00cb047ebe166b2acf797c899b7a7804"
+    },
+    {
+      "path": "USECASES_JTE/FOOTER/FOOTER_COPYRIGHT",
+      "code": "FOOTER_COPYRIGHT",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": true,
+      "sha256": "af283f0561fe17aa23734e3180654f2b9d8d3eaec90c54fe4cfe799ef8994dd3"
+    },
+    {
+      "path": "USECASES_JTE/FOOTER/FOOTER_SOCIALS",
+      "code": "FOOTER_SOCIALS",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": true,
+      "sha256": "ce45f8a106fbe509d8418f04f486b23869e2d793881a7e570d3652b98a84e46e"
+    },
+    {
+      "path": "VERTICAL_LANDING_JTE/TESTIMONIALS",
+      "code": "TESTIMONIALS",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": true,
+      "sha256": "e72bb0fb512453132b950b8accd11c5c3f938c4d8d9ffcfb37144a0365c20c5e"
+    },
+    {
+      "path": "FIELD_SERVICE_LANDING",
+      "code": "FIELD_SERVICE_LANDING",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": true,
+      "sha256": "9a92550d9fbd3673dc1b5e14adf41e02c519dd932679a1f71df93bc504a8a9b1"
+    },
+    {
+      "path": "FIELD_SERVICE_LANDING/FIELD_SERVICE_LANDING_GROWTH_STAGES",
+      "code": "FIELD_SERVICE_LANDING_GROWTH_STAGES",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": true,
+      "sha256": "32c188d19d41626550bebf93907bc601dcf9ce5f5de61e74db01c7cb47fabfef"
+    },
+    {
+      "path": "VERTICAL_LANDING_JTE/FOOTER/VL_FOOTER_MENU",
+      "code": "VL_FOOTER_MENU",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": true,
+      "sha256": "3fbbeff67dcf44c976768495102215c39b683f649764866787e250709d792317"
+    },
+    {
+      "path": "CORPORATE_LANDING_JTE/HERO",
+      "code": "HERO",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": true,
+      "sha256": "8efc68b3846822a358579a00dbc785065471be2ecb3b5f5da4940372e5e420cd"
+    },
+    {
+      "path": "BLOG_POST_JTE/HEADER/LOCALE_SELECTOR",
+      "code": "LOCALE_SELECTOR",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": true,
+      "sha256": "9b45543e0710b8389eda26c6ac571a2d618a1cea8c3d49cb83ed2785d15747ad"
+    },
+    {
+      "path": "CORPORATE_LANDING_JTE/FAQ/FAQ_5",
+      "code": "FAQ_5",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": true,
+      "sha256": "1e96f1a743fb2d98ec61666af065495785d7ee4dfe8a08505a2879e438ef446d"
+    },
+    {
+      "path": "VERTICAL_LANDING_JTE/PROCESS",
+      "code": "PROCESS",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": true,
+      "sha256": "ea816922891648fbc0124c76c8fefdc4dd101705c75d5737686a1f59a09eb200"
+    },
+    {
+      "path": "FIELD_SERVICE_LANDING/FIELD_SERVICE_LANDING_FOOTER",
+      "code": "FIELD_SERVICE_LANDING_FOOTER",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": true,
+      "sha256": "b5a6bb7046bde82271f566a7c789c2bf235b865a5eb7535d4d319e6a975bb4b4"
+    },
+    {
+      "path": "TEMPLATE-BASIC_TEMPLATE/BASIC_HEADER/BASIC_ABOUT",
+      "code": "BASIC_ABOUT",
+      "organization": "SYSTEM",
+      "language": "JSP",
+      "inPageTree": false,
+      "sha256": "966e23aefef57397b1f8b3bb122b5d92854b3c4b649efda7c6fa8714a3880fa5"
+    },
+    {
+      "path": "FIELD_SERVICE_BLOG_INDEX_ROOT",
+      "code": "FIELD_SERVICE_BLOG_INDEX_ROOT",
+      "organization": "SERVICEWAND",
+      "language": "JTE",
+      "inPageTree": true,
+      "sha256": "ff5abdf95d10fb549c20d8c74d0c969cd2c45ab3f3a3e2f7851a84fba082bd36"
+    },
+    {
+      "path": "VERTICAL_LANDING_JTE/FAQ/FAQ_12",
+      "code": "FAQ_12",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": true,
+      "sha256": "6753818f798c53908fc6ebfd6f7896ade3dfaf4bc85b6906c730fec6d15c54c6"
+    },
+    {
+      "path": "CORPORATE_WEBSITE_TEMPLATE/CORPORATE_WEBSITE_FAQ_SECTION",
+      "code": "CORPORATE_WEBSITE_FAQ_SECTION",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": false,
+      "sha256": "89963397222688ef13382060e8a5b86f0b0e8dce35e58660086598019b854696"
+    },
+    {
+      "path": "AUTH_LOGIN_SAMPLE",
+      "code": "AUTH_LOGIN_SAMPLE",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": true,
+      "sha256": "e33759e5d976eeef5646e4245e0322c68cfff38ae34e921b4102299dc8dcbbd4"
+    },
+    {
+      "path": "AUTH_2FA_SAMPLE",
+      "code": "AUTH_2FA_SAMPLE",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": true,
+      "sha256": "fd4ed030c712c28be8a6e70ace67d5e221e44d0c7da4bdc979ab46fceac327ff"
+    },
+    {
+      "path": "FIELD_SERVICE_LANDING/FIELD_SERVICE_LANDING_HEADER",
+      "code": "FIELD_SERVICE_LANDING_HEADER",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": true,
+      "sha256": "7b2a60f9fa90d17fd8703463177453a782ebd41df6ad120d8184ca6a49be67e2"
+    },
+    {
+      "path": "CORPORATE_LANDING_JTE/FAQ/FAQ_1",
+      "code": "FAQ_1",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": true,
+      "sha256": "dd0fbbb5e9c48b1aae81d834c949a48a3f9bb98ac417c9c3433e24594df751ca"
+    },
+    {
+      "path": "FIELD_SERVICE_LANDING/FIELD_SERVICE_LANDING_SUPPORTED_INDUSTRIES",
+      "code": "FIELD_SERVICE_LANDING_SUPPORTED_INDUSTRIES",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": true,
+      "sha256": "ccd5c0584e33f8d40d31cf520aa811bd05bbfadd5ea8a08bbc56e97999a6363b"
+    },
+    {
+      "path": "VERTICAL_LANDING_JTE/APP_FEATURES",
+      "code": "APP_FEATURES",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": true,
+      "sha256": "082ddcb2d82ae00ee7b15aa58e6ae6ecc96cdb95b94b87d076c7290313599012"
+    },
+    {
+      "path": "SNOW_REMOVAL_LANDING/SNOW_REMOVAL_LANDING_CONTENT",
+      "code": "SNOW_REMOVAL_LANDING_CONTENT",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": true,
+      "sha256": "bc74ad638b5e4cf9f824c7f06b1f78fcba2ef391f716de73a31e9a80afccc5c8"
+    },
+    {
+      "path": "TEMPLATE-BASIC_TEMPLATE",
+      "code": "TEMPLATE-BASIC_TEMPLATE",
+      "organization": "SYSTEM",
+      "language": "JSP",
+      "inPageTree": false,
+      "sha256": "c7f130f9e84cbedb6ca8659c0541b575b2ba77458c45e7bad5e04437cc998021"
+    },
+    {
+      "path": "CORPORATE_WEBSITE_TEMPLATE/CORPORATE_WEBSITE_TABLE_SECTION",
+      "code": "CORPORATE_WEBSITE_TABLE_SECTION",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": false,
+      "sha256": "5d3c186695b0e305a4fef49c484e73893470a1a998261d86b9278fe071e0e8d5"
+    },
+    {
+      "path": "FIELD_SERVICE_LANDING/FIELD_SERVICE_LANDING_FINAL_CTA",
+      "code": "FIELD_SERVICE_LANDING_FINAL_CTA",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": true,
+      "sha256": "ced8bc06208427c64e2e6b70e967025c2d9309a8e94caed0de0c4bc6d35dad33"
+    },
+    {
+      "path": "VERTICAL_LANDING_JTE/COMPARISON",
+      "code": "COMPARISON",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": true,
+      "sha256": "9e866620d9b681589a2e1813c4ffa1589deb61fd3f42336adafaea7ccbec58b0"
+    },
+    {
+      "path": "CORPORATE_LANDING_JTE/PARTNER_FORM",
+      "code": "PARTNER_FORM",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": true,
+      "sha256": "d94912748d16b66edc403d44ee4aad4f032949b516630d7958141e5843ba318d"
+    },
+    {
+      "path": "TEMPLATE-CORPORATE_LANDING/ECOSYSTEM",
+      "code": "ECOSYSTEM",
+      "organization": "SYSTEM",
+      "language": "JSP",
+      "inPageTree": true,
+      "sha256": "f5b38089ce2157081df40a6ead41adc8e3c0e3a8829398e4c09b94fd5e1dc8fe"
+    },
+    {
+      "path": "VERTICAL_LANDING_JTE/FOOTER/VL_FOOTER_COPYRIGHT",
+      "code": "VL_FOOTER_COPYRIGHT",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": true,
+      "sha256": "4b0a1fd0375ff81c1a405b29d03afd92e000cd5ecc44aa4aee218b19018bb773"
+    },
+    {
+      "path": "VERTICAL_LANDING_JTE/FAQ/FAQ_9",
+      "code": "FAQ_9",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": true,
+      "sha256": "6753818f798c53908fc6ebfd6f7896ade3dfaf4bc85b6906c730fec6d15c54c6"
+    },
+    {
+      "path": "CORPORATE_LANDING_JTE/FEATURES",
+      "code": "FEATURES",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": true,
+      "sha256": "2b19d066f947909bde52eecd7cd7aaddcba3f25191c86dcfdc61ddbe4d6b8f2f"
+    },
+    {
+      "path": "FIELD_SERVICE_LANDING/FIELD_SERVICE_LANDING_CONNECTED_OPERATIONS",
+      "code": "FIELD_SERVICE_LANDING_CONNECTED_OPERATIONS",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": true,
+      "sha256": "73d2273a4217c9e1cf143996be76c1bf54c04203cd40c7c80b39496af0ee0f20"
+    },
+    {
+      "path": "SNOW_REMOVAL_LANDING_NEW_REDIRECT",
+      "code": "SNOW_REMOVAL_LANDING_NEW_REDIRECT",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": true,
+      "sha256": "3c44dbfd5cf3ede3d41750e4a7fd2a9a7a748309653555d2ee803cd9d14116cd"
+    },
+    {
+      "path": "VERTICAL_LANDING_JTE/HEADER",
+      "code": "HEADER",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": true,
+      "sha256": "61ef38c1cf1dc228ff6084855c76df96afd6fb7fe08ab144fa13c54c5496f3db"
+    },
+    {
+      "path": "CORPORATE_LANDING_JTE/TERMS_AND_CONDITIONS",
+      "code": "TERMS_AND_CONDITIONS",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": true,
+      "sha256": "f9757d72dd72d8159a7959fe99c966263c77a438236bad7cc47378591425b569"
+    },
+    {
+      "path": "BLOG_POST_JTE/FOOTER/FOOTER_COPYRIGHT",
+      "code": "FOOTER_COPYRIGHT",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": true,
+      "sha256": "af283f0561fe17aa23734e3180654f2b9d8d3eaec90c54fe4cfe799ef8994dd3"
+    },
+    {
+      "path": "VERTICAL_LANDING_JTE/FAQ/FAQ_8",
+      "code": "FAQ_8",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": true,
+      "sha256": "6753818f798c53908fc6ebfd6f7896ade3dfaf4bc85b6906c730fec6d15c54c6"
+    },
+    {
+      "path": "CORPORATE_WEBSITE_TEMPLATE/E53C9520_DBEF_47A2_A202_0762B2F439F9",
+      "code": "E53C9520_DBEF_47A2_A202_0762B2F439F9",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": false,
+      "sha256": "78861eb35caa70f949379faf5eec9d3d4d6161ef316df127fa3cc735fa75f624"
+    },
+    {
+      "path": "VERTICAL_LANDING_JTE/FAQ/FAQ_5",
+      "code": "FAQ_5",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": true,
+      "sha256": "834029b7299a37f813ffed6b434b9b10f82c64d7827aaccbf21aa2ae969503d5"
+    },
+    {
+      "path": "BLOG_POST_JTE/FOOTER/FOOTER_MENU",
+      "code": "FOOTER_MENU",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": true,
+      "sha256": "8af360ff7c9a72debfb573a9cc4c28d2e01ff816317a5db1b8cbb24004a28641"
+    },
+    {
+      "path": "CORPORATE_WEBSITE_TEMPLATE/CORPORATE_WEBSITE_HEADER/CORPORATE_WEBSITE_HEADER_MENU",
+      "code": "CORPORATE_WEBSITE_HEADER_MENU",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": false,
+      "sha256": "b5fdf55eeae82a88ac61bc9597787a51df10a5bef289adee33bd0f4689ca7257"
+    },
+    {
+      "path": "TEMPLATE-CORPORATE_LANDING/PRIVACY_POLICY",
+      "code": "PRIVACY_POLICY",
+      "organization": "SYSTEM",
+      "language": "JSP",
+      "inPageTree": true,
+      "sha256": "2e52a0fdff3db6995bf6f9d42642baac879a3cd8fdb00ce03311f10d2fd043ad"
+    },
+    {
+      "path": "TEMPLATE-BASIC_TEMPLATE/BASIC_HEADER/BASIC_LANG_SELECTOR",
+      "code": "BASIC_LANG_SELECTOR",
+      "organization": "SYSTEM",
+      "language": "JSP",
+      "inPageTree": false,
+      "sha256": "9ecb032c09281c527bf982b398601a72472be9c9d7878a09296b8f232db48284"
+    },
+    {
+      "path": "USECASES_JTE/FOOTER/FOOTER_MENU",
+      "code": "FOOTER_MENU",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": true,
+      "sha256": "8af360ff7c9a72debfb573a9cc4c28d2e01ff816317a5db1b8cbb24004a28641"
+    },
+    {
+      "path": "VERTICAL_LANDING_JTE/FAQ/FAQ_11",
+      "code": "FAQ_11",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": true,
+      "sha256": "6753818f798c53908fc6ebfd6f7896ade3dfaf4bc85b6906c730fec6d15c54c6"
+    },
+    {
+      "path": "TEMPLATE-CORPORATE_LANDING/FAQ/FAQ_1",
+      "code": "FAQ_1",
+      "organization": "SYSTEM",
+      "language": "JSP",
+      "inPageTree": true,
+      "sha256": "308c1b14476ea0023ac3c6b335fbd68e68299e479c8592c6767103375e98db01"
+    },
+    {
+      "path": "CORPORATE_LANDING_JTE/FAQ/FAQ_6",
+      "code": "FAQ_6",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": true,
+      "sha256": "90ce80a447ef7e417a67eae2ddd9b49db51c34a914d88cac9a9f255bef20445c"
+    },
+    {
+      "path": "TEMPLATE-CORPORATE_LANDING/HEADER/LOCALE_SELECTOR",
+      "code": "LOCALE_SELECTOR",
+      "organization": "SYSTEM",
+      "language": "JSP",
+      "inPageTree": true,
+      "sha256": "9b45543e0710b8389eda26c6ac571a2d618a1cea8c3d49cb83ed2785d15747ad"
+    },
+    {
+      "path": "TEMPLATE-CORPORATE_LANDING/FAQ/FAQ_10",
+      "code": "FAQ_10",
+      "organization": "SYSTEM",
+      "language": "JSP",
+      "inPageTree": true,
+      "sha256": "3524e7104684007e64c4809deb401b81c865f28ca46539fb979f82ff5baab682"
+    },
+    {
+      "path": "TEMPLATE-CORPORATE_LANDING/FAQ/FAQ_2",
+      "code": "FAQ_2",
+      "organization": "SYSTEM",
+      "language": "JSP",
+      "inPageTree": true,
+      "sha256": "57e834abc6034801ea3f0bfd50f39d1f9296cbfb64cbf6828f720fa4a6feaf2b"
+    },
+    {
+      "path": "FIELD_SERVICE_LANDING/FIELD_SERVICE_LANDING_VISIBILITY_REPORTING_INTEGRATIONS",
+      "code": "FIELD_SERVICE_LANDING_VISIBILITY_REPORTING_INTEGRATIONS",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": true,
+      "sha256": "240e3f1a00ad375f0446832597841ffdcbf6ed6939e63e1d81a87e0e395d53bf"
+    },
+    {
+      "path": "VERTICAL_LANDING_JTE/HERO",
+      "code": "HERO",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": true,
+      "sha256": "344f20dde0cc8f713dd75d7bb097a8103cc3e9901f0098cf369c626cc08c43ff"
+    },
+    {
+      "path": "TEMPLATE-CORPORATE_LANDING/PARTNERS",
+      "code": "PARTNERS",
+      "organization": "SYSTEM",
+      "language": "JSP",
+      "inPageTree": true,
+      "sha256": "4d7d938bec95a349f2254a3d3928344e9928619713738bc918faffb25c00314e"
+    },
+    {
+      "path": "CORPORATE_LANDING_JTE/FAQ/FAQ_9",
+      "code": "FAQ_9",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": true,
+      "sha256": "057d073b18c20c4fd6d8522e090e4d92e848c32b2da887b7e5c565b1b5178de0"
+    },
+    {
+      "path": "TEMPLATE-CORPORATE_LANDING",
+      "code": "TEMPLATE-CORPORATE_LANDING",
+      "organization": "SYSTEM",
+      "language": "JSP",
+      "inPageTree": true,
+      "sha256": "ec184dc6430f6918885ba05835d7177b66705594db47b849ee09cb3867c3a299"
+    },
+    {
+      "path": "BLOG_POST_JTE/FOOTER/FOOTER_LOGO",
+      "code": "FOOTER_LOGO",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": true,
+      "sha256": "f1075fcb91f5ce3777ebdee0254610d8c299d6ac2cd81870c346dd137da45d8e"
+    },
+    {
+      "path": "VERTICAL_LANDING_JTE/FAQ/FAQ_2",
+      "code": "FAQ_2",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": true,
+      "sha256": "34a2644d977319d11afa296dcbbda2a95057b477306b24eae2b34ff475ed89fd"
+    },
+    {
+      "path": "CORPORATE_WEBSITE_TEMPLATE/CORPORATE_WEBSITE_FOOTER/CORPORATE_WEBSITE_FOOTER_SOCIALS",
+      "code": "CORPORATE_WEBSITE_FOOTER_SOCIALS",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": false,
+      "sha256": "6af3d1add00e019ac18857f0d378050d518d9aa93cb73c9baa69c194e60ff49a"
+    },
+    {
+      "path": "CORPORATE_LANDING_JTE/HEADER/HEADER_MENU",
+      "code": "HEADER_MENU",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": true,
+      "sha256": "e724229f3e3dcea5bd522c752e77715520afd51f443b08347d83bd887cf92559"
+    },
+    {
+      "path": "TEMPLATE-CORPORATE_LANDING/FAQ/FAQ_5",
+      "code": "FAQ_5",
+      "organization": "SYSTEM",
+      "language": "JSP",
+      "inPageTree": true,
+      "sha256": "1e96f1a743fb2d98ec61666af065495785d7ee4dfe8a08505a2879e438ef446d"
+    },
+    {
+      "path": "TEMPLATE-CORPORATE_LANDING/FOOTER/FOOTER_LOGO",
+      "code": "FOOTER_LOGO",
+      "organization": "SYSTEM",
+      "language": "JSP",
+      "inPageTree": true,
+      "sha256": "f1075fcb91f5ce3777ebdee0254610d8c299d6ac2cd81870c346dd137da45d8e"
+    },
+    {
+      "path": "CORPORATE_WEBSITE_TEMPLATE/CORPORATE_WEBSITE_PARTNERS_SECTION",
+      "code": "CORPORATE_WEBSITE_PARTNERS_SECTION",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": false,
+      "sha256": "5eb7fda81fe77eeb914ce37e83754ceea423d45c3657bf007a6b114aea9b8c6b"
+    },
+    {
+      "path": "CORPORATE_LANDING_JTE/FOOTER/FOOTER_MENU",
+      "code": "FOOTER_MENU",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": true,
+      "sha256": "9d416ae428387bc5f5ff74cdd12ef3b322205e00becdf2b933e484dab6744aba"
+    },
+    {
+      "path": "TEMPLATE-BASIC_TEMPLATE/BASIC_FOOTER",
+      "code": "BASIC_FOOTER",
+      "organization": "SYSTEM",
+      "language": "JSP",
+      "inPageTree": false,
+      "sha256": "aca3ae46aa221eb6ffa51126c83d6b4b5fdb41505459cb87f800b634de7c4d5a"
+    },
+    {
+      "path": "CORPORATE_WEBSITE_TEMPLATE/CORPORATE_WEBSITE_ECOSYSTEM_SECTION",
+      "code": "CORPORATE_WEBSITE_ECOSYSTEM_SECTION",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": false,
+      "sha256": "a8cbfff2952da32b7ce639001c7d4f56ad1a288338f9354d84330738e03835ec"
+    },
+    {
+      "path": "CORPORATE_WEBSITE_TEMPLATE/60C38991_79EB_4CED_90B7_92006A7B1DC7",
+      "code": "60C38991_79EB_4CED_90B7_92006A7B1DC7",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": false,
+      "sha256": "b8c286ff4990d69be7eca0e07a55a0f38b1b9ebe5fb330ce279065d539f7f5da"
+    },
+    {
+      "path": "TEMPLATE-CORPORATE_LANDING/FOOTER",
+      "code": "FOOTER",
+      "organization": "SYSTEM",
+      "language": "JSP",
+      "inPageTree": true,
+      "sha256": "a527f99764aa9ba96e091d0da74a81351361bc3bf1c747f8bbb8a652eb96c44c"
+    },
+    {
+      "path": "TEMPLATE-CORPORATE_LANDING/FAQ/FAQ_9",
+      "code": "FAQ_9",
+      "organization": "SYSTEM",
+      "language": "JSP",
+      "inPageTree": true,
+      "sha256": "057d073b18c20c4fd6d8522e090e4d92e848c32b2da887b7e5c565b1b5178de0"
+    },
+    {
+      "path": "TEMPLATE-CORPORATE_LANDING/FAQ/FAQ_6",
+      "code": "FAQ_6",
+      "organization": "SYSTEM",
+      "language": "JSP",
+      "inPageTree": true,
+      "sha256": "90ce80a447ef7e417a67eae2ddd9b49db51c34a914d88cac9a9f255bef20445c"
+    },
+    {
+      "path": "VERTICAL_LANDING_JTE/FOOTER",
+      "code": "FOOTER",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": true,
+      "sha256": "c8f7bef18b9afea932d1fc8e3401e390e41f4b155a451e4c8647314e6b4e85d9"
+    },
+    {
+      "path": "VERTICAL_LANDING_JTE/FAQ/FAQ_7",
+      "code": "FAQ_7",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": true,
+      "sha256": "6753818f798c53908fc6ebfd6f7896ade3dfaf4bc85b6906c730fec6d15c54c6"
+    },
+    {
+      "path": "VERTICAL_LANDING_JTE",
+      "code": "VERTICAL_LANDING_JTE",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": true,
+      "sha256": "bd603ec9c6c3eb3285a11cac00e9c8ff77264863a265722c4a8a9935244e4c93"
+    },
+    {
+      "path": "FIELD_SERVICE_LANDING/FIELD_SERVICE_LANDING_FAQ",
+      "code": "FIELD_SERVICE_LANDING_FAQ",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": true,
+      "sha256": "75971dd76e99a27e5cedc59abd0295f3a7667165153616b438daa48137009a5e"
+    },
+    {
+      "path": "FIELD_SERVICE_LANDING/FIELD_SERVICE_LANDING_MOBILE_WORKFORCE",
+      "code": "FIELD_SERVICE_LANDING_MOBILE_WORKFORCE",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": true,
+      "sha256": "d2cbcaf8f0c5f275c06c75da4f78bbedb67a00a20709a3c517574cdfafdb1cde"
+    },
+    {
+      "path": "VERTICAL_LANDING_JTE/SERVICES",
+      "code": "SERVICES",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": true,
+      "sha256": "01d3572bafa08821db1019dc272b1ab96431bab25b7da654cfe1644ac75b9307"
+    },
+    {
+      "path": "USECASES_JTE/FOOTER/FOOTER_LOGO",
+      "code": "FOOTER_LOGO",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": true,
+      "sha256": "f1075fcb91f5ce3777ebdee0254610d8c299d6ac2cd81870c346dd137da45d8e"
+    },
+    {
+      "path": "FIELD_SERVICE_BLOG_INDEX_ROOT/FIELD_SERVICE_BLOG_INDEX",
+      "code": "FIELD_SERVICE_BLOG_INDEX",
+      "organization": "SERVICEWAND",
+      "language": "JTE",
+      "inPageTree": true,
+      "sha256": "5e89adccd0e83819d88f056c888f8042c62c5bc0955e7315d06da72dc5f1e80d"
+    },
+    {
+      "path": "USECASES_JTE/HEADER/LOCALE_SELECTOR",
+      "code": "LOCALE_SELECTOR",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": true,
+      "sha256": "9b45543e0710b8389eda26c6ac571a2d618a1cea8c3d49cb83ed2785d15747ad"
+    },
+    {
+      "path": "TEMPLATE-CORPORATE_LANDING/CTA",
+      "code": "CTA",
+      "organization": "SYSTEM",
+      "language": "JSP",
+      "inPageTree": true,
+      "sha256": "435ed6d44007a6e8858317bab1117fb9d73467ceb072dab2b14811584792883e"
+    },
+    {
+      "path": "TEMPLATE-CORPORATE_LANDING/FOOTER/FOOTER_COPYRIGHT",
+      "code": "FOOTER_COPYRIGHT",
+      "organization": "SYSTEM",
+      "language": "JSP",
+      "inPageTree": true,
+      "sha256": "af283f0561fe17aa23734e3180654f2b9d8d3eaec90c54fe4cfe799ef8994dd3"
+    },
+    {
+      "path": "TEMPLATE-CORPORATE_LANDING/FAQ/FAQ_7",
+      "code": "FAQ_7",
+      "organization": "SYSTEM",
+      "language": "JSP",
+      "inPageTree": true,
+      "sha256": "67f7d87e297fdb861fa8e7f9d1b08f3d0d2d656a18d55a55ff82cd8a6a7ea4cf"
+    },
+    {
+      "path": "CORPORATE_WEBSITE_TEMPLATE/CORPORATE_WEBSITE_HERO_SECTION",
+      "code": "CORPORATE_WEBSITE_HERO_SECTION",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": false,
+      "sha256": "d6dc6ec8dd078ec164d3caff67d45255a6e2561a29e859f764037528e1bc3efb"
+    },
+    {
+      "path": "TEMPLATE-CORPORATE_LANDING/FOOTER/FOOTER_SOCIALS",
+      "code": "FOOTER_SOCIALS",
+      "organization": "SYSTEM",
+      "language": "JSP",
+      "inPageTree": true,
+      "sha256": "d058246297a92bdd11f4074a742dd010d100ff3e8f2be2122caf28fbf539b66f"
+    },
+    {
+      "path": "CORPORATE_LANDING_JTE/FOOTER",
+      "code": "FOOTER",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": true,
+      "sha256": "843817ae6257d7a71460a682812af17ba27811a76b2a37372cf5298378d3ee10"
+    },
+    {
+      "path": "VERTICAL_LANDING_JTE/FOOTER/VL_FOOTER_LOGO",
+      "code": "VL_FOOTER_LOGO",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": true,
+      "sha256": "a4064d7288d858e8e03a7c769ef9e6f7a69ef63b7cdbe7f812d19dc7cd938d9d"
+    },
+    {
+      "path": "USECASES_JTE/DOC_TEMPLATE_JTE",
+      "code": "DOC_TEMPLATE_JTE",
+      "organization": "SYSTEM",
+      "language": "JTE",
+      "inPageTree": true,
+      "sha256": "c90498eea91986d84a9eaa31fa84dfb39e381727dd6780b0337a3bb78b1e1409"
+    }
+  ],
+  "formTypes": [
+    {
+      "code": "PERSONAL_INFO_COLLECTION",
+      "organization": "SYSTEM",
+      "workflow": "FORM",
+      "literalReferences": []
+    },
+    {
+      "code": "ORGNIZATION_INFO_COLLECTION",
+      "organization": "SERVICEWAND",
+      "workflow": "FORM",
+      "literalReferences": []
+    },
+    {
+      "code": "REQUEST_DEMO_FORM_TYPE",
+      "organization": "SERVICEWAND",
+      "workflow": "FORM",
+      "literalReferences": [
+        "TEMPLATE-CORPORATE_LANDING/REQUEST_DEMO",
+        "CORPORATE_LANDING_JTE/REQUEST_DEMO",
+        "CORPORATE_WEBSITE_TEMPLATE/CORPORATE_WEBSITE_REQUEST_DEMO_SECTION",
+        "/form-test.html",
+        "/snow-removal-request-demo.html",
+        "/field-service-early-access.html"
+      ]
+    },
+    {
+      "code": "REGISTRATION_FORM__SNOW_REMOVAL_",
+      "organization": "SERVICEWAND",
+      "workflow": "FORM",
+      "literalReferences": []
+    },
+    {
+      "code": "SERVICE_WAND_CTA_FORM_TYPE",
+      "organization": "SERVICEWAND",
+      "workflow": "FORM",
+      "literalReferences": [
+        "CORPORATE_WEBSITE_TEMPLATE/CORPORATE_WEBSITE_CTA_SECTION",
+        "CORPORATE_LANDING_JTE/CTA",
+        "TEMPLATE-CORPORATE_LANDING/CTA"
+      ]
+    },
+    {
+      "code": "SERVICE_WAND_IMPLEMENTATION_PARTNER_FORM",
+      "organization": "SERVICEWAND",
+      "workflow": "FORM",
+      "literalReferences": [
+        "TEMPLATE-CORPORATE_LANDING/PARTNERS",
+        "CORPORATE_WEBSITE_TEMPLATE/CORPORATE_WEBSITE_PARTNERS_SECTION",
+        "/form-test.html"
+      ]
+    },
+    {
+      "code": "SERVICE_WAND_TECHNOLOGY_PARTNER_FORM",
+      "organization": "SERVICEWAND",
+      "workflow": "FORM",
+      "literalReferences": [
+        "TEMPLATE-CORPORATE_LANDING/PARTNERS",
+        "CORPORATE_WEBSITE_TEMPLATE/CORPORATE_WEBSITE_PARTNERS_SECTION"
+      ]
+    },
+    {
+      "code": "A66B4FAF_35AD_4FF9_93DE_7E972C80C2BF",
+      "organization": "SERVICEWAND",
+      "workflow": "FORM",
+      "literalReferences": [
+        "/index.html"
+      ]
+    },
+    {
+      "code": "GENERAL_PARTNERS_FORM",
+      "organization": "SERVICEWAND",
+      "workflow": "FORM",
+      "literalReferences": [
+        "CORPORATE_LANDING_JTE/REQUEST_DEMO",
+        "CORPORATE_LANDING_JTE/PARTNER_FORM",
+        "/index.html"
+      ]
+    },
+    {
+      "code": "SNOW_REMOVAL_REQUEST_DEMO",
+      "organization": "SERVICEWAND",
+      "workflow": "FORM",
+      "literalReferences": [
+        "/snow-removal-request-demo.html"
+      ]
+    },
+    {
+      "code": "FIELD_SERVICE_EARLY_ACCESS",
+      "organization": "SERVICEWAND",
+      "workflow": "FORM",
+      "literalReferences": [
+        "/field-service-early-access.html"
+      ]
+    },
+    {
+      "code": "SERVICEWAND_STRATEGIC_PARTNER_FORM",
+      "organization": "SERVICEWAND",
+      "workflow": "FORM",
+      "literalReferences": []
+    },
+    {
+      "code": "REFERRAL_CHANNEL_PARTNER",
+      "organization": "SERVICEWAND",
+      "workflow": "FORM",
+      "literalReferences": [
+        "SNOW_REMOVAL_LANDING/SNOW_REMOVAL_LANDING_CONTENT"
+      ]
+    }
+  ],
+  "media": [
+    {
+      "kind": "image",
+      "library": "SERVICEWAND_SNOW_REMOVAL_LANDING",
+      "name": "sub-manage-centrally-640.webp",
+      "format": "image/webp",
+      "bytes": 35616
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Weather Intelligence for Snow Removal The Storm Is Won Before the First Truck Moves2.png",
+      "format": "image/png",
+      "bytes": 2336760
+    },
+    {
+      "kind": "image",
+      "library": "FIELD_SERVICES",
+      "name": "Appliance Repair Software.png",
+      "format": "image/png",
+      "bytes": 2010788
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Scaling a Snow Removal Business The Systems That Break Between 5 and 50 Trucks2.png",
+      "format": "image/png",
+      "bytes": 2407138
+    },
+    {
+      "kind": "image",
+      "library": "SERVICEWAND_SNOW_REMOVAL_LANDING",
+      "name": "43d5053f4d.webp",
+      "format": "image/webp",
+      "bytes": 17154
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Agentic AI and the $234 Billion SaaS Question What Software Companies Need to Change1.png",
+      "format": "image/png",
+      "bytes": 2054685
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Field Service Is Becoming a Profit Center—Software Has to Catch Up2.png",
+      "format": "image/png",
+      "bytes": 2060460
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Field Service Scheduling Software Why Static Calendars Are Becoming Obsolete1.png",
+      "format": "image/png",
+      "bytes": 2100169
+    },
+    {
+      "kind": "image",
+      "library": "FIELD_SERVICES",
+      "name": "plumbing-service-software-1280.webp",
+      "format": "image/webp",
+      "bytes": 177694
+    },
+    {
+      "kind": "image",
+      "library": "CE7A483A_42C8_4869_ADB1_98DF04D1065D",
+      "name": "mainsnow#2.png",
+      "format": "image/png",
+      "bytes": 2397945
+    },
+    {
+      "kind": "image",
+      "library": "CE7A483A_42C8_4869_ADB1_98DF04D1065D",
+      "name": "Commercial Account Communication.png",
+      "format": "image/png",
+      "bytes": 151420
+    },
+    {
+      "kind": "image",
+      "library": "CE7A483A_42C8_4869_ADB1_98DF04D1065D",
+      "name": "Convenient Snow Removal Billing.webp",
+      "format": "image/webp",
+      "bytes": 15816
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "GPS Snow Plow Tracking Location Is Not the Same as Proof of Work1.png",
+      "format": "image/png",
+      "bytes": 2020385
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Snow and Ice Management Software Why Plowing Is Only Half the Operation2.png",
+      "format": "image/png",
+      "bytes": 2207235
+    },
+    {
+      "kind": "image",
+      "library": "SERVICEWAND_SNOW_REMOVAL_LANDING",
+      "name": "sw-email-snow-strip.jpg",
+      "format": "image/jpeg",
+      "bytes": 47944
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "1The System of Record Is Back—and AI Agents Are the Reason.png",
+      "format": "image/png",
+      "bytes": 1753861
+    },
+    {
+      "kind": "image",
+      "library": "CE7A483A_42C8_4869_ADB1_98DF04D1065D",
+      "name": "image 55.jpg",
+      "format": "image/jpeg",
+      "bytes": 590183
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Field Service CRM vs. FSM Why Customer Data and Job Execution Can’t Live Apart1.png",
+      "format": "image/png",
+      "bytes": 2009418
+    },
+    {
+      "kind": "image",
+      "library": "SERVICEWAND_SNOW_REMOVAL_LANDING",
+      "name": "46a0d3fd99.webp",
+      "format": "image/webp",
+      "bytes": 88638
+    },
+    {
+      "kind": "image",
+      "library": "SERVICEWAND_SNOW_REMOVAL_LANDING",
+      "name": "sub-manage-centrally.webp",
+      "format": "image/webp",
+      "bytes": 84582
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "MCP and the New Integration Layer Will APIs Still Be Enough1.png",
+      "format": "image/png",
+      "bytes": 1989804
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Field Service Route Optimization Stop Optimizing Miles and Start Optimizing Outcomes2.png",
+      "format": "image/png",
+      "bytes": 2095731
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Proof of Service for Snow Removal If You Can’t Prove It, Did It Happen2.png",
+      "format": "image/png",
+      "bytes": 2088071
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Snow Removal App vs. Full Management Software When a Simple App Stops Being Enough1.png",
+      "format": "image/png",
+      "bytes": 1918848
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Field Service Is Becoming a Profit Center—Software Has to Catch Up1.png",
+      "format": "image/png",
+      "bytes": 2213975
+    },
+    {
+      "kind": "image",
+      "library": "CE7A483A_42C8_4869_ADB1_98DF04D1065D",
+      "name": "Snow Removal Billing Software for Seasonal Contracts, Per-Plow Jobs, and De-Icing.png",
+      "format": "image/png",
+      "bytes": 1790359
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "SaaS Isn’t Dead. The Seat License Might Be.2.png",
+      "format": "image/png",
+      "bytes": 1948503
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Headless Software Is Coming What Happens When AI Stops Clicking Your UI2.png",
+      "format": "image/png",
+      "bytes": 2056516
+    },
+    {
+      "kind": "image",
+      "library": "SERVICEWAND_SNOW_REMOVAL_LANDING",
+      "name": "sub-info-separate-640.webp",
+      "format": "image/webp",
+      "bytes": 70956
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Your Company Doesn’t Have an AI Problem. It Has a Data and Workflow Problem.2.png",
+      "format": "image/png",
+      "bytes": 2518308
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Snow Removal Software ROI Measure Fewer Disputes, Faster Billing and Better Route Density2.png",
+      "format": "image/png",
+      "bytes": 2057373
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "The Rise of the Forward-Deployed Builder Why Software Companies Need People Who Understand Operations1.png",
+      "format": "image/png",
+      "bytes": 1936662
+    },
+    {
+      "kind": "image",
+      "library": "SERVICEWAND_SNOW_REMOVAL_LANDING",
+      "name": "sub-field-work.webp",
+      "format": "image/webp",
+      "bytes": 175906
+    },
+    {
+      "kind": "image",
+      "library": "CE7A483A_42C8_4869_ADB1_98DF04D1065D",
+      "name": "man-snow.webp",
+      "format": "image/webp",
+      "bytes": 93410
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "The Future of Business Software Is Invisible, Adaptive and Always Working1.png",
+      "format": "image/png",
+      "bytes": 2983756
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Field Service Route Optimization Stop Optimizing Miles and Start Optimizing Outcomes1.png",
+      "format": "image/png",
+      "bytes": 2112972
+    },
+    {
+      "kind": "image",
+      "library": "CE7A483A_42C8_4869_ADB1_98DF04D1065D",
+      "name": "Snow Removal Billing Software for Seasonal Contracts, Per-Plow Jobs, and De-Icing.webp",
+      "format": "image/webp",
+      "bytes": 166436
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Snow Removal Billing Software Stop Rebuilding the Storm in Your Invoice1.png",
+      "format": "image/png",
+      "bytes": 2138379
+    },
+    {
+      "kind": "image",
+      "library": "F50C149D_FD4F_4529_9A50_9E0B31CC09E3",
+      "name": "Screenshot 2026-04-23 at 20.08.22.png",
+      "format": "image/png",
+      "bytes": 4435218
+    },
+    {
+      "kind": "image",
+      "library": "FIELD_SERVICES",
+      "name": "cleaning-services-1280.webp",
+      "format": "image/webp",
+      "bytes": 124282
+    },
+    {
+      "kind": "image",
+      "library": "CE7A483A_42C8_4869_ADB1_98DF04D1065D",
+      "name": "Quote to Snow Web Page.webp",
+      "format": "image/png",
+      "bytes": 119903
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Snow Removal App vs. Full Management Software When a Simple App Stops Being Enough2.png",
+      "format": "image/png",
+      "bytes": 2125015
+    },
+    {
+      "kind": "image",
+      "library": "FIELD_SERVICES",
+      "name": "pest-control-operations-1280.webp",
+      "format": "image/webp",
+      "bytes": 221946
+    },
+    {
+      "kind": "image",
+      "library": "CE7A483A_42C8_4869_ADB1_98DF04D1065D",
+      "name": "Group 89.jpg",
+      "format": "image/jpeg",
+      "bytes": 917279
+    },
+    {
+      "kind": "image",
+      "library": "FIELD_SERVICES",
+      "name": "Property Maintenance Operations.png",
+      "format": "image/png",
+      "bytes": 2491950
+    },
+    {
+      "kind": "image",
+      "library": "FIELD_SERVICES",
+      "name": "Lawn Care Operations.png",
+      "format": "image/png",
+      "bytes": 2518790
+    },
+    {
+      "kind": "image",
+      "library": "FIELD_SERVICES",
+      "name": "Commercial Services.png",
+      "format": "image/png",
+      "bytes": 3040331
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "AI Agents Aren’t Replacing Software—They’re Rewriting What Software Has to Be1.png",
+      "format": "image/png",
+      "bytes": 1753342
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "The Operational Data Moat Why AI Makes Your “Boring” Business Data More Valuable2.png",
+      "format": "image/png",
+      "bytes": 2442426
+    },
+    {
+      "kind": "image",
+      "library": "CE7A483A_42C8_4869_ADB1_98DF04D1065D",
+      "name": "Github.svg",
+      "format": "image/svg+xml",
+      "bytes": 2986
+    },
+    {
+      "kind": "image",
+      "library": "CE7A483A_42C8_4869_ADB1_98DF04D1065D",
+      "name": "Invoicing Snow Page.webp",
+      "format": "image/webp",
+      "bytes": 3778
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Proof of Service for Snow Removal If You Can’t Prove It, Did It Happen1.png",
+      "format": "image/png",
+      "bytes": 1966747
+    },
+    {
+      "kind": "image",
+      "library": "SERVICEWAND_SNOW_REMOVAL_LANDING",
+      "name": "sub-field-work-640.webp",
+      "format": "image/webp",
+      "bytes": 68736
+    },
+    {
+      "kind": "image",
+      "library": "SERVICEWAND_DEFAULT",
+      "name": "Service Wand and the Argument for One Operational System2.png",
+      "format": "image/png",
+      "bytes": 1809112
+    },
+    {
+      "kind": "image",
+      "library": "CE7A483A_42C8_4869_ADB1_98DF04D1065D",
+      "name": "Turn Better Operations Into Better Margins.webp",
+      "format": "image/webp",
+      "bytes": 36302
+    },
+    {
+      "kind": "image",
+      "library": "FIELD_SERVICES",
+      "name": "landscaping-operations-1280.webp",
+      "format": "image/webp",
+      "bytes": 244364
+    },
+    {
+      "kind": "image",
+      "library": "SERVICEWAND_SNOW_REMOVAL_LANDING",
+      "name": "394df17a2a.webp",
+      "format": "image/webp",
+      "bytes": 109084
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Build vs. Buy vs. Configure The Software Decision Founders Keep Framing Wrong1.png",
+      "format": "image/png",
+      "bytes": 1745988
+    },
+    {
+      "kind": "image",
+      "library": "FIELD_SERVICES",
+      "name": "Facility Services.png",
+      "format": "image/png",
+      "bytes": 1929433
+    },
+    {
+      "kind": "image",
+      "library": "CE7A483A_42C8_4869_ADB1_98DF04D1065D",
+      "name": "Professional Snow Removal Quotes.webp",
+      "format": "image/webp",
+      "bytes": 17002
+    },
+    {
+      "kind": "image",
+      "library": "CE7A483A_42C8_4869_ADB1_98DF04D1065D",
+      "name": "Customer Records and Snow Service History.webp",
+      "format": "image/webp",
+      "bytes": 10338
+    },
+    {
+      "kind": "image",
+      "library": "CE7A483A_42C8_4869_ADB1_98DF04D1065D",
+      "name": "Customer Records and Snow Service History.png",
+      "format": "image/png",
+      "bytes": 105816
+    },
+    {
+      "kind": "image",
+      "library": "FIELD_SERVICES",
+      "name": "main pic.png",
+      "format": "image/png",
+      "bytes": 1333002
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Commercial Snow Removal Software Why One Parking Lot Can Be More Complex Than 50 Driveways2.png",
+      "format": "image/png",
+      "bytes": 2518996
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Snow Removal Route Optimization The Shortest-Route Trap That Costs More1.png",
+      "format": "image/png",
+      "bytes": 2101423
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "From Industry Expertise to Software How Partners Can Productize What They Know1.png",
+      "format": "image/png",
+      "bytes": 1768068
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Snow Removal Billing Software Stop Rebuilding the Storm in Your Invoice2.png",
+      "format": "image/png",
+      "bytes": 2058129
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Salt Tracking Software The Hidden Margin Problem in Snow and Ice Management2.png",
+      "format": "image/png",
+      "bytes": 2174864
+    },
+    {
+      "kind": "image",
+      "library": "CE7A483A_42C8_4869_ADB1_98DF04D1065D",
+      "name": "Ellipse 31.png",
+      "format": "image/png",
+      "bytes": 14565
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "The End of One-Size-Fits-All SaaS Software Is Becoming Adaptive2.png",
+      "format": "image/png",
+      "bytes": 1759839
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Snow Removal CRM What Should You Know About a Customer Before the Snow Falls1.png",
+      "format": "image/png",
+      "bytes": 1805509
+    },
+    {
+      "kind": "image",
+      "library": "FIELD_SERVICES",
+      "name": "Cleaning Services.png",
+      "format": "image/png",
+      "bytes": 2115306
+    },
+    {
+      "kind": "image",
+      "library": "CE7A483A_42C8_4869_ADB1_98DF04D1065D",
+      "name": "Improve Customer Satisfaction During Every Snow Event.png",
+      "format": "image/png",
+      "bytes": 1960551
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "The Developer Platform Wars Are Moving Up the Stack2.png",
+      "format": "image/png",
+      "bytes": 1862485
+    },
+    {
+      "kind": "image",
+      "library": "SERVICEWAND_SNOW_REMOVAL_LANDING",
+      "name": "18931164fa.webp",
+      "format": "image/webp",
+      "bytes": 34788
+    },
+    {
+      "kind": "image",
+      "library": "FIELD_SERVICES",
+      "name": "field-service-hero-1122.webp",
+      "format": "image/webp",
+      "bytes": 77344
+    },
+    {
+      "kind": "image",
+      "library": "SERVICEWAND_SNOW_REMOVAL_LANDING",
+      "name": "crm-property-plan.webp",
+      "format": "image/webp",
+      "bytes": 222940
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "What Is an Operational Platform The Category Between CRM, ERP and Custom Software2.png",
+      "format": "image/png",
+      "bytes": 1749155
+    },
+    {
+      "kind": "image",
+      "library": "CE7A483A_42C8_4869_ADB1_98DF04D1065D",
+      "name": "Group 75.png",
+      "format": "image/png",
+      "bytes": 525134
+    },
+    {
+      "kind": "image",
+      "library": "FIELD_SERVICES",
+      "name": "Electrical Contractor Platform.png",
+      "format": "image/png",
+      "bytes": 2351116
+    },
+    {
+      "kind": "image",
+      "library": "FIELD_SERVICES",
+      "name": "male-technician-320.webp",
+      "format": "image/webp",
+      "bytes": 13326
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Field Service Dispatch Software From Drag-and-Drop Boards to AI Orchestration1.png",
+      "format": "image/png",
+      "bytes": 2070829
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Predictive Field Service The End of Break-Fix Is Closer Than It Looks2.png",
+      "format": "image/png",
+      "bytes": 2131432
+    },
+    {
+      "kind": "image",
+      "library": "CE7A483A_42C8_4869_ADB1_98DF04D1065D",
+      "name": "what-is-snow-removal-software-service-wand-platform.webp",
+      "format": "image/webp",
+      "bytes": 25824
+    },
+    {
+      "kind": "image",
+      "library": "CE7A483A_42C8_4869_ADB1_98DF04D1065D",
+      "name": "image 9 (2).png",
+      "format": "image/png",
+      "bytes": 140567
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "AI in Snow Removal Can Software Predict What Your Dispatcher Will Need Next1.png",
+      "format": "image/png",
+      "bytes": 2666613
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Vertical SaaS Was Version One. Vertical Operating Systems Are Next2.png",
+      "format": "image/png",
+      "bytes": 3246448
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Field Service Automation 7 Decisions Your Team Should Stop Making Manually2.png",
+      "format": "image/png",
+      "bytes": 2431091
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Snow Removal Contract Management Seasonal, Per-Push, Per-Inch—Without Spreadsheet Chaos1.png",
+      "format": "image/png",
+      "bytes": 2096857
+    },
+    {
+      "kind": "image",
+      "library": "SERVICEWAND_DEFAULT",
+      "name": "Service Wand and the Argument for One Operational System1.png",
+      "format": "image/png",
+      "bytes": 1626625
+    },
+    {
+      "kind": "image",
+      "library": "CE7A483A_42C8_4869_ADB1_98DF04D1065D",
+      "name": "snow-removal-management-software-commercial-route-map.webp",
+      "format": "image/webp",
+      "bytes": 170736
+    },
+    {
+      "kind": "image",
+      "library": "CE7A483A_42C8_4869_ADB1_98DF04D1065D",
+      "name": "Increase Revenue Without Chasing More Paperwork.webp",
+      "format": "image/webp",
+      "bytes": 58866
+    },
+    {
+      "kind": "image",
+      "library": "FIELD_SERVICES",
+      "name": "Landscaping Operations.png",
+      "format": "image/png",
+      "bytes": 2769659
+    },
+    {
+      "kind": "image",
+      "library": "CE7A483A_42C8_4869_ADB1_98DF04D1065D",
+      "name": "service-history snow removal web page.webp",
+      "format": "image/png",
+      "bytes": 108690
+    },
+    {
+      "kind": "image",
+      "library": "SERVICEWAND_SNOW_REMOVAL_LANDING",
+      "name": "98855f8899.webp",
+      "format": "image/webp",
+      "bytes": 168086
+    },
+    {
+      "kind": "image",
+      "library": "FIELD_SERVICES",
+      "name": "HVAC Service Platform.png",
+      "format": "image/png",
+      "bytes": 2383672
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Snow Removal Customer Notifications Why Silence During a Storm Costs Trust2.png",
+      "format": "image/png",
+      "bytes": 2242523
+    },
+    {
+      "kind": "image",
+      "library": "CE7A483A_42C8_4869_ADB1_98DF04D1065D",
+      "name": "Get More Done With The Crews You Already Have.webp",
+      "format": "image/webp",
+      "bytes": 82412
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "AI in Snow Removal Can Software Predict What Your Dispatcher Will Need Next2.png",
+      "format": "image/png",
+      "bytes": 2581075
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "The SaaS-Pocalypse Was Exaggerated. The Software Reckoning Was Not.2.png",
+      "format": "image/png",
+      "bytes": 1814173
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Mobile Field Service Software The Real Test Starts When the Signal Disappears2.png",
+      "format": "image/png",
+      "bytes": 2178989
+    },
+    {
+      "kind": "image",
+      "library": "SERVICEWAND_SNOW_REMOVAL_LANDING",
+      "name": "sub-issues-accountable-640.webp",
+      "format": "image/webp",
+      "bytes": 36308
+    },
+    {
+      "kind": "image",
+      "library": "FIELD_SERVICES",
+      "name": "female dispatcher.png",
+      "format": "image/png",
+      "bytes": 1726028
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "The SaaS Stack Is Collapsing Why Businesses Are Replacing 10 Tools With One Operational Platform1.png",
+      "format": "image/png",
+      "bytes": 1665268
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Snow Removal Scheduling Software The 2 A.M. Test Most Platforms Fail2.png",
+      "format": "image/png",
+      "bytes": 2158420
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "AI Agents Need a Boss Why Orchestration Becomes the New Control Layer1.png",
+      "format": "image/png",
+      "bytes": 1897258
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Agentic AI and the $234 Billion SaaS Question What Software Companies Need to Change2.png",
+      "format": "image/png",
+      "bytes": 2371170
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "The Post-SaaS Interface What Software Looks Like When Humans Stop Opening Every App1.png",
+      "format": "image/png",
+      "bytes": 1687812
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "The AI-First Field Service Company What Changes From Dispatch to Closeout1.png",
+      "format": "image/png",
+      "bytes": 2583941
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Technician Knowledge Is Walking Out the Door Can AI Keep It Inside the Business1.png",
+      "format": "image/png",
+      "bytes": 2050589
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "AI Agents Aren’t Replacing Software—They’re Rewriting What Software Has to Be2.png",
+      "format": "image/png",
+      "bytes": 1862880
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "AI-Native Software What It Means When AI Is Built In, Not Bolted On1.png",
+      "format": "image/png",
+      "bytes": 1714148
+    },
+    {
+      "kind": "image",
+      "library": "CE7A483A_42C8_4869_ADB1_98DF04D1065D",
+      "name": "worker phone snow page.webp",
+      "format": "image/webp",
+      "bytes": 44064
+    },
+    {
+      "kind": "image",
+      "library": "SERVICEWAND_SNOW_REMOVAL_LANDING",
+      "name": "sub-field-work.webp",
+      "format": "image/webp",
+      "bytes": 175906
+    },
+    {
+      "kind": "image",
+      "library": "SERVICEWAND_SNOW_REMOVAL_LANDING",
+      "name": "28b790d668.webp",
+      "format": "image/webp",
+      "bytes": 44590
+    },
+    {
+      "kind": "image",
+      "library": "FIELD_SERVICES",
+      "name": "Snow Removal Software.png",
+      "format": "image/png",
+      "bytes": 2227879
+    },
+    {
+      "kind": "image",
+      "library": "FIELD_SERVICES",
+      "name": "facility-services-1280.webp",
+      "format": "image/webp",
+      "bytes": 88740
+    },
+    {
+      "kind": "image",
+      "library": "SERVICEWAND_SNOW_REMOVAL_LANDING",
+      "name": "winter-pickup-v2.webp",
+      "format": "image/webp",
+      "bytes": 155530
+    },
+    {
+      "kind": "image",
+      "library": "CE7A483A_42C8_4869_ADB1_98DF04D1065D",
+      "name": "Snow.svg",
+      "format": "image/svg+xml",
+      "bytes": 3599
+    },
+    {
+      "kind": "image",
+      "library": "CE7A483A_42C8_4869_ADB1_98DF04D1065D",
+      "name": "image 9.png",
+      "format": "image/png",
+      "bytes": 78929
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Commercial Snow Software Gets Serious When SLAs, Sites and Liability Enter the Picture2.png",
+      "format": "image/png",
+      "bytes": 2200036
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Snow Removal Scheduling Software The 2 A.M. Test Most Platforms Fail1.png",
+      "format": "image/png",
+      "bytes": 1940734
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "From Industry Expertise to Software How Partners Can Productize What They Know2.png",
+      "format": "image/png",
+      "bytes": 1736851
+    },
+    {
+      "kind": "image",
+      "library": "CE7A483A_42C8_4869_ADB1_98DF04D1065D",
+      "name": "Commercial Account Communication.webp",
+      "format": "image/webp",
+      "bytes": 12808
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Scaling a Snow Removal Business The Systems That Break Between 5 and 50 Trucks1.png",
+      "format": "image/png",
+      "bytes": 1912373
+    },
+    {
+      "kind": "image",
+      "library": "FIELD_SERVICES",
+      "name": "appliance-repair-software-1280.webp",
+      "format": "image/webp",
+      "bytes": 94730
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Build vs. Buy vs. Configure The Software Decision Founders Keep Framing Wrong2.png",
+      "format": "image/png",
+      "bytes": 2043327
+    },
+    {
+      "kind": "image",
+      "library": "FIELD_SERVICES",
+      "name": "Telecom Field Operations.png",
+      "format": "image/png",
+      "bytes": 1751129
+    },
+    {
+      "kind": "image",
+      "library": "CE7A483A_42C8_4869_ADB1_98DF04D1065D",
+      "name": "woman-snow.webp",
+      "format": "image/webp",
+      "bytes": 64616
+    },
+    {
+      "kind": "image",
+      "library": "CE7A483A_42C8_4869_ADB1_98DF04D1065D",
+      "name": "Online Snow Removal Requests.png",
+      "format": "image/png",
+      "bytes": 147279
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "The End of One-Size-Fits-All SaaS Software Is Becoming Adaptive1.png",
+      "format": "image/png",
+      "bytes": 1787884
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Digital Snow Logs The Record You Need Months After the Snow Is Gone1.png",
+      "format": "image/png",
+      "bytes": 2375123
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Commercial Snow Software Gets Serious When SLAs, Sites and Liability Enter the Picture1.png",
+      "format": "image/png",
+      "bytes": 2127508
+    },
+    {
+      "kind": "image",
+      "library": "CE7A483A_42C8_4869_ADB1_98DF04D1065D",
+      "name": "Improve Customer Satisfaction During Every Snow Event.webp",
+      "format": "image/webp",
+      "bytes": 87584
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "SaaS Isn’t Dead. The Seat License Might Be.1.png",
+      "format": "image/png",
+      "bytes": 1975384
+    },
+    {
+      "kind": "image",
+      "library": "FIELD_SERVICES",
+      "name": "hvac-service-platform-1280.webp",
+      "format": "image/webp",
+      "bytes": 141410
+    },
+    {
+      "kind": "image",
+      "library": "CE7A483A_42C8_4869_ADB1_98DF04D1065D",
+      "name": "main header.webp",
+      "format": "image/webp",
+      "bytes": 41318
+    },
+    {
+      "kind": "image",
+      "library": "FIELD_SERVICES",
+      "name": "electrical-contractor-platform-1280.webp",
+      "format": "image/webp",
+      "bytes": 158436
+    },
+    {
+      "kind": "image",
+      "library": "SERVICEWAND_SNOW_REMOVAL_LANDING",
+      "name": "sub-info-separate.webp",
+      "format": "image/webp",
+      "bytes": 194554
+    },
+    {
+      "kind": "image",
+      "library": "CE7A483A_42C8_4869_ADB1_98DF04D1065D",
+      "name": "Professional Snow Removal Quotes.png",
+      "format": "image/png",
+      "bytes": 138061
+    },
+    {
+      "kind": "image",
+      "library": "CE7A483A_42C8_4869_ADB1_98DF04D1065D",
+      "name": "truck.svg",
+      "format": "image/svg+xml",
+      "bytes": 2379
+    },
+    {
+      "kind": "image",
+      "library": "SERVICEWAND_SNOW_REMOVAL_LANDING",
+      "name": "4c171e80e9.webp",
+      "format": "image/webp",
+      "bytes": 25070
+    },
+    {
+      "kind": "image",
+      "library": "FIELD_SERVICES",
+      "name": "ai-automation-1280.webp",
+      "format": "image/webp",
+      "bytes": 83880
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "1Low-Code Is Not the End of Developers Why Serious Platforms Need Both.png",
+      "format": "image/png",
+      "bytes": 1827630
+    },
+    {
+      "kind": "image",
+      "library": "F50C149D_FD4F_4529_9A50_9E0B31CC09E3",
+      "name": "Rounded Photo.png",
+      "format": "image/png",
+      "bytes": 2709694
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Technician Knowledge Is Walking Out the Door Can AI Keep It Inside the Business2.png",
+      "format": "image/png",
+      "bytes": 2088013
+    },
+    {
+      "kind": "image",
+      "library": "CE7A483A_42C8_4869_ADB1_98DF04D1065D",
+      "name": "image 9 (3).png",
+      "format": "image/png",
+      "bytes": 162278
+    },
+    {
+      "kind": "image",
+      "library": "FIELD_SERVICES",
+      "name": "property-maintenance-operations-1280.webp",
+      "format": "image/webp",
+      "bytes": 154278
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Headless Software Is Coming What Happens When AI Stops Clicking Your UI1.png",
+      "format": "image/png",
+      "bytes": 1848434
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Snow Removal CRM What Should You Know About a Customer Before the Snow Falls2.png",
+      "format": "image/png",
+      "bytes": 2046860
+    },
+    {
+      "kind": "image",
+      "library": "CE7A483A_42C8_4869_ADB1_98DF04D1065D",
+      "name": "service-wand-logo.svg",
+      "format": "image/svg+xml",
+      "bytes": 11804
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Outcome-Based Pricing What Happens When AI Does the Work but Nobody Buys a Seat2.png",
+      "format": "image/png",
+      "bytes": 1883496
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "One Data Model, Many Businesses Why Entity-Based Architecture Matters1.jpg",
+      "format": "image/jpeg",
+      "bytes": 569128
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Snow Removal Software in 2026 The Storm Test That Exposes Weak Platforms1.png",
+      "format": "image/png",
+      "bytes": 2184770
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "GPS Snow Plow Tracking Location Is Not the Same as Proof of Work2.png",
+      "format": "image/png",
+      "bytes": 2355989
+    },
+    {
+      "kind": "image",
+      "library": "CE7A483A_42C8_4869_ADB1_98DF04D1065D",
+      "name": "X-social.svg",
+      "format": "image/svg+xml",
+      "bytes": 1135
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Snow Removal Customer Notifications Why Silence During a Storm Costs Trust1.png",
+      "format": "image/png",
+      "bytes": 2262695
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "From Configuration to Compounding How Operational Software Gets Smarter Over Time2.png",
+      "format": "image/png",
+      "bytes": 2063378
+    },
+    {
+      "kind": "image",
+      "library": "CE7A483A_42C8_4869_ADB1_98DF04D1065D",
+      "name": "cell phone crew arrival.webp",
+      "format": "image/png",
+      "bytes": 97371
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Field Service Dispatch Software From Drag-and-Drop Boards to AI Orchestration2.png",
+      "format": "image/png",
+      "bytes": 2523421
+    },
+    {
+      "kind": "image",
+      "library": "F50C149D_FD4F_4529_9A50_9E0B31CC09E3",
+      "name": "Me.png",
+      "format": "image/png",
+      "bytes": 1977880
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Field Service Scheduling Software Why Static Calendars Are Becoming Obsolete2.png",
+      "format": "image/png",
+      "bytes": 2705446
+    },
+    {
+      "kind": "image",
+      "library": "CE7A483A_42C8_4869_ADB1_98DF04D1065D",
+      "name": "Turn Better Operations Into Better Margins.png",
+      "format": "image/png",
+      "bytes": 1634289
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Snow Removal Job Costing The Profit Leak Hiding Inside Every Storm1.png",
+      "format": "image/png",
+      "bytes": 2303630
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Snow and Ice Management Software Why Plowing Is Only Half the Operation1.png",
+      "format": "image/png",
+      "bytes": 2288917
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Snow Removal Job Costing The Profit Leak Hiding Inside Every Storm2.png",
+      "format": "image/png",
+      "bytes": 2281596
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Commercial Snow Removal Software Why One Parking Lot Can Be More Complex Than 50 Driveways1.png",
+      "format": "image/png",
+      "bytes": 2667844
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "The Developer Platform Wars Are Moving Up the Stack1.png",
+      "format": "image/png",
+      "bytes": 1710680
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "What Is an Operational Platform The Category Between CRM, ERP and Custom Software1.png",
+      "format": "image/png",
+      "bytes": 1764792
+    },
+    {
+      "kind": "image",
+      "library": "CE7A483A_42C8_4869_ADB1_98DF04D1065D",
+      "name": "snow-removal-scheduling-software-online-request-laptop.webp",
+      "format": "image/webp",
+      "bytes": 55870
+    },
+    {
+      "kind": "image",
+      "library": "CE7A483A_42C8_4869_ADB1_98DF04D1065D",
+      "name": "mainsnow.png",
+      "format": "image/png",
+      "bytes": 2039554
+    },
+    {
+      "kind": "image",
+      "library": "CE7A483A_42C8_4869_ADB1_98DF04D1065D",
+      "name": "manager-snow.png",
+      "format": "image/webp",
+      "bytes": 67710
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "The SaaS-Pocalypse Was Exaggerated. The Software Reckoning Was Not.1.png",
+      "format": "image/png",
+      "bytes": 2012719
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Snow Removal Route Optimization The Shortest-Route Trap That Costs More2.png",
+      "format": "image/png",
+      "bytes": 2021734
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Field Service Automation 7 Decisions Your Team Should Stop Making Manually1.png",
+      "format": "image/png",
+      "bytes": 2545699
+    },
+    {
+      "kind": "image",
+      "library": "CE7A483A_42C8_4869_ADB1_98DF04D1065D",
+      "name": "Online Snow Removal Requests.webp",
+      "format": "image/webp",
+      "bytes": 12816
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "The AI-First Field Service Company What Changes From Dispatch to Closeout2.png",
+      "format": "image/png",
+      "bytes": 2423944
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "a44c69_1d08794aa7524aa69473ffa9103afbee_mv2.png",
+      "format": "image/png",
+      "bytes": 1432947
+    },
+    {
+      "kind": "image",
+      "library": "SERVICEWAND_SNOW_REMOVAL_LANDING",
+      "name": "sw-email-title.png",
+      "format": "image/png",
+      "bytes": 44342
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "One Data Model, Many Businesses Why Entity-Based Architecture Matters2.jpg",
+      "format": "image/jpeg",
+      "bytes": 502350
+    },
+    {
+      "kind": "image",
+      "library": "SERVICEWAND_SNOW_REMOVAL_LANDING",
+      "name": "sub-issues-accountable.webp",
+      "format": "image/webp",
+      "bytes": 106496
+    },
+    {
+      "kind": "image",
+      "library": "FIELD_SERVICES",
+      "name": "commercial-services-1280.webp",
+      "format": "image/webp",
+      "bytes": 263978
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Mobile Field Service Software The Real Test Starts When the Signal Disappears1.png",
+      "format": "image/png",
+      "bytes": 1840878
+    },
+    {
+      "kind": "image",
+      "library": "CE7A483A_42C8_4869_ADB1_98DF04D1065D",
+      "name": "snow-removal-management-software-commercial-route-map.webp",
+      "format": "image/webp",
+      "bytes": 181684
+    },
+    {
+      "kind": "image",
+      "library": "FIELD_SERVICES",
+      "name": "snow-removal-software-1280.webp",
+      "format": "image/webp",
+      "bytes": 108838
+    },
+    {
+      "kind": "image",
+      "library": "SERVICEWAND_SNOW_REMOVAL_LANDING",
+      "name": "hero-snow.webp",
+      "format": "image/webp",
+      "bytes": 81858
+    },
+    {
+      "kind": "image",
+      "library": "CE7A483A_42C8_4869_ADB1_98DF04D1065D",
+      "name": "man-snow.png",
+      "format": "image/png",
+      "bytes": 2243674
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Field Service Management Software in 2026 What Buyers Should Actually Compare2.png",
+      "format": "image/png",
+      "bytes": 2331708
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Digital Snow Logs The Record You Need Months After the Snow Is Gone2.png",
+      "format": "image/png",
+      "bytes": 2183444
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Vertical SaaS Was Version One. Vertical Operating Systems Are Next1.png",
+      "format": "image/png",
+      "bytes": 3396174
+    },
+    {
+      "kind": "image",
+      "library": "FIELD_SERVICES",
+      "name": "telecom-field-operations-1280.webp",
+      "format": "image/webp",
+      "bytes": 82884
+    },
+    {
+      "kind": "image",
+      "library": "CE7A483A_42C8_4869_ADB1_98DF04D1065D",
+      "name": "Rectangle 1072.jpg",
+      "format": "image/jpeg",
+      "bytes": 167984
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "The SaaS Stack Is Collapsing Why Businesses Are Replacing 10 Tools With One Operational Platform2.png",
+      "format": "image/png",
+      "bytes": 1635399
+    },
+    {
+      "kind": "image",
+      "library": "FIELD_SERVICES",
+      "name": "Pest Control Operations.png",
+      "format": "image/png",
+      "bytes": 2769687
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Predictive Field Service The End of Break-Fix Is Closer Than It Looks1.png",
+      "format": "image/png",
+      "bytes": 2147015
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Snow Removal Crew Management Knowing Where Everyone Is Isn’t the Same as Knowing What’s Done2.png",
+      "format": "image/png",
+      "bytes": 1998806
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "a44c69_62449eb7963e4225aa0aa5f18d94d446_mv2.png",
+      "format": "image/png",
+      "bytes": 1705611
+    },
+    {
+      "kind": "image",
+      "library": "CE7A483A_42C8_4869_ADB1_98DF04D1065D",
+      "name": "snow-removal-management-software-commercial-route-map.webp",
+      "format": "image/webp",
+      "bytes": 170336
+    },
+    {
+      "kind": "image",
+      "library": "SERVICEWAND_SNOW_REMOVAL_LANDING",
+      "name": "efff141366.svg",
+      "format": "image/svg+xml",
+      "bytes": 11804
+    },
+    {
+      "kind": "image",
+      "library": "SERVICEWAND_SNOW_REMOVAL_LANDING",
+      "name": "sw-email-logo-white.png",
+      "format": "image/png",
+      "bytes": 8417
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "The Rise of the Forward-Deployed Builder Why Software Companies Need People Who Understand Operations2.png",
+      "format": "image/png",
+      "bytes": 2418212
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "AI-Native Software What It Means When AI Is Built In, Not Bolted On2.png",
+      "format": "image/png",
+      "bytes": 2118626
+    },
+    {
+      "kind": "image",
+      "library": "FIELD_SERVICES",
+      "name": "Plumbing Service Software.png",
+      "format": "image/png",
+      "bytes": 2556113
+    },
+    {
+      "kind": "image",
+      "library": "CE7A483A_42C8_4869_ADB1_98DF04D1065D",
+      "name": "Youtube.svg",
+      "format": "image/svg+xml",
+      "bytes": 983
+    },
+    {
+      "kind": "image",
+      "library": "CE7A483A_42C8_4869_ADB1_98DF04D1065D",
+      "name": "main header.png",
+      "format": "image/png",
+      "bytes": 1381430
+    },
+    {
+      "kind": "image",
+      "library": "CE7A483A_42C8_4869_ADB1_98DF04D1065D",
+      "name": "Increase Revenue Without Chasing More Paperwork.png",
+      "format": "image/png",
+      "bytes": 1784573
+    },
+    {
+      "kind": "image",
+      "library": "CE7A483A_42C8_4869_ADB1_98DF04D1065D",
+      "name": "image 55.webp",
+      "format": "image/webp",
+      "bytes": 75450
+    },
+    {
+      "kind": "image",
+      "library": "FIELD_SERVICES",
+      "name": "female-dispatcher-320.webp",
+      "format": "image/webp",
+      "bytes": 11768
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "2The System of Record Is Back—and AI Agents Are the Reason.png",
+      "format": "image/png",
+      "bytes": 1757226
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "AI in Field Service Management Where It Works—and Where It’s Still Hype1.png",
+      "format": "image/png",
+      "bytes": 1816966
+    },
+    {
+      "kind": "image",
+      "library": "FIELD_SERVICES",
+      "name": "lawn-care-operations-1280.webp",
+      "format": "image/webp",
+      "bytes": 182186
+    },
+    {
+      "kind": "image",
+      "library": "CE7A483A_42C8_4869_ADB1_98DF04D1065D",
+      "name": "woman-snow.png",
+      "format": "image/png",
+      "bytes": 2064366
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Snow Removal Software ROI Measure Fewer Disputes, Faster Billing and Better Route Density1.png",
+      "format": "image/png",
+      "bytes": 2836377
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "The Post-SaaS Interface What Software Looks Like When Humans Stop Opening Every App2.png",
+      "format": "image/png",
+      "bytes": 1740533
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "From Configuration to Compounding How Operational Software Gets Smarter Over Time1.png",
+      "format": "image/png",
+      "bytes": 2366560
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Field Service CRM vs. FSM Why Customer Data and Job Execution Can’t Live Apart2.png",
+      "format": "image/png",
+      "bytes": 2122376
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "The Operational Data Moat Why AI Makes Your “Boring” Business Data More Valuable1.png",
+      "format": "image/png",
+      "bytes": 2155238
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Outcome-Based Pricing What Happens When AI Does the Work but Nobody Buys a Seat1.png",
+      "format": "image/png",
+      "bytes": 1802700
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Snow Removal Software in 2026 The Storm Test That Exposes Weak Platforms2.png",
+      "format": "image/png",
+      "bytes": 1846749
+    },
+    {
+      "kind": "image",
+      "library": "CE7A483A_42C8_4869_ADB1_98DF04D1065D",
+      "name": "Automated Crew Arrival and Completion Updates.webp",
+      "format": "image/webp",
+      "bytes": 17642
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Salt Tracking Software The Hidden Margin Problem in Snow and Ice Management1.png",
+      "format": "image/png",
+      "bytes": 2298875
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Snow Removal Contract Management Seasonal, Per-Push, Per-Inch—Without Spreadsheet Chaos2.png",
+      "format": "image/png",
+      "bytes": 2276080
+    },
+    {
+      "kind": "image",
+      "library": "CE7A483A_42C8_4869_ADB1_98DF04D1065D",
+      "name": "Convenient Snow Removal Billing.png",
+      "format": "image/png",
+      "bytes": 143521
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Your Company Doesn’t Have an AI Problem. It Has a Data and Workflow Problem.1.png",
+      "format": "image/png",
+      "bytes": 2310834
+    },
+    {
+      "kind": "image",
+      "library": "FIELD_SERVICES",
+      "name": "male technician.png",
+      "format": "image/png",
+      "bytes": 1900528
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "The Next Great Software Companies May Have Fewer Users—and More Work Getting Done2.png",
+      "format": "image/png",
+      "bytes": 2015686
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "2Low-Code Is Not the End of Developers Why Serious Platforms Need Both.png",
+      "format": "image/png",
+      "bytes": 1930830
+    },
+    {
+      "kind": "image",
+      "library": "CE7A483A_42C8_4869_ADB1_98DF04D1065D",
+      "name": "snow-removal-scheduling-software-online-request-tablet.webp",
+      "format": "image/webp",
+      "bytes": 9906
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Software Fragmentation Is Becoming a Competitive Liability2.png",
+      "format": "image/png",
+      "bytes": 1889456
+    },
+    {
+      "kind": "image",
+      "library": "CE7A483A_42C8_4869_ADB1_98DF04D1065D",
+      "name": "image 9 (1).png",
+      "format": "image/png",
+      "bytes": 125066
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "AI in Field Service Management Where It Works—and Where It’s Still Hype2.png",
+      "format": "image/png",
+      "bytes": 1985474
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Snow Removal Crew Management Knowing Where Everyone Is Isn’t the Same as Knowing What’s Done1.png",
+      "format": "image/png",
+      "bytes": 2237886
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "MCP and the New Integration Layer Will APIs Still Be Enough2.png",
+      "format": "image/png",
+      "bytes": 1767526
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Weather Intelligence for Snow Removal The Storm Is Won Before the First Truck Moves1.png",
+      "format": "image/png",
+      "bytes": 2340219
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "The Next Great Software Companies May Have Fewer Users—and More Work Getting Done1.png",
+      "format": "image/png",
+      "bytes": 2180480
+    },
+    {
+      "kind": "image",
+      "library": "CE7A483A_42C8_4869_ADB1_98DF04D1065D",
+      "name": "linkedin.svg",
+      "format": "image/svg+xml",
+      "bytes": 797
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Field Service Management Software in 2026 What Buyers Should Actually Compare1.png",
+      "format": "image/png",
+      "bytes": 2213399
+    },
+    {
+      "kind": "image",
+      "library": "CE7A483A_42C8_4869_ADB1_98DF04D1065D",
+      "name": "Get More Done With The Crews You Already Have.png",
+      "format": "image/png",
+      "bytes": 1969002
+    },
+    {
+      "kind": "image",
+      "library": "CE7A483A_42C8_4869_ADB1_98DF04D1065D",
+      "name": "Group 38.png",
+      "format": "image/png",
+      "bytes": 343593
+    },
+    {
+      "kind": "image",
+      "library": "CE7A483A_42C8_4869_ADB1_98DF04D1065D",
+      "name": "manager-snow.webp",
+      "format": "image/webp",
+      "bytes": 67710
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "The Future of Business Software Is Invisible, Adaptive and Always Working2.png",
+      "format": "image/png",
+      "bytes": 3175641
+    },
+    {
+      "kind": "image",
+      "library": "CE7A483A_42C8_4869_ADB1_98DF04D1065D",
+      "name": "pic-7.webp",
+      "format": "image/webp",
+      "bytes": 4252
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "Software Fragmentation Is Becoming a Competitive Liability1.png",
+      "format": "image/png",
+      "bytes": 1967163
+    },
+    {
+      "kind": "image",
+      "library": "CE7A483A_42C8_4869_ADB1_98DF04D1065D",
+      "name": "Automated Crew Arrival and Completion Updates.png",
+      "format": "image/png",
+      "bytes": 128178
+    },
+    {
+      "kind": "image",
+      "library": "E5F61FE2_8B18_4523_9991_8DE632D24464",
+      "name": "AI Agents Need a Boss Why Orchestration Becomes the New Control Layer2.png",
+      "format": "image/png",
+      "bytes": 1952161
+    },
+    {
+      "kind": "video",
+      "library": "SERVICEWAND_SNOW_REMOVAL_LANDING",
+      "name": "27416e9786.mp4",
+      "format": "video/mp4",
+      "bytes": 1043948
+    },
+    {
+      "kind": "media-asset",
+      "library": "CE7A483A_42C8_4869_ADB1_98DF04D1065D",
+      "name": "ai-assistant.css",
+      "format": "text/css",
+      "bytes": 24495
+    },
+    {
+      "kind": "media-asset",
+      "library": "SERVICEWAND_SNOW_REMOVAL_LANDING",
+      "name": "vela-sans-400.woff2",
+      "format": "application/octet-stream",
+      "bytes": 55128
+    },
+    {
+      "kind": "media-asset",
+      "library": "CE7A483A_42C8_4869_ADB1_98DF04D1065D",
+      "name": "ai-assistant.js",
+      "format": "application/javascript",
+      "bytes": 36396
+    },
+    {
+      "kind": "media-asset",
+      "library": "SERVICEWAND_SNOW_REMOVAL_LANDING",
+      "name": "vela-sans-600.woff2",
+      "format": "application/octet-stream",
+      "bytes": 55020
+    },
+    {
+      "kind": "media-asset",
+      "library": "SERVICEWAND_SNOW_REMOVAL_LANDING",
+      "name": "vela-sans-500.woff2",
+      "format": "application/octet-stream",
+      "bytes": 54516
+    },
+    {
+      "kind": "media-asset",
+      "library": "CE7A483A_42C8_4869_ADB1_98DF04D1065D",
+      "name": "VelaSans-GX.woff2",
+      "format": "application/octet-stream",
+      "bytes": 58792
+    },
+    {
+      "kind": "media-asset",
+      "library": "CE7A483A_42C8_4869_ADB1_98DF04D1065D",
+      "name": "ai-assistant-light.css",
+      "format": "text/css",
+      "bytes": 24871
+    }
+  ],
+  "blogPostsWithoutContent": [
+    {
+      "permalink": "snow-removal/blog-1",
+      "enabled": false
+    },
+    {
+      "permalink": "snow-removal/blog-1",
+      "enabled": false
+    }
+  ],
+  "limits": [
+    "Metadata/source inventory only; no binary media export, render or runtime form test.",
+    "33 blocks outside registered page trees are not proven unused; dynamic includes and external consumers remain to check.",
+    "Media inventory covers SERVICEWAND libraries. Referenced shared SYSTEM/PNI media must be resolved before packaging.",
+    "Blog languages, full permission configuration, workflow FORM scripts and destination conflicts need follow-up.",
+    "No business form submissions or comments were read. No credentials or raw page values included in this report."
+  ]
+}
