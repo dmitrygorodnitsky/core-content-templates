@@ -45,7 +45,7 @@ if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) 
   assert.ok(process.argv.length === 3 && ['--check', '--write'].includes(process.argv[2]), 'Use --check or --write');
   const url = new URL('../scripts.json', import.meta.url);
   const seed = JSON.parse(await fs.readFile(url, 'utf8'));
-  const script = seed.scripts.find(row => row.code === 'PLAN_SUBSCRIPTION_DRAFT_V5');
+  const script = seed.scripts.find(row => row.code === 'PLAN_SUBSCRIPTION_DRAFT');
   const expected = checkoutConfig(await loadConfig());
   if (process.argv[2] === '--write') {
     script.metadata.ENTITLEMENT_CHECKOUT_CONFIG = expected;

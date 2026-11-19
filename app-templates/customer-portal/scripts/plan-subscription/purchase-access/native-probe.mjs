@@ -2,7 +2,7 @@ import fs from 'node:fs/promises';
 // Temporary dev-1 fixture only. Compile the actual issuer and mapping policy, never a hand-copied authorization implementation.
 export async function withPurchaseAccessProbe(base) {
   const native=await fs.readFile(new URL('./native.java.inc',import.meta.url),'utf8');
-  const bill=await fs.readFile(new URL('../PLAN_SUBSCRIPTION_DRAFT_V5.java',import.meta.url),'utf8');
+  const bill=await fs.readFile(new URL('../PLAN_SUBSCRIPTION_DRAFT.java',import.meta.url),'utf8');
   function method(source,name){const signature=new RegExp('^    private [^\\n]*\\b'+name+'\\([^\\n]*\\)\\s*\\{','m').exec(source);if(!signature)throw Error('Method missing '+name);const start=signature.index;let a=source.indexOf('{',start),depth=1,b=a+1;for(;depth&&b<source.length;b++){if(source[b]==='{')depth++;else if(source[b]==='}')depth--;}return source.slice(start,b);}
   let policy=await fs.readFile(new URL('./PurchaseReadAccess.java',import.meta.url),'utf8');
   const imports=policy.split('\n').filter(s=>s.startsWith('import ')).join('\n')+'\nimport java.time.LocalDateTime;\nimport java.math.BigDecimal;\nimport java.util.Collection;\nimport com.pixelnation.common.json.Json;\n';

@@ -5,5 +5,5 @@
   "ttlHours": 24,
   "transport": "NATIVE_ORDER_ACCESS_GRANT",
   "paymentEnabled": false,
-  "paymentHelperCode": "PLAN_SUBSCRIPTION_PAYMENT_V1"
+  "paymentHelperCode": "PLAN_SUBSCRIPTION_PAYMENT"
 }

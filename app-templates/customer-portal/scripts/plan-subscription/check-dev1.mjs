@@ -151,7 +151,7 @@ async function purchaseLifecycle(orderId, submitted) {
 }
 async function purchaseAction(name, formId, checkoutDigest, expectFailure = false) {
   const args = [{ formId }, ...(checkoutDigest === undefined ? [] : [{ checkoutDigest }])];
-  const job = await ok(`/core/api/script/PLAN_SUBSCRIPTION_WORKFLOW_V11/${name}/exec.json`, { org: 'SYSTEM', json: args });
+  const job = await ok(`/core/api/script/PLAN_SUBSCRIPTION_WORKFLOW/${name}/exec.json`, { org: 'SYSTEM', json: args });
   for (let attempt = 0; attempt < 80; attempt++) {
     const item = (await ok('/core/api/script/result.json', { org: 'SYSTEM', json: [job] }))[0];
     if (item?.status === 'COMPLETED' || item?.status === 'FAILED') {
@@ -236,8 +236,8 @@ try {
   assert.ok(!type.attributes.some(attribute => attribute.code.startsWith('BILLING_') && attribute.code !== 'BILLING_PERIOD'));
   assert.ok(!type.attributeGroups.some(group => group.code === 'BILLING_DETAILS'));
   const typeBefore = JSON.stringify(type);
-  const [script] = await list('core', 'script', 'PLAN_SUBSCRIPTION_WORKFLOW_V11', names(['metadata', 'content']), 'SYSTEM');
-  assert.ok(script.content.trimEnd() === (await fs.readFile(new URL('./PLAN_SUBSCRIPTION_WORKFLOW_V11.java', import.meta.url), 'utf8')).trimEnd(), 'Deployed workflow source differs from the checked source');
+  const [script] = await list('core', 'script', 'PLAN_SUBSCRIPTION_WORKFLOW', names(['metadata', 'content']), 'SYSTEM');
+  assert.ok(script.content.trimEnd() === (await fs.readFile(new URL('./PLAN_SUBSCRIPTION_WORKFLOW.java', import.meta.url), 'utf8')).trimEnd(), 'Deployed workflow source differs from the checked source');
   assert.equal(script.metadata.LINK_TTL_HOURS, 24);
   assert.equal(script.metadata.DEV_CAPTURE_INVALID_EMAIL, true);
   const productId = async code => { const rows = await list('core-pim', 'product', code, names(['id'])); assert.equal(rows.length, 1); return rows[0].id; };
@@ -330,7 +330,7 @@ try {
   assert.equal(await billingFixture('inspectConfiguration'), true, 'Billing fixture runtime is not ready');
 
   if (process.argv.includes('--purchase-access-only')) {
-    const config=(await list('core','script','PLAN_SUBSCRIPTION_DRAFT_V5',names(['metadata']),'SYSTEM'))[0].metadata.PURCHASE_READ_ACCESS_CONFIG;
+    const config=(await list('core','script','PLAN_SUBSCRIPTION_DRAFT',names(['metadata']),'SYSTEM'))[0].metadata.PURCHASE_READ_ACCESS_CONFIG;
     const page=config.pageUrl;
     assert.ok(page===undefined || /^https:\/\/dev-1\.servicewand\.com\/[^?#]+$/.test(page),'The buyer page must be a dev-1 page without query or fragment');
     const draft=await awaiting();await use(draft,'POST');const review=await confirmationReady(draft.id);
@@ -358,7 +358,7 @@ try {
     assert.equal(rows.length,1);assert.equal(rows[0].metadata.PLAN_SUBSCRIPTION_READ_ACCESS.status,page===undefined?'WAITING_FOR_PURCHASE_PAGE_URL':'QUEUED');
     if(prepared.status==='AWAITING_PAYMENT')assert.ok(rows[0].metadata.PLAN_SUBSCRIPTION_ONBOARDING,'Read-access receipt discarded frozen onboarding plan');
     await purchaseAction('deliverPurchaseReadAccess',draft.id,'0'.repeat(64),true);
-    const anonymous=await call('/core/api/script/PLAN_SUBSCRIPTION_WORKFLOW_V11/deliverPurchaseReadAccess/exec.json',{anonymous:true,json:[{formId:draft.id},{checkoutDigest:digest}]});
+    const anonymous=await call('/core/api/script/PLAN_SUBSCRIPTION_WORKFLOW/deliverPurchaseReadAccess/exec.json',{anonymous:true,json:[{formId:draft.id},{checkoutDigest:digest}]});
     assert.ok([401,403].includes(anonymous.status));
     const nativeGrant=await billingFixture('verifyPurchaseReadGrant',rows[0].id,draft.id);
     await fs.writeFile(new URL('../../../../tmp/plan-subscription-magic-native-grant-result.json',import.meta.url),JSON.stringify(nativeGrant,null,2),{mode:0o600});
@@ -712,7 +712,7 @@ try {
   checks.push('single company address text preserved, yearly period, email and company address changes rejected');
   checks.push('US address components resolved; leading-zero ZIP preserved as a string');
 
-  const anonymousCheckout = await call('/core/api/script/PLAN_SUBSCRIPTION_WORKFLOW_V11/prepareCheckout/exec.json', {
+  const anonymousCheckout = await call('/core/api/script/PLAN_SUBSCRIPTION_WORKFLOW/prepareCheckout/exec.json', {
     anonymous: true, org: 'SYSTEM', json: [{ formId: valid.id }],
   });
   assert.ok(anonymousCheckout.status >= 400, 'Anonymous caller could access purchase details by Form ID');

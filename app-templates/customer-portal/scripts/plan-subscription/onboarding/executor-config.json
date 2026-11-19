@@ -4,7 +4,7 @@
   "grantIssuanceEnabled": true,
   "accessDeliveryEnabled": true,
   "paymentEnabled": false,
-  "helperCode": "PLAN_SUBSCRIPTION_WORKFLOW_V11",
+  "helperCode": "PLAN_SUBSCRIPTION_WORKFLOW",
   "readyNotificationEnabled": true,
   "readyLoginUrl": "https://dev-1.servicewand.com/core/apps/service-wand/index.html",
   "nativePaidInvoiceRequired": true,

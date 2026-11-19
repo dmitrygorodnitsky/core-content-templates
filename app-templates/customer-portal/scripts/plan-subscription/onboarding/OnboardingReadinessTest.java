@@ -22,7 +22,7 @@ public final class OnboardingReadinessTest {
     }
     private static Map<String, Object> config() {
         return m("creationEnabled", false, "paymentEnabled", false, "grantIssuanceEnabled", false,
-                "organizationTypeConfirmed", true, "organizationTypeCode", "OPERATOR", "customerTypeCode", "CUSTOMER",
+                "organizationTypeConfirmed", true, "organizationTypeCode", "SERVICE_PROVIDER", "customerTypeCode", "CUSTOMER",
                 "serviceOrderTypeCode", "WINTER_SERVICES_ORDER", "ledgerAccountTypeCode", "ORGANIZATION",
                 "adminRoleCode", "ADMIN", "adminRoleOwnerOrganizationCode", "SYSTEM", "adminAssignmentScope", "NEW_CLIENT_ORGANIZATION",
                 "starterLegalEntityType", "INDIVIDUAL", "purchaserLegalEntityType", "INDIVIDUAL",
@@ -41,7 +41,7 @@ public final class OnboardingReadinessTest {
                 "serviceOrderType", type(6, field("SERVICE_PROPERTY", "com.pixelnation.rm.domain.Resource", null, "entityTypes", List.of(154))),
                 "ledgerAccountType", type(3),
                 "seasonSettingsType", type(35, field("SEASON_START", "java.time.LocalDate", null), field("SEASON_END", "java.time.LocalDate", null)),
-                "referenceScripts", m("serviceOrder", m("status", "AVAILABLE"), "accessDelivery", m("status", "AVAILABLE"), "quoteDelivery", m("status", "AVAILABLE"), "quoteConfirmation", m("status", "AVAILABLE")),
+                "referenceScripts", m("quoteDelivery", m("status", "AVAILABLE"), "quoteConfirmation", m("status", "AVAILABLE")),
                 "adminRole", m("status", "AVAILABLE", "code", "ADMIN", "ownerCode", "SYSTEM", "hasExplicitSystemAdminPermission", false), "adminLoginExists", false, "seasonStartAvailable", false, "errors", List.of());
     }
     private static Map<String, Object> purchase() {
@@ -119,8 +119,10 @@ public final class OnboardingReadinessTest {
         check(has(OnboardingReadiness.evaluate(purchase(), model, config()), "agreement", "REFERENCE_TYPE_NOT_ALLOWED", "ORDERS"), "Agreement must accept the selected concrete service Order type");
         model = model(); map(model.get("ledgerAccountType")).put("code", "CUSTOMER");
         check(has(OnboardingReadiness.evaluate(purchase(), model, config()), "ledger", "LEDGER_TYPE_CONTRACT_MISMATCH", "type"), "A Client Account cannot stand in for a Ledger Account");
-        model = model(); map(map(model.get("referenceScripts")).get("accessDelivery")).put("status", "UNAVAILABLE");
-        check(has(OnboardingReadiness.evaluate(purchase(), model, config()), "accessDelivery", "REFERENCE_SCRIPT_UNAVAILABLE", "accessDelivery"), "A missing Request Quote reference must remain visible");
+        for (String quoteScript : List.of("quoteDelivery", "quoteConfirmation")) {
+            model = model(); map(model.get("referenceScripts")).remove(quoteScript);
+            check(has(OnboardingReadiness.evaluate(purchase(), model, config()), "quotation", "REFERENCE_SCRIPT_UNAVAILABLE", quoteScript), "Missing Quote expiry implementation remains a blocker");
+        }
         purchase = purchase(); purchase.remove("currency");
         check(has(OnboardingReadiness.evaluate(purchase, model(), config()), "serviceOrder", "CONFIRMED_CURRENCY_REQUIRED", "currency"), "Do not guess the service Order currency");
         purchase = purchase(); map(purchase.get("companyAddressSnapshot")).put("countryCode", "US");
@@ -143,7 +145,7 @@ public final class OnboardingReadinessTest {
         Map<String, Object> capacity = map(map(purchase.get("entitlementSnapshot")).get("propertyCapacity"));
         capacity.put("maximumValidation", "VALIDATED_PRODUCT_MAXIMUM"); capacity.put("maximumSource", "PRODUCT_ATTRIBUTE"); capacity.put("overallMaximum", 1000);
         report = OnboardingReadiness.evaluate(purchase, model, config);
-        check(Boolean.TRUE.equals(report.get("configurationReady")) && Boolean.FALSE.equals(report.get("canProvision")), "Resolved sources still cannot enable provisioning or payment");
+        check(Boolean.TRUE.equals(report.get("configurationReady")) && Boolean.FALSE.equals(report.get("canProvision")), "Readiness needs only the Quote expiry references and does not enable provisioning or payment");
         check(((List<?>) report.get("warnings")).size() == 3 && ((List<?>) report.get("executionGates")).contains("PROVISIONING_EXECUTOR_NOT_ENABLED"), "Deferred verification remains distinct from execution gates");
         for (Object raw : (List<?>) map(model.get("organizationType")).get("attributes")) if ("QUOTATION_EXPIRATION".equals(map(raw).get("code"))) map(raw).put("required", false);
         map(model.get("organizationDefaults")).remove("QUOTATION_EXPIRATION");

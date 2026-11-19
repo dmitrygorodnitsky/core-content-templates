@@ -30,7 +30,7 @@ public class MAIN_CLASS {
                 if (!Auth.isAuthenticatedSystemAdmin()) throw new ApplicationException("Administrator required");
                 var workflow = workflowManager.getByCode("PLAN_SUBSCRIPTION");
                 if (workflow == null || !"SERVICEWAND".equals(workflow.getOrganization().getCode())
-                        || workflow.getScript() == null || !"PLAN_SUBSCRIPTION_WORKFLOW_V11".equals(workflow.getScript().getCode())) {
+                        || workflow.getScript() == null || !"PLAN_SUBSCRIPTION_WORKFLOW".equals(workflow.getScript().getCode())) {
                     throw new ApplicationException("Expected deployed subscription workflow not found");
                 }
                 var source = workflow.getStates().stream().filter(s -> "CHECKOUT_PREPARED".equals(s.getCode())).findFirst().orElseThrow();

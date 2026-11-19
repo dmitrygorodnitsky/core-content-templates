@@ -4,7 +4,7 @@ import fs from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
 import { execFileSync } from 'node:child_process';
-import { readQuoteSources } from './quote-sources.mjs';
+import { readQuoteExpirySources } from './quote-sources.mjs';
 
 const config = JSON.parse(await fs.readFile(new URL('./config.json', import.meta.url), 'utf8'));
 const cases = [
@@ -18,7 +18,7 @@ const cases = [
   ['2028-02-15T08:00', '2028-01-01', '2028-03-16T08:00'],
 ];
 
-for (const [code, source] of Object.entries(await readQuoteSources())) {
+for (const [code, source] of Object.entries(await readQuoteExpirySources())) {
   test(code + ': exercise the actual expiry method without database, grants or mail', async () => {
     const start = source.indexOf('    private LocalDateTime quotationExpiry(');
     assert.ok(start >= 0); let end = source.indexOf('{', start), depth = 1;

@@ -74,22 +74,22 @@ Removal landing's Add-ons configurator builds these links.
 
 ## Sources
 
-- `PLAN_SUBSCRIPTION_WORKFLOW_V11.java`: Core CMS workflow helper. Its optional
+- `PLAN_SUBSCRIPTION_WORKFLOW.java`: Core CMS workflow helper. Its optional
   `CONFIRM_PAGE_URL` metadata makes both FormToken emails link to
   `<page>#step=verify|purchase&token=…`; without it they link to the native
   `send-event` endpoint.
 - `scripts.json`: Script seed for the existing core-ui `coreScripts.ts` importer.
 - `workflow.json`: Form workflow seed for the existing core-ui importer.
-- `PLAN_SUBSCRIPTION_DRAFT_V5.java`: billing-side preview and atomic Account/Order/selection item and DRAFT Invoice preparation.
+- `PLAN_SUBSCRIPTION_DRAFT.java`: billing-side preview and atomic Account/Order/selection item and DRAFT Invoice preparation.
 - `onboarding/`: CA readiness, frozen execution plans, disabled idempotent native
   executor and consumer policy/binding provisioning. No onboarding entities are
   created by the current disabled deployment; see its README for limits.
 - `email/`: the shared email layout embedded into the CMS and billing scripts.
 - `payment/`: purchase lifecycle rules embedded into the billing script.
-- `PLAN_SUBSCRIPTION_PAYMENT_V1.java`: creates the Stripe PaymentIntent for a submitted subscription invoice on the core-pay node.
+- `PLAN_SUBSCRIPTION_PAYMENT.java`: creates the Stripe PaymentIntent for a submitted subscription invoice on the core-pay node.
 - `checkout/`: explicit operator-only read/edit DTO commands and shared native
   tax assignment used for both preview and the existing Order workflow.
-- `PLAN_SUBSCRIPTION_ONBOARDING_MODEL_V1.java`: permanent RM-side read-only
+- `PLAN_SUBSCRIPTION_ONBOARDING_MODEL.java`: permanent RM-side read-only
   Property type inspector and disabled Property stage; never a test fixture.
 - `entitlements/`: prepared catalog-to-Entitlements configuration, per-purchase
   provisioning/recovery review templates (no issuance), and read-only
@@ -368,7 +368,7 @@ For these preparation invoices, scoped Order/OrderItem/Invoice guards reject
 line or amount drift, unsafe deletion and leaving Invoice DRAFT. Ordinary
 invoices/orders without this preparation receipt retain their existing behavior.
 The guards run in the hook scripts of the shared workflows in core-ui:
-`ORDER_LIFECYCLE_WORKFLOW` (order), `ORDER_ITEM_LIFECYCLE_WORKFLOW` (lines) and
+`ORDER_LIFECYCLE_WORKFLOW` (order), `INVOICE_LIFECYCLE_WORKFLOW` (lines) and
 `INVOICE_LIFECYCLE_WORKFLOW` (invoices). This script is bound to no workflow; it
 keeps `guardPreparedInvoice` as the self-check it runs after preparing an invoice.
 `payment/PurchaseLifecycle.java` holds the lifecycle rules of the purchase, and
@@ -544,7 +544,7 @@ transition is sent without locks and read back before the next one; otherwise
 the next guard sees the old state and the transition is silently dropped.
 
 Before the order email, `createPurchasePayment` submits
-`PLAN_SUBSCRIPTION_PAYMENT_V1.createInvoicePayment` to a CORE-PAY node. The
+`PLAN_SUBSCRIPTION_PAYMENT.createInvoicePayment` to a CORE-PAY node. The
 helper accepts only the system executor, checks the prepared SENT or OVERDUE unpaid
 invoice of an ACCEPTED order and charges its outstanding amount through
 `PaymentRequestBuilderFactory` (the Stripe controller requires an HTTP request).
@@ -559,7 +559,7 @@ or `OVERDUE-PAID`), then activates the order (`ACCEPTED-ACTIVE`) through awaited
 transitions and waits for the order hook to activate the lines. It is idempotent and
 may also be run by an administrator. Once the invoice is PAID and the order and its lines are ACTIVE it starts
 activation: it submits
-`PLAN_SUBSCRIPTION_WORKFLOW_V11.provisionOnboarding(formId, checkoutDigest)` to a
+`PLAN_SUBSCRIPTION_WORKFLOW.provisionOnboarding(formId, checkoutDigest)` to a
 CORE-CMS node as the system executor (the frozen plan supplies both values) and
 waits up to five minutes. It skips activation when the executor is disabled or
 onboarding is already COMPLETE; a blocked purchase (for example Weather) comes

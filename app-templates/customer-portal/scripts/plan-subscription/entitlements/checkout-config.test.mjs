@@ -13,7 +13,7 @@ const selection = { planCode: 'SERVICEWAND_GROWTH', billingPeriod: 'MONTHLY', ad
 
 test('deployed metadata is the exact projection of the owning config and excludes provisioning configuration', async () => {
   const seed = JSON.parse(await fs.readFile(new URL('../scripts.json', import.meta.url), 'utf8'));
-  assert.deepEqual(seed.scripts.find(row => row.code === 'PLAN_SUBSCRIPTION_DRAFT_V5').metadata.ENTITLEMENT_CHECKOUT_CONFIG, checkoutConfig(config));
+  assert.deepEqual(seed.scripts.find(row => row.code === 'PLAN_SUBSCRIPTION_DRAFT').metadata.ENTITLEMENT_CHECKOUT_CONFIG, checkoutConfig(config));
   assert.ok(!('ownerOrganizationCode' in checkoutConfig(config)));
   assert.ok(!('policyIntents' in checkoutConfig(config)));
 });

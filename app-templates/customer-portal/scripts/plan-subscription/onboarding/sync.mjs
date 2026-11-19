@@ -16,7 +16,7 @@ if (write) {
 // Core omits null-valued metadata members on readback. Unresolved sources stay
 // explicit in the canonical local config and absent in the native projection.
 const nativeConfig = Object.fromEntries(Object.entries(config).filter(([, value]) => value !== null));
-const url = new URL('../PLAN_SUBSCRIPTION_DRAFT_V5.java', import.meta.url);
+const url = new URL('../PLAN_SUBSCRIPTION_DRAFT.java', import.meta.url);
 const start = '    // BEGIN GENERATED ONBOARDING READINESS';
 const end = '    // END GENERATED ONBOARDING READINESS';
 const nested = source.split('\n').filter(line => !line.startsWith('import ')).join('\n').trim()
@@ -29,7 +29,7 @@ const expected = begin >= 0 ? original.slice(0, begin) + region + original.slice
 if (write) await fs.writeFile(url, expected); else assert.equal(original, expected, 'Regenerate onboarding Java region');
 
 const inspector = (await fs.readFile(new URL('./type-inspector.java.inc', import.meta.url), 'utf8')).trimEnd();
-for (const name of ['PLAN_SUBSCRIPTION_DRAFT_V5.java', 'PLAN_SUBSCRIPTION_ONBOARDING_MODEL_V1.java']) {
+for (const name of ['PLAN_SUBSCRIPTION_DRAFT.java', 'PLAN_SUBSCRIPTION_ONBOARDING_MODEL.java']) {
   const path = new URL('../' + name, import.meta.url), text = await fs.readFile(path, 'utf8');
   const markerStart = '    // BEGIN GENERATED ONBOARDING TYPE INSPECTOR', markerEnd = '    // END GENERATED ONBOARDING TYPE INSPECTOR';
   const a = text.indexOf(markerStart), b = text.indexOf(markerEnd);
@@ -50,29 +50,29 @@ async function embed(path, label, body) {
 }
 const executor = (await fs.readFile(new URL('./OnboardingExecution.java',import.meta.url),'utf8')).split('\n')
   .filter(line=>!line.startsWith('import ')).join('\n').trim().replace('public final class OnboardingExecution','public static final class OnboardingExecution');
-await embed('../PLAN_SUBSCRIPTION_DRAFT_V5.java','ONBOARDING EXECUTION', executor.split('\n').map(line=>'    '+line).join('\n'));
-await embed('../PLAN_SUBSCRIPTION_DRAFT_V5.java','ONBOARDING NATIVE EXECUTOR',await fs.readFile(new URL('./native-executor.java.inc',import.meta.url),'utf8'));
-await embed('../PLAN_SUBSCRIPTION_ONBOARDING_MODEL_V1.java','ONBOARDING RESOURCE EXECUTOR',await fs.readFile(new URL('./resource-executor.java.inc',import.meta.url),'utf8'));
+await embed('../PLAN_SUBSCRIPTION_DRAFT.java','ONBOARDING EXECUTION', executor.split('\n').map(line=>'    '+line).join('\n'));
+await embed('../PLAN_SUBSCRIPTION_DRAFT.java','ONBOARDING NATIVE EXECUTOR',await fs.readFile(new URL('./native-executor.java.inc',import.meta.url),'utf8'));
+await embed('../PLAN_SUBSCRIPTION_ONBOARDING_MODEL.java','ONBOARDING RESOURCE EXECUTOR',await fs.readFile(new URL('./resource-executor.java.inc',import.meta.url),'utf8'));
 
-await embed('../PLAN_SUBSCRIPTION_DRAFT_V5.java','CHECKOUT TAX ASSIGNMENT',await fs.readFile(new URL('../checkout/tax-assignment.java.inc',import.meta.url),'utf8'));
-await embed('../PLAN_SUBSCRIPTION_DRAFT_V5.java','CHECKOUT TAX PREVIEW',await fs.readFile(new URL('../checkout/tax-preview.java.inc',import.meta.url),'utf8'));
+await embed('../PLAN_SUBSCRIPTION_DRAFT.java','CHECKOUT TAX ASSIGNMENT',await fs.readFile(new URL('../checkout/tax-assignment.java.inc',import.meta.url),'utf8'));
+await embed('../PLAN_SUBSCRIPTION_DRAFT.java','CHECKOUT TAX PREVIEW',await fs.readFile(new URL('../checkout/tax-preview.java.inc',import.meta.url),'utf8'));
 
 const checkoutChanges = (await fs.readFile(new URL('../checkout/CheckoutChanges.java',import.meta.url),'utf8')).split('\n').filter(line=>!line.startsWith('import ')).join('\n').trim().replace('public final class CheckoutChanges','public static final class CheckoutChanges');
-await embed('../PLAN_SUBSCRIPTION_WORKFLOW_V11.java','CHECKOUT CHANGES',checkoutChanges.split('\n').map(line=>'    '+line).join('\n'));
-await embed('../PLAN_SUBSCRIPTION_WORKFLOW_V11.java','CHECKOUT COMMANDS',await fs.readFile(new URL('../checkout/commands.java.inc',import.meta.url),'utf8'));
+await embed('../PLAN_SUBSCRIPTION_WORKFLOW.java','CHECKOUT CHANGES',checkoutChanges.split('\n').map(line=>'    '+line).join('\n'));
+await embed('../PLAN_SUBSCRIPTION_WORKFLOW.java','CHECKOUT COMMANDS',await fs.readFile(new URL('../checkout/commands.java.inc',import.meta.url),'utf8'));
 const readAccess=(await fs.readFile(new URL('../purchase-access/PurchaseReadAccess.java',import.meta.url),'utf8')).split('\n').filter(line=>!line.startsWith('import ')).join('\n').trim().replace('public final class PurchaseReadAccess','public static final class PurchaseReadAccess');
-await embed('../PLAN_SUBSCRIPTION_DRAFT_V5.java','PURCHASE READ ACCESS POLICY',readAccess.split('\n').map(line=>'    '+line).join('\n'));
-await embed('../PLAN_SUBSCRIPTION_DRAFT_V5.java','PURCHASE READ ACCESS NATIVE',await fs.readFile(new URL('../purchase-access/native.java.inc',import.meta.url),'utf8'));
+await embed('../PLAN_SUBSCRIPTION_DRAFT.java','PURCHASE READ ACCESS POLICY',readAccess.split('\n').map(line=>'    '+line).join('\n'));
+await embed('../PLAN_SUBSCRIPTION_DRAFT.java','PURCHASE READ ACCESS NATIVE',await fs.readFile(new URL('../purchase-access/native.java.inc',import.meta.url),'utf8'));
 const lifecycle=(await fs.readFile(new URL('../payment/PurchaseLifecycle.java',import.meta.url),'utf8')).split('\n').filter(line=>!line.startsWith('import ')).join('\n').trim().replace('public final class PurchaseLifecycle','public static final class PurchaseLifecycle');
-await embed('../PLAN_SUBSCRIPTION_DRAFT_V5.java','PURCHASE LIFECYCLE',lifecycle.split('\n').map(line=>line?'    '+line:line).join('\n'));
+await embed('../PLAN_SUBSCRIPTION_DRAFT.java','PURCHASE LIFECYCLE',lifecycle.split('\n').map(line=>line?'    '+line:line).join('\n'));
 const emailLayout=(await fs.readFile(new URL('../email/EmailLayout.java',import.meta.url),'utf8')).split('\n').filter(line=>!line.startsWith('import ')).join('\n').trim().replace('public final class EmailLayout','public static final class EmailLayout');
-for(const name of ['../PLAN_SUBSCRIPTION_WORKFLOW_V11.java','../PLAN_SUBSCRIPTION_DRAFT_V5.java'])
+for(const name of ['../PLAN_SUBSCRIPTION_WORKFLOW.java','../PLAN_SUBSCRIPTION_DRAFT.java'])
   await embed(name,'EMAIL LAYOUT',emailLayout.split('\n').map(line=>line?'    '+line:line).join('\n'));
 
 const seedUrl = new URL('../scripts.json', import.meta.url), seed = JSON.parse(await fs.readFile(seedUrl, 'utf8'));
-const bill = seed.scripts.find(row => row.code === 'PLAN_SUBSCRIPTION_DRAFT_V5');
-const cms = seed.scripts.find(row => row.code === 'PLAN_SUBSCRIPTION_WORKFLOW_V11');
-const modelCode = 'PLAN_SUBSCRIPTION_ONBOARDING_MODEL_V1';
+const bill = seed.scripts.find(row => row.code === 'PLAN_SUBSCRIPTION_DRAFT');
+const cms = seed.scripts.find(row => row.code === 'PLAN_SUBSCRIPTION_WORKFLOW');
+const modelCode = 'PLAN_SUBSCRIPTION_ONBOARDING_MODEL';
 if (!seed.scripts.some(row => row.code === modelCode)) {
   assert.ok(write, 'Generate the RM helper declaration');
   seed.scripts.push({ code: modelCode, language: 'Java', category: 'WORKFLOW', organization: 'SYSTEM', executable: true,
@@ -91,7 +91,7 @@ add(cms, 'checkOnboardingReadiness', [param('formId', 'java.lang.Integer'), para
 add(bill, 'checkOnboardingReadiness', [param('payloadJson', 'java.lang.String')]);
 add(bill, 'inspectOnboardingConfiguration', []);
 const executionConfig = JSON.parse(await fs.readFile(new URL('./executor-config.json', import.meta.url),'utf8'));
-const nativeExecutionConfig = Object.fromEntries(Object.entries(executionConfig).filter(([,value])=>value!==null));
+const nativeExecutionConfig = Object.fromEntries(Object.entries({...executionConfig, parentOrganizationCode: config.parentOrganizationCode}).filter(([,value])=>value!==null));
 const rm = seed.scripts.find(row=>row.code===modelCode);
 const enforcementConfig=JSON.parse(await fs.readFile(new URL('./enforcement-config.json',import.meta.url),'utf8'));
 if(write)bill.metadata.ONBOARDING_ENFORCEMENT_CONFIG=enforcementConfig;else assert.deepEqual(bill.metadata.ONBOARDING_ENFORCEMENT_CONFIG,enforcementConfig);
@@ -104,7 +104,7 @@ add(bill,'readOnboardingStatus',[param('payloadJson','java.lang.String')]);
 add(cms,'readPurchaseStatus',[param('formId','java.lang.Integer'),param('checkoutDigest','java.lang.String')]);
 add(cms,'readCheckout',[param('formId','java.lang.Integer')]);
 add(cms,'reviseCheckout',[param('formId','java.lang.Integer'),param('expectedRevision','java.lang.Integer'),param('expectedCheckoutDigest','java.lang.String'),param('changesJson','java.lang.String')]);
-const paymentCode='PLAN_SUBSCRIPTION_PAYMENT_V1';
+const paymentCode='PLAN_SUBSCRIPTION_PAYMENT';
 if (!seed.scripts.some(row => row.code === paymentCode)) {
   assert.ok(write, 'Generate the payment helper declaration');
   seed.scripts.push({ code: paymentCode, language: 'Java', category: 'WORKFLOW', organization: 'SYSTEM', executable: true,
@@ -131,7 +131,7 @@ else assert.deepEqual(bill.metadata.ONBOARDING_READINESS_CONFIG, nativeConfig);
 
 // Refresh compiler markers on the existing bindings; their lifecycle logic stays intact.
 const hash = text => createHash('sha256').update(text).digest('hex').slice(0, 12);
-const cmsHash = hash(await fs.readFile(new URL('../PLAN_SUBSCRIPTION_WORKFLOW_V11.java', import.meta.url)));
+const cmsHash = hash(await fs.readFile(new URL('../PLAN_SUBSCRIPTION_WORKFLOW.java', import.meta.url)));
 const wfUrl = new URL('../workflow.json', import.meta.url), wf = await fs.readFile(wfUrl, 'utf8');
 const wfExpected = wf.replace(/utility source: [a-f0-9]{12}/g, 'utility source: ' + cmsHash);
 if (write) await fs.writeFile(wfUrl, wfExpected); else assert.equal(wf, wfExpected);

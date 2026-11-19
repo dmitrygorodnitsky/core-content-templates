@@ -58,7 +58,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 
 public class MAIN_CLASS {
-    private static final String SCRIPT = "PLAN_SUBSCRIPTION_WORKFLOW_V11";
+    private static final String SCRIPT = "PLAN_SUBSCRIPTION_WORKFLOW";
     private static final String KEY = "PLAN_SUBSCRIPTION";
     private static final String VERIFY = "VERIFY_EMAIL";
     private static final List<String> FIELDS = List.of("PLAN_PRODUCT", "BILLING_PERIOD",

@@ -14,11 +14,11 @@ the state names of their date; see core-ui
 ## Command and trust boundary
 
 The operator/system command is
-`PLAN_SUBSCRIPTION_WORKFLOW_V11.checkOnboardingReadiness(formId, checkoutDigest)`.
+`PLAN_SUBSCRIPTION_WORKFLOW.checkOnboardingReadiness(formId, checkoutDigest)`.
 Use the existing authenticated Core Script execution API:
 
 ```text
-POST /core/api/script/PLAN_SUBSCRIPTION_WORKFLOW_V11/checkOnboardingReadiness/exec.json
+POST /core/api/script/PLAN_SUBSCRIPTION_WORKFLOW/checkOnboardingReadiness/exec.json
 X-Organization-Code: SYSTEM
 [{"formId": <confirmed Form ID>}, {"checkoutDigest": "<its saved Checkout digest>"}]
 
@@ -41,10 +41,10 @@ existing purchase Invoice must match the saved receipt and remain a guarded
 DRAFT. There is no catalog refresh, purchase recovery, entity save or Form
 metadata write in this command.
 
-`PLAN_SUBSCRIPTION_DRAFT_V5.inspectOnboardingConfiguration()` can inspect the
+`PLAN_SUBSCRIPTION_DRAFT.inspectOnboardingConfiguration()` can inspect the
 model without a Form. Billing reads OrganizationType, AccountType, OrderType and DocumentType
 through native managers/JPA. ResourceType is read on the RM node by the dedicated
-`PLAN_SUBSCRIPTION_ONBOARDING_MODEL_V1.inspectPropertyType(typeCode)` Script.
+`PLAN_SUBSCRIPTION_ONBOARDING_MODEL.inspectPropertyType(typeCode)` Script.
 This technical Script is part of the deployment, accepts only the configured
 Property type and has the same system/operator restriction. Queue records and
 execution logs are technical side effects, not onboarding business entities.
@@ -58,8 +58,10 @@ uses the actual service User ID and an in-memory principal, without saving roles
 dependencies, while `blockers` identify missing/unverified configuration by
 step, code and field. Types are read live, including inherited required fields,
 allowed values/reference types, concrete-type status, definition ownership,
-parent types and initial workflow state. Request Quote reference Scripts are
-read for existence, executable status and source fingerprints; none is invoked.
+parent types and initial workflow state. Readiness checks existence, executable
+status and source fingerprints for the two Quote expiry implementations.
+Subscription onboarding builds its service order draft and delivers access
+through its own executor.
 `sourceReady` means only that a step has its own input sources; `dependsOn` still
 applies. Model read errors prevent ready claims. No entity-save, role-assignment
 or actual access test is implied.
@@ -80,9 +82,8 @@ otherwise 30 days, evaluated when the Quote link is issued.
 `grantIssuanceEnabled` remain false. Execution additionally requires confirmed
 payment and a separately enabled provisioning executor.
 
-The agreed configuration lives in `config.json`. OPERATOR is the existing
-Service Provider type; CUSTOMER is the existing Client type. Their codes are
-retained. The subscription codes also remain SERVICEWAND_SUBSCRIPTION and
+The agreed configuration lives in `config.json`. SERVICE_PROVIDER is the existing
+Service Provider type selected for new onboarding; CUSTOMER remains the Client type. The subscription codes also remain SERVICEWAND_SUBSCRIPTION and
 SERVICEWAND_SUBSCRIPTION_ITEM. No type is renamed or created.
 
 Ledger is one Account of the SYSTEM-owned ORGANIZATION type per new client
@@ -114,18 +115,18 @@ attachment. It does not fabricate an existing Dictionary ID. The agreement's
 proposed TERM_START_DATE / TERM_END_DATE use the same dates. No Dictionary or
 organization is saved by inspection.
 
-QUOTATION_EXPIRATION is no longer required on OPERATOR; its LocalDate type,
-label and existing organization values are retained. The approved narrowly
-scoped type patch is optional-quotation-expiration.json. It neither removes nor
-renames an attribute, changes its datatype, or alters ProductTypes.
+Onboarding now selects SERVICE_PROVIDER by code. Its inherited attribute contract
+matches the retired OPERATOR type, and QUOTATION_EXPIRATION is already optional.
+The obsolete OPERATOR optional-quotation-expiration.json patch has been removed;
+no type patch is needed for this switch. Existing frozen onboarding plans are not
+rewritten. See the production-transfer SERVICE_PROVIDER compatibility review.
 
 Both active Quote issuers use the frozen agreement TERM_START_DATE: if issued
 before its midnight, expiry is season start; otherwise expiry is issuance plus
 30 days, including issuance exactly at season start. The legacy organization
 date is not read as an integer or used to override this rule. The two shared
 sources are owned by the sibling core-ui repository under scripts/dev/seeds/scripts/:
-SNOW_SERVICE_QUOTATION_DELIVERY_V17.java and
-SNOW_QUOTATION_DECISION_CONFIRMATION_V10.java. quote-expiry.test.mjs compiles
+WINTER_SERVICE_QUOTATION_CREATOR.java (QuotationDelivery and DecisionConfirmation). quote-expiry.test.mjs compiles
 their actual methods with isolated data stubs and checks boundary/calendar cases.
 CORE_UI_REPOSITORY can override the default sibling checkout used by the checks.
 
@@ -252,8 +253,7 @@ not a shared default for new clients.
 
 The live SERVICE_AGREEMENT_LIFECYCLE uses
 SNOW_SERVICE_AGREEMENT_WORKFLOW_UTILITIES_V40, which invokes both
-SNOW_SERVICE_QUOTATION_DELIVERY_V17 and
-SNOW_QUOTATION_DECISION_CONFIRMATION_V10. Both calculate max(season start,
+WINTER_SERVICE_QUOTATION_CREATOR: QuotationDelivery and DecisionConfirmation. Both calculate max(season start,
 issuedAt + expirationDays). Both parse organization QUOTATION_EXPIRATION as an
 integer and fall back to 30 for a date. The native OPERATOR definition declares
 this field required java.time.LocalDate, named Quotation Expiration Date.

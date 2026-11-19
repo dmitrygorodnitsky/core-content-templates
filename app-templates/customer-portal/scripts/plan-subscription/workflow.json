@@ -4,7 +4,7 @@
       "code": "PLAN_SUBSCRIPTION",
       "entityType": "com.pixelnation.cms.domain.Form",
       "initialState": "SUBMITTED",
-      "script": "PLAN_SUBSCRIPTION_WORKFLOW_V11",
+      "script": "PLAN_SUBSCRIPTION_WORKFLOW",
       "scriptLanguage": "JavaScript",
       "nls": {
         "en": {
@@ -14,7 +14,7 @@
           "NAME": "Подписка: email, Checkout и черновик заказа"
         }
       },
-      "onUpdate": "this.workflowUtils.guardUpdate(entity, context);\n// utility source: 46862f5b5738",
+      "onUpdate": "this.workflowUtils.guardUpdate(entity, context);\n// utility source: 30a872ead77f",
       "states": [
         {
           "code": "SUBMITTED",
@@ -26,7 +26,7 @@
               "NAME": "Форма получена"
             }
           },
-          "onEnter": "this.workflowUtils.onSubmitted(entity, context);\n// utility source: 46862f5b5738"
+          "onEnter": "this.workflowUtils.onSubmitted(entity, context);\n// utility source: 30a872ead77f"
         },
         {
           "code": "AWAITING_EMAIL",
@@ -38,8 +38,8 @@
               "NAME": "Ожидает подтверждения email"
             }
           },
-          "onEnter": "this.workflowUtils.onAwaitingEmail(entity, context);\n// utility source: 46862f5b5738",
-          "onExit": "this.workflowUtils.onVerified(entity, context);\n// utility source: 46862f5b5738"
+          "onEnter": "this.workflowUtils.onAwaitingEmail(entity, context);\n// utility source: 30a872ead77f",
+          "onExit": "this.workflowUtils.onVerified(entity, context);\n// utility source: 30a872ead77f"
         },
         {
           "code": "EMAIL_VERIFIED_MODEL_PENDING",
@@ -51,8 +51,8 @@
               "NAME": "Email подтверждён; ожидается модель продуктов"
             }
           },
-          "onEnter": "this.workflowUtils.onEmailVerified(entity, context);\n// utility source: 46862f5b5738",
-          "onExit": "this.workflowUtils.onCheckoutPrepared(entity, context);\n// utility source: 46862f5b5738"
+          "onEnter": "this.workflowUtils.onEmailVerified(entity, context);\n// utility source: 30a872ead77f",
+          "onExit": "this.workflowUtils.onCheckoutPrepared(entity, context);\n// utility source: 30a872ead77f"
         },
         {
           "code": "PREPARATION_FAILED",
@@ -75,8 +75,8 @@
               "NAME": "Checkout подготовлен; ожидается подтверждение покупки"
             }
           },
-          "onEnter": "this.workflowUtils.onCheckoutEntered(entity, context);\n// utility source: 46862f5b5738",
-          "onExit": "this.workflowUtils.onPurchaseConfirmation(entity, context);\n// utility source: 46862f5b5738"
+          "onEnter": "this.workflowUtils.onCheckoutEntered(entity, context);\n// utility source: 30a872ead77f",
+          "onExit": "this.workflowUtils.onPurchaseConfirmation(entity, context);\n// utility source: 30a872ead77f"
         },
         {
           "code": "PURCHASE_CONFIRMATION_RECEIVED",
@@ -88,8 +88,8 @@
               "NAME": "Покупка подтверждена; подготовка черновика"
             }
           },
-          "onEnter": "this.workflowUtils.onPurchaseConfirmationReceived(entity, context);\n// utility source: 46862f5b5738",
-          "onExit": "this.workflowUtils.onDraftOrderReady(entity, context);\n// utility source: 46862f5b5738"
+          "onEnter": "this.workflowUtils.onPurchaseConfirmationReceived(entity, context);\n// utility source: 30a872ead77f",
+          "onExit": "this.workflowUtils.onDraftOrderReady(entity, context);\n// utility source: 30a872ead77f"
         },
         {
           "code": "DRAFT_ORDER_READY",
@@ -101,7 +101,7 @@
               "NAME": "Черновик заказа создан; ожидается модель расчёта"
             }
           },
-          "onEnter": "this.workflowUtils.onDraftOrderReady(entity, context);\n// utility source: 46862f5b5738"
+          "onEnter": "this.workflowUtils.onDraftOrderReady(entity, context);\n// utility source: 30a872ead77f"
         }
       ],
       "events": [

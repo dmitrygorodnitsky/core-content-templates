@@ -16,7 +16,7 @@
             if (service) { principal = new User(); principal.setId(caller.getId()); principal.setName(caller.getName()); principal.setFullname(caller.getFullname()); principal.setRoles(new LinkedHashSet<>()); }
             return Auth.withUser(principal, organizationManager.getByCode("SYSTEM"), (Supplier<Map<String, Object>>) () -> {
                 if (!service && !Auth.isAuthenticatedSystemAdmin()) throw new ApplicationException("System onboarding executor required");
-                Map<String, Object> config = objectMap(onboardingScripts.getByCode("PLAN_SUBSCRIPTION_ONBOARDING_MODEL_V1").getMetadata().get("ONBOARDING_EXECUTOR_CONFIG"));
+                Map<String, Object> config = objectMap(onboardingScripts.getByCode("PLAN_SUBSCRIPTION_ONBOARDING_MODEL").getMetadata().get("ONBOARDING_EXECUTOR_CONFIG"));
                 if (!Boolean.TRUE.equals(config.get("executionEnabled"))) throw new ApplicationException("Onboarding Property creation is disabled");
                 Map<String, Object> input;
                 try { input = Json.defaultMapper().readValue(payloadJson, Map.class); } catch (Exception invalid) { throw new ApplicationException("Invalid onboarding Property source"); }
@@ -28,7 +28,7 @@
                 entityManager.createNativeQuery("SELECT 1 FROM pg_advisory_xact_lock(:key)").setParameter("key", lock).getSingleResult();
                 var org = organizationManager.get(orgId);
                 Map<String, Object> marker = Map.of("orderId", orderId, "sourceFormId", onboardingNumber(input.get("sourceFormId")), "planDigest", digest);
-                if (org == null || org.getParent() == null || !"SERVICE_WAND_WINTER_SERVICES_CANADA".equals(org.getParent().getCode())
+                if (org == null || org.getParent() == null || !String.valueOf(config.get("parentOrganizationCode")).equals(org.getParent().getCode())
                         || !org.getCode().equals("PS_ORG_" + orderId) || !onboardingCanonical(marker).equals(onboardingCanonical(org.getMetadata().get("PLAN_SUBSCRIPTION_ONBOARDING")))) throw new ApplicationException("Property target does not match the recorded CA purchase");
                 String code = "PS_PROPERTY_" + orderId;
                 var rows = onboardingResources.selectJPQL("SELECT r FROM Resource r WHERE r.organization.id = :org AND r.code = :code", Map.of("org", orgId, "code", code), com.pixelnation.rm.domain.Resource.class);

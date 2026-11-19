@@ -76,7 +76,7 @@ import jakarta.persistence.PersistenceContext;
 
 public class MAIN_CLASS {
     private static final String KEY = "PLAN_SUBSCRIPTION";
-    private static final String SCRIPT = "PLAN_SUBSCRIPTION_DRAFT_V5";
+    private static final String SCRIPT = "PLAN_SUBSCRIPTION_DRAFT";
     @Autowired private TransactionUtils transactionUtils;
     @Autowired private IOrganizationManager organizationManager;
     @Autowired private IUserManager userManager;
@@ -290,8 +290,6 @@ public class MAIN_CLASS {
             roleInfo.put("ownerInParentAncestry", ancestry.contains(property(owner, "id"))); result.put("adminRole", roleInfo);
         } else result.put("adminRole", Map.of("status", "UNAVAILABLE"));
         Map<String, Object> references = new LinkedHashMap<>();
-        references.put("accessDelivery", describeOnboardingReference(text(optionalMap(config.get("accessDeliveryContract")), "referenceScriptCode")));
-        references.put("serviceOrder", describeOnboardingReference(text(optionalMap(config.get("serviceOrderPreparation")), "referenceScriptCode")));
         references.put("quoteDelivery", describeOnboardingReference(text(optionalMap(config.get("quoteLinkPolicy")), "deliveryScriptCode")));
         references.put("quoteConfirmation", describeOnboardingReference(text(optionalMap(config.get("quoteLinkPolicy")), "confirmationScriptCode")));
         result.put("referenceScripts", references);
@@ -326,7 +324,7 @@ public class MAIN_CLASS {
         List<String> nodes = capabilitiesResolver.listNodesWithCapabilities().entrySet().stream()
                 .filter(entry -> entry.getValue().containsAll(Set.of("CORE", "CORE-RM"))).map(Map.Entry::getKey).sorted().toList();
         if (nodes.isEmpty()) throw new ApplicationException("No Resource Management model-read node available");
-        Script helper = scriptManager.getByCode("PLAN_SUBSCRIPTION_ONBOARDING_MODEL_V1");
+        Script helper = scriptManager.getByCode("PLAN_SUBSCRIPTION_ONBOARDING_MODEL");
         if (helper == null) throw new ApplicationException("Resource Management readiness helper missing");
         java.util.UUID request = transactionUtils.getInNewTxRW(() -> {
             try { return scriptService.submitForExecution(nodes.get(0), helper, "inspectPropertyType", List.<Map<String, ?>>of(Map.of("typeCode", typeCode)),
@@ -1504,7 +1502,7 @@ public class MAIN_CLASS {
             Map<String, Object> parent = map(model.get("parent"));
             if (!"AVAILABLE".equals(parent.get("status"))) block(blockers, "organization", "CA_PARENT_UNAVAILABLE", "parent", "Не найден однозначный CA-родитель организации.");
             Map<String, Object> organization = type(model, "organizationType", "organization", blockers);
-            if (!Boolean.TRUE.equals(config.get("organizationTypeConfirmed"))) block(blockers, "organization", "ORGANIZATION_TYPE_CONFIRMATION_REQUIRED", "type", "OPERATOR найден как кандидат; назначение этого типа новой организации ещё нужно подтвердить.");
+            if (!Boolean.TRUE.equals(config.get("organizationTypeConfirmed"))) block(blockers, "organization", "ORGANIZATION_TYPE_CONFIRMATION_REQUIRED", "type", "Тип " + text(config.get("organizationTypeCode")) + " найден как кандидат; назначение этого типа новой организации ещё нужно подтвердить.");
             Map<String, Object> organizationValues = new LinkedHashMap<>(map(model.get("organizationDefaults")));
             required(organization, organizationValues, "organization", blockers);
             steps.add(step("organization", "Organization", organization, Map.of("parent", parent, "name", text(purchase.get("companyName")), "attributes", organizationValues)));
@@ -1560,7 +1558,6 @@ public class MAIN_CLASS {
                     || !text(preparation.get("initialStateCode")).equals(map(serviceOrder.get("workflow")).get("initialState"))) {
                 block(blockers, "serviceOrder", "SERVICE_ORDER_DRAFT_CONFIGURATION_REQUIRED", "preparation", "Нужен сервисный черновик в согласованном начальном состоянии без автоматической отправки и цен до проверки менеджером.");
             }
-            referenceScript(model, "serviceOrder", "serviceOrder", blockers);
             Map<String, Object> currency = map(purchase.get("currency"));
             if (!present(currency.get("id"))) block(blockers, "serviceOrder", "CONFIRMED_CURRENCY_REQUIRED", "currency", "Валюта стартового заказа должна быть прочитана из подтверждённого заказа подписки.");
             steps.add(step("serviceOrder", "Order", serviceOrder, Map.of("account", Map.of("reference", "starterCustomer"), "currency", currency,
@@ -1598,7 +1595,6 @@ public class MAIN_CLASS {
                     || !Boolean.TRUE.equals(access.get("issueOnlyForNewUserOrMissingPassword")) || !Boolean.TRUE.equals(access.get("reuseExistingPassword"))) {
                 block(blockers, "accessDelivery", "ACCESS_DELIVERY_CONFIGURATION_REQUIRED", "credentials", "Доступ должен повторять Request Quote: существующий пароль сохраняется, штатная выдача вызывается только для нового User или отсутствующего пароля.");
             }
-            referenceScript(model, "accessDelivery", "accessDelivery", blockers);
             steps.add(Map.of("step", "accessDelivery", "source", "REQUEST_QUOTE_PATTERN", "contract", access, "creationEnabled", false));
             if (!entitlements.isEmpty()) {
                 if (!validatedPropertyMaximum(map(entitlements.get("propertyCapacity")))) {
@@ -2124,7 +2120,7 @@ public class MAIN_CLASS {
         if (!records.isEmpty()) throw new ApplicationException("Partial company transaction requires reconciliation");
         Map<String, Object> orgSpec = artifact(state, "organization");
         Organization parent = organizationManager.getByCode(text(onboardingConfig(), "parentOrganizationCode"));
-        if (parent == null || !"SERVICE_WAND_WINTER_SERVICES_CANADA".equals(parent.getCode())) throw new ApplicationException("CA parent unavailable");
+        if (parent == null || !text(onboardingConfig(), "parentOrganizationCode").equals(parent.getCode())) throw new ApplicationException("CA parent unavailable");
         String code = "PS_ORG_" + purchase.getId();
         if (!organizationManager.selectJPQL("SELECT o FROM Organization o WHERE o.code = :code", Map.of("code", code), Organization.class).isEmpty()) throw new ApplicationException("Unrecorded organization already exists; do not adopt automatically");
         Organization target = new Organization(); target.setCode(code); target.setParent(parent); target.setEnabled(true);
@@ -2407,7 +2403,7 @@ public class MAIN_CLASS {
                 .filter(entry -> entry.getValue().containsAll(Set.of("CORE", "CORE-RM"))).map(Map.Entry::getKey).sorted().toList();
         if (nodes.isEmpty()) throw new ApplicationException("No onboarding Resource execution node");
         java.util.UUID job = transactionUtils.getInNewTxRW(() -> {
-            try { return scriptService.submitForExecution(nodes.getFirst(), scriptManager.getByCode("PLAN_SUBSCRIPTION_ONBOARDING_MODEL_V1"), method,
+            try { return scriptService.submitForExecution(nodes.getFirst(), scriptManager.getByCode("PLAN_SUBSCRIPTION_ONBOARDING_MODEL"), method,
                     List.<Map<String, ?>>of(Map.of("payloadJson", json(payload))), Auth.getAuthenticatedUser(), organizationManager.getByCode("SYSTEM")); }
             catch (Exception failure) { throw new ApplicationException(failure); }
         });

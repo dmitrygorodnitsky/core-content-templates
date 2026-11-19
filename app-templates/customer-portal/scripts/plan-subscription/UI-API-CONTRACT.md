@@ -70,7 +70,7 @@ https://<configured-host>/<configured-buyer-page>#orderId=<id>&token=<grant-toke
 token возвращается только один раз и не сохраняется для будущей отправки.
 
 Ссылки из писем VERIFY_EMAIL и CONFIRM_PURCHASE ведут на страницу из метаданных
-`CONFIRM_PAGE_URL` скрипта `PLAN_SUBSCRIPTION_WORKFLOW_V11`:
+`CONFIRM_PAGE_URL` скрипта `PLAN_SUBSCRIPTION_WORKFLOW`:
 `<page>#step=verify|purchase&token=<form-token>`. Страница сама отправляет
 `POST /core-cms/api/form/send-event/{token}.json` при открытии. Без
 `CONFIRM_PAGE_URL` письмо ведёт на native endpoint, как раньше.

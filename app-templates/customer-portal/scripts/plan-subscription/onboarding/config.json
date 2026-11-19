@@ -3,7 +3,7 @@
   "countryCode": "CA",
   "sellerCode": "SERVICEWAND",
   "parentOrganizationCode": "SERVICE_WAND_WINTER_SERVICES_CANADA",
-  "organizationTypeCode": "OPERATOR",
+  "organizationTypeCode": "SERVICE_PROVIDER",
   "customerTypeCode": "CUSTOMER",
   "propertyTypeCode": "SNOW_REMOVAL_PROPERTY",
   "agreementTypeCode": "SERVICE_AGREEMENT",
@@ -19,13 +19,11 @@
   "serviceOrderPreparation": {
     "mode": "DRAFT_PENDING_MANAGER_REVIEW",
     "initialStateCode": "INITIAL",
-    "referenceScriptCode": "WINTER_SERVICE_QUOTATION_DRAFT_CREATOR_V4",
     "pricesRequiredForDraft": false,
     "submitEnabled": false
   },
   "accessDeliveryContract": {
     "mode": "REQUEST_QUOTE_PATTERN",
-    "referenceScriptCode": "SNOW_PORTAL_USER_PROVISION_V5",
     "credentialMethod": "UserService.generateNewPassword",
     "issueOnlyForNewUserOrMissingPassword": true,
     "reuseExistingPassword": true,
@@ -51,12 +49,11 @@
     "beforeSeason": "SEASON_START",
     "afterSeasonStartedDays": 30,
     "evaluateAt": "QUOTE_LINK_ISSUANCE",
-    "deliveryScriptCode": "SNOW_SERVICE_QUOTATION_DELIVERY_V17",
-    "confirmationScriptCode": "SNOW_QUOTATION_DECISION_CONFIRMATION_V10",
+    "deliveryScriptCode": "WINTER_SERVICE_QUOTATION_CREATOR",
+    "confirmationScriptCode": "WINTER_SERVICE_QUOTATION_CREATOR",
     "implementationStatus": "READY",
     "implementationFingerprints": {
-      "SNOW_SERVICE_QUOTATION_DELIVERY_V17": "aa13bb743546c881db447335de7c044ef6763a2c932b4752b545e00c1727cef5",
-      "SNOW_QUOTATION_DECISION_CONFIRMATION_V10": "403cb838df947332834281d26bf61596ed1ba82a7ad4a2cf9f6a4d54cf9293da"
+      "WINTER_SERVICE_QUOTATION_CREATOR": "dce093bfbf4ed884f8cf3ddc571359873383f2e57d4f1679aa0193b43208a3ca"
     }
   },
   "creationEnabled": false,

@@ -251,7 +251,7 @@
         if (!records.isEmpty()) throw new ApplicationException("Partial company transaction requires reconciliation");
         Map<String, Object> orgSpec = artifact(state, "organization");
         Organization parent = organizationManager.getByCode(text(onboardingConfig(), "parentOrganizationCode"));
-        if (parent == null || !"SERVICE_WAND_WINTER_SERVICES_CANADA".equals(parent.getCode())) throw new ApplicationException("CA parent unavailable");
+        if (parent == null || !text(onboardingConfig(), "parentOrganizationCode").equals(parent.getCode())) throw new ApplicationException("CA parent unavailable");
         String code = "PS_ORG_" + purchase.getId();
         if (!organizationManager.selectJPQL("SELECT o FROM Organization o WHERE o.code = :code", Map.of("code", code), Organization.class).isEmpty()) throw new ApplicationException("Unrecorded organization already exists; do not adopt automatically");
         Organization target = new Organization(); target.setCode(code); target.setParent(parent); target.setEnabled(true);
@@ -534,7 +534,7 @@
                 .filter(entry -> entry.getValue().containsAll(Set.of("CORE", "CORE-RM"))).map(Map.Entry::getKey).sorted().toList();
         if (nodes.isEmpty()) throw new ApplicationException("No onboarding Resource execution node");
         java.util.UUID job = transactionUtils.getInNewTxRW(() -> {
-            try { return scriptService.submitForExecution(nodes.getFirst(), scriptManager.getByCode("PLAN_SUBSCRIPTION_ONBOARDING_MODEL_V1"), method,
+            try { return scriptService.submitForExecution(nodes.getFirst(), scriptManager.getByCode("PLAN_SUBSCRIPTION_ONBOARDING_MODEL"), method,
                     List.<Map<String, ?>>of(Map.of("payloadJson", json(payload))), Auth.getAuthenticatedUser(), organizationManager.getByCode("SYSTEM")); }
             catch (Exception failure) { throw new ApplicationException(failure); }
         });

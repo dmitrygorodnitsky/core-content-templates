@@ -7,7 +7,7 @@ import {execFileSync} from 'node:child_process';
 test('actual Checkout projection excludes receipts/tokens and preserves rounding gate',async()=>{
  const text=await fs.readFile(new URL('./commands.java.inc',import.meta.url),'utf8');
  const method=text.slice(text.indexOf('    private Map<String,Object> buyerCheckoutView'),text.indexOf('    private String checkoutTaxHtml'));
- const cms=await fs.readFile(new URL('../PLAN_SUBSCRIPTION_WORKFLOW_V11.java',import.meta.url),'utf8');
+ const cms=await fs.readFile(new URL('../PLAN_SUBSCRIPTION_WORKFLOW.java',import.meta.url),'utf8');
  const fields=cms.match(/FIELDS = List\.of\(([\s\S]*?)\);/)[1];
  const java=`import java.util.*;public class CheckoutProjectionTest {
  private static final List<String> FIELDS=List.of(${fields});

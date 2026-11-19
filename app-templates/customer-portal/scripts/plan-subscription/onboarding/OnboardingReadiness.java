@@ -38,7 +38,7 @@ public final class OnboardingReadiness {
         Map<String, Object> parent = map(model.get("parent"));
         if (!"AVAILABLE".equals(parent.get("status"))) block(blockers, "organization", "CA_PARENT_UNAVAILABLE", "parent", "Не найден однозначный CA-родитель организации.");
         Map<String, Object> organization = type(model, "organizationType", "organization", blockers);
-        if (!Boolean.TRUE.equals(config.get("organizationTypeConfirmed"))) block(blockers, "organization", "ORGANIZATION_TYPE_CONFIRMATION_REQUIRED", "type", "OPERATOR найден как кандидат; назначение этого типа новой организации ещё нужно подтвердить.");
+        if (!Boolean.TRUE.equals(config.get("organizationTypeConfirmed"))) block(blockers, "organization", "ORGANIZATION_TYPE_CONFIRMATION_REQUIRED", "type", "Тип " + text(config.get("organizationTypeCode")) + " найден как кандидат; назначение этого типа новой организации ещё нужно подтвердить.");
         Map<String, Object> organizationValues = new LinkedHashMap<>(map(model.get("organizationDefaults")));
         required(organization, organizationValues, "organization", blockers);
         steps.add(step("organization", "Organization", organization, Map.of("parent", parent, "name", text(purchase.get("companyName")), "attributes", organizationValues)));
@@ -94,7 +94,6 @@ public final class OnboardingReadiness {
                 || !text(preparation.get("initialStateCode")).equals(map(serviceOrder.get("workflow")).get("initialState"))) {
             block(blockers, "serviceOrder", "SERVICE_ORDER_DRAFT_CONFIGURATION_REQUIRED", "preparation", "Нужен сервисный черновик в согласованном начальном состоянии без автоматической отправки и цен до проверки менеджером.");
         }
-        referenceScript(model, "serviceOrder", "serviceOrder", blockers);
         Map<String, Object> currency = map(purchase.get("currency"));
         if (!present(currency.get("id"))) block(blockers, "serviceOrder", "CONFIRMED_CURRENCY_REQUIRED", "currency", "Валюта стартового заказа должна быть прочитана из подтверждённого заказа подписки.");
         steps.add(step("serviceOrder", "Order", serviceOrder, Map.of("account", Map.of("reference", "starterCustomer"), "currency", currency,
@@ -132,7 +131,6 @@ public final class OnboardingReadiness {
                 || !Boolean.TRUE.equals(access.get("issueOnlyForNewUserOrMissingPassword")) || !Boolean.TRUE.equals(access.get("reuseExistingPassword"))) {
             block(blockers, "accessDelivery", "ACCESS_DELIVERY_CONFIGURATION_REQUIRED", "credentials", "Доступ должен повторять Request Quote: существующий пароль сохраняется, штатная выдача вызывается только для нового User или отсутствующего пароля.");
         }
-        referenceScript(model, "accessDelivery", "accessDelivery", blockers);
         steps.add(Map.of("step", "accessDelivery", "source", "REQUEST_QUOTE_PATTERN", "contract", access, "creationEnabled", false));
         if (!entitlements.isEmpty()) {
             if (!validatedPropertyMaximum(map(entitlements.get("propertyCapacity")))) {
