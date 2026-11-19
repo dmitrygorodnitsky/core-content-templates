@@ -248,7 +248,7 @@
      "code": "SNOW_RESIDENTIAL_CUSTOMER",
      "workflow": "CLIENT_ACCOUNT_LIFECYCLE",
      "owner": "SERVICE_WAND_WINTER_SERVICES_CANADA",
-     "attributeCount": 2,
+     "attributeCount": 1,
      "isAbstract": true
     },
     {
@@ -256,7 +256,7 @@
      "code": "SNOW_COMMERCIAL_CUSTOMER",
      "workflow": "CLIENT_ACCOUNT_LIFECYCLE",
      "owner": "SERVICE_WAND_WINTER_SERVICES_CANADA",
-     "attributeCount": 2,
+     "attributeCount": 1,
      "isAbstract": true
     },
     {
@@ -264,7 +264,7 @@
      "code": "SNOW_PROPERTY_MANAGER",
      "workflow": "CLIENT_ACCOUNT_LIFECYCLE",
      "owner": "SERVICE_WAND_WINTER_SERVICES_CANADA",
-     "attributeCount": 2,
+     "attributeCount": 1,
      "isAbstract": true
     },
     {

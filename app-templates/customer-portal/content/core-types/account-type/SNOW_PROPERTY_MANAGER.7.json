@@ -20,12 +20,7 @@
    "CUSTOMER_PROFILE": []
   },
   {
-   "BILLING_PROFILE": [
-    {
-     "attributeCode": "TAX_EXEMPT",
-     "visible": true
-    }
-   ]
+   "BILLING_PROFILE": []
   },
   {
    "CUSTOMER_CONTEXT": [
@@ -47,20 +42,6 @@
    "nls": {
     "en": {
      "NAME": "Customer Notes"
-    }
-   },
-   "options": []
-  },
-  {
-   "code": "TAX_EXEMPT",
-   "required": false,
-   "multiselect": false,
-   "freeValue": false,
-   "unique": false,
-   "className": "java.lang.Boolean",
-   "nls": {
-    "en": {
-     "NAME": "Tax Exempt"
     }
    },
    "options": []

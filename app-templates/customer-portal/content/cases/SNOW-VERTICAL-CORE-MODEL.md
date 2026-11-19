@@ -44,9 +44,9 @@ entity's **id** as its value. `et` lists the `entityTypes` the attribute accepts
 | type | id | owner | workflow | attributes |
 | --- | --- | --- | --- | --- |
 | `CUSTOMER` | 2 | `SYSTEM` | `CLIENT_ACCOUNT_LIFECYCLE` | `MANAGEMENT_COMPANY` |
-| `SNOW_RESIDENTIAL_CUSTOMER` | 5 | `…_CANADA` | `CLIENT_ACCOUNT_LIFECYCLE` | `TAX_EXEMPT`, `CUSTOMER_NOTES` (retired abstract type) |
-| `SNOW_COMMERCIAL_CUSTOMER` | 6 | `…_CANADA` | `CLIENT_ACCOUNT_LIFECYCLE` | same two; retired abstract type |
-| `SNOW_PROPERTY_MANAGER` | 7 | `…_CANADA` | `CLIENT_ACCOUNT_LIFECYCLE` | same two; retired abstract type |
+| `SNOW_RESIDENTIAL_CUSTOMER` | 5 | `…_CANADA` | `CLIENT_ACCOUNT_LIFECYCLE` | `CUSTOMER_NOTES` (retired abstract type) |
+| `SNOW_COMMERCIAL_CUSTOMER` | 6 | `…_CANADA` | `CLIENT_ACCOUNT_LIFECYCLE` | `CUSTOMER_NOTES` (retired abstract type) |
+| `SNOW_PROPERTY_MANAGER` | 7 | `…_CANADA` | `CLIENT_ACCOUNT_LIFECYCLE` | `CUSTOMER_NOTES` (retired abstract type) |
 | `SNOW_EMPLOYEE` | 12 | `…_CANADA` | `SNOW_WORKFORCE_LIFECYCLE` | 7 |
 | `SNOW_SUBCONTRACTOR` | 17 | `…_CANADA` | `SNOW_WORKFORCE_LIFECYCLE` | 7 |
 
@@ -647,9 +647,10 @@ All 688 scoped Accounts were read back against the pre-migration plan. Account
 IDs, Contact IDs, 15 existing User links, organizations, workflows, states,
 addresses and metadata were preserved. The 48 populated Customer Notes were
 merged into native `nls.en.DESCRIPTION`, retaining existing text. Empty legacy
-Billing Terms was removed from the three retired definitions. Optional
-`TAX_EXEMPT` definitions and their access rules were retained; tax calculation
-and tax dictionaries were not changed.
+Billing Terms was removed from the three retired definitions. The unused account tax exemption attribute
+was subsequently removed on dev-1 on 2026-11-09; tax calculation and tax
+dictionaries were not changed. The historical removal patches are not needed
+for a fresh install.
 
 687 contact roles changed from `PRIMARY` to `LEGAL`, including contacts of
 636 already-Client Accounts so the same email/detail/provisioning consumers

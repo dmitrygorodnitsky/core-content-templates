@@ -15,7 +15,7 @@ assert.deepEqual(planClientTransition([plan[0].after], types, contacts, scope)[0
 assert.throws(() => planClientTransition([{ ...old, organization: { code: "OTHER" } }], types, contacts, scope), /outside/);
 assert.throws(() => planClientTransition([old], types, contacts), /scope/);
 assert.throws(() => planClientTransition([old, old], types, contacts, scope), /Duplicate/);
-const unknown = structuredClone(old); unknown.attributes[5].TAX_EXEMPT = { value: true };
+const unknown = structuredClone(old); unknown.attributes[5].UNMAPPED_FIELD = { value: true };
 assert.throws(() => planClientTransition([unknown], types, contacts, scope), /Unmapped/);
 const ambiguous = structuredClone(old); ambiguous.contacts.push({ id: 21, type: { code: "PRIMARY" } });
 assert.throws(() => planClientTransition([ambiguous], types, contacts, scope), /Ambiguous/);
@@ -24,4 +24,4 @@ assert.deepEqual(planClientTransition([legalPresent], types, contacts, scope)[0]
 const missing = structuredClone(old); missing.contacts = [];
 assert.equal(planClientTransition([missing], types, contacts, scope)[0].after.contacts.length, 0, "No contact identity is invented");
 assert.throws(() => verifyClientTransition(plan[0], { ...plan[0].after, user: { id: 999 } }), /Unexpected/);
-console.log("snow-client-transition-check ok: tenant scope, identities and relationships preserved, native notes merge, contact roles independent of entry kind, no invented contacts, repeat no-op and unmapped taxes rejected; writes require managed server migration");
+console.log("snow-client-transition-check ok: tenant scope, identities and relationships preserved, native notes merge, contact roles independent of entry kind, no invented contacts, repeat no-op and unmapped attributes rejected; writes require managed server migration");
